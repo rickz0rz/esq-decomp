@@ -2,6 +2,19 @@ typedef unsigned char UBYTE;
 typedef short WORD;
 typedef long LONG;
 
+enum {
+    COI_MODE_MARKER_PPV = -1,
+    COI_WINDOW_FULL_DAY_MINUTES = 1440,
+    COI_FIELD_MODE_TITLE = 1,
+    COI_FIELD_MODE_TEXT = 2,
+    COI_FIELD_MODE_FLAG3 = 3,
+    COI_FIELD_MODE_FLAG4 = 4,
+    COI_FIELD_MODE_WRAP = 6,
+    COI_PART_COUNT = 5,
+    COI_WRAP_PRINTF_WIDTH = 19,
+    COI_WRAP_BUF_LEN = 20
+};
+
 extern LONG GCOMMAND_PpvSelectionWindowMinutes;
 extern LONG GCOMMAND_PpvSelectionToleranceMinutes;
 extern LONG CONFIG_TimeWindowMinutes;
@@ -25,11 +38,11 @@ void COI_FormatEntryDisplayText(void *entry, void *ctx, WORD slot, UBYTE *out_bu
     UBYTE wrap_buf[20];
     UBYTE *wrap_ptr;
 
-    if (mode_marker == -1) {
+    if (mode_marker == COI_MODE_MARKER_PPV) {
         window = GCOMMAND_PpvSelectionWindowMinutes;
         tolerance = GCOMMAND_PpvSelectionToleranceMinutes;
     } else {
-        window = 1440;
+        window = COI_WINDOW_FULL_DAY_MINUTES;
         tolerance = CONFIG_TimeWindowMinutes;
     }
 
@@ -39,25 +52,30 @@ void COI_FormatEntryDisplayText(void *entry, void *ctx, WORD slot, UBYTE *out_bu
         return;
     }
 
-    parts[0] = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, slot_l, 1);
+    parts[0] = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_TITLE);
 
-    if (mode_marker == -1) {
+    if (mode_marker == COI_MODE_MARKER_PPV) {
         parts[1] = (UBYTE *)0;
         parts[2] = (UBYTE *)0;
         parts[3] = (UBYTE *)0;
-        mode_marker = 3;
+        mode_marker = COI_FIELD_MODE_FLAG3;
     } else {
-        parts[1] = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, slot_l, 3);
-        parts[2] = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, slot_l, 4);
-        parts[3] = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, slot_l, 2);
+        parts[1] = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_FLAG3);
+        parts[2] = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_FLAG4);
+        parts[3] = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_TEXT);
     }
     parts[4] = (UBYTE *)0;
 
     if (CLEANUP_TestEntryFlagYAndBit1(entry, slot_l, mode_marker) != 0) {
         UBYTE *wrap_field;
 
-        wrap_field = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, slot_l, 6);
-        GROUP_AE_JMPTBL_WDISP_SPrintf(wrap_buf, COI_FMT_WRAP_CHAR_STRING_CHAR, 19, (LONG)wrap_field, 20);
+        wrap_field = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_WRAP);
+        GROUP_AE_JMPTBL_WDISP_SPrintf(
+            wrap_buf,
+            COI_FMT_WRAP_CHAR_STRING_CHAR,
+            COI_WRAP_PRINTF_WIDTH,
+            (LONG)wrap_field,
+            COI_WRAP_BUF_LEN);
         wrap_ptr = wrap_buf;
         CLEANUP_UpdateEntryFlagBytes(entry, slot_l);
     } else {
@@ -65,7 +83,7 @@ void COI_FormatEntryDisplayText(void *entry, void *ctx, WORD slot, UBYTE *out_bu
     }
 
     i = 0;
-    while (i < 5) {
+    while (i < COI_PART_COUNT) {
         UBYTE *p;
 
         p = parts[i];

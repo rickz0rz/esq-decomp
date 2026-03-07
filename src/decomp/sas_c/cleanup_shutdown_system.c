@@ -1,6 +1,22 @@
 typedef unsigned short UWORD;
 typedef long LONG;
 
+enum {
+    CLEANUP_NULL = 0,
+    CLEANUP_LINEHEAD_MODE_PRIMARY = 1,
+    CLEANUP_LINEHEAD_MODE_SECONDARY = 2,
+    CLEANUP_REMOVE_GROUP_PRIMARY = 1,
+    CLEANUP_REMOVE_GROUP_SECONDARY = 2,
+    CLEANUP_HILITE_PORT_SIZE = 34,
+    CLEANUP_HILITE_MSG_DEALLOC_LINE = 318,
+    CLEANUP_HILITE_REPLY_DEALLOC_LINE = 319,
+    CLEANUP_RASTER_ROWS = 5,
+    CLEANUP_RASTER_COLS = 4,
+    CLEANUP_RASTER_ROW_STRIDE = 40,
+    CLEANUP_RASTER_COL_SHIFT = 2,
+    CLEANUP_RASTER_PTR_OFFSET = 8
+};
+
 extern LONG LOCAVAIL_PrimaryFilterState;
 extern LONG LOCAVAIL_SecondaryFilterState;
 extern LONG ESQIFF_BrushIniListHead;
@@ -57,10 +73,10 @@ void CLEANUP_ShutdownSystem(void)
     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain((void *)&LOCAVAIL_PrimaryFilterState);
     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain((void *)&LOCAVAIL_SecondaryFilterState);
 
-    BRUSH_FreeBrushList((void *)&ESQIFF_BrushIniListHead, 0);
-    BRUSH_FreeBrushList((void *)&ESQIFF_GAdsBrushListHead, 0);
-    BRUSH_FreeBrushList((void *)&ESQIFF_LogoBrushListHead, 0);
-    BRUSH_FreeBrushList((void *)&ESQFUNC_PwBrushListHead, 0);
+    BRUSH_FreeBrushList((void *)&ESQIFF_BrushIniListHead, CLEANUP_NULL);
+    BRUSH_FreeBrushList((void *)&ESQIFF_GAdsBrushListHead, CLEANUP_NULL);
+    BRUSH_FreeBrushList((void *)&ESQIFF_LogoBrushListHead, CLEANUP_NULL);
+    BRUSH_FreeBrushList((void *)&ESQFUNC_PwBrushListHead, CLEANUP_NULL);
 
     CLEANUP_ClearVertbInterruptServer();
     CLEANUP_ClearAud1InterruptVector();
@@ -73,33 +89,41 @@ void CLEANUP_ShutdownSystem(void)
 
     GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries();
     GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers();
-    GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(1);
-    GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(2);
+    GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(CLEANUP_LINEHEAD_MODE_PRIMARY);
+    GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(CLEANUP_LINEHEAD_MODE_SECONDARY);
     GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData();
-    GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(2);
-    GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(1);
+    GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(CLEANUP_REMOVE_GROUP_SECONDARY);
+    GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(CLEANUP_REMOVE_GROUP_PRIMARY);
     GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers();
     GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources();
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_14, 318, (void *)ESQ_HighlightMsgPort, 34);
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_15, 319, (void *)ESQ_HighlightReplyPort, 34);
+    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        Global_STR_CLEANUP_C_14,
+        CLEANUP_HILITE_MSG_DEALLOC_LINE,
+        (void *)ESQ_HighlightMsgPort,
+        CLEANUP_HILITE_PORT_SIZE);
+    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        Global_STR_CLEANUP_C_15,
+        CLEANUP_HILITE_REPLY_DEALLOC_LINE,
+        (void *)ESQ_HighlightReplyPort,
+        CLEANUP_HILITE_PORT_SIZE);
 
-    for (r = 0; r < 5; r++) {
-        for (c = 0; c < 4; c++) {
-            LONG off = GROUP_AG_JMPTBL_MATH_Mulu32(r, 40) + (c << 2);
-            LONG rast = *(LONG *)(ESQDISP_HighlightBitmapTable + off + 8);
+    for (r = 0; r < CLEANUP_RASTER_ROWS; r++) {
+        for (c = 0; c < CLEANUP_RASTER_COLS; c++) {
+            LONG off = GROUP_AG_JMPTBL_MATH_Mulu32(r, CLEANUP_RASTER_ROW_STRIDE) + (c << CLEANUP_RASTER_COL_SHIFT);
+            LONG rast = *(LONG *)(ESQDISP_HighlightBitmapTable + off + CLEANUP_RASTER_PTR_OFFSET);
             GROUP_AB_JMPTBL_GRAPHICS_FreeRaster((void *)rast, 696, (LONG)WDISP_HighlightRasterHeightPx, 329, Global_STR_CLEANUP_C_16);
         }
     }
 
-    WDISP_WeatherStatusTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(WDISP_WeatherStatusTextPtr, 0);
-    WDISP_WeatherStatusOverlayTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(WDISP_WeatherStatusOverlayTextPtr, 0);
+    WDISP_WeatherStatusTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(WDISP_WeatherStatusTextPtr, CLEANUP_NULL);
+    WDISP_WeatherStatusOverlayTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(WDISP_WeatherStatusOverlayTextPtr, CLEANUP_NULL);
 
     _LVOSetFunction();
     _LVOSetFunction();
     _LVOVBeamPos();
 
-    if (ESQ_ProcessWindowPtrBackup != 0) {
+    if (ESQ_ProcessWindowPtrBackup != CLEANUP_NULL) {
         *(LONG *)(WDISP_ExecBaseHookPtr + 184) = ESQ_ProcessWindowPtrBackup;
     }
 
