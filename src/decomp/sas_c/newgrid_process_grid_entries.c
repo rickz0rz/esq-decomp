@@ -40,6 +40,7 @@ extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths();
 extern LONG NEWGRID_DrawEntryRowOrPlaceholder(char *scratch, void *entry, void *aux, LONG row, LONG span, LONG state);
 extern LONG NEWGRID_DrawSelectionMarkers(LayoutCtx *ctx, LONG row, LONG span, LONG pen, LONG leftState, LONG rightState);
 extern LONG NEWGRID_DrawGridCell(char *scratch, void *entry, LONG style);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
 
 LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
 {
@@ -118,12 +119,15 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
             NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths((char *)ctx->scratch, leftState, rightState);
             NEWGRID_DrawEntryRowOrPlaceholder((char *)ctx->scratch, (void *)entry, (void *)aux, modeIdx, nextSpan, state);
         } else {
-            keepMarkers = 0;
             nextSpan = (UWORD)(3 - row);
-            NEWGRID_SelectionMarkerPenState = -1;
-            NEWGRID_RowLayoutCommitPenId = 1;
-            NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams((NEWGRID_ColumnWidthPx * nextSpan) - 12, 2, 1);
-            NEWGRID_DrawEntryRowOrPlaceholder((char *)ctx->scratch, (void *)entry, (void *)aux, modeIdx, nextSpan, 1);
+            if (nextSpan < 3) {
+                NEWGRID_SelectionMarkerPenState = -1;
+                NEWGRID_RowLayoutCommitPenId = 1;
+                NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams((NEWGRID_ColumnWidthPx * nextSpan) - 12, 2, 1);
+                NEWGRID_DrawEntryRowOrPlaceholder((char *)ctx->scratch, (void *)entry, (void *)aux, modeIdx, nextSpan, 1);
+            } else {
+                keepMarkers = 0;
+            }
         }
 
         if (keepMarkers) {
@@ -146,7 +150,7 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
         }
 
         ctx->currentHalfHeight = (UWORD)(NEWGRID_RowHeightPx >> 1);
-        ctx->currentVisibleLines = (LONG)ctx->currentHalfHeight;
+        ctx->currentVisibleLines = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
     } else {
         ctx->currentHalfHeight = 0;
         NEWGRID_GridEntriesWorkflowState = 4;
