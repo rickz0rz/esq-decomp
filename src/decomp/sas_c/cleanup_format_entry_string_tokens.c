@@ -26,10 +26,10 @@ LONG GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(void *old_ptr, const void *new_p
 
 void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, UBYTE *input)
 {
-    UBYTE defaults[11];
-    UBYTE out[11];
+    UBYTE defaultTokenText[11];
+    UBYTE formattedTokenText[11];
     LONG i;
-    UBYTE *p;
+    UBYTE *separatorPtr;
 
     if (input == (UBYTE *)0 || input[0] == 0 || GROUP_AI_JMPTBL_STR_FindCharPtr(input, TOKEN_SEPARATOR) == (UBYTE *)0) {
         *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*field_a, (void *)0);
@@ -38,77 +38,77 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, UBYTE *inpu
     }
 
     for (i = 0; i < TOKEN_MAX_LEN; i += 1) {
-        defaults[i] = CLOCK_STR_TOKEN_PAIR_DEFAULTS[i];
+        defaultTokenText[i] = CLOCK_STR_TOKEN_PAIR_DEFAULTS[i];
     }
-    defaults[TOKEN_MAX_LEN] = 0;
+    defaultTokenText[TOKEN_MAX_LEN] = 0;
 
     i = 0;
     while (CLEANUP_TokenPairScratch[i] != 0) {
-        out[i] = CLEANUP_TokenPairScratch[i];
+        formattedTokenText[i] = CLEANUP_TokenPairScratch[i];
         i += 1;
     }
-    out[i] = 0;
+    formattedTokenText[i] = 0;
 
     i = 0;
     while (i < TOKEN_PREFIX_MAX_LEN && input[i] != TOKEN_SEPARATOR && input[i] != 0) {
-        out[i] = input[i];
+        formattedTokenText[i] = input[i];
         i += 1;
     }
-    out[i] = 0;
+    formattedTokenText[i] = 0;
 
-    *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*field_a, out);
+    *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*field_a, formattedTokenText);
 
     i = 0;
     while (CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[i] != 0) {
-        out[i] = CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[i];
+        formattedTokenText[i] = CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[i];
         i += 1;
     }
-    out[i] = 0;
+    formattedTokenText[i] = 0;
 
-    p = GROUP_AI_JMPTBL_STR_FindCharPtr(input, TOKEN_SEPARATOR);
-    if (p != (UBYTE *)0) {
-        p += 1;
+    separatorPtr = GROUP_AI_JMPTBL_STR_FindCharPtr(input, TOKEN_SEPARATOR);
+    if (separatorPtr != (UBYTE *)0) {
+        separatorPtr += 1;
     }
 
     i = 0;
-    while (i < TOKEN_MAX_LEN && p != (UBYTE *)0 && p[i] != 0) {
-        UBYTE c = p[i];
+    while (i < TOKEN_MAX_LEN && separatorPtr != (UBYTE *)0 && separatorPtr[i] != 0) {
+        UBYTE c = separatorPtr[i];
 
         if (i <= TOKEN_FIELD_BOOL_MAX_INDEX) {
             if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_BOOL_CHARS_YyNn, (LONG)c) != (UBYTE *)0) {
                 if ((WDISP_CharClassTable[c] & CHARCLASS_ALPHA_MASK) != 0) {
                     c = (UBYTE)(c - ASCII_CASE_DELTA);
                 }
-                out[i] = c;
+                formattedTokenText[i] = c;
             } else {
-                out[i] = defaults[i];
+                formattedTokenText[i] = defaultTokenText[i];
             }
         } else if (i <= TOKEN_FIELD_HEX_MAX_INDEX) {
             if ((WDISP_CharClassTable[c] & CHARCLASS_HEX_MASK) != 0) {
-                out[i] = c;
+                formattedTokenText[i] = c;
             } else {
-                out[i] = defaults[i];
+                formattedTokenText[i] = defaultTokenText[i];
             }
         } else {
             if ((WDISP_CharClassTable[c] & CHARCLASS_ALNUM_MASK) != 0 &&
-                p[i + 1] != 0 &&
-                (WDISP_CharClassTable[p[i + 1]] & CHARCLASS_ALNUM_MASK) != 0) {
+                separatorPtr[i + 1] != 0 &&
+                (WDISP_CharClassTable[separatorPtr[i + 1]] & CHARCLASS_ALNUM_MASK) != 0) {
                 if ((WDISP_CharClassTable[c] & CHARCLASS_ALPHA_MASK) != 0) {
-                    out[i] = (UBYTE)(c - ASCII_CASE_DELTA);
+                    formattedTokenText[i] = (UBYTE)(c - ASCII_CASE_DELTA);
                 } else {
-                    out[i] = c;
+                    formattedTokenText[i] = c;
                 }
                 i += 1;
-                c = p[i];
+                c = separatorPtr[i];
                 if ((WDISP_CharClassTable[c] & CHARCLASS_ALPHA_MASK) != 0) {
-                    out[i] = (UBYTE)(c - ASCII_CASE_DELTA);
+                    formattedTokenText[i] = (UBYTE)(c - ASCII_CASE_DELTA);
                 } else {
-                    out[i] = c;
+                    formattedTokenText[i] = c;
                 }
             } else {
-                out[i] = defaults[i];
+                formattedTokenText[i] = defaultTokenText[i];
                 if (i + 1 < TOKEN_MAX_LEN) {
-                    out[i + 1] = defaults[i + 1];
+                    formattedTokenText[i + 1] = defaultTokenText[i + 1];
                     i += 1;
                 }
             }
@@ -117,5 +117,5 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, UBYTE *inpu
         i += 1;
     }
 
-    *field_b = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*field_b, out);
+    *field_b = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*field_b, formattedTokenText);
 }
