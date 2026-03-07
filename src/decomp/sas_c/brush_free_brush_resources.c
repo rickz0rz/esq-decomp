@@ -2,6 +2,7 @@ typedef unsigned char UBYTE;
 typedef long LONG;
 
 enum {
+    BRUSH_NULL = 0,
     BRUSH_RESOURCE_NEXT_OFFSET = 234,
     BRUSH_RESOURCE_NODE_SIZE = 238
 };
@@ -15,7 +16,7 @@ void BRUSH_FreeBrushResources(void **head_ptr)
     UBYTE *node;
 
     node = (UBYTE *)*head_ptr;
-    while (node != (UBYTE *)0) {
+    while (node != (UBYTE *)BRUSH_NULL) {
         UBYTE *next;
 
         next = *(UBYTE **)(node + BRUSH_RESOURCE_NEXT_OFFSET);
@@ -23,5 +24,5 @@ void BRUSH_FreeBrushResources(void **head_ptr)
         node = next;
     }
 
-    *head_ptr = (void *)0;
+    *head_ptr = (void *)BRUSH_NULL;
 }

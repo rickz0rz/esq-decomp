@@ -4,6 +4,8 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_FALSE = 0,
+    BRUSH_FREE_ALL_ENABLED = 1,
     BRUSH_NODE_FRAME_COUNT_OFFSET = 184,
     BRUSH_NODE_WIDTH_OFFSET = 176,
     BRUSH_NODE_HEIGHT_OFFSET = 178,
@@ -27,13 +29,13 @@ void BRUSH_FreeBrushList(void **head_ptr, LONG free_all)
     UBYTE *node;
 
     node = (UBYTE *)*head_ptr;
-    while (node != (UBYTE *)0) {
+    while (node != (UBYTE *)BRUSH_FALSE) {
         LONG i;
         UBYTE *next;
         UBYTE *aux;
 
         next = *(UBYTE **)(node + BRUSH_NODE_NEXT_OFFSET);
-        i = 0;
+        i = BRUSH_FALSE;
         while (i < (LONG)*(UBYTE *)(node + BRUSH_NODE_FRAME_COUNT_OFFSET)) {
             void *raster;
             LONG width;
@@ -47,7 +49,7 @@ void BRUSH_FreeBrushList(void **head_ptr, LONG free_all)
         }
 
         aux = *(UBYTE **)(node + BRUSH_NODE_AUX_LIST_OFFSET);
-        while (aux != (UBYTE *)0) {
+        while (aux != (UBYTE *)BRUSH_FALSE) {
             UBYTE *aux_next;
 
             aux_next = *(UBYTE **)(aux + BRUSH_AUX_NEXT_OFFSET);
@@ -57,7 +59,7 @@ void BRUSH_FreeBrushList(void **head_ptr, LONG free_all)
 
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_7, 567, (void *)node, BRUSH_NODE_SIZE);
         node = next;
-        if (free_all != 1) {
+        if (free_all != BRUSH_FREE_ALL_ENABLED) {
             break;
         }
     }
