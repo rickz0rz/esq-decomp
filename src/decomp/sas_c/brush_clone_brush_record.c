@@ -6,6 +6,12 @@ typedef long LONG;
 enum {
     BRUSH_NULL = 0,
     BRUSH_PLANE_PTR_SHIFT = 2,
+    BRUSH_PLANE_PAIR_TABLE_DST_OFFSET = 200,
+    BRUSH_PLANE_PAIR_TABLE_SRC_OFFSET = 152,
+    BRUSH_PLANE_PAIR_STRIDE = 8,
+    BRUSH_PLANE_PAIR_SECOND_WORD_OFFSET = 4,
+    BRUSH_LABEL_COPY_SRC_OFFSET = 191,
+    BRUSH_LABEL_COPY_DST_OFFSET = 33,
     BRUSH_NODE_BITMAP_OFFSET = 136,
     BRUSH_NODE_WIDTH_OFFSET = 176,
     BRUSH_NODE_HEIGHT_OFFSET = 178,
@@ -87,12 +93,16 @@ void *BRUSH_CloneBrushRecord(void *src_rec)
     *(ULONG *)(dst + 360) = *(ULONG *)(src + 226);
 
     for (i = BRUSH_NULL; i < BRUSH_PLANE_PAIR_COPY_COUNT; i++) {
-        *(ULONG *)(dst + 200 + (i * 8) + 0) = *(ULONG *)(src + 152 + (i * 8) + 0);
-        *(ULONG *)(dst + 200 + (i * 8) + 4) = *(ULONG *)(src + 152 + (i * 8) + 4);
+        *(ULONG *)(dst + BRUSH_PLANE_PAIR_TABLE_DST_OFFSET + (i * BRUSH_PLANE_PAIR_STRIDE)) =
+            *(ULONG *)(src + BRUSH_PLANE_PAIR_TABLE_SRC_OFFSET + (i * BRUSH_PLANE_PAIR_STRIDE));
+        *(ULONG *)(dst + BRUSH_PLANE_PAIR_TABLE_DST_OFFSET + (i * BRUSH_PLANE_PAIR_STRIDE) +
+                   BRUSH_PLANE_PAIR_SECOND_WORD_OFFSET) =
+            *(ULONG *)(src + BRUSH_PLANE_PAIR_TABLE_SRC_OFFSET + (i * BRUSH_PLANE_PAIR_STRIDE) +
+                       BRUSH_PLANE_PAIR_SECOND_WORD_OFFSET);
     }
 
-    s = src + 191;
-    d = dst + 33;
+    s = src + BRUSH_LABEL_COPY_SRC_OFFSET;
+    d = dst + BRUSH_LABEL_COPY_DST_OFFSET;
     do {
         *d++ = *s;
     } while (*s++ != BRUSH_NULL);
