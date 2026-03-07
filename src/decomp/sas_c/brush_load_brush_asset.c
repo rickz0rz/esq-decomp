@@ -172,7 +172,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 (UBYTE)node[BRUSH_NODE_DEPTH_OFFSET],
                 (UWORD)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET),
                 (UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET));
-            for (i = 0; i < (LONG)(UBYTE)node[BRUSH_NODE_DEPTH_OFFSET] && i < BRUSH_MAX_PLANES; i++) {
+            for (i = BRUSH_NULL; i < (LONG)(UBYTE)node[BRUSH_NODE_DEPTH_OFFSET] && i < BRUSH_MAX_PLANES; i++) {
                 void *plane = GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(
                     Global_STR_BRUSH_C_12,
                     1134,
@@ -209,7 +209,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             } else {
                 _LVOInitRastPort(node + BRUSH_NODE_RASTPORT_OFFSET);
                 *(void **)(node + BRUSH_NODE_RASTPORT_BITMAPPTR_OFFSET) = node + BRUSH_NODE_BITMAP_OFFSET;
-                for (i = 0; i < BRUSH_RASTPORT_STATE_COPY_BYTES; i++) {
+                for (i = BRUSH_NULL; i < BRUSH_RASTPORT_STATE_COPY_BYTES; i++) {
                     node[BRUSH_NODE_STATE_COPY_DST_OFFSET + i] = src[BRUSH_SRC_STATE_BLOCK_OFFSET + i];
                 }
 
@@ -217,9 +217,9 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                                 (UWORD)*(UWORD *)(src + BRUSH_SRC_WIDTH_OFFSET) + BRUSH_ROWWORD_ALIGN_ADDEND,
                                 BRUSH_ROWWORD_ALIGN_DIVISOR) *
                             BRUSH_ROWWORD_BYTES_PER_WORD;
-                for (i = 0; i < (LONG)(UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET); i++) {
+                for (i = BRUSH_NULL; i < (LONG)(UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET); i++) {
                     LONG p;
-                    for (p = 0; p < (LONG)(UBYTE)src[BRUSH_SRC_DEPTH_OFFSET]; p++) {
+                    for (p = BRUSH_NULL; p < (LONG)(UBYTE)src[BRUSH_SRC_DEPTH_OFFSET]; p++) {
                         decode_cur = ESQ_PackBitsDecode(
                             decode_cur,
                             *(UBYTE **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (p << BRUSH_PLANE_PTR_SHIFT)),
