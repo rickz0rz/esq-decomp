@@ -32,14 +32,14 @@ static LONG half_toward_zero(LONG v)
 
 LONG BRUSH_SelectBrushSlot(
     UBYTE *brush,
-    LONG src_x0,
+    LONG srcX0,
     LONG src_y0,
     LONG src_x1,
     LONG src_y1,
     void *dst_rp,
     LONG forcedDstY)
 {
-    LONG src_x = src_x0;
+    LONG src_x = srcX0;
     LONG src_y = src_y0;
     LONG dst_x;
     LONG dst_y;
@@ -54,13 +54,13 @@ LONG BRUSH_SelectBrushSlot(
         return BRUSH_SELECT_SLOT_STATUS_FAIL;
     }
 
-    spanX = src_x1 - src_x0 + BRUSH_SPAN_INCLUSIVE_DELTA;
+    spanX = src_x1 - srcX0 + BRUSH_SPAN_INCLUSIVE_DELTA;
     clip_w = *(LONG *)(brush + BRUSH_CLIP_W_OFFSET);
     if (clip_w > spanX) {
-        dst_x = src_x0;
+        dst_x = srcX0;
         alignModeX = *(LONG *)(brush + BRUSH_ALIGN_X_MODE_OFFSET);
         if (alignModeX == ALIGN_MODE_RIGHT_BOTTOM) {
-            dst_x = clip_w - (src_x1 - src_x0) - BRUSH_SPAN_INCLUSIVE_DELTA;
+            dst_x = clip_w - (src_x1 - srcX0) - BRUSH_SPAN_INCLUSIVE_DELTA;
         } else if (alignModeX == ALIGN_MODE_CENTER) {
             dst_x = half_toward_zero(clip_w) - half_toward_zero(spanX);
         } else {
@@ -73,13 +73,13 @@ LONG BRUSH_SelectBrushSlot(
             if (alignModeX == ALIGN_MODE_RIGHT_BOTTOM) {
                 src_x = src_x1 - clip_w + BRUSH_SPAN_INCLUSIVE_DELTA;
             } else if (alignModeX == ALIGN_MODE_CENTER) {
-                src_x = src_x0 + half_toward_zero(spanX) - half_toward_zero(clip_w);
+                src_x = srcX0 + half_toward_zero(spanX) - half_toward_zero(clip_w);
             } else {
-                src_x = src_x0;
+                src_x = srcX0;
             }
         } else {
             dst_x = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
-            src_x = src_x0;
+            src_x = srcX0;
         }
     }
 
@@ -112,7 +112,7 @@ LONG BRUSH_SelectBrushSlot(
         }
     }
 
-    clip_w = src_x1 - src_x0 + BRUSH_SPAN_INCLUSIVE_DELTA;
+    clip_w = src_x1 - srcX0 + BRUSH_SPAN_INCLUSIVE_DELTA;
     if (clip_w > *(LONG *)(brush + BRUSH_CLIP_W_OFFSET)) {
         clip_w = *(LONG *)(brush + BRUSH_CLIP_W_OFFSET);
     }
