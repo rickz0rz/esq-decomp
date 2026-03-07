@@ -35,10 +35,10 @@ void BRUSH_FreeBrushList(void **head_ptr, LONG free_all)
     node = (UBYTE *)*head_ptr;
     while (node != (UBYTE *)BRUSH_FALSE) {
         LONG i;
-        UBYTE *next;
-        UBYTE *aux;
+        UBYTE *nextNode;
+        UBYTE *auxNode;
 
-        next = *(UBYTE **)(node + BRUSH_NODE_NEXT_OFFSET);
+        nextNode = *(UBYTE **)(node + BRUSH_NODE_NEXT_OFFSET);
         i = BRUSH_FALSE;
         while (i < (LONG)*(UBYTE *)(node + BRUSH_NODE_FRAME_COUNT_OFFSET)) {
             void *raster;
@@ -52,19 +52,19 @@ void BRUSH_FreeBrushList(void **head_ptr, LONG free_all)
             i++;
         }
 
-        aux = *(UBYTE **)(node + BRUSH_NODE_AUX_LIST_OFFSET);
-        while (aux != (UBYTE *)BRUSH_FALSE) {
+        auxNode = *(UBYTE **)(node + BRUSH_NODE_AUX_LIST_OFFSET);
+        while (auxNode != (UBYTE *)BRUSH_FALSE) {
             UBYTE *aux_next;
 
-            aux_next = *(UBYTE **)(aux + BRUSH_AUX_NEXT_OFFSET);
+            aux_next = *(UBYTE **)(auxNode + BRUSH_AUX_NEXT_OFFSET);
             GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
-                Global_STR_BRUSH_C_6, BRUSH_FREE_AUX_LINE, (void *)aux, BRUSH_AUX_NODE_SIZE);
-            aux = aux_next;
+                Global_STR_BRUSH_C_6, BRUSH_FREE_AUX_LINE, (void *)auxNode, BRUSH_AUX_NODE_SIZE);
+            auxNode = aux_next;
         }
 
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_BRUSH_C_7, BRUSH_FREE_NODE_LINE, (void *)node, BRUSH_NODE_SIZE);
-        node = next;
+        node = nextNode;
         if (free_all != BRUSH_FREE_ALL_ENABLED) {
             break;
         }
