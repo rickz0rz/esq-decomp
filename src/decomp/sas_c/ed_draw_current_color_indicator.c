@@ -15,21 +15,29 @@ extern LONG _LVORectFill(void *gfxBase, void *rastPort, LONG minX, LONG minY, LO
 
 void ED_DrawCurrentColorIndicator(UBYTE colorValue)
 {
+    const LONG SWATCH_MIN_X = 204;
+    const LONG SWATCH_MIN_Y = 250;
+    const LONG SWATCH_MAX_X = 474;
+    const LONG SWATCH_MAX_Y = 275;
+    const LONG LABEL_Y = 272;
+    const LONG LABEL_X = 205;
+    const LONG PEN_DEFAULT_FOREGROUND = 1;
+    const LONG PEN_DEFAULT_BACKGROUND = 2;
     char colorLabel[41];
     LONG hi;
     LONG lo;
 
     hi = GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble((LONG)colorValue);
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, (LONG)(UBYTE)hi);
-    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 204, 250, 474, 275);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, SWATCH_MIN_X, SWATCH_MIN_Y, SWATCH_MAX_X, SWATCH_MAX_Y);
 
     lo = GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble((LONG)colorValue);
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, (LONG)(UBYTE)lo);
     _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, (LONG)(UBYTE)hi);
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(colorLabel, Global_STR_CURRENT_COLOR_FORMATTED, (LONG)colorValue);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 272, 205, colorLabel);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, LABEL_Y, LABEL_X, colorLabel);
 
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
-    _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 2);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_DEFAULT_FOREGROUND);
+    _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_DEFAULT_BACKGROUND);
 }

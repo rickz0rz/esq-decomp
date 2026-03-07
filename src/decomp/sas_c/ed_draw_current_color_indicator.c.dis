@@ -2,29 +2,40 @@
 __code:
 ED_DrawCurrentColorIndicator:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$44,D0                  ;90bc 0000 0044 
+              SUB.L          #$64,D0                  ;90bc 0000 0064 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$2c,A7                  ;9efc 002c 
+              SUB.W          #$4c,A7                  ;9efc 004c 
               MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
 ___ED_DrawCurrentColorIndicator__1:
-              MOVE.B         $3f(A7),D7               ;1e2f 003f 
+              MOVE.B         $5f(A7),D7               ;1e2f 005f 
+              MOVEQ.L        #$66,D6                  ;7c66 
+              ADD.L          D6,D6                    ;dc86 
+              MOVEQ.L        #$7d,D5                  ;7a7d 
+              ADD.L          D5,D5                    ;da85 
+              MOVE.L         #$1da,$54(A7)            ;2f7c 0000 01da 0054 
+              MOVE.L         #$113,$50(A7)            ;2f7c 0000 0113 0050 
+              MOVE.L         #$110,$4c(A7)            ;2f7c 0000 0110 004c 
+              MOVE.L         #$cd,$48(A7)             ;2f7c 0000 00cd 0048 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVEQ.L        #$2,D0                   ;7002 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         D7,D0                    ;1007 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          GROUP_AL_JMPTBL_LADFUNC_ExtractH;6100 0000 
-              MOVE.L         D0,D6                    ;2c00 
-              MOVE.L         D6,D0                    ;2006 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
               MOVE.L         D1,(A7)                  ;2e81 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              MOVE.L         D0,$48(A7)               ;2f40 0048 
               BSR.W          _LVOSetAPen              ;6100 0000 
-              PEA            ($113).w                 ;4878 0113 
-              PEA            ($1da).w                 ;4878 01da 
-              PEA            ($fa).w                  ;4878 00fa 
-              PEA            ($cc).w                  ;4878 00cc 
+              MOVE.L         $5c(A7),(A7)             ;2eaf 005c 
+              MOVE.L         $60(A7),-(A7)            ;2f2f 0060 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D6,-(A7)                 ;2f06 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVORectFill             ;6100 0000 
@@ -32,19 +43,18 @@ ___ED_DrawCurrentColorIndicator__1:
               MOVE.B         D7,D0                    ;1007 
               MOVE.L         D0,(A7)                  ;2e80 
               BSR.W          GROUP_AL_JMPTBL_LADFUNC_ExtractL;6100 0000 
-              MOVE.L         D0,D5                    ;2a00 
-              MOVE.L         D5,D0                    ;2005 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
+___ED_DrawCurrentColorIndicator__2:
               MOVE.L         D1,(A7)                  ;2e81 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              MOVE.L         D0,$60(A7)               ;2f40 0060 
               BSR.W          _LVOSetAPen              ;6100 0000 
-              MOVE.L         D6,D0                    ;2006 
+              MOVE.L         $64(A7),D0               ;202f 0064 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
               MOVE.L         D1,(A7)                  ;2e81 
-___ED_DrawCurrentColorIndicator__2:
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetBPen              ;6100 0000 
@@ -52,26 +62,26 @@ ___ED_DrawCurrentColorIndicator__2:
               MOVE.B         D7,D0                    ;1007 
               MOVE.L         D0,(A7)                  ;2e80 
               PEA            Global_STR_CURRENT_COLOR_FORMATT(A4);486c 0000 
-              PEA            $47(A7)                  ;486f 0047 
+              PEA            $43(A7)                  ;486f 0043 
               BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
-              PEA            $4b(A7)                  ;486f 004b 
-              PEA            ($cd).w                  ;4878 00cd 
-              PEA            ($110).w                 ;4878 0110 
+              PEA            $47(A7)                  ;486f 0047 
+              MOVE.L         $84(A7),-(A7)            ;2f2f 0084 
+              MOVE.L         $8c(A7),-(A7)            ;2f2f 008c 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              LEA            $4c(A7),A7               ;4fef 004c 
-              PEA            ($1).w                   ;4878 0001 
+              LEA            $48(A7),A7               ;4fef 0048 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetAPen              ;6100 0000 
-              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         $4c(A7),(A7)             ;2eaf 004c 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetBPen              ;6100 0000 
-              LEA            $18(A7),A7               ;4fef 0018 
+              LEA            $14(A7),A7               ;4fef 0014 
 ___ED_DrawCurrentColorIndicator__3:
               MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
-              ADD.W          #$2c,A7                  ;defc 002c 
+              ADD.W          #$4c,A7                  ;defc 004c 
               RTS                                     ;4e75 
 __const:
 __strings:
