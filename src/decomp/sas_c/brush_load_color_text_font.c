@@ -28,7 +28,7 @@ enum {
     BRUSH_FREE_DONE_LINE = 445
 };
 
-LONG BRUSH_LoadColorTextFont(LONG fh, LONG byte_count, UBYTE *out_buf)
+LONG BRUSH_LoadColorTextFont(LONG fh, LONG byteCount, UBYTE *out_buf)
 {
     UBYTE *tmp;
     LONG outputIndex;
@@ -46,13 +46,13 @@ LONG BRUSH_LoadColorTextFont(LONG fh, LONG byte_count, UBYTE *out_buf)
         return BRUSH_COLOR_FONT_STATUS_ERROR;
     }
 
-    if (byte_count > COLOR_TEXT_FONT_SIZE) {
+    if (byteCount > COLOR_TEXT_FONT_SIZE) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_BRUSH_C_2, BRUSH_FREE_ALLOC_FAIL_LINE, (void *)tmp, COLOR_TEXT_FONT_SIZE);
         return BRUSH_COLOR_FONT_STATUS_ERROR;
     }
 
-    if (_LVORead(fh, (void *)tmp, byte_count) != byte_count) {
+    if (_LVORead(fh, (void *)tmp, byteCount) != byteCount) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_BRUSH_C_3, BRUSH_FREE_READ_FAIL_LINE, (void *)tmp, COLOR_TEXT_FONT_SIZE);
         return BRUSH_COLOR_FONT_STATUS_ERROR;
@@ -60,7 +60,7 @@ LONG BRUSH_LoadColorTextFont(LONG fh, LONG byte_count, UBYTE *out_buf)
 
     outputIndex = BRUSH_NULL;
     p = tmp;
-    for (blockOffset = BRUSH_NULL; blockOffset < byte_count; blockOffset += COLOR_FONT_BLOCK_BYTES) {
+    for (blockOffset = BRUSH_NULL; blockOffset < byteCount; blockOffset += COLOR_FONT_BLOCK_BYTES) {
         UWORD inner_i;
         for (inner_i = BRUSH_NULL; inner_i < COLOR_FONT_BLOCK_BYTES; inner_i++) {
             out_buf[outputIndex++] = (UBYTE)((*p >> BRUSH_NIBBLE_SHIFT) & BRUSH_LOW_NIBBLE_MASK);
