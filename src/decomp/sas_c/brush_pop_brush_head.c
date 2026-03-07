@@ -9,14 +9,14 @@ void BRUSH_FreeBrushList(void **head_ptr, long free_one);
 void *BRUSH_PopBrushHead(void *head)
 {
     void *next;
-    void *local_head;
+    void *singleNodeHead;
 
     if (head == (void *)BRUSH_NULL) {
         next = (void *)BRUSH_NULL;
     } else {
         next = *(void **)((unsigned char *)head + BRUSH_NODE_NEXT_OFFSET);
-        local_head = head;
-        BRUSH_FreeBrushList(&local_head, BRUSH_FREE_ONE);
+        singleNodeHead = head;
+        BRUSH_FreeBrushList(&singleNodeHead, BRUSH_FREE_ONE);
     }
 
     return next;
