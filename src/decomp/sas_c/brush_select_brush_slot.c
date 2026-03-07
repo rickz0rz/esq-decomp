@@ -2,6 +2,19 @@ typedef unsigned char UBYTE;
 typedef unsigned short UWORD;
 typedef long LONG;
 
+enum {
+    BRUSH_BITMAP_OFFSET = 136,
+    BRUSH_DST_X_OFFSET = 340,
+    BRUSH_DST_Y_OFFSET = 344,
+    BRUSH_CLIP_W_OFFSET = 348,
+    BRUSH_CLIP_H_OFFSET = 352,
+    BRUSH_ALIGN_X_MODE_OFFSET = 356,
+    BRUSH_ALIGN_Y_MODE_OFFSET = 360,
+    ALIGN_MODE_CENTER = 1,
+    ALIGN_MODE_RIGHT_BOTTOM = 2,
+    BLIT_MINTERM_COPY = 192
+};
+
 LONG GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
     void *src_bm, LONG src_x, LONG src_y, void *dst_rp, LONG dst_x, LONG dst_y, LONG w, LONG h, LONG minterm);
 
@@ -38,71 +51,71 @@ LONG BRUSH_SelectBrushSlot(
     }
 
     span_x = src_x1 - src_x0 + 1;
-    clip_w = *(LONG *)(brush + 348);
+    clip_w = *(LONG *)(brush + BRUSH_CLIP_W_OFFSET);
     if (clip_w > span_x) {
         dst_x = src_x0;
-        mode_x = *(LONG *)(brush + 356);
-        if (mode_x == 2) {
+        mode_x = *(LONG *)(brush + BRUSH_ALIGN_X_MODE_OFFSET);
+        if (mode_x == ALIGN_MODE_RIGHT_BOTTOM) {
             dst_x = clip_w - (src_x1 - src_x0) - 1;
-        } else if (mode_x == 1) {
+        } else if (mode_x == ALIGN_MODE_CENTER) {
             dst_x = half_toward_zero(clip_w) - half_toward_zero(span_x);
         } else {
-            dst_x = *(LONG *)(brush + 340);
+            dst_x = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
         }
     } else {
         if (clip_w < span_x) {
-            dst_x = *(LONG *)(brush + 340);
-            mode_x = *(LONG *)(brush + 356);
-            if (mode_x == 2) {
+            dst_x = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
+            mode_x = *(LONG *)(brush + BRUSH_ALIGN_X_MODE_OFFSET);
+            if (mode_x == ALIGN_MODE_RIGHT_BOTTOM) {
                 src_x = src_x1 - clip_w + 1;
-            } else if (mode_x == 1) {
+            } else if (mode_x == ALIGN_MODE_CENTER) {
                 src_x = src_x0 + half_toward_zero(span_x) - half_toward_zero(clip_w);
             } else {
                 src_x = src_x0;
             }
         } else {
-            dst_x = *(LONG *)(brush + 340);
+            dst_x = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
             src_x = src_x0;
         }
     }
 
     span_y = src_y1 - src_y0 + 1;
-    clip_h = *(LONG *)(brush + 352);
+    clip_h = *(LONG *)(brush + BRUSH_CLIP_H_OFFSET);
     if (clip_h > span_y) {
         dst_y = src_y0;
-        mode_y = *(LONG *)(brush + 360);
-        if (mode_y == 2) {
+        mode_y = *(LONG *)(brush + BRUSH_ALIGN_Y_MODE_OFFSET);
+        if (mode_y == ALIGN_MODE_RIGHT_BOTTOM) {
             dst_y = clip_h - (src_y1 - src_y0) - 1;
-        } else if (mode_y == 1) {
+        } else if (mode_y == ALIGN_MODE_CENTER) {
             dst_y = half_toward_zero(clip_h) - half_toward_zero(span_y);
         } else {
-            dst_y = *(LONG *)(brush + 344);
+            dst_y = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
         }
     } else {
         if (clip_h < span_y) {
-            dst_y = *(LONG *)(brush + 344);
-            mode_y = *(LONG *)(brush + 360);
-            if (mode_y == 2) {
+            dst_y = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
+            mode_y = *(LONG *)(brush + BRUSH_ALIGN_Y_MODE_OFFSET);
+            if (mode_y == ALIGN_MODE_RIGHT_BOTTOM) {
                 src_y = src_y1 - clip_h + 1;
-            } else if (mode_y == 1) {
+            } else if (mode_y == ALIGN_MODE_CENTER) {
                 src_y = src_y0 + half_toward_zero(span_y) - half_toward_zero(clip_h);
             } else {
                 src_y = src_y0;
             }
         } else {
-            dst_y = *(LONG *)(brush + 344);
+            dst_y = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
             src_y = src_y0;
         }
     }
 
     clip_w = src_x1 - src_x0 + 1;
-    if (clip_w > *(LONG *)(brush + 348)) {
-        clip_w = *(LONG *)(brush + 348);
+    if (clip_w > *(LONG *)(brush + BRUSH_CLIP_W_OFFSET)) {
+        clip_w = *(LONG *)(brush + BRUSH_CLIP_W_OFFSET);
     }
 
     clip_h = src_y1 - src_y0 + 1;
-    if (clip_h > *(LONG *)(brush + 352)) {
-        clip_h = *(LONG *)(brush + 352);
+    if (clip_h > *(LONG *)(brush + BRUSH_CLIP_H_OFFSET)) {
+        clip_h = *(LONG *)(brush + BRUSH_CLIP_H_OFFSET);
     }
 
     if (forced_dst_y > 0) {
@@ -110,5 +123,14 @@ LONG BRUSH_SelectBrushSlot(
     }
 
     return GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
-        brush + 136, src_x, src_y, dst_rp, dst_x, dst_y, clip_w, clip_h, 192);
+        brush + BRUSH_BITMAP_OFFSET,
+        src_x,
+        src_y,
+        dst_rp,
+        dst_x,
+        dst_y,
+        clip_w,
+        clip_h,
+        BLIT_MINTERM_COPY
+    );
 }

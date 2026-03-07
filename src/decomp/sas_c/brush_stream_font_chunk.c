@@ -1,6 +1,11 @@
 typedef unsigned char UBYTE;
 typedef long LONG;
 
+enum {
+    BRUSH_STATE_FONT_CHUNK_SIZE_OFFSET = 186,
+    BRUSH_STREAM_CHUNK_SIZE = 2048
+};
+
 extern void *Global_REF_DOS_LIBRARY_2;
 LONG _LVORead(LONG fh, void *buf, LONG len);
 
@@ -13,15 +18,15 @@ LONG BRUSH_StreamFontChunk(LONG fh, LONG byte_count, LONG max_bytes, UBYTE *dst,
         return -1;
     }
 
-    *(LONG *)((UBYTE *)state + 186) = byte_count;
+    *(LONG *)((UBYTE *)state + BRUSH_STATE_FONT_CHUNK_SIZE_OFFSET) = byte_count;
     remaining = byte_count;
 
-    while (remaining > 2048) {
-        if (_LVORead(fh, dst, 2048) != 2048) {
+    while (remaining > BRUSH_STREAM_CHUNK_SIZE) {
+        if (_LVORead(fh, dst, BRUSH_STREAM_CHUNK_SIZE) != BRUSH_STREAM_CHUNK_SIZE) {
             return -1;
         }
-        dst += 2048;
-        remaining -= 2048;
+        dst += BRUSH_STREAM_CHUNK_SIZE;
+        remaining -= BRUSH_STREAM_CHUNK_SIZE;
     }
 
     if (_LVORead(fh, dst, remaining) != remaining) {
