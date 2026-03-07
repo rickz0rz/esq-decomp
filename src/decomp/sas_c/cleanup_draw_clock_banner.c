@@ -44,9 +44,9 @@ void _LVOText(void);
 
 void CLEANUP_DrawClockBanner(void)
 {
-    char text[10];
+    char timeText[10];
     LONG y;
-    LONG font_h;
+    LONG fontHeight;
 
     if (Global_UIBusyFlag != 0) {
         return;
@@ -55,7 +55,7 @@ void CLEANUP_DrawClockBanner(void)
     if (Global_REF_STR_USE_24_HR_CLOCK == 'Y') {
         LONG hour = GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat((LONG)Global_WORD_CURRENT_HOUR, (LONG)CLOCK_CurrentAmPmFlag);
         GROUP_AE_JMPTBL_WDISP_SPrintf(
-            text,
+            timeText,
             Global_STR_EXTRA_TIME_FORMAT,
             hour,
             (LONG)Global_WORD_CURRENT_MINUTE,
@@ -63,7 +63,7 @@ void CLEANUP_DrawClockBanner(void)
         );
     } else {
         GROUP_AE_JMPTBL_WDISP_SPrintf(
-            text,
+            timeText,
             Global_STR_GRID_TIME_FORMAT,
             (LONG)Global_WORD_CURRENT_HOUR,
             (LONG)Global_WORD_CURRENT_MINUTE,
@@ -84,8 +84,8 @@ void CLEANUP_DrawClockBanner(void)
         CLOCK_BANNER_FRAME_HEIGHT
     );
 
-    font_h = (LONG)(*(UWORD *)(*(LONG *)(NEWGRID_MainRastPortPtr + RASTPORT_FONT_PTR_OFFSET) + FONT_HEIGHT_OFFSET));
-    y = (((34 - font_h) + 1) >> 1) + font_h - 1;
+    fontHeight = (LONG)(*(UWORD *)(*(LONG *)(NEWGRID_MainRastPortPtr + RASTPORT_FONT_PTR_OFFSET) + FONT_HEIGHT_OFFSET));
+    y = (((34 - fontHeight) + 1) >> 1) + fontHeight - 1;
     (void)y;
 
     _LVOMove();
