@@ -13,24 +13,37 @@ extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const 
 
 void ED_DrawDiagnosticModeHelpText(void)
 {
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 2);
-    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 40, 68, 640, 327);
+    const LONG PEN_BACKGROUND = 2;
+    const LONG PEN_HIGHLIGHT = 6;
+    const LONG PEN_TEXT = 1;
+    const LONG DRAWMODE_JAM1 = 0;
+    const LONG MIN_X = 40;
+    const LONG MAX_X = 640;
+    const LONG TOP_MIN_Y = 68;
+    const LONG TOP_MAX_Y = 327;
+    const LONG BOTTOM_MIN_Y = 328;
+    const LONG BOTTOM_MAX_Y = 429;
+    const LONG HELP_ROW_1_Y = 390;
+    const LONG HELP_ROW_2_Y = 420;
 
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 6);
-    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 40, 328, 640, 429);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_BACKGROUND);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, MIN_X, TOP_MIN_Y, MAX_X, TOP_MAX_Y);
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0);
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_HIGHLIGHT);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, MIN_X, BOTTOM_MIN_Y, MAX_X, BOTTOM_MAX_Y);
+
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM1);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_TEXT);
 
     DISPLIB_DisplayTextAtPosition(
         Global_REF_RASTPORT_1,
-        390,
-        40,
+        HELP_ROW_1_Y,
+        MIN_X,
         Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_3);
 
     DISPLIB_DisplayTextAtPosition(
         Global_REF_RASTPORT_1,
-        420,
-        40,
+        HELP_ROW_2_Y,
+        MIN_X,
         Global_STR_PUSH_ANY_KEY_TO_SELECT_2);
 }
