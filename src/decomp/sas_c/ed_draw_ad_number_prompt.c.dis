@@ -1,0 +1,135 @@
+              SECTION      text,CODE
+__code:
+ED_DrawAdNumberPrompt:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ED_DrawAdNumberPrompt__1:
+              PEA            ($6).w                   ;4878 0006 
+              BSR.W          ED_DrawHelpPanels        ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            Global_STR_ENTER_AD_NUMBER_ONE_H(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($14a).w                 ;4878 014a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         ED_MaxAdNumber(A4),-(A7) ;2f2c 0000 
+              PEA            ED_EditBufferScratch(A4) ;486c 0000 
+              BSR.W          GROUP_AL_JMPTBL_ESQ_WriteDecFixe;6100 0000 
+              PEA            ED_EditBufferScratch(A4) ;486c 0000 
+              PEA            ($154).w                 ;4878 0154 
+              PEA            ($14a).w                 ;4878 014a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $44(A7),A7               ;4fef 0044 
+              PEA            Global_STR_LEFT_PARENTHESIS_THEN(A4);486c 0000 
+              PEA            ($172).w                 ;4878 0172 
+              PEA            ($14a).w                 ;4878 014a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            Global_STR_PUSH_RETURN_TO_ENTER_(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($168).w                 ;4878 0168 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            Global_STR_SINGLE_SPACE_4(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($186).w                 ;4878 0186 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+___ED_DrawAdNumberPrompt__2:
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              PEA            ($6).w                   ;4878 0006 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+              PEA            ($62).w                  ;4878 0062 
+              PEA            ($280).w                 ;4878 0280 
+              PEA            ($44).w                  ;4878 0044 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              PEA            Global_STR_AD_NUMBER_QUESTIONMAR(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($5a).w                  ;4878 005a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+              MOVEQ.L        #$c,D0                   ;700c 
+              MOVE.L         D0,ED_EditCursorOffset(A4);2940 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ED_DrawAdNumberPrompt__3:
+              MOVEQ.L        #$e,D0                   ;700e 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___ED_DrawAdNumberPrompt__6;6c24 
+___ED_DrawAdNumberPrompt__4:
+              LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
+              MOVE.B         #$20,$0(A0,D7.L)         ;11bc 0020 7800 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            ($2).w                   ;4878 0002 
+              BSR.W          GROUP_AL_JMPTBL_LADFUNC_PackNibb;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
+              MOVE.B         D0,$0(A0,D7.L)           ;1180 7800 
+___ED_DrawAdNumberPrompt__5:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___ED_DrawAdNumberPrompt__3;60d6 
+___ED_DrawAdNumberPrompt__6:
+              CLR.B          ED_AdNumberPromptStateBlock(A4);422c 0000 
+              BSR.W          ED_RedrawCursorChar      ;6100 0000 
+___ED_DrawAdNumberPrompt__7:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_DrawHelpPanels
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetDrMd
+              XREF           _LVOSetAPen
+              XREF           Global_STR_ENTER_AD_NUMBER_ONE_H
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           ED_MaxAdNumber
+              XREF           ED_EditBufferScratch
+              XREF           GROUP_AL_JMPTBL_ESQ_WriteDecFixe
+              XREF           Global_STR_LEFT_PARENTHESIS_THEN
+              XREF           Global_STR_PUSH_RETURN_TO_ENTER_
+              XREF           Global_STR_SINGLE_SPACE_4
+              XREF           _LVORectFill
+              XREF           Global_STR_AD_NUMBER_QUESTIONMAR
+              XREF           ED_EditCursorOffset
+              XREF           GROUP_AL_JMPTBL_LADFUNC_PackNibb
+              XREF           ED_EditBufferLive
+              XREF           ED_AdNumberPromptStateBlock
+              XREF           ED_RedrawCursorChar
+              XDEF           ED_DrawAdNumberPrompt
+              END
