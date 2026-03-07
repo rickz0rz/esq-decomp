@@ -6,7 +6,9 @@ typedef struct DateTimePair {
 } DateTimePair;
 
 enum {
-    DATETIME_SAVE_PREFIX_LEN = 4
+    DATETIME_SAVE_PREFIX_LEN = 4,
+    DATETIME_SAVE_FAILED = 0,
+    DATETIME_SAVE_SUCCESS = 1
 };
 
 extern LONG MODE_NEWFILE;
@@ -24,18 +26,18 @@ LONG DATETIME_SavePairToFile(DateTimePair *pair)
     LONG fileHandle;
 
     if (pair == (DateTimePair *)0) {
-        return 0;
+        return DATETIME_SAVE_FAILED;
     }
     if (pair->in_ptr == (void *)0) {
-        return 0;
+        return DATETIME_SAVE_FAILED;
     }
     if (pair->out_ptr == (void *)0) {
-        return 0;
+        return DATETIME_SAVE_FAILED;
     }
 
     fileHandle = DISKIO_OpenFileWithBuffer(DST_DefaultDatPathPtr, MODE_NEWFILE);
     if (fileHandle == 0) {
-        return 0;
+        return DATETIME_SAVE_FAILED;
     }
 
     (void)DISKIO_WriteBufferedBytes(fileHandle, DST_STR_G2_COLON, DATETIME_SAVE_PREFIX_LEN);
@@ -45,5 +47,5 @@ LONG DATETIME_SavePairToFile(DateTimePair *pair)
     (void)DATETIME_FormatPairToStream(fileHandle, (DateTimePair *)pair->in_ptr);
 
     (void)DISKIO_CloseBufferedFileAndFlush(fileHandle);
-    return 1;
+    return DATETIME_SAVE_SUCCESS;
 }
