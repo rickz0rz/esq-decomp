@@ -6,7 +6,7 @@ typedef unsigned char UBYTE;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 
-extern WORD NEWGRID_UpdatePresetEntry(UBYTE **outEntry, UBYTE **outAux, LONG selector, LONG index);
+extern LONG NEWGRID_UpdatePresetEntry(UBYTE **outEntry, UBYTE **outAux, LONG selector, LONG index);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG bitIndex);
 
 LONG NEWGRID_FindNextEntryWithAltMarkers(LONG scanMode, LONG startIndex, WORD selector)
@@ -43,7 +43,7 @@ LONG NEWGRID_FindNextEntryWithAltMarkers(LONG scanMode, LONG startIndex, WORD se
 
         entry = 0;
         aux = 0;
-        presetIndex = NEWGRID_UpdatePresetEntry(&entry, &aux, (LONG)selector, idx);
+        presetIndex = (WORD)NEWGRID_UpdatePresetEntry(&entry, &aux, (LONG)selector, idx);
 
         if (entry == 0 || aux == 0) {
             ++idx;
