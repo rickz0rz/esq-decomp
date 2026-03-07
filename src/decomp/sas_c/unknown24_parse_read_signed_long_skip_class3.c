@@ -6,26 +6,26 @@ extern void PARSE_ReadSignedLong_NoBranch(char *s, LONG *outValue);
 
 LONG PARSE_ReadSignedLongSkipClass3(char *input)
 {
-    LONG value;
+    LONG parsedValue;
 
     if (!input) {
         return 0;
     }
 
     input = STR_SkipClass3Chars(input);
-    PARSE_ReadSignedLong(input, &value);
-    return value;
+    PARSE_ReadSignedLong(input, &parsedValue);
+    return parsedValue;
 }
 
 LONG PARSE_ReadSignedLongSkipClass3_Alt(char *input)
 {
-    LONG value;
+    LONG parsedValue;
 
     if (!input) {
         return 0;
     }
 
     input = STR_SkipClass3Chars(input);
-    PARSE_ReadSignedLong_NoBranch(input, &value);
-    return value;
+    PARSE_ReadSignedLong_NoBranch(input, &parsedValue);
+    return parsedValue;
 }
