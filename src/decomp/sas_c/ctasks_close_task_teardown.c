@@ -15,6 +15,10 @@ void _LVOForbid(void);
 
 void CTASKS_CloseTaskTeardown(void)
 {
+    const LONG DEALLOC_LINE = 194;
+    const LONG PROC_LIST_BYTES = 14;
+    const UWORD TASK_DONE = 1;
+
     if (CTASKS_CloseTaskFileHandle != 0) {
         _LVOClose();
         CTASKS_CloseTaskFileHandle = 0;
@@ -22,6 +26,10 @@ void CTASKS_CloseTaskTeardown(void)
 
     _LVOForbid();
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CTASKS_C_3, 194, (void *)Global_REF_LIST_CLOSE_TASK_PROC, 14);
-    CTASKS_CloseTaskCompletionFlag = 1;
+    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        Global_STR_CTASKS_C_3,
+        DEALLOC_LINE,
+        (void *)Global_REF_LIST_CLOSE_TASK_PROC,
+        PROC_LIST_BYTES);
+    CTASKS_CloseTaskCompletionFlag = TASK_DONE;
 }
