@@ -175,6 +175,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqshared_init_entry_defaults_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared_parse_compact_entry_record_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared_normalize_in_stereo_tag_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqshared_replace_movie_rating_token_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqshared_replace_tv_rating_token_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared_match_selection_code_with_optional_suffix_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_disable_highlight_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_enable_highlight_trial.sh"
