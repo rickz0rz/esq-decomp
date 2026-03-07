@@ -17,11 +17,11 @@ void BRUSH_FreeBrushResources(void **head_ptr)
 
     node = (UBYTE *)*head_ptr;
     while (node != (UBYTE *)BRUSH_NULL) {
-        UBYTE *next;
+        UBYTE *nextNode;
 
-        next = *(UBYTE **)(node + BRUSH_RESOURCE_NEXT_OFFSET);
+        nextNode = *(UBYTE **)(node + BRUSH_RESOURCE_NEXT_OFFSET);
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_9, 887, (void *)node, BRUSH_RESOURCE_NODE_SIZE);
-        node = next;
+        node = nextNode;
     }
 
     *head_ptr = (void *)BRUSH_NULL;
