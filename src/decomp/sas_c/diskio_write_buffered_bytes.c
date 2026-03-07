@@ -28,13 +28,14 @@ extern LONG _LVOWrite(void *dosBase, LONG fileHandle, const void *buffer, LONG l
 
 LONG DISKIO_WriteBufferedBytes(LONG handle, const UBYTE *src, LONG len)
 {
+    const UBYTE *DISKIO_PTR_NULL = (const UBYTE *)0;
     LONG result;
     LONG requested;
 
     result = len;
     requested = len;
 
-    if (src == 0 ||
+    if (src == DISKIO_PTR_NULL ||
         len == DISKIO_RESULT_ZERO ||
         DISKIO_BufferControl.ErrorFlag == DISKIO_ERROR_FLAG_SET ||
         handle == DISKIO_HANDLE_INVALID) {
