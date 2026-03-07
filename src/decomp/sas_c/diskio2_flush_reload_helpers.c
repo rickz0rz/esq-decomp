@@ -18,26 +18,32 @@ volatile UBYTE CTASKS_PendingPrimaryOiDiskId;
 volatile UBYTE CTASKS_SecondaryOiWritePendingFlag;
 volatile UBYTE CTASKS_PendingSecondaryOiDiskId;
 
+enum {
+    DISKIO2_FLAG_CLEAR = 0,
+    DISKIO2_FLAG_SET = 1,
+    DISKIO2_MAX_PRIMARY_ENTRY_COUNT_PLUS_ONE = 0xC9U
+};
+
 void DISKIO2_FlushDataFilesIfNeeded(void)
 {
-    if (DISKIO2_FlushDataFilesGuardFlag != 0) {
+    if (DISKIO2_FlushDataFilesGuardFlag != DISKIO2_FLAG_CLEAR) {
         return;
     }
 
-    DISKIO2_FlushDataFilesGuardFlag = 1;
-    if (TEXTDISP_PrimaryGroupEntryCount < 0xc9U) {
+    DISKIO2_FlushDataFilesGuardFlag = DISKIO2_FLAG_SET;
+    if (TEXTDISP_PrimaryGroupEntryCount < DISKIO2_MAX_PRIMARY_ENTRY_COUNT_PLUS_ONE) {
         DISKIO2_WriteCurDayDataFile();
         DISKIO2_WriteNxtDayDataFile();
         DISKIO2_WriteOinfoDataFile();
 
-        if (CTASKS_PrimaryOiWritePendingFlag != 0) {
+        if (CTASKS_PrimaryOiWritePendingFlag != DISKIO2_FLAG_CLEAR) {
             COI_WriteOiDataFile((long)CTASKS_PendingPrimaryOiDiskId);
         }
-        if (CTASKS_SecondaryOiWritePendingFlag != 0) {
+        if (CTASKS_SecondaryOiWritePendingFlag != DISKIO2_FLAG_CLEAR) {
             COI_WriteOiDataFile((long)CTASKS_PendingSecondaryOiDiskId);
         }
     }
-    DISKIO2_FlushDataFilesGuardFlag = 0;
+    DISKIO2_FlushDataFilesGuardFlag = DISKIO2_FLAG_CLEAR;
 }
 
 void DISKIO2_ReloadDataFilesAndRebuildIndex(void)
