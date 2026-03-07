@@ -3,7 +3,7 @@ typedef signed long LONG;
 extern char *Global_FormatBufferPtr2;
 extern LONG Global_FormatByteCount2;
 
-extern void WDISP_FormatWithCallback(void (*cb)(LONG), char *format, void *args);
+extern void WDISP_FormatWithCallback(void (*cb)(LONG), const char *format, void *args);
 
 void FORMAT_Buffer2WriteChar(LONG ch)
 {
@@ -11,7 +11,7 @@ void FORMAT_Buffer2WriteChar(LONG ch)
     *Global_FormatBufferPtr2++ = (char)ch;
 }
 
-LONG FORMAT_FormatToBuffer2(char *outBuf, char *format, void *args)
+LONG FORMAT_FormatToBuffer2(char *outBuf, const char *format, void *args)
 {
     Global_FormatByteCount2 = 0;
     Global_FormatBufferPtr2 = outBuf;
