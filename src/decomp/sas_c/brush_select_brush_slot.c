@@ -3,6 +3,8 @@ typedef unsigned short UWORD;
 typedef long LONG;
 
 enum {
+    BRUSH_NULL = 0,
+    BRUSH_SELECT_SLOT_STATUS_FAIL = 0,
     BRUSH_SPAN_INCLUSIVE_DELTA = 1,
     BRUSH_FORCED_DST_Y_MIN = 0,
     BRUSH_BITMAP_OFFSET = 136,
@@ -48,8 +50,8 @@ LONG BRUSH_SelectBrushSlot(
     LONG mode_x;
     LONG mode_y;
 
-    if (brush == (UBYTE *)0) {
-        return 0;
+    if (brush == (UBYTE *)BRUSH_NULL) {
+        return BRUSH_SELECT_SLOT_STATUS_FAIL;
     }
 
     span_x = src_x1 - src_x0 + BRUSH_SPAN_INCLUSIVE_DELTA;
