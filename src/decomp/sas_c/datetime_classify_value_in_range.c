@@ -1,3 +1,11 @@
+enum {
+    RANGE_BOUND_A_OFFSET = 8,
+    RANGE_BOUND_B_OFFSET = 12,
+    RANGE_FLAG_DESCENDING = 16,
+    RANGE_FLAG_IN_RANGE = 1,
+    RANGE_FLAG_ABOVE_OR_EQUAL_HIGH = 2
+};
+
 long DATETIME_ClassifyValueInRange(void *range_ptr, long value)
 {
     unsigned char flags;
@@ -11,14 +19,14 @@ long DATETIME_ClassifyValueInRange(void *range_ptr, long value)
         return 0;
     }
 
-    bound_a = *(long *)((char *)range_ptr + 8);
-    bound_b = *(long *)((char *)range_ptr + 12);
+    bound_a = *(long *)((char *)range_ptr + RANGE_BOUND_A_OFFSET);
+    bound_b = *(long *)((char *)range_ptr + RANGE_BOUND_B_OFFSET);
 
     if (bound_a < bound_b) {
         low = bound_a;
         high = bound_b;
     } else if (bound_a > bound_b) {
-        flags |= 16;
+        flags |= RANGE_FLAG_DESCENDING;
         low = bound_b;
         high = bound_a;
     } else {
@@ -27,9 +35,9 @@ long DATETIME_ClassifyValueInRange(void *range_ptr, long value)
 
     if (value >= low) {
         if (value >= high) {
-            flags |= 2;
+            flags |= RANGE_FLAG_ABOVE_OR_EQUAL_HIGH;
         } else {
-            flags |= 1;
+            flags |= RANGE_FLAG_IN_RANGE;
         }
     }
 

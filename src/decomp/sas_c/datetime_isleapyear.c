@@ -1,9 +1,13 @@
 typedef signed long LONG;
 
+enum {
+    DATETIME_BASE_YEAR = 1900
+};
+
 LONG DATETIME_IsLeapYear(LONG year)
 {
-    if (year < 1900) {
-        year += 1900;
+    if (year < DATETIME_BASE_YEAR) {
+        year += DATETIME_BASE_YEAR;
     }
 
     if ((year % 4) != 0) {
