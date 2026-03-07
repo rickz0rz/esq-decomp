@@ -2,6 +2,18 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+enum {
+    VM_RUNTIME_STRIDE = 154,
+    VM_RASTPORT_OFFSET = 10,
+    VM_WIDTH_OFFSET = 2,
+    VM_HEIGHT_OFFSET = 4,
+    VM_PEN_0 = 0,
+    VM_PEN_1 = 1,
+    VM_DRAWMODE_1 = 1,
+    VM_TITLE_BUFFER_LEN = 88,
+    VM_TITLE_Y = 90
+};
+
 extern UBYTE TLIBA3_VmArrayRuntimeTable[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_HANDLE_PREVUEC_FONT;
@@ -23,38 +35,38 @@ void TLIBA3_DrawViewModeOverlay(LONG viewMode)
     void *rp;
     UWORD viewW;
     UWORD viewH;
-    char title[88];
+    char title[VM_TITLE_BUFFER_LEN];
 
-    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, 154);
-    viewW = *(UWORD *)(vm + 2);
-    viewH = *(UWORD *)(vm + 4);
+    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE);
+    viewW = *(UWORD *)(vm + VM_WIDTH_OFFSET);
+    viewH = *(UWORD *)(vm + VM_HEIGHT_OFFSET);
     (void)viewW;
     (void)viewH;
 
-    rp = vm + 10;
+    rp = vm + VM_RASTPORT_OFFSET;
     _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, rp, Global_HANDLE_PREVUEC_FONT);
 
-    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, 154);
-    rp = vm + 10;
-    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, rp, 0);
+    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE);
+    rp = vm + VM_RASTPORT_OFFSET;
+    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, rp, VM_PEN_0);
 
-    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, 154);
-    rp = vm + 10;
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rp, 1);
+    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE);
+    rp = vm + VM_RASTPORT_OFFSET;
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rp, VM_DRAWMODE_1);
 
-    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, 154);
-    rp = vm + 10;
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, 1);
+    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE);
+    rp = vm + VM_RASTPORT_OFFSET;
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, VM_PEN_1);
 
-    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, 154);
-    rp = vm + 10;
-    _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, rp, 0);
+    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE);
+    rp = vm + VM_RASTPORT_OFFSET;
+    _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, rp, VM_PEN_0);
 
     TLIBA3_DrawViewModeGuides(rp);
 
     WDISP_SPrintf(title, TLIBA1_FMT_VIEWMODE_PCT_LD, viewMode);
 
-    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, 154);
-    rp = vm + 10;
-    TLIBA3_DrawCenteredWrappedTextLines(rp, title, 90);
+    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE);
+    rp = vm + VM_RASTPORT_OFFSET;
+    TLIBA3_DrawCenteredWrappedTextLines(rp, title, VM_TITLE_Y);
 }
