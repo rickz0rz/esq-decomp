@@ -48,6 +48,17 @@ extern void LADFUNC_DrawEntryLineWithAttrs(void *rastPort, LONG row, UBYTE *attr
 
 void LADFUNC_DrawEntryPreview(LONG entryIndex)
 {
+    const LONG VIEW_MODE_SOURCE = 4;
+    const LONG VIEW_MODE_SUBSOURCE = 0;
+    const LONG VIEW_MODE_KIND = 3;
+    const LONG RASTPORT_OFFSET = 2;
+    const LONG PREVIEW_PIXEL_WIDTH = 624;
+    const LONG PREVIEW_CHARS_PER_ROW = 40;
+    const LONG PALETTE_TRIPLE_COPY_BYTES = 24;
+    const LONG PALETTE_TRIPLE_STRIDE = 3;
+    const LONG DRAW_MODE_JAM1 = 1;
+    const LONG ROW_HEIGHT_PIXELS = 8;
+    const LONG LINEBUF_ALLOC_FLAGS = 0x10001;
     LadfuncEntry *entry;
     UBYTE *lineText = (UBYTE *)0;
     UBYTE *lineAttr = (UBYTE *)0;
@@ -60,15 +71,20 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
     LONG i;
     void *rastPort;
 
-    WDISP_DisplayContextBase = GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(4, 0, 3);
-    rastPort = (void *)(WDISP_DisplayContextBase + 2);
+    WDISP_DisplayContextBase = GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(
+        VIEW_MODE_SOURCE,
+        VIEW_MODE_SUBSOURCE,
+        VIEW_MODE_KIND);
+    rastPort = (void *)(WDISP_DisplayContextBase + RASTPORT_OFFSET);
 
     _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_HANDLE_H26F_FONT);
     charWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_STR_SINGLE_SPACE_2, 1);
-    maxCols = NEWGRID_JMPTBL_MATH_DivS32(624, charWidth);
+    maxCols = NEWGRID_JMPTBL_MATH_DivS32(PREVIEW_PIXEL_WIDTH, charWidth);
 
-    lineText = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_16, 857, maxCols + 1, 0x10001);
-    lineAttr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_17, 858, maxCols, 0x10001);
+    lineText = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+        Global_STR_LADFUNC_C_16, 857, maxCols + 1, LINEBUF_ALLOC_FLAGS);
+    lineAttr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+        Global_STR_LADFUNC_C_17, 858, maxCols, LINEBUF_ALLOC_FLAGS);
     if (lineText == (UBYTE *)0 || lineAttr == (UBYTE *)0) {
         goto cleanup;
     }
@@ -76,10 +92,10 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
     entry = LADFUNC_EntryPtrTable[entryIndex];
     WDISP_AccumulatorFlushPending = 0;
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, 1);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, DRAW_MODE_JAM1);
     GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition();
 
-    for (i = 0; i < 24; ++i) {
+    for (i = 0; i < PALETTE_TRIPLE_COPY_BYTES; ++i) {
         (&WDISP_PaletteTriplesRBase)[i] = KYBD_CustomPaletteTriplesRBase[i];
     }
 
@@ -89,14 +105,14 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
 
     packed = entry->attrPtr[0];
     pen = LADFUNC_GetPackedPenHighNibble(packed);
-    WDISP_PaletteTriplesRBase = KYBD_CustomPaletteTriplesRBase[pen * 3];
-    WDISP_PaletteTriplesGBase = KYBD_CustomPaletteTriplesGBase[pen * 3];
-    WDISP_PaletteTriplesBBase = KYBD_CustomPaletteTriplesBBase[pen * 3];
+    WDISP_PaletteTriplesRBase = KYBD_CustomPaletteTriplesRBase[pen * PALETTE_TRIPLE_STRIDE];
+    WDISP_PaletteTriplesGBase = KYBD_CustomPaletteTriplesGBase[pen * PALETTE_TRIPLE_STRIDE];
+    WDISP_PaletteTriplesBBase = KYBD_CustomPaletteTriplesBBase[pen * PALETTE_TRIPLE_STRIDE];
     _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, rastPort, pen);
 
     for (row = 0; row < ED_TextLimit; ++row) {
         LONG col = 0;
-        LONG src = row * 40;
+        LONG src = row * PREVIEW_CHARS_PER_ROW;
         while (col < maxCols && src < textLen && entry->textPtr[src] != 0) {
             lineText[col] = entry->textPtr[src];
             lineAttr[col] = entry->attrPtr[src];

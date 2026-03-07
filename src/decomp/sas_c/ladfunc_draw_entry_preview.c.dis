@@ -2,22 +2,39 @@
 __code:
 LADFUNC_DrawEntryPreview:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$30,D0                  ;90bc 0000 0030 
+              SUB.L          #$5c,D0                  ;90bc 0000 005c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$20,A7                  ;9efc 0020 
+              SUB.W          #$4c,A7                  ;9efc 004c 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___LADFUNC_DrawEntryPreview__1:
-              MOVE.L         $3c(A7),D7               ;2e2f 003c 
+              MOVE.L         $68(A7),D7               ;2e2f 0068 
+              MOVEQ.L        #$4,D6                   ;7c04 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVEQ.L        #$3,D0                   ;7003 
+              MOVEQ.L        #$2,D1                   ;7202 
+              MOVE.L         D1,$5c(A7)               ;2f41 005c 
+              MOVE.L         #$270,$58(A7)            ;2f7c 0000 0270 0058 
+              MOVEQ.L        #$28,D1                  ;7228 
+              MOVE.L         D1,$54(A7)               ;2f41 0054 
+              MOVEQ.L        #$18,D1                  ;7218 
+              MOVE.L         D1,$50(A7)               ;2f41 0050 
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVE.L         D1,$48(A7)               ;2f41 0048 
+              MOVEQ.L        #$8,D1                   ;7208 
+              MOVE.L         D1,$44(A7)               ;2f41 0044 
+              MOVE.L         #$10001,$40(A7)          ;2f7c 0001 0001 0040 
               SUB.L          A3,A3                    ;97cb 
               SUB.L          A2,A2                    ;95ca 
               CLR.L          $30(A7)                  ;42af 0030 
-              PEA            ($3).w                   ;4878 0003 
-              CLR.L          -(A7)                    ;42a7 
-              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D0,$58(A7)               ;2f40 0058 
+              MOVE.L         D0,$6c(A7)               ;2f40 006c 
               BSR.W          GROUP_AW_JMPTBL_TLIBA3_BuildDisp;6100 0000 
               MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
-              ADDQ.L         #$2,D0                   ;5480 
+              ADD.L          $68(A7),D0               ;d0af 0068 
               MOVE.L         Global_HANDLE_H26F_FONT(A4),(A7);2eac 0000 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
@@ -28,32 +45,31 @@ ___LADFUNC_DrawEntryPreview__1:
               MOVE.L         $40(A7),-(A7)            ;2f2f 0040 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOTextLength           ;6100 0000 
-              MOVE.L         D0,D6                    ;2c00 
-              MOVE.L         D6,(A7)                  ;2e86 
-              PEA            ($270).w                 ;4878 0270 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         $7c(A7),-(A7)            ;2f2f 007c 
+              MOVE.L         D0,$64(A7)               ;2f40 0064 
+___LADFUNC_DrawEntryPreview__2:
               BSR.W          NEWGRID_JMPTBL_MATH_DivS32;6100 0000 
-              MOVE.L         D0,D5                    ;2a00 
-              MOVE.L         D5,D0                    ;2005 
+              MOVE.L         D0,$60(A7)               ;2f40 0060 
               ADDQ.L         #$1,D0                   ;5280 
-              MOVE.L         #$10001,(A7)             ;2ebc 0001 0001 
+              MOVE.L         $68(A7),(A7)             ;2eaf 0068 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            ($359).w                 ;4878 0359 
               PEA            Global_STR_LADFUNC_C_16(A4);486c 0000 
               BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
               MOVE.L         D0,A3                    ;2640 
-              MOVE.L         #$10001,(A7)             ;2ebc 0001 0001 
-              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         $74(A7),(A7)             ;2eaf 0074 
+              MOVE.L         $6c(A7),-(A7)            ;2f2f 006c 
               PEA            ($35a).w                 ;4878 035a 
               PEA            Global_STR_LADFUNC_C_17(A4);486c 0000 
               BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
               MOVE.L         D0,A2                    ;2440 
-___LADFUNC_DrawEntryPreview__2:
               LEA            $40(A7),A7               ;4fef 0040 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.W          ___LADFUNC_DrawEntryPreview__21;6700 0130 
+              BEQ.W          ___LADFUNC_DrawEntryPreview__21;6700 0136 
 ___LADFUNC_DrawEntryPreview__3:
               MOVE.L         A2,D0                    ;200a 
-              BEQ.W          ___LADFUNC_DrawEntryPreview__21;6700 012a 
+              BEQ.W          ___LADFUNC_DrawEntryPreview__21;6700 0130 
 ___LADFUNC_DrawEntryPreview__4:
 ___LADFUNC_DrawEntryPreview__5:
               MOVE.L         D7,D0                    ;2007 
@@ -61,7 +77,7 @@ ___LADFUNC_DrawEntryPreview__5:
               LEA            LADFUNC_EntryPtrTable(A4),A0;41ec 0000 
               MOVE.L         $0(A0,D0.L),A5           ;2a70 0800 
               CLR.W          WDISP_AccumulatorFlushPending(A4);426c 0000 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetDrMd              ;6100 0000 
@@ -70,8 +86,7 @@ ___LADFUNC_DrawEntryPreview__5:
               CLR.L          $28(A7)                  ;42af 0028 
 ___LADFUNC_DrawEntryPreview__6:
               MOVE.L         $28(A7),D0               ;202f 0028 
-              MOVEQ.L        #$18,D1                  ;7218 
-              CMP.L          D1,D0                    ;b081 
+              CMP.L          $50(A7),D0               ;b0af 0050 
               BGE.B          ___LADFUNC_DrawEntryPreview__9;6c14 
 ___LADFUNC_DrawEntryPreview__7:
               LEA            KYBD_CustomPaletteTriplesRBase(A4),A0;41ec 0000 
@@ -97,36 +112,33 @@ ___LADFUNC_DrawEntryPreview__11:
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.B         D0,$30(A7)               ;1f40 0030 
               BSR.W          LADFUNC_GetPackedPenHighNibble;6100 0000 
-              MOVE.L         D0,D1                    ;2200 
-              ADD.L          D1,D1                    ;d281 
-              ADD.L          D0,D1                    ;d280 
+              MOVE.L         $50(A7),D1               ;222f 0050 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              BSR.W          _CXM33                   ;6100 0000 
               LEA            KYBD_CustomPaletteTriplesRBase(A4),A0;41ec 0000 
-              MOVE.B         $0(A0,D1.L),WDISP_PaletteTriplesRBase(A4);1970 1800 0000 
+              MOVE.B         $0(A0,D0.L),WDISP_PaletteTriplesRBase(A4);1970 0800 0000 
               LEA            KYBD_CustomPaletteTriplesGBase(A4),A0;41ec 0000 
-              MOVE.B         $0(A0,D1.L),WDISP_PaletteTriplesGBase(A4);1970 1800 0000 
+              MOVE.B         $0(A0,D0.L),WDISP_PaletteTriplesGBase(A4);1970 0800 0000 
               LEA            KYBD_CustomPaletteTriplesBBase(A4),A0;41ec 0000 
-              MOVE.B         $0(A0,D1.L),WDISP_PaletteTriplesBBase(A4);1970 1800 0000 
-              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.B         $0(A0,D0.L),WDISP_PaletteTriplesBBase(A4);1970 0800 0000 
+              MOVE.L         $1c(A7),(A7)             ;2eaf 001c 
               MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
               BSR.W          _LVOSetRast              ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               CLR.L          $34(A7)                  ;42af 0034 
 ___LADFUNC_DrawEntryPreview__12:
               MOVE.L         $34(A7),D0               ;202f 0034 
               CMP.L          ED_TextLimit(A4),D0      ;b0ac 0000 
-              BGE.B          ___LADFUNC_DrawEntryPreview__20;6c6a 
+              BGE.B          ___LADFUNC_DrawEntryPreview__20;6c6c 
 ___LADFUNC_DrawEntryPreview__13:
               CLR.L          $20(A7)                  ;42af 0020 
-              MOVE.L         D0,D1                    ;2200 
-              ASL.L          #$2,D1                   ;e581 
-              ADD.L          D0,D1                    ;d280 
-              ASL.L          #$3,D1                   ;e781 
-              MOVE.L         D1,$1c(A7)               ;2f41 001c 
+              MOVE.L         $54(A7),D1               ;222f 0054 
+              BSR.W          _CXM33                   ;6100 0000 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
 ___LADFUNC_DrawEntryPreview__14:
               MOVE.L         $20(A7),D0               ;202f 0020 
-              CMP.L          D5,D0                    ;b085 
+              CMP.L          $38(A7),D0               ;b0af 0038 
               BGE.B          ___LADFUNC_DrawEntryPreview__18;6c30 
 ___LADFUNC_DrawEntryPreview__15:
               MOVE.L         $1c(A7),D1               ;222f 001c 
@@ -146,7 +158,7 @@ ___LADFUNC_DrawEntryPreview__17:
               MOVE.B         (A0),$0(A2,D0.L)         ;1590 0800 
               ADDQ.L         #$1,$20(A7)              ;52af 0020 
               ADDQ.L         #$1,$1c(A7)              ;52af 001c 
-              BRA.B          ___LADFUNC_DrawEntryPreview__14;60c8 
+              BRA.B          ___LADFUNC_DrawEntryPreview__14;60c6 
 ___LADFUNC_DrawEntryPreview__18:
               MOVE.L         $20(A7),D0               ;202f 0020 
               CLR.B          $0(A3,D0.L)              ;4233 0800 
@@ -158,7 +170,7 @@ ___LADFUNC_DrawEntryPreview__18:
               LEA            $10(A7),A7               ;4fef 0010 
 ___LADFUNC_DrawEntryPreview__19:
               ADDQ.L         #$1,$34(A7)              ;52af 0034 
-              BRA.B          ___LADFUNC_DrawEntryPreview__12;608c 
+              BRA.B          ___LADFUNC_DrawEntryPreview__12;608a 
 ___LADFUNC_DrawEntryPreview__20:
               BSR.W          GROUP_AW_JMPTBL_ESQIFF_RunCopper;6100 0000 
 ___LADFUNC_DrawEntryPreview__21:
@@ -168,9 +180,9 @@ ___LADFUNC_DrawEntryPreview__21:
               BSR.W          _LVOSetFont              ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.B          ___LADFUNC_DrawEntryPreview__23;6718 
+              BEQ.B          ___LADFUNC_DrawEntryPreview__23;671a 
 ___LADFUNC_DrawEntryPreview__22:
-              MOVE.L         D5,D0                    ;2005 
+              MOVE.L         $38(A7),D0               ;202f 0038 
               ADDQ.L         #$1,D0                   ;5280 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A3,-(A7)                 ;2f0b 
@@ -180,9 +192,9 @@ ___LADFUNC_DrawEntryPreview__22:
               LEA            $10(A7),A7               ;4fef 0010 
 ___LADFUNC_DrawEntryPreview__23:
               MOVE.L         A2,D0                    ;200a 
-              BEQ.B          ___LADFUNC_DrawEntryPreview__26;6714 
+              BEQ.B          ___LADFUNC_DrawEntryPreview__26;6716 
 ___LADFUNC_DrawEntryPreview__24:
-              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
               MOVE.L         A2,-(A7)                 ;2f0a 
               PEA            ($3a0).w                 ;4878 03a0 
               PEA            Global_STR_LADFUNC_C_19(A4);486c 0000 
@@ -191,7 +203,7 @@ ___LADFUNC_DrawEntryPreview__24:
 ___LADFUNC_DrawEntryPreview__25:
 ___LADFUNC_DrawEntryPreview__26:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$20,A7                  ;defc 0020 
+              ADD.W          #$4c,A7                  ;defc 004c 
               RTS                                     ;4e75 
 __const:
 __strings:
@@ -215,6 +227,7 @@ __strings:
               XREF           KYBD_CustomPaletteTriplesRBase
               XREF           WDISP_PaletteTriplesRBase
               XREF           LADFUNC_GetPackedPenHighNibble
+              XREF           _CXM33
               XREF           KYBD_CustomPaletteTriplesGBase
               XREF           WDISP_PaletteTriplesGBase
               XREF           KYBD_CustomPaletteTriplesBBase
