@@ -30,11 +30,11 @@ void CLEANUP_DrawClockFormatFrame(void)
 {
     LONG baseX;
     LONG frameX;
-    LONG width;
+    LONG frameWidth;
 
     baseX = (LONG)NEWGRID_ColumnStartXPx;
     frameX = baseX + CLOCK_FORMAT_FRAME_X_OFFSET;
-    width = CLOCK_FORMAT_FRAME_RIGHT_EDGE - baseX;
+    frameWidth = CLOCK_FORMAT_FRAME_RIGHT_EDGE - baseX;
 
     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
         *(void **)(NEWGRID_MainRastPortPtr + RASTPORT_BITMAP_PTR_OFFSET),
@@ -43,7 +43,7 @@ void CLEANUP_DrawClockFormatFrame(void)
         (void *)NEWGRID_MainRastPortPtr,
         frameX,
         CLOCK_FORMAT_FRAME_Y,
-        width,
+        frameWidth,
         CLOCK_FORMAT_FRAME_HEIGHT,
         CLOCK_FORMAT_FRAME_MINTERM
     );
