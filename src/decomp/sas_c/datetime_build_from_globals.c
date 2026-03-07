@@ -8,13 +8,13 @@ enum {
 
 long DATETIME_BuildFromGlobals(void *out_struct)
 {
-    long result;
+    long secondsResult;
 
-    result = DATETIME_BuildFromBaseDay(
+    secondsResult = DATETIME_BuildFromBaseDay(
         &CLOCK_DaySlotIndex,
         out_struct,
         DATETIME_GLOBALS_SLOT_BASE,
         (long)DST_PrimaryCountdown
     );
-    return result;
+    return secondsResult;
 }
