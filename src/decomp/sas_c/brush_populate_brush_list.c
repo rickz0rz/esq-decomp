@@ -37,9 +37,9 @@ void BRUSH_PopulateBrushList(void *descriptorList, void **outHeadPtr)
     descriptorCursor = (UBYTE *)descriptorList;
     while (descriptorCursor != (UBYTE *)BRUSH_NULL) {
         UBYTE *next_desc;
-        void *loaded;
+        void *loadedBrush;
 
-        loaded = BRUSH_LoadBrushAsset((void *)descriptorCursor);
+        loadedBrush = BRUSH_LoadBrushAsset((void *)descriptorCursor);
         next_desc = *(UBYTE **)(descriptorCursor + BRUSH_DESCRIPTOR_NEXT_OFFSET);
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_BRUSH_C_8,
@@ -49,16 +49,16 @@ void BRUSH_PopulateBrushList(void *descriptorList, void **outHeadPtr)
         );
         descriptorCursor = next_desc;
 
-        if (loaded == (void *)BRUSH_NULL) {
+        if (loadedBrush == (void *)BRUSH_NULL) {
             continue;
         }
 
         if (*outHeadPtr == (void *)BRUSH_NULL) {
-            *outHeadPtr = loaded;
+            *outHeadPtr = loadedBrush;
         } else {
-            *(void **)(listTail + BRUSH_NODE_NEXT_OFFSET) = loaded;
+            *(void **)(listTail + BRUSH_NODE_NEXT_OFFSET) = loadedBrush;
         }
-        listTail = (UBYTE *)loaded;
+        listTail = (UBYTE *)loadedBrush;
     }
 
     PARSEINI_ParsedDescriptorListHead = (void *)BRUSH_NULL;
