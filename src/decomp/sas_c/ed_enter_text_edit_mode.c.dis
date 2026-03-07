@@ -1,0 +1,35 @@
+              SECTION      text,CODE
+__code:
+ED_EnterTextEditMode:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED_EnterTextEditMode__1:
+              MOVE.B         #$4,ED_MenuStateId(A4)   ;197c 0004 0000 
+              BSR.W          ED_DrawAdEditingScreen   ;6100 0000 
+              BSR.W          ED_RedrawAllRows         ;6100 0000 
+              BSR.W          ED_RedrawCursorChar      ;6100 0000 
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              LEA            ED_EditBufferLive(A4),A1 ;43ec 0000 
+              MOVE.L         A0,D1                    ;2208 
+              MOVE.B         $0(A1,D1.L),D0           ;1031 1800 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ED_DrawCurrentColorIndicator;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ED_EnterTextEditMode__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_MenuStateId
+              XREF           ED_DrawAdEditingScreen
+              XREF           ED_RedrawAllRows
+              XREF           ED_RedrawCursorChar
+              XREF           ED_EditCursorOffset
+              XREF           ED_EditBufferLive
+              XREF           ED_DrawCurrentColorIndicator
+              XDEF           ED_EnterTextEditMode
+              END
