@@ -67,7 +67,7 @@ void _LVOPermit(void);
 
 void CLEANUP_ShutdownSystem(void)
 {
-    LONG r, c;
+    LONG rowIndex, colIndex;
 
     _LVOForbid();
 
@@ -109,11 +109,11 @@ void CLEANUP_ShutdownSystem(void)
         (void *)ESQ_HighlightReplyPort,
         CLEANUP_HILITE_PORT_SIZE);
 
-    for (r = 0; r < CLEANUP_RASTER_ROWS; r++) {
-        for (c = 0; c < CLEANUP_RASTER_COLS; c++) {
-            LONG off = GROUP_AG_JMPTBL_MATH_Mulu32(r, CLEANUP_RASTER_ROW_STRIDE) + (c << CLEANUP_RASTER_COL_SHIFT);
-            LONG rast = *(LONG *)(ESQDISP_HighlightBitmapTable + off + CLEANUP_RASTER_PTR_OFFSET);
-            GROUP_AB_JMPTBL_GRAPHICS_FreeRaster((void *)rast, 696, (LONG)WDISP_HighlightRasterHeightPx, 329, Global_STR_CLEANUP_C_16);
+    for (rowIndex = 0; rowIndex < CLEANUP_RASTER_ROWS; rowIndex++) {
+        for (colIndex = 0; colIndex < CLEANUP_RASTER_COLS; colIndex++) {
+            LONG rasterOffset = GROUP_AG_JMPTBL_MATH_Mulu32(rowIndex, CLEANUP_RASTER_ROW_STRIDE) + (colIndex << CLEANUP_RASTER_COL_SHIFT);
+            LONG rasterPtr = *(LONG *)(ESQDISP_HighlightBitmapTable + rasterOffset + CLEANUP_RASTER_PTR_OFFSET);
+            GROUP_AB_JMPTBL_GRAPHICS_FreeRaster((void *)rasterPtr, 696, (LONG)WDISP_HighlightRasterHeightPx, 329, Global_STR_CLEANUP_C_16);
         }
     }
 
