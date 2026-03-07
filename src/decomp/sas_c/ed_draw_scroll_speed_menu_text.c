@@ -21,25 +21,31 @@ extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const 
 void ED_DrawScrollSpeedMenuText(void)
 {
     static const char kFmtPercentC[] = "%c";
+    const LONG PEN_TEXT = 1;
+    const LONG DRAWMODE_JAM1 = 0;
+    const LONG DRAWMODE_JAM2 = 1;
+    const LONG TEXT_X = 40;
+    const LONG ROW0_Y = 90;
+    const LONG ROW_STEP_Y = 30;
     char statusLine[80];
 
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_TEXT);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM1);
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(
         statusLine,
         kFmtPercentC,
         (LONG)ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED);
 
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 90, 40, statusLine);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 120, 40, Global_STR_SPEED_ZERO_NOT_AVAILABLE);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 150, 40, Global_STR_SPEED_ONE_NOT_AVAILABLE);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 180, 40, Global_STR_SCROLL_SPEED_2);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 210, 40, Global_STR_SCROLL_SPEED_3);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 240, 40, Global_STR_SCROLL_SPEED_4);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 270, 40, Global_STR_SCROLL_SPEED_5);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 300, 40, Global_STR_SCROLL_SPEED_6);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 330, 40, Global_STR_SCROLL_SPEED_7);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 0), TEXT_X, statusLine);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 1), TEXT_X, Global_STR_SPEED_ZERO_NOT_AVAILABLE);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 2), TEXT_X, Global_STR_SPEED_ONE_NOT_AVAILABLE);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 3), TEXT_X, Global_STR_SCROLL_SPEED_2);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 4), TEXT_X, Global_STR_SCROLL_SPEED_3);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 5), TEXT_X, Global_STR_SCROLL_SPEED_4);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 6), TEXT_X, Global_STR_SCROLL_SPEED_5);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 7), TEXT_X, Global_STR_SCROLL_SPEED_6);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 8), TEXT_X, Global_STR_SCROLL_SPEED_7);
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM2);
 }
