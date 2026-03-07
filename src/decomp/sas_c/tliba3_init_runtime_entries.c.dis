@@ -1,0 +1,145 @@
+              SECTION      text,CODE
+__code:
+TLIBA3_InitRuntimeEntries:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$1c,D0                  ;90bc 0000 001c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
+___TLIBA3_InitRuntimeEntries__1:
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),A0;206c 0000 
+              ADD.W          #$ce,A0                  ;d0fc 00ce 
+              MOVE.W         (A0),D5                  ;3a10 
+              MOVE.W         D5,D7                    ;3e05 
+              EXT.L          D7                       ;48c7 
+              MOVEQ.L        #$2,D0                   ;7002 
+              AND.L          D0,D7                    ;ce80 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$c304,D0                ;0680 0000 c304 
+              MOVE.W         D0,D6                    ;3c00 
+              EXT.L          D6                       ;48c6 
+              PEA            ($4).w                   ;4878 0004 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($168).w                 ;4878 0168 
+              PEA            ($f0).w                  ;4878 00f0 
+              PEA            ($160).w                 ;4878 0160 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          TLIBA3_InitRuntimeEntry  ;6100 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$c304,D0                ;0680 0000 c304 
+              MOVE.W         D0,D6                    ;3c00 
+              EXT.L          D6                       ;48c6 
+              PEA            ($4).w                   ;4878 0004 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($10).w                  ;4878 0010 
+              PEA            ($f0).w                  ;4878 00f0 
+              PEA            ($160).w                 ;4878 0160 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          TLIBA3_InitRuntimeEntry  ;6100 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$c304,D0                ;0680 0000 c304 
+              MOVE.W         D0,D6                    ;3c00 
+              EXT.L          D6                       ;48c6 
+              PEA            ($4).w                   ;4878 0004 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($8).w                   ;4878 0008 
+              PEA            ($f0).w                  ;4878 00f0 
+___TLIBA3_InitRuntimeEntries__2:
+              PEA            ($2b8).w                 ;4878 02b8 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              PEA            ($2).w                   ;4878 0002 
+              BSR.W          TLIBA3_InitRuntimeEntry  ;6100 0000 
+              LEA            $54(A7),A7               ;4fef 0054 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$8304,D0                ;0680 0000 8304 
+              MOVE.W         D0,D6                    ;3c00 
+              EXT.L          D6                       ;48c6 
+              PEA            ($1).w                   ;4878 0001 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($f0).w                  ;4878 00f0 
+              PEA            ($2b8).w                 ;4878 02b8 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              PEA            ($3).w                   ;4878 0003 
+              BSR.W          TLIBA3_InitRuntimeEntry  ;6100 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$c304,D0                ;0680 0000 c304 
+              MOVE.W         D0,D6                    ;3c00 
+              EXT.L          D6                       ;48c6 
+              MOVEQ.L        #$4,D0                   ;7004 
+              MOVE.L         D0,(A7)                  ;2e80 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($2c).w                  ;4878 002c 
+              PEA            ($f0).w                  ;4878 00f0 
+              PEA            ($280).w                 ;4878 0280 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          TLIBA3_InitRuntimeEntry  ;6100 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$4304,D0                ;0680 0000 4304 
+              MOVE.W         D0,D6                    ;3c00 
+              EXT.L          D6                       ;48c6 
+              MOVEQ.L        #$5,D0                   ;7005 
+              MOVE.L         D0,(A7)                  ;2e80 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($2c).w                  ;4878 002c 
+              PEA            ($f0).w                  ;4878 00f0 
+___TLIBA3_InitRuntimeEntries__3:
+              PEA            ($140).w                 ;4878 0140 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          TLIBA3_InitRuntimeEntry  ;6100 0000 
+              LEA            $4c(A7),A7               ;4fef 004c 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$c300,D0                ;0680 0000 c300 
+              MOVE.W         D0,D6                    ;3c00 
+              EXT.L          D6                       ;48c6 
+              PEA            ($4).w                   ;4878 0004 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($2c).w                  ;4878 002c 
+              PEA            ($78).w                  ;4878 0078 
+              PEA            ($280).w                 ;4878 0280 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              PEA            ($6).w                   ;4878 0006 
+              BSR.W          TLIBA3_InitRuntimeEntry  ;6100 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$4300,D0                ;0680 0000 4300 
+              MOVE.W         D0,D6                    ;3c00 
+              EXT.L          D6                       ;48c6 
+              PEA            ($5).w                   ;4878 0005 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($2c).w                  ;4878 002c 
+              PEA            ($78).w                  ;4878 0078 
+              PEA            ($140).w                 ;4878 0140 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              PEA            ($7).w                   ;4878 0007 
+              BSR.W          TLIBA3_InitRuntimeEntry  ;6100 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$c304,D0                ;0680 0000 c304 
+              MOVE.W         D0,D6                    ;3c00 
+              EXT.L          D6                       ;48c6 
+              PEA            ($4).w                   ;4878 0004 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($10).w                  ;4878 0010 
+              PEA            ($128).w                 ;4878 0128 
+              PEA            ($140).w                 ;4878 0140 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              PEA            ($8).w                   ;4878 0008 
+___TLIBA3_InitRuntimeEntries__4:
+              BSR.W          TLIBA3_InitRuntimeEntry  ;6100 0000 
+              LEA            $54(A7),A7               ;4fef 0054 
+___TLIBA3_InitRuntimeEntries__5:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           TLIBA3_InitRuntimeEntry
+              XDEF           TLIBA3_InitRuntimeEntries
+              END
