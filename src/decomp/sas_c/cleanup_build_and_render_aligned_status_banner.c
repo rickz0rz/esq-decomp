@@ -27,36 +27,36 @@ void CLEANUP_BuildAndRenderAlignedStatusBanner(UWORD sourceMode, UWORD modeSel, 
     const LONG ALT_STYLE_DEFAULT = 0;
     const LONG ALT_STYLE_ALT = 1;
     const LONG ALIGN_TOKEN_DEFAULT = 0;
-    UBYTE status[560];
-    UBYTE clock_buf[64];
-    UBYTE alt_buf[64];
-    UBYTE parse_buf[256];
+    UBYTE statusLineBuffer[560];
+    UBYTE clockBuffer[64];
+    UBYTE altClockBuffer[64];
+    UBYTE parsedStatusBuffer[256];
     UBYTE *fieldA;
     UBYTE *fieldB;
 
-    status[0] = CH_NUL;
-    clock_buf[0] = CH_NUL;
-    alt_buf[0] = CH_NUL;
-    parse_buf[0] = CH_NUL;
+    statusLineBuffer[0] = CH_NUL;
+    clockBuffer[0] = CH_NUL;
+    altClockBuffer[0] = CH_NUL;
+    parsedStatusBuffer[0] = CH_NUL;
 
     if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_F) != (UBYTE *)0) {
         GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(
-            MATCH_IDX_DEFAULT, CLOCK_IDX_DEFAULT, clock_buf, ALT_STYLE_DEFAULT);
+            MATCH_IDX_DEFAULT, CLOCK_IDX_DEFAULT, clockBuffer, ALT_STYLE_DEFAULT);
     }
     if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_O) != (UBYTE *)0) {
         GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(
-            MATCH_IDX_DEFAULT, CLOCK_IDX_DEFAULT, alt_buf, ALT_STYLE_ALT);
+            MATCH_IDX_DEFAULT, CLOCK_IDX_DEFAULT, altClockBuffer, ALT_STYLE_ALT);
     }
 
-    CLEANUP_BuildAlignedStatusLine(status, sourceMode, modeSel, slot, ALIGN_TOKEN_DEFAULT);
+    CLEANUP_BuildAlignedStatusLine(statusLineBuffer, sourceMode, modeSel, slot, ALIGN_TOKEN_DEFAULT);
 
-    CLEANUP_ParseAlignedListingBlock(parse_buf, status);
+    CLEANUP_ParseAlignedListingBlock(parsedStatusBuffer, statusLineBuffer);
 
-    CLEANUP_UpdateEntryFlagBytes((void *)status, slot);
+    CLEANUP_UpdateEntryFlagBytes((void *)statusLineBuffer, slot);
 
     fieldA = (UBYTE *)CH_NUL;
     fieldB = (UBYTE *)CH_NUL;
-    CLEANUP_FormatEntryStringTokens((void **)&fieldA, (void **)&fieldB, parse_buf);
+    CLEANUP_FormatEntryStringTokens((void **)&fieldA, (void **)&fieldB, parsedStatusBuffer);
 
     CLEANUP_DrawInsetRectFrame();
     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort();
