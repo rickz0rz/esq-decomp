@@ -2,101 +2,118 @@
 __code:
 SCRIPT_SplitAndNormalizeSearchBu:
               MOVE.L         A7,D0                    ;200f 
-              SUBQ.L         #$8,D0                   ;5180 
+              SUB.L          #$1c,D0                  ;90bc 0000 001c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
+              SUB.W          #$14,A7                  ;9efc 0014 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
 ___SCRIPT_SplitAndNormalizeSearchBu__1:
-              MOVE.L         $1c(A7),D7               ;2e2f 001c 
-              MOVE.L         $18(A7),A5               ;2a6f 0018 
-              MOVEQ.L        #$12,D0                  ;7012 
-              CMP.B          $1(A5),D0                ;b02d 0001 
-              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__6;6616 
+              MOVE.L         $38(A7),D7               ;2e2f 0038 
+              MOVE.L         $34(A7),A5               ;2a6f 0034 
+              MOVEQ.L        #$12,D6                  ;7c12 
+              MOVEQ.L        #$1,D5                   ;7a01 
+              MOVE.W         #$c8,$2c(A7)             ;3f7c 00c8 002c 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVEQ.L        #$2,D1                   ;7202 
+              MOVE.L         #$80,$24(A7)             ;2f7c 0000 0080 0024 
+              CLR.B          $1d(A7)                  ;422f 001d 
+              MOVE.B         $0(A5,D0.L),D2           ;1435 0800 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         D1,$28(A7)               ;2f41 0028 
+              CMP.B          D6,D2                    ;b406 
+              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__6;661c 
 ___SCRIPT_SplitAndNormalizeSearchBu__2:
-              LEA            $2(A5),A3                ;47ed 0002 
+              MOVE.L         A5,A3                    ;264d 
+              ADD.L          D1,A3                    ;d7c1 
               LEA            TEXTDISP_SecondarySearchText(A4),A2;45ec 0000 
 ___SCRIPT_SplitAndNormalizeSearchBu__3:
               MOVE.B         (A3),(A2)+               ;14d3 
 ___SCRIPT_SplitAndNormalizeSearchBu__4:
               MOVE.B         (A3)+,D0                 ;101b 
-              TST.B          D0                       ;4a00 
-              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__3;66f8 
+              CMP.B          $1d(A7),D0               ;b02f 001d 
+              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__3;66f6 
 ___SCRIPT_SplitAndNormalizeSearchBu__5:
-              CLR.B          TEXTDISP_PrimarySearchText(A4);422c 0000 
-              BRA.B          ___SCRIPT_SplitAndNormalizeSearchBu__23;605c 
+              MOVE.B         $1d(A7),D0               ;102f 001d 
+              MOVE.B         D0,TEXTDISP_PrimarySearchText(A4);1940 0000 
+              BRA.B          ___SCRIPT_SplitAndNormalizeSearchBu__23;607a 
 ___SCRIPT_SplitAndNormalizeSearchBu__6:
-              MOVEQ.L        #$12,D0                  ;7012 
-              CMP.B          $ffffffff(A5,D7.L),D0    ;b035 78ff 
-              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__11;661a 
+              MOVE.B         $ffffffff(A5,D7.L),D0    ;1035 78ff 
+              CMP.B          D6,D0                    ;b006 
+              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__11;6622 
 ___SCRIPT_SplitAndNormalizeSearchBu__7:
-              CLR.B          $ffffffff(A5,D7.L)       ;4235 78ff 
-              LEA            $1(A5),A3                ;47ed 0001 
+              MOVE.B         $1d(A7),$ffffffff(A5,D7.L);1baf 001d 78ff 
+              MOVE.L         A5,A3                    ;264d 
+              ADD.L          $20(A7),A3               ;d7ef 0020 
               LEA            TEXTDISP_PrimarySearchText(A4),A2;45ec 0000 
 ___SCRIPT_SplitAndNormalizeSearchBu__8:
               MOVE.B         (A3),(A2)+               ;14d3 
 ___SCRIPT_SplitAndNormalizeSearchBu__9:
               MOVE.B         (A3)+,D0                 ;101b 
-              TST.B          D0                       ;4a00 
-              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__8;66f8 
+              CMP.B          $1d(A7),D0               ;b02f 001d 
+              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__8;66f6 
 ___SCRIPT_SplitAndNormalizeSearchBu__10:
-              CLR.B          TEXTDISP_SecondarySearchText(A4);422c 0000 
-              BRA.B          ___SCRIPT_SplitAndNormalizeSearchBu__23;603a 
+              MOVE.B         $1d(A7),TEXTDISP_SecondarySearchText(A4);196f 001d 0000 
+              BRA.B          ___SCRIPT_SplitAndNormalizeSearchBu__23;6050 
 ___SCRIPT_SplitAndNormalizeSearchBu__11:
-              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVE.W         D5,$1e(A7)               ;3f45 001e 
 ___SCRIPT_SplitAndNormalizeSearchBu__12:
-              MOVEQ.L        #$12,D0                  ;7012 
-              CMP.B          $0(A5,D6.W),D0           ;b035 6000 
-              BEQ.B          ___SCRIPT_SplitAndNormalizeSearchBu__17;670a 
+              MOVE.W         $1e(A7),D0               ;302f 001e 
+              MOVE.B         $0(A5,D0.W),D0           ;1035 0000 
+              CMP.B          D6,D0                    ;b006 
+              BEQ.B          ___SCRIPT_SplitAndNormalizeSearchBu__17;6710 
 ___SCRIPT_SplitAndNormalizeSearchBu__13:
 ___SCRIPT_SplitAndNormalizeSearchBu__14:
-              CMPI.W         #$c8,D6                  ;0c46 00c8 
-              BGE.B          ___SCRIPT_SplitAndNormalizeSearchBu__17;6c04 
+              MOVE.W         $1e(A7),D0               ;302f 001e 
+              CMP.W          $2c(A7),D0               ;b06f 002c 
+              BGE.B          ___SCRIPT_SplitAndNormalizeSearchBu__17;6c06 
 ___SCRIPT_SplitAndNormalizeSearchBu__15:
 ___SCRIPT_SplitAndNormalizeSearchBu__16:
-              ADDQ.W         #$1,D6                   ;5246 
-              BRA.B          ___SCRIPT_SplitAndNormalizeSearchBu__12;60ee 
+              ADDQ.W         #$1,$1e(A7)              ;526f 001e 
+              BRA.B          ___SCRIPT_SplitAndNormalizeSearchBu__12;60e4 
 ___SCRIPT_SplitAndNormalizeSearchBu__17:
               MOVE.L         A5,A0                    ;204d 
-              ADD.W          D6,A0                    ;d0c6 
-              CLR.B          (A0)                     ;4210 
+              ADD.W          $1e(A7),A0               ;d0ef 001e 
+              MOVE.B         $1d(A7),(A0)             ;10af 001d 
               LEA            $1(A0),A3                ;47e8 0001 
               LEA            TEXTDISP_SecondarySearchText(A4),A2;45ec 0000 
 ___SCRIPT_SplitAndNormalizeSearchBu__18:
               MOVE.B         (A3),(A2)+               ;14d3 
 ___SCRIPT_SplitAndNormalizeSearchBu__19:
               MOVE.B         (A3)+,D0                 ;101b 
-              TST.B          D0                       ;4a00 
-              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__18;66f8 
+              CMP.B          $1d(A7),D0               ;b02f 001d 
+              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__18;66f6 
 ___SCRIPT_SplitAndNormalizeSearchBu__20:
-              LEA            $1(A5),A3                ;47ed 0001 
+              MOVE.L         A5,A3                    ;264d 
+              ADD.L          $20(A7),A3               ;d7ef 0020 
               LEA            TEXTDISP_PrimarySearchText(A4),A2;45ec 0000 
 ___SCRIPT_SplitAndNormalizeSearchBu__21:
               MOVE.B         (A3),(A2)+               ;14d3 
 ___SCRIPT_SplitAndNormalizeSearchBu__22:
               MOVE.B         (A3)+,D0                 ;101b 
-              TST.B          D0                       ;4a00 
-              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__21;66f8 
+              CMP.B          $1d(A7),D0               ;b02f 001d 
+              BNE.B          ___SCRIPT_SplitAndNormalizeSearchBu__21;66f6 
 ___SCRIPT_SplitAndNormalizeSearchBu__23:
               MOVE.B         TEXTDISP_PrimarySearchText(A4),D0;102c 0000 
-              TST.B          D0                       ;4a00 
+              CMP.B          $1d(A7),D0               ;b02f 001d 
               BEQ.B          ___SCRIPT_SplitAndNormalizeSearchBu__25;670e 
 ___SCRIPT_SplitAndNormalizeSearchBu__24:
-              PEA            ($80).w                  ;4878 0080 
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
               PEA            TEXTDISP_PrimarySearchText(A4);486c 0000 
               BSR.W          SCRIPT3_JMPTBL_ESQSHARED_ApplyPr;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___SCRIPT_SplitAndNormalizeSearchBu__25:
               MOVE.B         TEXTDISP_SecondarySearchText(A4),D0;102c 0000 
-              TST.B          D0                       ;4a00 
+              CMP.B          $1d(A7),D0               ;b02f 001d 
               BEQ.B          ___SCRIPT_SplitAndNormalizeSearchBu__28;670e 
 ___SCRIPT_SplitAndNormalizeSearchBu__26:
-              PEA            ($80).w                  ;4878 0080 
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
               PEA            TEXTDISP_SecondarySearchText(A4);486c 0000 
               BSR.W          SCRIPT3_JMPTBL_ESQSHARED_ApplyPr;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___SCRIPT_SplitAndNormalizeSearchBu__27:
 ___SCRIPT_SplitAndNormalizeSearchBu__28:
-              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$14,A7                  ;defc 0014 
               RTS                                     ;4e75 
 __const:
 __strings:

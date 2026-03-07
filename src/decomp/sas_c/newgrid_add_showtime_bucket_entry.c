@@ -16,6 +16,12 @@ extern UBYTE *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(UBYTE *newValue, UBYTE 
 
 LONG NEWGRID_AddShowtimeBucketEntry(UBYTE *entryText, LONG bucketGroup, LONG unused)
 {
+    const LONG ASCII_COLON = 58;
+    const LONG GROUP_SHIFT = 8;
+    const LONG BUCKET_MAX = 10;
+    const LONG RESULT_FAIL = 0;
+    const LONG RESULT_OK = 1;
+    const LONG INDEX_ZERO = 0;
     LONG key;
     LONG insertPos;
     LONG shiftIdx;
@@ -25,13 +31,13 @@ LONG NEWGRID_AddShowtimeBucketEntry(UBYTE *entryText, LONG bucketGroup, LONG unu
 
     (void)unused;
 
-    cursor = PARSEINI_JMPTBL_STR_FindCharPtr(entryText, 58);
+    cursor = PARSEINI_JMPTBL_STR_FindCharPtr(entryText, ASCII_COLON);
     cursor = cursor + 1;
     key = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(cursor);
-    key += (bucketGroup << 8);
+    key += (bucketGroup << GROUP_SHIFT);
 
-    if (NEWGRID_ShowtimeBucketCount >= 10) {
-        return 0;
+    if (NEWGRID_ShowtimeBucketCount >= BUCKET_MAX) {
+        return RESULT_FAIL;
     }
 
     entry = &NEWGRID_ShowtimeBucketEntryTable[NEWGRID_ShowtimeBucketCount];
@@ -39,15 +45,15 @@ LONG NEWGRID_AddShowtimeBucketEntry(UBYTE *entryText, LONG bucketGroup, LONG unu
     entry->text = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(entryText, entry->text);
 
     insertPos = NEWGRID_ShowtimeBucketCount;
-    while (insertPos > 0) {
+    while (insertPos > INDEX_ZERO) {
         if (NEWGRID_ShowtimeBucketPtrTable[insertPos]->key <= key) {
             break;
         }
         --insertPos;
     }
 
-    if (insertPos != 0 && NEWGRID_ShowtimeBucketPtrTable[insertPos]->key == key) {
-        return 0;
+    if (insertPos != INDEX_ZERO && NEWGRID_ShowtimeBucketPtrTable[insertPos]->key == key) {
+        return RESULT_FAIL;
     }
 
     shiftIdx = NEWGRID_ShowtimeBucketCount;
@@ -58,6 +64,6 @@ LONG NEWGRID_AddShowtimeBucketEntry(UBYTE *entryText, LONG bucketGroup, LONG unu
 
     NEWGRID_ShowtimeBucketPtrTable[insertPos] = &NEWGRID_ShowtimeBucketEntryTable[NEWGRID_ShowtimeBucketCount];
     ++NEWGRID_ShowtimeBucketCount;
-    inserted = 1;
+    inserted = RESULT_OK;
     return inserted;
 }

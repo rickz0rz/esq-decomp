@@ -9,56 +9,63 @@ extern void SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(UBYTE *text, L
 
 void SCRIPT_SplitAndNormalizeSearchBuffer(UBYTE *parseBuffer, LONG parseLen)
 {
+    const UBYTE SPLIT_TOKEN = 18;
+    const WORD SPLIT_SCAN_START = 1;
+    const WORD SPLIT_SCAN_LIMIT = 0xc8;
+    const LONG FIELD_OFFSET_HEAD = 1;
+    const LONG FIELD_OFFSET_BODY = 2;
+    const LONG FILTER_MAXLEN = 128;
+    const UBYTE CH_NUL = 0;
     WORD i;
     UBYTE *src;
     UBYTE *dst;
 
-    if (parseBuffer[1] == 18) {
-        src = parseBuffer + 2;
+    if (parseBuffer[FIELD_OFFSET_HEAD] == SPLIT_TOKEN) {
+        src = parseBuffer + FIELD_OFFSET_BODY;
         dst = TEXTDISP_SecondarySearchText;
         do {
             *dst++ = *src;
-        } while (*src++ != 0);
-        TEXTDISP_PrimarySearchText[0] = 0;
-    } else if (parseBuffer[parseLen - 1] == 18) {
-        parseBuffer[parseLen - 1] = 0;
-        src = parseBuffer + 1;
+        } while (*src++ != CH_NUL);
+        TEXTDISP_PrimarySearchText[0] = CH_NUL;
+    } else if (parseBuffer[parseLen - 1] == SPLIT_TOKEN) {
+        parseBuffer[parseLen - 1] = CH_NUL;
+        src = parseBuffer + FIELD_OFFSET_HEAD;
         dst = TEXTDISP_PrimarySearchText;
         do {
             *dst++ = *src;
-        } while (*src++ != 0);
-        TEXTDISP_SecondarySearchText[0] = 0;
+        } while (*src++ != CH_NUL);
+        TEXTDISP_SecondarySearchText[0] = CH_NUL;
     } else {
-        i = 1;
+        i = SPLIT_SCAN_START;
         while (1) {
-            if (parseBuffer[i] == 18) {
+            if (parseBuffer[i] == SPLIT_TOKEN) {
                 break;
             }
-            if (i >= 0xc8) {
+            if (i >= SPLIT_SCAN_LIMIT) {
                 break;
             }
             i++;
         }
 
-        parseBuffer[i] = 0;
+        parseBuffer[i] = CH_NUL;
         src = parseBuffer + i + 1;
         dst = TEXTDISP_SecondarySearchText;
         do {
             *dst++ = *src;
-        } while (*src++ != 0);
+        } while (*src++ != CH_NUL);
 
-        src = parseBuffer + 1;
+        src = parseBuffer + FIELD_OFFSET_HEAD;
         dst = TEXTDISP_PrimarySearchText;
         do {
             *dst++ = *src;
-        } while (*src++ != 0);
+        } while (*src++ != CH_NUL);
     }
 
-    if (TEXTDISP_PrimarySearchText[0] != 0) {
-        SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(TEXTDISP_PrimarySearchText, 128);
+    if (TEXTDISP_PrimarySearchText[0] != CH_NUL) {
+        SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(TEXTDISP_PrimarySearchText, FILTER_MAXLEN);
     }
 
-    if (TEXTDISP_SecondarySearchText[0] != 0) {
-        SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(TEXTDISP_SecondarySearchText, 128);
+    if (TEXTDISP_SecondarySearchText[0] != CH_NUL) {
+        SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(TEXTDISP_SecondarySearchText, FILTER_MAXLEN);
     }
 }
