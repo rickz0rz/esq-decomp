@@ -1,6 +1,13 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
+enum {
+    DISKIO_CH_NUL = 0,
+    DISKIO_CH_LF = 10,
+    DISKIO_CH_CR = 13,
+    DISKIO_WORKBUF_SENTINEL_ERROR = 0xFFFF
+};
+
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern UBYTE *Global_PTR_WORK_BUFFER;
 
@@ -14,23 +21,23 @@ UBYTE *DISKIO_ConsumeLineFromWorkBuffer(void)
         UBYTE ch;
 
         ch = *Global_PTR_WORK_BUFFER;
-        if (ch == 13 || ch == 10) {
+        if (ch == DISKIO_CH_CR || ch == DISKIO_CH_LF) {
             break;
         }
         Global_PTR_WORK_BUFFER++;
     }
 
-    *Global_PTR_WORK_BUFFER++ = 0;
+    *Global_PTR_WORK_BUFFER++ = DISKIO_CH_NUL;
 
     if (Global_REF_LONG_FILE_SCRATCH < 0) {
-        return (UBYTE *)0xFFFF;
+        return (UBYTE *)DISKIO_WORKBUF_SENTINEL_ERROR;
     }
 
     while (1) {
         UBYTE ch;
 
         ch = *Global_PTR_WORK_BUFFER;
-        if (ch != 13 && ch != 10) {
+        if (ch != DISKIO_CH_CR && ch != DISKIO_CH_LF) {
             break;
         }
         Global_PTR_WORK_BUFFER++;
