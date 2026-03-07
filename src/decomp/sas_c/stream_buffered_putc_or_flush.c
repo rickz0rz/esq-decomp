@@ -9,7 +9,7 @@ typedef struct PreallocHandleNode {
     LONG write_remaining;    /* +12 */
     UBYTE *buffer_base;      /* +16 */
     LONG buffer_capacity;    /* +20 */
-    ULONG open_flags;        /* +24 */
+    ULONG mode_state_flags;  /* +24 */
     LONG handle_index;       /* +28 */
     UBYTE inline_byte;       /* +32 */
 } PreallocHandleNode;
@@ -32,8 +32,8 @@ extern LONG DOS_SeekByIndex(LONG handleIndex, LONG offset, LONG mode);
 extern LONG DOS_ReadByIndex(LONG handleIndex, void *buffer, LONG length);
 extern LONG DOS_WriteByIndex(LONG handleIndex, void *buffer, LONG length);
 
-static UBYTE *mode_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->open_flags) + 2; }
-static UBYTE *state_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->open_flags) + 3; }
+static UBYTE *mode_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->mode_state_flags) + 2; }
+static UBYTE *state_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->mode_state_flags) + 3; }
 
 LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
 {
@@ -48,7 +48,7 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
     state = state_flags_ptr(node);
     textMode = ((*mode & (1u << MODE_TEXT_TRANSLATE_BIT)) != 0) ? 1 : 0;
 
-    if ((node->open_flags & OPEN_MASK_WRITE_REJECT) != 0) {
+    if ((node->mode_state_flags & OPEN_MASK_WRITE_REJECT) != 0) {
         return -1;
     }
 
@@ -148,7 +148,7 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
         }
     }
 
-    if ((node->open_flags & OPEN_MASK_FLUSH_REJECT) != 0) {
+    if ((node->mode_state_flags & OPEN_MASK_FLUSH_REJECT) != 0) {
         return -1;
     }
     return (ch == -1) ? 0 : (LONG)(UBYTE)ch;

@@ -4,7 +4,7 @@ typedef unsigned char UBYTE;
 
 typedef struct StreamBufferState {
     ULONG owner_or_link;
-    UBYTE *read_ptr;      /* +4 */
+    UBYTE *buffer_cursor; /* +4 */
     LONG read_remaining;  /* +8 */
 } StreamBufferState;
 
@@ -27,7 +27,7 @@ UBYTE *STREAM_ReadLineWithLimit(UBYTE *dst, LONG max_len, StreamBufferState *str
         if (stream->read_remaining < 0) {
             c = STREAM_BufferedGetc(stream);
         } else {
-            c = (LONG)(*stream->read_ptr++);
+            c = (LONG)(*stream->buffer_cursor++);
         }
 
         if (c == -1) {
