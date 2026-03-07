@@ -19,6 +19,7 @@ extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, 
 #define INFODATA_ALLOC_LINE 593L
 #define INFODATA_FREE_LINE 599L
 #define RESULT_FAIL 0L
+#define RESULT_OK 1L
 
 LONG DISKIO_QueryVolumeSoftErrorCount(const char *path)
 {
@@ -38,7 +39,7 @@ LONG DISKIO_QueryVolumeSoftErrorCount(const char *path)
         MEMF_CLEAR_FLAG);
 
     if (infoData != 0) {
-        if (_LVOInfo(Global_REF_DOS_LIBRARY_2, lock, infoData) != RESULT_FAIL) {
+        if (_LVOInfo(Global_REF_DOS_LIBRARY_2, lock, infoData) == RESULT_OK) {
             softErrorCount = *(LONG *)(void *)infoData;
         }
 

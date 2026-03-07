@@ -34,8 +34,8 @@ ___DISKIO_QueryVolumeSoftErrorCount__4:
               MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
               BSR.W          _LVOInfo                 ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              TST.L          D0                       ;4a80 
-              BEQ.B          ___DISKIO_QueryVolumeSoftErrorCount__6;6702 
+              SUBQ.L         #$1,D0                   ;5380 
+              BNE.B          ___DISKIO_QueryVolumeSoftErrorCount__6;6602 
 ___DISKIO_QueryVolumeSoftErrorCount__5:
               MOVE.L         (A3),D7                  ;2e13 
 ___DISKIO_QueryVolumeSoftErrorCount__6:
