@@ -5,6 +5,10 @@ typedef struct DateTimePair {
     void *out_ptr;  /* +4 */
 } DateTimePair;
 
+enum {
+    DATETIME_SAVE_PREFIX_LEN = 4
+};
+
 extern LONG MODE_NEWFILE;
 extern const char *DST_DefaultDatPathPtr;
 extern const char *DST_STR_G2_COLON;
@@ -34,10 +38,10 @@ LONG DATETIME_SavePairToFile(DateTimePair *pair)
         return 0;
     }
 
-    (void)DISKIO_WriteBufferedBytes(fileHandle, DST_STR_G2_COLON, 4);
+    (void)DISKIO_WriteBufferedBytes(fileHandle, DST_STR_G2_COLON, DATETIME_SAVE_PREFIX_LEN);
     (void)DATETIME_FormatPairToStream(fileHandle, (DateTimePair *)pair->out_ptr);
 
-    (void)DISKIO_WriteBufferedBytes(fileHandle, DST_STR_G3_COLON, 4);
+    (void)DISKIO_WriteBufferedBytes(fileHandle, DST_STR_G3_COLON, DATETIME_SAVE_PREFIX_LEN);
     (void)DATETIME_FormatPairToStream(fileHandle, (DateTimePair *)pair->in_ptr);
 
     (void)DISKIO_CloseBufferedFileAndFlush(fileHandle);
