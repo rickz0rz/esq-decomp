@@ -1236,6 +1236,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_is_grid_ready_for_input_trial.sh"
     "src/decomp/scripts/compare_sasc_p_type_allocate_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_p_type_free_entry_trial.sh"
+    "src/decomp/scripts/compare_sasc_p_type_get_subtype_if_type20_trial.sh"
     "src/decomp/scripts/compare_sasc_p_type_jmptbl_string_findsubstring_trial.sh"
     "src/decomp/scripts/compare_sasc_displib_apply_inline_alignment_padding_return_trial.sh"
     "src/decomp/scripts/compare_sasc_displib_apply_inline_alignment_padding_trial.sh"
