@@ -6,7 +6,7 @@ typedef unsigned char UBYTE;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 
-extern WORD NEWGRID_UpdatePresetEntry(UBYTE **outEntry, UBYTE **outAux, LONG selector, LONG index);
+extern void NEWGRID_UpdatePresetEntry(UBYTE **outEntry, UBYTE **outAux, LONG selector, LONG index);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG bitIndex);
 extern LONG NEWGRID_ShouldOpenEditor(UBYTE *entry);
 
