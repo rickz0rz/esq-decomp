@@ -2,74 +2,88 @@
 __code:
 LADFUNC_FreeBannerRectEntries:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              SUB.L          #$24,D0                  ;90bc 0000 0024 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D6/D7/A3/A5,-(A7)        ;48e7 0314 
+              SUB.W          #$14,A7                  ;9efc 0014 
+              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
 ___LADFUNC_FreeBannerRectEntries__1:
-              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVEQ.L        #$2e,D7                  ;7e2e 
+              MOVEQ.L        #$6c,D6                  ;7c6c 
+              NOT.B          D6                       ;4606 
+              MOVEQ.L        #$4b,D5                  ;7a4b 
+              ADD.L          D5,D5                    ;da85 
+              MOVEQ.L        #$e,D0                   ;700e 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              CLR.B          $20(A7)                  ;422f 0020 
+              CLR.L          $14(A7)                  ;42af 0014 
+              CLR.L          $1c(A7)                  ;42af 001c 
 ___LADFUNC_FreeBannerRectEntries__2:
-              MOVEQ.L        #$2e,D0                  ;702e 
-              CMP.L          D0,D7                    ;be80 
-              BGT.B          ___LADFUNC_FreeBannerRectEntries__16;6e7a 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              CMP.L          D7,D0                    ;b087 
+              BGT.W          ___LADFUNC_FreeBannerRectEntries__16;6e00 0090 
 ___LADFUNC_FreeBannerRectEntries__3:
-              MOVE.L         D7,D0                    ;2007 
-              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
               LEA            LADFUNC_EntryPtrTable(A4),A0;41ec 0000 
-              MOVE.L         $0(A0,D0.L),A5           ;2a70 0800 
-              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.L         $0(A0,D1.L),A5           ;2a70 1800 
+              MOVE.L         $14(A7),$18(A7)          ;2f6f 0014 0018 
               MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___LADFUNC_FreeBannerRectEntries__14;6764 
+              BEQ.B          ___LADFUNC_FreeBannerRectEntries__14;6770 
 ___LADFUNC_FreeBannerRectEntries__4:
 ___LADFUNC_FreeBannerRectEntries__5:
               MOVE.L         $6(A5),D0                ;202d 0006 
-              BEQ.B          ___LADFUNC_FreeBannerRectEntries__10;671e 
+              BEQ.B          ___LADFUNC_FreeBannerRectEntries__10;6724 
 ___LADFUNC_FreeBannerRectEntries__6:
               MOVE.L         D0,A3                    ;2640 
 ___LADFUNC_FreeBannerRectEntries__7:
-              TST.B          (A3)                     ;4a13 
+              MOVE.B         (A3),D0                  ;1013 
+              CMP.B          $20(A7),D0               ;b02f 0020 
               BEQ.B          ___LADFUNC_FreeBannerRectEntries__9;6704 
 ___LADFUNC_FreeBannerRectEntries__8:
               ADDQ.L         #$1,A3                   ;528b 
-              BRA.B          ___LADFUNC_FreeBannerRectEntries__7;60f8 
+              BRA.B          ___LADFUNC_FreeBannerRectEntries__7;60f4 
 ___LADFUNC_FreeBannerRectEntries__9:
               MOVE.L         A3,D0                    ;200b 
               SUB.L          $6(A5),D0                ;90ad 0006 
-              MOVE.L         D0,D6                    ;2c00 
               CLR.L          -(A7)                    ;42a7 
               MOVE.L         $6(A5),-(A7)             ;2f2d 0006 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
               BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___LADFUNC_FreeBannerRectEntries__10:
-              TST.L          D6                       ;4a86 
-              BLE.B          ___LADFUNC_FreeBannerRectEntries__13;6f1a 
+              MOVE.L         $18(A7),D0               ;202f 0018 
+              CMP.L          $14(A7),D0               ;b0af 0014 
+              BLE.B          ___LADFUNC_FreeBannerRectEntries__13;6f18 
 ___LADFUNC_FreeBannerRectEntries__11:
-              MOVE.L         $a(A5),D0                ;202d 000a 
-              BEQ.B          ___LADFUNC_FreeBannerRectEntries__13;6714 
+              MOVE.L         $a(A5),D1                ;222d 000a 
+              BEQ.B          ___LADFUNC_FreeBannerRectEntries__13;6712 
 ___LADFUNC_FreeBannerRectEntries__12:
-              MOVE.L         D6,-(A7)                 ;2f06 
               MOVE.L         D0,-(A7)                 ;2f00 
-              PEA            ($93).w                  ;4878 0093 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D6,-(A7)                 ;2f06 
               PEA            Global_STR_LADFUNC_C_2(A4);486c 0000 
               BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
 ___LADFUNC_FreeBannerRectEntries__13:
-              PEA            ($e).w                   ;4878 000e 
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              PEA            ($96).w                  ;4878 0096 
+              MOVE.L         D5,-(A7)                 ;2f05 
               PEA            Global_STR_LADFUNC_C_3(A4);486c 0000 
               BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVE.L         D7,D0                    ;2007 
-              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
               LEA            LADFUNC_EntryPtrTable(A4),A0;41ec 0000 
-              CLR.L          $0(A0,D0.L)              ;42b0 0800 
+              CLR.L          $0(A0,D1.L)              ;42b0 1800 
 ___LADFUNC_FreeBannerRectEntries__14:
-              ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___LADFUNC_FreeBannerRectEntries__2;6080 
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.W          ___LADFUNC_FreeBannerRectEntries__2;6000 ff6a 
 ___LADFUNC_FreeBannerRectEntries__15:
 ___LADFUNC_FreeBannerRectEntries__16:
-              MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 
+              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
+              ADD.W          #$14,A7                  ;defc 0014 
               RTS                                     ;4e75 
 __const:
 __strings:

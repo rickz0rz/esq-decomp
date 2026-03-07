@@ -1,37 +1,50 @@
               SECTION      text,CODE
 __code:
 ESQSHARED4_InitializeBannerCoppe:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        D2/D5/D6/D7,-(A7)        ;48e7 2700 
 ___ESQSHARED4_InitializeBannerCoppe__1:
               MOVEQ.L        #$62,D7                  ;7e62 
-              MOVE.W         D7,ESQPARS2_BannerSweepBaseColor(A4);3947 0000 
-              SUBQ.W         #$2,D7                   ;5547 
-              MOVE.W         D7,ESQPARS2_BannerSweepOffsetColor(A4);3947 0000 
-              MOVE.W         #$5,ESQPARS2_ReadModeFlags(A4);397c 0005 0000 
-              MOVE.W         #$2,ESQPARS2_StateIndex(A4);397c 0002 0000 
-              MOVE.W         #$a,ESQPARS2_HighlightTickCountdown(A4);397c 000a 0000 
+              MOVEQ.L        #$2,D6                   ;7c02 
+              MOVEQ.L        #$5,D5                   ;7a05 
+              MOVEQ.L        #$2,D0                   ;7002 
+              MOVEQ.L        #$a,D1                   ;720a 
+              MOVE.B         #$80,$17(A7)             ;1f7c 0080 0017 
+              MOVE.B         #$40,$16(A7)             ;1f7c 0040 0016 
+              MOVE.W         #$1,$14(A7)              ;3f7c 0001 0014 
+              MOVE.L         D7,D2                    ;2407 
+              MOVE.W         D2,ESQPARS2_BannerSweepBaseColor(A4);3942 0000 
+              MOVE.W         D2,$12(A7)               ;3f42 0012 
+              SUB.W          D6,D2                    ;9446 
+              MOVE.W         D2,ESQPARS2_BannerSweepOffsetColor(A4);3942 0000 
+              MOVE.W         D5,ESQPARS2_ReadModeFlags(A4);3945 0000 
+              MOVE.W         D0,ESQPARS2_StateIndex(A4);3940 0000 
+              MOVE.W         D1,ESQPARS2_HighlightTickCountdown(A4);3941 0000 
+              MOVE.W         D0,$1a(A7)               ;3f40 001a 
+              MOVE.W         D1,$18(A7)               ;3f41 0018 
+              MOVE.W         D2,$12(A7)               ;3f42 0012 
               BSR.W          ESQSHARED4_SnapshotDisplayBuffer;6100 0000 
               BSR.W          ESQSHARED4_ResetBannerColorSweep;6100 0000 
               BSR.W          ESQSHARED4_SetupBannerPlanePoint;6100 0000 
-              MOVE.B         CIAB_PRA(A4),D6          ;1c2c 0000 
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         D6,D0                    ;1006 
-              ORI.W          #$80,D0                  ;0040 0080 
-              MOVE.L         D0,D6                    ;2c00 
-              MOVE.L         D6,D0                    ;2006 
+              MOVE.B         CIAB_PRA(A4),D0          ;102c 0000 
+              MOVE.B         D0,$11(A7)               ;1f40 0011 
+              OR.B           $17(A7),D0               ;802f 0017 
               MOVE.B         D0,CIAB_PRA(A4)          ;1940 0000 
-              MOVE.B         CIAB_PRA(A4),D6          ;1c2c 0000 
-              BSET           #$6,D6                   ;08c6 0006 
-              MOVE.B         D6,CIAB_PRA(A4)          ;1946 0000 
-              MOVE.W         CONFIG_BannerCopperHeadByte(A4),D7;3e2c 0000 
-              MOVE.W         D7,D0                    ;3007 
+              MOVE.B         CIAB_PRA(A4),D1          ;122c 0000 
+              MOVE.B         D1,$11(A7)               ;1f41 0011 
+              OR.B           $16(A7),D1               ;822f 0016 
+              MOVE.B         D1,CIAB_PRA(A4)          ;1941 0000 
+              MOVE.W         CONFIG_BannerCopperHeadByte(A4),D0;302c 0000 
               MOVE.B         D0,ESQ_CopperListBannerA(A4);1940 0000 
               MOVE.B         D0,ESQ_CopperListBannerB(A4);1940 0000 
-              MOVE.W         #$1,ESQPARS2_CopperProgramPendingFla(A4);397c 0001 0000 
+              MOVE.W         $14(A7),ESQPARS2_CopperProgramPendingFla(A4);396f 0014 0000 
 ___ESQSHARED4_InitializeBannerCoppe__2:
-              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              MOVEM.L        (A7)+,D2/D5/D6/D7        ;4cdf 00e4 
+              ADD.W          #$c,A7                   ;defc 000c 
               RTS                                     ;4e75 
 __const:
 __strings:
