@@ -603,6 +603,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ed_draw_cursor_char_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_ad_editing_screen_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_current_color_indicator_trial.sh"
+    "src/decomp/scripts/compare_sasc_set_a_pen_1_b_pen_6_drmd_1_draw_text_or_cursor_trial.sh"
+    "src/decomp/scripts/compare_sasc_set_a_pen_1_b_pen_6_drmd_1_draw_line_or_page_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_enter_text_edit_mode_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_redraw_all_rows_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_redraw_row_trial.sh"
