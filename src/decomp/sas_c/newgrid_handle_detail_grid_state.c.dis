@@ -18,7 +18,7 @@ ___NEWGRID_HandleDetailGridState__1:
 ___NEWGRID_HandleDetailGridState__2:
               MOVEQ.L        #$4,D0                   ;7004 
               MOVE.L         D0,NEWGRID_DetailGridStateLatch(A4);2940 0000 
-              BRA.W          ___NEWGRID_HandleDetailGridState__21;6000 0144 
+              BRA.W          ___NEWGRID_HandleDetailGridState__21;6000 0148 
 ___NEWGRID_HandleDetailGridState__3:
               MOVEQ.L        #$4,D0                   ;7004 
               CMP.L          NEWGRID_DetailGridStateLatch(A4),D0;b0ac 0000 
@@ -40,7 +40,7 @@ ___NEWGRID_HandleDetailGridState__5:
               BNE.B          ___NEWGRID_HandleDetailGridState__7;6608 
 ___NEWGRID_HandleDetailGridState__6:
               MOVE.L         NEWGRID_DetailGridStateLatch(A4),D0;202c 0000 
-              BRA.W          ___NEWGRID_HandleDetailGridState__21;6000 010c 
+              BRA.W          ___NEWGRID_HandleDetailGridState__21;6000 0110 
 ___NEWGRID_HandleDetailGridState__7:
               MOVE.L         GCOMMAND_MplexDetailLayoutPen(A4),-(A7);2f2c 0000 
               PEA            ($14).w                  ;4878 0014 
@@ -114,11 +114,11 @@ ___NEWGRID_HandleDetailGridState__13:
               MOVE.L         D0,(A0)                  ;2080 
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.L         NEWGRID_DetailGridStateLatch(A4),D0;202c 0000 
-              BRA.B          ___NEWGRID_HandleDetailGridState__21;6030 
+              BRA.B          ___NEWGRID_HandleDetailGridState__21;6034 
 ___NEWGRID_HandleDetailGridState__14:
               MOVEQ.L        #$5,D0                   ;7005 
               CMP.L          NEWGRID_DetailGridStateLatch(A4),D0;b0ac 0000 
-              BNE.B          ___NEWGRID_HandleDetailGridState__19;6622 
+              BNE.B          ___NEWGRID_HandleDetailGridState__19;6626 
 ___NEWGRID_HandleDetailGridState__15:
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_DrawGridFrameVariant2;6100 0000 
@@ -131,11 +131,12 @@ ___NEWGRID_HandleDetailGridState__16:
 ___NEWGRID_HandleDetailGridState__17:
               MOVEQ.L        #$5,D5                   ;7a05 
 ___NEWGRID_HandleDetailGridState__18:
-              LEA            $20(A5),A0               ;41ed 0020 
-              MOVEQ.L        #$ff,D0                  ;70ff 
-              MOVE.L         D0,(A0)                  ;2080 
               MOVE.L         D5,D0                    ;2005 
               MOVE.L         D0,NEWGRID_DetailGridStateLatch(A4);2940 0000 
+              LEA            $20(A5),A0               ;41ed 0020 
+              MOVEQ.L        #$ff,D1                  ;72ff 
+              MOVE.L         D1,(A0)                  ;2081 
+              MOVE.L         NEWGRID_DetailGridStateLatch(A4),D0;202c 0000 
               BRA.B          ___NEWGRID_HandleDetailGridState__21;6006 
 ___NEWGRID_HandleDetailGridState__19:
               MOVEQ.L        #$4,D0                   ;7004 
