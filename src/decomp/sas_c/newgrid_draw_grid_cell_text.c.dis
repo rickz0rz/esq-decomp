@@ -1,0 +1,251 @@
+              SECTION      text,CODE
+__code:
+trim_len:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___trim_len__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___trim_len__2:
+              TST.B          $0(A5,D7.L)              ;4a35 7800 
+              BEQ.B          ___trim_len__4           ;6704 
+___trim_len__3:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___trim_len__2           ;60f6 
+___trim_len__4:
+              TST.L          D7                       ;4a87 
+              BLE.B          ___trim_len__7           ;6f0c 
+___trim_len__5:
+              MOVEQ.L        #$20,D0                  ;7020 
+              CMP.B          $ffffffff(A5,D7.L),D0    ;b035 78ff 
+              BNE.B          ___trim_len__7           ;6604 
+___trim_len__6:
+              SUBQ.L         #$1,D7                   ;5387 
+              BRA.B          ___trim_len__4           ;60f0 
+___trim_len__7:
+              MOVE.L         D7,D0                    ;2007 
+___trim_len__8:
+___trim_len__9:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+NEWGRID_DrawGridCellText:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$3c,D0                  ;90bc 0000 003c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$2c,A7                  ;9efc 002c 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___NEWGRID_DrawGridCellText__1:
+              MOVE.L         $58(A7),D7               ;2e2f 0058 
+              MOVE.L         $54(A7),A2               ;246f 0054 
+              MOVE.L         $50(A7),A3               ;266f 0050 
+              MOVE.L         $4c(A7),A5               ;2a6f 004c 
+              TST.W          Global_WORD_SELECT_CODE_IS_RAVES(A4);4a6c 0000 
+              BEQ.B          ___NEWGRID_DrawGridCellText__7;674c 
+___NEWGRID_DrawGridCellText__2:
+              CLR.L          $38(A7)                  ;42af 0038 
+___NEWGRID_DrawGridCellText__3:
+              MOVE.L         $38(A7),D0               ;202f 0038 
+              TST.B          $0(A2,D0.L)              ;4a32 0800 
+              BEQ.B          ___NEWGRID_DrawGridCellText__6;6712 
+___NEWGRID_DrawGridCellText__4:
+              MOVEQ.L        #$17,D1                  ;7217 
+              CMP.L          D1,D0                    ;b081 
+              BGE.B          ___NEWGRID_DrawGridCellText__6;6c0c 
+___NEWGRID_DrawGridCellText__5:
+              MOVE.B         $0(A2,D0.L),$1e(A7,D0.L) ;1fb2 0800 081e 
+              ADDQ.L         #$1,$38(A7)              ;52af 0038 
+              BRA.B          ___NEWGRID_DrawGridCellText__3;60e4 
+___NEWGRID_DrawGridCellText__6:
+              LEA            $1e(A7),A0               ;41ef 001e 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          $38(A7),A1               ;d3ef 0038 
+              ADDQ.L         #$1,$38(A7)              ;52af 0038 
+              MOVE.B         #$2d,(A1)                ;12bc 002d 
+              MOVE.L         $38(A7),D0               ;202f 0038 
+              CLR.B          $1e(A7,D0.L)             ;4237 081e 
+              LEA            $2(A2),A1                ;43ea 0002 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              LEA            $1e(A7),A2               ;45ef 001e 
+___NEWGRID_DrawGridCellText__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_SampleTimeTextWidthPx(A4),D0;302c 0000 
+              ADDQ.L         #$1,D0                   ;5280 
+              ASR.L          #$1,D0                   ;e280 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVEQ.L        #$2a,D0                  ;702a 
+              ADD.L          D0,D6                    ;dc80 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_RowHeightPx(A4),D0;302c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ADDQ.L         #$1,D1                   ;5281 
+              ASR.L          #$1,D1                   ;e281 
+              MOVE.L         D1,D5                    ;2a01 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         $34(A5),D1               ;322d 0034 
+              MOVE.L         D1,D2                    ;2401 
+              ADDQ.L         #$1,D2                   ;5282 
+              ASR.L          #$1,D2                   ;e282 
+              SUB.L          D2,D5                    ;9a82 
+              SUBQ.L         #$4,D5                   ;5985 
+              MOVE.L         D5,D2                    ;2405 
+              ADDQ.L         #$1,D2                   ;5282 
+              ASR.L          #$1,D2                   ;e282 
+              MOVE.L         D2,D5                    ;2a02 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D1,D2                    ;3401 
+              ADD.L          D2,D5                    ;da82 
+              MOVE.L         D5,D1                    ;2205 
+              ADDQ.L         #$3,D1                   ;5681 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D0,D2                    ;3400 
+              ADDQ.L         #$1,D2                   ;5282 
+___NEWGRID_DrawGridCellText__8:
+              ASR.L          #$1,D2                   ;e282 
+              MOVE.L         D1,$44(A7)               ;2f41 0044 
+              ADD.L          D2,D1                    ;d282 
+              MOVEM.L        D1,$40(A7)               ;48ef 0002 0040 
+              MOVEQ.L        #$5,D0                   ;7005 
+              CMP.L          NEWGRID_GridOperationId(A4),D0;b0ac 0000 
+              BNE.B          ___NEWGRID_DrawGridCellText__10;6614 
+___NEWGRID_DrawGridCellText__9:
+              MOVE.L         GCOMMAND_NicheTextPen(A4),-(A7);2f2c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___NEWGRID_DrawGridCellText__11;6012 
+___NEWGRID_DrawGridCellText__10:
+              PEA            ($3).w                   ;4878 0003 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___NEWGRID_DrawGridCellText__11:
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              BSR.W          trim_len                 ;6100 fec0 
+___NEWGRID_DrawGridCellText__12:
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              BLE.B          ___NEWGRID_DrawGridCellText__17;6f6c 
+___NEWGRID_DrawGridCellText__13:
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOTextLength           ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
+              ADDQ.L         #$1,D0                   ;5280 
+              ASR.L          #$1,D0                   ;e280 
+              MOVE.B         CTASKS_STR_C(A4),D1      ;122c 0000 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
+              MOVEQ.L        #$53,D2                  ;7453 
+              CMP.B          D2,D1                    ;b202 
+              BNE.B          ___NEWGRID_DrawGridCellText__15;661a 
+___NEWGRID_DrawGridCellText__14:
+              MOVE.L         D6,D1                    ;2206 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOMove                 ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.B          ___NEWGRID_DrawGridCellText__16;6016 
+___NEWGRID_DrawGridCellText__15:
+              MOVE.L         D6,D1                    ;2206 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOMove                 ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___NEWGRID_DrawGridCellText__16:
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOText                 ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___NEWGRID_DrawGridCellText__17:
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          trim_len                 ;6100 fe44 
+___NEWGRID_DrawGridCellText__18:
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              BLE.B          ___NEWGRID_DrawGridCellText__24;6f6c 
+___NEWGRID_DrawGridCellText__19:
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOTextLength           ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
+              ADDQ.L         #$1,D0                   ;5280 
+              ASR.L          #$1,D0                   ;e280 
+              MOVE.B         CTASKS_STR_C(A4),D1      ;122c 0000 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
+              MOVEQ.L        #$53,D2                  ;7453 
+              CMP.B          D2,D1                    ;b202 
+              BNE.B          ___NEWGRID_DrawGridCellText__21;6618 
+___NEWGRID_DrawGridCellText__20:
+              MOVE.L         D6,D1                    ;2206 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOMove                 ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.B          ___NEWGRID_DrawGridCellText__22;6018 
+___NEWGRID_DrawGridCellText__21:
+              MOVE.L         D6,D1                    ;2206 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOMove                 ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___NEWGRID_DrawGridCellText__22:
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOText                 ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___NEWGRID_DrawGridCellText__23:
+___NEWGRID_DrawGridCellText__24:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$2c,A7                  ;defc 002c 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_WORD_SELECT_CODE_IS_RAVES
+              XREF           PARSEINI_JMPTBL_STRING_AppendAtN
+              XREF           NEWGRID_SampleTimeTextWidthPx
+              XREF           NEWGRID_RowHeightPx
+              XREF           NEWGRID_GridOperationId
+              XREF           GCOMMAND_NicheTextPen
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetAPen
+              XREF           _LVOSetDrMd
+              XREF           _LVOTextLength
+              XREF           CTASKS_STR_C
+              XREF           _LVOMove
+              XREF           _LVOText
+              XDEF           NEWGRID_DrawGridCellText
+              END

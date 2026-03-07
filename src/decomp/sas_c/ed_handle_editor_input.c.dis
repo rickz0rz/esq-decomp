@@ -1,0 +1,944 @@
+              SECTION      text,CODE
+__code:
+sync_current_char_and_maybe_draw:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___sync_current_char_and_maybe_draw__1:
+              TST.L          Global_REF_BOOL_IS_TEXT_OR_CURSO(A4);4aac 0000 
+              BNE.B          ___sync_current_char_and_maybe_draw__3;6612 
+___sync_current_char_and_maybe_draw__2:
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferLive(A4),A1 ;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         ED_CurrentChar(A4),$0(A1,D0.L);13ac 0000 0800 
+              BRA.B          ___sync_current_char_and_maybe_draw__4;6010 
+___sync_current_char_and_maybe_draw__3:
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferLive(A4),A1 ;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         $0(A1,D0.L),ED_CurrentChar(A4);1971 0800 0000 
+___sync_current_char_and_maybe_draw__4:
+              MOVE.B         ED_MenuStateId(A4),D0    ;102c 0000 
+              SUBQ.B         #$4,D0                   ;5900 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___sync_current_char_and_maybe_draw__7;6612 
+___sync_current_char_and_maybe_draw__5:
+              BSR.W          ED_RedrawCursorChar      ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_CurrentChar(A4),D0    ;102c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ED_DrawCurrentColorIndicator;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___sync_current_char_and_maybe_draw__6:
+___sync_current_char_and_maybe_draw__7:
+              RTS                                     ;4e75 
+__const:
+__strings:
+do_spacing_transform:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+___do_spacing_transform__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              TST.L          Global_REF_BOOL_IS_LINE_OR_PAGE(A4);4aac 0000 
+              BNE.B          ___do_spacing_transform__3;660e 
+___do_spacing_transform__2:
+              JSR            (A5)                     ;4e95 
+              MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
+              BSR.W          ED_RedrawRow             ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.B          ___do_spacing_transform__7;601e 
+___do_spacing_transform__3:
+              CLR.L          ED_ViewportOffset(A4)    ;42ac 0000 
+___do_spacing_transform__4:
+              MOVE.L         ED_ViewportOffset(A4),D0 ;202c 0000 
+              CMP.L          ED_TextLimit(A4),D0      ;b0ac 0000 
+              BGE.B          ___do_spacing_transform__6;6c08 
+___do_spacing_transform__5:
+              JSR            (A5)                     ;4e95 
+              ADDQ.L         #$1,ED_ViewportOffset(A4);52ac 0000 
+              BRA.B          ___do_spacing_transform__4;60ee 
+___do_spacing_transform__6:
+              CLR.L          ED_EditCursorOffset(A4)  ;42ac 0000 
+              BSR.W          ED_RedrawAllRows         ;6100 0000 
+___do_spacing_transform__7:
+              MOVE.L         (A7)+,A5                 ;2a5f 
+              RTS                                     ;4e75 
+clear_line_or_page:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___clear_line_or_page__1:
+              TST.L          Global_REF_BOOL_IS_LINE_OR_PAGE(A4);4aac 0000 
+              BNE.B          ___clear_line_or_page__7 ;6640 
+___clear_line_or_page__2:
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___clear_line_or_page__3:
+              MOVEQ.L        #$28,D0                  ;7028 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___clear_line_or_page__6 ;6c1c 
+___clear_line_or_page__4:
+              MOVE.L         D6,D0                    ;2006 
+              ADD.L          D7,D0                    ;d087 
+              LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
+              MOVE.B         #$20,$0(A0,D0.L)         ;11bc 0020 0800 
+              LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
+              MOVE.B         ED_CurrentChar(A4),$0(A0,D0.L);11ac 0000 0800 
+___clear_line_or_page__5:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___clear_line_or_page__3 ;60de 
+___clear_line_or_page__6:
+              MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
+              BSR.W          ED_RedrawRow             ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.B          ___clear_line_or_page__12;6032 
+___clear_line_or_page__7:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___clear_line_or_page__8:
+              CMP.L          ED_BlockOffset(A4),D7    ;beac 0000 
+              BGE.B          ___clear_line_or_page__11;6c18 
+___clear_line_or_page__9:
+              LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
+              MOVE.B         #$20,$0(A0,D7.L)         ;11bc 0020 7800 
+              LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
+              MOVE.B         ED_CurrentChar(A4),$0(A0,D7.L);11ac 0000 7800 
+___clear_line_or_page__10:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___clear_line_or_page__8 ;60e2 
+___clear_line_or_page__11:
+              MOVE.L         ED_BlockOffset(A4),A0    ;206c 0000 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              CLR.B          $0(A1,D0.L)              ;4231 0800 
+              BSR.W          ED_RedrawAllRows         ;6100 0000 
+___clear_line_or_page__12:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+nav_alt_code:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___nav_alt_code__1:
+              MOVE.L         ED_StateRingIndex(A4),D0 ;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.L         D1,D7                    ;2e01 
+              LEA            ED_StateRingTable+$2(A4),A0;41ec 0002 
+              MOVE.B         $0(A0,D7.L),D6           ;1c30 7800 
+              MOVE.B         D6,ED_LastKeyCode(A4)    ;1946 0000 
+              MOVEQ.L        #$40,D0                  ;7040 
+              CMP.B          D0,D6                    ;bc00 
+              BNE.B          ___nav_alt_code__3       ;6606 
+___nav_alt_code__2:
+              BSR.W          ED_NextAdNumber          ;6100 0000 
+              BRA.B          ___nav_alt_code__6       ;600a 
+___nav_alt_code__3:
+              MOVEQ.L        #$41,D0                  ;7041 
+              CMP.B          D0,D6                    ;bc00 
+              BNE.B          ___nav_alt_code__6       ;6604 
+___nav_alt_code__4:
+              BSR.W          ED_PrevAdNumber          ;6100 0000 
+___nav_alt_code__5:
+___nav_alt_code__6:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+ED_HandleEditorInput:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$1c,D0                  ;90bc 0000 001c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        D2/D5/D6/D7/A2,-(A7)     ;48e7 2720 
+___ED_HandleEditorInput__1:
+              TST.L          ED_TextModeReinitPendingFlag(A4);4aac 0000 
+              BEQ.B          ___ED_HandleEditorInput__3;671a 
+___ED_HandleEditorInput__2:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,Global_REF_BOOL_IS_TEXT_OR_CURSO(A4);2940 0000 
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferLive(A4),A1 ;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         $0(A1,D0.L),ED_CurrentChar(A4);1971 0800 0000 
+              CLR.L          ED_TextModeReinitPendingFlag(A4);42ac 0000 
+___ED_HandleEditorInput__3:
+              BSR.W          ED_DrawCursorChar        ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_LastKeyCode(A4),D0    ;102c 0000 
+___ED_HandleEditorInput__4:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.B          ___ED_HandleEditorInput__16;6744 
+___ED_HandleEditorInput__5:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.B          ___ED_HandleEditorInput__17;674e 
+___ED_HandleEditorInput__6:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED_HandleEditorInput__20;6700 009a 
+___ED_HandleEditorInput__7:
+              SUBQ.L         #$3,D0                   ;5780 
+              BEQ.W          ___ED_HandleEditorInput__21;6700 00b0 
+___ED_HandleEditorInput__8:
+              SUBQ.L         #$2,D0                   ;5580 
+              BEQ.W          ___ED_HandleEditorInput__24;6700 00fa 
+___ED_HandleEditorInput__9:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED_HandleEditorInput__127;6700 06f8 
+___ED_HandleEditorInput__10:
+              SUBQ.L         #$4,D0                   ;5980 
+              BEQ.W          ___ED_HandleEditorInput__39;6700 01da 
+___ED_HandleEditorInput__11:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED_HandleEditorInput__44;6700 0218 
+___ED_HandleEditorInput__12:
+              MOVEQ.L        #$d,D1                   ;720d 
+              SUB.L          D1,D0                    ;9081 
+              BEQ.W          ___ED_HandleEditorInput__45;6700 021c 
+___ED_HandleEditorInput__13:
+              MOVEQ.L        #$51,D1                  ;7251 
+              SUB.L          D1,D0                    ;9081 
+              BEQ.W          ___ED_HandleEditorInput__26;6700 00e4 
+___ED_HandleEditorInput__14:
+              MOVEQ.L        #$14,D1                  ;7214 
+              SUB.L          D1,D0                    ;9081 
+              BEQ.W          ___ED_HandleEditorInput__46;6700 0222 
+___ED_HandleEditorInput__15:
+              BRA.W          ___ED_HandleEditorInput__122;6000 0686 
+___ED_HandleEditorInput__16:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,ED_AdActiveFlag(A4)   ;2940 0000 
+              BSR.W          ED_ApplyActiveFlagToAdData;6100 0000 
+              BRA.W          ___ED_HandleEditorInput__127;6000 06c2 
+___ED_HandleEditorInput__17:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_CurrentChar(A4),D0    ;102c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AL_JMPTBL_LADFUNC_ExtractH;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              MOVE.L         D7,D0                    ;2007 
+              ADDQ.L         #$1,D0                   ;5280 
+              PEA            ($8).w                   ;4878 0008 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_CurrentChar(A4),D0    ;102c 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          ED1_JMPTBL_LADFUNC_PackNibblesTo;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.B         D0,ED_CurrentChar(A4)    ;1940 0000 
+              MOVEQ.L        #$1,D1                   ;7201 
+              CMP.L          Global_REF_BOOL_IS_TEXT_OR_CURSO(A4),D1;b2ac 0000 
+              BNE.W          ___ED_HandleEditorInput__127;6600 0684 
+___ED_HandleEditorInput__18:
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferLive(A4),A1 ;43ec 0000 
+              MOVE.L         A0,D1                    ;2208 
+              MOVE.B         D0,$0(A1,D1.L)           ;1380 1800 
+___ED_HandleEditorInput__19:
+              BRA.W          ___ED_HandleEditorInput__127;6000 0672 
+___ED_HandleEditorInput__20:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          Global_REF_BOOL_IS_TEXT_OR_CURSO(A4),D0;b0ac 0000 
+              SCC            D1,#$600                 ;56c1 
+              MOVEQ.L        #$0,D2                   ;7400 
+              SUB.B          D1,D2                    ;9401 
+              MOVE.L         D2,Global_REF_BOOL_IS_TEXT_OR_CURSO(A4);2942 0000 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              BSR.W          SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___ED_HandleEditorInput__127;6000 0656 
+___ED_HandleEditorInput__21:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_CurrentChar(A4),D0    ;102c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AL_JMPTBL_LADFUNC_ExtractL;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              MOVE.L         D7,D0                    ;2007 
+              ADDQ.L         #$1,D0                   ;5280 
+              PEA            ($8).w                   ;4878 0008 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_CurrentChar(A4),D0    ;102c 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          ED1_JMPTBL_LADFUNC_MergeHighLowN;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.B         D0,ED_CurrentChar(A4)    ;1940 0000 
+              MOVEQ.L        #$1,D1                   ;7201 
+              CMP.L          Global_REF_BOOL_IS_TEXT_OR_CURSO(A4),D1;b2ac 0000 
+              BNE.W          ___ED_HandleEditorInput__127;6600 0618 
+___ED_HandleEditorInput__22:
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferLive(A4),A1 ;43ec 0000 
+              MOVE.L         A0,D1                    ;2208 
+              MOVE.B         D0,$0(A1,D1.L)           ;1380 1800 
+___ED_HandleEditorInput__23:
+              BRA.W          ___ED_HandleEditorInput__127;6000 0606 
+___ED_HandleEditorInput__24:
+              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
+              TST.L          D0                       ;4a80 
+              BLE.B          ___ED_HandleEditorInput__26;6f04 
+___ED_HandleEditorInput__25:
+              SUBQ.L         #$1,ED_EditCursorOffset(A4);53ac 0000 
+___ED_HandleEditorInput__26:
+              MOVE.L         ED_BlockOffset(A4),D0    ;202c 0000 
+              SUBQ.L         #$1,D0                   ;5380 
+              CMP.L          ED_EditCursorOffset(A4),D0;b0ac 0000 
+              BLE.W          ___ED_HandleEditorInput__36;6f00 00bc 
+___ED_HandleEditorInput__27:
+              TST.L          Global_REF_BOOL_IS_LINE_OR_PAGE(A4);4aac 0000 
+              BNE.B          ___ED_HandleEditorInput__29;6618 
+___ED_HandleEditorInput__28:
+              MOVE.L         ED_ViewportOffset(A4),D0 ;202c 0000 
+              ADDQ.L         #$1,D0                   ;5280 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D0,D7                    ;2e00 
+              SUBQ.L         #$1,D7                   ;5387 
+              BRA.B          ___ED_HandleEditorInput__30;6006 
+___ED_HandleEditorInput__29:
+              MOVE.L         ED_BlockOffset(A4),D7    ;2e2c 0000 
+              SUBQ.L         #$1,D7                   ;5387 
+___ED_HandleEditorInput__30:
+              MOVE.L         D7,ED_TempCopyOffset(A4) ;2947 0000 
+              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
+              CMP.L          D7,D0                    ;b087 
+              BGE.B          ___ED_HandleEditorInput__32;6c3c 
+___ED_HandleEditorInput__31:
+              LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            ED_EditBufferScratchShiftBase(A4),A1;43ec 0000 
+              ADD.L          D0,A1                    ;d3c0 
+              MOVE.L         D7,D1                    ;2207 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          ED1_JMPTBL_MEM_Move      ;6100 0000 
+              LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
+              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            ED_EditBufferLiveShiftBase(A4),A1;43ec 0000 
+              ADD.L          D0,A1                    ;d3c0 
+              MOVE.L         D7,D1                    ;2207 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          ED1_JMPTBL_MEM_Move      ;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+___ED_HandleEditorInput__32:
+              MOVE.L         ED_TempCopyOffset(A4),A0 ;206c 0000 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         #$20,$0(A1,D0.L)         ;13bc 0020 0800 
+              MOVE.L         ED_TempCopyOffset(A4),A0 ;206c 0000 
+              LEA            ED_EditBufferLiveIndexBaseMinus1(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              LEA            ED_EditBufferLive(A4),A2 ;45ec 0000 
+              MOVE.B         $0(A1,D0.L),$0(A2,D0.L)  ;15b1 0800 0800 
+              TST.L          Global_REF_BOOL_IS_LINE_OR_PAGE(A4);4aac 0000 
+              BNE.B          ___ED_HandleEditorInput__34;660e 
+___ED_HandleEditorInput__33:
+              MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
+              BSR.W          ED_RedrawRow             ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___ED_HandleEditorInput__127;6000 0548 
+___ED_HandleEditorInput__34:
+              MOVE.L         ED_BlockOffset(A4),A0    ;206c 0000 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              CLR.B          $0(A1,D0.L)              ;4231 0800 
+              BSR.W          ED_RedrawAllRows         ;6100 0000 
+___ED_HandleEditorInput__35:
+              BRA.W          ___ED_HandleEditorInput__127;6000 0532 
+___ED_HandleEditorInput__36:
+              MOVE.L         ED_BlockOffset(A4),A0    ;206c 0000 
+              LEA            ED_EditBufferScratchIndexBaseMin(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         #$20,$0(A1,D0.L)         ;13bc 0020 0800 
+              BSR.W          ED_DrawCursorChar        ;6100 0000 
+___ED_HandleEditorInput__37:
+              BRA.W          ___ED_HandleEditorInput__127;6000 051a 
+___ED_HandleEditorInput__38:
+___ED_HandleEditorInput__39:
+              MOVE.L         ED_TextLimit(A4),D0      ;202c 0000 
+              TST.L          D0                       ;4a80 
+              BLE.W          ___ED_HandleEditorInput__127;6f00 0510 
+___ED_HandleEditorInput__40:
+              SUBQ.L         #$1,D0                   ;5380 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
+              CMP.L          D5,D0                    ;b085 
+              BGE.B          ___ED_HandleEditorInput__42;6c1a 
+___ED_HandleEditorInput__41:
+              MOVE.L         ED_ViewportOffset(A4),D0 ;202c 0000 
+              ADDQ.L         #$1,D0                   ;5280 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,ED_EditCursorOffset(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.W          ___ED_HandleEditorInput__127;6000 04de 
+___ED_HandleEditorInput__42:
+              MOVE.L         D5,ED_EditCursorOffset(A4);2945 0000 
+___ED_HandleEditorInput__43:
+              BRA.W          ___ED_HandleEditorInput__127;6000 04d6 
+___ED_HandleEditorInput__44:
+              CLR.L          ED_AdActiveFlag(A4)      ;42ac 0000 
+              BSR.W          ED_ApplyActiveFlagToAdData;6100 0000 
+              BRA.W          ___ED_HandleEditorInput__127;6000 04ca 
+___ED_HandleEditorInput__45:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,Global_REF_BOOL_IS_TEXT_OR_CURSO(A4);2940 0000 
+              MOVE.L         D0,ED_TextModeReinitPendingFlag(A4);2940 0000 
+              BSR.W          ED_CommitCurrentAdEdits  ;6100 0000 
+              BSR.W          ED_DrawESCMenuBottomHelp ;6100 0000 
+              BRA.W          ___ED_HandleEditorInput__127;6000 04b4 
+___ED_HandleEditorInput__46:
+              MOVE.L         ED_StateRingIndex(A4),D0 ;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.L         D1,D6                    ;2c01 
+              LEA            ED_StateRingTable+$1(A4),A0;41ec 0001 
+              MOVE.B         $0(A0,D6.L),D0           ;1030 6800 
+              MOVE.B         D0,ED_LastMenuInputChar(A4);1940 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+___ED_HandleEditorInput__47:
+              MOVEQ.L        #$20,D0                  ;7020 
+              SUB.L          D0,D1                    ;9280 
+              BLT.W          ___ED_HandleEditorInput__127;6d00 0490 
+___ED_HandleEditorInput__48:
+              CMPI.L         #$26,D1                  ;0c81 0000 0026 
+              BGE.W          ___ED_HandleEditorInput__127;6c00 0486 
+___ED_HandleEditorInput__49:
+              ADD.W          D1,D1                    ;d241 
+              MOVE.W         $6(PC,D1.W),D1           ;323b 1006 
+              JMP            $4(PC,D1.W)              ;4efb 1004 
+__switch_ED_HandleEditorInput_49:
+              DC.W           ___ED_HandleEditorInput__50-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__52-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__56-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__60-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__62-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__64-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__66-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__68-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__75-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__83-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__95-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__107-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__127-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__108-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__111-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__114-__switch_ED_HandleEditorInput_49
+              DC.W           ___ED_HandleEditorInput__117-__switch_ED_HandleEditorInput_49
+___ED_HandleEditorInput__50:
+              BSR.W          nav_alt_code             ;6100 fc94 
+___ED_HandleEditorInput__51:
+              BRA.W          ___ED_HandleEditorInput__127;6000 0428 
+___ED_HandleEditorInput__52:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          Global_REF_BOOL_IS_LINE_OR_PAGE(A4),D0;b0ac 0000 
+              BNE.B          ___ED_HandleEditorInput__54;6608 
+___ED_HandleEditorInput__53:
+              CLR.L          ED_EditCursorOffset(A4)  ;42ac 0000 
+              BRA.W          ___ED_HandleEditorInput__127;6000 0418 
+___ED_HandleEditorInput__54:
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,ED_EditCursorOffset(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED_HandleEditorInput__55:
+              BRA.W          ___ED_HandleEditorInput__127;6000 0402 
+___ED_HandleEditorInput__56:
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($6).w                   ;4878 0006 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetBPen              ;6100 0000 
+              MOVE.L         Global_REF_BOOL_IS_LINE_OR_PAGE(A4),D0;202c 0000 
+              ADDQ.L         #$1,D0                   ;5280 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              LEA            $20(A7),A7               ;4fef 0020 
+              MOVE.L         D7,D0                    ;2007 
+              MOVE.L         D0,Global_REF_BOOL_IS_LINE_OR_PAGE(A4);2940 0000 
+              BEQ.B          ___ED_HandleEditorInput__58;6706 
+___ED_HandleEditorInput__57:
+              LEA            ED2_STR_PAGE(A4),A0      ;41ec 0000 
+              BRA.B          ___ED_HandleEditorInput__59;6004 
+___ED_HandleEditorInput__58:
+              LEA            ED2_STR_LINE(A4),A0      ;41ec 0000 
+___ED_HandleEditorInput__59:
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            ($186).w                 ;4878 0186 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetBPen              ;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              BRA.W          ___ED_HandleEditorInput__127;6000 0390 
+___ED_HandleEditorInput__60:
+              PEA            ED_TransformLineSpacing_Mode3(PC);487a 0000 
+              BSR.W          do_spacing_transform     ;6100 fb1a 
+___ED_HandleEditorInput__61:
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___ED_HandleEditorInput__127;6000 0382 
+___ED_HandleEditorInput__62:
+              PEA            ED_TransformLineSpacing_Mode1(PC);487a 0000 
+              BSR.W          do_spacing_transform     ;6100 fb0c 
+___ED_HandleEditorInput__63:
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___ED_HandleEditorInput__127;6000 0374 
+___ED_HandleEditorInput__64:
+              PEA            ED_TransformLineSpacing_Mode2(PC);487a 0000 
+              BSR.W          do_spacing_transform     ;6100 fafe 
+___ED_HandleEditorInput__65:
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___ED_HandleEditorInput__127;6000 0366 
+___ED_HandleEditorInput__66:
+              BSR.W          clear_line_or_page       ;6100 fb3c 
+___ED_HandleEditorInput__67:
+              BRA.W          ___ED_HandleEditorInput__127;6000 035e 
+___ED_HandleEditorInput__68:
+              MOVE.L         ED_TextLimit(A4),D0      ;202c 0000 
+              SUBQ.L         #$1,D0                   ;5380 
+              MOVE.L         ED_ViewportOffset(A4),D1 ;222c 0000 
+              CMP.L          D1,D0                    ;b081 
+              BLE.W          ___ED_HandleEditorInput__127;6f00 034e 
+___ED_HandleEditorInput__69:
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         ED_ViewportOffset(A4),D1 ;222c 0000 
+              ADDQ.L         #$1,D1                   ;5281 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         ED_BlockOffset(A4),D1    ;222c 0000 
+              SUB.L          D0,D1                    ;9280 
+              LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D0,A1                    ;d3c0 
+              ADD.L          $2c(A7),A0               ;d1ef 002c 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVE.L         D1,$2c(A7)               ;2f41 002c 
+              BSR.W          ED1_JMPTBL_MEM_Move      ;6100 0000 
+              LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          $30(A7),A1               ;d3ef 0030 
+              ADD.L          $34(A7),A0               ;d1ef 0034 
+              MOVE.L         $2c(A7),(A7)             ;2eaf 002c 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              BSR.W          ED1_JMPTBL_MEM_Move      ;6100 0000 
+              LEA            $20(A7),A7               ;4fef 0020 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ED_HandleEditorInput__70:
+              MOVEQ.L        #$28,D0                  ;7028 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___ED_HandleEditorInput__73;6c1e 
+___ED_HandleEditorInput__71:
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              ADD.L          D7,D0                    ;d087 
+              LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
+              MOVE.B         #$20,$0(A0,D0.L)         ;11bc 0020 0800 
+              LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
+              MOVE.B         ED_CurrentChar(A4),$0(A0,D0.L);11ac 0000 0800 
+___ED_HandleEditorInput__72:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___ED_HandleEditorInput__70;60dc 
+___ED_HandleEditorInput__73:
+              MOVE.L         ED_BlockOffset(A4),A0    ;206c 0000 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              CLR.B          $0(A1,D0.L)              ;4231 0800 
+              BSR.W          ED_RedrawAllRows         ;6100 0000 
+___ED_HandleEditorInput__74:
+              BRA.W          ___ED_HandleEditorInput__127;6000 02b2 
+___ED_HandleEditorInput__75:
+              MOVE.L         ED_TextLimit(A4),D0      ;202c 0000 
+              SUBQ.L         #$1,D0                   ;5380 
+              MOVE.L         ED_ViewportOffset(A4),D1 ;222c 0000 
+              CMP.L          D1,D0                    ;b081 
+              BLE.W          ___ED_HandleEditorInput__127;6f00 02a2 
+___ED_HandleEditorInput__76:
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         ED_ViewportOffset(A4),D1 ;222c 0000 
+              ADDQ.L         #$1,D1                   ;5281 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         ED_BlockOffset(A4),D1    ;222c 0000 
+              SUB.L          D0,D1                    ;9280 
+              LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          $2c(A7),A1               ;d3ef 002c 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVE.L         D1,$2c(A7)               ;2f41 002c 
+              BSR.W          ED1_JMPTBL_MEM_Move      ;6100 0000 
+              LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          $34(A7),A1               ;d3ef 0034 
+              ADD.L          $30(A7),A0               ;d1ef 0030 
+              MOVE.L         $2c(A7),(A7)             ;2eaf 002c 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              BSR.W          ED1_JMPTBL_MEM_Move      ;6100 0000 
+              MOVE.L         ED_TextLimit(A4),D0      ;202c 0000 
+              SUBQ.L         #$1,D0                   ;5380 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D0,-(A7)                 ;2f00 
+___ED_HandleEditorInput__77:
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              LEA            $28(A7),A7               ;4fef 0028 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+___ED_HandleEditorInput__78:
+              MOVEQ.L        #$28,D0                  ;7028 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___ED_HandleEditorInput__81;6c1e 
+___ED_HandleEditorInput__79:
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              ADD.L          D7,D0                    ;d087 
+              LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
+              MOVE.B         #$20,$0(A0,D0.L)         ;11bc 0020 0800 
+              LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
+              MOVE.B         ED_CurrentChar(A4),$0(A0,D0.L);11ac 0000 0800 
+___ED_HandleEditorInput__80:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___ED_HandleEditorInput__78;60dc 
+___ED_HandleEditorInput__81:
+              MOVE.L         ED_BlockOffset(A4),A0    ;206c 0000 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              CLR.B          $0(A1,D0.L)              ;4231 0800 
+              BSR.W          ED_RedrawAllRows         ;6100 0000 
+___ED_HandleEditorInput__82:
+              BRA.W          ___ED_HandleEditorInput__127;6000 01f2 
+___ED_HandleEditorInput__83:
+              TST.L          Global_REF_BOOL_IS_LINE_OR_PAGE(A4);4aac 0000 
+              BNE.B          ___ED_HandleEditorInput__89;663c 
+___ED_HandleEditorInput__84:
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+___ED_HandleEditorInput__85:
+              MOVEQ.L        #$28,D0                  ;7028 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___ED_HandleEditorInput__88;6c14 
+___ED_HandleEditorInput__86:
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              ADD.L          D7,D0                    ;d087 
+              LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
+              MOVE.B         ED_CurrentChar(A4),$0(A0,D0.L);11ac 0000 0800 
+___ED_HandleEditorInput__87:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___ED_HandleEditorInput__85;60e6 
+___ED_HandleEditorInput__88:
+              MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
+              BSR.W          ED_RedrawRow             ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___ED_HandleEditorInput__127;6000 01b0 
+___ED_HandleEditorInput__89:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ED_HandleEditorInput__90:
+              CMP.L          ED_BlockOffset(A4),D7    ;beac 0000 
+              BGE.B          ___ED_HandleEditorInput__93;6c0e 
+___ED_HandleEditorInput__91:
+              LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
+              MOVE.B         ED_CurrentChar(A4),$0(A0,D7.L);11ac 0000 7800 
+___ED_HandleEditorInput__92:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___ED_HandleEditorInput__90;60ec 
+___ED_HandleEditorInput__93:
+              BSR.W          ED_RedrawAllRows         ;6100 0000 
+___ED_HandleEditorInput__94:
+              BRA.W          ___ED_HandleEditorInput__127;6000 0192 
+___ED_HandleEditorInput__95:
+              MOVE.L         ED_BlockOffset(A4),D0    ;202c 0000 
+              SUBQ.L         #$1,D0                   ;5380 
+              CMP.L          ED_EditCursorOffset(A4),D0;b0ac 0000 
+              BLE.W          ___ED_HandleEditorInput__105;6f00 00b6 
+___ED_HandleEditorInput__96:
+              TST.L          Global_REF_BOOL_IS_LINE_OR_PAGE(A4);4aac 0000 
+              BNE.B          ___ED_HandleEditorInput__98;6616 
+___ED_HandleEditorInput__97:
+              MOVE.L         ED_ViewportOffset(A4),D0 ;202c 0000 
+              ADDQ.L         #$1,D0                   ;5280 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              SUBQ.L         #$1,D0                   ;5380 
+              BRA.B          ___ED_HandleEditorInput__99;6006 
+___ED_HandleEditorInput__98:
+              MOVE.L         ED_BlockOffset(A4),D0    ;202c 0000 
+              SUBQ.L         #$1,D0                   ;5380 
+___ED_HandleEditorInput__99:
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              MOVE.L         ED_EditCursorOffset(A4),D1;222c 0000 
+              CMP.L          D0,D1                    ;b280 
+              BGE.B          ___ED_HandleEditorInput__101;6c3c 
+___ED_HandleEditorInput__100:
+              LEA            ED_EditBufferScratchShiftBase(A4),A0;41ec 0000 
+              ADD.L          D1,A0                    ;d1c1 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              ADD.L          D1,A1                    ;d3c1 
+              SUB.L          D1,D0                    ;9081 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          ED1_JMPTBL_MEM_Move      ;6100 0000 
+              LEA            ED_EditBufferLiveShiftBase(A4),A0;41ec 0000 
+              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            ED_EditBufferLive(A4),A1 ;43ec 0000 
+              ADD.L          D0,A1                    ;d3c0 
+              MOVE.L         $28(A7),D1               ;222f 0028 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          ED1_JMPTBL_MEM_Move      ;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+___ED_HandleEditorInput__101:
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         #$20,$0(A1,D0.L)         ;13bc 0020 0800 
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferLive(A4),A1 ;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         ED_CurrentChar(A4),$0(A1,D0.L);13ac 0000 0800 
+              TST.L          Global_REF_BOOL_IS_LINE_OR_PAGE(A4);4aac 0000 
+              BNE.B          ___ED_HandleEditorInput__103;660e 
+___ED_HandleEditorInput__102:
+              MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
+              BSR.W          ED_RedrawRow             ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___ED_HandleEditorInput__127;6000 00e6 
+___ED_HandleEditorInput__103:
+              MOVE.L         ED_BlockOffset(A4),A0    ;206c 0000 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              CLR.B          $0(A1,D0.L)              ;4231 0800 
+              BSR.W          ED_RedrawAllRows         ;6100 0000 
+___ED_HandleEditorInput__104:
+              BRA.W          ___ED_HandleEditorInput__127;6000 00d0 
+___ED_HandleEditorInput__105:
+              MOVE.L         ED_BlockOffset(A4),A0    ;206c 0000 
+              LEA            ED_EditBufferScratchIndexBaseMin(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         #$20,$0(A1,D0.L)         ;13bc 0020 0800 
+              BSR.W          ED_DrawCursorChar        ;6100 0000 
+___ED_HandleEditorInput__106:
+              BRA.W          ___ED_HandleEditorInput__127;6000 00b8 
+___ED_HandleEditorInput__107:
+              MOVE.B         #$9,ED_MenuStateId(A4)   ;197c 0009 0000 
+              BSR.W          ED_DrawEditHelpText      ;6100 0000 
+              BRA.W          ___ED_HandleEditorInput__127;6000 00aa 
+___ED_HandleEditorInput__108:
+              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
+              MOVEQ.L        #$27,D1                  ;7227 
+              CMP.L          D1,D0                    ;b081 
+              BLE.W          ___ED_HandleEditorInput__127;6f00 009e 
+___ED_HandleEditorInput__109:
+              MOVEQ.L        #$28,D1                  ;7228 
+              SUB.L          D1,ED_EditCursorOffset(A4);93ac 0000 
+___ED_HandleEditorInput__110:
+              BRA.W          ___ED_HandleEditorInput__127;6000 0094 
+___ED_HandleEditorInput__111:
+              MOVE.L         ED_TextLimit(A4),D0      ;202c 0000 
+              SUBQ.L         #$1,D0                   ;5380 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              MOVE.L         ED_EditCursorOffset(A4),D1;222c 0000 
+              CMP.L          D0,D1                    ;b280 
+              BGE.B          ___ED_HandleEditorInput__127;6c74 
+___ED_HandleEditorInput__112:
+              MOVEQ.L        #$28,D0                  ;7028 
+              ADD.L          D0,ED_EditCursorOffset(A4);d1ac 0000 
+___ED_HandleEditorInput__113:
+              BRA.B          ___ED_HandleEditorInput__127;606c 
+___ED_HandleEditorInput__114:
+              MOVE.L         ED_BlockOffset(A4),D0    ;202c 0000 
+              SUBQ.L         #$1,D0                   ;5380 
+              MOVE.L         ED_EditCursorOffset(A4),D1;222c 0000 
+              CMP.L          D0,D1                    ;b280 
+              BGE.B          ___ED_HandleEditorInput__127;6c5e 
+___ED_HandleEditorInput__115:
+              ADDQ.L         #$1,ED_EditCursorOffset(A4);52ac 0000 
+___ED_HandleEditorInput__116:
+              BRA.B          ___ED_HandleEditorInput__127;6058 
+___ED_HandleEditorInput__117:
+              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
+              TST.L          D0                       ;4a80 
+              BLE.B          ___ED_HandleEditorInput__127;6f50 
+___ED_HandleEditorInput__118:
+              SUBQ.L         #$1,ED_EditCursorOffset(A4);53ac 0000 
+___ED_HandleEditorInput__119:
+___ED_HandleEditorInput__120:
+___ED_HandleEditorInput__121:
+              BRA.B          ___ED_HandleEditorInput__127;604a 
+___ED_HandleEditorInput__122:
+              MOVE.B         ED_LastKeyCode(A4),D0    ;102c 0000 
+              MOVEQ.L        #$19,D1                  ;7219 
+              CMP.B          D1,D0                    ;b001 
+              BLS.B          ___ED_HandleEditorInput__127;6340 
+___ED_HandleEditorInput__123:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVEQ.L        #$40,D2                  ;7440 
+              ADD.L          D2,D2                    ;d482 
+              CMP.L          D2,D1                    ;b282 
+              BGE.B          ___ED_HandleEditorInput__127;6c34 
+___ED_HandleEditorInput__124:
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              MOVE.L         A0,D1                    ;2208 
+              MOVE.B         D0,$0(A1,D1.L)           ;1380 1800 
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferLive(A4),A1 ;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         ED_CurrentChar(A4),$0(A1,D0.L);13ac 0000 0800 
+              BSR.W          ED_DrawCursorChar        ;6100 0000 
+              MOVE.L         ED_BlockOffset(A4),D0    ;202c 0000 
+              SUBQ.L         #$1,D0                   ;5380 
+              MOVE.L         ED_EditCursorOffset(A4),D1;222c 0000 
+              CMP.L          D0,D1                    ;b280 
+              BGE.B          ___ED_HandleEditorInput__127;6c04 
+___ED_HandleEditorInput__125:
+              ADDQ.L         #$1,ED_EditCursorOffset(A4);52ac 0000 
+___ED_HandleEditorInput__126:
+___ED_HandleEditorInput__127:
+              BSR.W          sync_current_char_and_maybe_draw;6100 f73e 
+___ED_HandleEditorInput__128:
+___ED_HandleEditorInput__129:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2     ;4cdf 04e4 
+              ADD.W          #$c,A7                   ;defc 000c 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_BOOL_IS_TEXT_OR_CURSO
+              XREF           ED_EditCursorOffset
+              XREF           ED_EditBufferLive
+              XREF           ED_CurrentChar
+              XREF           ED_MenuStateId
+              XREF           ED_RedrawCursorChar
+              XREF           ED_DrawCurrentColorIndicator
+              XREF           Global_REF_BOOL_IS_LINE_OR_PAGE
+              XREF           ED_ViewportOffset
+              XREF           ED_RedrawRow
+              XREF           ED_TextLimit
+              XREF           ED_RedrawAllRows
+              XREF           GROUP_AG_JMPTBL_MATH_Mulu32
+              XREF           ED_EditBufferScratch
+              XREF           ED_BlockOffset
+              XREF           ED_StateRingIndex
+              XREF           ED_StateRingTable
+              XREF           ED_LastKeyCode
+              XREF           ED_NextAdNumber
+              XREF           ED_PrevAdNumber
+              XREF           ED_TextModeReinitPendingFlag
+              XREF           ED_DrawCursorChar
+              XREF           ED_AdActiveFlag
+              XREF           ED_ApplyActiveFlagToAdData
+              XREF           GROUP_AL_JMPTBL_LADFUNC_ExtractH
+              XREF           GROUP_AG_JMPTBL_MATH_DivS32
+              XREF           ED1_JMPTBL_LADFUNC_PackNibblesTo
+              XREF           SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_
+              XREF           GROUP_AL_JMPTBL_LADFUNC_ExtractL
+              XREF           ED1_JMPTBL_LADFUNC_MergeHighLowN
+              XREF           ED_TempCopyOffset
+              XREF           ED_EditBufferScratchShiftBase
+              XREF           ED1_JMPTBL_MEM_Move
+              XREF           ED_EditBufferLiveShiftBase
+              XREF           ED_EditBufferLiveIndexBaseMinus1
+              XREF           ED_EditBufferScratchIndexBaseMin
+              XREF           ED_CommitCurrentAdEdits
+              XREF           ED_DrawESCMenuBottomHelp
+              XREF           ED_LastMenuInputChar
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetAPen
+              XREF           _LVOSetBPen
+              XREF           ED2_STR_PAGE
+              XREF           ED2_STR_LINE
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           ED_TransformLineSpacing_Mode3
+              XREF           ED_TransformLineSpacing_Mode1
+              XREF           ED_TransformLineSpacing_Mode2
+              XREF           ED_DrawEditHelpText
+              XDEF           ED_HandleEditorInput
+              END

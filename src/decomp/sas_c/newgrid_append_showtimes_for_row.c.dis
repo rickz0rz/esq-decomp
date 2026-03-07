@@ -1,0 +1,374 @@
+              SECTION      text,CODE
+__code:
+str_eq_nullable:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___str_eq_nullable__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              CMP.L          A5,A3                    ;b7cd 
+              BNE.B          ___str_eq_nullable__3    ;6604 
+___str_eq_nullable__2:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.B          ___str_eq_nullable__12   ;6024 
+___str_eq_nullable__3:
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___str_eq_nullable__5    ;6704 
+___str_eq_nullable__4:
+              MOVE.L         A3,D0                    ;200b 
+              BNE.B          ___str_eq_nullable__6    ;6604 
+___str_eq_nullable__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___str_eq_nullable__12   ;6018 
+___str_eq_nullable__6:
+              MOVE.B         (A5),D0                  ;1015 
+              MOVE.B         (A3),D1                  ;1213 
+              CMP.B          D0,D1                    ;b200 
+              BNE.B          ___str_eq_nullable__10   ;660e 
+___str_eq_nullable__7:
+              TST.B          D0                       ;4a00 
+              BNE.B          ___str_eq_nullable__9    ;6604 
+___str_eq_nullable__8:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.B          ___str_eq_nullable__12   ;6008 
+___str_eq_nullable__9:
+              ADDQ.L         #$1,A5                   ;528d 
+              ADDQ.L         #$1,A3                   ;528b 
+              BRA.B          ___str_eq_nullable__6    ;60ea 
+___str_eq_nullable__10:
+              MOVEQ.L        #$0,D0                   ;7000 
+___str_eq_nullable__11:
+___str_eq_nullable__12:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+__const:
+__strings:
+NEWGRID_AppendShowtimesForRow:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$58,D0                  ;90bc 0000 0058 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$48,A7                  ;9efc 0048 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+___NEWGRID_AppendShowtimesForRow__1:
+              MOVE.L         $6c(A7),D7               ;2e2f 006c 
+              MOVE.L         $68(A7),A5               ;2a6f 0068 
+              CLR.B          (A5)                     ;4215 
+              TST.L          $64(A7)                  ;4aaf 0064 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__55;6700 02f4 
+___NEWGRID_AppendShowtimesForRow__2:
+              MOVE.L         $64(A7),A0               ;206f 0064 
+              MOVE.L         (A0),D0                  ;2010 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__55;6700 02ea 
+___NEWGRID_AppendShowtimesForRow__3:
+              TST.L          $4(A0)                   ;4aa8 0004 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__55;6700 02e2 
+___NEWGRID_AppendShowtimesForRow__4:
+___NEWGRID_AppendShowtimesForRow__5:
+              MOVE.L         $64(A7),A0               ;206f 0064 
+              MOVE.W         $c(A0),D6                ;3c28 000c 
+              MOVEQ.L        #$0,D0                   ;7000 
+              CMP.W          D0,D6                    ;bc40 
+              BLS.W          ___NEWGRID_AppendShowtimesForRow__55;6300 02d2 
+___NEWGRID_AppendShowtimesForRow__6:
+              MOVEQ.L        #$61,D0                  ;7061 
+              CMP.W          D0,D6                    ;bc40 
+              BCC.W          ___NEWGRID_AppendShowtimesForRow__55;6400 02ca 
+___NEWGRID_AppendShowtimesForRow__7:
+___NEWGRID_AppendShowtimesForRow__8:
+              MOVEQ.L        #$30,D0                  ;7030 
+              CMP.W          D0,D6                    ;bc40 
+              BLS.B          ___NEWGRID_AppendShowtimesForRow__10;6304 
+___NEWGRID_AppendShowtimesForRow__9:
+              SUBI.W         #$30,D6                  ;0446 0030 
+___NEWGRID_AppendShowtimesForRow__10:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D6,D0                    ;3006 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         (A0),-(A7)               ;2f10 
+              BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D6,D0                    ;3006 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $78(A7),A0               ;206f 0078 
+              MOVE.L         (A0),-(A7)               ;2f10 
+              BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D6,D1                    ;3206 
+              PEA            ($6).w                   ;4878 0006 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         $84(A7),A0               ;206f 0084 
+              MOVE.L         (A0),-(A7)               ;2f10 
+              MOVE.L         D0,$54(A7)               ;2f40 0054 
+              BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D6,D1                    ;3206 
+              PEA            ($7).w                   ;4878 0007 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         $90(A7),A0               ;206f 0090 
+              MOVE.L         (A0),-(A7)               ;2f10 
+              MOVE.L         D0,$58(A7)               ;2f40 0058 
+              BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
+              LEA            $30(A7),A7               ;4fef 0030 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__55;6700 025c 
+___NEWGRID_AppendShowtimesForRow__11:
+              TST.B          (A3)                     ;4a13 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__55;6700 0256 
+___NEWGRID_AppendShowtimesForRow__12:
+___NEWGRID_AppendShowtimesForRow__13:
+              CLR.B          $1b(A7)                  ;422f 001b 
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.L         #$1,D0                   ;5380 
+              BNE.B          ___NEWGRID_AppendShowtimesForRow__16;661e 
+___NEWGRID_AppendShowtimesForRow__14:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D6,D0                    ;3006 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $68(A7),A0               ;206f 0068 
+              MOVE.L         $4(A0),-(A7)             ;2f28 0004 
+              BSR.W          TEXTDISP_JMPTBL_ESQDISP_TestEntr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___NEWGRID_AppendShowtimesForRow__16;6706 
+___NEWGRID_AppendShowtimesForRow__15:
+              MOVE.B         #$1,$1b(A7)              ;1f7c 0001 001b 
+___NEWGRID_AppendShowtimesForRow__16:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D6,D0                    ;3006 
+              MOVE.L         $64(A7),A0               ;206f 0064 
+              MOVE.L         $4(A0),-(A7)             ;2f28 0004 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            $3c(A7)                  ;486f 003c 
+              BSR.W          TEXTDISP_FormatEntryTimeForIndex;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         $64(A7),A0               ;206f 0064 
+              MOVE.W         $c(A0),D0                ;3028 000c 
+              MOVE.W         D0,D5                    ;3a00 
+              ADD.W          #$21,D5                  ;0645 0021 
+              MOVEQ.L        #$60,D1                  ;7260 
+              CMP.W          D1,D5                    ;ba41 
+              BLS.B          ___NEWGRID_AppendShowtimesForRow__18;6302 
+___NEWGRID_AppendShowtimesForRow__17:
+              MOVE.W         D1,D5                    ;3a01 
+___NEWGRID_AppendShowtimesForRow__18:
+              ADDQ.W         #$1,D5                   ;5245 
+              MOVE.W         D0,D6                    ;3c00 
+              ADDQ.W         #$1,D6                   ;5246 
+___NEWGRID_AppendShowtimesForRow__19:
+              CMP.W          D5,D6                    ;bc45 
+              BCC.W          ___NEWGRID_AppendShowtimesForRow__52;6400 01d0 
+___NEWGRID_AppendShowtimesForRow__20:
+              MOVEQ.L        #$31,D0                  ;7031 
+              CMP.W          D0,D6                    ;bc40 
+              BNE.B          ___NEWGRID_AppendShowtimesForRow__22;6622 
+___NEWGRID_AppendShowtimesForRow__21:
+              MOVE.L         $64(A7),A0               ;206f 0064 
+              ADDQ.L         #$4,A0                   ;5888 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D6,D0                    ;3006 
+              MOVE.L         $64(A7),A1               ;226f 0064 
+              MOVE.L         $8(A1),-(A7)             ;2f29 0008 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            $70(A7)                  ;486f 0070 
+              BSR.W          NEWGRID_UpdatePresetEntry;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___NEWGRID_AppendShowtimesForRow__22:
+              MOVEQ.L        #$30,D0                  ;7030 
+              CMP.W          D0,D6                    ;bc40 
+              BLS.B          ___NEWGRID_AppendShowtimesForRow__24;630a 
+___NEWGRID_AppendShowtimesForRow__23:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D6,D0                    ;3006 
+              MOVEQ.L        #$30,D1                  ;7230 
+              SUB.L          D1,D0                    ;9081 
+              BRA.B          ___NEWGRID_AppendShowtimesForRow__25;6004 
+___NEWGRID_AppendShowtimesForRow__24:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D6,D0                    ;3006 
+___NEWGRID_AppendShowtimesForRow__25:
+              MOVE.L         D0,$5c(A7)               ;2f40 005c 
+              MOVE.L         $64(A7),A0               ;206f 0064 
+              TST.L          (A0)                     ;4a90 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__51;6700 0180 
+___NEWGRID_AppendShowtimesForRow__26:
+              TST.L          $4(A0)                   ;4aa8 0004 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__51;6700 0178 
+___NEWGRID_AppendShowtimesForRow__27:
+___NEWGRID_AppendShowtimesForRow__28:
+              MOVE.L         $64(A7),A1               ;226f 0064 
+              MOVE.L         (A1),A0                  ;2051 
+              ADD.W          #$1c,A0                  ;d0fc 001c 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID2_JMPTBL_ESQ_TestBit1Base;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              ADDQ.L         #$1,D0                   ;5280 
+              BNE.W          ___NEWGRID_AppendShowtimesForRow__51;6600 015e 
+___NEWGRID_AppendShowtimesForRow__29:
+___NEWGRID_AppendShowtimesForRow__30:
+              MOVE.L         $5c(A7),D0               ;202f 005c 
+              MOVE.L         $64(A7),A1               ;226f 0064 
+              MOVE.L         $4(A1),A0                ;2069 0004 
+              ADD.L          D0,A0                    ;d1c0 
+              BTST           #$5,$7(A0)               ;0828 0005 0007 
+              BNE.W          ___NEWGRID_AppendShowtimesForRow__51;6600 0146 
+___NEWGRID_AppendShowtimesForRow__31:
+___NEWGRID_AppendShowtimesForRow__32:
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         (A1),-(A7)               ;2f11 
+              BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         $6c(A7),-(A7)            ;2f2f 006c 
+              MOVE.L         $78(A7),A0               ;206f 0078 
+              MOVE.L         (A0),-(A7)               ;2f10 
+              BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
+              PEA            ($6).w                   ;4878 0006 
+              MOVE.L         $78(A7),-(A7)            ;2f2f 0078 
+              MOVE.L         $84(A7),A0               ;206f 0084 
+              MOVE.L         (A0),-(A7)               ;2f10 
+              MOVE.L         D0,$50(A7)               ;2f40 0050 
+              BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
+              PEA            ($7).w                   ;4878 0007 
+              MOVE.L         $84(A7),-(A7)            ;2f2f 0084 
+              MOVE.L         $90(A7),A0               ;206f 0090 
+              MOVE.L         (A0),-(A7)               ;2f10 
+              MOVE.L         D0,$54(A7)               ;2f40 0054 
+              BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
+              LEA            $30(A7),A7               ;4fef 0030 
+              CLR.B          $1a(A7)                  ;422f 001a 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.L         #$1,D0                   ;5380 
+              BNE.B          ___NEWGRID_AppendShowtimesForRow__35;661c 
+___NEWGRID_AppendShowtimesForRow__33:
+              MOVE.L         $5c(A7),-(A7)            ;2f2f 005c 
+              MOVE.L         $68(A7),A0               ;206f 0068 
+              MOVE.L         $4(A0),-(A7)             ;2f28 0004 
+              BSR.W          TEXTDISP_JMPTBL_ESQDISP_TestEntr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___NEWGRID_AppendShowtimesForRow__35;6706 
+___NEWGRID_AppendShowtimesForRow__34:
+              MOVE.B         #$1,$1a(A7)              ;1f7c 0001 001a 
+___NEWGRID_AppendShowtimesForRow__35:
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__51;6700 00c6 
+___NEWGRID_AppendShowtimesForRow__36:
+              CMP.L          A3,A2                    ;b5cb 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__51;6700 00c0 
+___NEWGRID_AppendShowtimesForRow__37:
+___NEWGRID_AppendShowtimesForRow__38:
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          str_eq_nullable          ;6100 fd7e 
+___NEWGRID_AppendShowtimesForRow__39:
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__51;6700 00b0 
+___NEWGRID_AppendShowtimesForRow__40:
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
+              BSR.W          str_eq_nullable          ;6100 fd6a 
+___NEWGRID_AppendShowtimesForRow__41:
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__51;6700 009c 
+___NEWGRID_AppendShowtimesForRow__42:
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              BSR.W          str_eq_nullable          ;6100 fd56 
+___NEWGRID_AppendShowtimesForRow__43:
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.W          ___NEWGRID_AppendShowtimesForRow__51;6700 0088 
+___NEWGRID_AppendShowtimesForRow__44:
+              MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              BSR.W          str_eq_nullable          ;6100 fd42 
+___NEWGRID_AppendShowtimesForRow__45:
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___NEWGRID_AppendShowtimesForRow__51;6774 
+___NEWGRID_AppendShowtimesForRow__46:
+              MOVE.B         $1b(A7),D0               ;102f 001b 
+              CMP.B          $1a(A7),D0               ;b02f 001a 
+              BNE.B          ___NEWGRID_AppendShowtimesForRow__51;666a 
+___NEWGRID_AppendShowtimesForRow__47:
+___NEWGRID_AppendShowtimesForRow__48:
+              TST.B          (A5)                     ;4a15 
+              BNE.B          ___NEWGRID_AppendShowtimesForRow__50;661e 
+___NEWGRID_AppendShowtimesForRow__49:
+              PEA            Global_STR_SHOWTIMES_AND_SINGLE_(A4);486c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
+              PEA            $3c(A7)                  ;486f 003c 
+              BSR.W          NEWGRID2_JMPTBL_STR_SkipClass3Ch;6100 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___NEWGRID_AppendShowtimesForRow__50:
+              MOVE.L         $64(A7),A0               ;206f 0064 
+              MOVE.L         $4(A0),-(A7)             ;2f28 0004 
+              MOVE.L         $60(A7),-(A7)            ;2f2f 0060 
+              PEA            $3c(A7)                  ;486f 003c 
+              BSR.W          TEXTDISP_FormatEntryTimeForIndex;6100 0000 
+              PEA            NEWGRID_ShowtimeListSeparator(A4);486c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
+              PEA            $48(A7)                  ;486f 0048 
+              BSR.W          NEWGRID2_JMPTBL_STR_SkipClass3Ch;6100 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              MOVE.L         $64(A7),A1               ;226f 0064 
+              MOVE.L         $4(A1),A0                ;2069 0004 
+              ADD.L          $5c(A7),A0               ;d1ef 005c 
+              MOVEQ.L        #$20,D0                  ;7020 
+              OR.B           $7(A0),D0                ;8028 0007 
+              MOVE.B         D0,$7(A0)                ;1140 0007 
+___NEWGRID_AppendShowtimesForRow__51:
+              ADDQ.W         #$1,D6                   ;5246 
+              BRA.W          ___NEWGRID_AppendShowtimesForRow__19;6000 fe2e 
+___NEWGRID_AppendShowtimesForRow__52:
+              TST.B          (A5)                     ;4a15 
+              BNE.B          ___NEWGRID_AppendShowtimesForRow__55;661e 
+___NEWGRID_AppendShowtimesForRow__53:
+              PEA            Global_STR_SHOWING_AT_AND_SINGLE(A4);486c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
+              PEA            $3c(A7)                  ;486f 003c 
+              BSR.W          NEWGRID2_JMPTBL_STR_SkipClass3Ch;6100 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___NEWGRID_AppendShowtimesForRow__54:
+___NEWGRID_AppendShowtimesForRow__55:
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$48,A7                  ;defc 0048 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID2_JMPTBL_COI_SelectAnimFi
+              XREF           TEXTDISP_JMPTBL_ESQDISP_TestEntr
+              XREF           TEXTDISP_FormatEntryTimeForIndex
+              XREF           NEWGRID_UpdatePresetEntry
+              XREF           NEWGRID2_JMPTBL_ESQ_TestBit1Base
+              XREF           Global_STR_SHOWTIMES_AND_SINGLE_
+              XREF           PARSEINI_JMPTBL_STRING_AppendAtN
+              XREF           NEWGRID2_JMPTBL_STR_SkipClass3Ch
+              XREF           NEWGRID_ShowtimeListSeparator
+              XREF           Global_STR_SHOWING_AT_AND_SINGLE
+              XDEF           NEWGRID_AppendShowtimesForRow
+              END
