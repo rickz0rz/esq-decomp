@@ -12,41 +12,50 @@ LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG lead, void *entry, LONG slo
 
 LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, WORD slot)
 {
+    const LONG SLOT_INVALID = 49;
+    const LONG SLOT_FIRST = 1;
+    const LONG SLOT_LAST = 48;
+    const LONG AUX_TITLE_TABLE_OFFSET = 56;
+    const LONG AUX_GROUPCODE_OFFSET = 498;
+    const LONG SLOT_PTR_SHIFT = 2;
+    const LONG DELTA_DAY_MINUTES = 2880;
+    const LONG SLOT_MINUTES = 30;
+    const LONG DELTA_INVALID = -1;
     UBYTE *e;
     LONG out;
     LONG s;
 
     e = (UBYTE *)entry;
-    s = 49;
-    out = -1;
+    s = SLOT_INVALID;
+    out = DELTA_INVALID;
 
-    if (slot <= 0 || slot >= 49) {
+    if (slot <= 0 || slot >= SLOT_INVALID) {
         return out;
     }
 
     s = (LONG)slot + 1;
-    while (s < 49 && *(LONG *)(e + 56 + (s << 2)) == 0) {
+    while (s < SLOT_INVALID && *(LONG *)(e + AUX_TITLE_TABLE_OFFSET + (s << SLOT_PTR_SHIFT)) == 0) {
         s += 1;
     }
 
-    if (s > 48 && TEXTDISP_PrimaryGroupCode == e[498]) {
+    if (s > SLOT_LAST && TEXTDISP_PrimaryGroupCode == e[AUX_GROUPCODE_OFFSET]) {
         s = GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(e);
         e = (UBYTE *)GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(s, 2);
         if (e != (UBYTE *)0) {
-            s = 1;
-            while (s < 49 && *(LONG *)(e + 56 + (s << 2)) == 0) {
+            s = SLOT_FIRST;
+            while (s < SLOT_INVALID && *(LONG *)(e + AUX_TITLE_TABLE_OFFSET + (s << SLOT_PTR_SHIFT)) == 0) {
                 s += 1;
             }
         } else {
-            s = 49;
+            s = SLOT_INVALID;
         }
     }
 
-    if (s > 48) {
-        out = 2880 - ((LONG)CLOCK_HalfHourSlotIndex * 30);
+    if (s > SLOT_LAST) {
+        out = DELTA_DAY_MINUTES - ((LONG)CLOCK_HalfHourSlotIndex * SLOT_MINUTES);
         return out;
     }
 
-    out = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((LONG)e[498], e, s);
+    out = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((LONG)e[AUX_GROUPCODE_OFFSET], e, s);
     return out;
 }
