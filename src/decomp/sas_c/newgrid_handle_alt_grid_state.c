@@ -11,11 +11,11 @@ extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mod
 extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(LONG *slot);
 extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(UBYTE *pattern);
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams();
-extern void NEWGRID_DrawGridEntry();
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount();
+extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
+extern void NEWGRID_DrawGridEntry(void *rastPort, UBYTE *entry, UBYTE *aux, LONG row, LONG mode, LONG enabled, LONG bevel);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
 extern LONG NEWGRID_DrawGridFrameAlt(UBYTE *ctx);
-extern void NEWGRID_DrawGridCell();
+extern void NEWGRID_DrawGridCell(void *rastPort, UBYTE *cell, LONG rowFlag);
 
 LONG NEWGRID_HandleAltGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
 {
