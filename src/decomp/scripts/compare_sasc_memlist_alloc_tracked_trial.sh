@@ -9,6 +9,7 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown24.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY_ORIG="MEMLIST_AllocTracked"
 
 mkdir -p "$OUT_DIR"
 

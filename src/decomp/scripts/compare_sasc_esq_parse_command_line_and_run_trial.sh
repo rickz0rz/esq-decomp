@@ -9,6 +9,8 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown29.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY_ORIG="ESQ_ParseCommandLineAndRun"
+ENTRY_CANONICAL="ESQ_MainInitAndRun"
 
 mkdir -p "$OUT_DIR"
 
