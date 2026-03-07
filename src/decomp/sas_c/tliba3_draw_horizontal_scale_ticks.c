@@ -11,6 +11,21 @@ typedef struct TLIBA3_RastPortWrap {
     TLIBA3_DimBlock *dims;
 } TLIBA3_RastPortWrap;
 
+enum {
+    TICK_ZERO = 0,
+    LABEL_BASE_Y_OFFSET = 25,
+    WIDTH_TO_PIXEL_SHIFT = 3,
+    MAX_X_MINUS_ONE = 1,
+    LABEL_BUFFER_LEN = 84,
+    MAJOR_TICK_INTERVAL = 25,
+    MINOR_TICK_INTERVAL = 5,
+    MAJOR_TICK_HEIGHT = 20,
+    MINOR_TICK_HEIGHT = 10,
+    TEXTWIDTH_NEG_ADJUST = 1,
+    HALF_DIVISOR = 2,
+    LABEL_Y_SCALE = 10
+};
+
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern char TLIBA1_FMT_PCT_03LD_HorizontalScaleTick[];
 
@@ -26,16 +41,16 @@ void TLIBA3_DrawHorizontalScaleTicks(TLIBA3_RastPortWrap *rp, LONG y)
     LONG labelBaseY;
     LONG maxX;
     LONG x;
-    char buf[84];
+    char buf[LABEL_BUFFER_LEN];
 
-    labelBaseY = y + 25;
+    labelBaseY = y + LABEL_BASE_Y_OFFSET;
 
-    _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, 0, y);
-    maxX = (((LONG)rp->dims->width) << 3) - 1;
+    _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, TICK_ZERO, y);
+    maxX = (((LONG)rp->dims->width) << WIDTH_TO_PIXEL_SHIFT) - MAX_X_MINUS_ONE;
     _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, maxX, y);
 
-    for (x = 0; x < maxX; ++x) {
-        if ((x % 25) == 0 && x != 0) {
+    for (x = TICK_ZERO; x < maxX; ++x) {
+        if ((x % MAJOR_TICK_INTERVAL) == TICK_ZERO && x != TICK_ZERO) {
             LONG len;
             LONG textWidth;
             LONG textX;
@@ -43,28 +58,28 @@ void TLIBA3_DrawHorizontalScaleTicks(TLIBA3_RastPortWrap *rp, LONG y)
             char *p;
 
             _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, x, y);
-            _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, x, y + 20);
+            _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, x, y + MAJOR_TICK_HEIGHT);
 
             WDISP_SPrintf(buf, TLIBA1_FMT_PCT_03LD_HorizontalScaleTick, x);
 
             p = buf;
-            while (*p != 0) {
-                p += 1;
+            while (*p != TICK_ZERO) {
+                p += TEXTWIDTH_NEG_ADJUST;
             }
             len = (LONG)(p - buf);
 
             textWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp, buf, len);
-            if (textWidth < 0) {
-                textWidth += 1;
+            if (textWidth < TICK_ZERO) {
+                textWidth += TEXTWIDTH_NEG_ADJUST;
             }
-            textX = x - (textWidth >> 1);
-            textY = labelBaseY + MATH_Mulu32((x / 2), 10);
+            textX = x - (textWidth >> MAX_X_MINUS_ONE);
+            textY = labelBaseY + MATH_Mulu32((x / HALF_DIVISOR), LABEL_Y_SCALE);
 
             _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, textX, textY);
             _LVOText(Global_REF_GRAPHICS_LIBRARY, rp, buf, len);
-        } else if ((x % 5) == 0) {
+        } else if ((x % MINOR_TICK_INTERVAL) == TICK_ZERO) {
             _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, x, y);
-            _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, x, y + 10);
+            _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, x, y + MINOR_TICK_HEIGHT);
         }
     }
 }
