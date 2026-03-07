@@ -34,7 +34,6 @@ extern LONG TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG i
 LONG TEXTDISP_SelectBestMatchFromList(void *titles, UWORD candidateCount, UWORD channelCode, const char *tag)
 {
     LONG i;
-    LONG rc = 2;
     WORD lastChannel = 0x31;
     WORD bestDelta = 0x05a1;
     WORD altDelta = (WORD)0xfa5f;

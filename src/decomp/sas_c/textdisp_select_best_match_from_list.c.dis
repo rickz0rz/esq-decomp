@@ -2,18 +2,16 @@
 __code:
 TEXTDISP_SelectBestMatchFromList:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$50,D0                  ;90bc 0000 0050 
+              SUB.L          #$4c,D0                  ;90bc 0000 004c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$44,A7                  ;9efc 0044 
+              SUB.W          #$40,A7                  ;9efc 0040 
               MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 3f34 
 ___TEXTDISP_SelectBestMatchFromList__1:
-              MOVE.W         $76(A7),D6               ;3c2f 0076 
-              MOVE.W         $72(A7),D7               ;3e2f 0072 
-              MOVE.L         $78(A7),A3               ;266f 0078 
-              MOVE.L         $6c(A7),A5               ;2a6f 006c 
-              MOVEQ.L        #$2,D0                   ;7002 
-              MOVE.L         D0,$64(A7)               ;2f40 0064 
+              MOVE.W         $72(A7),D6               ;3c2f 0072 
+              MOVE.W         $6e(A7),D7               ;3e2f 006e 
+              MOVE.L         $74(A7),A3               ;266f 0074 
+              MOVE.L         $68(A7),A5               ;2a6f 0068 
               MOVE.W         #$31,$5c(A7)             ;3f7c 0031 005c 
               MOVE.W         #$5a1,$58(A7)            ;3f7c 05a1 0058 
               MOVE.W         #$fffffa5f,$3c(A7)       ;3f7c fa5f 003c 
@@ -448,7 +446,7 @@ ___TEXTDISP_SelectBestMatchFromList__79:
 ___TEXTDISP_SelectBestMatchFromList__80:
 ___TEXTDISP_SelectBestMatchFromList__81:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
-              ADD.W          #$44,A7                  ;defc 0044 
+              ADD.W          #$40,A7                  ;defc 0040 
               RTS                                     ;4e75 
 __const:
 __strings:
