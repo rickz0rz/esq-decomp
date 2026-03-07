@@ -1,6 +1,12 @@
 typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
+enum {
+    DISKIO1_MASK_SUM_COUNT = 6,
+    DISKIO1_TIME_MASK_BASE = 28,
+    DISKIO1_BLACKOUT_MASK_BASE = 34
+};
+
 extern void DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet(void);
 extern void DISKIO1_AppendBlackoutMaskNoneIfEmpty(void);
 
@@ -11,8 +17,8 @@ volatile ULONG gDiskio1MaskIndex;
 
 void DISKIO1_AccumulateTimeSlotMaskSum(void)
 {
-    while (gDiskio1MaskIndex < 6) {
-        gDiskio1MaskSum += gDiskio1TimeMaskTable[28 + gDiskio1MaskIndex];
+    while (gDiskio1MaskIndex < DISKIO1_MASK_SUM_COUNT) {
+        gDiskio1MaskSum += gDiskio1TimeMaskTable[DISKIO1_TIME_MASK_BASE + gDiskio1MaskIndex];
         gDiskio1MaskIndex++;
     }
     DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet();
@@ -20,8 +26,8 @@ void DISKIO1_AccumulateTimeSlotMaskSum(void)
 
 void DISKIO1_AccumulateBlackoutMaskSum(void)
 {
-    while (gDiskio1MaskIndex < 6) {
-        gDiskio1MaskSum += gDiskio1BlackoutMaskTable[34 + gDiskio1MaskIndex];
+    while (gDiskio1MaskIndex < DISKIO1_MASK_SUM_COUNT) {
+        gDiskio1MaskSum += gDiskio1BlackoutMaskTable[DISKIO1_BLACKOUT_MASK_BASE + gDiskio1MaskIndex];
         gDiskio1MaskIndex++;
     }
     DISKIO1_AppendBlackoutMaskNoneIfEmpty();
