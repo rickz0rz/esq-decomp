@@ -9,11 +9,11 @@ struct DiskioProgramSourceRecord {
     UBYTE attrFlags;
     UBYTE timeSlotMask[6];
     UBYTE blackoutMask[6];
-    UBYTE flag1;
-    UBYTE bg0;
-    UBYTE bg1;
-    char bgText[3];
-    unsigned short flag2;
+    UBYTE sourceFlagsByte;
+    UBYTE backgroundColor0;
+    UBYTE backgroundColor1;
+    char backgroundText[3];
+    unsigned short sourceFlagsWord;
 };
 
 extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
@@ -103,9 +103,9 @@ void DISKIO1_DumpProgramSourceRecordVerbose(
         (ULONG)rec->blackoutMask[5]);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord,
-        (ULONG)rec->flag1,
-        (ULONG)rec->flag2,
-        (ULONG)rec->bg0,
-        (ULONG)rec->bg1,
-        rec->bgText);
+        (ULONG)rec->sourceFlagsByte,
+        (ULONG)rec->sourceFlagsWord,
+        (ULONG)rec->backgroundColor0,
+        (ULONG)rec->backgroundColor1,
+        rec->backgroundText);
 }
