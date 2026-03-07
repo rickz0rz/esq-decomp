@@ -29,10 +29,10 @@ extern LONG _LVOWrite(void *dosBase, LONG fileHandle, const void *buffer, LONG l
 LONG DISKIO_WriteBufferedBytes(LONG handle, const UBYTE *src, LONG len)
 {
     const UBYTE *DISKIO_PTR_NULL = (const UBYTE *)0;
-    LONG result;
+    LONG writeResult;
     LONG requested;
 
-    result = len;
+    writeResult = len;
     requested = len;
 
     if (src == DISKIO_PTR_NULL ||
@@ -65,14 +65,14 @@ LONG DISKIO_WriteBufferedBytes(LONG handle, const UBYTE *src, LONG len)
                 handle,
                 DISKIO_BufferControl.BufferBase,
                 DISKIO_BufferState.BufferSize);
-            result = wrote;
+            writeResult = wrote;
 
             if (wrote != DISKIO_BufferState.BufferSize) {
                 DISKIO_BufferControl.ErrorFlag = DISKIO_ERROR_FLAG_SET;
                 break;
             }
 
-            result = requested;
+            writeResult = requested;
             DISKIO_BufferState.BufferPtr = DISKIO_BufferControl.BufferBase;
             DISKIO_BufferState.Remaining = DISKIO_BufferState.BufferSize;
             GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
@@ -83,5 +83,5 @@ LONG DISKIO_WriteBufferedBytes(LONG handle, const UBYTE *src, LONG len)
         }
     }
 
-    return result;
+    return writeResult;
 }

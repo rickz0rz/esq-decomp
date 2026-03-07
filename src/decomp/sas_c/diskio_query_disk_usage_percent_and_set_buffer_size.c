@@ -42,22 +42,22 @@ LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(const char *path)
     const LONG FREE_LINE = 574;
     const ULONG INFODATA_SIZE = 32;
     const ULONG MEMF_CLEAR = 0x10000UL;
-    LONG percent;
+    LONG usagePercent;
     LONG lockHandle;
     struct InfoDataApprox *info;
 
-    percent = 0;
+    usagePercent = 0;
     lockHandle = _LVOLock(Global_REF_DOS_LIBRARY_2, path, LOCK_READ);
     if (lockHandle == LOCK_INVALID) {
-        return percent;
+        return usagePercent;
     }
 
     info = (struct InfoDataApprox *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_DISKIO_C_5, ALLOC_LINE, INFODATA_SIZE, MEMF_CLEAR);
     if (info != 0) {
         if (_LVOInfo(Global_REF_DOS_LIBRARY_2, lockHandle, info) == INFO_QUERY_OK) {
-            percent = GROUP_AG_JMPTBL_MATH_Mulu32((LONG)info->id_NumBlocksUsed, PERCENT_SCALE);
-            percent = GROUP_AG_JMPTBL_MATH_DivS32(percent, (LONG)info->id_NumBlocks);
+            usagePercent = GROUP_AG_JMPTBL_MATH_Mulu32((LONG)info->id_NumBlocksUsed, PERCENT_SCALE);
+            usagePercent = GROUP_AG_JMPTBL_MATH_DivS32(usagePercent, (LONG)info->id_NumBlocks);
             DISKIO_BufferState.BufferSize = (LONG)(info->id_BytesPerBlock * BUFFER_BLOCK_MULT);
         }
 
@@ -65,5 +65,5 @@ LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(const char *path)
     }
 
     _LVOUnLock(Global_REF_DOS_LIBRARY_2, lockHandle);
-    return percent;
+    return usagePercent;
 }
