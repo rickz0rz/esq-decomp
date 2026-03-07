@@ -1,10 +1,11 @@
 typedef signed long LONG;
+typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 typedef struct LadfuncEntry {
-    short startSlot;
-    short endSlot;
-    short isHighlighted;
+    UWORD startSlot;
+    UWORD endSlot;
+    UWORD isHighlighted;
     UBYTE *textPtr;
     UBYTE *attrPtr;
 } LadfuncEntry;
