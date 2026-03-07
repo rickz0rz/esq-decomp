@@ -28,7 +28,7 @@ enum {
     BRUSH_FREE_DONE_LINE = 445
 };
 
-LONG BRUSH_LoadColorTextFont(LONG fh, LONG byteCount, UBYTE *outBuf)
+LONG BRUSH_LoadColorTextFont(LONG fileHandle, LONG byteCount, UBYTE *outBuf)
 {
     UBYTE *tmp;
     LONG outputIndex;
@@ -52,7 +52,7 @@ LONG BRUSH_LoadColorTextFont(LONG fh, LONG byteCount, UBYTE *outBuf)
         return BRUSH_COLOR_FONT_STATUS_ERROR;
     }
 
-    if (_LVORead(fh, (void *)tmp, byteCount) != byteCount) {
+    if (_LVORead(fileHandle, (void *)tmp, byteCount) != byteCount) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_BRUSH_C_3, BRUSH_FREE_READ_FAIL_LINE, (void *)tmp, COLOR_TEXT_FONT_SIZE);
         return BRUSH_COLOR_FONT_STATUS_ERROR;
