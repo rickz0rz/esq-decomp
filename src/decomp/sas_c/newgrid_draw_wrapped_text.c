@@ -1,16 +1,16 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern UBYTE NEWGRID_WrapWordSpacer;
-extern UBYTE NEWGRID_WrapReturnSpacer;
-extern UBYTE Global_STR_SINGLE_SPACE;
+extern const UBYTE NEWGRID_WrapWordSpacer;
+extern const UBYTE NEWGRID_WrapReturnSpacer;
+extern const UBYTE Global_STR_SINGLE_SPACE;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern UBYTE *NEWGRID2_JMPTBL_STR_SkipClass3Chars(UBYTE *s);
 extern UBYTE *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(UBYTE *src, UBYTE *dst, LONG limit, UBYTE *delims);
-extern LONG _LVOTextLength(void *rastport, UBYTE *text, LONG len);
+extern LONG _LVOTextLength(void *rastport, const UBYTE *text, LONG len);
 extern void _LVOMove(void *rastport, LONG x, LONG y);
-extern void _LVOText(void *rastport, UBYTE *text, LONG len);
+extern void _LVOText(void *rastport, const UBYTE *text, LONG len);
 
 UBYTE *NEWGRID_DrawWrappedText(void *rastport, LONG x, LONG y, LONG max_width, UBYTE *text, LONG draw_enable)
 {
