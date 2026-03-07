@@ -11,6 +11,11 @@ extern LONG GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG handle);
 
 LONG GCOMMAND_LoadCommandFile(void)
 {
+    const LONG TEMPLATE_WORD_COUNT = 8;
+    const LONG TEMPLATE_WORD_LAST = 7;
+    const LONG TEMPLATE_BLOCK_BYTES = 32;
+    const UBYTE CH_NUL = 0;
+    const LONG ONE = 1;
     LONG fileHandle;
     LONG templateWords[8];
     UBYTE *textStart;
@@ -24,24 +29,24 @@ LONG GCOMMAND_LoadCommandFile(void)
         return fileHandle;
     }
 
-    for (i = 0; i < 8; i++) {
+    for (i = 0; i < TEMPLATE_WORD_COUNT; i++) {
         templateWords[i] = ((LONG *)GCOMMAND_DigitalNicheEnabledFlag)[i];
     }
 
-    textStart = (UBYTE *)templateWords[7];
-    templateWords[7] = 0;
+    textStart = (UBYTE *)templateWords[TEMPLATE_WORD_LAST];
+    templateWords[TEMPLATE_WORD_LAST] = 0;
 
-    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(fileHandle, templateWords, 32);
+    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(fileHandle, templateWords, TEMPLATE_BLOCK_BYTES);
 
     scan = textStart;
-    while (*scan != 0) {
+    while (*scan != CH_NUL) {
         scan++;
     }
 
     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(
         fileHandle,
         textStart,
-        (LONG)(scan - textStart) + 1);
+        (LONG)(scan - textStart) + ONE);
 
     return GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(fileHandle);
 }

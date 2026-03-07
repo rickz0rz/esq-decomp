@@ -12,6 +12,9 @@ extern void ESQSHARED_UpdateMatchingEntriesByTitle(
 
 void ESQSHARED_ParseCompactEntryRecord(UBYTE *record)
 {
+    const UBYTE TITLE_TERM_TOKEN = 0x12;
+    const UBYTE TITLE_KEY_MAX = 8;
+    const char CH_NUL = '\0';
     UBYTE group_code;
     UBYTE slot_index;
     UBYTE mode_byte;
@@ -25,16 +28,16 @@ void ESQSHARED_ParseCompactEntryRecord(UBYTE *record)
     do {
         UBYTE c = *record++;
         title_key[i] = (char)c;
-        if (c == 0x12) {
+        if (c == TITLE_TERM_TOKEN) {
             break;
         }
-        if (i >= 8) {
+        if (i >= TITLE_KEY_MAX) {
             break;
         }
         ++i;
     } while (1);
 
-    title_key[i] = '\0';
+    title_key[i] = CH_NUL;
     mode_byte = *record++;
 
     ESQSHARED_UpdateMatchingEntriesByTitle(

@@ -2,67 +2,73 @@
 __code:
 GCOMMAND_LoadCommandFile:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$2c,D0                  ;90bc 0000 002c 
+              SUB.L          #$40,D0                  ;90bc 0000 0040 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$20,A7                  ;9efc 0020 
-              MOVEM.L        D6/D7/A3/A5,-(A7)        ;48e7 0314 
+              SUB.W          #$34,A7                  ;9efc 0034 
+              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
 ___GCOMMAND_LoadCommandFile__1:
+              MOVEQ.L        #$8,D7                   ;7e08 
+              MOVEQ.L        #$7,D6                   ;7c07 
+              MOVEQ.L        #$20,D5                  ;7a20 
+              CLR.B          $44(A7)                  ;422f 0044 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
               MOVE.L         MODE_NEWFILE(A4),-(A7)   ;2f2c 0000 
               PEA            GCOMMAND_PATH_DF0_COLON_DIGITAL_(A4);486c 0000 
               BSR.W          GROUP_AY_JMPTBL_DISKIO_OpenFileW;6100 0000 
-              MOVE.L         D0,D7                    ;2e00 
               ADDQ.W         #$8,A7                   ;504f 
-              TST.L          D7                       ;4a87 
-              BNE.B          ___GCOMMAND_LoadCommandFile__3;6604 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
+              BEQ.B          ___GCOMMAND_LoadCommandFile__12;676e 
 ___GCOMMAND_LoadCommandFile__2:
-              MOVE.L         D7,D0                    ;2007 
-              BRA.B          ___GCOMMAND_LoadCommandFile__12;605a 
 ___GCOMMAND_LoadCommandFile__3:
-              MOVEQ.L        #$0,D6                   ;7c00 
+              CLR.L          $14(A7)                  ;42af 0014 
 ___GCOMMAND_LoadCommandFile__4:
-              MOVEQ.L        #$8,D0                   ;7008 
-              CMP.L          D0,D6                    ;bc80 
-              BGE.B          ___GCOMMAND_LoadCommandFile__7;6c12 
+              MOVE.L         $14(A7),D0               ;202f 0014 
+              CMP.L          D7,D0                    ;b087 
+              BGE.B          ___GCOMMAND_LoadCommandFile__7;6c14 
 ___GCOMMAND_LoadCommandFile__5:
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            GCOMMAND_DigitalNicheEnabledFlag(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D1.L),$18(A7,D1.L) ;2fb0 1800 1818 
+___GCOMMAND_LoadCommandFile__6:
+              ADDQ.L         #$1,$14(A7)              ;52af 0014 
+              BRA.B          ___GCOMMAND_LoadCommandFile__4;60e4 
+___GCOMMAND_LoadCommandFile__7:
               MOVE.L         D6,D0                    ;2006 
               ASL.L          #$2,D0                   ;e580 
-              LEA            GCOMMAND_DigitalNicheEnabledFlag(A4),A0;41ec 0000 
-              MOVE.L         $0(A0,D0.L),$10(A7,D0.L) ;2fb0 0800 0810 
-___GCOMMAND_LoadCommandFile__6:
-              ADDQ.L         #$1,D6                   ;5286 
-              BRA.B          ___GCOMMAND_LoadCommandFile__4;60e8 
-___GCOMMAND_LoadCommandFile__7:
-              MOVE.L         $2c(A7),A5               ;2a6f 002c 
-              CLR.L          $2c(A7)                  ;42af 002c 
-              PEA            ($20).w                  ;4878 0020 
-              PEA            $14(A7)                  ;486f 0014 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         $18(A7,D0.L),A5          ;2a77 0818 
+              CLR.L          $18(A7,D0.L)             ;42b7 0818 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              PEA            $1c(A7)                  ;486f 001c 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteBuff;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         A5,A3                    ;264d 
 ___GCOMMAND_LoadCommandFile__8:
-              TST.B          (A3)                     ;4a13 
+              MOVE.B         (A3),D0                  ;1013 
+              CMP.B          $44(A7),D0               ;b02f 0044 
               BEQ.B          ___GCOMMAND_LoadCommandFile__10;6704 
 ___GCOMMAND_LoadCommandFile__9:
               ADDQ.L         #$1,A3                   ;528b 
-              BRA.B          ___GCOMMAND_LoadCommandFile__8;60f8 
+              BRA.B          ___GCOMMAND_LoadCommandFile__8;60f4 
 ___GCOMMAND_LoadCommandFile__10:
               MOVE.L         A3,D0                    ;200b 
               MOVE.L         A5,D1                    ;220d 
               SUB.L          D1,D0                    ;9081 
-              ADDQ.L         #$1,D0                   ;5280 
+              ADD.L          $3c(A7),D0               ;d0af 003c 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D1,-(A7)                 ;2f01 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteBuff;6100 0000 
-              MOVE.L         D7,(A7)                  ;2e87 
+              MOVE.L         $4c(A7),(A7)             ;2eaf 004c 
               BSR.W          GROUP_AY_JMPTBL_DISKIO_CloseBuff;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
 ___GCOMMAND_LoadCommandFile__11:
 ___GCOMMAND_LoadCommandFile__12:
-              MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 
-              ADD.W          #$20,A7                  ;defc 0020 
+              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
+              ADD.W          #$34,A7                  ;defc 0034 
               RTS                                     ;4e75 
 __const:
 __strings:
