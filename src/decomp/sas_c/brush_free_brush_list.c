@@ -34,32 +34,32 @@ void BRUSH_FreeBrushList(void **head_ptr, LONG free_all)
 
     node = (UBYTE *)*head_ptr;
     while (node != (UBYTE *)BRUSH_FALSE) {
-        LONG i;
+        LONG frameIndex;
         UBYTE *nextNode;
         UBYTE *auxNode;
 
         nextNode = *(UBYTE **)(node + BRUSH_NODE_NEXT_OFFSET);
-        i = BRUSH_FALSE;
-        while (i < (LONG)*(UBYTE *)(node + BRUSH_NODE_FRAME_COUNT_OFFSET)) {
+        frameIndex = BRUSH_FALSE;
+        while (frameIndex < (LONG)*(UBYTE *)(node + BRUSH_NODE_FRAME_COUNT_OFFSET)) {
             void *raster;
             LONG width;
             LONG height;
 
-            raster = *(void **)(node + BRUSH_NODE_RASTER_TABLE_OFFSET + ((ULONG)i << BRUSH_RASTER_PTR_STRIDE_SHIFT));
+            raster = *(void **)(node + BRUSH_NODE_RASTER_TABLE_OFFSET + ((ULONG)frameIndex << BRUSH_RASTER_PTR_STRIDE_SHIFT));
             width = (LONG)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET);
             height = (LONG)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET);
             GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_BRUSH_C_5, BRUSH_FREE_RASTER_LINE, raster, width, height);
-            i++;
+            frameIndex++;
         }
 
         auxNode = *(UBYTE **)(node + BRUSH_NODE_AUX_LIST_OFFSET);
         while (auxNode != (UBYTE *)BRUSH_FALSE) {
-            UBYTE *aux_next;
+            UBYTE *nextAuxNode;
 
-            aux_next = *(UBYTE **)(auxNode + BRUSH_AUX_NEXT_OFFSET);
+            nextAuxNode = *(UBYTE **)(auxNode + BRUSH_AUX_NEXT_OFFSET);
             GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
                 Global_STR_BRUSH_C_6, BRUSH_FREE_AUX_LINE, (void *)auxNode, BRUSH_AUX_NODE_SIZE);
-            auxNode = aux_next;
+            auxNode = nextAuxNode;
         }
 
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
