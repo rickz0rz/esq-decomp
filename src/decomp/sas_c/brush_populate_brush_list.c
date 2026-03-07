@@ -7,7 +7,8 @@ enum {
     BRUSH_NULL = 0,
     BRUSH_DESCRIPTOR_NEXT_OFFSET = 234,
     BRUSH_DESCRIPTOR_NODE_SIZE = 238,
-    BRUSH_NODE_NEXT_OFFSET = 368
+    BRUSH_NODE_NEXT_OFFSET = 368,
+    BRUSH_DESC_FREE_LINE = 845
 };
 
 extern void *AbsExecBase;
@@ -42,7 +43,7 @@ void BRUSH_PopulateBrushList(void *descriptor, void **out_head_ptr)
         next_desc = *(UBYTE **)(cur + BRUSH_DESCRIPTOR_NEXT_OFFSET);
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_BRUSH_C_8,
-            845,
+            BRUSH_DESC_FREE_LINE,
             (void *)cur,
             BRUSH_DESCRIPTOR_NODE_SIZE
         );

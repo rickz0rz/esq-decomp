@@ -15,7 +15,10 @@ enum {
     BRUSH_NODE_NEXT_OFFSET = 368,
     BRUSH_NODE_SIZE = 372,
     BRUSH_AUX_NEXT_OFFSET = 8,
-    BRUSH_AUX_NODE_SIZE = 12
+    BRUSH_AUX_NODE_SIZE = 12,
+    BRUSH_FREE_RASTER_LINE = 549,
+    BRUSH_FREE_AUX_LINE = 561,
+    BRUSH_FREE_NODE_LINE = 567
 };
 
 extern const UBYTE Global_STR_BRUSH_C_5[];
@@ -45,7 +48,7 @@ void BRUSH_FreeBrushList(void **head_ptr, LONG free_all)
             raster = *(void **)(node + BRUSH_NODE_RASTER_TABLE_OFFSET + ((ULONG)i << BRUSH_RASTER_PTR_STRIDE_SHIFT));
             width = (LONG)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET);
             height = (LONG)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET);
-            GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_BRUSH_C_5, 549, raster, width, height);
+            GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_BRUSH_C_5, BRUSH_FREE_RASTER_LINE, raster, width, height);
             i++;
         }
 
@@ -54,11 +57,13 @@ void BRUSH_FreeBrushList(void **head_ptr, LONG free_all)
             UBYTE *aux_next;
 
             aux_next = *(UBYTE **)(aux + BRUSH_AUX_NEXT_OFFSET);
-            GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_6, 561, (void *)aux, BRUSH_AUX_NODE_SIZE);
+            GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+                Global_STR_BRUSH_C_6, BRUSH_FREE_AUX_LINE, (void *)aux, BRUSH_AUX_NODE_SIZE);
             aux = aux_next;
         }
 
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_7, 567, (void *)node, BRUSH_NODE_SIZE);
+        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+            Global_STR_BRUSH_C_7, BRUSH_FREE_NODE_LINE, (void *)node, BRUSH_NODE_SIZE);
         node = next;
         if (free_all != BRUSH_FREE_ALL_ENABLED) {
             break;

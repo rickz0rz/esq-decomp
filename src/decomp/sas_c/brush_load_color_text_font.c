@@ -21,7 +21,11 @@ enum {
     COLOR_FONT_BLOCK_BYTES = 3,
     MEMF_PUBLIC = 1,
     BRUSH_COLOR_FONT_STATUS_ERROR = -1,
-    BRUSH_COLOR_FONT_STATUS_OK = 1
+    BRUSH_COLOR_FONT_STATUS_OK = 1,
+    BRUSH_ALLOC_LINE = 396,
+    BRUSH_FREE_ALLOC_FAIL_LINE = 416,
+    BRUSH_FREE_READ_FAIL_LINE = 431,
+    BRUSH_FREE_DONE_LINE = 445
 };
 
 LONG BRUSH_LoadColorTextFont(LONG fh, LONG byte_count, UBYTE *out_buf)
@@ -34,7 +38,7 @@ LONG BRUSH_LoadColorTextFont(LONG fh, LONG byte_count, UBYTE *out_buf)
     (void)Global_REF_DOS_LIBRARY_2;
     tmp = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_BRUSH_C_1,
-        396,
+        BRUSH_ALLOC_LINE,
         COLOR_TEXT_FONT_SIZE,
         MEMF_PUBLIC
     );
@@ -43,12 +47,14 @@ LONG BRUSH_LoadColorTextFont(LONG fh, LONG byte_count, UBYTE *out_buf)
     }
 
     if (byte_count > COLOR_TEXT_FONT_SIZE) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_2, 416, (void *)tmp, COLOR_TEXT_FONT_SIZE);
+        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+            Global_STR_BRUSH_C_2, BRUSH_FREE_ALLOC_FAIL_LINE, (void *)tmp, COLOR_TEXT_FONT_SIZE);
         return BRUSH_COLOR_FONT_STATUS_ERROR;
     }
 
     if (_LVORead(fh, (void *)tmp, byte_count) != byte_count) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_3, 431, (void *)tmp, COLOR_TEXT_FONT_SIZE);
+        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+            Global_STR_BRUSH_C_3, BRUSH_FREE_READ_FAIL_LINE, (void *)tmp, COLOR_TEXT_FONT_SIZE);
         return BRUSH_COLOR_FONT_STATUS_ERROR;
     }
 
@@ -62,6 +68,7 @@ LONG BRUSH_LoadColorTextFont(LONG fh, LONG byte_count, UBYTE *out_buf)
         }
     }
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_4, 445, (void *)tmp, COLOR_TEXT_FONT_SIZE);
+    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        Global_STR_BRUSH_C_4, BRUSH_FREE_DONE_LINE, (void *)tmp, COLOR_TEXT_FONT_SIZE);
     return BRUSH_COLOR_FONT_STATUS_OK;
 }
