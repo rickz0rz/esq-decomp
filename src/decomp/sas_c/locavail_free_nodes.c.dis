@@ -1,0 +1,67 @@
+              SECTION      text,CODE
+__code:
+LOCAVAIL_FreeNodeRecord:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___LOCAVAIL_FreeNodeRecord__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A5,A3                    ;264d 
+              CLR.B          (A3)                     ;4213 
+              LEA            $2(A3),A0                ;41eb 0002 
+              CLR.W          (A0)                     ;4250 
+              LEA            $4(A3),A0                ;41eb 0004 
+              CLR.W          (A0)                     ;4250 
+              LEA            $6(A3),A0                ;41eb 0006 
+              CLR.L          (A0)                     ;4290 
+___LOCAVAIL_FreeNodeRecord__2:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+__const:
+__strings:
+LOCAVAIL_FreeNodeAtPointer:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
+___LOCAVAIL_FreeNodeAtPointer__1:
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___LOCAVAIL_FreeNodeAtPointer__8;6732 
+___LOCAVAIL_FreeNodeAtPointer__2:
+              LEA            $6(A3),A0                ;41eb 0006 
+              MOVE.L         (A0),A2                  ;2450 
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___LOCAVAIL_FreeNodeAtPointer__5;6722 
+___LOCAVAIL_FreeNodeAtPointer__3:
+              LEA            $4(A3),A0                ;41eb 0004 
+              MOVE.W         (A0),D7                  ;3e10 
+              TST.W          D7                       ;4a47 
+              BLE.B          ___LOCAVAIL_FreeNodeAtPointer__5;6f18 
+___LOCAVAIL_FreeNodeAtPointer__4:
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              PEA            ($6a).w                  ;4878 006a 
+              PEA            Global_STR_LOCAVAIL_C_1(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___LOCAVAIL_FreeNodeAtPointer__5:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.B          LOCAVAIL_FreeNodeRecord  ;6186 
+___LOCAVAIL_FreeNodeAtPointer__6:
+              ADDQ.W         #$4,A7                   ;584f 
+___LOCAVAIL_FreeNodeAtPointer__7:
+___LOCAVAIL_FreeNodeAtPointer__8:
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_STR_LOCAVAIL_C_1
+              XREF           NEWGRID_JMPTBL_MEMORY_Deallocate
+              XDEF           LOCAVAIL_FreeNodeRecord
+              XDEF           LOCAVAIL_FreeNodeAtPointer
+              END

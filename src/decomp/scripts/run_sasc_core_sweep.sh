@@ -1079,6 +1079,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_locavail2_display_alert_delay_and_reboot_trial.sh"
     "src/decomp/scripts/compare_sasc_override_intuition_funcs_trial.sh"
     "src/decomp/scripts/compare_sasc_locavail_load_availability_data_file_return_trial.sh"
+    "src/decomp/scripts/compare_sasc_locavail_free_node_record_trial.sh"
+    "src/decomp/scripts/compare_sasc_locavail_free_node_at_pointer_trial.sh"
     "src/decomp/scripts/compare_sasc_locavail_map_filter_token_char_to_class_trial.sh"
     "src/decomp/scripts/compare_sasc_locavail_map_filter_token_char_to_class_return_trial.sh"
     "src/decomp/scripts/compare_sasc_locavail_parse_filter_state_from_buffer_return_trial.sh"
