@@ -10,6 +10,7 @@ enum {
     PROGRAM_TYPE1_TABLE_OFFSET = 0x12d,
     PROGRAM_TYPE2_TABLE_OFFSET = 0x15e,
     PROGRAM_TEXT_COPY_MAX = 40,
+    PROGRAM_TEXT_BUFFER_SIZE = PROGRAM_TEXT_COPY_MAX + 1,
     ATTR_FLAG_NONE = 0x01,
     ATTR_FLAG_MOVIE = 0x02,
     ATTR_FLAG_ALT_HILITE = 0x04,
@@ -44,7 +45,7 @@ extern const char DISKIO_FMT_ProgramStringSuffixWithTypeFields[];
 void DISKIO1_DumpProgramInfoAttrTable(const UBYTE *rec, ULONG programInfoId)
 {
     ULONG i;
-    char escaped[41];
+    char escaped[PROGRAM_TEXT_BUFFER_SIZE];
 
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_PROGRAM_INFO_PCT_D,
