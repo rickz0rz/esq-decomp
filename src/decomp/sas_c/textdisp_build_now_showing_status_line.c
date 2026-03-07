@@ -3,6 +3,18 @@ typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+enum {
+    TEXTDISP_NULL = 0,
+    MODE_KIND_PRIMARY = 1,
+    MODE_KIND_SECONDARY = 2,
+    CHANNEL_CODE_DEFAULT = 48,
+    ENTRY_INDEX_MIN = 0,
+    ENTRY_INDEX_MAX_EXCLUSIVE = 49,
+    MINUTES_PER_DAY = 1440,
+    BANNER_SELECTED_SENTINEL = 100,
+    BANNER_KIND_NOW_SHOWING = 1
+};
+
 extern UWORD TEXTDISP_PrimaryChannelCode;
 extern UWORD CLOCK_CurrentDayOfWeekIndex;
 extern LONG CONFIG_TimeWindowMinutes;
@@ -51,20 +63,20 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
     char *timeToken;
 
     idx = (LONG)groupIndex;
-    modeKind = modeFlag ? 1 : 2;
+    modeKind = modeFlag ? MODE_KIND_PRIMARY : MODE_KIND_SECONDARY;
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(idx, modeKind);
     entry = (UBYTE *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, modeKind);
 
-    line[0] = 0;
-    timeToken = (char *)0;
-    bannerKind = 1;
+    line[0] = TEXTDISP_NULL;
+    timeToken = (char *)TEXTDISP_NULL;
+    bannerKind = BANNER_KIND_NOW_SHOWING;
 
-    if (entry != (UBYTE *)0 && aux != (void *)0) {
-        if (TEXTDISP_PrimaryChannelCode == 0) {
-            TEXTDISP_PrimaryChannelCode = 48;
+    if (entry != (UBYTE *)TEXTDISP_NULL && aux != (void *)TEXTDISP_NULL) {
+        if (TEXTDISP_PrimaryChannelCode == TEXTDISP_NULL) {
+            TEXTDISP_PrimaryChannelCode = CHANNEL_CODE_DEFAULT;
         }
 
-        channelEnabled = 0;
+        channelEnabled = TEXTDISP_NULL;
         if ((TEXTDISP_PrimaryChannelCode >= 48 && TEXTDISP_PrimaryChannelCode <= 67) ||
             (TEXTDISP_PrimaryChannelCode >= 72 && TEXTDISP_PrimaryChannelCode <= 77)) {
             ULONG mask;
@@ -74,21 +86,26 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             day = (LONG)CLOCK_CurrentDayOfWeekIndex;
             mask = ((ULONG)1U) << day;
             value = (ULONG)Global_STR_TEXTDISP_C_3[(LONG)TEXTDISP_PrimaryChannelCode];
-            if ((value & mask) != 0) {
-                channelEnabled = 1;
+            if ((value & mask) != TEXTDISP_NULL) {
+                channelEnabled = MODE_KIND_PRIMARY;
             }
         }
 
-        if (channelEnabled != 0 && entryIndex > 0 && entryIndex < 49 &&
-            TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(entry, aux, (LONG)entryIndex, 1440, CONFIG_TimeWindowMinutes) != 0) {
-            if ((LONG)TEXTDISP_BannerCharSelected == 100) {
+        if (channelEnabled != TEXTDISP_NULL && entryIndex > ENTRY_INDEX_MIN && entryIndex < ENTRY_INDEX_MAX_EXCLUSIVE &&
+            TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
+                entry,
+                aux,
+                (LONG)entryIndex,
+                MINUTES_PER_DAY,
+                CONFIG_TimeWindowMinutes) != TEXTDISP_NULL) {
+            if ((LONG)TEXTDISP_BannerCharSelected == BANNER_SELECTED_SENTINEL) {
                 bannerDigit = (LONG)TEXTDISP_BannerFallbackIsSpecialFlag;
             } else {
                 bannerDigit = (LONG)TEXTDISP_BannerSelectedIsSpecialFlag;
             }
 
             bannerKind = bannerDigit;
-            if ((bannerKind - 1) == 0) {
+            if ((bannerKind - BANNER_KIND_NOW_SHOWING) == TEXTDISP_NULL) {
                 title = (char *)Global_STR_ALIGNED_NOW_SHOWING;
             } else {
                 TEXTDISP_FormatEntryTimeForIndex(scratch, (LONG)entryIndex, aux);
@@ -109,17 +126,17 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             }
         }
 
-        if (bannerKind == 0) {
-            out = 0;
-            for (i = 0; entry[i + 1] != 0; i++) {
+        if (bannerKind == TEXTDISP_NULL) {
+            out = TEXTDISP_NULL;
+            for (i = TEXTDISP_NULL; entry[i + 1] != TEXTDISP_NULL; i++) {
                 if (entry[i + 1] != ' ') {
                     scratch[out++] = (char)entry[i + 1];
                 }
             }
-            scratch[out] = 0;
+            scratch[out] = TEXTDISP_NULL;
 
-            if (scratch[0] != 0) {
-                if (line[0] != 0) {
+            if (scratch[0] != TEXTDISP_NULL) {
+                if (line[0] != TEXTDISP_NULL) {
                     STRING_AppendAtNull(line, SCRIPT_SpacerTripleA);
                 }
                 STRING_AppendAtNull(line, SCRIPT_AlignedChannelAbbrevPrefix);
@@ -127,21 +144,28 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             }
         }
 
-        if (timeToken != (char *)0) {
-            if (line[0] != 0) {
+        if (timeToken != (char *)TEXTDISP_NULL) {
+            if (line[0] != TEXTDISP_NULL) {
                 STRING_AppendAtNull(line, SCRIPT_SpacerTripleB);
             }
             WDISP_SPrintf(scratch, SCRIPT_AlignedCharFormat, (LONG)(UBYTE)timeToken[0]);
             STRING_AppendAtNull(line, scratch);
         }
 
-        TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(line, (LONG)modeFlag, (LONG)groupIndex, (LONG)entryIndex, 0, 0);
+        TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(
+            line,
+            (LONG)modeFlag,
+            (LONG)groupIndex,
+            (LONG)entryIndex,
+            TEXTDISP_NULL,
+            TEXTDISP_NULL);
     } else {
-        if (P_TYPE_WeatherBottomLineMsgPtr != (const char *)0 && P_TYPE_WeatherBottomLineMsgPtr[0] != 0) {
+        if (P_TYPE_WeatherBottomLineMsgPtr != (const char *)TEXTDISP_NULL &&
+            P_TYPE_WeatherBottomLineMsgPtr[0] != TEXTDISP_NULL) {
             STRING_AppendAtNull(line, SCRIPT_AlignedPrefixEmptyC);
             STRING_AppendAtNull(line, P_TYPE_WeatherBottomLineMsgPtr);
         } else {
-            line[0] = 0;
+            line[0] = TEXTDISP_NULL;
         }
     }
 
