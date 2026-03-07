@@ -1,27 +1,17 @@
-BEGIN {
-    has_target_dispatch = 0
-    has_rts_or_jmp = 0
+BEGIN{h_call=0}
+function t(s, x){
+    x=s
+    sub(/;.*/,"",x)
+    sub(/^[ \t]+/,"",x)
+    sub(/[ \t]+$/,"",x)
+    gsub(/[ \t]+/," ",x)
+    return toupper(x)
 }
-
-function trim(s,    t) {
-    t = s
-    sub(/;.*/, "", t)
-    sub(/^[ \t]+/, "", t)
-    sub(/[ \t]+$/, "", t)
-    return t
-}
-
 {
-    line = trim($0)
-    if (line == "") next
-    gsub(/[ \t]+/, " ", line)
-    u = toupper(line)
-
-    if (u ~ /ESQPARS_REPLACEOWNEDSTRING/) has_target_dispatch = 1
-    if (u ~ /^JMP / || u ~ /^RTS$/ || u ~ /^JSR / || u ~ /^BSR / || u ~ /^BSR\.W /) has_rts_or_jmp = 1
+    l=t($0)
+    if(l=="")next
+    if(l~/(JMP|JSR|BSR).*ESQPARS_REPLACEOWNEDSTRING/)h_call=1
 }
-
-END {
-    print "HAS_TARGET_DISPATCH=" has_target_dispatch
-    print "HAS_RTS_OR_JMP=" has_rts_or_jmp
+END{
+    print "HAS_FORWARD_TO_ESQPARS_REPLACEOWNEDSTRING=" h_call
 }

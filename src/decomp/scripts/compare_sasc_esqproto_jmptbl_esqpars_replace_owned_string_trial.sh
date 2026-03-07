@@ -4,18 +4,34 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-SASC_SRC="unknown_jmptbl_core_stubs.c"
-SASC_DIR="src/decomp/sas_c"
-SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
+SASC_SRC="esqproto_jmptbl_esqpars_replace_owned_string.c"
+SASC_DIS="src/decomp/sas_c/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown.s"
 OUT_DIR="build/decomp/sasc_trial"
+BASE="esqproto_jmptbl_esqpars_replace_owned_string"
+ENTRY_ORIG="ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString"
+ENTRY_SASC_REGEX="^ESQPROTO_JMPTBL_ESQPARS_Replace[A-Za-z0-9_]*:$"
 
 mkdir -p "$OUT_DIR"
 
-./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_esqproto_jmptbl_esqpars_replace_owned_string.log" 2>&1
+./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_${BASE}.log" 2>&1
 
-awk '$0 ~ /^ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString:$/ {in_func=1} in_func { if ($0 ~ /^;------------------------------------------------------------------------------/ || $0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.original.s"
-awk '$0 ~ /^[[:space:]]*ESQPROTO_JMPTBL_ESQPARS_Replace/ {in_func=1} in_func { if ($0 ~ /^[[:space:]]*__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.sasc.dis.s"
+awk -v e="^${ENTRY_ORIG}:$" '
+  $0 ~ e {in_func=1}
+  in_func {
+    if ($0 ~ /^;!======/) exit
+    print
+  }
+' "$ORIG_ASM" >"${OUT_DIR}/${BASE}.original.s"
+
+awk -v e="^${ENTRY_ORIG}:$" -v e2="$ENTRY_SASC_REGEX" '
+  $0 ~ e || $0 ~ e2 {in_func=1}
+  in_func {
+    if (($0 ~ /^[A-Z0-9_]+:$/ || $0 ~ /^_?[A-Z0-9_]+:$/) && $0 !~ /^___/ && $0 !~ e && $0 !~ e2) exit
+    if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/) exit
+    print
+  }
+' "$SASC_DIS" >"${OUT_DIR}/${BASE}.sasc.dis.s"
 
 normalize() {
   sed -E \
@@ -30,14 +46,14 @@ normalize() {
     -e '/^$/d'
 }
 
-normalize <"${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.original.s" >"${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.original.norm.s"
-normalize <"${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.sasc.dis.s" >"${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.sasc.norm.s"
+normalize <"${OUT_DIR}/${BASE}.original.s" >"${OUT_DIR}/${BASE}.original.norm.s"
+normalize <"${OUT_DIR}/${BASE}.sasc.dis.s" >"${OUT_DIR}/${BASE}.sasc.norm.s"
 
-diff -u "${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.original.norm.s" "${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.sasc.norm.s" >"${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.diff" || true
+diff -u "${OUT_DIR}/${BASE}.original.norm.s" "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.diff" || true
 
-awk -f src/decomp/scripts/semantic_filter_sasc_esqproto_jmptbl_esqpars_replace_owned_string.awk "${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.original.norm.s" >"${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.original.semantic.txt"
-awk -f src/decomp/scripts/semantic_filter_sasc_esqproto_jmptbl_esqpars_replace_owned_string.awk "${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.sasc.norm.s" >"${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.sasc.semantic.txt"
-diff -u "${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.original.semantic.txt" "${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.sasc.semantic.txt" >"${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.semantic.diff" || true
+awk -f src/decomp/scripts/semantic_filter_sasc_esqproto_jmptbl_esqpars_replace_owned_string.awk "${OUT_DIR}/${BASE}.original.norm.s" >"${OUT_DIR}/${BASE}.original.semantic.txt"
+awk -f src/decomp/scripts/semantic_filter_sasc_esqproto_jmptbl_esqpars_replace_owned_string.awk "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.sasc.semantic.txt"
+diff -u "${OUT_DIR}/${BASE}.original.semantic.txt" "${OUT_DIR}/${BASE}.sasc.semantic.txt" >"${OUT_DIR}/${BASE}.semantic.diff" || true
 
-echo "wrote: ${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.diff"
-echo "wrote: ${OUT_DIR}/esqproto_jmptbl_esqpars_replace_owned_string.semantic.diff"
+echo "wrote: ${OUT_DIR}/${BASE}.diff"
+echo "wrote: ${OUT_DIR}/${BASE}.semantic.diff"
