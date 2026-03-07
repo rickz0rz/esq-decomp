@@ -1,5 +1,9 @@
 typedef unsigned char UBYTE;
 
+enum {
+    BRUSH_NODE_NEXT_OFFSET = 368
+};
+
 UBYTE *GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(UBYTE *path);
 
 void BRUSH_NormalizeBrushNames(void **head_ptr)
@@ -24,6 +28,6 @@ void BRUSH_NormalizeBrushNames(void **head_ptr)
             *dst++ = *src;
         } while (*src++ != (UBYTE)0);
 
-        node = *(UBYTE **)(node + 368);
+        node = *(UBYTE **)(node + BRUSH_NODE_NEXT_OFFSET);
     }
 }
