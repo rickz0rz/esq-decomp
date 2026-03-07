@@ -31,7 +31,7 @@ extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line,
 
 LONG DISKIO_CloseBufferedFileAndFlush(LONG fileHandle)
 {
-    LONG previousOpenCount;
+    LONG openCountBeforeClose;
 
     GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
 
@@ -65,8 +65,8 @@ LONG DISKIO_CloseBufferedFileAndFlush(LONG fileHandle)
         GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
     }
 
-    previousOpenCount = DISKIO_OpenCount;
-    if (previousOpenCount > 0) {
+    openCountBeforeClose = DISKIO_OpenCount;
+    if (openCountBeforeClose > 0) {
         DISKIO_OpenCount -= 1;
     }
 
@@ -74,5 +74,5 @@ LONG DISKIO_CloseBufferedFileAndFlush(LONG fileHandle)
         ESQPARS2_ReadModeFlags = DISKIO_BufferState.SavedF45;
     }
 
-    return previousOpenCount;
+    return openCountBeforeClose;
 }
