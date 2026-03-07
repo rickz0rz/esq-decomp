@@ -18,7 +18,7 @@ rg -No --no-filename '^[[:space:]]*XDEF[[:space:]]+[A-Za-z0-9_]+' \
 
 # Compare scripts that expose an explicit original-entry variable.
 for script in src/decomp/scripts/compare_sasc_*_trial.sh; do
-  rg -No --no-filename 'ENTRY_ORIG="[^"]+"|ENTRY="[^"]+"|ENTRY_LABEL="[^"]+"|ENTRY_CANONICAL="[^"]+"' "$script" \
+  rg -No --no-filename 'ENTRY_ORIG="[^"]+"|ENTRY="[^"]+"|ENTRY_LABEL="[^"]+"|ENTRY_CANONICAL="[^"]+"|TARGET="[^"]+"' "$script" \
     | sed -E 's/.*="([^"]+)"/\1/' || true
 done | sort -u >"$COVERED_FILE"
 
