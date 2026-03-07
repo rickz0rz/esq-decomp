@@ -1,9 +1,15 @@
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+enum {
+    CUSTOM_BASE = 0x00DFF000UL,
+    CUSTOM_INTREQ_OFFSET = 0x009C,
+    INTREQ_SETCLR = 0x0100
+};
+
 extern void ESQ_CaptureCtrlBit4Stream(void);
 extern void ESQ_CaptureCtrlBit3Stream(void);
-extern UBYTE ESQ_STR_B[];
+extern const UBYTE ESQ_STR_B[];
 
 void ESQ_PollCtrlInput(void)
 {
@@ -15,6 +21,6 @@ void ESQ_PollCtrlInput(void)
         ESQ_CaptureCtrlBit3Stream();
     }
 
-    custom16 = (volatile UWORD *)0x00DFF000UL;
-    custom16[0x009C / 2] = 0x0100;
+    custom16 = (volatile UWORD *)CUSTOM_BASE;
+    custom16[CUSTOM_INTREQ_OFFSET / 2] = INTREQ_SETCLR;
 }
