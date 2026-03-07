@@ -50,9 +50,9 @@ extern void PARSEINI_ParseColorTable(char *entryKey, char *entryValue);
 LONG PARSEINI_ParseIniBufferAndDispatch(char *path)
 {
     LONG section;
-    char *line;
-    char *sep;
-    char *tail;
+    char *entryLine;
+    char *separatorPtr;
+    char *entryValue;
 
     section = PARSEINI_SECTION_NONE;
     if (PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(path) == -1) {
@@ -60,44 +60,44 @@ LONG PARSEINI_ParseIniBufferAndDispatch(char *path)
     }
 
     for (;;) {
-        line = (char *)PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer();
-        if ((LONG)line == -1) {
+        entryLine = (char *)PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer();
+        if ((LONG)entryLine == -1) {
             break;
         }
-        if (*line == 0) {
+        if (*entryLine == 0) {
             continue;
         }
 
-        if (*line == '[') {
-            sep = PARSEINI_JMPTBL_STR_FindCharPtr(line + 1, ']');
-            if (sep == (char *)0) {
+        if (*entryLine == '[') {
+            separatorPtr = PARSEINI_JMPTBL_STR_FindCharPtr(entryLine + 1, ']');
+            if (separatorPtr == (char *)0) {
                 continue;
             }
-            *sep = 0;
-            line += 1;
+            *separatorPtr = 0;
+            entryLine += 1;
 
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, P_TYPE_STR_QTABLE) == 0) {
+            if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryLine, P_TYPE_STR_QTABLE) == 0) {
                 section = PARSEINI_SECTION_QTABLE;
                 continue;
             }
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, P_TYPE_TAG_GRADIENT) == 0) {
+            if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryLine, P_TYPE_TAG_GRADIENT) == 0) {
                 section = PARSEINI_SECTION_GRADIENT;
                 PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(GCOMMAND_GradientPresetTable);
                 continue;
             }
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, P_TYPE_TAG_DEFAULT_TEXT) == 0) {
+            if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryLine, P_TYPE_TAG_DEFAULT_TEXT) == 0) {
                 section = PARSEINI_SECTION_DEFAULT_TEXT;
                 P_TYPE_WeatherCurrentMsgPtr = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(P_TYPE_WeatherCurrentMsgPtr, Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE);
                 P_TYPE_WeatherForecastMsgPtr = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(P_TYPE_WeatherForecastMsgPtr, SCRIPT_PtrNoForecastWeatherData);
                 P_TYPE_WeatherBottomLineMsgPtr = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(P_TYPE_WeatherBottomLineMsgPtr, SCRIPT_PtrWeatherDataAvailabilityDisclaimer);
                 continue;
             }
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, P_TYPE_STR_SOURCE_CONFIG) == 0) {
+            if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryLine, P_TYPE_STR_SOURCE_CONFIG) == 0) {
                 section = PARSEINI_SECTION_SOURCE_CONFIG;
                 TEXTDISP_ClearSourceConfig();
                 continue;
             }
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, P_TYPE_TAG_BRUSH) == 0) {
+            if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryLine, P_TYPE_TAG_BRUSH) == 0) {
                 section = PARSEINI_SECTION_BRUSH;
                 continue;
             }
@@ -106,31 +106,31 @@ LONG PARSEINI_ParseIniBufferAndDispatch(char *path)
             continue;
         }
 
-        sep = PARSEINI_JMPTBL_STR_FindCharPtr(line, '=');
-        if (sep == (char *)0) {
+        separatorPtr = PARSEINI_JMPTBL_STR_FindCharPtr(entryLine, '=');
+        if (separatorPtr == (char *)0) {
             continue;
         }
-        *sep = 0;
-        tail = sep + 1;
+        *separatorPtr = 0;
+        entryValue = separatorPtr + 1;
 
         if (section == PARSEINI_SECTION_BRUSH) {
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, PARSEINI_TAG_FILENAME) == 0 ||
-                PARSEINI_JMPTBL_STRING_CompareNoCase(line, PARSEINI_TAG_BRUSH) == 0) {
-                tail = PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(tail);
-                if (PARSEINI_JMPTBL_HANDLE_OpenWithMode(tail, PARSEINI_MODE_RB) != 0) {
-                    PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(tail);
+            if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryLine, PARSEINI_TAG_FILENAME) == 0 ||
+                PARSEINI_JMPTBL_STRING_CompareNoCase(entryLine, PARSEINI_TAG_BRUSH) == 0) {
+                entryValue = PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(entryValue);
+                if (PARSEINI_JMPTBL_HANDLE_OpenWithMode(entryValue, PARSEINI_MODE_RB) != 0) {
+                    PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(entryValue);
                     PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey();
                 }
             }
         } else if (section == PARSEINI_SECTION_WEATHER_BLOCKS) {
-            PARSEINI_ProcessWeatherBlocks(line, tail);
+            PARSEINI_ProcessWeatherBlocks(entryLine, entryValue);
         } else if (section == PARSEINI_SECTION_DEFAULT_TEXT) {
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, PARSEINI_STR_LOADWEATHER) == 0) {
-                PARSEINI_LoadWeatherStrings(line, tail);
-            } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, PARSEINI_STR_LOADWEATHERMESSAGE) == 0) {
-                PARSEINI_LoadWeatherMessageStrings(line, tail);
-            } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, PARSEINI_STR_LOADCOLORTABLE) == 0) {
-                PARSEINI_ParseColorTable(line, tail);
+            if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryLine, PARSEINI_STR_LOADWEATHER) == 0) {
+                PARSEINI_LoadWeatherStrings(entryLine, entryValue);
+            } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryLine, PARSEINI_STR_LOADWEATHERMESSAGE) == 0) {
+                PARSEINI_LoadWeatherMessageStrings(entryLine, entryValue);
+            } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryLine, PARSEINI_STR_LOADCOLORTABLE) == 0) {
+                PARSEINI_ParseColorTable(entryLine, entryValue);
             }
         }
     }
