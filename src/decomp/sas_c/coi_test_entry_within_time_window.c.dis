@@ -20,13 +20,14 @@ ___COI_TestEntryWithinTimeWindow__1:
               CLR.L          $24(A7)                  ;42af 0024 
               SUB.L          A2,A2                    ;95ca 
               MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___COI_TestEntryWithinTimeWindow__4;6708 
+              BEQ.B          ___COI_TestEntryWithinTimeWindow__4;670a 
 ___COI_TestEntryWithinTimeWindow__2:
               MOVE.L         A3,D0                    ;200b 
-              BEQ.B          ___COI_TestEntryWithinTimeWindow__4;6704 
+              BEQ.B          ___COI_TestEntryWithinTimeWindow__4;6706 
 ___COI_TestEntryWithinTimeWindow__3:
-              TST.W          D7                       ;4a47 
-              BGT.B          ___COI_TestEntryWithinTimeWindow__6;6e06 
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.W          D0,D7                    ;be40 
+              BGE.B          ___COI_TestEntryWithinTimeWindow__6;6c06 
 ___COI_TestEntryWithinTimeWindow__4:
               MOVEQ.L        #$0,D0                   ;7000 
               BRA.W          ___COI_TestEntryWithinTimeWindow__31;6000 00fc 
