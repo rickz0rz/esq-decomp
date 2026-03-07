@@ -61,6 +61,7 @@ void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
     UWORD row;
 
     if (!ctx || !ctx->coi || !ctx->entries || !out) return;
+    if ((((UBYTE *)ctx->coi)[47] & 0x10) == 0) return;
     if (!TEXTDISP_PrimaryGroupPresentFlag) return;
 
     out[0] = 0;
@@ -85,8 +86,12 @@ void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
 
     NEWGRID_ResetShowtimeBuckets();
 
-    if (ctx->startCol < 0 || ctx->startCol > TEXTDISP_PrimaryGroupEntryCount) ctx->startCol = 0;
-    if (ctx->endCol < 0 || ctx->endCol > TEXTDISP_PrimaryGroupEntryCount) ctx->endCol = 0;
+    if (ctx->startCol < 0 || ctx->startCol > TEXTDISP_PrimaryGroupEntryCount) {
+        ctx->startCol = (LONG)TEXTDISP_PrimaryGroupEntryCount;
+    }
+    if (ctx->endCol < 0 || ctx->endCol > TEXTDISP_PrimaryGroupEntryCount) {
+        ctx->endCol = (LONG)TEXTDISP_PrimaryGroupEntryCount;
+    }
 
     {
         UWORD rowEnd = (UWORD)(ctx->startRow + GCOMMAND_PpvShowtimesRowSpan + 1);
@@ -135,6 +140,8 @@ void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
                     col++;
                     continue;
                 }
+
+                ((UBYTE *)coi)[7 + idx] |= 0x20;
 
                 if (out[0] == 0) {
                     PARSEINI_JMPTBL_STRING_AppendAtNull(out, Global_STR_SHOWTIMES_AND_SINGLE_SPACE);

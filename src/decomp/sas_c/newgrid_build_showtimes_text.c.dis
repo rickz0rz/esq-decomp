@@ -56,30 +56,37 @@ ___NEWGRID_BuildShowtimesText__1:
               MOVE.L         $c0(A7),A3               ;266f 00c0 
               MOVE.L         $bc(A7),A5               ;2a6f 00bc 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.W          ___NEWGRID_BuildShowtimesText__62;6700 0390 
+              BEQ.W          ___NEWGRID_BuildShowtimesText__64;6700 03be 
 ___NEWGRID_BuildShowtimesText__2:
-              MOVE.L         (A3),D0                  ;2013 
-              BEQ.W          ___NEWGRID_BuildShowtimesText__62;6700 038a 
+              TST.L          (A3)                     ;4a93 
+              BEQ.W          ___NEWGRID_BuildShowtimesText__64;6700 03b8 
 ___NEWGRID_BuildShowtimesText__3:
               TST.L          $4(A3)                   ;4aab 0004 
-              BEQ.W          ___NEWGRID_BuildShowtimesText__62;6700 0382 
+              BEQ.W          ___NEWGRID_BuildShowtimesText__64;6700 03b0 
 ___NEWGRID_BuildShowtimesText__4:
-              MOVE.L         A2,D1                    ;220a 
-              BEQ.W          ___NEWGRID_BuildShowtimesText__62;6700 037c 
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.W          ___NEWGRID_BuildShowtimesText__64;6700 03aa 
 ___NEWGRID_BuildShowtimesText__5:
 ___NEWGRID_BuildShowtimesText__6:
-              TST.B          TEXTDISP_PrimaryGroupPresentFlag(A4);4a2c 0000 
-              BEQ.W          ___NEWGRID_BuildShowtimesText__62;6700 0374 
+              MOVE.L         (A3),A0                  ;2053 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.W          #$2f,A1                  ;d2fc 002f 
+              BTST           #$4,(A1)                 ;0811 0004 
+              BEQ.W          ___NEWGRID_BuildShowtimesText__64;6700 039a 
 ___NEWGRID_BuildShowtimesText__7:
 ___NEWGRID_BuildShowtimesText__8:
+              TST.B          TEXTDISP_PrimaryGroupPresentFlag(A4);4a2c 0000 
+              BEQ.W          ___NEWGRID_BuildShowtimesText__64;6700 0392 
+___NEWGRID_BuildShowtimesText__9:
+___NEWGRID_BuildShowtimesText__10:
               CLR.B          (A2)                     ;4212 
               MOVE.W         $12(A3),D5               ;3a2b 0012 
               MOVEQ.L        #$30,D0                  ;7030 
               CMP.W          D0,D5                    ;ba40 
-              BLS.B          ___NEWGRID_BuildShowtimesText__10;6304 
-___NEWGRID_BuildShowtimesText__9:
+              BLS.B          ___NEWGRID_BuildShowtimesText__12;6304 
+___NEWGRID_BuildShowtimesText__11:
               SUBI.W         #$30,D5                  ;0445 0030 
-___NEWGRID_BuildShowtimesText__10:
+___NEWGRID_BuildShowtimesText__12:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D5,D0                    ;3005 
               PEA            ($1).w                   ;4878 0001 
@@ -113,25 +120,25 @@ ___NEWGRID_BuildShowtimesText__10:
               MOVE.L         D1,-(A7)                 ;2f01 
               PEA            $86(A7)                  ;486f 0086 
               MOVE.L         D0,$e0(A7)               ;2f40 00e0 
-___NEWGRID_BuildShowtimesText__11:
+___NEWGRID_BuildShowtimesText__13:
               BSR.W          TEXTDISP_FormatEntryTimeForIndex;6100 0000 
               LEA            $38(A7),A7               ;4fef 0038 
               TST.L          $b4(A7)                  ;4aaf 00b4 
-              BEQ.W          ___NEWGRID_BuildShowtimesText__62;6700 02f6 
-___NEWGRID_BuildShowtimesText__12:
+              BEQ.W          ___NEWGRID_BuildShowtimesText__64;6700 0314 
+___NEWGRID_BuildShowtimesText__14:
               MOVE.L         $b4(A7),A0               ;206f 00b4 
               TST.B          (A0)                     ;4a10 
-              BEQ.W          ___NEWGRID_BuildShowtimesText__62;6700 02ec 
-___NEWGRID_BuildShowtimesText__13:
-___NEWGRID_BuildShowtimesText__14:
+              BEQ.W          ___NEWGRID_BuildShowtimesText__64;6700 030a 
+___NEWGRID_BuildShowtimesText__15:
+___NEWGRID_BuildShowtimesText__16:
               MOVE.L         #$264,D7                 ;2e3c 0000 0264 
               MOVE.L         $ac(A7),D0               ;202f 00ac 
-              BEQ.B          ___NEWGRID_BuildShowtimesText__17;6732 
-___NEWGRID_BuildShowtimesText__15:
+              BEQ.B          ___NEWGRID_BuildShowtimesText__19;6732 
+___NEWGRID_BuildShowtimesText__17:
               MOVE.L         D0,A0                    ;2040 
               TST.B          (A0)                     ;4a10 
-              BEQ.B          ___NEWGRID_BuildShowtimesText__17;672c 
-___NEWGRID_BuildShowtimesText__16:
+              BEQ.B          ___NEWGRID_BuildShowtimesText__19;672c 
+___NEWGRID_BuildShowtimesText__18:
               MOVE.L         #$7fffffff,-(A7)         ;2f3c 7fff ffff 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A5,-(A7)                 ;2f0d 
@@ -145,7 +152,7 @@ ___NEWGRID_BuildShowtimesText__16:
               BSR.W          _LVOTextLength           ;6100 0000 
               LEA            $20(A7),A7               ;4fef 0020 
               SUB.L          D0,D7                    ;9e80 
-___NEWGRID_BuildShowtimesText__17:
+___NEWGRID_BuildShowtimesText__19:
               PEA            ($2).w                   ;4878 0002 
               PEA            __MERGED+$2(A4)          ;486c 0002 
               MOVE.L         A5,-(A7)                 ;2f0d 
@@ -156,26 +163,30 @@ ___NEWGRID_BuildShowtimesText__17:
               LEA            $10(A7),A7               ;4fef 0010 
               MOVE.L         $8(A3),D0                ;202b 0008 
               TST.L          D0                       ;4a80 
-              BMI.B          ___NEWGRID_BuildShowtimesText__19;6b0a 
-___NEWGRID_BuildShowtimesText__18:
+              BMI.B          ___NEWGRID_BuildShowtimesText__21;6b0a 
+___NEWGRID_BuildShowtimesText__20:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D1;322c 0000 
               CMP.L          D1,D0                    ;b081 
-              BLE.B          ___NEWGRID_BuildShowtimesText__20;6f04 
-___NEWGRID_BuildShowtimesText__19:
-              CLR.L          $8(A3)                   ;42ab 0008 
-___NEWGRID_BuildShowtimesText__20:
+              BLE.B          ___NEWGRID_BuildShowtimesText__22;6f0a 
+___NEWGRID_BuildShowtimesText__21:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
+              MOVE.L         D0,$8(A3)                ;2740 0008 
+___NEWGRID_BuildShowtimesText__22:
               MOVE.L         $c(A3),D0                ;202b 000c 
               TST.L          D0                       ;4a80 
-              BMI.B          ___NEWGRID_BuildShowtimesText__22;6b0a 
-___NEWGRID_BuildShowtimesText__21:
+              BMI.B          ___NEWGRID_BuildShowtimesText__24;6b0a 
+___NEWGRID_BuildShowtimesText__23:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D1;322c 0000 
               CMP.L          D1,D0                    ;b081 
-              BLE.B          ___NEWGRID_BuildShowtimesText__23;6f04 
-___NEWGRID_BuildShowtimesText__22:
-              CLR.L          $c(A3)                   ;42ab 000c 
-___NEWGRID_BuildShowtimesText__23:
+              BLE.B          ___NEWGRID_BuildShowtimesText__25;6f0a 
+___NEWGRID_BuildShowtimesText__24:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
+              MOVE.L         D0,$c(A3)                ;2740 000c 
+___NEWGRID_BuildShowtimesText__25:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         $10(A3),D0               ;302b 0010 
               MOVE.L         D0,D1                    ;2200 
@@ -184,21 +195,21 @@ ___NEWGRID_BuildShowtimesText__23:
               MOVE.W         D1,$a4(A7)               ;3f41 00a4 
               MOVEQ.L        #$61,D2                  ;7461 
               CMP.W          D2,D1                    ;b242 
-              BLS.B          ___NEWGRID_BuildShowtimesText__25;6304 
-___NEWGRID_BuildShowtimesText__24:
-              MOVE.W         D2,$a4(A7)               ;3f42 00a4 
-___NEWGRID_BuildShowtimesText__25:
-              MOVE.W         D0,D5                    ;3a00 
+              BLS.B          ___NEWGRID_BuildShowtimesText__27;6304 
 ___NEWGRID_BuildShowtimesText__26:
-              CMP.W          $a4(A7),D5               ;ba6f 00a4 
-              BCC.W          ___NEWGRID_BuildShowtimesText__55;6400 01ee 
+              MOVE.W         D2,$a4(A7)               ;3f42 00a4 
 ___NEWGRID_BuildShowtimesText__27:
-              MOVE.L         $8(A3),$1c(A7)           ;2f6b 0008 001c 
+              MOVE.W         D0,D5                    ;3a00 
 ___NEWGRID_BuildShowtimesText__28:
+              CMP.W          $a4(A7),D5               ;ba6f 00a4 
+              BCC.W          ___NEWGRID_BuildShowtimesText__57;6400 0200 
+___NEWGRID_BuildShowtimesText__29:
+              MOVE.L         $8(A3),$1c(A7)           ;2f6b 0008 001c 
+___NEWGRID_BuildShowtimesText__30:
               MOVE.L         $1c(A7),D0               ;202f 001c 
               CMP.L          $c(A3),D0                ;b0ab 000c 
-              BGE.W          ___NEWGRID_BuildShowtimesText__51;6c00 01cc 
-___NEWGRID_BuildShowtimesText__29:
+              BGE.W          ___NEWGRID_BuildShowtimesText__53;6c00 01de 
+___NEWGRID_BuildShowtimesText__31:
               CLR.L          $a0(A7)                  ;42af 00a0 
               CLR.L          $9c(A7)                  ;42af 009c 
               MOVEQ.L        #$0,D1                   ;7200 
@@ -211,17 +222,17 @@ ___NEWGRID_BuildShowtimesText__29:
               LEA            $10(A7),A7               ;4fef 0010 
               MOVE.L         D0,$98(A7)               ;2f40 0098 
               MOVE.L         $a0(A7),D0               ;202f 00a0 
-              BEQ.B          ___NEWGRID_BuildShowtimesText__31;6706 
-___NEWGRID_BuildShowtimesText__30:
-              MOVE.L         $9c(A7),D1               ;222f 009c 
-              BNE.B          ___NEWGRID_BuildShowtimesText__32;6606 
-___NEWGRID_BuildShowtimesText__31:
-              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
-              BRA.B          ___NEWGRID_BuildShowtimesText__28;60be 
+              BEQ.B          ___NEWGRID_BuildShowtimesText__33;6706 
 ___NEWGRID_BuildShowtimesText__32:
-              CMP.W          $10(A3),D5               ;ba6b 0010 
-              BNE.B          ___NEWGRID_BuildShowtimesText__35;6636 
+              MOVE.L         $9c(A7),D1               ;222f 009c 
+              BNE.B          ___NEWGRID_BuildShowtimesText__34;6606 
 ___NEWGRID_BuildShowtimesText__33:
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.B          ___NEWGRID_BuildShowtimesText__30;60be 
+___NEWGRID_BuildShowtimesText__34:
+              CMP.W          $10(A3),D5               ;ba6b 0010 
+              BNE.B          ___NEWGRID_BuildShowtimesText__37;6636 
+___NEWGRID_BuildShowtimesText__35:
               MOVE.L         $98(A7),-(A7)            ;2f2f 0098 
               MOVE.L         $a0(A7),-(A7)            ;2f2f 00a0 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -235,11 +246,11 @@ ___NEWGRID_BuildShowtimesText__33:
               BSR.W          NEWGRID2_JMPTBL_COI_ProcessEntry;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
               TST.L          D0                       ;4a80 
-              BNE.B          ___NEWGRID_BuildShowtimesText__35;6606 
-___NEWGRID_BuildShowtimesText__34:
+              BNE.B          ___NEWGRID_BuildShowtimesText__37;6606 
+___NEWGRID_BuildShowtimesText__36:
               ADDQ.L         #$1,$1c(A7)              ;52af 001c 
-              BRA.B          ___NEWGRID_BuildShowtimesText__28;6082 
-___NEWGRID_BuildShowtimesText__35:
+              BRA.B          ___NEWGRID_BuildShowtimesText__30;6082 
+___NEWGRID_BuildShowtimesText__37:
               MOVE.L         $a0(A7),A0               ;206f 00a0 
               ADD.W          #$1c,A0                  ;d0fc 001c 
               MOVE.L         $98(A7),-(A7)            ;2f2f 0098 
@@ -247,11 +258,11 @@ ___NEWGRID_BuildShowtimesText__35:
               BSR.W          NEWGRID2_JMPTBL_ESQ_TestBit1Base;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               ADDQ.L         #$1,D0                   ;5280 
-              BEQ.B          ___NEWGRID_BuildShowtimesText__37;6708 
-___NEWGRID_BuildShowtimesText__36:
+              BEQ.B          ___NEWGRID_BuildShowtimesText__39;6708 
+___NEWGRID_BuildShowtimesText__38:
               ADDQ.L         #$1,$1c(A7)              ;52af 001c 
-              BRA.W          ___NEWGRID_BuildShowtimesText__28;6000 ff64 
-___NEWGRID_BuildShowtimesText__37:
+              BRA.W          ___NEWGRID_BuildShowtimesText__30;6000 ff64 
+___NEWGRID_BuildShowtimesText__39:
               PEA            ($1).w                   ;4878 0001 
               MOVE.L         $9c(A7),-(A7)            ;2f2f 009c 
               MOVE.L         $a8(A7),-(A7)            ;2f2f 00a8 
@@ -274,42 +285,47 @@ ___NEWGRID_BuildShowtimesText__37:
               MOVE.L         $c4(A7),(A7)             ;2eaf 00c4 
               MOVE.L         $e4(A7),-(A7)            ;2f2f 00e4 
               MOVE.L         D0,$bc(A7)               ;2f40 00bc 
-              BSR.W          str_eq_nullable          ;6100 fd42 
-___NEWGRID_BuildShowtimesText__38:
+              BSR.W          str_eq_nullable          ;6100 fd26 
+___NEWGRID_BuildShowtimesText__40:
               LEA            $34(A7),A7               ;4fef 0034 
               TST.L          D0                       ;4a80 
-              BEQ.B          ___NEWGRID_BuildShowtimesText__45;6736 
-___NEWGRID_BuildShowtimesText__39:
+              BEQ.B          ___NEWGRID_BuildShowtimesText__47;6736 
+___NEWGRID_BuildShowtimesText__41:
               MOVE.L         $90(A7),-(A7)            ;2f2f 0090 
               MOVE.L         $b4(A7),-(A7)            ;2f2f 00b4 
-              BSR.W          str_eq_nullable          ;6100 fd2e 
-___NEWGRID_BuildShowtimesText__40:
-              ADDQ.W         #$8,A7                   ;504f 
-              TST.L          D0                       ;4a80 
-              BEQ.B          ___NEWGRID_BuildShowtimesText__45;6724 
-___NEWGRID_BuildShowtimesText__41:
-              MOVE.L         $8c(A7),-(A7)            ;2f2f 008c 
-              MOVE.L         $b0(A7),-(A7)            ;2f2f 00b0 
-              BSR.W          str_eq_nullable          ;6100 fd1c 
+              BSR.W          str_eq_nullable          ;6100 fd12 
 ___NEWGRID_BuildShowtimesText__42:
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BEQ.B          ___NEWGRID_BuildShowtimesText__45;6712 
+              BEQ.B          ___NEWGRID_BuildShowtimesText__47;6724 
 ___NEWGRID_BuildShowtimesText__43:
-              MOVE.L         $88(A7),-(A7)            ;2f2f 0088 
-              MOVE.L         $ac(A7),-(A7)            ;2f2f 00ac 
-              BSR.W          str_eq_nullable          ;6100 fd0a 
+              MOVE.L         $8c(A7),-(A7)            ;2f2f 008c 
+              MOVE.L         $b0(A7),-(A7)            ;2f2f 00b0 
+              BSR.W          str_eq_nullable          ;6100 fd00 
 ___NEWGRID_BuildShowtimesText__44:
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___NEWGRID_BuildShowtimesText__46;6608 
+              BEQ.B          ___NEWGRID_BuildShowtimesText__47;6712 
 ___NEWGRID_BuildShowtimesText__45:
-              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
-              BRA.W          ___NEWGRID_BuildShowtimesText__28;6000 fec2 
+              MOVE.L         $88(A7),-(A7)            ;2f2f 0088 
+              MOVE.L         $ac(A7),-(A7)            ;2f2f 00ac 
+              BSR.W          str_eq_nullable          ;6100 fcee 
 ___NEWGRID_BuildShowtimesText__46:
-              TST.B          (A2)                     ;4a12 
-              BNE.B          ___NEWGRID_BuildShowtimesText__48;6638 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___NEWGRID_BuildShowtimesText__48;6608 
 ___NEWGRID_BuildShowtimesText__47:
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.W          ___NEWGRID_BuildShowtimesText__30;6000 fec2 
+___NEWGRID_BuildShowtimesText__48:
+              MOVE.L         $9c(A7),A0               ;206f 009c 
+              ADD.L          $98(A7),A0               ;d1ef 0098 
+              MOVEQ.L        #$20,D0                  ;7020 
+              OR.B           $7(A0),D0                ;8028 0007 
+              MOVE.B         D0,$7(A0)                ;1140 0007 
+              TST.B          (A2)                     ;4a12 
+              BNE.B          ___NEWGRID_BuildShowtimesText__50;6638 
+___NEWGRID_BuildShowtimesText__49:
               PEA            Global_STR_SHOWTIMES_AND_SINGLE_(A4);486c 0000 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
@@ -327,7 +343,7 @@ ___NEWGRID_BuildShowtimesText__47:
               BSR.W          _LVOTextLength           ;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
               SUB.L          D0,D7                    ;9e80 
-___NEWGRID_BuildShowtimesText__48:
+___NEWGRID_BuildShowtimesText__50:
               MOVE.L         $9c(A7),-(A7)            ;2f2f 009c 
               MOVE.L         $9c(A7),-(A7)            ;2f2f 009c 
               PEA            $28(A7)                  ;486f 0028 
@@ -339,8 +355,8 @@ ___NEWGRID_BuildShowtimesText__48:
               BSR.W          NEWGRID_AddShowtimeBucketEntry;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
               TST.L          D0                       ;4a80 
-              BNE.B          ___NEWGRID_BuildShowtimesText__50;6628 
-___NEWGRID_BuildShowtimesText__49:
+              BNE.B          ___NEWGRID_BuildShowtimesText__52;6628 
+___NEWGRID_BuildShowtimesText__51:
               PEA            $20(A7)                  ;486f 0020 
               BSR.W          NEWGRID2_JMPTBL_STR_SkipClass3Ch;6100 0000 
               MOVE.L         #$7fffffff,(A7)          ;2ebc 7fff ffff 
@@ -353,23 +369,23 @@ ___NEWGRID_BuildShowtimesText__49:
               ADD.L          D0,D1                    ;d280 
               SUB.L          D1,D7                    ;9e81 
               MOVE.L         D0,$84(A7)               ;2f40 0084 
-___NEWGRID_BuildShowtimesText__50:
-              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
-              BRA.W          ___NEWGRID_BuildShowtimesText__28;6000 fe2c 
-___NEWGRID_BuildShowtimesText__51:
-              TST.L          D7                       ;4a87 
-              BPL.B          ___NEWGRID_BuildShowtimesText__54;6a06 
 ___NEWGRID_BuildShowtimesText__52:
-              CMP.W          $12(A3),D5               ;ba6b 0012 
-              BCC.B          ___NEWGRID_BuildShowtimesText__55;6406 
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.W          ___NEWGRID_BuildShowtimesText__30;6000 fe1a 
 ___NEWGRID_BuildShowtimesText__53:
+              TST.L          D7                       ;4a87 
+              BPL.B          ___NEWGRID_BuildShowtimesText__56;6a06 
 ___NEWGRID_BuildShowtimesText__54:
-              ADDQ.W         #$1,D5                   ;5245 
-              BRA.W          ___NEWGRID_BuildShowtimesText__26;6000 fe0e 
+              CMP.W          $12(A3),D5               ;ba6b 0012 
+              BCC.B          ___NEWGRID_BuildShowtimesText__57;6406 
 ___NEWGRID_BuildShowtimesText__55:
-              TST.B          (A2)                     ;4a12 
-              BNE.B          ___NEWGRID_BuildShowtimesText__57;6620 
 ___NEWGRID_BuildShowtimesText__56:
+              ADDQ.W         #$1,D5                   ;5245 
+              BRA.W          ___NEWGRID_BuildShowtimesText__28;6000 fdfc 
+___NEWGRID_BuildShowtimesText__57:
+              TST.B          (A2)                     ;4a12 
+              BNE.B          ___NEWGRID_BuildShowtimesText__59;6620 
+___NEWGRID_BuildShowtimesText__58:
               PEA            Global_STR_SHOWING_AT_AND_SINGLE(A4);486c 0000 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
@@ -379,19 +395,19 @@ ___NEWGRID_BuildShowtimesText__56:
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              BRA.B          ___NEWGRID_BuildShowtimesText__58;6008 
-___NEWGRID_BuildShowtimesText__57:
+              BRA.B          ___NEWGRID_BuildShowtimesText__60;6008 
+___NEWGRID_BuildShowtimesText__59:
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          NEWGRID_AppendShowtimeBuckets;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-___NEWGRID_BuildShowtimesText__58:
+___NEWGRID_BuildShowtimesText__60:
               TST.L          $ac(A7)                  ;4aaf 00ac 
-              BEQ.B          ___NEWGRID_BuildShowtimesText__62;6720 
-___NEWGRID_BuildShowtimesText__59:
+              BEQ.B          ___NEWGRID_BuildShowtimesText__64;6720 
+___NEWGRID_BuildShowtimesText__61:
               MOVE.L         $ac(A7),A0               ;206f 00ac 
               TST.B          (A0)                     ;4a10 
-              BEQ.B          ___NEWGRID_BuildShowtimesText__62;6718 
-___NEWGRID_BuildShowtimesText__60:
+              BEQ.B          ___NEWGRID_BuildShowtimesText__64;6718 
+___NEWGRID_BuildShowtimesText__62:
               PEA            NEWGRID_ShowtimeGenreSpacer(A4);486c 0000 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
@@ -399,8 +415,8 @@ ___NEWGRID_BuildShowtimesText__60:
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-___NEWGRID_BuildShowtimesText__61:
-___NEWGRID_BuildShowtimesText__62:
+___NEWGRID_BuildShowtimesText__63:
+___NEWGRID_BuildShowtimesText__64:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
               ADD.W          #$9c,A7                  ;defc 009c 
               RTS                                     ;4e75 
