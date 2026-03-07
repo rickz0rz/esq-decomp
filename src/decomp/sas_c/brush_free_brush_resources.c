@@ -13,15 +13,15 @@ void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *p
 
 void BRUSH_FreeBrushResources(void **head_ptr)
 {
-    UBYTE *node;
+    UBYTE *resourceNode;
 
-    node = (UBYTE *)*head_ptr;
-    while (node != (UBYTE *)BRUSH_NULL) {
+    resourceNode = (UBYTE *)*head_ptr;
+    while (resourceNode != (UBYTE *)BRUSH_NULL) {
         UBYTE *nextNode;
 
-        nextNode = *(UBYTE **)(node + BRUSH_RESOURCE_NEXT_OFFSET);
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_9, 887, (void *)node, BRUSH_RESOURCE_NODE_SIZE);
-        node = nextNode;
+        nextNode = *(UBYTE **)(resourceNode + BRUSH_RESOURCE_NEXT_OFFSET);
+        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_9, 887, (void *)resourceNode, BRUSH_RESOURCE_NODE_SIZE);
+        resourceNode = nextNode;
     }
 
     *head_ptr = (void *)BRUSH_NULL;
