@@ -4,7 +4,15 @@ typedef unsigned short UWORD;
 
 enum {
     PTR_HI_SHIFT = 16,
-    DIWSTOP_EXTEND_ADDEND = 0x100UL
+    DIWSTOP_EXTEND_ADDEND = 0x100UL,
+    REG_DIWSTRT_ADDR_INDEX = 0,
+    REG_DIWSTRT_VALUE_INDEX = 1,
+    REG_DIWSTOP_ADDR_INDEX = 2,
+    REG_DIWSTOP_VALUE_INDEX = 3,
+    REG_DDFSTRT_ADDR_INDEX = 4,
+    REG_DDFSTRT_VALUE_INDEX = 5,
+    REG_DDFSTOP_ADDR_INDEX = 6,
+    REG_DDFSTOP_VALUE_INDEX = 7
 };
 
 extern UWORD TLIBA1_DiagDiwOffset;
@@ -49,14 +57,26 @@ void TLIBA3_FormatPatternRegisterDump(const char *title, const UWORD *regs)
         (ULONG)TLIBA1_DiagDdfOffset,
         (ULONG)TLIBA1_DiagBplcon1Value);
 
-    FORMAT_RawDoFmtWithScratchBuffer(TLIBA1_FMT_DIWSTRT_COLON_0X_PCT_04LX_0X_PCT_04L, (ULONG)regs[0], (ULONG)regs[1], (ULONG)regs[1]);
+    FORMAT_RawDoFmtWithScratchBuffer(
+        TLIBA1_FMT_DIWSTRT_COLON_0X_PCT_04LX_0X_PCT_04L,
+        (ULONG)regs[REG_DIWSTRT_ADDR_INDEX],
+        (ULONG)regs[REG_DIWSTRT_VALUE_INDEX],
+        (ULONG)regs[REG_DIWSTRT_VALUE_INDEX]);
     FORMAT_RawDoFmtWithScratchBuffer(
         TLIBA1_FMT_DIWSTOP_COLON_0X_PCT_04LX_0X_PCT_04L,
-        (ULONG)regs[2],
-        (ULONG)regs[3],
-        (ULONG)regs[3] + DIWSTOP_EXTEND_ADDEND);
-    FORMAT_RawDoFmtWithScratchBuffer(TLIBA1_FMT_DDFSTRT_COLON_0X_PCT_04LX_0X_PCT_04L, (ULONG)regs[4], (ULONG)regs[5], (ULONG)regs[5]);
-    FORMAT_RawDoFmtWithScratchBuffer(TLIBA1_FMT_DDFSTOP_COLON_0X_PCT_04LX_0X_PCT_04L, (ULONG)regs[6], (ULONG)regs[7], (ULONG)regs[7]);
+        (ULONG)regs[REG_DIWSTOP_ADDR_INDEX],
+        (ULONG)regs[REG_DIWSTOP_VALUE_INDEX],
+        (ULONG)regs[REG_DIWSTOP_VALUE_INDEX] + DIWSTOP_EXTEND_ADDEND);
+    FORMAT_RawDoFmtWithScratchBuffer(
+        TLIBA1_FMT_DDFSTRT_COLON_0X_PCT_04LX_0X_PCT_04L,
+        (ULONG)regs[REG_DDFSTRT_ADDR_INDEX],
+        (ULONG)regs[REG_DDFSTRT_VALUE_INDEX],
+        (ULONG)regs[REG_DDFSTRT_VALUE_INDEX]);
+    FORMAT_RawDoFmtWithScratchBuffer(
+        TLIBA1_FMT_DDFSTOP_COLON_0X_PCT_04LX_0X_PCT_04L,
+        (ULONG)regs[REG_DDFSTOP_ADDR_INDEX],
+        (ULONG)regs[REG_DDFSTOP_VALUE_INDEX],
+        (ULONG)regs[REG_DDFSTOP_VALUE_INDEX]);
 
     FORMAT_RawDoFmtWithScratchBuffer(TLIBA1_FMT_BPL1MOD_COLON_0X_PCT_04LX_0X_PCT_04L, (ULONG)regs[8], (ULONG)regs[9], (ULONG)regs[9]);
     FORMAT_RawDoFmtWithScratchBuffer(TLIBA1_FMT_BPL2MOD_COLON_0X_PCT_04LX_0X_PCT_04L, (ULONG)regs[10], (ULONG)regs[11], (ULONG)regs[11]);
