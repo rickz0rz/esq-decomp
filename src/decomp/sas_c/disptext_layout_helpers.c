@@ -2,6 +2,14 @@ typedef unsigned short UWORD;
 typedef signed short WORD;
 typedef signed long LONG;
 
+enum {
+    DISPTEXT_BUILD_LINE_PTRS_FLAG = 1,
+    DISPTEXT_MAX_LINE_WIDTH_PX = 624,
+    DISPTEXT_MAX_TARGET_LINES = 20,
+    DISPTEXT_RESULT_FALSE = 0,
+    DISPTEXT_RESULT_TRUE = 1
+};
+
 extern LONG DISPTEXT_LineTableLockFlag;
 extern WORD DISPTEXT_CurrentLineIndex;
 extern WORD DISPTEXT_TargetLineIndex;
@@ -27,7 +35,7 @@ void DISPTEXT_FinalizeLineTable(void)
         DISPTEXT_TargetLineIndex = (WORD)(idx + 1);
     }
 
-    DISPTEXT_BuildLinePointerTable(1);
+    DISPTEXT_BuildLinePointerTable(DISPTEXT_BUILD_LINE_PTRS_FLAG);
     DISPTEXT_CurrentLineIndex = 0;
 }
 
@@ -35,23 +43,23 @@ LONG DISPTEXT_SetLayoutParams(LONG widthPx, LONG targetLines, LONG currentLine)
 {
     DISPLIB_ResetTextBufferAndLineTables();
 
-    if (widthPx >= 0 && widthPx <= 624) {
+    if (widthPx >= 0 && widthPx <= DISPTEXT_MAX_LINE_WIDTH_PX) {
         DISPTEXT_LineWidthPx = widthPx;
     }
 
-    if (targetLines > 0 && targetLines <= 20) {
+    if (targetLines > 0 && targetLines <= DISPTEXT_MAX_TARGET_LINES) {
         DISPTEXT_TargetLineIndex = (WORD)targetLines;
     }
 
     DISPLIB_CommitCurrentLinePenAndAdvance(currentLine);
 
     if (DISPTEXT_LineWidthPx != widthPx) {
-        return 0;
+        return DISPTEXT_RESULT_FALSE;
     }
 
     if ((LONG)(UWORD)DISPTEXT_TargetLineIndex != targetLines) {
-        return 0;
+        return DISPTEXT_RESULT_FALSE;
     }
 
-    return 1;
+    return DISPTEXT_RESULT_TRUE;
 }
