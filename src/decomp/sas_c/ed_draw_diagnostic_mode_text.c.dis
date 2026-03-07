@@ -2,156 +2,172 @@
 __code:
 ED_DrawDiagnosticModeText:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              SUB.L          #$28,D0                  ;90bc 0000 0028 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$18,A7                  ;9efc 0018 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
 ___ED_DrawDiagnosticModeText__1:
-              PEA            ($1).w                   ;4878 0001 
+              MOVEQ.L        #$1,D7                   ;7e01 
+              MOVEQ.L        #$3,D6                   ;7c03 
+              MOVEQ.L        #$1,D5                   ;7a01 
+              MOVE.L         #$12c,$20(A7)            ;2f7c 0000 012c 0020 
+              MOVE.L         #$14a,$1c(A7)            ;2f7c 0000 014a 001c 
+              MOVEQ.L        #$28,D0                  ;7028 
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              MOVEQ.L        #$5a,D0                  ;705a 
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,$10(A7)               ;2f40 0010 
+              MOVEQ.L        #$2,D0                   ;7002 
+              MOVE.L         D0,$c(A7)                ;2f40 000c 
+              MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetAPen              ;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D5,(A7)                  ;2e85 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetDrMd              ;6100 0000 
               PEA            Global_STR_VIN_BCK_FWD_SSPD_AD_L(A4);486c 0000 
-              PEA            ($28).w                  ;4878 0028 
-              PEA            ($12c).w                 ;4878 012c 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
               PEA            Global_STR_TZ_DST_CONT_TXT_GRPH(A4);486c 0000 
-              PEA            ($5a).w                  ;4878 005a 
-              PEA            ($14a).w                 ;4878 014a 
+              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              PEA            ($3).w                   ;4878 0003 
+              MOVE.L         D6,(A7)                  ;2e86 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetAPen              ;6100 0000 
-              LEA            $44(A7),A7               ;4fef 0044 
-              PEA            ($12c).w                 ;4878 012c 
+              MOVE.L         $5c(A7),(A7)             ;2eaf 005c 
               PEA            ($64).w                  ;4878 0064 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOMove                 ;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+___ED_DrawDiagnosticModeText__2:
+              LEA            $48(A7),A7               ;4fef 0048 
+              MOVE.L         $10(A7),-(A7)            ;2f2f 0010 
               PEA            ED_DiagVinModeChar(A4)   ;486c 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOText                 ;6100 0000 
-              PEA            ($12c).w                 ;4878 012c 
+              MOVE.L         $30(A7),(A7)             ;2eaf 0030 
               PEA            ($be).w                  ;4878 00be 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOMove                 ;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         $2c(A7),(A7)             ;2eaf 002c 
               PEA            ESQ_STR_B(A4)            ;486c 0000 
-___ED_DrawDiagnosticModeText__2:
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOText                 ;6100 0000 
-              PEA            ($12c).w                 ;4878 012c 
+              MOVE.L         $48(A7),(A7)             ;2eaf 0048 
               PEA            ($118).w                 ;4878 0118 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOMove                 ;6100 0000 
-              LEA            $50(A7),A7               ;4fef 0050 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         $44(A7),(A7)             ;2eaf 0044 
               PEA            ESQ_STR_E(A4)            ;486c 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOText                 ;6100 0000 
-              PEA            ($12c).w                 ;4878 012c 
+              MOVE.L         $60(A7),(A7)             ;2eaf 0060 
               PEA            ($181).w                 ;4878 0181 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOMove                 ;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+              LEA            $4c(A7),A7               ;4fef 004c 
+              MOVE.L         $10(A7),-(A7)            ;2f2f 0010 
               PEA            ESQ_STR_SATELLITE_DELIVERED_SCRO(A4);486c 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOText                 ;6100 0000 
-              PEA            ($12c).w                 ;4878 012c 
+              MOVE.L         $30(A7),(A7)             ;2eaf 0030 
               PEA            ($1db).w                 ;4878 01db 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+___ED_DrawDiagnosticModeText__3:
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOMove                 ;6100 0000 
-              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         $28(A7),(A7)             ;2eaf 0028 
               PEA            ESQ_TAG_36(A4)           ;486c 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOText                 ;6100 0000 
-              LEA            $50(A7),A7               ;4fef 0050 
-              PEA            ($12c).w                 ;4878 012c 
+              MOVE.L         $48(A7),(A7)             ;2eaf 0048 
               PEA            ($253).w                 ;4878 0253 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOMove                 ;6100 0000 
-___ED_DrawDiagnosticModeText__3:
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         $44(A7),(A7)             ;2eaf 0044 
               PEA            ED_DiagScrollSpeedChar(A4);486c 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOText                 ;6100 0000 
-              PEA            ($14a).w                 ;4878 014a 
+              MOVE.L         $5c(A7),(A7)             ;2eaf 005c 
               PEA            ($96).w                  ;4878 0096 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOMove                 ;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+              LEA            $4c(A7),A7               ;4fef 004c 
+              MOVE.L         $10(A7),-(A7)            ;2f2f 0010 
               PEA            ESQ_STR_6(A4)            ;486c 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOText                 ;6100 0000 
-              PEA            ($14a).w                 ;4878 014a 
+              MOVE.L         $2c(A7),(A7)             ;2eaf 002c 
               PEA            ($f0).w                  ;4878 00f0 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOMove                 ;6100 0000 
-              LEA            $50(A7),A7               ;4fef 0050 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         $2c(A7),(A7)             ;2eaf 002c 
               PEA            ESQ_SecondarySlotModeFlagChar(A4);486c 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOText                 ;6100 0000 
-              PEA            ($14a).w                 ;4878 014a 
+              MOVE.L         $44(A7),(A7)             ;2eaf 0044 
               PEA            ($159).w                 ;4878 0159 
+___ED_DrawDiagnosticModeText__4:
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOMove                 ;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         $44(A7),(A7)             ;2eaf 0044 
               PEA            ESQ_STR_Y(A4)            ;486c 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOText                 ;6100 0000 
-              PEA            ($14a).w                 ;4878 014a 
+              MOVE.L         $5c(A7),(A7)             ;2eaf 005c 
               PEA            ($1c2).w                 ;4878 01c2 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
-___ED_DrawDiagnosticModeText__4:
               BSR.W          _LVOMove                 ;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+              LEA            $4c(A7),A7               ;4fef 004c 
+              MOVE.L         $10(A7),-(A7)            ;2f2f 0010 
               PEA            ED_DiagTextModeChar(A4)  ;486c 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOText                 ;6100 0000 
-              LEA            $50(A7),A7               ;4fef 0050 
-              PEA            ($14a).w                 ;4878 014a 
+              MOVE.L         $2c(A7),(A7)             ;2eaf 002c 
               PEA            ($22b).w                 ;4878 022b 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOMove                 ;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         $2c(A7),(A7)             ;2eaf 002c 
               PEA            ED_DiagGraphModeChar(A4) ;486c 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOText                 ;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D7,(A7)                  ;2e87 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetAPen              ;6100 0000 
-              LEA            $2c(A7),A7               ;4fef 002c 
+              LEA            $30(A7),A7               ;4fef 0030 
 ___ED_DrawDiagnosticModeText__5:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              ADD.W          #$18,A7                  ;defc 0018 
               RTS                                     ;4e75 
 __const:
 __strings:
