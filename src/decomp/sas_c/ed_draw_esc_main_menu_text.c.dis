@@ -1,0 +1,75 @@
+              SECTION      text,CODE
+__code:
+ED_DrawEscMainMenuText:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED_DrawEscMainMenuText__1:
+              PEA            ($6).w                   ;4878 0006 
+              BSR.W          ED_DrawMenuSelectionHighlight;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              PEA            Global_STR_EDIT_ADS(A4)  ;486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($5a).w                  ;4878 005a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            Global_STR_EDIT_ATTRIBUTES(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($78).w                  ;4878 0078 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            Global_STR_CHANGE_SCROLL_SPEED(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($96).w                  ;4878 0096 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+              PEA            Global_STR_DIAGNOSTIC_MODE(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($b4).w                  ;4878 00b4 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            Global_STR_SPECIAL_FUNCTIONS(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($d2).w                  ;4878 00d2 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            Global_STR_VERSIONS_SCREEN(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($f0).w                  ;4878 00f0 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+___ED_DrawEscMainMenuText__2:
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              LEA            $3c(A7),A7               ;4fef 003c 
+___ED_DrawEscMainMenuText__3:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_DrawMenuSelectionHighlight
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetAPen
+              XREF           _LVOSetDrMd
+              XREF           Global_STR_EDIT_ADS
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           Global_STR_EDIT_ATTRIBUTES
+              XREF           Global_STR_CHANGE_SCROLL_SPEED
+              XREF           Global_STR_DIAGNOSTIC_MODE
+              XREF           Global_STR_SPECIAL_FUNCTIONS
+              XREF           Global_STR_VERSIONS_SCREEN
+              XDEF           ED_DrawEscMainMenuText
+              END

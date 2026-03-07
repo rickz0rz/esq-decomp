@@ -1,0 +1,135 @@
+              SECTION      text,CODE
+__code:
+ED1_ExitEscMenu:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D2,-(A7)                 ;2f02 
+___ED1_ExitEscMenu__1:
+              CLR.W          COI_AttentionOverlayBusyFlag(A4);426c 0000 
+              PEA            ($190).w                 ;4878 0190 
+              PEA            ($2b8).w                 ;4878 02b8 
+              PEA            ($3).w                   ;4878 0003 
+              PEA            Global_REF_696_400_BITMAP(A4);486c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOInitBitMap           ;6100 0000 
+              MOVE.L         Global_HANDLE_PREVUEC_FONT(A4),(A7);2eac 0000 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetFont              ;6100 0000 
+              BSR.W          ED1_JMPTBL_GCOMMAND_ResetHighlig;6100 0000 
+              CLR.W          ED_DiagnosticsScreenActive(A4);426c 0000 
+              CLR.W          SCRIPT_StatusRefreshHoldFlag(A4);426c 0000 
+              BSR.W          GROUP_AM_JMPTBL_SCRIPT_PrimeBann;6100 0000 
+              CLR.W          ESQPARS2_EdDiagResetScratchFlag(A4);426c 0000 
+              BSR.W          ESQFUNC_JMPTBL_LADFUNC_UpdateHig;6100 0000 
+              BSR.W          ESQFUNC_UpdateDiskWarningAndRefr;6100 0000 
+              BSR.W          ED1_ClearEscMenuMode     ;6100 0000 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,NEWGRID_RefreshStateFlag(A4);2940 0000 
+              MOVE.L         NEWGRID_LastRefreshRequest(A4),(A7);2eac 0000 
+              MOVE.L         NEWGRID_MessagePumpSuspendFlag(A4),-(A7);2f2c 0000 
+              BSR.W          ESQFUNC_UpdateRefreshModeState;6100 0000 
+              BSR.W          ED1_JMPTBL_NEWGRID_DrawTopBorder;6100 0000 
+              LEA            $20(A7),A7               ;4fef 0020 
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          ED_SaveTextAdsOnExitFlag(A4),D0;b0ac 0000 
+              BNE.B          ___ED1_ExitEscMenu__3    ;6604 
+___ED1_ExitEscMenu__2:
+              BSR.W          ED1_JMPTBL_LADFUNC_SaveTextAdsTo;6100 0000 
+___ED1_ExitEscMenu__3:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,LOCAVAIL_FilterPrevClassId(A4);2940 0000 
+              MOVE.B         ED_SavedDiagGraphModeChar(A4),D0;102c 0000 
+              MOVE.B         ED_DiagGraphModeChar(A4),D1;122c 0000 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___ED1_ExitEscMenu__10   ;672e 
+___ED1_ExitEscMenu__4:
+              MOVEQ.L        #$4e,D2                  ;744e 
+              CMP.B          D2,D1                    ;b202 
+              BEQ.B          ___ED1_ExitEscMenu__7    ;6708 
+___ED1_ExitEscMenu__5:
+              CMP.B          D2,D0                    ;b002 
+              BNE.B          ___ED1_ExitEscMenu__7    ;6604 
+___ED1_ExitEscMenu__6:
+              BSR.W          ED1_WaitForFlagAndClearBit0;6100 0000 
+___ED1_ExitEscMenu__7:
+              MOVE.B         ED_DiagGraphModeChar(A4),D0;102c 0000 
+              CMP.B          D2,D0                    ;b002 
+              BNE.B          ___ED1_ExitEscMenu__10   ;6618 
+___ED1_ExitEscMenu__8:
+              MOVE.B         ED_SavedDiagGraphModeChar(A4),D0;102c 0000 
+              CMP.B          D2,D0                    ;b002 
+              BEQ.B          ___ED1_ExitEscMenu__10   ;6710 
+___ED1_ExitEscMenu__9:
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ESQIFF_GAdsBrushListHead(A4);486c 0000 
+              BSR.W          ESQIFF_JMPTBL_BRUSH_FreeBrushLis;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              CLR.L          ESQIFF_GAdsBrushListCount(A4);42ac 0000 
+___ED1_ExitEscMenu__10:
+              MOVE.W         SCRIPT_RuntimeMode(A4),D0;302c 0000 
+              BEQ.B          ___ED1_ExitEscMenu__12   ;6706 
+___ED1_ExitEscMenu__11:
+              MOVE.W         #$3,SCRIPT_RuntimeMode(A4);397c 0003 0000 
+___ED1_ExitEscMenu__12:
+              CLR.W          CTRL_BufferedByteCount(A4);426c 0000 
+              CLR.W          CTRL_HPreviousSample(A4) ;426c 0000 
+              CLR.W          CTRL_H(A4)               ;426c 0000 
+              CLR.W          Global_UIBusyFlag(A4)    ;426c 0000 
+              BSR.W          ED1_JMPTBL_GCOMMAND_SeedBannerFr;6100 0000 
+              BSR.W          ED_DrawBottomHelpBarBackground;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          ESQFUNC_JMPTBL_TEXTDISP_SetRastF;6100 0000 
+              BSR.W          ESQIFF_RunCopperRiseTransition;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              CLR.W          ESQPARS2_ReadModeFlags(A4);426c 0000 
+___ED1_ExitEscMenu__13:
+              MOVE.L         (A7)+,D2                 ;241f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           COI_AttentionOverlayBusyFlag
+              XREF           Global_REF_696_400_BITMAP
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOInitBitMap
+              XREF           Global_HANDLE_PREVUEC_FONT
+              XREF           Global_REF_RASTPORT_1
+              XREF           _LVOSetFont
+              XREF           ED1_JMPTBL_GCOMMAND_ResetHighlig
+              XREF           ED_DiagnosticsScreenActive
+              XREF           SCRIPT_StatusRefreshHoldFlag
+              XREF           GROUP_AM_JMPTBL_SCRIPT_PrimeBann
+              XREF           ESQPARS2_EdDiagResetScratchFlag
+              XREF           ESQFUNC_JMPTBL_LADFUNC_UpdateHig
+              XREF           ESQFUNC_UpdateDiskWarningAndRefr
+              XREF           ED1_ClearEscMenuMode
+              XREF           NEWGRID_RefreshStateFlag
+              XREF           NEWGRID_LastRefreshRequest
+              XREF           NEWGRID_MessagePumpSuspendFlag
+              XREF           ESQFUNC_UpdateRefreshModeState
+              XREF           ED1_JMPTBL_NEWGRID_DrawTopBorder
+              XREF           ED_SaveTextAdsOnExitFlag
+              XREF           ED1_JMPTBL_LADFUNC_SaveTextAdsTo
+              XREF           LOCAVAIL_FilterPrevClassId
+              XREF           ED_SavedDiagGraphModeChar
+              XREF           ED_DiagGraphModeChar
+              XREF           ED1_WaitForFlagAndClearBit0
+              XREF           ESQIFF_GAdsBrushListHead
+              XREF           ESQIFF_JMPTBL_BRUSH_FreeBrushLis
+              XREF           ESQIFF_GAdsBrushListCount
+              XREF           SCRIPT_RuntimeMode
+              XREF           CTRL_BufferedByteCount
+              XREF           CTRL_HPreviousSample
+              XREF           CTRL_H
+              XREF           Global_UIBusyFlag
+              XREF           ED1_JMPTBL_GCOMMAND_SeedBannerFr
+              XREF           ED_DrawBottomHelpBarBackground
+              XREF           ESQFUNC_JMPTBL_TEXTDISP_SetRastF
+              XREF           ESQIFF_RunCopperRiseTransition
+              XREF           ESQPARS2_ReadModeFlags
+              XDEF           ED1_ExitEscMenu
+              END
