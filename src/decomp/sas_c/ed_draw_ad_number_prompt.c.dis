@@ -2,10 +2,10 @@
 __code:
 ED_DrawAdNumberPrompt:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$68,D0                  ;90bc 0000 0068 
+              SUB.L          #$64,D0                  ;90bc 0000 0064 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$50,A7                  ;9efc 0050 
+              SUB.W          #$4c,A7                  ;9efc 004c 
               MOVEM.L        D2/D5/D6/D7,-(A7)        ;48e7 2700 
 ___ED_DrawAdNumberPrompt__1:
               MOVEQ.L        #$6,D7                   ;7e06 
@@ -13,91 +13,90 @@ ___ED_DrawAdNumberPrompt__1:
               MOVEQ.L        #$1,D5                   ;7a01 
               MOVEQ.L        #$1,D0                   ;7001 
               MOVEQ.L        #$6,D1                   ;7206 
-              MOVE.L         D1,$58(A7)               ;2f41 0058 
-              MOVEQ.L        #$28,D1                  ;7228 
               MOVE.L         D1,$54(A7)               ;2f41 0054 
-              MOVE.L         #$280,$50(A7)            ;2f7c 0000 0280 0050 
+              MOVEQ.L        #$28,D1                  ;7228 
+              MOVE.L         D1,$50(A7)               ;2f41 0050 
+              MOVE.L         #$280,$4c(A7)            ;2f7c 0000 0280 004c 
               MOVEQ.L        #$44,D1                  ;7244 
-              MOVE.L         D1,$4c(A7)               ;2f41 004c 
-              MOVEQ.L        #$62,D1                  ;7262 
               MOVE.L         D1,$48(A7)               ;2f41 0048 
-              MOVE.L         #$14a,$44(A7)            ;2f7c 0000 014a 0044 
-              MOVE.L         #$154,$40(A7)            ;2f7c 0000 0154 0040 
-              MOVE.L         #$172,$3c(A7)            ;2f7c 0000 0172 003c 
-              MOVE.L         #$168,$38(A7)            ;2f7c 0000 0168 0038 
-              MOVE.L         #$186,$34(A7)            ;2f7c 0000 0186 0034 
+              MOVEQ.L        #$62,D1                  ;7262 
+              MOVE.L         D1,$44(A7)               ;2f41 0044 
+              MOVE.L         #$14a,$40(A7)            ;2f7c 0000 014a 0040 
+              MOVE.L         #$154,$3c(A7)            ;2f7c 0000 0154 003c 
+              MOVE.L         #$172,$38(A7)            ;2f7c 0000 0172 0038 
+              MOVE.L         #$168,$34(A7)            ;2f7c 0000 0168 0034 
+              MOVE.L         #$186,$30(A7)            ;2f7c 0000 0186 0030 
               MOVEQ.L        #$5a,D1                  ;725a 
-              MOVE.L         D1,$30(A7)               ;2f41 0030 
+              MOVE.L         D1,$2c(A7)               ;2f41 002c 
               MOVEQ.L        #$2,D1                   ;7202 
               MOVEQ.L        #$c,D2                   ;740c 
-              MOVE.L         D2,$28(A7)               ;2f42 0028 
-              MOVEQ.L        #$e,D2                   ;740e 
               MOVE.L         D2,$24(A7)               ;2f42 0024 
-              MOVE.B         #$20,$20(A7)             ;1f7c 0020 0020 
-              CLR.B          $18(A7)                  ;422f 0018 
+              MOVEQ.L        #$e,D2                   ;740e 
+              MOVE.L         D2,$20(A7)               ;2f42 0020 
+              MOVE.B         #$20,$1c(A7)             ;1f7c 0020 001c 
               MOVE.L         D7,-(A7)                 ;2f07 
-              MOVE.L         D0,$20(A7)               ;2f40 0020 
-              MOVE.L         D0,$60(A7)               ;2f40 0060 
-              MOVE.L         D1,$18(A7)               ;2f41 0018 
-              MOVE.L         D1,$30(A7)               ;2f41 0030 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              MOVE.L         D0,$5c(A7)               ;2f40 005c 
+              MOVE.L         D1,$14(A7)               ;2f41 0014 
+              MOVE.L         D1,$2c(A7)               ;2f41 002c 
               BSR.W          ED_DrawHelpPanels        ;6100 0000 
               MOVE.L         D6,(A7)                  ;2e86 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetDrMd              ;6100 0000 
-              MOVE.L         $68(A7),(A7)             ;2eaf 0068 
+              MOVE.L         $64(A7),(A7)             ;2eaf 0064 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
-___ED_DrawAdNumberPrompt__2:
               BSR.W          _LVOSetAPen              ;6100 0000 
+___ED_DrawAdNumberPrompt__2:
               PEA            Global_STR_ENTER_AD_NUMBER_ONE_H(A4);486c 0000 
-              MOVE.L         $6c(A7),-(A7)            ;2f2f 006c 
-              MOVE.L         $60(A7),-(A7)            ;2f2f 0060 
+              MOVE.L         $68(A7),-(A7)            ;2f2f 0068 
+              MOVE.L         $5c(A7),-(A7)            ;2f2f 005c 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              MOVE.L         $50(A7),(A7)             ;2eaf 0050 
+              MOVE.L         $4c(A7),(A7)             ;2eaf 004c 
               MOVE.L         ED_MaxAdNumber(A4),-(A7) ;2f2c 0000 
               PEA            ED_EditBufferScratch(A4) ;486c 0000 
               BSR.W          GROUP_AL_JMPTBL_ESQ_WriteDecFixe;6100 0000 
               PEA            ED_EditBufferScratch(A4) ;486c 0000 
-              MOVE.L         $70(A7),-(A7)            ;2f2f 0070 
-              MOVE.L         $78(A7),-(A7)            ;2f2f 0078 
+              MOVE.L         $6c(A7),-(A7)            ;2f2f 006c 
+              MOVE.L         $74(A7),-(A7)            ;2f2f 0074 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
               PEA            Global_STR_LEFT_PARENTHESIS_THEN(A4);486c 0000 
-              MOVE.L         $7c(A7),-(A7)            ;2f2f 007c 
-              MOVE.L         $88(A7),-(A7)            ;2f2f 0088 
+              MOVE.L         $78(A7),-(A7)            ;2f2f 0078 
+              MOVE.L         $84(A7),-(A7)            ;2f2f 0084 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
               LEA            $4c(A7),A7               ;4fef 004c 
               PEA            Global_STR_PUSH_RETURN_TO_ENTER_(A4);486c 0000 
-              MOVE.L         $58(A7),-(A7)            ;2f2f 0058 
-              MOVE.L         $40(A7),-(A7)            ;2f2f 0040 
+              MOVE.L         $54(A7),-(A7)            ;2f2f 0054 
+              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
               PEA            Global_STR_SINGLE_SPACE_4(A4);486c 0000 
-              MOVE.L         $68(A7),-(A7)            ;2f2f 0068 
-              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
+              MOVE.L         $64(A7),-(A7)            ;2f2f 0064 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
               MOVE.L         D5,(A7)                  ;2e85 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetDrMd              ;6100 0000 
-              MOVE.L         $80(A7),(A7)             ;2eaf 0080 
+              MOVE.L         $7c(A7),(A7)             ;2eaf 007c 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetAPen              ;6100 0000 
-              MOVE.L         $78(A7),(A7)             ;2eaf 0078 
+              MOVE.L         $74(A7),(A7)             ;2eaf 0074 
+              MOVE.L         $7c(A7),-(A7)            ;2f2f 007c 
 ___ED_DrawAdNumberPrompt__3:
-              MOVE.L         $80(A7),-(A7)            ;2f2f 0080 
-              MOVE.L         $80(A7),-(A7)            ;2f2f 0080 
-              MOVE.L         $8c(A7),-(A7)            ;2f2f 008c 
+              MOVE.L         $7c(A7),-(A7)            ;2f2f 007c 
+              MOVE.L         $88(A7),-(A7)            ;2f2f 0088 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVORectFill             ;6100 0000 
               LEA            $44(A7),A7               ;4fef 0044 
-              MOVE.L         $5c(A7),-(A7)            ;2f2f 005c 
+              MOVE.L         $58(A7),-(A7)            ;2f2f 0058 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetAPen              ;6100 0000 
@@ -106,8 +105,8 @@ ___ED_DrawAdNumberPrompt__3:
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetDrMd              ;6100 0000 
               PEA            Global_STR_AD_NUMBER_QUESTIONMAR(A4);486c 0000 
-              MOVE.L         $6c(A7),-(A7)            ;2f2f 006c 
-              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
+              MOVE.L         $68(A7),-(A7)            ;2f2f 0068 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
               MOVE.L         D5,(A7)                  ;2e85 
@@ -115,31 +114,31 @@ ___ED_DrawAdNumberPrompt__3:
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetDrMd              ;6100 0000 
               LEA            $2c(A7),A7               ;4fef 002c 
-              MOVE.L         $28(A7),ED_EditCursorOffset(A4);296f 0028 0000 
-              CLR.L          $10(A7)                  ;42af 0010 
+              MOVE.L         $24(A7),ED_EditCursorOffset(A4);296f 0024 0000 
+              CLR.L          $14(A7)                  ;42af 0014 
 ___ED_DrawAdNumberPrompt__4:
-              MOVE.L         $10(A7),D0               ;202f 0010 
-              CMP.L          $24(A7),D0               ;b0af 0024 
+              MOVE.L         $14(A7),D0               ;202f 0014 
+              CMP.L          $20(A7),D0               ;b0af 0020 
               BGE.B          ___ED_DrawAdNumberPrompt__7;6c2a 
 ___ED_DrawAdNumberPrompt__5:
               LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
-              MOVE.B         $20(A7),$0(A0,D0.L)      ;11af 0020 0800 
-              MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
+              MOVE.B         $1c(A7),$0(A0,D0.L)      ;11af 001c 0800 
               MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
+              MOVE.L         $14(A7),-(A7)            ;2f2f 0014 
               BSR.W          GROUP_AL_JMPTBL_LADFUNC_PackNibb;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
-              MOVE.L         $10(A7),D1               ;222f 0010 
+              MOVE.L         $14(A7),D1               ;222f 0014 
               MOVE.B         D0,$0(A0,D1.L)           ;1180 1800 
 ___ED_DrawAdNumberPrompt__6:
-              ADDQ.L         #$1,$10(A7)              ;52af 0010 
+              ADDQ.L         #$1,$14(A7)              ;52af 0014 
               BRA.B          ___ED_DrawAdNumberPrompt__4;60cc 
 ___ED_DrawAdNumberPrompt__7:
-              MOVE.B         $18(A7),ED_AdNumberPromptStateBlock(A4);196f 0018 0000 
+              CLR.B          ED_AdNumberPromptStateBlock(A4);422c 0000 
               BSR.W          ED_RedrawCursorChar      ;6100 0000 
 ___ED_DrawAdNumberPrompt__8:
               MOVEM.L        (A7)+,D2/D5/D6/D7        ;4cdf 00e4 
-              ADD.W          #$50,A7                  ;defc 0050 
+              ADD.W          #$4c,A7                  ;defc 004c 
               RTS                                     ;4e75 
 __const:
 __strings:

@@ -48,7 +48,6 @@ void ED_DrawAdNumberPrompt(void)
     const UBYTE SPACE_CHAR = 0x20;
     const LONG NIBBLE_HI = 2;
     const LONG NIBBLE_LO = 1;
-    const UBYTE STATE_RESET = 0;
     LONG i;
 
     ED_DrawHelpPanels(PANEL_MODE_EDIT_AD);
@@ -83,6 +82,6 @@ void ED_DrawAdNumberPrompt(void)
         ED_EditBufferLive[i] = (UBYTE)GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte(NIBBLE_HI, NIBBLE_LO);
     }
 
-    ED_AdNumberPromptStateBlock = STATE_RESET;
+    ED_AdNumberPromptStateBlock = 0;
     ED_RedrawCursorChar();
 }

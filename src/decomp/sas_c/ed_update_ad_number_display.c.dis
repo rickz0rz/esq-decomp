@@ -2,46 +2,52 @@
 __code:
 ED_UpdateAdNumberDisplay:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$38,D0                  ;90bc 0000 0038 
+              SUB.L          #$44,D0                  ;90bc 0000 0044 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$28,A7                  ;9efc 0028 
-              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+              SUB.W          #$34,A7                  ;9efc 0034 
+              MOVEM.L        D4/D5/D6/D7,-(A7)        ;48e7 0f00 
 ___ED_UpdateAdNumberDisplay__1:
+              MOVEQ.L        #$5a,D7                  ;7e5a 
+              ADD.L          D7,D7                    ;de87 
+              MOVEQ.L        #$28,D6                  ;7c28 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVEQ.L        #$1,D4                   ;7801 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
               MOVE.L         Global_REF_LONG_CURRENT_EDITING_(A4),-(A7);2f2c 0000 
               PEA            Global_STR_AD_NUMBER_FORMATTED(A4);486c 0000 
-              PEA            $10(A7)                  ;486f 0010 
+              PEA            $20(A7)                  ;486f 0020 
               BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
-              PEA            $14(A7)                  ;486f 0014 
-              PEA            ($28).w                  ;4878 0028 
-              PEA            ($b4).w                  ;4878 00b4 
+              PEA            $24(A7)                  ;486f 0024 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
-              CLR.L          ED_AdActiveFlag(A4)      ;42ac 0000 
-              MOVE.L         Global_REF_LONG_CURRENT_EDITING_(A4),D7;2e2c 0000 
-              MOVE.L         D7,D0                    ;2007 
-              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         D5,ED_AdActiveFlag(A4)   ;2945 0000 
+              MOVE.L         Global_REF_LONG_CURRENT_EDITING_(A4),D0;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
               LEA            ED_AdRecordPtrTable(A4),A0;41ec 0000 
-              MOVE.L         $0(A0,D0.L),A0           ;2070 0800 
-              MOVE.W         (A0),D6                  ;3c10 
-              TST.W          D6                       ;4a46 
-              BLE.B          ___ED_UpdateAdNumberDisplay__3;6f06 
+              MOVE.L         $0(A0,D1.L),A0           ;2070 1800 
+              MOVE.W         (A0),D1                  ;3210 
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
+              MOVE.W         D1,$12(A7)               ;3f41 0012 
+              BLE.B          ___ED_UpdateAdNumberDisplay__3;6f04 
 ___ED_UpdateAdNumberDisplay__2:
-              MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,ED_AdActiveFlag(A4)   ;2940 0000 
+              MOVE.L         D4,ED_AdActiveFlag(A4)   ;2944 0000 
 ___ED_UpdateAdNumberDisplay__3:
-              MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,ED_AdDisplayResetFlag(A4);2940 0000 
-              CLR.L          ED_ViewportOffset(A4)    ;42ac 0000 
-              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D4,ED_AdDisplayResetFlag(A4);2944 0000 
+              MOVE.L         D5,ED_ViewportOffset(A4) ;2945 0000 
+              MOVE.L         $40(A7),D0               ;202f 0040 
               MOVE.L         D0,ED_AdDisplayStateLatchBlockB(A4);2940 0000 
               MOVE.L         D0,ED_ActiveIndicatorCachedState(A4);2940 0000 
               MOVE.L         D0,ED_AdDisplayStateLatchA(A4);2940 0000 
               BSR.W          ED_UpdateActiveInactiveIndicator;6100 0000 
 ___ED_UpdateAdNumberDisplay__4:
-              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
-              ADD.W          #$28,A7                  ;defc 0028 
+              MOVEM.L        (A7)+,D4/D5/D6/D7        ;4cdf 00f0 
+              ADD.W          #$34,A7                  ;defc 0034 
               RTS                                     ;4e75 
 __const:
 __strings:
