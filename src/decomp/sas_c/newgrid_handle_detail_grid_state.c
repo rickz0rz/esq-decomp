@@ -8,7 +8,7 @@ extern UBYTE GCOMMAND_MplexDetailLayoutFlag;
 extern LONG GCOMMAND_MplexDetailInitialLineIndex;
 extern UBYTE NEWGRID_ChannelRowFmt[];
 
-extern WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, LONG keyIndex);
+extern LONG NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, LONG keyIndex);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams();
 extern void NEWGRID_DrawGridEntry();
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex();
@@ -33,7 +33,7 @@ LONG NEWGRID_HandleDetailGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
     }
 
     if (NEWGRID_DetailGridStateLatch == 4) {
-        rowIndex = NEWGRID_UpdatePresetEntry(&entry, &aux, rowIndex, keyIndex);
+        rowIndex = (WORD)NEWGRID_UpdatePresetEntry(&entry, &aux, rowIndex, keyIndex);
         if (entry == 0 || aux == 0) {
             return NEWGRID_DetailGridStateLatch;
         }
