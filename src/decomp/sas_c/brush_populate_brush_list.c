@@ -24,8 +24,8 @@ void BRUSH_NormalizeBrushNames(void **head_ptr);
 
 void BRUSH_PopulateBrushList(void *descriptor, void **out_head_ptr)
 {
-    UBYTE *cur;
-    UBYTE *tail;
+    UBYTE *descriptorCursor;
+    UBYTE *listTail;
 
     (void)AbsExecBase;
     _LVOForbid();
@@ -33,21 +33,21 @@ void BRUSH_PopulateBrushList(void *descriptor, void **out_head_ptr)
     _LVOPermit();
 
     *out_head_ptr = (void *)BRUSH_NULL;
-    tail = (UBYTE *)BRUSH_NULL;
-    cur = (UBYTE *)descriptor;
-    while (cur != (UBYTE *)BRUSH_NULL) {
+    listTail = (UBYTE *)BRUSH_NULL;
+    descriptorCursor = (UBYTE *)descriptor;
+    while (descriptorCursor != (UBYTE *)BRUSH_NULL) {
         UBYTE *next_desc;
         void *loaded;
 
-        loaded = BRUSH_LoadBrushAsset((void *)cur);
-        next_desc = *(UBYTE **)(cur + BRUSH_DESCRIPTOR_NEXT_OFFSET);
+        loaded = BRUSH_LoadBrushAsset((void *)descriptorCursor);
+        next_desc = *(UBYTE **)(descriptorCursor + BRUSH_DESCRIPTOR_NEXT_OFFSET);
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_BRUSH_C_8,
             BRUSH_DESC_FREE_LINE,
-            (void *)cur,
+            (void *)descriptorCursor,
             BRUSH_DESCRIPTOR_NODE_SIZE
         );
-        cur = next_desc;
+        descriptorCursor = next_desc;
 
         if (loaded == (void *)BRUSH_NULL) {
             continue;
@@ -56,9 +56,9 @@ void BRUSH_PopulateBrushList(void *descriptor, void **out_head_ptr)
         if (*out_head_ptr == (void *)BRUSH_NULL) {
             *out_head_ptr = loaded;
         } else {
-            *(void **)(tail + BRUSH_NODE_NEXT_OFFSET) = loaded;
+            *(void **)(listTail + BRUSH_NODE_NEXT_OFFSET) = loaded;
         }
-        tail = (UBYTE *)loaded;
+        listTail = (UBYTE *)loaded;
     }
 
     PARSEINI_ParsedDescriptorListHead = (void *)BRUSH_NULL;
