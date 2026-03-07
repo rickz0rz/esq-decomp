@@ -2,6 +2,10 @@ typedef unsigned char UBYTE;
 typedef long LONG;
 
 enum {
+    BRUSH_NULL_BYTE = 0,
+    BRUSH_LABEL_COMPARE_LEN = 2,
+    BRUSH_CODE_BUFFER_LEN = 3,
+    BRUSH_CODE_TERMINATOR_INDEX = 2,
     BRUSH_NODE_LABEL_OFFSET = 0x21,
     BRUSH_NODE_NEXT_OFFSET = 368
 };
@@ -23,7 +27,7 @@ void *BRUSH_FindBrushByPredicate(void *key, void *list_head_ptr);
 void BRUSH_SelectBrushByLabel(const UBYTE *label)
 {
     void *cur;
-    UBYTE code[3];
+    UBYTE code[BRUSH_CODE_BUFFER_LEN];
     const UBYTE *src;
     UBYTE *dst;
 
@@ -31,30 +35,30 @@ void BRUSH_SelectBrushByLabel(const UBYTE *label)
     dst = BRUSH_LabelScratch;
     do {
         *dst++ = *src;
-    } while (*src++ != (UBYTE)0);
+    } while (*src++ != (UBYTE)BRUSH_NULL_BYTE);
 
     cur = ESQIFF_BrushIniListHead;
-    BRUSH_SelectedNode = (void *)0;
+    BRUSH_SelectedNode = (void *)BRUSH_NULL_BYTE;
 
-    if (GROUP_AA_JMPTBL_STRING_CompareN(label, BRUSH_STR_ALIAS_CODE_00, 2) == 0 ||
-        GROUP_AA_JMPTBL_STRING_CompareN(label, BRUSH_STR_ALIAS_CODE_11, 2) == 0) {
-        GROUP_AG_JMPTBL_STRING_CopyPadNul(code, BRUSH_STR_ALIAS_CODE_DT, 2);
+    if (GROUP_AA_JMPTBL_STRING_CompareN(label, BRUSH_STR_ALIAS_CODE_00, BRUSH_LABEL_COMPARE_LEN) == 0 ||
+        GROUP_AA_JMPTBL_STRING_CompareN(label, BRUSH_STR_ALIAS_CODE_11, BRUSH_LABEL_COMPARE_LEN) == 0) {
+        GROUP_AG_JMPTBL_STRING_CopyPadNul(code, BRUSH_STR_ALIAS_CODE_DT, BRUSH_LABEL_COMPARE_LEN);
     } else {
-        GROUP_AG_JMPTBL_STRING_CopyPadNul(code, label, 2);
+        GROUP_AG_JMPTBL_STRING_CopyPadNul(code, label, BRUSH_LABEL_COMPARE_LEN);
     }
-    code[2] = 0;
+    code[BRUSH_CODE_TERMINATOR_INDEX] = BRUSH_NULL_BYTE;
 
-    while (cur != (void *)0) {
+    while (cur != (void *)BRUSH_NULL_BYTE) {
         UBYTE *node;
 
         node = (UBYTE *)cur;
-        if (GROUP_AA_JMPTBL_STRING_CompareN(node + BRUSH_NODE_LABEL_OFFSET, code, 2) == 0) {
+        if (GROUP_AA_JMPTBL_STRING_CompareN(node + BRUSH_NODE_LABEL_OFFSET, code, BRUSH_LABEL_COMPARE_LEN) == 0) {
             BRUSH_SelectedNode = cur;
         }
         cur = *(void **)(node + BRUSH_NODE_NEXT_OFFSET);
     }
 
-    if (BRUSH_SelectedNode == (void *)0) {
+    if (BRUSH_SelectedNode == (void *)BRUSH_NULL_BYTE) {
         BRUSH_SelectedNode = BRUSH_FindBrushByPredicate(BRUSH_STR_FALLBACK_DITHER, &ESQIFF_BrushIniListHead);
     }
 
