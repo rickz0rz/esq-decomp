@@ -14,10 +14,10 @@ LONG COI_GetAnimFieldPointerByMode(void *entry, LONG slot, LONG mode);
 
 LONG CLEANUP_TestEntryFlagYAndBit1(void *entry, UWORD slot, LONG idx)
 {
-    UBYTE *p;
+    UBYTE *flagsText;
 
-    p = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
-    if (p == (UBYTE *)0) {
+    flagsText = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
+    if (flagsText == (UBYTE *)0) {
         return 0;
     }
 
@@ -25,7 +25,7 @@ LONG CLEANUP_TestEntryFlagYAndBit1(void *entry, UWORD slot, LONG idx)
         return 0;
     }
 
-    if (p[idx] != ENTRY_FLAG_Y_CHAR) {
+    if (flagsText[idx] != ENTRY_FLAG_Y_CHAR) {
         return 0;
     }
 
