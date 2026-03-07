@@ -25,6 +25,19 @@ extern LONG TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const 
 
 LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG unusedArg, UWORD mode, UBYTE mask)
 {
+    const LONG GROUP_PRIMARY = 1;
+    const LONG GROUP_SECONDARY = 2;
+    const LONG MODE_PREV = 1;
+    const LONG MODE_NEXT = 2;
+    const LONG MODE_PREV_BEFORE = 3;
+    const LONG SLOT_FIRST = 1;
+    const LONG SLOT_MAX = 49;
+    const LONG SLOT_NONE = 0;
+    const LONG ENTRY_BITMAP_OFFSET = 28;
+    const UBYTE MASK_SLOT_BLOCKED = 0x80u;
+    const LONG BIT_TEST_TRUE = -1;
+    const UBYTE CH_NUL = 0;
+    const LONG MATCH_TRUE = -1;
     TextdispAux *aux;
     UBYTE *entry;
     UBYTE *inputCtrl;
@@ -49,54 +62,56 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG unusedArg, UWORD mode, UBYT
     inputHasQuotes = 0;
     entryHasQuotes = 0;
 
-    if (input[0] == 0) {
-        return 49;
+    if (input[0] == CH_NUL) {
+        return SLOT_MAX;
     }
 
-    if (TEXTDISP_ActiveGroupId == 1) {
+    if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
         slot = (LONG)CLOCK_HalfHourSlotIndex;
-        aux = (TextdispAux *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, 1);
-        entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, 1);
+        aux = (TextdispAux *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+            (LONG)TEXTDISP_CurrentMatchIndex, GROUP_PRIMARY);
+        entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, GROUP_PRIMARY);
     } else {
-        slot = 1;
-        aux = (TextdispAux *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, 2);
-        entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, 2);
+        slot = SLOT_FIRST;
+        aux = (TextdispAux *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+            (LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
+        entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
     }
 
-    if (mode == 2) {
-        if (TEXTDISP_ActiveGroupId == 1) {
+    if (mode == MODE_NEXT) {
+        if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
             slot = (LONG)CLOCK_HalfHourSlotIndex + 1;
         } else {
-            slot = 1;
+            slot = SLOT_FIRST;
         }
-    } else if (mode == 1) {
+    } else if (mode == MODE_PREV) {
         slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, slot);
-        if (slot == 0 || (aux->slotMask[(UWORD)slot] & 0x80u) != 0) {
-            if (TEXTDISP_ActiveGroupId == 1) {
+        if (slot == SLOT_NONE || (aux->slotMask[(UWORD)slot] & MASK_SLOT_BLOCKED) != 0) {
+            if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
                 slot = (LONG)CLOCK_HalfHourSlotIndex;
             } else {
-                slot = 1;
+                slot = SLOT_FIRST;
             }
         }
-    } else if (mode == 3) {
+    } else if (mode == MODE_PREV_BEFORE) {
         slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, slot - 1);
-        if (slot == 0 || (aux->slotMask[(UWORD)slot] & 0x80u) != 0) {
-            if (TEXTDISP_ActiveGroupId == 1) {
+        if (slot == SLOT_NONE || (aux->slotMask[(UWORD)slot] & MASK_SLOT_BLOCKED) != 0) {
+            if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
                 slot = (LONG)CLOCK_HalfHourSlotIndex;
             } else {
-                slot = 1;
+                slot = SLOT_FIRST;
             }
         }
     } else {
-        slot = 1;
+        slot = SLOT_FIRST;
     }
 
     inputCtrl = TEXTDISP_FindControlToken(input);
     inputLen = TEXTDISP_FindQuotedSpan(input, &inputStart, inputCtrl, &inputHasQuotes);
     inputSaved = inputStart[inputLen];
-    inputStart[inputLen] = 0;
+    inputStart[inputLen] = CH_NUL;
 
-    while (slot < 49) {
+    while (slot < SLOT_MAX) {
         if (aux->titlePtrBySlot[(UWORD)slot] == (UBYTE *)0) {
             slot++;
             continue;
@@ -107,7 +122,7 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG unusedArg, UWORD mode, UBYT
             continue;
         }
 
-        if (TLIBA2_JMPTBL_ESQ_TestBit1Based((void *)(entry + 28), slot) != -1) {
+        if (TLIBA2_JMPTBL_ESQ_TestBit1Based((void *)(entry + ENTRY_BITMAP_OFFSET), slot) != BIT_TEST_TRUE) {
             slot++;
             continue;
         }
@@ -117,26 +132,26 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG unusedArg, UWORD mode, UBYT
 
         tokenOk = 0;
         if (inputCtrl == (UBYTE *)0) {
-            tokenOk = 1;
+            tokenOk = GROUP_PRIMARY;
         } else if (entryCtrl != (UBYTE *)0 && entryCtrl[0] == inputCtrl[0]) {
-            tokenOk = 1;
+            tokenOk = GROUP_PRIMARY;
         }
 
         isMatch = 0;
         if (tokenOk != 0) {
             entryLen = TEXTDISP_FindQuotedSpan(entryTitle, &entryStart, entryCtrl, &entryHasQuotes);
             entrySaved = entryStart[entryLen];
-            entryStart[entryLen] = 0;
+            entryStart[entryLen] = CH_NUL;
 
             if (inputHasQuotes != 0) {
                 if (entryHasQuotes != 0 && inputLen == entryLen &&
                     STRING_CompareNoCase((const char *)inputStart, (const char *)entryStart) == 0) {
-                    isMatch = -1;
+                    isMatch = MATCH_TRUE;
                 }
             } else {
                 if (inputLen <= entryLen &&
                     TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold((const char *)entryStart, (const char *)inputStart) != 0) {
-                    isMatch = -1;
+                    isMatch = MATCH_TRUE;
                 }
             }
 

@@ -2,28 +2,46 @@
 __code:
 TEXTDISP_BuildMatchIndexList:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              SUB.L          #$3c,D0                  ;90bc 0000 003c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$8,A7                   ;514f 
-              MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
+              SUB.W          #$34,A7                  ;9efc 0034 
+              MOVEM.L        D2/D3/D5/D6/D7/A2/A3/A5,-(A7);48e7 3734 
 ___TEXTDISP_BuildMatchIndexList__1:
-              MOVE.W         $2e(A7),D7               ;3e2f 002e 
-              MOVE.L         $28(A7),A5               ;2a6f 0028 
-              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.W         $5e(A7),D7               ;3e2f 005e 
+              MOVE.L         $58(A7),A5               ;2a6f 0058 
+              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,$50(A7)               ;2f40 0050 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
+              MOVEQ.L        #$1b,D0                  ;701b 
+              MOVE.L         D0,$48(A7)               ;2f40 0048 
+              MOVEQ.L        #$28,D0                  ;7028 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVEQ.L        #$3,D0                   ;7003 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
+              MOVEQ.L        #$4,D0                   ;7004 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
+              MOVEQ.L        #$7,D0                   ;7007 
+              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              MOVE.W         #$45,$34(A7)             ;3f7c 0045 0034 
+              CLR.L          $20(A7)                  ;42af 0020 
               MOVE.L         A5,D0                    ;200d 
-              BEQ.W          ___TEXTDISP_BuildMatchIndexList__41;6700 0160 
+              BNE.B          ___TEXTDISP_BuildMatchIndexList__3;6606 
 ___TEXTDISP_BuildMatchIndexList__2:
+              MOVE.L         D5,D0                    ;2005 
+              BRA.W          ___TEXTDISP_BuildMatchIndexList__41;6000 01b8 
 ___TEXTDISP_BuildMatchIndexList__3:
               PEA            TEXTDISP_Tag_PPV(A4)     ;486c 0000 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          UNKNOWN_JMPTBL_ESQ_WildcardMatch;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
               BNE.B          ___TEXTDISP_BuildMatchIndexList__5;6608 
 ___TEXTDISP_BuildMatchIndexList__4:
-              MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         $50(A7),$28(A7)          ;2f6f 0050 0028 
               BRA.B          ___TEXTDISP_BuildMatchIndexList__8;6022 
 ___TEXTDISP_BuildMatchIndexList__5:
               PEA            TEXTDISP_Tag_SBE(A4)     ;486c 0000 
@@ -33,28 +51,28 @@ ___TEXTDISP_BuildMatchIndexList__5:
               TST.L          D0                       ;4a80 
               BNE.B          ___TEXTDISP_BuildMatchIndexList__7;660e 
 ___TEXTDISP_BuildMatchIndexList__6:
-              MOVE.W         #$1,TEXTDISP_SbeFilterActiveFlag(A4);397c 0001 0000 
-              MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         $50(A7),D0               ;202f 0050 
+              MOVE.W         D0,TEXTDISP_SbeFilterActiveFlag(A4);3940 0000 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
               BRA.B          ___TEXTDISP_BuildMatchIndexList__8;6004 
 ___TEXTDISP_BuildMatchIndexList__7:
-              CLR.L          $20(A7)                  ;42af 0020 
+              MOVE.L         D5,$28(A7)               ;2f45 0028 
 ___TEXTDISP_BuildMatchIndexList__8:
               PEA            TEXTDISP_Tag_SPORTS(A4)  ;486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          UNKNOWN_JMPTBL_ESQ_WildcardMatch;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___TEXTDISP_BuildMatchIndexList__10;6604 
+              BNE.B          ___TEXTDISP_BuildMatchIndexList__10;6606 
 ___TEXTDISP_BuildMatchIndexList__9:
-              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         $4c(A7),D0               ;202f 004c 
               BRA.B          ___TEXTDISP_BuildMatchIndexList__11;6002 
 ___TEXTDISP_BuildMatchIndexList__10:
-              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D5,D0                    ;2005 
 ___TEXTDISP_BuildMatchIndexList__11:
               PEA            TEXTDISP_Tag_SPT_Filter(A4);486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
               BSR.W          UNKNOWN_JMPTBL_ESQ_WildcardMatch;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
@@ -67,121 +85,140 @@ ___TEXTDISP_BuildMatchIndexList__13:
               BSR.W          UNKNOWN_JMPTBL_ESQ_WildcardMatch;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___TEXTDISP_BuildMatchIndexList__15;660c 
+              BNE.B          ___TEXTDISP_BuildMatchIndexList__15;660e 
 ___TEXTDISP_BuildMatchIndexList__14:
-              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         $50(A7),D0               ;202f 0050 
               MOVE.W         D0,TEXTDISP_FindModeActiveFlag(A4);3940 0000 
               LEA            Global_STR_ASTERISK_3(A4),A5;4bec 0000 
-              BRA.B          ___TEXTDISP_BuildMatchIndexList__16;6004 
+              BRA.B          ___TEXTDISP_BuildMatchIndexList__16;6006 
 ___TEXTDISP_BuildMatchIndexList__15:
-              CLR.W          TEXTDISP_FindModeActiveFlag(A4);426c 0000 
+              MOVE.L         D5,D0                    ;2005 
+              MOVE.W         D0,TEXTDISP_FindModeActiveFlag(A4);3940 0000 
 ___TEXTDISP_BuildMatchIndexList__16:
+              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_ActiveGroupId(A4),D0;302c 0000 
-              SUBQ.W         #$1,D0                   ;5340 
-              BNE.B          ___TEXTDISP_BuildMatchIndexList__18;660a 
+              CMP.L          D6,D0                    ;b086 
+              BNE.B          ___TEXTDISP_BuildMatchIndexList__18;6608 
 ___TEXTDISP_BuildMatchIndexList__17:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
-              MOVE.L         D0,D4                    ;2800 
-              BRA.B          ___TEXTDISP_BuildMatchIndexList__19;6008 
+              BRA.B          ___TEXTDISP_BuildMatchIndexList__19;6006 
 ___TEXTDISP_BuildMatchIndexList__18:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_SecondaryGroupEntryCoun(A4),D0;302c 0000 
-              MOVE.L         D0,D4                    ;2800 
 ___TEXTDISP_BuildMatchIndexList__19:
-              MOVEQ.L        #$0,D5                   ;7a00 
+              CLR.L          $30(A7)                  ;42af 0030 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
 ___TEXTDISP_BuildMatchIndexList__20:
-              CMP.L          D4,D5                    ;ba84 
-              BGE.W          ___TEXTDISP_BuildMatchIndexList__39;6c00 00b4 
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              CMP.L          $2c(A7),D0               ;b0af 002c 
+              BGE.W          ___TEXTDISP_BuildMatchIndexList__39;6c00 00fa 
 ___TEXTDISP_BuildMatchIndexList__21:
-              MOVE.W         TEXTDISP_ActiveGroupId(A4),D0;302c 0000 
-              SUBQ.W         #$1,D0                   ;5340 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         TEXTDISP_ActiveGroupId(A4),D1;322c 0000 
+              CMP.L          D6,D1                    ;b286 
               BNE.B          ___TEXTDISP_BuildMatchIndexList__23;6616 
 ___TEXTDISP_BuildMatchIndexList__22:
-              MOVE.L         D5,D0                    ;2005 
-              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
               LEA            TEXTDISP_PrimaryTitlePtrTable(A4),A0;41ec 0000 
-              MOVE.L         $0(A0,D0.L),A3           ;2670 0800 
+              MOVE.L         $0(A0,D1.L),A3           ;2670 1800 
               LEA            TEXTDISP_PrimaryEntryPtrTable(A4),A0;41ec 0000 
-              MOVE.L         $0(A0,D0.L),A2           ;2470 0800 
+              MOVE.L         $0(A0,D1.L),A2           ;2470 1800 
               BRA.B          ___TEXTDISP_BuildMatchIndexList__24;6014 
 ___TEXTDISP_BuildMatchIndexList__23:
-              MOVE.L         D5,D0                    ;2005 
-              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
               LEA            TEXTDISP_SecondaryTitlePtrTable(A4),A0;41ec 0000 
-              MOVE.L         $0(A0,D0.L),A3           ;2670 0800 
+              MOVE.L         $0(A0,D1.L),A3           ;2670 1800 
               LEA            TEXTDISP_SecondaryEntryPtrTable(A4),A0;41ec 0000 
-              MOVE.L         $0(A0,D0.L),A2           ;2470 0800 
+              MOVE.L         $0(A0,D1.L),A2           ;2470 1800 
 ___TEXTDISP_BuildMatchIndexList__24:
-              BTST           #$3,$1b(A2)              ;082a 0003 001b 
-              BEQ.B          ___TEXTDISP_BuildMatchIndexList__26;6704 
+              MOVE.L         $40(A7),D1               ;222f 0040 
+              MOVEQ.L        #$0,D2                   ;7400 
+              BSET           D1,D2                    ;03c2 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.L         $48(A7),D3               ;262f 0048 
+              MOVE.B         $0(A2,D3.L),D1           ;1232 3800 
+              AND.L          D2,D1                    ;c282 
+              BEQ.B          ___TEXTDISP_BuildMatchIndexList__26;6706 
 ___TEXTDISP_BuildMatchIndexList__25:
-              ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___TEXTDISP_BuildMatchIndexList__20;60bc 
+              ADDQ.L         #$1,$30(A7)              ;52af 0030 
+              BRA.B          ___TEXTDISP_BuildMatchIndexList__20;60a4 
 ___TEXTDISP_BuildMatchIndexList__26:
-              MOVEQ.L        #$45,D0                  ;7045 
-              CMP.W          D0,D7                    ;be40 
-              BNE.B          ___TEXTDISP_BuildMatchIndexList__29;660c 
+              CMP.W          $34(A7),D7               ;be6f 0034 
+              BNE.B          ___TEXTDISP_BuildMatchIndexList__29;661c 
 ___TEXTDISP_BuildMatchIndexList__27:
-              BTST           #$7,$28(A2)              ;082a 0007 0028 
-              BNE.B          ___TEXTDISP_BuildMatchIndexList__29;6604 
+              MOVE.L         $38(A7),D0               ;202f 0038 
+              MOVEQ.L        #$0,D1                   ;7200 
+              BSET           D0,D1                    ;01c1 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $44(A7),D2               ;242f 0044 
+              MOVE.B         $0(A2,D2.L),D0           ;1032 2800 
+              AND.L          D1,D0                    ;c081 
+              BNE.B          ___TEXTDISP_BuildMatchIndexList__29;6606 
 ___TEXTDISP_BuildMatchIndexList__28:
-              ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___TEXTDISP_BuildMatchIndexList__20;60aa 
+              ADDQ.L         #$1,$30(A7)              ;52af 0030 
+              BRA.B          ___TEXTDISP_BuildMatchIndexList__20;6082 
 ___TEXTDISP_BuildMatchIndexList__29:
-              TST.L          $20(A7)                  ;4aaf 0020 
-              BEQ.B          ___TEXTDISP_BuildMatchIndexList__32;6718 
+              TST.L          $28(A7)                  ;4aaf 0028 
+              BEQ.B          ___TEXTDISP_BuildMatchIndexList__32;672c 
 ___TEXTDISP_BuildMatchIndexList__30:
-              BTST           #$4,$1b(A2)              ;082a 0004 001b 
-              BEQ.B          ___TEXTDISP_BuildMatchIndexList__32;6710 
+              MOVE.L         $3c(A7),D0               ;202f 003c 
+              MOVEQ.L        #$0,D1                   ;7200 
+              BSET           D0,D1                    ;01c1 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         $0(A2,D3.L),D0           ;1032 3800 
+              AND.L          D1,D0                    ;c081 
+              BEQ.B          ___TEXTDISP_BuildMatchIndexList__32;671a 
 ___TEXTDISP_BuildMatchIndexList__31:
               LEA            TEXTDISP_CandidateIndexList(A4),A0;41ec 0000 
-              ADD.L          D6,A0                    ;d1c6 
-              ADDQ.L         #$1,D6                   ;5286 
-              MOVE.L         D5,D0                    ;2005 
+              ADD.L          $20(A7),A0               ;d1ef 0020 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+              MOVE.L         $30(A7),D0               ;202f 0030 
               MOVE.B         D0,(A0)                  ;1080 
-              ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___TEXTDISP_BuildMatchIndexList__20;608c 
+              ADDQ.L         #$1,$30(A7)              ;52af 0030 
+              BRA.W          ___TEXTDISP_BuildMatchIndexList__20;6000 ff52 
 ___TEXTDISP_BuildMatchIndexList__32:
-              TST.L          $1c(A7)                  ;4aaf 001c 
-              BEQ.B          ___TEXTDISP_BuildMatchIndexList__36;671e 
+              TST.L          $24(A7)                  ;4aaf 0024 
+              BEQ.B          ___TEXTDISP_BuildMatchIndexList__36;6726 
 ___TEXTDISP_BuildMatchIndexList__33:
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          TEXTDISP_ShouldOpenEditorForEntr;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               TST.L          D0                       ;4a80 
-              BEQ.B          ___TEXTDISP_BuildMatchIndexList__35;670c 
+              BEQ.B          ___TEXTDISP_BuildMatchIndexList__35;6712 
 ___TEXTDISP_BuildMatchIndexList__34:
               LEA            TEXTDISP_CandidateIndexList(A4),A0;41ec 0000 
-              ADD.L          D6,A0                    ;d1c6 
-              ADDQ.L         #$1,D6                   ;5286 
-              MOVE.L         D5,D0                    ;2005 
+              ADD.L          $20(A7),A0               ;d1ef 0020 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+              MOVE.L         $30(A7),D0               ;202f 0030 
               MOVE.B         D0,(A0)                  ;1080 
 ___TEXTDISP_BuildMatchIndexList__35:
-              ADDQ.L         #$1,D5                   ;5285 
-              BRA.W          ___TEXTDISP_BuildMatchIndexList__20;6000 ff6a 
+              ADDQ.L         #$1,$30(A7)              ;52af 0030 
+              BRA.W          ___TEXTDISP_BuildMatchIndexList__20;6000 ff26 
 ___TEXTDISP_BuildMatchIndexList__36:
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          UNKNOWN_JMPTBL_ESQ_WildcardMatch;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___TEXTDISP_BuildMatchIndexList__38;660c 
+              BNE.B          ___TEXTDISP_BuildMatchIndexList__38;6612 
 ___TEXTDISP_BuildMatchIndexList__37:
               LEA            TEXTDISP_CandidateIndexList(A4),A0;41ec 0000 
-              ADD.L          D6,A0                    ;d1c6 
-              ADDQ.L         #$1,D6                   ;5286 
-              MOVE.L         D5,D0                    ;2005 
+              ADD.L          $20(A7),A0               ;d1ef 0020 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+              MOVE.L         $30(A7),D0               ;202f 0030 
               MOVE.B         D0,(A0)                  ;1080 
 ___TEXTDISP_BuildMatchIndexList__38:
-              ADDQ.L         #$1,D5                   ;5285 
-              BRA.W          ___TEXTDISP_BuildMatchIndexList__20;6000 ff4a 
+              ADDQ.L         #$1,$30(A7)              ;52af 0030 
+              BRA.W          ___TEXTDISP_BuildMatchIndexList__20;6000 fefe 
 ___TEXTDISP_BuildMatchIndexList__39:
-              MOVE.L         D6,D0                    ;2006 
+              MOVE.L         $20(A7),D0               ;202f 0020 
 ___TEXTDISP_BuildMatchIndexList__40:
 ___TEXTDISP_BuildMatchIndexList__41:
-              MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
-              ADDQ.W         #$8,A7                   ;504f 
+              MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A2/A3/A5;4cdf 2cec 
+              ADD.W          #$34,A7                  ;defc 0034 
               RTS                                     ;4e75 
 __const:
 __strings:
