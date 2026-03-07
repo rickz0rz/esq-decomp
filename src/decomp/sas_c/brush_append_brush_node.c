@@ -5,17 +5,17 @@ enum {
 
 void *BRUSH_AppendBrushNode(void *head, void *node)
 {
-    unsigned char *cur;
+    unsigned char *tailCursor;
 
     if (head == (void *)BRUSH_NULL) {
         return node;
     }
 
-    cur = (unsigned char *)head;
-    while (*(void **)(cur + BRUSH_NODE_NEXT_OFFSET) != (void *)BRUSH_NULL) {
-        cur = *(unsigned char **)(cur + BRUSH_NODE_NEXT_OFFSET);
+    tailCursor = (unsigned char *)head;
+    while (*(void **)(tailCursor + BRUSH_NODE_NEXT_OFFSET) != (void *)BRUSH_NULL) {
+        tailCursor = *(unsigned char **)(tailCursor + BRUSH_NODE_NEXT_OFFSET);
     }
 
-    *(void **)(cur + BRUSH_NODE_NEXT_OFFSET) = node;
+    *(void **)(tailCursor + BRUSH_NODE_NEXT_OFFSET) = node;
     return head;
 }
