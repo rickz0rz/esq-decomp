@@ -3,7 +3,8 @@ typedef unsigned long ULONG;
 
 enum {
     DISPTEXT_LINE_TABLE_COUNT = 21,
-    DISPTEXT_DEFAULT_PEN = 1
+    DISPTEXT_DEFAULT_PEN = 1,
+    DISPTEXT_VALUE_CLEAR = 0
 };
 
 extern volatile UWORD DISPTEXT_TargetLineIndex;
@@ -20,16 +21,16 @@ void DISPLIB_ResetLineTables(void)
 {
     long i;
 
-    DISPTEXT_TargetLineIndex = 0;
-    DISPTEXT_CurrentLineIndex = 0;
-    DISPTEXT_LineWidthPx = 0;
-    DISPTEXT_ControlMarkerWidthPx = 0;
-    DISPTEXT_LineTableLockFlag = 0;
-    DISPTEXT_ControlMarkersEnabledFlag = 0;
+    DISPTEXT_TargetLineIndex = DISPTEXT_VALUE_CLEAR;
+    DISPTEXT_CurrentLineIndex = DISPTEXT_VALUE_CLEAR;
+    DISPTEXT_LineWidthPx = DISPTEXT_VALUE_CLEAR;
+    DISPTEXT_ControlMarkerWidthPx = DISPTEXT_VALUE_CLEAR;
+    DISPTEXT_LineTableLockFlag = DISPTEXT_VALUE_CLEAR;
+    DISPTEXT_ControlMarkersEnabledFlag = DISPTEXT_VALUE_CLEAR;
 
     for (i = 0; i < DISPTEXT_LINE_TABLE_COUNT; ++i) {
         DISPTEXT_LinePtrTable[i] = 0;
-        DISPTEXT_LineLengthTable[i] = 0;
+        DISPTEXT_LineLengthTable[i] = DISPTEXT_VALUE_CLEAR;
         DISPTEXT_LinePenTable[i] = DISPTEXT_DEFAULT_PEN;
     }
 }
