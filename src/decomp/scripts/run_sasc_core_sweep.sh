@@ -1207,6 +1207,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_cell_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_cell_background_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_frame_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_draw_grid_frame_variant2_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_should_open_editor_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_top_bars_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_top_border_line_trial.sh"
