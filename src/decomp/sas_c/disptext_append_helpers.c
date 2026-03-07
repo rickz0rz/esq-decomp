@@ -16,6 +16,10 @@ extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, cha
 
 LONG DISPTEXT_AppendToBuffer(char *src)
 {
+    const ULONG AVAILMEM_CHIP_FLAG = 1;
+    const ULONG TEXTBUFFER_ALLOC_FLAGS = 1;
+    const ULONG AVAILMEM_MIN_ALLOC_THRESHOLD = 0x2710UL;
+    const ULONG ALLOC_SOURCE_LINE = 127;
     char *newBuffer = (char *)0;
 
     if (DISPTEXT_TextBufferPtr != (char *)0) {
@@ -36,14 +40,14 @@ LONG DISPTEXT_AppendToBuffer(char *src)
         }
 
         allocSize = dstLen + srcLen + 1;
-        avail = _LVOAvailMem(AbsExecBase, 1);
+        avail = _LVOAvailMem(AbsExecBase, AVAILMEM_CHIP_FLAG);
 
-        if (avail > 0x2710UL) {
+        if (avail > AVAILMEM_MIN_ALLOC_THRESHOLD) {
             newBuffer = (char *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
                 Global_STR_DISPTEXT_C_1,
-                127,
+                ALLOC_SOURCE_LINE,
                 allocSize,
-                1);
+                TEXTBUFFER_ALLOC_FLAGS);
         }
 
         if (newBuffer != (char *)0) {
