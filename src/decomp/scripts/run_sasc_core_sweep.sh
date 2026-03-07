@@ -1223,6 +1223,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_select_entry_pen_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_init_selection_window_alt_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_init_selection_window_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_handle_grid_selection_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_handle_grid_editor_state_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_handle_alt_grid_state_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_handle_detail_grid_state_trial.sh"
