@@ -2,116 +2,142 @@
 __code:
 NEWGRID_TestEntryState:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              SUB.L          #$4c,D0                  ;90bc 0000 004c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$8,A7                   ;514f 
-              MOVEM.L        D2/D4/D5/D6/D7/A3/A5,-(A7);48e7 2f14 
+              SUB.W          #$40,A7                  ;9efc 0040 
+              MOVEM.L        D2/D3/D4/D5/D6/D7/A3/A5,-(A7);48e7 3f14 
 ___NEWGRID_TestEntryState__1:
-              MOVE.W         $36(A7),D4               ;382f 0036 
-              MOVE.L         $30(A7),D5               ;2a2f 0030 
-              MOVE.L         $2c(A7),D6               ;2c2f 002c 
-              MOVE.L         $28(A7),D7               ;2e2f 0028 
-              CLR.L          $1c(A7)                  ;42af 001c 
-              MOVEQ.L        #$30,D0                  ;7030 
-              CMP.W          D0,D4                    ;b840 
+              MOVE.L         $6c(A7),D5               ;2a2f 006c 
+              MOVE.L         $68(A7),D6               ;2c2f 0068 
+              MOVE.L         $64(A7),D7               ;2e2f 0064 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVEQ.L        #$2,D1                   ;7202 
+              MOVEQ.L        #$30,D2                  ;7430 
+              MOVEQ.L        #$1,D3                   ;7601 
+              MOVEQ.L        #$0,D4                   ;7800 
+              MOVE.W         D3,$26(A7)               ;3f43 0026 
+              MOVEQ.L        #$ff,D3                  ;76ff 
+              MOVE.L         D3,$4c(A7)               ;2f43 004c 
+              MOVEQ.L        #$3,D3                   ;7603 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVE.L         D0,$50(A7)               ;2f40 0050 
+              MOVE.L         D0,$5c(A7)               ;2f40 005c 
+              MOVE.L         D1,$40(A7)               ;2f41 0040 
+              MOVE.L         D1,$58(A7)               ;2f41 0058 
+              MOVEM.W        D2,$54(A7)               ;48af 0004 0054 
+              MOVEM.L        D3,$30(A7)               ;48ef 0008 0030 
+              MOVEM.L        D3,$3c(A7)               ;48ef 0008 003c 
+              MOVEM.L        D4,$28(A7)               ;48ef 0010 0028 
+              MOVEM.L        D4,$38(A7)               ;48ef 0010 0038 
+              MOVEM.L        D4,$48(A7)               ;48ef 0010 0048 
+              MOVEM.L        D4,$22(A7)               ;48ef 0010 0022 
+              MOVE.W         $72(A7),D0               ;302f 0072 
+              CMP.W          D2,D0                    ;b042 
               BGT.B          ___NEWGRID_TestEntryState__3;6e06 
 ___NEWGRID_TestEntryState__2:
-              MOVE.L         D4,D0                    ;2004 
-              SUBQ.W         #$1,D0                   ;5340 
-              BNE.B          ___NEWGRID_TestEntryState__7;6628 
+              CMP.W          $26(A7),D0               ;b06f 0026 
+              BNE.B          ___NEWGRID_TestEntryState__7;662c 
 ___NEWGRID_TestEntryState__3:
-              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D5,-(A7)                 ;2f05 
               BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
               MOVE.L         D0,A5                    ;2a40 
-              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         $60(A7),(A7)             ;2eaf 0060 
               MOVE.L         D5,-(A7)                 ;2f05 
               BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
               MOVE.L         D0,A3                    ;2640 
-              LEA            $10(A7),A7               ;4fef 0010 
+              LEA            $c(A7),A7                ;4fef 000c 
 ___NEWGRID_TestEntryState__4:
-              MOVEQ.L        #$30,D0                  ;7030 
-              CMP.W          D0,D4                    ;b840 
+              MOVE.W         $54(A7),D0               ;302f 0054 
+              MOVE.W         $72(A7),D1               ;322f 0072 
+              CMP.W          D0,D1                    ;b240 
               BLE.B          ___NEWGRID_TestEntryState__8;6f22 
 ___NEWGRID_TestEntryState__5:
-              SUBI.W         #$30,D4                  ;0444 0030 
-              BRA.B          ___NEWGRID_TestEntryState__4;60f4 
+              SUB.W          D0,$72(A7)               ;916f 0072 
+              BRA.B          ___NEWGRID_TestEntryState__4;60ee 
 ___NEWGRID_TestEntryState__6:
 ___NEWGRID_TestEntryState__7:
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         $5c(A7),-(A7)            ;2f2f 005c 
               MOVE.L         D6,-(A7)                 ;2f06 
               BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
               MOVE.L         D0,A5                    ;2a40 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         $64(A7),(A7)             ;2eaf 0064 
               MOVE.L         D6,-(A7)                 ;2f06 
               BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
               MOVE.L         D0,A3                    ;2640 
-              LEA            $10(A7),A7               ;4fef 0010 
+              LEA            $c(A7),A7                ;4fef 000c 
 ___NEWGRID_TestEntryState__8:
-              MOVE.W         D4,D0                    ;3004 
+              MOVE.W         $72(A7),D0               ;302f 0072 
               EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_GetEntryStateCode;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              MOVE.L         D0,$20(A7)               ;2f40 0020 
-              TST.L          D7                       ;4a87 
-              BNE.B          ___NEWGRID_TestEntryState__13;6612 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              MOVE.L         $48(A7),D0               ;202f 0048 
+              CMP.L          D7,D0                    ;b087 
+              BNE.B          ___NEWGRID_TestEntryState__13;6620 
 ___NEWGRID_TestEntryState__9:
-              TST.L          D0                       ;4a80 
-              BNE.B          ___NEWGRID_TestEntryState__11;6608 
+              MOVE.L         $2c(A7),D0               ;202f 002c 
+              MOVE.L         $38(A7),D1               ;222f 0038 
+              CMP.L          D0,D1                    ;b280 
+              BNE.B          ___NEWGRID_TestEntryState__11;660a 
 ___NEWGRID_TestEntryState__10:
-              MOVEQ.L        #$ff,D1                  ;72ff 
-              MOVE.L         D1,$1c(A7)               ;2f41 001c 
-              BRA.B          ___NEWGRID_TestEntryState__24;6040 
+              MOVE.L         $4c(A7),D1               ;222f 004c 
+              MOVE.L         D1,$28(A7)               ;2f41 0028 
+              BRA.B          ___NEWGRID_TestEntryState__24;6060 
 ___NEWGRID_TestEntryState__11:
-              CLR.L          $1c(A7)                  ;42af 001c 
+              MOVE.L         $22(A7),D1               ;222f 0022 
+              MOVE.L         D1,$28(A7)               ;2f41 0028 
 ___NEWGRID_TestEntryState__12:
-              BRA.B          ___NEWGRID_TestEntryState__24;603a 
+              BRA.B          ___NEWGRID_TestEntryState__24;6056 
 ___NEWGRID_TestEntryState__13:
-              MOVEQ.L        #$1,D1                   ;7201 
-              CMP.L          D1,D7                    ;be81 
-              BNE.B          ___NEWGRID_TestEntryState__19;6616 
+              MOVE.L         $44(A7),D0               ;202f 0044 
+              CMP.L          D7,D0                    ;b087 
+              BNE.B          ___NEWGRID_TestEntryState__19;6626 
 ___NEWGRID_TestEntryState__14:
-              CMP.L          D1,D0                    ;b081 
-              BEQ.B          ___NEWGRID_TestEntryState__16;6706 
+              MOVE.L         $2c(A7),D0               ;202f 002c 
+              MOVE.L         $34(A7),D1               ;222f 0034 
+              CMP.L          D0,D1                    ;b280 
+              BEQ.B          ___NEWGRID_TestEntryState__16;6708 
 ___NEWGRID_TestEntryState__15:
-              MOVEQ.L        #$3,D2                   ;7403 
-              CMP.L          D2,D0                    ;b082 
-              BNE.B          ___NEWGRID_TestEntryState__17;6606 
+              MOVE.L         $30(A7),D1               ;222f 0030 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___NEWGRID_TestEntryState__17;6608 
 ___NEWGRID_TestEntryState__16:
-              MOVE.L         D1,$1c(A7)               ;2f41 001c 
-              BRA.B          ___NEWGRID_TestEntryState__24;6024 
+              MOVE.L         $50(A7),$28(A7)          ;2f6f 0050 0028 
+              BRA.B          ___NEWGRID_TestEntryState__24;6032 
 ___NEWGRID_TestEntryState__17:
-              CLR.L          $1c(A7)                  ;42af 001c 
+              MOVE.L         $22(A7),D2               ;242f 0022 
+              MOVE.L         D2,$28(A7)               ;2f42 0028 
 ___NEWGRID_TestEntryState__18:
-              BRA.B          ___NEWGRID_TestEntryState__24;601e 
+              BRA.B          ___NEWGRID_TestEntryState__24;6028 
 ___NEWGRID_TestEntryState__19:
-              MOVEQ.L        #$2,D1                   ;7202 
-              CMP.L          D1,D7                    ;be81 
+              MOVE.L         $40(A7),D0               ;202f 0040 
+              CMP.L          D7,D0                    ;b087 
               BEQ.B          ___NEWGRID_TestEntryState__21;6706 
 ___NEWGRID_TestEntryState__20:
-              MOVE.L         D7,D1                    ;2207 
-              SUBQ.L         #$3,D1                   ;5781 
-              BNE.B          ___NEWGRID_TestEntryState__24;6612 
+              CMP.L          $3c(A7),D7               ;beaf 003c 
+              BNE.B          ___NEWGRID_TestEntryState__24;661a 
 ___NEWGRID_TestEntryState__21:
-              SUBQ.L         #$3,D0                   ;5780 
+              MOVE.L         $2c(A7),D0               ;202f 002c 
+              CMP.L          $30(A7),D0               ;b0af 0030 
               BNE.B          ___NEWGRID_TestEntryState__23;6608 
 ___NEWGRID_TestEntryState__22:
-              MOVEQ.L        #$ff,D0                  ;70ff 
-              MOVE.L         D0,$1c(A7)               ;2f40 001c 
-              BRA.B          ___NEWGRID_TestEntryState__24;6006 
+              MOVE.L         $4c(A7),$28(A7)          ;2f6f 004c 0028 
+              BRA.B          ___NEWGRID_TestEntryState__24;6008 
 ___NEWGRID_TestEntryState__23:
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              MOVE.L         $22(A7),D0               ;202f 0022 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
 ___NEWGRID_TestEntryState__24:
-              MOVE.L         $1c(A7),D0               ;202f 001c 
+              MOVE.L         $28(A7),D0               ;202f 0028 
 ___NEWGRID_TestEntryState__25:
 ___NEWGRID_TestEntryState__26:
-              MOVEM.L        (A7)+,D2/D4/D5/D6/D7/A3/A5;4cdf 28f4 
-              ADDQ.W         #$8,A7                   ;504f 
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A3/A5;4cdf 28fc 
+              ADD.W          #$40,A7                  ;defc 0040 
               RTS                                     ;4e75 
 __const:
 __strings:

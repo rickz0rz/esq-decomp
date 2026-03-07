@@ -8,44 +8,58 @@ extern LONG NEWGRID_GetEntryStateCode(UBYTE *entryPtr, UBYTE *entryAuxPtr, WORD 
 
 LONG NEWGRID_TestEntryState(LONG mode, LONG primaryIndex, LONG secondaryIndex, WORD selector)
 {
+    const LONG MODE_PRIMARY = 1;
+    const LONG MODE_SECONDARY = 2;
+    const WORD SLOT_WRAP = 48;
+    const WORD SLOT_PRIMARY_FIRST = 1;
+    const LONG RESULT_FALSE = 0;
+    const LONG RESULT_TRUE = 1;
+    const LONG RESULT_MATCH = -1;
+    const LONG TEST_MODE_UNSET = 0;
+    const LONG TEST_MODE_PRESENT = 1;
+    const LONG TEST_MODE_BLOCKED_A = 2;
+    const LONG TEST_MODE_BLOCKED_B = 3;
+    const LONG STATE_UNSET = 0;
+    const LONG STATE_PRESENT = 1;
+    const LONG STATE_BLOCKED = 3;
     UBYTE *entryPtr;
     UBYTE *entryAuxPtr;
     LONG state;
     LONG result;
 
-    result = 0;
+    result = RESULT_FALSE;
 
-    if (selector > 48 || selector == 1) {
-        entryPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(secondaryIndex, 2);
-        entryAuxPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(secondaryIndex, 2);
+    if (selector > SLOT_WRAP || selector == SLOT_PRIMARY_FIRST) {
+        entryPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(secondaryIndex, MODE_SECONDARY);
+        entryAuxPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(secondaryIndex, MODE_SECONDARY);
 
-        while (selector > 48) {
-            selector -= 48;
+        while (selector > SLOT_WRAP) {
+            selector -= SLOT_WRAP;
         }
     } else {
-        entryPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(primaryIndex, 1);
-        entryAuxPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(primaryIndex, 1);
+        entryPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(primaryIndex, MODE_PRIMARY);
+        entryAuxPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(primaryIndex, MODE_PRIMARY);
     }
 
     state = NEWGRID_GetEntryStateCode(entryPtr, entryAuxPtr, selector);
 
-    if (mode == 0) {
-        if (state == 0) {
-            result = -1;
+    if (mode == TEST_MODE_UNSET) {
+        if (state == STATE_UNSET) {
+            result = RESULT_MATCH;
         } else {
-            result = 0;
+            result = RESULT_FALSE;
         }
-    } else if (mode == 1) {
-        if (state == 1 || state == 3) {
-            result = 1;
+    } else if (mode == TEST_MODE_PRESENT) {
+        if (state == STATE_PRESENT || state == STATE_BLOCKED) {
+            result = RESULT_TRUE;
         } else {
-            result = 0;
+            result = RESULT_FALSE;
         }
-    } else if (mode == 2 || mode == 3) {
-        if (state == 3) {
-            result = -1;
+    } else if (mode == TEST_MODE_BLOCKED_A || mode == TEST_MODE_BLOCKED_B) {
+        if (state == STATE_BLOCKED) {
+            result = RESULT_MATCH;
         } else {
-            result = 0;
+            result = RESULT_FALSE;
         }
     }
 

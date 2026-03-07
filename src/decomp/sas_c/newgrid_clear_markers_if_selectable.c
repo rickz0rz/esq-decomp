@@ -14,21 +14,29 @@ extern LONG NEWGRID_TestEntrySelectable(UBYTE *entry, UBYTE *aux, LONG selection
 
 void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
 {
+    const WORD MODE_PRIMARY_ALLOWED = 1;
+    const LONG MODE_PRIMARY = 1;
+    const LONG MODE_SECONDARY = 2;
+    const LONG SLOT_FIRST = 1;
+    const LONG SLOT_LIMIT = 49;
+    const LONG AUX_SLOT_BASE = 7;
+    const LONG BIT_SHIFT_MARKER = 5;
+    const UBYTE FLAG_FALSE = 0;
     LONG i;
     LONG j;
     UBYTE *entry;
     UBYTE *aux;
 
-    if (modeSel > 1) {
+    if (modeSel > MODE_PRIMARY_ALLOWED) {
         i = 0;
         while (i < (LONG)TEXTDISP_PrimaryGroupEntryCount) {
-            if (TEXTDISP_PrimaryGroupPresentFlag == 0) {
+            if (TEXTDISP_PrimaryGroupPresentFlag == FLAG_FALSE) {
                 break;
             }
-            entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 1);
-            aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, 1);
+            entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
+            aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
             if (NEWGRID_TestEntrySelectable(entry, aux, selectionCode) != 0) {
-                for (j = 1; j < 49; ++j) {
+                for (j = SLOT_FIRST; j < SLOT_LIMIT; ++j) {
                     aux[7 + j] &= (UBYTE)~(1u << 5);
                 }
             }
@@ -38,13 +46,13 @@ void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
 
     i = 0;
     while (i < (LONG)TEXTDISP_SecondaryGroupEntryCount) {
-        if (TEXTDISP_SecondaryGroupPresentFlag == 0) {
+        if (TEXTDISP_SecondaryGroupPresentFlag == FLAG_FALSE) {
             break;
         }
-        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 2);
-        aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, 2);
+        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
+        aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
         if (NEWGRID_TestEntrySelectable(entry, aux, selectionCode) != 0) {
-            for (j = 1; j < 49; ++j) {
+            for (j = SLOT_FIRST; j < SLOT_LIMIT; ++j) {
                 aux[7 + j] &= (UBYTE)~(1u << 5);
             }
         }

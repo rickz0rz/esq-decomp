@@ -17,6 +17,15 @@ extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LON
 
 void NEWGRID_DrawGridCellBackground(void *gridCtx, WORD row, WORD col, LONG colorSel)
 {
+    const LONG RASTPORT_OFFSET = 60;
+    const LONG GRID_X_OFFSET = 36;
+    const LONG GRID_RIGHT_EDGE = 695;
+    const LONG ROWCOL_SPLIT = 3;
+    const LONG COLOR_NONE = -1;
+    const LONG ZERO = 0;
+    const LONG ONE = 1;
+    const WORD COL_BEVEL = 3;
+    const UBYTE BEVEL_ENABLED_CHAR = 89;
     UBYTE *rast;
     LONG x1;
     LONG y1;
@@ -26,26 +35,26 @@ void NEWGRID_DrawGridCellBackground(void *gridCtx, WORD row, WORD col, LONG colo
 
     (void)Global_REF_GRAPHICS_LIBRARY;
 
-    rast = (UBYTE *)gridCtx + 60;
-    x1 = (LONG)(UWORD)NEWGRID_ColumnStartXPx + ((LONG)(UWORD)NEWGRID_ColumnWidthPx * (LONG)row) + 36;
-    y1 = 0;
+    rast = (UBYTE *)gridCtx + RASTPORT_OFFSET;
+    x1 = (LONG)(UWORD)NEWGRID_ColumnStartXPx + ((LONG)(UWORD)NEWGRID_ColumnWidthPx * (LONG)row) + GRID_X_OFFSET;
+    y1 = ZERO;
 
     rc = (LONG)row + (LONG)col;
-    if (rc >= 3) {
-        x2 = 695;
+    if (rc >= ROWCOL_SPLIT) {
+        x2 = GRID_RIGHT_EDGE;
     } else {
-        x2 = x1 + ((LONG)(UWORD)NEWGRID_ColumnWidthPx * (LONG)col) - 1;
+        x2 = x1 + ((LONG)(UWORD)NEWGRID_ColumnWidthPx * (LONG)col) - ONE;
     }
 
-    y2 = (LONG)(UWORD)NEWGRID_RowHeightPx - 1;
+    y2 = (LONG)(UWORD)NEWGRID_RowHeightPx - ONE;
 
-    if (colorSel != -1) {
+    if (colorSel != COLOR_NONE) {
         NEWGRID_SetRowColor(gridCtx, (LONG)row, colorSel);
         _LVOSetAPen(rast, colorSel);
         _LVORectFill(rast, x1, y1, x2, y2);
     }
 
-    if (col == 3 && CONFIG_NewgridPlaceholderBevelFlag == (UBYTE)89) {
+    if (col == COL_BEVEL && CONFIG_NewgridPlaceholderBevelFlag == BEVEL_ENABLED_CHAR) {
         NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(rast, x1, y1, x2, y2);
     } else {
         NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(rast, x1, y1, x2, y2);
