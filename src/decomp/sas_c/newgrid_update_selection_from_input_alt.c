@@ -18,7 +18,7 @@ extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern LONG CONFIG_TimeWindowMinutes;
 
-extern LONG NEWGRID_ClearMarkersIfSelectable(void *entry, void *aux, LONG mode);
+extern LONG NEWGRID_ClearMarkersIfSelectable(LONG mode, LONG row);
 extern LONG NEWGRID_UpdatePresetEntry(void **entryPtr, void **auxPtr, LONG row, LONG col);
 extern LONG NEWGRID_TestEntrySelectable(void *entry, void *aux, LONG mode);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(void *entry, void *aux, LONG idx);
@@ -29,6 +29,7 @@ extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(void *aux, LONG idx
 LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
 {
     LONG found = 0;
+    LONG matched = 0;
     LONG idx = 0;
     LONG row = 0;
     void *entry = 0;
@@ -38,14 +39,14 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
     case 0:
         NEWGRID_AltSelectionRowCursor = 0;
         NEWGRID_AltSelectionEntryCursor = ctx->row;
-        NEWGRID_ClearMarkersIfSelectable(entry, aux, mode);
+        NEWGRID_ClearMarkersIfSelectable(mode, (LONG)NEWGRID_AltSelectionEntryCursor);
         break;
     case 1:
         NEWGRID_AltSelectionRowCursor += 1;
         NEWGRID_AltSelectionEntryCursor = ctx->row;
         break;
-    case 2:
-        NEWGRID_AltSelectionEntryCursor += 1;
+    case 4:
+        NEWGRID_AltSelectionEntryCursor = (UWORD)(NEWGRID_AltSelectionEntryCursor + 1);
         break;
     case 3:
     case 5:
@@ -62,34 +63,52 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
 
         row = NEWGRID_AltSelectionEntryCursor;
         NEWGRID_UpdatePresetEntry(&entry, &aux, row, NEWGRID_AltSelectionRowCursor);
-        if (!NEWGRID_TestEntrySelectable(entry, aux, mode)) goto next_entry;
-
-        while (!found) {
+        if (NEWGRID_TestEntrySelectable(entry, aux, mode)) {
+            matched = 0;
             idx = NEWGRID_AltSelectionEntryCursor;
-            if (idx <= 0 || idx >= ctx->rowLimit) break;
+            if (idx > 0 && idx < ctx->rowLimit) {
+                if (idx == 49) {
+                    idx = NEWGRID_UpdatePresetEntry(&entry, &aux, idx, NEWGRID_AltSelectionRowCursor);
+                } else if (idx > 48) {
+                    idx -= 48;
+                }
 
-            if (idx == ctx->row) {
-                idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, idx);
+                if (entry && aux) {
+                    if (NEWGRID_AltSelectionEntryCursor == ctx->row) {
+                        idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, idx);
+                    }
+                    if (idx > 0) {
+                        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based((UBYTE *)entry + 0x1c, idx) == -1) {
+                            if ((((UBYTE *)aux)[7 + idx] & 0x20) == 0) {
+                                if ((((UBYTE *)aux)[7 + NEWGRID_AltSelectionEntryCursor] & 0x80) == 0) {
+                                    if (((LONG *)aux)[14 + idx] != 0) {
+                                        if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
+                                                entry, aux, idx, 1440, CONFIG_TimeWindowMinutes) != 0) {
+                                            if (mode != 1 ||
+                                                TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(aux, idx) != 0) {
+                                                matched = 1;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            if (idx <= 0) break;
-            if (NEWGRID2_JMPTBL_ESQ_TestBit1Based((UBYTE *)entry + 0x1c, idx) != -1) break;
-            if (((UBYTE *)aux)[7 + idx] & 0x20) break;
-            if (((UBYTE *)aux)[7 + NEWGRID_AltSelectionEntryCursor] & 0x80) break;
-            if (((LONG *)aux)[14 + idx] == 0) break;
-
-            if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(entry, aux, idx, 1440, CONFIG_TimeWindowMinutes) == 0) break;
-            if (mode == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(aux, idx) == 0) break;
-
-            found = 1;
-            break;
+            found = matched;
         }
 
-next_entry:
-        if (found) break;
-        NEWGRID_AltSelectionEntryCursor += 1;
-        if (state == 4) state = 5; else {
-            NEWGRID_AltSelectionEntryCursor = ctx->row;
-            NEWGRID_AltSelectionRowCursor += 1;
+        if (!found) {
+            NEWGRID_AltSelectionEntryCursor = (UWORD)(NEWGRID_AltSelectionEntryCursor + 1);
+            if (state == 4) {
+                state = 5;
+            } else {
+                NEWGRID_AltSelectionEntryCursor = ctx->row;
+                NEWGRID_AltSelectionRowCursor += 1;
+            }
+        } else {
+            break;
         }
     }
 
@@ -97,8 +116,11 @@ next_entry:
         ctx->entry = entry;
         ctx->aux = aux;
         ctx->index = NEWGRID_AltSelectionRowCursor;
-        if (NEWGRID_AltSelectionEntryCursor > '0' && idx < 49) ctx->row = (UWORD)(idx + 48);
-        else ctx->row = (UWORD)idx;
+        if (NEWGRID_AltSelectionEntryCursor > '0' && idx < 49) {
+            ctx->row = (UWORD)(idx + 48);
+        } else {
+            ctx->row = (UWORD)idx;
+        }
         ((UBYTE *)aux)[7 + idx] |= 0x20;
     } else if (!found) {
         ctx->entry = 0;
