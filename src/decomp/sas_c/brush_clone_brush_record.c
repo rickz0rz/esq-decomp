@@ -142,16 +142,16 @@ void *BRUSH_CloneBrushRecord(void *src_rec)
     }
 
     for (i = BRUSH_NULL; i < (LONG)(UBYTE)dst[BRUSH_NODE_DEPTH_OFFSET] && i < BRUSH_PLANE_COUNT; i++) {
-        void *p;
+        void *planeRaster;
         LONG plane_off = i << BRUSH_PLANE_PTR_SHIFT;
-        p = GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(
+        planeRaster = GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(
             Global_STR_BRUSH_C_18,
             BRUSH_ALLOC_RASTER_LINE,
             plane_off,
             (UWORD)*(UWORD *)(dst + BRUSH_NODE_WIDTH_OFFSET),
             (UWORD)*(UWORD *)(dst + BRUSH_NODE_HEIGHT_OFFSET));
-        *(void **)(dst + BRUSH_NODE_PLANE_TABLE_OFFSET + plane_off) = p;
-        if (p == (void *)BRUSH_NULL) {
+        *(void **)(dst + BRUSH_NODE_PLANE_TABLE_OFFSET + plane_off) = planeRaster;
+        if (planeRaster == (void *)BRUSH_NULL) {
             _LVOForbid();
             if (BRUSH_PendingAlertCode == BRUSH_NULL) {
                 const UBYTE *snap_s = dst;
