@@ -3,12 +3,13 @@ typedef signed long LONG;
 
 LONG LADFUNC_SetPackedPenHighNibble(UBYTE highNibble, UBYTE lowNibble)
 {
+    const LONG NIBBLE_MASK = 0x0f;
     LONG out;
 
     out = (LONG)highNibble;
-    out &= 0x0f;
+    out &= NIBBLE_MASK;
     out <<= 4;
 
-    out |= ((LONG)lowNibble & 0x0f);
+    out |= ((LONG)lowNibble & NIBBLE_MASK);
     return out;
 }
