@@ -3,25 +3,25 @@ typedef unsigned char UBYTE;
 
 LONG PARSE_ReadSignedLong(const UBYTE *in, LONG *out_value)
 {
-    const UBYTE *start = in;
-    LONG value = 0;
+    const UBYTE *parseStart = in;
+    LONG parsedValue = 0;
 
     if (*in == (UBYTE)'+' || *in == (UBYTE)'-') {
         in++;
     }
 
     for (;;) {
-        LONG digit = (LONG)(*in++) - (LONG)(UBYTE)'0';
-        if (digit < 0 || digit > 9) {
+        LONG digitValue = (LONG)(*in++) - (LONG)(UBYTE)'0';
+        if (digitValue < 0 || digitValue > 9) {
             break;
         }
-        value = value * 10 + digit;
+        parsedValue = parsedValue * 10 + digitValue;
     }
 
-    if (*start == (UBYTE)'-') {
-        value = -value;
+    if (*parseStart == (UBYTE)'-') {
+        parsedValue = -parsedValue;
     }
 
-    *out_value = value;
-    return (LONG)((in - 1) - start);
+    *out_value = parsedValue;
+    return (LONG)((in - 1) - parseStart);
 }
