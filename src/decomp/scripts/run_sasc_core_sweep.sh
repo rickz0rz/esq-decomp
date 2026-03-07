@@ -980,6 +980,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_tliba3_draw_vertical_scale_ticks_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba3_draw_view_mode_overlay_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba3_init_runtime_entries_trial.sh"
+    "src/decomp/scripts/compare_sasc_tliba3_set_font_for_all_view_modes_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba3_jmptbl_gcommand_applyhighlightflag_trial.sh"
     "src/decomp/scripts/compare_sasc_unknown29_jmptbl_esq_main_init_and_run_trial.sh"
     "src/decomp/scripts/compare_sasc_unknown32_jmptbl_esq_return_with_stack_code_trial.sh"
