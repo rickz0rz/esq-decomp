@@ -1,0 +1,76 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_Apply24HourFormatting:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+___NEWGRID_Apply24HourFormatting__1:
+              MOVE.B         $27(A7),D6               ;1c2f 0027 
+              MOVE.W         $22(A7),D7               ;3e2f 0022 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.B         Global_REF_STR_USE_24_HR_CLOCK(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___NEWGRID_Apply24HourFormatting__10;6668 
+___NEWGRID_Apply24HourFormatting__2:
+___NEWGRID_Apply24HourFormatting__3:
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___NEWGRID_Apply24HourFormatting__10;6764 
+___NEWGRID_Apply24HourFormatting__4:
+___NEWGRID_Apply24HourFormatting__5:
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSEINI_JMPTBL_STR_FindCharPtr;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              TST.L          D0                       ;4a80 
+              ADDQ.W         #$8,A7                   ;504f 
+              BEQ.B          ___NEWGRID_Apply24HourFormatting__10;6752 
+___NEWGRID_Apply24HourFormatting__6:
+___NEWGRID_Apply24HourFormatting__7:
+              MOVEQ.L        #$3a,D0                  ;703a 
+              CMP.B          $3(A3),D0                ;b02b 0003 
+              BNE.B          ___NEWGRID_Apply24HourFormatting__10;664a 
+___NEWGRID_Apply24HourFormatting__8:
+___NEWGRID_Apply24HourFormatting__9:
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D6,D1                    ;1206 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          NEWGRID2_JMPTBL_ESQDISP_ComputeS;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         D5,D0                    ;2005 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            Global_JMPTBL_HALF_HOURS_24_HR_F(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A2           ;2470 0800 
+              MOVE.B         (A2),$1(A3)              ;1752 0001 
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D6,D1                    ;1206 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          NEWGRID2_JMPTBL_ESQDISP_ComputeS;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         D5,D0                    ;2005 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            Global_JMPTBL_HALF_HOURS_24_HR_F(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A2           ;2470 0800 
+              MOVE.B         $1(A2),$2(A3)            ;176a 0001 0002 
+              LEA            $c(A7),A7                ;4fef 000c 
+___NEWGRID_Apply24HourFormatting__10:
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_STR_USE_24_HR_CLOCK
+              XREF           PARSEINI_JMPTBL_STR_FindCharPtr
+              XREF           NEWGRID2_JMPTBL_ESQDISP_ComputeS
+              XREF           Global_JMPTBL_HALF_HOURS_24_HR_F
+              XDEF           NEWGRID_Apply24HourFormatting
+              END
