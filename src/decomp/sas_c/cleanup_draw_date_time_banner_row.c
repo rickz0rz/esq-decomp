@@ -18,9 +18,9 @@ void CLEANUP_DrawTimeBannerSegment(void);
 
 void CLEANUP_DrawDateTimeBannerRow(void)
 {
-    LONG previousBitmap;
+    LONG savedBitmap;
 
-    previousBitmap = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET);
+    savedBitmap = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET);
     *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET) = (LONG)&Global_REF_696_400_BITMAP;
 
     _LVOSetAPen();
@@ -34,5 +34,5 @@ void CLEANUP_DrawDateTimeBannerRow(void)
     CLEANUP_DrawBannerSpacerSegment();
     CLEANUP_DrawTimeBannerSegment();
 
-    *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET) = previousBitmap;
+    *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET) = savedBitmap;
 }
