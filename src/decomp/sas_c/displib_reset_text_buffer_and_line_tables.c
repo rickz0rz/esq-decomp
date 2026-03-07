@@ -4,6 +4,7 @@ extern void DISPLIB_ResetLineTables(void);
 
 void DISPLIB_ResetTextBufferAndLineTables(void)
 {
-    DISPTEXT_TextBufferPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(DISPTEXT_TextBufferPtr, 0);
+    DISPTEXT_TextBufferPtr =
+        GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(DISPTEXT_TextBufferPtr, (const char *)0);
     DISPLIB_ResetLineTables();
 }
