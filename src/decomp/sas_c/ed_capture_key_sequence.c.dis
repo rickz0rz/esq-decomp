@@ -1,0 +1,132 @@
+              SECTION      text,CODE
+__code:
+ED_CaptureKeySequence:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$28,D0                  ;90bc 0000 0028 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$24,A7                  ;9efc 0024 
+              MOVEM.L        D2/D3/D5/D6/D7,-(A7)     ;48e7 3700 
+___ED_CaptureKeySequence__1:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ED_CaptureKeySequence__2:
+              MOVEQ.L        #$18,D0                  ;7018 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___ED_CaptureKeySequence__5;6c0e 
+___ED_CaptureKeySequence__3:
+              LEA            ED_CustomPaletteTriplesDefaultTe(A4),A0;41ec 0000 
+              MOVE.B         $0(A0,D7.L),$20(A7,D7.L) ;1fb0 7800 7820 
+___ED_CaptureKeySequence__4:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___ED_CaptureKeySequence__2;60ec 
+___ED_CaptureKeySequence__5:
+              MOVE.L         ED_StateRingIndex(A4),D0 ;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.L         D1,D6                    ;2c01 
+              LEA            ED_StateRingTable(A4),A0 ;41ec 0000 
+              MOVE.B         $0(A0,D6.L),D5           ;1a30 6800 
+              MOVE.B         D5,ED_LastKeyCode(A4)    ;1945 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D5,D0                    ;1005 
+              LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
+              BTST           #$7,$0(A0,D0.L)          ;0830 0007 0800 
+              BEQ.B          ___ED_CaptureKeySequence__14;675e 
+___ED_CaptureKeySequence__6:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D5,D0                    ;1005 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQFUNC_JMPTBL_LADFUNC_ParseHexD;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              MOVE.L         ED_CustomPaletteCapturePhaseMod4(A4),D0;202c 0000 
+              BNE.B          ___ED_CaptureKeySequence__8;660e 
+___ED_CaptureKeySequence__7:
+              MOVE.L         $1c(A7),D1               ;222f 001c 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D1,D2                    ;1401 
+              MOVE.L         D2,ED_CustomPaletteCaptureIndexOrSe(A4);2942 0000 
+              BRA.B          ___ED_CaptureKeySequence__15;6040 
+___ED_CaptureKeySequence__8:
+              MOVE.L         ED_CustomPaletteCaptureIndexOrSe(A4),D1;222c 0000 
+              MOVEM.L        D1,$18(A7)               ;48ef 0002 0018 
+              BLT.B          ___ED_CaptureKeySequence__12;6d26 
+___ED_CaptureKeySequence__9:
+              MOVEQ.L        #$8,D2                   ;7408 
+              CMP.L          D2,D1                    ;b282 
+              BGE.B          ___ED_CaptureKeySequence__12;6c20 
+___ED_CaptureKeySequence__10:
+              MOVE.L         $1c(A7),D2               ;242f 001c 
+              MOVEQ.L        #$d,D3                   ;760d 
+              CMP.L          D3,D2                    ;b483 
+              BGE.B          ___ED_CaptureKeySequence__12;6c16 
+___ED_CaptureKeySequence__11:
+              MOVE.L         D1,D3                    ;2601 
+              ASL.L          #$2,D3                   ;e583 
+              SUB.L          D1,D3                    ;9681 
+              ADD.L          D0,D3                    ;d680 
+              LEA            KYBD_CustomPaletteCaptureScratch(A4),A0;41ec 0000 
+              MOVE.B         D2,$0(A0,D3.L)           ;1182 3800 
+              MOVE.L         D3,$14(A7)               ;2f43 0014 
+              BRA.B          ___ED_CaptureKeySequence__15;600e 
+___ED_CaptureKeySequence__12:
+              MOVEQ.L        #$ff,D1                  ;72ff 
+              MOVE.L         D1,ED_CustomPaletteCaptureIndexOrSe(A4);2941 0000 
+___ED_CaptureKeySequence__13:
+              BRA.B          ___ED_CaptureKeySequence__15;6006 
+___ED_CaptureKeySequence__14:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,ED_CustomPaletteCaptureIndexOrSe(A4);2940 0000 
+___ED_CaptureKeySequence__15:
+              MOVE.L         ED_CustomPaletteCapturePhaseMod4(A4),D0;202c 0000 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVEQ.L        #$4,D1                   ;7204 
+              BSR.W          _CXD33                   ;6100 0000 
+              MOVE.L         D1,ED_CustomPaletteCapturePhaseMod4(A4);2941 0000 
+              BNE.B          ___ED_CaptureKeySequence__23;662e 
+___ED_CaptureKeySequence__16:
+___ED_CaptureKeySequence__17:
+              MOVE.L         ED_CustomPaletteCaptureIndexOrSe(A4),D0;202c 0000 
+              TST.L          D0                       ;4a80 
+              BPL.B          ___ED_CaptureKeySequence__22;6a22 
+___ED_CaptureKeySequence__18:
+              CLR.L          ED_CustomPaletteCaptureIndexOrSe(A4);42ac 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ED_CaptureKeySequence__19:
+              MOVEQ.L        #$18,D0                  ;7018 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___ED_CaptureKeySequence__22;6c16 
+___ED_CaptureKeySequence__20:
+              LEA            KYBD_CustomPaletteTriplesRBase(A4),A0;41ec 0000 
+              MOVE.B         $20(A7,D7.L),$0(A0,D7.L) ;11b7 7820 7800 
+              MOVE.L         D7,D0                    ;2007 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,ED_CustomPaletteCaptureIndexOrSe(A4);2940 0000 
+___ED_CaptureKeySequence__21:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___ED_CaptureKeySequence__19;60e4 
+___ED_CaptureKeySequence__22:
+              CLR.B          ED_MenuStateId(A4)       ;422c 0000 
+___ED_CaptureKeySequence__23:
+              MOVEM.L        (A7)+,D2/D3/D5/D6/D7     ;4cdf 00ec 
+              ADD.W          #$24,A7                  ;defc 0024 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_CustomPaletteTriplesDefaultTe
+              XREF           ED_StateRingIndex
+              XREF           ED_StateRingTable
+              XREF           ED_LastKeyCode
+              XREF           WDISP_CharClassTable
+              XREF           ESQFUNC_JMPTBL_LADFUNC_ParseHexD
+              XREF           ED_CustomPaletteCapturePhaseMod4
+              XREF           ED_CustomPaletteCaptureIndexOrSe
+              XREF           KYBD_CustomPaletteCaptureScratch
+              XREF           _CXD33
+              XREF           KYBD_CustomPaletteTriplesRBase
+              XREF           ED_MenuStateId
+              XDEF           ED_CaptureKeySequence
+              END
