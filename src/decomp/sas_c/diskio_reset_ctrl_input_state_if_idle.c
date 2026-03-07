@@ -1,5 +1,9 @@
 typedef signed short WORD;
 
+enum {
+    DISKIO_STATE_CLEAR = 0
+};
+
 extern void *AbsExecBase;
 extern WORD Global_UIBusyFlag;
 extern WORD CTRL_BufferedByteCount;
@@ -13,16 +17,16 @@ extern void _LVOEnable(void *execBase);
 
 void DISKIO_ResetCtrlInputStateIfIdle(void)
 {
-    if (Global_UIBusyFlag != 0) {
+    if (Global_UIBusyFlag != DISKIO_STATE_CLEAR) {
         return;
     }
 
     _LVODisable(AbsExecBase);
-    CTRL_BufferedByteCount = 0;
-    CTRL_HPreviousSample = 0;
-    CTRL_H = 0;
+    CTRL_BufferedByteCount = DISKIO_STATE_CLEAR;
+    CTRL_HPreviousSample = DISKIO_STATE_CLEAR;
+    CTRL_H = DISKIO_STATE_CLEAR;
     _LVOEnable(AbsExecBase);
 
-    Global_RefreshTickCounter = 0;
-    ESQPARS2_ReadModeFlags = 0;
+    Global_RefreshTickCounter = DISKIO_STATE_CLEAR;
+    ESQPARS2_ReadModeFlags = DISKIO_STATE_CLEAR;
 }
