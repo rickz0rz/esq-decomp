@@ -30,15 +30,15 @@ void CLEANUP_FormatClockFormatEntry(LONG slotIndex, UBYTE *out)
     }
 
     if (variant > 0) {
-        LONG d;
+        LONG decimalDigit;
 
-        d = (LONG)(out[-2] - '0');
-        variant += GROUP_AG_JMPTBL_MATH_Mulu32(d, DECIMAL_BASE);
+        decimalDigit = (LONG)(out[-2] - '0');
+        variant += GROUP_AG_JMPTBL_MATH_Mulu32(decimalDigit, DECIMAL_BASE);
 
-        d = GROUP_AG_JMPTBL_MATH_DivS32(variant, DECIMAL_BASE);
-        out[-2] = (UBYTE)(d + '0');
+        decimalDigit = GROUP_AG_JMPTBL_MATH_DivS32(variant, DECIMAL_BASE);
+        out[-2] = (UBYTE)(decimalDigit + '0');
 
-        d = GROUP_AG_JMPTBL_MATH_DivS32(variant, DECIMAL_BASE);
-        out[-1] = (UBYTE)(d + '0');
+        decimalDigit = GROUP_AG_JMPTBL_MATH_DivS32(variant, DECIMAL_BASE);
+        out[-1] = (UBYTE)(decimalDigit + '0');
     }
 }
