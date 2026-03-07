@@ -4,6 +4,9 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_ROWWORD_ALIGN_ADDEND = 15,
+    BRUSH_ROWWORD_ALIGN_DIVISOR = 16,
+    BRUSH_ROWWORD_BYTES_PER_WORD = 2,
     BRUSH_RASTPORT_STATE_COPY_BYTES = 96,
     BRUSH_MAX_PLANES = 5,
     BRUSH_ALERT_ALLOC_FAIL = 1,
@@ -177,7 +180,10 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                     node[232 + i] = src[32 + i];
                 }
 
-                row_words = GROUP_AG_JMPTBL_MATH_DivS32((UWORD)*(UWORD *)(src + 128) + 15, 16) * 2;
+                row_words = GROUP_AG_JMPTBL_MATH_DivS32(
+                                (UWORD)*(UWORD *)(src + 128) + BRUSH_ROWWORD_ALIGN_ADDEND,
+                                BRUSH_ROWWORD_ALIGN_DIVISOR) *
+                            BRUSH_ROWWORD_BYTES_PER_WORD;
                 for (i = 0; i < (LONG)(UWORD)*(UWORD *)(node + 178); i++) {
                     LONG p;
                     for (p = 0; p < (LONG)(UBYTE)src[136]; p++) {
