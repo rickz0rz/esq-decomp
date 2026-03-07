@@ -1174,6 +1174,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_adjust_clock_string_by_slot_with_offset_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_compute_day_slot_from_clock_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_compute_day_slot_from_clock_with_offset_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_compute_column_index_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_awaiting_listings_message_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_clock_format_header_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_date_banner_trial.sh"
