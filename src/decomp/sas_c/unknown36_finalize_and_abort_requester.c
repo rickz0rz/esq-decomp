@@ -22,11 +22,11 @@ typedef struct Unknown36Request {
 
 extern ULONG AbsExecBase;
 extern ULONG Global_DosLibrary;
-extern UBYTE *Global_UNKNOWN36_MessagePtr;
+extern const UBYTE *Global_UNKNOWN36_MessagePtr;
 extern UBYTE *Global_UNKNOWN36_RequesterOutPtr;
-extern UBYTE Global_UNKNOWN36_RequesterText0[];
-extern UBYTE Global_UNKNOWN36_RequesterText1[];
-extern UBYTE Global_UNKNOWN36_RequesterText2[];
+extern const UBYTE Global_UNKNOWN36_RequesterText0[];
+extern const UBYTE Global_UNKNOWN36_RequesterText1[];
+extern const UBYTE Global_UNKNOWN36_RequesterText2[];
 
 extern LONG STREAM_BufferedPutcOrFlush(LONG ch, void *node);
 extern LONG ALLOC_InsertFreeBlock(void *block, LONG size);
@@ -68,7 +68,7 @@ LONG UNKNOWN36_ShowAbortRequester(void)
     static const UBYTE kIntuitionLib[] = "intuition.library";
 
     UBYTE local[82];
-    UBYTE *msg = Global_UNKNOWN36_MessagePtr;
+    const UBYTE *msg = Global_UNKNOWN36_MessagePtr;
     LONG len = (UBYTE)msg[-1];
     LONG i;
     UBYTE *task;
