@@ -4,9 +4,9 @@ extern char *P_TYPE_WeatherCurrentMsgPtr;
 extern char *P_TYPE_WeatherForecastMsgPtr;
 extern char *P_TYPE_WeatherBottomLineMsgPtr;
 
-extern char PARSEINI_STR_WEATHERCURRENT[];
-extern char PARSEINI_STR_WEATHERFORECAST[];
-extern char PARSEINI_STR_BOTTOMLINETAG[];
+extern const char PARSEINI_STR_WEATHERCURRENT[];
+extern const char PARSEINI_STR_WEATHERFORECAST[];
+extern const char PARSEINI_STR_BOTTOMLINETAG[];
 
 extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(char *a, char *b);
 extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(char *newValue, char *oldValue);

@@ -10,18 +10,18 @@ enum {
     PARSEINI_SECTION_SOURCE_CONFIG = 8
 };
 
-extern char P_TYPE_STR_QTABLE[];
-extern char P_TYPE_TAG_GRADIENT[];
-extern char P_TYPE_TAG_DEFAULT_TEXT[];
-extern char P_TYPE_STR_SOURCE_CONFIG[];
-extern char P_TYPE_TAG_BRUSH[];
+extern const char P_TYPE_STR_QTABLE[];
+extern const char P_TYPE_TAG_GRADIENT[];
+extern const char P_TYPE_TAG_DEFAULT_TEXT[];
+extern const char P_TYPE_STR_SOURCE_CONFIG[];
+extern const char P_TYPE_TAG_BRUSH[];
 
-extern char PARSEINI_MODE_RB[];
-extern char PARSEINI_TAG_FILENAME[];
-extern char PARSEINI_TAG_BRUSH[];
-extern char PARSEINI_STR_LOADWEATHER[];
-extern char PARSEINI_STR_LOADWEATHERMESSAGE[];
-extern char PARSEINI_STR_LOADCOLORTABLE[];
+extern const char PARSEINI_MODE_RB[];
+extern const char PARSEINI_TAG_FILENAME[];
+extern const char PARSEINI_TAG_BRUSH[];
+extern const char PARSEINI_STR_LOADWEATHER[];
+extern const char PARSEINI_STR_LOADWEATHERMESSAGE[];
+extern const char PARSEINI_STR_LOADCOLORTABLE[];
 
 extern char *P_TYPE_WeatherCurrentMsgPtr;
 extern char *P_TYPE_WeatherForecastMsgPtr;
