@@ -1,0 +1,116 @@
+              SECTION      text,CODE
+__code:
+ED_DrawAdEditingScreen:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$44,D0                  ;90bc 0000 0044 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$2c,A7                  ;9efc 002c 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ED_DrawAdEditingScreen__1:
+              PEA            ($6).w                   ;4878 0006 
+              BSR.W          ED_DrawHelpPanels        ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            Global_STR_PUSH_ESC_TO_MAKE_ANOT(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($14a).w                 ;4878 014a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            Global_STR_PUSH_HELP_FOR_OTHER_E(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($168).w                 ;4878 0168 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            Global_STR_LINE_MODE_ON_TEXT_COL(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($186).w                 ;4878 0186 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+              MOVE.L         Global_REF_BOOL_IS_LINE_OR_PAGE(A4),-(A7);2f2c 0000 
+              BSR.W          SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_;6100 0000 
+              MOVE.L         Global_REF_BOOL_IS_TEXT_OR_CURSO(A4),(A7);2eac 0000 
+              BSR.W          SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_;6100 0000 
+              PEA            ($7).w                   ;4878 0007 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              MOVEQ.L        #$8,D0                   ;7008 
+              SUB.L          ED_TextLimit(A4),D0      ;90ac 0000 
+              PEA            ($1e).w                  ;4878 001e 
+              MOVE.L         D0,-(A7)                 ;2f00 
+___ED_DrawAdEditingScreen__2:
+              BSR.W          ESQIFF_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         #$12e,D1                 ;223c 0000 012e 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,D7                    ;2e01 
+              PEA            ($134).w                 ;4878 0134 
+              PEA            ($280).w                 ;4878 0280 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($7).w                   ;4878 0007 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetBPen              ;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+              MOVE.L         Global_REF_LONG_CURRENT_EDITING_(A4),-(A7);2f2c 0000 
+              PEA            Global_STR_EDITING_AD_NUMBER_FOR(A4);486c 0000 
+              PEA            $f(A7)                   ;486f 000f 
+              BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            $13(A7)                  ;486f 0013 
+              PEA            ($be).w                  ;4878 00be 
+              PEA            ($12c).w                 ;4878 012c 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetBPen              ;6100 0000 
+              LEA            $34(A7),A7               ;4fef 0034 
+___ED_DrawAdEditingScreen__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              ADD.W          #$2c,A7                  ;defc 002c 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_DrawHelpPanels
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetDrMd
+              XREF           _LVOSetAPen
+              XREF           Global_STR_PUSH_ESC_TO_MAKE_ANOT
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           Global_STR_PUSH_HELP_FOR_OTHER_E
+              XREF           Global_STR_LINE_MODE_ON_TEXT_COL
+              XREF           Global_REF_BOOL_IS_LINE_OR_PAGE
+              XREF           SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_
+              XREF           Global_REF_BOOL_IS_TEXT_OR_CURSO
+              XREF           ED_TextLimit
+              XREF           ESQIFF_JMPTBL_MATH_Mulu32
+              XREF           _LVORectFill
+              XREF           _LVOSetBPen
+              XREF           Global_REF_LONG_CURRENT_EDITING_
+              XREF           Global_STR_EDITING_AD_NUMBER_FOR
+              XREF           GROUP_AM_JMPTBL_WDISP_SPrintf
+              XDEF           ED_DrawAdEditingScreen
+              END
