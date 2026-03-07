@@ -1,5 +1,15 @@
 typedef signed long LONG;
 
+enum {
+    PARSEINI_SECTION_NONE = 0,
+    PARSEINI_SECTION_QTABLE = 1,
+    PARSEINI_SECTION_GRADIENT = 3,
+    PARSEINI_SECTION_BRUSH = 5,
+    PARSEINI_SECTION_WEATHER_BLOCKS = 6,
+    PARSEINI_SECTION_DEFAULT_TEXT = 7,
+    PARSEINI_SECTION_SOURCE_CONFIG = 8
+};
+
 extern char P_TYPE_STR_QTABLE[];
 extern char P_TYPE_TAG_GRADIENT[];
 extern char P_TYPE_TAG_DEFAULT_TEXT[];
@@ -44,7 +54,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(char *path)
     char *sep;
     char *tail;
 
-    section = 0;
+    section = PARSEINI_SECTION_NONE;
     if (PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(path) == -1) {
         return -1;
     }
@@ -67,32 +77,32 @@ LONG PARSEINI_ParseIniBufferAndDispatch(char *path)
             line += 1;
 
             if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, P_TYPE_STR_QTABLE) == 0) {
-                section = 1;
+                section = PARSEINI_SECTION_QTABLE;
                 continue;
             }
             if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, P_TYPE_TAG_GRADIENT) == 0) {
-                section = 3;
+                section = PARSEINI_SECTION_GRADIENT;
                 PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(GCOMMAND_GradientPresetTable);
                 continue;
             }
             if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, P_TYPE_TAG_DEFAULT_TEXT) == 0) {
-                section = 7;
+                section = PARSEINI_SECTION_DEFAULT_TEXT;
                 P_TYPE_WeatherCurrentMsgPtr = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(P_TYPE_WeatherCurrentMsgPtr, Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE);
                 P_TYPE_WeatherForecastMsgPtr = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(P_TYPE_WeatherForecastMsgPtr, SCRIPT_PtrNoForecastWeatherData);
                 P_TYPE_WeatherBottomLineMsgPtr = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(P_TYPE_WeatherBottomLineMsgPtr, SCRIPT_PtrWeatherDataAvailabilityDisclaimer);
                 continue;
             }
             if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, P_TYPE_STR_SOURCE_CONFIG) == 0) {
-                section = 8;
+                section = PARSEINI_SECTION_SOURCE_CONFIG;
                 TEXTDISP_ClearSourceConfig();
                 continue;
             }
             if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, P_TYPE_TAG_BRUSH) == 0) {
-                section = 5;
+                section = PARSEINI_SECTION_BRUSH;
                 continue;
             }
 
-            section = 0;
+            section = PARSEINI_SECTION_NONE;
             continue;
         }
 
@@ -103,7 +113,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(char *path)
         *sep = 0;
         tail = sep + 1;
 
-        if (section == 5) {
+        if (section == PARSEINI_SECTION_BRUSH) {
             if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, PARSEINI_TAG_FILENAME) == 0 ||
                 PARSEINI_JMPTBL_STRING_CompareNoCase(line, PARSEINI_TAG_BRUSH) == 0) {
                 tail = PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(tail);
@@ -112,9 +122,9 @@ LONG PARSEINI_ParseIniBufferAndDispatch(char *path)
                     PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey();
                 }
             }
-        } else if (section == 6) {
+        } else if (section == PARSEINI_SECTION_WEATHER_BLOCKS) {
             PARSEINI_ProcessWeatherBlocks(line, tail);
-        } else if (section == 7) {
+        } else if (section == PARSEINI_SECTION_DEFAULT_TEXT) {
             if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, PARSEINI_STR_LOADWEATHER) == 0) {
                 PARSEINI_LoadWeatherStrings(line, tail);
             } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(line, PARSEINI_STR_LOADWEATHERMESSAGE) == 0) {
