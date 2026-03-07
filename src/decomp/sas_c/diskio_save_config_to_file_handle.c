@@ -11,15 +11,15 @@ extern LONG DISKIO_CloseBufferedFileAndFlush(LONG fileHandle);
 
 LONG DISKIO_SaveConfigToFileHandle(void)
 {
-    LONG fileHandle;
+    LONG configFileHandle;
 
-    fileHandle = DISKIO_OpenFileWithBuffer(Global_STR_DF0_CONFIG_DAT_1, 1006);
-    if (fileHandle == 0) {
+    configFileHandle = DISKIO_OpenFileWithBuffer(Global_STR_DF0_CONFIG_DAT_1, 1006);
+    if (configFileHandle == 0) {
         return -1;
     }
 
     GROUP_AE_JMPTBL_WDISP_SPrintf(BRUSH_LabelScratch, Global_STR_DEFAULT_CONFIG_FORMATTED, 0);
-    DISKIO_WriteBufferedBytes(fileHandle, BRUSH_LabelScratch, 52);
-    DISKIO_CloseBufferedFileAndFlush(fileHandle);
+    DISKIO_WriteBufferedBytes(configFileHandle, BRUSH_LabelScratch, 52);
+    DISKIO_CloseBufferedFileAndFlush(configFileHandle);
     return 0;
 }
