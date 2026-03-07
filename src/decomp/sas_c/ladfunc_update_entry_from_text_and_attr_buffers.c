@@ -26,6 +26,8 @@ extern const char Global_STR_LADFUNC_C_30[];
 
 void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, UBYTE *textBuf, UBYTE *attrBuf)
 {
+    const LONG ENTRY_RECORD_SIZE = 14;
+    const LONG MEMF_PUBLIC_CLEAR = (MEMF_PUBLIC + MEMF_CLEAR);
     LADFUNC_EntryRecord *entry;
     LONG oldTextLen;
     LONG newTextLen;
@@ -37,8 +39,8 @@ void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, UBYTE *textBuf, 
         entry = (LADFUNC_EntryRecord *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
             Global_STR_LADFUNC_C_28,
             1362,
-            14,
-            (MEMF_PUBLIC + MEMF_CLEAR)
+            ENTRY_RECORD_SIZE,
+            MEMF_PUBLIC_CLEAR
         );
         LADFUNC_EntryPtrTable[entryIndex] = entry;
         if (entry != (LADFUNC_EntryRecord *)0) {
@@ -84,7 +86,7 @@ void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, UBYTE *textBuf, 
         Global_STR_LADFUNC_C_30,
         1389,
         newTextLen,
-        (MEMF_PUBLIC + MEMF_CLEAR)
+        MEMF_PUBLIC_CLEAR
     );
     if (entry->attrPtr == (UBYTE *)0) {
         return;
