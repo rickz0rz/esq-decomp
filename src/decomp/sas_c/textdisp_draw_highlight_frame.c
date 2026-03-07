@@ -25,6 +25,26 @@ extern void TEXTDISP_ResetSelectionState(void *entry);
 
 void TEXTDISP_DrawHighlightFrame(void *entryPtr)
 {
+    const LONG MODE_HIGHLIGHT = 8;
+    const LONG MODE_TEXT = 3;
+    const LONG ZERO = 0;
+    const LONG VIEWCFG_THREE = 3;
+    const LONG ENTRY_HIGHLIGHT_TEXT_OFFSET = 220;
+    const LONG DC_FLAGS_OFFSET = 0;
+    const LONG DC_YBASE_OFFSET = 2;
+    const LONG DC_WIDTH_OFFSET = 4;
+    const LONG RASTPORT_OFFSET = 2;
+    const LONG BIT_SHIFT_DUAL_GRID = 2;
+    const LONG GRIDCOLS_SINGLE = 1;
+    const LONG GRIDCOLS_DOUBLE = 2;
+    const LONG WIDTH_MARGIN = 22;
+    const LONG BANNER_DURATION = 500;
+    const UBYTE CH_BANNER_YES = 'Y';
+    const LONG FRAME_X_BASE = 284;
+    const LONG FRAME_X_DIV = 2;
+    const LONG FRAME_X_SPAN = 0x11b;
+    const LONG DRAWMODE_JAM1 = 0;
+    const LONG ONE = 1;
     UBYTE *entry;
     LONG *dc;
     void *rastPort;
@@ -38,47 +58,49 @@ void TEXTDISP_DrawHighlightFrame(void *entryPtr)
     LONG y2;
 
     entry = (UBYTE *)entryPtr;
-    if (entry == (UBYTE *)0 || entry[220] == 0) {
+    if (entry == (UBYTE *)0 || entry[ENTRY_HIGHLIGHT_TEXT_OFFSET] == ZERO) {
         return;
     }
 
-    TLIBA3_ClearViewModeRastPort(8, 0);
-    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(8, 0, 3);
+    TLIBA3_ClearViewModeRastPort(MODE_HIGHLIGHT, ZERO);
+    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(MODE_HIGHLIGHT, ZERO, VIEWCFG_THREE);
     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
 
     dc = (LONG *)WDISP_DisplayContextBase;
-    widthPx = (LONG)(*(UWORD *)((UBYTE *)dc + 4));
-    widthMax = TEXTDISP_EntryTextBaseWidthPx - 22;
-    gridCols = ((*(UWORD *)((UBYTE *)dc + 0) & (1u << 2)) != 0) ? 2 : 1;
+    widthPx = (LONG)(*(UWORD *)((UBYTE *)dc + DC_WIDTH_OFFSET));
+    widthMax = TEXTDISP_EntryTextBaseWidthPx - WIDTH_MARGIN;
+    gridCols = ((*(UWORD *)((UBYTE *)dc + DC_FLAGS_OFFSET) & (1u << BIT_SHIFT_DUAL_GRID)) != 0) ? GRIDCOLS_DOUBLE
+                                                                                                   : GRIDCOLS_SINGLE;
     widthMax = MATH_Mulu32(widthMax, gridCols);
     if (widthPx > widthMax) {
         widthPx = widthMax;
     }
 
-    yBase = (LONG)(*(UWORD *)((UBYTE *)dc + 2));
-    WDISP_AccumulatorCaptureActive = 1;
-    WDISP_AccumulatorFlushPending = 0;
+    yBase = (LONG)(*(UWORD *)((UBYTE *)dc + DC_YBASE_OFFSET));
+    WDISP_AccumulatorCaptureActive = ONE;
+    WDISP_AccumulatorFlushPending = ZERO;
 
-    rastPort = (void *)((UBYTE *)dc + 2);
+    rastPort = (void *)((UBYTE *)dc + RASTPORT_OFFSET);
     WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
 
-    if (CONFIG_LRBN_FlagChar == 'Y') {
-        gridCols = ((*(UWORD *)((UBYTE *)dc + 0) & (1u << 2)) != 0) ? 2 : 1;
-        SCRIPT_BeginBannerCharTransition(MATH_DivS32(widthPx, gridCols) + 22, 500);
+    if (CONFIG_LRBN_FlagChar == CH_BANNER_YES) {
+        gridCols = ((*(UWORD *)((UBYTE *)dc + DC_FLAGS_OFFSET) & (1u << BIT_SHIFT_DUAL_GRID)) != 0) ? GRIDCOLS_DOUBLE
+                                                                                                        : GRIDCOLS_SINGLE;
+        SCRIPT_BeginBannerCharTransition(MATH_DivS32(widthPx, gridCols) + WIDTH_MARGIN, BANNER_DURATION);
     }
 
-    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 0);
-    x1 = (yBase - 284) / 2;
-    y1 = 0;
-    x2 = x1 + 0x11b;
-    y2 = widthPx - 1;
+    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(MODE_TEXT, ZERO, ZERO);
+    x1 = (yBase - FRAME_X_BASE) / FRAME_X_DIV;
+    y1 = ZERO;
+    x2 = x1 + FRAME_X_SPAN;
+    y2 = widthPx - ONE;
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, 0);
-    TEXTDISP_LinePenOverrideEnabledFlag = 1;
-    TLIBA1_DrawFormattedTextBlock(rastPort, (const char *)(entry + 220), x1, y1, x2, y2);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, DRAWMODE_JAM1);
+    TEXTDISP_LinePenOverrideEnabledFlag = ONE;
+    TLIBA1_DrawFormattedTextBlock(rastPort, (const char *)(entry + ENTRY_HIGHLIGHT_TEXT_OFFSET), x1, y1, x2, y2);
 
-    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(8, 0, 3);
+    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(MODE_HIGHLIGHT, ZERO, VIEWCFG_THREE);
     TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
     TEXTDISP_ResetSelectionState(entry);
 }
