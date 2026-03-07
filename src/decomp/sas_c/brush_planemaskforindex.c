@@ -4,13 +4,13 @@ enum {
     BRUSH_PLANE_MASK_NONE = 0UL
 };
 
-unsigned long BRUSH_PlaneMaskForIndex(long plane_index)
+unsigned long BRUSH_PlaneMaskForIndex(long planeIndex)
 {
-    if (plane_index <= BRUSH_PLANE_INDEX_MIN_EXCLUSIVE) {
+    if (planeIndex <= BRUSH_PLANE_INDEX_MIN_EXCLUSIVE) {
         return BRUSH_PLANE_MASK_NONE;
     }
-    if (plane_index >= BRUSH_PLANE_INDEX_MAX_EXCLUSIVE) {
+    if (planeIndex >= BRUSH_PLANE_INDEX_MAX_EXCLUSIVE) {
         return BRUSH_PLANE_MASK_NONE;
     }
-    return (1UL << plane_index);
+    return (1UL << planeIndex);
 }
