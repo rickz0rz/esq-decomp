@@ -1232,6 +1232,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_build_showtimes_text_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_awaiting_listings_message_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_empty_grid_message_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_draw_grid_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_entry_flag_badge_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_entry_row_or_placeholder_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_message_alt_trial.sh"
