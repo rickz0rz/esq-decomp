@@ -1,10 +1,11 @@
 typedef signed long LONG;
+typedef unsigned char UBYTE;
 
-extern char *STR_SkipClass3Chars(char *s);
-extern void PARSE_ReadSignedLong(char *s, LONG *outValue);
-extern void PARSE_ReadSignedLong_NoBranch(char *s, LONG *outValue);
+extern UBYTE *STR_SkipClass3Chars(UBYTE *s);
+extern LONG PARSE_ReadSignedLong(const UBYTE *in, LONG *outValue);
+extern LONG PARSE_ReadSignedLong_NoBranch(const UBYTE *in, LONG *outValue);
 
-LONG PARSE_ReadSignedLongSkipClass3(char *input)
+LONG PARSE_ReadSignedLongSkipClass3(UBYTE *input)
 {
     LONG parsedValue;
 
@@ -17,7 +18,7 @@ LONG PARSE_ReadSignedLongSkipClass3(char *input)
     return parsedValue;
 }
 
-LONG PARSE_ReadSignedLongSkipClass3_Alt(char *input)
+LONG PARSE_ReadSignedLongSkipClass3_Alt(UBYTE *input)
 {
     LONG parsedValue;
 
