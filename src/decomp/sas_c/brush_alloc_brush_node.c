@@ -20,7 +20,7 @@ extern void *BRUSH_LastAllocatedNode;
 
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
 
-void *BRUSH_AllocBrushNode(const char *label, void *prev_tail)
+void *BRUSH_AllocBrushNode(const char *label, void *prevTail)
 {
     UBYTE *node;
     const UBYTE *labelCursor;
@@ -47,8 +47,8 @@ void *BRUSH_AllocBrushNode(const char *label, void *prev_tail)
     *(UBYTE *)(node + BRUSH_NODE_TYPE_OFFSET) = BRUSH_NULL;
     *(ULONG *)(node + BRUSH_NODE_ALIGN_H_OFFSET) = BRUSH_NULL;
     *(ULONG *)(node + BRUSH_NODE_ALIGN_V_OFFSET) = BRUSH_NULL;
-    if (prev_tail != (void *)BRUSH_NULL) {
-        *(void **)((UBYTE *)prev_tail + BRUSH_NODE_NEXT_OFFSET) = (void *)node;
+    if (prevTail != (void *)BRUSH_NULL) {
+        *(void **)((UBYTE *)prevTail + BRUSH_NODE_NEXT_OFFSET) = (void *)node;
     }
     *(void **)(node + BRUSH_NODE_NEXT_OFFSET) = (void *)BRUSH_NULL;
 
