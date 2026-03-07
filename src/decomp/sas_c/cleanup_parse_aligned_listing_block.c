@@ -38,10 +38,10 @@ LONG COI_WriteOiDataFile(UBYTE disk_id);
 
 LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
 {
-    WORD slot_map[SLOT_MAP_COUNT];
-    LONG record_offs;
-    LONG count_escape;
-    LONG token_count;
+    WORD slotMap[SLOT_MAP_COUNT];
+    LONG recordOffset;
+    LONG escapeCount;
+    LONG tokenCount;
     LONG i;
     LONG entry_count;
     UBYTE disk_id;
@@ -52,11 +52,11 @@ LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
     }
 
     for (i = 0; i < SLOT_MAP_COUNT; i += 1) {
-        slot_map[i] = -1;
+        slotMap[i] = -1;
     }
 
     disk_id = record[0];
-    record_offs = RECORD_HEADER_DISK_ID_SIZE;
+    recordOffset = RECORD_HEADER_DISK_ID_SIZE;
 
     if (disk_id == TEXTDISP_SecondaryGroupCode && (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - 1) == 0) {
         entry_count = (LONG)TEXTDISP_SecondaryGroupEntryCount;
@@ -70,17 +70,17 @@ LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
         return 1;
     }
 
-    if (record[record_offs] == RECORD_PREFIX_MARKER_1) {
-        record_offs += 1;
+    if (record[recordOffset] == RECORD_PREFIX_MARKER_1) {
+        recordOffset += 1;
     }
 
-    count_escape = COI_CountEscape14BeforeNull(record + record_offs, (LONG)ESQIFF_RecordLength - record_offs);
-    token_count = GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(record + record_offs,
-                                                            slot_map,
+    escapeCount = COI_CountEscape14BeforeNull(record + recordOffset, (LONG)ESQIFF_RecordLength - recordOffset);
+    tokenCount = GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(record + recordOffset,
+                                                            slotMap,
                                                             SLOT_MAP_MAX_TOKENS,
-                                                            record + record_offs,
+                                                            record + recordOffset,
                                                             DELIMITER_COUNT_ONE,
-                                                            (LONG)ESQIFF_RecordLength - record_offs,
+                                                            (LONG)ESQIFF_RecordLength - recordOffset,
                                                             0);
 
     for (i = 0; i < entry_count && i < SLOT_MAP_COUNT; i += 1) {
@@ -93,7 +93,7 @@ LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
         }
 
         if (candidate != (void *)0) {
-            (void)ESQ_WildcardMatch((UBYTE *)candidate + 12, record + record_offs);
+            (void)ESQ_WildcardMatch((UBYTE *)candidate + 12, record + recordOffset);
         }
     }
 
@@ -120,8 +120,8 @@ LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
     (void)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(listing);
     COI_AllocSubEntryTable(entry);
 
-    (void)count_escape;
-    (void)token_count;
+    (void)escapeCount;
+    (void)tokenCount;
 
     return COI_WriteOiDataFile(disk_id);
 }
