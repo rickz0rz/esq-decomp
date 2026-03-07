@@ -9,14 +9,14 @@ LONG GROUP_AA_JMPTBL_STRING_CompareNoCase(void *a, void *b);
 
 void *BRUSH_FindBrushByPredicate(void *key, void *list_head_ptr)
 {
-    unsigned char *cur;
+    unsigned char *nodeCursor;
 
-    cur = *(unsigned char **)list_head_ptr;
-    while (cur != (unsigned char *)BRUSH_NULL) {
-        if (GROUP_AA_JMPTBL_STRING_CompareNoCase((void *)cur, key) == BRUSH_NULL) {
-            return (void *)cur;
+    nodeCursor = *(unsigned char **)list_head_ptr;
+    while (nodeCursor != (unsigned char *)BRUSH_NULL) {
+        if (GROUP_AA_JMPTBL_STRING_CompareNoCase((void *)nodeCursor, key) == BRUSH_NULL) {
+            return (void *)nodeCursor;
         }
-        cur = *(unsigned char **)(cur + BRUSH_NODE_NEXT_OFFSET);
+        nodeCursor = *(unsigned char **)(nodeCursor + BRUSH_NODE_NEXT_OFFSET);
     }
 
     return (void *)BRUSH_NULL;
