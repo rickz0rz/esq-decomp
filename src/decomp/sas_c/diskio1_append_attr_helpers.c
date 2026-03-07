@@ -1,5 +1,13 @@
 typedef unsigned char UBYTE;
 
+#define ATTRFLAG_HILITE_SRC_MASK 0x02
+#define ATTRFLAG_SUMMARY_SRC_MASK 0x04
+#define ATTRFLAG_VIDEO_TAG_DISABLE_MASK 0x08
+#define ATTRFLAG_PPV_SRC_MASK 0x10
+#define ATTRFLAG_DITTO_MASK 0x20
+#define ATTRFLAG_ALT_HILITE_SRC_MASK 0x40
+#define ATTRFLAG_BIT7_MASK 0x80
+
 extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *text);
 
 extern void DISKIO1_AppendAttrFlagSummarySrc(void);
@@ -22,7 +30,7 @@ volatile UBYTE gDiskio1AttrFlags;
 
 void DISKIO1_AppendAttrFlagHiliteSrc(void)
 {
-    if (gDiskio1AttrFlags & (1u << 1)) {
+    if (gDiskio1AttrFlags & ATTRFLAG_HILITE_SRC_MASK) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_HILITE_SRC_CompactSourceAttrFlags);
     }
     DISKIO1_AppendAttrFlagSummarySrc();
@@ -30,7 +38,7 @@ void DISKIO1_AppendAttrFlagHiliteSrc(void)
 
 void DISKIO1_AppendAttrFlagSummarySrc(void)
 {
-    if (gDiskio1AttrFlags & (1u << 2)) {
+    if (gDiskio1AttrFlags & ATTRFLAG_SUMMARY_SRC_MASK) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_SUM_SRC_CompactSourceAttrFlags);
     }
     DISKIO1_AppendAttrFlagVideoTagDisable();
@@ -38,7 +46,7 @@ void DISKIO1_AppendAttrFlagSummarySrc(void)
 
 void DISKIO1_AppendAttrFlagVideoTagDisable(void)
 {
-    if (gDiskio1AttrFlags & (1u << 3)) {
+    if (gDiskio1AttrFlags & ATTRFLAG_VIDEO_TAG_DISABLE_MASK) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_VIDEO_TAG_DISABLE_CompactSourceAttrFlags);
     }
     DISKIO1_AppendAttrFlagPpvSrc();
@@ -46,7 +54,7 @@ void DISKIO1_AppendAttrFlagVideoTagDisable(void)
 
 void DISKIO1_AppendAttrFlagPpvSrc(void)
 {
-    if (gDiskio1AttrFlags & (1u << 4)) {
+    if (gDiskio1AttrFlags & ATTRFLAG_PPV_SRC_MASK) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_PPV_SRC_CompactSourceAttrFlags);
     }
     DISKIO1_AppendAttrFlagDitto();
@@ -54,7 +62,7 @@ void DISKIO1_AppendAttrFlagPpvSrc(void)
 
 void DISKIO1_AppendAttrFlagDitto(void)
 {
-    if (gDiskio1AttrFlags & (1u << 5)) {
+    if (gDiskio1AttrFlags & ATTRFLAG_DITTO_MASK) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_DITTO_CompactSourceAttrFlags);
     }
     DISKIO1_AppendAttrFlagAltHiliteSrc();
@@ -62,7 +70,7 @@ void DISKIO1_AppendAttrFlagDitto(void)
 
 void DISKIO1_AppendAttrFlagAltHiliteSrc(void)
 {
-    if (gDiskio1AttrFlags & (1u << 6)) {
+    if (gDiskio1AttrFlags & ATTRFLAG_ALT_HILITE_SRC_MASK) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_ALTHILITESRC_CompactSourceAttrFlags);
     }
     DISKIO1_AppendAttrFlagBit7();
@@ -70,7 +78,7 @@ void DISKIO1_AppendAttrFlagAltHiliteSrc(void)
 
 void DISKIO1_AppendAttrFlagBit7(void)
 {
-    if (gDiskio1AttrFlags & (1u << 7)) {
+    if (gDiskio1AttrFlags & ATTRFLAG_BIT7_MASK) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_0X80);
     }
     DISKIO1_FormatTimeSlotMaskFlags();
