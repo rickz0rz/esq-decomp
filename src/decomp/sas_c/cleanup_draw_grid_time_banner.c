@@ -7,7 +7,8 @@ enum {
     RASTPORT_TEXTWIDTH_OFFSET = 0,
     RASTPORT_FLAGS_OFFSET = 32,
     RASTPORT_FLAGMASK_CLEAR_BIT3 = 0xFFF7,
-    GRID_TIME_BANNER_WIDTH = 216
+    GRID_TIME_BANNER_WIDTH = 216,
+    GRID_TIME_SUFFIX_INDEX = 9
 };
 
 extern LONG Global_REF_RASTPORT_1;
@@ -48,8 +49,8 @@ void CLEANUP_DrawGridTimeBanner(void)
     _LVORectFill();
     _LVOSetAPen();
 
-    ampm_suffix = time_buf[9];
-    time_buf[9] = 0;
+    ampm_suffix = time_buf[GRID_TIME_SUFFIX_INDEX];
+    time_buf[GRID_TIME_SUFFIX_INDEX] = 0;
 
     if (Global_REF_STR_USE_24_HR_CLOCK == 'Y') {
         LONG hour = GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat((LONG)Global_WORD_CURRENT_HOUR, (LONG)CLOCK_CurrentAmPmFlag);
