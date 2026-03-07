@@ -16,51 +16,63 @@ extern LONG NEWGRID_DrawGridFrameAndRows(UBYTE *grid, LONG selectedEntryState);
 
 void NEWGRID_UpdateGridState(UBYTE *grid, LONG keyIndex, WORD rowIndex)
 {
+    const LONG GRID_NULL = 0;
+    const LONG GRIDSTATE_READY = 4;
+    const LONG GRIDSTATE_LATCHED = 5;
+    const LONG SELECTED_NONE = -1;
+    const LONG ENTRY_BITSET_OFFSET = 28;
+    const LONG ROWAUX_FLAGS_OFFSET = 7;
+    const LONG ROWAUX_TITLE_TABLE_OFFSET = 56;
+    const LONG ROWAUX_TITLE_PTR_SHIFT = 2;
+    const LONG GRID_SELECTED_STATE_OFFSET = 32;
+    const LONG GRID_RASTPORT_OFFSET = 60;
+    const LONG PEN_OVERRIDE_FLAGGED = 5;
+    const UBYTE ROW_FLAG_BADGE = 0x04;
     UBYTE *entry;
     UBYTE *aux;
     UBYTE *rowAux;
     LONG frameState;
     LONG pen;
 
-    if (grid == 0) {
-        NEWGRID_GridStateFrameLatch = 4;
+    if (grid == (UBYTE *)GRID_NULL) {
+        NEWGRID_GridStateFrameLatch = GRIDSTATE_READY;
         return;
     }
 
     frameState = NEWGRID_GridStateFrameLatch;
-    if (frameState == 5) {
-        *(LONG *)(grid + 32) = -1;
-    } else if (frameState == 4) {
+    if (frameState == GRIDSTATE_LATCHED) {
+        *(LONG *)(grid + GRID_SELECTED_STATE_OFFSET) = SELECTED_NONE;
+    } else if (frameState == GRIDSTATE_READY) {
         rowIndex = (WORD)NEWGRID_UpdatePresetEntry(&entry, &aux, rowIndex, keyIndex);
 
         if (entry != 0 && aux != 0) {
-            if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry + 28, (LONG)rowIndex) == -1) {
+            if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry + ENTRY_BITSET_OFFSET, (LONG)rowIndex) == SELECTED_NONE) {
                 rowIndex = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, (LONG)rowIndex);
                 pen = NEWGRID_SelectEntryPen(entry);
                 rowAux = aux + rowIndex;
                 NEWGRID_SelectedGridEntryPtr = pen;
-                if ((rowAux[7] & (UBYTE)0x04) != 0) {
-                    NEWGRID_SelectedGridEntryPtr = 5;
+                if ((rowAux[ROWAUX_FLAGS_OFFSET] & ROW_FLAG_BADGE) != 0) {
+                    NEWGRID_SelectedGridEntryPtr = PEN_OVERRIDE_FLAGGED;
                 }
 
                 NEWGRID_DrawEntryFlagBadge(
-                    grid + 60,
+                    grid + GRID_RASTPORT_OFFSET,
                     entry,
                     rowIndex,
-                    *(LONG *)(aux + 56 + ((LONG)rowIndex << 2)),
+                    *(LONG *)(aux + ROWAUX_TITLE_TABLE_OFFSET + ((LONG)rowIndex << ROWAUX_TITLE_PTR_SHIFT)),
                     NEWGRID_OverridePenIndex
                 );
 
-                *(LONG *)(grid + 32) = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(0);
+                *(LONG *)(grid + GRID_SELECTED_STATE_OFFSET) = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(0);
             }
         }
     } else {
-        NEWGRID_GridStateFrameLatch = 4;
+        NEWGRID_GridStateFrameLatch = GRIDSTATE_READY;
     }
 
     if (NEWGRID_DrawGridFrameAndRows(grid, NEWGRID_SelectedGridEntryPtr) == 0) {
-        NEWGRID_GridStateFrameLatch = 5;
+        NEWGRID_GridStateFrameLatch = GRIDSTATE_LATCHED;
     } else {
-        NEWGRID_GridStateFrameLatch = 4;
+        NEWGRID_GridStateFrameLatch = GRIDSTATE_READY;
     }
 }
