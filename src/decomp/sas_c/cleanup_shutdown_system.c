@@ -14,7 +14,8 @@ enum {
     CLEANUP_RASTER_COLS = 4,
     CLEANUP_RASTER_ROW_STRIDE = 40,
     CLEANUP_RASTER_COL_SHIFT = 2,
-    CLEANUP_RASTER_PTR_OFFSET = 8
+    CLEANUP_RASTER_PTR_OFFSET = 8,
+    CLEANUP_EXEC_HOOK_WINDOW_OFFSET = 184
 };
 
 extern LONG LOCAVAIL_PrimaryFilterState;
@@ -124,7 +125,7 @@ void CLEANUP_ShutdownSystem(void)
     _LVOVBeamPos();
 
     if (ESQ_ProcessWindowPtrBackup != CLEANUP_NULL) {
-        *(LONG *)(WDISP_ExecBaseHookPtr + 184) = ESQ_ProcessWindowPtrBackup;
+        *(LONG *)(WDISP_ExecBaseHookPtr + CLEANUP_EXEC_HOOK_WINDOW_OFFSET) = ESQ_ProcessWindowPtrBackup;
     }
 
     GROUP_AB_JMPTBL_UNKNOWN2A_Stub0();
