@@ -14,7 +14,9 @@ enum {
     SUBENTRY_STR3_OFFSET = 14,
     SUBENTRY_STR4_OFFSET = 18,
     SUBENTRY_STR5_OFFSET = 22,
-    SUBENTRY_EXTRA_PTR_OFFSET = 26
+    SUBENTRY_EXTRA_PTR_OFFSET = 26,
+    SUBENTRY_TABLE_PTR_SHIFT = 2,
+    SUBENTRY_TABLE_DEALLOC_LINE = 876
 };
 
 extern const UBYTE Global_STR_COI_C_4[];
@@ -80,8 +82,12 @@ void COI_FreeSubEntryTableEntries(void *entry)
 
         GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray(table, SUBENTRY_SIZE, count);
 
-        bytes = count << 2;
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_COI_C_4, 876, table, bytes);
+        bytes = count << SUBENTRY_TABLE_PTR_SHIFT;
+        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+            Global_STR_COI_C_4,
+            SUBENTRY_TABLE_DEALLOC_LINE,
+            table,
+            bytes);
     }
 
     *(WORD *)(anim + ANIM_COUNT_OFFSET) = 0;
