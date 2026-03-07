@@ -6,7 +6,9 @@ enum {
     ENTRY_FLAG_WIDE_RANGE = 0x20,
     TITLE_INDEX_TABLE_OFFSET = 56,
     SEARCH_STEP_WIDE = 48,
-    SEARCH_STEP_NARROW = 7
+    SEARCH_STEP_NARROW = 7,
+    SEARCH_WRAP_FLAG_CLEAR = 0,
+    SEARCH_WRAP_FLAG_SET = 1
 };
 
 extern volatile UWORD DISPLIB_PreviousSearchWrappedFlag;
@@ -33,11 +35,11 @@ long DISPLIB_FindPreviousValidEntryIndex(const UBYTE *entry, const UBYTE *title,
         index--;
         if (index < floorIndex) {
             index = 0;
-            DISPLIB_PreviousSearchWrappedFlag = 0;
+            DISPLIB_PreviousSearchWrappedFlag = SEARCH_WRAP_FLAG_CLEAR;
             break;
         }
         if (isWideRange == 0) {
-            DISPLIB_PreviousSearchWrappedFlag = 1;
+            DISPLIB_PreviousSearchWrappedFlag = SEARCH_WRAP_FLAG_SET;
         }
     }
 
