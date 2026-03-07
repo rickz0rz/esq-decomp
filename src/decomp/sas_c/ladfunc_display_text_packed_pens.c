@@ -5,9 +5,9 @@ extern LONG LADFUNC_GetPackedPenLowNibble(UBYTE packed);
 extern LONG LADFUNC_GetPackedPenHighNibble(UBYTE packed);
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void _LVOSetAPen();
-extern void _LVOSetBPen();
-extern void GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition();
+extern void _LVOSetAPen(void *graphicsBase, void *rastPort, LONG pen);
+extern void _LVOSetBPen(void *graphicsBase, void *rastPort, LONG pen);
+extern void GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rastPort, LONG x, LONG y, const UBYTE *text);
 
 void LADFUNC_DisplayTextPackedPens(void *rastPort, LONG x, LONG y, UBYTE packedPens, const UBYTE *text)
 {

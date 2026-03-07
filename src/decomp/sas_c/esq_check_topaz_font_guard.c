@@ -15,13 +15,13 @@ extern LONG GROUP_MAIN_B_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern void GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(const UBYTE *text);
 extern void GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode(LONG code);
 
-extern void _LVOSetAPen();
-extern void _LVORectFill();
-extern void _LVOMove();
-extern void _LVOText();
-extern void _LVOSizeWindow();
-extern void _LVORemakeDisplay();
-extern void _LVOFreeMem();
+extern void _LVOSetAPen(void *rastPort, LONG pen);
+extern void _LVORectFill(void *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
+extern void _LVOMove(void *rastPort, LONG x, LONG y);
+extern void _LVOText(void *rastPort, const UBYTE *text, LONG length);
+extern void _LVOSizeWindow(void *window, LONG deltaX, LONG deltaY);
+extern void _LVORemakeDisplay(void);
+extern void _LVOFreeMem(void *memory, LONG byteSize);
 
 void ESQ_CheckTopazFontGuard(void)
 {

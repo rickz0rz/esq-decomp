@@ -9,7 +9,7 @@ extern UWORD LADFUNC_LineSlotWriteIndex;
 extern UWORD LADFUNC_LineControlCodeTable[];
 extern UBYTE *LADFUNC_LineTextBufferPtrs[];
 
-extern LONG _LVOTextLength();
+extern LONG _LVOTextLength(void *graphicsBase, void *rastPort, const char *text, LONG length);
 extern void GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(UBYTE *text, LONG controlCode);
 
 void LADFUNC_BuildHighlightLinesFromText(UBYTE *src)

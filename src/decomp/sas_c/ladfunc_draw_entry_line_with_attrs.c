@@ -8,7 +8,7 @@ extern const char Global_STR_SINGLE_SPACE_1[];
 extern const char Global_STR_LADFUNC_C_14[];
 extern const char Global_STR_LADFUNC_C_15[];
 
-extern LONG _LVOTextLength();
+extern LONG _LVOTextLength(void *graphicsBase, void *rastPort, const char *text, LONG length);
 extern LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG n, LONG d);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);

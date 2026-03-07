@@ -34,13 +34,13 @@ extern const char Global_STR_LADFUNC_C_19[];
 extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 
 extern LONG GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(LONG a, LONG b, LONG c);
-extern void _LVOSetFont();
-extern LONG _LVOTextLength();
+extern void _LVOSetFont(void *graphicsBase, void *rastPort, void *font);
+extern LONG _LVOTextLength(void *graphicsBase, void *rastPort, const char *text, LONG length);
 extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG n, LONG d);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
-extern void _LVOSetDrMd();
-extern void _LVOSetRast();
+extern void _LVOSetDrMd(void *graphicsBase, void *rastPort, LONG drawMode);
+extern void _LVOSetRast(void *graphicsBase, void *rastPort, LONG pen);
 extern void GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern void GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 extern LONG LADFUNC_GetPackedPenHighNibble(UBYTE packed);
