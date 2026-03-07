@@ -44,7 +44,7 @@ volatile struct DiskioProgramSourceRecord *gDiskio1CurrentSourceRecord;
 void DISKIO1_DumpDefaultCoiInfoBlock(void)
 {
     const struct DiskioProgramSourceRecord *rec = gDiskio1CurrentSourceRecord;
-    const struct DiskioDefaultCoiInfo *coi;
+    const struct DiskioDefaultCoiInfo *coi = rec->defaultCoi;
 
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_DefaultCoiDump,
@@ -55,13 +55,12 @@ void DISKIO1_DumpDefaultCoiInfoBlock(void)
         rec->backgroundText);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_COI_DASH_PTR_PCT_08LX,
-        rec->defaultCoi);
+        coi);
 
-    if (rec->defaultCoi == 0) {
+    if (coi == 0) {
         return;
     }
 
-    coi = rec->defaultCoi;
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_STR_DEF_COI_INFORMATION_FOLLOWS_COLON);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(

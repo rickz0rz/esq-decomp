@@ -8,6 +8,7 @@ DISKIO1_DumpDefaultCoiInfoBlock:
               MOVEM.L        D2/D3/A3/A5,-(A7)        ;48e7 3014 
 ___DISKIO1_DumpDefaultCoiInfoBlock__1:
               MOVE.L         __MERGEDBSS(A4),A5       ;2a6c 0000 
+              MOVE.L         $30(A5),A3               ;266d 0030 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $28(A5),D0               ;102d 0028 
               MOVEQ.L        #$0,D1                   ;7200 
@@ -24,15 +25,14 @@ ___DISKIO1_DumpDefaultCoiInfoBlock__1:
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG(A4);486c 0000 
               BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
-              MOVE.L         $30(A5),(A7)             ;2ead 0030 
+              MOVE.L         A3,(A7)                  ;2e8b 
               PEA            DISKIO_FMT_COI_DASH_PTR_PCT_08LX(A4);486c 0000 
               BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
-              TST.L          $30(A5)                  ;4aad 0030 
-              BEQ.W          ___DISKIO1_DumpDefaultCoiInfoBlock__5;6700 0088 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.W          ___DISKIO1_DumpDefaultCoiInfoBlock__5;6700 0084 
 ___DISKIO1_DumpDefaultCoiInfoBlock__2:
 ___DISKIO1_DumpDefaultCoiInfoBlock__3:
-              MOVE.L         $30(A5),A3               ;266d 0030 
               PEA            DISKIO_STR_DEF_COI_INFORMATION_F(A4);486c 0000 
               BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
               MOVE.L         A3,(A7)                  ;2e8b 
@@ -71,8 +71,8 @@ ___DISKIO1_DumpDefaultCoiInfoBlock__3:
               MOVE.L         $26(A3),(A7)             ;2eab 0026 
               PEA            DISKIO_FMT_EXCEPTION_BLOCK_PCT_0(A4);486c 0000 
               BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
-___DISKIO1_DumpDefaultCoiInfoBlock__4:
               LEA            $38(A7),A7               ;4fef 0038 
+___DISKIO1_DumpDefaultCoiInfoBlock__4:
 ___DISKIO1_DumpDefaultCoiInfoBlock__5:
               MOVEM.L        (A7)+,D2/D3/A3/A5        ;4cdf 280c 
               RTS                                     ;4e75 
