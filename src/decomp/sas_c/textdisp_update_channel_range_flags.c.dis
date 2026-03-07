@@ -1,0 +1,94 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_UpdateChannelRangeFlags:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D2/D3/D5/D6/D7/A5,-(A7)  ;48e7 3704 
+___TEXTDISP_UpdateChannelRangeFlags__1:
+              MOVE.W         TEXTDISP_ChannelSourceMode(A4),D0;302c 0000 
+              SUBQ.W         #$1,D0                   ;5340 
+              BNE.B          ___TEXTDISP_UpdateChannelRangeFlags__3;660a 
+___TEXTDISP_UpdateChannelRangeFlags__2:
+              LEA            TEXTDISP_PrimarySearchText(A4),A5;4bec 0000 
+              MOVE.W         TEXTDISP_PrimaryChannelCode(A4),D7;3e2c 0000 
+              BRA.B          ___TEXTDISP_UpdateChannelRangeFlags__4;6008 
+___TEXTDISP_UpdateChannelRangeFlags__3:
+              LEA            TEXTDISP_SecondarySearchText(A4),A5;4bec 0000 
+              MOVE.W         TEXTDISP_SecondaryChannelCode(A4),D7;3e2c 0000 
+___TEXTDISP_UpdateChannelRangeFlags__4:
+              TST.W          D7                       ;4a47 
+              BNE.B          ___TEXTDISP_UpdateChannelRangeFlags__6;6602 
+___TEXTDISP_UpdateChannelRangeFlags__5:
+              MOVEQ.L        #$30,D7                  ;7e30 
+___TEXTDISP_UpdateChannelRangeFlags__6:
+              MOVEQ.L        #$30,D0                  ;7030 
+              CMP.W          D0,D7                    ;be40 
+              BLT.B          ___TEXTDISP_UpdateChannelRangeFlags__8;6d06 
+___TEXTDISP_UpdateChannelRangeFlags__7:
+              MOVEQ.L        #$43,D0                  ;7043 
+              CMP.W          D0,D7                    ;be40 
+              BLE.B          ___TEXTDISP_UpdateChannelRangeFlags__11;6f1a 
+___TEXTDISP_UpdateChannelRangeFlags__8:
+              MOVEQ.L        #$48,D0                  ;7048 
+              CMP.W          D0,D7                    ;be40 
+              BLT.B          ___TEXTDISP_UpdateChannelRangeFlags__10;6d06 
+___TEXTDISP_UpdateChannelRangeFlags__9:
+              MOVEQ.L        #$4d,D0                  ;704d 
+              CMP.W          D0,D7                    ;be40 
+              BLE.B          ___TEXTDISP_UpdateChannelRangeFlags__11;6f0e 
+___TEXTDISP_UpdateChannelRangeFlags__10:
+              MOVEQ.L        #$64,D0                  ;7064 
+              MOVE.B         D0,TEXTDISP_BannerCharSelected(A4);1940 0000 
+              MOVEQ.L        #$31,D1                  ;7231 
+              MOVE.B         D1,TEXTDISP_BannerCharFallback(A4);1941 0000 
+              BRA.B          ___TEXTDISP_UpdateChannelRangeFlags__14;604a 
+___TEXTDISP_UpdateChannelRangeFlags__11:
+              MOVE.W         CLOCK_CurrentDayOfWeekIndex(A4),D5;3a2c 0000 
+              EXT.L          D5                       ;48c5 
+              MOVE.L         D5,D0                    ;2005 
+              MOVEQ.L        #$0,D1                   ;7200 
+              BSET           D0,D1                    ;01c1 
+              MOVE.L         D1,D6                    ;2c01 
+              MOVE.W         D7,D1                    ;3207 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D1,D2                    ;1401 
+              MOVEQ.L        #$0,D3                   ;7600 
+              LEA            Global_STR_TEXTDISP_C_3(A4),A0;41ec 0000 
+              MOVE.B         $0(A0,D2.W),D3           ;1630 2000 
+              AND.L          D6,D3                    ;c686 
+              MOVEM.L        D3,$18(A7)               ;48ef 0008 0018 
+              BNE.B          ___TEXTDISP_UpdateChannelRangeFlags__13;660e 
+___TEXTDISP_UpdateChannelRangeFlags__12:
+              MOVE.B         #$64,TEXTDISP_BannerCharSelected(A4);197c 0064 0000 
+              MOVE.B         #$31,TEXTDISP_BannerCharFallback(A4);197c 0031 0000 
+              BRA.B          ___TEXTDISP_UpdateChannelRangeFlags__14;6014 
+___TEXTDISP_UpdateChannelRangeFlags__13:
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          TEXTDISP_FindEntryMatchIndex;6100 0000 
+              MOVE.B         D0,TEXTDISP_BannerCharFallback(A4);1940 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___TEXTDISP_UpdateChannelRangeFlags__14:
+              MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A5  ;4cdf 20ec 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_ChannelSourceMode
+              XREF           TEXTDISP_PrimarySearchText
+              XREF           TEXTDISP_PrimaryChannelCode
+              XREF           TEXTDISP_SecondarySearchText
+              XREF           TEXTDISP_SecondaryChannelCode
+              XREF           TEXTDISP_BannerCharSelected
+              XREF           TEXTDISP_BannerCharFallback
+              XREF           CLOCK_CurrentDayOfWeekIndex
+              XREF           Global_STR_TEXTDISP_C_3
+              XREF           TEXTDISP_FindEntryMatchIndex
+              XDEF           TEXTDISP_UpdateChannelRangeFlags
+              END

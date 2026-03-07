@@ -935,6 +935,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_textdisp_build_match_index_list_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_find_alias_index_by_name_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_find_control_token_trial.sh"
+    "src/decomp/scripts/compare_sasc_textdisp_update_channel_range_flags_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_build_entry_detail_line_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_build_now_showing_status_line_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_build_entry_pair_status_line_trial.sh"
