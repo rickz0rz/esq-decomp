@@ -330,6 +330,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqpars_jmptbl_parseini_handlefontcommand_trial.sh"
     "src/decomp/scripts/compare_sasc_esqpars_jmptbl_parseini_writertcfromglobals_trial.sh"
     "src/decomp/scripts/compare_sasc_esqpars_apply_rtc_bytes_and_persist_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqpars_consume_rbf_byte_and_dispatch_command_trial.sh"
     "src/decomp/scripts/compare_sasc_esqpars_replace_owned_string_trial.sh"
     "src/decomp/scripts/compare_sasc_esqpars_read_length_word_with_checksum_xor_trial.sh"
     "src/decomp/scripts/compare_sasc_esqpars_remove_group_entry_and_release_strings_trial.sh"
