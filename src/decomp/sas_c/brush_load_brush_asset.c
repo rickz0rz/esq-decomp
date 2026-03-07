@@ -4,6 +4,7 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_ILBM_PROCESS_OK = 1,
     BRUSH_NULL = 0,
     BRUSH_PLANE_PTR_SHIFT = 2,
     BRUSH_NODE_WIDTH_OFFSET = 176,
@@ -122,7 +123,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                         src + BRUSH_SRC_STATE_BLOCK_OFFSET,
                         BRUSH_DECODE_BUFFER_SIZE,
                         decode_buf,
-                        src) == 1) {
+                        src) == BRUSH_ILBM_PROCESS_OK) {
                     status_fail = BRUSH_STATUS_OK;
                 }
             }
