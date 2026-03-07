@@ -14,22 +14,28 @@ extern void SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(LONG statusMask, L
 
 LONG PARSEINI_CheckCtrlHChange(void)
 {
+    const LONG CHANGED_FALSE = 0L;
+    const LONG CHANGED_TRUE = -1L;
+    const WORD FLAG_FALSE = 0;
+    const WORD FLAG_TRUE = 1;
+    const LONG STATUSMASK_CTRL_H = 16L;
+    const LONG GATE_STABLE_COUNT = 3;
     LONG changed;
     WORD secondSample;
 
-    changed = (CTRL_H != CTRL_HPreviousSample) ? -1L : 0L;
+    changed = (CTRL_H != CTRL_HPreviousSample) ? CHANGED_TRUE : CHANGED_FALSE;
     if (changed != 0 && PARSEINI_CtrlHChangeGateFlag != 0) {
         PARSEINI_CtrlHClockSnapshot = Global_REF_CLOCKDATA_STRUCT;
         PARSEINI_CtrlHChangeGateCounter = 0;
-        if (PARSEINI_CtrlHChangePendingFlag == 1) {
+        if (PARSEINI_CtrlHChangePendingFlag == FLAG_TRUE) {
             return changed;
         }
-        PARSEINI_CtrlHChangePendingFlag = 1;
-        SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(16L, 1L);
+        PARSEINI_CtrlHChangePendingFlag = FLAG_TRUE;
+        SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(STATUSMASK_CTRL_H, FLAG_TRUE);
         return changed;
     }
 
-    if (PARSEINI_CtrlHChangePendingFlag == 0) {
+    if (PARSEINI_CtrlHChangePendingFlag == FLAG_FALSE) {
         return changed;
     }
 
@@ -41,12 +47,12 @@ LONG PARSEINI_CheckCtrlHChange(void)
     PARSEINI_CtrlHClockSnapshot = secondSample;
     if (PARSEINI_CtrlHChangeGateFlag != 0) {
         ++PARSEINI_CtrlHChangeGateCounter;
-        if (PARSEINI_CtrlHChangeGateCounter < 3) {
+        if (PARSEINI_CtrlHChangeGateCounter < GATE_STABLE_COUNT) {
             return changed;
         }
     }
 
-    PARSEINI_CtrlHChangePendingFlag = 0;
-    SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(16L, 0L);
+    PARSEINI_CtrlHChangePendingFlag = FLAG_FALSE;
+    SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(STATUSMASK_CTRL_H, CHANGED_FALSE);
     return changed;
 }

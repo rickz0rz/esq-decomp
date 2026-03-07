@@ -2,57 +2,75 @@
 __code:
 SCRIPT_SelectPlaybackCursorFromS:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              SUB.L          #$30,D0                  ;90bc 0000 0030 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D5/D6/D7/A5,-(A7)        ;48e7 0704 
+              SUB.W          #$24,A7                  ;9efc 0024 
+              MOVEM.L        D2/D5/D6/D7/A5,-(A7)     ;48e7 2704 
 ___SCRIPT_SelectPlaybackCursorFromS__1:
-              MOVE.L         $14(A7),D7               ;2e2f 0014 
-              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVE.L         $3c(A7),D7               ;2e2f 003c 
+              MOVE.L         $40(A7),A5               ;2a6f 0040 
               MOVEQ.L        #$1,D6                   ;7c01 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVEQ.L        #$3,D0                   ;7003 
+              MOVE.W         #$1e,$1e(A7)             ;3f7c 001e 001e 
+              MOVE.B         #$12,$1d(A7)             ;1f7c 0012 001d 
+              CLR.B          $1c(A7)                  ;422f 001c 
+              MOVEQ.L        #$2,D1                   ;7202 
+              MOVE.L         D1,$18(A7)               ;2f41 0018 
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVEQ.L        #$6,D2                   ;7406 
+              MOVE.L         D2,$2c(A7)               ;2f42 002c 
+              MOVEQ.L        #$7,D2                   ;7407 
+              MOVE.L         D2,$28(A7)               ;2f42 0028 
+              MOVE.L         D6,$20(A7)               ;2f46 0020 
               MOVE.L         D7,SCRIPT_SearchMatchCountOrIndex(A4);2947 0000 
-              MOVE.W         #$1,SCRIPT_ChannelRangeArmedFlag(A4);397c 0001 0000 
-              MOVEQ.L        #$3,D5                   ;7a03 
+              MOVE.L         D6,D2                    ;2406 
+              MOVE.W         D2,SCRIPT_ChannelRangeArmedFlag(A4);3942 0000 
+              MOVE.W         D0,$16(A7)               ;3f40 0016 
+              MOVE.W         D0,$34(A7)               ;3f40 0034 
+              MOVE.L         D1,$24(A7)               ;2f41 0024 
+              MOVE.L         D1,$30(A7)               ;2f41 0030 
 ___SCRIPT_SelectPlaybackCursorFromS__2:
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         D5,D0                    ;3005 
-              MOVEQ.L        #$12,D1                  ;7212 
-              CMP.B          $0(A5,D0.L),D1           ;b235 0800 
-              BEQ.B          ___SCRIPT_SelectPlaybackCursorFromS__5;670a 
+              MOVE.W         $16(A7),D0               ;302f 0016 
+              MOVE.B         $0(A5,D0.L),D1           ;1235 0800 
+              CMP.B          $1d(A7),D1               ;b22f 001d 
+              BEQ.B          ___SCRIPT_SelectPlaybackCursorFromS__5;670c 
 ___SCRIPT_SelectPlaybackCursorFromS__3:
-              MOVEQ.L        #$1e,D0                  ;701e 
-              CMP.W          D0,D5                    ;ba40 
-              BCC.B          ___SCRIPT_SelectPlaybackCursorFromS__5;6404 
+              CMP.W          $1e(A7),D0               ;b06f 001e 
+              BCC.B          ___SCRIPT_SelectPlaybackCursorFromS__5;6406 
 ___SCRIPT_SelectPlaybackCursorFromS__4:
-              ADDQ.W         #$1,D5                   ;5245 
-              BRA.B          ___SCRIPT_SelectPlaybackCursorFromS__2;60ea 
+              ADDQ.W         #$1,$16(A7)              ;526f 0016 
+              BRA.B          ___SCRIPT_SelectPlaybackCursorFromS__2;60e4 
 ___SCRIPT_SelectPlaybackCursorFromS__5:
               MOVE.L         A5,A0                    ;204d 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         D5,D0                    ;3005 
+              MOVE.W         $16(A7),D0               ;302f 0016 
               ADD.L          D0,A0                    ;d1c0 
-              CLR.B          (A0)                     ;4210 
+              MOVE.B         $1c(A7),(A0)             ;10af 001c 
+              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         SCRIPT_PrimarySearchFirstFlag(A4),D0;302c 0000 
-              TST.W          D0                       ;4a40 
-              BNE.B          ___SCRIPT_SelectPlaybackCursorFromS__8;6628 
+              CMP.L          D5,D0                    ;b085 
+              BNE.B          ___SCRIPT_SelectPlaybackCursorFromS__8;662a 
 ___SCRIPT_SelectPlaybackCursorFromS__6:
-              LEA            $1(A0),A1                ;43e8 0001 
+              ADD.L          $30(A7),A0               ;d1ef 0030 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_SecondaryChannelCode(A4),D0;302c 0000 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            TEXTDISP_SecondarySearchText(A4);486c 0000 
-              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          TEXTDISP_SelectGroupAndEntry;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              SUBQ.L         #$1,D0                   ;5380 
-              BNE.B          ___SCRIPT_SelectPlaybackCursorFromS__8;660a 
+              CMP.L          D6,D0                    ;b086 
+              BNE.B          ___SCRIPT_SelectPlaybackCursorFromS__8;660c 
 ___SCRIPT_SelectPlaybackCursorFromS__7:
-              MOVEQ.L        #$7,D0                   ;7007 
-              MOVE.L         D0,SCRIPT_PlaybackCursor(A4);2940 0000 
-              MOVE.L         D6,D0                    ;2006 
-              BRA.B          ___SCRIPT_SelectPlaybackCursorFromS__15;606c 
+              MOVE.L         $28(A7),SCRIPT_PlaybackCursor(A4);296f 0028 0000 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              BRA.B          ___SCRIPT_SelectPlaybackCursorFromS__15;6078 
 ___SCRIPT_SelectPlaybackCursorFromS__8:
-              LEA            $2(A5),A0                ;41ed 0002 
+              MOVE.L         A5,A0                    ;204d 
+              ADD.L          $18(A7),A0               ;d1ef 0018 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_PrimaryChannelCode(A4),D0;302c 0000 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -60,45 +78,45 @@ ___SCRIPT_SelectPlaybackCursorFromS__8:
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          TEXTDISP_SelectGroupAndEntry;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              SUBQ.L         #$1,D0                   ;5380 
-              BNE.B          ___SCRIPT_SelectPlaybackCursorFromS__10;660a 
+              CMP.L          D6,D0                    ;b086 
+              BNE.B          ___SCRIPT_SelectPlaybackCursorFromS__10;660c 
 ___SCRIPT_SelectPlaybackCursorFromS__9:
-              MOVEQ.L        #$6,D0                   ;7006 
-              MOVE.L         D0,SCRIPT_PlaybackCursor(A4);2940 0000 
-              MOVE.L         D6,D0                    ;2006 
-              BRA.B          ___SCRIPT_SelectPlaybackCursorFromS__15;6044 
+              MOVE.L         $2c(A7),SCRIPT_PlaybackCursor(A4);296f 002c 0000 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              BRA.B          ___SCRIPT_SelectPlaybackCursorFromS__15;604c 
 ___SCRIPT_SelectPlaybackCursorFromS__10:
+              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         SCRIPT_PrimarySearchFirstFlag(A4),D0;302c 0000 
-              BEQ.B          ___SCRIPT_SelectPlaybackCursorFromS__13;6730 
+              CMP.L          D5,D0                    ;b085 
+              BEQ.B          ___SCRIPT_SelectPlaybackCursorFromS__13;6734 
 ___SCRIPT_SelectPlaybackCursorFromS__11:
               MOVE.L         A5,A0                    ;204d 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         D5,D0                    ;3005 
+              MOVE.W         $16(A7),D0               ;302f 0016 
               ADD.L          D0,A0                    ;d1c0 
-              LEA            $1(A0),A1                ;43e8 0001 
+              ADD.L          $30(A7),A0               ;d1ef 0030 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_SecondaryChannelCode(A4),D0;302c 0000 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            TEXTDISP_SecondarySearchText(A4);486c 0000 
-              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          TEXTDISP_SelectGroupAndEntry;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              SUBQ.L         #$1,D0                   ;5380 
-              BNE.B          ___SCRIPT_SelectPlaybackCursorFromS__13;660a 
+              CMP.L          D6,D0                    ;b086 
+              BNE.B          ___SCRIPT_SelectPlaybackCursorFromS__13;660c 
 ___SCRIPT_SelectPlaybackCursorFromS__12:
-              MOVEQ.L        #$7,D0                   ;7007 
-              MOVE.L         D0,SCRIPT_PlaybackCursor(A4);2940 0000 
-              MOVE.L         D6,D0                    ;2006 
+              MOVE.L         $28(A7),SCRIPT_PlaybackCursor(A4);296f 0028 0000 
+              MOVE.L         $20(A7),D0               ;202f 0020 
               BRA.B          ___SCRIPT_SelectPlaybackCursorFromS__15;600e 
 ___SCRIPT_SelectPlaybackCursorFromS__13:
-              MOVEQ.L        #$0,D6                   ;7c00 
-              CLR.W          SCRIPT_ChannelRangeArmedFlag(A4);426c 0000 
-              MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,SCRIPT_PlaybackCursor(A4);2940 0000 
-              MOVE.L         D6,D0                    ;2006 
+              MOVE.L         D5,D0                    ;2005 
+              MOVE.L         D5,D1                    ;2205 
+              MOVE.W         D1,SCRIPT_ChannelRangeArmedFlag(A4);3941 0000 
+              MOVE.L         $24(A7),SCRIPT_PlaybackCursor(A4);296f 0024 0000 
 ___SCRIPT_SelectPlaybackCursorFromS__14:
 ___SCRIPT_SelectPlaybackCursorFromS__15:
-              MOVEM.L        (A7)+,D5/D6/D7/A5        ;4cdf 20e0 
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A5     ;4cdf 20e4 
+              ADD.W          #$24,A7                  ;defc 0024 
               RTS                                     ;4e75 
 __const:
 __strings:

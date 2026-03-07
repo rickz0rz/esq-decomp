@@ -15,40 +15,60 @@ extern LONG TEXTDISP_SelectGroupAndEntry(char *arg, char *searchText, LONG chann
 
 LONG SCRIPT_SelectPlaybackCursorFromSearchText(LONG matchIndex, char *text)
 {
+    const LONG FLAG_TRUE = 1;
+    const LONG FLAG_FALSE = 0;
+    const UWORD SPLIT_START = 3;
+    const UWORD SPLIT_LIMIT = 30;
+    const char SPLIT_TOKEN = 18;
+    const char CH_NUL = 0;
+    const LONG PRIMARY_TEXT_OFFSET = 2;
+    const LONG SECONDARY_TEXT_STEP = 1;
+    const LONG CURSOR_PRIMARY_MATCH = 6;
+    const LONG CURSOR_SECONDARY_MATCH = 7;
+    const LONG CURSOR_FALLBACK = 1;
     LONG ok;
     UWORD split;
 
-    ok = 1;
+    ok = FLAG_TRUE;
     SCRIPT_SearchMatchCountOrIndex = matchIndex;
-    SCRIPT_ChannelRangeArmedFlag = 1;
+    SCRIPT_ChannelRangeArmedFlag = FLAG_TRUE;
 
-    split = 3;
-    while (text[split] != 18 && split < 30) {
+    split = SPLIT_START;
+    while (text[split] != SPLIT_TOKEN && split < SPLIT_LIMIT) {
         split++;
     }
-    text[split] = 0;
+    text[split] = CH_NUL;
 
-    if (SCRIPT_PrimarySearchFirstFlag == 0) {
-        if (TEXTDISP_SelectGroupAndEntry(text + split + 1, (char *)&TEXTDISP_SecondarySearchText, (LONG)TEXTDISP_SecondaryChannelCode) == 1) {
-            SCRIPT_PlaybackCursor = 7;
+    if (SCRIPT_PrimarySearchFirstFlag == FLAG_FALSE) {
+        if (TEXTDISP_SelectGroupAndEntry(
+                text + split + SECONDARY_TEXT_STEP,
+                (char *)&TEXTDISP_SecondarySearchText,
+                (LONG)TEXTDISP_SecondaryChannelCode) == FLAG_TRUE) {
+            SCRIPT_PlaybackCursor = CURSOR_SECONDARY_MATCH;
             return ok;
         }
     }
 
-    if (TEXTDISP_SelectGroupAndEntry(text + 2, (char *)&TEXTDISP_PrimarySearchText, (LONG)TEXTDISP_PrimaryChannelCode) == 1) {
-        SCRIPT_PlaybackCursor = 6;
+    if (TEXTDISP_SelectGroupAndEntry(
+            text + PRIMARY_TEXT_OFFSET,
+            (char *)&TEXTDISP_PrimarySearchText,
+            (LONG)TEXTDISP_PrimaryChannelCode) == FLAG_TRUE) {
+        SCRIPT_PlaybackCursor = CURSOR_PRIMARY_MATCH;
         return ok;
     }
 
-    if (SCRIPT_PrimarySearchFirstFlag != 0) {
-        if (TEXTDISP_SelectGroupAndEntry(text + split + 1, (char *)&TEXTDISP_SecondarySearchText, (LONG)TEXTDISP_SecondaryChannelCode) == 1) {
-            SCRIPT_PlaybackCursor = 7;
+    if (SCRIPT_PrimarySearchFirstFlag != FLAG_FALSE) {
+        if (TEXTDISP_SelectGroupAndEntry(
+                text + split + SECONDARY_TEXT_STEP,
+                (char *)&TEXTDISP_SecondarySearchText,
+                (LONG)TEXTDISP_SecondaryChannelCode) == FLAG_TRUE) {
+            SCRIPT_PlaybackCursor = CURSOR_SECONDARY_MATCH;
             return ok;
         }
     }
 
-    ok = 0;
-    SCRIPT_ChannelRangeArmedFlag = 0;
-    SCRIPT_PlaybackCursor = 1;
+    ok = FLAG_FALSE;
+    SCRIPT_ChannelRangeArmedFlag = FLAG_FALSE;
+    SCRIPT_PlaybackCursor = CURSOR_FALLBACK;
     return ok;
 }
