@@ -14,6 +14,9 @@ enum {
     CHANNEL_RANGE_B_MAX = 77,
     STATUS_LINE_BUFFER_LEN = 137,
     STATUS_SCRATCH_BUFFER_LEN = 188,
+    ENTRY_TITLE_TABLE_OFFSET = 56,
+    ENTRY_TEXT_START_OFFSET = 1,
+    ASCII_SPACE = ' ',
     ENTRY_INDEX_MIN = 0,
     ENTRY_INDEX_MAX_EXCLUSIVE = 49,
     MINUTES_PER_DAY = 1440,
@@ -123,7 +126,7 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             STRING_AppendAtNull(line, SCRIPT_AlignedPrefixEmptyA);
             STRING_AppendAtNull(line, title);
 
-            titleTable = (ULONG *)((UBYTE *)aux + 56);
+            titleTable = (ULONG *)((UBYTE *)aux + ENTRY_TITLE_TABLE_OFFSET);
             timeToken = TEXTDISP_FindControlToken((const char *)titleTable[(LONG)entryIndex]);
         } else {
             if ((TEXTDISP_PrimaryChannelCode > CHANNEL_RANGE_A_MIN &&
@@ -138,9 +141,9 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
 
         if (bannerKind == TEXTDISP_NULL) {
             out = TEXTDISP_NULL;
-            for (i = TEXTDISP_NULL; entry[i + 1] != TEXTDISP_NULL; i++) {
-                if (entry[i + 1] != ' ') {
-                    scratch[out++] = (char)entry[i + 1];
+            for (i = TEXTDISP_NULL; entry[i + ENTRY_TEXT_START_OFFSET] != TEXTDISP_NULL; i++) {
+                if (entry[i + ENTRY_TEXT_START_OFFSET] != ASCII_SPACE) {
+                    scratch[out++] = (char)entry[i + ENTRY_TEXT_START_OFFSET];
                 }
             }
             scratch[out] = TEXTDISP_NULL;
