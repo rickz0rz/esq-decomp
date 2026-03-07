@@ -21,7 +21,7 @@ ___BRUSH_CloneBrushRecord__1:
               BNE.B          ___BRUSH_CloneBrushRecord__3;6606 
 ___BRUSH_CloneBrushRecord__2:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___BRUSH_CloneBrushRecord__41;6000 0248 
+              BRA.W          ___BRUSH_CloneBrushRecord__44;6000 0238 
 ___BRUSH_CloneBrushRecord__3:
               MOVE.L         A3,$2c(A7)               ;2f4b 002c 
               MOVE.L         A2,$28(A7)               ;2f4a 0028 
@@ -77,22 +77,25 @@ ___BRUSH_CloneBrushRecord__10:
               BSR.W          _LVOInitBitMap           ;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
               MOVE.B         $be(A3),$20(A2)          ;156b 00be 0020 
-              LEA            $148(A2),A0              ;41ea 0148 
-              LEA            $c2(A3),A1               ;43eb 00c2 
-              MOVE.L         (A1),(A0)                ;2091 
-              LEA            $14c(A2),A0              ;41ea 014c 
-              LEA            $c6(A3),A1               ;43eb 00c6 
-              MOVE.L         (A1),(A0)                ;2091 
-              LEA            $150(A2),A0              ;41ea 0150 
-              LEA            $ca(A3),A1               ;43eb 00ca 
-              MOVE.L         (A1),(A0)                ;2091 
-              LEA            $154(A2),A0              ;41ea 0154 
-              LEA            $ce(A3),A1               ;43eb 00ce 
-              MOVE.L         (A1),(A0)                ;2091 
-              LEA            $158(A2),A0              ;41ea 0158 
-              LEA            $d2(A3),A1               ;43eb 00d2 
-              MOVE.L         (A1),(A0)                ;2091 
+              MOVEQ.L        #$0,D7                   ;7e00 
 ___BRUSH_CloneBrushRecord__11:
+              MOVEQ.L        #$5,D0                   ;7005 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___BRUSH_CloneBrushRecord__14;6c1a 
+___BRUSH_CloneBrushRecord__12:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         A2,A0                    ;204a 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            $148(A0),A1              ;43e8 0148 
+              MOVE.L         A3,A0                    ;204b 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            $c2(A0),A6               ;4de8 00c2 
+              MOVE.L         (A6),(A1)                ;2296 
+___BRUSH_CloneBrushRecord__13:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___BRUSH_CloneBrushRecord__11;60e0 
+___BRUSH_CloneBrushRecord__14:
               LEA            $164(A2),A0              ;41ea 0164 
               LEA            $de(A3),A1               ;43eb 00de 
               MOVE.L         (A1),(A0)                ;2091 
@@ -100,11 +103,11 @@ ___BRUSH_CloneBrushRecord__11:
               LEA            $e2(A3),A1               ;43eb 00e2 
               MOVE.L         (A1),(A0)                ;2091 
               MOVEQ.L        #$0,D7                   ;7e00 
-___BRUSH_CloneBrushRecord__12:
+___BRUSH_CloneBrushRecord__15:
               MOVEQ.L        #$4,D0                   ;7004 
               CMP.L          D0,D7                    ;be80 
-              BGE.B          ___BRUSH_CloneBrushRecord__15;6c30 
-___BRUSH_CloneBrushRecord__13:
+              BGE.B          ___BRUSH_CloneBrushRecord__18;6c30 
+___BRUSH_CloneBrushRecord__16:
               MOVE.L         D7,D0                    ;2007 
               ASL.L          #$3,D0                   ;e780 
               MOVE.L         A2,A0                    ;204a 
@@ -123,68 +126,68 @@ ___BRUSH_CloneBrushRecord__13:
               ADD.L          D0,A0                    ;d1c0 
               LEA            $9c(A0),A6               ;4de8 009c 
               MOVE.L         (A6),(A1)                ;2296 
-___BRUSH_CloneBrushRecord__14:
+___BRUSH_CloneBrushRecord__17:
               ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___BRUSH_CloneBrushRecord__12;60ca 
-___BRUSH_CloneBrushRecord__15:
+              BRA.B          ___BRUSH_CloneBrushRecord__15;60ca 
+___BRUSH_CloneBrushRecord__18:
               LEA            $bf(A3),A0               ;41eb 00bf 
               LEA            $21(A2),A1               ;43ea 0021 
               MOVE.L         A0,$2c(A7)               ;2f48 002c 
               MOVE.L         A1,$28(A7)               ;2f49 0028 
-___BRUSH_CloneBrushRecord__16:
+___BRUSH_CloneBrushRecord__19:
               MOVE.L         $2c(A7),A0               ;206f 002c 
               MOVE.L         $28(A7),A1               ;226f 0028 
               MOVE.B         (A0),(A1)+               ;12d0 
               MOVE.L         A1,$28(A7)               ;2f49 0028 
-___BRUSH_CloneBrushRecord__17:
+___BRUSH_CloneBrushRecord__20:
               MOVE.L         $2c(A7),A0               ;206f 002c 
               MOVE.B         (A0)+,D0                 ;1018 
               MOVE.L         A0,$2c(A7)               ;2f48 002c 
               TST.B          D0                       ;4a00 
-              BNE.B          ___BRUSH_CloneBrushRecord__16;66e4 
-___BRUSH_CloneBrushRecord__18:
+              BNE.B          ___BRUSH_CloneBrushRecord__19;66e4 
+___BRUSH_CloneBrushRecord__21:
               LEA            $16c(A2),A0              ;41ea 016c 
               LEA            $e6(A3),A1               ;43eb 00e6 
               MOVE.L         (A1),(A0)                ;2091 
               LEA            $d6(A3),A0               ;41eb 00d6 
               MOVE.L         (A0),D0                  ;2010 
-              BEQ.B          ___BRUSH_CloneBrushRecord__20;6708 
-___BRUSH_CloneBrushRecord__19:
+              BEQ.B          ___BRUSH_CloneBrushRecord__23;6708 
+___BRUSH_CloneBrushRecord__22:
               LEA            $15c(A2),A1              ;43ea 015c 
               MOVE.L         D0,(A1)                  ;2280 
-              BRA.B          ___BRUSH_CloneBrushRecord__21;600e 
-___BRUSH_CloneBrushRecord__20:
+              BRA.B          ___BRUSH_CloneBrushRecord__24;600e 
+___BRUSH_CloneBrushRecord__23:
               LEA            $15c(A2),A0              ;41ea 015c 
               LEA            $b0(A2),A1               ;43ea 00b0 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         (A1),D0                  ;3011 
               MOVE.L         D0,(A0)                  ;2080 
-___BRUSH_CloneBrushRecord__21:
+___BRUSH_CloneBrushRecord__24:
               LEA            $da(A3),A0               ;41eb 00da 
               MOVE.L         (A0),D0                  ;2010 
-              BEQ.B          ___BRUSH_CloneBrushRecord__23;6708 
-___BRUSH_CloneBrushRecord__22:
+              BEQ.B          ___BRUSH_CloneBrushRecord__26;6708 
+___BRUSH_CloneBrushRecord__25:
               LEA            $160(A2),A1              ;43ea 0160 
               MOVE.L         D0,(A1)                  ;2280 
-              BRA.B          ___BRUSH_CloneBrushRecord__24;600e 
-___BRUSH_CloneBrushRecord__23:
+              BRA.B          ___BRUSH_CloneBrushRecord__27;600e 
+___BRUSH_CloneBrushRecord__26:
               LEA            $160(A2),A0              ;41ea 0160 
               LEA            $b2(A2),A1               ;43ea 00b2 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         (A1),D0                  ;3011 
               MOVE.L         D0,(A0)                  ;2080 
-___BRUSH_CloneBrushRecord__24:
+___BRUSH_CloneBrushRecord__27:
               MOVEQ.L        #$0,D7                   ;7e00 
-___BRUSH_CloneBrushRecord__25:
+___BRUSH_CloneBrushRecord__28:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $b8(A2),D0               ;102a 00b8 
               CMP.L          D0,D7                    ;be80 
-              BGE.W          ___BRUSH_CloneBrushRecord__34;6c00 0088 
-___BRUSH_CloneBrushRecord__26:
+              BGE.W          ___BRUSH_CloneBrushRecord__37;6c00 0088 
+___BRUSH_CloneBrushRecord__29:
               MOVEQ.L        #$5,D0                   ;7005 
               CMP.L          D0,D7                    ;be80 
-              BGE.W          ___BRUSH_CloneBrushRecord__34;6c00 0080 
-___BRUSH_CloneBrushRecord__27:
+              BGE.W          ___BRUSH_CloneBrushRecord__37;6c00 0080 
+___BRUSH_CloneBrushRecord__30:
               MOVE.L         D7,D6                    ;2c07 
               ASL.L          #$2,D6                   ;e586 
               LEA            $b0(A2),A0               ;41ea 00b0 
@@ -205,40 +208,40 @@ ___BRUSH_CloneBrushRecord__27:
               LEA            $90(A0),A1               ;43e8 0090 
               MOVE.L         D0,(A1)                  ;2280 
               MOVE.L         D0,$24(A7)               ;2f40 0024 
-              BNE.B          ___BRUSH_CloneBrushRecord__33;663e 
-___BRUSH_CloneBrushRecord__28:
+              BNE.B          ___BRUSH_CloneBrushRecord__36;663e 
+___BRUSH_CloneBrushRecord__31:
               BSR.W          _LVOForbid               ;6100 0000 
               TST.L          BRUSH_PendingAlertCode(A4);4aac 0000 
-              BNE.B          ___BRUSH_CloneBrushRecord__32;662e 
-___BRUSH_CloneBrushRecord__29:
+              BNE.B          ___BRUSH_CloneBrushRecord__35;662e 
+___BRUSH_CloneBrushRecord__32:
               MOVE.L         A2,$20(A7)               ;2f4a 0020 
               LEA            BRUSH_SnapshotHeader(A4),A0;41ec 0000 
               MOVEQ.L        #$1,D0                   ;7001 
               MOVE.L         D0,BRUSH_PendingAlertCode(A4);2940 0000 
               MOVE.L         A0,$1c(A7)               ;2f48 001c 
-___BRUSH_CloneBrushRecord__30:
+___BRUSH_CloneBrushRecord__33:
               MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.L         $1c(A7),A1               ;226f 001c 
               MOVE.B         (A0),(A1)+               ;12d0 
               MOVE.L         A1,$1c(A7)               ;2f49 001c 
-___BRUSH_CloneBrushRecord__31:
+___BRUSH_CloneBrushRecord__34:
               MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.B         (A0)+,D0                 ;1018 
               MOVE.L         A0,$20(A7)               ;2f48 0020 
               TST.B          D0                       ;4a00 
-              BNE.B          ___BRUSH_CloneBrushRecord__30;66e4 
-___BRUSH_CloneBrushRecord__32:
+              BNE.B          ___BRUSH_CloneBrushRecord__33;66e4 
+___BRUSH_CloneBrushRecord__35:
               BSR.W          _LVOPermit               ;6100 0000 
-              BRA.B          ___BRUSH_CloneBrushRecord__34;6006 
-___BRUSH_CloneBrushRecord__33:
+              BRA.B          ___BRUSH_CloneBrushRecord__37;6006 
+___BRUSH_CloneBrushRecord__36:
               ADDQ.L         #$1,D7                   ;5287 
-              BRA.W          ___BRUSH_CloneBrushRecord__25;6000 ff70 
-___BRUSH_CloneBrushRecord__34:
+              BRA.W          ___BRUSH_CloneBrushRecord__28;6000 ff70 
+___BRUSH_CloneBrushRecord__37:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $b8(A2),D0               ;102a 00b8 
               CMP.L          D0,D7                    ;be80 
-              BNE.B          ___BRUSH_CloneBrushRecord__39;6630 
-___BRUSH_CloneBrushRecord__35:
+              BNE.B          ___BRUSH_CloneBrushRecord__42;6630 
+___BRUSH_CloneBrushRecord__38:
               LEA            $24(A2),A0               ;41ea 0024 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          _LVOInitRastPort         ;6100 0000 
@@ -247,21 +250,21 @@ ___BRUSH_CloneBrushRecord__35:
               LEA            $88(A2),A1               ;43ea 0088 
               MOVE.L         A1,(A0)                  ;2089 
               MOVEQ.L        #$0,D7                   ;7e00 
-___BRUSH_CloneBrushRecord__36:
+___BRUSH_CloneBrushRecord__39:
               MOVEQ.L        #$60,D0                  ;7060 
               CMP.L          D0,D7                    ;be80 
-              BGE.B          ___BRUSH_CloneBrushRecord__39;6c12 
-___BRUSH_CloneBrushRecord__37:
+              BGE.B          ___BRUSH_CloneBrushRecord__42;6c12 
+___BRUSH_CloneBrushRecord__40:
               MOVE.L         D7,D0                    ;2007 
               ADD.L          #$e8,D0                  ;0680 0000 00e8 
               MOVE.B         $20(A3,D7.L),$0(A2,D0.L) ;15b3 7820 0800 
-___BRUSH_CloneBrushRecord__38:
-              ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___BRUSH_CloneBrushRecord__36;60e8 
-___BRUSH_CloneBrushRecord__39:
-              MOVE.L         A2,D0                    ;200a 
-___BRUSH_CloneBrushRecord__40:
 ___BRUSH_CloneBrushRecord__41:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___BRUSH_CloneBrushRecord__39;60e8 
+___BRUSH_CloneBrushRecord__42:
+              MOVE.L         A2,D0                    ;200a 
+___BRUSH_CloneBrushRecord__43:
+___BRUSH_CloneBrushRecord__44:
               MOVEM.L        (A7)+,D2/D6/D7/A2/A3/A5/A6;4cdf 6cc4 
               ADD.W          #$14,A7                  ;defc 0014 
               RTS                                     ;4e75 

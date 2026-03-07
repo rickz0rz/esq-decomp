@@ -12,6 +12,14 @@ enum {
     BRUSH_META_COPY_DST_OFFSET = 196,
     BRUSH_META_COPY_SRC_OFFSET = 148,
     BRUSH_NEXT_PTR_OFFSET = 368,
+    BRUSH_DST_BLOCK_328_OFFSET = 328,
+    BRUSH_SRC_BLOCK_194_OFFSET = 194,
+    BRUSH_BLOCK_COPY_STRIDE = 4,
+    BRUSH_BLOCK_COPY_COUNT = 5,
+    BRUSH_DST_ALIGN_H_OFFSET = 356,
+    BRUSH_DST_ALIGN_V_OFFSET = 360,
+    BRUSH_SRC_ALIGN_H_OFFSET = 222,
+    BRUSH_SRC_ALIGN_V_OFFSET = 226,
     BRUSH_PLANE_PAIR_TABLE_DST_OFFSET = 200,
     BRUSH_PLANE_PAIR_TABLE_SRC_OFFSET = 152,
     BRUSH_PLANE_PAIR_STRIDE = 8,
@@ -91,13 +99,12 @@ void *BRUSH_CloneBrushRecord(void *src_rec)
         (UWORD)*(UWORD *)(dst + BRUSH_NODE_HEIGHT_OFFSET));
 
     dst[BRUSH_SRC_STATE_COPY_SRC_OFFSET] = src[BRUSH_SRC_TYPE_OFFSET];
-    *(ULONG *)(dst + 328) = *(ULONG *)(src + 194);
-    *(ULONG *)(dst + 332) = *(ULONG *)(src + 198);
-    *(ULONG *)(dst + 336) = *(ULONG *)(src + 202);
-    *(ULONG *)(dst + 340) = *(ULONG *)(src + 206);
-    *(ULONG *)(dst + 344) = *(ULONG *)(src + 210);
-    *(ULONG *)(dst + 356) = *(ULONG *)(src + 222);
-    *(ULONG *)(dst + 360) = *(ULONG *)(src + 226);
+    for (i = BRUSH_NULL; i < BRUSH_BLOCK_COPY_COUNT; i++) {
+        *(ULONG *)(dst + BRUSH_DST_BLOCK_328_OFFSET + (i * BRUSH_BLOCK_COPY_STRIDE)) =
+            *(ULONG *)(src + BRUSH_SRC_BLOCK_194_OFFSET + (i * BRUSH_BLOCK_COPY_STRIDE));
+    }
+    *(ULONG *)(dst + BRUSH_DST_ALIGN_H_OFFSET) = *(ULONG *)(src + BRUSH_SRC_ALIGN_H_OFFSET);
+    *(ULONG *)(dst + BRUSH_DST_ALIGN_V_OFFSET) = *(ULONG *)(src + BRUSH_SRC_ALIGN_V_OFFSET);
 
     for (i = BRUSH_NULL; i < BRUSH_PLANE_PAIR_COPY_COUNT; i++) {
         *(ULONG *)(dst + BRUSH_PLANE_PAIR_TABLE_DST_OFFSET + (i * BRUSH_PLANE_PAIR_STRIDE)) =
