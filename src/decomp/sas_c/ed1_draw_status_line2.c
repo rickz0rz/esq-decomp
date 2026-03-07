@@ -22,10 +22,15 @@ extern LONG _LVOSetRast(void *gfxBase, void *rastPort, LONG pen);
 
 void ED1_DrawStatusLine2(void)
 {
+    const LONG RASTPORT_OFFSET = 2;
+    const LONG PEN_BG = 2;
+    const LONG STATUS_Y_BUDGET = 120;
+    const LONG STATUS_Y_CYCLE = 150;
+    const LONG STATUS_Y_CLOCK = 180;
     char statusLine[51];
-    void *rastPort = (void *)((unsigned char *)WDISP_DisplayContextBase + 2);
+    void *rastPort = (void *)((unsigned char *)WDISP_DisplayContextBase + RASTPORT_OFFSET);
 
-    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, rastPort, 2);
+    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, rastPort, PEN_BG);
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(
         statusLine,
@@ -34,7 +39,7 @@ void ED1_DrawStatusLine2(void)
         (LONG)CONFIG_NicheModeCycleBudget_Static,
         (LONG)CONFIG_NicheModeCycleBudget_Custom
     );
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 120);
+    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, STATUS_Y_BUDGET);
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(
         statusLine,
@@ -43,12 +48,12 @@ void ED1_DrawStatusLine2(void)
         CONFIG_ModeCycleGateDuration,
         CONFIG_TimeWindowMinutes
     );
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 150);
+    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, STATUS_Y_CYCLE);
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(
         statusLine,
         Global_STR_CLOCKCMD_EQUALS_PCT_C,
         (LONG)CTASKS_STR_1
     );
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 180);
+    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, STATUS_Y_CLOCK);
 }

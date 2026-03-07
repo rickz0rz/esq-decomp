@@ -3,149 +3,196 @@ __code:
 rol32:
               CMP.L          __base(A4),A7            ;bfec 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D2/D6/D7,-(A7)           ;48e7 2300 
+              MOVEM.L        D2/D5/D6/D7,-(A7)        ;48e7 2700 
 ___rol32__1:
-              MOVE.W         $16(A7),D6               ;3c2f 0016 
-              MOVE.L         $10(A7),D7               ;2e2f 0010 
+              MOVE.W         $1a(A7),D6               ;3c2f 001a 
+              MOVE.L         $14(A7),D7               ;2e2f 0014 
+              MOVEQ.L        #$20,D5                  ;7a20 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D6,D0                    ;3006 
               MOVE.L         D7,D1                    ;2207 
               ASL.L          D0,D1                    ;e1a1 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         D6,D0                    ;3006 
-              MOVEQ.L        #$20,D2                  ;7420 
-              SUB.L          D0,D2                    ;9480 
-              MOVE.L         D7,D0                    ;2007 
-              LSR.L          D2,D0                    ;e4a8 
-              OR.L           D0,D1                    ;8280 
+              MOVE.W         D5,D0                    ;3005 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D6,D2                    ;3406 
+              SUB.L          D2,D0                    ;9082 
+              MOVE.L         D7,D2                    ;2407 
+              LSR.L          D0,D2                    ;e0aa 
+              OR.L           D2,D1                    ;8282 
               MOVE.L         D1,D0                    ;2001 
 ___rol32__2:
 ___rol32__3:
-              MOVEM.L        (A7)+,D2/D6/D7           ;4cdf 00c4 
+              MOVEM.L        (A7)+,D2/D5/D6/D7        ;4cdf 00e4 
               RTS                                     ;4e75 
 __const:
 __strings:
 ESQ_UpdateCopperListsFromParams:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              SUB.L          #$34,D0                  ;90bc 0000 0034 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$4,A7                   ;594f 
-              MOVEM.L        D2/D3/D5/D6/D7/A3/A5,-(A7);48e7 3714 
+              SUB.W          #$2c,A7                  ;9efc 002c 
+              MOVEM.L        D2/D3/D4/D5/D6/D7/A3/A5,-(A7);48e7 3f14 
 ___ESQ_UpdateCopperListsFromParams__1:
-              MOVE.W         ESQ_CopperEffectTemplateRowsSet0+$1a(A4),D7;3e2c 001a 
-              MOVE.L         HIGHLIGHT_CopperEffectSeed(A4),D6;2c2c 0000 
-              LEA            ESQ_CopperEffectListA+$6(A4),A5;4bec 0006 
-              LEA            ESQ_CopperEffectListB+$6(A4),A3;47ec 0006 
-              MOVE.L         D6,D0                    ;2006 
-              CLR.B          D0                       ;4200 
-              MOVE.L         D6,D1                    ;2206 
-              MOVEQ.L        #$0,D2                   ;7400 
-              MOVE.B         D1,D2                    ;1401 
+              MOVEQ.L        #$1a,D7                  ;7e1a 
+              MOVEQ.L        #$6,D6                   ;7c06 
+              MOVE.W         #$feff,D5                ;3a3c feff 
+              MOVE.W         #$100,$48(A7)            ;3f7c 0100 0048 
+              MOVE.W         #$f,$3e(A7)              ;3f7c 000f 003e 
+              MOVE.W         #$8,$3c(A7)              ;3f7c 0008 003c 
+              MOVE.W         #$88,$3a(A7)             ;3f7c 0088 003a 
+              MOVE.W         #$8c,$38(A7)             ;3f7c 008c 0038 
+              MOVE.W         #$4,$36(A7)              ;3f7c 0004 0036 
+              MOVEQ.L        #$5,D0                   ;7005 
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVEQ.L        #$80,D2                  ;7480 
               ADD.L          D2,D2                    ;d482 
-              MOVEQ.L        #$0,D3                   ;7600 
-              MOVE.B         D2,D3                    ;1602 
-              OR.L           D3,D0                    ;8083 
-              MOVE.L         D0,D6                    ;2c00 
-              MOVE.L         D6,D0                    ;2006 
-              CLR.B          D0                       ;4200 
-              MOVE.L         D6,D1                    ;2206 
-              MOVEQ.L        #$0,D2                   ;7400 
-              MOVE.B         D1,D2                    ;1401 
-              ADD.L          D2,D2                    ;d482 
-              MOVEQ.L        #$0,D3                   ;7600 
-              MOVE.B         D2,D3                    ;1602 
-              OR.L           D3,D0                    ;8083 
-              MOVE.L         D0,D6                    ;2c00 
-              MOVE.L         D6,D0                    ;2006 
-              CLR.W          D0                       ;4240 
-              MOVE.L         D6,D1                    ;2206 
-              ADD.W          D1,D1                    ;d241 
-              MOVEQ.L        #$0,D2                   ;7400 
-              MOVE.W         D1,D2                    ;3401 
-              OR.L           D2,D0                    ;8082 
-              MOVE.L         D0,D6                    ;2c00 
-              MOVE.L         D6,D0                    ;2006 
-              CLR.W          D0                       ;4240 
+              MOVE.L         #$ffff0000,D3            ;263c ffff 0000 
+              MOVEQ.L        #$10,D4                  ;7810 
+              MOVE.W         ESQ_CopperEffectTemplateRowsSet0+$1a(A4),$2c(A7);3f6c 001a 002c 
+              MOVE.W         D0,$34(A7)               ;3f40 0034 
+              MOVE.L         HIGHLIGHT_CopperEffectSeed(A4),D0;202c 0000 
+              LEA            ESQ_CopperEffectListA(A4),A0;41ec 0000 
+              MOVE.W         D4,$40(A7)               ;3f44 0040 
+              MOVEQ.L        #$0,D4                   ;7800 
+              MOVE.W         D6,D4                    ;3806 
+              ADD.L          D4,A0                    ;d1c4 
+              MOVE.L         A0,A5                    ;2a48 
+              LEA            ESQ_CopperEffectListB(A4),A0;41ec 0000 
+              MOVEQ.L        #$0,D4                   ;7800 
+              MOVE.W         D6,D4                    ;3806 
+              ADD.L          D4,A0                    ;d1c4 
+              MOVE.L         A0,A3                    ;2648 
+              MOVEQ.L        #$0,D4                   ;7800 
+              MOVE.W         D7,D4                    ;3807 
+              LEA            ESQ_CopperEffectTemplateRowsSet0(A4),A0;41ec 0000 
+              MOVE.W         $0(A0,D4.L),$2c(A7)      ;3f70 4800 002c 
+              MOVE.L         D2,D4                    ;2802 
+              AND.L          D0,D4                    ;c880 
+              MOVE.W         D1,$32(A7)               ;3f41 0032 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
 ___ESQ_UpdateCopperListsFromParams__2:
-              MOVE.L         D6,D1                    ;2206 
-              ADD.W          D1,D1                    ;d241 
-              MOVEQ.L        #$0,D2                   ;7400 
-              MOVE.W         D1,D2                    ;3401 
-              OR.L           D2,D0                    ;8082 
-              MOVE.L         D0,D6                    ;2c00 
-              MOVE.L         D6,D0                    ;2006 
-              SWAP           D0                       ;4840 
-              CLR.W          D0                       ;4240 
-              MOVE.L         D6,D1                    ;2206 
-              CLR.W          D1                       ;4241 
-              SWAP           D1                       ;4841 
-              OR.L           D1,D0                    ;8081 
-              MOVE.L         D0,D6                    ;2c00 
-              MOVE.L         D6,D0                    ;2006 
-              TST.B          D0                       ;4a00 
-              BNE.B          ___ESQ_UpdateCopperListsFromParams__4;6602 
-___ESQ_UpdateCopperListsFromParams__3:
-              MOVEQ.L        #$0,D6                   ;7c00 
-___ESQ_UpdateCopperListsFromParams__4:
-              PEA            ($5).w                   ;4878 0005 
-              MOVE.L         D6,-(A7)                 ;2f06 
-              BSR.W          rol32                    ;6100 ff40 
-___ESQ_UpdateCopperListsFromParams__5:
-              MOVE.L         D0,D6                    ;2c00 
-              ADDQ.W         #$8,A7                   ;504f 
+              ADD.L          D1,D1                    ;d281 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         D7,D0                    ;3007 
-              ANDI.L         #$feff,D0                ;0280 0000 feff 
-              MOVE.L         D0,D5                    ;2a00 
-              CLR.W          $1e(A7)                  ;426f 001e 
-___ESQ_UpdateCopperListsFromParams__6:
-              CMPI.W         #$f,$1e(A7)              ;0c6f 000f 001e 
-              BHI.B          ___ESQ_UpdateCopperListsFromParams__10;6252 
-___ESQ_UpdateCopperListsFromParams__7:
-              MOVE.L         D6,D0                    ;2006 
+              MOVE.B         D1,D0                    ;1001 
+              OR.L           D0,D4                    ;8880 
+              MOVE.L         D2,$2e(A7)               ;2f42 002e 
+              AND.L          D4,D2                    ;c484 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D4,D0                    ;1004 
+              ADD.L          D0,D0                    ;d080 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              OR.L           D1,D2                    ;8481 
+              MOVE.L         D3,D0                    ;2003 
+              AND.L          D2,D0                    ;c082 
+              MOVE.L         D2,$28(A7)               ;2f42 0028 
+              ADD.W          D2,D2                    ;d442 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D2,D1                    ;3202 
+              OR.L           D1,D0                    ;8081 
+              MOVE.L         D3,$44(A7)               ;2f43 0044 
+              AND.L          D0,D3                    ;c680 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              ADD.W          D0,D0                    ;d040 
+              MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         D0,D1                    ;3200 
-              ANDI.W         #$100,D1                 ;0241 0100 
-              MOVE.W         D1,$1c(A7)               ;3f41 001c 
-              OR.W           D5,D1                    ;8245 
+              OR.L           D1,D3                    ;8681 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $40(A7),D0               ;302f 0040 
+              MOVE.L         D3,D1                    ;2203 
+              ASL.L          D0,D1                    ;e1a1 
+              MOVEQ.L        #$0,D2                   ;7400 
+___ESQ_UpdateCopperListsFromParams__3:
+              MOVE.W         D0,D2                    ;3400 
+              MOVE.L         D3,$28(A7)               ;2f43 0028 
+              LSR.L          D2,D3                    ;e4ab 
+              OR.L           D3,D1                    ;8283 
+              MOVE.L         D1,$28(A7)               ;2f41 0028 
+              TST.B          D1                       ;4a01 
+              BNE.B          ___ESQ_UpdateCopperListsFromParams__5;6606 
+___ESQ_UpdateCopperListsFromParams__4:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+___ESQ_UpdateCopperListsFromParams__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $34(A7),D0               ;302f 0034 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              BSR.W          rol32                    ;6100 fec0 
+___ESQ_UpdateCopperListsFromParams__6:
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.W         $2c(A7),D1               ;322f 002c 
+              AND.W          D5,D1                    ;c245 
+              CLR.W          $24(A7)                  ;426f 0024 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              MOVE.W         D1,$26(A7)               ;3f41 0026 
+___ESQ_UpdateCopperListsFromParams__7:
+              MOVE.W         $24(A7),D0               ;302f 0024 
+              CMP.W          $3e(A7),D0               ;b06f 003e 
+              BHI.B          ___ESQ_UpdateCopperListsFromParams__11;627a 
+___ESQ_UpdateCopperListsFromParams__8:
+              MOVE.L         $28(A7),D0               ;202f 0028 
+              MOVE.W         $48(A7),D1               ;322f 0048 
+              AND.W          D0,D1                    ;c240 
+              MOVE.W         D1,$22(A7)               ;3f41 0022 
+              OR.W           $26(A7),D1               ;826f 0026 
               MOVE.W         D1,(A5)                  ;3a81 
               MOVE.W         D1,(A3)                  ;3681 
-              LEA            $4(A5),A0                ;41ed 0004 
-              MOVE.W         D1,(A0)                  ;3081 
-              LEA            $4(A3),A0                ;41eb 0004 
-              MOVE.W         D1,(A0)                  ;3081 
-              LEA            $88(A5),A0               ;41ed 0088 
-              MOVE.W         D1,(A0)                  ;3081 
-              LEA            $88(A3),A0               ;41eb 0088 
-              MOVE.W         D1,(A0)                  ;3081 
-              LEA            $8c(A5),A0               ;41ed 008c 
-              MOVE.W         D1,(A0)                  ;3081 
-              LEA            $8c(A3),A0               ;41eb 008c 
-              MOVE.W         D1,(A0)                  ;3081 
-              ADDQ.L         #$8,A5                   ;508d 
-              ADDQ.L         #$8,A3                   ;508b 
-              PEA            ($1).w                   ;4878 0001 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         $36(A7),D2               ;342f 0036 
+              MOVE.W         D1,$0(A5,D2.L)           ;3b81 2800 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         D2,D3                    ;3602 
+              MOVE.W         D1,$0(A3,D3.L)           ;3781 3800 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         $3a(A7),D2               ;342f 003a 
+              MOVE.W         D1,$0(A5,D2.L)           ;3b81 2800 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         D2,D3                    ;3602 
+              MOVE.W         D1,$0(A3,D3.L)           ;3781 3800 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         $38(A7),D2               ;342f 0038 
+              MOVE.W         D1,$0(A5,D2.L)           ;3b81 2800 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         D2,D3                    ;3602 
+              MOVE.W         D1,$0(A3,D3.L)           ;3781 3800 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         $3c(A7),D2               ;342f 003c 
+              ADD.L          D2,A5                    ;dbc2 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         D2,D3                    ;3602 
+              ADD.L          D3,A3                    ;d7c3 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         $32(A7),D2               ;342f 0032 
+              MOVE.L         D2,-(A7)                 ;2f02 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.W         D1,$24(A7)               ;3f41 0024 
-              BSR.W          rol32                    ;6100 fedc 
-___ESQ_UpdateCopperListsFromParams__8:
-              MOVE.L         D0,D6                    ;2c00 
-              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.W         D1,$2a(A7)               ;3f41 002a 
+              BSR.W          rol32                    ;6100 fe36 
 ___ESQ_UpdateCopperListsFromParams__9:
-              ADDQ.W         #$1,$1e(A7)              ;526f 001e 
-              BRA.B          ___ESQ_UpdateCopperListsFromParams__6;60a6 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
 ___ESQ_UpdateCopperListsFromParams__10:
-              MOVE.W         D7,(A5)                  ;3a87 
-              MOVE.W         D7,(A3)                  ;3687 
-              LEA            $88(A5),A0               ;41ed 0088 
-              MOVE.W         D7,(A0)                  ;3087 
-              LEA            $88(A3),A0               ;41eb 0088 
-              MOVE.W         D7,(A0)                  ;3087 
-              MOVEQ.L        #$0,D0                   ;7000 
+              ADDQ.W         #$1,$24(A7)              ;526f 0024 
+              BRA.W          ___ESQ_UpdateCopperListsFromParams__7;6000 ff7e 
 ___ESQ_UpdateCopperListsFromParams__11:
+              MOVE.W         $2c(A7),D0               ;302f 002c 
+              MOVE.W         D0,(A5)                  ;3a80 
+              MOVE.W         D0,(A3)                  ;3680 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         $3a(A7),D1               ;322f 003a 
+              MOVE.W         D0,$0(A5,D1.L)           ;3b80 1800 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D1,D2                    ;3401 
+              MOVE.W         D0,$0(A3,D2.L)           ;3780 2800 
+              MOVEQ.L        #$0,D0                   ;7000 
 ___ESQ_UpdateCopperListsFromParams__12:
-              MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A3/A5;4cdf 28ec 
-              ADDQ.W         #$4,A7                   ;584f 
+___ESQ_UpdateCopperListsFromParams__13:
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A3/A5;4cdf 28fc 
+              ADD.W          #$2c,A7                  ;defc 002c 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
