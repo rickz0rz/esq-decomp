@@ -1,12 +1,19 @@
 typedef long LONG;
 
+enum {
+    CUSTOM_INTENA = 0xDFF09A,
+    INTENA_RBF_DISABLE = 0x0800,
+    RBF_BUFFER_SIZE = 64000,
+    INTERRUPT_STRUCT_SIZE = 22
+};
+
 extern LONG WDISP_SerialIoRequestPtr;
 extern LONG WDISP_SerialMessagePortPtr;
 extern LONG Global_REF_INTB_RBF_INTERRUPT;
 extern LONG Global_REF_INTB_RBF_64K_BUFFER;
 extern LONG Global_REF_INTERRUPT_STRUCT_INTB_RBF;
-extern char Global_STR_CLEANUP_C_3[];
-extern char Global_STR_CLEANUP_C_4[];
+extern const char Global_STR_CLEANUP_C_3[];
+extern const char Global_STR_CLEANUP_C_4[];
 
 void _LVOCloseDevice(void);
 void GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(void *port);
@@ -16,7 +23,7 @@ void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *
 
 void CLEANUP_ClearRbfInterruptAndSerial(void)
 {
-    *((volatile unsigned short *)0xDFF09A) = 0x0800; /* INTENA */
+    *((volatile unsigned short *)CUSTOM_INTENA) = INTENA_RBF_DISABLE; /* INTENA */
 
     _LVOCloseDevice();
     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport((void *)WDISP_SerialMessagePortPtr);
@@ -28,13 +35,13 @@ void CLEANUP_ClearRbfInterruptAndSerial(void)
         Global_STR_CLEANUP_C_3,
         113,
         (void *)Global_REF_INTB_RBF_64K_BUFFER,
-        64000
+        RBF_BUFFER_SIZE
     );
 
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
         Global_STR_CLEANUP_C_4,
         118,
         (void *)Global_REF_INTERRUPT_STRUCT_INTB_RBF,
-        22
+        INTERRUPT_STRUCT_SIZE
     );
 }
