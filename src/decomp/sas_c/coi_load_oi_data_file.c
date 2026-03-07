@@ -11,6 +11,8 @@ enum {
     COI_TOKEN_MAXLEN = 26,
     COI_STOP_ON_EMPTY = 1,
     COI_DEALLOC_LINE = 1198,
+    COI_PATH_PRINTF_ARG_ZERO = 0,
+    COI_WORK_BUFFER_TRAILING_NUL_BYTES = 1,
     COI_SUCCESS = 0
 };
 
@@ -45,7 +47,11 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
     (void)disk_id;
 
     GROUP_AG_JMPTBL_MATH_DivS32((LONG)disk_id, COI_DISK_SPLIT_DIVISOR);
-    GROUP_AE_JMPTBL_WDISP_SPrintf(path_buf, Global_STR_DF0_OI_PERCENT_2_LX_DAT_2, 0, 0, 0);
+    GROUP_AE_JMPTBL_WDISP_SPrintf(path_buf,
+                                  Global_STR_DF0_OI_PERCENT_2_LX_DAT_2,
+                                  COI_PATH_PRINTF_ARG_ZERO,
+                                  COI_PATH_PRINTF_ARG_ZERO,
+                                  COI_PATH_PRINTF_ARG_ZERO);
 
     if (DISKIO_LoadFileToWorkBuffer(path_buf) == COI_LOAD_FAIL) {
         return COI_LOAD_FAIL;
@@ -93,6 +99,6 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
         Global_STR_COI_C_6,
         COI_DEALLOC_LINE,
         Global_PTR_WORK_BUFFER,
-        file_size + 1);
+        file_size + COI_WORK_BUFFER_TRAILING_NUL_BYTES);
     return COI_SUCCESS;
 }

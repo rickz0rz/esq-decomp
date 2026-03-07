@@ -58,16 +58,16 @@ void CTASKS_StartIffTaskProcess(void)
 
     list_ptr = (LONG)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_CTASKS_C_2,
-        TASKPROC_ALLOC_LINE,
-        TASKPROC_STRUCT_SIZE,
-        MEMF_PUBLIC_CLEAR);
+        CTASKS_TASKPROC_ALLOC_LINE,
+        CTASKS_TASKPROC_STRUCT_SIZE,
+        CTASKS_MEMF_PUBLIC_CLEAR);
     Global_REF_LIST_IFF_TASK_PROC = list_ptr;
 
-    *(LONG *)(list_ptr + TASKLIST_SIZE_OFFSET) = TASKPROC_STRUCT_SIZE;
-    *(LONG *)(list_ptr + TASKLIST_ENTRY_OFFSET) = (LONG)CTASKS_IFFTaskCleanup;
-    *(UWORD *)(list_ptr + TASKLIST_MAGIC_OFFSET) = TASKLIST_MAGIC;
+    *(LONG *)(list_ptr + CTASKS_TASKLIST_SIZE_OFFSET) = CTASKS_TASKPROC_STRUCT_SIZE;
+    *(LONG *)(list_ptr + CTASKS_TASKLIST_ENTRY_OFFSET) = (LONG)CTASKS_IFFTaskCleanup;
+    *(UWORD *)(list_ptr + CTASKS_TASKLIST_MAGIC_OFFSET) = CTASKS_TASKLIST_MAGIC;
 
-    seg_bptr = (list_ptr + TASKLIST_SEG_BPTR_ADD) >> TASKLIST_SEG_BPTR_SHIFT;
+    seg_bptr = (list_ptr + CTASKS_TASKLIST_SEG_BPTR_ADD) >> CTASKS_TASKLIST_SEG_BPTR_SHIFT;
     CTASKS_IffTaskSegListBPTR = seg_bptr;
 
     CTASKS_IffTaskProcPtr = _LVOCreateProc();

@@ -14,7 +14,8 @@ enum {
     COI_OPEN_ERROR = -3,
     COI_WRITE_OK = 0,
     COI_WRITE_ONE = 1,
-    COI_WRITE_TWO = 2
+    COI_WRITE_TWO = 2,
+    COI_PRINTF_ARG_ZERO = 0
 };
 
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
@@ -69,16 +70,28 @@ LONG COI_WriteOiDataFile(UBYTE disk_id)
     }
 
     GROUP_AG_JMPTBL_MATH_DivS32((LONG)disk_id, COI_DISK_SPLIT_DIVISOR);
-    GROUP_AE_JMPTBL_WDISP_SPrintf(path_buf, Global_STR_DF0_OI_PERCENT_2_LX_DAT_1, 0, 0, 0);
+    GROUP_AE_JMPTBL_WDISP_SPrintf(path_buf,
+                                  Global_STR_DF0_OI_PERCENT_2_LX_DAT_1,
+                                  COI_PRINTF_ARG_ZERO,
+                                  COI_PRINTF_ARG_ZERO,
+                                  COI_PRINTF_ARG_ZERO);
     fh = DISKIO_OpenFileWithBuffer(path_buf, COI_OPEN_MODE_WRITE);
     if (fh == COI_OPEN_FAIL) {
         return COI_OPEN_ERROR;
     }
 
-    GROUP_AE_JMPTBL_WDISP_SPrintf(tmp, COI_FMT_LONG_DEC_A, (LONG)disk_id, 0, 0);
+    GROUP_AE_JMPTBL_WDISP_SPrintf(tmp,
+                                  COI_FMT_LONG_DEC_A,
+                                  (LONG)disk_id,
+                                  COI_PRINTF_ARG_ZERO,
+                                  COI_PRINTF_ARG_ZERO);
     DISKIO_WriteBufferedBytes(fh, tmp, COI_WRITE_ONE);
     DISKIO_WriteBufferedBytes(fh, COI_FieldDelimiterTab, COI_WRITE_ONE);
-    GROUP_AE_JMPTBL_WDISP_SPrintf(tmp, COI_FMT_DEC_A, COI_DISK_SPLIT_DIVISOR, 0, 0);
+    GROUP_AE_JMPTBL_WDISP_SPrintf(tmp,
+                                  COI_FMT_DEC_A,
+                                  COI_DISK_SPLIT_DIVISOR,
+                                  COI_PRINTF_ARG_ZERO,
+                                  COI_PRINTF_ARG_ZERO);
     DISKIO_WriteBufferedBytes(fh, tmp, COI_WRITE_ONE);
     DISKIO_WriteBufferedBytes(fh, COI_RecordTerminatorCrLf, COI_WRITE_TWO);
 
