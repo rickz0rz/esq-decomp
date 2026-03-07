@@ -1,0 +1,57 @@
+              SECTION      text,CODE
+__code:
+DATETIME_BuildFromBaseDay:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+___DATETIME_BuildFromBaseDay__1:
+              MOVE.L         $30(A7),D6               ;2c2f 0030 
+              MOVE.L         $2c(A7),D7               ;2e2f 002c 
+              MOVE.L         $28(A7),A3               ;266f 0028 
+              MOVE.L         $24(A7),A5               ;2a6f 0024 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          DATETIME_NormalizeStructToSecond;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D7,D0                    ;2007 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$36,D1                  ;7236 
+              SUB.L          D1,D0                    ;9081 
+              MOVE.L         D6,D1                    ;2206 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              SUBQ.W         #$1,D1                   ;5341 
+              BNE.B          ___DATETIME_BuildFromBaseDay__3;6604 
+___DATETIME_BuildFromBaseDay__2:
+              SUBQ.L         #$1,$1c(A7)              ;53af 001c 
+___DATETIME_BuildFromBaseDay__3:
+              PEA            ($e10).w                 ;4878 0e10 
+              MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,D4                    ;2800 
+              MOVE.L         D5,D0                    ;2005 
+              ADD.L          D4,D0                    ;d084 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BSR.W          DATETIME_SecondsToStruct ;6100 0000 
+              LEA            $e(A3),A0                ;41eb 000e 
+              CLR.W          (A0)                     ;4250 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         $18(A7),D0               ;202f 0018 
+___DATETIME_BuildFromBaseDay__4:
+___DATETIME_BuildFromBaseDay__5:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              ADDQ.W         #$8,A7                   ;504f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DATETIME_NormalizeStructToSecond
+              XREF           GROUP_AG_JMPTBL_MATH_Mulu32
+              XREF           DATETIME_SecondsToStruct
+              XDEF           DATETIME_BuildFromBaseDay
+              END

@@ -8,6 +8,10 @@ typedef struct DateTimePair {
     LONG out_seconds;  /* +12 */
 } DateTimePair;
 
+enum {
+    DATETIME_STRUCT_COPY_COUNT = 21
+};
+
 extern LONG DATETIME_NormalizeStructToSeconds(void *dt);
 
 LONG DATETIME_CopyPairAndRecalc(DateTimePair *pair, void *src_in, void *src_out)
@@ -30,14 +34,14 @@ LONG DATETIME_CopyPairAndRecalc(DateTimePair *pair, void *src_in, void *src_out)
 
     src = (UBYTE *)src_in;
     dst = (UBYTE *)pair->in_ptr;
-    count = 21;
+    count = DATETIME_STRUCT_COPY_COUNT;
     do {
         *dst++ = *src++;
     } while ((count--) != 0);
 
     src = (UBYTE *)src_out;
     dst = (UBYTE *)pair->out_ptr;
-    count = 21;
+    count = DATETIME_STRUCT_COPY_COUNT;
     do {
         *dst++ = *src++;
     } while ((count--) != 0);
