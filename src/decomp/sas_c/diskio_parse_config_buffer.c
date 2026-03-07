@@ -11,7 +11,7 @@ extern LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 
 void DISKIO_ParseConfigBuffer(UBYTE *buffer, ULONG size)
 {
-    char tmp[3];
+    char modeText[3];
     LONG minutes;
 
     if (buffer == 0 || size == 0) {
@@ -22,10 +22,10 @@ void DISKIO_ParseConfigBuffer(UBYTE *buffer, ULONG size)
     CONFIG_RefreshIntervalMinutes = (UBYTE)minutes;
 
     if (size > 6) {
-        tmp[0] = (char)buffer[4];
-        tmp[1] = (char)buffer[5];
-        tmp[2] = '\0';
-        (void)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(tmp);
+        modeText[0] = (char)buffer[4];
+        modeText[1] = (char)buffer[5];
+        modeText[2] = '\0';
+        (void)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(modeText);
     }
 
     GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState((LONG)CONFIG_RefreshIntervalMinutes, 0);
