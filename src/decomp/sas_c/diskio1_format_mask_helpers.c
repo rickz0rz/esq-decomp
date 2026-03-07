@@ -8,6 +8,7 @@ enum {
     DISKIO1_MASK_INDEX_3 = 3,
     DISKIO1_MASK_INDEX_4 = 4,
     DISKIO1_MASK_BYTE_COUNT = 6,
+    DISKIO1_MASK_LAST_INDEX = DISKIO1_MASK_BYTE_COUNT - 1,
     DISKIO1_MASK_SUM_INIT = 0,
     DISKIO1_MASK_INDEX_INIT = 0
 };
@@ -36,7 +37,7 @@ void DISKIO1_FormatTimeSlotMaskFlags(void)
         (ULONG)gDiskio1TimeSlotMaskBytes[DISKIO1_MASK_INDEX_2],
         (ULONG)gDiskio1TimeSlotMaskBytes[DISKIO1_MASK_INDEX_3],
         (ULONG)gDiskio1TimeSlotMaskBytes[DISKIO1_MASK_INDEX_4],
-        (ULONG)gDiskio1TimeSlotMaskBytes[DISKIO1_MASK_BYTE_COUNT - 1]);
+        (ULONG)gDiskio1TimeSlotMaskBytes[DISKIO1_MASK_LAST_INDEX]);
     gDiskio1MaskDecisionSum = DISKIO1_MASK_SUM_INIT;
     gDiskio1MaskArrayIndex = DISKIO1_MASK_INDEX_INIT;
     DISKIO1_AccumulateTimeSlotMaskSum();
@@ -51,7 +52,7 @@ void DISKIO1_FormatBlackoutMaskFlags(void)
         (ULONG)gDiskio1BlackoutMaskBytes[DISKIO1_MASK_INDEX_2],
         (ULONG)gDiskio1BlackoutMaskBytes[DISKIO1_MASK_INDEX_3],
         (ULONG)gDiskio1BlackoutMaskBytes[DISKIO1_MASK_INDEX_4],
-        (ULONG)gDiskio1BlackoutMaskBytes[DISKIO1_MASK_BYTE_COUNT - 1]);
+        (ULONG)gDiskio1BlackoutMaskBytes[DISKIO1_MASK_LAST_INDEX]);
     gDiskio1MaskDecisionSum = DISKIO1_MASK_SUM_INIT;
     gDiskio1MaskArrayIndex = DISKIO1_MASK_INDEX_INIT;
     DISKIO1_AccumulateBlackoutMaskSum();

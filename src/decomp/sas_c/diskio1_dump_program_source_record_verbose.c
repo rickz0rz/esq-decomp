@@ -8,6 +8,7 @@ enum {
     MASK_INDEX_3 = 3,
     MASK_INDEX_4 = 4,
     MASK_BYTE_COUNT = 6,
+    MASK_LAST_INDEX = MASK_BYTE_COUNT - 1,
     CHANNEL_NUMBER_LEN = 11,
     SOURCE_NAME_LEN = 7,
     CALL_LETTERS_LEN = 8,
@@ -113,7 +114,7 @@ void DISKIO1_DumpProgramSourceRecordVerbose(
         (ULONG)rec->timeSlotMask[MASK_INDEX_2],
         (ULONG)rec->timeSlotMask[MASK_INDEX_3],
         (ULONG)rec->timeSlotMask[MASK_INDEX_4],
-        (ULONG)rec->timeSlotMask[MASK_BYTE_COUNT - 1]);
+        (ULONG)rec->timeSlotMask[MASK_LAST_INDEX]);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_,
         (ULONG)rec->blackoutMask[MASK_INDEX_0],
@@ -121,7 +122,7 @@ void DISKIO1_DumpProgramSourceRecordVerbose(
         (ULONG)rec->blackoutMask[MASK_INDEX_2],
         (ULONG)rec->blackoutMask[MASK_INDEX_3],
         (ULONG)rec->blackoutMask[MASK_INDEX_4],
-        (ULONG)rec->blackoutMask[MASK_BYTE_COUNT - 1]);
+        (ULONG)rec->blackoutMask[MASK_LAST_INDEX]);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord,
         (ULONG)rec->sourceFlagsByte,
