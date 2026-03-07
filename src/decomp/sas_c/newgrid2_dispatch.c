@@ -1,6 +1,7 @@
 typedef signed long LONG;
+typedef signed short WORD;
 
-extern LONG NEWGRID2_DispatchGridOperation(LONG a0, LONG a1, LONG a2, LONG a3);
+extern LONG NEWGRID2_DispatchGridOperation(LONG operationId, void *gridCtx, WORD rowIndex, WORD selector);
 
 void NEWGRID2_DispatchOperationDefault(void)
 {

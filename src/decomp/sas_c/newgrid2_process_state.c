@@ -10,14 +10,22 @@ extern UBYTE Global_STR_NEWGRID2_C_2;
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(UBYTE *tagName, LONG line, LONG size, LONG flags);
 extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(UBYTE *tagName, LONG line, void *ptr, LONG bytes);
 
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams();
-extern LONG NEWGRID_TestPrimeTimeWindow();
-extern LONG NEWGRID_DrawGridEntry();
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex();
-extern LONG NEWGRID_AppendShowtimesForRow();
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer();
-extern LONG NEWGRID_DrawGridFrameVariant4();
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount();
+extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG height, LONG pen);
+extern LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, void *entryHead);
+extern LONG NEWGRID_DrawGridEntry(
+    void *layoutCtx,
+    void *entryPtr,
+    void *auxPtr,
+    LONG rowSlot,
+    LONG style,
+    LONG enableMarkers,
+    LONG mode
+);
+extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG index);
+extern LONG NEWGRID_AppendShowtimesForRow(void *gridCtx, void *entryCtx, void *scratch, LONG keyValue);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *layoutCtx, void *scratch);
+extern LONG NEWGRID_DrawGridFrameVariant4(void *gridCtx);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
 
 LONG NEWGRID2_ProcessGridState(void *gridCtx, void *entryCtx, LONG keyValue)
 {

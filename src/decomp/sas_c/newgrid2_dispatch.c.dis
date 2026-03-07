@@ -9,7 +9,7 @@ ___NEWGRID2_DispatchOperationDefaul__1:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              CLR.L          -(A7)                    ;42a7 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          NEWGRID2_DispatchGridOperation;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
