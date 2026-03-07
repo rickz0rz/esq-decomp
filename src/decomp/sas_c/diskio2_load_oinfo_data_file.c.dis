@@ -2,31 +2,37 @@
 __code:
 DISKIO2_LoadOinfoDataFile:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              SUB.L          #$20,D0                  ;90bc 0000 0020 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
+              SUB.W          #$10,A7                  ;9efc 0010 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___DISKIO2_LoadOinfoDataFile__1:
+              MOVEQ.L        #$ff,D7                  ;7eff 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              NOT.B          D5                       ;4605 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         #$4a7,$20(A7)            ;2f7c 0000 04a7 0020 
               SUB.L          A5,A5                    ;9bcd 
               SUB.L          A3,A3                    ;97cb 
               PEA            CTASKS_PATH_OINFO_DAT(A4);486c 0000 
               BSR.W          DISKIO_LoadFileToWorkBuffer;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              ADDQ.L         #$1,D0                   ;5280 
+              CMP.L          D7,D0                    ;b087 
               BNE.B          ___DISKIO2_LoadOinfoDataFile__3;6604 
 ___DISKIO2_LoadOinfoDataFile__2:
-              MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.B          ___DISKIO2_LoadOinfoDataFile__10;6070 
+              MOVE.L         D7,D0                    ;2007 
+              BRA.B          ___DISKIO2_LoadOinfoDataFile__10;6076 
 ___DISKIO2_LoadOinfoDataFile__3:
-              MOVE.L         __MERGEDBSS(A4),D7       ;2e2c 0000 
+              MOVE.L         __MERGEDBSS(A4),$1c(A7)  ;2f6c 0000 001c 
               MOVE.L         __MERGEDBSS+$4(A4),A2    ;246c 0004 
               BSR.W          DISKIO_ParseLongFromWorkBuffer;6100 0000 
-              MOVE.L         D0,D6                    ;2c00 
-              MOVEQ.L        #$0,D0                   ;7000 
-              NOT.B          D0                       ;4600 
-              AND.L          D0,D6                    ;cc80 
-              MOVE.L         D6,D0                    ;2006 
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              AND.L          D5,D0                    ;c085 
               MOVE.B         __MERGEDBSS+$8(A4),D1    ;122c 0008 
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
               CMP.B          D1,D0                    ;b001 
               BNE.B          ___DISKIO2_LoadOinfoDataFile__5;660c 
 ___DISKIO2_LoadOinfoDataFile__4:
@@ -52,18 +58,19 @@ ___DISKIO2_LoadOinfoDataFile__7:
               MOVE.L         D0,__MERGEDBSS+$e(A4)    ;2940 000e 
               LEA            $c(A7),A7                ;4fef 000c 
 ___DISKIO2_LoadOinfoDataFile__8:
-              MOVE.L         D7,D0                    ;2007 
-              ADDQ.L         #$1,D0                   ;5280 
-              PEA            ($4a7).w                 ;4878 04a7 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              ADD.L          $24(A7),D0               ;d0af 0024 
+              MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
               PEA            Global_STR_DISKIO2_C_23(A4);486c 0000 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D6,D0                    ;2006 
 ___DISKIO2_LoadOinfoDataFile__9:
 ___DISKIO2_LoadOinfoDataFile__10:
-              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$10,A7                  ;defc 0010 
               RTS                                     ;4e75 
 __const:
 __strings:

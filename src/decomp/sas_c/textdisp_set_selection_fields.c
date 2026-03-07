@@ -15,6 +15,13 @@ extern void TEXTDISP_ResetSelectionState(TEXTDISP_State *state);
 
 void TEXTDISP_SetSelectionFields(TEXTDISP_State *state, LONG mode, LONG displayIndex, LONG entryIndex)
 {
+    const LONG MODE_PRIMARY = 1;
+    const LONG MODE_SECONDARY = 2;
+    const LONG MODE_INVALID = 3;
+    const LONG INDEX_INVALID = -1;
+    const LONG ENTRY_FIRST = 1;
+    const LONG ENTRY_LIMIT = 49;
+    const UBYTE FLAG_CLEAR = 0;
     LONG groupCount;
     LONG outMode;
     LONG outDisplay;
@@ -24,10 +31,10 @@ void TEXTDISP_SetSelectionFields(TEXTDISP_State *state, LONG mode, LONG displayI
         return;
     }
 
-    if (mode == 1 || mode == 2) {
+    if (mode == MODE_PRIMARY || mode == MODE_SECONDARY) {
         outMode = mode;
     } else {
-        outMode = 3;
+        outMode = MODE_INVALID;
     }
 
     state->selectionMode = outMode;
@@ -36,19 +43,21 @@ void TEXTDISP_SetSelectionFields(TEXTDISP_State *state, LONG mode, LONG displayI
     if (displayIndex < groupCount) {
         outDisplay = displayIndex;
     } else {
-        outDisplay = -1;
+        outDisplay = INDEX_INVALID;
     }
     state->displayIndex = outDisplay;
 
-    if (entryIndex > 0 && entryIndex < 49) {
+    if (entryIndex > ENTRY_FIRST - 1 && entryIndex < ENTRY_LIMIT) {
         outEntry = entryIndex;
     } else {
-        outEntry = -1;
+        outEntry = INDEX_INVALID;
     }
     state->entryIndex = (WORD)outEntry;
-    state->flags = 0;
+    state->flags = FLAG_CLEAR;
 
-    if (state->selectionMode == 3 || state->displayIndex == -1 || state->entryIndex == -1) {
+    if (state->selectionMode == MODE_INVALID ||
+        state->displayIndex == INDEX_INVALID ||
+        state->entryIndex == INDEX_INVALID) {
         TEXTDISP_ResetSelectionState(state);
     }
 }

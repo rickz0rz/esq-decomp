@@ -17,21 +17,26 @@ volatile char *ESQIFF_PrimaryLineTailPtr;
 
 long DISKIO2_LoadOinfoDataFile(void)
 {
+    const long RESULT_FAIL = -1;
+    const long RESULT_OK = 0;
+    const ULONG GROUPCODE_MASK = 0xffUL;
+    const ULONG STR_TERM_BYTES = 1;
+    const ULONG FREE_LINE = 1191;
     char *newHead = 0;
     char *newTail = 0;
     ULONG fileLen;
     void *workBuf;
     ULONG parsedGroupCode;
 
-    if (DISKIO_LoadFileToWorkBuffer(CTASKS_PATH_OINFO_DAT) == -1) {
-        return -1;
+    if (DISKIO_LoadFileToWorkBuffer(CTASKS_PATH_OINFO_DAT) == RESULT_FAIL) {
+        return RESULT_FAIL;
     }
 
     fileLen = Global_REF_LONG_FILE_SCRATCH;
     workBuf = (void *)Global_PTR_WORK_BUFFER;
 
     parsedGroupCode = (ULONG)DISKIO_ParseLongFromWorkBuffer();
-    parsedGroupCode &= 0xffUL;
+    parsedGroupCode &= GROUPCODE_MASK;
 
     if ((UBYTE)parsedGroupCode == TEXTDISP_PrimaryGroupCode) {
         newHead = DISKIO_ConsumeCStringFromWorkBuffer();
@@ -47,8 +52,8 @@ long DISKIO2_LoadOinfoDataFile(void)
 
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
         workBuf,
-        fileLen + 1,
+        fileLen + STR_TERM_BYTES,
         Global_STR_DISKIO2_C_23,
-        1191);
-    return 0;
+        FREE_LINE);
+    return RESULT_OK;
 }
