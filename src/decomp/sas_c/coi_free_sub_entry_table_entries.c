@@ -8,6 +8,7 @@ enum {
     ANIM_COUNT_OFFSET = 36,
     ANIM_TABLE_PTR_OFFSET = 38,
     SUBENTRY_SIZE = 30,
+    SUBENTRY_KEY_OFFSET = 0,
     SUBENTRY_STR0_OFFSET = 2,
     SUBENTRY_STR1_OFFSET = 6,
     SUBENTRY_STR2_OFFSET = 10,
@@ -48,7 +49,7 @@ void COI_FreeSubEntryTableEntries(void *entry)
         table = *(UBYTE ***)(anim + ANIM_TABLE_PTR_OFFSET);
         sub = table[i];
 
-        *(WORD *)(sub + 0) = 0;
+        *(WORD *)(sub + SUBENTRY_KEY_OFFSET) = 0;
 
         owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(sub + SUBENTRY_STR0_OFFSET), (void *)0);
         *(LONG *)(sub + SUBENTRY_STR0_OFFSET) = owned;

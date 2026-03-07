@@ -30,12 +30,12 @@ LONG GROUP_AI_JMPTBL_STRING_AppendAtNull(UBYTE *dst, const UBYTE *src);
 
 void COI_FormatEntryDisplayText(void *entry, void *ctx, WORD slot, UBYTE *out_buf, LONG mode_marker)
 {
-    UBYTE *parts[5];
+    UBYTE *parts[COI_PART_COUNT];
     LONG window;
     LONG tolerance;
     LONG slot_l;
     LONG i;
-    UBYTE wrap_buf[20];
+    UBYTE wrap_buf[COI_WRAP_BUF_LEN];
     UBYTE *wrap_ptr;
 
     if (mode_marker == COI_MODE_MARKER_PPV) {

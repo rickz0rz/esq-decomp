@@ -7,6 +7,7 @@ enum {
     ENTRY_ANIM_PTR_OFFSET = 48,
     ANIM_DEFAULT_STR_OFFSET = 28,
     ANIM_SENTINEL_OFFSET = 32,
+    ANIM_SENTINEL_INVALID = -1,
     COI_ALLOC_LINE = 1458,
     COI_MEMF_PUBLIC_CLEAR = 0x10001UL
 };
@@ -46,6 +47,6 @@ void COI_EnsureAnimObjectAllocated(void *entry)
         old_str = *(void **)(anim + ANIM_DEFAULT_STR_OFFSET);
         new_owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(old_str, COI_STR_DEFAULT_TOKEN_TEMPLATE_B);
         *(LONG *)(anim + ANIM_DEFAULT_STR_OFFSET) = new_owned;
-        *(LONG *)(anim + ANIM_SENTINEL_OFFSET) = -1;
+        *(LONG *)(anim + ANIM_SENTINEL_OFFSET) = ANIM_SENTINEL_INVALID;
     }
 }
