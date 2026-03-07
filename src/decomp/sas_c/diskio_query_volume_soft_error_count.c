@@ -16,6 +16,9 @@ extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, 
 #define LOCK_READ_MODE (-2L)
 #define MEMF_CLEAR_FLAG 0x00010000UL
 #define STRUCT_INFODATA_SIZE 36L
+#define INFODATA_ALLOC_LINE 593L
+#define INFODATA_FREE_LINE 599L
+#define RESULT_FAIL 0L
 
 LONG DISKIO_QueryVolumeSoftErrorCount(const char *path)
 {
@@ -25,12 +28,12 @@ LONG DISKIO_QueryVolumeSoftErrorCount(const char *path)
 
     lock = _LVOLock(Global_REF_DOS_LIBRARY_2, path, LOCK_READ_MODE);
     if (lock == 0) {
-        return 0;
+        return RESULT_FAIL;
     }
 
     infoData = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_DISKIO_C_7,
-        593,
+        INFODATA_ALLOC_LINE,
         STRUCT_INFODATA_SIZE,
         MEMF_CLEAR_FLAG);
 
@@ -41,7 +44,7 @@ LONG DISKIO_QueryVolumeSoftErrorCount(const char *path)
 
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_DISKIO_C_8,
-            599,
+            INFODATA_FREE_LINE,
             infoData,
             STRUCT_INFODATA_SIZE);
     }

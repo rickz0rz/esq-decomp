@@ -23,6 +23,7 @@ extern LONG DATETIME_FormatPairToStream(LONG fileHandle, DateTimePair *pair);
 
 LONG DATETIME_SavePairToFile(DateTimePair *pair)
 {
+    const LONG FILEHANDLE_INVALID = 0;
     LONG fileHandle;
 
     if (pair == (DateTimePair *)0) {
@@ -36,7 +37,7 @@ LONG DATETIME_SavePairToFile(DateTimePair *pair)
     }
 
     fileHandle = DISKIO_OpenFileWithBuffer(DST_DefaultDatPathPtr, MODE_NEWFILE);
-    if (fileHandle == 0) {
+    if (fileHandle == FILEHANDLE_INVALID) {
         return DATETIME_SAVE_FAILED;
     }
 
