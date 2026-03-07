@@ -1,0 +1,244 @@
+              SECTION      text,CODE
+__code:
+DATETIME_NormalizeStructToSecond:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        D2/D3/D4/D5/D6/D7/A5,-(A7);48e7 3f04 
+___DATETIME_NormalizeStructToSecond__1:
+              MOVE.L         $28(A7),A5               ;2a6f 0028 
+              LEA            $6(A5),A0                ;41ed 0006 
+              MOVE.W         (A0),D7                  ;3e10 
+              EXT.L          D7                       ;48c7 
+              CMPI.L         #$76c,D7                 ;0c87 0000 076c 
+              BGE.B          ___DATETIME_NormalizeStructToSecond__3;6c0e 
+___DATETIME_NormalizeStructToSecond__2:
+              LEA            $6(A5),A0                ;41ed 0006 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$76c,D0                 ;0680 0000 076c 
+              MOVE.W         D0,(A0)                  ;3080 
+___DATETIME_NormalizeStructToSecond__3:
+              LEA            $6(A5),A0                ;41ed 0006 
+              MOVE.W         (A0),D7                  ;3e10 
+              EXT.L          D7                       ;48c7 
+              CMPI.L         #$7b2,D7                 ;0c87 0000 07b2 
+              BLT.B          ___DATETIME_NormalizeStructToSecond__5;6d08 
+___DATETIME_NormalizeStructToSecond__4:
+              CMPI.L         #$7f6,D7                 ;0c87 0000 07f6 
+              BLE.B          ___DATETIME_NormalizeStructToSecond__6;6f06 
+___DATETIME_NormalizeStructToSecond__5:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.W          ___DATETIME_NormalizeStructToSecond__25;6000 01ea 
+___DATETIME_NormalizeStructToSecond__6:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          DATETIME_AdjustMonthIndex;6100 0000 
+              LEA            $c(A5),A0                ;41ed 000c 
+              MOVE.W         (A0),D0                  ;3010 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$3c,D1                  ;723c 
+              BSR.W          _CXD33                   ;6100 0000 
+              LEA            $a(A5),A0                ;41ed 000a 
+              LEA            $a(A5),A1                ;43ed 000a 
+              MOVE.W         (A1),D1                  ;3211 
+              EXT.L          D1                       ;48c1 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.W         D1,(A0)                  ;3081 
+              LEA            $c(A5),A0                ;41ed 000c 
+              LEA            $c(A5),A1                ;43ed 000c 
+              MOVE.W         (A1),D1                  ;3211 
+              EXT.L          D1                       ;48c1 
+              MOVEQ.L        #$3c,D2                  ;743c 
+              DIVS.W         D2,D1                    ;83c2 
+              SWAP           D1                       ;4841 
+              MOVE.W         D1,(A0)                  ;3081 
+              LEA            $a(A5),A0                ;41ed 000a 
+              MOVE.W         (A0),D1                  ;3210 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         D1,D0                    ;2001 
+              MOVEQ.L        #$3c,D1                  ;723c 
+              BSR.W          _CXD33                   ;6100 0000 
+              LEA            $8(A5),A0                ;41ed 0008 
+              LEA            $8(A5),A1                ;43ed 0008 
+              MOVE.W         (A1),D1                  ;3211 
+              EXT.L          D1                       ;48c1 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.W         D1,(A0)                  ;3081 
+              LEA            $a(A5),A0                ;41ed 000a 
+              LEA            $a(A5),A1                ;43ed 000a 
+___DATETIME_NormalizeStructToSecond__7:
+              MOVE.W         (A1),D1                  ;3211 
+              EXT.L          D1                       ;48c1 
+              DIVS.W         D2,D1                    ;83c2 
+              SWAP           D1                       ;4841 
+              MOVE.W         D1,(A0)                  ;3081 
+              LEA            $8(A5),A0                ;41ed 0008 
+              MOVE.W         (A0),D1                  ;3210 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         D1,D0                    ;2001 
+              MOVEQ.L        #$18,D1                  ;7218 
+              BSR.W          _CXD33                   ;6100 0000 
+              LEA            $4(A5),A0                ;41ed 0004 
+              LEA            $4(A5),A1                ;43ed 0004 
+              MOVE.W         (A1),D1                  ;3211 
+              EXT.L          D1                       ;48c1 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.W         D1,(A0)                  ;3081 
+              LEA            $10(A5),A0               ;41ed 0010 
+              LEA            $10(A5),A1               ;43ed 0010 
+              MOVE.W         (A1),D1                  ;3211 
+              EXT.L          D1                       ;48c1 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.W         D1,(A0)                  ;3081 
+              LEA            $8(A5),A0                ;41ed 0008 
+              LEA            $8(A5),A1                ;43ed 0008 
+              MOVE.W         (A1),D1                  ;3211 
+              EXT.L          D1                       ;48c1 
+              DIVS.W         #$18,D1                  ;83fc 0018 
+              SWAP           D1                       ;4841 
+              MOVE.W         D1,(A0)                  ;3081 
+              LEA            $6(A5),A0                ;41ed 0006 
+              MOVE.W         (A0),D1                  ;3210 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+___DATETIME_NormalizeStructToSecond__8:
+              BSR.W          DATETIME_IsLeapYear      ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___DATETIME_NormalizeStructToSecond__10;6708 
+___DATETIME_NormalizeStructToSecond__9:
+              MOVE.L         #$16e,D6                 ;2c3c 0000 016e 
+              BRA.B          ___DATETIME_NormalizeStructToSecond__11;6006 
+___DATETIME_NormalizeStructToSecond__10:
+              MOVE.L         #$16d,D6                 ;2c3c 0000 016d 
+___DATETIME_NormalizeStructToSecond__11:
+              LEA            $10(A5),A0               ;41ed 0010 
+              MOVE.W         (A0),D0                  ;3010 
+              EXT.L          D0                       ;48c0 
+              CMP.L          D6,D0                    ;b086 
+              BLE.B          ___DATETIME_NormalizeStructToSecond__16;6f42 
+___DATETIME_NormalizeStructToSecond__12:
+              LEA            $10(A5),A0               ;41ed 0010 
+              LEA            $10(A5),A1               ;43ed 0010 
+              MOVE.W         (A1),D0                  ;3011 
+              EXT.L          D0                       ;48c0 
+              SUB.L          D6,D0                    ;9086 
+              MOVE.W         D0,(A0)                  ;3080 
+              LEA            $6(A5),A0                ;41ed 0006 
+              LEA            $6(A5),A1                ;43ed 0006 
+              MOVE.W         (A1),D0                  ;3011 
+              ADDQ.W         #$1,D0                   ;5240 
+              MOVE.W         D0,(A0)                  ;3080 
+              LEA            $6(A5),A0                ;41ed 0006 
+              MOVE.W         (A0),D0                  ;3010 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          DATETIME_IsLeapYear      ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___DATETIME_NormalizeStructToSecond__14;6708 
+___DATETIME_NormalizeStructToSecond__13:
+              MOVE.L         #$16e,D6                 ;2c3c 0000 016e 
+              BRA.B          ___DATETIME_NormalizeStructToSecond__11;60ba 
+___DATETIME_NormalizeStructToSecond__14:
+              MOVE.L         #$16d,D6                 ;2c3c 0000 016d 
+___DATETIME_NormalizeStructToSecond__15:
+              BRA.B          ___DATETIME_NormalizeStructToSecond__11;60b2 
+___DATETIME_NormalizeStructToSecond__16:
+              LEA            $6(A5),A0                ;41ed 0006 
+              MOVE.W         (A0),D0                  ;3010 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,D5                    ;2a00 
+              SUBI.L         #$7b0,D5                 ;0485 0000 07b0 
+              BGE.B          ___DATETIME_NormalizeStructToSecond__18;6c02 
+___DATETIME_NormalizeStructToSecond__17:
+              ADDQ.L         #$3,D5                   ;5685 
+___DATETIME_NormalizeStructToSecond__18:
+              ASR.L          #$2,D5                   ;e485 
+              LEA            $6(A5),A0                ;41ed 0006 
+              MOVE.W         (A0),D0                  ;3010 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          DATETIME_IsLeapYear      ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___DATETIME_NormalizeStructToSecond__20;6702 
+___DATETIME_NormalizeStructToSecond__19:
+              SUBQ.L         #$1,D5                   ;5385 
+___DATETIME_NormalizeStructToSecond__20:
+              LEA            $6(A5),A0                ;41ed 0006 
+              MOVE.W         (A0),D0                  ;3010 
+              EXT.L          D0                       ;48c0 
+              SUBI.L         #$7b2,D0                 ;0480 0000 07b2 
+              PEA            ($16d).w                 ;4878 016d 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,D4                    ;2800 
+              ADD.L          D5,D4                    ;d885 
+              LEA            $10(A5),A0               ;41ed 0010 
+              MOVE.W         (A0),D0                  ;3010 
+              EXT.L          D0                       ;48c0 
+              ADD.L          D0,D4                    ;d880 
+              SUBQ.L         #$1,D4                   ;5384 
+              MOVE.L         #$15180,(A7)             ;2ebc 0001 5180 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              LEA            $8(A5),A0                ;41ed 0008 
+              MOVE.W         (A0),D1                  ;3210 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D1,D2                    ;2401 
+              ASL.L          #$4,D2                   ;e982 
+              SUB.L          D1,D2                    ;9481 
+              MOVE.L         D2,D3                    ;2602 
+              ASL.L          #$4,D3                   ;e983 
+              SUB.L          D2,D3                    ;9682 
+              ASL.L          #$4,D3                   ;e983 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              ADD.L          D3,D0                    ;d083 
+              LEA            $a(A5),A0                ;41ed 000a 
+              MOVE.W         (A0),D1                  ;3210 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D1,D2                    ;2401 
+              ASL.L          #$4,D2                   ;e982 
+              SUB.L          D1,D2                    ;9481 
+              ASL.L          #$2,D2                   ;e582 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              ADD.L          D2,D0                    ;d082 
+___DATETIME_NormalizeStructToSecond__21:
+              LEA            $c(A5),A0                ;41ed 000c 
+              MOVE.W         (A0),D1                  ;3210 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         A5,(A7)                  ;2e8d 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              BSR.W          DATETIME_NormalizeMonthRange;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              TST.L          D0                       ;4a80 
+              BGT.B          ___DATETIME_NormalizeStructToSecond__23;6e04 
+___DATETIME_NormalizeStructToSecond__22:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___DATETIME_NormalizeStructToSecond__25;6004 
+___DATETIME_NormalizeStructToSecond__23:
+              MOVE.L         $20(A7),D0               ;202f 0020 
+___DATETIME_NormalizeStructToSecond__24:
+___DATETIME_NormalizeStructToSecond__25:
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A5;4cdf 20fc 
+              ADDQ.W         #$8,A7                   ;504f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DATETIME_AdjustMonthIndex
+              XREF           _CXD33
+              XREF           DATETIME_IsLeapYear
+              XREF           GROUP_AG_JMPTBL_MATH_Mulu32
+              XREF           DATETIME_NormalizeMonthRange
+              XDEF           DATETIME_NormalizeStructToSecond
+              END
