@@ -2,6 +2,11 @@ typedef signed long LONG;
 typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 
+enum {
+    PTR_HI_SHIFT = 16,
+    DIWSTOP_EXTEND_ADDEND = 0x100UL
+};
+
 extern UWORD TLIBA1_DiagDiwOffset;
 extern UWORD TLIBA1_DiagDdfOffset;
 extern UWORD TLIBA1_DiagBplcon1Value;
@@ -32,7 +37,7 @@ extern void FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
 
 static ULONG join_ptr_words(UWORD hi, UWORD lo)
 {
-    return ((ULONG)hi << 16) | (ULONG)lo;
+    return ((ULONG)hi << PTR_HI_SHIFT) | (ULONG)lo;
 }
 
 void TLIBA3_FormatPatternRegisterDump(const char *title, const UWORD *regs)
@@ -45,7 +50,11 @@ void TLIBA3_FormatPatternRegisterDump(const char *title, const UWORD *regs)
         (ULONG)TLIBA1_DiagBplcon1Value);
 
     FORMAT_RawDoFmtWithScratchBuffer(TLIBA1_FMT_DIWSTRT_COLON_0X_PCT_04LX_0X_PCT_04L, (ULONG)regs[0], (ULONG)regs[1], (ULONG)regs[1]);
-    FORMAT_RawDoFmtWithScratchBuffer(TLIBA1_FMT_DIWSTOP_COLON_0X_PCT_04LX_0X_PCT_04L, (ULONG)regs[2], (ULONG)regs[3], (ULONG)regs[3] + 0x100UL);
+    FORMAT_RawDoFmtWithScratchBuffer(
+        TLIBA1_FMT_DIWSTOP_COLON_0X_PCT_04LX_0X_PCT_04L,
+        (ULONG)regs[2],
+        (ULONG)regs[3],
+        (ULONG)regs[3] + DIWSTOP_EXTEND_ADDEND);
     FORMAT_RawDoFmtWithScratchBuffer(TLIBA1_FMT_DDFSTRT_COLON_0X_PCT_04LX_0X_PCT_04L, (ULONG)regs[4], (ULONG)regs[5], (ULONG)regs[5]);
     FORMAT_RawDoFmtWithScratchBuffer(TLIBA1_FMT_DDFSTOP_COLON_0X_PCT_04LX_0X_PCT_04L, (ULONG)regs[6], (ULONG)regs[7], (ULONG)regs[7]);
 
