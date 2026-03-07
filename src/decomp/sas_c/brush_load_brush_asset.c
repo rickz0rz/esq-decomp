@@ -4,6 +4,9 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_SRC_WIDTH_OFFSET = 128,
+    BRUSH_SRC_HEIGHT_OFFSET = 130,
+    BRUSH_SRC_DEPTH_OFFSET = 136,
     BRUSH_ROWWORD_ALIGN_ADDEND = 15,
     BRUSH_ROWWORD_ALIGN_DIVISOR = 16,
     BRUSH_ROWWORD_BYTES_PER_WORD = 2,
@@ -117,12 +120,14 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
         max_depth = BRUSH_MAX_DEPTH_ALT;
         max_width = BRUSH_MAX_WIDTH_ALT;
     }
-    if ((LONG)(UBYTE)src[136] > max_depth || (LONG)(UWORD)*(UWORD *)(src + 128) > max_width) {
+    if ((LONG)(UBYTE)src[BRUSH_SRC_DEPTH_OFFSET] > max_depth ||
+        (LONG)(UWORD)*(UWORD *)(src + BRUSH_SRC_WIDTH_OFFSET) > max_width) {
         _LVOForbid();
-        BRUSH_PendingAlertCode =
-            ((LONG)(UBYTE)src[136] > max_depth) ? BRUSH_ALERT_DEPTH_EXCEEDED : BRUSH_ALERT_WIDTH_EXCEEDED;
-        BRUSH_SnapshotWidth = (UWORD)*(UWORD *)(src + 128);
-        BRUSH_SnapshotDepth = (UBYTE)src[136];
+        BRUSH_PendingAlertCode = ((LONG)(UBYTE)src[BRUSH_SRC_DEPTH_OFFSET] > max_depth)
+                                     ? BRUSH_ALERT_DEPTH_EXCEEDED
+                                     : BRUSH_ALERT_WIDTH_EXCEEDED;
+        BRUSH_SnapshotWidth = (UWORD)*(UWORD *)(src + BRUSH_SRC_WIDTH_OFFSET);
+        BRUSH_SnapshotDepth = (UBYTE)src[BRUSH_SRC_DEPTH_OFFSET];
         {
             UBYTE *d = BRUSH_SnapshotHeader;
             const UBYTE *s = src;
@@ -186,7 +191,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                             BRUSH_ROWWORD_BYTES_PER_WORD;
                 for (i = 0; i < (LONG)(UWORD)*(UWORD *)(node + 178); i++) {
                     LONG p;
-                    for (p = 0; p < (LONG)(UBYTE)src[136]; p++) {
+                    for (p = 0; p < (LONG)(UBYTE)src[BRUSH_SRC_DEPTH_OFFSET]; p++) {
                         decode_cur = ESQ_PackBitsDecode(decode_cur, *(UBYTE **)(node + 0x90 + (p << 2)), row_words);
                     }
                 }
