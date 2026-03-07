@@ -3,6 +3,12 @@ typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 typedef signed short WORD;
 
+enum {
+    DEFAULT_COI_TRAILING_RESERVED_BYTES = 12,
+    SOURCE_HEADER_RESERVED_BYTES = 40,
+    BACKGROUND_TEXT_BYTES = 3
+};
+
 struct DiskioDefaultCoiInfo {
     ULONG owner_or_link;
     const char *city;
@@ -10,17 +16,17 @@ struct DiskioDefaultCoiInfo {
     const char *price;
     const char *tele;
     const char *event;
-    UBYTE trailing_reserved[12];
+    UBYTE trailing_reserved[DEFAULT_COI_TRAILING_RESERVED_BYTES];
     WORD exceptionCount;
     void *exceptionBlock;
 };
 
 struct DiskioProgramSourceRecord {
-    UBYTE header_reserved[40];
+    UBYTE header_reserved[SOURCE_HEADER_RESERVED_BYTES];
     UBYTE sourceFlagsByte;
     UBYTE backgroundColor0;
     UBYTE backgroundColor1;
-    char backgroundText[3];
+    char backgroundText[BACKGROUND_TEXT_BYTES];
     UWORD sourceFlagsWord;
     struct DiskioDefaultCoiInfo *defaultCoi;
 };

@@ -19,8 +19,8 @@ struct DiskioProgramSourceRecord {
     char source[7];
     char callLetters[8];
     UBYTE attrFlags;
-    UBYTE timeSlotMask[6];
-    UBYTE blackoutMask[6];
+    UBYTE timeSlotMask[MASK_BYTE_COUNT];
+    UBYTE blackoutMask[MASK_BYTE_COUNT];
     UBYTE sourceFlagsByte;
     UBYTE backgroundColor0;
     UBYTE backgroundColor1;

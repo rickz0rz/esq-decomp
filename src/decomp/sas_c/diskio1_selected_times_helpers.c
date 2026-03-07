@@ -2,6 +2,7 @@ typedef unsigned char UBYTE;
 typedef long LONG;
 
 enum {
+    DISKIO1_MASK_BYTE_COUNT = 6,
     DISKIO1_MASK_VALUE_END_INDEX = 49,
     DISKIO1_TESTBIT_CLEAR = -1
 };
@@ -16,8 +17,8 @@ extern const char DISKIO_FMT_PCT_S_TimeSlotMaskEntry[];
 extern const char DISKIO_FMT_PCT_S_BlackoutMaskEntry[];
 
 volatile UBYTE gDiskio1MaskValueBitIndex;
-volatile UBYTE gDiskio1TimeSlotMaskBytes[6];
-volatile UBYTE gDiskio1BlackoutMaskBytes[6];
+volatile UBYTE gDiskio1TimeSlotMaskBytes[DISKIO1_MASK_BYTE_COUNT];
+volatile UBYTE gDiskio1BlackoutMaskBytes[DISKIO1_MASK_BYTE_COUNT];
 
 void DISKIO1_AppendTimeSlotMaskSelectedTimes(void)
 {

@@ -15,8 +15,8 @@ extern const char DISKIO_STR_AttrFlagsCloseParenNewline_A[];
 extern const char DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX[];
 extern const char DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02[];
 
-volatile UBYTE gDiskio1TimeSlotMaskBytes[6];
-volatile UBYTE gDiskio1BlackoutMaskBytes[6];
+volatile UBYTE gDiskio1TimeSlotMaskBytes[DISKIO1_MASK_BYTE_COUNT];
+volatile UBYTE gDiskio1BlackoutMaskBytes[DISKIO1_MASK_BYTE_COUNT];
 volatile ULONG gDiskio1MaskDecisionSum;
 volatile ULONG gDiskio1MaskArrayIndex;
 
