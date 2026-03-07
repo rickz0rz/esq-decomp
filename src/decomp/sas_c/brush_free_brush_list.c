@@ -28,11 +28,11 @@ extern const UBYTE Global_STR_BRUSH_C_7[];
 void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const void *tag, LONG line, void *raster, LONG width, LONG height);
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
 
-void BRUSH_FreeBrushList(void **head_ptr, LONG free_all)
+void BRUSH_FreeBrushList(void **headPtr, LONG freeAll)
 {
     UBYTE *node;
 
-    node = (UBYTE *)*head_ptr;
+    node = (UBYTE *)*headPtr;
     while (node != (UBYTE *)BRUSH_FALSE) {
         LONG frameIndex;
         UBYTE *nextNode;
@@ -65,10 +65,10 @@ void BRUSH_FreeBrushList(void **head_ptr, LONG free_all)
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_BRUSH_C_7, BRUSH_FREE_NODE_LINE, (void *)node, BRUSH_NODE_SIZE);
         node = nextNode;
-        if (free_all != BRUSH_FREE_ALL_ENABLED) {
+        if (freeAll != BRUSH_FREE_ALL_ENABLED) {
             break;
         }
     }
 
-    *head_ptr = (void *)node;
+    *headPtr = (void *)node;
 }
