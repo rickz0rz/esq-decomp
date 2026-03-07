@@ -1,0 +1,85 @@
+typedef signed long LONG;
+typedef signed short WORD;
+typedef unsigned char UBYTE;
+
+extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
+extern WORD TEXTDISP_SecondaryGroupEntryCount;
+extern UBYTE *TEXTDISP_SecondaryEntryPtrTable[];
+extern LONG *NEWGRID_SecondaryIndexCachePtr;
+extern LONG CLOCK_DaySlotIndex;
+
+extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(LONG *clockSlotPtr);
+extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(UBYTE *pattern);
+
+WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, LONG keyIndex)
+{
+    LONG slotIndex;
+    LONG cacheIndex;
+    LONG normalizeFlag;
+    UBYTE *entry;
+    UBYTE *aux;
+    UBYTE *a;
+    UBYTE *b;
+
+    normalizeFlag = 0;
+    entry = *entryOut;
+    aux = *auxOut;
+
+    if (rowIndex > 48) {
+        rowIndex = (WORD)(rowIndex - 48);
+        normalizeFlag = 1;
+    }
+
+    entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(keyIndex, 1);
+    aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(keyIndex, 1);
+    if (entry == 0 || aux == 0) {
+        *entryOut = entry;
+        *auxOut = aux;
+        return rowIndex;
+    }
+
+    if (rowIndex != 1) {
+        if ((WORD)(NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) != 0) {
+            if (normalizeFlag == 0) {
+                *entryOut = entry;
+                *auxOut = aux;
+                return rowIndex;
+            }
+        }
+    }
+
+    if (TEXTDISP_SecondaryGroupPresentFlag != 0) {
+        if (NEWGRID_SecondaryIndexCachePtr != 0) {
+            cacheIndex = NEWGRID_SecondaryIndexCachePtr[keyIndex];
+            if (cacheIndex < 0 || cacheIndex >= (LONG)(WORD)TEXTDISP_SecondaryGroupEntryCount) {
+                cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
+                NEWGRID_SecondaryIndexCachePtr[keyIndex] = cacheIndex;
+            } else {
+                a = entry + 12;
+                b = TEXTDISP_SecondaryEntryPtrTable[cacheIndex] + 12;
+                while (*a == *b) {
+                    if (*a == 0) {
+                        break;
+                    }
+                    a++;
+                    b++;
+                }
+                if (*a != *b) {
+                    cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
+                    NEWGRID_SecondaryIndexCachePtr[keyIndex] = cacheIndex;
+                }
+            }
+        } else {
+            cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
+        }
+
+        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(cacheIndex, 2);
+        aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(cacheIndex, 2);
+    }
+
+    *entryOut = entry;
+    *auxOut = aux;
+    return rowIndex;
+}
