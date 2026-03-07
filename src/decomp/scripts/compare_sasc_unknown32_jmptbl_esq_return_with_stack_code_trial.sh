@@ -9,13 +9,14 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown32.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY_ORIG="UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode"
 
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_unknown32_jmptbl_esq_return_with_stack_code.log" 2>&1
 
-awk '$0 ~ /^UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/unknown32_jmptbl_esq_return_with_stack_code.original.s"
-awk '$0 ~ /^UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode:/ || $0 ~ /^UNKNOWN32_JMPTBL_ESQ_ReturnWithS:/ {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/unknown32_jmptbl_esq_return_with_stack_code.sasc.dis.s"
+awk -v entry="^${ENTRY_ORIG}:$" '$0 ~ entry {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/unknown32_jmptbl_esq_return_with_stack_code.original.s"
+awk -v entry="^${ENTRY_ORIG}:" -v entry_short="^UNKNOWN32_JMPTBL_ESQ_ReturnWithS:" '$0 ~ entry || $0 ~ entry_short {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/unknown32_jmptbl_esq_return_with_stack_code.sasc.dis.s"
 
 normalize() {
   sed -E \

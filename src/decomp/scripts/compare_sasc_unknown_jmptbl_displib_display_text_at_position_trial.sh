@@ -9,12 +9,13 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY_ORIG="UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition"
 
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_unknown_jmptbl_displib_display_text_at_position.log" 2>&1
 
-awk '$0 ~ /^UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition:$/ {in_func=1} in_func { if ($0 ~ /^;------------------------------------------------------------------------------/ || $0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/unknown_jmptbl_displib_display_text_at_position.original.s"
+awk -v entry="^${ENTRY_ORIG}:$" '$0 ~ entry {in_func=1} in_func { if ($0 ~ /^;------------------------------------------------------------------------------/ || $0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/unknown_jmptbl_displib_display_text_at_position.original.s"
 awk '$0 ~ /^[[:space:]]*UNKNOWN_JMPTBL_DISPLIB_DisplayTe/ {in_func=1} in_func { if ($0 ~ /^[[:space:]]*UNKNOWN_JMPTBL_ESQ_WildcardMatch/ || /^[[:space:]]*UNKNOWN_JMPTBL_ESQ_WildcardMat/ || $0 ~ /^[[:space:]]*__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/unknown_jmptbl_displib_display_text_at_position.sasc.dis.s"
 
 normalize() {

@@ -9,12 +9,13 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY_ORIG="UNKNOWN_JMPTBL_DST_NormalizeDayOfYear"
 
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_unknown_jmptbl_dst_normalize_day_of_year.log" 2>&1
 
-awk '$0 ~ /^UNKNOWN_JMPTBL_DST_NormalizeDayOfYear:$/ {in_func=1} in_func { if ($0 ~ /^;------------------------------------------------------------------------------/ || $0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/unknown_jmptbl_dst_normalize_day_of_year.original.s"
+awk -v entry="^${ENTRY_ORIG}:$" '$0 ~ entry {in_func=1} in_func { if ($0 ~ /^;------------------------------------------------------------------------------/ || $0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/unknown_jmptbl_dst_normalize_day_of_year.original.s"
 awk '$0 ~ /^[[:space:]]*UNKNOWN_JMPTBL_DST_Normalize/ {in_func=1} in_func { if ($0 ~ /^[[:space:]]*UNKNOWN_JMPTBL_ESQ_GenerateXor/ || /^[[:space:]]*UNKNOWN_JMPTBL_ESQ_Generate/ || $0 ~ /^[[:space:]]*__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/unknown_jmptbl_dst_normalize_day_of_year.sasc.dis.s"
 
 normalize() {
