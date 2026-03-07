@@ -4,6 +4,8 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_SRC_STATE_BLOCK_OFFSET = 32,
+    BRUSH_SRC_DECODE_AUX_OFFSET = 152,
     BRUSH_SRC_MODE_FLAGS_OFFSET = 150,
     BRUSH_SRC_TYPE_OFFSET = 190,
     BRUSH_SRC_WIDTH_OFFSET = 128,
@@ -106,8 +108,8 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             if (decode_buf != (UBYTE *)0) {
                 if (BITMAP_ProcessIlbmImage(
                         fh,
-                        src + 152,
-                        src + 32,
+                        src + BRUSH_SRC_DECODE_AUX_OFFSET,
+                        src + BRUSH_SRC_STATE_BLOCK_OFFSET,
                         BRUSH_DECODE_BUFFER_SIZE,
                         decode_buf,
                         src) == 1) {
@@ -184,7 +186,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 _LVOInitRastPort(node + 36);
                 *(void **)(node + 40) = node + 136;
                 for (i = 0; i < BRUSH_RASTPORT_STATE_COPY_BYTES; i++) {
-                    node[232 + i] = src[32 + i];
+                    node[232 + i] = src[BRUSH_SRC_STATE_BLOCK_OFFSET + i];
                 }
 
                 row_words = GROUP_AG_JMPTBL_MATH_DivS32(
