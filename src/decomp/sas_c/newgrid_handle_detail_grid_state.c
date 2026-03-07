@@ -67,8 +67,8 @@ LONG NEWGRID_HandleDetailGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
         } else {
             nextState = 5;
         }
-        NEWGRID_DetailGridStateLatch = nextState;
         *(LONG *)(ctx + 32) = -1;
+        NEWGRID_DetailGridStateLatch = nextState;
         return NEWGRID_DetailGridStateLatch;
     }
 
