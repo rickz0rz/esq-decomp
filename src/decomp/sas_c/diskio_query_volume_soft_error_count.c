@@ -23,7 +23,7 @@ extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, 
 
 LONG DISKIO_QueryVolumeSoftErrorCount(const char *path)
 {
-    LONG softErrorCount = 0;
+    LONG softErrorCountValue = 0;
     LONG lock;
     UBYTE *infoData;
 
@@ -40,7 +40,7 @@ LONG DISKIO_QueryVolumeSoftErrorCount(const char *path)
 
     if (infoData != 0) {
         if (_LVOInfo(Global_REF_DOS_LIBRARY_2, lock, infoData) == RESULT_OK) {
-            softErrorCount = *(LONG *)(void *)infoData;
+            softErrorCountValue = *(LONG *)(void *)infoData;
         }
 
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
@@ -51,5 +51,5 @@ LONG DISKIO_QueryVolumeSoftErrorCount(const char *path)
     }
 
     _LVOUnLock(Global_REF_DOS_LIBRARY_2, lock);
-    return softErrorCount;
+    return softErrorCountValue;
 }
