@@ -4,6 +4,9 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_ALERT_ALLOC_FAIL = 1,
+    BRUSH_ALERT_DEPTH_EXCEEDED = 2,
+    BRUSH_ALERT_WIDTH_EXCEEDED = 3,
     BRUSH_FILE_OPEN_MODE_READ = 1005,
     BRUSH_SEEK_OFFSET_START = 0,
     BRUSH_SEEK_MODE_BEGIN = -1,
@@ -111,7 +114,8 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     }
     if ((LONG)(UBYTE)src[136] > max_depth || (LONG)(UWORD)*(UWORD *)(src + 128) > max_width) {
         _LVOForbid();
-        BRUSH_PendingAlertCode = ((LONG)(UBYTE)src[136] > max_depth) ? 2 : 3;
+        BRUSH_PendingAlertCode =
+            ((LONG)(UBYTE)src[136] > max_depth) ? BRUSH_ALERT_DEPTH_EXCEEDED : BRUSH_ALERT_WIDTH_EXCEEDED;
         BRUSH_SnapshotWidth = (UWORD)*(UWORD *)(src + 128);
         BRUSH_SnapshotDepth = (UBYTE)src[136];
         {
@@ -146,7 +150,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 if (plane == (void *)0) {
                     _LVOForbid();
                     if (BRUSH_PendingAlertCode == 0) {
-                        BRUSH_PendingAlertCode = 1;
+                        BRUSH_PendingAlertCode = BRUSH_ALERT_ALLOC_FAIL;
                     }
                     _LVOPermit();
                     break;
