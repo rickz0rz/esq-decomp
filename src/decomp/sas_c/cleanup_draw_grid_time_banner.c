@@ -35,13 +35,13 @@ void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void);
 
 void CLEANUP_DrawGridTimeBanner(void)
 {
-    char time_buf[32];
+    char timeBuffer[32];
     char ampm_suffix;
-    LONG sample_width;
-    LONG text_width;
+    LONG sampleWidth;
+    LONG textWidth;
     LONG x;
 
-    ESQ_FormatTimeStamp(time_buf, &CLOCK_CurrentDayOfWeekIndex);
+    ESQ_FormatTimeStamp(timeBuffer, &CLOCK_CurrentDayOfWeekIndex);
     _LVOSetAPen();
     *(UWORD *)(Global_REF_RASTPORT_1 + RASTPORT_FLAGS_OFFSET) =
         (UWORD)(*(UWORD *)(Global_REF_RASTPORT_1 + RASTPORT_FLAGS_OFFSET) & RASTPORT_FLAGMASK_CLEAR_BIT3);
@@ -49,13 +49,13 @@ void CLEANUP_DrawGridTimeBanner(void)
     _LVORectFill();
     _LVOSetAPen();
 
-    ampm_suffix = time_buf[GRID_TIME_SUFFIX_INDEX];
-    time_buf[GRID_TIME_SUFFIX_INDEX] = 0;
+    ampm_suffix = timeBuffer[GRID_TIME_SUFFIX_INDEX];
+    timeBuffer[GRID_TIME_SUFFIX_INDEX] = 0;
 
     if (Global_REF_STR_USE_24_HR_CLOCK == 'Y') {
         LONG hour = GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat((LONG)Global_WORD_CURRENT_HOUR, (LONG)CLOCK_CurrentAmPmFlag);
         GROUP_AE_JMPTBL_WDISP_SPrintf(
-            time_buf,
+            timeBuffer,
             Global_STR_GRID_TIME_FORMAT_DUPLICATE,
             hour,
             (LONG)Global_WORD_CURRENT_MINUTE,
@@ -64,16 +64,16 @@ void CLEANUP_DrawGridTimeBanner(void)
     }
 
     _LVOTextLength();
-    sample_width = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_TEXTWIDTH_OFFSET);
+    sampleWidth = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_TEXTWIDTH_OFFSET);
 
     if (Global_REF_STR_USE_24_HR_CLOCK == 'N') {
         _LVOTextLength();
-        text_width = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_TEXTWIDTH_OFFSET);
+        textWidth = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_TEXTWIDTH_OFFSET);
     } else {
-        text_width = sample_width;
+        textWidth = sampleWidth;
     }
 
-    x = (GRID_TIME_BANNER_WIDTH - text_width);
+    x = (GRID_TIME_BANNER_WIDTH - textWidth);
     if (x < 0) {
         x++;
     }
