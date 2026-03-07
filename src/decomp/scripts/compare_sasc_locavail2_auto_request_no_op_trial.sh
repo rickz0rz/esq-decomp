@@ -10,6 +10,7 @@ SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/groups/a/z/locavail2.s"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="locavail2_auto_request_no_op"
+ENTRY_ORIG="LOCAVAIL2_AutoRequestNoOp"
 
 mkdir -p "$OUT_DIR"
 
