@@ -4,6 +4,7 @@ typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 enum {
+    VM_ZERO = 0,
     VM_RUNTIME_STRIDE = 154,
     VM_REGBASE_OFFSET = 0,
     VM_WIDTH_OFFSET = 2,
@@ -52,7 +53,7 @@ void TLIBA3_InitRuntimeEntry(
     {
         ULONG *src = (ULONG *)Global_REF_RASTPORT_1;
         ULONG *dst = (ULONG *)(vm + VM_RPORT_COPY_OFFSET);
-        for (i = 0; i <= VM_RPORT_COPY_LAST_INDEX; ++i) {
+        for (i = VM_ZERO; i <= VM_RPORT_COPY_LAST_INDEX; ++i) {
             dst[i] = src[i];
         }
     }
@@ -66,11 +67,11 @@ void TLIBA3_InitRuntimeEntry(
         (LONG)(UWORD)width,
         (LONG)(UWORD)height);
 
-    for (i = 0; i < VM_PLANE_PTR_COUNT; ++i) {
+    for (i = VM_ZERO; i < VM_PLANE_PTR_COUNT; ++i) {
         *(ULONG *)(vm + VM_PLANE_PTR_BASE_OFFSET + (i * VM_PLANE_PTR_STRIDE)) =
             WDISP_DisplayContextPlanePointer0[i];
     }
 
-    *(UWORD *)(vm + VM_RESERVED0_OFFSET) = 0;
-    *(UWORD *)(vm + VM_RESERVED1_OFFSET) = 0;
+    *(UWORD *)(vm + VM_RESERVED0_OFFSET) = VM_ZERO;
+    *(UWORD *)(vm + VM_RESERVED1_OFFSET) = VM_ZERO;
 }
