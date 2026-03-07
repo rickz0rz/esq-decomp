@@ -600,6 +600,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ed_handle_edit_attributes_menu_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_handle_special_functions_menu_trial.sh"
     "src/decomp/scripts/compare_sasc_ed1_handle_esc_menu_input_trial.sh"
+    "src/decomp/scripts/compare_sasc_ed2_handle_scroll_speed_selection_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_capture_key_sequence_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_ad_number_prompt_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_esc_main_menu_text_trial.sh"
