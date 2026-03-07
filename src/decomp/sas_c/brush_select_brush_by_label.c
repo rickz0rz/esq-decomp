@@ -27,18 +27,18 @@ void *BRUSH_FindBrushByPredicate(void *key, void *list_head_ptr);
 
 void BRUSH_SelectBrushByLabel(const UBYTE *label)
 {
-    void *cur;
+    void *nodeCursor;
     UBYTE code[BRUSH_CODE_BUFFER_LEN];
-    const UBYTE *src;
-    UBYTE *dst;
+    const UBYTE *labelCursor;
+    UBYTE *scratchCursor;
 
-    src = label;
-    dst = BRUSH_LabelScratch;
+    labelCursor = label;
+    scratchCursor = BRUSH_LabelScratch;
     do {
-        *dst++ = *src;
-    } while (*src++ != (UBYTE)BRUSH_NULL_BYTE);
+        *scratchCursor++ = *labelCursor;
+    } while (*labelCursor++ != (UBYTE)BRUSH_NULL_BYTE);
 
-    cur = ESQIFF_BrushIniListHead;
+    nodeCursor = ESQIFF_BrushIniListHead;
     BRUSH_SelectedNode = (void *)BRUSH_NULL_BYTE;
 
     if (GROUP_AA_JMPTBL_STRING_CompareN(label, BRUSH_STR_ALIAS_CODE_00, BRUSH_LABEL_COMPARE_LEN) ==
@@ -51,15 +51,15 @@ void BRUSH_SelectBrushByLabel(const UBYTE *label)
     }
     code[BRUSH_CODE_TERMINATOR_INDEX] = BRUSH_NULL_BYTE;
 
-    while (cur != (void *)BRUSH_NULL_BYTE) {
+    while (nodeCursor != (void *)BRUSH_NULL_BYTE) {
         UBYTE *node;
 
-        node = (UBYTE *)cur;
+        node = (UBYTE *)nodeCursor;
         if (GROUP_AA_JMPTBL_STRING_CompareN(node + BRUSH_NODE_LABEL_OFFSET, code, BRUSH_LABEL_COMPARE_LEN) ==
             BRUSH_COMPARE_EQUAL) {
-            BRUSH_SelectedNode = cur;
+            BRUSH_SelectedNode = nodeCursor;
         }
-        cur = *(void **)(node + BRUSH_NODE_NEXT_OFFSET);
+        nodeCursor = *(void **)(node + BRUSH_NODE_NEXT_OFFSET);
     }
 
     if (BRUSH_SelectedNode == (void *)BRUSH_NULL_BYTE) {
