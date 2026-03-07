@@ -14,6 +14,9 @@ void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *p
 LONG _LVORead(LONG fh, void *buf, LONG len);
 
 enum {
+    BRUSH_NULL = 0,
+    BRUSH_NIBBLE_SHIFT = 4,
+    BRUSH_LOW_NIBBLE_MASK = 0x0FU,
     COLOR_TEXT_FONT_SIZE = 96,
     COLOR_FONT_BLOCK_BYTES = 3,
     MEMF_PUBLIC = 1,
@@ -35,7 +38,7 @@ LONG BRUSH_LoadColorTextFont(LONG fh, LONG byte_count, UBYTE *out_buf)
         COLOR_TEXT_FONT_SIZE,
         MEMF_PUBLIC
     );
-    if (tmp == (UBYTE *)0) {
+    if (tmp == (UBYTE *)BRUSH_NULL) {
         return BRUSH_COLOR_FONT_STATUS_ERROR;
     }
 
@@ -49,12 +52,12 @@ LONG BRUSH_LoadColorTextFont(LONG fh, LONG byte_count, UBYTE *out_buf)
         return BRUSH_COLOR_FONT_STATUS_ERROR;
     }
 
-    out_i = 0;
+    out_i = BRUSH_NULL;
     p = tmp;
-    for (block_i = 0; block_i < byte_count; block_i += COLOR_FONT_BLOCK_BYTES) {
+    for (block_i = BRUSH_NULL; block_i < byte_count; block_i += COLOR_FONT_BLOCK_BYTES) {
         UWORD inner_i;
-        for (inner_i = 0; inner_i < COLOR_FONT_BLOCK_BYTES; inner_i++) {
-            out_buf[out_i++] = (UBYTE)((*p >> 4) & 0x0FU);
+        for (inner_i = BRUSH_NULL; inner_i < COLOR_FONT_BLOCK_BYTES; inner_i++) {
+            out_buf[out_i++] = (UBYTE)((*p >> BRUSH_NIBBLE_SHIFT) & BRUSH_LOW_NIBBLE_MASK);
             p++;
         }
     }
