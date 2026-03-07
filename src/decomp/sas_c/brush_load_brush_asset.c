@@ -89,7 +89,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     LONG max_width;
     UBYTE hdr[BRUSH_IFF_HEADER_SIZE];
     UBYTE *decode_buf;
-    UBYTE *decode_cur;
+    UBYTE *decodeCursor;
     UBYTE *node;
     LONG i;
     LONG row_words;
@@ -101,7 +101,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     max_depth = BRUSH_MAX_DEPTH_DEFAULT;
     max_width = BRUSH_MAX_WIDTH_DEFAULT;
     decode_buf = (UBYTE *)BRUSH_NULL;
-    decode_cur = (UBYTE *)BRUSH_NULL;
+    decodeCursor = (UBYTE *)BRUSH_NULL;
     node = (UBYTE *)BRUSH_NULL;
 
     fh = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(src, BRUSH_FILE_OPEN_MODE_READ);
@@ -115,7 +115,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 BRUSH_DECODE_BUFFER_SIZE,
                 MEMF_PUBLIC_CLEAR
             );
-            decode_cur = decode_buf;
+            decodeCursor = decode_buf;
             if (decode_buf != (UBYTE *)BRUSH_NULL) {
                 if (BITMAP_ProcessIlbmImage(
                         fh,
@@ -220,8 +220,8 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 for (i = BRUSH_NULL; i < (LONG)(UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET); i++) {
                     LONG p;
                     for (p = BRUSH_NULL; p < (LONG)(UBYTE)src[BRUSH_SRC_DEPTH_OFFSET]; p++) {
-                        decode_cur = ESQ_PackBitsDecode(
-                            decode_cur,
+                        decodeCursor = ESQ_PackBitsDecode(
+                            decodeCursor,
                             *(UBYTE **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (p << BRUSH_PLANE_PTR_SHIFT)),
                             row_words);
                     }
