@@ -178,9 +178,12 @@ LONG TEXTDISP_SelectBestMatchFromList(void *titles, UWORD candidateCount, UWORD 
         return 2;
     }
 
-    if (!((channelCode <= 48 || channelCode >= 58) && (channelCode <= 62 || channelCode >= 68) && (channelCode <= 71 || channelCode >= 78))) {
-        return 0;
+    if ((channelCode > 48 && channelCode < 58) ||
+        (channelCode > 62 && channelCode < 68) ||
+        (channelCode > 71 && channelCode < 78)) {
+        channelCode = 68;
+        return 1;
     }
 
-    return (channelCode = 68, 1);
+    return 0;
 }

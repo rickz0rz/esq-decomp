@@ -437,17 +437,17 @@ ___TEXTDISP_SelectBestMatchFromList__76:
 ___TEXTDISP_SelectBestMatchFromList__77:
               MOVEQ.L        #$47,D0                  ;7047 
               CMP.W          D0,D6                    ;bc40 
-              BLS.B          ___TEXTDISP_SelectBestMatchFromList__80;630a 
+              BLS.B          ___TEXTDISP_SelectBestMatchFromList__80;630c 
 ___TEXTDISP_SelectBestMatchFromList__78:
               MOVEQ.L        #$4e,D0                  ;704e 
               CMP.W          D0,D6                    ;bc40 
-              BCC.B          ___TEXTDISP_SelectBestMatchFromList__80;6404 
+              BCC.B          ___TEXTDISP_SelectBestMatchFromList__80;6406 
 ___TEXTDISP_SelectBestMatchFromList__79:
-              MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__82;6004 
-___TEXTDISP_SelectBestMatchFromList__80:
               MOVEQ.L        #$44,D6                  ;7c44 
               MOVEQ.L        #$1,D0                   ;7001 
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__82;6002 
+___TEXTDISP_SelectBestMatchFromList__80:
+              MOVEQ.L        #$0,D0                   ;7000 
 ___TEXTDISP_SelectBestMatchFromList__81:
 ___TEXTDISP_SelectBestMatchFromList__82:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
