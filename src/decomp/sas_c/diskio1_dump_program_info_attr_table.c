@@ -1,6 +1,25 @@
 typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
+enum {
+    PROGRAM_SLOT_FIRST = 1,
+    PROGRAM_SLOT_END = 49,
+    PROGRAM_ATTR_TABLE_OFFSET = 7,
+    PROGRAM_TEXT_PTR_TABLE_OFFSET = 56,
+    PROGRAM_TYPE0_TABLE_OFFSET = 0xfc,
+    PROGRAM_TYPE1_TABLE_OFFSET = 0x12d,
+    PROGRAM_TYPE2_TABLE_OFFSET = 0x15e,
+    PROGRAM_TEXT_COPY_MAX = 40,
+    ATTR_FLAG_NONE = 0x01,
+    ATTR_FLAG_MOVIE = 0x02,
+    ATTR_FLAG_ALT_HILITE = 0x04,
+    ATTR_FLAG_TAG = 0x08,
+    ATTR_FLAG_SPORTS = 0x10,
+    ATTR_FLAG_BIT20 = 0x20,
+    ATTR_FLAG_REPEAT = 0x40,
+    ATTR_FLAG_PREV_DAYS = 0x80
+};
+
 extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
 extern void GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG maxLen);
 extern void GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch(const char *text);
@@ -40,11 +59,11 @@ void DISKIO1_DumpProgramInfoAttrTable(const UBYTE *rec, ULONG programInfoId)
         DISKIO_FMT_PROG_SRCE_PCT_S_ProgramInfoAttrTable,
         rec);
 
-    for (i = 1; i < 49; i++) {
-        ULONG attr = (ULONG)rec[7 + i];
-        const char *programText = ((const char *const *)(rec + 56))[i];
+    for (i = PROGRAM_SLOT_FIRST; i < PROGRAM_SLOT_END; i++) {
+        ULONG attr = (ULONG)rec[PROGRAM_ATTR_TABLE_OFFSET + i];
+        const char *programText = ((const char *const *)(rec + PROGRAM_TEXT_PTR_TABLE_OFFSET))[i];
 
-        if (attr == 1 && programText == 0) {
+        if (attr == ATTR_FLAG_NONE && programText == 0) {
             continue;
         }
 
@@ -53,35 +72,35 @@ void DISKIO1_DumpProgramInfoAttrTable(const UBYTE *rec, ULONG programInfoId)
             i,
             Global_REF_STR_CLOCK_FORMAT[i]);
 
-        if (attr == 1) {
+        if (attr == ATTR_FLAG_NONE) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_NONE_ProgramInfoAttrTable);
         }
-        if (attr & 0x02) {
+        if (attr & ATTR_FLAG_MOVIE) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_MOVIE_ProgramInfoAttrTable);
         }
-        if (attr & 0x04) {
+        if (attr & ATTR_FLAG_ALT_HILITE) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_ALTHILITE_PROG_ProgramInfoAttrTable);
         }
-        if (attr & 0x08) {
+        if (attr & ATTR_FLAG_TAG) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_TAG_PROG_ProgramInfoAttrTable);
         }
-        if (attr & 0x10) {
+        if (attr & ATTR_FLAG_SPORTS) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_SPORTSPROG);
         }
-        if (attr & 0x20) {
+        if (attr & ATTR_FLAG_BIT20) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_0X20_ProgramInfoAttrTable);
         }
-        if (attr & 0x40) {
+        if (attr & ATTR_FLAG_REPEAT) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_REPEATPROG);
         }
-        if (attr & 0x80) {
+        if (attr & ATTR_FLAG_PREV_DAYS) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_PREV_DAYS_DATA_ProgramInfoAttrTable);
         }
@@ -90,7 +109,7 @@ void DISKIO1_DumpProgramInfoAttrTable(const UBYTE *rec, ULONG programInfoId)
             DISKIO_STR_ProgramAttrCloseAndProgQuotedPrefix);
 
         if (programText != 0) {
-            GROUP_AG_JMPTBL_STRING_CopyPadNul(escaped, programText, 40);
+            GROUP_AG_JMPTBL_STRING_CopyPadNul(escaped, programText, PROGRAM_TEXT_COPY_MAX);
         } else {
             const char *src = DISKIO_TAG_NONE;
             char *dst = escaped;
@@ -104,8 +123,8 @@ void DISKIO1_DumpProgramInfoAttrTable(const UBYTE *rec, ULONG programInfoId)
         GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch(escaped);
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_FMT_ProgramStringSuffixWithTypeFields,
-            (ULONG)rec[0xfc + i],
-            (ULONG)rec[0x12d + i],
-            (ULONG)rec[0x15e + i]);
+            (ULONG)rec[PROGRAM_TYPE0_TABLE_OFFSET + i],
+            (ULONG)rec[PROGRAM_TYPE1_TABLE_OFFSET + i],
+            (ULONG)rec[PROGRAM_TYPE2_TABLE_OFFSET + i]);
     }
 }
