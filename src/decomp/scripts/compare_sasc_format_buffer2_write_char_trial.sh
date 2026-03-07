@@ -9,6 +9,7 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown27.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY_ORIG="FORMAT_Buffer2WriteChar"
 
 mkdir -p "$OUT_DIR"
 
