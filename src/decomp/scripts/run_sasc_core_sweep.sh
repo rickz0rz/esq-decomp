@@ -1171,6 +1171,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_jmptbl_wdisp_updateselectionpreviewpanel_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_clear_highlight_area_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_clear_entry_marker_bits_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_clear_markers_if_selectable_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_adjust_clock_string_by_slot_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_adjust_clock_string_by_slot_with_offset_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_apply_24_hour_formatting_trial.sh"
