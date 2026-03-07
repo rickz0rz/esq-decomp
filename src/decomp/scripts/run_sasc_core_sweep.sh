@@ -927,6 +927,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_textdisp_handle_script_command_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_draw_highlight_frame_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_filter_and_select_entry_trial.sh"
+    "src/decomp/scripts/compare_sasc_textdisp_build_match_index_list_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_build_entry_detail_line_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_build_now_showing_status_line_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_build_entry_pair_status_line_trial.sh"
