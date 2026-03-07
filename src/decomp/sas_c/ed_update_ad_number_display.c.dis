@@ -1,0 +1,64 @@
+              SECTION      text,CODE
+__code:
+ED_UpdateAdNumberDisplay:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$38,D0                  ;90bc 0000 0038 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$28,A7                  ;9efc 0028 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___ED_UpdateAdNumberDisplay__1:
+              MOVE.L         Global_REF_LONG_CURRENT_EDITING_(A4),-(A7);2f2c 0000 
+              PEA            Global_STR_AD_NUMBER_FORMATTED(A4);486c 0000 
+              PEA            $10(A7)                  ;486f 0010 
+              BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            $14(A7)                  ;486f 0014 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($b4).w                  ;4878 00b4 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              CLR.L          ED_AdActiveFlag(A4)      ;42ac 0000 
+              MOVE.L         Global_REF_LONG_CURRENT_EDITING_(A4),D7;2e2c 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            ED_AdRecordPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A0           ;2070 0800 
+              MOVE.W         (A0),D6                  ;3c10 
+              TST.W          D6                       ;4a46 
+              BLE.B          ___ED_UpdateAdNumberDisplay__3;6f06 
+___ED_UpdateAdNumberDisplay__2:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,ED_AdActiveFlag(A4)   ;2940 0000 
+___ED_UpdateAdNumberDisplay__3:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,ED_AdDisplayResetFlag(A4);2940 0000 
+              CLR.L          ED_ViewportOffset(A4)    ;42ac 0000 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,ED_AdDisplayStateLatchBlockB(A4);2940 0000 
+              MOVE.L         D0,ED_ActiveIndicatorCachedState(A4);2940 0000 
+              MOVE.L         D0,ED_AdDisplayStateLatchA(A4);2940 0000 
+              BSR.W          ED_UpdateActiveInactiveIndicator;6100 0000 
+___ED_UpdateAdNumberDisplay__4:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              ADD.W          #$28,A7                  ;defc 0028 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_LONG_CURRENT_EDITING_
+              XREF           Global_STR_AD_NUMBER_FORMATTED
+              XREF           GROUP_AM_JMPTBL_WDISP_SPrintf
+              XREF           Global_REF_RASTPORT_1
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           ED_AdActiveFlag
+              XREF           ED_AdRecordPtrTable
+              XREF           ED_AdDisplayResetFlag
+              XREF           ED_ViewportOffset
+              XREF           ED_AdDisplayStateLatchBlockB
+              XREF           ED_ActiveIndicatorCachedState
+              XREF           ED_AdDisplayStateLatchA
+              XREF           ED_UpdateActiveInactiveIndicator
+              XDEF           ED_UpdateAdNumberDisplay
+              END
