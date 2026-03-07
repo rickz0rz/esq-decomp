@@ -978,6 +978,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqdisp_init_highlight_message_pattern_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_mirror_primary_entries_to_secondary_if_empty_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_parse_program_info_command_record_return_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqdisp_test_entry_bits0_and2_core_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_test_entry_grid_eligibility_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_update_status_mask_and_refresh_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_render_weather_status_brush_slice_return_trial.sh"
