@@ -7,7 +7,7 @@ typedef struct LadfuncEntry {
     WORD startSlot;
     WORD endSlot;
     WORD isHighlighted;
-    LONG textPtr;
+    UBYTE *textPtr;
 } LadfuncEntry;
 
 extern UBYTE ED_DiagTextModeChar;

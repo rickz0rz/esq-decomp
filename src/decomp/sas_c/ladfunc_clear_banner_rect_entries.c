@@ -6,8 +6,8 @@ typedef struct LadfuncEntry {
     UWORD startSlot;
     UWORD endSlot;
     UWORD isHighlighted;
-    void *textPtr;
-    void *attrPtr;
+    UBYTE *textPtr;
+    UBYTE *attrPtr;
 } LadfuncEntry;
 
 extern LadfuncEntry *LADFUNC_EntryPtrTable[];
@@ -28,8 +28,8 @@ void LADFUNC_ClearBannerRectEntries(void)
         entry->startSlot = 0;
         entry->endSlot = 0;
         entry->isHighlighted = 0;
-        entry->textPtr = (void *)0;
-        entry->attrPtr = (void *)0;
+        entry->textPtr = (UBYTE *)0;
+        entry->attrPtr = (UBYTE *)0;
     }
 
     LADFUNC_HighlightCycleCountdown = 0;
