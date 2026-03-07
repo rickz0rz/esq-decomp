@@ -28,7 +28,7 @@ enum {
     BRUSH_FREE_DONE_LINE = 445
 };
 
-LONG BRUSH_LoadColorTextFont(LONG fh, LONG byteCount, UBYTE *out_buf)
+LONG BRUSH_LoadColorTextFont(LONG fh, LONG byteCount, UBYTE *outBuf)
 {
     UBYTE *tmp;
     LONG outputIndex;
@@ -63,7 +63,7 @@ LONG BRUSH_LoadColorTextFont(LONG fh, LONG byteCount, UBYTE *out_buf)
     for (blockOffset = BRUSH_NULL; blockOffset < byteCount; blockOffset += COLOR_FONT_BLOCK_BYTES) {
         UWORD inner_i;
         for (inner_i = BRUSH_NULL; inner_i < COLOR_FONT_BLOCK_BYTES; inner_i++) {
-            out_buf[outputIndex++] = (UBYTE)((*p >> BRUSH_NIBBLE_SHIFT) & BRUSH_LOW_NIBBLE_MASK);
+            outBuf[outputIndex++] = (UBYTE)((*p >> BRUSH_NIBBLE_SHIFT) & BRUSH_LOW_NIBBLE_MASK);
             p++;
         }
     }
