@@ -39,8 +39,8 @@ LONG BRUSH_SelectBrushSlot(
     void *dstRp,
     LONG forcedDstY)
 {
-    LONG src_x = srcX0;
-    LONG src_y = srcY0;
+    LONG srcX = srcX0;
+    LONG srcY = srcY0;
     LONG dstX;
     LONG dstY;
     LONG spanX;
@@ -71,15 +71,15 @@ LONG BRUSH_SelectBrushSlot(
             dstX = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
             alignModeX = *(LONG *)(brush + BRUSH_ALIGN_X_MODE_OFFSET);
             if (alignModeX == ALIGN_MODE_RIGHT_BOTTOM) {
-                src_x = srcX1 - clip_w + BRUSH_SPAN_INCLUSIVE_DELTA;
+                srcX = srcX1 - clip_w + BRUSH_SPAN_INCLUSIVE_DELTA;
             } else if (alignModeX == ALIGN_MODE_CENTER) {
-                src_x = srcX0 + half_toward_zero(spanX) - half_toward_zero(clip_w);
+                srcX = srcX0 + half_toward_zero(spanX) - half_toward_zero(clip_w);
             } else {
-                src_x = srcX0;
+                srcX = srcX0;
             }
         } else {
             dstX = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
-            src_x = srcX0;
+            srcX = srcX0;
         }
     }
 
@@ -100,15 +100,15 @@ LONG BRUSH_SelectBrushSlot(
             dstY = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
             alignModeY = *(LONG *)(brush + BRUSH_ALIGN_Y_MODE_OFFSET);
             if (alignModeY == ALIGN_MODE_RIGHT_BOTTOM) {
-                src_y = srcY1 - clip_h + BRUSH_SPAN_INCLUSIVE_DELTA;
+                srcY = srcY1 - clip_h + BRUSH_SPAN_INCLUSIVE_DELTA;
             } else if (alignModeY == ALIGN_MODE_CENTER) {
-                src_y = srcY0 + half_toward_zero(spanY) - half_toward_zero(clip_h);
+                srcY = srcY0 + half_toward_zero(spanY) - half_toward_zero(clip_h);
             } else {
-                src_y = srcY0;
+                srcY = srcY0;
             }
         } else {
             dstY = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
-            src_y = srcY0;
+            srcY = srcY0;
         }
     }
 
@@ -128,8 +128,8 @@ LONG BRUSH_SelectBrushSlot(
 
     return GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
         brush + BRUSH_BITMAP_OFFSET,
-        src_x,
-        src_y,
+        srcX,
+        srcY,
         dstRp,
         dstX,
         dstY,
