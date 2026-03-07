@@ -5,11 +5,13 @@ ESQFUNC_CommitSecondaryStateAndP:
               SUBQ.L         #$8,D0                   ;5180 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
 ___ESQFUNC_CommitSecondaryStateAndP__1:
-              MOVE.W         ESQPARS2_ReadModeFlags(A4),D7;3e2c 0000 
-              MOVE.W         #$100,ESQPARS2_ReadModeFlags(A4);397c 0100 0000 
-              MOVE.W         #$1,ESQDISP_PendingGridReinitFlag(A4);397c 0001 0000 
+              MOVE.W         #$100,D7                 ;3e3c 0100 
+              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVE.W         ESQPARS2_ReadModeFlags(A4),D5;3a2c 0000 
+              MOVE.W         D7,ESQPARS2_ReadModeFlags(A4);3947 0000 
+              MOVE.W         D6,ESQDISP_PendingGridReinitFlag(A4);3946 0000 
               BSR.W          ESQDISP_PropagatePrimaryTitleMet;6100 0000 
               BSR.W          ESQFUNC_JMPTBL_LOCAVAIL_RebuildF;6100 0000 
               BSR.W          ESQDISP_PromoteSecondaryGroupToP;6100 0000 
@@ -26,9 +28,9 @@ ___ESQFUNC_CommitSecondaryStateAndP__1:
               BSR.W          ESQPARS_JMPTBL_P_TYPE_WritePromo;6100 0000 
               BSR.W          ESQFUNC_UpdateDiskWarningAndRefr;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              MOVE.W         D7,ESQPARS2_ReadModeFlags(A4);3947 0000 
+              MOVE.W         D5,ESQPARS2_ReadModeFlags(A4);3945 0000 
 ___ESQFUNC_CommitSecondaryStateAndP__2:
-              MOVE.L         (A7)+,D7                 ;2e1f 
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
               RTS                                     ;4e75 
 __const:
 __strings:

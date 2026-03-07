@@ -19,11 +19,15 @@ extern void LADFUNC_ClearBannerRectEntries(void);
 
 void LADFUNC_ResetEntryTextBuffers(void)
 {
+    const LONG ENTRY_LAST_INDEX = 46;
+    const LONG ATTR_FREE_LINE = 212;
+    const UBYTE CH_NUL = 0;
+    const LONG LEN_EMPTY = 0;
     LONG i;
 
-    for (i = 0; i <= 46; ++i) {
+    for (i = 0; i <= ENTRY_LAST_INDEX; ++i) {
         LadfuncEntry *entry = LADFUNC_EntryPtrTable[i];
-        LONG len = 0;
+        LONG len = LEN_EMPTY;
         UBYTE *p;
 
         if (entry == (LadfuncEntry *)0) {
@@ -34,13 +38,13 @@ void LADFUNC_ResetEntryTextBuffers(void)
         }
 
         p = entry->textPtr;
-        while (*p != 0) {
+        while (*p != CH_NUL) {
             ++p;
         }
         len = (LONG)(p - entry->textPtr);
 
-        if (len > 0 && entry->attrPtr != (UBYTE *)0) {
-            NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_4, 212, entry->attrPtr, len);
+        if (len > LEN_EMPTY && entry->attrPtr != (UBYTE *)0) {
+            NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_4, ATTR_FREE_LINE, entry->attrPtr, len);
         }
 
         entry->textPtr = ESQPARS_ReplaceOwnedString(entry->textPtr, (const UBYTE *)0);

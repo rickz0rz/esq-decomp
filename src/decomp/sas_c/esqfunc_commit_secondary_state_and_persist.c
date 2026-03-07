@@ -23,11 +23,13 @@ extern void ESQFUNC_UpdateDiskWarningAndRefreshTick(void);
 
 void ESQFUNC_CommitSecondaryStateAndPersist(void)
 {
+    const WORD READMODE_PROMOTE_PASS = 0x100;
+    const WORD FLAG_PENDING = 1;
     WORD savedFlags;
 
     savedFlags = ESQPARS2_ReadModeFlags;
-    ESQPARS2_ReadModeFlags = 0x100;
-    ESQDISP_PendingGridReinitFlag = 1;
+    ESQPARS2_ReadModeFlags = READMODE_PROMOTE_PASS;
+    ESQDISP_PendingGridReinitFlag = FLAG_PENDING;
 
     ESQDISP_PropagatePrimaryTitleMetadataToSecondary();
     ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup();
