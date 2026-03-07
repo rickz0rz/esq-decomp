@@ -3,6 +3,13 @@ typedef unsigned short UWORD;
 typedef short WORD;
 typedef long LONG;
 
+enum {
+    RASTPORT_TEXTWIDTH_OFFSET = 0,
+    RASTPORT_FLAGS_OFFSET = 32,
+    RASTPORT_FLAGMASK_CLEAR_BIT3 = 0xFFF7,
+    GRID_TIME_BANNER_WIDTH = 216
+};
+
 extern LONG Global_REF_RASTPORT_1;
 extern UBYTE Global_REF_STR_USE_24_HR_CLOCK;
 extern WORD Global_WORD_CURRENT_HOUR;
@@ -10,9 +17,9 @@ extern WORD CLOCK_CurrentAmPmFlag;
 extern WORD Global_WORD_CURRENT_MINUTE;
 extern WORD Global_WORD_CURRENT_SECOND;
 extern WORD CLOCK_CurrentDayOfWeekIndex;
-extern char Global_STR_GRID_TIME_FORMAT_DUPLICATE[];
-extern char Global_STR_12_44_44_SINGLE_SPACE[];
-extern char Global_STR_12_44_44_PM[];
+extern const char Global_STR_GRID_TIME_FORMAT_DUPLICATE[];
+extern const char Global_STR_12_44_44_SINGLE_SPACE[];
+extern const char Global_STR_12_44_44_PM[];
 
 void _LVOSetAPen(void);
 void _LVOSetDrMd(void);
@@ -35,7 +42,8 @@ void CLEANUP_DrawGridTimeBanner(void)
 
     ESQ_FormatTimeStamp(time_buf, &CLOCK_CurrentDayOfWeekIndex);
     _LVOSetAPen();
-    *(UWORD *)(Global_REF_RASTPORT_1 + 32) = (UWORD)(*(UWORD *)(Global_REF_RASTPORT_1 + 32) & 0xFFF7);
+    *(UWORD *)(Global_REF_RASTPORT_1 + RASTPORT_FLAGS_OFFSET) =
+        (UWORD)(*(UWORD *)(Global_REF_RASTPORT_1 + RASTPORT_FLAGS_OFFSET) & RASTPORT_FLAGMASK_CLEAR_BIT3);
     _LVOSetDrMd();
     _LVORectFill();
     _LVOSetAPen();
@@ -55,16 +63,16 @@ void CLEANUP_DrawGridTimeBanner(void)
     }
 
     _LVOTextLength();
-    sample_width = *(LONG *)(Global_REF_RASTPORT_1);
+    sample_width = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_TEXTWIDTH_OFFSET);
 
     if (Global_REF_STR_USE_24_HR_CLOCK == 'N') {
         _LVOTextLength();
-        text_width = *(LONG *)(Global_REF_RASTPORT_1);
+        text_width = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_TEXTWIDTH_OFFSET);
     } else {
         text_width = sample_width;
     }
 
-    x = (216 - text_width);
+    x = (GRID_TIME_BANNER_WIDTH - text_width);
     if (x < 0) {
         x++;
     }
