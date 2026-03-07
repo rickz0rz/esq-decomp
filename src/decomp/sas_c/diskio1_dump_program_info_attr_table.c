@@ -2,6 +2,7 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
 enum {
+    PROGRAM_NULL = 0,
     PROGRAM_SLOT_FIRST = 1,
     PROGRAM_SLOT_END = 49,
     PROGRAM_ATTR_TABLE_OFFSET = 7,
@@ -51,7 +52,7 @@ void DISKIO1_DumpProgramInfoAttrTable(const UBYTE *rec, ULONG programInfoId)
         DISKIO_FMT_PROGRAM_INFO_PCT_D,
         programInfoId);
 
-    if (rec == 0) {
+    if (rec == (const UBYTE *)PROGRAM_NULL) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_C);
         return;
     }
@@ -64,7 +65,7 @@ void DISKIO1_DumpProgramInfoAttrTable(const UBYTE *rec, ULONG programInfoId)
         ULONG attr = (ULONG)rec[PROGRAM_ATTR_TABLE_OFFSET + i];
         const char *programText = ((const char *const *)(rec + PROGRAM_TEXT_PTR_TABLE_OFFSET))[i];
 
-        if (attr == ATTR_FLAG_NONE && programText == 0) {
+        if (attr == ATTR_FLAG_NONE && programText == (const char *)PROGRAM_NULL) {
             continue;
         }
 
@@ -109,7 +110,7 @@ void DISKIO1_DumpProgramInfoAttrTable(const UBYTE *rec, ULONG programInfoId)
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_ProgramAttrCloseAndProgQuotedPrefix);
 
-        if (programText != 0) {
+        if (programText != (const char *)PROGRAM_NULL) {
             GROUP_AG_JMPTBL_STRING_CopyPadNul(escaped, programText, PROGRAM_TEXT_COPY_MAX);
         } else {
             const char *src = DISKIO_TAG_NONE;
@@ -118,7 +119,7 @@ void DISKIO1_DumpProgramInfoAttrTable(const UBYTE *rec, ULONG programInfoId)
                 *dst = *src;
                 dst++;
                 src++;
-            } while (dst[-1] != 0);
+            } while (dst[-1] != PROGRAM_NULL);
         }
 
         GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch(escaped);

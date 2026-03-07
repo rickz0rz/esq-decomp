@@ -2,6 +2,7 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
 enum {
+    PROGRAM_NULL = 0,
     PROGRAM_SLOT_FIRST = 1,
     PROGRAM_SLOT_PAST_LAST = 49,
     PROGRAM_ATTR_TABLE_OFFSET = 7,
@@ -47,7 +48,7 @@ void DISKIO1_DumpProgramInfoVerbose(const UBYTE *rec, ULONG programInfoId)
         DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo,
         rec);
 
-    if (rec == 0) {
+    if (rec == (const UBYTE *)PROGRAM_NULL) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_A);
         return;
     }
@@ -98,7 +99,7 @@ void DISKIO1_DumpProgramInfoVerbose(const UBYTE *rec, ULONG programInfoId)
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_ProgramAttrCloseAndProgPrefix);
 
-        if (line != 0) {
+        if (line != (const char *)PROGRAM_NULL) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_FMT_PCT_S_VerboseProgramStringLine,
                 line);
