@@ -37,7 +37,7 @@ LONG NEWGRID_ProcessScheduleState(LayoutCtx *ctx, UWORD rowBase, UWORD rowCur)
     LONG steppedFromState34 = 0;
 
     if (!ctx) {
-        if (NEWGRID_ScheduleWorkflowState == 2) {
+        if (NEWGRID_ScheduleWorkflowState == 2 || NEWGRID_ScheduleWorkflowState == 7) {
             NEWGRID_HandleGridEditorState(ctx, 0, 0, 0);
         } else if (NEWGRID_ScheduleWorkflowState == 5) {
             LONG idx = NEWGRID_SelectedPrimaryEntryIndex;
