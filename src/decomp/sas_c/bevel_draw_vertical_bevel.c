@@ -1,5 +1,15 @@
 typedef long LONG;
 
+enum {
+    RASTPORT_AOLPEN_OFFSET = 30,
+    RASTPORT_FLAGS1_OFFSET = 33,
+    RASTPORT_LINPAT_OFFSET = 34,
+    BEVEL_LINE_PATTERN_SOLID = -1,
+    BEVEL_STYLE_PEN = 15,
+    BEVEL_DRAW_MODE_FLAG = 1,
+    BEVEL_STROKE_COUNT = 4
+};
+
 extern LONG Global_REF_GRAPHICS_LIBRARY;
 
 void _LVOSetDrMd(void);
@@ -14,10 +24,10 @@ void BEVEL_DrawVerticalBevel(void *rastPort, LONG x, LONG y, LONG height)
     _LVOSetDrMd();
     _LVOSetAPen();
 
-    for (i = 0; i < 4; i++) {
-        *(short *)((LONG)rastPort + 34) = -1;
-        *(unsigned char *)((LONG)rastPort + 33) |= 1;
-        *(unsigned char *)((LONG)rastPort + 30) = 15;
+    for (i = 0; i < BEVEL_STROKE_COUNT; i++) {
+        *(short *)((LONG)rastPort + RASTPORT_LINPAT_OFFSET) = BEVEL_LINE_PATTERN_SOLID;
+        *(unsigned char *)((LONG)rastPort + RASTPORT_FLAGS1_OFFSET) |= BEVEL_DRAW_MODE_FLAG;
+        *(unsigned char *)((LONG)rastPort + RASTPORT_AOLPEN_OFFSET) = BEVEL_STYLE_PEN;
 
         _LVOMove();
         _LVODraw();
