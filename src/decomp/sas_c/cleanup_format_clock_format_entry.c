@@ -1,25 +1,30 @@
 typedef unsigned char UBYTE;
 typedef long LONG;
 
+enum {
+    CLOCK_FORMAT_SLOTS_PER_BANK = 48,
+    CLOCK_VARIANT_DIVISOR = 30
+};
+
 extern UBYTE CLOCK_FormatVariantCode;
 extern UBYTE **Global_REF_STR_CLOCK_FORMAT;
 
 LONG GROUP_AG_JMPTBL_MATH_DivS32(LONG a, LONG b);
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 
-void CLEANUP_FormatClockFormatEntry(LONG slot_index, UBYTE *out)
+void CLEANUP_FormatClockFormatEntry(LONG slotIndex, UBYTE *out)
 {
     LONG variant;
     UBYTE *src;
 
-    while (slot_index > 48) {
-        slot_index -= 48;
+    while (slotIndex > CLOCK_FORMAT_SLOTS_PER_BANK) {
+        slotIndex -= CLOCK_FORMAT_SLOTS_PER_BANK;
     }
 
-    GROUP_AG_JMPTBL_MATH_DivS32((LONG)CLOCK_FormatVariantCode, 30);
-    variant = GROUP_AG_JMPTBL_MATH_DivS32((LONG)CLOCK_FormatVariantCode, 30);
+    GROUP_AG_JMPTBL_MATH_DivS32((LONG)CLOCK_FormatVariantCode, CLOCK_VARIANT_DIVISOR);
+    variant = GROUP_AG_JMPTBL_MATH_DivS32((LONG)CLOCK_FormatVariantCode, CLOCK_VARIANT_DIVISOR);
 
-    src = Global_REF_STR_CLOCK_FORMAT[slot_index];
+    src = Global_REF_STR_CLOCK_FORMAT[slotIndex];
     while ((*out++ = *src++) != 0) {
     }
 

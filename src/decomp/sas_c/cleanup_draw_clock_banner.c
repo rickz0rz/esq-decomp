@@ -3,14 +3,20 @@ typedef unsigned short UWORD;
 typedef short WORD;
 typedef long LONG;
 
+enum {
+    CLOCK_BANNER_FRAME_WIDTH = 35,
+    CLOCK_BANNER_FRAME_HEIGHT = 33,
+    CLOCK_BANNER_BLIT_SIZE = 34
+};
+
 extern WORD Global_UIBusyFlag;
 extern UBYTE Global_REF_STR_USE_24_HR_CLOCK;
 extern WORD Global_WORD_CURRENT_HOUR;
 extern WORD CLOCK_CurrentAmPmFlag;
 extern WORD Global_WORD_CURRENT_MINUTE;
 extern WORD Global_WORD_CURRENT_SECOND;
-extern char Global_STR_EXTRA_TIME_FORMAT[];
-extern char Global_STR_GRID_TIME_FORMAT[];
+extern const char Global_STR_EXTRA_TIME_FORMAT[];
+extern const char Global_STR_GRID_TIME_FORMAT[];
 extern LONG NEWGRID_MainRastPortPtr;
 extern UWORD NEWGRID_ColumnStartXPx;
 
@@ -71,8 +77,8 @@ void CLEANUP_DrawClockBanner(void)
         (void *)NEWGRID_MainRastPortPtr,
         (LONG)NEWGRID_ColumnStartXPx + 35,
         0,
-        35,
-        33
+        CLOCK_BANNER_FRAME_WIDTH,
+        CLOCK_BANNER_FRAME_HEIGHT
     );
 
     font_h = (LONG)(*(UWORD *)(*(LONG *)(NEWGRID_MainRastPortPtr + 52) + 26));
@@ -89,9 +95,9 @@ void CLEANUP_DrawClockBanner(void)
         0,
         (void *)NEWGRID_MainRastPortPtr,
         (LONG)NEWGRID_ColumnStartXPx + 36,
-        34,
-        34,
-        34,
+        CLOCK_BANNER_BLIT_SIZE,
+        CLOCK_BANNER_BLIT_SIZE,
+        CLOCK_BANNER_BLIT_SIZE,
         192
     );
 }
