@@ -1,0 +1,150 @@
+              SECTION      text,CODE
+__code:
+WDISP_DrawWeatherStatusOverlay:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$24,D0                  ;90bc 0000 0024 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$14,A7                  ;9efc 0014 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+___WDISP_DrawWeatherStatusOverlay__1:
+              MOVE.L         $38(A7),D6               ;2c2f 0038 
+              MOVE.L         $34(A7),D7               ;2e2f 0034 
+              MOVE.L         $30(A7),A5               ;2a6f 0030 
+              MOVE.B         WDISP_WeatherStatusCountdown(A4),D0;102c 0000 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___WDISP_DrawWeatherStatusOverlay__3;670a 
+___WDISP_DrawWeatherStatusOverlay__2:
+              MOVE.W         WDISP_WeatherStatusDigitChar(A4),D0;302c 0000 
+              MOVEQ.L        #$30,D1                  ;7230 
+              CMP.W          D1,D0                    ;b041 
+              BNE.B          ___WDISP_DrawWeatherStatusOverlay__6;6616 
+___WDISP_DrawWeatherStatusOverlay__3:
+              MOVE.L         P_TYPE_WeatherCurrentMsgPtr(A4),A0;206c 0000 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              BNE.W          ___WDISP_DrawWeatherStatusOverlay__27;6600 00ee 
+___WDISP_DrawWeatherStatusOverlay__4:
+              MOVE.L         Global_STR_PTR_NO_CURRENT_WEATHE(A4),$24(A7);2f6c 0000 0024 
+___WDISP_DrawWeatherStatusOverlay__5:
+              BRA.W          ___WDISP_DrawWeatherStatusOverlay__27;6000 00e4 
+___WDISP_DrawWeatherStatusOverlay__6:
+              MOVE.B         WDISP_WeatherStatusBrushIndex(A4),D0;102c 0000 
+              SUBQ.B         #$1,D0                   ;5300 
+              BNE.B          ___WDISP_DrawWeatherStatusOverlay__8;6614 
+___WDISP_DrawWeatherStatusOverlay__7:
+              MOVE.L         ESQFUNC_WeatherBrushPredicateNam(A4),A0;206c 0000 
+              PEA            ESQFUNC_PwBrushListHead(A4);486c 0000 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          WDISP_JMPTBL_BRUSH_FindBrushByPr;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.B          ___WDISP_DrawWeatherStatusOverlay__9;6020 
+___WDISP_DrawWeatherStatusOverlay__8:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         WDISP_WeatherStatusBrushIndex(A4),D0;102c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            ESQFUNC_STR_I5(A4),A0    ;41ec 0000 
+              MOVE.L         $0(A0,D1.L),A0           ;2070 1800 
+              PEA            ESQFUNC_PwBrushListHead(A4);486c 0000 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          WDISP_JMPTBL_BRUSH_FindBrushByPr;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              ADDQ.W         #$8,A7                   ;504f 
+___WDISP_DrawWeatherStatusOverlay__9:
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___WDISP_DrawWeatherStatusOverlay__11;671a 
+___WDISP_DrawWeatherStatusOverlay__10:
+              LEA            $b0(A3),A0               ;41eb 00b0 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         (A0),D0                  ;3010 
+              LEA            $b2(A3),A0               ;41eb 00b2 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         (A0),D1                  ;3210 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              MOVE.L         D1,$18(A7)               ;2f41 0018 
+              BRA.B          ___WDISP_DrawWeatherStatusOverlay__12;600e 
+___WDISP_DrawWeatherStatusOverlay__11:
+              MOVE.L         #$aa,$1c(A7)             ;2f7c 0000 00aa 001c 
+              MOVEQ.L        #$5a,D0                  ;705a 
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+___WDISP_DrawWeatherStatusOverlay__12:
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         WDISP_WeatherStatusOverlayTextPt(A4),-(A7);2f2c 0000 
+              BSR.W          ESQPROTO_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              TST.L          D0                       ;4a80 
+              ADDQ.W         #$8,A7                   ;504f 
+              BEQ.B          ___WDISP_DrawWeatherStatusOverlay__27;6768 
+___WDISP_DrawWeatherStatusOverlay__13:
+___WDISP_DrawWeatherStatusOverlay__14:
+              MOVEQ.L        #$0,D5                   ;7a00 
+___WDISP_DrawWeatherStatusOverlay__15:
+              TST.B          $0(A2,D5.L)              ;4a32 5800 
+              BEQ.B          ___WDISP_DrawWeatherStatusOverlay__17;6704 
+___WDISP_DrawWeatherStatusOverlay__16:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.B          ___WDISP_DrawWeatherStatusOverlay__15;60f6 
+___WDISP_DrawWeatherStatusOverlay__17:
+              CLR.L          $20(A7)                  ;42af 0020 
+              MOVE.L         A2,$28(A7)               ;2f4a 0028 
+___WDISP_DrawWeatherStatusOverlay__18:
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              MOVE.B         (A0),D0                  ;1010 
+              BEQ.B          ___WDISP_DrawWeatherStatusOverlay__22;6712 
+___WDISP_DrawWeatherStatusOverlay__19:
+              MOVEQ.L        #$18,D1                  ;7218 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___WDISP_DrawWeatherStatusOverlay__21;6606 
+___WDISP_DrawWeatherStatusOverlay__20:
+              CLR.B          (A0)                     ;4210 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+___WDISP_DrawWeatherStatusOverlay__21:
+              ADDQ.L         #$1,$28(A7)              ;52af 0028 
+              BRA.B          ___WDISP_DrawWeatherStatusOverlay__18;60e6 
+___WDISP_DrawWeatherStatusOverlay__22:
+              MOVE.L         A2,A0                    ;204a 
+              MOVE.L         A0,$28(A7)               ;2f48 0028 
+              TST.B          (A0)                     ;4a10 
+              BNE.B          ___WDISP_DrawWeatherStatusOverlay__24;6608 
+___WDISP_DrawWeatherStatusOverlay__23:
+              ADDQ.L         #$1,$28(A7)              ;52af 0028 
+              SUBQ.L         #$1,$20(A7)              ;53af 0020 
+___WDISP_DrawWeatherStatusOverlay__24:
+              CMPI.L         #$a,$20(A7)              ;0caf 0000 000a 0020 
+              BLE.B          ___WDISP_DrawWeatherStatusOverlay__26;6f06 
+___WDISP_DrawWeatherStatusOverlay__25:
+              MOVEQ.L        #$a,D0                   ;700a 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+___WDISP_DrawWeatherStatusOverlay__26:
+              MOVE.L         D5,D0                    ;2005 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              PEA            ($12d).w                 ;4878 012d 
+              PEA            Global_STR_WDISP_C(A4)   ;486c 0000 
+              BSR.W          MEMORY_DeallocateMemory  ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___WDISP_DrawWeatherStatusOverlay__27:
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$14,A7                  ;defc 0014 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           WDISP_WeatherStatusCountdown
+              XREF           WDISP_WeatherStatusDigitChar
+              XREF           P_TYPE_WeatherCurrentMsgPtr
+              XREF           Global_STR_PTR_NO_CURRENT_WEATHE
+              XREF           WDISP_WeatherStatusBrushIndex
+              XREF           ESQFUNC_WeatherBrushPredicateNam
+              XREF           ESQFUNC_PwBrushListHead
+              XREF           WDISP_JMPTBL_BRUSH_FindBrushByPr
+              XREF           ESQFUNC_STR_I5
+              XREF           WDISP_WeatherStatusOverlayTextPt
+              XREF           ESQPROTO_JMPTBL_ESQPARS_ReplaceO
+              XREF           Global_STR_WDISP_C
+              XREF           MEMORY_DeallocateMemory
+              XDEF           WDISP_DrawWeatherStatusOverlay
+              END
