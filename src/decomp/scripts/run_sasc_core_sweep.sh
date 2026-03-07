@@ -586,6 +586,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ed_draw_diagnostic_mode_help_text_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_diagnostic_mode_text_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_diagnostic_register_values_trial.sh"
+    "src/decomp/scripts/compare_sasc_ed_draw_edit_help_text_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_current_color_indicator_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_esc_main_menu_text_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_menu_selection_highlight_trial.sh"
