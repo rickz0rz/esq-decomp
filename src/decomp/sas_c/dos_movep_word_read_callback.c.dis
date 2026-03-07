@@ -1,0 +1,16 @@
+              SECTION      text,CODE
+__code:
+DOS_MovepWordReadCallback:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DOS_MovepWordReadCallback__1:
+              MOVEQ.L        #$0,D0                   ;7000 
+___DOS_MovepWordReadCallback__2:
+___DOS_MovepWordReadCallback__3:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           DOS_MovepWordReadCallback
+              END

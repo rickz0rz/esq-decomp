@@ -38,6 +38,17 @@ LOCAVAIL_UpdateFilterStateMachin:
 ___LOCAVAIL_UpdateFilterStateMachin__1:
 ___LOCAVAIL_UpdateFilterStateMachin__2:
               RTS                                     ;4e75 
+LOCAVAIL_GetNodeDurationByIndex:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___LOCAVAIL_GetNodeDurationByIndex__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,D0                    ;2007 
+___LOCAVAIL_GetNodeDurationByIndex__2:
+___LOCAVAIL_GetNodeDurationByIndex__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
               XDEF           LOCAVAIL_ParseFilterStateFromBuf
@@ -46,4 +57,5 @@ ___LOCAVAIL_UpdateFilterStateMachin__2:
               XDEF           LOCAVAIL_SaveAvailabilityDataFil
               XDEF           LOCAVAIL_LoadAvailabilityDataFil
               XDEF           LOCAVAIL_UpdateFilterStateMachin
+              XDEF           LOCAVAIL_GetNodeDurationByIndex
               END
