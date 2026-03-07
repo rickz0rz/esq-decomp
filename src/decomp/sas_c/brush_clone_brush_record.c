@@ -20,6 +20,10 @@ enum {
     BRUSH_DST_ALIGN_V_OFFSET = 360,
     BRUSH_SRC_ALIGN_H_OFFSET = 222,
     BRUSH_SRC_ALIGN_V_OFFSET = 226,
+    BRUSH_DST_AUX_LIST_OFFSET = 364,
+    BRUSH_SRC_AUX_LIST_OFFSET = 230,
+    BRUSH_DST_CLIP_W_OFFSET = 348,
+    BRUSH_DST_CLIP_H_OFFSET = 352,
     BRUSH_PLANE_PAIR_TABLE_DST_OFFSET = 200,
     BRUSH_PLANE_PAIR_TABLE_SRC_OFFSET = 152,
     BRUSH_PLANE_PAIR_STRIDE = 8,
@@ -121,18 +125,18 @@ void *BRUSH_CloneBrushRecord(void *src_rec)
         *d++ = *s;
     } while (*s++ != BRUSH_NULL);
 
-    *(ULONG *)(dst + 364) = *(ULONG *)(src + 230);
+    *(ULONG *)(dst + BRUSH_DST_AUX_LIST_OFFSET) = *(ULONG *)(src + BRUSH_SRC_AUX_LIST_OFFSET);
 
     if (*(ULONG *)(src + BRUSH_SRC_CLIP_W_OFFSET) != BRUSH_NULL) {
-        *(ULONG *)(dst + 348) = *(ULONG *)(src + BRUSH_SRC_CLIP_W_OFFSET);
+        *(ULONG *)(dst + BRUSH_DST_CLIP_W_OFFSET) = *(ULONG *)(src + BRUSH_SRC_CLIP_W_OFFSET);
     } else {
-        *(ULONG *)(dst + 348) = (UWORD)*(UWORD *)(dst + BRUSH_NODE_WIDTH_OFFSET);
+        *(ULONG *)(dst + BRUSH_DST_CLIP_W_OFFSET) = (UWORD)*(UWORD *)(dst + BRUSH_NODE_WIDTH_OFFSET);
     }
 
     if (*(ULONG *)(src + BRUSH_SRC_CLIP_H_OFFSET) != BRUSH_NULL) {
-        *(ULONG *)(dst + 352) = *(ULONG *)(src + BRUSH_SRC_CLIP_H_OFFSET);
+        *(ULONG *)(dst + BRUSH_DST_CLIP_H_OFFSET) = *(ULONG *)(src + BRUSH_SRC_CLIP_H_OFFSET);
     } else {
-        *(ULONG *)(dst + 352) = (UWORD)*(UWORD *)(dst + BRUSH_NODE_HEIGHT_OFFSET);
+        *(ULONG *)(dst + BRUSH_DST_CLIP_H_OFFSET) = (UWORD)*(UWORD *)(dst + BRUSH_NODE_HEIGHT_OFFSET);
     }
 
     for (i = BRUSH_NULL; i < (LONG)(UBYTE)dst[BRUSH_NODE_DEPTH_OFFSET] && i < BRUSH_PLANE_COUNT; i++) {
