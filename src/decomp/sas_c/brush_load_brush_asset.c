@@ -4,6 +4,9 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_NODE_WIDTH_OFFSET = 176,
+    BRUSH_NODE_HEIGHT_OFFSET = 178,
+    BRUSH_NODE_DEPTH_OFFSET = 184,
     BRUSH_NODE_PLANE_TABLE_OFFSET = 0x90,
     BRUSH_NODE_BITMAP_OFFSET = 136,
     BRUSH_NODE_RASTPORT_OFFSET = 36,
@@ -163,12 +166,16 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
 
             _LVOInitBitMap(
                 node + BRUSH_NODE_BITMAP_OFFSET,
-                (UBYTE)node[184],
-                (UWORD)*(UWORD *)(node + 176),
-                (UWORD)*(UWORD *)(node + 178));
-            for (i = 0; i < (LONG)(UBYTE)node[184] && i < BRUSH_MAX_PLANES; i++) {
+                (UBYTE)node[BRUSH_NODE_DEPTH_OFFSET],
+                (UWORD)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET),
+                (UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET));
+            for (i = 0; i < (LONG)(UBYTE)node[BRUSH_NODE_DEPTH_OFFSET] && i < BRUSH_MAX_PLANES; i++) {
                 void *plane = GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(
-                    Global_STR_BRUSH_C_12, 1134, i << 2, (UWORD)*(UWORD *)(node + 176), (UWORD)*(UWORD *)(node + 178));
+                    Global_STR_BRUSH_C_12,
+                    1134,
+                    i << 2,
+                    (UWORD)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET),
+                    (UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET));
                 *(void **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (i << 2)) = plane;
                 if (plane == (void *)0) {
                     _LVOForbid();
@@ -185,7 +192,11 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                     void *plane = *(void **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (i << 2));
                     if (plane != (void *)0) {
                         GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
-                            Global_STR_BRUSH_C_13, 1202, plane, (UWORD)*(UWORD *)(node + 176), (UWORD)*(UWORD *)(node + 178));
+                            Global_STR_BRUSH_C_13,
+                            1202,
+                            plane,
+                            (UWORD)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET),
+                            (UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET));
                     }
                     i++;
                 }
@@ -199,10 +210,10 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 }
 
                 row_words = GROUP_AG_JMPTBL_MATH_DivS32(
-                                (UWORD)*(UWORD *)(src + 128) + BRUSH_ROWWORD_ALIGN_ADDEND,
+                                (UWORD)*(UWORD *)(src + BRUSH_SRC_WIDTH_OFFSET) + BRUSH_ROWWORD_ALIGN_ADDEND,
                                 BRUSH_ROWWORD_ALIGN_DIVISOR) *
                             BRUSH_ROWWORD_BYTES_PER_WORD;
-                for (i = 0; i < (LONG)(UWORD)*(UWORD *)(node + 178); i++) {
+                for (i = 0; i < (LONG)(UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET); i++) {
                     LONG p;
                     for (p = 0; p < (LONG)(UBYTE)src[BRUSH_SRC_DEPTH_OFFSET]; p++) {
                         decode_cur = ESQ_PackBitsDecode(
