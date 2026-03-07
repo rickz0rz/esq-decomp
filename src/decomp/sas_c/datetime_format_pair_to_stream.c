@@ -28,10 +28,10 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, void *pairStruct)
 {
     char outBuf[87];
     char scratch[51];
-    char *scan;
+    char *outCursor;
     void *t;
     LONG hour12;
-    LONG result;
+    LONG writeResult;
 
     outBuf[0] = 0;
     if (pairStruct == (void *)0) {
@@ -96,10 +96,10 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, void *pairStruct)
     }
 
 emit:
-    scan = outBuf;
-    while (*scan != 0) {
-        scan++;
+    outCursor = outBuf;
+    while (*outCursor != 0) {
+        outCursor++;
     }
-    result = DISKIO_WriteBufferedBytes(fileHandle, outBuf, (LONG)(scan - outBuf));
-    return result;
+    writeResult = DISKIO_WriteBufferedBytes(fileHandle, outBuf, (LONG)(outCursor - outBuf));
+    return writeResult;
 }
