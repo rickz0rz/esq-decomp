@@ -43,6 +43,8 @@ enum {
     BRUSH_SRC_CLIP_W_OFFSET = 214,
     BRUSH_SRC_CLIP_H_OFFSET = 218,
     BRUSH_PENDING_ALERT_SET = 1,
+    BRUSH_ALLOC_RECORD_LINE = 1248,
+    BRUSH_ALLOC_RASTER_LINE = 1302,
     BRUSH_PLANE_COUNT = 5,
     BRUSH_PLANE_PAIR_COPY_COUNT = 4,
     BRUSH_RASTPORT_COPY_BYTES = 96,
@@ -76,7 +78,7 @@ void *BRUSH_CloneBrushRecord(void *src_rec)
     (void)Global_REF_GRAPHICS_LIBRARY;
     dst = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_BRUSH_C_17,
-        1248,
+        BRUSH_ALLOC_RECORD_LINE,
         BRUSH_RECORD_SIZE,
         MEMF_PUBLIC_CLEAR);
     if (dst == (UBYTE *)BRUSH_NULL) {
@@ -144,7 +146,7 @@ void *BRUSH_CloneBrushRecord(void *src_rec)
         LONG plane_off = i << BRUSH_PLANE_PTR_SHIFT;
         p = GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(
             Global_STR_BRUSH_C_18,
-            1302,
+            BRUSH_ALLOC_RASTER_LINE,
             plane_off,
             (UWORD)*(UWORD *)(dst + BRUSH_NODE_WIDTH_OFFSET),
             (UWORD)*(UWORD *)(dst + BRUSH_NODE_HEIGHT_OFFSET));
