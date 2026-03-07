@@ -19,6 +19,7 @@ enum {
     CONTROL_TOKEN_B = 25,
     CHAR_LPAREN = 40,
     ASCII_SPACE = ' ',
+    TMP_BUFFER_LEN = 524,
     DETAIL_TRIM_PIXEL_WIDTH = 284
 };
 
@@ -59,7 +60,7 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
     LONG entryIndex;
     LONG titleLen;
     LONG longLen;
-    char tmp[524];
+    char tmp[TMP_BUFFER_LEN];
 
     entry = (UBYTE *)entryPtr;
     if (entry == (UBYTE *)TEXTDISP_NULL) {
