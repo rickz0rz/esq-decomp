@@ -35,12 +35,15 @@ extern const char Global_STR_LADFUNC_C_13[];
 
 LONG LADFUNC_LoadTextAdsFromFile(void)
 {
+    const UBYTE DEFAULT_PEN_HIGH_NIBBLE = 2;
+    const UBYTE DEFAULT_PEN_LOW_NIBBLE = 1;
+    const UBYTE ATTR_ESCAPE_MARKER = 3;
     UBYTE currentAttr;
     LONG entryIndex;
     LONG fileLen;
     UBYTE *fileBuf;
 
-    currentAttr = (UBYTE)LADFUNC_ComposePackedPenByte(2, 1);
+    currentAttr = (UBYTE)LADFUNC_ComposePackedPenByte(DEFAULT_PEN_HIGH_NIBBLE, DEFAULT_PEN_LOW_NIBBLE);
 
     if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(KYBD_PATH_DF0_LOCAL_ADS) == -1) {
         return -1;
@@ -67,7 +70,7 @@ LONG LADFUNC_LoadTextAdsFromFile(void)
         }
 
         for (i = 0; i < encodedLen; ++i) {
-            if (encoded[i] == 3 && (i + 2) < encodedLen) {
+            if (encoded[i] == ATTR_ESCAPE_MARKER && (i + 2) < encodedLen) {
                 i += 2;
             } else {
                 ++textLen;
@@ -93,7 +96,7 @@ LONG LADFUNC_LoadTextAdsFromFile(void)
                 LONG out = 0;
                 for (i = 0; i < encodedLen; ++i) {
                     UBYTE ch = encoded[i];
-                    if (ch == 3 && (i + 2) < encodedLen) {
+                    if (ch == ATTR_ESCAPE_MARKER && (i + 2) < encodedLen) {
                         UBYTE hi = (UBYTE)LADFUNC_ParseHexDigit((LONG)encoded[++i]);
                         currentAttr = (UBYTE)LADFUNC_SetPackedPenHighNibble(currentAttr, hi);
                         {

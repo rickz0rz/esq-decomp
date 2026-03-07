@@ -32,11 +32,13 @@ extern void GROUP_AW_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG argCo
 
 LONG LADFUNC_SaveTextAdsToFile(void)
 {
+    const UBYTE DEFAULT_PEN_HIGH_NIBBLE = 2;
+    const UBYTE DEFAULT_PEN_LOW_NIBBLE = 1;
     LONG entryIndex;
     UBYTE currentAttr;
     UBYTE empty = 0;
 
-    currentAttr = (UBYTE)LADFUNC_ComposePackedPenByte(2, 1);
+    currentAttr = (UBYTE)LADFUNC_ComposePackedPenByte(DEFAULT_PEN_HIGH_NIBBLE, DEFAULT_PEN_LOW_NIBBLE);
 
     if (DISKIO_SaveOperationReadyFlag == 0) {
         return 0;
