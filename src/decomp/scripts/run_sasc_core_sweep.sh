@@ -982,6 +982,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_tliba3_draw_outer_frame_border_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba3_draw_vertical_scale_ticks_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba3_draw_view_mode_overlay_trial.sh"
+    "src/decomp/scripts/compare_sasc_tliba3_format_pattern_register_dump_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba3_init_runtime_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba3_init_runtime_entries_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba3_set_font_for_all_view_modes_trial.sh"
