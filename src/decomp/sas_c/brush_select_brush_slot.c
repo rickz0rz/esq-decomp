@@ -41,8 +41,8 @@ LONG BRUSH_SelectBrushSlot(
 {
     LONG src_x = srcX0;
     LONG src_y = srcY0;
-    LONG dst_x;
-    LONG dst_y;
+    LONG dstX;
+    LONG dstY;
     LONG spanX;
     LONG spanY;
     LONG clip_w;
@@ -57,18 +57,18 @@ LONG BRUSH_SelectBrushSlot(
     spanX = srcX1 - srcX0 + BRUSH_SPAN_INCLUSIVE_DELTA;
     clip_w = *(LONG *)(brush + BRUSH_CLIP_W_OFFSET);
     if (clip_w > spanX) {
-        dst_x = srcX0;
+        dstX = srcX0;
         alignModeX = *(LONG *)(brush + BRUSH_ALIGN_X_MODE_OFFSET);
         if (alignModeX == ALIGN_MODE_RIGHT_BOTTOM) {
-            dst_x = clip_w - (srcX1 - srcX0) - BRUSH_SPAN_INCLUSIVE_DELTA;
+            dstX = clip_w - (srcX1 - srcX0) - BRUSH_SPAN_INCLUSIVE_DELTA;
         } else if (alignModeX == ALIGN_MODE_CENTER) {
-            dst_x = half_toward_zero(clip_w) - half_toward_zero(spanX);
+            dstX = half_toward_zero(clip_w) - half_toward_zero(spanX);
         } else {
-            dst_x = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
+            dstX = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
         }
     } else {
         if (clip_w < spanX) {
-            dst_x = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
+            dstX = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
             alignModeX = *(LONG *)(brush + BRUSH_ALIGN_X_MODE_OFFSET);
             if (alignModeX == ALIGN_MODE_RIGHT_BOTTOM) {
                 src_x = srcX1 - clip_w + BRUSH_SPAN_INCLUSIVE_DELTA;
@@ -78,7 +78,7 @@ LONG BRUSH_SelectBrushSlot(
                 src_x = srcX0;
             }
         } else {
-            dst_x = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
+            dstX = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
             src_x = srcX0;
         }
     }
@@ -86,18 +86,18 @@ LONG BRUSH_SelectBrushSlot(
     spanY = srcY1 - srcY0 + BRUSH_SPAN_INCLUSIVE_DELTA;
     clip_h = *(LONG *)(brush + BRUSH_CLIP_H_OFFSET);
     if (clip_h > spanY) {
-        dst_y = srcY0;
+        dstY = srcY0;
         alignModeY = *(LONG *)(brush + BRUSH_ALIGN_Y_MODE_OFFSET);
         if (alignModeY == ALIGN_MODE_RIGHT_BOTTOM) {
-            dst_y = clip_h - (srcY1 - srcY0) - BRUSH_SPAN_INCLUSIVE_DELTA;
+            dstY = clip_h - (srcY1 - srcY0) - BRUSH_SPAN_INCLUSIVE_DELTA;
         } else if (alignModeY == ALIGN_MODE_CENTER) {
-            dst_y = half_toward_zero(clip_h) - half_toward_zero(spanY);
+            dstY = half_toward_zero(clip_h) - half_toward_zero(spanY);
         } else {
-            dst_y = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
+            dstY = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
         }
     } else {
         if (clip_h < spanY) {
-            dst_y = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
+            dstY = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
             alignModeY = *(LONG *)(brush + BRUSH_ALIGN_Y_MODE_OFFSET);
             if (alignModeY == ALIGN_MODE_RIGHT_BOTTOM) {
                 src_y = srcY1 - clip_h + BRUSH_SPAN_INCLUSIVE_DELTA;
@@ -107,7 +107,7 @@ LONG BRUSH_SelectBrushSlot(
                 src_y = srcY0;
             }
         } else {
-            dst_y = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
+            dstY = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
             src_y = srcY0;
         }
     }
@@ -123,7 +123,7 @@ LONG BRUSH_SelectBrushSlot(
     }
 
     if (forcedDstY > BRUSH_FORCED_DST_Y_MIN) {
-        dst_y = forcedDstY;
+        dstY = forcedDstY;
     }
 
     return GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
@@ -131,8 +131,8 @@ LONG BRUSH_SelectBrushSlot(
         src_x,
         src_y,
         dstRp,
-        dst_x,
-        dst_y,
+        dstX,
+        dstY,
         clip_w,
         clip_h,
         BLIT_MINTERM_COPY
