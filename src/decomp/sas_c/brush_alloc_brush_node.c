@@ -2,7 +2,17 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 typedef long LONG;
 
-extern UBYTE Global_STR_BRUSH_C_19[];
+enum {
+    BRUSH_DESCRIPTOR_NODE_SIZE = 238,
+    BRUSH_NODE_TYPE_OFFSET = 190,
+    BRUSH_NODE_LOADCOLOR_OFFSET = 194,
+    BRUSH_NODE_ALIGN_H_OFFSET = 222,
+    BRUSH_NODE_ALIGN_V_OFFSET = 226,
+    BRUSH_NODE_NEXT_OFFSET = 234,
+    MEMF_PUBLIC_CLEAR = 0x10001UL
+};
+
+extern const UBYTE Global_STR_BRUSH_C_19[];
 extern void *BRUSH_LastAllocatedNode;
 
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
@@ -13,7 +23,12 @@ void *BRUSH_AllocBrushNode(const char *label, void *prev_tail)
     const UBYTE *src;
     UBYTE *dst;
 
-    node = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_BRUSH_C_19, 1352, 238, 0x10001UL);
+    node = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+        Global_STR_BRUSH_C_19,
+        1352,
+        BRUSH_DESCRIPTOR_NODE_SIZE,
+        MEMF_PUBLIC_CLEAR
+    );
     BRUSH_LastAllocatedNode = (void *)node;
     if (node == (UBYTE *)0) {
         return BRUSH_LastAllocatedNode;
@@ -25,14 +40,14 @@ void *BRUSH_AllocBrushNode(const char *label, void *prev_tail)
         *dst++ = *src;
     } while (*src++ != (UBYTE)0);
 
-    *(LONG *)(node + 194) = 1;
-    *(UBYTE *)(node + 190) = 0;
-    *(ULONG *)(node + 222) = 0;
-    *(ULONG *)(node + 226) = 0;
+    *(LONG *)(node + BRUSH_NODE_LOADCOLOR_OFFSET) = 1;
+    *(UBYTE *)(node + BRUSH_NODE_TYPE_OFFSET) = 0;
+    *(ULONG *)(node + BRUSH_NODE_ALIGN_H_OFFSET) = 0;
+    *(ULONG *)(node + BRUSH_NODE_ALIGN_V_OFFSET) = 0;
     if (prev_tail != (void *)0) {
-        *(void **)((UBYTE *)prev_tail + 234) = (void *)node;
+        *(void **)((UBYTE *)prev_tail + BRUSH_NODE_NEXT_OFFSET) = (void *)node;
     }
-    *(void **)(node + 234) = (void *)0;
+    *(void **)(node + BRUSH_NODE_NEXT_OFFSET) = (void *)0;
 
     return BRUSH_LastAllocatedNode;
 }
