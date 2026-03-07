@@ -32,11 +32,11 @@ void _LVOText(void);
 
 static LONG cleanup_wrap_clock_idx(LONG base, LONG add)
 {
-    LONG v = base + add;
-    if (v > CLOCK_FORMAT_WRAP_MAX) {
-        v -= CLOCK_FORMAT_WRAP_MAX;
+    LONG wrappedClockIndex = base + add;
+    if (wrappedClockIndex > CLOCK_FORMAT_WRAP_MAX) {
+        wrappedClockIndex -= CLOCK_FORMAT_WRAP_MAX;
     }
-    return v;
+    return wrappedClockIndex;
 }
 
 void CLEANUP_DrawClockFormatList(LONG startIndex)
