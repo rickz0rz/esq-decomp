@@ -6,17 +6,24 @@ extern UBYTE WDISP_CharClassTable[];
 
 LONG TEXTDISP_FindQuotedSpan(char *src, char **outStart, char *endHint, LONG *hasQuotes)
 {
+    const LONG FLAG_FALSE = 0;
+    const LONG FLAG_TRUE = 1;
+    const LONG ASCII_QUOTE = 34;
+    const LONG ASCII_LPAREN = 40;
+    const LONG PREFIX_SKIP_LEN = 8;
+    const LONG CHARCLASS_WHITESPACE = 8;
+    const LONG PTR_BACK_ONE = 1;
     char *start;
     char *end;
     char *firstQuote;
     char *secondQuote;
 
-    *hasQuotes = 0;
+    *hasQuotes = FLAG_FALSE;
 
-    firstQuote = STR_FindCharPtr(src, 34);
+    firstQuote = STR_FindCharPtr(src, ASCII_QUOTE);
     secondQuote = 0;
     if (firstQuote != 0) {
-        secondQuote = STR_FindCharPtr(firstQuote + 1, 34);
+        secondQuote = STR_FindCharPtr(firstQuote + 1, ASCII_QUOTE);
     }
 
     start = firstQuote;
@@ -26,12 +33,12 @@ LONG TEXTDISP_FindQuotedSpan(char *src, char **outStart, char *endHint, LONG *ha
         if (start == 0) {
             start = src;
         }
-        if (*start == 40) {
-            start += 8;
+        if (*start == ASCII_LPAREN) {
+            start += PREFIX_SKIP_LEN;
         }
 
         if (endHint != 0) {
-            end = endHint - 1;
+            end = endHint - PTR_BACK_ONE;
         } else {
             end = src;
             while (*end != '\0') {
@@ -40,17 +47,17 @@ LONG TEXTDISP_FindQuotedSpan(char *src, char **outStart, char *endHint, LONG *ha
             --end;
         }
     } else {
-        *hasQuotes = 1;
+        *hasQuotes = FLAG_TRUE;
     }
 
-    while ((WDISP_CharClassTable[(UBYTE)*start] & 8) != 0) {
+    while ((WDISP_CharClassTable[(UBYTE)*start] & CHARCLASS_WHITESPACE) != 0) {
         ++start;
     }
 
-    while ((WDISP_CharClassTable[(UBYTE)*end] & 8) != 0) {
+    while ((WDISP_CharClassTable[(UBYTE)*end] & CHARCLASS_WHITESPACE) != 0) {
         --end;
     }
 
     *outStart = start;
-    return (LONG)(end - start) + 1;
+    return (LONG)(end - start) + PTR_BACK_ONE;
 }

@@ -6,14 +6,17 @@ extern WORD TEXTDISP_SecondaryGroupEntryCount;
 
 LONG TEXTDISP_GetGroupEntryCount(LONG groupIndex)
 {
+    const LONG GROUP_PRIMARY = 1;
+    const LONG GROUP_SECONDARY = 2;
+    const LONG GROUP_INVALID_COUNT = 0;
     LONG count;
 
-    if (groupIndex == 1) {
+    if (groupIndex == GROUP_PRIMARY) {
         count = (LONG)TEXTDISP_PrimaryGroupEntryCount;
-    } else if (groupIndex == 2) {
+    } else if (groupIndex == GROUP_SECONDARY) {
         count = (LONG)TEXTDISP_SecondaryGroupEntryCount;
     } else {
-        count = 0;
+        count = GROUP_INVALID_COUNT;
     }
 
     return count;

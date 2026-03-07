@@ -2,109 +2,125 @@
 __code:
 TEXTDISP_FindQuotedSpan:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              SUB.L          #$28,D0                  ;90bc 0000 0028 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$10,A7                  ;9efc 0010 
-              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+              SUB.W          #$20,A7                  ;9efc 0020 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___TEXTDISP_FindQuotedSpan__1:
-              MOVE.L         $28(A7),A2               ;246f 0028 
-              MOVE.L         $24(A7),A3               ;266f 0024 
-              MOVE.L         $20(A7),A5               ;2a6f 0020 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              CLR.L          (A0)                     ;4290 
-              PEA            ($22).w                  ;4878 0022 
+              MOVE.L         $44(A7),A2               ;246f 0044 
+              MOVE.L         $40(A7),A3               ;266f 0040 
+              MOVE.L         $3c(A7),A5               ;2a6f 003c 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVEQ.L        #$22,D5                  ;7a22 
+              MOVEQ.L        #$28,D0                  ;7028 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
+              MOVEQ.L        #$8,D0                   ;7008 
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVE.L         D1,$28(A7)               ;2f41 0028 
+              MOVE.L         $48(A7),A0               ;206f 0048 
+              MOVE.L         D7,(A0)                  ;2087 
+              MOVE.L         D5,-(A7)                 ;2f05 
               MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
+              MOVE.L         D0,$38(A7)               ;2f40 0038 
               BSR.W          STR_FindCharPtr          ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              CLR.L          $c(A7)                   ;42af 000c 
-              MOVE.L         D0,$10(A7)               ;2f40 0010 
-              BEQ.B          ___TEXTDISP_FindQuotedSpan__3;6714 
+              CLR.L          $18(A7)                  ;42af 0018 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              BEQ.B          ___TEXTDISP_FindQuotedSpan__3;6712 
 ___TEXTDISP_FindQuotedSpan__2:
               MOVE.L         D0,A0                    ;2040 
               ADDQ.L         #$1,A0                   ;5288 
-              PEA            ($22).w                  ;4878 0022 
+              MOVE.L         D5,-(A7)                 ;2f05 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          STR_FindCharPtr          ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         D0,$c(A7)                ;2f40 000c 
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
 ___TEXTDISP_FindQuotedSpan__3:
-              MOVE.L         $10(A7),A0               ;206f 0010 
-              MOVE.L         $c(A7),A1                ;226f 000c 
-              MOVE.L         A0,$18(A7)               ;2f48 0018 
-              MOVEM.L        A1,$14(A7)               ;48ef 0200 0014 
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              MOVE.L         $18(A7),A1               ;226f 0018 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              MOVEM.L        A1,$20(A7)               ;48ef 0200 0020 
               MOVE.L         A1,D0                    ;2009 
-              BNE.B          ___TEXTDISP_FindQuotedSpan__15;663e 
+              BNE.B          ___TEXTDISP_FindQuotedSpan__15;664a 
 ___TEXTDISP_FindQuotedSpan__4:
               MOVE.L         A0,D0                    ;2008 
               BNE.B          ___TEXTDISP_FindQuotedSpan__6;6606 
 ___TEXTDISP_FindQuotedSpan__5:
               MOVE.L         A5,A1                    ;224d 
-              MOVE.L         A1,$18(A7)               ;2f49 0018 
+              MOVE.L         A1,$24(A7)               ;2f49 0024 
 ___TEXTDISP_FindQuotedSpan__6:
-              MOVEQ.L        #$28,D0                  ;7028 
-              MOVE.L         $18(A7),A0               ;206f 0018 
-              CMP.B          (A0),D0                  ;b010 
-              BNE.B          ___TEXTDISP_FindQuotedSpan__8;6604 
+              MOVE.L         $24(A7),A0               ;206f 0024 
+              MOVE.B         (A0),D0                  ;1010 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              CMP.L          $34(A7),D0               ;b0af 0034 
+              BNE.B          ___TEXTDISP_FindQuotedSpan__8;6608 
 ___TEXTDISP_FindQuotedSpan__7:
-              ADDQ.L         #$8,$18(A7)              ;50af 0018 
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              ADD.L          D0,$24(A7)               ;d1af 0024 
 ___TEXTDISP_FindQuotedSpan__8:
               MOVE.L         A2,D0                    ;200a 
-              BEQ.B          ___TEXTDISP_FindQuotedSpan__10;670a 
+              BEQ.B          ___TEXTDISP_FindQuotedSpan__10;670c 
 ___TEXTDISP_FindQuotedSpan__9:
               MOVE.L         A2,A0                    ;204a 
-              SUBQ.L         #$1,A0                   ;5388 
-              MOVE.L         A0,$14(A7)               ;2f48 0014 
-              BRA.B          ___TEXTDISP_FindQuotedSpan__16;6020 
+              SUB.L          $28(A7),A0               ;91ef 0028 
+              MOVE.L         A0,$20(A7)               ;2f48 0020 
+              BRA.B          ___TEXTDISP_FindQuotedSpan__16;601e 
 ___TEXTDISP_FindQuotedSpan__10:
-              MOVE.L         A5,$14(A7)               ;2f4d 0014 
+              MOVE.L         A5,$20(A7)               ;2f4d 0020 
 ___TEXTDISP_FindQuotedSpan__11:
-              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         $20(A7),A0               ;206f 0020 
               TST.B          (A0)                     ;4a10 
               BEQ.B          ___TEXTDISP_FindQuotedSpan__13;6706 
 ___TEXTDISP_FindQuotedSpan__12:
-              ADDQ.L         #$1,$14(A7)              ;52af 0014 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
               BRA.B          ___TEXTDISP_FindQuotedSpan__11;60f2 
 ___TEXTDISP_FindQuotedSpan__13:
-              SUBQ.L         #$1,$14(A7)              ;53af 0014 
+              SUBQ.L         #$1,$20(A7)              ;53af 0020 
 ___TEXTDISP_FindQuotedSpan__14:
-              BRA.B          ___TEXTDISP_FindQuotedSpan__16;6008 
+              BRA.B          ___TEXTDISP_FindQuotedSpan__16;6006 
 ___TEXTDISP_FindQuotedSpan__15:
-              MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         $48(A7),A0               ;206f 0048 
+              MOVE.L         D6,(A0)                  ;2086 
 ___TEXTDISP_FindQuotedSpan__16:
-              MOVE.L         $18(A7),A0               ;206f 0018 
+              MOVE.L         $24(A7),A0               ;206f 0024 
               MOVE.B         (A0),D0                  ;1010 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
+              MOVEQ.L        #$0,D0                   ;7000 
               LEA            WDISP_CharClassTable(A4),A1;43ec 0000 
-              BTST           #$3,$0(A1,D1.W)          ;0831 0003 1000 
+              MOVE.B         $0(A1,D1.W),D0           ;1031 1000 
+              AND.L          $2c(A7),D0               ;c0af 002c 
               BEQ.B          ___TEXTDISP_FindQuotedSpan__18;6706 
 ___TEXTDISP_FindQuotedSpan__17:
-              ADDQ.L         #$1,$18(A7)              ;52af 0018 
-              BRA.B          ___TEXTDISP_FindQuotedSpan__16;60e4 
+              ADDQ.L         #$1,$24(A7)              ;52af 0024 
+              BRA.B          ___TEXTDISP_FindQuotedSpan__16;60e0 
 ___TEXTDISP_FindQuotedSpan__18:
-              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.B         (A0),D0                  ;1010 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
+              MOVEQ.L        #$0,D0                   ;7000 
               LEA            WDISP_CharClassTable(A4),A1;43ec 0000 
-              BTST           #$3,$0(A1,D1.W)          ;0831 0003 1000 
+              MOVE.B         $0(A1,D1.W),D0           ;1031 1000 
+              AND.L          $2c(A7),D0               ;c0af 002c 
               BEQ.B          ___TEXTDISP_FindQuotedSpan__20;6706 
 ___TEXTDISP_FindQuotedSpan__19:
-              SUBQ.L         #$1,$14(A7)              ;53af 0014 
-              BRA.B          ___TEXTDISP_FindQuotedSpan__18;60e4 
+              SUBQ.L         #$1,$20(A7)              ;53af 0020 
+              BRA.B          ___TEXTDISP_FindQuotedSpan__18;60e0 
 ___TEXTDISP_FindQuotedSpan__20:
-              MOVE.L         $18(A7),A0               ;206f 0018 
+              MOVE.L         $24(A7),A0               ;206f 0024 
               MOVE.L         A0,(A3)                  ;2688 
-              MOVE.L         $14(A7),D0               ;202f 0014 
-              SUB.L          $18(A7),D0               ;90af 0018 
-              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              SUB.L          $24(A7),D0               ;90af 0024 
+              ADD.L          $28(A7),D0               ;d0af 0028 
 ___TEXTDISP_FindQuotedSpan__21:
 ___TEXTDISP_FindQuotedSpan__22:
-              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
-              ADD.W          #$10,A7                  ;defc 0010 
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$20,A7                  ;defc 0020 
               RTS                                     ;4e75 
 __const:
 __strings:

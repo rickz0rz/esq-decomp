@@ -9,18 +9,21 @@ extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 
 LONG TEXTDISP_FindAliasIndexByName(UBYTE *entryPtr)
 {
+    const LONG ENTRY_NAME_OFFSET = 12;
+    const LONG INDEX_NOT_FOUND = -1;
+    const UBYTE CH_NUL = 0;
     UBYTE nameBuf[22];
     UBYTE *src;
     UBYTE *dst;
     LONG idx;
 
-    src = entryPtr + 12;
+    src = entryPtr + ENTRY_NAME_OFFSET;
     dst = nameBuf;
     do {
         *dst = *src;
         dst += 1;
         src += 1;
-    } while (dst[-1] != 0);
+    } while (dst[-1] != CH_NUL);
 
     idx = 0;
     while ((WORD)idx < TEXTDISP_AliasCount) {
@@ -31,7 +34,7 @@ LONG TEXTDISP_FindAliasIndexByName(UBYTE *entryPtr)
         aliasNode = (UBYTE **)TEXTDISP_AliasPtrTable[idx];
         alias = aliasNode[0];
         len = 0;
-        while (alias[len] != 0) {
+        while (alias[len] != CH_NUL) {
             len += 1;
         }
 
@@ -41,5 +44,5 @@ LONG TEXTDISP_FindAliasIndexByName(UBYTE *entryPtr)
         idx += 1;
     }
 
-    return -1;
+    return INDEX_NOT_FOUND;
 }
