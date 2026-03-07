@@ -5,7 +5,7 @@ enum {
     CHARCLASS_ALPHA_BIT_MASK = 0x80
 };
 
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 extern LONG SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(LONG ch);
 
 LONG PARSEINI_ParseHexValueFromString(const UBYTE *hexText)

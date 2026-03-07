@@ -11,7 +11,7 @@ enum {
     ASCII_HEX_ALPHA_BASE = 55
 };
 
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 
 LONG LADFUNC_ParseHexDigit(BYTE ch)
 {
