@@ -11,11 +11,11 @@ extern const UBYTE Global_STR_BRUSH_C_9[];
 
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
 
-void BRUSH_FreeBrushResources(void **head_ptr)
+void BRUSH_FreeBrushResources(void **headPtr)
 {
     UBYTE *resourceNode;
 
-    resourceNode = (UBYTE *)*head_ptr;
+    resourceNode = (UBYTE *)*headPtr;
     while (resourceNode != (UBYTE *)BRUSH_NULL) {
         UBYTE *nextNode;
 
@@ -24,5 +24,5 @@ void BRUSH_FreeBrushResources(void **head_ptr)
         resourceNode = nextNode;
     }
 
-    *head_ptr = (void *)BRUSH_NULL;
+    *headPtr = (void *)BRUSH_NULL;
 }
