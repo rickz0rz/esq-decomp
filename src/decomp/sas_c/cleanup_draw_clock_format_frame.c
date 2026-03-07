@@ -6,6 +6,7 @@ enum {
     CLOCK_FORMAT_FRAME_X_OFFSET = 36,
     CLOCK_FORMAT_FRAME_RIGHT_EDGE = 660,
     CLOCK_FORMAT_FRAME_Y = 34,
+    CLOCK_FORMAT_FRAME_HEIGHT = 34,
     CLOCK_FORMAT_FRAME_MINTERM = 192,
     SRC_Y_ZERO = 0
 };
@@ -43,7 +44,7 @@ void CLEANUP_DrawClockFormatFrame(void)
         frameX,
         CLOCK_FORMAT_FRAME_Y,
         width,
-        CLOCK_FORMAT_FRAME_Y,
+        CLOCK_FORMAT_FRAME_HEIGHT,
         CLOCK_FORMAT_FRAME_MINTERM
     );
 }

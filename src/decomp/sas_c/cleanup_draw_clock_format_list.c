@@ -5,7 +5,14 @@ typedef long LONG;
 enum {
     CLOCK_FORMAT_WRAP_MAX = 48,
     CLOCK_FORMAT_COLUMN_COUNT = 3,
-    CLOCK_FORMAT_FINAL_COLUMN_INDEX = 2
+    CLOCK_FORMAT_FINAL_COLUMN_INDEX = 2,
+    CLOCK_FORMAT_BEVEL_X_OFFSET = 36,
+    CLOCK_FORMAT_BEVEL_EXTRA_WIDTH = 35,
+    CLOCK_FORMAT_TEXT_PAD = 8,
+    CLOCK_FORMAT_TEXT_X_OFFSET = 42,
+    CLOCK_FORMAT_FONT_PTR_OFFSET = 52,
+    CLOCK_FORMAT_FONT_HEIGHT_OFFSET = 26,
+    CLOCK_FORMAT_TEXT_ROW_HEIGHT = 34
 };
 
 extern UWORD NEWGRID_ColumnStartXPx;
@@ -53,12 +60,17 @@ void CLEANUP_DrawClockFormatList(LONG startIndex)
         UBYTE *textCursor;
 
         if (row < CLOCK_FORMAT_FINAL_COLUMN_INDEX) {
-            rowRightX = rowStartX + columnWidth + 35;
+            rowRightX = rowStartX + columnWidth + CLOCK_FORMAT_BEVEL_EXTRA_WIDTH;
         } else {
             rowRightX = 695;
         }
 
-        BEVEL_DrawBevelFrameWithTopRight((void *)NEWGRID_MainRastPortPtr, rowStartX + 36, 0, rowRightX, 33);
+        BEVEL_DrawBevelFrameWithTopRight(
+            (void *)NEWGRID_MainRastPortPtr,
+            rowStartX + CLOCK_FORMAT_BEVEL_X_OFFSET,
+            0,
+            rowRightX,
+            33);
         CLEANUP_FormatClockFormatEntry(clockIndex, textBuffer);
 
         textCursor = (UBYTE *)textBuffer;
@@ -68,9 +80,12 @@ void CLEANUP_DrawClockFormatList(LONG startIndex)
 
         _LVOTextLength();
 
-        textX = rowStartX + (((columnWidth - (LONG)(textCursor - (UBYTE *)textBuffer) - 8) + 1) >> 1) + 42;
-        fontHeight = (LONG)(*(UWORD *)(*(LONG *)(NEWGRID_MainRastPortPtr + 52) + 26));
-        textY = (((34 - fontHeight) + 1) >> 1) + fontHeight - 1;
+        textX = rowStartX +
+                (((columnWidth - (LONG)(textCursor - (UBYTE *)textBuffer) - CLOCK_FORMAT_TEXT_PAD) + 1) >> 1) +
+                CLOCK_FORMAT_TEXT_X_OFFSET;
+        fontHeight = (LONG)(*(UWORD *)(*(LONG *)(NEWGRID_MainRastPortPtr + CLOCK_FORMAT_FONT_PTR_OFFSET) +
+                                       CLOCK_FORMAT_FONT_HEIGHT_OFFSET));
+        textY = (((CLOCK_FORMAT_TEXT_ROW_HEIGHT - fontHeight) + 1) >> 1) + fontHeight - 1;
 
         (void)textX;
         (void)textY;
