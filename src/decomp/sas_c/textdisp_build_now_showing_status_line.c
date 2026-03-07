@@ -8,6 +8,10 @@ enum {
     MODE_KIND_PRIMARY = 1,
     MODE_KIND_SECONDARY = 2,
     CHANNEL_CODE_DEFAULT = 48,
+    CHANNEL_RANGE_A_MIN = 48,
+    CHANNEL_RANGE_A_MAX = 67,
+    CHANNEL_RANGE_B_MIN = 72,
+    CHANNEL_RANGE_B_MAX = 77,
     ENTRY_INDEX_MIN = 0,
     ENTRY_INDEX_MAX_EXCLUSIVE = 49,
     MINUTES_PER_DAY = 1440,
@@ -77,8 +81,10 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
         }
 
         channelEnabled = TEXTDISP_NULL;
-        if ((TEXTDISP_PrimaryChannelCode >= 48 && TEXTDISP_PrimaryChannelCode <= 67) ||
-            (TEXTDISP_PrimaryChannelCode >= 72 && TEXTDISP_PrimaryChannelCode <= 77)) {
+        if ((TEXTDISP_PrimaryChannelCode >= CHANNEL_RANGE_A_MIN &&
+             TEXTDISP_PrimaryChannelCode <= CHANNEL_RANGE_A_MAX) ||
+            (TEXTDISP_PrimaryChannelCode >= CHANNEL_RANGE_B_MIN &&
+             TEXTDISP_PrimaryChannelCode <= CHANNEL_RANGE_B_MAX)) {
             ULONG mask;
             ULONG value;
             LONG day;
@@ -118,8 +124,10 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             titleTable = (ULONG *)((UBYTE *)aux + 56);
             timeToken = TEXTDISP_FindControlToken((const char *)titleTable[(LONG)entryIndex]);
         } else {
-            if ((TEXTDISP_PrimaryChannelCode > 48 && TEXTDISP_PrimaryChannelCode <= 67) ||
-                (TEXTDISP_PrimaryChannelCode >= 72 && TEXTDISP_PrimaryChannelCode <= 77)) {
+            if ((TEXTDISP_PrimaryChannelCode > CHANNEL_RANGE_A_MIN &&
+                 TEXTDISP_PrimaryChannelCode <= CHANNEL_RANGE_A_MAX) ||
+                (TEXTDISP_PrimaryChannelCode >= CHANNEL_RANGE_B_MIN &&
+                 TEXTDISP_PrimaryChannelCode <= CHANNEL_RANGE_B_MAX)) {
                 STRING_AppendAtNull(line, SCRIPT_AlignedPrefixEmptyB);
                 STRING_AppendAtNull(line, SCRIPT_StrChannelLabel_TuesdaysFridays[(LONG)TEXTDISP_PrimaryChannelCode]);
                 timeToken = TEXTDISP_FindControlToken(TEXTDISP_PrimarySearchText);
