@@ -981,6 +981,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqdisp_test_entry_bits0_and2_core_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_test_entry_grid_eligibility_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_update_status_mask_and_refresh_return_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqiff_set_apen_to_brightest_palette_index_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_render_weather_status_brush_slice_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_play_next_external_asset_frame_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_show_external_asset_with_copper_fx_return_trial.sh"
