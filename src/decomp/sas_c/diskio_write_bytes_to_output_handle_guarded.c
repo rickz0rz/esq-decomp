@@ -17,16 +17,16 @@ extern LONG _LVOWrite(void *dosBase, LONG fh, CPTR buffer, LONG len);
 
 LONG DISKIO_WriteBytesToOutputHandleGuarded(CPTR data, WORD byteCount)
 {
-    LONG wrote;
+    LONG writtenByteCount;
 
     DISKIO_SavedReadModeFlags = ESQPARS2_ReadModeFlags;
     ESQPARS2_ReadModeFlags = DISKIO_READMODE_GUARD_FLAG;
 
-    wrote = _LVOWrite(Global_REF_DOS_LIBRARY_2, DISKIO_WriteFileHandle, data, (LONG)byteCount);
+    writtenByteCount = _LVOWrite(Global_REF_DOS_LIBRARY_2, DISKIO_WriteFileHandle, data, (LONG)byteCount);
 
     ESQPARS2_ReadModeFlags = DISKIO_SavedReadModeFlags;
 
-    if ((WORD)wrote == byteCount) {
+    if ((WORD)writtenByteCount == byteCount) {
         return DISKIO_WRITE_RESULT_OK;
     }
     return DISKIO_WRITE_RESULT_FAIL;
