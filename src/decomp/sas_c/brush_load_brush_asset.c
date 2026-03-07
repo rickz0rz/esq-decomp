@@ -5,6 +5,7 @@ typedef long LONG;
 
 enum {
     BRUSH_NULL = 0,
+    BRUSH_PLANE_PTR_SHIFT = 2,
     BRUSH_NODE_WIDTH_OFFSET = 176,
     BRUSH_NODE_HEIGHT_OFFSET = 178,
     BRUSH_NODE_DEPTH_OFFSET = 184,
@@ -174,10 +175,10 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 void *plane = GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(
                     Global_STR_BRUSH_C_12,
                     1134,
-                    i << 2,
+                    i << BRUSH_PLANE_PTR_SHIFT,
                     (UWORD)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET),
                     (UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET));
-                *(void **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (i << 2)) = plane;
+                *(void **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (i << BRUSH_PLANE_PTR_SHIFT)) = plane;
                 if (plane == (void *)BRUSH_NULL) {
                     _LVOForbid();
                     if (BRUSH_PendingAlertCode == BRUSH_NULL) {
@@ -190,7 +191,8 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
 
             if (i != (LONG)(UBYTE)node[BRUSH_NODE_DEPTH_OFFSET]) {
                 while (i < BRUSH_MAX_PLANES) {
-                    void *plane = *(void **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (i << 2));
+                    void *plane =
+                        *(void **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (i << BRUSH_PLANE_PTR_SHIFT));
                     if (plane != (void *)BRUSH_NULL) {
                         GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
                             Global_STR_BRUSH_C_13,
@@ -219,7 +221,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                     for (p = 0; p < (LONG)(UBYTE)src[BRUSH_SRC_DEPTH_OFFSET]; p++) {
                         decode_cur = ESQ_PackBitsDecode(
                             decode_cur,
-                            *(UBYTE **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (p << 2)),
+                            *(UBYTE **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (p << BRUSH_PLANE_PTR_SHIFT)),
                             row_words);
                     }
                 }
