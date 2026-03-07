@@ -9,6 +9,8 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/groups/a/g/xjump.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY_ORIG="GROUP_AG_JMPTBL_MEMORY_AllocateMemory"
+TARGET="MEMORY_AllocateMemory"
 
 mkdir -p "$OUT_DIR"
 
