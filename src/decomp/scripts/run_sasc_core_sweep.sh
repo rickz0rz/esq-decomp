@@ -1181,6 +1181,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_add_showtime_bucket_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_append_showtime_buckets_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_awaiting_listings_message_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_draw_entry_flag_badge_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_clock_format_header_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_date_banner_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_init_grid_resources_trial.sh"
