@@ -1,0 +1,332 @@
+              SECTION      text,CODE
+__code:
+ESQIFF_QueueNextExternalAssetIff:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$ac,D0                  ;90bc 0000 00ac 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$a0,A7                  ;9efc 00a0 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+___ESQIFF_QueueNextExternalAssetIff__1:
+              CLR.L          $b0(A7)                  ;42af 00b0 
+              BSR.W          _LVOForbid               ;6100 0000 
+              MOVE.W         CTASKS_IffTaskDoneFlag(A4),D0;302c 0000 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__3;660a 
+___ESQIFF_QueueNextExternalAssetIff__2:
+              BSR.W          _LVOPermit               ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__85;6000 0286 
+___ESQIFF_QueueNextExternalAssetIff__3:
+              MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__6;6714 
+___ESQIFF_QueueNextExternalAssetIff__4:
+              CMPI.L         #$1,ESQIFF_LogoBrushListCount(A4);0cac 0000 0001 0000 
+              BLT.B          ___ESQIFF_QueueNextExternalAssetIff__6;6d0a 
+___ESQIFF_QueueNextExternalAssetIff__5:
+              BSR.W          _LVOPermit               ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__85;6000 026c 
+___ESQIFF_QueueNextExternalAssetIff__6:
+              MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__9;6614 
+___ESQIFF_QueueNextExternalAssetIff__7:
+              CMPI.L         #$2,ESQIFF_GAdsBrushListCount(A4);0cac 0000 0002 0000 
+              BLT.B          ___ESQIFF_QueueNextExternalAssetIff__9;6d0a 
+___ESQIFF_QueueNextExternalAssetIff__8:
+              BSR.W          _LVOPermit               ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__85;6000 0252 
+___ESQIFF_QueueNextExternalAssetIff__9:
+              BSR.W          _LVOPermit               ;6100 0000 
+              CLR.B          $6d(A7)                  ;422f 006d 
+              MOVE.W         ESQIFF_LogoListLineIndex(A4),D7;3e2c 0000 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              TST.L          Global_REF_LONG_DF0_LOGO_LST_DAT(A4);4aac 0000 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__12;6706 
+___ESQIFF_QueueNextExternalAssetIff__10:
+              MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__16;6610 
+___ESQIFF_QueueNextExternalAssetIff__11:
+___ESQIFF_QueueNextExternalAssetIff__12:
+              TST.L          Global_REF_LONG_GFX_G_ADS_DATA(A4);4aac 0000 
+              BEQ.W          ___ESQIFF_QueueNextExternalAssetIff__81;6700 0222 
+___ESQIFF_QueueNextExternalAssetIff__13:
+              MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
+              BNE.W          ___ESQIFF_QueueNextExternalAssetIff__81;6600 021a 
+___ESQIFF_QueueNextExternalAssetIff__14:
+___ESQIFF_QueueNextExternalAssetIff__15:
+___ESQIFF_QueueNextExternalAssetIff__16:
+              CLR.B          $43(A7)                  ;422f 0043 
+              MOVE.W         TEXTDISP_CurrentMatchIndex(A4),D5;3a2c 0000 
+___ESQIFF_QueueNextExternalAssetIff__17:
+              PEA            $6d(A7)                  ;486f 006d 
+              BSR.W          ESQIFF_ReadNextExternalAssetPath;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              LEA            $6d(A7),A2               ;45ef 006d 
+___ESQIFF_QueueNextExternalAssetIff__18:
+              TST.B          (A2)                     ;4a12 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__20;6704 
+___ESQIFF_QueueNextExternalAssetIff__19:
+              ADDQ.L         #$1,A2                   ;528a 
+              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__18;60f8 
+___ESQIFF_QueueNextExternalAssetIff__20:
+              MOVE.L         A2,D0                    ;200a 
+              LEA            $6d(A7),A0               ;41ef 006d 
+              SUB.L          A0,D0                    ;9088 
+              MOVE.L         D0,$96(A7)               ;2f40 0096 
+              BEQ.W          ___ESQIFF_QueueNextExternalAssetIff__40;6700 00aa 
+___ESQIFF_QueueNextExternalAssetIff__21:
+              MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
+              MOVEM.W        D0,$9e(A7)               ;48af 0001 009e 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__35;676a 
+___ESQIFF_QueueNextExternalAssetIff__22:
+              MOVE.W         ESQIFF_ExternalAssetPathCommaFla(A4),D0;302c 0000 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__24;6706 
+___ESQIFF_QueueNextExternalAssetIff__23:
+              MOVEQ.L        #$1,D6                   ;7c01 
+              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__40;6000 0092 
+___ESQIFF_QueueNextExternalAssetIff__24:
+              CLR.W          $ac(A7)                  ;426f 00ac 
+___ESQIFF_QueueNextExternalAssetIff__25:
+              MOVE.W         $ac(A7),D0               ;302f 00ac 
+              MOVEQ.L        #$28,D1                  ;7228 
+              CMP.W          D1,D0                    ;b041 
+              BGE.B          ___ESQIFF_QueueNextExternalAssetIff__31;6c2c 
+___ESQIFF_QueueNextExternalAssetIff__26:
+              LEA            $6d(A7),A0               ;41ef 006d 
+              ADD.W          D0,A0                    ;d0c0 
+              MOVE.B         (A0),$43(A7,D0.W)        ;1f90 0043 
+              TST.B          $43(A7,D0.W)             ;4a37 0043 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__31;671c 
+___ESQIFF_QueueNextExternalAssetIff__27:
+___ESQIFF_QueueNextExternalAssetIff__28:
+              MOVEQ.L        #$21,D1                  ;7221 
+              CMP.B          $43(A7,D0.W),D1          ;b237 0043 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__30;660e 
+___ESQIFF_QueueNextExternalAssetIff__29:
+              MOVE.B         #$2a,$43(A7,D0.W)        ;1fbc 002a 0043 
+              EXT.L          D0                       ;48c0 
+              CLR.B          $44(A7,D0.L)             ;4237 0844 
+              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__31;6006 
+___ESQIFF_QueueNextExternalAssetIff__30:
+              ADDQ.W         #$1,$ac(A7)              ;526f 00ac 
+              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__25;60ca 
+___ESQIFF_QueueNextExternalAssetIff__31:
+              PEA            $43(A7)                  ;486f 0043 
+              BSR.W          GCOMMAND_FindPathSeparator;6100 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          ESQIFF_JMPTBL_TEXTDISP_FindEntry;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              SUBQ.W         #$1,D0                   ;5340 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__33;660a 
+___ESQIFF_QueueNextExternalAssetIff__32:
+              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVE.W         TEXTDISP_CurrentMatchIndex(A4),ESQIFF_ExternalAssetStateTable(A4);396c 0000 0000 
+              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__40;6038 
+___ESQIFF_QueueNextExternalAssetIff__33:
+              BSR.W          ESQDISP_ProcessGridMessagesIfIdl;6100 0000 
+___ESQIFF_QueueNextExternalAssetIff__34:
+              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__40;6032 
+___ESQIFF_QueueNextExternalAssetIff__35:
+              PEA            ($4).w                   ;4878 0004 
+              PEA            $71(A7)                  ;486f 0071 
+              PEA            ESQIFF_PATH_DF0_COLON(A4);486c 0000 
+              BSR.W          ESQIFF_JMPTBL_STRING_CompareNoCa;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__40;671a 
+___ESQIFF_QueueNextExternalAssetIff__36:
+___ESQIFF_QueueNextExternalAssetIff__37:
+              PEA            ($b).w                   ;4878 000b 
+              PEA            $71(A7)                  ;486f 0071 
+              PEA            ESQIFF_PATH_RAM_COLON_LOGOS_SLAS(A4);486c 0000 
+              BSR.W          ESQIFF_JMPTBL_STRING_CompareNoCa;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__40;6702 
+___ESQIFF_QueueNextExternalAssetIff__38:
+___ESQIFF_QueueNextExternalAssetIff__39:
+              MOVEQ.L        #$1,D6                   ;7c01 
+___ESQIFF_QueueNextExternalAssetIff__40:
+              TST.W          D6                       ;4a46 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__45;660a 
+___ESQIFF_QueueNextExternalAssetIff__41:
+___ESQIFF_QueueNextExternalAssetIff__42:
+              MOVE.W         ESQIFF_LogoListLineIndex(A4),D0;302c 0000 
+              CMP.W          D7,D0                    ;b047 
+              BNE.W          ___ESQIFF_QueueNextExternalAssetIff__17;6600 ff26 
+___ESQIFF_QueueNextExternalAssetIff__43:
+___ESQIFF_QueueNextExternalAssetIff__44:
+___ESQIFF_QueueNextExternalAssetIff__45:
+              MOVE.W         D5,TEXTDISP_CurrentMatchIndex(A4);3945 0000 
+              TST.W          D6                       ;4a46 
+              BEQ.W          ___ESQIFF_QueueNextExternalAssetIff__81;6700 012c 
+___ESQIFF_QueueNextExternalAssetIff__46:
+___ESQIFF_QueueNextExternalAssetIff__47:
+              MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__49;670a 
+___ESQIFF_QueueNextExternalAssetIff__48:
+              MOVE.L         #$fa00,$9a(A7)           ;2f7c 0000 fa00 009a 
+              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__50;6008 
+___ESQIFF_QueueNextExternalAssetIff__49:
+              MOVE.L         #$13880,$9a(A7)          ;2f7c 0001 3880 009a 
+___ESQIFF_QueueNextExternalAssetIff__50:
+              LEA            $6d(A7),A0               ;41ef 006d 
+              LEA            $19(A7),A1               ;43ef 0019 
+              MOVE.L         A0,$a0(A7)               ;2f48 00a0 
+              MOVE.L         A1,$a8(A7)               ;2f49 00a8 
+___ESQIFF_QueueNextExternalAssetIff__51:
+              MOVE.L         $a0(A7),A0               ;206f 00a0 
+              MOVE.L         $a8(A7),A1               ;226f 00a8 
+              MOVE.B         (A0),(A1)+               ;12d0 
+              MOVE.L         A1,$a8(A7)               ;2f49 00a8 
+___ESQIFF_QueueNextExternalAssetIff__52:
+              MOVE.L         $a0(A7),A0               ;206f 00a0 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$a0(A7)               ;2f48 00a0 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__51;66e4 
+___ESQIFF_QueueNextExternalAssetIff__53:
+              MOVE.W         #$1,$b4(A7)              ;3f7c 0001 00b4 
+              BSR.W          ESQDISP_ProcessGridMessagesIfIdl;6100 0000 
+              MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__55;6706 
+___ESQIFF_QueueNextExternalAssetIff__54:
+              MOVE.L         ESQIFF_LogoBrushListHead(A4),A5;2a6c 0000 
+              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__56;6004 
+___ESQIFF_QueueNextExternalAssetIff__55:
+              MOVE.L         ESQIFF_GAdsBrushListHead(A4),A5;2a6c 0000 
+___ESQIFF_QueueNextExternalAssetIff__56:
+              CLR.L          $b0(A7)                  ;42af 00b0 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__64;6738 
+___ESQIFF_QueueNextExternalAssetIff__57:
+              CMP.L          ESQIFF_LogoBrushListHead(A4),A5;bbec 0000 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__64;6632 
+___ESQIFF_QueueNextExternalAssetIff__58:
+              LEA            $6d(A7),A0               ;41ef 006d 
+              MOVE.L         A5,$a8(A7)               ;2f4d 00a8 
+              MOVE.L         A0,$a0(A7)               ;2f48 00a0 
+___ESQIFF_QueueNextExternalAssetIff__59:
+              MOVE.L         $a0(A7),A0               ;206f 00a0 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         $a8(A7),A1               ;226f 00a8 
+              MOVE.B         (A1)+,D1                 ;1219 
+              MOVE.B         D0,$a7(A7)               ;1f40 00a7 
+              MOVE.L         A0,$a0(A7)               ;2f48 00a0 
+              MOVE.L         A1,$a8(A7)               ;2f49 00a8 
+              CMP.B          D0,D1                    ;b200 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__64;660a 
+___ESQIFF_QueueNextExternalAssetIff__60:
+___ESQIFF_QueueNextExternalAssetIff__61:
+              TST.B          D0                       ;4a00 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__59;66e0 
+___ESQIFF_QueueNextExternalAssetIff__62:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,$b0(A7)               ;2f40 00b0 
+___ESQIFF_QueueNextExternalAssetIff__63:
+___ESQIFF_QueueNextExternalAssetIff__64:
+              TST.L          $b0(A7)                  ;4aaf 00b0 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__69;6632 
+___ESQIFF_QueueNextExternalAssetIff__65:
+              CLR.L          -(A7)                    ;42a7 
+              PEA            $71(A7)                  ;486f 0071 
+              BSR.W          ESQIFF_JMPTBL_BRUSH_AllocBrushNo;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         A3,ESQIFF_PendingExternalBrushNode(A4);294b 0000 
+              MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__67;670c 
+___ESQIFF_QueueNextExternalAssetIff__66:
+              MOVE.B         #$4,$be(A3)              ;177c 0004 00be 
+              MOVE.L         A3,CTASKS_PendingLogoBrushDescripto(A4);294b 0000 
+              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__68;600a 
+___ESQIFF_QueueNextExternalAssetIff__67:
+              MOVE.B         #$5,$be(A3)              ;177c 0005 00be 
+              MOVE.L         A3,CTASKS_PendingGAdsBrushDescripto(A4);294b 0000 
+___ESQIFF_QueueNextExternalAssetIff__68:
+              BSR.W          ESQIFF_JMPTBL_CTASKS_StartIffTas;6100 0000 
+___ESQIFF_QueueNextExternalAssetIff__69:
+              BSR.W          ESQDISP_ProcessGridMessagesIfIdl;6100 0000 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              CMP.W          $b4(A7),D0               ;b06f 00b4 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__71;660a 
+___ESQIFF_QueueNextExternalAssetIff__70:
+              PEA            $6d(A7)                  ;486f 006d 
+              BSR.W          ESQIFF_ReadNextExternalAssetPath;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQIFF_QueueNextExternalAssetIff__71:
+              LEA            $19(A7),A0               ;41ef 0019 
+              LEA            $6d(A7),A1               ;43ef 006d 
+              MOVE.L         A0,$a0(A7)               ;2f48 00a0 
+              MOVE.L         A1,$a8(A7)               ;2f49 00a8 
+___ESQIFF_QueueNextExternalAssetIff__72:
+              MOVE.L         $a0(A7),A0               ;206f 00a0 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         $a8(A7),A1               ;226f 00a8 
+              MOVE.B         (A1)+,D1                 ;1219 
+              MOVE.B         D0,$a7(A7)               ;1f40 00a7 
+              MOVE.L         A0,$a0(A7)               ;2f48 00a0 
+              MOVE.L         A1,$a8(A7)               ;2f49 00a8 
+              CMP.B          D0,D1                    ;b200 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__77;6606 
+___ESQIFF_QueueNextExternalAssetIff__73:
+___ESQIFF_QueueNextExternalAssetIff__74:
+              TST.B          D0                       ;4a00 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__72;66e0 
+___ESQIFF_QueueNextExternalAssetIff__75:
+              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__81;600c 
+___ESQIFF_QueueNextExternalAssetIff__76:
+___ESQIFF_QueueNextExternalAssetIff__77:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              CMP.W          $b4(A7),D0               ;b06f 00b4 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__81;6604 
+___ESQIFF_QueueNextExternalAssetIff__78:
+              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__53;6000 ff1c 
+___ESQIFF_QueueNextExternalAssetIff__79:
+___ESQIFF_QueueNextExternalAssetIff__80:
+___ESQIFF_QueueNextExternalAssetIff__81:
+              TST.W          D6                       ;4a46 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__83;6606 
+___ESQIFF_QueueNextExternalAssetIff__82:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.W         D0,$b4(A7)               ;3f40 00b4 
+___ESQIFF_QueueNextExternalAssetIff__83:
+              MOVE.W         $b4(A7),D0               ;302f 00b4 
+___ESQIFF_QueueNextExternalAssetIff__84:
+___ESQIFF_QueueNextExternalAssetIff__85:
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$a0,A7                  ;defc 00a0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           _LVOForbid
+              XREF           CTASKS_IffTaskDoneFlag
+              XREF           _LVOPermit
+              XREF           ESQIFF_AssetSourceSelect
+              XREF           ESQIFF_LogoBrushListCount
+              XREF           ESQIFF_GAdsBrushListCount
+              XREF           ESQIFF_LogoListLineIndex
+              XREF           Global_REF_LONG_DF0_LOGO_LST_DAT
+              XREF           Global_REF_LONG_GFX_G_ADS_DATA
+              XREF           TEXTDISP_CurrentMatchIndex
+              XREF           ESQIFF_ReadNextExternalAssetPath
+              XREF           ESQIFF_ExternalAssetPathCommaFla
+              XREF           GCOMMAND_FindPathSeparator
+              XREF           ESQIFF_JMPTBL_TEXTDISP_FindEntry
+              XREF           ESQIFF_ExternalAssetStateTable
+              XREF           ESQDISP_ProcessGridMessagesIfIdl
+              XREF           ESQIFF_PATH_DF0_COLON
+              XREF           ESQIFF_JMPTBL_STRING_CompareNoCa
+              XREF           ESQIFF_PATH_RAM_COLON_LOGOS_SLAS
+              XREF           ESQIFF_LogoBrushListHead
+              XREF           ESQIFF_GAdsBrushListHead
+              XREF           ESQIFF_JMPTBL_BRUSH_AllocBrushNo
+              XREF           ESQIFF_PendingExternalBrushNode
+              XREF           CTASKS_PendingLogoBrushDescripto
+              XREF           CTASKS_PendingGAdsBrushDescripto
+              XREF           ESQIFF_JMPTBL_CTASKS_StartIffTas
+              XDEF           ESQIFF_QueueNextExternalAssetIff
+              END

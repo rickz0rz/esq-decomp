@@ -1,0 +1,105 @@
+              SECTION      text,CODE
+__code:
+service_row:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___service_row__1:
+              MOVE.L         $18(A7),A2               ;246f 0018 
+              MOVE.L         $14(A7),A3               ;266f 0014 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.W          (A5),D0                  ;b055 
+              BNE.B          ___service_row__9        ;663c 
+___service_row__2:
+___service_row__3:
+              MOVE.W         (A3),D0                  ;3013 
+              BEQ.B          ___service_row__9        ;6738 
+___service_row__4:
+___service_row__5:
+              CLR.W          (A5)                     ;4255 
+              BTST           #$1,$1(A3)               ;082b 0001 0001 
+              BEQ.B          ___service_row__7        ;6718 
+___service_row__6:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A2),D0                  ;1012 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              MOVE.B         (A0),D1                  ;1210 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQIFF_JMPTBL_ESQ_MoveCopperEntr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.B          ___service_row__9        ;6016 
+___service_row__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A2),D0                  ;1012 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              MOVE.B         (A0),D1                  ;1210 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQIFF_JMPTBL_ESQ_MoveCopperEntr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___service_row__8:
+___service_row__9:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQIFF_ServicePendingCopperPalet:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_ServicePendingCopperPalet__1:
+              LEA            WDISP_AccumulatorRow0_CopperInde(A4),A0;41ec 0000 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            WDISP_AccumulatorRow0_MoveFlags(A4);486c 0000 
+              PEA            ACCUMULATOR_Row0_SaturateFlag(A4);486c 0000 
+              BSR.W          service_row              ;6100 ff7a 
+___ESQIFF_ServicePendingCopperPalet__2:
+              LEA            WDISP_AccumulatorRow1_CopperInde(A4),A0;41ec 0000 
+              MOVE.L         A0,(A7)                  ;2e88 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            WDISP_AccumulatorRow1_MoveFlags(A4);486c 0000 
+              PEA            ACCUMULATOR_Row1_SaturateFlag(A4);486c 0000 
+              BSR.W          service_row              ;6100 ff66 
+___ESQIFF_ServicePendingCopperPalet__3:
+              LEA            WDISP_AccumulatorRow2_CopperInde(A4),A0;41ec 0000 
+              MOVE.L         A0,(A7)                  ;2e88 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            WDISP_AccumulatorRow2_MoveFlags(A4);486c 0000 
+              PEA            ACCUMULATOR_Row2_SaturateFlag(A4);486c 0000 
+              BSR.W          service_row              ;6100 ff52 
+___ESQIFF_ServicePendingCopperPalet__4:
+              LEA            WDISP_AccumulatorRow3_CopperInde(A4),A0;41ec 0000 
+              MOVE.L         A0,(A7)                  ;2e88 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            WDISP_AccumulatorRow3_MoveFlags(A4);486c 0000 
+              PEA            ACCUMULATOR_Row3_SaturateFlag(A4);486c 0000 
+              BSR.W          service_row              ;6100 ff3e 
+___ESQIFF_ServicePendingCopperPalet__5:
+              LEA            $34(A7),A7               ;4fef 0034 
+___ESQIFF_ServicePendingCopperPalet__6:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQIFF_JMPTBL_ESQ_MoveCopperEntr
+              XREF           WDISP_AccumulatorRow0_CopperInde
+              XREF           WDISP_AccumulatorRow0_MoveFlags
+              XREF           ACCUMULATOR_Row0_SaturateFlag
+              XREF           WDISP_AccumulatorRow1_CopperInde
+              XREF           WDISP_AccumulatorRow1_MoveFlags
+              XREF           ACCUMULATOR_Row1_SaturateFlag
+              XREF           WDISP_AccumulatorRow2_CopperInde
+              XREF           WDISP_AccumulatorRow2_MoveFlags
+              XREF           ACCUMULATOR_Row2_SaturateFlag
+              XREF           WDISP_AccumulatorRow3_CopperInde
+              XREF           WDISP_AccumulatorRow3_MoveFlags
+              XREF           ACCUMULATOR_Row3_SaturateFlag
+              XDEF           ESQIFF_ServicePendingCopperPalet
+              END
