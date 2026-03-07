@@ -29,8 +29,8 @@ extern UBYTE DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES[];
 void *DATETIME_SecondsToStruct(LONG seconds, void *dt)
 {
     LONG years4;
-    LONG remHours;
-    LONG yearHours;
+    LONG remainingHours;
+    LONG currentYearHours;
     LONG dayAcc;
     LONG dayOfYear;
     LONG isLeap;
@@ -55,31 +55,31 @@ void *DATETIME_SecondsToStruct(LONG seconds, void *dt)
     dayAcc = GROUP_AJ_JMPTBL_MATH_Mulu32(years4, DATETIME_DAYS_PER_4YEAR_BLOCK);
 
     (void)GROUP_AG_JMPTBL_MATH_DivS32(seconds, DATETIME_HOURS_PER_4YEAR_BLOCK);
-    remHours = seconds % DATETIME_HOURS_PER_4YEAR_BLOCK;
+    remainingHours = seconds % DATETIME_HOURS_PER_4YEAR_BLOCK;
 
     for (;;) {
-        yearHours = DATETIME_HOURS_PER_YEAR;
+        currentYearHours = DATETIME_HOURS_PER_YEAR;
         if (DATETIME_IsLeapYear((LONG)W(dt, 6)) != 0) {
-            yearHours += DATETIME_HOURS_PER_DAY;
+            currentYearHours += DATETIME_HOURS_PER_DAY;
         }
-        if (remHours < yearHours) {
+        if (remainingHours < currentYearHours) {
             break;
         }
-        (void)GROUP_AG_JMPTBL_MATH_DivS32(yearHours, DATETIME_HOURS_PER_DAY);
-        dayAcc += (yearHours / DATETIME_HOURS_PER_DAY);
+        (void)GROUP_AG_JMPTBL_MATH_DivS32(currentYearHours, DATETIME_HOURS_PER_DAY);
+        dayAcc += (currentYearHours / DATETIME_HOURS_PER_DAY);
         W(dt, 6) = (short)(W(dt, 6) + 1);
-        remHours -= yearHours;
+        remainingHours -= currentYearHours;
     }
 
-    (void)GROUP_AG_JMPTBL_MATH_DivS32(remHours, DATETIME_HOURS_PER_DAY);
-    W(dt, 8) = (short)(remHours % DATETIME_HOURS_PER_DAY);
-    remHours /= DATETIME_HOURS_PER_DAY;
+    (void)GROUP_AG_JMPTBL_MATH_DivS32(remainingHours, DATETIME_HOURS_PER_DAY);
+    W(dt, 8) = (short)(remainingHours % DATETIME_HOURS_PER_DAY);
+    remainingHours /= DATETIME_HOURS_PER_DAY;
 
-    dayAcc += remHours + DATETIME_WEEKDAY_EPOCH_OFFSET;
+    dayAcc += remainingHours + DATETIME_WEEKDAY_EPOCH_OFFSET;
     (void)GROUP_AJ_JMPTBL_MATH_DivU32((ULONG)dayAcc, DATETIME_DAYS_PER_WEEK);
     W(dt, 0) = (short)((ULONG)dayAcc % DATETIME_DAYS_PER_WEEK);
 
-    dayOfYear = remHours + 1;
+    dayOfYear = remainingHours + 1;
     W(dt, 16) = (short)dayOfYear;
 
     isLeap = DATETIME_IsLeapYear((LONG)W(dt, 6));
