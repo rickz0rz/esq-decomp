@@ -36,7 +36,7 @@ LONG BRUSH_SelectBrushSlot(
     LONG srcY0,
     LONG srcX1,
     LONG srcY1,
-    void *dst_rp,
+    void *dstRp,
     LONG forcedDstY)
 {
     LONG src_x = srcX0;
@@ -130,7 +130,7 @@ LONG BRUSH_SelectBrushSlot(
         brush + BRUSH_BITMAP_OFFSET,
         src_x,
         src_y,
-        dst_rp,
+        dstRp,
         dst_x,
         dst_y,
         clip_w,
