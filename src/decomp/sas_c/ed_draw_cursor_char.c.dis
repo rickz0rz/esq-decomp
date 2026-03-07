@@ -1,0 +1,83 @@
+              SECTION      text,CODE
+__code:
+ED_DrawCursorChar:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
+___ED_DrawCursorChar__1:
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              LEA            ED_EditBufferLive(A4),A1 ;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         $0(A1,D0.L),D7           ;1e31 0800 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          GROUP_AL_JMPTBL_LADFUNC_ExtractL;6100 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              MOVE.L         D7,(A7)                  ;2e87 
+              BSR.W          GROUP_AL_JMPTBL_LADFUNC_ExtractH;6100 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetBPen              ;6100 0000 
+              MOVE.L         ED_EditCursorOffset(A4),(A7);2eac 0000 
+              BSR.W          ED_UpdateCursorPosFromIndex;6100 0000 
+              MOVE.L         ED_CursorColumnIndex(A4),D0;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$4,D1                   ;e981 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,D6                    ;2c01 
+              MOVEQ.L        #$28,D0                  ;7028 
+              ADD.L          D0,D6                    ;dc80 
+              PEA            ($1e).w                  ;4878 001e 
+              MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
+              BSR.W          ESQIFF_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVEQ.L        #$5a,D1                  ;725a 
+              ADD.L          D1,D5                    ;da81 
+              MOVE.L         D5,(A7)                  ;2e85 
+___ED_DrawCursorChar__2:
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOMove                 ;6100 0000 
+              LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
+              ADD.L          ED_EditCursorOffset(A4),A0;d1ec 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOText                 ;6100 0000 
+              LEA            $38(A7),A7               ;4fef 0038 
+___ED_DrawCursorChar__3:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_EditCursorOffset
+              XREF           ED_EditBufferLive
+              XREF           GROUP_AL_JMPTBL_LADFUNC_ExtractL
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetAPen
+              XREF           GROUP_AL_JMPTBL_LADFUNC_ExtractH
+              XREF           _LVOSetBPen
+              XREF           ED_UpdateCursorPosFromIndex
+              XREF           ED_CursorColumnIndex
+              XREF           ED_ViewportOffset
+              XREF           ESQIFF_JMPTBL_MATH_Mulu32
+              XREF           _LVOMove
+              XREF           ED_EditBufferScratch
+              XREF           _LVOText
+              XDEF           ED_DrawCursorChar
+              END
