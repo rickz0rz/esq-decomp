@@ -2,6 +2,7 @@ typedef unsigned char UBYTE;
 typedef long LONG;
 
 enum {
+    BRUSH_NULL = 0,
     BRUSH_FALSE = 0,
     BRUSH_TRUE = 1,
     BRUSH_NODE_TYPE_OFFSET = 32,
@@ -17,7 +18,7 @@ void *BRUSH_FindType3Brush(void *list_head_ptr)
     cur = *(UBYTE **)list_head_ptr;
     found = BRUSH_FALSE;
 
-    while (cur != (UBYTE *)0 && found == BRUSH_FALSE) {
+    while (cur != (UBYTE *)BRUSH_NULL && found == BRUSH_FALSE) {
         if (cur[BRUSH_NODE_TYPE_OFFSET] == BRUSH_NODE_TYPE_3) {
             found = BRUSH_TRUE;
         }
@@ -29,5 +30,5 @@ void *BRUSH_FindType3Brush(void *list_head_ptr)
     if (found != BRUSH_FALSE) {
         return (void *)cur;
     }
-    return (void *)0;
+    return (void *)BRUSH_NULL;
 }

@@ -6,6 +6,7 @@ typedef long LONG;
 enum {
     BRUSH_FALSE = 0,
     BRUSH_FREE_ALL_ENABLED = 1,
+    BRUSH_RASTER_PTR_STRIDE_SHIFT = 2,
     BRUSH_NODE_FRAME_COUNT_OFFSET = 184,
     BRUSH_NODE_WIDTH_OFFSET = 176,
     BRUSH_NODE_HEIGHT_OFFSET = 178,
@@ -41,7 +42,7 @@ void BRUSH_FreeBrushList(void **head_ptr, LONG free_all)
             LONG width;
             LONG height;
 
-            raster = *(void **)(node + BRUSH_NODE_RASTER_TABLE_OFFSET + ((ULONG)i << 2));
+            raster = *(void **)(node + BRUSH_NODE_RASTER_TABLE_OFFSET + ((ULONG)i << BRUSH_RASTER_PTR_STRIDE_SHIFT));
             width = (LONG)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET);
             height = (LONG)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET);
             GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_BRUSH_C_5, 549, raster, width, height);
