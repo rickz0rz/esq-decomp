@@ -11,29 +11,29 @@ enum {
     RANGE_RESULT_TRUE = 1
 };
 
-long DATETIME_ClassifyValueInRange(void *range_ptr, long value)
+long DATETIME_ClassifyValueInRange(void *rangePtr, long value)
 {
     unsigned char flags;
-    long bound_a;
-    long bound_b;
+    long boundA;
+    long boundB;
     long low;
     long high;
 
     flags = 0;
-    if (range_ptr == 0) {
+    if (rangePtr == 0) {
         return RANGE_RESULT_FALSE;
     }
 
-    bound_a = *(long *)((char *)range_ptr + RANGE_BOUND_A_OFFSET);
-    bound_b = *(long *)((char *)range_ptr + RANGE_BOUND_B_OFFSET);
+    boundA = *(long *)((char *)rangePtr + RANGE_BOUND_A_OFFSET);
+    boundB = *(long *)((char *)rangePtr + RANGE_BOUND_B_OFFSET);
 
-    if (bound_a < bound_b) {
-        low = bound_a;
-        high = bound_b;
-    } else if (bound_a > bound_b) {
+    if (boundA < boundB) {
+        low = boundA;
+        high = boundB;
+    } else if (boundA > boundB) {
         flags |= RANGE_FLAG_DESCENDING;
-        low = bound_b;
-        high = bound_a;
+        low = boundB;
+        high = boundA;
     } else {
         return RANGE_RESULT_FALSE;
     }
