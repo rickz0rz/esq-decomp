@@ -1235,6 +1235,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_handle_detail_grid_state_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_is_grid_ready_for_input_trial.sh"
     "src/decomp/scripts/compare_sasc_p_type_allocate_entry_trial.sh"
+    "src/decomp/scripts/compare_sasc_p_type_clone_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_p_type_consume_primary_type_if_present_trial.sh"
     "src/decomp/scripts/compare_sasc_p_type_free_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_p_type_get_subtype_if_type20_trial.sh"
