@@ -1114,6 +1114,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqshared_jmptbl_esq_wildcardmatch_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared_jmptbl_str_skipclass3chars_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid2_dispatch_operation_default_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid2_dispatch_grid_operation_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid2_handle_grid_state_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid2_ensure_buffers_allocated_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid2_free_buffers_if_allocated_trial.sh"

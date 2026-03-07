@@ -1,0 +1,163 @@
+              SECTION      text,CODE
+__code:
+NEWGRID2_DispatchGridOperation:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A5,-(A7)     ;48e7 0f04 
+___NEWGRID2_DispatchGridOperation__1:
+              MOVE.W         $26(A7),D5               ;3a2f 0026 
+              MOVE.W         $22(A7),D6               ;3c2f 0022 
+              MOVE.L         $18(A7),D7               ;2e2f 0018 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.L         D7,D4                    ;2807 
+              TST.L          D4                       ;4a84 
+              BNE.B          ___NEWGRID2_DispatchGridOperation__3;660c 
+___NEWGRID2_DispatchGridOperation__2:
+              SUB.L          A5,A5                    ;9bcd 
+              MOVE.L         NEWGRID2_PendingOperationId(A4),D4;282c 0000 
+              CLR.L          NEWGRID2_PendingOperationId(A4);42ac 0000 
+              BRA.B          ___NEWGRID2_DispatchGridOperation__4;6004 
+___NEWGRID2_DispatchGridOperation__3:
+              MOVE.L         D4,NEWGRID2_PendingOperationId(A4);2944 0000 
+___NEWGRID2_DispatchGridOperation__4:
+              MOVE.W         ESQDISP_PendingGridReinitFlag(A4),D0;302c 0000 
+              BEQ.B          ___NEWGRID2_DispatchGridOperation__6;6706 
+___NEWGRID2_DispatchGridOperation__5:
+              CLR.W          ESQDISP_PendingGridReinitFlag(A4);426c 0000 
+              SUB.L          A5,A5                    ;9bcd 
+___NEWGRID2_DispatchGridOperation__6:
+              MOVE.L         D4,NEWGRID_GridOperationId(A4);2944 0000 
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          D0,D4                    ;b880 
+              BLT.B          ___NEWGRID2_DispatchGridOperation__8;6d06 
+___NEWGRID2_DispatchGridOperation__7:
+              MOVEQ.L        #$8,D0                   ;7008 
+              CMP.L          D0,D4                    ;b880 
+              BLT.B          ___NEWGRID2_DispatchGridOperation__9;6d08 
+___NEWGRID2_DispatchGridOperation__8:
+              CLR.L          NEWGRID_GridOperationId(A4);42ac 0000 
+              BRA.W          ___NEWGRID2_DispatchGridOperation__20;6000 00da 
+___NEWGRID2_DispatchGridOperation__9:
+              MOVE.L         D4,D0                    ;2004 
+___NEWGRID2_DispatchGridOperation__10:
+              SUBQ.L         #$1,D0                   ;5380 
+              BLT.W          ___NEWGRID2_DispatchGridOperation__20;6d00 00d2 
+___NEWGRID2_DispatchGridOperation__11:
+              CMPI.L         #$7,D0                   ;0c80 0000 0007 
+              BGE.W          ___NEWGRID2_DispatchGridOperation__20;6c00 00c8 
+___NEWGRID2_DispatchGridOperation__12:
+              ADD.W          D0,D0                    ;d040 
+              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
+              JMP            $4(PC,D0.W)              ;4efb 0004 
+__switch_NEWGRID2_DispatchGridOperation_12:
+              DC.W           ___NEWGRID2_DispatchGridOperation__13-__switch_NEWGRID2_DispatchGridOperation_12
+              DC.W           ___NEWGRID2_DispatchGridOperation__14-__switch_NEWGRID2_DispatchGridOperation_12
+              DC.W           ___NEWGRID2_DispatchGridOperation__15-__switch_NEWGRID2_DispatchGridOperation_12
+              DC.W           ___NEWGRID2_DispatchGridOperation__16-__switch_NEWGRID2_DispatchGridOperation_12
+              DC.W           ___NEWGRID2_DispatchGridOperation__17-__switch_NEWGRID2_DispatchGridOperation_12
+              DC.W           ___NEWGRID2_DispatchGridOperation__18-__switch_NEWGRID2_DispatchGridOperation_12
+              DC.W           ___NEWGRID2_DispatchGridOperation__19-__switch_NEWGRID2_DispatchGridOperation_12
+___NEWGRID2_DispatchGridOperation__13:
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_HandleGridSelection;6100 0000 
+              MOVE.L         D0,NEWGRID2_LastDispatchResult(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.W          ___NEWGRID2_DispatchGridOperation__20;6000 009a 
+___NEWGRID2_DispatchGridOperation__14:
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              MOVE.W         D5,D1                    ;3205 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_ProcessAltEntryState;6100 0000 
+              MOVE.L         D0,NEWGRID2_LastDispatchResult(A4);2940 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___NEWGRID2_DispatchGridOperation__20;607c 
+___NEWGRID2_DispatchGridOperation__15:
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID2_HandleGridState ;6100 0000 
+              MOVE.L         D0,NEWGRID2_LastDispatchResult(A4);2940 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___NEWGRID2_DispatchGridOperation__20;6064 
+___NEWGRID2_DispatchGridOperation__16:
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID2_HandleGridState ;6100 0000 
+              MOVE.L         D0,NEWGRID2_LastDispatchResult(A4);2940 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___NEWGRID2_DispatchGridOperation__20;604a 
+___NEWGRID2_DispatchGridOperation__17:
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_ProcessSecondaryState;6100 0000 
+              MOVE.L         D0,NEWGRID2_LastDispatchResult(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.B          ___NEWGRID2_DispatchGridOperation__20;6036 
+___NEWGRID2_DispatchGridOperation__18:
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              MOVE.W         D5,D1                    ;3205 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_ProcessScheduleState;6100 0000 
+              MOVE.L         D0,NEWGRID2_LastDispatchResult(A4);2940 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___NEWGRID2_DispatchGridOperation__20;601a 
+___NEWGRID2_DispatchGridOperation__19:
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              MOVE.W         D5,D1                    ;3205 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_ProcessShowtimesWorkflow;6100 0000 
+              MOVE.L         D0,NEWGRID2_LastDispatchResult(A4);2940 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___NEWGRID2_DispatchGridOperation__20:
+              TST.L          NEWGRID2_LastDispatchResult(A4);4aac 0000 
+              BEQ.B          ___NEWGRID2_DispatchGridOperation__22;6704 
+___NEWGRID2_DispatchGridOperation__21:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___NEWGRID2_DispatchGridOperation__23;6002 
+___NEWGRID2_DispatchGridOperation__22:
+              MOVEQ.L        #$0,D0                   ;7000 
+___NEWGRID2_DispatchGridOperation__23:
+___NEWGRID2_DispatchGridOperation__24:
+___NEWGRID2_DispatchGridOperation__25:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A5     ;4cdf 20f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID2_PendingOperationId
+              XREF           ESQDISP_PendingGridReinitFlag
+              XREF           NEWGRID_GridOperationId
+              XREF           NEWGRID_HandleGridSelection
+              XREF           NEWGRID2_LastDispatchResult
+              XREF           NEWGRID_ProcessAltEntryState
+              XREF           NEWGRID2_HandleGridState
+              XREF           NEWGRID_ProcessSecondaryState
+              XREF           NEWGRID_ProcessScheduleState
+              XREF           NEWGRID_ProcessShowtimesWorkflow
+              XDEF           NEWGRID2_DispatchGridOperation
+              END
