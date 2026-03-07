@@ -22,13 +22,16 @@ extern LONG STRING_CompareNoCase(const char *a, const char *b);
 
 void TEXTDISP_AddSourceConfigEntry(char *name, const char *tag)
 {
+    const LONG SOURCECFG_ALLOC_LINE = 1229;
+    const LONG SOURCECFG_ALLOC_SIZE = 6;
+    const UBYTE SOURCECFG_FLAG_SPORTS = 8;
     LONG idx = TEXTDISP_SourceConfigEntryCount;
     TEXTDISP_SourceConfigEntry **slot = &TEXTDISP_SourceConfigEntryTable[idx];
 
     *slot = (TEXTDISP_SourceConfigEntry *)MEMORY_AllocateMemory(
         Global_STR_TEXTDISP_C_4,
-        1229,
-        6,
+        SOURCECFG_ALLOC_LINE,
+        SOURCECFG_ALLOC_SIZE,
         (MEMF_PUBLIC + MEMF_CLEAR)
     );
 
@@ -41,7 +44,7 @@ void TEXTDISP_AddSourceConfigEntry(char *name, const char *tag)
     (*slot)->name = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(name, (*slot)->name);
 
     if (STRING_CompareNoCase(tag, TEXTDISP_PtrPrevueSportsTag) == 0) {
-        (*slot)->flagMask = 8;
+        (*slot)->flagMask = SOURCECFG_FLAG_SPORTS;
     }
 
     TEXTDISP_SourceConfigFlagMask |= (*slot)->flagMask;

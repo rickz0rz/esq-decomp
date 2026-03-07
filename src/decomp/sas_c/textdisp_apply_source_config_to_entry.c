@@ -22,6 +22,7 @@ extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 
 void TEXTDISP_ApplySourceConfigToEntry(TEXTDISP_Entry *entry)
 {
+    const UBYTE CH_NUL = 0;
     LONG i;
 
     if (entry == (TEXTDISP_Entry *)0) {
@@ -34,7 +35,7 @@ void TEXTDISP_ApplySourceConfigToEntry(TEXTDISP_Entry *entry)
         TEXTDISP_SourceConfigEntry *cfg = TEXTDISP_SourceConfigEntryTable[i];
         LONG n = 0;
 
-        while (cfg->name[n] != 0) {
+        while (cfg->name[n] != CH_NUL) {
             ++n;
         }
 
