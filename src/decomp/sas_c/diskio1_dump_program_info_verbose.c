@@ -5,7 +5,15 @@ enum {
     PROGRAM_SLOT_FIRST = 1,
     PROGRAM_SLOT_PAST_LAST = 49,
     PROGRAM_ATTR_TABLE_OFFSET = 7,
-    PROGRAM_LINE_TABLE_OFFSET = 56
+    PROGRAM_LINE_TABLE_OFFSET = 56,
+    PROGRAM_ATTR_NONE = 0x01,
+    PROGRAM_ATTR_MOVIE = 0x02,
+    PROGRAM_ATTR_ALT_HILITE = 0x04,
+    PROGRAM_ATTR_TAG = 0x08,
+    PROGRAM_ATTR_0X10 = 0x10,
+    PROGRAM_ATTR_0X20 = 0x20,
+    PROGRAM_ATTR_0X40 = 0x40,
+    PROGRAM_ATTR_PREV_DAYS_DATA = 0x80
 };
 
 extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
@@ -54,35 +62,35 @@ void DISKIO1_DumpProgramInfoVerbose(const UBYTE *rec, ULONG programInfoId)
             Global_REF_STR_CLOCK_FORMAT[i],
             attr);
 
-        if (attr == 1) {
+        if (attr == PROGRAM_ATTR_NONE) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_NONE_VerboseProgramAttrFlags);
         }
-        if (attr & 0x02) {
+        if (attr & PROGRAM_ATTR_MOVIE) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_MOVIE_VerboseProgramAttrFlags);
         }
-        if (attr & 0x04) {
+        if (attr & PROGRAM_ATTR_ALT_HILITE) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_ALTHILITE_PROG_VerboseProgramAttrFlags);
         }
-        if (attr & 0x08) {
+        if (attr & PROGRAM_ATTR_TAG) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_TAG_PROG_VerboseProgramAttrFlags);
         }
-        if (attr & 0x10) {
+        if (attr & PROGRAM_ATTR_0X10) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_0X10);
         }
-        if (attr & 0x20) {
+        if (attr & PROGRAM_ATTR_0X20) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_0X20_VerboseProgramAttrFlags);
         }
-        if (attr & 0x40) {
+        if (attr & PROGRAM_ATTR_0X40) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_0X40);
         }
-        if (attr & 0x80) {
+        if (attr & PROGRAM_ATTR_PREV_DAYS_DATA) {
             GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_PREV_DAYS_DATA_VerboseProgramAttrFlags);
         }
