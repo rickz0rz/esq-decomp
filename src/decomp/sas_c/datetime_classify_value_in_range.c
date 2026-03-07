@@ -4,6 +4,9 @@ enum {
     RANGE_FLAG_DESCENDING = 16,
     RANGE_FLAG_IN_RANGE = 1,
     RANGE_FLAG_ABOVE_OR_EQUAL_HIGH = 2,
+    RANGE_CASE_IN_RANGE = 1,
+    RANGE_CASE_DESCENDING_IN_RANGE = 14,
+    RANGE_CASE_DESCENDING_ONLY = 16,
     RANGE_RESULT_FALSE = 0,
     RANGE_RESULT_TRUE = 1
 };
@@ -44,9 +47,9 @@ long DATETIME_ClassifyValueInRange(void *range_ptr, long value)
     }
 
     switch (flags) {
-        case 1:
-        case 14:
-        case 16:
+        case RANGE_CASE_IN_RANGE:
+        case RANGE_CASE_DESCENDING_IN_RANGE:
+        case RANGE_CASE_DESCENDING_ONLY:
             return RANGE_RESULT_TRUE;
         default:
             return RANGE_RESULT_FALSE;
