@@ -2,22 +2,31 @@ typedef signed char BYTE;
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
+enum {
+    CHARCLASS_DECIMAL_DIGIT_BIT = 2,
+    CHARCLASS_ALPHA_BIT = 7,
+    CHARCLASS_LOWERCASE_BIT = 1,
+    ASCII_ZERO = 48,
+    ASCII_UPPERCASE_DELTA = 32,
+    ASCII_HEX_ALPHA_BASE = 55
+};
+
 extern UBYTE WDISP_CharClassTable[];
 
 LONG LADFUNC_ParseHexDigit(BYTE ch)
 {
-    LONG v;
+    LONG code;
 
-    v = (LONG)ch;
-    if ((WDISP_CharClassTable[v] & (1u << 2)) != 0) {
-        return v - 48;
+    code = (LONG)ch;
+    if ((WDISP_CharClassTable[code] & (1u << CHARCLASS_DECIMAL_DIGIT_BIT)) != 0) {
+        return code - ASCII_ZERO;
     }
 
-    if ((WDISP_CharClassTable[v] & (1u << 7)) != 0) {
-        if ((WDISP_CharClassTable[v] & (1u << 1)) != 0) {
-            v -= 32;
+    if ((WDISP_CharClassTable[code] & (1u << CHARCLASS_ALPHA_BIT)) != 0) {
+        if ((WDISP_CharClassTable[code] & (1u << CHARCLASS_LOWERCASE_BIT)) != 0) {
+            code -= ASCII_UPPERCASE_DELTA;
         }
-        return v - 55;
+        return code - ASCII_HEX_ALPHA_BASE;
     }
 
     return 0;
