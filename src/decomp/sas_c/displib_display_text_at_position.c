@@ -1,5 +1,3 @@
-typedef unsigned long ULONG;
-
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void _LVOMove(void *graphicsBase, void *rastPort, long x, long y);
 extern void _LVOText(void *graphicsBase, void *rastPort, const char *text, long len);
