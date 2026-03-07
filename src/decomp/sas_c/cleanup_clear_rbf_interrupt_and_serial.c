@@ -2,7 +2,7 @@ typedef long LONG;
 
 enum {
     CUSTOM_INTENA = 0xDFF09A,
-    INTENA_RBF_DISABLE = 0x0800,
+    INTENA_RBF_DISABLE_MASK = 0x0800,
     RBF_BUFFER_SIZE = 64000,
     INTERRUPT_STRUCT_SIZE = 22,
     RBF_BUFFER_FREE_LINE = 113,
@@ -25,7 +25,7 @@ void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *
 
 void CLEANUP_ClearRbfInterruptAndSerial(void)
 {
-    *((volatile unsigned short *)CUSTOM_INTENA) = INTENA_RBF_DISABLE; /* INTENA */
+    *((volatile unsigned short *)CUSTOM_INTENA) = INTENA_RBF_DISABLE_MASK; /* INTENA */
 
     _LVOCloseDevice();
     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport((void *)WDISP_SerialMessagePortPtr);
