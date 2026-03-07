@@ -27,40 +27,62 @@ extern void ED_RedrawCursorChar(void);
 
 void ED_DrawAdNumberPrompt(void)
 {
+    const LONG PANEL_MODE_EDIT_AD = 6;
+    const LONG DRAWMODE_JAM1 = 0;
+    const LONG DRAWMODE_COMPLEMENT = 1;
+    const LONG PEN_TEXT = 1;
+    const LONG PEN_HILITE = 6;
+    const LONG X_LEFT = 40;
+    const LONG X_RIGHT = 640;
+    const LONG Y_TOP = 68;
+    const LONG Y_BOTTOM = 98;
+    const LONG Y_MSG = 330;
+    const LONG X_ADMAX = 340;
+    const LONG X_HELP = 370;
+    const LONG Y_MSG2 = 360;
+    const LONG Y_MSG3 = 390;
+    const LONG Y_PROMPT = 90;
+    const LONG DEC_WIDTH_2 = 2;
+    const LONG CURSOR_START = 12;
+    const LONG PROMPT_BUF_LEN = 14;
+    const UBYTE SPACE_CHAR = 0x20;
+    const LONG NIBBLE_HI = 2;
+    const LONG NIBBLE_LO = 1;
+    const UBYTE STATE_RESET = 0;
     LONG i;
 
-    ED_DrawHelpPanels(6);
+    ED_DrawHelpPanels(PANEL_MODE_EDIT_AD);
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0);
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM1);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_TEXT);
 
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 330, 40, Global_STR_ENTER_AD_NUMBER_ONE_HYPHEN);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG, X_LEFT, Global_STR_ENTER_AD_NUMBER_ONE_HYPHEN);
 
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth((char *)ED_EditBufferScratch, ED_MaxAdNumber, 2);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 330, 340, (char *)ED_EditBufferScratch);
+    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth((char *)ED_EditBufferScratch, ED_MaxAdNumber, DEC_WIDTH_2);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG, X_ADMAX, (char *)ED_EditBufferScratch);
 
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 330, 370, Global_STR_LEFT_PARENTHESIS_THEN);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 360, 40, Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_2);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 390, 40, Global_STR_SINGLE_SPACE_4);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG, X_HELP, Global_STR_LEFT_PARENTHESIS_THEN);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG2, X_LEFT, Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_2);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG3, X_LEFT, Global_STR_SINGLE_SPACE_4);
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 6);
-    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 40, 68, 640, 98);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_COMPLEMENT);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_HILITE);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, X_LEFT, Y_TOP, X_RIGHT, Y_BOTTOM);
 
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_TEXT);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM1);
 
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 90, 40, Global_STR_AD_NUMBER_QUESTIONMARK);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_PROMPT, X_LEFT, Global_STR_AD_NUMBER_QUESTIONMARK);
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_COMPLEMENT);
 
-    ED_EditCursorOffset = 12;
+    ED_EditCursorOffset = CURSOR_START;
 
-    for (i = 0; i < 14; ++i) {
-        ED_EditBufferScratch[i] = 0x20;
-        ED_EditBufferLive[i] = (UBYTE)GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte(2, 1);
+    for (i = 0; i < PROMPT_BUF_LEN; ++i) {
+        ED_EditBufferScratch[i] = SPACE_CHAR;
+        ED_EditBufferLive[i] = (UBYTE)GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte(NIBBLE_HI, NIBBLE_LO);
     }
 
-    ED_AdNumberPromptStateBlock = 0;
+    ED_AdNumberPromptStateBlock = STATE_RESET;
     ED_RedrawCursorChar();
 }
