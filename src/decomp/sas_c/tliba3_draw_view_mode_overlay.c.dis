@@ -1,0 +1,113 @@
+              SECTION      text,CODE
+__code:
+TLIBA3_DrawViewModeOverlay:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$64,D0                  ;90bc 0000 0064 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$58,A7                  ;9efc 0058 
+              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
+___TLIBA3_DrawViewModeOverlay__1:
+              MOVE.L         $70(A7),D7               ;2e2f 0070 
+              PEA            ($9a).w                  ;4878 009a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              LEA            TLIBA3_VmArrayRuntimeTable(A4),A0;41ec 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,A5                    ;2a48 
+              LEA            $2(A5),A0                ;41ed 0002 
+              MOVE.W         (A0),D6                  ;3c10 
+              LEA            $4(A5),A0                ;41ed 0004 
+              MOVE.W         (A0),D5                  ;3a10 
+              LEA            $a(A5),A3                ;47ed 000a 
+              MOVE.L         Global_HANDLE_PREVUEC_FONT(A4),(A7);2eac 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetFont              ;6100 0000 
+              PEA            ($9a).w                  ;4878 009a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              LEA            TLIBA3_VmArrayRuntimeTable(A4),A0;41ec 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,A5                    ;2a48 
+              LEA            $a(A5),A3                ;47ed 000a 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetRast              ;6100 0000 
+              PEA            ($9a).w                  ;4878 009a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              LEA            TLIBA3_VmArrayRuntimeTable(A4),A0;41ec 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,A5                    ;2a48 
+              LEA            $a(A5),A3                ;47ed 000a 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              PEA            ($9a).w                  ;4878 009a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___TLIBA3_DrawViewModeOverlay__2:
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              LEA            TLIBA3_VmArrayRuntimeTable(A4),A0;41ec 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,A5                    ;2a48 
+              LEA            $a(A5),A3                ;47ed 000a 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+              PEA            ($9a).w                  ;4878 009a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              LEA            TLIBA3_VmArrayRuntimeTable(A4),A0;41ec 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,A5                    ;2a48 
+              LEA            $a(A5),A3                ;47ed 000a 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetBPen              ;6100 0000 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              BSR.W          TLIBA3_DrawViewModeGuides;6100 0000 
+              MOVE.L         D7,(A7)                  ;2e87 
+              PEA            TLIBA1_FMT_VIEWMODE_PCT_LD(A4);486c 0000 
+              PEA            $28(A7)                  ;486f 0028 
+              BSR.W          WDISP_SPrintf            ;6100 0000 
+              PEA            ($9a).w                  ;4878 009a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              LEA            TLIBA3_VmArrayRuntimeTable(A4),A0;41ec 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,A5                    ;2a48 
+              LEA            $a(A5),A3                ;47ed 000a 
+              PEA            ($5a).w                  ;4878 005a 
+              PEA            $38(A7)                  ;486f 0038 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          TLIBA3_DrawCenteredWrappedTextLi;6100 0000 
+              LEA            $2c(A7),A7               ;4fef 002c 
+___TLIBA3_DrawViewModeOverlay__3:
+              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
+              ADD.W          #$58,A7                  ;defc 0058 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           MATH_Mulu32
+              XREF           TLIBA3_VmArrayRuntimeTable
+              XREF           Global_HANDLE_PREVUEC_FONT
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetFont
+              XREF           _LVOSetRast
+              XREF           _LVOSetDrMd
+              XREF           _LVOSetAPen
+              XREF           _LVOSetBPen
+              XREF           TLIBA3_DrawViewModeGuides
+              XREF           TLIBA1_FMT_VIEWMODE_PCT_LD
+              XREF           WDISP_SPrintf
+              XREF           TLIBA3_DrawCenteredWrappedTextLi
+              XDEF           TLIBA3_DrawViewModeOverlay
+              END
