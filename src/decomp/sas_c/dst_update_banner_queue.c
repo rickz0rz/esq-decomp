@@ -15,52 +15,63 @@ extern void DST_WriteRtcFromGlobals(void);
 
 LONG DST_UpdateBannerQueue(void *pair)
 {
+    const LONG PTR_NULL = 0;
+    const LONG SLOT0_OFFSET = 0;
+    const LONG SLOT1_OFFSET = 4;
+    const LONG SLOT_COUNTDOWN_OFFSET = 16;
+    const LONG COUNTDOWN_ACTIVE = 1;
+    const LONG STEP_FORWARD = 1;
+    const LONG STEP_BACKWARD = -1;
+    const LONG OFFSET_ZERO = 0;
+    const UBYTE SECONDARY_MODE_ENABLED = 89;
+    const LONG FLAG_FALSE = 0;
+    const LONG FLAG_TRUE = 1;
     UBYTE *p = (UBYTE *)pair;
-    LONG changed = 0;
+    LONG changed = FLAG_FALSE;
 
-    if (p == (UBYTE *)0) {
-        return 0;
+    if (p == (UBYTE *)PTR_NULL) {
+        return FLAG_FALSE;
     }
 
-    if (*(void **)(p + 0) != (void *)0) {
-        UBYTE *slot0 = (UBYTE *)*(void **)(p + 0);
-        *(WORD *)(slot0 + 16) = DST_PrimaryCountdown;
+    if (*(void **)(p + SLOT0_OFFSET) != (void *)PTR_NULL) {
+        UBYTE *slot0 = (UBYTE *)*(void **)(p + SLOT0_OFFSET);
+        *(WORD *)(slot0 + SLOT_COUNTDOWN_OFFSET) = DST_PrimaryCountdown;
 
         if (DATETIME_UpdateSelectionField(slot0) != 0) {
-            LONG step = (*(WORD *)(slot0 + 16) != 0) ? 1 : -1;
-            DST_AddTimeOffset(CLOCK_DaySlotIndex, step, 0);
-            DST_PrimaryCountdown = *(WORD *)(slot0 + 16);
+            LONG step = (*(WORD *)(slot0 + SLOT_COUNTDOWN_OFFSET) != FLAG_FALSE) ? STEP_FORWARD : STEP_BACKWARD;
+            DST_AddTimeOffset(CLOCK_DaySlotIndex, step, OFFSET_ZERO);
+            DST_PrimaryCountdown = *(WORD *)(slot0 + SLOT_COUNTDOWN_OFFSET);
             DST_WriteRtcFromGlobals();
-            changed = 1;
+            changed = FLAG_TRUE;
         }
     } else {
-        if ((WORD)(DST_PrimaryCountdown - 1) == 0) {
-            DST_AddTimeOffset(CLOCK_DaySlotIndex, -1, 0);
-            DST_PrimaryCountdown = 0;
-            changed = 1;
+        if ((WORD)(DST_PrimaryCountdown - COUNTDOWN_ACTIVE) == FLAG_FALSE) {
+            DST_AddTimeOffset(CLOCK_DaySlotIndex, STEP_BACKWARD, OFFSET_ZERO);
+            DST_PrimaryCountdown = FLAG_FALSE;
+            changed = FLAG_TRUE;
         }
     }
 
-    if (ESQ_SecondarySlotModeFlagChar == 89) {
-        if (*(void **)(p + 4) != (void *)0) {
-            UBYTE *slot1 = (UBYTE *)*(void **)(p + 4);
-            *(WORD *)(slot1 + 16) = DST_SecondaryCountdown;
+    if (ESQ_SecondarySlotModeFlagChar == SECONDARY_MODE_ENABLED) {
+        if (*(void **)(p + SLOT1_OFFSET) != (void *)PTR_NULL) {
+            UBYTE *slot1 = (UBYTE *)*(void **)(p + SLOT1_OFFSET);
+            *(WORD *)(slot1 + SLOT_COUNTDOWN_OFFSET) = DST_SecondaryCountdown;
 
             if (DATETIME_UpdateSelectionField(slot1) != 0) {
-                DST_SecondaryCountdown = *(WORD *)(slot1 + 16);
-                changed = 1;
+                DST_SecondaryCountdown = *(WORD *)(slot1 + SLOT_COUNTDOWN_OFFSET);
+                changed = FLAG_TRUE;
             }
-        } else if ((WORD)(DST_SecondaryCountdown - 1) == 0) {
-            DST_SecondaryCountdown = 0;
-            changed = 1;
+        } else if ((WORD)(DST_SecondaryCountdown - COUNTDOWN_ACTIVE) == FLAG_FALSE) {
+            DST_SecondaryCountdown = FLAG_FALSE;
+            changed = FLAG_TRUE;
         }
-    } else if ((WORD)(DST_SecondaryCountdown - 1) == 0) {
-        *(void **)(p + 4) = DST_AllocateBannerStruct(*(void **)(p + 4));
-        DST_SecondaryCountdown = 0;
-        changed = 1;
+    } else if ((WORD)(DST_SecondaryCountdown - COUNTDOWN_ACTIVE) == FLAG_FALSE) {
+        *(void **)(p + SLOT1_OFFSET) = DST_AllocateBannerStruct(*(void **)(p + SLOT1_OFFSET));
+        DST_SecondaryCountdown = FLAG_FALSE;
+        changed = FLAG_TRUE;
     }
 
-    if (changed != 0) {
+    if (changed != FLAG_FALSE) {
         DST_RefreshBannerBuffer();
     }
 

@@ -2,109 +2,123 @@
 __code:
 ED2_HandleScrollSpeedSelection:
               MOVE.L         A7,D0                    ;200f 
-              SUBQ.L         #$4,D0                   ;5980 
+              SUB.L          #$28,D0                  ;90bc 0000 0028 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D2/D6/D7,-(A7)           ;48e7 2300 
+              SUB.W          #$24,A7                  ;9efc 0024 
+              MOVEM.L        D2/D3/D4/D5/D6/D7,-(A7)  ;48e7 3f00 
 ___ED2_HandleScrollSpeedSelection__1:
-              MOVE.L         ED_StateRingIndex(A4),D0 ;202c 0000 
-              MOVE.L         D0,D1                    ;2200 
-              ASL.L          #$2,D1                   ;e581 
-              ADD.L          D0,D1                    ;d280 
-              MOVE.L         D1,D7                    ;2e01 
-              LEA            ED_StateRingTable(A4),A0 ;41ec 0000 
-              MOVE.B         $0(A0,D7.L),D6           ;1c30 7800 
-              MOVE.B         D6,ED_LastKeyCode(A4)    ;1946 0000 
-              LEA            ED_StateRingTable+$1(A4),A0;41ec 0001 
-              MOVE.B         $0(A0,D7.L),ED_LastMenuInputChar(A4);1970 7800 0000 
-              MOVEQ.L        #$d,D0                   ;700d 
-              CMP.B          D0,D6                    ;bc00 
-              BEQ.B          ___ED2_HandleScrollSpeedSelection__3;6706 
-___ED2_HandleScrollSpeedSelection__2:
+              MOVEQ.L        #$2,D7                   ;7e02 
+              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVEQ.L        #$d,D5                   ;7a0d 
               MOVEQ.L        #$1b,D0                  ;701b 
-              CMP.B          D0,D6                    ;bc00 
-              BNE.B          ___ED2_HandleScrollSpeedSelection__7;662a 
+              MOVE.B         #$9b,$1f(A7)             ;1f7c 009b 001f 
+              MOVE.B         #$41,$1e(A7)             ;1f7c 0041 001e 
+              MOVEQ.L        #$8,D1                   ;7208 
+              MOVE.L         D1,$1a(A7)               ;2f41 001a 
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVE.L         D1,$34(A7)               ;2f41 0034 
+              MOVEQ.L        #$3,D1                   ;7203 
+              MOVE.L         D1,$30(A7)               ;2f41 0030 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVEQ.L        #$9,D2                   ;7409 
+              MOVE.L         D2,$28(A7)               ;2f42 0028 
+              MOVEQ.L        #$30,D2                  ;7430 
+              MOVE.L         ED_StateRingIndex(A4),D3 ;262c 0000 
+              MOVE.L         D3,D4                    ;2803 
+              ASL.L          D7,D4                    ;efa4 
+              ADD.L          D3,D4                    ;d883 
+              LEA            ED_StateRingTable(A4),A0 ;41ec 0000 
+              MOVE.B         $0(A0,D4.L),D3           ;1630 4800 
+              MOVE.B         D3,ED_LastKeyCode(A4)    ;1943 0000 
+              MOVE.L         D4,$20(A7)               ;2f44 0020 
+              ADD.L          D6,D4                    ;d886 
+              MOVE.B         $0(A0,D4.L),ED_LastMenuInputChar(A4);1970 4800 0000 
+              MOVE.B         D0,$38(A7)               ;1f40 0038 
+              MOVEM.L        D1,$2c(A7)               ;48ef 0002 002c 
+              MOVEM.L        D2,$24(A7)               ;48ef 0004 0024 
+              MOVE.B         D3,$19(A7)               ;1f43 0019 
+              CMP.B          D3,D5                    ;ba03 
+              BEQ.B          ___ED2_HandleScrollSpeedSelection__3;6704 
+___ED2_HandleScrollSpeedSelection__2:
+              CMP.B          D0,D3                    ;b600 
+              BNE.B          ___ED2_HandleScrollSpeedSelection__7;6628 
 ___ED2_HandleScrollSpeedSelection__3:
               MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
               MOVE.L         D0,ED_SavedScrollSpeedIndex(A4);2940 0000 
-              TST.L          D0                       ;4a80 
-              BNE.B          ___ED2_HandleScrollSpeedSelection__5;6610 
+              CMP.L          D0,D1                    ;b280 
+              BNE.B          ___ED2_HandleScrollSpeedSelection__5;660e 
 ___ED2_HandleScrollSpeedSelection__4:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         ESQ_STR_SATELLITE_DELIVERED_SCRO(A4),D1;122c 0000 
-              MOVEQ.L        #$30,D2                  ;7430 
               SUB.L          D2,D1                    ;9282 
               MOVE.W         D1,ESQPARS2_StateIndex(A4);3941 0000 
               BRA.B          ___ED2_HandleScrollSpeedSelection__6;6006 
 ___ED2_HandleScrollSpeedSelection__5:
-              SUBQ.L         #$1,D0                   ;5380 
+              SUB.L          D6,D0                    ;9086 
               MOVE.W         D0,ESQPARS2_StateIndex(A4);3940 0000 
 ___ED2_HandleScrollSpeedSelection__6:
               BSR.W          ED_DrawESCMenuBottomHelp ;6100 0000 
               BRA.W          ___ED2_HandleScrollSpeedSelection__22;6000 0084 
 ___ED2_HandleScrollSpeedSelection__7:
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         D6,D0                    ;1006 
-              MOVEQ.L        #$64,D1                  ;7264 
-              NOT.B          D1                       ;4601 
-              CMP.L          D1,D0                    ;b081 
-              BNE.B          ___ED2_HandleScrollSpeedSelection__17;6648 
+              CMP.B          $1f(A7),D3               ;b62f 001f 
+              BNE.B          ___ED2_HandleScrollSpeedSelection__17;664c 
 ___ED2_HandleScrollSpeedSelection__8:
               MOVE.B         ED_LastMenuInputChar(A4),D0;102c 0000 
-              MOVEQ.L        #$41,D1                  ;7241 
-              CMP.B          D1,D0                    ;b001 
-              BNE.B          ___ED2_HandleScrollSpeedSelection__12;660e 
+              CMP.B          $1e(A7),D0               ;b02f 001e 
+              BNE.B          ___ED2_HandleScrollSpeedSelection__12;6610 
 ___ED2_HandleScrollSpeedSelection__9:
               SUBQ.L         #$1,ED_EditCursorOffset(A4);53ac 0000 
-              BGE.B          ___ED2_HandleScrollSpeedSelection__16;6c28 
+              BGE.B          ___ED2_HandleScrollSpeedSelection__16;6c2c 
 ___ED2_HandleScrollSpeedSelection__10:
-              MOVEQ.L        #$8,D0                   ;7008 
+              MOVE.L         $1a(A7),D0               ;202f 001a 
               MOVE.L         D0,ED_EditCursorOffset(A4);2940 0000 
 ___ED2_HandleScrollSpeedSelection__11:
-              BRA.B          ___ED2_HandleScrollSpeedSelection__16;6020 
+              BRA.B          ___ED2_HandleScrollSpeedSelection__16;6022 
 ___ED2_HandleScrollSpeedSelection__12:
               ADDQ.L         #$1,ED_EditCursorOffset(A4);52ac 0000 
-              MOVEQ.L        #$1,D0                   ;7001 
-              CMP.L          ED_EditCursorOffset(A4),D0;b0ac 0000 
-              BNE.B          ___ED2_HandleScrollSpeedSelection__14;6608 
+              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
+              CMP.L          $34(A7),D0               ;b0af 0034 
+              BNE.B          ___ED2_HandleScrollSpeedSelection__14;660a 
 ___ED2_HandleScrollSpeedSelection__13:
-              MOVEQ.L        #$3,D0                   ;7003 
-              MOVE.L         D0,ED_EditCursorOffset(A4);2940 0000 
-              BRA.B          ___ED2_HandleScrollSpeedSelection__16;600c 
+              MOVE.L         $30(A7),D1               ;222f 0030 
+              MOVE.L         D1,ED_EditCursorOffset(A4);2941 0000 
+              BRA.B          ___ED2_HandleScrollSpeedSelection__16;600a 
 ___ED2_HandleScrollSpeedSelection__14:
-              MOVEQ.L        #$9,D0                   ;7009 
-              CMP.L          ED_EditCursorOffset(A4),D0;b0ac 0000 
+              MOVEQ.L        #$9,D1                   ;7209 
+              CMP.L          D1,D0                    ;b081 
               BNE.B          ___ED2_HandleScrollSpeedSelection__16;6604 
 ___ED2_HandleScrollSpeedSelection__15:
               CLR.L          ED_EditCursorOffset(A4)  ;42ac 0000 
 ___ED2_HandleScrollSpeedSelection__16:
-              PEA            ($9).w                   ;4878 0009 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               BSR.W          ED_DrawMenuSelectionHighlight;6100 0000 
               BSR.W          ED_DrawScrollSpeedMenuText;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.B          ___ED2_HandleScrollSpeedSelection__22;602e 
+              BRA.B          ___ED2_HandleScrollSpeedSelection__22;6030 
 ___ED2_HandleScrollSpeedSelection__17:
               ADDQ.L         #$1,ED_EditCursorOffset(A4);52ac 0000 
-              MOVEQ.L        #$1,D0                   ;7001 
-              CMP.L          ED_EditCursorOffset(A4),D0;b0ac 0000 
-              BNE.B          ___ED2_HandleScrollSpeedSelection__19;6608 
+              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
+              CMP.L          $34(A7),D0               ;b0af 0034 
+              BNE.B          ___ED2_HandleScrollSpeedSelection__19;660a 
 ___ED2_HandleScrollSpeedSelection__18:
-              MOVEQ.L        #$3,D0                   ;7003 
-              MOVE.L         D0,ED_EditCursorOffset(A4);2940 0000 
-              BRA.B          ___ED2_HandleScrollSpeedSelection__21;600c 
+              MOVE.L         $30(A7),D1               ;222f 0030 
+              MOVE.L         D1,ED_EditCursorOffset(A4);2941 0000 
+              BRA.B          ___ED2_HandleScrollSpeedSelection__21;600a 
 ___ED2_HandleScrollSpeedSelection__19:
-              MOVEQ.L        #$9,D0                   ;7009 
-              CMP.L          ED_EditCursorOffset(A4),D0;b0ac 0000 
+              MOVEQ.L        #$9,D1                   ;7209 
+              CMP.L          D1,D0                    ;b081 
               BNE.B          ___ED2_HandleScrollSpeedSelection__21;6604 
 ___ED2_HandleScrollSpeedSelection__20:
               CLR.L          ED_EditCursorOffset(A4)  ;42ac 0000 
 ___ED2_HandleScrollSpeedSelection__21:
-              PEA            ($9).w                   ;4878 0009 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               BSR.W          ED_DrawMenuSelectionHighlight;6100 0000 
               BSR.W          ED_DrawScrollSpeedMenuText;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___ED2_HandleScrollSpeedSelection__22:
-              MOVEM.L        (A7)+,D2/D6/D7           ;4cdf 00c4 
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7  ;4cdf 00fc 
+              ADD.W          #$24,A7                  ;defc 0024 
               RTS                                     ;4e75 
 __const:
 __strings:

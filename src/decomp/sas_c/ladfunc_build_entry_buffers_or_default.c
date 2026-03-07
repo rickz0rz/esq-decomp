@@ -19,23 +19,30 @@ extern void LADFUNC_ReflowEntryBuffers(UBYTE *textBuf, UBYTE *attrBuf);
 
 void LADFUNC_BuildEntryBuffersOrDefault(LONG entryIndex, UBYTE *outText, UBYTE *outAttr)
 {
+    const LONG LINE_WIDTH = 40;
+    const UBYTE SPACE_CHAR = 32;
+    const UBYTE CH_NUL = 0;
+    const LONG PTR_NULL = 0;
     LONG count;
     LadfuncEntry *entry;
-    UBYTE packed;
+    LONG packedLong;
     LONG i;
 
     entry = LADFUNC_EntryPtrTable[entryIndex];
-    if (entry->textPtr == (UBYTE *)0) {
-        count = NEWGRID_JMPTBL_MATH_Mulu32(ED_TextLimit, 40);
+    if (entry->textPtr == (UBYTE *)PTR_NULL) {
+        count = NEWGRID_JMPTBL_MATH_Mulu32(ED_TextLimit, LINE_WIDTH);
         for (i = 0; i < count; ++i) {
-            outText[i] = 32;
+            outText[i] = SPACE_CHAR;
         }
-        outText[count] = 0;
+        outText[count] = CH_NUL;
 
-        packed = (UBYTE)LADFUNC_ComposePackedPenByte(2, 1);
+        packedLong = LADFUNC_ComposePackedPenByte(2, 1);
         count = NEWGRID_JMPTBL_MATH_Mulu32(ED_TextLimit, 40);
-        for (i = 0; i < count; ++i) {
-            outAttr[i] = packed;
+        {
+            UBYTE *dst = outAttr;
+            for (i = count; i > 0; --i) {
+                *dst++ = (UBYTE)packedLong;
+            }
         }
         return;
     }
@@ -43,13 +50,13 @@ void LADFUNC_BuildEntryBuffersOrDefault(LONG entryIndex, UBYTE *outText, UBYTE *
     {
         UBYTE *src = entry->textPtr;
         UBYTE *dst = outText;
-        while ((*dst++ = *src++) != 0) {
+        while ((*dst++ = *src++) != CH_NUL) {
         }
     }
 
     {
         UBYTE *p = outText;
-        while (*p != 0) {
+        while (*p != CH_NUL) {
             ++p;
         }
         count = (LONG)(p - outText);
