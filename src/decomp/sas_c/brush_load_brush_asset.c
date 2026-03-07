@@ -4,6 +4,8 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_NODE_SIZE = 372,
+    BRUSH_DECODE_BUFFER_SIZE = 130000,
     MEMF_PUBLIC_CLEAR = 0x10001UL
 };
 
@@ -70,12 +72,18 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             decode_buf = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
                 Global_STR_BRUSH_C_10,
                 977,
-                130000,
+                BRUSH_DECODE_BUFFER_SIZE,
                 MEMF_PUBLIC_CLEAR
             );
             decode_cur = decode_buf;
             if (decode_buf != (UBYTE *)0) {
-                if (BITMAP_ProcessIlbmImage(fh, src + 152, src + 32, 130000, decode_buf, src) == 1) {
+                if (BITMAP_ProcessIlbmImage(
+                        fh,
+                        src + 152,
+                        src + 32,
+                        BRUSH_DECODE_BUFFER_SIZE,
+                        decode_buf,
+                        src) == 1) {
                     status_fail = 0;
                 }
             }
@@ -104,7 +112,11 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     }
 
     if (status_fail == 0) {
-        node = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_BRUSH_C_11, 1064, 372, MEMF_PUBLIC_CLEAR);
+        node = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+            Global_STR_BRUSH_C_11,
+            1064,
+            BRUSH_NODE_SIZE,
+            MEMF_PUBLIC_CLEAR);
         if (node != (UBYTE *)0) {
             UBYTE *d = node;
             const UBYTE *s = src;
@@ -136,7 +148,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                     }
                     i++;
                 }
-                GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_14, 1205, node, 372);
+                GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_14, 1205, node, BRUSH_NODE_SIZE);
                 node = (UBYTE *)0;
             } else {
                 _LVOInitRastPort(node + 36);
@@ -157,14 +169,22 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     }
 
     if ((UBYTE)src[190] == 11) {
-        UBYTE *alt = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_BRUSH_C_15, 1220, 372, MEMF_PUBLIC_CLEAR);
+        UBYTE *alt = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+            Global_STR_BRUSH_C_15,
+            1220,
+            BRUSH_NODE_SIZE,
+            MEMF_PUBLIC_CLEAR);
         if (alt != (UBYTE *)0) {
             node = alt;
         }
     }
 
     if (decode_buf != (UBYTE *)0) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_16, 1236, decode_buf, 130000);
+        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+            Global_STR_BRUSH_C_16,
+            1236,
+            decode_buf,
+            BRUSH_DECODE_BUFFER_SIZE);
     }
 
     return node;
