@@ -4,6 +4,7 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_RASTPORT_STATE_COPY_BYTES = 96,
     BRUSH_MAX_PLANES = 5,
     BRUSH_ALERT_ALLOC_FAIL = 1,
     BRUSH_ALERT_DEPTH_EXCEEDED = 2,
@@ -172,7 +173,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             } else {
                 _LVOInitRastPort(node + 36);
                 *(void **)(node + 40) = node + 136;
-                for (i = 0; i < 96; i++) {
+                for (i = 0; i < BRUSH_RASTPORT_STATE_COPY_BYTES; i++) {
                     node[232 + i] = src[32 + i];
                 }
 
