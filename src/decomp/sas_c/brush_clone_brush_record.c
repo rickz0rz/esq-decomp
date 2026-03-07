@@ -6,6 +6,12 @@ typedef long LONG;
 enum {
     BRUSH_NULL = 0,
     BRUSH_PLANE_PTR_SHIFT = 2,
+    BRUSH_META_TABLE_DST_OFFSET = 176,
+    BRUSH_META_TABLE_SRC_OFFSET = 128,
+    BRUSH_META_TABLE_STRIDE = 4,
+    BRUSH_META_COPY_DST_OFFSET = 196,
+    BRUSH_META_COPY_SRC_OFFSET = 148,
+    BRUSH_NEXT_PTR_OFFSET = 368,
     BRUSH_PLANE_PAIR_TABLE_DST_OFFSET = 200,
     BRUSH_PLANE_PAIR_TABLE_SRC_OFFSET = 152,
     BRUSH_PLANE_PAIR_STRIDE = 8,
@@ -72,10 +78,11 @@ void *BRUSH_CloneBrushRecord(void *src_rec)
     } while (*s++ != BRUSH_NULL);
 
     for (i = BRUSH_NULL; i < BRUSH_PLANE_COUNT; i++) {
-        *(ULONG *)(dst + 176 + (i * 4)) = *(ULONG *)(src + 128 + (i * 4));
+        *(ULONG *)(dst + BRUSH_META_TABLE_DST_OFFSET + (i * BRUSH_META_TABLE_STRIDE)) =
+            *(ULONG *)(src + BRUSH_META_TABLE_SRC_OFFSET + (i * BRUSH_META_TABLE_STRIDE));
     }
-    *(ULONG *)(dst + 196) = *(ULONG *)(src + 148);
-    *(ULONG *)(dst + 368) = BRUSH_NULL;
+    *(ULONG *)(dst + BRUSH_META_COPY_DST_OFFSET) = *(ULONG *)(src + BRUSH_META_COPY_SRC_OFFSET);
+    *(ULONG *)(dst + BRUSH_NEXT_PTR_OFFSET) = BRUSH_NULL;
 
     _LVOInitBitMap(
         dst + BRUSH_NODE_BITMAP_OFFSET,
