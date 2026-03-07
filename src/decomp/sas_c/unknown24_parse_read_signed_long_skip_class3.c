@@ -5,28 +5,28 @@ extern UBYTE *STR_SkipClass3Chars(UBYTE *s);
 extern LONG PARSE_ReadSignedLong(const UBYTE *in, LONG *outValue);
 extern LONG PARSE_ReadSignedLong_NoBranch(const UBYTE *in, LONG *outValue);
 
-LONG PARSE_ReadSignedLongSkipClass3(UBYTE *input)
+LONG PARSE_ReadSignedLongSkipClass3(UBYTE *cursor)
 {
     LONG parsedValue;
 
-    if (!input) {
+    if (!cursor) {
         return 0;
     }
 
-    input = STR_SkipClass3Chars(input);
-    PARSE_ReadSignedLong(input, &parsedValue);
+    cursor = STR_SkipClass3Chars(cursor);
+    PARSE_ReadSignedLong(cursor, &parsedValue);
     return parsedValue;
 }
 
-LONG PARSE_ReadSignedLongSkipClass3_Alt(UBYTE *input)
+LONG PARSE_ReadSignedLongSkipClass3_Alt(UBYTE *cursor)
 {
     LONG parsedValue;
 
-    if (!input) {
+    if (!cursor) {
         return 0;
     }
 
-    input = STR_SkipClass3Chars(input);
-    PARSE_ReadSignedLong_NoBranch(input, &parsedValue);
+    cursor = STR_SkipClass3Chars(cursor);
+    PARSE_ReadSignedLong_NoBranch(cursor, &parsedValue);
     return parsedValue;
 }
