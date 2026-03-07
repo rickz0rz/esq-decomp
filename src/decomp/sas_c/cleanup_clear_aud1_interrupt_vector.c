@@ -2,7 +2,7 @@ typedef long LONG;
 
 enum {
     CUSTOM_INTENA = 0xDFF09A,
-    INTENA_AUD1_DISABLE = 0x0100,
+    INTENA_AUD1_DISABLE_MASK = 0x0100,
     INTERRUPT_STRUCT_SIZE = 22,
     INTERRUPT_FREE_LINE = 74
 };
@@ -16,7 +16,7 @@ void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *
 
 void CLEANUP_ClearAud1InterruptVector(void)
 {
-    *((volatile unsigned short *)CUSTOM_INTENA) = INTENA_AUD1_DISABLE; /* INTENA */
+    *((volatile unsigned short *)CUSTOM_INTENA) = INTENA_AUD1_DISABLE_MASK; /* INTENA */
     _LVOSetIntVector();
 
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
