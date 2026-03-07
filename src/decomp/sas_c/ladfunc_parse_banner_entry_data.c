@@ -8,7 +8,7 @@ typedef unsigned char UBYTE;
 typedef struct LADFUNC_EntryRecord {
     UWORD startSlot;
     UWORD endSlot;
-    UBYTE reserved[2];
+    UBYTE align_pad[2];
     UBYTE *textPtr;
     UBYTE *attrPtr;
 } LADFUNC_EntryRecord;
