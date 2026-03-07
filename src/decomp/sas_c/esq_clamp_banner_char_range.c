@@ -9,6 +9,7 @@ void ESQ_ClampBannerCharRange(long currentChar, long startBandChar, long endBand
     const short kBandCharI = 73;
     const short kWrapMax = 48;
     const short kMinRangeStart = 1;
+    const short kZero = 0;
     short clampedStart;
     short clampedEnd;
     short startOffset;
@@ -43,7 +44,7 @@ void ESQ_ClampBannerCharRange(long currentChar, long startBandChar, long endBand
     wrapMax = kWrapMax;
     rangeEndChar = clampedStart;
 
-    if (startOffset != 0) {
+    if (startOffset != kZero) {
         clampedStart = (short)(clampedStart - startOffset);
         if (clampedStart < kMinRangeStart) {
             clampedStart = (short)(clampedStart + wrapMax);
