@@ -1,6 +1,13 @@
 typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
+enum {
+    PROGRAM_SLOT_FIRST = 1,
+    PROGRAM_SLOT_PAST_LAST = 49,
+    PROGRAM_ATTR_TABLE_OFFSET = 7,
+    PROGRAM_LINE_TABLE_OFFSET = 56
+};
+
 extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
 
 extern const char *Global_REF_STR_CLOCK_FORMAT[];
@@ -37,9 +44,9 @@ void DISKIO1_DumpProgramInfoVerbose(const UBYTE *rec, ULONG programInfoId)
         return;
     }
 
-    for (i = 1; i < 49; i++) {
-        ULONG attr = (ULONG)rec[7 + i];
-        const char *line = ((const char *const *)(rec + 56))[i];
+    for (i = PROGRAM_SLOT_FIRST; i < PROGRAM_SLOT_PAST_LAST; i++) {
+        ULONG attr = (ULONG)rec[PROGRAM_ATTR_TABLE_OFFSET + i];
+        const char *line = ((const char *const *)(rec + PROGRAM_LINE_TABLE_OFFSET))[i];
 
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX,
