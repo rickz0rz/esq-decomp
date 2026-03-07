@@ -627,6 +627,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ed1_handle_esc_menu_input_trial.sh"
     "src/decomp/scripts/compare_sasc_ed2_draw_entry_details_panel_trial.sh"
     "src/decomp/scripts/compare_sasc_ed2_draw_entry_summary_panel_trial.sh"
+    "src/decomp/scripts/compare_sasc_ed2_handle_diagnostics_menu_actions_trial.sh"
     "src/decomp/scripts/compare_sasc_ed2_handle_scroll_speed_selection_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_capture_key_sequence_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_ad_number_prompt_trial.sh"

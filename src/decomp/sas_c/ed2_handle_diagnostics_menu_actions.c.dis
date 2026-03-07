@@ -1,0 +1,382 @@
+              SECTION      text,CODE
+__code:
+ED2_HandleDiagnosticsMenuActions:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ED2_HandleDiagnosticsMenuActions__1:
+              MOVE.L         ED_StateRingIndex(A4),D0 ;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D0,D1                    ;d280 
+              LEA            ED_StateRingTable(A4),A0 ;41ec 0000 
+              MOVE.B         $0(A0,D1.L),D7           ;1e30 1800 
+              MOVE.B         D7,ED_LastKeyCode(A4)    ;1947 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+___ED2_HandleDiagnosticsMenuActions__2:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__25;6700 008c 
+___ED2_HandleDiagnosticsMenuActions__3:
+              SUBQ.L         #$2,D0                   ;5580 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__29;6700 00a4 
+___ED2_HandleDiagnosticsMenuActions__4:
+              SUBQ.L         #$3,D0                   ;5780 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__30;6700 00ae 
+___ED2_HandleDiagnosticsMenuActions__5:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__31;6700 00b8 
+___ED2_HandleDiagnosticsMenuActions__6:
+              SUBQ.L         #$6,D0                   ;5d80 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__32;6700 00c0 
+___ED2_HandleDiagnosticsMenuActions__7:
+              MOVEQ.L        #$d,D1                   ;720d 
+              SUB.L          D1,D0                    ;9081 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__36;6700 0136 
+___ED2_HandleDiagnosticsMenuActions__8:
+              SUBQ.L         #$2,D0                   ;5580 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__33;6700 00d6 
+___ED2_HandleDiagnosticsMenuActions__9:
+              SUBQ.L         #$2,D0                   ;5580 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__34;6700 00ee 
+___ED2_HandleDiagnosticsMenuActions__10:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__35;6700 0106 
+___ED2_HandleDiagnosticsMenuActions__11:
+              MOVEQ.L        #$9,D1                   ;7209 
+              SUB.L          D1,D0                    ;9081 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__40;6700 0158 
+___ED2_HandleDiagnosticsMenuActions__12:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__41;6700 0174 
+___ED2_HandleDiagnosticsMenuActions__13:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__42;6700 0192 
+___ED2_HandleDiagnosticsMenuActions__14:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__43;6700 01b0 
+___ED2_HandleDiagnosticsMenuActions__15:
+              SUBQ.L         #$7,D0                   ;5f80 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__44;6700 01ce 
+___ED2_HandleDiagnosticsMenuActions__16:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__45;6700 01e8 
+___ED2_HandleDiagnosticsMenuActions__17:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__46;6700 0202 
+___ED2_HandleDiagnosticsMenuActions__18:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__47;6700 021c 
+___ED2_HandleDiagnosticsMenuActions__19:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__48;6700 0236 
+___ED2_HandleDiagnosticsMenuActions__20:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__52;6700 0284 
+___ED2_HandleDiagnosticsMenuActions__21:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__53;6700 029c 
+___ED2_HandleDiagnosticsMenuActions__22:
+              MOVEQ.L        #$22,D1                  ;7222 
+              SUB.L          D1,D0                    ;9081 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__54;6700 02b2 
+___ED2_HandleDiagnosticsMenuActions__23:
+              MOVEQ.L        #$20,D1                  ;7220 
+              SUB.L          D1,D0                    ;9081 
+              BEQ.W          ___ED2_HandleDiagnosticsMenuActions__55;6700 02b6 
+___ED2_HandleDiagnosticsMenuActions__24:
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__56;6000 02c4 
+___ED2_HandleDiagnosticsMenuActions__25:
+              MOVEQ.L        #$7,D0                   ;7007 
+              AND.L          ED_DiagAvailMemMask(A4),D0;c0ac 0000 
+              SUBQ.L         #$7,D0                   ;5f80 
+              BNE.B          ___ED2_HandleDiagnosticsMenuActions__27;660a 
+___ED2_HandleDiagnosticsMenuActions__26:
+              MOVEQ.L        #$f8,D0                  ;70f8 
+              AND.L          D0,ED_DiagAvailMemMask(A4);c1ac 0000 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 02b8 
+___ED2_HandleDiagnosticsMenuActions__27:
+              MOVEQ.L        #$7,D0                   ;7007 
+              OR.L           D0,ED_DiagAvailMemMask(A4);81ac 0000 
+___ED2_HandleDiagnosticsMenuActions__28:
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 02ae 
+___ED2_HandleDiagnosticsMenuActions__29:
+              MOVEQ.L        #$f8,D0                  ;70f8 
+              AND.L          D0,ED_DiagAvailMemMask(A4);c1ac 0000 
+              BSET           #$0,ED_DiagAvailMemPresetBits+$3(A4);08ec 0000 0003 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 029e 
+___ED2_HandleDiagnosticsMenuActions__30:
+              MOVEQ.L        #$f8,D0                  ;70f8 
+              AND.L          D0,ED_DiagAvailMemMask(A4);c1ac 0000 
+              BSET           #$1,ED_DiagAvailMemPresetBits+$3(A4);08ec 0001 0003 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 028e 
+___ED2_HandleDiagnosticsMenuActions__31:
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AK_JMPTBL_TLIBA3_DrawViewM;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 0280 
+___ED2_HandleDiagnosticsMenuActions__32:
+              CLR.W          Global_WORD_MAX_VALUE(A4);426c 0000 
+              CLR.W          CTRL_HDeltaMax(A4)       ;426c 0000 
+              CLR.W          ESQIFF_LineErrorCount(A4);426c 0000 
+              CLR.W          DATACErrs(A4)            ;426c 0000 
+              CLR.W          ESQIFF_ParseAttemptCount(A4);426c 0000 
+              CLR.W          SCRIPT_CtrlCmdLengthErrorCount(A4);426c 0000 
+              CLR.W          SCRIPT_CtrlCmdChecksumErrorCount(A4);426c 0000 
+              CLR.W          SCRIPT_CtrlCmdCount(A4)  ;426c 0000 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 025c 
+___ED2_HandleDiagnosticsMenuActions__33:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_DiagTextModeChar(A4),D0;102c 0000 
+              PEA            ED2_TAG_NRLS(A4)         ;486c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ED_FindNextCharInTable   ;6100 0000 
+              MOVE.B         D0,ED_DiagTextModeChar(A4);1940 0000 
+              BSR.W          ED_DrawDiagnosticModeText;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 023e 
+___ED2_HandleDiagnosticsMenuActions__34:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_DiagVinModeChar(A4),D0;102c 0000 
+              PEA            ED2_STR_NYYLLZ(A4)       ;486c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ED_FindNextCharInTable   ;6100 0000 
+              MOVE.B         D0,ED_DiagVinModeChar(A4);1940 0000 
+              BSR.W          ED_DrawDiagnosticModeText;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 0220 
+___ED2_HandleDiagnosticsMenuActions__35:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_DiagGraphModeChar(A4),D0;102c 0000 
+              PEA            ED2_TAG_NYLRS(A4)        ;486c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ED_FindNextCharInTable   ;6100 0000 
+              MOVE.B         D0,ED_DiagGraphModeChar(A4);1940 0000 
+              BSR.W          ED_DrawDiagnosticModeText;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 0202 
+___ED2_HandleDiagnosticsMenuActions__36:
+              MOVE.B         ED_DiagScrollSpeedChar(A4),D0;102c 0000 
+              MOVEQ.L        #$33,D1                  ;7233 
+              CMP.B          D1,D0                    ;b001 
+              BHI.B          ___ED2_HandleDiagnosticsMenuActions__38;6204 
+___ED2_HandleDiagnosticsMenuActions__37:
+              MOVEQ.L        #$36,D1                  ;7236 
+              BRA.B          ___ED2_HandleDiagnosticsMenuActions__39;6006 
+___ED2_HandleDiagnosticsMenuActions__38:
+              SUBQ.B         #$1,D0                   ;5300 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+___ED2_HandleDiagnosticsMenuActions__39:
+              MOVE.B         D1,ED_DiagScrollSpeedChar(A4);1941 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D1,D0                    ;1001 
+              MOVEQ.L        #$30,D1                  ;7230 
+              SUB.L          D1,D0                    ;9081 
+              MOVE.L         D0,ED_TextLimit(A4)      ;2940 0000 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQIFF_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,ED_BlockOffset(A4)    ;2940 0000 
+              BSR.W          ED_DrawDiagnosticModeText;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 01c6 
+___ED2_HandleDiagnosticsMenuActions__40:
+              PEA            ED2_STR_SILENCE(A4)      ;486c 0000 
+              PEA            ($168).w                 ;4878 0168 
+              PEA            ($af).w                  ;4878 00af 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              BSR.W          GROUP_AK_JMPTBL_SCRIPT_UpdateSer;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 01a4 
+___ED2_HandleDiagnosticsMenuActions__41:
+              PEA            ED2_STR_LEFT(A4)         ;486c 0000 
+              PEA            ($168).w                 ;4878 0168 
+              PEA            ($af).w                  ;4878 00af 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          GROUP_AK_JMPTBL_SCRIPT_UpdateSer;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 0180 
+___ED2_HandleDiagnosticsMenuActions__42:
+              PEA            ED2_STR_RIGHT(A4)        ;486c 0000 
+              PEA            ($168).w                 ;4878 0168 
+              PEA            ($af).w                  ;4878 00af 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ($2).w                   ;4878 0002 
+              BSR.W          GROUP_AK_JMPTBL_SCRIPT_UpdateSer;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 015c 
+___ED2_HandleDiagnosticsMenuActions__43:
+              PEA            ED2_STR_BACKGROUND(A4)   ;486c 0000 
+              PEA            ($168).w                 ;4878 0168 
+              PEA            ($af).w                  ;4878 00af 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ($3).w                   ;4878 0003 
+              BSR.W          GROUP_AK_JMPTBL_SCRIPT_UpdateSer;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 0138 
+___ED2_HandleDiagnosticsMenuActions__44:
+              PEA            ED2_STR_EXT_DOT_VIDEO_ONLY(A4);486c 0000 
+              PEA            ($186).w                 ;4878 0186 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              BSR.W          GROUP_AK_JMPTBL_ESQ_SetCopperEff;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 0118 
+___ED2_HandleDiagnosticsMenuActions__45:
+              PEA            ED2_STR_COMPUTER_ONLY(A4);486c 0000 
+              PEA            ($186).w                 ;4878 0186 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              BSR.W          GROUP_AM_JMPTBL_ESQ_SetCopperEff;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 00f8 
+___ED2_HandleDiagnosticsMenuActions__46:
+              PEA            ED2_STR_OVERLAY_EXT_DOT_VIDEO(A4);486c 0000 
+              PEA            ($186).w                 ;4878 0186 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              BSR.W          GROUP_AM_JMPTBL_ESQ_SetCopperEff;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 00d8 
+___ED2_HandleDiagnosticsMenuActions__47:
+              PEA            ED2_STR_NEGATIVE_VIDEO(A4);486c 0000 
+              PEA            ($186).w                 ;4878 0186 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              BSR.W          GROUP_AK_JMPTBL_ESQ_SetCopperEff;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.W          ___ED2_HandleDiagnosticsMenuActions__58;6000 00b8 
+___ED2_HandleDiagnosticsMenuActions__48:
+              PEA            ED2_STR_VIDEO_SWITCH(A4) ;486c 0000 
+              PEA            ($10e).w                 ;4878 010e 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              BSR.W          ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___ED2_HandleDiagnosticsMenuActions__50;661a 
+___ED2_HandleDiagnosticsMenuActions__49:
+              PEA            ED2_STR_OPEN(A4)         ;486c 0000 
+              PEA            ($10e).w                 ;4878 010e 
+              PEA            ($eb).w                  ;4878 00eb 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.B          ___ED2_HandleDiagnosticsMenuActions__58;607c 
+___ED2_HandleDiagnosticsMenuActions__50:
+              PEA            ED2_STR_CLOSED(A4)       ;486c 0000 
+              PEA            ($10e).w                 ;4878 010e 
+              PEA            ($eb).w                  ;4878 00eb 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___ED2_HandleDiagnosticsMenuActions__51:
+              BRA.B          ___ED2_HandleDiagnosticsMenuActions__58;6062 
+___ED2_HandleDiagnosticsMenuActions__52:
+              PEA            ED2_STR_START_TAPE_VIDEO(A4);486c 0000 
+              PEA            ($10e).w                 ;4878 010e 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              BSR.W          GROUP_AK_JMPTBL_SCRIPT_AssertCtr;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.B          ___ED2_HandleDiagnosticsMenuActions__58;6044 
+___ED2_HandleDiagnosticsMenuActions__53:
+              PEA            ED2_STR_STOP(A4)         ;486c 0000 
+              PEA            ($10e).w                 ;4878 010e 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              BSR.W          GROUP_AK_JMPTBL_SCRIPT_DeassertC;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.B          ___ED2_HandleDiagnosticsMenuActions__58;6026 
+___ED2_HandleDiagnosticsMenuActions__54:
+              MOVE.W         ED_DiagnosticsViewMode(A4),D0;302c 0000 
+              ADDQ.W         #$1,D0                   ;5240 
+              MOVE.W         D0,ED_DiagnosticsViewMode(A4);3940 0000 
+              BRA.B          ___ED2_HandleDiagnosticsMenuActions__58;601a 
+___ED2_HandleDiagnosticsMenuActions__55:
+              MOVE.W         ED_DiagnosticsViewMode(A4),D0;302c 0000 
+              SUBQ.W         #$1,D0                   ;5340 
+              SCC            D0,#$600                 ;56c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              SUB.B          D0,D1                    ;9200 
+              MOVE.W         D1,ED_DiagnosticsViewMode(A4);3941 0000 
+              BRA.B          ___ED2_HandleDiagnosticsMenuActions__58;6008 
+___ED2_HandleDiagnosticsMenuActions__56:
+              BSR.W          ED_DrawESCMenuBottomHelp ;6100 0000 
+              CLR.W          ED_DiagnosticsScreenActive(A4);426c 0000 
+___ED2_HandleDiagnosticsMenuActions__57:
+___ED2_HandleDiagnosticsMenuActions__58:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_StateRingIndex
+              XREF           ED_StateRingTable
+              XREF           ED_LastKeyCode
+              XREF           ED_DiagAvailMemMask
+              XREF           ED_DiagAvailMemPresetBits
+              XREF           Global_REF_RASTPORT_1
+              XREF           GROUP_AK_JMPTBL_TLIBA3_DrawViewM
+              XREF           Global_WORD_MAX_VALUE
+              XREF           CTRL_HDeltaMax
+              XREF           ESQIFF_LineErrorCount
+              XREF           DATACErrs
+              XREF           ESQIFF_ParseAttemptCount
+              XREF           SCRIPT_CtrlCmdLengthErrorCount
+              XREF           SCRIPT_CtrlCmdChecksumErrorCount
+              XREF           SCRIPT_CtrlCmdCount
+              XREF           ED_DiagTextModeChar
+              XREF           ED2_TAG_NRLS
+              XREF           ED_FindNextCharInTable
+              XREF           ED_DrawDiagnosticModeText
+              XREF           ED_DiagVinModeChar
+              XREF           ED2_STR_NYYLLZ
+              XREF           ED_DiagGraphModeChar
+              XREF           ED2_TAG_NYLRS
+              XREF           ED_DiagScrollSpeedChar
+              XREF           ED_TextLimit
+              XREF           ESQIFF_JMPTBL_MATH_Mulu32
+              XREF           ED_BlockOffset
+              XREF           ED2_STR_SILENCE
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           GROUP_AK_JMPTBL_SCRIPT_UpdateSer
+              XREF           ED2_STR_LEFT
+              XREF           ED2_STR_RIGHT
+              XREF           ED2_STR_BACKGROUND
+              XREF           ED2_STR_EXT_DOT_VIDEO_ONLY
+              XREF           GROUP_AK_JMPTBL_ESQ_SetCopperEff
+              XREF           ED2_STR_COMPUTER_ONLY
+              XREF           GROUP_AM_JMPTBL_ESQ_SetCopperEff
+              XREF           ED2_STR_OVERLAY_EXT_DOT_VIDEO
+              XREF           ED2_STR_NEGATIVE_VIDEO
+              XREF           ED2_STR_VIDEO_SWITCH
+              XREF           ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi
+              XREF           ED2_STR_OPEN
+              XREF           ED2_STR_CLOSED
+              XREF           ED2_STR_START_TAPE_VIDEO
+              XREF           GROUP_AK_JMPTBL_SCRIPT_AssertCtr
+              XREF           ED2_STR_STOP
+              XREF           GROUP_AK_JMPTBL_SCRIPT_DeassertC
+              XREF           ED_DiagnosticsViewMode
+              XREF           ED_DrawESCMenuBottomHelp
+              XREF           ED_DiagnosticsScreenActive
+              XDEF           ED2_HandleDiagnosticsMenuActions
+              END
