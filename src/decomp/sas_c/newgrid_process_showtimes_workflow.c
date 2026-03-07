@@ -33,7 +33,7 @@ LONG NEWGRID_ProcessShowtimesWorkflow(LayoutCtx *ctx, UWORD rowBase)
     LONG steppedFrom34 = 0;
 
     if (!ctx) {
-        if (NEWGRID_ShowtimesWorkflowState == 2) {
+        if (NEWGRID_ShowtimesWorkflowState == 2 || NEWGRID_ShowtimesWorkflowState == 7) {
             NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState(ctx, 0, 0, 0);
         } else if (NEWGRID_ShowtimesWorkflowState == 5) {
             if (NEWGRID_ShouldOpenEditor((void *)NEWGRID_ShowtimesSelectionContextPtr) != 0) {
@@ -100,6 +100,10 @@ LONG NEWGRID_ProcessShowtimesWorkflow(LayoutCtx *ctx, UWORD rowBase)
             break;
 
         case 6:
+            NEWGRID_ShowtimesWorkflowState = 0;
+            break;
+
+        case 7:
             if (GCOMMAND_PpvShowtimesWorkflowMode == 'B' || GCOMMAND_PpvShowtimesWorkflowMode == 'L') {
                 NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState(
                     ctx, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, GCOMMAND_PPVListingsTemplatePtr);
@@ -111,10 +115,6 @@ LONG NEWGRID_ProcessShowtimesWorkflow(LayoutCtx *ctx, UWORD rowBase)
             } else {
                 NEWGRID_ShowtimesWorkflowState = 0;
             }
-            break;
-
-        case 7:
-            NEWGRID_ShowtimesWorkflowState = 0;
             break;
 
         default:
