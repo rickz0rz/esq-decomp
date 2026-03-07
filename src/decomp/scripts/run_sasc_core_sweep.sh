@@ -591,6 +591,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ed_draw_ad_editing_screen_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_current_color_indicator_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_enter_text_edit_mode_trial.sh"
+    "src/decomp/scripts/compare_sasc_ed_redraw_all_rows_trial.sh"
+    "src/decomp/scripts/compare_sasc_ed_redraw_row_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_ad_number_prompt_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_esc_main_menu_text_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_menu_selection_highlight_trial.sh"
