@@ -11,7 +11,7 @@ enum {
 extern UBYTE KYBD_CustomPaletteTriplesRBase[];
 extern UBYTE ESQFUNC_BasePaletteRgbTriples[];
 
-extern char Global_STR_COLOR_PERCENT_D[];
+extern const char Global_STR_COLOR_PERCENT_D[];
 
 extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, LONG indexValue);
 extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(char *a, char *b);

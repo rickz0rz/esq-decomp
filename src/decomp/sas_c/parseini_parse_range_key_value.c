@@ -4,11 +4,11 @@ typedef unsigned char UBYTE;
 
 extern LONG PARSEINI_CurrentRangeTableIndex;
 
-extern char PARSEINI_DelimSpaceTab_RangeKey[];
-extern char PARSEINI_DelimSpaceSemicolonTab_RangeValue[];
-extern char PARSEINI_TAG_TABLE[];
-extern char PARSEINI_TAG_DONE[];
-extern char PARSEINI_TAG_COLOR[];
+extern const char PARSEINI_DelimSpaceTab_RangeKey[];
+extern const char PARSEINI_DelimSpaceSemicolonTab_RangeValue[];
+extern const char PARSEINI_TAG_TABLE[];
+extern const char PARSEINI_TAG_DONE[];
+extern const char PARSEINI_TAG_COLOR[];
 
 extern char *PARSEINI_JMPTBL_STR_FindCharPtr(char *s, LONG ch);
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
