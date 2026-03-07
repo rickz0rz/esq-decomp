@@ -38,7 +38,7 @@ ___NEWGRID_UpdateSelectionFromInput__5:
               MOVEQ.L        #$1,D6                   ;7c01 
 ___NEWGRID_UpdateSelectionFromInput__6:
               TST.L          D6                       ;4a86 
-              BNE.W          ___NEWGRID_UpdateSelectionFromInput__45;6600 017e 
+              BNE.W          ___NEWGRID_UpdateSelectionFromInput__48;6600 01c6 
 ___NEWGRID_UpdateSelectionFromInput__7:
               MOVE.L         $c(A5),D0                ;202d 000c 
               TST.L          D0                       ;4a80 
@@ -47,9 +47,11 @@ ___NEWGRID_UpdateSelectionFromInput__8:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D1;322c 0000 
               CMP.L          D1,D0                    ;b081 
-              BLE.B          ___NEWGRID_UpdateSelectionFromInput__10;6f04 
+              BLE.B          ___NEWGRID_UpdateSelectionFromInput__10;6f0a 
 ___NEWGRID_UpdateSelectionFromInput__9:
-              CLR.L          $c(A5)                   ;42ad 000c 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
+              MOVE.L         D0,$c(A5)                ;2b40 000c 
 ___NEWGRID_UpdateSelectionFromInput__10:
               MOVE.L         $10(A5),D0               ;202d 0010 
               TST.L          D0                       ;4a80 
@@ -58,20 +60,22 @@ ___NEWGRID_UpdateSelectionFromInput__11:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D1;322c 0000 
               CMP.L          D1,D0                    ;b081 
-              BLE.B          ___NEWGRID_UpdateSelectionFromInput__13;6f04 
+              BLE.B          ___NEWGRID_UpdateSelectionFromInput__13;6f0a 
 ___NEWGRID_UpdateSelectionFromInput__12:
-              CLR.L          $10(A5)                  ;42ad 0010 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
+              MOVE.L         D0,$10(A5)               ;2b40 0010 
 ___NEWGRID_UpdateSelectionFromInput__13:
               TST.L          D6                       ;4a86 
-              BNE.W          ___NEWGRID_UpdateSelectionFromInput__45;6600 014c 
+              BNE.W          ___NEWGRID_UpdateSelectionFromInput__48;6600 0188 
 ___NEWGRID_UpdateSelectionFromInput__14:
               MOVE.W         NEWGRID_SelectionScanRow(A4),D0;302c 0000 
               MOVEQ.L        #$0,D1                   ;7200 
               CMP.W          D1,D0                    ;b041 
-              BLS.W          ___NEWGRID_UpdateSelectionFromInput__45;6300 0140 
+              BLS.W          ___NEWGRID_UpdateSelectionFromInput__48;6300 017c 
 ___NEWGRID_UpdateSelectionFromInput__15:
               CMP.W          $16(A5),D0               ;b06d 0016 
-              BCC.W          ___NEWGRID_UpdateSelectionFromInput__45;6400 0138 
+              BCC.W          ___NEWGRID_UpdateSelectionFromInput__48;6400 0174 
 ___NEWGRID_UpdateSelectionFromInput__16:
 ___NEWGRID_UpdateSelectionFromInput__17:
               MOVE.L         NEWGRID_SelectionScanEntryIndex(A4),D1;222c 0000 
@@ -86,8 +90,15 @@ ___NEWGRID_UpdateSelectionFromInput__18:
               BRA.B          ___NEWGRID_UpdateSelectionFromInput__13;60ca 
 ___NEWGRID_UpdateSelectionFromInput__19:
               TST.B          TEXTDISP_PrimaryGroupPresentFlag(A4);4a2c 0000 
-              BEQ.W          ___NEWGRID_UpdateSelectionFromInput__45;6700 0114 
+              BNE.B          ___NEWGRID_UpdateSelectionFromInput__21;6616 
 ___NEWGRID_UpdateSelectionFromInput__20:
+              MOVE.W         NEWGRID_SelectionScanRow(A4),D0;302c 0000 
+              MOVE.W         D0,D1                    ;3200 
+              ADDQ.W         #$1,D1                   ;5241 
+              MOVE.W         D1,NEWGRID_SelectionScanRow(A4);3941 0000 
+              MOVE.L         $c(A5),D0                ;202d 000c 
+              MOVE.L         D0,NEWGRID_SelectionScanEntryIndex(A4);2940 0000 
+              BRA.B          ___NEWGRID_UpdateSelectionFromInput__13;60ae 
 ___NEWGRID_UpdateSelectionFromInput__21:
               MOVE.L         NEWGRID_SelectionScanEntryIndex(A4),D5;2a2c 0000 
               MOVEQ.L        #$0,D0                   ;7000 
@@ -103,10 +114,10 @@ ___NEWGRID_UpdateSelectionFromInput__21:
               BEQ.B          ___NEWGRID_UpdateSelectionFromInput__23;6706 
 ___NEWGRID_UpdateSelectionFromInput__22:
               MOVE.L         $14(A7),D1               ;222f 0014 
-              BNE.B          ___NEWGRID_UpdateSelectionFromInput__24;6606 
+              BNE.B          ___NEWGRID_UpdateSelectionFromInput__24;6608 
 ___NEWGRID_UpdateSelectionFromInput__23:
               ADDQ.L         #$1,NEWGRID_SelectionScanEntryIndex(A4);52ac 0000 
-              BRA.B          ___NEWGRID_UpdateSelectionFromInput__13;6090 
+              BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 ff7c 
 ___NEWGRID_UpdateSelectionFromInput__24:
               MOVE.L         D0,A0                    ;2040 
               MOVE.B         $2e(A0),D1               ;1228 002e 
@@ -118,7 +129,7 @@ ___NEWGRID_UpdateSelectionFromInput__25:
               BNE.B          ___NEWGRID_UpdateSelectionFromInput__27;6608 
 ___NEWGRID_UpdateSelectionFromInput__26:
               ADDQ.L         #$1,NEWGRID_SelectionScanEntryIndex(A4);52ac 0000 
-              BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 ff74 
+              BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 ff5e 
 ___NEWGRID_UpdateSelectionFromInput__27:
               MOVE.W         NEWGRID_SelectionScanRow(A4),D1;322c 0000 
               CMP.W          $14(A5),D1               ;b26d 0014 
@@ -135,7 +146,7 @@ ___NEWGRID_UpdateSelectionFromInput__29:
               BGT.B          ___NEWGRID_UpdateSelectionFromInput__31;6e08 
 ___NEWGRID_UpdateSelectionFromInput__30:
               ADDQ.L         #$1,NEWGRID_SelectionScanEntryIndex(A4);52ac 0000 
-              BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 ff4c 
+              BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 ff36 
 ___NEWGRID_UpdateSelectionFromInput__31:
               MOVE.L         $18(A7),A0               ;206f 0018 
               ADD.W          #$1c,A0                  ;d0fc 001c 
@@ -147,7 +158,7 @@ ___NEWGRID_UpdateSelectionFromInput__31:
               BEQ.B          ___NEWGRID_UpdateSelectionFromInput__33;6708 
 ___NEWGRID_UpdateSelectionFromInput__32:
               ADDQ.L         #$1,NEWGRID_SelectionScanEntryIndex(A4);52ac 0000 
-              BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 ff2e 
+              BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 ff18 
 ___NEWGRID_UpdateSelectionFromInput__33:
               MOVE.L         $14(A7),A0               ;206f 0014 
               ADD.L          D4,A0                    ;d1c4 
@@ -155,7 +166,7 @@ ___NEWGRID_UpdateSelectionFromInput__33:
               BEQ.B          ___NEWGRID_UpdateSelectionFromInput__35;6708 
 ___NEWGRID_UpdateSelectionFromInput__34:
               ADDQ.L         #$1,NEWGRID_SelectionScanEntryIndex(A4);52ac 0000 
-              BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 ff18 
+              BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 ff02 
 ___NEWGRID_UpdateSelectionFromInput__35:
               MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
               BSR.W          NEWGRID_ShouldOpenEditor ;6100 0000 
@@ -167,25 +178,40 @@ ___NEWGRID_UpdateSelectionFromInput__36:
               CMP.W          $14(A5),D0               ;b06d 0014 
               BNE.B          ___NEWGRID_UpdateSelectionFromInput__39;6616 
 ___NEWGRID_UpdateSelectionFromInput__37:
+              MOVE.L         D4,D1                    ;2204 
+              ASL.L          #$2,D1                   ;e581 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D1,A1                    ;d3c1 
+              TST.L          $38(A1)                  ;4aa9 0038 
+              BEQ.B          ___NEWGRID_UpdateSelectionFromInput__39;6704 
+___NEWGRID_UpdateSelectionFromInput__38:
+              MOVEQ.L        #$1,D6                   ;7c01 
+              BRA.B          ___NEWGRID_UpdateSelectionFromInput__45;6050 
+___NEWGRID_UpdateSelectionFromInput__39:
+              MOVEQ.L        #$0,D6                   ;7c00 
+___NEWGRID_UpdateSelectionFromInput__40:
+              BRA.B          ___NEWGRID_UpdateSelectionFromInput__45;604c 
+___NEWGRID_UpdateSelectionFromInput__41:
               MOVE.L         D4,D0                    ;2004 
               ASL.L          #$2,D0                   ;e580 
               MOVE.L         $14(A7),A0               ;206f 0014 
               MOVE.L         A0,A1                    ;2248 
               ADD.L          D0,A1                    ;d3c0 
               TST.L          $38(A1)                  ;4aa9 0038 
-              BEQ.B          ___NEWGRID_UpdateSelectionFromInput__39;6704 
-___NEWGRID_UpdateSelectionFromInput__38:
-              MOVEQ.L        #$1,D6                   ;7c01 
-              BRA.B          ___NEWGRID_UpdateSelectionFromInput__42;602a 
-___NEWGRID_UpdateSelectionFromInput__39:
-              MOVEQ.L        #$0,D6                   ;7c00 
-___NEWGRID_UpdateSelectionFromInput__40:
-              BRA.B          ___NEWGRID_UpdateSelectionFromInput__42;6026 
-___NEWGRID_UpdateSelectionFromInput__41:
+              BEQ.B          ___NEWGRID_UpdateSelectionFromInput__44;6738 
+___NEWGRID_UpdateSelectionFromInput__42:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_SelectionScanRow(A4),D0;302c 0000 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D0,A1                    ;d3c0 
+              BTST           #$7,$7(A1)               ;0829 0007 0007 
+              BNE.B          ___NEWGRID_UpdateSelectionFromInput__44;6626 
+___NEWGRID_UpdateSelectionFromInput__43:
               MOVE.L         GCOMMAND_PpvSelectionToleranceMi(A4),-(A7);2f2c 0000 
               MOVE.L         GCOMMAND_PpvSelectionWindowMinut(A4),-(A7);2f2c 0000 
               MOVE.L         D4,-(A7)                 ;2f04 
-              MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
+              MOVE.L         A0,-(A7)                 ;2f08 
               MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               BSR.W          NEWGRID2_JMPTBL_COI_ProcessEntry;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
@@ -195,53 +221,56 @@ ___NEWGRID_UpdateSelectionFromInput__41:
               EXT.W          D1                       ;4881 
               EXT.L          D1                       ;48c1 
               MOVE.L         D1,D6                    ;2c01 
-___NEWGRID_UpdateSelectionFromInput__42:
-              TST.L          D6                       ;4a86 
-              BNE.W          ___NEWGRID_UpdateSelectionFromInput__13;6600 feba 
-___NEWGRID_UpdateSelectionFromInput__43:
-              ADDQ.L         #$1,NEWGRID_SelectionScanEntryIndex(A4);52ac 0000 
+              BRA.B          ___NEWGRID_UpdateSelectionFromInput__45;6002 
 ___NEWGRID_UpdateSelectionFromInput__44:
-              BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 feb2 
+              MOVEQ.L        #$0,D6                   ;7c00 
 ___NEWGRID_UpdateSelectionFromInput__45:
               TST.L          D6                       ;4a86 
-              BEQ.B          ___NEWGRID_UpdateSelectionFromInput__51;6744 
+              BNE.W          ___NEWGRID_UpdateSelectionFromInput__13;6600 fe7e 
 ___NEWGRID_UpdateSelectionFromInput__46:
+              ADDQ.L         #$1,NEWGRID_SelectionScanEntryIndex(A4);52ac 0000 
+___NEWGRID_UpdateSelectionFromInput__47:
+              BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 fe76 
+___NEWGRID_UpdateSelectionFromInput__48:
+              TST.L          D6                       ;4a86 
+              BEQ.B          ___NEWGRID_UpdateSelectionFromInput__54;6744 
+___NEWGRID_UpdateSelectionFromInput__49:
               MOVE.L         $18(A7),(A5)             ;2aaf 0018 
               MOVE.L         $14(A7),$4(A5)           ;2b6f 0014 0004 
               MOVE.L         NEWGRID_SelectionScanEntryIndex(A4),$8(A5);2b6c 0000 0008 
               MOVE.W         NEWGRID_SelectionScanRow(A4),D0;302c 0000 
               MOVEQ.L        #$30,D1                  ;7230 
               CMP.W          D1,D0                    ;b041 
-              BLS.B          ___NEWGRID_UpdateSelectionFromInput__49;6312 
-___NEWGRID_UpdateSelectionFromInput__47:
+              BLS.B          ___NEWGRID_UpdateSelectionFromInput__52;6312 
+___NEWGRID_UpdateSelectionFromInput__50:
               MOVEQ.L        #$31,D0                  ;7031 
               CMP.L          D0,D4                    ;b880 
-              BGE.B          ___NEWGRID_UpdateSelectionFromInput__49;6c0c 
-___NEWGRID_UpdateSelectionFromInput__48:
+              BGE.B          ___NEWGRID_UpdateSelectionFromInput__52;6c0c 
+___NEWGRID_UpdateSelectionFromInput__51:
               MOVE.L         D4,D0                    ;2004 
               MOVEQ.L        #$30,D1                  ;7230 
               ADD.L          D1,D0                    ;d081 
               MOVE.W         D0,$14(A5)               ;3b40 0014 
-              BRA.B          ___NEWGRID_UpdateSelectionFromInput__50;6006 
-___NEWGRID_UpdateSelectionFromInput__49:
+              BRA.B          ___NEWGRID_UpdateSelectionFromInput__53;6006 
+___NEWGRID_UpdateSelectionFromInput__52:
               MOVE.L         D4,D0                    ;2004 
               MOVE.W         D0,$14(A5)               ;3b40 0014 
-___NEWGRID_UpdateSelectionFromInput__50:
+___NEWGRID_UpdateSelectionFromInput__53:
               MOVE.L         $14(A7),A0               ;206f 0014 
               ADD.L          D4,A0                    ;d1c4 
               MOVEQ.L        #$20,D0                  ;7020 
               OR.B           $7(A0),D0                ;8028 0007 
               MOVE.B         D0,$7(A0)                ;1140 0007 
-              BRA.B          ___NEWGRID_UpdateSelectionFromInput__52;600a 
-___NEWGRID_UpdateSelectionFromInput__51:
+              BRA.B          ___NEWGRID_UpdateSelectionFromInput__55;600a 
+___NEWGRID_UpdateSelectionFromInput__54:
               CLR.L          -(A7)                    ;42a7 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_InitSelectionWindow;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-___NEWGRID_UpdateSelectionFromInput__52:
+___NEWGRID_UpdateSelectionFromInput__55:
               MOVE.L         D6,D0                    ;2006 
-___NEWGRID_UpdateSelectionFromInput__53:
-___NEWGRID_UpdateSelectionFromInput__54:
+___NEWGRID_UpdateSelectionFromInput__56:
+___NEWGRID_UpdateSelectionFromInput__57:
               MOVEM.L        (A7)+,D4/D5/D6/D7/A5     ;4cdf 20f0 
               ADDQ.W         #$8,A7                   ;504f 
               RTS                                     ;4e75 

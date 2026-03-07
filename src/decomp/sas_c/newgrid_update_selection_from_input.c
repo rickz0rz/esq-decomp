@@ -46,8 +46,12 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
     }
 
     if (!found) {
-        if (ctx->start < 0 || ctx->start > TEXTDISP_PrimaryGroupEntryCount) ctx->start = 0;
-        if (ctx->end < 0 || ctx->end > TEXTDISP_PrimaryGroupEntryCount) ctx->end = 0;
+        if (ctx->start < 0 || ctx->start > TEXTDISP_PrimaryGroupEntryCount) {
+            ctx->start = (LONG)TEXTDISP_PrimaryGroupEntryCount;
+        }
+        if (ctx->end < 0 || ctx->end > TEXTDISP_PrimaryGroupEntryCount) {
+            ctx->end = (LONG)TEXTDISP_PrimaryGroupEntryCount;
+        }
 
         while (!found) {
             if (NEWGRID_SelectionScanRow <= 0 || NEWGRID_SelectionScanRow >= ctx->rowLimit) break;
@@ -56,7 +60,11 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
                 NEWGRID_SelectionScanEntryIndex = ctx->start;
                 continue;
             }
-            if (!TEXTDISP_PrimaryGroupPresentFlag) break;
+            if (!TEXTDISP_PrimaryGroupPresentFlag) {
+                NEWGRID_SelectionScanRow += 1;
+                NEWGRID_SelectionScanEntryIndex = ctx->start;
+                continue;
+            }
 
             col = NEWGRID_SelectionScanEntryIndex;
             idx = NEWGRID_UpdatePresetEntry(&entry, &aux, NEWGRID_SelectionScanRow, col);
@@ -90,8 +98,12 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
             if (NEWGRID_ShouldOpenEditor(entry) != 0) {
                 found = ((NEWGRID_SelectionScanRow == ctx->row) && (((LONG *)aux)[14 + idx] != 0)) ? 1 : 0;
             } else {
-                found = NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
-                    entry, aux, idx, GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes) != 0;
+                if ((((LONG *)aux)[14 + idx] != 0) && ((((UBYTE *)aux)[7 + NEWGRID_SelectionScanRow] & 0x80) == 0)) {
+                    found = NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
+                        entry, aux, idx, GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes) != 0;
+                } else {
+                    found = 0;
+                }
             }
 
             if (!found) NEWGRID_SelectionScanEntryIndex += 1;
