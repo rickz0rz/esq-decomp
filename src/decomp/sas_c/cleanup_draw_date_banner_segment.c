@@ -19,9 +19,9 @@ void BEVEL_DrawBevelFrameWithTopRight(void *rp, LONG x, LONG y, LONG w, LONG h);
 
 void CLEANUP_DrawDateBannerSegment(void)
 {
-    LONG previousBitmap;
+    LONG savedBitmap;
 
-    previousBitmap = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET);
+    savedBitmap = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET);
     *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET) = (LONG)&Global_REF_696_400_BITMAP;
 
     _LVOSetAPen();
@@ -35,5 +35,5 @@ void CLEANUP_DrawDateBannerSegment(void)
 
     BEVEL_DrawBevelFrameWithTopRight((void *)Global_REF_RASTPORT_1, 0, DATE_BEVEL_Y, 255, DATE_BEVEL_HEIGHT);
 
-    *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET) = previousBitmap;
+    *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET) = savedBitmap;
 }
