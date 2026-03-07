@@ -14,9 +14,9 @@ extern UBYTE *Global_PTR_WORK_BUFFER;
 
 UBYTE *DISKIO_ConsumeLineFromWorkBuffer(void)
 {
-    UBYTE *start;
+    UBYTE *lineStart;
 
-    start = Global_PTR_WORK_BUFFER;
+    lineStart = Global_PTR_WORK_BUFFER;
 
     while (Global_REF_LONG_FILE_SCRATCH-- > DISKIO_COUNT_ZERO) {
         UBYTE ch;
@@ -45,5 +45,5 @@ UBYTE *DISKIO_ConsumeLineFromWorkBuffer(void)
         Global_REF_LONG_FILE_SCRATCH--;
     }
 
-    return start;
+    return lineStart;
 }
