@@ -16,6 +16,11 @@ volatile char *ESQIFF_PrimaryLineTailPtr;
 
 long DISKIO2_WriteOinfoDataFile(void)
 {
+    const long FILEHANDLE_INVALID = 0;
+    const long RESULT_FAIL = -1;
+    const long RESULT_OK = 0;
+    const char CH_NUL = 0;
+    const ULONG STR_TERM_BYTES = 1;
     char empty = 0;
     const char *line;
     const char *scan;
@@ -24,8 +29,8 @@ long DISKIO2_WriteOinfoDataFile(void)
     DISKIO2_OinfoFileHandle = DISKIO_OpenFileWithBuffer(
         CTASKS_PATH_OINFO_DAT,
         MODE_NEWFILE);
-    if (DISKIO2_OinfoFileHandle == 0) {
-        return -1;
+    if (DISKIO2_OinfoFileHandle == FILEHANDLE_INVALID) {
+        return RESULT_FAIL;
     }
 
     DISKIO_WriteDecimalField(
@@ -34,20 +39,20 @@ long DISKIO2_WriteOinfoDataFile(void)
 
     line = ESQIFF_PrimaryLineHeadPtr != 0 ? ESQIFF_PrimaryLineHeadPtr : &empty;
     scan = line;
-    while (*scan != 0) {
+    while (*scan != CH_NUL) {
         scan++;
     }
-    len = (ULONG)(scan - line) + 1;
+    len = (ULONG)(scan - line) + STR_TERM_BYTES;
     DISKIO_WriteBufferedBytes(DISKIO2_OinfoFileHandle, line, len);
 
     line = ESQIFF_PrimaryLineTailPtr != 0 ? ESQIFF_PrimaryLineTailPtr : &empty;
     scan = line;
-    while (*scan != 0) {
+    while (*scan != CH_NUL) {
         scan++;
     }
-    len = (ULONG)(scan - line) + 1;
+    len = (ULONG)(scan - line) + STR_TERM_BYTES;
     DISKIO_WriteBufferedBytes(DISKIO2_OinfoFileHandle, line, len);
 
     DISKIO_CloseBufferedFileAndFlush(DISKIO2_OinfoFileHandle);
-    return 0;
+    return RESULT_OK;
 }

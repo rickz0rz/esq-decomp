@@ -2,22 +2,30 @@
 __code:
 DISKIO2_WriteOinfoDataFile:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              SUB.L          #$1c,D0                  ;90bc 0000 001c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$4,A7                   ;594f 
-              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
+              SUB.W          #$10,A7                  ;9efc 0010 
+              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
 ___DISKIO2_WriteOinfoDataFile__1:
-              CLR.B          $f(A7)                   ;422f 000f 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVEQ.L        #$ff,D6                  ;7cff 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              CLR.B          $20(A7)                  ;422f 0020 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              CLR.B          $17(A7)                  ;422f 0017 
               MOVE.L         MODE_NEWFILE(A4),-(A7)   ;2f2c 0000 
               PEA            CTASKS_PATH_OINFO_DAT(A4);486c 0000 
               BSR.W          DISKIO_OpenFileWithBuffer;6100 0000 
               MOVE.L         D0,__MERGEDBSS(A4)       ;2940 0000 
               ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         __MERGEDBSS(A4),D0       ;202c 0000 
+              CMP.L          D0,D7                    ;be80 
               BNE.B          ___DISKIO2_WriteOinfoDataFile__3;6606 
 ___DISKIO2_WriteOinfoDataFile__2:
-              MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___DISKIO2_WriteOinfoDataFile__17;6000 0082 
+              MOVE.L         D6,D0                    ;2006 
+              BRA.W          ___DISKIO2_WriteOinfoDataFile__17;6000 0092 
 ___DISKIO2_WriteOinfoDataFile__3:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         __MERGEDBSS+$4(A4),D0    ;102c 0004 
@@ -31,24 +39,25 @@ ___DISKIO2_WriteOinfoDataFile__4:
               MOVE.L         D0,A5                    ;2a40 
               BRA.B          ___DISKIO2_WriteOinfoDataFile__6;6004 
 ___DISKIO2_WriteOinfoDataFile__5:
-              LEA            $f(A7),A5                ;4bef 000f 
+              LEA            $17(A7),A5               ;4bef 0017 
 ___DISKIO2_WriteOinfoDataFile__6:
               MOVE.L         A5,A3                    ;264d 
 ___DISKIO2_WriteOinfoDataFile__7:
-              TST.B          (A3)                     ;4a13 
+              MOVE.B         (A3),D0                  ;1013 
+              CMP.B          $20(A7),D0               ;b02f 0020 
               BEQ.B          ___DISKIO2_WriteOinfoDataFile__9;6704 
 ___DISKIO2_WriteOinfoDataFile__8:
               ADDQ.L         #$1,A3                   ;528b 
-              BRA.B          ___DISKIO2_WriteOinfoDataFile__7;60f8 
+              BRA.B          ___DISKIO2_WriteOinfoDataFile__7;60f4 
 ___DISKIO2_WriteOinfoDataFile__9:
               MOVE.L         A3,D0                    ;200b 
               MOVE.L         A5,D1                    ;220d 
               SUB.L          D1,D0                    ;9081 
-              MOVE.L         D0,D7                    ;2e00 
-              ADDQ.L         #$1,D7                   ;5287 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              ADD.L          $18(A7),D0               ;d0af 0018 
+              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         __MERGEDBSS(A4),-(A7)    ;2f2c 0000 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
               BSR.W          DISKIO_WriteBufferedBytes;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         __MERGEDBSS+$a(A4),D0    ;202c 000a 
@@ -57,33 +66,34 @@ ___DISKIO2_WriteOinfoDataFile__10:
               MOVE.L         D0,A5                    ;2a40 
               BRA.B          ___DISKIO2_WriteOinfoDataFile__12;6004 
 ___DISKIO2_WriteOinfoDataFile__11:
-              LEA            $f(A7),A5                ;4bef 000f 
+              LEA            $17(A7),A5               ;4bef 0017 
 ___DISKIO2_WriteOinfoDataFile__12:
               MOVE.L         A5,A3                    ;264d 
 ___DISKIO2_WriteOinfoDataFile__13:
-              TST.B          (A3)                     ;4a13 
+              MOVE.B         (A3),D0                  ;1013 
+              CMP.B          $20(A7),D0               ;b02f 0020 
               BEQ.B          ___DISKIO2_WriteOinfoDataFile__15;6704 
 ___DISKIO2_WriteOinfoDataFile__14:
               ADDQ.L         #$1,A3                   ;528b 
-              BRA.B          ___DISKIO2_WriteOinfoDataFile__13;60f8 
+              BRA.B          ___DISKIO2_WriteOinfoDataFile__13;60f4 
 ___DISKIO2_WriteOinfoDataFile__15:
               MOVE.L         A3,D0                    ;200b 
               MOVE.L         A5,D1                    ;220d 
               SUB.L          D1,D0                    ;9081 
-              MOVE.L         D0,D7                    ;2e00 
-              ADDQ.L         #$1,D7                   ;5287 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              ADD.L          $18(A7),D0               ;d0af 0018 
+              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         __MERGEDBSS(A4),-(A7)    ;2f2c 0000 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
               BSR.W          DISKIO_WriteBufferedBytes;6100 0000 
               MOVE.L         __MERGEDBSS(A4),(A7)     ;2eac 0000 
               BSR.W          DISKIO_CloseBufferedFileAndFlush;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D5,D0                    ;2005 
 ___DISKIO2_WriteOinfoDataFile__16:
 ___DISKIO2_WriteOinfoDataFile__17:
-              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
-              ADDQ.W         #$4,A7                   ;584f 
+              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
+              ADD.W          #$10,A7                  ;defc 0010 
               RTS                                     ;4e75 
 __const:
 __strings:

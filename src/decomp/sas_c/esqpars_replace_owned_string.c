@@ -3,6 +3,11 @@ typedef unsigned long ULONG;
 typedef signed long LONG;
 
 #define MEMF_PUBLIC 1
+#define ESQPARS_FREE_LINE 1081
+#define ESQPARS_ALLOC_LINE 1100
+#define AVAILMEM_PUBLIC_REQUIREMENT 1
+#define AVAILMEM_MIN_FREE_THRESHOLD 0x2710UL
+#define STR_TERM_BYTES 1
 
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, ULONG size);
 extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG line, ULONG flags, ULONG size);
@@ -21,7 +26,11 @@ void *ESQPARS_ReplaceOwnedString(char *new_src, char *old_owned)
         while (old_owned[old_len] != 0) {
             old_len++;
         }
-        ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_5, 1081, old_owned, old_len + 1);
+        ESQIFF_JMPTBL_MEMORY_DeallocateMemory(
+            Global_STR_ESQPARS_C_5,
+            ESQPARS_FREE_LINE,
+            old_owned,
+            old_len + STR_TERM_BYTES);
     }
 
     if (new_src == (char *)0) {
@@ -38,8 +47,12 @@ void *ESQPARS_ReplaceOwnedString(char *new_src, char *old_owned)
     }
 
     dst = (char *)0;
-    if (AvailMem(1) > 0x2710UL) {
-        dst = (char *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQPARS_C_6, 1100, MEMF_PUBLIC, new_len);
+    if (AvailMem(AVAILMEM_PUBLIC_REQUIREMENT) > AVAILMEM_MIN_FREE_THRESHOLD) {
+        dst = (char *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(
+            Global_STR_ESQPARS_C_6,
+            ESQPARS_ALLOC_LINE,
+            MEMF_PUBLIC,
+            new_len);
     }
 
     if (dst != (char *)0) {
