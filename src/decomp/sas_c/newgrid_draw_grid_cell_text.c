@@ -2,9 +2,14 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct TextFontLike {
+    UBYTE pad[26];
+    UWORD ySize;
+} TextFontLike;
+
 typedef struct RastPortLike {
     UBYTE pad[52];
-    UWORD txHeight;
+    TextFontLike *font;
 } RastPortLike;
 
 extern UWORD Global_WORD_SELECT_CODE_IS_RAVESC;
@@ -22,23 +27,16 @@ extern LONG _LVOTextLength(void *gfx, void *rp, const char *text, LONG len);
 extern LONG _LVOMove(void *gfx, void *rp, LONG x, LONG y);
 extern LONG _LVOText(void *gfx, void *rp, const char *text, LONG len);
 
-static LONG trim_len(const char *s)
-{
-    LONG n = 0;
-    while (s[n] != 0) n++;
-    while (n > 0 && s[n - 1] == ' ') n--;
-    return n;
-}
-
 void NEWGRID_DrawGridCellText(RastPortLike *rp, const char *primary, const char *secondary, LONG alignMode)
 {
     char mergedSecondary[26];
-    LONG baseX;
-    LONG centerX;
-    LONG yPrimary;
-    LONG ySecondary;
+    LONG baselineX;
+    LONG rowHalfY;
+    LONG primaryY;
+    LONG secondaryY;
     LONG w;
     LONG n;
+    LONG fontY;
 
     if (Global_WORD_SELECT_CODE_IS_RAVESC) {
         n = 0;
@@ -52,17 +50,31 @@ void NEWGRID_DrawGridCellText(RastPortLike *rp, const char *primary, const char 
         secondary = mergedSecondary;
     }
 
-    baseX = ((LONG)NEWGRID_SampleTimeTextWidthPx + 1) >> 1;
-    baseX += 42;
+    baselineX = ((LONG)NEWGRID_SampleTimeTextWidthPx + 1) >> 1;
+    baselineX += 42;
 
-    centerX = ((LONG)NEWGRID_RowHeightPx + 1) >> 1;
-    centerX -= ((LONG)rp->txHeight + 1) >> 1;
-    centerX -= 4;
-    centerX = (centerX + 1) >> 1;
-    centerX += rp->txHeight;
+    fontY = (LONG)rp->font->ySize;
+    rowHalfY = ((LONG)NEWGRID_RowHeightPx + 1) >> 1;
+    rowHalfY -= ((fontY + 1) >> 1);
+    rowHalfY -= 4;
+    rowHalfY = (rowHalfY + 1) >> 1;
+    rowHalfY += fontY;
 
-    yPrimary = centerX + 3;
-    ySecondary = yPrimary + (((LONG)NEWGRID_RowHeightPx + 1) >> 1);
+    primaryY = rowHalfY + 3;
+    secondaryY = ((LONG)NEWGRID_RowHeightPx + 1) >> 1;
+    if (alignMode == 0) {
+        secondaryY -= fontY;
+        secondaryY = (secondaryY + 1) >> 1;
+        secondaryY += fontY;
+        secondaryY -= 1;
+    } else {
+        secondaryY -= fontY;
+        secondaryY -= 4;
+        secondaryY = (secondaryY + 1) >> 1;
+        secondaryY += fontY;
+        secondaryY -= 1;
+    }
+    secondaryY += primaryY;
 
     if (NEWGRID_GridOperationId == 5) {
         _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, GCOMMAND_NicheTextPen);
@@ -71,29 +83,31 @@ void NEWGRID_DrawGridCellText(RastPortLike *rp, const char *primary, const char 
     }
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rp, 0);
 
-    n = trim_len(primary);
+    n = 0;
+    while (primary[n] != 0) n++;
+    while (n > 0 && primary[n - 1] == ' ') n--;
     if (n > 0) {
         w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp, primary, n);
         w = (w + 1) >> 1;
         if (CTASKS_STR_C == 'S') {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, yPrimary, baseX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, primaryY, baselineX - w);
         } else {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, centerX, baseX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, secondaryY, baselineX - w);
         }
         _LVOText(Global_REF_GRAPHICS_LIBRARY, rp, primary, n);
     }
 
-    n = trim_len(secondary);
+    n = 0;
+    while (secondary[n] != 0) n++;
+    while (n > 0 && secondary[n - 1] == ' ') n--;
     if (n > 0) {
         w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp, secondary, n);
         w = (w + 1) >> 1;
         if (CTASKS_STR_C == 'S') {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, centerX, baseX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, secondaryY, baselineX - w);
         } else {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, ySecondary, baseX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, primaryY, baselineX - w);
         }
         _LVOText(Global_REF_GRAPHICS_LIBRARY, rp, secondary, n);
     }
-
-    (void)alignMode;
 }
