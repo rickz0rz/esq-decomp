@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
+ENTRY="PARSE_ReadSignedLongSkipClass3"
+
 SASC_SRC="unknown24_parse_read_signed_long_skip_class3.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
