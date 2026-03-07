@@ -2,7 +2,16 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
 enum {
+    MASK_INDEX_0 = 0,
+    MASK_INDEX_1 = 1,
+    MASK_INDEX_2 = 2,
+    MASK_INDEX_3 = 3,
+    MASK_INDEX_4 = 4,
     MASK_BYTE_COUNT = 6,
+    CHANNEL_NUMBER_LEN = 11,
+    SOURCE_NAME_LEN = 7,
+    CALL_LETTERS_LEN = 8,
+    BACKGROUND_TEXT_LEN = 3,
     ATTR_FLAG_NONE = 0x01,
     ATTR_FLAG_HILITE_SRC = 0x02,
     ATTR_FLAG_SUM_SRC = 0x04,
@@ -15,16 +24,16 @@ enum {
 
 struct DiskioProgramSourceRecord {
     UBYTE etid;
-    char channelNumber[11];
-    char source[7];
-    char callLetters[8];
+    char channelNumber[CHANNEL_NUMBER_LEN];
+    char source[SOURCE_NAME_LEN];
+    char callLetters[CALL_LETTERS_LEN];
     UBYTE attrFlags;
     UBYTE timeSlotMask[MASK_BYTE_COUNT];
     UBYTE blackoutMask[MASK_BYTE_COUNT];
     UBYTE sourceFlagsByte;
     UBYTE backgroundColor0;
     UBYTE backgroundColor1;
-    char backgroundText[3];
+    char backgroundText[BACKGROUND_TEXT_LEN];
     unsigned short sourceFlagsWord;
 };
 
@@ -99,19 +108,19 @@ void DISKIO1_DumpProgramSourceRecordVerbose(
         DISKIO_STR_ProgramAttrCloseParenNewline);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC,
-        (ULONG)rec->timeSlotMask[0],
-        (ULONG)rec->timeSlotMask[1],
-        (ULONG)rec->timeSlotMask[2],
-        (ULONG)rec->timeSlotMask[3],
-        (ULONG)rec->timeSlotMask[4],
+        (ULONG)rec->timeSlotMask[MASK_INDEX_0],
+        (ULONG)rec->timeSlotMask[MASK_INDEX_1],
+        (ULONG)rec->timeSlotMask[MASK_INDEX_2],
+        (ULONG)rec->timeSlotMask[MASK_INDEX_3],
+        (ULONG)rec->timeSlotMask[MASK_INDEX_4],
         (ULONG)rec->timeSlotMask[MASK_BYTE_COUNT - 1]);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_,
-        (ULONG)rec->blackoutMask[0],
-        (ULONG)rec->blackoutMask[1],
-        (ULONG)rec->blackoutMask[2],
-        (ULONG)rec->blackoutMask[3],
-        (ULONG)rec->blackoutMask[4],
+        (ULONG)rec->blackoutMask[MASK_INDEX_0],
+        (ULONG)rec->blackoutMask[MASK_INDEX_1],
+        (ULONG)rec->blackoutMask[MASK_INDEX_2],
+        (ULONG)rec->blackoutMask[MASK_INDEX_3],
+        (ULONG)rec->blackoutMask[MASK_INDEX_4],
         (ULONG)rec->blackoutMask[MASK_BYTE_COUNT - 1]);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord,
