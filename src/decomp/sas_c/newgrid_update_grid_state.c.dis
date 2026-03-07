@@ -1,0 +1,143 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_UpdateGridState:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$20,D0                  ;90bc 0000 0020 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
+___NEWGRID_UpdateGridState__1:
+              MOVE.W         $36(A7),D6               ;3c2f 0036 
+              MOVE.L         $30(A7),D7               ;2e2f 0030 
+              MOVE.L         $2c(A7),A5               ;2a6f 002c 
+              MOVE.L         A5,D0                    ;200d 
+              BNE.B          ___NEWGRID_UpdateGridState__3;660a 
+___NEWGRID_UpdateGridState__2:
+              MOVEQ.L        #$4,D0                   ;7004 
+              MOVE.L         D0,NEWGRID_GridStateFrameLatch(A4);2940 0000 
+              BRA.W          ___NEWGRID_UpdateGridState__18;6000 0106 
+___NEWGRID_UpdateGridState__3:
+              MOVE.L         NEWGRID_GridStateFrameLatch(A4),D5;2a2c 0000 
+              MOVEQ.L        #$5,D0                   ;7005 
+              CMP.L          D0,D5                    ;ba80 
+              BNE.B          ___NEWGRID_UpdateGridState__5;660c 
+___NEWGRID_UpdateGridState__4:
+              LEA            $20(A5),A0               ;41ed 0020 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,(A0)                  ;2080 
+              BRA.W          ___NEWGRID_UpdateGridState__14;6000 00d2 
+___NEWGRID_UpdateGridState__5:
+              MOVE.L         D5,D0                    ;2005 
+              SUBQ.L         #$4,D0                   ;5980 
+              BNE.W          ___NEWGRID_UpdateGridState__13;6600 00c4 
+___NEWGRID_UpdateGridState__6:
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            $28(A7)                  ;486f 0028 
+              PEA            $30(A7)                  ;486f 0030 
+              BSR.W          NEWGRID_UpdatePresetEntry;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         $24(A7),D0               ;202f 0024 
+              BEQ.W          ___NEWGRID_UpdateGridState__14;6700 00a8 
+___NEWGRID_UpdateGridState__7:
+              TST.L          $20(A7)                  ;4aaf 0020 
+              BEQ.W          ___NEWGRID_UpdateGridState__14;6700 00a0 
+___NEWGRID_UpdateGridState__8:
+              MOVE.L         D0,A0                    ;2040 
+              ADD.W          #$1c,A0                  ;d0fc 001c 
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID2_JMPTBL_ESQ_TestBit1Base;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              ADDQ.L         #$1,D0                   ;5280 
+              BNE.W          ___NEWGRID_UpdateGridState__14;6600 0086 
+___NEWGRID_UpdateGridState__9:
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              BSR.W          NEWGRID2_JMPTBL_DISPLIB_FindPrev;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         $30(A7),(A7)             ;2eaf 0030 
+              BSR.W          NEWGRID_SelectEntryPen   ;6100 0000 
+              MOVE.L         D0,D4                    ;2800 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.W          D6,A1                    ;d2c6 
+              MOVE.L         A1,A3                    ;2649 
+              MOVE.L         D4,NEWGRID_SelectedGridEntryPtr(A4);2944 0000 
+              BTST           #$2,$7(A3)               ;082b 0002 0007 
+              BEQ.B          ___NEWGRID_UpdateGridState__11;6706 
+___NEWGRID_UpdateGridState__10:
+              MOVEQ.L        #$5,D0                   ;7005 
+              MOVE.L         D0,NEWGRID_SelectedGridEntryPtr(A4);2940 0000 
+___NEWGRID_UpdateGridState__11:
+              LEA            $3c(A5),A1               ;43ed 003c 
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              MOVE.W         D6,D1                    ;3206 
+              EXT.L          D1                       ;48c1 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D1,A0                    ;d1c1 
+              LEA            $38(A0),A2               ;45e8 0038 
+              MOVE.L         NEWGRID_OverridePenIndex(A4),-(A7);2f2c 0000 
+              MOVE.L         (A2),-(A7)               ;2f12 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              BSR.W          NEWGRID_DrawEntryFlagBadge;6100 0000 
+              LEA            $20(A5),A0               ;41ed 0020 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         A0,$30(A7)               ;2f48 0030 
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_Compute;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              MOVE.L         D0,(A0)                  ;2080 
+___NEWGRID_UpdateGridState__12:
+              BRA.B          ___NEWGRID_UpdateGridState__14;6006 
+___NEWGRID_UpdateGridState__13:
+              MOVEQ.L        #$4,D0                   ;7004 
+              MOVE.L         D0,NEWGRID_GridStateFrameLatch(A4);2940 0000 
+___NEWGRID_UpdateGridState__14:
+              MOVE.L         NEWGRID_SelectedGridEntryPtr(A4),-(A7);2f2c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_DrawGridFrameAndRows;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___NEWGRID_UpdateGridState__16;6608 
+___NEWGRID_UpdateGridState__15:
+              MOVEQ.L        #$5,D0                   ;7005 
+              MOVE.L         D0,NEWGRID_GridStateFrameLatch(A4);2940 0000 
+              BRA.B          ___NEWGRID_UpdateGridState__18;6006 
+___NEWGRID_UpdateGridState__16:
+              MOVEQ.L        #$4,D0                   ;7004 
+              MOVE.L         D0,NEWGRID_GridStateFrameLatch(A4);2940 0000 
+___NEWGRID_UpdateGridState__17:
+___NEWGRID_UpdateGridState__18:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
+              ADD.W          #$c,A7                   ;defc 000c 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_GridStateFrameLatch
+              XREF           NEWGRID_UpdatePresetEntry
+              XREF           NEWGRID2_JMPTBL_ESQ_TestBit1Base
+              XREF           NEWGRID2_JMPTBL_DISPLIB_FindPrev
+              XREF           NEWGRID_SelectEntryPen
+              XREF           NEWGRID_SelectedGridEntryPtr
+              XREF           NEWGRID_OverridePenIndex
+              XREF           NEWGRID_DrawEntryFlagBadge
+              XREF           NEWGRID2_JMPTBL_DISPTEXT_Compute
+              XREF           NEWGRID_DrawGridFrameAndRows
+              XDEF           NEWGRID_UpdateGridState
+              END
