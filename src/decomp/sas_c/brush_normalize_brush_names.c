@@ -15,20 +15,20 @@ void BRUSH_NormalizeBrushNames(void **head_ptr)
     node = (UBYTE *)*head_ptr;
     while (node != (UBYTE *)BRUSH_NULL) {
         UBYTE scratch[BRUSH_NAME_SCRATCH_SIZE];
-        UBYTE *src;
-        UBYTE *dst;
+        UBYTE *sourceCursor;
+        UBYTE *destCursor;
 
-        src = node;
-        dst = scratch;
+        sourceCursor = node;
+        destCursor = scratch;
         do {
-            *dst++ = *src;
-        } while (*src++ != (UBYTE)BRUSH_NULL);
+            *destCursor++ = *sourceCursor;
+        } while (*sourceCursor++ != (UBYTE)BRUSH_NULL);
 
-        src = GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(scratch);
-        dst = node;
+        sourceCursor = GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(scratch);
+        destCursor = node;
         do {
-            *dst++ = *src;
-        } while (*src++ != (UBYTE)BRUSH_NULL);
+            *destCursor++ = *sourceCursor;
+        } while (*sourceCursor++ != (UBYTE)BRUSH_NULL);
 
         node = *(UBYTE **)(node + BRUSH_NODE_NEXT_OFFSET);
     }
