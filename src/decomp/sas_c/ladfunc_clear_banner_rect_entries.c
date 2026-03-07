@@ -21,9 +21,11 @@ extern LONG ED_TextLimit;
 
 void LADFUNC_ClearBannerRectEntries(void)
 {
+    const UWORD ENTRY_LAST_INDEX = 46;
+    const UBYTE ASCII_ZERO = '0';
     UWORD i;
 
-    for (i = 0; i <= 46; ++i) {
+    for (i = 0; i <= ENTRY_LAST_INDEX; ++i) {
         LadfuncEntry *entry = LADFUNC_EntryPtrTable[i];
         entry->startSlot = 0;
         entry->endSlot = 0;
@@ -38,5 +40,5 @@ void LADFUNC_ClearBannerRectEntries(void)
     WDISP_HighlightActive = 0;
     WDISP_HighlightIndex = 0;
 
-    ED_TextLimit = (LONG)ED_DiagScrollSpeedChar - 48;
+    ED_TextLimit = (LONG)ED_DiagScrollSpeedChar - ASCII_ZERO;
 }

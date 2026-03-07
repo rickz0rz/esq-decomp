@@ -19,7 +19,7 @@ void LADFUNC_UpdateHighlightState(void)
 {
     const UWORD FLAG_FALSE = 0;
     const UWORD FLAG_TRUE = 1;
-    const UBYTE DIAG_MODE_NONE = 78;
+    const UBYTE DIAG_MODE_NONE = 'N';
     const LONG ENTRY_COUNT = 47;
     LONG i;
 

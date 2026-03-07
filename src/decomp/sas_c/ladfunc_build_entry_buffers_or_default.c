@@ -20,6 +20,8 @@ extern void LADFUNC_ReflowEntryBuffers(UBYTE *textBuf, UBYTE *attrBuf);
 void LADFUNC_BuildEntryBuffersOrDefault(LONG entryIndex, UBYTE *outText, UBYTE *outAttr)
 {
     const LONG LINE_WIDTH = 40;
+    const UBYTE DEFAULT_PEN_HIGH_NIBBLE = 2;
+    const UBYTE DEFAULT_PEN_LOW_NIBBLE = 1;
     const UBYTE SPACE_CHAR = 32;
     const UBYTE CH_NUL = 0;
     const LONG PTR_NULL = 0;
@@ -36,8 +38,8 @@ void LADFUNC_BuildEntryBuffersOrDefault(LONG entryIndex, UBYTE *outText, UBYTE *
         }
         outText[count] = CH_NUL;
 
-        packedLong = LADFUNC_ComposePackedPenByte(2, 1);
-        count = NEWGRID_JMPTBL_MATH_Mulu32(ED_TextLimit, 40);
+        packedLong = LADFUNC_ComposePackedPenByte(DEFAULT_PEN_HIGH_NIBBLE, DEFAULT_PEN_LOW_NIBBLE);
+        count = NEWGRID_JMPTBL_MATH_Mulu32(ED_TextLimit, LINE_WIDTH);
         {
             UBYTE *dst = outAttr;
             for (i = count; i > 0; --i) {
