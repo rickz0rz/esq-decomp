@@ -1,0 +1,166 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_DrawEmptyGridMessage:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c4,D0                  ;90bc 0000 00c4 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$b0,A7                  ;9efc 00b0 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___NEWGRID_DrawEmptyGridMessage__1:
+              MOVE.W         $d6(A7),D7               ;3e2f 00d6 
+              MOVE.L         $d0(A7),A5               ;2a6f 00d0 
+              PEA            ($21).w                  ;4878 0021 
+              MOVEQ.L        #$6,D0                   ;7006 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($7).w                   ;4878 0007 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_DrawGridFrame    ;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              MOVE.L         SCRIPT_PtrMovieSummaryForPrefix(A4),A3;266c 0000 
+              LEA            $4c(A7),A2               ;45ef 004c 
+___NEWGRID_DrawEmptyGridMessage__2:
+              MOVE.L         A2,A0                    ;204a 
+              ADDQ.L         #$1,A2                   ;528a 
+              MOVE.B         (A3)+,D0                 ;101b 
+              MOVE.B         D0,(A0)                  ;1080 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___NEWGRID_DrawEmptyGridMessage__2;66f4 
+___NEWGRID_DrawEmptyGridMessage__3:
+___NEWGRID_DrawEmptyGridMessage__4:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D7,D0                    ;3007 
+              PEA            $1d(A7)                  ;486f 001d 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          NEWGRID2_JMPTBL_CLEANUP_FormatCl;6100 0000 
+              PEA            $25(A7)                  ;486f 0025 
+              PEA            $58(A7)                  ;486f 0058 
+              BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
+              LEA            $3c(A5),A0               ;41ed 003c 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              MOVEQ.L        #$23,D1                  ;7223 
+              ADD.L          D1,D0                    ;d081 
+              PEA            ($21).w                  ;4878 0021 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A0,$6c(A7)               ;2f48 006c 
+              BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              MOVEQ.L        #$24,D1                  ;7224 
+              ADD.L          D1,D0                    ;d081 
+              PEA            ($21).w                  ;4878 0021 
+              PEA            ($2b7).w                 ;4878 02b7 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $7c(A7),-(A7)            ;2f2f 007c 
+              BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
+              PEA            ($3).w                   ;4878 0003 
+              MOVE.L         $84(A7),-(A7)            ;2f2f 0084 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+___NEWGRID_DrawEmptyGridMessage__5:
+              MOVE.L         $88(A7),-(A7)            ;2f2f 0088 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              LEA            $44(A7),A7               ;4fef 0044 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___NEWGRID_DrawEmptyGridMessage__6:
+              TST.B          $4c(A7,D6.L)             ;4a37 684c 
+              BEQ.B          ___NEWGRID_DrawEmptyGridMessage__8;6704 
+___NEWGRID_DrawEmptyGridMessage__7:
+              ADDQ.L         #$1,D6                   ;5286 
+              BRA.B          ___NEWGRID_DrawEmptyGridMessage__6;60f6 
+___NEWGRID_DrawEmptyGridMessage__8:
+              MOVE.L         D6,-(A7)                 ;2f06 
+              PEA            $50(A7)                  ;486f 0050 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
+              BSR.W          _LVOTextLength           ;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.W         NEWGRID_ColumnWidthPx(A4),D0;302c 0000 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          D1,D1                    ;d281 
+              ADD.L          D0,D1                    ;d280 
+              SUB.L          D5,D1                    ;9285 
+              MOVEM.L        D1,$40(A7)               ;48ef 0002 0040 
+              BGE.B          ___NEWGRID_DrawEmptyGridMessage__10;6c04 
+___NEWGRID_DrawEmptyGridMessage__9:
+              ADDQ.L         #$1,$40(A7)              ;52af 0040 
+___NEWGRID_DrawEmptyGridMessage__10:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              MOVE.L         $40(A7),D1               ;222f 0040 
+              ASR.L          #$1,D1                   ;e281 
+              ADD.L          D1,D0                    ;d081 
+              MOVEQ.L        #$24,D1                  ;7224 
+              ADD.L          D1,D0                    ;d081 
+              LEA            $70(A5),A0               ;41ed 0070 
+              MOVE.L         (A0),A1                  ;2250 
+              LEA            $1a(A1),A0               ;41e9 001a 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         (A0),D1                  ;3210 
+              MOVEQ.L        #$22,D2                  ;7422 
+              SUB.L          D1,D2                    ;9481 
+              MOVEM.L        D0,$40(A7)               ;48ef 0001 0040 
+              MOVEM.L        D2,$3c(A7)               ;48ef 0004 003c 
+              MOVEM.L        A1,$44(A7)               ;48ef 0200 0044 
+              BGE.B          ___NEWGRID_DrawEmptyGridMessage__12;6c04 
+___NEWGRID_DrawEmptyGridMessage__11:
+              ADDQ.L         #$1,$3c(A7)              ;52af 003c 
+___NEWGRID_DrawEmptyGridMessage__12:
+              MOVE.L         $3c(A7),D1               ;222f 003c 
+              ASR.L          #$1,D1                   ;e281 
+              LEA            $1a(A1),A0               ;41e9 001a 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         (A0),D2                  ;3410 
+              ADD.L          D2,D1                    ;d282 
+              SUBQ.L         #$1,D1                   ;5381 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
+              MOVE.L         D1,$48(A7)               ;2f41 0048 
+              BSR.W          _LVOMove                 ;6100 0000 
+              MOVE.L         D6,(A7)                  ;2e86 
+              PEA            $58(A7)                  ;486f 0058 
+              MOVE.L         $58(A7),-(A7)            ;2f2f 0058 
+              BSR.W          _LVOText                 ;6100 0000 
+              LEA            $34(A5),A0               ;41ed 0034 
+              MOVE.W         #$11,(A0)                ;30bc 0011 
+              LEA            $20(A5),A0               ;41ed 0020 
+              MOVEQ.L        #$11,D0                  ;7011 
+              MOVE.L         D0,(A0)                  ;2080 
+              PEA            ($41).w                  ;4878 0041 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_ValidateSelectionCode;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+___NEWGRID_DrawEmptyGridMessage__13:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$b0,A7                  ;defc 00b0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_DrawGridFrame
+              XREF           SCRIPT_PtrMovieSummaryForPrefix
+              XREF           NEWGRID2_JMPTBL_CLEANUP_FormatCl
+              XREF           PARSEINI_JMPTBL_STRING_AppendAtN
+              XREF           NEWGRID_ColumnStartXPx
+              XREF           NEWGRID2_JMPTBL_BEVEL_DrawBevelF
+              XREF           _LVOSetAPen
+              XREF           _LVOSetDrMd
+              XREF           _LVOTextLength
+              XREF           NEWGRID_ColumnWidthPx
+              XREF           _LVOMove
+              XREF           _LVOText
+              XREF           NEWGRID_ValidateSelectionCode
+              XDEF           NEWGRID_DrawEmptyGridMessage
+              END

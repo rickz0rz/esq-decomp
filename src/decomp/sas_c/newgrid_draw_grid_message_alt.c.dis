@@ -1,0 +1,176 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_DrawGridMessageAlt:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
+___NEWGRID_DrawGridMessageAlt__1:
+              MOVE.L         $24(A7),A5               ;2a6f 0024 
+              PEA            ($21).w                  ;4878 0021 
+              MOVE.L         GCOMMAND_PpvMessageFramePen(A4),D0;202c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($7).w                   ;4878 0007 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_DrawGridFrame    ;6100 0000 
+              LEA            $3c(A5),A0               ;41ed 003c 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              MOVEQ.L        #$23,D1                  ;7223 
+              ADD.L          D1,D0                    ;d081 
+              PEA            ($21).w                  ;4878 0021 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
+              LEA            $3c(A5),A0               ;41ed 003c 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              MOVEQ.L        #$24,D1                  ;7224 
+              ADD.L          D1,D0                    ;d081 
+              PEA            ($21).w                  ;4878 0021 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($2b7).w                 ;4878 02b7 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
+              LEA            $3c(A5),A0               ;41ed 003c 
+              MOVE.L         GCOMMAND_PpvMessageTextPen(A4),(A7);2eac 0000 
+              MOVE.L         A0,-(A7)                 ;2f08 
+___NEWGRID_DrawGridMessageAlt__2:
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              LEA            $3c(A5),A0               ;41ed 003c 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              LEA            $44(A7),A7               ;4fef 0044 
+              MOVE.L         GCOMMAND_PPVPeriodTemplatePtr(A4),A3;266c 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___NEWGRID_DrawGridMessageAlt__3:
+              TST.B          $0(A3,D7.L)              ;4a33 7800 
+              BEQ.B          ___NEWGRID_DrawGridMessageAlt__5;6704 
+___NEWGRID_DrawGridMessageAlt__4:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___NEWGRID_DrawGridMessageAlt__3;60f6 
+___NEWGRID_DrawGridMessageAlt__5:
+              TST.L          D7                       ;4a87 
+              BLE.B          ___NEWGRID_DrawGridMessageAlt__9;6f30 
+___NEWGRID_DrawGridMessageAlt__6:
+              LEA            $3c(A5),A0               ;41ed 003c 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          _LVOTextLength           ;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.W         NEWGRID_ColumnWidthPx(A4),D0;302c 0000 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          D1,D1                    ;d281 
+              ADD.L          D0,D1                    ;d280 
+              MOVEQ.L        #$c,D0                   ;700c 
+              SUB.L          D0,D1                    ;9280 
+              CMP.L          D1,D6                    ;bc81 
+              BLE.B          ___NEWGRID_DrawGridMessageAlt__9;6f04 
+___NEWGRID_DrawGridMessageAlt__7:
+___NEWGRID_DrawGridMessageAlt__8:
+              SUBQ.L         #$1,D7                   ;5387 
+              BRA.B          ___NEWGRID_DrawGridMessageAlt__5;60cc 
+___NEWGRID_DrawGridMessageAlt__9:
+              LEA            $3c(A5),A0               ;41ed 003c 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          _LVOTextLength           ;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.W         NEWGRID_ColumnWidthPx(A4),D0;302c 0000 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          D1,D1                    ;d281 
+              ADD.L          D0,D1                    ;d280 
+              SUB.L          D6,D1                    ;9286 
+              MOVE.L         D1,D5                    ;2a01 
+              TST.L          D5                       ;4a85 
+              BPL.B          ___NEWGRID_DrawGridMessageAlt__11;6a02 
+___NEWGRID_DrawGridMessageAlt__10:
+              ADDQ.L         #$1,D5                   ;5285 
+___NEWGRID_DrawGridMessageAlt__11:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              MOVE.L         D5,D1                    ;2205 
+              ASR.L          #$1,D1                   ;e281 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVEQ.L        #$24,D1                  ;7224 
+              ADD.L          D1,D5                    ;da81 
+              LEA            $70(A5),A0               ;41ed 0070 
+              MOVE.L         (A0),A2                  ;2450 
+              LEA            $1a(A2),A0               ;41ea 001a 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         (A0),D0                  ;3010 
+              MOVEQ.L        #$22,D1                  ;7222 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,D4                    ;2801 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              TST.L          D4                       ;4a84 
+              BPL.B          ___NEWGRID_DrawGridMessageAlt__13;6a02 
+___NEWGRID_DrawGridMessageAlt__12:
+              ADDQ.L         #$1,D4                   ;5284 
+___NEWGRID_DrawGridMessageAlt__13:
+              MOVE.L         D4,D1                    ;2204 
+              ASR.L          #$1,D1                   ;e281 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.L         D1,D4                    ;2801 
+              SUBQ.L         #$1,D4                   ;5384 
+              LEA            $3c(A5),A0               ;41ed 003c 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          _LVOMove                 ;6100 0000 
+              LEA            $3c(A5),A0               ;41ed 003c 
+              MOVE.L         D7,(A7)                  ;2e87 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          _LVOText                 ;6100 0000 
+              LEA            $34(A5),A0               ;41ed 0034 
+              MOVE.W         #$11,(A0)                ;30bc 0011 
+              LEA            $20(A5),A0               ;41ed 0020 
+              MOVEQ.L        #$11,D0                  ;7011 
+              MOVE.L         D0,(A0)                  ;2080 
+              PEA            ($42).w                  ;4878 0042 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_ValidateSelectionCode;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+___NEWGRID_DrawGridMessageAlt__14:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_PpvMessageFramePen
+              XREF           NEWGRID_DrawGridFrame
+              XREF           NEWGRID_ColumnStartXPx
+              XREF           NEWGRID2_JMPTBL_BEVEL_DrawBevelF
+              XREF           GCOMMAND_PpvMessageTextPen
+              XREF           _LVOSetAPen
+              XREF           _LVOSetDrMd
+              XREF           GCOMMAND_PPVPeriodTemplatePtr
+              XREF           _LVOTextLength
+              XREF           NEWGRID_ColumnWidthPx
+              XREF           _LVOMove
+              XREF           _LVOText
+              XREF           NEWGRID_ValidateSelectionCode
+              XDEF           NEWGRID_DrawGridMessageAlt
+              END
