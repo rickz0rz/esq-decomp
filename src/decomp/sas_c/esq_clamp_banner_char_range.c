@@ -3,6 +3,12 @@ extern short WDISP_BannerCharRangeEnd;
 
 void ESQ_ClampBannerCharRange(long currentChar, long startBandChar, long endBandChar)
 {
+    const short kBandCharA = 65;
+    const short kBandCharC = 67;
+    const short kBandCharE = 69;
+    const short kBandCharI = 73;
+    const short kWrapMax = 48;
+    const short kMinRangeStart = 1;
     short clampedStart;
     short clampedEnd;
     short startOffset;
@@ -14,32 +20,32 @@ void ESQ_ClampBannerCharRange(long currentChar, long startBandChar, long endBand
     startOffset = (short)startBandChar;
     endOffsetPlusOne = (short)endBandChar;
 
-    if (startOffset < 65) {
-        startOffset = 65;
+    if (startOffset < kBandCharA) {
+        startOffset = kBandCharA;
     } else {
-        if (startOffset >= 67) {
-            startOffset = 65;
+        if (startOffset >= kBandCharC) {
+            startOffset = kBandCharA;
         }
     }
 
-    if (endOffsetPlusOne < 65) {
-        endOffsetPlusOne = 69;
+    if (endOffsetPlusOne < kBandCharA) {
+        endOffsetPlusOne = kBandCharE;
     } else {
-        if (endOffsetPlusOne > 73) {
-            endOffsetPlusOne = 69;
+        if (endOffsetPlusOne > kBandCharI) {
+            endOffsetPlusOne = kBandCharE;
         }
     }
 
-    startOffset = (short)(startOffset - 65);
-    endOffsetPlusOne = (short)(endOffsetPlusOne - 65);
+    startOffset = (short)(startOffset - kBandCharA);
+    endOffsetPlusOne = (short)(endOffsetPlusOne - kBandCharA);
     endOffsetPlusOne = (short)(endOffsetPlusOne + 1);
 
-    wrapMax = 48;
+    wrapMax = kWrapMax;
     rangeEndChar = clampedStart;
 
     if (startOffset != 0) {
         clampedStart = (short)(clampedStart - startOffset);
-        if (clampedStart < 1) {
+        if (clampedStart < kMinRangeStart) {
             clampedStart = (short)(clampedStart + wrapMax);
         }
     }
