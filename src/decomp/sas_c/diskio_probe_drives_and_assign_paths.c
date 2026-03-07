@@ -58,13 +58,13 @@ void DISKIO_ProbeDrivesAndAssignPaths(void)
         DISKIO_TrackdiskMsgPortPtr, 56);
 
     for (unit = 0; unit < 4; unit++) {
-        LONG rc;
+        LONG openDeviceResult;
 
         ((LONG *)&DISKIO_Drive0WriteProtectedCode)[unit] = 0;
         DISKIO_DriveMediaStatusCodeTable[unit] = 0;
 
-        rc = _LVOOpenDevice(AbsExecBase, DISKIO_STR_TRACKDISK_DEVICE, unit, 0, DISKIO_TrackdiskIoReqPtr);
-        if (rc != 0) {
+        openDeviceResult = _LVOOpenDevice(AbsExecBase, DISKIO_STR_TRACKDISK_DEVICE, unit, 0, DISKIO_TrackdiskIoReqPtr);
+        if (openDeviceResult != 0) {
             ((LONG *)&DISKIO_Drive0WriteProtectedCode)[unit] = 218;
             DISKIO_DriveMediaStatusCodeTable[unit] = 223;
             continue;
@@ -105,9 +105,9 @@ void DISKIO_ProbeDrivesAndAssignPaths(void)
     }
 
     if (DISKIO_Drive0Dh2AssignDoneFlag != 0 && DISKIO_Drive0WriteProtectedCode == 0) {
-        WORD saved;
+        WORD savedReadModeFlags;
 
-        saved = ESQPARS2_ReadModeFlags;
+        savedReadModeFlags = ESQPARS2_ReadModeFlags;
         ESQPARS2_ReadModeFlags = 0x100;
         _LVOExecute(Global_REF_DOS_LIBRARY_2, DISKIO_CMD_ASSIGN_FONTS_DH2, 0, 0);
         _LVOExecute(Global_REF_DOS_LIBRARY_2, DISKIO_CMD_ASSIGN_ENV_DH2, 0, 0);
@@ -117,7 +117,7 @@ void DISKIO_ProbeDrivesAndAssignPaths(void)
         _LVOExecute(Global_REF_DOS_LIBRARY_2, DISKIO_CMD_ASSIGN_L_DH2, 0, 0);
         _LVOExecute(Global_REF_DOS_LIBRARY_2, DISKIO_CMD_ASSIGN_LIBS_DH2, 0, 0);
         _LVOExecute(Global_REF_DOS_LIBRARY_2, DISKIO_CMD_ASSIGN_DEVS_DH2, 0, 0);
-        ESQPARS2_ReadModeFlags = saved;
+        ESQPARS2_ReadModeFlags = savedReadModeFlags;
         DISKIO_Drive0Dh2AssignDoneFlag = 0;
     }
 
