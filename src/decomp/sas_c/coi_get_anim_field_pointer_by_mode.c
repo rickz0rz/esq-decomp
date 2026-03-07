@@ -19,7 +19,16 @@ enum {
     COI_SUB_FIELD_3_OFFSET = 10,
     COI_SUB_FIELD_4_OFFSET = 14,
     COI_SUB_FIELD_6_OFFSET = 18,
-    COI_SUB_FIELD_7_OFFSET = 22
+    COI_SUB_FIELD_7_OFFSET = 22,
+    COI_SUB_KEY_OFFSET = 0,
+    COI_MODE_FIELD_0 = 0,
+    COI_MODE_FIELD_1 = 1,
+    COI_MODE_FIELD_2 = 2,
+    COI_MODE_FIELD_3 = 3,
+    COI_MODE_FIELD_4 = 4,
+    COI_MODE_ANIM_POINTER = 5,
+    COI_MODE_FIELD_6 = 6,
+    COI_MODE_FIELD_7 = 7
 };
 
 LONG COI_GetAnimFieldPointerByMode(void *entry, UWORD key, UWORD mode)
@@ -48,7 +57,7 @@ LONG COI_GetAnimFieldPointerByMode(void *entry, UWORD key, UWORD mode)
         table = *(UBYTE ***)(anim + COI_ANIM_TABLE_OFFSET);
         cur = table[i];
         sub = cur;
-        if (*(UWORD *)(cur + 0) == key) {
+        if (*(UWORD *)(cur + COI_SUB_KEY_OFFSET) == key) {
             found = 1;
             break;
         }
@@ -56,28 +65,28 @@ LONG COI_GetAnimFieldPointerByMode(void *entry, UWORD key, UWORD mode)
     }
 
     switch (mode) {
-    case 5:
+    case COI_MODE_ANIM_POINTER:
         out = (LONG)anim;
         break;
-    case 0:
+    case COI_MODE_FIELD_0:
         out = *(LONG *)(anim + COI_ANIM_FIELD_0_OFFSET);
         break;
-    case 1:
+    case COI_MODE_FIELD_1:
         out = (found != 0) ? *(LONG *)(sub + COI_SUB_FIELD_1_OFFSET) : *(LONG *)(anim + COI_ANIM_FIELD_1_OFFSET);
         break;
-    case 2:
+    case COI_MODE_FIELD_2:
         out = (found != 0) ? *(LONG *)(sub + COI_SUB_FIELD_2_OFFSET) : *(LONG *)(anim + COI_ANIM_FIELD_2_OFFSET);
         break;
-    case 3:
+    case COI_MODE_FIELD_3:
         out = (found != 0) ? *(LONG *)(sub + COI_SUB_FIELD_3_OFFSET) : *(LONG *)(anim + COI_ANIM_FIELD_3_OFFSET);
         break;
-    case 4:
+    case COI_MODE_FIELD_4:
         out = (found != 0) ? *(LONG *)(sub + COI_SUB_FIELD_4_OFFSET) : *(LONG *)(anim + COI_ANIM_FIELD_4_OFFSET);
         break;
-    case 6:
+    case COI_MODE_FIELD_6:
         out = (found != 0) ? *(LONG *)(sub + COI_SUB_FIELD_6_OFFSET) : *(LONG *)(anim + COI_ANIM_FIELD_6_OFFSET);
         break;
-    case 7:
+    case COI_MODE_FIELD_7:
         out = (found != 0) ? *(LONG *)(sub + COI_SUB_FIELD_7_OFFSET) : *(LONG *)(anim + COI_ANIM_FIELD_7_OFFSET);
         break;
     default:

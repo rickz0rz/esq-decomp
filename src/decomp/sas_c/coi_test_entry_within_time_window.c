@@ -9,6 +9,8 @@ enum {
     COI_SLOT_MIN_VALID = 1,
     COI_SLOT_INVALID = 49,
     COI_SLOT_MINUTES = 30,
+    COI_FLAGS_OFFSET = 27,
+    COI_FLAG_HAS_ANIM_TABLE = 16,
     COI_ANIM_PTR_OFFSET = 48,
     COI_ANIM_COUNT_OFFSET = 36,
     COI_ANIM_TABLE_OFFSET = 38,
@@ -48,7 +50,7 @@ LONG COI_TestEntryWithinTimeWindow(UBYTE *entry, void *time_ctx, WORD slot, LONG
         offset_minutes = GROUP_AG_JMPTBL_MATH_Mulu32((LONG)slot - (LONG)CLOCK_HalfHourSlotIndex, COI_SLOT_MINUTES);
     }
 
-    if ((entry[27] & 16) != 0) {
+    if ((entry[COI_FLAGS_OFFSET] & COI_FLAG_HAS_ANIM_TABLE) != 0) {
         LONG i;
         LONG count;
         UBYTE **table;

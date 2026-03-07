@@ -3,7 +3,8 @@ typedef long LONG;
 
 enum {
     CLOCK_FORMAT_SLOTS_PER_BANK = 48,
-    CLOCK_VARIANT_DIVISOR = 30
+    CLOCK_VARIANT_DIVISOR = 30,
+    DECIMAL_BASE = 10
 };
 
 extern UBYTE CLOCK_FormatVariantCode;
@@ -32,12 +33,12 @@ void CLEANUP_FormatClockFormatEntry(LONG slotIndex, UBYTE *out)
         LONG d;
 
         d = (LONG)(out[-2] - '0');
-        variant += GROUP_AG_JMPTBL_MATH_Mulu32(d, 10);
+        variant += GROUP_AG_JMPTBL_MATH_Mulu32(d, DECIMAL_BASE);
 
-        d = GROUP_AG_JMPTBL_MATH_DivS32(variant, 10);
+        d = GROUP_AG_JMPTBL_MATH_DivS32(variant, DECIMAL_BASE);
         out[-2] = (UBYTE)(d + '0');
 
-        d = GROUP_AG_JMPTBL_MATH_DivS32(variant, 10);
+        d = GROUP_AG_JMPTBL_MATH_DivS32(variant, DECIMAL_BASE);
         out[-1] = (UBYTE)(d + '0');
     }
 }

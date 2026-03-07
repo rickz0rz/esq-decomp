@@ -2,39 +2,42 @@
 __code:
 COI_ComputeEntryTimeDeltaMinutes:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$30,D0                  ;90bc 0000 0030 
+              SUB.L          #$34,D0                  ;90bc 0000 0034 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$24,A7                  ;9efc 0024 
+              SUB.W          #$28,A7                  ;9efc 0028 
               MOVEM.L        D2/D5/D6/D7/A3/A5,-(A7)  ;48e7 2714 
 ___COI_ComputeEntryTimeDeltaMinutes__1:
-              MOVE.W         $46(A7),D7               ;3e2f 0046 
-              MOVE.L         $40(A7),A5               ;2a6f 0040 
+              MOVE.W         $4a(A7),D7               ;3e2f 004a 
+              MOVE.L         $44(A7),A5               ;2a6f 0044 
               MOVEQ.L        #$31,D6                  ;7c31 
               MOVEQ.L        #$1,D5                   ;7a01 
               MOVEQ.L        #$30,D0                  ;7030 
-              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
               MOVEQ.L        #$38,D0                  ;7038 
-              MOVE.L         D0,$34(A7)               ;2f40 0034 
-              MOVE.L         #$1f2,$30(A7)            ;2f7c 0000 01f2 0030 
+              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              MOVE.L         #$1f2,$34(A7)            ;2f7c 0000 01f2 0034 
               MOVEQ.L        #$2,D0                   ;7002 
-              MOVE.L         D0,$2c(A7)               ;2f40 002c 
               MOVE.L         #$b40,$28(A7)            ;2f7c 0000 0b40 0028 
-              MOVEQ.L        #$1e,D0                  ;701e 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
-              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVEQ.L        #$1e,D1                  ;721e 
+              MOVE.L         D1,$24(A7)               ;2f41 0024 
+              MOVEQ.L        #$ff,D1                  ;72ff 
               MOVE.L         A5,A3                    ;264d 
               MOVE.L         D6,$18(A7)               ;2f46 0018 
-              MOVE.L         D0,$1c(A7)               ;2f40 001c 
-              MOVEM.L        D0,$20(A7)               ;48ef 0001 0020 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVE.L         D1,$1c(A7)               ;2f41 001c 
+              MOVEM.L        D1,$20(A7)               ;48ef 0002 0020 
               TST.W          D7                       ;4a47 
-              BLE.W          ___COI_ComputeEntryTimeDeltaMinutes__22;6f00 00d6 
+              BLE.B          ___COI_ComputeEntryTimeDeltaMinutes__3;6f08 
 ___COI_ComputeEntryTimeDeltaMinutes__2:
-              MOVE.W         D7,D1                    ;3207 
-              EXT.L          D1                       ;48c1 
-              CMP.L          D6,D1                    ;b286 
-              BGE.W          ___COI_ComputeEntryTimeDeltaMinutes__22;6c00 00cc 
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              CMP.L          D6,D0                    ;b086 
+              BLT.B          ___COI_ComputeEntryTimeDeltaMinutes__4;6d06 
 ___COI_ComputeEntryTimeDeltaMinutes__3:
+              MOVE.L         D1,D0                    ;2001 
+              BRA.W          ___COI_ComputeEntryTimeDeltaMinutes__22;6000 00ca 
 ___COI_ComputeEntryTimeDeltaMinutes__4:
               MOVE.W         D7,D0                    ;3007 
               EXT.L          D0                       ;48c0 
@@ -46,7 +49,7 @@ ___COI_ComputeEntryTimeDeltaMinutes__5:
               BGE.B          ___COI_ComputeEntryTimeDeltaMinutes__8;6c1a 
 ___COI_ComputeEntryTimeDeltaMinutes__6:
               MOVE.L         A3,A0                    ;204b 
-              ADD.L          $34(A7),A0               ;d1ef 0034 
+              ADD.L          $38(A7),A0               ;d1ef 0038 
               MOVE.L         D0,D1                    ;2200 
               MOVE.L         $2c(A7),D2               ;242f 002c 
               ASL.L          D2,D1                    ;e5a1 
@@ -58,23 +61,23 @@ ___COI_ComputeEntryTimeDeltaMinutes__7:
               BRA.B          ___COI_ComputeEntryTimeDeltaMinutes__5;60de 
 ___COI_ComputeEntryTimeDeltaMinutes__8:
               MOVE.L         $18(A7),D0               ;202f 0018 
-              CMP.L          $38(A7),D0               ;b0af 0038 
-              BLE.B          ___COI_ComputeEntryTimeDeltaMinutes__17;6f58 
+              CMP.L          $3c(A7),D0               ;b0af 003c 
+              BLE.B          ___COI_ComputeEntryTimeDeltaMinutes__17;6f56 
 ___COI_ComputeEntryTimeDeltaMinutes__9:
               MOVE.B         TEXTDISP_PrimaryGroupCode(A4),D0;102c 0000 
-              MOVE.L         $30(A7),D1               ;222f 0030 
+              MOVE.L         $34(A7),D1               ;222f 0034 
               CMP.B          $0(A3,D1.L),D0           ;b033 1800 
-              BNE.B          ___COI_ComputeEntryTimeDeltaMinutes__17;664a 
+              BNE.B          ___COI_ComputeEntryTimeDeltaMinutes__17;6648 
 ___COI_ComputeEntryTimeDeltaMinutes__10:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          GROUP_AE_JMPTBL_TLIBA_FindFirstW;6100 0000 
-              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         $34(A7),(A7)             ;2eaf 0034 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
               BSR.W          GROUP_AE_JMPTBL_ESQDISP_GetEntry;6100 0000 
               MOVE.L         D0,A3                    ;2640 
               TST.L          D0                       ;4a80 
-              LEA            $c(A7),A7                ;4fef 000c 
+              ADDQ.W         #$8,A7                   ;504f 
               BEQ.B          ___COI_ComputeEntryTimeDeltaMinutes__16;6726 
 ___COI_ComputeEntryTimeDeltaMinutes__11:
               MOVE.L         D5,$18(A7)               ;2f45 0018 
@@ -84,7 +87,7 @@ ___COI_ComputeEntryTimeDeltaMinutes__12:
               BGE.B          ___COI_ComputeEntryTimeDeltaMinutes__17;6c20 
 ___COI_ComputeEntryTimeDeltaMinutes__13:
               MOVE.L         A3,A0                    ;204b 
-              ADD.L          $34(A7),A0               ;d1ef 0034 
+              ADD.L          $38(A7),A0               ;d1ef 0038 
               MOVE.L         D0,D1                    ;2200 
               MOVE.L         $2c(A7),D2               ;242f 002c 
               ASL.L          D2,D1                    ;e5a1 
@@ -100,7 +103,7 @@ ___COI_ComputeEntryTimeDeltaMinutes__16:
               MOVE.L         D0,$18(A7)               ;2f40 0018 
 ___COI_ComputeEntryTimeDeltaMinutes__17:
               MOVE.L         $18(A7),D0               ;202f 0018 
-              CMP.L          $38(A7),D0               ;b0af 0038 
+              CMP.L          $3c(A7),D0               ;b0af 003c 
               BLE.B          ___COI_ComputeEntryTimeDeltaMinutes__20;6f18 
 ___COI_ComputeEntryTimeDeltaMinutes__18:
               MOVEQ.L        #$0,D1                   ;7200 
@@ -114,7 +117,7 @@ ___COI_ComputeEntryTimeDeltaMinutes__18:
 ___COI_ComputeEntryTimeDeltaMinutes__19:
 ___COI_ComputeEntryTimeDeltaMinutes__20:
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.L         $30(A7),D1               ;222f 0030 
+              MOVE.L         $34(A7),D1               ;222f 0034 
               MOVE.B         $0(A3,D1.L),D0           ;1033 1800 
               MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
               MOVE.L         A3,-(A7)                 ;2f0b 
@@ -124,7 +127,7 @@ ___COI_ComputeEntryTimeDeltaMinutes__20:
 ___COI_ComputeEntryTimeDeltaMinutes__21:
 ___COI_ComputeEntryTimeDeltaMinutes__22:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A3/A5  ;4cdf 28e4 
-              ADD.W          #$24,A7                  ;defc 0024 
+              ADD.W          #$28,A7                  ;defc 0028 
               RTS                                     ;4e75 
 __const:
 __strings:

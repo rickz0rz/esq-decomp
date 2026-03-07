@@ -17,6 +17,7 @@ LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, WORD slot)
     const LONG SLOT_LAST = 48;
     const LONG AUX_TITLE_TABLE_OFFSET = 56;
     const LONG AUX_GROUPCODE_OFFSET = 498;
+    const LONG AUX_POINTER_MODE_SECONDARY = 2;
     const LONG SLOT_PTR_SHIFT = 2;
     const LONG DELTA_DAY_MINUTES = 2880;
     const LONG SLOT_MINUTES = 30;
@@ -40,7 +41,7 @@ LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, WORD slot)
 
     if (s > SLOT_LAST && TEXTDISP_PrimaryGroupCode == e[AUX_GROUPCODE_OFFSET]) {
         s = GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(e);
-        e = (UBYTE *)GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(s, 2);
+        e = (UBYTE *)GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(s, AUX_POINTER_MODE_SECONDARY);
         if (e != (UBYTE *)0) {
             s = SLOT_FIRST;
             while (s < SLOT_INVALID && *(LONG *)(e + AUX_TITLE_TABLE_OFFSET + (s << SLOT_PTR_SHIFT)) == 0) {
