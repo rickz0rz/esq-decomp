@@ -1,0 +1,266 @@
+              SECTION      text,CODE
+__code:
+ED_ParseAdNumberFromDigits:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/D6/D7,-(A7)           ;48e7 2300 
+___ED_ParseAdNumberFromDigits__1:
+              MOVE.B         ED_AdNumberInputDigitTens(A4),D7;1e2c 0000 
+              MOVE.B         ED_AdNumberInputDigitOnes(A4),D6;1c2c 0000 
+              MOVEQ.L        #$20,D0                  ;7020 
+              CMP.B          D0,D7                    ;be00 
+              BNE.B          ___ED_ParseAdNumberFromDigits__5;6612 
+___ED_ParseAdNumberFromDigits__2:
+              CMP.B          D0,D6                    ;bc00 
+              BNE.B          ___ED_ParseAdNumberFromDigits__4;6604 
+___ED_ParseAdNumberFromDigits__3:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.B          ___ED_ParseAdNumberFromDigits__9;6034 
+___ED_ParseAdNumberFromDigits__4:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVEQ.L        #$30,D1                  ;7230 
+              SUB.L          D1,D0                    ;9081 
+              BRA.B          ___ED_ParseAdNumberFromDigits__9;602a 
+___ED_ParseAdNumberFromDigits__5:
+              MOVEQ.L        #$20,D0                  ;7020 
+              CMP.B          D0,D6                    ;bc00 
+              BNE.B          ___ED_ParseAdNumberFromDigits__7;660a 
+___ED_ParseAdNumberFromDigits__6:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$30,D1                  ;7230 
+              SUB.L          D1,D0                    ;9081 
+              BRA.B          ___ED_ParseAdNumberFromDigits__9;601a 
+___ED_ParseAdNumberFromDigits__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$30,D1                  ;7230 
+              SUB.L          D1,D0                    ;9081 
+              MOVE.L         D0,D2                    ;2400 
+              ASL.L          #$2,D2                   ;e582 
+              ADD.L          D0,D2                    ;d480 
+              ADD.L          D2,D2                    ;d482 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              SUB.L          D1,D0                    ;9081 
+              ADD.L          D0,D2                    ;d480 
+              MOVE.L         D2,D0                    ;2002 
+___ED_ParseAdNumberFromDigits__8:
+___ED_ParseAdNumberFromDigits__9:
+              MOVEM.L        (A7)+,D2/D6/D7           ;4cdf 00c4 
+              RTS                                     ;4e75 
+__const:
+__strings:
+ED_HandleEditAttributesMenu:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7,-(A7)        ;48e7 0f00 
+___ED_HandleEditAttributesMenu__1:
+              BSR.W          ED_DrawCursorChar        ;6100 0000 
+              MOVE.B         ED_LastKeyCode(A4),D7    ;1e2c 0000 
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.B         #$8,D0                   ;5100 
+              BNE.B          ___ED_HandleEditAttributesMenu__5;662a 
+___ED_HandleEditAttributesMenu__2:
+              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
+              MOVEQ.L        #$c,D1                   ;720c 
+              CMP.L          D1,D0                    ;b081 
+              BLE.B          ___ED_HandleEditAttributesMenu__4;6f14 
+___ED_HandleEditAttributesMenu__3:
+              SUBQ.L         #$1,ED_EditCursorOffset(A4);53ac 0000 
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         #$20,$0(A1,D0.L)         ;13bc 0020 0800 
+___ED_HandleEditAttributesMenu__4:
+              BSR.W          ED_DrawCursorChar        ;6100 0000 
+              BSR.W          ED_RedrawCursorChar      ;6100 0000 
+              BRA.W          ___ED_HandleEditAttributesMenu__25;6000 01c4 
+___ED_HandleEditAttributesMenu__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$47,D1                  ;7247 
+              ADD.L          D1,D1                    ;d281 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___ED_HandleEditAttributesMenu__11;663a 
+___ED_HandleEditAttributesMenu__6:
+              MOVE.L         ED_StateRingIndex(A4),D0 ;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.L         D1,D6                    ;2c01 
+              LEA            ED_StateRingTable+$1(A4),A0;41ec 0001 
+              MOVE.B         $0(A0,D6.L),D5           ;1a30 6800 
+              MOVE.B         D5,ED_LastMenuInputChar(A4);1945 0000 
+              MOVEQ.L        #$43,D0                  ;7043 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___ED_HandleEditAttributesMenu__8;6608 
+___ED_HandleEditAttributesMenu__7:
+              MOVEQ.L        #$d,D0                   ;700d 
+              MOVE.L         D0,ED_EditCursorOffset(A4);2940 0000 
+              BRA.B          ___ED_HandleEditAttributesMenu__10;600c 
+___ED_HandleEditAttributesMenu__8:
+              MOVEQ.L        #$44,D0                  ;7044 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___ED_HandleEditAttributesMenu__10;6606 
+___ED_HandleEditAttributesMenu__9:
+              MOVEQ.L        #$c,D0                   ;700c 
+              MOVE.L         D0,ED_EditCursorOffset(A4);2940 0000 
+___ED_HandleEditAttributesMenu__10:
+              BSR.W          ED_RedrawCursorChar      ;6100 0000 
+              BRA.W          ___ED_HandleEditAttributesMenu__25;6000 017e 
+___ED_HandleEditAttributesMenu__11:
+              MOVEQ.L        #$d,D0                   ;700d 
+              CMP.B          D0,D7                    ;be00 
+              BNE.W          ___ED_HandleEditAttributesMenu__20;6600 0134 
+___ED_HandleEditAttributesMenu__12:
+              BSR.W          ED_ParseAdNumberFromDigits;6100 ff08 
+___ED_HandleEditAttributesMenu__13:
+              MOVE.L         D0,D4                    ;2800 
+              MOVE.L         D4,Global_REF_LONG_CURRENT_EDITING_(A4);2944 0000 
+              CMP.L          ED_MaxAdNumber(A4),D4    ;b8ac 0000 
+              BLE.B          ___ED_HandleEditAttributesMenu__15;6f3c 
+___ED_HandleEditAttributesMenu__14:
+              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ED2_STR_NUMBER_TOO_BIG(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($96).w                  ;4878 0096 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              LEA            $28(A7),A7               ;4fef 0028 
+              BRA.W          ___ED_HandleEditAttributesMenu__25;6000 012a 
+___ED_HandleEditAttributesMenu__15:
+              TST.L          D4                       ;4a84 
+              BNE.B          ___ED_HandleEditAttributesMenu__17;663c 
+___ED_HandleEditAttributesMenu__16:
+              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ED2_STR_NUMBER_TOO_SMALL(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($96).w                  ;4878 0096 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              LEA            $28(A7),A7               ;4fef 0028 
+              BRA.W          ___ED_HandleEditAttributesMenu__25;6000 00ea 
+___ED_HandleEditAttributesMenu__17:
+              MOVE.B         ED_MenuStateId(A4),D0    ;102c 0000 
+              SUBQ.B         #$2,D0                   ;5500 
+              BNE.B          ___ED_HandleEditAttributesMenu__19;6618 
+___ED_HandleEditAttributesMenu__18:
+              MOVE.B         #$4,ED_MenuStateId(A4)   ;197c 0004 0000 
+              BSR.W          ED_DrawAdEditingScreen   ;6100 0000 
+              BSR.W          ED_LoadCurrentAdIntoBuffers;6100 0000 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,ED_SaveTextAdsOnExitFlag(A4);2940 0000 
+              BRA.W          ___ED_HandleEditAttributesMenu__25;6000 00ca 
+___ED_HandleEditAttributesMenu__19:
+              MOVE.B         #$5,ED_MenuStateId(A4)   ;197c 0005 0000 
+              PEA            ($6).w                   ;4878 0006 
+              BSR.W          ED_DrawHelpPanels        ;6100 0000 
+              BSR.W          ED_UpdateAdNumberDisplay ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ED2_STR_PUSH_ESC_TO_EXIT_ATTRIBU(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($14a).w                 ;4878 014a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ED2_STR_PUSH_RETURN_TO_ENTER_SEL(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($168).w                 ;4878 0168 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ED2_STR_PUSH_ANY_KEY_TO_SELECT(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($186).w                 ;4878 0186 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___ED_HandleEditAttributesMenu__25;6042 
+___ED_HandleEditAttributesMenu__20:
+              MOVEQ.L        #$30,D0                  ;7030 
+              CMP.B          D0,D7                    ;be00 
+              BCS.B          ___ED_HandleEditAttributesMenu__24;6538 
+___ED_HandleEditAttributesMenu__21:
+              MOVEQ.L        #$39,D0                  ;7039 
+              CMP.B          D0,D7                    ;be00 
+              BHI.B          ___ED_HandleEditAttributesMenu__24;6232 
+___ED_HandleEditAttributesMenu__22:
+              BSR.W          ED_DrawCursorChar        ;6100 0000 
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         D7,$0(A1,D0.L)           ;1387 0800 
+              CMPI.L         #$d,ED_EditCursorOffset(A4);0cac 0000 000d 0000 
+              BGE.B          ___ED_HandleEditAttributesMenu__24;6c16 
+___ED_HandleEditAttributesMenu__23:
+              BSR.W          ED_DrawCursorChar        ;6100 0000 
+              ADDQ.L         #$1,ED_EditCursorOffset(A4);52ac 0000 
+              MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
+              LEA            ED_EditBufferScratch(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         D7,$0(A1,D0.L)           ;1387 0800 
+___ED_HandleEditAttributesMenu__24:
+              BSR.W          ED_RedrawCursorChar      ;6100 0000 
+___ED_HandleEditAttributesMenu__25:
+              MOVEM.L        (A7)+,D4/D5/D6/D7        ;4cdf 00f0 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_AdNumberInputDigitTens
+              XREF           ED_AdNumberInputDigitOnes
+              XREF           ED_DrawCursorChar
+              XREF           ED_LastKeyCode
+              XREF           ED_EditCursorOffset
+              XREF           ED_EditBufferScratch
+              XREF           ED_RedrawCursorChar
+              XREF           ED_StateRingIndex
+              XREF           ED_StateRingTable
+              XREF           ED_LastMenuInputChar
+              XREF           Global_REF_LONG_CURRENT_EDITING_
+              XREF           ED_MaxAdNumber
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetAPen
+              XREF           ED2_STR_NUMBER_TOO_BIG
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           ED2_STR_NUMBER_TOO_SMALL
+              XREF           ED_MenuStateId
+              XREF           ED_DrawAdEditingScreen
+              XREF           ED_LoadCurrentAdIntoBuffers
+              XREF           ED_SaveTextAdsOnExitFlag
+              XREF           ED_DrawHelpPanels
+              XREF           ED_UpdateAdNumberDisplay
+              XREF           _LVOSetDrMd
+              XREF           ED2_STR_PUSH_ESC_TO_EXIT_ATTRIBU
+              XREF           ED2_STR_PUSH_RETURN_TO_ENTER_SEL
+              XREF           ED2_STR_PUSH_ANY_KEY_TO_SELECT
+              XDEF           ED_HandleEditAttributesMenu
+              END
