@@ -63,7 +63,7 @@ void GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen(void);
 
 void CLEANUP_ProcessAlerts(void)
 {
-    LONG tick_code;
+    LONG tickCode;
 
     if (CLEANUP_PendingAlertFlag == CLEANUP_FLAG_CLEAR) return;
     if (CLEANUP_AlertProcessingFlag != CLEANUP_FLAG_CLEAR) return;
@@ -90,8 +90,8 @@ void CLEANUP_ProcessAlerts(void)
     }
 
     CLEANUP_PendingAlertFlag = CLEANUP_FLAG_CLEAR;
-    tick_code = ESQ_TickClockAndFlagEvents(&CLOCK_DaySlotIndex);
-    tick_code = ESQ_TickClockAndFlagEvents(&CLOCK_CurrentDayOfWeekIndex);
+    tickCode = ESQ_TickClockAndFlagEvents(&CLOCK_DaySlotIndex);
+    tickCode = ESQ_TickClockAndFlagEvents(&CLOCK_CurrentDayOfWeekIndex);
 
     if (TEXTDISP_DeferredActionDelayTicks >= 0 && TEXTDISP_DeferredActionDelayTicks < 11) {
         GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled();
@@ -113,7 +113,7 @@ void CLEANUP_ProcessAlerts(void)
         BRUSH_PendingAlertCode = 4;
     }
 
-    if (tick_code != 0) {
+    if (tickCode != 0) {
         if (WDISP_WeatherStatusCountdown > 0) {
             WDISP_WeatherStatusCountdown--;
         }
@@ -129,20 +129,20 @@ void CLEANUP_ProcessAlerts(void)
         }
     }
 
-    if (ESQ_AlertType235ModeFlagChar == CLEANUP_ALERT_Y_CHAR && tick_code == CLEANUP_TICK_CODE_2) {
+    if (ESQ_AlertType235ModeFlagChar == CLEANUP_ALERT_Y_CHAR && tickCode == CLEANUP_TICK_CODE_2) {
         ESQDISP_StatusBannerClampGateFlag = CLEANUP_FLAG_CLEAR;
         GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(CLEANUP_FLAG_CLEAR);
         ESQDISP_StatusBannerClampGateFlag = CLEANUP_FLAG_SET;
     }
 
-    if ((ESQ_AlertType235ModeFlagChar == CLEANUP_ALERT_Y_CHAR && tick_code == CLEANUP_TICK_CODE_5) ||
-        (ESQ_AlertType235ModeFlagChar != CLEANUP_ALERT_Y_CHAR && tick_code == CLEANUP_TICK_CODE_2)) {
+    if ((ESQ_AlertType235ModeFlagChar == CLEANUP_ALERT_Y_CHAR && tickCode == CLEANUP_TICK_CODE_5) ||
+        (ESQ_AlertType235ModeFlagChar != CLEANUP_ALERT_Y_CHAR && tickCode == CLEANUP_TICK_CODE_2)) {
         GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc();
         GROUP_AC_JMPTBL_DST_RefreshBannerBuffer();
         GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(CLEANUP_FLAG_CLEAR);
     }
 
-    if (ESQ_AlertType235ModeFlagChar == CLEANUP_ALERT_Y_CHAR && tick_code == CLEANUP_TICK_CODE_3) {
+    if (ESQ_AlertType235ModeFlagChar == CLEANUP_ALERT_Y_CHAR && tickCode == CLEANUP_TICK_CODE_3) {
         BANNER_ResetPendingFlag = CLEANUP_FLAG_SET;
         WDISP_BannerCharRangeStart = (WORD)DISPLIB_NormalizeValueByStep(
             (LONG)CLOCK_HalfHourSlotIndex + CLEANUP_BANNER_WRAP_STEP,
@@ -154,7 +154,7 @@ void CLEANUP_ProcessAlerts(void)
             CLEANUP_BANNER_WRAP_MODULO);
     }
 
-    if (ESQ_AlertType4ModeFlagChar == CLEANUP_ALERT_Y_CHAR && tick_code == CLEANUP_TICK_CODE_4) {
+    if (ESQ_AlertType4ModeFlagChar == CLEANUP_ALERT_Y_CHAR && tickCode == CLEANUP_TICK_CODE_4) {
         WDISP_BannerCharRangeStart = (WORD)DISPLIB_NormalizeValueByStep(
             (LONG)WDISP_BannerCharRangeStart + CLEANUP_BANNER_WRAP_STEP,
             CLEANUP_BANNER_WRAP_STEP,
@@ -172,7 +172,7 @@ void CLEANUP_ProcessAlerts(void)
         CLEANUP_DrawClockBanner();
     }
 
-    if (tick_code == CLEANUP_TICK_CODE_2) {
+    if (tickCode == CLEANUP_TICK_CODE_2) {
         if ((GROUP_AG_JMPTBL_MATH_DivS32((LONG)CLOCK_HalfHourSlotIndex, CLEANUP_TICK_CODE_2) - CLEANUP_BANNER_WRAP_STEP) ==
             CLEANUP_FLAG_CLEAR) {
             BRUSH_PendingAlertCode = CLEANUP_FLAG_CLEAR;
