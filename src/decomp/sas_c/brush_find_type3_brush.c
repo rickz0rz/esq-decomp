@@ -10,12 +10,12 @@ enum {
     BRUSH_NODE_TYPE_3 = 3
 };
 
-void *BRUSH_FindType3Brush(void *list_head_ptr)
+void *BRUSH_FindType3Brush(void *listHeadPtr)
 {
     UBYTE *nodeCursor;
     LONG matchFound;
 
-    nodeCursor = *(UBYTE **)list_head_ptr;
+    nodeCursor = *(UBYTE **)listHeadPtr;
     matchFound = BRUSH_FALSE;
 
     while (nodeCursor != (UBYTE *)BRUSH_NULL && matchFound == BRUSH_FALSE) {
