@@ -8,11 +8,11 @@ enum {
 
 UBYTE *GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(UBYTE *path);
 
-void BRUSH_NormalizeBrushNames(void **head_ptr)
+void BRUSH_NormalizeBrushNames(void **headPtr)
 {
     UBYTE *node;
 
-    node = (UBYTE *)*head_ptr;
+    node = (UBYTE *)*headPtr;
     while (node != (UBYTE *)BRUSH_NULL) {
         UBYTE scratch[BRUSH_NAME_SCRATCH_SIZE];
         UBYTE *sourceCursor;
