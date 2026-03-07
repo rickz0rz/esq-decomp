@@ -30,25 +30,28 @@ extern void PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock(LONG sec
 
 void PARSEINI_WriteRtcFromGlobals(void)
 {
+    const WORD PTR_NULL = 0;
+    const WORD MONTH_BASE = 1;
+    const LONG CHECK_VALID = 0;
     struct ClockData clockData;
     LONG seconds;
 
-    if (Global_REF_UTILITY_LIBRARY == (void *)0) {
+    if (Global_REF_UTILITY_LIBRARY == (void *)PTR_NULL) {
         return;
     }
-    if (Global_REF_BATTCLOCK_RESOURCE == (void *)0) {
+    if (Global_REF_BATTCLOCK_RESOURCE == (void *)PTR_NULL) {
         return;
     }
 
     clockData.wday = CLOCK_DaySlotIndex;
-    clockData.month = (WORD)(CLOCK_CacheMonthIndex0 + 1);
+    clockData.month = (WORD)(CLOCK_CacheMonthIndex0 + MONTH_BASE);
     clockData.mday = CLOCK_CacheDayIndex0;
     clockData.year = CLOCK_CacheYear;
     clockData.hour = (WORD)PARSEINI_AdjustHoursTo24HrFormat(CLOCK_CacheHour, CLOCK_CacheAmPmFlag);
     clockData.min = CLOCK_CacheMinuteOrSecond;
     clockData.sec = Global_REF_CLOCKDATA_STRUCT;
 
-    if (PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(&clockData) == 0) {
+    if (PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(&clockData) == CHECK_VALID) {
         return;
     }
 

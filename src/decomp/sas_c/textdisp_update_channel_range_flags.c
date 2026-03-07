@@ -17,10 +17,20 @@ extern LONG TEXTDISP_FindEntryMatchIndex(UBYTE *searchText, LONG mode, LONG flag
 
 void TEXTDISP_UpdateChannelRangeFlags(void)
 {
+    const WORD SOURCE_PRIMARY = 1;
+    const WORD CHANNEL_DEFAULT = 48;
+    const WORD CHANNEL_RANGE_A_MIN = 48;
+    const WORD CHANNEL_RANGE_A_MAX = 67;
+    const WORD CHANNEL_RANGE_B_MIN = 72;
+    const WORD CHANNEL_RANGE_B_MAX = 77;
+    const UBYTE BANNER_CHAR_INVALID = 0x64;
+    const UBYTE BANNER_CHAR_FALLBACK = 0x31;
+    const LONG MATCH_MODE_PRIMARY = 1;
+    const LONG MATCH_FLAGS_NONE = 0;
     UBYTE *searchText;
     WORD channel;
 
-    if ((WORD)(TEXTDISP_ChannelSourceMode - 1) == 0) {
+    if ((WORD)(TEXTDISP_ChannelSourceMode - SOURCE_PRIMARY) == 0) {
         searchText = TEXTDISP_PrimarySearchText;
         channel = TEXTDISP_PrimaryChannelCode;
     } else {
@@ -29,12 +39,13 @@ void TEXTDISP_UpdateChannelRangeFlags(void)
     }
 
     if (channel == 0) {
-        channel = 48;
+        channel = CHANNEL_DEFAULT;
     }
 
-    if (!((channel >= 48 && channel <= 67) || (channel >= 72 && channel <= 77))) {
-        TEXTDISP_BannerCharSelected = 0x64;
-        TEXTDISP_BannerCharFallback = 0x31;
+    if (!((channel >= CHANNEL_RANGE_A_MIN && channel <= CHANNEL_RANGE_A_MAX) ||
+          (channel >= CHANNEL_RANGE_B_MIN && channel <= CHANNEL_RANGE_B_MAX))) {
+        TEXTDISP_BannerCharSelected = BANNER_CHAR_INVALID;
+        TEXTDISP_BannerCharFallback = BANNER_CHAR_FALLBACK;
         return;
     }
 
@@ -47,11 +58,12 @@ void TEXTDISP_UpdateChannelRangeFlags(void)
         mask = 1UL << weekday;
         enabled = (ULONG)Global_STR_TEXTDISP_C_3[(UBYTE)channel] & mask;
         if (enabled == 0) {
-            TEXTDISP_BannerCharSelected = 0x64;
-            TEXTDISP_BannerCharFallback = 0x31;
+            TEXTDISP_BannerCharSelected = BANNER_CHAR_INVALID;
+            TEXTDISP_BannerCharFallback = BANNER_CHAR_FALLBACK;
             return;
         }
     }
 
-    TEXTDISP_BannerCharFallback = (UBYTE)TEXTDISP_FindEntryMatchIndex(searchText, 1, 0);
+    TEXTDISP_BannerCharFallback =
+        (UBYTE)TEXTDISP_FindEntryMatchIndex(searchText, MATCH_MODE_PRIMARY, MATCH_FLAGS_NONE);
 }
