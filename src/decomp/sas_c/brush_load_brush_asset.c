@@ -4,6 +4,7 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_MAX_PLANES = 5,
     BRUSH_ALERT_ALLOC_FAIL = 1,
     BRUSH_ALERT_DEPTH_EXCEEDED = 2,
     BRUSH_ALERT_WIDTH_EXCEEDED = 3,
@@ -143,7 +144,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             } while (*s++ != 0);
 
             _LVOInitBitMap(node + 136, (UBYTE)node[184], (UWORD)*(UWORD *)(node + 176), (UWORD)*(UWORD *)(node + 178));
-            for (i = 0; i < (LONG)(UBYTE)node[184] && i < 5; i++) {
+            for (i = 0; i < (LONG)(UBYTE)node[184] && i < BRUSH_MAX_PLANES; i++) {
                 void *plane = GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(
                     Global_STR_BRUSH_C_12, 1134, i << 2, (UWORD)*(UWORD *)(node + 176), (UWORD)*(UWORD *)(node + 178));
                 *(void **)(node + 0x90 + (i << 2)) = plane;
@@ -158,7 +159,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             }
 
             if (i != (LONG)(UBYTE)node[184]) {
-                while (i < 5) {
+                while (i < BRUSH_MAX_PLANES) {
                     void *plane = *(void **)(node + 0x90 + (i << 2));
                     if (plane != (void *)0) {
                         GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
