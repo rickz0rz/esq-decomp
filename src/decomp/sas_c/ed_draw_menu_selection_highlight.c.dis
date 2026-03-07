@@ -1,0 +1,68 @@
+              SECTION      text,CODE
+__code:
+ED_DrawMenuSelectionHighlight:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7,-(A7)        ;48e7 0f00 
+___ED_DrawMenuSelectionHighlight__1:
+              MOVE.L         $14(A7),D7               ;2e2f 0014 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($1e).w                  ;4878 001e 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          ESQIFF_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVEQ.L        #$43,D1                  ;7243 
+              ADD.L          D1,D6                    ;dc81 
+              MOVE.L         D6,(A7)                  ;2e86 
+              PEA            ($280).w                 ;4878 0280 
+              PEA            ($44).w                  ;4878 0044 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              LEA            $28(A7),A7               ;4fef 0028 
+              CMPI.L         #$ffffffff,ED_EditCursorOffset(A4);0cac ffff ffff 0000 
+              BLE.B          ___ED_DrawMenuSelectionHighlight__4;6f44 
+___ED_DrawMenuSelectionHighlight__2:
+              PEA            ($6).w                   ;4878 0006 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($1e).w                  ;4878 001e 
+              MOVE.L         ED_EditCursorOffset(A4),-(A7);2f2c 0000 
+              BSR.W          ESQIFF_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVEQ.L        #$44,D1                  ;7244 
+              ADD.L          D1,D5                    ;da81 
+              MOVE.L         D5,D4                    ;2805 
+              MOVEQ.L        #$1d,D0                  ;701d 
+              ADD.L          D0,D4                    ;d880 
+              MOVE.L         D4,(A7)                  ;2e84 
+              PEA            ($280).w                 ;4878 0280 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              LEA            $28(A7),A7               ;4fef 0028 
+___ED_DrawMenuSelectionHighlight__3:
+___ED_DrawMenuSelectionHighlight__4:
+              MOVEM.L        (A7)+,D4/D5/D6/D7        ;4cdf 00f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetAPen
+              XREF           ESQIFF_JMPTBL_MATH_Mulu32
+              XREF           _LVORectFill
+              XREF           ED_EditCursorOffset
+              XDEF           ED_DrawMenuSelectionHighlight
+              END
