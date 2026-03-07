@@ -42,10 +42,10 @@ extern char *PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(char *path);
 extern LONG PARSEINI_JMPTBL_HANDLE_OpenWithMode(char *path, char *modeStr);
 extern void PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(char *brushPath);
 extern void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(void);
-extern void PARSEINI_ProcessWeatherBlocks(char *k, char *v);
-extern void PARSEINI_LoadWeatherStrings(char *k, char *v);
-extern void PARSEINI_LoadWeatherMessageStrings(char *k, char *v);
-extern void PARSEINI_ParseColorTable(char *k, char *v);
+extern void PARSEINI_ProcessWeatherBlocks(char *entryKey, char *entryValue);
+extern void PARSEINI_LoadWeatherStrings(char *entryKey, char *entryValue);
+extern void PARSEINI_LoadWeatherMessageStrings(char *entryKey, char *entryValue);
+extern void PARSEINI_ParseColorTable(char *entryKey, char *entryValue);
 
 LONG PARSEINI_ParseIniBufferAndDispatch(char *path)
 {
