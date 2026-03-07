@@ -1,33 +1,31 @@
-BEGIN {
-    has_global_dst = 0
-    has_copy_loop = 0
-    has_terminator_store = 0
-    has_rts_or_jmp = 0
+BEGIN{
+    h_sentinel=0
+    h_max10=0
+    h_terminator=0
+    h_global_copy=0
+    h_rts=0
 }
-
-function trim(s,    t) {
-    t = s
-    sub(/;.*/, "", t)
-    sub(/^[ \t]+/, "", t)
-    sub(/[ \t]+$/, "", t)
-    return t
+function t(s, x){
+    x=s
+    sub(/;.*/,"",x)
+    sub(/^[ \t]+/,"",x)
+    sub(/[ \t]+$/,"",x)
+    gsub(/[ \t]+/," ",x)
+    return toupper(x)
 }
-
 {
-    line = trim($0)
-    if (line == "") next
-    gsub(/[ \t]+/, " ", line)
-    u = toupper(line)
-
-    if (u ~ /WDISP_STATUSLISTMATCHPATTERN/) has_global_dst = 1
-    if (u ~ /MOVE.B \(A0\)\+,\(A1\)\+/ || (u ~ /MOVE.B D0,\(A0\)/) || (u ~ /MOVE.B \(A3\)\+,D0/)) has_copy_loop = 1
-    if (u ~ /CLR.B/ || u ~ /MOVE.B #0/) has_terminator_store = 1
-    if (u ~ /^RTS$/ || u ~ /^JMP / || u ~ /^JSR / || u ~ /^BSR / || u ~ /^BSR\.W /) has_rts_or_jmp = 1
+    l=t($0)
+    if(l=="")next
+    if(l~/MOVEQ(\.L)? #(\$?12|18),D[0-7]/ || l~/CMPI\.B #(\$?12|18),/ || l~/CMP\.B D1,D0/)h_sentinel=1
+    if(l~/MOVEQ(\.L)? #(\$?A|10),D[0-7]/ || l~/CMP\.(W|L) .*#(\$?A|10)/ || l~/CMP\.W D0,D7/)h_max10=1
+    if(l~/CLR\.B/ || l~/MOVE\.B #\$?0,/)h_terminator=1
+    if(l~/WDISP_STATUSLISTMATCHPATTERN/)h_global_copy=1
+    if(l=="RTS")h_rts=1
 }
-
-END {
-    print "HAS_GLOBAL_DST=" has_global_dst
-    print "HAS_COPY_LOOP=" has_copy_loop
-    print "HAS_TERMINATOR_STORE=" has_terminator_store
-    print "HAS_RTS_OR_JMP=" has_rts_or_jmp
+END{
+    print "HAS_SENTINEL_0x12_CHECK=" h_sentinel
+    print "HAS_MAXLEN10_CHECK=" h_max10
+    print "HAS_NUL_TERMINATOR_WRITE=" h_terminator
+    print "HAS_GLOBAL_COPY=" h_global_copy
+    print "HAS_RTS=" h_rts
 }
