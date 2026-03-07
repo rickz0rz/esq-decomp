@@ -1,0 +1,56 @@
+              SECTION      text,CODE
+__code:
+ESQPARS_ApplyRtcBytesAndPersist:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$10,A7                  ;9efc 0010 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___ESQPARS_ApplyRtcBytesAndPersist__1:
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.B         (A5),D0                  ;1015 
+              EXT.W          D0                       ;4880 
+              MOVE.W         D0,$8(A7)                ;3f40 0008 
+              MOVE.B         $1(A5),D0                ;102d 0001 
+              EXT.W          D0                       ;4880 
+              MOVE.W         D0,$a(A7)                ;3f40 000a 
+              MOVE.B         $2(A5),D0                ;102d 0002 
+              EXT.W          D0                       ;4880 
+              MOVE.W         D0,$c(A7)                ;3f40 000c 
+              MOVE.B         $3(A5),D0                ;102d 0003 
+              EXT.W          D0                       ;4880 
+              ADD.W          #$76c,D0                 ;0640 076c 
+              MOVE.W         D0,$e(A7)                ;3f40 000e 
+              MOVE.B         $4(A5),D0                ;102d 0004 
+              EXT.W          D0                       ;4880 
+              MOVE.W         D0,$10(A7)               ;3f40 0010 
+              MOVE.B         $5(A5),D0                ;102d 0005 
+              EXT.W          D0                       ;4880 
+              MOVE.W         D0,$12(A7)               ;3f40 0012 
+              MOVE.B         $6(A5),D0                ;102d 0006 
+              EXT.W          D0                       ;4880 
+              MOVE.W         D0,$14(A7)               ;3f40 0014 
+              MOVE.B         $7(A5),D0                ;102d 0007 
+              EXT.W          D0                       ;4880 
+              MOVE.W         D0,$16(A7)               ;3f40 0016 
+              PEA            $8(A7)                   ;486f 0008 
+              BSR.W          ESQDISP_NormalizeClockAndRedrawB;6100 0000 
+              MOVE.W         ESQPARS2_ReadModeFlags(A4),D7;3e2c 0000 
+              MOVE.W         #$100,ESQPARS2_ReadModeFlags(A4);397c 0100 0000 
+              BSR.W          ESQPARS_JMPTBL_PARSEINI_WriteRtc;6100 0000 
+              MOVE.W         D7,ESQPARS2_ReadModeFlags(A4);3947 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQPARS_ApplyRtcBytesAndPersist__2:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              ADD.W          #$10,A7                  ;defc 0010 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQDISP_NormalizeClockAndRedrawB
+              XREF           ESQPARS2_ReadModeFlags
+              XREF           ESQPARS_JMPTBL_PARSEINI_WriteRtc
+              XDEF           ESQPARS_ApplyRtcBytesAndPersist
+              END
