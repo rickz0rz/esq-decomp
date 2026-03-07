@@ -23,8 +23,8 @@ void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG byt
 void *BRUSH_AllocBrushNode(const char *label, void *prev_tail)
 {
     UBYTE *node;
-    const UBYTE *src;
-    UBYTE *dst;
+    const UBYTE *labelCursor;
+    UBYTE *nodeCursor;
 
     node = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_BRUSH_C_19,
@@ -37,11 +37,11 @@ void *BRUSH_AllocBrushNode(const char *label, void *prev_tail)
         return BRUSH_LastAllocatedNode;
     }
 
-    src = (const UBYTE *)label;
-    dst = node;
+    labelCursor = (const UBYTE *)label;
+    nodeCursor = node;
     do {
-        *dst++ = *src;
-    } while (*src++ != (UBYTE)BRUSH_NULL);
+        *nodeCursor++ = *labelCursor;
+    } while (*labelCursor++ != (UBYTE)BRUSH_NULL);
 
     *(LONG *)(node + BRUSH_NODE_LOADCOLOR_OFFSET) = BRUSH_TRUE;
     *(UBYTE *)(node + BRUSH_NODE_TYPE_OFFSET) = BRUSH_NULL;
