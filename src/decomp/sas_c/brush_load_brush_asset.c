@@ -131,7 +131,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
         _LVOClose(fh);
     }
 
-    if ((src[BRUSH_SRC_MODE_FLAGS_OFFSET] & BRUSH_ALT_MODE_FLAG_MASK) != 0) {
+    if ((src[BRUSH_SRC_MODE_FLAGS_OFFSET] & BRUSH_ALT_MODE_FLAG_MASK) != BRUSH_NULL) {
         max_depth = BRUSH_MAX_DEPTH_ALT;
         max_width = BRUSH_MAX_WIDTH_ALT;
     }
