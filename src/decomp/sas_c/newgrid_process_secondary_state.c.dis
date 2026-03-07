@@ -1,0 +1,295 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_ProcessSecondaryState:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
+___NEWGRID_ProcessSecondaryState__1:
+              MOVE.W         $1e(A7),D7               ;3e2f 001e 
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.L         A5,D0                    ;200d 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__10;6676 
+___NEWGRID_ProcessSecondaryState__2:
+              MOVE.L         NEWGRID_SecondaryWorkflowState(A4),D5;2a2c 0000 
+              MOVEQ.L        #$2,D0                   ;7002 
+              CMP.L          D0,D5                    ;ba80 
+              BEQ.B          ___NEWGRID_ProcessSecondaryState__4;6706 
+___NEWGRID_ProcessSecondaryState__3:
+              MOVE.L         D5,D0                    ;2005 
+              SUBQ.L         #$7,D0                   ;5f80 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__5;6614 
+___NEWGRID_ProcessSecondaryState__4:
+              CLR.L          -(A7)                    ;42a7 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_HandleGridEditorState;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.B          ___NEWGRID_ProcessSecondaryState__9;6044 
+___NEWGRID_ProcessSecondaryState__5:
+              MOVE.L         D5,D0                    ;2005 
+              SUBQ.L         #$5,D0                   ;5b80 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__9;663e 
+___NEWGRID_ProcessSecondaryState__6:
+              MOVE.L         NEWGRID_SecondarySelectedEntryIn(A4),D0;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            TEXTDISP_PrimaryEntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D1.L),A3           ;2670 1800 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          NEWGRID_ShouldOpenEditor ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___NEWGRID_ProcessSecondaryState__8;6712 
+___NEWGRID_ProcessSecondaryState__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_UpdateGridState  ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___NEWGRID_ProcessSecondaryState__9;6010 
+___NEWGRID_ProcessSecondaryState__8:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_ProcessGridEntries;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___NEWGRID_ProcessSecondaryState__9:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+              MOVE.L         D0,NEWGRID_SecondarySelectedEntryIn(A4);2940 0000 
+              BRA.W          ___NEWGRID_ProcessSecondaryState__50;6000 01dc 
+___NEWGRID_ProcessSecondaryState__10:
+              MOVE.L         NEWGRID_SecondaryWorkflowState(A4),D5;2a2c 0000 
+              MOVEQ.L        #$8,D0                   ;7008 
+              CMP.L          D0,D5                    ;ba80 
+              BLT.B          ___NEWGRID_ProcessSecondaryState__12;6d08 
+___NEWGRID_ProcessSecondaryState__11:
+              MOVE.L         NEWGRID_SecondaryWorkflowState(A4),D0;202c 0000 
+              BRA.W          ___NEWGRID_ProcessSecondaryState__50;6000 01ca 
+___NEWGRID_ProcessSecondaryState__12:
+              MOVE.L         D5,D0                    ;2005 
+___NEWGRID_ProcessSecondaryState__13:
+___NEWGRID_ProcessSecondaryState__14:
+              CMPI.L         #$8,D0                   ;0c80 0000 0008 
+              BCC.W          ___NEWGRID_ProcessSecondaryState__48;6400 01ba 
+___NEWGRID_ProcessSecondaryState__15:
+              ADD.W          D0,D0                    ;d040 
+              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
+              JMP            $4(PC,D0.W)              ;4efb 0004 
+__switch_NEWGRID_ProcessSecondaryState_15:
+              DC.W           ___NEWGRID_ProcessSecondaryState__16-__switch_NEWGRID_ProcessSecondaryState_15
+              DC.W           ___NEWGRID_ProcessSecondaryState__48-__switch_NEWGRID_ProcessSecondaryState_15
+              DC.W           ___NEWGRID_ProcessSecondaryState__19-__switch_NEWGRID_ProcessSecondaryState_15
+              DC.W           ___NEWGRID_ProcessSecondaryState__25-__switch_NEWGRID_ProcessSecondaryState_15
+              DC.W           ___NEWGRID_ProcessSecondaryState__25-__switch_NEWGRID_ProcessSecondaryState_15
+              DC.W           ___NEWGRID_ProcessSecondaryState__26-__switch_NEWGRID_ProcessSecondaryState_15
+              DC.W           ___NEWGRID_ProcessSecondaryState__48-__switch_NEWGRID_ProcessSecondaryState_15
+              DC.W           ___NEWGRID_ProcessSecondaryState__42-__switch_NEWGRID_ProcessSecondaryState_15
+___NEWGRID_ProcessSecondaryState__16:
+              CLR.L          NEWGRID_SecondarySelectionHintCo(A4);42ac 0000 
+              MOVE.L         NEWGRID_SecondarySelectedEntryIn(A4),-(A7);2f2c 0000 
+              MOVE.L         NEWGRID_SecondaryWorkflowState(A4),-(A7);2f2c 0000 
+              BSR.W          NEWGRID_FindNextEntryWithFlags;6100 0000 
+              MOVE.L         D0,NEWGRID_SecondarySelectedEntryIn(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              ADDQ.L         #$1,D0                   ;5280 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__18;6608 
+___NEWGRID_ProcessSecondaryState__17:
+              MOVE.L         NEWGRID_SecondaryWorkflowState(A4),D0;202c 0000 
+              BRA.W          ___NEWGRID_ProcessSecondaryState__50;6000 0182 
+___NEWGRID_ProcessSecondaryState__18:
+              MOVEQ.L        #$2,D0                   ;7002 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+___NEWGRID_ProcessSecondaryState__19:
+              MOVE.B         GCOMMAND_NicheWorkflowMode(A4),D0;102c 0000 
+              MOVEQ.L        #$42,D1                  ;7242 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___NEWGRID_ProcessSecondaryState__21;6706 
+___NEWGRID_ProcessSecondaryState__20:
+              MOVEQ.L        #$46,D1                  ;7246 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__24;6632 
+___NEWGRID_ProcessSecondaryState__21:
+              MOVE.L         GCOMMAND_DigitalNicheListingsTem(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_NicheEditorRowPen(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_NicheEditorLayoutPen(A4),-(A7);2f2c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_HandleGridEditorState;6100 0000 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              SUBQ.L         #$5,D0                   ;5b80 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__23;660a 
+___NEWGRID_ProcessSecondaryState__22:
+              MOVEQ.L        #$2,D0                   ;7002 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+              BRA.W          ___NEWGRID_ProcessSecondaryState__50;6000 0144 
+___NEWGRID_ProcessSecondaryState__23:
+              MOVEQ.L        #$3,D0                   ;7003 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+              BRA.W          ___NEWGRID_ProcessSecondaryState__50;6000 013a 
+___NEWGRID_ProcessSecondaryState__24:
+              MOVEQ.L        #$3,D0                   ;7003 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+___NEWGRID_ProcessSecondaryState__25:
+              MOVE.L         NEWGRID_SecondarySelectedEntryIn(A4),-(A7);2f2c 0000 
+              MOVE.L         NEWGRID_SecondaryWorkflowState(A4),-(A7);2f2c 0000 
+              BSR.W          NEWGRID_FindNextEntryWithFlags;6100 0000 
+              MOVE.L         D0,NEWGRID_SecondarySelectedEntryIn(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVEQ.L        #$1,D6                   ;7c01 
+___NEWGRID_ProcessSecondaryState__26:
+              MOVE.L         NEWGRID_SecondarySelectedEntryIn(A4),D0;202c 0000 
+              MOVEQ.L        #$ff,D1                  ;72ff 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__28;660a 
+___NEWGRID_ProcessSecondaryState__27:
+              MOVEQ.L        #$7,D1                   ;7207 
+              MOVE.L         D1,NEWGRID_SecondaryWorkflowState(A4);2941 0000 
+              BRA.W          ___NEWGRID_ProcessSecondaryState__42;6000 00c2 
+___NEWGRID_ProcessSecondaryState__28:
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            TEXTDISP_PrimaryEntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D1.L),A3           ;2670 1800 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          NEWGRID_ShouldOpenEditor ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___NEWGRID_ProcessSecondaryState__30;671a 
+___NEWGRID_ProcessSecondaryState__29:
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         NEWGRID_SecondarySelectedEntryIn(A4),-(A7);2f2c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_UpdateGridState  ;6100 0000 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___NEWGRID_ProcessSecondaryState__35;6048 
+___NEWGRID_ProcessSecondaryState__30:
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         NEWGRID_SecondarySelectedEntryIn(A4),-(A7);2f2c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_ProcessGridEntries;6100 0000 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D6                       ;4a86 
+              BEQ.B          ___NEWGRID_ProcessSecondaryState__35;672c 
+___NEWGRID_ProcessSecondaryState__31:
+              CMPI.L         #$1,NEWGRID_SecondarySelectionHintCo(A4);0cac 0000 0001 0000 
+              BGE.B          ___NEWGRID_ProcessSecondaryState__35;6c22 
+___NEWGRID_ProcessSecondaryState__32:
+              SUBQ.L         #$5,D0                   ;5b80 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__35;661e 
+___NEWGRID_ProcessSecondaryState__33:
+              MOVE.B         CONFIG_NewgridSelectionCode48_49(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__35;6614 
+___NEWGRID_ProcessSecondaryState__34:
+              PEA            ($31).w                  ;4878 0031 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_ValidateSelectionCode;6100 0000 
+              BSR.W          NEWGRID_GetGridModeIndex ;6100 0000 
+              MOVE.L         D0,NEWGRID_SecondarySelectionHintCo(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___NEWGRID_ProcessSecondaryState__35:
+              MOVE.B         GCOMMAND_DigitalNicheEnabledFlag(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__39;6622 
+___NEWGRID_ProcessSecondaryState__36:
+              TST.L          D6                       ;4a86 
+              BEQ.B          ___NEWGRID_ProcessSecondaryState__39;671e 
+___NEWGRID_ProcessSecondaryState__37:
+              CMPI.L         #$1,NEWGRID_SecondarySelectionHintCo(A4);0cac 0000 0001 0000 
+              BGE.B          ___NEWGRID_ProcessSecondaryState__39;6c14 
+___NEWGRID_ProcessSecondaryState__38:
+              PEA            ($21).w                  ;4878 0021 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_ValidateSelectionCode;6100 0000 
+              BSR.W          NEWGRID_GetGridModeIndex ;6100 0000 
+              MOVE.L         D0,NEWGRID_SecondarySelectionHintCo(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___NEWGRID_ProcessSecondaryState__39:
+              MOVE.L         NEWGRID_SecondarySelectionHintCo(A4),D0;202c 0000 
+              TST.L          D0                       ;4a80 
+              BLE.B          ___NEWGRID_ProcessSecondaryState__41;6f0c 
+___NEWGRID_ProcessSecondaryState__40:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_ComputeColumnIndex;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              SUB.L          D0,NEWGRID_SecondarySelectionHintCo(A4);91ac 0000 
+___NEWGRID_ProcessSecondaryState__41:
+              MOVE.L         NEWGRID_SecondaryWorkflowState(A4),D0;202c 0000 
+              BRA.B          ___NEWGRID_ProcessSecondaryState__50;604a 
+___NEWGRID_ProcessSecondaryState__42:
+              MOVE.B         GCOMMAND_NicheWorkflowMode(A4),D0;102c 0000 
+              MOVEQ.L        #$42,D1                  ;7242 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___NEWGRID_ProcessSecondaryState__44;6706 
+___NEWGRID_ProcessSecondaryState__43:
+              MOVEQ.L        #$4c,D1                  ;724c 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__47;662e 
+___NEWGRID_ProcessSecondaryState__44:
+              MOVE.L         GCOMMAND_DigitalNicheListingsTem(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_NicheEditorRowPen(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_NicheEditorLayoutPen(A4),-(A7);2f2c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_HandleGridEditorState;6100 0000 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              SUBQ.L         #$5,D0                   ;5b80 
+              BNE.B          ___NEWGRID_ProcessSecondaryState__46;6608 
+___NEWGRID_ProcessSecondaryState__45:
+              MOVEQ.L        #$7,D0                   ;7007 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+              BRA.B          ___NEWGRID_ProcessSecondaryState__50;6014 
+___NEWGRID_ProcessSecondaryState__46:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+              BRA.B          ___NEWGRID_ProcessSecondaryState__50;600c 
+___NEWGRID_ProcessSecondaryState__47:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,NEWGRID_SecondaryWorkflowState(A4);2940 0000 
+              BRA.B          ___NEWGRID_ProcessSecondaryState__50;6004 
+___NEWGRID_ProcessSecondaryState__48:
+              MOVE.L         NEWGRID_SecondaryWorkflowState(A4),D0;202c 0000 
+___NEWGRID_ProcessSecondaryState__49:
+___NEWGRID_ProcessSecondaryState__50:
+              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_SecondaryWorkflowState
+              XREF           NEWGRID_HandleGridEditorState
+              XREF           NEWGRID_SecondarySelectedEntryIn
+              XREF           TEXTDISP_PrimaryEntryPtrTable
+              XREF           NEWGRID_ShouldOpenEditor
+              XREF           NEWGRID_UpdateGridState
+              XREF           NEWGRID_ProcessGridEntries
+              XREF           NEWGRID_SecondarySelectionHintCo
+              XREF           NEWGRID_FindNextEntryWithFlags
+              XREF           GCOMMAND_NicheWorkflowMode
+              XREF           GCOMMAND_DigitalNicheListingsTem
+              XREF           GCOMMAND_NicheEditorRowPen
+              XREF           GCOMMAND_NicheEditorLayoutPen
+              XREF           CONFIG_NewgridSelectionCode48_49
+              XREF           NEWGRID_ValidateSelectionCode
+              XREF           NEWGRID_GetGridModeIndex
+              XREF           GCOMMAND_DigitalNicheEnabledFlag
+              XREF           NEWGRID_ComputeColumnIndex
+              XDEF           NEWGRID_ProcessSecondaryState
+              END
