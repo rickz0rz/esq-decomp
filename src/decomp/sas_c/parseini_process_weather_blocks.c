@@ -38,7 +38,7 @@ extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
 extern void SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, char *src, LONG n);
 
-void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
+void PARSEINI_ProcessWeatherBlocks(char *entryKey, char *entryValue)
 {
     void *prevSourceNode;
     void *newAllocNode;
@@ -52,9 +52,9 @@ void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
         PARSEINI_CurrentWeatherBlockPtr = (void *)0;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_FILENAME_WeatherBlock) == 0) {
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_FILENAME_WeatherBlock) == 0) {
         PARSEINI_CurrentWeatherBlockTempPtr = (void *)0;
-        newAllocNode = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(keyValue, PARSEINI_CurrentWeatherBlockPtr);
+        newAllocNode = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(entryValue, PARSEINI_CurrentWeatherBlockPtr);
         weatherBlock = (UBYTE *)newAllocNode;
         weatherBlock[190] = 1;
         PARSEINI_CurrentWeatherBlockPtr = newAllocNode;
@@ -67,16 +67,16 @@ void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_STR_LOADCOLOR) == 0) {
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyValue, PARSEINI_TAG_ALL) == 0) {
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_STR_LOADCOLOR) == 0) {
+        if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_ALL) == 0) {
             *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 194)) = 0;
             return;
         }
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyValue, PARSEINI_TAG_NONE) == 0) {
+        if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_NONE) == 0) {
             *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 194)) = 2;
             return;
         }
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyValue, PARSEINI_TAG_TEXT) == 0) {
+        if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_TEXT) == 0) {
             *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 194)) = 3;
             return;
         }
@@ -84,59 +84,59 @@ void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_XPOS) == 0) {
-        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_XPOS) == 0) {
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
         *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 198)) = parsedValue;
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_TYPE) == 0) {
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyValue, PARSEINI_TAG_DITHER) == 0) {
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_TYPE) == 0) {
+        if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_DITHER) == 0) {
             ((UBYTE *)PARSEINI_CurrentWeatherBlockPtr)[190] = 2;
         }
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_YPOS) == 0) {
-        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_YPOS) == 0) {
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
         *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 202)) = parsedValue;
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_XSOURCE) == 0) {
-        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_XSOURCE) == 0) {
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
         *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 206)) = parsedValue;
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_YSOURCE) == 0) {
-        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_YSOURCE) == 0) {
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
         *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 210)) = parsedValue;
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_SIZEX) == 0) {
-        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_SIZEX) == 0) {
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
         *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 214)) = parsedValue;
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_SIZEY) == 0) {
-        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_SIZEY) == 0) {
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
         *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 218)) = parsedValue;
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_SOURCE) == 0) {
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_SOURCE) == 0) {
         sourceLen = 0;
-        cursor = keyValue;
+        cursor = entryValue;
         while (*cursor != 0) {
             ++cursor;
             ++sourceLen;
         }
 
         if (sourceLen > 0) {
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyValue, PARSEINI_TAG_PPV) == 0) {
+            if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_PPV) == 0) {
                 ((UBYTE *)PARSEINI_CurrentWeatherBlockPtr)[190] = 3;
                 return;
             }
@@ -150,8 +150,8 @@ void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
             *((LONG *)((UBYTE *)newAllocNode + 8)) = 0;
 
             cursor = (char *)newAllocNode;
-            while (*keyValue != 0) {
-                *cursor++ = *keyValue++;
+            while (*entryValue != 0) {
+                *cursor++ = *entryValue++;
             }
             *cursor = 0;
 
@@ -164,12 +164,12 @@ void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_STR_HORIZONTAL) == 0) {
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyValue, PARSEINI_TAG_RIGHT) == 0) {
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_STR_HORIZONTAL) == 0) {
+        if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_RIGHT) == 0) {
             *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 222)) = 2;
             return;
         }
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyValue, PARSEINI_TAG_CENTER_HorizontalAlign) == 0) {
+        if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_CENTER_HorizontalAlign) == 0) {
             *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 222)) = 1;
             return;
         }
@@ -177,12 +177,12 @@ void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_VERTICAL) == 0) {
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyValue, PARSEINI_TAG_BOTTOM) == 0) {
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_VERTICAL) == 0) {
+        if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_BOTTOM) == 0) {
             *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 226)) = 2;
             return;
         }
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyValue, PARSEINI_TAG_CENTER_VerticalAlign) == 0) {
+        if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_CENTER_VerticalAlign) == 0) {
             *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 226)) = 1;
             return;
         }
@@ -190,8 +190,8 @@ void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_ID) == 0) {
-        SCRIPT3_JMPTBL_STRING_CopyPadNul((char *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 191), keyValue, 2);
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_ID) == 0) {
+        SCRIPT3_JMPTBL_STRING_CopyPadNul((char *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 191), entryValue, 2);
         ((UBYTE *)PARSEINI_CurrentWeatherBlockPtr)[193] = 0;
     }
 }

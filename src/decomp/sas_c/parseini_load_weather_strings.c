@@ -10,7 +10,7 @@ extern char PARSEINI_TAG_FILENAME_WeatherString[];
 extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(char *a, char *b);
 extern void *PARSEINI_JMPTBL_BRUSH_AllocBrushNode(char *entryText, void *existingNode);
 
-void PARSEINI_LoadWeatherStrings(char *keyName, char *keyValue)
+void PARSEINI_LoadWeatherStrings(char *entryKey, char *entryValue)
 {
     void *weatherNode;
 
@@ -18,11 +18,11 @@ void PARSEINI_LoadWeatherStrings(char *keyName, char *keyValue)
         PARSEINI_WeatherBrushNodePtr = (void *)0;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_FILENAME_WeatherString) != 0) {
+    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_FILENAME_WeatherString) != 0) {
         return;
     }
 
-    weatherNode = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(keyValue, PARSEINI_WeatherBrushNodePtr);
+    weatherNode = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(entryValue, PARSEINI_WeatherBrushNodePtr);
     *((UBYTE *)weatherNode + 190) = 10;
     PARSEINI_WeatherBrushNodePtr = weatherNode;
 
