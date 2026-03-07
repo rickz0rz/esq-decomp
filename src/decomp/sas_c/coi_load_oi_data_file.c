@@ -3,6 +3,17 @@ typedef unsigned short UWORD;
 typedef short WORD;
 typedef long LONG;
 
+enum {
+    COI_DISK_SPLIT_DIVISOR = 2,
+    COI_LOAD_FAIL = -1,
+    COI_TOKEN_MAX = 11,
+    COI_DELIM_COUNT = 1,
+    COI_TOKEN_MAXLEN = 26,
+    COI_STOP_ON_EMPTY = 1,
+    COI_DEALLOC_LINE = 1198,
+    COI_SUCCESS = 0
+};
+
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern UBYTE *Global_PTR_WORK_BUFFER;
 extern UBYTE Global_STR_DF0_OI_PERCENT_2_LX_DAT_2[];
@@ -33,11 +44,11 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
 
     (void)disk_id;
 
-    GROUP_AG_JMPTBL_MATH_DivS32((LONG)disk_id, 2);
+    GROUP_AG_JMPTBL_MATH_DivS32((LONG)disk_id, COI_DISK_SPLIT_DIVISOR);
     GROUP_AE_JMPTBL_WDISP_SPrintf(path_buf, Global_STR_DF0_OI_PERCENT_2_LX_DAT_2, 0, 0, 0);
 
-    if (DISKIO_LoadFileToWorkBuffer(path_buf) == -1) {
-        return -1;
+    if (DISKIO_LoadFileToWorkBuffer(path_buf) == COI_LOAD_FAIL) {
+        return COI_LOAD_FAIL;
     }
 
     file_size = Global_REF_LONG_FILE_SCRATCH;
@@ -57,7 +68,14 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
         line_buf[line_len] = 0;
         parsed = GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(line_buf);
         (void)parsed;
-        GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(line_buf, line_buf, 11, COI_STR_LINEFEED_CR_2, 1, 26, 1);
+        GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
+            line_buf,
+            line_buf,
+            COI_TOKEN_MAX,
+            COI_STR_LINEFEED_CR_2,
+            COI_DELIM_COUNT,
+            COI_TOKEN_MAXLEN,
+            COI_STOP_ON_EMPTY);
         break;
     }
 
@@ -71,6 +89,10 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
         COI_AllocSubEntryTable(entry);
     }
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_COI_C_6, 1198, Global_PTR_WORK_BUFFER, file_size + 1);
-    return 0;
+    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        Global_STR_COI_C_6,
+        COI_DEALLOC_LINE,
+        Global_PTR_WORK_BUFFER,
+        file_size + 1);
+    return COI_SUCCESS;
 }

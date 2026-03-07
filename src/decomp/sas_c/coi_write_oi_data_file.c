@@ -3,6 +3,20 @@ typedef unsigned short UWORD;
 typedef short WORD;
 typedef long LONG;
 
+enum {
+    COI_MAX_PRIMARY_ENTRIES = 0xC8,
+    COI_FLAG_SET = 1,
+    COI_GROUP_PRESENT_BASE = 1,
+    COI_DISK_SPLIT_DIVISOR = 2,
+    COI_OPEN_MODE_WRITE = 1006,
+    COI_OPEN_FAIL = 0,
+    COI_WRITE_FAIL = 1,
+    COI_OPEN_ERROR = -3,
+    COI_WRITE_OK = 0,
+    COI_WRITE_ONE = 1,
+    COI_WRITE_TWO = 2
+};
+
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE TEXTDISP_SecondaryGroupCode;
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
@@ -37,41 +51,43 @@ LONG COI_WriteOiDataFile(UBYTE disk_id)
     WORD count;
     WORD i;
 
-    if (TEXTDISP_PrimaryGroupEntryCount > 0xC8) {
-        return 1;
+    if (TEXTDISP_PrimaryGroupEntryCount > COI_MAX_PRIMARY_ENTRIES) {
+        return COI_WRITE_FAIL;
     }
 
-    if (disk_id == TEXTDISP_SecondaryGroupCode && (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - 1) == 0) {
-        CTASKS_SecondaryOiWritePendingFlag = 1;
+    if (disk_id == TEXTDISP_SecondaryGroupCode &&
+        (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - COI_GROUP_PRESENT_BASE) == 0) {
+        CTASKS_SecondaryOiWritePendingFlag = COI_FLAG_SET;
         CTASKS_PendingSecondaryOiDiskId = disk_id;
         count = (WORD)TEXTDISP_SecondaryGroupEntryCount;
     } else if (disk_id == TEXTDISP_PrimaryGroupCode) {
-        CTASKS_PrimaryOiWritePendingFlag = 1;
+        CTASKS_PrimaryOiWritePendingFlag = COI_FLAG_SET;
         CTASKS_PendingPrimaryOiDiskId = disk_id;
         count = (WORD)TEXTDISP_PrimaryGroupEntryCount;
     } else {
-        return 1;
+        return COI_WRITE_FAIL;
     }
 
-    GROUP_AG_JMPTBL_MATH_DivS32((LONG)disk_id, 2);
+    GROUP_AG_JMPTBL_MATH_DivS32((LONG)disk_id, COI_DISK_SPLIT_DIVISOR);
     GROUP_AE_JMPTBL_WDISP_SPrintf(path_buf, Global_STR_DF0_OI_PERCENT_2_LX_DAT_1, 0, 0, 0);
-    fh = DISKIO_OpenFileWithBuffer(path_buf, 1006);
-    if (fh == 0) {
-        return -3;
+    fh = DISKIO_OpenFileWithBuffer(path_buf, COI_OPEN_MODE_WRITE);
+    if (fh == COI_OPEN_FAIL) {
+        return COI_OPEN_ERROR;
     }
 
     GROUP_AE_JMPTBL_WDISP_SPrintf(tmp, COI_FMT_LONG_DEC_A, (LONG)disk_id, 0, 0);
-    DISKIO_WriteBufferedBytes(fh, tmp, 1);
-    DISKIO_WriteBufferedBytes(fh, COI_FieldDelimiterTab, 1);
-    GROUP_AE_JMPTBL_WDISP_SPrintf(tmp, COI_FMT_DEC_A, 2, 0, 0);
-    DISKIO_WriteBufferedBytes(fh, tmp, 1);
-    DISKIO_WriteBufferedBytes(fh, COI_RecordTerminatorCrLf, 2);
+    DISKIO_WriteBufferedBytes(fh, tmp, COI_WRITE_ONE);
+    DISKIO_WriteBufferedBytes(fh, COI_FieldDelimiterTab, COI_WRITE_ONE);
+    GROUP_AE_JMPTBL_WDISP_SPrintf(tmp, COI_FMT_DEC_A, COI_DISK_SPLIT_DIVISOR, 0, 0);
+    DISKIO_WriteBufferedBytes(fh, tmp, COI_WRITE_ONE);
+    DISKIO_WriteBufferedBytes(fh, COI_RecordTerminatorCrLf, COI_WRITE_TWO);
 
     i = 0;
     while (i < count) {
         void *entry;
 
-        if (disk_id == TEXTDISP_SecondaryGroupCode && (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - 1) == 0) {
+        if (disk_id == TEXTDISP_SecondaryGroupCode &&
+            (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - COI_GROUP_PRESENT_BASE) == 0) {
             entry = TEXTDISP_SecondaryEntryPtrTable[i];
         } else {
             entry = TEXTDISP_PrimaryEntryPtrTable[i];
@@ -79,14 +95,14 @@ LONG COI_WriteOiDataFile(UBYTE disk_id)
 
         if (entry != (void *)0) {
             ESQ_WildcardMatch((const UBYTE *)entry, (const UBYTE *)entry);
-            DISKIO_WriteBufferedBytes(fh, entry, 1);
-            DISKIO_WriteBufferedBytes(fh, COI_RecordTerminatorCrLf, 2);
+            DISKIO_WriteBufferedBytes(fh, entry, COI_WRITE_ONE);
+            DISKIO_WriteBufferedBytes(fh, COI_RecordTerminatorCrLf, COI_WRITE_TWO);
         }
 
         i += 1;
     }
 
-    DISKIO_WriteBufferedBytes(fh, COI_RecordTerminatorCrLf, 2);
+    DISKIO_WriteBufferedBytes(fh, COI_RecordTerminatorCrLf, COI_WRITE_TWO);
     DISKIO_CloseBufferedFileAndFlush(fh);
-    return 0;
+    return COI_WRITE_OK;
 }
