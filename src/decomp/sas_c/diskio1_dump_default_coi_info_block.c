@@ -17,11 +17,11 @@ struct DiskioDefaultCoiInfo {
 
 struct DiskioProgramSourceRecord {
     UBYTE header_reserved[40];
-    UBYTE flag1;
-    UBYTE bg0;
-    UBYTE bg1;
-    char bgText[3];
-    UWORD flag2;
+    UBYTE sourceFlagsByte;
+    UBYTE backgroundColor0;
+    UBYTE backgroundColor1;
+    char backgroundText[3];
+    UWORD sourceFlagsWord;
     struct DiskioDefaultCoiInfo *defaultCoi;
 };
 
@@ -48,11 +48,11 @@ void DISKIO1_DumpDefaultCoiInfoBlock(void)
 
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_DefaultCoiDump,
-        (ULONG)rec->flag1,
-        (ULONG)rec->flag2,
-        (ULONG)rec->bg0,
-        (ULONG)rec->bg1,
-        rec->bgText);
+        (ULONG)rec->sourceFlagsByte,
+        (ULONG)rec->sourceFlagsWord,
+        (ULONG)rec->backgroundColor0,
+        (ULONG)rec->backgroundColor1,
+        rec->backgroundText);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_COI_DASH_PTR_PCT_08LX,
         rec->defaultCoi);
