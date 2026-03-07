@@ -2,6 +2,7 @@ typedef unsigned char UBYTE;
 typedef long LONG;
 
 enum {
+    COI_ENTRY_AUX_OFFSET = 48,
     COI_AUX_DEALLOC_LINE = 815,
     COI_AUX_DEALLOC_BYTES = 42
 };
@@ -22,7 +23,7 @@ void COI_FreeEntryResources(void *entry)
         return;
     }
 
-    aux = *(UBYTE **)(e + 48);
+    aux = *(UBYTE **)(e + COI_ENTRY_AUX_OFFSET);
     COI_FreeSubEntryTableEntries((void *)e);
     COI_ClearAnimObjectStrings((void *)e);
 
@@ -34,5 +35,5 @@ void COI_FreeEntryResources(void *entry)
             COI_AUX_DEALLOC_BYTES);
     }
 
-    *(void **)(e + 48) = (void *)0;
+    *(void **)(e + COI_ENTRY_AUX_OFFSET) = (void *)0;
 }
