@@ -2,6 +2,9 @@ typedef unsigned char UBYTE;
 typedef long LONG;
 
 enum {
+    BRUSH_FALSE = 0,
+    BRUSH_TRUE = 1,
+    BRUSH_NULL = 0,
     BRUSH_DESCRIPTOR_NEXT_OFFSET = 234,
     BRUSH_DESCRIPTOR_NODE_SIZE = 238,
     BRUSH_NODE_NEXT_OFFSET = 368
@@ -25,13 +28,13 @@ void BRUSH_PopulateBrushList(void *descriptor, void **out_head_ptr)
 
     (void)AbsExecBase;
     _LVOForbid();
-    BRUSH_LoadInProgressFlag = 1;
+    BRUSH_LoadInProgressFlag = BRUSH_TRUE;
     _LVOPermit();
 
-    *out_head_ptr = (void *)0;
-    tail = (UBYTE *)0;
+    *out_head_ptr = (void *)BRUSH_NULL;
+    tail = (UBYTE *)BRUSH_NULL;
     cur = (UBYTE *)descriptor;
-    while (cur != (UBYTE *)0) {
+    while (cur != (UBYTE *)BRUSH_NULL) {
         UBYTE *next_desc;
         void *loaded;
 
@@ -45,11 +48,11 @@ void BRUSH_PopulateBrushList(void *descriptor, void **out_head_ptr)
         );
         cur = next_desc;
 
-        if (loaded == (void *)0) {
+        if (loaded == (void *)BRUSH_NULL) {
             continue;
         }
 
-        if (*out_head_ptr == (void *)0) {
+        if (*out_head_ptr == (void *)BRUSH_NULL) {
             *out_head_ptr = loaded;
         } else {
             *(void **)(tail + BRUSH_NODE_NEXT_OFFSET) = loaded;
@@ -57,10 +60,10 @@ void BRUSH_PopulateBrushList(void *descriptor, void **out_head_ptr)
         tail = (UBYTE *)loaded;
     }
 
-    PARSEINI_ParsedDescriptorListHead = (void *)0;
+    PARSEINI_ParsedDescriptorListHead = (void *)BRUSH_NULL;
     BRUSH_NormalizeBrushNames(out_head_ptr);
 
     _LVOForbid();
-    BRUSH_LoadInProgressFlag = 0;
+    BRUSH_LoadInProgressFlag = BRUSH_FALSE;
     _LVOPermit();
 }
