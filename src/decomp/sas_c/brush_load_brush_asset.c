@@ -4,6 +4,14 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_STATUS_OK = 0,
+    BRUSH_STATUS_FAIL = 1,
+    BRUSH_MAX_DEPTH_DEFAULT = 5,
+    BRUSH_MAX_DEPTH_ALT = 4,
+    BRUSH_MAX_WIDTH_DEFAULT = 320,
+    BRUSH_MAX_WIDTH_ALT = 640,
+    BRUSH_ALT_MODE_FLAG_MASK = 0x80U,
+    BRUSH_ALT_NODE_TYPE = 11,
     BRUSH_NODE_SIZE = 372,
     BRUSH_DECODE_BUFFER_SIZE = 130000,
     MEMF_PUBLIC_CLEAR = 0x10001UL
@@ -58,9 +66,9 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     (void)AbsExecBase;
     (void)Global_REF_DOS_LIBRARY_2;
     (void)Global_REF_GRAPHICS_LIBRARY;
-    status_fail = 1;
-    max_depth = 5;
-    max_width = 320;
+    status_fail = BRUSH_STATUS_FAIL;
+    max_depth = BRUSH_MAX_DEPTH_DEFAULT;
+    max_width = BRUSH_MAX_WIDTH_DEFAULT;
     decode_buf = (UBYTE *)0;
     decode_cur = (UBYTE *)0;
     node = (UBYTE *)0;
@@ -84,16 +92,16 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                         BRUSH_DECODE_BUFFER_SIZE,
                         decode_buf,
                         src) == 1) {
-                    status_fail = 0;
+                    status_fail = BRUSH_STATUS_OK;
                 }
             }
         }
         _LVOClose(fh);
     }
 
-    if ((src[150] & 0x80U) != 0) {
-        max_depth = 4;
-        max_width = 640;
+    if ((src[150] & BRUSH_ALT_MODE_FLAG_MASK) != 0) {
+        max_depth = BRUSH_MAX_DEPTH_ALT;
+        max_width = BRUSH_MAX_WIDTH_ALT;
     }
     if ((LONG)(UBYTE)src[136] > max_depth || (LONG)(UWORD)*(UWORD *)(src + 128) > max_width) {
         _LVOForbid();
@@ -108,10 +116,10 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             } while (*s++ != 0);
         }
         _LVOPermit();
-        status_fail = 1;
+        status_fail = BRUSH_STATUS_FAIL;
     }
 
-    if (status_fail == 0) {
+    if (status_fail == BRUSH_STATUS_OK) {
         node = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
             Global_STR_BRUSH_C_11,
             1064,
@@ -168,7 +176,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
         }
     }
 
-    if ((UBYTE)src[190] == 11) {
+    if ((UBYTE)src[190] == BRUSH_ALT_NODE_TYPE) {
         UBYTE *alt = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
             Global_STR_BRUSH_C_15,
             1220,
