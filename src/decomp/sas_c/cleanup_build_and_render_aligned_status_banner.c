@@ -21,6 +21,12 @@ LONG GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 
 void CLEANUP_BuildAndRenderAlignedStatusBanner(UWORD sourceMode, UWORD modeSel, UWORD slot)
 {
+    const UBYTE CH_NUL = 0;
+    const LONG MATCH_IDX_DEFAULT = 0;
+    const LONG CLOCK_IDX_DEFAULT = 0;
+    const LONG ALT_STYLE_DEFAULT = 0;
+    const LONG ALT_STYLE_ALT = 1;
+    const LONG ALIGN_TOKEN_DEFAULT = 0;
     UBYTE status[560];
     UBYTE clock_buf[64];
     UBYTE alt_buf[64];
@@ -28,26 +34,28 @@ void CLEANUP_BuildAndRenderAlignedStatusBanner(UWORD sourceMode, UWORD modeSel, 
     UBYTE *fieldA;
     UBYTE *fieldB;
 
-    status[0] = 0;
-    clock_buf[0] = 0;
-    alt_buf[0] = 0;
-    parse_buf[0] = 0;
+    status[0] = CH_NUL;
+    clock_buf[0] = CH_NUL;
+    alt_buf[0] = CH_NUL;
+    parse_buf[0] = CH_NUL;
 
     if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_F) != (UBYTE *)0) {
-        GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(0, 0, clock_buf, 0);
+        GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(
+            MATCH_IDX_DEFAULT, CLOCK_IDX_DEFAULT, clock_buf, ALT_STYLE_DEFAULT);
     }
     if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_O) != (UBYTE *)0) {
-        GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(0, 0, alt_buf, 1);
+        GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(
+            MATCH_IDX_DEFAULT, CLOCK_IDX_DEFAULT, alt_buf, ALT_STYLE_ALT);
     }
 
-    CLEANUP_BuildAlignedStatusLine(status, sourceMode, modeSel, slot, 0);
+    CLEANUP_BuildAlignedStatusLine(status, sourceMode, modeSel, slot, ALIGN_TOKEN_DEFAULT);
 
     CLEANUP_ParseAlignedListingBlock(parse_buf, status);
 
     CLEANUP_UpdateEntryFlagBytes((void *)status, slot);
 
-    fieldA = (UBYTE *)0;
-    fieldB = (UBYTE *)0;
+    fieldA = (UBYTE *)CH_NUL;
+    fieldB = (UBYTE *)CH_NUL;
     CLEANUP_FormatEntryStringTokens((void **)&fieldA, (void **)&fieldB, parse_buf);
 
     CLEANUP_DrawInsetRectFrame();

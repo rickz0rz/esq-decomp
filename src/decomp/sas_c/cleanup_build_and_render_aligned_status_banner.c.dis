@@ -2,31 +2,38 @@
 __code:
 CLEANUP_BuildAndRenderAlignedSta:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$3cc,D0                 ;90bc 0000 03cc 
+              SUB.L          #$3f4,D0                 ;90bc 0000 03f4 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$3b8,A7                 ;9efc 03b8 
+              SUB.W          #$3e0,A7                 ;9efc 03e0 
               MOVEM.L        D2/D5/D6/D7,-(A7)        ;48e7 2700 
 ___CLEANUP_BuildAndRenderAlignedSta__1:
-              MOVE.W         $3d6(A7),D5              ;3a2f 03d6 
-              MOVE.W         $3d2(A7),D6              ;3c2f 03d2 
-              MOVE.W         $3ce(A7),D7              ;3e2f 03ce 
-              CLR.B          $198(A7)                 ;422f 0198 
-              CLR.B          $158(A7)                 ;422f 0158 
-              CLR.B          $118(A7)                 ;422f 0118 
-              CLR.B          $18(A7)                  ;422f 0018 
+              MOVE.W         $3fe(A7),D5              ;3a2f 03fe 
+              MOVE.W         $3fa(A7),D6              ;3c2f 03fa 
+              MOVE.W         $3f6(A7),D7              ;3e2f 03f6 
+              MOVEQ.L        #$0,D0                   ;7000 
+              CLR.L          $3d8(A7)                 ;42af 03d8 
+              CLR.L          $3e8(A7)                 ;42af 03e8 
+              CLR.L          $3e4(A7)                 ;42af 03e4 
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVE.L         D1,$3e0(A7)              ;2f41 03e0 
+              CLR.L          $3dc(A7)                 ;42af 03dc 
+              MOVE.B         D0,$198(A7)              ;1f40 0198 
+              MOVE.B         D0,$158(A7)              ;1f40 0158 
+              MOVE.B         D0,$118(A7)              ;1f40 0118 
+              MOVE.B         D0,$18(A7)               ;1f40 0018 
               PEA            ($46).w                  ;4878 0046 
               PEA            CLOCK_STR_TEMPLATE_CODE_SET_FGN(A4);486c 0000 
+              MOVE.B         D0,$3f4(A7)              ;1f40 03f4 
               BSR.W          GROUP_AI_JMPTBL_STR_FindCharPtr;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BEQ.B          ___CLEANUP_BuildAndRenderAlignedSta__3;6714 
+              BEQ.B          ___CLEANUP_BuildAndRenderAlignedSta__3;6718 
 ___CLEANUP_BuildAndRenderAlignedSta__2:
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $3e4(A7),-(A7)           ;2f2f 03e4 
               PEA            $15c(A7)                 ;486f 015c 
-              MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $3f0(A7),-(A7)           ;2f2f 03f0 
+              MOVE.L         $3e4(A7),-(A7)           ;2f2f 03e4 
               BSR.W          GROUP_AD_JMPTBL_TLIBA1_BuildCloc;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
 ___CLEANUP_BuildAndRenderAlignedSta__3:
@@ -35,13 +42,12 @@ ___CLEANUP_BuildAndRenderAlignedSta__3:
               BSR.W          GROUP_AI_JMPTBL_STR_FindCharPtr;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BEQ.B          ___CLEANUP_BuildAndRenderAlignedSta__5;6716 
+              BEQ.B          ___CLEANUP_BuildAndRenderAlignedSta__5;6718 
 ___CLEANUP_BuildAndRenderAlignedSta__4:
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         $3e0(A7),-(A7)           ;2f2f 03e0 
               PEA            $11c(A7)                 ;486f 011c 
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $3f0(A7),-(A7)           ;2f2f 03f0 
+              MOVE.L         $3e4(A7),-(A7)           ;2f2f 03e4 
               BSR.W          GROUP_AD_JMPTBL_TLIBA1_BuildCloc;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
 ___CLEANUP_BuildAndRenderAlignedSta__5:
@@ -51,7 +57,7 @@ ___CLEANUP_BuildAndRenderAlignedSta__5:
               MOVE.W         D6,D1                    ;3206 
               MOVEQ.L        #$0,D2                   ;7400 
               MOVE.W         D5,D2                    ;3405 
-              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         $3dc(A7),-(A7)           ;2f2f 03dc 
               MOVE.L         D2,-(A7)                 ;2f02 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -65,8 +71,12 @@ ___CLEANUP_BuildAndRenderAlignedSta__5:
               MOVE.L         D0,(A7)                  ;2e80 
               PEA            $1b4(A7)                 ;486f 01b4 
               BSR.W          CLEANUP_UpdateEntryFlagBytes;6100 0000 
-              CLR.L          $34(A7)                  ;42af 0034 
-              CLR.L          $30(A7)                  ;42af 0030 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         $40c(A7),D0              ;102f 040c 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,$30(A7)               ;2f41 0030 
               PEA            $38(A7)                  ;486f 0038 
               PEA            $34(A7)                  ;486f 0034 
               PEA            $3c(A7)                  ;486f 003c 
@@ -77,7 +87,7 @@ ___CLEANUP_BuildAndRenderAlignedSta__5:
               LEA            $2c(A7),A7               ;4fef 002c 
 ___CLEANUP_BuildAndRenderAlignedSta__6:
               MOVEM.L        (A7)+,D2/D5/D6/D7        ;4cdf 00e4 
-              ADD.W          #$3b8,A7                 ;defc 03b8 
+              ADD.W          #$3e0,A7                 ;defc 03e0 
               RTS                                     ;4e75 
 __const:
 __strings:
@@ -100,7 +110,7 @@ ___CLEANUP_RenderAlignedStatusScree__1:
               MOVE.L         D2,-(A7)                 ;2f02 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          CLEANUP_BuildAndRenderAlignedSta;6100 fee2 
+              BSR.W          CLEANUP_BuildAndRenderAlignedSta;6100 feb4 
 ___CLEANUP_RenderAlignedStatusScree__2:
               LEA            $c(A7),A7                ;4fef 000c 
 ___CLEANUP_RenderAlignedStatusScree__3:

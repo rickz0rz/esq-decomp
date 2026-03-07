@@ -10,7 +10,8 @@ enum {
     INSET_LEFT_MARGIN = 2,
     INSET_RIGHT_MARGIN = 2,
     INSET_TOP_ADJUST = 2,
-    INSET_BASELINE_ADJUST = 1
+    INSET_BASELINE_ADJUST = 1,
+    ZERO = 0
 };
 
 extern LONG Global_REF_GRAPHICS_LIBRARY;
@@ -54,6 +55,7 @@ void CLEANUP_DrawInsetRectFrame(UBYTE *rp, UBYTE pen, UWORD w, UWORD h)
 
     (void)x1;
     (void)y1;
+    (void)ZERO;
     _LVOMove();
 
     (void)old_pen;
