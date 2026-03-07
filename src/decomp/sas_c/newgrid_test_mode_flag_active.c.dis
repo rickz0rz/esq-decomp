@@ -1,0 +1,44 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_TestModeFlagActive:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___NEWGRID_TestModeFlagActive__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              TST.L          D7                       ;4a87 
+              BNE.B          ___NEWGRID_TestModeFlagActive__4;660e 
+___NEWGRID_TestModeFlagActive__2:
+              MOVE.B         CONFIG_NewgridSelectionCode34Pri(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___NEWGRID_TestModeFlagActive__4;6604 
+___NEWGRID_TestModeFlagActive__3:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.B          ___NEWGRID_TestModeFlagActive__9;6016 
+___NEWGRID_TestModeFlagActive__4:
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.L         #$1,D0                   ;5380 
+              BNE.B          ___NEWGRID_TestModeFlagActive__7;660e 
+___NEWGRID_TestModeFlagActive__5:
+              MOVE.B         CONFIG_NewgridSelectionCode34Alt(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___NEWGRID_TestModeFlagActive__7;6604 
+___NEWGRID_TestModeFlagActive__6:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.B          ___NEWGRID_TestModeFlagActive__9;6002 
+___NEWGRID_TestModeFlagActive__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+___NEWGRID_TestModeFlagActive__8:
+___NEWGRID_TestModeFlagActive__9:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           CONFIG_NewgridSelectionCode34Pri
+              XREF           CONFIG_NewgridSelectionCode34Alt
+              XDEF           NEWGRID_TestModeFlagActive
+              END
