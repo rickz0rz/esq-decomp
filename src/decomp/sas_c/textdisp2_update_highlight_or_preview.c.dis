@@ -2,42 +2,50 @@
 __code:
 TEXTDISP_UpdateHighlightOrPrevie:
               MOVE.L         A7,D0                    ;200f 
-              SUBQ.L         #$4,D0                   ;5980 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D2/D7,-(A7)              ;48e7 2100 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        D2/D4/D5/D6/D7,-(A7)     ;48e7 2f00 
 ___TEXTDISP_UpdateHighlightOrPrevie__1:
-              MOVEQ.L        #$1,D0                   ;7001 
-              CMP.L          LOCAVAIL_FilterModeFlag(A4),D0;b0ac 0000 
-              BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__12;6642 
+              MOVEQ.L        #$1,D7                   ;7e01 
+              MOVEQ.L        #$ff,D6                  ;7cff 
+              MOVEQ.L        #$2,D5                   ;7a02 
+              MOVEQ.L        #$3,D4                   ;7803 
+              MOVEQ.L        #$4e,D0                  ;704e 
+              MOVE.B         D0,$18(A7)               ;1f40 0018 
+              MOVE.L         LOCAVAIL_FilterModeFlag(A4),D1;222c 0000 
+              CMP.L          D7,D1                    ;b287 
+              BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__12;664e 
 ___TEXTDISP_UpdateHighlightOrPrevie__2:
-              MOVE.L         LOCAVAIL_FilterClassId(A4),D7;2e2c 0000 
-              MOVE.L         D7,D1                    ;2207 
-              ADDQ.L         #$1,D1                   ;5281 
-              BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__4;6604 
+              MOVE.L         LOCAVAIL_FilterClassId(A4),D1;222c 0000 
+              MOVEM.L        D1,$14(A7)               ;48ef 0002 0014 
+              CMP.L          D6,D1                    ;b286 
+              BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__4;6608 
 ___TEXTDISP_UpdateHighlightOrPrevie__3:
-              MOVE.L         LOCAVAIL_FilterPrevClassId(A4),D7;2e2c 0000 
+              MOVE.L         LOCAVAIL_FilterPrevClassId(A4),D2;242c 0000 
+              MOVE.L         D2,$14(A7)               ;2f42 0014 
 ___TEXTDISP_UpdateHighlightOrPrevie__4:
               MOVE.B         ED_DiagGraphModeChar(A4),D1;122c 0000 
-              MOVEQ.L        #$4e,D2                  ;744e 
-              CMP.B          D2,D1                    ;b202 
-              BEQ.B          ___TEXTDISP_UpdateHighlightOrPrevie__7;6710 
+              CMP.B          D0,D1                    ;b200 
+              BEQ.B          ___TEXTDISP_UpdateHighlightOrPrevie__7;6712 
 ___TEXTDISP_UpdateHighlightOrPrevie__5:
-              MOVE.L         D7,D1                    ;2207 
-              SUBQ.L         #$2,D1                   ;5581 
+              MOVE.L         $14(A7),D0               ;202f 0014 
+              CMP.L          D5,D0                    ;b085 
               BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__7;660a 
 ___TEXTDISP_UpdateHighlightOrPrevie__6:
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          TEXTDISP2_JMPTBL_ESQIFF_PlayNext;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__18;6042 
+              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__18;6046 
 ___TEXTDISP_UpdateHighlightOrPrevie__7:
               MOVE.W         WDISP_HighlightActive(A4),D0;302c 0000 
-              SUBQ.W         #$1,D0                   ;5340 
-              BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__10;660c 
+              EXT.L          D0                       ;48c0 
+              CMP.L          D7,D0                    ;b087 
+              BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__10;660e 
 ___TEXTDISP_UpdateHighlightOrPrevie__8:
-              MOVE.L         D7,D0                    ;2007 
-              SUBQ.L         #$3,D0                   ;5780 
+              MOVE.L         $14(A7),D0               ;202f 0014 
+              CMP.L          D4,D0                    ;b084 
               BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__10;6606 
 ___TEXTDISP_UpdateHighlightOrPrevie__9:
               BSR.W          TEXTDISP_DrawNextEntryPreview;6100 0000 
@@ -48,17 +56,17 @@ ___TEXTDISP_UpdateHighlightOrPrevie__11:
               BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__18;6028 
 ___TEXTDISP_UpdateHighlightOrPrevie__12:
               MOVE.B         ED_DiagGraphModeChar(A4),D0;102c 0000 
-              MOVEQ.L        #$4e,D1                  ;724e 
-              CMP.B          D1,D0                    ;b001 
-              BEQ.B          ___TEXTDISP_UpdateHighlightOrPrevie__14;670c 
+              CMP.B          $18(A7),D0               ;b02f 0018 
+              BEQ.B          ___TEXTDISP_UpdateHighlightOrPrevie__14;670a 
 ___TEXTDISP_UpdateHighlightOrPrevie__13:
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          TEXTDISP2_JMPTBL_ESQIFF_PlayNext;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__18;6012 
+              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__18;6014 
 ___TEXTDISP_UpdateHighlightOrPrevie__14:
               MOVE.W         WDISP_HighlightActive(A4),D0;302c 0000 
-              SUBQ.W         #$1,D0                   ;5340 
+              EXT.L          D0                       ;48c0 
+              CMP.L          D7,D0                    ;b087 
               BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__16;6606 
 ___TEXTDISP_UpdateHighlightOrPrevie__15:
               BSR.W          TEXTDISP_DrawNextEntryPreview;6100 0000 
@@ -67,7 +75,8 @@ ___TEXTDISP_UpdateHighlightOrPrevie__16:
               BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
 ___TEXTDISP_UpdateHighlightOrPrevie__17:
 ___TEXTDISP_UpdateHighlightOrPrevie__18:
-              MOVEM.L        (A7)+,D2/D7              ;4cdf 0084 
+              MOVEM.L        (A7)+,D2/D4/D5/D6/D7     ;4cdf 00f4 
+              ADDQ.W         #$8,A7                   ;504f 
               RTS                                     ;4e75 
 __const:
 __strings:

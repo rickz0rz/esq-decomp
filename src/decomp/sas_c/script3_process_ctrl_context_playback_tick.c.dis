@@ -2,67 +2,82 @@
 __code:
 SCRIPT_ProcessCtrlContextPlaybac:
               MOVE.L         A7,D0                    ;200f 
-              SUBQ.L         #$8,D0                   ;5180 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D2/A5,-(A7)              ;48e7 2004 
+              SUB.W          #$10,A7                  ;9efc 0010 
+              MOVEM.L        D2/D4/D5/D6/D7/A5,-(A7)  ;48e7 2f04 
 ___SCRIPT_ProcessCtrlContextPlaybac__1:
-              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         $2c(A7),A5               ;2a6f 002c 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVEQ.L        #$3,D6                   ;7c03 
+              MOVEQ.L        #$4d,D5                  ;7a4d 
+              MOVEQ.L        #$1,D4                   ;7801 
+              MOVEQ.L        #$a,D0                   ;700a 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVEQ.L        #$2,D0                   ;7002 
+              MOVEQ.L        #$f,D1                   ;720f 
+              MOVE.L         D1,$18(A7)               ;2f41 0018 
               PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
               BSR.W          SCRIPT3_JMPTBL_LOCAVAIL_UpdateFi;6100 0000 
               MOVE.L         A5,(A7)                  ;2e8d 
               BSR.W          SCRIPT_LoadCtrlContextSnapshot;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              TST.L          SCRIPT_RuntimeModeDeferredFlag(A4);4aac 0000 
+              MOVE.L         SCRIPT_RuntimeModeDeferredFlag(A4),D0;202c 0000 
+              CMP.L          D7,D0                    ;b087 
               BEQ.B          ___SCRIPT_ProcessCtrlContextPlaybac__3;670a 
 ___SCRIPT_ProcessCtrlContextPlaybac__2:
-              MOVEQ.L        #$3,D0                   ;7003 
+              MOVE.L         D6,D0                    ;2006 
               MOVE.W         D0,SCRIPT_RuntimeMode(A4);3940 0000 
-              CLR.L          SCRIPT_RuntimeModeDeferredFlag(A4);42ac 0000 
+              MOVE.L         D7,SCRIPT_RuntimeModeDeferredFlag(A4);2947 0000 
 ___SCRIPT_ProcessCtrlContextPlaybac__3:
               MOVE.B         CONFIG_MSN_FlagChar(A4),D0;102c 0000 
-              MOVEQ.L        #$4d,D1                  ;724d 
-              CMP.B          D1,D0                    ;b001 
-              BNE.B          ___SCRIPT_ProcessCtrlContextPlaybac__7;6614 
+              CMP.B          D5,D0                    ;b005 
+              BNE.B          ___SCRIPT_ProcessCtrlContextPlaybac__7;6618 
 ___SCRIPT_ProcessCtrlContextPlaybac__4:
               MOVE.L         SCRIPT_PlaybackCursor(A4),D0;202c 0000 
-              TST.L          D0                       ;4a80 
-              BLE.B          ___SCRIPT_ProcessCtrlContextPlaybac__7;6f0c 
+              CMP.L          D7,D0                    ;b087 
+              BLE.B          ___SCRIPT_ProcessCtrlContextPlaybac__7;6f10 
 ___SCRIPT_ProcessCtrlContextPlaybac__5:
-              MOVEQ.L        #$a,D1                   ;720a 
+              MOVE.L         $24(A7),D1               ;222f 0024 
               CMP.L          D1,D0                    ;b081 
-              BGE.B          ___SCRIPT_ProcessCtrlContextPlaybac__7;6c06 
+              BGE.B          ___SCRIPT_ProcessCtrlContextPlaybac__7;6c08 
 ___SCRIPT_ProcessCtrlContextPlaybac__6:
-              MOVEQ.L        #$2,D2                   ;7402 
+              MOVE.L         $20(A7),D2               ;242f 0020 
               MOVE.L         D2,SCRIPT_PlaybackCursor(A4);2942 0000 
 ___SCRIPT_ProcessCtrlContextPlaybac__7:
+              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         SCRIPT_RuntimeMode(A4),D0;302c 0000 
-              SUBQ.W         #$2,D0                   ;5540 
-              BNE.B          ___SCRIPT_ProcessCtrlContextPlaybac__10;6610 
+              CMP.L          $1c(A7),D0               ;b0af 001c 
+              BNE.B          ___SCRIPT_ProcessCtrlContextPlaybac__10;6614 
 ___SCRIPT_ProcessCtrlContextPlaybac__8:
+              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         SCRIPT_RuntimeModeDispatchLatch(A4),D0;302c 0000 
+              CMP.L          D7,D0                    ;b087 
               BEQ.B          ___SCRIPT_ProcessCtrlContextPlaybac__10;670a 
 ___SCRIPT_ProcessCtrlContextPlaybac__9:
               MOVE.L         SCRIPT_PlaybackCursor(A4),D0;202c 0000 
-              MOVEQ.L        #$a,D1                   ;720a 
-              CMP.L          D1,D0                    ;b081 
-              BLE.B          ___SCRIPT_ProcessCtrlContextPlaybac__17;6f2e 
+              CMP.L          $24(A7),D0               ;b0af 0024 
+              BLE.B          ___SCRIPT_ProcessCtrlContextPlaybac__17;6f32 
 ___SCRIPT_ProcessCtrlContextPlaybac__10:
               MOVE.L         SCRIPT_PlaybackCursor(A4),D0;202c 0000 
-              TST.L          D0                       ;4a80 
-              BLE.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;6f2a 
+              CMP.L          D7,D0                    ;b087 
+              BLE.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;6f30 
 ___SCRIPT_ProcessCtrlContextPlaybac__11:
-              MOVEQ.L        #$f,D1                   ;720f 
-              CMP.L          D1,D0                    ;b081 
-              BGT.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;6e24 
+              CMP.L          $18(A7),D0               ;b0af 0018 
+              BGT.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;6e2a 
 ___SCRIPT_ProcessCtrlContextPlaybac__12:
               BSR.W          SCRIPT_UpdateRuntimeModeForPlayb;6100 0000 
-              TST.W          D0                       ;4a40 
-              BNE.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;661c 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              CMP.L          D7,D1                    ;b287 
+              BNE.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;661e 
 ___SCRIPT_ProcessCtrlContextPlaybac__13:
-              MOVEQ.L        #$1,D0                   ;7001 
-              CMP.L          SCRIPT_PlaybackCursor(A4),D0;b0ac 0000 
+              MOVE.L         SCRIPT_PlaybackCursor(A4),D0;202c 0000 
+              CMP.L          D4,D0                    ;b084 
               BEQ.B          ___SCRIPT_ProcessCtrlContextPlaybac__15;6704 
 ___SCRIPT_ProcessCtrlContextPlaybac__14:
               BSR.W          SCRIPT_ApplyPendingBannerTarget;6100 0000 
@@ -71,16 +86,18 @@ ___SCRIPT_ProcessCtrlContextPlaybac__15:
               BSR.W          SCRIPT_DispatchPlaybackCursorCom;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___SCRIPT_ProcessCtrlContextPlaybac__16:
-              BRA.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;6004 
+              BRA.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;6006 
 ___SCRIPT_ProcessCtrlContextPlaybac__17:
-              CLR.W          SCRIPT_RuntimeModeDispatchLatch(A4);426c 0000 
+              MOVE.L         D7,D0                    ;2007 
+              MOVE.W         D0,SCRIPT_RuntimeModeDispatchLatch(A4);3940 0000 
 ___SCRIPT_ProcessCtrlContextPlaybac__18:
               MOVE.W         TEXTDISP_CurrentMatchIndex(A4),TEXTDISP_CurrentMatchIndexSaved(A4);396c 0000 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          SCRIPT_SaveCtrlContextSnapshot;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___SCRIPT_ProcessCtrlContextPlaybac__19:
-              MOVEM.L        (A7)+,D2/A5              ;4cdf 2004 
+              MOVEM.L        (A7)+,D2/D4/D5/D6/D7/A5  ;4cdf 20f4 
+              ADD.W          #$10,A7                  ;defc 0010 
               RTS                                     ;4e75 
 __const:
 __strings:

@@ -20,29 +20,41 @@ extern void SCRIPT_SaveCtrlContextSnapshot(void *ctx);
 
 void SCRIPT_ProcessCtrlContextPlaybackTick(void *ctx)
 {
+    const LONG FLAG_FALSE = 0;
+    const LONG MODE_DEFERRED = 3;
+    const UBYTE MSN_MODE_CHAR = 'M';
+    const LONG CURSOR_MIN_ACTIVE = 1;
+    const LONG CURSOR_WINDOW_END = 10;
+    const LONG CURSOR_REMAP_VALUE = 2;
+    const LONG RUNTIME_MODE_LATCHED = 2;
+    const LONG CURSOR_DISPATCH_MAX = 15;
     SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(ctx, &LOCAVAIL_PrimaryFilterState);
     SCRIPT_LoadCtrlContextSnapshot(ctx);
 
-    if (SCRIPT_RuntimeModeDeferredFlag != 0) {
-        SCRIPT_RuntimeMode = 3;
-        SCRIPT_RuntimeModeDeferredFlag = 0;
+    if (SCRIPT_RuntimeModeDeferredFlag != FLAG_FALSE) {
+        SCRIPT_RuntimeMode = MODE_DEFERRED;
+        SCRIPT_RuntimeModeDeferredFlag = FLAG_FALSE;
     }
 
-    if (CONFIG_MSN_FlagChar == 'M' && SCRIPT_PlaybackCursor > 0 && SCRIPT_PlaybackCursor < 10) {
-        SCRIPT_PlaybackCursor = 2;
+    if (CONFIG_MSN_FlagChar == MSN_MODE_CHAR &&
+        SCRIPT_PlaybackCursor > FLAG_FALSE &&
+        SCRIPT_PlaybackCursor < CURSOR_WINDOW_END) {
+        SCRIPT_PlaybackCursor = CURSOR_REMAP_VALUE;
     }
 
-    if (!(SCRIPT_RuntimeMode == 2 && SCRIPT_RuntimeModeDispatchLatch != 0 && SCRIPT_PlaybackCursor <= 10)) {
-        if (SCRIPT_PlaybackCursor > 0 && SCRIPT_PlaybackCursor <= 15) {
-            if (SCRIPT_UpdateRuntimeModeForPlaybackCursor() == 0) {
-                if (SCRIPT_PlaybackCursor != 1) {
+    if (!(SCRIPT_RuntimeMode == RUNTIME_MODE_LATCHED &&
+          SCRIPT_RuntimeModeDispatchLatch != FLAG_FALSE &&
+          SCRIPT_PlaybackCursor <= CURSOR_WINDOW_END)) {
+        if (SCRIPT_PlaybackCursor > FLAG_FALSE && SCRIPT_PlaybackCursor <= CURSOR_DISPATCH_MAX) {
+            if (SCRIPT_UpdateRuntimeModeForPlaybackCursor() == FLAG_FALSE) {
+                if (SCRIPT_PlaybackCursor != CURSOR_MIN_ACTIVE) {
                     SCRIPT_ApplyPendingBannerTarget();
                 }
                 SCRIPT_DispatchPlaybackCursorCommand(&SCRIPT_PlaybackCursor);
             }
         }
     } else {
-        SCRIPT_RuntimeModeDispatchLatch = 0;
+        SCRIPT_RuntimeModeDispatchLatch = FLAG_FALSE;
     }
 
     TEXTDISP_CurrentMatchIndexSaved = TEXTDISP_CurrentMatchIndex;
