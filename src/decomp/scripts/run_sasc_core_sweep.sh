@@ -470,6 +470,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_handle_open_entry_with_flags_trial.sh"
     "src/decomp/scripts/compare_sasc_handle_close_all_and_return_with_code_trial.sh"
     "src/decomp/scripts/compare_sasc_wdisp_format_with_callback_trial.sh"
+    "src/decomp/scripts/compare_sasc_wdisp_draw_weather_status_summary_trial.sh"
     "src/decomp/scripts/compare_sasc_wdisp_handle_weather_status_command_trial.sh"
     "src/decomp/scripts/compare_sasc_wdisp_sprintf_trial.sh"
     "src/decomp/scripts/compare_sasc_math_divs32_trial.sh"
