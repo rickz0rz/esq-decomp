@@ -2,6 +2,7 @@ typedef unsigned char UBYTE;
 typedef long LONG;
 
 enum {
+    DISKIO1_MASK_INDEX_STEP = 1,
     DISKIO1_MASK_BYTE_COUNT = 6,
     DISKIO1_MASK_VALUE_END_INDEX = 49,
     DISKIO1_TESTBIT_CLEAR = -1
@@ -32,7 +33,7 @@ void DISKIO1_AppendTimeSlotMaskSelectedTimes(void)
                 DISKIO_FMT_PCT_S_TimeSlotMaskEntry,
                 Global_REF_STR_CLOCK_FORMAT[(LONG)gDiskio1MaskValueBitIndex]);
         }
-        gDiskio1MaskValueBitIndex++;
+        gDiskio1MaskValueBitIndex += DISKIO1_MASK_INDEX_STEP;
     }
 
     DISKIO1_AppendTimeSlotMaskValueTerminator();
@@ -50,7 +51,7 @@ void DISKIO1_AppendBlackoutMaskSelectedTimes(void)
                 DISKIO_FMT_PCT_S_BlackoutMaskEntry,
                 Global_REF_STR_CLOCK_FORMAT[(LONG)gDiskio1MaskValueBitIndex]);
         }
-        gDiskio1MaskValueBitIndex++;
+        gDiskio1MaskValueBitIndex += DISKIO1_MASK_INDEX_STEP;
     }
 
     DISKIO1_AppendBlackoutMaskValueTerminator();
