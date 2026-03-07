@@ -40,12 +40,12 @@ extern void SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, char *src, LONG n);
 
 void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
 {
-    void *previousNode;
-    void *newNode;
-    LONG v;
-    LONG len;
+    void *prevSourceNode;
+    void *newAllocNode;
+    LONG parsedValue;
+    LONG sourceLen;
     char *cursor;
-    UBYTE *block;
+    UBYTE *weatherBlock;
 
     if (PARSEINI_ParsedDescriptorListHead == (void *)0) {
         PARSEINI_CurrentWeatherBlockTempPtr = (void *)0;
@@ -54,12 +54,12 @@ void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_FILENAME_WeatherBlock) == 0) {
         PARSEINI_CurrentWeatherBlockTempPtr = (void *)0;
-        newNode = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(keyValue, PARSEINI_CurrentWeatherBlockPtr);
-        block = (UBYTE *)newNode;
-        block[190] = 1;
-        PARSEINI_CurrentWeatherBlockPtr = newNode;
+        newAllocNode = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(keyValue, PARSEINI_CurrentWeatherBlockPtr);
+        weatherBlock = (UBYTE *)newAllocNode;
+        weatherBlock[190] = 1;
+        PARSEINI_CurrentWeatherBlockPtr = newAllocNode;
         if (PARSEINI_ParsedDescriptorListHead == (void *)0) {
-            PARSEINI_ParsedDescriptorListHead = newNode;
+            PARSEINI_ParsedDescriptorListHead = newAllocNode;
         }
     }
 
@@ -85,8 +85,8 @@ void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_XPOS) == 0) {
-        v = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 198)) = v;
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 198)) = parsedValue;
         return;
     }
 
@@ -98,67 +98,67 @@ void PARSEINI_ProcessWeatherBlocks(char *keyName, char *keyValue)
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_YPOS) == 0) {
-        v = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 202)) = v;
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 202)) = parsedValue;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_XSOURCE) == 0) {
-        v = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 206)) = v;
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 206)) = parsedValue;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_YSOURCE) == 0) {
-        v = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 210)) = v;
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 210)) = parsedValue;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_SIZEX) == 0) {
-        v = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 214)) = v;
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 214)) = parsedValue;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_SIZEY) == 0) {
-        v = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 218)) = v;
+        parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyValue);
+        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 218)) = parsedValue;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyName, PARSEINI_TAG_SOURCE) == 0) {
-        len = 0;
+        sourceLen = 0;
         cursor = keyValue;
         while (*cursor != 0) {
             ++cursor;
-            ++len;
+            ++sourceLen;
         }
 
-        if (len > 0) {
+        if (sourceLen > 0) {
             if (PARSEINI_JMPTBL_STRING_CompareNoCase(keyValue, PARSEINI_TAG_PPV) == 0) {
                 ((UBYTE *)PARSEINI_CurrentWeatherBlockPtr)[190] = 3;
                 return;
             }
 
-            previousNode = PARSEINI_CurrentWeatherBlockTempPtr;
-            newNode = SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_PARSEINI_C_3, 670, 12, MEMF_PUBLIC + MEMF_CLEAR);
-            PARSEINI_CurrentWeatherBlockTempPtr = newNode;
-            if (newNode == (void *)0) {
+            prevSourceNode = PARSEINI_CurrentWeatherBlockTempPtr;
+            newAllocNode = SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_PARSEINI_C_3, 670, 12, MEMF_PUBLIC + MEMF_CLEAR);
+            PARSEINI_CurrentWeatherBlockTempPtr = newAllocNode;
+            if (newAllocNode == (void *)0) {
                 return;
             }
-            *((LONG *)((UBYTE *)newNode + 8)) = 0;
+            *((LONG *)((UBYTE *)newAllocNode + 8)) = 0;
 
-            cursor = (char *)newNode;
+            cursor = (char *)newAllocNode;
             while (*keyValue != 0) {
                 *cursor++ = *keyValue++;
             }
             *cursor = 0;
 
             if (*((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 230)) == 0) {
-                *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 230)) = (LONG)newNode;
-            } else if (previousNode != (void *)0) {
-                *((LONG *)((UBYTE *)previousNode + 8)) = (LONG)newNode;
+                *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 230)) = (LONG)newAllocNode;
+            } else if (prevSourceNode != (void *)0) {
+                *((LONG *)((UBYTE *)prevSourceNode + 8)) = (LONG)newAllocNode;
             }
         }
         return;
