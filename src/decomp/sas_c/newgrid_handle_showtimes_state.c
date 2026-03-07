@@ -19,6 +19,7 @@ LONG NEWGRID_HandleShowtimesState(UBYTE *gridCtx, UBYTE *entryState)
 {
     UBYTE text[130];
     LONG row;
+    LONG nextState;
 
     if (gridCtx == 0) {
         NEWGRID_ShowtimesWorkflowStateLatch = 4;
@@ -59,11 +60,12 @@ LONG NEWGRID_HandleShowtimesState(UBYTE *gridCtx, UBYTE *entryState)
 
     if (NEWGRID_ShowtimesWorkflowStateLatch == 5) {
         if (NEWGRID_DrawGridFrameVariant3(gridCtx) != 0) {
-            NEWGRID_ShowtimesWorkflowStateLatch = 4;
+            nextState = 4;
         } else {
-            NEWGRID_ShowtimesWorkflowStateLatch = 5;
+            nextState = 5;
         }
         *(LONG *)(gridCtx + 32) = -1;
+        NEWGRID_ShowtimesWorkflowStateLatch = nextState;
         return NEWGRID_ShowtimesWorkflowStateLatch;
     }
 
