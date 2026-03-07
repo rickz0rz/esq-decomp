@@ -18,30 +18,36 @@ extern void _LVOPermit(void *execBase);
 
 void GCOMMAND_SaveBrushResult(UBYTE *workPtr)
 {
+    const LONG NEWLIST_EMPTY = 0;
+    const LONG WORK_TASKSTATE_OFFSET = 190;
+    const WORD TASKSTATE_LOGO = 4;
+    const WORD TASKSTATE_GADS = 5;
+    const WORD TASKSTATE_WEATHER = 6;
+    const LONG COUNTER_STEP = 1;
     LONG newList;
 
-    newList = 0;
-    CTASKS_IffTaskState = (WORD)workPtr[190];
+    newList = NEWLIST_EMPTY;
+    CTASKS_IffTaskState = (WORD)workPtr[WORK_TASKSTATE_OFFSET];
 
     GROUP_AU_JMPTBL_BRUSH_PopulateBrushList(workPtr, &newList);
 
-    if (CTASKS_IffTaskState == 4 && newList != 0) {
+    if (CTASKS_IffTaskState == TASKSTATE_LOGO && newList != NEWLIST_EMPTY) {
         _LVOForbid(AbsExecBase);
         ESQIFF_LogoBrushListHead = GROUP_AU_JMPTBL_BRUSH_AppendBrushNode(ESQIFF_LogoBrushListHead, newList);
-        ESQIFF_LogoBrushListCount += 1;
+        ESQIFF_LogoBrushListCount += COUNTER_STEP;
         _LVOPermit(AbsExecBase);
         return;
     }
 
-    if (CTASKS_IffTaskState == 5 && newList != 0) {
+    if (CTASKS_IffTaskState == TASKSTATE_GADS && newList != NEWLIST_EMPTY) {
         _LVOForbid(AbsExecBase);
         ESQIFF_GAdsBrushListHead = GROUP_AU_JMPTBL_BRUSH_AppendBrushNode(ESQIFF_GAdsBrushListHead, newList);
-        ESQIFF_GAdsBrushListCount += 1;
+        ESQIFF_GAdsBrushListCount += COUNTER_STEP;
         _LVOPermit(AbsExecBase);
         return;
     }
 
-    if (CTASKS_IffTaskState == 6 && newList != 0) {
+    if (CTASKS_IffTaskState == TASKSTATE_WEATHER && newList != NEWLIST_EMPTY) {
         _LVOForbid(AbsExecBase);
         WDISP_WeatherStatusBrushListHead = newList;
         _LVOPermit(AbsExecBase);
