@@ -24,7 +24,7 @@ extern LONG DATETIME_FormatPairToStream(LONG fileHandle, DateTimePair *pair);
 LONG DATETIME_SavePairToFile(DateTimePair *pair)
 {
     const LONG FILEHANDLE_INVALID = 0;
-    LONG fileHandle;
+    LONG outputFileHandle;
 
     if (pair == (DateTimePair *)0) {
         return DATETIME_SAVE_FAILED;
@@ -36,17 +36,17 @@ LONG DATETIME_SavePairToFile(DateTimePair *pair)
         return DATETIME_SAVE_FAILED;
     }
 
-    fileHandle = DISKIO_OpenFileWithBuffer(DST_DefaultDatPathPtr, MODE_NEWFILE);
-    if (fileHandle == FILEHANDLE_INVALID) {
+    outputFileHandle = DISKIO_OpenFileWithBuffer(DST_DefaultDatPathPtr, MODE_NEWFILE);
+    if (outputFileHandle == FILEHANDLE_INVALID) {
         return DATETIME_SAVE_FAILED;
     }
 
-    (void)DISKIO_WriteBufferedBytes(fileHandle, DST_STR_G2_COLON, DATETIME_SAVE_PREFIX_LEN);
-    (void)DATETIME_FormatPairToStream(fileHandle, (DateTimePair *)pair->out_ptr);
+    (void)DISKIO_WriteBufferedBytes(outputFileHandle, DST_STR_G2_COLON, DATETIME_SAVE_PREFIX_LEN);
+    (void)DATETIME_FormatPairToStream(outputFileHandle, (DateTimePair *)pair->out_ptr);
 
-    (void)DISKIO_WriteBufferedBytes(fileHandle, DST_STR_G3_COLON, DATETIME_SAVE_PREFIX_LEN);
-    (void)DATETIME_FormatPairToStream(fileHandle, (DateTimePair *)pair->in_ptr);
+    (void)DISKIO_WriteBufferedBytes(outputFileHandle, DST_STR_G3_COLON, DATETIME_SAVE_PREFIX_LEN);
+    (void)DATETIME_FormatPairToStream(outputFileHandle, (DateTimePair *)pair->in_ptr);
 
-    (void)DISKIO_CloseBufferedFileAndFlush(fileHandle);
+    (void)DISKIO_CloseBufferedFileAndFlush(outputFileHandle);
     return DATETIME_SAVE_SUCCESS;
 }
