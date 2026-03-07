@@ -292,6 +292,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqfunc_jmptbl_script_readciabbit3flag_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_jmptbl_script_readciabbit5mask_trial.sh"
     "src/decomp/scripts/compare_sasc_setup_interrupt_intb_aud1_trial.sh"
+    "src/decomp/scripts/compare_sasc_setup_interrupt_intb_rbf_trial.sh"
     "src/decomp/scripts/compare_sasc_setup_interrupt_intb_vertb_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_jmptbl_string_copypadnul_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_jmptbl_textdisp_resetselectionandrefresh_trial.sh"
