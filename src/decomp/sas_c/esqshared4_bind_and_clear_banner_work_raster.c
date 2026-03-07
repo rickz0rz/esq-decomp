@@ -21,6 +21,7 @@ void ESQSHARED4_ClearBannerWorkRasterWithOnes(void);
 
 void ESQSHARED4_BindAndClearBannerWorkRaster(void)
 {
+    const ULONG PTR_HIWORD_SHIFT = 16;
     ULONG value;
     UWORD lo;
     UWORD hi;
@@ -35,7 +36,7 @@ void ESQSHARED4_BindAndClearBannerWorkRaster(void)
     ESQ_BannerWorkRasterPtrMirrorB_LoWord = lo;
     ESQ_CopperBannerRasterPointerListB = lo;
 
-    hi = (UWORD)(value >> 16);
+    hi = (UWORD)(value >> PTR_HIWORD_SHIFT);
     ESQ_BannerWorkRasterPtrA_HiWord = hi;
     ESQ_BannerWorkRasterPtrMirrorA_HiWord = hi;
     ESQ_BannerWorkRasterPtrTailA_HiWord = hi;

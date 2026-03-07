@@ -2,10 +2,12 @@ typedef unsigned short UWORD;
 typedef long LONG;
 
 enum {
+    RASTPORT_BITMAP_PTR_OFFSET = 4,
     CLOCK_FORMAT_FRAME_X_OFFSET = 36,
     CLOCK_FORMAT_FRAME_RIGHT_EDGE = 660,
     CLOCK_FORMAT_FRAME_Y = 34,
-    CLOCK_FORMAT_FRAME_MINTERM = 192
+    CLOCK_FORMAT_FRAME_MINTERM = 192,
+    SRC_Y_ZERO = 0
 };
 
 extern UWORD NEWGRID_ColumnStartXPx;
@@ -34,9 +36,9 @@ void CLEANUP_DrawClockFormatFrame(void)
     width = CLOCK_FORMAT_FRAME_RIGHT_EDGE - baseX;
 
     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
-        *(void **)(NEWGRID_MainRastPortPtr + 4),
+        *(void **)(NEWGRID_MainRastPortPtr + RASTPORT_BITMAP_PTR_OFFSET),
         frameX,
-        0,
+        SRC_Y_ZERO,
         (void *)NEWGRID_MainRastPortPtr,
         frameX,
         CLOCK_FORMAT_FRAME_Y,

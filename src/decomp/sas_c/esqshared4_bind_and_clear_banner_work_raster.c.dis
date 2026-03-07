@@ -1,31 +1,35 @@
               SECTION      text,CODE
 __code:
 ESQSHARED4_BindAndClearBannerWor:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
               MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
 ___ESQSHARED4_BindAndClearBannerWor__1:
-              MOVE.L         WDISP_BannerWorkRasterPtr(A4),D7;2e2c 0000 
-              MOVE.L         D7,D6                    ;2c07 
-              MOVE.W         D6,ESQ_BannerWorkRasterPtrA_LoWord(A4);3946 0000 
-              MOVE.W         D6,ESQ_BannerWorkRasterPtrMirrorA_L(A4);3946 0000 
-              MOVE.W         D6,ESQ_CopperBannerRasterPointerLis(A4);3946 0000 
-              MOVE.W         D6,ESQ_BannerWorkRasterPtrB_LoWord(A4);3946 0000 
-              MOVE.W         D6,ESQ_BannerWorkRasterPtrMirrorB_L(A4);3946 0000 
-              MOVE.W         D6,ESQ_CopperBannerRasterPointerLis(A4);3946 0000 
-              MOVE.L         D7,D0                    ;2007 
-              CLR.W          D0                       ;4240 
-              SWAP           D0                       ;4840 
-              MOVE.L         D0,D5                    ;2a00 
-              MOVE.W         D5,ESQ_BannerWorkRasterPtrA_HiWord(A4);3945 0000 
-              MOVE.W         D5,ESQ_BannerWorkRasterPtrMirrorA_H(A4);3945 0000 
-              MOVE.W         D5,ESQ_BannerWorkRasterPtrTailA_HiW(A4);3945 0000 
-              MOVE.W         D5,ESQ_BannerWorkRasterPtrB_HiWord(A4);3945 0000 
-              MOVE.W         D5,ESQ_BannerWorkRasterPtrMirrorB_H(A4);3945 0000 
-              MOVE.W         D5,ESQ_BannerWorkRasterPtrTailB_HiW(A4);3945 0000 
+              MOVEQ.L        #$10,D7                  ;7e10 
+              MOVE.L         WDISP_BannerWorkRasterPtr(A4),D6;2c2c 0000 
+              MOVE.L         D6,D5                    ;2a06 
+              MOVE.W         D5,ESQ_BannerWorkRasterPtrA_LoWord(A4);3945 0000 
+              MOVE.W         D5,ESQ_BannerWorkRasterPtrMirrorA_L(A4);3945 0000 
+              MOVE.W         D5,ESQ_CopperBannerRasterPointerLis(A4);3945 0000 
+              MOVE.W         D5,ESQ_BannerWorkRasterPtrB_LoWord(A4);3945 0000 
+              MOVE.W         D5,ESQ_BannerWorkRasterPtrMirrorB_L(A4);3945 0000 
+              MOVE.W         D5,ESQ_CopperBannerRasterPointerLis(A4);3945 0000 
+              MOVE.L         D6,D0                    ;2006 
+              LSR.L          D7,D0                    ;eea8 
+              MOVE.W         D0,ESQ_BannerWorkRasterPtrA_HiWord(A4);3940 0000 
+              MOVE.W         D0,ESQ_BannerWorkRasterPtrMirrorA_H(A4);3940 0000 
+              MOVE.W         D0,ESQ_BannerWorkRasterPtrTailA_HiW(A4);3940 0000 
+              MOVE.W         D0,ESQ_BannerWorkRasterPtrB_HiWord(A4);3940 0000 
+              MOVE.W         D0,ESQ_BannerWorkRasterPtrMirrorB_H(A4);3940 0000 
+              MOVE.W         D0,ESQ_BannerWorkRasterPtrTailB_HiW(A4);3940 0000 
+              MOVE.W         D0,$e(A7)                ;3f40 000e 
               BSR.W          ESQSHARED4_ClearBannerWorkRaster;6100 0000 
 ___ESQSHARED4_BindAndClearBannerWor__2:
               MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:
 __strings:
