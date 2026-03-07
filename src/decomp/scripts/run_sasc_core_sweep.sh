@@ -63,6 +63,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_dos_delete_and_recreate_file_trial.sh"
     "src/decomp/scripts/compare_sasc_dos_close_with_signal_check_trial.sh"
     "src/decomp/scripts/compare_sasc_dos_movep_word_read_callback_trial.sh"
+    "src/decomp/scripts/compare_sasc_bitmap_process_ilbm_image_trial.sh"
     "src/decomp/scripts/compare_sasc_iostdreq_free_trial.sh"
     "src/decomp/scripts/compare_sasc_iostdreq_cleanup_signal_and_msgport_trial.sh"
     "src/decomp/scripts/compare_sasc_handle_get_entry_by_index_trial.sh"
