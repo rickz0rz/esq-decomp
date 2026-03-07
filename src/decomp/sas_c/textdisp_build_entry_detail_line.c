@@ -3,6 +3,25 @@ typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+enum {
+    TEXTDISP_NULL = 0,
+    ENTRY_MODE_OFFSET = 210,
+    ENTRY_GROUP_INDEX_OFFSET = 214,
+    ENTRY_SELECTION_INDEX_OFFSET = 218,
+    ENTRY_DETAIL_OFFSET = 220,
+    AUX_TITLE_TABLE_OFFSET = 56,
+    ENTRY_LONG_NAME_OFFSET = 10,
+    ENTRY_PROGRAM_TEXT_START_OFFSET = 1,
+    MODE_BLOCKED = 3,
+    INVALID_INDEX = -1,
+    CLASS_SKIP_MASK = 8,
+    CONTROL_TOKEN_A = 24,
+    CONTROL_TOKEN_B = 25,
+    CHAR_LPAREN = 40,
+    ASCII_SPACE = ' ',
+    DETAIL_TRIM_PIXEL_WIDTH = 284
+};
+
 extern UBYTE WDISP_CharClassTable[];
 extern const char SCRIPT_AlignedPrefixEmptyF[];
 extern const char SCRIPT_AlignedPrefixEmptyG[];
@@ -43,54 +62,56 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
     char tmp[524];
 
     entry = (UBYTE *)entryPtr;
-    if (entry == (UBYTE *)0) {
+    if (entry == (UBYTE *)TEXTDISP_NULL) {
         return;
     }
 
-    mode = *(LONG *)(entry + 210);
-    groupIndex = *(LONG *)(entry + 214);
-    entryIndex = (LONG)(*(short *)(entry + 218));
+    mode = *(LONG *)(entry + ENTRY_MODE_OFFSET);
+    groupIndex = *(LONG *)(entry + ENTRY_GROUP_INDEX_OFFSET);
+    entryIndex = (LONG)(*(short *)(entry + ENTRY_SELECTION_INDEX_OFFSET));
 
-    if (mode == 3 || groupIndex == -1 || entryIndex == -1) {
+    if (mode == MODE_BLOCKED || groupIndex == INVALID_INDEX || entryIndex == INVALID_INDEX) {
         TEXTDISP_ResetSelectionState(entry);
         return;
     }
 
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(groupIndex, mode);
     program = (UBYTE *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(groupIndex, mode);
-    detail = entry + 220;
-    detail[0] = 0;
+    detail = entry + ENTRY_DETAIL_OFFSET;
+    detail[TEXTDISP_NULL] = TEXTDISP_NULL;
 
     TEXTDISP_BuildEntryShortName(program, tmp);
 
     segment = (UBYTE *)tmp;
-    while (segment[0] != 0) {
-        UBYTE cls = WDISP_CharClassTable[segment[0]];
-        if ((cls & 8) == 0 && segment[0] != 24 && segment[0] != 25) {
+    while (segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
+        UBYTE cls = WDISP_CharClassTable[segment[TEXTDISP_NULL]];
+        if ((cls & CLASS_SKIP_MASK) == TEXTDISP_NULL &&
+            segment[TEXTDISP_NULL] != CONTROL_TOKEN_A &&
+            segment[TEXTDISP_NULL] != CONTROL_TOKEN_B) {
             break;
         }
         segment++;
     }
-    if (segment[0] != 0) {
+    if (segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
         STRING_AppendAtNull((char *)detail, SCRIPT_AlignedPrefixEmptyF);
         STRING_AppendAtNull((char *)detail, (const char *)segment);
     }
 
-    if (aux != (void *)0 && entryIndex >= 0) {
-        titleTable = (ULONG *)((UBYTE *)aux + 56);
+    if (aux != (void *)TEXTDISP_NULL && entryIndex >= TEXTDISP_NULL) {
+        titleTable = (ULONG *)((UBYTE *)aux + AUX_TITLE_TABLE_OFFSET);
         segment = TEXTDISP_SkipControlCodes((UBYTE *)titleTable[entryIndex]);
     } else {
-        segment = (UBYTE *)0;
+        segment = (UBYTE *)TEXTDISP_NULL;
     }
 
-    if (segment != (UBYTE *)0 && segment[0] != 0) {
-        titleLen = 0;
-        while (segment[titleLen] != 0) {
+    if (segment != (UBYTE *)TEXTDISP_NULL && segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
+        titleLen = TEXTDISP_NULL;
+        while (segment[titleLen] != TEXTDISP_NULL) {
             titleLen++;
         }
 
-        longLen = 0;
-        while (entry[10 + longLen] != 0) {
+        longLen = TEXTDISP_NULL;
+        while (entry[ENTRY_LONG_NAME_OFFSET + longLen] != TEXTDISP_NULL) {
             longLen++;
         }
 
@@ -98,31 +119,33 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
             segment += longLen;
         }
 
-        while (segment[0] != 0 && (WDISP_CharClassTable[segment[0]] & 8) != 0) {
+        while (segment[TEXTDISP_NULL] != TEXTDISP_NULL &&
+               (WDISP_CharClassTable[segment[TEXTDISP_NULL]] & CLASS_SKIP_MASK) != TEXTDISP_NULL) {
             segment++;
         }
 
         WDISP_SPrintf(tmp, SCRIPT_AlignedStringFormat, (const char *)segment);
 
         hit = (UBYTE *)TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrAtSeparator);
-        if (hit == (UBYTE *)0) {
+        if (hit == (UBYTE *)TEXTDISP_NULL) {
             hit = (UBYTE *)TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsDotSeparator);
         }
-        if (hit == (UBYTE *)0) {
+        if (hit == (UBYTE *)TEXTDISP_NULL) {
             hit = (UBYTE *)TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsSeparator);
         }
 
-        if (hit != (UBYTE *)0) {
-            hit[0] = 24;
-            while (hit[0] != 0 && (WDISP_CharClassTable[hit[0]] & 8) == 0) {
+        if (hit != (UBYTE *)TEXTDISP_NULL) {
+            hit[TEXTDISP_NULL] = CONTROL_TOKEN_A;
+            while (hit[TEXTDISP_NULL] != TEXTDISP_NULL &&
+                   (WDISP_CharClassTable[hit[TEXTDISP_NULL]] & CLASS_SKIP_MASK) == TEXTDISP_NULL) {
                 hit++;
             }
-            hit[0] = 24;
+            hit[TEXTDISP_NULL] = CONTROL_TOKEN_A;
         }
 
-        hit = (UBYTE *)STR_FindCharPtr(tmp, 40);
-        if (hit != (UBYTE *)0) {
-            hit[0] = 0;
+        hit = (UBYTE *)STR_FindCharPtr(tmp, CHAR_LPAREN);
+        if (hit != (UBYTE *)TEXTDISP_NULL) {
+            hit[TEXTDISP_NULL] = TEXTDISP_NULL;
         }
 
         STRING_AppendAtNull((char *)detail, tmp);
@@ -130,27 +153,31 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
 
     TEXTDISP_FormatEntryTimeForIndex(tmp, entryIndex, aux);
     segment = (UBYTE *)tmp;
-    while (segment[0] != 0 && (WDISP_CharClassTable[segment[0]] & 8) != 0) {
+    while (segment[TEXTDISP_NULL] != TEXTDISP_NULL &&
+           (WDISP_CharClassTable[segment[TEXTDISP_NULL]] & CLASS_SKIP_MASK) != TEXTDISP_NULL) {
         segment++;
     }
 
-    if (segment[0] != 0) {
+    if (segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
         STRING_AppendAtNull((char *)detail, SCRIPT_AlignedPrefixEmptyG);
         STRING_AppendAtNull((char *)detail, (const char *)segment);
     }
 
-    out = 0;
-    for (i = 0; program != (UBYTE *)0 && program[i + 1] != 0; i++) {
-        if (program[i + 1] != ' ') {
-            tmp[out++] = (char)program[i + 1];
+    out = TEXTDISP_NULL;
+    for (i = TEXTDISP_NULL;
+         program != (UBYTE *)TEXTDISP_NULL &&
+         program[i + ENTRY_PROGRAM_TEXT_START_OFFSET] != TEXTDISP_NULL;
+         i++) {
+        if (program[i + ENTRY_PROGRAM_TEXT_START_OFFSET] != ASCII_SPACE) {
+            tmp[out++] = (char)program[i + ENTRY_PROGRAM_TEXT_START_OFFSET];
         }
     }
-    tmp[out] = 0;
+    tmp[out] = TEXTDISP_NULL;
 
-    if (tmp[0] != 0) {
+    if (tmp[TEXTDISP_NULL] != TEXTDISP_NULL) {
         STRING_AppendAtNull((char *)detail, Global_STR_ALIGNED_CHANNEL_2);
         STRING_AppendAtNull((char *)detail, tmp);
     }
 
-    TEXTDISP_TrimTextToPixelWidth((char *)detail, 284);
+    TEXTDISP_TrimTextToPixelWidth((char *)detail, DETAIL_TRIM_PIXEL_WIDTH);
 }
