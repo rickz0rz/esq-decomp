@@ -14,6 +14,8 @@ extern void GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(UBYTE *text, LON
 
 void LADFUNC_BuildHighlightLinesFromText(UBYTE *src)
 {
+    const UWORD LINE_SLOT_COUNT = 20;
+    const LONG LINE_PIXEL_WIDTH = 624;
     LONG segLen;
     LONG remaining;
     UBYTE control;
@@ -22,12 +24,12 @@ void LADFUNC_BuildHighlightLinesFromText(UBYTE *src)
 
     LADFUNC_LineControlCodeTable[LADFUNC_LineSlotWriteIndex] = 4;
     LADFUNC_LineSlotWriteIndex = (UWORD)(LADFUNC_LineSlotWriteIndex + 1);
-    if (LADFUNC_LineSlotWriteIndex >= 20) {
+    if (LADFUNC_LineSlotWriteIndex >= LINE_SLOT_COUNT) {
         LADFUNC_LineSlotWriteIndex = 0;
     }
 
     segLen = 0;
-    remaining = 624;
+    remaining = LINE_PIXEL_WIDTH;
     control = src[0];
     if (control == 24 || control == 25 || control == 26) {
         ++src;
@@ -59,12 +61,12 @@ void LADFUNC_BuildHighlightLinesFromText(UBYTE *src)
 
             LADFUNC_LineControlCodeTable[LADFUNC_LineSlotWriteIndex] = 0;
             LADFUNC_LineSlotWriteIndex = (UWORD)(LADFUNC_LineSlotWriteIndex + 1);
-            if (LADFUNC_LineSlotWriteIndex >= 20) {
+            if (LADFUNC_LineSlotWriteIndex >= LINE_SLOT_COUNT) {
                 LADFUNC_LineSlotWriteIndex = 0;
             }
 
             segLen = 0;
-            remaining = 624;
+            remaining = LINE_PIXEL_WIDTH;
             control = ch;
             continue;
         }
@@ -91,13 +93,13 @@ void LADFUNC_BuildHighlightLinesFromText(UBYTE *src)
 
     LADFUNC_LineControlCodeTable[LADFUNC_LineSlotWriteIndex] = 0;
     LADFUNC_LineSlotWriteIndex = (UWORD)(LADFUNC_LineSlotWriteIndex + 1);
-    if (LADFUNC_LineSlotWriteIndex >= 20) {
+    if (LADFUNC_LineSlotWriteIndex >= LINE_SLOT_COUNT) {
         LADFUNC_LineSlotWriteIndex = 0;
     }
 
     LADFUNC_LineControlCodeTable[LADFUNC_LineSlotWriteIndex] = 4;
     LADFUNC_LineSlotWriteIndex = (UWORD)(LADFUNC_LineSlotWriteIndex + 1);
-    if (LADFUNC_LineSlotWriteIndex >= 20) {
+    if (LADFUNC_LineSlotWriteIndex >= LINE_SLOT_COUNT) {
         LADFUNC_LineSlotWriteIndex = 0;
     }
 }

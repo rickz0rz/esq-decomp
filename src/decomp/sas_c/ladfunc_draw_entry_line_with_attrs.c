@@ -22,6 +22,14 @@ void LADFUNC_DrawEntryLineWithAttrs(
     UBYTE *lineText
 )
 {
+    const LONG PREVIEW_PIXEL_WIDTH = 624;
+    const LONG PREVIEW_MAX_COLS = 40;
+    const LONG SEGBUF_ALLOC_LINE = 712;
+    const LONG SEGBUF_FREE_LINE = 824;
+    const LONG SEGBUF_ALLOC_FLAGS = 0x10001;
+    const LONG ROW_HEIGHT_PIXELS = 8;
+    const UBYTE SPACE_CHAR = 32;
+    const UBYTE CH_NUL = 0;
     LONG charWidth;
     LONG cols;
     LONG textLen = 0;
@@ -33,12 +41,13 @@ void LADFUNC_DrawEntryLineWithAttrs(
     UBYTE *segBuf;
 
     charWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_STR_SINGLE_SPACE_1, 1);
-    cols = NEWGRID_JMPTBL_MATH_DivS32(624, charWidth);
-    if (cols > 40) {
-        cols = 40;
+    cols = NEWGRID_JMPTBL_MATH_DivS32(PREVIEW_PIXEL_WIDTH, charWidth);
+    if (cols > PREVIEW_MAX_COLS) {
+        cols = PREVIEW_MAX_COLS;
     }
 
-    segBuf = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_14, 712, cols + 1, 0x10001);
+    segBuf = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+        Global_STR_LADFUNC_C_14, SEGBUF_ALLOC_LINE, cols + 1, SEGBUF_ALLOC_FLAGS);
     if (segBuf == (UBYTE *)0) {
         return;
     }
@@ -59,14 +68,14 @@ void LADFUNC_DrawEntryLineWithAttrs(
 
     remain = cols - textLen;
     x = 0;
-    y = NEWGRID_JMPTBL_MATH_Mulu32(row + 1, 8);
+    y = NEWGRID_JMPTBL_MATH_Mulu32(row + 1, ROW_HEIGHT_PIXELS);
     if (leadCtrl == 24) {
         LONG indent = NEWGRID_JMPTBL_MATH_DivS32(remain, 2);
         LONG i;
         for (i = 0; i < indent; ++i) {
-            segBuf[i] = 32;
+            segBuf[i] = SPACE_CHAR;
         }
-        segBuf[indent] = 0;
+        segBuf[indent] = CH_NUL;
         LADFUNC_DisplayTextPackedPens(rastPort, x, y, leadAttr, segBuf);
         x += NEWGRID_JMPTBL_MATH_Mulu32(indent, charWidth);
         remain -= indent;
@@ -74,9 +83,9 @@ void LADFUNC_DrawEntryLineWithAttrs(
         LONG indent = NEWGRID_JMPTBL_MATH_DivS32(remain, 1);
         LONG i;
         for (i = 0; i < indent; ++i) {
-            segBuf[i] = 32;
+            segBuf[i] = SPACE_CHAR;
         }
-        segBuf[indent] = 0;
+        segBuf[indent] = CH_NUL;
         LADFUNC_DisplayTextPackedPens(rastPort, x, y, leadAttr, segBuf);
         x += NEWGRID_JMPTBL_MATH_Mulu32(indent, charWidth);
         remain -= indent;
@@ -91,7 +100,7 @@ void LADFUNC_DrawEntryLineWithAttrs(
                 segBuf[end - start] = lineText[end];
                 ++end;
             }
-            segBuf[end - start] = 0;
+            segBuf[end - start] = CH_NUL;
             LADFUNC_DisplayTextPackedPens(rastPort, x, y, packed, segBuf);
             x += NEWGRID_JMPTBL_MATH_Mulu32(end - start, charWidth);
             start = end;
@@ -101,11 +110,11 @@ void LADFUNC_DrawEntryLineWithAttrs(
     if (remain > 0) {
         LONG i;
         for (i = 0; i < remain; ++i) {
-            segBuf[i] = 32;
+            segBuf[i] = SPACE_CHAR;
         }
-        segBuf[remain] = 0;
+        segBuf[remain] = CH_NUL;
         LADFUNC_DisplayTextPackedPens(rastPort, x, y, leadAttr, segBuf);
     }
 
-    NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_15, 824, segBuf, cols + 1);
+    NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_15, SEGBUF_FREE_LINE, segBuf, cols + 1);
 }
