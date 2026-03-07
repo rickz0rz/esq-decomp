@@ -14,6 +14,9 @@ extern void SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset(LONG delta);
 
 void SCRIPT_UpdateBannerCharTransition(void)
 {
+    const WORD FLAG_FALSE = 0;
+    const WORD FLAG_TRUE = 1;
+    const WORD CURSOR_RESET = 0;
     LONG current;
     LONG target;
     WORD delta;
@@ -21,7 +24,7 @@ void SCRIPT_UpdateBannerCharTransition(void)
     WORD sign;
     LONG candidate;
 
-    if (SCRIPT_BannerTransitionActive == 0) {
+    if (SCRIPT_BannerTransitionActive == FLAG_FALSE) {
         return;
     }
 
@@ -29,18 +32,18 @@ void SCRIPT_UpdateBannerCharTransition(void)
     target = (LONG)SCRIPT_BannerTransitionTargetChar;
 
     if ((LONG)(WORD)current == target) {
-        SCRIPT_BannerTransitionActive = 0;
-        SCRIPT_BannerTransitionStepCursor = 0;
+        SCRIPT_BannerTransitionActive = FLAG_FALSE;
+        SCRIPT_BannerTransitionStepCursor = CURSOR_RESET;
         return;
     }
 
     delta = SCRIPT_BannerTransitionStepDelta;
     budget = SCRIPT_BannerTransitionStepBudget;
-    if (budget > 0) {
-        SCRIPT_BannerTransitionStepCursor = (WORD)(SCRIPT_BannerTransitionStepCursor + 1);
+    if (budget > FLAG_FALSE) {
+        SCRIPT_BannerTransitionStepCursor = (WORD)(SCRIPT_BannerTransitionStepCursor + FLAG_TRUE);
         if (SCRIPT_BannerTransitionStepCursor >= budget) {
             delta = (WORD)(delta + SCRIPT_BannerTransitionStepSign);
-            SCRIPT_BannerTransitionStepCursor = 0;
+            SCRIPT_BannerTransitionStepCursor = CURSOR_RESET;
         }
     }
 
@@ -48,9 +51,10 @@ void SCRIPT_UpdateBannerCharTransition(void)
     sign = SCRIPT_BannerTransitionStepSign;
     if (sign < 0 && candidate < target) {
         delta = (WORD)(target - (LONG)(WORD)current);
-    } else if (sign > 0 && candidate > target) {
+    } else if (sign > FLAG_FALSE && candidate > target) {
         delta = (WORD)(target - (LONG)(WORD)current);
-    } else if (SCRIPT_BannerTransitionStepDelta == 0 && SCRIPT_BannerTransitionStepBudget == 0) {
+    } else if (SCRIPT_BannerTransitionStepDelta == FLAG_FALSE &&
+               SCRIPT_BannerTransitionStepBudget == FLAG_FALSE) {
         delta = (WORD)(target - (LONG)(WORD)current);
     }
 

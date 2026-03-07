@@ -2,99 +2,109 @@
 __code:
 SCRIPT_UpdateBannerCharTransitio:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$8,A7                   ;514f 
+              SUB.W          #$10,A7                  ;9efc 0010 
               MOVEM.L        D2/D3/D4/D5/D6/D7,-(A7)  ;48e7 3f00 
 ___SCRIPT_UpdateBannerCharTransitio__1:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVEQ.L        #$0,D5                   ;7a00 
               MOVE.W         SCRIPT_BannerTransitionActive(A4),D0;302c 0000 
-              BEQ.W          ___SCRIPT_UpdateBannerCharTransitio__18;6700 00ac 
+              CMP.W          D7,D0                    ;b047 
+              BEQ.W          ___SCRIPT_UpdateBannerCharTransitio__18;6700 00d2 
 ___SCRIPT_UpdateBannerCharTransitio__2:
 ___SCRIPT_UpdateBannerCharTransitio__3:
               BSR.W          SCRIPT3_JMPTBL_GCOMMAND_GetBanne;6100 0000 
-              MOVE.L         D0,D7                    ;2e00 
-              MOVEQ.L        #$0,D6                   ;7c00 
-              MOVE.B         SCRIPT_BannerTransitionTargetCha(A4),D6;1c2c 0000 
-              MOVE.L         D7,D0                    ;2007 
-              EXT.L          D0                       ;48c0 
-              CMP.L          D6,D0                    ;b086 
+              MOVE.L         D0,D4                    ;2800 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         SCRIPT_BannerTransitionTargetCha(A4),D0;102c 0000 
+              MOVE.L         D4,D1                    ;2204 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              CMP.L          D0,D1                    ;b280 
               BNE.B          ___SCRIPT_UpdateBannerCharTransitio__5;660e 
 ___SCRIPT_UpdateBannerCharTransitio__4:
-              CLR.W          SCRIPT_BannerTransitionActive(A4);426c 0000 
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         D0,SCRIPT_BannerTransitionStepCurso(A4);3940 0000 
-              BRA.W          ___SCRIPT_UpdateBannerCharTransitio__18;6000 008a 
-___SCRIPT_UpdateBannerCharTransitio__5:
-              MOVE.W         SCRIPT_BannerTransitionStepDelta(A4),D5;3a2c 0000 
-              MOVE.W         SCRIPT_BannerTransitionStepBudge(A4),D4;382c 0000 
-              TST.W          D4                       ;4a44 
-              BLE.B          ___SCRIPT_UpdateBannerCharTransitio__8;6f1a 
-___SCRIPT_UpdateBannerCharTransitio__6:
-              MOVE.W         SCRIPT_BannerTransitionStepCurso(A4),D0;302c 0000 
-              MOVE.W         D0,D1                    ;3200 
-              ADDQ.W         #$1,D1                   ;5241 
+              MOVE.W         D7,SCRIPT_BannerTransitionActive(A4);3947 0000 
+              MOVE.L         D5,D1                    ;2205 
               MOVE.W         D1,SCRIPT_BannerTransitionStepCurso(A4);3941 0000 
-              CMP.W          D4,D1                    ;b244 
-              BLT.B          ___SCRIPT_UpdateBannerCharTransitio__8;6d0a 
+              BRA.W          ___SCRIPT_UpdateBannerCharTransitio__18;6000 00ac 
+___SCRIPT_UpdateBannerCharTransitio__5:
+              MOVE.W         SCRIPT_BannerTransitionStepDelta(A4),D1;322c 0000 
+              MOVE.W         SCRIPT_BannerTransitionStepBudge(A4),D2;342c 0000 
+              MOVEM.W        D1,$20(A7)               ;48af 0002 0020 
+              MOVEM.W        D2,$1e(A7)               ;48af 0004 001e 
+              CMP.W          D7,D2                    ;b447 
+              BLE.B          ___SCRIPT_UpdateBannerCharTransitio__8;6f1c 
+___SCRIPT_UpdateBannerCharTransitio__6:
+              MOVE.W         SCRIPT_BannerTransitionStepCurso(A4),D3;362c 0000 
+              MOVE.W         D3,D0                    ;3003 
+              ADD.W          D6,D0                    ;d046 
+              MOVE.W         D0,SCRIPT_BannerTransitionStepCurso(A4);3940 0000 
+              CMP.W          D2,D0                    ;b042 
+              BLT.B          ___SCRIPT_UpdateBannerCharTransitio__8;6d0c 
 ___SCRIPT_UpdateBannerCharTransitio__7:
               MOVE.W         SCRIPT_BannerTransitionStepSign(A4),D0;302c 0000 
-              ADD.W          D0,D5                    ;da40 
-              CLR.W          SCRIPT_BannerTransitionStepCurso(A4);426c 0000 
+              ADD.W          D0,$20(A7)               ;d16f 0020 
+              MOVE.W         D5,SCRIPT_BannerTransitionStepCurso(A4);3945 0000 
 ___SCRIPT_UpdateBannerCharTransitio__8:
-              MOVE.W         D5,D0                    ;3005 
+              MOVE.W         $20(A7),D0               ;302f 0020 
               EXT.L          D0                       ;48c0 
-              MOVE.L         D7,D1                    ;2207 
-              EXT.L          D1                       ;48c1 
-              ADD.L          D1,D0                    ;d081 
-              MOVE.W         SCRIPT_BannerTransitionStepSign(A4),D1;322c 0000 
+              MOVE.L         D4,D3                    ;2604 
+              EXT.L          D3                       ;48c3 
+              ADD.L          D3,D0                    ;d083 
+              MOVE.W         SCRIPT_BannerTransitionStepSign(A4),D3;362c 0000 
               MOVEM.L        D0,$18(A7)               ;48ef 0001 0018 
-              MOVEM.W        D1,$1c(A7)               ;48af 0002 001c 
-              BGE.B          ___SCRIPT_UpdateBannerCharTransitio__11;6c10 
+              MOVEM.W        D3,$1c(A7)               ;48af 0008 001c 
+              BGE.B          ___SCRIPT_UpdateBannerCharTransitio__11;6c16 
 ___SCRIPT_UpdateBannerCharTransitio__9:
-              CMP.L          D6,D0                    ;b086 
-              BGE.B          ___SCRIPT_UpdateBannerCharTransitio__11;6c0c 
+              MOVE.L         $24(A7),D2               ;242f 0024 
+              CMP.L          D2,D0                    ;b082 
+              BGE.B          ___SCRIPT_UpdateBannerCharTransitio__11;6c0e 
 ___SCRIPT_UpdateBannerCharTransitio__10:
-              MOVE.L         D7,D2                    ;2407 
-              EXT.L          D2                       ;48c2 
-              MOVE.L         D6,D3                    ;2606 
-              SUB.L          D2,D3                    ;9682 
-              MOVE.L         D3,D5                    ;2a03 
-              BRA.B          ___SCRIPT_UpdateBannerCharTransitio__17;602a 
+              MOVE.L         D4,D1                    ;2204 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D2,D0                    ;2002 
+              SUB.L          D1,D0                    ;9081 
+              MOVE.W         D0,$20(A7)               ;3f40 0020 
+              BRA.B          ___SCRIPT_UpdateBannerCharTransitio__17;6034 
 ___SCRIPT_UpdateBannerCharTransitio__11:
-              TST.W          D1                       ;4a41 
-              BLE.B          ___SCRIPT_UpdateBannerCharTransitio__14;6f10 
+              CMP.W          D7,D3                    ;b647 
+              BLE.B          ___SCRIPT_UpdateBannerCharTransitio__14;6f16 
 ___SCRIPT_UpdateBannerCharTransitio__12:
-              CMP.L          D6,D0                    ;b086 
-              BLE.B          ___SCRIPT_UpdateBannerCharTransitio__14;6f0c 
+              MOVE.L         $24(A7),D2               ;242f 0024 
+              CMP.L          D2,D0                    ;b082 
+              BLE.B          ___SCRIPT_UpdateBannerCharTransitio__14;6f0e 
 ___SCRIPT_UpdateBannerCharTransitio__13:
-              MOVE.L         D7,D0                    ;2007 
+              MOVE.L         D4,D0                    ;2004 
               EXT.L          D0                       ;48c0 
-              MOVE.L         D6,D1                    ;2206 
-              SUB.L          D0,D1                    ;9280 
-              MOVE.L         D1,D5                    ;2a01 
-              BRA.B          ___SCRIPT_UpdateBannerCharTransitio__17;6016 
+              MOVE.L         D2,D3                    ;2602 
+              SUB.L          D0,D3                    ;9680 
+              MOVE.W         D3,$20(A7)               ;3f43 0020 
+              BRA.B          ___SCRIPT_UpdateBannerCharTransitio__17;601a 
 ___SCRIPT_UpdateBannerCharTransitio__14:
-              MOVE.W         SCRIPT_BannerTransitionStepDelta(A4),D0;302c 0000 
-              BNE.B          ___SCRIPT_UpdateBannerCharTransitio__17;6610 
+              CMP.W          D7,D1                    ;b247 
+              BNE.B          ___SCRIPT_UpdateBannerCharTransitio__17;6616 
 ___SCRIPT_UpdateBannerCharTransitio__15:
               MOVE.W         SCRIPT_BannerTransitionStepBudge(A4),D0;302c 0000 
-              BNE.B          ___SCRIPT_UpdateBannerCharTransitio__17;660a 
+              CMP.W          D7,D0                    ;b047 
+              BNE.B          ___SCRIPT_UpdateBannerCharTransitio__17;660e 
 ___SCRIPT_UpdateBannerCharTransitio__16:
-              MOVE.L         D7,D0                    ;2007 
+              MOVE.L         D4,D0                    ;2004 
               EXT.L          D0                       ;48c0 
-              MOVE.L         D6,D1                    ;2206 
+              MOVE.L         $24(A7),D1               ;222f 0024 
               SUB.L          D0,D1                    ;9280 
-              MOVE.L         D1,D5                    ;2a01 
+              MOVE.W         D1,$20(A7)               ;3f41 0020 
 ___SCRIPT_UpdateBannerCharTransitio__17:
-              MOVE.W         D5,D0                    ;3005 
+              MOVE.W         $20(A7),D0               ;302f 0020 
               EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          SCRIPT3_JMPTBL_GCOMMAND_AdjustBa;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___SCRIPT_UpdateBannerCharTransitio__18:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7  ;4cdf 00fc 
-              ADDQ.W         #$8,A7                   ;504f 
+              ADD.W          #$10,A7                  ;defc 0010 
               RTS                                     ;4e75 
 __const:
 __strings:

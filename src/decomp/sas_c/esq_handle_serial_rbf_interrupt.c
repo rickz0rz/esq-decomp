@@ -20,6 +20,13 @@ extern LONG SCRIPT_SerialReadModeOverflowCount;
 
 LONG ESQ_HandleSerialRbfInterrupt(SerialIntCtx *ctx, UBYTE *rbfBase)
 {
+    const UWORD SERIAL_ERR_BIT = 0x8000;
+    const UWORD RBF_WRAP = 0xFA00;
+    const WORD RBF_OVERFLOW_WATERMARK = 0xDAC0;
+    const WORD READMODE_RBF_OVERFLOW = 0x0102;
+    const WORD INTREQ_RBF = 0x0800;
+    const LONG COUNTER_STEP = 1;
+    const LONG RESULT_OK = 0;
     UWORD head;
     WORD serialWord;
     WORD fill;
@@ -28,19 +35,19 @@ LONG ESQ_HandleSerialRbfInterrupt(SerialIntCtx *ctx, UBYTE *rbfBase)
     rbfBase[head] = (UBYTE)ctx->serial_word_24;
     serialWord = ctx->serial_word_24;
 
-    if (((UWORD)serialWord & (UWORD)0x8000) != 0) {
-        ESQ_SerialRbfErrorCount = (WORD)(ESQ_SerialRbfErrorCount + 1);
+    if (((UWORD)serialWord & SERIAL_ERR_BIT) != 0) {
+        ESQ_SerialRbfErrorCount = (WORD)(ESQ_SerialRbfErrorCount + COUNTER_STEP);
     }
 
-    head = (UWORD)(head + 1);
-    if (head == (UWORD)0xFA00) {
-        head = 0;
+    head = (UWORD)(head + COUNTER_STEP);
+    if (head == RBF_WRAP) {
+        head = RESULT_OK;
     }
     Global_WORD_H_VALUE = (WORD)head;
 
     fill = (WORD)((WORD)head - Global_WORD_T_VALUE);
     if (fill < 0) {
-        fill = (WORD)(fill + (WORD)0xFA00);
+        fill = (WORD)(fill + (WORD)RBF_WRAP);
     }
 
     ESQ_SerialRbfFillLevel = fill;
@@ -48,11 +55,11 @@ LONG ESQ_HandleSerialRbfInterrupt(SerialIntCtx *ctx, UBYTE *rbfBase)
         Global_WORD_MAX_VALUE = fill;
     }
 
-    if (fill >= (WORD)0xDAC0 && ESQPARS2_ReadModeFlags != (WORD)0x0102) {
-        ESQPARS2_ReadModeFlags = (WORD)0x0102;
-        SCRIPT_SerialReadModeOverflowCount += 1;
+    if (fill >= RBF_OVERFLOW_WATERMARK && ESQPARS2_ReadModeFlags != READMODE_RBF_OVERFLOW) {
+        ESQPARS2_ReadModeFlags = READMODE_RBF_OVERFLOW;
+        SCRIPT_SerialReadModeOverflowCount += COUNTER_STEP;
     }
 
-    ctx->intreq_write_156 = (WORD)0x0800;
-    return 0;
+    ctx->intreq_write_156 = INTREQ_RBF;
+    return RESULT_OK;
 }

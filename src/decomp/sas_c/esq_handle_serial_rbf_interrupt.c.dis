@@ -1,66 +1,87 @@
               SECTION      text,CODE
 __code:
 ESQ_HandleSerialRbfInterrupt:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D2/D5/D6/D7/A3/A5,-(A7)  ;48e7 2714 
+              SUB.W          #$14,A7                  ;9efc 0014 
+              MOVEM.L        D2/D3/D4/D5/D6/D7/A3/A5,-(A7);48e7 3f14 
 ___ESQ_HandleSerialRbfInterrupt__1:
-              MOVE.L         $20(A7),A3               ;266f 0020 
-              MOVE.L         $1c(A7),A5               ;2a6f 001c 
-              MOVE.W         Global_WORD_H_VALUE(A4),D7;3e2c 0000 
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         D7,D0                    ;3007 
-              MOVE.W         $18(A5),D1               ;322d 0018 
-              MOVE.B         D1,$0(A3,D0.L)           ;1781 0800 
-              MOVE.W         $18(A5),D6               ;3c2d 0018 
-              MOVE.W         D6,D0                    ;3006 
-              BTST           #$f,D0                   ;0800 000f 
-              BEQ.B          ___ESQ_HandleSerialRbfInterrupt__3;670a 
-___ESQ_HandleSerialRbfInterrupt__2:
-              MOVE.W         ESQ_SerialRbfErrorCount(A4),D1;322c 0000 
-              ADDQ.W         #$1,D1                   ;5241 
-              MOVE.W         D1,ESQ_SerialRbfErrorCount(A4);3941 0000 
-___ESQ_HandleSerialRbfInterrupt__3:
-              ADDQ.W         #$1,D7                   ;5247 
+              MOVE.L         $3c(A7),A3               ;266f 003c 
+              MOVE.L         $38(A7),A5               ;2a6f 0038 
+              MOVE.W         #$8000,D7                ;3e3c 8000 
+              MOVE.W         #$fa00,D6                ;3c3c fa00 
+              MOVE.W         #$ffffdac0,D5            ;3a3c dac0 
+              MOVE.W         #$102,D0                 ;303c 0102 
+              MOVE.W         #$800,D1                 ;323c 0800 
+              MOVEQ.L        #$1,D2                   ;7401 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         Global_WORD_H_VALUE(A4),D4;382c 0000 
+              MOVE.W         D1,$2a(A7)               ;3f41 002a 
               MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.W         D7,D1                    ;3207 
-              CMPI.L         #$fa00,D1                ;0c81 0000 fa00 
-              BNE.B          ___ESQ_HandleSerialRbfInterrupt__5;6602 
+              MOVE.W         D4,D1                    ;3204 
+              MOVE.W         D0,$30(A7)               ;3f40 0030 
+              MOVE.W         $18(A5),D0               ;302d 0018 
+              MOVE.B         D0,$0(A3,D1.L)           ;1780 1800 
+              MOVE.W         $18(A5),D0               ;302d 0018 
+              MOVE.W         D0,$22(A7)               ;3f40 0022 
+              AND.W          D7,D0                    ;c047 
+              MOVE.L         D2,$26(A7)               ;2f42 0026 
+              MOVEM.L        D3,$2c(A7)               ;48ef 0008 002c 
+              MOVEM.W        D4,$24(A7)               ;48af 0010 0024 
+              TST.W          D0                       ;4a40 
+              BEQ.B          ___ESQ_HandleSerialRbfInterrupt__3;670c 
+___ESQ_HandleSerialRbfInterrupt__2:
+              MOVE.W         ESQ_SerialRbfErrorCount(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              ADD.L          D2,D0                    ;d082 
+              MOVE.W         D0,ESQ_SerialRbfErrorCount(A4);3940 0000 
+___ESQ_HandleSerialRbfInterrupt__3:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D4,D0                    ;3004 
+              ADD.L          D2,D0                    ;d082 
+              MOVE.W         D0,$24(A7)               ;3f40 0024 
+              CMP.W          D6,D0                    ;b046 
+              BNE.B          ___ESQ_HandleSerialRbfInterrupt__5;6604 
 ___ESQ_HandleSerialRbfInterrupt__4:
-              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.W         D3,$24(A7)               ;3f43 0024 
 ___ESQ_HandleSerialRbfInterrupt__5:
-              MOVE.W         D7,D1                    ;3207 
-              MOVE.W         D1,Global_WORD_H_VALUE(A4);3941 0000 
-              MOVE.W         Global_WORD_T_VALUE(A4),D2;342c 0000 
-              SUB.W          D2,D1                    ;9242 
-              MOVE.L         D1,D5                    ;2a01 
-              TST.W          D5                       ;4a45 
-              BPL.B          ___ESQ_HandleSerialRbfInterrupt__7;6a04 
+              MOVE.W         $24(A7),D0               ;302f 0024 
+              MOVE.W         D0,Global_WORD_H_VALUE(A4);3940 0000 
+              MOVE.W         Global_WORD_T_VALUE(A4),D1;322c 0000 
+              SUB.W          D1,D0                    ;9041 
+              MOVEM.W        D0,$20(A7)               ;48af 0001 0020 
+              BGE.B          ___ESQ_HandleSerialRbfInterrupt__7;6c06 
 ___ESQ_HandleSerialRbfInterrupt__6:
-              SUBI.W         #$600,D5                 ;0445 0600 
+              MOVE.W         D6,D1                    ;3206 
+              ADD.W          D1,$20(A7)               ;d36f 0020 
 ___ESQ_HandleSerialRbfInterrupt__7:
-              MOVE.W         D5,ESQ_SerialRbfFillLevel(A4);3945 0000 
+              MOVE.W         $20(A7),D0               ;302f 0020 
+              MOVE.W         D0,ESQ_SerialRbfFillLevel(A4);3940 0000 
               MOVE.W         Global_WORD_MAX_VALUE(A4),D1;322c 0000 
-              CMP.W          D1,D5                    ;ba41 
+              CMP.W          D1,D0                    ;b041 
               BLT.B          ___ESQ_HandleSerialRbfInterrupt__9;6d04 
 ___ESQ_HandleSerialRbfInterrupt__8:
-              MOVE.W         D5,Global_WORD_MAX_VALUE(A4);3945 0000 
+              MOVE.W         D0,Global_WORD_MAX_VALUE(A4);3940 0000 
 ___ESQ_HandleSerialRbfInterrupt__9:
-              CMPI.W         #$ffffdac0,D5            ;0c45 dac0 
+              CMP.W          D5,D0                    ;b045 
               BLT.B          ___ESQ_HandleSerialRbfInterrupt__12;6d14 
 ___ESQ_HandleSerialRbfInterrupt__10:
-              MOVE.W         ESQPARS2_ReadModeFlags(A4),D1;322c 0000 
-              CMPI.W         #$102,D1                 ;0c41 0102 
-              BEQ.B          ___ESQ_HandleSerialRbfInterrupt__12;670a 
+              MOVE.W         ESQPARS2_ReadModeFlags(A4),D0;302c 0000 
+              MOVE.W         $30(A7),D1               ;322f 0030 
+              CMP.W          D1,D0                    ;b041 
+              BEQ.B          ___ESQ_HandleSerialRbfInterrupt__12;6708 
 ___ESQ_HandleSerialRbfInterrupt__11:
-              MOVE.W         #$102,ESQPARS2_ReadModeFlags(A4);397c 0102 0000 
-              ADDQ.L         #$1,SCRIPT_SerialReadModeOverflowCou(A4);52ac 0000 
+              MOVE.W         D1,ESQPARS2_ReadModeFlags(A4);3941 0000 
+              ADD.L          D2,SCRIPT_SerialReadModeOverflowCou(A4);d5ac 0000 
 ___ESQ_HandleSerialRbfInterrupt__12:
-              MOVE.W         #$800,$9c(A5)            ;3b7c 0800 009c 
-              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $2a(A7),$9c(A5)          ;3b6f 002a 009c 
+              MOVE.L         D3,D0                    ;2003 
 ___ESQ_HandleSerialRbfInterrupt__13:
 ___ESQ_HandleSerialRbfInterrupt__14:
-              MOVEM.L        (A7)+,D2/D5/D6/D7/A3/A5  ;4cdf 28e4 
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A3/A5;4cdf 28fc 
+              ADD.W          #$14,A7                  ;defc 0014 
               RTS                                     ;4e75 
 __const:
 __strings:
