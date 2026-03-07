@@ -35,6 +35,7 @@ LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(const char *path)
 {
     const LONG LOCK_READ = -2;
     const LONG LOCK_INVALID = 0;
+    const LONG INFO_QUERY_OK = 1;
     const LONG PERCENT_SCALE = 100;
     const LONG BUFFER_BLOCK_MULT = 2;
     const LONG ALLOC_LINE = 567;
@@ -54,7 +55,7 @@ LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(const char *path)
     info = (struct InfoDataApprox *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_DISKIO_C_5, ALLOC_LINE, INFODATA_SIZE, MEMF_CLEAR);
     if (info != 0) {
-        if (_LVOInfo(Global_REF_DOS_LIBRARY_2, lockHandle, info) != LOCK_INVALID) {
+        if (_LVOInfo(Global_REF_DOS_LIBRARY_2, lockHandle, info) == INFO_QUERY_OK) {
             percent = GROUP_AG_JMPTBL_MATH_Mulu32((LONG)info->id_NumBlocksUsed, PERCENT_SCALE);
             percent = GROUP_AG_JMPTBL_MATH_DivS32(percent, (LONG)info->id_NumBlocks);
             DISKIO_BufferState.BufferSize = (LONG)(info->id_BytesPerBlock * BUFFER_BLOCK_MULT);
