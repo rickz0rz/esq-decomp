@@ -1,0 +1,33 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED_InitEntryDefaults:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___ESQSHARED_InitEntryDefaults__1:
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.B         #$2,$28(A5)              ;1b7c 0002 0028 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.B         D0,$29(A5)               ;1b40 0029 
+              MOVE.B         D0,$2a(A5)               ;1b40 002a 
+              LEA            $2b(A5),A3               ;47ed 002b 
+              LEA            ESQPARS_DefaultEntryCodeString(A4),A2;45ec 0000 
+___ESQSHARED_InitEntryDefaults__2:
+              MOVE.B         (A2),(A3)+               ;16d2 
+___ESQSHARED_InitEntryDefaults__3:
+              MOVE.B         (A2)+,D0                 ;101a 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___ESQSHARED_InitEntryDefaults__2;66f8 
+___ESQSHARED_InitEntryDefaults__4:
+              LEA            $2e(A5),A0               ;41ed 002e 
+              MOVE.W         #$3,(A0)                 ;30bc 0003 
+___ESQSHARED_InitEntryDefaults__5:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQPARS_DefaultEntryCodeString
+              XDEF           ESQSHARED_InitEntryDefaults
+              END
