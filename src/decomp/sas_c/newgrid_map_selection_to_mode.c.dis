@@ -2,25 +2,38 @@
 __code:
 NEWGRID_MapSelectionToMode:
               MOVE.L         A7,D0                    ;200f 
-              SUBQ.L         #$4,D0                   ;5980 
+              SUB.L          #$24,D0                  ;90bc 0000 0024 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$20,A7                  ;9efc 0020 
               MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
 ___NEWGRID_MapSelectionToMode__1:
-              MOVE.W         $16(A7),D6               ;3c2f 0016 
-              MOVE.L         $10(A7),D7               ;2e2f 0010 
-              MOVEQ.L        #$d,D0                   ;700d 
-              CMP.L          D0,D7                    ;be80 
-              BCS.B          ___NEWGRID_MapSelectionToMode__3;6504 
-___NEWGRID_MapSelectionToMode__2:
+              MOVE.W         $36(A7),D6               ;3c2f 0036 
+              MOVE.L         $30(A7),D7               ;2e2f 0030 
+              MOVEQ.L        #$d,D5                   ;7a0d 
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___NEWGRID_MapSelectionToMode__21;6070 
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVE.L         D1,$24(A7)               ;2f41 0024 
+              MOVEQ.L        #$2,D1                   ;7202 
+              MOVE.L         D1,$20(A7)               ;2f41 0020 
+              MOVEQ.L        #$3,D1                   ;7203 
+              MOVE.L         D1,$1c(A7)               ;2f41 001c 
+              MOVEQ.L        #$b,D1                   ;720b 
+              MOVE.L         D1,$18(A7)               ;2f41 0018 
+              MOVEQ.L        #$4,D1                   ;7204 
+              MOVE.L         D1,$14(A7)               ;2f41 0014 
+              MOVEQ.L        #$5,D1                   ;7205 
+              MOVE.L         D1,$10(A7)               ;2f41 0010 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              CMP.L          D5,D7                    ;be85 
+              BCC.W          ___NEWGRID_MapSelectionToMode__21;6400 009a 
+___NEWGRID_MapSelectionToMode__2:
 ___NEWGRID_MapSelectionToMode__3:
               MOVE.L         D7,D0                    ;2007 
 ___NEWGRID_MapSelectionToMode__4:
 ___NEWGRID_MapSelectionToMode__5:
               CMPI.L         #$d,D0                   ;0c80 0000 000d 
-              BCC.B          ___NEWGRID_MapSelectionToMode__18;6462 
+              BCC.W          ___NEWGRID_MapSelectionToMode__18;6400 0084 
 ___NEWGRID_MapSelectionToMode__6:
               ADD.W          D0,D0                    ;d040 
               MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
@@ -40,14 +53,14 @@ __switch_NEWGRID_MapSelectionToMode_6:
               DC.W           ___NEWGRID_MapSelectionToMode__17-__switch_NEWGRID_MapSelectionToMode_6
               DC.W           ___NEWGRID_MapSelectionToMode__7-__switch_NEWGRID_MapSelectionToMode_6
 ___NEWGRID_MapSelectionToMode__7:
-              MOVEQ.L        #$1,D5                   ;7a01 
-              BRA.B          ___NEWGRID_MapSelectionToMode__19;603c 
+              MOVE.L         $24(A7),$c(A7)           ;2f6f 0024 000c 
+              BRA.B          ___NEWGRID_MapSelectionToMode__19;605c 
 ___NEWGRID_MapSelectionToMode__8:
-              MOVEQ.L        #$2,D5                   ;7a02 
-              BRA.B          ___NEWGRID_MapSelectionToMode__19;6038 
+              MOVE.L         $20(A7),$c(A7)           ;2f6f 0020 000c 
+              BRA.B          ___NEWGRID_MapSelectionToMode__19;6054 
 ___NEWGRID_MapSelectionToMode__9:
-              MOVEQ.L        #$3,D5                   ;7a03 
-              BRA.B          ___NEWGRID_MapSelectionToMode__19;6034 
+              MOVE.L         $1c(A7),$c(A7)           ;2f6f 001c 000c 
+              BRA.B          ___NEWGRID_MapSelectionToMode__19;604c 
 ___NEWGRID_MapSelectionToMode__10:
               MOVE.W         D6,D0                    ;3006 
               EXT.L          D0                       ;48c0 
@@ -55,35 +68,36 @@ ___NEWGRID_MapSelectionToMode__10:
               BSR.W          NEWGRID_IsGridReadyForInput;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               TST.L          D0                       ;4a80 
-              BEQ.B          ___NEWGRID_MapSelectionToMode__12;6704 
+              BEQ.B          ___NEWGRID_MapSelectionToMode__12;6708 
 ___NEWGRID_MapSelectionToMode__11:
-              MOVEQ.L        #$b,D5                   ;7a0b 
-              BRA.B          ___NEWGRID_MapSelectionToMode__19;6020 
+              MOVE.L         $18(A7),$c(A7)           ;2f6f 0018 000c 
+              BRA.B          ___NEWGRID_MapSelectionToMode__19;6034 
 ___NEWGRID_MapSelectionToMode__12:
-              MOVEQ.L        #$4,D5                   ;7a04 
+              MOVE.L         $14(A7),$c(A7)           ;2f6f 0014 000c 
 ___NEWGRID_MapSelectionToMode__13:
-              BRA.B          ___NEWGRID_MapSelectionToMode__19;601c 
+              BRA.B          ___NEWGRID_MapSelectionToMode__19;602c 
 ___NEWGRID_MapSelectionToMode__14:
               TST.L          GCOMMAND_NicheForceMode5Flag(A4);4aac 0000 
-              BEQ.B          ___NEWGRID_MapSelectionToMode__16;6708 
+              BEQ.B          ___NEWGRID_MapSelectionToMode__16;670e 
 ___NEWGRID_MapSelectionToMode__15:
-              MOVEQ.L        #$5,D5                   ;7a05 
-              CLR.L          GCOMMAND_NicheModeCycleCount(A4);42ac 0000 
-              BRA.B          ___NEWGRID_MapSelectionToMode__19;600e 
+              MOVE.L         $10(A7),$c(A7)           ;2f6f 0010 000c 
+              MOVE.L         $28(A7),GCOMMAND_NicheModeCycleCount(A4);296f 0028 0000 
+              BRA.B          ___NEWGRID_MapSelectionToMode__19;6018 
 ___NEWGRID_MapSelectionToMode__16:
               BSR.W          NEWGRID_SelectNextMode   ;6100 0000 
-              MOVE.L         D0,D5                    ;2a00 
-              BRA.B          ___NEWGRID_MapSelectionToMode__19;6006 
+              MOVE.L         D0,$c(A7)                ;2f40 000c 
+              BRA.B          ___NEWGRID_MapSelectionToMode__19;600e 
 ___NEWGRID_MapSelectionToMode__17:
-              MOVEQ.L        #$1,D5                   ;7a01 
-              BRA.B          ___NEWGRID_MapSelectionToMode__19;6002 
+              MOVE.L         $24(A7),$c(A7)           ;2f6f 0024 000c 
+              BRA.B          ___NEWGRID_MapSelectionToMode__19;6006 
 ___NEWGRID_MapSelectionToMode__18:
-              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVE.L         $28(A7),$c(A7)           ;2f6f 0028 000c 
 ___NEWGRID_MapSelectionToMode__19:
-              MOVE.L         D5,D0                    ;2005 
+              MOVE.L         $c(A7),D0                ;202f 000c 
 ___NEWGRID_MapSelectionToMode__20:
 ___NEWGRID_MapSelectionToMode__21:
               MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              ADD.W          #$20,A7                  ;defc 0020 
               RTS                                     ;4e75 
 __const:
 __strings:
