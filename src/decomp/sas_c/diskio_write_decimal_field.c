@@ -2,7 +2,8 @@ typedef signed long LONG;
 typedef unsigned char UBYTE;
 
 enum {
-    DISKIO_PRINTF_ARG_UNUSED = 0
+    DISKIO_PRINTF_ARG_UNUSED = 0,
+    DISKIO_DECIMAL_FIELD_BUFFER_LEN = 10
 };
 
 extern const UBYTE Global_STR_PERCENT_LD[];
@@ -12,7 +13,7 @@ extern LONG DISKIO_WriteBufferedBytes(LONG handle, const void *data, LONG len);
 
 void DISKIO_WriteDecimalField(LONG handle, LONG value)
 {
-    UBYTE buf[10];
+    UBYTE buf[DISKIO_DECIMAL_FIELD_BUFFER_LEN];
     UBYTE *scan = buf;
 
     GROUP_AE_JMPTBL_WDISP_SPrintf(buf,
