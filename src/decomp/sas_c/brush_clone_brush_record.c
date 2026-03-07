@@ -66,9 +66,9 @@ void _LVOInitRastPort(void *rp);
 void _LVOForbid(void);
 void _LVOPermit(void);
 
-void *BRUSH_CloneBrushRecord(void *src_rec)
+void *BRUSH_CloneBrushRecord(void *srcRec)
 {
-    UBYTE *src = (UBYTE *)src_rec;
+    UBYTE *src = (UBYTE *)srcRec;
     UBYTE *dst;
     LONG i;
     const UBYTE *s;
