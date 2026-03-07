@@ -27,7 +27,7 @@ LONG DISKIO_QueryVolumeSoftErrorCount(const char *path)
     UBYTE *infoData;
 
     lock = _LVOLock(Global_REF_DOS_LIBRARY_2, path, LOCK_READ_MODE);
-    if (lock == 0) {
+    if (lock == RESULT_FAIL) {
         return RESULT_FAIL;
     }
 
@@ -38,7 +38,7 @@ LONG DISKIO_QueryVolumeSoftErrorCount(const char *path)
         MEMF_CLEAR_FLAG);
 
     if (infoData != 0) {
-        if (_LVOInfo(Global_REF_DOS_LIBRARY_2, lock, infoData) != 0) {
+        if (_LVOInfo(Global_REF_DOS_LIBRARY_2, lock, infoData) != RESULT_FAIL) {
             softErrorCount = *(LONG *)(void *)infoData;
         }
 
