@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
+ENTRY="STR_FindAnyCharInSet"
+
 SASC_SRC="unknown7_str_core_helpers.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
