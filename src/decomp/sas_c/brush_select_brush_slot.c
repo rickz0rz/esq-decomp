@@ -3,6 +3,8 @@ typedef unsigned short UWORD;
 typedef long LONG;
 
 enum {
+    BRUSH_SPAN_INCLUSIVE_DELTA = 1,
+    BRUSH_FORCED_DST_Y_MIN = 0,
     BRUSH_BITMAP_OFFSET = 136,
     BRUSH_DST_X_OFFSET = 340,
     BRUSH_DST_Y_OFFSET = 344,
@@ -50,13 +52,13 @@ LONG BRUSH_SelectBrushSlot(
         return 0;
     }
 
-    span_x = src_x1 - src_x0 + 1;
+    span_x = src_x1 - src_x0 + BRUSH_SPAN_INCLUSIVE_DELTA;
     clip_w = *(LONG *)(brush + BRUSH_CLIP_W_OFFSET);
     if (clip_w > span_x) {
         dst_x = src_x0;
         mode_x = *(LONG *)(brush + BRUSH_ALIGN_X_MODE_OFFSET);
         if (mode_x == ALIGN_MODE_RIGHT_BOTTOM) {
-            dst_x = clip_w - (src_x1 - src_x0) - 1;
+            dst_x = clip_w - (src_x1 - src_x0) - BRUSH_SPAN_INCLUSIVE_DELTA;
         } else if (mode_x == ALIGN_MODE_CENTER) {
             dst_x = half_toward_zero(clip_w) - half_toward_zero(span_x);
         } else {
@@ -67,7 +69,7 @@ LONG BRUSH_SelectBrushSlot(
             dst_x = *(LONG *)(brush + BRUSH_DST_X_OFFSET);
             mode_x = *(LONG *)(brush + BRUSH_ALIGN_X_MODE_OFFSET);
             if (mode_x == ALIGN_MODE_RIGHT_BOTTOM) {
-                src_x = src_x1 - clip_w + 1;
+                src_x = src_x1 - clip_w + BRUSH_SPAN_INCLUSIVE_DELTA;
             } else if (mode_x == ALIGN_MODE_CENTER) {
                 src_x = src_x0 + half_toward_zero(span_x) - half_toward_zero(clip_w);
             } else {
@@ -79,13 +81,13 @@ LONG BRUSH_SelectBrushSlot(
         }
     }
 
-    span_y = src_y1 - src_y0 + 1;
+    span_y = src_y1 - src_y0 + BRUSH_SPAN_INCLUSIVE_DELTA;
     clip_h = *(LONG *)(brush + BRUSH_CLIP_H_OFFSET);
     if (clip_h > span_y) {
         dst_y = src_y0;
         mode_y = *(LONG *)(brush + BRUSH_ALIGN_Y_MODE_OFFSET);
         if (mode_y == ALIGN_MODE_RIGHT_BOTTOM) {
-            dst_y = clip_h - (src_y1 - src_y0) - 1;
+            dst_y = clip_h - (src_y1 - src_y0) - BRUSH_SPAN_INCLUSIVE_DELTA;
         } else if (mode_y == ALIGN_MODE_CENTER) {
             dst_y = half_toward_zero(clip_h) - half_toward_zero(span_y);
         } else {
@@ -96,7 +98,7 @@ LONG BRUSH_SelectBrushSlot(
             dst_y = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
             mode_y = *(LONG *)(brush + BRUSH_ALIGN_Y_MODE_OFFSET);
             if (mode_y == ALIGN_MODE_RIGHT_BOTTOM) {
-                src_y = src_y1 - clip_h + 1;
+                src_y = src_y1 - clip_h + BRUSH_SPAN_INCLUSIVE_DELTA;
             } else if (mode_y == ALIGN_MODE_CENTER) {
                 src_y = src_y0 + half_toward_zero(span_y) - half_toward_zero(clip_h);
             } else {
@@ -108,17 +110,17 @@ LONG BRUSH_SelectBrushSlot(
         }
     }
 
-    clip_w = src_x1 - src_x0 + 1;
+    clip_w = src_x1 - src_x0 + BRUSH_SPAN_INCLUSIVE_DELTA;
     if (clip_w > *(LONG *)(brush + BRUSH_CLIP_W_OFFSET)) {
         clip_w = *(LONG *)(brush + BRUSH_CLIP_W_OFFSET);
     }
 
-    clip_h = src_y1 - src_y0 + 1;
+    clip_h = src_y1 - src_y0 + BRUSH_SPAN_INCLUSIVE_DELTA;
     if (clip_h > *(LONG *)(brush + BRUSH_CLIP_H_OFFSET)) {
         clip_h = *(LONG *)(brush + BRUSH_CLIP_H_OFFSET);
     }
 
-    if (forced_dst_y > 0) {
+    if (forced_dst_y > BRUSH_FORCED_DST_Y_MIN) {
         dst_y = forced_dst_y;
     }
 
