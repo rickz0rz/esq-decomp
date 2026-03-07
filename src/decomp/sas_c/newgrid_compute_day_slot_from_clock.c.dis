@@ -2,60 +2,77 @@
 __code:
 NEWGRID_ComputeDaySlotFromClock:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$1c,D0                  ;90bc 0000 001c 
+              SUB.L          #$38,D0                  ;90bc 0000 0038 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$18,A7                  ;9efc 0018 
+              SUB.W          #$34,A7                  ;9efc 0034 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___NEWGRID_ComputeDaySlotFromClock__1:
-              MOVE.L         $34(A7),A5               ;2a6f 0034 
+              MOVE.L         $50(A7),A5               ;2a6f 0050 
+              MOVEQ.L        #$5,D7                   ;7e05 
+              MOVEQ.L        #$14,D6                  ;7c14 
+              MOVEQ.L        #$32,D5                  ;7a32 
+              MOVEQ.L        #$14,D0                  ;7014 
+              MOVE.L         D0,$48(A7)               ;2f40 0048 
+              MOVEQ.L        #$1d,D0                  ;701d 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVEQ.L        #$30,D1                  ;7230 
+              MOVE.L         D1,$3c(A7)               ;2f41 003c 
               MOVE.L         A5,A3                    ;264d 
               LEA            $1a(A7),A2               ;45ef 001a 
-              MOVEQ.L        #$0,D5                   ;7a00 
+              CLR.L          $30(A7)                  ;42af 0030 
+              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
 ___NEWGRID_ComputeDaySlotFromClock__2:
-              MOVEQ.L        #$5,D0                   ;7005 
-              CMP.L          D0,D5                    ;ba80 
-              BGE.B          ___NEWGRID_ComputeDaySlotFromClock__5;6c0e 
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              CMP.L          D7,D0                    ;b087 
+              BGE.B          ___NEWGRID_ComputeDaySlotFromClock__5;6c10 
 ___NEWGRID_ComputeDaySlotFromClock__3:
-              MOVE.L         D5,D0                    ;2005 
-              ASL.L          #$2,D0                   ;e580 
-              MOVE.L         $0(A3,D0.L),$0(A2,D0.L)  ;25b3 0800 0800 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              MOVE.L         $0(A3,D1.L),$0(A2,D1.L)  ;25b3 1800 1800 
 ___NEWGRID_ComputeDaySlotFromClock__4:
-              ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___NEWGRID_ComputeDaySlotFromClock__2;60ec 
+              ADDQ.L         #$1,$30(A7)              ;52af 0030 
+              BRA.B          ___NEWGRID_ComputeDaySlotFromClock__2;60e8 
 ___NEWGRID_ComputeDaySlotFromClock__5:
-              LEA            $14(A5),A0               ;41ed 0014 
-              MOVE.W         (A0),$2e(A7)             ;3f50 002e 
+              MOVE.W         $0(A5,D6.L),$2e(A7)      ;3f75 6800 002e 
               PEA            $1a(A7)                  ;486f 001a 
               BSR.W          NEWGRID2_JMPTBL_ESQ_GetHalfHourS;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              MOVEQ.L        #$0,D7                   ;7e00 
-              MOVE.W         D0,D7                    ;3e00 
-              MOVE.W         $2e(A7),D6               ;3c2f 002e 
-              MOVEQ.L        #$32,D0                  ;7032 
-              CMP.W          D0,D6                    ;bc40 
-              BGE.B          ___NEWGRID_ComputeDaySlotFromClock__8;6c0c 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              MOVE.W         $2e(A7),D0               ;302f 002e 
+              MOVE.W         D0,$18(A7)               ;3f40 0018 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D1,$34(A7)               ;2f41 0034 
+              CMP.L          D5,D0                    ;b085 
+              BGE.B          ___NEWGRID_ComputeDaySlotFromClock__8;6c18 
 ___NEWGRID_ComputeDaySlotFromClock__6:
-              MOVEQ.L        #$14,D0                  ;7014 
-              CMP.W          D0,D6                    ;bc40 
-              BLT.B          ___NEWGRID_ComputeDaySlotFromClock__10;6d10 
+              MOVE.W         $18(A7),D0               ;302f 0018 
+              EXT.L          D0                       ;48c0 
+              CMP.L          $48(A7),D0               ;b0af 0048 
+              BLT.B          ___NEWGRID_ComputeDaySlotFromClock__10;6d26 
 ___NEWGRID_ComputeDaySlotFromClock__7:
-              MOVEQ.L        #$1d,D0                  ;701d 
-              CMP.W          D0,D6                    ;bc40 
-              BGT.B          ___NEWGRID_ComputeDaySlotFromClock__10;6e0a 
+              MOVE.W         $18(A7),D0               ;302f 0018 
+              EXT.L          D0                       ;48c0 
+              CMP.L          $44(A7),D0               ;b0af 0044 
+              BGT.B          ___NEWGRID_ComputeDaySlotFromClock__10;6e1a 
 ___NEWGRID_ComputeDaySlotFromClock__8:
-              ADDQ.L         #$1,D7                   ;5287 
-              MOVEQ.L        #$30,D0                  ;7030 
-              CMP.L          D0,D7                    ;be80 
-              BLE.B          ___NEWGRID_ComputeDaySlotFromClock__10;6f02 
+              MOVE.L         $40(A7),D0               ;202f 0040 
+              ADD.L          D0,$34(A7)               ;d1af 0034 
+              MOVE.L         $34(A7),D0               ;202f 0034 
+              CMP.L          $3c(A7),D0               ;b0af 003c 
+              BLE.B          ___NEWGRID_ComputeDaySlotFromClock__10;6f08 
 ___NEWGRID_ComputeDaySlotFromClock__9:
-              MOVEQ.L        #$1,D7                   ;7e01 
+              MOVE.L         $38(A7),D1               ;222f 0038 
+              MOVE.L         D1,$34(A7)               ;2f41 0034 
 ___NEWGRID_ComputeDaySlotFromClock__10:
-              MOVE.L         D7,D0                    ;2007 
+              MOVE.L         $34(A7),D0               ;202f 0034 
 ___NEWGRID_ComputeDaySlotFromClock__11:
 ___NEWGRID_ComputeDaySlotFromClock__12:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$18,A7                  ;defc 0018 
+              ADD.W          #$34,A7                  ;defc 0034 
               RTS                                     ;4e75 
 __const:
 __strings:
