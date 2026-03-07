@@ -1,0 +1,75 @@
+              SECTION      text,CODE
+__code:
+ESQIFF_ServiceExternalAssetSourc:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ESQIFF_ServiceExternalAssetSourc__1:
+              MOVE.W         $a(A7),D7                ;3e2f 000a 
+              MOVE.W         Global_WORD_SELECT_CODE_IS_RAVES(A4),D0;302c 0000 
+              BNE.B          ___ESQIFF_ServiceExternalAssetSourc__15;6662 
+___ESQIFF_ServiceExternalAssetSourc__2:
+___ESQIFF_ServiceExternalAssetSourc__3:
+              BSR.W          ESQDISP_ProcessGridMessagesIfIdl;6100 0000 
+              MOVE.W         COI_AttentionOverlayBusyFlag(A4),D0;302c 0000 
+              BNE.B          ___ESQIFF_ServiceExternalAssetSourc__15;6658 
+___ESQIFF_ServiceExternalAssetSourc__4:
+___ESQIFF_ServiceExternalAssetSourc__5:
+              TST.W          D7                       ;4a47 
+              BEQ.B          ___ESQIFF_ServiceExternalAssetSourc__7;670c 
+___ESQIFF_ServiceExternalAssetSourc__6:
+              CLR.W          ESQIFF_AssetSourceSelect(A4);426c 0000 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.W         D0,ESQIFF_GAdsSourceEnabled(A4);3940 0000 
+              BRA.B          ___ESQIFF_ServiceExternalAssetSourc__8;600a 
+___ESQIFF_ServiceExternalAssetSourc__7:
+              CLR.W          ESQIFF_GAdsSourceEnabled(A4);426c 0000 
+              MOVE.W         #$ffffffff,ESQIFF_AssetSourceSelect(A4);397c ffff 0000 
+___ESQIFF_ServiceExternalAssetSourc__8:
+              TST.L          DISKIO_Drive0WriteProtectedCode(A4);4aac 0000 
+              BNE.B          ___ESQIFF_ServiceExternalAssetSourc__11;6614 
+___ESQIFF_ServiceExternalAssetSourc__9:
+              MOVE.W         ESQIFF_ExternalAssetFlags(A4),D0;302c 0000 
+              ANDI.W         #$2,D0                   ;0240 0002 
+              SUBQ.W         #$2,D0                   ;5540 
+              BEQ.B          ___ESQIFF_ServiceExternalAssetSourc__11;6708 
+___ESQIFF_ServiceExternalAssetSourc__10:
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          ESQIFF_ReloadExternalAssetCatalo;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQIFF_ServiceExternalAssetSourc__11:
+              TST.L          DISKIO_DriveWriteProtectStatusCo(A4);4aac 0000 
+              BNE.B          ___ESQIFF_ServiceExternalAssetSourc__14;6616 
+___ESQIFF_ServiceExternalAssetSourc__12:
+              MOVE.W         ESQIFF_ExternalAssetFlags(A4),D0;302c 0000 
+              ANDI.W         #$1,D0                   ;0240 0001 
+              SUBQ.W         #$1,D0                   ;5340 
+              BEQ.B          ___ESQIFF_ServiceExternalAssetSourc__14;670a 
+___ESQIFF_ServiceExternalAssetSourc__13:
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          ESQIFF_ReloadExternalAssetCatalo;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQIFF_ServiceExternalAssetSourc__14:
+              BSR.W          ESQDISP_ProcessGridMessagesIfIdl;6100 0000 
+              BSR.W          ESQIFF_QueueNextExternalAssetIff;6100 0000 
+___ESQIFF_ServiceExternalAssetSourc__15:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_WORD_SELECT_CODE_IS_RAVES
+              XREF           ESQDISP_ProcessGridMessagesIfIdl
+              XREF           COI_AttentionOverlayBusyFlag
+              XREF           ESQIFF_AssetSourceSelect
+              XREF           ESQIFF_GAdsSourceEnabled
+              XREF           DISKIO_Drive0WriteProtectedCode
+              XREF           ESQIFF_ExternalAssetFlags
+              XREF           ESQIFF_ReloadExternalAssetCatalo
+              XREF           DISKIO_DriveWriteProtectStatusCo
+              XREF           ESQIFF_QueueNextExternalAssetIff
+              XDEF           ESQIFF_ServiceExternalAssetSourc
+              END
