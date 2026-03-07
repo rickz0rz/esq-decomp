@@ -2,6 +2,7 @@ typedef signed long LONG;
 typedef unsigned char UBYTE;
 
 enum {
+    DISKIO_COUNT_ZERO = 0,
     DISKIO_CSTRING_CH_NUL = 0,
     DISKIO_WORKBUF_SENTINEL_ERROR = 0xFFFF
 };
@@ -15,7 +16,7 @@ UBYTE *DISKIO_ConsumeCStringFromWorkBuffer(void)
 
     start = Global_PTR_WORK_BUFFER;
 
-    while (Global_REF_LONG_FILE_SCRATCH-- > 0) {
+    while (Global_REF_LONG_FILE_SCRATCH-- > DISKIO_COUNT_ZERO) {
         UBYTE ch;
         UBYTE *p;
 
@@ -27,7 +28,7 @@ UBYTE *DISKIO_ConsumeCStringFromWorkBuffer(void)
         }
     }
 
-    if (Global_REF_LONG_FILE_SCRATCH < 0) {
+    if (Global_REF_LONG_FILE_SCRATCH < DISKIO_COUNT_ZERO) {
         start = (UBYTE *)DISKIO_WORKBUF_SENTINEL_ERROR;
     }
 
