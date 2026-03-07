@@ -2,6 +2,7 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
 enum {
+    MASK_BYTE_COUNT = 6,
     ATTR_FLAG_NONE = 0x01,
     ATTR_FLAG_HILITE_SRC = 0x02,
     ATTR_FLAG_SUM_SRC = 0x04,
@@ -103,7 +104,7 @@ void DISKIO1_DumpProgramSourceRecordVerbose(
         (ULONG)rec->timeSlotMask[2],
         (ULONG)rec->timeSlotMask[3],
         (ULONG)rec->timeSlotMask[4],
-        (ULONG)rec->timeSlotMask[5]);
+        (ULONG)rec->timeSlotMask[MASK_BYTE_COUNT - 1]);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_,
         (ULONG)rec->blackoutMask[0],
@@ -111,7 +112,7 @@ void DISKIO1_DumpProgramSourceRecordVerbose(
         (ULONG)rec->blackoutMask[2],
         (ULONG)rec->blackoutMask[3],
         (ULONG)rec->blackoutMask[4],
-        (ULONG)rec->blackoutMask[5]);
+        (ULONG)rec->blackoutMask[MASK_BYTE_COUNT - 1]);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord,
         (ULONG)rec->sourceFlagsByte,
