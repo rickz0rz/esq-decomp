@@ -15,6 +15,7 @@ typedef struct PreallocHandleNode {
 } PreallocHandleNode;
 
 enum {
+    CH_EOF = -1,
     CHAR_CTRL_Z = 0x1a,
     CHAR_CR = 0x0d,
     MODE_TEXT_TRANSLATE_BIT = 7,
@@ -50,7 +51,7 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
 
     if ((node->mode_state_flags & OPEN_MASK_FLUSH_REJECT) != 0) {
         node->read_remaining = 0;
-        return -1;
+        return CH_EOF;
     }
 
     if (((*state & (1u << STATE_PREREAD_FLUSH_GATE_HI_BIT)) != 0) &&
@@ -66,7 +67,7 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
         } else {
             if (BUFFER_EnsureAllocated(node) != 0) {
                 *state |= (1u << STATE_IO_ERROR_BIT);
-                return -1;
+                return CH_EOF;
             }
         }
     } else if (textMode != 0) {
@@ -76,7 +77,7 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
             c = (LONG)(unsigned char)node->buffer_cursor[-1];
             if (c == CHAR_CTRL_Z) {
                 *state |= (1u << STATE_EOF_OR_SHORT_BIT);
-                return -1;
+                return CH_EOF;
             }
             if (c == CHAR_CR) {
                 node->read_remaining -= 1;
@@ -107,7 +108,7 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
 
     if ((node->mode_state_flags & OPEN_MASK_READ_REJECT) != 0) {
         node->read_remaining = (textMode != 0) ? -1 : 0;
-        return -1;
+        return CH_EOF;
     }
 
     node->read_remaining -= 1;

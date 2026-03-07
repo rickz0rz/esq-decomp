@@ -15,6 +15,10 @@ typedef struct PreallocHandleNode {
 } PreallocHandleNode;
 
 enum {
+    CHAR_LF = 10,
+    CHAR_CR = 13,
+    CHAR_CTRL_Z = 26,
+    CH_FLUSH = -1,
     MODE_TEXT_TRANSLATE_BIT = 7,
     MODE_PREWRITE_SCAN_BIT = 6,
     STATE_WRITE_PENDING_BIT = 1,
@@ -54,7 +58,7 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
 
     if (node->buffer_capacity == 0 && ((*state & (1u << STATE_UNBUFFERED_BIT)) == 0)) {
         node->write_remaining = 0;
-        if (ch == -1) {
+        if (ch == CH_FLUSH) {
             return -1;
         }
         if (BUFFER_EnsureAllocated(node) != 0) {
@@ -72,26 +76,26 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
     }
 
     if ((*state & (1u << STATE_UNBUFFERED_BIT)) != 0) {
-        if (ch == -1) {
+        if (ch == CH_FLUSH) {
             return 0;
         }
 
         outByte = (UBYTE)ch;
-        if (textMode != 0 && ch == 10) {
+        if (textMode != 0 && ch == CHAR_LF) {
             UBYTE crlf[2];
-            crlf[0] = 13;
-            crlf[1] = 10;
+            crlf[0] = CHAR_CR;
+            crlf[1] = CHAR_LF;
             written = DOS_WriteByIndex(node->handle_index, crlf, 2);
         } else {
             written = DOS_WriteByIndex(node->handle_index, &outByte, 1);
         }
-        ch = -1;
+        ch = CH_FLUSH;
     } else {
         *state |= (1u << STATE_WRITE_PENDING_BIT);
-        if (textMode != 0 && ch != -1) {
+        if (textMode != 0 && ch != CH_FLUSH) {
             node->write_remaining += 2;
-            if (ch == 10) {
-                *node->buffer_cursor++ = 13;
+            if (ch == CHAR_LF) {
+                *node->buffer_cursor++ = CHAR_CR;
                 if (node->write_remaining >= 0) {
                     (void)STREAM_BufferedPutcOrFlush(0, node);
                 }
@@ -101,7 +105,7 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
             if (node->write_remaining < 0) {
                 return (LONG)(UBYTE)ch;
             }
-            ch = -1;
+            ch = CH_FLUSH;
         }
 
         pendingBytes = (LONG)(node->buffer_cursor - node->buffer_base);
@@ -115,7 +119,7 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
                         UBYTE probe;
                         (void)DOS_SeekByIndex(node->handle_index, scan, 0);
                         (void)DOS_ReadByIndex(node->handle_index, &probe, 1);
-                        if (Global_DosIoErr != 0 || probe != 26) {
+                        if (Global_DosIoErr != 0 || probe != CHAR_CTRL_Z) {
                             break;
                         }
                     }
@@ -139,7 +143,7 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
         }
         node->buffer_cursor = node->buffer_base;
 
-        if (ch != -1) {
+        if (ch != CH_FLUSH) {
             node->write_remaining -= 1;
             if (node->write_remaining < 0) {
                 return STREAM_BufferedPutcOrFlush((LONG)(UBYTE)ch, node);
@@ -151,5 +155,5 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
     if ((node->mode_state_flags & OPEN_MASK_FLUSH_REJECT) != 0) {
         return -1;
     }
-    return (ch == -1) ? 0 : (LONG)(UBYTE)ch;
+    return (ch == CH_FLUSH) ? 0 : (LONG)(UBYTE)ch;
 }
