@@ -19,6 +19,14 @@ extern void DST_UpdateBannerQueue(void *pair);
 
 LONG DST_LoadBannerPairFromFiles(void *pair)
 {
+    const LONG RESULT_FAIL = 0;
+    const LONG RESULT_OK = 1;
+    const LONG LINE_PARSE_WIDTH = 4;
+    const LONG DATETIME_PARSE_WIDTH = 19;
+    const LONG PAIR_PRIMARY_OFFSET = 0;
+    const LONG PAIR_SECONDARY_OFFSET = 4;
+    const LONG FREE_LINE = 889;
+    const ULONG STR_TERM_BYTES = 1;
     UBYTE *p = (UBYTE *)pair;
     UBYTE parsed_a[22];
     UBYTE parsed_b[22];
@@ -29,7 +37,7 @@ LONG DST_LoadBannerPairFromFiles(void *pair)
     DST_RebuildBannerPair(p);
 
     if (DISKIO_LoadFileToWorkBuffer(DST_DefaultDatPathPtr) == -1) {
-        return 0;
+        return RESULT_FAIL;
     }
 
     work = (char *)Global_PTR_WORK_BUFFER;
@@ -37,20 +45,21 @@ LONG DST_LoadBannerPairFromFiles(void *pair)
 
     hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, (const char *)Global_STR_G2);
     if (hit != (char *)0) {
-        DATETIME_ParseString(parsed_a, hit, 4);
-        DATETIME_ParseString(parsed_b, hit, 19);
-        DATETIME_CopyPairAndRecalc(*(void **)(p + 4), parsed_a, parsed_b);
+        DATETIME_ParseString(parsed_a, hit, LINE_PARSE_WIDTH);
+        DATETIME_ParseString(parsed_b, hit, DATETIME_PARSE_WIDTH);
+        DATETIME_CopyPairAndRecalc(*(void **)(p + PAIR_SECONDARY_OFFSET), parsed_a, parsed_b);
     }
 
     hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, (const char *)Global_STR_G3);
     if (hit != (char *)0) {
-        DATETIME_ParseString(parsed_a, hit, 4);
-        DATETIME_ParseString(parsed_b, hit, 19);
-        DATETIME_CopyPairAndRecalc(*(void **)(p + 0), parsed_a, parsed_b);
+        DATETIME_ParseString(parsed_a, hit, LINE_PARSE_WIDTH);
+        DATETIME_ParseString(parsed_b, hit, DATETIME_PARSE_WIDTH);
+        DATETIME_CopyPairAndRecalc(*(void **)(p + PAIR_PRIMARY_OFFSET), parsed_a, parsed_b);
     }
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_7, 889, work, (ULONG)(scratch_len + 1));
+    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        Global_STR_DST_C_7, FREE_LINE, work, (ULONG)(scratch_len + STR_TERM_BYTES));
     DST_UpdateBannerQueue(p);
 
-    return 1;
+    return RESULT_OK;
 }

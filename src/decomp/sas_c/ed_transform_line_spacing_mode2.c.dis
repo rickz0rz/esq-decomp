@@ -2,163 +2,177 @@
 __code:
 ED_TransformLineSpacing_Mode2:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$60,D0                  ;90bc 0000 0060 
+              SUB.L          #$74,D0                  ;90bc 0000 0074 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$54,A7                  ;9efc 0054 
-              MOVEM.L        D2/D4/D5/D6/D7,-(A7)     ;48e7 2f00 
+              SUB.W          #$68,A7                  ;9efc 0068 
+              MOVEM.L        D2/D3/D5/D6/D7,-(A7)     ;48e7 3700 
 ___ED_TransformLineSpacing_Mode2__1:
-              PEA            ($28).w                  ;4878 0028 
+              MOVEQ.L        #$28,D7                  ;7e28 
+              MOVEQ.L        #$20,D6                  ;7c20 
+              MOVEQ.L        #$1,D5                   ;7a01 
+              CLR.L          $78(A7)                  ;42af 0078 
+              MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
               BSR.W          ESQIFF_JMPTBL_MATH_Mulu32;6100 0000 
-              MOVE.L         D0,D7                    ;2e00 
-              MOVEQ.L        #$0,D5                   ;7a00 
-              MOVEQ.L        #$0,D4                   ;7800 
+              CLR.L          $24(A7)                  ;42af 0024 
+              CLR.L          $20(A7)                  ;42af 0020 
               MOVE.L         ED_EditCursorOffset(A4),A0;206c 0000 
               LEA            ED_EditBufferLive(A4),A1 ;43ec 0000 
-              MOVE.L         A0,D0                    ;2008 
-              MOVE.B         $0(A1,D0.L),$1f(A7)      ;1f71 0800 001f 
+              MOVE.L         A0,D1                    ;2208 
+              MOVE.B         $0(A1,D1.L),$1f(A7)      ;1f71 1800 001f 
               LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
-              ADD.L          D7,A0                    ;d1c7 
-              PEA            ($28).w                  ;4878 0028 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         D7,(A7)                  ;2e87 
               MOVE.L         A0,-(A7)                 ;2f08 
-              PEA            $50(A7)                  ;486f 0050 
+              PEA            $5c(A7)                  ;486f 005c 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
               BSR.W          ESQFUNC_JMPTBL_STRING_CopyPadNul;6100 0000 
-              LEA            $14(A7),A7               ;4fef 0014 
-              MOVEQ.L        #$0,D6                   ;7c00 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         $78(A7),$20(A7)          ;2f6f 0078 0020 
 ___ED_TransformLineSpacing_Mode2__2:
-              MOVEQ.L        #$28,D0                  ;7028 
-              CMP.L          D0,D6                    ;bc80 
-              BGE.B          ___ED_TransformLineSpacing_Mode2__5;6c12 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              CMP.L          D7,D0                    ;b087 
+              BGE.B          ___ED_TransformLineSpacing_Mode2__5;6c16 
 ___ED_TransformLineSpacing_Mode2__3:
-              MOVE.L         D7,D0                    ;2007 
-              ADD.L          D6,D0                    ;d086 
+              MOVE.L         $24(A7),D1               ;222f 0024 
+              ADD.L          D0,D1                    ;d280 
               LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
-              MOVE.B         $0(A0,D0.L),$18(A7,D6.L) ;1fb0 0800 6818 
+              MOVE.B         $0(A0,D1.L),$28(A7,D0.L) ;1fb0 1800 0828 
 ___ED_TransformLineSpacing_Mode2__4:
-              ADDQ.L         #$1,D6                   ;5286 
-              BRA.B          ___ED_TransformLineSpacing_Mode2__2;60e8 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+              BRA.B          ___ED_TransformLineSpacing_Mode2__2;60e2 
 ___ED_TransformLineSpacing_Mode2__5:
-              MOVEQ.L        #$28,D0                  ;7028 
-              CMP.L          D0,D5                    ;ba80 
-              BGE.B          ___ED_TransformLineSpacing_Mode2__8;6c1a 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              CMP.L          D7,D0                    ;b087 
+              BGE.B          ___ED_TransformLineSpacing_Mode2__8;6c22 
 ___ED_TransformLineSpacing_Mode2__6:
-              MOVEQ.L        #$27,D0                  ;7027 
-              MOVE.L         D0,D1                    ;2200 
+              MOVE.L         D7,D1                    ;2207 
               SUB.L          D5,D1                    ;9285 
-              MOVEQ.L        #$20,D2                  ;7420 
-              CMP.B          $40(A7,D1.L),D2          ;b437 1840 
-              BNE.B          ___ED_TransformLineSpacing_Mode2__8;660c 
+              SUB.L          D0,D1                    ;9280 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         $50(A7,D1.L),D2          ;1437 1850 
+              CMP.L          D6,D2                    ;b486 
+              BNE.B          ___ED_TransformLineSpacing_Mode2__8;6612 
 ___ED_TransformLineSpacing_Mode2__7:
-              SUB.L          D5,D0                    ;9085 
-              MOVE.B         $17(A7),$18(A7,D0.L)     ;1faf 0017 0818 
-              ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___ED_TransformLineSpacing_Mode2__5;60e0 
+              MOVE.L         D7,D1                    ;2207 
+              SUB.L          D5,D1                    ;9285 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.B         $17(A7),$28(A7,D1.L)     ;1faf 0017 1828 
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.B          ___ED_TransformLineSpacing_Mode2__5;60d6 
 ___ED_TransformLineSpacing_Mode2__8:
-              MOVEQ.L        #$28,D0                  ;7028 
-              CMP.L          D0,D4                    ;b880 
-              BGE.B          ___ED_TransformLineSpacing_Mode2__11;6c12 
+              MOVE.L         $18(A7),D0               ;202f 0018 
+              CMP.L          D7,D0                    ;b087 
+              BGE.B          ___ED_TransformLineSpacing_Mode2__11;6c16 
 ___ED_TransformLineSpacing_Mode2__9:
-              MOVEQ.L        #$20,D0                  ;7020 
-              CMP.B          $40(A7,D4.L),D0          ;b037 4840 
-              BNE.B          ___ED_TransformLineSpacing_Mode2__11;660a 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         $50(A7,D0.L),D1          ;1237 0850 
+              CMP.L          D6,D1                    ;b286 
+              BNE.B          ___ED_TransformLineSpacing_Mode2__11;660c 
 ___ED_TransformLineSpacing_Mode2__10:
-              MOVE.B         $17(A7),$18(A7,D4.L)     ;1faf 0017 4818 
-              ADDQ.L         #$1,D4                   ;5284 
-              BRA.B          ___ED_TransformLineSpacing_Mode2__8;60e8 
+              MOVE.B         $17(A7),$28(A7,D0.L)     ;1faf 0017 0828 
+              ADDQ.L         #$1,$18(A7)              ;52af 0018 
+              BRA.B          ___ED_TransformLineSpacing_Mode2__8;60e2 
 ___ED_TransformLineSpacing_Mode2__11:
-              MOVEQ.L        #$28,D0                  ;7028 
-              CMP.L          D0,D5                    ;ba80 
-              BGE.W          ___ED_TransformLineSpacing_Mode2__30;6c00 00b8 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              CMP.L          D7,D0                    ;b087 
+              BGE.W          ___ED_TransformLineSpacing_Mode2__30;6c00 00fa 
 ___ED_TransformLineSpacing_Mode2__12:
 ___ED_TransformLineSpacing_Mode2__13:
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
               BSR.W          ESQIFF_JMPTBL_MATH_Mulu32;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              ADD.L          D5,D0                    ;d085 
-              MOVE.L         D0,D7                    ;2e00 
-              MOVEQ.L        #$0,D6                   ;7c00 
+              ADD.L          $1c(A7),D0               ;d0af 001c 
+              MOVE.L         $78(A7),$20(A7)          ;2f6f 0078 0020 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
 ___ED_TransformLineSpacing_Mode2__14:
-              MOVEQ.L        #$28,D0                  ;7028 
-              SUB.L          D5,D0                    ;9085 
-              CMP.L          D0,D6                    ;bc80 
-              BGE.B          ___ED_TransformLineSpacing_Mode2__17;6c12 
+              MOVE.L         D7,D0                    ;2007 
+              SUB.L          $1c(A7),D0               ;90af 001c 
+              MOVE.L         $20(A7),D1               ;222f 0020 
+              CMP.L          D0,D1                    ;b280 
+              BGE.B          ___ED_TransformLineSpacing_Mode2__17;6c16 
 ___ED_TransformLineSpacing_Mode2__15:
-              MOVE.L         D7,D0                    ;2007 
-              ADD.L          D6,D0                    ;d086 
+              MOVE.L         $24(A7),D0               ;202f 0024 
+              ADD.L          D1,D0                    ;d081 
               LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
-              MOVE.B         $40(A7,D6.L),$0(A0,D0.L) ;11b7 6840 0800 
+              MOVE.B         $50(A7,D1.L),$0(A0,D0.L) ;11b7 1850 0800 
 ___ED_TransformLineSpacing_Mode2__16:
-              ADDQ.L         #$1,D6                   ;5286 
-              BRA.B          ___ED_TransformLineSpacing_Mode2__14;60e6 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+              BRA.B          ___ED_TransformLineSpacing_Mode2__14;60dc 
 ___ED_TransformLineSpacing_Mode2__17:
-              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
               BSR.W          ESQIFF_JMPTBL_MATH_Mulu32;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              ADD.L          D5,D0                    ;d085 
-              MOVE.L         D0,D7                    ;2e00 
-              MOVEQ.L        #$0,D6                   ;7c00 
+              ADD.L          $1c(A7),D0               ;d0af 001c 
+              MOVE.L         $78(A7),$20(A7)          ;2f6f 0078 0020 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
 ___ED_TransformLineSpacing_Mode2__18:
-              MOVEQ.L        #$28,D0                  ;7028 
-              SUB.L          D5,D0                    ;9085 
-              CMP.L          D0,D6                    ;bc80 
-              BGE.B          ___ED_TransformLineSpacing_Mode2__21;6c12 
+              MOVE.L         D7,D0                    ;2007 
+              SUB.L          $1c(A7),D0               ;90af 001c 
+              MOVE.L         $20(A7),D1               ;222f 0020 
+              CMP.L          D0,D1                    ;b280 
+              BGE.B          ___ED_TransformLineSpacing_Mode2__21;6c16 
 ___ED_TransformLineSpacing_Mode2__19:
-              MOVE.L         D7,D0                    ;2007 
-              ADD.L          D6,D0                    ;d086 
+              MOVE.L         $24(A7),D0               ;202f 0024 
+              ADD.L          D1,D0                    ;d081 
               LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
-              MOVE.B         $18(A7,D6.L),$0(A0,D0.L) ;11b7 6818 0800 
+              MOVE.B         $28(A7,D1.L),$0(A0,D0.L) ;11b7 1828 0800 
 ___ED_TransformLineSpacing_Mode2__20:
-              ADDQ.L         #$1,D6                   ;5286 
-              BRA.B          ___ED_TransformLineSpacing_Mode2__18;60e6 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+              BRA.B          ___ED_TransformLineSpacing_Mode2__18;60dc 
 ___ED_TransformLineSpacing_Mode2__21:
-              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
               BSR.W          ESQIFF_JMPTBL_MATH_Mulu32;6100 0000 
-              MOVE.L         D0,D7                    ;2e00 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.L         $78(A7),$20(A7)          ;2f6f 0078 0020 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
 ___ED_TransformLineSpacing_Mode2__22:
-              CMP.L          D5,D6                    ;bc85 
-              BGE.B          ___ED_TransformLineSpacing_Mode2__25;6c18 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              MOVE.L         $20(A7),D1               ;222f 0020 
+              CMP.L          D0,D1                    ;b280 
+              BGE.B          ___ED_TransformLineSpacing_Mode2__25;6c1c 
 ___ED_TransformLineSpacing_Mode2__23:
-              MOVE.L         D7,D0                    ;2007 
-              ADD.L          D6,D0                    ;d086 
-              MOVEQ.L        #$28,D1                  ;7228 
-              SUB.L          D5,D1                    ;9285 
-              ADD.L          D6,D1                    ;d286 
+              MOVE.L         $24(A7),D2               ;242f 0024 
+              ADD.L          D1,D2                    ;d481 
+              MOVE.L         D7,D3                    ;2607 
+              SUB.L          D0,D3                    ;9680 
+              ADD.L          D1,D3                    ;d681 
               LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
-              MOVE.B         $40(A7,D1.L),$0(A0,D0.L) ;11b7 1840 0800 
+              MOVE.B         $50(A7,D3.L),$0(A0,D2.L) ;11b7 3850 2800 
 ___ED_TransformLineSpacing_Mode2__24:
-              ADDQ.L         #$1,D6                   ;5286 
-              BRA.B          ___ED_TransformLineSpacing_Mode2__22;60e4 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+              BRA.B          ___ED_TransformLineSpacing_Mode2__22;60d8 
 ___ED_TransformLineSpacing_Mode2__25:
-              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
               BSR.W          ESQIFF_JMPTBL_MATH_Mulu32;6100 0000 
-              MOVE.L         D0,D7                    ;2e00 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.L         $78(A7),$20(A7)          ;2f6f 0078 0020 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
 ___ED_TransformLineSpacing_Mode2__26:
-              CMP.L          D5,D6                    ;bc85 
-              BGE.B          ___ED_TransformLineSpacing_Mode2__30;6c18 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              MOVE.L         $20(A7),D1               ;222f 0020 
+              CMP.L          D0,D1                    ;b280 
+              BGE.B          ___ED_TransformLineSpacing_Mode2__30;6c1c 
 ___ED_TransformLineSpacing_Mode2__27:
-              MOVE.L         D7,D0                    ;2007 
-              ADD.L          D6,D0                    ;d086 
-              MOVEQ.L        #$28,D1                  ;7228 
-              SUB.L          D5,D1                    ;9285 
-              ADD.L          D6,D1                    ;d286 
+              MOVE.L         $24(A7),D2               ;242f 0024 
+              ADD.L          D1,D2                    ;d481 
+              MOVE.L         D7,D3                    ;2607 
+              SUB.L          D0,D3                    ;9680 
+              ADD.L          D1,D3                    ;d681 
               LEA            ED_EditBufferLive(A4),A0 ;41ec 0000 
-              MOVE.B         $18(A7,D1.L),$0(A0,D0.L) ;11b7 1818 0800 
+              MOVE.B         $28(A7,D3.L),$0(A0,D2.L) ;11b7 3828 2800 
 ___ED_TransformLineSpacing_Mode2__28:
-              ADDQ.L         #$1,D6                   ;5286 
-              BRA.B          ___ED_TransformLineSpacing_Mode2__26;60e4 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+              BRA.B          ___ED_TransformLineSpacing_Mode2__26;60d8 
 ___ED_TransformLineSpacing_Mode2__29:
 ___ED_TransformLineSpacing_Mode2__30:
-              MOVEM.L        (A7)+,D2/D4/D5/D6/D7     ;4cdf 00f4 
-              ADD.W          #$54,A7                  ;defc 0054 
+              MOVEM.L        (A7)+,D2/D3/D5/D6/D7     ;4cdf 00ec 
+              ADD.W          #$68,A7                  ;defc 0068 
               RTS                                     ;4e75 
 __const:
 __strings:

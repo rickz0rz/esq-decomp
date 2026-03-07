@@ -2,13 +2,24 @@
 __code:
 DST_LoadBannerPairFromFiles:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$40,D0                  ;90bc 0000 0040 
+              SUB.L          #$58,D0                  ;90bc 0000 0058 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$30,A7                  ;9efc 0030 
-              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
+              SUB.W          #$48,A7                  ;9efc 0048 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___DST_LoadBannerPairFromFiles__1:
-              MOVE.L         $44(A7),A5               ;2a6f 0044 
+              MOVE.L         $64(A7),A5               ;2a6f 0064 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVEQ.L        #$4,D5                   ;7a04 
+              MOVEQ.L        #$13,D0                  ;7013 
+              MOVE.L         D0,$5c(A7)               ;2f40 005c 
+              CLR.L          $58(A7)                  ;42af 0058 
+              MOVEQ.L        #$4,D0                   ;7004 
+              MOVE.L         D0,$54(A7)               ;2f40 0054 
+              MOVE.L         #$379,$50(A7)            ;2f7c 0000 0379 0050 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
               MOVE.L         A5,A3                    ;264d 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          DST_RebuildBannerPair    ;6100 0000 
@@ -18,69 +29,70 @@ ___DST_LoadBannerPairFromFiles__1:
               ADDQ.L         #$1,D0                   ;5280 
               BNE.B          ___DST_LoadBannerPairFromFiles__3;6606 
 ___DST_LoadBannerPairFromFiles__2:
-              MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___DST_LoadBannerPairFromFiles__9;6000 00b2 
+              MOVE.L         D7,D0                    ;2007 
+              BRA.W          ___DST_LoadBannerPairFromFiles__9;6000 00bc 
 ___DST_LoadBannerPairFromFiles__3:
               MOVE.L         Global_PTR_WORK_BUFFER(A4),A2;246c 0000 
-              MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D7;2e2c 0000 
+              MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),$48(A7);2f6c 0000 0048 
               PEA            Global_STR_G2(A4)        ;486c 0000 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          GROUP_AJ_JMPTBL_STRING_FindSubst;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         D0,$3c(A7)               ;2f40 003c 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
               BEQ.B          ___DST_LoadBannerPairFromFiles__5;6734 
 ___DST_LoadBannerPairFromFiles__4:
-              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         D5,-(A7)                 ;2f05 
               MOVE.L         D0,-(A7)                 ;2f00 
-              PEA            $2e(A7)                  ;486f 002e 
+              PEA            $36(A7)                  ;486f 0036 
               BSR.W          DATETIME_ParseString     ;6100 0000 
-              PEA            ($13).w                  ;4878 0013 
-              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
-              PEA            $24(A7)                  ;486f 0024 
-              BSR.W          DATETIME_ParseString     ;6100 0000 
-              LEA            $4(A3),A0                ;41eb 0004 
+              MOVE.L         $68(A7),(A7)             ;2eaf 0068 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
               PEA            $28(A7)                  ;486f 0028 
-              PEA            $42(A7)                  ;486f 0042 
-              MOVE.L         (A0),-(A7)               ;2f10 
+              BSR.W          DATETIME_ParseString     ;6100 0000 
+              PEA            $2c(A7)                  ;486f 002c 
+              PEA            $46(A7)                  ;486f 0046 
+              MOVE.L         $70(A7),D0               ;202f 0070 
+              MOVE.L         $0(A3,D0.L),-(A7)        ;2f33 0800 
               BSR.W          DATETIME_CopyPairAndRecalc;6100 0000 
-              LEA            $24(A7),A7               ;4fef 0024 
+              LEA            $20(A7),A7               ;4fef 0020 
 ___DST_LoadBannerPairFromFiles__5:
               PEA            Global_STR_G3(A4)        ;486c 0000 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          GROUP_AJ_JMPTBL_STRING_FindSubst;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         D0,$3c(A7)               ;2f40 003c 
-              BEQ.B          ___DST_LoadBannerPairFromFiles__7;6730 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              BEQ.B          ___DST_LoadBannerPairFromFiles__7;6734 
 ___DST_LoadBannerPairFromFiles__6:
-              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         D5,-(A7)                 ;2f05 
               MOVE.L         D0,-(A7)                 ;2f00 
-              PEA            $2e(A7)                  ;486f 002e 
+              PEA            $36(A7)                  ;486f 0036 
               BSR.W          DATETIME_ParseString     ;6100 0000 
-              PEA            ($13).w                  ;4878 0013 
-              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
-              PEA            $24(A7)                  ;486f 0024 
-              BSR.W          DATETIME_ParseString     ;6100 0000 
+              MOVE.L         $68(A7),(A7)             ;2eaf 0068 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
               PEA            $28(A7)                  ;486f 0028 
-              PEA            $42(A7)                  ;486f 0042 
-              MOVE.L         (A3),-(A7)               ;2f13 
+              BSR.W          DATETIME_ParseString     ;6100 0000 
+              PEA            $2c(A7)                  ;486f 002c 
+              PEA            $46(A7)                  ;486f 0046 
+              MOVE.L         $74(A7),D0               ;202f 0074 
+              MOVE.L         $0(A3,D0.L),-(A7)        ;2f33 0800 
               BSR.W          DATETIME_CopyPairAndRecalc;6100 0000 
-              LEA            $24(A7),A7               ;4fef 0024 
+              LEA            $20(A7),A7               ;4fef 0020 
 ___DST_LoadBannerPairFromFiles__7:
-              MOVE.L         D7,D0                    ;2007 
-              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         $48(A7),D0               ;202f 0048 
+              ADD.L          $4c(A7),D0               ;d0af 004c 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A2,-(A7)                 ;2f0a 
-              PEA            ($379).w                 ;4878 0379 
+              MOVE.L         $58(A7),-(A7)            ;2f2f 0058 
               PEA            Global_STR_DST_C_7(A4)   ;486c 0000 
               BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
               MOVE.L         A3,(A7)                  ;2e8b 
               BSR.W          DST_UpdateBannerQueue    ;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D6,D0                    ;2006 
 ___DST_LoadBannerPairFromFiles__8:
 ___DST_LoadBannerPairFromFiles__9:
-              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
-              ADD.W          #$30,A7                  ;defc 0030 
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$48,A7                  ;defc 0048 
               RTS                                     ;4e75 
 __const:
 __strings:

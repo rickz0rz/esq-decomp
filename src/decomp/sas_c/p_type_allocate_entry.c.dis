@@ -1,0 +1,124 @@
+              SECTION      text,CODE
+__code:
+P_TYPE_AllocateEntry:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$34,D0                  ;90bc 0000 0034 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$24,A7                  ;9efc 0024 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+___P_TYPE_AllocateEntry__1:
+              MOVE.L         $44(A7),D6               ;2c2f 0044 
+              MOVE.B         $43(A7),D7               ;1e2f 0043 
+              MOVE.L         $48(A7),A5               ;2a6f 0048 
+              MOVEQ.L        #$a,D5                   ;7a0a 
+              CLR.L          $38(A7)                  ;42af 0038 
+              MOVEQ.L        #$2,D0                   ;7002 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
+              MOVEQ.L        #$6,D0                   ;7006 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVEQ.L        #$2f,D0                  ;702f 
+              MOVEQ.L        #$3a,D1                  ;723a 
+              MOVE.L         D1,$28(A7)               ;2f41 0028 
+              MOVEQ.L        #$4d,D1                  ;724d 
+              MOVE.L         D1,$24(A7)               ;2f41 0024 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.L         D1,A3                    ;2641 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              MOVEM.L        D1,$20(A7)               ;48ef 0002 0020 
+              TST.L          D6                       ;4a86 
+              BGT.B          ___P_TYPE_AllocateEntry__3;6e06 
+___P_TYPE_AllocateEntry__2:
+              MOVE.L         D1,D0                    ;2001 
+              BRA.W          ___P_TYPE_AllocateEntry__18;6000 00d0 
+___P_TYPE_AllocateEntry__3:
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
+              PEA            Global_STR_P_TYPE_C_1(A4);486c 0000 
+              BSR.W          SCRIPT_JMPTBL_MEMORY_AllocateMem;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              CMP.L          A3,A0                    ;b1cb 
+              BNE.B          ___P_TYPE_AllocateEntry__5;6606 
+___P_TYPE_AllocateEntry__4:
+              MOVE.L         A0,D0                    ;2008 
+              BRA.W          ___P_TYPE_AllocateEntry__18;6000 00a8 
+___P_TYPE_AllocateEntry__5:
+              MOVE.L         $38(A7),D0               ;202f 0038 
+              MOVE.B         D7,$0(A3,D0.L)           ;1787 0800 
+              MOVE.L         $34(A7),D0               ;202f 0034 
+              MOVE.L         D6,$0(A3,D0.L)           ;2786 0800 
+              CLR.L          $18(A7)                  ;42af 0018 
+___P_TYPE_AllocateEntry__6:
+              MOVE.L         $18(A7),D0               ;202f 0018 
+              TST.B          $0(A5,D0.L)              ;4a35 0800 
+              BEQ.B          ___P_TYPE_AllocateEntry__8;6706 
+___P_TYPE_AllocateEntry__7:
+              ADDQ.L         #$1,$18(A7)              ;52af 0018 
+              BRA.B          ___P_TYPE_AllocateEntry__6;60f0 
+___P_TYPE_AllocateEntry__8:
+              MOVE.L         $18(A7),D0               ;202f 0018 
+              CMP.L          D6,D0                    ;b086 
+              BNE.B          ___P_TYPE_AllocateEntry__10;6624 
+___P_TYPE_AllocateEntry__9:
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              PEA            Global_STR_P_TYPE_C_2(A4);486c 0000 
+              BSR.W          SCRIPT_JMPTBL_MEMORY_AllocateMem;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              MOVE.L         A2,$0(A3,D0.L)           ;278a 0800 
+              BRA.B          ___P_TYPE_AllocateEntry__11;600c 
+___P_TYPE_AllocateEntry__10:
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              MOVE.L         A0,$0(A3,D0.L)           ;2788 0800 
+___P_TYPE_AllocateEntry__11:
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.L         $0(A3,D0.L),A1           ;2273 0800 
+              CMP.L          A0,A1                    ;b3c8 
+              BNE.B          ___P_TYPE_AllocateEntry__13;661c 
+___P_TYPE_AllocateEntry__12:
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              PEA            Global_STR_P_TYPE_C_3(A4);486c 0000 
+              BSR.W          SCRIPT_JMPTBL_MEMORY_DeallocateM;6100 0000 
+              MOVE.L         $30(A7),A0               ;206f 0030 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         A0,D0                    ;2008 
+              BRA.B          ___P_TYPE_AllocateEntry__18;6022 
+___P_TYPE_AllocateEntry__13:
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              MOVE.L         $0(A3,D0.L),A2           ;2473 0800 
+              CLR.L          $1c(A7)                  ;42af 001c 
+___P_TYPE_AllocateEntry__14:
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              CMP.L          D6,D0                    ;b086 
+              BGE.B          ___P_TYPE_AllocateEntry__16;6c0c 
+___P_TYPE_AllocateEntry__15:
+              MOVE.B         $0(A5,D0.L),$0(A2,D0.L)  ;15b5 0800 0800 
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.B          ___P_TYPE_AllocateEntry__14;60ec 
+___P_TYPE_AllocateEntry__16:
+              MOVE.L         A3,D0                    ;200b 
+___P_TYPE_AllocateEntry__17:
+___P_TYPE_AllocateEntry__18:
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$24,A7                  ;defc 0024 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_STR_P_TYPE_C_1
+              XREF           SCRIPT_JMPTBL_MEMORY_AllocateMem
+              XREF           Global_STR_P_TYPE_C_2
+              XREF           Global_STR_P_TYPE_C_3
+              XREF           SCRIPT_JMPTBL_MEMORY_DeallocateM
+              XDEF           P_TYPE_AllocateEntry
+              END

@@ -13,23 +13,32 @@ extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(UBYTE *tagName, LONG line, voi
 
 void *P_TYPE_AllocateEntry(UBYTE typeByte, LONG length, UBYTE *dataPtr)
 {
+    const LONG ENTRY_SIZE = 10;
+    const LONG ENTRY_TYPE_OFFSET = 0;
+    const LONG ENTRY_LENGTH_OFFSET = 2;
+    const LONG ENTRY_PAYLOADPTR_OFFSET = 6;
+    const LONG ALLOC_ENTRY_LINE = 47;
+    const LONG ALLOC_PAYLOAD_LINE = 58;
+    const LONG FREE_ENTRY_LINE = 77;
+    const LONG PTR_NULL = 0;
     UBYTE *entry;
     UBYTE *payload;
     LONG i;
     LONG srcLen;
 
-    entry = (UBYTE *)0;
+    entry = (UBYTE *)PTR_NULL;
     if (length <= 0) {
-        return (void *)0;
+        return (void *)PTR_NULL;
     }
 
-    entry = (UBYTE *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(&Global_STR_P_TYPE_C_1, 47, 10, MEMF_PUBLIC + MEMF_CLEAR);
-    if (entry == (UBYTE *)0) {
-        return (void *)0;
+    entry = (UBYTE *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(
+        &Global_STR_P_TYPE_C_1, ALLOC_ENTRY_LINE, ENTRY_SIZE, MEMF_PUBLIC + MEMF_CLEAR);
+    if (entry == (UBYTE *)PTR_NULL) {
+        return (void *)PTR_NULL;
     }
 
-    entry[0] = typeByte;
-    *(LONG *)(entry + 2) = length;
+    entry[ENTRY_TYPE_OFFSET] = typeByte;
+    *(LONG *)(entry + ENTRY_LENGTH_OFFSET) = length;
 
     srcLen = 0;
     while (dataPtr[srcLen] != 0) {
@@ -37,18 +46,19 @@ void *P_TYPE_AllocateEntry(UBYTE typeByte, LONG length, UBYTE *dataPtr)
     }
 
     if (srcLen == length) {
-        payload = (UBYTE *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(&Global_STR_P_TYPE_C_2, 58, length, MEMF_PUBLIC + MEMF_CLEAR);
-        *(UBYTE **)(entry + 6) = payload;
+        payload = (UBYTE *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(
+            &Global_STR_P_TYPE_C_2, ALLOC_PAYLOAD_LINE, length, MEMF_PUBLIC + MEMF_CLEAR);
+        *(UBYTE **)(entry + ENTRY_PAYLOADPTR_OFFSET) = payload;
     } else {
-        *(UBYTE **)(entry + 6) = (UBYTE *)0;
+        *(UBYTE **)(entry + ENTRY_PAYLOADPTR_OFFSET) = (UBYTE *)PTR_NULL;
     }
 
-    if (*(UBYTE **)(entry + 6) == (UBYTE *)0) {
-        SCRIPT_JMPTBL_MEMORY_DeallocateMemory(&Global_STR_P_TYPE_C_3, 77, entry, 10);
-        return (void *)0;
+    if (*(UBYTE **)(entry + ENTRY_PAYLOADPTR_OFFSET) == (UBYTE *)PTR_NULL) {
+        SCRIPT_JMPTBL_MEMORY_DeallocateMemory(&Global_STR_P_TYPE_C_3, FREE_ENTRY_LINE, entry, ENTRY_SIZE);
+        return (void *)PTR_NULL;
     }
 
-    payload = *(UBYTE **)(entry + 6);
+    payload = *(UBYTE **)(entry + ENTRY_PAYLOADPTR_OFFSET);
     i = 0;
     while (i < length) {
         payload[i] = dataPtr[i];
