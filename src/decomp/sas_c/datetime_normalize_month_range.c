@@ -14,21 +14,21 @@ enum {
 
 LONG DATETIME_NormalizeMonthRange(void *ctx)
 {
-    UBYTE *p = (UBYTE *)ctx;
-    WORD month = *(WORD *)(p + DATETIME_MONTH_OFFSET);
+    UBYTE *ctxBytes = (UBYTE *)ctx;
+    WORD month = *(WORD *)(ctxBytes + DATETIME_MONTH_OFFSET);
     WORD overflow = (month > DATETIME_MONTH_MAX_INDEX)
         ? (WORD)DATETIME_OVERFLOW_NEGATIVE_ONE
         : (WORD)DATETIME_OVERFLOW_ZERO;
-    WORD rem;
+    WORD normalizedMonth;
 
-    *(WORD *)(p + DATETIME_OVERFLOW_FLAG_OFFSET) = overflow;
+    *(WORD *)(ctxBytes + DATETIME_OVERFLOW_FLAG_OFFSET) = overflow;
 
-    rem = (WORD)(month % DATETIME_MONTHS_PER_YEAR);
-    *(WORD *)(p + DATETIME_MONTH_OFFSET) = rem;
+    normalizedMonth = (WORD)(month % DATETIME_MONTHS_PER_YEAR);
+    *(WORD *)(ctxBytes + DATETIME_MONTH_OFFSET) = normalizedMonth;
 
-    if (rem == DATETIME_MONTH_ZERO) {
-        *(WORD *)(p + DATETIME_MONTH_OFFSET) = DATETIME_MONTHS_PER_YEAR;
+    if (normalizedMonth == DATETIME_MONTH_ZERO) {
+        *(WORD *)(ctxBytes + DATETIME_MONTH_OFFSET) = DATETIME_MONTHS_PER_YEAR;
     }
 
-    return (LONG)rem;
+    return (LONG)normalizedMonth;
 }
