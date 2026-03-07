@@ -9,13 +9,13 @@ extern LONG GCOMMAND_MplexDetailInitialLineIndex;
 extern UBYTE NEWGRID_ChannelRowFmt[];
 
 extern LONG NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, LONG keyIndex);
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams();
-extern void NEWGRID_DrawGridEntry();
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex();
-extern void PARSEINI_JMPTBL_WDISP_SPrintf();
-extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer();
+extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
+extern void NEWGRID_DrawGridEntry(void *rastPort, UBYTE *entry, UBYTE *aux, LONG row, LONG mode, LONG enabled, LONG bevel);
+extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG lineIndex);
+extern void PARSEINI_JMPTBL_WDISP_SPrintf(UBYTE *out, const UBYTE *fmt, const UBYTE *arg0, const UBYTE *arg1);
+extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *rastPort, const UBYTE *text);
 extern LONG NEWGRID_DrawGridFrameVariant2(UBYTE *ctx);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount();
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
 
 LONG NEWGRID_HandleDetailGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
 {
