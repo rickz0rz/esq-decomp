@@ -20,7 +20,7 @@ extern void *BRUSH_LastAllocatedNode;
 
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
 
-void *BRUSH_AllocBrushNode(const char *label, void *prevTail)
+void *BRUSH_AllocBrushNode(const char *brushLabel, void *prevTail)
 {
     UBYTE *node;
     const UBYTE *labelCursor;
@@ -37,7 +37,7 @@ void *BRUSH_AllocBrushNode(const char *label, void *prevTail)
         return BRUSH_LastAllocatedNode;
     }
 
-    labelCursor = (const UBYTE *)label;
+    labelCursor = (const UBYTE *)brushLabel;
     nodeCursor = node;
     do {
         *nodeCursor++ = *labelCursor;
