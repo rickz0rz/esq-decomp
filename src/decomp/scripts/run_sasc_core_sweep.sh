@@ -1205,6 +1205,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_draw_top_border_line_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_find_next_flagged_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_find_next_entry_with_flags_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_handle_grid_editor_state_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_is_grid_ready_for_input_trial.sh"
     "src/decomp/scripts/compare_sasc_p_type_jmptbl_string_findsubstring_trial.sh"
     "src/decomp/scripts/compare_sasc_displib_apply_inline_alignment_padding_return_trial.sh"
