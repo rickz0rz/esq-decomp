@@ -3,7 +3,7 @@ typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
 typedef struct PreallocHandleNode {
-    ULONG reserved0;         /* +0  */
+    ULONG owner_or_link;     /* +0  */
     UBYTE *buffer_cursor;    /* +4  */
     LONG read_remaining;     /* +8  */
     LONG write_remaining;    /* +12 */

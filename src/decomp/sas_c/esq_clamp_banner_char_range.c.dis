@@ -2,79 +2,80 @@
 __code:
 ESQ_ClampBannerCharRange:
               MOVE.L         A7,D0                    ;200f 
-              SUBQ.L         #$8,D0                   ;5180 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$8,A7                   ;514f 
+              SUB.W          #$c,A7                   ;9efc 000c 
               MOVEM.L        D2/D3/D4/D5/D6/D7,-(A7)  ;48e7 3f00 
 ___ESQ_ClampBannerCharRange__1:
-              MOVE.L         $2c(A7),D5               ;2a2f 002c 
-              MOVE.L         $28(A7),D6               ;2c2f 0028 
-              MOVE.L         $24(A7),D7               ;2e2f 0024 
-              MOVE.L         D7,D4                    ;2807 
-              MOVE.L         D6,D0                    ;2006 
-              MOVE.L         D5,D1                    ;2205 
-              MOVE.W         D0,$1e(A7)               ;3f40 001e 
-              MOVE.W         D1,$1c(A7)               ;3f41 001c 
-              MOVEQ.L        #$41,D2                  ;7441 
-              CMP.W          D2,D0                    ;b042 
+              MOVE.L         $30(A7),D5               ;2a2f 0030 
+              MOVE.L         $2c(A7),D6               ;2c2f 002c 
+              MOVE.L         $28(A7),D7               ;2e2f 0028 
+              MOVE.L         D7,D0                    ;2007 
+              MOVE.L         D6,D1                    ;2206 
+              MOVE.L         D5,D2                    ;2405 
+              MOVE.W         D0,$22(A7)               ;3f40 0022 
+              MOVEM.W        D1,$1e(A7)               ;48af 0002 001e 
+              MOVEM.W        D2,$1c(A7)               ;48af 0004 001c 
+              MOVEQ.L        #$41,D3                  ;7641 
+              CMP.W          D3,D1                    ;b243 
               BGE.B          ___ESQ_ClampBannerCharRange__3;6c06 
 ___ESQ_ClampBannerCharRange__2:
-              MOVE.W         D2,$1e(A7)               ;3f42 001e 
+              MOVE.W         D3,$1e(A7)               ;3f43 001e 
               BRA.B          ___ESQ_ClampBannerCharRange__5;600a 
 ___ESQ_ClampBannerCharRange__3:
-              MOVEQ.L        #$43,D3                  ;7643 
-              CMP.W          D3,D0                    ;b043 
+              MOVEQ.L        #$43,D4                  ;7843 
+              CMP.W          D4,D1                    ;b244 
               BLT.B          ___ESQ_ClampBannerCharRange__5;6d04 
 ___ESQ_ClampBannerCharRange__4:
-              MOVE.W         D2,$1e(A7)               ;3f42 001e 
+              MOVE.W         D3,$1e(A7)               ;3f43 001e 
 ___ESQ_ClampBannerCharRange__5:
-              CMP.W          D2,D1                    ;b242 
+              CMP.W          D3,D2                    ;b443 
               BGE.B          ___ESQ_ClampBannerCharRange__7;6c08 
 ___ESQ_ClampBannerCharRange__6:
-              MOVEQ.L        #$45,D3                  ;7645 
-              MOVE.W         D3,$1c(A7)               ;3f43 001c 
+              MOVEQ.L        #$45,D4                  ;7845 
+              MOVE.W         D4,$1c(A7)               ;3f44 001c 
               BRA.B          ___ESQ_ClampBannerCharRange__9;600c 
 ___ESQ_ClampBannerCharRange__7:
-              MOVEQ.L        #$49,D3                  ;7649 
-              CMP.W          D3,D1                    ;b243 
+              MOVEQ.L        #$49,D4                  ;7849 
+              CMP.W          D4,D2                    ;b444 
               BLE.B          ___ESQ_ClampBannerCharRange__9;6f06 
 ___ESQ_ClampBannerCharRange__8:
-              MOVEQ.L        #$45,D3                  ;7645 
-              MOVE.W         D3,$1c(A7)               ;3f43 001c 
+              MOVEQ.L        #$45,D4                  ;7845 
+              MOVE.W         D4,$1c(A7)               ;3f44 001c 
 ___ESQ_ClampBannerCharRange__9:
+              MOVEQ.L        #$41,D4                  ;7841 
+              SUB.W          D4,$1e(A7)               ;996f 001e 
               MOVEQ.L        #$41,D3                  ;7641 
-              SUB.W          D3,$1e(A7)               ;976f 001e 
-              MOVEQ.L        #$41,D2                  ;7441 
-              SUB.W          D2,$1c(A7)               ;956f 001c 
+              SUB.W          D3,$1c(A7)               ;976f 001c 
               ADDQ.W         #$1,$1c(A7)              ;526f 001c 
-              MOVEQ.L        #$30,D2                  ;7430 
-              MOVE.L         D4,D3                    ;2604 
-              MOVE.W         D2,$18(A7)               ;3f42 0018 
-              MOVEM.W        D3,$1a(A7)               ;48af 0008 001a 
-              TST.W          $1e(A7)                  ;4a6f 001e 
-              BEQ.B          ___ESQ_ClampBannerCharRange__12;670c 
+              MOVEQ.L        #$30,D3                  ;7630 
+              MOVE.W         D0,$1a(A7)               ;3f40 001a 
+              MOVEM.W        D3,$18(A7)               ;48af 0008 0018 
+              MOVE.W         $1e(A7),D4               ;382f 001e 
+              BEQ.B          ___ESQ_ClampBannerCharRange__12;6712 
 ___ESQ_ClampBannerCharRange__10:
-              SUB.W          $1e(A7),D4               ;986f 001e 
-              MOVEQ.L        #$1,D0                   ;7001 
-              CMP.W          D0,D4                    ;b840 
-              BGE.B          ___ESQ_ClampBannerCharRange__12;6c02 
+              SUB.W          D4,$22(A7)               ;996f 0022 
+              MOVE.W         $22(A7),D4               ;382f 0022 
+              MOVEQ.L        #$1,D1                   ;7201 
+              CMP.W          D1,D4                    ;b841 
+              BGE.B          ___ESQ_ClampBannerCharRange__12;6c04 
 ___ESQ_ClampBannerCharRange__11:
-              ADD.W          D2,D4                    ;d842 
+              ADD.W          D3,$22(A7)               ;d76f 0022 
 ___ESQ_ClampBannerCharRange__12:
-              MOVE.W         $1c(A7),D0               ;302f 001c 
-              ADD.W          D0,$1a(A7)               ;d16f 001a 
-              MOVE.W         $1a(A7),D0               ;302f 001a 
-              CMP.W          D2,D0                    ;b042 
+              MOVE.W         $1c(A7),D1               ;322f 001c 
+              ADD.W          D1,$1a(A7)               ;d36f 001a 
+              MOVE.W         $1a(A7),D1               ;322f 001a 
+              CMP.W          D3,D1                    ;b243 
               BLE.B          ___ESQ_ClampBannerCharRange__14;6f04 
 ___ESQ_ClampBannerCharRange__13:
-              SUB.W          D2,$1a(A7)               ;956f 001a 
+              SUB.W          D3,$1a(A7)               ;976f 001a 
 ___ESQ_ClampBannerCharRange__14:
-              MOVE.W         D4,WDISP_BannerCharRangeStart(A4);3944 0000 
+              MOVE.W         $22(A7),WDISP_BannerCharRangeStart(A4);396f 0022 0000 
               MOVE.W         $1a(A7),WDISP_BannerCharRangeEnd(A4);396f 001a 0000 
 ___ESQ_ClampBannerCharRange__15:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7  ;4cdf 00fc 
-              ADDQ.W         #$8,A7                   ;504f 
+              ADD.W          #$c,A7                   ;defc 000c 
               RTS                                     ;4e75 
 __const:
 __strings:

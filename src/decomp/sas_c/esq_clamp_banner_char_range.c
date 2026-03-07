@@ -1,53 +1,54 @@
 extern short WDISP_BannerCharRangeStart;
 extern short WDISP_BannerCharRangeEnd;
 
-void ESQ_ClampBannerCharRange(long value0, long value1, long value2)
+void ESQ_ClampBannerCharRange(long currentChar, long startBandChar, long endBandChar)
 {
-    short d0;
-    short d1;
-    short d2;
-    short d3;
-    short d4;
+    short clampedStart;
+    short clampedEnd;
+    short startOffset;
+    short endOffsetPlusOne;
+    short rangeEndChar;
+    short wrapMax;
 
-    d0 = (short)value0;
-    d1 = (short)value1;
-    d2 = (short)value2;
+    clampedStart = (short)currentChar;
+    startOffset = (short)startBandChar;
+    endOffsetPlusOne = (short)endBandChar;
 
-    if (d1 < 65) {
-        d1 = 65;
+    if (startOffset < 65) {
+        startOffset = 65;
     } else {
-        if (d1 >= 67) {
-            d1 = 65;
+        if (startOffset >= 67) {
+            startOffset = 65;
         }
     }
 
-    if (d2 < 65) {
-        d2 = 69;
+    if (endOffsetPlusOne < 65) {
+        endOffsetPlusOne = 69;
     } else {
-        if (d2 > 73) {
-            d2 = 69;
+        if (endOffsetPlusOne > 73) {
+            endOffsetPlusOne = 69;
         }
     }
 
-    d1 = (short)(d1 - 65);
-    d2 = (short)(d2 - 65);
-    d2 = (short)(d2 + 1);
+    startOffset = (short)(startOffset - 65);
+    endOffsetPlusOne = (short)(endOffsetPlusOne - 65);
+    endOffsetPlusOne = (short)(endOffsetPlusOne + 1);
 
-    d4 = 48;
-    d3 = d0;
+    wrapMax = 48;
+    rangeEndChar = clampedStart;
 
-    if (d1 != 0) {
-        d0 = (short)(d0 - d1);
-        if (d0 < 1) {
-            d0 = (short)(d0 + d4);
+    if (startOffset != 0) {
+        clampedStart = (short)(clampedStart - startOffset);
+        if (clampedStart < 1) {
+            clampedStart = (short)(clampedStart + wrapMax);
         }
     }
 
-    d3 = (short)(d3 + d2);
-    if (d3 > d4) {
-        d3 = (short)(d3 - d4);
+    rangeEndChar = (short)(rangeEndChar + endOffsetPlusOne);
+    if (rangeEndChar > wrapMax) {
+        rangeEndChar = (short)(rangeEndChar - wrapMax);
     }
 
-    WDISP_BannerCharRangeStart = d0;
-    WDISP_BannerCharRangeEnd = d3;
+    WDISP_BannerCharRangeStart = clampedStart;
+    WDISP_BannerCharRangeEnd = rangeEndChar;
 }
