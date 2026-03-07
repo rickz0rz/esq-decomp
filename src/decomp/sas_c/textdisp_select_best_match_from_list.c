@@ -45,7 +45,7 @@ LONG TEXTDISP_SelectBestMatchFromList(void *titles, UWORD candidateCount, UWORD 
     TEXTDISP_BannerSelectedValidFlag = 0;
     TEXTDISP_BannerCharSelected = 100;
 
-    if (tag) {
+    {
         const UBYTE *a = TEXTDISP_Tag_SPT_Select;
         const UBYTE *b = (const UBYTE *)tag;
         while (*a == *b) {

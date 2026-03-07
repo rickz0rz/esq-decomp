@@ -22,53 +22,50 @@ ___TEXTDISP_SelectBestMatchFromList__1:
               CLR.B          TEXTDISP_BannerFallbackValidFlag(A4);422c 0000 
               CLR.B          TEXTDISP_BannerSelectedValidFlag(A4);422c 0000 
               MOVE.B         #$64,TEXTDISP_BannerCharSelected(A4);197c 0064 0000 
-              MOVE.L         A3,D0                    ;200b 
-              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__7;6728 
-___TEXTDISP_SelectBestMatchFromList__2:
               LEA            TEXTDISP_Tag_SPT_Select(A4),A2;45ec 0000 
               MOVE.L         A3,$60(A7)               ;2f4b 0060 
-___TEXTDISP_SelectBestMatchFromList__3:
+___TEXTDISP_SelectBestMatchFromList__2:
               MOVE.B         (A2),D0                  ;1012 
               MOVE.L         $60(A7),A0               ;206f 0060 
               MOVE.B         (A0),D1                  ;1210 
               CMP.B          D0,D1                    ;b200 
-              BNE.B          ___TEXTDISP_SelectBestMatchFromList__7;6614 
-___TEXTDISP_SelectBestMatchFromList__4:
+              BNE.B          ___TEXTDISP_SelectBestMatchFromList__6;6614 
+___TEXTDISP_SelectBestMatchFromList__3:
               TST.B          D0                       ;4a00 
-              BNE.B          ___TEXTDISP_SelectBestMatchFromList__6;6608 
-___TEXTDISP_SelectBestMatchFromList__5:
+              BNE.B          ___TEXTDISP_SelectBestMatchFromList__5;6608 
+___TEXTDISP_SelectBestMatchFromList__4:
               MOVE.B         #$8,$37(A7)              ;1f7c 0008 0037 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__7;6008 
-___TEXTDISP_SelectBestMatchFromList__6:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__6;6008 
+___TEXTDISP_SelectBestMatchFromList__5:
               ADDQ.L         #$1,A2                   ;528a 
               ADDQ.L         #$1,$60(A7)              ;52af 0060 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__3;60e0 
-___TEXTDISP_SelectBestMatchFromList__7:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__2;60e0 
+___TEXTDISP_SelectBestMatchFromList__6:
               MOVE.B         #$31,TEXTDISP_BannerCharFallback(A4);197c 0031 0000 
               TST.W          D6                       ;4a46 
-              BNE.B          ___TEXTDISP_SelectBestMatchFromList__9;6602 
-___TEXTDISP_SelectBestMatchFromList__8:
+              BNE.B          ___TEXTDISP_SelectBestMatchFromList__8;6602 
+___TEXTDISP_SelectBestMatchFromList__7:
               MOVEQ.L        #$30,D6                  ;7c30 
-___TEXTDISP_SelectBestMatchFromList__9:
+___TEXTDISP_SelectBestMatchFromList__8:
               MOVEQ.L        #$30,D0                  ;7030 
               CMP.W          D0,D6                    ;bc40 
-              BCS.B          ___TEXTDISP_SelectBestMatchFromList__11;6506 
-___TEXTDISP_SelectBestMatchFromList__10:
+              BCS.B          ___TEXTDISP_SelectBestMatchFromList__10;6506 
+___TEXTDISP_SelectBestMatchFromList__9:
               MOVEQ.L        #$43,D0                  ;7043 
               CMP.W          D0,D6                    ;bc40 
-              BLS.B          ___TEXTDISP_SelectBestMatchFromList__14;6312 
-___TEXTDISP_SelectBestMatchFromList__11:
+              BLS.B          ___TEXTDISP_SelectBestMatchFromList__13;6312 
+___TEXTDISP_SelectBestMatchFromList__10:
               MOVEQ.L        #$48,D0                  ;7048 
               CMP.W          D0,D6                    ;bc40 
-              BCS.B          ___TEXTDISP_SelectBestMatchFromList__13;6506 
-___TEXTDISP_SelectBestMatchFromList__12:
+              BCS.B          ___TEXTDISP_SelectBestMatchFromList__12;6506 
+___TEXTDISP_SelectBestMatchFromList__11:
               MOVEQ.L        #$4d,D0                  ;704d 
               CMP.W          D0,D6                    ;bc40 
-              BLS.B          ___TEXTDISP_SelectBestMatchFromList__14;6306 
-___TEXTDISP_SelectBestMatchFromList__13:
+              BLS.B          ___TEXTDISP_SelectBestMatchFromList__13;6306 
+___TEXTDISP_SelectBestMatchFromList__12:
               MOVEQ.L        #$1,D0                   ;7001 
-              BRA.W          ___TEXTDISP_SelectBestMatchFromList__82;6000 03b8 
-___TEXTDISP_SelectBestMatchFromList__14:
+              BRA.W          ___TEXTDISP_SelectBestMatchFromList__81;6000 03b8 
+___TEXTDISP_SelectBestMatchFromList__13:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         CLOCK_CurrentDayOfWeekIndex(A4),D0;102c 0000 
               MOVEQ.L        #$0,D1                   ;7200 
@@ -81,18 +78,18 @@ ___TEXTDISP_SelectBestMatchFromList__14:
               AND.L          D1,D2                    ;c481 
               MOVE.L         D1,$26(A7)               ;2f41 0026 
               TST.L          D2                       ;4a82 
-              BNE.B          ___TEXTDISP_SelectBestMatchFromList__16;6606 
-___TEXTDISP_SelectBestMatchFromList__15:
+              BNE.B          ___TEXTDISP_SelectBestMatchFromList__15;6606 
+___TEXTDISP_SelectBestMatchFromList__14:
               MOVEQ.L        #$1,D0                   ;7001 
-              BRA.W          ___TEXTDISP_SelectBestMatchFromList__82;6000 0390 
-___TEXTDISP_SelectBestMatchFromList__16:
+              BRA.W          ___TEXTDISP_SelectBestMatchFromList__81;6000 0390 
+___TEXTDISP_SelectBestMatchFromList__15:
               MOVEQ.L        #$0,D5                   ;7a00 
-___TEXTDISP_SelectBestMatchFromList__17:
+___TEXTDISP_SelectBestMatchFromList__16:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D7,D0                    ;3007 
               CMP.L          D0,D5                    ;ba80 
-              BGE.W          ___TEXTDISP_SelectBestMatchFromList__65;6c00 02b8 
-___TEXTDISP_SelectBestMatchFromList__18:
+              BGE.W          ___TEXTDISP_SelectBestMatchFromList__64;6c00 02b8 
+___TEXTDISP_SelectBestMatchFromList__17:
               CLR.L          $4c(A7)                  ;42af 004c 
               LEA            TEXTDISP_CandidateIndexList(A4),A0;41ec 0000 
               MOVE.B         $0(A0,D5.L),TEXTDISP_CurrentMatchIndex(A4);1970 5800 0000 
@@ -106,11 +103,11 @@ ___TEXTDISP_SelectBestMatchFromList__18:
               MOVE.L         D0,$32(A7)               ;2f40 0032 
               MOVEQ.L        #$31,D1                  ;7231 
               CMP.L          D1,D0                    ;b081 
-              BGE.W          ___TEXTDISP_SelectBestMatchFromList__64;6c00 0282 
-___TEXTDISP_SelectBestMatchFromList__19:
+              BGE.W          ___TEXTDISP_SelectBestMatchFromList__63;6c00 0282 
+___TEXTDISP_SelectBestMatchFromList__18:
               TST.W          TEXTDISP_ActiveGroupId(A4);4a6c 0000 
-              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__21;6720 
-___TEXTDISP_SelectBestMatchFromList__20:
+              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__20;6720 
+___TEXTDISP_SelectBestMatchFromList__19:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         TEXTDISP_PrimaryGroupCode(A4),D1;122c 0000 
               MOVEQ.L        #$0,D2                   ;7400 
@@ -120,8 +117,8 @@ ___TEXTDISP_SelectBestMatchFromList__20:
               LEA            TEXTDISP_PrimaryTitlePtrTable(A4),A0;41ec 0000 
               MOVE.L         $0(A0,D3.L),$44(A7)      ;2f70 3800 0044 
               MOVE.L         D1,$48(A7)               ;2f41 0048 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__22;601e 
-___TEXTDISP_SelectBestMatchFromList__21:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__21;601e 
+___TEXTDISP_SelectBestMatchFromList__20:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         TEXTDISP_SecondaryGroupCode(A4),D1;122c 0000 
               MOVEQ.L        #$0,D2                   ;7400 
@@ -131,50 +128,50 @@ ___TEXTDISP_SelectBestMatchFromList__21:
               MOVE.L         $0(A0,D2.L),A0           ;2070 2800 
               MOVE.L         D1,$48(A7)               ;2f41 0048 
               MOVE.L         A0,$44(A7)               ;2f48 0044 
-___TEXTDISP_SelectBestMatchFromList__22:
+___TEXTDISP_SelectBestMatchFromList__21:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         D1,-(A7)                 ;2f01 
               BSR.W          TEXTDISP_ComputeTimeOffset;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         D0,$54(A7)               ;2f40 0054 
+___TEXTDISP_SelectBestMatchFromList__22:
 ___TEXTDISP_SelectBestMatchFromList__23:
-___TEXTDISP_SelectBestMatchFromList__24:
               MOVE.W         TEXTDISP_ActiveGroupId(A4),D0;302c 0000 
-              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__29;6724 
-___TEXTDISP_SelectBestMatchFromList__25:
+              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__28;6724 
+___TEXTDISP_SelectBestMatchFromList__24:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         CLOCK_HalfHourSlotIndex(A4),D1;322c 0000 
               MOVE.L         $32(A7),D2               ;242f 0032 
               CMP.L          D1,D2                    ;b481 
-              BLT.B          ___TEXTDISP_SelectBestMatchFromList__28;6d10 
-___TEXTDISP_SelectBestMatchFromList__26:
+              BLT.B          ___TEXTDISP_SelectBestMatchFromList__27;6d10 
+___TEXTDISP_SelectBestMatchFromList__25:
               MOVEQ.L        #$0,D3                   ;7600 
               MOVE.W         D1,D3                    ;3601 
               CMP.L          D2,D3                    ;b682 
-              BNE.B          ___TEXTDISP_SelectBestMatchFromList__29;660e 
-___TEXTDISP_SelectBestMatchFromList__27:
+              BNE.B          ___TEXTDISP_SelectBestMatchFromList__28;660e 
+___TEXTDISP_SelectBestMatchFromList__26:
               MOVE.L         $54(A7),D3               ;262f 0054 
               TST.L          D3                       ;4a83 
-              BGT.B          ___TEXTDISP_SelectBestMatchFromList__29;6e06 
-___TEXTDISP_SelectBestMatchFromList__28:
+              BGT.B          ___TEXTDISP_SelectBestMatchFromList__28;6e06 
+___TEXTDISP_SelectBestMatchFromList__27:
               MOVEQ.L        #$1,D3                   ;7601 
               MOVE.L         D3,$4c(A7)               ;2f43 004c 
-___TEXTDISP_SelectBestMatchFromList__29:
+___TEXTDISP_SelectBestMatchFromList__28:
               TST.W          D0                       ;4a40 
-              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__31;6708 
-___TEXTDISP_SelectBestMatchFromList__30:
+              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__30;6708 
+___TEXTDISP_SelectBestMatchFromList__29:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         CLOCK_HalfHourSlotIndex(A4),D0;302c 0000 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__32;6002 
-___TEXTDISP_SelectBestMatchFromList__31:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__31;6002 
+___TEXTDISP_SelectBestMatchFromList__30:
               MOVEQ.L        #$1,D0                   ;7001 
-___TEXTDISP_SelectBestMatchFromList__32:
+___TEXTDISP_SelectBestMatchFromList__31:
               MOVE.L         D0,$40(A7)               ;2f40 0040 
               MOVE.L         $32(A7),D1               ;222f 0032 
               CMP.L          D0,D1                    ;b280 
-              BGT.B          ___TEXTDISP_SelectBestMatchFromList__37;6e32 
-___TEXTDISP_SelectBestMatchFromList__33:
+              BGT.B          ___TEXTDISP_SelectBestMatchFromList__36;6e32 
+___TEXTDISP_SelectBestMatchFromList__32:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $37(A7),D0               ;102f 0037 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -185,21 +182,21 @@ ___TEXTDISP_SelectBestMatchFromList__33:
               MOVE.L         D0,$60(A7)               ;2f40 0060 
               MOVEQ.L        #$31,D1                  ;7231 
               CMP.L          D1,D0                    ;b081 
-              BGE.B          ___TEXTDISP_SelectBestMatchFromList__35;6c08 
-___TEXTDISP_SelectBestMatchFromList__34:
+              BGE.B          ___TEXTDISP_SelectBestMatchFromList__34;6c08 
+___TEXTDISP_SelectBestMatchFromList__33:
               MOVE.B         #$1,TEXTDISP_BannerFallbackValidFlag(A4);197c 0001 0000 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__38;600e 
-___TEXTDISP_SelectBestMatchFromList__35:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__37;600e 
+___TEXTDISP_SelectBestMatchFromList__34:
               MOVE.L         $32(A7),D0               ;202f 0032 
               MOVE.L         D0,$60(A7)               ;2f40 0060 
+___TEXTDISP_SelectBestMatchFromList__35:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__37;6004 
 ___TEXTDISP_SelectBestMatchFromList__36:
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__38;6004 
-___TEXTDISP_SelectBestMatchFromList__37:
               MOVE.L         D1,$60(A7)               ;2f41 0060 
-___TEXTDISP_SelectBestMatchFromList__38:
+___TEXTDISP_SelectBestMatchFromList__37:
               TST.W          TEXTDISP_ActiveGroupId(A4);4a6c 0000 
-              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__40;6720 
-___TEXTDISP_SelectBestMatchFromList__39:
+              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__39;6720 
+___TEXTDISP_SelectBestMatchFromList__38:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         TEXTDISP_PrimaryGroupCode(A4),D0;102c 0000 
               MOVEQ.L        #$0,D1                   ;7200 
@@ -209,8 +206,8 @@ ___TEXTDISP_SelectBestMatchFromList__39:
               LEA            TEXTDISP_PrimaryTitlePtrTable(A4),A0;41ec 0000 
               MOVE.L         $0(A0,D2.L),$44(A7)      ;2f70 2800 0044 
               MOVE.L         D0,$48(A7)               ;2f40 0048 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__41;601e 
-___TEXTDISP_SelectBestMatchFromList__40:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__40;601e 
+___TEXTDISP_SelectBestMatchFromList__39:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         TEXTDISP_SecondaryGroupCode(A4),D0;102c 0000 
               MOVEQ.L        #$0,D1                   ;7200 
@@ -220,7 +217,7 @@ ___TEXTDISP_SelectBestMatchFromList__40:
               MOVE.L         $0(A0,D1.L),A0           ;2070 1800 
               MOVE.L         D0,$48(A7)               ;2f40 0048 
               MOVE.L         A0,$44(A7)               ;2f48 0044 
-___TEXTDISP_SelectBestMatchFromList__41:
+___TEXTDISP_SelectBestMatchFromList__40:
               MOVE.L         $60(A7),-(A7)            ;2f2f 0060 
               MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -228,18 +225,18 @@ ___TEXTDISP_SelectBestMatchFromList__41:
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         D0,$50(A7)               ;2f40 0050 
               TST.W          TEXTDISP_ActiveGroupId(A4);4a6c 0000 
-              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__45;6730 
-___TEXTDISP_SelectBestMatchFromList__42:
+              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__44;6730 
+___TEXTDISP_SelectBestMatchFromList__41:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         CLOCK_HalfHourSlotIndex(A4),D0;302c 0000 
               MOVE.L         $32(A7),D1               ;222f 0032 
               CMP.L          D0,D1                    ;b280 
-              BNE.B          ___TEXTDISP_SelectBestMatchFromList__45;6622 
-___TEXTDISP_SelectBestMatchFromList__43:
+              BNE.B          ___TEXTDISP_SelectBestMatchFromList__44;6622 
+___TEXTDISP_SelectBestMatchFromList__42:
               MOVE.L         $50(A7),D0               ;202f 0050 
               TST.L          D0                       ;4a80 
-              BLE.B          ___TEXTDISP_SelectBestMatchFromList__45;6f1a 
-___TEXTDISP_SelectBestMatchFromList__44:
+              BLE.B          ___TEXTDISP_SelectBestMatchFromList__44;6f1a 
+___TEXTDISP_SelectBestMatchFromList__43:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $37(A7),D0               ;102f 0037 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -248,16 +245,16 @@ ___TEXTDISP_SelectBestMatchFromList__44:
               BSR.W          TEXTDISP_FindEntryMatchIndex;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         D0,$32(A7)               ;2f40 0032 
-___TEXTDISP_SelectBestMatchFromList__45:
+___TEXTDISP_SelectBestMatchFromList__44:
               MOVE.L         $50(A7),D0               ;202f 0050 
               TST.L          D0                       ;4a80 
-              BLE.B          ___TEXTDISP_SelectBestMatchFromList__48;6f2a 
-___TEXTDISP_SelectBestMatchFromList__46:
+              BLE.B          ___TEXTDISP_SelectBestMatchFromList__47;6f2a 
+___TEXTDISP_SelectBestMatchFromList__45:
               MOVE.W         $58(A7),D1               ;322f 0058 
               EXT.L          D1                       ;48c1 
               CMP.L          D1,D0                    ;b081 
-              BGE.B          ___TEXTDISP_SelectBestMatchFromList__48;6c20 
-___TEXTDISP_SelectBestMatchFromList__47:
+              BGE.B          ___TEXTDISP_SelectBestMatchFromList__47;6c20 
+___TEXTDISP_SelectBestMatchFromList__46:
               MOVEQ.L        #$1,D1                   ;7201 
               MOVE.B         D1,TEXTDISP_BannerSelectedValidFlag(A4);1941 0000 
               MOVE.L         $60(A7),D2               ;242f 0060 
@@ -266,34 +263,34 @@ ___TEXTDISP_SelectBestMatchFromList__47:
               MOVE.B         D3,TEXTDISP_BannerSelectedEntryInde(A4);1943 0000 
               MOVE.L         $4c(A7),D4               ;282f 004c 
               MOVE.B         D4,TEXTDISP_BannerSelectedIsSpecial(A4);1944 0000 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__52;602c 
-___TEXTDISP_SelectBestMatchFromList__48:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__51;602c 
+___TEXTDISP_SelectBestMatchFromList__47:
               TST.B          TEXTDISP_BannerSelectedValidFlag(A4);4a2c 0000 
-              BNE.B          ___TEXTDISP_SelectBestMatchFromList__52;6626 
-___TEXTDISP_SelectBestMatchFromList__49:
+              BNE.B          ___TEXTDISP_SelectBestMatchFromList__51;6626 
+___TEXTDISP_SelectBestMatchFromList__48:
               TST.L          D0                       ;4a80 
-              BGT.B          ___TEXTDISP_SelectBestMatchFromList__52;6e22 
-___TEXTDISP_SelectBestMatchFromList__50:
+              BGT.B          ___TEXTDISP_SelectBestMatchFromList__51;6e22 
+___TEXTDISP_SelectBestMatchFromList__49:
               MOVE.W         $3c(A7),D1               ;322f 003c 
               EXT.L          D1                       ;48c1 
               CMP.L          D1,D0                    ;b081 
-              BLE.B          ___TEXTDISP_SelectBestMatchFromList__52;6f18 
-___TEXTDISP_SelectBestMatchFromList__51:
+              BLE.B          ___TEXTDISP_SelectBestMatchFromList__51;6f18 
+___TEXTDISP_SelectBestMatchFromList__50:
               MOVE.L         $60(A7),D1               ;222f 0060 
               MOVE.B         D1,TEXTDISP_BannerCharSelected(A4);1941 0000 
               MOVE.B         TEXTDISP_CurrentMatchIndex(A4),D2;142c 0000 
               MOVE.B         D2,TEXTDISP_BannerSelectedEntryInde(A4);1942 0000 
               MOVE.L         $4c(A7),D3               ;262f 004c 
               MOVE.B         D3,TEXTDISP_BannerSelectedIsSpecial(A4);1943 0000 
-___TEXTDISP_SelectBestMatchFromList__52:
+___TEXTDISP_SelectBestMatchFromList__51:
               TST.L          D0                       ;4a80 
-              BLE.B          ___TEXTDISP_SelectBestMatchFromList__55;6f2e 
-___TEXTDISP_SelectBestMatchFromList__53:
+              BLE.B          ___TEXTDISP_SelectBestMatchFromList__54;6f2e 
+___TEXTDISP_SelectBestMatchFromList__52:
               MOVE.W         $58(A7),D1               ;322f 0058 
               EXT.L          D1                       ;48c1 
               CMP.L          D1,D0                    ;b081 
-              BGE.B          ___TEXTDISP_SelectBestMatchFromList__55;6c24 
-___TEXTDISP_SelectBestMatchFromList__54:
+              BGE.B          ___TEXTDISP_SelectBestMatchFromList__54;6c24 
+___TEXTDISP_SelectBestMatchFromList__53:
               MOVEQ.L        #$1,D1                   ;7201 
               MOVE.B         D1,TEXTDISP_BannerFallbackValidFlag(A4);1941 0000 
               MOVE.L         $60(A7),D2               ;242f 0060 
@@ -303,26 +300,26 @@ ___TEXTDISP_SelectBestMatchFromList__54:
               MOVE.L         $4c(A7),D4               ;282f 004c 
               MOVE.B         D4,TEXTDISP_BannerFallbackIsSpecial(A4);1944 0000 
               MOVE.W         D0,$58(A7)               ;3f40 0058 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__59;602e 
-___TEXTDISP_SelectBestMatchFromList__55:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__58;602e 
+___TEXTDISP_SelectBestMatchFromList__54:
               TST.B          TEXTDISP_BannerFallbackValidFlag(A4);4a2c 0000 
-              BNE.B          ___TEXTDISP_SelectBestMatchFromList__59;6628 
-___TEXTDISP_SelectBestMatchFromList__56:
+              BNE.B          ___TEXTDISP_SelectBestMatchFromList__58;6628 
+___TEXTDISP_SelectBestMatchFromList__55:
               TST.L          D0                       ;4a80 
-              BGT.B          ___TEXTDISP_SelectBestMatchFromList__59;6e24 
-___TEXTDISP_SelectBestMatchFromList__57:
+              BGT.B          ___TEXTDISP_SelectBestMatchFromList__58;6e24 
+___TEXTDISP_SelectBestMatchFromList__56:
               MOVE.W         $3c(A7),D1               ;322f 003c 
               EXT.L          D1                       ;48c1 
               CMP.L          D1,D0                    ;b081 
-              BLE.B          ___TEXTDISP_SelectBestMatchFromList__59;6f1a 
-___TEXTDISP_SelectBestMatchFromList__58:
+              BLE.B          ___TEXTDISP_SelectBestMatchFromList__58;6f1a 
+___TEXTDISP_SelectBestMatchFromList__57:
               MOVE.L         $60(A7),D1               ;222f 0060 
               MOVE.B         D1,TEXTDISP_BannerCharFallback(A4);1941 0000 
               MOVE.B         TEXTDISP_CurrentMatchIndex(A4),TEXTDISP_BannerFallbackEntryInde(A4);196c 0000 0000 
               MOVE.L         $4c(A7),D2               ;242f 004c 
               MOVE.B         D2,TEXTDISP_BannerFallbackIsSpecial(A4);1942 0000 
               MOVE.W         D0,$3c(A7)               ;3f40 003c 
-___TEXTDISP_SelectBestMatchFromList__59:
+___TEXTDISP_SelectBestMatchFromList__58:
               MOVE.L         $60(A7),D0               ;202f 0060 
               MOVE.L         D0,D1                    ;2200 
               ADD.L          D1,D1                    ;d281 
@@ -335,18 +332,18 @@ ___TEXTDISP_SelectBestMatchFromList__59:
               MOVE.W         D0,$38(A7)               ;3f40 0038 
               MOVE.W         D1,$5c(A7)               ;3f41 005c 
               SUBQ.B         #$1,D2                   ;5302 
-              BNE.B          ___TEXTDISP_SelectBestMatchFromList__61;6606 
-___TEXTDISP_SelectBestMatchFromList__60:
+              BNE.B          ___TEXTDISP_SelectBestMatchFromList__60;6606 
+___TEXTDISP_SelectBestMatchFromList__59:
               MOVEQ.L        #$2,D0                   ;7002 
-              BRA.W          ___TEXTDISP_SelectBestMatchFromList__82;6000 0102 
-___TEXTDISP_SelectBestMatchFromList__61:
+              BRA.W          ___TEXTDISP_SelectBestMatchFromList__81;6000 0102 
+___TEXTDISP_SelectBestMatchFromList__60:
               MOVEQ.L        #$31,D0                  ;7031 
               CMP.W          D0,D1                    ;b240 
-              BNE.B          ___TEXTDISP_SelectBestMatchFromList__64;6628 
-___TEXTDISP_SelectBestMatchFromList__62:
+              BNE.B          ___TEXTDISP_SelectBestMatchFromList__63;6628 
+___TEXTDISP_SelectBestMatchFromList__61:
               TST.W          TEXTDISP_SbeFilterActiveFlag(A4);4a6c 0000 
-              BNE.B          ___TEXTDISP_SelectBestMatchFromList__64;6622 
-___TEXTDISP_SelectBestMatchFromList__63:
+              BNE.B          ___TEXTDISP_SelectBestMatchFromList__63;6622 
+___TEXTDISP_SelectBestMatchFromList__62:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $37(A7),D0               ;102f 0037 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -357,27 +354,27 @@ ___TEXTDISP_SelectBestMatchFromList__63:
               MOVE.B         TEXTDISP_CurrentMatchIndex(A4),TEXTDISP_BannerFallbackEntryInde(A4);196c 0000 0000 
               MOVE.W         D0,$5c(A7)               ;3f40 005c 
               MOVE.L         D0,$32(A7)               ;2f40 0032 
-___TEXTDISP_SelectBestMatchFromList__64:
+___TEXTDISP_SelectBestMatchFromList__63:
               ADDQ.L         #$1,D5                   ;5285 
-              BRA.W          ___TEXTDISP_SelectBestMatchFromList__17;6000 fd42 
-___TEXTDISP_SelectBestMatchFromList__65:
+              BRA.W          ___TEXTDISP_SelectBestMatchFromList__16;6000 fd42 
+___TEXTDISP_SelectBestMatchFromList__64:
               CMPI.W         #$31,$5c(A7)             ;0c6f 0031 005c 
-              BGE.B          ___TEXTDISP_SelectBestMatchFromList__68;6c0e 
-___TEXTDISP_SelectBestMatchFromList__66:
+              BGE.B          ___TEXTDISP_SelectBestMatchFromList__67;6c0e 
+___TEXTDISP_SelectBestMatchFromList__65:
               CMPI.W         #$3d,$58(A7)             ;0c6f 003d 0058 
-              BLT.B          ___TEXTDISP_SelectBestMatchFromList__68;6d06 
-___TEXTDISP_SelectBestMatchFromList__67:
+              BLT.B          ___TEXTDISP_SelectBestMatchFromList__67;6d06 
+___TEXTDISP_SelectBestMatchFromList__66:
               MOVEQ.L        #$64,D0                  ;7064 
               MOVE.B         D0,TEXTDISP_BannerCharSelected(A4);1940 0000 
-___TEXTDISP_SelectBestMatchFromList__68:
+___TEXTDISP_SelectBestMatchFromList__67:
               MOVE.B         TEXTDISP_BannerCharSelected(A4),D0;102c 0000 
               MOVEQ.L        #$64,D1                  ;7264 
               CMP.B          D1,D0                    ;b001 
-              BEQ.W          ___TEXTDISP_SelectBestMatchFromList__73;6700 0080 
-___TEXTDISP_SelectBestMatchFromList__69:
+              BEQ.W          ___TEXTDISP_SelectBestMatchFromList__72;6700 0080 
+___TEXTDISP_SelectBestMatchFromList__68:
               TST.W          TEXTDISP_ActiveGroupId(A4);4a6c 0000 
-              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__71;673c 
-___TEXTDISP_SelectBestMatchFromList__70:
+              BEQ.B          ___TEXTDISP_SelectBestMatchFromList__70;673c 
+___TEXTDISP_SelectBestMatchFromList__69:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         TEXTDISP_BannerSelectedEntryInde(A4),D1;122c 0000 
               MOVE.L         D1,D2                    ;2401 
@@ -396,8 +393,8 @@ ___TEXTDISP_SelectBestMatchFromList__70:
               MOVE.L         D3,D0                    ;2003 
               ADD.L          #$190,D0                 ;0680 0000 0190 
               MOVE.W         D2,$0(A0,D0.L)           ;3182 0800 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__72;6038 
-___TEXTDISP_SelectBestMatchFromList__71:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__71;6038 
+___TEXTDISP_SelectBestMatchFromList__70:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         TEXTDISP_BannerSelectedEntryInde(A4),D1;122c 0000 
               ASL.L          #$2,D1                   ;e581 
@@ -415,41 +412,41 @@ ___TEXTDISP_SelectBestMatchFromList__71:
               MOVE.L         D0,D2                    ;2400 
               ADD.L          #$190,D2                 ;0682 0000 0190 
               MOVE.W         D1,$0(A0,D2.L)           ;3181 2800 
-___TEXTDISP_SelectBestMatchFromList__72:
+___TEXTDISP_SelectBestMatchFromList__71:
               MOVEQ.L        #$2,D0                   ;7002 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__82;602c 
-___TEXTDISP_SelectBestMatchFromList__73:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__81;602c 
+___TEXTDISP_SelectBestMatchFromList__72:
               MOVEQ.L        #$30,D0                  ;7030 
               CMP.W          D0,D6                    ;bc40 
-              BLS.B          ___TEXTDISP_SelectBestMatchFromList__75;6306 
-___TEXTDISP_SelectBestMatchFromList__74:
+              BLS.B          ___TEXTDISP_SelectBestMatchFromList__74;6306 
+___TEXTDISP_SelectBestMatchFromList__73:
               MOVEQ.L        #$3a,D0                  ;703a 
               CMP.W          D0,D6                    ;bc40 
-              BCS.B          ___TEXTDISP_SelectBestMatchFromList__79;6518 
-___TEXTDISP_SelectBestMatchFromList__75:
+              BCS.B          ___TEXTDISP_SelectBestMatchFromList__78;6518 
+___TEXTDISP_SelectBestMatchFromList__74:
               MOVEQ.L        #$3e,D0                  ;703e 
               CMP.W          D0,D6                    ;bc40 
-              BLS.B          ___TEXTDISP_SelectBestMatchFromList__77;6306 
-___TEXTDISP_SelectBestMatchFromList__76:
+              BLS.B          ___TEXTDISP_SelectBestMatchFromList__76;6306 
+___TEXTDISP_SelectBestMatchFromList__75:
               MOVEQ.L        #$44,D0                  ;7044 
               CMP.W          D0,D6                    ;bc40 
-              BCS.B          ___TEXTDISP_SelectBestMatchFromList__79;650c 
-___TEXTDISP_SelectBestMatchFromList__77:
+              BCS.B          ___TEXTDISP_SelectBestMatchFromList__78;650c 
+___TEXTDISP_SelectBestMatchFromList__76:
               MOVEQ.L        #$47,D0                  ;7047 
               CMP.W          D0,D6                    ;bc40 
-              BLS.B          ___TEXTDISP_SelectBestMatchFromList__80;630c 
-___TEXTDISP_SelectBestMatchFromList__78:
+              BLS.B          ___TEXTDISP_SelectBestMatchFromList__79;630c 
+___TEXTDISP_SelectBestMatchFromList__77:
               MOVEQ.L        #$4e,D0                  ;704e 
               CMP.W          D0,D6                    ;bc40 
-              BCC.B          ___TEXTDISP_SelectBestMatchFromList__80;6406 
-___TEXTDISP_SelectBestMatchFromList__79:
+              BCC.B          ___TEXTDISP_SelectBestMatchFromList__79;6406 
+___TEXTDISP_SelectBestMatchFromList__78:
               MOVEQ.L        #$44,D6                  ;7c44 
               MOVEQ.L        #$1,D0                   ;7001 
-              BRA.B          ___TEXTDISP_SelectBestMatchFromList__82;6002 
-___TEXTDISP_SelectBestMatchFromList__80:
+              BRA.B          ___TEXTDISP_SelectBestMatchFromList__81;6002 
+___TEXTDISP_SelectBestMatchFromList__79:
               MOVEQ.L        #$0,D0                   ;7000 
+___TEXTDISP_SelectBestMatchFromList__80:
 ___TEXTDISP_SelectBestMatchFromList__81:
-___TEXTDISP_SelectBestMatchFromList__82:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
               ADD.W          #$44,A7                  ;defc 0044 
               RTS                                     ;4e75 
