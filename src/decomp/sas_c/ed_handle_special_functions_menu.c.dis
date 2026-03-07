@@ -1,0 +1,252 @@
+              SECTION      text,CODE
+__code:
+ED_DrawSpecialMenuSelection:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED_DrawSpecialMenuSelection__1:
+              PEA            ($4).w                   ;4878 0004 
+              BSR.W          ED_DrawMenuSelectionHighlight;6100 0000 
+              BSR.W          ED_DrawSpecialFunctionsMenu;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ED_DrawSpecialMenuSelection__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ED_DrawColorBars:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED_DrawColorBars__1:
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($18f).w                 ;4878 018f 
+              PEA            ($73).w                  ;4878 0073 
+              PEA            ($148).w                 ;4878 0148 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($18f).w                 ;4878 018f 
+              PEA            ($be).w                  ;4878 00be 
+              PEA            ($148).w                 ;4878 0148 
+              PEA            ($73).w                  ;4878 0073 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($18f).w                 ;4878 018f 
+              PEA            ($109).w                 ;4878 0109 
+              PEA            ($148).w                 ;4878 0148 
+              PEA            ($be).w                  ;4878 00be 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              PEA            ($3).w                   ;4878 0003 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($18f).w                 ;4878 018f 
+              PEA            ($154).w                 ;4878 0154 
+___ED_DrawColorBars__2:
+              PEA            ($148).w                 ;4878 0148 
+              PEA            ($109).w                 ;4878 0109 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($18f).w                 ;4878 018f 
+              PEA            ($19f).w                 ;4878 019f 
+              PEA            ($148).w                 ;4878 0148 
+              PEA            ($154).w                 ;4878 0154 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              PEA            ($5).w                   ;4878 0005 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($18f).w                 ;4878 018f 
+              PEA            ($1ea).w                 ;4878 01ea 
+              PEA            ($148).w                 ;4878 0148 
+              PEA            ($19f).w                 ;4878 019f 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+              PEA            ($6).w                   ;4878 0006 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($18f).w                 ;4878 018f 
+              PEA            ($235).w                 ;4878 0235 
+              PEA            ($148).w                 ;4878 0148 
+              PEA            ($1ea).w                 ;4878 01ea 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+___ED_DrawColorBars__3:
+              PEA            ($7).w                   ;4878 0007 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($18f).w                 ;4878 018f 
+              PEA            ($280).w                 ;4878 0280 
+              PEA            ($148).w                 ;4878 0148 
+              PEA            ($235).w                 ;4878 0235 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+___ED_DrawColorBars__4:
+              RTS                                     ;4e75 
+ED_HandleSpecialFunctionsMenu:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ED_HandleSpecialFunctionsMenu__1:
+              BSR.W          ED_GetEscMenuActionCode  ;6100 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.B         D0,D7                    ;1e00 
+              MOVE.L         D7,D0                    ;2007 
+___ED_HandleSpecialFunctionsMenu__2:
+___ED_HandleSpecialFunctionsMenu__3:
+              CMPI.L         #$8,D0                   ;0c80 0000 0008 
+              BCC.W          ___ED_HandleSpecialFunctionsMenu__17;6400 00fa 
+___ED_HandleSpecialFunctionsMenu__4:
+              ADD.W          D0,D0                    ;d040 
+              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
+              JMP            $4(PC,D0.W)              ;4efb 0004 
+__switch_ED_HandleSpecialFunctionsMenu_4:
+              DC.W           ___ED_HandleSpecialFunctionsMenu__5-__switch_ED_HandleSpecialFunctionsMenu_4
+              DC.W           ___ED_HandleSpecialFunctionsMenu__6-__switch_ED_HandleSpecialFunctionsMenu_4
+              DC.W           ___ED_HandleSpecialFunctionsMenu__7-__switch_ED_HandleSpecialFunctionsMenu_4
+              DC.W           ___ED_HandleSpecialFunctionsMenu__8-__switch_ED_HandleSpecialFunctionsMenu_4
+              DC.W           ___ED_HandleSpecialFunctionsMenu__9-__switch_ED_HandleSpecialFunctionsMenu_4
+              DC.W           ___ED_HandleSpecialFunctionsMenu__17-__switch_ED_HandleSpecialFunctionsMenu_4
+              DC.W           ___ED_HandleSpecialFunctionsMenu__14-__switch_ED_HandleSpecialFunctionsMenu_4
+              DC.W           ___ED_HandleSpecialFunctionsMenu__10-__switch_ED_HandleSpecialFunctionsMenu_4
+___ED_HandleSpecialFunctionsMenu__5:
+              BSR.W          ED_DrawESCMenuBottomHelp ;6100 0000 
+              BRA.W          ___ED_HandleSpecialFunctionsMenu__22;6000 00ec 
+___ED_HandleSpecialFunctionsMenu__6:
+              BSR.W          ED_DrawAreYouSurePrompt  ;6100 0000 
+              PEA            ED2_STR_ALL_DATA_IS_TO_BE_SAVED_(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($5a).w                  ;4878 005a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.B         #$b,ED_MenuStateId(A4)   ;197c 000b 0000 
+              BRA.W          ___ED_HandleSpecialFunctionsMenu__22;6000 00c6 
+___ED_HandleSpecialFunctionsMenu__7:
+              BSR.W          ED_DrawAreYouSurePrompt  ;6100 0000 
+              PEA            ED2_STR_TV_GUIDE_DATA_IS_TO_BE_S(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($5a).w                  ;4878 005a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.B         #$c,ED_MenuStateId(A4)   ;197c 000c 0000 
+              BRA.W          ___ED_HandleSpecialFunctionsMenu__22;6000 00a0 
+___ED_HandleSpecialFunctionsMenu__8:
+              BSR.W          ED_DrawAreYouSurePrompt  ;6100 0000 
+              PEA            ED2_STR_TEXT_ADS_WILL_BE_LOADED_(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($5a).w                  ;4878 005a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.B         #$d,ED_MenuStateId(A4)   ;197c 000d 0000 
+              BRA.B          ___ED_HandleSpecialFunctionsMenu__22;607a 
+___ED_HandleSpecialFunctionsMenu__9:
+              BSR.W          ED_DrawAreYouSurePrompt  ;6100 0000 
+              PEA            Global_STR_COMPUTER_WILL_RESET(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($5a).w                  ;4878 005a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            Global_STR_GO_OFF_AIR_FOR_1_2_MI(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($78).w                  ;4878 0078 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $20(A7),A7               ;4fef 0020 
+              MOVE.B         #$e,ED_MenuStateId(A4)   ;197c 000e 0000 
+              BRA.B          ___ED_HandleSpecialFunctionsMenu__22;6042 
+___ED_HandleSpecialFunctionsMenu__10:
+              SUBQ.L         #$1,ED_EditCursorOffset(A4);53ac 0000 
+              BGE.B          ___ED_HandleSpecialFunctionsMenu__12;6c06 
+___ED_HandleSpecialFunctionsMenu__11:
+              MOVEQ.L        #$3,D0                   ;7003 
+              MOVE.L         D0,ED_EditCursorOffset(A4);2940 0000 
+___ED_HandleSpecialFunctionsMenu__12:
+              BSR.W          ED_DrawSpecialMenuSelection;6100 fd66 
+___ED_HandleSpecialFunctionsMenu__13:
+              BRA.B          ___ED_HandleSpecialFunctionsMenu__22;6030 
+___ED_HandleSpecialFunctionsMenu__14:
+              MOVEQ.L        #$2,D0                   ;7002 
+              CMP.L          ED_EditCursorOffset(A4),D0;b0ac 0000 
+              BNE.B          ___ED_HandleSpecialFunctionsMenu__17;6614 
+___ED_HandleSpecialFunctionsMenu__15:
+              MOVE.B         #$f,ED_MenuStateId(A4)   ;197c 000f 0000 
+              BSR.W          ED_DrawColorBars         ;6100 fd6e 
+___ED_HandleSpecialFunctionsMenu__16:
+              CLR.L          ED_TempCopyOffset(A4)    ;42ac 0000 
+              BSR.W          ED_DrawDiagnosticRegisterValues;6100 0000 
+              BRA.B          ___ED_HandleSpecialFunctionsMenu__22;6014 
+___ED_HandleSpecialFunctionsMenu__17:
+              ADDQ.L         #$1,ED_EditCursorOffset(A4);52ac 0000 
+              MOVEQ.L        #$4,D0                   ;7004 
+              CMP.L          ED_EditCursorOffset(A4),D0;b0ac 0000 
+              BNE.B          ___ED_HandleSpecialFunctionsMenu__19;6604 
+___ED_HandleSpecialFunctionsMenu__18:
+              CLR.L          ED_EditCursorOffset(A4)  ;42ac 0000 
+___ED_HandleSpecialFunctionsMenu__19:
+              BSR.W          ED_DrawSpecialMenuSelection;6100 fd34 
+___ED_HandleSpecialFunctionsMenu__20:
+___ED_HandleSpecialFunctionsMenu__21:
+___ED_HandleSpecialFunctionsMenu__22:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_DrawMenuSelectionHighlight
+              XREF           ED_DrawSpecialFunctionsMenu
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetAPen
+              XREF           _LVORectFill
+              XREF           ED_GetEscMenuActionCode
+              XREF           ED_DrawESCMenuBottomHelp
+              XREF           ED_DrawAreYouSurePrompt
+              XREF           ED2_STR_ALL_DATA_IS_TO_BE_SAVED_
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           ED_MenuStateId
+              XREF           ED2_STR_TV_GUIDE_DATA_IS_TO_BE_S
+              XREF           ED2_STR_TEXT_ADS_WILL_BE_LOADED_
+              XREF           Global_STR_COMPUTER_WILL_RESET
+              XREF           Global_STR_GO_OFF_AIR_FOR_1_2_MI
+              XREF           ED_EditCursorOffset
+              XREF           ED_TempCopyOffset
+              XREF           ED_DrawDiagnosticRegisterValues
+              XDEF           ED_HandleSpecialFunctionsMenu
+              END
