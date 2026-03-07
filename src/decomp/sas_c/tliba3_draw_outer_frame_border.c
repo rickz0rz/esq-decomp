@@ -11,6 +11,12 @@ typedef struct TLIBA3_RastPortWrap {
     TLIBA3_DimBlock *dims;
 } TLIBA3_RastPortWrap;
 
+enum {
+    BORDER_ZERO = 0,
+    WIDTH_TO_PIXEL_SHIFT = 3,
+    BORDER_MINUS_ONE = 1
+};
+
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern LONG _LVOMove(void *gfxBase, void *rastPort, LONG x, LONG y);
 extern LONG _LVODraw(void *gfxBase, void *rastPort, LONG x, LONG y);
@@ -20,17 +26,17 @@ void TLIBA3_DrawOuterFrameBorder(TLIBA3_RastPortWrap *rp)
     LONG maxX;
     LONG maxY;
 
-    _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, 0, 0);
+    _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, BORDER_ZERO, BORDER_ZERO);
 
-    maxX = (((LONG)rp->dims->width) << 3) - 1;
-    _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, maxX, 0);
+    maxX = (((LONG)rp->dims->width) << WIDTH_TO_PIXEL_SHIFT) - BORDER_MINUS_ONE;
+    _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, maxX, BORDER_ZERO);
 
-    maxX = (((LONG)rp->dims->width) << 3) - 1;
-    maxY = ((LONG)rp->dims->height) - 1;
+    maxX = (((LONG)rp->dims->width) << WIDTH_TO_PIXEL_SHIFT) - BORDER_MINUS_ONE;
+    maxY = ((LONG)rp->dims->height) - BORDER_MINUS_ONE;
     _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, maxX, maxY);
 
-    maxY = ((LONG)rp->dims->height) - 1;
-    _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, 0, maxY);
+    maxY = ((LONG)rp->dims->height) - BORDER_MINUS_ONE;
+    _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, BORDER_ZERO, maxY);
 
-    _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, 0, 0);
+    _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, BORDER_ZERO, BORDER_ZERO);
 }
