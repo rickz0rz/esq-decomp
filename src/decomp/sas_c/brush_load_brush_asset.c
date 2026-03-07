@@ -4,6 +4,9 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_FILE_OPEN_MODE_READ = 1005,
+    BRUSH_SEEK_OFFSET_START = 0,
+    BRUSH_SEEK_MODE_BEGIN = -1,
     BRUSH_IFF_HEADER_SIZE = 6,
     BRUSH_IFF_FORM_TAG_LEN = 4,
     BRUSH_STATUS_OK = 0,
@@ -75,11 +78,11 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     decode_cur = (UBYTE *)0;
     node = (UBYTE *)0;
 
-    fh = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(src, 1005);
+    fh = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(src, BRUSH_FILE_OPEN_MODE_READ);
     if (fh != 0) {
         if (_LVORead(fh, hdr, BRUSH_IFF_HEADER_SIZE) - BRUSH_IFF_HEADER_SIZE == 0 &&
             GROUP_AA_JMPTBL_STRING_CompareN(hdr, BRUSH_STR_IFF_FORM, BRUSH_IFF_FORM_TAG_LEN) == 0) {
-            _LVOSeek(fh, 0, -1);
+            _LVOSeek(fh, BRUSH_SEEK_OFFSET_START, BRUSH_SEEK_MODE_BEGIN);
             decode_buf = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
                 Global_STR_BRUSH_C_10,
                 977,
