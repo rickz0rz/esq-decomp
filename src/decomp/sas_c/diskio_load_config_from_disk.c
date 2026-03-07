@@ -13,17 +13,17 @@ extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line,
 
 LONG DISKIO_LoadConfigFromDisk(void)
 {
-    LONG size;
-    UBYTE *buf;
+    LONG workBufferSize;
+    UBYTE *workBuffer;
 
     if (DISKIO_LoadFileToWorkBuffer(Global_STR_DF0_CONFIG_DAT_2) == -1) {
         return -1;
     }
 
-    size = Global_REF_LONG_FILE_SCRATCH;
-    buf = Global_PTR_WORK_BUFFER;
-    DISKIO_ParseConfigBuffer(buf, (ULONG)(size + 1));
+    workBufferSize = Global_REF_LONG_FILE_SCRATCH;
+    workBuffer = Global_PTR_WORK_BUFFER;
+    DISKIO_ParseConfigBuffer(workBuffer, (ULONG)(workBufferSize + 1));
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO_C_9, 1344, buf, (ULONG)(size + 1));
+    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO_C_9, 1344, workBuffer, (ULONG)(workBufferSize + 1));
     return 0;
 }
