@@ -1,0 +1,157 @@
+              SECTION      text,CODE
+__code:
+FLIB2_LoadDigitalNicheDefaults:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___FLIB2_LoadDigitalNicheDefaults__1:
+              MOVE.B         #$4e,GCOMMAND_DigitalNicheEnabledFlag(A4);197c 004e 0000 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,GCOMMAND_NicheTextPen(A4);2940 0000 
+              MOVEQ.L        #$5,D1                   ;7205 
+              MOVE.L         D1,GCOMMAND_NicheFramePen(A4);2941 0000 
+              MOVE.L         D0,GCOMMAND_NicheEditorLayoutPen(A4);2940 0000 
+              MOVE.L         D1,GCOMMAND_NicheEditorRowPen(A4);2941 0000 
+              CLR.L          GCOMMAND_NicheModeCycleCount(A4);42ac 0000 
+              CLR.L          GCOMMAND_NicheForceMode5Flag(A4);42ac 0000 
+              MOVE.B         #$42,GCOMMAND_NicheWorkflowMode(A4);197c 0042 0000 
+              MOVE.L         GCOMMAND_DigitalNicheListingsTem(A4),-(A7);2f2c 0000 
+              PEA            FLIB_STR_DIGITAL_NICHE_LISTINGS(A4);486c 0000 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,GCOMMAND_DigitalNicheListingsTem(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___FLIB2_LoadDigitalNicheDefaults__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+FLIB2_LoadDigitalMplexDefaults:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/D3,-(A7)              ;48e7 3000 
+___FLIB2_LoadDigitalMplexDefaults__1:
+              MOVEQ.L        #$4e,D0                  ;704e 
+              MOVE.B         D0,GCOMMAND_DigitalMplexEnabledFlag(A4);1940 0000 
+              CLR.L          GCOMMAND_MplexModeCycleCount(A4);42ac 0000 
+              CLR.L          GCOMMAND_MplexSearchRowLimit(A4);42ac 0000 
+              MOVEQ.L        #$a,D1                   ;720a 
+              MOVE.L         D1,GCOMMAND_MplexClockOffsetMinutes(A4);2941 0000 
+              MOVEQ.L        #$3,D2                   ;7403 
+              MOVE.L         D2,GCOMMAND_MplexMessageTextPen(A4);2942 0000 
+              MOVEQ.L        #$6,D2                   ;7406 
+              MOVE.L         D2,GCOMMAND_MplexMessageFramePen(A4);2942 0000 
+              MOVEQ.L        #$1,D2                   ;7401 
+              MOVE.L         D2,GCOMMAND_MplexEditorLayoutPen(A4);2942 0000 
+              MOVEQ.L        #$4,D3                   ;7604 
+              MOVE.L         D3,GCOMMAND_MplexEditorRowPen(A4);2943 0000 
+              MOVE.L         D2,GCOMMAND_MplexDetailLayoutPen(A4);2942 0000 
+              MOVE.L         D1,GCOMMAND_MplexDetailInitialLineI(A4);2941 0000 
+              MOVE.L         D3,GCOMMAND_MplexDetailRowPen(A4);2943 0000 
+              MOVE.B         #$42,GCOMMAND_MplexWorkflowMode(A4);197c 0042 0000 
+              MOVE.B         D0,GCOMMAND_MplexDetailLayoutFlag(A4);1940 0000 
+              MOVE.L         GCOMMAND_MplexListingsTemplatePt(A4),-(A7);2f2c 0000 
+              PEA            FLIB_STR_DIGITAL_MULTIPLEX_LISTI(A4);486c 0000 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,GCOMMAND_MplexListingsTemplatePt(A4);2940 0000 
+              MOVE.L         GCOMMAND_MplexAtTemplatePtr(A4),(A7);2eac 0000 
+              PEA            FLIB_FMT_DIGITAL_MULTIPLEX_AT_PC(A4);486c 0000 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,GCOMMAND_MplexAtTemplatePtr(A4);2940 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___FLIB2_LoadDigitalMplexDefaults__2:
+              MOVEM.L        (A7)+,D2/D3              ;4cdf 000c 
+              RTS                                     ;4e75 
+FLIB2_LoadDigitalPpvDefaults:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D2,-(A7)                 ;2f02 
+___FLIB2_LoadDigitalPpvDefaults__1:
+              MOVE.B         #$4e,GCOMMAND_DigitalPpvEnabledFlag(A4);197c 004e 0000 
+              CLR.L          GCOMMAND_PpvModeCycleCount(A4);42ac 0000 
+              MOVEQ.L        #$3c,D0                  ;703c 
+              MOVE.L         D0,GCOMMAND_PpvSelectionWindowMinut(A4);2940 0000 
+              MOVEQ.L        #$1e,D0                  ;701e 
+              MOVE.L         D0,GCOMMAND_PpvSelectionToleranceMi(A4);2940 0000 
+              MOVEQ.L        #$3,D0                   ;7003 
+              MOVE.L         D0,GCOMMAND_PpvMessageTextPen(A4);2940 0000 
+              MOVEQ.L        #$4,D1                   ;7204 
+              MOVE.L         D1,GCOMMAND_PpvMessageFramePen(A4);2941 0000 
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVE.L         D1,GCOMMAND_PpvEditorLayoutPen(A4);2941 0000 
+              MOVEQ.L        #$7,D2                   ;7407 
+              MOVE.L         D2,GCOMMAND_PpvEditorRowPen(A4);2942 0000 
+              MOVE.L         D1,GCOMMAND_PpvShowtimesLayoutPen(A4);2941 0000 
+              MOVE.L         D0,GCOMMAND_PpvShowtimesInitialLine(A4);2940 0000 
+              MOVE.L         D2,GCOMMAND_PpvShowtimesRowPen(A4);2942 0000 
+              MOVEQ.L        #$18,D0                  ;7018 
+              MOVE.L         D0,GCOMMAND_PpvShowtimesRowSpan(A4);2940 0000 
+              MOVE.B         #$42,GCOMMAND_PpvShowtimesWorkflowMod(A4);197c 0042 0000 
+              MOVE.B         #$59,GCOMMAND_PpvDetailLayoutFlag(A4);197c 0059 0000 
+              MOVE.L         GCOMMAND_PPVListingsTemplatePtr(A4),-(A7);2f2c 0000 
+              PEA            FLIB_STR_DIGITAL_PPV_LISTINGS(A4);486c 0000 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,GCOMMAND_PPVListingsTemplatePtr(A4);2940 0000 
+              MOVE.L         GCOMMAND_PPVPeriodTemplatePtr(A4),(A7);2eac 0000 
+              PEA            Global_STR_DIGITAL_PPV_PERIOD(A4);486c 0000 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,GCOMMAND_PPVPeriodTemplatePtr(A4);2940 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___FLIB2_LoadDigitalPpvDefaults__2:
+              MOVE.L         (A7)+,D2                 ;241f 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_DigitalNicheEnabledFlag
+              XREF           GCOMMAND_NicheTextPen
+              XREF           GCOMMAND_NicheFramePen
+              XREF           GCOMMAND_NicheEditorLayoutPen
+              XREF           GCOMMAND_NicheEditorRowPen
+              XREF           GCOMMAND_NicheModeCycleCount
+              XREF           GCOMMAND_NicheForceMode5Flag
+              XREF           GCOMMAND_NicheWorkflowMode
+              XREF           GCOMMAND_DigitalNicheListingsTem
+              XREF           FLIB_STR_DIGITAL_NICHE_LISTINGS
+              XREF           ESQPARS_ReplaceOwnedString
+              XREF           GCOMMAND_DigitalMplexEnabledFlag
+              XREF           GCOMMAND_MplexModeCycleCount
+              XREF           GCOMMAND_MplexSearchRowLimit
+              XREF           GCOMMAND_MplexClockOffsetMinutes
+              XREF           GCOMMAND_MplexMessageTextPen
+              XREF           GCOMMAND_MplexMessageFramePen
+              XREF           GCOMMAND_MplexEditorLayoutPen
+              XREF           GCOMMAND_MplexEditorRowPen
+              XREF           GCOMMAND_MplexDetailLayoutPen
+              XREF           GCOMMAND_MplexDetailInitialLineI
+              XREF           GCOMMAND_MplexDetailRowPen
+              XREF           GCOMMAND_MplexWorkflowMode
+              XREF           GCOMMAND_MplexDetailLayoutFlag
+              XREF           GCOMMAND_MplexListingsTemplatePt
+              XREF           FLIB_STR_DIGITAL_MULTIPLEX_LISTI
+              XREF           GCOMMAND_MplexAtTemplatePtr
+              XREF           FLIB_FMT_DIGITAL_MULTIPLEX_AT_PC
+              XREF           GCOMMAND_DigitalPpvEnabledFlag
+              XREF           GCOMMAND_PpvModeCycleCount
+              XREF           GCOMMAND_PpvSelectionWindowMinut
+              XREF           GCOMMAND_PpvSelectionToleranceMi
+              XREF           GCOMMAND_PpvMessageTextPen
+              XREF           GCOMMAND_PpvMessageFramePen
+              XREF           GCOMMAND_PpvEditorLayoutPen
+              XREF           GCOMMAND_PpvEditorRowPen
+              XREF           GCOMMAND_PpvShowtimesLayoutPen
+              XREF           GCOMMAND_PpvShowtimesInitialLine
+              XREF           GCOMMAND_PpvShowtimesRowPen
+              XREF           GCOMMAND_PpvShowtimesRowSpan
+              XREF           GCOMMAND_PpvShowtimesWorkflowMod
+              XREF           GCOMMAND_PpvDetailLayoutFlag
+              XREF           GCOMMAND_PPVListingsTemplatePtr
+              XREF           FLIB_STR_DIGITAL_PPV_LISTINGS
+              XREF           GCOMMAND_PPVPeriodTemplatePtr
+              XREF           Global_STR_DIGITAL_PPV_PERIOD
+              XDEF           FLIB2_LoadDigitalNicheDefaults
+              XDEF           FLIB2_LoadDigitalMplexDefaults
+              XDEF           FLIB2_LoadDigitalPpvDefaults
+              END

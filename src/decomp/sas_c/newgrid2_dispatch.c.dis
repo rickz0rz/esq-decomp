@@ -1,0 +1,24 @@
+              SECTION      text,CODE
+__code:
+NEWGRID2_DispatchOperationDefaul:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_DispatchOperationDefaul__1:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          NEWGRID2_DispatchGridOperation;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___NEWGRID2_DispatchOperationDefaul__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID2_DispatchGridOperation
+              XDEF           NEWGRID2_DispatchOperationDefaul
+              END
