@@ -2,6 +2,13 @@ typedef signed long LONG;
 typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
+enum {
+    PROCESS_TASK_CLI_PTR_OFFSET = 172,
+    PROCESS_TASK_CONSOLE_FH_OFFSET = 160,
+    CLI_STDOUT_FH_OFFSET = 56,
+    ABORT_MSG_MAX_LEN = 79
+};
+
 typedef struct Unknown36Request {
     ULONG unk00;
     ULONG unk04;
@@ -67,8 +74,8 @@ LONG UNKNOWN36_ShowAbortRequester(void)
     UBYTE *task;
     LONG fh = 0;
 
-    if (len > 79) {
-        len = 79;
+    if (len > ABORT_MSG_MAX_LEN) {
+        len = ABORT_MSG_MAX_LEN;
     }
 
     for (i = 0; i < len; ++i) {
@@ -77,12 +84,12 @@ LONG UNKNOWN36_ShowAbortRequester(void)
     local[len] = 0;
 
     task = (UBYTE *)_LVOFindTask((void *)AbsExecBase, (void *)0);
-    if (*(ULONG *)(task + 172) != 0) {
-        UBYTE *cli = (UBYTE *)((*(ULONG *)(task + 172)) << 2);
-        fh = *(LONG *)(cli + 56);
+    if (*(ULONG *)(task + PROCESS_TASK_CLI_PTR_OFFSET) != 0) {
+        UBYTE *cli = (UBYTE *)((*(ULONG *)(task + PROCESS_TASK_CLI_PTR_OFFSET)) << 2);
+        fh = *(LONG *)(cli + CLI_STDOUT_FH_OFFSET);
     }
     if (fh == 0) {
-        fh = *(LONG *)(task + 160);
+        fh = *(LONG *)(task + PROCESS_TASK_CONSOLE_FH_OFFSET);
     }
 
     if (fh != 0) {
