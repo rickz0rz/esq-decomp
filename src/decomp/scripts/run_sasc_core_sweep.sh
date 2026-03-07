@@ -1198,6 +1198,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_test_mode_flag_active_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_test_entry_selectable_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_test_entry_state_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_test_primetime_window_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_select_next_mode_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_wrapped_text_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_cell_trial.sh"
