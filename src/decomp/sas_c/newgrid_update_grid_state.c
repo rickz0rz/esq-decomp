@@ -6,7 +6,7 @@ extern LONG NEWGRID_GridStateFrameLatch;
 extern LONG NEWGRID_SelectedGridEntryPtr;
 extern LONG NEWGRID_OverridePenIndex;
 
-extern WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, LONG keyIndex);
+extern LONG NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, LONG keyIndex);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG bitIndex);
 extern WORD NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(UBYTE *entry, UBYTE *aux, LONG rowIndex);
 extern LONG NEWGRID_SelectEntryPen(UBYTE *entry);
@@ -31,7 +31,7 @@ void NEWGRID_UpdateGridState(UBYTE *grid, LONG keyIndex, WORD rowIndex)
     if (frameState == 5) {
         *(LONG *)(grid + 32) = -1;
     } else if (frameState == 4) {
-        rowIndex = NEWGRID_UpdatePresetEntry(&entry, &aux, rowIndex, keyIndex);
+        rowIndex = (WORD)NEWGRID_UpdatePresetEntry(&entry, &aux, rowIndex, keyIndex);
 
         if (entry != 0 && aux != 0) {
             if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry + 28, (LONG)rowIndex) == -1) {

@@ -39,8 +39,8 @@ ___NEWGRID_UpdateGridState__6:
               PEA            $28(A7)                  ;486f 0028 
               PEA            $30(A7)                  ;486f 0030 
               BSR.W          NEWGRID_UpdatePresetEntry;6100 0000 
-              MOVE.L         D0,D6                    ;2c00 
               LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         D0,D6                    ;2c00 
               MOVE.L         $24(A7),D0               ;202f 0024 
               BEQ.W          ___NEWGRID_UpdateGridState__14;6700 00a8 
 ___NEWGRID_UpdateGridState__7:
