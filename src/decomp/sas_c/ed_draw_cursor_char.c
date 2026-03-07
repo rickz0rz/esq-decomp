@@ -21,6 +21,11 @@ extern LONG _LVOText(void *gfxBase, void *rastPort, const char *text, LONG len);
 
 void ED_DrawCursorChar(void)
 {
+    const LONG COLUMN_STRIDE_SHIFT = 4;
+    const LONG CURSOR_X_OFFSET = 40;
+    const LONG ROW_HEIGHT = 30;
+    const LONG CURSOR_Y_OFFSET = 90;
+    const LONG CHAR_LEN_1 = 1;
     LONG packed = (LONG)ED_EditBufferLive[ED_EditCursorOffset];
     LONG x;
     LONG y;
@@ -37,9 +42,9 @@ void ED_DrawCursorChar(void)
 
     ED_UpdateCursorPosFromIndex(ED_EditCursorOffset);
 
-    x = (ED_CursorColumnIndex << 4) - ED_CursorColumnIndex + 40;
-    y = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, 30) + 90;
+    x = (ED_CursorColumnIndex << COLUMN_STRIDE_SHIFT) - ED_CursorColumnIndex + CURSOR_X_OFFSET;
+    y = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, ROW_HEIGHT) + CURSOR_Y_OFFSET;
 
     _LVOMove(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, x, y);
-    _LVOText(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, &ED_EditBufferScratch[ED_EditCursorOffset], 1);
+    _LVOText(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, &ED_EditBufferScratch[ED_EditCursorOffset], CHAR_LEN_1);
 }

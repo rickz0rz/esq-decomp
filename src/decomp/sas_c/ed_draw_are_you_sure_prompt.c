@@ -11,16 +11,23 @@ extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const 
 
 void ED_DrawAreYouSurePrompt(void)
 {
-    ED_DrawHelpPanels(6);
+    const LONG HELP_PANEL_MODE_ESC = 6;
+    const LONG DRAWMODE_JAM1 = 0;
+    const LONG DRAWMODE_JAM2 = 1;
+    const LONG PEN_PRIMARY = 1;
+    const LONG TEXT_Y = 330;
+    const LONG TEXT_X = 40;
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0);
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
+    ED_DrawHelpPanels(HELP_PANEL_MODE_ESC);
+
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM1);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_PRIMARY);
 
     DISPLIB_DisplayTextAtPosition(
         Global_REF_RASTPORT_1,
-        330,
-        40,
+        TEXT_Y,
+        TEXT_X,
         Global_STR_ARE_YOU_SURE);
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM2);
 }
