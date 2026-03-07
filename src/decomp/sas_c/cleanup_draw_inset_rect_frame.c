@@ -25,9 +25,9 @@ void CLEANUP_DrawInsetRectFrame(UBYTE *rp, UBYTE pen, UWORD w, UWORD h)
 {
     LONG x0, y0;
     LONG x1, y1;
-    LONG old_pen;
+    LONG savedPen;
 
-    old_pen = (LONG)rp[RASTPORT_PEN_OFFSET];
+    savedPen = (LONG)rp[RASTPORT_PEN_OFFSET];
     x0 = (LONG)*(UWORD *)(rp + RASTPORT_CP_X_OFFSET) - INSET_LEFT_MARGIN;
     y0 = (LONG)(*(UWORD *)(rp + RASTPORT_CP_Y_OFFSET) + INSET_TOP_ADJUST -
                 *(UWORD *)(rp + RASTPORT_TX_BASELINE_OFFSET) - INSET_BASELINE_ADJUST);
@@ -58,6 +58,6 @@ void CLEANUP_DrawInsetRectFrame(UBYTE *rp, UBYTE pen, UWORD w, UWORD h)
     (void)ZERO;
     _LVOMove();
 
-    (void)old_pen;
+    (void)savedPen;
     _LVOSetAPen();
 }
