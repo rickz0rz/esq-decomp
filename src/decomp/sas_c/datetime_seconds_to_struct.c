@@ -12,6 +12,7 @@ enum {
     DATETIME_HOURS_PER_YEAR = 8760,
     DATETIME_HOURS_PER_DAY = 24,
     DATETIME_DAYS_PER_WEEK = 7,
+    DATETIME_WEEKDAY_EPOCH_OFFSET = 4,
     DATETIME_LEAP_DAY_OF_YEAR = 60,
     DATETIME_LEAP_MONTH_INDEX = 1,
     DATETIME_LEAP_DAY_OF_MONTH = 29,
@@ -74,7 +75,7 @@ void *DATETIME_SecondsToStruct(LONG seconds, void *dt)
     W(dt, 8) = (short)(remHours % DATETIME_HOURS_PER_DAY);
     remHours /= DATETIME_HOURS_PER_DAY;
 
-    dayAcc += remHours + 4;
+    dayAcc += remHours + DATETIME_WEEKDAY_EPOCH_OFFSET;
     (void)GROUP_AJ_JMPTBL_MATH_DivU32((ULONG)dayAcc, DATETIME_DAYS_PER_WEEK);
     W(dt, 0) = (short)((ULONG)dayAcc % DATETIME_DAYS_PER_WEEK);
 

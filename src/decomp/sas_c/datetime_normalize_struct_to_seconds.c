@@ -12,7 +12,8 @@ enum {
     DATETIME_SECONDS_PER_DAY = 86400,
     DATETIME_SECONDS_PER_HOUR = 3600,
     DATETIME_SECONDS_PER_MINUTE = 60,
-    DATETIME_HOURS_PER_DAY = 24
+    DATETIME_HOURS_PER_DAY = 24,
+    DATETIME_SECONDS_INVALID = -1
 };
 
 extern LONG DATETIME_AdjustMonthIndex(void *dt);
@@ -36,7 +37,7 @@ LONG DATETIME_NormalizeStructToSeconds(void *dt)
 
     year = (LONG)W(dt, 6);
     if (year < DATETIME_UNIX_EPOCH_YEAR || year > DATETIME_MAX_YEAR) {
-        return -1;
+        return DATETIME_SECONDS_INVALID;
     }
 
     DATETIME_AdjustMonthIndex(dt);
@@ -90,7 +91,7 @@ LONG DATETIME_NormalizeStructToSeconds(void *dt)
     DATETIME_NormalizeMonthRange(dt);
 
     if (seconds <= 0) {
-        return -1;
+        return DATETIME_SECONDS_INVALID;
     }
     return seconds;
 }
