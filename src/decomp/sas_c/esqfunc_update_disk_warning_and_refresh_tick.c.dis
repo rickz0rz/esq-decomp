@@ -1,0 +1,56 @@
+              SECTION      text,CODE
+__code:
+ESQFUNC_UpdateDiskWarningAndRefr:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ESQFUNC_UpdateDiskWarningAndRefr__1:
+              BSR.W          ESQFUNC_JMPTBL_DISKIO_ProbeDrive;6100 0000 
+              TST.L          DISKIO_Drive0WriteProtectedCode(A4);4aac 0000 
+              BEQ.B          ___ESQFUNC_UpdateDiskWarningAndRefr__3;671c 
+___ESQFUNC_UpdateDiskWarningAndRefr__2:
+              MOVE.W         #$ffffffff,Global_RefreshTickCounter(A4);397c ffff 0000 
+              PEA            ($5a).w                  ;4878 005a 
+              PEA            Global_STR_YOU_MUST_REINSERT_SYS(A4);486c 0000 
+              PEA            Global_REF_RASTPORT_2+$2(A4);486c 0002 
+              BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___ESQFUNC_UpdateDiskWarningAndRefr__8;6030 
+___ESQFUNC_UpdateDiskWarningAndRefr__3:
+              TST.L          DISKIO_DriveMediaStatusCodeTable(A4);4aac 0000 
+              BEQ.B          ___ESQFUNC_UpdateDiskWarningAndRefr__5;671c 
+___ESQFUNC_UpdateDiskWarningAndRefr__4:
+              MOVE.W         #$ffffffff,Global_RefreshTickCounter(A4);397c ffff 0000 
+              PEA            ($5a).w                  ;4878 005a 
+              PEA            Global_STR_DISK_0_IS_WRITE_PROTE(A4);486c 0000 
+              PEA            Global_REF_RASTPORT_2+$2(A4);486c 0002 
+              BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___ESQFUNC_UpdateDiskWarningAndRefr__8;600e 
+___ESQFUNC_UpdateDiskWarningAndRefr__5:
+              MOVE.W         Global_RefreshTickCounter(A4),D0;302c 0000 
+              MOVE.W         D0,D7                    ;3e00 
+              ADDQ.W         #$1,D7                   ;5247 
+              BNE.B          ___ESQFUNC_UpdateDiskWarningAndRefr__8;6604 
+___ESQFUNC_UpdateDiskWarningAndRefr__6:
+              CLR.W          Global_RefreshTickCounter(A4);426c 0000 
+___ESQFUNC_UpdateDiskWarningAndRefr__7:
+___ESQFUNC_UpdateDiskWarningAndRefr__8:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQFUNC_JMPTBL_DISKIO_ProbeDrive
+              XREF           DISKIO_Drive0WriteProtectedCode
+              XREF           Global_RefreshTickCounter
+              XREF           Global_STR_YOU_MUST_REINSERT_SYS
+              XREF           Global_REF_RASTPORT_2
+              XREF           ESQFUNC_JMPTBL_TLIBA3_DrawCenter
+              XREF           DISKIO_DriveMediaStatusCodeTable
+              XREF           Global_STR_DISK_0_IS_WRITE_PROTE
+              XDEF           ESQFUNC_UpdateDiskWarningAndRefr
+              END

@@ -1,0 +1,55 @@
+              SECTION      text,CODE
+__code:
+ESQFUNC_CommitSecondaryStateAndP:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ESQFUNC_CommitSecondaryStateAndP__1:
+              MOVE.W         ESQPARS2_ReadModeFlags(A4),D7;3e2c 0000 
+              MOVE.W         #$100,ESQPARS2_ReadModeFlags(A4);397c 0100 0000 
+              MOVE.W         #$1,ESQDISP_PendingGridReinitFlag(A4);397c 0001 0000 
+              BSR.W          ESQDISP_PropagatePrimaryTitleMet;6100 0000 
+              BSR.W          ESQFUNC_JMPTBL_LOCAVAIL_RebuildF;6100 0000 
+              BSR.W          ESQDISP_PromoteSecondaryGroupToP;6100 0000 
+              BSR.W          ESQDISP_MirrorPrimaryEntriesToSe;6100 0000 
+              BSR.W          ESQDISP_PromoteSecondaryLineHead;6100 0000 
+              BSR.W          ESQPARS_JMPTBL_DISKIO2_FlushData;6100 0000 
+              BSR.W          ESQPARS_JMPTBL_LADFUNC_SaveTextA;6100 0000 
+              PEA            LOCAVAIL_SecondaryFilterState(A4);486c 0000 
+              PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 
+              BSR.W          ESQPARS_JMPTBL_LOCAVAIL_SaveAvai;6100 0000 
+              PEA            DST_BannerWindowPrimary(A4);486c 0000 
+              BSR.W          DATETIME_SavePairToFile  ;6100 0000 
+              BSR.W          ESQFUNC_JMPTBL_P_TYPE_PromoteSec;6100 0000 
+              BSR.W          ESQPARS_JMPTBL_P_TYPE_WritePromo;6100 0000 
+              BSR.W          ESQFUNC_UpdateDiskWarningAndRefr;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.W         D7,ESQPARS2_ReadModeFlags(A4);3947 0000 
+___ESQFUNC_CommitSecondaryStateAndP__2:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQPARS2_ReadModeFlags
+              XREF           ESQDISP_PendingGridReinitFlag
+              XREF           ESQDISP_PropagatePrimaryTitleMet
+              XREF           ESQFUNC_JMPTBL_LOCAVAIL_RebuildF
+              XREF           ESQDISP_PromoteSecondaryGroupToP
+              XREF           ESQDISP_MirrorPrimaryEntriesToSe
+              XREF           ESQDISP_PromoteSecondaryLineHead
+              XREF           ESQPARS_JMPTBL_DISKIO2_FlushData
+              XREF           ESQPARS_JMPTBL_LADFUNC_SaveTextA
+              XREF           LOCAVAIL_SecondaryFilterState
+              XREF           LOCAVAIL_PrimaryFilterState
+              XREF           ESQPARS_JMPTBL_LOCAVAIL_SaveAvai
+              XREF           DST_BannerWindowPrimary
+              XREF           DATETIME_SavePairToFile
+              XREF           ESQFUNC_JMPTBL_P_TYPE_PromoteSec
+              XREF           ESQPARS_JMPTBL_P_TYPE_WritePromo
+              XREF           ESQFUNC_UpdateDiskWarningAndRefr
+              XDEF           ESQFUNC_CommitSecondaryStateAndP
+              END
