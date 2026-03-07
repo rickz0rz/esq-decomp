@@ -6,7 +6,10 @@ typedef long LONG;
 enum {
     CLOCK_BANNER_FRAME_WIDTH = 35,
     CLOCK_BANNER_FRAME_HEIGHT = 33,
-    CLOCK_BANNER_BLIT_SIZE = 34
+    CLOCK_BANNER_BLIT_SIZE = 34,
+    RASTPORT_FONT_PTR_OFFSET = 52,
+    FONT_HEIGHT_OFFSET = 26,
+    CLOCK_BANNER_INNER_X_OFFSET = 36
 };
 
 extern WORD Global_UIBusyFlag;
@@ -81,7 +84,7 @@ void CLEANUP_DrawClockBanner(void)
         CLOCK_BANNER_FRAME_HEIGHT
     );
 
-    font_h = (LONG)(*(UWORD *)(*(LONG *)(NEWGRID_MainRastPortPtr + 52) + 26));
+    font_h = (LONG)(*(UWORD *)(*(LONG *)(NEWGRID_MainRastPortPtr + RASTPORT_FONT_PTR_OFFSET) + FONT_HEIGHT_OFFSET));
     y = (((34 - font_h) + 1) >> 1) + font_h - 1;
     (void)y;
 
@@ -94,7 +97,7 @@ void CLEANUP_DrawClockBanner(void)
         0,
         0,
         (void *)NEWGRID_MainRastPortPtr,
-        (LONG)NEWGRID_ColumnStartXPx + 36,
+        (LONG)NEWGRID_ColumnStartXPx + CLOCK_BANNER_INNER_X_OFFSET,
         CLOCK_BANNER_BLIT_SIZE,
         CLOCK_BANNER_BLIT_SIZE,
         CLOCK_BANNER_BLIT_SIZE,
