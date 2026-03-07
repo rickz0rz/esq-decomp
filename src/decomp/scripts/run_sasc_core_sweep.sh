@@ -972,6 +972,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_wdisp_jmptbl_gcommand_expandpresetblock_trial.sh"
     "src/decomp/scripts/compare_sasc_wdisp_jmptbl_newgrid_drawwrappedtext_trial.sh"
     "src/decomp/scripts/compare_sasc_wdisp_jmptbl_newgrid_resetrowtable_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqdisp_draw_status_banner_impl_return_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqiff_render_weather_status_brush_slice_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_play_next_external_asset_frame_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_show_external_asset_with_copper_fx_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqpars_read_length_word_with_checksum_xor_return_trial.sh"
