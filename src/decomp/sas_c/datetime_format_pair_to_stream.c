@@ -5,7 +5,8 @@ typedef long LONG;
 enum {
     DATETIME_PAIR_OUT_PTR_OFFSET = 4,
     DATETIME_IN_PREFIX_TOKEN = 4,
-    DATETIME_OUT_PREFIX_TOKEN = 19
+    DATETIME_OUT_PREFIX_TOKEN = 19,
+    DATETIME_HOURS_PER_HALF_DAY = 12
 };
 
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
@@ -50,10 +51,10 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, void *pairStruct)
             (LONG)WORD_AT(t, 16));
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
 
-        (void)GROUP_AG_JMPTBL_MATH_DivS32((LONG)WORD_AT(t, 8), 12);
-        hour12 = ((LONG)WORD_AT(t, 8)) / 12;
+        (void)GROUP_AG_JMPTBL_MATH_DivS32((LONG)WORD_AT(t, 8), DATETIME_HOURS_PER_HALF_DAY);
+        hour12 = ((LONG)WORD_AT(t, 8)) / DATETIME_HOURS_PER_HALF_DAY;
         if (WORD_AT(t, 18) != 0) {
-            hour12 += 12;
+            hour12 += DATETIME_HOURS_PER_HALF_DAY;
         }
 
         GROUP_AM_JMPTBL_WDISP_SPrintf(
@@ -78,10 +79,10 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, void *pairStruct)
             (LONG)WORD_AT(t, 16));
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
 
-        (void)GROUP_AG_JMPTBL_MATH_DivS32((LONG)WORD_AT(t, 8), 12);
-        hour12 = ((LONG)WORD_AT(t, 8)) / 12;
+        (void)GROUP_AG_JMPTBL_MATH_DivS32((LONG)WORD_AT(t, 8), DATETIME_HOURS_PER_HALF_DAY);
+        hour12 = ((LONG)WORD_AT(t, 8)) / DATETIME_HOURS_PER_HALF_DAY;
         if (WORD_AT(t, 18) != 0) {
-            hour12 += 12;
+            hour12 += DATETIME_HOURS_PER_HALF_DAY;
         }
 
         GROUP_AM_JMPTBL_WDISP_SPrintf(
