@@ -1187,6 +1187,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_draw_entry_row_or_placeholder_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_message_alt_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_status_message_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_draw_showtimes_prompt_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_clock_format_header_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_date_banner_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_init_grid_resources_trial.sh"
