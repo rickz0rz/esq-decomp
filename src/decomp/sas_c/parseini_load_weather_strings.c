@@ -12,7 +12,7 @@ extern void *PARSEINI_JMPTBL_BRUSH_AllocBrushNode(char *entryText, void *existin
 
 void PARSEINI_LoadWeatherStrings(char *keyName, char *keyValue)
 {
-    void *node;
+    void *weatherNode;
 
     if (PARSEINI_BannerBrushResourceHead == (void *)0) {
         PARSEINI_WeatherBrushNodePtr = (void *)0;
@@ -22,11 +22,11 @@ void PARSEINI_LoadWeatherStrings(char *keyName, char *keyValue)
         return;
     }
 
-    node = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(keyValue, PARSEINI_WeatherBrushNodePtr);
-    *((UBYTE *)node + 190) = 10;
-    PARSEINI_WeatherBrushNodePtr = node;
+    weatherNode = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(keyValue, PARSEINI_WeatherBrushNodePtr);
+    *((UBYTE *)weatherNode + 190) = 10;
+    PARSEINI_WeatherBrushNodePtr = weatherNode;
 
     if (PARSEINI_BannerBrushResourceHead == (void *)0) {
-        PARSEINI_BannerBrushResourceHead = node;
+        PARSEINI_BannerBrushResourceHead = weatherNode;
     }
 }
