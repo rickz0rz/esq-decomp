@@ -2,6 +2,12 @@ typedef long LONG;
 
 #define WORD_AT(p, off) (*(short *)((char *)(p) + (off)))
 
+enum {
+    DATETIME_PAIR_OUT_PTR_OFFSET = 4,
+    DATETIME_IN_PREFIX_TOKEN = 4,
+    DATETIME_OUT_PREFIX_TOKEN = 19
+};
+
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern LONG GROUP_AG_JMPTBL_MATH_DivS32(LONG a, LONG b);
@@ -34,7 +40,7 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, void *pairStruct)
 
     t = *(void **)pairStruct;
     if (t != (void *)0) {
-        GROUP_AM_JMPTBL_WDISP_SPrintf(scratch, DST_FMT_PCT_C_InTimePrefixChar, 4);
+        GROUP_AM_JMPTBL_WDISP_SPrintf(scratch, DST_FMT_PCT_C_InTimePrefixChar, DATETIME_IN_PREFIX_TOKEN);
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
 
         GROUP_AM_JMPTBL_WDISP_SPrintf(
@@ -60,9 +66,9 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, void *pairStruct)
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, DST_STR_NO_IN_TIME);
     }
 
-    t = *(void **)((char *)pairStruct + 4);
+    t = *(void **)((char *)pairStruct + DATETIME_PAIR_OUT_PTR_OFFSET);
     if (t != (void *)0) {
-        GROUP_AM_JMPTBL_WDISP_SPrintf(scratch, DST_FMT_PCT_C_OutTimePrefixChar, 19);
+        GROUP_AM_JMPTBL_WDISP_SPrintf(scratch, DST_FMT_PCT_C_OutTimePrefixChar, DATETIME_OUT_PREFIX_TOKEN);
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
 
         GROUP_AM_JMPTBL_WDISP_SPrintf(
