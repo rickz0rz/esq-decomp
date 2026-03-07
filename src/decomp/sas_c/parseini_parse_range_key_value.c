@@ -23,10 +23,10 @@ LONG PARSEINI_ParseRangeKeyValue(char *sourceLine, WORD *rangeTable)
     char *keyToken;
     char *valueToken;
     char *splitPtr;
-    LONG idx;
-    LONG parsed;
-    LONG slot;
-    LONG color;
+    LONG colorIndex;
+    LONG parsedRangeLen;
+    LONG slotIndex;
+    LONG colorValue;
     char *p;
 
     keyToken = sourceLine;
@@ -60,31 +60,31 @@ LONG PARSEINI_ParseRangeKeyValue(char *sourceLine, WORD *rangeTable)
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCaseN(keyToken, PARSEINI_TAG_COLOR, 5) == 0) {
-        idx = 0;
+        colorIndex = 0;
         p = keyToken + 5;
         if (p != (char *)0 && *p != 0) {
-            idx = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(p);
+            colorIndex = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(p);
         }
 
-        if (idx < 0 || idx >= 16) {
+        if (colorIndex < 0 || colorIndex >= 16) {
             PARSEINI_CurrentRangeTableIndex = -1;
         } else {
-            PARSEINI_CurrentRangeTableIndex = idx;
-            rangeTable[idx] = 0;
+            PARSEINI_CurrentRangeTableIndex = colorIndex;
+            rangeTable[colorIndex] = 0;
         }
 
         if (PARSEINI_CurrentRangeTableIndex < 0 || PARSEINI_CurrentRangeTableIndex >= 16) {
             return 0;
         }
 
-        parsed = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(valueToken);
-        if (parsed < 1 || parsed > 63) {
-            parsed = -1;
+        parsedRangeLen = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(valueToken);
+        if (parsedRangeLen < 1 || parsedRangeLen > 63) {
+            parsedRangeLen = -1;
         } else {
-            parsed += 1;
+            parsedRangeLen += 1;
         }
 
-        rangeTable[PARSEINI_CurrentRangeTableIndex] = (WORD)parsed;
+        rangeTable[PARSEINI_CurrentRangeTableIndex] = (WORD)parsedRangeLen;
         return 0;
     }
 
@@ -95,18 +95,18 @@ LONG PARSEINI_ParseRangeKeyValue(char *sourceLine, WORD *rangeTable)
         return 0;
     }
 
-    slot = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyToken);
-    color = PARSEINI_ParseHexValueFromString((UBYTE *)valueToken);
-    if (slot <= 0) {
+    slotIndex = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyToken);
+    colorValue = PARSEINI_ParseHexValueFromString((UBYTE *)valueToken);
+    if (slotIndex <= 0) {
         return 0;
     }
-    if (slot >= rangeTable[PARSEINI_CurrentRangeTableIndex]) {
+    if (slotIndex >= rangeTable[PARSEINI_CurrentRangeTableIndex]) {
         return 0;
     }
-    if (color < 0 || color >= 0x1000) {
+    if (colorValue < 0 || colorValue >= 0x1000) {
         return 0;
     }
 
-    *((WORD *)((char *)rangeTable + (PARSEINI_CurrentRangeTableIndex << 7) + (slot << 1) + 32)) = (WORD)color;
+    *((WORD *)((char *)rangeTable + (PARSEINI_CurrentRangeTableIndex << 7) + (slotIndex << 1) + 32)) = (WORD)colorValue;
     return 0;
 }
