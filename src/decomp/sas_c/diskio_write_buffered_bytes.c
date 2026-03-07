@@ -1,6 +1,12 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
+enum {
+    DISKIO_RESULT_ZERO = 0,
+    DISKIO_ERROR_FLAG_SET = 1,
+    DISKIO_HANDLE_INVALID = 0
+};
+
 struct DiskIoBufferState {
     UBYTE *BufferPtr;
     LONG BufferSize;
@@ -28,8 +34,11 @@ LONG DISKIO_WriteBufferedBytes(LONG handle, const UBYTE *src, LONG len)
     result = len;
     requested = len;
 
-    if (src == 0 || len == 0 || DISKIO_BufferControl.ErrorFlag == 1 || handle == 0) {
-        return 0;
+    if (src == 0 ||
+        len == DISKIO_RESULT_ZERO ||
+        DISKIO_BufferControl.ErrorFlag == DISKIO_ERROR_FLAG_SET ||
+        handle == DISKIO_HANDLE_INVALID) {
+        return DISKIO_RESULT_ZERO;
     }
 
     GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
@@ -58,7 +67,7 @@ LONG DISKIO_WriteBufferedBytes(LONG handle, const UBYTE *src, LONG len)
             result = wrote;
 
             if (wrote != DISKIO_BufferState.BufferSize) {
-                DISKIO_BufferControl.ErrorFlag = 1;
+                DISKIO_BufferControl.ErrorFlag = DISKIO_ERROR_FLAG_SET;
                 break;
             }
 
@@ -68,7 +77,7 @@ LONG DISKIO_WriteBufferedBytes(LONG handle, const UBYTE *src, LONG len)
             GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
         }
 
-        if (len == 0) {
+        if (len == DISKIO_RESULT_ZERO) {
             break;
         }
     }
