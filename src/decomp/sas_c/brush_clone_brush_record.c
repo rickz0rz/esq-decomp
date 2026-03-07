@@ -4,6 +4,7 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_RECORD_SIZE = 372,
     MEMF_PUBLIC_CLEAR = 0x10001UL
 };
 
@@ -31,7 +32,11 @@ void *BRUSH_CloneBrushRecord(void *src_rec)
 
     (void)AbsExecBase;
     (void)Global_REF_GRAPHICS_LIBRARY;
-    dst = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_BRUSH_C_17, 1248, 372, MEMF_PUBLIC_CLEAR);
+    dst = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+        Global_STR_BRUSH_C_17,
+        1248,
+        BRUSH_RECORD_SIZE,
+        MEMF_PUBLIC_CLEAR);
     if (dst == (UBYTE *)0) {
         return (void *)0;
     }
