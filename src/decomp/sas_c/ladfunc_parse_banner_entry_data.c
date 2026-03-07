@@ -39,6 +39,20 @@ extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, 
 
 LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const UBYTE *in)
 {
+    const UBYTE DEFAULT_PEN_HIGH = 2;
+    const UBYTE DEFAULT_PEN_LOW = 1;
+    const LONG RESET_SENTINEL_CODE = (73L * 2L);
+    const UBYTE ENTRY_INDEX_MAX_EXCLUSIVE = 46;
+    const UBYTE ENTRY_START_SLOT_DEFAULT = 1;
+    const UWORD ENTRY_END_SLOT_DEFAULT = 0x30;
+    const UWORD ATTR_TEMP_ALLOC_SIZE = 304;
+    const UWORD TEXT_SCRATCH_MAX = 0x190;
+    const UBYTE CTRL_SET_PENS = 3;
+    const UBYTE CTRL_SET_TIME_WINDOW = 20;
+    const UBYTE PEN_NIBBLE_MAX = 7;
+    const LONG ATTR_FREE_LINE = 412;
+    const LONG ATTR_ALLOC_LINE = 413;
+    const LONG ATTR_TMP_FREE_LINE = 416;
     UBYTE entryByte;
     UBYTE packedPens;
     UBYTE *tempAttr;
@@ -46,10 +60,10 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const UBYTE *in)
     UWORD textLen;
     LADFUNC_EntryRecord *entry;
 
-    packedPens = LADFUNC_ComposePackedPenByte(2, 1);
+    packedPens = LADFUNC_ComposePackedPenByte(DEFAULT_PEN_HIGH, DEFAULT_PEN_LOW);
     entryByte = *in++;
 
-    if ((LONG)entryByte == (73L * 2L)) {
+    if ((LONG)entryByte == RESET_SENTINEL_CODE) {
         if ((mode == 'L' || mode == 't') &&
             (UWORD)(ESQIFF_StatusPacketReadyFlag - 1) == 0 &&
             GROUP_AS_JMPTBL_STR_FindCharPtr(LADFUNC_TAG_RS_ResetTriggerSet, (LONG)ED_DiagTextModeChar) != 0) {
@@ -60,25 +74,25 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const UBYTE *in)
 
     if ((mode != 'L' && mode != 't') ||
         GROUP_AS_JMPTBL_STR_FindCharPtr(LADFUNC_TAG_RS_ParseAllowedSet, (LONG)ED_DiagTextModeChar) == 0 ||
-        entryByte >= 46) {
+        entryByte >= ENTRY_INDEX_MAX_EXCLUSIVE) {
         return 0;
     }
 
     LADFUNC_ParsedEntryCount = (UWORD)(LADFUNC_ParsedEntryCount + 1);
-    if (LADFUNC_ParsedEntryCount >= 46) {
+    if (LADFUNC_ParsedEntryCount >= ENTRY_INDEX_MAX_EXCLUSIVE) {
         return 0;
     }
 
     entryByte = (UBYTE)(entryByte - 1);
     entry = LADFUNC_EntryPtrTable[(LONG)entryByte];
-    entry->startSlot = 1;
-    entry->endSlot = 0x30;
+    entry->startSlot = ENTRY_START_SLOT_DEFAULT;
+    entry->endSlot = ENTRY_END_SLOT_DEFAULT;
 
     textLen = 0;
     tempAttr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_5,
         367,
-        304,
+        ATTR_TEMP_ALLOC_SIZE,
         (MEMF_PUBLIC + MEMF_CLEAR)
     );
     if (tempAttr == (UBYTE *)0) {
@@ -88,26 +102,26 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const UBYTE *in)
     for (;;) {
         UBYTE c = *in++;
 
-        if (c == 0 || textLen >= 0x190) {
+        if (c == 0 || textLen >= TEXT_SCRATCH_MAX) {
             break;
         }
 
-        if (c == 3) {
+        if (c == CTRL_SET_PENS) {
             LONG hi = LADFUNC_ParseHexDigit((LONG)(*in++));
-            if ((UBYTE)hi <= 7) {
+            if ((UBYTE)hi <= PEN_NIBBLE_MAX) {
                 packedPens = LADFUNC_SetPackedPenHighNibble((LONG)packedPens, hi);
             }
 
             {
                 LONG lo = LADFUNC_ParseHexDigit((LONG)(*in++));
-                if ((UBYTE)lo <= 7) {
+                if ((UBYTE)lo <= PEN_NIBBLE_MAX) {
                     packedPens = LADFUNC_SetPackedPenLowNibble((LONG)packedPens, lo);
                 }
             }
             continue;
         }
 
-        if (c == 20) {
+        if (c == CTRL_SET_TIME_WINDOW) {
             entry->startSlot = (UWORD)(*in++);
             entry->endSlot = (UWORD)(*in++);
             entry->startSlot = (UWORD)(UBYTE)ESQIFF2_ValidateAsciiNumericByte((LONG)entry->startSlot);
@@ -126,15 +140,15 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const UBYTE *in)
     if (entry->attrPtr != (UBYTE *)0) {
         NEWGRID_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_LADFUNC_C_6,
-            412,
+            ATTR_FREE_LINE,
             entry->attrPtr,
-            304
+            ATTR_TEMP_ALLOC_SIZE
         );
     }
 
     entry->attrPtr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_7,
-        413,
+        ATTR_ALLOC_LINE,
         (LONG)textLen,
         (MEMF_PUBLIC + MEMF_CLEAR)
     );
@@ -148,9 +162,9 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const UBYTE *in)
 
     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(
         Global_STR_LADFUNC_C_8,
-        416,
+        ATTR_TMP_FREE_LINE,
         tempAttr,
-        304
+        ATTR_TEMP_ALLOC_SIZE
     );
 
     LADFUNC_UpdateHighlightState();
