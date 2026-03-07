@@ -12,23 +12,23 @@ enum {
 
 void *BRUSH_FindType3Brush(void *list_head_ptr)
 {
-    UBYTE *cur;
-    LONG found;
+    UBYTE *nodeCursor;
+    LONG matchFound;
 
-    cur = *(UBYTE **)list_head_ptr;
-    found = BRUSH_FALSE;
+    nodeCursor = *(UBYTE **)list_head_ptr;
+    matchFound = BRUSH_FALSE;
 
-    while (cur != (UBYTE *)BRUSH_NULL && found == BRUSH_FALSE) {
-        if (cur[BRUSH_NODE_TYPE_OFFSET] == BRUSH_NODE_TYPE_3) {
-            found = BRUSH_TRUE;
+    while (nodeCursor != (UBYTE *)BRUSH_NULL && matchFound == BRUSH_FALSE) {
+        if (nodeCursor[BRUSH_NODE_TYPE_OFFSET] == BRUSH_NODE_TYPE_3) {
+            matchFound = BRUSH_TRUE;
         }
-        if (found == BRUSH_FALSE) {
-            cur = *(UBYTE **)(cur + BRUSH_NODE_NEXT_OFFSET);
+        if (matchFound == BRUSH_FALSE) {
+            nodeCursor = *(UBYTE **)(nodeCursor + BRUSH_NODE_NEXT_OFFSET);
         }
     }
 
-    if (found != BRUSH_FALSE) {
-        return (void *)cur;
+    if (matchFound != BRUSH_FALSE) {
+        return (void *)nodeCursor;
     }
     return (void *)BRUSH_NULL;
 }
