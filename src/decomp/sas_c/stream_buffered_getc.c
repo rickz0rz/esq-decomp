@@ -15,6 +15,8 @@ typedef struct PreallocHandleNode {
 } PreallocHandleNode;
 
 enum {
+    CHAR_CTRL_Z = 0x1a,
+    CHAR_CR = 0x0d,
     MODE_TEXT_TRANSLATE_BIT = 7,
     STATE_READ_REFILL_ISSUED_BIT = 0,
     STATE_WRITE_PENDING_BIT = 1,
@@ -72,11 +74,11 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
         if (node->read_remaining <= 0) {
             node->buffer_cursor += 1;
             c = (LONG)(unsigned char)node->buffer_cursor[-1];
-            if (c == 0x1a) {
+            if (c == CHAR_CTRL_Z) {
                 *state |= (1u << STATE_EOF_OR_SHORT_BIT);
                 return -1;
             }
-            if (c == 0x0d) {
+            if (c == CHAR_CR) {
                 node->read_remaining -= 1;
                 if (node->read_remaining < 0) {
                     return STREAM_BufferedGetc(node);

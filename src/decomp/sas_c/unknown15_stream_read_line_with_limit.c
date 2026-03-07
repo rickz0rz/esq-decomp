@@ -12,12 +12,15 @@ extern LONG STREAM_BufferedGetc(StreamBufferState *stream);
 
 UBYTE *STREAM_ReadLineWithLimit(UBYTE *dst, LONG max_len, StreamBufferState *stream)
 {
+    const LONG kNulReserve = 1;
+    const LONG kEof = -1;
+    const LONG kLineFeed = 10;
     UBYTE *start;
     LONG limit_minus_nul;
     LONG slots_left;
 
     start = dst;
-    limit_minus_nul = max_len - 1;
+    limit_minus_nul = max_len - kNulReserve;
     slots_left = limit_minus_nul;
 
     while (slots_left >= 0) {
@@ -30,14 +33,14 @@ UBYTE *STREAM_ReadLineWithLimit(UBYTE *dst, LONG max_len, StreamBufferState *str
             c = (LONG)(*stream->buffer_cursor++);
         }
 
-        if (c == -1) {
+        if (c == kEof) {
             break;
         }
 
         slots_left -= 1;
         *dst++ = (UBYTE)c;
 
-        if (c == 10) {
+        if (c == kLineFeed) {
             break;
         }
     }

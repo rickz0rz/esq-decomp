@@ -2,52 +2,57 @@
 __code:
 STREAM_ReadLineWithLimit:
               MOVE.L         A7,D0                    ;200f 
-              SUBQ.L         #$4,D0                   ;5980 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$c,A7                   ;9efc 000c 
               MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
 ___STREAM_ReadLineWithLimit__1:
-              MOVE.L         $24(A7),D7               ;2e2f 0024 
-              MOVE.L         $28(A7),A3               ;266f 0028 
-              MOVE.L         $20(A7),A5               ;2a6f 0020 
+              MOVE.L         $30(A7),D7               ;2e2f 0030 
+              MOVE.L         $34(A7),A3               ;266f 0034 
+              MOVE.L         $2c(A7),A5               ;2a6f 002c 
+              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVEQ.L        #$ff,D5                  ;7aff 
+              MOVEQ.L        #$a,D4                   ;780a 
               MOVE.L         A5,A2                    ;244d 
-              MOVE.L         D7,D6                    ;2c07 
-              SUBQ.L         #$1,D6                   ;5386 
-              MOVE.L         D6,D5                    ;2a06 
+              MOVE.L         D7,D0                    ;2007 
+              SUB.L          D6,D0                    ;9086 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
 ___STREAM_ReadLineWithLimit__2:
-              TST.L          D5                       ;4a85 
-              BMI.B          ___STREAM_ReadLineWithLimit__11;6b30 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              TST.L          D0                       ;4a80 
+              BMI.B          ___STREAM_ReadLineWithLimit__11;6b32 
 ___STREAM_ReadLineWithLimit__3:
               SUBQ.L         #$1,$8(A3)               ;53ab 0008 
-              BGE.B          ___STREAM_ReadLineWithLimit__5;6c0c 
+              BGE.B          ___STREAM_ReadLineWithLimit__5;6c0e 
 ___STREAM_ReadLineWithLimit__4:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          STREAM_BufferedGetc      ;6100 0000 
-              MOVE.L         D0,D4                    ;2800 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.B          ___STREAM_ReadLineWithLimit__6;600c 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              BRA.B          ___STREAM_ReadLineWithLimit__6;6010 
 ___STREAM_ReadLineWithLimit__5:
               MOVE.L         $4(A3),A0                ;206b 0004 
               ADDQ.L         #$1,$4(A3)               ;52ab 0004 
-              MOVEQ.L        #$0,D4                   ;7800 
-              MOVE.B         (A0),D4                  ;1810 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A0),D0                  ;1010 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
 ___STREAM_ReadLineWithLimit__6:
-              MOVEQ.L        #$ff,D0                  ;70ff 
-              CMP.L          D0,D4                    ;b880 
-              BEQ.B          ___STREAM_ReadLineWithLimit__11;670c 
+              CMP.L          D0,D5                    ;ba80 
+              BEQ.B          ___STREAM_ReadLineWithLimit__11;670a 
 ___STREAM_ReadLineWithLimit__7:
 ___STREAM_ReadLineWithLimit__8:
-              SUBQ.L         #$1,D5                   ;5385 
-              MOVE.L         D4,D0                    ;2004 
+              SUBQ.L         #$1,$20(A7)              ;53af 0020 
               MOVE.B         D0,(A5)+                 ;1ac0 
-              MOVEQ.L        #$a,D1                   ;720a 
-              CMP.L          D1,D4                    ;b881 
-              BNE.B          ___STREAM_ReadLineWithLimit__2;66cc 
+              CMP.L          D4,D0                    ;b084 
+              BNE.B          ___STREAM_ReadLineWithLimit__2;66c6 
 ___STREAM_ReadLineWithLimit__9:
 ___STREAM_ReadLineWithLimit__10:
 ___STREAM_ReadLineWithLimit__11:
               CLR.B          (A5)                     ;4215 
-              CMP.L          D6,D5                    ;ba86 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              CMP.L          $24(A7),D0               ;b0af 0024 
               BNE.B          ___STREAM_ReadLineWithLimit__13;6604 
 ___STREAM_ReadLineWithLimit__12:
               MOVEQ.L        #$0,D0                   ;7000 
@@ -57,6 +62,7 @@ ___STREAM_ReadLineWithLimit__13:
 ___STREAM_ReadLineWithLimit__14:
 ___STREAM_ReadLineWithLimit__15:
               MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
+              ADD.W          #$c,A7                   ;defc 000c 
               RTS                                     ;4e75 
 __const:
 __strings:
