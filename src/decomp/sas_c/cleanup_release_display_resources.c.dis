@@ -2,117 +2,138 @@
 __code:
 CLEANUP_ReleaseDisplayResources:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              SUB.L          #$4c,D0                  ;90bc 0000 004c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              SUB.W          #$38,A7                  ;9efc 0038 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
 ___CLEANUP_ReleaseDisplayResources__1:
+              MOVEQ.L        #$60,D7                  ;7e60 
+              MOVEQ.L        #$64,D6                  ;7c64 
+              MOVEQ.L        #$4,D5                   ;7a04 
+              MOVEQ.L        #$2,D0                   ;7002 
+              MOVE.L         #$2b8,$3c(A7)            ;2f7c 0000 02b8 003c 
+              MOVE.L         #$160,$38(A7)            ;2f7c 0000 0160 0038 
+              MOVEQ.L        #$22,D1                  ;7222 
+              MOVE.L         D1,$30(A7)               ;2f41 0030 
+              MOVE.L         #$f0,$2c(A7)             ;2f7c 0000 00f0 002c 
+              MOVEQ.L        #$4a,D1                  ;724a 
+              ADD.L          D1,D1                    ;d281 
+              MOVE.L         #$98,$24(A7)             ;2f7c 0000 0098 0024 
+              MOVE.L         #$9e,$20(A7)             ;2f7c 0000 009e 0020 
+              MOVE.L         #$a3,$1c(A7)             ;2f7c 0000 00a3 001c 
+              MOVE.L         #$a8,$18(A7)             ;2f7c 0000 00a8 0018 
+              MOVE.L         #$ad,$14(A7)             ;2f7c 0000 00ad 0014 
+              MOVE.L         #$b2,$10(A7)             ;2f7c 0000 00b2 0010 
               MOVE.L         Global_REF_96_BYTES_ALLOCATED(A4),A0;206c 0000 
-              PEA            ($60).w                  ;4878 0060 
+              MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         A0,-(A7)                 ;2f08 
-              PEA            ($94).w                  ;4878 0094 
+              MOVE.L         D1,-(A7)                 ;2f01 
               PEA            Global_STR_CLEANUP_C_6(A4);486c 0000 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVE.L         D0,$50(A7)               ;2f40 0050 
+              MOVE.L         D1,$38(A7)               ;2f41 0038 
               BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),A0;206c 0000 
-              PEA            ($64).w                  ;4878 0064 
+              MOVE.L         D6,(A7)                  ;2e86 
               MOVE.L         A0,-(A7)                 ;2f08 
-              PEA            ($98).w                  ;4878 0098 
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
               PEA            Global_STR_CLEANUP_C_7(A4);486c 0000 
               BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
-              LEA            $20(A7),A7               ;4fef 0020 
-              MOVEQ.L        #$0,D7                   ;7e00 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              CLR.L          $c(A7)                   ;42af 000c 
 ___CLEANUP_ReleaseDisplayResources__2:
-              MOVEQ.L        #$4,D0                   ;7004 
-              CMP.L          D0,D7                    ;be80 
-              BGE.B          ___CLEANUP_ReleaseDisplayResources__5;6c2a 
+              MOVE.L         $c(A7),D0                ;202f 000c 
+              CMP.L          D5,D0                    ;b085 
+              BGE.B          ___CLEANUP_ReleaseDisplayResources__5;6c2e 
 ___CLEANUP_ReleaseDisplayResources__3:
-              MOVE.L         D7,D0                    ;2007 
-              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         $40(A7),D1               ;222f 0040 
+              ASL.L          D1,D0                    ;e3a0 
               MOVE.L         WDISP_LivePlaneRasterTable0(A4),D1;222c 0000 
               ADD.L          D0,D1                    ;d280 
               PEA            Global_STR_CLEANUP_C_8(A4);486c 0000 
-              PEA            ($9e).w                  ;4878 009e 
-              PEA            ($2).w                   ;4878 0002 
-              PEA            ($2b8).w                 ;4878 02b8 
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         D1,A0                    ;2041 
               MOVE.L         (A0),-(A7)               ;2f10 
               BSR.W          GROUP_AB_JMPTBL_GRAPHICS_FreeRas;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
 ___CLEANUP_ReleaseDisplayResources__4:
-              ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___CLEANUP_ReleaseDisplayResources__2;60d0 
+              ADDQ.L         #$1,$c(A7)               ;52af 000c 
+              BRA.B          ___CLEANUP_ReleaseDisplayResources__2;60ca 
 ___CLEANUP_ReleaseDisplayResources__5:
-              MOVEQ.L        #$0,D7                   ;7e00 
+              CLR.L          $c(A7)                   ;42af 000c 
 ___CLEANUP_ReleaseDisplayResources__6:
-              MOVEQ.L        #$4,D0                   ;7004 
-              CMP.L          D0,D7                    ;be80 
-              BGE.B          ___CLEANUP_ReleaseDisplayResources__9;6c2a 
+              MOVE.L         $c(A7),D0                ;202f 000c 
+              CMP.L          D5,D0                    ;b085 
+              BGE.B          ___CLEANUP_ReleaseDisplayResources__9;6c2e 
 ___CLEANUP_ReleaseDisplayResources__7:
-              MOVE.L         D7,D0                    ;2007 
-              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         $40(A7),D1               ;222f 0040 
+              ASL.L          D1,D0                    ;e3a0 
               MOVE.L         WDISP_352x240RasterPtrTable(A4),D1;222c 0000 
               ADD.L          D0,D1                    ;d280 
               PEA            Global_STR_CLEANUP_C_9(A4);486c 0000 
-              PEA            ($a3).w                  ;4878 00a3 
-              PEA            ($f0).w                  ;4878 00f0 
-              PEA            ($160).w                 ;4878 0160 
+              MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
+              MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
               MOVE.L         D1,A0                    ;2041 
               MOVE.L         (A0),-(A7)               ;2f10 
               BSR.W          GROUP_AB_JMPTBL_GRAPHICS_FreeRas;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
 ___CLEANUP_ReleaseDisplayResources__8:
-              ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___CLEANUP_ReleaseDisplayResources__6;60d0 
+              ADDQ.L         #$1,$c(A7)               ;52af 000c 
+              BRA.B          ___CLEANUP_ReleaseDisplayResources__6;60ca 
 ___CLEANUP_ReleaseDisplayResources__9:
-              MOVEQ.L        #$0,D7                   ;7e00 
+              CLR.L          $c(A7)                   ;42af 000c 
 ___CLEANUP_ReleaseDisplayResources__10:
-              MOVEQ.L        #$4,D0                   ;7004 
-              CMP.L          D0,D7                    ;be80 
-              BGE.B          ___CLEANUP_ReleaseDisplayResources__13;6c2a 
+              MOVE.L         $c(A7),D0                ;202f 000c 
+              CMP.L          D5,D0                    ;b085 
+              BGE.B          ___CLEANUP_ReleaseDisplayResources__13;6c2e 
 ___CLEANUP_ReleaseDisplayResources__11:
-              MOVE.L         D7,D0                    ;2007 
-              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         $40(A7),D1               ;222f 0040 
+              ASL.L          D1,D0                    ;e3a0 
               MOVE.L         WDISP_BannerRowScratchRasterTabl(A4),D1;222c 0000 
               ADD.L          D0,D1                    ;d280 
               PEA            Global_STR_CLEANUP_C_10(A4);486c 0000 
-              PEA            ($a8).w                  ;4878 00a8 
-              PEA            ($22).w                  ;4878 0022 
-              PEA            ($2b8).w                 ;4878 02b8 
+              MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         D1,A0                    ;2041 
               MOVE.L         (A0),-(A7)               ;2f10 
               BSR.W          GROUP_AB_JMPTBL_GRAPHICS_FreeRas;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
 ___CLEANUP_ReleaseDisplayResources__12:
-              ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___CLEANUP_ReleaseDisplayResources__10;60d0 
+              ADDQ.L         #$1,$c(A7)               ;52af 000c 
+              BRA.B          ___CLEANUP_ReleaseDisplayResources__10;60ca 
 ___CLEANUP_ReleaseDisplayResources__13:
-              MOVEQ.L        #$0,D7                   ;7e00 
+              CLR.L          $c(A7)                   ;42af 000c 
 ___CLEANUP_ReleaseDisplayResources__14:
-              MOVEQ.L        #$4,D0                   ;7004 
-              CMP.L          D0,D7                    ;be80 
-              BGE.B          ___CLEANUP_ReleaseDisplayResources__17;6c2a 
+              MOVE.L         $c(A7),D0                ;202f 000c 
+              CMP.L          D5,D0                    ;b085 
+              BGE.B          ___CLEANUP_ReleaseDisplayResources__17;6c2e 
 ___CLEANUP_ReleaseDisplayResources__15:
-              MOVE.L         D7,D0                    ;2007 
-              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         $40(A7),D1               ;222f 0040 
+              ASL.L          D1,D0                    ;e3a0 
               MOVE.L         WDISP_DisplayContextPlanePointer(A4),D1;222c 0000 
               ADD.L          D0,D1                    ;d280 
               PEA            Global_STR_CLEANUP_C_11(A4);486c 0000 
-              PEA            ($ad).w                  ;4878 00ad 
-              PEA            ($f0).w                  ;4878 00f0 
-              PEA            ($2b8).w                 ;4878 02b8 
+              MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
+              MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         D1,A0                    ;2041 
               MOVE.L         (A0),-(A7)               ;2f10 
               BSR.W          GROUP_AB_JMPTBL_GRAPHICS_FreeRas;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
 ___CLEANUP_ReleaseDisplayResources__16:
-              ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___CLEANUP_ReleaseDisplayResources__14;60d0 
+              ADDQ.L         #$1,$c(A7)               ;52af 000c 
+              BRA.B          ___CLEANUP_ReleaseDisplayResources__14;60ca 
 ___CLEANUP_ReleaseDisplayResources__17:
               MOVE.L         WDISP_BannerWorkRasterPtr(A4),A0;206c 0000 
               PEA            Global_STR_CLEANUP_C_12(A4);486c 0000 
-              PEA            ($b2).w                  ;4878 00b2 
-              PEA            ($22).w                  ;4878 0022 
-              PEA            ($2b8).w                 ;4878 02b8 
+              MOVE.L         $14(A7),-(A7)            ;2f2f 0014 
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          GROUP_AB_JMPTBL_GRAPHICS_FreeRas;6100 0000 
               BSR.W          _LVOCloseFont            ;6100 0000 
@@ -126,7 +147,8 @@ ___CLEANUP_ReleaseDisplayResources__17:
               BSR.W          _LVOCloseLibrary         ;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
 ___CLEANUP_ReleaseDisplayResources__18:
-              MOVE.L         (A7)+,D7                 ;2e1f 
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              ADD.W          #$38,A7                  ;defc 0038 
               RTS                                     ;4e75 
 __const:
 __strings:

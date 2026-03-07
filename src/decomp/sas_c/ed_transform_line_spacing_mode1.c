@@ -13,51 +13,55 @@ extern void ESQFUNC_JMPTBL_STRING_CopyPadNul(UBYTE *dst, const UBYTE *src, LONG 
 
 void ED_TransformLineSpacing_Mode1(void)
 {
+    const LONG LINE_WIDTH = 40;
+    const LONG SPACE_CHAR = ' ';
+    const LONG ONE = 1;
+    const LONG ZERO = 0;
     UBYTE lineText[40];
     UBYTE lineAttrs[40];
-    LONG base = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, 40);
+    LONG base = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, LINE_WIDTH);
     LONG i;
     LONG lead = 0;
     LONG trail = 0;
     UBYTE fill = ED_EditBufferLive[ED_EditCursorOffset];
 
-    ESQFUNC_JMPTBL_STRING_CopyPadNul(lineText, &ED_EditBufferScratch[base], 40);
+    ESQFUNC_JMPTBL_STRING_CopyPadNul(lineText, &ED_EditBufferScratch[base], LINE_WIDTH);
 
-    for (i = 0; i < 40; ++i) {
+    for (i = ZERO; i < LINE_WIDTH; ++i) {
         lineAttrs[i] = ED_EditBufferLive[base + i];
     }
 
-    while (lead < 40 && lineText[lead] == ' ') {
+    while (lead < LINE_WIDTH && lineText[lead] == SPACE_CHAR) {
         lineAttrs[lead] = fill;
         ++lead;
     }
 
-    while (trail < 40 && lineText[39 - trail] == ' ') {
-        lineAttrs[39 - trail] = fill;
+    while (trail < LINE_WIDTH && lineText[(LINE_WIDTH - ONE) - trail] == SPACE_CHAR) {
+        lineAttrs[(LINE_WIDTH - ONE) - trail] = fill;
         ++trail;
     }
 
-    if (lead >= 40) {
+    if (lead >= LINE_WIDTH) {
         return;
     }
 
-    base = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, 40);
-    for (i = 0; i < (40 - lead); ++i) {
+    base = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, LINE_WIDTH);
+    for (i = ZERO; i < (LINE_WIDTH - lead); ++i) {
         ED_EditBufferScratch[base + i] = lineText[lead + i];
     }
 
-    base = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, 40);
-    for (i = 0; i < (40 - lead); ++i) {
+    base = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, LINE_WIDTH);
+    for (i = ZERO; i < (LINE_WIDTH - lead); ++i) {
         ED_EditBufferLive[base + i] = lineAttrs[lead + i];
     }
 
-    base = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, 40) - lead;
-    for (i = 0; i < lead; ++i) {
+    base = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, LINE_WIDTH) - lead;
+    for (i = ZERO; i < lead; ++i) {
         ED_LineTransformSuffixScratchBuffer[base + i] = lineText[i];
     }
 
-    base = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, 40) - lead;
-    for (i = 0; i < lead; ++i) {
+    base = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, LINE_WIDTH) - lead;
+    for (i = ZERO; i < lead; ++i) {
         ED_LineTransformTailScratchBuffer[base + i] = lineAttrs[i];
     }
 }

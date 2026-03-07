@@ -31,24 +31,63 @@ void _LVOCloseLibrary(void);
 
 void CLEANUP_ReleaseDisplayResources(void)
 {
+    const LONG ALLOC96_SIZE = 96;
+    const LONG RASTPORT1_SIZE = 100;
+    const LONG RASTER_TABLE_COUNT = 4;
+    const LONG PTR_STRIDE_SHIFT = 2;
+    const LONG RASTER_WIDE = 696;
+    const LONG RASTER_NARROW = 352;
+    const LONG RASTER_H_2 = 2;
+    const LONG RASTER_H_34 = 34;
+    const LONG RASTER_H_240 = 240;
+    const LONG FREE96_LINE = 148;
+    const LONG FREE_RP_LINE = 152;
+    const LONG FREE_LIVE_LINE = 158;
+    const LONG FREE_352_LINE = 163;
+    const LONG FREE_BANNER_LINE = 168;
+    const LONG FREE_CTX_LINE = 173;
+    const LONG FREE_WORK_LINE = 178;
     LONG i;
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_6, 148, (void *)Global_REF_96_BYTES_ALLOCATED, 96);
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_7, 152, (void *)Global_REF_RASTPORT_1, 100);
+    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        Global_STR_CLEANUP_C_6, FREE96_LINE, (void *)Global_REF_96_BYTES_ALLOCATED, ALLOC96_SIZE);
+    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        Global_STR_CLEANUP_C_7, FREE_RP_LINE, (void *)Global_REF_RASTPORT_1, RASTPORT1_SIZE);
 
-    for (i = 0; i < 4; i++) {
-        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(*(void **)(WDISP_LivePlaneRasterTable0 + (i << 2)), 696, 2, 158, Global_STR_CLEANUP_C_8);
+    for (i = 0; i < RASTER_TABLE_COUNT; i++) {
+        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
+            *(void **)(WDISP_LivePlaneRasterTable0 + (i << PTR_STRIDE_SHIFT)),
+            RASTER_WIDE,
+            RASTER_H_2,
+            FREE_LIVE_LINE,
+            Global_STR_CLEANUP_C_8);
     }
-    for (i = 0; i < 4; i++) {
-        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(*(void **)(WDISP_352x240RasterPtrTable + (i << 2)), 352, 240, 163, Global_STR_CLEANUP_C_9);
+    for (i = 0; i < RASTER_TABLE_COUNT; i++) {
+        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
+            *(void **)(WDISP_352x240RasterPtrTable + (i << PTR_STRIDE_SHIFT)),
+            RASTER_NARROW,
+            RASTER_H_240,
+            FREE_352_LINE,
+            Global_STR_CLEANUP_C_9);
     }
-    for (i = 0; i < 4; i++) {
-        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(*(void **)(WDISP_BannerRowScratchRasterTable0 + (i << 2)), 696, 34, 168, Global_STR_CLEANUP_C_10);
+    for (i = 0; i < RASTER_TABLE_COUNT; i++) {
+        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
+            *(void **)(WDISP_BannerRowScratchRasterTable0 + (i << PTR_STRIDE_SHIFT)),
+            RASTER_WIDE,
+            RASTER_H_34,
+            FREE_BANNER_LINE,
+            Global_STR_CLEANUP_C_10);
     }
-    for (i = 0; i < 4; i++) {
-        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(*(void **)(WDISP_DisplayContextPlanePointer0 + (i << 2)), 696, 240, 173, Global_STR_CLEANUP_C_11);
+    for (i = 0; i < RASTER_TABLE_COUNT; i++) {
+        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
+            *(void **)(WDISP_DisplayContextPlanePointer0 + (i << PTR_STRIDE_SHIFT)),
+            RASTER_WIDE,
+            RASTER_H_240,
+            FREE_CTX_LINE,
+            Global_STR_CLEANUP_C_11);
     }
-    GROUP_AB_JMPTBL_GRAPHICS_FreeRaster((void *)WDISP_BannerWorkRasterPtr, 696, 34, 178, Global_STR_CLEANUP_C_12);
+    GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
+        (void *)WDISP_BannerWorkRasterPtr, RASTER_WIDE, RASTER_H_34, FREE_WORK_LINE, Global_STR_CLEANUP_C_12);
 
     _LVOCloseFont();
     _LVOCloseFont();

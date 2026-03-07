@@ -2,86 +2,96 @@
 __code:
 UNKNOWN_ParseRecordAndUpdateDisp:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$24,D0                  ;90bc 0000 0024 
+              SUB.L          #$44,D0                  ;90bc 0000 0044 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$14,A7                  ;9efc 0014 
-              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+              SUB.W          #$34,A7                  ;9efc 0034 
+              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
 ___UNKNOWN_ParseRecordAndUpdateDisp__1:
-              MOVE.L         $30(A7),A5               ;2a6f 0030 
-              MOVE.L         A5,A3                    ;264d 
-              MOVE.B         (A3)+,D7                 ;1e1b 
-              MOVE.B         (A3)+,D6                 ;1c1b 
-              MOVE.B         (A3)+,D5                 ;1a1b 
-              MOVEQ.L        #$0,D4                   ;7800 
-              ADDQ.L         #$1,A3                   ;528b 
-              MOVEQ.L        #$2,D0                   ;7002 
-              CMP.B          D0,D5                    ;ba00 
-              BCS.B          ___UNKNOWN_ParseRecordAndUpdateDisp__3;6506 
-___UNKNOWN_ParseRecordAndUpdateDisp__2:
-              MOVEQ.L        #$6,D0                   ;7006 
-              CMP.B          D0,D5                    ;ba00 
-              BLS.B          ___UNKNOWN_ParseRecordAndUpdateDisp__4;6302 
-___UNKNOWN_ParseRecordAndUpdateDisp__3:
+              MOVE.L         $4c(A7),A5               ;2a6f 004c 
+              MOVEQ.L        #$2,D7                   ;7e02 
+              MOVEQ.L        #$6,D6                   ;7c06 
               MOVEQ.L        #$1,D5                   ;7a01 
+              MOVE.B         #$12,$44(A7)             ;1f7c 0012 0044 
+              MOVEQ.L        #$a,D0                   ;700a 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              CLR.B          $40(A7)                  ;422f 0040 
+              CLR.L          $1c(A7)                  ;42af 001c 
+              CLR.L          $3c(A7)                  ;42af 003c 
+              MOVE.L         #$ac,$38(A7)             ;2f7c 0000 00ac 0038 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.B         (A3)+,$24(A7)            ;1f5b 0024 
+              MOVE.B         (A3)+,$1b(A7)            ;1f5b 001b 
+              MOVE.B         (A3)+,D0                 ;101b 
+              CLR.L          $16(A7)                  ;42af 0016 
+              ADDQ.L         #$1,A3                   ;528b 
+              MOVE.B         D0,$1a(A7)               ;1f40 001a 
+              CMP.B          D7,D0                    ;b007 
+              BCS.B          ___UNKNOWN_ParseRecordAndUpdateDisp__3;6504 
+___UNKNOWN_ParseRecordAndUpdateDisp__2:
+              CMP.B          D6,D0                    ;b006 
+              BLS.B          ___UNKNOWN_ParseRecordAndUpdateDisp__4;6304 
+___UNKNOWN_ParseRecordAndUpdateDisp__3:
+              MOVE.B         D5,$1a(A7)               ;1f45 001a 
 ___UNKNOWN_ParseRecordAndUpdateDisp__4:
               MOVE.B         (A3)+,D0                 ;101b 
-              MOVE.B         D0,$1c(A7,D4.L)          ;1f80 481c 
-              MOVE.B         D0,$1b(A7)               ;1f40 001b 
-              MOVEQ.L        #$12,D1                  ;7212 
-              CMP.B          D1,D0                    ;b001 
-              BEQ.B          ___UNKNOWN_ParseRecordAndUpdateDisp__9;670a 
+              MOVE.L         $16(A7),D1               ;222f 0016 
+              MOVE.B         D0,$28(A7,D1.L)          ;1f80 1828 
+              MOVE.B         D0,$15(A7)               ;1f40 0015 
+              CMP.B          $44(A7),D0               ;b02f 0044 
+              BEQ.B          ___UNKNOWN_ParseRecordAndUpdateDisp__9;670c 
 ___UNKNOWN_ParseRecordAndUpdateDisp__5:
-              MOVEQ.L        #$a,D0                   ;700a 
-              CMP.L          D0,D4                    ;b880 
-              BCC.B          ___UNKNOWN_ParseRecordAndUpdateDisp__9;6404 
+              CMP.L          $20(A7),D1               ;b2af 0020 
+              BCC.B          ___UNKNOWN_ParseRecordAndUpdateDisp__9;6406 
 ___UNKNOWN_ParseRecordAndUpdateDisp__6:
 ___UNKNOWN_ParseRecordAndUpdateDisp__7:
-              ADDQ.L         #$1,D4                   ;5284 
+              ADDQ.L         #$1,$16(A7)              ;52af 0016 
 ___UNKNOWN_ParseRecordAndUpdateDisp__8:
-              BRA.B          ___UNKNOWN_ParseRecordAndUpdateDisp__4;60e6 
+              BRA.B          ___UNKNOWN_ParseRecordAndUpdateDisp__4;60e0 
 ___UNKNOWN_ParseRecordAndUpdateDisp__9:
-              CLR.B          $1c(A7,D4.L)             ;4237 481c 
-              MOVE.B         $1c(A7),D0               ;102f 001c 
-              TST.B          D0                       ;4a00 
-              BNE.B          ___UNKNOWN_ParseRecordAndUpdateDisp__11;6604 
+              MOVE.B         $40(A7),D0               ;102f 0040 
+              MOVE.L         $16(A7),D1               ;222f 0016 
+              MOVE.B         D0,$28(A7,D1.L)          ;1f80 1828 
+              MOVE.B         $28(A7),D1               ;122f 0028 
+              CMP.B          D0,D1                    ;b200 
+              BNE.B          ___UNKNOWN_ParseRecordAndUpdateDisp__11;6606 
 ___UNKNOWN_ParseRecordAndUpdateDisp__10:
-              MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___UNKNOWN_ParseRecordAndUpdateDisp__17;6050 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              BRA.B          ___UNKNOWN_ParseRecordAndUpdateDisp__17;605c 
 ___UNKNOWN_ParseRecordAndUpdateDisp__11:
-              PEA            $1c(A7)                  ;486f 001c 
+              PEA            $28(A7)                  ;486f 0028 
               PEA            WDISP_WeatherStatusLabelBuffer(A4);486c 0000 
               BSR.W          UNKNOWN_JMPTBL_ESQ_WildcardMatch;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BEQ.B          ___UNKNOWN_ParseRecordAndUpdateDisp__13;6704 
+              BEQ.B          ___UNKNOWN_ParseRecordAndUpdateDisp__13;6706 
 ___UNKNOWN_ParseRecordAndUpdateDisp__12:
-              MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___UNKNOWN_ParseRecordAndUpdateDisp__17;603a 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              BRA.B          ___UNKNOWN_ParseRecordAndUpdateDisp__17;6044 
 ___UNKNOWN_ParseRecordAndUpdateDisp__13:
               MOVE.L         WDISP_WeatherStatusOverlayTextPt(A4),-(A7);2f2c 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          ESQPROTO_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,WDISP_WeatherStatusOverlayTextPt(A4);2940 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.B         D7,WDISP_WeatherStatusCountdown(A4);1947 0000 
-              MOVE.B         D6,WDISP_WeatherStatusColorCode(A4);1946 0000 
-              MOVE.B         D5,WDISP_WeatherStatusBrushIndex(A4);1945 0000 
+              MOVE.B         $24(A7),WDISP_WeatherStatusCountdown(A4);196f 0024 0000 
+              MOVE.B         $1b(A7),WDISP_WeatherStatusColorCode(A4);196f 001b 0000 
+              MOVE.B         $1a(A7),WDISP_WeatherStatusBrushIndex(A4);196f 001a 0000 
               MOVE.W         ED_DiagnosticsScreenActive(A4),D0;302c 0000 
-              BEQ.B          ___UNKNOWN_ParseRecordAndUpdateDisp__15;6716 
+              BEQ.B          ___UNKNOWN_ParseRecordAndUpdateDisp__15;6718 
 ___UNKNOWN_ParseRecordAndUpdateDisp__14:
               MOVE.L         WDISP_WeatherStatusOverlayTextPt(A4),-(A7);2f2c 0000 
-              PEA            ($ac).w                  ;4878 00ac 
-              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          UNKNOWN_JMPTBL_DISPLIB_DisplayTe;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
 ___UNKNOWN_ParseRecordAndUpdateDisp__15:
-              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
 ___UNKNOWN_ParseRecordAndUpdateDisp__16:
 ___UNKNOWN_ParseRecordAndUpdateDisp__17:
-              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
-              ADD.W          #$14,A7                  ;defc 0014 
+              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
+              ADD.W          #$34,A7                  ;defc 0034 
               RTS                                     ;4e75 
 __const:
 __strings:

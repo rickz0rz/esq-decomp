@@ -17,6 +17,15 @@ extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rast, LONG x, LON
 
 LONG UNKNOWN_ParseRecordAndUpdateDisplay(const UBYTE *in)
 {
+    const UBYTE BRUSH_MIN = 2u;
+    const UBYTE BRUSH_MAX = 6u;
+    const UBYTE BRUSH_DEFAULT = 1;
+    const UBYTE TOKEN_RECORD_END = 0x12;
+    const ULONG LABEL_MAX = 10u;
+    const UBYTE CH_NUL = 0;
+    const LONG RESULT_OK = 0;
+    const LONG DISPLAY_X = 0;
+    const LONG DISPLAY_Y = 172;
     const UBYTE *p = in;
     UBYTE local[16];
     UBYTE countdown = *p++;
@@ -26,26 +35,26 @@ LONG UNKNOWN_ParseRecordAndUpdateDisplay(const UBYTE *in)
 
     p += 1;
 
-    if (brush < 2u || brush > 6u) {
-        brush = 1;
+    if (brush < BRUSH_MIN || brush > BRUSH_MAX) {
+        brush = BRUSH_DEFAULT;
     }
 
     for (;;) {
         UBYTE c = *p++;
         local[i] = c;
-        if (c == 0x12 || i >= 10u) {
+        if (c == TOKEN_RECORD_END || i >= LABEL_MAX) {
             break;
         }
         i++;
     }
 
-    local[i] = 0;
-    if (local[0] == 0) {
-        return 0;
+    local[i] = CH_NUL;
+    if (local[0] == CH_NUL) {
+        return RESULT_OK;
     }
 
     if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(WDISP_WeatherStatusLabelBuffer, local) != 0) {
-        return 0;
+        return RESULT_OK;
     }
 
     WDISP_WeatherStatusOverlayTextPtr =
@@ -56,8 +65,8 @@ LONG UNKNOWN_ParseRecordAndUpdateDisplay(const UBYTE *in)
 
     if (ED_DiagnosticsScreenActive != 0) {
         UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(
-            Global_REF_RASTPORT_1, 0, 172, WDISP_WeatherStatusOverlayTextPtr);
+            Global_REF_RASTPORT_1, DISPLAY_X, DISPLAY_Y, WDISP_WeatherStatusOverlayTextPtr);
     }
 
-    return 0;
+    return RESULT_OK;
 }
