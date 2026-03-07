@@ -1016,6 +1016,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqdisp_update_status_mask_and_refresh_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_set_apen_to_brightest_palette_index_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_deallocate_ads_and_logo_lst_data_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqiff_read_next_external_asset_path_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_service_external_asset_source_state_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_render_weather_status_brush_slice_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_play_next_external_asset_frame_return_trial.sh"
