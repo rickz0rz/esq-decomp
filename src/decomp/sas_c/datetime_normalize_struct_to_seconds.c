@@ -28,7 +28,7 @@ LONG DATETIME_NormalizeStructToSeconds(void *dt)
     LONG leapAdjust;
     LONG totalDays;
     LONG seconds;
-    LONG carry;
+    LONG overflowCarry;
 
     year = (LONG)W(dt, 6);
     if (year < DATETIME_BASE_YEAR) {
@@ -42,17 +42,17 @@ LONG DATETIME_NormalizeStructToSeconds(void *dt)
 
     DATETIME_AdjustMonthIndex(dt);
 
-    carry = (LONG)W(dt, 12) / DATETIME_SECONDS_PER_MINUTE;
-    W(dt, 10) = (short)(W(dt, 10) + carry);
+    overflowCarry = (LONG)W(dt, 12) / DATETIME_SECONDS_PER_MINUTE;
+    W(dt, 10) = (short)(W(dt, 10) + overflowCarry);
     W(dt, 12) = (short)((LONG)W(dt, 12) % DATETIME_SECONDS_PER_MINUTE);
 
-    carry = (LONG)W(dt, 10) / DATETIME_SECONDS_PER_MINUTE;
-    W(dt, 8) = (short)(W(dt, 8) + carry);
+    overflowCarry = (LONG)W(dt, 10) / DATETIME_SECONDS_PER_MINUTE;
+    W(dt, 8) = (short)(W(dt, 8) + overflowCarry);
     W(dt, 10) = (short)((LONG)W(dt, 10) % DATETIME_SECONDS_PER_MINUTE);
 
-    carry = (LONG)W(dt, 8) / DATETIME_HOURS_PER_DAY;
-    W(dt, 4) = (short)(W(dt, 4) + carry);
-    W(dt, 16) = (short)(W(dt, 16) + carry);
+    overflowCarry = (LONG)W(dt, 8) / DATETIME_HOURS_PER_DAY;
+    W(dt, 4) = (short)(W(dt, 4) + overflowCarry);
+    W(dt, 16) = (short)(W(dt, 16) + overflowCarry);
     W(dt, 8) = (short)((LONG)W(dt, 8) % DATETIME_HOURS_PER_DAY);
 
     daysInYear = (DATETIME_IsLeapYear((LONG)W(dt, 6)) != 0) ?
