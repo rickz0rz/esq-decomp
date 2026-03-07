@@ -41,16 +41,16 @@ static UBYTE *state_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->mode
 
 LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
 {
-    LONG textMode;
-    LONG written;
-    LONG pendingBytes;
-    UBYTE outByte;
+    LONG isTextMode;
+    LONG bytesWritten;
+    LONG pendingByteCount;
+    UBYTE singleByte;
     UBYTE *state;
     UBYTE *mode;
 
     mode = mode_flags_ptr(node);
     state = state_flags_ptr(node);
-    textMode = ((*mode & (1u << MODE_TEXT_TRANSLATE_BIT)) != 0) ? 1 : 0;
+    isTextMode = ((*mode & (1u << MODE_TEXT_TRANSLATE_BIT)) != 0) ? 1 : 0;
 
     if ((node->mode_state_flags & OPEN_MASK_WRITE_REJECT) != 0) {
         return -1;
@@ -66,7 +66,7 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
             return -1;
         }
         *state |= (1u << STATE_WRITE_PENDING_BIT);
-        node->write_remaining = (textMode != 0) ? -node->buffer_capacity : node->buffer_capacity;
+        node->write_remaining = (isTextMode != 0) ? -node->buffer_capacity : node->buffer_capacity;
         node->write_remaining -= 1;
         if (node->write_remaining < 0) {
             return STREAM_BufferedPutcOrFlush((LONG)(UBYTE)ch, node);
@@ -80,19 +80,19 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
             return 0;
         }
 
-        outByte = (UBYTE)ch;
-        if (textMode != 0 && ch == CHAR_LF) {
+        singleByte = (UBYTE)ch;
+        if (isTextMode != 0 && ch == CHAR_LF) {
             UBYTE crlf[2];
             crlf[0] = CHAR_CR;
             crlf[1] = CHAR_LF;
-            written = DOS_WriteByIndex(node->handle_index, crlf, 2);
+            bytesWritten = DOS_WriteByIndex(node->handle_index, crlf, 2);
         } else {
-            written = DOS_WriteByIndex(node->handle_index, &outByte, 1);
+            bytesWritten = DOS_WriteByIndex(node->handle_index, &singleByte, 1);
         }
         ch = CH_FLUSH;
     } else {
         *state |= (1u << STATE_WRITE_PENDING_BIT);
-        if (textMode != 0 && ch != CH_FLUSH) {
+        if (isTextMode != 0 && ch != CH_FLUSH) {
             node->write_remaining += 2;
             if (ch == CHAR_LF) {
                 *node->buffer_cursor++ = CHAR_CR;
@@ -108,14 +108,14 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
             ch = CH_FLUSH;
         }
 
-        pendingBytes = (LONG)(node->buffer_cursor - node->buffer_base);
-        written = 0;
-        if (pendingBytes != 0) {
+        pendingByteCount = (LONG)(node->buffer_cursor - node->buffer_base);
+        bytesWritten = 0;
+        if (pendingByteCount != 0) {
             if (((*mode & (1u << MODE_PREWRITE_SCAN_BIT)) != 0)) {
                 LONG scan;
                 (void)DOS_SeekByIndex(node->handle_index, 0, 2);
-                if (textMode != 0) {
-                    for (scan = pendingBytes - 1; scan >= 0; scan -= 1) {
+                if (isTextMode != 0) {
+                    for (scan = pendingByteCount - 1; scan >= 0; scan -= 1) {
                         UBYTE probe;
                         (void)DOS_SeekByIndex(node->handle_index, scan, 0);
                         (void)DOS_ReadByIndex(node->handle_index, &probe, 1);
@@ -125,16 +125,16 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
                     }
                 }
             }
-            written = DOS_WriteByIndex(node->handle_index, node->buffer_base, pendingBytes);
+            bytesWritten = DOS_WriteByIndex(node->handle_index, node->buffer_base, pendingByteCount);
         }
 
-        if (written == -1) {
+        if (bytesWritten == -1) {
             *state |= (1u << STATE_IO_ERROR_BIT);
-        } else if (written != pendingBytes) {
+        } else if (bytesWritten != pendingByteCount) {
             *state |= (1u << STATE_EOF_OR_SHORT_BIT);
         }
 
-        if (textMode != 0) {
+        if (isTextMode != 0) {
             node->write_remaining = -node->buffer_capacity;
         } else if ((*state & (1u << STATE_UNBUFFERED_BIT)) != 0) {
             node->write_remaining = 0;

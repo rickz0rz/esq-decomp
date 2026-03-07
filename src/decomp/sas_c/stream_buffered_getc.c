@@ -39,15 +39,15 @@ static UBYTE *state_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->mode
 
 LONG STREAM_BufferedGetc(PreallocHandleNode *node)
 {
-    LONG textMode;
-    LONG readCount;
-    LONG c;
+    LONG isTextMode;
+    LONG bytesRead;
+    LONG ch;
     UBYTE *state;
     UBYTE *mode;
 
     mode = mode_flags_ptr(node);
     state = state_flags_ptr(node);
-    textMode = ((*mode & (1u << MODE_TEXT_TRANSLATE_BIT)) != 0) ? 1 : 0;
+    isTextMode = ((*mode & (1u << MODE_TEXT_TRANSLATE_BIT)) != 0) ? 1 : 0;
 
     if ((node->mode_state_flags & OPEN_MASK_FLUSH_REJECT) != 0) {
         node->read_remaining = 0;
@@ -70,16 +70,16 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
                 return CH_EOF;
             }
         }
-    } else if (textMode != 0) {
+    } else if (isTextMode != 0) {
         node->read_remaining += 2;
         if (node->read_remaining <= 0) {
             node->buffer_cursor += 1;
-            c = (LONG)(unsigned char)node->buffer_cursor[-1];
-            if (c == CHAR_CTRL_Z) {
+            ch = (LONG)(unsigned char)node->buffer_cursor[-1];
+            if (ch == CHAR_CTRL_Z) {
                 *state |= (1u << STATE_EOF_OR_SHORT_BIT);
                 return CH_EOF;
             }
-            if (c == CHAR_CR) {
+            if (ch == CHAR_CR) {
                 node->read_remaining -= 1;
                 if (node->read_remaining < 0) {
                     return STREAM_BufferedGetc(node);
@@ -87,27 +87,27 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
                 node->buffer_cursor += 1;
                 return (LONG)(unsigned char)node->buffer_cursor[-1];
             }
-            return c;
+            return ch;
         }
     }
 
     if ((*state & (1u << STATE_WRITE_PENDING_BIT)) == 0) {
         *state |= (1u << STATE_READ_REFILL_ISSUED_BIT);
-        readCount = DOS_ReadByIndex(node->handle_index, node->buffer_base, node->buffer_capacity);
-        if (readCount < 0) {
+        bytesRead = DOS_ReadByIndex(node->handle_index, node->buffer_base, node->buffer_capacity);
+        if (bytesRead < 0) {
             *state |= (1u << STATE_IO_ERROR_BIT);
         }
-        if (readCount == 0) {
+        if (bytesRead == 0) {
             *state |= (1u << STATE_EOF_OR_SHORT_BIT);
         }
-        if (readCount > 0) {
-            node->read_remaining = (textMode != 0) ? -readCount : readCount;
+        if (bytesRead > 0) {
+            node->read_remaining = (isTextMode != 0) ? -bytesRead : bytesRead;
             node->buffer_cursor = node->buffer_base;
         }
     }
 
     if ((node->mode_state_flags & OPEN_MASK_READ_REJECT) != 0) {
-        node->read_remaining = (textMode != 0) ? -1 : 0;
+        node->read_remaining = (isTextMode != 0) ? -1 : 0;
         return CH_EOF;
     }
 
