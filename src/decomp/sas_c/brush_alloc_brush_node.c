@@ -3,6 +3,8 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_NULL = 0,
+    BRUSH_TRUE = 1,
     BRUSH_DESCRIPTOR_NODE_SIZE = 238,
     BRUSH_NODE_TYPE_OFFSET = 190,
     BRUSH_NODE_LOADCOLOR_OFFSET = 194,
@@ -30,7 +32,7 @@ void *BRUSH_AllocBrushNode(const char *label, void *prev_tail)
         MEMF_PUBLIC_CLEAR
     );
     BRUSH_LastAllocatedNode = (void *)node;
-    if (node == (UBYTE *)0) {
+    if (node == (UBYTE *)BRUSH_NULL) {
         return BRUSH_LastAllocatedNode;
     }
 
@@ -38,16 +40,16 @@ void *BRUSH_AllocBrushNode(const char *label, void *prev_tail)
     dst = node;
     do {
         *dst++ = *src;
-    } while (*src++ != (UBYTE)0);
+    } while (*src++ != (UBYTE)BRUSH_NULL);
 
-    *(LONG *)(node + BRUSH_NODE_LOADCOLOR_OFFSET) = 1;
-    *(UBYTE *)(node + BRUSH_NODE_TYPE_OFFSET) = 0;
-    *(ULONG *)(node + BRUSH_NODE_ALIGN_H_OFFSET) = 0;
-    *(ULONG *)(node + BRUSH_NODE_ALIGN_V_OFFSET) = 0;
-    if (prev_tail != (void *)0) {
+    *(LONG *)(node + BRUSH_NODE_LOADCOLOR_OFFSET) = BRUSH_TRUE;
+    *(UBYTE *)(node + BRUSH_NODE_TYPE_OFFSET) = BRUSH_NULL;
+    *(ULONG *)(node + BRUSH_NODE_ALIGN_H_OFFSET) = BRUSH_NULL;
+    *(ULONG *)(node + BRUSH_NODE_ALIGN_V_OFFSET) = BRUSH_NULL;
+    if (prev_tail != (void *)BRUSH_NULL) {
         *(void **)((UBYTE *)prev_tail + BRUSH_NODE_NEXT_OFFSET) = (void *)node;
     }
-    *(void **)(node + BRUSH_NODE_NEXT_OFFSET) = (void *)0;
+    *(void **)(node + BRUSH_NODE_NEXT_OFFSET) = (void *)BRUSH_NULL;
 
     return BRUSH_LastAllocatedNode;
 }
