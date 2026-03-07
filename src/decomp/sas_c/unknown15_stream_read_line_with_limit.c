@@ -3,7 +3,7 @@ typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
 typedef struct StreamBufferState {
-    ULONG reserved0;
+    ULONG owner_or_link;
     UBYTE *read_ptr;      /* +4 */
     LONG read_remaining;  /* +8 */
 } StreamBufferState;

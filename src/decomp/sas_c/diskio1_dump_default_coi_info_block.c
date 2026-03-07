@@ -4,7 +4,7 @@ typedef unsigned long ULONG;
 typedef signed short WORD;
 
 struct DiskioDefaultCoiInfo {
-    ULONG reserved0;
+    ULONG owner_or_link;
     const char *city;
     const char *order;
     const char *price;
@@ -16,7 +16,7 @@ struct DiskioDefaultCoiInfo {
 };
 
 struct DiskioProgramSourceRecord {
-    UBYTE reserved0[40];
+    UBYTE header_reserved[40];
     UBYTE flag1;
     UBYTE bg0;
     UBYTE bg1;
