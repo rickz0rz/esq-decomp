@@ -1,27 +1,30 @@
               SECTION      text,CODE
 __code:
-skip_leading_spaces:
+advance_until_space:
               CMP.L          __base(A4),A7            ;bfec 0000 
               BCS.W          _XCOVF                   ;6500 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
-___skip_leading_spaces__1:
+___advance_until_space__1:
               MOVE.L         $8(A7),A5                ;2a6f 0008 
               MOVE.L         A5,D0                    ;200d 
-              BNE.B          ___skip_leading_spaces__3;6604 
-___skip_leading_spaces__2:
+              BNE.B          ___advance_until_space__3;6604 
+___advance_until_space__2:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___skip_leading_spaces__7;600c 
-___skip_leading_spaces__3:
-              MOVEQ.L        #$20,D0                  ;7020 
-              CMP.B          (A5),D0                  ;b015 
-              BNE.B          ___skip_leading_spaces__5;6604 
-___skip_leading_spaces__4:
+              BRA.B          ___advance_until_space__8;6010 
+___advance_until_space__3:
+              MOVE.B         (A5),D0                  ;1015 
+              BEQ.B          ___advance_until_space__6;670a 
+___advance_until_space__4:
+              MOVEQ.L        #$20,D1                  ;7220 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___advance_until_space__6;6704 
+___advance_until_space__5:
               ADDQ.L         #$1,A5                   ;528d 
-              BRA.B          ___skip_leading_spaces__3;60f6 
-___skip_leading_spaces__5:
+              BRA.B          ___advance_until_space__3;60f2 
+___advance_until_space__6:
               MOVE.L         A5,D0                    ;200d 
-___skip_leading_spaces__6:
-___skip_leading_spaces__7:
+___advance_until_space__7:
+___advance_until_space__8:
               MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 __const:
@@ -193,7 +196,7 @@ ___NEWGRID_DrawGridEntry__28:
               MOVE.L         D0,$30(A7)               ;2f40 0030 
 ___NEWGRID_DrawGridEntry__29:
               MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
-              BSR.W          skip_leading_spaces      ;6100 fe3c 
+              BSR.W          advance_until_space      ;6100 fe38 
 ___NEWGRID_DrawGridEntry__30:
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.L         D0,$30(A7)               ;2f40 0030 
@@ -237,7 +240,7 @@ ___NEWGRID_DrawGridEntry__38:
               MOVE.L         A1,$30(A7)               ;2f49 0030 
 ___NEWGRID_DrawGridEntry__39:
               MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
-              BSR.W          skip_leading_spaces      ;6100 fdd4 
+              BSR.W          advance_until_space      ;6100 fdd0 
 ___NEWGRID_DrawGridEntry__40:
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.L         D0,$30(A7)               ;2f40 0030 
@@ -309,7 +312,7 @@ ___NEWGRID_DrawGridEntry__52:
               BEQ.W          ___NEWGRID_DrawGridEntry__64;6700 009a 
 ___NEWGRID_DrawGridEntry__53:
               MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
-              BSR.W          skip_leading_spaces      ;6100 fd1c 
+              BSR.W          advance_until_space      ;6100 fd18 
 ___NEWGRID_DrawGridEntry__54:
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.L         D0,$30(A7)               ;2f40 0030 

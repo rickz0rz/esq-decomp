@@ -23,10 +23,10 @@ extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *layout, const
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(void *layout, const char *src);
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 
-static char *skip_leading_spaces(char *p)
+static char *advance_until_space(char *p)
 {
     if (!p) return 0;
-    while (*p == ' ') p++;
+    while (*p != 0 && *p != ' ') p++;
     return p;
 }
 
@@ -84,7 +84,7 @@ void NEWGRID_DrawGridEntry(void *layout, UBYTE *rowMeta, CoiSet *coi, UWORD row,
     if (split) {
         tail = PARSEINI_JMPTBL_STR_FindAnyCharPtr(split, NEWGRID_EntrySplitDelimiterMask);
         if (tail) split = tail;
-        split = skip_leading_spaces(split);
+        split = advance_until_space(split);
         if (*split) {
             *split++ = 0;
         } else {
@@ -100,7 +100,7 @@ void NEWGRID_DrawGridEntry(void *layout, UBYTE *rowMeta, CoiSet *coi, UWORD row,
             split = p + 6;
         }
 
-        split = skip_leading_spaces(split);
+        split = advance_until_space(split);
         if (*split) {
             *split++ = 0;
             if (NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(layout, p) != 0) {
@@ -130,7 +130,7 @@ void NEWGRID_DrawGridEntry(void *layout, UBYTE *rowMeta, CoiSet *coi, UWORD row,
                 }
 
                 if (subtitle) {
-                    split = skip_leading_spaces(split);
+                    split = advance_until_space(split);
                     if (*split) {
                         *split++ = 0;
                     } else {
