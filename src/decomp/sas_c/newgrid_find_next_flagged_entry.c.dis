@@ -1,0 +1,90 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_FindNextFlaggedEntry:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A5,-(A7)     ;48e7 0f04 
+___NEWGRID_FindNextFlaggedEntry__1:
+              MOVE.L         $1c(A7),D6               ;2c2f 001c 
+              MOVE.L         $18(A7),D7               ;2e2f 0018 
+              MOVE.L         D6,D5                    ;2a06 
+              MOVEQ.L        #$0,D4                   ;7800 
+              MOVEQ.L        #$3,D0                   ;7003 
+              CMP.L          D0,D7                    ;be80 
+              BNE.B          ___NEWGRID_FindNextFlaggedEntry__3;6604 
+___NEWGRID_FindNextFlaggedEntry__2:
+              MOVEQ.L        #$0,D5                   ;7a00 
+              BRA.B          ___NEWGRID_FindNextFlaggedEntry__6;600c 
+___NEWGRID_FindNextFlaggedEntry__3:
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.L         #$4,D0                   ;5980 
+              BNE.B          ___NEWGRID_FindNextFlaggedEntry__5;6604 
+___NEWGRID_FindNextFlaggedEntry__4:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.B          ___NEWGRID_FindNextFlaggedEntry__6;6002 
+___NEWGRID_FindNextFlaggedEntry__5:
+              MOVEQ.L        #$1,D4                   ;7801 
+___NEWGRID_FindNextFlaggedEntry__6:
+              TST.L          D4                       ;4a84 
+              BEQ.B          ___NEWGRID_FindNextFlaggedEntry__8;6704 
+___NEWGRID_FindNextFlaggedEntry__7:
+              MOVE.L         D5,D0                    ;2005 
+              BRA.B          ___NEWGRID_FindNextFlaggedEntry__22;604c 
+___NEWGRID_FindNextFlaggedEntry__8:
+              MOVE.B         TEXTDISP_PrimaryGroupPresentFlag(A4),D0;102c 0000 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___NEWGRID_FindNextFlaggedEntry__10;6604 
+___NEWGRID_FindNextFlaggedEntry__9:
+              MOVE.L         D5,D0                    ;2005 
+              BRA.B          ___NEWGRID_FindNextFlaggedEntry__22;6040 
+___NEWGRID_FindNextFlaggedEntry__10:
+              TST.L          D4                       ;4a84 
+              BNE.B          ___NEWGRID_FindNextFlaggedEntry__18;6634 
+___NEWGRID_FindNextFlaggedEntry__11:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
+              CMP.L          D0,D5                    ;ba80 
+              BGE.B          ___NEWGRID_FindNextFlaggedEntry__18;6c2a 
+___NEWGRID_FindNextFlaggedEntry__12:
+___NEWGRID_FindNextFlaggedEntry__13:
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
+              MOVE.L         D0,A5                    ;2a40 
+              TST.L          D0                       ;4a80 
+              ADDQ.W         #$8,A7                   ;504f 
+              BEQ.B          ___NEWGRID_FindNextFlaggedEntry__17;6714 
+___NEWGRID_FindNextFlaggedEntry__14:
+              BTST           #$0,$2f(A5)              ;082d 0000 002f 
+              BEQ.B          ___NEWGRID_FindNextFlaggedEntry__17;670c 
+___NEWGRID_FindNextFlaggedEntry__15:
+              BTST           #$7,$28(A5)              ;082d 0007 0028 
+              BEQ.B          ___NEWGRID_FindNextFlaggedEntry__17;6704 
+___NEWGRID_FindNextFlaggedEntry__16:
+              MOVEQ.L        #$1,D4                   ;7801 
+              BRA.B          ___NEWGRID_FindNextFlaggedEntry__10;60cc 
+___NEWGRID_FindNextFlaggedEntry__17:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.B          ___NEWGRID_FindNextFlaggedEntry__10;60c8 
+___NEWGRID_FindNextFlaggedEntry__18:
+              TST.L          D4                       ;4a84 
+              BNE.B          ___NEWGRID_FindNextFlaggedEntry__20;6602 
+___NEWGRID_FindNextFlaggedEntry__19:
+              MOVEQ.L        #$ff,D5                  ;7aff 
+___NEWGRID_FindNextFlaggedEntry__20:
+              MOVE.L         D5,D0                    ;2005 
+___NEWGRID_FindNextFlaggedEntry__21:
+___NEWGRID_FindNextFlaggedEntry__22:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A5     ;4cdf 20f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_PrimaryGroupPresentFlag
+              XREF           TEXTDISP_PrimaryGroupEntryCount
+              XREF           NEWGRID2_JMPTBL_ESQDISP_GetEntry
+              XDEF           NEWGRID_FindNextFlaggedEntry
+              END
