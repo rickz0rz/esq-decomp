@@ -5,6 +5,7 @@ typedef unsigned char UBYTE;
 
 enum {
     TEXTDISP_NULL = 0,
+    FIRST_CHAR_INDEX = 0,
     MODE_KIND_PRIMARY = 1,
     MODE_KIND_SECONDARY = 2,
     CHANNEL_CODE_DEFAULT = 48,
@@ -76,7 +77,7 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(idx, modeKind);
     entry = (UBYTE *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, modeKind);
 
-    line[0] = TEXTDISP_NULL;
+    line[FIRST_CHAR_INDEX] = TEXTDISP_NULL;
     timeToken = (char *)TEXTDISP_NULL;
     bannerKind = BANNER_KIND_NOW_SHOWING;
 
@@ -148,8 +149,8 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             }
             scratch[out] = TEXTDISP_NULL;
 
-            if (scratch[0] != TEXTDISP_NULL) {
-                if (line[0] != TEXTDISP_NULL) {
+            if (scratch[FIRST_CHAR_INDEX] != TEXTDISP_NULL) {
+                if (line[FIRST_CHAR_INDEX] != TEXTDISP_NULL) {
                     STRING_AppendAtNull(line, SCRIPT_SpacerTripleA);
                 }
                 STRING_AppendAtNull(line, SCRIPT_AlignedChannelAbbrevPrefix);
@@ -158,10 +159,13 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
         }
 
         if (timeToken != (char *)TEXTDISP_NULL) {
-            if (line[0] != TEXTDISP_NULL) {
+            if (line[FIRST_CHAR_INDEX] != TEXTDISP_NULL) {
                 STRING_AppendAtNull(line, SCRIPT_SpacerTripleB);
             }
-            WDISP_SPrintf(scratch, SCRIPT_AlignedCharFormat, (LONG)(UBYTE)timeToken[0]);
+            WDISP_SPrintf(
+                scratch,
+                SCRIPT_AlignedCharFormat,
+                (LONG)(UBYTE)timeToken[FIRST_CHAR_INDEX]);
             STRING_AppendAtNull(line, scratch);
         }
 
@@ -174,11 +178,11 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             TEXTDISP_NULL);
     } else {
         if (P_TYPE_WeatherBottomLineMsgPtr != (const char *)TEXTDISP_NULL &&
-            P_TYPE_WeatherBottomLineMsgPtr[0] != TEXTDISP_NULL) {
+            P_TYPE_WeatherBottomLineMsgPtr[FIRST_CHAR_INDEX] != TEXTDISP_NULL) {
             STRING_AppendAtNull(line, SCRIPT_AlignedPrefixEmptyC);
             STRING_AppendAtNull(line, P_TYPE_WeatherBottomLineMsgPtr);
         } else {
-            line[0] = TEXTDISP_NULL;
+            line[FIRST_CHAR_INDEX] = TEXTDISP_NULL;
         }
     }
 
