@@ -2,138 +2,162 @@
 __code:
 TLIBA1_BuildClockFormatEntryIfVi:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$38,D0                  ;90bc 0000 0038 
+              SUB.L          #$6c,D0                  ;90bc 0000 006c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$1c,A7                  ;9efc 001c 
+              SUB.W          #$50,A7                  ;9efc 0050 
               MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 3f34 
 ___TLIBA1_BuildClockFormatEntryIfVi__1:
-              MOVE.W         $52(A7),D5               ;3a2f 0052 
-              MOVE.W         $4a(A7),D6               ;3c2f 004a 
-              MOVE.W         $46(A7),D7               ;3e2f 0046 
-              MOVE.L         $4c(A7),A5               ;2a6f 004c 
-              MOVE.W         TEXTDISP_ActiveGroupId(A4),D0;302c 0000 
-              SUBQ.W         #$1,D0                   ;5340 
-              SCC            D0,#$600                 ;56c0 
-              MOVEQ.L        #$1,D1                   ;7201 
-              SUB.B          D0,D1                    ;9200 
-              MOVE.W         D7,D0                    ;3007 
-              EXT.L          D0                       ;48c0 
-              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.W         $86(A7),D5               ;3a2f 0086 
+              MOVE.W         $7e(A7),D6               ;3c2f 007e 
+              MOVE.W         $7a(A7),D7               ;3e2f 007a 
+              MOVE.L         $80(A7),A5               ;2a6f 0080 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVEQ.L        #$2,D1                   ;7202 
+              MOVEQ.L        #$ff,D2                  ;74ff 
+              MOVE.L         D2,$64(A7)               ;2f42 0064 
+              MOVEQ.L        #$5,D2                   ;7405 
+              MOVE.L         D2,$60(A7)               ;2f42 0060 
+              MOVEQ.L        #$3,D2                   ;7403 
+              MOVE.L         D2,$5c(A7)               ;2f42 005c 
+              MOVEQ.L        #$4,D2                   ;7404 
+              MOVE.L         D2,$54(A7)               ;2f42 0054 
+              MOVE.L         #$5a0,$4c(A7)            ;2f7c 0000 05a0 004c 
+              CLR.L          $44(A7)                  ;42af 0044 
+              CLR.B          $40(A7)                  ;422f 0040 
+              MOVE.W         TEXTDISP_ActiveGroupId(A4),D2;342c 0000 
+              EXT.L          D2                       ;48c2 
+              MOVE.L         D0,$48(A7)               ;2f40 0048 
+              MOVE.L         D0,$50(A7)               ;2f40 0050 
+              MOVE.L         D0,$6c(A7)               ;2f40 006c 
+              MOVEM.L        D0,$70(A7)               ;48ef 0001 0070 
+              MOVEM.L        D1,$58(A7)               ;48ef 0002 0058 
+              MOVEM.L        D1,$68(A7)               ;48ef 0002 0068 
+              CMP.L          D0,D2                    ;b480 
+              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__4;6702 
+___TLIBA1_BuildClockFormatEntryIfVi__2:
+___TLIBA1_BuildClockFormatEntryIfVi__3:
+              MOVE.L         D1,D0                    ;2001 
+___TLIBA1_BuildClockFormatEntryIfVi__4:
+              MOVE.W         D7,D1                    ;3207 
+              EXT.L          D1                       ;48c1 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         D1,$44(A7)               ;2f41 0044 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
               BSR.W          TLIBA1_JMPTBL_ESQDISP_GetEntryPo;6100 0000 
               MOVE.L         D0,A3                    ;2640 
               MOVE.W         D7,D0                    ;3007 
               EXT.L          D0                       ;48c0 
-              MOVE.L         $44(A7),(A7)             ;2eaf 0044 
+              MOVE.L         $2c(A7),(A7)             ;2eaf 002c 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          TLIBA1_JMPTBL_ESQDISP_GetEntryAu;6100 0000 
               MOVE.L         D0,A2                    ;2440 
               MOVE.W         D6,D0                    ;3006 
               EXT.L          D0                       ;48c0 
-              PEA            ($5).w                   ;4878 0005 
+              MOVE.L         $6c(A7),(A7)             ;2eaf 006c 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          TLIBA1_JMPTBL_COI_GetAnimFieldPo;6100 0000 
               MOVE.W         D6,D1                    ;3206 
               EXT.L          D1                       ;48c1 
-              PEA            ($3).w                   ;4878 0003 
+              MOVE.L         $70(A7),(A7)             ;2eaf 0070 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              MOVE.L         D0,$5c(A7)               ;2f40 005c 
-___TLIBA1_BuildClockFormatEntryIfVi__2:
+              MOVE.L         D0,$58(A7)               ;2f40 0058 
               BSR.W          TLIBA1_JMPTBL_COI_GetAnimFieldPo;6100 0000 
               MOVE.W         D6,D1                    ;3206 
               EXT.L          D1                       ;48c1 
-              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         $74(A7),(A7)             ;2eaf 0074 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         D0,$5c(A7)               ;2f40 005c 
+              BSR.W          TLIBA1_JMPTBL_COI_GetAnimFieldPo;6100 0000 
+              MOVE.W         D6,D1                    ;3206 
+              EXT.L          D1                       ;48c1 
+___TLIBA1_BuildClockFormatEntryIfVi__5:
+              MOVE.L         $78(A7),(A7)             ;2eaf 0078 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         D0,$60(A7)               ;2f40 0060 
+              BSR.W          TLIBA1_JMPTBL_COI_GetAnimFieldPo;6100 0000 
+              MOVE.W         D6,D1                    ;3206 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         $7c(A7),(A7)             ;2eaf 007c 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         D0,$64(A7)               ;2f40 0064 
               BSR.W          TLIBA1_JMPTBL_COI_GetAnimFieldPo;6100 0000 
+              LEA            $34(A7),A7               ;4fef 0034 
+              MOVE.L         $48(A7),$28(A7)          ;2f6f 0048 0028 
               MOVE.W         D6,D1                    ;3206 
               EXT.L          D1                       ;48c1 
-              PEA            ($4).w                   ;4878 0004 
-              MOVE.L         D1,-(A7)                 ;2f01 
-              MOVE.L         A3,-(A7)                 ;2f0b 
-              MOVE.L         D0,$6c(A7)               ;2f40 006c 
-              BSR.W          TLIBA1_JMPTBL_COI_GetAnimFieldPo;6100 0000 
-              MOVE.W         D6,D1                    ;3206 
-              EXT.L          D1                       ;48c1 
-              PEA            ($1).w                   ;4878 0001 
-              MOVE.L         D1,-(A7)                 ;2f01 
-              MOVE.L         A3,-(A7)                 ;2f0b 
-              MOVE.L         D0,$74(A7)               ;2f40 0074 
-              BSR.W          TLIBA1_JMPTBL_COI_GetAnimFieldPo;6100 0000 
-              LEA            $48(A7),A7               ;4fef 0048 
-              MOVEQ.L        #$1,D1                   ;7201 
-              MOVE.L         D1,$24(A7)               ;2f41 0024 
-              MOVE.L         D0,$28(A7)               ;2f40 0028 
-              MOVEQ.L        #$ff,D0                  ;70ff 
-              CMP.W          D0,D6                    ;bc40 
-              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__4;671e 
-___TLIBA1_BuildClockFormatEntryIfVi__3:
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              CMP.L          $64(A7),D1               ;b2af 0064 
+              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__7;671e 
+___TLIBA1_BuildClockFormatEntryIfVi__6:
               MOVE.W         D6,D0                    ;3006 
               EXT.L          D0                       ;48c0 
               MOVE.L         CONFIG_TimeWindowMinutes(A4),-(A7);2f2c 0000 
-              PEA            ($5a0).w                 ;4878 05a0 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A2,-(A7)                 ;2f0a 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          TLIBA1_JMPTBL_COI_TestEntryWithi;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
-___TLIBA1_BuildClockFormatEntryIfVi__4:
-              MOVE.L         D6,D0                    ;2006 
-              ADDQ.W         #$1,D0                   ;5240 
-              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__6;6706 
-___TLIBA1_BuildClockFormatEntryIfVi__5:
-              TST.L          $24(A7)                  ;4aaf 0024 
-              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__14;6748 
-___TLIBA1_BuildClockFormatEntryIfVi__6:
-              MOVE.L         $38(A7),D0               ;202f 0038 
-              BNE.B          ___TLIBA1_BuildClockFormatEntryIfVi__11;6618 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
 ___TLIBA1_BuildClockFormatEntryIfVi__7:
-              MOVE.L         $34(A7),D1               ;222f 0034 
-              BNE.B          ___TLIBA1_BuildClockFormatEntryIfVi__11;6612 
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              CMP.L          $64(A7),D0               ;b0af 0064 
+              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__9;670a 
 ___TLIBA1_BuildClockFormatEntryIfVi__8:
-              MOVE.L         $30(A7),D2               ;242f 0030 
-              BNE.B          ___TLIBA1_BuildClockFormatEntryIfVi__11;660c 
+              MOVE.L         $28(A7),D0               ;202f 0028 
+              CMP.L          $44(A7),D0               ;b0af 0044 
+              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__17;674a 
 ___TLIBA1_BuildClockFormatEntryIfVi__9:
-              MOVE.L         $2c(A7),D3               ;262f 002c 
-              BNE.B          ___TLIBA1_BuildClockFormatEntryIfVi__11;6606 
+              MOVE.L         $3c(A7),D0               ;202f 003c 
+              BNE.B          ___TLIBA1_BuildClockFormatEntryIfVi__14;6618 
 ___TLIBA1_BuildClockFormatEntryIfVi__10:
-              MOVE.L         $28(A7),D4               ;282f 0028 
-              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__14;672a 
+              MOVE.L         $38(A7),D1               ;222f 0038 
+              BNE.B          ___TLIBA1_BuildClockFormatEntryIfVi__14;6612 
 ___TLIBA1_BuildClockFormatEntryIfVi__11:
-              MOVE.L         A5,D1                    ;220d 
-              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__13;6722 
+              MOVE.L         $34(A7),D2               ;242f 0034 
+              BNE.B          ___TLIBA1_BuildClockFormatEntryIfVi__14;660c 
 ___TLIBA1_BuildClockFormatEntryIfVi__12:
+              MOVE.L         $30(A7),D3               ;262f 0030 
+              BNE.B          ___TLIBA1_BuildClockFormatEntryIfVi__14;6606 
+___TLIBA1_BuildClockFormatEntryIfVi__13:
+              MOVE.L         $2c(A7),D4               ;282f 002c 
+              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__17;672c 
+___TLIBA1_BuildClockFormatEntryIfVi__14:
+              MOVE.L         A5,D1                    ;220d 
+              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__16;6722 
+___TLIBA1_BuildClockFormatEntryIfVi__15:
               MOVE.W         D5,D1                    ;3205 
               EXT.L          D1                       ;48c1 
               MOVE.L         D1,-(A7)                 ;2f01 
-              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
-              MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
-              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
-              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         $40(A7),-(A7)            ;2f2f 0040 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          TLIBA1_FormatClockFormatEntry;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
-___TLIBA1_BuildClockFormatEntryIfVi__13:
-              MOVEQ.L        #$1,D0                   ;7001 
-              BRA.B          ___TLIBA1_BuildClockFormatEntryIfVi__18;6008 
-___TLIBA1_BuildClockFormatEntryIfVi__14:
-              MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__16;6702 
-___TLIBA1_BuildClockFormatEntryIfVi__15:
-              CLR.B          (A5)                     ;4215 
 ___TLIBA1_BuildClockFormatEntryIfVi__16:
-              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $48(A7),D0               ;202f 0048 
+              BRA.B          ___TLIBA1_BuildClockFormatEntryIfVi__21;600c 
 ___TLIBA1_BuildClockFormatEntryIfVi__17:
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___TLIBA1_BuildClockFormatEntryIfVi__19;6704 
 ___TLIBA1_BuildClockFormatEntryIfVi__18:
+              MOVE.B         $40(A7),(A5)             ;1aaf 0040 
+___TLIBA1_BuildClockFormatEntryIfVi__19:
+              MOVE.L         $44(A7),D0               ;202f 0044 
+___TLIBA1_BuildClockFormatEntryIfVi__20:
+___TLIBA1_BuildClockFormatEntryIfVi__21:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
-              ADD.W          #$1c,A7                  ;defc 001c 
+              ADD.W          #$50,A7                  ;defc 0050 
               RTS                                     ;4e75 
 __const:
 __strings:

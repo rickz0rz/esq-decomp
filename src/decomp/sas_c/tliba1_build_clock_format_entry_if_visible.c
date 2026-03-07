@@ -12,6 +12,19 @@ extern void TLIBA1_FormatClockFormatEntry(char *dst, void *f0, void *f1, void *f
 
 WORD TLIBA1_BuildClockFormatEntryIfVisible(WORD groupIndex, WORD modeIndex, char *outText, WORD style)
 {
+    const LONG GROUP_PRIMARY = 1;
+    const LONG MODE_PRIMARY = 1;
+    const LONG MODE_SECONDARY = 2;
+    const LONG MODE_ANY = -1;
+    const LONG FIELD_ID_0 = 5;
+    const LONG FIELD_ID_1 = 3;
+    const LONG FIELD_ID_2 = 2;
+    const LONG FIELD_ID_3 = 4;
+    const LONG FIELD_ID_4 = 1;
+    const LONG DAY_MINUTES = 1440;
+    const LONG FLAG_TRUE = 1;
+    const LONG FLAG_FALSE = 0;
+    const char CH_NUL = 0;
     LONG displayMode;
     void *entry;
     void *aux;
@@ -22,30 +35,32 @@ WORD TLIBA1_BuildClockFormatEntryIfVisible(WORD groupIndex, WORD modeIndex, char
     void *f4;
     LONG visible;
 
-    displayMode = (TEXTDISP_ActiveGroupId == 1) ? 1 : 2;
+    displayMode = (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) ? MODE_PRIMARY : MODE_SECONDARY;
     entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)groupIndex, displayMode);
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((LONG)groupIndex, displayMode);
 
-    f0 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, 5);
-    f1 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, 3);
-    f2 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, 2);
-    f3 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, 4);
-    f4 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, 1);
+    f0 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, FIELD_ID_0);
+    f1 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, FIELD_ID_1);
+    f2 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, FIELD_ID_2);
+    f3 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, FIELD_ID_3);
+    f4 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, FIELD_ID_4);
 
-    visible = 1;
-    if (modeIndex != -1) {
-        visible = TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(entry, aux, (LONG)modeIndex, 1440, CONFIG_TimeWindowMinutes);
+    visible = FLAG_TRUE;
+    if (modeIndex != MODE_ANY) {
+        visible = TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
+            entry, aux, (LONG)modeIndex, DAY_MINUTES, CONFIG_TimeWindowMinutes);
     }
 
-    if ((modeIndex == -1 || visible != 0) && (f0 != (void *)0 || f1 != (void *)0 || f2 != (void *)0 || f3 != (void *)0 || f4 != (void *)0)) {
+    if ((modeIndex == MODE_ANY || visible != FLAG_FALSE) &&
+        (f0 != (void *)0 || f1 != (void *)0 || f2 != (void *)0 || f3 != (void *)0 || f4 != (void *)0)) {
         if (outText != (char *)0) {
             TLIBA1_FormatClockFormatEntry(outText, f0, f1, f2, f3, f4, (LONG)style);
         }
-        return 1;
+        return FLAG_TRUE;
     }
 
     if (outText != (char *)0) {
-        outText[0] = 0;
+        outText[0] = CH_NUL;
     }
-    return 0;
+    return FLAG_FALSE;
 }

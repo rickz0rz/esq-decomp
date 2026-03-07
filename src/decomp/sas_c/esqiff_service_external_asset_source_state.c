@@ -15,33 +15,40 @@ extern void ESQIFF_QueueNextExternalAssetIffJob(void);
 
 void ESQIFF_ServiceExternalAssetSourceState(WORD mode)
 {
-    if (Global_WORD_SELECT_CODE_IS_RAVESC != 0) {
+    const WORD FLAG_FALSE = 0;
+    const WORD FLAG_TRUE = -1;
+    const WORD EXTERNAL_SRC_BIT_DRIVE0 = 2;
+    const WORD EXTERNAL_SRC_BIT_DRIVE1 = 1;
+    const WORD RELOAD_DRIVE0 = 0;
+    const WORD RELOAD_DRIVE1 = 1;
+
+    if (Global_WORD_SELECT_CODE_IS_RAVESC != FLAG_FALSE) {
         return;
     }
 
     ESQDISP_ProcessGridMessagesIfIdle();
 
-    if (COI_AttentionOverlayBusyFlag != 0) {
+    if (COI_AttentionOverlayBusyFlag != FLAG_FALSE) {
         return;
     }
 
-    if (mode != 0) {
-        ESQIFF_AssetSourceSelect = 0;
-        ESQIFF_GAdsSourceEnabled = -1;
+    if (mode != FLAG_FALSE) {
+        ESQIFF_AssetSourceSelect = FLAG_FALSE;
+        ESQIFF_GAdsSourceEnabled = FLAG_TRUE;
     } else {
-        ESQIFF_GAdsSourceEnabled = 0;
-        ESQIFF_AssetSourceSelect = -1;
+        ESQIFF_GAdsSourceEnabled = FLAG_FALSE;
+        ESQIFF_AssetSourceSelect = FLAG_TRUE;
     }
 
-    if (DISKIO_Drive0WriteProtectedCode == 0) {
-        if ((ESQIFF_ExternalAssetFlags & 2) != 2) {
-            ESQIFF_ReloadExternalAssetCatalogBuffers(0);
+    if (DISKIO_Drive0WriteProtectedCode == FLAG_FALSE) {
+        if ((ESQIFF_ExternalAssetFlags & EXTERNAL_SRC_BIT_DRIVE0) != EXTERNAL_SRC_BIT_DRIVE0) {
+            ESQIFF_ReloadExternalAssetCatalogBuffers(RELOAD_DRIVE0);
         }
     }
 
-    if (DISKIO_DriveWriteProtectStatusCodeDrive1 == 0) {
-        if ((ESQIFF_ExternalAssetFlags & 1) != 1) {
-            ESQIFF_ReloadExternalAssetCatalogBuffers(1);
+    if (DISKIO_DriveWriteProtectStatusCodeDrive1 == FLAG_FALSE) {
+        if ((ESQIFF_ExternalAssetFlags & EXTERNAL_SRC_BIT_DRIVE1) != EXTERNAL_SRC_BIT_DRIVE1) {
+            ESQIFF_ReloadExternalAssetCatalogBuffers(RELOAD_DRIVE1);
         }
     }
 
