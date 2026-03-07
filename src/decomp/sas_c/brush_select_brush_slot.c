@@ -33,14 +33,14 @@ static LONG half_toward_zero(LONG v)
 LONG BRUSH_SelectBrushSlot(
     UBYTE *brush,
     LONG srcX0,
-    LONG src_y0,
+    LONG srcY0,
     LONG src_x1,
     LONG src_y1,
     void *dst_rp,
     LONG forcedDstY)
 {
     LONG src_x = srcX0;
-    LONG src_y = src_y0;
+    LONG src_y = srcY0;
     LONG dst_x;
     LONG dst_y;
     LONG spanX;
@@ -83,13 +83,13 @@ LONG BRUSH_SelectBrushSlot(
         }
     }
 
-    spanY = src_y1 - src_y0 + BRUSH_SPAN_INCLUSIVE_DELTA;
+    spanY = src_y1 - srcY0 + BRUSH_SPAN_INCLUSIVE_DELTA;
     clip_h = *(LONG *)(brush + BRUSH_CLIP_H_OFFSET);
     if (clip_h > spanY) {
-        dst_y = src_y0;
+        dst_y = srcY0;
         alignModeY = *(LONG *)(brush + BRUSH_ALIGN_Y_MODE_OFFSET);
         if (alignModeY == ALIGN_MODE_RIGHT_BOTTOM) {
-            dst_y = clip_h - (src_y1 - src_y0) - BRUSH_SPAN_INCLUSIVE_DELTA;
+            dst_y = clip_h - (src_y1 - srcY0) - BRUSH_SPAN_INCLUSIVE_DELTA;
         } else if (alignModeY == ALIGN_MODE_CENTER) {
             dst_y = half_toward_zero(clip_h) - half_toward_zero(spanY);
         } else {
@@ -102,13 +102,13 @@ LONG BRUSH_SelectBrushSlot(
             if (alignModeY == ALIGN_MODE_RIGHT_BOTTOM) {
                 src_y = src_y1 - clip_h + BRUSH_SPAN_INCLUSIVE_DELTA;
             } else if (alignModeY == ALIGN_MODE_CENTER) {
-                src_y = src_y0 + half_toward_zero(spanY) - half_toward_zero(clip_h);
+                src_y = srcY0 + half_toward_zero(spanY) - half_toward_zero(clip_h);
             } else {
-                src_y = src_y0;
+                src_y = srcY0;
             }
         } else {
             dst_y = *(LONG *)(brush + BRUSH_DST_Y_OFFSET);
-            src_y = src_y0;
+            src_y = srcY0;
         }
     }
 
@@ -117,7 +117,7 @@ LONG BRUSH_SelectBrushSlot(
         clip_w = *(LONG *)(brush + BRUSH_CLIP_W_OFFSET);
     }
 
-    clip_h = src_y1 - src_y0 + BRUSH_SPAN_INCLUSIVE_DELTA;
+    clip_h = src_y1 - srcY0 + BRUSH_SPAN_INCLUSIVE_DELTA;
     if (clip_h > *(LONG *)(brush + BRUSH_CLIP_H_OFFSET)) {
         clip_h = *(LONG *)(brush + BRUSH_CLIP_H_OFFSET);
     }
