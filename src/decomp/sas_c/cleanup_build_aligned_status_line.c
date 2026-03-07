@@ -33,30 +33,30 @@ LONG GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(LONG c);
 void CLEANUP_BuildAlignedStatusLine(UBYTE *out, UWORD isPrimary, UWORD modeSel, UWORD slot, LONG alignToken)
 {
     void *entry;
-    UBYTE wrap[12];
-    UBYTE *text6;
-    UBYTE *text7;
+    UBYTE wrappedText[12];
+    UBYTE *fieldText6;
+    UBYTE *fieldText7;
 
     entry = (void *)GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(
         (LONG)modeSel,
         isPrimary ? ALIGNED_STATUS_MODE_PRIMARY : ALIGNED_STATUS_MODE_SECONDARY
     );
     if (CLEANUP_TestEntryFlagYAndBit1(entry, (LONG)slot, alignToken) != 0) {
-        text6 = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT6);
+        fieldText6 = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT6);
     } else {
-        text6 = (UBYTE *)0;
+        fieldText6 = (UBYTE *)0;
     }
 
-    if (text6 == (UBYTE *)0) {
+    if (fieldText6 == (UBYTE *)0) {
         CLOCK_AlignedInsetRenderGateFlag = 0;
         return;
     }
 
     GROUP_AE_JMPTBL_WDISP_SPrintf(
-        wrap,
+        wrappedText,
         CLOCK_FMT_WRAP_CHAR_STRING_CHAR,
         ALIGNED_STATUS_WRAP_PREFIX_WIDTH,
-        (LONG)text6,
+        (LONG)fieldText6,
         ALIGNED_STATUS_WRAP_SUFFIX_WIDTH
     );
     if (alignToken != 0) {
@@ -64,23 +64,23 @@ void CLEANUP_BuildAlignedStatusLine(UBYTE *out, UWORD isPrimary, UWORD modeSel, 
     } else {
         GROUP_AI_JMPTBL_STRING_AppendAtNull(out, CLOCK_STR_DOUBLE_SPACE);
     }
-    GROUP_AI_JMPTBL_STRING_AppendAtNull(out, wrap);
+    GROUP_AI_JMPTBL_STRING_AppendAtNull(out, wrappedText);
 
-    text7 = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT7);
-    if (text7 == (UBYTE *)0) {
-        text7 = (UBYTE *)CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY;
+    fieldText7 = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT7);
+    if (fieldText7 == (UBYTE *)0) {
+        fieldText7 = (UBYTE *)CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY;
     }
 
-    if ((WDISP_CharClassTable[text7[ALIGNED_STATUS_FIELD_TEXT6]] & CHARCLASS_HEX_DIGIT_MASK) != 0) {
+    if ((WDISP_CharClassTable[fieldText7[ALIGNED_STATUS_FIELD_TEXT6]] & CHARCLASS_HEX_DIGIT_MASK) != 0) {
         CLEANUP_AlignedInsetNibblePrimary =
-            (UBYTE)GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)text7[ALIGNED_STATUS_FIELD_TEXT6]);
+            (UBYTE)GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)fieldText7[ALIGNED_STATUS_FIELD_TEXT6]);
     } else {
         CLEANUP_AlignedInsetNibblePrimary = ALIGNED_INSET_NIBBLE_INVALID;
     }
 
-    if ((WDISP_CharClassTable[text7[ALIGNED_STATUS_FIELD_TEXT7]] & CHARCLASS_HEX_DIGIT_MASK) != 0) {
+    if ((WDISP_CharClassTable[fieldText7[ALIGNED_STATUS_FIELD_TEXT7]] & CHARCLASS_HEX_DIGIT_MASK) != 0) {
         CLEANUP_AlignedInsetNibbleSecondary =
-            (UBYTE)GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)text7[ALIGNED_STATUS_FIELD_TEXT7]);
+            (UBYTE)GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)fieldText7[ALIGNED_STATUS_FIELD_TEXT7]);
     } else {
         CLEANUP_AlignedInsetNibbleSecondary = ALIGNED_INSET_NIBBLE_INVALID;
     }
