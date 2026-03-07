@@ -5,14 +5,17 @@ DISPLIB_ResetTextBufferAndLineTa:
               SUBQ.L         #$8,D0                   ;5180 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___DISPLIB_ResetTextBufferAndLineTa__1:
-              CLR.L          -(A7)                    ;42a7 
+              SUB.L          A5,A5                    ;9bcd 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               MOVE.L         DISPTEXT_TextBufferPtr(A4),-(A7);2f2c 0000 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,DISPTEXT_TextBufferPtr(A4);2940 0000 
               BSR.W          DISPLIB_ResetLineTables  ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___DISPLIB_ResetTextBufferAndLineTa__2:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 __const:
 __strings:
