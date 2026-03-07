@@ -10,7 +10,7 @@ extern const char PARSEINI_TAG_FILENAME_WeatherString[];
 extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
 extern void *PARSEINI_JMPTBL_BRUSH_AllocBrushNode(char *entryText, void *existingNode);
 
-void PARSEINI_LoadWeatherStrings(char *entryKey, char *entryValue)
+void PARSEINI_LoadWeatherStrings(const char *entryKey, char *entryValue)
 {
     void *weatherNode;
 

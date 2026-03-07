@@ -17,9 +17,9 @@ typedef struct PreallocHandleNode {
 extern ULONG Global_DefaultHandleFlags;
 
 extern LONG UNKNOWN36_FinalizeRequest(PreallocHandleNode *node);
-extern LONG HANDLE_OpenEntryWithFlags(UBYTE *name, ULONG flags, LONG size);
+extern LONG HANDLE_OpenEntryWithFlags(const UBYTE *name, ULONG flags, LONG size);
 
-PreallocHandleNode *HANDLE_OpenFromModeString(UBYTE *name, UBYTE *mode, PreallocHandleNode *node)
+PreallocHandleNode *HANDLE_OpenFromModeString(const UBYTE *name, const UBYTE *mode, PreallocHandleNode *node)
 {
     ULONG defaultFlags;
     ULONG idx;

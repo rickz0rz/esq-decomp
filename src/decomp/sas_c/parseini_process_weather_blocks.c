@@ -38,7 +38,7 @@ extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
 extern void SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, char *src, LONG n);
 
-void PARSEINI_ProcessWeatherBlocks(char *entryKey, char *entryValue)
+void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
 {
     void *prevSourceNode;
     void *newAllocNode;

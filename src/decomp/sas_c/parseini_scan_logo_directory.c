@@ -3,19 +3,19 @@ typedef unsigned long ULONG;
 
 extern LONG Global_REF_DOS_LIBRARY_2;
 
-extern char Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK[];
-extern char PARSEINI_STR_RB_LogoListPrimary[];
-extern char PARSEINI_STR_RB_LogoListSecondary[];
-extern char PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST[];
-extern char PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT[];
-extern char Global_STR_PARSEINI_C_4[];
-extern char Global_STR_PARSEINI_C_5[];
+extern const char Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK[];
+extern const char PARSEINI_STR_RB_LogoListPrimary[];
+extern const char PARSEINI_STR_RB_LogoListSecondary[];
+extern const char PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST[];
+extern const char PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT[];
+extern const char Global_STR_PARSEINI_C_4[];
+extern const char Global_STR_PARSEINI_C_5[];
 
-extern LONG _LVOExecute(char *cmd, LONG input, LONG output);
-extern LONG PARSEINI_JMPTBL_HANDLE_OpenWithMode(char *path, char *modeStr);
+extern LONG _LVOExecute(const char *cmd, LONG input, LONG output);
+extern LONG PARSEINI_JMPTBL_HANDLE_OpenWithMode(const char *path, const char *modeStr);
 extern LONG PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(char *dst, LONG maxLen, LONG handle);
 extern char *PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(char *path);
-extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
+extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
 extern void PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(LONG handle);
 
 static LONG PARSEINI_StrLen(const char *s)

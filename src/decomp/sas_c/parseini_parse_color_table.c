@@ -13,12 +13,12 @@ extern UBYTE ESQFUNC_BasePaletteRgbTriples[];
 
 extern const char Global_STR_COLOR_PERCENT_D[];
 
-extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, LONG indexValue);
-extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(char *a, char *b);
+extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, LONG indexValue);
+extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
 extern LONG SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(LONG ch);
 extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 
-void PARSEINI_ParseColorTable(char *entryKey, char *entryValue, LONG mode)
+void PARSEINI_ParseColorTable(const char *entryKey, const char *entryValue, LONG mode)
 {
     UBYTE *targetTriples;
     LONG maxColors;

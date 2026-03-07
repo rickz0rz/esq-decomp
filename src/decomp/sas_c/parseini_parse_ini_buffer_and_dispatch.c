@@ -26,9 +26,9 @@ extern const char PARSEINI_STR_LOADCOLORTABLE[];
 extern char *P_TYPE_WeatherCurrentMsgPtr;
 extern char *P_TYPE_WeatherForecastMsgPtr;
 extern char *P_TYPE_WeatherBottomLineMsgPtr;
-extern char Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE[];
-extern char SCRIPT_PtrNoForecastWeatherData[];
-extern char SCRIPT_PtrWeatherDataAvailabilityDisclaimer[];
+extern const char Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE[];
+extern const char SCRIPT_PtrNoForecastWeatherData[];
+extern const char SCRIPT_PtrWeatherDataAvailabilityDisclaimer[];
 extern LONG GCOMMAND_GradientPresetTable[];
 
 extern LONG PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
@@ -42,10 +42,10 @@ extern char *PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(char *path);
 extern LONG PARSEINI_JMPTBL_HANDLE_OpenWithMode(char *path, const char *modeStr);
 extern void PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(char *brushPath);
 extern void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(void);
-extern void PARSEINI_ProcessWeatherBlocks(char *entryKey, char *entryValue);
-extern void PARSEINI_LoadWeatherStrings(char *entryKey, char *entryValue);
-extern void PARSEINI_LoadWeatherMessageStrings(char *entryKey, char *entryValue);
-extern void PARSEINI_ParseColorTable(char *entryKey, char *entryValue);
+extern void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue);
+extern void PARSEINI_LoadWeatherStrings(const char *entryKey, char *entryValue);
+extern void PARSEINI_LoadWeatherMessageStrings(const char *entryKey, char *entryValue);
+extern void PARSEINI_ParseColorTable(const char *entryKey, char *entryValue);
 
 LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
 {

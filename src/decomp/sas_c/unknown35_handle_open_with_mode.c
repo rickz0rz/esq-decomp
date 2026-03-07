@@ -9,9 +9,9 @@ struct PreallocHandleNode {
 extern struct PreallocHandleNode Global_PreallocHandleNode0;
 
 extern void *ALLOC_AllocFromFreeList(LONG size);
-extern LONG HANDLE_OpenFromModeString(char *path, char *mode, struct PreallocHandleNode *node);
+extern LONG HANDLE_OpenFromModeString(const char *path, const char *mode, struct PreallocHandleNode *node);
 
-struct PreallocHandleNode *HANDLE_OpenWithMode(char *path, char *mode, char *unused)
+struct PreallocHandleNode *HANDLE_OpenWithMode(const char *path, const char *mode, char *unused)
 {
     struct PreallocHandleNode *prev = 0;
     struct PreallocHandleNode *node = &Global_PreallocHandleNode0;

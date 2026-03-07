@@ -5,7 +5,7 @@ extern UBYTE CONFIG_ParseiniLogoScanEnabledFlag;
 extern LONG Global_UIBusyFlag;
 extern LONG Global_REF_DOS_LIBRARY_2;
 
-extern char Global_STR_PERCENT_S_2[];
+extern const char Global_STR_PERCENT_S_2[];
 
 extern void PARSEINI_ScanLogoDirectory(void);
 extern LONG PARSEINI_TestMemoryAndOpenTopazFont(void **fontHandleOut, void *textAttr);
@@ -17,8 +17,8 @@ extern void *Global_STRUCT_TEXTATTR_H26F_FONT;
 extern void *Global_STRUCT_TEXTATTR_PREVUEC_FONT;
 extern void *Global_STRUCT_TEXTATTR_PREVUE_FONT;
 
-extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, char *arg);
-extern LONG _LVOExecute(char *command, LONG input, LONG output);
+extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
+extern LONG _LVOExecute(const char *command, LONG input, LONG output);
 
 extern void PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0(void);
 extern void PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1(void);
@@ -29,7 +29,7 @@ extern void PARSEINI_JMPTBL_ED1_ExitEscMenu(void);
 extern void PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen(void);
 extern void PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion(void);
 
-void PARSEINI_HandleFontCommand(char *command)
+void PARSEINI_HandleFontCommand(const char *command)
 {
     UBYTE c0;
     UBYTE c1;

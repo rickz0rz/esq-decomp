@@ -11,7 +11,7 @@ extern const char PARSEINI_STR_BOTTOMLINETAG[];
 extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
 extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(char *newValue, char *oldValue);
 
-void PARSEINI_LoadWeatherMessageStrings(char *entryKey, char *entryValue)
+void PARSEINI_LoadWeatherMessageStrings(const char *entryKey, char *entryValue)
 {
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_STR_WEATHERCURRENT) == 0) {
         P_TYPE_WeatherCurrentMsgPtr =
