@@ -2,6 +2,14 @@ typedef unsigned short UWORD;
 typedef signed short WORD;
 typedef signed long LONG;
 
+enum {
+    DISPTEXT_MIN_SELECTABLE_LINE_INDEX = 1,
+    DISPTEXT_MAX_SELECTABLE_LINE_INDEX = 3,
+    DISPTEXT_RESULT_FALSE = 0,
+    DISPTEXT_RESULT_TRUE = 1,
+    DISPTEXT_RESULT_SELECTED = -1
+};
+
 extern WORD DISPTEXT_LineTableLockFlag;
 extern WORD DISPTEXT_CurrentLineIndex;
 extern WORD DISPTEXT_TargetLineIndex;
@@ -19,11 +27,11 @@ void DISPTEXT_SetCurrentLineIndex(LONG lineIndex)
         return;
     }
 
-    if (lineIndex < 1) {
+    if (lineIndex < DISPTEXT_MIN_SELECTABLE_LINE_INDEX) {
         return;
     }
 
-    if (lineIndex > 3) {
+    if (lineIndex > DISPTEXT_MAX_SELECTABLE_LINE_INDEX) {
         return;
     }
 
@@ -40,15 +48,15 @@ LONG DISPTEXT_HasMultipleLines(void)
 {
     DISPTEXT_FinalizeLineTable();
 
-    if (DISPTEXT_CurrentLineIndex != 0) {
-        return 0;
+    if (DISPTEXT_CurrentLineIndex != DISPTEXT_RESULT_FALSE) {
+        return DISPTEXT_RESULT_FALSE;
     }
 
     if ((UWORD)DISPTEXT_TargetLineIndex <= 0) {
-        return 0;
+        return DISPTEXT_RESULT_FALSE;
     }
 
-    return 1;
+    return DISPTEXT_RESULT_TRUE;
 }
 
 LONG DISPTEXT_IsLastLineSelected(void)
@@ -63,9 +71,9 @@ LONG DISPTEXT_IsLastLineSelected(void)
     current = (LONG)(UWORD)DISPTEXT_CurrentLineIndex;
 
     if (current == lastIndex) {
-        return -1;
+        return DISPTEXT_RESULT_SELECTED;
     }
-    return 0;
+    return DISPTEXT_RESULT_FALSE;
 }
 
 LONG DISPTEXT_IsCurrentLineLast(void)
@@ -79,9 +87,9 @@ LONG DISPTEXT_IsCurrentLineLast(void)
     target = (LONG)(UWORD)DISPTEXT_TargetLineIndex;
 
     if (current == target) {
-        return -1;
+        return DISPTEXT_RESULT_SELECTED;
     }
-    return 0;
+    return DISPTEXT_RESULT_FALSE;
 }
 
 LONG DISPTEXT_MeasureCurrentLineLength(void *rp)
