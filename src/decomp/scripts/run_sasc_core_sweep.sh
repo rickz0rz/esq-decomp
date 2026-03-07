@@ -596,6 +596,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ed_update_ad_number_display_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_load_current_ad_into_buffers_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_handle_diagnostic_nibble_edit_trial.sh"
+    "src/decomp/scripts/compare_sasc_ed_handle_edit_attributes_input_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_ad_number_prompt_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_esc_main_menu_text_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_menu_selection_highlight_trial.sh"
