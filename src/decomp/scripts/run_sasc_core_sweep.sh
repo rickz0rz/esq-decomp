@@ -1205,6 +1205,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_draw_top_border_line_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_find_next_flagged_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_find_next_entry_with_flags_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_find_next_entry_with_alt_markers_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_init_showtime_buckets_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_init_selection_window_alt_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_init_selection_window_trial.sh"

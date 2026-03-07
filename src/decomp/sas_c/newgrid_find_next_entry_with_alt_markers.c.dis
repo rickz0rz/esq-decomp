@@ -1,0 +1,151 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_FindNextEntryWithAltMark:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$20,D0                  ;90bc 0000 0020 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$10,A7                  ;9efc 0010 
+              MOVEM.L        D4/D5/D6/D7,-(A7)        ;48e7 0f00 
+___NEWGRID_FindNextEntryWithAltMark__1:
+              MOVE.W         $2e(A7),D5               ;3a2f 002e 
+              MOVE.L         $28(A7),D6               ;2c2f 0028 
+              MOVE.L         $24(A7),D7               ;2e2f 0024 
+              MOVE.L         D6,D4                    ;2806 
+              CLR.L          $1c(A7)                  ;42af 001c 
+              TST.L          D7                       ;4a87 
+              BEQ.B          ___NEWGRID_FindNextEntryWithAltMark__3;6706 
+___NEWGRID_FindNextEntryWithAltMark__2:
+              MOVEQ.L        #$6,D0                   ;7006 
+              CMP.L          D0,D7                    ;be80 
+              BNE.B          ___NEWGRID_FindNextEntryWithAltMark__4;6604 
+___NEWGRID_FindNextEntryWithAltMark__3:
+              MOVEQ.L        #$0,D4                   ;7800 
+              BRA.B          ___NEWGRID_FindNextEntryWithAltMark__7;6010 
+___NEWGRID_FindNextEntryWithAltMark__4:
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.L         #$4,D0                   ;5980 
+              BNE.B          ___NEWGRID_FindNextEntryWithAltMark__6;6604 
+___NEWGRID_FindNextEntryWithAltMark__5:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.B          ___NEWGRID_FindNextEntryWithAltMark__7;6006 
+___NEWGRID_FindNextEntryWithAltMark__6:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+___NEWGRID_FindNextEntryWithAltMark__7:
+              TST.L          $1c(A7)                  ;4aaf 001c 
+              BEQ.B          ___NEWGRID_FindNextEntryWithAltMark__9;6706 
+___NEWGRID_FindNextEntryWithAltMark__8:
+              MOVE.L         D4,D0                    ;2004 
+              BRA.W          ___NEWGRID_FindNextEntryWithAltMark__32;6000 00da 
+___NEWGRID_FindNextEntryWithAltMark__9:
+              TST.L          $1c(A7)                  ;4aaf 001c 
+              BNE.W          ___NEWGRID_FindNextEntryWithAltMark__28;6600 00c8 
+___NEWGRID_FindNextEntryWithAltMark__10:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
+              CMP.L          D0,D4                    ;b880 
+              BGE.W          ___NEWGRID_FindNextEntryWithAltMark__28;6c00 00bc 
+___NEWGRID_FindNextEntryWithAltMark__11:
+___NEWGRID_FindNextEntryWithAltMark__12:
+              MOVE.B         TEXTDISP_PrimaryGroupPresentFlag(A4),D0;102c 0000 
+              TST.B          D0                       ;4a00 
+              BEQ.W          ___NEWGRID_FindNextEntryWithAltMark__28;6700 00b2 
+___NEWGRID_FindNextEntryWithAltMark__13:
+___NEWGRID_FindNextEntryWithAltMark__14:
+              CLR.L          $18(A7)                  ;42af 0018 
+              CLR.L          $14(A7)                  ;42af 0014 
+              MOVE.W         D5,D0                    ;3005 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            $1c(A7)                  ;486f 001c 
+              PEA            $24(A7)                  ;486f 0024 
+              BSR.W          NEWGRID_UpdatePresetEntry;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.W         D0,$12(A7)               ;3f40 0012 
+              MOVE.L         $18(A7),D0               ;202f 0018 
+              BEQ.B          ___NEWGRID_FindNextEntryWithAltMark__16;6706 
+___NEWGRID_FindNextEntryWithAltMark__15:
+              TST.L          $14(A7)                  ;4aaf 0014 
+              BNE.B          ___NEWGRID_FindNextEntryWithAltMark__17;6604 
+___NEWGRID_FindNextEntryWithAltMark__16:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.B          ___NEWGRID_FindNextEntryWithAltMark__9;60ae 
+___NEWGRID_FindNextEntryWithAltMark__17:
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.W          #$2e,A1                  ;d2fc 002e 
+              BTST           #$3,$1(A1)               ;0829 0003 0001 
+              BNE.B          ___NEWGRID_FindNextEntryWithAltMark__19;6604 
+___NEWGRID_FindNextEntryWithAltMark__18:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.B          ___NEWGRID_FindNextEntryWithAltMark__9;609a 
+___NEWGRID_FindNextEntryWithAltMark__19:
+              MOVE.B         $28(A0),D1               ;1228 0028 
+              BTST           #$7,D1                   ;0801 0007 
+              BNE.B          ___NEWGRID_FindNextEntryWithAltMark__21;6604 
+___NEWGRID_FindNextEntryWithAltMark__20:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.B          ___NEWGRID_FindNextEntryWithAltMark__9;608c 
+___NEWGRID_FindNextEntryWithAltMark__21:
+              LEA            $1c(A0),A1               ;43e8 001c 
+              MOVE.W         $12(A7),D0               ;302f 0012 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              BSR.W          NEWGRID2_JMPTBL_ESQ_TestBit1Base;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              ADDQ.L         #$1,D0                   ;5280 
+              BEQ.B          ___NEWGRID_FindNextEntryWithAltMark__23;6706 
+___NEWGRID_FindNextEntryWithAltMark__22:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.W          ___NEWGRID_FindNextEntryWithAltMark__9;6000 ff70 
+___NEWGRID_FindNextEntryWithAltMark__23:
+              MOVE.W         D5,D0                    ;3005 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D0,A1                    ;d3c0 
+              BTST           #$7,$7(A1)               ;0829 0007 0007 
+              BEQ.B          ___NEWGRID_FindNextEntryWithAltMark__25;6706 
+___NEWGRID_FindNextEntryWithAltMark__24:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.W          ___NEWGRID_FindNextEntryWithAltMark__9;6000 ff56 
+___NEWGRID_FindNextEntryWithAltMark__25:
+              MOVE.W         $12(A7),D0               ;302f 0012 
+              EXT.L          D0                       ;48c0 
+              ASL.L          #$2,D0                   ;e580 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            $38(A0),A1               ;43e8 0038 
+              TST.L          (A1)                     ;4a91 
+              BNE.B          ___NEWGRID_FindNextEntryWithAltMark__27;6606 
+___NEWGRID_FindNextEntryWithAltMark__26:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.W          ___NEWGRID_FindNextEntryWithAltMark__9;6000 ff3e 
+___NEWGRID_FindNextEntryWithAltMark__27:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              BRA.W          ___NEWGRID_FindNextEntryWithAltMark__9;6000 ff34 
+___NEWGRID_FindNextEntryWithAltMark__28:
+              TST.L          $1c(A7)                  ;4aaf 001c 
+              BNE.B          ___NEWGRID_FindNextEntryWithAltMark__30;6602 
+___NEWGRID_FindNextEntryWithAltMark__29:
+              MOVEQ.L        #$ff,D4                  ;78ff 
+___NEWGRID_FindNextEntryWithAltMark__30:
+              MOVE.L         D4,D0                    ;2004 
+___NEWGRID_FindNextEntryWithAltMark__31:
+___NEWGRID_FindNextEntryWithAltMark__32:
+              MOVEM.L        (A7)+,D4/D5/D6/D7        ;4cdf 00f0 
+              ADD.W          #$10,A7                  ;defc 0010 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_PrimaryGroupEntryCount
+              XREF           TEXTDISP_PrimaryGroupPresentFlag
+              XREF           NEWGRID_UpdatePresetEntry
+              XREF           NEWGRID2_JMPTBL_ESQ_TestBit1Base
+              XDEF           NEWGRID_FindNextEntryWithAltMark
+              END
