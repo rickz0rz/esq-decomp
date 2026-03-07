@@ -17,98 +17,116 @@ __const:
 __strings:
 ED_DrawDiagnosticRegisterValues:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              SUB.L          #$3c,D0                  ;90bc 0000 003c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              SUB.W          #$2c,A7                  ;9efc 002c 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
 ___ED_DrawDiagnosticRegisterValues__1:
-              PEA            ($1).w                   ;4878 0001 
+              MOVEQ.L        #$1,D7                   ;7e01 
+              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVEQ.L        #$2,D5                   ;7a02 
+              MOVE.L         #$f0,$34(A7)             ;2f7c 0000 00f0 0034 
+              MOVE.L         #$10e,$30(A7)            ;2f7c 0000 010e 0030 
+              MOVEQ.L        #$28,D0                  ;7028 
+              MOVE.L         #$be,$28(A7)             ;2f7c 0000 00be 0028 
+              MOVEQ.L        #$55,D1                  ;7255 
+              MOVE.L         D1,$20(A7)               ;2f41 0020 
+              MOVE.L         #$87,$1c(A7)             ;2f7c 0000 0087 001c 
+              MOVE.L         #$b4,$18(A7)             ;2f7c 0000 00b4 0018 
+              MOVE.L         #$e6,$14(A7)             ;2f7c 0000 00e6 0014 
+              MOVE.L         #$113,$10(A7)            ;2f7c 0000 0113 0010 
+              MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVE.L         D0,$38(A7)               ;2f40 0038 
               BSR.W          _LVOSetDrMd              ;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D6,(A7)                  ;2e86 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetAPen              ;6100 0000 
               PEA            Global_STR_REGISTER(A4)  ;486c 0000 
-              PEA            ($28).w                  ;4878 0028 
-              PEA            ($f0).w                  ;4878 00f0 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         D5,(A7)                  ;2e85 
               MOVE.L         ED_TempCopyOffset(A4),-(A7);2f2c 0000 
               PEA            ED_EditBufferScratch(A4) ;486c 0000 
               BSR.W          GROUP_AL_JMPTBL_ESQ_WriteDecFixe;6100 0000 
               PEA            ED_EditBufferScratch(A4) ;486c 0000 
-              PEA            ($be).w                  ;4878 00be 
-              PEA            ($f0).w                  ;4878 00f0 
+              MOVE.L         $58(A7),-(A7)            ;2f2f 0058 
+              MOVE.L         $68(A7),-(A7)            ;2f2f 0068 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              LEA            $44(A7),A7               ;4fef 0044 
               PEA            Global_STR_R_EQUALS(A4)  ;486c 0000 
-              PEA            ($28).w                  ;4878 0028 
-              PEA            ($10e).w                 ;4878 010e 
+              MOVE.L         $64(A7),-(A7)            ;2f2f 0064 
+              MOVE.L         $74(A7),-(A7)            ;2f2f 0074 
+___ED_DrawDiagnosticRegisterValues__2:
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              BSR.W          ED_DiagPaletteIndex3     ;6100 ff64 
-___ED_DrawDiagnosticRegisterValues__2:
-              MOVE.L         D0,D7                    ;2e00 
-              MOVEQ.L        #$0,D0                   ;7000 
+              LEA            $4c(A7),A7               ;4fef 004c 
+              BSR.W          ED_DiagPaletteIndex3     ;6100 ff16 
+___ED_DrawDiagnosticRegisterValues__3:
+              MOVEQ.L        #$0,D1                   ;7200 
               LEA            GCOMMAND_PresetFallbackValue0(A4),A0;41ec 0000 
-              MOVE.B         $0(A0,D7.L),D0           ;1030 7800 
-              PEA            ($2).w                   ;4878 0002 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.B         $0(A0,D0.L),D1           ;1230 0800 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D1,-(A7)                 ;2f01 
               PEA            ED_EditBufferScratch(A4) ;486c 0000 
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
               BSR.W          GROUP_AL_JMPTBL_ESQ_WriteDecFixe;6100 0000 
               PEA            ED_EditBufferScratch(A4) ;486c 0000 
-              PEA            ($55).w                  ;4878 0055 
-              PEA            ($10e).w                 ;4878 010e 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
               PEA            Global_STR_G_EQUALS(A4)  ;486c 0000 
-              PEA            ($87).w                  ;4878 0087 
-              PEA            ($10e).w                 ;4878 010e 
+              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
+              MOVE.L         $54(A7),-(A7)            ;2f2f 0054 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              BSR.W          ED_DiagPaletteIndex3     ;6100 ff1e 
-___ED_DrawDiagnosticRegisterValues__3:
-              MOVE.L         D0,D7                    ;2e00 
-              MOVEQ.L        #$0,D0                   ;7000 
-              LEA            GCOMMAND_PresetFallbackValue1(A4),A0;41ec 0000 
-              MOVE.B         $0(A0,D7.L),D0           ;1030 7800 
-              PEA            ($2).w                   ;4878 0002 
-              MOVE.L         D0,-(A7)                 ;2f00 
-              PEA            ED_EditBufferScratch(A4) ;486c 0000 
-              BSR.W          GROUP_AL_JMPTBL_ESQ_WriteDecFixe;6100 0000 
-              LEA            $48(A7),A7               ;4fef 0048 
-              PEA            ED_EditBufferScratch(A4) ;486c 0000 
-              PEA            ($b4).w                  ;4878 00b4 
-              PEA            ($10e).w                 ;4878 010e 
-              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
-              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              PEA            Global_STR_B_EQUALS(A4)  ;486c 0000 
-              PEA            ($e6).w                  ;4878 00e6 
-              PEA            ($10e).w                 ;4878 010e 
-              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
-              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              BSR.W          ED_DiagPaletteIndex3     ;6100 fed4 
+              BSR.W          ED_DiagPaletteIndex3     ;6100 fed0 
 ___ED_DrawDiagnosticRegisterValues__4:
-              MOVE.L         D0,D7                    ;2e00 
-              MOVEQ.L        #$0,D0                   ;7000 
-              LEA            GCOMMAND_PresetFallbackValue2(A4),A0;41ec 0000 
-              MOVE.B         $0(A0,D7.L),D0           ;1030 7800 
-              PEA            ($2).w                   ;4878 0002 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVEQ.L        #$0,D1                   ;7200 
+              LEA            GCOMMAND_PresetFallbackValue1(A4),A0;41ec 0000 
+              MOVE.B         $0(A0,D0.L),D1           ;1230 0800 
+              MOVE.L         D5,(A7)                  ;2e85 
+              MOVE.L         D1,-(A7)                 ;2f01 
               PEA            ED_EditBufferScratch(A4) ;486c 0000 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
               BSR.W          GROUP_AL_JMPTBL_ESQ_WriteDecFixe;6100 0000 
               PEA            ED_EditBufferScratch(A4) ;486c 0000 
-              PEA            ($113).w                 ;4878 0113 
-              PEA            ($10e).w                 ;4878 010e 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
+              MOVE.L         $6c(A7),-(A7)            ;2f2f 006c 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              LEA            $3c(A7),A7               ;4fef 003c 
+              LEA            $44(A7),A7               ;4fef 0044 
+              PEA            Global_STR_B_EQUALS(A4)  ;486c 0000 
+              MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              BSR.W          ED_DiagPaletteIndex3     ;6100 fe86 
 ___ED_DrawDiagnosticRegisterValues__5:
-              MOVE.L         (A7)+,D7                 ;2e1f 
+              MOVEQ.L        #$0,D1                   ;7200 
+              LEA            GCOMMAND_PresetFallbackValue2(A4),A0;41ec 0000 
+              MOVE.B         $0(A0,D0.L),D1           ;1230 0800 
+              MOVE.L         D5,(A7)                  ;2e85 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              PEA            ED_EditBufferScratch(A4) ;486c 0000 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BSR.W          GROUP_AL_JMPTBL_ESQ_WriteDecFixe;6100 0000 
+              PEA            ED_EditBufferScratch(A4) ;486c 0000 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $28(A7),A7               ;4fef 0028 
+___ED_DrawDiagnosticRegisterValues__6:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              ADD.W          #$2c,A7                  ;defc 002c 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF

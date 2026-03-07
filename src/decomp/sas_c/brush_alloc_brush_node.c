@@ -5,6 +5,7 @@ typedef long LONG;
 enum {
     BRUSH_NULL = 0,
     BRUSH_TRUE = 1,
+    BRUSH_ALLOC_LINE = 1352,
     BRUSH_DESCRIPTOR_NODE_SIZE = 238,
     BRUSH_NODE_TYPE_OFFSET = 190,
     BRUSH_NODE_LOADCOLOR_OFFSET = 194,
@@ -27,7 +28,7 @@ void *BRUSH_AllocBrushNode(const char *label, void *prev_tail)
 
     node = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_BRUSH_C_19,
-        1352,
+        BRUSH_ALLOC_LINE,
         BRUSH_DESCRIPTOR_NODE_SIZE,
         MEMF_PUBLIC_CLEAR
     );

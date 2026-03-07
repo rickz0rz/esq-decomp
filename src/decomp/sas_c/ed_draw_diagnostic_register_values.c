@@ -28,28 +28,41 @@ static LONG ED_DiagPaletteIndex3(void)
 
 void ED_DrawDiagnosticRegisterValues(void)
 {
+    const LONG DRAWMODE_COMPLEMENT = 1;
+    const LONG PEN_TEXT = 1;
+    const LONG DEC_WIDTH_2 = 2;
+    const LONG ROW_REG = 240;
+    const LONG ROW_RGB = 270;
+    const LONG COL_LEFT = 40;
+    const LONG COL_REG_VALUE = 190;
+    const LONG COL_R_LABEL = 40;
+    const LONG COL_R_VALUE = 85;
+    const LONG COL_G_LABEL = 135;
+    const LONG COL_G_VALUE = 180;
+    const LONG COL_B_LABEL = 230;
+    const LONG COL_B_VALUE = 275;
     LONG idx3;
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_COMPLEMENT);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_TEXT);
 
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 240, 40, Global_STR_REGISTER);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_REG, COL_LEFT, Global_STR_REGISTER);
 
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, ED_TempCopyOffset, 2);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 240, 190, ED_EditBufferScratch);
+    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, ED_TempCopyOffset, DEC_WIDTH_2);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_REG, COL_REG_VALUE, ED_EditBufferScratch);
 
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 270, 40, Global_STR_R_EQUALS);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_R_LABEL, Global_STR_R_EQUALS);
     idx3 = ED_DiagPaletteIndex3();
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue0[idx3], 2);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 270, 85, ED_EditBufferScratch);
+    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue0[idx3], DEC_WIDTH_2);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_R_VALUE, ED_EditBufferScratch);
 
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 270, 135, Global_STR_G_EQUALS);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_G_LABEL, Global_STR_G_EQUALS);
     idx3 = ED_DiagPaletteIndex3();
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue1[idx3], 2);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 270, 180, ED_EditBufferScratch);
+    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue1[idx3], DEC_WIDTH_2);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_G_VALUE, ED_EditBufferScratch);
 
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 270, 230, Global_STR_B_EQUALS);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_B_LABEL, Global_STR_B_EQUALS);
     idx3 = ED_DiagPaletteIndex3();
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue2[idx3], 2);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 270, 275, ED_EditBufferScratch);
+    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue2[idx3], DEC_WIDTH_2);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_B_VALUE, ED_EditBufferScratch);
 }

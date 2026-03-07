@@ -21,6 +21,19 @@ LONG _LVOCreateProc(void);
 
 void CTASKS_StartIffTaskProcess(void)
 {
+    const UWORD FLAG_FALSE = 0;
+    const UWORD TASKSTATE_IFF = 6;
+    const UWORD TASKSTATE_LOGO = 4;
+    const UWORD TASKSTATE_GADS = 5;
+    const LONG TASKPROC_ALLOC_LINE = 159;
+    const LONG TASKPROC_STRUCT_SIZE = 14;
+    const ULONG MEMF_PUBLIC_CLEAR = 0x10001UL;
+    const LONG TASKLIST_SIZE_OFFSET = 0;
+    const LONG TASKLIST_MAGIC_OFFSET = 8;
+    const LONG TASKLIST_ENTRY_OFFSET = 10;
+    const UWORD TASKLIST_MAGIC = 20217;
+    const LONG TASKLIST_SEG_BPTR_SHIFT = 2;
+    const LONG TASKLIST_SEG_BPTR_ADD = 4;
     LONG task;
     LONG list_ptr;
     LONG seg_bptr;
@@ -29,25 +42,29 @@ void CTASKS_StartIffTaskProcess(void)
         _LVOForbid();
         task = _LVOFindTask();
         _LVOPermit();
-    } while (task != 0);
+    } while (task != FLAG_FALSE);
 
-    CTASKS_IffTaskDoneFlag = 0;
-    if ((UWORD)(CTASKS_IffTaskState - 6) != 0) {
-        if (ESQIFF_AssetSourceSelect != 0) {
-            CTASKS_IffTaskState = 4;
+    CTASKS_IffTaskDoneFlag = FLAG_FALSE;
+    if ((UWORD)(CTASKS_IffTaskState - TASKSTATE_IFF) != 0) {
+        if (ESQIFF_AssetSourceSelect != FLAG_FALSE) {
+            CTASKS_IffTaskState = TASKSTATE_LOGO;
         } else {
-            CTASKS_IffTaskState = 5;
+            CTASKS_IffTaskState = TASKSTATE_GADS;
         }
     }
 
-    list_ptr = (LONG)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_CTASKS_C_2, 159, 14, 0x10001UL);
+    list_ptr = (LONG)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+        Global_STR_CTASKS_C_2,
+        TASKPROC_ALLOC_LINE,
+        TASKPROC_STRUCT_SIZE,
+        MEMF_PUBLIC_CLEAR);
     Global_REF_LIST_IFF_TASK_PROC = list_ptr;
 
-    *(LONG *)(list_ptr + 0) = 14;
-    *(LONG *)(list_ptr + 10) = (LONG)CTASKS_IFFTaskCleanup;
-    *(UWORD *)(list_ptr + 8) = 20217;
+    *(LONG *)(list_ptr + TASKLIST_SIZE_OFFSET) = TASKPROC_STRUCT_SIZE;
+    *(LONG *)(list_ptr + TASKLIST_ENTRY_OFFSET) = (LONG)CTASKS_IFFTaskCleanup;
+    *(UWORD *)(list_ptr + TASKLIST_MAGIC_OFFSET) = TASKLIST_MAGIC;
 
-    seg_bptr = (list_ptr + 4) >> 2;
+    seg_bptr = (list_ptr + TASKLIST_SEG_BPTR_ADD) >> TASKLIST_SEG_BPTR_SHIFT;
     CTASKS_IffTaskSegListBPTR = seg_bptr;
 
     CTASKS_IffTaskProcPtr = _LVOCreateProc();
