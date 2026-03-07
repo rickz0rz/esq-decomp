@@ -16,8 +16,8 @@ extern void ALLOC_InsertFreeBlock(void *block, LONG size);
 
 void *ALLOC_AllocFromFreeList(LONG size)
 {
-    FreeBlock **link;
-    FreeBlock *node;
+    FreeBlock **freeListLink;
+    FreeBlock *freeNode;
 
     if (size <= 0) {
         return (void *)0;
@@ -29,30 +29,30 @@ void *ALLOC_AllocFromFreeList(LONG size)
 
     size = (size + 3) & ~3;
 
-    link = &Global_AllocListHead;
-    node = *link;
+    freeListLink = &Global_AllocListHead;
+    freeNode = *freeListLink;
 
-    while (node != (FreeBlock *)0) {
-        if (node->size >= size) {
-            if (node->size == size) {
-                *link = node->next;
+    while (freeNode != (FreeBlock *)0) {
+        if (freeNode->size >= size) {
+            if (freeNode->size == size) {
+                *freeListLink = freeNode->next;
                 Global_AllocBytesTotal -= size;
-                return node;
+                return freeNode;
             } else {
-                LONG remainder = node->size - size;
+                LONG remainder = freeNode->size - size;
                 if (remainder >= 8) {
-                    FreeBlock *split = (FreeBlock *)((char *)node + size);
-                    *link = split;
-                    split->next = node->next;
+                    FreeBlock *split = (FreeBlock *)((char *)freeNode + size);
+                    *freeListLink = split;
+                    split->next = freeNode->next;
                     split->size = remainder;
                     Global_AllocBytesTotal -= size;
-                    return node;
+                    return freeNode;
                 }
             }
         }
 
-        link = &node->next;
-        node = node->next;
+        freeListLink = &freeNode->next;
+        freeNode = freeNode->next;
     }
 
     {
