@@ -1,0 +1,61 @@
+              SECTION      text,CODE
+__code:
+ESQPARS_ClearAliasStringPointers:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___ESQPARS_ClearAliasStringPointers__1:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ESQPARS_ClearAliasStringPointers__2:
+              MOVE.W         TEXTDISP_AliasCount(A4),D0;302c 0000 
+              CMP.W          D0,D7                    ;be40 
+              BGE.B          ___ESQPARS_ClearAliasStringPointers__8;6c52 
+___ESQPARS_ClearAliasStringPointers__3:
+              EXT.L          D7                       ;48c7 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            TEXTDISP_AliasPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A5           ;2a70 0800 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___ESQPARS_ClearAliasStringPointers__6;673c 
+___ESQPARS_ClearAliasStringPointers__4:
+___ESQPARS_ClearAliasStringPointers__5:
+              MOVE.L         (A5),-(A7)               ;2f15 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,(A5)                  ;2a80 
+              MOVE.L         $4(A5),(A7)              ;2ead 0004 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,$4(A5)                ;2b40 0004 
+              PEA            ($8).w                   ;4878 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            ($3b1).w                 ;4878 03b1 
+              PEA            Global_STR_ESQPARS_C_1(A4);486c 0000 
+              BSR.W          ESQIFF_JMPTBL_MEMORY_DeallocateM;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              EXT.L          D7                       ;48c7 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            TEXTDISP_AliasPtrTable(A4),A0;41ec 0000 
+              CLR.L          $0(A0,D0.L)              ;42b0 0800 
+___ESQPARS_ClearAliasStringPointers__6:
+              ADDQ.W         #$1,D7                   ;5247 
+              BRA.B          ___ESQPARS_ClearAliasStringPointers__2;60a6 
+___ESQPARS_ClearAliasStringPointers__7:
+___ESQPARS_ClearAliasStringPointers__8:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_AliasCount
+              XREF           TEXTDISP_AliasPtrTable
+              XREF           ESQPARS_ReplaceOwnedString
+              XREF           Global_STR_ESQPARS_C_1
+              XREF           ESQIFF_JMPTBL_MEMORY_DeallocateM
+              XDEF           ESQPARS_ClearAliasStringPointers
+              END

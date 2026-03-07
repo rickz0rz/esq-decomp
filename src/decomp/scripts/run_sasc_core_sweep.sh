@@ -985,6 +985,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqiff_render_weather_status_brush_slice_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_play_next_external_asset_frame_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_show_external_asset_with_copper_fx_return_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqpars_clear_alias_string_pointers_trial.sh"
     "src/decomp/scripts/compare_sasc_esqpars_read_length_word_with_checksum_xor_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqpars_remove_group_entry_and_release_strings_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqpars_replace_owned_string_return_trial.sh"
