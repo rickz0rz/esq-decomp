@@ -20,38 +20,49 @@ static LONG cstrlen_local(const char *s)
 
 void SCRIPT_DrawInsetTextWithFrame(void *rastport, BYTE textPenOverride, BYTE framePen, const char *text)
 {
+    const LONG PEN_NONE = -1;
+    const LONG RP_X_OFFSET = 36;
+    const LONG RP_Y_OFFSET = 38;
+    const LONG RP_FONT_HEIGHT_OFFSET = 58;
+    const LONG RP_APEN_OFFSET = 25;
+    const LONG FRAME_WIDTH_PAD = 4;
+    const LONG FRAME_Y_RESTORE = 2;
+    const char CH_NUL = '\0';
     LONG textLen;
     LONG savedPen = 0;
     UBYTE *rp = (UBYTE *)rastport;
 
-    if (text == 0 || *text == '\0') {
+    if (text == 0 || *text == CH_NUL) {
         return;
     }
 
-    if ((LONG)framePen != -1) {
-        *(unsigned short *)(rp + 36) = (unsigned short)(*(unsigned short *)(rp + 36) + 4);
+    if ((LONG)framePen != PEN_NONE) {
+        *(unsigned short *)(rp + RP_X_OFFSET) =
+            (unsigned short)(*(unsigned short *)(rp + RP_X_OFFSET) + FRAME_WIDTH_PAD);
         textLen = cstrlen_local(text);
         TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(
             rastport,
             (LONG)framePen,
             _LVOTextLength(rastport, text, textLen),
-            (LONG)*(unsigned short *)(rp + 58));
+            (LONG)*(unsigned short *)(rp + RP_FONT_HEIGHT_OFFSET));
     }
 
-    if ((LONG)textPenOverride != -1) {
-        savedPen = (LONG)rp[25];
+    if ((LONG)textPenOverride != PEN_NONE) {
+        savedPen = (LONG)rp[RP_APEN_OFFSET];
         _LVOSetAPen(rastport, (LONG)textPenOverride);
     }
 
     textLen = cstrlen_local(text);
     _LVOText(rastport, text, textLen);
 
-    if ((LONG)textPenOverride != -1) {
+    if ((LONG)textPenOverride != PEN_NONE) {
         _LVOSetAPen(rastport, savedPen);
     }
 
-    if ((LONG)framePen != -1) {
-        *(unsigned short *)(rp + 38) = (unsigned short)(*(unsigned short *)(rp + 38) - 2);
-        *(unsigned short *)(rp + 36) = (unsigned short)(*(unsigned short *)(rp + 36) + 4);
+    if ((LONG)framePen != PEN_NONE) {
+        *(unsigned short *)(rp + RP_Y_OFFSET) =
+            (unsigned short)(*(unsigned short *)(rp + RP_Y_OFFSET) - FRAME_Y_RESTORE);
+        *(unsigned short *)(rp + RP_X_OFFSET) =
+            (unsigned short)(*(unsigned short *)(rp + RP_X_OFFSET) + FRAME_WIDTH_PAD);
     }
 }

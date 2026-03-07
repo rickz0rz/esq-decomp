@@ -23,103 +23,138 @@ __const:
 __strings:
 SCRIPT_DrawInsetTextWithFrame:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              SUB.L          #$38,D0                  ;90bc 0000 0038 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$4,A7                   ;594f 
-              MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
+              SUB.W          #$28,A7                  ;9efc 0028 
+              MOVEM.L        D2/D3/D5/D6/D7/A2/A3/A5,-(A7);48e7 3734 
 ___SCRIPT_DrawInsetTextWithFrame__1:
-              MOVE.B         $2f(A7),D6               ;1c2f 002f 
-              MOVE.B         $2b(A7),D7               ;1e2f 002b 
-              MOVE.L         $30(A7),A3               ;266f 0030 
-              MOVE.L         $24(A7),A5               ;2a6f 0024 
-              MOVEQ.L        #$0,D4                   ;7800 
+              MOVE.B         $57(A7),D6               ;1c2f 0057 
+              MOVE.B         $53(A7),D7               ;1e2f 0053 
+              MOVE.L         $58(A7),A3               ;266f 0058 
+              MOVE.L         $4c(A7),A5               ;2a6f 004c 
+              MOVEQ.L        #$ff,D5                  ;7aff 
+              MOVEQ.L        #$24,D0                  ;7024 
+              MOVEQ.L        #$26,D1                  ;7226 
+              MOVE.L         D1,$40(A7)               ;2f41 0040 
+              MOVEQ.L        #$3a,D1                  ;723a 
+              MOVE.L         D1,$3c(A7)               ;2f41 003c 
+              MOVEQ.L        #$19,D1                  ;7219 
+              MOVE.L         D1,$38(A7)               ;2f41 0038 
+              MOVEQ.L        #$4,D1                   ;7204 
+              MOVEQ.L        #$2,D2                   ;7402 
+              MOVE.L         D2,$30(A7)               ;2f42 0030 
+              MOVEQ.L        #$0,D2                   ;7400 
+              CLR.L          $28(A7)                  ;42af 0028 
               MOVE.L         A5,A2                    ;244d 
-              MOVE.L         A3,D0                    ;200b 
-              BEQ.W          ___SCRIPT_DrawInsetTextWithFrame__15;6700 00a8 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVEM.L        D1,$34(A7)               ;48ef 0002 0034 
+              MOVE.B         D2,$2c(A7)               ;1f42 002c 
+              MOVE.L         A3,D3                    ;260b 
+              BEQ.W          ___SCRIPT_DrawInsetTextWithFrame__15;6700 00f4 
 ___SCRIPT_DrawInsetTextWithFrame__2:
-              TST.B          (A3)                     ;4a13 
-              BEQ.W          ___SCRIPT_DrawInsetTextWithFrame__15;6700 00a2 
+              MOVE.B         (A3),D3                  ;1613 
+              CMP.B          D2,D3                    ;b602 
+              BEQ.W          ___SCRIPT_DrawInsetTextWithFrame__15;6700 00ec 
 ___SCRIPT_DrawInsetTextWithFrame__3:
 ___SCRIPT_DrawInsetTextWithFrame__4:
-              MOVE.L         D6,D0                    ;2006 
-              ADDQ.B         #$1,D0                   ;5200 
-              BEQ.B          ___SCRIPT_DrawInsetTextWithFrame__7;673e 
+              MOVE.B         D6,D2                    ;1406 
+              EXT.W          D2                       ;4882 
+              EXT.L          D2                       ;48c2 
+              CMP.L          D5,D2                    ;b485 
+              BEQ.B          ___SCRIPT_DrawInsetTextWithFrame__7;6750 
 ___SCRIPT_DrawInsetTextWithFrame__5:
-              LEA            $24(A2),A0               ;41ea 0024 
-              MOVE.W         (A0),D0                  ;3010 
-              ADDQ.W         #$4,D0                   ;5840 
-              MOVE.W         D0,(A0)                  ;3080 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $44(A7),D2               ;242f 0044 
+              MOVE.W         $0(A2,D2.L),D0           ;3032 2800 
+              MOVE.L         D0,D2                    ;2400 
+              ADD.L          D1,D2                    ;d481 
+              MOVE.L         $44(A7),D0               ;202f 0044 
+              MOVE.W         D2,$0(A2,D0.L)           ;3582 0800 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              BSR.B          cstrlen_local            ;6192 
+              BSR.W          cstrlen_local            ;6100 ff4e 
 ___SCRIPT_DrawInsetTextWithFrame__6:
-              MOVE.L         D0,D5                    ;2a00 
-              MOVE.B         D6,D0                    ;1006 
-              EXT.W          D0                       ;4880 
-              EXT.L          D0                       ;48c0 
-              MOVE.L         D5,(A7)                  ;2e85 
+              MOVE.B         D6,D1                    ;1206 
+              EXT.W          D1                       ;4881 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVE.L         D1,$2c(A7)               ;2f41 002c 
               BSR.W          _LVOTextLength           ;6100 0000 
-              LEA            $3a(A2),A0               ;41ea 003a 
               MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.W         (A0),D1                  ;3210 
+              MOVE.L         $48(A7),D2               ;242f 0048 
+              MOVE.W         $0(A2,D2.L),D1           ;3232 2800 
               MOVE.L         D1,(A7)                  ;2e81 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          TEXTDISP_JMPTBL_CLEANUP_DrawInse;6100 0000 
               LEA            $18(A7),A7               ;4fef 0018 
 ___SCRIPT_DrawInsetTextWithFrame__7:
-              MOVEQ.L        #$ff,D0                  ;70ff 
-              CMP.B          D0,D7                    ;be00 
-              BEQ.B          ___SCRIPT_DrawInsetTextWithFrame__9;6716 
-___SCRIPT_DrawInsetTextWithFrame__8:
-              MOVEQ.L        #$0,D4                   ;7800 
-              MOVE.B         $19(A2),D4               ;182a 0019 
               MOVE.B         D7,D0                    ;1007 
               EXT.W          D0                       ;4880 
               EXT.L          D0                       ;48c0 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              CMP.L          D5,D0                    ;b085 
+              BEQ.B          ___SCRIPT_DrawInsetTextWithFrame__9;671e 
+___SCRIPT_DrawInsetTextWithFrame__8:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $38(A7),D1               ;222f 0038 
+              MOVE.B         $0(A2,D1.L),D0           ;1032 1800 
+              MOVE.B         D7,D1                    ;1207 
+              EXT.W          D1                       ;4881 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
               BSR.W          _LVOSetAPen              ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___SCRIPT_DrawInsetTextWithFrame__9:
               MOVE.L         A3,-(A7)                 ;2f0b 
-              BSR.W          cstrlen_local            ;6100 ff42 
+              BSR.W          cstrlen_local            ;6100 feec 
 ___SCRIPT_DrawInsetTextWithFrame__10:
-              MOVE.L         D0,D5                    ;2a00 
-              MOVE.L         D5,(A7)                  ;2e85 
+              MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
               BSR.W          _LVOText                 ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              MOVE.L         D7,D0                    ;2007 
-              ADDQ.B         #$1,D0                   ;5200 
-              BEQ.B          ___SCRIPT_DrawInsetTextWithFrame__12;670a 
+              MOVE.B         D7,D0                    ;1007 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              CMP.L          D5,D0                    ;b085 
+              BEQ.B          ___SCRIPT_DrawInsetTextWithFrame__12;670c 
 ___SCRIPT_DrawInsetTextWithFrame__11:
-              MOVE.L         D4,-(A7)                 ;2f04 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          _LVOSetAPen              ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___SCRIPT_DrawInsetTextWithFrame__12:
-              MOVE.L         D6,D0                    ;2006 
-              ADDQ.B         #$1,D0                   ;5200 
-              BEQ.B          ___SCRIPT_DrawInsetTextWithFrame__15;6714 
+              MOVE.B         D6,D0                    ;1006 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              CMP.L          D5,D0                    ;b085 
+              BEQ.B          ___SCRIPT_DrawInsetTextWithFrame__15;6730 
 ___SCRIPT_DrawInsetTextWithFrame__13:
-              LEA            $26(A2),A0               ;41ea 0026 
-              MOVE.W         (A0),D0                  ;3010 
-              SUBQ.W         #$2,D0                   ;5540 
-              MOVE.W         D0,(A0)                  ;3080 
-              LEA            $24(A2),A0               ;41ea 0024 
-              MOVE.W         (A0),D0                  ;3010 
-              ADDQ.W         #$4,D0                   ;5840 
-              MOVE.W         D0,(A0)                  ;3080 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $40(A7),D1               ;222f 0040 
+              MOVE.W         $0(A2,D1.L),D0           ;3032 1800 
+              MOVE.L         D0,D1                    ;2200 
+              SUB.L          $30(A7),D1               ;92af 0030 
+              MOVE.L         $40(A7),D0               ;202f 0040 
+              MOVE.W         D1,$0(A2,D0.L)           ;3581 0800 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $44(A7),D1               ;222f 0044 
+              MOVE.W         $0(A2,D1.L),D0           ;3032 1800 
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          $34(A7),D1               ;d2af 0034 
+              MOVE.L         $44(A7),D0               ;202f 0044 
+              MOVE.W         D1,$0(A2,D0.L)           ;3581 0800 
 ___SCRIPT_DrawInsetTextWithFrame__14:
 ___SCRIPT_DrawInsetTextWithFrame__15:
-              MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
-              ADDQ.W         #$4,A7                   ;584f 
+              MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A2/A3/A5;4cdf 2cec 
+              ADD.W          #$28,A7                  ;defc 0028 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
