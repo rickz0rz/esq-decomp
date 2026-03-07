@@ -954,6 +954,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_textdisp_set_entry_text_fields_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_reset_selection_state_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_set_selection_fields_trial.sh"
+    "src/decomp/scripts/compare_sasc_textdisp_select_group_and_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_should_open_editor_for_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_skip_control_codes_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_find_quoted_span_trial.sh"
