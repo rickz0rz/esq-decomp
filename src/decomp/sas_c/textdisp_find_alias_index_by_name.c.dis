@@ -1,0 +1,70 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_FindAliasIndexByName:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$2c,D0                  ;90bc 0000 002c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$20,A7                  ;9efc 0020 
+              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
+___TEXTDISP_FindAliasIndexByName__1:
+              MOVE.L         $38(A7),A5               ;2a6f 0038 
+              LEA            $c(A5),A3                ;47ed 000c 
+              LEA            $16(A7),A2               ;45ef 0016 
+___TEXTDISP_FindAliasIndexByName__2:
+              MOVE.B         (A3)+,(A2)+              ;14db 
+___TEXTDISP_FindAliasIndexByName__3:
+              TST.B          $ffffffff(A2)            ;4a2a ffff 
+              BNE.B          ___TEXTDISP_FindAliasIndexByName__2;66f8 
+___TEXTDISP_FindAliasIndexByName__4:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___TEXTDISP_FindAliasIndexByName__5:
+              MOVE.L         D7,D0                    ;2007 
+              MOVE.W         TEXTDISP_AliasCount(A4),D1;322c 0000 
+              CMP.W          D1,D0                    ;b041 
+              BGE.B          ___TEXTDISP_FindAliasIndexByName__12;6c44 
+___TEXTDISP_FindAliasIndexByName__6:
+              MOVE.L         D7,D1                    ;2207 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            TEXTDISP_AliasPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D1.L),$30(A7)      ;2f70 1800 0030 
+              MOVE.L         $30(A7),A0               ;206f 0030 
+              MOVE.L         (A0),$2c(A7)             ;2f50 002c 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___TEXTDISP_FindAliasIndexByName__7:
+              MOVE.L         $2c(A7),A0               ;206f 002c 
+              TST.B          $0(A0,D6.L)              ;4a30 6800 
+              BEQ.B          ___TEXTDISP_FindAliasIndexByName__9;6704 
+___TEXTDISP_FindAliasIndexByName__8:
+              ADDQ.L         #$1,D6                   ;5286 
+              BRA.B          ___TEXTDISP_FindAliasIndexByName__7;60f2 
+___TEXTDISP_FindAliasIndexByName__9:
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              PEA            $1e(A7)                  ;486f 001e 
+              BSR.W          STRING_CompareNoCaseN    ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___TEXTDISP_FindAliasIndexByName__11;6604 
+___TEXTDISP_FindAliasIndexByName__10:
+              MOVE.L         D7,D0                    ;2007 
+              BRA.B          ___TEXTDISP_FindAliasIndexByName__14;6006 
+___TEXTDISP_FindAliasIndexByName__11:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___TEXTDISP_FindAliasIndexByName__5;60b2 
+___TEXTDISP_FindAliasIndexByName__12:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+___TEXTDISP_FindAliasIndexByName__13:
+___TEXTDISP_FindAliasIndexByName__14:
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
+              ADD.W          #$20,A7                  ;defc 0020 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_AliasCount
+              XREF           TEXTDISP_AliasPtrTable
+              XREF           STRING_CompareNoCaseN
+              XDEF           TEXTDISP_FindAliasIndexByName
+              END

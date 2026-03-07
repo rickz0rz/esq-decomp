@@ -1,0 +1,127 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_FindControlToken:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___TEXTDISP_FindControlToken__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+___TEXTDISP_FindControlToken__2:
+              MOVE.B         (A5),D0                  ;1015 
+              BEQ.W          ___TEXTDISP_FindControlToken__20;6700 00b8 
+___TEXTDISP_FindControlToken__3:
+              BTST           #$7,D0                   ;0800 0007 
+              BNE.B          ___TEXTDISP_FindControlToken__5;6604 
+___TEXTDISP_FindControlToken__4:
+              ADDQ.L         #$1,A5                   ;528d 
+              BRA.B          ___TEXTDISP_FindControlToken__2;60f0 
+___TEXTDISP_FindControlToken__5:
+              MOVE.B         (A5),D7                  ;1e15 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$42,D1                  ;7242 
+              ADD.L          D1,D1                    ;d281 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.W          ___TEXTDISP_FindControlToken__18;6700 0094 
+___TEXTDISP_FindControlToken__6:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$7a,D1                  ;727a 
+              NOT.B          D1                       ;4601 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.W          ___TEXTDISP_FindControlToken__18;6700 0086 
+___TEXTDISP_FindControlToken__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$43,D1                  ;7243 
+              ADD.L          D1,D1                    ;d281 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___TEXTDISP_FindControlToken__18;6778 
+___TEXTDISP_FindControlToken__8:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$78,D1                  ;7278 
+              NOT.B          D1                       ;4601 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___TEXTDISP_FindControlToken__18;676c 
+___TEXTDISP_FindControlToken__9:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$46,D1                  ;7246 
+              ADD.L          D1,D1                    ;d281 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___TEXTDISP_FindControlToken__18;6760 
+___TEXTDISP_FindControlToken__10:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$72,D1                  ;7272 
+              NOT.B          D1                       ;4601 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___TEXTDISP_FindControlToken__18;6754 
+___TEXTDISP_FindControlToken__11:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$70,D1                  ;7270 
+              NOT.B          D1                       ;4601 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___TEXTDISP_FindControlToken__18;6748 
+___TEXTDISP_FindControlToken__12:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$48,D1                  ;7248 
+              ADD.L          D1,D1                    ;d281 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___TEXTDISP_FindControlToken__18;673c 
+___TEXTDISP_FindControlToken__13:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$6c,D1                  ;726c 
+              NOT.B          D1                       ;4601 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___TEXTDISP_FindControlToken__18;6730 
+___TEXTDISP_FindControlToken__14:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$66,D1                  ;7266 
+              NOT.B          D1                       ;4601 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___TEXTDISP_FindControlToken__18;6724 
+___TEXTDISP_FindControlToken__15:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$4d,D1                  ;724d 
+              ADD.L          D1,D1                    ;d281 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___TEXTDISP_FindControlToken__18;6718 
+___TEXTDISP_FindControlToken__16:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$64,D1                  ;7264 
+              NOT.B          D1                       ;4601 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___TEXTDISP_FindControlToken__18;670c 
+___TEXTDISP_FindControlToken__17:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$5c,D1                  ;725c 
+              NOT.B          D1                       ;4601 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___TEXTDISP_FindControlToken__19;6604 
+___TEXTDISP_FindControlToken__18:
+              MOVE.L         A5,D0                    ;200d 
+              BRA.B          ___TEXTDISP_FindControlToken__22;6008 
+___TEXTDISP_FindControlToken__19:
+              ADDQ.L         #$1,A5                   ;528d 
+              BRA.W          ___TEXTDISP_FindControlToken__2;6000 ff46 
+___TEXTDISP_FindControlToken__20:
+              MOVEQ.L        #$0,D0                   ;7000 
+___TEXTDISP_FindControlToken__21:
+___TEXTDISP_FindControlToken__22:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           TEXTDISP_FindControlToken
+              END
