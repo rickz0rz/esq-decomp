@@ -12,6 +12,8 @@ enum {
     CHANNEL_RANGE_A_MAX = 67,
     CHANNEL_RANGE_B_MIN = 72,
     CHANNEL_RANGE_B_MAX = 77,
+    STATUS_LINE_BUFFER_LEN = 137,
+    STATUS_SCRATCH_BUFFER_LEN = 188,
     ENTRY_INDEX_MIN = 0,
     ENTRY_INDEX_MAX_EXCLUSIVE = 49,
     MINUTES_PER_DAY = 1440,
@@ -61,8 +63,8 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
     ULONG *titleTable;
     LONG i;
     LONG out;
-    char line[137];
-    char scratch[188];
+    char line[STATUS_LINE_BUFFER_LEN];
+    char scratch[STATUS_SCRATCH_BUFFER_LEN];
     char *title;
     char *timeToken;
 
