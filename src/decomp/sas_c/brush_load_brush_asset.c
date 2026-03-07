@@ -4,6 +4,7 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_NULL = 0,
     BRUSH_NODE_WIDTH_OFFSET = 176,
     BRUSH_NODE_HEIGHT_OFFSET = 178,
     BRUSH_NODE_DEPTH_OFFSET = 184,
@@ -97,14 +98,14 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     status_fail = BRUSH_STATUS_FAIL;
     max_depth = BRUSH_MAX_DEPTH_DEFAULT;
     max_width = BRUSH_MAX_WIDTH_DEFAULT;
-    decode_buf = (UBYTE *)0;
-    decode_cur = (UBYTE *)0;
-    node = (UBYTE *)0;
+    decode_buf = (UBYTE *)BRUSH_NULL;
+    decode_cur = (UBYTE *)BRUSH_NULL;
+    node = (UBYTE *)BRUSH_NULL;
 
     fh = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(src, BRUSH_FILE_OPEN_MODE_READ);
-    if (fh != 0) {
-        if (_LVORead(fh, hdr, BRUSH_IFF_HEADER_SIZE) - BRUSH_IFF_HEADER_SIZE == 0 &&
-            GROUP_AA_JMPTBL_STRING_CompareN(hdr, BRUSH_STR_IFF_FORM, BRUSH_IFF_FORM_TAG_LEN) == 0) {
+    if (fh != BRUSH_NULL) {
+        if (_LVORead(fh, hdr, BRUSH_IFF_HEADER_SIZE) - BRUSH_IFF_HEADER_SIZE == BRUSH_NULL &&
+            GROUP_AA_JMPTBL_STRING_CompareN(hdr, BRUSH_STR_IFF_FORM, BRUSH_IFF_FORM_TAG_LEN) == BRUSH_NULL) {
             _LVOSeek(fh, BRUSH_SEEK_OFFSET_START, BRUSH_SEEK_MODE_BEGIN);
             decode_buf = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
                 Global_STR_BRUSH_C_10,
@@ -113,7 +114,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 MEMF_PUBLIC_CLEAR
             );
             decode_cur = decode_buf;
-            if (decode_buf != (UBYTE *)0) {
+            if (decode_buf != (UBYTE *)BRUSH_NULL) {
                 if (BITMAP_ProcessIlbmImage(
                         fh,
                         src + BRUSH_SRC_DECODE_AUX_OFFSET,
@@ -145,7 +146,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             const UBYTE *s = src;
             do {
                 *d++ = *s;
-            } while (*s++ != 0);
+            } while (*s++ != BRUSH_NULL);
         }
         _LVOPermit();
         status_fail = BRUSH_STATUS_FAIL;
@@ -157,12 +158,12 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             1064,
             BRUSH_NODE_SIZE,
             MEMF_PUBLIC_CLEAR);
-        if (node != (UBYTE *)0) {
+        if (node != (UBYTE *)BRUSH_NULL) {
             UBYTE *d = node;
             const UBYTE *s = src;
             do {
                 *d++ = *s;
-            } while (*s++ != 0);
+            } while (*s++ != BRUSH_NULL);
 
             _LVOInitBitMap(
                 node + BRUSH_NODE_BITMAP_OFFSET,
@@ -177,9 +178,9 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                     (UWORD)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET),
                     (UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET));
                 *(void **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (i << 2)) = plane;
-                if (plane == (void *)0) {
+                if (plane == (void *)BRUSH_NULL) {
                     _LVOForbid();
-                    if (BRUSH_PendingAlertCode == 0) {
+                    if (BRUSH_PendingAlertCode == BRUSH_NULL) {
                         BRUSH_PendingAlertCode = BRUSH_ALERT_ALLOC_FAIL;
                     }
                     _LVOPermit();
@@ -187,10 +188,10 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 }
             }
 
-            if (i != (LONG)(UBYTE)node[184]) {
+            if (i != (LONG)(UBYTE)node[BRUSH_NODE_DEPTH_OFFSET]) {
                 while (i < BRUSH_MAX_PLANES) {
                     void *plane = *(void **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (i << 2));
-                    if (plane != (void *)0) {
+                    if (plane != (void *)BRUSH_NULL) {
                         GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
                             Global_STR_BRUSH_C_13,
                             1202,
@@ -201,7 +202,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                     i++;
                 }
                 GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_14, 1205, node, BRUSH_NODE_SIZE);
-                node = (UBYTE *)0;
+                node = (UBYTE *)BRUSH_NULL;
             } else {
                 _LVOInitRastPort(node + BRUSH_NODE_RASTPORT_OFFSET);
                 *(void **)(node + BRUSH_NODE_RASTPORT_BITMAPPTR_OFFSET) = node + BRUSH_NODE_BITMAP_OFFSET;
@@ -232,12 +233,12 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             1220,
             BRUSH_NODE_SIZE,
             MEMF_PUBLIC_CLEAR);
-        if (alt != (UBYTE *)0) {
+        if (alt != (UBYTE *)BRUSH_NULL) {
             node = alt;
         }
     }
 
-    if (decode_buf != (UBYTE *)0) {
+    if (decode_buf != (UBYTE *)BRUSH_NULL) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_BRUSH_C_16,
             1236,
