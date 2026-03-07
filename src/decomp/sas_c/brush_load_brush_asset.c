@@ -3,17 +3,21 @@ typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 typedef long LONG;
 
+enum {
+    MEMF_PUBLIC_CLEAR = 0x10001UL
+};
+
 extern void *AbsExecBase;
 extern void *Global_REF_DOS_LIBRARY_2;
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern UBYTE BRUSH_STR_IFF_FORM[];
-extern UBYTE Global_STR_BRUSH_C_10[];
-extern UBYTE Global_STR_BRUSH_C_11[];
-extern UBYTE Global_STR_BRUSH_C_12[];
-extern UBYTE Global_STR_BRUSH_C_13[];
-extern UBYTE Global_STR_BRUSH_C_14[];
-extern UBYTE Global_STR_BRUSH_C_15[];
-extern UBYTE Global_STR_BRUSH_C_16[];
+extern const UBYTE BRUSH_STR_IFF_FORM[];
+extern const UBYTE Global_STR_BRUSH_C_10[];
+extern const UBYTE Global_STR_BRUSH_C_11[];
+extern const UBYTE Global_STR_BRUSH_C_12[];
+extern const UBYTE Global_STR_BRUSH_C_13[];
+extern const UBYTE Global_STR_BRUSH_C_14[];
+extern const UBYTE Global_STR_BRUSH_C_15[];
+extern const UBYTE Global_STR_BRUSH_C_16[];
 extern LONG BRUSH_PendingAlertCode;
 extern LONG BRUSH_SnapshotWidth;
 extern LONG BRUSH_SnapshotDepth;
@@ -63,7 +67,12 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     if (fh != 0) {
         if (_LVORead(fh, hdr, 6) - 6 == 0 && GROUP_AA_JMPTBL_STRING_CompareN(hdr, BRUSH_STR_IFF_FORM, 4) == 0) {
             _LVOSeek(fh, 0, -1);
-            decode_buf = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_BRUSH_C_10, 977, 130000, 0x10001UL);
+            decode_buf = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+                Global_STR_BRUSH_C_10,
+                977,
+                130000,
+                MEMF_PUBLIC_CLEAR
+            );
             decode_cur = decode_buf;
             if (decode_buf != (UBYTE *)0) {
                 if (BITMAP_ProcessIlbmImage(fh, src + 152, src + 32, 130000, decode_buf, src) == 1) {
@@ -95,7 +104,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     }
 
     if (status_fail == 0) {
-        node = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_BRUSH_C_11, 1064, 372, 0x10001UL);
+        node = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_BRUSH_C_11, 1064, 372, MEMF_PUBLIC_CLEAR);
         if (node != (UBYTE *)0) {
             UBYTE *d = node;
             const UBYTE *s = src;
@@ -148,7 +157,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     }
 
     if ((UBYTE)src[190] == 11) {
-        UBYTE *alt = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_BRUSH_C_15, 1220, 372, 0x10001UL);
+        UBYTE *alt = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_BRUSH_C_15, 1220, 372, MEMF_PUBLIC_CLEAR);
         if (alt != (UBYTE *)0) {
             node = alt;
         }
