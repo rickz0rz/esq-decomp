@@ -1,0 +1,173 @@
+              SECTION      text,CODE
+__code:
+ED1_HandleEscMenuInput:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
+___ED1_HandleEscMenuInput__1:
+              BSR.W          ED_GetEscMenuActionCode  ;6100 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.B         D0,D7                    ;1e00 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVEQ.L        #$9,D0                   ;7009 
+              CMP.L          D0,D7                    ;be80 
+              BGE.W          ___ED1_HandleEscMenuInput__21;6c00 00bc 
+___ED1_HandleEscMenuInput__2:
+              MOVE.L         D7,D0                    ;2007 
+___ED1_HandleEscMenuInput__3:
+___ED1_HandleEscMenuInput__4:
+              CMPI.L         #$9,D0                   ;0c80 0000 0009 
+              BCC.W          ___ED1_HandleEscMenuInput__21;6400 00b0 
+___ED1_HandleEscMenuInput__5:
+              ADD.W          D0,D0                    ;d040 
+              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
+              JMP            $4(PC,D0.W)              ;4efb 0004 
+__switch_ED1_HandleEscMenuInput_5:
+              DC.W           ___ED1_HandleEscMenuInput__6-__switch_ED1_HandleEscMenuInput_5
+              DC.W           ___ED1_HandleEscMenuInput__7-__switch_ED1_HandleEscMenuInput_5
+              DC.W           ___ED1_HandleEscMenuInput__11-__switch_ED1_HandleEscMenuInput_5
+              DC.W           ___ED1_HandleEscMenuInput__15-__switch_ED1_HandleEscMenuInput_5
+              DC.W           ___ED1_HandleEscMenuInput__16-__switch_ED1_HandleEscMenuInput_5
+              DC.W           ___ED1_HandleEscMenuInput__17-__switch_ED1_HandleEscMenuInput_5
+              DC.W           ___ED1_HandleEscMenuInput__18-__switch_ED1_HandleEscMenuInput_5
+              DC.W           ___ED1_HandleEscMenuInput__21-__switch_ED1_HandleEscMenuInput_5
+              DC.W           ___ED1_HandleEscMenuInput__19-__switch_ED1_HandleEscMenuInput_5
+___ED1_HandleEscMenuInput__6:
+              BSR.W          ED1_EnterEscMenu_AfterVersionTex;6100 0000 
+              BRA.W          ___ED1_HandleEscMenuInput__21;6000 008c 
+___ED1_HandleEscMenuInput__7:
+              MOVE.B         ED_DiagTextModeChar(A4),D0;102c 0000 
+              MOVEQ.L        #$4c,D1                  ;724c 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___ED1_HandleEscMenuInput__9;660c 
+___ED1_HandleEscMenuInput__8:
+              BSR.W          ED_DrawAdNumberPrompt    ;6100 0000 
+              MOVE.B         #$2,ED_MenuStateId(A4)   ;197c 0002 0000 
+              BRA.B          ___ED1_HandleEscMenuInput__21;6074 
+___ED1_HandleEscMenuInput__9:
+              MOVEQ.L        #$1,D6                   ;7c01 
+___ED1_HandleEscMenuInput__10:
+              BRA.B          ___ED1_HandleEscMenuInput__21;6070 
+___ED1_HandleEscMenuInput__11:
+              MOVE.B         ED_DiagTextModeChar(A4),D0;102c 0000 
+              MOVEQ.L        #$4c,D1                  ;724c 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___ED1_HandleEscMenuInput__13;660c 
+___ED1_HandleEscMenuInput__12:
+              BSR.W          ED_DrawAdNumberPrompt    ;6100 0000 
+              MOVE.B         #$3,ED_MenuStateId(A4)   ;197c 0003 0000 
+              BRA.B          ___ED1_HandleEscMenuInput__21;605a 
+___ED1_HandleEscMenuInput__13:
+              MOVEQ.L        #$1,D6                   ;7c01 
+___ED1_HandleEscMenuInput__14:
+              BRA.B          ___ED1_HandleEscMenuInput__21;6056 
+___ED1_HandleEscMenuInput__15:
+              MOVE.B         #$6,ED_MenuStateId(A4)   ;197c 0006 0000 
+              BSR.W          ED_DrawDiagnosticModeHelpText;6100 0000 
+              MOVE.L         ED_SavedScrollSpeedIndex(A4),ED_EditCursorOffset(A4);296c 0000 0000 
+              PEA            ($9).w                   ;4878 0009 
+              BSR.W          ED_DrawMenuSelectionHighlight;6100 0000 
+              BSR.W          ED_DrawScrollSpeedMenuText;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.B          ___ED1_HandleEscMenuInput__21;6036 
+___ED1_HandleEscMenuInput__16:
+              BSR.W          ED1_DrawDiagnosticsScreen;6100 0000 
+              BRA.B          ___ED1_HandleEscMenuInput__21;6030 
+___ED1_HandleEscMenuInput__17:
+              MOVE.B         #$a,ED_MenuStateId(A4)   ;197c 000a 0000 
+              BSR.W          ED_DrawDiagnosticModeHelpText;6100 0000 
+              CLR.L          ED_EditCursorOffset(A4)  ;42ac 0000 
+              PEA            ($4).w                   ;4878 0004 
+              BSR.W          ED_DrawMenuSelectionHighlight;6100 0000 
+              BSR.W          ED_DrawSpecialFunctionsMenu;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.B          ___ED1_HandleEscMenuInput__21;6012 
+___ED1_HandleEscMenuInput__18:
+              MOVE.B         #$8,ED_MenuStateId(A4)   ;197c 0008 0000 
+              BSR.W          ED_DrawBottomHelpBarBackground;6100 0000 
+              BRA.B          ___ED1_HandleEscMenuInput__21;6006 
+___ED1_HandleEscMenuInput__19:
+              MOVE.W         #$1,ESQ_ShutdownRequestedFlag(A4);397c 0001 0000 
+___ED1_HandleEscMenuInput__20:
+___ED1_HandleEscMenuInput__21:
+              MOVEQ.L        #$7,D0                   ;7007 
+              CMP.L          D0,D7                    ;be80 
+              BEQ.B          ___ED1_HandleEscMenuInput__23;6706 
+___ED1_HandleEscMenuInput__22:
+              MOVEQ.L        #$9,D0                   ;7009 
+              CMP.L          D0,D7                    ;be80 
+              BLT.B          ___ED1_HandleEscMenuInput__27;6d22 
+___ED1_HandleEscMenuInput__23:
+              MOVEQ.L        #$9,D0                   ;7009 
+              CMP.L          D0,D7                    ;be80 
+              BNE.B          ___ED1_HandleEscMenuInput__25;6604 
+___ED1_HandleEscMenuInput__24:
+              MOVEQ.L        #$5,D5                   ;7a05 
+              BRA.B          ___ED1_HandleEscMenuInput__26;6002 
+___ED1_HandleEscMenuInput__25:
+              MOVEQ.L        #$1,D5                   ;7a01 
+___ED1_HandleEscMenuInput__26:
+              ADD.L          D5,ED_EditCursorOffset(A4);dbac 0000 
+              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
+              MOVEQ.L        #$6,D1                   ;7206 
+              BSR.W          _CXD33                   ;6100 0000 
+              MOVE.L         D1,ED_EditCursorOffset(A4);2941 0000 
+              BSR.W          ED_DrawEscMainMenuText   ;6100 0000 
+___ED1_HandleEscMenuInput__27:
+              TST.L          D6                       ;4a86 
+              BEQ.B          ___ED1_HandleEscMenuInput__32;6746 
+___ED1_HandleEscMenuInput__28:
+              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         D6,D0                    ;2006 
+              SUBQ.L         #$1,D0                   ;5380 
+              BNE.B          ___ED1_HandleEscMenuInput__30;6618 
+___ED1_HandleEscMenuInput__29:
+              PEA            ED2_STR_LOCAL_EDIT_NOT_AVAILABLE(A4);486c 0000 
+              PEA            ($91).w                  ;4878 0091 
+              PEA            ($10e).w                 ;4878 010e 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___ED1_HandleEscMenuInput__30:
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___ED1_HandleEscMenuInput__31:
+___ED1_HandleEscMenuInput__32:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_GetEscMenuActionCode
+              XREF           ED1_EnterEscMenu_AfterVersionTex
+              XREF           ED_DiagTextModeChar
+              XREF           ED_DrawAdNumberPrompt
+              XREF           ED_MenuStateId
+              XREF           ED_DrawDiagnosticModeHelpText
+              XREF           ED_SavedScrollSpeedIndex
+              XREF           ED_EditCursorOffset
+              XREF           ED_DrawMenuSelectionHighlight
+              XREF           ED_DrawScrollSpeedMenuText
+              XREF           ED1_DrawDiagnosticsScreen
+              XREF           ED_DrawSpecialFunctionsMenu
+              XREF           ED_DrawBottomHelpBarBackground
+              XREF           ESQ_ShutdownRequestedFlag
+              XREF           _CXD33
+              XREF           ED_DrawEscMainMenuText
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetAPen
+              XREF           ED2_STR_LOCAL_EDIT_NOT_AVAILABLE
+              XREF           DISPLIB_DisplayTextAtPosition
+              XDEF           ED1_HandleEscMenuInput
+              END
