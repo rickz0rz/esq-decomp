@@ -1,5 +1,10 @@
 typedef unsigned long ULONG;
 
+enum {
+    DISKIO1_MASK_SUM_EMPTY = 0UL,
+    DISKIO1_MASK_SUM_ALL_BITS_SET = 0x5faUL
+};
+
 extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *text);
 extern void DISKIO1_AppendTimeSlotMaskOffAirIfEmpty(void);
 extern void DISKIO1_FormatBlackoutMaskFlags(void);
@@ -17,7 +22,7 @@ volatile ULONG gDiskio1MaskDecisionSum;
 
 void DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet(void)
 {
-    if (gDiskio1MaskDecisionSum != 0x5faUL) {
+    if (gDiskio1MaskDecisionSum != DISKIO1_MASK_SUM_ALL_BITS_SET) {
         DISKIO1_AppendTimeSlotMaskOffAirIfEmpty();
         return;
     }
@@ -27,7 +32,7 @@ void DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet(void)
 
 void DISKIO1_AppendTimeSlotMaskOffAirIfEmpty(void)
 {
-    if (gDiskio1MaskDecisionSum != 0) {
+    if (gDiskio1MaskDecisionSum != DISKIO1_MASK_SUM_EMPTY) {
         DISKIO1_AppendTimeSlotMaskValueHeader();
         return;
     }
@@ -37,7 +42,7 @@ void DISKIO1_AppendTimeSlotMaskOffAirIfEmpty(void)
 
 void DISKIO1_AppendBlackoutMaskNoneIfEmpty(void)
 {
-    if (gDiskio1MaskDecisionSum != 0) {
+    if (gDiskio1MaskDecisionSum != DISKIO1_MASK_SUM_EMPTY) {
         DISKIO1_AppendBlackoutMaskAllIfAllBitsSet();
         return;
     }
@@ -47,7 +52,7 @@ void DISKIO1_AppendBlackoutMaskNoneIfEmpty(void)
 
 void DISKIO1_AppendBlackoutMaskAllIfAllBitsSet(void)
 {
-    if (gDiskio1MaskDecisionSum != 0x5faUL) {
+    if (gDiskio1MaskDecisionSum != DISKIO1_MASK_SUM_ALL_BITS_SET) {
         DISKIO1_AppendBlackoutMaskValueHeader();
         return;
     }

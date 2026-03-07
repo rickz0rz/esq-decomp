@@ -1,5 +1,9 @@
 typedef unsigned char UBYTE;
 
+enum {
+    DISKIO1_MASK_VALUE_FIRST_BIT_INDEX = 1
+};
+
 extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *text);
 
 extern void DISKIO1_AppendTimeSlotMaskSelectedTimes(void);
@@ -17,7 +21,7 @@ volatile UBYTE gDiskio1MaskValueBitIndex;
 void DISKIO1_AppendTimeSlotMaskValueHeader(void)
 {
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_TimeSlotListOpenParen);
-    gDiskio1MaskValueBitIndex = 1;
+    gDiskio1MaskValueBitIndex = DISKIO1_MASK_VALUE_FIRST_BIT_INDEX;
     DISKIO1_AppendTimeSlotMaskSelectedTimes();
 }
 
@@ -30,7 +34,7 @@ void DISKIO1_AppendTimeSlotMaskValueTerminator(void)
 void DISKIO1_AppendBlackoutMaskValueHeader(void)
 {
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_BlackoutListOpenParen);
-    gDiskio1MaskValueBitIndex = 1;
+    gDiskio1MaskValueBitIndex = DISKIO1_MASK_VALUE_FIRST_BIT_INDEX;
     DISKIO1_AppendBlackoutMaskSelectedTimes();
 }
 
