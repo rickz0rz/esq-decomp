@@ -36,6 +36,8 @@ extern LONG NEWGRID_GetEntryStateCode(void *entry, void *aux, LONG row);
 extern LONG NEWGRID_TestEntryState(LONG baseState, LONG titleIdx, LONG wildcardIdx, LONG rowIdx);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(void *entry, void *aux, LONG row);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG h, LONG pen);
+/* Keep K&R-style declaration: SAS/C long-name significance causes a prototype clash
+ * with NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount in this translation unit. */
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths();
 extern LONG NEWGRID_DrawEntryRowOrPlaceholder(char *scratch, void *entry, void *aux, LONG row, LONG span, LONG state);
 extern LONG NEWGRID_DrawSelectionMarkers(LayoutCtx *ctx, LONG row, LONG span, LONG pen, LONG leftState, LONG rightState);

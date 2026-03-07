@@ -24,7 +24,7 @@ extern LONG GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(const char *path, LONG mod
 extern void GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(LONG fileHandle, LONG value);
 extern void GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(LONG fileHandle, const void *data, LONG size);
 extern void GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG fileHandle);
-extern void GROUP_AW_JMPTBL_WDISP_SPrintf();
+extern void GROUP_AW_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG argCount, LONG value);
 
 #ifndef MODE_NEWFILE
 #define MODE_NEWFILE 1006
