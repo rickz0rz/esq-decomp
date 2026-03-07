@@ -1209,6 +1209,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_find_next_entry_with_markers_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_handle_showtimes_state_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_init_showtime_buckets_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_reset_showtime_buckets_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_init_selection_window_alt_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_init_selection_window_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_handle_grid_editor_state_trial.sh"
