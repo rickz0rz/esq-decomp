@@ -10,7 +10,7 @@ enum {
     DATETIME_STRUCT_DST_FLAG_OFFSET = 14
 };
 
-long DATETIME_BuildFromBaseDay(void *in_struct, void *out_struct, long day_slot, long flag_word)
+long DATETIME_BuildFromBaseDay(void *in_struct, void *out_struct, long daySlot, long dstFlagWord)
 {
     long base_seconds;
     long scaled_offset;
@@ -18,8 +18,8 @@ long DATETIME_BuildFromBaseDay(void *in_struct, void *out_struct, long day_slot,
     long result_seconds;
 
     base_seconds = DATETIME_NormalizeStructToSeconds(in_struct);
-    normalized_slot = (short)day_slot - DATETIME_SLOT_BASE_OFFSET;
-    if ((short)flag_word == DATETIME_DST_CLEAR_FLAG) {
+    normalized_slot = (short)daySlot - DATETIME_SLOT_BASE_OFFSET;
+    if ((short)dstFlagWord == DATETIME_DST_CLEAR_FLAG) {
         normalized_slot -= 1;
     }
 
