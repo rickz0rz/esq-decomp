@@ -20,38 +20,44 @@ extern void GCOMMAND_ServiceHighlightMessages(void);
 
 void GCOMMAND_TickHighlightState(void)
 {
+    const LONG PHASE_WRAP = 98;
+    const LONG ROWBYTE_STEP = 176;
+    const LONG INTERLEAVE_STEP = 32;
+    const WORD QUEUE_WRAP = 0x61;
+    const WORD ONE = 1;
+    const WORD ZERO = 0;
     LONG *interleaveOffsets = &ESQSHARED4_InterleaveCopyBaseOffset;
 
     if (GCOMMAND_BannerRebuildPendingFlag != 0) {
         GCOMMAND_RebuildBannerTablesFromBounds();
     }
 
-    GCOMMAND_BannerPhaseIndexCurrent += 1;
+    GCOMMAND_BannerPhaseIndexCurrent += ONE;
     GCOMMAND_BannerRowByteOffsetPrevious = GCOMMAND_BannerRowByteOffsetCurrent;
 
-    if (GCOMMAND_BannerPhaseIndexCurrent == 98) {
-        GCOMMAND_BannerPhaseIndexCurrent = 0;
+    if (GCOMMAND_BannerPhaseIndexCurrent == PHASE_WRAP) {
+        GCOMMAND_BannerPhaseIndexCurrent = ZERO;
         GCOMMAND_BannerRowByteOffsetCurrent = GCOMMAND_BannerRowByteOffsetResetValue;
         interleaveOffsets[1] = interleaveOffsets[2];
     } else {
-        GCOMMAND_BannerRowByteOffsetCurrent += 176;
-        interleaveOffsets[1] += 32;
+        GCOMMAND_BannerRowByteOffsetCurrent += ROWBYTE_STEP;
+        interleaveOffsets[1] += INTERLEAVE_STEP;
     }
 
     {
         WORD cur = GCOMMAND_BannerQueueSlotCurrent;
         GCOMMAND_BannerQueueSlotPrevious = cur;
-        cur = (WORD)(cur - 1);
+        cur = (WORD)(cur - ONE);
         GCOMMAND_BannerQueueSlotCurrent = cur;
-        if (cur < 0) {
-            GCOMMAND_BannerQueueSlotCurrent = 0x61;
+        if (cur < ZERO) {
+            GCOMMAND_BannerQueueSlotCurrent = QUEUE_WRAP;
         }
     }
 
     GCOMMAND_BannerRowIndexPrevious = GCOMMAND_BannerRowIndexCurrent;
-    GCOMMAND_BannerRowIndexCurrent += 1;
-    if (GCOMMAND_BannerRowIndexCurrent == 98) {
-        GCOMMAND_BannerRowIndexCurrent = 0;
+    GCOMMAND_BannerRowIndexCurrent += ONE;
+    if (GCOMMAND_BannerRowIndexCurrent == PHASE_WRAP) {
+        GCOMMAND_BannerRowIndexCurrent = ZERO;
     }
 
     GCOMMAND_ServiceHighlightMessages();

@@ -1,55 +1,74 @@
               SECTION      text,CODE
 __code:
 GCOMMAND_TickHighlightState:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D2/D7/A5,-(A7)           ;48e7 2104 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        D2/D4/D5/D6/D7/A5,-(A7)  ;48e7 2f04 
 ___GCOMMAND_TickHighlightState__1:
+              MOVEQ.L        #$62,D7                  ;7e62 
+              MOVEQ.L        #$58,D6                  ;7c58 
+              ADD.L          D6,D6                    ;dc86 
+              MOVEQ.L        #$20,D5                  ;7a20 
+              MOVEQ.L        #$61,D4                  ;7861 
+              MOVE.W         #$1,$1e(A7)              ;3f7c 0001 001e 
+              CLR.W          $1c(A7)                  ;426f 001c 
               LEA            ESQSHARED4_InterleaveCopyBaseOff(A4),A5;4bec 0000 
               MOVE.W         GCOMMAND_BannerRebuildPendingFla(A4),D0;302c 0000 
               BEQ.B          ___GCOMMAND_TickHighlightState__3;6704 
 ___GCOMMAND_TickHighlightState__2:
               BSR.W          GCOMMAND_RebuildBannerTablesFrom;6100 0000 
 ___GCOMMAND_TickHighlightState__3:
-              ADDQ.L         #$1,GCOMMAND_BannerPhaseIndexCurrent(A4);52ac 0000 
+              MOVE.W         $1e(A7),D0               ;302f 001e 
+              EXT.L          D0                       ;48c0 
+              ADD.L          D0,GCOMMAND_BannerPhaseIndexCurrent(A4);d1ac 0000 
               MOVE.L         GCOMMAND_BannerRowByteOffsetCurr(A4),GCOMMAND_BannerRowByteOffsetPrev(A4);296c 0000 0000 
-              MOVEQ.L        #$62,D0                  ;7062 
-              CMP.L          GCOMMAND_BannerPhaseIndexCurrent(A4),D0;b0ac 0000 
-              BNE.B          ___GCOMMAND_TickHighlightState__5;6616 
+              MOVE.L         GCOMMAND_BannerPhaseIndexCurrent(A4),D0;202c 0000 
+              CMP.L          D7,D0                    ;b087 
+              BNE.B          ___GCOMMAND_TickHighlightState__5;661c 
 ___GCOMMAND_TickHighlightState__4:
-              CLR.L          GCOMMAND_BannerPhaseIndexCurrent(A4);42ac 0000 
-              MOVE.L         GCOMMAND_BannerRowByteOffsetRese(A4),D1;222c 0000 
-              MOVE.L         D1,GCOMMAND_BannerRowByteOffsetCurr(A4);2941 0000 
-              MOVE.L         $8(A5),D2                ;242d 0008 
-              MOVE.L         D2,$4(A5)                ;2b42 0004 
-              BRA.B          ___GCOMMAND_TickHighlightState__6;600e 
+              MOVE.W         $1c(A7),D0               ;302f 001c 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,GCOMMAND_BannerPhaseIndexCurrent(A4);2940 0000 
+              MOVE.L         GCOMMAND_BannerRowByteOffsetRese(A4),D0;202c 0000 
+              MOVE.L         D0,GCOMMAND_BannerRowByteOffsetCurr(A4);2940 0000 
+              MOVE.L         $8(A5),D1                ;222d 0008 
+              MOVE.L         D1,$4(A5)                ;2b41 0004 
+              BRA.B          ___GCOMMAND_TickHighlightState__6;6008 
 ___GCOMMAND_TickHighlightState__5:
-              MOVEQ.L        #$58,D1                  ;7258 
-              ADD.L          D1,D1                    ;d281 
-              ADD.L          D1,GCOMMAND_BannerRowByteOffsetCurr(A4);d3ac 0000 
-              MOVEQ.L        #$20,D1                  ;7220 
-              ADD.L          D1,$4(A5)                ;d3ad 0004 
+              ADD.L          D6,GCOMMAND_BannerRowByteOffsetCurr(A4);ddac 0000 
+              ADD.L          D5,$4(A5)                ;dbad 0004 
 ___GCOMMAND_TickHighlightState__6:
-              MOVE.W         GCOMMAND_BannerQueueSlotCurrent(A4),D7;3e2c 0000 
-              MOVE.W         D7,GCOMMAND_BannerQueueSlotPrevious(A4);3947 0000 
-              SUBQ.W         #$1,D7                   ;5347 
-              MOVE.W         D7,GCOMMAND_BannerQueueSlotCurrent(A4);3947 0000 
-              TST.W          D7                       ;4a47 
-              BPL.B          ___GCOMMAND_TickHighlightState__8;6a06 
+              MOVE.W         GCOMMAND_BannerQueueSlotCurrent(A4),D0;302c 0000 
+              MOVE.W         D0,GCOMMAND_BannerQueueSlotPrevious(A4);3940 0000 
+              MOVE.W         $1e(A7),D1               ;322f 001e 
+              MOVE.W         D0,$1a(A7)               ;3f40 001a 
+              SUB.W          D1,D0                    ;9041 
+              MOVE.W         D0,GCOMMAND_BannerQueueSlotCurrent(A4);3940 0000 
+              MOVE.W         D0,$1a(A7)               ;3f40 001a 
+              MOVE.W         $1c(A7),D2               ;342f 001c 
+              CMP.W          D2,D0                    ;b042 
+              BGE.B          ___GCOMMAND_TickHighlightState__8;6c04 
 ___GCOMMAND_TickHighlightState__7:
-              MOVE.W         #$61,GCOMMAND_BannerQueueSlotCurrent(A4);397c 0061 0000 
+              MOVE.W         D4,GCOMMAND_BannerQueueSlotCurrent(A4);3944 0000 
 ___GCOMMAND_TickHighlightState__8:
-              MOVE.L         GCOMMAND_BannerRowIndexCurrent(A4),D1;222c 0000 
-              MOVE.L         D1,GCOMMAND_BannerRowIndexPrevious(A4);2941 0000 
-              ADDQ.L         #$1,GCOMMAND_BannerRowIndexCurrent(A4);52ac 0000 
-              CMP.L          GCOMMAND_BannerRowIndexCurrent(A4),D0;b0ac 0000 
-              BNE.B          ___GCOMMAND_TickHighlightState__10;6604 
+              MOVE.L         GCOMMAND_BannerRowIndexCurrent(A4),D0;202c 0000 
+              MOVE.L         D0,GCOMMAND_BannerRowIndexPrevious(A4);2940 0000 
+              EXT.L          D1                       ;48c1 
+              ADD.L          D1,GCOMMAND_BannerRowIndexCurrent(A4);d3ac 0000 
+              MOVE.L         GCOMMAND_BannerRowIndexCurrent(A4),D0;202c 0000 
+              CMP.L          D7,D0                    ;b087 
+              BNE.B          ___GCOMMAND_TickHighlightState__10;6606 
 ___GCOMMAND_TickHighlightState__9:
-              CLR.L          GCOMMAND_BannerRowIndexCurrent(A4);42ac 0000 
+              EXT.L          D2                       ;48c2 
+              MOVE.L         D2,GCOMMAND_BannerRowIndexCurrent(A4);2942 0000 
 ___GCOMMAND_TickHighlightState__10:
               BSR.W          GCOMMAND_ServiceHighlightMessage;6100 0000 
 ___GCOMMAND_TickHighlightState__11:
-              MOVEM.L        (A7)+,D2/D7/A5           ;4cdf 2084 
+              MOVEM.L        (A7)+,D2/D4/D5/D6/D7/A5  ;4cdf 20f4 
+              ADDQ.W         #$8,A7                   ;504f 
               RTS                                     ;4e75 
 __const:
 __strings:

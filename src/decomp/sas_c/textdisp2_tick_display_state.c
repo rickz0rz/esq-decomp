@@ -19,38 +19,47 @@ extern void TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations(void);
 
 void TEXTDISP_TickDisplayState(void)
 {
-    ESQ_GlobalTickCounter = 0;
+    const WORD FLAG_FALSE = 0;
+    const WORD FLAG_TRUE = 1;
+    const WORD MODE_RUNTIME_PLAYBACK = 2;
+    const WORD COUNTDOWN_TRIGGER_A = 3;
+    const WORD COUNTDOWN_TRIGGER_B = 2;
+    const LONG FILTER_CLASS_INVALID = -1;
+    const WORD REFRESH_WRAP = 0xB4;
 
-    if (TEXTDISP_TickSuspendFlag != 0) {
+    ESQ_GlobalTickCounter = FLAG_FALSE;
+
+    if (TEXTDISP_TickSuspendFlag != FLAG_FALSE) {
         TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations();
         return;
     }
 
-    if (Global_UIBusyFlag == 0 && SCRIPT_RuntimeMode != 2) {
-        if (TEXTDISP_DeferredActionCountdown != 0 && TEXTDISP_DeferredActionArmed != 0) {
-            TEXTDISP_DeferredActionArmed = 0;
+    if (Global_UIBusyFlag == FLAG_FALSE && SCRIPT_RuntimeMode != MODE_RUNTIME_PLAYBACK) {
+        if (TEXTDISP_DeferredActionCountdown != FLAG_FALSE && TEXTDISP_DeferredActionArmed != FLAG_FALSE) {
+            TEXTDISP_DeferredActionArmed = FLAG_FALSE;
 
-            if (TEXTDISP_DeferredActionCountdown == 3 || TEXTDISP_DeferredActionCountdown == 2) {
+            if (TEXTDISP_DeferredActionCountdown == COUNTDOWN_TRIGGER_A ||
+                TEXTDISP_DeferredActionCountdown == COUNTDOWN_TRIGGER_B) {
                 TEXTDISP_DeferredActionDelayTicks = TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan();
                 SCRIPT_AssertCtrlLineIfEnabled();
                 TEXTDISP_UpdateHighlightOrPreview();
-            } else if (LOCAVAIL_FilterPrevClassId != -1) {
-                LOCAVAIL_FilterPrevClassId = -1;
+            } else if (LOCAVAIL_FilterPrevClassId != FILTER_CLASS_INVALID) {
+                LOCAVAIL_FilterPrevClassId = FILTER_CLASS_INVALID;
             }
 
-            if (TEXTDISP_DeferredActionCountdown > 0) {
+            if (TEXTDISP_DeferredActionCountdown > FLAG_FALSE) {
                 TEXTDISP_DeferredActionCountdown--;
             }
         }
 
-        if (Global_RefreshTickCounter >= 0xB4) {
-            Global_RefreshTickCounter = 0;
+        if (Global_RefreshTickCounter >= REFRESH_WRAP) {
+            Global_RefreshTickCounter = FLAG_FALSE;
             TEXTDISP_ResetSelectionAndRefresh();
         }
     } else {
         Global_RefreshTickCounter++;
-        if (Global_RefreshTickCounter == 0) {
-            Global_RefreshTickCounter = 0;
+        if (Global_RefreshTickCounter == FLAG_FALSE) {
+            Global_RefreshTickCounter = FLAG_FALSE;
         }
     }
 
