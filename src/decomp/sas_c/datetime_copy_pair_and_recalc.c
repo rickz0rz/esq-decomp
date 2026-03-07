@@ -17,38 +17,38 @@ extern LONG DATETIME_NormalizeStructToSeconds(void *dt);
 LONG DATETIME_CopyPairAndRecalc(DateTimePair *pair, void *src_in, void *src_out)
 {
     const LONG PTR_NULL = 0;
-    LONG d0;
+    LONG secondsResult;
     UBYTE *src;
     UBYTE *dst;
-    short count;
+    short copyCount;
 
-    d0 = (LONG)pair;
+    secondsResult = (LONG)pair;
     if (pair == (DateTimePair *)PTR_NULL) {
-        return d0;
+        return secondsResult;
     }
     if (pair->in_ptr == (void *)PTR_NULL) {
-        return d0;
+        return secondsResult;
     }
     if (pair->out_ptr == (void *)PTR_NULL) {
-        return d0;
+        return secondsResult;
     }
 
     src = (UBYTE *)src_in;
     dst = (UBYTE *)pair->in_ptr;
-    count = DATETIME_STRUCT_COPY_COUNT;
+    copyCount = DATETIME_STRUCT_COPY_COUNT;
     do {
         *dst++ = *src++;
-    } while ((count--) != 0);
+    } while ((copyCount--) != 0);
 
     src = (UBYTE *)src_out;
     dst = (UBYTE *)pair->out_ptr;
-    count = DATETIME_STRUCT_COPY_COUNT;
+    copyCount = DATETIME_STRUCT_COPY_COUNT;
     do {
         *dst++ = *src++;
-    } while ((count--) != 0);
+    } while ((copyCount--) != 0);
 
     pair->in_seconds = DATETIME_NormalizeStructToSeconds(src_in);
-    d0 = DATETIME_NormalizeStructToSeconds(src_out);
-    pair->out_seconds = d0;
-    return d0;
+    secondsResult = DATETIME_NormalizeStructToSeconds(src_out);
+    pair->out_seconds = secondsResult;
+    return secondsResult;
 }
