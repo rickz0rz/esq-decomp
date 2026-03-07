@@ -10,7 +10,7 @@ struct DiskioDefaultCoiInfo {
     const char *price;
     const char *tele;
     const char *event;
-    UBYTE reserved24[12];
+    UBYTE trailing_reserved[12];
     WORD exceptionCount;
     void *exceptionBlock;
 };

@@ -3,7 +3,7 @@ typedef signed short WORD;
 
 typedef struct TitleEntry TitleEntry;
 struct TitleEntry {
-    char unknown0[56];
+    char base_text_prefix[56];
     char *extra_text[35];
 };
 
@@ -20,11 +20,11 @@ void ESQFUNC_FreeExtraTitleTextPointers(WORD max_index)
     for (entry_index = 0; entry_index < TEXTDISP_PrimaryGroupEntryCount; ++entry_index) {
         TitleEntry *title_entry;
         WORD slot_index;
-        WORD saw_first;
+        WORD kept_first_non_null_slot;
 
         (void)TEXTDISP_PrimaryEntryPtrTable[entry_index];
         title_entry = TEXTDISP_PrimaryTitlePtrTable[entry_index];
-        saw_first = 0;
+        kept_first_non_null_slot = 0;
 
         if (max_index > 34) {
             slot_index = 34;
@@ -39,8 +39,8 @@ void ESQFUNC_FreeExtraTitleTextPointers(WORD max_index)
                 continue;
             }
 
-            if (saw_first == 0) {
-                saw_first = 1;
+            if (kept_first_non_null_slot == 0) {
+                kept_first_non_null_slot = 1;
                 continue;
             }
 
