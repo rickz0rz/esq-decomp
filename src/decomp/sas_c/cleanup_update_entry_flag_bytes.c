@@ -22,11 +22,11 @@ LONG GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(LONG c);
 void CLEANUP_UpdateEntryFlagBytes(void *entry, UWORD slot)
 {
     UBYTE local[16];
-    UBYTE *p;
-    LONG v;
+    UBYTE *flagText;
+    LONG parsedNibble;
 
-    p = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
-    if (p == (UBYTE *)0) {
+    flagText = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
+    if (flagText == (UBYTE *)0) {
         UBYTE *s = CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY;
         UBYTE *d = &local[LOCAL_FALLBACK_COPY_OFFSET];
         do {
@@ -34,19 +34,19 @@ void CLEANUP_UpdateEntryFlagBytes(void *entry, UWORD slot)
             d++;
             s++;
         } while (d[-1] != 0);
-        p = &local[LOCAL_FALLBACK_COPY_OFFSET];
+        flagText = &local[LOCAL_FALLBACK_COPY_OFFSET];
     }
 
-    if ((WDISP_CharClassTable[p[ENTRY_FLAGS_HEX_PRIMARY_INDEX]] & CHARCLASS_HEX_MASK) != 0) {
-        v = GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)p[ENTRY_FLAGS_HEX_PRIMARY_INDEX]);
-        DISPTEXT_InsetNibblePrimary = (UBYTE)v;
+    if ((WDISP_CharClassTable[flagText[ENTRY_FLAGS_HEX_PRIMARY_INDEX]] & CHARCLASS_HEX_MASK) != 0) {
+        parsedNibble = GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)flagText[ENTRY_FLAGS_HEX_PRIMARY_INDEX]);
+        DISPTEXT_InsetNibblePrimary = (UBYTE)parsedNibble;
     } else {
         DISPTEXT_InsetNibblePrimary = INSET_NIBBLE_INVALID;
     }
 
-    if ((WDISP_CharClassTable[p[ENTRY_FLAGS_HEX_SECONDARY_INDEX]] & CHARCLASS_HEX_MASK) != 0) {
-        v = GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)p[ENTRY_FLAGS_HEX_SECONDARY_INDEX]);
-        DISPTEXT_InsetNibbleSecondary = (UBYTE)v;
+    if ((WDISP_CharClassTable[flagText[ENTRY_FLAGS_HEX_SECONDARY_INDEX]] & CHARCLASS_HEX_MASK) != 0) {
+        parsedNibble = GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)flagText[ENTRY_FLAGS_HEX_SECONDARY_INDEX]);
+        DISPTEXT_InsetNibbleSecondary = (UBYTE)parsedNibble;
     } else {
         DISPTEXT_InsetNibbleSecondary = INSET_NIBBLE_INVALID;
     }
