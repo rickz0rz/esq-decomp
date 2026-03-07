@@ -8,8 +8,8 @@ extern UBYTE *GCOMMAND_PPVPeriodTemplatePtr;
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 
-extern LONG NEWGRID_DrawGridFrame();
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight();
+extern LONG NEWGRID_DrawGridFrame(void *rastPort, LONG style, LONG penA, LONG penB, LONG rowHeight);
+extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void _LVOSetAPen(void *rastPort, LONG pen);
 extern void _LVOSetDrMd(void *rastPort, LONG mode);
 extern LONG _LVOTextLength(void *rastPort, UBYTE *text, LONG len);
