@@ -31,8 +31,8 @@ enum {
 LONG BRUSH_LoadColorTextFont(LONG fh, LONG byte_count, UBYTE *out_buf)
 {
     UBYTE *tmp;
-    LONG out_i;
-    LONG block_i;
+    LONG outputIndex;
+    LONG blockOffset;
     UBYTE *p;
 
     (void)Global_REF_DOS_LIBRARY_2;
@@ -58,12 +58,12 @@ LONG BRUSH_LoadColorTextFont(LONG fh, LONG byte_count, UBYTE *out_buf)
         return BRUSH_COLOR_FONT_STATUS_ERROR;
     }
 
-    out_i = BRUSH_NULL;
+    outputIndex = BRUSH_NULL;
     p = tmp;
-    for (block_i = BRUSH_NULL; block_i < byte_count; block_i += COLOR_FONT_BLOCK_BYTES) {
+    for (blockOffset = BRUSH_NULL; blockOffset < byte_count; blockOffset += COLOR_FONT_BLOCK_BYTES) {
         UWORD inner_i;
         for (inner_i = BRUSH_NULL; inner_i < COLOR_FONT_BLOCK_BYTES; inner_i++) {
-            out_buf[out_i++] = (UBYTE)((*p >> BRUSH_NIBBLE_SHIFT) & BRUSH_LOW_NIBBLE_MASK);
+            out_buf[outputIndex++] = (UBYTE)((*p >> BRUSH_NIBBLE_SHIFT) & BRUSH_LOW_NIBBLE_MASK);
             p++;
         }
     }
