@@ -1,0 +1,232 @@
+              SECTION      text,CODE
+__code:
+ED2_DrawEntrySummaryPanel:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$8c,D0                  ;90bc 0000 008c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$78,A7                  ;9efc 0078 
+              MOVEM.L        D2/D6/D7/A2/A3/A5,-(A7)  ;48e7 2334 
+___ED2_DrawEntrySummaryPanel__1:
+              MOVE.W         ED2_SelectedEntryIndex(A4),D0;302c 0000 
+              MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D1;322c 0000 
+              CMP.W          D1,D0                    ;b041 
+              BCS.B          ___ED2_DrawEntrySummaryPanel__3;6506 
+___ED2_DrawEntrySummaryPanel__2:
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D2,ED2_SelectedEntryIndex(A4);3942 0000 
+___ED2_DrawEntrySummaryPanel__3:
+              MOVE.W         ED2_SelectedEntryIndex(A4),D0;302c 0000 
+              TST.W          D0                       ;4a40 
+              BPL.B          ___ED2_DrawEntrySummaryPanel__5;6a06 
+___ED2_DrawEntrySummaryPanel__4:
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D2,ED2_SelectedEntryIndex(A4);3942 0000 
+___ED2_DrawEntrySummaryPanel__5:
+              TST.W          D1                       ;4a41 
+              BNE.B          ___ED2_DrawEntrySummaryPanel__7;660a 
+___ED2_DrawEntrySummaryPanel__6:
+              CLR.L          ED2_SelectedEntryDataPtr(A4);42ac 0000 
+              CLR.L          ED2_SelectedEntryTitlePtr(A4);42ac 0000 
+              BRA.B          ___ED2_DrawEntrySummaryPanel__8;601e 
+___ED2_DrawEntrySummaryPanel__7:
+              MOVE.W         ED2_SelectedEntryIndex(A4),D0;302c 0000 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              MOVE.L         D0,D2                    ;2400 
+              ASL.L          #$2,D2                   ;e582 
+              LEA            TEXTDISP_PrimaryEntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D2.L),A0           ;2070 2800 
+              MOVE.L         A0,ED2_SelectedEntryDataPtr(A4);2948 0000 
+              CLR.W          ED2_SelectedFlagByteOffset(A4);426c 0000 
+___ED2_DrawEntrySummaryPanel__8:
+              MOVE.L         ED2_SelectedEntryDataPtr(A4),A5;2a6c 0000 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.W          ___ED2_DrawEntrySummaryPanel__37;6700 019e 
+___ED2_DrawEntrySummaryPanel__9:
+___ED2_DrawEntrySummaryPanel__10:
+              MOVE.L         WDISP_DisplayContextBase(A4),A0;206c 0000 
+              LEA            $2(A0),A3                ;47e8 0002 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         ED2_SelectedEntryIndex(A4),D0;302c 0000 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D1,D2                    ;3401 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            Global_STR_CLU_CLU_POS1(A4);486c 0000 
+              PEA            $24(A7)                  ;486f 0024 
+              BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            ($78).w                  ;4878 0078 
+              PEA            $2c(A7)                  ;486f 002c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
+              LEA            $1(A5),A0                ;41ed 0001 
+              LEA            $c(A5),A1                ;43ed 000c 
+              LEA            $13(A5),A2               ;45ed 0013 
+              MOVE.L         A2,(A7)                  ;2e8a 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            Global_STR_CHAN_SOURCE_CALLLTRS_(A4);486c 0000 
+              PEA            $40(A7)                  ;486f 0040 
+              BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            ($96).w                  ;4878 0096 
+              PEA            $48(A7)                  ;486f 0048 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
+              LEA            $38(A7),A7               ;4fef 0038 
+              CLR.B          $18(A7)                  ;422f 0018 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.B         $1b(A5),D7               ;1e2d 001b 
+              BTST           #$0,D7                   ;0807 0000 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__12;670e 
+___ED2_DrawEntrySummaryPanel__11:
+              PEA            ED2_STR_NONE_SourceFlagSummary(A4);486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__12:
+              BTST           #$1,D7                   ;0807 0001 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__14;670e 
+___ED2_DrawEntrySummaryPanel__13:
+              PEA            ED2_STR_HILITESRC(A4)    ;486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__14:
+              BTST           #$2,D7                   ;0807 0002 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__16;670e 
+___ED2_DrawEntrySummaryPanel__15:
+              PEA            ED2_STR_SUMBYSRC(A4)     ;486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__16:
+              BTST           #$3,D7                   ;0807 0003 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__18;670e 
+___ED2_DrawEntrySummaryPanel__17:
+              PEA            ED2_STR_VIDEO_TAG_DISABLE(A4);486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__18:
+              BTST           #$4,D7                   ;0807 0004 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__20;670e 
+___ED2_DrawEntrySummaryPanel__19:
+              PEA            ED2_STR_CAF_PPVSRC(A4)   ;486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__20:
+              BTST           #$5,D7                   ;0807 0005 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__22;670e 
+___ED2_DrawEntrySummaryPanel__21:
+              PEA            ED2_STR_DITTO(A4)        ;486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__22:
+              BTST           #$6,D7                   ;0807 0006 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__24;670e 
+___ED2_DrawEntrySummaryPanel__23:
+              PEA            ED2_STR_ALTHILITESRC(A4) ;486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__24:
+              BTST           #$7,D7                   ;0807 0007 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__26;670e 
+___ED2_DrawEntrySummaryPanel__25:
+              PEA            ED2_STR_STEREO(A4)       ;486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__26:
+              PEA            ($b4).w                  ;4878 00b4 
+              PEA            $1c(A7)                  ;486f 001c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              CLR.B          $18(A7)                  ;422f 0018 
+              LEA            $2e(A5),A0               ;41ed 002e 
+              MOVE.W         (A0),D6                  ;3c10 
+              BTST           #$0,D6                   ;0806 0000 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__28;670e 
+___ED2_DrawEntrySummaryPanel__27:
+              PEA            ED2_STR_GRID(A4)         ;486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__28:
+              BTST           #$1,D6                   ;0806 0001 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__30;670e 
+___ED2_DrawEntrySummaryPanel__29:
+              PEA            ED2_STR_MR(A4)           ;486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__30:
+              BTST           #$2,D6                   ;0806 0002 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__32;670e 
+___ED2_DrawEntrySummaryPanel__31:
+              PEA            ED2_STR_DNICHE(A4)       ;486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__32:
+              BTST           #$3,D6                   ;0806 0003 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__34;670e 
+___ED2_DrawEntrySummaryPanel__33:
+              PEA            ED2_STR_DMPLEX(A4)       ;486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__34:
+              BTST           #$4,D6                   ;0806 0004 
+              BEQ.B          ___ED2_DrawEntrySummaryPanel__36;670e 
+___ED2_DrawEntrySummaryPanel__35:
+              PEA            ED2_STR_CF2_DPPV(A4)     ;486c 0000 
+              PEA            $1c(A7)                  ;486f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ED2_DrawEntrySummaryPanel__36:
+              PEA            ($d2).w                  ;4878 00d2 
+              PEA            $1c(A7)                  ;486f 001c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___ED2_DrawEntrySummaryPanel__37:
+              MOVEM.L        (A7)+,D2/D6/D7/A2/A3/A5  ;4cdf 2cc4 
+              ADD.W          #$78,A7                  ;defc 0078 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED2_SelectedEntryIndex
+              XREF           TEXTDISP_PrimaryGroupEntryCount
+              XREF           ED2_SelectedEntryDataPtr
+              XREF           ED2_SelectedEntryTitlePtr
+              XREF           TEXTDISP_PrimaryEntryPtrTable
+              XREF           ED2_SelectedFlagByteOffset
+              XREF           WDISP_DisplayContextBase
+              XREF           Global_STR_CLU_CLU_POS1
+              XREF           GROUP_AM_JMPTBL_WDISP_SPrintf
+              XREF           ESQFUNC_JMPTBL_TLIBA3_DrawCenter
+              XREF           Global_STR_CHAN_SOURCE_CALLLTRS_
+              XREF           ED2_STR_NONE_SourceFlagSummary
+              XREF           GROUP_AI_JMPTBL_STRING_AppendAtN
+              XREF           ED2_STR_HILITESRC
+              XREF           ED2_STR_SUMBYSRC
+              XREF           ED2_STR_VIDEO_TAG_DISABLE
+              XREF           ED2_STR_CAF_PPVSRC
+              XREF           ED2_STR_DITTO
+              XREF           ED2_STR_ALTHILITESRC
+              XREF           ED2_STR_STEREO
+              XREF           ED2_STR_GRID
+              XREF           ED2_STR_MR
+              XREF           ED2_STR_DNICHE
+              XREF           ED2_STR_DMPLEX
+              XREF           ED2_STR_CF2_DPPV
+              XDEF           ED2_DrawEntrySummaryPanel
+              END
