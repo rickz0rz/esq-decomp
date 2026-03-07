@@ -372,6 +372,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esq_parse_command_line_and_run_trial.sh"
     "src/decomp/scripts/compare_sasc_stream_read_line_with_limit_trial.sh"
     "src/decomp/scripts/compare_sasc_stream_buffered_getc_trial.sh"
+    "src/decomp/scripts/compare_sasc_stream_buffered_putc_or_flush_trial.sh"
     "src/decomp/scripts/compare_sasc_clock_check_date_or_seconds_from_epoch_trial.sh"
     "src/decomp/scripts/compare_sasc_clock_seconds_from_epoch_trial.sh"
     "src/decomp/scripts/compare_sasc_parallel_check_ready_stub_trial.sh"
