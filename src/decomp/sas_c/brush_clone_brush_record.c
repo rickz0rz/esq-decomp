@@ -5,6 +5,19 @@ typedef long LONG;
 
 enum {
     BRUSH_NULL = 0,
+    BRUSH_PLANE_PTR_SHIFT = 2,
+    BRUSH_NODE_BITMAP_OFFSET = 136,
+    BRUSH_NODE_WIDTH_OFFSET = 176,
+    BRUSH_NODE_HEIGHT_OFFSET = 178,
+    BRUSH_NODE_DEPTH_OFFSET = 184,
+    BRUSH_NODE_RASTPORT_OFFSET = 36,
+    BRUSH_NODE_RASTPORT_BITMAPPTR_OFFSET = 40,
+    BRUSH_NODE_PLANE_TABLE_OFFSET = 0x90,
+    BRUSH_NODE_STATE_COPY_DST_OFFSET = 232,
+    BRUSH_SRC_STATE_COPY_SRC_OFFSET = 32,
+    BRUSH_SRC_TYPE_OFFSET = 190,
+    BRUSH_SRC_CLIP_W_OFFSET = 214,
+    BRUSH_SRC_CLIP_H_OFFSET = 218,
     BRUSH_PENDING_ALERT_SET = 1,
     BRUSH_PLANE_COUNT = 5,
     BRUSH_PLANE_PAIR_COPY_COUNT = 4,
@@ -58,9 +71,13 @@ void *BRUSH_CloneBrushRecord(void *src_rec)
     *(ULONG *)(dst + 196) = *(ULONG *)(src + 148);
     *(ULONG *)(dst + 368) = BRUSH_NULL;
 
-    _LVOInitBitMap(dst + 136, (UBYTE)dst[184], (UWORD)*(UWORD *)(dst + 176), (UWORD)*(UWORD *)(dst + 178));
+    _LVOInitBitMap(
+        dst + BRUSH_NODE_BITMAP_OFFSET,
+        (UBYTE)dst[BRUSH_NODE_DEPTH_OFFSET],
+        (UWORD)*(UWORD *)(dst + BRUSH_NODE_WIDTH_OFFSET),
+        (UWORD)*(UWORD *)(dst + BRUSH_NODE_HEIGHT_OFFSET));
 
-    dst[32] = src[190];
+    dst[BRUSH_SRC_STATE_COPY_SRC_OFFSET] = src[BRUSH_SRC_TYPE_OFFSET];
     *(ULONG *)(dst + 328) = *(ULONG *)(src + 194);
     *(ULONG *)(dst + 332) = *(ULONG *)(src + 198);
     *(ULONG *)(dst + 336) = *(ULONG *)(src + 202);
@@ -82,28 +99,28 @@ void *BRUSH_CloneBrushRecord(void *src_rec)
 
     *(ULONG *)(dst + 364) = *(ULONG *)(src + 230);
 
-    if (*(ULONG *)(src + 214) != BRUSH_NULL) {
-        *(ULONG *)(dst + 348) = *(ULONG *)(src + 214);
+    if (*(ULONG *)(src + BRUSH_SRC_CLIP_W_OFFSET) != BRUSH_NULL) {
+        *(ULONG *)(dst + 348) = *(ULONG *)(src + BRUSH_SRC_CLIP_W_OFFSET);
     } else {
-        *(ULONG *)(dst + 348) = (UWORD)*(UWORD *)(dst + 176);
+        *(ULONG *)(dst + 348) = (UWORD)*(UWORD *)(dst + BRUSH_NODE_WIDTH_OFFSET);
     }
 
-    if (*(ULONG *)(src + 218) != BRUSH_NULL) {
-        *(ULONG *)(dst + 352) = *(ULONG *)(src + 218);
+    if (*(ULONG *)(src + BRUSH_SRC_CLIP_H_OFFSET) != BRUSH_NULL) {
+        *(ULONG *)(dst + 352) = *(ULONG *)(src + BRUSH_SRC_CLIP_H_OFFSET);
     } else {
-        *(ULONG *)(dst + 352) = (UWORD)*(UWORD *)(dst + 178);
+        *(ULONG *)(dst + 352) = (UWORD)*(UWORD *)(dst + BRUSH_NODE_HEIGHT_OFFSET);
     }
 
-    for (i = BRUSH_NULL; i < (LONG)(UBYTE)dst[184] && i < BRUSH_PLANE_COUNT; i++) {
+    for (i = BRUSH_NULL; i < (LONG)(UBYTE)dst[BRUSH_NODE_DEPTH_OFFSET] && i < BRUSH_PLANE_COUNT; i++) {
         void *p;
-        LONG plane_off = i << 2;
+        LONG plane_off = i << BRUSH_PLANE_PTR_SHIFT;
         p = GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(
             Global_STR_BRUSH_C_18,
             1302,
             plane_off,
-            (UWORD)*(UWORD *)(dst + 176),
-            (UWORD)*(UWORD *)(dst + 178));
-        *(void **)(dst + 0x90 + plane_off) = p;
+            (UWORD)*(UWORD *)(dst + BRUSH_NODE_WIDTH_OFFSET),
+            (UWORD)*(UWORD *)(dst + BRUSH_NODE_HEIGHT_OFFSET));
+        *(void **)(dst + BRUSH_NODE_PLANE_TABLE_OFFSET + plane_off) = p;
         if (p == (void *)BRUSH_NULL) {
             _LVOForbid();
             if (BRUSH_PendingAlertCode == BRUSH_NULL) {
@@ -119,11 +136,11 @@ void *BRUSH_CloneBrushRecord(void *src_rec)
         }
     }
 
-    if (i == (LONG)(UBYTE)dst[184]) {
-        _LVOInitRastPort(dst + 36);
-        *(void **)(dst + 40) = dst + 136;
+    if (i == (LONG)(UBYTE)dst[BRUSH_NODE_DEPTH_OFFSET]) {
+        _LVOInitRastPort(dst + BRUSH_NODE_RASTPORT_OFFSET);
+        *(void **)(dst + BRUSH_NODE_RASTPORT_BITMAPPTR_OFFSET) = dst + BRUSH_NODE_BITMAP_OFFSET;
         for (i = BRUSH_NULL; i < BRUSH_RASTPORT_COPY_BYTES; i++) {
-            dst[232 + i] = src[32 + i];
+            dst[BRUSH_NODE_STATE_COPY_DST_OFFSET + i] = src[BRUSH_SRC_STATE_COPY_SRC_OFFSET + i];
         }
     }
 
