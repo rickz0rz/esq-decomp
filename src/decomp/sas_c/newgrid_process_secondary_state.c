@@ -17,10 +17,10 @@ extern UBYTE GCOMMAND_DigitalNicheEnabledFlag;
 extern LONG GCOMMAND_NicheEditorLayoutPen;
 extern LONG GCOMMAND_NicheEditorRowPen;
 extern UBYTE GCOMMAND_NicheWorkflowMode;
-extern UBYTE *GCOMMAND_DigitalNicheListingsTemplatePtr;
+extern char *GCOMMAND_DigitalNicheListingsTemplatePtr;
 extern UBYTE CONFIG_NewgridSelectionCode48_49EnabledFlag;
 
-extern LONG NEWGRID_HandleGridEditorState(UBYTE *ctx, LONG layoutPen, LONG rowPen, UBYTE *sourceText);
+extern LONG NEWGRID_HandleGridEditorState(UBYTE *ctx, LONG layoutPen, LONG rowPen, char *sourceText);
 extern LONG NEWGRID_UpdateGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_ProcessGridEntries(UBYTE *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_FindNextEntryWithFlags(LONG mode, LONG startIndex);

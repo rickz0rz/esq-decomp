@@ -23,7 +23,7 @@ typedef struct NEWGRID_Context {
 
 extern LONG GCOMMAND_MplexMessageFramePen;
 extern LONG GCOMMAND_MplexMessageTextPen;
-extern UBYTE *GCOMMAND_MplexAtTemplatePtr;
+extern char *GCOMMAND_MplexAtTemplatePtr;
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 
@@ -56,7 +56,7 @@ void NEWGRID_DrawStatusMessage(UBYTE *gridCtx, UWORD slot)
 
     NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry((LONG)slot, slot_text);
     msg = NEWGRID2_JMPTBL_STR_SkipClass3Chars(slot_text);
-    PARSEINI_JMPTBL_WDISP_SPrintf(text_buf, (char *)GCOMMAND_MplexAtTemplatePtr, msg);
+    PARSEINI_JMPTBL_WDISP_SPrintf(text_buf, GCOMMAND_MplexAtTemplatePtr, msg);
 
     rast = &ctx->rastPort;
     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
