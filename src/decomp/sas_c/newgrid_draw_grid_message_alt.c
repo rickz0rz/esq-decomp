@@ -28,12 +28,12 @@ extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 
 extern LONG NEWGRID_DrawGridFrame(char *rastPort, LONG style, LONG penA, LONG penB, LONG rowHeight);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
-extern void _LVOSetAPen(void *rastPort, LONG pen);
-extern void _LVOSetDrMd(void *rastPort, LONG mode);
-extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
-extern void _LVOMove(void *rastPort, LONG x, LONG y);
-extern void _LVOText(void *rastPort, char *text, LONG len);
+extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void _LVOSetAPen(char *rastPort, LONG pen);
+extern void _LVOSetDrMd(char *rastPort, LONG mode);
+extern LONG _LVOTextLength(char *rastPort, char *text, LONG len);
+extern void _LVOMove(char *rastPort, LONG x, LONG y);
+extern void _LVOText(char *rastPort, char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(char *rastPort, LONG code);
 
 void NEWGRID_DrawGridMessageAlt(char *gridCtx)
@@ -53,14 +53,14 @@ void NEWGRID_DrawGridMessageAlt(char *gridCtx)
     NEWGRID_DrawGridFrame(gridCtx, 7, GCOMMAND_PpvMessageFramePen, GCOMMAND_PpvMessageFramePen, 33);
 
     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
-        rastPort, 0, 0, (LONG)(UWORD)NEWGRID_ColumnStartXPx + 35, 33
+        (char *)rastPort, 0, 0, (LONG)(UWORD)NEWGRID_ColumnStartXPx + 35, 33
     );
     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
-        rastPort, 0, 695, (LONG)(UWORD)NEWGRID_ColumnStartXPx + 36, 33
+        (char *)rastPort, 0, 695, (LONG)(UWORD)NEWGRID_ColumnStartXPx + 36, 33
     );
 
-    _LVOSetAPen(rastPort, GCOMMAND_PpvMessageTextPen);
-    _LVOSetDrMd(rastPort, 0);
+    _LVOSetAPen((char *)rastPort, GCOMMAND_PpvMessageTextPen);
+    _LVOSetDrMd((char *)rastPort, 0);
 
     msg = GCOMMAND_PPVPeriodTemplatePtr;
     len = 0;
@@ -69,14 +69,14 @@ void NEWGRID_DrawGridMessageAlt(char *gridCtx)
     }
 
     while (len > 0) {
-        width = _LVOTextLength(rastPort, msg, len);
+        width = _LVOTextLength((char *)rastPort, msg, len);
         if (width <= ((LONG)(UWORD)NEWGRID_ColumnWidthPx * 3) - 12) {
             break;
         }
         --len;
     }
 
-    width = _LVOTextLength(rastPort, msg, len);
+    width = _LVOTextLength((char *)rastPort, msg, len);
     x = ((LONG)(UWORD)NEWGRID_ColumnWidthPx * 3) - width;
     if (x < 0) {
         ++x;
@@ -90,8 +90,8 @@ void NEWGRID_DrawGridMessageAlt(char *gridCtx)
     }
     y = (y >> 1) + fh - 1;
 
-    _LVOMove(rastPort, x, y);
-    _LVOText(rastPort, msg, len);
+    _LVOMove((char *)rastPort, x, y);
+    _LVOText((char *)rastPort, msg, len);
 
     ctx->selectionCode = 17;
     ctx->selectedState = 17;

@@ -27,10 +27,10 @@ extern char *Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void NEWGRID_DrawGridFrame(char *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
-extern void _LVOSetAPen(void *rastPort, LONG pen);
-extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
+extern void _LVOSetAPen(char *rastPort, LONG pen);
+extern LONG _LVOTextLength(char *rastPort, char *text, LONG len);
 extern void NEWGRID_DrawWrappedText(char *rastPort, LONG x, LONG y, LONG width, char *text, LONG centered);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
 LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
 {
@@ -58,14 +58,14 @@ LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
     msgLen = 0;
 
     NEWGRID_DrawGridFrame(gridCtx, 7, 4, 4, yMax);
-    _LVOSetAPen(rast, 1);
+    _LVOSetAPen((char *)rast, 1);
 
     while (*p != 0) {
         ++p;
     }
     msgLen = (LONG)(p - msg);
 
-    textW = _LVOTextLength(rast, msg, msgLen);
+    textW = _LVOTextLength((char *)rast, msg, msgLen);
     x = 624 - textW;
     if (x < 0) {
         x += 1;
@@ -80,7 +80,7 @@ LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
     y = (y >> 1) + (LONG)fontH - 1;
 
     NEWGRID_DrawWrappedText((char *)rast, x, y, 612, msg, 1);
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(rast, 0, 0, 695, yMax);
+    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight((char *)rast, 0, 0, 695, yMax);
 
     mid = (WORD)((UWORD)NEWGRID_RowHeightPx >> 1);
     ctx->selectionCode = (UWORD)mid;
