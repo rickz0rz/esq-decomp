@@ -20,18 +20,14 @@ ___TLIBA3_InitRuntimeEntry__1:
               MOVE.L         A0,A5                    ;2a48 
               MOVE.L         D6,D0                    ;2006 
               MOVE.W         D0,(A5)                  ;3a80 
-              LEA            $2(A5),A0                ;41ed 0002 
               MOVE.L         D5,D1                    ;2205 
-              MOVE.W         D1,(A0)                  ;3081 
-              LEA            $4(A5),A0                ;41ed 0004 
+              MOVE.W         D1,$2(A5)                ;3b41 0002 
               MOVE.L         $38(A7),D2               ;242f 0038 
-              MOVE.W         D2,(A0)                  ;3082 
-              LEA            $6(A5),A0                ;41ed 0006 
+              MOVE.W         D2,$4(A5)                ;3b42 0004 
               MOVE.L         $3c(A7),D2               ;242f 003c 
-              MOVE.W         D2,(A0)                  ;3082 
-              LEA            $8(A5),A0                ;41ed 0008 
+              MOVE.W         D2,$6(A5)                ;3b42 0006 
               MOVE.L         $40(A7),D2               ;242f 0040 
-              MOVE.W         D2,(A0)                  ;3082 
+              MOVE.W         D2,$8(A5)                ;3b42 0008 
               MOVE.L         Global_REF_RASTPORT_1(A4),A3;266c 0000 
               LEA            $a(A5),A2                ;45ed 000a 
               CLR.L          $24(A7)                  ;42af 0024 
@@ -48,9 +44,9 @@ ___TLIBA3_InitRuntimeEntry__4:
               ADDQ.L         #$1,$24(A7)              ;52af 0024 
               BRA.B          ___TLIBA3_InitRuntimeEntry__2;60e6 
 ___TLIBA3_InitRuntimeEntry__5:
-              LEA            $e(A5),A0                ;41ed 000e 
-              LEA            $6e(A5),A1               ;43ed 006e 
-              MOVE.L         A1,(A0)                  ;2089 
+              LEA            $72(A5),A0               ;41ed 0072 
+              MOVE.L         A0,$6e(A5)               ;2b48 006e 
+              LEA            $72(A5),A0               ;41ed 0072 
               MOVE.L         $44(A7),D0               ;202f 0044 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
@@ -63,7 +59,7 @@ ___TLIBA3_InitRuntimeEntry__5:
               MOVE.L         D4,-(A7)                 ;2f04 
               MOVE.L         D2,-(A7)                 ;2f02 
               MOVE.L         D1,-(A7)                 ;2f01 
-              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOInitBitMap           ;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
@@ -72,25 +68,18 @@ ___TLIBA3_InitRuntimeEntry__6:
               MOVE.L         $24(A7),D0               ;202f 0024 
               MOVEQ.L        #$6,D1                   ;7206 
               CMP.L          D1,D0                    ;b081 
-              BGE.B          ___TLIBA3_InitRuntimeEntry__9;6c1e 
+              BGE.B          ___TLIBA3_InitRuntimeEntry__9;6c14 
 ___TLIBA3_InitRuntimeEntry__7:
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
-              MOVE.L         A5,A0                    ;204d 
-              ADD.L          D1,A0                    ;d1c1 
-              LEA            $76(A0),A1               ;43e8 0076 
-              MOVE.L         D0,D1                    ;2200 
-              ASL.L          #$2,D1                   ;e581 
               LEA            WDISP_DisplayContextPlanePointer(A4),A0;41ec 0000 
-              MOVE.L         $0(A0,D1.L),(A1)         ;22b0 1800 
+              MOVE.L         $0(A0,D1.L),$7a(A5,D1.L) ;2bb0 1800 187a 
 ___TLIBA3_InitRuntimeEntry__8:
               ADDQ.L         #$1,$24(A7)              ;52af 0024 
-              BRA.B          ___TLIBA3_InitRuntimeEntry__6;60d8 
+              BRA.B          ___TLIBA3_InitRuntimeEntry__6;60e2 
 ___TLIBA3_InitRuntimeEntry__9:
-              LEA            $96(A5),A0               ;41ed 0096 
-              CLR.W          (A0)                     ;4250 
-              LEA            $98(A5),A0               ;41ed 0098 
-              CLR.W          (A0)                     ;4250 
+              CLR.W          $92(A5)                  ;426d 0092 
+              CLR.W          $94(A5)                  ;426d 0094 
 ___TLIBA3_InitRuntimeEntry__10:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
               ADDQ.W         #$4,A7                   ;584f 

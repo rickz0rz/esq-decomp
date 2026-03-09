@@ -1,9 +1,13 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
+typedef struct TLIBA3_ViewModeRuntimeEntry {
+    UBYTE pad0[10];
+    UBYTE rastPort10[1];
+} TLIBA3_ViewModeRuntimeEntry;
+
 enum {
-    VM_RUNTIME_STRIDE = 154,
-    VM_RASTPORT_OFFSET = 10
+    VM_RUNTIME_STRIDE = 154
 };
 
 extern UBYTE TLIBA3_VmArrayRuntimeTable[];
@@ -15,9 +19,9 @@ extern LONG _LVOSetRast(void *gfxBase, void *rastPort, LONG pen);
 void TLIBA3_ClearViewModeRastPort(LONG viewMode, LONG clearPen)
 {
     LONG offset;
-    UBYTE *viewRec;
+    TLIBA3_ViewModeRuntimeEntry *viewRec;
 
     offset = MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE);
-    viewRec = TLIBA3_VmArrayRuntimeTable + offset;
-    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, viewRec + VM_RASTPORT_OFFSET, clearPen);
+    viewRec = (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + offset);
+    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, viewRec->rastPort10, clearPen);
 }
