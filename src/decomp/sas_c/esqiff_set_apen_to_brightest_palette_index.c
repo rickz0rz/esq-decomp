@@ -5,9 +5,9 @@ extern UBYTE WDISP_PaletteDepthLog2;
 extern UBYTE WDISP_PaletteTriplesRBase[];
 extern UBYTE WDISP_PaletteTriplesGBase[];
 extern UBYTE WDISP_PaletteTriplesBBase[];
-extern void *Global_REF_RASTPORT_2;
+extern char *Global_REF_RASTPORT_2;
 
-extern void SetAPen(void *rastPort, LONG pen);
+extern void SetAPen(char *rastPort, LONG pen);
 
 void ESQIFF_SetApenToBrightestPaletteIndex(void)
 {
