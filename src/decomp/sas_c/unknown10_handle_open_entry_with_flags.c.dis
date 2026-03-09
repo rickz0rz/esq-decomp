@@ -37,7 +37,7 @@ ___HANDLE_OpenEntryWithFlags__7:
               MOVEQ.L        #$18,D0                  ;7018 
               MOVE.L         D0,Global_AppErrorCode(A4);2940 0000 
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___HANDLE_OpenEntryWithFlags__36;6000 013e 
+              BRA.W          ___HANDLE_OpenEntryWithFlags__36;6000 013c 
 ___HANDLE_OpenEntryWithFlags__8:
               TST.L          D6                       ;4a86 
               BNE.B          ___HANDLE_OpenEntryWithFlags__10;660a 
@@ -80,7 +80,7 @@ ___HANDLE_OpenEntryWithFlags__17:
               MOVEQ.L        #$16,D0                  ;7016 
               MOVE.L         D0,Global_AppErrorCode(A4);2940 0000 
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___HANDLE_OpenEntryWithFlags__36;6000 00da 
+              BRA.W          ___HANDLE_OpenEntryWithFlags__36;6000 00d8 
 ___HANDLE_OpenEntryWithFlags__18:
               MOVE.L         D7,D0                    ;2007 
               ADDQ.L         #$1,D0                   ;5280 
@@ -157,7 +157,7 @@ ___HANDLE_OpenEntryWithFlags__32:
               BEQ.B          ___HANDLE_OpenEntryWithFlags__34;6704 
 ___HANDLE_OpenEntryWithFlags__33:
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.B          ___HANDLE_OpenEntryWithFlags__36;601a 
+              BRA.B          ___HANDLE_OpenEntryWithFlags__36;6018 
 ___HANDLE_OpenEntryWithFlags__34:
               MOVE.L         D5,D0                    ;2005 
               ASL.L          #$3,D0                   ;e780 
@@ -165,8 +165,7 @@ ___HANDLE_OpenEntryWithFlags__34:
               ADD.L          D0,A0                    ;d1c0 
               MOVE.L         A0,A2                    ;2448 
               MOVE.L         $20(A7),(A2)             ;24af 0020 
-              LEA            $4(A2),A0                ;41ea 0004 
-              MOVE.L         $28(A7),(A0)             ;20af 0028 
+              MOVE.L         $28(A7),$4(A2)           ;256f 0028 0004 
               MOVE.L         D5,D0                    ;2005 
 ___HANDLE_OpenEntryWithFlags__35:
 ___HANDLE_OpenEntryWithFlags__36:

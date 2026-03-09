@@ -2,6 +2,20 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID2_Context {
+    UBYTE pad0[32];
+    LONG selectedState;
+    UBYTE pad1[24];
+    UBYTE rastPort[1];
+} NEWGRID2_Context;
+
+typedef struct NEWGRID2_StateEntry {
+    void *entryPtr;
+    void *auxPtr;
+    UBYTE pad0[12];
+    WORD rowSlot;
+} NEWGRID2_StateEntry;
+
 extern LONG NEWGRID_RenderStateLatch;
 extern WORD NEWGRID_PrimeTimeLayoutEnable;
 extern UBYTE Global_STR_NEWGRID2_C_1;
@@ -29,8 +43,8 @@ extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
 
 LONG NEWGRID2_ProcessGridState(void *gridCtx, void *entryCtx, LONG keyValue)
 {
-    UBYTE *grid = (UBYTE *)gridCtx;
-    UBYTE *entry = (UBYTE *)entryCtx;
+    NEWGRID2_Context *grid = (NEWGRID2_Context *)gridCtx;
+    NEWGRID2_StateEntry *entry = (NEWGRID2_StateEntry *)entryCtx;
     void *scratch = 0;
     WORD rowSlot;
 
@@ -41,25 +55,25 @@ LONG NEWGRID2_ProcessGridState(void *gridCtx, void *entryCtx, LONG keyValue)
 
     switch (NEWGRID_RenderStateLatch) {
         case 4:
-            if (*(void **)(entry + 0) == 0) {
+            if (entry->entryPtr == 0) {
                 return NEWGRID_RenderStateLatch;
             }
-            if (*(void **)(entry + 4) == 0) {
+            if (entry->auxPtr == 0) {
                 return NEWGRID_RenderStateLatch;
             }
 
             NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20, 1);
-            rowSlot = *(WORD *)(entry + 20);
+            rowSlot = entry->rowSlot;
             if (rowSlot > 48) {
                 rowSlot = (WORD)(rowSlot - 0x30);
             }
 
             if (NEWGRID_PrimeTimeLayoutEnable != 0 &&
-                NEWGRID_TestPrimeTimeWindow((LONG)rowSlot, *(void **)(entry + 0)) == 0) {
+                NEWGRID_TestPrimeTimeWindow((LONG)rowSlot, entry->entryPtr) == 0) {
                 NEWGRID_DrawGridEntry(
-                    grid + 60,
-                    *(void **)(entry + 0),
-                    *(void **)(entry + 4),
+                    grid->rastPort,
+                    entry->entryPtr,
+                    entry->auxPtr,
                     (LONG)rowSlot,
                     1,
                     1,
@@ -67,9 +81,9 @@ LONG NEWGRID2_ProcessGridState(void *gridCtx, void *entryCtx, LONG keyValue)
                 );
             } else {
                 NEWGRID_DrawGridEntry(
-                    grid + 60,
-                    *(void **)(entry + 0),
-                    *(void **)(entry + 4),
+                    grid->rastPort,
+                    entry->entryPtr,
+                    entry->auxPtr,
                     (LONG)rowSlot,
                     3,
                     1,
@@ -83,7 +97,7 @@ LONG NEWGRID2_ProcessGridState(void *gridCtx, void *entryCtx, LONG keyValue)
             if (scratch != 0) {
                 NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(3);
                 NEWGRID_AppendShowtimesForRow(grid, entry, scratch, keyValue);
-                NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(grid + 60, scratch);
+                NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(grid->rastPort, scratch);
                 SCRIPT_JMPTBL_MEMORY_DeallocateMemory(&Global_STR_NEWGRID2_C_2, 3953, scratch, 2000);
             }
 
@@ -92,7 +106,7 @@ LONG NEWGRID2_ProcessGridState(void *gridCtx, void *entryCtx, LONG keyValue)
             } else {
                 NEWGRID_RenderStateLatch = 5;
             }
-            *(LONG *)(grid + 32) = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
+            grid->selectedState = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
             break;
 
         case 5:
@@ -101,7 +115,7 @@ LONG NEWGRID2_ProcessGridState(void *gridCtx, void *entryCtx, LONG keyValue)
             } else {
                 NEWGRID_RenderStateLatch = 5;
             }
-            *(LONG *)(grid + 32) = -1;
+            grid->selectedState = -1;
             break;
 
         default:

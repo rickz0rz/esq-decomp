@@ -2,6 +2,11 @@ typedef signed long LONG;
 typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
+typedef struct HANDLE_TableEntry {
+    ULONG modeBits;
+    LONG openHandle;
+} HANDLE_TableEntry;
+
 extern ULONG Global_HandleTableCount;
 extern UBYTE Global_HandleTableBase[];
 extern ULONG Global_HandleTableFlags;
@@ -25,8 +30,8 @@ LONG HANDLE_OpenEntryWithFlags(const UBYTE *name, ULONG flags, LONG aux)
     Global_DosIoErr = 0;
 
     while ((ULONG)slot < Global_HandleTableCount) {
-        UBYTE *entry = Global_HandleTableBase + ((ULONG)slot << 3);
-        if (*(ULONG *)(entry + 0) == 0) {
+        HANDLE_TableEntry *entry = (HANDLE_TableEntry *)(Global_HandleTableBase + ((ULONG)slot << 3));
+        if (entry->modeBits == 0) {
             break;
         }
         slot++;
@@ -89,9 +94,9 @@ LONG HANDLE_OpenEntryWithFlags(const UBYTE *name, ULONG flags, LONG aux)
     }
 
     {
-        UBYTE *entry = Global_HandleTableBase + ((ULONG)slot << 3);
-        *(ULONG *)(entry + 0) = mode_bits;
-        *(LONG *)(entry + 4) = open_handle;
+        HANDLE_TableEntry *entry = (HANDLE_TableEntry *)(Global_HandleTableBase + ((ULONG)slot << 3));
+        entry->modeBits = mode_bits;
+        entry->openHandle = open_handle;
     }
 
     return slot;
