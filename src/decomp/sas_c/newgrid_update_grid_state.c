@@ -25,15 +25,15 @@ extern LONG NEWGRID_GridStateFrameLatch;
 extern LONG NEWGRID_SelectedGridEntryPtr;
 extern LONG NEWGRID_OverridePenIndex;
 
-extern LONG NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, LONG keyIndex);
+extern LONG NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LONG keyIndex);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG bitIndex);
-extern WORD NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(UBYTE *entry, UBYTE *aux, LONG rowIndex);
-extern LONG NEWGRID_SelectEntryPen(UBYTE *entry);
-extern void NEWGRID_DrawEntryFlagBadge(void *rastPort, UBYTE *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode);
+extern WORD NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG rowIndex);
+extern LONG NEWGRID_SelectEntryPen(char *entry);
+extern void NEWGRID_DrawEntryFlagBadge(void *rastPort, char *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG unused);
-extern LONG NEWGRID_DrawGridFrameAndRows(UBYTE *grid, LONG selectedEntryState);
+extern LONG NEWGRID_DrawGridFrameAndRows(char *grid, LONG selectedEntryState);
 
-void NEWGRID_UpdateGridState(UBYTE *grid, LONG keyIndex, WORD rowIndex)
+void NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
 {
     const LONG GRID_NULL = 0;
     const LONG GRIDSTATE_READY = 4;
@@ -48,7 +48,7 @@ void NEWGRID_UpdateGridState(UBYTE *grid, LONG keyIndex, WORD rowIndex)
     LONG pen;
 
     gridView = (NEWGRID_Context *)grid;
-    if (grid == (UBYTE *)GRID_NULL) {
+    if (grid == (char *)GRID_NULL) {
         NEWGRID_GridStateFrameLatch = GRIDSTATE_READY;
         return;
     }
@@ -57,12 +57,12 @@ void NEWGRID_UpdateGridState(UBYTE *grid, LONG keyIndex, WORD rowIndex)
     if (frameState == GRIDSTATE_LATCHED) {
         gridView->selectedState = SELECTED_NONE;
     } else if (frameState == GRIDSTATE_READY) {
-        rowIndex = (WORD)NEWGRID_UpdatePresetEntry((UBYTE **)&entry, (UBYTE **)&aux, rowIndex, keyIndex);
+        rowIndex = (WORD)NEWGRID_UpdatePresetEntry((char **)&entry, (char **)&aux, rowIndex, keyIndex);
 
         if (entry != 0 && aux != 0) {
             if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, (LONG)rowIndex) == SELECTED_NONE) {
-                rowIndex = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((UBYTE *)entry, (UBYTE *)aux, (LONG)rowIndex);
-                pen = NEWGRID_SelectEntryPen((UBYTE *)entry);
+                rowIndex = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((char *)entry, (char *)aux, (LONG)rowIndex);
+                pen = NEWGRID_SelectEntryPen((char *)entry);
                 NEWGRID_SelectedGridEntryPtr = pen;
                 if ((aux->rowFlags[rowIndex] & ROW_FLAG_BADGE) != 0) {
                     NEWGRID_SelectedGridEntryPtr = PEN_OVERRIDE_FLAGGED;
@@ -70,7 +70,7 @@ void NEWGRID_UpdateGridState(UBYTE *grid, LONG keyIndex, WORD rowIndex)
 
                 NEWGRID_DrawEntryFlagBadge(
                     gridView->rastPort,
-                    (UBYTE *)entry,
+                    (char *)entry,
                     rowIndex,
                     (LONG)aux->titleTable[rowIndex],
                     NEWGRID_OverridePenIndex

@@ -1,10 +1,9 @@
 typedef signed long LONG;
 typedef signed short WORD;
-typedef unsigned char UBYTE;
 
-extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern LONG NEWGRID_GetEntryStateCode(UBYTE *entryPtr, UBYTE *entryAuxPtr, WORD selector);
+extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern LONG NEWGRID_GetEntryStateCode(char *entryPtr, char *entryAuxPtr, WORD selector);
 
 LONG NEWGRID_TestEntryState(LONG mode, LONG primaryIndex, LONG secondaryIndex, WORD selector)
 {
@@ -22,8 +21,8 @@ LONG NEWGRID_TestEntryState(LONG mode, LONG primaryIndex, LONG secondaryIndex, W
     const LONG STATE_UNSET = 0;
     const LONG STATE_PRESENT = 1;
     const LONG STATE_BLOCKED = 3;
-    UBYTE *entryPtr;
-    UBYTE *entryAuxPtr;
+    char *entryPtr;
+    char *entryAuxPtr;
     LONG state;
     LONG result;
 

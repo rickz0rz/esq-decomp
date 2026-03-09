@@ -16,7 +16,7 @@ typedef struct NEWGRID_AuxData {
 
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG bitIndex);
 
-LONG NEWGRID_GetEntryStateCode(UBYTE *gridCtx, UBYTE *entryAuxBase, WORD rowIndex)
+LONG NEWGRID_GetEntryStateCode(char *gridCtx, char *entryAuxBase, WORD rowIndex)
 {
     NEWGRID_Entry *entry;
     NEWGRID_AuxData *aux;
