@@ -9,17 +9,17 @@ typedef struct TEXTDISP_AuxData {
 } TEXTDISP_AuxData;
 
 typedef struct TEXTDISP_SelectionEntry {
-    UBYTE shortName[10];
-    UBYTE longName[200];
+    char shortName[10];
+    char longName[200];
     LONG mode;
     LONG groupIndex;
     UWORD selectionIndex;
-    UBYTE detailLine[524];
+    char detailLine[524];
 } TEXTDISP_SelectionEntry;
 
 typedef struct TEXTDISP_CandidateEntry {
     UBYTE pad0[12];
-    UBYTE tagText[15];
+    char tagText[15];
     UBYTE flags27;
     UBYTE selectionBits[1];
 } TEXTDISP_CandidateEntry;

@@ -17,8 +17,12 @@ ___TEXTDISP_FindAliasIndexByName__2:
               MOVE.B         (A3)+,(A2)+              ;14db 
 ___TEXTDISP_FindAliasIndexByName__3:
               MOVE.B         $ffffffff(A2),D0         ;102a ffff 
-              CMP.B          D6,D0                    ;b006 
-              BNE.B          ___TEXTDISP_FindAliasIndexByName__2;66f6 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D6,D1                    ;1206 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___TEXTDISP_FindAliasIndexByName__2;66ee 
 ___TEXTDISP_FindAliasIndexByName__4:
               MOVEQ.L        #$0,D5                   ;7a00 
 ___TEXTDISP_FindAliasIndexByName__5:

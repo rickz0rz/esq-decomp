@@ -3,9 +3,9 @@ typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 typedef struct TEXTDISP_CandidateEntry {
-    UBYTE shortName[10];
-    UBYTE longName[2];
-    UBYTE tagText[15];
+    char shortName[10];
+    char longName[2];
+    char tagText[15];
     UBYTE flags27;
     UBYTE pad28[12];
     UBYTE editFlags40;

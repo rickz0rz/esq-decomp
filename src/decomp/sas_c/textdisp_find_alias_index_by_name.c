@@ -3,9 +3,9 @@ typedef signed short WORD;
 typedef unsigned char UBYTE;
 
 typedef struct TEXTDISP_CandidateEntry {
-    UBYTE shortName[10];
-    UBYTE longName[2];
-    UBYTE tagText[15];
+    char shortName[10];
+    char longName[2];
+    char tagText[15];
 } TEXTDISP_CandidateEntry;
 
 typedef struct TEXTDISP_AliasEntry {
@@ -17,13 +17,13 @@ extern TEXTDISP_AliasEntry *TEXTDISP_AliasPtrTable[];
 
 extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 
-LONG TEXTDISP_FindAliasIndexByName(UBYTE *entryPtr)
+LONG TEXTDISP_FindAliasIndexByName(char *entryPtr)
 {
     const LONG INDEX_NOT_FOUND = -1;
     const UBYTE CH_NUL = 0;
-    UBYTE nameBuf[22];
-    UBYTE *src;
-    UBYTE *dst;
+    char nameBuf[22];
+    char *src;
+    char *dst;
     LONG idx;
 
     src = ((TEXTDISP_CandidateEntry *)entryPtr)->tagText;
