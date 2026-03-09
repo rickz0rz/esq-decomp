@@ -8,8 +8,8 @@ extern const char PARSEINI_STR_RB_LogoListPrimary[];
 extern const char PARSEINI_STR_RB_LogoListSecondary[];
 extern const char PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST[];
 extern const char PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT[];
-extern const char Global_STR_PARSEINI_C_4[];
-extern const char Global_STR_PARSEINI_C_5[];
+extern char Global_STR_PARSEINI_C_4[];
+extern char Global_STR_PARSEINI_C_5[];
 
 extern LONG _LVOExecute(const char *cmd, LONG input, LONG output);
 extern LONG PARSEINI_JMPTBL_HANDLE_OpenWithMode(const char *path, const char *modeStr);
@@ -38,6 +38,8 @@ void PARSEINI_ScanLogoDirectory(void)
     LONG i;
     LONG j;
     char *lineStart;
+    char *dst;
+    char *src;
     LONG len;
 
     for (i = 0; i < 100; ++i) {
@@ -64,9 +66,11 @@ void PARSEINI_ScanLogoDirectory(void)
         len = PARSEINI_StrLen(lineStart) + 1;
         primaryEntries[i] = (char *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_PARSEINI_C_4, 1263, len, 65537);
         if (primaryEntries[i] != (char *)0) {
-            for (j = 0; j < len; ++j) {
-                primaryEntries[i][j] = lineStart[j];
-            }
+            dst = primaryEntries[i];
+            src = lineStart;
+            do {
+                *dst++ = *src++;
+            } while (dst[-1] != 0);
         }
         ++i;
     }
@@ -84,9 +88,11 @@ void PARSEINI_ScanLogoDirectory(void)
         len = PARSEINI_StrLen(lineBuf) + 1;
         secondaryEntries[i] = (char *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_PARSEINI_C_5, 1287, len, 65537);
         if (secondaryEntries[i] != (char *)0) {
-            for (j = 0; j < len; ++j) {
-                secondaryEntries[i][j] = lineBuf[j];
-            }
+            dst = secondaryEntries[i];
+            src = lineBuf;
+            do {
+                *dst++ = *src++;
+            } while (dst[-1] != 0);
         }
         ++i;
     }
