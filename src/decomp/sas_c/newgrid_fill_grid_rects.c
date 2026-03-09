@@ -7,7 +7,7 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void _LVOSetAPen(void *rastPort, LONG pen);
 extern void _LVORectFill(void *rastPort, LONG xMin, LONG yMin, LONG xMax, LONG yMax);
 
-void NEWGRID_FillGridRects(void *rastPort, LONG firstPen, LONG secondPen, LONG yMax)
+void NEWGRID_FillGridRects(char *rastPort, LONG firstPen, LONG secondPen, LONG yMax)
 {
     LONG xSplit;
 

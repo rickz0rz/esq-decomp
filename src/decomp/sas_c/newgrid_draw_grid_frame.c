@@ -8,7 +8,7 @@ typedef struct NEWGRID_Context {
 } NEWGRID_Context;
 
 extern LONG NEWGRID_SetRowColor(char *gridCtx, LONG mode, LONG pen, void *rowState);
-extern void NEWGRID_FillGridRects(void *rastPort, LONG firstPen, LONG secondPen, LONG yMax);
+extern void NEWGRID_FillGridRects(char *rastPort, LONG firstPen, LONG secondPen, LONG yMax);
 
 void NEWGRID_DrawGridFrame(char *gridCtx, LONG unused1, LONG firstPen, LONG secondPen, LONG yMax)
 {
