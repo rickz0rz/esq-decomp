@@ -42,7 +42,7 @@ extern const char ED2_STR_DMPLEX[];
 extern const char ED2_STR_CF2_DPPV[];
 
 extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void *rastPort, char *text, LONG y);
+extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, char *text, LONG y);
 extern void GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
 void ED2_DrawEntrySummaryPanel(void)
@@ -50,7 +50,7 @@ void ED2_DrawEntrySummaryPanel(void)
     char panelTextBuffer[120];
     ED2_DisplayContext *context;
     ED2_Entry *entry;
-    void *rastPort;
+    char *rastPort;
     UWORD flags8;
     UWORD flags16;
 
@@ -76,7 +76,7 @@ void ED2_DrawEntrySummaryPanel(void)
     }
 
     context = (ED2_DisplayContext *)WDISP_DisplayContextBase;
-    rastPort = (void *)context->rastPort;
+    rastPort = (char *)context->rastPort;
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(panelTextBuffer, Global_STR_CLU_CLU_POS1,
                                   (LONG)ED2_SelectedEntryIndex,

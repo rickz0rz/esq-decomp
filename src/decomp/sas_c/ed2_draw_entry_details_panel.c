@@ -47,7 +47,7 @@ extern const char ED2_STR_PREVDAYSDATA[];
 extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG pool, LONG size, LONG flags);
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG pool, void *ptr, LONG size);
 extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void *rastPort, char *text, LONG y);
+extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, char *text, LONG y);
 extern void GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern UBYTE *DISKIO2_CopyAndSanitizeSlotString(UBYTE *buf, UBYTE *entryData, UBYTE *titlePtr, LONG slot);
 extern void GROUP_AK_JMPTBL_TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG slot, UBYTE *titlePtr);
@@ -64,7 +64,7 @@ void ED2_DrawEntryDetailsPanel(void)
     UBYTE *src;
     UBYTE *calls;
     UBYTE *safeTitle;
-    void *rastPort;
+    char *rastPort;
     UBYTE flags;
 
     if (ED2_SelectedEntryIndex >= TEXTDISP_PrimaryGroupEntryCount || (LONG)(short)ED2_SelectedEntryIndex < 0) {
@@ -80,7 +80,7 @@ void ED2_DrawEntryDetailsPanel(void)
 
     scratch = (UBYTE *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ED2_C_1, 1000, 374, 3);
     context = (ED2_DisplayContext *)WDISP_DisplayContextBase;
-    rastPort = (void *)context->rastPort;
+    rastPort = (char *)context->rastPort;
 
     if (ED2_SelectedFlagByteOffset < 1 || ED2_SelectedFlagByteOffset > 48) {
         ED2_SelectedFlagByteOffset = 1;
