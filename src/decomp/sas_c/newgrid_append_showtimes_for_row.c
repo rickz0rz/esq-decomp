@@ -9,6 +9,16 @@ typedef struct NewgridCtx {
     UWORD row;
 } NewgridCtx;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[28];
+    UBYTE selectionBits[1];
+} NEWGRID_Entry;
+
+typedef struct NEWGRID_AuxData {
+    UBYTE pad0[7];
+    UBYTE rowFlags[49];
+} NEWGRID_AuxData;
+
 extern const char Global_STR_SHOWTIMES_AND_SINGLE_SPACE[];
 extern const char Global_STR_SHOWING_AT_AND_SINGLE_SPACE[];
 extern const char NEWGRID_ShowtimeListSeparator[];
@@ -44,8 +54,6 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
     UWORD row;
     UWORD rowEnd;
     LONG srcIdx;
-    LONG elig0;
-    LONG eligN;
     char scratchTime[32];
     const char *title0;
     const char *titleN;
@@ -57,16 +65,16 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
     const char *f3_n;
     UBYTE mode0;
     UBYTE modeN;
-    void *entryCur;
-    void *auxCur;
+    NEWGRID_Entry *entryCur;
+    NEWGRID_AuxData *auxCur;
 
     out[0] = 0;
 
     if (!ctx || !ctx->coi || !ctx->entries) {
         return;
     }
-    entryCur = ctx->coi;
-    auxCur = ctx->entries;
+    entryCur = (NEWGRID_Entry *)ctx->coi;
+    auxCur = (NEWGRID_AuxData *)ctx->entries;
 
     row = ctx->row;
     if (row <= 0 || row >= 97) {
@@ -100,7 +108,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
 
     for (row = (UWORD)(ctx->row + 1); row < rowEnd; row++) {
         if (row == 49) {
-            NEWGRID_UpdatePresetEntry(&entryCur, &auxCur, (LONG)row, ctx->preset);
+            NEWGRID_UpdatePresetEntry((void **)&entryCur, (void **)&auxCur, (LONG)row, ctx->preset);
         }
 
         srcIdx = (row > 48) ? (LONG)(row - 48) : (LONG)row;
@@ -108,11 +116,11 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
             continue;
         }
 
-        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based((UBYTE *)entryCur + 0x1c, srcIdx) != -1) {
+        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entryCur->selectionBits, srcIdx) != -1) {
             continue;
         }
 
-        if (((UBYTE *)auxCur)[7 + srcIdx] & 0x20) {
+        if (auxCur->rowFlags[srcIdx] & 0x20) {
             continue;
         }
 
@@ -147,7 +155,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
         PARSEINI_JMPTBL_STRING_AppendAtNull(out, NEWGRID_ShowtimeListSeparator);
         PARSEINI_JMPTBL_STRING_AppendAtNull(out, NEWGRID2_JMPTBL_STR_SkipClass3Chars(scratchTime));
 
-        ((UBYTE *)auxCur)[7 + srcIdx] |= 0x20;
+        auxCur->rowFlags[srcIdx] |= 0x20;
     }
 
     if (out[0] == 0) {

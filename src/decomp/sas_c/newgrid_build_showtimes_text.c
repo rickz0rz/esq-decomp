@@ -12,6 +12,16 @@ typedef struct NewgridCtx {
     LONG preset;
 } NewgridCtx;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[28];
+    UBYTE selectionBits[1];
+} NEWGRID_Entry;
+
+typedef struct NEWGRID_AuxData {
+    UBYTE pad0[7];
+    UBYTE rowFlags[49];
+} NEWGRID_AuxData;
+
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern LONG GCOMMAND_PpvShowtimesRowSpan;
@@ -98,17 +108,17 @@ void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
         if (rowEnd > 97) rowEnd = 97;
 
         for (row = ctx->startRow; row < rowEnd; row++) {
-            LONG col = ctx->startCol;
-            while (col < ctx->endCol) {
-                void *entry = 0;
-                void *coi = 0;
+                LONG col = ctx->startCol;
+                while (col < ctx->endCol) {
+                NEWGRID_Entry *entry = 0;
+                NEWGRID_AuxData *coi = 0;
                 LONG idx;
                 const char *t;
                 const char *f1;
                 const char *f2;
                 const char *f3;
 
-                idx = NEWGRID_UpdatePresetEntry(&entry, &coi, row, col);
+                idx = NEWGRID_UpdatePresetEntry((void **)&entry, (void **)&coi, row, col);
                 if (!entry || !coi) {
                     col++;
                     continue;
@@ -123,7 +133,7 @@ void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
                     }
                 }
 
-                if (NEWGRID2_JMPTBL_ESQ_TestBit1Based((UBYTE *)entry + 0x1c, idx) != -1) {
+                if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, idx) != -1) {
                     col++;
                     continue;
                 }
@@ -141,7 +151,7 @@ void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
                     continue;
                 }
 
-                ((UBYTE *)coi)[7 + idx] |= 0x20;
+                coi->rowFlags[idx] |= 0x20;
 
                 if (out[0] == 0) {
                     PARSEINI_JMPTBL_STRING_AppendAtNull(out, Global_STR_SHOWTIMES_AND_SINGLE_SPACE);

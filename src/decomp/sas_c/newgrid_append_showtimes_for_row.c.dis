@@ -46,23 +46,23 @@ __const:
 __strings:
 NEWGRID_AppendShowtimesForRow:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$68,D0                  ;90bc 0000 0068 
+              SUB.L          #$60,D0                  ;90bc 0000 0060 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$58,A7                  ;9efc 0058 
+              SUB.W          #$50,A7                  ;9efc 0050 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___NEWGRID_AppendShowtimesForRow__1:
-              MOVE.L         $7c(A7),D7               ;2e2f 007c 
-              MOVE.L         $78(A7),A3               ;266f 0078 
-              MOVE.L         $74(A7),A5               ;2a6f 0074 
+              MOVE.L         $74(A7),D7               ;2e2f 0074 
+              MOVE.L         $70(A7),A3               ;266f 0070 
+              MOVE.L         $6c(A7),A5               ;2a6f 006c 
               CLR.B          (A3)                     ;4213 
               MOVE.L         A5,D0                    ;200d 
               BEQ.W          ___NEWGRID_AppendShowtimesForRow__55;6700 02c8 
 ___NEWGRID_AppendShowtimesForRow__2:
-              MOVE.L         (A5),D0                  ;2015 
+              TST.L          (A5)                     ;4a95 
               BEQ.W          ___NEWGRID_AppendShowtimesForRow__55;6700 02c2 
 ___NEWGRID_AppendShowtimesForRow__3:
-              MOVE.L         $4(A5),D1                ;222d 0004 
+              TST.L          $4(A5)                   ;4aad 0004 
               BEQ.W          ___NEWGRID_AppendShowtimesForRow__55;6700 02ba 
 ___NEWGRID_AppendShowtimesForRow__4:
 ___NEWGRID_AppendShowtimesForRow__5:
@@ -185,7 +185,7 @@ ___NEWGRID_AppendShowtimesForRow__24:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D6,D0                    ;3006 
 ___NEWGRID_AppendShowtimesForRow__25:
-              MOVE.L         D0,$6c(A7)               ;2f40 006c 
+              MOVE.L         D0,$64(A7)               ;2f40 0064 
               TST.L          $1a(A7)                  ;4aaf 001a 
               BEQ.W          ___NEWGRID_AppendShowtimesForRow__51;6700 016e 
 ___NEWGRID_AppendShowtimesForRow__26:
@@ -203,7 +203,7 @@ ___NEWGRID_AppendShowtimesForRow__28:
               BNE.W          ___NEWGRID_AppendShowtimesForRow__51;6600 014e 
 ___NEWGRID_AppendShowtimesForRow__29:
 ___NEWGRID_AppendShowtimesForRow__30:
-              MOVE.L         $6c(A7),D0               ;202f 006c 
+              MOVE.L         $64(A7),D0               ;202f 0064 
               MOVE.L         $20(A7),A0               ;206f 0020 
               ADD.L          D0,A0                    ;d1c0 
               BTST           #$5,$7(A0)               ;0828 0005 0007 
@@ -215,17 +215,17 @@ ___NEWGRID_AppendShowtimesForRow__32:
               MOVE.L         $22(A7),-(A7)            ;2f2f 0022 
               BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
               PEA            ($2).w                   ;4878 0002 
-              MOVE.L         $7c(A7),-(A7)            ;2f2f 007c 
+              MOVE.L         $74(A7),-(A7)            ;2f2f 0074 
               MOVE.L         $2e(A7),-(A7)            ;2f2f 002e 
               MOVE.L         D0,$58(A7)               ;2f40 0058 
               BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
               PEA            ($6).w                   ;4878 0006 
-              MOVE.L         $88(A7),-(A7)            ;2f2f 0088 
+              MOVE.L         $80(A7),-(A7)            ;2f2f 0080 
               MOVE.L         $3a(A7),-(A7)            ;2f2f 003a 
               MOVE.L         D0,$5c(A7)               ;2f40 005c 
               BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
               PEA            ($7).w                   ;4878 0007 
-              MOVE.L         $94(A7),-(A7)            ;2f2f 0094 
+              MOVE.L         $8c(A7),-(A7)            ;2f2f 008c 
               MOVE.L         $46(A7),-(A7)            ;2f2f 0046 
               MOVE.L         D0,$60(A7)               ;2f40 0060 
               BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
@@ -236,7 +236,7 @@ ___NEWGRID_AppendShowtimesForRow__32:
               SUBQ.L         #$1,D0                   ;5380 
               BNE.B          ___NEWGRID_AppendShowtimesForRow__35;6618 
 ___NEWGRID_AppendShowtimesForRow__33:
-              MOVE.L         $6c(A7),-(A7)            ;2f2f 006c 
+              MOVE.L         $64(A7),-(A7)            ;2f2f 0064 
               MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
               BSR.W          TEXTDISP_JMPTBL_ESQDISP_TestEntr;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
@@ -303,7 +303,7 @@ ___NEWGRID_AppendShowtimesForRow__49:
               LEA            $10(A7),A7               ;4fef 0010 
 ___NEWGRID_AppendShowtimesForRow__50:
               MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
-              MOVE.L         $70(A7),-(A7)            ;2f2f 0070 
+              MOVE.L         $68(A7),-(A7)            ;2f2f 0068 
               PEA            $4c(A7)                  ;486f 004c 
               BSR.W          TEXTDISP_FormatEntryTimeForIndex;6100 0000 
               PEA            NEWGRID_ShowtimeListSeparator(A4);486c 0000 
@@ -316,7 +316,7 @@ ___NEWGRID_AppendShowtimesForRow__50:
               BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
               MOVE.L         $20(A7),A0               ;206f 0020 
-              ADD.L          $6c(A7),A0               ;d1ef 006c 
+              ADD.L          $64(A7),A0               ;d1ef 0064 
               MOVEQ.L        #$20,D0                  ;7020 
               OR.B           $7(A0),D0                ;8028 0007 
               MOVE.B         D0,$7(A0)                ;1140 0007 
@@ -339,7 +339,7 @@ ___NEWGRID_AppendShowtimesForRow__53:
 ___NEWGRID_AppendShowtimesForRow__54:
 ___NEWGRID_AppendShowtimesForRow__55:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$58,A7                  ;defc 0058 
+              ADD.W          #$50,A7                  ;defc 0050 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
