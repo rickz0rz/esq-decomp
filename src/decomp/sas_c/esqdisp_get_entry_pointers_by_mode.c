@@ -1,12 +1,20 @@
 typedef unsigned short UWORD;
 typedef signed long LONG;
 
+typedef struct ESQDISP_EntryTableEntry {
+    char pad0[1];
+} ESQDISP_EntryTableEntry;
+
+typedef struct ESQDISP_TitleTableEntry {
+    char pad0[1];
+} ESQDISP_TitleTableEntry;
+
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UWORD TEXTDISP_SecondaryGroupEntryCount;
-extern void *TEXTDISP_PrimaryEntryPtrTable[];
-extern void *TEXTDISP_SecondaryEntryPtrTable[];
-extern void *TEXTDISP_PrimaryTitlePtrTable[];
-extern void *TEXTDISP_SecondaryTitlePtrTable[];
+extern ESQDISP_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
+extern ESQDISP_EntryTableEntry *TEXTDISP_SecondaryEntryPtrTable[];
+extern ESQDISP_TitleTableEntry *TEXTDISP_PrimaryTitlePtrTable[];
+extern ESQDISP_TitleTableEntry *TEXTDISP_SecondaryTitlePtrTable[];
 
 void *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode)
 {
