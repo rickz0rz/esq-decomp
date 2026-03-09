@@ -8,8 +8,12 @@ typedef struct TEXTDISP_CandidateEntry {
     UBYTE tagText[15];
 } TEXTDISP_CandidateEntry;
 
+typedef struct TEXTDISP_AliasEntry {
+    UBYTE *aliasText;
+} TEXTDISP_AliasEntry;
+
 extern WORD TEXTDISP_AliasCount;
-extern void *TEXTDISP_AliasPtrTable[];
+extern TEXTDISP_AliasEntry *TEXTDISP_AliasPtrTable[];
 
 extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 
@@ -32,12 +36,12 @@ LONG TEXTDISP_FindAliasIndexByName(UBYTE *entryPtr)
 
     idx = 0;
     while ((WORD)idx < TEXTDISP_AliasCount) {
-        UBYTE **aliasNode;
+        TEXTDISP_AliasEntry *aliasEntry;
         UBYTE *alias;
         UBYTE *scan;
 
-        aliasNode = (UBYTE **)TEXTDISP_AliasPtrTable[idx];
-        alias = aliasNode[0];
+        aliasEntry = TEXTDISP_AliasPtrTable[idx];
+        alias = aliasEntry->aliasText;
         scan = alias;
         while (*scan != CH_NUL) {
             ++scan;
