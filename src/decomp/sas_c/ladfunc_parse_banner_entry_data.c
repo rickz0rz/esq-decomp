@@ -34,7 +34,7 @@ extern UBYTE LADFUNC_SetPackedPenLowNibble(LONG packed, LONG lo);
 extern LONG ESQIFF2_ValidateAsciiNumericByte(LONG ch);
 extern char *ESQPARS_ReplaceOwnedString(char *newText, char *oldText);
 extern void LADFUNC_UpdateHighlightState(void);
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
+extern UBYTE *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 
 LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const char *in)
@@ -89,7 +89,7 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const char *in)
     entry->endSlot = ENTRY_END_SLOT_DEFAULT;
 
     textLen = 0;
-    tempAttr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+    tempAttr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_5,
         367,
         ATTR_TEMP_ALLOC_SIZE,
@@ -146,7 +146,7 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const char *in)
         );
     }
 
-    entry->attrPtr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+    entry->attrPtr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_7,
         ATTR_ALLOC_LINE,
         (LONG)textLen,
