@@ -5,16 +5,16 @@ ED_InitRastport2Pens:
               SUB.L          #$c,D0                   ;90bc 0000 000c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
 ___ED_InitRastport2Pens__1:
-              MOVE.L         WDISP_DisplayContextBase(A4),A0;206c 0000 
-              LEA            $2(A0),A5                ;4be8 0002 
+              MOVE.L         WDISP_DisplayContextBase(A4),A5;2a6c 0000 
+              LEA            $2(A5),A3                ;47ed 0002 
               CLR.L          -(A7)                    ;42a7 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetDrMd              ;6100 0000 
               PEA            ($1).w                   ;4878 0001 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetAPen              ;6100 0000 
               LEA            $18(A7),A7               ;4fef 0018 
@@ -23,17 +23,17 @@ ___ED_InitRastport2Pens__1:
               BNE.B          ___ED_InitRastport2Pens__4;6620 
 ___ED_InitRastport2Pens__2:
               PEA            ($1).w                   ;4878 0001 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetDrMd              ;6100 0000 
               PEA            ($2).w                   ;4878 0002 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetBPen              ;6100 0000 
               LEA            $18(A7),A7               ;4fef 0018 
 ___ED_InitRastport2Pens__3:
 ___ED_InitRastport2Pens__4:
-              MOVE.L         (A7)+,A5                 ;2a5f 
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
               RTS                                     ;4e75 
 __const:
 __strings:
