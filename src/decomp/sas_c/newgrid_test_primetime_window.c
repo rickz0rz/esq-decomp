@@ -11,7 +11,7 @@ typedef struct NEWGRID_Entry {
     NEWGRID_ModeInfo *modeInfo;
 } NEWGRID_Entry;
 
-LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, UBYTE *entry)
+LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, char *entry)
 {
     NEWGRID_Entry *entryView;
     NEWGRID_ModeInfo *modePtr;

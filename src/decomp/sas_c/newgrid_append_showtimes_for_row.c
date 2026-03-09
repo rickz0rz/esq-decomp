@@ -24,9 +24,9 @@ extern const char Global_STR_SHOWING_AT_AND_SINGLE_SPACE[];
 extern const char NEWGRID_ShowtimeListSeparator[];
 
 extern LONG NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(void *coi, LONG row, LONG field);
-extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(void *entries, LONG row);
+extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *entries, LONG row);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, void *entries);
-extern void NEWGRID_UpdatePresetEntry(void **entryPtr, void **auxPtr, LONG row, LONG preset);
+extern void NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG preset);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(void *bitsetBase, LONG bitIndex);
 extern const char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
@@ -94,7 +94,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
     }
 
     mode0 = 0;
-    if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(auxCur, (LONG)row) != 0) {
+    if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((char *)auxCur, (LONG)row) != 0) {
         mode0 = 1;
     }
 
@@ -108,7 +108,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
 
     for (row = (UWORD)(ctx->row + 1); row < rowEnd; row++) {
         if (row == 49) {
-            NEWGRID_UpdatePresetEntry((void **)&entryCur, (void **)&auxCur, (LONG)row, ctx->preset);
+            NEWGRID_UpdatePresetEntry((char **)&entryCur, (char **)&auxCur, (LONG)row, ctx->preset);
         }
 
         srcIdx = (row > 48) ? (LONG)(row - 48) : (LONG)row;
@@ -130,7 +130,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
         f3_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 7);
 
         modeN = 0;
-        if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(auxCur, srcIdx) != 0) {
+        if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((char *)auxCur, srcIdx) != 0) {
             modeN = 1;
         }
 
