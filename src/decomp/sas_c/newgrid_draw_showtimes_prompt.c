@@ -22,11 +22,11 @@ typedef struct NEWGRID_Context {
 } NEWGRID_Context;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern UBYTE *SCRIPT_PtrSportsOnPrefix;
-extern UBYTE *SCRIPT_PtrSummaryOfPrefix;
-extern UBYTE *SCRIPT_PtrChannelSuffix;
+extern char *SCRIPT_PtrSportsOnPrefix;
+extern char *SCRIPT_PtrSummaryOfPrefix;
+extern char *SCRIPT_PtrChannelSuffix;
 extern WORD Global_WORD_SELECT_CODE_IS_RAVESC;
-extern UBYTE NEWGRID_ShowtimeRangeDash[];
+extern char NEWGRID_ShowtimeRangeDash[];
 extern WORD NEWGRID_RowHeightPx;
 extern WORD NEWGRID_ColumnStartXPx;
 extern WORD NEWGRID_ColumnWidthPx;
@@ -66,7 +66,7 @@ void NEWGRID_DrawShowtimesPrompt(UBYTE *rpCtx, char *outBuf, LONG mode)
     titlePart = NEWGRID2_JMPTBL_STR_SkipClass3Chars(outBuf + 19);
     channelPart = NEWGRID2_JMPTBL_STR_SkipClass3Chars(outBuf + 1);
 
-    src = (mode == 0) ? (char *)SCRIPT_PtrSummaryOfPrefix : (char *)SCRIPT_PtrSportsOnPrefix;
+    src = (mode == 0) ? SCRIPT_PtrSummaryOfPrefix : SCRIPT_PtrSportsOnPrefix;
     dst = prompt;
     while ((*dst++ = *src++) != 0) {
     }

@@ -4,7 +4,7 @@ typedef unsigned char UBYTE;
 
 typedef struct NEWGRID_AuxData {
     UBYTE pad0[56];
-    UBYTE *titleTable[49];
+    char *titleTable[49];
 } NEWGRID_AuxData;
 
 typedef struct NEWGRID_Context {
@@ -22,7 +22,7 @@ extern WORD NEWGRID_ShowtimeEntryVariantFlag;
 extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(LONG *slot);
-extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(UBYTE *pattern);
+extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(char *pattern);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
 extern void NEWGRID_DrawGridEntry(void *rastPort, UBYTE *entry, UBYTE *aux, LONG row, LONG mode, LONG enabled, LONG bevel);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
@@ -33,7 +33,7 @@ LONG NEWGRID_HandleAltGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
 {
     UBYTE *entry;
     NEWGRID_AuxData *aux;
-    UBYTE *payload;
+    char *payload;
     NEWGRID_Context *ctxView;
     LONG state;
     LONG drawFlag;
@@ -50,7 +50,7 @@ LONG NEWGRID_HandleAltGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
 
         if (aux != 0) {
             if (rowIndex == 1 || (WORD)(NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) {
-                keyIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex((UBYTE *)aux);
+                keyIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex((char *)aux);
                 entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(keyIndex, 2);
                 aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(keyIndex, 2);
             }

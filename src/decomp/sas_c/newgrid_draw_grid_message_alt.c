@@ -23,7 +23,7 @@ typedef struct NEWGRID_Context {
 
 extern LONG GCOMMAND_PpvMessageTextPen;
 extern LONG GCOMMAND_PpvMessageFramePen;
-extern UBYTE *GCOMMAND_PPVPeriodTemplatePtr;
+extern char *GCOMMAND_PPVPeriodTemplatePtr;
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 
@@ -62,7 +62,7 @@ void NEWGRID_DrawGridMessageAlt(UBYTE *gridCtx)
     _LVOSetAPen(rastPort, GCOMMAND_PpvMessageTextPen);
     _LVOSetDrMd(rastPort, 0);
 
-    msg = (char *)GCOMMAND_PPVPeriodTemplatePtr;
+    msg = GCOMMAND_PPVPeriodTemplatePtr;
     len = 0;
     while (msg[len] != 0) {
         ++len;
