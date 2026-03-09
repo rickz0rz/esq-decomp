@@ -1,8 +1,13 @@
 typedef unsigned char UBYTE;
 
+typedef struct ESQDISP_RastPort {
+    UBYTE pad0[4];
+    void *bitmap;
+} ESQDISP_RastPort;
+
 extern UBYTE CLOCK_DaySlotIndex;
 extern UBYTE DST_BannerWindowPrimary;
-extern void *Global_REF_RASTPORT_1;
+extern ESQDISP_RastPort *Global_REF_RASTPORT_1;
 extern UBYTE Global_REF_696_400_BITMAP;
 
 extern void ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData(UBYTE *slot_index, void *clock_data);
@@ -20,9 +25,9 @@ void ESQDISP_NormalizeClockAndRedrawBanner(void *clock_data)
         DST_RefreshBannerBuffer();
     }
 
-    saved_bitmap = *(void **)((UBYTE *)Global_REF_RASTPORT_1 + 4);
-    *(void **)((UBYTE *)Global_REF_RASTPORT_1 + 4) = &Global_REF_696_400_BITMAP;
+    saved_bitmap = Global_REF_RASTPORT_1->bitmap;
+    Global_REF_RASTPORT_1->bitmap = &Global_REF_696_400_BITMAP;
     ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner();
-    *(void **)((UBYTE *)Global_REF_RASTPORT_1 + 4) = saved_bitmap;
+    Global_REF_RASTPORT_1->bitmap = saved_bitmap;
     ESQDISP_DrawStatusBanner_Impl(1);
 }
