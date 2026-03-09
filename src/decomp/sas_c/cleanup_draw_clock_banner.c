@@ -3,6 +3,18 @@ typedef unsigned short UWORD;
 typedef short WORD;
 typedef long LONG;
 
+typedef struct CLEANUP_Font {
+    UBYTE pad0[26];
+    UWORD height26;
+} CLEANUP_Font;
+
+typedef struct CLEANUP_RastPort {
+    UBYTE pad0[4];
+    void *bitmap4;
+    UBYTE pad8[44];
+    CLEANUP_Font *font52;
+} CLEANUP_RastPort;
+
 enum {
     CLOCK_BANNER_FRAME_WIDTH = 35,
     CLOCK_BANNER_FRAME_HEIGHT = 33,
@@ -44,6 +56,7 @@ void _LVOText(void);
 
 void CLEANUP_DrawClockBanner(void)
 {
+    CLEANUP_RastPort *rp;
     char timeText[10];
     LONG y;
     LONG fontHeight;
@@ -51,6 +64,8 @@ void CLEANUP_DrawClockBanner(void)
     if (Global_UIBusyFlag != 0) {
         return;
     }
+
+    rp = (CLEANUP_RastPort *)NEWGRID_MainRastPortPtr;
 
     if (Global_REF_STR_USE_24_HR_CLOCK == 'Y') {
         LONG hour = GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat((LONG)Global_WORD_CURRENT_HOUR, (LONG)CLOCK_CurrentAmPmFlag);
@@ -77,14 +92,14 @@ void CLEANUP_DrawClockBanner(void)
     _LVORectFill();
 
     BEVEL_DrawBevelFrameWithTopRight(
-        (void *)NEWGRID_MainRastPortPtr,
+        rp,
         (LONG)NEWGRID_ColumnStartXPx + 35,
         0,
         CLOCK_BANNER_FRAME_WIDTH,
         CLOCK_BANNER_FRAME_HEIGHT
     );
 
-    fontHeight = (LONG)(*(UWORD *)(*(LONG *)(NEWGRID_MainRastPortPtr + RASTPORT_FONT_PTR_OFFSET) + FONT_HEIGHT_OFFSET));
+    fontHeight = (LONG)rp->font52->height26;
     y = (((34 - fontHeight) + 1) >> 1) + fontHeight - 1;
     (void)y;
 
@@ -93,10 +108,10 @@ void CLEANUP_DrawClockBanner(void)
     _LVOText();
 
     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
-        *(void **)(NEWGRID_MainRastPortPtr + 4),
+        rp->bitmap4,
         0,
         0,
-        (void *)NEWGRID_MainRastPortPtr,
+        rp,
         (LONG)NEWGRID_ColumnStartXPx + CLOCK_BANNER_INNER_X_OFFSET,
         CLOCK_BANNER_BLIT_SIZE,
         CLOCK_BANNER_BLIT_SIZE,
