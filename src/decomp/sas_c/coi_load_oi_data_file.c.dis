@@ -28,7 +28,7 @@ ___COI_LoadOiDataFile__1:
               BNE.B          ___COI_LoadOiDataFile__3 ;6606 
 ___COI_LoadOiDataFile__2:
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___COI_LoadOiDataFile__14;6000 00b8 
+              BRA.W          ___COI_LoadOiDataFile__14;6000 00b6 
 ___COI_LoadOiDataFile__3:
               MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D6;2c2c 0000 
               MOVEQ.L        #$0,D5                   ;7a00 
@@ -78,10 +78,10 @@ ___COI_LoadOiDataFile__8:
               LEA            $1c(A7),A7               ;4fef 001c 
 ___COI_LoadOiDataFile__9:
 ___COI_LoadOiDataFile__10:
-              TST.L          Global_PTR_WORK_BUFFER(A4);4aac 0000 
-              BEQ.B          ___COI_LoadOiDataFile__12;6724 
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),D0;202c 0000 
+              BEQ.B          ___COI_LoadOiDataFile__12;6722 
 ___COI_LoadOiDataFile__11:
-              MOVE.L         Global_PTR_WORK_BUFFER(A4),A3;266c 0000 
+              MOVE.L         D0,A3                    ;2640 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          ESQ_WildcardMatch        ;6100 0000 

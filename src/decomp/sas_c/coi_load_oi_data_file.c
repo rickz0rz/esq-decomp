@@ -87,11 +87,11 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
     }
 
     if (Global_PTR_WORK_BUFFER != (char *)0) {
-        void *entry;
+        char *entry;
 
-        entry = (void *)Global_PTR_WORK_BUFFER;
-        ESQ_WildcardMatch((const char *)entry, (const char *)entry);
-        GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)entry, (char *)0);
+        entry = Global_PTR_WORK_BUFFER;
+        ESQ_WildcardMatch(entry, entry);
+        GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(entry, (char *)0);
         CLEANUP_FormatEntryStringTokens(entry);
         COI_AllocSubEntryTable(entry);
     }
