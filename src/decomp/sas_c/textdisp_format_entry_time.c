@@ -2,6 +2,13 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct TEXTDISP_AuxData {
+    UBYTE pad0[56];
+    UBYTE *titleTable[110];
+    UBYTE pad1[2];
+    UBYTE slotCode;
+} TEXTDISP_AuxData;
+
 extern WORD TEXTDISP_ActiveGroupId;
 extern WORD TEXTDISP_CurrentMatchIndex;
 extern UBYTE CLOCK_FormatVariantCode;
@@ -16,18 +23,18 @@ extern LONG MATH_Mulu32(LONG a, LONG b);
 
 void TEXTDISP_FormatEntryTime(UBYTE *out, WORD entryIndex)
 {
-    UBYTE *title;
+    TEXTDISP_AuxData *title;
     UBYTE *timeText;
     LONG slotIndex;
 
     if (TEXTDISP_ActiveGroupId != 0) {
-        title = TEXTDISP_PrimaryTitlePtrTable[(LONG)TEXTDISP_CurrentMatchIndex];
+        title = (TEXTDISP_AuxData *)TEXTDISP_PrimaryTitlePtrTable[(LONG)TEXTDISP_CurrentMatchIndex];
     } else {
-        title = TEXTDISP_SecondaryTitlePtrTable[(LONG)TEXTDISP_CurrentMatchIndex];
+        title = (TEXTDISP_AuxData *)TEXTDISP_SecondaryTitlePtrTable[(LONG)TEXTDISP_CurrentMatchIndex];
     }
 
-    timeText = *(UBYTE **)(title + 56 + ((LONG)entryIndex << 2));
-    slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)(UBYTE)title[498]);
+    timeText = title->titleTable[(LONG)entryIndex];
+    slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)title->slotCode);
 
     if (timeText == (UBYTE *)0 || *timeText == 0) {
         *out = 0;
@@ -76,11 +83,13 @@ void TEXTDISP_FormatEntryTime(UBYTE *out, WORD entryIndex)
 
 void TEXTDISP_FormatEntryTimeForIndex(UBYTE *out, WORD entryIndex, UBYTE *entryTable)
 {
+    TEXTDISP_AuxData *aux;
     UBYTE *timeText;
     LONG slotIndex;
 
-    timeText = *(UBYTE **)(entryTable + 56 + ((LONG)entryIndex << 2));
-    slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)(UBYTE)entryTable[498]);
+    aux = (TEXTDISP_AuxData *)entryTable;
+    timeText = aux->titleTable[(LONG)entryIndex];
+    slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)aux->slotCode);
 
     if (timeText == (UBYTE *)0 || *timeText == 0) {
         *out = 0;

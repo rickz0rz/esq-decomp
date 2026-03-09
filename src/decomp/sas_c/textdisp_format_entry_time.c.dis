@@ -28,13 +28,10 @@ ___TEXTDISP_FormatEntryTime__3:
               LEA            TEXTDISP_SecondaryTitlePtrTable(A4),A0;41ec 0000 
               MOVE.L         $0(A0,D1.L),A3           ;2670 1800 
 ___TEXTDISP_FormatEntryTime__4:
-              MOVE.W         D7,D0                    ;3007 
-              EXT.L          D0                       ;48c0 
+              EXT.L          D7                       ;48c7 
+              MOVE.L         D7,D0                    ;2007 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         A3,A0                    ;204b 
-              ADD.L          D0,A0                    ;d1c0 
-              LEA            $38(A0),A1               ;43e8 0038 
-              MOVE.L         (A1),A2                  ;2451 
+              MOVE.L         $38(A3,D0.L),A2          ;2473 0838 
               MOVE.W         D7,D0                    ;3007 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$0,D1                   ;7200 
@@ -165,46 +162,46 @@ __const:
 __strings:
 TEXTDISP_FormatEntryTimeForIndex:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              SUB.L          #$1c,D0                  ;90bc 0000 001c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$10,A7                  ;9efc 0010 
+              SUB.W          #$14,A7                  ;9efc 0014 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___TEXTDISP_FormatEntryTimeForIndex__1:
-              MOVE.W         $32(A7),D7               ;3e2f 0032 
-              MOVE.L         $34(A7),A3               ;266f 0034 
-              MOVE.L         $2c(A7),A5               ;2a6f 002c 
-              MOVE.W         D7,D0                    ;3007 
-              EXT.L          D0                       ;48c0 
+              MOVE.W         $36(A7),D7               ;3e2f 0036 
+              MOVE.L         $38(A7),A3               ;266f 0038 
+              MOVE.L         $30(A7),A5               ;2a6f 0030 
+              MOVE.L         A3,A2                    ;244b 
+              EXT.L          D7                       ;48c7 
+              MOVE.L         D7,D0                    ;2007 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         A3,A0                    ;204b 
-              ADD.L          D0,A0                    ;d1c0 
-              LEA            $38(A0),A1               ;43e8 0038 
-              MOVE.L         (A1),A2                  ;2451 
+              MOVE.L         $38(A2,D0.L),$28(A7)     ;2f72 0838 0028 
               MOVE.W         D7,D0                    ;3007 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         $1f2(A3),D1              ;122b 01f2 
+              MOVE.B         $1f2(A2),D1              ;122a 01f2 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          TLIBA1_JMPTBL_ESQDISP_ComputeSch;6100 0000 
               MOVE.L         D0,D6                    ;2c00 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         A2,D0                    ;200a 
-              BEQ.B          ___TEXTDISP_FormatEntryTimeForIndex__3;6704 
+              TST.L          $28(A7)                  ;4aaf 0028 
+              BEQ.B          ___TEXTDISP_FormatEntryTimeForIndex__3;6708 
 ___TEXTDISP_FormatEntryTimeForIndex__2:
-              MOVE.B         (A2),D0                  ;1012 
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              MOVE.B         (A0),D0                  ;1010 
               BNE.B          ___TEXTDISP_FormatEntryTimeForIndex__4;6606 
 ___TEXTDISP_FormatEntryTimeForIndex__3:
               CLR.B          (A5)                     ;4215 
-              BRA.W          ___TEXTDISP_FormatEntryTimeForIndex__15;6000 010a 
+              BRA.W          ___TEXTDISP_FormatEntryTimeForIndex__15;6000 0116 
 ___TEXTDISP_FormatEntryTimeForIndex__4:
               MOVEQ.L        #$28,D0                  ;7028 
-              CMP.B          (A2),D0                  ;b012 
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              CMP.B          (A0),D0                  ;b010 
               BNE.B          ___TEXTDISP_FormatEntryTimeForIndex__6;6608 
 ___TEXTDISP_FormatEntryTimeForIndex__5:
               MOVEQ.L        #$3a,D0                  ;703a 
-              CMP.B          $3(A2),D0                ;b02a 0003 
+              CMP.B          $3(A0),D0                ;b028 0003 
               BEQ.B          ___TEXTDISP_FormatEntryTimeForIndex__7;6722 
 ___TEXTDISP_FormatEntryTimeForIndex__6:
               MOVEQ.L        #$0,D0                   ;7000 
@@ -217,10 +214,11 @@ ___TEXTDISP_FormatEntryTimeForIndex__6:
               MOVE.L         D6,-(A7)                 ;2f06 
               BSR.W          TLIBA1_JMPTBL_CLEANUP_FormatCloc;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              BRA.W          ___TEXTDISP_FormatEntryTimeForIndex__15;6000 00da 
+              BRA.W          ___TEXTDISP_FormatEntryTimeForIndex__15;6000 00e2 
 ___TEXTDISP_FormatEntryTimeForIndex__7:
               MOVEQ.L        #$d0,D0                  ;70d0 
-              ADD.B          $4(A2),D0                ;d02a 0004 
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              ADD.B          $4(A0),D0                ;d028 0004 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
               PEA            ($a).w                   ;4878 000a 
@@ -228,7 +226,8 @@ ___TEXTDISP_FormatEntryTimeForIndex__7:
               BSR.W          MATH_Mulu32              ;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
               MOVEQ.L        #$d0,D0                  ;70d0 
-              ADD.B          $5(A2),D0                ;d02a 0005 
+              MOVE.L         $30(A7),A0               ;206f 0030 
+              ADD.B          $5(A0),D0                ;d028 0005 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
               ADD.L          D1,D5                    ;da81 
@@ -306,7 +305,7 @@ ___TEXTDISP_FormatEntryTimeForIndex__14:
               LEA            $10(A7),A7               ;4fef 0010 
 ___TEXTDISP_FormatEntryTimeForIndex__15:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$10,A7                  ;defc 0010 
+              ADD.W          #$14,A7                  ;defc 0014 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF

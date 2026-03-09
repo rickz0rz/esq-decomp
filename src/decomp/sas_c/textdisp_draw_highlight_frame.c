@@ -2,6 +2,15 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct TEXTDISP_SelectionEntry {
+    UBYTE shortName[10];
+    UBYTE longName[200];
+    LONG mode;
+    LONG groupIndex;
+    UWORD selectionIndex;
+    UBYTE detailLine[524];
+} TEXTDISP_SelectionEntry;
+
 extern LONG TEXTDISP_EntryTextBaseWidthPx;
 extern LONG WDISP_DisplayContextBase;
 extern UWORD WDISP_AccumulatorCaptureActive;
@@ -29,7 +38,6 @@ void TEXTDISP_DrawHighlightFrame(void *entryPtr)
     const LONG MODE_TEXT = 3;
     const LONG ZERO = 0;
     const LONG VIEWCFG_THREE = 3;
-    const LONG ENTRY_HIGHLIGHT_TEXT_OFFSET = 220;
     const LONG DC_FLAGS_OFFSET = 0;
     const LONG DC_YBASE_OFFSET = 2;
     const LONG DC_WIDTH_OFFSET = 4;
@@ -45,7 +53,7 @@ void TEXTDISP_DrawHighlightFrame(void *entryPtr)
     const LONG FRAME_X_SPAN = 0x11b;
     const LONG DRAWMODE_JAM1 = 0;
     const LONG ONE = 1;
-    UBYTE *entry;
+    TEXTDISP_SelectionEntry *entry;
     LONG *dc;
     void *rastPort;
     LONG widthPx;
@@ -57,8 +65,8 @@ void TEXTDISP_DrawHighlightFrame(void *entryPtr)
     LONG x2;
     LONG y2;
 
-    entry = (UBYTE *)entryPtr;
-    if (entry == (UBYTE *)0 || entry[ENTRY_HIGHLIGHT_TEXT_OFFSET] == ZERO) {
+    entry = (TEXTDISP_SelectionEntry *)entryPtr;
+    if (entry == (TEXTDISP_SelectionEntry *)0 || entry->detailLine[0] == ZERO) {
         return;
     }
 
@@ -98,7 +106,7 @@ void TEXTDISP_DrawHighlightFrame(void *entryPtr)
 
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, DRAWMODE_JAM1);
     TEXTDISP_LinePenOverrideEnabledFlag = ONE;
-    TLIBA1_DrawFormattedTextBlock(rastPort, (const char *)(entry + ENTRY_HIGHLIGHT_TEXT_OFFSET), x1, y1, x2, y2);
+    TLIBA1_DrawFormattedTextBlock(rastPort, (const char *)entry->detailLine, x1, y1, x2, y2);
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(MODE_HIGHLIGHT, ZERO, VIEWCFG_THREE);
     TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
