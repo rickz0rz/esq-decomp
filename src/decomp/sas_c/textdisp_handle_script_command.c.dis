@@ -37,7 +37,7 @@ ___TEXTDISP_HandleScriptCommand__1:
               MOVEQ.L        #$0,D0                   ;7000 
               NOT.B          D0                       ;4600 
               CMP.L          D0,D2                    ;b480 
-              BEQ.W          ___TEXTDISP_HandleScriptCommand__24;6700 0192 
+              BEQ.W          ___TEXTDISP_HandleScriptCommand__24;6700 0194 
 ___TEXTDISP_HandleScriptCommand__2:
               CMP.B          D5,D6                    ;bc05 
               BNE.W          ___TEXTDISP_HandleScriptCommand__11;6600 00c6 
@@ -107,7 +107,7 @@ ___TEXTDISP_HandleScriptCommand__10:
               BSR.W          SCRIPT_ResetBannerCharDefaults;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         $118(A7),$e4(A7)         ;2f6f 0118 00e4 
-              BRA.W          ___TEXTDISP_HandleScriptCommand__24;6000 00c8 
+              BRA.W          ___TEXTDISP_HandleScriptCommand__24;6000 00ca 
 ___TEXTDISP_HandleScriptCommand__11:
               CMP.B          $120(A7),D6              ;bc2f 0120 
               BNE.B          ___TEXTDISP_HandleScriptCommand__13;662a 
@@ -124,10 +124,10 @@ ___TEXTDISP_HandleScriptCommand__12:
               BSR.W          TEXTDISP_BuildEntryPairStatusLin;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         $118(A7),$e4(A7)         ;2f6f 0118 00e4 
-              BRA.W          ___TEXTDISP_HandleScriptCommand__24;6000 0098 
+              BRA.W          ___TEXTDISP_HandleScriptCommand__24;6000 009a 
 ___TEXTDISP_HandleScriptCommand__13:
               CMP.B          $f0(A7),D7               ;be2f 00f0 
-              BNE.B          ___TEXTDISP_HandleScriptCommand__21;666e 
+              BNE.B          ___TEXTDISP_HandleScriptCommand__21;6670 
 ___TEXTDISP_HandleScriptCommand__14:
               TST.L          TEXTDISP_CommandBufferPtr(A4);4aac 0000 
               BNE.B          ___TEXTDISP_HandleScriptCommand__16;661e 
@@ -140,12 +140,12 @@ ___TEXTDISP_HandleScriptCommand__15:
               MOVE.L         D0,TEXTDISP_CommandBufferPtr(A4);2940 0000 
               LEA            $10(A7),A7               ;4fef 0010 
 ___TEXTDISP_HandleScriptCommand__16:
-              MOVE.L         TEXTDISP_CommandBufferPtr(A4),D0;202c 0000 
-              BEQ.B          ___TEXTDISP_HandleScriptCommand__21;6744 
+              TST.L          TEXTDISP_CommandBufferPtr(A4);4aac 0000 
+              BEQ.B          ___TEXTDISP_HandleScriptCommand__21;6746 
 ___TEXTDISP_HandleScriptCommand__17:
               PEA            TEXTDISP_PrimarySearchText(A4);486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         TEXTDISP_CommandBufferPtr(A4),-(A7);2f2c 0000 
               BSR.W          TEXTDISP_SetEntryTextFields;6100 0000 
               MOVE.L         $f8(A7),(A7)             ;2eaf 00f8 
               MOVE.L         TEXTDISP_CommandBufferPtr(A4),-(A7);2f2c 0000 
