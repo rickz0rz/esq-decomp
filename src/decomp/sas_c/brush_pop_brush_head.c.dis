@@ -13,10 +13,9 @@ ___BRUSH_PopBrushHead__1:
               BNE.B          ___BRUSH_PopBrushHead__3 ;6604 
 ___BRUSH_PopBrushHead__2:
               SUB.L          A3,A3                    ;97cb 
-              BRA.B          ___BRUSH_PopBrushHead__4 ;6018 
+              BRA.B          ___BRUSH_PopBrushHead__4 ;6016 
 ___BRUSH_PopBrushHead__3:
-              LEA            $170(A5),A0              ;41ed 0170 
-              MOVE.L         (A0),A3                  ;2650 
+              MOVE.L         $170(A5),A3              ;266d 0170 
               MOVE.L         A5,$8(A7)                ;2f4d 0008 
               PEA            ($1).w                   ;4878 0001 
               PEA            $c(A7)                   ;486f 000c 

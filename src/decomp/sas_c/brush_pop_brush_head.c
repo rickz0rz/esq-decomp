@@ -6,18 +6,23 @@ enum {
 
 void BRUSH_FreeBrushList(void **head_ptr, long free_one);
 
+typedef struct BRUSH_Node {
+    unsigned char pad0[BRUSH_NODE_NEXT_OFFSET];
+    struct BRUSH_Node *next;
+} BRUSH_Node;
+
 void *BRUSH_PopBrushHead(void *head)
 {
-    void *next;
+    BRUSH_Node *next;
     void *singleNodeHead;
 
     if (head == (void *)BRUSH_NULL) {
-        next = (void *)BRUSH_NULL;
+        next = (BRUSH_Node *)BRUSH_NULL;
     } else {
-        next = *(void **)((unsigned char *)head + BRUSH_NODE_NEXT_OFFSET);
+        next = ((BRUSH_Node *)head)->next;
         singleNodeHead = head;
         BRUSH_FreeBrushList(&singleNodeHead, BRUSH_FREE_ONE);
     }
 
-    return next;
+    return (void *)next;
 }

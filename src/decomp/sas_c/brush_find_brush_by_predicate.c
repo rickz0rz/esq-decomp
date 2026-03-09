@@ -7,16 +7,21 @@ enum {
 
 LONG GROUP_AA_JMPTBL_STRING_CompareNoCase(void *a, void *b);
 
+typedef struct BRUSH_Node {
+    unsigned char pad0[BRUSH_NODE_NEXT_OFFSET];
+    struct BRUSH_Node *next;
+} BRUSH_Node;
+
 void *BRUSH_FindBrushByPredicate(void *searchKey, void *listHeadPtr)
 {
-    unsigned char *nodeCursor;
+    BRUSH_Node *nodeCursor;
 
-    nodeCursor = *(unsigned char **)listHeadPtr;
-    while (nodeCursor != (unsigned char *)BRUSH_NULL) {
+    nodeCursor = *(BRUSH_Node **)listHeadPtr;
+    while (nodeCursor != (BRUSH_Node *)BRUSH_NULL) {
         if (GROUP_AA_JMPTBL_STRING_CompareNoCase((void *)nodeCursor, searchKey) == BRUSH_NULL) {
             return (void *)nodeCursor;
         }
-        nodeCursor = *(unsigned char **)(nodeCursor + BRUSH_NODE_NEXT_OFFSET);
+        nodeCursor = nodeCursor->next;
     }
 
     return (void *)BRUSH_NULL;

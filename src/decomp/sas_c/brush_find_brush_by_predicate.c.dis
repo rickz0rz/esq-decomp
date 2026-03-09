@@ -24,8 +24,8 @@ ___BRUSH_FindBrushByPredicate__4:
               MOVE.L         A2,D0                    ;200a 
               BRA.B          ___BRUSH_FindBrushByPredicate__8;600a 
 ___BRUSH_FindBrushByPredicate__5:
-              LEA            $170(A2),A0              ;41ea 0170 
-              MOVE.L         (A0),A2                  ;2450 
+              MOVE.L         A2,A0                    ;204a 
+              MOVE.L         $170(A0),A2              ;2468 0170 
               BRA.B          ___BRUSH_FindBrushByPredicate__2;60e2 
 ___BRUSH_FindBrushByPredicate__6:
               MOVEQ.L        #$0,D0                   ;7000 
