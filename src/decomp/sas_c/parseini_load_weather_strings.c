@@ -1,6 +1,11 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
+typedef struct PARSEINI_BrushNode {
+    UBYTE pad0[190];
+    UBYTE typeByte;
+} PARSEINI_BrushNode;
+
 extern void *PARSEINI_BannerBrushResourceHead;
 extern void *PARSEINI_WeatherBrushNodePtr;
 extern LONG P_TYPE_WeatherBrushRefreshPendingFlag;
@@ -12,7 +17,7 @@ extern void *PARSEINI_JMPTBL_BRUSH_AllocBrushNode(char *entryText, void *existin
 
 void PARSEINI_LoadWeatherStrings(const char *entryKey, char *entryValue)
 {
-    void *weatherNode;
+    PARSEINI_BrushNode *weatherNode;
 
     if (PARSEINI_BannerBrushResourceHead == (void *)0) {
         PARSEINI_WeatherBrushNodePtr = (void *)0;
@@ -22,11 +27,11 @@ void PARSEINI_LoadWeatherStrings(const char *entryKey, char *entryValue)
         return;
     }
 
-    weatherNode = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(entryValue, PARSEINI_WeatherBrushNodePtr);
-    *((UBYTE *)weatherNode + 190) = 10;
-    PARSEINI_WeatherBrushNodePtr = weatherNode;
+    weatherNode = (PARSEINI_BrushNode *)PARSEINI_JMPTBL_BRUSH_AllocBrushNode(entryValue, PARSEINI_WeatherBrushNodePtr);
+    weatherNode->typeByte = (UBYTE)10;
+    PARSEINI_WeatherBrushNodePtr = (void *)weatherNode;
 
     if (PARSEINI_BannerBrushResourceHead == (void *)0) {
-        PARSEINI_BannerBrushResourceHead = weatherNode;
+        PARSEINI_BannerBrushResourceHead = (void *)weatherNode;
     }
 }
