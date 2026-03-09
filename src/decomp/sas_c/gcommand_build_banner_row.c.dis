@@ -24,17 +24,17 @@ __const:
 __strings:
 GCOMMAND_BuildBannerRow:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$1c,D0                  ;90bc 0000 001c 
+              SUB.L          #$20,D0                  ;90bc 0000 0020 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$14,A7                  ;9efc 0014 
-              MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 3f34 
+              SUB.W          #$18,A7                  ;9efc 0018 
+              MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5/A6,-(A7);48e7 3f36 
 ___GCOMMAND_BuildBannerRow__1:
-              MOVE.L         $4c(A7),D5               ;2a2f 004c 
-              MOVE.L         $48(A7),D6               ;2c2f 0048 
-              MOVE.L         $44(A7),D7               ;2e2f 0044 
-              MOVE.L         $40(A7),A3               ;266f 0040 
-              MOVE.L         $3c(A7),A5               ;2a6f 003c 
+              MOVE.L         $54(A7),D5               ;2a2f 0054 
+              MOVE.L         $50(A7),D6               ;2c2f 0050 
+              MOVE.L         $4c(A7),D7               ;2e2f 004c 
+              MOVE.L         $48(A7),A3               ;266f 0048 
+              MOVE.L         $44(A7),A5               ;2a6f 0044 
               TST.L          D7                       ;4a87 
               BLE.B          ___GCOMMAND_BuildBannerRow__3;6f04 
 ___GCOMMAND_BuildBannerRow__2:
@@ -43,132 +43,120 @@ ___GCOMMAND_BuildBannerRow__2:
 ___GCOMMAND_BuildBannerRow__3:
               MOVE.L         D6,D0                    ;2006 
 ___GCOMMAND_BuildBannerRow__4:
-              MOVE.L         D0,$34(A7)               ;2f40 0034 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
               SUBQ.L         #$1,D0                   ;5380 
               MOVE.L         D7,D1                    ;2207 
               ASL.L          #$5,D1                   ;eb81 
-              MOVE.L         A3,A2                    ;244b 
-              MOVE.L         A2,A0                    ;204a 
-              ADD.L          D1,A0                    ;d1c1 
-              LEA            $2e8(A0),A1              ;43e8 02e8 
-              LEA            $2da(A2),A0              ;41ea 02da 
-              MOVE.L         A1,D2                    ;2409 
+              MOVE.L         A3,A0                    ;204b 
+              MOVE.L         A5,A2                    ;244d 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D1,A1                    ;d3c1 
+              LEA            $2e8(A1),A6              ;4de9 02e8 
+              LEA            $2da(A0),A1              ;43e8 02da 
+              MOVE.L         A6,D2                    ;240e 
               MOVE.L         D2,D3                    ;2602 
               CLR.W          D3                       ;4243 
               SWAP           D3                       ;4843 
               MOVE.L         #$ffff,D4                ;283c 0000 ffff 
               AND.L          D4,D3                    ;c684 
-              MOVE.W         D3,(A0)                  ;3083 
-              LEA            $2de(A2),A0              ;41ea 02de 
-              MOVE.L         D2,$28(A7)               ;2f42 0028 
+              MOVE.W         D3,(A1)                  ;3283 
+              LEA            $2de(A0),A1              ;43e8 02de 
+              MOVE.L         D2,$2c(A7)               ;2f42 002c 
               AND.L          D4,D2                    ;c484 
-              MOVE.W         D2,(A0)                  ;3082 
-              LEA            $8(A5),A0                ;41ed 0008 
-              MOVE.L         (A0),D2                  ;2410 
+              MOVE.W         D2,(A1)                  ;3282 
+              MOVE.L         $8(A2),D2                ;242a 0008 
               ADD.L          D5,D2                    ;d485 
-              LEA            $2ca(A2),A0              ;41ea 02ca 
+              LEA            $2ca(A0),A1              ;43e8 02ca 
               MOVE.L         D2,D3                    ;2602 
               CLR.W          D3                       ;4243 
               SWAP           D3                       ;4843 
               AND.L          D4,D3                    ;c684 
-              MOVE.W         D3,(A0)                  ;3083 
-              LEA            $2ce(A2),A0              ;41ea 02ce 
-              MOVE.L         D2,$28(A7)               ;2f42 0028 
+              MOVE.W         D3,(A1)                  ;3283 
+              LEA            $2ce(A0),A1              ;43e8 02ce 
+              MOVE.L         D2,$2c(A7)               ;2f42 002c 
               AND.L          D4,D2                    ;c484 
-              MOVE.W         D2,(A0)                  ;3082 
-              LEA            $c(A5),A0                ;41ed 000c 
-              MOVE.L         (A0),D2                  ;2410 
+              MOVE.W         D2,(A1)                  ;3282 
+              MOVE.L         $c(A2),D2                ;242a 000c 
               ADD.L          D5,D2                    ;d485 
-              LEA            $2b6(A2),A0              ;41ea 02b6 
+              LEA            $2b6(A0),A1              ;43e8 02b6 
               MOVE.L         D2,D3                    ;2602 
+              CLR.W          D3                       ;4243 
 ___GCOMMAND_BuildBannerRow__5:
-              CLR.W          D3                       ;4243 
               SWAP           D3                       ;4843 
               AND.L          D4,D3                    ;c684 
-              MOVE.W         D3,(A0)                  ;3083 
-              LEA            $2ba(A2),A0              ;41ea 02ba 
-              MOVE.L         D2,$28(A7)               ;2f42 0028 
+              MOVE.W         D3,(A1)                  ;3283 
+              LEA            $2ba(A0),A1              ;43e8 02ba 
+              MOVE.L         D2,$2c(A7)               ;2f42 002c 
               AND.L          D4,D2                    ;c484 
-              MOVE.W         D2,(A0)                  ;3082 
-              LEA            $10(A5),A0               ;41ed 0010 
-              MOVE.L         (A0),D2                  ;2410 
+              MOVE.W         D2,(A1)                  ;3282 
+              MOVE.L         $10(A2),D2               ;242a 0010 
               ADD.L          D5,D2                    ;d485 
-              LEA            $2be(A2),A0              ;41ea 02be 
+              LEA            $2be(A0),A1              ;43e8 02be 
               MOVE.L         D2,D3                    ;2602 
               CLR.W          D3                       ;4243 
               SWAP           D3                       ;4843 
               AND.L          D4,D3                    ;c684 
-              MOVE.W         D3,(A0)                  ;3083 
-              LEA            $2c2(A2),A0              ;41ea 02c2 
-              MOVE.L         D2,$28(A7)               ;2f42 0028 
+              MOVE.W         D3,(A1)                  ;3283 
+              LEA            $2c2(A0),A1              ;43e8 02c2 
+              MOVE.L         D2,$2c(A7)               ;2f42 002c 
               SWAP           D2                       ;4842 
               CLR.W          D2                       ;4242 
               SWAP           D2                       ;4842 
-              MOVE.W         D2,(A0)                  ;3082 
+              MOVE.W         D2,(A1)                  ;3282 
               MOVE.L         D0,D2                    ;2400 
               ASL.L          #$5,D2                   ;eb82 
-              MOVE.L         A2,A0                    ;204a 
+              MOVE.L         A0,$30(A7)               ;2f48 0030 
               ADD.L          D2,A0                    ;d1c2 
               LEA            $2ea(A0),A1              ;43e8 02ea 
               MOVE.W         GCOMMAND_BannerRowFallbackOnFirs(A4),D2;342c 0000 
-              MOVE.L         D0,$30(A7)               ;2f40 0030 
-              MOVEM.L        D1,$2c(A7)               ;48ef 0002 002c 
-              MOVEM.L        A1,$24(A7)               ;48ef 0200 0024 
+              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              MOVEM.L        D1,$34(A7)               ;48ef 0002 0034 
+              MOVEM.L        A1,$28(A7)               ;48ef 0200 0028 
               TST.W          D2                       ;4a42 
-              BEQ.B          ___GCOMMAND_BuildBannerRow__8;6722 
+              BEQ.B          ___GCOMMAND_BuildBannerRow__8;6718 
 ___GCOMMAND_BuildBannerRow__6:
               TST.L          D0                       ;4a80 
-              BGT.B          ___GCOMMAND_BuildBannerRow__8;6e1e 
+              BGT.B          ___GCOMMAND_BuildBannerRow__8;6e14 
 ___GCOMMAND_BuildBannerRow__7:
               MOVE.W         #$f0,D0                  ;303c 00f0 
               MOVE.W         D0,(A1)                  ;3280 
-              LEA            $4(A1),A0                ;41e9 0004 
-              MOVE.W         D0,(A0)                  ;3080 
-              LEA            $4(A0),A1                ;43e8 0004 
-              MOVE.W         D0,(A1)                  ;3280 
-              LEA            $4(A1),A0                ;41e9 0004 
-              MOVE.W         D0,(A0)                  ;3080 
-              MOVE.L         A0,$24(A7)               ;2f48 0024 
-              BRA.B          ___GCOMMAND_BuildBannerRow__13;6064 
+              MOVE.W         D0,$4(A1)                ;3340 0004 
+              MOVE.W         D0,$8(A1)                ;3340 0008 
+              MOVE.W         D0,$c(A1)                ;3340 000c 
+              BRA.B          ___GCOMMAND_BuildBannerRow__13;6052 
 ___GCOMMAND_BuildBannerRow__8:
               MOVE.L         GCOMMAND_PresetWorkEntry0_ValueI(A4),-(A7);2f2c 0000 
               MOVE.L         GCOMMAND_PresetWorkEntryTable(A4),-(A7);2f2c 0000 
-              BSR.W          GCOMMAND_LoadPresetWord  ;6100 feac 
+              BSR.W          GCOMMAND_LoadPresetWord  ;6100 feb8 
 ___GCOMMAND_BuildBannerRow__9:
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.W         D0,(A0)                  ;3080 
-              LEA            $4(A0),A1                ;43e8 0004 
-              MOVE.L         GCOMMAND_PresetWorkEntry1_ValueI(A4),(A7);2eac 0000 
-              MOVE.L         GCOMMAND_PresetWorkEntry1(A4),-(A7);2f2c 0000 
-              MOVE.L         A1,$30(A7)               ;2f49 0030 
-              BSR.W          GCOMMAND_LoadPresetWord  ;6100 fe92 
-___GCOMMAND_BuildBannerRow__10:
               MOVE.L         $30(A7),A0               ;206f 0030 
               MOVE.W         D0,(A0)                  ;3080 
-              LEA            $4(A0),A1                ;43e8 0004 
+              MOVE.L         GCOMMAND_PresetWorkEntry1_ValueI(A4),(A7);2eac 0000 
+              MOVE.L         GCOMMAND_PresetWorkEntry1(A4),-(A7);2f2c 0000 
+              BSR.W          GCOMMAND_LoadPresetWord  ;6100 fea6 
+___GCOMMAND_BuildBannerRow__10:
+              MOVE.L         $34(A7),A0               ;206f 0034 
+              MOVE.W         D0,$4(A0)                ;3140 0004 
               MOVE.L         GCOMMAND_PresetWorkEntry2_ValueI(A4),(A7);2eac 0000 
               MOVE.L         GCOMMAND_PresetWorkEntry2(A4),-(A7);2f2c 0000 
-              MOVE.L         A1,$34(A7)               ;2f49 0034 
-              BSR.W          GCOMMAND_LoadPresetWord  ;6100 fe78 
+              BSR.W          GCOMMAND_LoadPresetWord  ;6100 fe92 
 ___GCOMMAND_BuildBannerRow__11:
-              MOVE.L         $34(A7),A0               ;206f 0034 
-              MOVE.W         D0,(A0)                  ;3080 
-              LEA            $4(A0),A1                ;43e8 0004 
+              MOVE.L         $38(A7),A0               ;206f 0038 
+              MOVE.W         D0,$8(A0)                ;3140 0008 
               MOVE.L         GCOMMAND_PresetWorkEntry3_ValueI(A4),(A7);2eac 0000 
               MOVE.L         GCOMMAND_PresetWorkEntry3(A4),-(A7);2f2c 0000 
-              MOVE.L         A1,$38(A7)               ;2f49 0038 
-              BSR.W          GCOMMAND_LoadPresetWord  ;6100 fe5e 
+              BSR.W          GCOMMAND_LoadPresetWord  ;6100 fe7e 
 ___GCOMMAND_BuildBannerRow__12:
-              MOVE.L         $38(A7),A0               ;206f 0038 
-              MOVE.W         D0,(A0)                  ;3080 
+              MOVE.L         $3c(A7),A0               ;206f 003c 
+              MOVE.W         D0,$c(A0)                ;3140 000c 
               LEA            $14(A7),A7               ;4fef 0014 
 ___GCOMMAND_BuildBannerRow__13:
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
               BSR.W          GCOMMAND_UpdateBannerRowPointers;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___GCOMMAND_BuildBannerRow__14:
-              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
-              ADD.W          #$14,A7                  ;defc 0014 
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5/A6;4cdf 6cfc 
+              ADD.W          #$18,A7                  ;defc 0018 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
