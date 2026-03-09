@@ -3,13 +3,13 @@ typedef signed long LONG;
 extern LONG ED_AdActiveFlag;
 extern LONG ED_ActiveIndicatorCachedState;
 
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern LONG _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG mode);
-extern void _LVORectFill(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
-extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const char *text);
+extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVORectFill(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
+extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 extern const char Global_STR_ACTIVE_INACTIVE[];
 

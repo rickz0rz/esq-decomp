@@ -3,7 +3,7 @@ typedef signed short WORD;
 typedef unsigned char UBYTE;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 
 extern UBYTE ED_DiagTextModeChar;
 extern LONG ED_SavedScrollSpeedIndex;
@@ -24,8 +24,8 @@ extern void ED_DrawSpecialFunctionsMenu(void);
 extern void ED_DrawBottomHelpBarBackground(void);
 extern void ED_DrawEscMainMenuText(void);
 extern LONG ESQIFF_JMPTBL_MATH_DivS32(LONG a, LONG b);
-extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const char *text);
-extern LONG _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
+extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 
 void ED1_HandleEscMenuInput(void)
 {

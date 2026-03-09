@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef unsigned char UBYTE;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 
 extern UBYTE ED_LastKeyCode;
 extern LONG ED_EditCursorOffset;
@@ -29,9 +29,9 @@ extern void ED_DrawAdEditingScreen(void);
 extern void ED_LoadCurrentAdIntoBuffers(void);
 extern void ED_DrawHelpPanels(LONG panelMode);
 extern void ED_UpdateAdNumberDisplay(void);
-extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const char *text);
-extern LONG _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG mode);
+extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 
 static LONG ED_ParseAdNumberFromDigits(void)
 {

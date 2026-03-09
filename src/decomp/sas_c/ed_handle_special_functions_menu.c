@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef unsigned char UBYTE;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 
 extern LONG ED_EditCursorOffset;
 extern LONG ED_TempCopyOffset;
@@ -20,9 +20,9 @@ extern void ED_DrawMenuSelectionHighlight(LONG menuBase);
 extern void ED_DrawDiagnosticRegisterValues(void);
 extern void ED_DrawESCMenuBottomHelp(void);
 extern void ED_DrawSpecialFunctionsMenu(void);
-extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const char *text);
-extern LONG _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVORectFill(void *gfxBase, void *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
+extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
 
 static void ED_DrawSpecialMenuSelection(void)
 {
