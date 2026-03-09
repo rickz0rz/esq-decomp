@@ -46,6 +46,42 @@ static void ESQ_CopyCString(UBYTE *dst, const UBYTE *src)
     }
 }
 
+static UBYTE *ESQ_BuildCliStartupCommand(UBYTE *currentTask, UBYTE *startupCmdString, LONG startupCmdLength)
+{
+    ULONG cliBptr;
+    ULONG tailBptr;
+    UBYTE *tail;
+    UBYTE *dst;
+    LONG tailLength;
+    LONG i;
+
+    cliBptr = *(ULONG *)(currentTask + TASK_CLI_FLAG_OFFSET);
+    if (cliBptr == 0) {
+        return startupCmdString;
+    }
+
+    tailBptr = *(ULONG *)((UBYTE *)(cliBptr << 2) + CLI_BPTR_COMMAND_OFFSET);
+    if (tailBptr == 0) {
+        return startupCmdString;
+    }
+
+    tail = (UBYTE *)(tailBptr << 2);
+    tailLength = (LONG)(UBYTE)*tail++;
+    Global_ScratchPtr_592 = tail;
+    Global_CommandLineSize = startupCmdLength + tailLength + 128;
+
+    dst = BUFFER_5929_LONGWORDS;
+    for (i = 0; i < tailLength; ++i) {
+        dst[i] = tail[i];
+    }
+    dst[tailLength] = ' ';
+    for (i = 0; i < startupCmdLength; ++i) {
+        dst[tailLength + 1 + i] = startupCmdString[i];
+    }
+    dst[tailLength + 1 + startupCmdLength] = 0;
+    return dst;
+}
+
 LONG ESQ_StartupEntry(UBYTE *startupCmdString, LONG startupCmdLength)
 {
     UBYTE *currentTask;
@@ -70,9 +106,7 @@ LONG ESQ_StartupEntry(UBYTE *startupCmdString, LONG startupCmdLength)
     Global_SavedDirLock = *(LONG *)(currentTask + TASK_SAVED_DIRLOCK_OFFSET);
 
     if (*(LONG *)(currentTask + TASK_CLI_FLAG_OFFSET) != 0) {
-        Global_CommandLineSize = startupCmdLength + 128;
-        Global_ScratchPtr_592 = (UBYTE *)0;
-        cmdlinePtr = startupCmdString;
+        cmdlinePtr = ESQ_BuildCliStartupCommand(currentTask, startupCmdString, startupCmdLength);
     } else {
         void *savedMsg;
         UBYTE *argList;
