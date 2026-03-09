@@ -23,7 +23,7 @@ enum {
 };
 
 extern LONG Global_REF_LONG_FILE_SCRATCH;
-extern UBYTE *Global_PTR_WORK_BUFFER;
+extern char *Global_PTR_WORK_BUFFER;
 extern UBYTE WDISP_CharClassTable[];
 
 extern AliasPair *TEXTDISP_AliasPtrTable[];
@@ -133,7 +133,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
     LONG section;
     LONG aliasIndex;
     LONG workBufferSize;
-    UBYTE *workBuffer;
+    char *workBuffer;
     char *linePtr;
 
     section = PARSEINI_SECTION_NONE;

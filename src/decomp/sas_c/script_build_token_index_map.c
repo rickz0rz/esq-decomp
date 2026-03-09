@@ -3,19 +3,19 @@ typedef short WORD;
 typedef unsigned char UBYTE;
 
 LONG SCRIPT_BuildTokenIndexMap(
-    UBYTE *inputBytes,
+    char *inputBytes,
     WORD *outIndexByToken,
     WORD tokenCount,
-    UBYTE *tokenTable,
+    const char *tokenTable,
     WORD maxScanCount,
-    UBYTE terminatorByte,
+    char terminatorByte,
     WORD fillMissingFlag)
 {
     WORD tokenIndex;
     WORD nextTokenIndex;
     WORD scanIndex;
     WORD lastMatchedScanIndex;
-    UBYTE tokenByte;
+    char tokenByte;
 
     tokenIndex = 0;
     lastMatchedScanIndex = 0;
@@ -39,7 +39,7 @@ LONG SCRIPT_BuildTokenIndexMap(
         while (tokenIndex < tokenCount) {
             if (tokenByte == tokenTable[(WORD)tokenIndex]) {
                 outIndexByToken[(LONG)tokenIndex] = (WORD)(scanIndex + 1);
-                inputBytes[(WORD)scanIndex] = (UBYTE)0;
+                inputBytes[(WORD)scanIndex] = 0;
                 ++nextTokenIndex;
                 lastMatchedScanIndex = scanIndex;
                 break;

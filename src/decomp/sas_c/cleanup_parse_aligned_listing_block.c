@@ -26,20 +26,20 @@ extern UBYTE CTASKS_PrimaryOiWritePendingFlag;
 extern UWORD ESQIFF_RecordLength;
 extern CLEANUP_EntryTableEntry *TEXTDISP_SecondaryEntryPtrTable[];
 extern CLEANUP_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
-extern UBYTE CLOCK_STR_MISSING_TITLE_TEMPLATE[];
+extern char CLOCK_STR_MISSING_TITLE_TEMPLATE[];
 
-LONG COI_CountEscape14BeforeNull(UBYTE *buf, LONG max_len);
-LONG GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(const UBYTE *s, void *map, LONG max_tokens, const UBYTE *delims, LONG n_delims, LONG max_len, LONG stop_on_empty);
-LONG ESQ_WildcardMatch(const UBYTE *a, const UBYTE *b);
+LONG COI_CountEscape14BeforeNull(char *buf, LONG max_len);
+LONG GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(const char *s, void *map, LONG max_tokens, const char *delims, LONG n_delims, LONG max_len, LONG stop_on_empty);
+LONG ESQ_WildcardMatch(const char *a, const char *b);
 void COI_ClearAnimObjectStrings(void *entry);
 void COI_FreeSubEntryTableEntries(void *entry);
-LONG GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(void *old_ptr, const void *new_ptr);
-void CLEANUP_FormatEntryStringTokens(void **a, void **b, UBYTE *in);
-LONG GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const UBYTE *s);
+char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *old_ptr, const char *new_ptr);
+void CLEANUP_FormatEntryStringTokens(void **a, void **b, char *in);
+LONG GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 void COI_AllocSubEntryTable(void *entry);
 LONG COI_WriteOiDataFile(UBYTE disk_id);
 
-LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
+LONG CLEANUP_ParseAlignedListingBlock(char *record, char *listing)
 {
     WORD slotMap[SLOT_MAP_COUNT];
     LONG recordOffset;
@@ -50,7 +50,7 @@ LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
     UBYTE disk_id;
     CLEANUP_EntryTableEntry *entry;
 
-    if (record == (UBYTE *)0 || listing == (UBYTE *)0) {
+    if (record == (char *)0 || listing == (char *)0) {
         return 1;
     }
 
@@ -111,8 +111,8 @@ LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
     COI_ClearAnimObjectStrings(entry);
     COI_FreeSubEntryTableEntries(entry);
 
-    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((void *)0, listing);
-    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((void *)0, CLOCK_STR_MISSING_TITLE_TEMPLATE);
+    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)0, listing);
+    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)0, CLOCK_STR_MISSING_TITLE_TEMPLATE);
 
     {
         void *a = (void *)0;
