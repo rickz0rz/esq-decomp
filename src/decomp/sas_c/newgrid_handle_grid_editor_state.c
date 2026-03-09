@@ -13,9 +13,9 @@ extern LONG NEWGRID_GridEditorWorkflowState;
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
 extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *rastPort, char *text);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
-extern LONG NEWGRID_DrawGridFrameAndRows(void *gridCtx, LONG rowPen);
+extern LONG NEWGRID_DrawGridFrameAndRows(char *gridCtx, LONG rowPen);
 
-LONG NEWGRID_HandleGridEditorState(void *gridCtx, LONG layoutPen, LONG rowPen, char *sourceText)
+LONG NEWGRID_HandleGridEditorState(char *gridCtx, LONG layoutPen, LONG rowPen, char *sourceText)
 {
     NEWGRID_Context *ctxView;
 

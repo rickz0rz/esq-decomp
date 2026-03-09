@@ -28,10 +28,10 @@ extern LONG GCOMMAND_PPVListingsTemplatePtr;
 extern LONG GCOMMAND_PpvEditorRowPen;
 extern LONG GCOMMAND_PpvEditorLayoutPen;
 
-extern LONG NEWGRID_HandleGridEditorState(LayoutCtx *ctx, LONG a, LONG b, LONG c);
-extern LONG NEWGRID_ShouldOpenEditor(void *entry);
+extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG a, LONG b, char *sourceText);
+extern LONG NEWGRID_ShouldOpenEditor(char *entry);
 extern LONG NEWGRID_UpdateGridState(LayoutCtx *ctx, LONG index, LONG row);
-extern LONG NEWGRID_HandleShowtimesState(LayoutCtx *ctx, NEWGRID_SelectionWindow *selCtxPtr);
+extern LONG NEWGRID_HandleShowtimesState(char *ctx, char *selCtxPtr);
 extern LONG NEWGRID_InitSelectionWindow(NEWGRID_SelectionWindow *selCtxPtr, LONG rowBase);
 extern LONG NEWGRID_UpdateSelectionFromInput(LONG state, NEWGRID_SelectionWindow *selCtxPtr);
 extern LONG NEWGRID_DrawGridMessageAlt(LayoutCtx *ctx);
@@ -46,12 +46,12 @@ LONG NEWGRID_ProcessShowtimesWorkflow(LayoutCtx *ctx, UWORD rowBase)
 
     if (!ctx) {
         if (NEWGRID_ShowtimesWorkflowState == 2 || NEWGRID_ShowtimesWorkflowState == 7) {
-            NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState(ctx, 0, 0, 0);
+            NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState((char *)ctx, 0, 0, 0);
         } else if (NEWGRID_ShowtimesWorkflowState == 5) {
-            if (NEWGRID_ShouldOpenEditor(NEWGRID_ShowtimesSelectionContextPtr.entry) != 0) {
+            if (NEWGRID_ShouldOpenEditor((char *)NEWGRID_ShowtimesSelectionContextPtr.entry) != 0) {
                 NEWGRID_ShowtimesWorkflowState = NEWGRID_UpdateGridState(ctx, 0, 0);
             } else {
-                NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleShowtimesState(ctx, &NEWGRID_ShowtimesSelectionContextPtr);
+                NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleShowtimesState((char *)ctx, (char *)&NEWGRID_ShowtimesSelectionContextPtr);
             }
         }
         NEWGRID_InitSelectionWindow(&NEWGRID_ShowtimesSelectionContextPtr, 0);
@@ -74,7 +74,7 @@ LONG NEWGRID_ProcessShowtimesWorkflow(LayoutCtx *ctx, UWORD rowBase)
         case 2:
             if (GCOMMAND_PpvShowtimesWorkflowMode == 'B' || GCOMMAND_PpvShowtimesWorkflowMode == 'F') {
                 NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState(
-                    ctx, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, GCOMMAND_PPVListingsTemplatePtr);
+                    (char *)ctx, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, (char *)GCOMMAND_PPVListingsTemplatePtr);
                 if (NEWGRID_ShowtimesWorkflowState == 5) {
                     NEWGRID_ShowtimesWorkflowState = 2;
                     break;
@@ -91,12 +91,12 @@ LONG NEWGRID_ProcessShowtimesWorkflow(LayoutCtx *ctx, UWORD rowBase)
 
         case 5:
             if (NEWGRID_ShowtimesSelectionContextPtr.entry != 0) {
-                if (NEWGRID_ShouldOpenEditor(NEWGRID_ShowtimesSelectionContextPtr.entry) != 0) {
+                if (NEWGRID_ShouldOpenEditor((char *)NEWGRID_ShowtimesSelectionContextPtr.entry) != 0) {
                     NEWGRID_ShowtimesWorkflowState = NEWGRID_UpdateGridState(
                         ctx, NEWGRID_ShowtimesWorkflowArgLong, (LONG)NEWGRID_ShowtimesWorkflowArgWord);
                 } else {
                     NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleShowtimesState(
-                        ctx, &NEWGRID_ShowtimesSelectionContextPtr);
+                        (char *)ctx, (char *)&NEWGRID_ShowtimesSelectionContextPtr);
                 }
 
                 if (GCOMMAND_DigitalPpvEnabledFlag == 'Y') {
@@ -118,7 +118,7 @@ LONG NEWGRID_ProcessShowtimesWorkflow(LayoutCtx *ctx, UWORD rowBase)
         case 7:
             if (GCOMMAND_PpvShowtimesWorkflowMode == 'B' || GCOMMAND_PpvShowtimesWorkflowMode == 'L') {
                 NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState(
-                    ctx, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, GCOMMAND_PPVListingsTemplatePtr);
+                    (char *)ctx, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, (char *)GCOMMAND_PPVListingsTemplatePtr);
                 if (NEWGRID_ShowtimesWorkflowState == 5) {
                     NEWGRID_ShowtimesWorkflowState = 7;
                     break;

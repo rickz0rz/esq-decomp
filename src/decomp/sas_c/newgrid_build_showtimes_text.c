@@ -42,9 +42,9 @@ extern LONG _LVOTextLength(void *gfxBase, void *rp, const char *text, LONG len);
 extern LONG NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(void *coi, LONG row, LONG field);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, void *entries);
 extern void NEWGRID_ResetShowtimeBuckets(void);
-extern LONG NEWGRID_UpdatePresetEntry(void **entryPtr, void **coiPtr, LONG row, LONG col);
-extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(void *entry, void *coi, LONG idx);
-extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(void *entry, void *coi, LONG idx, LONG winMins, LONG tolMins);
+extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **coiPtr, LONG row, LONG col);
+extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *coi, LONG idx);
+extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *coi, LONG idx, LONG winMins, LONG tolMins);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(void *bitsetBase, LONG bitIdx);
 extern const char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern LONG NEWGRID_AddShowtimeBucketEntry(const char *text, LONG row);
@@ -123,15 +123,15 @@ void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
                 const char *f2;
                 const char *f3;
 
-                idx = NEWGRID_UpdatePresetEntry((void **)&entry, (void **)&coi, row, col);
+                idx = NEWGRID_UpdatePresetEntry((char **)&entry, (char **)&coi, row, col);
                 if (!entry || !coi) {
                     col++;
                     continue;
                 }
 
                 if (row == ctx->startRow) {
-                    LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, coi, idx);
-                    if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(entry, coi, prev,
+                    LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((char *)entry, (char *)coi, idx);
+                    if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState((char *)entry, (char *)coi, prev,
                         GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes) == 0) {
                         col++;
                         continue;
