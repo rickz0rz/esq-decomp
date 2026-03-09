@@ -18,14 +18,14 @@ extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, 
 
 LONG GCOMMAND_LoadDefaultTable(void)
 {
-    UBYTE *loadedBuffer;
+    char *loadedBuffer;
     LONG loadedSize;
 
     if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable) == -1) {
         return 1;
     }
 
-    loadedBuffer = Global_PTR_WORK_BUFFER;
+    loadedBuffer = (char *)Global_PTR_WORK_BUFFER;
     loadedSize = Global_REF_LONG_FILE_SCRATCH;
 
     _LVOCopyMem(AbsExecBase, GCOMMAND_DigitalNicheEnabledFlag, loadedBuffer, 32);

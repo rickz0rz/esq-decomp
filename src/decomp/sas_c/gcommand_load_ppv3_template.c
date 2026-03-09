@@ -26,7 +26,7 @@ LONG GCOMMAND_LoadPPV3Template(void)
 {
     LONG copySize;
     LONG usedFallbackDelete;
-    UBYTE *loadedBuffer;
+    char *loadedBuffer;
     LONG loadedSize;
     char *splitPtr;
 
@@ -49,7 +49,7 @@ LONG GCOMMAND_LoadPPV3Template(void)
         return 1;
     }
 
-    loadedBuffer = Global_PTR_WORK_BUFFER;
+    loadedBuffer = (char *)Global_PTR_WORK_BUFFER;
     loadedSize = Global_REF_LONG_FILE_SCRATCH;
 
     _LVOCopyMem(AbsExecBase, GCOMMAND_DigitalPpvEnabledFlag, loadedBuffer, copySize);
