@@ -31,27 +31,27 @@ extern WORD NEWGRID_RowHeightPx;
 extern WORD NEWGRID_ColumnStartXPx;
 extern WORD NEWGRID_ColumnWidthPx;
 
-extern UBYTE *NEWGRID2_JMPTBL_STR_SkipClass3Chars(UBYTE *s);
-extern void NEWGRID2_JMPTBL_STRING_AppendN(UBYTE *dst, UBYTE *src, LONG len);
-extern void PARSEINI_JMPTBL_STRING_AppendAtNull(UBYTE *dst, UBYTE *src);
+extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
+extern void NEWGRID2_JMPTBL_STRING_AppendN(char *dst, char *src, LONG len);
+extern void PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
 extern void NEWGRID_DrawGridFrame(void *rp, LONG type, LONG penA, LONG penB, LONG height);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rp, LONG x, LONG y, LONG width, LONG color, LONG style);
 extern LONG _LVOSetAPen(void *gfxBase, void *rp, LONG pen);
 extern LONG _LVOSetDrMd(void *gfxBase, void *rp, LONG mode);
-extern LONG _LVOTextLength(void *gfxBase, void *rp, UBYTE *text, LONG len);
+extern LONG _LVOTextLength(void *gfxBase, void *rp, char *text, LONG len);
 extern LONG _LVOMove(void *gfxBase, void *rp, LONG x, LONG y);
-extern LONG _LVOText(void *gfxBase, void *rp, UBYTE *text, LONG len);
+extern LONG _LVOText(void *gfxBase, void *rp, char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(void *rp, LONG code);
 
-void NEWGRID_DrawShowtimesPrompt(UBYTE *rpCtx, UBYTE *outBuf, LONG mode)
+void NEWGRID_DrawShowtimesPrompt(UBYTE *rpCtx, char *outBuf, LONG mode)
 {
     NEWGRID_Context *ctx;
-    UBYTE prompt[136];
-    UBYTE tmpSuffix[10];
-    UBYTE *titlePart;
-    UBYTE *channelPart;
-    UBYTE *src;
-    UBYTE *dst;
+    char prompt[136];
+    char tmpSuffix[10];
+    char *titlePart;
+    char *channelPart;
+    char *src;
+    char *dst;
     NEWGRID_RastPort *rp;
     LONG len;
     LONG x;
@@ -66,7 +66,7 @@ void NEWGRID_DrawShowtimesPrompt(UBYTE *rpCtx, UBYTE *outBuf, LONG mode)
     titlePart = NEWGRID2_JMPTBL_STR_SkipClass3Chars(outBuf + 19);
     channelPart = NEWGRID2_JMPTBL_STR_SkipClass3Chars(outBuf + 1);
 
-    src = (mode == 0) ? SCRIPT_PtrSummaryOfPrefix : SCRIPT_PtrSportsOnPrefix;
+    src = (mode == 0) ? (char *)SCRIPT_PtrSummaryOfPrefix : (char *)SCRIPT_PtrSportsOnPrefix;
     dst = prompt;
     while ((*dst++ = *src++) != 0) {
     }
