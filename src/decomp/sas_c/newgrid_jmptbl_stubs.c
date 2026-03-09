@@ -2,7 +2,7 @@ typedef signed long LONG;
 
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern void DATETIME_SecondsToStruct(void);
-extern void GENERATE_GRID_DATE_STRING(void);
+extern void GENERATE_GRID_DATE_STRING(char *outText);
 extern void MEMORY_DeallocateMemory(void);
 extern void DISPTEXT_FreeBuffers(void);
 extern void MEMORY_AllocateMemory(void);
@@ -14,7 +14,7 @@ extern LONG MATH_Mulu32(LONG a, LONG b);
 
 LONG NEWGRID_JMPTBL_MATH_DivS32(LONG a, LONG b){return MATH_DivS32(a, b);}
 void NEWGRID_JMPTBL_DATETIME_SecondsToStruct(void){DATETIME_SecondsToStruct();}
-void NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING(void){GENERATE_GRID_DATE_STRING();}
+void NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING(char *outText){GENERATE_GRID_DATE_STRING(outText);}
 void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(void){MEMORY_DeallocateMemory();}
 void NEWGRID_JMPTBL_DISPTEXT_FreeBuffers(void){DISPTEXT_FreeBuffers();}
 void NEWGRID_JMPTBL_MEMORY_AllocateMemory(void){MEMORY_AllocateMemory();}
