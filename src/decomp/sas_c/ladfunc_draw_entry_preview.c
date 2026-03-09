@@ -34,17 +34,17 @@ extern const char Global_STR_LADFUNC_C_19[];
 extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 
 extern LONG GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(LONG a, LONG b, LONG c);
-extern void _LVOSetFont(void *graphicsBase, void *rastPort, void *font);
-extern LONG _LVOTextLength(void *graphicsBase, void *rastPort, const char *text, LONG length);
+extern void _LVOSetFont(void *graphicsBase, char *rastPort, void *font);
+extern LONG _LVOTextLength(void *graphicsBase, char *rastPort, const char *text, LONG length);
 extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG n, LONG d);
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
+extern char *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
-extern void _LVOSetDrMd(void *graphicsBase, void *rastPort, LONG drawMode);
-extern void _LVOSetRast(void *graphicsBase, void *rastPort, LONG pen);
+extern void _LVOSetDrMd(void *graphicsBase, char *rastPort, LONG drawMode);
+extern void _LVOSetRast(void *graphicsBase, char *rastPort, LONG pen);
 extern void GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern void GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 extern LONG LADFUNC_GetPackedPenHighNibble(UBYTE packed);
-extern void LADFUNC_DrawEntryLineWithAttrs(void *rastPort, LONG row, UBYTE *attrBuf, char *textBuf);
+extern void LADFUNC_DrawEntryLineWithAttrs(char *rastPort, LONG row, UBYTE *attrBuf, char *textBuf);
 
 void LADFUNC_DrawEntryPreview(LONG entryIndex)
 {
@@ -68,19 +68,19 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
     UBYTE packed;
     LONG pen;
     LONG i;
-    void *rastPort;
+    char *rastPort;
 
     WDISP_DisplayContextBase = GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(
         VIEW_MODE_SOURCE,
         VIEW_MODE_SUBSOURCE,
         VIEW_MODE_KIND);
-    rastPort = (void *)(WDISP_DisplayContextBase + RASTPORT_OFFSET);
+    rastPort = (char *)(WDISP_DisplayContextBase + RASTPORT_OFFSET);
 
     _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_HANDLE_H26F_FONT);
     charWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_STR_SINGLE_SPACE_2, 1);
     maxCols = NEWGRID_JMPTBL_MATH_DivS32(PREVIEW_PIXEL_WIDTH, charWidth);
 
-    lineText = (char *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+    lineText = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_16, 857, maxCols + 1, LINEBUF_ALLOC_FLAGS);
     lineAttr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_17, 858, maxCols, LINEBUF_ALLOC_FLAGS);

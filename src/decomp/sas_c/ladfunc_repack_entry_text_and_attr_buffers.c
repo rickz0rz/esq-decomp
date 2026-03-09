@@ -7,7 +7,7 @@ typedef unsigned char UBYTE;
 extern LONG ED_TextLimit;
 
 extern LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
+extern char *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 extern void GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG n);
 extern void GROUP_AW_JMPTBL_MEM_Move(void *dst, const void *src, LONG n);
@@ -39,7 +39,7 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *textBuf, UBYTE *attrBuf)
         srcLen = (LONG)(p - textBuf);
     }
 
-    textCopy = (char *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+    textCopy = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_24,
         1214,
         srcLen + 1,

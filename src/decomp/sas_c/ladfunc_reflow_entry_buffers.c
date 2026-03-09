@@ -8,7 +8,7 @@ extern const char Global_STR_LADFUNC_C_21[];
 extern const char Global_STR_LADFUNC_C_22[];
 extern const char Global_STR_LADFUNC_C_23[];
 
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
+extern char *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG num, LONG den);
 
@@ -24,7 +24,7 @@ void LADFUNC_ReflowEntryBuffers(char *outText, UBYTE *outAttr)
         ++srcLen;
     }
 
-    tmpText = (char *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+    tmpText = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_20, 1025, srcLen + 1, 0x10001
     );
     tmpAttr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(

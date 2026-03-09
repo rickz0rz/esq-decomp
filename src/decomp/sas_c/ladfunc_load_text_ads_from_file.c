@@ -23,7 +23,7 @@ extern UBYTE *GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(void);
 extern LONG LADFUNC_ParseHexDigit(LONG ch);
 extern LONG LADFUNC_SetPackedPenHighNibble(UBYTE packed, UBYTE nibble);
 extern LONG LADFUNC_SetPackedPenLowNibble(UBYTE packed, UBYTE nibble);
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
+extern char *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 extern void LADFUNC_ResetEntryTextBuffers(void);
 
@@ -78,7 +78,7 @@ LONG LADFUNC_LoadTextAdsFromFile(void)
         }
 
         if (textLen > 0) {
-            entry->textPtr = (char *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+            entry->textPtr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
                 Global_STR_LADFUNC_C_9, 591, textLen + 1, 0x10001
             );
             if (entry->textPtr == (char *)0) {
