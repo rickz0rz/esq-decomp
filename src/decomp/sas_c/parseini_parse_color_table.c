@@ -37,16 +37,20 @@ void PARSEINI_ParseColorTable(const char *entryKey, const char *entryValue, LONG
         maxColors = PARSE_COLOR_MAX;
     }
 
-    for (colorIndex = 0; colorIndex < maxColors; ++colorIndex) {
+    colorIndex = 0;
+    while (colorIndex < maxColors) {
         PARSEINI_JMPTBL_WDISP_SPrintf(keyBuffer, Global_STR_COLOR_PERCENT_D, colorIndex);
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, keyBuffer) != 0) {
-            continue;
+        if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, keyBuffer) == 0) {
+            channelIndex = 0;
+            while (channelIndex < PARSE_COLOR_CHANNEL_COUNT) {
+                tripleOffset = (colorIndex << 2) - colorIndex;
+                tripleOffset += channelIndex;
+                targetTriples[tripleOffset] =
+                    (UBYTE)SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit((LONG)(UBYTE)entryValue[channelIndex]);
+                ++channelIndex;
+            }
         }
-
-        for (channelIndex = 0; channelIndex < PARSE_COLOR_CHANNEL_COUNT; ++channelIndex) {
-            tripleOffset = (colorIndex * PARSE_COLOR_CHANNEL_COUNT) + channelIndex;
-            targetTriples[tripleOffset] = (UBYTE)SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit((LONG)(UBYTE)entryValue[channelIndex]);
-        }
+        ++colorIndex;
     }
 
     if (mode == PARSE_COLOR_MODE_CUSTOM) {

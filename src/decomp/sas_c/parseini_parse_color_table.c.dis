@@ -31,7 +31,7 @@ ___PARSEINI_ParseColorTable__5:
               MOVEQ.L        #$0,D5                   ;7a00 
 ___PARSEINI_ParseColorTable__6:
               CMP.L          D6,D5                    ;ba86 
-              BGE.B          ___PARSEINI_ParseColorTable__14;6c58 
+              BGE.B          ___PARSEINI_ParseColorTable__12;6c60 
 ___PARSEINI_ParseColorTable__7:
               MOVE.L         D5,-(A7)                 ;2f05 
               PEA            Global_STR_COLOR_PERCENT_D(A4);486c 0000 
@@ -42,42 +42,42 @@ ___PARSEINI_ParseColorTable__7:
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ParseColorTable__13;6634 
+              BNE.B          ___PARSEINI_ParseColorTable__11;663c 
 ___PARSEINI_ParseColorTable__8:
-___PARSEINI_ParseColorTable__9:
               CLR.L          $90(A7)                  ;42af 0090 
-___PARSEINI_ParseColorTable__10:
+___PARSEINI_ParseColorTable__9:
               MOVE.L         $90(A7),D0               ;202f 0090 
               MOVEQ.L        #$3,D1                   ;7203 
               CMP.L          D1,D0                    ;b081 
-              BGE.B          ___PARSEINI_ParseColorTable__13;6c26 
-___PARSEINI_ParseColorTable__11:
-              MOVE.L         D5,D2                    ;2405 
-              ADD.L          D2,D2                    ;d482 
-              ADD.L          D5,D2                    ;d485 
-              ADD.L          D0,D2                    ;d480 
+              BGE.B          ___PARSEINI_ParseColorTable__11;6c2e 
+___PARSEINI_ParseColorTable__10:
+              MOVE.L         D5,D1                    ;2205 
+              ASL.L          #$2,D1                   ;e581 
+              SUB.L          D5,D1                    ;9285 
+              MOVE.L         D1,$8c(A7)               ;2f41 008c 
+              ADD.L          D0,D1                    ;d280 
               MOVE.B         $0(A3,D0.L),D0           ;1033 0800 
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         D0,D1                    ;1200 
-              MOVE.L         D1,-(A7)                 ;2f01 
-              MOVE.L         D2,$90(A7)               ;2f42 0090 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D0,D2                    ;1400 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D1,$90(A7)               ;2f41 0090 
               BSR.W          SCRIPT3_JMPTBL_LADFUNC_ParseHexD;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              MOVE.B         D0,$0(A2,D2.L)           ;1580 2800 
-___PARSEINI_ParseColorTable__12:
+              MOVE.L         $8c(A7),D1               ;222f 008c 
+              MOVE.B         D0,$0(A2,D1.L)           ;1580 1800 
               ADDQ.L         #$1,$90(A7)              ;52af 0090 
-              BRA.B          ___PARSEINI_ParseColorTable__10;60d0 
-___PARSEINI_ParseColorTable__13:
+              BRA.B          ___PARSEINI_ParseColorTable__9;60c8 
+___PARSEINI_ParseColorTable__11:
               ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___PARSEINI_ParseColorTable__6;60a4 
-___PARSEINI_ParseColorTable__14:
+              BRA.B          ___PARSEINI_ParseColorTable__6;609c 
+___PARSEINI_ParseColorTable__12:
               MOVE.L         D7,D0                    ;2007 
               SUBQ.L         #$4,D0                   ;5980 
-              BNE.B          ___PARSEINI_ParseColorTable__17;6604 
-___PARSEINI_ParseColorTable__15:
+              BNE.B          ___PARSEINI_ParseColorTable__15;6604 
+___PARSEINI_ParseColorTable__13:
               BSR.W          TEXTDISP_JMPTBL_ESQIFF_RunCopper;6100 0000 
-___PARSEINI_ParseColorTable__16:
-___PARSEINI_ParseColorTable__17:
+___PARSEINI_ParseColorTable__14:
+___PARSEINI_ParseColorTable__15:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
               ADD.W          #$78,A7                  ;defc 0078 
               RTS                                     ;4e75 
