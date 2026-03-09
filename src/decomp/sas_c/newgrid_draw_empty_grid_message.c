@@ -25,7 +25,7 @@ extern char *SCRIPT_PtrMovieSummaryForPrefix;
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 
-extern void NEWGRID_DrawGridFrame(void *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
+extern void NEWGRID_DrawGridFrame(char *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
 extern void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slot, char *out_text);
 extern void PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
@@ -34,7 +34,7 @@ extern void _LVOSetDrMd(void *rastPort, LONG mode);
 extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
 extern void _LVOMove(void *rastPort, LONG x, LONG y);
 extern void _LVOText(void *rastPort, char *text, LONG len);
-extern void NEWGRID_ValidateSelectionCode(void *gridCtx, LONG code);
+extern void NEWGRID_ValidateSelectionCode(char *gridCtx, LONG code);
 
 void NEWGRID_DrawEmptyGridMessage(char *gridCtx, UWORD slot)
 {

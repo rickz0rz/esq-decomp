@@ -14,13 +14,13 @@ extern UWORD NEWGRID_RowHeightPx;
 extern UBYTE CONFIG_NewgridPlaceholderBevelFlag;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern void NEWGRID_SetRowColor(void *gridCtx, LONG row, LONG colorSel);
+extern void NEWGRID_SetRowColor(char *gridCtx, LONG row, LONG colorSel);
 extern void _LVOSetAPen(void *rastPort, LONG pen);
 extern void _LVORectFill(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
-void NEWGRID_DrawGridCellBackground(void *gridCtx, WORD row, WORD col, LONG colorSel)
+void NEWGRID_DrawGridCellBackground(char *gridCtx, WORD row, WORD col, LONG colorSel)
 {
     const LONG GRID_X_OFFSET = 36;
     const LONG GRID_RIGHT_EDGE = 695;

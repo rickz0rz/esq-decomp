@@ -24,7 +24,7 @@ extern UWORD NEWGRID_RowHeightPx;
 extern UBYTE CONFIG_NewgridPlaceholderBevelFlag;
 extern LONG DISPTEXT_ControlMarkerXOffsetPx;
 
-extern void NEWGRID_DrawGridCellBackground(void *gridCtx, WORD row, WORD col, LONG colorSel);
+extern void NEWGRID_DrawGridCellBackground(char *gridCtx, WORD row, WORD col, LONG colorSel);
 extern void NEWGRID_SetSelectionMarkers(LONG primarySel, LONG secondarySel, char *m3, char *m2, char *m1, char *m0);
 extern LONG _LVOTextLength(void *rp, const char *s, LONG len);
 extern void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(void *rp, LONG x, LONG y);
