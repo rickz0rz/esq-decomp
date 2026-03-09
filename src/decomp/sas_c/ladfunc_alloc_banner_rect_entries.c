@@ -1,12 +1,18 @@
 typedef signed long LONG;
+typedef unsigned short UWORD;
+typedef unsigned char UBYTE;
 
-typedef struct LADFUNC_BannerRectEntry {
-    char raw[14];
-} LADFUNC_BannerRectEntry;
+typedef struct LadfuncEntry {
+    UWORD startSlot;
+    UWORD endSlot;
+    UWORD isHighlighted;
+    char *textPtr;
+    UBYTE *attrPtr;
+} LadfuncEntry;
 
-extern LADFUNC_BannerRectEntry *LADFUNC_EntryPtrTable[];
+extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 extern const char Global_STR_LADFUNC_C_1[];
-extern LADFUNC_BannerRectEntry *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
+extern LadfuncEntry *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 
 void LADFUNC_AllocBannerRectEntries(void)
 {

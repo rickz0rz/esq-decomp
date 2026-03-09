@@ -2,13 +2,16 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
-typedef struct LADFUNC_PreviewEntry {
-    UBYTE pad0[4];
-    UWORD state;
-} LADFUNC_PreviewEntry;
+typedef struct LadfuncEntry {
+    UWORD startSlot;
+    UWORD endSlot;
+    UWORD isHighlighted;
+    char *textPtr;
+    UBYTE *attrPtr;
+} LadfuncEntry;
 
 extern UWORD LADFUNC_EntryCount;
-extern LADFUNC_PreviewEntry *LADFUNC_EntryPtrTable[];
+extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern void TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview(LONG entryIndex);
@@ -16,7 +19,7 @@ extern void TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview(LONG entryIndex);
 void TEXTDISP_DrawNextEntryPreview(void)
 {
     for (;;) {
-        if (LADFUNC_EntryPtrTable[(LONG)(UWORD)LADFUNC_EntryCount]->state == 1) {
+        if (LADFUNC_EntryPtrTable[(LONG)(UWORD)LADFUNC_EntryCount]->isHighlighted == 1) {
             break;
         }
 
