@@ -39,10 +39,26 @@ extern WORD GCOMMAND_BannerRebuildPendingFlag;
 extern void GCOMMAND_InitPresetWorkEntry(void *entryPtr, LONG presetIndex, LONG span, LONG baseValue);
 extern void GCOMMAND_TickPresetWorkEntries(void);
 
+typedef struct GCOMMAND_PresetRow {
+    UWORD values[64];
+} GCOMMAND_PresetRow;
+
+typedef struct GCOMMAND_BannerRow {
+    UBYTE pad0[6];
+    UWORD value0;
+    UBYTE pad8[2];
+    UWORD value1;
+    UBYTE pad12[2];
+    UWORD value2;
+    UBYTE pad16[2];
+    UWORD value3;
+    UBYTE pad20[12];
+} GCOMMAND_BannerRow;
+
 static UWORD GCOMMAND_LoadPresetValueOrFallback(LONG presetId, LONG valueIndex, UBYTE fallback)
 {
     LONG presetBase;
-    UBYTE *src;
+    GCOMMAND_PresetRow *rows;
 
     if (valueIndex < 0) {
         return (UWORD)fallback;
@@ -58,19 +74,19 @@ static UWORD GCOMMAND_LoadPresetValueOrFallback(LONG presetId, LONG valueIndex, 
         presetBase = GCOMMAND_PresetWorkEntry3;
     }
 
-    src = GCOMMAND_PresetValueTable + (presetBase << 7) + (valueIndex << 1);
-    return *(UWORD *)src;
+    rows = (GCOMMAND_PresetRow *)GCOMMAND_PresetValueTable;
+    return rows[presetBase].values[valueIndex];
 }
 
 void GCOMMAND_RebuildBannerTablesFromBounds(void)
 {
     LONG seed;
     LONG row;
-    UBYTE *tableA;
-    UBYTE *tableB;
+    GCOMMAND_BannerRow *tableA;
+    GCOMMAND_BannerRow *tableB;
 
-    tableA = ESQ_CopperListBannerA + 0x80;
-    tableB = ESQ_CopperListBannerB + 0x80;
+    tableA = (GCOMMAND_BannerRow *)(ESQ_CopperListBannerA + 0x80);
+    tableB = (GCOMMAND_BannerRow *)(ESQ_CopperListBannerB + 0x80);
 
     if (Global_UIBusyFlag != 0) {
         seed = 0;
@@ -84,20 +100,19 @@ void GCOMMAND_RebuildBannerTablesFromBounds(void)
     GCOMMAND_InitPresetWorkEntry((void *)&GCOMMAND_PresetWorkEntry3, GCOMMAND_BannerBoundBottom, seed, GCOMMAND_BannerStepBottom);
 
     for (row = 0; row < 17; ++row) {
-        LONG off = (row << 5);
         UWORD v0 = GCOMMAND_LoadPresetValueOrFallback(0, GCOMMAND_PresetWorkEntry0_ValueIndex, GCOMMAND_PresetFallbackValue0);
         UWORD v1 = GCOMMAND_LoadPresetValueOrFallback(1, GCOMMAND_PresetWorkEntry1_ValueIndex, GCOMMAND_PresetFallbackValue1);
         UWORD v2 = GCOMMAND_LoadPresetValueOrFallback(2, GCOMMAND_PresetWorkEntry2_ValueIndex, GCOMMAND_PresetFallbackValue2);
         UWORD v3 = GCOMMAND_LoadPresetValueOrFallback(3, GCOMMAND_PresetWorkEntry3_ValueIndex, GCOMMAND_PresetFallbackValue3);
 
-        *(UWORD *)(tableA + off + 6) = v0;
-        *(UWORD *)(tableB + off + 6) = v0;
-        *(UWORD *)(tableA + off + 10) = v1;
-        *(UWORD *)(tableB + off + 10) = v1;
-        *(UWORD *)(tableA + off + 14) = v2;
-        *(UWORD *)(tableB + off + 14) = v2;
-        *(UWORD *)(tableA + off + 18) = v3;
-        *(UWORD *)(tableB + off + 18) = v3;
+        tableA[row].value0 = v0;
+        tableB[row].value0 = v0;
+        tableA[row].value1 = v1;
+        tableB[row].value1 = v1;
+        tableA[row].value2 = v2;
+        tableB[row].value2 = v2;
+        tableA[row].value3 = v3;
+        tableB[row].value3 = v3;
 
         GCOMMAND_TickPresetWorkEntries();
     }
