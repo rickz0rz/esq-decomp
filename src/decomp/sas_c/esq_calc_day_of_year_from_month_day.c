@@ -1,8 +1,18 @@
 extern unsigned short CLOCK_MonthLengths[];
 
+typedef struct ESQ_TimeFields {
+    unsigned char pad0[2];
+    unsigned short month;
+    unsigned short day;
+    unsigned char pad6[10];
+    unsigned short dayOfYear;
+    unsigned char pad18[2];
+    unsigned short leapYearFlag;
+} ESQ_TimeFields;
+
 void ESQ_CalcDayOfYearFromMonthDay(void *timePtr)
 {
-    unsigned char *p;
+    ESQ_TimeFields *p;
     unsigned short month;
     unsigned short day;
     unsigned short leap;
@@ -10,10 +20,10 @@ void ESQ_CalcDayOfYearFromMonthDay(void *timePtr)
     unsigned short i;
     unsigned short *table;
 
-    p = (unsigned char *)timePtr;
-    month = *(unsigned short *)(p + 2);
-    day = *(unsigned short *)(p + 4);
-    leap = *(unsigned short *)(p + 20);
+    p = (ESQ_TimeFields *)timePtr;
+    month = p->month;
+    day = p->day;
+    leap = p->leapYearFlag;
 
     table = CLOCK_MonthLengths;
     if (leap != 0) {
@@ -26,5 +36,5 @@ void ESQ_CalcDayOfYearFromMonthDay(void *timePtr)
     }
 
     total = (unsigned short)(total + day);
-    *(unsigned short *)(p + 16) = total;
+    p->dayOfYear = total;
 }

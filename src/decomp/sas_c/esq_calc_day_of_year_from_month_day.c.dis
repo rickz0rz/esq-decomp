@@ -10,12 +10,9 @@ ESQ_CalcDayOfYearFromMonthDay:
 ___ESQ_CalcDayOfYearFromMonthDay__1:
               MOVE.L         $24(A7),A5               ;2a6f 0024 
               MOVE.L         A5,A3                    ;264d 
-              LEA            $2(A3),A0                ;41eb 0002 
-              MOVE.W         (A0),D7                  ;3e10 
-              LEA            $4(A3),A0                ;41eb 0004 
-              MOVE.W         (A0),D6                  ;3c10 
-              LEA            $14(A3),A0               ;41eb 0014 
-              MOVE.W         (A0),D5                  ;3a10 
+              MOVE.W         $2(A3),D7                ;3e2b 0002 
+              MOVE.W         $4(A3),D6                ;3c2b 0004 
+              MOVE.W         $14(A3),D5               ;3a2b 0014 
               LEA            CLOCK_MonthLengths(A4),A2;45ec 0000 
               TST.W          D5                       ;4a45 
               BEQ.B          ___ESQ_CalcDayOfYearFromMonthDay__3;6704 
@@ -40,8 +37,7 @@ ___ESQ_CalcDayOfYearFromMonthDay__6:
               BRA.B          ___ESQ_CalcDayOfYearFromMonthDay__4;60e4 
 ___ESQ_CalcDayOfYearFromMonthDay__7:
               ADD.W          D6,D4                    ;d846 
-              LEA            $10(A3),A0               ;41eb 0010 
-              MOVE.W         D4,(A0)                  ;3084 
+              MOVE.W         D4,$10(A3)               ;3744 0010 
 ___ESQ_CalcDayOfYearFromMonthDay__8:
               MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
               ADDQ.W         #$4,A7                   ;584f 
