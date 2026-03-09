@@ -7,7 +7,7 @@ extern LONG WDISP_DisplayContextBase;
 extern const char ED2_FMT_SCRSPD_PCT_D[];
 
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern LONG ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void *rastPort, const char *text, LONG y);
+extern LONG ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y);
 
 typedef struct ED1_DisplayContext {
     unsigned char pad0[2];
@@ -23,7 +23,7 @@ void ED1_DrawStatusLine1(void)
     context = (ED1_DisplayContext *)WDISP_DisplayContextBase;
 
     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
-        (void *)context->rastPort,
+        (char *)context->rastPort,
         statusLine,
         210
     );
