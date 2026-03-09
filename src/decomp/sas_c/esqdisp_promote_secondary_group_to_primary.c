@@ -2,6 +2,14 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct ESQDISP_EntryTableEntry {
+    char pad0[1];
+} ESQDISP_EntryTableEntry;
+
+typedef struct ESQDISP_TitleTableEntry {
+    char pad0[1];
+} ESQDISP_TitleTableEntry;
+
 extern LONG NEWGRID_RefreshStateFlag;
 extern WORD TEXTDISP_GroupMutationState;
 extern UBYTE TEXTDISP_PrimaryGroupRecordChecksum;
@@ -9,10 +17,10 @@ extern WORD TEXTDISP_PrimaryGroupRecordLength;
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
 extern WORD TEXTDISP_SecondaryGroupEntryCount;
 extern WORD TEXTDISP_PrimaryGroupEntryCount;
-extern void *TEXTDISP_PrimaryEntryPtrTable[];
-extern void *TEXTDISP_SecondaryEntryPtrTable[];
-extern void *TEXTDISP_PrimaryTitlePtrTable[];
-extern void *TEXTDISP_SecondaryTitlePtrTable[];
+extern ESQDISP_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
+extern ESQDISP_EntryTableEntry *TEXTDISP_SecondaryEntryPtrTable[];
+extern ESQDISP_TitleTableEntry *TEXTDISP_PrimaryTitlePtrTable[];
+extern ESQDISP_TitleTableEntry *TEXTDISP_SecondaryTitlePtrTable[];
 extern UBYTE TEXTDISP_SecondaryGroupRecordChecksum;
 extern UBYTE TEXTDISP_SecondaryGroupHeaderCode;
 extern WORD TEXTDISP_SecondaryGroupRecordLength;
