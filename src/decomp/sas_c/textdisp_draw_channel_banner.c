@@ -19,13 +19,22 @@ extern void TEXTDISP_TrimTextToPixelWidth(UBYTE *text, LONG maxWidth);
 extern void TEXTDISP_DrawInsetRectFrame(UBYTE *text, LONG drawMode);
 extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG mode);
 
+typedef struct TEXTDISP_DisplayContext {
+    UBYTE pad0[2];
+    WORD widthWord2;
+    UBYTE rastPortTail[1];
+} TEXTDISP_DisplayContext;
+
 void TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode)
 {
+    TEXTDISP_DisplayContext *context;
     UBYTE *entry;
     UBYTE *src;
     UBYTE *dst;
     void *rastPort;
     LONG trimWidth;
+
+    context = (TEXTDISP_DisplayContext *)WDISP_DisplayContextBase;
 
     entry = (UBYTE *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
         (LONG)TEXTDISP_CurrentMatchIndex,
@@ -46,13 +55,13 @@ void TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode)
         rastPort = Global_REF_RASTPORT_2;
         _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, 0);
     } else {
-        rastPort = (void *)((UBYTE *)WDISP_DisplayContextBase + 2);
+        rastPort = (void *)&context->widthWord2;
         _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, 0);
     }
 
     TEXTDISP_LinePenOverrideEnabledFlag = 1;
 
-    trimWidth = (LONG)*(WORD *)((UBYTE *)WDISP_DisplayContextBase + 2);
+    trimWidth = (LONG)context->widthWord2;
     if (mode == 2) {
         if (trimWidth < 0) {
             ++trimWidth;
@@ -68,7 +77,7 @@ void TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode)
     } else {
         _LVOSetDrMd(
             Global_REF_GRAPHICS_LIBRARY,
-            (void *)((UBYTE *)WDISP_DisplayContextBase + 2),
+            (void *)&context->widthWord2,
             1);
     }
 }
