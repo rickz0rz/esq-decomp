@@ -3,18 +3,18 @@ typedef unsigned char UBYTE;
 
 typedef struct NEWGRID_ShowtimeBucketEntry {
     LONG key;
-    UBYTE *text;
+    char *text;
 } NEWGRID_ShowtimeBucketEntry;
 
 extern LONG NEWGRID_ShowtimeBucketCount;
 extern NEWGRID_ShowtimeBucketEntry NEWGRID_ShowtimeBucketEntryTable[];
 extern NEWGRID_ShowtimeBucketEntry *NEWGRID_ShowtimeBucketPtrTable[];
 
-extern UBYTE *PARSEINI_JMPTBL_STR_FindCharPtr(UBYTE *text, LONG ch);
-extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(UBYTE *text);
-extern UBYTE *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(UBYTE *newValue, UBYTE *oldValue);
+extern char *PARSEINI_JMPTBL_STR_FindCharPtr(char *text, LONG ch);
+extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *text);
+extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(char *newValue, char *oldValue);
 
-LONG NEWGRID_AddShowtimeBucketEntry(UBYTE *entryText, LONG bucketGroup, LONG unused)
+LONG NEWGRID_AddShowtimeBucketEntry(char *entryText, LONG bucketGroup, LONG unused)
 {
     const LONG ASCII_COLON = 58;
     const LONG GROUP_SHIFT = 8;
@@ -26,7 +26,7 @@ LONG NEWGRID_AddShowtimeBucketEntry(UBYTE *entryText, LONG bucketGroup, LONG unu
     LONG insertPos;
     LONG shiftIdx;
     LONG inserted = 0;
-    UBYTE *cursor;
+    char *cursor;
     NEWGRID_ShowtimeBucketEntry *entry;
 
     (void)unused;
