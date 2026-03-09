@@ -102,8 +102,8 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
             doFinalize = FLAG_FALSE;
         } else {
             if (scriptType == SCRIPT_FILTER) {
-                if (TEXTDISP_CommandBufferPtr == (void *)0) {
-                    TEXTDISP_CommandBufferPtr = MEMORY_AllocateMemory(
+                if (TEXTDISP_CommandBufferPtr == (TEXTDISP_SelectionEntry *)0) {
+                    TEXTDISP_CommandBufferPtr = (TEXTDISP_SelectionEntry *)MEMORY_AllocateMemory(
                         Global_STR_TEXTDISP_C_1,
                         BUFFER_ALLOC_LINE,
                         BUFFER_SIZE,
@@ -111,7 +111,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
                     );
                 }
 
-                if (TEXTDISP_CommandBufferPtr != (void *)0) {
+                if (TEXTDISP_CommandBufferPtr != (TEXTDISP_SelectionEntry *)0) {
                     TEXTDISP_SetEntryTextFields(TEXTDISP_CommandBufferPtr, (const UBYTE *)arg, (const UBYTE *)TEXTDISP_PrimarySearchText);
 
                     if (TEXTDISP_FilterAndSelectEntry(TEXTDISP_CommandBufferPtr, MODE_FILTER) == 0) {
@@ -123,7 +123,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
                 }
             }
 
-            if (TEXTDISP_CommandBufferPtr != (void *)0) {
+            if (TEXTDISP_CommandBufferPtr != (TEXTDISP_SelectionEntry *)0) {
                 TEXTDISP_DrawHighlightFrame(TEXTDISP_CommandBufferPtr);
                 TEXTDISP_FilterAndSelectEntry(TEXTDISP_CommandBufferPtr, MODE_EXACT);
             }
@@ -139,7 +139,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
 
     if (doCleanup != 0) {
         TEXTDISP_FilterAndSelectEntry((void *)0, 0);
-        if (TEXTDISP_CommandBufferPtr != (void *)0) {
+        if (TEXTDISP_CommandBufferPtr != (TEXTDISP_SelectionEntry *)0) {
             MEMORY_DeallocateMemory(Global_STR_TEXTDISP_C_2, BUFFER_FREE_LINE, TEXTDISP_CommandBufferPtr, BUFFER_SIZE);
             TEXTDISP_CommandBufferPtr = (TEXTDISP_SelectionEntry *)0;
         }
