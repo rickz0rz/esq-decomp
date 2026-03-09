@@ -8,8 +8,8 @@ DISPLIB_ResetTextBufferAndLineTa:
               MOVE.L         A5,-(A7)                 ;2f0d 
 ___DISPLIB_ResetTextBufferAndLineTa__1:
               SUB.L          A5,A5                    ;9bcd 
-              MOVE.L         A5,-(A7)                 ;2f0d 
               MOVE.L         DISPTEXT_TextBufferPtr(A4),-(A7);2f2c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,DISPTEXT_TextBufferPtr(A4);2940 0000 
               BSR.W          DISPLIB_ResetLineTables  ;6100 0000 
