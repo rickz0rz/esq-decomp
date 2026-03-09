@@ -16,7 +16,7 @@ void _LVOSetAPen(void);
 void _LVOMove(void);
 void _LVODraw(void);
 
-void BEVEL_DrawVerticalBevelPair(void *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY)
+void BEVEL_DrawVerticalBevelPair(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY)
 {
     LONG i;
 
