@@ -39,18 +39,50 @@ ___LOCAVAIL_UpdateFilterStateMachin__1:
 ___LOCAVAIL_UpdateFilterStateMachin__2:
               RTS                                     ;4e75 
 LOCAVAIL_GetNodeDurationByIndex:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
 ___LOCAVAIL_GetNodeDurationByIndex__1:
-              MOVE.L         $8(A7),D7                ;2e2f 0008 
-              MOVE.L         D7,D0                    ;2007 
+              MOVE.L         $20(A7),D7               ;2e2f 0020 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___LOCAVAIL_GetNodeDurationByIndex__5;6732 
 ___LOCAVAIL_GetNodeDurationByIndex__2:
+              TST.L          D7                       ;4a87 
+              BMI.B          ___LOCAVAIL_GetNodeDurationByIndex__5;6b2e 
 ___LOCAVAIL_GetNodeDurationByIndex__3:
-              MOVE.L         (A7)+,D7                 ;2e1f 
+              LEA            $2(A3),A0                ;41eb 0002 
+              CMP.L          (A0),D7                  ;be90 
+              BGE.B          ___LOCAVAIL_GetNodeDurationByIndex__5;6c26 
+___LOCAVAIL_GetNodeDurationByIndex__4:
+              LEA            $14(A3),A0               ;41eb 0014 
+              PEA            ($a).w                   ;4878 000a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A0,$1c(A7)               ;2f48 001c 
+              BSR.W          NEWGRID_JMPTBL_MATH_Mulu32;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         $14(A7),A1               ;226f 0014 
+              MOVE.L         (A1),A0                  ;2051 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,A2                    ;2448 
+              LEA            $2(A2),A0                ;41ea 0002 
+              MOVE.W         (A0),D6                  ;3c10 
+              EXT.L          D6                       ;48c6 
+___LOCAVAIL_GetNodeDurationByIndex__5:
+              MOVE.L         D6,D0                    ;2006 
+___LOCAVAIL_GetNodeDurationByIndex__6:
+___LOCAVAIL_GetNodeDurationByIndex__7:
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
+              ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
+              XREF           NEWGRID_JMPTBL_MATH_Mulu32
               XDEF           LOCAVAIL_ParseFilterStateFromBuf
               XDEF           LOCAVAIL_MapFilterTokenCharToCla
               XDEF           LOCAVAIL_ComputeFilterOffsetForE
