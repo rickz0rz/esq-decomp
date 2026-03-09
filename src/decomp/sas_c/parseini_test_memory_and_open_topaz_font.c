@@ -1,42 +1,45 @@
 typedef signed long LONG;
 
+extern void *AbsExecBase;
 extern LONG DesiredMemoryAvailability;
 extern void *Global_HANDLE_TOPAZ_FONT;
+extern void *Global_REF_GRAPHICS_LIBRARY;
+extern void *Global_REF_DISKFONT_LIBRARY;
 
-extern void _LVOForbid(void);
-extern void _LVOPermit(void);
-extern void *_LVOAllocMem(LONG byteSize, LONG flags);
-extern void _LVOFreeMem(void *bufferPtr, LONG byteSize);
-extern void _LVOCloseFont(void *fontHandle);
-extern void *_LVOOpenDiskFont(void *textAttr);
+extern void _LVOCloseFont(void *graphicsBase, void *font);
+extern void _LVOForbid(void *execBase);
+extern void * _LVOAllocMem(void *execBase, LONG bytes, LONG flags);
+extern void _LVOFreeMem(void *execBase, void *mem, LONG bytes);
+extern void _LVOPermit(void *execBase);
+extern void * _LVOOpenDiskFont(void *diskfontBase, void *textAttr);
 
-LONG PARSEINI_TestMemoryAndOpenTopazFont(void **fontHandleOut, void *textAttr)
+LONG PARSEINI_TestMemoryAndOpenTopazFont(void **fontHandlePtr, void *textAttr)
 {
-    LONG failed;
-    void *probe;
+    LONG result;
+    void *memoryProbe;
 
-    failed = 0;
-    if (*fontHandleOut == (void *)0) {
-        return failed;
+    result = 0;
+    if (*fontHandlePtr == (void *)0) {
+        return result;
     }
 
-    if (*fontHandleOut != Global_HANDLE_TOPAZ_FONT) {
-        _LVOCloseFont(*fontHandleOut);
+    if (*fontHandlePtr != Global_HANDLE_TOPAZ_FONT) {
+        _LVOCloseFont(Global_REF_GRAPHICS_LIBRARY, *fontHandlePtr);
     }
 
-    _LVOForbid();
-    probe = _LVOAllocMem(DesiredMemoryAvailability, 1);
-    if (probe != (void *)0) {
-        _LVOFreeMem(probe, DesiredMemoryAvailability);
+    _LVOForbid(AbsExecBase);
+    memoryProbe = _LVOAllocMem(AbsExecBase, DesiredMemoryAvailability, 1);
+    if (memoryProbe != (void *)0) {
+        _LVOFreeMem(AbsExecBase, memoryProbe, DesiredMemoryAvailability);
     }
-    _LVOPermit();
+    _LVOPermit(AbsExecBase);
 
-    *fontHandleOut = _LVOOpenDiskFont(textAttr);
-    if (*fontHandleOut == (void *)0) {
-        *fontHandleOut = Global_HANDLE_TOPAZ_FONT;
+    *fontHandlePtr = _LVOOpenDiskFont(Global_REF_DISKFONT_LIBRARY, textAttr);
+    if (*fontHandlePtr != (void *)0) {
+        result = 1;
     } else {
-        failed = 1;
+        *fontHandlePtr = Global_HANDLE_TOPAZ_FONT;
     }
 
-    return failed;
+    return result;
 }
