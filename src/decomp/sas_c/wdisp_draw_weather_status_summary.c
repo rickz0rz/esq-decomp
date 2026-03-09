@@ -8,7 +8,7 @@ extern void *Global_HANDLE_PREVUEC_FONT;
 extern UBYTE TLIBA1_DayEntryModeCounter;
 extern WORD WDISP_WeatherStatusDigitChar;
 extern LONG P_TYPE_WeatherForecastMsgPtr;
-extern UBYTE *SCRIPT_PtrNoForecastWeatherData;
+extern char *SCRIPT_PtrNoForecastWeatherData;
 
 extern void WDISP_DrawWeatherStatusDayEntry(void *rastPort, LONG dayIndex, LONG x, LONG y);
 
@@ -40,7 +40,7 @@ void WDISP_DrawWeatherStatusSummary(void *rastPort, LONG xSpan, LONG ySpan)
     if (P_TYPE_WeatherForecastMsgPtr != 0) {
         textPtr = (char *)P_TYPE_WeatherForecastMsgPtr;
     } else {
-        textPtr = (char *)SCRIPT_PtrNoForecastWeatherData;
+        textPtr = SCRIPT_PtrNoForecastWeatherData;
     }
 
     p = textPtr;
