@@ -9,7 +9,7 @@ typedef struct NEWGRID_Entry {
 
 typedef struct NEWGRID_AuxBase {
     UBYTE pad0[56];
-    UBYTE *titleTable[49];
+    char *titleTable[49];
 } NEWGRID_AuxBase;
 
 typedef struct CoiSet {
@@ -19,7 +19,7 @@ typedef struct CoiSet {
 } CoiSet;
 
 extern UWORD Global_WORD_SELECT_CODE_IS_RAVESC;
-extern UBYTE *NEWGRID_EntryTextScratchPtr;
+extern char *NEWGRID_EntryTextScratchPtr;
 extern const char NEWGRID_GridEntryDelimiterBar[];
 extern const char NEWGRID_EntrySplitDelimiterMask[];
 extern char *SCRIPT_PtrNoDataPlaceholder;

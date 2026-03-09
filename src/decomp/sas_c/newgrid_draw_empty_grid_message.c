@@ -21,7 +21,7 @@ typedef struct NEWGRID_Context {
     NEWGRID_RastPort rastPort;
 } NEWGRID_Context;
 
-extern UBYTE *SCRIPT_PtrMovieSummaryForPrefix;
+extern char *SCRIPT_PtrMovieSummaryForPrefix;
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 
@@ -52,7 +52,7 @@ void NEWGRID_DrawEmptyGridMessage(UBYTE *gridCtx, UWORD slot)
     ctx = (NEWGRID_Context *)gridCtx;
     NEWGRID_DrawGridFrame(gridCtx, 7, 6, 6, 33);
 
-    src = (char *)SCRIPT_PtrMovieSummaryForPrefix;
+    src = SCRIPT_PtrMovieSummaryForPrefix;
     dst = banner;
     while ((*dst++ = *src++) != 0) {
     }
