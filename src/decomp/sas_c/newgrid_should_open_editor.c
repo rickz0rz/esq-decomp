@@ -9,13 +9,13 @@ typedef struct NEWGRID_Entry {
     UBYTE flags27;
 } NEWGRID_Entry;
 
-extern UBYTE *NEWGRID2_JMPTBL_STR_SkipClass3Chars(UBYTE *s);
+extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
 
 LONG NEWGRID_ShouldOpenEditor(UBYTE *entry)
 {
     NEWGRID_Entry *entryView;
-    UBYTE *primaryScan;
-    UBYTE *secondaryScan;
+    char *primaryScan;
+    char *secondaryScan;
 
     if (entry == (UBYTE *)0) {
         return 0;
@@ -25,11 +25,11 @@ LONG NEWGRID_ShouldOpenEditor(UBYTE *entry)
     primaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->primaryText);
     secondaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->shortText);
 
-    if (primaryScan != (UBYTE *)0 && *primaryScan != 0) {
+    if (primaryScan != (char *)0 && *primaryScan != 0) {
         return 0;
     }
 
-    if (secondaryScan != (UBYTE *)0 && *secondaryScan != 0) {
+    if (secondaryScan != (char *)0 && *secondaryScan != 0) {
         return 0;
     }
 
