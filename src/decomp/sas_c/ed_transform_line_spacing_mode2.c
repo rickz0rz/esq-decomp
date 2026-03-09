@@ -3,11 +3,11 @@ typedef unsigned char UBYTE;
 
 extern LONG ED_ViewportOffset;
 extern LONG ED_EditCursorOffset;
-extern UBYTE ED_EditBufferScratch[];
+extern char ED_EditBufferScratch[];
 extern UBYTE ED_EditBufferLive[];
 
 extern LONG ESQIFF_JMPTBL_MATH_Mulu32(LONG value, LONG scale);
-extern void ESQFUNC_JMPTBL_STRING_CopyPadNul(UBYTE *dst, const UBYTE *src, LONG count);
+extern void ESQFUNC_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG count);
 
 void ED_TransformLineSpacing_Mode2(void)
 {
@@ -15,7 +15,7 @@ void ED_TransformLineSpacing_Mode2(void)
     const LONG SPACE_CHAR = ' ';
     const LONG ONE = 1;
     const LONG ZERO = 0;
-    UBYTE lineText[40];
+    char lineText[40];
     UBYTE lineAttrs[40];
     LONG base = ESQIFF_JMPTBL_MATH_Mulu32(ED_ViewportOffset, LINE_WIDTH);
     LONG i;
