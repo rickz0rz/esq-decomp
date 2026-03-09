@@ -4,10 +4,10 @@ typedef unsigned char UBYTE;
 extern void PARALLEL_WriteCharD0(LONG ch);
 extern void PARALLEL_RawDoFmt(char *fmt, void *args, void (*out)(LONG));
 
-void PARALLEL_WriteStringLoop(const UBYTE *s)
+void PARALLEL_WriteStringLoop(const char *s)
 {
     for (;;) {
-        UBYTE ch = *s++;
+        char ch = *s++;
         if (ch == 0) {
             return;
         }

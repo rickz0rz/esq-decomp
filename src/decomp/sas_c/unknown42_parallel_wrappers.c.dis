@@ -28,9 +28,9 @@ ___PARALLEL_WriteString__2:
               MOVE.B         (A5),D0                  ;1015 
               BEQ.B          ___PARALLEL_WriteString__5;6710 
 ___PARALLEL_WriteString__3:
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         D0,D1                    ;1200 
-              MOVE.L         D1,-(A7)                 ;2f01 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          PARALLEL_WriteCharD0     ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               ADDQ.L         #$1,A5                   ;528d 

@@ -11,16 +11,17 @@ ___PARALLEL_WriteStringLoop__1:
 ___PARALLEL_WriteStringLoop__2:
               MOVE.B         (A5)+,D7                 ;1e1d 
               TST.B          D7                       ;4a07 
-              BEQ.B          ___PARALLEL_WriteStringLoop__7;670e 
+              BEQ.B          ___PARALLEL_WriteStringLoop__7;6710 
 ___PARALLEL_WriteStringLoop__3:
 ___PARALLEL_WriteStringLoop__4:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         D7,D0                    ;1007 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          PARALLEL_WriteCharD0     ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___PARALLEL_WriteStringLoop__5:
-              BRA.B          ___PARALLEL_WriteStringLoop__2;60ec 
+              BRA.B          ___PARALLEL_WriteStringLoop__2;60ea 
 ___PARALLEL_WriteStringLoop__6:
 ___PARALLEL_WriteStringLoop__7:
               MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 

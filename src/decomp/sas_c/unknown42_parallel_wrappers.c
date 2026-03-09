@@ -11,7 +11,7 @@ void PARALLEL_WriteChar(LONG ch)
     PARALLEL_WriteCharD0(ch);
 }
 
-void PARALLEL_WriteString(const UBYTE *s)
+void PARALLEL_WriteString(const char *s)
 {
     while (*s != 0) {
         PARALLEL_WriteCharD0((LONG)*s);
