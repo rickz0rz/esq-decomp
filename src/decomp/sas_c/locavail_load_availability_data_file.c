@@ -26,10 +26,10 @@ typedef struct LOCAVAIL_FilterState {
 
 #define MEMF_PUBLIC 0x00000001L
 #define MEMF_CLEAR  0x00010000L
-#define WORKBUF_ERROR ((UBYTE *)0xFFFF)
+#define WORKBUF_ERROR ((char *)0xFFFF)
 
 extern LONG Global_REF_LONG_FILE_SCRATCH;
-extern UBYTE *Global_PTR_WORK_BUFFER;
+extern char *Global_PTR_WORK_BUFFER;
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 extern UBYTE TEXTDISP_SecondaryGroupCode;
 
@@ -39,7 +39,7 @@ extern const char LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load[];
 extern UBYTE LOCAVAIL_STR_LA_VER[];
 
 extern LONG GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
-extern UBYTE *GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(void);
+extern char *GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(void);
 extern LONG GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(void);
 extern LONG GROUP_AY_JMPTBL_STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 extern void LOCAVAIL_ResetFilterStateStruct(void *state);
@@ -55,15 +55,15 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
     LOCAVAIL_FilterState *primaryState;
     LOCAVAIL_FilterState *secondaryState;
     LOCAVAIL_FilterState scratchState;
-    UBYTE *section;
+    char *section;
     LONG success;
     LONG fileLen;
-    UBYTE *fileBuf;
+    char *fileBuf;
 
     primaryState = (LOCAVAIL_FilterState *)primaryStatePtr;
     secondaryState = (LOCAVAIL_FilterState *)secondaryStatePtr;
     success = 1;
-    fileBuf = (UBYTE *)0;
+    fileBuf = (char *)0;
     fileLen = 0;
 
     if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load) == -1) {
@@ -87,12 +87,12 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
     fileBuf = Global_PTR_WORK_BUFFER;
     section = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
     if (section == WORKBUF_ERROR) {
-        section = (UBYTE *)0;
+        section = (char *)0;
     }
 
     while (success != 0 &&
-           section != (UBYTE *)0 &&
-           GROUP_AY_JMPTBL_STRING_CompareNoCaseN((const char *)section, (const char *)LOCAVAIL_STR_LA_VER, 6) == 0) {
+           section != (char *)0 &&
+           GROUP_AY_JMPTBL_STRING_CompareNoCaseN(section, (const char *)LOCAVAIL_STR_LA_VER, 6) == 0) {
         LONG nodeCount;
         LONG nodeIndex;
 
@@ -112,7 +112,7 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
             while (success != 0 && nodeIndex < nodeCount) {
                 LOCAVAIL_NodeRecord *node;
                 LONG payloadLen;
-                UBYTE *encoded;
+                char *encoded;
                 LONG payloadIndex;
 
                 node = scratchState.nodeTable20 + nodeIndex;
@@ -154,7 +154,7 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
                     UBYTE *payload;
 
                     payload = node->payload6 + payloadIndex;
-                    switch (*encoded++) {
+                    switch ((UBYTE)*encoded++) {
                     case 'G':
                         *payload = 2;
                         break;
@@ -197,7 +197,7 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
 
         section = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
         if (section == WORKBUF_ERROR) {
-            section = (UBYTE *)0;
+            section = (char *)0;
         }
     }
 

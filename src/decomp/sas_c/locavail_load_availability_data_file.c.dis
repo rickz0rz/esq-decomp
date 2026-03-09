@@ -44,7 +44,7 @@ ___LOCAVAIL_LoadAvailabilityDataFil__5:
               MOVE.B         TEXTDISP_SecondaryGroupCode(A4),(A0);10ac 0000 
 ___LOCAVAIL_LoadAvailabilityDataFil__6:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__60;6000 029a 
+              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__60;6000 029e 
 ___LOCAVAIL_LoadAvailabilityDataFil__7:
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          LOCAVAIL_FreeResourceChain;6100 0000 
@@ -65,10 +65,10 @@ ___LOCAVAIL_LoadAvailabilityDataFil__8:
               CLR.L          $34(A7)                  ;42af 0034 
 ___LOCAVAIL_LoadAvailabilityDataFil__9:
               TST.L          D7                       ;4a87 
-              BEQ.W          ___LOCAVAIL_LoadAvailabilityDataFil__58;6700 023c 
+              BEQ.W          ___LOCAVAIL_LoadAvailabilityDataFil__58;6700 0240 
 ___LOCAVAIL_LoadAvailabilityDataFil__10:
               MOVE.L         $34(A7),D0               ;202f 0034 
-              BEQ.W          ___LOCAVAIL_LoadAvailabilityDataFil__58;6700 0234 
+              BEQ.W          ___LOCAVAIL_LoadAvailabilityDataFil__58;6700 0238 
 ___LOCAVAIL_LoadAvailabilityDataFil__11:
               PEA            ($6).w                   ;4878 0006 
               PEA            LOCAVAIL_STR_LA_VER(A4)  ;486c 0000 
@@ -76,7 +76,7 @@ ___LOCAVAIL_LoadAvailabilityDataFil__11:
               BSR.W          GROUP_AY_JMPTBL_STRING_CompareNo;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               TST.L          D0                       ;4a80 
-              BNE.W          ___LOCAVAIL_LoadAvailabilityDataFil__58;6600 021c 
+              BNE.W          ___LOCAVAIL_LoadAvailabilityDataFil__58;6600 0220 
 ___LOCAVAIL_LoadAvailabilityDataFil__12:
               PEA            $38(A7)                  ;486f 0038 
               BSR.W          LOCAVAIL_ResetFilterStateStruct;6100 0000 
@@ -87,7 +87,8 @@ ___LOCAVAIL_LoadAvailabilityDataFil__12:
               MOVE.L         D5,$3e(A7)               ;2f45 003e 
               BSR.W          GROUP_AY_JMPTBL_DISKIO_ConsumeCS;6100 0000 
               MOVE.L         D0,A0                    ;2040 
-              MOVE.B         (A0),$42(A7)             ;1f50 0042 
+              MOVE.B         (A0),D1                  ;1210 
+              MOVE.B         D1,$42(A7)               ;1f41 0042 
               PEA            $3c(A7)                  ;486f 003c 
               MOVE.L         D0,$3c(A7)               ;2f40 003c 
               BSR.W          LOCAVAIL_AllocNodeArraysForState;6100 0000 
@@ -96,20 +97,20 @@ ___LOCAVAIL_LoadAvailabilityDataFil__12:
               BNE.B          ___LOCAVAIL_LoadAvailabilityDataFil__16;660c 
 ___LOCAVAIL_LoadAvailabilityDataFil__13:
               TST.L          D5                       ;4a85 
-              BEQ.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6700 0178 
+              BEQ.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6700 017a 
 ___LOCAVAIL_LoadAvailabilityDataFil__14:
               MOVEQ.L        #$0,D7                   ;7e00 
 ___LOCAVAIL_LoadAvailabilityDataFil__15:
-              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 0172 
+              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 0174 
 ___LOCAVAIL_LoadAvailabilityDataFil__16:
               CLR.L          $2c(A7)                  ;42af 002c 
 ___LOCAVAIL_LoadAvailabilityDataFil__17:
               TST.L          D7                       ;4a87 
-              BEQ.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6700 0168 
+              BEQ.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6700 016a 
 ___LOCAVAIL_LoadAvailabilityDataFil__18:
               MOVE.L         $2c(A7),D0               ;202f 002c 
               CMP.L          D5,D0                    ;b085 
-              BGE.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6c00 015e 
+              BGE.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6c00 0160 
 ___LOCAVAIL_LoadAvailabilityDataFil__19:
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
@@ -128,7 +129,7 @@ ___LOCAVAIL_LoadAvailabilityDataFil__20:
               BCS.B          ___LOCAVAIL_LoadAvailabilityDataFil__22;6506 
 ___LOCAVAIL_LoadAvailabilityDataFil__21:
               MOVEQ.L        #$0,D7                   ;7e00 
-              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 0134 
+              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 0136 
 ___LOCAVAIL_LoadAvailabilityDataFil__22:
               BSR.W          GROUP_AY_JMPTBL_DISKIO_ParseLong;6100 0000 
               MOVE.L         $28(A7),A0               ;206f 0028 
@@ -140,7 +141,7 @@ ___LOCAVAIL_LoadAvailabilityDataFil__23:
               BCS.B          ___LOCAVAIL_LoadAvailabilityDataFil__25;6506 
 ___LOCAVAIL_LoadAvailabilityDataFil__24:
               MOVEQ.L        #$0,D7                   ;7e00 
-              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 0118 
+              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 011a 
 ___LOCAVAIL_LoadAvailabilityDataFil__25:
               BSR.W          GROUP_AY_JMPTBL_DISKIO_ParseLong;6100 0000 
               MOVE.L         $28(A7),A0               ;206f 0028 
@@ -156,7 +157,7 @@ ___LOCAVAIL_LoadAvailabilityDataFil__26:
               BLT.B          ___LOCAVAIL_LoadAvailabilityDataFil__28;6d06 
 ___LOCAVAIL_LoadAvailabilityDataFil__27:
               MOVEQ.L        #$0,D7                   ;7e00 
-              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 00f2 
+              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 00f4 
 ___LOCAVAIL_LoadAvailabilityDataFil__28:
               MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
               MOVE.L         D1,-(A7)                 ;2f01 
@@ -169,7 +170,7 @@ ___LOCAVAIL_LoadAvailabilityDataFil__28:
               BNE.B          ___LOCAVAIL_LoadAvailabilityDataFil__30;6606 
 ___LOCAVAIL_LoadAvailabilityDataFil__29:
               MOVEQ.L        #$0,D7                   ;7e00 
-              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 00ca 
+              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 00cc 
 ___LOCAVAIL_LoadAvailabilityDataFil__30:
               BSR.W          GROUP_AY_JMPTBL_DISKIO_ConsumeCS;6100 0000 
               MOVE.L         #$ffff,A0                ;207c 0000 ffff 
@@ -178,36 +179,37 @@ ___LOCAVAIL_LoadAvailabilityDataFil__30:
               BNE.B          ___LOCAVAIL_LoadAvailabilityDataFil__32;6606 
 ___LOCAVAIL_LoadAvailabilityDataFil__31:
               MOVEQ.L        #$0,D7                   ;7e00 
-              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 00b2 
+              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__47;6000 00b4 
 ___LOCAVAIL_LoadAvailabilityDataFil__32:
               CLR.L          $1c(A7)                  ;42af 001c 
 ___LOCAVAIL_LoadAvailabilityDataFil__33:
               TST.L          D7                       ;4a87 
-              BEQ.W          ___LOCAVAIL_LoadAvailabilityDataFil__46;6700 00a0 
+              BEQ.W          ___LOCAVAIL_LoadAvailabilityDataFil__46;6700 00a2 
 ___LOCAVAIL_LoadAvailabilityDataFil__34:
               MOVE.L         $1c(A7),D0               ;202f 001c 
               CMP.L          $24(A7),D0               ;b0af 0024 
-              BGE.W          ___LOCAVAIL_LoadAvailabilityDataFil__46;6c00 0094 
+              BGE.W          ___LOCAVAIL_LoadAvailabilityDataFil__46;6c00 0096 
 ___LOCAVAIL_LoadAvailabilityDataFil__35:
               MOVE.L         $28(A7),A1               ;226f 0028 
               MOVE.L         $6(A1),A0                ;2069 0006 
               ADD.L          D0,A0                    ;d1c0 
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.L         $20(A7),A1               ;226f 0020 
               MOVE.B         (A1)+,D0                 ;1019 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
               MOVE.L         A0,$18(A7)               ;2f48 0018 
               MOVE.L         A1,$20(A7)               ;2f49 0020 
 ___LOCAVAIL_LoadAvailabilityDataFil__36:
-              MOVEQ.L        #$47,D1                  ;7247 
-              SUB.L          D1,D0                    ;9081 
+              MOVEQ.L        #$47,D0                  ;7047 
+              SUB.L          D0,D1                    ;9280 
               BLT.B          ___LOCAVAIL_LoadAvailabilityDataFil__44;6d62 
 ___LOCAVAIL_LoadAvailabilityDataFil__37:
-              CMPI.L         #$10,D0                  ;0c80 0000 0010 
+              CMPI.L         #$10,D1                  ;0c81 0000 0010 
               BGE.B          ___LOCAVAIL_LoadAvailabilityDataFil__44;6c5a 
 ___LOCAVAIL_LoadAvailabilityDataFil__38:
-              ADD.W          D0,D0                    ;d040 
-              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
-              JMP            $4(PC,D0.W)              ;4efb 0004 
+              ADD.W          D1,D1                    ;d241 
+              MOVE.W         $6(PC,D1.W),D1           ;323b 1006 
+              JMP            $4(PC,D1.W)              ;4efb 1004 
 __switch_LOCAVAIL_LoadAvailabilityDataFil_38:
               DC.W           ___LOCAVAIL_LoadAvailabilityDataFil__39-__switch_LOCAVAIL_LoadAvailabilityDataFil_38
               DC.W           ___LOCAVAIL_LoadAvailabilityDataFil__44-__switch_LOCAVAIL_LoadAvailabilityDataFil_38
@@ -251,10 +253,10 @@ ___LOCAVAIL_LoadAvailabilityDataFil__44:
               MOVEQ.L        #$0,D7                   ;7e00 
 ___LOCAVAIL_LoadAvailabilityDataFil__45:
               ADDQ.L         #$1,$1c(A7)              ;52af 001c 
-              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__33;6000 ff5e 
+              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__33;6000 ff5c 
 ___LOCAVAIL_LoadAvailabilityDataFil__46:
               ADDQ.L         #$1,$2c(A7)              ;52af 002c 
-              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__17;6000 fe96 
+              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__17;6000 fe94 
 ___LOCAVAIL_LoadAvailabilityDataFil__47:
               TST.L          D7                       ;4a87 
               BEQ.B          ___LOCAVAIL_LoadAvailabilityDataFil__54;673e 
@@ -294,11 +296,11 @@ ___LOCAVAIL_LoadAvailabilityDataFil__55:
               MOVE.L         #$ffff,A0                ;207c 0000 ffff 
               MOVE.L         D0,$34(A7)               ;2f40 0034 
               CMP.L          A0,D0                    ;b088 
-              BNE.W          ___LOCAVAIL_LoadAvailabilityDataFil__9;6600 fdca 
+              BNE.W          ___LOCAVAIL_LoadAvailabilityDataFil__9;6600 fdc6 
 ___LOCAVAIL_LoadAvailabilityDataFil__56:
               CLR.L          $34(A7)                  ;42af 0034 
 ___LOCAVAIL_LoadAvailabilityDataFil__57:
-              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__9;6000 fdc2 
+              BRA.W          ___LOCAVAIL_LoadAvailabilityDataFil__9;6000 fdbe 
 ___LOCAVAIL_LoadAvailabilityDataFil__58:
               MOVE.L         D6,D0                    ;2006 
               ADDQ.L         #$1,D0                   ;5280 
