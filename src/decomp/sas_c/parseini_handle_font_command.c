@@ -53,6 +53,11 @@ extern void PARSEINI_JMPTBL_ED1_ExitEscMenu(void);
 extern void PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen(void);
 extern void PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion(void);
 
+typedef struct PARSEINI_DisplayContext {
+    UBYTE pad0[2];
+    UBYTE rastPort[1];
+} PARSEINI_DisplayContext;
+
 void PARSEINI_HandleFontCommand(const char *command)
 {
     UBYTE c0;
@@ -99,12 +104,14 @@ void PARSEINI_HandleFontCommand(const char *command)
         }
         if (c2 == (UBYTE)'8') {
             LONG i;
+            PARSEINI_DisplayContext *context;
 
             if (PARSEINI_TestMemoryAndOpenTopazFont(&Global_HANDLE_PREVUEC_FONT, Global_STRUCT_TEXTATTR_PREVUEC_FONT) == 0) {
                 return;
             }
 
-            _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, (UBYTE *)WDISP_DisplayContextBase + 2, Global_HANDLE_PREVUEC_FONT);
+            context = (PARSEINI_DisplayContext *)WDISP_DisplayContextBase;
+            _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, context->rastPort, Global_HANDLE_PREVUEC_FONT);
             _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_HANDLE_PREVUEC_FONT);
             _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, Global_HANDLE_PREVUEC_FONT);
             _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, NEWGRID_MainRastPortPtr, Global_HANDLE_PREVUEC_FONT);
