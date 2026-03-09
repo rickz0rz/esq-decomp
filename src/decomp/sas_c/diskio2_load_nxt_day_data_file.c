@@ -4,7 +4,8 @@ typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 
 typedef struct DISKIO2_Entry {
-    UBYTE pad0[27];
+    UBYTE pad0[1];
+    UBYTE titleText[26];
     UBYTE flags27;
     UBYTE pad1[12];
     UBYTE flags40;

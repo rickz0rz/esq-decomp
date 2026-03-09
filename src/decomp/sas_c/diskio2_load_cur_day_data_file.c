@@ -4,7 +4,8 @@ typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 
 typedef struct DISKIO2_Entry {
-    UBYTE pad0[27];
+    UBYTE pad0[1];
+    UBYTE titleText[26];
     UBYTE flags27;
     UBYTE pad1[12];
     UBYTE flags40;
@@ -202,7 +203,7 @@ long DISKIO2_LoadCurDayDataFile(void)
 
             entry->flags40 = (UBYTE)(entry->flags40 & 0x7F);
             {
-                UBYTE *scan = ((UBYTE *)entry) + 1;
+                UBYTE *scan = entry->titleText;
                 UWORD len = 0;
                 while (*scan++ != 0) {
                     len++;
