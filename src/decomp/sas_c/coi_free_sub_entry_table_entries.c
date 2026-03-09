@@ -16,9 +16,10 @@ enum {
     SUBENTRY_STR4_OFFSET = 18,
     SUBENTRY_STR5_OFFSET = 22,
     SUBENTRY_EXTRA_PTR_OFFSET = 26,
-    SUBENTRY_TABLE_PTR_SHIFT = 2,
     SUBENTRY_TABLE_DEALLOC_LINE = 876
 };
+
+static const LONG SUBENTRY_TABLE_PTR_SHIFT = 2;
 
 extern const UBYTE Global_STR_COI_C_4[];
 
@@ -26,60 +27,82 @@ LONG GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(void *old_ptr, const void *new_p
 void GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray(void *table, LONG elem_size, LONG count);
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
 
+typedef struct COI_SubEntry {
+    WORD key0;
+    void *str0;
+    void *str1;
+    void *str2;
+    void *str3;
+    void *str4;
+    void *str5;
+    void *extraPtr;
+} COI_SubEntry;
+
+typedef struct COI_AnimObject {
+    UBYTE pad0[ANIM_COUNT_OFFSET];
+    WORD subEntryCount;
+    COI_SubEntry **subEntryTable;
+} COI_AnimObject;
+
+typedef struct COI_Entry {
+    UBYTE pad0[ENTRY_ANIM_PTR_OFFSET];
+    COI_AnimObject *anim;
+} COI_Entry;
+
 void COI_FreeSubEntryTableEntries(void *entry)
 {
-    UBYTE *anim;
+    COI_AnimObject *anim;
     WORD i;
 
     if (entry == (void *)0) {
         return;
     }
 
-    anim = *(UBYTE **)((UBYTE *)entry + ENTRY_ANIM_PTR_OFFSET);
-    if (anim == (UBYTE *)0) {
+    anim = ((COI_Entry *)entry)->anim;
+    if (anim == (COI_AnimObject *)0) {
         return;
     }
 
     i = 0;
-    while (i < *(WORD *)(anim + ANIM_COUNT_OFFSET)) {
-        UBYTE **table;
-        UBYTE *sub;
+    while (i < anim->subEntryCount) {
+        COI_SubEntry **table;
+        COI_SubEntry *sub;
         LONG owned;
 
-        table = *(UBYTE ***)(anim + ANIM_TABLE_PTR_OFFSET);
+        table = anim->subEntryTable;
         sub = table[i];
 
-        *(WORD *)(sub + SUBENTRY_KEY_OFFSET) = 0;
+        sub->key0 = 0;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(sub + SUBENTRY_STR0_OFFSET), (void *)0);
-        *(LONG *)(sub + SUBENTRY_STR0_OFFSET) = owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(sub->str0, (void *)0);
+        sub->str0 = (void *)owned;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(sub + SUBENTRY_STR1_OFFSET), (void *)0);
-        *(LONG *)(sub + SUBENTRY_STR1_OFFSET) = owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(sub->str1, (void *)0);
+        sub->str1 = (void *)owned;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(sub + SUBENTRY_STR2_OFFSET), (void *)0);
-        *(LONG *)(sub + SUBENTRY_STR2_OFFSET) = owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(sub->str2, (void *)0);
+        sub->str2 = (void *)owned;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(sub + SUBENTRY_STR3_OFFSET), (void *)0);
-        *(LONG *)(sub + SUBENTRY_STR3_OFFSET) = owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(sub->str3, (void *)0);
+        sub->str3 = (void *)owned;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(sub + SUBENTRY_STR4_OFFSET), (void *)0);
-        *(LONG *)(sub + SUBENTRY_STR4_OFFSET) = owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(sub->str4, (void *)0);
+        sub->str4 = (void *)owned;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(sub + SUBENTRY_STR5_OFFSET), (void *)0);
-        *(LONG *)(sub + SUBENTRY_STR5_OFFSET) = owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(sub->str5, (void *)0);
+        sub->str5 = (void *)owned;
 
-        *(LONG *)(sub + SUBENTRY_EXTRA_PTR_OFFSET) = 0;
+        sub->extraPtr = 0;
         i += 1;
     }
 
-    if (*(WORD *)(anim + ANIM_COUNT_OFFSET) != 0) {
+    if (anim->subEntryCount != 0) {
         LONG count;
         LONG bytes;
-        UBYTE **table;
+        COI_SubEntry **table;
 
-        count = (LONG)*(WORD *)(anim + ANIM_COUNT_OFFSET);
-        table = *(UBYTE ***)(anim + ANIM_TABLE_PTR_OFFSET);
+        count = (LONG)anim->subEntryCount;
+        table = anim->subEntryTable;
 
         GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray(table, SUBENTRY_SIZE, count);
 
@@ -91,6 +114,6 @@ void COI_FreeSubEntryTableEntries(void *entry)
             bytes);
     }
 
-    *(WORD *)(anim + ANIM_COUNT_OFFSET) = 0;
-    *(LONG *)(anim + ANIM_TABLE_PTR_OFFSET) = 0;
+    anim->subEntryCount = 0;
+    anim->subEntryTable = 0;
 }
