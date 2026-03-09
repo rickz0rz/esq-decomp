@@ -1,6 +1,8 @@
 typedef signed long LONG;
 
-extern void *NEWGRID_HeaderRastPortPtr;
+typedef struct NEWGRID_RastPort NEWGRID_RastPort;
+
+extern NEWGRID_RastPort *NEWGRID_HeaderRastPortPtr;
 extern void NEWGRID_FillGridRects(char *rastPort, LONG fillA, LONG fillB, LONG yMax);
 
 void NEWGRID_DrawGridTopBars(void)
