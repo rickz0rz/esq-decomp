@@ -2,6 +2,23 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Font {
+    UBYTE pad0[26];
+    WORD ySize;
+} NEWGRID_Font;
+
+typedef struct NEWGRID_RastPort {
+    UBYTE pad0[52];
+    NEWGRID_Font *font;
+} NEWGRID_RastPort;
+
+typedef struct NEWGRID_Context {
+    UBYTE pad0[52];
+    WORD selectionCode;
+    UBYTE pad1[6];
+    NEWGRID_RastPort rastPort;
+} NEWGRID_Context;
+
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern LONG GCOMMAND_MplexDetailRowPen;
 extern WORD NEWGRID_RowHeightPx;
@@ -27,8 +44,8 @@ static LONG asr1_round_toward_zero(LONG v)
 
 LONG NEWGRID_DrawGridFrameVariant2(UBYTE *ctx)
 {
-    UBYTE *rp;
-    UBYTE *font;
+    NEWGRID_Context *ctxView;
+    NEWGRID_RastPort *rp;
     LONG row;
     LONG yBase;
     LONG yDraw;
@@ -36,7 +53,8 @@ LONG NEWGRID_DrawGridFrameVariant2(UBYTE *ctx)
     LONG rowHeight;
     LONG fontHeight;
 
-    rp = ctx + 60;
+    ctxView = (NEWGRID_Context *)ctx;
+    rp = &ctxView->rastPort;
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, NEWGRID_SetRowColor(ctx, 0, GCOMMAND_MplexDetailRowPen));
     _LVORectFill(Global_REF_GRAPHICS_LIBRARY, rp, 0, 0, 695, (LONG)NEWGRID_RowHeightPx + 3);
 
@@ -50,8 +68,7 @@ LONG NEWGRID_DrawGridFrameVariant2(UBYTE *ctx)
         }
 
         yDraw = yBase;
-        font = *(UBYTE **)(ctx + 112);
-        fontHeight = (LONG)*(WORD *)(font + 26);
+        fontHeight = (LONG)rp->font->ySize;
         rowHeight = (LONG)NEWGRID_RowHeightPx;
 
         if (NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines() != 0) {
@@ -72,6 +89,6 @@ LONG NEWGRID_DrawGridFrameVariant2(UBYTE *ctx)
         NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(rp, 0, yBase - 1, 695, 0);
     }
 
-    *(WORD *)(ctx + 52) = (WORD)asr1_round_toward_zero(yBase);
+    ctxView->selectionCode = (WORD)asr1_round_toward_zero(yBase);
     return NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast();
 }
