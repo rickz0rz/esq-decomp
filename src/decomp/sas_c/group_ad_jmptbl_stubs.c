@@ -12,7 +12,7 @@ extern void TEXTDISP_DrawInsetRectFrame(void);
 extern void TEXTDISP_FormatEntryTime(void);
 extern void TEXTDISP_TrimTextToPixelWidth(void);
 extern void TLIBA1_BuildClockFormatEntryIfVisible(void);
-extern void TLIBA3_BuildDisplayContextForViewMode(void);
+extern long TLIBA3_BuildDisplayContextForViewMode(long viewMode, long a1, long a2);
 extern long TLIBA3_GetViewModeHeight(long viewModeIndex);
 
 void GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex(void){DATETIME_AdjustMonthIndex();}
@@ -29,5 +29,5 @@ void GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame(void){TEXTDISP_DrawInsetRectFra
 void GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime(void){TEXTDISP_FormatEntryTime();}
 void GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth(void){TEXTDISP_TrimTextToPixelWidth();}
 void GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(void){TLIBA1_BuildClockFormatEntryIfVisible();}
-void GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(void){TLIBA3_BuildDisplayContextForViewMode();}
+long GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(long viewMode, long a1, long a2){return TLIBA3_BuildDisplayContextForViewMode(viewMode, a1, a2);}
 long GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight(long viewModeIndex){return TLIBA3_GetViewModeHeight(viewModeIndex);}

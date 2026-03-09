@@ -1,4 +1,6 @@
-extern void TLIBA3_BuildDisplayContextForViewMode(void);
+typedef signed long LONG;
+
+extern LONG TLIBA3_BuildDisplayContextForViewMode(LONG viewMode, LONG a1, LONG a2);
 extern void DISPLIB_ApplyInlineAlignmentPadding(void);
 extern void ESQIFF_RunCopperRiseTransition(void);
 extern void DISPLIB_DisplayTextAtPosition(void);
@@ -7,9 +9,9 @@ extern void WDISP_SPrintf(void);
 extern void ESQ_SetCopperEffect_OffDisableHighlight(void);
 extern void STRING_CopyPadNul(void);
 
-void GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(void)
+LONG GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(LONG viewMode, LONG a1, LONG a2)
 {
-    TLIBA3_BuildDisplayContextForViewMode();
+    return TLIBA3_BuildDisplayContextForViewMode(viewMode, a1, a2);
 }
 
 void GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(void)
