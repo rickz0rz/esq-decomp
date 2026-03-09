@@ -36,7 +36,7 @@ extern void _LVOMove(void *rastPort, LONG x, LONG y);
 extern void _LVOText(void *rastPort, char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(void *gridCtx, LONG code);
 
-void NEWGRID_DrawEmptyGridMessage(UBYTE *gridCtx, UWORD slot)
+void NEWGRID_DrawEmptyGridMessage(char *gridCtx, UWORD slot)
 {
     NEWGRID_Context *ctx;
     char banner[128];

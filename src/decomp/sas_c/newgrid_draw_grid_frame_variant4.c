@@ -23,7 +23,7 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 extern WORD NEWGRID_RowHeightPx;
 extern LONG DISPTEXT_ControlMarkerXOffsetPx;
 
-extern LONG NEWGRID_SetRowColor(UBYTE *gridCtx, WORD selector, LONG colorIndex);
+extern LONG NEWGRID_SetRowColor(char *gridCtx, WORD selector, LONG colorIndex);
 extern LONG _LVOSetAPen(void *gfxBase, void *rp, LONG pen);
 extern LONG _LVORectFill(void *gfxBase, void *rp, LONG minx, LONG miny, LONG maxx, LONG maxy);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
@@ -41,7 +41,7 @@ static LONG asr1_round_toward_zero(LONG v)
     return v >> 1;
 }
 
-LONG NEWGRID_DrawGridFrameVariant4(UBYTE *ctx)
+LONG NEWGRID_DrawGridFrameVariant4(char *ctx)
 {
     NEWGRID_Context *ctxView;
     NEWGRID_RastPort *rp;

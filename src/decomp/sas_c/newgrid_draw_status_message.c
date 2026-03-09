@@ -39,7 +39,7 @@ extern void _LVOMove(void *rastPort, LONG x, LONG y);
 extern void _LVOText(void *rastPort, char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(void *gridCtx, LONG code);
 
-void NEWGRID_DrawStatusMessage(UBYTE *gridCtx, UWORD slot)
+void NEWGRID_DrawStatusMessage(char *gridCtx, UWORD slot)
 {
     NEWGRID_Context *ctx;
     char text_buf[132];
