@@ -34,19 +34,20 @@ ___lo16__3:
               RTS                                     ;4e75 
 GCOMMAND_CopyImageDataToBitmap:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$28,D0                  ;90bc 0000 0028 
+              SUB.L          #$2c,D0                  ;90bc 0000 002c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$10,A7                  ;9efc 0010 
+              SUB.W          #$14,A7                  ;9efc 0014 
               MOVEM.L        D5/D6/D7/A2/A3/A5/A6,-(A7);48e7 0736 
 ___GCOMMAND_CopyImageDataToBitmap__1:
-              MOVE.W         $46(A7),D5               ;3a2f 0046 
-              MOVE.L         $3c(A7),D6               ;2c2f 003c 
-              MOVE.L         $38(A7),D7               ;2e2f 0038 
-              MOVE.L         $40(A7),A2               ;246f 0040 
-              MOVE.L         $34(A7),A3               ;266f 0034 
-              MOVE.L         $30(A7),A5               ;2a6f 0030 
+              MOVE.W         $4a(A7),D5               ;3a2f 004a 
+              MOVE.L         $40(A7),D6               ;2c2f 0040 
+              MOVE.L         $3c(A7),D7               ;2e2f 003c 
+              MOVE.L         $44(A7),A2               ;246f 0044 
+              MOVE.L         $38(A7),A3               ;266f 0038 
+              MOVE.L         $34(A7),A5               ;2a6f 0034 
               MOVE.L         A3,A0                    ;204b 
+              MOVE.L         A5,$2c(A7)               ;2f4d 002c 
               MOVE.B         #$8e,(A0)                ;10bc 008e 
               MOVE.B         #$d9,$1(A0)              ;117c 00d9 0001 
               LEA            $2(A0),A1                ;43e8 0002 
@@ -79,8 +80,8 @@ ___GCOMMAND_CopyImageDataToBitmap__1:
               LEA            $1c(A0),A1               ;43e8 001c 
               MOVE.W         #$100,(A1)               ;32bc 0100 
               LEA            $1e(A0),A1               ;43e8 001e 
-              MOVE.W         #$9306,(A1)              ;32bc 9306 
 ___GCOMMAND_CopyImageDataToBitmap__2:
+              MOVE.W         #$9306,(A1)              ;32bc 9306 
               LEA            $20(A0),A1               ;43e8 0020 
               MOVE.W         #$102,(A1)               ;32bc 0102 
               LEA            $22(A0),A1               ;43e8 0022 
@@ -95,7 +96,7 @@ ___GCOMMAND_CopyImageDataToBitmap__2:
               MOVE.L         WDISP_BannerWorkRasterPtr(A4),-(A7);2f2c 0000 
               MOVE.L         A0,$2c(A7)               ;2f48 002c 
               MOVE.L         A1,$20(A7)               ;2f49 0020 
-              BSR.W          hi16                     ;6100 fede 
+              BSR.W          hi16                     ;6100 feda 
 ___GCOMMAND_CopyImageDataToBitmap__3:
               MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.W         D0,(A0)                  ;3080 
@@ -106,7 +107,7 @@ ___GCOMMAND_CopyImageDataToBitmap__3:
               LEA            $2e(A0),A1               ;43e8 002e 
               MOVE.L         WDISP_BannerWorkRasterPtr(A4),(A7);2eac 0000 
               MOVE.L         A1,$20(A7)               ;2f49 0020 
-              BSR.W          lo16                     ;6100 fed8 
+              BSR.W          lo16                     ;6100 fed4 
 ___GCOMMAND_CopyImageDataToBitmap__4:
               MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.W         D0,(A0)                  ;3080 
@@ -147,7 +148,7 @@ ___GCOMMAND_CopyImageDataToBitmap__4:
               MOVE.W         D0,(A1)                  ;3280 
               MOVE.B         (A2),D0                  ;1012 
               MOVE.B         D0,$50(A0)               ;1140 0050 
-              MOVE.B         $4f(A7),D0               ;102f 004f 
+              MOVE.B         $53(A7),D0               ;102f 0053 
 ___GCOMMAND_CopyImageDataToBitmap__5:
               ADD.B          D0,(A2)                  ;d112 
               MOVE.B         #$db,$51(A0)             ;117c 00db 0051 
@@ -155,17 +156,15 @@ ___GCOMMAND_CopyImageDataToBitmap__5:
               MOVE.W         D5,(A1)                  ;3285 
               LEA            $54(A0),A1               ;43e8 0054 
               MOVE.W         #$e0,(A1)                ;32bc 00e0 
-              LEA            $8(A5),A1                ;43ed 0008 
-              MOVE.L         (A1),D0                  ;2011 
+              MOVE.L         $30(A7),A1               ;226f 0030 
+              MOVE.L         $8(A1),D0                ;2029 0008 
               ADD.L          D7,D0                    ;d087 
-              LEA            $56(A0),A1               ;43e8 0056 
+              LEA            $56(A0),A6               ;4de8 0056 
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D0,$28(A7)               ;2f40 0028 
-              MOVE.L         A1,$20(A7)               ;2f49 0020 
-              BSR.W          hi16                     ;6100 fdf8 
+              BSR.W          hi16                     ;6100 fdf6 
 ___GCOMMAND_CopyImageDataToBitmap__6:
-              MOVE.L         $20(A7),A0               ;206f 0020 
-              MOVE.W         D0,(A0)                  ;3080 
+              MOVE.W         D0,(A6)                  ;3c80 
               MOVE.L         $2c(A7),A0               ;206f 002c 
               MOVE.L         A0,A1                    ;2248 
               ADD.W          #$58,A1                  ;d2fc 0058 
@@ -173,7 +172,7 @@ ___GCOMMAND_CopyImageDataToBitmap__6:
               LEA            $5a(A0),A1               ;43e8 005a 
               MOVE.L         $28(A7),(A7)             ;2eaf 0028 
               MOVE.L         A1,$20(A7)               ;2f49 0020 
-              BSR.W          lo16                     ;6100 fdf2 
+              BSR.W          lo16                     ;6100 fdf4 
 ___GCOMMAND_CopyImageDataToBitmap__7:
               MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.W         D0,(A0)                  ;3080 
@@ -181,17 +180,15 @@ ___GCOMMAND_CopyImageDataToBitmap__7:
               MOVE.L         A0,A1                    ;2248 
               ADD.W          #$5c,A1                  ;d2fc 005c 
               MOVE.W         #$e4,(A1)                ;32bc 00e4 
-              LEA            $c(A5),A1                ;43ed 000c 
-              MOVE.L         (A1),D0                  ;2011 
+              MOVE.L         $30(A7),A1               ;226f 0030 
+              MOVE.L         $c(A1),D0                ;2029 000c 
               ADD.L          D7,D0                    ;d087 
-              LEA            $5e(A0),A1               ;43e8 005e 
+              LEA            $5e(A0),A6               ;4de8 005e 
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D0,$28(A7)               ;2f40 0028 
-              MOVE.L         A1,$20(A7)               ;2f49 0020 
-              BSR.W          hi16                     ;6100 fda6 
+              BSR.W          hi16                     ;6100 fdaa 
 ___GCOMMAND_CopyImageDataToBitmap__8:
-              MOVE.L         $20(A7),A0               ;206f 0020 
-              MOVE.W         D0,(A0)                  ;3080 
+              MOVE.W         D0,(A6)                  ;3c80 
               MOVE.L         $2c(A7),A0               ;206f 002c 
               MOVE.L         A0,A1                    ;2248 
               ADD.W          #$60,A1                  ;d2fc 0060 
@@ -199,7 +196,7 @@ ___GCOMMAND_CopyImageDataToBitmap__8:
               LEA            $62(A0),A1               ;43e8 0062 
               MOVE.L         $28(A7),(A7)             ;2eaf 0028 
               MOVE.L         A1,$20(A7)               ;2f49 0020 
-              BSR.W          lo16                     ;6100 fda0 
+              BSR.W          lo16                     ;6100 fda8 
 ___GCOMMAND_CopyImageDataToBitmap__9:
               MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.W         D0,(A0)                  ;3080 
@@ -207,14 +204,14 @@ ___GCOMMAND_CopyImageDataToBitmap__9:
               MOVE.L         A0,A1                    ;2248 
               ADD.W          #$64,A1                  ;d2fc 0064 
               MOVE.W         #$e8,(A1)                ;32bc 00e8 
-              LEA            $10(A5),A1               ;43ed 0010 
-              MOVE.L         (A1),D0                  ;2011 
+              MOVE.L         $30(A7),A1               ;226f 0030 
+              MOVE.L         $10(A1),D0               ;2029 0010 
               ADD.L          D7,D0                    ;d087 
               LEA            $66(A0),A1               ;43e8 0066 
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D0,$28(A7)               ;2f40 0028 
               MOVE.L         A1,$20(A7)               ;2f49 0020 
-              BSR.W          hi16                     ;6100 fd54 
+              BSR.W          hi16                     ;6100 fd5a 
 ___GCOMMAND_CopyImageDataToBitmap__10:
               MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.W         D0,(A0)                  ;3080 
@@ -225,7 +222,7 @@ ___GCOMMAND_CopyImageDataToBitmap__10:
               LEA            $6a(A0),A1               ;43e8 006a 
               MOVE.L         $28(A7),(A7)             ;2eaf 0028 
               MOVE.L         A1,$20(A7)               ;2f49 0020 
-              BSR.W          lo16                     ;6100 fd4e 
+              BSR.W          lo16                     ;6100 fd54 
 ___GCOMMAND_CopyImageDataToBitmap__11:
               MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.W         D0,(A0)                  ;3080 
@@ -245,7 +242,7 @@ ___GCOMMAND_CopyImageDataToBitmap__11:
               LEA            $76(A0),A6               ;4de8 0076 
               MOVE.L         A1,(A7)                  ;2e89 
               MOVE.L         A1,$28(A7)               ;2f49 0028 
-              BSR.W          hi16                     ;6100 fcea 
+              BSR.W          hi16                     ;6100 fcf0 
 ___GCOMMAND_CopyImageDataToBitmap__12:
               MOVE.W         D0,(A6)                  ;3c80 
               MOVE.L         $2c(A7),A0               ;206f 002c 
@@ -255,7 +252,7 @@ ___GCOMMAND_CopyImageDataToBitmap__12:
               LEA            $7a(A0),A1               ;43e8 007a 
               MOVE.L         $28(A7),(A7)             ;2eaf 0028 
               MOVE.L         A1,$20(A7)               ;2f49 0020 
-              BSR.W          lo16                     ;6100 fce8 
+              BSR.W          lo16                     ;6100 fcee 
 ___GCOMMAND_CopyImageDataToBitmap__13:
               MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.W         D0,(A0)                  ;3080 
@@ -269,7 +266,7 @@ ___GCOMMAND_CopyImageDataToBitmap__13:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D5,D0                    ;3005 
               MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         $4f(A7),D1               ;122f 004f 
+              MOVE.B         $53(A7),D1               ;122f 0053 
               MOVE.L         D1,(A7)                  ;2e81 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            ($dd).w                  ;4878 00dd 
@@ -281,7 +278,7 @@ ___GCOMMAND_CopyImageDataToBitmap__13:
               MOVE.B         (A2),D0                  ;1012 
               MOVE.L         $40(A7),A0               ;206f 0040 
               MOVE.B         D0,$2a0(A0)              ;1140 02a0 
-              MOVE.B         $63(A7),D0               ;102f 0063 
+              MOVE.B         $67(A7),D0               ;102f 0067 
               ADD.B          D0,(A2)                  ;d112 
               MOVE.B         #$d9,$2a1(A0)            ;117c 00d9 02a1 
               LEA            $2a2(A0),A1              ;43e8 02a2 
@@ -300,7 +297,7 @@ ___GCOMMAND_CopyImageDataToBitmap__14:
               LEA            $2ae(A0),A1              ;43e8 02ae 
               MOVE.L         WDISP_BannerWorkRasterPtr(A4),(A7);2eac 0000 
               MOVE.L         A1,$34(A7)               ;2f49 0034 
-              BSR.W          hi16                     ;6100 fc36 
+              BSR.W          hi16                     ;6100 fc3c 
 ___GCOMMAND_CopyImageDataToBitmap__15:
               MOVE.L         $34(A7),A0               ;206f 0034 
               MOVE.W         D0,(A0)                  ;3080 
@@ -311,7 +308,7 @@ ___GCOMMAND_CopyImageDataToBitmap__15:
               LEA            $2b2(A0),A1              ;43e8 02b2 
               MOVE.L         WDISP_BannerWorkRasterPtr(A4),(A7);2eac 0000 
               MOVE.L         A1,$34(A7)               ;2f49 0034 
-              BSR.W          lo16                     ;6100 fc30 
+              BSR.W          lo16                     ;6100 fc36 
 ___GCOMMAND_CopyImageDataToBitmap__16:
               MOVE.L         $34(A7),A0               ;206f 0034 
               MOVE.W         D0,(A0)                  ;3080 
@@ -319,14 +316,14 @@ ___GCOMMAND_CopyImageDataToBitmap__16:
               MOVE.L         A0,A1                    ;2248 
               ADD.W          #$2b4,A1                 ;d2fc 02b4 
               MOVE.W         #$e4,(A1)                ;32bc 00e4 
-              LEA            $c(A5),A1                ;43ed 000c 
-              MOVE.L         (A1),D0                  ;2011 
+              MOVE.L         $44(A7),A1               ;226f 0044 
+              MOVE.L         $c(A1),D0                ;2029 000c 
               ADD.L          D6,D0                    ;d086 
               LEA            $2b6(A0),A1              ;43e8 02b6 
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D0,$3c(A7)               ;2f40 003c 
               MOVE.L         A1,$34(A7)               ;2f49 0034 
-              BSR.W          hi16                     ;6100 fbe4 
+              BSR.W          hi16                     ;6100 fbe8 
 ___GCOMMAND_CopyImageDataToBitmap__17:
               MOVE.L         $34(A7),A0               ;206f 0034 
               MOVE.W         D0,(A0)                  ;3080 
@@ -337,7 +334,7 @@ ___GCOMMAND_CopyImageDataToBitmap__17:
               LEA            $2ba(A0),A1              ;43e8 02ba 
               MOVE.L         $3c(A7),(A7)             ;2eaf 003c 
               MOVE.L         A1,$34(A7)               ;2f49 0034 
-              BSR.W          lo16                     ;6100 fbde 
+              BSR.W          lo16                     ;6100 fbe2 
 ___GCOMMAND_CopyImageDataToBitmap__18:
               MOVE.L         $34(A7),A0               ;206f 0034 
               MOVE.W         D0,(A0)                  ;3080 
@@ -345,14 +342,14 @@ ___GCOMMAND_CopyImageDataToBitmap__18:
               MOVE.L         A0,A1                    ;2248 
               ADD.W          #$2bc,A1                 ;d2fc 02bc 
               MOVE.W         #$e8,(A1)                ;32bc 00e8 
-              LEA            $10(A5),A1               ;43ed 0010 
-              MOVE.L         (A1),D0                  ;2011 
+              MOVE.L         $44(A7),A1               ;226f 0044 
+              MOVE.L         $10(A1),D0               ;2029 0010 
               ADD.L          D6,D0                    ;d086 
               LEA            $2be(A0),A1              ;43e8 02be 
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D0,$3c(A7)               ;2f40 003c 
               MOVE.L         A1,$34(A7)               ;2f49 0034 
-              BSR.W          hi16                     ;6100 fb92 
+              BSR.W          hi16                     ;6100 fb94 
 ___GCOMMAND_CopyImageDataToBitmap__19:
               MOVE.L         $34(A7),A0               ;206f 0034 
               MOVE.W         D0,(A0)                  ;3080 
@@ -363,22 +360,22 @@ ___GCOMMAND_CopyImageDataToBitmap__19:
               LEA            $2c2(A0),A1              ;43e8 02c2 
               MOVE.L         $3c(A7),(A7)             ;2eaf 003c 
               MOVE.L         A1,$34(A7)               ;2f49 0034 
-              BSR.W          lo16                     ;6100 fb8c 
+              BSR.W          lo16                     ;6100 fb8e 
 ___GCOMMAND_CopyImageDataToBitmap__20:
               MOVE.L         $34(A7),A0               ;206f 0034 
               MOVE.W         D0,(A0)                  ;3080 
               MOVE.B         (A2),D0                  ;1012 
               MOVE.L         $40(A7),A0               ;206f 0040 
               MOVE.B         D0,$2c4(A0)              ;1140 02c4 
-              MOVE.B         $63(A7),D0               ;102f 0063 
+              MOVE.B         $67(A7),D0               ;102f 0067 
               ADD.B          D0,(A2)                  ;d112 
               MOVE.B         #$db,$2c5(A0)            ;117c 00db 02c5 
               LEA            $2c6(A0),A1              ;43e8 02c6 
               MOVE.W         D5,(A1)                  ;3285 
               LEA            $2c8(A0),A1              ;43e8 02c8 
               MOVE.W         #$e0,(A1)                ;32bc 00e0 
-              LEA            $8(A5),A1                ;43ed 0008 
-              MOVE.L         (A1),D0                  ;2011 
+              MOVE.L         $44(A7),A1               ;226f 0044 
+              MOVE.L         $8(A1),D0                ;2029 0008 
               ADD.L          D6,D0                    ;d086 
               LEA            $2ca(A0),A1              ;43e8 02ca 
               MOVE.L         D0,(A7)                  ;2e80 
@@ -439,7 +436,7 @@ ___GCOMMAND_CopyImageDataToBitmap__24:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D5,D0                    ;3005 
               MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         $63(A7),D1               ;122f 0063 
+              MOVE.B         $67(A7),D1               ;122f 0067 
               MOVE.L         D1,(A7)                  ;2e81 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            ($dd).w                  ;4878 00dd 
@@ -496,21 +493,21 @@ ___GCOMMAND_CopyImageDataToBitmap__27:
               MOVE.W         #$fffe,(A1)              ;32bc fffe 
               MOVE.B         (A2),D0                  ;1012 
               MOVE.B         D0,$f24(A0)              ;1140 0f24 
-              MOVE.B         $87(A7),D0               ;102f 0087 
+              MOVE.B         $8b(A7),D0               ;102f 008b 
               ADD.B          D0,(A2)                  ;d112 
               MOVE.B         #$d9,$f25(A0)            ;117c 00d9 0f25 
               LEA            $f26(A0),A1              ;43e8 0f26 
               MOVE.W         D5,(A1)                  ;3285 
               LEA            $f28(A0),A1              ;43e8 0f28 
               MOVE.W         #$e0,(A1)                ;32bc 00e0 
-              LEA            $8(A5),A1                ;43ed 0008 
-              MOVE.L         (A1),D0                  ;2011 
+              MOVE.L         $68(A7),A1               ;226f 0068 
+              MOVE.L         $8(A1),D0                ;2029 0008 
               ADD.L          D6,D0                    ;d086 
               LEA            $f2a(A0),A1              ;43e8 0f2a 
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D0,$60(A7)               ;2f40 0060 
               MOVE.L         A1,$58(A7)               ;2f49 0058 
-              BSR.W          hi16                     ;6100 f986 
+              BSR.W          hi16                     ;6100 f984 
 ___GCOMMAND_CopyImageDataToBitmap__28:
               MOVE.L         $58(A7),A0               ;206f 0058 
               MOVE.W         D0,(A0)                  ;3080 
@@ -521,7 +518,7 @@ ___GCOMMAND_CopyImageDataToBitmap__28:
               LEA            $f2e(A0),A1              ;43e8 0f2e 
               MOVE.L         $60(A7),(A7)             ;2eaf 0060 
               MOVE.L         A1,$58(A7)               ;2f49 0058 
-              BSR.W          lo16                     ;6100 f980 
+              BSR.W          lo16                     ;6100 f97e 
 ___GCOMMAND_CopyImageDataToBitmap__29:
               MOVE.L         $58(A7),A0               ;206f 0058 
               MOVE.W         D0,(A0)                  ;3080 
@@ -529,14 +526,14 @@ ___GCOMMAND_CopyImageDataToBitmap__29:
               MOVE.L         A0,A1                    ;2248 
               ADD.W          #$f30,A1                 ;d2fc 0f30 
               MOVE.W         #$e4,(A1)                ;32bc 00e4 
-              LEA            $c(A5),A1                ;43ed 000c 
-              MOVE.L         (A1),D0                  ;2011 
+              MOVE.L         $68(A7),A1               ;226f 0068 
+              MOVE.L         $c(A1),D0                ;2029 000c 
               ADD.L          D6,D0                    ;d086 
               LEA            $f32(A0),A1              ;43e8 0f32 
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D0,$60(A7)               ;2f40 0060 
               MOVE.L         A1,$58(A7)               ;2f49 0058 
-              BSR.W          hi16                     ;6100 f934 
+              BSR.W          hi16                     ;6100 f930 
 ___GCOMMAND_CopyImageDataToBitmap__30:
               MOVE.L         $58(A7),A0               ;206f 0058 
               MOVE.W         D0,(A0)                  ;3080 
@@ -547,7 +544,7 @@ ___GCOMMAND_CopyImageDataToBitmap__30:
               LEA            $f36(A0),A1              ;43e8 0f36 
               MOVE.L         $60(A7),(A7)             ;2eaf 0060 
               MOVE.L         A1,$58(A7)               ;2f49 0058 
-              BSR.W          lo16                     ;6100 f92e 
+              BSR.W          lo16                     ;6100 f92a 
 ___GCOMMAND_CopyImageDataToBitmap__31:
               MOVE.L         $58(A7),A0               ;206f 0058 
               MOVE.W         D0,(A0)                  ;3080 
@@ -555,14 +552,14 @@ ___GCOMMAND_CopyImageDataToBitmap__31:
               MOVE.L         A0,A1                    ;2248 
               ADD.W          #$f38,A1                 ;d2fc 0f38 
               MOVE.W         #$e8,(A1)                ;32bc 00e8 
-              LEA            $10(A5),A1               ;43ed 0010 
-              MOVE.L         (A1),D0                  ;2011 
+              MOVE.L         $68(A7),A1               ;226f 0068 
+              MOVE.L         $10(A1),D0               ;2029 0010 
               ADD.L          D6,D0                    ;d086 
               LEA            $f3a(A0),A1              ;43e8 0f3a 
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D0,$60(A7)               ;2f40 0060 
               MOVE.L         A1,$58(A7)               ;2f49 0058 
-              BSR.W          hi16                     ;6100 f8e2 
+              BSR.W          hi16                     ;6100 f8dc 
 ___GCOMMAND_CopyImageDataToBitmap__32:
               MOVE.L         $58(A7),A0               ;206f 0058 
               MOVE.W         D0,(A0)                  ;3080 
@@ -573,7 +570,7 @@ ___GCOMMAND_CopyImageDataToBitmap__32:
               LEA            $f3e(A0),A1              ;43e8 0f3e 
               MOVE.L         $60(A7),(A7)             ;2eaf 0060 
               MOVE.L         A1,$58(A7)               ;2f49 0058 
-              BSR.W          lo16                     ;6100 f8dc 
+              BSR.W          lo16                     ;6100 f8d6 
 ___GCOMMAND_CopyImageDataToBitmap__33:
               MOVE.L         $58(A7),A0               ;206f 0058 
               MOVE.W         D0,(A0)                  ;3080 
@@ -585,7 +582,7 @@ ___GCOMMAND_CopyImageDataToBitmap__33:
               LEA            $f42(A0),A6              ;4de8 0f42 
               MOVE.L         A1,(A7)                  ;2e89 
               MOVE.L         A1,$60(A7)               ;2f49 0060 
-              BSR.W          hi16                     ;6100 f898 
+              BSR.W          hi16                     ;6100 f892 
 ___GCOMMAND_CopyImageDataToBitmap__34:
               MOVE.W         D0,(A6)                  ;3c80 
               MOVE.L         $64(A7),A0               ;206f 0064 
@@ -595,7 +592,7 @@ ___GCOMMAND_CopyImageDataToBitmap__34:
               LEA            $f46(A0),A1              ;43e8 0f46 
               MOVE.L         $60(A7),(A7)             ;2eaf 0060 
               MOVE.L         A1,$58(A7)               ;2f49 0058 
-              BSR.W          lo16                     ;6100 f896 
+              BSR.W          lo16                     ;6100 f890 
 ___GCOMMAND_CopyImageDataToBitmap__35:
               MOVE.L         $58(A7),A0               ;206f 0058 
               MOVE.W         D0,(A0)                  ;3080 
@@ -610,7 +607,7 @@ ___GCOMMAND_CopyImageDataToBitmap__35:
 ___GCOMMAND_CopyImageDataToBitmap__36:
 ___GCOMMAND_CopyImageDataToBitmap__37:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5/A6;4cdf 6ce0 
-              ADD.W          #$10,A7                  ;defc 0010 
+              ADD.W          #$14,A7                  ;defc 0014 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF

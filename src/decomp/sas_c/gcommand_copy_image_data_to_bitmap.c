@@ -3,6 +3,13 @@ typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct GCOMMAND_Bitmap {
+    UBYTE pad0[8];
+    ULONG plane0Ptr;
+    ULONG plane1Ptr;
+    ULONG plane2Ptr;
+} GCOMMAND_Bitmap;
+
 extern ULONG WDISP_BannerWorkRasterPtr;
 
 extern UBYTE *GCOMMAND_BuildBannerBlock(UBYTE *tablePtr, LONG count, UBYTE *srcBytePtr, UBYTE byte1, UWORD word2, UBYTE stepByte);
@@ -20,9 +27,12 @@ UBYTE *GCOMMAND_CopyImageDataToBitmap(
     UWORD argWord0,
     UBYTE argByte0)
 {
+    GCOMMAND_Bitmap *bitmapView;
     UBYTE *out = tablePtr;
     ULONG p;
     UBYTE *blockBase;
+
+    bitmapView = (GCOMMAND_Bitmap *)bitmapPtr;
 
     out[0] = 0x8E;
     out[1] = 0xD9;
@@ -70,17 +80,17 @@ UBYTE *GCOMMAND_CopyImageDataToBitmap(
     out[81] = 0xDB;
     *(UWORD *)(out + 82) = argWord0;
     *(UWORD *)(out + 84) = 0x00E0;
-    p = *(ULONG *)(bitmapPtr + 8) + (ULONG)length;
+    p = bitmapView->plane0Ptr + (ULONG)length;
     *(UWORD *)(out + 86) = hi16(p);
     *(UWORD *)(out + 88) = 0x00E2;
     *(UWORD *)(out + 90) = lo16(p);
     *(UWORD *)(out + 92) = 0x00E4;
-    p = *(ULONG *)(bitmapPtr + 12) + (ULONG)length;
+    p = bitmapView->plane1Ptr + (ULONG)length;
     *(UWORD *)(out + 94) = hi16(p);
     *(UWORD *)(out + 96) = 0x00E6;
     *(UWORD *)(out + 98) = lo16(p);
     *(UWORD *)(out + 100) = 0x00E8;
-    p = *(ULONG *)(bitmapPtr + 16) + (ULONG)length;
+    p = bitmapView->plane2Ptr + (ULONG)length;
     *(UWORD *)(out + 102) = hi16(p);
     *(UWORD *)(out + 104) = 0x00EA;
     *(UWORD *)(out + 106) = lo16(p);
@@ -112,12 +122,12 @@ UBYTE *GCOMMAND_CopyImageDataToBitmap(
     *(UWORD *)(out + 688) = 0x00E2;
     *(UWORD *)(out + 690) = lo16(WDISP_BannerWorkRasterPtr);
     *(UWORD *)(out + 692) = 0x00E4;
-    p = *(ULONG *)(bitmapPtr + 12) + (ULONG)baseOffset;
+    p = bitmapView->plane1Ptr + (ULONG)baseOffset;
     *(UWORD *)(out + 694) = hi16(p);
     *(UWORD *)(out + 696) = 0x00E6;
     *(UWORD *)(out + 698) = lo16(p);
     *(UWORD *)(out + 700) = 0x00E8;
-    p = *(ULONG *)(bitmapPtr + 16) + (ULONG)baseOffset;
+    p = bitmapView->plane2Ptr + (ULONG)baseOffset;
     *(UWORD *)(out + 702) = hi16(p);
     *(UWORD *)(out + 704) = 0x00EA;
     *(UWORD *)(out + 706) = lo16(p);
@@ -126,7 +136,7 @@ UBYTE *GCOMMAND_CopyImageDataToBitmap(
     out[709] = 0xDB;
     *(UWORD *)(out + 710) = argWord0;
     *(UWORD *)(out + 712) = 0x00E0;
-    p = *(ULONG *)(bitmapPtr + 8) + (ULONG)baseOffset;
+    p = bitmapView->plane0Ptr + (ULONG)baseOffset;
     *(UWORD *)(out + 714) = hi16(p);
     *(UWORD *)(out + 716) = 0x00E2;
     *(UWORD *)(out + 718) = lo16(p);
@@ -165,17 +175,17 @@ UBYTE *GCOMMAND_CopyImageDataToBitmap(
     out[3877] = (UBYTE)-39;
     *(UWORD *)(out + 3878) = argWord0;
     *(UWORD *)(out + 3880) = 0x00E0;
-    p = *(ULONG *)(bitmapPtr + 8) + (ULONG)baseOffset;
+    p = bitmapView->plane0Ptr + (ULONG)baseOffset;
     *(UWORD *)(out + 3882) = hi16(p);
     *(UWORD *)(out + 3884) = 0x00E2;
     *(UWORD *)(out + 3886) = lo16(p);
     *(UWORD *)(out + 3888) = 0x00E4;
-    p = *(ULONG *)(bitmapPtr + 12) + (ULONG)baseOffset;
+    p = bitmapView->plane1Ptr + (ULONG)baseOffset;
     *(UWORD *)(out + 3890) = hi16(p);
     *(UWORD *)(out + 3892) = 0x00E6;
     *(UWORD *)(out + 3894) = lo16(p);
     *(UWORD *)(out + 3896) = 0x00E8;
-    p = *(ULONG *)(bitmapPtr + 16) + (ULONG)baseOffset;
+    p = bitmapView->plane2Ptr + (ULONG)baseOffset;
     *(UWORD *)(out + 3898) = hi16(p);
     *(UWORD *)(out + 3900) = 0x00EA;
     *(UWORD *)(out + 3902) = lo16(p);
