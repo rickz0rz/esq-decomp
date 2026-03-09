@@ -17,7 +17,7 @@ extern LONG SCRIPT_SearchMatchCountOrIndex;
 extern UBYTE SCRIPT_PendingWeatherCommandChar;
 extern UBYTE SCRIPT_PendingTextdispCmdChar;
 extern UBYTE SCRIPT_PendingTextdispCmdArg;
-extern UBYTE *SCRIPT_CommandTextPtr;
+extern char *SCRIPT_CommandTextPtr;
 extern WORD SCRIPT_RuntimeMode;
 extern WORD SCRIPT_PlaybackFallbackCounter;
 
@@ -28,7 +28,7 @@ extern void SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom(void);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
 extern void SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(LONG mode, LONG arg, LONG flags);
 extern void WDISP_HandleWeatherStatusCommand(LONG command);
-extern void TEXTDISP_HandleScriptCommand(LONG command, LONG arg, UBYTE *text);
+extern void TEXTDISP_HandleScriptCommand(LONG command, LONG arg, char *text);
 extern void SCRIPT_AssertCtrlLineNow(void);
 extern void SCRIPT_ClearSearchTextsAndChannels(void);
 

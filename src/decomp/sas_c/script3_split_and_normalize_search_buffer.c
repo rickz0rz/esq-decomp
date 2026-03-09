@@ -2,12 +2,12 @@ typedef signed long LONG;
 typedef short WORD;
 typedef unsigned char UBYTE;
 
-extern UBYTE TEXTDISP_PrimarySearchText[];
-extern UBYTE TEXTDISP_SecondarySearchText[];
+extern char TEXTDISP_PrimarySearchText[];
+extern char TEXTDISP_SecondarySearchText[];
 
-extern void SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(UBYTE *text, LONG maxLen);
+extern void SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(char *text, LONG maxLen);
 
-void SCRIPT_SplitAndNormalizeSearchBuffer(UBYTE *parseBuffer, LONG parseLen)
+void SCRIPT_SplitAndNormalizeSearchBuffer(char *parseBuffer, LONG parseLen)
 {
     const UBYTE SPLIT_TOKEN = 18;
     const WORD SPLIT_SCAN_START = 1;
@@ -17,8 +17,8 @@ void SCRIPT_SplitAndNormalizeSearchBuffer(UBYTE *parseBuffer, LONG parseLen)
     const LONG FILTER_MAXLEN = 128;
     const UBYTE CH_NUL = 0;
     WORD i;
-    UBYTE *src;
-    UBYTE *dst;
+    char *src;
+    char *dst;
 
     if (parseBuffer[FIELD_OFFSET_HEAD] == SPLIT_TOKEN) {
         src = parseBuffer + FIELD_OFFSET_BODY;
