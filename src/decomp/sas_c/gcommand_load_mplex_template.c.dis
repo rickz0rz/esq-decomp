@@ -40,12 +40,12 @@ ___GCOMMAND_LoadMplexTemplate__4:
 ___GCOMMAND_LoadMplexTemplate__5:
               CLR.B          (A3)+                    ;421b 
 ___GCOMMAND_LoadMplexTemplate__6:
-              MOVE.L         Global_PTR_WORK_BUFFER(A4),-(A7);2f2c 0000 
               MOVE.L         GCOMMAND_MplexAtTemplatePtr(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),-(A7);2f2c 0000 
               BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
               MOVE.L         D0,GCOMMAND_MplexAtTemplatePtr(A4);2940 0000 
-              MOVE.L         A3,(A7)                  ;2e8b 
-              MOVE.L         GCOMMAND_MplexListingsTemplatePt(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_MplexListingsTemplatePt(A4),(A7);2eac 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
               MOVE.L         D0,GCOMMAND_MplexListingsTemplatePt(A4);2940 0000 
               MOVE.L         D7,D0                    ;2007 

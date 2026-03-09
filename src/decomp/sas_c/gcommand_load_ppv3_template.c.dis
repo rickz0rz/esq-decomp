@@ -60,12 +60,12 @@ ___GCOMMAND_LoadPPV3Template__8:
 ___GCOMMAND_LoadPPV3Template__9:
               CLR.B          (A3)+                    ;421b 
 ___GCOMMAND_LoadPPV3Template__10:
-              MOVE.L         Global_PTR_WORK_BUFFER(A4),-(A7);2f2c 0000 
               MOVE.L         GCOMMAND_PPVPeriodTemplatePtr(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),-(A7);2f2c 0000 
               BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
               MOVE.L         D0,GCOMMAND_PPVPeriodTemplatePtr(A4);2940 0000 
-              MOVE.L         A3,(A7)                  ;2e8b 
-              MOVE.L         GCOMMAND_PPVListingsTemplatePtr(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_PPVListingsTemplatePtr(A4),(A7);2eac 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
               MOVE.L         D0,GCOMMAND_PPVListingsTemplatePtr(A4);2940 0000 
               MOVE.L         D5,D0                    ;2005 

@@ -13,7 +13,7 @@ extern const char Global_STR_GCOMMAND_C_1[];
 
 extern LONG GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
 extern void _LVOCopyMem(void *execBase, const void *src, void *dst, LONG size);
-extern char *ESQPARS_ReplaceOwnedString(char *oldString, const char *newString);
+extern char *ESQPARS_ReplaceOwnedString(const char *newString, char *oldString);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 
 LONG GCOMMAND_LoadDefaultTable(void)
@@ -32,7 +32,7 @@ LONG GCOMMAND_LoadDefaultTable(void)
     Global_PTR_WORK_BUFFER += 32;
 
     GCOMMAND_DigitalNicheListingsTemplatePtr = (char *)0;
-    GCOMMAND_DigitalNicheListingsTemplatePtr = ESQPARS_ReplaceOwnedString((char *)0, (const char *)Global_PTR_WORK_BUFFER);
+    GCOMMAND_DigitalNicheListingsTemplatePtr = ESQPARS_ReplaceOwnedString((const char *)Global_PTR_WORK_BUFFER, (char *)0);
 
     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_GCOMMAND_C_1, 335, loadedBuffer, loadedSize + 1);
 

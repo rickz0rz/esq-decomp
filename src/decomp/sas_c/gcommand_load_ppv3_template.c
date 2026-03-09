@@ -17,7 +17,7 @@ extern const char Global_STR_GCOMMAND_C_3[];
 extern LONG GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
 extern void _LVOCopyMem(void *execBase, const void *src, void *dst, LONG size);
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *text, LONG ch);
-extern char *ESQPARS_ReplaceOwnedString(char *oldString, const char *newString);
+extern char *ESQPARS_ReplaceOwnedString(const char *newString, char *oldString);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 extern LONG _LVODeleteFile(void *dosBase, const char *name);
 extern LONG GCOMMAND_LoadPPVTemplate(void);
@@ -66,11 +66,11 @@ LONG GCOMMAND_LoadPPV3Template(void)
     }
 
     GCOMMAND_PPVPeriodTemplatePtr = ESQPARS_ReplaceOwnedString(
-        GCOMMAND_PPVPeriodTemplatePtr,
-        (const char *)Global_PTR_WORK_BUFFER);
+        (const char *)Global_PTR_WORK_BUFFER,
+        GCOMMAND_PPVPeriodTemplatePtr);
     GCOMMAND_PPVListingsTemplatePtr = ESQPARS_ReplaceOwnedString(
-        GCOMMAND_PPVListingsTemplatePtr,
-        splitPtr);
+        splitPtr,
+        GCOMMAND_PPVListingsTemplatePtr);
 
     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(
         Global_STR_GCOMMAND_C_3,

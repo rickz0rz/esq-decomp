@@ -26,8 +26,8 @@ ___GCOMMAND_LoadDefaultTable__3:
               MOVEQ.L        #$20,D0                  ;7020 
               ADD.L          D0,Global_PTR_WORK_BUFFER(A4);d1ac 0000 
               CLR.L          GCOMMAND_DigitalNicheListingsTem(A4);42ac 0000 
-              MOVE.L         Global_PTR_WORK_BUFFER(A4),(A7);2eac 0000 
-              CLR.L          -(A7)                    ;42a7 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),-(A7);2f2c 0000 
               BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
               MOVE.L         D0,GCOMMAND_DigitalNicheListingsTem(A4);2940 0000 
               MOVE.L         D7,D0                    ;2007 
