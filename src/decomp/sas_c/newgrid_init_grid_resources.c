@@ -2,9 +2,21 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Font {
+    UBYTE pad0[20];
+    UWORD ySize;
+} NEWGRID_Font;
+
+typedef struct NEWGRID_RastPort {
+    UBYTE pad0[4];
+    void *bitmap;
+    UBYTE pad1[44];
+    NEWGRID_Font *font;
+} NEWGRID_RastPort;
+
 extern UWORD NEWGRID_GridResourcesInitializedFlag;
-extern void *NEWGRID_MainRastPortPtr;
-extern void *NEWGRID_HeaderRastPortPtr;
+extern NEWGRID_RastPort *NEWGRID_MainRastPortPtr;
+extern NEWGRID_RastPort *NEWGRID_HeaderRastPortPtr;
 extern UWORD NEWGRID_SampleTimeTextWidthPx;
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
@@ -33,7 +45,7 @@ void NEWGRID_InitGridResources(void)
 {
     LONG d0;
     LONG d1;
-    UBYTE *mainRast;
+    NEWGRID_RastPort *mainRast;
 
     if (NEWGRID_GridResourcesInitializedFlag != 0) {
         return;
@@ -50,7 +62,7 @@ void NEWGRID_InitGridResources(void)
     }
 
     _LVOInitRastPort(NEWGRID_MainRastPortPtr);
-    *(void **)((UBYTE *)NEWGRID_MainRastPortPtr + 4) = &Global_REF_696_400_BITMAP;
+    NEWGRID_MainRastPortPtr->bitmap = &Global_REF_696_400_BITMAP;
     _LVOSetDrMd(NEWGRID_MainRastPortPtr, 0);
     _LVOSetFont(NEWGRID_MainRastPortPtr, Global_HANDLE_PREVUEC_FONT);
 
@@ -60,7 +72,7 @@ void NEWGRID_InitGridResources(void)
     }
 
     _LVOInitRastPort(NEWGRID_HeaderRastPortPtr);
-    *(void **)((UBYTE *)NEWGRID_HeaderRastPortPtr + 4) = &WDISP_BannerGridBitmapStruct;
+    NEWGRID_HeaderRastPortPtr->bitmap = &WDISP_BannerGridBitmapStruct;
     _LVOSetDrMd(NEWGRID_HeaderRastPortPtr, 0);
     _LVOSetFont(NEWGRID_HeaderRastPortPtr, Global_HANDLE_PREVUEC_FONT);
 
@@ -75,8 +87,8 @@ void NEWGRID_InitGridResources(void)
     d0 = NEWGRID_JMPTBL_MATH_DivS32(d0, 3);
     NEWGRID_ColumnWidthPx = (UWORD)d0;
 
-    mainRast = (UBYTE *)NEWGRID_MainRastPortPtr;
-    d0 = (LONG)(UWORD)(*(UWORD *)(*(UBYTE **)(mainRast + 52) + 20));
+    mainRast = NEWGRID_MainRastPortPtr;
+    d0 = (LONG)(UWORD)mainRast->font->ySize;
     d0 = ((d0 - 1) * 2) + 8;
     NEWGRID_RowHeightPx = (UWORD)d0;
     d1 = NEWGRID_JMPTBL_MATH_DivS32(d0, 2);

@@ -2,27 +2,23 @@
 __code:
 NEWGRID_ClearMarkersIfSelectable:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$30,D0                  ;90bc 0000 0030 
+              SUB.L          #$28,D0                  ;90bc 0000 0028 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$24,A7                  ;9efc 0024 
+              SUB.W          #$1c,A7                  ;9efc 001c 
               MOVEM.L        D2/D5/D6/D7/A3/A5,-(A7)  ;48e7 2714 
 ___NEWGRID_ClearMarkersIfSelectable__1:
-              MOVE.W         $46(A7),D6               ;3c2f 0046 
-              MOVE.L         $40(A7),D7               ;2e2f 0040 
+              MOVE.W         $3e(A7),D6               ;3c2f 003e 
+              MOVE.L         $38(A7),D7               ;2e2f 0038 
               MOVEQ.L        #$1,D5                   ;7a01 
               MOVEQ.L        #$1,D0                   ;7001 
               MOVEQ.L        #$2,D1                   ;7202 
-              MOVE.L         D1,$34(A7)               ;2f41 0034 
-              MOVEQ.L        #$31,D1                  ;7231 
               MOVE.L         D1,$2c(A7)               ;2f41 002c 
-              MOVEQ.L        #$7,D1                   ;7207 
-              MOVE.L         D1,$28(A7)               ;2f41 0028 
-              MOVEQ.L        #$5,D1                   ;7205 
+              MOVEQ.L        #$31,D1                  ;7231 
               MOVE.L         D1,$24(A7)               ;2f41 0024 
               CLR.B          $20(A7)                  ;422f 0020 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
               MOVE.L         D0,$30(A7)               ;2f40 0030 
-              MOVE.L         D0,$38(A7)               ;2f40 0038 
               CMP.W          D5,D6                    ;bc45 
               BLE.W          ___NEWGRID_ClearMarkersIfSelectable__12;6f00 0080 
 ___NEWGRID_ClearMarkersIfSelectable__2:
@@ -39,11 +35,11 @@ ___NEWGRID_ClearMarkersIfSelectable__4:
               BEQ.B          ___NEWGRID_ClearMarkersIfSelectable__12;6762 
 ___NEWGRID_ClearMarkersIfSelectable__5:
 ___NEWGRID_ClearMarkersIfSelectable__6:
-              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
               MOVE.L         D1,-(A7)                 ;2f01 
               BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
               MOVE.L         D0,A5                    ;2a40 
-              MOVE.L         $40(A7),(A7)             ;2eaf 0040 
+              MOVE.L         $38(A7),(A7)             ;2eaf 0038 
               MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
               BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
               MOVE.L         D0,A3                    ;2640 
@@ -55,10 +51,10 @@ ___NEWGRID_ClearMarkersIfSelectable__6:
               TST.L          D0                       ;4a80 
               BEQ.B          ___NEWGRID_ClearMarkersIfSelectable__11;6730 
 ___NEWGRID_ClearMarkersIfSelectable__7:
-              MOVE.L         $30(A7),$1c(A7)          ;2f6f 0030 001c 
+              MOVE.L         $28(A7),$1c(A7)          ;2f6f 0028 001c 
 ___NEWGRID_ClearMarkersIfSelectable__8:
               MOVE.L         $1c(A7),D0               ;202f 001c 
-              CMP.L          $2c(A7),D0               ;b0af 002c 
+              CMP.L          $24(A7),D0               ;b0af 0024 
               BGE.B          ___NEWGRID_ClearMarkersIfSelectable__11;6c20 
 ___NEWGRID_ClearMarkersIfSelectable__9:
               MOVEQ.L        #$0,D0                   ;7000 
@@ -90,11 +86,11 @@ ___NEWGRID_ClearMarkersIfSelectable__14:
               BEQ.B          ___NEWGRID_ClearMarkersIfSelectable__23;6762 
 ___NEWGRID_ClearMarkersIfSelectable__15:
 ___NEWGRID_ClearMarkersIfSelectable__16:
-              MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
               MOVE.L         D1,-(A7)                 ;2f01 
               BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
               MOVE.L         D0,A5                    ;2a40 
-              MOVE.L         $3c(A7),(A7)             ;2eaf 003c 
+              MOVE.L         $34(A7),(A7)             ;2eaf 0034 
               MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
               BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
               MOVE.L         D0,A3                    ;2640 
@@ -106,10 +102,10 @@ ___NEWGRID_ClearMarkersIfSelectable__16:
               TST.L          D0                       ;4a80 
               BEQ.B          ___NEWGRID_ClearMarkersIfSelectable__21;6730 
 ___NEWGRID_ClearMarkersIfSelectable__17:
-              MOVE.L         $30(A7),$1c(A7)          ;2f6f 0030 001c 
+              MOVE.L         $28(A7),$1c(A7)          ;2f6f 0028 001c 
 ___NEWGRID_ClearMarkersIfSelectable__18:
               MOVE.L         $1c(A7),D0               ;202f 001c 
-              CMP.L          $2c(A7),D0               ;b0af 002c 
+              CMP.L          $24(A7),D0               ;b0af 0024 
               BGE.B          ___NEWGRID_ClearMarkersIfSelectable__21;6c20 
 ___NEWGRID_ClearMarkersIfSelectable__19:
               MOVEQ.L        #$0,D0                   ;7000 
@@ -130,7 +126,7 @@ ___NEWGRID_ClearMarkersIfSelectable__21:
 ___NEWGRID_ClearMarkersIfSelectable__22:
 ___NEWGRID_ClearMarkersIfSelectable__23:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A3/A5  ;4cdf 28e4 
-              ADD.W          #$24,A7                  ;defc 0024 
+              ADD.W          #$1c,A7                  ;defc 001c 
               RTS                                     ;4e75 
 __const:
 __strings:

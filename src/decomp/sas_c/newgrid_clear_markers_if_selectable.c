@@ -3,6 +3,11 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_AuxData {
+    UBYTE pad0[7];
+    UBYTE rowFlags[49];
+} NEWGRID_AuxData;
+
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UWORD TEXTDISP_SecondaryGroupEntryCount;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
@@ -19,13 +24,11 @@ void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
     const LONG MODE_SECONDARY = 2;
     const LONG SLOT_FIRST = 1;
     const LONG SLOT_LIMIT = 49;
-    const LONG AUX_SLOT_BASE = 7;
-    const LONG BIT_SHIFT_MARKER = 5;
     const UBYTE FLAG_FALSE = 0;
     LONG i;
     LONG j;
     UBYTE *entry;
-    UBYTE *aux;
+    NEWGRID_AuxData *aux;
 
     if (modeSel > MODE_PRIMARY_ALLOWED) {
         i = 0;
@@ -34,10 +37,10 @@ void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
                 break;
             }
             entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
-            aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
-            if (NEWGRID_TestEntrySelectable(entry, aux, selectionCode) != 0) {
+            aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
+            if (NEWGRID_TestEntrySelectable(entry, (UBYTE *)aux, selectionCode) != 0) {
                 for (j = SLOT_FIRST; j < SLOT_LIMIT; ++j) {
-                    aux[7 + j] &= (UBYTE)~(1u << 5);
+                    aux->rowFlags[j] &= (UBYTE)~(1u << 5);
                 }
             }
             ++i;
@@ -50,10 +53,10 @@ void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
             break;
         }
         entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
-        aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
-        if (NEWGRID_TestEntrySelectable(entry, aux, selectionCode) != 0) {
+        aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
+        if (NEWGRID_TestEntrySelectable(entry, (UBYTE *)aux, selectionCode) != 0) {
             for (j = SLOT_FIRST; j < SLOT_LIMIT; ++j) {
-                aux[7 + j] &= (UBYTE)~(1u << 5);
+                aux->rowFlags[j] &= (UBYTE)~(1u << 5);
             }
         }
         ++i;
