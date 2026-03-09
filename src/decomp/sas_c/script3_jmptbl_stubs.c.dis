@@ -1,11 +1,20 @@
               SECTION      text,CODE
 __code:
 SCRIPT3_JMPTBL_LOCAVAIL_UpdateFi:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
 ___SCRIPT3_JMPTBL_LOCAVAIL_UpdateFi__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          LOCAVAIL_UpdateFilterStateMachin;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___SCRIPT3_JMPTBL_LOCAVAIL_UpdateFi__2:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
               RTS                                     ;4e75 
 __const:
 __strings:
@@ -63,11 +72,20 @@ ___SCRIPT3_JMPTBL_STRING_CompareN__3:
               MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
               RTS                                     ;4e75 
 SCRIPT3_JMPTBL_ESQDISP_UpdateSta:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
 ___SCRIPT3_JMPTBL_ESQDISP_UpdateSta__1:
+              MOVE.L         $10(A7),D6               ;2c2f 0010 
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          ESQDISP_UpdateStatusMaskAndRefre;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___SCRIPT3_JMPTBL_ESQDISP_UpdateSta__2:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
               RTS                                     ;4e75 
 SCRIPT3_JMPTBL_GCOMMAND_GetBanne:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -107,11 +125,21 @@ ___SCRIPT3_JMPTBL_PARSE_ReadSignedL__3:
               MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 SCRIPT3_JMPTBL_GCOMMAND_AdjustBa:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___SCRIPT3_JMPTBL_GCOMMAND_AdjustBa__1:
+              MOVE.B         $b(A7),D7                ;1e2f 000b 
+              MOVE.B         D7,D0                    ;1007 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          GCOMMAND_AdjustBannerCopperOffse;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___SCRIPT3_JMPTBL_GCOMMAND_AdjustBa__2:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 SCRIPT3_JMPTBL_ESQ_SetCopperEffe:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -128,11 +156,20 @@ ___SCRIPT3_JMPTBL_CLEANUP_RenderAli__1:
 ___SCRIPT3_JMPTBL_CLEANUP_RenderAli__2:
               RTS                                     ;4e75 
 SCRIPT3_JMPTBL_LOCAVAIL_ComputeF:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
 ___SCRIPT3_JMPTBL_LOCAVAIL_ComputeF__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          LOCAVAIL_ComputeFilterOffsetForE;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___SCRIPT3_JMPTBL_LOCAVAIL_ComputeF__2:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
               RTS                                     ;4e75 
 SCRIPT3_JMPTBL_MATH_Mulu32:
               MOVE.L         A7,D0                    ;200f 
@@ -152,11 +189,18 @@ ___SCRIPT3_JMPTBL_MATH_Mulu32__3:
               MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
               RTS                                     ;4e75 
 SCRIPT3_JMPTBL_LOCAVAIL_SetFilte:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___SCRIPT3_JMPTBL_LOCAVAIL_SetFilte__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          LOCAVAIL_SetFilterModeAndResetSt;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___SCRIPT3_JMPTBL_LOCAVAIL_SetFilte__2:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 SCRIPT3_JMPTBL_STRING_CopyPadNul:
               MOVE.L         A7,D0                    ;200f 

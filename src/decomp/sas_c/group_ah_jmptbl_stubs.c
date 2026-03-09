@@ -1,4 +1,7 @@
-extern void ESQDISP_UpdateStatusMaskAndRefresh(void);
+typedef unsigned long ULONG;
+typedef signed long LONG;
+
+extern void ESQDISP_UpdateStatusMaskAndRefresh(ULONG mask, LONG setMode);
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
 extern void ESQIFF2_ApplyIncomingStatusPacket(void);
 extern void ESQIFF2_ShowAttentionOverlay(void);
@@ -17,7 +20,7 @@ extern void P_TYPE_WritePromoIdDataFile(void);
 extern void SCRIPT_ReadNextRbfByte(void);
 extern char *STR_FindAnyCharPtr(char *s, char *charset);
 
-void GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(void){ESQDISP_UpdateStatusMaskAndRefresh();}
+void GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(ULONG mask, LONG setMode){ESQDISP_UpdateStatusMaskAndRefresh(mask, setMode);}
 void GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi(void){ESQFUNC_WaitForClockChangeAndServiceUi();}
 void GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket(void){ESQIFF2_ApplyIncomingStatusPacket();}
 void GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(void){ESQIFF2_ShowAttentionOverlay();}
