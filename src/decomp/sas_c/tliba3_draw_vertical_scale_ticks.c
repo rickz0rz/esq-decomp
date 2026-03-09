@@ -11,24 +11,22 @@ typedef struct TLIBA3_RastPortWrap {
     TLIBA3_DimBlock *dims;
 } TLIBA3_RastPortWrap;
 
-enum {
-    TICK_ZERO = 0,
-    LABEL_X_OFFSET = 25,
-    MAX_Y_MINUS_ONE = 1,
-    LABEL_BUFFER_LEN = 84,
-    MAJOR_TICK_INTERVAL = 10,
-    MINOR_TICK_INTERVAL = 5,
-    MAJOR_TICK_WIDTH = 20,
-    MINOR_TICK_WIDTH = 10,
-    CHAR_ADVANCE = 1
-};
+#define TICK_ZERO 0
+#define LABEL_X_OFFSET 25
+#define MAX_Y_MINUS_ONE 1
+#define LABEL_BUFFER_LEN 84
+#define MAJOR_TICK_INTERVAL 10
+#define MINOR_TICK_INTERVAL 5
+#define MAJOR_TICK_WIDTH 20
+#define MINOR_TICK_WIDTH 10
+#define CHAR_ADVANCE 1
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern char TLIBA1_FMT_PCT_03LD_VerticalScaleTick[];
 
-extern LONG _LVOMove(void *gfxBase, void *rastPort, LONG x, LONG y);
-extern LONG _LVODraw(void *gfxBase, void *rastPort, LONG x, LONG y);
-extern LONG _LVOText(void *gfxBase, void *rastPort, char *text, LONG len);
+extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
+extern LONG _LVODraw(void *gfxBase, char *rastPort, LONG x, LONG y);
+extern LONG _LVOText(void *gfxBase, char *rastPort, char *text, LONG len);
 extern void WDISP_SPrintf(char *dst, const char *fmt, LONG value);
 
 void TLIBA3_DrawVerticalScaleTicks(TLIBA3_RastPortWrap *rp, LONG x)
@@ -40,18 +38,18 @@ void TLIBA3_DrawVerticalScaleTicks(TLIBA3_RastPortWrap *rp, LONG x)
 
     labelX = x + LABEL_X_OFFSET;
 
-    _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, x, TICK_ZERO);
+    _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, TICK_ZERO);
     maxY = (LONG)rp->dims->height - MAX_Y_MINUS_ONE;
-    _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, x, maxY);
+    _LVODraw(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, maxY);
 
     for (y = TICK_ZERO; y < maxY; ++y) {
         if ((y % MAJOR_TICK_INTERVAL) == TICK_ZERO && y != TICK_ZERO) {
             char *p;
             LONG len;
 
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, x, y);
-            _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, x + MAJOR_TICK_WIDTH, y);
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, labelX, y);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, y);
+            _LVODraw(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x + MAJOR_TICK_WIDTH, y);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, labelX, y);
 
             WDISP_SPrintf(buf, TLIBA1_FMT_PCT_03LD_VerticalScaleTick, y);
 
@@ -60,10 +58,10 @@ void TLIBA3_DrawVerticalScaleTicks(TLIBA3_RastPortWrap *rp, LONG x)
                 p += CHAR_ADVANCE;
             }
             len = (LONG)(p - buf);
-            _LVOText(Global_REF_GRAPHICS_LIBRARY, rp, buf, len);
+            _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rp, buf, len);
         } else if ((y % MINOR_TICK_INTERVAL) == TICK_ZERO) {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, x, y);
-            _LVODraw(Global_REF_GRAPHICS_LIBRARY, rp, x + MINOR_TICK_WIDTH, y);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, y);
+            _LVODraw(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x + MINOR_TICK_WIDTH, y);
         }
     }
 }
