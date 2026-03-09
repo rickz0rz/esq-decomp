@@ -26,7 +26,7 @@ extern LONG GROUP_AW_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern char *GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG line, ULONG flags, ULONG size);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, ULONG size);
-extern char *ESQPARS_ReplaceOwnedString(char *new_src, char *old_owned);
+extern char *ESQPARS_ReplaceOwnedString(const char *new_src, char *old_owned);
 
 LONG FLIB_AppendClockStampedLogEntry(char *entry_text)
 {

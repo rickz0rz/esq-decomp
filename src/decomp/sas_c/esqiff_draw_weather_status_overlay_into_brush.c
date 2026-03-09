@@ -9,7 +9,7 @@ extern ULONG ESQFUNC_STR_I5[];
 extern const char Global_STR_ESQIFF_C_1[];
 
 extern void *ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(void *predicate, void *listHead);
-extern char *ESQPARS_ReplaceOwnedString(char *src, char *oldPtr);
+extern char *ESQPARS_ReplaceOwnedString(const char *src, char *oldPtr);
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG pool, void *ptr, LONG size);
 
 void ESQIFF_DrawWeatherStatusOverlayIntoBrush(UBYTE *rastCtx)
