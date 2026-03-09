@@ -21,11 +21,11 @@ extern UBYTE CTASKS_STR_C;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
-extern LONG _LVOSetAPen(void *gfx, void *rp, LONG pen);
-extern LONG _LVOSetDrMd(void *gfx, void *rp, LONG mode);
-extern LONG _LVOTextLength(void *gfx, void *rp, const char *text, LONG len);
-extern LONG _LVOMove(void *gfx, void *rp, LONG x, LONG y);
-extern LONG _LVOText(void *gfx, void *rp, const char *text, LONG len);
+extern LONG _LVOSetAPen(void *gfx, char *rp, LONG pen);
+extern LONG _LVOSetDrMd(void *gfx, char *rp, LONG mode);
+extern LONG _LVOTextLength(void *gfx, char *rp, const char *text, LONG len);
+extern LONG _LVOMove(void *gfx, char *rp, LONG x, LONG y);
+extern LONG _LVOText(void *gfx, char *rp, const char *text, LONG len);
 
 void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *secondary, LONG alignMode)
 {
@@ -80,37 +80,37 @@ void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *s
     secondaryY += primaryY;
 
     if (NEWGRID_GridOperationId == 5) {
-        _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, GCOMMAND_NicheTextPen);
+        _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, (char *)rp, GCOMMAND_NicheTextPen);
     } else {
-        _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, 3);
+        _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, (char *)rp, 3);
     }
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rp, 0);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, (char *)rp, 0);
 
     n = 0;
     while (primary[n] != 0) n++;
     while (n > 0 && primary[n - 1] == ' ') n--;
     if (n > 0) {
-        w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp, primary, n);
+        w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rp, primary, n);
         w = (w + 1) >> 1;
         if (CTASKS_STR_C == 'S') {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, primaryY, baselineX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, primaryY, baselineX - w);
         } else {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, secondaryY, baselineX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, secondaryY, baselineX - w);
         }
-        _LVOText(Global_REF_GRAPHICS_LIBRARY, rp, primary, n);
+        _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rp, primary, n);
     }
 
     n = 0;
     while (secondary[n] != 0) n++;
     while (n > 0 && secondary[n - 1] == ' ') n--;
     if (n > 0) {
-        w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp, secondary, n);
+        w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rp, secondary, n);
         w = (w + 1) >> 1;
         if (CTASKS_STR_C == 'S') {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, secondaryY, baselineX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, secondaryY, baselineX - w);
         } else {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, primaryY, baselineX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, primaryY, baselineX - w);
         }
-        _LVOText(Global_REF_GRAPHICS_LIBRARY, rp, secondary, n);
+        _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rp, secondary, n);
     }
 }
