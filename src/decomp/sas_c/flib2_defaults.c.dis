@@ -103,6 +103,26 @@ ___FLIB2_LoadDigitalPpvDefaults__1:
 ___FLIB2_LoadDigitalPpvDefaults__2:
               MOVE.L         (A7)+,D2                 ;241f 
               RTS                                     ;4e75 
+FLIB2_ResetAndLoadListingTemplat:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___FLIB2_ResetAndLoadListingTemplat__1:
+              CLR.L          GCOMMAND_DigitalNicheListingsTem(A4);42ac 0000 
+              CLR.L          GCOMMAND_MplexListingsTemplatePt(A4);42ac 0000 
+              CLR.L          GCOMMAND_MplexAtTemplatePtr(A4);42ac 0000 
+              CLR.L          GCOMMAND_PPVListingsTemplatePtr(A4);42ac 0000 
+              CLR.L          GCOMMAND_PPVPeriodTemplatePtr(A4);42ac 0000 
+              BSR.W          FLIB2_LoadDigitalNicheDefaults;6100 fe9c 
+___FLIB2_ResetAndLoadListingTemplat__2:
+              BSR.W          FLIB2_LoadDigitalMplexDefaults;6100 fee0 
+___FLIB2_ResetAndLoadListingTemplat__3:
+              BSR.W          FLIB2_LoadDigitalPpvDefaults;6100 ff58 
+___FLIB2_ResetAndLoadListingTemplat__4:
+              BSR.W          GCOMMAND_LoadDefaultTable;6100 0000 
+              BSR.W          GCOMMAND_LoadMplexTemplate;6100 0000 
+              BSR.W          GCOMMAND_LoadPPV3Template;6100 0000 
+___FLIB2_ResetAndLoadListingTemplat__5:
+              RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
               XREF           GCOMMAND_DigitalNicheEnabledFlag
@@ -151,7 +171,11 @@ ___FLIB2_LoadDigitalPpvDefaults__2:
               XREF           FLIB_STR_DIGITAL_PPV_LISTINGS
               XREF           GCOMMAND_PPVPeriodTemplatePtr
               XREF           Global_STR_DIGITAL_PPV_PERIOD
+              XREF           GCOMMAND_LoadDefaultTable
+              XREF           GCOMMAND_LoadMplexTemplate
+              XREF           GCOMMAND_LoadPPV3Template
               XDEF           FLIB2_LoadDigitalNicheDefaults
               XDEF           FLIB2_LoadDigitalMplexDefaults
               XDEF           FLIB2_LoadDigitalPpvDefaults
+              XDEF           FLIB2_ResetAndLoadListingTemplat
               END

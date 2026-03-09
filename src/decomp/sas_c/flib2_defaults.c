@@ -51,6 +51,9 @@ extern UBYTE FLIB_STR_DIGITAL_PPV_LISTINGS;
 extern UBYTE Global_STR_DIGITAL_PPV_PERIOD;
 
 extern UBYTE *ESQPARS_ReplaceOwnedString(UBYTE *newValue, UBYTE *oldValue);
+extern void GCOMMAND_LoadDefaultTable(void);
+extern void GCOMMAND_LoadMplexTemplate(void);
+extern void GCOMMAND_LoadPPV3Template(void);
 
 void FLIB2_LoadDigitalNicheDefaults(void)
 {
@@ -117,4 +120,21 @@ void FLIB2_LoadDigitalPpvDefaults(void)
         &Global_STR_DIGITAL_PPV_PERIOD,
         GCOMMAND_PPVPeriodTemplatePtr
     );
+}
+
+void FLIB2_ResetAndLoadListingTemplates(void)
+{
+    GCOMMAND_DigitalNicheListingsTemplatePtr = (UBYTE *)0;
+    GCOMMAND_MplexListingsTemplatePtr = (UBYTE *)0;
+    GCOMMAND_MplexAtTemplatePtr = (UBYTE *)0;
+    GCOMMAND_PPVListingsTemplatePtr = (UBYTE *)0;
+    GCOMMAND_PPVPeriodTemplatePtr = (UBYTE *)0;
+
+    FLIB2_LoadDigitalNicheDefaults();
+    FLIB2_LoadDigitalMplexDefaults();
+    FLIB2_LoadDigitalPpvDefaults();
+
+    GCOMMAND_LoadDefaultTable();
+    GCOMMAND_LoadMplexTemplate();
+    GCOMMAND_LoadPPV3Template();
 }
