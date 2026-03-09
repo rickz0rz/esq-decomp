@@ -1,6 +1,16 @@
 typedef signed long LONG;
 
-extern void *TEXTDISP_AliasPtrTable[];
+typedef struct TEXTDISP_AliasEntry {
+    LONG pad0;
+    char *aliasText;
+} TEXTDISP_AliasEntry;
+
+typedef struct TEXTDISP_Entry {
+    char shortName[19];
+    char fallbackName[1];
+} TEXTDISP_Entry;
+
+extern TEXTDISP_AliasEntry *TEXTDISP_AliasPtrTable[];
 extern char TEXTDISP_CenterAlignToken[];
 
 extern LONG TEXTDISP_FindAliasIndexByName(const char *name);
@@ -10,12 +20,13 @@ void TEXTDISP_BuildEntryShortName(char *entry, char *out)
 {
     out[0] = 0;
     if (entry != (char *)0) {
+        TEXTDISP_Entry *entryView;
         LONG aliasIndex;
 
+        entryView = (TEXTDISP_Entry *)entry;
         aliasIndex = TEXTDISP_FindAliasIndexByName(entry);
         if (aliasIndex != -1) {
-            char *src = *(char **)((char *)TEXTDISP_AliasPtrTable + (aliasIndex << 2));
-            src = *(char **)(src + 4);
+            char *src = TEXTDISP_AliasPtrTable[aliasIndex]->aliasText;
             do {
                 *out++ = *src;
             } while (*src++ != 0);
@@ -23,7 +34,7 @@ void TEXTDISP_BuildEntryShortName(char *entry, char *out)
         }
 
         {
-            char *fallback = entry + 19;
+            char *fallback = entryView->fallbackName;
             LONG len = 0;
 
             while (fallback[len] != 0) {

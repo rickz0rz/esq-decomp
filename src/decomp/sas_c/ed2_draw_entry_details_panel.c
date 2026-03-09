@@ -2,6 +2,17 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct ED2_Entry {
+    UBYTE pad0[1];
+    UBYTE channelText[18];
+    UBYTE callLetters[1];
+} ED2_Entry;
+
+typedef struct ED2_TitleData {
+    UBYTE pad0[7];
+    UBYTE slotFlags[49];
+} ED2_TitleData;
+
 extern UWORD ED2_SelectedEntryIndex;
 extern UWORD ED2_SelectedFlagByteOffset;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
@@ -41,8 +52,8 @@ void ED2_DrawEntryDetailsPanel(void)
     char panelTextBuffer[120];
     char timeBuf[20];
     UBYTE *scratch;
-    UBYTE *entry;
-    UBYTE *title;
+    ED2_Entry *entry;
+    ED2_TitleData *title;
     UBYTE *chan;
     UBYTE *src;
     UBYTE *calls;
@@ -75,10 +86,10 @@ void ED2_DrawEntryDetailsPanel(void)
                                   (LONG)TEXTDISP_PrimaryGroupEntryCount);
     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, panelTextBuffer, 90);
 
-    entry = ED2_SelectedEntryDataPtr;
-    chan = (entry != (UBYTE *)0) ? (entry + 1) : (UBYTE *)ED2_STR_NullFallbackChannel;
+    entry = (ED2_Entry *)ED2_SelectedEntryDataPtr;
+    chan = (entry != (ED2_Entry *)0) ? entry->channelText : (UBYTE *)ED2_STR_NullFallbackChannel;
     src = (ED2_SelectedEntryTitlePtr != (UBYTE *)0) ? ED2_SelectedEntryTitlePtr : (UBYTE *)ED2_STR_NullFallbackSource;
-    calls = (entry != (UBYTE *)0) ? (entry + 19) : (UBYTE *)ED2_STR_NullFallbackCallLetters;
+    calls = (entry != (ED2_Entry *)0) ? entry->callLetters : (UBYTE *)ED2_STR_NullFallbackCallLetters;
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(panelTextBuffer, Global_STR_CHAN_SOURCE_CALLLTRS_1,
                                   chan, src, calls);
@@ -101,8 +112,8 @@ void ED2_DrawEntryDetailsPanel(void)
     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, panelTextBuffer, 150);
 
     panelTextBuffer[0] = 0;
-    title = ED2_SelectedEntryTitlePtr + (LONG)ED2_SelectedFlagByteOffset;
-    flags = title[7];
+    title = (ED2_TitleData *)(ED2_SelectedEntryTitlePtr + (LONG)ED2_SelectedFlagByteOffset);
+    flags = title->slotFlags[0];
     if ((flags & (1u << 0)) != 0) GROUP_AI_JMPTBL_STRING_AppendAtNull(panelTextBuffer, ED2_STR_NONE_ProgramFlagSummary);
     if ((flags & (1u << 1)) != 0) GROUP_AI_JMPTBL_STRING_AppendAtNull(panelTextBuffer, ED2_STR_MOVIE);
     if ((flags & (1u << 2)) != 0) GROUP_AI_JMPTBL_STRING_AppendAtNull(panelTextBuffer, ED2_STR_ALTHILITEPROG);
