@@ -34,6 +34,14 @@ ___TEST_MEMORY_AND_OPEN_TOPAZ_FONT__2:
 ___TEST_MEMORY_AND_OPEN_TOPAZ_FONT__3:
               MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
               RTS                                     ;4e75 
+ESQDISP_PropagatePrimaryTitleMet:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQDISP_PropagatePrimaryTitleMet__1:
+              BSR.B          ESQDISP_PropagatePrimaryTitleMet;61f6 
+___ESQDISP_PropagatePrimaryTitleMet__2:
+___ESQDISP_PropagatePrimaryTitleMet__3:
+              RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
               XREF           CTASKS_IFFTaskCleanup
@@ -42,4 +50,5 @@ ___TEST_MEMORY_AND_OPEN_TOPAZ_FONT__3:
               XDEF           LAB_0386
               XDEF           LADFUNC_UpdateHighlightCycle
               XDEF           TEST_MEMORY_AND_OPEN_TOPAZ_FONT
+              XDEF           ESQDISP_PropagatePrimaryTitleMet
               END
