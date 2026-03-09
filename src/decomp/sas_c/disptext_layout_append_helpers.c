@@ -15,14 +15,14 @@ extern char Global_REF_1000_BYTES_ALLOCATED_2[];
 extern const char DISPTEXT_STR_SINGLE_SPACE_PREFIX_2[];
 extern const char DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX[];
 
-extern LONG _LVOTextLength(void *gfxBase, void *rp, const char *text, LONG count);
-extern char *DISPTEXT_BuildLineWithWidth(void *rp, char *src, char *scratch, LONG widthPx);
+extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG count);
+extern char *DISPTEXT_BuildLineWithWidth(char *rp, char *src, char *scratch, LONG widthPx);
 extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern void DISPLIB_CommitCurrentLinePenAndAdvance(LONG pen);
 extern LONG DISPTEXT_AppendToBuffer(char *src);
 extern void DISPTEXT_BuildLinePointerTable(LONG lockValue);
 
-LONG DISPTEXT_LayoutAndAppendToBuffer(void *rp, char *src)
+LONG DISPTEXT_LayoutAndAppendToBuffer(char *rp, char *src)
 {
     LONG availableWidth;
     char lineScratch[268];

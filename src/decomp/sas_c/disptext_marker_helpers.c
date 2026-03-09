@@ -3,10 +3,10 @@ typedef signed long LONG;
 extern LONG DISPTEXT_ControlMarkerWidthPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern void GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers(void);
-extern LONG _LVOTextLength(void);
+extern void GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers(LONG a, LONG b, char *m3, char *m2, char *m1, char *m0);
+extern LONG _LVOTextLength(char *rp, const char *text, LONG len);
 
-void DISPTEXT_ComputeMarkerWidths(void *rp, LONG a, LONG b)
+void DISPTEXT_ComputeMarkerWidths(char *rp, LONG a, LONG b)
 {
     char m0;
     char m1;

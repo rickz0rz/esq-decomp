@@ -12,12 +12,12 @@ extern const char DISPTEXT_STR_SINGLE_SPACE_MEASURE[];
 extern const char DISPTEXT_STR_SINGLE_SPACE_APPEND[];
 extern char DISPTEXT_STR_SINGLE_SPACE_DELIM[];
 
-extern LONG _LVOTextLength(void *gfxBase, void *rp, const char *text, LONG count);
+extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG count);
 extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern char *GROUP_AI_JMPTBL_STR_SkipClass3Chars(char *s);
 extern char *GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst, LONG maxLen, char *delims);
 
-char *DISPTEXT_BuildLineWithWidth(void *rp, char *src, char *out, LONG widthPx)
+char *DISPTEXT_BuildLineWithWidth(char *rp, char *src, char *out, LONG widthPx)
 {
     char wordBuf[50];
     LONG sepWidth;

@@ -12,10 +12,10 @@ extern LONG DISPTEXT_ControlMarkerWidthPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern const char DISPTEXT_STR_SINGLE_SPACE_PREFIX_1[];
 
-extern LONG _LVOTextLength(void *gfxBase, void *rp, const char *text, LONG count);
-extern char *DISPTEXT_BuildLineWithWidth(void *rp, char *src, char *scratch, LONG widthPx);
+extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG count);
+extern char *DISPTEXT_BuildLineWithWidth(char *rp, char *src, char *scratch, LONG widthPx);
 
-LONG DISPTEXT_LayoutSourceToLines(void *rp, char *src)
+LONG DISPTEXT_LayoutSourceToLines(char *rp, char *src)
 {
     LONG lineOffset = 0;
     LONG availableWidth;
