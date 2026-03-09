@@ -3,64 +3,72 @@ typedef long LONG;
 
 enum {
     COI_NULL = 0,
-    ENTRY_ANIM_OFFSET = 48,
-    ANIM_FLAG_0_OFFSET = 0,
-    ANIM_FLAG_1_OFFSET = 1,
-    ANIM_FLAG_2_OFFSET = 2,
-    ANIM_FLAG_3_OFFSET = 3,
-    ANIM_OWNED_0_OFFSET = 4,
-    ANIM_OWNED_1_OFFSET = 8,
-    ANIM_OWNED_2_OFFSET = 12,
-    ANIM_OWNED_3_OFFSET = 16,
-    ANIM_OWNED_4_OFFSET = 20,
-    ANIM_OWNED_5_OFFSET = 24,
-    ANIM_OWNED_6_OFFSET = 28,
-    ANIM_STATUS_OFFSET = 32
+    ENTRY_ANIM_OFFSET = 48
 };
 
 LONG GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(void *old_ptr, const void *new_ptr);
 
+typedef struct COI_AnimObject {
+    UBYTE flags0;
+    UBYTE flags1;
+    UBYTE flags2;
+    UBYTE flags3;
+    void *owned0;
+    void *owned1;
+    void *owned2;
+    void *owned3;
+    void *owned4;
+    void *owned5;
+    void *owned6;
+    LONG status;
+} COI_AnimObject;
+
+typedef struct COI_Entry {
+    UBYTE pad0[ENTRY_ANIM_OFFSET];
+    COI_AnimObject *anim;
+} COI_Entry;
+
 void COI_ClearAnimObjectStrings(void *entry)
 {
-    UBYTE *e;
-    UBYTE *anim;
+    COI_Entry *e;
+    COI_AnimObject *anim;
     LONG owned;
 
-    e = (UBYTE *)entry;
-    if (e == (UBYTE *)COI_NULL) {
+    e = (COI_Entry *)entry;
+    if (e == (COI_Entry *)COI_NULL) {
         return;
     }
 
-    anim = *(UBYTE **)(e + ENTRY_ANIM_OFFSET);
-    if (anim == (UBYTE *)COI_NULL) {
+    anim = e->anim;
+    if (anim == (COI_AnimObject *)COI_NULL) {
         return;
     }
 
-    anim[ANIM_FLAG_0_OFFSET] = COI_NULL;
-    anim[ANIM_FLAG_1_OFFSET] = COI_NULL;
-    anim[ANIM_FLAG_2_OFFSET] = COI_NULL;
-    anim[ANIM_FLAG_3_OFFSET] = COI_NULL;
+    anim->flags0 = COI_NULL;
+    anim->flags1 = COI_NULL;
+    anim->flags2 = COI_NULL;
+    anim->flags3 = COI_NULL;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(anim + ANIM_OWNED_0_OFFSET), (void *)COI_NULL);
-    *(LONG *)(anim + ANIM_OWNED_0_OFFSET) = owned;
+    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(anim->owned0, (void *)COI_NULL);
+    anim->owned0 = (void *)owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(anim + ANIM_OWNED_1_OFFSET), (void *)COI_NULL);
-    *(LONG *)(anim + ANIM_OWNED_1_OFFSET) = owned;
+    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(anim->owned1, (void *)COI_NULL);
+    anim->owned1 = (void *)owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(anim + ANIM_OWNED_2_OFFSET), (void *)COI_NULL);
-    *(LONG *)(anim + ANIM_OWNED_2_OFFSET) = owned;
+    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(anim->owned2, (void *)COI_NULL);
+    anim->owned2 = (void *)owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(anim + ANIM_OWNED_3_OFFSET), (void *)COI_NULL);
-    *(LONG *)(anim + ANIM_OWNED_3_OFFSET) = owned;
+    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(anim->owned3, (void *)COI_NULL);
+    anim->owned3 = (void *)owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(anim + ANIM_OWNED_4_OFFSET), (void *)COI_NULL);
-    *(LONG *)(anim + ANIM_OWNED_4_OFFSET) = owned;
+    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(anim->owned4, (void *)COI_NULL);
+    anim->owned4 = (void *)owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(anim + ANIM_OWNED_5_OFFSET), (void *)COI_NULL);
-    *(LONG *)(anim + ANIM_OWNED_5_OFFSET) = owned;
+    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(anim->owned5, (void *)COI_NULL);
+    anim->owned5 = (void *)owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*(void **)(anim + ANIM_OWNED_6_OFFSET), (void *)COI_NULL);
-    *(LONG *)(anim + ANIM_OWNED_6_OFFSET) = owned;
+    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(anim->owned6, (void *)COI_NULL);
+    anim->owned6 = (void *)owned;
 
-    *(LONG *)(anim + ANIM_STATUS_OFFSET) = COI_NULL;
+    anim->status = COI_NULL;
 }
