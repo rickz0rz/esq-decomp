@@ -8,7 +8,7 @@ typedef char *STRPTR;
 extern void GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(LONG mask, LONG mode);
 extern void GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi(void);
 extern LONG GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
-extern void DISPLIB_DisplayTextAtPosition(void *rp, LONG x, LONG y, const char *text);
+extern void DISPLIB_DisplayTextAtPosition(char *rp, LONG x, LONG y, const char *text);
 extern void GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG maxLen);
 extern LONG GROUP_AH_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 extern LONG GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(const char *text);
@@ -31,7 +31,7 @@ extern LONG _LVOInfo(void *dosBase, LONG lock, void *id);
 extern LONG GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, ULONG size, ULONG flags);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, ULONG size);
 
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_DOS_LIBRARY_2;
 extern const char Global_STR_SPECIAL_NGAD[];
 extern const char Global_STR_RAM[];
