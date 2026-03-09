@@ -24,7 +24,7 @@ typedef struct NEWGRID_Entry {
 typedef struct NEWGRID_AuxData {
     UBYTE pad0[7];
     UBYTE rowFlags[49];
-    UBYTE *payloadTable[49];
+    char *payloadTable[49];
 } NEWGRID_AuxData;
 
 extern LONG NEWGRID_SelectionScanEntryIndex;
@@ -35,11 +35,11 @@ extern LONG GCOMMAND_PpvSelectionToleranceMinutes;
 extern LONG GCOMMAND_PpvSelectionWindowMinutes;
 
 extern LONG NEWGRID_ClearEntryMarkerBits(LONG row);
-extern LONG NEWGRID_UpdatePresetEntry(void **entryPtr, void **auxPtr, LONG row, LONG col);
-extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(void *entry, void *aux, LONG idx);
+extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG col);
+extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG idx);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(void *bitset, LONG idx);
-extern LONG NEWGRID_ShouldOpenEditor(void *entry);
-extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(void *entry, void *aux, LONG idx, LONG win, LONG tol);
+extern LONG NEWGRID_ShouldOpenEditor(char *entry);
+extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *aux, LONG idx, LONG win, LONG tol);
 extern LONG NEWGRID_InitSelectionWindow(SelCtx *ctx, LONG rowBase);
 
 LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
@@ -82,7 +82,7 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
             }
 
             col = NEWGRID_SelectionScanEntryIndex;
-            idx = NEWGRID_UpdatePresetEntry((void **)&entry, (void **)&aux, NEWGRID_SelectionScanRow, col);
+            idx = NEWGRID_UpdatePresetEntry((char **)&entry, (char **)&aux, NEWGRID_SelectionScanRow, col);
             if (!entry || !aux) {
                 NEWGRID_SelectionScanEntryIndex += 1;
                 continue;
@@ -94,7 +94,7 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
             }
 
             if (NEWGRID_SelectionScanRow == ctx->row) {
-                idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, idx);
+                idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((char *)entry, (char *)aux, idx);
             }
             if (idx <= 0) {
                 NEWGRID_SelectionScanEntryIndex += 1;
@@ -110,12 +110,16 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
                 continue;
             }
 
-            if (NEWGRID_ShouldOpenEditor(entry) != 0) {
+            if (NEWGRID_ShouldOpenEditor((char *)entry) != 0) {
                 found = ((NEWGRID_SelectionScanRow == ctx->row) && (aux->payloadTable[idx] != 0)) ? 1 : 0;
             } else {
                 if ((aux->payloadTable[idx] != 0) && ((aux->rowFlags[NEWGRID_SelectionScanRow] & 0x80) == 0)) {
                     found = NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
-                        entry, aux, idx, GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes) != 0;
+                        (char *)entry,
+                        (char *)aux,
+                        idx,
+                        GCOMMAND_PpvSelectionWindowMinutes,
+                        GCOMMAND_PpvSelectionToleranceMinutes) != 0;
                 } else {
                     found = 0;
                 }

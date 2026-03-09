@@ -20,7 +20,7 @@ typedef struct NEWGRID_Entry {
 typedef struct NEWGRID_AuxData {
     UBYTE pad0[7];
     UBYTE rowFlags[49];
-    UBYTE *payloadTable[49];
+    char *payloadTable[49];
 } NEWGRID_AuxData;
 
 extern LONG NEWGRID_AltSelectionRowCursor;
@@ -30,12 +30,12 @@ extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern LONG CONFIG_TimeWindowMinutes;
 
 extern LONG NEWGRID_ClearMarkersIfSelectable(LONG mode, LONG row);
-extern LONG NEWGRID_UpdatePresetEntry(void **entryPtr, void **auxPtr, LONG row, LONG col);
-extern LONG NEWGRID_TestEntrySelectable(void *entry, void *aux, LONG mode);
-extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(void *entry, void *aux, LONG idx);
+extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG col);
+extern LONG NEWGRID_TestEntrySelectable(char *entry, char *aux, LONG mode);
+extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG idx);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(void *bitset, LONG idx);
-extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(void *entry, void *aux, LONG idx, LONG day, LONG window);
-extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(void *aux, LONG idx);
+extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *aux, LONG idx, LONG day, LONG window);
+extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *aux, LONG idx);
 
 LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
 {
@@ -73,20 +73,20 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
         if (!TEXTDISP_PrimaryGroupPresentFlag || state == 5) break;
 
         row = NEWGRID_AltSelectionEntryCursor;
-        NEWGRID_UpdatePresetEntry((void **)&entry, (void **)&aux, row, NEWGRID_AltSelectionRowCursor);
-        if (NEWGRID_TestEntrySelectable(entry, aux, mode)) {
+        NEWGRID_UpdatePresetEntry((char **)&entry, (char **)&aux, row, NEWGRID_AltSelectionRowCursor);
+        if (NEWGRID_TestEntrySelectable((char *)entry, (char *)aux, mode)) {
             matched = 0;
             idx = NEWGRID_AltSelectionEntryCursor;
             if (idx > 0 && idx < ctx->rowLimit) {
                 if (idx == 49) {
-                    idx = NEWGRID_UpdatePresetEntry((void **)&entry, (void **)&aux, idx, NEWGRID_AltSelectionRowCursor);
+                    idx = NEWGRID_UpdatePresetEntry((char **)&entry, (char **)&aux, idx, NEWGRID_AltSelectionRowCursor);
                 } else if (idx > 48) {
                     idx -= 48;
                 }
 
                 if (entry && aux) {
                     if (NEWGRID_AltSelectionEntryCursor == ctx->row) {
-                        idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, idx);
+                        idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((char *)entry, (char *)aux, idx);
                     }
                     if (idx > 0) {
                         if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, idx) == -1) {
@@ -94,9 +94,13 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
                                 if ((aux->rowFlags[NEWGRID_AltSelectionEntryCursor] & 0x80) == 0) {
                                     if (aux->payloadTable[idx] != 0) {
                                         if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
-                                                entry, aux, idx, 1440, CONFIG_TimeWindowMinutes) != 0) {
+                                                (char *)entry,
+                                                (char *)aux,
+                                                idx,
+                                                1440,
+                                                CONFIG_TimeWindowMinutes) != 0) {
                                             if (mode != 1 ||
-                                                TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(aux, idx) != 0) {
+                                                TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((char *)aux, idx) != 0) {
                                                 matched = 1;
                                             }
                                         }

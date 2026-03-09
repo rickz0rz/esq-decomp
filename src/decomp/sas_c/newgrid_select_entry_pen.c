@@ -19,7 +19,7 @@ extern LONG GCOMMAND_MplexDetailRowPen;
 extern LONG GCOMMAND_PpvShowtimesLayoutPen;
 extern LONG GCOMMAND_PpvShowtimesRowPen;
 
-LONG NEWGRID_SelectEntryPen(UBYTE *entry)
+LONG NEWGRID_SelectEntryPen(char *entry)
 {
     NEWGRID_Entry *entryView;
     LONG pen;
