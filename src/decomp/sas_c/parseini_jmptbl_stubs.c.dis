@@ -78,6 +78,7 @@ PARSEINI_JMPTBL_DISKIO_ConsumeLi:
 ___PARSEINI_JMPTBL_DISKIO_ConsumeLi__1:
               BSR.W          DISKIO_ConsumeLineFromWorkBuffer;6100 0000 
 ___PARSEINI_JMPTBL_DISKIO_ConsumeLi__2:
+___PARSEINI_JMPTBL_DISKIO_ConsumeLi__3:
               RTS                                     ;4e75 
 PARSEINI_JMPTBL_ED1_DrawDiagnost:
               CMP.L          __base(A4),A7            ;bfec 0000 

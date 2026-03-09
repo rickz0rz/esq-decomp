@@ -8,7 +8,7 @@ extern void ESQIFF_HandleBrushIniReloadHotkey(void);
 extern void BRUSH_FreeBrushResources(void);
 extern void ESQFUNC_RebuildPwBrushListFromTagTable(void);
 extern void GCOMMAND_FindPathSeparator(void);
-extern void DISKIO_ConsumeLineFromWorkBuffer(void);
+extern char *DISKIO_ConsumeLineFromWorkBuffer(void);
 extern void ED1_DrawDiagnosticsScreen(void);
 extern void BRUSH_FreeBrushList(void);
 extern void GCOMMAND_ValidatePresetTable(void);
@@ -35,7 +35,7 @@ void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(void){ESQIFF_HandleBrushI
 void PARSEINI_JMPTBL_BRUSH_FreeBrushResources(void){BRUSH_FreeBrushResources();}
 void PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable(void){ESQFUNC_RebuildPwBrushListFromTagTable();}
 void PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(void){GCOMMAND_FindPathSeparator();}
-void PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer(void){DISKIO_ConsumeLineFromWorkBuffer();}
+char *PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer(void){return DISKIO_ConsumeLineFromWorkBuffer();}
 void PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen(void){ED1_DrawDiagnosticsScreen();}
 void PARSEINI_JMPTBL_BRUSH_FreeBrushList(void){BRUSH_FreeBrushList();}
 void PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable(void){GCOMMAND_ValidatePresetTable();}

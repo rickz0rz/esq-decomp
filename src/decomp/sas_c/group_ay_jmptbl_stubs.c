@@ -1,22 +1,22 @@
-extern void DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern void DISKIO_ParseLongFromWorkBuffer(void);
+extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
+extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern void DISKIO_WriteDecimalField(void);
 extern void DISKIO_WriteBufferedBytes(void);
 extern void DISKIO_CloseBufferedFileAndFlush(void);
-extern void STRING_CompareNoCaseN(void);
-extern void MATH_Mulu32(void);
-extern void DISKIO_LoadFileToWorkBuffer(void);
+extern long STRING_CompareNoCaseN(void);
+extern long MATH_Mulu32(void);
+extern long DISKIO_LoadFileToWorkBuffer(void);
 extern void SCRIPT_ReadHandshakeBit5Mask(void);
 extern void DISKIO_OpenFileWithBuffer(void);
 
-void GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(void)
+char *GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(void)
 {
-    DISKIO_ConsumeCStringFromWorkBuffer();
+    return DISKIO_ConsumeCStringFromWorkBuffer();
 }
 
-void GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(void)
+long GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(void)
 {
-    DISKIO_ParseLongFromWorkBuffer();
+    return DISKIO_ParseLongFromWorkBuffer();
 }
 
 void GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(void)
@@ -34,19 +34,19 @@ void GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(void)
     DISKIO_CloseBufferedFileAndFlush();
 }
 
-void GROUP_AY_JMPTBL_STRING_CompareNoCaseN(void)
+long GROUP_AY_JMPTBL_STRING_CompareNoCaseN(void)
 {
-    STRING_CompareNoCaseN();
+    return STRING_CompareNoCaseN();
 }
 
-void GROUP_AY_JMPTBL_MATH_Mulu32(void)
+long GROUP_AY_JMPTBL_MATH_Mulu32(void)
 {
-    MATH_Mulu32();
+    return MATH_Mulu32();
 }
 
-void GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(void)
+long GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(void)
 {
-    DISKIO_LoadFileToWorkBuffer();
+    return DISKIO_LoadFileToWorkBuffer();
 }
 
 void GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void)
