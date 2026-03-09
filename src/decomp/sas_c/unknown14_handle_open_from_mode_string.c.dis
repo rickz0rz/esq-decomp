@@ -20,23 +20,26 @@ ___HANDLE_OpenFromModeString__2:
 ___HANDLE_OpenFromModeString__3:
               MOVE.L         Global_DefaultHandleFlags(A4),D7;2e2c 0000 
               MOVEQ.L        #$1,D6                   ;7c01 
-              MOVEQ.L        #$62,D0                  ;7062 
-              CMP.B          $0(A3,D6.L),D0           ;b033 6800 
+              MOVE.B         $0(A3,D6.L),D0           ;1033 6800 
+              MOVEQ.L        #$62,D1                  ;7262 
+              CMP.B          D1,D0                    ;b001 
               BNE.B          ___HANDLE_OpenFromModeString__5;660a 
 ___HANDLE_OpenFromModeString__4:
               MOVE.L         #$8000,D7                ;2e3c 0000 8000 
               ADDQ.L         #$1,D6                   ;5286 
-              BRA.B          ___HANDLE_OpenFromModeString__7;600c 
+              BRA.B          ___HANDLE_OpenFromModeString__7;600e 
 ___HANDLE_OpenFromModeString__5:
-              MOVEQ.L        #$61,D0                  ;7061 
-              CMP.B          $0(A3,D6.L),D0           ;b033 6800 
+              MOVE.B         $0(A3,D6.L),D0           ;1033 6800 
+              MOVEQ.L        #$61,D1                  ;7261 
+              CMP.B          D1,D0                    ;b001 
               BNE.B          ___HANDLE_OpenFromModeString__7;6604 
 ___HANDLE_OpenFromModeString__6:
               MOVEQ.L        #$0,D7                   ;7e00 
               ADDQ.L         #$1,D6                   ;5286 
 ___HANDLE_OpenFromModeString__7:
-              MOVEQ.L        #$2b,D0                  ;702b 
-              CMP.B          $0(A3,D6.L),D0           ;b033 6800 
+              MOVE.B         $0(A3,D6.L),D0           ;1033 6800 
+              MOVEQ.L        #$2b,D1                  ;722b 
+              CMP.B          D1,D0                    ;b001 
               BNE.B          ___HANDLE_OpenFromModeString__9;6604 
 ___HANDLE_OpenFromModeString__8:
               MOVEQ.L        #$ff,D5                  ;7aff 
@@ -44,8 +47,9 @@ ___HANDLE_OpenFromModeString__8:
 ___HANDLE_OpenFromModeString__9:
               MOVEQ.L        #$0,D5                   ;7a00 
 ___HANDLE_OpenFromModeString__10:
-              MOVEQ.L        #$61,D0                  ;7061 
-              CMP.B          (A3),D0                  ;b013 
+              MOVE.B         (A3),D0                  ;1013 
+              MOVEQ.L        #$61,D1                  ;7261 
+              CMP.B          D1,D0                    ;b001 
               BNE.B          ___HANDLE_OpenFromModeString__17;663e 
 ___HANDLE_OpenFromModeString__11:
               PEA            ($c).w                   ;4878 000c 
@@ -74,8 +78,8 @@ ___HANDLE_OpenFromModeString__16:
               MOVE.L         D0,$20(A7)               ;2f40 0020 
               BRA.W          ___HANDLE_OpenFromModeString__32;6000 009c 
 ___HANDLE_OpenFromModeString__17:
-              MOVEQ.L        #$72,D0                  ;7072 
-              CMP.B          (A3),D0                  ;b013 
+              MOVEQ.L        #$72,D1                  ;7272 
+              CMP.B          D1,D0                    ;b001 
               BNE.B          ___HANDLE_OpenFromModeString__24;6642 
 ___HANDLE_OpenFromModeString__18:
               TST.L          D5                       ;4a85 
@@ -109,8 +113,8 @@ ___HANDLE_OpenFromModeString__23:
               MOVE.L         D0,$20(A7)               ;2f40 0020 
               BRA.B          ___HANDLE_OpenFromModeString__32;6052 
 ___HANDLE_OpenFromModeString__24:
-              MOVEQ.L        #$77,D0                  ;7077 
-              CMP.B          (A3),D0                  ;b013 
+              MOVEQ.L        #$77,D1                  ;7277 
+              CMP.B          D1,D0                    ;b001 
               BNE.B          ___HANDLE_OpenFromModeString__31;6648 
 ___HANDLE_OpenFromModeString__25:
               TST.L          D5                       ;4a85 

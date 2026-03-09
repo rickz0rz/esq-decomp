@@ -9,8 +9,8 @@ extern char TLIBA1_FormatFallbackFieldPtr2[];
 extern char TLIBA1_FormatFallbackFieldPtr3[];
 extern char TLIBA1_FMT_PCT_C_PCT_S[];
 
-extern LONG WDISP_SPrintf(char *dst, char *fmt, LONG c, char *s);
-extern char *STRING_AppendAtNull(char *dst, char *src);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG c, const char *s);
+extern char *STRING_AppendAtNull(char *dst, const char *src);
 
 static LONG TLIBA1_StrLen(const char *s)
 {
@@ -22,7 +22,7 @@ static LONG TLIBA1_StrLen(const char *s)
     return n;
 }
 
-void TLIBA1_FormatClockFormatEntry(char *dst, char *f0, char *f1, char *f2, char *f3, char *fallbackStyle, LONG useFallbackSet)
+void TLIBA1_FormatClockFormatEntry(char *dst, char *f0, char *f1, char *f2, char *f3, const char *fallbackStyle, LONG useFallbackSet)
 {
     char scratch[512];
     char *fieldList[4];
