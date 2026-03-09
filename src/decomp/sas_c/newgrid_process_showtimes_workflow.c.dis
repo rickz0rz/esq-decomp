@@ -11,7 +11,7 @@ ___NEWGRID_ProcessShowtimesWorkflow__1:
               MOVE.L         $10(A7),A5               ;2a6f 0010 
               MOVEQ.L        #$0,D6                   ;7c00 
               MOVE.L         A5,D0                    ;200d 
-              BNE.B          ___NEWGRID_ProcessShowtimesWorkflow__10;667a 
+              BNE.B          ___NEWGRID_ProcessShowtimesWorkflow__10;6678 
 ___NEWGRID_ProcessShowtimesWorkflow__2:
               MOVE.L         NEWGRID_ShowtimesWorkflowState(A4),D0;202c 0000 
               MOVEQ.L        #$2,D1                   ;7202 
@@ -29,14 +29,13 @@ ___NEWGRID_ProcessShowtimesWorkflow__4:
               BSR.W          NEWGRID_HandleGridEditorState;6100 0000 
               MOVE.L         D0,NEWGRID_ShowtimesWorkflowState(A4);2940 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              BRA.B          ___NEWGRID_ProcessShowtimesWorkflow__9;603e 
+              BRA.B          ___NEWGRID_ProcessShowtimesWorkflow__9;603c 
 ___NEWGRID_ProcessShowtimesWorkflow__5:
               MOVEQ.L        #$5,D0                   ;7005 
               CMP.L          NEWGRID_ShowtimesWorkflowState(A4),D0;b0ac 0000 
-              BNE.B          ___NEWGRID_ProcessShowtimesWorkflow__9;6636 
+              BNE.B          ___NEWGRID_ProcessShowtimesWorkflow__9;6634 
 ___NEWGRID_ProcessShowtimesWorkflow__6:
-              MOVE.L         NEWGRID_ShowtimesSelectionContex(A4),A0;206c 0000 
-              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         NEWGRID_ShowtimesSelectionContex(A4),-(A7);2f2c 0000 
               BSR.W          NEWGRID_ShouldOpenEditor ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               TST.L          D0                       ;4a80 

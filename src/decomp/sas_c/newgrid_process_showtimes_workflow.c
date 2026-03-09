@@ -3,9 +3,21 @@ typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 typedef struct LayoutCtx LayoutCtx;
+typedef struct NEWGRID_SelectionWindow NEWGRID_SelectionWindow;
+
+struct NEWGRID_SelectionWindow {
+    void *entry;
+    void *aux;
+    LONG index;
+    LONG start;
+    LONG end;
+    UWORD row;
+    UWORD initialRow;
+    UWORD rowLimit;
+};
 
 extern LONG NEWGRID_ShowtimesWorkflowState;
-extern LONG NEWGRID_ShowtimesSelectionContextPtr;
+extern NEWGRID_SelectionWindow NEWGRID_ShowtimesSelectionContextPtr;
 extern LONG NEWGRID_ShowtimesWorkflowArgLong;
 extern UWORD NEWGRID_ShowtimesWorkflowArgWord;
 extern LONG NEWGRID_ShowtimesColumnAdjust;
@@ -19,9 +31,9 @@ extern LONG GCOMMAND_PpvEditorLayoutPen;
 extern LONG NEWGRID_HandleGridEditorState(LayoutCtx *ctx, LONG a, LONG b, LONG c);
 extern LONG NEWGRID_ShouldOpenEditor(void *entry);
 extern LONG NEWGRID_UpdateGridState(LayoutCtx *ctx, LONG index, LONG row);
-extern LONG NEWGRID_HandleShowtimesState(LayoutCtx *ctx, LONG *selCtxPtr);
-extern LONG NEWGRID_InitSelectionWindow(LONG *selCtxPtr, LONG rowBase);
-extern LONG NEWGRID_UpdateSelectionFromInput(LONG state, LONG *selCtxPtr);
+extern LONG NEWGRID_HandleShowtimesState(LayoutCtx *ctx, NEWGRID_SelectionWindow *selCtxPtr);
+extern LONG NEWGRID_InitSelectionWindow(NEWGRID_SelectionWindow *selCtxPtr, LONG rowBase);
+extern LONG NEWGRID_UpdateSelectionFromInput(LONG state, NEWGRID_SelectionWindow *selCtxPtr);
 extern LONG NEWGRID_DrawGridMessageAlt(LayoutCtx *ctx);
 extern LONG NEWGRID_ValidateSelectionCode(LayoutCtx *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
@@ -36,19 +48,19 @@ LONG NEWGRID_ProcessShowtimesWorkflow(LayoutCtx *ctx, UWORD rowBase)
         if (NEWGRID_ShowtimesWorkflowState == 2 || NEWGRID_ShowtimesWorkflowState == 7) {
             NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState(ctx, 0, 0, 0);
         } else if (NEWGRID_ShowtimesWorkflowState == 5) {
-            if (NEWGRID_ShouldOpenEditor((void *)NEWGRID_ShowtimesSelectionContextPtr) != 0) {
+            if (NEWGRID_ShouldOpenEditor(NEWGRID_ShowtimesSelectionContextPtr.entry) != 0) {
                 NEWGRID_ShowtimesWorkflowState = NEWGRID_UpdateGridState(ctx, 0, 0);
             } else {
-                NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleShowtimesState(ctx, (LONG *)&NEWGRID_ShowtimesSelectionContextPtr);
+                NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleShowtimesState(ctx, &NEWGRID_ShowtimesSelectionContextPtr);
             }
         }
-        NEWGRID_InitSelectionWindow((LONG *)&NEWGRID_ShowtimesSelectionContextPtr, 0);
+        NEWGRID_InitSelectionWindow(&NEWGRID_ShowtimesSelectionContextPtr, 0);
         NEWGRID_ShowtimesWorkflowState = 0;
     } else if (NEWGRID_ShowtimesWorkflowState < 8) {
         switch (NEWGRID_ShowtimesWorkflowState) {
         case 0:
-            NEWGRID_InitSelectionWindow((LONG *)&NEWGRID_ShowtimesSelectionContextPtr, rowBase);
-            if (NEWGRID_UpdateSelectionFromInput(NEWGRID_ShowtimesWorkflowState, (LONG *)&NEWGRID_ShowtimesSelectionContextPtr) != 0) {
+            NEWGRID_InitSelectionWindow(&NEWGRID_ShowtimesSelectionContextPtr, rowBase);
+            if (NEWGRID_UpdateSelectionFromInput(NEWGRID_ShowtimesWorkflowState, &NEWGRID_ShowtimesSelectionContextPtr) != 0) {
                 NEWGRID_ShowtimesWorkflowState = 1;
             }
             break;
@@ -73,18 +85,18 @@ LONG NEWGRID_ProcessShowtimesWorkflow(LayoutCtx *ctx, UWORD rowBase)
 
         case 3:
         case 4:
-            NEWGRID_UpdateSelectionFromInput(NEWGRID_ShowtimesWorkflowState, (LONG *)&NEWGRID_ShowtimesSelectionContextPtr);
+            NEWGRID_UpdateSelectionFromInput(NEWGRID_ShowtimesWorkflowState, &NEWGRID_ShowtimesSelectionContextPtr);
             steppedFrom34 = 1;
             /* fallthrough */
 
         case 5:
-            if (NEWGRID_ShowtimesSelectionContextPtr != 0) {
-                if (NEWGRID_ShouldOpenEditor((void *)NEWGRID_ShowtimesSelectionContextPtr) != 0) {
+            if (NEWGRID_ShowtimesSelectionContextPtr.entry != 0) {
+                if (NEWGRID_ShouldOpenEditor(NEWGRID_ShowtimesSelectionContextPtr.entry) != 0) {
                     NEWGRID_ShowtimesWorkflowState = NEWGRID_UpdateGridState(
                         ctx, NEWGRID_ShowtimesWorkflowArgLong, (LONG)NEWGRID_ShowtimesWorkflowArgWord);
                 } else {
                     NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleShowtimesState(
-                        ctx, (LONG *)&NEWGRID_ShowtimesSelectionContextPtr);
+                        ctx, &NEWGRID_ShowtimesSelectionContextPtr);
                 }
 
                 if (GCOMMAND_DigitalPpvEnabledFlag == 'Y') {

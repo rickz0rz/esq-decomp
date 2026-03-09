@@ -3,6 +3,11 @@ typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 typedef struct LayoutCtx LayoutCtx;
+typedef struct NEWGRID_Entry NEWGRID_Entry;
+
+struct NEWGRID_Entry {
+    UBYTE pad0[1];
+};
 
 extern LONG NEWGRID_ScheduleWorkflowState;
 extern LONG NEWGRID_SelectedPrimaryEntryIndex;
@@ -20,7 +25,7 @@ extern LONG GCOMMAND_MplexEditorRowPen;
 extern LONG GCOMMAND_MplexEditorLayoutPen;
 
 extern UWORD CLOCK_DaySlotIndex;
-extern UBYTE TEXTDISP_PrimaryEntryPtrTable[];
+extern NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
 extern LONG NEWGRID_HandleGridEditorState(LayoutCtx *ctx, LONG a, LONG b, LONG c);
 extern LONG NEWGRID_ShouldOpenEditor(void *entry);
@@ -41,8 +46,8 @@ LONG NEWGRID_ProcessScheduleState(LayoutCtx *ctx, UWORD rowBase, UWORD rowCur)
             NEWGRID_HandleGridEditorState(ctx, 0, 0, 0);
         } else if (NEWGRID_ScheduleWorkflowState == 5) {
             LONG idx = NEWGRID_SelectedPrimaryEntryIndex;
-            LONG entry = *(LONG *)(TEXTDISP_PrimaryEntryPtrTable + (idx << 2));
-            if (NEWGRID_ShouldOpenEditor((void *)entry) != 0) {
+            NEWGRID_Entry *entry = TEXTDISP_PrimaryEntryPtrTable[idx];
+            if (NEWGRID_ShouldOpenEditor(entry) != 0) {
                 NEWGRID_UpdateGridState(ctx, 0, 0);
             } else {
                 NEWGRID_HandleDetailGridState(ctx, 0, 0);
@@ -111,8 +116,8 @@ LONG NEWGRID_ProcessScheduleState(LayoutCtx *ctx, UWORD rowBase, UWORD rowCur)
 
     case 5:
         if (NEWGRID_SelectedPrimaryEntryIndex != -1) {
-            LONG entry = *(LONG *)(TEXTDISP_PrimaryEntryPtrTable + (NEWGRID_SelectedPrimaryEntryIndex << 2));
-            if (NEWGRID_ShouldOpenEditor((void *)entry) != 0) {
+            NEWGRID_Entry *entry = TEXTDISP_PrimaryEntryPtrTable[NEWGRID_SelectedPrimaryEntryIndex];
+            if (NEWGRID_ShouldOpenEditor(entry) != 0) {
                 NEWGRID_ScheduleWorkflowState = NEWGRID_UpdateGridState(
                     ctx, NEWGRID_SelectedPrimaryEntryIndex, (LONG)rowBase + NEWGRID_ScheduleRowOffset);
             } else {
