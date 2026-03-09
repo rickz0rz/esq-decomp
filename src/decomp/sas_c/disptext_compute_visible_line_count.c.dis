@@ -50,7 +50,7 @@ ___DISPTEXT_ComputeVisibleLineCount__9:
               SWAP           D0                       ;4840 
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
-              LEA            DISPTEXT_TextBufferPtr(A4),A0;41ec 0000 
+              LEA            DISPTEXT_LinePtrTable(A4),A0;41ec 0000 
               MOVE.L         $0(A0,D1.L),A5           ;2a70 1800 
               MOVE.L         A5,D0                    ;200d 
               BNE.B          ___DISPTEXT_ComputeVisibleLineCount__11;6604 
@@ -93,7 +93,7 @@ __strings:
               XREF           NEWGRID_RowHeightPx
               XREF           GROUP_AG_JMPTBL_MATH_Mulu32
               XREF           DISPTEXT_ControlMarkersEnabledFl
-              XREF           DISPTEXT_TextBufferPtr
+              XREF           DISPTEXT_LinePtrTable
               XREF           GROUP_AI_JMPTBL_STR_FindCharPtr
               XDEF           DISPTEXT_ComputeVisibleLineCount
               END

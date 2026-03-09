@@ -6,11 +6,11 @@ typedef signed long LONG;
 extern WORD DISPTEXT_TargetLineIndex;
 extern WORD NEWGRID_RowHeightPx;
 extern WORD DISPTEXT_ControlMarkersEnabledFlag;
-extern char *DISPTEXT_TextBufferPtr[];
+extern char *DISPTEXT_LinePtrTable[];
 
 extern void DISPTEXT_FinalizeLineTable(void);
-extern LONG GROUP_AG_JMPTBL_MATH_Mulu32(void);
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(void);
+extern LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
+extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, LONG ch);
 
 LONG DISPTEXT_ComputeVisibleLineCount(LONG maxLines)
 {
@@ -40,7 +40,7 @@ LONG DISPTEXT_ComputeVisibleLineCount(LONG maxLines)
         return visibleCount;
     }
 
-    line = DISPTEXT_TextBufferPtr[(UWORD)DISPTEXT_TargetLineIndex];
+    line = DISPTEXT_LinePtrTable[(UWORD)DISPTEXT_TargetLineIndex];
     if (line == 0) {
         return visibleCount;
     }
