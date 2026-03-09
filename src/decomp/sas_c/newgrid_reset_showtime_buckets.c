@@ -9,7 +9,7 @@ typedef struct NEWGRID_ShowtimeBucketEntry {
 extern LONG NEWGRID_ShowtimeBucketCount;
 extern NEWGRID_ShowtimeBucketEntry NEWGRID_ShowtimeBucketEntryTable[];
 
-extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(char *newStr, char *oldStr);
+extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newStr, char *oldStr);
 
 void NEWGRID_ResetShowtimeBuckets(void)
 {

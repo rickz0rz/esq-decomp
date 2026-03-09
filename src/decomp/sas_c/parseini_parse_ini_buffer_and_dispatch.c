@@ -66,7 +66,7 @@ extern char *PARSEINI_JMPTBL_STR_FindCharPtr(char *s, LONG ch);
 extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(char *s, const char *delim);
 extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
 extern void PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(LONG *table);
-extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(char *newValue, char *oldValue);
+extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 extern char *PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(char *path);
 extern LONG PARSEINI_JMPTBL_HANDLE_OpenWithMode(char *path, const char *modeStr);
 extern void PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(char *brushPath);
