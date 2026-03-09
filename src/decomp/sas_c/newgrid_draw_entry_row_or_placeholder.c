@@ -8,10 +8,10 @@ extern UBYTE CONFIG_NewgridPlaceholderBevelFlag;
 extern char *SCRIPT_PtrNoDataPlaceholder;
 extern char *SCRIPT_PtrOffAirPlaceholder;
 
-extern void NEWGRID_DrawGridEntry(void *gridCtx, void *entryPtr, LONG rowMeta, LONG row, LONG col, LONG style, LONG mode);
+extern void NEWGRID_DrawGridEntry(void *gridCtx, char *entryPtr, LONG rowMeta, LONG row, LONG col, LONG style, LONG mode);
 extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *gridCtx, char *text);
 
-void NEWGRID_DrawEntryRowOrPlaceholder(void *gridCtx, void *entryPtr, LONG rowMeta, WORD row, WORD col, LONG state)
+void NEWGRID_DrawEntryRowOrPlaceholder(void *gridCtx, char *entryPtr, LONG rowMeta, WORD row, WORD col, LONG state)
 {
     if (state == 2) {
         if (NEWGRID_EntryPlaceholderModeFlag != 0) {

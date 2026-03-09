@@ -16,14 +16,14 @@ extern UBYTE CONFIG_NewgridSelectionCode32EnabledFlag;
 extern NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
 extern LONG NEWGRID_ShouldOpenEditor(NEWGRID_Entry *entry);
-extern LONG NEWGRID_UpdateGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex);
-extern LONG NEWGRID_ProcessGridEntries(UBYTE *ctx, LONG keyIndex, WORD rowIndex);
+extern LONG NEWGRID_UpdateGridState(char *ctx, LONG keyIndex, WORD rowIndex);
+extern LONG NEWGRID_ProcessGridEntries(char *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_FindNextFlaggedEntry(LONG mode, LONG startIndex);
-extern void NEWGRID_ValidateSelectionCode(UBYTE *ctx, LONG code);
+extern void NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
-extern LONG NEWGRID_ComputeColumnIndex(UBYTE *ctx);
+extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
 
-LONG NEWGRID_HandleGridSelection(UBYTE *ctx, WORD rowIndex)
+LONG NEWGRID_HandleGridSelection(char *ctx, WORD rowIndex)
 {
     LONG scannedThisStep;
     NEWGRID_Entry *entry;

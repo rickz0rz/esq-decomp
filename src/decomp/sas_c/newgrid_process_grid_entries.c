@@ -48,9 +48,9 @@ extern LONG NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG h, LONG pen);
 /* Keep K&R-style declaration: SAS/C long-name significance causes a prototype clash
  * with NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount in this translation unit. */
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths();
-extern LONG NEWGRID_DrawEntryRowOrPlaceholder(char *scratch, void *entry, void *aux, LONG row, LONG span, LONG state);
+extern LONG NEWGRID_DrawEntryRowOrPlaceholder(char *scratch, char *entry, LONG aux, LONG row, LONG span, LONG state);
 extern LONG NEWGRID_DrawSelectionMarkers(LayoutCtx *ctx, LONG row, LONG span, LONG pen, LONG leftState, LONG rightState);
-extern LONG NEWGRID_DrawGridCell(char *scratch, void *entry, LONG style);
+extern LONG NEWGRID_DrawGridCell(char *scratch, char *entry, LONG style);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
 
 LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
@@ -129,14 +129,14 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
 
             ((LONG (*)(char *, LONG, LONG))NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths)(
                 ctx->scratch, leftState, rightState);
-            NEWGRID_DrawEntryRowOrPlaceholder(ctx->scratch, entry, aux, modeIdx, nextSpan, state);
+            NEWGRID_DrawEntryRowOrPlaceholder(ctx->scratch, (char *)entry, (LONG)aux, modeIdx, nextSpan, state);
         } else {
             nextSpan = (UWORD)(3 - row);
             if (nextSpan < 3) {
                 NEWGRID_SelectionMarkerPenState = -1;
                 NEWGRID_RowLayoutCommitPenId = 1;
                 NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams((NEWGRID_ColumnWidthPx * nextSpan) - 12, 2, 1);
-                NEWGRID_DrawEntryRowOrPlaceholder(ctx->scratch, entry, aux, modeIdx, nextSpan, 1);
+                NEWGRID_DrawEntryRowOrPlaceholder(ctx->scratch, (char *)entry, (LONG)aux, modeIdx, nextSpan, 1);
             } else {
                 keepMarkers = 0;
             }
@@ -151,13 +151,13 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
 
     if (keepMarkers) {
         if (rowSpan == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y' && NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
-            NEWGRID_DrawGridCell(ctx->scratch, (void *)NEWGRID_SelectedGridEntryPtr, 0);
+            NEWGRID_DrawGridCell(ctx->scratch, (char *)NEWGRID_SelectedGridEntryPtr, 0);
             NEWGRID_GridEntriesWorkflowState = 5;
             if (NEWGRID_SelectionMarkerPenState == -1) {
                 NEWGRID_SelectionMarkerPenState = NEWGRID_SelectedGridEntryPtr;
             }
         } else {
-            NEWGRID_DrawGridCell(ctx->scratch, (void *)NEWGRID_SelectedGridEntryPtr, 1);
+            NEWGRID_DrawGridCell(ctx->scratch, (char *)NEWGRID_SelectedGridEntryPtr, 1);
             NEWGRID_GridEntriesWorkflowState = 4;
         }
 
