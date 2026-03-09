@@ -41,7 +41,7 @@ extern const char Global_STR_DISKIO2_C_21[];
 extern const char Global_STR_DISKIO2_C_22[];
 
 volatile ULONG Global_REF_LONG_FILE_SCRATCH;
-volatile UBYTE *Global_PTR_WORK_BUFFER;
+volatile char *Global_PTR_WORK_BUFFER;
 volatile UWORD DISKIO_CurrentDriveRevisionIndex;
 
 volatile UBYTE TEXTDISP_SecondaryGroupCode;
@@ -60,7 +60,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
 {
     long result = 0;
     ULONG fileLen;
-    UBYTE *workBuf;
+    char *workBuf;
     UBYTE headerCode;
     UWORD loadedCount = 0;
     UWORD parsedCount = 0;
@@ -71,7 +71,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
     }
 
     fileLen = Global_REF_LONG_FILE_SCRATCH;
-    workBuf = (UBYTE *)Global_PTR_WORK_BUFFER;
+    workBuf = (char *)Global_PTR_WORK_BUFFER;
     headerCode = (UBYTE)(DISKIO_ParseLongFromWorkBuffer() & 0xffL);
 
     if (headerCode == TEXTDISP_SecondaryGroupCode) {
@@ -105,9 +105,9 @@ long DISKIO2_LoadNxtDayDataFile(void)
             {
                 UWORD i;
                 UBYTE *dst = (UBYTE *)entry;
-                UBYTE *src = (UBYTE *)Global_PTR_WORK_BUFFER;
+                char *src = (char *)Global_PTR_WORK_BUFFER;
                 for (i = 0; i < 48; i++) {
-                    *dst++ = *src++;
+                    *dst++ = (UBYTE)*src++;
                 }
                 Global_PTR_WORK_BUFFER = src;
                 Global_REF_LONG_FILE_SCRATCH -= 48;

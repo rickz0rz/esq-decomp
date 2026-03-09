@@ -53,7 +53,7 @@ extern const char Global_STR_DISKIO2_C_12[];
 extern const char Global_STR_DISKIO2_C_13[];
 
 volatile ULONG Global_REF_LONG_FILE_SCRATCH;
-volatile UBYTE *Global_PTR_WORK_BUFFER;
+volatile char *Global_PTR_WORK_BUFFER;
 volatile WORD DST_PrimaryCountdown;
 volatile UWORD DISKIO_CurrentDriveRevisionIndex;
 volatile UBYTE DISKIO_ErrorMessageScratch[64];
@@ -78,7 +78,7 @@ long DISKIO2_LoadCurDayDataFile(void)
 {
     long result = 0;
     ULONG fileLen;
-    UBYTE *workBuf;
+    char *workBuf;
     UBYTE headerCode;
     UWORD loadedCount = 0;
     UWORD parsedCount = 0;
@@ -101,7 +101,7 @@ long DISKIO2_LoadCurDayDataFile(void)
     }
 
     fileLen = Global_REF_LONG_FILE_SCRATCH;
-    workBuf = (UBYTE *)Global_PTR_WORK_BUFFER;
+    workBuf = (char *)Global_PTR_WORK_BUFFER;
 
     DST_PrimaryCountdown = (WORD)DISKIO_ParseLongFromWorkBuffer();
     GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket(statusText);
@@ -193,9 +193,9 @@ long DISKIO2_LoadCurDayDataFile(void)
             {
                 UWORD i;
                 UBYTE *dst = (UBYTE *)entry;
-                UBYTE *src = (UBYTE *)Global_PTR_WORK_BUFFER;
+                char *src = (char *)Global_PTR_WORK_BUFFER;
                 for (i = 0; i < 48; i++) {
-                    *dst++ = *src++;
+                    *dst++ = (UBYTE)*src++;
                 }
                 Global_PTR_WORK_BUFFER = src;
                 Global_REF_LONG_FILE_SCRATCH -= 48;
