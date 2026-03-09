@@ -15,7 +15,7 @@ typedef struct NEWGRID_AuxData {
     UBYTE pad0[7];
     UBYTE rowFlags[49];
     UBYTE pad1[0x38 - 0x38];
-    UBYTE *titleTable[49];
+    char *titleTable[49];
 } NEWGRID_AuxData;
 
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
