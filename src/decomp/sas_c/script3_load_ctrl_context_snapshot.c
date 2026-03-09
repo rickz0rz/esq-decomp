@@ -23,7 +23,7 @@ extern UWORD TEXTDISP_ActiveGroupId;
 extern UBYTE TEXTDISP_BannerFallbackEntryIndex;
 extern UBYTE TEXTDISP_BannerSelectedEntryIndex;
 
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newPtr, char *oldPtr);
+extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newPtr, char *oldPtr);
 
 typedef struct SCRIPT_CtrlContextSnapshot {
     UBYTE pad0[2];

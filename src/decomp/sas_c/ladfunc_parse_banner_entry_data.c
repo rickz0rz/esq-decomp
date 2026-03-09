@@ -32,7 +32,7 @@ extern LONG LADFUNC_ParseHexDigit(LONG ch);
 extern UBYTE LADFUNC_SetPackedPenHighNibble(LONG packed, LONG hi);
 extern UBYTE LADFUNC_SetPackedPenLowNibble(LONG packed, LONG lo);
 extern LONG ESQIFF2_ValidateAsciiNumericByte(LONG ch);
-extern char *ESQPARS_ReplaceOwnedString(char *newText, char *oldText);
+extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern void LADFUNC_UpdateHighlightState(void);
 extern UBYTE *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);

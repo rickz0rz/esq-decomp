@@ -18,7 +18,7 @@ extern LADFUNC_EntryRecord *LADFUNC_EntryPtrTable[];
 extern void LADFUNC_RepackEntryTextAndAttrBuffers(char *textBuf, UBYTE *attrBuf);
 extern char *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
-extern char *ESQPARS_ReplaceOwnedString(char *newText, char *oldText);
+extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 
 extern const char Global_STR_LADFUNC_C_28[];
 extern const char Global_STR_LADFUNC_C_29[];

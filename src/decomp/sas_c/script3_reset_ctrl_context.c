@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newPtr, char *oldPtr);
+extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newPtr, char *oldPtr);
 
 typedef struct SCRIPT_CtrlContextSnapshot {
     UBYTE pad0[2];
