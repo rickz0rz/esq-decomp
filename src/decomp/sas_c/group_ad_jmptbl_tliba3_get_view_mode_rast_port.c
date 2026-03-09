@@ -1,3 +1,5 @@
-extern void TLIBA3_GetViewModeRastPort(void);
+typedef signed long LONG;
 
-void GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort(void){TLIBA3_GetViewModeRastPort();}
+extern char *TLIBA3_GetViewModeRastPort(LONG viewModeIndex);
+
+char *GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort(LONG viewModeIndex){return TLIBA3_GetViewModeRastPort(viewModeIndex);}
