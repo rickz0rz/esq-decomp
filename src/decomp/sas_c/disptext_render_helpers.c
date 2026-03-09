@@ -16,20 +16,20 @@ extern UBYTE DISPTEXT_InsetNibblePrimary;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void DISPTEXT_FinalizeLineTable(void);
-extern LONG _LVOSetAPen(void *gfxBase, void *rp, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, void *rp, LONG drawMode);
-extern LONG _LVOMove(void *gfxBase, void *rp, LONG x, LONG y);
-extern LONG _LVOText(void *gfxBase, void *rp, const char *text, LONG count);
+extern LONG _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
+extern LONG _LVOSetDrMd(void *gfxBase, char *rp, LONG drawMode);
+extern LONG _LVOMove(void *gfxBase, char *rp, LONG x, LONG y);
+extern LONG _LVOText(void *gfxBase, char *rp, const char *text, LONG count);
 extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *text, LONG ch);
 extern void GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments(
-    void *rp,
+    char *rp,
     LONG x,
     LONG y,
     LONG insetSecondary,
     LONG insetPrimary,
     char *text);
 
-void DISPTEXT_RenderCurrentLine(void *rp, LONG x, LONG y)
+void DISPTEXT_RenderCurrentLine(char *rp, LONG x, LONG y)
 {
     LONG idx;
     char *linePtr;
