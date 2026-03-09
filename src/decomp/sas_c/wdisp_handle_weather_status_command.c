@@ -40,13 +40,13 @@ extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
 extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
-extern void WDISP_DrawWeatherStatusOverlay(void *rastPort, LONG x, LONG y);
-extern void WDISP_DrawWeatherStatusSummary(void *rastPort, LONG x, LONG y);
+extern void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG x, LONG y);
+extern void WDISP_DrawWeatherStatusSummary(char *rastPort, LONG x, LONG y);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
 
-extern LONG _LVOSetDrMd(void *rastPort, LONG mode);
-extern LONG _LVOSetAPen(void *rastPort, LONG pen);
-extern LONG _LVOSetFont(void *rastPort, void *font);
+extern LONG _LVOSetDrMd(char *rastPort, LONG mode);
+extern LONG _LVOSetAPen(char *rastPort, LONG pen);
+extern LONG _LVOSetFont(char *rastPort, void *font);
 
 typedef struct WDISP_DisplayContext {
     UBYTE pad0[2];
@@ -58,7 +58,7 @@ typedef struct WDISP_DisplayContext {
 void WDISP_HandleWeatherStatusCommand(LONG command)
 {
     WDISP_DisplayContext *context;
-    void *localRastPort;
+    char *localRastPort;
     LONG width;
     LONG left;
     WORD capture3;
@@ -73,7 +73,7 @@ void WDISP_HandleWeatherStatusCommand(LONG command)
     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
 
     context = (WDISP_DisplayContext *)WDISP_DisplayContextBase;
-    localRastPort = (void *)&context->left;
+    localRastPort = (char *)&context->left;
     width = (LONG)context->width;
     left = (LONG)context->left;
 
