@@ -33,7 +33,7 @@ enum {
 };
 
 extern UBYTE TLIBA3_VmArrayRuntimeTable[];
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern ULONG WDISP_DisplayContextPlanePointer0[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
