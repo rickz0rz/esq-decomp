@@ -13,6 +13,7 @@ extern WORD TEXTDISP_ActiveGroupId;
 extern WORD TEXTDISP_CurrentMatchIndex;
 extern WORD TEXTDISP_PrimaryFirstMatchIndex;
 extern WORD TEXTDISP_SecondaryFirstMatchIndex;
+extern WORD TEXTDISP_PrimaryChannelCode;
 extern char TEXTDISP_PrimarySearchText[];
 extern char TEXTDISP_DefaultSpacePad[];
 
@@ -39,8 +40,6 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
     const UBYTE SCRIPT_FILTER = 'F';
     const LONG MODE_FILTER = 70;
     const LONG MODE_EXACT = 88;
-    const LONG CMD_CHANNEL_CODE = 0;
-    const LONG FLAG_TRUE = 1;
     const LONG FLAG_FALSE = 0;
     const LONG INDEX_NOT_FOUND = -1;
     const LONG GROUP_PRIMARY = 1;
@@ -59,7 +58,8 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
     if (command == CMD_CHANNEL) {
         WDISP_SPrintf(scratch, TEXTDISP_CommandPrefixFormat, arg);
 
-        if (TEXTDISP_SelectGroupAndEntry(arg, TEXTDISP_PrimarySearchText, CMD_CHANNEL_CODE) == 0) {
+        if (TEXTDISP_SelectGroupAndEntry(
+                arg, TEXTDISP_PrimarySearchText, (LONG)(WORD)TEXTDISP_PrimaryChannelCode) == 0) {
             TEXTDISP_StatusGroupId = TEXTDISP_ActiveGroupId;
             TEXTDISP_LastDispatchMatchIndex = TEXTDISP_CurrentMatchIndex;
             TEXTDISP_LastDispatchGroupId = (WORD)SCRIPT_GetBannerCharOrFallback();
@@ -128,7 +128,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
     }
 
     if (doCleanup != 0) {
-        TEXTDISP_FilterAndSelectEntry((void *)0, CMD_CHANNEL_CODE);
+        TEXTDISP_FilterAndSelectEntry((void *)0, 0);
         if (TEXTDISP_CommandBufferPtr != (void *)0) {
             MEMORY_DeallocateMemory(Global_STR_TEXTDISP_C_2, BUFFER_FREE_LINE, TEXTDISP_CommandBufferPtr, BUFFER_SIZE);
             TEXTDISP_CommandBufferPtr = (void *)0;

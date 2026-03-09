@@ -2,27 +2,25 @@
 __code:
 TEXTDISP_HandleScriptCommand:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$124,D0                 ;90bc 0000 0124 
+              SUB.L          #$11c,D0                 ;90bc 0000 011c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$114,A7                 ;9efc 0114 
+              SUB.W          #$10c,A7                 ;9efc 010c 
               MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
 ___TEXTDISP_HandleScriptCommand__1:
-              MOVE.B         $13b(A7),D6              ;1c2f 013b 
-              MOVE.B         $137(A7),D7              ;1e2f 0137 
-              MOVE.L         $13c(A7),A5              ;2a6f 013c 
+              MOVE.B         $133(A7),D6              ;1c2f 0133 
+              MOVE.B         $12f(A7),D7              ;1e2f 012f 
+              MOVE.L         $134(A7),A5              ;2a6f 0134 
               MOVEQ.L        #$43,D5                  ;7a43 
-              MOVE.B         #$4a,$12c(A7)            ;1f7c 004a 012c 
+              MOVE.B         #$4a,$124(A7)            ;1f7c 004a 0124 
               MOVE.B         #$46,$f0(A7)             ;1f7c 0046 00f0 
               MOVEQ.L        #$46,D0                  ;7046 
               MOVE.L         D0,$ec(A7)               ;2f40 00ec 
               MOVEQ.L        #$58,D0                  ;7058 
-              MOVE.L         D0,$128(A7)              ;2f40 0128 
-              CLR.L          $124(A7)                 ;42af 0124 
-              MOVEQ.L        #$1,D0                   ;7001 
               MOVE.L         D0,$120(A7)              ;2f40 0120 
               CLR.L          $11c(A7)                 ;42af 011c 
-              MOVEQ.L        #$ff,D1                  ;72ff 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVEQ.L        #$1,D1                   ;7201 
               CLR.L          $110(A7)                 ;42af 0110 
               MOVE.W         #$31,$108(A7)            ;3f7c 0031 0108 
               MOVE.L         #$43c,$e8(A7)            ;2f7c 0000 043c 00e8 
@@ -30,19 +28,21 @@ ___TEXTDISP_HandleScriptCommand__1:
               MOVE.L         #$2dc,$100(A7)           ;2f7c 0000 02dc 0100 
               MOVE.L         #$dc,$fc(A7)             ;2f7c 0000 00dc 00fc 
               CLR.B          $f8(A7)                  ;422f 00f8 
-              MOVE.L         D0,$f4(A7)               ;2f40 00f4 
-              MOVE.L         D0,$e4(A7)               ;2f40 00e4 
-              MOVE.L         D0,$114(A7)              ;2f40 0114 
-              MOVE.L         D1,$10c(A7)              ;2f41 010c 
-              MOVE.L         D1,$118(A7)              ;2f41 0118 
+              MOVE.L         D0,$10c(A7)              ;2f40 010c 
+              MOVE.L         D0,$118(A7)              ;2f40 0118 
+              MOVE.L         D1,$f4(A7)               ;2f41 00f4 
+              MOVE.L         D1,$e4(A7)               ;2f41 00e4 
+              MOVE.L         D1,$114(A7)              ;2f41 0114 
               CMP.B          D5,D6                    ;bc05 
-              BNE.W          ___TEXTDISP_HandleScriptCommand__10;6600 00c2 
+              BNE.W          ___TEXTDISP_HandleScriptCommand__10;6600 00c6 
 ___TEXTDISP_HandleScriptCommand__2:
               MOVE.L         A5,-(A7)                 ;2f0d 
               PEA            TEXTDISP_CommandPrefixFormat(A4);486c 0000 
               PEA            $24(A7)                  ;486f 0024 
               BSR.W          WDISP_SPrintf            ;6100 0000 
-              MOVE.L         $130(A7),(A7)            ;2eaf 0130 
+              MOVE.W         TEXTDISP_PrimaryChannelCode(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,(A7)                  ;2e80 
               PEA            TEXTDISP_PrimarySearchText(A4);486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          TEXTDISP_SelectGroupAndEntry;6100 0000 
@@ -103,7 +103,7 @@ ___TEXTDISP_HandleScriptCommand__9:
               MOVE.L         $11c(A7),$e4(A7)         ;2f6f 011c 00e4 
               BRA.W          ___TEXTDISP_HandleScriptCommand__23;6000 00c8 
 ___TEXTDISP_HandleScriptCommand__10:
-              CMP.B          $12c(A7),D6              ;bc2f 012c 
+              CMP.B          $124(A7),D6              ;bc2f 0124 
               BNE.B          ___TEXTDISP_HandleScriptCommand__12;662a 
 ___TEXTDISP_HandleScriptCommand__11:
               MOVE.W         TEXTDISP_StatusGroupId(A4),D0;302c 0000 
@@ -170,7 +170,7 @@ ___TEXTDISP_HandleScriptCommand__20:
 ___TEXTDISP_HandleScriptCommand__21:
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          TEXTDISP_DrawHighlightFrame;6100 0000 
-              MOVE.L         $12c(A7),(A7)            ;2eaf 012c 
+              MOVE.L         $124(A7),(A7)            ;2eaf 0124 
               MOVE.L         TEXTDISP_CommandBufferPtr(A4),-(A7);2f2c 0000 
               BSR.W          TEXTDISP_FilterAndSelectEntry;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
@@ -186,9 +186,9 @@ ___TEXTDISP_HandleScriptCommand__24:
               MOVE.W         $108(A7),TEXTDISP_LastDispatchGroupId(A4);396f 0108 0000 
 ___TEXTDISP_HandleScriptCommand__25:
               TST.L          $f4(A7)                  ;4aaf 00f4 
-              BEQ.B          ___TEXTDISP_HandleScriptCommand__28;672c 
+              BEQ.B          ___TEXTDISP_HandleScriptCommand__28;672a 
 ___TEXTDISP_HandleScriptCommand__26:
-              MOVE.L         $124(A7),-(A7)           ;2f2f 0124 
+              CLR.L          -(A7)                    ;42a7 
               CLR.L          -(A7)                    ;42a7 
               BSR.W          TEXTDISP_FilterAndSelectEntry;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
@@ -207,7 +207,7 @@ ___TEXTDISP_HandleScriptCommand__28:
 ___TEXTDISP_HandleScriptCommand__29:
 ___TEXTDISP_HandleScriptCommand__30:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
-              ADD.W          #$114,A7                 ;defc 0114 
+              ADD.W          #$10c,A7                 ;defc 010c 
               RTS                                     ;4e75 
 __const:
 __strings:
@@ -215,6 +215,7 @@ __strings:
               XREF           _XCOVF
               XREF           TEXTDISP_CommandPrefixFormat
               XREF           WDISP_SPrintf
+              XREF           TEXTDISP_PrimaryChannelCode
               XREF           TEXTDISP_PrimarySearchText
               XREF           TEXTDISP_SelectGroupAndEntry
               XREF           TEXTDISP_ActiveGroupId
