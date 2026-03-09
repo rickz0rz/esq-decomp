@@ -250,7 +250,7 @@ long DISKIO2_LoadCurDayDataFile(void)
                 }
 
                 str = GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(str, (ULONG)entry->flags27);
-                title->slotTextTable[slot] = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(title->slotTextTable[slot], str);
+                title->slotTextTable[slot] = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(str, title->slotTextTable[slot]);
                 if (title->slotTextTable[slot] != 0) {
                     entry->flags40 = (UBYTE)(entry->flags40 | 0x80);
                 }

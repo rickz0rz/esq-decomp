@@ -413,9 +413,9 @@ ___DISKIO2_LoadCurDayDataFile__66:
               SWAP           D0                       ;4840 
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
-              MOVE.L         A3,(A7)                  ;2e8b 
               MOVE.L         $68(A7),A0               ;206f 0068 
-              MOVE.L         $38(A0,D1.L),-(A7)       ;2f30 1838 
+              MOVE.L         $38(A0,D1.L),(A7)        ;2eb0 1838 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         D1,$2c(A7)               ;2f41 002c 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 

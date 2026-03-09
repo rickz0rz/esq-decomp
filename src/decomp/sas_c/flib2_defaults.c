@@ -50,7 +50,7 @@ extern char FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S;
 extern char FLIB_STR_DIGITAL_PPV_LISTINGS;
 extern char Global_STR_DIGITAL_PPV_PERIOD;
 
-extern char *ESQPARS_ReplaceOwnedString(char *newValue, char *oldValue);
+extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 extern void GCOMMAND_LoadDefaultTable(void);
 extern void GCOMMAND_LoadMplexTemplate(void);
 extern void GCOMMAND_LoadPPV3Template(void);
