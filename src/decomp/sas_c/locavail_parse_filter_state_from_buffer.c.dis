@@ -1,0 +1,306 @@
+              SECTION      text,CODE
+__code:
+LOCAVAIL_ParseFilterStateFromBuf:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$48,D0                  ;90bc 0000 0048 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$38,A7                  ;9efc 0038 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___LOCAVAIL_ParseFilterStateFromBuf__1:
+              MOVE.L         $5c(A7),A3               ;266f 005c 
+              MOVE.L         $58(A7),A5               ;2a6f 0058 
+              MOVE.L         A3,A2                    ;244b 
+              MOVEQ.L        #$1,D7                   ;7e01 
+              PEA            $3c(A7)                  ;486f 003c 
+              BSR.W          LOCAVAIL_ResetFilterStateStruct;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.B         (A5)+,$3c(A7)            ;1f5d 003c 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$26(A7)               ;1f40 0026 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
+              BTST           #$1,$0(A0,D1.W)          ;0830 0001 1000 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__3;670a 
+___LOCAVAIL_ParseFilterStateFromBuf__2:
+              MOVE.B         D0,D1                    ;1200 
+              SUBI.B         #$20,D1                  ;0401 0020 
+              MOVE.B         D1,$26(A7)               ;1f41 0026 
+___LOCAVAIL_ParseFilterStateFromBuf__3:
+              MOVE.B         $26(A7),D0               ;102f 0026 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              PEA            LOCAVAIL_TAG_FV(A4)      ;486c 0000 
+              BSR.W          GROUP_AS_JMPTBL_STR_FindCharPtr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.W          ___LOCAVAIL_ParseFilterStateFromBuf__47;6700 0220 
+___LOCAVAIL_ParseFilterStateFromBuf__4:
+              MOVE.B         $26(A7),D0               ;102f 0026 
+              MOVE.B         D0,$42(A7)               ;1f40 0042 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$26(A7)               ;1f40 0026 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$27(A7)               ;1f40 0027 
+              CLR.B          $28(A7)                  ;422f 0028 
+              PEA            $26(A7)                  ;486f 0026 
+              BSR.W          NEWGRID2_JMPTBL_PARSE_ReadSigned;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         D6,$42(A7)               ;2f46 0042 
+              PEA            $40(A7)                  ;486f 0040 
+              BSR.W          LOCAVAIL_AllocNodeArraysForState;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.W          ___LOCAVAIL_ParseFilterStateFromBuf__44;6700 01e2 
+___LOCAVAIL_ParseFilterStateFromBuf__5:
+              MOVEQ.L        #$0,D5                   ;7a00 
+___LOCAVAIL_ParseFilterStateFromBuf__6:
+              TST.L          D7                       ;4a87 
+              BEQ.W          ___LOCAVAIL_ParseFilterStateFromBuf__48;6700 01e4 
+___LOCAVAIL_ParseFilterStateFromBuf__7:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.W          ___LOCAVAIL_ParseFilterStateFromBuf__48;6c00 01de 
+___LOCAVAIL_ParseFilterStateFromBuf__8:
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVEQ.L        #$12,D1                  ;7212 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__10;6706 
+___LOCAVAIL_ParseFilterStateFromBuf__9:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              BRA.W          ___LOCAVAIL_ParseFilterStateFromBuf__48;6000 01d0 
+___LOCAVAIL_ParseFilterStateFromBuf__10:
+              PEA            ($a).w                   ;4878 000a 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              BSR.W          NEWGRID_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         $58(A7),A0               ;206f 0058 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$2e(A7)               ;1f40 002e 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$2f(A7)               ;1f40 002f 
+              CLR.B          $30(A7)                  ;422f 0030 
+              PEA            $2e(A7)                  ;486f 002e 
+              MOVE.L         A0,$44(A7)               ;2f48 0044 
+              BSR.W          NEWGRID2_JMPTBL_PARSE_ReadSigned;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         $38(A7),A0               ;206f 0038 
+              MOVE.B         D0,(A0)                  ;1080 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__12;6706 
+___LOCAVAIL_ParseFilterStateFromBuf__11:
+              MOVEQ.L        #$64,D1                  ;7264 
+              CMP.B          D1,D0                    ;b001 
+              BCS.B          ___LOCAVAIL_ParseFilterStateFromBuf__13;6506 
+___LOCAVAIL_ParseFilterStateFromBuf__12:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              BRA.W          ___LOCAVAIL_ParseFilterStateFromBuf__48;6000 018c 
+___LOCAVAIL_ParseFilterStateFromBuf__13:
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$26(A7)               ;1f40 0026 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$27(A7)               ;1f40 0027 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$28(A7)               ;1f40 0028 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$29(A7)               ;1f40 0029 
+              CLR.B          $2a(A7)                  ;422f 002a 
+              LEA            $2(A0),A1                ;43e8 0002 
+              PEA            $26(A7)                  ;486f 0026 
+              MOVE.L         A1,$20(A7)               ;2f49 0020 
+              BSR.W          NEWGRID2_JMPTBL_PARSE_ReadSigned;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              MOVE.W         D0,(A0)                  ;3080 
+              MOVE.L         $38(A7),A0               ;206f 0038 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$2,A1                   ;5489 
+              MOVE.W         (A1),D0                  ;3011 
+              TST.W          D0                       ;4a40 
+              BLE.B          ___LOCAVAIL_ParseFilterStateFromBuf__15;6f06 
+___LOCAVAIL_ParseFilterStateFromBuf__14:
+              CMPI.W         #$e11,D0                 ;0c40 0e11 
+              BLT.B          ___LOCAVAIL_ParseFilterStateFromBuf__16;6d06 
+___LOCAVAIL_ParseFilterStateFromBuf__15:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              BRA.W          ___LOCAVAIL_ParseFilterStateFromBuf__48;6000 013e 
+___LOCAVAIL_ParseFilterStateFromBuf__16:
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$26(A7)               ;1f40 0026 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$27(A7)               ;1f40 0027 
+              CLR.B          $28(A7)                  ;422f 0028 
+              LEA            $4(A0),A1                ;43e8 0004 
+              PEA            $26(A7)                  ;486f 0026 
+              MOVE.L         A1,$20(A7)               ;2f49 0020 
+              BSR.W          NEWGRID2_JMPTBL_PARSE_ReadSigned;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              MOVE.W         D0,(A0)                  ;3080 
+              MOVE.L         $38(A7),A0               ;206f 0038 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$4,A1                   ;5889 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         (A1),D0                  ;3011 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVEQ.L        #$0,D1                   ;7200 
+              CMP.W          D1,D0                    ;b041 
+              BLS.B          ___LOCAVAIL_ParseFilterStateFromBuf__18;6306 
+___LOCAVAIL_ParseFilterStateFromBuf__17:
+              MOVEQ.L        #$64,D1                  ;7264 
+              CMP.L          D1,D0                    ;b081 
+              BLT.B          ___LOCAVAIL_ParseFilterStateFromBuf__19;6d06 
+___LOCAVAIL_ParseFilterStateFromBuf__18:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              BRA.W          ___LOCAVAIL_ParseFilterStateFromBuf__48;6000 00f4 
+___LOCAVAIL_ParseFilterStateFromBuf__19:
+              LEA            $6(A0),A1                ;43e8 0006 
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($155).w                 ;4878 0155 
+              PEA            Global_STR_LOCAVAIL_C_6(A4);486c 0000 
+              MOVE.L         A1,$2c(A7)               ;2f49 002c 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         $38(A7),A0               ;206f 0038 
+              ADDQ.L         #$6,A0                   ;5c88 
+              TST.L          (A0)                     ;4a90 
+              BNE.B          ___LOCAVAIL_ParseFilterStateFromBuf__21;6606 
+___LOCAVAIL_ParseFilterStateFromBuf__20:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              BRA.W          ___LOCAVAIL_ParseFilterStateFromBuf__48;6000 00be 
+___LOCAVAIL_ParseFilterStateFromBuf__21:
+              CLR.L          $34(A7)                  ;42af 0034 
+___LOCAVAIL_ParseFilterStateFromBuf__22:
+              TST.L          D7                       ;4a87 
+              BEQ.W          ___LOCAVAIL_ParseFilterStateFromBuf__42;6700 00a4 
+___LOCAVAIL_ParseFilterStateFromBuf__23:
+              MOVE.L         $34(A7),D0               ;202f 0034 
+              CMP.L          $30(A7),D0               ;b0af 0030 
+              BGE.W          ___LOCAVAIL_ParseFilterStateFromBuf__42;6c00 0098 
+___LOCAVAIL_ParseFilterStateFromBuf__24:
+              MOVE.B         (A5)+,D1                 ;121d 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D1,D2                    ;1401 
+              MOVE.B         D1,$25(A7)               ;1f41 0025 
+              MOVE.B         D1,$2c(A7)               ;1f41 002c 
+              LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
+              BTST           #$1,$0(A0,D2.W)          ;0830 0001 2000 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__26;6706 
+___LOCAVAIL_ParseFilterStateFromBuf__25:
+              MOVEQ.L        #$20,D2                  ;7420 
+              SUB.B          D2,$25(A7)               ;952f 0025 
+___LOCAVAIL_ParseFilterStateFromBuf__26:
+              MOVE.L         $38(A7),A0               ;206f 0038 
+              ADDQ.L         #$6,A0                   ;5c88 
+              MOVE.L         (A0),A1                  ;2250 
+              ADD.L          D0,A1                    ;d3c0 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         $25(A7),D0               ;102f 0025 
+              MOVE.L         A1,$20(A7)               ;2f49 0020 
+___LOCAVAIL_ParseFilterStateFromBuf__27:
+              MOVEQ.L        #$30,D1                  ;7230 
+              SUB.L          D1,D0                    ;9081 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__35;671c 
+___LOCAVAIL_ParseFilterStateFromBuf__28:
+              MOVEQ.L        #$17,D1                  ;7217 
+              SUB.L          D1,D0                    ;9081 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__37;6728 
+___LOCAVAIL_ParseFilterStateFromBuf__29:
+              SUBQ.L         #$2,D0                   ;5580 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__39;6738 
+___LOCAVAIL_ParseFilterStateFromBuf__30:
+              SUBQ.L         #$3,D0                   ;5780 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__35;670e 
+___LOCAVAIL_ParseFilterStateFromBuf__31:
+              SUBQ.L         #$8,D0                   ;5180 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__38;6726 
+___LOCAVAIL_ParseFilterStateFromBuf__32:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__35;6706 
+___LOCAVAIL_ParseFilterStateFromBuf__33:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__36;670a 
+___LOCAVAIL_ParseFilterStateFromBuf__34:
+              BRA.B          ___LOCAVAIL_ParseFilterStateFromBuf__40;6030 
+___LOCAVAIL_ParseFilterStateFromBuf__35:
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              CLR.B          (A0)                     ;4210 
+              BRA.B          ___LOCAVAIL_ParseFilterStateFromBuf__41;6030 
+___LOCAVAIL_ParseFilterStateFromBuf__36:
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.B         #$1,(A0)                 ;10bc 0001 
+              BRA.B          ___LOCAVAIL_ParseFilterStateFromBuf__41;6026 
+___LOCAVAIL_ParseFilterStateFromBuf__37:
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.B         #$2,(A0)                 ;10bc 0002 
+              BRA.B          ___LOCAVAIL_ParseFilterStateFromBuf__41;601c 
+___LOCAVAIL_ParseFilterStateFromBuf__38:
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.B         #$3,(A0)                 ;10bc 0003 
+              BRA.B          ___LOCAVAIL_ParseFilterStateFromBuf__41;6012 
+___LOCAVAIL_ParseFilterStateFromBuf__39:
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.B         #$4,(A0)                 ;10bc 0004 
+              BRA.B          ___LOCAVAIL_ParseFilterStateFromBuf__41;6008 
+___LOCAVAIL_ParseFilterStateFromBuf__40:
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              CLR.B          (A0)                     ;4210 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___LOCAVAIL_ParseFilterStateFromBuf__41:
+              ADDQ.L         #$1,$34(A7)              ;52af 0034 
+              BRA.W          ___LOCAVAIL_ParseFilterStateFromBuf__22;6000 ff5a 
+___LOCAVAIL_ParseFilterStateFromBuf__42:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.W          ___LOCAVAIL_ParseFilterStateFromBuf__6;6000 fe24 
+___LOCAVAIL_ParseFilterStateFromBuf__43:
+___LOCAVAIL_ParseFilterStateFromBuf__44:
+              TST.L          D6                       ;4a86 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__48;6706 
+___LOCAVAIL_ParseFilterStateFromBuf__45:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___LOCAVAIL_ParseFilterStateFromBuf__46:
+              BRA.B          ___LOCAVAIL_ParseFilterStateFromBuf__48;6002 
+___LOCAVAIL_ParseFilterStateFromBuf__47:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___LOCAVAIL_ParseFilterStateFromBuf__48:
+              TST.L          D7                       ;4a87 
+              BEQ.B          ___LOCAVAIL_ParseFilterStateFromBuf__50;6716 
+___LOCAVAIL_ParseFilterStateFromBuf__49:
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          LOCAVAIL_FreeResourceChain;6100 0000 
+              PEA            $40(A7)                  ;486f 0040 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          LOCAVAIL_CopyFilterStateStructRe;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___LOCAVAIL_ParseFilterStateFromBuf__51;600a 
+___LOCAVAIL_ParseFilterStateFromBuf__50:
+              PEA            $3c(A7)                  ;486f 003c 
+              BSR.W          LOCAVAIL_FreeResourceChain;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___LOCAVAIL_ParseFilterStateFromBuf__51:
+              MOVE.L         D7,D0                    ;2007 
+___LOCAVAIL_ParseFilterStateFromBuf__52:
+___LOCAVAIL_ParseFilterStateFromBuf__53:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$38,A7                  ;defc 0038 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LOCAVAIL_ResetFilterStateStruct
+              XREF           WDISP_CharClassTable
+              XREF           LOCAVAIL_TAG_FV
+              XREF           GROUP_AS_JMPTBL_STR_FindCharPtr
+              XREF           NEWGRID2_JMPTBL_PARSE_ReadSigned
+              XREF           LOCAVAIL_AllocNodeArraysForState
+              XREF           NEWGRID_JMPTBL_MATH_Mulu32
+              XREF           Global_STR_LOCAVAIL_C_6
+              XREF           NEWGRID_JMPTBL_MEMORY_AllocateMe
+              XREF           LOCAVAIL_FreeResourceChain
+              XREF           LOCAVAIL_CopyFilterStateStructRe
+              XDEF           LOCAVAIL_ParseFilterStateFromBuf
+              END
