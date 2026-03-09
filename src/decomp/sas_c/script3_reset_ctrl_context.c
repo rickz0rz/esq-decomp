@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
-extern LONG ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(LONG oldPtr, LONG newPtr);
+extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *oldPtr, char *newPtr);
 
 typedef struct SCRIPT_CtrlContextSnapshot {
     UBYTE pad0[2];
@@ -17,8 +17,8 @@ typedef struct SCRIPT_CtrlContextSnapshot {
     LONG playbackCursor;
     UWORD runtimeMode;
     UBYTE pad26[200];
-    UBYTE primarySearchText[200];
-    UBYTE secondarySearchText[200];
+    char primarySearchText[200];
+    char secondarySearchText[200];
     UWORD activeGroupId;
     UBYTE bannerFallbackEntryIndex[4];
     UBYTE pad432[4];
@@ -26,7 +26,7 @@ typedef struct SCRIPT_CtrlContextSnapshot {
     UBYTE pendingWeatherCommandChar;
     UBYTE pendingTextdispCmdChar;
     UBYTE pendingTextdispCmdArg;
-    LONG commandTextPtr;
+    char *commandTextPtr;
     UBYTE bannerSelectedEntryIndex[4];
 } SCRIPT_CtrlContextSnapshot;
 
@@ -42,7 +42,7 @@ void SCRIPT_ResetCtrlContext(void *ctx)
     p->pendingTextdispCmdChar = 0;
     p->pendingTextdispCmdArg = 0;
 
-    p->commandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(p->commandTextPtr, 0);
+    p->commandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(p->commandTextPtr, (char *)0);
 
     p->secondarySearchText[0] = 0;
     p->primarySearchText[0] = 0;

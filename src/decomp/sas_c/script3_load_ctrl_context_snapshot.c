@@ -6,12 +6,12 @@ extern UBYTE SCRIPT_Type20SubtypeCache;
 extern UBYTE SCRIPT_PendingWeatherCommandChar;
 extern UBYTE SCRIPT_PendingTextdispCmdChar;
 extern UBYTE SCRIPT_PendingTextdispCmdArg;
-extern LONG SCRIPT_CommandTextPtr;
+extern char *SCRIPT_CommandTextPtr;
 extern UWORD SCRIPT_PrimarySearchFirstFlag;
 extern UWORD TEXTDISP_PrimaryChannelCode;
 extern UWORD TEXTDISP_SecondaryChannelCode;
-extern UBYTE TEXTDISP_PrimarySearchText;
-extern UBYTE TEXTDISP_SecondarySearchText;
+extern char TEXTDISP_PrimarySearchText[];
+extern char TEXTDISP_SecondarySearchText[];
 extern UWORD TEXTDISP_CurrentMatchIndex;
 extern UWORD SCRIPT_ChannelRangeArmedFlag;
 extern UWORD TEXTDISP_ChannelSourceMode;
@@ -23,7 +23,7 @@ extern UWORD TEXTDISP_ActiveGroupId;
 extern UBYTE TEXTDISP_BannerFallbackEntryIndex;
 extern UBYTE TEXTDISP_BannerSelectedEntryIndex;
 
-extern LONG ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(LONG oldPtr, LONG newPtr);
+extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *oldPtr, char *newPtr);
 
 typedef struct SCRIPT_CtrlContextSnapshot {
     UBYTE pad0[2];
@@ -38,15 +38,15 @@ typedef struct SCRIPT_CtrlContextSnapshot {
     LONG playbackCursor;
     UWORD runtimeMode;
     UBYTE pad26[200];
-    UBYTE primarySearchText[200];
-    UBYTE secondarySearchText[200];
+    char primarySearchText[200];
+    char secondarySearchText[200];
     UWORD activeGroupId;
     UBYTE pad428[8];
     UBYTE type20SubtypeCache;
     UBYTE pendingWeatherCommandChar;
     UBYTE pendingTextdispCmdChar;
     UBYTE pendingTextdispCmdArg;
-    LONG commandTextPtr;
+    char *commandTextPtr;
     UBYTE bannerFallbackEntryIndex[4];
     UBYTE bannerSelectedEntryIndex[4];
 } SCRIPT_CtrlContextSnapshot;
@@ -54,8 +54,8 @@ typedef struct SCRIPT_CtrlContextSnapshot {
 void SCRIPT_LoadCtrlContextSnapshot(void *ctx)
 {
     SCRIPT_CtrlContextSnapshot *p;
-    UBYTE *src;
-    UBYTE *dst;
+    char *src;
+    char *dst;
     UWORD savedMode;
     LONG i;
 
@@ -73,13 +73,13 @@ void SCRIPT_LoadCtrlContextSnapshot(void *ctx)
     TEXTDISP_SecondaryChannelCode = p->secondaryChannelCode;
 
     src = p->primarySearchText;
-    dst = &TEXTDISP_PrimarySearchText;
+    dst = TEXTDISP_PrimarySearchText;
     do {
         *dst++ = *src;
     } while (*src++ != 0);
 
     src = p->secondarySearchText;
-    dst = &TEXTDISP_SecondarySearchText;
+    dst = TEXTDISP_SecondarySearchText;
     do {
         *dst++ = *src;
     } while (*src++ != 0);
