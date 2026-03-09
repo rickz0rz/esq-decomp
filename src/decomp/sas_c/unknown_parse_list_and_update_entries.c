@@ -9,18 +9,18 @@ extern UWORD CLOCK_CurrentYearValue;
 extern UBYTE TLIBA1_DayEntryModeCounter;
 extern UBYTE WDISP_StatusDayEntry0[];
 
-extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const UBYTE *pattern, const UBYTE *text);
+extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 extern LONG UNKNOWN_JMPTBL_DST_NormalizeDayOfYear(LONG day, LONG year);
-extern UBYTE *STRING_CopyPadNul(UBYTE *dst, const UBYTE *src, ULONG max_len);
-extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const UBYTE *in);
+extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG max_len);
+extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *in);
 extern ULONG MATH_Mulu32(ULONG a, ULONG b);
 
-static void copy_label_0x12(const UBYTE **pp, UBYTE *dst)
+static void copy_label_0x12(const char **pp, char *dst)
 {
     ULONG i = 0;
 
     for (;;) {
-        UBYTE c = *(*pp)++;
+        char c = *(*pp)++;
         dst[i] = c;
         if (c == 0x12 || i >= 10u) {
             break;
@@ -37,11 +37,11 @@ static LONG *status_entry_ptr(ULONG index)
     return (LONG *)(WDISP_StatusDayEntry0 + off);
 }
 
-LONG UNKNOWN_ParseListAndUpdateEntries(const UBYTE *in)
+LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
 {
-    const UBYTE *p = in;
-    UBYTE list_name[16];
-    UBYTE field_buf[8];
+    const char *p = in;
+    char list_name[16];
+    char field_buf[8];
     ULONG i;
     UBYTE marker;
 

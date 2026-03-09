@@ -72,7 +72,7 @@ ___UNKNOWN_ParseListAndUpdateEntrie__2:
               BNE.B          ___UNKNOWN_ParseListAndUpdateEntrie__4;6606 
 ___UNKNOWN_ParseListAndUpdateEntrie__3:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___UNKNOWN_ParseListAndUpdateEntrie__38;6000 01ec 
+              BRA.W          ___UNKNOWN_ParseListAndUpdateEntrie__38;6000 01ee 
 ___UNKNOWN_ParseListAndUpdateEntrie__4:
               PEA            $34(A7)                  ;486f 0034 
               PEA            WDISP_StatusListMatchPattern(A4);486c 0000 
@@ -82,7 +82,7 @@ ___UNKNOWN_ParseListAndUpdateEntrie__4:
               BEQ.B          ___UNKNOWN_ParseListAndUpdateEntrie__6;6706 
 ___UNKNOWN_ParseListAndUpdateEntrie__5:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___UNKNOWN_ParseListAndUpdateEntrie__38;6000 01d4 
+              BRA.W          ___UNKNOWN_ParseListAndUpdateEntrie__38;6000 01d6 
 ___UNKNOWN_ParseListAndUpdateEntrie__6:
               MOVEQ.L        #$0,D7                   ;7e00 
 ___UNKNOWN_ParseListAndUpdateEntrie__7:
@@ -116,7 +116,8 @@ ___UNKNOWN_ParseListAndUpdateEntrie__10:
 ___UNKNOWN_ParseListAndUpdateEntrie__11:
               MOVE.L         $44(A7),A0               ;206f 0044 
               ADDQ.L         #$1,$44(A7)              ;52af 0044 
-              MOVE.B         (A0),TLIBA1_DayEntryModeCounter(A4);1950 0000 
+              MOVE.B         (A0),D0                  ;1010 
+              MOVE.B         D0,TLIBA1_DayEntryModeCounter(A4);1940 0000 
               MOVE.L         $44(A7),A0               ;206f 0044 
               ADDQ.L         #$1,$44(A7)              ;52af 0044 
               MOVE.B         (A0),D6                  ;1c10 
@@ -145,7 +146,7 @@ ___UNKNOWN_ParseListAndUpdateEntrie__14:
               BGT.B          ___UNKNOWN_ParseListAndUpdateEntrie__19;6e20 
 ___UNKNOWN_ParseListAndUpdateEntrie__15:
               MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          status_entry_ptr         ;6100 fee0 
+              BSR.W          status_entry_ptr         ;6100 fede 
 ___UNKNOWN_ParseListAndUpdateEntrie__16:
               MOVE.L         D0,A2                    ;2440 
               ADDQ.W         #$4,A7                   ;584f 
@@ -174,7 +175,7 @@ ___UNKNOWN_ParseListAndUpdateEntrie__22:
               BNE.W          ___UNKNOWN_ParseListAndUpdateEntrie__34;6600 00f0 
 ___UNKNOWN_ParseListAndUpdateEntrie__23:
               MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          status_entry_ptr         ;6100 fea8 
+              BSR.W          status_entry_ptr         ;6100 fea6 
 ___UNKNOWN_ParseListAndUpdateEntrie__24:
               MOVE.L         D0,A0                    ;2040 
               CLR.L          $10(A0)                  ;42a8 0010 

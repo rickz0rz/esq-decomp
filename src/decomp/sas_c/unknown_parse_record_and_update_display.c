@@ -11,11 +11,11 @@ extern UBYTE WDISP_WeatherStatusBrushIndex;
 extern UWORD ED_DiagnosticsScreenActive;
 extern void *Global_REF_RASTPORT_1;
 
-extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const UBYTE *pattern, const UBYTE *text);
+extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *new_value, char *old_value);
 extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rast, LONG x, LONG y, char *text);
 
-LONG UNKNOWN_ParseRecordAndUpdateDisplay(const UBYTE *in)
+LONG UNKNOWN_ParseRecordAndUpdateDisplay(const char *in)
 {
     const UBYTE BRUSH_MIN = 2u;
     const UBYTE BRUSH_MAX = 6u;
@@ -26,8 +26,8 @@ LONG UNKNOWN_ParseRecordAndUpdateDisplay(const UBYTE *in)
     const LONG RESULT_OK = 0;
     const LONG DISPLAY_X = 0;
     const LONG DISPLAY_Y = 172;
-    const UBYTE *p = in;
-    UBYTE local[16];
+    const char *p = in;
+    char local[16];
     UBYTE countdown = *p++;
     UBYTE color = *p++;
     UBYTE brush = *p++;
@@ -40,7 +40,7 @@ LONG UNKNOWN_ParseRecordAndUpdateDisplay(const UBYTE *in)
     }
 
     for (;;) {
-        UBYTE c = *p++;
+        char c = *p++;
         local[i] = c;
         if (c == TOKEN_RECORD_END || i >= LABEL_MAX) {
             break;
