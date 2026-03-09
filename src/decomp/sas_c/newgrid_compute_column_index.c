@@ -11,7 +11,7 @@ typedef struct NEWGRID_Context {
 extern UWORD NEWGRID_RowHeightPx;
 extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG a, LONG b);
 
-LONG NEWGRID_ComputeColumnIndex(void *gridCtx)
+LONG NEWGRID_ComputeColumnIndex(char *gridCtx)
 {
     NEWGRID_Context *grid = (NEWGRID_Context *)gridCtx;
     LONG result = 0;

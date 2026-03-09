@@ -26,13 +26,13 @@ extern UWORD NEWGRID_RowHeightPx;
 extern char *Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern void NEWGRID_DrawGridFrame(void *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
+extern void NEWGRID_DrawGridFrame(char *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
 extern void _LVOSetAPen(void *rastPort, LONG pen);
 extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
 extern void NEWGRID_DrawWrappedText(void *rastPort, LONG x, LONG y, LONG width, char *text, LONG centered);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
-LONG NEWGRID_DrawAwaitingListingsMessage(void *gridCtx)
+LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
 {
     NEWGRID_Context *ctx;
     NEWGRID_RastPort *rast;

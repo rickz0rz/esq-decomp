@@ -7,14 +7,14 @@ extern LONG NEWGRID_AltEntryCursor;
 extern LONG NEWGRID_AltEntryAttemptCounter;
 extern UBYTE CONFIG_NewgridSelectionCode35EnabledFlag;
 
-extern LONG NEWGRID_HandleAltGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex);
+extern LONG NEWGRID_HandleAltGridState(char *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_FindNextEntryWithMarkers(LONG mode, LONG startIndex, WORD selector);
-extern void NEWGRID_DrawEmptyGridMessage(UBYTE *ctx, LONG rowIndex, LONG selector);
-extern void NEWGRID_ValidateSelectionCode(UBYTE *ctx, LONG code);
+extern void NEWGRID_DrawEmptyGridMessage(char *ctx, LONG rowIndex, LONG selector);
+extern void NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
-extern LONG NEWGRID_ComputeColumnIndex(UBYTE *ctx);
+extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
 
-LONG NEWGRID_ProcessAltEntryState(UBYTE *ctx, WORD rowIndex, WORD selector)
+LONG NEWGRID_ProcessAltEntryState(char *ctx, WORD rowIndex, WORD selector)
 {
     LONG updatedFromScan;
     LONG state;
