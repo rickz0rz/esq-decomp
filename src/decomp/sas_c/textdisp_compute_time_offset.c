@@ -2,6 +2,13 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct TEXTDISP_AuxData {
+    UBYTE pad0[56];
+    UBYTE *titleTable[110];
+    UBYTE pad1[2];
+    UBYTE slotCode;
+} TEXTDISP_AuxData;
+
 extern WORD CLOCK_CurrentMonthIndex;
 extern WORD CLOCK_CurrentDayOfMonth;
 extern WORD CLOCK_CurrentYearValue;
@@ -15,6 +22,7 @@ extern LONG MATH_Mulu32(LONG a, LONG b);
 
 LONG TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG index)
 {
+    TEXTDISP_AuxData *aux;
     LONG dateTriplet[3];
     LONG timePair[2];
     LONG dayDelta;
@@ -23,11 +31,12 @@ LONG TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG index)
     LONG currentHour12;
     LONG slotIndex;
 
+    aux = (TEXTDISP_AuxData *)title;
     slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(
         index,
         groupCode,
         groupCode,
-        (LONG)(UBYTE)title[498]);
+        (LONG)aux->slotCode);
 
     TLIBA2_ComputeBroadcastTimeWindow(
         (WORD)groupCode,

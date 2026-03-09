@@ -2,27 +2,27 @@
 __code:
 TEXTDISP_ComputeTimeOffset:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$3c,D0                  ;90bc 0000 003c 
+              SUB.L          #$40,D0                  ;90bc 0000 0040 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$24,A7                  ;9efc 0024 
-              MOVEM.L        D4/D5/D6/D7/A5,-(A7)     ;48e7 0f04 
+              SUB.W          #$28,A7                  ;9efc 0028 
+              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
 ___TEXTDISP_ComputeTimeOffset__1:
-              MOVE.L         $44(A7),D6               ;2c2f 0044 
-              MOVE.L         $3c(A7),D7               ;2e2f 003c 
-              MOVE.L         $40(A7),A5               ;2a6f 0040 
-              MOVE.B         $1f2(A5),D0              ;102d 01f2 
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         D0,D1                    ;1200 
-              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         $48(A7),D6               ;2c2f 0048 
+              MOVE.L         $40(A7),D7               ;2e2f 0040 
+              MOVE.L         $44(A7),A5               ;2a6f 0044 
+              MOVE.L         A5,A3                    ;264d 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         $1f2(A3),D0              ;102b 01f2 
+              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         D6,-(A7)                 ;2f06 
               BSR.W          TLIBA1_JMPTBL_ESQDISP_ComputeSch;6100 0000 
               MOVE.L         D7,D1                    ;2207 
               EXT.L          D1                       ;48c1 
-              PEA            $34(A7)                  ;486f 0034 
-              PEA            $40(A7)                  ;486f 0040 
+              PEA            $38(A7)                  ;486f 0038 
+              PEA            $44(A7)                  ;486f 0044 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D6,-(A7)                 ;2f06 
               MOVE.L         A5,-(A7)                 ;2f0d 
@@ -32,7 +32,7 @@ ___TEXTDISP_ComputeTimeOffset__1:
               LEA            $28(A7),A7               ;4fef 0028 
               MOVE.W         CLOCK_CurrentYearValue(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
-              MOVE.L         $2c(A7),D1               ;222f 002c 
+              MOVE.L         $30(A7),D1               ;222f 0030 
               SUB.L          D0,D1                    ;9280 
               MOVE.L         D1,D5                    ;2a01 
               TST.L          D5                       ;4a85 
@@ -40,7 +40,7 @@ ___TEXTDISP_ComputeTimeOffset__1:
 ___TEXTDISP_ComputeTimeOffset__2:
               MOVE.W         CLOCK_CurrentMonthIndex(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
-              MOVE.L         $30(A7),D1               ;222f 0030 
+              MOVE.L         $34(A7),D1               ;222f 0034 
               SUB.L          D0,D1                    ;9280 
               MOVE.L         D1,D5                    ;2a01 
 ___TEXTDISP_ComputeTimeOffset__3:
@@ -49,18 +49,19 @@ ___TEXTDISP_ComputeTimeOffset__3:
 ___TEXTDISP_ComputeTimeOffset__4:
               MOVE.W         CLOCK_CurrentDayOfMonth(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
-              MOVE.L         $34(A7),D1               ;222f 0034 
+              MOVE.L         $38(A7),D1               ;222f 0038 
               SUB.L          D0,D1                    ;9280 
               MOVE.L         D1,D5                    ;2a01 
 ___TEXTDISP_ComputeTimeOffset__5:
               PEA            ($3c).w                  ;4878 003c 
-              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
               BSR.W          MATH_Mulu32              ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              ADD.L          $28(A7),D0               ;d0af 0028 
-              MOVE.L         D0,D4                    ;2800 
-              MOVE.W         Global_WORD_CURRENT_HOUR(A4),D0;302c 0000 
-              EXT.L          D0                       ;48c0 
+              ADD.L          $2c(A7),D0               ;d0af 002c 
+              MOVE.W         Global_WORD_CURRENT_HOUR(A4),D1;322c 0000 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         D1,D0                    ;2001 
               MOVEQ.L        #$c,D1                   ;720c 
               BSR.W          _CXD33                   ;6100 0000 
               MOVE.W         CLOCK_CurrentAmPmFlag(A4),D0;302c 0000 
@@ -77,7 +78,7 @@ ___TEXTDISP_ComputeTimeOffset__7:
               MOVE.W         Global_WORD_CURRENT_MINUTE(A4),D1;322c 0000 
               EXT.L          D1                       ;48c1 
               ADD.L          D1,D0                    ;d081 
-              MOVE.L         D4,D1                    ;2204 
+              MOVE.L         $2c(A7),D1               ;222f 002c 
               SUB.L          D0,D1                    ;9280 
               PEA            ($5a0).w                 ;4878 05a0 
               MOVE.L         D5,-(A7)                 ;2f05 
@@ -90,8 +91,8 @@ ___TEXTDISP_ComputeTimeOffset__7:
               MOVE.L         D1,D0                    ;2001 
 ___TEXTDISP_ComputeTimeOffset__8:
 ___TEXTDISP_ComputeTimeOffset__9:
-              MOVEM.L        (A7)+,D4/D5/D6/D7/A5     ;4cdf 20f0 
-              ADD.W          #$24,A7                  ;defc 0024 
+              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
+              ADD.W          #$28,A7                  ;defc 0028 
               RTS                                     ;4e75 
 __const:
 __strings:

@@ -2,6 +2,12 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct TEXTDISP_CandidateEntry {
+    UBYTE shortName[10];
+    UBYTE longName[2];
+    UBYTE tagText[15];
+} TEXTDISP_CandidateEntry;
+
 extern WORD TEXTDISP_AliasCount;
 extern void *TEXTDISP_AliasPtrTable[];
 
@@ -9,7 +15,6 @@ extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 
 LONG TEXTDISP_FindAliasIndexByName(UBYTE *entryPtr)
 {
-    const LONG ENTRY_NAME_OFFSET = 12;
     const LONG INDEX_NOT_FOUND = -1;
     const UBYTE CH_NUL = 0;
     UBYTE nameBuf[22];
@@ -17,7 +22,7 @@ LONG TEXTDISP_FindAliasIndexByName(UBYTE *entryPtr)
     UBYTE *dst;
     LONG idx;
 
-    src = entryPtr + ENTRY_NAME_OFFSET;
+    src = ((TEXTDISP_CandidateEntry *)entryPtr)->tagText;
     dst = nameBuf;
     do {
         *dst = *src;
