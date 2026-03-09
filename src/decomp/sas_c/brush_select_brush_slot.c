@@ -2,25 +2,23 @@ typedef unsigned char UBYTE;
 typedef unsigned short UWORD;
 typedef long LONG;
 
-enum {
-    BRUSH_NULL = 0,
-    BRUSH_SELECT_SLOT_STATUS_FAIL = 0,
-    BRUSH_SPAN_INCLUSIVE_DELTA = 1,
-    BRUSH_FORCED_DST_Y_MIN = 0,
-    BRUSH_BITMAP_OFFSET = 136,
-    BRUSH_DST_X_OFFSET = 340,
-    BRUSH_DST_Y_OFFSET = 344,
-    BRUSH_CLIP_W_OFFSET = 348,
-    BRUSH_CLIP_H_OFFSET = 352,
-    BRUSH_ALIGN_X_MODE_OFFSET = 356,
-    BRUSH_ALIGN_Y_MODE_OFFSET = 360,
-    ALIGN_MODE_CENTER = 1,
-    ALIGN_MODE_RIGHT_BOTTOM = 2,
-    BLIT_MINTERM_COPY = 192
-};
+#define BRUSH_NULL 0
+#define BRUSH_SELECT_SLOT_STATUS_FAIL 0
+#define BRUSH_SPAN_INCLUSIVE_DELTA 1
+#define BRUSH_FORCED_DST_Y_MIN 0
+#define BRUSH_BITMAP_OFFSET 136
+#define BRUSH_DST_X_OFFSET 340
+#define BRUSH_DST_Y_OFFSET 344
+#define BRUSH_CLIP_W_OFFSET 348
+#define BRUSH_CLIP_H_OFFSET 352
+#define BRUSH_ALIGN_X_MODE_OFFSET 356
+#define BRUSH_ALIGN_Y_MODE_OFFSET 360
+#define ALIGN_MODE_CENTER 1
+#define ALIGN_MODE_RIGHT_BOTTOM 2
+#define BLIT_MINTERM_COPY 192
 
 LONG GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
-    void *src_bm, LONG src_x, LONG src_y, void *dst_rp, LONG dst_x, LONG dst_y, LONG w, LONG h, LONG minterm);
+    void *src_bm, LONG src_x, LONG src_y, char *dst_rp, LONG dst_x, LONG dst_y, LONG w, LONG h, LONG minterm);
 
 static LONG half_toward_zero(LONG v)
 {
@@ -36,7 +34,7 @@ LONG BRUSH_SelectBrushSlot(
     LONG srcY0,
     LONG srcX1,
     LONG srcY1,
-    void *dstRp,
+    char *dstRp,
     LONG forcedDstY)
 {
     LONG srcX = srcX0;
