@@ -1,7 +1,7 @@
 typedef signed long LONG;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 
 extern const char ED2_STR_PUSH_ANY_KEY_TO_CONTINUE_DOT[];
 extern const char ED2_STR_STAR_STAR_LINE_SLASH_PAGE_COMMANDS_S[];
@@ -15,10 +15,10 @@ extern const char Global_STR_SHIFT_LEFT_PREV_AD_CTRLC_COLOR_MODE[];
 extern const char Global_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND[];
 
 extern void ED_DrawBottomHelpBarBackground(void);
-extern LONG _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG mode);
-extern LONG _LVORectFill(void *gfxBase, void *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
-extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const char *text);
+extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern LONG _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
+extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 void ED_DrawEditHelpText(void)
 {

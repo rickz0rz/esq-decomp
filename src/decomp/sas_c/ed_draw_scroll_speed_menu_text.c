@@ -1,7 +1,7 @@
 typedef signed long LONG;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 
 extern unsigned char ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED;
 extern const char Global_STR_SPEED_ZERO_NOT_AVAILABLE[];
@@ -13,10 +13,10 @@ extern const char Global_STR_SCROLL_SPEED_5[];
 extern const char Global_STR_SCROLL_SPEED_6[];
 extern const char Global_STR_SCROLL_SPEED_7[];
 
-extern LONG _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG mode);
+extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const char *text);
+extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 void ED_DrawScrollSpeedMenuText(void)
 {
