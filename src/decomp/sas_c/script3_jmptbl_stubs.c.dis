@@ -75,6 +75,7 @@ SCRIPT3_JMPTBL_GCOMMAND_GetBanne:
 ___SCRIPT3_JMPTBL_GCOMMAND_GetBanne__1:
               BSR.W          GCOMMAND_GetBannerChar   ;6100 0000 
 ___SCRIPT3_JMPTBL_GCOMMAND_GetBanne__2:
+___SCRIPT3_JMPTBL_GCOMMAND_GetBanne__3:
               RTS                                     ;4e75 
 SCRIPT3_JMPTBL_LADFUNC_ParseHexD:
               CMP.L          __base(A4),A7            ;bfec 0000 

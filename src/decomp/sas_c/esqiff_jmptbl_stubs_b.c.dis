@@ -44,11 +44,24 @@ ___ESQIFF_JMPTBL_ESQ_NoOp__1:
 ___ESQIFF_JMPTBL_ESQ_NoOp__2:
               RTS                                     ;4e75 
 ESQIFF_JMPTBL_TEXTDISP_DrawChann:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
 ___ESQIFF_JMPTBL_TEXTDISP_DrawChann__1:
+              MOVE.W         $12(A7),D6               ;3c2f 0012 
+              MOVE.W         $e(A7),D7                ;3e2f 000e 
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              MOVE.W         D6,D1                    ;3206 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          TEXTDISP_DrawChannelBanner;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___ESQIFF_JMPTBL_TEXTDISP_DrawChann__2:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
