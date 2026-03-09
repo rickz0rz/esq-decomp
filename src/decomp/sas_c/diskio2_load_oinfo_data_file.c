@@ -25,7 +25,7 @@ long DISKIO2_LoadOinfoDataFile(void)
     char *newHead = 0;
     char *newTail = 0;
     ULONG fileLen;
-    char *workBuf;
+    volatile char *workBuf;
     ULONG parsedGroupCode;
 
     if (DISKIO_LoadFileToWorkBuffer(CTASKS_PATH_OINFO_DAT) == RESULT_FAIL) {
@@ -33,7 +33,7 @@ long DISKIO2_LoadOinfoDataFile(void)
     }
 
     fileLen = Global_REF_LONG_FILE_SCRATCH;
-    workBuf = (char *)Global_PTR_WORK_BUFFER;
+    workBuf = Global_PTR_WORK_BUFFER;
 
     parsedGroupCode = (ULONG)DISKIO_ParseLongFromWorkBuffer();
     parsedGroupCode &= GROUPCODE_MASK;
@@ -51,7 +51,7 @@ long DISKIO2_LoadOinfoDataFile(void)
     }
 
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
-        workBuf,
+        (char *)workBuf,
         fileLen + STR_TERM_BYTES,
         Global_STR_DISKIO2_C_23,
         FREE_LINE);

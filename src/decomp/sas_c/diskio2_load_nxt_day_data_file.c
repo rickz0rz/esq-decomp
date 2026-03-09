@@ -60,7 +60,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
 {
     long result = 0;
     ULONG fileLen;
-    char *workBuf;
+    volatile char *workBuf;
     UBYTE headerCode;
     UWORD loadedCount = 0;
     UWORD parsedCount = 0;
@@ -71,7 +71,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
     }
 
     fileLen = Global_REF_LONG_FILE_SCRATCH;
-    workBuf = (char *)Global_PTR_WORK_BUFFER;
+    workBuf = Global_PTR_WORK_BUFFER;
     headerCode = (UBYTE)(DISKIO_ParseLongFromWorkBuffer() & 0xffL);
 
     if (headerCode == TEXTDISP_SecondaryGroupCode) {
@@ -105,7 +105,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
             {
                 UWORD i;
                 UBYTE *dst = (UBYTE *)entry;
-                char *src = (char *)Global_PTR_WORK_BUFFER;
+                volatile char *src = Global_PTR_WORK_BUFFER;
                 for (i = 0; i < 48; i++) {
                     *dst++ = (UBYTE)*src++;
                 }
@@ -185,7 +185,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
         Global_STR_DISKIO2_C_22,
         1041,
-        workBuf,
+        (char *)workBuf,
         fileLen + 1);
 
     if (COI_LoadOiDataFile((long)headerCode) != -1) {

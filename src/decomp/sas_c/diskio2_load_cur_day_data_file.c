@@ -78,7 +78,7 @@ long DISKIO2_LoadCurDayDataFile(void)
 {
     long result = 0;
     ULONG fileLen;
-    char *workBuf;
+    volatile char *workBuf;
     UBYTE headerCode;
     UWORD loadedCount = 0;
     UWORD parsedCount = 0;
@@ -101,7 +101,7 @@ long DISKIO2_LoadCurDayDataFile(void)
     }
 
     fileLen = Global_REF_LONG_FILE_SCRATCH;
-    workBuf = (char *)Global_PTR_WORK_BUFFER;
+    workBuf = Global_PTR_WORK_BUFFER;
 
     DST_PrimaryCountdown = (WORD)DISKIO_ParseLongFromWorkBuffer();
     GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket(statusText);
@@ -109,7 +109,7 @@ long DISKIO2_LoadCurDayDataFile(void)
     str = DISKIO_ConsumeCStringFromWorkBuffer();
     if (str == (char *)-1) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
-            Global_STR_DISKIO2_C_4, 520, workBuf, fileLen + 1);
+            Global_STR_DISKIO2_C_4, 520, (char *)workBuf, fileLen + 1);
         return -1;
     }
 
@@ -131,14 +131,14 @@ long DISKIO2_LoadCurDayDataFile(void)
         DISKIO_CurrentDriveRevisionIndex = 5;
     } else {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
-            Global_STR_DISKIO2_C_5, 561, workBuf, fileLen + 1);
+            Global_STR_DISKIO2_C_5, 561, (char *)workBuf, fileLen + 1);
         return -1;
     }
 
     str = DISKIO_ConsumeCStringFromWorkBuffer();
     if (str == (char *)-1) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
-            Global_STR_DISKIO2_C_6, 570, workBuf, fileLen + 1);
+            Global_STR_DISKIO2_C_6, 570, (char *)workBuf, fileLen + 1);
         return -1;
     }
     {
@@ -151,7 +151,7 @@ long DISKIO2_LoadCurDayDataFile(void)
         str = DISKIO_ConsumeCStringFromWorkBuffer();
         if (str == (char *)-1) {
             GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
-                Global_STR_DISKIO2_C_7, 588, workBuf, fileLen + 1);
+                Global_STR_DISKIO2_C_7, 588, (char *)workBuf, fileLen + 1);
             return -1;
         }
         WDISP_WeatherStatusTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
@@ -193,7 +193,7 @@ long DISKIO2_LoadCurDayDataFile(void)
             {
                 UWORD i;
                 UBYTE *dst = (UBYTE *)entry;
-                char *src = (char *)Global_PTR_WORK_BUFFER;
+                volatile char *src = Global_PTR_WORK_BUFFER;
                 for (i = 0; i < 48; i++) {
                     *dst++ = (UBYTE)*src++;
                 }
@@ -282,7 +282,7 @@ long DISKIO2_LoadCurDayDataFile(void)
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
         Global_STR_DISKIO2_C_13,
         764,
-        workBuf,
+        (char *)workBuf,
         fileLen + 1);
 
     if (COI_LoadOiDataFile((long)headerCode) != -1) {
