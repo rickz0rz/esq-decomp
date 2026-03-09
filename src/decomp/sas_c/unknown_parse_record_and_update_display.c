@@ -9,11 +9,11 @@ extern UBYTE WDISP_WeatherStatusCountdown;
 extern UBYTE WDISP_WeatherStatusColorCode;
 extern UBYTE WDISP_WeatherStatusBrushIndex;
 extern UWORD ED_DiagnosticsScreenActive;
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 
 extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *new_value, char *old_value);
-extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rast, LONG x, LONG y, char *text);
+extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rast, LONG x, LONG y, char *text);
 
 LONG UNKNOWN_ParseRecordAndUpdateDisplay(const char *in)
 {

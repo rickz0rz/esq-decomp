@@ -1,16 +1,16 @@
 typedef unsigned long ULONG;
 
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern const char Global_STR_38_SPACES[];
 
-extern void _LVOSetAPen(void *gfxBase, void *rastPort, ULONG pen);
-extern void _LVOSetDrMd(void *gfxBase, void *rastPort, ULONG mode);
-extern void DISPLIB_DisplayTextAtPosition(void *rastPort, ULONG x, ULONG y, const char *text);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, ULONG pen);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, ULONG mode);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, ULONG x, ULONG y, const char *text);
 
 void DISKIO2_DisplayStatusLine(const char *text)
 {
-    void *rastPort = Global_REF_RASTPORT_1;
+    char *rastPort = Global_REF_RASTPORT_1;
     void *gfxBase = Global_REF_GRAPHICS_LIBRARY;
 
     _LVOSetAPen(gfxBase, rastPort, 1);

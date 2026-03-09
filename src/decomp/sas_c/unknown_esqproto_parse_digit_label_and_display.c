@@ -7,10 +7,10 @@ extern UWORD WDISP_WeatherStatusDigitChar;
 extern char WDISP_WeatherStatusLabelBuffer[];
 extern char *WDISP_WeatherStatusTextPtr;
 extern UWORD ED_DiagnosticsScreenActive;
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 
 extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *new_value, char *old_value);
-extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rast, LONG x, LONG y, char *text);
+extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rast, LONG x, LONG y, char *text);
 
 char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in)
 {
