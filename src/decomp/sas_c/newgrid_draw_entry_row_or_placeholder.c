@@ -5,11 +5,11 @@ typedef unsigned char UBYTE;
 
 extern UWORD NEWGRID_EntryPlaceholderModeFlag;
 extern UBYTE CONFIG_NewgridPlaceholderBevelFlag;
-extern UBYTE *SCRIPT_PtrNoDataPlaceholder;
-extern UBYTE *SCRIPT_PtrOffAirPlaceholder;
+extern char *SCRIPT_PtrNoDataPlaceholder;
+extern char *SCRIPT_PtrOffAirPlaceholder;
 
 extern void NEWGRID_DrawGridEntry(void *gridCtx, void *entryPtr, LONG rowMeta, LONG row, LONG col, LONG style, LONG mode);
-extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *gridCtx, UBYTE *text);
+extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *gridCtx, char *text);
 
 void NEWGRID_DrawEntryRowOrPlaceholder(void *gridCtx, void *entryPtr, LONG rowMeta, WORD row, WORD col, LONG state)
 {

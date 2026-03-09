@@ -24,8 +24,8 @@ extern UBYTE GCOMMAND_PpvDetailLayoutFlag;
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
 extern void NEWGRID_DrawGridEntry(void *rastPort, void *entryPtr0, void *entryPtr1, LONG row, LONG mode, LONG enabled, LONG bevel);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG idx);
-extern void NEWGRID_BuildShowtimesText(void *gridCtx, void *entryState, UBYTE *out);
-extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *rastPort, UBYTE *text);
+extern void NEWGRID_BuildShowtimesText(void *gridCtx, void *entryState, char *out);
+extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *rastPort, char *text);
 extern LONG NEWGRID_DrawGridFrameVariant3(void *gridCtx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
 
@@ -33,7 +33,7 @@ LONG NEWGRID_HandleShowtimesState(UBYTE *gridCtx, UBYTE *entryState)
 {
     NEWGRID_Context *ctxView;
     NEWGRID_ShowtimesEntryState *stateView;
-    UBYTE text[130];
+    char text[130];
     LONG row;
     LONG nextState;
 
