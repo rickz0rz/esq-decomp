@@ -2,18 +2,19 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
-typedef struct TEXTDISP_State {
-    UBYTE pad0[210];
-    LONG selectionMode;
-    LONG displayIndex;
-    WORD entryIndex;
-    UBYTE flags;
-} TEXTDISP_State;
+typedef struct TEXTDISP_SelectionEntry {
+    UBYTE shortName[10];
+    UBYTE longName[200];
+    LONG mode;
+    LONG groupIndex;
+    WORD selectionIndex;
+    UBYTE detailLine[524];
+} TEXTDISP_SelectionEntry;
 
 extern LONG TEXTDISP_GetGroupEntryCount(LONG mode);
-extern void TEXTDISP_ResetSelectionState(TEXTDISP_State *state);
+extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *state);
 
-void TEXTDISP_SetSelectionFields(TEXTDISP_State *state, LONG mode, LONG displayIndex, LONG entryIndex)
+void TEXTDISP_SetSelectionFields(TEXTDISP_SelectionEntry *state, LONG mode, LONG displayIndex, LONG entryIndex)
 {
     const LONG MODE_PRIMARY = 1;
     const LONG MODE_SECONDARY = 2;
@@ -21,13 +22,12 @@ void TEXTDISP_SetSelectionFields(TEXTDISP_State *state, LONG mode, LONG displayI
     const LONG INDEX_INVALID = -1;
     const LONG ENTRY_FIRST = 1;
     const LONG ENTRY_LIMIT = 49;
-    const UBYTE FLAG_CLEAR = 0;
     LONG groupCount;
     LONG outMode;
     LONG outDisplay;
     LONG outEntry;
 
-    if (state == (TEXTDISP_State *)0) {
+    if (state == (TEXTDISP_SelectionEntry *)0) {
         return;
     }
 
@@ -37,7 +37,7 @@ void TEXTDISP_SetSelectionFields(TEXTDISP_State *state, LONG mode, LONG displayI
         outMode = MODE_INVALID;
     }
 
-    state->selectionMode = outMode;
+    state->mode = outMode;
 
     groupCount = TEXTDISP_GetGroupEntryCount(outMode);
     if (displayIndex < groupCount) {
@@ -45,19 +45,19 @@ void TEXTDISP_SetSelectionFields(TEXTDISP_State *state, LONG mode, LONG displayI
     } else {
         outDisplay = INDEX_INVALID;
     }
-    state->displayIndex = outDisplay;
+    state->groupIndex = outDisplay;
 
     if (entryIndex > ENTRY_FIRST - 1 && entryIndex < ENTRY_LIMIT) {
         outEntry = entryIndex;
     } else {
         outEntry = INDEX_INVALID;
     }
-    state->entryIndex = (WORD)outEntry;
-    state->flags = FLAG_CLEAR;
+    state->selectionIndex = (WORD)outEntry;
+    state->detailLine[0] = 0;
 
-    if (state->selectionMode == MODE_INVALID ||
-        state->displayIndex == INDEX_INVALID ||
-        state->entryIndex == INDEX_INVALID) {
+    if (state->mode == MODE_INVALID ||
+        state->groupIndex == INDEX_INVALID ||
+        state->selectionIndex == INDEX_INVALID) {
         TEXTDISP_ResetSelectionState(state);
     }
 }

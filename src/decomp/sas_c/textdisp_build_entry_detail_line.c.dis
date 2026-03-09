@@ -11,17 +11,14 @@ ___TEXTDISP_BuildEntryDetailLine__1:
               MOVE.L         $254(A7),A5              ;2a6f 0254 
               MOVE.L         A5,A3                    ;264d 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.W          ___TEXTDISP_BuildEntryDetailLine__61;6700 02c6 
+              BEQ.W          ___TEXTDISP_BuildEntryDetailLine__61;6700 02bc 
 ___TEXTDISP_BuildEntryDetailLine__2:
 ___TEXTDISP_BuildEntryDetailLine__3:
-              LEA            $d2(A3),A0               ;41eb 00d2 
-              MOVE.L         (A0),D5                  ;2a10 
-              LEA            $d6(A3),A0               ;41eb 00d6 
-              MOVE.L         (A0),D0                  ;2010 
-              LEA            $da(A3),A0               ;41eb 00da 
-              MOVE.W         (A0),D1                  ;3210 
-              EXT.L          D1                       ;48c1 
-              MOVEM.L        D0,$238(A7)              ;48ef 0001 0238 
+              MOVE.L         $d2(A3),D5               ;2a2b 00d2 
+              MOVE.L         $d6(A3),D0               ;202b 00d6 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         $da(A3),D1               ;322b 00da 
+              MOVE.L         D0,$238(A7)              ;2f40 0238 
               MOVEM.L        D1,$234(A7)              ;48ef 0002 0234 
               MOVE.L         D5,D2                    ;2405 
               SUBQ.L         #$3,D2                   ;5782 
@@ -36,7 +33,7 @@ ___TEXTDISP_BuildEntryDetailLine__6:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          TEXTDISP_ResetSelectionState;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.W          ___TEXTDISP_BuildEntryDetailLine__61;6000 028c 
+              BRA.W          ___TEXTDISP_BuildEntryDetailLine__61;6000 028a 
 ___TEXTDISP_BuildEntryDetailLine__7:
               MOVE.L         D5,-(A7)                 ;2f05 
               MOVE.L         $23c(A7),-(A7)           ;2f2f 023c 
@@ -93,18 +90,17 @@ ___TEXTDISP_BuildEntryDetailLine__15:
               LEA            $c(A7),A7                ;4fef 000c 
 ___TEXTDISP_BuildEntryDetailLine__16:
               MOVE.L         A2,D0                    ;200a 
-              BEQ.B          ___TEXTDISP_BuildEntryDetailLine__19;6726 
+              BEQ.B          ___TEXTDISP_BuildEntryDetailLine__19;6724 
 ___TEXTDISP_BuildEntryDetailLine__17:
               MOVE.L         $234(A7),D0              ;202f 0234 
               TST.L          D0                       ;4a80 
-              BMI.B          ___TEXTDISP_BuildEntryDetailLine__19;6b1e 
+              BMI.B          ___TEXTDISP_BuildEntryDetailLine__19;6b1c 
 ___TEXTDISP_BuildEntryDetailLine__18:
-              LEA            $38(A2),A0               ;41ea 0038 
+              MOVE.L         A2,$23c(A7)              ;2f4a 023c 
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
-              MOVE.L         $0(A0,D1.L),A1           ;2270 1800 
-              MOVE.L         A1,-(A7)                 ;2f09 
-              MOVE.L         A0,$240(A7)              ;2f48 0240 
+              MOVE.L         $23c(A7),A0              ;206f 023c 
+              MOVE.L         $38(A0,D1.L),-(A7)       ;2f30 1838 
               BSR.W          TEXTDISP_SkipControlCodes;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.L         D0,$244(A7)              ;2f40 0244 

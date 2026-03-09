@@ -2,6 +2,15 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct TEXTDISP_SelectionEntry {
+    UBYTE shortName[10];
+    UBYTE longName[200];
+    LONG mode;
+    LONG groupIndex;
+    unsigned short selectionIndex;
+    UBYTE detailLine[524];
+} TEXTDISP_SelectionEntry;
+
 #define MEMF_PUBLIC 0x00000001L
 #define MEMF_CLEAR  0x00010000L
 
@@ -49,7 +58,6 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
     const LONG BUFFER_ALLOC_LINE = 1084;
     const LONG BUFFER_FREE_LINE = 1106;
     const LONG BUFFER_SIZE = 732;
-    const LONG ENTRY_HIGHLIGHT_TEXT_OFFSET = 0xDC;
     const UBYTE CH_NUL = 0;
     LONG doFinalize = 1;
     LONG doCleanup = 1;
@@ -107,7 +115,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
                     TEXTDISP_SetEntryTextFields(TEXTDISP_CommandBufferPtr, (const UBYTE *)arg, (const UBYTE *)TEXTDISP_PrimarySearchText);
 
                     if (TEXTDISP_FilterAndSelectEntry(TEXTDISP_CommandBufferPtr, MODE_FILTER) == 0) {
-                        char *dst = (char *)TEXTDISP_CommandBufferPtr + ENTRY_HIGHLIGHT_TEXT_OFFSET;
+                        char *dst = (char *)((TEXTDISP_SelectionEntry *)TEXTDISP_CommandBufferPtr)->detailLine;
                         char *src = TEXTDISP_DefaultSpacePad;
                         while ((*dst++ = *src++) != CH_NUL) {
                         }

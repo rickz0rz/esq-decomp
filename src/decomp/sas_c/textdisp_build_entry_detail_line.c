@@ -3,14 +3,22 @@ typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct TEXTDISP_AuxData {
+    UBYTE pad0[56];
+    UBYTE *titleTable[49];
+} TEXTDISP_AuxData;
+
+typedef struct TEXTDISP_SelectionEntry {
+    UBYTE shortName[10];
+    UBYTE longName[200];
+    LONG mode;
+    LONG groupIndex;
+    UWORD selectionIndex;
+    UBYTE detailLine[524];
+} TEXTDISP_SelectionEntry;
+
 enum {
     TEXTDISP_NULL = 0,
-    ENTRY_MODE_OFFSET = 210,
-    ENTRY_GROUP_INDEX_OFFSET = 214,
-    ENTRY_SELECTION_INDEX_OFFSET = 218,
-    ENTRY_DETAIL_OFFSET = 220,
-    AUX_TITLE_TABLE_OFFSET = 56,
-    ENTRY_LONG_NAME_OFFSET = 10,
     ENTRY_PROGRAM_TEXT_START_OFFSET = 1,
     MODE_BLOCKED = 3,
     INVALID_INDEX = -1,
@@ -52,7 +60,7 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
     UBYTE *detail;
     UBYTE *segment;
     UBYTE *hit;
-    ULONG *titleTable;
+    TEXTDISP_AuxData *auxData;
     LONG i;
     LONG out;
     LONG mode;
@@ -67,9 +75,9 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
         return;
     }
 
-    mode = *(LONG *)(entry + ENTRY_MODE_OFFSET);
-    groupIndex = *(LONG *)(entry + ENTRY_GROUP_INDEX_OFFSET);
-    entryIndex = (LONG)(*(short *)(entry + ENTRY_SELECTION_INDEX_OFFSET));
+    mode = ((TEXTDISP_SelectionEntry *)entry)->mode;
+    groupIndex = ((TEXTDISP_SelectionEntry *)entry)->groupIndex;
+    entryIndex = (LONG)(UWORD)((TEXTDISP_SelectionEntry *)entry)->selectionIndex;
 
     if (mode == MODE_BLOCKED || groupIndex == INVALID_INDEX || entryIndex == INVALID_INDEX) {
         TEXTDISP_ResetSelectionState(entry);
@@ -78,7 +86,7 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
 
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(groupIndex, mode);
     program = (UBYTE *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(groupIndex, mode);
-    detail = entry + ENTRY_DETAIL_OFFSET;
+    detail = ((TEXTDISP_SelectionEntry *)entry)->detailLine;
     detail[TEXTDISP_NULL] = TEXTDISP_NULL;
 
     TEXTDISP_BuildEntryShortName(program, tmp);
@@ -99,8 +107,8 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
     }
 
     if (aux != (void *)TEXTDISP_NULL && entryIndex >= TEXTDISP_NULL) {
-        titleTable = (ULONG *)((UBYTE *)aux + AUX_TITLE_TABLE_OFFSET);
-        segment = TEXTDISP_SkipControlCodes((UBYTE *)titleTable[entryIndex]);
+        auxData = (TEXTDISP_AuxData *)aux;
+        segment = TEXTDISP_SkipControlCodes(auxData->titleTable[entryIndex]);
     } else {
         segment = (UBYTE *)TEXTDISP_NULL;
     }
@@ -112,7 +120,7 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
         }
 
         longLen = TEXTDISP_NULL;
-        while (entry[ENTRY_LONG_NAME_OFFSET + longLen] != TEXTDISP_NULL) {
+        while (((TEXTDISP_SelectionEntry *)entry)->longName[longLen] != TEXTDISP_NULL) {
             longLen++;
         }
 
