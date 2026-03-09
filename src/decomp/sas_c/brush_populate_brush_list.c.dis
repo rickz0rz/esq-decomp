@@ -19,12 +19,11 @@ ___BRUSH_PopulateBrushList__1:
               MOVE.L         A5,A2                    ;244d 
 ___BRUSH_PopulateBrushList__2:
               MOVE.L         A2,D0                    ;200a 
-              BEQ.B          ___BRUSH_PopulateBrushList__9;674a 
+              BEQ.B          ___BRUSH_PopulateBrushList__9;6746 
 ___BRUSH_PopulateBrushList__3:
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          BRUSH_LoadBrushAsset     ;6100 0000 
-              LEA            $ea(A2),A0               ;41ea 00ea 
-              MOVE.L         (A0),$14(A7)             ;2f50 0014 
+              MOVE.L         $ea(A2),$14(A7)          ;2f6a 00ea 0014 
               PEA            ($ee).w                  ;4878 00ee 
               MOVE.L         A2,-(A7)                 ;2f0a 
               PEA            ($34d).w                 ;4878 034d 
@@ -34,21 +33,20 @@ ___BRUSH_PopulateBrushList__3:
               LEA            $14(A7),A7               ;4fef 0014 
               MOVE.L         $10(A7),A2               ;246f 0010 
               MOVE.L         $c(A7),D0                ;202f 000c 
-              BEQ.B          ___BRUSH_PopulateBrushList__2;67ca 
+              BEQ.B          ___BRUSH_PopulateBrushList__2;67cc 
 ___BRUSH_PopulateBrushList__4:
 ___BRUSH_PopulateBrushList__5:
               TST.L          (A3)                     ;4a93 
               BNE.B          ___BRUSH_PopulateBrushList__7;6604 
 ___BRUSH_PopulateBrushList__6:
               MOVE.L         D0,(A3)                  ;2680 
-              BRA.B          ___BRUSH_PopulateBrushList__8;600a 
+              BRA.B          ___BRUSH_PopulateBrushList__8;6008 
 ___BRUSH_PopulateBrushList__7:
               MOVE.L         $14(A7),A0               ;206f 0014 
-              ADD.W          #$170,A0                 ;d0fc 0170 
-              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         D0,$170(A0)              ;2140 0170 
 ___BRUSH_PopulateBrushList__8:
               MOVE.L         D0,$14(A7)               ;2f40 0014 
-              BRA.B          ___BRUSH_PopulateBrushList__2;60b2 
+              BRA.B          ___BRUSH_PopulateBrushList__2;60b6 
 ___BRUSH_PopulateBrushList__9:
               CLR.L          PARSEINI_ParsedDescriptorListHea(A4);42ac 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
