@@ -6,21 +6,23 @@ ED1_DrawStatusLine1:
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
               SUB.W          #$2c,A7                  ;9efc 002c 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___ED1_DrawStatusLine1__1:
               MOVE.W         ESQPARS2_StateIndex(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            ED2_FMT_SCRSPD_PCT_D(A4) ;486c 0000 
-              PEA            $b(A7)                   ;486f 000b 
+              PEA            $f(A7)                   ;486f 000f 
               BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
-              MOVE.L         WDISP_DisplayContextBase(A4),A0;206c 0000 
-              LEA            $2(A0),A1                ;43e8 0002 
+              MOVE.L         WDISP_DisplayContextBase(A4),A5;2a6c 0000 
+              LEA            $2(A5),A0                ;41ed 0002 
               PEA            ($d2).w                  ;4878 00d2 
-              PEA            $13(A7)                  ;486f 0013 
-              MOVE.L         A1,-(A7)                 ;2f09 
+              PEA            $17(A7)                  ;486f 0017 
+              MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
               LEA            $18(A7),A7               ;4fef 0018 
 ___ED1_DrawStatusLine1__2:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               ADD.W          #$2c,A7                  ;defc 002c 
               RTS                                     ;4e75 
 __const:
