@@ -9,7 +9,7 @@ ___NEWGRID_InitShowtimeBuckets__1:
 ___NEWGRID_InitShowtimeBuckets__2:
               MOVEQ.L        #$a,D0                   ;700a 
               CMP.L          D0,D7                    ;be80 
-              BGE.B          ___NEWGRID_InitShowtimeBuckets__6;6c24 
+              BGE.B          ___NEWGRID_InitShowtimeBuckets__6;6c20 
 ___NEWGRID_InitShowtimeBuckets__3:
               MOVE.L         D7,D0                    ;2007 
               ASL.L          #$2,D0                   ;e580 
@@ -20,12 +20,10 @@ ___NEWGRID_InitShowtimeBuckets__3:
               ADD.L          D1,A1                    ;d3c1 
               LEA            NEWGRID_ShowtimeBucketPtrTable(A4),A2;45ec 0000 
               MOVE.L         A1,$0(A2,D0.L)           ;2589 0800 
-              ADD.L          D1,A0                    ;d1c1 
-              LEA            $4(A0),A1                ;43e8 0004 
-              CLR.L          (A1)                     ;4291 
+              CLR.L          $4(A0,D1.L)              ;42b0 1804 
 ___NEWGRID_InitShowtimeBuckets__4:
               ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___NEWGRID_InitShowtimeBuckets__2;60d6 
+              BRA.B          ___NEWGRID_InitShowtimeBuckets__2;60da 
 ___NEWGRID_InitShowtimeBuckets__5:
 ___NEWGRID_InitShowtimeBuckets__6:
               MOVEM.L        (A7)+,D7/A2              ;4cdf 0480 
