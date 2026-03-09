@@ -12,7 +12,7 @@ LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG lead, void *entry, LONG slo
 
 typedef struct COI_AuxEntry {
     UBYTE pad0[56];
-    UBYTE *titleTable[49];
+    char *titleTable[49];
     UBYTE pad252[246];
     UBYTE groupCode498;
 } COI_AuxEntry;

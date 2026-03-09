@@ -21,8 +21,8 @@ extern const char NEWGRID_EntrySplitDelimiterMask[];
 
 char *DISKIO2_CopyAndSanitizeSlotString(
     char *dst,
-    const UBYTE *entryData,
-    const UBYTE *titleData,
+    const char *entryData,
+    const char *titleData,
     UWORD slotIndex)
 {
     const DISKIO2_Entry *entryView;
@@ -32,11 +32,12 @@ char *DISKIO2_CopyAndSanitizeSlotString(
     char *cutPos;
 
     dstStart = dst;
-    titleView = (const DISKIO2_TitleData *)titleData;
-    src = titleView->slotTextTable[(ULONG)slotIndex];
+    src = (const char *)0;
     if (entryData == 0 || titleData == 0 || (WORD)slotIndex <= 0 || slotIndex >= 49U) {
         return (char *)src;
     }
+    titleView = (const DISKIO2_TitleData *)titleData;
+    src = titleView->slotTextTable[(ULONG)slotIndex];
     if (src == 0 || src[0] == 0) {
         return (char *)src;
     }

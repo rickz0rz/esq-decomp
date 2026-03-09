@@ -8,7 +8,7 @@ typedef struct DISPLIB_Entry {
 
 typedef struct DISPLIB_AuxData {
     UBYTE pad0[56];
-    const UBYTE *titleTable[49];
+    const char *titleTable[49];
 } DISPLIB_AuxData;
 
 enum {
@@ -21,7 +21,7 @@ enum {
 
 extern volatile UWORD DISPLIB_PreviousSearchWrappedFlag;
 
-long DISPLIB_FindPreviousValidEntryIndex(const UBYTE *entry, const UBYTE *title, long index)
+long DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *title, long index)
 {
     const DISPLIB_Entry *entryView;
     const DISPLIB_AuxData *auxView;
