@@ -34,7 +34,7 @@ extern LONG Global_REF_GRAPHICS_LIBRARY;
 
 void GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds(LONG a, LONG b, LONG c, LONG d);
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-void BEVEL_DrawBevelFrameWithTopRight(void *rp, LONG x, LONG y, LONG w, LONG h);
+void BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG w, LONG h);
 void CLEANUP_FormatClockFormatEntry(LONG idx, char *dst);
 void _LVOSetAPen(void);
 void _LVORectFill(void);
@@ -80,7 +80,7 @@ void CLEANUP_DrawClockFormatList(LONG startIndex)
         }
 
         BEVEL_DrawBevelFrameWithTopRight(
-            rp,
+            (char *)rp,
             rowStartX + CLOCK_FORMAT_BEVEL_X_OFFSET,
             0,
             rowRightX,

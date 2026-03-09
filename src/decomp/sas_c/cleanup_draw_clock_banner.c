@@ -37,7 +37,7 @@ extern UWORD NEWGRID_ColumnStartXPx;
 
 LONG GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(LONG hour, LONG ampm);
 void GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b, LONG c);
-void BEVEL_DrawBevelFrameWithTopRight(void *rp, LONG x, LONG y, LONG w, LONG h);
+void BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG w, LONG h);
 void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
     void *src_bitmap,
     LONG src_x,
@@ -92,7 +92,7 @@ void CLEANUP_DrawClockBanner(void)
     _LVORectFill();
 
     BEVEL_DrawBevelFrameWithTopRight(
-        rp,
+        (char *)rp,
         (LONG)NEWGRID_ColumnStartXPx + 35,
         0,
         CLOCK_BANNER_FRAME_WIDTH,
