@@ -54,9 +54,9 @@ ___DISPTEXT_BuildLinePointerTable__8:
               MOVE.W         $0(A2,D1.L),D0           ;3032 1800 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         D0,D1                    ;3200 
-              MOVE.L         (A3),D0                  ;2013 
-              ADD.L          D1,D0                    ;d081 
-              MOVE.L         D0,(A5)                  ;2a80 
+              MOVE.L         (A3),A0                  ;2053 
+              ADD.L          D1,A0                    ;d1c1 
+              MOVE.L         A0,(A5)                  ;2a88 
 ___DISPTEXT_BuildLinePointerTable__9:
               ADDQ.L         #$1,$18(A7)              ;52af 0018 
               BRA.B          ___DISPTEXT_BuildLinePointerTable__7;60c8 

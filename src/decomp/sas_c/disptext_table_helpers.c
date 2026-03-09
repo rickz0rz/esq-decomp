@@ -3,9 +3,9 @@ typedef signed short WORD;
 typedef signed long LONG;
 
 extern LONG DISPTEXT_LineTableLockFlag;
-extern LONG DISPTEXT_TextBufferPtr;
-extern LONG DISPTEXT_LinePtrTable[];
-extern LONG DISPTEXT_TextBufferPtrTable[];
+extern char *DISPTEXT_TextBufferPtr;
+extern char *DISPTEXT_LinePtrTable[];
+extern char *DISPTEXT_TextBufferPtrTable[];
 extern WORD DISPTEXT_CurrentLineIndex;
 extern WORD DISPTEXT_LineLengthTable[];
 
@@ -14,8 +14,8 @@ void DISPTEXT_BuildLinePointerTable(LONG lockValue)
     LONG headerAdjust;
     LONG totalLines;
     LONG i;
-    LONG *linePtr;
-    LONG *textPtr;
+    char **linePtr;
+    char **textPtr;
     WORD *offsetTable;
 
     if (DISPTEXT_LineTableLockFlag != 0) {
