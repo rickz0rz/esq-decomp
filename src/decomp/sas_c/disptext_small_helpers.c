@@ -2,24 +2,22 @@ typedef unsigned short UWORD;
 typedef signed short WORD;
 typedef signed long LONG;
 
-enum {
-    DISPTEXT_MIN_SELECTABLE_LINE_INDEX = 1,
-    DISPTEXT_MAX_SELECTABLE_LINE_INDEX = 3,
-    DISPTEXT_RESULT_FALSE = 0,
-    DISPTEXT_RESULT_TRUE = 1,
-    DISPTEXT_RESULT_SELECTED = -1
-};
+#define DISPTEXT_MIN_SELECTABLE_LINE_INDEX 1
+#define DISPTEXT_MAX_SELECTABLE_LINE_INDEX 3
+#define DISPTEXT_RESULT_FALSE 0
+#define DISPTEXT_RESULT_TRUE 1
+#define DISPTEXT_RESULT_SELECTED -1
 
 extern WORD DISPTEXT_LineTableLockFlag;
 extern WORD DISPTEXT_CurrentLineIndex;
 extern WORD DISPTEXT_TargetLineIndex;
-extern void *DISPTEXT_LinePtrTable[];
+extern char *DISPTEXT_LinePtrTable[];
 extern WORD DISPTEXT_LineLengthTable[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void DISPTEXT_FinalizeLineTable(void);
-extern void DISPLIB_CommitCurrentLinePenAndAdvance(void);
-extern LONG _LVOTextLength(void);
+extern void DISPLIB_CommitCurrentLinePenAndAdvance(LONG lineIndex);
+extern LONG _LVOTextLength(void *gfxBase, void *rp, const char *text, LONG len);
 
 void DISPTEXT_SetCurrentLineIndex(LONG lineIndex)
 {
@@ -95,7 +93,7 @@ LONG DISPTEXT_IsCurrentLineLast(void)
 LONG DISPTEXT_MeasureCurrentLineLength(void *rp)
 {
     LONG lineIndex;
-    void *linePtr;
+    char *linePtr;
     LONG charCount;
 
     DISPTEXT_FinalizeLineTable();
@@ -104,5 +102,5 @@ LONG DISPTEXT_MeasureCurrentLineLength(void *rp)
     linePtr = DISPTEXT_LinePtrTable[lineIndex];
     charCount = (LONG)(UWORD)DISPTEXT_LineLengthTable[lineIndex];
 
-    return _LVOTextLength(rp, linePtr, charCount);
+    return _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp, linePtr, charCount);
 }

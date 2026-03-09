@@ -114,7 +114,7 @@ ___DISPTEXT_IsCurrentLineLast__5:
               RTS                                     ;4e75 
 DISPTEXT_MeasureCurrentLineLengt:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
               MOVEM.L        D6/D7/A3/A5,-(A7)        ;48e7 0314 
@@ -137,8 +137,9 @@ ___DISPTEXT_MeasureCurrentLineLengt__1:
               MOVE.L         D6,-(A7)                 ;2f06 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOTextLength           ;6100 0000 
-              LEA            $c(A7),A7                ;4fef 000c 
+              LEA            $10(A7),A7               ;4fef 0010 
 ___DISPTEXT_MeasureCurrentLineLengt__2:
 ___DISPTEXT_MeasureCurrentLineLengt__3:
               MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 
@@ -152,6 +153,7 @@ ___DISPTEXT_MeasureCurrentLineLengt__3:
               XREF           DISPTEXT_CurrentLineIndex
               XREF           DISPTEXT_LinePtrTable
               XREF           DISPTEXT_LineLengthTable
+              XREF           Global_REF_GRAPHICS_LIBRARY
               XREF           _LVOTextLength
               XDEF           DISPTEXT_SetCurrentLineIndex
               XDEF           DISPTEXT_GetTotalLineCount
