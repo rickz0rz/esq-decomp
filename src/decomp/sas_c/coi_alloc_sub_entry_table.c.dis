@@ -9,33 +9,30 @@ COI_AllocSubEntryTable:
 ___COI_AllocSubEntryTable__1:
               MOVE.L         $18(A7),A5               ;2a6f 0018 
               MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___COI_AllocSubEntryTable__8;6748 
+              BEQ.B          ___COI_AllocSubEntryTable__8;6740 
 ___COI_AllocSubEntryTable__2:
 ___COI_AllocSubEntryTable__3:
-              LEA            $30(A5),A0               ;41ed 0030 
-              MOVE.L         (A0),A3                  ;2650 
+              MOVE.L         $30(A5),A3               ;266d 0030 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.B          ___COI_AllocSubEntryTable__8;673e 
+              BEQ.B          ___COI_AllocSubEntryTable__8;6738 
 ___COI_AllocSubEntryTable__4:
 ___COI_AllocSubEntryTable__5:
-              LEA            $24(A3),A0               ;41eb 0024 
-              MOVE.W         (A0),D6                  ;3c10 
+              MOVE.W         $24(A3),D6               ;3c2b 0024 
               EXT.L          D6                       ;48c6 
               MOVE.L         D6,D0                    ;2006 
               TST.W          D0                       ;4a40 
-              BLE.B          ___COI_AllocSubEntryTable__8;6f30 
+              BLE.B          ___COI_AllocSubEntryTable__8;6f2c 
 ___COI_AllocSubEntryTable__6:
 ___COI_AllocSubEntryTable__7:
               MOVE.L         D6,D7                    ;2e06 
               ASL.L          #$2,D7                   ;e587 
-              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         __MERGED(A4),-(A7)       ;2f2c 0000 
               MOVE.L         D7,-(A7)                 ;2f07 
               PEA            ($463).w                 ;4878 0463 
               PEA            Global_STR_COI_C_5(A4)   ;486c 0000 
               BSR.W          GROUP_AG_JMPTBL_MEMORY_AllocateM;6100 0000 
               MOVE.L         D0,A2                    ;2440 
-              LEA            $26(A3),A0               ;41eb 0026 
-              MOVE.L         A2,(A0)                  ;208a 
+              MOVE.L         A2,$26(A3)               ;274a 0026 
               MOVE.L         D6,(A7)                  ;2e86 
               PEA            ($1e).w                  ;4878 001e 
               MOVE.L         A2,-(A7)                 ;2f0a 
@@ -52,4 +49,9 @@ __strings:
               XREF           GROUP_AG_JMPTBL_MEMORY_AllocateM
               XREF           GROUP_AE_JMPTBL_SCRIPT_AllocateB
               XDEF           COI_AllocSubEntryTable
+
+              SECTION        __MERGED,DATA
+__MERGED
+COI_MEMF_PUBLIC_CLEAR:
+              DC.L           $00010001
               END
