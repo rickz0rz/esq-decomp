@@ -33,22 +33,22 @@ ___NEWGRID_FindNextEntryWithMarkers__6:
               BEQ.B          ___NEWGRID_FindNextEntryWithMarkers__8;6706 
 ___NEWGRID_FindNextEntryWithMarkers__7:
               MOVE.L         D4,D0                    ;2004 
-              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__36;6000 010c 
+              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__36;6000 0108 
 ___NEWGRID_FindNextEntryWithMarkers__8:
               MOVE.B         TEXTDISP_PrimaryGroupPresentFlag(A4),D0;102c 0000 
               TST.B          D0                       ;4a00 
               BNE.B          ___NEWGRID_FindNextEntryWithMarkers__10;6606 
 ___NEWGRID_FindNextEntryWithMarkers__9:
               MOVE.L         D4,D0                    ;2004 
-              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__36;6000 00fe 
+              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__36;6000 00fa 
 ___NEWGRID_FindNextEntryWithMarkers__10:
               TST.L          $18(A7)                  ;4aaf 0018 
-              BNE.W          ___NEWGRID_FindNextEntryWithMarkers__32;6600 00ec 
+              BNE.W          ___NEWGRID_FindNextEntryWithMarkers__32;6600 00e8 
 ___NEWGRID_FindNextEntryWithMarkers__11:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
               CMP.L          D0,D4                    ;b880 
-              BGE.W          ___NEWGRID_FindNextEntryWithMarkers__32;6c00 00e0 
+              BGE.W          ___NEWGRID_FindNextEntryWithMarkers__32;6c00 00dc 
 ___NEWGRID_FindNextEntryWithMarkers__12:
 ___NEWGRID_FindNextEntryWithMarkers__13:
               CLR.L          $14(A7)                  ;42af 0014 
@@ -61,7 +61,7 @@ ___NEWGRID_FindNextEntryWithMarkers__13:
               PEA            $20(A7)                  ;486f 0020 
               BSR.W          NEWGRID_UpdatePresetEntry;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVE.L         $14(A7),D0               ;202f 0014 
+              TST.L          $14(A7)                  ;4aaf 0014 
               BEQ.B          ___NEWGRID_FindNextEntryWithMarkers__15;6706 
 ___NEWGRID_FindNextEntryWithMarkers__14:
               TST.L          $10(A7)                  ;4aaf 0010 
@@ -70,26 +70,25 @@ ___NEWGRID_FindNextEntryWithMarkers__15:
               ADDQ.L         #$1,D4                   ;5284 
               BRA.B          ___NEWGRID_FindNextEntryWithMarkers__10;60bc 
 ___NEWGRID_FindNextEntryWithMarkers__16:
-              MOVE.L         D0,A0                    ;2040 
-              MOVE.L         A0,A1                    ;2248 
-              ADD.W          #$2e,A1                  ;d2fc 002e 
-              BTST           #$1,$1(A1)               ;0829 0001 0001 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.W         $2e(A0),D0               ;3028 002e 
+              BTST           #$1,D0                   ;0800 0001 
               BNE.B          ___NEWGRID_FindNextEntryWithMarkers__18;6604 
 ___NEWGRID_FindNextEntryWithMarkers__17:
               ADDQ.L         #$1,D4                   ;5284 
-              BRA.B          ___NEWGRID_FindNextEntryWithMarkers__10;60a8 
+              BRA.B          ___NEWGRID_FindNextEntryWithMarkers__10;60aa 
 ___NEWGRID_FindNextEntryWithMarkers__18:
-              MOVE.B         $28(A0),D1               ;1228 0028 
-              BTST           #$7,D1                   ;0801 0007 
+              MOVE.B         $28(A0),D0               ;1028 0028 
+              BTST           #$7,D0                   ;0800 0007 
               BNE.B          ___NEWGRID_FindNextEntryWithMarkers__20;6604 
 ___NEWGRID_FindNextEntryWithMarkers__19:
               ADDQ.L         #$1,D4                   ;5284 
-              BRA.B          ___NEWGRID_FindNextEntryWithMarkers__10;609a 
+              BRA.B          ___NEWGRID_FindNextEntryWithMarkers__10;609c 
 ___NEWGRID_FindNextEntryWithMarkers__20:
               LEA            $1c(A0),A1               ;43e8 001c 
-              MOVE.W         D5,D1                    ;3205 
-              EXT.L          D1                       ;48c1 
-              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.W         D5,D0                    ;3005 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A1,-(A7)                 ;2f09 
               BSR.W          NEWGRID2_JMPTBL_ESQ_TestBit1Base;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
@@ -97,7 +96,7 @@ ___NEWGRID_FindNextEntryWithMarkers__20:
               BEQ.B          ___NEWGRID_FindNextEntryWithMarkers__22;6704 
 ___NEWGRID_FindNextEntryWithMarkers__21:
               ADDQ.L         #$1,D4                   ;5284 
-              BRA.B          ___NEWGRID_FindNextEntryWithMarkers__10;6080 
+              BRA.B          ___NEWGRID_FindNextEntryWithMarkers__10;6082 
 ___NEWGRID_FindNextEntryWithMarkers__22:
               MOVE.L         $14(A7),-(A7)            ;2f2f 0014 
               BSR.W          NEWGRID_ShouldOpenEditor ;6100 0000 
@@ -106,7 +105,7 @@ ___NEWGRID_FindNextEntryWithMarkers__22:
               BEQ.B          ___NEWGRID_FindNextEntryWithMarkers__24;6706 
 ___NEWGRID_FindNextEntryWithMarkers__23:
               ADDQ.L         #$1,D4                   ;5284 
-              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff6e 
+              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff70 
 ___NEWGRID_FindNextEntryWithMarkers__24:
               MOVE.W         D5,D0                    ;3005 
               EXT.L          D0                       ;48c0 
@@ -122,7 +121,7 @@ ___NEWGRID_FindNextEntryWithMarkers__25:
               BNE.B          ___NEWGRID_FindNextEntryWithMarkers__27;6606 
 ___NEWGRID_FindNextEntryWithMarkers__26:
               ADDQ.L         #$1,D4                   ;5284 
-              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff46 
+              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff48 
 ___NEWGRID_FindNextEntryWithMarkers__27:
               MOVE.W         D5,D0                    ;3005 
               EXT.L          D0                       ;48c0 
@@ -132,22 +131,21 @@ ___NEWGRID_FindNextEntryWithMarkers__27:
               BEQ.B          ___NEWGRID_FindNextEntryWithMarkers__29;6706 
 ___NEWGRID_FindNextEntryWithMarkers__28:
               ADDQ.L         #$1,D4                   ;5284 
-              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff30 
+              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff32 
 ___NEWGRID_FindNextEntryWithMarkers__29:
-              MOVE.W         D5,D0                    ;3005 
-              EXT.L          D0                       ;48c0 
+              EXT.L          D5                       ;48c5 
+              MOVE.L         D5,D0                    ;2005 
               ASL.L          #$2,D0                   ;e580 
               ADD.L          D0,A0                    ;d1c0 
-              LEA            $38(A0),A1               ;43e8 0038 
-              TST.L          (A1)                     ;4a91 
+              TST.L          $38(A0)                  ;4aa8 0038 
               BNE.B          ___NEWGRID_FindNextEntryWithMarkers__31;6606 
 ___NEWGRID_FindNextEntryWithMarkers__30:
               ADDQ.L         #$1,D4                   ;5284 
-              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff1a 
+              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff1e 
 ___NEWGRID_FindNextEntryWithMarkers__31:
               MOVEQ.L        #$1,D0                   ;7001 
               MOVE.L         D0,$18(A7)               ;2f40 0018 
-              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff10 
+              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff14 
 ___NEWGRID_FindNextEntryWithMarkers__32:
               TST.L          $18(A7)                  ;4aaf 0018 
               BNE.B          ___NEWGRID_FindNextEntryWithMarkers__34;6602 

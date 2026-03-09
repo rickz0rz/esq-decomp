@@ -2,6 +2,13 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[40];
+    UBYTE flags40;
+    UBYTE pad1[6];
+    UBYTE flags47;
+} NEWGRID_Entry;
+
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 
@@ -15,8 +22,6 @@ LONG NEWGRID_FindNextFlaggedEntry(LONG modeSelector, LONG startIndex)
     const LONG INDEX_INVALID = -1;
     const LONG FLAG_FALSE = 0;
     const LONG FLAG_TRUE = 1;
-    const LONG ENTRY_FLAGS_A_OFFSET = 47;
-    const LONG ENTRY_FLAGS_B_OFFSET = 40;
     const UBYTE ENTRY_FLAG_A_MASK = 0x01;
     const UBYTE ENTRY_FLAG_B_MASK = 0x80;
     LONG idx;
@@ -47,10 +52,10 @@ LONG NEWGRID_FindNextFlaggedEntry(LONG modeSelector, LONG startIndex)
         }
 
         {
-            UBYTE *entry = (UBYTE *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, MODE_PRIMARY);
+            NEWGRID_Entry *entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, MODE_PRIMARY);
             if (entry != 0) {
-                if (((entry[ENTRY_FLAGS_A_OFFSET] & ENTRY_FLAG_A_MASK) != 0) &&
-                    ((entry[ENTRY_FLAGS_B_OFFSET] & ENTRY_FLAG_B_MASK) != 0)) {
+                if (((entry->flags47 & ENTRY_FLAG_A_MASK) != 0) &&
+                    ((entry->flags40 & ENTRY_FLAG_B_MASK) != 0)) {
                     found = FLAG_TRUE;
                     continue;
                 }

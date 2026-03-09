@@ -3,6 +3,22 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[27];
+    UBYTE flags27;
+    UBYTE selectionBits[12];
+    UBYTE flags40;
+    UBYTE pad1[5];
+    UWORD markerFlags46;
+} NEWGRID_Entry;
+
+typedef struct NEWGRID_AuxData {
+    UBYTE pad0[7];
+    UBYTE rowFlags[49];
+    UBYTE pad1[0x38 - 0x38];
+    LONG titleTable[49];
+} NEWGRID_AuxData;
+
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 
@@ -34,8 +50,8 @@ LONG NEWGRID_FindNextEntryWithMarkers(LONG scanMode, LONG startIndex, WORD selec
     }
 
     while (found == 0) {
-        UBYTE *entry;
-        UBYTE *aux;
+        NEWGRID_Entry *entry;
+        NEWGRID_AuxData *aux;
 
         if (idx >= (LONG)(UWORD)TEXTDISP_PrimaryGroupEntryCount) {
             break;
@@ -43,41 +59,41 @@ LONG NEWGRID_FindNextEntryWithMarkers(LONG scanMode, LONG startIndex, WORD selec
 
         entry = 0;
         aux = 0;
-        (void)NEWGRID_UpdatePresetEntry(&entry, &aux, (LONG)selector, idx);
+        (void)NEWGRID_UpdatePresetEntry((UBYTE **)&entry, (UBYTE **)&aux, (LONG)selector, idx);
 
         if (entry == 0 || aux == 0) {
             ++idx;
             continue;
         }
-        if ((*(UWORD *)(entry + 46) & (UWORD)0x0002) == 0) {
+        if ((entry->markerFlags46 & (UWORD)0x0002) == 0) {
             ++idx;
             continue;
         }
-        if ((entry[40] & 0x80) == 0) {
+        if ((entry->flags40 & 0x80) == 0) {
             ++idx;
             continue;
         }
-        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry + 28, (LONG)selector) + 1 != 0) {
+        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, (LONG)selector) + 1 != 0) {
             ++idx;
             continue;
         }
-        if (NEWGRID_ShouldOpenEditor(entry) != 0) {
+        if (NEWGRID_ShouldOpenEditor((UBYTE *)entry) != 0) {
             ++idx;
             continue;
         }
 
-        if ((aux[(LONG)selector + 7] & 0x02) == 0) {
-            if ((entry[27] & 0x10) == 0) {
+        if ((aux->rowFlags[(LONG)selector] & 0x02) == 0) {
+            if ((entry->flags27 & 0x10) == 0) {
                 ++idx;
                 continue;
             }
         }
 
-        if ((aux[(LONG)selector + 7] & 0x80) != 0) {
+        if ((aux->rowFlags[(LONG)selector] & 0x80) != 0) {
             ++idx;
             continue;
         }
-        if (*(LONG *)(aux + 56 + (((LONG)selector) << 2)) == 0) {
+        if (aux->titleTable[(LONG)selector] == 0) {
             ++idx;
             continue;
         }
