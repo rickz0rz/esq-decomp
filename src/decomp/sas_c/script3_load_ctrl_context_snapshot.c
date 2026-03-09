@@ -23,7 +23,7 @@ extern UWORD TEXTDISP_ActiveGroupId;
 extern UBYTE TEXTDISP_BannerFallbackEntryIndex;
 extern UBYTE TEXTDISP_BannerSelectedEntryIndex;
 
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *oldPtr, char *newPtr);
+extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newPtr, char *oldPtr);
 
 typedef struct SCRIPT_CtrlContextSnapshot {
     UBYTE pad0[2];
@@ -66,7 +66,7 @@ void SCRIPT_LoadCtrlContextSnapshot(char *ctx)
     SCRIPT_PendingTextdispCmdChar = p->pendingTextdispCmdChar;
     SCRIPT_PendingTextdispCmdArg = p->pendingTextdispCmdArg;
 
-    SCRIPT_CommandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(SCRIPT_CommandTextPtr, p->commandTextPtr);
+    SCRIPT_CommandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(p->commandTextPtr, SCRIPT_CommandTextPtr);
 
     SCRIPT_PrimarySearchFirstFlag = p->primarySearchFirstFlag;
     TEXTDISP_PrimaryChannelCode = p->primaryChannelCode;

@@ -13,8 +13,8 @@ ___SCRIPT_ResetCtrlContext__1:
               MOVE.B         #$78,$27d(A3)            ;177c 0078 027d 
               CLR.B          $27e(A3)                 ;422b 027e 
               CLR.B          $27f(A3)                 ;422b 027f 
-              CLR.L          -(A7)                    ;42a7 
               MOVE.L         $280(A3),-(A7)           ;2f2b 0280 
+              CLR.L          -(A7)                    ;42a7 
               BSR.W          ESQPROTO_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,$280(A3)              ;2740 0280 
               ADDQ.W         #$8,A7                   ;504f 

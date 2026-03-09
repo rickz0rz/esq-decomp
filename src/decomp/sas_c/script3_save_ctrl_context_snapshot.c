@@ -23,7 +23,7 @@ extern UWORD TEXTDISP_ActiveGroupId;
 extern UBYTE TEXTDISP_BannerFallbackEntryIndex;
 extern UBYTE TEXTDISP_BannerSelectedEntryIndex;
 
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *oldPtr, char *newPtr);
+extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newPtr, char *oldPtr);
 
 typedef struct SCRIPT_CtrlContextSnapshot {
     UBYTE pad0[2];
@@ -64,7 +64,7 @@ void SCRIPT_SaveCtrlContextSnapshot(char *ctx)
     p->pendingWeatherCommandChar = SCRIPT_PendingWeatherCommandChar;
     p->pendingTextdispCmdChar = SCRIPT_PendingTextdispCmdChar;
     p->pendingTextdispCmdArg = SCRIPT_PendingTextdispCmdArg;
-    p->commandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(p->commandTextPtr, SCRIPT_CommandTextPtr);
+    p->commandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(SCRIPT_CommandTextPtr, p->commandTextPtr);
 
     p->primarySearchFirstFlag = SCRIPT_PrimarySearchFirstFlag;
     p->primaryChannelCode = TEXTDISP_PrimaryChannelCode;

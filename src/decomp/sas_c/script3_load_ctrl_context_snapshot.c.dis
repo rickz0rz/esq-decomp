@@ -14,8 +14,8 @@ ___SCRIPT_LoadCtrlContextSnapshot__1:
               MOVE.B         $27d(A3),SCRIPT_PendingWeatherCommandChar(A4);196b 027d 0000 
               MOVE.B         $27e(A3),SCRIPT_PendingTextdispCmdChar(A4);196b 027e 0000 
               MOVE.B         $27f(A3),SCRIPT_PendingTextdispCmdArg(A4);196b 027f 0000 
-              MOVE.L         $280(A3),-(A7)           ;2f2b 0280 
               MOVE.L         SCRIPT_CommandTextPtr(A4),-(A7);2f2c 0000 
+              MOVE.L         $280(A3),-(A7)           ;2f2b 0280 
               BSR.W          ESQPROTO_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,SCRIPT_CommandTextPtr(A4);2940 0000 
               ADDQ.W         #$8,A7                   ;504f 
