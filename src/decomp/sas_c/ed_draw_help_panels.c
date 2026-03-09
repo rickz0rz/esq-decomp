@@ -1,11 +1,11 @@
 typedef signed long LONG;
 
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern LONG _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG mode);
-extern void _LVORectFill(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
+extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVORectFill(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
 void ED_DrawHelpPanels(LONG penIndex)
 {
