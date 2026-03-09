@@ -2,14 +2,20 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Entry NEWGRID_Entry;
+
+struct NEWGRID_Entry {
+    UBYTE pad0[1];
+};
+
 extern LONG NEWGRID_GridSelectionWorkflowState;
 extern LONG NEWGRID_GridSelectionEntryIndex;
 extern LONG NEWGRID_GridSelectionColumnAdjust;
 extern UBYTE CONFIG_NewgridSelectionCode48_49EnabledFlag;
 extern UBYTE CONFIG_NewgridSelectionCode32EnabledFlag;
-extern UBYTE *TEXTDISP_PrimaryEntryPtrTable[];
+extern NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
-extern LONG NEWGRID_ShouldOpenEditor(UBYTE *entry);
+extern LONG NEWGRID_ShouldOpenEditor(NEWGRID_Entry *entry);
 extern LONG NEWGRID_UpdateGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_ProcessGridEntries(UBYTE *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_FindNextFlaggedEntry(LONG mode, LONG startIndex);
@@ -20,7 +26,7 @@ extern LONG NEWGRID_ComputeColumnIndex(UBYTE *ctx);
 LONG NEWGRID_HandleGridSelection(UBYTE *ctx, WORD rowIndex)
 {
     LONG scannedThisStep;
-    UBYTE *entry;
+    NEWGRID_Entry *entry;
     LONG state;
 
     scannedThisStep = 0;

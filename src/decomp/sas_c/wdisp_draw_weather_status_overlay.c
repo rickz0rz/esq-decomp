@@ -3,6 +3,12 @@ typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct WDISP_WeatherBrush {
+    UBYTE pad0[176];
+    UWORD width;
+    UWORD height;
+} WDISP_WeatherBrush;
+
 extern UBYTE WDISP_WeatherStatusCountdown;
 extern UWORD WDISP_WeatherStatusDigitChar;
 extern UBYTE WDISP_WeatherStatusBrushIndex;
@@ -21,7 +27,7 @@ extern void MEMORY_DeallocateMemory(const char *tag, LONG pool, void *ptr, LONG 
 
 void WDISP_DrawWeatherStatusOverlay(void *rastPort, LONG xSpan, LONG ySpan)
 {
-    void *brush;
+    WDISP_WeatherBrush *brush;
     UBYTE *textCopy;
     UBYTE *scan;
     UBYTE *fallback;
@@ -44,17 +50,19 @@ void WDISP_DrawWeatherStatusOverlay(void *rastPort, LONG xSpan, LONG ySpan)
     }
 
     if (WDISP_WeatherStatusBrushIndex == 1) {
-        brush = WDISP_JMPTBL_BRUSH_FindBrushByPredicate((void *)ESQFUNC_WeatherBrushPredicateNames,
-                                                        (void *)&ESQFUNC_PwBrushListHead);
+        brush = (WDISP_WeatherBrush *)WDISP_JMPTBL_BRUSH_FindBrushByPredicate(
+            (void *)ESQFUNC_WeatherBrushPredicateNames,
+            (void *)&ESQFUNC_PwBrushListHead
+        );
     } else {
-        brush = WDISP_JMPTBL_BRUSH_FindBrushByPredicate(
+        brush = (WDISP_WeatherBrush *)WDISP_JMPTBL_BRUSH_FindBrushByPredicate(
             (void *)ESQFUNC_STR_I5[(ULONG)WDISP_WeatherStatusBrushIndex],
             (void *)&ESQFUNC_PwBrushListHead);
     }
 
-    if (brush != (void *)0) {
-        brushWidth = ((UWORD *)((UBYTE *)brush + 176))[0];
-        brushHeight = ((UWORD *)((UBYTE *)brush + 178))[0];
+    if (brush != (WDISP_WeatherBrush *)0) {
+        brushWidth = brush->width;
+        brushHeight = brush->height;
     } else {
         brushWidth = 0xAA;
         brushHeight = 90;

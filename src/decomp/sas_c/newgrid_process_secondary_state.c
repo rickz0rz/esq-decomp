@@ -2,10 +2,16 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Entry NEWGRID_Entry;
+
+struct NEWGRID_Entry {
+    UBYTE pad0[1];
+};
+
 extern LONG NEWGRID_SecondaryWorkflowState;
 extern LONG NEWGRID_SecondarySelectedEntryIndex;
 extern LONG NEWGRID_SecondarySelectionHintCounter;
-extern UBYTE *TEXTDISP_PrimaryEntryPtrTable[];
+extern NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
 extern UBYTE GCOMMAND_DigitalNicheEnabledFlag;
 extern LONG GCOMMAND_NicheEditorLayoutPen;
@@ -18,7 +24,7 @@ extern LONG NEWGRID_HandleGridEditorState(UBYTE *ctx, LONG layoutPen, LONG rowPe
 extern LONG NEWGRID_UpdateGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_ProcessGridEntries(UBYTE *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_FindNextEntryWithFlags(LONG mode, LONG startIndex);
-extern LONG NEWGRID_ShouldOpenEditor(UBYTE *entry);
+extern LONG NEWGRID_ShouldOpenEditor(NEWGRID_Entry *entry);
 extern void NEWGRID_ValidateSelectionCode(UBYTE *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
 extern LONG NEWGRID_ComputeColumnIndex(UBYTE *ctx);
@@ -27,7 +33,7 @@ LONG NEWGRID_ProcessSecondaryState(UBYTE *ctx, WORD rowIndex)
 {
     LONG scannedThisStep;
     LONG state;
-    UBYTE *entry;
+    NEWGRID_Entry *entry;
 
     scannedThisStep = 0;
 

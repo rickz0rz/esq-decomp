@@ -22,11 +22,11 @@ ___WDISP_DrawWeatherStatusOverlay__2:
 ___WDISP_DrawWeatherStatusOverlay__3:
               MOVE.L         P_TYPE_WeatherCurrentMsgPtr(A4),A0;206c 0000 
               MOVE.L         A0,$24(A7)               ;2f48 0024 
-              BNE.W          ___WDISP_DrawWeatherStatusOverlay__27;6600 00ee 
+              BNE.W          ___WDISP_DrawWeatherStatusOverlay__27;6600 00ea 
 ___WDISP_DrawWeatherStatusOverlay__4:
               MOVE.L         Global_STR_PTR_NO_CURRENT_WEATHE(A4),$24(A7);2f6c 0000 0024 
 ___WDISP_DrawWeatherStatusOverlay__5:
-              BRA.W          ___WDISP_DrawWeatherStatusOverlay__27;6000 00e4 
+              BRA.W          ___WDISP_DrawWeatherStatusOverlay__27;6000 00e0 
 ___WDISP_DrawWeatherStatusOverlay__6:
               MOVE.B         WDISP_WeatherStatusBrushIndex(A4),D0;102c 0000 
               SUBQ.B         #$1,D0                   ;5300 
@@ -53,14 +53,12 @@ ___WDISP_DrawWeatherStatusOverlay__8:
               ADDQ.W         #$8,A7                   ;504f 
 ___WDISP_DrawWeatherStatusOverlay__9:
               MOVE.L         A3,D0                    ;200b 
-              BEQ.B          ___WDISP_DrawWeatherStatusOverlay__11;671a 
+              BEQ.B          ___WDISP_DrawWeatherStatusOverlay__11;6716 
 ___WDISP_DrawWeatherStatusOverlay__10:
-              LEA            $b0(A3),A0               ;41eb 00b0 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         (A0),D0                  ;3010 
-              LEA            $b2(A3),A0               ;41eb 00b2 
+              MOVE.W         $b0(A3),D0               ;302b 00b0 
               MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.W         (A0),D1                  ;3210 
+              MOVE.W         $b2(A3),D1               ;322b 00b2 
               MOVE.L         D0,$1c(A7)               ;2f40 001c 
               MOVE.L         D1,$18(A7)               ;2f41 0018 
               BRA.B          ___WDISP_DrawWeatherStatusOverlay__12;600e 
