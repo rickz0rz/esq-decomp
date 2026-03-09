@@ -16,7 +16,7 @@ extern UBYTE TEXTDISP_SourceConfigFlagMask;
 extern const char *TEXTDISP_PtrPrevueSportsTag;
 
 extern const char Global_STR_TEXTDISP_C_4[];
-extern void *MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
+extern TEXTDISP_SourceConfigEntry *MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newStr, char *oldStr);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
 
@@ -28,7 +28,7 @@ void TEXTDISP_AddSourceConfigEntry(char *name, const char *tag)
     LONG idx = TEXTDISP_SourceConfigEntryCount;
     TEXTDISP_SourceConfigEntry **slot = &TEXTDISP_SourceConfigEntryTable[idx];
 
-    *slot = (TEXTDISP_SourceConfigEntry *)MEMORY_AllocateMemory(
+    *slot = MEMORY_AllocateMemory(
         Global_STR_TEXTDISP_C_4,
         SOURCECFG_ALLOC_LINE,
         SOURCECFG_ALLOC_SIZE,

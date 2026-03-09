@@ -30,7 +30,7 @@ extern const char Global_STR_TEXTDISP_C_1[];
 extern const char Global_STR_TEXTDISP_C_2[];
 extern const char TEXTDISP_CommandPrefixFormat[];
 
-extern void *MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
+extern TEXTDISP_SelectionEntry *MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 extern void WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
 extern LONG TEXTDISP_SelectGroupAndEntry(char *cmd, char *primarySearch, LONG channelCode);
@@ -103,7 +103,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
         } else {
             if (scriptType == SCRIPT_FILTER) {
                 if (TEXTDISP_CommandBufferPtr == (TEXTDISP_SelectionEntry *)0) {
-                    TEXTDISP_CommandBufferPtr = (TEXTDISP_SelectionEntry *)MEMORY_AllocateMemory(
+                    TEXTDISP_CommandBufferPtr = MEMORY_AllocateMemory(
                         Global_STR_TEXTDISP_C_1,
                         BUFFER_ALLOC_LINE,
                         BUFFER_SIZE,
