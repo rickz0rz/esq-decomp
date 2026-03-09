@@ -27,26 +27,28 @@ ___TEXTDISP_FindAliasIndexByName__5:
               MOVE.L         $3c(A7),D0               ;202f 003c 
               MOVE.W         TEXTDISP_AliasCount(A4),D1;322c 0000 
               CMP.W          D1,D0                    ;b041 
-              BGE.B          ___TEXTDISP_FindAliasIndexByName__12;6c54 
+              BGE.B          ___TEXTDISP_FindAliasIndexByName__12;6c56 
 ___TEXTDISP_FindAliasIndexByName__6:
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
               LEA            TEXTDISP_AliasPtrTable(A4),A0;41ec 0000 
               MOVE.L         $0(A0,D1.L),$38(A7)      ;2f70 1800 0038 
-              MOVE.L         $38(A7),A0               ;206f 0038 
-              MOVE.L         (A0),$34(A7)             ;2f50 0034 
-              CLR.L          $30(A7)                  ;42af 0030 
+              MOVE.L         $38(A7),A1               ;226f 0038 
+              MOVE.L         (A1),A0                  ;2051 
+              MOVE.L         A0,$30(A7)               ;2f48 0030 
+              MOVE.L         A0,$34(A7)               ;2f48 0034 
 ___TEXTDISP_FindAliasIndexByName__7:
-              MOVE.L         $34(A7),A0               ;206f 0034 
-              MOVE.L         $30(A7),D0               ;202f 0030 
-              MOVE.B         $0(A0,D0.L),D0           ;1030 0800 
+              MOVE.L         $30(A7),A0               ;206f 0030 
+              MOVE.B         (A0),D0                  ;1010 
               CMP.B          D5,D0                    ;b005 
               BEQ.B          ___TEXTDISP_FindAliasIndexByName__9;6706 
 ___TEXTDISP_FindAliasIndexByName__8:
               ADDQ.L         #$1,$30(A7)              ;52af 0030 
-              BRA.B          ___TEXTDISP_FindAliasIndexByName__7;60ea 
+              BRA.B          ___TEXTDISP_FindAliasIndexByName__7;60f0 
 ___TEXTDISP_FindAliasIndexByName__9:
-              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              SUB.L          $34(A7),D0               ;90af 0034 
+              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
               PEA            $22(A7)                  ;486f 0022 
               BSR.W          STRING_CompareNoCaseN    ;6100 0000 
@@ -58,7 +60,7 @@ ___TEXTDISP_FindAliasIndexByName__10:
               BRA.B          ___TEXTDISP_FindAliasIndexByName__14;6008 
 ___TEXTDISP_FindAliasIndexByName__11:
               ADDQ.L         #$1,$3c(A7)              ;52af 003c 
-              BRA.B          ___TEXTDISP_FindAliasIndexByName__5;60a0 
+              BRA.B          ___TEXTDISP_FindAliasIndexByName__5;609e 
 ___TEXTDISP_FindAliasIndexByName__12:
               MOVE.L         D6,D0                    ;2006 
 ___TEXTDISP_FindAliasIndexByName__13:

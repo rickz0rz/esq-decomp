@@ -29,16 +29,16 @@ LONG TEXTDISP_FindAliasIndexByName(UBYTE *entryPtr)
     while ((WORD)idx < TEXTDISP_AliasCount) {
         UBYTE **aliasNode;
         UBYTE *alias;
-        LONG len;
+        UBYTE *scan;
 
         aliasNode = (UBYTE **)TEXTDISP_AliasPtrTable[idx];
         alias = aliasNode[0];
-        len = 0;
-        while (alias[len] != CH_NUL) {
-            len += 1;
+        scan = alias;
+        while (*scan != CH_NUL) {
+            ++scan;
         }
 
-        if (STRING_CompareNoCaseN((const char *)nameBuf, (const char *)alias, len) == 0) {
+        if (STRING_CompareNoCaseN((const char *)nameBuf, (const char *)alias, (LONG)(scan - alias)) == 0) {
             return idx;
         }
         idx += 1;
