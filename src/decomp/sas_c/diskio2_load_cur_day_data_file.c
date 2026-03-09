@@ -3,6 +3,23 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 
+typedef struct DISKIO2_Entry {
+    UBYTE pad0[27];
+    UBYTE flags27;
+    UBYTE pad1[12];
+    UBYTE flags40;
+    UBYTE pad2[7];
+} DISKIO2_Entry;
+
+typedef struct DISKIO2_TitleData {
+    UBYTE pad0[7];
+    UBYTE slotFlags[49];
+    char *slotTextTable[49];
+    UBYTE slotAttr252[49];
+    UBYTE slotAttr301[49];
+    UBYTE slotAttr350[49];
+} DISKIO2_TitleData;
+
 extern long DISKIO_LoadFileToWorkBuffer(const char *path);
 extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
@@ -50,8 +67,8 @@ volatile UWORD TEXTDISP_PrimaryGroupRecordLength;
 volatile UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 volatile UWORD TEXTDISP_GroupMutationState;
 volatile UWORD TEXTDISP_MaxEntryTitleLength;
-volatile UBYTE *TEXTDISP_PrimaryEntryPtrTable[200];
-volatile UBYTE *TEXTDISP_PrimaryTitlePtrTable[200];
+volatile DISKIO2_Entry *TEXTDISP_PrimaryEntryPtrTable[200];
+volatile DISKIO2_TitleData *TEXTDISP_PrimaryTitlePtrTable[200];
 
 volatile UBYTE CTASKS_PrimaryOiWritePendingFlag;
 volatile UBYTE CTASKS_PendingPrimaryOiDiskId;
@@ -152,9 +169,9 @@ long DISKIO2_LoadCurDayDataFile(void)
         TEXTDISP_MaxEntryTitleLength = 0;
 
         for (entryIndex = 0; entryIndex < parsedCount; entryIndex++) {
-            UBYTE *entry = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+            DISKIO2_Entry *entry = (DISKIO2_Entry *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
                 Global_STR_DISKIO2_C_8, 634, 52, 0x10001UL);
-            UBYTE *title = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+            DISKIO2_TitleData *title = (DISKIO2_TitleData *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
                 Global_STR_DISKIO2_C_9, 640, 500, 0x10001UL);
             UWORD slot;
 
@@ -169,12 +186,12 @@ long DISKIO2_LoadCurDayDataFile(void)
                 break;
             }
 
-            GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults(entry);
-            COI_EnsureAnimObjectAllocated(entry);
+            GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults((UBYTE *)entry);
+            COI_EnsureAnimObjectAllocated((UBYTE *)entry);
 
             {
                 UWORD i;
-                UBYTE *dst = entry;
+                UBYTE *dst = (UBYTE *)entry;
                 UBYTE *src = (UBYTE *)Global_PTR_WORK_BUFFER;
                 for (i = 0; i < 48; i++) {
                     *dst++ = *src++;
@@ -183,9 +200,9 @@ long DISKIO2_LoadCurDayDataFile(void)
                 Global_REF_LONG_FILE_SCRATCH -= 48;
             }
 
-            entry[40] = (UBYTE)(entry[40] & 0x7F);
+            entry->flags40 = (UBYTE)(entry->flags40 & 0x7F);
             {
-                UBYTE *scan = entry + 1;
+                UBYTE *scan = ((UBYTE *)entry) + 1;
                 UWORD len = 0;
                 while (*scan++ != 0) {
                     len++;
@@ -205,9 +222,8 @@ long DISKIO2_LoadCurDayDataFile(void)
             }
 
             for (slot = 0; slot < 49 && result != -1; slot++) {
-                char **slotTextTable = (char **)(title + 56);
-                title[7 + slot] = 1;
-                slotTextTable[slot] = 0;
+                title->slotFlags[slot] = 1;
+                title->slotTextTable[slot] = 0;
 
                 if (DISKIO_CurrentDriveRevisionIndex > 4) {
                     if (skipUntil < 0) {
@@ -219,11 +235,11 @@ long DISKIO2_LoadCurDayDataFile(void)
                     skipUntil = -1;
                 }
 
-                title[7 + slot] = (UBYTE)DISKIO_ParseLongFromWorkBuffer();
+                title->slotFlags[slot] = (UBYTE)DISKIO_ParseLongFromWorkBuffer();
                 if (DISKIO_CurrentDriveRevisionIndex > 1) {
-                    title[252 + slot] = (UBYTE)DISKIO_ParseLongFromWorkBuffer();
-                    title[301 + slot] = (UBYTE)DISKIO_ParseLongFromWorkBuffer();
-                    title[350 + slot] = (UBYTE)DISKIO_ParseLongFromWorkBuffer();
+                    title->slotAttr252[slot] = (UBYTE)DISKIO_ParseLongFromWorkBuffer();
+                    title->slotAttr301[slot] = (UBYTE)DISKIO_ParseLongFromWorkBuffer();
+                    title->slotAttr350[slot] = (UBYTE)DISKIO_ParseLongFromWorkBuffer();
                 }
 
                 str = DISKIO_ConsumeCStringFromWorkBuffer();
@@ -232,10 +248,10 @@ long DISKIO2_LoadCurDayDataFile(void)
                     break;
                 }
 
-                str = GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(str, (ULONG)entry[27]);
-                slotTextTable[slot] = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(slotTextTable[slot], str);
-                if (slotTextTable[slot] != 0) {
-                    entry[40] = (UBYTE)(entry[40] | 0x80);
+                str = GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(str, (ULONG)entry->flags27);
+                title->slotTextTable[slot] = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(title->slotTextTable[slot], str);
+                if (title->slotTextTable[slot] != 0) {
+                    entry->flags40 = (UBYTE)(entry->flags40 | 0x80);
                 }
             }
 
