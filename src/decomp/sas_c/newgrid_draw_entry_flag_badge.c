@@ -2,6 +2,11 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[27];
+    UBYTE flags27;
+} NEWGRID_Entry;
+
 extern UBYTE NEWGRID_EntryDetailFmtStr;
 
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
@@ -14,11 +19,13 @@ extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *rastPort, LON
 
 void NEWGRID_DrawEntryFlagBadge(void *rastPort, UBYTE *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode)
 {
+    NEWGRID_Entry *entryView;
     UBYTE *animPtr;
 
+    entryView = (NEWGRID_Entry *)entry;
     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20, layoutMode);
 
-    if (entry != 0 && (entry[27] & (1u << 4)) != 0) {
+    if (entryView != 0 && (entryView->flags27 & (1u << 4)) != 0) {
         if (NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(entry, (LONG)rowIndex, 5) != 0) {
             animPtr = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, (LONG)rowIndex, 6);
             if (animPtr != 0) {
