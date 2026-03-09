@@ -5,7 +5,7 @@ typedef unsigned char UBYTE;
 typedef struct LayoutCtx {
     UWORD currentHalfHeight;
     LONG currentVisibleLines;
-    UBYTE scratch[60];
+    char scratch[60];
 } LayoutCtx;
 
 typedef struct NEWGRID_AuxData {
@@ -128,15 +128,15 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
             }
 
             ((LONG (*)(char *, LONG, LONG))NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths)(
-                (char *)ctx->scratch, leftState, rightState);
-            NEWGRID_DrawEntryRowOrPlaceholder((char *)ctx->scratch, entry, aux, modeIdx, nextSpan, state);
+                ctx->scratch, leftState, rightState);
+            NEWGRID_DrawEntryRowOrPlaceholder(ctx->scratch, entry, aux, modeIdx, nextSpan, state);
         } else {
             nextSpan = (UWORD)(3 - row);
             if (nextSpan < 3) {
                 NEWGRID_SelectionMarkerPenState = -1;
                 NEWGRID_RowLayoutCommitPenId = 1;
                 NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams((NEWGRID_ColumnWidthPx * nextSpan) - 12, 2, 1);
-                NEWGRID_DrawEntryRowOrPlaceholder((char *)ctx->scratch, entry, aux, modeIdx, nextSpan, 1);
+                NEWGRID_DrawEntryRowOrPlaceholder(ctx->scratch, entry, aux, modeIdx, nextSpan, 1);
             } else {
                 keepMarkers = 0;
             }
@@ -151,13 +151,13 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
 
     if (keepMarkers) {
         if (rowSpan == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y' && NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
-            NEWGRID_DrawGridCell((char *)ctx->scratch, (void *)NEWGRID_SelectedGridEntryPtr, 0);
+            NEWGRID_DrawGridCell(ctx->scratch, (void *)NEWGRID_SelectedGridEntryPtr, 0);
             NEWGRID_GridEntriesWorkflowState = 5;
             if (NEWGRID_SelectionMarkerPenState == -1) {
                 NEWGRID_SelectionMarkerPenState = NEWGRID_SelectedGridEntryPtr;
             }
         } else {
-            NEWGRID_DrawGridCell((char *)ctx->scratch, (void *)NEWGRID_SelectedGridEntryPtr, 1);
+            NEWGRID_DrawGridCell(ctx->scratch, (void *)NEWGRID_SelectedGridEntryPtr, 1);
             NEWGRID_GridEntriesWorkflowState = 4;
         }
 

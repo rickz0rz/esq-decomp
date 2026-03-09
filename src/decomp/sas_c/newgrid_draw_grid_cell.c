@@ -4,8 +4,8 @@ typedef unsigned char UBYTE;
 
 typedef struct NEWGRID_Entry {
     UBYTE pad0[1];
-    UBYTE leftText[18];
-    UBYTE rightText[1];
+    char leftText[18];
+    char rightText[1];
 } NEWGRID_Entry;
 
 extern UWORD NEWGRID_ColumnStartXPx;
