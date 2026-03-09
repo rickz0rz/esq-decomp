@@ -29,7 +29,7 @@ extern LONG NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIn
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG bitIndex);
 extern WORD NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG rowIndex);
 extern LONG NEWGRID_SelectEntryPen(char *entry);
-extern void NEWGRID_DrawEntryFlagBadge(void *rastPort, char *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode);
+extern void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG unused);
 extern LONG NEWGRID_DrawGridFrameAndRows(char *grid, LONG selectedEntryState);
 

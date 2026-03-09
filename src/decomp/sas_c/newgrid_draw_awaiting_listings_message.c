@@ -29,7 +29,7 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void NEWGRID_DrawGridFrame(char *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
 extern void _LVOSetAPen(void *rastPort, LONG pen);
 extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
-extern void NEWGRID_DrawWrappedText(void *rastPort, LONG x, LONG y, LONG width, char *text, LONG centered);
+extern void NEWGRID_DrawWrappedText(char *rastPort, LONG x, LONG y, LONG width, char *text, LONG centered);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
 LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
@@ -79,7 +79,7 @@ LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
     }
     y = (y >> 1) + (LONG)fontH - 1;
 
-    NEWGRID_DrawWrappedText(rast, x, y, 612, msg, 1);
+    NEWGRID_DrawWrappedText((char *)rast, x, y, 612, msg, 1);
     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(rast, 0, 0, 695, yMax);
 
     mid = (WORD)((UWORD)NEWGRID_RowHeightPx >> 1);
