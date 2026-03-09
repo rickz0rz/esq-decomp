@@ -22,38 +22,38 @@ ___COI_ClearAnimObjectStrings__5:
               CLR.B          $1(A2)                   ;422a 0001 
               CLR.B          $2(A2)                   ;422a 0002 
               CLR.B          $3(A2)                   ;422a 0003 
-              CLR.L          -(A7)                    ;42a7 
               MOVE.L         $4(A2),-(A7)             ;2f2a 0004 
+              CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         D7,$4(A2)                ;2547 0004 
-              CLR.L          (A7)                     ;4297 
-              MOVE.L         $8(A2),-(A7)             ;2f2a 0008 
+              MOVE.L         $8(A2),(A7)              ;2eaa 0008 
+              CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         D7,$8(A2)                ;2547 0008 
-              CLR.L          (A7)                     ;4297 
-              MOVE.L         $c(A2),-(A7)             ;2f2a 000c 
+              MOVE.L         $c(A2),(A7)              ;2eaa 000c 
+              CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         D7,$c(A2)                ;2547 000c 
-              CLR.L          (A7)                     ;4297 
-              MOVE.L         $10(A2),-(A7)            ;2f2a 0010 
+              MOVE.L         $10(A2),(A7)             ;2eaa 0010 
+              CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         D7,$10(A2)               ;2547 0010 
-              CLR.L          (A7)                     ;4297 
-              MOVE.L         $14(A2),-(A7)            ;2f2a 0014 
+              MOVE.L         $14(A2),(A7)             ;2eaa 0014 
+              CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         D7,$14(A2)               ;2547 0014 
-              CLR.L          (A7)                     ;4297 
-              MOVE.L         $18(A2),-(A7)            ;2f2a 0018 
+              MOVE.L         $18(A2),(A7)             ;2eaa 0018 
+              CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         D7,$18(A2)               ;2547 0018 
-              CLR.L          (A7)                     ;4297 
-              MOVE.L         $1c(A2),-(A7)            ;2f2a 001c 
+              MOVE.L         $1c(A2),(A7)             ;2eaa 001c 
+              CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         D7,$1c(A2)               ;2547 001c 

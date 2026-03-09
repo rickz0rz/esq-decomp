@@ -103,12 +103,12 @@ ___CLEANUP_ShutdownSystem__8:
               ADDQ.L         #$1,D7                   ;5287 
               BRA.B          ___CLEANUP_ShutdownSystem__3;60ae 
 ___CLEANUP_ShutdownSystem__9:
-              CLR.L          -(A7)                    ;42a7 
               MOVE.L         WDISP_WeatherStatusTextPtr(A4),-(A7);2f2c 0000 
+              CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,WDISP_WeatherStatusTextPtr(A4);2940 0000 
-              CLR.L          (A7)                     ;4297 
-              MOVE.L         WDISP_WeatherStatusOverlayTextPt(A4),-(A7);2f2c 0000 
+              MOVE.L         WDISP_WeatherStatusOverlayTextPt(A4),(A7);2eac 0000 
+              CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,WDISP_WeatherStatusOverlayTextPt(A4);2940 0000 
               BSR.W          _LVOSetFunction          ;6100 0000 

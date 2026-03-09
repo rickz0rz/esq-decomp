@@ -33,7 +33,7 @@ LONG GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(const char *s, void *map, LONG ma
 LONG ESQ_WildcardMatch(const char *a, const char *b);
 void COI_ClearAnimObjectStrings(void *entry);
 void COI_FreeSubEntryTableEntries(void *entry);
-char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *old_ptr, const char *new_ptr);
+char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 void CLEANUP_FormatEntryStringTokens(void **a, void **b, char *in);
 LONG GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 void COI_AllocSubEntryTable(void *entry);

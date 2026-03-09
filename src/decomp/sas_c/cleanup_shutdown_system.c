@@ -1,22 +1,20 @@
 typedef unsigned short UWORD;
 typedef long LONG;
 
-enum {
-    CLEANUP_NULL = 0,
-    CLEANUP_LINEHEAD_MODE_PRIMARY = 1,
-    CLEANUP_LINEHEAD_MODE_SECONDARY = 2,
-    CLEANUP_REMOVE_GROUP_PRIMARY = 1,
-    CLEANUP_REMOVE_GROUP_SECONDARY = 2,
-    CLEANUP_HILITE_PORT_SIZE = 34,
-    CLEANUP_HILITE_MSG_DEALLOC_LINE = 318,
-    CLEANUP_HILITE_REPLY_DEALLOC_LINE = 319,
-    CLEANUP_RASTER_ROWS = 5,
-    CLEANUP_RASTER_COLS = 4,
-    CLEANUP_RASTER_ROW_STRIDE = 40,
-    CLEANUP_RASTER_COL_SHIFT = 2,
-    CLEANUP_RASTER_PTR_OFFSET = 8,
-    CLEANUP_EXEC_HOOK_WINDOW_OFFSET = 184
-};
+#define CLEANUP_NULL 0
+#define CLEANUP_LINEHEAD_MODE_PRIMARY 1
+#define CLEANUP_LINEHEAD_MODE_SECONDARY 2
+#define CLEANUP_REMOVE_GROUP_PRIMARY 1
+#define CLEANUP_REMOVE_GROUP_SECONDARY 2
+#define CLEANUP_HILITE_PORT_SIZE 34
+#define CLEANUP_HILITE_MSG_DEALLOC_LINE 318
+#define CLEANUP_HILITE_REPLY_DEALLOC_LINE 319
+#define CLEANUP_RASTER_ROWS 5
+#define CLEANUP_RASTER_COLS 4
+#define CLEANUP_RASTER_ROW_STRIDE 40
+#define CLEANUP_RASTER_COL_SHIFT 2
+#define CLEANUP_RASTER_PTR_OFFSET 8
+#define CLEANUP_EXEC_HOOK_WINDOW_OFFSET 184
 
 extern LONG LOCAVAIL_PrimaryFilterState;
 extern LONG LOCAVAIL_SecondaryFilterState;
@@ -59,7 +57,7 @@ void GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers(void);
 void GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources(void);
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(void *rast, LONG width, LONG height, LONG line, const char *file);
-LONG GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(LONG old_ptr, LONG new_ptr);
+LONG GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(LONG new_ptr, LONG old_ptr);
 void _LVOSetFunction(void);
 void _LVOVBeamPos(void);
 void GROUP_AB_JMPTBL_UNKNOWN2A_Stub0(void);
@@ -117,8 +115,8 @@ void CLEANUP_ShutdownSystem(void)
         }
     }
 
-    WDISP_WeatherStatusTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(WDISP_WeatherStatusTextPtr, CLEANUP_NULL);
-    WDISP_WeatherStatusOverlayTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(WDISP_WeatherStatusOverlayTextPtr, CLEANUP_NULL);
+    WDISP_WeatherStatusTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(CLEANUP_NULL, WDISP_WeatherStatusTextPtr);
+    WDISP_WeatherStatusOverlayTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(CLEANUP_NULL, WDISP_WeatherStatusOverlayTextPtr);
 
     _LVOSetFunction();
     _LVOSetFunction();
