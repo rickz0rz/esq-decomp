@@ -1,11 +1,26 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
+typedef unsigned short UWORD;
 
 extern UBYTE CONFIG_ParseiniLogoScanEnabledFlag;
 extern LONG Global_UIBusyFlag;
 extern LONG Global_REF_DOS_LIBRARY_2;
+extern void *Global_REF_GRAPHICS_LIBRARY;
+extern void *Global_REF_RASTPORT_1;
+extern void *Global_REF_RASTPORT_2;
+extern void *WDISP_DisplayContextBase;
+extern void *NEWGRID_MainRastPortPtr;
+extern void *NEWGRID_HeaderRastPortPtr;
+extern UBYTE GCOMMAND_HighlightMessageSlotTable[];
+extern UWORD CTASKS_IffTaskDoneFlag;
+extern void *WDISP_WeatherStatusBrushListHead;
+extern void *PARSEINI_BannerBrushResourceHead;
 
 extern const char Global_STR_PERCENT_S_2[];
+extern const char Global_STR_DF0_GRADIENT_INI_3[];
+extern const char Global_STR_DF0_BANNER_INI_2[];
+extern const char Global_STR_DF0_DEFAULT_INI_2[];
+extern const char Global_STR_DF0_SOURCECFG_INI_1[];
 
 extern void PARSEINI_ScanLogoDirectory(void);
 extern LONG PARSEINI_TestMemoryAndOpenTopazFont(void **fontHandleOut, void *textAttr);
@@ -19,6 +34,15 @@ extern void *Global_STRUCT_TEXTATTR_PREVUE_FONT;
 
 extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
 extern LONG _LVOExecute(const char *command, LONG input, LONG output);
+extern void _LVOSetFont(void *graphicsBase, void *rastPort, void *font);
+extern LONG SCRIPT3_JMPTBL_MATH_Mulu32(LONG a, LONG b);
+extern void TLIBA3_SetFontForAllViewModes(void *font);
+extern LONG SCRIPT_CheckPathExists(const char *path);
+extern void PARSEINI_ParseIniBufferAndDispatch(const char *path);
+extern void TEXTDISP_ApplySourceConfigAllEntries(void);
+extern void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(LONG arg);
+extern void PARSEINI_JMPTBL_BRUSH_FreeBrushList(void **headPtr, LONG flags);
+extern void PARSEINI_JMPTBL_BRUSH_FreeBrushResources(void **headPtr);
 
 extern void PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0(void);
 extern void PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1(void);
@@ -66,14 +90,35 @@ void PARSEINI_HandleFontCommand(const char *command)
             return;
         }
         if (c2 == (UBYTE)'7') {
-            if (PARSEINI_TestMemoryAndOpenTopazFont(&Global_HANDLE_H26F_FONT, Global_STRUCT_TEXTATTR_H26F_FONT) != 0 &&
-                Global_UIBusyFlag != 0) {
-                return;
+            if (PARSEINI_TestMemoryAndOpenTopazFont(&Global_HANDLE_H26F_FONT, Global_STRUCT_TEXTATTR_H26F_FONT) != 0) {
+                if (Global_UIBusyFlag != 0) {
+                    _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_HANDLE_H26F_FONT);
+                }
             }
             return;
         }
         if (c2 == (UBYTE)'8') {
-            PARSEINI_TestMemoryAndOpenTopazFont(&Global_HANDLE_PREVUEC_FONT, Global_STRUCT_TEXTATTR_PREVUEC_FONT);
+            LONG i;
+
+            if (PARSEINI_TestMemoryAndOpenTopazFont(&Global_HANDLE_PREVUEC_FONT, Global_STRUCT_TEXTATTR_PREVUEC_FONT) == 0) {
+                return;
+            }
+
+            _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, (UBYTE *)WDISP_DisplayContextBase + 2, Global_HANDLE_PREVUEC_FONT);
+            _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_HANDLE_PREVUEC_FONT);
+            _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, Global_HANDLE_PREVUEC_FONT);
+            _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, NEWGRID_MainRastPortPtr, Global_HANDLE_PREVUEC_FONT);
+            _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, NEWGRID_HeaderRastPortPtr, Global_HANDLE_PREVUEC_FONT);
+
+            for (i = 0; i < 4; ++i) {
+                LONG offset = SCRIPT3_JMPTBL_MATH_Mulu32(i, 160);
+                _LVOSetFont(
+                    Global_REF_GRAPHICS_LIBRARY,
+                    (void *)(GCOMMAND_HighlightMessageSlotTable + offset + 60),
+                    Global_HANDLE_PREVUEC_FONT);
+            }
+
+            TLIBA3_SetFontForAllViewModes(Global_HANDLE_PREVUEC_FONT);
             return;
         }
         if (c2 == (UBYTE)'9') {
@@ -82,6 +127,37 @@ void PARSEINI_HandleFontCommand(const char *command)
         }
         if (c2 == (UBYTE)'R') {
             PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk();
+            return;
+        }
+        if (c2 == (UBYTE)'a') {
+            PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(97);
+            return;
+        }
+        if (c2 == (UBYTE)'b') {
+            PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_GRADIENT_INI_3);
+            return;
+        }
+        if (c2 == (UBYTE)'c') {
+            if (SCRIPT_CheckPathExists(Global_STR_DF0_BANNER_INI_2) == 0) {
+                return;
+            }
+
+            while (CTASKS_IffTaskDoneFlag == 0) {
+            }
+
+            PARSEINI_JMPTBL_BRUSH_FreeBrushList(&WDISP_WeatherStatusBrushListHead, 0);
+            PARSEINI_JMPTBL_BRUSH_FreeBrushResources(&PARSEINI_BannerBrushResourceHead);
+            PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BANNER_INI_2);
+            PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(1);
+            return;
+        }
+        if (c2 == (UBYTE)'d') {
+            PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_DEFAULT_INI_2);
+            return;
+        }
+        if (c2 == (UBYTE)'m') {
+            PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_SOURCECFG_INI_1);
+            TEXTDISP_ApplySourceConfigAllEntries();
             return;
         }
         return;
