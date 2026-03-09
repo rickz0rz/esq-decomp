@@ -13,13 +13,21 @@ typedef struct NEWGRID_ClockScratch {
     UWORD word10;
 } NEWGRID_ClockScratch;
 
+typedef struct NEWGRID_ClockView {
+    ULONG word0;
+    ULONG word1;
+    ULONG word2;
+    ULONG word3;
+    ULONG word4;
+    UWORD minute;
+} NEWGRID_ClockView;
+
 extern LONG GCOMMAND_MplexClockOffsetMinutes;
 extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(void *clockPtr);
 
 LONG NEWGRID_ComputeDaySlotFromClockWithOffset(void *clockPtr)
 {
     const LONG CLOCK_COPY_WORDS32 = 5;
-    const LONG CLOCK_MINUTE_OFFSET = 20;
     const LONG MINUTES_PER_HOUR = 60;
     const LONG HALF_HOUR_MARK = 30;
     const LONG LOWER_HALF_MAX = 29;
@@ -41,7 +49,7 @@ LONG NEWGRID_ComputeDaySlotFromClockWithOffset(void *clockPtr)
     for (i = 0; i < CLOCK_COPY_WORDS32; ++i) {
         dst32[i] = src32[i];
     }
-    scratch.word10 = *((UWORD *)((UBYTE *)clockPtr + CLOCK_MINUTE_OFFSET));
+    scratch.word10 = ((NEWGRID_ClockView *)clockPtr)->minute;
 
     slot = (UWORD)NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&scratch);
 

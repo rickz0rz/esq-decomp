@@ -12,6 +12,11 @@ typedef struct NewgridCtx {
     LONG preset;
 } NewgridCtx;
 
+typedef struct NEWGRID_CoiHeader {
+    UBYTE pad0[47];
+    UBYTE flags47;
+} NEWGRID_CoiHeader;
+
 typedef struct NEWGRID_Entry {
     UBYTE pad0[28];
     UBYTE selectionBits[1];
@@ -71,7 +76,7 @@ void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
     UWORD row;
 
     if (!ctx || !ctx->coi || !ctx->entries || !out) return;
-    if ((((UBYTE *)ctx->coi)[47] & 0x10) == 0) return;
+    if ((((NEWGRID_CoiHeader *)ctx->coi)->flags47 & 0x10) == 0) return;
     if (!TEXTDISP_PrimaryGroupPresentFlag) return;
 
     out[0] = 0;
