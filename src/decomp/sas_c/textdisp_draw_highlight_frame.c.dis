@@ -30,13 +30,13 @@ ___TEXTDISP_DrawHighlightFrame__1:
               MOVE.L         D1,$48(A7)               ;2f41 0048 
               MOVE.L         D1,$68(A7)               ;2f41 0068 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.W          ___TEXTDISP_DrawHighlightFrame__16;6700 017e 
+              BEQ.W          ___TEXTDISP_DrawHighlightFrame__16;6700 0186 
 ___TEXTDISP_DrawHighlightFrame__2:
               MOVE.B         $dc(A3),D0               ;102b 00dc 
               EXT.W          D0                       ;4880 
               EXT.L          D0                       ;48c0 
               CMP.L          D5,D0                    ;b085 
-              BEQ.W          ___TEXTDISP_DrawHighlightFrame__16;6700 0170 
+              BEQ.W          ___TEXTDISP_DrawHighlightFrame__16;6700 0178 
 ___TEXTDISP_DrawHighlightFrame__3:
 ___TEXTDISP_DrawHighlightFrame__4:
               MOVE.L         D5,-(A7)                 ;2f05 
@@ -94,7 +94,11 @@ ___TEXTDISP_DrawHighlightFrame__9:
               BSR.W          WDISP_JMPTBL_ESQIFF_RunCopperDro;6100 0000 
               BSR.W          WDISP_JMPTBL_ESQIFF_RestoreBaseP;6100 0000 
               MOVE.B         CONFIG_LRBN_FlagChar(A4),D0;102c 0000 
-              CMP.B          $58(A7),D0               ;b02f 0058 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         $58(A7),D1               ;122f 0058 
+              CMP.L          D1,D0                    ;b081 
               BNE.B          ___TEXTDISP_DrawHighlightFrame__14;663a 
 ___TEXTDISP_DrawHighlightFrame__10:
               MOVE.L         $6c(A7),D0               ;202f 006c 

@@ -3,9 +3,9 @@ typedef signed short WORD;
 typedef unsigned char UBYTE;
 
 extern LONG WDISP_DisplayContextBase;
-extern void *Global_REF_RASTPORT_2;
+extern char *Global_REF_RASTPORT_2;
 
-extern void TLIBA1_DrawFormattedTextBlock(void *rastPort, const char *text, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void TLIBA1_DrawFormattedTextBlock(char *rastPort, const char *text, LONG x1, LONG y1, LONG x2, LONG y2);
 
 typedef struct TEXTDISP_DisplayContext {
     UBYTE pad0[2];
@@ -41,6 +41,6 @@ void TEXTDISP_DrawInsetRectFrame(char *text, WORD mode)
     if (mode == 3) {
         TLIBA1_DrawFormattedTextBlock(Global_REF_RASTPORT_2, text, x1, y1, x2, y2);
     } else {
-        TLIBA1_DrawFormattedTextBlock((void *)context->rastPort, text, x1, y1, x2, y2);
+        TLIBA1_DrawFormattedTextBlock((char *)context->rastPort, text, x1, y1, x2, y2);
     }
 }

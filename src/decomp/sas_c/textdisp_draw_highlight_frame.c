@@ -23,7 +23,7 @@ extern LONG WDISP_DisplayContextBase;
 extern UWORD WDISP_AccumulatorCaptureActive;
 extern UWORD WDISP_AccumulatorFlushPending;
 extern UWORD TEXTDISP_LinePenOverrideEnabledFlag;
-extern UBYTE CONFIG_LRBN_FlagChar;
+extern char CONFIG_LRBN_FlagChar;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void TLIBA3_ClearViewModeRastPort(LONG viewMode, LONG unused);
@@ -34,8 +34,8 @@ extern LONG MATH_DivS32(LONG a, LONG b);
 extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
 extern void SCRIPT_BeginBannerCharTransition(LONG bannerChar, LONG duration);
-extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG drawMode);
-extern void TLIBA1_DrawFormattedTextBlock(void *rastPort, const char *text, LONG x1, LONG y1, LONG x2, LONG y2);
+extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG drawMode);
+extern void TLIBA1_DrawFormattedTextBlock(char *rastPort, const char *text, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
 
@@ -58,7 +58,7 @@ void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entryPtr)
     const LONG ONE = 1;
     TEXTDISP_SelectionEntry *entry;
     TEXTDISP_DisplayContext *dc;
-    void *rastPort;
+    char *rastPort;
     LONG widthPx;
     LONG widthMax;
     LONG gridCols;
@@ -90,7 +90,7 @@ void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entryPtr)
     WDISP_AccumulatorCaptureActive = ONE;
     WDISP_AccumulatorFlushPending = ZERO;
 
-    rastPort = (void *)dc->rastPort;
+    rastPort = (char *)dc->rastPort;
     WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
 
@@ -107,7 +107,7 @@ void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entryPtr)
 
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, DRAWMODE_JAM1);
     TEXTDISP_LinePenOverrideEnabledFlag = ONE;
-    TLIBA1_DrawFormattedTextBlock(rastPort, (const char *)entry->detailLine, x1, y1, x2, y2);
+    TLIBA1_DrawFormattedTextBlock(rastPort, entry->detailLine, x1, y1, x2, y2);
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(MODE_HIGHLIGHT, ZERO, VIEWCFG_THREE);
     TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();

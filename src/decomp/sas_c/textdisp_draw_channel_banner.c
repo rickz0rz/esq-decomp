@@ -9,7 +9,7 @@ extern WORD TEXTDISP_LinePenOverrideStateWord;
 extern LONG WDISP_DisplayContextBase;
 extern char TEXTDISP_EntryShortNameScratch[];
 extern char TEXTDISP_ChannelLabelBuffer[];
-extern void *Global_REF_RASTPORT_2;
+extern char *Global_REF_RASTPORT_2;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
@@ -17,7 +17,7 @@ extern void TEXTDISP_BuildEntryShortName(char *entry, char *out);
 extern void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix);
 extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth);
 extern void TEXTDISP_DrawInsetRectFrame(char *text, LONG drawMode);
-extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG mode);
+extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 
 typedef struct TEXTDISP_DisplayContext {
     UBYTE pad0[2];
@@ -31,7 +31,7 @@ void TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode)
     char *entry;
     char *src;
     char *dst;
-    void *rastPort;
+    char *rastPort;
     LONG trimWidth;
 
     context = (TEXTDISP_DisplayContext *)WDISP_DisplayContextBase;
@@ -55,7 +55,7 @@ void TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode)
         rastPort = Global_REF_RASTPORT_2;
         _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, 0);
     } else {
-        rastPort = (void *)&context->widthWord2;
+        rastPort = (char *)&context->widthWord2;
         _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, 0);
     }
 
@@ -77,7 +77,7 @@ void TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode)
     } else {
         _LVOSetDrMd(
             Global_REF_GRAPHICS_LIBRARY,
-            (void *)&context->widthWord2,
+            (char *)&context->widthWord2,
             1);
     }
 }
