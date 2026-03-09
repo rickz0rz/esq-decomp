@@ -23,7 +23,7 @@ extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(void *bitsetPtr, LONG index);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
 extern LONG TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
 
-LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG unusedArg, UWORD mode, UBYTE mask)
+LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
 {
     const LONG GROUP_PRIMARY = 1;
     const LONG GROUP_SECONDARY = 2;
@@ -54,8 +54,9 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG unusedArg, UWORD mode, UBYT
     LONG isMatch;
     UBYTE inputSaved;
     UBYTE entrySaved;
+    UBYTE mask;
 
-    (void)unusedArg;
+    mask = (UBYTE)flags;
 
     inputStart = (UBYTE *)0;
     entryStart = (UBYTE *)0;
@@ -78,13 +79,13 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG unusedArg, UWORD mode, UBYT
         entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
     }
 
-    if (mode == MODE_NEXT) {
+    if ((UWORD)mode == MODE_NEXT) {
         if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
             slot = (LONG)CLOCK_HalfHourSlotIndex + 1;
         } else {
             slot = SLOT_FIRST;
         }
-    } else if (mode == MODE_PREV) {
+    } else if ((UWORD)mode == MODE_PREV) {
         slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, slot);
         if (slot == SLOT_NONE || (aux->slotMask[(UWORD)slot] & MASK_SLOT_BLOCKED) != 0) {
             if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
@@ -93,7 +94,7 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG unusedArg, UWORD mode, UBYT
                 slot = SLOT_FIRST;
             }
         }
-    } else if (mode == MODE_PREV_BEFORE) {
+    } else if ((UWORD)mode == MODE_PREV_BEFORE) {
         slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, slot - 1);
         if (slot == SLOT_NONE || (aux->slotMask[(UWORD)slot] & MASK_SLOT_BLOCKED) != 0) {
             if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
