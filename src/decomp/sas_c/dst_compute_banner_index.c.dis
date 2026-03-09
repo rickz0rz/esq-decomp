@@ -23,14 +23,12 @@ ___DST_ComputeBannerIndex__1:
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          DST_BuildBannerTimeEntry ;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              LEA            $8(A3),A0                ;41eb 0008 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.W         $8(A3),D0                ;302b 0008 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$c,D1                   ;720c 
               BSR.W          _CXD33                   ;6100 0000 
               MOVE.L         D1,D5                    ;2a01 
-              LEA            $12(A3),A0               ;41eb 0012 
-              TST.W          (A0)                     ;4a50 
+              TST.W          $12(A3)                  ;4a6b 0012 
               BEQ.B          ___DST_ComputeBannerIndex__3;6704 
 ___DST_ComputeBannerIndex__2:
               MOVEQ.L        #$c,D0                   ;700c 
@@ -38,8 +36,7 @@ ___DST_ComputeBannerIndex__2:
 ___DST_ComputeBannerIndex__3:
               MOVE.L         D5,D4                    ;2805 
               ADD.L          D5,D4                    ;d885 
-              LEA            $a(A3),A0                ;41eb 000a 
-              CMPI.W         #$1d,(A0)                ;0c50 001d 
+              CMPI.W         #$1d,$a(A3)              ;0c6b 001d 000a 
               BLE.B          ___DST_ComputeBannerIndex__5;6f02 
 ___DST_ComputeBannerIndex__4:
               ADDQ.L         #$1,D4                   ;5284 

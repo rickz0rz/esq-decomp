@@ -4,9 +4,17 @@ typedef unsigned char UBYTE;
 
 extern void DST_BuildBannerTimeEntry(LONG arg0, LONG arg1, WORD *out_word, void *ctx);
 
+typedef struct DST_BannerTimeContext {
+    UBYTE pad0[8];
+    WORD hourWord8;
+    WORD dayWord10;
+    UBYTE pad12[6];
+    WORD pmFlag18;
+} DST_BannerTimeContext;
+
 LONG DST_ComputeBannerIndex(void *ctx, WORD arg_2, UBYTE arg_3)
 {
-    UBYTE *p = (UBYTE *)ctx;
+    DST_BannerTimeContext *p = (DST_BannerTimeContext *)ctx;
     WORD out_word = 0;
     LONG rem;
     LONG idx;
@@ -15,13 +23,13 @@ LONG DST_ComputeBannerIndex(void *ctx, WORD arg_2, UBYTE arg_3)
 
     DST_BuildBannerTimeEntry((LONG)arg_2, (LONG)arg_3, &out_word, ctx);
 
-    rem = (LONG)((WORD)(*(WORD *)(p + 8)) % 12);
-    if (*(WORD *)(p + 18) != 0) {
+    rem = (LONG)((WORD)(p->hourWord8) % 12);
+    if (p->pmFlag18 != 0) {
         rem += 12;
     }
 
     idx = rem + rem;
-    if ((WORD)(*(WORD *)(p + 10)) > 0x1d) {
+    if ((WORD)(p->dayWord10) > 0x1d) {
         idx += 1;
     }
 
