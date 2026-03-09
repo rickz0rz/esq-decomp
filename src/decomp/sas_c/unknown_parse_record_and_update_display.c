@@ -58,7 +58,7 @@ LONG UNKNOWN_ParseRecordAndUpdateDisplay(const char *in)
     }
 
     WDISP_WeatherStatusOverlayTextPtr =
-        ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString((char *)p, WDISP_WeatherStatusOverlayTextPtr);
+        ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(p, WDISP_WeatherStatusOverlayTextPtr);
     WDISP_WeatherStatusCountdown = countdown;
     WDISP_WeatherStatusColorCode = color;
     WDISP_WeatherStatusBrushIndex = brush;

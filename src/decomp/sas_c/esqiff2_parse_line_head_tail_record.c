@@ -29,14 +29,14 @@ void ESQIFF2_ParseLineHeadTailRecord(UBYTE *record)
             if (record[(UWORD)(len - 1)] == 18) {
                 ESQIFF_PrimaryLineTailPtr = (char *)0;
             } else {
-                ESQIFF_PrimaryLineTailPtr = ESQPARS_ReplaceOwnedString((char *)(record + 2), ESQIFF_PrimaryLineTailPtr);
+                ESQIFF_PrimaryLineTailPtr = ESQPARS_ReplaceOwnedString(record + 2, ESQIFF_PrimaryLineTailPtr);
             }
             return;
         }
 
         if (record[(UWORD)(len - 1)] == 18) {
             record[(UWORD)(len - 1)] = 0;
-            ESQIFF_PrimaryLineHeadPtr = ESQPARS_ReplaceOwnedString((char *)(record + 1), ESQIFF_PrimaryLineHeadPtr);
+            ESQIFF_PrimaryLineHeadPtr = ESQPARS_ReplaceOwnedString(record + 1, ESQIFF_PrimaryLineHeadPtr);
             ESQIFF_PrimaryLineTailPtr = (char *)0;
             return;
         }
@@ -47,8 +47,8 @@ void ESQIFF2_ParseLineHeadTailRecord(UBYTE *record)
         }
 
         record[i] = 0;
-        ESQIFF_PrimaryLineHeadPtr = ESQPARS_ReplaceOwnedString((char *)(record + 1), ESQIFF_PrimaryLineHeadPtr);
-        ESQIFF_PrimaryLineTailPtr = ESQPARS_ReplaceOwnedString((char *)(record + i + 1), ESQIFF_PrimaryLineTailPtr);
+        ESQIFF_PrimaryLineHeadPtr = ESQPARS_ReplaceOwnedString(record + 1, ESQIFF_PrimaryLineHeadPtr);
+        ESQIFF_PrimaryLineTailPtr = ESQPARS_ReplaceOwnedString(record + i + 1, ESQIFF_PrimaryLineTailPtr);
         return;
     }
 
@@ -64,13 +64,13 @@ void ESQIFF2_ParseLineHeadTailRecord(UBYTE *record)
         if (record[(UWORD)(len - 1)] == 18) {
             ESQIFF_SecondaryLineTailPtr = (char *)0;
         } else {
-            ESQIFF_SecondaryLineTailPtr = ESQPARS_ReplaceOwnedString((char *)(record + 2), ESQIFF_SecondaryLineTailPtr);
+            ESQIFF_SecondaryLineTailPtr = ESQPARS_ReplaceOwnedString(record + 2, ESQIFF_SecondaryLineTailPtr);
         }
         return;
     }
 
     if (record[(UWORD)(len - 1)] == 18) {
-        ESQIFF_SecondaryLineHeadPtr = ESQPARS_ReplaceOwnedString((char *)(record + 1), ESQIFF_SecondaryLineHeadPtr);
+        ESQIFF_SecondaryLineHeadPtr = ESQPARS_ReplaceOwnedString(record + 1, ESQIFF_SecondaryLineHeadPtr);
         ESQIFF_SecondaryLineTailPtr = (char *)0;
         return;
     }
@@ -81,6 +81,6 @@ void ESQIFF2_ParseLineHeadTailRecord(UBYTE *record)
     }
 
     record[i] = 0;
-    ESQIFF_SecondaryLineHeadPtr = ESQPARS_ReplaceOwnedString((char *)(record + 1), ESQIFF_SecondaryLineHeadPtr);
-    ESQIFF_SecondaryLineTailPtr = ESQPARS_ReplaceOwnedString((char *)(record + i + 1), ESQIFF_SecondaryLineTailPtr);
+    ESQIFF_SecondaryLineHeadPtr = ESQPARS_ReplaceOwnedString(record + 1, ESQIFF_SecondaryLineHeadPtr);
+    ESQIFF_SecondaryLineTailPtr = ESQPARS_ReplaceOwnedString(record + i + 1, ESQIFF_SecondaryLineTailPtr);
 }

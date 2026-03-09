@@ -43,7 +43,7 @@ char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in)
     }
 
     WDISP_WeatherStatusTextPtr =
-        ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString((char *)p, WDISP_WeatherStatusTextPtr);
+        ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(p, WDISP_WeatherStatusTextPtr);
 
     if (ED_DiagnosticsScreenActive != 0) {
         UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(

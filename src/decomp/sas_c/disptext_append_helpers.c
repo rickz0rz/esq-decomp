@@ -58,7 +58,7 @@ LONG DISPTEXT_AppendToBuffer(char *src)
             }
 
             GROUP_AI_JMPTBL_STRING_AppendAtNull(newBuffer, src);
-            GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)0, DISPTEXT_TextBufferPtr);
+            GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, DISPTEXT_TextBufferPtr);
             DISPTEXT_TextBufferPtr = newBuffer;
         }
     } else {
