@@ -8,15 +8,19 @@ typedef struct ESQPARS_TitleTable {
     char *titleTable[49];
 } ESQPARS_TitleTable;
 
+typedef struct ESQPARS_EntryTableEntry {
+    char pad0[1];
+} ESQPARS_EntryTableEntry;
+
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_SecondaryGroupEntryCount;
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
 
-extern void *TEXTDISP_PrimaryEntryPtrTable[];
-extern void *TEXTDISP_PrimaryTitlePtrTable[];
-extern void *TEXTDISP_SecondaryEntryPtrTable[];
-extern void *TEXTDISP_SecondaryTitlePtrTable[];
+extern ESQPARS_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
+extern ESQPARS_TitleTable *TEXTDISP_PrimaryTitlePtrTable[];
+extern ESQPARS_EntryTableEntry *TEXTDISP_SecondaryEntryPtrTable[];
+extern ESQPARS_TitleTable *TEXTDISP_SecondaryTitlePtrTable[];
 
 extern const char Global_STR_ESQPARS_C_2[];
 extern const char Global_STR_ESQPARS_C_3[];
@@ -45,20 +49,20 @@ void ESQPARS_RemoveGroupEntryAndReleaseStrings(UWORD mode)
     }
 
     for (; idx >= 0; --idx) {
-        void *entry;
+        ESQPARS_EntryTableEntry *entry;
         ESQPARS_TitleTable *titleTable;
         LONG slot;
 
         if (mode == 2) {
             entry = TEXTDISP_SecondaryEntryPtrTable[idx];
-            TEXTDISP_SecondaryEntryPtrTable[idx] = (void *)0;
-            titleTable = (ESQPARS_TitleTable *)TEXTDISP_SecondaryTitlePtrTable[idx];
-            TEXTDISP_SecondaryTitlePtrTable[idx] = (void *)0;
+            TEXTDISP_SecondaryEntryPtrTable[idx] = (ESQPARS_EntryTableEntry *)0;
+            titleTable = TEXTDISP_SecondaryTitlePtrTable[idx];
+            TEXTDISP_SecondaryTitlePtrTable[idx] = (ESQPARS_TitleTable *)0;
         } else {
             entry = TEXTDISP_PrimaryEntryPtrTable[idx];
-            TEXTDISP_PrimaryEntryPtrTable[idx] = (void *)0;
-            titleTable = (ESQPARS_TitleTable *)TEXTDISP_PrimaryTitlePtrTable[idx];
-            TEXTDISP_PrimaryTitlePtrTable[idx] = (void *)0;
+            TEXTDISP_PrimaryEntryPtrTable[idx] = (ESQPARS_EntryTableEntry *)0;
+            titleTable = TEXTDISP_PrimaryTitlePtrTable[idx];
+            TEXTDISP_PrimaryTitlePtrTable[idx] = (ESQPARS_TitleTable *)0;
         }
 
         for (slot = 0; titleTable != (ESQPARS_TitleTable *)0 && slot < 49; ++slot) {
