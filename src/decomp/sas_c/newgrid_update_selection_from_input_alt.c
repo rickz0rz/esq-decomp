@@ -12,6 +12,17 @@ typedef struct SelCtx {
     UWORD rowLimit;
 } SelCtx;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[28];
+    UBYTE selectionBits[1];
+} NEWGRID_Entry;
+
+typedef struct NEWGRID_AuxData {
+    UBYTE pad0[7];
+    UBYTE rowFlags[49];
+    LONG payloadTable[49];
+} NEWGRID_AuxData;
+
 extern LONG NEWGRID_AltSelectionRowCursor;
 extern UWORD NEWGRID_AltSelectionEntryCursor;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
@@ -32,8 +43,8 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
     LONG matched = 0;
     LONG idx = 0;
     LONG row = 0;
-    void *entry = 0;
-    void *aux = 0;
+    NEWGRID_Entry *entry = 0;
+    NEWGRID_AuxData *aux = 0;
 
     switch (state) {
     case 0:
@@ -62,13 +73,13 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
         if (!TEXTDISP_PrimaryGroupPresentFlag || state == 5) break;
 
         row = NEWGRID_AltSelectionEntryCursor;
-        NEWGRID_UpdatePresetEntry(&entry, &aux, row, NEWGRID_AltSelectionRowCursor);
+        NEWGRID_UpdatePresetEntry((void **)&entry, (void **)&aux, row, NEWGRID_AltSelectionRowCursor);
         if (NEWGRID_TestEntrySelectable(entry, aux, mode)) {
             matched = 0;
             idx = NEWGRID_AltSelectionEntryCursor;
             if (idx > 0 && idx < ctx->rowLimit) {
                 if (idx == 49) {
-                    idx = NEWGRID_UpdatePresetEntry(&entry, &aux, idx, NEWGRID_AltSelectionRowCursor);
+                    idx = NEWGRID_UpdatePresetEntry((void **)&entry, (void **)&aux, idx, NEWGRID_AltSelectionRowCursor);
                 } else if (idx > 48) {
                     idx -= 48;
                 }
@@ -78,10 +89,10 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
                         idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, idx);
                     }
                     if (idx > 0) {
-                        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based((UBYTE *)entry + 0x1c, idx) == -1) {
-                            if ((((UBYTE *)aux)[7 + idx] & 0x20) == 0) {
-                                if ((((UBYTE *)aux)[7 + NEWGRID_AltSelectionEntryCursor] & 0x80) == 0) {
-                                    if (((LONG *)aux)[14 + idx] != 0) {
+                        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, idx) == -1) {
+                            if ((aux->rowFlags[idx] & 0x20) == 0) {
+                                if ((aux->rowFlags[NEWGRID_AltSelectionEntryCursor] & 0x80) == 0) {
+                                    if (aux->payloadTable[idx] != 0) {
                                         if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
                                                 entry, aux, idx, 1440, CONFIG_TimeWindowMinutes) != 0) {
                                             if (mode != 1 ||
@@ -121,7 +132,7 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
         } else {
             ctx->row = (UWORD)idx;
         }
-        ((UBYTE *)aux)[7 + idx] |= 0x20;
+        aux->rowFlags[idx] |= 0x20;
     } else if (!found) {
         ctx->entry = 0;
         ctx->aux = 0;

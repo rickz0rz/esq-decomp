@@ -12,6 +12,21 @@ typedef struct SelCtx {
     UWORD rowLimit;
 } SelCtx;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[28];
+    UBYTE selectionBits[1];
+    UBYTE pad1[12];
+    UBYTE flags40;
+    UBYTE pad2[5];
+    UBYTE flags46;
+} NEWGRID_Entry;
+
+typedef struct NEWGRID_AuxData {
+    UBYTE pad0[7];
+    UBYTE rowFlags[49];
+    LONG payloadTable[49];
+} NEWGRID_AuxData;
+
 extern LONG NEWGRID_SelectionScanEntryIndex;
 extern UWORD NEWGRID_SelectionScanRow;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
@@ -32,8 +47,8 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
     LONG found = 0;
     LONG col = 0;
     LONG idx = 0;
-    void *entry = 0;
-    void *aux = 0;
+    NEWGRID_Entry *entry = 0;
+    NEWGRID_AuxData *aux = 0;
 
     if (state == 0) {
         NEWGRID_SelectionScanEntryIndex = ctx->start;
@@ -67,13 +82,13 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
             }
 
             col = NEWGRID_SelectionScanEntryIndex;
-            idx = NEWGRID_UpdatePresetEntry(&entry, &aux, NEWGRID_SelectionScanRow, col);
+            idx = NEWGRID_UpdatePresetEntry((void **)&entry, (void **)&aux, NEWGRID_SelectionScanRow, col);
             if (!entry || !aux) {
                 NEWGRID_SelectionScanEntryIndex += 1;
                 continue;
             }
 
-            if ((((UBYTE *)entry)[46] & 0x10) == 0 || ((((UBYTE *)entry)[40] & 0x80) == 0)) {
+            if ((entry->flags46 & 0x10) == 0 || ((entry->flags40 & 0x80) == 0)) {
                 NEWGRID_SelectionScanEntryIndex += 1;
                 continue;
             }
@@ -86,19 +101,19 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
                 continue;
             }
 
-            if (NEWGRID2_JMPTBL_ESQ_TestBit1Based((UBYTE *)entry + 0x1c, idx) != -1) {
+            if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, idx) != -1) {
                 NEWGRID_SelectionScanEntryIndex += 1;
                 continue;
             }
-            if (((UBYTE *)aux)[7 + idx] & 0x20) {
+            if (aux->rowFlags[idx] & 0x20) {
                 NEWGRID_SelectionScanEntryIndex += 1;
                 continue;
             }
 
             if (NEWGRID_ShouldOpenEditor(entry) != 0) {
-                found = ((NEWGRID_SelectionScanRow == ctx->row) && (((LONG *)aux)[14 + idx] != 0)) ? 1 : 0;
+                found = ((NEWGRID_SelectionScanRow == ctx->row) && (aux->payloadTable[idx] != 0)) ? 1 : 0;
             } else {
-                if ((((LONG *)aux)[14 + idx] != 0) && ((((UBYTE *)aux)[7 + NEWGRID_SelectionScanRow] & 0x80) == 0)) {
+                if ((aux->payloadTable[idx] != 0) && ((aux->rowFlags[NEWGRID_SelectionScanRow] & 0x80) == 0)) {
                     found = NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
                         entry, aux, idx, GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes) != 0;
                 } else {
@@ -120,7 +135,7 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
         } else {
             ctx->row = (UWORD)idx;
         }
-        ((UBYTE *)aux)[7 + idx] |= 0x20;
+        aux->rowFlags[idx] |= 0x20;
     } else {
         NEWGRID_InitSelectionWindow(ctx, 0);
     }

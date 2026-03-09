@@ -120,11 +120,11 @@ ___NEWGRID_UpdateSelectionFromInput__23:
               BRA.W          ___NEWGRID_UpdateSelectionFromInput__13;6000 ff7c 
 ___NEWGRID_UpdateSelectionFromInput__24:
               MOVE.L         D0,A0                    ;2040 
-              MOVE.B         $2e(A0),D1               ;1228 002e 
+              MOVE.B         $2f(A0),D1               ;1228 002f 
               BTST           #$4,D1                   ;0801 0004 
               BEQ.B          ___NEWGRID_UpdateSelectionFromInput__26;670a 
 ___NEWGRID_UpdateSelectionFromInput__25:
-              MOVE.B         $28(A0),D1               ;1228 0028 
+              MOVE.B         $29(A0),D1               ;1228 0029 
               BTST           #$7,D1                   ;0801 0007 
               BNE.B          ___NEWGRID_UpdateSelectionFromInput__27;6608 
 ___NEWGRID_UpdateSelectionFromInput__26:
