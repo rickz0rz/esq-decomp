@@ -5,7 +5,7 @@ typedef signed char BYTE;
 extern BYTE ED_MenuStateId;
 extern WORD ED_DiagnosticsScreenActive;
 
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern LONG Global_REF_BAUD_RATE;
 
@@ -19,12 +19,12 @@ extern const char Global_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS[];
 extern const char Global_STR_PUSH_ANY_KEY_TO_CONTINUE_2[];
 
 extern void ED_DrawBottomHelpBarBackground(void);
-extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const char *text);
+extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(LONG *outPercent);
 extern LONG DISKIO_QueryVolumeSoftErrorCount(LONG *outCount);
 extern void ED_DrawDiagnosticModeText(void);
-extern LONG _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
+extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 
 void ED1_DrawDiagnosticsScreen(void)
 {
@@ -36,7 +36,6 @@ void ED1_DrawDiagnosticsScreen(void)
     const LONG POS_Y_LABEL_B = 210;
     const LONG POS_Y_BAUD = 410;
     const LONG POS_X_RIGHT = 360;
-    const LONG POS_X_LEFT = 40;
     const LONG POS_Y_DISK = 88;
     const LONG POS_X_DISK = 40;
     const LONG POS_Y_CONTINUE = 175;

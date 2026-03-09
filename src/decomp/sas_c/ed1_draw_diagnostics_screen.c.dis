@@ -2,40 +2,39 @@
 __code:
 ED1_DrawDiagnosticsScreen:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$6c,D0                  ;90bc 0000 006c 
+              SUB.L          #$68,D0                  ;90bc 0000 0068 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$5c,A7                  ;9efc 005c 
+              SUB.W          #$58,A7                  ;9efc 0058 
               MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
 ___ED1_DrawDiagnosticsScreen__1:
               MOVEQ.L        #$7,D7                   ;7e07 
               MOVEQ.L        #$1,D6                   ;7c01 
               MOVEQ.L        #$6,D5                   ;7a06 
               MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,$64(A7)               ;2f40 0064 
-              MOVEQ.L        #$5a,D0                  ;705a 
               MOVE.L         D0,$60(A7)               ;2f40 0060 
-              MOVE.L         #$d2,$5c(A7)             ;2f7c 0000 00d2 005c 
-              MOVE.L         #$19a,$58(A7)            ;2f7c 0000 019a 0058 
-              MOVE.L         #$168,$54(A7)            ;2f7c 0000 0168 0054 
+              MOVEQ.L        #$5a,D0                  ;705a 
+              MOVE.L         D0,$5c(A7)               ;2f40 005c 
+              MOVE.L         #$d2,$58(A7)             ;2f7c 0000 00d2 0058 
+              MOVE.L         #$19a,$54(A7)            ;2f7c 0000 019a 0054 
+              MOVE.L         #$168,$50(A7)            ;2f7c 0000 0168 0050 
+              MOVEQ.L        #$58,D0                  ;7058 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
               MOVEQ.L        #$28,D0                  ;7028 
-              MOVE.L         D0,$50(A7)               ;2f40 0050 
-              MOVEQ.L        #$58,D1                  ;7258 
-              MOVE.L         D1,$4c(A7)               ;2f41 004c 
+              MOVE.L         D0,$48(A7)               ;2f40 0048 
               MOVE.L         #$af,$44(A7)             ;2f7c 0000 00af 0044 
               MOVE.L         #$186,$40(A7)            ;2f7c 0000 0186 0040 
               MOVE.B         D7,ED_MenuStateId(A4)    ;1947 0000 
               MOVE.W         D6,ED_DiagnosticsScreenActive(A4);3946 0000 
-              MOVE.L         D0,$48(A7)               ;2f40 0048 
               BSR.W          ED_DrawBottomHelpBarBackground;6100 0000 
               PEA            ESQ_SelectCodeBuffer(A4) ;486c 0000 
-              MOVE.L         $58(A7),-(A7)            ;2f2f 0058 
-              MOVE.L         $68(A7),-(A7)            ;2f2f 0068 
+              MOVE.L         $54(A7),-(A7)            ;2f2f 0054 
+              MOVE.L         $64(A7),-(A7)            ;2f2f 0064 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
               PEA            WDISP_WeatherStatusLabelBuffer(A4);486c 0000 
-              MOVE.L         $68(A7),-(A7)            ;2f2f 0068 
-              MOVE.L         $74(A7),-(A7)            ;2f2f 0074 
+              MOVE.L         $64(A7),-(A7)            ;2f2f 0064 
+              MOVE.L         $70(A7),-(A7)            ;2f2f 0070 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
               MOVE.L         Global_REF_BAUD_RATE(A4),(A7);2eac 0000 
@@ -43,13 +42,13 @@ ___ED1_DrawDiagnosticsScreen__1:
               PEA            $33(A7)                  ;486f 0033 
               BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
               PEA            $37(A7)                  ;486f 0037 
-              MOVE.L         $80(A7),-(A7)            ;2f2f 0080 
-              MOVE.L         $88(A7),-(A7)            ;2f2f 0088 
+              MOVE.L         $7c(A7),-(A7)            ;2f2f 007c 
+              MOVE.L         $84(A7),-(A7)            ;2f2f 0084 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
               PEA            ED2_DiagnosticDiskUsagePercent(A4);486c 0000 
-___ED1_DrawDiagnosticsScreen__2:
               BSR.W          DISKIO_QueryDiskUsagePercentAndS;6100 0000 
+___ED1_DrawDiagnosticsScreen__2:
               PEA            ED2_DiagnosticDiskSoftErrorCount(A4);486c 0000 
               MOVE.L         D0,$7c(A7)               ;2f40 007c 
               BSR.W          DISKIO_QueryVolumeSoftErrorCount;6100 0000 
@@ -75,14 +74,14 @@ ___ED1_DrawDiagnosticsScreen__2:
               MOVE.L         $64(A7),-(A7)            ;2f2f 0064 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              MOVE.L         $8c(A7),(A7)             ;2eaf 008c 
+              MOVE.L         $88(A7),(A7)             ;2eaf 0088 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetAPen              ;6100 0000 
               LEA            $30(A7),A7               ;4fef 0030 
 ___ED1_DrawDiagnosticsScreen__3:
               MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
-              ADD.W          #$5c,A7                  ;defc 005c 
+              ADD.W          #$58,A7                  ;defc 0058 
               RTS                                     ;4e75 
 __const:
 __strings:
