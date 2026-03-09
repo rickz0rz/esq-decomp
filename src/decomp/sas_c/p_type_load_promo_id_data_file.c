@@ -15,7 +15,7 @@ extern char P_TYPE_STR_TYPES_COLON[];
 extern UBYTE WDISP_CharClassTable[];
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 extern UBYTE TEXTDISP_SecondaryGroupCode;
-extern UBYTE *Global_PTR_WORK_BUFFER;
+extern char *Global_PTR_WORK_BUFFER;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern UBYTE Global_STR_P_TYPE_C_6;
 extern PTypeEntry *P_TYPE_PrimaryGroupListPtr;
@@ -39,7 +39,7 @@ static LONG p_type_strlen_local(const char *s)
 
 LONG P_TYPE_LoadPromoIdDataFile(void)
 {
-    UBYTE *work;
+    char *work;
     LONG scratch_len;
     LONG section;
 

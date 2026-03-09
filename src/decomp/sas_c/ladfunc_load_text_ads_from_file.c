@@ -13,7 +13,7 @@ typedef struct LadfuncEntry {
 extern const char KYBD_PATH_DF0_LOCAL_ADS[];
 
 extern LONG Global_REF_LONG_FILE_SCRATCH;
-extern UBYTE *Global_PTR_WORK_BUFFER;
+extern char *Global_PTR_WORK_BUFFER;
 extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 
 extern LONG LADFUNC_ComposePackedPenByte(UBYTE highNibble, UBYTE lowNibble);
@@ -41,7 +41,7 @@ LONG LADFUNC_LoadTextAdsFromFile(void)
     UBYTE currentAttr;
     LONG entryIndex;
     LONG fileLen;
-    UBYTE *fileBuf;
+    char *fileBuf;
 
     currentAttr = (UBYTE)LADFUNC_ComposePackedPenByte(DEFAULT_PEN_HIGH_NIBBLE, DEFAULT_PEN_LOW_NIBBLE);
 
