@@ -6,7 +6,7 @@ SCRIPT_HandleSerialCtrlCmd:
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
               SUBQ.W         #$4,A7                   ;594f 
-              MOVEM.L        D2/D5/D6/D7,-(A7)        ;48e7 2700 
+              MOVEM.L        D2/D3/D5/D6/D7,-(A7)     ;48e7 3700 
 ___SCRIPT_HandleSerialCtrlCmd__1:
               MOVE.W         Global_WORD_SELECT_CODE_IS_RAVES(A4),D0;302c 0000 
               BNE.B          ___SCRIPT_HandleSerialCtrlCmd__3;660a 
@@ -23,12 +23,12 @@ ___SCRIPT_HandleSerialCtrlCmd__4:
               BEQ.B          ___SCRIPT_HandleSerialCtrlCmd__7;6708 
 ___SCRIPT_HandleSerialCtrlCmd__5:
               CLR.W          Global_RefreshTickCounter(A4);426c 0000 
-              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__56;6000 0288 
+              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__56;6000 028e 
 ___SCRIPT_HandleSerialCtrlCmd__6:
 ___SCRIPT_HandleSerialCtrlCmd__7:
               MOVEQ.L        #$1,D0                   ;7001 
               CMP.L          ESQDISP_DisplayActiveFlag(A4),D0;b0ac 0000 
-              BEQ.W          ___SCRIPT_HandleSerialCtrlCmd__56;6700 027e 
+              BEQ.W          ___SCRIPT_HandleSerialCtrlCmd__56;6700 0284 
 ___SCRIPT_HandleSerialCtrlCmd__8:
 ___SCRIPT_HandleSerialCtrlCmd__9:
               MOVE.W         SCRIPT_StatusMaskRefreshPending(A4),D0;302c 0000 
@@ -55,10 +55,10 @@ ___SCRIPT_HandleSerialCtrlCmd__13:
               BSR.W          PARSEINI_CheckCtrlHChange;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
-              BNE.W          ___SCRIPT_HandleSerialCtrlCmd__56;6600 0240 
+              BNE.W          ___SCRIPT_HandleSerialCtrlCmd__56;6600 0246 
 ___SCRIPT_HandleSerialCtrlCmd__14:
               TST.L          D7                       ;4a87 
-              BEQ.W          ___SCRIPT_HandleSerialCtrlCmd__56;6700 023a 
+              BEQ.W          ___SCRIPT_HandleSerialCtrlCmd__56;6700 0240 
 ___SCRIPT_HandleSerialCtrlCmd__15:
 ___SCRIPT_HandleSerialCtrlCmd__16:
               MOVE.W         Global_RefreshTickCounter(A4),D0;302c 0000 
@@ -73,24 +73,24 @@ ___SCRIPT_HandleSerialCtrlCmd__18:
               MOVE.L         D0,D6                    ;2c00 
               MOVE.W         SCRIPT_CTRL_STATE(A4),D5 ;3a2c 0000 
               TST.W          D5                       ;4a45 
-              BNE.W          ___SCRIPT_HandleSerialCtrlCmd__33;6600 00c2 
+              BNE.W          ___SCRIPT_HandleSerialCtrlCmd__33;6600 00c6 
 ___SCRIPT_HandleSerialCtrlCmd__19:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         D6,D0                    ;1006 
               SUBQ.W         #$1,D0                   ;5340 
-              MOVEM.W        D0,$12(A7)               ;48af 0001 0012 
-              BLT.W          ___SCRIPT_HandleSerialCtrlCmd__52;6d00 01dc 
+              MOVEM.W        D0,$16(A7)               ;48af 0001 0016 
+              BLT.W          ___SCRIPT_HandleSerialCtrlCmd__52;6d00 01e2 
 ___SCRIPT_HandleSerialCtrlCmd__20:
               MOVEQ.L        #$16,D1                  ;7216 
               CMP.W          D1,D0                    ;b041 
-              BGE.W          ___SCRIPT_HandleSerialCtrlCmd__52;6c00 01d4 
+              BGE.W          ___SCRIPT_HandleSerialCtrlCmd__52;6c00 01da 
 ___SCRIPT_HandleSerialCtrlCmd__21:
 ___SCRIPT_HandleSerialCtrlCmd__22:
               EXT.L          D0                       ;48c0 
 ___SCRIPT_HandleSerialCtrlCmd__23:
 ___SCRIPT_HandleSerialCtrlCmd__24:
               CMPI.L         #$16,D0                  ;0c80 0000 0016 
-              BCC.W          ___SCRIPT_HandleSerialCtrlCmd__52;6400 01c8 
+              BCC.W          ___SCRIPT_HandleSerialCtrlCmd__52;6400 01ce 
 ___SCRIPT_HandleSerialCtrlCmd__25:
               ADD.W          D0,D0                    ;d040 
               MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
@@ -120,50 +120,53 @@ __switch_SCRIPT_HandleSerialCtrlCmd_25:
               DC.W           ___SCRIPT_HandleSerialCtrlCmd__28-__switch_SCRIPT_HandleSerialCtrlCmd_25
 ___SCRIPT_HandleSerialCtrlCmd__26:
               MOVE.W         SCRIPT_CTRL_READ_INDEX(A4),A0;306c 0000 
-              LEA            SCRIPT_CTRL_CMD_BUFFER(A4),A1;43ec 0000 
-              MOVE.L         A0,D0                    ;2008 
-              MOVE.B         D6,$0(A1,D0.W)           ;1386 0000 
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         D6,D0                    ;1006 
-              MOVE.W         D0,SCRIPT_CTRL_CHECKSUM(A4);3940 0000 
-              MOVE.W         SCRIPT_CtrlCmdCount(A4),D0;302c 0000 
-              ADDQ.W         #$1,D0                   ;5240 
-              MOVE.W         D0,SCRIPT_CtrlCmdCount(A4);3940 0000 
+              LEA            SCRIPT_CTRL_CMD_BUFFER(A4),A1;43ec 0000 
+              MOVE.L         A0,D1                    ;2208 
+              MOVE.B         D0,$0(A1,D1.W)           ;1380 1000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.W         D1,SCRIPT_CTRL_CHECKSUM(A4);3941 0000 
+              MOVE.W         SCRIPT_CtrlCmdCount(A4),D1;322c 0000 
+              ADDQ.W         #$1,D1                   ;5241 
+              MOVE.W         D1,SCRIPT_CtrlCmdCount(A4);3941 0000 
               MOVE.W         #$1,SCRIPT_CTRL_STATE(A4);397c 0001 0000 
-              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__52;6000 0168 
+              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__52;6000 016c 
 ___SCRIPT_HandleSerialCtrlCmd__27:
               MOVE.W         #$3,SCRIPT_CTRL_STATE(A4);397c 0003 0000 
-              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__52;6000 015e 
+              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__52;6000 0162 
 ___SCRIPT_HandleSerialCtrlCmd__28:
               MOVE.W         Global_WORD_SELECT_CODE_IS_RAVES(A4),D0;302c 0000 
-              BNE.W          ___SCRIPT_HandleSerialCtrlCmd__56;6600 0182 
+              BNE.W          ___SCRIPT_HandleSerialCtrlCmd__56;6600 0186 
 ___SCRIPT_HandleSerialCtrlCmd__29:
 ___SCRIPT_HandleSerialCtrlCmd__30:
               MOVE.W         SCRIPT_CTRL_READ_INDEX(A4),A0;306c 0000 
-              LEA            SCRIPT_CTRL_CMD_BUFFER(A4),A1;43ec 0000 
-              MOVE.L         A0,D0                    ;2008 
-              MOVE.B         D6,$0(A1,D0.W)           ;1386 0000 
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         D6,D0                    ;1006 
-              MOVE.W         D0,SCRIPT_CTRL_CHECKSUM(A4);3940 0000 
-              MOVE.W         SCRIPT_CtrlCmdCount(A4),D0;302c 0000 
-              ADDQ.W         #$1,D0                   ;5240 
-              MOVE.W         D0,SCRIPT_CtrlCmdCount(A4);3940 0000 
+              LEA            SCRIPT_CTRL_CMD_BUFFER(A4),A1;43ec 0000 
+              MOVE.L         A0,D1                    ;2208 
+              MOVE.B         D0,$0(A1,D1.W)           ;1380 1000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.W         D1,SCRIPT_CTRL_CHECKSUM(A4);3941 0000 
+              MOVE.W         SCRIPT_CtrlCmdCount(A4),D1;322c 0000 
+              ADDQ.W         #$1,D1                   ;5241 
+              MOVE.W         D1,SCRIPT_CtrlCmdCount(A4);3941 0000 
               MOVE.W         #$1,SCRIPT_CTRL_STATE(A4);397c 0001 0000 
 ___SCRIPT_HandleSerialCtrlCmd__31:
 ___SCRIPT_HandleSerialCtrlCmd__32:
-              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__52;6000 012c 
+              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__52;6000 012e 
 ___SCRIPT_HandleSerialCtrlCmd__33:
               MOVEQ.L        #$1,D0                   ;7001 
               CMP.W          D0,D5                    ;ba40 
-              BNE.B          ___SCRIPT_HandleSerialCtrlCmd__37;6634 
+              BNE.B          ___SCRIPT_HandleSerialCtrlCmd__37;6636 
 ___SCRIPT_HandleSerialCtrlCmd__34:
               MOVE.W         SCRIPT_CTRL_READ_INDEX(A4),D1;322c 0000 
               MOVE.W         D1,D0                    ;3001 
               ADDQ.W         #$1,D0                   ;5240 
               MOVE.W         D0,SCRIPT_CTRL_READ_INDEX(A4);3940 0000 
+              MOVE.B         D6,D1                    ;1206 
               LEA            SCRIPT_CTRL_CMD_BUFFER(A4),A0;41ec 0000 
-              MOVE.B         D6,$0(A0,D0.W)           ;1186 0000 
+              MOVE.B         D1,$0(A0,D0.W)           ;1181 0000 
               MOVEQ.L        #$d,D0                   ;700d 
               CMP.B          D0,D6                    ;bc00 
               BNE.B          ___SCRIPT_HandleSerialCtrlCmd__36;6606 
@@ -172,11 +175,11 @@ ___SCRIPT_HandleSerialCtrlCmd__35:
               MOVE.W         D0,SCRIPT_CTRL_STATE(A4) ;3940 0000 
 ___SCRIPT_HandleSerialCtrlCmd__36:
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         D6,D0                    ;1006 
-              MOVE.W         SCRIPT_CTRL_CHECKSUM(A4),D1;322c 0000 
-              MOVE.W         D1,D2                    ;3401 
-              EOR.W          D0,D2                    ;b142 
-              MOVE.W         D2,SCRIPT_CTRL_CHECKSUM(A4);3942 0000 
+              MOVE.B         D1,D0                    ;1001 
+              MOVE.W         SCRIPT_CTRL_CHECKSUM(A4),D2;342c 0000 
+              MOVE.W         D2,D3                    ;3602 
+              EOR.W          D0,D3                    ;b143 
+              MOVE.W         D3,SCRIPT_CTRL_CHECKSUM(A4);3943 0000 
               BRA.W          ___SCRIPT_HandleSerialCtrlCmd__52;6000 00f2 
 ___SCRIPT_HandleSerialCtrlCmd__37:
               MOVE.L         D5,D0                    ;2005 
@@ -284,7 +287,7 @@ ___SCRIPT_HandleSerialCtrlCmd__54:
               BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
 ___SCRIPT_HandleSerialCtrlCmd__55:
 ___SCRIPT_HandleSerialCtrlCmd__56:
-              MOVEM.L        (A7)+,D2/D5/D6/D7        ;4cdf 00e4 
+              MOVEM.L        (A7)+,D2/D3/D5/D6/D7     ;4cdf 00ec 
               ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:

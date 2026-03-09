@@ -15,7 +15,7 @@ extern WORD Global_UIBusyFlag;
 extern WORD SCRIPT_CTRL_READ_INDEX;
 extern WORD SCRIPT_CTRL_CHECKSUM;
 extern WORD SCRIPT_CTRL_STATE;
-extern UBYTE SCRIPT_CTRL_CMD_BUFFER[];
+extern char SCRIPT_CTRL_CMD_BUFFER[];
 extern char SCRIPT_CTRL_CONTEXT[];
 
 extern WORD SCRIPT_CtrlCmdCount;
@@ -83,7 +83,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
         case 0:
         case 11:
         case 14:
-            SCRIPT_CTRL_CMD_BUFFER[SCRIPT_CTRL_READ_INDEX] = inputByte;
+            SCRIPT_CTRL_CMD_BUFFER[SCRIPT_CTRL_READ_INDEX] = (char)inputByte;
             SCRIPT_CTRL_CHECKSUM = (WORD)inputByte;
             SCRIPT_CtrlCmdCount = (WORD)(SCRIPT_CtrlCmdCount + 1);
             SCRIPT_CTRL_STATE = 1;
@@ -106,7 +106,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
             if (Global_WORD_SELECT_CODE_IS_RAVESC != 0) {
                 return;
             }
-            SCRIPT_CTRL_CMD_BUFFER[SCRIPT_CTRL_READ_INDEX] = inputByte;
+            SCRIPT_CTRL_CMD_BUFFER[SCRIPT_CTRL_READ_INDEX] = (char)inputByte;
             SCRIPT_CTRL_CHECKSUM = (WORD)inputByte;
             SCRIPT_CtrlCmdCount = (WORD)(SCRIPT_CtrlCmdCount + 1);
             SCRIPT_CTRL_STATE = 1;
@@ -118,7 +118,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
 
     } else if (state == 1) {
         SCRIPT_CTRL_READ_INDEX = (WORD)(SCRIPT_CTRL_READ_INDEX + 1);
-        SCRIPT_CTRL_CMD_BUFFER[SCRIPT_CTRL_READ_INDEX] = inputByte;
+        SCRIPT_CTRL_CMD_BUFFER[SCRIPT_CTRL_READ_INDEX] = (char)inputByte;
         if (inputByte == 13) {
             SCRIPT_CTRL_STATE = 2;
         }
@@ -127,18 +127,18 @@ void SCRIPT_HandleSerialCtrlCmd(void)
     } else if (state == 2) {
         if ((WORD)inputByte == SCRIPT_CTRL_CHECKSUM) {
             if (Global_WORD_SELECT_CODE_IS_RAVESC != 0) {
-                SCRIPT_HandleBrushCommand((char *)SCRIPT_CTRL_CONTEXT, (char *)SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
+                SCRIPT_HandleBrushCommand((char *)SCRIPT_CTRL_CONTEXT, SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
                 SCRIPT_ApplyPendingBannerTarget();
                 WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
                 TEXTDISP_SetRastForMode(0);
             } else {
                 if (TEXTDISP_DeferredActionCountdown == 0) {
-                    SCRIPT_HandleBrushCommand((char *)SCRIPT_CTRL_CONTEXT, (char *)SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
+                    SCRIPT_HandleBrushCommand((char *)SCRIPT_CTRL_CONTEXT, SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
                     SCRIPT_ProcessCtrlContextPlaybackTick((char *)SCRIPT_CTRL_CONTEXT);
                 } else {
                     TEXTDISP_DeferredActionCountdown = (WORD)(TEXTDISP_DeferredActionCountdown - 1);
                     if (TEXTDISP_DeferredActionCountdown == 0) {
-                        SCRIPT_HandleBrushCommand((char *)SCRIPT_CTRL_CONTEXT, (char *)SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
+                        SCRIPT_HandleBrushCommand((char *)SCRIPT_CTRL_CONTEXT, SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
                         SCRIPT_ProcessCtrlContextPlaybackTick((char *)SCRIPT_CTRL_CONTEXT);
                     } else {
                         SCRIPT_CtrlCmdDeferCounter = (WORD)(SCRIPT_CtrlCmdDeferCounter + 1);
