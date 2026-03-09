@@ -37,7 +37,7 @@ extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(UBYTE *tagName, LONG width, LO
 extern void _LVOInitRastPort(void *rastPort);
 extern void _LVOSetDrMd(void *rastPort, LONG mode);
 extern void _LVOSetFont(void *rastPort, void *font);
-extern LONG _LVOTextLength(void *rastPort, UBYTE *text, LONG len);
+extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
 extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG a, LONG b);
 extern void NEWGRID_DrawTopBorderLine(void);
 
@@ -78,7 +78,7 @@ void NEWGRID_InitGridResources(void)
 
     NEWGRID_DrawTopBorderLine();
 
-    d0 = _LVOTextLength(NEWGRID_MainRastPortPtr, &Global_STR_44_44_44, 8);
+    d0 = _LVOTextLength(NEWGRID_MainRastPortPtr, (char *)&Global_STR_44_44_44, 8);
     NEWGRID_SampleTimeTextWidthPx = (UWORD)d0;
     d0 += 12;
     NEWGRID_ColumnStartXPx = (UWORD)d0;
