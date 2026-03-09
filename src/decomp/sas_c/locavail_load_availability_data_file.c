@@ -4,6 +4,26 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct LOCAVAIL_NodeRecord {
+    UBYTE tokenIndex0;
+    UBYTE pad1;
+    UWORD duration2;
+    UWORD payloadSize4;
+    UBYTE *payload6;
+} LOCAVAIL_NodeRecord;
+
+typedef struct LOCAVAIL_FilterState {
+    UBYTE mode0;
+    UBYTE pad1;
+    LONG nodeCount2;
+    UBYTE modeChar6;
+    UBYTE pad7;
+    LONG field8;
+    LONG field12;
+    ULONG *sharedRef16;
+    LOCAVAIL_NodeRecord *nodeTable20;
+} LOCAVAIL_FilterState;
+
 #define MEMF_PUBLIC 0x00000001L
 #define MEMF_CLEAR  0x00010000L
 #define WORKBUF_ERROR ((UBYTE *)0xFFFF)
@@ -32,36 +52,36 @@ extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, 
 
 LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondaryStatePtr)
 {
-    UBYTE *primaryState;
-    UBYTE *secondaryState;
-    UBYTE scratchState[24];
+    LOCAVAIL_FilterState *primaryState;
+    LOCAVAIL_FilterState *secondaryState;
+    LOCAVAIL_FilterState scratchState;
     UBYTE *section;
     LONG success;
     LONG fileLen;
     UBYTE *fileBuf;
 
-    primaryState = (UBYTE *)primaryStatePtr;
-    secondaryState = (UBYTE *)secondaryStatePtr;
+    primaryState = (LOCAVAIL_FilterState *)primaryStatePtr;
+    secondaryState = (LOCAVAIL_FilterState *)secondaryStatePtr;
     success = 1;
     fileBuf = (UBYTE *)0;
     fileLen = 0;
 
     if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load) == -1) {
-        if (primaryState[0] != TEXTDISP_PrimaryGroupCode) {
+        if (primaryState->mode0 != TEXTDISP_PrimaryGroupCode) {
             LOCAVAIL_FreeResourceChain(primaryState);
-            primaryState[0] = TEXTDISP_PrimaryGroupCode;
+            primaryState->mode0 = TEXTDISP_PrimaryGroupCode;
         }
-        if (secondaryState[0] != TEXTDISP_SecondaryGroupCode) {
+        if (secondaryState->mode0 != TEXTDISP_SecondaryGroupCode) {
             LOCAVAIL_FreeResourceChain(secondaryState);
-            secondaryState[0] = TEXTDISP_SecondaryGroupCode;
+            secondaryState->mode0 = TEXTDISP_SecondaryGroupCode;
         }
         return 0;
     }
 
     LOCAVAIL_FreeResourceChain(primaryState);
-    primaryState[0] = TEXTDISP_PrimaryGroupCode;
+    primaryState->mode0 = TEXTDISP_PrimaryGroupCode;
     LOCAVAIL_FreeResourceChain(secondaryState);
-    secondaryState[0] = TEXTDISP_SecondaryGroupCode;
+    secondaryState->mode0 = TEXTDISP_SecondaryGroupCode;
 
     fileLen = Global_REF_LONG_FILE_SCRATCH;
     fileBuf = Global_PTR_WORK_BUFFER;
@@ -76,49 +96,49 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
         LONG nodeCount;
         LONG nodeIndex;
 
-        LOCAVAIL_ResetFilterStateStruct(scratchState);
-        scratchState[0] = (UBYTE)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
+        LOCAVAIL_ResetFilterStateStruct(&scratchState);
+        scratchState.mode0 = (UBYTE)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
         nodeCount = GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
-        *(LONG *)(scratchState + 2) = nodeCount;
+        scratchState.nodeCount2 = nodeCount;
         section = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
-        scratchState[6] = *section;
+        scratchState.modeChar6 = *section;
 
-        if (LOCAVAIL_AllocNodeArraysForState(scratchState) == 0) {
+        if (LOCAVAIL_AllocNodeArraysForState(&scratchState) == 0) {
             if (nodeCount != 0) {
                 success = 0;
             }
         } else {
             nodeIndex = 0;
             while (success != 0 && nodeIndex < nodeCount) {
-                UBYTE *node;
+                LOCAVAIL_NodeRecord *node;
                 LONG payloadLen;
                 UBYTE *encoded;
                 LONG payloadIndex;
 
-                node = *(UBYTE **)(scratchState + 20) + NEWGRID_JMPTBL_MATH_Mulu32(nodeIndex, 10);
+                node = scratchState.nodeTable20 + nodeIndex;
 
-                node[0] = (UBYTE)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
-                if (node[0] == 0 || node[0] >= 100) {
+                node->tokenIndex0 = (UBYTE)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
+                if (node->tokenIndex0 == 0 || node->tokenIndex0 >= 100) {
                     success = 0;
                     break;
                 }
 
-                *(UWORD *)(node + 2) = (UWORD)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
-                if (*(WORD *)(node + 2) <= 0 || *(UWORD *)(node + 2) >= 0x0E11U) {
+                node->duration2 = (UWORD)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
+                if ((WORD)node->duration2 <= 0 || node->duration2 >= 0x0E11U) {
                     success = 0;
                     break;
                 }
 
-                *(UWORD *)(node + 4) = (UWORD)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
-                payloadLen = (LONG)*(UWORD *)(node + 4);
-                if (*(WORD *)(node + 4) <= 0 || payloadLen >= 100) {
+                node->payloadSize4 = (UWORD)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
+                payloadLen = (LONG)node->payloadSize4;
+                if ((WORD)node->payloadSize4 <= 0 || payloadLen >= 100) {
                     success = 0;
                     break;
                 }
 
-                *(UBYTE **)(node + 6) = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+                node->payload6 = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
                     Global_STR_LOCAVAIL_C_7, 786, payloadLen, MEMF_PUBLIC + MEMF_CLEAR);
-                if (*(UBYTE **)(node + 6) == (UBYTE *)0) {
+                if (node->payload6 == (UBYTE *)0) {
                     success = 0;
                     break;
                 }
@@ -133,7 +153,7 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
                 while (success != 0 && payloadIndex < payloadLen) {
                     UBYTE *payload;
 
-                    payload = *(UBYTE **)(node + 6) + payloadIndex;
+                    payload = node->payload6 + payloadIndex;
                     switch (*encoded++) {
                     case 'G':
                         *payload = 2;
@@ -164,15 +184,15 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
         }
 
         if (success != 0) {
-            if (scratchState[0] == TEXTDISP_PrimaryGroupCode) {
-                LOCAVAIL_CopyFilterStateStructRetainRefs(primaryState, scratchState);
-            } else if (scratchState[0] == TEXTDISP_SecondaryGroupCode) {
-                LOCAVAIL_CopyFilterStateStructRetainRefs(secondaryState, scratchState);
+            if (scratchState.mode0 == TEXTDISP_PrimaryGroupCode) {
+                LOCAVAIL_CopyFilterStateStructRetainRefs(primaryState, &scratchState);
+            } else if (scratchState.mode0 == TEXTDISP_SecondaryGroupCode) {
+                LOCAVAIL_CopyFilterStateStructRetainRefs(secondaryState, &scratchState);
             } else {
-                LOCAVAIL_FreeResourceChain(scratchState);
+                LOCAVAIL_FreeResourceChain(&scratchState);
             }
         } else {
-            LOCAVAIL_FreeResourceChain(scratchState);
+            LOCAVAIL_FreeResourceChain(&scratchState);
         }
 
         section = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
