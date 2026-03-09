@@ -25,7 +25,7 @@ extern void GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG n
 extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *text);
 extern LONG LADFUNC_ParseHexDigit(LONG c);
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *text, LONG ch);
-extern char *ESQPARS_ReplaceOwnedString(char *oldText, const char *newText);
+extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern LONG GCOMMAND_LoadPPVTemplate(void);
 
 static LONG parse_pen_1_to_3(UBYTE c)
@@ -226,18 +226,18 @@ LONG GCOMMAND_ParsePPVCommand(char *cmd)
 
             if (*tail != 0) {
                 GCOMMAND_PPVPeriodTemplatePtr = ESQPARS_ReplaceOwnedString(
-                    GCOMMAND_PPVPeriodTemplatePtr,
-                    tail);
+                    tail,
+                    GCOMMAND_PPVPeriodTemplatePtr);
             }
             if (*split != 0) {
                 GCOMMAND_PPVListingsTemplatePtr = ESQPARS_ReplaceOwnedString(
-                    GCOMMAND_PPVListingsTemplatePtr,
-                    split);
+                    split,
+                    GCOMMAND_PPVListingsTemplatePtr);
             }
         } else {
             GCOMMAND_PPVPeriodTemplatePtr = ESQPARS_ReplaceOwnedString(
-                GCOMMAND_PPVPeriodTemplatePtr,
-                cmd + idx);
+                cmd + idx,
+                GCOMMAND_PPVPeriodTemplatePtr);
         }
     }
 

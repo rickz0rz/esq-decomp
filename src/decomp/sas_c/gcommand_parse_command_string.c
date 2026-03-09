@@ -27,7 +27,7 @@ extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *text);
 extern LONG LADFUNC_ParseHexDigit(LONG c);
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *text, LONG ch);
 extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(const char *text, const char *needle);
-extern char *ESQPARS_ReplaceOwnedString(char *oldText, const char *newText);
+extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern LONG GCOMMAND_LoadMplexFile(void);
 
 static LONG parse_pen_1_to_3(UBYTE c)
@@ -207,18 +207,18 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
 
             if (*tail != 0) {
                 GCOMMAND_MplexAtTemplatePtr = ESQPARS_ReplaceOwnedString(
-                    GCOMMAND_MplexAtTemplatePtr,
-                    tail);
+                    tail,
+                    GCOMMAND_MplexAtTemplatePtr);
             }
             if (*split != 0) {
                 GCOMMAND_MplexListingsTemplatePtr = ESQPARS_ReplaceOwnedString(
-                    GCOMMAND_MplexListingsTemplatePtr,
-                    split);
+                    split,
+                    GCOMMAND_MplexListingsTemplatePtr);
             }
         } else {
             GCOMMAND_MplexAtTemplatePtr = ESQPARS_ReplaceOwnedString(
-                GCOMMAND_MplexAtTemplatePtr,
-                tail);
+                tail,
+                GCOMMAND_MplexAtTemplatePtr);
         }
     }
 

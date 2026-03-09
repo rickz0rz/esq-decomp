@@ -463,8 +463,8 @@ ___GCOMMAND_ParsePPVCommand__80:
               TST.B          (A3)                     ;4a13 
               BEQ.B          ___GCOMMAND_ParsePPVCommand__82;6710 
 ___GCOMMAND_ParsePPVCommand__81:
-              MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         GCOMMAND_PPVPeriodTemplatePtr(A4),-(A7);2f2c 0000 
+              MOVE.L         D1,-(A7)                 ;2f01 
               BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
               MOVE.L         D0,GCOMMAND_PPVPeriodTemplatePtr(A4);2940 0000 
               ADDQ.W         #$8,A7                   ;504f 
@@ -472,8 +472,8 @@ ___GCOMMAND_ParsePPVCommand__82:
               TST.B          (A2)                     ;4a12 
               BEQ.B          ___GCOMMAND_ParsePPVCommand__86;6726 
 ___GCOMMAND_ParsePPVCommand__83:
-              MOVE.L         A2,-(A7)                 ;2f0a 
               MOVE.L         GCOMMAND_PPVListingsTemplatePtr(A4),-(A7);2f2c 0000 
+              MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
               MOVE.L         D0,GCOMMAND_PPVListingsTemplatePtr(A4);2940 0000 
               ADDQ.W         #$8,A7                   ;504f 
@@ -482,8 +482,8 @@ ___GCOMMAND_ParsePPVCommand__84:
 ___GCOMMAND_ParsePPVCommand__85:
               MOVE.L         A5,A0                    ;204d 
               ADD.L          D5,A0                    ;d1c5 
-              MOVE.L         A0,-(A7)                 ;2f08 
               MOVE.L         GCOMMAND_PPVPeriodTemplatePtr(A4),-(A7);2f2c 0000 
+              MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
               MOVE.L         D0,GCOMMAND_PPVPeriodTemplatePtr(A4);2940 0000 
               ADDQ.W         #$8,A7                   ;504f 
