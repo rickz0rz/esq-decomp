@@ -88,16 +88,16 @@ ___CLEANUP_BuildAlignedStatusLine__10:
               LEA            CLOCK_STR_FALLBACK_ENTRY_FLAGS_S(A4),A0;41ec 0000 
               MOVE.L         A0,$20(A7)               ;2f48 0020 
 ___CLEANUP_BuildAlignedStatusLine__11:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.B         $6(A0),D0                ;1028 0006 
+              EXT.W          D0                       ;4880 
               LEA            WDISP_CharClassTable(A4),A1;43ec 0000 
               BTST           #$7,$0(A1,D0.W)          ;0831 0007 0000 
               BEQ.B          ___CLEANUP_BuildAlignedStatusLine__13;6712 
 ___CLEANUP_BuildAlignedStatusLine__12:
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         D0,D1                    ;1200 
-              MOVE.L         D1,-(A7)                 ;2f01 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          GROUP_AE_JMPTBL_LADFUNC_ParseHex;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.B         D0,CLEANUP_AlignedInsetNibblePrimar(A4);1940 0000 
@@ -105,16 +105,16 @@ ___CLEANUP_BuildAlignedStatusLine__12:
 ___CLEANUP_BuildAlignedStatusLine__13:
               SCC            CLEANUP_AlignedInsetNibblePrimar(A4);50ec 0000 
 ___CLEANUP_BuildAlignedStatusLine__14:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.L         $20(A7),A0               ;206f 0020 
               MOVE.B         $7(A0),D0                ;1028 0007 
+              EXT.W          D0                       ;4880 
               LEA            WDISP_CharClassTable(A4),A1;43ec 0000 
               BTST           #$7,$0(A1,D0.W)          ;0831 0007 0000 
               BEQ.B          ___CLEANUP_BuildAlignedStatusLine__16;6712 
 ___CLEANUP_BuildAlignedStatusLine__15:
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         D0,D1                    ;1200 
-              MOVE.L         D1,-(A7)                 ;2f01 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          GROUP_AE_JMPTBL_LADFUNC_ParseHex;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.B         D0,CLEANUP_AlignedInsetNibbleSecond(A4);1940 0000 

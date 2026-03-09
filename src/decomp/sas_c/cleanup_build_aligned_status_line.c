@@ -14,10 +14,10 @@ enum {
     ALIGNED_INSET_NIBBLE_INVALID = 0xFF
 };
 
-extern const UBYTE CLOCK_FMT_WRAP_CHAR_STRING_CHAR[];
-extern const UBYTE TEXTDISP_CenterAlignToken[];
-extern const UBYTE CLOCK_STR_DOUBLE_SPACE[];
-extern const UBYTE CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY[];
+extern const char CLOCK_FMT_WRAP_CHAR_STRING_CHAR[];
+extern const char TEXTDISP_CenterAlignToken[];
+extern const char CLOCK_STR_DOUBLE_SPACE[];
+extern const char CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY[];
 extern const UBYTE WDISP_CharClassTable[];
 extern UBYTE CLEANUP_AlignedInsetNibblePrimary;
 extern UBYTE CLEANUP_AlignedInsetNibbleSecondary;
@@ -26,28 +26,28 @@ extern UBYTE CLOCK_AlignedInsetRenderGateFlag;
 LONG GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG slot, LONG mode);
 LONG CLEANUP_TestEntryFlagYAndBit1(void *entry, LONG slot, LONG mode);
 LONG COI_GetAnimFieldPointerByMode(void *entry, LONG slot, LONG mode);
-LONG GROUP_AE_JMPTBL_WDISP_SPrintf(UBYTE *out, const UBYTE *fmt, LONG a, LONG b, LONG c);
-LONG GROUP_AI_JMPTBL_STRING_AppendAtNull(UBYTE *dst, const UBYTE *src);
+LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG a, LONG b, LONG c);
+LONG GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 LONG GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(LONG c);
 
-void CLEANUP_BuildAlignedStatusLine(UBYTE *out, UWORD isPrimary, UWORD modeSel, UWORD slot, LONG alignToken)
+void CLEANUP_BuildAlignedStatusLine(char *out, UWORD isPrimary, UWORD modeSel, UWORD slot, LONG alignToken)
 {
     void *entry;
-    UBYTE wrappedText[12];
-    UBYTE *fieldText6;
-    UBYTE *fieldText7;
+    char wrappedText[12];
+    char *fieldText6;
+    char *fieldText7;
 
     entry = (void *)GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(
         (LONG)modeSel,
         isPrimary ? ALIGNED_STATUS_MODE_PRIMARY : ALIGNED_STATUS_MODE_SECONDARY
     );
     if (CLEANUP_TestEntryFlagYAndBit1(entry, (LONG)slot, alignToken) != 0) {
-        fieldText6 = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT6);
+        fieldText6 = (char *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT6);
     } else {
-        fieldText6 = (UBYTE *)0;
+        fieldText6 = (char *)0;
     }
 
-    if (fieldText6 == (UBYTE *)0) {
+    if (fieldText6 == (char *)0) {
         CLOCK_AlignedInsetRenderGateFlag = 0;
         return;
     }
@@ -66,9 +66,9 @@ void CLEANUP_BuildAlignedStatusLine(UBYTE *out, UWORD isPrimary, UWORD modeSel, 
     }
     GROUP_AI_JMPTBL_STRING_AppendAtNull(out, wrappedText);
 
-    fieldText7 = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT7);
-    if (fieldText7 == (UBYTE *)0) {
-        fieldText7 = (UBYTE *)CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY;
+    fieldText7 = (char *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT7);
+    if (fieldText7 == (char *)0) {
+        fieldText7 = (char *)CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY;
     }
 
     if ((WDISP_CharClassTable[fieldText7[ALIGNED_STATUS_FIELD_TEXT6]] & CHARCLASS_HEX_DIGIT_MASK) != 0) {

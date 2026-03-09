@@ -7,14 +7,14 @@ enum {
     CLOCK_TEMPLATE_TOKEN_O = 'O'
 };
 
-extern const UBYTE CLOCK_STR_TEMPLATE_CODE_SET_FGN[];
+extern const char CLOCK_STR_TEMPLATE_CODE_SET_FGN[];
 
-UBYTE *GROUP_AI_JMPTBL_STR_FindCharPtr(const UBYTE *s, LONG c);
-LONG GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(LONG match_idx, LONG clock_idx, UBYTE *out, LONG alt);
-void CLEANUP_BuildAlignedStatusLine(UBYTE *out, UWORD isPrimary, UWORD modeSel, UWORD slot, LONG alignToken);
-LONG CLEANUP_ParseAlignedListingBlock(UBYTE *dst, const UBYTE *src);
+char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *s, LONG c);
+LONG GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(LONG match_idx, LONG clock_idx, char *out, LONG alt);
+void CLEANUP_BuildAlignedStatusLine(char *out, UWORD isPrimary, UWORD modeSel, UWORD slot, LONG alignToken);
+LONG CLEANUP_ParseAlignedListingBlock(char *dst, const char *src);
 void CLEANUP_UpdateEntryFlagBytes(void *entry, UWORD slot);
-void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, UBYTE *input);
+void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input);
 void CLEANUP_DrawInsetRectFrame(void);
 LONG GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void);
 LONG GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
@@ -27,23 +27,23 @@ void CLEANUP_BuildAndRenderAlignedStatusBanner(UWORD sourceMode, UWORD modeSel, 
     const LONG ALT_STYLE_DEFAULT = 0;
     const LONG ALT_STYLE_ALT = 1;
     const LONG ALIGN_TOKEN_DEFAULT = 0;
-    UBYTE statusLineBuffer[560];
-    UBYTE clockBuffer[64];
-    UBYTE altClockBuffer[64];
-    UBYTE parsedStatusBuffer[256];
-    UBYTE *fieldA;
-    UBYTE *fieldB;
+    char statusLineBuffer[560];
+    char clockBuffer[64];
+    char altClockBuffer[64];
+    char parsedStatusBuffer[256];
+    char *fieldA;
+    char *fieldB;
 
     statusLineBuffer[0] = CH_NUL;
     clockBuffer[0] = CH_NUL;
     altClockBuffer[0] = CH_NUL;
     parsedStatusBuffer[0] = CH_NUL;
 
-    if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_F) != (UBYTE *)0) {
+    if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_F) != (char *)0) {
         GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(
             MATCH_IDX_DEFAULT, CLOCK_IDX_DEFAULT, clockBuffer, ALT_STYLE_DEFAULT);
     }
-    if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_O) != (UBYTE *)0) {
+    if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_O) != (char *)0) {
         GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(
             MATCH_IDX_DEFAULT, CLOCK_IDX_DEFAULT, altClockBuffer, ALT_STYLE_ALT);
     }
@@ -54,8 +54,8 @@ void CLEANUP_BuildAndRenderAlignedStatusBanner(UWORD sourceMode, UWORD modeSel, 
 
     CLEANUP_UpdateEntryFlagBytes((void *)statusLineBuffer, slot);
 
-    fieldA = (UBYTE *)CH_NUL;
-    fieldB = (UBYTE *)CH_NUL;
+    fieldA = (char *)CH_NUL;
+    fieldB = (char *)CH_NUL;
     CLEANUP_FormatEntryStringTokens((void **)&fieldA, (void **)&fieldB, parsedStatusBuffer);
 
     CLEANUP_DrawInsetRectFrame();
