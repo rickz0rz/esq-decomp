@@ -6,10 +6,10 @@ enum {
     BRUSH_NODE_NEXT_OFFSET = 368
 };
 
-UBYTE *GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(UBYTE *path);
+char *GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(char *path);
 
 typedef struct BRUSH_Node {
-    UBYTE name[BRUSH_NODE_NEXT_OFFSET];
+    char name[BRUSH_NODE_NEXT_OFFSET];
     struct BRUSH_Node *next;
 } BRUSH_Node;
 
@@ -19,21 +19,21 @@ void BRUSH_NormalizeBrushNames(void **headPtr)
 
     node = (BRUSH_Node *)*headPtr;
     while (node != (BRUSH_Node *)BRUSH_NULL) {
-        UBYTE scratch[BRUSH_NAME_SCRATCH_SIZE];
-        UBYTE *sourceCursor;
-        UBYTE *destCursor;
+        char scratch[BRUSH_NAME_SCRATCH_SIZE];
+        char *sourceCursor;
+        char *destCursor;
 
         sourceCursor = node->name;
         destCursor = scratch;
         do {
             *destCursor++ = *sourceCursor;
-        } while (*sourceCursor++ != (UBYTE)BRUSH_NULL);
+        } while (*sourceCursor++ != BRUSH_NULL);
 
         sourceCursor = GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(scratch);
         destCursor = node->name;
         do {
             *destCursor++ = *sourceCursor;
-        } while (*sourceCursor++ != (UBYTE)BRUSH_NULL);
+        } while (*sourceCursor++ != BRUSH_NULL);
 
         node = node->next;
     }

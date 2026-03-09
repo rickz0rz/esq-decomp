@@ -9,38 +9,38 @@ enum {
     BRUSH_NODE_NEXT_OFFSET = 368
 };
 
-extern UBYTE BRUSH_LabelScratch[];
+extern char BRUSH_LabelScratch[];
 extern void *ESQIFF_BrushIniListHead;
 extern void *BRUSH_SelectedNode;
 extern void *BRUSH_ScriptPrimarySelection;
 extern void *BRUSH_ScriptSecondarySelection;
-extern const UBYTE BRUSH_STR_ALIAS_CODE_00[];
-extern const UBYTE BRUSH_STR_ALIAS_CODE_11[];
-extern const UBYTE BRUSH_STR_ALIAS_CODE_DT[];
-extern const UBYTE BRUSH_STR_FALLBACK_DITHER[];
+extern const char BRUSH_STR_ALIAS_CODE_00[];
+extern const char BRUSH_STR_ALIAS_CODE_11[];
+extern const char BRUSH_STR_ALIAS_CODE_DT[];
+extern const char BRUSH_STR_FALLBACK_DITHER[];
 
 LONG GROUP_AA_JMPTBL_STRING_CompareN(const void *lhs, const void *rhs, LONG n);
-void GROUP_AG_JMPTBL_STRING_CopyPadNul(void *dst, const void *src, LONG n);
+void GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG n);
 void *BRUSH_FindBrushByPredicate(const void *key, void *list_head_ptr);
 
 typedef struct BRUSH_Node {
     UBYTE pad0[BRUSH_NODE_LABEL_OFFSET];
-    UBYTE label[BRUSH_NODE_NEXT_OFFSET - BRUSH_NODE_LABEL_OFFSET];
+    char label[BRUSH_NODE_NEXT_OFFSET - BRUSH_NODE_LABEL_OFFSET];
     struct BRUSH_Node *next;
 } BRUSH_Node;
 
-void BRUSH_SelectBrushByLabel(const UBYTE *brushLabel)
+void BRUSH_SelectBrushByLabel(const char *brushLabel)
 {
     BRUSH_Node *nodeCursor;
-    UBYTE aliasCode[BRUSH_CODE_BUFFER_LEN];
-    const UBYTE *labelCursor;
-    UBYTE *scratchCursor;
+    char aliasCode[BRUSH_CODE_BUFFER_LEN];
+    const char *labelCursor;
+    char *scratchCursor;
 
     labelCursor = brushLabel;
     scratchCursor = BRUSH_LabelScratch;
     do {
         *scratchCursor++ = *labelCursor;
-    } while (*labelCursor++ != (UBYTE)BRUSH_NULL_BYTE);
+    } while (*labelCursor++ != BRUSH_NULL_BYTE);
 
     nodeCursor = (BRUSH_Node *)ESQIFF_BrushIniListHead;
     BRUSH_SelectedNode = (void *)BRUSH_NULL_BYTE;
