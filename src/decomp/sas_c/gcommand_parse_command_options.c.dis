@@ -263,8 +263,8 @@ ___GCOMMAND_ParseCommandOptions__49:
               TST.B          (A3)                     ;4a13 
               BEQ.B          ___GCOMMAND_ParseCommandOptions__51;6710 
 ___GCOMMAND_ParseCommandOptions__50:
-              MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         GCOMMAND_DigitalNicheListingsTem(A4),-(A7);2f2c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
               MOVE.L         D0,GCOMMAND_DigitalNicheListingsTem(A4);2940 0000 
               ADDQ.W         #$8,A7                   ;504f 
