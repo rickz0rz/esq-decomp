@@ -4,18 +4,19 @@ typedef unsigned long ULONG;
 enum {
     DISPLIB_INLINE_ALIGN_CENTER = 24,
     DISPLIB_INLINE_ALIGN_RIGHT = 26,
-    DISPLIB_INLINE_TARGET_WIDTH_PX = 624,
-    MEMF_PUBLIC = 0x1UL
+    DISPLIB_INLINE_TARGET_WIDTH_PX = 624
 };
 
+static const ULONG MEMF_PUBLIC = 0x1UL;
+
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern const char Global_STR_DISPLIB_C_1[];
 extern const char Global_STR_DISPLIB_C_2[];
 extern const char DISPLIB_STR_InlineAlignPadCharCenter[];
 extern const char DISPLIB_STR_InlineAlignPadCharRight[];
 
-extern long _LVOTextLength(void *graphicsBase, void *rastPort, const char *text, long len);
+extern long _LVOTextLength(void *graphicsBase, char *rastPort, const char *text, long len);
 extern long GROUP_AG_JMPTBL_MATH_DivS32(long numer, long denom);
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);

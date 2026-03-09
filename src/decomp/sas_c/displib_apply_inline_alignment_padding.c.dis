@@ -79,7 +79,7 @@ ___DISPLIB_ApplyInlineAlignmentPadd__13:
 ___DISPLIB_ApplyInlineAlignmentPadd__14:
               MOVE.L         D6,D0                    ;2006 
               ADDQ.L         #$1,D0                   ;5280 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         __MERGED(A4),-(A7)       ;2f2c 0000 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            ($c2).w                  ;4878 00c2 
               PEA            Global_STR_DISPLIB_C_1(A4);486c 0000 
@@ -149,4 +149,9 @@ __strings:
               XREF           Global_STR_DISPLIB_C_2
               XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
               XDEF           DISPLIB_ApplyInlineAlignmentPadd
+
+              SECTION        __MERGED,DATA
+__MERGED
+MEMF_PUBLIC:
+              DC.L           $00000001
               END
