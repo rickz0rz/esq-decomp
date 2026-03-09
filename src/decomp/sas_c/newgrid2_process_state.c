@@ -27,7 +27,7 @@ extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(UBYTE *tagName, LONG line, voi
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG height, LONG pen);
 extern LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, char *entryHead);
 extern LONG NEWGRID_DrawGridEntry(
-    void *layoutCtx,
+    char *layoutCtx,
     char *entryPtr,
     char *auxPtr,
     LONG rowSlot,
@@ -36,12 +36,12 @@ extern LONG NEWGRID_DrawGridEntry(
     LONG mode
 );
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG index);
-extern LONG NEWGRID_AppendShowtimesForRow(char *gridCtx, void *entryCtx, char *scratch, LONG keyValue);
+extern LONG NEWGRID_AppendShowtimesForRow(char *gridCtx, char *entryCtx, char *scratch, LONG keyValue);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, char *scratch);
 extern LONG NEWGRID_DrawGridFrameVariant4(char *gridCtx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
 
-LONG NEWGRID2_ProcessGridState(char *gridCtx, void *entryCtx, LONG keyValue)
+LONG NEWGRID2_ProcessGridState(char *gridCtx, char *entryCtx, LONG keyValue)
 {
     NEWGRID2_Context *grid = (NEWGRID2_Context *)gridCtx;
     NEWGRID2_StateEntry *entry = (NEWGRID2_StateEntry *)entryCtx;
@@ -96,7 +96,7 @@ LONG NEWGRID2_ProcessGridState(char *gridCtx, void *entryCtx, LONG keyValue)
             );
             if (scratch != 0) {
                 NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(3);
-                NEWGRID_AppendShowtimesForRow(gridCtx, entry, scratch, keyValue);
+                NEWGRID_AppendShowtimesForRow(gridCtx, (char *)entry, scratch, keyValue);
                 NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(grid->rastPort, scratch);
                 SCRIPT_JMPTBL_MEMORY_DeallocateMemory(&Global_STR_NEWGRID2_C_2, 3953, scratch, 2000);
             }
