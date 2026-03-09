@@ -23,12 +23,12 @@ extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mod
 extern UBYTE *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(void *entryPtr, void *auxPtr, LONG startIndex);
 extern char *TEXTDISP_FindControlToken(char *textPtr);
-extern LONG TEXTDISP_FindQuotedSpan(UBYTE *src, UBYTE **outStart, UBYTE *endHint, LONG *hasQuotes);
+extern LONG TEXTDISP_FindQuotedSpan(char *src, char **outStart, char *endHint, LONG *hasQuotes);
 extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(void *bitsetPtr, LONG index);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
 extern LONG TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
 
-LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
+LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
 {
     const LONG GROUP_PRIMARY = 1;
     const LONG GROUP_SECONDARY = 2;
@@ -45,10 +45,10 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
     TEXTDISP_AuxData *aux;
     TEXTDISP_CandidateEntry *entry;
     char *inputCtrl;
-    UBYTE *inputStart;
+    char *inputStart;
     char *entryTitle;
     char *entryCtrl;
-    UBYTE *entryStart;
+    char *entryStart;
     LONG inputHasQuotes;
     LONG entryHasQuotes;
     LONG inputLen;
@@ -56,14 +56,14 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
     LONG slot;
     LONG tokenOk;
     LONG isMatch;
-    UBYTE inputSaved;
-    UBYTE entrySaved;
+    char inputSaved;
+    char entrySaved;
     UBYTE mask;
 
     mask = (UBYTE)flags;
 
-    inputStart = (UBYTE *)0;
-    entryStart = (UBYTE *)0;
+    inputStart = (char *)0;
+    entryStart = (char *)0;
     inputHasQuotes = 0;
     entryHasQuotes = 0;
 

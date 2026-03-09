@@ -11,10 +11,10 @@ ___DISKIO_ParseConfigBuffer__1:
               MOVE.L         $18(A7),D7               ;2e2f 0018 
               MOVE.L         $14(A7),A5               ;2a6f 0014 
               MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___DISKIO_ParseConfigBuffer__7;675e 
+              BEQ.B          ___DISKIO_ParseConfigBuffer__7;675a 
 ___DISKIO_ParseConfigBuffer__2:
               TST.L          D7                       ;4a87 
-              BEQ.B          ___DISKIO_ParseConfigBuffer__7;675a 
+              BEQ.B          ___DISKIO_ParseConfigBuffer__7;6756 
 ___DISKIO_ParseConfigBuffer__3:
 ___DISKIO_ParseConfigBuffer__4:
               MOVEQ.L        #$d0,D0                  ;70d0 
@@ -26,12 +26,10 @@ ___DISKIO_ParseConfigBuffer__4:
               MOVE.B         D0,CONFIG_RefreshIntervalMinutes(A4);1940 0000 
               MOVEQ.L        #$6,D1                   ;7206 
               CMP.L          D1,D7                    ;be81 
-              BLS.B          ___DISKIO_ParseConfigBuffer__6;631e 
+              BLS.B          ___DISKIO_ParseConfigBuffer__6;631a 
 ___DISKIO_ParseConfigBuffer__5:
-              MOVE.B         $4(A5),D1                ;122d 0004 
-              MOVE.B         D1,$d(A7)                ;1f41 000d 
-              MOVE.B         $5(A5),D1                ;122d 0005 
-              MOVE.B         D1,$e(A7)                ;1f41 000e 
+              MOVE.B         $4(A5),$d(A7)            ;1f6d 0004 000d 
+              MOVE.B         $5(A5),$e(A7)            ;1f6d 0005 000e 
               CLR.B          $f(A7)                   ;422f 000f 
               PEA            $d(A7)                   ;486f 000d 
               BSR.W          GROUP_AG_JMPTBL_PARSE_ReadSigned;6100 0000 

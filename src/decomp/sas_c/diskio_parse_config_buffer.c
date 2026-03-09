@@ -9,7 +9,7 @@ extern LONG GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *text)
 extern LONG GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState(LONG minutes, LONG mode);
 extern LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 
-void DISKIO_ParseConfigBuffer(UBYTE *buffer, ULONG size)
+void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
 {
     char modeText[3];
     LONG minutes;
