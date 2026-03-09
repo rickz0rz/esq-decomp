@@ -23,12 +23,43 @@ extern void _LVOSizeWindow(void *window, LONG deltaX, LONG deltaY);
 extern void _LVORemakeDisplay(void);
 extern void _LVOFreeMem(void *memory, LONG byteSize);
 
+typedef struct ESQ_SecondaryLine {
+    UBYTE pad0[2];
+    UWORD height2;
+    UBYTE pad4;
+    UBYTE mode5;
+    UBYTE pad6[2];
+    LONG freeStart8;
+    LONG freeEnd12;
+} ESQ_SecondaryLine;
+
+typedef struct ESQ_TopazFontView {
+    UBYTE pad0[14];
+    UWORD height14;
+    UBYTE pad16[0x54 - 16];
+    UBYTE rastPort54[0xB8 - 0x54];
+    ESQ_SecondaryLine secondaryLine;
+} ESQ_TopazFontView;
+
+typedef struct ESQ_WindowView {
+    UBYTE pad0[10];
+    UWORD height10;
+} ESQ_WindowView;
+
+typedef struct ESQ_IntuitionView {
+    UBYTE pad0[20];
+    UWORD monitorDepth20;
+    UBYTE pad22[0x34 - 22];
+    ESQ_WindowView *window34;
+    ESQ_TopazFontView *topazFont38;
+} ESQ_IntuitionView;
+
 void ESQ_CheckTopazFontGuard(void)
 {
-    UBYTE *intuition;
-    UBYTE *topazFont;
-    UBYTE *window;
-    UBYTE *secondaryLine;
+    ESQ_IntuitionView *intuition;
+    ESQ_TopazFontView *topazFont;
+    ESQ_WindowView *window;
+    ESQ_SecondaryLine *secondaryLine;
     UBYTE *rastPort;
     LONG widthSlots;
     LONG freeStart;
@@ -36,21 +67,21 @@ void ESQ_CheckTopazFontGuard(void)
     LONG freeSize;
     LONG deltaY;
 
-    intuition = (UBYTE *)Global_REF_INTUITION_LIBRARY;
-    topazFont = *(UBYTE **)(intuition + 0x38);
-    secondaryLine = topazFont + 0xB8;
+    intuition = (ESQ_IntuitionView *)Global_REF_INTUITION_LIBRARY;
+    topazFont = intuition->topazFont38;
+    secondaryLine = &topazFont->secondaryLine;
 
-    if (secondaryLine[5] != 2) {
+    if (secondaryLine->mode5 != 2) {
         GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE);
         GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode(0);
         return;
     }
 
-    window = *(UBYTE **)(intuition + 0x34);
-    if (*(UWORD *)(intuition + 20) <= 33) {
+    window = intuition->window34;
+    if (intuition->monitorDepth20 <= 33) {
         GROUP_MAIN_B_JMPTBL_DOS_Delay(250);
 
-        rastPort = topazFont + 0x54;
+        rastPort = topazFont->rastPort54;
         _LVOSetAPen(rastPort, 2);
         _LVORectFill(rastPort, 0, 0, 639, 255);
         _LVOSetAPen(rastPort, 1);
@@ -68,22 +99,22 @@ void ESQ_CheckTopazFontGuard(void)
         }
     }
 
-    deltaY = 50 - (LONG)(WORD)(*(UWORD *)(window + 10));
+    deltaY = 50 - (LONG)(WORD)(window->height10);
     _LVOSizeWindow(window, 0, deltaY);
 
     GROUP_MAIN_B_JMPTBL_DOS_Delay(100);
 
-    *(UWORD *)(topazFont + 14) = 50;
-    *(UWORD *)(secondaryLine + 2) = 50;
-    secondaryLine[5] = 1;
+    topazFont->height14 = 50;
+    secondaryLine->height2 = 50;
+    secondaryLine->mode5 = 1;
 
-    widthSlots = GROUP_MAIN_B_JMPTBL_MATH_Mulu32((LONG)(WORD)(*(UWORD *)(topazFont + 14)), 640);
+    widthSlots = GROUP_MAIN_B_JMPTBL_MATH_Mulu32((LONG)(WORD)(topazFont->height14), 640);
     widthSlots >>= 3;
 
-    freeStart = *(LONG *)(secondaryLine + 8) + 4000;
-    freeEnd = *(LONG *)(secondaryLine + 12) + widthSlots;
+    freeStart = secondaryLine->freeStart8 + 4000;
+    freeEnd = secondaryLine->freeEnd12 + widthSlots;
 
-    *(LONG *)(secondaryLine + 12) = 0;
+    secondaryLine->freeEnd12 = 0;
 
     _LVORemakeDisplay();
     freeSize = freeEnd - freeStart;

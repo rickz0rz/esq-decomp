@@ -9,8 +9,7 @@ ESQ_CheckTopazFontGuard:
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___ESQ_CheckTopazFontGuard__1:
               MOVE.L         Global_REF_INTUITION_LIBRARY(A4),A5;2a6c 0000 
-              LEA            $38(A5),A0               ;41ed 0038 
-              MOVE.L         (A0),A3                  ;2650 
+              MOVE.L         $38(A5),A3               ;266d 0038 
               LEA            $b8(A3),A0               ;41eb 00b8 
               MOVE.L         A0,$24(A7)               ;2f48 0024 
               MOVEQ.L        #$2,D0                   ;7002 
@@ -22,12 +21,10 @@ ___ESQ_CheckTopazFontGuard__2:
               CLR.L          (A7)                     ;4297 
               BSR.W          GROUP_MAIN_B_JMPTBL_BUFFER_Flush;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.W          ___ESQ_CheckTopazFontGuard__9;6000 013a 
+              BRA.W          ___ESQ_CheckTopazFontGuard__9;6000 012e 
 ___ESQ_CheckTopazFontGuard__3:
-              LEA            $34(A5),A0               ;41ed 0034 
-              MOVE.L         (A0),A2                  ;2450 
-              LEA            $14(A5),A0               ;41ed 0014 
-              CMPI.W         #$21,(A0)                ;0c50 0021 
+              MOVE.L         $34(A5),A2               ;246d 0034 
+              CMPI.W         #$21,$14(A5)             ;0c6d 0021 0014 
               BHI.W          ___ESQ_CheckTopazFontGuard__7;6200 00a8 
 ___ESQ_CheckTopazFontGuard__4:
               PEA            ($fa).w                  ;4878 00fa 
@@ -77,8 +74,7 @@ ___ESQ_CheckTopazFontGuard__5:
 ___ESQ_CheckTopazFontGuard__6:
               BRA.B          ___ESQ_CheckTopazFontGuard__6;60fe 
 ___ESQ_CheckTopazFontGuard__7:
-              LEA            $a(A2),A0                ;41ea 000a 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.W         $a(A2),D0                ;302a 000a 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$32,D1                  ;7232 
               SUB.L          D0,D1                    ;9280 
@@ -89,39 +85,33 @@ ___ESQ_CheckTopazFontGuard__7:
               BSR.W          _LVOSizeWindow           ;6100 0000 
               PEA            ($64).w                  ;4878 0064 
               BSR.W          GROUP_MAIN_B_JMPTBL_DOS_Delay;6100 0000 
-              LEA            $e(A3),A0                ;41eb 000e 
               MOVEQ.L        #$32,D0                  ;7032 
-              MOVE.W         D0,(A0)                  ;3080 
-              MOVE.L         $34(A7),A1               ;226f 0034 
-              ADDQ.L         #$2,A1                   ;5489 
-              MOVE.W         D0,(A1)                  ;3280 
-              MOVE.L         $34(A7),A1               ;226f 0034 
-              MOVE.B         #$1,$5(A1)               ;137c 0001 0005 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.W         D0,$e(A3)                ;3740 000e 
+              MOVE.L         $34(A7),A0               ;206f 0034 
+              MOVE.W         D0,$2(A0)                ;3140 0002 
+              MOVE.B         #$1,$5(A0)               ;117c 0001 0005 
+              MOVE.W         $e(A3),D0                ;302b 000e 
               EXT.L          D0                       ;48c0 
               PEA            ($280).w                 ;4878 0280 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          GROUP_MAIN_B_JMPTBL_MATH_Mulu32;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               ASR.L          #$3,D7                   ;e687 
-              MOVE.L         $3c(A7),A0               ;206f 003c 
-              MOVE.L         A0,A1                    ;2248 
-              ADDQ.L         #$8,A1                   ;5089 
               MOVEQ.L        #$7d,D6                  ;7c7d 
               LSL.L          #$5,D6                   ;eb8e 
-              ADD.L          (A1),D6                  ;dc91 
-              LEA            $c(A0),A1                ;43e8 000c 
-              MOVE.L         (A1),D0                  ;2011 
+              MOVE.L         $3c(A7),A0               ;206f 003c 
+              ADD.L          $8(A0),D6                ;dca8 0008 
+              MOVE.L         $c(A0),D0                ;2028 000c 
               ADD.L          D7,D0                    ;d087 
               MOVE.L         D0,D5                    ;2a00 
-___ESQ_CheckTopazFontGuard__8:
-              CLR.L          (A1)                     ;4291 
+              CLR.L          $c(A0)                   ;42a8 000c 
               BSR.W          _LVORemakeDisplay        ;6100 0000 
               MOVE.L         D5,D0                    ;2005 
               SUB.L          D6,D0                    ;9086 
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D6,-(A7)                 ;2f06 
               MOVE.L         D0,$38(A7)               ;2f40 0038 
+___ESQ_CheckTopazFontGuard__8:
               BSR.W          _LVOFreeMem              ;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
 ___ESQ_CheckTopazFontGuard__9:
