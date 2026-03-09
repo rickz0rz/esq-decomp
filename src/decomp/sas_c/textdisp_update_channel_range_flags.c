@@ -4,12 +4,12 @@ typedef signed short WORD;
 typedef unsigned char UBYTE;
 
 extern WORD TEXTDISP_ChannelSourceMode;
-extern UBYTE TEXTDISP_PrimarySearchText[];
-extern UBYTE TEXTDISP_SecondarySearchText[];
+extern char TEXTDISP_PrimarySearchText[];
+extern char TEXTDISP_SecondarySearchText[];
 extern WORD TEXTDISP_PrimaryChannelCode;
 extern WORD TEXTDISP_SecondaryChannelCode;
 extern WORD CLOCK_CurrentDayOfWeekIndex;
-extern UBYTE Global_STR_TEXTDISP_C_3[];
+extern const UBYTE Global_STR_TEXTDISP_C_3[];
 extern UBYTE TEXTDISP_BannerCharSelected;
 extern UBYTE TEXTDISP_BannerCharFallback;
 
