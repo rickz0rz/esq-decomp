@@ -12,7 +12,7 @@ extern char *ESQIFF_PrimaryLineTailPtr;
 extern char *ESQIFF_SecondaryLineHeadPtr;
 extern char *ESQIFF_SecondaryLineTailPtr;
 
-extern char *ESQPARS_ReplaceOwnedString(char *new_ptr, char *old_ptr);
+extern char *ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 extern char *ESQIFF2_ClearLineHeadTailByMode(UWORD mode);
 
 void ESQIFF2_ParseLineHeadTailRecord(UBYTE *record)

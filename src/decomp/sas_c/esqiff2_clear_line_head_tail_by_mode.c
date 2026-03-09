@@ -5,7 +5,7 @@ extern char *ESQIFF_SecondaryLineTailPtr;
 extern char *ESQIFF_PrimaryLineHeadPtr;
 extern char *ESQIFF_PrimaryLineTailPtr;
 
-extern char *ESQPARS_ReplaceOwnedString(char *new_ptr, char *old_ptr);
+extern char *ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 
 char *ESQIFF2_ClearLineHeadTailByMode(WORD mode)
 {
