@@ -28,35 +28,52 @@ extern const UBYTE Global_STR_BRUSH_C_7[];
 void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const void *tag, LONG line, void *raster, LONG width, LONG height);
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
 
+typedef struct BRUSH_AuxNode {
+    UBYTE pad0[BRUSH_AUX_NEXT_OFFSET];
+    struct BRUSH_AuxNode *next;
+} BRUSH_AuxNode;
+
+typedef struct BRUSH_Node {
+    UBYTE pad0[BRUSH_NODE_RASTER_TABLE_OFFSET];
+    void *rasterTable[8];
+    UWORD width176;
+    UWORD height178;
+    UBYTE pad180[4];
+    UBYTE frameCount184;
+    UBYTE pad185[179];
+    BRUSH_AuxNode *auxList364;
+    struct BRUSH_Node *next368;
+} BRUSH_Node;
+
 void BRUSH_FreeBrushList(void **headPtr, LONG freeAll)
 {
-    UBYTE *node;
+    BRUSH_Node *node;
 
-    node = (UBYTE *)*headPtr;
-    while (node != (UBYTE *)BRUSH_FALSE) {
+    node = (BRUSH_Node *)*headPtr;
+    while (node != (BRUSH_Node *)BRUSH_FALSE) {
         LONG frameIndex;
-        UBYTE *nextNode;
-        UBYTE *auxNode;
+        BRUSH_Node *nextNode;
+        BRUSH_AuxNode *auxNode;
 
-        nextNode = *(UBYTE **)(node + BRUSH_NODE_NEXT_OFFSET);
+        nextNode = node->next368;
         frameIndex = BRUSH_FALSE;
-        while (frameIndex < (LONG)*(UBYTE *)(node + BRUSH_NODE_FRAME_COUNT_OFFSET)) {
+        while (frameIndex < (LONG)node->frameCount184) {
             void *raster;
             LONG width;
             LONG height;
 
-            raster = *(void **)(node + BRUSH_NODE_RASTER_TABLE_OFFSET + ((ULONG)frameIndex << BRUSH_RASTER_PTR_STRIDE_SHIFT));
-            width = (LONG)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET);
-            height = (LONG)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET);
+            raster = node->rasterTable[frameIndex];
+            width = (LONG)node->width176;
+            height = (LONG)node->height178;
             GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_BRUSH_C_5, BRUSH_FREE_RASTER_LINE, raster, width, height);
             frameIndex++;
         }
 
-        auxNode = *(UBYTE **)(node + BRUSH_NODE_AUX_LIST_OFFSET);
-        while (auxNode != (UBYTE *)BRUSH_FALSE) {
-            UBYTE *nextAuxNode;
+        auxNode = node->auxList364;
+        while (auxNode != (BRUSH_AuxNode *)BRUSH_FALSE) {
+            BRUSH_AuxNode *nextAuxNode;
 
-            nextAuxNode = *(UBYTE **)(auxNode + BRUSH_AUX_NEXT_OFFSET);
+            nextAuxNode = auxNode->next;
             GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
                 Global_STR_BRUSH_C_6, BRUSH_FREE_AUX_LINE, (void *)auxNode, BRUSH_AUX_NODE_SIZE);
             auxNode = nextAuxNode;
