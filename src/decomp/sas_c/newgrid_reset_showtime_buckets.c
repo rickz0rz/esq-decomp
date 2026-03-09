@@ -3,13 +3,13 @@ typedef unsigned char UBYTE;
 
 typedef struct NEWGRID_ShowtimeBucketEntry {
     LONG key;
-    UBYTE *text;
+    char *text;
 } NEWGRID_ShowtimeBucketEntry;
 
 extern LONG NEWGRID_ShowtimeBucketCount;
 extern NEWGRID_ShowtimeBucketEntry NEWGRID_ShowtimeBucketEntryTable[];
 
-extern UBYTE *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(UBYTE *newStr, UBYTE *oldStr);
+extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(char *newStr, char *oldStr);
 
 void NEWGRID_ResetShowtimeBuckets(void)
 {
