@@ -2,14 +2,14 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern UWORD LADFUNC_LineSlotWriteIndex;
 extern UWORD LADFUNC_LineControlCodeTable[];
 extern char *LADFUNC_LineTextBufferPtrs[];
 
-extern LONG _LVOTextLength(void *graphicsBase, void *rastPort, const char *text, LONG length);
+extern LONG _LVOTextLength(void *graphicsBase, char *rastPort, const char *text, LONG length);
 extern void GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(char *text, LONG controlCode);
 
 void LADFUNC_BuildHighlightLinesFromText(char *src)
