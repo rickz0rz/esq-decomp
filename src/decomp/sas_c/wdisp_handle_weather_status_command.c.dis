@@ -5,9 +5,9 @@ WDISP_HandleWeatherStatusCommand:
               SUB.L          #$c,D0                   ;90bc 0000 000c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D2/D3/D4/D5/D6/D7/A5,-(A7);48e7 3f04 
+              MOVEM.L        D2/D3/D4/D5/D6/D7/A3/A5,-(A7);48e7 3f14 
 ___WDISP_HandleWeatherStatusCommand__1:
-              MOVE.L         $20(A7),D7               ;2e2f 0020 
+              MOVE.L         $24(A7),D7               ;2e2f 0024 
               MOVEQ.L        #$30,D0                  ;7030 
               CMP.L          D0,D7                    ;be80 
               BEQ.B          ___WDISP_HandleWeatherStatusCommand__4;670e 
@@ -17,7 +17,7 @@ ___WDISP_HandleWeatherStatusCommand__2:
               BEQ.B          ___WDISP_HandleWeatherStatusCommand__4;6708 
 ___WDISP_HandleWeatherStatusCommand__3:
               BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
-              BRA.W          ___WDISP_HandleWeatherStatusCommand__36;6000 0180 
+              BRA.W          ___WDISP_HandleWeatherStatusCommand__35;6000 017a 
 ___WDISP_HandleWeatherStatusCommand__4:
               CLR.L          -(A7)                    ;42a7 
               PEA            ($4).w                   ;4878 0004 
@@ -30,15 +30,11 @@ ___WDISP_HandleWeatherStatusCommand__4:
               MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
               BSR.W          WDISP_JMPTBL_ESQ_SetCopperEffect;6100 0000 
               MOVE.L         WDISP_DisplayContextBase(A4),A5;2a6c 0000 
-              ADDQ.L         #$2,A5                   ;548d 
-              MOVE.L         WDISP_DisplayContextBase(A4),A0;206c 0000 
-              MOVE.L         A0,A1                    ;2248 
-              ADDQ.L         #$4,A1                   ;5889 
+              LEA            $2(A5),A3                ;47ed 0002 
               MOVEQ.L        #$0,D6                   ;7c00 
-              MOVE.W         (A1),D6                  ;3c11 
-              LEA            $2(A0),A1                ;43e8 0002 
+              MOVE.W         $4(A5),D6                ;3c2d 0004 
               MOVEQ.L        #$0,D5                   ;7a00 
-              MOVE.W         (A1),D5                  ;3a11 
+              MOVE.W         $2(A5),D5                ;3a2d 0002 
               BSR.W          WDISP_JMPTBL_ESQIFF_RestoreBaseP;6100 0000 
               BSR.W          WDISP_JMPTBL_ESQIFF_RunCopperDro;6100 0000 
               MOVEQ.L        #$0,D0                   ;7000 
@@ -48,37 +44,36 @@ ___WDISP_HandleWeatherStatusCommand__4:
               BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
               MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
               CLR.L          (A7)                     ;4297 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          _LVOSetDrMd              ;6100 0000 
               PEA            ($1).w                   ;4878 0001 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          _LVOSetAPen              ;6100 0000 
               MOVE.L         Global_HANDLE_PREVUEC_FONT(A4),(A7);2eac 0000 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          _LVOSetFont              ;6100 0000 
               LEA            $28(A7),A7               ;4fef 0028 
               MOVEQ.L        #$30,D0                  ;7030 
               CMP.L          D0,D7                    ;be80 
+              BNE.B          ___WDISP_HandleWeatherStatusCommand__6;6610 
 ___WDISP_HandleWeatherStatusCommand__5:
-              BNE.B          ___WDISP_HandleWeatherStatusCommand__7;6610 
-___WDISP_HandleWeatherStatusCommand__6:
               MOVE.L         D6,-(A7)                 ;2f06 
               MOVE.L         D5,-(A7)                 ;2f05 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          WDISP_DrawWeatherStatusOverlay;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              BRA.B          ___WDISP_HandleWeatherStatusCommand__9;6014 
-___WDISP_HandleWeatherStatusCommand__7:
+              BRA.B          ___WDISP_HandleWeatherStatusCommand__8;6014 
+___WDISP_HandleWeatherStatusCommand__6:
               MOVEQ.L        #$33,D0                  ;7033 
               CMP.L          D0,D7                    ;be80 
-              BNE.B          ___WDISP_HandleWeatherStatusCommand__9;660e 
-___WDISP_HandleWeatherStatusCommand__8:
+              BNE.B          ___WDISP_HandleWeatherStatusCommand__8;660e 
+___WDISP_HandleWeatherStatusCommand__7:
               MOVE.L         D6,-(A7)                 ;2f06 
               MOVE.L         D5,-(A7)                 ;2f05 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          WDISP_DrawWeatherStatusSummary;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-___WDISP_HandleWeatherStatusCommand__9:
+___WDISP_HandleWeatherStatusCommand__8:
               MOVEQ.L        #$4,D0                   ;7004 
               MOVE.L         D0,-(A7)                 ;2f00 
               CLR.L          -(A7)                    ;42a7 
@@ -89,90 +84,90 @@ ___WDISP_HandleWeatherStatusCommand__9:
               MOVE.B         WDISP_AccumulatorRow0_CopperInde(A4),D0;102c 0000 
               MOVEQ.L        #$20,D1                  ;7220 
               CMP.B          D1,D0                    ;b001 
-              BCC.B          ___WDISP_HandleWeatherStatusCommand__13;6414 
-___WDISP_HandleWeatherStatusCommand__10:
+              BCC.B          ___WDISP_HandleWeatherStatusCommand__12;6414 
+___WDISP_HandleWeatherStatusCommand__9:
               CMP.B          D1,D0                    ;b001 
-              BCC.B          ___WDISP_HandleWeatherStatusCommand__13;6410 
-___WDISP_HandleWeatherStatusCommand__11:
+              BCC.B          ___WDISP_HandleWeatherStatusCommand__12;6410 
+___WDISP_HandleWeatherStatusCommand__10:
               MOVE.W         WDISP_AccumulatorRow0_Value(A4),D0;302c 0000 
               CMPI.W         #$4000,D0                ;0c40 4000 
-              BGE.B          ___WDISP_HandleWeatherStatusCommand__13;6c06 
-___WDISP_HandleWeatherStatusCommand__12:
+              BGE.B          ___WDISP_HandleWeatherStatusCommand__12;6c06 
+___WDISP_HandleWeatherStatusCommand__11:
               MOVE.W         D0,ACCUMULATOR_Row0_CaptureValue(A4);3940 0000 
-              BRA.B          ___WDISP_HandleWeatherStatusCommand__14;6006 
-___WDISP_HandleWeatherStatusCommand__13:
+              BRA.B          ___WDISP_HandleWeatherStatusCommand__13;6006 
+___WDISP_HandleWeatherStatusCommand__12:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D0,ACCUMULATOR_Row0_CaptureValue(A4);3940 0000 
-___WDISP_HandleWeatherStatusCommand__14:
+___WDISP_HandleWeatherStatusCommand__13:
               MOVE.B         WDISP_AccumulatorRow1_CopperInde(A4),D2;142c 0000 
               CMP.B          D1,D2                    ;b401 
-              BCC.B          ___WDISP_HandleWeatherStatusCommand__18;6414 
-___WDISP_HandleWeatherStatusCommand__15:
+              BCC.B          ___WDISP_HandleWeatherStatusCommand__17;6414 
+___WDISP_HandleWeatherStatusCommand__14:
               CMP.B          D1,D2                    ;b401 
-              BCC.B          ___WDISP_HandleWeatherStatusCommand__18;6410 
-___WDISP_HandleWeatherStatusCommand__16:
+              BCC.B          ___WDISP_HandleWeatherStatusCommand__17;6410 
+___WDISP_HandleWeatherStatusCommand__15:
               MOVE.W         WDISP_AccumulatorRow1_Value(A4),D2;342c 0000 
               CMPI.W         #$4000,D2                ;0c42 4000 
-              BGE.B          ___WDISP_HandleWeatherStatusCommand__18;6c06 
-___WDISP_HandleWeatherStatusCommand__17:
+              BGE.B          ___WDISP_HandleWeatherStatusCommand__17;6c06 
+___WDISP_HandleWeatherStatusCommand__16:
               MOVE.W         D2,ACCUMULATOR_Row1_CaptureValue(A4);3942 0000 
-              BRA.B          ___WDISP_HandleWeatherStatusCommand__19;6006 
-___WDISP_HandleWeatherStatusCommand__18:
+              BRA.B          ___WDISP_HandleWeatherStatusCommand__18;6006 
+___WDISP_HandleWeatherStatusCommand__17:
               MOVEQ.L        #$0,D2                   ;7400 
               MOVE.W         D2,ACCUMULATOR_Row1_CaptureValue(A4);3942 0000 
-___WDISP_HandleWeatherStatusCommand__19:
+___WDISP_HandleWeatherStatusCommand__18:
               MOVE.B         WDISP_AccumulatorRow2_CopperInde(A4),D3;162c 0000 
               CMP.B          D1,D3                    ;b601 
-              BCC.B          ___WDISP_HandleWeatherStatusCommand__23;6414 
-___WDISP_HandleWeatherStatusCommand__20:
+              BCC.B          ___WDISP_HandleWeatherStatusCommand__22;6414 
+___WDISP_HandleWeatherStatusCommand__19:
               CMP.B          D1,D3                    ;b601 
-              BCC.B          ___WDISP_HandleWeatherStatusCommand__23;6410 
-___WDISP_HandleWeatherStatusCommand__21:
+              BCC.B          ___WDISP_HandleWeatherStatusCommand__22;6410 
+___WDISP_HandleWeatherStatusCommand__20:
               MOVE.W         WDISP_AccumulatorRow2_Value(A4),D3;362c 0000 
               CMPI.W         #$4000,D3                ;0c43 4000 
-              BGE.B          ___WDISP_HandleWeatherStatusCommand__23;6c06 
-___WDISP_HandleWeatherStatusCommand__22:
+              BGE.B          ___WDISP_HandleWeatherStatusCommand__22;6c06 
+___WDISP_HandleWeatherStatusCommand__21:
               MOVE.W         D3,ACCUMULATOR_Row2_CaptureValue(A4);3943 0000 
-              BRA.B          ___WDISP_HandleWeatherStatusCommand__24;6006 
-___WDISP_HandleWeatherStatusCommand__23:
+              BRA.B          ___WDISP_HandleWeatherStatusCommand__23;6006 
+___WDISP_HandleWeatherStatusCommand__22:
               MOVEQ.L        #$0,D3                   ;7600 
               MOVE.W         D3,ACCUMULATOR_Row2_CaptureValue(A4);3943 0000 
-___WDISP_HandleWeatherStatusCommand__24:
+___WDISP_HandleWeatherStatusCommand__23:
               MOVE.B         WDISP_AccumulatorRow3_CopperInde(A4),D3;162c 0000 
               CMP.B          D1,D3                    ;b601 
-              BCC.B          ___WDISP_HandleWeatherStatusCommand__28;6416 
-___WDISP_HandleWeatherStatusCommand__25:
+              BCC.B          ___WDISP_HandleWeatherStatusCommand__27;6416 
+___WDISP_HandleWeatherStatusCommand__24:
               CMP.B          D1,D3                    ;b601 
-              BCC.B          ___WDISP_HandleWeatherStatusCommand__28;6412 
-___WDISP_HandleWeatherStatusCommand__26:
+              BCC.B          ___WDISP_HandleWeatherStatusCommand__27;6412 
+___WDISP_HandleWeatherStatusCommand__25:
               MOVE.W         WDISP_AccumulatorRow3_Value(A4),D1;322c 0000 
               CMPI.W         #$4000,D1                ;0c41 4000 
-              BGE.B          ___WDISP_HandleWeatherStatusCommand__28;6c08 
-___WDISP_HandleWeatherStatusCommand__27:
+              BGE.B          ___WDISP_HandleWeatherStatusCommand__27;6c08 
+___WDISP_HandleWeatherStatusCommand__26:
               MOVE.W         D1,D4                    ;3801 
               MOVE.W         D4,ACCUMULATOR_Row3_CaptureValue(A4);3944 0000 
-              BRA.B          ___WDISP_HandleWeatherStatusCommand__29;6006 
-___WDISP_HandleWeatherStatusCommand__28:
+              BRA.B          ___WDISP_HandleWeatherStatusCommand__28;6006 
+___WDISP_HandleWeatherStatusCommand__27:
               MOVEQ.L        #$0,D4                   ;7800 
               CLR.W          ACCUMULATOR_Row3_CaptureValue(A4);426c 0000 
-___WDISP_HandleWeatherStatusCommand__29:
+___WDISP_HandleWeatherStatusCommand__28:
               TST.W          D0                       ;4a40 
-              BNE.B          ___WDISP_HandleWeatherStatusCommand__33;660e 
-___WDISP_HandleWeatherStatusCommand__30:
+              BNE.B          ___WDISP_HandleWeatherStatusCommand__32;660e 
+___WDISP_HandleWeatherStatusCommand__29:
               TST.W          D2                       ;4a42 
-              BNE.B          ___WDISP_HandleWeatherStatusCommand__33;660a 
-___WDISP_HandleWeatherStatusCommand__31:
+              BNE.B          ___WDISP_HandleWeatherStatusCommand__32;660a 
+___WDISP_HandleWeatherStatusCommand__30:
               MOVE.W         ACCUMULATOR_Row2_CaptureValue(A4),D0;302c 0000 
-              BNE.B          ___WDISP_HandleWeatherStatusCommand__33;6604 
-___WDISP_HandleWeatherStatusCommand__32:
+              BNE.B          ___WDISP_HandleWeatherStatusCommand__32;6604 
+___WDISP_HandleWeatherStatusCommand__31:
               TST.W          D4                       ;4a44 
-              BEQ.B          ___WDISP_HandleWeatherStatusCommand__34;6708 
-___WDISP_HandleWeatherStatusCommand__33:
+              BEQ.B          ___WDISP_HandleWeatherStatusCommand__33;6708 
+___WDISP_HandleWeatherStatusCommand__32:
               MOVE.W         #$1,WDISP_AccumulatorCaptureActive(A4);397c 0001 0000 
-              BRA.B          ___WDISP_HandleWeatherStatusCommand__35;6004 
-___WDISP_HandleWeatherStatusCommand__34:
+              BRA.B          ___WDISP_HandleWeatherStatusCommand__34;6004 
+___WDISP_HandleWeatherStatusCommand__33:
               CLR.W          WDISP_AccumulatorCaptureActive(A4);426c 0000 
-___WDISP_HandleWeatherStatusCommand__35:
+___WDISP_HandleWeatherStatusCommand__34:
               CLR.W          ACCUMULATOR_Row0_Sum(A4) ;426c 0000 
               CLR.W          ACCUMULATOR_Row0_SaturateFlag(A4);426c 0000 
               CLR.W          ACCUMULATOR_Row1_Sum(A4) ;426c 0000 
@@ -182,8 +177,8 @@ ___WDISP_HandleWeatherStatusCommand__35:
               CLR.W          ACCUMULATOR_Row3_Sum(A4) ;426c 0000 
               CLR.W          ACCUMULATOR_Row3_SaturateFlag(A4);426c 0000 
               BSR.W          TEXTDISP_JMPTBL_ESQIFF_RunCopper;6100 0000 
-___WDISP_HandleWeatherStatusCommand__36:
-              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A5;4cdf 20fc 
+___WDISP_HandleWeatherStatusCommand__35:
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A3/A5;4cdf 28fc 
               RTS                                     ;4e75 
 __const:
 __strings:

@@ -48,8 +48,16 @@ extern LONG _LVOSetDrMd(void *rastPort, LONG mode);
 extern LONG _LVOSetAPen(void *rastPort, LONG pen);
 extern LONG _LVOSetFont(void *rastPort, void *font);
 
+typedef struct WDISP_DisplayContext {
+    UBYTE pad0[2];
+    UWORD left;
+    UWORD width;
+    UBYTE rastPortTail[1];
+} WDISP_DisplayContext;
+
 void WDISP_HandleWeatherStatusCommand(LONG command)
 {
+    WDISP_DisplayContext *context;
     void *localRastPort;
     LONG width;
     LONG left;
@@ -64,9 +72,10 @@ void WDISP_HandleWeatherStatusCommand(LONG command)
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 4);
     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
 
-    localRastPort = (UBYTE *)WDISP_DisplayContextBase + 2;
-    width = (LONG)(UWORD)(*(UWORD *)((UBYTE *)WDISP_DisplayContextBase + 4));
-    left = (LONG)(UWORD)(*(UWORD *)((UBYTE *)WDISP_DisplayContextBase + 2));
+    context = (WDISP_DisplayContext *)WDISP_DisplayContextBase;
+    localRastPort = (void *)&context->left;
+    width = (LONG)context->width;
+    left = (LONG)context->left;
 
     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
     WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
