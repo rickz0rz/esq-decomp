@@ -2,7 +2,9 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
-extern void *NEWGRID_MainRastPortPtr;
+typedef struct NEWGRID_RastPort NEWGRID_RastPort;
+
+extern NEWGRID_RastPort *NEWGRID_MainRastPortPtr;
 extern WORD NEWGRID_GridResourcesInitializedFlag;
 extern UBYTE Global_STR_NEWGRID_C_3;
 
