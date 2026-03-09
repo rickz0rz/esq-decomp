@@ -24,7 +24,7 @@ typedef struct NEWGRID_Entry {
 typedef struct NEWGRID_AuxData {
     UBYTE pad0[7];
     UBYTE rowFlags[49];
-    void *payloadTable[49];
+    UBYTE *payloadTable[49];
 } NEWGRID_AuxData;
 
 extern LONG NEWGRID_SelectionScanEntryIndex;
