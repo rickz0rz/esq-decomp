@@ -1,15 +1,15 @@
 typedef signed long LONG;
 
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern LONG Global_REF_BOOL_IS_LINE_OR_PAGE;
 extern char Global_STR_LINE[];
 extern char Global_STR_PAGE[];
 
-extern LONG _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOSetBPen(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG mode);
-extern void DISPLIB_DisplayTextAtPosition(void *rastPort, LONG x, LONG y, char *text);
+extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, char *text);
 
 void SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE(void)
 {
