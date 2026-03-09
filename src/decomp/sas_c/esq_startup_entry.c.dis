@@ -1,0 +1,197 @@
+              SECTION      text,CODE
+__code:
+ESQ_CopyCString:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___ESQ_CopyCString__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+___ESQ_CopyCString__2:
+              MOVE.L         A5,A0                    ;204d 
+              ADDQ.L         #$1,A5                   ;528d 
+              MOVE.B         (A3)+,D0                 ;101b 
+              MOVE.B         D0,(A0)                  ;1080 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___ESQ_CopyCString__5    ;6702 
+___ESQ_CopyCString__3:
+              BRA.B          ___ESQ_CopyCString__2    ;60f2 
+___ESQ_CopyCString__4:
+___ESQ_CopyCString__5:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQ_StartupEntry:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D6/D7/A2/A3/A5/A6,-(A7)  ;48e7 0336 
+___ESQ_StartupEntry__1:
+              MOVE.L         $24(A7),D7               ;2e2f 0024 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___ESQ_StartupEntry__2:
+              CMPI.L         #$1728,D6                ;0c86 0000 1728 
+              BGT.B          ___ESQ_StartupEntry__5   ;6e10 
+___ESQ_StartupEntry__3:
+              MOVE.L         D6,D0                    ;2006 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            BUFFER_5929_LONGWORDS(A4),A0;41ec 0000 
+              CLR.L          $0(A0,D0.L)              ;42b0 0800 
+___ESQ_StartupEntry__4:
+              ADDQ.L         #$1,D6                   ;5286 
+              BRA.B          ___ESQ_StartupEntry__2   ;60e8 
+___ESQ_StartupEntry__5:
+              LEA            $20(A7),A0               ;41ef 0020 
+              MOVE.L         A0,Global_SavedStackPointer(A4);2948 0000 
+              MOVE.L         AbsExecBase(A4),A0       ;206c 0000 
+              MOVE.L         A0,Global_SavedExecBase(A4);2948 0000 
+              CLR.L          Global_SavedMsg(A4)      ;42ac 0000 
+              PEA            ($3000).w                ;4878 3000 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          _LVOSetSignal            ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              PEA            __MERGED(A4)             ;486c 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOOpenLibrary          ;6100 0000 
+              MOVE.L         D0,Global_DosLibrary(A4) ;2940 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              BNE.B          ___ESQ_StartupEntry__7   ;660e 
+___ESQ_StartupEntry__6:
+              PEA            ($64).w                  ;4878 0064 
+              BSR.W          ESQ_ShutdownAndReturn    ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___ESQ_StartupEntry__24  ;6000 00f4 
+___ESQ_StartupEntry__7:
+              MOVE.L         AbsExecBase(A4),A0       ;206c 0000 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.W          #$114,A1                 ;d2fc 0114 
+              MOVE.L         (A1),A5                  ;2a51 
+              LEA            $98(A5),A1               ;43ed 0098 
+              MOVE.L         (A1),Global_SavedDirLock(A4);2951 0000 
+              LEA            $ac(A5),A1               ;43ed 00ac 
+              TST.L          (A1)                     ;4a91 
+              BEQ.B          ___ESQ_StartupEntry__9   ;6718 
+___ESQ_StartupEntry__8:
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$40,D1                  ;7240 
+              ADD.L          D1,D1                    ;d281 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         D0,Global_CommandLineSize(A4);2940 0000 
+              CLR.L          Global_ScratchPtr_592(A4);42ac 0000 
+              MOVE.L         $20(A7),A3               ;266f 0020 
+              BRA.W          ___ESQ_StartupEntry__22  ;6000 00ae 
+___ESQ_StartupEntry__9:
+              LEA            $3a(A5),A1               ;43ed 003a 
+              MOVEQ.L        #$40,D0                  ;7040 
+              ADD.L          D0,D0                    ;d080 
+              ADD.L          (A1),D0                  ;d091 
+              MOVE.L         D0,Global_CommandLineSize(A4);2940 0000 
+              LEA            $5c(A5),A1               ;43ed 005c 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          _LVOWaitPort             ;6100 0000 
+              LEA            $5c(A5),A0               ;41ed 005c 
+              MOVE.L         A0,(A7)                  ;2e88 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOGetMsg               ;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         A2,Global_SavedMsg(A4)   ;294a 0000 
+              LEA            $24(A2),A0               ;41ea 0024 
+              MOVE.L         (A0),A1                  ;2250 
+              MOVE.L         A1,$18(A7)               ;2f49 0018 
+              BEQ.B          ___ESQ_StartupEntry__11  ;6712 
+___ESQ_StartupEntry__10:
+              MOVE.L         (A1),D0                  ;2011 
+              MOVE.L         D0,Global_SavedDirLock(A4);2940 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         Global_DosLibrary(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOCurrentDir           ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ESQ_StartupEntry__11:
+              LEA            $20(A2),A0               ;41ea 0020 
+              TST.L          (A0)                     ;4a90 
+              BEQ.B          ___ESQ_StartupEntry__14  ;6722 
+___ESQ_StartupEntry__12:
+              PEA            ($3ed).w                 ;4878 03ed 
+              MOVE.L         Global_DosLibrary(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSupervisor           ;6100 0000 
+              MOVE.L         D0,Global_WBStartupWindowPtr(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BEQ.B          ___ESQ_StartupEntry__14  ;670e 
+___ESQ_StartupEntry__13:
+              LEA            $a4(A5),A0               ;41ed 00a4 
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         D0,A1                    ;2240 
+              LEA            $8(A1),A6                ;4de9 0008 
+              MOVE.L         (A6),(A0)                ;2096 
+___ESQ_StartupEntry__14:
+              MOVE.L         $18(A7),D0               ;202f 0018 
+              BEQ.B          ___ESQ_StartupEntry__20  ;6720 
+___ESQ_StartupEntry__15:
+              MOVE.L         D0,A0                    ;2040 
+              ADDQ.L         #$4,A0                   ;5888 
+              MOVE.L         (A0),A1                  ;2250 
+              MOVE.L         A1,Global_ScratchPtr_592(A4);2949 0000 
+              BEQ.B          ___ESQ_StartupEntry__18  ;670e 
+___ESQ_StartupEntry__16:
+              MOVE.L         A1,-(A7)                 ;2f09 
+              PEA            Global_WBStartupCmdBuffer(A4);486c 0000 
+              BSR.W          ESQ_CopyCString          ;6100 fe96 
+___ESQ_StartupEntry__17:
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.B          ___ESQ_StartupEntry__21  ;600e 
+___ESQ_StartupEntry__18:
+              CLR.B          Global_WBStartupCmdBuffer(A4);422c 0000 
+___ESQ_StartupEntry__19:
+              BRA.B          ___ESQ_StartupEntry__21  ;6008 
+___ESQ_StartupEntry__20:
+              CLR.L          Global_ScratchPtr_592(A4);42ac 0000 
+              CLR.B          Global_WBStartupCmdBuffer(A4);422c 0000 
+___ESQ_StartupEntry__21:
+              LEA            Global_WBStartupCmdBuffer(A4),A3;47ec 0000 
+___ESQ_StartupEntry__22:
+              BSR.W          GROUP_MAIN_A_JMPTBL_ESQ_MainEntr;6100 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          GROUP_MAIN_A_JMPTBL_ESQ_ParseCom;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              BSR.W          ESQ_ShutdownAndReturn    ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQ_StartupEntry__23:
+___ESQ_StartupEntry__24:
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5/A6  ;4cdf 6cc0 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           BUFFER_5929_LONGWORDS
+              XREF           Global_SavedStackPointer
+              XREF           AbsExecBase
+              XREF           Global_SavedExecBase
+              XREF           Global_SavedMsg
+              XREF           _LVOSetSignal
+              XREF           _LVOOpenLibrary
+              XREF           Global_DosLibrary
+              XREF           ESQ_ShutdownAndReturn
+              XREF           Global_SavedDirLock
+              XREF           Global_CommandLineSize
+              XREF           Global_ScratchPtr_592
+              XREF           _LVOWaitPort
+              XREF           _LVOGetMsg
+              XREF           _LVOCurrentDir
+              XREF           _LVOSupervisor
+              XREF           Global_WBStartupWindowPtr
+              XREF           Global_WBStartupCmdBuffer
+              XREF           GROUP_MAIN_A_JMPTBL_ESQ_MainEntr
+              XREF           GROUP_MAIN_A_JMPTBL_ESQ_ParseCom
+              XDEF           ESQ_StartupEntry
+
+              SECTION        __MERGED,DATA
+__MERGED
+              DC.B           'dos.library'
+              DC.B           $00
+              END
