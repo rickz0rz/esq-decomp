@@ -1,8 +1,8 @@
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void _LVOMove(void *graphicsBase, void *rastPort, long x, long y);
-extern void _LVOText(void *graphicsBase, void *rastPort, const char *text, long len);
+extern void _LVOMove(void *graphicsBase, char *rastPort, long x, long y);
+extern void _LVOText(void *graphicsBase, char *rastPort, const char *text, long len);
 
-void DISPLIB_DisplayTextAtPosition(void *rastPort, long x, long y, const char *text)
+void DISPLIB_DisplayTextAtPosition(char *rastPort, long x, long y, const char *text)
 {
     long len = 0;
 
