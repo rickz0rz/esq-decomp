@@ -14,7 +14,7 @@ extern UWORD DATACErrs;
 
 extern LONG UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer(UBYTE *dst, LONG a1, LONG a2);
 extern LONG UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte(UBYTE seed, const UBYTE *buf, LONG len);
-extern LONG UNKNOWN_ParseListAndUpdateEntries(const UBYTE *buf);
+extern LONG UNKNOWN_ParseListAndUpdateEntries(const char *buf);
 
 LONG ESQPROTO_VerifyChecksumAndParseList(UBYTE seed)
 {
@@ -35,5 +35,5 @@ LONG ESQPROTO_VerifyChecksumAndParseList(UBYTE seed)
         return 0;
     }
 
-    return UNKNOWN_ParseListAndUpdateEntries(ESQIFF_RecordBufferPtr);
+    return UNKNOWN_ParseListAndUpdateEntries((const char *)ESQIFF_RecordBufferPtr);
 }
