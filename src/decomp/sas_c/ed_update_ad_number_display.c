@@ -1,7 +1,7 @@
 typedef signed long LONG;
 typedef signed short WORD;
 
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern LONG Global_REF_LONG_CURRENT_EDITING_AD_NUMBER;
 
 extern void *ED_AdRecordPtrTable[];
@@ -15,7 +15,7 @@ extern LONG ED_AdDisplayStateLatchA;
 extern const char Global_STR_AD_NUMBER_FORMATTED[];
 
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const char *text);
+extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 extern void ED_UpdateActiveInactiveIndicator(void);
 
 void ED_UpdateAdNumberDisplay(void)
