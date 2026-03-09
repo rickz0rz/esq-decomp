@@ -5,7 +5,7 @@ extern LONG NEWGRID2_DispatchStateIndex;
 extern LONG NEWGRID2_CachedModeIndex;
 extern LONG NEWGRID2_ShowtimesSelectionContextPtr;
 
-extern LONG NEWGRID2_ProcessGridState(char *gridCtx, LONG *selectionCtxPtr, LONG modeSel);
+extern LONG NEWGRID2_ProcessGridState(char *gridCtx, char *selectionCtxPtr, LONG modeSel);
 extern void NEWGRID_InitSelectionWindowAlt(LONG *selectionCtxPtr, LONG rowIndex, LONG modeSel);
 extern LONG NEWGRID_UpdateSelectionFromInputAlt(LONG stateIndex, LONG *selectionCtxPtr, LONG modeSel);
 extern void NEWGRID_DrawShowtimesPrompt(char *gridCtx, LONG selectionCtx, LONG modeSel);
@@ -22,7 +22,7 @@ LONG NEWGRID2_HandleGridState(char *gridCtx, WORD rowIndex, LONG modeSel)
 
     if (gridCtx == 0) {
         if (NEWGRID2_DispatchStateIndex == 5) {
-            NEWGRID2_ProcessGridState(gridCtx, &NEWGRID2_ShowtimesSelectionContextPtr, modeSel);
+            NEWGRID2_ProcessGridState(gridCtx, (char *)&NEWGRID2_ShowtimesSelectionContextPtr, modeSel);
         }
         NEWGRID2_DispatchStateIndex = 0;
         goto return_state;
@@ -57,7 +57,7 @@ LONG NEWGRID2_HandleGridState(char *gridCtx, WORD rowIndex, LONG modeSel)
                 goto return_state;
             }
             NEWGRID2_DispatchStateIndex = NEWGRID2_ProcessGridState(
-                gridCtx, &NEWGRID2_ShowtimesSelectionContextPtr, modeSel
+                gridCtx, (char *)&NEWGRID2_ShowtimesSelectionContextPtr, modeSel
             );
             d0 = NEWGRID_TestModeFlagActive(modeSel);
             if (d0 == 0) {
