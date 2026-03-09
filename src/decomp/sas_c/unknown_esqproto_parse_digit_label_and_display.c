@@ -9,7 +9,7 @@ extern char *WDISP_WeatherStatusTextPtr;
 extern UWORD ED_DiagnosticsScreenActive;
 extern char *Global_REF_RASTPORT_1;
 
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *new_value, char *old_value);
+extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_value, char *old_value);
 extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rast, LONG x, LONG y, char *text);
 
 char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in)
