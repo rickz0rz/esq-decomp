@@ -58,10 +58,125 @@ ___LOCAVAIL_FreeNodeAtPointer__7:
 ___LOCAVAIL_FreeNodeAtPointer__8:
               MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
               RTS                                     ;4e75 
+LOCAVAIL_ResetFilterStateStruct:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___LOCAVAIL_ResetFilterStateStruct__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A5,A3                    ;264d 
+              CLR.B          (A3)                     ;4213 
+              LEA            $2(A3),A0                ;41eb 0002 
+              CLR.L          (A0)                     ;4290 
+              LEA            $10(A3),A0               ;41eb 0010 
+              CLR.L          (A0)                     ;4290 
+              LEA            $14(A3),A0               ;41eb 0014 
+              CLR.L          (A0)                     ;4290 
+              MOVE.B         #$46,$6(A3)              ;177c 0046 0006 
+              LEA            $8(A3),A0                ;41eb 0008 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,(A0)                  ;2080 
+              LEA            $c(A3),A0                ;41eb 000c 
+              MOVE.L         D0,(A0)                  ;2080 
+___LOCAVAIL_ResetFilterStateStruct__2:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+LOCAVAIL_FreeResourceChain:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
+___LOCAVAIL_FreeResourceChain__1:
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.W          ___LOCAVAIL_FreeResourceChain__16;6700 00aa 
+___LOCAVAIL_FreeResourceChain__2:
+              LEA            $10(A3),A0               ;41eb 0010 
+              MOVE.L         (A0),A2                  ;2450 
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.W          ___LOCAVAIL_FreeResourceChain__13;6700 0096 
+___LOCAVAIL_FreeResourceChain__3:
+              MOVE.L         (A2),D0                  ;2012 
+              TST.L          D0                       ;4a80 
+              BLE.B          ___LOCAVAIL_FreeResourceChain__5;6f02 
+___LOCAVAIL_FreeResourceChain__4:
+              SUBQ.L         #$1,(A2)                 ;5392 
+___LOCAVAIL_FreeResourceChain__5:
+              LEA            $14(A3),A0               ;41eb 0014 
+              TST.L          (A0)                     ;4a90 
+              BEQ.W          ___LOCAVAIL_FreeResourceChain__13;6700 0084 
+___LOCAVAIL_FreeResourceChain__6:
+              LEA            $2(A3),A0                ;41eb 0002 
+              MOVE.L         (A0),D0                  ;2010 
+              TST.L          D0                       ;4a80 
+              BLE.B          ___LOCAVAIL_FreeResourceChain__13;6f78 
+___LOCAVAIL_FreeResourceChain__7:
+              TST.L          (A2)                     ;4a92 
+              BNE.B          ___LOCAVAIL_FreeResourceChain__13;6674 
+___LOCAVAIL_FreeResourceChain__8:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              PEA            ($9f).w                  ;4878 009f 
+              PEA            Global_STR_LOCAVAIL_C_2(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___LOCAVAIL_FreeResourceChain__9:
+              LEA            $2(A3),A0                ;41eb 0002 
+              CMP.L          (A0),D7                  ;be90 
+              BGE.B          ___LOCAVAIL_FreeResourceChain__12;6c26 
+___LOCAVAIL_FreeResourceChain__10:
+              LEA            $14(A3),A0               ;41eb 0014 
+              PEA            ($a).w                   ;4878 000a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A0,$18(A7)               ;2f48 0018 
+              BSR.W          NEWGRID_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         $18(A7),A1               ;226f 0018 
+              MOVE.L         (A1),A0                  ;2051 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,(A7)                  ;2e88 
+              BSR.W          LOCAVAIL_FreeNodeAtPointer;6100 fede 
+___LOCAVAIL_FreeResourceChain__11:
+              ADDQ.W         #$8,A7                   ;504f 
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___LOCAVAIL_FreeResourceChain__9;60d2 
+___LOCAVAIL_FreeResourceChain__12:
+              LEA            $14(A3),A0               ;41eb 0014 
+              LEA            $2(A3),A1                ;43eb 0002 
+              PEA            ($a).w                   ;4878 000a 
+              MOVE.L         (A1),-(A7)               ;2f11 
+              MOVE.L         A0,$18(A7)               ;2f48 0018 
+              BSR.W          GROUP_AY_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         $18(A7),A0               ;206f 0018 
+              MOVE.L         (A0),-(A7)               ;2f10 
+              PEA            ($a4).w                  ;4878 00a4 
+              PEA            Global_STR_LOCAVAIL_C_3(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+___LOCAVAIL_FreeResourceChain__13:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          LOCAVAIL_ResetFilterStateStruct;6100 fefa 
+___LOCAVAIL_FreeResourceChain__14:
+              ADDQ.W         #$4,A7                   ;584f 
+___LOCAVAIL_FreeResourceChain__15:
+___LOCAVAIL_FreeResourceChain__16:
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
               XREF           Global_STR_LOCAVAIL_C_1
               XREF           NEWGRID_JMPTBL_MEMORY_Deallocate
+              XREF           Global_STR_LOCAVAIL_C_2
+              XREF           NEWGRID_JMPTBL_MATH_Mulu32
+              XREF           GROUP_AY_JMPTBL_MATH_Mulu32
+              XREF           Global_STR_LOCAVAIL_C_3
               XDEF           LOCAVAIL_FreeNodeRecord
               XDEF           LOCAVAIL_FreeNodeAtPointer
+              XDEF           LOCAVAIL_ResetFilterStateStruct
+              XDEF           LOCAVAIL_FreeResourceChain
               END
