@@ -40,7 +40,7 @@ static char *advance_until_space(char *p)
     return p;
 }
 
-void NEWGRID_DrawGridEntry(void *layout, UBYTE *rowMeta, CoiSet *coi, UWORD row, UWORD textLines, LONG renderMode, LONG clockFmt)
+void NEWGRID_DrawGridEntry(void *layout, char *rowMeta, CoiSet *coi, UWORD row, UWORD textLines, LONG renderMode, LONG clockFmt)
 {
     NEWGRID_Entry *entry;
     char splitMask[4];

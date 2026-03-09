@@ -16,7 +16,7 @@ extern void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(void *rastPort, LONG x1, LONG
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID_DrawGridCellText(void *rastPort, char *leftText, char *rightText, LONG rowFlag);
 
-void NEWGRID_DrawGridCell(void *rastPort, UBYTE *cell, LONG rowFlag)
+void NEWGRID_DrawGridCell(void *rastPort, char *cell, LONG rowFlag)
 {
     NEWGRID_Entry *cellView;
     char *left;

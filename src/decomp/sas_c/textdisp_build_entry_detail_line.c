@@ -54,9 +54,9 @@ extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG px);
 
 void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
 {
-    UBYTE *entry;
+    TEXTDISP_SelectionEntry *entry;
     void *aux;
-    UBYTE *program;
+    char *program;
     char *detail;
     char *segment;
     char *hit;
@@ -70,14 +70,14 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
     LONG longLen;
     char tmp[TMP_BUFFER_LEN];
 
-    entry = (UBYTE *)entryPtr;
-    if (entry == (UBYTE *)TEXTDISP_NULL) {
+    entry = (TEXTDISP_SelectionEntry *)entryPtr;
+    if (entry == (TEXTDISP_SelectionEntry *)TEXTDISP_NULL) {
         return;
     }
 
-    mode = ((TEXTDISP_SelectionEntry *)entry)->mode;
-    groupIndex = ((TEXTDISP_SelectionEntry *)entry)->groupIndex;
-    entryIndex = (LONG)(UWORD)((TEXTDISP_SelectionEntry *)entry)->selectionIndex;
+    mode = entry->mode;
+    groupIndex = entry->groupIndex;
+    entryIndex = (LONG)(UWORD)entry->selectionIndex;
 
     if (mode == MODE_BLOCKED || groupIndex == INVALID_INDEX || entryIndex == INVALID_INDEX) {
         TEXTDISP_ResetSelectionState(entry);
@@ -85,13 +85,13 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
     }
 
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(groupIndex, mode);
-    program = (UBYTE *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(groupIndex, mode);
-    detail = (char *)((TEXTDISP_SelectionEntry *)entry)->detailLine;
+    program = (char *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(groupIndex, mode);
+    detail = entry->detailLine;
     detail[TEXTDISP_NULL] = TEXTDISP_NULL;
 
     TEXTDISP_BuildEntryShortName(program, tmp);
 
-    segment = (UBYTE *)tmp;
+    segment = tmp;
     while (segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
         UBYTE cls = WDISP_CharClassTable[segment[TEXTDISP_NULL]];
         if ((cls & CLASS_SKIP_MASK) == TEXTDISP_NULL &&
@@ -120,7 +120,7 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
         }
 
         longLen = TEXTDISP_NULL;
-        while (((TEXTDISP_SelectionEntry *)entry)->longName[longLen] != TEXTDISP_NULL) {
+        while (entry->longName[longLen] != TEXTDISP_NULL) {
             longLen++;
         }
 
@@ -174,7 +174,7 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
 
     out = TEXTDISP_NULL;
     for (i = TEXTDISP_NULL;
-         program != (UBYTE *)TEXTDISP_NULL &&
+         program != (char *)TEXTDISP_NULL &&
          program[i + ENTRY_PROGRAM_TEXT_START_OFFSET] != TEXTDISP_NULL;
          i++) {
         if (program[i + ENTRY_PROGRAM_TEXT_START_OFFSET] != ASCII_SPACE) {
