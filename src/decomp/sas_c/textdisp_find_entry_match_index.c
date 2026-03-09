@@ -7,7 +7,7 @@ typedef struct TEXTDISP_AuxData {
     UBYTE pad0[7];
     UBYTE slotMask[49];
     UBYTE pad1[0x38 - 0x38];
-    UBYTE *titlePtrBySlot[49];
+    char *titlePtrBySlot[49];
 } TEXTDISP_AuxData;
 
 typedef struct TEXTDISP_CandidateEntry {
@@ -46,7 +46,7 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
     TEXTDISP_CandidateEntry *entry;
     char *inputCtrl;
     UBYTE *inputStart;
-    UBYTE *entryTitle;
+    char *entryTitle;
     char *entryCtrl;
     UBYTE *entryStart;
     LONG inputHasQuotes;
@@ -119,7 +119,7 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
     inputStart[inputLen] = CH_NUL;
 
     while (slot < SLOT_MAX) {
-        if (aux->titlePtrBySlot[(UWORD)slot] == (UBYTE *)0) {
+        if (aux->titlePtrBySlot[(UWORD)slot] == (char *)0) {
             slot++;
             continue;
         }
