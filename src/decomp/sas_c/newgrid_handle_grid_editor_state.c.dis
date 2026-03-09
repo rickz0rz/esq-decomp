@@ -2,11 +2,10 @@
 __code:
 NEWGRID_HandleGridEditorState:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$4,A7                   ;594f 
-              MOVEM.L        D6/D7/A3/A5,-(A7)        ;48e7 0314 
+              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
 ___NEWGRID_HandleGridEditorState__1:
               MOVE.L         $20(A7),D6               ;2c2f 0020 
               MOVE.L         $1c(A7),D7               ;2e2f 001c 
@@ -17,26 +16,24 @@ ___NEWGRID_HandleGridEditorState__1:
 ___NEWGRID_HandleGridEditorState__2:
               MOVEQ.L        #$4,D0                   ;7004 
               MOVE.L         D0,NEWGRID_GridEditorWorkflowState(A4);2940 0000 
-              BRA.W          ___NEWGRID_HandleGridEditorState__15;6000 0090 
+              BRA.W          ___NEWGRID_HandleGridEditorState__15;6000 0086 
 ___NEWGRID_HandleGridEditorState__3:
+              MOVE.L         A5,A2                    ;244d 
               MOVEQ.L        #$4,D0                   ;7004 
               CMP.L          NEWGRID_GridEditorWorkflowState(A4),D0;b0ac 0000 
-              BNE.B          ___NEWGRID_HandleGridEditorState__8;6652 
+              BNE.B          ___NEWGRID_HandleGridEditorState__8;6648 
 ___NEWGRID_HandleGridEditorState__4:
               MOVE.L         D7,-(A7)                 ;2f07 
               PEA            ($14).w                  ;4878 0014 
               PEA            ($264).w                 ;4878 0264 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_SetLayo;6100 0000 
-              LEA            $3c(A5),A0               ;41ed 003c 
+              LEA            $3c(A2),A0               ;41ea 003c 
               MOVE.L         A3,(A7)                  ;2e8b 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_LayoutA;6100 0000 
-              LEA            $20(A5),A0               ;41ed 0020 
               CLR.L          (A7)                     ;4297 
-              MOVE.L         A0,$20(A7)               ;2f48 0020 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_Compute;6100 0000 
-              MOVE.L         $20(A7),A0               ;206f 0020 
-              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         D0,$20(A2)               ;2540 0020 
               MOVE.L         D6,(A7)                  ;2e86 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_DrawGridFrameAndRows;6100 0000 
@@ -52,15 +49,14 @@ ___NEWGRID_HandleGridEditorState__6:
               MOVE.L         D0,NEWGRID_GridEditorWorkflowState(A4);2940 0000 
 ___NEWGRID_HandleGridEditorState__7:
               MOVE.L         NEWGRID_GridEditorWorkflowState(A4),D0;202c 0000 
-              BRA.B          ___NEWGRID_HandleGridEditorState__15;6034 
+              BRA.B          ___NEWGRID_HandleGridEditorState__15;6032 
 ___NEWGRID_HandleGridEditorState__8:
               MOVEQ.L        #$5,D0                   ;7005 
               CMP.L          NEWGRID_GridEditorWorkflowState(A4),D0;b0ac 0000 
-              BNE.B          ___NEWGRID_HandleGridEditorState__13;6626 
+              BNE.B          ___NEWGRID_HandleGridEditorState__13;6624 
 ___NEWGRID_HandleGridEditorState__9:
-              LEA            $20(A5),A0               ;41ed 0020 
               MOVEQ.L        #$ff,D0                  ;70ff 
-              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         D0,$20(A2)               ;2540 0020 
               MOVE.L         D6,-(A7)                 ;2f06 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_DrawGridFrameAndRows;6100 0000 
@@ -81,8 +77,7 @@ ___NEWGRID_HandleGridEditorState__13:
               MOVE.L         D0,NEWGRID_GridEditorWorkflowState(A4);2940 0000 
 ___NEWGRID_HandleGridEditorState__14:
 ___NEWGRID_HandleGridEditorState__15:
-              MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 
-              ADDQ.W         #$4,A7                   ;584f 
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
               RTS                                     ;4e75 
 __const:
 __strings:
