@@ -27,7 +27,7 @@ extern WORD SCRIPT_RuntimeMode;
 
 extern LONG PARSEINI_CheckCtrlHChange(void);
 extern LONG SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte(void);
-extern LONG SCRIPT_HandleBrushCommand(UBYTE *ctx, UBYTE *cmd, LONG cmdLen);
+extern LONG SCRIPT_HandleBrushCommand(UBYTE *ctx, char *cmd, LONG cmdLen);
 extern void SCRIPT_ApplyPendingBannerTarget(void);
 extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void TEXTDISP_SetRastForMode(LONG mode);
@@ -127,18 +127,18 @@ void SCRIPT_HandleSerialCtrlCmd(void)
     } else if (state == 2) {
         if ((WORD)inputByte == SCRIPT_CTRL_CHECKSUM) {
             if (Global_WORD_SELECT_CODE_IS_RAVESC != 0) {
-                SCRIPT_HandleBrushCommand(SCRIPT_CTRL_CONTEXT, SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
+                SCRIPT_HandleBrushCommand(SCRIPT_CTRL_CONTEXT, (char *)SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
                 SCRIPT_ApplyPendingBannerTarget();
                 WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
                 TEXTDISP_SetRastForMode(0);
             } else {
                 if (TEXTDISP_DeferredActionCountdown == 0) {
-                    SCRIPT_HandleBrushCommand(SCRIPT_CTRL_CONTEXT, SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
+                    SCRIPT_HandleBrushCommand(SCRIPT_CTRL_CONTEXT, (char *)SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
                     SCRIPT_ProcessCtrlContextPlaybackTick(SCRIPT_CTRL_CONTEXT);
                 } else {
                     TEXTDISP_DeferredActionCountdown = (WORD)(TEXTDISP_DeferredActionCountdown - 1);
                     if (TEXTDISP_DeferredActionCountdown == 0) {
-                        SCRIPT_HandleBrushCommand(SCRIPT_CTRL_CONTEXT, SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
+                        SCRIPT_HandleBrushCommand(SCRIPT_CTRL_CONTEXT, (char *)SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
                         SCRIPT_ProcessCtrlContextPlaybackTick(SCRIPT_CTRL_CONTEXT);
                     } else {
                         SCRIPT_CtrlCmdDeferCounter = (WORD)(SCRIPT_CtrlCmdDeferCounter + 1);
