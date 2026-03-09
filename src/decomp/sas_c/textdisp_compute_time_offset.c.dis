@@ -1,0 +1,111 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_ComputeTimeOffset:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$3c,D0                  ;90bc 0000 003c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$24,A7                  ;9efc 0024 
+              MOVEM.L        D4/D5/D6/D7/A5,-(A7)     ;48e7 0f04 
+___TEXTDISP_ComputeTimeOffset__1:
+              MOVE.L         $44(A7),D6               ;2c2f 0044 
+              MOVE.L         $3c(A7),D7               ;2e2f 003c 
+              MOVE.L         $40(A7),A5               ;2a6f 0040 
+              MOVE.B         $1f2(A5),D0              ;102d 01f2 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              BSR.W          TLIBA1_JMPTBL_ESQDISP_ComputeSch;6100 0000 
+              MOVE.L         D7,D1                    ;2207 
+              EXT.L          D1                       ;48c1 
+              PEA            $34(A7)                  ;486f 0034 
+              PEA            $40(A7)                  ;486f 0040 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
+              BSR.W          TLIBA2_ComputeBroadcastTimeWindo;6100 0000 
+              LEA            $28(A7),A7               ;4fef 0028 
+              MOVE.W         CLOCK_CurrentYearValue(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         $2c(A7),D1               ;222f 002c 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,D5                    ;2a01 
+              TST.L          D5                       ;4a85 
+              BNE.B          ___TEXTDISP_ComputeTimeOffset__3;660e 
+___TEXTDISP_ComputeTimeOffset__2:
+              MOVE.W         CLOCK_CurrentMonthIndex(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         $30(A7),D1               ;222f 0030 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,D5                    ;2a01 
+___TEXTDISP_ComputeTimeOffset__3:
+              TST.L          D5                       ;4a85 
+              BNE.B          ___TEXTDISP_ComputeTimeOffset__5;660e 
+___TEXTDISP_ComputeTimeOffset__4:
+              MOVE.W         CLOCK_CurrentDayOfMonth(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         $34(A7),D1               ;222f 0034 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,D5                    ;2a01 
+___TEXTDISP_ComputeTimeOffset__5:
+              PEA            ($3c).w                  ;4878 003c 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              ADD.L          $28(A7),D0               ;d0af 0028 
+              MOVE.L         D0,D4                    ;2800 
+              MOVE.W         Global_WORD_CURRENT_HOUR(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$c,D1                   ;720c 
+              BSR.W          _CXD33                   ;6100 0000 
+              MOVE.W         CLOCK_CurrentAmPmFlag(A4),D0;302c 0000 
+              MOVE.L         D1,$1c(A7)               ;2f41 001c 
+              TST.W          D0                       ;4a40 
+              BEQ.B          ___TEXTDISP_ComputeTimeOffset__7;6706 
+___TEXTDISP_ComputeTimeOffset__6:
+              MOVEQ.L        #$c,D0                   ;700c 
+              ADD.L          D0,$1c(A7)               ;d1af 001c 
+___TEXTDISP_ComputeTimeOffset__7:
+              PEA            ($3c).w                  ;4878 003c 
+              MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              MOVE.W         Global_WORD_CURRENT_MINUTE(A4),D1;322c 0000 
+              EXT.L          D1                       ;48c1 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         D4,D1                    ;2204 
+              SUB.L          D0,D1                    ;9280 
+              PEA            ($5a0).w                 ;4878 05a0 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVE.L         D1,$24(A7)               ;2f41 0024 
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              MOVE.L         $24(A7),D1               ;222f 0024 
+              ADD.L          D0,D1                    ;d280 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         D1,D0                    ;2001 
+___TEXTDISP_ComputeTimeOffset__8:
+___TEXTDISP_ComputeTimeOffset__9:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A5     ;4cdf 20f0 
+              ADD.W          #$24,A7                  ;defc 0024 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TLIBA1_JMPTBL_ESQDISP_ComputeSch
+              XREF           TLIBA2_ComputeBroadcastTimeWindo
+              XREF           CLOCK_CurrentYearValue
+              XREF           CLOCK_CurrentMonthIndex
+              XREF           CLOCK_CurrentDayOfMonth
+              XREF           MATH_Mulu32
+              XREF           Global_WORD_CURRENT_HOUR
+              XREF           _CXD33
+              XREF           CLOCK_CurrentAmPmFlag
+              XREF           Global_WORD_CURRENT_MINUTE
+              XDEF           TEXTDISP_ComputeTimeOffset
+              END
