@@ -25,18 +25,18 @@ extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(UBYTE *tagName, LONG line, LONG
 extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(UBYTE *tagName, LONG line, void *ptr, LONG bytes);
 
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG height, LONG pen);
-extern LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, void *entryHead);
+extern LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, char *entryHead);
 extern LONG NEWGRID_DrawGridEntry(
     void *layoutCtx,
-    void *entryPtr,
-    void *auxPtr,
+    char *entryPtr,
+    char *auxPtr,
     LONG rowSlot,
     LONG style,
     LONG enableMarkers,
     LONG mode
 );
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG index);
-extern LONG NEWGRID_AppendShowtimesForRow(void *gridCtx, void *entryCtx, void *scratch, LONG keyValue);
+extern LONG NEWGRID_AppendShowtimesForRow(void *gridCtx, void *entryCtx, char *scratch, LONG keyValue);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *layoutCtx, void *scratch);
 extern LONG NEWGRID_DrawGridFrameVariant4(void *gridCtx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);

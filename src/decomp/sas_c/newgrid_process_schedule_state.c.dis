@@ -23,8 +23,8 @@ ___NEWGRID_ProcessScheduleState__3:
               SUBQ.L         #$7,D0                   ;5f80 
               BNE.B          ___NEWGRID_ProcessScheduleState__5;6614 
 ___NEWGRID_ProcessScheduleState__4:
+              CLR.L          -(A7)                    ;42a7 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A5,-(A7)                 ;2f0d 
@@ -66,20 +66,20 @@ ___NEWGRID_ProcessScheduleState__9:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.L         D0,NEWGRID_ScheduleWorkflowState(A4);2940 0000 
               MOVE.L         D0,NEWGRID_SelectedPrimaryEntryInde(A4);2940 0000 
-              BRA.W          ___NEWGRID_ProcessScheduleState__69;6000 02c6 
+              BRA.W          ___NEWGRID_ProcessScheduleState__69;6000 02ca 
 ___NEWGRID_ProcessScheduleState__10:
               CMPI.L         #$8,NEWGRID_ScheduleWorkflowState(A4);0cac 0000 0008 0000 
               BLT.B          ___NEWGRID_ProcessScheduleState__12;6d0a 
 ___NEWGRID_ProcessScheduleState__11:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.L         D0,NEWGRID_ScheduleWorkflowState(A4);2940 0000 
-              BRA.W          ___NEWGRID_ProcessScheduleState__69;6000 02b2 
+              BRA.W          ___NEWGRID_ProcessScheduleState__69;6000 02b6 
 ___NEWGRID_ProcessScheduleState__12:
               MOVE.L         NEWGRID_ScheduleWorkflowState(A4),D0;202c 0000 
 ___NEWGRID_ProcessScheduleState__13:
 ___NEWGRID_ProcessScheduleState__14:
               CMPI.L         #$8,D0                   ;0c80 0000 0008 
-              BCC.W          ___NEWGRID_ProcessScheduleState__66;6400 029c 
+              BCC.W          ___NEWGRID_ProcessScheduleState__66;6400 02a0 
 ___NEWGRID_ProcessScheduleState__15:
               ADD.W          D0,D0                    ;d040 
               MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
@@ -162,12 +162,12 @@ ___NEWGRID_ProcessScheduleState__27:
 ___NEWGRID_ProcessScheduleState__28:
               MOVEQ.L        #$ff,D0                  ;70ff 
               CMP.L          NEWGRID_SelectedPrimaryEntryInde(A4),D0;b0ac 0000 
-              BEQ.W          ___NEWGRID_ProcessScheduleState__67;6700 01ea 
+              BEQ.W          ___NEWGRID_ProcessScheduleState__67;6700 01ee 
 ___NEWGRID_ProcessScheduleState__29:
               MOVEQ.L        #$1,D0                   ;7001 
               MOVE.L         D0,NEWGRID_ScheduleWorkflowState(A4);2940 0000 
 ___NEWGRID_ProcessScheduleState__30:
-              BRA.W          ___NEWGRID_ProcessScheduleState__67;6000 01e0 
+              BRA.W          ___NEWGRID_ProcessScheduleState__67;6000 01e4 
 ___NEWGRID_ProcessScheduleState__31:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D6,D0                    ;3006 
@@ -184,12 +184,13 @@ ___NEWGRID_ProcessScheduleState__31:
               MOVEQ.L        #$2,D1                   ;7202 
               SUB.B          D0,D1                    ;9200 
               MOVE.L         D1,NEWGRID_ScheduleWorkflowState(A4);2941 0000 
-              BRA.W          ___NEWGRID_ProcessScheduleState__67;6000 01b4 
+              BRA.W          ___NEWGRID_ProcessScheduleState__67;6000 01b8 
 ___NEWGRID_ProcessScheduleState__32:
               TST.L          NEWGRID_ScheduleEditorGateFlag(A4);4aac 0000 
-              BEQ.B          ___NEWGRID_ProcessScheduleState__36;672c 
+              BEQ.B          ___NEWGRID_ProcessScheduleState__36;672e 
 ___NEWGRID_ProcessScheduleState__33:
-              MOVE.L         GCOMMAND_MplexListingsTemplatePt(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_MplexListingsTemplatePt(A4),A0;206c 0000 
+              MOVE.L         A0,-(A7)                 ;2f08 
               MOVE.L         GCOMMAND_MplexEditorRowPen(A4),-(A7);2f2c 0000 
               MOVE.L         GCOMMAND_MplexEditorLayoutPen(A4),-(A7);2f2c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
@@ -201,13 +202,13 @@ ___NEWGRID_ProcessScheduleState__33:
 ___NEWGRID_ProcessScheduleState__34:
               MOVEQ.L        #$2,D0                   ;7002 
               MOVE.L         D0,NEWGRID_ScheduleWorkflowState(A4);2940 0000 
-              BRA.W          ___NEWGRID_ProcessScheduleState__69;6000 018a 
+              BRA.W          ___NEWGRID_ProcessScheduleState__69;6000 018c 
 ___NEWGRID_ProcessScheduleState__35:
               CLR.L          NEWGRID_ScheduleEditorGateFlag(A4);42ac 0000 
 ___NEWGRID_ProcessScheduleState__36:
               MOVEQ.L        #$3,D0                   ;7003 
               MOVE.L         D0,NEWGRID_ScheduleWorkflowState(A4);2940 0000 
-              BRA.W          ___NEWGRID_ProcessScheduleState__67;6000 0178 
+              BRA.W          ___NEWGRID_ProcessScheduleState__67;6000 017a 
 ___NEWGRID_ProcessScheduleState__37:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D7,D0                    ;3007 
@@ -265,7 +266,7 @@ ___NEWGRID_ProcessScheduleState__42:
               MOVE.B         GCOMMAND_DigitalMplexEnabledFlag(A4),D0;102c 0000 
               MOVEQ.L        #$59,D1                  ;7259 
               CMP.B          D1,D0                    ;b001 
-              BNE.W          ___NEWGRID_ProcessScheduleState__67;6600 00e2 
+              BNE.W          ___NEWGRID_ProcessScheduleState__67;6600 00e4 
 ___NEWGRID_ProcessScheduleState__43:
               TST.L          D5                       ;4a85 
               BEQ.B          ___NEWGRID_ProcessScheduleState__49;6730 
@@ -296,12 +297,12 @@ ___NEWGRID_ProcessScheduleState__49:
               ADDQ.W         #$4,A7                   ;584f 
               SUB.L          D0,NEWGRID_ScheduleSelectionCodeCac(A4);91ac 0000 
 ___NEWGRID_ProcessScheduleState__50:
-              BRA.W          ___NEWGRID_ProcessScheduleState__67;6000 009e 
+              BRA.W          ___NEWGRID_ProcessScheduleState__67;6000 00a0 
 ___NEWGRID_ProcessScheduleState__51:
               MOVEQ.L        #$6,D0                   ;7006 
               MOVE.L         D0,NEWGRID_ScheduleWorkflowState(A4);2940 0000 
 ___NEWGRID_ProcessScheduleState__52:
-              BRA.W          ___NEWGRID_ProcessScheduleState__67;6000 0094 
+              BRA.W          ___NEWGRID_ProcessScheduleState__67;6000 0096 
 ___NEWGRID_ProcessScheduleState__53:
               MOVE.L         NEWGRID_SelectedPrimaryEntryInde(A4),D0;202c 0000 
               MOVEQ.L        #$ff,D1                  ;72ff 
@@ -339,12 +340,13 @@ ___NEWGRID_ProcessScheduleState__58:
               MOVEQ.L        #$1,D0                   ;7001 
 ___NEWGRID_ProcessScheduleState__59:
               MOVE.L         D0,NEWGRID_ScheduleWorkflowState(A4);2940 0000 
-              BRA.B          ___NEWGRID_ProcessScheduleState__67;6040 
+              BRA.B          ___NEWGRID_ProcessScheduleState__67;6042 
 ___NEWGRID_ProcessScheduleState__60:
               TST.L          NEWGRID_ScheduleAltSelectorFlag(A4);4aac 0000 
-              BEQ.B          ___NEWGRID_ProcessScheduleState__64;6730 
+              BEQ.B          ___NEWGRID_ProcessScheduleState__64;6732 
 ___NEWGRID_ProcessScheduleState__61:
-              MOVE.L         GCOMMAND_MplexListingsTemplatePt(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_MplexListingsTemplatePt(A4),A0;206c 0000 
+              MOVE.L         A0,-(A7)                 ;2f08 
               MOVE.L         GCOMMAND_MplexEditorRowPen(A4),-(A7);2f2c 0000 
               MOVE.L         GCOMMAND_MplexEditorLayoutPen(A4),-(A7);2f2c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 

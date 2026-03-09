@@ -27,8 +27,8 @@ extern LONG GCOMMAND_MplexEditorLayoutPen;
 extern UWORD CLOCK_DaySlotIndex;
 extern NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
-extern LONG NEWGRID_HandleGridEditorState(LayoutCtx *ctx, LONG a, LONG b, LONG c);
-extern LONG NEWGRID_ShouldOpenEditor(void *entry);
+extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG a, LONG b, char *sourceText);
+extern LONG NEWGRID_ShouldOpenEditor(char *entry);
 extern LONG NEWGRID_UpdateGridState(LayoutCtx *ctx, LONG index, LONG row);
 extern LONG NEWGRID_HandleDetailGridState(LayoutCtx *ctx, LONG index, LONG row);
 extern LONG NEWGRID_FindNextEntryWithAltMarkers(LONG state, LONG selected, LONG row);
@@ -43,11 +43,11 @@ LONG NEWGRID_ProcessScheduleState(LayoutCtx *ctx, UWORD rowBase, UWORD rowCur)
 
     if (!ctx) {
         if (NEWGRID_ScheduleWorkflowState == 2 || NEWGRID_ScheduleWorkflowState == 7) {
-            NEWGRID_HandleGridEditorState(ctx, 0, 0, 0);
+            NEWGRID_HandleGridEditorState((char *)ctx, 0, 0, 0);
         } else if (NEWGRID_ScheduleWorkflowState == 5) {
             LONG idx = NEWGRID_SelectedPrimaryEntryIndex;
             NEWGRID_Entry *entry = TEXTDISP_PrimaryEntryPtrTable[idx];
-            if (NEWGRID_ShouldOpenEditor(entry) != 0) {
+            if (NEWGRID_ShouldOpenEditor((char *)entry) != 0) {
                 NEWGRID_UpdateGridState(ctx, 0, 0);
             } else {
                 NEWGRID_HandleDetailGridState(ctx, 0, 0);
@@ -96,7 +96,10 @@ LONG NEWGRID_ProcessScheduleState(LayoutCtx *ctx, UWORD rowBase, UWORD rowCur)
     case 2:
         if (NEWGRID_ScheduleEditorGateFlag) {
             NEWGRID_ScheduleWorkflowState = NEWGRID_HandleGridEditorState(
-                ctx, GCOMMAND_MplexEditorLayoutPen, GCOMMAND_MplexEditorRowPen, GCOMMAND_MplexListingsTemplatePtr);
+                (char *)ctx,
+                GCOMMAND_MplexEditorLayoutPen,
+                GCOMMAND_MplexEditorRowPen,
+                (char *)GCOMMAND_MplexListingsTemplatePtr);
             if (NEWGRID_ScheduleWorkflowState == 5) {
                 NEWGRID_ScheduleWorkflowState = 2;
                 return NEWGRID_ScheduleWorkflowState;
@@ -117,7 +120,7 @@ LONG NEWGRID_ProcessScheduleState(LayoutCtx *ctx, UWORD rowBase, UWORD rowCur)
     case 5:
         if (NEWGRID_SelectedPrimaryEntryIndex != -1) {
             NEWGRID_Entry *entry = TEXTDISP_PrimaryEntryPtrTable[NEWGRID_SelectedPrimaryEntryIndex];
-            if (NEWGRID_ShouldOpenEditor(entry) != 0) {
+            if (NEWGRID_ShouldOpenEditor((char *)entry) != 0) {
                 NEWGRID_ScheduleWorkflowState = NEWGRID_UpdateGridState(
                     ctx, NEWGRID_SelectedPrimaryEntryIndex, (LONG)rowBase + NEWGRID_ScheduleRowOffset);
             } else {
@@ -151,7 +154,10 @@ LONG NEWGRID_ProcessScheduleState(LayoutCtx *ctx, UWORD rowBase, UWORD rowCur)
     case 7:
         if (NEWGRID_ScheduleAltSelectorFlag) {
             NEWGRID_ScheduleWorkflowState = NEWGRID_HandleGridEditorState(
-                ctx, GCOMMAND_MplexEditorLayoutPen, GCOMMAND_MplexEditorRowPen, GCOMMAND_MplexListingsTemplatePtr);
+                (char *)ctx,
+                GCOMMAND_MplexEditorLayoutPen,
+                GCOMMAND_MplexEditorRowPen,
+                (char *)GCOMMAND_MplexListingsTemplatePtr);
             if (NEWGRID_ScheduleWorkflowState == 5) {
                 NEWGRID_ScheduleWorkflowState = 7;
                 return NEWGRID_ScheduleWorkflowState;
