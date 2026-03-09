@@ -2,6 +2,18 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_AuxData {
+    UBYTE pad0[56];
+    UBYTE *titleTable[49];
+} NEWGRID_AuxData;
+
+typedef struct NEWGRID_Context {
+    UBYTE pad0[32];
+    LONG selectedState;
+    UBYTE pad1[24];
+    UBYTE rastPort[1];
+} NEWGRID_Context;
+
 extern LONG NEWGRID_AltGridStateLatch;
 extern LONG CLOCK_DaySlotIndex;
 extern WORD NEWGRID_ColumnWidthPx;
@@ -20,8 +32,9 @@ extern void NEWGRID_DrawGridCell(void *rastPort, UBYTE *cell, LONG rowFlag);
 LONG NEWGRID_HandleAltGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
 {
     UBYTE *entry;
-    UBYTE *aux;
+    NEWGRID_AuxData *aux;
     UBYTE *payload;
+    NEWGRID_Context *ctxView;
     LONG state;
     LONG drawFlag;
 
@@ -30,15 +43,16 @@ LONG NEWGRID_HandleAltGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
         return NEWGRID_AltGridStateLatch;
     }
 
+    ctxView = (NEWGRID_Context *)ctx;
     if (NEWGRID_AltGridStateLatch == 4) {
         entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(keyIndex, 1);
-        aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(keyIndex, 1);
+        aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(keyIndex, 1);
 
         if (aux != 0) {
             if (rowIndex == 1 || (WORD)(NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) {
-                keyIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
+                keyIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex((UBYTE *)aux);
                 entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(keyIndex, 2);
-                aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(keyIndex, 2);
+                aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(keyIndex, 2);
             }
         }
 
@@ -46,7 +60,7 @@ LONG NEWGRID_HandleAltGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
             return NEWGRID_AltGridStateLatch;
         }
 
-        payload = *(UBYTE **)(aux + 56 + (((LONG)rowIndex) << 2));
+        payload = aux->titleTable[(LONG)rowIndex];
         if (payload == 0 || payload[0] == 0) {
             return NEWGRID_AltGridStateLatch;
         }
@@ -54,12 +68,12 @@ LONG NEWGRID_HandleAltGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
         NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams((LONG)NEWGRID_ColumnWidthPx * 3 - 12, 20, 1);
 
         if (NEWGRID_ShowtimeEntryVariantFlag != 0) {
-            NEWGRID_DrawGridEntry(ctx + 60, entry, aux, (LONG)rowIndex, 2, 1, 4);
+            NEWGRID_DrawGridEntry(ctxView->rastPort, entry, (UBYTE *)aux, (LONG)rowIndex, 2, 1, 4);
         } else {
-            NEWGRID_DrawGridEntry(ctx + 60, entry, aux, (LONG)rowIndex, 3, 1, 4);
+            NEWGRID_DrawGridEntry(ctxView->rastPort, entry, (UBYTE *)aux, (LONG)rowIndex, 3, 1, 4);
         }
 
-        *(LONG *)(ctx + 32) = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
+        ctxView->selectedState = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
         if (NEWGRID_DrawGridFrameAlt(ctx) != 0) {
             state = 4;
         } else {
@@ -68,12 +82,12 @@ LONG NEWGRID_HandleAltGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
 
         NEWGRID_AltGridStateLatch = state;
         drawFlag = (state == 4) ? 1 : 0;
-        NEWGRID_DrawGridCell(ctx + 60, entry, drawFlag);
+        NEWGRID_DrawGridCell(ctxView->rastPort, entry, drawFlag);
         return NEWGRID_AltGridStateLatch;
     }
 
     if (NEWGRID_AltGridStateLatch == 5) {
-        *(LONG *)(ctx + 32) = -1;
+        ctxView->selectedState = -1;
         if (NEWGRID_DrawGridFrameAlt(ctx) != 0) {
             NEWGRID_AltGridStateLatch = 4;
         } else {
