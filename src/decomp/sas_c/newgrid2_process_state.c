@@ -10,8 +10,8 @@ typedef struct NEWGRID2_Context {
 } NEWGRID2_Context;
 
 typedef struct NEWGRID2_StateEntry {
-    void *entryPtr;
-    void *auxPtr;
+    char *entryPtr;
+    char *auxPtr;
     UBYTE pad0[12];
     WORD rowSlot;
 } NEWGRID2_StateEntry;

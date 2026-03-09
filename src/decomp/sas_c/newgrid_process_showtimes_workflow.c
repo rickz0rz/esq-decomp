@@ -2,7 +2,6 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
-typedef struct LayoutCtx LayoutCtx;
 typedef struct NEWGRID_SelectionWindow NEWGRID_SelectionWindow;
 
 struct NEWGRID_SelectionWindow {
@@ -30,17 +29,17 @@ extern LONG GCOMMAND_PpvEditorLayoutPen;
 
 extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG a, LONG b, char *sourceText);
 extern LONG NEWGRID_ShouldOpenEditor(char *entry);
-extern LONG NEWGRID_UpdateGridState(LayoutCtx *ctx, LONG index, LONG row);
+extern LONG NEWGRID_UpdateGridState(char *ctx, LONG index, LONG row);
 extern LONG NEWGRID_HandleShowtimesState(char *ctx, char *selCtxPtr);
 extern LONG NEWGRID_InitSelectionWindow(NEWGRID_SelectionWindow *selCtxPtr, LONG rowBase);
 extern LONG NEWGRID_UpdateSelectionFromInput(LONG state, NEWGRID_SelectionWindow *selCtxPtr);
-extern LONG NEWGRID_DrawGridMessageAlt(LayoutCtx *ctx);
-extern LONG NEWGRID_ValidateSelectionCode(LayoutCtx *ctx, LONG code);
+extern LONG NEWGRID_DrawGridMessageAlt(char *ctx);
+extern LONG NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
-extern LONG NEWGRID_ComputeColumnIndex(LayoutCtx *ctx);
+extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
 extern LONG NEWGRID_ClearEntryMarkerBits(LONG row);
 
-LONG NEWGRID_ProcessShowtimesWorkflow(LayoutCtx *ctx, UWORD rowBase)
+LONG NEWGRID_ProcessShowtimesWorkflow(char *ctx, UWORD rowBase)
 {
     LONG steppedFrom34 = 0;
 
