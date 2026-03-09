@@ -6,9 +6,9 @@ extern LONG CONFIG_TimeWindowMinutes;
 
 extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern void *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(void *entry, LONG modeIndex, LONG fieldId);
+extern char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(void *entry, LONG modeIndex, LONG fieldId);
 extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(void *entry, void *aux, LONG modeIndex, LONG dayMinutes, LONG windowMinutes);
-extern void TLIBA1_FormatClockFormatEntry(char *dst, void *f0, void *f1, void *f2, void *f3, void *f4, LONG style);
+extern void TLIBA1_FormatClockFormatEntry(char *dst, char *f0, char *f1, char *f2, char *f3, char *f4, LONG style);
 
 WORD TLIBA1_BuildClockFormatEntryIfVisible(WORD groupIndex, WORD modeIndex, char *outText, WORD style)
 {
@@ -22,17 +22,17 @@ WORD TLIBA1_BuildClockFormatEntryIfVisible(WORD groupIndex, WORD modeIndex, char
     const LONG FIELD_ID_3 = 4;
     const LONG FIELD_ID_4 = 1;
     const LONG DAY_MINUTES = 1440;
-    const LONG FLAG_TRUE = 1;
-    const LONG FLAG_FALSE = 0;
+    const WORD FLAG_TRUE = 1;
+    const WORD FLAG_FALSE = 0;
     const char CH_NUL = 0;
     LONG displayMode;
     void *entry;
     void *aux;
-    void *f0;
-    void *f1;
-    void *f2;
-    void *f3;
-    void *f4;
+    char *f0;
+    char *f1;
+    char *f2;
+    char *f3;
+    char *f4;
     LONG visible;
 
     displayMode = (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) ? MODE_PRIMARY : MODE_SECONDARY;
@@ -52,7 +52,7 @@ WORD TLIBA1_BuildClockFormatEntryIfVisible(WORD groupIndex, WORD modeIndex, char
     }
 
     if ((modeIndex == MODE_ANY || visible != FLAG_FALSE) &&
-        (f0 != (void *)0 || f1 != (void *)0 || f2 != (void *)0 || f3 != (void *)0 || f4 != (void *)0)) {
+        (f0 != (char *)0 || f1 != (char *)0 || f2 != (char *)0 || f3 != (char *)0 || f4 != (char *)0)) {
         if (outText != (char *)0) {
             TLIBA1_FormatClockFormatEntry(outText, f0, f1, f2, f3, f4, (LONG)style);
         }
