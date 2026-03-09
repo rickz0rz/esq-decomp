@@ -14,10 +14,10 @@ extern ULONG MATH_Mulu32(ULONG a, ULONG b);
 extern LONG MATH_DivS32(LONG dividend, LONG divisor);
 extern void *MEMORY_AllocateMemory(char *owner, LONG line, LONG bytes, ULONG flags);
 extern void MEMORY_DeallocateMemory(char *owner, LONG line, void *ptr, ULONG bytes);
-extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
-extern void _LVOSetAPen(void *rastPort, LONG pen);
-extern void _LVOSetFont(void *rastPort, void *font);
-extern void TLIBA1_DrawInlineStyledText(void *rastPort, LONG x, LONG y, char *text);
+extern LONG _LVOTextLength(char *rastPort, char *text, LONG len);
+extern void _LVOSetAPen(char *rastPort, LONG pen);
+extern void _LVOSetFont(char *rastPort, void *font);
+extern void TLIBA1_DrawInlineStyledText(char *rastPort, LONG x, LONG y, char *text);
 
 typedef struct TLIBA1_RastPort {
     UBYTE pad0[25];
@@ -37,7 +37,7 @@ static LONG TLIBA1_StrLen(const char *s)
 }
 
 void TLIBA1_DrawFormattedTextBlock(
-    void *rastPort,
+    char *rastPort,
     char *text,
     WORD left,
     WORD top,
