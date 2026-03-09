@@ -2,108 +2,102 @@
 __code:
 NEWGRID_FindNextEntryWithFlags:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$34,D0                  ;90bc 0000 0034 
+              SUB.L          #$2c,D0                  ;90bc 0000 002c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$2c,A7                  ;9efc 002c 
-              MOVEM.L        D2/D3/D5/D6/D7/A5,-(A7)  ;48e7 3704 
+              SUB.W          #$24,A7                  ;9efc 0024 
+              MOVEM.L        D2/D5/D6/D7/A5,-(A7)     ;48e7 2704 
 ___NEWGRID_FindNextEntryWithFlags__1:
-              MOVE.L         $4c(A7),D6               ;2c2f 004c 
-              MOVE.L         $48(A7),D7               ;2e2f 0048 
+              MOVE.L         $40(A7),D6               ;2c2f 0040 
+              MOVE.L         $3c(A7),D7               ;2e2f 003c 
               MOVEQ.L        #$0,D5                   ;7a00 
               MOVEQ.L        #$4,D0                   ;7004 
               MOVEQ.L        #$1,D1                   ;7201 
               MOVEQ.L        #$ff,D2                  ;74ff 
-              MOVE.L         D2,$38(A7)               ;2f42 0038 
+              MOVE.L         D2,$2c(A7)               ;2f42 002c 
               MOVEQ.L        #$0,D2                   ;7400 
-              MOVEQ.L        #$2f,D3                  ;762f 
-              MOVE.L         D3,$2c(A7)               ;2f43 002c 
-              MOVEQ.L        #$28,D3                  ;7628 
-              MOVE.L         D3,$28(A7)               ;2f43 0028 
-              MOVE.B         #$4,$24(A7)              ;1f7c 0004 0024 
-              MOVE.B         #$80,$1f(A7)             ;1f7c 0080 001f 
-              MOVE.L         D6,$1a(A7)               ;2f46 001a 
-              MOVE.L         D0,$40(A7)               ;2f40 0040 
+              MOVE.B         #$4,$20(A7)              ;1f7c 0004 0020 
+              MOVE.B         #$80,$1b(A7)             ;1f7c 0080 001b 
+              MOVE.L         D6,$16(A7)               ;2f46 0016 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
+              MOVEM.L        D1,$24(A7)               ;48ef 0002 0024 
               MOVEM.L        D1,$30(A7)               ;48ef 0002 0030 
-              MOVEM.L        D1,$3c(A7)               ;48ef 0002 003c 
-              MOVEM.L        D2,$20(A7)               ;48ef 0004 0020 
-              MOVEM.L        D2,$34(A7)               ;48ef 0004 0034 
+              MOVEM.L        D2,$1c(A7)               ;48ef 0004 001c 
+              MOVEM.L        D2,$28(A7)               ;48ef 0004 0028 
               CMP.L          D7,D5                    ;ba87 
               BNE.B          ___NEWGRID_FindNextEntryWithFlags__3;6606 
 ___NEWGRID_FindNextEntryWithFlags__2:
-              MOVE.L         D2,$1a(A7)               ;2f42 001a 
+              MOVE.L         D2,$16(A7)               ;2f42 0016 
               BRA.B          ___NEWGRID_FindNextEntryWithFlags__6;600e 
 ___NEWGRID_FindNextEntryWithFlags__3:
               CMP.L          D0,D7                    ;be80 
               BNE.B          ___NEWGRID_FindNextEntryWithFlags__5;6606 
 ___NEWGRID_FindNextEntryWithFlags__4:
-              ADDQ.L         #$1,$1a(A7)              ;52af 001a 
+              ADDQ.L         #$1,$16(A7)              ;52af 0016 
               BRA.B          ___NEWGRID_FindNextEntryWithFlags__6;6004 
 ___NEWGRID_FindNextEntryWithFlags__5:
-              MOVE.L         D1,$20(A7)               ;2f41 0020 
+              MOVE.L         D1,$1c(A7)               ;2f41 001c 
 ___NEWGRID_FindNextEntryWithFlags__6:
-              TST.L          $20(A7)                  ;4aaf 0020 
+              TST.L          $1c(A7)                  ;4aaf 001c 
               BEQ.B          ___NEWGRID_FindNextEntryWithFlags__8;6706 
 ___NEWGRID_FindNextEntryWithFlags__7:
-              MOVE.L         $1a(A7),D0               ;202f 001a 
-              BRA.B          ___NEWGRID_FindNextEntryWithFlags__22;607a 
+              MOVE.L         $16(A7),D0               ;202f 0016 
+              BRA.B          ___NEWGRID_FindNextEntryWithFlags__22;6072 
 ___NEWGRID_FindNextEntryWithFlags__8:
-              MOVE.L         $34(A7),D0               ;202f 0034 
-              MOVE.L         $20(A7),D1               ;222f 0020 
+              MOVE.L         $28(A7),D0               ;202f 0028 
+              MOVE.L         $1c(A7),D1               ;222f 001c 
               CMP.L          D0,D1                    ;b280 
-              BNE.B          ___NEWGRID_FindNextEntryWithFlags__18;6658 
+              BNE.B          ___NEWGRID_FindNextEntryWithFlags__18;6650 
 ___NEWGRID_FindNextEntryWithFlags__9:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D1;322c 0000 
-              MOVE.L         $1a(A7),D2               ;242f 001a 
+              MOVE.L         $16(A7),D2               ;242f 0016 
               CMP.L          D1,D2                    ;b481 
-              BGE.B          ___NEWGRID_FindNextEntryWithFlags__18;6c4a 
+              BGE.B          ___NEWGRID_FindNextEntryWithFlags__18;6c42 
 ___NEWGRID_FindNextEntryWithFlags__10:
 ___NEWGRID_FindNextEntryWithFlags__11:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         TEXTDISP_PrimaryGroupPresentFlag(A4),D1;122c 0000 
               CMP.L          D0,D1                    ;b280 
-              BEQ.B          ___NEWGRID_FindNextEntryWithFlags__18;6740 
+              BEQ.B          ___NEWGRID_FindNextEntryWithFlags__18;6738 
 ___NEWGRID_FindNextEntryWithFlags__12:
 ___NEWGRID_FindNextEntryWithFlags__13:
-              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
               MOVE.L         D2,-(A7)                 ;2f02 
               BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
               MOVE.L         D0,A5                    ;2a40 
               TST.L          D0                       ;4a80 
               ADDQ.W         #$8,A7                   ;504f 
-              BEQ.B          ___NEWGRID_FindNextEntryWithFlags__17;6728 
+              BEQ.B          ___NEWGRID_FindNextEntryWithFlags__17;6720 
 ___NEWGRID_FindNextEntryWithFlags__14:
-              MOVE.L         $2c(A7),D0               ;202f 002c 
-              MOVE.B         $0(A5,D0.L),D0           ;1035 0800 
-              AND.B          $24(A7),D0               ;c02f 0024 
+              MOVE.B         $2f(A5),D0               ;102d 002f 
+              AND.B          $20(A7),D0               ;c02f 0020 
               TST.B          D0                       ;4a00 
-              BEQ.B          ___NEWGRID_FindNextEntryWithFlags__17;6718 
+              BEQ.B          ___NEWGRID_FindNextEntryWithFlags__17;6714 
 ___NEWGRID_FindNextEntryWithFlags__15:
-              MOVE.L         $28(A7),D0               ;202f 0028 
-              MOVE.B         $0(A5,D0.L),D0           ;1035 0800 
-              AND.B          $1f(A7),D0               ;c02f 001f 
+              MOVE.B         $28(A5),D0               ;102d 0028 
+              AND.B          $1b(A7),D0               ;c02f 001b 
               TST.B          D0                       ;4a00 
               BEQ.B          ___NEWGRID_FindNextEntryWithFlags__17;6708 
 ___NEWGRID_FindNextEntryWithFlags__16:
-              MOVE.L         $30(A7),$20(A7)          ;2f6f 0030 0020 
-              BRA.B          ___NEWGRID_FindNextEntryWithFlags__8;60a2 
+              MOVE.L         $24(A7),$1c(A7)          ;2f6f 0024 001c 
+              BRA.B          ___NEWGRID_FindNextEntryWithFlags__8;60aa 
 ___NEWGRID_FindNextEntryWithFlags__17:
-              ADDQ.L         #$1,$1a(A7)              ;52af 001a 
-              BRA.B          ___NEWGRID_FindNextEntryWithFlags__8;609c 
+              ADDQ.L         #$1,$16(A7)              ;52af 0016 
+              BRA.B          ___NEWGRID_FindNextEntryWithFlags__8;60a4 
 ___NEWGRID_FindNextEntryWithFlags__18:
-              MOVE.L         $20(A7),D0               ;202f 0020 
-              CMP.L          $34(A7),D0               ;b0af 0034 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              CMP.L          $28(A7),D0               ;b0af 0028 
               BNE.B          ___NEWGRID_FindNextEntryWithFlags__20;6608 
 ___NEWGRID_FindNextEntryWithFlags__19:
-              MOVE.L         $38(A7),D0               ;202f 0038 
-              MOVE.L         D0,$1a(A7)               ;2f40 001a 
+              MOVE.L         $2c(A7),D0               ;202f 002c 
+              MOVE.L         D0,$16(A7)               ;2f40 0016 
 ___NEWGRID_FindNextEntryWithFlags__20:
-              MOVE.L         $1a(A7),D0               ;202f 001a 
+              MOVE.L         $16(A7),D0               ;202f 0016 
 ___NEWGRID_FindNextEntryWithFlags__21:
 ___NEWGRID_FindNextEntryWithFlags__22:
-              MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A5  ;4cdf 20ec 
-              ADD.W          #$2c,A7                  ;defc 002c 
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A5     ;4cdf 20e4 
+              ADD.W          #$24,A7                  ;defc 0024 
               RTS                                     ;4e75 
 __const:
 __strings:

@@ -3,6 +3,21 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[28];
+    UBYTE selectionBits[12];
+    UBYTE flags40;
+    UBYTE pad1[5];
+    UWORD markerFlags46;
+} NEWGRID_Entry;
+
+typedef struct NEWGRID_AuxData {
+    UBYTE pad0[7];
+    UBYTE rowFlags[49];
+    UBYTE pad1[0x38 - 0x38];
+    LONG titleTable[49];
+} NEWGRID_AuxData;
+
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 
@@ -30,8 +45,8 @@ LONG NEWGRID_FindNextEntryWithAltMarkers(LONG scanMode, LONG startIndex, WORD se
     }
 
     while (found == 0) {
-        UBYTE *entry;
-        UBYTE *aux;
+        NEWGRID_Entry *entry;
+        NEWGRID_AuxData *aux;
         WORD presetIndex;
 
         if (idx >= (LONG)(UWORD)TEXTDISP_PrimaryGroupEntryCount) {
@@ -43,30 +58,30 @@ LONG NEWGRID_FindNextEntryWithAltMarkers(LONG scanMode, LONG startIndex, WORD se
 
         entry = 0;
         aux = 0;
-        presetIndex = (WORD)NEWGRID_UpdatePresetEntry(&entry, &aux, (LONG)selector, idx);
+        presetIndex = (WORD)NEWGRID_UpdatePresetEntry((UBYTE **)&entry, (UBYTE **)&aux, (LONG)selector, idx);
 
         if (entry == 0 || aux == 0) {
             ++idx;
             continue;
         }
 
-        if ((*(UWORD *)(entry + 46) & (UWORD)0x0008) == 0) {
+        if ((entry->markerFlags46 & (UWORD)0x0008) == 0) {
             ++idx;
             continue;
         }
-        if ((entry[40] & 0x80) == 0) {
+        if ((entry->flags40 & 0x80) == 0) {
             ++idx;
             continue;
         }
-        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry + 28, (LONG)presetIndex) + 1 != 0) {
+        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, (LONG)presetIndex) + 1 != 0) {
             ++idx;
             continue;
         }
-        if ((aux[(LONG)selector + 7] & 0x80) != 0) {
+        if ((aux->rowFlags[(LONG)selector] & 0x80) != 0) {
             ++idx;
             continue;
         }
-        if (*(LONG *)(aux + 56 + (((LONG)presetIndex) << 2)) == 0) {
+        if (aux->titleTable[(LONG)presetIndex] == 0) {
             ++idx;
             continue;
         }
