@@ -27,7 +27,7 @@ extern UBYTE HIGHLIGHT_CustomValue;
 extern LONG WDISP_DisplayContextBase;
 
 extern LONG LOCAVAIL_FilterStep;
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_DOS_LIBRARY_2;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
