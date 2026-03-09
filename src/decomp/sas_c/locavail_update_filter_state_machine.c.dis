@@ -1,0 +1,377 @@
+              SECTION      text,CODE
+__code:
+LOCAVAIL_UpdateFilterStateMachin:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___LOCAVAIL_UpdateFilterStateMachin__1:
+              MOVE.L         $30(A7),A3               ;266f 0030 
+              MOVE.L         $2c(A7),A5               ;2a6f 002c 
+              MOVE.L         A5,A2                    ;244d 
+              MOVE.L         A3,A0                    ;204b 
+              CLR.L          $20(A7)                  ;42af 0020 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          LOCAVAIL_FilterModeFlag(A4),D0;b0ac 0000 
+              BNE.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6600 02e8 
+___LOCAVAIL_UpdateFilterStateMachin__2:
+___LOCAVAIL_UpdateFilterStateMachin__3:
+              TST.L          LOCAVAIL_FilterStep(A4)  ;4aac 0000 
+              BNE.W          ___LOCAVAIL_UpdateFilterStateMachin__34;6600 0114 
+___LOCAVAIL_UpdateFilterStateMachin__4:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              CMP.L          LOCAVAIL_FilterClassId(A4),D0;b0ac 0000 
+              BNE.W          ___LOCAVAIL_UpdateFilterStateMachin__34;6600 010a 
+___LOCAVAIL_UpdateFilterStateMachin__5:
+              LEA            $8(A0),A1                ;43e8 0008 
+              MOVE.L         (A1),D7                  ;2e11 
+              CMP.L          D0,D7                    ;be80 
+              BEQ.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6700 02ca 
+___LOCAVAIL_UpdateFilterStateMachin__6:
+___LOCAVAIL_UpdateFilterStateMachin__7:
+              LEA            $c(A0),A1                ;43e8 000c 
+              MOVE.L         (A1),D6                  ;2c11 
+              MOVE.L         D6,D0                    ;2006 
+              ADDQ.L         #$1,D0                   ;5280 
+              BEQ.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6700 02bc 
+___LOCAVAIL_UpdateFilterStateMachin__8:
+___LOCAVAIL_UpdateFilterStateMachin__9:
+              TST.L          D7                       ;4a87 
+              BMI.B          ___LOCAVAIL_UpdateFilterStateMachin__12;6b28 
+___LOCAVAIL_UpdateFilterStateMachin__10:
+              LEA            $2(A0),A1                ;43e8 0002 
+              CMP.L          (A1),D7                  ;be91 
+              BGE.B          ___LOCAVAIL_UpdateFilterStateMachin__12;6c20 
+___LOCAVAIL_UpdateFilterStateMachin__11:
+              LEA            $14(A0),A1               ;43e8 0014 
+              PEA            ($a).w                   ;4878 000a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A1,$24(A7)               ;2f49 0024 
+              BSR.W          NEWGRID_JMPTBL_MATH_Mulu32;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         $1c(A7),A1               ;226f 001c 
+              MOVE.L         (A1),A0                  ;2051 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,$20(A7)               ;2f48 0020 
+___LOCAVAIL_UpdateFilterStateMachin__12:
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              BEQ.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6700 0288 
+___LOCAVAIL_UpdateFilterStateMachin__13:
+___LOCAVAIL_UpdateFilterStateMachin__14:
+              TST.L          D6                       ;4a86 
+              BMI.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6b00 0282 
+___LOCAVAIL_UpdateFilterStateMachin__15:
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$4,A1                   ;5889 
+              MOVE.W         (A1),D1                  ;3211 
+              EXT.L          D1                       ;48c1 
+              CMP.L          D1,D6                    ;bc81 
+              BGE.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6c00 0272 
+___LOCAVAIL_UpdateFilterStateMachin__16:
+___LOCAVAIL_UpdateFilterStateMachin__17:
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.B         $6(A0,D6.L),D5           ;1a30 6806 
+              MOVE.L         D5,LOCAVAIL_FilterClassId(A4);2945 0000 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,LOCAVAIL_FilterStep(A4);2940 0000 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,LOCAVAIL_FilterPrevClassId(A4);2940 0000 
+              MOVE.L         D5,D0                    ;2005 
+___LOCAVAIL_UpdateFilterStateMachin__18:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.B          ___LOCAVAIL_UpdateFilterStateMachin__22;670a 
+___LOCAVAIL_UpdateFilterStateMachin__19:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.B          ___LOCAVAIL_UpdateFilterStateMachin__26;673e 
+___LOCAVAIL_UpdateFilterStateMachin__20:
+              SUBQ.L         #$1,D0                   ;5380 
+              BEQ.B          ___LOCAVAIL_UpdateFilterStateMachin__30;675a 
+___LOCAVAIL_UpdateFilterStateMachin__21:
+              BRA.B          ___LOCAVAIL_UpdateFilterStateMachin__33;606e 
+___LOCAVAIL_UpdateFilterStateMachin__22:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_DiagVinModeChar(A4),D0;102c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            LOCAVAIL_STR_YYLLZ_FilterStateUp(A4);486c 0000 
+              BSR.W          GROUP_AS_JMPTBL_STR_FindCharPtr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___LOCAVAIL_UpdateFilterStateMachin__25;6714 
+___LOCAVAIL_UpdateFilterStateMachin__23:
+              BSR.W          GROUP_AY_JMPTBL_SCRIPT_ReadCiaBB;6100 0000 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___LOCAVAIL_UpdateFilterStateMachin__25;670c 
+___LOCAVAIL_UpdateFilterStateMachin__24:
+              LEA            $14(A2),A0               ;41ea 0014 
+              MOVEQ.L        #$a,D0                   ;700a 
+              MOVE.L         D0,(A0)                  ;2080 
+              BRA.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6000 0220 
+___LOCAVAIL_UpdateFilterStateMachin__25:
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              BSR.W          LOCAVAIL_ResetFilterCursorState;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6000 0212 
+___LOCAVAIL_UpdateFilterStateMachin__26:
+              MOVE.B         ED_DiagGraphModeChar(A4),D0;102c 0000 
+              MOVEQ.L        #$4e,D1                  ;724e 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___LOCAVAIL_UpdateFilterStateMachin__29;6708 
+___LOCAVAIL_UpdateFilterStateMachin__27:
+              TST.L          ESQIFF_GAdsBrushListCount(A4);4aac 0000 
+              BNE.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6600 0200 
+___LOCAVAIL_UpdateFilterStateMachin__28:
+___LOCAVAIL_UpdateFilterStateMachin__29:
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              BSR.W          LOCAVAIL_ResetFilterCursorState;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6000 01f2 
+___LOCAVAIL_UpdateFilterStateMachin__30:
+              MOVE.W         WDISP_HighlightActive(A4),D0;302c 0000 
+              BNE.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6600 01ea 
+___LOCAVAIL_UpdateFilterStateMachin__31:
+___LOCAVAIL_UpdateFilterStateMachin__32:
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              BSR.W          LOCAVAIL_ResetFilterCursorState;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6000 01dc 
+___LOCAVAIL_UpdateFilterStateMachin__33:
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              BSR.W          LOCAVAIL_ResetFilterCursorState;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6000 01ce 
+___LOCAVAIL_UpdateFilterStateMachin__34:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          LOCAVAIL_FilterStep(A4),D0;b0ac 0000 
+              BNE.W          ___LOCAVAIL_UpdateFilterStateMachin__55;6600 0102 
+___LOCAVAIL_UpdateFilterStateMachin__35:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              CMP.L          LOCAVAIL_FilterClassId(A4),D0;b0ac 0000 
+              BEQ.W          ___LOCAVAIL_UpdateFilterStateMachin__55;6700 00f8 
+___LOCAVAIL_UpdateFilterStateMachin__36:
+              MOVE.L         $24(A7),A0               ;206f 0024 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$8,A1                   ;5089 
+              MOVE.L         (A1),D7                  ;2e11 
+              LEA            $c(A0),A1                ;43e8 000c 
+              MOVE.L         (A1),D6                  ;2c11 
+              CMP.L          D0,D7                    ;be80 
+              BEQ.W          ___LOCAVAIL_UpdateFilterStateMachin__55;6700 00e2 
+___LOCAVAIL_UpdateFilterStateMachin__37:
+              MOVE.L         D6,D0                    ;2006 
+              ADDQ.L         #$1,D0                   ;5280 
+              BEQ.W          ___LOCAVAIL_UpdateFilterStateMachin__55;6700 00da 
+___LOCAVAIL_UpdateFilterStateMachin__38:
+              TST.L          D7                       ;4a87 
+              BMI.B          ___LOCAVAIL_UpdateFilterStateMachin__41;6b28 
+___LOCAVAIL_UpdateFilterStateMachin__39:
+              LEA            $2(A0),A1                ;43e8 0002 
+              CMP.L          (A1),D7                  ;be91 
+              BGE.B          ___LOCAVAIL_UpdateFilterStateMachin__41;6c20 
+___LOCAVAIL_UpdateFilterStateMachin__40:
+              LEA            $14(A0),A1               ;43e8 0014 
+              PEA            ($a).w                   ;4878 000a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A1,$24(A7)               ;2f49 0024 
+              BSR.W          NEWGRID_JMPTBL_MATH_Mulu32;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         $1c(A7),A1               ;226f 001c 
+              MOVE.L         (A1),A0                  ;2051 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,$20(A7)               ;2f48 0020 
+___LOCAVAIL_UpdateFilterStateMachin__41:
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              BEQ.W          ___LOCAVAIL_UpdateFilterStateMachin__55;6700 00a6 
+___LOCAVAIL_UpdateFilterStateMachin__42:
+              TST.L          D6                       ;4a86 
+              BMI.W          ___LOCAVAIL_UpdateFilterStateMachin__55;6b00 00a0 
+___LOCAVAIL_UpdateFilterStateMachin__43:
+              MOVE.L         D0,A0                    ;2040 
+              ADDQ.L         #$4,A0                   ;5888 
+              MOVE.W         (A0),D0                  ;3010 
+              EXT.L          D0                       ;48c0 
+              CMP.L          D0,D6                    ;bc80 
+              BGE.W          ___LOCAVAIL_UpdateFilterStateMachin__55;6c00 0092 
+___LOCAVAIL_UpdateFilterStateMachin__44:
+              LEA            $14(A2),A0               ;41ea 0014 
+              CMPI.L         #$10,(A0)                ;0c90 0000 0010 
+              BGE.W          ___LOCAVAIL_UpdateFilterStateMachin__55;6c00 0084 
+___LOCAVAIL_UpdateFilterStateMachin__45:
+              LEA            $14(A2),A0               ;41ea 0014 
+              MOVE.L         (A0),D0                  ;2010 
+___LOCAVAIL_UpdateFilterStateMachin__46:
+              SUBQ.L         #$1,D0                   ;5380 
+              BLT.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6d00 013a 
+___LOCAVAIL_UpdateFilterStateMachin__47:
+              CMPI.L         #$8,D0                   ;0c80 0000 0008 
+              BGE.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6c00 0130 
+___LOCAVAIL_UpdateFilterStateMachin__48:
+              ADD.W          D0,D0                    ;d040 
+              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
+              JMP            $4(PC,D0.W)              ;4efb 0004 
+__switch_LOCAVAIL_UpdateFilterStateMachin_48:
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__49-__switch_LOCAVAIL_UpdateFilterStateMachin_48
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__49-__switch_LOCAVAIL_UpdateFilterStateMachin_48
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__49-__switch_LOCAVAIL_UpdateFilterStateMachin_48
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__53-__switch_LOCAVAIL_UpdateFilterStateMachin_48
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__49-__switch_LOCAVAIL_UpdateFilterStateMachin_48
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__49-__switch_LOCAVAIL_UpdateFilterStateMachin_48
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__49-__switch_LOCAVAIL_UpdateFilterStateMachin_48
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__49-__switch_LOCAVAIL_UpdateFilterStateMachin_48
+___LOCAVAIL_UpdateFilterStateMachin__49:
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              ADDQ.L         #$2,A0                   ;5488 
+              MOVE.W         (A0),D0                  ;3010 
+              MOVE.L         D0,D1                    ;2200 
+              SUBQ.W         #$5,D1                   ;5b41 
+              MOVE.W         D1,LOCAVAIL_FilterCooldownTicks(A4);3941 0000 
+              MOVE.W         (A0),LOCAVAIL_FilterWindowHalfSpan(A4);3950 0000 
+              MOVE.L         $24(A7),A0               ;206f 0024 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$8,A1                   ;5089 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,(A1)                  ;2280 
+              LEA            $c(A0),A1                ;43e8 000c 
+              MOVE.L         D0,(A1)                  ;2280 
+              MOVEQ.L        #$2,D0                   ;7002 
+              MOVE.L         D0,LOCAVAIL_FilterStep(A4);2940 0000 
+              MOVE.L         LOCAVAIL_FilterClassId(A4),D0;202c 0000 
+              MOVEQ.L        #$2,D1                   ;7202 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___LOCAVAIL_UpdateFilterStateMachin__51;6706 
+___LOCAVAIL_UpdateFilterStateMachin__50:
+              SUBQ.L         #$3,D0                   ;5780 
+              BNE.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6600 00da 
+___LOCAVAIL_UpdateFilterStateMachin__51:
+              LEA            $14(A2),A0               ;41ea 0014 
+              MOVEQ.L        #$4,D0                   ;7004 
+              MOVE.L         D0,(A0)                  ;2080 
+___LOCAVAIL_UpdateFilterStateMachin__52:
+              BRA.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6000 00ce 
+___LOCAVAIL_UpdateFilterStateMachin__53:
+              LEA            $14(A2),A0               ;41ea 0014 
+              CLR.L          (A0)                     ;4290 
+              BRA.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6000 00c4 
+___LOCAVAIL_UpdateFilterStateMachin__54:
+___LOCAVAIL_UpdateFilterStateMachin__55:
+              MOVE.L         LOCAVAIL_FilterStep(A4),D0;202c 0000 
+              MOVEQ.L        #$2,D1                   ;7202 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___LOCAVAIL_UpdateFilterStateMachin__60;6628 
+___LOCAVAIL_UpdateFilterStateMachin__56:
+              MOVE.L         LOCAVAIL_FilterClassId(A4),D1;222c 0000 
+              MOVEQ.L        #$ff,D2                  ;74ff 
+              CMP.L          D2,D1                    ;b282 
+              BEQ.B          ___LOCAVAIL_UpdateFilterStateMachin__60;671e 
+___LOCAVAIL_UpdateFilterStateMachin__57:
+              MOVE.L         $24(A7),A0               ;206f 0024 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$8,A1                   ;5089 
+              CMP.L          (A1),D2                  ;b491 
+              BNE.B          ___LOCAVAIL_UpdateFilterStateMachin__60;6612 
+___LOCAVAIL_UpdateFilterStateMachin__58:
+              LEA            $c(A0),A1                ;43e8 000c 
+              CMP.L          (A1),D2                  ;b491 
+              BNE.B          ___LOCAVAIL_UpdateFilterStateMachin__60;660a 
+___LOCAVAIL_UpdateFilterStateMachin__59:
+              LEA            $14(A2),A1               ;43ea 0014 
+              CLR.L          (A1)                     ;4291 
+              BRA.W          ___LOCAVAIL_UpdateFilterStateMachin__75;6000 0092 
+___LOCAVAIL_UpdateFilterStateMachin__60:
+              MOVE.L         LOCAVAIL_FilterStep(A4),D0;202c 0000 
+              MOVEQ.L        #$3,D1                   ;7203 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.B          ___LOCAVAIL_UpdateFilterStateMachin__62;6704 
+___LOCAVAIL_UpdateFilterStateMachin__61:
+              SUBQ.L         #$4,D0                   ;5980 
+              BNE.B          ___LOCAVAIL_UpdateFilterStateMachin__74;6678 
+___LOCAVAIL_UpdateFilterStateMachin__62:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              CMP.L          LOCAVAIL_FilterClassId(A4),D0;b0ac 0000 
+              BEQ.B          ___LOCAVAIL_UpdateFilterStateMachin__74;6770 
+___LOCAVAIL_UpdateFilterStateMachin__63:
+              MOVE.L         $24(A7),A0               ;206f 0024 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$8,A1                   ;5089 
+              CMP.L          (A1),D0                  ;b091 
+              BNE.B          ___LOCAVAIL_UpdateFilterStateMachin__74;6664 
+___LOCAVAIL_UpdateFilterStateMachin__64:
+              LEA            $c(A0),A1                ;43e8 000c 
+              CMP.L          (A1),D0                  ;b091 
+              BNE.B          ___LOCAVAIL_UpdateFilterStateMachin__74;665c 
+___LOCAVAIL_UpdateFilterStateMachin__65:
+              LEA            $14(A2),A0               ;41ea 0014 
+              MOVE.L         (A0),D0                  ;2010 
+              MOVEQ.L        #$10,D1                  ;7210 
+              CMP.L          D1,D0                    ;b081 
+              BGE.B          ___LOCAVAIL_UpdateFilterStateMachin__74;6c50 
+___LOCAVAIL_UpdateFilterStateMachin__66:
+              SUBQ.L         #$1,D0                   ;5380 
+              BLT.B          ___LOCAVAIL_UpdateFilterStateMachin__75;6d56 
+___LOCAVAIL_UpdateFilterStateMachin__67:
+              CMPI.L         #$8,D0                   ;0c80 0000 0008 
+              BGE.B          ___LOCAVAIL_UpdateFilterStateMachin__75;6c4e 
+___LOCAVAIL_UpdateFilterStateMachin__68:
+              ADD.W          D0,D0                    ;d040 
+              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
+              JMP            $4(PC,D0.W)              ;4efb 0004 
+__switch_LOCAVAIL_UpdateFilterStateMachin_68:
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__69-__switch_LOCAVAIL_UpdateFilterStateMachin_68
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__69-__switch_LOCAVAIL_UpdateFilterStateMachin_68
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__69-__switch_LOCAVAIL_UpdateFilterStateMachin_68
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__72-__switch_LOCAVAIL_UpdateFilterStateMachin_68
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__69-__switch_LOCAVAIL_UpdateFilterStateMachin_68
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__69-__switch_LOCAVAIL_UpdateFilterStateMachin_68
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__69-__switch_LOCAVAIL_UpdateFilterStateMachin_68
+              DC.W           ___LOCAVAIL_UpdateFilterStateMachin__69-__switch_LOCAVAIL_UpdateFilterStateMachin_68
+___LOCAVAIL_UpdateFilterStateMachin__69:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          LOCAVAIL_FilterClassId(A4),D0;b0ac 0000 
+              BNE.B          ___LOCAVAIL_UpdateFilterStateMachin__71;6608 
+___LOCAVAIL_UpdateFilterStateMachin__70:
+              LEA            $18(A2),A0               ;41ea 0018 
+              MOVE.W         #$3,(A0)                 ;30bc 0003 
+___LOCAVAIL_UpdateFilterStateMachin__71:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,LOCAVAIL_FilterClassId(A4);2940 0000 
+              CLR.L          LOCAVAIL_FilterStep(A4)  ;42ac 0000 
+              MOVE.W         #$ffffffff,LOCAVAIL_FilterWindowHalfSpan(A4);397c ffff 0000 
+              BRA.B          ___LOCAVAIL_UpdateFilterStateMachin__75;6012 
+___LOCAVAIL_UpdateFilterStateMachin__72:
+              LEA            $14(A2),A0               ;41ea 0014 
+              CLR.L          (A0)                     ;4290 
+              BRA.B          ___LOCAVAIL_UpdateFilterStateMachin__75;600a 
+___LOCAVAIL_UpdateFilterStateMachin__73:
+___LOCAVAIL_UpdateFilterStateMachin__74:
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              BSR.W          LOCAVAIL_ResetFilterCursorState;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___LOCAVAIL_UpdateFilterStateMachin__75:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$c,A7                   ;defc 000c 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LOCAVAIL_FilterModeFlag
+              XREF           LOCAVAIL_FilterStep
+              XREF           LOCAVAIL_FilterClassId
+              XREF           NEWGRID_JMPTBL_MATH_Mulu32
+              XREF           LOCAVAIL_FilterPrevClassId
+              XREF           ED_DiagVinModeChar
+              XREF           LOCAVAIL_STR_YYLLZ_FilterStateUp
+              XREF           GROUP_AS_JMPTBL_STR_FindCharPtr
+              XREF           GROUP_AY_JMPTBL_SCRIPT_ReadCiaBB
+              XREF           LOCAVAIL_ResetFilterCursorState
+              XREF           ED_DiagGraphModeChar
+              XREF           ESQIFF_GAdsBrushListCount
+              XREF           WDISP_HighlightActive
+              XREF           LOCAVAIL_FilterCooldownTicks
+              XREF           LOCAVAIL_FilterWindowHalfSpan
+              XDEF           LOCAVAIL_UpdateFilterStateMachin
+              END
