@@ -15,7 +15,7 @@ typedef struct TEXTDISP_DisplayContext {
     UBYTE rastPort[1];
 } TEXTDISP_DisplayContext;
 
-void TEXTDISP_DrawInsetRectFrame(UBYTE *text, WORD mode)
+void TEXTDISP_DrawInsetRectFrame(char *text, WORD mode)
 {
     TEXTDISP_DisplayContext *context;
     LONG x1;
@@ -39,8 +39,8 @@ void TEXTDISP_DrawInsetRectFrame(UBYTE *text, WORD mode)
     }
 
     if (mode == 3) {
-        TLIBA1_DrawFormattedTextBlock(Global_REF_RASTPORT_2, (const char *)text, x1, y1, x2, y2);
+        TLIBA1_DrawFormattedTextBlock(Global_REF_RASTPORT_2, text, x1, y1, x2, y2);
     } else {
-        TLIBA1_DrawFormattedTextBlock((void *)context->rastPort, (const char *)text, x1, y1, x2, y2);
+        TLIBA1_DrawFormattedTextBlock((void *)context->rastPort, text, x1, y1, x2, y2);
     }
 }

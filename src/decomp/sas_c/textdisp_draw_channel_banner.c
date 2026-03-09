@@ -13,7 +13,7 @@ extern void *Global_REF_RASTPORT_2;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern void TEXTDISP_BuildEntryShortName(UBYTE *entry, char *out);
+extern void TEXTDISP_BuildEntryShortName(char *entry, char *out);
 extern void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix);
 extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth);
 extern void TEXTDISP_DrawInsetRectFrame(char *text, LONG drawMode);
@@ -28,7 +28,7 @@ typedef struct TEXTDISP_DisplayContext {
 void TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode)
 {
     TEXTDISP_DisplayContext *context;
-    UBYTE *entry;
+    char *entry;
     char *src;
     char *dst;
     void *rastPort;
@@ -36,7 +36,7 @@ void TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode)
 
     context = (TEXTDISP_DisplayContext *)WDISP_DisplayContextBase;
 
-    entry = (UBYTE *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+    entry = (char *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
         (LONG)TEXTDISP_CurrentMatchIndex,
         (TEXTDISP_ActiveGroupId == 0) ? 2 : 1);
 
