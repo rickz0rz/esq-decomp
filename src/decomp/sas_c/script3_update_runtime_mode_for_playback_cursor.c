@@ -8,8 +8,8 @@ extern UWORD CONFIG_BannerCopperHeadByte;
 extern UWORD SCRIPT_CtrlHandshakeRetryCount;
 extern UWORD TEXTDISP_CurrentMatchIndex;
 extern UWORD SCRIPT_RuntimeModeDispatchLatch;
-extern UBYTE CONFIG_MSN_FlagChar;
-extern UBYTE CONFIG_MsnRuntimeModeSelectorChar_LRBN;
+extern char CONFIG_MSN_FlagChar;
+extern char CONFIG_MsnRuntimeModeSelectorChar_LRBN;
 
 extern void SCRIPT_BeginBannerCharTransition(LONG bannerChar, LONG speedMs);
 extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);

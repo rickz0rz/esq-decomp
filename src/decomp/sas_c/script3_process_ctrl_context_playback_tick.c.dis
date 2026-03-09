@@ -35,7 +35,11 @@ ___SCRIPT_ProcessCtrlContextPlaybac__2:
               MOVE.L         D7,SCRIPT_RuntimeModeDeferredFlag(A4);2947 0000 
 ___SCRIPT_ProcessCtrlContextPlaybac__3:
               MOVE.B         CONFIG_MSN_FlagChar(A4),D0;102c 0000 
-              CMP.B          D5,D0                    ;b005 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D5,D1                    ;1205 
+              CMP.L          D1,D0                    ;b081 
               BNE.B          ___SCRIPT_ProcessCtrlContextPlaybac__7;6618 
 ___SCRIPT_ProcessCtrlContextPlaybac__4:
               MOVE.L         SCRIPT_PlaybackCursor(A4),D0;202c 0000 

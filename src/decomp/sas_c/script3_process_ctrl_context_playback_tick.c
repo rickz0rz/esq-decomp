@@ -5,7 +5,7 @@ typedef unsigned char UBYTE;
 extern LONG LOCAVAIL_PrimaryFilterState;
 extern LONG SCRIPT_RuntimeModeDeferredFlag;
 extern UWORD SCRIPT_RuntimeMode;
-extern UBYTE CONFIG_MSN_FlagChar;
+extern char CONFIG_MSN_FlagChar;
 extern LONG SCRIPT_PlaybackCursor;
 extern UWORD SCRIPT_RuntimeModeDispatchLatch;
 extern UWORD TEXTDISP_CurrentMatchIndex;

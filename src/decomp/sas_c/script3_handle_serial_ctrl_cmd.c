@@ -3,7 +3,7 @@ typedef short WORD;
 typedef unsigned char UBYTE;
 
 extern WORD Global_WORD_SELECT_CODE_IS_RAVESC;
-extern UBYTE CONFIG_MSN_FlagChar;
+extern char CONFIG_MSN_FlagChar;
 extern WORD Global_RefreshTickCounter;
 extern WORD SCRIPT_StatusRefreshHoldFlag;
 extern LONG ESQDISP_DisplayActiveFlag;

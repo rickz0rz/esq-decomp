@@ -8,7 +8,7 @@ extern WORD TEXTDISP_CurrentMatchIndex;
 extern WORD CONFIG_BannerCopperHeadByte;
 extern WORD SCRIPT_PendingBannerSpeedMs;
 extern WORD SCRIPT_PendingBannerTargetChar;
-extern UBYTE CONFIG_MSN_FlagChar;
+extern char CONFIG_MSN_FlagChar;
 extern WORD TEXTDISP_DeferredActionCountdown;
 extern WORD TEXTDISP_DeferredActionArmed;
 extern WORD TEXTDISP_ChannelSourceMode;

@@ -9,7 +9,7 @@ SCRIPT_UpdateRuntimeModeForPlayb:
 ___SCRIPT_UpdateRuntimeModeForPlayb__1:
               MOVE.W         SCRIPT_RuntimeMode(A4),D0;302c 0000 
               SUBQ.W         #$1,D0                   ;5340 
-              BNE.W          ___SCRIPT_UpdateRuntimeModeForPlayb__18;6600 0094 
+              BNE.W          ___SCRIPT_UpdateRuntimeModeForPlayb__18;6600 0096 
 ___SCRIPT_UpdateRuntimeModeForPlayb__2:
               MOVE.B         CONFIG_RuntimeMode12BannerJumpEn(A4),D0;102c 0000 
               MOVEQ.L        #$59,D1                  ;7259 
@@ -41,23 +41,24 @@ ___SCRIPT_UpdateRuntimeModeForPlayb__4:
 ___SCRIPT_UpdateRuntimeModeForPlayb__5:
               MOVEQ.L        #$53,D1                  ;7253 
               CMP.B          D1,D0                    ;b001 
-              BNE.B          ___SCRIPT_UpdateRuntimeModeForPlayb__17;662e 
+              BNE.B          ___SCRIPT_UpdateRuntimeModeForPlayb__17;6630 
 ___SCRIPT_UpdateRuntimeModeForPlayb__6:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         CONFIG_MsnRuntimeModeSelectorCha(A4),D0;102c 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
 ___SCRIPT_UpdateRuntimeModeForPlayb__7:
-              MOVEQ.L        #$42,D1                  ;7242 
-              SUB.L          D1,D0                    ;9081 
+              MOVEQ.L        #$42,D0                  ;7042 
+              SUB.L          D0,D1                    ;9280 
               BEQ.B          ___SCRIPT_UpdateRuntimeModeForPlayb__12;6710 
 ___SCRIPT_UpdateRuntimeModeForPlayb__8:
-              MOVEQ.L        #$a,D1                   ;720a 
-              SUB.L          D1,D0                    ;9081 
+              MOVEQ.L        #$a,D0                   ;700a 
+              SUB.L          D0,D1                    ;9280 
               BEQ.B          ___SCRIPT_UpdateRuntimeModeForPlayb__13;670e 
 ___SCRIPT_UpdateRuntimeModeForPlayb__9:
-              SUBQ.L         #$2,D0                   ;5580 
+              SUBQ.L         #$2,D1                   ;5581 
               BEQ.B          ___SCRIPT_UpdateRuntimeModeForPlayb__14;670e 
 ___SCRIPT_UpdateRuntimeModeForPlayb__10:
-              SUBQ.L         #$4,D0                   ;5980 
+              SUBQ.L         #$4,D1                   ;5981 
               BEQ.B          ___SCRIPT_UpdateRuntimeModeForPlayb__15;670e 
 ___SCRIPT_UpdateRuntimeModeForPlayb__11:
               BRA.B          ___SCRIPT_UpdateRuntimeModeForPlayb__16;6010 
