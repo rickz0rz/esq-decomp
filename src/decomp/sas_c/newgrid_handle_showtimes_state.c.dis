@@ -6,28 +6,30 @@ NEWGRID_HandleShowtimesState:
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
               SUB.W          #$88,A7                  ;9efc 0088 
-              MOVEM.L        D6/D7/A3/A5,-(A7)        ;48e7 0314 
+              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
 ___NEWGRID_HandleShowtimesState__1:
-              MOVE.L         $a0(A7),A3               ;266f 00a0 
-              MOVE.L         $9c(A7),A5               ;2a6f 009c 
+              MOVE.L         $a4(A7),A3               ;266f 00a4 
+              MOVE.L         $a0(A7),A5               ;2a6f 00a0 
               MOVE.L         A5,D0                    ;200d 
               BNE.B          ___NEWGRID_HandleShowtimesState__3;660a 
 ___NEWGRID_HandleShowtimesState__2:
               MOVEQ.L        #$4,D0                   ;7004 
               MOVE.L         D0,NEWGRID_ShowtimesWorkflowStateLa(A4);2940 0000 
-              BRA.W          ___NEWGRID_HandleShowtimesState__23;6000 011e 
+              BRA.W          ___NEWGRID_HandleShowtimesState__23;6000 0120 
 ___NEWGRID_HandleShowtimesState__3:
+              MOVE.L         A5,A2                    ;244d 
+              MOVE.L         A3,$98(A7)               ;2f4b 0098 
               MOVE.L         NEWGRID_ShowtimesWorkflowStateLa(A4),D0;202c 0000 
               MOVEQ.L        #$4,D1                   ;7204 
               CMP.L          D1,D0                    ;b081 
-              BNE.W          ___NEWGRID_HandleShowtimesState__16;6600 00e6 
+              BNE.W          ___NEWGRID_HandleShowtimesState__16;6600 00e4 
 ___NEWGRID_HandleShowtimesState__4:
-              TST.L          (A3)                     ;4a93 
-              BEQ.W          ___NEWGRID_HandleShowtimesState__23;6700 010c 
-___NEWGRID_HandleShowtimesState__5:
-              LEA            $4(A3),A0                ;41eb 0004 
+              MOVE.L         $98(A7),A0               ;206f 0098 
               TST.L          (A0)                     ;4a90 
-              BEQ.W          ___NEWGRID_HandleShowtimesState__23;6700 0102 
+              BEQ.W          ___NEWGRID_HandleShowtimesState__23;6700 0104 
+___NEWGRID_HandleShowtimesState__5:
+              TST.L          $4(A0)                   ;4aa8 0004 
+              BEQ.W          ___NEWGRID_HandleShowtimesState__23;6700 00fc 
 ___NEWGRID_HandleShowtimesState__6:
 ___NEWGRID_HandleShowtimesState__7:
               MOVE.L         GCOMMAND_PpvShowtimesLayoutPen(A4),-(A7);2f2c 0000 
@@ -35,8 +37,8 @@ ___NEWGRID_HandleShowtimesState__7:
               PEA            ($264).w                 ;4878 0264 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_SetLayo;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              LEA            $14(A3),A0               ;41eb 0014 
-              MOVE.W         (A0),D7                  ;3e10 
+              MOVE.L         $98(A7),A0               ;206f 0098 
+              MOVE.W         $14(A0),D7               ;3e28 0014 
               EXT.L          D7                       ;48c7 
               MOVEQ.L        #$30,D0                  ;7030 
               CMP.L          D0,D7                    ;be80 
@@ -47,29 +49,29 @@ ___NEWGRID_HandleShowtimesState__9:
               MOVE.B         GCOMMAND_PpvDetailLayoutFlag(A4),D0;102c 0000 
               MOVEQ.L        #$4e,D1                  ;724e 
               CMP.B          D1,D0                    ;b001 
-              BNE.B          ___NEWGRID_HandleShowtimesState__11;6626 
+              BNE.B          ___NEWGRID_HandleShowtimesState__11;6628 
 ___NEWGRID_HandleShowtimesState__10:
-              LEA            $3c(A5),A0               ;41ed 003c 
-              LEA            $4(A3),A1                ;43eb 0004 
+              LEA            $3c(A2),A0               ;41ea 003c 
               PEA            ($ffffffff).w            ;4878 ffff 
               PEA            ($1).w                   ;4878 0001 
               PEA            ($2).w                   ;4878 0002 
               MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         $a8(A7),A1               ;226f 00a8 
+              MOVE.L         $4(A1),-(A7)             ;2f29 0004 
               MOVE.L         (A1),-(A7)               ;2f11 
-              MOVE.L         (A3),-(A7)               ;2f13 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID_DrawGridEntry    ;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
-              BRA.B          ___NEWGRID_HandleShowtimesState__12;6024 
+              BRA.B          ___NEWGRID_HandleShowtimesState__12;6026 
 ___NEWGRID_HandleShowtimesState__11:
-              LEA            $3c(A5),A0               ;41ed 003c 
-              LEA            $4(A3),A1                ;43eb 0004 
+              LEA            $3c(A2),A0               ;41ea 003c 
               PEA            ($ffffffff).w            ;4878 ffff 
               PEA            ($1).w                   ;4878 0001 
               PEA            ($3).w                   ;4878 0003 
               MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         $a8(A7),A1               ;226f 00a8 
+              MOVE.L         $4(A1),-(A7)             ;2f29 0004 
               MOVE.L         (A1),-(A7)               ;2f11 
-              MOVE.L         (A3),-(A7)               ;2f13 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID_DrawGridEntry    ;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
@@ -80,7 +82,7 @@ ___NEWGRID_HandleShowtimesState__12:
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_BuildShowtimesText;6100 0000 
-              LEA            $3c(A5),A0               ;41ed 003c 
+              LEA            $3c(A2),A0               ;41ea 003c 
               PEA            $26(A7)                  ;486f 0026 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_LayoutA;6100 0000 
@@ -97,18 +99,15 @@ ___NEWGRID_HandleShowtimesState__14:
               MOVEQ.L        #$5,D0                   ;7005 
               MOVE.L         D0,NEWGRID_ShowtimesWorkflowStateLa(A4);2940 0000 
 ___NEWGRID_HandleShowtimesState__15:
-              LEA            $20(A5),A0               ;41ed 0020 
               PEA            ($2).w                   ;4878 0002 
-              MOVE.L         A0,$14(A7)               ;2f48 0014 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_Compute;6100 0000 
-              MOVE.L         $14(A7),A0               ;206f 0014 
-              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         D0,$20(A2)               ;2540 0020 
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.L         NEWGRID_ShowtimesWorkflowStateLa(A4),D0;202c 0000 
-              BRA.B          ___NEWGRID_HandleShowtimesState__23;602c 
+              BRA.B          ___NEWGRID_HandleShowtimesState__23;602a 
 ___NEWGRID_HandleShowtimesState__16:
               SUBQ.L         #$5,D0                   ;5b80 
-              BNE.B          ___NEWGRID_HandleShowtimesState__21;6622 
+              BNE.B          ___NEWGRID_HandleShowtimesState__21;6620 
 ___NEWGRID_HandleShowtimesState__17:
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_DrawGridFrameVariant3;6100 0000 
@@ -121,9 +120,8 @@ ___NEWGRID_HandleShowtimesState__18:
 ___NEWGRID_HandleShowtimesState__19:
               MOVEQ.L        #$5,D6                   ;7c05 
 ___NEWGRID_HandleShowtimesState__20:
-              LEA            $20(A5),A0               ;41ed 0020 
               MOVEQ.L        #$ff,D0                  ;70ff 
-              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         D0,$20(A2)               ;2540 0020 
               MOVE.L         D6,D0                    ;2006 
               MOVE.L         D0,NEWGRID_ShowtimesWorkflowStateLa(A4);2940 0000 
               BRA.B          ___NEWGRID_HandleShowtimesState__23;6006 
@@ -132,7 +130,7 @@ ___NEWGRID_HandleShowtimesState__21:
               MOVE.L         D0,NEWGRID_ShowtimesWorkflowStateLa(A4);2940 0000 
 ___NEWGRID_HandleShowtimesState__22:
 ___NEWGRID_HandleShowtimesState__23:
-              MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
               ADD.W          #$88,A7                  ;defc 0088 
               RTS                                     ;4e75 
 __const:
