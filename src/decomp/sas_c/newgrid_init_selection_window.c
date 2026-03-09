@@ -23,11 +23,11 @@ extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE CLOCK_DaySlotIndex;
 extern LONG GCOMMAND_PpvSelectionWindowMinutes;
 
-extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(UBYTE *slotPtr);
 extern LONG SCRIPT3_JMPTBL_MATH_DivS32(LONG num, LONG den);
 
-void NEWGRID_InitSelectionWindow(UBYTE *ctx, WORD row)
+void NEWGRID_InitSelectionWindow(char *ctx, WORD row)
 {
     NEWGRID_SelectionWindow *window;
     LONG i;

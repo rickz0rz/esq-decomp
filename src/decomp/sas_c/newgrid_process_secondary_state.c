@@ -20,16 +20,16 @@ extern UBYTE GCOMMAND_NicheWorkflowMode;
 extern char *GCOMMAND_DigitalNicheListingsTemplatePtr;
 extern UBYTE CONFIG_NewgridSelectionCode48_49EnabledFlag;
 
-extern LONG NEWGRID_HandleGridEditorState(UBYTE *ctx, LONG layoutPen, LONG rowPen, char *sourceText);
-extern LONG NEWGRID_UpdateGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex);
-extern LONG NEWGRID_ProcessGridEntries(UBYTE *ctx, LONG keyIndex, WORD rowIndex);
+extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG layoutPen, LONG rowPen, char *sourceText);
+extern LONG NEWGRID_UpdateGridState(char *ctx, LONG keyIndex, WORD rowIndex);
+extern LONG NEWGRID_ProcessGridEntries(char *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_FindNextEntryWithFlags(LONG mode, LONG startIndex);
 extern LONG NEWGRID_ShouldOpenEditor(NEWGRID_Entry *entry);
-extern void NEWGRID_ValidateSelectionCode(UBYTE *ctx, LONG code);
+extern void NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
-extern LONG NEWGRID_ComputeColumnIndex(UBYTE *ctx);
+extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
 
-LONG NEWGRID_ProcessSecondaryState(UBYTE *ctx, WORD rowIndex)
+LONG NEWGRID_ProcessSecondaryState(char *ctx, WORD rowIndex)
 {
     LONG scannedThisStep;
     LONG state;
