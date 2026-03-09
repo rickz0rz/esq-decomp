@@ -1,6 +1,13 @@
 typedef unsigned short UWORD;
 typedef long LONG;
 
+typedef struct CLEANUP_RastPort {
+    LONG pad0;
+    LONG bitmap4;
+    UWORD pad8[12];
+    UWORD flags32;
+} CLEANUP_RastPort;
+
 enum {
     RASTPORT_BITMAP_OFFSET = 4,
     RASTPORT_FLAGS_OFFSET = 32,
@@ -18,15 +25,16 @@ void CLEANUP_DrawTimeBannerSegment(void);
 
 void CLEANUP_DrawDateTimeBannerRow(void)
 {
+    CLEANUP_RastPort *rp;
     LONG savedBitmap;
 
-    savedBitmap = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET);
-    *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET) = (LONG)&Global_REF_696_400_BITMAP;
+    rp = (CLEANUP_RastPort *)Global_REF_RASTPORT_1;
+    savedBitmap = rp->bitmap4;
+    rp->bitmap4 = (LONG)&Global_REF_696_400_BITMAP;
 
     _LVOSetAPen();
 
-    *(UWORD *)(Global_REF_RASTPORT_1 + RASTPORT_FLAGS_OFFSET) =
-        (UWORD)(*(UWORD *)(Global_REF_RASTPORT_1 + RASTPORT_FLAGS_OFFSET) & RASTPORT_FLAGMASK_CLEAR_BIT3);
+    rp->flags32 = (UWORD)(rp->flags32 & RASTPORT_FLAGMASK_CLEAR_BIT3);
 
     _LVORectFill();
 
@@ -34,5 +42,5 @@ void CLEANUP_DrawDateTimeBannerRow(void)
     CLEANUP_DrawBannerSpacerSegment();
     CLEANUP_DrawTimeBannerSegment();
 
-    *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET) = savedBitmap;
+    rp->bitmap4 = savedBitmap;
 }

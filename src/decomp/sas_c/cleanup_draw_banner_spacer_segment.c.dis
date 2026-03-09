@@ -5,23 +5,17 @@ CLEANUP_DrawBannerSpacerSegment:
               SUB.L          #$14,D0                  ;90bc 0000 0014 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
 ___CLEANUP_DrawBannerSpacerSegment__1:
-              MOVE.L         Global_REF_RASTPORT_1(A4),D0;202c 0000 
-              ADDQ.L         #$4,D0                   ;5880 
-              MOVE.L         D0,A0                    ;2040 
-              MOVE.L         (A0),D7                  ;2e10 
+              MOVE.L         Global_REF_RASTPORT_1(A4),A5;2a6c 0000 
+              MOVE.L         $4(A5),D7                ;2e2d 0004 
               LEA            Global_REF_696_400_BITMAP(A4),A0;41ec 0000 
-              MOVE.L         D0,A1                    ;2240 
-              MOVE.L         A0,(A1)                  ;2288 
+              MOVE.L         A0,$4(A5)                ;2b48 0004 
               BSR.W          _LVOSetAPen              ;6100 0000 
-              MOVEQ.L        #$20,D0                  ;7020 
-              ADD.L          Global_REF_RASTPORT_1(A4),D0;d0ac 0000 
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.L         D0,A0                    ;2040 
-              MOVE.W         (A0),D1                  ;3210 
-              ANDI.L         #$fff7,D1                ;0281 0000 fff7 
-              MOVE.W         D1,(A0)                  ;3081 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $20(A5),D0               ;302d 0020 
+              ANDI.L         #$fff7,D0                ;0280 0000 fff7 
+              MOVE.W         D0,$20(A5)               ;3b40 0020 
               BSR.W          _LVORectFill             ;6100 0000 
               MOVE.L         Global_REF_RASTPORT_1(A4),A0;206c 0000 
               PEA            ($43).w                  ;4878 0043 
@@ -31,12 +25,9 @@ ___CLEANUP_DrawBannerSpacerSegment__1:
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          BEVEL_DrawBevelFrameWithTopRight;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
-              MOVE.L         Global_REF_RASTPORT_1(A4),D0;202c 0000 
-              ADDQ.L         #$4,D0                   ;5880 
-              MOVE.L         D0,A0                    ;2040 
-              MOVE.L         D7,(A0)                  ;2087 
+              MOVE.L         D7,$4(A5)                ;2b47 0004 
 ___CLEANUP_DrawBannerSpacerSegment__2:
-              MOVE.L         (A7)+,D7                 ;2e1f 
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 __const:
 __strings:
