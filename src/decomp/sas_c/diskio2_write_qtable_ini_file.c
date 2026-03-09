@@ -2,8 +2,8 @@ typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 
 struct AliasPair {
-    const char *key;
-    const char *value;
+    char *key;
+    char *value;
 };
 
 extern long DISKIO_OpenFileWithBuffer(const char *path, long mode);
