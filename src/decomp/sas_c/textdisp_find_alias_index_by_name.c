@@ -9,7 +9,7 @@ typedef struct TEXTDISP_CandidateEntry {
 } TEXTDISP_CandidateEntry;
 
 typedef struct TEXTDISP_AliasEntry {
-    UBYTE *aliasText;
+    char *aliasText;
 } TEXTDISP_AliasEntry;
 
 extern WORD TEXTDISP_AliasCount;
@@ -37,8 +37,8 @@ LONG TEXTDISP_FindAliasIndexByName(UBYTE *entryPtr)
     idx = 0;
     while ((WORD)idx < TEXTDISP_AliasCount) {
         TEXTDISP_AliasEntry *aliasEntry;
-        UBYTE *alias;
-        UBYTE *scan;
+        char *alias;
+        char *scan;
 
         aliasEntry = TEXTDISP_AliasPtrTable[idx];
         alias = aliasEntry->aliasText;

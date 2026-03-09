@@ -25,7 +25,7 @@ ___TEXTDISP_FindAliasIndexByName__5:
               MOVE.L         D5,D0                    ;2005 
               MOVE.W         TEXTDISP_AliasCount(A4),D1;322c 0000 
               CMP.W          D1,D0                    ;b041 
-              BGE.B          ___TEXTDISP_FindAliasIndexByName__12;6c52 
+              BGE.B          ___TEXTDISP_FindAliasIndexByName__12;6c5a 
 ___TEXTDISP_FindAliasIndexByName__6:
               MOVE.L         D5,D1                    ;2205 
               ASL.L          #$2,D1                   ;e581 
@@ -38,11 +38,15 @@ ___TEXTDISP_FindAliasIndexByName__6:
 ___TEXTDISP_FindAliasIndexByName__7:
               MOVE.L         $30(A7),A0               ;206f 0030 
               MOVE.B         (A0),D0                  ;1010 
-              CMP.B          D6,D0                    ;b006 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D6,D1                    ;1206 
+              CMP.L          D1,D0                    ;b081 
               BEQ.B          ___TEXTDISP_FindAliasIndexByName__9;6706 
 ___TEXTDISP_FindAliasIndexByName__8:
               ADDQ.L         #$1,$30(A7)              ;52af 0030 
-              BRA.B          ___TEXTDISP_FindAliasIndexByName__7;60f0 
+              BRA.B          ___TEXTDISP_FindAliasIndexByName__7;60e8 
 ___TEXTDISP_FindAliasIndexByName__9:
               MOVE.L         $30(A7),D0               ;202f 0030 
               SUB.L          $34(A7),D0               ;90af 0034 
@@ -58,7 +62,7 @@ ___TEXTDISP_FindAliasIndexByName__10:
               BRA.B          ___TEXTDISP_FindAliasIndexByName__14;6006 
 ___TEXTDISP_FindAliasIndexByName__11:
               ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___TEXTDISP_FindAliasIndexByName__5;60a4 
+              BRA.B          ___TEXTDISP_FindAliasIndexByName__5;609c 
 ___TEXTDISP_FindAliasIndexByName__12:
               MOVE.L         D7,D0                    ;2007 
 ___TEXTDISP_FindAliasIndexByName__13:
