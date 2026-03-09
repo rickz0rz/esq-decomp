@@ -21,7 +21,7 @@ extern void WDISP_SPrintf(void);
 extern void STREAM_ReadLineWithLimit(void);
 extern void STR_FindAnyCharPtr(void);
 extern void ED1_ExitEscMenu(void);
-extern void ESQPARS_ReplaceOwnedString(void);
+extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern void ED1_EnterEscMenu(void);
 extern void ESQFUNC_DrawEscMenuVersion(void);
 
@@ -48,6 +48,6 @@ void PARSEINI_JMPTBL_WDISP_SPrintf(void){WDISP_SPrintf();}
 void PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(void){STREAM_ReadLineWithLimit();}
 void PARSEINI_JMPTBL_STR_FindAnyCharPtr(void){STR_FindAnyCharPtr();}
 void PARSEINI_JMPTBL_ED1_ExitEscMenu(void){ED1_ExitEscMenu();}
-void PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(void){ESQPARS_ReplaceOwnedString();}
+char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, char *oldText){return ESQPARS_ReplaceOwnedString(newText, oldText);}
 void PARSEINI_JMPTBL_ED1_EnterEscMenu(void){ED1_EnterEscMenu();}
 void PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion(void){ESQFUNC_DrawEscMenuVersion();}

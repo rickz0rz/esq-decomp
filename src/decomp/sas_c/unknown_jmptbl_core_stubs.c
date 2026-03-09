@@ -3,7 +3,7 @@ extern void DISPLIB_DisplayTextAtPosition(void);
 extern void ESQ_WildcardMatch(void);
 extern void DST_NormalizeDayOfYear(void);
 extern void ESQ_GenerateXorChecksumByte(void);
-extern void ESQPARS_ReplaceOwnedString(void);
+extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 
 void UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer(void)
 {
@@ -30,7 +30,7 @@ void UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte(void)
     ESQ_GenerateXorChecksumByte();
 }
 
-void ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(void)
+char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, char *oldText)
 {
-    ESQPARS_ReplaceOwnedString();
+    return ESQPARS_ReplaceOwnedString(newText, oldText);
 }
