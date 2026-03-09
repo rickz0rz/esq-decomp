@@ -9,11 +9,11 @@ typedef struct AllocNode {
 extern AllocNode *Global_AllocListHead;
 extern LONG Global_AllocBytesTotal;
 
-UBYTE *STRING_FindSubstring(UBYTE *haystack, const UBYTE *needle)
+char *STRING_FindSubstring(char *haystack, const char *needle)
 {
-    UBYTE *start;
-    const UBYTE *p;
-    UBYTE *q;
+    char *start;
+    const char *p;
+    char *q;
 
     for (;;) {
         q = haystack;
@@ -29,12 +29,12 @@ UBYTE *STRING_FindSubstring(UBYTE *haystack, const UBYTE *needle)
         }
 
         if (*q == 0) {
-            return (UBYTE *)0;
+            return (char *)0;
         }
 
         haystack++;
         if (*haystack == 0) {
-            return (UBYTE *)0;
+            return (char *)0;
         }
 
         start = haystack;

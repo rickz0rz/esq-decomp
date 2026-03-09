@@ -9,10 +9,11 @@ ___STRING_ToUpperInPlace__1:
               MOVE.L         A5,A3                    ;264d 
 ___STRING_ToUpperInPlace__2:
               MOVE.B         (A3),D0                  ;1013 
-              BEQ.B          ___STRING_ToUpperInPlace__7;6722 
+              BEQ.B          ___STRING_ToUpperInPlace__7;6724 
 ___STRING_ToUpperInPlace__3:
-              MOVEQ.L        #$0,D7                   ;7e00 
               MOVE.B         D0,D7                    ;1e00 
+              EXT.W          D7                       ;4887 
+              EXT.L          D7                       ;48c7 
               LEA            Global_CharClassTable(A4),A0;41ec 0000 
               BTST           #$1,$0(A0,D7.L)          ;0830 0001 7800 
               BEQ.B          ___STRING_ToUpperInPlace__5;670a 
@@ -27,7 +28,7 @@ ___STRING_ToUpperInPlace__5:
               MOVE.B         D0,(A3)                  ;1680 
 ___STRING_ToUpperInPlace__6:
               ADDQ.L         #$1,A3                   ;528b 
-              BRA.B          ___STRING_ToUpperInPlace__2;60da 
+              BRA.B          ___STRING_ToUpperInPlace__2;60d8 
 ___STRING_ToUpperInPlace__7:
               MOVE.L         A5,D0                    ;200d 
 ___STRING_ToUpperInPlace__8:

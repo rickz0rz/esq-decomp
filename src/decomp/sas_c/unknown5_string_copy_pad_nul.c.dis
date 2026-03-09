@@ -16,9 +16,9 @@ ___STRING_CopyPadNul__2:
               BEQ.B          ___STRING_CopyPadNul__8  ;6720 
 ___STRING_CopyPadNul__3:
               MOVE.B         (A3),(A5)                ;1a93 
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A3)+,D0                 ;101b 
-              TST.L          D0                       ;4a80 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               BNE.B          ___STRING_CopyPadNul__7  ;6612 
 ___STRING_CopyPadNul__4:
               MOVE.L         D7,D0                    ;2007 

@@ -1,12 +1,12 @@
 typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
-UBYTE *STRING_AppendN(UBYTE *dst, const UBYTE *src, ULONG maxBytes)
+char *STRING_AppendN(char *dst, const char *src, ULONG maxBytes)
 {
     ULONG srcLen;
     ULONG dstLen;
     ULONG n;
-    UBYTE *out;
+    char *out;
 
     srcLen = 0;
     while (src[srcLen] != 0) {

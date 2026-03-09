@@ -3,9 +3,9 @@ typedef unsigned char UBYTE;
 
 extern UBYTE Global_CharClassTable[];
 
-UBYTE *STRING_ToUpperInPlace(UBYTE *s)
+char *STRING_ToUpperInPlace(char *s)
 {
-    UBYTE *p;
+    char *p;
 
     p = s;
     while (*p != 0) {

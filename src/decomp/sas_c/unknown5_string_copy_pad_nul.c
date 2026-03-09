@@ -1,9 +1,9 @@
 typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
-UBYTE *STRING_CopyPadNul(UBYTE *dst, const UBYTE *src, ULONG maxLen)
+char *STRING_CopyPadNul(char *dst, const char *src, ULONG maxLen)
 {
-    UBYTE *ret;
+    char *ret;
 
     ret = dst;
 
