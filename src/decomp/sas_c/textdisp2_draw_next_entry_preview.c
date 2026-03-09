@@ -8,7 +8,7 @@ typedef struct LADFUNC_PreviewEntry {
 } LADFUNC_PreviewEntry;
 
 extern UWORD LADFUNC_EntryCount;
-extern void *LADFUNC_EntryPtrTable[];
+extern LADFUNC_PreviewEntry *LADFUNC_EntryPtrTable[];
 
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern void TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview(LONG entryIndex);
@@ -16,7 +16,7 @@ extern void TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview(LONG entryIndex);
 void TEXTDISP_DrawNextEntryPreview(void)
 {
     for (;;) {
-        if (((LADFUNC_PreviewEntry *)LADFUNC_EntryPtrTable[(LONG)(UWORD)LADFUNC_EntryCount])->state == 1) {
+        if (LADFUNC_EntryPtrTable[(LONG)(UWORD)LADFUNC_EntryCount]->state == 1) {
             break;
         }
 
