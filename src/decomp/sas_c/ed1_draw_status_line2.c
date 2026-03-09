@@ -20,15 +20,23 @@ extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern LONG ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void *rastPort, const char *text, LONG y);
 extern LONG _LVOSetRast(void *gfxBase, void *rastPort, LONG pen);
 
+typedef struct ED1_DisplayContext {
+    unsigned char pad0[2];
+    unsigned char rastPort[1];
+} ED1_DisplayContext;
+
 void ED1_DrawStatusLine2(void)
 {
-    const LONG RASTPORT_OFFSET = 2;
     const LONG PEN_BG = 2;
     const LONG STATUS_Y_BUDGET = 120;
     const LONG STATUS_Y_CYCLE = 150;
     const LONG STATUS_Y_CLOCK = 180;
+    ED1_DisplayContext *context;
     char statusLine[51];
-    void *rastPort = (void *)((unsigned char *)WDISP_DisplayContextBase + RASTPORT_OFFSET);
+    void *rastPort;
+
+    context = (ED1_DisplayContext *)WDISP_DisplayContextBase;
+    rastPort = (void *)context->rastPort;
 
     _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, rastPort, PEN_BG);
 
