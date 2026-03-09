@@ -1,25 +1,25 @@
 typedef short WORD;
 
-extern void *ESQIFF_SecondaryLineHeadPtr;
-extern void *ESQIFF_SecondaryLineTailPtr;
-extern void *ESQIFF_PrimaryLineHeadPtr;
-extern void *ESQIFF_PrimaryLineTailPtr;
+extern char *ESQIFF_SecondaryLineHeadPtr;
+extern char *ESQIFF_SecondaryLineTailPtr;
+extern char *ESQIFF_PrimaryLineHeadPtr;
+extern char *ESQIFF_PrimaryLineTailPtr;
 
-extern void *ESQPARS_ReplaceOwnedString(void *new_ptr, void *old_ptr);
+extern char *ESQPARS_ReplaceOwnedString(char *new_ptr, char *old_ptr);
 
-void *ESQIFF2_ClearLineHeadTailByMode(WORD mode)
+char *ESQIFF2_ClearLineHeadTailByMode(WORD mode)
 {
-    void *result;
+    char *result;
 
     if (mode == 2) {
-        result = ESQPARS_ReplaceOwnedString((void *)0, ESQIFF_SecondaryLineHeadPtr);
+        result = ESQPARS_ReplaceOwnedString((char *)0, ESQIFF_SecondaryLineHeadPtr);
         ESQIFF_SecondaryLineHeadPtr = result;
-        result = ESQPARS_ReplaceOwnedString((void *)0, ESQIFF_SecondaryLineTailPtr);
+        result = ESQPARS_ReplaceOwnedString((char *)0, ESQIFF_SecondaryLineTailPtr);
         ESQIFF_SecondaryLineTailPtr = result;
     } else {
-        result = ESQPARS_ReplaceOwnedString((void *)0, ESQIFF_PrimaryLineHeadPtr);
+        result = ESQPARS_ReplaceOwnedString((char *)0, ESQIFF_PrimaryLineHeadPtr);
         ESQIFF_PrimaryLineHeadPtr = result;
-        result = ESQPARS_ReplaceOwnedString((void *)0, ESQIFF_PrimaryLineTailPtr);
+        result = ESQPARS_ReplaceOwnedString((char *)0, ESQIFF_PrimaryLineTailPtr);
         ESQIFF_PrimaryLineTailPtr = result;
     }
 
