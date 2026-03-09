@@ -4,6 +4,27 @@ typedef unsigned char UBYTE;
 #define MEMF_PUBLIC 1L
 #define MEMF_CLEAR 65536L
 
+typedef struct PARSEINI_WeatherSourceNode {
+    char label[8];
+    struct PARSEINI_WeatherSourceNode *next;
+} PARSEINI_WeatherSourceNode;
+
+typedef struct PARSEINI_WeatherBlock {
+    UBYTE pad0[190];
+    UBYTE typeByte;
+    UBYTE id[3];
+    LONG loadColorMode;
+    LONG xPos;
+    LONG yPos;
+    LONG xSource;
+    LONG ySource;
+    LONG sizeX;
+    LONG sizeY;
+    LONG horizAlign;
+    LONG vertAlign;
+    PARSEINI_WeatherSourceNode *sourceList;
+} PARSEINI_WeatherBlock;
+
 extern void *PARSEINI_ParsedDescriptorListHead;
 extern void *PARSEINI_CurrentWeatherBlockTempPtr;
 extern void *PARSEINI_CurrentWeatherBlockPtr;
@@ -47,7 +68,7 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
     char *sourceEnd;
     char *sourceDst;
     char *sourceSrc;
-    UBYTE *weatherBlock;
+    PARSEINI_WeatherBlock *weatherBlock;
 
     if (PARSEINI_ParsedDescriptorListHead == (void *)0) {
         PARSEINI_CurrentWeatherBlockTempPtr = (void *)0;
@@ -57,8 +78,8 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_FILENAME_WeatherBlock) == 0) {
         PARSEINI_CurrentWeatherBlockTempPtr = (void *)0;
         newAllocNode = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(entryValue, PARSEINI_CurrentWeatherBlockPtr);
-        weatherBlock = (UBYTE *)newAllocNode;
-        weatherBlock[190] = 1;
+        weatherBlock = (PARSEINI_WeatherBlock *)newAllocNode;
+        weatherBlock->typeByte = (UBYTE)1;
         PARSEINI_CurrentWeatherBlockPtr = newAllocNode;
         if (PARSEINI_ParsedDescriptorListHead == (void *)0) {
             PARSEINI_ParsedDescriptorListHead = newAllocNode;
@@ -70,62 +91,63 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_STR_LOADCOLOR) == 0) {
+        weatherBlock = (PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr;
         if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_ALL) == 0) {
-            *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 194)) = 0;
+            weatherBlock->loadColorMode = 0;
             return;
         }
         if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_NONE) == 0) {
-            *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 194)) = 2;
+            weatherBlock->loadColorMode = 2;
             return;
         }
         if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_TEXT) == 0) {
-            *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 194)) = 3;
+            weatherBlock->loadColorMode = 3;
             return;
         }
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 194)) = 1;
+        weatherBlock->loadColorMode = 1;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_XPOS) == 0) {
         parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 198)) = parsedValue;
+        ((PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr)->xPos = parsedValue;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_TYPE) == 0) {
         if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_DITHER) == 0) {
-            ((UBYTE *)PARSEINI_CurrentWeatherBlockPtr)[190] = 2;
+            ((PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr)->typeByte = (UBYTE)2;
         }
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_YPOS) == 0) {
         parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 202)) = parsedValue;
+        ((PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr)->yPos = parsedValue;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_XSOURCE) == 0) {
         parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 206)) = parsedValue;
+        ((PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr)->xSource = parsedValue;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_YSOURCE) == 0) {
         parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 210)) = parsedValue;
+        ((PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr)->ySource = parsedValue;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_SIZEX) == 0) {
         parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 214)) = parsedValue;
+        ((PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr)->sizeX = parsedValue;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_SIZEY) == 0) {
         parsedValue = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(entryValue);
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 218)) = parsedValue;
+        ((PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr)->sizeY = parsedValue;
         return;
     }
 
@@ -138,7 +160,7 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
 
         if (sourceLen > 0) {
             if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_PPV) == 0) {
-                ((UBYTE *)PARSEINI_CurrentWeatherBlockPtr)[190] = 3;
+                ((PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr)->typeByte = (UBYTE)3;
                 return;
             }
 
@@ -148,7 +170,7 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
             if (newAllocNode == (void *)0) {
                 return;
             }
-            *((LONG *)((UBYTE *)newAllocNode + 8)) = 0;
+            ((PARSEINI_WeatherSourceNode *)newAllocNode)->next = (PARSEINI_WeatherSourceNode *)0;
 
             sourceDst = (char *)newAllocNode;
             sourceSrc = entryValue;
@@ -156,43 +178,47 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
                 *sourceDst++ = *sourceSrc++;
             } while (sourceDst[-1] != 0);
 
-            if (*((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 230)) == 0) {
-                *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 230)) = (LONG)newAllocNode;
+            weatherBlock = (PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr;
+            if (weatherBlock->sourceList == (PARSEINI_WeatherSourceNode *)0) {
+                weatherBlock->sourceList = (PARSEINI_WeatherSourceNode *)newAllocNode;
             } else if (prevSourceNode != (void *)0) {
-                *((LONG *)((UBYTE *)prevSourceNode + 8)) = (LONG)newAllocNode;
+                ((PARSEINI_WeatherSourceNode *)prevSourceNode)->next = (PARSEINI_WeatherSourceNode *)newAllocNode;
             }
         }
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_STR_HORIZONTAL) == 0) {
+        weatherBlock = (PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr;
         if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_RIGHT) == 0) {
-            *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 222)) = 2;
+            weatherBlock->horizAlign = 2;
             return;
         }
         if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_CENTER_HorizontalAlign) == 0) {
-            *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 222)) = 1;
+            weatherBlock->horizAlign = 1;
             return;
         }
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 222)) = 0;
+        weatherBlock->horizAlign = 0;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_VERTICAL) == 0) {
+        weatherBlock = (PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr;
         if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_BOTTOM) == 0) {
-            *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 226)) = 2;
+            weatherBlock->vertAlign = 2;
             return;
         }
         if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_CENTER_VerticalAlign) == 0) {
-            *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 226)) = 1;
+            weatherBlock->vertAlign = 1;
             return;
         }
-        *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 226)) = 0;
+        weatherBlock->vertAlign = 0;
         return;
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_ID) == 0) {
-        SCRIPT3_JMPTBL_STRING_CopyPadNul((char *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 191), entryValue, 2);
-        ((UBYTE *)PARSEINI_CurrentWeatherBlockPtr)[193] = 0;
+        weatherBlock = (PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr;
+        SCRIPT3_JMPTBL_STRING_CopyPadNul((char *)weatherBlock->id, entryValue, 2);
+        weatherBlock->id[2] = 0;
     }
 }

@@ -39,7 +39,7 @@ ___PARSEINI_ProcessWeatherBlocks__5:
               MOVE.L         D0,PARSEINI_ParsedDescriptorListHea(A4);2940 0000 
 ___PARSEINI_ProcessWeatherBlocks__6:
               TST.L          PARSEINI_CurrentWeatherBlockPtr(A4);4aac 0000 
-              BEQ.W          ___PARSEINI_ProcessWeatherBlocks__64;6700 0366 
+              BEQ.W          ___PARSEINI_ProcessWeatherBlocks__64;6700 0352 
 ___PARSEINI_ProcessWeatherBlocks__7:
 ___PARSEINI_ProcessWeatherBlocks__8:
               PEA            PARSEINI_STR_LOADCOLOR(A4);486c 0000 
@@ -47,68 +47,63 @@ ___PARSEINI_ProcessWeatherBlocks__8:
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__16;6670 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__16;666c 
 ___PARSEINI_ProcessWeatherBlocks__9:
+              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),$14(A7);2f6c 0000 0014 
               PEA            PARSEINI_TAG_ALL(A4)     ;486c 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__11;660e 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__11;660c 
 ___PARSEINI_ProcessWeatherBlocks__10:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$c2,A0                  ;d0fc 00c2 
-              CLR.L          (A0)                     ;4290 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0338 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              CLR.L          $c2(A0)                  ;42a8 00c2 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0320 
 ___PARSEINI_ProcessWeatherBlocks__11:
               PEA            PARSEINI_TAG_NONE(A4)    ;486c 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__13;6610 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__13;660e 
 ___PARSEINI_ProcessWeatherBlocks__12:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$c2,A0                  ;d0fc 00c2 
               MOVEQ.L        #$2,D0                   ;7002 
-              MOVE.L         D0,(A0)                  ;2080 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0318 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         D0,$c2(A0)               ;2140 00c2 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0302 
 ___PARSEINI_ProcessWeatherBlocks__13:
               PEA            PARSEINI_TAG_TEXT(A4)    ;486c 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__15;6612 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__15;660e 
 ___PARSEINI_ProcessWeatherBlocks__14:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              MOVE.L         A0,A1                    ;2248 
-              ADD.W          #$c2,A1                  ;d2fc 00c2 
               MOVEQ.L        #$3,D0                   ;7003 
-              MOVE.L         D0,(A1)                  ;2280 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 02f6 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         D0,$c2(A0)               ;2140 00c2 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 02e4 
 ___PARSEINI_ProcessWeatherBlocks__15:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$c2,A0                  ;d0fc 00c2 
               MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,(A0)                  ;2080 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 02e6 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         D0,$c2(A0)               ;2140 00c2 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 02d6 
 ___PARSEINI_ProcessWeatherBlocks__16:
               PEA            PARSEINI_TAG_XPOS(A4)    ;486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__18;6618 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__18;6616 
 ___PARSEINI_ProcessWeatherBlocks__17:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          SCRIPT3_JMPTBL_PARSE_ReadSignedL;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$c6,A0                  ;d0fc 00c6 
-              MOVE.L         D7,(A0)                  ;2087 
+              MOVE.L         D7,$c6(A0)               ;2147 00c6 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 02be 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 02b0 
 ___PARSEINI_ProcessWeatherBlocks__18:
               PEA            PARSEINI_TAG_TYPE(A4)    ;486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
@@ -122,99 +117,94 @@ ___PARSEINI_ProcessWeatherBlocks__19:
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.W          ___PARSEINI_ProcessWeatherBlocks__64;6600 029c 
+              BNE.W          ___PARSEINI_ProcessWeatherBlocks__64;6600 028e 
 ___PARSEINI_ProcessWeatherBlocks__20:
               MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
               MOVE.B         #$2,$be(A0)              ;117c 0002 00be 
 ___PARSEINI_ProcessWeatherBlocks__21:
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 028e 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0280 
 ___PARSEINI_ProcessWeatherBlocks__22:
               PEA            PARSEINI_TAG_YPOS(A4)    ;486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__24;6618 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__24;6616 
 ___PARSEINI_ProcessWeatherBlocks__23:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          SCRIPT3_JMPTBL_PARSE_ReadSignedL;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$ca,A0                  ;d0fc 00ca 
-              MOVE.L         D7,(A0)                  ;2087 
+              MOVE.L         D7,$ca(A0)               ;2147 00ca 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0266 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 025a 
 ___PARSEINI_ProcessWeatherBlocks__24:
               PEA            PARSEINI_TAG_XSOURCE(A4) ;486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__26;6618 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__26;6616 
 ___PARSEINI_ProcessWeatherBlocks__25:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          SCRIPT3_JMPTBL_PARSE_ReadSignedL;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$ce,A0                  ;d0fc 00ce 
-              MOVE.L         D7,(A0)                  ;2087 
+              MOVE.L         D7,$ce(A0)               ;2147 00ce 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 023e 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0234 
 ___PARSEINI_ProcessWeatherBlocks__26:
               PEA            PARSEINI_TAG_YSOURCE(A4) ;486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__28;6618 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__28;6616 
 ___PARSEINI_ProcessWeatherBlocks__27:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          SCRIPT3_JMPTBL_PARSE_ReadSignedL;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$d2,A0                  ;d0fc 00d2 
-              MOVE.L         D7,(A0)                  ;2087 
+              MOVE.L         D7,$d2(A0)               ;2147 00d2 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0216 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 020e 
 ___PARSEINI_ProcessWeatherBlocks__28:
               PEA            PARSEINI_TAG_SIZEX(A4)   ;486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__30;6618 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__30;6616 
 ___PARSEINI_ProcessWeatherBlocks__29:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          SCRIPT3_JMPTBL_PARSE_ReadSignedL;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$d6,A0                  ;d0fc 00d6 
-              MOVE.L         D7,(A0)                  ;2087 
+              MOVE.L         D7,$d6(A0)               ;2147 00d6 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 01ee 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 01e8 
 ___PARSEINI_ProcessWeatherBlocks__30:
               PEA            PARSEINI_TAG_SIZEY(A4)   ;486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__32;6618 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__32;6616 
 ___PARSEINI_ProcessWeatherBlocks__31:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          SCRIPT3_JMPTBL_PARSE_ReadSignedL;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$da,A0                  ;d0fc 00da 
-              MOVE.L         D7,(A0)                  ;2087 
+              MOVE.L         D7,$da(A0)               ;2147 00da 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 01c6 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 01c2 
 ___PARSEINI_ProcessWeatherBlocks__32:
               PEA            PARSEINI_TAG_SOURCE(A4)  ;486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.W          ___PARSEINI_ProcessWeatherBlocks__49;6600 00ca 
+              BNE.W          ___PARSEINI_ProcessWeatherBlocks__49;6600 00c4 
 ___PARSEINI_ProcessWeatherBlocks__33:
               MOVE.L         A3,$20(A7)               ;2f4b 0020 
 ___PARSEINI_ProcessWeatherBlocks__34:
@@ -230,7 +220,7 @@ ___PARSEINI_ProcessWeatherBlocks__36:
               SUB.L          D1,D0                    ;9081 
               MOVE.L         D0,D6                    ;2c00 
               TST.L          D6                       ;4a86 
-              BLE.W          ___PARSEINI_ProcessWeatherBlocks__64;6f00 0192 
+              BLE.W          ___PARSEINI_ProcessWeatherBlocks__64;6f00 018e 
 ___PARSEINI_ProcessWeatherBlocks__37:
               PEA            PARSEINI_TAG_PPV(A4)     ;486c 0000 
               MOVE.L         D1,-(A7)                 ;2f01 
@@ -241,7 +231,7 @@ ___PARSEINI_ProcessWeatherBlocks__37:
 ___PARSEINI_ProcessWeatherBlocks__38:
               MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
               MOVE.B         #$3,$be(A0)              ;117c 0003 00be 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0174 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0170 
 ___PARSEINI_ProcessWeatherBlocks__39:
               MOVE.L         PARSEINI_CurrentWeatherBlockTemp(A4),A2;246c 0000 
               MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
@@ -253,13 +243,11 @@ ___PARSEINI_ProcessWeatherBlocks__39:
               MOVE.L         D0,PARSEINI_CurrentWeatherBlockTemp(A4);2940 0000 
               MOVE.L         D0,$24(A7)               ;2f40 0024 
               TST.L          D0                       ;4a80 
-              BEQ.W          ___PARSEINI_ProcessWeatherBlocks__64;6700 0148 
+              BEQ.W          ___PARSEINI_ProcessWeatherBlocks__64;6700 0144 
 ___PARSEINI_ProcessWeatherBlocks__40:
 ___PARSEINI_ProcessWeatherBlocks__41:
               MOVE.L         D0,A0                    ;2040 
-              MOVE.L         A0,A1                    ;2248 
-              ADDQ.L         #$8,A1                   ;5089 
-              CLR.L          (A1)                     ;4291 
+              CLR.L          $8(A0)                   ;42a8 0008 
               MOVE.L         A3,$18(A7)               ;2f4b 0018 
               MOVE.L         D0,$1c(A7)               ;2f40 001c 
 ___PARSEINI_ProcessWeatherBlocks__42:
@@ -273,83 +261,76 @@ ___PARSEINI_ProcessWeatherBlocks__43:
               TST.B          $ffffffff(A0)            ;4a28 ffff 
               BNE.B          ___PARSEINI_ProcessWeatherBlocks__42;66e4 
 ___PARSEINI_ProcessWeatherBlocks__44:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              MOVE.L         A0,A1                    ;2248 
-              ADD.W          #$e6,A1                  ;d2fc 00e6 
-              TST.L          (A1)                     ;4a91 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__46;660e 
+              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),$14(A7);2f6c 0000 0014 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              TST.L          $e6(A0)                  ;4aa8 00e6 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__46;660c 
 ___PARSEINI_ProcessWeatherBlocks__45:
-              LEA            $e6(A0),A1               ;43e8 00e6 
-              MOVE.L         $24(A7),D0               ;202f 0024 
-              MOVE.L         D0,(A1)                  ;2280 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0100 
+              MOVE.L         $24(A7),A1               ;226f 0024 
+              MOVE.L         A1,$e6(A0)               ;2149 00e6 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 00fe 
 ___PARSEINI_ProcessWeatherBlocks__46:
               MOVE.L         A2,D0                    ;200a 
-              BEQ.W          ___PARSEINI_ProcessWeatherBlocks__64;6700 00fa 
+              BEQ.W          ___PARSEINI_ProcessWeatherBlocks__64;6700 00f8 
 ___PARSEINI_ProcessWeatherBlocks__47:
-              LEA            $8(A2),A0                ;41ea 0008 
-              MOVE.L         $24(A7),D0               ;202f 0024 
-              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         $24(A7),$8(A2)           ;256f 0024 0008 
 ___PARSEINI_ProcessWeatherBlocks__48:
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 00ec 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 00ee 
 ___PARSEINI_ProcessWeatherBlocks__49:
               PEA            PARSEINI_STR_HORIZONTAL(A4);486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__55;6650 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__55;664e 
 ___PARSEINI_ProcessWeatherBlocks__50:
+              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),$14(A7);2f6c 0000 0014 
               PEA            PARSEINI_TAG_RIGHT(A4)   ;486c 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__52;6610 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__52;660e 
 ___PARSEINI_ProcessWeatherBlocks__51:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$de,A0                  ;d0fc 00de 
               MOVEQ.L        #$2,D0                   ;7002 
-              MOVE.L         D0,(A0)                  ;2080 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 00bc 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         D0,$de(A0)               ;2140 00de 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 00ba 
 ___PARSEINI_ProcessWeatherBlocks__52:
               PEA            PARSEINI_TAG_CENTER_HorizontalAl(A4);486c 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__54;6612 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__54;660e 
 ___PARSEINI_ProcessWeatherBlocks__53:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              MOVE.L         A0,A1                    ;2248 
-              ADD.W          #$de,A1                  ;d2fc 00de 
               MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,(A1)                  ;2280 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 009a 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         D0,$de(A0)               ;2140 00de 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 009c 
 ___PARSEINI_ProcessWeatherBlocks__54:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$de,A0                  ;d0fc 00de 
-              CLR.L          (A0)                     ;4290 
-              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 008c 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              CLR.L          $de(A0)                  ;42a8 00de 
+              BRA.W          ___PARSEINI_ProcessWeatherBlocks__64;6000 0090 
 ___PARSEINI_ProcessWeatherBlocks__55:
               PEA            PARSEINI_TAG_VERTICAL(A4);486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__61;664a 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__61;6648 
 ___PARSEINI_ProcessWeatherBlocks__56:
+              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),$14(A7);2f6c 0000 0014 
               PEA            PARSEINI_TAG_BOTTOM(A4)  ;486c 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__58;660e 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__58;660c 
 ___PARSEINI_ProcessWeatherBlocks__57:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$e2,A0                  ;d0fc 00e2 
               MOVEQ.L        #$2,D0                   ;7002 
-              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         D0,$e2(A0)               ;2140 00e2 
               BRA.B          ___PARSEINI_ProcessWeatherBlocks__64;605c 
 ___PARSEINI_ProcessWeatherBlocks__58:
               PEA            PARSEINI_TAG_CENTER_VerticalAlig(A4);486c 0000 
@@ -357,35 +338,33 @@ ___PARSEINI_ProcessWeatherBlocks__58:
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__60;6610 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__60;660c 
 ___PARSEINI_ProcessWeatherBlocks__59:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              MOVE.L         A0,A1                    ;2248 
-              ADD.W          #$e2,A1                  ;d2fc 00e2 
               MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,(A1)                  ;2280 
-              BRA.B          ___PARSEINI_ProcessWeatherBlocks__64;603c 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         D0,$e2(A0)               ;2140 00e2 
+              BRA.B          ___PARSEINI_ProcessWeatherBlocks__64;6040 
 ___PARSEINI_ProcessWeatherBlocks__60:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
-              ADD.W          #$e2,A0                  ;d0fc 00e2 
-              CLR.L          (A0)                     ;4290 
-              BRA.B          ___PARSEINI_ProcessWeatherBlocks__64;6030 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              CLR.L          $e2(A0)                  ;42a8 00e2 
+              BRA.B          ___PARSEINI_ProcessWeatherBlocks__64;6036 
 ___PARSEINI_ProcessWeatherBlocks__61:
               PEA            PARSEINI_TAG_ID(A4)      ;486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BNE.B          ___PARSEINI_ProcessWeatherBlocks__64;6620 
+              BNE.B          ___PARSEINI_ProcessWeatherBlocks__64;6626 
 ___PARSEINI_ProcessWeatherBlocks__62:
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
+              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),$14(A7);2f6c 0000 0014 
+              MOVE.L         $14(A7),A0               ;206f 0014 
               ADD.W          #$bf,A0                  ;d0fc 00bf 
               PEA            ($2).w                   ;4878 0002 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          SCRIPT3_JMPTBL_STRING_CopyPadNul;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              MOVE.L         PARSEINI_CurrentWeatherBlockPtr(A4),A0;206c 0000 
+              MOVE.L         $14(A7),A0               ;206f 0014 
               CLR.B          $c1(A0)                  ;4228 00c1 
 ___PARSEINI_ProcessWeatherBlocks__63:
 ___PARSEINI_ProcessWeatherBlocks__64:
