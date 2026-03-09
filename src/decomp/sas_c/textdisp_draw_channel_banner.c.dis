@@ -1,0 +1,131 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_DrawChannelBanner:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___TEXTDISP_DrawChannelBanner__1:
+              MOVE.W         $2a(A7),D6               ;3c2f 002a 
+              MOVE.W         $26(A7),D7               ;3e2f 0026 
+              MOVE.W         TEXTDISP_CurrentMatchIndex(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.W         TEXTDISP_ActiveGroupId(A4),D1;322c 0000 
+              TST.W          D1                       ;4a41 
+              SCC            D1,#$700                 ;57c1 
+              MOVEQ.L        #$1,D2                   ;7401 
+              SUB.B          D1,D2                    ;9401 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          TLIBA1_JMPTBL_ESQDISP_GetEntryPo;6100 0000 
+              MOVE.L         D0,A5                    ;2a40 
+              PEA            TEXTDISP_EntryShortNameScratch(A4);486c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          TEXTDISP_BuildEntryShortName;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              LEA            TEXTDISP_EntryShortNameScratch(A4),A3;47ec 0000 
+              LEA            TEXTDISP_ChannelLabelBuffer(A4),A2;45ec 0000 
+___TEXTDISP_DrawChannelBanner__2:
+              MOVE.B         (A3),(A2)+               ;14d3 
+___TEXTDISP_DrawChannelBanner__3:
+              MOVE.B         (A3)+,D0                 ;101b 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___TEXTDISP_DrawChannelBanner__2;66f8 
+___TEXTDISP_DrawChannelBanner__4:
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          TEXTDISP_BuildChannelLabel;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              CLR.W          TEXTDISP_LinePenOverrideStateWor(A4);426c 0000 
+              MOVE.L         D6,D0                    ;2006 
+              SUBQ.W         #$3,D0                   ;5740 
+              BNE.B          ___TEXTDISP_DrawChannelBanner__6;661a 
+___TEXTDISP_DrawChannelBanner__5:
+              MOVE.L         Global_REF_RASTPORT_2(A4),A0;206c 0000 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              MOVE.L         A0,$28(A7)               ;2f48 0028 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___TEXTDISP_DrawChannelBanner__7;601c 
+___TEXTDISP_DrawChannelBanner__6:
+              MOVE.L         WDISP_DisplayContextBase(A4),A0;206c 0000 
+              LEA            $2(A0),A1                ;43e8 0002 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              MOVE.L         A1,$28(A7)               ;2f49 0028 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___TEXTDISP_DrawChannelBanner__7:
+              MOVE.W         #$1,TEXTDISP_LinePenOverrideEnabledF(A4);397c 0001 0000 
+              MOVE.L         WDISP_DisplayContextBase(A4),A0;206c 0000 
+              LEA            $2(A0),A1                ;43e8 0002 
+              MOVE.W         (A1),D5                  ;3a11 
+              EXT.L          D5                       ;48c5 
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.W         #$2,D0                   ;5540 
+              BNE.B          ___TEXTDISP_DrawChannelBanner__11;6608 
+___TEXTDISP_DrawChannelBanner__8:
+              TST.L          D5                       ;4a85 
+              BPL.B          ___TEXTDISP_DrawChannelBanner__10;6a02 
+___TEXTDISP_DrawChannelBanner__9:
+              ADDQ.L         #$1,D5                   ;5285 
+___TEXTDISP_DrawChannelBanner__10:
+              ASR.L          #$1,D5                   ;e285 
+___TEXTDISP_DrawChannelBanner__11:
+              MOVE.L         D5,-(A7)                 ;2f05 
+              PEA            TEXTDISP_ChannelLabelBuffer(A4);486c 0000 
+              BSR.W          TEXTDISP_TrimTextToPixelWidth;6100 0000 
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,(A7)                  ;2e80 
+              PEA            TEXTDISP_ChannelLabelBuffer(A4);486c 0000 
+              BSR.W          TEXTDISP_DrawInsetRectFrame;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         D6,D0                    ;2006 
+              SUBQ.W         #$3,D0                   ;5740 
+              BNE.B          ___TEXTDISP_DrawChannelBanner__13;6616 
+___TEXTDISP_DrawChannelBanner__12:
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_2(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___TEXTDISP_DrawChannelBanner__15;601a 
+___TEXTDISP_DrawChannelBanner__13:
+              MOVE.L         WDISP_DisplayContextBase(A4),A0;206c 0000 
+              LEA            $2(A0),A1                ;43e8 0002 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___TEXTDISP_DrawChannelBanner__14:
+___TEXTDISP_DrawChannelBanner__15:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_CurrentMatchIndex
+              XREF           TEXTDISP_ActiveGroupId
+              XREF           TLIBA1_JMPTBL_ESQDISP_GetEntryPo
+              XREF           TEXTDISP_EntryShortNameScratch
+              XREF           TEXTDISP_BuildEntryShortName
+              XREF           TEXTDISP_ChannelLabelBuffer
+              XREF           TEXTDISP_BuildChannelLabel
+              XREF           TEXTDISP_LinePenOverrideStateWor
+              XREF           Global_REF_RASTPORT_2
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetDrMd
+              XREF           WDISP_DisplayContextBase
+              XREF           TEXTDISP_LinePenOverrideEnabledF
+              XREF           TEXTDISP_TrimTextToPixelWidth
+              XREF           TEXTDISP_DrawInsetRectFrame
+              XDEF           TEXTDISP_DrawChannelBanner
+              END
