@@ -51,7 +51,7 @@ typedef struct SCRIPT_CtrlContextSnapshot {
     UBYTE bannerSelectedEntryIndex[4];
 } SCRIPT_CtrlContextSnapshot;
 
-void SCRIPT_LoadCtrlContextSnapshot(void *ctx)
+void SCRIPT_LoadCtrlContextSnapshot(char *ctx)
 {
     SCRIPT_CtrlContextSnapshot *p;
     char *src;

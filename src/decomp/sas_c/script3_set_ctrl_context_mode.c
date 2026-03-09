@@ -5,9 +5,9 @@ typedef struct SCRIPT_CtrlContext {
     UWORD active2;
 } SCRIPT_CtrlContext;
 
-extern void SCRIPT_ResetCtrlContext(void *ctx);
+extern void SCRIPT_ResetCtrlContext(char *ctx);
 
-void SCRIPT_SetCtrlContextMode(void *ctx, UWORD mode)
+void SCRIPT_SetCtrlContextMode(char *ctx, UWORD mode)
 {
     SCRIPT_CtrlContext *ctxView = (SCRIPT_CtrlContext *)ctx;
 

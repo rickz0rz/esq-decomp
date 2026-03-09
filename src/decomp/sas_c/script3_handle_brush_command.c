@@ -16,14 +16,14 @@ extern WORD SCRIPT_ReadModeActiveLatch;
 extern WORD ESQPARS2_ReadModeFlags;
 extern WORD SCRIPT_PlaybackFallbackCounter;
 
-extern void SCRIPT_LoadCtrlContextSnapshot(UBYTE *ctx);
-extern void SCRIPT_SaveCtrlContextSnapshot(UBYTE *ctx);
+extern void SCRIPT_LoadCtrlContextSnapshot(char *ctx);
+extern void SCRIPT_SaveCtrlContextSnapshot(char *ctx);
 extern LONG SCRIPT_SelectPlaybackCursorFromSearchText(LONG matchCountOrIndex, char *parseBuffer);
 extern void SCRIPT_SplitAndNormalizeSearchBuffer(char *parseBuffer, LONG parseLen);
 extern void TEXTDISP_HandleScriptCommand(LONG command, LONG arg, char *text);
 extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newValue, char *oldValue);
 
-LONG SCRIPT_HandleBrushCommand(UBYTE *ctx, char *cmd, LONG cmdLen)
+LONG SCRIPT_HandleBrushCommand(char *ctx, char *cmd, LONG cmdLen)
 {
     LONG ok;
     WORD savedRuntimeMode;

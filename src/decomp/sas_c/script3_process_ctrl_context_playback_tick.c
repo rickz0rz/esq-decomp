@@ -11,14 +11,14 @@ extern UWORD SCRIPT_RuntimeModeDispatchLatch;
 extern UWORD TEXTDISP_CurrentMatchIndex;
 extern UWORD TEXTDISP_CurrentMatchIndexSaved;
 
-extern void SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(void *ctx, void *state);
-extern void SCRIPT_LoadCtrlContextSnapshot(void *ctx);
+extern void SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(char *ctx, void *state);
+extern void SCRIPT_LoadCtrlContextSnapshot(char *ctx);
 extern UWORD SCRIPT_UpdateRuntimeModeForPlaybackCursor(void);
 extern void SCRIPT_ApplyPendingBannerTarget(void);
 extern void SCRIPT_DispatchPlaybackCursorCommand(LONG *cursorPtr);
-extern void SCRIPT_SaveCtrlContextSnapshot(void *ctx);
+extern void SCRIPT_SaveCtrlContextSnapshot(char *ctx);
 
-void SCRIPT_ProcessCtrlContextPlaybackTick(void *ctx)
+void SCRIPT_ProcessCtrlContextPlaybackTick(char *ctx)
 {
     const LONG FLAG_FALSE = 0;
     const LONG MODE_DEFERRED = 3;
