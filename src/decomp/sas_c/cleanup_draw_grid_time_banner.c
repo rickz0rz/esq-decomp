@@ -3,6 +3,12 @@ typedef unsigned short UWORD;
 typedef short WORD;
 typedef long LONG;
 
+typedef struct CLEANUP_RastPort {
+    LONG textWidth0;
+    UBYTE pad4[28];
+    UWORD flags32;
+} CLEANUP_RastPort;
+
 enum {
     RASTPORT_TEXTWIDTH_OFFSET = 0,
     RASTPORT_FLAGS_OFFSET = 32,
@@ -35,16 +41,17 @@ void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void);
 
 void CLEANUP_DrawGridTimeBanner(void)
 {
+    CLEANUP_RastPort *rp;
     char timeBuffer[32];
     char ampm_suffix;
     LONG sampleWidth;
     LONG textWidth;
     LONG x;
 
+    rp = (CLEANUP_RastPort *)Global_REF_RASTPORT_1;
     ESQ_FormatTimeStamp(timeBuffer, &CLOCK_CurrentDayOfWeekIndex);
     _LVOSetAPen();
-    *(UWORD *)(Global_REF_RASTPORT_1 + RASTPORT_FLAGS_OFFSET) =
-        (UWORD)(*(UWORD *)(Global_REF_RASTPORT_1 + RASTPORT_FLAGS_OFFSET) & RASTPORT_FLAGMASK_CLEAR_BIT3);
+    rp->flags32 = (UWORD)(rp->flags32 & RASTPORT_FLAGMASK_CLEAR_BIT3);
     _LVOSetDrMd();
     _LVORectFill();
     _LVOSetAPen();
@@ -64,11 +71,11 @@ void CLEANUP_DrawGridTimeBanner(void)
     }
 
     _LVOTextLength();
-    sampleWidth = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_TEXTWIDTH_OFFSET);
+    sampleWidth = rp->textWidth0;
 
     if (Global_REF_STR_USE_24_HR_CLOCK == 'N') {
         _LVOTextLength();
-        textWidth = *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_TEXTWIDTH_OFFSET);
+        textWidth = rp->textWidth0;
     } else {
         textWidth = sampleWidth;
     }
