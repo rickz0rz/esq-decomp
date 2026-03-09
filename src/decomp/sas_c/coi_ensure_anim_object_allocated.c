@@ -5,12 +5,11 @@ typedef long LONG;
 enum {
     STRUCT_ANIMOB_SIZE = 42,
     ENTRY_ANIM_PTR_OFFSET = 48,
-    ANIM_DEFAULT_STR_OFFSET = 28,
-    ANIM_SENTINEL_OFFSET = 32,
     ANIM_SENTINEL_INVALID = -1,
-    COI_ALLOC_LINE = 1458,
-    COI_MEMF_PUBLIC_CLEAR = 0x10001UL
+    COI_ALLOC_LINE = 1458
 };
+
+static const ULONG COI_MEMF_PUBLIC_CLEAR = 0x10001UL;
 
 extern UBYTE Global_STR_COI_C_2[];
 extern UBYTE COI_STR_DEFAULT_TOKEN_TEMPLATE_B[];
@@ -18,35 +17,46 @@ extern UBYTE COI_STR_DEFAULT_TOKEN_TEMPLATE_B[];
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
 LONG GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(void *old_ptr, const void *new_ptr);
 
+typedef struct COI_AnimObject {
+    UBYTE pad0[28];
+    void *defaultStr;
+    LONG sentinel;
+} COI_AnimObject;
+
+typedef struct COI_Entry {
+    UBYTE pad0[ENTRY_ANIM_PTR_OFFSET];
+    COI_AnimObject *anim;
+} COI_Entry;
+
 void COI_EnsureAnimObjectAllocated(void *entry)
 {
-    UBYTE *e;
-    UBYTE *anim;
+    COI_Entry *e;
+    COI_AnimObject *anim;
 
-    e = (UBYTE *)entry;
-    if (e == (UBYTE *)0) {
+    e = (COI_Entry *)entry;
+    if (e == (COI_Entry *)0) {
         return;
     }
 
-    anim = *(UBYTE **)(e + ENTRY_ANIM_PTR_OFFSET);
-    if (anim != (UBYTE *)0) {
+    anim = e->anim;
+    if (anim != (COI_AnimObject *)0) {
         return;
     }
 
-    anim = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    anim = (COI_AnimObject *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_COI_C_2,
         COI_ALLOC_LINE,
         STRUCT_ANIMOB_SIZE,
         COI_MEMF_PUBLIC_CLEAR);
-    *(UBYTE **)(e + ENTRY_ANIM_PTR_OFFSET) = anim;
+    e->anim = anim;
 
-    if (anim != (UBYTE *)0) {
+    if (anim != (COI_AnimObject *)0) {
         void *old_str;
         LONG new_owned;
 
-        old_str = *(void **)(anim + ANIM_DEFAULT_STR_OFFSET);
+        old_str = anim->defaultStr;
         new_owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(old_str, COI_STR_DEFAULT_TOKEN_TEMPLATE_B);
-        *(LONG *)(anim + ANIM_DEFAULT_STR_OFFSET) = new_owned;
-        *(LONG *)(anim + ANIM_SENTINEL_OFFSET) = ANIM_SENTINEL_INVALID;
+        anim->defaultStr = (void *)new_owned;
+        anim->sentinel = ANIM_SENTINEL_INVALID;
     }
 }
