@@ -5,7 +5,6 @@ typedef long LONG;
 
 enum {
     COI_RESULT_FALSE = 0,
-    COI_RESULT_TRUE = 1,
     COI_SLOT_MIN_VALID = 1,
     COI_SLOT_INVALID = 49,
     COI_SLOT_MINUTES = 30,
@@ -25,19 +24,42 @@ LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG lead_char, void *time_ctx, 
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, LONG slot);
 
+typedef struct COI_SubEntry {
+    WORD slotKey0;
+    UBYTE pad2[24];
+    LONG delta26;
+} COI_SubEntry;
+
+typedef struct COI_AnimObject {
+    UBYTE pad0[COI_ANIM_COUNT_OFFSET];
+    WORD subEntryCount;
+    COI_SubEntry **subEntryTable;
+    LONG fallbackDelta32;
+} COI_AnimObject;
+
+typedef struct COI_Entry {
+    UBYTE leadChar0;
+    UBYTE pad1[COI_FLAGS_OFFSET - 1];
+    UBYTE flags27;
+    UBYTE pad28[COI_ANIM_PTR_OFFSET - 28];
+    COI_AnimObject *anim;
+} COI_Entry;
+
 LONG COI_TestEntryWithinTimeWindow(UBYTE *entry, void *time_ctx, WORD slot, LONG max_offset, LONG fallback_delta)
 {
+    COI_Entry *entryView;
     LONG result;
     LONG offset_minutes;
     LONG delta_minutes;
-    UBYTE *anim;
-    UBYTE *sub_entry;
+    COI_AnimObject *anim;
+    COI_SubEntry *sub_entry;
 
-    result = COI_RESULT_TRUE;
+    result = 1;
     delta_minutes = 0;
     offset_minutes = 0;
-    sub_entry = (UBYTE *)0;
-    anim = (UBYTE *)0;
+    sub_entry = (COI_SubEntry *)0;
+    anim = (COI_AnimObject *)0;
+    entryView = (COI_Entry *)entry;
 
     if (entry == (UBYTE *)0 || time_ctx == (void *)0 || slot < COI_SLOT_MIN_VALID) {
         result = COI_RESULT_FALSE;
@@ -45,34 +67,34 @@ LONG COI_TestEntryWithinTimeWindow(UBYTE *entry, void *time_ctx, WORD slot, LONG
     }
 
     if (slot < COI_SLOT_INVALID) {
-        offset_minutes = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((LONG)entry[0], time_ctx, (LONG)slot);
+        offset_minutes = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((LONG)entryView->leadChar0, time_ctx, (LONG)slot);
     } else {
         offset_minutes = GROUP_AG_JMPTBL_MATH_Mulu32((LONG)slot - (LONG)CLOCK_HalfHourSlotIndex, COI_SLOT_MINUTES);
     }
 
-    if ((entry[COI_FLAGS_OFFSET] & COI_FLAG_HAS_ANIM_TABLE) != 0) {
+    if ((entryView->flags27 & COI_FLAG_HAS_ANIM_TABLE) != 0) {
         LONG i;
         LONG count;
-        UBYTE **table;
+        COI_SubEntry **table;
 
-        anim = *(UBYTE **)(entry + COI_ANIM_PTR_OFFSET);
-        if (anim != (UBYTE *)0) {
-            count = (LONG)*(WORD *)(anim + COI_ANIM_COUNT_OFFSET);
+        anim = entryView->anim;
+        if (anim != (COI_AnimObject *)0) {
+            count = (LONG)anim->subEntryCount;
             i = 0;
             while (i < count) {
-                table = *(UBYTE ***)(anim + COI_ANIM_TABLE_OFFSET);
+                table = anim->subEntryTable;
                 sub_entry = table[i];
-                if (*(WORD *)sub_entry == slot) {
+                if (sub_entry->slotKey0 == slot) {
                     break;
                 }
-                sub_entry = (UBYTE *)0;
+                sub_entry = (COI_SubEntry *)0;
                 i += 1;
             }
 
-            if (sub_entry != (UBYTE *)0) {
-                delta_minutes = *(LONG *)(sub_entry + COI_SUBENTRY_DELTA_OFFSET);
+            if (sub_entry != (COI_SubEntry *)0) {
+                delta_minutes = sub_entry->delta26;
             } else {
-                delta_minutes = *(LONG *)(anim + COI_ANIM_FALLBACK_DELTA_OFFSET);
+                delta_minutes = anim->fallbackDelta32;
             }
 
             if (delta_minutes == COI_DELTA_INVALID) {
