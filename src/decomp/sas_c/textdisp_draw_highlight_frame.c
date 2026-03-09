@@ -37,9 +37,9 @@ extern void SCRIPT_BeginBannerCharTransition(LONG bannerChar, LONG duration);
 extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG drawMode);
 extern void TLIBA1_DrawFormattedTextBlock(void *rastPort, const char *text, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
-extern void TEXTDISP_ResetSelectionState(void *entry);
+extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
 
-void TEXTDISP_DrawHighlightFrame(void *entryPtr)
+void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entryPtr)
 {
     const LONG MODE_HIGHLIGHT = 8;
     const LONG MODE_TEXT = 3;
@@ -68,7 +68,7 @@ void TEXTDISP_DrawHighlightFrame(void *entryPtr)
     LONG x2;
     LONG y2;
 
-    entry = (TEXTDISP_SelectionEntry *)entryPtr;
+    entry = entryPtr;
     if (entry == (TEXTDISP_SelectionEntry *)0 || entry->detailLine[0] == ZERO) {
         return;
     }

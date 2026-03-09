@@ -33,14 +33,14 @@ extern const char TEXTDISP_CommandPrefixFormat[];
 extern void *MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 extern void WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
-extern LONG TEXTDISP_SelectGroupAndEntry(const char *cmd, char *primarySearch, LONG channelCode);
+extern LONG TEXTDISP_SelectGroupAndEntry(char *cmd, char *primarySearch, LONG channelCode);
 extern UBYTE SCRIPT_GetBannerCharOrFallback(void);
 extern void TEXTDISP_BuildNowShowingStatusLine(LONG group, LONG match, LONG bannerChar);
 extern void SCRIPT_ResetBannerCharDefaults(void);
 extern void TEXTDISP_BuildEntryPairStatusLine(LONG group, LONG match, LONG bannerChar);
-extern void TEXTDISP_SetEntryTextFields(void *entry, const char *shortText, const char *longText);
-extern LONG TEXTDISP_FilterAndSelectEntry(void *entry, LONG mode);
-extern void TEXTDISP_DrawHighlightFrame(void *entry);
+extern void TEXTDISP_SetEntryTextFields(TEXTDISP_SelectionEntry *entry, const char *shortText, const char *longText);
+extern LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entry, LONG mode);
+extern void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entry);
 
 LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *arg)
 {
@@ -68,7 +68,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
             WDISP_SPrintf(scratch, TEXTDISP_CommandPrefixFormat, arg);
 
             if (TEXTDISP_SelectGroupAndEntry(
-                    arg, TEXTDISP_PrimarySearchText, (LONG)(WORD)TEXTDISP_PrimaryChannelCode) == 0) {
+                    (char *)arg, TEXTDISP_PrimarySearchText, (LONG)(WORD)TEXTDISP_PrimaryChannelCode) == 0) {
                 TEXTDISP_StatusGroupId = TEXTDISP_ActiveGroupId;
                 TEXTDISP_LastDispatchMatchIndex = TEXTDISP_CurrentMatchIndex;
                 TEXTDISP_LastDispatchGroupId = (WORD)SCRIPT_GetBannerCharOrFallback();
@@ -138,7 +138,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
     }
 
     if (doCleanup != 0) {
-        TEXTDISP_FilterAndSelectEntry((void *)0, 0);
+        TEXTDISP_FilterAndSelectEntry((TEXTDISP_SelectionEntry *)0, 0);
         if (TEXTDISP_CommandBufferPtr != (TEXTDISP_SelectionEntry *)0) {
             MEMORY_DeallocateMemory(Global_STR_TEXTDISP_C_2, BUFFER_FREE_LINE, TEXTDISP_CommandBufferPtr, BUFFER_SIZE);
             TEXTDISP_CommandBufferPtr = (TEXTDISP_SelectionEntry *)0;

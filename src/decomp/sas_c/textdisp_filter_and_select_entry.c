@@ -39,20 +39,20 @@ extern const char SCRIPT_FilterTag_SBE[];
 extern const char SCRIPT_FilterTag_SPORTS[];
 
 extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
-extern LONG TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern LONG TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(void *entry, void *aux, LONG index, LONG window, LONG minutes);
-extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(void *aux, LONG slot);
+extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux, LONG index, LONG window, LONG minutes);
+extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *aux, LONG slot);
 extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(void *bits, LONG index);
 extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 extern LONG TEXTDISP_GetGroupEntryCount(LONG mode);
-extern LONG TEXTDISP_ShouldOpenEditorForEntry(void *entry);
+extern LONG TEXTDISP_ShouldOpenEditorForEntry(TEXTDISP_CandidateEntry *entry);
 extern char *TEXTDISP_SkipControlCodes(char *text);
-extern void TEXTDISP_SetSelectionFields(void *entry, LONG mode, LONG displayIndex, LONG entryIndex);
-extern void TEXTDISP_BuildEntryDetailLine(void *entry);
-extern void TEXTDISP_ResetSelectionState(void *entry);
+extern void TEXTDISP_SetSelectionFields(TEXTDISP_SelectionEntry *entry, LONG mode, LONG displayIndex, LONG entryIndex);
+extern void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entry);
+extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
 
-LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
+LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE modeChar)
 {
     const UBYTE CH_NUL = 0;
     const UBYTE CH_MODE_FILTER = 'F';
@@ -85,7 +85,7 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
     char *nameEnd;
 
     found = 0;
-    entry = (TEXTDISP_SelectionEntry *)entryPtr;
+    entry = entryPtr;
     if (entry == (TEXTDISP_SelectionEntry *)0) {
         modeChar = CH_NUL;
     }
@@ -185,7 +185,7 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
                 candidate = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
                 if (candidate == (TEXTDISP_CandidateEntry *)0 ||
                     TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
-                        candidate, aux, titleSlot, MINUTES_PER_DAY, CONFIG_TimeWindowMinutes) == 0) {
+                        (char *)candidate, (char *)aux, titleSlot, MINUTES_PER_DAY, CONFIG_TimeWindowMinutes) == 0) {
                     candidateTitle = (char *)0;
                 }
             }
@@ -199,7 +199,7 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
             }
 
             if (TEXTDISP_FilterSportsMatchFlag != 0 &&
-                TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(aux, titleSlot) == 0) {
+                TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((char *)aux, titleSlot) == 0) {
                 TEXTDISP_FilterCandidateCursor++;
                 continue;
             }
