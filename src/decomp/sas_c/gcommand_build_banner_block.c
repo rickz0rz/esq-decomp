@@ -4,6 +4,26 @@ typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct GCOMMAND_BannerBlock {
+    UBYTE lineByte0;
+    UBYTE lineByte1;
+    UWORD lineWord2;
+    UWORD colorReg0188;
+    UWORD colorValue0;
+    UWORD colorReg018A;
+    UWORD colorValue1;
+    UWORD colorReg018C;
+    UWORD colorValue2;
+    UWORD colorReg018E;
+    UWORD colorValue3;
+    UWORD ptrReg0084;
+    UWORD ptrHi;
+    UWORD ptrReg0086;
+    UWORD ptrLo;
+    UWORD termReg008A;
+    UWORD termValue;
+} GCOMMAND_BannerBlock;
+
 extern WORD Global_UIBusyFlag;
 
 extern LONG GCOMMAND_PresetWorkEntryTable;
@@ -37,7 +57,7 @@ static UWORD GCOMMAND_LoadColorOrFallback(LONG presetBase, LONG valueIndex, UBYT
 UBYTE *GCOMMAND_BuildBannerBlock(UBYTE *tablePtr, LONG count, UBYTE *srcBytePtr, UBYTE byte1, UWORD word2, UBYTE stepByte)
 {
     LONG seed;
-    UBYTE *out = tablePtr;
+    GCOMMAND_BannerBlock *out = (GCOMMAND_BannerBlock *)tablePtr;
     LONG i;
 
     if (Global_UIBusyFlag != 0) {
@@ -56,31 +76,31 @@ UBYTE *GCOMMAND_BuildBannerBlock(UBYTE *tablePtr, LONG count, UBYTE *srcBytePtr,
         UWORD c1 = GCOMMAND_LoadColorOrFallback(GCOMMAND_PresetWorkEntry1, GCOMMAND_PresetWorkEntry1_ValueIndex, GCOMMAND_PresetFallbackValue1);
         UWORD c2 = GCOMMAND_LoadColorOrFallback(GCOMMAND_PresetWorkEntry2, GCOMMAND_PresetWorkEntry2_ValueIndex, GCOMMAND_PresetFallbackValue2);
         UWORD c3 = GCOMMAND_LoadColorOrFallback(GCOMMAND_PresetWorkEntry3, GCOMMAND_PresetWorkEntry3_ValueIndex, GCOMMAND_PresetFallbackValue3);
-        UBYTE *next = out + 32;
+        GCOMMAND_BannerBlock *next = out + 1;
         ULONG p = (ULONG)next;
 
-        out[0] = *srcBytePtr;
+        out->lineByte0 = *srcBytePtr;
         *srcBytePtr = (UBYTE)(*srcBytePtr + stepByte);
-        out[1] = byte1;
-        *(UWORD *)(out + 2) = word2;
-        *(UWORD *)(out + 4) = 0x0188;
-        *(UWORD *)(out + 6) = c0;
-        *(UWORD *)(out + 8) = 0x018A;
-        *(UWORD *)(out + 10) = c1;
-        *(UWORD *)(out + 12) = 0x018C;
-        *(UWORD *)(out + 14) = c2;
-        *(UWORD *)(out + 16) = 0x018E;
-        *(UWORD *)(out + 18) = c3;
-        *(UWORD *)(out + 20) = 0x0084;
-        *(UWORD *)(out + 22) = (UWORD)((p >> 16) & 0xFFFF);
-        *(UWORD *)(out + 24) = 0x0086;
-        *(UWORD *)(out + 26) = (UWORD)(p & 0xFFFF);
-        *(UWORD *)(out + 28) = 0x008A;
-        *(UWORD *)(out + 30) = 0;
+        out->lineByte1 = byte1;
+        out->lineWord2 = word2;
+        out->colorReg0188 = 0x0188;
+        out->colorValue0 = c0;
+        out->colorReg018A = 0x018A;
+        out->colorValue1 = c1;
+        out->colorReg018C = 0x018C;
+        out->colorValue2 = c2;
+        out->colorReg018E = 0x018E;
+        out->colorValue3 = c3;
+        out->ptrReg0084 = 0x0084;
+        out->ptrHi = (UWORD)((p >> 16) & 0xFFFF);
+        out->ptrReg0086 = 0x0086;
+        out->ptrLo = (UWORD)(p & 0xFFFF);
+        out->termReg008A = 0x008A;
+        out->termValue = 0;
 
         GCOMMAND_TickPresetWorkEntries();
-        out += 32;
+        out = next;
     }
 
-    return out;
+    return (UBYTE *)out;
 }
