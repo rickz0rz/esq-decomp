@@ -9,7 +9,7 @@ extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
 
 void TEXTDISP_InitRastAndResetFlag(void)
 {
-    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 3);
+    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode((LONG)4, (LONG)0, (LONG)3);
     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
-    WDISP_AccumulatorFlushPending = 0;
+    WDISP_AccumulatorFlushPending = (WORD)0;
 }
