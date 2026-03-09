@@ -22,7 +22,7 @@ extern LONG Global_REF_696_400_BITMAP;
 void _LVOSetAPen(void);
 void _LVORectFill(void);
 void RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY(void);
-void BEVEL_DrawBevelFrameWithTopRight(void *rp, LONG x, LONG y, LONG w, LONG h);
+void BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG w, LONG h);
 
 void CLEANUP_DrawDateBannerSegment(void)
 {
@@ -41,7 +41,7 @@ void CLEANUP_DrawDateBannerSegment(void)
 
     RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY();
 
-    BEVEL_DrawBevelFrameWithTopRight((void *)Global_REF_RASTPORT_1, 0, DATE_BEVEL_Y, 255, DATE_BEVEL_HEIGHT);
+    BEVEL_DrawBevelFrameWithTopRight((char *)Global_REF_RASTPORT_1, 0, DATE_BEVEL_Y, 255, DATE_BEVEL_HEIGHT);
 
     rp->bitmap4 = savedBitmap;
 }

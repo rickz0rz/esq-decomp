@@ -24,7 +24,7 @@ extern LONG Global_REF_696_400_BITMAP;
 
 void _LVOSetAPen(void);
 void _LVORectFill(void);
-void BEVEL_DrawBevelFrameWithTopRight(void *rp, LONG x, LONG y, LONG w, LONG h);
+void BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG w, LONG h);
 
 void CLEANUP_DrawBannerSpacerSegment(void)
 {
@@ -41,7 +41,7 @@ void CLEANUP_DrawBannerSpacerSegment(void)
 
     _LVORectFill();
 
-    BEVEL_DrawBevelFrameWithTopRight((void *)Global_REF_RASTPORT_1,
+    BEVEL_DrawBevelFrameWithTopRight((char *)Global_REF_RASTPORT_1,
                                      BANNER_SPACER_LEFT,
                                      BANNER_SPACER_TOP,
                                      BANNER_SPACER_RIGHT,
