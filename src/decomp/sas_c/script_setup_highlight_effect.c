@@ -26,6 +26,13 @@ extern void _LVOSetAPen(void *rastport, LONG pen);
 extern void _LVOMove(void *rastport, LONG x, LONG y);
 extern void _LVOText(void *rastport, const char *text, LONG len);
 
+typedef struct SCRIPT_DisplayContext {
+    unsigned short flags0;
+    unsigned short rastWord2;
+    unsigned short width4;
+    UBYTE rastPortTail[1];
+} SCRIPT_DisplayContext;
+
 static LONG len_local(const char *s)
 {
     LONG n = 0;
@@ -37,6 +44,7 @@ static LONG len_local(const char *s)
 
 void SCRIPT_SetupHighlightEffect(const char *text)
 {
+    SCRIPT_DisplayContext *context;
     LONG widthSlot;
     LONG div;
     char prefix[128];
@@ -50,11 +58,12 @@ void SCRIPT_SetupHighlightEffect(const char *text)
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 3);
     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
 
-    widthSlot = (LONG)(*(unsigned short *)((UBYTE *)WDISP_DisplayContextBase + 4));
+    context = (SCRIPT_DisplayContext *)WDISP_DisplayContextBase;
+    widthSlot = (LONG)context->width4;
     WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
 
-    div = MATH_DivS32(widthSlot, ((*(unsigned short *)WDISP_DisplayContextBase) & (1 << 2)) ? 2 : 1);
+    div = MATH_DivS32(widthSlot, ((context->flags0 & (1 << 2)) != 0) ? 2 : 1);
     SCRIPT_BeginBannerCharTransition((WORD)(div + 22), 500);
 
     if (text == 0 || *text == '\0') {
@@ -62,7 +71,7 @@ void SCRIPT_SetupHighlightEffect(const char *text)
         return;
     }
 
-    rp = (UBYTE *)WDISP_DisplayContextBase + 2;
+    rp = (void *)&context->rastWord2;
     WDISP_AccumulatorCaptureActive = 1;
     WDISP_AccumulatorFlushPending = 0;
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 0);
