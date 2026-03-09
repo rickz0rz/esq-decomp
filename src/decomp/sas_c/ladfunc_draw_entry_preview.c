@@ -6,7 +6,7 @@ typedef struct LadfuncEntry {
     UWORD startSlot;
     UWORD endSlot;
     UWORD isHighlighted;
-    UBYTE *textPtr;
+    char *textPtr;
     UBYTE *attrPtr;
 } LadfuncEntry;
 
@@ -57,10 +57,9 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
     const LONG PALETTE_TRIPLE_COPY_BYTES = 24;
     const LONG PALETTE_TRIPLE_STRIDE = 3;
     const LONG DRAW_MODE_JAM1 = 1;
-    const LONG ROW_HEIGHT_PIXELS = 8;
     const LONG LINEBUF_ALLOC_FLAGS = 0x10001;
     LadfuncEntry *entry;
-    UBYTE *lineText = (UBYTE *)0;
+    char *lineText = (char *)0;
     UBYTE *lineAttr = (UBYTE *)0;
     LONG charWidth;
     LONG maxCols;
@@ -81,11 +80,11 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
     charWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_STR_SINGLE_SPACE_2, 1);
     maxCols = NEWGRID_JMPTBL_MATH_DivS32(PREVIEW_PIXEL_WIDTH, charWidth);
 
-    lineText = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+    lineText = (char *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_16, 857, maxCols + 1, LINEBUF_ALLOC_FLAGS);
     lineAttr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_17, 858, maxCols, LINEBUF_ALLOC_FLAGS);
-    if (lineText == (UBYTE *)0 || lineAttr == (UBYTE *)0) {
+    if (lineText == (char *)0 || lineAttr == (UBYTE *)0) {
         goto cleanup;
     }
 
@@ -120,7 +119,7 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
             ++src;
         }
         lineText[col] = 0;
-        LADFUNC_DrawEntryLineWithAttrs(rastPort, row, lineAttr, lineText);
+        LADFUNC_DrawEntryLineWithAttrs(rastPort, row, lineAttr, (UBYTE *)lineText);
     }
 
     GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition();
@@ -128,7 +127,7 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
 cleanup:
     _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_HANDLE_PREVUEC_FONT);
 
-    if (lineText != (UBYTE *)0) {
+    if (lineText != (char *)0) {
         NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_18, 926, lineText, maxCols + 1);
     }
     if (lineAttr != (UBYTE *)0) {

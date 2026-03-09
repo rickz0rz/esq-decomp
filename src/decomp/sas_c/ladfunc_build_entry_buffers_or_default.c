@@ -6,7 +6,7 @@ typedef struct LadfuncEntry {
     UWORD startSlot;
     UWORD endSlot;
     UWORD isHighlighted;
-    UBYTE *textPtr;
+    char *textPtr;
     UBYTE *attrPtr;
 } LadfuncEntry;
 
@@ -15,9 +15,9 @@ extern LONG ED_TextLimit;
 
 extern LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern LONG LADFUNC_ComposePackedPenByte(UBYTE highNibble, UBYTE lowNibble);
-extern void LADFUNC_ReflowEntryBuffers(UBYTE *textBuf, UBYTE *attrBuf);
+extern void LADFUNC_ReflowEntryBuffers(char *textBuf, UBYTE *attrBuf);
 
-void LADFUNC_BuildEntryBuffersOrDefault(LONG entryIndex, UBYTE *outText, UBYTE *outAttr)
+void LADFUNC_BuildEntryBuffersOrDefault(LONG entryIndex, char *outText, UBYTE *outAttr)
 {
     const LONG LINE_WIDTH = 40;
     const UBYTE DEFAULT_PEN_HIGH_NIBBLE = 2;
@@ -31,7 +31,7 @@ void LADFUNC_BuildEntryBuffersOrDefault(LONG entryIndex, UBYTE *outText, UBYTE *
     LONG i;
 
     entry = LADFUNC_EntryPtrTable[entryIndex];
-    if (entry->textPtr == (UBYTE *)PTR_NULL) {
+    if (entry->textPtr == (char *)PTR_NULL) {
         count = NEWGRID_JMPTBL_MATH_Mulu32(ED_TextLimit, LINE_WIDTH);
         for (i = 0; i < count; ++i) {
             outText[i] = SPACE_CHAR;
@@ -50,14 +50,14 @@ void LADFUNC_BuildEntryBuffersOrDefault(LONG entryIndex, UBYTE *outText, UBYTE *
     }
 
     {
-        UBYTE *src = entry->textPtr;
-        UBYTE *dst = outText;
+        char *src = entry->textPtr;
+        char *dst = outText;
         while ((*dst++ = *src++) != CH_NUL) {
         }
     }
 
     {
-        UBYTE *p = outText;
+        char *p = outText;
         while (*p != CH_NUL) {
             ++p;
         }

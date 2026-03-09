@@ -24,7 +24,7 @@ ___LADFUNC_BuildEntryBuffersOrDefau__1:
               MOVE.L         D0,$1a(A7)               ;2f40 001a 
               MOVE.L         $6(A2),A0                ;206a 0006 
               CMP.L          D0,A0                    ;b1c0 
-              BNE.W          ___LADFUNC_BuildEntryBuffersOrDefau__11;6600 0084 
+              BNE.W          ___LADFUNC_BuildEntryBuffersOrDefau__11;6600 008c 
 ___LADFUNC_BuildEntryBuffersOrDefau__2:
               MOVE.L         D6,-(A7)                 ;2f06 
               MOVE.L         ED_TextLimit(A4),-(A7)   ;2f2c 0000 
@@ -35,15 +35,18 @@ ___LADFUNC_BuildEntryBuffersOrDefau__2:
 ___LADFUNC_BuildEntryBuffersOrDefau__3:
               MOVE.L         $28(A7),D0               ;202f 0028 
               CMP.L          $30(A7),D0               ;b0af 0030 
-              BGE.B          ___LADFUNC_BuildEntryBuffersOrDefau__6;6c0c 
+              BGE.B          ___LADFUNC_BuildEntryBuffersOrDefau__6;6c12 
 ___LADFUNC_BuildEntryBuffersOrDefau__4:
-              MOVE.B         $1f(A7),$0(A5,D0.L)      ;1baf 001f 0800 
+              MOVE.B         $1f(A7),D0               ;102f 001f 
+              MOVE.L         $28(A7),D1               ;222f 0028 
+              MOVE.B         D0,$0(A5,D1.L)           ;1b80 1800 
 ___LADFUNC_BuildEntryBuffersOrDefau__5:
               ADDQ.L         #$1,$28(A7)              ;52af 0028 
-              BRA.B          ___LADFUNC_BuildEntryBuffersOrDefau__3;60ea 
+              BRA.B          ___LADFUNC_BuildEntryBuffersOrDefau__3;60e4 
 ___LADFUNC_BuildEntryBuffersOrDefau__6:
-              MOVE.L         $30(A7),D0               ;202f 0030 
-              MOVE.B         $1e(A7),$0(A5,D0.L)      ;1baf 001e 0800 
+              MOVE.B         $1e(A7),D0               ;102f 001e 
+              MOVE.L         $30(A7),D1               ;222f 0030 
+              MOVE.B         D0,$0(A5,D1.L)           ;1b80 1800 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         D5,D0                    ;1005 
               MOVEQ.L        #$0,D1                   ;7200 
@@ -62,7 +65,7 @@ ___LADFUNC_BuildEntryBuffersOrDefau__6:
 ___LADFUNC_BuildEntryBuffersOrDefau__7:
               MOVE.L         $28(A7),D0               ;202f 0028 
               TST.L          D0                       ;4a80 
-              BLE.W          ___LADFUNC_BuildEntryBuffersOrDefau__22;6f00 0096 
+              BLE.W          ___LADFUNC_BuildEntryBuffersOrDefau__22;6f00 00a6 
 ___LADFUNC_BuildEntryBuffersOrDefau__8:
               MOVE.L         $2c(A7),D0               ;202f 002c 
               MOVE.L         $24(A7),A0               ;206f 0024 
@@ -81,20 +84,28 @@ ___LADFUNC_BuildEntryBuffersOrDefau__12:
               MOVE.L         $24(A7),A1               ;226f 0024 
               MOVE.B         (A1)+,D0                 ;1019 
               MOVE.B         D0,(A0)                  ;1080 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         $1e(A7),D1               ;122f 001e 
               MOVE.L         A1,$24(A7)               ;2f49 0024 
-              CMP.B          $1e(A7),D0               ;b02f 001e 
-              BNE.B          ___LADFUNC_BuildEntryBuffersOrDefau__12;66e6 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___LADFUNC_BuildEntryBuffersOrDefau__12;66de 
 ___LADFUNC_BuildEntryBuffersOrDefau__13:
 ___LADFUNC_BuildEntryBuffersOrDefau__14:
               MOVE.L         A5,$24(A7)               ;2f4d 0024 
 ___LADFUNC_BuildEntryBuffersOrDefau__15:
               MOVE.L         $24(A7),A0               ;206f 0024 
               MOVE.B         (A0),D0                  ;1010 
-              CMP.B          $1e(A7),D0               ;b02f 001e 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         $1e(A7),D1               ;122f 001e 
+              CMP.L          D1,D0                    ;b081 
               BEQ.B          ___LADFUNC_BuildEntryBuffersOrDefau__17;6706 
 ___LADFUNC_BuildEntryBuffersOrDefau__16:
               ADDQ.L         #$1,$24(A7)              ;52af 0024 
-              BRA.B          ___LADFUNC_BuildEntryBuffersOrDefau__15;60ee 
+              BRA.B          ___LADFUNC_BuildEntryBuffersOrDefau__15;60e6 
 ___LADFUNC_BuildEntryBuffersOrDefau__17:
               MOVE.L         $24(A7),D0               ;202f 0024 
               MOVE.L         A5,D1                    ;220d 
