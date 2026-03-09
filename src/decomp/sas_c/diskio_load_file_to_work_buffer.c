@@ -4,7 +4,7 @@ typedef unsigned char UBYTE;
 
 extern void *Global_REF_DOS_LIBRARY_2;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
-extern UBYTE *Global_PTR_WORK_BUFFER;
+extern char *Global_PTR_WORK_BUFFER;
 extern const char Global_STR_DISKIO_C_3[];
 extern const char Global_STR_DISKIO_C_4[];
 
@@ -40,12 +40,12 @@ LONG DISKIO_LoadFileToWorkBuffer(const char *path)
         return RESULT_FAIL;
     }
 
-    Global_PTR_WORK_BUFFER = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    Global_PTR_WORK_BUFFER = (char *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_DISKIO_C_3,
         ALLOC_LINE,
         (ULONG)(Global_REF_LONG_FILE_SCRATCH + STR_TERM_BYTES),
         MEMF_PUBLIC_CLEAR);
-    if (Global_PTR_WORK_BUFFER == (UBYTE *)FILEHANDLE_INVALID) {
+    if (Global_PTR_WORK_BUFFER == (char *)FILEHANDLE_INVALID) {
         _LVOClose(Global_REF_DOS_LIBRARY_2, fileHandle);
         return RESULT_FAIL;
     }
