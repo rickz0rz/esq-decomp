@@ -115,11 +115,19 @@ ___ESQPARS_JMPTBL_LADFUNC_SaveTextA__1:
 ___ESQPARS_JMPTBL_LADFUNC_SaveTextA__2:
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_PARSE_ReadSignedL:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___ESQPARS_JMPTBL_PARSE_ReadSignedL__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSE_ReadSignedLongSkipClass3_A;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQPARS_JMPTBL_PARSE_ReadSignedL__2:
+___ESQPARS_JMPTBL_PARSE_ReadSignedL__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_DISKIO2_HandleInt:
               CMP.L          __base(A4),A7            ;bfec 0000 
