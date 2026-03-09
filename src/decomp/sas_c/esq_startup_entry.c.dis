@@ -39,7 +39,7 @@ ___ESQ_BuildCliStartupCommand__1:
               BNE.B          ___ESQ_BuildCliStartupCommand__3;6606 
 ___ESQ_BuildCliStartupCommand__2:
               MOVE.L         A3,D0                    ;200b 
-              BRA.W          ___ESQ_BuildCliStartupCommand__15;6000 008e 
+              BRA.W          ___ESQ_BuildCliStartupCommand__15;6000 0090 
 ___ESQ_BuildCliStartupCommand__3:
               MOVE.L         D6,D0                    ;2006 
               ASL.L          #$2,D0                   ;e580 
@@ -50,13 +50,14 @@ ___ESQ_BuildCliStartupCommand__3:
               BNE.B          ___ESQ_BuildCliStartupCommand__5;6604 
 ___ESQ_BuildCliStartupCommand__4:
               MOVE.L         A3,D0                    ;200b 
-              BRA.B          ___ESQ_BuildCliStartupCommand__15;6078 
+              BRA.B          ___ESQ_BuildCliStartupCommand__15;607a 
 ___ESQ_BuildCliStartupCommand__5:
               MOVE.L         D5,D0                    ;2005 
               ASL.L          #$2,D0                   ;e580 
               MOVE.L         D0,A2                    ;2440 
+              MOVE.B         (A2)+,D0                 ;101a 
               MOVEQ.L        #$0,D4                   ;7800 
-              MOVE.B         (A2)+,D4                 ;181a 
+              MOVE.B         D0,D4                    ;1800 
               MOVE.L         A2,Global_ScratchPtr_592(A4);294a 0000 
               MOVE.L         D7,D0                    ;2007 
               ADD.L          D4,D0                    ;d084 
@@ -160,7 +161,7 @@ ___ESQ_StartupEntry__8:
               MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              BSR.W          ESQ_BuildCliStartupCommand;6100 fea0 
+              BSR.W          ESQ_BuildCliStartupCommand;6100 fe9e 
 ___ESQ_StartupEntry__9:
               MOVE.L         D0,A3                    ;2640 
               LEA            $c(A7),A7                ;4fef 000c 
@@ -222,7 +223,7 @@ ___ESQ_StartupEntry__16:
 ___ESQ_StartupEntry__17:
               MOVE.L         A1,-(A7)                 ;2f09 
               PEA            Global_WBStartupCmdBuffer(A4);486c 0000 
-              BSR.W          ESQ_CopyCString          ;6100 fdd6 
+              BSR.W          ESQ_CopyCString          ;6100 fdd4 
 ___ESQ_StartupEntry__18:
               ADDQ.W         #$8,A7                   ;504f 
               BRA.B          ___ESQ_StartupEntry__22  ;600e 

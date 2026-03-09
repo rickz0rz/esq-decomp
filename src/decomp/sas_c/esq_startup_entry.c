@@ -25,9 +25,9 @@ extern void *Global_SavedMsg;
 extern void *Global_DosLibrary;
 extern LONG Global_SavedDirLock;
 extern LONG Global_CommandLineSize;
-extern UBYTE *Global_ScratchPtr_592;
+extern char *Global_ScratchPtr_592;
 extern LONG Global_WBStartupWindowPtr;
-extern UBYTE Global_WBStartupCmdBuffer[];
+extern char Global_WBStartupCmdBuffer[];
 
 extern void _LVOSetSignal(void *execBase, LONG oldMask, LONG newMask);
 extern void * _LVOOpenLibrary(void *execBase, const char *name, LONG version);
@@ -37,21 +37,21 @@ extern LONG _LVOCurrentDir(void *dosBase, LONG lock);
 extern LONG _LVOSupervisor(void *dosBase, LONG code);
 
 extern void GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook(void);
-extern LONG GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun(UBYTE *cmdline);
+extern LONG GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun(char *cmdline);
 extern LONG ESQ_ShutdownAndReturn(LONG exitCode);
 
-static void ESQ_CopyCString(UBYTE *dst, const UBYTE *src)
+static void ESQ_CopyCString(char *dst, const char *src)
 {
     while ((*dst++ = *src++) != 0) {
     }
 }
 
-static UBYTE *ESQ_BuildCliStartupCommand(UBYTE *currentTask, UBYTE *startupCmdString, LONG startupCmdLength)
+static char *ESQ_BuildCliStartupCommand(UBYTE *currentTask, char *startupCmdString, LONG startupCmdLength)
 {
     ULONG cliBptr;
     ULONG tailBptr;
-    UBYTE *tail;
-    UBYTE *dst;
+    char *tail;
+    char *dst;
     LONG tailLength;
     LONG i;
 
@@ -65,7 +65,7 @@ static UBYTE *ESQ_BuildCliStartupCommand(UBYTE *currentTask, UBYTE *startupCmdSt
         return startupCmdString;
     }
 
-    tail = (UBYTE *)(tailBptr << 2);
+    tail = (char *)(tailBptr << 2);
     tailLength = (LONG)(UBYTE)*tail++;
     Global_ScratchPtr_592 = tail;
     Global_CommandLineSize = startupCmdLength + tailLength + 128;
@@ -85,7 +85,7 @@ static UBYTE *ESQ_BuildCliStartupCommand(UBYTE *currentTask, UBYTE *startupCmdSt
 LONG ESQ_StartupEntry(UBYTE *startupCmdString, LONG startupCmdLength)
 {
     UBYTE *currentTask;
-    UBYTE *cmdlinePtr;
+    char *cmdlinePtr;
     LONG i;
 
     for (i = 0; i <= 5928; ++i) {
@@ -131,14 +131,14 @@ LONG ESQ_StartupEntry(UBYTE *startupCmdString, LONG startupCmdLength)
         }
 
         if (argList != (UBYTE *)0) {
-            Global_ScratchPtr_592 = *(UBYTE **)(argList + WBARG_NAME_OFFSET);
-            if (Global_ScratchPtr_592 != (UBYTE *)0) {
+            Global_ScratchPtr_592 = *(char **)(argList + WBARG_NAME_OFFSET);
+            if (Global_ScratchPtr_592 != (char *)0) {
                 ESQ_CopyCString(Global_WBStartupCmdBuffer, Global_ScratchPtr_592);
             } else {
                 Global_WBStartupCmdBuffer[0] = 0;
             }
         } else {
-            Global_ScratchPtr_592 = (UBYTE *)0;
+            Global_ScratchPtr_592 = (char *)0;
             Global_WBStartupCmdBuffer[0] = 0;
         }
 

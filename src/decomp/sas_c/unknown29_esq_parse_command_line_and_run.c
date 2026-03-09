@@ -3,10 +3,10 @@ typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
 extern ULONG Global_ArgCount;
-extern UBYTE *Global_ArgvStorage[];
-extern UBYTE **Global_ArgvPtr;
-extern UBYTE *Global_SavedMsg;
-extern UBYTE Global_ConsoleNameBuffer[];
+extern char *Global_ArgvStorage[];
+extern char **Global_ArgvPtr;
+extern char *Global_SavedMsg;
+extern char Global_ConsoleNameBuffer[];
 extern ULONG Global_DosLibrary;
 
 extern LONG Global_HandleEntry0_Ptr;
@@ -25,13 +25,13 @@ extern ULONG Global_PreallocHandleNode2_HandleIndex;
 extern ULONG Global_PreallocHandleNode2_OpenFlags;
 extern ULONG Global_SignalCallbackPtr;
 
-extern UBYTE *STRING_AppendN(UBYTE *dst, const UBYTE *src, ULONG max_bytes);
+extern char *STRING_AppendN(char *dst, const char *src, ULONG max_bytes);
 extern LONG HANDLE_CloseAllAndReturnWithCode(LONG code);
-extern LONG UNKNOWN29_JMPTBL_ESQ_MainInitAndRun(LONG argc, UBYTE **argv);
+extern LONG UNKNOWN29_JMPTBL_ESQ_MainInitAndRun(LONG argc, char **argv);
 extern LONG BUFFER_FlushAllAndCloseWithCode(LONG code);
 extern LONG UNKNOWN36_ShowAbortRequester(void);
 
-extern LONG DOS_LVO_OPEN(const UBYTE *name, LONG mode);
+extern LONG DOS_LVO_OPEN(const char *name, LONG mode);
 extern LONG DOS_LVO_INPUT(void);
 extern LONG DOS_LVO_OUTPUT(void);
 extern UBYTE *EXEC_FIND_TASK_NULL(void);
@@ -41,7 +41,7 @@ extern UBYTE *EXEC_FIND_TASK_NULL(void);
 
 typedef struct ESQ_WBArgRecord {
     ULONG lock0;
-    UBYTE *namePtr4;
+    char *namePtr4;
 } ESQ_WBArgRecord;
 
 typedef struct ESQ_WBStartupMsg {
@@ -49,9 +49,9 @@ typedef struct ESQ_WBStartupMsg {
     ESQ_WBArgRecord *argList36;
 } ESQ_WBStartupMsg;
 
-LONG ESQ_ParseCommandLineAndRun(UBYTE *cmdline)
+LONG ESQ_ParseCommandLineAndRun(char *cmdline)
 {
-    UBYTE *p = cmdline;
+    char *p = cmdline;
 
     while (Global_ArgCount < 32UL) {
         while (*p == (UBYTE)' ' || *p == (UBYTE)'\t' || *p == (UBYTE)'\n') {
@@ -97,16 +97,16 @@ LONG ESQ_ParseCommandLineAndRun(UBYTE *cmdline)
     }
 
     if (Global_ArgCount == 0) {
-        Global_ArgvPtr = (UBYTE **)Global_SavedMsg;
+        Global_ArgvPtr = (char **)Global_SavedMsg;
     } else {
         Global_ArgvPtr = Global_ArgvStorage;
     }
 
     if (Global_ArgCount == 0) {
-        static const UBYTE kConsolePrefix[] = "con.10/10/320/80/";
+        static const char kConsolePrefix[] = "con.10/10/320/80/";
         ESQ_WBStartupMsg *saved_msg = (ESQ_WBStartupMsg *)Global_SavedMsg;
         ESQ_WBArgRecord *arg_record = saved_msg->argList36;
-        UBYTE *append_src = arg_record->namePtr4;
+        char *append_src = arg_record->namePtr4;
         LONG h;
         UBYTE *task;
         UBYTE *fh_ptr;
@@ -131,7 +131,7 @@ LONG ESQ_ParseCommandLineAndRun(UBYTE *cmdline)
     } else {
         Global_HandleEntry0_Ptr = DOS_LVO_INPUT();
         Global_HandleEntry1_Ptr = DOS_LVO_OUTPUT();
-        Global_HandleEntry2_Ptr = DOS_LVO_OPEN((const UBYTE *)"*", MODE_OLDFILE);
+        Global_HandleEntry2_Ptr = DOS_LVO_OPEN("*", MODE_OLDFILE);
     }
 
     {
