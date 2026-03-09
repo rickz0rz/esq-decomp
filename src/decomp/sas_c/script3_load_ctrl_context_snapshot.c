@@ -25,54 +25,80 @@ extern UBYTE TEXTDISP_BannerSelectedEntryIndex;
 
 extern LONG ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(LONG oldPtr, LONG newPtr);
 
+typedef struct SCRIPT_CtrlContextSnapshot {
+    UBYTE pad0[2];
+    UWORD primarySearchFirstFlag;
+    UWORD primaryChannelCode;
+    UWORD secondaryChannelCode;
+    UWORD currentMatchIndex;
+    UWORD channelRangeArmedFlag;
+    UWORD channelSourceMode;
+    UWORD channelRangeDigitChar;
+    LONG searchMatchCountOrIndex;
+    LONG playbackCursor;
+    UWORD runtimeMode;
+    UBYTE pad26[200];
+    UBYTE primarySearchText[200];
+    UBYTE secondarySearchText[200];
+    UWORD activeGroupId;
+    UBYTE pad428[8];
+    UBYTE type20SubtypeCache;
+    UBYTE pendingWeatherCommandChar;
+    UBYTE pendingTextdispCmdChar;
+    UBYTE pendingTextdispCmdArg;
+    LONG commandTextPtr;
+    UBYTE bannerFallbackEntryIndex[4];
+    UBYTE bannerSelectedEntryIndex[4];
+} SCRIPT_CtrlContextSnapshot;
+
 void SCRIPT_LoadCtrlContextSnapshot(void *ctx)
 {
-    UBYTE *p;
+    SCRIPT_CtrlContextSnapshot *p;
     UBYTE *src;
     UBYTE *dst;
     UWORD savedMode;
     LONG i;
 
-    p = (UBYTE *)ctx;
+    p = (SCRIPT_CtrlContextSnapshot *)ctx;
 
-    SCRIPT_Type20SubtypeCache = p[436];
-    SCRIPT_PendingWeatherCommandChar = p[437];
-    SCRIPT_PendingTextdispCmdChar = p[438];
-    SCRIPT_PendingTextdispCmdArg = p[439];
+    SCRIPT_Type20SubtypeCache = p->type20SubtypeCache;
+    SCRIPT_PendingWeatherCommandChar = p->pendingWeatherCommandChar;
+    SCRIPT_PendingTextdispCmdChar = p->pendingTextdispCmdChar;
+    SCRIPT_PendingTextdispCmdArg = p->pendingTextdispCmdArg;
 
-    SCRIPT_CommandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(SCRIPT_CommandTextPtr, *(LONG *)(p + 440));
+    SCRIPT_CommandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(SCRIPT_CommandTextPtr, p->commandTextPtr);
 
-    SCRIPT_PrimarySearchFirstFlag = *(UWORD *)(p + 2);
-    TEXTDISP_PrimaryChannelCode = *(UWORD *)(p + 4);
-    TEXTDISP_SecondaryChannelCode = *(UWORD *)(p + 6);
+    SCRIPT_PrimarySearchFirstFlag = p->primarySearchFirstFlag;
+    TEXTDISP_PrimaryChannelCode = p->primaryChannelCode;
+    TEXTDISP_SecondaryChannelCode = p->secondaryChannelCode;
 
-    src = p + 26;
+    src = p->primarySearchText;
     dst = &TEXTDISP_PrimarySearchText;
     do {
         *dst++ = *src;
     } while (*src++ != 0);
 
-    src = p + 226;
+    src = p->secondarySearchText;
     dst = &TEXTDISP_SecondarySearchText;
     do {
         *dst++ = *src;
     } while (*src++ != 0);
 
-    TEXTDISP_CurrentMatchIndex = *(UWORD *)(p + 8);
-    SCRIPT_ChannelRangeArmedFlag = *(UWORD *)(p + 10);
-    TEXTDISP_ChannelSourceMode = *(UWORD *)(p + 12);
-    SCRIPT_ChannelRangeDigitChar = *(UWORD *)(p + 14);
-    SCRIPT_SearchMatchCountOrIndex = *(LONG *)(p + 16);
-    SCRIPT_PlaybackCursor = *(LONG *)(p + 20);
+    TEXTDISP_CurrentMatchIndex = p->currentMatchIndex;
+    SCRIPT_ChannelRangeArmedFlag = p->channelRangeArmedFlag;
+    TEXTDISP_ChannelSourceMode = p->channelSourceMode;
+    SCRIPT_ChannelRangeDigitChar = p->channelRangeDigitChar;
+    SCRIPT_SearchMatchCountOrIndex = p->searchMatchCountOrIndex;
+    SCRIPT_PlaybackCursor = p->playbackCursor;
 
-    savedMode = *(UWORD *)(p + 24);
+    savedMode = p->runtimeMode;
     if ((SCRIPT_RuntimeMode == 2 && savedMode == 3) || (SCRIPT_RuntimeMode == 0 && savedMode == 1)) {
         SCRIPT_RuntimeMode = savedMode;
     }
 
-    TEXTDISP_ActiveGroupId = *(UWORD *)(p + 426);
+    TEXTDISP_ActiveGroupId = p->activeGroupId;
     for (i = 0; i < 4; i++) {
-        *(&TEXTDISP_BannerFallbackEntryIndex + i) = p[0x1ac + i];
-        *(&TEXTDISP_BannerSelectedEntryIndex + i) = p[0x1b0 + i];
+        *(&TEXTDISP_BannerFallbackEntryIndex + i) = p->bannerFallbackEntryIndex[i];
+        *(&TEXTDISP_BannerSelectedEntryIndex + i) = p->bannerSelectedEntryIndex[i];
     }
 }
