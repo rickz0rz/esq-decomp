@@ -25,7 +25,7 @@ extern UBYTE ED_CurrentChar;
 extern LONG ED_AdActiveFlag;
 extern UBYTE ED_MenuStateId;
 
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern const char ED2_STR_PAGE[];
 extern const char ED2_STR_LINE[];
@@ -52,9 +52,9 @@ extern void *ED1_JMPTBL_MEM_Move(void *dst, const void *src, LONG len);
 extern void SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR(LONG mode);
 extern LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern LONG GROUP_AG_JMPTBL_MATH_DivS32(LONG a, LONG b);
-extern void DISPLIB_DisplayTextAtPosition(void *rp, LONG x, LONG y, const char *text);
-extern LONG _LVOSetAPen(void *gfxBase, void *rp, LONG pen);
-extern LONG _LVOSetBPen(void *gfxBase, void *rp, LONG pen);
+extern void DISPLIB_DisplayTextAtPosition(char *rp, LONG x, LONG y, const char *text);
+extern LONG _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
+extern LONG _LVOSetBPen(void *gfxBase, char *rp, LONG pen);
 
 static void sync_current_char_and_maybe_draw_indicator(void)
 {
