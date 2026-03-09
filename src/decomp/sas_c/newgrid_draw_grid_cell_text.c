@@ -27,8 +27,9 @@ extern LONG _LVOTextLength(void *gfx, void *rp, const char *text, LONG len);
 extern LONG _LVOMove(void *gfx, void *rp, LONG x, LONG y);
 extern LONG _LVOText(void *gfx, void *rp, const char *text, LONG len);
 
-void NEWGRID_DrawGridCellText(NEWGRID_RastPort *rp, const char *primary, const char *secondary, LONG alignMode)
+void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *secondary, LONG alignMode)
 {
+    NEWGRID_RastPort *rp;
     char mergedSecondary[26];
     LONG baselineX;
     LONG rowHalfY;
@@ -37,6 +38,8 @@ void NEWGRID_DrawGridCellText(NEWGRID_RastPort *rp, const char *primary, const c
     LONG w;
     LONG n;
     LONG fontY;
+
+    rp = (NEWGRID_RastPort *)rastPort;
 
     if (Global_WORD_SELECT_CODE_IS_RAVESC) {
         n = 0;
