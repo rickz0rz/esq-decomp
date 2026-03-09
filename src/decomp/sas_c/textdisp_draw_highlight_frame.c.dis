@@ -2,51 +2,46 @@
 __code:
 TEXTDISP_DrawHighlightFrame:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$7c,D0                  ;90bc 0000 007c 
+              SUB.L          #$6c,D0                  ;90bc 0000 006c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$64,A7                  ;9efc 0064 
-              MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 3f34 
+              SUB.W          #$54,A7                  ;9efc 0054 
+              MOVEM.L        D2/D3/D5/D6/D7/A2/A3/A5,-(A7);48e7 3734 
 ___TEXTDISP_DrawHighlightFrame__1:
-              MOVE.L         $8c(A7),A5               ;2a6f 008c 
+              MOVE.L         $78(A7),A5               ;2a6f 0078 
               MOVEQ.L        #$8,D7                   ;7e08 
               MOVEQ.L        #$3,D6                   ;7c03 
               MOVEQ.L        #$0,D5                   ;7a00 
               MOVEQ.L        #$3,D0                   ;7003 
-              MOVE.L         D0,$84(A7)               ;2f40 0084 
-              CLR.L          $80(A7)                  ;42af 0080 
+              MOVE.L         D0,$70(A7)               ;2f40 0070 
               MOVEQ.L        #$2,D0                   ;7002 
-              MOVEQ.L        #$4,D1                   ;7204 
-              MOVE.L         D1,$78(A7)               ;2f41 0078 
               MOVEQ.L        #$1,D1                   ;7201 
               MOVEQ.L        #$16,D2                  ;7416 
-              MOVE.L         D2,$64(A7)               ;2f42 0064 
-              MOVE.L         #$1f4,$60(A7)            ;2f7c 0000 01f4 0060 
-              MOVE.B         #$59,$5c(A7)             ;1f7c 0059 005c 
-              MOVE.L         #$11c,$24(A7)            ;2f7c 0000 011c 0024 
-              MOVE.L         #$11b,$54(A7)            ;2f7c 0000 011b 0054 
-              CLR.L          $50(A7)                  ;42af 0050 
+              MOVE.L         D2,$60(A7)               ;2f42 0060 
+              MOVE.L         #$1f4,$5c(A7)            ;2f7c 0000 01f4 005c 
+              MOVE.B         #$59,$58(A7)             ;1f7c 0059 0058 
+              MOVE.L         #$11c,$20(A7)            ;2f7c 0000 011c 0020 
+              MOVE.L         #$11b,$50(A7)            ;2f7c 0000 011b 0050 
+              CLR.L          $4c(A7)                  ;42af 004c 
               MOVE.L         A5,A3                    ;264d 
-              MOVE.L         D0,$58(A7)               ;2f40 0058 
-              MOVE.L         D0,$68(A7)               ;2f40 0068 
-              MOVE.L         D0,$70(A7)               ;2f40 0070 
-              MOVE.L         D0,$74(A7)               ;2f40 0074 
-              MOVE.L         D0,$7c(A7)               ;2f40 007c 
-              MOVE.L         D1,$4c(A7)               ;2f41 004c 
-              MOVE.L         D1,$6c(A7)               ;2f41 006c 
+              MOVE.L         D0,$54(A7)               ;2f40 0054 
+              MOVE.L         D0,$64(A7)               ;2f40 0064 
+              MOVE.L         D0,$6c(A7)               ;2f40 006c 
+              MOVE.L         D1,$48(A7)               ;2f41 0048 
+              MOVE.L         D1,$68(A7)               ;2f41 0068 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.W          ___TEXTDISP_DrawHighlightFrame__16;6700 018e 
+              BEQ.W          ___TEXTDISP_DrawHighlightFrame__16;6700 017c 
 ___TEXTDISP_DrawHighlightFrame__2:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $dc(A3),D0               ;102b 00dc 
               CMP.L          D5,D0                    ;b085 
-              BEQ.W          ___TEXTDISP_DrawHighlightFrame__16;6700 0182 
+              BEQ.W          ___TEXTDISP_DrawHighlightFrame__16;6700 0170 
 ___TEXTDISP_DrawHighlightFrame__3:
 ___TEXTDISP_DrawHighlightFrame__4:
               MOVE.L         D5,-(A7)                 ;2f05 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          TLIBA3_ClearViewModeRastPort;6100 0000 
-              MOVE.L         $8c(A7),(A7)             ;2eaf 008c 
+              MOVE.L         $78(A7),(A7)             ;2eaf 0078 
               MOVE.L         D5,-(A7)                 ;2f05 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
@@ -55,75 +50,71 @@ ___TEXTDISP_DrawHighlightFrame__4:
               LEA            $10(A7),A7               ;4fef 0010 
               MOVE.L         WDISP_DisplayContextBase(A4),A2;246c 0000 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.L         $78(A7),D1               ;222f 0078 
-              MOVE.W         $0(A2,D1.L),D0           ;3032 1800 
+              MOVE.W         $4(A2),D0                ;302a 0004 
               MOVE.L         TEXTDISP_EntryTextBaseWidthPx(A4),D1;222c 0000 
-              SUB.L          $64(A7),D1               ;92af 0064 
-              MOVE.L         $70(A7),D2               ;242f 0070 
+              SUB.L          $60(A7),D1               ;92af 0060 
+              MOVE.L         $6c(A7),D2               ;242f 006c 
               MOVEQ.L        #$0,D3                   ;7600 
               BSET           D2,D3                    ;05c3 
               MOVEQ.L        #$0,D2                   ;7400 
-              MOVE.L         $80(A7),D4               ;282f 0080 
-              MOVE.W         $0(A2,D4.L),D2           ;3432 4800 
+              MOVE.W         (A2),D2                  ;3412 
               AND.L          D3,D2                    ;c483 
-              MOVE.L         D0,$44(A7)               ;2f40 0044 
-              MOVE.L         D1,$40(A7)               ;2f41 0040 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
+              MOVE.L         D1,$3c(A7)               ;2f41 003c 
               TST.L          D2                       ;4a82 
               BEQ.B          ___TEXTDISP_DrawHighlightFrame__6;6706 
 ___TEXTDISP_DrawHighlightFrame__5:
-              MOVE.L         $68(A7),D0               ;202f 0068 
+              MOVE.L         $64(A7),D0               ;202f 0064 
               BRA.B          ___TEXTDISP_DrawHighlightFrame__7;6004 
 ___TEXTDISP_DrawHighlightFrame__6:
-              MOVE.L         $6c(A7),D0               ;202f 006c 
+              MOVE.L         $68(A7),D0               ;202f 0068 
 ___TEXTDISP_DrawHighlightFrame__7:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D1,-(A7)                 ;2f01 
-              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
               BSR.W          MATH_Mulu32              ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         D0,$40(A7)               ;2f40 0040 
-              MOVE.L         $44(A7),D1               ;222f 0044 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
+              MOVE.L         $40(A7),D1               ;222f 0040 
               CMP.L          D0,D1                    ;b280 
               BLE.B          ___TEXTDISP_DrawHighlightFrame__9;6f04 
 ___TEXTDISP_DrawHighlightFrame__8:
-              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
 ___TEXTDISP_DrawHighlightFrame__9:
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.L         $7c(A7),D1               ;222f 007c 
-              MOVE.W         $0(A2,D1.L),D0           ;3032 1800 
-              MOVE.L         $4c(A7),D1               ;222f 004c 
+              MOVE.W         $2(A2),D0                ;302a 0002 
+              MOVE.L         $48(A7),D1               ;222f 0048 
               MOVE.W         D1,WDISP_AccumulatorCaptureActive(A4);3941 0000 
               MOVE.L         D5,D1                    ;2205 
               MOVE.W         D1,WDISP_AccumulatorFlushPending(A4);3941 0000 
-              MOVE.L         A2,A0                    ;204a 
-              ADD.L          $74(A7),A0               ;d1ef 0074 
-              MOVE.L         D0,$38(A7)               ;2f40 0038 
-              MOVE.L         A0,$48(A7)               ;2f48 0048 
+              LEA            $6(A2),A0                ;41ea 0006 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
+              MOVE.L         A0,$44(A7)               ;2f48 0044 
               BSR.W          WDISP_JMPTBL_ESQIFF_RunCopperDro;6100 0000 
               BSR.W          WDISP_JMPTBL_ESQIFF_RestoreBaseP;6100 0000 
               MOVE.B         CONFIG_LRBN_FlagChar(A4),D0;102c 0000 
-              CMP.B          $5c(A7),D0               ;b02f 005c 
-              BNE.B          ___TEXTDISP_DrawHighlightFrame__14;663c 
+              CMP.B          $58(A7),D0               ;b02f 0058 
+              BNE.B          ___TEXTDISP_DrawHighlightFrame__14;663a 
 ___TEXTDISP_DrawHighlightFrame__10:
-              MOVE.L         $70(A7),D0               ;202f 0070 
+              MOVE.L         $6c(A7),D0               ;202f 006c 
               MOVEQ.L        #$0,D1                   ;7200 
               BSET           D0,D1                    ;01c1 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         $0(A2,D4.L),D0           ;3032 4800 
+              MOVE.W         (A2),D0                  ;3012 
               AND.L          D1,D0                    ;c081 
               BEQ.B          ___TEXTDISP_DrawHighlightFrame__12;6706 
 ___TEXTDISP_DrawHighlightFrame__11:
-              MOVE.L         $68(A7),D0               ;202f 0068 
+              MOVE.L         $64(A7),D0               ;202f 0064 
               BRA.B          ___TEXTDISP_DrawHighlightFrame__13;6004 
 ___TEXTDISP_DrawHighlightFrame__12:
-              MOVE.L         $6c(A7),D0               ;202f 006c 
+              MOVE.L         $68(A7),D0               ;202f 0068 
 ___TEXTDISP_DrawHighlightFrame__13:
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
-              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
               BSR.W          MATH_DivS32              ;6100 0000 
-              ADD.L          $6c(A7),D0               ;d0af 006c 
-              MOVE.L         $68(A7),(A7)             ;2eaf 0068 
+              ADD.L          $68(A7),D0               ;d0af 0068 
+              MOVE.L         $64(A7),(A7)             ;2eaf 0064 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          SCRIPT_BeginBannerCharTransition;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
@@ -133,32 +124,32 @@ ___TEXTDISP_DrawHighlightFrame__14:
               MOVE.L         D6,-(A7)                 ;2f06 
               BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
               MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
-              MOVE.L         $44(A7),D0               ;202f 0044 
-              SUB.L          $30(A7),D0               ;90af 0030 
-              MOVE.L         $64(A7),D1               ;222f 0064 
+              MOVE.L         $40(A7),D0               ;202f 0040 
+              SUB.L          $2c(A7),D0               ;90af 002c 
+              MOVE.L         $60(A7),D1               ;222f 0060 
               BSR.W          _CXD33                   ;6100 0000 
-              MOVE.L         D5,$3c(A7)               ;2f45 003c 
-              MOVE.L         D0,$40(A7)               ;2f40 0040 
-              ADD.L          $60(A7),D0               ;d0af 0060 
-              MOVE.L         $50(A7),D1               ;222f 0050 
-              SUB.L          $58(A7),D1               ;92af 0058 
-              MOVE.L         $5c(A7),(A7)             ;2eaf 005c 
-              MOVE.L         $54(A7),-(A7)            ;2f2f 0054 
+              MOVE.L         D5,$38(A7)               ;2f45 0038 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
+              ADD.L          $5c(A7),D0               ;d0af 005c 
+              MOVE.L         $4c(A7),D1               ;222f 004c 
+              SUB.L          $54(A7),D1               ;92af 0054 
+              MOVE.L         $58(A7),(A7)             ;2eaf 0058 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
-              MOVE.L         D0,$40(A7)               ;2f40 0040 
-              MOVE.L         D1,$3c(A7)               ;2f41 003c 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
+              MOVE.L         D1,$38(A7)               ;2f41 0038 
               BSR.W          _LVOSetDrMd              ;6100 0000 
-              MOVE.L         $60(A7),D0               ;202f 0060 
+              MOVE.L         $5c(A7),D0               ;202f 005c 
               MOVE.W         D0,TEXTDISP_LinePenOverrideEnabledF(A4);3940 0000 
               LEA            $dc(A3),A0               ;41eb 00dc 
-              MOVE.L         $3c(A7),(A7)             ;2eaf 003c 
-              MOVE.L         $40(A7),-(A7)            ;2f2f 0040 
-              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
-              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
+              MOVE.L         $38(A7),(A7)             ;2eaf 0038 
+              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
               MOVE.L         A0,-(A7)                 ;2f08 
-              MOVE.L         $6c(A7),-(A7)            ;2f2f 006c 
+              MOVE.L         $68(A7),-(A7)            ;2f2f 0068 
               BSR.W          TLIBA1_DrawFormattedTextBlock;6100 0000 
-              MOVE.L         $ac(A7),(A7)             ;2eaf 00ac 
+              MOVE.L         $98(A7),(A7)             ;2eaf 0098 
               MOVE.L         D5,-(A7)                 ;2f05 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
@@ -169,8 +160,8 @@ ___TEXTDISP_DrawHighlightFrame__14:
 ___TEXTDISP_DrawHighlightFrame__15:
               LEA            $30(A7),A7               ;4fef 0030 
 ___TEXTDISP_DrawHighlightFrame__16:
-              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
-              ADD.W          #$64,A7                  ;defc 0064 
+              MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A2/A3/A5;4cdf 2cec 
+              ADD.W          #$54,A7                  ;defc 0054 
               RTS                                     ;4e75 
 __const:
 __strings:

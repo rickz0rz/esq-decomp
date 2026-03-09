@@ -11,6 +11,13 @@ typedef struct TEXTDISP_SelectionEntry {
     UBYTE detailLine[524];
 } TEXTDISP_SelectionEntry;
 
+typedef struct TEXTDISP_DisplayContext {
+    UWORD flags;
+    UWORD yBase;
+    UWORD width;
+    UBYTE rastPort[1];
+} TEXTDISP_DisplayContext;
+
 extern LONG TEXTDISP_EntryTextBaseWidthPx;
 extern LONG WDISP_DisplayContextBase;
 extern UWORD WDISP_AccumulatorCaptureActive;
@@ -38,10 +45,6 @@ void TEXTDISP_DrawHighlightFrame(void *entryPtr)
     const LONG MODE_TEXT = 3;
     const LONG ZERO = 0;
     const LONG VIEWCFG_THREE = 3;
-    const LONG DC_FLAGS_OFFSET = 0;
-    const LONG DC_YBASE_OFFSET = 2;
-    const LONG DC_WIDTH_OFFSET = 4;
-    const LONG RASTPORT_OFFSET = 2;
     const LONG BIT_SHIFT_DUAL_GRID = 2;
     const LONG GRIDCOLS_SINGLE = 1;
     const LONG GRIDCOLS_DOUBLE = 2;
@@ -54,7 +57,7 @@ void TEXTDISP_DrawHighlightFrame(void *entryPtr)
     const LONG DRAWMODE_JAM1 = 0;
     const LONG ONE = 1;
     TEXTDISP_SelectionEntry *entry;
-    LONG *dc;
+    TEXTDISP_DisplayContext *dc;
     void *rastPort;
     LONG widthPx;
     LONG widthMax;
@@ -74,27 +77,25 @@ void TEXTDISP_DrawHighlightFrame(void *entryPtr)
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(MODE_HIGHLIGHT, ZERO, VIEWCFG_THREE);
     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
 
-    dc = (LONG *)WDISP_DisplayContextBase;
-    widthPx = (LONG)(*(UWORD *)((UBYTE *)dc + DC_WIDTH_OFFSET));
+    dc = (TEXTDISP_DisplayContext *)WDISP_DisplayContextBase;
+    widthPx = (LONG)dc->width;
     widthMax = TEXTDISP_EntryTextBaseWidthPx - WIDTH_MARGIN;
-    gridCols = ((*(UWORD *)((UBYTE *)dc + DC_FLAGS_OFFSET) & (1u << BIT_SHIFT_DUAL_GRID)) != 0) ? GRIDCOLS_DOUBLE
-                                                                                                   : GRIDCOLS_SINGLE;
+    gridCols = ((dc->flags & (1u << BIT_SHIFT_DUAL_GRID)) != 0) ? GRIDCOLS_DOUBLE : GRIDCOLS_SINGLE;
     widthMax = MATH_Mulu32(widthMax, gridCols);
     if (widthPx > widthMax) {
         widthPx = widthMax;
     }
 
-    yBase = (LONG)(*(UWORD *)((UBYTE *)dc + DC_YBASE_OFFSET));
+    yBase = (LONG)dc->yBase;
     WDISP_AccumulatorCaptureActive = ONE;
     WDISP_AccumulatorFlushPending = ZERO;
 
-    rastPort = (void *)((UBYTE *)dc + RASTPORT_OFFSET);
+    rastPort = (void *)dc->rastPort;
     WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
 
     if (CONFIG_LRBN_FlagChar == CH_BANNER_YES) {
-        gridCols = ((*(UWORD *)((UBYTE *)dc + DC_FLAGS_OFFSET) & (1u << BIT_SHIFT_DUAL_GRID)) != 0) ? GRIDCOLS_DOUBLE
-                                                                                                        : GRIDCOLS_SINGLE;
+        gridCols = ((dc->flags & (1u << BIT_SHIFT_DUAL_GRID)) != 0) ? GRIDCOLS_DOUBLE : GRIDCOLS_SINGLE;
         SCRIPT_BeginBannerCharTransition(MATH_DivS32(widthPx, gridCols) + WIDTH_MARGIN, BANNER_DURATION);
     }
 
