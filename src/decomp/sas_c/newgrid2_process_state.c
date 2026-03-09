@@ -36,16 +36,16 @@ extern LONG NEWGRID_DrawGridEntry(
     LONG mode
 );
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG index);
-extern LONG NEWGRID_AppendShowtimesForRow(void *gridCtx, void *entryCtx, char *scratch, LONG keyValue);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *layoutCtx, void *scratch);
-extern LONG NEWGRID_DrawGridFrameVariant4(void *gridCtx);
+extern LONG NEWGRID_AppendShowtimesForRow(char *gridCtx, void *entryCtx, char *scratch, LONG keyValue);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, char *scratch);
+extern LONG NEWGRID_DrawGridFrameVariant4(char *gridCtx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
 
-LONG NEWGRID2_ProcessGridState(void *gridCtx, void *entryCtx, LONG keyValue)
+LONG NEWGRID2_ProcessGridState(char *gridCtx, void *entryCtx, LONG keyValue)
 {
     NEWGRID2_Context *grid = (NEWGRID2_Context *)gridCtx;
     NEWGRID2_StateEntry *entry = (NEWGRID2_StateEntry *)entryCtx;
-    void *scratch = 0;
+    char *scratch = 0;
     WORD rowSlot;
 
     if (grid == 0) {
@@ -96,12 +96,12 @@ LONG NEWGRID2_ProcessGridState(void *gridCtx, void *entryCtx, LONG keyValue)
             );
             if (scratch != 0) {
                 NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(3);
-                NEWGRID_AppendShowtimesForRow(grid, entry, scratch, keyValue);
+                NEWGRID_AppendShowtimesForRow(gridCtx, entry, scratch, keyValue);
                 NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(grid->rastPort, scratch);
                 SCRIPT_JMPTBL_MEMORY_DeallocateMemory(&Global_STR_NEWGRID2_C_2, 3953, scratch, 2000);
             }
 
-            if (NEWGRID_DrawGridFrameVariant4(grid) != 0) {
+            if (NEWGRID_DrawGridFrameVariant4(gridCtx) != 0) {
                 NEWGRID_RenderStateLatch = 4;
             } else {
                 NEWGRID_RenderStateLatch = 5;
@@ -110,7 +110,7 @@ LONG NEWGRID2_ProcessGridState(void *gridCtx, void *entryCtx, LONG keyValue)
             break;
 
         case 5:
-            if (NEWGRID_DrawGridFrameVariant4(grid) != 0) {
+            if (NEWGRID_DrawGridFrameVariant4(gridCtx) != 0) {
                 NEWGRID_RenderStateLatch = 4;
             } else {
                 NEWGRID_RenderStateLatch = 5;

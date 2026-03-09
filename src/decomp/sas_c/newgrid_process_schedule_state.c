@@ -2,7 +2,6 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
-typedef struct LayoutCtx LayoutCtx;
 typedef struct NEWGRID_Entry NEWGRID_Entry;
 
 struct NEWGRID_Entry {
@@ -29,15 +28,15 @@ extern NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
 extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG a, LONG b, char *sourceText);
 extern LONG NEWGRID_ShouldOpenEditor(char *entry);
-extern LONG NEWGRID_UpdateGridState(LayoutCtx *ctx, LONG index, LONG row);
-extern LONG NEWGRID_HandleDetailGridState(LayoutCtx *ctx, LONG index, LONG row);
+extern LONG NEWGRID_UpdateGridState(char *ctx, LONG index, LONG row);
+extern LONG NEWGRID_HandleDetailGridState(char *ctx, LONG index, LONG row);
 extern LONG NEWGRID_FindNextEntryWithAltMarkers(LONG state, LONG selected, LONG row);
-extern LONG NEWGRID_DrawStatusMessage(LayoutCtx *ctx, LONG row);
-extern LONG NEWGRID_ValidateSelectionCode(LayoutCtx *ctx, LONG code);
+extern LONG NEWGRID_DrawStatusMessage(char *ctx, LONG row);
+extern LONG NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
-extern LONG NEWGRID_ComputeColumnIndex(LayoutCtx *ctx);
+extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
 
-LONG NEWGRID_ProcessScheduleState(LayoutCtx *ctx, UWORD rowBase, UWORD rowCur)
+LONG NEWGRID_ProcessScheduleState(char *ctx, UWORD rowBase, UWORD rowCur)
 {
     LONG steppedFromState34 = 0;
 

@@ -114,7 +114,7 @@ ___NEWGRID2_ProcessGridState__18:
               MOVE.L         D7,(A7)                  ;2e87 
               MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
               MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_AppendShowtimesForRow;6100 0000 
               LEA            $3c(A2),A0               ;41ea 003c 
               MOVE.L         $24(A7),(A7)             ;2eaf 0024 
@@ -127,7 +127,7 @@ ___NEWGRID2_ProcessGridState__18:
               BSR.W          SCRIPT_JMPTBL_MEMORY_DeallocateM;6100 0000 
               LEA            $24(A7),A7               ;4fef 0024 
 ___NEWGRID2_ProcessGridState__19:
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_DrawGridFrameVariant4;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               TST.L          D0                       ;4a80 
@@ -146,7 +146,7 @@ ___NEWGRID2_ProcessGridState__22:
               ADDQ.W         #$4,A7                   ;584f 
               BRA.B          ___NEWGRID2_ProcessGridState__28;6028 
 ___NEWGRID2_ProcessGridState__23:
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_DrawGridFrameVariant4;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               TST.L          D0                       ;4a80 
