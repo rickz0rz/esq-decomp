@@ -2,41 +2,41 @@
 __code:
 TEXTDISP_BuildNowShowingStatusLi:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$190,D0                 ;90bc 0000 0190 
+              SUB.L          #$18c,D0                 ;90bc 0000 018c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$178,A7                 ;9efc 0178 
+              SUB.W          #$174,A7                 ;9efc 0174 
               MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 3f34 
 ___TEXTDISP_BuildNowShowingStatusLi__1:
-              MOVE.W         $1aa(A7),D5              ;3a2f 01aa 
-              MOVE.W         $1a6(A7),D6              ;3c2f 01a6 
-              MOVE.W         $1a2(A7),D7              ;3e2f 01a2 
+              MOVE.W         $1a6(A7),D5              ;3a2f 01a6 
+              MOVE.W         $1a2(A7),D6              ;3c2f 01a2 
+              MOVE.W         $19e(A7),D7              ;3e2f 019e 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D6,D0                    ;3006 
-              MOVEM.L        D0,$188(A7)              ;48ef 0001 0188 
+              MOVEM.L        D0,$184(A7)              ;48ef 0001 0184 
               TST.W          D7                       ;4a47 
               SCC            D1,#$700                 ;57c1 
               MOVEQ.L        #$1,D2                   ;7401 
               SUB.B          D1,D2                    ;9401 
               MOVE.L         D2,-(A7)                 ;2f02 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         D2,$1a0(A7)              ;2f42 01a0 
+              MOVE.L         D2,$19c(A7)              ;2f42 019c 
               BSR.W          TLIBA1_JMPTBL_ESQDISP_GetEntryAu;6100 0000 
               MOVE.L         D0,A5                    ;2a40 
               MOVE.L         D2,(A7)                  ;2e82 
-              MOVE.L         $190(A7),-(A7)           ;2f2f 0190 
+              MOVE.L         $18c(A7),-(A7)           ;2f2f 018c 
               BSR.W          TLIBA1_JMPTBL_ESQDISP_GetEntryPo;6100 0000 
               MOVE.L         D0,A3                    ;2640 
               LEA            $c(A7),A7                ;4fef 000c 
-              CLR.B          $f4(A7)                  ;422f 00f4 
+              CLR.B          $f0(A7)                  ;422f 00f0 
               CLR.L          $ec(A7)                  ;42af 00ec 
               MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,$190(A7)              ;2f40 0190 
+              MOVE.L         D0,$18c(A7)              ;2f40 018c 
               MOVE.L         A3,D1                    ;220b 
-              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__42;6700 025e 
+              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__42;6700 0252 
 ___TEXTDISP_BuildNowShowingStatusLi__2:
               MOVE.L         A5,D1                    ;220d 
-              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__42;6700 0258 
+              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__42;6700 024c 
 ___TEXTDISP_BuildNowShowingStatusLi__3:
               MOVE.W         TEXTDISP_PrimaryChannelCode(A4),D1;322c 0000 
               BNE.B          ___TEXTDISP_BuildNowShowingStatusLi__5;6606 
@@ -44,7 +44,7 @@ ___TEXTDISP_BuildNowShowingStatusLi__4:
               MOVEQ.L        #$30,D2                  ;7430 
               MOVE.W         D2,TEXTDISP_PrimaryChannelCode(A4);3942 0000 
 ___TEXTDISP_BuildNowShowingStatusLi__5:
-              CLR.L          $194(A7)                 ;42af 0194 
+              CLR.L          $190(A7)                 ;42af 0190 
               MOVE.W         TEXTDISP_PrimaryChannelCode(A4),D1;322c 0000 
               MOVEQ.L        #$30,D2                  ;7430 
               CMP.W          D2,D1                    ;b242 
@@ -78,18 +78,18 @@ ___TEXTDISP_BuildNowShowingStatusLi__9:
               TST.L          D1                       ;4a81 
               BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__11;6704 
 ___TEXTDISP_BuildNowShowingStatusLi__10:
-              MOVE.L         D0,$194(A7)              ;2f40 0194 
+              MOVE.L         D0,$190(A7)              ;2f40 0190 
 ___TEXTDISP_BuildNowShowingStatusLi__11:
-              TST.L          $194(A7)                 ;4aaf 0194 
-              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__22;6700 00be 
+              TST.L          $190(A7)                 ;4aaf 0190 
+              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__22;6700 00b0 
 ___TEXTDISP_BuildNowShowingStatusLi__12:
               MOVEQ.L        #$0,D0                   ;7000 
               CMP.W          D0,D5                    ;ba40 
-              BLS.W          ___TEXTDISP_BuildNowShowingStatusLi__22;6300 00b6 
+              BLS.W          ___TEXTDISP_BuildNowShowingStatusLi__22;6300 00a8 
 ___TEXTDISP_BuildNowShowingStatusLi__13:
               MOVEQ.L        #$31,D0                  ;7031 
               CMP.W          D0,D5                    ;ba40 
-              BCC.W          ___TEXTDISP_BuildNowShowingStatusLi__22;6400 00ae 
+              BCC.W          ___TEXTDISP_BuildNowShowingStatusLi__22;6400 00a0 
 ___TEXTDISP_BuildNowShowingStatusLi__14:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D5,D0                    ;3005 
@@ -101,7 +101,7 @@ ___TEXTDISP_BuildNowShowingStatusLi__14:
               BSR.W          TLIBA1_JMPTBL_COI_TestEntryWithi;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
               TST.L          D0                       ;4a80 
-              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__22;6700 008e 
+              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__22;6700 0080 
 ___TEXTDISP_BuildNowShowingStatusLi__15:
               MOVE.B         TEXTDISP_BannerCharSelected(A4),D0;102c 0000 
               MOVEQ.L        #$64,D1                  ;7264 
@@ -110,20 +110,19 @@ ___TEXTDISP_BuildNowShowingStatusLi__15:
 ___TEXTDISP_BuildNowShowingStatusLi__16:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         TEXTDISP_BannerFallbackIsSpecial(A4),D0;102c 0000 
-              MOVE.L         D0,$18c(A7)              ;2f40 018c 
+              MOVE.L         D0,$188(A7)              ;2f40 0188 
               BRA.B          ___TEXTDISP_BuildNowShowingStatusLi__18;600a 
 ___TEXTDISP_BuildNowShowingStatusLi__17:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         TEXTDISP_BannerSelectedIsSpecial(A4),D0;102c 0000 
-              MOVE.L         D0,$18c(A7)              ;2f40 018c 
+              MOVE.L         D0,$188(A7)              ;2f40 0188 
 ___TEXTDISP_BuildNowShowingStatusLi__18:
-              MOVE.L         D0,$190(A7)              ;2f40 0190 
+              MOVE.L         D0,$18c(A7)              ;2f40 018c 
               SUBQ.L         #$1,D0                   ;5380 
-              BNE.B          ___TEXTDISP_BuildNowShowingStatusLi__20;660a 
+              BNE.B          ___TEXTDISP_BuildNowShowingStatusLi__20;6606 
 ___TEXTDISP_BuildNowShowingStatusLi__19:
-              LEA            Global_STR_ALIGNED_NOW_SHOWING(A4),A0;41ec 0000 
-              MOVE.L         A0,$f0(A7)               ;2f48 00f0 
-              BRA.B          ___TEXTDISP_BuildNowShowingStatusLi__21;6020 
+              LEA            Global_STR_ALIGNED_NOW_SHOWING(A4),A2;45ec 0000 
+              BRA.B          ___TEXTDISP_BuildNowShowingStatusLi__21;601e 
 ___TEXTDISP_BuildNowShowingStatusLi__20:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D5,D0                    ;3005 
@@ -133,23 +132,21 @@ ___TEXTDISP_BuildNowShowingStatusLi__20:
               BSR.W          TEXTDISP_FormatEntryTimeForIndex;6100 0000 
               PEA            $30(A7)                  ;486f 0030 
               BSR.W          STR_SkipClass3Chars      ;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVE.L         D0,$f0(A7)               ;2f40 00f0 
 ___TEXTDISP_BuildNowShowingStatusLi__21:
               PEA            SCRIPT_AlignedPrefixEmptyA(A4);486c 0000 
+              PEA            $f4(A7)                  ;486f 00f4 
+              BSR.W          STRING_AppendAtNull      ;6100 0000 
+              MOVE.L         A2,(A7)                  ;2e8a 
               PEA            $f8(A7)                  ;486f 00f8 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
-              MOVE.L         $f8(A7),(A7)             ;2eaf 00f8 
-              PEA            $fc(A7)                  ;486f 00fc 
-              BSR.W          STRING_AppendAtNull      ;6100 0000 
-              LEA            $38(A5),A2               ;45ed 0038 
               SWAP           D5                       ;4845 
               CLR.W          D5                       ;4245 
               SWAP           D5                       ;4845 
               MOVE.L         D5,D0                    ;2005 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         $0(A2,D0.L),A0           ;2072 0800 
-              MOVE.L         A0,(A7)                  ;2e88 
+              MOVE.L         $38(A5,D0.L),(A7)        ;2eb5 0838 
               BSR.W          TEXTDISP_FindControlToken;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         D0,$ec(A7)               ;2f40 00ec 
@@ -173,7 +170,7 @@ ___TEXTDISP_BuildNowShowingStatusLi__25:
               BHI.B          ___TEXTDISP_BuildNowShowingStatusLi__27;623a 
 ___TEXTDISP_BuildNowShowingStatusLi__26:
               PEA            SCRIPT_AlignedPrefixEmptyB(A4);486c 0000 
-              PEA            $f8(A7)                  ;486f 00f8 
+              PEA            $f4(A7)                  ;486f 00f4 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
               MOVE.W         TEXTDISP_PrimaryChannelCode(A4),D0;302c 0000 
               SWAP           D0                       ;4840 
@@ -183,68 +180,68 @@ ___TEXTDISP_BuildNowShowingStatusLi__26:
               ASL.L          #$2,D1                   ;e581 
               LEA            SCRIPT_StrChannelLabel_TuesdaysF(A4),A0;41ec 0000 
               MOVE.L         $0(A0,D1.L),(A7)         ;2eb0 1800 
-              PEA            $fc(A7)                  ;486f 00fc 
+              PEA            $f8(A7)                  ;486f 00f8 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
               MOVE.L         TEXTDISP_PrimarySearchText(A4),(A7);2eac 0000 
               BSR.W          TEXTDISP_FindControlToken;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         D0,$ec(A7)               ;2f40 00ec 
 ___TEXTDISP_BuildNowShowingStatusLi__27:
-              TST.L          $190(A7)                 ;4aaf 0190 
-              BNE.B          ___TEXTDISP_BuildNowShowingStatusLi__37;6672 
+              TST.L          $18c(A7)                 ;4aaf 018c 
+              BNE.B          ___TEXTDISP_BuildNowShowingStatusLi__37;6674 
 ___TEXTDISP_BuildNowShowingStatusLi__28:
+              CLR.L          $17c(A7)                 ;42af 017c 
               CLR.L          $180(A7)                 ;42af 0180 
-              CLR.L          $184(A7)                 ;42af 0184 
 ___TEXTDISP_BuildNowShowingStatusLi__29:
-              MOVE.L         $184(A7),D0              ;202f 0184 
-              TST.B          $1(A3,D0.L)              ;4a33 0801 
-              BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__33;671e 
+              MOVE.L         $180(A7),D0              ;202f 0180 
+              TST.B          $2(A3,D0.L)              ;4a33 0802 
+              BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__33;6720 
 ___TEXTDISP_BuildNowShowingStatusLi__30:
-              MOVE.B         $1(A3,D0.L),D0           ;1033 0801 
               MOVEQ.L        #$20,D1                  ;7220 
-              CMP.B          D1,D0                    ;b001 
-              BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__32;670e 
+              CMP.B          $2(A3,D0.L),D1           ;b233 0802 
+              BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__32;6712 
 ___TEXTDISP_BuildNowShowingStatusLi__31:
               LEA            $24(A7),A0               ;41ef 0024 
-              ADD.L          $180(A7),A0              ;d1ef 0180 
-              ADDQ.L         #$1,$180(A7)             ;52af 0180 
+              ADD.L          $17c(A7),A0              ;d1ef 017c 
+              ADDQ.L         #$1,$17c(A7)             ;52af 017c 
+              MOVE.B         $2(A3,D0.L),D0           ;1033 0802 
               MOVE.B         D0,(A0)                  ;1080 
 ___TEXTDISP_BuildNowShowingStatusLi__32:
-              ADDQ.L         #$1,$184(A7)             ;52af 0184 
-              BRA.B          ___TEXTDISP_BuildNowShowingStatusLi__29;60d8 
+              ADDQ.L         #$1,$180(A7)             ;52af 0180 
+              BRA.B          ___TEXTDISP_BuildNowShowingStatusLi__29;60d6 
 ___TEXTDISP_BuildNowShowingStatusLi__33:
-              MOVE.L         $180(A7),D0              ;202f 0180 
+              MOVE.L         $17c(A7),D0              ;202f 017c 
               CLR.B          $24(A7,D0.L)             ;4237 0824 
               MOVE.B         $24(A7),D0               ;102f 0024 
               TST.B          D0                       ;4a00 
               BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__37;6732 
 ___TEXTDISP_BuildNowShowingStatusLi__34:
-              MOVE.B         $f4(A7),D0               ;102f 00f4 
+              MOVE.B         $f0(A7),D0               ;102f 00f0 
               TST.B          D0                       ;4a00 
               BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__36;670e 
 ___TEXTDISP_BuildNowShowingStatusLi__35:
               PEA            SCRIPT_SpacerTripleA(A4) ;486c 0000 
-              PEA            $f8(A7)                  ;486f 00f8 
+              PEA            $f4(A7)                  ;486f 00f4 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___TEXTDISP_BuildNowShowingStatusLi__36:
               PEA            SCRIPT_AlignedChannelAbbrevPrefi(A4);486c 0000 
-              PEA            $f8(A7)                  ;486f 00f8 
+              PEA            $f4(A7)                  ;486f 00f4 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
               PEA            $2c(A7)                  ;486f 002c 
-              PEA            $100(A7)                 ;486f 0100 
+              PEA            $fc(A7)                  ;486f 00fc 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
 ___TEXTDISP_BuildNowShowingStatusLi__37:
               TST.L          $ec(A7)                  ;4aaf 00ec 
               BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__41;673e 
 ___TEXTDISP_BuildNowShowingStatusLi__38:
-              MOVE.B         $f4(A7),D0               ;102f 00f4 
+              MOVE.B         $f0(A7),D0               ;102f 00f0 
               TST.B          D0                       ;4a00 
               BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__40;670e 
 ___TEXTDISP_BuildNowShowingStatusLi__39:
               PEA            SCRIPT_SpacerTripleB(A4) ;486c 0000 
-              PEA            $f8(A7)                  ;486f 00f8 
+              PEA            $f4(A7)                  ;486f 00f4 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___TEXTDISP_BuildNowShowingStatusLi__40:
@@ -257,7 +254,7 @@ ___TEXTDISP_BuildNowShowingStatusLi__40:
               PEA            $2c(A7)                  ;486f 002c 
               BSR.W          WDISP_SPrintf            ;6100 0000 
               PEA            $30(A7)                  ;486f 0030 
-              PEA            $104(A7)                 ;486f 0104 
+              PEA            $100(A7)                 ;486f 0100 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
 ___TEXTDISP_BuildNowShowingStatusLi__41:
@@ -273,7 +270,7 @@ ___TEXTDISP_BuildNowShowingStatusLi__41:
               MOVE.L         D2,-(A7)                 ;2f02 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D0,-(A7)                 ;2f00 
-              PEA            $108(A7)                 ;486f 0108 
+              PEA            $104(A7)                 ;486f 0104 
               BSR.W          TEXTDISP_JMPTBL_CLEANUP_BuildAli;6100 0000 
               LEA            $18(A7),A7               ;4fef 0018 
               BRA.B          ___TEXTDISP_BuildNowShowingStatusLi__46;6032 
@@ -287,22 +284,22 @@ ___TEXTDISP_BuildNowShowingStatusLi__43:
               BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__45;671e 
 ___TEXTDISP_BuildNowShowingStatusLi__44:
               PEA            SCRIPT_AlignedPrefixEmptyC(A4);486c 0000 
-              PEA            $f8(A7)                  ;486f 00f8 
+              PEA            $f4(A7)                  ;486f 00f4 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
               MOVE.L         P_TYPE_WeatherBottomLineMsgPtr(A4),(A7);2eac 0000 
-              PEA            $fc(A7)                  ;486f 00fc 
+              PEA            $f8(A7)                  ;486f 00f8 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               BRA.B          ___TEXTDISP_BuildNowShowingStatusLi__46;6004 
 ___TEXTDISP_BuildNowShowingStatusLi__45:
-              CLR.B          $f4(A7)                  ;422f 00f4 
+              CLR.B          $f0(A7)                  ;422f 00f0 
 ___TEXTDISP_BuildNowShowingStatusLi__46:
-              PEA            $f4(A7)                  ;486f 00f4 
+              PEA            $f0(A7)                  ;486f 00f0 
               BSR.W          SCRIPT_SetupHighlightEffect;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___TEXTDISP_BuildNowShowingStatusLi__47:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
-              ADD.W          #$178,A7                 ;defc 0178 
+              ADD.W          #$174,A7                 ;defc 0174 
               RTS                                     ;4e75 
 __const:
 __strings:

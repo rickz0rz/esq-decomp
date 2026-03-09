@@ -2,6 +2,15 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct TEXTDISP_CandidateEntry {
+    UBYTE shortName[10];
+    UBYTE longName[2];
+    UBYTE tagText[15];
+    UBYTE flags27;
+    UBYTE pad28[12];
+    UBYTE editFlags40;
+} TEXTDISP_CandidateEntry;
+
 extern UWORD TEXTDISP_ActiveGroupId;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UWORD TEXTDISP_SecondaryGroupEntryCount;
@@ -31,8 +40,6 @@ LONG TEXTDISP_BuildMatchIndexList(UBYTE *patternPtr, UWORD cmdChar)
     const LONG MATCH_FALSE = 0;
     const LONG MATCH_TRUE = 1;
     const LONG SPORTS_MATCH_TRUE = -1;
-    const LONG ENTRY_FLAGS_OFFSET = 27;
-    const LONG ENTRY_EDIT_FLAGS_OFFSET = 40;
     const LONG BIT_SHIFT_HIDDEN = 3;
     const LONG BIT_SHIFT_PPV_SBE = 4;
     const LONG BIT_SHIFT_EDITABLE = 7;
@@ -43,7 +50,7 @@ LONG TEXTDISP_BuildMatchIndexList(UBYTE *patternPtr, UWORD cmdChar)
     LONG ppvOrSbeFlag;
     LONG sportsFilterFlag;
     UBYTE *title;
-    UBYTE *entry;
+    TEXTDISP_CandidateEntry *entry;
 
     matchCount = 0;
     if (patternPtr == (UBYTE *)0) {
@@ -96,22 +103,22 @@ LONG TEXTDISP_BuildMatchIndexList(UBYTE *patternPtr, UWORD cmdChar)
     while (idx < entryCount) {
         if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
             title = TEXTDISP_PrimaryTitlePtrTable[idx];
-            entry = TEXTDISP_PrimaryEntryPtrTable[idx];
+            entry = (TEXTDISP_CandidateEntry *)TEXTDISP_PrimaryEntryPtrTable[idx];
         } else {
             title = TEXTDISP_SecondaryTitlePtrTable[idx];
-            entry = TEXTDISP_SecondaryEntryPtrTable[idx];
+            entry = (TEXTDISP_CandidateEntry *)TEXTDISP_SecondaryEntryPtrTable[idx];
         }
 
-        if ((entry[ENTRY_FLAGS_OFFSET] & (1u << BIT_SHIFT_HIDDEN)) != 0) {
+        if ((entry->flags27 & (1u << BIT_SHIFT_HIDDEN)) != 0) {
             idx += 1;
             continue;
         }
-        if (cmdChar == CMD_EDIT && (entry[ENTRY_EDIT_FLAGS_OFFSET] & (1u << BIT_SHIFT_EDITABLE)) == 0) {
+        if (cmdChar == CMD_EDIT && (entry->editFlags40 & (1u << BIT_SHIFT_EDITABLE)) == 0) {
             idx += 1;
             continue;
         }
 
-        if (ppvOrSbeFlag != 0 && (entry[ENTRY_FLAGS_OFFSET] & (1u << BIT_SHIFT_PPV_SBE)) != 0) {
+        if (ppvOrSbeFlag != 0 && (entry->flags27 & (1u << BIT_SHIFT_PPV_SBE)) != 0) {
             TEXTDISP_CandidateIndexList[matchCount++] = (UBYTE)idx;
             idx += 1;
             continue;
