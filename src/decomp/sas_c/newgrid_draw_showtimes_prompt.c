@@ -2,6 +2,25 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Font {
+    UBYTE pad0[26];
+    WORD ySize;
+} NEWGRID_Font;
+
+typedef struct NEWGRID_RastPort {
+    UBYTE pad0[52];
+    NEWGRID_Font *font;
+} NEWGRID_RastPort;
+
+typedef struct NEWGRID_Context {
+    UBYTE pad0[32];
+    LONG selectedState;
+    UBYTE pad1[18];
+    WORD selectionCode;
+    UBYTE pad2[6];
+    NEWGRID_RastPort rastPort;
+} NEWGRID_Context;
+
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern UBYTE *SCRIPT_PtrSportsOnPrefix;
 extern UBYTE *SCRIPT_PtrSummaryOfPrefix;
@@ -26,14 +45,14 @@ extern void NEWGRID_ValidateSelectionCode(void *rp, LONG code);
 
 void NEWGRID_DrawShowtimesPrompt(UBYTE *rpCtx, UBYTE *outBuf, LONG mode)
 {
+    NEWGRID_Context *ctx;
     UBYTE prompt[136];
     UBYTE tmpSuffix[10];
     UBYTE *titlePart;
     UBYTE *channelPart;
     UBYTE *src;
     UBYTE *dst;
-    UBYTE *rp;
-    UBYTE *font;
+    NEWGRID_RastPort *rp;
     LONG len;
     LONG x;
     LONG y;
@@ -43,6 +62,7 @@ void NEWGRID_DrawShowtimesPrompt(UBYTE *rpCtx, UBYTE *outBuf, LONG mode)
         return;
     }
 
+    ctx = (NEWGRID_Context *)rpCtx;
     titlePart = NEWGRID2_JMPTBL_STR_SkipClass3Chars(outBuf + 19);
     channelPart = NEWGRID2_JMPTBL_STR_SkipClass3Chars(outBuf + 1);
 
@@ -74,7 +94,7 @@ void NEWGRID_DrawShowtimesPrompt(UBYTE *rpCtx, UBYTE *outBuf, LONG mode)
         }
     }
 
-    rp = rpCtx + 60;
+    rp = &ctx->rastPort;
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, 6);
     NEWGRID_DrawGridFrame(rpCtx, 7, 6, 6, (LONG)NEWGRID_RowHeightPx + 3);
     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(rp, (LONG)NEWGRID_ColumnStartXPx + 35, 33, 0, (LONG)33, 0);
@@ -90,12 +110,11 @@ void NEWGRID_DrawShowtimesPrompt(UBYTE *rpCtx, UBYTE *outBuf, LONG mode)
     width = (LONG)((unsigned short)NEWGRID_ColumnWidthPx) * 3;
     x = (LONG)NEWGRID_ColumnStartXPx + ((width - _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp, prompt, len)) >> 1) + 36;
 
-    font = *(UBYTE **)(rpCtx + 112);
-    y = ((((LONG)34 - (LONG)*(WORD *)(font + 26)) >> 1) + (LONG)*(WORD *)(font + 26)) - 1;
+    y = ((((LONG)34 - (LONG)rp->font->ySize) >> 1) + (LONG)rp->font->ySize) - 1;
     _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, x, y);
     _LVOText(Global_REF_GRAPHICS_LIBRARY, rp, prompt, len);
 
-    *(WORD *)(rpCtx + 52) = 17;
-    *(LONG *)(rpCtx + 32) = 17;
+    ctx->selectionCode = 17;
+    ctx->selectedState = 17;
     NEWGRID_ValidateSelectionCode(rpCtx, 67);
 }

@@ -1,0 +1,286 @@
+              SECTION      text,CODE
+__code:
+asr1_round_toward_zero:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___asr1_round_toward_zero__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              TST.L          D7                       ;4a87 
+              BPL.B          ___asr1_round_toward_zero__3;6a02 
+___asr1_round_toward_zero__2:
+              ADDQ.L         #$1,D7                   ;5287 
+___asr1_round_toward_zero__3:
+              MOVE.L         D7,D0                    ;2007 
+              ASR.L          #$1,D0                   ;e280 
+___asr1_round_toward_zero__4:
+___asr1_round_toward_zero__5:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+NEWGRID_DrawSelectionMarkers:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$48,D0                  ;90bc 0000 0048 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$30,A7                  ;9efc 0030 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___NEWGRID_DrawSelectionMarkers__1:
+              MOVE.L         $5c(A7),D5               ;2a2f 005c 
+              MOVE.W         $5a(A7),D6               ;3c2f 005a 
+              MOVE.W         $56(A7),D7               ;3e2f 0056 
+              MOVE.L         $50(A7),A5               ;2a6f 0050 
+              MOVE.L         A5,A3                    ;264d 
+              LEA            $3c(A3),A2               ;45eb 003c 
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              MOVE.W         D6,D1                    ;3206 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_DrawGridCellBackground;6100 0000 
+              PEA            $58(A7)                  ;486f 0058 
+              PEA            $3b(A7)                  ;486f 003b 
+              PEA            $3e(A7)                  ;486f 003e 
+              PEA            $41(A7)                  ;486f 0041 
+              MOVE.L         $84(A7),-(A7)            ;2f2f 0084 
+              MOVE.L         $84(A7),-(A7)            ;2f2f 0084 
+              BSR.W          NEWGRID_SetSelectionMarkers;6100 0000 
+              LEA            $28(A7),A7               ;4fef 0028 
+              MOVE.B         $48(A7),D0               ;102f 0048 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___NEWGRID_DrawSelectionMarkers__3;6718 
+___NEWGRID_DrawSelectionMarkers__2:
+              PEA            ($1).w                   ;4878 0001 
+              PEA            $4c(A7)                  ;486f 004c 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          _LVOTextLength           ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              BRA.B          ___NEWGRID_DrawSelectionMarkers__4;6004 
+___NEWGRID_DrawSelectionMarkers__3:
+              CLR.L          $20(A7)                  ;42af 0020 
+___NEWGRID_DrawSelectionMarkers__4:
+              MOVE.B         $26(A7),D0               ;102f 0026 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___NEWGRID_DrawSelectionMarkers__6;6718 
+___NEWGRID_DrawSelectionMarkers__5:
+              PEA            ($1).w                   ;4878 0001 
+              PEA            $2a(A7)                  ;486f 002a 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          _LVOTextLength           ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              BRA.B          ___NEWGRID_DrawSelectionMarkers__7;6004 
+___NEWGRID_DrawSelectionMarkers__6:
+              CLR.L          $44(A7)                  ;42af 0044 
+___NEWGRID_DrawSelectionMarkers__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         NEWGRID_ColumnWidthPx(A4),D1;322c 0000 
+              MOVE.W         D7,D2                    ;3407 
+              EXT.L          D2                       ;48c2 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              MOVE.L         D2,D0                    ;2002 
+              BSR.W          _CXM33                   ;6100 0000 
+              MOVE.L         $1c(A7),D1               ;222f 001c 
+              ADD.L          D0,D1                    ;d280 
+              ADD.L          $20(A7),D1               ;d2af 0020 
+              MOVEQ.L        #$2a,D0                  ;702a 
+              ADD.L          D0,D1                    ;d280 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_RowHeightPx(A4),D0;302c 0000 
+              MOVE.L         $34(A2),A0               ;206a 0034 
+              MOVE.W         $1a(A0),D2               ;3428 001a 
+              EXT.L          D2                       ;48c2 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
+              MOVE.L         D1,$44(A7)               ;2f41 0044 
+              MOVE.L         D2,$30(A7)               ;2f42 0030 
+              BSR.W          asr1_round_toward_zero   ;6100 fef2 
+___NEWGRID_DrawSelectionMarkers__8:
+              SUB.L          D2,D0                    ;9082 
+              SUBQ.L         #$4,D0                   ;5980 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          asr1_round_toward_zero   ;6100 fee8 
+___NEWGRID_DrawSelectionMarkers__9:
+              ADD.L          D2,D0                    ;d082 
+              ADDQ.L         #$3,D0                   ;5680 
+              MOVE.L         $34(A7),(A7)             ;2eaf 0034 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
+              BSR.W          asr1_round_toward_zero   ;6100 fed8 
+___NEWGRID_DrawSelectionMarkers__10:
+              SUB.L          D2,D0                    ;9082 
+              SUBQ.L         #$4,D0                   ;5980 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          asr1_round_toward_zero   ;6100 fece 
+___NEWGRID_DrawSelectionMarkers__11:
+              ADD.L          D2,D0                    ;d082 
+              MOVE.L         $34(A7),(A7)             ;2eaf 0034 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              BSR.W          asr1_round_toward_zero   ;6100 fec0 
+___NEWGRID_DrawSelectionMarkers__12:
+              MOVE.L         $20(A7),D1               ;222f 0020 
+              ADD.L          D0,D1                    ;d280 
+              SUBQ.L         #$1,D1                   ;5381 
+              MOVE.L         $34(A7),(A7)             ;2eaf 0034 
+              MOVE.L         D1,$3c(A7)               ;2f41 003c 
+              BSR.W          asr1_round_toward_zero   ;6100 feac 
+___NEWGRID_DrawSelectionMarkers__13:
+              SUB.L          D2,D0                    ;9082 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          asr1_round_toward_zero   ;6100 fea4 
+___NEWGRID_DrawSelectionMarkers__14:
+              ADD.L          D2,D0                    ;d082 
+              MOVE.L         $34(A7),(A7)             ;2eaf 0034 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              BSR.W          asr1_round_toward_zero   ;6100 fe96 
+___NEWGRID_DrawSelectionMarkers__15:
+              MOVE.L         $20(A7),D1               ;222f 0020 
+              ADD.L          D0,D1                    ;d280 
+              SUBQ.L         #$1,D1                   ;5381 
+              MOVE.L         $40(A7),(A7)             ;2eaf 0040 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         D1,$40(A7)               ;2f41 0040 
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_RenderC;6100 0000 
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_IsCurre;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___NEWGRID_DrawSelectionMarkers__19;662e 
+___NEWGRID_DrawSelectionMarkers__16:
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_IsLastL;6100 0000 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___NEWGRID_DrawSelectionMarkers__18;6714 
+___NEWGRID_DrawSelectionMarkers__17:
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_RenderC;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___NEWGRID_DrawSelectionMarkers__19;6012 
+___NEWGRID_DrawSelectionMarkers__18:
+              MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_RenderC;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___NEWGRID_DrawSelectionMarkers__19:
+              MOVE.B         $48(A7),D0               ;102f 0048 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___NEWGRID_DrawSelectionMarkers__21;6744 
+___NEWGRID_DrawSelectionMarkers__20:
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              SUB.L          D0,$40(A7)               ;91af 0040 
+              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          _LVOMove                 ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            $58(A7)                  ;486f 0058 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          _LVOText                 ;6100 0000 
+              MOVE.L         $50(A7),(A7)             ;2eaf 0050 
+              MOVE.L         $58(A7),-(A7)            ;2f2f 0058 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          _LVOMove                 ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            $4b(A7)                  ;486f 004b 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          _LVOText                 ;6100 0000 
+              LEA            $2c(A7),A7               ;4fef 002c 
+___NEWGRID_DrawSelectionMarkers__21:
+              MOVE.B         $26(A7),D0               ;102f 0026 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___NEWGRID_DrawSelectionMarkers__23;675e 
+___NEWGRID_DrawSelectionMarkers__22:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              MOVE.W         NEWGRID_ColumnWidthPx(A4),D1;322c 0000 
+              SWAP           D1                       ;4841 
+              CLR.W          D1                       ;4241 
+              SWAP           D1                       ;4841 
+              MOVE.L         D1,D2                    ;2401 
+              ADD.L          D2,D2                    ;d482 
+              ADD.L          D1,D2                    ;d481 
+              ADD.L          D2,D0                    ;d082 
+              SUB.L          $44(A7),D0               ;90af 0044 
+              MOVEQ.L        #$1d,D1                  ;721d 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
+              BSR.W          _LVOMove                 ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            $36(A7)                  ;486f 0036 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          _LVOText                 ;6100 0000 
+              MOVE.L         $50(A7),(A7)             ;2eaf 0050 
+              MOVE.L         $58(A7),-(A7)            ;2f2f 0058 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          _LVOMove                 ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            $49(A7)                  ;486f 0049 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          _LVOText                 ;6100 0000 
+              LEA            $2c(A7),A7               ;4fef 002c 
+___NEWGRID_DrawSelectionMarkers__23:
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_IsCurre;6100 0000 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              BEQ.B          ___NEWGRID_DrawSelectionMarkers__27;673a 
+___NEWGRID_DrawSelectionMarkers__24:
+              MOVE.L         D6,D0                    ;2006 
+              SUBQ.W         #$3,D0                   ;5740 
+              BNE.B          ___NEWGRID_DrawSelectionMarkers__27;6634 
+___NEWGRID_DrawSelectionMarkers__25:
+              MOVE.B         CONFIG_NewgridPlaceholderBevelFl(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___NEWGRID_DrawSelectionMarkers__27;662a 
+___NEWGRID_DrawSelectionMarkers__26:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              MOVEQ.L        #$24,D1                  ;7224 
+              ADD.L          D1,D0                    ;d081 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         NEWGRID_RowHeightPx(A4),D1;322c 0000 
+              ADD.L          DISPTEXT_ControlMarkerXOffsetPx(A4),D1;d2ac 0000 
+              SUBQ.L         #$1,D1                   ;5381 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              PEA            ($2b7).w                 ;4878 02b7 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawHorizo;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+___NEWGRID_DrawSelectionMarkers__27:
+              MOVE.L         $28(A7),D0               ;202f 0028 
+___NEWGRID_DrawSelectionMarkers__28:
+___NEWGRID_DrawSelectionMarkers__29:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$30,A7                  ;defc 0030 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_DrawGridCellBackground
+              XREF           NEWGRID_SetSelectionMarkers
+              XREF           _LVOTextLength
+              XREF           NEWGRID_ColumnStartXPx
+              XREF           NEWGRID_ColumnWidthPx
+              XREF           _CXM33
+              XREF           NEWGRID_RowHeightPx
+              XREF           NEWGRID2_JMPTBL_DISPTEXT_RenderC
+              XREF           NEWGRID2_JMPTBL_DISPTEXT_IsCurre
+              XREF           NEWGRID2_JMPTBL_DISPTEXT_IsLastL
+              XREF           _LVOMove
+              XREF           _LVOText
+              XREF           CONFIG_NewgridPlaceholderBevelFl
+              XREF           DISPTEXT_ControlMarkerXOffsetPx
+              XREF           NEWGRID2_JMPTBL_BEVEL_DrawHorizo
+              XDEF           NEWGRID_DrawSelectionMarkers
+              END
