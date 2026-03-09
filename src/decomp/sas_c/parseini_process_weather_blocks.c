@@ -7,7 +7,7 @@ typedef unsigned char UBYTE;
 extern void *PARSEINI_ParsedDescriptorListHead;
 extern void *PARSEINI_CurrentWeatherBlockTempPtr;
 extern void *PARSEINI_CurrentWeatherBlockPtr;
-extern const char Global_STR_PARSEINI_C_3[];
+extern char Global_STR_PARSEINI_C_3[];
 
 extern const char PARSEINI_TAG_FILENAME_WeatherBlock[];
 extern const char PARSEINI_STR_LOADCOLOR[];
