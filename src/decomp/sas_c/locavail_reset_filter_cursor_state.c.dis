@@ -7,11 +7,9 @@ LOCAVAIL_ResetFilterCursorState:
 ___LOCAVAIL_ResetFilterCursorState__1:
               MOVE.L         $c(A7),A5                ;2a6f 000c 
               MOVE.L         A5,A3                    ;264d 
-              LEA            $8(A3),A0                ;41eb 0008 
               MOVEQ.L        #$ff,D0                  ;70ff 
-              MOVE.L         D0,(A0)                  ;2080 
-              LEA            $c(A3),A0                ;41eb 000c 
-              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         D0,$8(A3)                ;2740 0008 
+              MOVE.L         D0,$c(A3)                ;2740 000c 
               MOVE.L         D0,LOCAVAIL_FilterClassId(A4);2940 0000 
               CLR.L          LOCAVAIL_FilterStep(A4)  ;42ac 0000 
 ___LOCAVAIL_ResetFilterCursorState__2:
