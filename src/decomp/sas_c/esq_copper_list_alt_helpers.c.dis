@@ -1,0 +1,106 @@
+              SECTION      text,CODE
+__code:
+ESQ_ClearCopperListFlags:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQ_ClearCopperListFlags__1:
+              CLR.B          ESQ_CopperListBannerA(A4);422c 0000 
+              CLR.B          ESQ_CopperListBannerB(A4);422c 0000 
+___ESQ_ClearCopperListFlags__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQ_DecCopperListsAltSkipIndex4:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
+___ESQ_DecCopperListsAltSkipIndex4__1:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___ESQ_DecCopperListsAltSkipIndex4__2:
+              MOVEQ.L        #$7,D0                   ;7007 
+              CMP.W          D0,D6                    ;bc40 
+              BGT.B          ___ESQ_DecCopperListsAltSkipIndex4__8;6e32 
+___ESQ_DecCopperListsAltSkipIndex4__3:
+              MOVEQ.L        #$4,D0                   ;7004 
+              CMP.W          D0,D7                    ;be40 
+              BEQ.B          ___ESQ_DecCopperListsAltSkipIndex4__5;6726 
+___ESQ_DecCopperListsAltSkipIndex4__4:
+              LEA            ESQ_BannerPaletteWordsA(A4),A0;41ec 0000 
+              MOVE.W         $0(A0,D7.W),D5           ;3a30 7000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D5,D0                    ;3005 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQ_DecColorStep         ;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              ADDQ.W         #$4,A7                   ;584f 
+              LEA            ESQ_BannerPaletteWordsA(A4),A0;41ec 0000 
+              MOVE.W         D5,$0(A0,D7.W)           ;3185 7000 
+              LEA            ESQ_BannerPaletteWordsB(A4),A0;41ec 0000 
+              MOVE.W         D5,$0(A0,D7.W)           ;3185 7000 
+___ESQ_DecCopperListsAltSkipIndex4__5:
+              ADDQ.W         #$4,D7                   ;5847 
+___ESQ_DecCopperListsAltSkipIndex4__6:
+              ADDQ.W         #$1,D6                   ;5246 
+              BRA.B          ___ESQ_DecCopperListsAltSkipIndex4__2;60c8 
+___ESQ_DecCopperListsAltSkipIndex4__7:
+___ESQ_DecCopperListsAltSkipIndex4__8:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              RTS                                     ;4e75 
+ESQ_IncCopperListsAltSkipIndex4:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7/A5,-(A7)        ;48e7 0704 
+___ESQ_IncCopperListsAltSkipIndex4__1:
+              LEA            WDISP_PaletteTriplesRBase(A4),A5;4bec 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___ESQ_IncCopperListsAltSkipIndex4__2:
+              MOVEQ.L        #$7,D0                   ;7007 
+              CMP.W          D0,D6                    ;bc40 
+              BGT.B          ___ESQ_IncCopperListsAltSkipIndex4__8;6e36 
+___ESQ_IncCopperListsAltSkipIndex4__3:
+              MOVEQ.L        #$4,D0                   ;7004 
+              CMP.W          D0,D7                    ;be40 
+              BEQ.B          ___ESQ_IncCopperListsAltSkipIndex4__5;6728 
+___ESQ_IncCopperListsAltSkipIndex4__4:
+              LEA            ESQ_BannerPaletteWordsA(A4),A0;41ec 0000 
+              MOVE.W         $0(A0,D7.W),D5           ;3a30 7000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D5,D0                    ;3005 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQ_BumpColorTowardTargets;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              ADDQ.W         #$8,A7                   ;504f 
+              LEA            ESQ_BannerPaletteWordsA(A4),A0;41ec 0000 
+              MOVE.W         D5,$0(A0,D7.W)           ;3185 7000 
+              LEA            ESQ_BannerPaletteWordsB(A4),A0;41ec 0000 
+              MOVE.W         D5,$0(A0,D7.W)           ;3185 7000 
+___ESQ_IncCopperListsAltSkipIndex4__5:
+              ADDQ.W         #$4,D7                   ;5847 
+              ADDQ.L         #$3,A5                   ;568d 
+___ESQ_IncCopperListsAltSkipIndex4__6:
+              ADDQ.W         #$1,D6                   ;5246 
+              BRA.B          ___ESQ_IncCopperListsAltSkipIndex4__2;60c4 
+___ESQ_IncCopperListsAltSkipIndex4__7:
+___ESQ_IncCopperListsAltSkipIndex4__8:
+              MOVEM.L        (A7)+,D5/D6/D7/A5        ;4cdf 20e0 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_CopperListBannerA
+              XREF           ESQ_CopperListBannerB
+              XREF           ESQ_BannerPaletteWordsA
+              XREF           ESQ_DecColorStep
+              XREF           ESQ_BannerPaletteWordsB
+              XREF           WDISP_PaletteTriplesRBase
+              XREF           ESQ_BumpColorTowardTargets
+              XDEF           ESQ_ClearCopperListFlags
+              XDEF           ESQ_DecCopperListsAltSkipIndex4
+              XDEF           ESQ_IncCopperListsAltSkipIndex4
+              END
