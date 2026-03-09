@@ -12,9 +12,9 @@ typedef struct TEXTDISP_AuxData {
 extern WORD TEXTDISP_ActiveGroupId;
 extern WORD TEXTDISP_CurrentMatchIndex;
 extern UBYTE CLOCK_FormatVariantCode;
-extern UBYTE *TEXTDISP_PrimaryTitlePtrTable[];
-extern UBYTE *TEXTDISP_SecondaryTitlePtrTable[];
-extern UBYTE **Global_REF_STR_CLOCK_FORMAT;
+extern char *TEXTDISP_PrimaryTitlePtrTable[];
+extern char *TEXTDISP_SecondaryTitlePtrTable[];
+extern char **Global_REF_STR_CLOCK_FORMAT;
 
 extern LONG TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(LONG row, LONG slot);
 extern void TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slotIndex, UBYTE *out);
@@ -24,7 +24,7 @@ extern LONG MATH_Mulu32(LONG a, LONG b);
 void TEXTDISP_FormatEntryTime(UBYTE *out, WORD entryIndex)
 {
     TEXTDISP_AuxData *title;
-    UBYTE *timeText;
+    char *timeText;
     LONG slotIndex;
 
     if (TEXTDISP_ActiveGroupId != 0) {
@@ -36,7 +36,7 @@ void TEXTDISP_FormatEntryTime(UBYTE *out, WORD entryIndex)
     timeText = title->titleTable[(LONG)entryIndex];
     slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)title->slotCode);
 
-    if (timeText == (UBYTE *)0 || *timeText == 0) {
+    if (timeText == (char *)0 || *timeText == 0) {
         *out = 0;
         return;
     }
@@ -52,7 +52,7 @@ void TEXTDISP_FormatEntryTime(UBYTE *out, WORD entryIndex)
         LONG minuteRemainder;
         LONG variantRemainder;
         LONG variant;
-        UBYTE *src;
+        char *src;
 
         minutes = MATH_Mulu32((LONG)(UBYTE)(timeText[4] - '0'), 10);
         minutes += (LONG)(UBYTE)(timeText[5] - '0');
@@ -84,14 +84,14 @@ void TEXTDISP_FormatEntryTime(UBYTE *out, WORD entryIndex)
 void TEXTDISP_FormatEntryTimeForIndex(UBYTE *out, WORD entryIndex, UBYTE *entryTable)
 {
     TEXTDISP_AuxData *aux;
-    UBYTE *timeText;
+    char *timeText;
     LONG slotIndex;
 
     aux = (TEXTDISP_AuxData *)entryTable;
     timeText = aux->titleTable[(LONG)entryIndex];
     slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)aux->slotCode);
 
-    if (timeText == (UBYTE *)0 || *timeText == 0) {
+    if (timeText == (char *)0 || *timeText == 0) {
         *out = 0;
         return;
     }
@@ -107,7 +107,7 @@ void TEXTDISP_FormatEntryTimeForIndex(UBYTE *out, WORD entryIndex, UBYTE *entryT
         LONG minuteRemainder;
         LONG variantRemainder;
         LONG variant;
-        UBYTE *src;
+        char *src;
 
         minutes = MATH_Mulu32((LONG)(UBYTE)(timeText[4] - '0'), 10);
         minutes += (LONG)(UBYTE)(timeText[5] - '0');
