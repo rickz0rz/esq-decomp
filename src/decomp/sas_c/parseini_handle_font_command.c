@@ -6,11 +6,11 @@ extern UBYTE CONFIG_ParseiniLogoScanEnabledFlag;
 extern LONG Global_UIBusyFlag;
 extern LONG Global_REF_DOS_LIBRARY_2;
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void *Global_REF_RASTPORT_1;
-extern void *Global_REF_RASTPORT_2;
+extern char *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_2;
 extern void *WDISP_DisplayContextBase;
-extern void *NEWGRID_MainRastPortPtr;
-extern void *NEWGRID_HeaderRastPortPtr;
+extern char *NEWGRID_MainRastPortPtr;
+extern char *NEWGRID_HeaderRastPortPtr;
 extern UBYTE GCOMMAND_HighlightMessageSlotTable[];
 extern UWORD CTASKS_IffTaskDoneFlag;
 extern void *WDISP_WeatherStatusBrushListHead;
@@ -34,7 +34,7 @@ extern void *Global_STRUCT_TEXTATTR_PREVUE_FONT;
 
 extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
 extern LONG _LVOExecute(const char *command, LONG input, LONG output);
-extern void _LVOSetFont(void *graphicsBase, void *rastPort, void *font);
+extern void _LVOSetFont(void *graphicsBase, char *rastPort, void *font);
 extern LONG SCRIPT3_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern void TLIBA3_SetFontForAllViewModes(void *font);
 extern LONG SCRIPT_CheckPathExists(const char *path);
@@ -111,7 +111,7 @@ void PARSEINI_HandleFontCommand(const char *command)
             }
 
             context = (PARSEINI_DisplayContext *)WDISP_DisplayContextBase;
-            _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, context->rastPort, Global_HANDLE_PREVUEC_FONT);
+            _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, (char *)context->rastPort, Global_HANDLE_PREVUEC_FONT);
             _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_HANDLE_PREVUEC_FONT);
             _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, Global_HANDLE_PREVUEC_FONT);
             _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, NEWGRID_MainRastPortPtr, Global_HANDLE_PREVUEC_FONT);
@@ -121,7 +121,7 @@ void PARSEINI_HandleFontCommand(const char *command)
                 LONG offset = SCRIPT3_JMPTBL_MATH_Mulu32(i, 160);
                 _LVOSetFont(
                     Global_REF_GRAPHICS_LIBRARY,
-                    (void *)(GCOMMAND_HighlightMessageSlotTable + offset + 60),
+                    (char *)(GCOMMAND_HighlightMessageSlotTable + offset + 60),
                     Global_HANDLE_PREVUEC_FONT);
             }
 
