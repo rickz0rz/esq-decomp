@@ -155,7 +155,7 @@ ___ED_TransformLineSpacing_Mode3__26:
 ___ED_TransformLineSpacing_Mode3__27:
               MOVE.L         $18(A7),D0               ;202f 0018 
               CMP.L          D0,D6                    ;bc80 
-              BGE.W          ___ED_TransformLineSpacing_Mode3__52;6c00 00fc 
+              BGE.W          ___ED_TransformLineSpacing_Mode3__52;6c00 00fe 
 ___ED_TransformLineSpacing_Mode3__28:
               MOVE.L         D7,D1                    ;2207 
               ADD.L          D6,D1                    ;d286 
@@ -170,7 +170,7 @@ ___ED_TransformLineSpacing_Mode3__29:
 ___ED_TransformLineSpacing_Mode3__30:
 ___ED_TransformLineSpacing_Mode3__31:
               CMP.L          D4,D5                    ;ba84 
-              BLE.W          ___ED_TransformLineSpacing_Mode3__52;6f00 00de 
+              BLE.W          ___ED_TransformLineSpacing_Mode3__52;6f00 00e0 
 ___ED_TransformLineSpacing_Mode3__32:
 ___ED_TransformLineSpacing_Mode3__33:
               MOVE.L         D5,D0                    ;2005 
@@ -237,15 +237,16 @@ ___ED_TransformLineSpacing_Mode3__43:
               MOVEQ.L        #$0,D6                   ;7c00 
 ___ED_TransformLineSpacing_Mode3__44:
               CMP.L          $18(A7),D6               ;bcaf 0018 
-              BGE.B          ___ED_TransformLineSpacing_Mode3__47;6c12 
+              BGE.B          ___ED_TransformLineSpacing_Mode3__47;6c14 
 ___ED_TransformLineSpacing_Mode3__45:
               MOVE.L         D7,D0                    ;2007 
               ADD.L          D6,D0                    ;d086 
+              MOVE.B         $44(A7,D6.L),D1          ;1237 6844 
               LEA            ED_LineTransformSuffixScratchBuf(A4),A0;41ec 0000 
-              MOVE.B         $44(A7,D6.L),$0(A0,D0.L) ;11b7 6844 0800 
+              MOVE.B         D1,$0(A0,D0.L)           ;1181 0800 
 ___ED_TransformLineSpacing_Mode3__46:
               ADDQ.L         #$1,D6                   ;5286 
-              BRA.B          ___ED_TransformLineSpacing_Mode3__44;60e8 
+              BRA.B          ___ED_TransformLineSpacing_Mode3__44;60e6 
 ___ED_TransformLineSpacing_Mode3__47:
               PEA            ($28).w                  ;4878 0028 
               MOVE.L         ED_ViewportOffset(A4),-(A7);2f2c 0000 
