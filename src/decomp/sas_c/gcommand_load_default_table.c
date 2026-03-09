@@ -2,7 +2,7 @@ typedef signed long LONG;
 
 typedef unsigned char UBYTE;
 
-extern UBYTE *Global_PTR_WORK_BUFFER;
+extern char *Global_PTR_WORK_BUFFER;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern UBYTE GCOMMAND_DigitalNicheEnabledFlag[];
 extern char *GCOMMAND_DigitalNicheListingsTemplatePtr;
@@ -25,14 +25,14 @@ LONG GCOMMAND_LoadDefaultTable(void)
         return 1;
     }
 
-    loadedBuffer = (char *)Global_PTR_WORK_BUFFER;
+    loadedBuffer = Global_PTR_WORK_BUFFER;
     loadedSize = Global_REF_LONG_FILE_SCRATCH;
 
     _LVOCopyMem(AbsExecBase, GCOMMAND_DigitalNicheEnabledFlag, loadedBuffer, 32);
     Global_PTR_WORK_BUFFER += 32;
 
     GCOMMAND_DigitalNicheListingsTemplatePtr = (char *)0;
-    GCOMMAND_DigitalNicheListingsTemplatePtr = ESQPARS_ReplaceOwnedString((const char *)Global_PTR_WORK_BUFFER, (char *)0);
+    GCOMMAND_DigitalNicheListingsTemplatePtr = ESQPARS_ReplaceOwnedString(Global_PTR_WORK_BUFFER, (char *)0);
 
     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_GCOMMAND_C_1, 335, loadedBuffer, loadedSize + 1);
 

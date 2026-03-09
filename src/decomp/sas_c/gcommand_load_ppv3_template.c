@@ -1,7 +1,7 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern UBYTE *Global_PTR_WORK_BUFFER;
+extern char *Global_PTR_WORK_BUFFER;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern UBYTE GCOMMAND_DigitalPpvEnabledFlag[];
 extern char *GCOMMAND_PPVListingsTemplatePtr;
@@ -49,7 +49,7 @@ LONG GCOMMAND_LoadPPV3Template(void)
         return 1;
     }
 
-    loadedBuffer = (char *)Global_PTR_WORK_BUFFER;
+    loadedBuffer = Global_PTR_WORK_BUFFER;
     loadedSize = Global_REF_LONG_FILE_SCRATCH;
 
     _LVOCopyMem(AbsExecBase, GCOMMAND_DigitalPpvEnabledFlag, loadedBuffer, copySize);
@@ -58,7 +58,7 @@ LONG GCOMMAND_LoadPPV3Template(void)
     GCOMMAND_PPVListingsTemplatePtr = (char *)0;
 
     Global_PTR_WORK_BUFFER += copySize;
-    splitPtr = GROUP_AS_JMPTBL_STR_FindCharPtr((char *)Global_PTR_WORK_BUFFER, 18);
+    splitPtr = GROUP_AS_JMPTBL_STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
 
     if (splitPtr != (char *)0 && *splitPtr != 0) {
         *splitPtr = 0;
@@ -66,7 +66,7 @@ LONG GCOMMAND_LoadPPV3Template(void)
     }
 
     GCOMMAND_PPVPeriodTemplatePtr = ESQPARS_ReplaceOwnedString(
-        (const char *)Global_PTR_WORK_BUFFER,
+        Global_PTR_WORK_BUFFER,
         GCOMMAND_PPVPeriodTemplatePtr);
     GCOMMAND_PPVListingsTemplatePtr = ESQPARS_ReplaceOwnedString(
         splitPtr,

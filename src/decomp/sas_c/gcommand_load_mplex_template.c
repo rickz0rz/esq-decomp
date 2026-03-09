@@ -1,7 +1,7 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern UBYTE *Global_PTR_WORK_BUFFER;
+extern char *Global_PTR_WORK_BUFFER;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern UBYTE GCOMMAND_DigitalMplexEnabledFlag[];
 extern char *GCOMMAND_MplexListingsTemplatePtr;
@@ -31,7 +31,7 @@ LONG GCOMMAND_LoadMplexTemplate(void)
         return 1;
     }
 
-    loadedBuffer = (char *)Global_PTR_WORK_BUFFER;
+    loadedBuffer = Global_PTR_WORK_BUFFER;
     loadedSize = Global_REF_LONG_FILE_SCRATCH;
 
     _LVOCopyMem(AbsExecBase, GCOMMAND_DigitalMplexEnabledFlag, loadedBuffer, 52);
@@ -40,14 +40,14 @@ LONG GCOMMAND_LoadMplexTemplate(void)
     GCOMMAND_MplexListingsTemplatePtr = (char *)0;
     GCOMMAND_MplexAtTemplatePtr = (char *)0;
 
-    splitPtr = GROUP_AS_JMPTBL_STR_FindCharPtr((char *)Global_PTR_WORK_BUFFER, 18);
+    splitPtr = GROUP_AS_JMPTBL_STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
     if (splitPtr != (char *)0 && *splitPtr != 0) {
         *splitPtr = 0;
         splitPtr++;
     }
 
     GCOMMAND_MplexAtTemplatePtr = ESQPARS_ReplaceOwnedString(
-        (const char *)Global_PTR_WORK_BUFFER,
+        Global_PTR_WORK_BUFFER,
         GCOMMAND_MplexAtTemplatePtr);
     GCOMMAND_MplexListingsTemplatePtr = ESQPARS_ReplaceOwnedString(
         splitPtr,
