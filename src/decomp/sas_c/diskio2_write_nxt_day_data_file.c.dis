@@ -13,13 +13,13 @@ ___DISKIO2_WriteNxtDayDataFile__1:
               BLS.B          ___DISKIO2_WriteNxtDayDataFile__3;6306 
 ___DISKIO2_WriteNxtDayDataFile__2:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___DISKIO2_WriteNxtDayDataFile__38;6000 0296 
+              BRA.W          ___DISKIO2_WriteNxtDayDataFile__38;6000 028a 
 ___DISKIO2_WriteNxtDayDataFile__3:
               MOVE.L         __MERGEDBSS+$646(A4),D0  ;202c 0646 
               BNE.B          ___DISKIO2_WriteNxtDayDataFile__5;6606 
 ___DISKIO2_WriteNxtDayDataFile__4:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___DISKIO2_WriteNxtDayDataFile__38;6000 028a 
+              BRA.W          ___DISKIO2_WriteNxtDayDataFile__38;6000 027e 
 ___DISKIO2_WriteNxtDayDataFile__5:
               CLR.L          __MERGEDBSS+$646(A4)     ;42ac 0646 
               MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
@@ -35,7 +35,7 @@ ___DISKIO2_WriteNxtDayDataFile__6:
               MOVEQ.L        #$1,D0                   ;7001 
               MOVE.L         D0,__MERGEDBSS+$646(A4)  ;2940 0646 
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___DISKIO2_WriteNxtDayDataFile__38;6000 025a 
+              BRA.W          ___DISKIO2_WriteNxtDayDataFile__38;6000 024e 
 ___DISKIO2_WriteNxtDayDataFile__7:
               MOVE.L         MODE_NEWFILE(A4),-(A7)   ;2f2c 0000 
               PEA            Global_STR_DF0_NXTDAY_DAT(A4);486c 0000 
@@ -53,7 +53,7 @@ ___DISKIO2_WriteNxtDayDataFile__8:
               BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___DISKIO2_WriteNxtDayDataFile__38;6000 0224 
+              BRA.W          ___DISKIO2_WriteNxtDayDataFile__38;6000 0218 
 ___DISKIO2_WriteNxtDayDataFile__9:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         __MERGEDBSS+$2(A4),D0    ;102c 0002 
@@ -80,7 +80,7 @@ ___DISKIO2_WriteNxtDayDataFile__9:
 ___DISKIO2_WriteNxtDayDataFile__10:
               MOVE.W         __MERGEDBSS(A4),D0       ;302c 0000 
               CMP.W          D0,D7                    ;be40 
-              BCC.W          ___DISKIO2_WriteNxtDayDataFile__36;6400 01ae 
+              BCC.W          ___DISKIO2_WriteNxtDayDataFile__36;6400 01a2 
 ___DISKIO2_WriteNxtDayDataFile__11:
               SWAP           D7                       ;4847 
               CLR.W          D7                       ;4247 
@@ -92,10 +92,10 @@ ___DISKIO2_WriteNxtDayDataFile__11:
               LEA            __MERGEDBSS+$326(A4),A0  ;41ec 0326 
               MOVE.L         $0(A0,D0.L),A2           ;2470 0800 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.W          ___DISKIO2_WriteNxtDayDataFile__35;6700 0188 
+              BEQ.W          ___DISKIO2_WriteNxtDayDataFile__35;6700 017c 
 ___DISKIO2_WriteNxtDayDataFile__12:
               MOVE.L         A2,D0                    ;200a 
-              BEQ.W          ___DISKIO2_WriteNxtDayDataFile__35;6700 0182 
+              BEQ.W          ___DISKIO2_WriteNxtDayDataFile__35;6700 0176 
 ___DISKIO2_WriteNxtDayDataFile__13:
 ___DISKIO2_WriteNxtDayDataFile__14:
               PEA            ($30).w                  ;4878 0030 
@@ -126,17 +126,15 @@ ___DISKIO2_WriteNxtDayDataFile__17:
 ___DISKIO2_WriteNxtDayDataFile__18:
               MOVEQ.L        #$31,D0                  ;7031 
               CMP.W          D0,D6                    ;bc40 
-              BCC.W          ___DISKIO2_WriteNxtDayDataFile__34;6400 0124 
+              BCC.W          ___DISKIO2_WriteNxtDayDataFile__34;6400 0118 
 ___DISKIO2_WriteNxtDayDataFile__19:
-              LEA            $38(A2),A0               ;41ea 0038 
               SWAP           D6                       ;4846 
               CLR.W          D6                       ;4246 
               SWAP           D6                       ;4846 
               MOVE.L         D6,D0                    ;2006 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         A0,$24(A7)               ;2f48 0024 
-              TST.L          $0(A0,D0.L)              ;4ab0 0800 
-              BEQ.W          ___DISKIO2_WriteNxtDayDataFile__33;6700 0104 
+              TST.L          $38(A2,D0.L)             ;4ab2 0838 
+              BEQ.W          ___DISKIO2_WriteNxtDayDataFile__33;6700 0100 
 ___DISKIO2_WriteNxtDayDataFile__20:
 ___DISKIO2_WriteNxtDayDataFile__21:
               LEA            $1c(A3),A0               ;41eb 001c 
@@ -147,7 +145,7 @@ ___DISKIO2_WriteNxtDayDataFile__21:
               BSR.W          GROUP_AH_JMPTBL_ESQ_TestBit1Base;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               ADDQ.L         #$1,D0                   ;5280 
-              BNE.W          ___DISKIO2_WriteNxtDayDataFile__33;6600 00ec 
+              BNE.W          ___DISKIO2_WriteNxtDayDataFile__33;6600 00e8 
 ___DISKIO2_WriteNxtDayDataFile__22:
 ___DISKIO2_WriteNxtDayDataFile__23:
               MOVEQ.L        #$0,D0                   ;7000 
@@ -205,19 +203,18 @@ ___DISKIO2_WriteNxtDayDataFile__25:
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          DISKIO2_CopyAndSanitizeSlotStrin;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVE.L         D0,$20(A7)               ;2f40 0020 
-              BRA.B          ___DISKIO2_WriteNxtDayDataFile__27;6016 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BRA.B          ___DISKIO2_WriteNxtDayDataFile__27;6012 
 ___DISKIO2_WriteNxtDayDataFile__26:
               SWAP           D6                       ;4846 
               CLR.W          D6                       ;4246 
               SWAP           D6                       ;4846 
               MOVE.L         D6,D0                    ;2006 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         $24(A7),A0               ;206f 0024 
-              MOVE.L         $0(A0,D0.L),A0           ;2070 0800 
-              MOVE.L         A0,$20(A7)               ;2f48 0020 
+              MOVE.L         $38(A2,D0.L),A0          ;2072 0838 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
 ___DISKIO2_WriteNxtDayDataFile__27:
-              MOVE.L         $20(A7),D0               ;202f 0020 
+              MOVE.L         $24(A7),D0               ;202f 0024 
               BEQ.B          ___DISKIO2_WriteNxtDayDataFile__33;672e 
 ___DISKIO2_WriteNxtDayDataFile__28:
 ___DISKIO2_WriteNxtDayDataFile__29:
@@ -231,16 +228,16 @@ ___DISKIO2_WriteNxtDayDataFile__31:
               BRA.B          ___DISKIO2_WriteNxtDayDataFile__30;60f2 
 ___DISKIO2_WriteNxtDayDataFile__32:
               MOVE.L         $1c(A7),D0               ;202f 001c 
-              SUB.L          $20(A7),D0               ;90af 0020 
+              SUB.L          $24(A7),D0               ;90af 0024 
               ADDQ.L         #$1,D0                   ;5280 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               MOVE.L         __MERGEDBSS+$64a(A4),-(A7);2f2c 064a 
               BSR.W          DISKIO_WriteBufferedBytes;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
 ___DISKIO2_WriteNxtDayDataFile__33:
               ADDQ.W         #$1,D6                   ;5246 
-              BRA.W          ___DISKIO2_WriteNxtDayDataFile__18;6000 fed8 
+              BRA.W          ___DISKIO2_WriteNxtDayDataFile__18;6000 fee4 
 ___DISKIO2_WriteNxtDayDataFile__34:
               PEA            ($31).w                  ;4878 0031 
               MOVE.L         __MERGEDBSS+$64a(A4),-(A7);2f2c 064a 
@@ -248,7 +245,7 @@ ___DISKIO2_WriteNxtDayDataFile__34:
               ADDQ.W         #$8,A7                   ;504f 
 ___DISKIO2_WriteNxtDayDataFile__35:
               ADDQ.W         #$1,D7                   ;5247 
-              BRA.W          ___DISKIO2_WriteNxtDayDataFile__10;6000 fe4c 
+              BRA.W          ___DISKIO2_WriteNxtDayDataFile__10;6000 fe58 
 ___DISKIO2_WriteNxtDayDataFile__36:
               MOVE.L         __MERGEDBSS+$64a(A4),-(A7);2f2c 064a 
               BSR.W          DISKIO_CloseBufferedFileAndFlush;6100 0000 

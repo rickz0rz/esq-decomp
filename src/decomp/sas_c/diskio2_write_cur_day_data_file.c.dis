@@ -14,13 +14,13 @@ ___DISKIO2_WriteCurDayDataFile__1:
               BLS.B          ___DISKIO2_WriteCurDayDataFile__3;6306 
 ___DISKIO2_WriteCurDayDataFile__2:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___DISKIO2_WriteCurDayDataFile__46;6000 034a 
+              BRA.W          ___DISKIO2_WriteCurDayDataFile__46;6000 0342 
 ___DISKIO2_WriteCurDayDataFile__3:
               MOVE.L         __MERGEDBSS+$6cc(A4),D0  ;202c 06cc 
               BNE.B          ___DISKIO2_WriteCurDayDataFile__5;6606 
 ___DISKIO2_WriteCurDayDataFile__4:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___DISKIO2_WriteCurDayDataFile__46;6000 033e 
+              BRA.W          ___DISKIO2_WriteCurDayDataFile__46;6000 0336 
 ___DISKIO2_WriteCurDayDataFile__5:
               CLR.L          __MERGEDBSS+$6cc(A4)     ;42ac 06cc 
               MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
@@ -36,7 +36,7 @@ ___DISKIO2_WriteCurDayDataFile__6:
               MOVEQ.L        #$1,D0                   ;7001 
               MOVE.L         D0,__MERGEDBSS+$6cc(A4)  ;2940 06cc 
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___DISKIO2_WriteCurDayDataFile__46;6000 030e 
+              BRA.W          ___DISKIO2_WriteCurDayDataFile__46;6000 0306 
 ___DISKIO2_WriteCurDayDataFile__7:
               MOVE.L         MODE_NEWFILE(A4),-(A7)   ;2f2c 0000 
               PEA            CTASKS_PATH_CURDAY_DAT(A4);486c 0000 
@@ -54,7 +54,7 @@ ___DISKIO2_WriteCurDayDataFile__8:
               BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___DISKIO2_WriteCurDayDataFile__46;6000 02d8 
+              BRA.W          ___DISKIO2_WriteCurDayDataFile__46;6000 02d0 
 ___DISKIO2_WriteCurDayDataFile__9:
               PEA            ($15).w                  ;4878 0015 
               PEA            ESQ_STR_B(A4)            ;486c 0000 
@@ -135,7 +135,7 @@ ___DISKIO2_WriteCurDayDataFile__17:
 ___DISKIO2_WriteCurDayDataFile__18:
               MOVE.W         __MERGEDBSS+$86(A4),D0   ;302c 0086 
               CMP.W          D0,D7                    ;be40 
-              BCC.W          ___DISKIO2_WriteCurDayDataFile__44;6400 01d4 
+              BCC.W          ___DISKIO2_WriteCurDayDataFile__44;6400 01cc 
 ___DISKIO2_WriteCurDayDataFile__19:
               SWAP           D7                       ;4847 
               CLR.W          D7                       ;4247 
@@ -148,10 +148,10 @@ ___DISKIO2_WriteCurDayDataFile__19:
               MOVE.L         $0(A1,D0.L),A1           ;2271 0800 
               MOVE.L         A0,$1c(A7)               ;2f48 001c 
               MOVEM.L        A1,$30(A7)               ;48ef 0200 0030 
-              BEQ.W          ___DISKIO2_WriteCurDayDataFile__43;6700 01a6 
+              BEQ.W          ___DISKIO2_WriteCurDayDataFile__43;6700 019e 
 ___DISKIO2_WriteCurDayDataFile__20:
               MOVE.L         A1,D0                    ;2009 
-              BEQ.W          ___DISKIO2_WriteCurDayDataFile__43;6700 01a0 
+              BEQ.W          ___DISKIO2_WriteCurDayDataFile__43;6700 0198 
 ___DISKIO2_WriteCurDayDataFile__21:
 ___DISKIO2_WriteCurDayDataFile__22:
               PEA            ($30).w                  ;4878 0030 
@@ -182,26 +182,24 @@ ___DISKIO2_WriteCurDayDataFile__25:
 ___DISKIO2_WriteCurDayDataFile__26:
               MOVEQ.L        #$31,D0                  ;7031 
               CMP.W          D0,D6                    ;bc40 
-              BCC.W          ___DISKIO2_WriteCurDayDataFile__42;6400 0140 
+              BCC.W          ___DISKIO2_WriteCurDayDataFile__42;6400 0138 
 ___DISKIO2_WriteCurDayDataFile__27:
-              MOVE.L         $30(A7),A0               ;206f 0030 
-              ADD.W          #$38,A0                  ;d0fc 0038 
               SWAP           D6                       ;4846 
               CLR.W          D6                       ;4246 
               SWAP           D6                       ;4846 
               MOVE.L         D6,D0                    ;2006 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         A0,$28(A7)               ;2f48 0028 
-              TST.L          $0(A0,D0.L)              ;4ab0 0800 
+              MOVE.L         $30(A7),A0               ;206f 0030 
+              TST.L          $38(A0,D0.L)             ;4ab0 0838 
               BEQ.W          ___DISKIO2_WriteCurDayDataFile__41;6700 011c 
 ___DISKIO2_WriteCurDayDataFile__28:
 ___DISKIO2_WriteCurDayDataFile__29:
-              MOVE.L         $1c(A7),A0               ;206f 001c 
-              ADD.W          #$1c,A0                  ;d0fc 001c 
+              MOVE.L         $1c(A7),A1               ;226f 001c 
+              ADD.W          #$1c,A1                  ;d2fc 001c 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D6,D0                    ;3006 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A1,-(A7)                 ;2f09 
               BSR.W          GROUP_AH_JMPTBL_ESQ_TestBit1Base;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               ADDQ.L         #$1,D0                   ;5280 
@@ -267,7 +265,7 @@ ___DISKIO2_WriteCurDayDataFile__33:
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          DISKIO2_CopyAndSanitizeSlotStrin;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
               BRA.B          ___DISKIO2_WriteCurDayDataFile__35;6016 
 ___DISKIO2_WriteCurDayDataFile__34:
               SWAP           D6                       ;4846 
@@ -275,11 +273,11 @@ ___DISKIO2_WriteCurDayDataFile__34:
               SWAP           D6                       ;4846 
               MOVE.L         D6,D0                    ;2006 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         $28(A7),A0               ;206f 0028 
-              MOVE.L         $0(A0,D0.L),A0           ;2070 0800 
-              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              MOVE.L         $30(A7),A0               ;206f 0030 
+              MOVE.L         $38(A0,D0.L),A0          ;2070 0838 
+              MOVE.L         A0,$28(A7)               ;2f48 0028 
 ___DISKIO2_WriteCurDayDataFile__35:
-              MOVE.L         $24(A7),D0               ;202f 0024 
+              MOVE.L         $28(A7),D0               ;202f 0028 
               BEQ.B          ___DISKIO2_WriteCurDayDataFile__41;672e 
 ___DISKIO2_WriteCurDayDataFile__36:
 ___DISKIO2_WriteCurDayDataFile__37:
@@ -293,16 +291,16 @@ ___DISKIO2_WriteCurDayDataFile__39:
               BRA.B          ___DISKIO2_WriteCurDayDataFile__38;60f2 
 ___DISKIO2_WriteCurDayDataFile__40:
               MOVE.L         $20(A7),D0               ;202f 0020 
-              SUB.L          $24(A7),D0               ;90af 0024 
+              SUB.L          $28(A7),D0               ;90af 0028 
               ADDQ.L         #$1,D0                   ;5280 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
               MOVE.L         __MERGEDBSS+$6d0(A4),-(A7);2f2c 06d0 
               BSR.W          DISKIO_WriteBufferedBytes;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
 ___DISKIO2_WriteCurDayDataFile__41:
               ADDQ.W         #$1,D6                   ;5246 
-              BRA.W          ___DISKIO2_WriteCurDayDataFile__26;6000 febc 
+              BRA.W          ___DISKIO2_WriteCurDayDataFile__26;6000 fec4 
 ___DISKIO2_WriteCurDayDataFile__42:
               PEA            ($31).w                  ;4878 0031 
               MOVE.L         __MERGEDBSS+$6d0(A4),-(A7);2f2c 06d0 
@@ -310,7 +308,7 @@ ___DISKIO2_WriteCurDayDataFile__42:
               ADDQ.W         #$8,A7                   ;504f 
 ___DISKIO2_WriteCurDayDataFile__43:
               ADDQ.W         #$1,D7                   ;5247 
-              BRA.W          ___DISKIO2_WriteCurDayDataFile__18;6000 fe26 
+              BRA.W          ___DISKIO2_WriteCurDayDataFile__18;6000 fe2e 
 ___DISKIO2_WriteCurDayDataFile__44:
               MOVE.L         __MERGEDBSS+$6d0(A4),-(A7);2f2c 06d0 
               BSR.W          DISKIO_CloseBufferedFileAndFlush;6100 0000 

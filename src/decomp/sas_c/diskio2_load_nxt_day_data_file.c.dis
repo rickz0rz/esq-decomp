@@ -19,7 +19,7 @@ ___DISKIO2_LoadNxtDayDataFile__1:
               BNE.B          ___DISKIO2_LoadNxtDayDataFile__3;6606 
 ___DISKIO2_LoadNxtDayDataFile__2:
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___DISKIO2_LoadNxtDayDataFile__45;6000 0328 
+              BRA.W          ___DISKIO2_LoadNxtDayDataFile__45;6000 0318 
 ___DISKIO2_LoadNxtDayDataFile__3:
               MOVE.L         __MERGEDBSS(A4),D6       ;2c2c 0000 
               MOVE.L         __MERGEDBSS+$4(A4),A5    ;2a6c 0004 
@@ -30,7 +30,7 @@ ___DISKIO2_LoadNxtDayDataFile__3:
               MOVE.L         D0,D5                    ;2a00 
               MOVE.B         __MERGEDBSS+$a(A4),D0    ;102c 000a 
               CMP.B          D0,D5                    ;ba00 
-              BNE.W          ___DISKIO2_LoadNxtDayDataFile__40;6600 02c4 
+              BNE.W          ___DISKIO2_LoadNxtDayDataFile__40;6600 02b4 
 ___DISKIO2_LoadNxtDayDataFile__4:
               BSR.W          DISKIO_ParseLongFromWorkBuffer;6100 0000 
               MOVE.W         D0,$2c(A7)               ;3f40 002c 
@@ -43,7 +43,7 @@ ___DISKIO2_LoadNxtDayDataFile__4:
 ___DISKIO2_LoadNxtDayDataFile__5:
               MOVE.W         $28(A7),D0               ;302f 0028 
               CMP.W          $2c(A7),D0               ;b06f 002c 
-              BCC.W          ___DISKIO2_LoadNxtDayDataFile__40;6400 0296 
+              BCC.W          ___DISKIO2_LoadNxtDayDataFile__40;6400 0286 
 ___DISKIO2_LoadNxtDayDataFile__6:
               MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
               PEA            ($34).w                  ;4878 0034 
@@ -62,7 +62,7 @@ ___DISKIO2_LoadNxtDayDataFile__6:
               BNE.B          ___DISKIO2_LoadNxtDayDataFile__8;6606 
 ___DISKIO2_LoadNxtDayDataFile__7:
               MOVEQ.L        #$ff,D7                  ;7eff 
-              BRA.W          ___DISKIO2_LoadNxtDayDataFile__40;6000 0258 
+              BRA.W          ___DISKIO2_LoadNxtDayDataFile__40;6000 0248 
 ___DISKIO2_LoadNxtDayDataFile__8:
               MOVE.L         A2,D0                    ;200a 
               BNE.B          ___DISKIO2_LoadNxtDayDataFile__10;661c 
@@ -74,7 +74,7 @@ ___DISKIO2_LoadNxtDayDataFile__9:
               PEA            Global_STR_DISKIO2_C_19(A4);486c 0000 
               BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              BRA.W          ___DISKIO2_LoadNxtDayDataFile__40;6000 0238 
+              BRA.W          ___DISKIO2_LoadNxtDayDataFile__40;6000 0228 
 ___DISKIO2_LoadNxtDayDataFile__10:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          GROUP_AH_JMPTBL_ESQSHARED_InitEn;6100 0000 
@@ -127,13 +127,12 @@ ___DISKIO2_LoadNxtDayDataFile__20:
               MOVE.W         $38(A7),D0               ;302f 0038 
               MOVEQ.L        #$31,D1                  ;7231 
               CMP.W          D1,D0                    ;b041 
-              BCC.W          ___DISKIO2_LoadNxtDayDataFile__33;6400 0136 
+              BCC.W          ___DISKIO2_LoadNxtDayDataFile__33;6400 0126 
 ___DISKIO2_LoadNxtDayDataFile__21:
               MOVE.L         D7,D1                    ;2207 
               ADDQ.L         #$1,D1                   ;5281 
-              BEQ.W          ___DISKIO2_LoadNxtDayDataFile__33;6700 012e 
+              BEQ.W          ___DISKIO2_LoadNxtDayDataFile__33;6700 011e 
 ___DISKIO2_LoadNxtDayDataFile__22:
-              LEA            $38(A2),A0               ;41ea 0038 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         D0,D1                    ;3200 
               MOVE.B         #$1,$7(A2,D1.L)          ;15bc 0001 1807 
@@ -142,9 +141,8 @@ ___DISKIO2_LoadNxtDayDataFile__22:
               SWAP           D0                       ;4840 
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
-              CLR.L          $0(A0,D1.L)              ;42b0 1800 
+              CLR.L          $38(A2,D1.L)             ;42b2 1838 
               MOVE.W         __MERGEDBSS+$8(A4),D0    ;302c 0008 
-              MOVE.L         A0,$34(A7)               ;2f48 0034 
               MOVEQ.L        #$4,D1                   ;7204 
               CMP.W          D1,D0                    ;b041 
               BLS.B          ___DISKIO2_LoadNxtDayDataFile__28;6320 
@@ -158,7 +156,7 @@ ___DISKIO2_LoadNxtDayDataFile__24:
 ___DISKIO2_LoadNxtDayDataFile__25:
               MOVE.W         $38(A7),D1               ;322f 0038 
               CMP.W          D0,D1                    ;b240 
-              BLT.W          ___DISKIO2_LoadNxtDayDataFile__32;6d00 00e2 
+              BLT.W          ___DISKIO2_LoadNxtDayDataFile__32;6d00 00da 
 ___DISKIO2_LoadNxtDayDataFile__26:
 ___DISKIO2_LoadNxtDayDataFile__27:
               MOVE.W         #$ffffffff,$2a(A7)       ;3f7c ffff 002a 
@@ -192,12 +190,12 @@ ___DISKIO2_LoadNxtDayDataFile__28:
               MOVE.B         D0,$0(A2,D1.L)           ;1580 1800 
               BSR.W          DISKIO_ConsumeCStringFromWorkBuf;6100 0000 
               MOVE.W         #$ffffffff,A0            ;307c ffff 
-              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
               CMP.L          D0,A0                    ;b1c0 
               BNE.B          ___DISKIO2_LoadNxtDayDataFile__30;6604 
 ___DISKIO2_LoadNxtDayDataFile__29:
               MOVE.L         A0,D7                    ;2e08 
-              BRA.B          ___DISKIO2_LoadNxtDayDataFile__33;6064 
+              BRA.B          ___DISKIO2_LoadNxtDayDataFile__33;605c 
 ___DISKIO2_LoadNxtDayDataFile__30:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         $1b(A3),D1               ;122b 001b 
@@ -211,20 +209,18 @@ ___DISKIO2_LoadNxtDayDataFile__30:
               MOVE.L         D1,D2                    ;2401 
               ASL.L          #$2,D2                   ;e582 
               MOVE.L         D0,(A7)                  ;2e80 
-              MOVE.L         $3c(A7),A0               ;206f 003c 
-              MOVE.L         $0(A0,D2.L),-(A7)        ;2f30 2800 
-              MOVE.L         D0,$3c(A7)               ;2f40 003c 
+              MOVE.L         $38(A2,D2.L),-(A7)       ;2f32 2838 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              MOVE.L         $34(A7),A0               ;206f 0034 
-              MOVE.L         D0,$0(A0,D2.L)           ;2180 2800 
+              MOVE.L         D0,$38(A2,D2.L)          ;2580 2838 
               MOVE.W         $38(A7),D0               ;302f 0038 
               SWAP           D0                       ;4840 
               CLR.W          D0                       ;4240 
               SWAP           D0                       ;4840 
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
-              TST.L          $0(A0,D1.L)              ;4ab0 1800 
+              TST.L          $38(A2,D1.L)             ;4ab2 1838 
               BEQ.B          ___DISKIO2_LoadNxtDayDataFile__32;670e 
 ___DISKIO2_LoadNxtDayDataFile__31:
               MOVEQ.L        #$0,D0                   ;7000 
@@ -233,7 +229,7 @@ ___DISKIO2_LoadNxtDayDataFile__31:
               MOVE.B         D0,$28(A3)               ;1740 0028 
 ___DISKIO2_LoadNxtDayDataFile__32:
               ADDQ.W         #$1,$38(A7)              ;526f 0038 
-              BRA.W          ___DISKIO2_LoadNxtDayDataFile__20;6000 fec2 
+              BRA.W          ___DISKIO2_LoadNxtDayDataFile__20;6000 fed2 
 ___DISKIO2_LoadNxtDayDataFile__33:
               MOVE.W         __MERGEDBSS+$8(A4),D0    ;302c 0008 
               MOVEQ.L        #$4,D1                   ;7204 
@@ -277,7 +273,7 @@ ___DISKIO2_LoadNxtDayDataFile__38:
               ADDQ.W         #$1,$2e(A7)              ;526f 002e 
 ___DISKIO2_LoadNxtDayDataFile__39:
               ADDQ.W         #$1,$28(A7)              ;526f 0028 
-              BRA.W          ___DISKIO2_LoadNxtDayDataFile__5;6000 fd62 
+              BRA.W          ___DISKIO2_LoadNxtDayDataFile__5;6000 fd72 
 ___DISKIO2_LoadNxtDayDataFile__40:
               MOVE.B         D5,__MERGEDBSS+$b(A4)    ;1945 000b 
               MOVE.W         $2e(A7),__MERGEDBSS+$c(A4);396f 002e 000c 

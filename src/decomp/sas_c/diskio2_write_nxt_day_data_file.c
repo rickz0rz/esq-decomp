@@ -3,6 +3,23 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 
+typedef struct DISKIO2_Entry {
+    UBYTE pad0[27];
+    UBYTE flags27;
+    UBYTE slotMask[12];
+    UBYTE flags40;
+    UBYTE pad2[7];
+} DISKIO2_Entry;
+
+typedef struct DISKIO2_TitleData {
+    UBYTE pad0[7];
+    UBYTE slotFlags[49];
+    char *slotTextTable[49];
+    UBYTE slotAttr252[49];
+    UBYTE slotAttr301[49];
+    UBYTE slotAttr350[49];
+} DISKIO2_TitleData;
+
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
 extern long DISKIO_OpenFileWithBuffer(const char *path, long mode);
@@ -22,8 +39,8 @@ volatile UWORD TEXTDISP_SecondaryGroupEntryCount;
 volatile UBYTE TEXTDISP_SecondaryGroupCode;
 volatile UBYTE TEXTDISP_SecondaryGroupRecordChecksum;
 volatile UWORD TEXTDISP_SecondaryGroupRecordLength;
-volatile UBYTE *TEXTDISP_SecondaryEntryPtrTable[200];
-volatile UBYTE *TEXTDISP_SecondaryTitlePtrTable[200];
+volatile DISKIO2_Entry *TEXTDISP_SecondaryEntryPtrTable[200];
+volatile DISKIO2_TitleData *TEXTDISP_SecondaryTitlePtrTable[200];
 volatile long DISKIO_SaveOperationReadyFlag;
 volatile long DISKIO2_NxtDayFileHandle;
 
@@ -63,8 +80,8 @@ long DISKIO2_WriteNxtDayDataFile(void)
     DISKIO_WriteDecimalField(DISKIO2_NxtDayFileHandle, (long)TEXTDISP_SecondaryGroupRecordLength);
 
     for (entryIndex = 0; entryIndex < TEXTDISP_SecondaryGroupEntryCount; entryIndex++) {
-        UBYTE *entry = (UBYTE *)TEXTDISP_SecondaryEntryPtrTable[entryIndex];
-        UBYTE *title = (UBYTE *)TEXTDISP_SecondaryTitlePtrTable[entryIndex];
+        DISKIO2_Entry *entry = (DISKIO2_Entry *)TEXTDISP_SecondaryEntryPtrTable[entryIndex];
+        DISKIO2_TitleData *title = (DISKIO2_TitleData *)TEXTDISP_SecondaryTitlePtrTable[entryIndex];
         UWORD slot;
 
         if (entry == 0 || title == 0) {
@@ -82,28 +99,27 @@ long DISKIO2_WriteNxtDayDataFile(void)
         }
 
         for (slot = 0; slot < 49; slot++) {
-            char **slotTextTable = (char **)(title + 56);
             char *slotText;
             UBYTE attr;
 
-            if (slotTextTable[slot] == 0) {
+            if (title->slotTextTable[slot] == 0) {
                 continue;
             }
-            if (GROUP_AH_JMPTBL_ESQ_TestBit1Based(entry + 28, (long)slot) != -1) {
+            if (GROUP_AH_JMPTBL_ESQ_TestBit1Based(entry->slotMask, (long)slot) != -1) {
                 continue;
             }
 
             DISKIO_WriteDecimalField(DISKIO2_NxtDayFileHandle, (long)slot);
-            attr = title[7 + slot];
+            attr = title->slotFlags[slot];
             DISKIO_WriteDecimalField(DISKIO2_NxtDayFileHandle, (long)attr);
-            DISKIO_WriteDecimalField(DISKIO2_NxtDayFileHandle, (long)title[252 + slot]);
-            DISKIO_WriteDecimalField(DISKIO2_NxtDayFileHandle, (long)title[301 + slot]);
-            DISKIO_WriteDecimalField(DISKIO2_NxtDayFileHandle, (long)title[350 + slot]);
+            DISKIO_WriteDecimalField(DISKIO2_NxtDayFileHandle, (long)title->slotAttr252[slot]);
+            DISKIO_WriteDecimalField(DISKIO2_NxtDayFileHandle, (long)title->slotAttr301[slot]);
+            DISKIO_WriteDecimalField(DISKIO2_NxtDayFileHandle, (long)title->slotAttr350[slot]);
 
             if (TEXTDISP_SecondaryGroupEntryCount > 100U) {
-                slotText = DISKIO2_CopyAndSanitizeSlotString((char *)scratch, entry, title, slot);
+                slotText = DISKIO2_CopyAndSanitizeSlotString((char *)scratch, (const UBYTE *)entry, (const UBYTE *)title, slot);
             } else {
-                slotText = slotTextTable[slot];
+                slotText = title->slotTextTable[slot];
             }
             if (slotText == 0) {
                 continue;

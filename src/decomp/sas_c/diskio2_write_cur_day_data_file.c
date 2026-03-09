@@ -3,6 +3,23 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 
+typedef struct DISKIO2_Entry {
+    UBYTE pad0[27];
+    UBYTE flags27;
+    UBYTE slotMask[12];
+    UBYTE flags40;
+    UBYTE pad2[7];
+} DISKIO2_Entry;
+
+typedef struct DISKIO2_TitleData {
+    UBYTE pad0[7];
+    UBYTE slotFlags[49];
+    char *slotTextTable[49];
+    UBYTE slotAttr252[49];
+    UBYTE slotAttr301[49];
+    UBYTE slotAttr350[49];
+} DISKIO2_TitleData;
+
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
 extern long DISKIO_OpenFileWithBuffer(const char *path, long mode);
@@ -27,8 +44,8 @@ volatile UWORD TEXTDISP_PrimaryGroupEntryCount;
 volatile UBYTE TEXTDISP_PrimaryGroupCode;
 volatile UBYTE TEXTDISP_PrimaryGroupRecordChecksum;
 volatile UWORD TEXTDISP_PrimaryGroupRecordLength;
-volatile UBYTE *TEXTDISP_PrimaryEntryPtrTable[200];
-volatile UBYTE *TEXTDISP_PrimaryTitlePtrTable[200];
+volatile DISKIO2_Entry *TEXTDISP_PrimaryEntryPtrTable[200];
+volatile DISKIO2_TitleData *TEXTDISP_PrimaryTitlePtrTable[200];
 volatile long DISKIO_SaveOperationReadyFlag;
 volatile long DISKIO2_OutputFileHandle;
 
@@ -68,23 +85,25 @@ long DISKIO2_WriteCurDayDataFile(void)
     DISKIO_WriteBufferedBytes(DISKIO2_OutputFileHandle, Global_STR_DREV_5_1, 7);
 
     {
-        const char *scan = (const char *)WDISP_WeatherStatusLabelBuffer;
+        const volatile char *scan = (const volatile char *)WDISP_WeatherStatusLabelBuffer;
         while (*scan != 0) {
             scan++;
         }
         DISKIO_WriteBufferedBytes(
             DISKIO2_OutputFileHandle,
-            WDISP_WeatherStatusLabelBuffer,
-            (ULONG)(scan - (const char *)WDISP_WeatherStatusLabelBuffer) + 1);
+            (const char *)WDISP_WeatherStatusLabelBuffer,
+            (ULONG)(scan - (const volatile char *)WDISP_WeatherStatusLabelBuffer) + 1);
     }
 
     {
-        const char *status = WDISP_WeatherStatusTextPtr ? WDISP_WeatherStatusTextPtr : (const char *)&empty;
-        const char *scan = status;
+        const volatile char *status = WDISP_WeatherStatusTextPtr
+            ? (const volatile char *)WDISP_WeatherStatusTextPtr
+            : (const volatile char *)&empty;
+        const volatile char *scan = status;
         while (*scan != 0) {
             scan++;
         }
-        DISKIO_WriteBufferedBytes(DISKIO2_OutputFileHandle, status, (ULONG)(scan - status) + 1);
+        DISKIO_WriteBufferedBytes(DISKIO2_OutputFileHandle, (const char *)status, (ULONG)(scan - status) + 1);
     }
 
     DISKIO_WriteDecimalField(DISKIO2_OutputFileHandle, (long)TEXTDISP_PrimaryGroupCode);
@@ -93,8 +112,8 @@ long DISKIO2_WriteCurDayDataFile(void)
     DISKIO_WriteDecimalField(DISKIO2_OutputFileHandle, (long)TEXTDISP_PrimaryGroupRecordLength);
 
     for (entryIndex = 0; entryIndex < TEXTDISP_PrimaryGroupEntryCount; entryIndex++) {
-        UBYTE *entry = (UBYTE *)TEXTDISP_PrimaryEntryPtrTable[entryIndex];
-        UBYTE *title = (UBYTE *)TEXTDISP_PrimaryTitlePtrTable[entryIndex];
+        DISKIO2_Entry *entry = (DISKIO2_Entry *)TEXTDISP_PrimaryEntryPtrTable[entryIndex];
+        DISKIO2_TitleData *title = (DISKIO2_TitleData *)TEXTDISP_PrimaryTitlePtrTable[entryIndex];
         UWORD slot;
 
         if (entry == 0 || title == 0) {
@@ -112,28 +131,27 @@ long DISKIO2_WriteCurDayDataFile(void)
         }
 
         for (slot = 0; slot < 49; slot++) {
-            char **slotTextTable = (char **)(title + 56);
             char *slotText;
             UBYTE attr;
 
-            if (slotTextTable[slot] == 0) {
+            if (title->slotTextTable[slot] == 0) {
                 continue;
             }
-            if (GROUP_AH_JMPTBL_ESQ_TestBit1Based(entry + 28, (long)slot) != -1) {
+            if (GROUP_AH_JMPTBL_ESQ_TestBit1Based(entry->slotMask, (long)slot) != -1) {
                 continue;
             }
 
             DISKIO_WriteDecimalField(DISKIO2_OutputFileHandle, (long)slot);
-            attr = title[7 + slot];
+            attr = title->slotFlags[slot];
             DISKIO_WriteDecimalField(DISKIO2_OutputFileHandle, (long)attr);
-            DISKIO_WriteDecimalField(DISKIO2_OutputFileHandle, (long)title[252 + slot]);
-            DISKIO_WriteDecimalField(DISKIO2_OutputFileHandle, (long)title[301 + slot]);
-            DISKIO_WriteDecimalField(DISKIO2_OutputFileHandle, (long)title[350 + slot]);
+            DISKIO_WriteDecimalField(DISKIO2_OutputFileHandle, (long)title->slotAttr252[slot]);
+            DISKIO_WriteDecimalField(DISKIO2_OutputFileHandle, (long)title->slotAttr301[slot]);
+            DISKIO_WriteDecimalField(DISKIO2_OutputFileHandle, (long)title->slotAttr350[slot]);
 
             if (TEXTDISP_PrimaryGroupEntryCount > 100U) {
-                slotText = DISKIO2_CopyAndSanitizeSlotString((char *)scratch, entry, title, slot);
+                slotText = DISKIO2_CopyAndSanitizeSlotString((char *)scratch, (const UBYTE *)entry, (const UBYTE *)title, slot);
             } else {
-                slotText = slotTextTable[slot];
+                slotText = title->slotTextTable[slot];
             }
             if (slotText == 0) {
                 continue;
