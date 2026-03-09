@@ -2,9 +2,9 @@ typedef unsigned long ULONG;
 typedef signed long LONG;
 
 extern LONG DISPTEXT_InitBuffersPending;
-extern void *DISPTEXT_TextBufferPtr;
-extern void *Global_REF_1000_BYTES_ALLOCATED_1;
-extern void *Global_REF_1000_BYTES_ALLOCATED_2;
+extern char *DISPTEXT_TextBufferPtr;
+extern char *Global_REF_1000_BYTES_ALLOCATED_1;
+extern char *Global_REF_1000_BYTES_ALLOCATED_2;
 extern const char Global_STR_DISPTEXT_C_2[];
 extern const char Global_STR_DISPTEXT_C_3[];
 extern const char Global_STR_DISPTEXT_C_4[];
@@ -12,8 +12,8 @@ extern const char Global_STR_DISPTEXT_C_5[];
 
 extern void DISPLIB_ResetLineTables(void);
 extern void DISPLIB_ResetTextBufferAndLineTables(void);
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(void);
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(void);
+extern char *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *tagName, LONG line, LONG size, LONG flags);
+extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line, char *memoryBlock, LONG byteSize);
 
 void DISPTEXT_InitBuffers(void)
 {
