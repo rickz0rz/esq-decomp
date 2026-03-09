@@ -13,7 +13,7 @@ extern UBYTE Global_STR_TEXTDISP_C_3[];
 extern UBYTE TEXTDISP_BannerCharSelected;
 extern UBYTE TEXTDISP_BannerCharFallback;
 
-extern LONG TEXTDISP_FindEntryMatchIndex(UBYTE *searchText, LONG mode, LONG flags);
+extern LONG TEXTDISP_FindEntryMatchIndex(char *searchText, LONG mode, LONG flags);
 
 void TEXTDISP_UpdateChannelRangeFlags(void)
 {
@@ -27,7 +27,7 @@ void TEXTDISP_UpdateChannelRangeFlags(void)
     const UBYTE BANNER_CHAR_FALLBACK = 0x31;
     const LONG MATCH_MODE_PRIMARY = 1;
     const LONG MATCH_FLAGS_NONE = 0;
-    UBYTE *searchText;
+    char *searchText;
     WORD channel;
 
     if ((WORD)(TEXTDISP_ChannelSourceMode - SOURCE_PRIMARY) == 0) {

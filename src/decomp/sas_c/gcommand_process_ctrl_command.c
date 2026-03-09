@@ -8,10 +8,10 @@ extern WORD GCOMMAND_DriveProbeRequestedFlag;
 
 extern LONG GROUP_AV_JMPTBL_EXEC_CallVector_48(void *a0, void *a1, LONG d1, void *a2);
 
-LONG GCOMMAND_ProcessCtrlCommand(UBYTE *cmdPtr)
+LONG GCOMMAND_ProcessCtrlCommand(char *cmdPtr)
 {
     LONG rc;
-    UBYTE type = cmdPtr[4];
+    UBYTE type = (UBYTE)cmdPtr[4];
 
     if (type == 1) {
         UBYTE *entry = ED_StateRingTable + (ED_StateRingWriteIndex * 5);
