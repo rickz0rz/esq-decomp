@@ -1,11 +1,11 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const UBYTE *in);
+extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *in);
 extern LONG DOS_OpenFileWithMode(const char *name, LONG mode);
 extern LONG SCRIPT_CheckPathExists(const char *path);
 
-LONG GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const UBYTE *in)
+LONG GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *in)
 {
     return PARSE_ReadSignedLongSkipClass3_Alt(in);
 }
