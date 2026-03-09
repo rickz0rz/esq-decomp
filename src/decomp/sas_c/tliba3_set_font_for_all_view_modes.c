@@ -16,7 +16,7 @@ extern UBYTE TLIBA3_VmArrayRuntimeTable[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern LONG MATH_Mulu32(LONG left, LONG right);
-extern LONG _LVOSetFont(void *gfxBase, void *rastPort, void *font);
+extern LONG _LVOSetFont(void *gfxBase, char *rastPort, void *font);
 
 void TLIBA3_SetFontForAllViewModes(void *font)
 {
@@ -25,6 +25,6 @@ void TLIBA3_SetFontForAllViewModes(void *font)
     for (i = VM_ZERO; i < VM_RUNTIME_COUNT; ++i) {
         TLIBA3_ViewModeRuntimeEntry *vm =
             (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(i, VM_RUNTIME_STRIDE));
-        _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, vm->rastPort10, font);
+        _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, (char *)vm->rastPort10, font);
     }
 }

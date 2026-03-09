@@ -14,7 +14,7 @@ extern UBYTE TLIBA3_VmArrayRuntimeTable[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern LONG MATH_Mulu32(LONG left, LONG right);
-extern LONG _LVOSetRast(void *gfxBase, void *rastPort, LONG pen);
+extern LONG _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
 
 void TLIBA3_ClearViewModeRastPort(LONG viewMode, LONG clearPen)
 {
@@ -23,5 +23,5 @@ void TLIBA3_ClearViewModeRastPort(LONG viewMode, LONG clearPen)
 
     offset = MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE);
     viewRec = (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + offset);
-    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, viewRec->rastPort10, clearPen);
+    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, (char *)viewRec->rastPort10, clearPen);
 }
