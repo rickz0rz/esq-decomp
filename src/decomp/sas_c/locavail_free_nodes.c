@@ -4,6 +4,26 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct LOCAVAIL_NodeRecord {
+    UBYTE flag0;
+    UBYTE pad1;
+    UWORD word2;
+    UWORD payloadSize4;
+    void *payload6;
+} LOCAVAIL_NodeRecord;
+
+typedef struct LOCAVAIL_FilterState {
+    UBYTE mode0;
+    UBYTE pad1;
+    LONG nodeCount2;
+    UBYTE modeChar6;
+    UBYTE pad7;
+    LONG field8;
+    LONG field12;
+    ULONG *sharedRef16;
+    LOCAVAIL_NodeRecord *nodeTable20;
+} LOCAVAIL_FilterState;
+
 extern const char Global_STR_LOCAVAIL_C_1[];
 extern const char Global_STR_LOCAVAIL_C_2[];
 extern const char Global_STR_LOCAVAIL_C_3[];
@@ -13,21 +33,22 @@ extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, 
 
 void LOCAVAIL_FreeNodeRecord(void *node)
 {
-    UBYTE *p = (UBYTE *)node;
-    p[0] = 0;
-    *(UWORD *)(p + 2) = 0;
-    *(UWORD *)(p + 4) = 0;
-    *(void **)(p + 6) = (void *)0;
+    LOCAVAIL_NodeRecord *nodeView = (LOCAVAIL_NodeRecord *)node;
+
+    nodeView->flag0 = 0;
+    nodeView->word2 = 0;
+    nodeView->payloadSize4 = 0;
+    nodeView->payload6 = (void *)0;
 }
 
 void LOCAVAIL_FreeNodeAtPointer(void *node)
 {
-    UBYTE *p = (UBYTE *)node;
+    LOCAVAIL_NodeRecord *nodeView = (LOCAVAIL_NodeRecord *)node;
 
-    if (p != (UBYTE *)0) {
-        void *buf = *(void **)(p + 6);
+    if (nodeView != (LOCAVAIL_NodeRecord *)0) {
+        void *buf = nodeView->payload6;
         if (buf != (void *)0) {
-            WORD size = *(WORD *)(p + 4);
+            WORD size = (WORD)nodeView->payloadSize4;
             if (size > 0) {
                 NEWGRID_JMPTBL_MEMORY_DeallocateMemory(
                     Global_STR_LOCAVAIL_C_1,
@@ -43,30 +64,30 @@ void LOCAVAIL_FreeNodeAtPointer(void *node)
 
 void LOCAVAIL_ResetFilterStateStruct(void *state)
 {
-    UBYTE *p = (UBYTE *)state;
+    LOCAVAIL_FilterState *stateView = (LOCAVAIL_FilterState *)state;
 
-    p[0] = 0;
-    *(LONG *)(p + 2) = 0;
-    *(void **)(p + 16) = (void *)0;
-    *(void **)(p + 20) = (void *)0;
-    p[6] = 'F';
-    *(LONG *)(p + 8) = -1;
-    *(LONG *)(p + 12) = -1;
+    stateView->mode0 = 0;
+    stateView->nodeCount2 = 0;
+    stateView->sharedRef16 = (ULONG *)0;
+    stateView->nodeTable20 = (LOCAVAIL_NodeRecord *)0;
+    stateView->modeChar6 = 'F';
+    stateView->field8 = -1;
+    stateView->field12 = -1;
 }
 
 void LOCAVAIL_FreeResourceChain(void *state)
 {
-    UBYTE *p = (UBYTE *)state;
+    LOCAVAIL_FilterState *stateView = (LOCAVAIL_FilterState *)state;
 
-    if (p != (UBYTE *)0) {
-        ULONG *sharedRef = *(ULONG **)(p + 16);
+    if (stateView != (LOCAVAIL_FilterState *)0) {
+        ULONG *sharedRef = stateView->sharedRef16;
         if (sharedRef != (ULONG *)0) {
             if ((LONG)(*sharedRef) > 0) {
                 *sharedRef -= 1;
             }
 
-            if (*(void **)(p + 20) != (void *)0 &&
-                *(LONG *)(p + 2) > 0 &&
+            if (stateView->nodeTable20 != (LOCAVAIL_NodeRecord *)0 &&
+                stateView->nodeCount2 > 0 &&
                 *sharedRef == 0) {
                 LONG i = 0;
 
@@ -77,16 +98,16 @@ void LOCAVAIL_FreeResourceChain(void *state)
                     4
                 );
 
-                while (i < *(LONG *)(p + 2)) {
-                    LOCAVAIL_FreeNodeAtPointer(*(UBYTE **)(p + 20) + NEWGRID_JMPTBL_MATH_Mulu32(i, 10));
+                while (i < stateView->nodeCount2) {
+                    LOCAVAIL_FreeNodeAtPointer(stateView->nodeTable20 + i);
                     i += 1;
                 }
 
                 NEWGRID_JMPTBL_MEMORY_DeallocateMemory(
                     Global_STR_LOCAVAIL_C_3,
                     164,
-                    *(void **)(p + 20),
-                    GROUP_AY_JMPTBL_MATH_Mulu32(*(LONG *)(p + 2), 10)
+                    stateView->nodeTable20,
+                    GROUP_AY_JMPTBL_MATH_Mulu32(stateView->nodeCount2, 10)
                 );
             }
         }
