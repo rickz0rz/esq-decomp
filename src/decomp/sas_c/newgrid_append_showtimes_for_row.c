@@ -3,8 +3,8 @@ typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 typedef struct NewgridCtx {
-    void *coi;
-    void *entries;
+    char *coi;
+    char *entries;
     LONG preset;
     UWORD row;
 } NewgridCtx;
@@ -23,9 +23,9 @@ extern const char Global_STR_SHOWTIMES_AND_SINGLE_SPACE[];
 extern const char Global_STR_SHOWING_AT_AND_SINGLE_SPACE[];
 extern const char NEWGRID_ShowtimeListSeparator[];
 
-extern LONG NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(void *coi, LONG row, LONG field);
+extern LONG NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(char *coi, LONG row, LONG field);
 extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *entries, LONG row);
-extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, void *entries);
+extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, char *entries);
 extern void NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG preset);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(void *bitsetBase, LONG bitIndex);
 extern const char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
@@ -85,10 +85,10 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
         row = (UWORD)(row - 48);
     }
 
-    title0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 1);
-    f1_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 2);
-    f2_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 6);
-    f3_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 7);
+    title0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entryCur, (LONG)row, 1);
+    f1_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entryCur, (LONG)row, 2);
+    f2_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entryCur, (LONG)row, 6);
+    f3_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entryCur, (LONG)row, 7);
     if (!title0 || title0[0] == 0) {
         return;
     }
@@ -98,7 +98,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
         mode0 = 1;
     }
 
-    TEXTDISP_FormatEntryTimeForIndex(scratchTime, (LONG)row, auxCur);
+    TEXTDISP_FormatEntryTimeForIndex(scratchTime, (LONG)row, (char *)auxCur);
 
     rowEnd = (UWORD)(ctx->row + 33);
     if (rowEnd > 96) {
@@ -124,10 +124,10 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
             continue;
         }
 
-        titleN = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 1);
-        f1_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 2);
-        f2_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 6);
-        f3_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 7);
+        titleN = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entryCur, srcIdx, 1);
+        f1_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entryCur, srcIdx, 2);
+        f2_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entryCur, srcIdx, 6);
+        f3_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entryCur, srcIdx, 7);
 
         modeN = 0;
         if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((char *)auxCur, srcIdx) != 0) {
@@ -151,7 +151,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
             PARSEINI_JMPTBL_STRING_AppendAtNull(out, NEWGRID2_JMPTBL_STR_SkipClass3Chars(scratchTime));
         }
 
-        TEXTDISP_FormatEntryTimeForIndex(scratchTime, srcIdx, auxCur);
+        TEXTDISP_FormatEntryTimeForIndex(scratchTime, srcIdx, (char *)auxCur);
         PARSEINI_JMPTBL_STRING_AppendAtNull(out, NEWGRID_ShowtimeListSeparator);
         PARSEINI_JMPTBL_STRING_AppendAtNull(out, NEWGRID2_JMPTBL_STR_SkipClass3Chars(scratchTime));
 

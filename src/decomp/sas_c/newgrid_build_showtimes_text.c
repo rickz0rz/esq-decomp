@@ -3,8 +3,8 @@ typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 typedef struct NewgridCtx {
-    void *coi;
-    void *entries;
+    char *coi;
+    char *entries;
     LONG startCol;
     LONG endCol;
     UWORD startRow;
@@ -39,8 +39,8 @@ extern const char Global_STR_SHOWING_AT_AND_SINGLE_SPACE[];
 extern const char NEWGRID_ShowtimeGenreSpacer[];
 
 extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG len);
-extern LONG NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(void *coi, LONG row, LONG field);
-extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, void *entries);
+extern LONG NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(char *coi, LONG row, LONG field);
+extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, char *entries);
 extern void NEWGRID_ResetShowtimeBuckets(void);
 extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **coiPtr, LONG row, LONG col);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *coi, LONG idx);
@@ -145,10 +145,10 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
                     continue;
                 }
 
-                t = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 1);
-                f1 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 2);
-                f2 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 6);
-                f3 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 7);
+                t = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entry, idx, 1);
+                f1 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entry, idx, 2);
+                f2 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entry, idx, 6);
+                f3 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entry, idx, 7);
 
                 if (!str_eq_nullable(baseTitle, t) ||
                     !str_eq_nullable(baseF1, f1) ||
@@ -167,7 +167,7 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
                                                   Global_STR_SHOWTIMES_AND_SINGLE_SPACE, 0x7fffffff);
                 }
 
-                TEXTDISP_FormatEntryTimeForIndex(tempTime, idx, coi);
+                TEXTDISP_FormatEntryTimeForIndex(tempTime, idx, (char *)coi);
                 if (NEWGRID_AddShowtimeBucketEntry(NEWGRID2_JMPTBL_STR_SkipClass3Chars(tempTime), idx) == 0) {
                     LONG w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, gridCtx,
                                             NEWGRID2_JMPTBL_STR_SkipClass3Chars(tempTime), 0x7fffffff);
