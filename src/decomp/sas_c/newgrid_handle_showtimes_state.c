@@ -10,8 +10,8 @@ typedef struct NEWGRID_Context {
 } NEWGRID_Context;
 
 typedef struct NEWGRID_ShowtimesEntryState {
-    void *entryPtr;
-    void *auxPtr;
+    char *entryPtr;
+    char *auxPtr;
     UBYTE pad0[12];
     WORD rowIndex;
 } NEWGRID_ShowtimesEntryState;
@@ -24,9 +24,9 @@ extern UBYTE GCOMMAND_PpvDetailLayoutFlag;
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
 extern void NEWGRID_DrawGridEntry(void *rastPort, char *entryPtr0, char *entryPtr1, LONG row, LONG mode, LONG enabled, LONG bevel);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG idx);
-extern void NEWGRID_BuildShowtimesText(void *gridCtx, void *entryState, char *out);
+extern void NEWGRID_BuildShowtimesText(void *gridCtx, char *entryState, char *out);
 extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *rastPort, char *text);
-extern LONG NEWGRID_DrawGridFrameVariant3(void *gridCtx);
+extern LONG NEWGRID_DrawGridFrameVariant3(char *gridCtx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
 
 LONG NEWGRID_HandleShowtimesState(char *gridCtx, char *entryState)
