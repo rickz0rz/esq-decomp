@@ -2,8 +2,8 @@ typedef signed long LONG;
 typedef signed short WORD;
 
 typedef struct AliasRecord {
-    void *label_ptr;
-    void *value_ptr;
+    char *label_ptr;
+    char *value_ptr;
 } AliasRecord;
 
 extern WORD TEXTDISP_AliasCount;
