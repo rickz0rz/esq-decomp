@@ -38,7 +38,7 @@ extern UBYTE SCRIPT_GetBannerCharOrFallback(void);
 extern void TEXTDISP_BuildNowShowingStatusLine(LONG group, LONG match, LONG bannerChar);
 extern void SCRIPT_ResetBannerCharDefaults(void);
 extern void TEXTDISP_BuildEntryPairStatusLine(LONG group, LONG match, LONG bannerChar);
-extern void TEXTDISP_SetEntryTextFields(void *entry, const UBYTE *shortText, const UBYTE *longText);
+extern void TEXTDISP_SetEntryTextFields(void *entry, const char *shortText, const char *longText);
 extern LONG TEXTDISP_FilterAndSelectEntry(void *entry, LONG mode);
 extern void TEXTDISP_DrawHighlightFrame(void *entry);
 
@@ -112,7 +112,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
                 }
 
                 if (TEXTDISP_CommandBufferPtr != (TEXTDISP_SelectionEntry *)0) {
-                    TEXTDISP_SetEntryTextFields(TEXTDISP_CommandBufferPtr, (const UBYTE *)arg, (const UBYTE *)TEXTDISP_PrimarySearchText);
+                    TEXTDISP_SetEntryTextFields(TEXTDISP_CommandBufferPtr, arg, TEXTDISP_PrimarySearchText);
 
                     if (TEXTDISP_FilterAndSelectEntry(TEXTDISP_CommandBufferPtr, MODE_FILTER) == 0) {
                         char *dst = (char *)TEXTDISP_CommandBufferPtr->detailLine;
