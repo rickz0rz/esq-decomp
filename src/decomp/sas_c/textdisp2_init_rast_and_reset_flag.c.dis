@@ -1,0 +1,28 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_InitRastAndResetFlag:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TEXTDISP_InitRastAndResetFlag__1:
+              PEA            ($3).w                   ;4878 0003 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($4).w                   ;4878 0004 
+              BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
+              MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
+              BSR.W          WDISP_JMPTBL_ESQIFF_RestoreBaseP;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              CLR.W          WDISP_AccumulatorFlushPending(A4);426c 0000 
+___TEXTDISP_InitRastAndResetFlag__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TLIBA3_BuildDisplayContextForVie
+              XREF           WDISP_DisplayContextBase
+              XREF           WDISP_JMPTBL_ESQIFF_RestoreBaseP
+              XREF           WDISP_AccumulatorFlushPending
+              XDEF           TEXTDISP_InitRastAndResetFlag
+              END
