@@ -1,6 +1,7 @@
 typedef signed long LONG;
 typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
+typedef unsigned short UWORD;
 
 #define MEMF_PUBLIC 0x00000001L
 #define MEMF_CLEAR  0x00010000L
@@ -18,38 +19,58 @@ extern LONG LOCAVAIL_AllocNodeArraysForState(void *state);
 extern void LOCAVAIL_FreeResourceChain(void *state);
 extern void LOCAVAIL_CopyFilterStateStructRetainRefs(void *dst_state, const void *src_state);
 
+typedef struct LOCAVAIL_NodeRecord {
+    UBYTE tokenIndex;
+    UBYTE pad1;
+    UWORD duration;
+    UWORD payloadSize;
+    UBYTE *payload;
+} LOCAVAIL_NodeRecord;
+
+typedef struct LOCAVAIL_FilterState {
+    UBYTE groupCode;
+    UBYTE pad1;
+    LONG nodeCount;
+    UBYTE modeChar;
+    UBYTE pad7;
+    LONG selectedNodeIndex;
+    LONG selectedPayloadIndex;
+    ULONG *sharedRef;
+    LOCAVAIL_NodeRecord *nodeTable;
+} LOCAVAIL_FilterState;
+
 LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
 {
-    UBYTE *state;
-    UBYTE scratchState[24];
+    LOCAVAIL_FilterState *state;
+    LOCAVAIL_FilterState scratchState;
     char parseBuf[6];
     LONG success;
     LONG nodeCount;
     LONG nodeIndex;
 
-    state = (UBYTE *)statePtr;
+    state = (LOCAVAIL_FilterState *)statePtr;
     success = 1;
-    LOCAVAIL_ResetFilterStateStruct(scratchState);
+    LOCAVAIL_ResetFilterStateStruct(&scratchState);
 
-    scratchState[0] = *buffer++;
+    scratchState.groupCode = *buffer++;
     parseBuf[0] = (char)*buffer++;
     if ((WDISP_CharClassTable[(UBYTE)parseBuf[0]] & 0x02U) != 0) {
         parseBuf[0] = (char)((UBYTE)parseBuf[0] - 32);
     }
 
     if (GROUP_AS_JMPTBL_STR_FindCharPtr((const char *)LOCAVAIL_TAG_FV, (LONG)(UBYTE)parseBuf[0]) != (char *)0) {
-        scratchState[6] = (UBYTE)parseBuf[0];
+        scratchState.modeChar = (UBYTE)parseBuf[0];
 
         parseBuf[0] = (char)*buffer++;
         parseBuf[1] = (char)*buffer++;
         parseBuf[2] = '\0';
         nodeCount = NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
-        *(LONG *)(scratchState + 2) = nodeCount;
+        scratchState.nodeCount = nodeCount;
 
-        if (LOCAVAIL_AllocNodeArraysForState(scratchState) != 0) {
+        if (LOCAVAIL_AllocNodeArraysForState(&scratchState) != 0) {
             nodeIndex = 0;
             while (success != 0 && nodeIndex < nodeCount) {
-                UBYTE *node;
+                LOCAVAIL_NodeRecord *node;
                 LONG payloadIndex;
                 LONG payloadLen;
 
@@ -58,13 +79,13 @@ LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
                     break;
                 }
 
-                node = *(UBYTE **)(scratchState + 20) + NEWGRID_JMPTBL_MATH_Mulu32(nodeIndex, 10);
+                node = &scratchState.nodeTable[NEWGRID_JMPTBL_MATH_Mulu32(nodeIndex, 1)];
 
                 parseBuf[0] = (char)*buffer++;
                 parseBuf[1] = (char)*buffer++;
                 parseBuf[2] = '\0';
-                node[0] = (UBYTE)NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
-                if (node[0] == 0 || node[0] >= 100) {
+                node->tokenIndex = (UBYTE)NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
+                if (node->tokenIndex == 0 || node->tokenIndex >= 100) {
                     success = 0;
                     break;
                 }
@@ -74,9 +95,8 @@ LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
                 parseBuf[2] = (char)*buffer++;
                 parseBuf[3] = (char)*buffer++;
                 parseBuf[4] = '\0';
-                *(unsigned short *)(node + 2) =
-                    (unsigned short)NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
-                if (*(signed short *)(node + 2) <= 0 || *(unsigned short *)(node + 2) >= 0x0E11U) {
+                node->duration = (UWORD)NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
+                if ((LONG)(short)node->duration <= 0 || node->duration >= 0x0E11U) {
                     success = 0;
                     break;
                 }
@@ -84,17 +104,16 @@ LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
                 parseBuf[0] = (char)*buffer++;
                 parseBuf[1] = (char)*buffer++;
                 parseBuf[2] = '\0';
-                *(unsigned short *)(node + 4) =
-                    (unsigned short)NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
-                payloadLen = (LONG)*(unsigned short *)(node + 4);
-                if (*(signed short *)(node + 4) <= 0 || payloadLen >= 100) {
+                node->payloadSize = (UWORD)NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
+                payloadLen = (LONG)node->payloadSize;
+                if ((LONG)(short)node->payloadSize <= 0 || payloadLen >= 100) {
                     success = 0;
                     break;
                 }
 
-                *(UBYTE **)(node + 6) = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+                node->payload = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
                     Global_STR_LOCAVAIL_C_6, 341, payloadLen, MEMF_PUBLIC + MEMF_CLEAR);
-                if (*(UBYTE **)(node + 6) == (UBYTE *)0) {
+                if (node->payload == (UBYTE *)0) {
                     success = 0;
                     break;
                 }
@@ -111,7 +130,7 @@ LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
                         normalized = (UBYTE)(normalized - 32);
                     }
 
-                    payload = *(UBYTE **)(node + 6) + payloadIndex;
+                    payload = node->payload + payloadIndex;
                     switch (normalized) {
                     case '0':
                     case 'L':
@@ -150,9 +169,9 @@ LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
 
     if (success != 0) {
         LOCAVAIL_FreeResourceChain(state);
-        LOCAVAIL_CopyFilterStateStructRetainRefs(state, scratchState);
+        LOCAVAIL_CopyFilterStateStructRetainRefs(state, &scratchState);
     } else {
-        LOCAVAIL_FreeResourceChain(scratchState);
+        LOCAVAIL_FreeResourceChain(&scratchState);
     }
 
     return success;
