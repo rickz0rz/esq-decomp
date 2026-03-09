@@ -27,11 +27,11 @@ extern void NEWGRID_DrawGridFrame(char *rpCtx, LONG type, LONG penA, LONG penB, 
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(void);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(void);
-extern void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(void *rp, LONG x, LONG y);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rp, LONG x, LONG y, LONG maxx, LONG maxy);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(void *rp, LONG x, LONG y, LONG maxx, LONG maxy);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(void *rp, LONG x, LONG y, LONG maxx, LONG maxy);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(void *rp, LONG x, LONG y, LONG maxx, LONG maxy);
+extern void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(char *rp, LONG x, LONG y);
+extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG maxx, LONG maxy);
+extern void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(char *rp, LONG x, LONG y, LONG maxx, LONG maxy);
+extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(char *rp, LONG x, LONG y, LONG maxx, LONG maxy);
+extern void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(char *rp, LONG x, LONG y, LONG maxx, LONG maxy);
 
 static LONG asr1_round_toward_zero(LONG v)
 {
@@ -80,7 +80,7 @@ LONG NEWGRID_DrawGridFrameAlt(char *ctx)
         }
 
         rp = &ctxView->rastPort;
-        NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(rp, x, yDraw);
+        NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine((char *)rp, x, yDraw);
         row += 1;
         yBase += asr1_round_toward_zero(rowHeight) + DISPTEXT_ControlMarkerXOffsetPx;
     }
@@ -89,19 +89,19 @@ LONG NEWGRID_DrawGridFrameAlt(char *ctx)
     if (hasMultiple != 0) {
         yBase = rowHeight;
         if (isLast != 0) {
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
+            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight((char *)&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
+            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight((char *)&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
         } else {
-            NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
-            NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
+            NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame((char *)&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
+            NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame((char *)&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
         }
     } else {
         if (isLast != 0) {
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
+            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop((char *)&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
+            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop((char *)&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
         } else {
-            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
-            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
+            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair((char *)&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
+            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair((char *)&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
         }
     }
 
