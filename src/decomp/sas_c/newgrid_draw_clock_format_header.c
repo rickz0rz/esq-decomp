@@ -31,16 +31,16 @@ extern void _LVOSetDrMd(void *rastport, LONG mode);
 extern void _LVOSetAPen(void *rastport, LONG pen);
 extern void _LVORectFill(void *rastport, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastport, LONG x1, LONG y1, LONG x2, LONG y2);
-extern void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slot, UBYTE *out_text);
+extern void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slot, char *out_text);
 extern ULONG NEWGRID_JMPTBL_MATH_Mulu32(ULONG a, ULONG b);
-extern LONG _LVOTextLength(void *rastport, UBYTE *text, LONG len);
+extern LONG _LVOTextLength(void *rastport, char *text, LONG len);
 extern void _LVOMove(void *rastport, LONG x, LONG y);
-extern void _LVOText(void *rastport, UBYTE *text, LONG len);
+extern void _LVOText(void *rastport, char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(void *grid_ctx, LONG code);
 
 void NEWGRID_DrawClockFormatHeader(void *grid_ctx, LONG start_slot)
 {
-    UBYTE label[97];
+    char label[97];
     NEWGRID_Context *ctx;
     NEWGRID_RastPort *rast;
     LONG left_x;
@@ -61,7 +61,7 @@ void NEWGRID_DrawClockFormatHeader(void *grid_ctx, LONG start_slot)
         LONG col_w;
         LONG x;
         LONG right;
-        UBYTE *p;
+        char *p;
         LONG text_len;
         LONG text_w;
         LONG pad;

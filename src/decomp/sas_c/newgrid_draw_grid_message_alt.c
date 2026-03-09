@@ -31,16 +31,16 @@ extern LONG NEWGRID_DrawGridFrame(void *rastPort, LONG style, LONG penA, LONG pe
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void _LVOSetAPen(void *rastPort, LONG pen);
 extern void _LVOSetDrMd(void *rastPort, LONG mode);
-extern LONG _LVOTextLength(void *rastPort, UBYTE *text, LONG len);
+extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
 extern void _LVOMove(void *rastPort, LONG x, LONG y);
-extern void _LVOText(void *rastPort, UBYTE *text, LONG len);
+extern void _LVOText(void *rastPort, char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(void *rastPort, LONG code);
 
 void NEWGRID_DrawGridMessageAlt(UBYTE *gridCtx)
 {
     NEWGRID_Context *ctx;
     NEWGRID_RastPort *rastPort;
-    UBYTE *msg;
+    char *msg;
     LONG len;
     LONG width;
     LONG x;
@@ -62,7 +62,7 @@ void NEWGRID_DrawGridMessageAlt(UBYTE *gridCtx)
     _LVOSetAPen(rastPort, GCOMMAND_PpvMessageTextPen);
     _LVOSetDrMd(rastPort, 0);
 
-    msg = GCOMMAND_PPVPeriodTemplatePtr;
+    msg = (char *)GCOMMAND_PPVPeriodTemplatePtr;
     len = 0;
     while (msg[len] != 0) {
         ++len;
