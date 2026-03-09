@@ -3,13 +3,16 @@ typedef unsigned short UWORD;
 typedef short WORD;
 typedef long LONG;
 
-enum {
-    SLOT_MAP_COUNT = 10,
-    SLOT_MAP_MAX_TOKENS = 9,
-    RECORD_PREFIX_MARKER_1 = 49,
-    RECORD_HEADER_DISK_ID_SIZE = 1,
-    DELIMITER_COUNT_ONE = 1
-};
+typedef struct CLEANUP_EntryTableEntry {
+    UBYTE pad0[12];
+    UBYTE titleText[1];
+} CLEANUP_EntryTableEntry;
+
+#define SLOT_MAP_COUNT 10
+#define SLOT_MAP_MAX_TOKENS 9
+#define RECORD_PREFIX_MARKER_1 49
+#define RECORD_HEADER_DISK_ID_SIZE 1
+#define DELIMITER_COUNT_ONE 1
 
 extern UBYTE TEXTDISP_SecondaryGroupCode;
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
@@ -21,8 +24,8 @@ extern UBYTE CTASKS_SecondaryOiWritePendingFlag;
 extern UBYTE CTASKS_PendingPrimaryOiDiskId;
 extern UBYTE CTASKS_PrimaryOiWritePendingFlag;
 extern UWORD ESQIFF_RecordLength;
-extern void *TEXTDISP_SecondaryEntryPtrTable[];
-extern void *TEXTDISP_PrimaryEntryPtrTable[];
+extern CLEANUP_EntryTableEntry *TEXTDISP_SecondaryEntryPtrTable[];
+extern CLEANUP_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
 extern UBYTE CLOCK_STR_MISSING_TITLE_TEMPLATE[];
 
 LONG COI_CountEscape14BeforeNull(UBYTE *buf, LONG max_len);
@@ -45,7 +48,7 @@ LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
     LONG i;
     LONG entry_count;
     UBYTE disk_id;
-    void *entry;
+    CLEANUP_EntryTableEntry *entry;
 
     if (record == (UBYTE *)0 || listing == (UBYTE *)0) {
         return 1;
@@ -84,7 +87,7 @@ LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
                                                             0);
 
     for (i = 0; i < entry_count && i < SLOT_MAP_COUNT; i += 1) {
-        void *candidate;
+        CLEANUP_EntryTableEntry *candidate;
 
         if (disk_id == TEXTDISP_SecondaryGroupCode && (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - 1) == 0) {
             candidate = TEXTDISP_SecondaryEntryPtrTable[i];
@@ -93,7 +96,7 @@ LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
         }
 
         if (candidate != (void *)0) {
-            (void)ESQ_WildcardMatch((UBYTE *)candidate + 12, record + recordOffset);
+            (void)ESQ_WildcardMatch(candidate->titleText, record + recordOffset);
         }
     }
 

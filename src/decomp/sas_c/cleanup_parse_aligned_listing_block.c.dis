@@ -17,7 +17,7 @@ ___CLEANUP_ParseAlignedListingBlock__2:
               BNE.B          ___CLEANUP_ParseAlignedListingBlock__4;6606 
 ___CLEANUP_ParseAlignedListingBlock__3:
               MOVEQ.L        #$1,D0                   ;7001 
-              BRA.W          ___CLEANUP_ParseAlignedListingBlock__34;6000 01a2 
+              BRA.W          ___CLEANUP_ParseAlignedListingBlock__34;6000 01a0 
 ___CLEANUP_ParseAlignedListingBlock__4:
               CLR.L          $2c(A7)                  ;42af 002c 
 ___CLEANUP_ParseAlignedListingBlock__5:
@@ -65,7 +65,7 @@ ___CLEANUP_ParseAlignedListingBlock__12:
               BRA.B          ___CLEANUP_ParseAlignedListingBlock__14;6006 
 ___CLEANUP_ParseAlignedListingBlock__13:
               MOVEQ.L        #$1,D0                   ;7001 
-              BRA.W          ___CLEANUP_ParseAlignedListingBlock__34;6000 0130 
+              BRA.W          ___CLEANUP_ParseAlignedListingBlock__34;6000 012e 
 ___CLEANUP_ParseAlignedListingBlock__14:
               MOVEQ.L        #$31,D0                  ;7031 
               CMP.B          $0(A5,D7.L),D0           ;b035 7800 
@@ -101,11 +101,11 @@ ___CLEANUP_ParseAlignedListingBlock__16:
 ___CLEANUP_ParseAlignedListingBlock__17:
               MOVE.L         $2c(A7),D0               ;202f 002c 
               CMP.L          $28(A7),D0               ;b0af 0028 
-              BGE.B          ___CLEANUP_ParseAlignedListingBlock__26;6c5e 
+              BGE.B          ___CLEANUP_ParseAlignedListingBlock__26;6c5c 
 ___CLEANUP_ParseAlignedListingBlock__18:
               MOVEQ.L        #$a,D1                   ;720a 
               CMP.L          D1,D0                    ;b081 
-              BGE.B          ___CLEANUP_ParseAlignedListingBlock__26;6c58 
+              BGE.B          ___CLEANUP_ParseAlignedListingBlock__26;6c56 
 ___CLEANUP_ParseAlignedListingBlock__19:
               MOVE.B         TEXTDISP_SecondaryGroupCode(A4),D1;122c 0000 
               MOVE.B         $1f(A7),D2               ;142f 001f 
@@ -121,13 +121,12 @@ ___CLEANUP_ParseAlignedListingBlock__21:
               ASL.L          #$2,D1                   ;e581 
               LEA            TEXTDISP_SecondaryEntryPtrTable(A4),A0;41ec 0000 
               MOVE.L         $0(A0,D1.L),$24(A7)      ;2f70 1800 0024 
-              BRA.B          ___CLEANUP_ParseAlignedListingBlock__23;6010 
+              BRA.B          ___CLEANUP_ParseAlignedListingBlock__23;600e 
 ___CLEANUP_ParseAlignedListingBlock__22:
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
               LEA            TEXTDISP_PrimaryEntryPtrTable(A4),A0;41ec 0000 
-              MOVE.L         $0(A0,D1.L),A0           ;2070 1800 
-              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              MOVE.L         $0(A0,D1.L),$24(A7)      ;2f70 1800 0024 
 ___CLEANUP_ParseAlignedListingBlock__23:
               TST.L          $24(A7)                  ;4aaf 0024 
               BEQ.B          ___CLEANUP_ParseAlignedListingBlock__25;6716 
@@ -142,7 +141,7 @@ ___CLEANUP_ParseAlignedListingBlock__24:
               ADDQ.W         #$8,A7                   ;504f 
 ___CLEANUP_ParseAlignedListingBlock__25:
               ADDQ.L         #$1,$2c(A7)              ;52af 002c 
-              BRA.B          ___CLEANUP_ParseAlignedListingBlock__17;6098 
+              BRA.B          ___CLEANUP_ParseAlignedListingBlock__17;609a 
 ___CLEANUP_ParseAlignedListingBlock__26:
               MOVE.B         TEXTDISP_SecondaryGroupCode(A4),D0;102c 0000 
               MOVE.B         $1f(A7),D1               ;122f 001f 
