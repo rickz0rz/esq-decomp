@@ -5,34 +5,35 @@ enum {
     TOKEN_BUF_LEN = 11,
     TOKEN_MAX_LEN = 10,
     TOKEN_PREFIX_MAX_LEN = 5,
-    TOKEN_FIELD_BOOL_MAX_INDEX = 5,
     TOKEN_FIELD_HEX_MAX_INDEX = 7,
     TOKEN_SEPARATOR = ':',
     ASCII_CASE_DELTA = 32,
     CHARCLASS_ALPHA_MASK = 2,
-    CHARCLASS_ALNUM_MASK = 7,
     CHARCLASS_HEX_MASK = 0x80
 };
 
-extern UBYTE CLOCK_STR_TOKEN_PAIR_DEFAULTS[];
-extern UBYTE CLEANUP_TokenPairScratch[];
-extern UBYTE CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[];
-extern UBYTE CLOCK_STR_EMPTY_TOKEN_TEMPLATE[];
-extern UBYTE CLOCK_STR_BOOL_CHARS_YyNn[];
+#define TOKEN_FIELD_BOOL_MAX_INDEX 5
+#define CHARCLASS_ALNUM_MASK 7
+
+extern char CLOCK_STR_TOKEN_PAIR_DEFAULTS[];
+extern char CLEANUP_TokenPairScratch[];
+extern char CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[];
+extern char CLOCK_STR_EMPTY_TOKEN_TEMPLATE[];
+extern char CLOCK_STR_BOOL_CHARS_YyNn[];
 extern UBYTE WDISP_CharClassTable[];
 
-UBYTE *GROUP_AI_JMPTBL_STR_FindCharPtr(const UBYTE *s, LONG c);
-LONG GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(void *old_ptr, const void *new_ptr);
+char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *s, LONG c);
+char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *old_ptr, const char *new_ptr);
 
-void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, UBYTE *input)
+void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input)
 {
-    UBYTE defaultTokenText[11];
-    UBYTE formattedTokenText[11];
+    char defaultTokenText[11];
+    char formattedTokenText[11];
     LONG i;
-    UBYTE *separatorPtr;
+    char *separatorPtr;
 
-    if (input == (UBYTE *)0 || input[0] == 0 || GROUP_AI_JMPTBL_STR_FindCharPtr(input, TOKEN_SEPARATOR) == (UBYTE *)0) {
-        *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*field_a, (void *)0);
+    if (input == (char *)0 || input[0] == 0 || GROUP_AI_JMPTBL_STR_FindCharPtr(input, TOKEN_SEPARATOR) == (char *)0) {
+        *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)*field_a, (char *)0);
         *field_b = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*field_b, CLOCK_STR_EMPTY_TOKEN_TEMPLATE);
         return;
     }
@@ -56,7 +57,7 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, UBYTE *inpu
     }
     formattedTokenText[i] = 0;
 
-    *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*field_a, formattedTokenText);
+    *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)*field_a, formattedTokenText);
 
     i = 0;
     while (CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[i] != 0) {
@@ -66,16 +67,16 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, UBYTE *inpu
     formattedTokenText[i] = 0;
 
     separatorPtr = GROUP_AI_JMPTBL_STR_FindCharPtr(input, TOKEN_SEPARATOR);
-    if (separatorPtr != (UBYTE *)0) {
+    if (separatorPtr != (char *)0) {
         separatorPtr += 1;
     }
 
     i = 0;
-    while (i < TOKEN_MAX_LEN && separatorPtr != (UBYTE *)0 && separatorPtr[i] != 0) {
+    while (i < TOKEN_MAX_LEN && separatorPtr != (char *)0 && separatorPtr[i] != 0) {
         UBYTE c = separatorPtr[i];
 
         if (i <= TOKEN_FIELD_BOOL_MAX_INDEX) {
-            if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_BOOL_CHARS_YyNn, (LONG)c) != (UBYTE *)0) {
+            if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_BOOL_CHARS_YyNn, (LONG)c) != (char *)0) {
                 if ((WDISP_CharClassTable[c] & CHARCLASS_ALPHA_MASK) != 0) {
                     c = (UBYTE)(c - ASCII_CASE_DELTA);
                 }
@@ -117,5 +118,5 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, UBYTE *inpu
         i += 1;
     }
 
-    *field_b = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*field_b, formattedTokenText);
+    *field_b = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)*field_b, formattedTokenText);
 }
