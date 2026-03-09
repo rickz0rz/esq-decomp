@@ -3,6 +3,22 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[47];
+    UBYTE flags47;
+} NEWGRID_Entry;
+
+typedef struct NEWGRID_SelectionWindow {
+    void *entry;
+    void *aux;
+    LONG index;
+    LONG start;
+    LONG end;
+    UWORD row;
+    UWORD initialRow;
+    UWORD rowLimit;
+} NEWGRID_SelectionWindow;
+
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE CLOCK_DaySlotIndex;
 extern LONG GCOMMAND_PpvSelectionWindowMinutes;
@@ -13,6 +29,7 @@ extern LONG SCRIPT3_JMPTBL_MATH_DivS32(LONG num, LONG den);
 
 void NEWGRID_InitSelectionWindow(UBYTE *ctx, WORD row)
 {
+    NEWGRID_SelectionWindow *window;
     LONG i;
     LONG q;
 
@@ -20,48 +37,49 @@ void NEWGRID_InitSelectionWindow(UBYTE *ctx, WORD row)
         return;
     }
 
-    *(LONG *)(ctx + 0) = 0;
-    *(LONG *)(ctx + 4) = 0;
-    *(LONG *)(ctx + 8) = 0;
+    window = (NEWGRID_SelectionWindow *)ctx;
+    window->entry = 0;
+    window->aux = 0;
+    window->index = 0;
 
     if (row != 0) {
-        *(LONG *)(ctx + 12) = (LONG)(UWORD)TEXTDISP_PrimaryGroupEntryCount;
+        window->start = (LONG)(UWORD)TEXTDISP_PrimaryGroupEntryCount;
         i = 0;
-        while (i < *(LONG *)(ctx + 12)) {
-            UBYTE *entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 1);
-            if ((entry[47] & 0x10) != 0) {
-                *(LONG *)(ctx + 12) = i;
+        while (i < window->start) {
+            NEWGRID_Entry *entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 1);
+            if ((entry->flags47 & 0x10) != 0) {
+                window->start = i;
             }
             ++i;
         }
 
-        *(LONG *)(ctx + 16) = *(LONG *)(ctx + 12);
+        window->end = window->start;
         i = (LONG)(UWORD)TEXTDISP_PrimaryGroupEntryCount;
-        while (i > *(LONG *)(ctx + 16)) {
-            UBYTE *entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i - 1, 1);
-            if ((entry[47] & 0x10) != 0) {
-                *(LONG *)(ctx + 16) = i;
+        while (i > window->end) {
+            NEWGRID_Entry *entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i - 1, 1);
+            if ((entry->flags47 & 0x10) != 0) {
+                window->end = i;
             }
             --i;
         }
     } else {
-        *(LONG *)(ctx + 12) = 0;
-        *(LONG *)(ctx + 16) = 0;
+        window->start = 0;
+        window->end = 0;
     }
 
-    *(WORD *)(ctx + 20) = row;
+    window->row = (UWORD)row;
     if (row < 48) {
         if (row == 1 || (NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) {
-            *(WORD *)(ctx + 20) = (WORD)(*(WORD *)(ctx + 20) + 48);
+            window->row = (UWORD)(window->row + 48);
         }
     }
 
-    *(WORD *)(ctx + 22) = *(WORD *)(ctx + 20);
+    window->initialRow = window->row;
 
     q = SCRIPT3_JMPTBL_MATH_DivS32(29 + GCOMMAND_PpvSelectionWindowMinutes, 30);
-    *(WORD *)(ctx + 24) = (WORD)((LONG)(*(WORD *)(ctx + 20)) + q);
-    if (*(WORD *)(ctx + 24) > 96) {
-        *(WORD *)(ctx + 24) = 96;
+    window->rowLimit = (UWORD)((LONG)window->row + q);
+    if (window->rowLimit > 96) {
+        window->rowLimit = 96;
     }
-    *(WORD *)(ctx + 24) = (WORD)(*(WORD *)(ctx + 24) + 1);
+    window->rowLimit = (UWORD)(window->rowLimit + 1);
 }
