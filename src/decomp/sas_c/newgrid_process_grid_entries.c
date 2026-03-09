@@ -33,28 +33,29 @@ extern UWORD CLOCK_DaySlotIndex;
 extern const char *TEXTDISP_PrimaryTitlePtrTable[];
 extern NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
-extern LONG NEWGRID_DrawGridHeaderRows(LayoutCtx *ctx, LONG framePen, LONG markerPen);
+extern LONG NEWGRID_DrawGridHeaderRows(char *ctx, LONG framePen, LONG markerPen);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
 extern LONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(UWORD *slot);
 extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const char *title);
-extern LONG NEWGRID_SelectEntryPen(void *entryPtr);
-extern LONG NEWGRID_DrawGridFrame(LayoutCtx *ctx, LONG style, LONG pen, LONG entryPen, LONG rowHeight);
+extern LONG NEWGRID_SelectEntryPen(char *entryPtr);
+extern LONG NEWGRID_DrawGridFrame(char *ctx, LONG style, LONG pen, LONG entryPen, LONG rowHeight);
 extern LONG NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG idx, LONG mode);
 extern LONG NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG idx, LONG mode);
-extern LONG NEWGRID_GetEntryStateCode(void *entry, void *aux, LONG row);
+extern LONG NEWGRID_GetEntryStateCode(char *entry, char *aux, LONG row);
 extern LONG NEWGRID_TestEntryState(LONG baseState, LONG titleIdx, LONG wildcardIdx, LONG rowIdx);
-extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(void *entry, void *aux, LONG row);
+extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG row);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG h, LONG pen);
 /* Keep K&R-style declaration: SAS/C long-name significance causes a prototype clash
  * with NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount in this translation unit. */
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths();
 extern LONG NEWGRID_DrawEntryRowOrPlaceholder(char *scratch, char *entry, LONG aux, LONG row, LONG span, LONG state);
-extern LONG NEWGRID_DrawSelectionMarkers(LayoutCtx *ctx, LONG row, LONG span, LONG pen, LONG leftState, LONG rightState);
+extern LONG NEWGRID_DrawSelectionMarkers(char *ctx, LONG row, LONG span, LONG pen, LONG leftState, LONG rightState);
 extern LONG NEWGRID_DrawGridCell(char *scratch, char *entry, LONG style);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
 
-LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
+LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
 {
+    LayoutCtx *ctxView;
     LONG wildcardIdx = -1;
     LONG keepMarkers = 1;
     UWORD row = 0;
@@ -65,9 +66,11 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
         return NEWGRID_GridEntriesWorkflowState;
     }
 
+    ctxView = (LayoutCtx *)ctx;
+
     if (NEWGRID_GridEntriesWorkflowState == 5) {
         NEWGRID_DrawGridHeaderRows(ctx, NEWGRID_HeaderFramePenId, NEWGRID_SelectionMarkerPenState);
-        ctx->currentVisibleLines = -1;
+        ctxView->currentVisibleLines = -1;
         if (NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() != 0) {
             NEWGRID_GridEntriesWorkflowState = 4;
         }
@@ -84,7 +87,7 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
             TEXTDISP_PrimaryTitlePtrTable[titleIdx]);
     }
 
-    NEWGRID_SelectedGridEntryPtr = NEWGRID_SelectEntryPen(TEXTDISP_PrimaryEntryPtrTable[titleIdx]);
+    NEWGRID_SelectedGridEntryPtr = NEWGRID_SelectEntryPen((char *)TEXTDISP_PrimaryEntryPtrTable[titleIdx]);
     NEWGRID_HeaderFramePenId = (NEWGRID_GridOperationId == 5) ? GCOMMAND_NicheFramePen : 7;
     NEWGRID_DrawGridFrame(ctx, 7, NEWGRID_HeaderFramePenId, NEWGRID_SelectedGridEntryPtr, (LONG)NEWGRID_RowHeightPx + 3);
 
@@ -103,7 +106,7 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
         aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((mode == 2) ? wildcardIdx : titleIdx, mode);
 
         if (entry && aux) {
-            state = NEWGRID_GetEntryStateCode(entry, aux, modeIdx);
+            state = NEWGRID_GetEntryStateCode((char *)entry, (char *)aux, modeIdx);
             nextSpan = 1;
             while ((LONG)row + (LONG)nextSpan < 3) {
                 if (!NEWGRID_TestEntryState(state, titleIdx, wildcardIdx, modeIdx + nextSpan)) break;
@@ -111,7 +114,7 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
             }
 
             if (state == 3) {
-                LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((void *)entry, (void *)aux, modeIdx);
+                LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((char *)entry, (char *)aux, modeIdx);
                 state = (prev == 0) ? 1 : 2;
             }
 
@@ -128,15 +131,15 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
             }
 
             ((LONG (*)(char *, LONG, LONG))NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths)(
-                ctx->scratch, leftState, rightState);
-            NEWGRID_DrawEntryRowOrPlaceholder(ctx->scratch, (char *)entry, (LONG)aux, modeIdx, nextSpan, state);
+                ctxView->scratch, leftState, rightState);
+            NEWGRID_DrawEntryRowOrPlaceholder(ctxView->scratch, (char *)entry, (LONG)aux, modeIdx, nextSpan, state);
         } else {
             nextSpan = (UWORD)(3 - row);
             if (nextSpan < 3) {
                 NEWGRID_SelectionMarkerPenState = -1;
                 NEWGRID_RowLayoutCommitPenId = 1;
                 NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams((NEWGRID_ColumnWidthPx * nextSpan) - 12, 2, 1);
-                NEWGRID_DrawEntryRowOrPlaceholder(ctx->scratch, (char *)entry, (LONG)aux, modeIdx, nextSpan, 1);
+                NEWGRID_DrawEntryRowOrPlaceholder(ctxView->scratch, (char *)entry, (LONG)aux, modeIdx, nextSpan, 1);
             } else {
                 keepMarkers = 0;
             }
@@ -151,20 +154,20 @@ LONG NEWGRID_ProcessGridEntries(LayoutCtx *ctx, LONG titleIdx, UWORD startRow)
 
     if (keepMarkers) {
         if (rowSpan == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y' && NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
-            NEWGRID_DrawGridCell(ctx->scratch, (char *)NEWGRID_SelectedGridEntryPtr, 0);
+            NEWGRID_DrawGridCell(ctxView->scratch, (char *)NEWGRID_SelectedGridEntryPtr, 0);
             NEWGRID_GridEntriesWorkflowState = 5;
             if (NEWGRID_SelectionMarkerPenState == -1) {
                 NEWGRID_SelectionMarkerPenState = NEWGRID_SelectedGridEntryPtr;
             }
         } else {
-            NEWGRID_DrawGridCell(ctx->scratch, (char *)NEWGRID_SelectedGridEntryPtr, 1);
+            NEWGRID_DrawGridCell(ctxView->scratch, (char *)NEWGRID_SelectedGridEntryPtr, 1);
             NEWGRID_GridEntriesWorkflowState = 4;
         }
 
-        ctx->currentHalfHeight = (UWORD)(NEWGRID_RowHeightPx >> 1);
-        ctx->currentVisibleLines = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
+        ctxView->currentHalfHeight = (UWORD)(NEWGRID_RowHeightPx >> 1);
+        ctxView->currentVisibleLines = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
     } else {
-        ctx->currentHalfHeight = 0;
+        ctxView->currentHalfHeight = 0;
         NEWGRID_GridEntriesWorkflowState = 4;
     }
 

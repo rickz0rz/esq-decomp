@@ -2,18 +2,18 @@
 __code:
 NEWGRID_ProcessGridEntries:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$40,D0                  ;90bc 0000 0040 
+              SUB.L          #$44,D0                  ;90bc 0000 0044 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$28,A7                  ;9efc 0028 
+              SUB.W          #$2c,A7                  ;9efc 002c 
               MOVEM.L        D2/D3/D5/D6/D7/A2/A3/A5,-(A7);48e7 3734 
 ___NEWGRID_ProcessGridEntries__1:
-              MOVE.W         $56(A7),D6               ;3c2f 0056 
-              MOVE.L         $50(A7),D7               ;2e2f 0050 
-              MOVE.L         $4c(A7),A5               ;2a6f 004c 
+              MOVE.W         $5a(A7),D6               ;3c2f 005a 
+              MOVE.L         $54(A7),D7               ;2e2f 0054 
+              MOVE.L         $50(A7),A5               ;2a6f 0050 
               MOVEQ.L        #$ff,D5                  ;7aff 
               MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVE.L         D0,$48(A7)               ;2f40 0048 
               CLR.W          $26(A7)                  ;426f 0026 
               CLR.W          $24(A7)                  ;426f 0024 
               MOVE.L         A5,D0                    ;200d 
@@ -21,8 +21,9 @@ ___NEWGRID_ProcessGridEntries__1:
 ___NEWGRID_ProcessGridEntries__2:
               MOVEQ.L        #$4,D0                   ;7004 
               MOVE.L         D0,NEWGRID_GridEntriesWorkflowState(A4);2940 0000 
-              BRA.W          ___NEWGRID_ProcessGridEntries__68;6000 03d4 
+              BRA.W          ___NEWGRID_ProcessGridEntries__68;6000 03e8 
 ___NEWGRID_ProcessGridEntries__3:
+              MOVE.L         A5,A3                    ;264d 
               MOVEQ.L        #$5,D0                   ;7005 
               CMP.L          NEWGRID_GridEntriesWorkflowState(A4),D0;b0ac 0000 
               BNE.B          ___NEWGRID_ProcessGridEntries__7;662e 
@@ -32,7 +33,7 @@ ___NEWGRID_ProcessGridEntries__4:
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_DrawGridHeaderRows;6100 0000 
               MOVEQ.L        #$ff,D0                  ;70ff 
-              MOVE.L         D0,$2(A5)                ;2b40 0002 
+              MOVE.L         D0,$2(A3)                ;2740 0002 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_IsCurre;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               TST.L          D0                       ;4a80 
@@ -42,14 +43,14 @@ ___NEWGRID_ProcessGridEntries__5:
               MOVE.L         D0,NEWGRID_GridEntriesWorkflowState(A4);2940 0000 
 ___NEWGRID_ProcessGridEntries__6:
               MOVE.L         NEWGRID_GridEntriesWorkflowState(A4),D0;202c 0000 
-              BRA.W          ___NEWGRID_ProcessGridEntries__68;6000 039e 
+              BRA.W          ___NEWGRID_ProcessGridEntries__68;6000 03b0 
 ___NEWGRID_ProcessGridEntries__7:
               MOVEQ.L        #$4,D0                   ;7004 
               CMP.L          NEWGRID_GridEntriesWorkflowState(A4),D0;b0ac 0000 
               BEQ.B          ___NEWGRID_ProcessGridEntries__9;6708 
 ___NEWGRID_ProcessGridEntries__8:
               MOVE.L         D0,NEWGRID_GridEntriesWorkflowState(A4);2940 0000 
-              BRA.W          ___NEWGRID_ProcessGridEntries__68;6000 038e 
+              BRA.W          ___NEWGRID_ProcessGridEntries__68;6000 03a0 
 ___NEWGRID_ProcessGridEntries__9:
               MOVEQ.L        #$2c,D0                  ;702c 
               CMP.W          D0,D6                    ;bc40 
@@ -104,10 +105,10 @@ ___NEWGRID_ProcessGridEntries__17:
               MOVE.W         $26(A7),D0               ;302f 0026 
               MOVEQ.L        #$3,D1                   ;7203 
               CMP.W          D1,D0                    ;b041 
-              BCC.W          ___NEWGRID_ProcessGridEntries__56;6400 027a 
+              BCC.W          ___NEWGRID_ProcessGridEntries__56;6400 028c 
 ___NEWGRID_ProcessGridEntries__18:
-              SUB.L          A3,A3                    ;97cb 
               SUB.L          A2,A2                    ;95ca 
+              CLR.L          $44(A7)                  ;42af 0044 
               CLR.L          $40(A7)                  ;42af 0040 
               CLR.L          $3c(A7)                  ;42af 003c 
               CLR.L          $38(A7)                  ;42af 0038 
@@ -166,7 +167,7 @@ ___NEWGRID_ProcessGridEntries__30:
               MOVE.L         D1,-(A7)                 ;2f01 
               BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         D0,A3                    ;2640 
+              MOVE.L         D0,A2                    ;2440 
               MOVE.L         $30(A7),D0               ;202f 0030 
               MOVEQ.L        #$2,D1                   ;7202 
               CMP.L          D1,D0                    ;b081 
@@ -181,16 +182,16 @@ ___NEWGRID_ProcessGridEntries__33:
               MOVE.L         D1,-(A7)                 ;2f01 
               BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         D0,A2                    ;2440 
-              MOVE.L         A3,D0                    ;200b 
-              BEQ.W          ___NEWGRID_ProcessGridEntries__50;6700 0148 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVE.L         A2,D1                    ;220a 
+              BEQ.W          ___NEWGRID_ProcessGridEntries__50;6700 0152 
 ___NEWGRID_ProcessGridEntries__34:
-              MOVE.L         A2,D0                    ;200a 
-              BEQ.W          ___NEWGRID_ProcessGridEntries__50;6700 0142 
+              TST.L          D0                       ;4a80 
+              BEQ.W          ___NEWGRID_ProcessGridEntries__50;6700 014c 
 ___NEWGRID_ProcessGridEntries__35:
               MOVE.L         D3,-(A7)                 ;2f03 
+              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A2,-(A7)                 ;2f0a 
-              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          NEWGRID_GetEntryStateCode;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.W         #$1,$34(A7)              ;3f7c 0001 0034 
@@ -224,11 +225,11 @@ ___NEWGRID_ProcessGridEntries__39:
 ___NEWGRID_ProcessGridEntries__40:
               MOVEQ.L        #$3,D0                   ;7003 
               CMP.L          $40(A7),D0               ;b0af 0040 
-              BNE.B          ___NEWGRID_ProcessGridEntries__42;661e 
+              BNE.B          ___NEWGRID_ProcessGridEntries__42;6620 
 ___NEWGRID_ProcessGridEntries__41:
               MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               MOVE.L         A2,-(A7)                 ;2f0a 
-              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          NEWGRID2_JMPTBL_DISPLIB_FindPrev;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         D0,$28(A7)               ;2f40 0028 
@@ -256,8 +257,9 @@ ___NEWGRID_ProcessGridEntries__42:
               MOVE.L         NEWGRID_OverridePenIndex(A4),D0;202c 0000 
               MOVE.L         D0,NEWGRID_RowLayoutCommitPenId(A4);2940 0000 
               MOVE.L         D2,$38(A7)               ;2f42 0038 
+              MOVE.L         $44(A7),A0               ;206f 0044 
               MOVE.L         $2c(A7),D2               ;242f 002c 
-              BTST           #$2,$7(A2,D2.L)          ;0832 0002 2807 
+              BTST           #$2,$7(A0,D2.L)          ;0830 0002 2807 
               BEQ.B          ___NEWGRID_ProcessGridEntries__44;6704 
 ___NEWGRID_ProcessGridEntries__43:
               MOVEQ.L        #$5,D2                   ;7405 
@@ -296,30 +298,31 @@ ___NEWGRID_ProcessGridEntries__48:
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_SetLayo;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
 ___NEWGRID_ProcessGridEntries__49:
-              LEA            $6(A5),A0                ;41ed 0006 
+              LEA            $6(A3),A0                ;41eb 0006 
               MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
               MOVE.L         $40(A7),-(A7)            ;2f2f 0040 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_Compute;6100 0000 
-              LEA            $6(A5),A0                ;41ed 0006 
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         $40(A7),D0               ;302f 0040 
+              LEA            $6(A3),A0                ;41eb 0006 
+              MOVE.L         $50(A7),D0               ;202f 0050 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         $40(A7),D1               ;322f 0040 
               MOVE.L         $4c(A7),(A7)             ;2eaf 004c 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
+              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A2,-(A7)                 ;2f0a 
-              MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID_DrawEntryRowOrPlaceholde;6100 0000 
               LEA            $20(A7),A7               ;4fef 0020 
-              BRA.B          ___NEWGRID_ProcessGridEntries__53;605e 
+              BRA.B          ___NEWGRID_ProcessGridEntries__53;6062 
 ___NEWGRID_ProcessGridEntries__50:
               MOVEQ.L        #$3,D0                   ;7003 
               MOVE.W         D0,D1                    ;3200 
               SUB.W          $26(A7),D1               ;926f 0026 
               MOVEM.W        D1,$34(A7)               ;48af 0002 0034 
               CMP.W          D0,D1                    ;b240 
-              BCC.B          ___NEWGRID_ProcessGridEntries__52;6446 
+              BCC.B          ___NEWGRID_ProcessGridEntries__52;644a 
 ___NEWGRID_ProcessGridEntries__51:
               MOVEQ.L        #$ff,D0                  ;70ff 
               MOVE.L         D0,NEWGRID_SelectionMarkerPenState(A4);2940 0000 
@@ -333,23 +336,24 @@ ___NEWGRID_ProcessGridEntries__51:
               PEA            ($2).w                   ;4878 0002 
               MOVE.L         D2,-(A7)                 ;2f02 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_SetLayo;6100 0000 
-              LEA            $6(A5),A0                ;41ed 0006 
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         $40(A7),D0               ;302f 0040 
+              LEA            $6(A3),A0                ;41eb 0006 
+              MOVE.L         $50(A7),D0               ;202f 0050 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         $40(A7),D1               ;322f 0040 
               PEA            ($1).w                   ;4878 0001 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         $40(A7),-(A7)            ;2f2f 0040 
+              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A2,-(A7)                 ;2f0a 
-              MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID_DrawEntryRowOrPlaceholde;6100 0000 
               LEA            $24(A7),A7               ;4fef 0024 
               BRA.B          ___NEWGRID_ProcessGridEntries__53;6006 
 ___NEWGRID_ProcessGridEntries__52:
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVE.L         D0,$48(A7)               ;2f40 0048 
 ___NEWGRID_ProcessGridEntries__53:
-              TST.L          $44(A7)                  ;4aaf 0044 
+              TST.L          $48(A7)                  ;4aaf 0048 
               BEQ.B          ___NEWGRID_ProcessGridEntries__55;6726 
 ___NEWGRID_ProcessGridEntries__54:
               MOVEQ.L        #$0,D0                   ;7000 
@@ -368,9 +372,9 @@ ___NEWGRID_ProcessGridEntries__55:
               MOVE.W         $34(A7),D0               ;302f 0034 
               ADD.W          D0,$26(A7)               ;d16f 0026 
               MOVE.W         D0,$24(A7)               ;3f40 0024 
-              BRA.W          ___NEWGRID_ProcessGridEntries__17;6000 fd7e 
+              BRA.W          ___NEWGRID_ProcessGridEntries__17;6000 fd6c 
 ___NEWGRID_ProcessGridEntries__56:
-              TST.L          $44(A7)                  ;4aaf 0044 
+              TST.L          $48(A7)                  ;4aaf 0048 
               BEQ.W          ___NEWGRID_ProcessGridEntries__65;6700 0080 
 ___NEWGRID_ProcessGridEntries__57:
               MOVEQ.L        #$3,D0                   ;7003 
@@ -386,7 +390,7 @@ ___NEWGRID_ProcessGridEntries__59:
               TST.L          D0                       ;4a80 
               BNE.B          ___NEWGRID_ProcessGridEntries__63;662e 
 ___NEWGRID_ProcessGridEntries__60:
-              LEA            $6(A5),A0                ;41ed 0006 
+              LEA            $6(A3),A0                ;41eb 0006 
               MOVE.L         NEWGRID_SelectedGridEntryPtr(A4),A1;226c 0000 
               CLR.L          -(A7)                    ;42a7 
               MOVE.L         A1,-(A7)                 ;2f09 
@@ -404,7 +408,7 @@ ___NEWGRID_ProcessGridEntries__61:
 ___NEWGRID_ProcessGridEntries__62:
               BRA.B          ___NEWGRID_ProcessGridEntries__64;601e 
 ___NEWGRID_ProcessGridEntries__63:
-              LEA            $6(A5),A0                ;41ed 0006 
+              LEA            $6(A3),A0                ;41eb 0006 
               MOVE.L         NEWGRID_SelectedGridEntryPtr(A4),A1;226c 0000 
               PEA            ($1).w                   ;4878 0001 
               MOVE.L         A1,-(A7)                 ;2f09 
@@ -416,14 +420,14 @@ ___NEWGRID_ProcessGridEntries__63:
 ___NEWGRID_ProcessGridEntries__64:
               MOVE.W         NEWGRID_RowHeightPx(A4),D0;302c 0000 
               LSR.W          #$1,D0                   ;e248 
-              MOVE.W         D0,(A5)                  ;3a80 
+              MOVE.W         D0,(A3)                  ;3680 
               PEA            ($2).w                   ;4878 0002 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_Compute;6100 0000 
-              MOVE.L         D0,$2(A5)                ;2b40 0002 
+              MOVE.L         D0,$2(A3)                ;2740 0002 
               ADDQ.W         #$4,A7                   ;584f 
               BRA.B          ___NEWGRID_ProcessGridEntries__66;6008 
 ___NEWGRID_ProcessGridEntries__65:
-              CLR.W          (A5)                     ;4255 
+              CLR.W          (A3)                     ;4253 
               MOVEQ.L        #$4,D0                   ;7004 
               MOVE.L         D0,NEWGRID_GridEntriesWorkflowState(A4);2940 0000 
 ___NEWGRID_ProcessGridEntries__66:
@@ -431,7 +435,7 @@ ___NEWGRID_ProcessGridEntries__66:
 ___NEWGRID_ProcessGridEntries__67:
 ___NEWGRID_ProcessGridEntries__68:
               MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A2/A3/A5;4cdf 2cec 
-              ADD.W          #$28,A7                  ;defc 0028 
+              ADD.W          #$2c,A7                  ;defc 002c 
               RTS                                     ;4e75 
 __const:
 __strings:
