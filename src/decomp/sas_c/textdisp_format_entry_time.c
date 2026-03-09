@@ -17,11 +17,11 @@ extern char *TEXTDISP_SecondaryTitlePtrTable[];
 extern char **Global_REF_STR_CLOCK_FORMAT;
 
 extern LONG TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(LONG row, LONG slot);
-extern void TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slotIndex, UBYTE *out);
+extern void TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out);
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 
-void TEXTDISP_FormatEntryTime(UBYTE *out, WORD entryIndex)
+void TEXTDISP_FormatEntryTime(char *out, WORD entryIndex)
 {
     TEXTDISP_AuxData *title;
     char *timeText;
@@ -76,12 +76,12 @@ void TEXTDISP_FormatEntryTime(UBYTE *out, WORD entryIndex)
         }
 
         variant = MATH_Mulu32((LONG)(UBYTE)(out[-3] - '0'), 10) + minutes;
-        out[-3] = (UBYTE)(MATH_DivS32(variant, 10) + '0');
-        out[-2] = (UBYTE)((variant % 10) + '0');
+        out[-3] = (char)(MATH_DivS32(variant, 10) + '0');
+        out[-2] = (char)((variant % 10) + '0');
     }
 }
 
-void TEXTDISP_FormatEntryTimeForIndex(UBYTE *out, WORD entryIndex, UBYTE *entryTable)
+void TEXTDISP_FormatEntryTimeForIndex(char *out, WORD entryIndex, char *entryTable)
 {
     TEXTDISP_AuxData *aux;
     char *timeText;
@@ -131,7 +131,7 @@ void TEXTDISP_FormatEntryTimeForIndex(UBYTE *out, WORD entryIndex, UBYTE *entryT
         }
 
         variant = MATH_Mulu32((LONG)(UBYTE)(out[-3] - '0'), 10) + minutes;
-        out[-3] = (UBYTE)(MATH_DivS32(variant, 10) + '0');
-        out[-2] = (UBYTE)((variant % 10) + '0');
+        out[-3] = (char)(MATH_DivS32(variant, 10) + '0');
+        out[-2] = (char)((variant % 10) + '0');
     }
 }
