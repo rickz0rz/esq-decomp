@@ -1,8 +1,12 @@
 typedef signed long LONG;
 
-extern void *LADFUNC_EntryPtrTable[];
+typedef struct LADFUNC_BannerRectEntry {
+    char raw[14];
+} LADFUNC_BannerRectEntry;
+
+extern LADFUNC_BannerRectEntry *LADFUNC_EntryPtrTable[];
 extern const char Global_STR_LADFUNC_C_1[];
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
+extern LADFUNC_BannerRectEntry *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 
 void LADFUNC_AllocBannerRectEntries(void)
 {
