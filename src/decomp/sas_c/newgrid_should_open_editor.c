@@ -11,13 +11,13 @@ typedef struct NEWGRID_Entry {
 
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
 
-LONG NEWGRID_ShouldOpenEditor(UBYTE *entry)
+LONG NEWGRID_ShouldOpenEditor(char *entry)
 {
     NEWGRID_Entry *entryView;
     char *primaryScan;
     char *secondaryScan;
 
-    if (entry == (UBYTE *)0) {
+    if (entry == (char *)0) {
         return 0;
     }
 

@@ -10,14 +10,14 @@ typedef struct NEWGRID_Entry {
 extern char NEWGRID_EntryDetailFmtStr;
 
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
-extern LONG NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(UBYTE *entry, LONG rowIndex, LONG mode);
-extern char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(UBYTE *entry, LONG rowIndex, LONG field);
-extern void NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(UBYTE *entry, LONG rowIndex);
+extern LONG NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(char *entry, LONG rowIndex, LONG mode);
+extern char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(char *entry, LONG rowIndex, LONG field);
+extern void NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(char *entry, LONG rowIndex);
 extern void NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(
     void *rastPort, const char *fmt, LONG fmtRow, const char *src, LONG srcRow, LONG fallbackText);
 extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *rastPort, LONG fallbackText);
 
-void NEWGRID_DrawEntryFlagBadge(void *rastPort, UBYTE *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode)
+void NEWGRID_DrawEntryFlagBadge(void *rastPort, char *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode)
 {
     NEWGRID_Entry *entryView;
     char *animPtr;
