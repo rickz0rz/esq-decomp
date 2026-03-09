@@ -208,8 +208,8 @@ ___DISKIO2_LoadNxtDayDataFile__30:
               SWAP           D1                       ;4841 
               MOVE.L         D1,D2                    ;2401 
               ASL.L          #$2,D2                   ;e582 
-              MOVE.L         D0,(A7)                  ;2e80 
-              MOVE.L         $38(A2,D2.L),-(A7)       ;2f32 2838 
+              MOVE.L         $38(A2,D2.L),(A7)        ;2eb2 2838 
+              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D0,$40(A7)               ;2f40 0040 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 

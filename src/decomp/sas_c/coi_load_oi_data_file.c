@@ -32,7 +32,7 @@ char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *s, LONG c);
 LONG GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 LONG GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(const char *s, void *map, LONG max_tokens, const char *delims, LONG n_delims, LONG max_len, LONG stop_on_empty);
 LONG ESQ_WildcardMatch(const char *a, const char *b);
-char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *old_ptr, const char *new_ptr);
+char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 void CLEANUP_FormatEntryStringTokens(void *entry);
 void COI_AllocSubEntryTable(void *entry);
 
@@ -91,7 +91,7 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
 
         entry = (void *)Global_PTR_WORK_BUFFER;
         ESQ_WildcardMatch((const char *)entry, (const char *)entry);
-        GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)0, (const char *)entry);
+        GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)entry, (char *)0);
         CLEANUP_FormatEntryStringTokens(entry);
         COI_AllocSubEntryTable(entry);
     }

@@ -14,7 +14,7 @@ extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 extern const char Global_STR_LADFUNC_C_2[];
 extern const char Global_STR_LADFUNC_C_3[];
 
-extern char *ESQPARS_ReplaceOwnedString(char *oldString, const char *newString);
+extern char *ESQPARS_ReplaceOwnedString(const char *newString, char *oldString);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 
 void LADFUNC_FreeBannerRectEntries(void)
@@ -42,7 +42,7 @@ void LADFUNC_FreeBannerRectEntries(void)
                 ++p;
             }
             len = (LONG)(p - entry->textPtr);
-            (void)ESQPARS_ReplaceOwnedString(entry->textPtr, (const char *)0);
+            (void)ESQPARS_ReplaceOwnedString((const char *)0, entry->textPtr);
         }
 
         if (len > LEN_EMPTY && entry->attrPtr != (UBYTE *)0) {

@@ -48,12 +48,12 @@ ___DISKIO2_LoadOinfoDataFile__6:
               CMP.L          A0,A3                    ;b7c8 
               BEQ.B          ___DISKIO2_LoadOinfoDataFile__8;6720 
 ___DISKIO2_LoadOinfoDataFile__7:
-              MOVE.L         A5,-(A7)                 ;2f0d 
               MOVE.L         __MERGEDBSS+$a(A4),-(A7) ;2f2c 000a 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,__MERGEDBSS+$a(A4)    ;2940 000a 
-              MOVE.L         A3,(A7)                  ;2e8b 
-              MOVE.L         __MERGEDBSS+$e(A4),-(A7) ;2f2c 000e 
+              MOVE.L         __MERGEDBSS+$e(A4),(A7)  ;2eac 000e 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,__MERGEDBSS+$e(A4)    ;2940 000e 
               LEA            $c(A7),A7                ;4fef 000c 

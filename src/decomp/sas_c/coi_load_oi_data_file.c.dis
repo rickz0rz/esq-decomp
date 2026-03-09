@@ -85,8 +85,8 @@ ___COI_LoadOiDataFile__11:
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          ESQ_WildcardMatch        ;6100 0000 
-              MOVE.L         A3,(A7)                  ;2e8b 
-              CLR.L          -(A7)                    ;42a7 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         A3,(A7)                  ;2e8b 
               BSR.W          CLEANUP_FormatEntryStringTokens;6100 0000 

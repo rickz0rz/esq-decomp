@@ -23,7 +23,7 @@ extern char CLOCK_STR_BOOL_CHARS_YyNn[];
 extern UBYTE WDISP_CharClassTable[];
 
 char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *s, LONG c);
-char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *old_ptr, const char *new_ptr);
+char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 
 void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input)
 {
@@ -33,8 +33,8 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input
     char *separatorPtr;
 
     if (input == (char *)0 || input[0] == 0 || GROUP_AI_JMPTBL_STR_FindCharPtr(input, TOKEN_SEPARATOR) == (char *)0) {
-        *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)*field_a, (char *)0);
-        *field_b = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(*field_b, CLOCK_STR_EMPTY_TOKEN_TEMPLATE);
+        *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)0, (char *)*field_a);
+        *field_b = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(CLOCK_STR_EMPTY_TOKEN_TEMPLATE, *field_b);
         return;
     }
 
@@ -57,7 +57,7 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input
     }
     formattedTokenText[i] = 0;
 
-    *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)*field_a, formattedTokenText);
+    *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(formattedTokenText, (char *)*field_a);
 
     i = 0;
     while (CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[i] != 0) {
@@ -118,5 +118,5 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input
         i += 1;
     }
 
-    *field_b = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)*field_b, formattedTokenText);
+    *field_b = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(formattedTokenText, (char *)*field_b);
 }

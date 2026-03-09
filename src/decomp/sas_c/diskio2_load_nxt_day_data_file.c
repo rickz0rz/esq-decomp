@@ -29,7 +29,7 @@ extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, ULONG line
 extern void GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults(UBYTE *entry);
 extern void COI_EnsureAnimObjectAllocated(UBYTE *entry);
 extern char *GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(const char *text, ULONG flags);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *oldText, const char *newText);
+extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern long COI_LoadOiDataFile(long diskId);
 
 extern const char Global_STR_DF0_NXTDAY_DAT[];
@@ -154,7 +154,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
                         slotText,
                         (ULONG)entry->flags27);
                     title->slotTextTable[slot] =
-                        GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(title->slotTextTable[slot], slotText);
+                        GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(slotText, title->slotTextTable[slot]);
                     if (title->slotTextTable[slot] != 0) {
                         entry->flags40 = (UBYTE)(entry->flags40 | 0x80);
                     }

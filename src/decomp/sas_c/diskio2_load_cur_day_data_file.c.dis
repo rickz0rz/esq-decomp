@@ -188,8 +188,8 @@ ___DISKIO2_LoadCurDayDataFile__30:
               MOVEQ.L        #$ff,D0                  ;70ff 
               BRA.W          ___DISKIO2_LoadCurDayDataFile__83;6000 03a0 
 ___DISKIO2_LoadCurDayDataFile__31:
-              MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         __MERGEDBSS+$cc(A4),-(A7);2f2c 00cc 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,__MERGEDBSS+$cc(A4)   ;2940 00cc 
               ADDQ.W         #$8,A7                   ;504f 

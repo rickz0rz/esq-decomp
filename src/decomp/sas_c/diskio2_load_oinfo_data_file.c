@@ -4,7 +4,7 @@ typedef unsigned long ULONG;
 extern long DISKIO_LoadFileToWorkBuffer(const char *path);
 extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *oldText, const char *newText);
+extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *ptr, ULONG size, const char *file, ULONG line);
 
 extern const char CTASKS_PATH_OINFO_DAT[];
@@ -45,9 +45,9 @@ long DISKIO2_LoadOinfoDataFile(void)
 
     if (newHead != (char *)-1 && newTail != (char *)-1) {
         ESQIFF_PrimaryLineHeadPtr =
-            GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(ESQIFF_PrimaryLineHeadPtr, newHead);
+            GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(newHead, (char *)ESQIFF_PrimaryLineHeadPtr);
         ESQIFF_PrimaryLineTailPtr =
-            GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(ESQIFF_PrimaryLineTailPtr, newTail);
+            GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(newTail, (char *)ESQIFF_PrimaryLineTailPtr);
     }
 
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(

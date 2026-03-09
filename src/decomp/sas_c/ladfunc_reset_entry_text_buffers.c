@@ -13,7 +13,7 @@ typedef struct LadfuncEntry {
 extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 extern const char Global_STR_LADFUNC_C_4[];
 
-extern char *ESQPARS_ReplaceOwnedString(char *oldString, const char *newString);
+extern char *ESQPARS_ReplaceOwnedString(const char *newString, char *oldString);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 extern void LADFUNC_ClearBannerRectEntries(void);
 
@@ -47,7 +47,7 @@ void LADFUNC_ResetEntryTextBuffers(void)
             NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_4, ATTR_FREE_LINE, entry->attrPtr, len);
         }
 
-        entry->textPtr = ESQPARS_ReplaceOwnedString(entry->textPtr, (const char *)0);
+        entry->textPtr = ESQPARS_ReplaceOwnedString((const char *)0, entry->textPtr);
     }
 
     LADFUNC_ClearBannerRectEntries();

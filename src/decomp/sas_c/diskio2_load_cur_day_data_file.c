@@ -24,7 +24,7 @@ typedef struct DISKIO2_TitleData {
 extern long DISKIO_LoadFileToWorkBuffer(const char *path);
 extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *oldText, const char *newText);
+extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern long GROUP_AH_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
@@ -155,8 +155,8 @@ long DISKIO2_LoadCurDayDataFile(void)
             return -1;
         }
         WDISP_WeatherStatusTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
-            (char *)WDISP_WeatherStatusTextPtr,
-            str);
+            str,
+            (char *)WDISP_WeatherStatusTextPtr);
     }
 
     headerCode = (UBYTE)(DISKIO_ParseLongFromWorkBuffer() & 0xffL);

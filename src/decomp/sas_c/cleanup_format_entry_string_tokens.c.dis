@@ -24,15 +24,15 @@ ___CLEANUP_FormatEntryStringTokens__3:
               TST.L          D0                       ;4a80 
               BNE.B          ___CLEANUP_FormatEntryStringTokens__5;661e 
 ___CLEANUP_FormatEntryStringTokens__4:
-              CLR.L          -(A7)                    ;42a7 
               MOVE.L         (A5),-(A7)               ;2f15 
+              CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,(A5)                  ;2a80 
+              MOVE.L         (A3),(A7)                ;2e93 
               PEA            CLOCK_STR_EMPTY_TOKEN_TEMPLATE(A4);486c 0000 
-              MOVE.L         (A3),-(A7)               ;2f13 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,(A3)                  ;2680 
-              LEA            $10(A7),A7               ;4fef 0010 
+              LEA            $c(A7),A7                ;4fef 000c 
               BRA.W          ___CLEANUP_FormatEntryStringTokens__52;6000 01c0 
 ___CLEANUP_FormatEntryStringTokens__5:
               MOVEQ.L        #$0,D7                   ;7e00 
@@ -77,8 +77,8 @@ ___CLEANUP_FormatEntryStringTokens__16:
               BRA.B          ___CLEANUP_FormatEntryStringTokens__13;60e2 
 ___CLEANUP_FormatEntryStringTokens__17:
               CLR.B          $15(A7,D7.L)             ;4237 7815 
-              PEA            $15(A7)                  ;486f 0015 
               MOVE.L         (A5),-(A7)               ;2f15 
+              PEA            $19(A7)                  ;486f 0019 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,(A5)                  ;2a80 
               ADDQ.W         #$8,A7                   ;504f 
@@ -225,8 +225,8 @@ ___CLEANUP_FormatEntryStringTokens__50:
               ADDQ.L         #$1,D7                   ;5287 
               BRA.W          ___CLEANUP_FormatEntryStringTokens__23;6000 feea 
 ___CLEANUP_FormatEntryStringTokens__51:
-              PEA            $15(A7)                  ;486f 0015 
               MOVE.L         (A3),-(A7)               ;2f13 
+              PEA            $19(A7)                  ;486f 0019 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,(A3)                  ;2680 
               ADDQ.W         #$8,A7                   ;504f 
