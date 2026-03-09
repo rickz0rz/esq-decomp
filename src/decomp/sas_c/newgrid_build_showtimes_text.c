@@ -38,7 +38,7 @@ extern const char Global_STR_SHOWTIMES_AND_SINGLE_SPACE[];
 extern const char Global_STR_SHOWING_AT_AND_SINGLE_SPACE[];
 extern const char NEWGRID_ShowtimeGenreSpacer[];
 
-extern LONG _LVOTextLength(void *gfxBase, void *rp, const char *text, LONG len);
+extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG len);
 extern LONG NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(void *coi, LONG row, LONG field);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, void *entries);
 extern void NEWGRID_ResetShowtimeBuckets(void);
