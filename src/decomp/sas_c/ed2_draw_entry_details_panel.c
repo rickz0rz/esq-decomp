@@ -13,6 +13,11 @@ typedef struct ED2_TitleData {
     UBYTE slotFlags[49];
 } ED2_TitleData;
 
+typedef struct ED2_DisplayContext {
+    UBYTE pad0[2];
+    UBYTE rastPort[1];
+} ED2_DisplayContext;
+
 extern UWORD ED2_SelectedEntryIndex;
 extern UWORD ED2_SelectedFlagByteOffset;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
@@ -51,6 +56,7 @@ void ED2_DrawEntryDetailsPanel(void)
 {
     char panelTextBuffer[120];
     char timeBuf[20];
+    ED2_DisplayContext *context;
     UBYTE *scratch;
     ED2_Entry *entry;
     ED2_TitleData *title;
@@ -73,7 +79,8 @@ void ED2_DrawEntryDetailsPanel(void)
     }
 
     scratch = (UBYTE *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ED2_C_1, 1000, 374, 3);
-    rastPort = (void *)((UBYTE *)WDISP_DisplayContextBase + 2);
+    context = (ED2_DisplayContext *)WDISP_DisplayContextBase;
+    rastPort = (void *)context->rastPort;
 
     if (ED2_SelectedFlagByteOffset < 1 || ED2_SelectedFlagByteOffset > 48) {
         ED2_SelectedFlagByteOffset = 1;

@@ -2,10 +2,10 @@
 __code:
 ED2_DrawEntryDetailsPanel:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$b4,D0                  ;90bc 0000 00b4 
+              SUB.L          #$b8,D0                  ;90bc 0000 00b8 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$a0,A7                  ;9efc 00a0 
+              SUB.W          #$a4,A7                  ;9efc 00a4 
               MOVEM.L        D2/D7/A2/A3/A5/A6,-(A7)  ;48e7 2136 
 ___ED2_DrawEntryDetailsPanel__1:
               MOVE.W         ED2_SelectedEntryIndex(A4),D0;302c 0000 
@@ -31,10 +31,10 @@ ___ED2_DrawEntryDetailsPanel__4:
               MOVE.L         A0,ED2_SelectedEntryTitlePtr(A4);2948 0000 
 ___ED2_DrawEntryDetailsPanel__5:
               TST.L          ED2_SelectedEntryTitlePtr(A4);4aac 0000 
-              BEQ.W          ___ED2_DrawEntryDetailsPanel__40;6700 0238 
+              BEQ.W          ___ED2_DrawEntryDetailsPanel__40;6700 023a 
 ___ED2_DrawEntryDetailsPanel__6:
               TST.L          ED2_SelectedEntryDataPtr(A4);4aac 0000 
-              BEQ.W          ___ED2_DrawEntryDetailsPanel__40;6700 0230 
+              BEQ.W          ___ED2_DrawEntryDetailsPanel__40;6700 0232 
 ___ED2_DrawEntryDetailsPanel__7:
 ___ED2_DrawEntryDetailsPanel__8:
               PEA            ($3).w                   ;4878 0003 
@@ -42,12 +42,12 @@ ___ED2_DrawEntryDetailsPanel__8:
               PEA            ($3e8).w                 ;4878 03e8 
               PEA            Global_STR_ED2_C_1(A4)   ;486c 0000 
               BSR.W          ESQIFF_JMPTBL_MEMORY_AllocateMem;6100 0000 
-              MOVE.L         D0,A5                    ;2a40 
+              MOVE.L         D0,A3                    ;2640 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVE.L         WDISP_DisplayContextBase(A4),A0;206c 0000 
-              LEA            $2(A0),A1                ;43e8 0002 
+              MOVE.L         WDISP_DisplayContextBase(A4),A5;2a6c 0000 
+              LEA            $2(A5),A0                ;41ed 0002 
               MOVE.W         ED2_SelectedFlagByteOffset(A4),D0;302c 0000 
-              MOVE.L         A1,$18(A7)               ;2f49 0018 
+              MOVE.L         A0,$18(A7)               ;2f48 0018 
               MOVEQ.L        #$1,D1                   ;7201 
               CMP.W          D1,D0                    ;b041 
               BCS.B          ___ED2_DrawEntryDetailsPanel__10;6506 
@@ -73,18 +73,18 @@ ___ED2_DrawEntryDetailsPanel__11:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D1,-(A7)                 ;2f01 
               PEA            Global_STR_PI_CLU_POS1(A4);486c 0000 
-              PEA            $4c(A7)                  ;486f 004c 
+              PEA            $50(A7)                  ;486f 0050 
               BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
               PEA            ($5a).w                  ;4878 005a 
-              PEA            $54(A7)                  ;486f 0054 
+              PEA            $58(A7)                  ;486f 0058 
               MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
               BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
-              MOVE.L         ED2_SelectedEntryDataPtr(A4),A3;266c 0000 
-              MOVE.L         A3,D0                    ;200b 
+              MOVE.L         ED2_SelectedEntryDataPtr(A4),A2;246c 0000 
+              MOVE.L         A2,D0                    ;200a 
               BEQ.B          ___ED2_DrawEntryDetailsPanel__13;6706 
 ___ED2_DrawEntryDetailsPanel__12:
-              LEA            $1(A3),A0                ;41eb 0001 
+              LEA            $1(A2),A0                ;41ea 0001 
               BRA.B          ___ED2_DrawEntryDetailsPanel__14;6004 
 ___ED2_DrawEntryDetailsPanel__13:
               LEA            ED2_STR_NullFallbackChannel(A4),A0;41ec 0000 
@@ -99,10 +99,10 @@ ___ED2_DrawEntryDetailsPanel__16:
               LEA            ED2_STR_NullFallbackSource(A4),A1;43ec 0000 
 ___ED2_DrawEntryDetailsPanel__17:
               MOVE.L         A1,$24(A7)               ;2f49 0024 
-              MOVE.L         A3,D0                    ;200b 
+              MOVE.L         A2,D0                    ;200a 
               BEQ.B          ___ED2_DrawEntryDetailsPanel__19;6706 
 ___ED2_DrawEntryDetailsPanel__18:
-              LEA            $13(A3),A6               ;4deb 0013 
+              LEA            $13(A2),A6               ;4dea 0013 
               BRA.B          ___ED2_DrawEntryDetailsPanel__20;6004 
 ___ED2_DrawEntryDetailsPanel__19:
               LEA            ED2_STR_NullFallbackCallLetters(A4),A6;4dec 0000 
@@ -111,11 +111,11 @@ ___ED2_DrawEntryDetailsPanel__20:
               MOVE.L         A1,-(A7)                 ;2f09 
               MOVE.L         A0,-(A7)                 ;2f08 
               PEA            Global_STR_CHAN_SOURCE_CALLLTRS_(A4);486c 0000 
-              PEA            $50(A7)                  ;486f 0050 
+              PEA            $54(A7)                  ;486f 0054 
               MOVE.L         A6,$34(A7)               ;2f4e 0034 
               BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
               PEA            ($78).w                  ;4878 0078 
-              PEA            $58(A7)                  ;486f 0058 
+              PEA            $5c(A7)                  ;486f 005c 
               MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
               BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
               MOVEQ.L        #$0,D0                   ;7000 
@@ -123,7 +123,7 @@ ___ED2_DrawEntryDetailsPanel__20:
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         ED2_SelectedEntryTitlePtr(A4),-(A7);2f2c 0000 
               MOVE.L         ED2_SelectedEntryDataPtr(A4),-(A7);2f2c 0000 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          DISKIO2_CopyAndSanitizeSlotStrin;6100 0000 
               LEA            $2c(A7),A7               ;4fef 002c 
               MOVE.L         D0,$1c(A7)               ;2f40 001c 
@@ -133,40 +133,40 @@ ___ED2_DrawEntryDetailsPanel__21:
               MOVE.W         ED2_SelectedFlagByteOffset(A4),D0;302c 0000 
               MOVE.L         ED2_SelectedEntryTitlePtr(A4),-(A7);2f2c 0000 
               MOVE.L         D0,-(A7)                 ;2f00 
-              PEA            $34(A7)                  ;486f 0034 
+              PEA            $38(A7)                  ;486f 0038 
               BSR.W          GROUP_AK_JMPTBL_TEXTDISP_FormatE;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               BRA.B          ___ED2_DrawEntryDetailsPanel__23;600c 
 ___ED2_DrawEntryDetailsPanel__22:
-              CLR.B          $2c(A7)                  ;422f 002c 
+              CLR.B          $30(A7)                  ;422f 0030 
               LEA            ED2_STR_NullFallbackTitle(A4),A0;41ec 0000 
               MOVE.L         A0,$1c(A7)               ;2f48 001c 
 ___ED2_DrawEntryDetailsPanel__23:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         ED2_SelectedFlagByteOffset(A4),D0;302c 0000 
-              PEA            $2c(A7)                  ;486f 002c 
+              PEA            $30(A7)                  ;486f 0030 
               MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            Global_STR_TS_TITLE_TIME(A4);486c 0000 
-              PEA            $50(A7)                  ;486f 0050 
+              PEA            $54(A7)                  ;486f 0054 
               BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
               PEA            ($96).w                  ;4878 0096 
-              PEA            $58(A7)                  ;486f 0058 
+              PEA            $5c(A7)                  ;486f 005c 
               MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
               BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
               LEA            $20(A7),A7               ;4fef 0020 
-              CLR.B          $40(A7)                  ;422f 0040 
+              CLR.B          $44(A7)                  ;422f 0044 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         ED2_SelectedFlagByteOffset(A4),D0;302c 0000 
               MOVE.L         ED2_SelectedEntryTitlePtr(A4),A0;206c 0000 
               ADD.L          D0,A0                    ;d1c0 
-              MOVE.L         A0,A2                    ;2448 
-              MOVE.B         $7(A2),D7                ;1e2a 0007 
+              MOVE.B         $7(A0),D7                ;1e28 0007 
+              MOVE.L         A0,$2c(A7)               ;2f48 002c 
               BTST           #$0,D7                   ;0807 0000 
               BEQ.B          ___ED2_DrawEntryDetailsPanel__25;670e 
 ___ED2_DrawEntryDetailsPanel__24:
               PEA            ED2_STR_NONE_ProgramFlagSummary(A4);486c 0000 
-              PEA            $44(A7)                  ;486f 0044 
+              PEA            $48(A7)                  ;486f 0048 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___ED2_DrawEntryDetailsPanel__25:
@@ -174,7 +174,7 @@ ___ED2_DrawEntryDetailsPanel__25:
               BEQ.B          ___ED2_DrawEntryDetailsPanel__27;670e 
 ___ED2_DrawEntryDetailsPanel__26:
               PEA            ED2_STR_MOVIE(A4)        ;486c 0000 
-              PEA            $44(A7)                  ;486f 0044 
+              PEA            $48(A7)                  ;486f 0048 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___ED2_DrawEntryDetailsPanel__27:
@@ -182,7 +182,7 @@ ___ED2_DrawEntryDetailsPanel__27:
               BEQ.B          ___ED2_DrawEntryDetailsPanel__29;670e 
 ___ED2_DrawEntryDetailsPanel__28:
               PEA            ED2_STR_ALTHILITEPROG(A4);486c 0000 
-              PEA            $44(A7)                  ;486f 0044 
+              PEA            $48(A7)                  ;486f 0048 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___ED2_DrawEntryDetailsPanel__29:
@@ -190,7 +190,7 @@ ___ED2_DrawEntryDetailsPanel__29:
               BEQ.B          ___ED2_DrawEntryDetailsPanel__31;670e 
 ___ED2_DrawEntryDetailsPanel__30:
               PEA            ED2_STR_TAGPROG(A4)      ;486c 0000 
-              PEA            $44(A7)                  ;486f 0044 
+              PEA            $48(A7)                  ;486f 0048 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___ED2_DrawEntryDetailsPanel__31:
@@ -198,7 +198,7 @@ ___ED2_DrawEntryDetailsPanel__31:
               BEQ.B          ___ED2_DrawEntryDetailsPanel__33;670e 
 ___ED2_DrawEntryDetailsPanel__32:
               PEA            ED2_STR_SPORTSPROG(A4)   ;486c 0000 
-              PEA            $44(A7)                  ;486f 0044 
+              PEA            $48(A7)                  ;486f 0048 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___ED2_DrawEntryDetailsPanel__33:
@@ -206,7 +206,7 @@ ___ED2_DrawEntryDetailsPanel__33:
               BEQ.B          ___ED2_DrawEntryDetailsPanel__35;670e 
 ___ED2_DrawEntryDetailsPanel__34:
               PEA            ED2_STR_DVIEW_USED(A4)   ;486c 0000 
-              PEA            $44(A7)                  ;486f 0044 
+              PEA            $48(A7)                  ;486f 0048 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___ED2_DrawEntryDetailsPanel__35:
@@ -214,7 +214,7 @@ ___ED2_DrawEntryDetailsPanel__35:
               BEQ.B          ___ED2_DrawEntryDetailsPanel__37;670e 
 ___ED2_DrawEntryDetailsPanel__36:
               PEA            ED2_STR_REPEATPROG(A4)   ;486c 0000 
-              PEA            $44(A7)                  ;486f 0044 
+              PEA            $48(A7)                  ;486f 0048 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___ED2_DrawEntryDetailsPanel__37:
@@ -222,23 +222,23 @@ ___ED2_DrawEntryDetailsPanel__37:
               BEQ.B          ___ED2_DrawEntryDetailsPanel__39;670e 
 ___ED2_DrawEntryDetailsPanel__38:
               PEA            ED2_STR_PREVDAYSDATA(A4) ;486c 0000 
-              PEA            $44(A7)                  ;486f 0044 
+              PEA            $48(A7)                  ;486f 0048 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___ED2_DrawEntryDetailsPanel__39:
               PEA            ($d2).w                  ;4878 00d2 
-              PEA            $44(A7)                  ;486f 0044 
+              PEA            $48(A7)                  ;486f 0048 
               MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
               BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
               PEA            ($3e8).w                 ;4878 03e8 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               PEA            ($1ab).w                 ;4878 01ab 
               PEA            Global_STR_ED2_C_2(A4)   ;486c 0000 
               BSR.W          ESQIFF_JMPTBL_MEMORY_DeallocateM;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
 ___ED2_DrawEntryDetailsPanel__40:
               MOVEM.L        (A7)+,D2/D7/A2/A3/A5/A6  ;4cdf 6c84 
-              ADD.W          #$a0,A7                  ;defc 00a0 
+              ADD.W          #$a4,A7                  ;defc 00a4 
               RTS                                     ;4e75 
 __const:
 __strings:
