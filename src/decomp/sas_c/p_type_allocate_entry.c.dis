@@ -2,21 +2,16 @@
 __code:
 P_TYPE_AllocateEntry:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$34,D0                  ;90bc 0000 0034 
+              SUB.L          #$28,D0                  ;90bc 0000 0028 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$24,A7                  ;9efc 0024 
+              SUB.W          #$18,A7                  ;9efc 0018 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___P_TYPE_AllocateEntry__1:
-              MOVE.L         $44(A7),D6               ;2c2f 0044 
-              MOVE.B         $43(A7),D7               ;1e2f 0043 
-              MOVE.L         $48(A7),A5               ;2a6f 0048 
+              MOVE.L         $38(A7),D6               ;2c2f 0038 
+              MOVE.B         $37(A7),D7               ;1e2f 0037 
+              MOVE.L         $3c(A7),A5               ;2a6f 003c 
               MOVEQ.L        #$a,D5                   ;7a0a 
-              CLR.L          $38(A7)                  ;42af 0038 
-              MOVEQ.L        #$2,D0                   ;7002 
-              MOVE.L         D0,$34(A7)               ;2f40 0034 
-              MOVEQ.L        #$6,D0                   ;7006 
-              MOVE.L         D0,$30(A7)               ;2f40 0030 
               MOVEQ.L        #$2f,D0                  ;702f 
               MOVEQ.L        #$3a,D1                  ;723a 
               MOVE.L         D1,$28(A7)               ;2f41 0028 
@@ -30,7 +25,7 @@ ___P_TYPE_AllocateEntry__1:
               BGT.B          ___P_TYPE_AllocateEntry__3;6e06 
 ___P_TYPE_AllocateEntry__2:
               MOVE.L         D1,D0                    ;2001 
-              BRA.W          ___P_TYPE_AllocateEntry__18;6000 00d0 
+              BRA.W          ___P_TYPE_AllocateEntry__18;6000 00ba 
 ___P_TYPE_AllocateEntry__3:
               MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
               MOVE.L         D5,-(A7)                 ;2f05 
@@ -40,16 +35,14 @@ ___P_TYPE_AllocateEntry__3:
               MOVE.L         D0,A3                    ;2640 
               LEA            $10(A7),A7               ;4fef 0010 
               MOVE.L         $20(A7),A0               ;206f 0020 
-              CMP.L          A3,A0                    ;b1cb 
+              CMP.L          A0,A3                    ;b7c8 
               BNE.B          ___P_TYPE_AllocateEntry__5;6606 
 ___P_TYPE_AllocateEntry__4:
               MOVE.L         A0,D0                    ;2008 
-              BRA.W          ___P_TYPE_AllocateEntry__18;6000 00a8 
+              BRA.W          ___P_TYPE_AllocateEntry__18;6000 0092 
 ___P_TYPE_AllocateEntry__5:
-              MOVE.L         $38(A7),D0               ;202f 0038 
-              MOVE.B         D7,$0(A3,D0.L)           ;1787 0800 
-              MOVE.L         $34(A7),D0               ;202f 0034 
-              MOVE.L         D6,$0(A3,D0.L)           ;2786 0800 
+              MOVE.B         D7,(A3)                  ;1687 
+              MOVE.L         D6,$2(A3)                ;2746 0002 
               CLR.L          $18(A7)                  ;42af 0018 
 ___P_TYPE_AllocateEntry__6:
               MOVE.L         $18(A7),D0               ;202f 0018 
@@ -61,7 +54,7 @@ ___P_TYPE_AllocateEntry__7:
 ___P_TYPE_AllocateEntry__8:
               MOVE.L         $18(A7),D0               ;202f 0018 
               CMP.L          D6,D0                    ;b086 
-              BNE.B          ___P_TYPE_AllocateEntry__10;6624 
+              BNE.B          ___P_TYPE_AllocateEntry__10;6620 
 ___P_TYPE_AllocateEntry__9:
               MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
               MOVE.L         D6,-(A7)                 ;2f06 
@@ -70,16 +63,14 @@ ___P_TYPE_AllocateEntry__9:
               BSR.W          SCRIPT_JMPTBL_MEMORY_AllocateMem;6100 0000 
               MOVE.L         D0,A2                    ;2440 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVE.L         $30(A7),D0               ;202f 0030 
-              MOVE.L         A2,$0(A3,D0.L)           ;278a 0800 
-              BRA.B          ___P_TYPE_AllocateEntry__11;600c 
+              MOVE.L         A2,$6(A3)                ;274a 0006 
+              BRA.B          ___P_TYPE_AllocateEntry__11;6008 
 ___P_TYPE_AllocateEntry__10:
               MOVE.L         $20(A7),A0               ;206f 0020 
-              MOVE.L         $30(A7),D0               ;202f 0030 
-              MOVE.L         A0,$0(A3,D0.L)           ;2788 0800 
+              MOVE.L         A0,$6(A3)                ;2748 0006 
 ___P_TYPE_AllocateEntry__11:
               MOVE.L         $20(A7),A0               ;206f 0020 
-              MOVE.L         $0(A3,D0.L),A1           ;2273 0800 
+              MOVE.L         $6(A3),A1                ;226b 0006 
               CMP.L          A0,A1                    ;b3c8 
               BNE.B          ___P_TYPE_AllocateEntry__13;661c 
 ___P_TYPE_AllocateEntry__12:
@@ -91,10 +82,9 @@ ___P_TYPE_AllocateEntry__12:
               MOVE.L         $30(A7),A0               ;206f 0030 
               LEA            $10(A7),A7               ;4fef 0010 
               MOVE.L         A0,D0                    ;2008 
-              BRA.B          ___P_TYPE_AllocateEntry__18;6022 
+              BRA.B          ___P_TYPE_AllocateEntry__18;601e 
 ___P_TYPE_AllocateEntry__13:
-              MOVE.L         $30(A7),D0               ;202f 0030 
-              MOVE.L         $0(A3,D0.L),A2           ;2473 0800 
+              MOVE.L         $6(A3),A2                ;246b 0006 
               CLR.L          $1c(A7)                  ;42af 001c 
 ___P_TYPE_AllocateEntry__14:
               MOVE.L         $1c(A7),D0               ;202f 001c 
@@ -109,7 +99,7 @@ ___P_TYPE_AllocateEntry__16:
 ___P_TYPE_AllocateEntry__17:
 ___P_TYPE_AllocateEntry__18:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$24,A7                  ;defc 0024 
+              ADD.W          #$18,A7                  ;defc 0018 
               RTS                                     ;4e75 
 __const:
 __strings:
