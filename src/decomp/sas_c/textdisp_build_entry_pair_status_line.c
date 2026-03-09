@@ -7,10 +7,10 @@ extern const char SCRIPT_AlignedPrefixEmptyD[];
 extern const char SCRIPT_AlignedPrefixEmptyE[];
 extern const char SCRIPT_SpacerTripleC[];
 
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(void *entry, void *aux, LONG index, LONG window, LONG minutes);
-extern const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(void *entry, LONG index, LONG fieldId);
+extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux, LONG index, LONG window, LONG minutes);
+extern const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(char *entry, LONG index, LONG fieldId);
 extern void STRING_AppendAtNull(char *dst, const char *src);
 extern void TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(char *line, LONG mode, LONG groupIndex, LONG entryIndex, LONG a, LONG b);
 extern void SCRIPT_SetupHighlightEffect(char *line);
@@ -27,8 +27,8 @@ void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD e
     const LONG FIELD_PART_B = 3;
     const LONG ZERO = 0;
     const UBYTE CH_NUL = 0;
-    void *aux;
-    void *entry;
+    char *aux;
+    char *entry;
     LONG idx;
     const char *partA;
     const char *partB;
@@ -38,7 +38,7 @@ void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD e
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(idx, modeFlag ? MODE_PRIMARY : MODE_SECONDARY);
     entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, modeFlag ? MODE_PRIMARY : MODE_SECONDARY);
 
-    if (entry == (void *)0 || aux == (void *)0) {
+    if (entry == (char *)0 || aux == (char *)0) {
         return;
     }
 
