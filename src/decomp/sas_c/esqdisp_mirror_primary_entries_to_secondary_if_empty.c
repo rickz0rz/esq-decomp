@@ -2,11 +2,29 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct ESQDISP_PrimaryEntry {
+    UBYTE pad0[1];
+    UBYTE field1[11];
+    UBYTE titleText[7];
+    UBYTE field3[8];
+    UBYTE groupCode27;
+    UBYTE field2[12];
+    UBYTE flags40;
+    UBYTE field41;
+    UBYTE field42;
+    UBYTE field43[3];
+    WORD word46;
+} ESQDISP_PrimaryEntry;
+
+typedef struct ESQDISP_SecondaryEntry {
+    UBYTE pad0[1];
+} ESQDISP_SecondaryEntry;
+
 extern WORD TEXTDISP_SecondaryGroupEntryCount;
 extern WORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE TEXTDISP_SecondaryGroupCode;
-extern void *TEXTDISP_PrimaryEntryPtrTable[];
-extern void *TEXTDISP_SecondaryEntryPtrTablePreSlot[];
+extern ESQDISP_PrimaryEntry *TEXTDISP_PrimaryEntryPtrTable[];
+extern ESQDISP_SecondaryEntry *TEXTDISP_SecondaryEntryPtrTablePreSlot[];
 extern WORD ESQDISP_PrimarySecondaryMirrorFlag;
 
 extern void ESQSHARED_CreateGroupEntryAndTitle(LONG group_code, LONG entry_code, void *ptr1, void *ptr2, void *ptr3, void *ptr4);
@@ -16,16 +34,6 @@ void ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty(void)
 {
     const WORD FLAG_FALSE = 0;
     const WORD FLAG_TRUE = 1;
-    const LONG ENTRY_GROUPCODE_OFFSET = 27;
-    const LONG ENTRY_TITLE_OFFSET = 12;
-    const LONG ENTRY_FIELD1_OFFSET = 1;
-    const LONG ENTRY_FIELD2_OFFSET = 28;
-    const LONG ENTRY_FIELD3_OFFSET = 19;
-    const LONG ENTRY_FLAGS_OFFSET = 40;
-    const LONG ENTRY_FIELD41_OFFSET = 41;
-    const LONG ENTRY_FIELD42_OFFSET = 42;
-    const LONG ENTRY_FIELD43_OFFSET = 43;
-    const LONG ENTRY_WORD46_OFFSET = 46;
     const UBYTE MASK_FLAGS_LOW7 = 0x7F;
     LONG entry_index;
 
@@ -35,17 +43,17 @@ void ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty(void)
     }
 
     for (entry_index = 0; entry_index < (LONG)(unsigned short)TEXTDISP_PrimaryGroupEntryCount; ++entry_index) {
-        UBYTE *src = (UBYTE *)TEXTDISP_PrimaryEntryPtrTable[entry_index];
-        void *dst;
+        ESQDISP_PrimaryEntry *src = TEXTDISP_PrimaryEntryPtrTable[entry_index];
+        ESQDISP_SecondaryEntry *dst;
         LONG dst_index;
 
         ESQSHARED_CreateGroupEntryAndTitle(
             (LONG)TEXTDISP_SecondaryGroupCode,
-            (LONG)src[ENTRY_GROUPCODE_OFFSET],
-            src + ENTRY_TITLE_OFFSET,
-            src + ENTRY_FIELD1_OFFSET,
-            src + ENTRY_FIELD2_OFFSET,
-            src + ENTRY_FIELD3_OFFSET
+            (LONG)src->groupCode27,
+            src->titleText,
+            src->field1,
+            src->field2,
+            src->field3
         );
 
         dst_index = (LONG)(unsigned short)TEXTDISP_SecondaryGroupEntryCount;
@@ -53,11 +61,11 @@ void ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty(void)
 
         ESQDISP_FillProgramInfoHeaderFields(
             dst,
-            (LONG)(src[ENTRY_FLAGS_OFFSET] & MASK_FLAGS_LOW7),
-            (LONG)src[ENTRY_FIELD41_OFFSET],
-            (LONG)*(unsigned short *)(src + ENTRY_WORD46_OFFSET),
-            (LONG)src[ENTRY_FIELD42_OFFSET],
-            src + ENTRY_FIELD43_OFFSET
+            (LONG)(src->flags40 & MASK_FLAGS_LOW7),
+            (LONG)src->field41,
+            (LONG)(unsigned short)src->word46,
+            (LONG)src->field42,
+            src->field43
         );
     }
 
