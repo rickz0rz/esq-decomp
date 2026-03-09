@@ -40,8 +40,8 @@ ___BRUSH_NormalizeBrushNames__8:
               TST.B          D0                       ;4a00 
               BNE.B          ___BRUSH_NormalizeBrushNames__7;66f0 
 ___BRUSH_NormalizeBrushNames__9:
-              LEA            $170(A3),A0              ;41eb 0170 
-              MOVE.L         (A0),A3                  ;2650 
+              MOVE.L         A3,A0                    ;204b 
+              MOVE.L         $170(A0),A3              ;2668 0170 
               BRA.B          ___BRUSH_NormalizeBrushNames__2;60ba 
 ___BRUSH_NormalizeBrushNames__10:
 ___BRUSH_NormalizeBrushNames__11:

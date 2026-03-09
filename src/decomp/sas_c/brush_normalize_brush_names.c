@@ -8,28 +8,33 @@ enum {
 
 UBYTE *GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(UBYTE *path);
 
+typedef struct BRUSH_Node {
+    UBYTE name[BRUSH_NODE_NEXT_OFFSET];
+    struct BRUSH_Node *next;
+} BRUSH_Node;
+
 void BRUSH_NormalizeBrushNames(void **headPtr)
 {
-    UBYTE *node;
+    BRUSH_Node *node;
 
-    node = (UBYTE *)*headPtr;
-    while (node != (UBYTE *)BRUSH_NULL) {
+    node = (BRUSH_Node *)*headPtr;
+    while (node != (BRUSH_Node *)BRUSH_NULL) {
         UBYTE scratch[BRUSH_NAME_SCRATCH_SIZE];
         UBYTE *sourceCursor;
         UBYTE *destCursor;
 
-        sourceCursor = node;
+        sourceCursor = node->name;
         destCursor = scratch;
         do {
             *destCursor++ = *sourceCursor;
         } while (*sourceCursor++ != (UBYTE)BRUSH_NULL);
 
         sourceCursor = GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(scratch);
-        destCursor = node;
+        destCursor = node->name;
         do {
             *destCursor++ = *sourceCursor;
         } while (*sourceCursor++ != (UBYTE)BRUSH_NULL);
 
-        node = *(UBYTE **)(node + BRUSH_NODE_NEXT_OFFSET);
+        node = node->next;
     }
 }

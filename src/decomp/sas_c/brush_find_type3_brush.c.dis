@@ -24,8 +24,8 @@ ___BRUSH_FindType3Brush__6:
               TST.L          D7                       ;4a87 
               BNE.B          ___BRUSH_FindType3Brush__2;66ea 
 ___BRUSH_FindType3Brush__7:
-              LEA            $170(A3),A0              ;41eb 0170 
-              MOVE.L         (A0),A3                  ;2650 
+              MOVE.L         A3,A0                    ;204b 
+              MOVE.L         $170(A0),A3              ;2668 0170 
 ___BRUSH_FindType3Brush__8:
               BRA.B          ___BRUSH_FindType3Brush__2;60e2 
 ___BRUSH_FindType3Brush__9:
