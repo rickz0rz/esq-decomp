@@ -2,12 +2,22 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct ED2_Entry {
+    UBYTE pad0[1];
+    UBYTE titleText[11];
+    UBYTE aliasText[7];
+    UBYTE channelText[8];
+    UBYTE flags27;
+    UBYTE pad1[18];
+    UWORD flags46;
+} ED2_Entry;
+
 extern UWORD ED2_SelectedEntryIndex;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE *ED2_SelectedEntryDataPtr;
 extern UBYTE *ED2_SelectedEntryTitlePtr;
 extern UWORD ED2_SelectedFlagByteOffset;
-extern UBYTE *TEXTDISP_PrimaryEntryPtrTable[];
+extern ED2_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 extern LONG WDISP_DisplayContextBase;
 
 extern const char Global_STR_CLU_CLU_POS1[];
@@ -33,7 +43,7 @@ extern void GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 void ED2_DrawEntrySummaryPanel(void)
 {
     char panelTextBuffer[120];
-    UBYTE *entry;
+    ED2_Entry *entry;
     void *rastPort;
     UWORD flags8;
     UWORD flags16;
@@ -50,12 +60,12 @@ void ED2_DrawEntrySummaryPanel(void)
         ED2_SelectedEntryDataPtr = (UBYTE *)0;
         ED2_SelectedEntryTitlePtr = (UBYTE *)0;
     } else {
-        ED2_SelectedEntryDataPtr = TEXTDISP_PrimaryEntryPtrTable[ED2_SelectedEntryIndex];
+        ED2_SelectedEntryDataPtr = (UBYTE *)TEXTDISP_PrimaryEntryPtrTable[ED2_SelectedEntryIndex];
         ED2_SelectedFlagByteOffset = 0;
     }
 
-    entry = ED2_SelectedEntryDataPtr;
-    if (entry == (UBYTE *)0) {
+    entry = (ED2_Entry *)ED2_SelectedEntryDataPtr;
+    if (entry == (ED2_Entry *)0) {
         return;
     }
 
@@ -67,13 +77,13 @@ void ED2_DrawEntrySummaryPanel(void)
     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, panelTextBuffer, 120);
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(panelTextBuffer, Global_STR_CHAN_SOURCE_CALLLTRS_2,
-                                  (char *)(entry + 1),
-                                  (char *)(entry + 12),
-                                  (char *)(entry + 19));
+                                  (char *)entry->titleText,
+                                  (char *)entry->aliasText,
+                                  (char *)entry->channelText);
     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, panelTextBuffer, 150);
 
     panelTextBuffer[0] = 0;
-    flags8 = (UWORD)entry[27];
+    flags8 = (UWORD)entry->flags27;
     if ((flags8 & (1u << 0)) != 0) GROUP_AI_JMPTBL_STRING_AppendAtNull(panelTextBuffer, ED2_STR_NONE_SourceFlagSummary);
     if ((flags8 & (1u << 1)) != 0) GROUP_AI_JMPTBL_STRING_AppendAtNull(panelTextBuffer, ED2_STR_HILITESRC);
     if ((flags8 & (1u << 2)) != 0) GROUP_AI_JMPTBL_STRING_AppendAtNull(panelTextBuffer, ED2_STR_SUMBYSRC);
@@ -85,7 +95,7 @@ void ED2_DrawEntrySummaryPanel(void)
     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, panelTextBuffer, 180);
 
     panelTextBuffer[0] = 0;
-    flags16 = *(UWORD *)(entry + 46);
+    flags16 = entry->flags46;
     if ((flags16 & (1u << 0)) != 0) GROUP_AI_JMPTBL_STRING_AppendAtNull(panelTextBuffer, ED2_STR_GRID);
     if ((flags16 & (1u << 1)) != 0) GROUP_AI_JMPTBL_STRING_AppendAtNull(panelTextBuffer, ED2_STR_MR);
     if ((flags16 & (1u << 2)) != 0) GROUP_AI_JMPTBL_STRING_AppendAtNull(panelTextBuffer, ED2_STR_DNICHE);

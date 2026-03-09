@@ -4,13 +4,18 @@ typedef unsigned short UWORD;
 typedef signed short WORD;
 typedef signed long LONG;
 
+typedef struct ESQIFF2_Entry {
+    UBYTE pad0[1];
+    UBYTE titleText[1];
+} ESQIFF2_Entry;
+
 extern BYTE TEXTDISP_SecondaryGroupCode;
 extern BYTE TEXTDISP_PrimaryGroupCode;
 extern WORD TEXTDISP_SecondaryGroupEntryCount;
 extern WORD TEXTDISP_PrimaryGroupEntryCount;
 extern WORD TEXTDISP_MaxEntryTitleLength;
-extern UBYTE *TEXTDISP_SecondaryEntryPtrTable[];
-extern UBYTE *TEXTDISP_PrimaryEntryPtrTable[];
+extern ESQIFF2_Entry *TEXTDISP_SecondaryEntryPtrTable[];
+extern ESQIFF2_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
 extern LONG GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
@@ -30,7 +35,7 @@ LONG ESQIFF2_PadEntriesToMaxTitleWidth(BYTE group_code)
 
     d6 = 0;
     while (d6 < entry_count) {
-        UBYTE *entry;
+        ESQIFF2_Entry *entry;
         char *title;
         char *p;
         WORD pad;
@@ -42,7 +47,7 @@ LONG ESQIFF2_PadEntriesToMaxTitleWidth(BYTE group_code)
             entry = TEXTDISP_PrimaryEntryPtrTable[(UWORD)d6];
         }
 
-        title = (char *)(entry + 1);
+        title = (char *)entry->titleText;
         p = title;
         while (*p != '\0') {
             ++p;

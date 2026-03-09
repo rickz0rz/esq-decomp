@@ -1,19 +1,24 @@
 typedef unsigned char UBYTE;
 typedef unsigned short UWORD;
 
+typedef struct ESQIFF2_Entry {
+    UBYTE pad0[34];
+    UBYTE flags34To39[6];
+} ESQIFF2_Entry;
+
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
-extern UBYTE *TEXTDISP_PrimaryEntryPtrTable[];
+extern ESQIFF2_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
 void ESQIFF2_ClearPrimaryEntryFlags34To39(void)
 {
     UWORD d7 = 0;
 
     while (d7 < TEXTDISP_PrimaryGroupEntryCount) {
-        UBYTE *entry = TEXTDISP_PrimaryEntryPtrTable[d7];
+        ESQIFF2_Entry *entry = TEXTDISP_PrimaryEntryPtrTable[d7];
         UWORD d6 = 0;
 
         while (d6 < 6) {
-            entry[34 + d6] = 0;
+            entry->flags34To39[d6] = 0;
             ++d6;
         }
 
