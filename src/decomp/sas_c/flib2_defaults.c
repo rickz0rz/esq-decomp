@@ -9,7 +9,7 @@ extern LONG GCOMMAND_NicheEditorRowPen;
 extern LONG GCOMMAND_NicheModeCycleCount;
 extern LONG GCOMMAND_NicheForceMode5Flag;
 extern UBYTE GCOMMAND_NicheWorkflowMode;
-extern UBYTE *GCOMMAND_DigitalNicheListingsTemplatePtr;
+extern char *GCOMMAND_DigitalNicheListingsTemplatePtr;
 
 extern UBYTE GCOMMAND_DigitalMplexEnabledFlag;
 extern LONG GCOMMAND_MplexModeCycleCount;
@@ -24,8 +24,8 @@ extern LONG GCOMMAND_MplexDetailInitialLineIndex;
 extern LONG GCOMMAND_MplexDetailRowPen;
 extern UBYTE GCOMMAND_MplexWorkflowMode;
 extern UBYTE GCOMMAND_MplexDetailLayoutFlag;
-extern UBYTE *GCOMMAND_MplexListingsTemplatePtr;
-extern UBYTE *GCOMMAND_MplexAtTemplatePtr;
+extern char *GCOMMAND_MplexListingsTemplatePtr;
+extern char *GCOMMAND_MplexAtTemplatePtr;
 
 extern UBYTE GCOMMAND_DigitalPpvEnabledFlag;
 extern LONG GCOMMAND_PpvModeCycleCount;
@@ -41,16 +41,16 @@ extern LONG GCOMMAND_PpvShowtimesRowPen;
 extern LONG GCOMMAND_PpvShowtimesRowSpan;
 extern UBYTE GCOMMAND_PpvShowtimesWorkflowMode;
 extern UBYTE GCOMMAND_PpvDetailLayoutFlag;
-extern UBYTE *GCOMMAND_PPVListingsTemplatePtr;
-extern UBYTE *GCOMMAND_PPVPeriodTemplatePtr;
+extern char *GCOMMAND_PPVListingsTemplatePtr;
+extern char *GCOMMAND_PPVPeriodTemplatePtr;
 
-extern UBYTE FLIB_STR_DIGITAL_NICHE_LISTINGS;
-extern UBYTE FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS;
-extern UBYTE FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S;
-extern UBYTE FLIB_STR_DIGITAL_PPV_LISTINGS;
-extern UBYTE Global_STR_DIGITAL_PPV_PERIOD;
+extern char FLIB_STR_DIGITAL_NICHE_LISTINGS;
+extern char FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS;
+extern char FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S;
+extern char FLIB_STR_DIGITAL_PPV_LISTINGS;
+extern char Global_STR_DIGITAL_PPV_PERIOD;
 
-extern UBYTE *ESQPARS_ReplaceOwnedString(UBYTE *newValue, UBYTE *oldValue);
+extern char *ESQPARS_ReplaceOwnedString(char *newValue, char *oldValue);
 extern void GCOMMAND_LoadDefaultTable(void);
 extern void GCOMMAND_LoadMplexTemplate(void);
 extern void GCOMMAND_LoadPPV3Template(void);
@@ -124,11 +124,11 @@ void FLIB2_LoadDigitalPpvDefaults(void)
 
 void FLIB2_ResetAndLoadListingTemplates(void)
 {
-    GCOMMAND_DigitalNicheListingsTemplatePtr = (UBYTE *)0;
-    GCOMMAND_MplexListingsTemplatePtr = (UBYTE *)0;
-    GCOMMAND_MplexAtTemplatePtr = (UBYTE *)0;
-    GCOMMAND_PPVListingsTemplatePtr = (UBYTE *)0;
-    GCOMMAND_PPVPeriodTemplatePtr = (UBYTE *)0;
+    GCOMMAND_DigitalNicheListingsTemplatePtr = (char *)0;
+    GCOMMAND_MplexListingsTemplatePtr = (char *)0;
+    GCOMMAND_MplexAtTemplatePtr = (char *)0;
+    GCOMMAND_PPVListingsTemplatePtr = (char *)0;
+    GCOMMAND_PPVPeriodTemplatePtr = (char *)0;
 
     FLIB2_LoadDigitalNicheDefaults();
     FLIB2_LoadDigitalMplexDefaults();
