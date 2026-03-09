@@ -3,20 +3,22 @@ typedef unsigned short UWORD;
 typedef short WORD;
 typedef long LONG;
 
-enum {
-    COI_MAX_PRIMARY_ENTRIES = 0xC8,
-    COI_FLAG_SET = 1,
-    COI_GROUP_PRESENT_BASE = 1,
-    COI_DISK_SPLIT_DIVISOR = 2,
-    COI_OPEN_MODE_WRITE = 1006,
-    COI_OPEN_FAIL = 0,
-    COI_WRITE_FAIL = 1,
-    COI_OPEN_ERROR = -3,
-    COI_WRITE_OK = 0,
-    COI_WRITE_ONE = 1,
-    COI_WRITE_TWO = 2,
-    COI_PRINTF_ARG_ZERO = 0
-};
+typedef struct COI_EntryTableEntry {
+    UBYTE pad0[1];
+} COI_EntryTableEntry;
+
+#define COI_MAX_PRIMARY_ENTRIES 0xC8
+#define COI_FLAG_SET 1
+#define COI_GROUP_PRESENT_BASE 1
+#define COI_DISK_SPLIT_DIVISOR 2
+#define COI_OPEN_MODE_WRITE 1006
+#define COI_OPEN_FAIL 0
+#define COI_WRITE_FAIL 1
+#define COI_OPEN_ERROR -3
+#define COI_WRITE_OK 0
+#define COI_WRITE_ONE 1
+#define COI_WRITE_TWO 2
+#define COI_PRINTF_ARG_ZERO 0
 
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE TEXTDISP_SecondaryGroupCode;
@@ -28,8 +30,8 @@ extern UBYTE CTASKS_SecondaryOiWritePendingFlag;
 extern UBYTE CTASKS_PendingSecondaryOiDiskId;
 extern UBYTE CTASKS_PrimaryOiWritePendingFlag;
 extern UBYTE CTASKS_PendingPrimaryOiDiskId;
-extern void *TEXTDISP_PrimaryEntryPtrTable[];
-extern void *TEXTDISP_SecondaryEntryPtrTable[];
+extern COI_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
+extern COI_EntryTableEntry *TEXTDISP_SecondaryEntryPtrTable[];
 
 extern UBYTE Global_STR_DF0_OI_PERCENT_2_LX_DAT_1[];
 extern UBYTE COI_FMT_LONG_DEC_A[];
@@ -97,7 +99,7 @@ LONG COI_WriteOiDataFile(UBYTE disk_id)
 
     i = 0;
     while (i < count) {
-        void *entry;
+        COI_EntryTableEntry *entry;
 
         if (disk_id == TEXTDISP_SecondaryGroupCode &&
             (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - COI_GROUP_PRESENT_BASE) == 0) {
