@@ -129,11 +129,19 @@ ___NEWGRID2_JMPTBL_ESQ_GetHalfHourS__1:
 ___NEWGRID2_JMPTBL_ESQ_GetHalfHourS__2:
               RTS                                     ;4e75 
 NEWGRID2_JMPTBL_STR_SkipClass3Ch:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___NEWGRID2_JMPTBL_STR_SkipClass3Ch__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          STR_SkipClass3Chars      ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___NEWGRID2_JMPTBL_STR_SkipClass3Ch__2:
+___NEWGRID2_JMPTBL_STR_SkipClass3Ch__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 NEWGRID2_JMPTBL_STRING_AppendN:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -150,11 +158,19 @@ ___NEWGRID2_JMPTBL_ESQDISP_ComputeS__1:
 ___NEWGRID2_JMPTBL_ESQDISP_ComputeS__2:
               RTS                                     ;4e75 
 NEWGRID2_JMPTBL_PARSE_ReadSigned:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___NEWGRID2_JMPTBL_PARSE_ReadSigned__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          PARSE_ReadSignedLongSkipClass3_A;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___NEWGRID2_JMPTBL_PARSE_ReadSigned__2:
+___NEWGRID2_JMPTBL_PARSE_ReadSigned__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 NEWGRID2_JMPTBL_CLEANUP_TestEntr:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -226,6 +242,40 @@ ___NEWGRID2_JMPTBL_BEVEL_DrawHorizo__1:
               BSR.W          BEVEL_DrawHorizontalBevel;6100 0000 
 ___NEWGRID2_JMPTBL_BEVEL_DrawHorizo__2:
               RTS                                     ;4e75 
+NEWGRID2_JMPTBL_MATH_DivS32:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___NEWGRID2_JMPTBL_MATH_DivS32__1:
+              MOVE.L         $10(A7),D6               ;2c2f 0010 
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          MATH_DivS32              ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___NEWGRID2_JMPTBL_MATH_DivS32__2:
+___NEWGRID2_JMPTBL_MATH_DivS32__3:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_MATH_Mulu32:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___NEWGRID2_JMPTBL_MATH_Mulu32__1:
+              MOVE.L         $10(A7),D6               ;2c2f 0010 
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___NEWGRID2_JMPTBL_MATH_Mulu32__2:
+___NEWGRID2_JMPTBL_MATH_Mulu32__3:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
               XREF           COI_SelectAnimFieldPointer
@@ -260,6 +310,8 @@ ___NEWGRID2_JMPTBL_BEVEL_DrawHorizo__2:
               XREF           DISPTEXT_SetLayoutParams
               XREF           DISPTEXT_HasMultipleLines
               XREF           BEVEL_DrawHorizontalBevel
+              XREF           MATH_DivS32
+              XREF           MATH_Mulu32
               XDEF           NEWGRID2_JMPTBL_COI_SelectAnimFi
               XDEF           NEWGRID2_JMPTBL_DISPTEXT_SetCurr
               XDEF           NEWGRID2_JMPTBL_DISPTEXT_LayoutA
@@ -292,4 +344,6 @@ ___NEWGRID2_JMPTBL_BEVEL_DrawHorizo__2:
               XDEF           NEWGRID2_JMPTBL_DISPTEXT_SetLayo
               XDEF           NEWGRID2_JMPTBL_DISPTEXT_HasMult
               XDEF           NEWGRID2_JMPTBL_BEVEL_DrawHorizo
+              XDEF           NEWGRID2_JMPTBL_MATH_DivS32
+              XDEF           NEWGRID2_JMPTBL_MATH_Mulu32
               END
