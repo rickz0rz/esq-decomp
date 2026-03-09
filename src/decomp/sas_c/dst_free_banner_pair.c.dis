@@ -12,11 +12,9 @@ ___DST_FreeBannerPair__1:
               MOVE.L         (A3),-(A7)               ;2f13 
               BSR.W          DST_FreeBannerStruct     ;6100 0000 
               CLR.L          (A3)                     ;4293 
-              LEA            $4(A3),A0                ;41eb 0004 
-              MOVE.L         (A0),(A7)                ;2e90 
+              MOVE.L         $4(A3),(A7)              ;2eab 0004 
               BSR.W          DST_FreeBannerStruct     ;6100 0000 
-              LEA            $4(A3),A0                ;41eb 0004 
-              CLR.L          (A0)                     ;4290 
+              CLR.L          $4(A3)                   ;42ab 0004 
               ADDQ.W         #$4,A7                   ;584f 
 ___DST_FreeBannerPair__2:
               MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 

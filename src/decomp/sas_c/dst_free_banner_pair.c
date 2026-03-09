@@ -1,14 +1,19 @@
 typedef unsigned char UBYTE;
 
+typedef struct DST_BannerPair {
+    void *first;
+    void *second;
+} DST_BannerPair;
+
 extern void DST_FreeBannerStruct(void *banner);
 
 void DST_FreeBannerPair(void *pair)
 {
-    UBYTE *p = (UBYTE *)pair;
+    DST_BannerPair *pairView = (DST_BannerPair *)pair;
 
-    DST_FreeBannerStruct(*(void **)(p + 0));
-    *(void **)(p + 0) = (void *)0;
+    DST_FreeBannerStruct(pairView->first);
+    pairView->first = (void *)0;
 
-    DST_FreeBannerStruct(*(void **)(p + 4));
-    *(void **)(p + 4) = (void *)0;
+    DST_FreeBannerStruct(pairView->second);
+    pairView->second = (void *)0;
 }
