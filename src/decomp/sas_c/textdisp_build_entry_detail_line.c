@@ -40,22 +40,22 @@ extern const char SCRIPT_StrVsDotSeparator[];
 extern const char SCRIPT_StrVsSeparator[];
 extern const char Global_STR_ALIGNED_CHANNEL_2[];
 
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern void TEXTDISP_ResetSelectionState(void *entry);
-extern void TEXTDISP_BuildEntryShortName(void *entry, char *dst);
+extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
+extern void TEXTDISP_BuildEntryShortName(char *entry, char *dst);
 extern char *TEXTDISP_SkipControlCodes(char *text);
 extern void STRING_AppendAtNull(char *dst, const char *src);
 extern void WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
 extern char *TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
 extern char *STR_FindCharPtr(char *s, LONG ch);
-extern void TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG index, void *aux);
+extern void TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG index, char *aux);
 extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG px);
 
-void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
+void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
 {
     TEXTDISP_SelectionEntry *entry;
-    void *aux;
+    char *aux;
     char *program;
     char *detail;
     char *segment;
@@ -85,7 +85,7 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
     }
 
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(groupIndex, mode);
-    program = (char *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(groupIndex, mode);
+    program = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(groupIndex, mode);
     detail = entry->detailLine;
     detail[TEXTDISP_NULL] = TEXTDISP_NULL;
 

@@ -50,10 +50,10 @@ extern const char *SCRIPT_StrChannelLabel_TuesdaysFridays[];
 extern const char *TEXTDISP_PrimarySearchText;
 extern const char *P_TYPE_WeatherBottomLineMsgPtr;
 
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(void *entry, void *aux, LONG index, LONG window, LONG minutes);
-extern void TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG index, void *aux);
+extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux, LONG index, LONG window, LONG minutes);
+extern void TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG index, char *aux);
 extern char *STR_SkipClass3Chars(char *src);
 extern void STRING_AppendAtNull(char *dst, const char *src);
 extern char *TEXTDISP_FindControlToken(const char *src);
@@ -110,8 +110,8 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
 
         if (channelEnabled != TEXTDISP_NULL && entryIndex > TEXTDISP_NULL && entryIndex < ENTRY_INDEX_MAX_EXCLUSIVE &&
             TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
-                entry,
-                aux,
+                (char *)entry,
+                (char *)aux,
                 (LONG)entryIndex,
                 MINUTES_PER_DAY,
                 CONFIG_TimeWindowMinutes) != TEXTDISP_NULL) {
@@ -125,7 +125,7 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             if ((bannerKind - MODE_KIND_PRIMARY) == TEXTDISP_NULL) {
                 title = (char *)Global_STR_ALIGNED_NOW_SHOWING;
             } else {
-                TEXTDISP_FormatEntryTimeForIndex(scratch, (LONG)entryIndex, aux);
+                TEXTDISP_FormatEntryTimeForIndex(scratch, (LONG)entryIndex, (char *)aux);
                 title = STR_SkipClass3Chars(scratch);
             }
 
