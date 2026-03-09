@@ -33,10 +33,10 @@ ___TEXTDISP_BuildNowShowingStatusLi__1:
               MOVEQ.L        #$1,D0                   ;7001 
               MOVE.L         D0,$18c(A7)              ;2f40 018c 
               MOVE.L         A3,D1                    ;220b 
-              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__42;6700 0252 
+              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__42;6700 0250 
 ___TEXTDISP_BuildNowShowingStatusLi__2:
               MOVE.L         A5,D1                    ;220d 
-              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__42;6700 024c 
+              BEQ.W          ___TEXTDISP_BuildNowShowingStatusLi__42;6700 024a 
 ___TEXTDISP_BuildNowShowingStatusLi__3:
               MOVE.W         TEXTDISP_PrimaryChannelCode(A4),D1;322c 0000 
               BNE.B          ___TEXTDISP_BuildNowShowingStatusLi__5;6606 
@@ -188,27 +188,26 @@ ___TEXTDISP_BuildNowShowingStatusLi__26:
               MOVE.L         D0,$ec(A7)               ;2f40 00ec 
 ___TEXTDISP_BuildNowShowingStatusLi__27:
               TST.L          $18c(A7)                 ;4aaf 018c 
-              BNE.B          ___TEXTDISP_BuildNowShowingStatusLi__37;6674 
+              BNE.B          ___TEXTDISP_BuildNowShowingStatusLi__37;6672 
 ___TEXTDISP_BuildNowShowingStatusLi__28:
               CLR.L          $17c(A7)                 ;42af 017c 
               CLR.L          $180(A7)                 ;42af 0180 
 ___TEXTDISP_BuildNowShowingStatusLi__29:
               MOVE.L         $180(A7),D0              ;202f 0180 
               TST.B          $2(A3,D0.L)              ;4a33 0802 
-              BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__33;6720 
+              BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__33;671e 
 ___TEXTDISP_BuildNowShowingStatusLi__30:
               MOVEQ.L        #$20,D1                  ;7220 
               CMP.B          $2(A3,D0.L),D1           ;b233 0802 
-              BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__32;6712 
+              BEQ.B          ___TEXTDISP_BuildNowShowingStatusLi__32;6710 
 ___TEXTDISP_BuildNowShowingStatusLi__31:
               LEA            $24(A7),A0               ;41ef 0024 
               ADD.L          $17c(A7),A0              ;d1ef 017c 
               ADDQ.L         #$1,$17c(A7)             ;52af 017c 
-              MOVE.B         $2(A3,D0.L),D0           ;1033 0802 
-              MOVE.B         D0,(A0)                  ;1080 
+              MOVE.B         $2(A3,D0.L),(A0)         ;10b3 0802 
 ___TEXTDISP_BuildNowShowingStatusLi__32:
               ADDQ.L         #$1,$180(A7)             ;52af 0180 
-              BRA.B          ___TEXTDISP_BuildNowShowingStatusLi__29;60d6 
+              BRA.B          ___TEXTDISP_BuildNowShowingStatusLi__29;60d8 
 ___TEXTDISP_BuildNowShowingStatusLi__33:
               MOVE.L         $17c(A7),D0              ;202f 017c 
               CLR.B          $24(A7,D0.L)             ;4237 0824 

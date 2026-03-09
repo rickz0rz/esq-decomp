@@ -3,12 +3,12 @@ typedef signed short WORD;
 typedef unsigned char UBYTE;
 
 typedef struct TEXTDISP_SelectionEntry {
-    UBYTE shortName[10];
-    UBYTE longName[200];
+    char shortName[10];
+    char longName[200];
     LONG mode;
     LONG groupIndex;
     WORD selectionIndex;
-    UBYTE detailLine[524];
+    char detailLine[524];
 } TEXTDISP_SelectionEntry;
 
 void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *state)

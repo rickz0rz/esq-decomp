@@ -12,7 +12,7 @@ typedef struct TEXTDISP_AuxData {
 
 typedef struct TEXTDISP_CandidateEntry {
     UBYTE pad0[1];
-    UBYTE text[1];
+    char text[1];
 } TEXTDISP_CandidateEntry;
 
 enum {

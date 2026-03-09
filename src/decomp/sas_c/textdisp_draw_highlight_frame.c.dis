@@ -30,10 +30,11 @@ ___TEXTDISP_DrawHighlightFrame__1:
               MOVE.L         D1,$48(A7)               ;2f41 0048 
               MOVE.L         D1,$68(A7)               ;2f41 0068 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.W          ___TEXTDISP_DrawHighlightFrame__16;6700 017c 
+              BEQ.W          ___TEXTDISP_DrawHighlightFrame__16;6700 017e 
 ___TEXTDISP_DrawHighlightFrame__2:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $dc(A3),D0               ;102b 00dc 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               CMP.L          D5,D0                    ;b085 
               BEQ.W          ___TEXTDISP_DrawHighlightFrame__16;6700 0170 
 ___TEXTDISP_DrawHighlightFrame__3:

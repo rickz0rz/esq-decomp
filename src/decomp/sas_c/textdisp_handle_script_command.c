@@ -3,12 +3,12 @@ typedef signed short WORD;
 typedef unsigned char UBYTE;
 
 typedef struct TEXTDISP_SelectionEntry {
-    UBYTE shortName[10];
-    UBYTE longName[200];
+    char shortName[10];
+    char longName[200];
     LONG mode;
     LONG groupIndex;
     unsigned short selectionIndex;
-    UBYTE detailLine[524];
+    char detailLine[524];
 } TEXTDISP_SelectionEntry;
 
 #define MEMF_PUBLIC 0x00000001L
