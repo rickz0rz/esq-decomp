@@ -4,7 +4,7 @@ typedef unsigned char UBYTE;
 
 typedef struct TEXTDISP_AuxData {
     UBYTE pad0[56];
-    UBYTE *titleTable[110];
+    char *titleTable[110];
     UBYTE pad1[2];
     UBYTE slotCode;
 } TEXTDISP_AuxData;
