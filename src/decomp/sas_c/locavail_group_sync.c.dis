@@ -1,0 +1,63 @@
+              SECTION      text,CODE
+__code:
+LOCAVAIL_SyncSecondaryFilterForC:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___LOCAVAIL_SyncSecondaryFilterForC__1:
+              MOVE.B         LOCAVAIL_SecondaryFilterState(A4),D0;102c 0000 
+              MOVE.B         TEXTDISP_SecondaryGroupCode(A4),D1;122c 0000 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___LOCAVAIL_SyncSecondaryFilterForC__5;672a 
+___LOCAVAIL_SyncSecondaryFilterForC__2:
+              MOVE.B         LOCAVAIL_PrimaryFilterState(A4),D0;102c 0000 
+              MOVE.B         TEXTDISP_PrimaryGroupCode(A4),D1;122c 0000 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___LOCAVAIL_SyncSecondaryFilterForC__5;661e 
+___LOCAVAIL_SyncSecondaryFilterForC__3:
+              PEA            LOCAVAIL_SecondaryFilterState(A4);486c 0000 
+              BSR.W          LOCAVAIL_FreeResourceChain;6100 0000 
+              PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 
+              PEA            LOCAVAIL_SecondaryFilterState(A4);486c 0000 
+              BSR.W          LOCAVAIL_CopyFilterStateStructRe;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.B         TEXTDISP_SecondaryGroupCode(A4),LOCAVAIL_SecondaryFilterState(A4);196c 0000 0000 
+___LOCAVAIL_SyncSecondaryFilterForC__4:
+___LOCAVAIL_SyncSecondaryFilterForC__5:
+              RTS                                     ;4e75 
+__const:
+__strings:
+LOCAVAIL_RebuildFilterStateFromC:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___LOCAVAIL_RebuildFilterStateFromC__1:
+              PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 
+              BSR.W          LOCAVAIL_FreeResourceChain;6100 0000 
+              PEA            LOCAVAIL_SecondaryFilterState(A4);486c 0000 
+              PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 
+              BSR.W          LOCAVAIL_CopyFilterStateStructRe;6100 0000 
+              PEA            LOCAVAIL_SecondaryFilterState(A4);486c 0000 
+              BSR.W          LOCAVAIL_FreeResourceChain;6100 0000 
+              MOVE.B         TEXTDISP_PrimaryGroupCode(A4),D0;102c 0000 
+              SUBQ.B         #$1,D0                   ;5300 
+              MOVE.B         D0,LOCAVAIL_SecondaryFilterState(A4);1940 0000 
+              PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 
+              BSR.W          LOCAVAIL_ResetFilterCursorState;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+___LOCAVAIL_RebuildFilterStateFromC__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LOCAVAIL_SecondaryFilterState
+              XREF           TEXTDISP_SecondaryGroupCode
+              XREF           LOCAVAIL_PrimaryFilterState
+              XREF           TEXTDISP_PrimaryGroupCode
+              XREF           LOCAVAIL_FreeResourceChain
+              XREF           LOCAVAIL_CopyFilterStateStructRe
+              XREF           LOCAVAIL_ResetFilterCursorState
+              XDEF           LOCAVAIL_SyncSecondaryFilterForC
+              XDEF           LOCAVAIL_RebuildFilterStateFromC
+              END
