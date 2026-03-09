@@ -26,7 +26,7 @@ extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern LONG NEWGRID_SetRowColor(void *grid_ctx, LONG mode, LONG pen);
+extern LONG NEWGRID_SetRowColor(char *grid_ctx, LONG mode, LONG pen);
 extern void _LVOSetDrMd(void *rastport, LONG mode);
 extern void _LVOSetAPen(void *rastport, LONG pen);
 extern void _LVORectFill(void *rastport, LONG x1, LONG y1, LONG x2, LONG y2);
@@ -36,9 +36,9 @@ extern ULONG NEWGRID_JMPTBL_MATH_Mulu32(ULONG a, ULONG b);
 extern LONG _LVOTextLength(void *rastport, char *text, LONG len);
 extern void _LVOMove(void *rastport, LONG x, LONG y);
 extern void _LVOText(void *rastport, char *text, LONG len);
-extern void NEWGRID_ValidateSelectionCode(void *grid_ctx, LONG code);
+extern void NEWGRID_ValidateSelectionCode(char *grid_ctx, LONG code);
 
-void NEWGRID_DrawClockFormatHeader(void *grid_ctx, LONG start_slot)
+void NEWGRID_DrawClockFormatHeader(char *grid_ctx, LONG start_slot)
 {
     char label[97];
     NEWGRID_Context *ctx;

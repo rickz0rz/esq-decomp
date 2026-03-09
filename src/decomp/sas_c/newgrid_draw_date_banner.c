@@ -27,7 +27,7 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING(char *outText);
 extern void _LVOSetDrMd(void *rastPort, LONG mode);
-extern LONG NEWGRID_SetRowColor(void *gridCtx, LONG mode, LONG pen);
+extern LONG NEWGRID_SetRowColor(char *gridCtx, LONG mode, LONG pen);
 extern void _LVOSetAPen(void *rastPort, LONG pen);
 extern void _LVORectFill(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
@@ -35,7 +35,7 @@ extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
 extern void _LVOMove(void *rastPort, LONG x, LONG y);
 extern void _LVOText(void *rastPort, char *text, LONG len);
 
-void NEWGRID_DrawDateBanner(void *gridCtx)
+void NEWGRID_DrawDateBanner(char *gridCtx)
 {
     char dateText[100];
     NEWGRID_Context *ctx;
