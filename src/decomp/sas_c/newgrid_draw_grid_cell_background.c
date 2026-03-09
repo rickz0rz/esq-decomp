@@ -3,6 +3,11 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Context {
+    UBYTE pad0[60];
+    UBYTE rastPort[1];
+} NEWGRID_Context;
+
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 extern UWORD NEWGRID_RowHeightPx;
@@ -17,7 +22,6 @@ extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LON
 
 void NEWGRID_DrawGridCellBackground(void *gridCtx, WORD row, WORD col, LONG colorSel)
 {
-    const LONG RASTPORT_OFFSET = 60;
     const LONG GRID_X_OFFSET = 36;
     const LONG GRID_RIGHT_EDGE = 695;
     const LONG ROWCOL_SPLIT = 3;
@@ -26,7 +30,7 @@ void NEWGRID_DrawGridCellBackground(void *gridCtx, WORD row, WORD col, LONG colo
     const LONG ONE = 1;
     const WORD COL_BEVEL = 3;
     const UBYTE BEVEL_ENABLED_CHAR = 89;
-    UBYTE *rast;
+    NEWGRID_Context *ctxView;
     LONG x1;
     LONG y1;
     LONG x2;
@@ -35,7 +39,7 @@ void NEWGRID_DrawGridCellBackground(void *gridCtx, WORD row, WORD col, LONG colo
 
     (void)Global_REF_GRAPHICS_LIBRARY;
 
-    rast = (UBYTE *)gridCtx + RASTPORT_OFFSET;
+    ctxView = (NEWGRID_Context *)gridCtx;
     x1 = (LONG)(UWORD)NEWGRID_ColumnStartXPx + ((LONG)(UWORD)NEWGRID_ColumnWidthPx * (LONG)row) + GRID_X_OFFSET;
     y1 = ZERO;
 
@@ -50,13 +54,13 @@ void NEWGRID_DrawGridCellBackground(void *gridCtx, WORD row, WORD col, LONG colo
 
     if (colorSel != COLOR_NONE) {
         NEWGRID_SetRowColor(gridCtx, (LONG)row, colorSel);
-        _LVOSetAPen(rast, colorSel);
-        _LVORectFill(rast, x1, y1, x2, y2);
+        _LVOSetAPen(ctxView->rastPort, colorSel);
+        _LVORectFill(ctxView->rastPort, x1, y1, x2, y2);
     }
 
     if (col == COL_BEVEL && CONFIG_NewgridPlaceholderBevelFlag == BEVEL_ENABLED_CHAR) {
-        NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(rast, x1, y1, x2, y2);
+        NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(ctxView->rastPort, x1, y1, x2, y2);
     } else {
-        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(rast, x1, y1, x2, y2);
+        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(ctxView->rastPort, x1, y1, x2, y2);
     }
 }

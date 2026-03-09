@@ -2,15 +2,15 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
-typedef struct TextFontLike {
+typedef struct NEWGRID_Font {
     UBYTE pad[26];
     UWORD ySize;
-} TextFontLike;
+} NEWGRID_Font;
 
-typedef struct RastPortLike {
+typedef struct NEWGRID_RastPort {
     UBYTE pad[52];
-    TextFontLike *font;
-} RastPortLike;
+    NEWGRID_Font *font;
+} NEWGRID_RastPort;
 
 extern UWORD Global_WORD_SELECT_CODE_IS_RAVESC;
 extern UWORD NEWGRID_SampleTimeTextWidthPx;
@@ -27,7 +27,7 @@ extern LONG _LVOTextLength(void *gfx, void *rp, const char *text, LONG len);
 extern LONG _LVOMove(void *gfx, void *rp, LONG x, LONG y);
 extern LONG _LVOText(void *gfx, void *rp, const char *text, LONG len);
 
-void NEWGRID_DrawGridCellText(RastPortLike *rp, const char *primary, const char *secondary, LONG alignMode)
+void NEWGRID_DrawGridCellText(NEWGRID_RastPort *rp, const char *primary, const char *secondary, LONG alignMode)
 {
     char mergedSecondary[26];
     LONG baselineX;
