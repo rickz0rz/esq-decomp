@@ -17,7 +17,7 @@ extern const char Global_STR_LADFUNC_C_25[];
 extern const char Global_STR_LADFUNC_C_26[];
 extern const char Global_STR_LADFUNC_C_27[];
 
-void LADFUNC_RepackEntryTextAndAttrBuffers(UBYTE *textBuf, UBYTE *attrBuf)
+void LADFUNC_RepackEntryTextAndAttrBuffers(char *textBuf, UBYTE *attrBuf)
 {
     const LONG ROW_COLS = 40;
     const LONG ROW_TEXT_BUF_LEN = 41;
@@ -26,20 +26,20 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(UBYTE *textBuf, UBYTE *attrBuf)
     const UBYTE SPACE_CHAR = ' ';
     const LONG MEMF_PUBLIC_CLEAR = (MEMF_PUBLIC + MEMF_CLEAR);
     LONG srcLen;
-    UBYTE *textCopy;
+    char *textCopy;
     UBYTE *attrCopy;
     LONG outPos;
     LONG row;
 
     {
-        UBYTE *p = textBuf;
+        char *p = textBuf;
         while (*p != 0) {
             ++p;
         }
         srcLen = (LONG)(p - textBuf);
     }
 
-    textCopy = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+    textCopy = (char *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_24,
         1214,
         srcLen + 1,
@@ -53,9 +53,9 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(UBYTE *textBuf, UBYTE *attrBuf)
         MEMF_PUBLIC_CLEAR
     );
 
-    if (textCopy != (UBYTE *)0 && attrCopy != (UBYTE *)0) {
+    if (textCopy != (char *)0 && attrCopy != (UBYTE *)0) {
         LONG i;
-        UBYTE lineText[41];
+        char lineText[41];
         UBYTE lineAttr[40];
 
         for (i = 0;; ++i) {
@@ -73,10 +73,10 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(UBYTE *textBuf, UBYTE *attrBuf)
             LONG rowOffset = NEWGRID_JMPTBL_MATH_Mulu32(row, ROW_COLS);
             LONG lineLen;
             LONG k;
-            UBYTE alignCode;
+            char alignCode;
             UBYTE alignAttr;
 
-            GROUP_AW_JMPTBL_STRING_CopyPadNul((char *)lineText, (const char *)(textCopy + rowOffset), ROW_COLS);
+            GROUP_AW_JMPTBL_STRING_CopyPadNul(lineText, textCopy + rowOffset, ROW_COLS);
 
             lineLen = 0;
             while (lineText[lineLen] != 0) {
@@ -153,7 +153,7 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(UBYTE *textBuf, UBYTE *attrBuf)
         textBuf[outPos] = 0;
     }
 
-    if (textCopy != (UBYTE *)0) {
+    if (textCopy != (char *)0) {
         NEWGRID_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_LADFUNC_C_26,
             1322,

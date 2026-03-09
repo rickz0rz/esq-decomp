@@ -44,7 +44,7 @@ extern void _LVOSetRast(void *graphicsBase, void *rastPort, LONG pen);
 extern void GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern void GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 extern LONG LADFUNC_GetPackedPenHighNibble(UBYTE packed);
-extern void LADFUNC_DrawEntryLineWithAttrs(void *rastPort, LONG row, UBYTE *attrBuf, UBYTE *textBuf);
+extern void LADFUNC_DrawEntryLineWithAttrs(void *rastPort, LONG row, UBYTE *attrBuf, char *textBuf);
 
 void LADFUNC_DrawEntryPreview(LONG entryIndex)
 {
@@ -119,7 +119,7 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
             ++src;
         }
         lineText[col] = 0;
-        LADFUNC_DrawEntryLineWithAttrs(rastPort, row, lineAttr, (UBYTE *)lineText);
+        LADFUNC_DrawEntryLineWithAttrs(rastPort, row, lineAttr, lineText);
     }
 
     GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition();

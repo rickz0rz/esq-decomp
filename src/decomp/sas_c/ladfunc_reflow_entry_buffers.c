@@ -12,10 +12,10 @@ extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, L
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG num, LONG den);
 
-void LADFUNC_ReflowEntryBuffers(UBYTE *outText, UBYTE *outAttr)
+void LADFUNC_ReflowEntryBuffers(char *outText, UBYTE *outAttr)
 {
     LONG srcLen = 0;
-    UBYTE *tmpText = (UBYTE *)0;
+    char *tmpText = (char *)0;
     UBYTE *tmpAttr = (UBYTE *)0;
     LONG outPos = 0;
     LONG row;
@@ -24,13 +24,13 @@ void LADFUNC_ReflowEntryBuffers(UBYTE *outText, UBYTE *outAttr)
         ++srcLen;
     }
 
-    tmpText = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+    tmpText = (char *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_20, 1025, srcLen + 1, 0x10001
     );
     tmpAttr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_21, 1026, srcLen, 0x10001
     );
-    if (tmpText == (UBYTE *)0 || tmpAttr == (UBYTE *)0) {
+    if (tmpText == (char *)0 || tmpAttr == (UBYTE *)0) {
         goto cleanup;
     }
 
@@ -50,7 +50,7 @@ void LADFUNC_ReflowEntryBuffers(UBYTE *outText, UBYTE *outAttr)
         UBYTE pen = 0;
 
         for (row = 0; row < ED_TextLimit; ++row) {
-            UBYTE lineText[41];
+            char lineText[41];
             UBYTE lineAttr[41];
             LONG lineLen = 0;
             LONG remaining;
@@ -125,7 +125,7 @@ void LADFUNC_ReflowEntryBuffers(UBYTE *outText, UBYTE *outAttr)
     outText[outPos] = 0;
 
 cleanup:
-    if (tmpText != (UBYTE *)0) {
+    if (tmpText != (char *)0) {
         NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_22, 1146, tmpText, srcLen + 1);
     }
     if (tmpAttr != (UBYTE *)0) {

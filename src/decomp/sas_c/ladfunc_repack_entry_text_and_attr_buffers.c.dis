@@ -45,10 +45,10 @@ ___LADFUNC_RepackEntryTextAndAttrBu__4:
               LEA            $1c(A7),A7               ;4fef 001c 
               MOVE.L         D0,$bc(A7)               ;2f40 00bc 
               MOVE.L         A2,D0                    ;200a 
-              BEQ.W          ___LADFUNC_RepackEntryTextAndAttrBu__65;6700 0308 
+              BEQ.W          ___LADFUNC_RepackEntryTextAndAttrBu__65;6700 0338 
 ___LADFUNC_RepackEntryTextAndAttrBu__5:
               TST.L          $bc(A7)                  ;4aaf 00bc 
-              BEQ.W          ___LADFUNC_RepackEntryTextAndAttrBu__65;6700 0300 
+              BEQ.W          ___LADFUNC_RepackEntryTextAndAttrBu__65;6700 0330 
 ___LADFUNC_RepackEntryTextAndAttrBu__6:
               CLR.L          $b0(A7)                  ;42af 00b0 
 ___LADFUNC_RepackEntryTextAndAttrBu__7:
@@ -80,7 +80,7 @@ ___LADFUNC_RepackEntryTextAndAttrBu__14:
 ___LADFUNC_RepackEntryTextAndAttrBu__15:
               MOVE.L         $b4(A7),D0               ;202f 00b4 
               CMP.L          ED_TextLimit(A4),D0      ;b0ac 0000 
-              BGE.W          ___LADFUNC_RepackEntryTextAndAttrBu__64;6c00 02a6 
+              BGE.W          ___LADFUNC_RepackEntryTextAndAttrBu__64;6c00 02d6 
 ___LADFUNC_RepackEntryTextAndAttrBu__16:
               MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -120,32 +120,40 @@ ___LADFUNC_RepackEntryTextAndAttrBu__22:
 ___LADFUNC_RepackEntryTextAndAttrBu__23:
               MOVE.L         $38(A7),D0               ;202f 0038 
               CMP.L          D7,D0                    ;b087 
-              BGE.B          ___LADFUNC_RepackEntryTextAndAttrBu__28;6c2a 
+              BGE.B          ___LADFUNC_RepackEntryTextAndAttrBu__28;6c2c 
 ___LADFUNC_RepackEntryTextAndAttrBu__24:
               MOVE.B         $40(A7,D0.L),$30(A7)     ;1f77 0840 0030 
               MOVE.L         D0,$34(A7)               ;2f40 0034 
 ___LADFUNC_RepackEntryTextAndAttrBu__25:
               MOVE.L         $34(A7),D0               ;202f 0034 
               CMP.L          D7,D0                    ;b087 
-              BGE.B          ___LADFUNC_RepackEntryTextAndAttrBu__28;6c18 
+              BGE.B          ___LADFUNC_RepackEntryTextAndAttrBu__28;6c1a 
 ___LADFUNC_RepackEntryTextAndAttrBu__26:
+              MOVE.B         $c4(A7),D1               ;122f 00c4 
               MOVE.L         A7,A0                    ;204f 
               ADD.W          #$6b,A0                  ;d0fc 006b 
-              MOVE.B         $c4(A7),$0(A0,D0.L)      ;11af 00c4 0800 
+              MOVE.B         D1,$0(A0,D0.L)           ;1181 0800 
               MOVE.B         $30(A7),$40(A7,D0.L)     ;1faf 0030 0840 
 ___LADFUNC_RepackEntryTextAndAttrBu__27:
               ADDQ.L         #$1,$34(A7)              ;52af 0034 
-              BRA.B          ___LADFUNC_RepackEntryTextAndAttrBu__25;60e0 
+              BRA.B          ___LADFUNC_RepackEntryTextAndAttrBu__25;60de 
 ___LADFUNC_RepackEntryTextAndAttrBu__28:
               MOVE.B         $6b(A7),D0               ;102f 006b 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         $c4(A7),D1               ;122f 00c4 
-              CMP.B          D1,D0                    ;b001 
-              BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__30;661a 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__30;6622 
 ___LADFUNC_RepackEntryTextAndAttrBu__29:
               MOVE.L         A7,A0                    ;204f 
               ADD.W          #$6b,A0                  ;d0fc 006b 
               MOVE.B         $0(A0,D5.L),D0           ;1030 5800 
-              CMP.B          D1,D0                    ;b001 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D1,D2                    ;1401 
+              CMP.L          D2,D0                    ;b082 
               SCC            D0,#$600                 ;56c0 
               MOVEQ.L        #$18,D1                  ;7218 
               SUB.B          D0,D1                    ;9200 
@@ -159,28 +167,35 @@ ___LADFUNC_RepackEntryTextAndAttrBu__31:
               CLR.B          $24(A7)                  ;422f 0024 
               MOVEQ.L        #$18,D0                  ;7018 
               CMP.B          $2c(A7),D0               ;b02f 002c 
-              BNE.W          ___LADFUNC_RepackEntryTextAndAttrBu__42;6600 00b4 
+              BNE.W          ___LADFUNC_RepackEntryTextAndAttrBu__42;6600 00c2 
 ___LADFUNC_RepackEntryTextAndAttrBu__32:
               CLR.L          $20(A7)                  ;42af 0020 
               MOVE.B         $40(A7),$24(A7)          ;1f6f 0040 0024 
 ___LADFUNC_RepackEntryTextAndAttrBu__33:
               MOVE.L         $20(A7),D0               ;202f 0020 
               CMP.L          $c8(A7),D0               ;b0af 00c8 
-              BGE.B          ___LADFUNC_RepackEntryTextAndAttrBu__39;6c42 
+              BGE.B          ___LADFUNC_RepackEntryTextAndAttrBu__39;6c50 
 ___LADFUNC_RepackEntryTextAndAttrBu__34:
               MOVE.L         A7,A0                    ;204f 
               ADD.W          #$6b,A0                  ;d0fc 006b 
               MOVE.B         $0(A0,D0.L),D1           ;1230 0800 
+              EXT.W          D1                       ;4881 
+              EXT.L          D1                       ;48c1 
+              MOVEQ.L        #$0,D2                   ;7400 
               MOVE.B         $c4(A7),D2               ;142f 00c4 
-              CMP.B          D2,D1                    ;b202 
-              BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__39;6630 
+              CMP.L          D2,D1                    ;b282 
+              BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__39;6638 
 ___LADFUNC_RepackEntryTextAndAttrBu__35:
               MOVE.L         D5,D1                    ;2205 
               SUB.L          D0,D1                    ;9280 
               MOVE.L         A7,A0                    ;204f 
               ADD.W          #$6b,A0                  ;d0fc 006b 
               MOVE.B         $0(A0,D1.L),D3           ;1630 1800 
-              CMP.B          D2,D3                    ;b602 
+              EXT.W          D3                       ;4883 
+              EXT.L          D3                       ;48c3 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D2,D1                    ;1202 
+              CMP.L          D1,D3                    ;b681 
               BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__39;661e 
 ___LADFUNC_RepackEntryTextAndAttrBu__36:
               MOVE.B         $40(A7,D0.L),D1          ;1237 0840 
@@ -195,11 +210,11 @@ ___LADFUNC_RepackEntryTextAndAttrBu__37:
               BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__39;6606 
 ___LADFUNC_RepackEntryTextAndAttrBu__38:
               ADDQ.L         #$1,$20(A7)              ;52af 0020 
-              BRA.B          ___LADFUNC_RepackEntryTextAndAttrBu__33;60b4 
+              BRA.B          ___LADFUNC_RepackEntryTextAndAttrBu__33;60a6 
 ___LADFUNC_RepackEntryTextAndAttrBu__39:
               MOVE.L         $20(A7),D0               ;202f 0020 
               TST.L          D0                       ;4a80 
-              BLE.W          ___LADFUNC_RepackEntryTextAndAttrBu__59;6f00 0128 
+              BLE.W          ___LADFUNC_RepackEntryTextAndAttrBu__59;6f00 013a 
 ___LADFUNC_RepackEntryTextAndAttrBu__40:
               MOVE.L         D7,D1                    ;2207 
               SUB.L          D0,D1                    ;9280 
@@ -232,25 +247,29 @@ ___LADFUNC_RepackEntryTextAndAttrBu__40:
               BSR.W          GROUP_AW_JMPTBL_MEM_Move ;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
 ___LADFUNC_RepackEntryTextAndAttrBu__41:
-              BRA.W          ___LADFUNC_RepackEntryTextAndAttrBu__59;6000 00d6 
+              BRA.W          ___LADFUNC_RepackEntryTextAndAttrBu__59;6000 00e8 
 ___LADFUNC_RepackEntryTextAndAttrBu__42:
               MOVEQ.L        #$19,D0                  ;7019 
               CMP.B          $2c(A7),D0               ;b02f 002c 
-              BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__51;6654 
+              BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__51;665e 
 ___LADFUNC_RepackEntryTextAndAttrBu__43:
               CLR.L          $20(A7)                  ;42af 0020 
               MOVE.B         $40(A7,D5.L),$24(A7)     ;1f77 5840 0024 
 ___LADFUNC_RepackEntryTextAndAttrBu__44:
               MOVE.L         $20(A7),D0               ;202f 0020 
               CMP.L          D7,D0                    ;b087 
-              BGE.B          ___LADFUNC_RepackEntryTextAndAttrBu__48;6c28 
+              BGE.B          ___LADFUNC_RepackEntryTextAndAttrBu__48;6c30 
 ___LADFUNC_RepackEntryTextAndAttrBu__45:
               MOVE.L         D5,D1                    ;2205 
               SUB.L          D0,D1                    ;9280 
               MOVE.L         A7,A0                    ;204f 
               ADD.W          #$6b,A0                  ;d0fc 006b 
               MOVE.B         $0(A0,D1.L),D2           ;1430 1800 
-              CMP.B          $c4(A7),D2               ;b42f 00c4 
+              EXT.W          D2                       ;4882 
+              EXT.L          D2                       ;48c2 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         $c4(A7),D1               ;122f 00c4 
+              CMP.L          D1,D2                    ;b481 
               BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__48;6614 
 ___LADFUNC_RepackEntryTextAndAttrBu__46:
               MOVE.L         D5,D1                    ;2205 
@@ -260,11 +279,11 @@ ___LADFUNC_RepackEntryTextAndAttrBu__46:
               BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__48;6606 
 ___LADFUNC_RepackEntryTextAndAttrBu__47:
               ADDQ.L         #$1,$20(A7)              ;52af 0020 
-              BRA.B          ___LADFUNC_RepackEntryTextAndAttrBu__44;60d0 
+              BRA.B          ___LADFUNC_RepackEntryTextAndAttrBu__44;60c8 
 ___LADFUNC_RepackEntryTextAndAttrBu__48:
               MOVE.L         $20(A7),D0               ;202f 0020 
               TST.L          D0                       ;4a80 
-              BLE.W          ___LADFUNC_RepackEntryTextAndAttrBu__59;6f00 008a 
+              BLE.W          ___LADFUNC_RepackEntryTextAndAttrBu__59;6f00 0094 
 ___LADFUNC_RepackEntryTextAndAttrBu__49:
               MOVE.L         D7,D1                    ;2207 
               SUB.L          D0,D1                    ;9280 
@@ -272,23 +291,27 @@ ___LADFUNC_RepackEntryTextAndAttrBu__49:
               ADD.W          #$6b,A0                  ;d0fc 006b 
               CLR.B          $0(A0,D1.L)              ;4230 1800 
 ___LADFUNC_RepackEntryTextAndAttrBu__50:
-              BRA.B          ___LADFUNC_RepackEntryTextAndAttrBu__59;6078 
+              BRA.W          ___LADFUNC_RepackEntryTextAndAttrBu__59;6000 0082 
 ___LADFUNC_RepackEntryTextAndAttrBu__51:
               MOVEQ.L        #$1a,D0                  ;701a 
               CMP.B          $2c(A7),D0               ;b02f 002c 
-              BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__59;6670 
+              BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__59;6678 
 ___LADFUNC_RepackEntryTextAndAttrBu__52:
               CLR.L          $20(A7)                  ;42af 0020 
               MOVE.B         $40(A7),$24(A7)          ;1f6f 0040 0024 
 ___LADFUNC_RepackEntryTextAndAttrBu__53:
               MOVE.L         $20(A7),D0               ;202f 0020 
               CMP.L          D7,D0                    ;b087 
-              BGE.B          ___LADFUNC_RepackEntryTextAndAttrBu__57;6c20 
+              BGE.B          ___LADFUNC_RepackEntryTextAndAttrBu__57;6c28 
 ___LADFUNC_RepackEntryTextAndAttrBu__54:
               MOVE.L         A7,A0                    ;204f 
               ADD.W          #$6b,A0                  ;d0fc 006b 
               MOVE.B         $0(A0,D0.L),D1           ;1230 0800 
-              CMP.B          $c4(A7),D1               ;b22f 00c4 
+              EXT.W          D1                       ;4881 
+              EXT.L          D1                       ;48c1 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         $c4(A7),D2               ;142f 00c4 
+              CMP.L          D2,D1                    ;b282 
               BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__57;6610 
 ___LADFUNC_RepackEntryTextAndAttrBu__55:
               MOVE.B         $40(A7,D0.L),D1          ;1237 0840 
@@ -296,7 +319,7 @@ ___LADFUNC_RepackEntryTextAndAttrBu__55:
               BNE.B          ___LADFUNC_RepackEntryTextAndAttrBu__57;6606 
 ___LADFUNC_RepackEntryTextAndAttrBu__56:
               ADDQ.L         #$1,$20(A7)              ;52af 0020 
-              BRA.B          ___LADFUNC_RepackEntryTextAndAttrBu__53;60d8 
+              BRA.B          ___LADFUNC_RepackEntryTextAndAttrBu__53;60d0 
 ___LADFUNC_RepackEntryTextAndAttrBu__57:
               MOVE.L         $20(A7),D0               ;202f 0020 
               TST.L          D0                       ;4a80 
@@ -348,7 +371,7 @@ ___LADFUNC_RepackEntryTextAndAttrBu__62:
               BRA.B          ___LADFUNC_RepackEntryTextAndAttrBu__60;60d0 
 ___LADFUNC_RepackEntryTextAndAttrBu__63:
               ADDQ.L         #$1,$b4(A7)              ;52af 00b4 
-              BRA.W          ___LADFUNC_RepackEntryTextAndAttrBu__15;6000 fd52 
+              BRA.W          ___LADFUNC_RepackEntryTextAndAttrBu__15;6000 fd22 
 ___LADFUNC_RepackEntryTextAndAttrBu__64:
               MOVE.L         $b8(A7),D0               ;202f 00b8 
               CLR.B          $0(A5,D0.L)              ;4235 0800 

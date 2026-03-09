@@ -15,7 +15,7 @@ typedef struct LADFUNC_EntryRecord {
 
 extern LADFUNC_EntryRecord *LADFUNC_EntryPtrTable[];
 
-extern void LADFUNC_RepackEntryTextAndAttrBuffers(UBYTE *textBuf, UBYTE *attrBuf);
+extern void LADFUNC_RepackEntryTextAndAttrBuffers(char *textBuf, UBYTE *attrBuf);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 extern char *ESQPARS_ReplaceOwnedString(char *newText, char *oldText);
