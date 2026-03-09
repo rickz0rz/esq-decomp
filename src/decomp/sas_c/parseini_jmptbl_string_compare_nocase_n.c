@@ -1,3 +1,3 @@
-extern void STRING_CompareNoCaseN(void);
+extern long STRING_CompareNoCaseN(const char *a, const char *b, long n);
 
-void PARSEINI_JMPTBL_STRING_CompareNoCaseN(void){STRING_CompareNoCaseN();}
+long PARSEINI_JMPTBL_STRING_CompareNoCaseN(const char *a, const char *b, long n){return STRING_CompareNoCaseN(a, b, n);}

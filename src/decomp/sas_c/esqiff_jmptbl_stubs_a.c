@@ -1,9 +1,9 @@
-extern void STRING_CompareNoCase(void);
+extern long STRING_CompareNoCase(const char *a, const char *b);
 extern void TLIBA3_BuildDisplayContextForViewMode(void);
-extern void DISKIO_GetFilesizeFromHandle(void);
-extern void MATH_DivS32(void);
+extern long DISKIO_GetFilesizeFromHandle(long fileHandle);
+extern long MATH_DivS32(long dividend, long divisor);
 
-void ESQIFF_JMPTBL_STRING_CompareNoCase(void){STRING_CompareNoCase();}
+long ESQIFF_JMPTBL_STRING_CompareNoCase(const char *a, const char *b){return STRING_CompareNoCase(a, b);}
 void ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(void){TLIBA3_BuildDisplayContextForViewMode();}
-void ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(void){DISKIO_GetFilesizeFromHandle();}
-void ESQIFF_JMPTBL_MATH_DivS32(void){MATH_DivS32();}
+long ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(long fileHandle){return DISKIO_GetFilesizeFromHandle(fileHandle);}
+long ESQIFF_JMPTBL_MATH_DivS32(long dividend, long divisor){return MATH_DivS32(dividend, divisor);}
