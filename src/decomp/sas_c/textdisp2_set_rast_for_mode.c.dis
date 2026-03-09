@@ -5,9 +5,9 @@ TEXTDISP_SetRastForMode:
               SUB.L          #$c,D0                   ;90bc 0000 000c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+              MOVEM.L        D6/D7/A5,-(A7)           ;48e7 0304 
 ___TEXTDISP_SetRastForMode__1:
-              MOVE.W         $e(A7),D7                ;3e2f 000e 
+              MOVE.W         $12(A7),D7               ;3e2f 0012 
               CLR.W          WDISP_AccumulatorFlushPending(A4);426c 0000 
               BSR.W          WDISP_JMPTBL_ESQIFF_RunCopperDro;6100 0000 
               TST.W          D7                       ;4a47 
@@ -41,17 +41,17 @@ ___TEXTDISP_SetRastForMode__3:
               MOVE.B         $0(A0,D6.L),WDISP_PaletteTriplesGBase(A4);1970 6800 0000 
               LEA            WDISP_PaletteTriplesBBase(A4),A0;41ec 0000 
               MOVE.B         $0(A0,D6.L),WDISP_PaletteTriplesBBase(A4);1970 6800 0000 
-              MOVE.L         WDISP_DisplayContextBase(A4),A0;206c 0000 
-              LEA            $2(A0),A1                ;43e8 0002 
+              MOVE.L         WDISP_DisplayContextBase(A4),A5;2a6c 0000 
+              LEA            $2(A5),A0                ;41ed 0002 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D7,D0                    ;3007 
               MOVE.L         D0,(A7)                  ;2e80 
-              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetRast              ;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
 ___TEXTDISP_SetRastForMode__4:
-              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              MOVEM.L        (A7)+,D6/D7/A5           ;4cdf 20c0 
               RTS                                     ;4e75 
 __const:
 __strings:

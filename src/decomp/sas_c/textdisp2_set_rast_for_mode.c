@@ -13,8 +13,14 @@ extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern LONG TLIBA3_BuildDisplayContextForViewMode(LONG viewMode, LONG a, LONG b);
 extern LONG _LVOSetRast(void *gfxBase, void *rastPort, LONG pen);
 
+typedef struct TEXTDISP_DisplayContext {
+    UBYTE pad0[2];
+    UBYTE rastPort[1];
+} TEXTDISP_DisplayContext;
+
 void TEXTDISP_SetRastForMode(UWORD modeIndex)
 {
+    TEXTDISP_DisplayContext *context;
     LONG idx;
 
     WDISP_AccumulatorFlushPending = 0;
@@ -32,10 +38,11 @@ void TEXTDISP_SetRastForMode(UWORD modeIndex)
     WDISP_PaletteTriplesRBase = *(((UBYTE *)&WDISP_PaletteTriplesRBase) + idx);
     WDISP_PaletteTriplesGBase = *(((UBYTE *)&WDISP_PaletteTriplesGBase) + idx);
     WDISP_PaletteTriplesBBase = *(((UBYTE *)&WDISP_PaletteTriplesBBase) + idx);
+    context = (TEXTDISP_DisplayContext *)WDISP_DisplayContextBase;
 
     _LVOSetRast(
         Global_REF_GRAPHICS_LIBRARY,
-        (void *)((unsigned char *)WDISP_DisplayContextBase + 2),
+        (void *)context->rastPort,
         (LONG)(UWORD)modeIndex
     );
 }
