@@ -10,23 +10,27 @@ LONG GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(void *entry);
 void *GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG mode, LONG idx);
 LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG lead, void *entry, LONG slot);
 
+typedef struct COI_AuxEntry {
+    UBYTE pad0[56];
+    void *titleTable[49];
+    UBYTE pad252[246];
+    UBYTE groupCode498;
+} COI_AuxEntry;
+
 LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, WORD slot)
 {
     const LONG SLOT_INVALID = 49;
     const LONG SLOT_FIRST = 1;
     const LONG SLOT_LAST = 48;
-    const LONG AUX_TITLE_TABLE_OFFSET = 56;
-    const LONG AUX_GROUPCODE_OFFSET = 498;
     const LONG AUX_POINTER_MODE_SECONDARY = 2;
-    const LONG SLOT_PTR_SHIFT = 2;
     const LONG DELTA_DAY_MINUTES = 2880;
     const LONG SLOT_MINUTES = 30;
     const LONG DELTA_INVALID = -1;
-    UBYTE *e;
+    COI_AuxEntry *e;
     LONG out;
     LONG s;
 
-    e = (UBYTE *)entry;
+    e = (COI_AuxEntry *)entry;
     s = SLOT_INVALID;
     out = DELTA_INVALID;
 
@@ -35,16 +39,16 @@ LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, WORD slot)
     }
 
     s = (LONG)slot + 1;
-    while (s < SLOT_INVALID && *(LONG *)(e + AUX_TITLE_TABLE_OFFSET + (s << SLOT_PTR_SHIFT)) == 0) {
+    while (s < SLOT_INVALID && e->titleTable[s] == 0) {
         s += 1;
     }
 
-    if (s > SLOT_LAST && TEXTDISP_PrimaryGroupCode == e[AUX_GROUPCODE_OFFSET]) {
+    if (s > SLOT_LAST && TEXTDISP_PrimaryGroupCode == e->groupCode498) {
         s = GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(e);
-        e = (UBYTE *)GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(s, AUX_POINTER_MODE_SECONDARY);
-        if (e != (UBYTE *)0) {
+        e = (COI_AuxEntry *)GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(s, AUX_POINTER_MODE_SECONDARY);
+        if (e != (COI_AuxEntry *)0) {
             s = SLOT_FIRST;
-            while (s < SLOT_INVALID && *(LONG *)(e + AUX_TITLE_TABLE_OFFSET + (s << SLOT_PTR_SHIFT)) == 0) {
+            while (s < SLOT_INVALID && e->titleTable[s] == 0) {
                 s += 1;
             }
         } else {
@@ -57,6 +61,6 @@ LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, WORD slot)
         return out;
     }
 
-    out = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((LONG)e[AUX_GROUPCODE_OFFSET], e, s);
+    out = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((LONG)e->groupCode498, e, s);
     return out;
 }
