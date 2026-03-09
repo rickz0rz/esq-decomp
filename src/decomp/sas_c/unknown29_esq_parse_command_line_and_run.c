@@ -39,6 +39,16 @@ extern UBYTE *EXEC_FIND_TASK_NULL(void);
 #define MODE_OLDFILE 1005
 #define MODE_NEWFILE 1006
 
+typedef struct ESQ_WBArgRecord {
+    ULONG lock0;
+    UBYTE *namePtr4;
+} ESQ_WBArgRecord;
+
+typedef struct ESQ_WBStartupMsg {
+    UBYTE pad0[36];
+    ESQ_WBArgRecord *argList36;
+} ESQ_WBStartupMsg;
+
 LONG ESQ_ParseCommandLineAndRun(UBYTE *cmdline)
 {
     UBYTE *p = cmdline;
@@ -94,9 +104,9 @@ LONG ESQ_ParseCommandLineAndRun(UBYTE *cmdline)
 
     if (Global_ArgCount == 0) {
         static const UBYTE kConsolePrefix[] = "con.10/10/320/80/";
-        UBYTE *saved_msg = Global_SavedMsg;
-        UBYTE *arg_record = *(UBYTE **)(saved_msg + 36);
-        UBYTE *append_src = *(UBYTE **)(arg_record + 4);
+        ESQ_WBStartupMsg *saved_msg = (ESQ_WBStartupMsg *)Global_SavedMsg;
+        ESQ_WBArgRecord *arg_record = saved_msg->argList36;
+        UBYTE *append_src = arg_record->namePtr4;
         LONG h;
         UBYTE *task;
         UBYTE *fh_ptr;

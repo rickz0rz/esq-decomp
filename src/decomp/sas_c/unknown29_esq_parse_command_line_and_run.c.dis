@@ -109,15 +109,13 @@ ___ESQ_ParseCommandLineAndRun__28:
               MOVE.L         A0,Global_ArgvPtr(A4)    ;2948 0000 
 ___ESQ_ParseCommandLineAndRun__29:
               TST.L          D0                       ;4a80 
-              BNE.W          ___ESQ_ParseCommandLineAndRun__34;6600 008c 
+              BNE.W          ___ESQ_ParseCommandLineAndRun__34;6600 008a 
 ___ESQ_ParseCommandLineAndRun__30:
               MOVE.L         Global_SavedMsg(A4),A2   ;246c 0000 
-              LEA            $24(A2),A0               ;41ea 0024 
-              MOVE.L         (A0),A1                  ;2250 
-              LEA            $4(A1),A0                ;41e9 0004 
-              MOVE.L         (A0),$2c(A7)             ;2f50 002c 
+              MOVE.L         $24(A2),$30(A7)          ;2f6a 0024 0030 
+              MOVE.L         $30(A7),A0               ;206f 0030 
+              MOVE.L         $4(A0),$2c(A7)           ;2f68 0004 002c 
               MOVEQ.L        #$0,D5                   ;7a00 
-              MOVE.L         A1,$30(A7)               ;2f49 0030 
 ___ESQ_ParseCommandLineAndRun__31:
               LEA            __MERGED(A4),A0          ;41ec 0000 
               LEA            Global_ConsoleNameBuffer(A4),A1;43ec 0000 
