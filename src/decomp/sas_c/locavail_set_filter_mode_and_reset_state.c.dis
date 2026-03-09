@@ -1,0 +1,39 @@
+              SECTION      text,CODE
+__code:
+LOCAVAIL_SetFilterModeAndResetSt:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___LOCAVAIL_SetFilterModeAndResetSt__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         LOCAVAIL_FilterModeFlag(A4),D0;202c 0000 
+              CMP.L          D7,D0                    ;b087 
+              BEQ.B          ___LOCAVAIL_SetFilterModeAndResetSt__7;6718 
+___LOCAVAIL_SetFilterModeAndResetSt__2:
+___LOCAVAIL_SetFilterModeAndResetSt__3:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          D0,D7                    ;be80 
+              BEQ.B          ___LOCAVAIL_SetFilterModeAndResetSt__5;6704 
+___LOCAVAIL_SetFilterModeAndResetSt__4:
+              TST.L          D7                       ;4a87 
+              BNE.B          ___LOCAVAIL_SetFilterModeAndResetSt__7;660e 
+___LOCAVAIL_SetFilterModeAndResetSt__5:
+              MOVE.L         D7,LOCAVAIL_FilterModeFlag(A4);2947 0000 
+              PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 
+              BSR.W          LOCAVAIL_ResetFilterCursorState;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___LOCAVAIL_SetFilterModeAndResetSt__6:
+___LOCAVAIL_SetFilterModeAndResetSt__7:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LOCAVAIL_FilterModeFlag
+              XREF           LOCAVAIL_PrimaryFilterState
+              XREF           LOCAVAIL_ResetFilterCursorState
+              XDEF           LOCAVAIL_SetFilterModeAndResetSt
+              END

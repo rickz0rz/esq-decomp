@@ -1,0 +1,27 @@
+              SECTION      text,CODE
+__code:
+LOCAVAIL_ResetFilterCursorState:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___LOCAVAIL_ResetFilterCursorState__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A5,A3                    ;264d 
+              LEA            $8(A3),A0                ;41eb 0008 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,(A0)                  ;2080 
+              LEA            $c(A3),A0                ;41eb 000c 
+              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         D0,LOCAVAIL_FilterClassId(A4);2940 0000 
+              CLR.L          LOCAVAIL_FilterStep(A4)  ;42ac 0000 
+___LOCAVAIL_ResetFilterCursorState__2:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LOCAVAIL_FilterClassId
+              XREF           LOCAVAIL_FilterStep
+              XDEF           LOCAVAIL_ResetFilterCursorState
+              END
