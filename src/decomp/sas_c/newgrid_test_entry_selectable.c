@@ -8,9 +8,9 @@ typedef struct NEWGRID_Entry {
     UBYTE flags40;
 } NEWGRID_Entry;
 
-extern LONG NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(UBYTE *entry);
+extern LONG NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(char *entry);
 
-LONG NEWGRID_TestEntrySelectable(UBYTE *entry, UBYTE *aux, LONG mode)
+LONG NEWGRID_TestEntrySelectable(char *entry, char *aux, LONG mode)
 {
     NEWGRID_Entry *entryView;
 

@@ -13,17 +13,17 @@ extern NEWGRID_Entry *TEXTDISP_SecondaryEntryPtrTable[];
 extern LONG *NEWGRID_SecondaryIndexCachePtr;
 extern LONG CLOCK_DaySlotIndex;
 
-extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(LONG *clockSlotPtr);
 extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(char *pattern);
 
-WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, LONG keyIndex)
+WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LONG keyIndex)
 {
     LONG cacheIndex;
     LONG normalizeFlag;
     NEWGRID_Entry *entry;
-    UBYTE *aux;
+    char *aux;
     char *a;
     char *b;
 
@@ -39,7 +39,7 @@ WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, 
     entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(keyIndex, 1);
     aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(keyIndex, 1);
     if (entry == 0 || aux == 0) {
-        *entryOut = (UBYTE *)entry;
+        *entryOut = (char *)entry;
         *auxOut = aux;
         return rowIndex;
     }
@@ -47,7 +47,7 @@ WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, 
     if (rowIndex != 1) {
         if ((WORD)(NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) != 0) {
             if (normalizeFlag == 0) {
-                *entryOut = (UBYTE *)entry;
+                *entryOut = (char *)entry;
                 *auxOut = aux;
                 return rowIndex;
             }
@@ -83,7 +83,7 @@ WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, 
         aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(cacheIndex, 2);
     }
 
-    *entryOut = (UBYTE *)entry;
+    *entryOut = (char *)entry;
     *auxOut = aux;
     return rowIndex;
 }

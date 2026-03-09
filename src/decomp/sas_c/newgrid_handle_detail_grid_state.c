@@ -21,19 +21,19 @@ extern UBYTE GCOMMAND_MplexDetailLayoutFlag;
 extern LONG GCOMMAND_MplexDetailInitialLineIndex;
 extern char NEWGRID_ChannelRowFmt[];
 
-extern LONG NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, LONG keyIndex);
+extern LONG NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LONG keyIndex);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
-extern void NEWGRID_DrawGridEntry(void *rastPort, UBYTE *entry, UBYTE *aux, LONG row, LONG mode, LONG enabled, LONG bevel);
+extern void NEWGRID_DrawGridEntry(void *rastPort, char *entry, char *aux, LONG row, LONG mode, LONG enabled, LONG bevel);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG lineIndex);
 extern void PARSEINI_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, const char *arg0, const char *arg1);
 extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *rastPort, const char *text);
-extern LONG NEWGRID_DrawGridFrameVariant2(UBYTE *ctx);
+extern LONG NEWGRID_DrawGridFrameVariant2(char *ctx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
 
-LONG NEWGRID_HandleDetailGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
+LONG NEWGRID_HandleDetailGridState(char *ctx, LONG keyIndex, WORD rowIndex)
 {
     NEWGRID_Entry *entry;
-    UBYTE *aux;
+    char *aux;
     NEWGRID_Context *ctxView;
     LONG nextState;
     char channelRow[58];
@@ -48,7 +48,7 @@ LONG NEWGRID_HandleDetailGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
 
     ctxView = (NEWGRID_Context *)ctx;
     if (NEWGRID_DetailGridStateLatch == 4) {
-        rowIndex = (WORD)NEWGRID_UpdatePresetEntry((UBYTE **)&entry, &aux, rowIndex, keyIndex);
+        rowIndex = (WORD)NEWGRID_UpdatePresetEntry((char **)&entry, &aux, rowIndex, keyIndex);
         if (entry == 0 || aux == 0) {
             return NEWGRID_DetailGridStateLatch;
         }
@@ -56,9 +56,9 @@ LONG NEWGRID_HandleDetailGridState(UBYTE *ctx, LONG keyIndex, WORD rowIndex)
         NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20, GCOMMAND_MplexDetailLayoutPen);
 
         if (GCOMMAND_MplexDetailLayoutFlag == (UBYTE)'N') {
-            NEWGRID_DrawGridEntry(ctxView->rastPort, (UBYTE *)entry, aux, (LONG)rowIndex, 2, 1, 4);
+            NEWGRID_DrawGridEntry(ctxView->rastPort, (char *)entry, aux, (LONG)rowIndex, 2, 1, 4);
         } else {
-            NEWGRID_DrawGridEntry(ctxView->rastPort, (UBYTE *)entry, aux, (LONG)rowIndex, 3, 1, 4);
+            NEWGRID_DrawGridEntry(ctxView->rastPort, (char *)entry, aux, (LONG)rowIndex, 3, 1, 4);
         }
 
         NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(GCOMMAND_MplexDetailInitialLineIndex);
