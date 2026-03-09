@@ -9,7 +9,6 @@ enum {
     VM_X_16 = 16,
     VM_X_44 = 44,
     VM_X_360 = 360,
-    VM_Y_0 = 0,
     VM_WIDTH_320 = 320,
     VM_WIDTH_352 = 352,
     VM_WIDTH_640 = 640,
@@ -38,40 +37,45 @@ extern void TLIBA3_InitRuntimeEntry(
     LONG y,
     LONG depth);
 
+typedef struct TLIBA3_GraphicsLibraryView {
+    char pad0[GRAPHICS_WORD_OFFSET];
+    WORD diwWord206;
+} TLIBA3_GraphicsLibraryView;
+
 void TLIBA3_InitRuntimeEntries(void)
 {
     LONG d7;
     LONG d1;
     WORD gfxWord;
 
-    gfxWord = *(WORD *)((char *)Global_REF_GRAPHICS_LIBRARY + GRAPHICS_WORD_OFFSET);
+    gfxWord = ((TLIBA3_GraphicsLibraryView *)Global_REF_GRAPHICS_LIBRARY)->diwWord206;
     d7 = (LONG)gfxWord;
     d7 &= RUNTIME_DIW_MASK;
 
     d1 = (LONG)(WORD)(d7 + REGBASE_C304);
-    TLIBA3_InitRuntimeEntry(0, d1, VM_WIDTH_352, VM_HEIGHT_240, VM_X_360, VM_Y_0, VM_DEPTH_4);
+    TLIBA3_InitRuntimeEntry(0, d1, VM_WIDTH_352, VM_HEIGHT_240, VM_X_360, 0, VM_DEPTH_4);
 
     d1 = (LONG)(WORD)(d7 + REGBASE_C304);
-    TLIBA3_InitRuntimeEntry(1, d1, VM_WIDTH_352, VM_HEIGHT_240, VM_X_16, VM_Y_0, VM_DEPTH_4);
+    TLIBA3_InitRuntimeEntry(1, d1, VM_WIDTH_352, VM_HEIGHT_240, VM_X_16, 0, VM_DEPTH_4);
 
     d1 = (LONG)(WORD)(d7 + REGBASE_C304);
-    TLIBA3_InitRuntimeEntry(2, d1, VM_WIDTH_696, VM_HEIGHT_240, VM_X_8, VM_Y_0, VM_DEPTH_4);
+    TLIBA3_InitRuntimeEntry(2, d1, VM_WIDTH_696, VM_HEIGHT_240, VM_X_8, 0, VM_DEPTH_4);
 
     d1 = (LONG)(WORD)(d7 + REGBASE_8304);
-    TLIBA3_InitRuntimeEntry(3, d1, VM_WIDTH_696, VM_HEIGHT_240, VM_X_0, VM_Y_0, VM_DEPTH_1);
+    TLIBA3_InitRuntimeEntry(3, d1, VM_WIDTH_696, VM_HEIGHT_240, VM_X_0, 0, VM_DEPTH_1);
 
     d1 = (LONG)(WORD)(d7 + REGBASE_C304);
-    TLIBA3_InitRuntimeEntry(4, d1, VM_WIDTH_640, VM_HEIGHT_240, VM_X_44, VM_Y_0, VM_DEPTH_4);
+    TLIBA3_InitRuntimeEntry(4, d1, VM_WIDTH_640, VM_HEIGHT_240, VM_X_44, 0, VM_DEPTH_4);
 
     d1 = (LONG)(WORD)(d7 + REGBASE_4304);
-    TLIBA3_InitRuntimeEntry(5, d1, VM_WIDTH_320, VM_HEIGHT_240, VM_X_44, VM_Y_0, VM_DEPTH_5);
+    TLIBA3_InitRuntimeEntry(5, d1, VM_WIDTH_320, VM_HEIGHT_240, VM_X_44, 0, VM_DEPTH_5);
 
     d1 = (LONG)(WORD)(d7 + REGBASE_C300);
-    TLIBA3_InitRuntimeEntry(6, d1, VM_WIDTH_640, VM_HEIGHT_120, VM_X_44, VM_Y_0, VM_DEPTH_4);
+    TLIBA3_InitRuntimeEntry(6, d1, VM_WIDTH_640, VM_HEIGHT_120, VM_X_44, 0, VM_DEPTH_4);
 
     d1 = (LONG)(WORD)(d7 + REGBASE_4300);
-    TLIBA3_InitRuntimeEntry(7, d1, VM_WIDTH_320, VM_HEIGHT_120, VM_X_44, VM_Y_0, VM_DEPTH_5);
+    TLIBA3_InitRuntimeEntry(7, d1, VM_WIDTH_320, VM_HEIGHT_120, VM_X_44, 0, VM_DEPTH_5);
 
     d1 = (LONG)(WORD)(d7 + REGBASE_C304);
-    TLIBA3_InitRuntimeEntry(8, d1, VM_WIDTH_320, VM_HEIGHT_296, VM_X_16, VM_Y_0, VM_DEPTH_4);
+    TLIBA3_InitRuntimeEntry(8, d1, VM_WIDTH_320, VM_HEIGHT_296, VM_X_16, 0, VM_DEPTH_4);
 }
