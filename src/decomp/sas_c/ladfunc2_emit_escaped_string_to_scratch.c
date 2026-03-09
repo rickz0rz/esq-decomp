@@ -3,9 +3,9 @@ typedef signed long LONG;
 
 extern void LADFUNC2_EmitEscapedCharToScratch(LONG ch);
 
-void LADFUNC2_EmitEscapedStringToScratch(const UBYTE *src)
+void LADFUNC2_EmitEscapedStringToScratch(const char *src)
 {
-    if (src == (const UBYTE *)0) {
+    if (src == (const char *)0) {
         return;
     }
 

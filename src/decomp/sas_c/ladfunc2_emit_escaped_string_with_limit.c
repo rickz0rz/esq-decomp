@@ -3,7 +3,7 @@ typedef signed long LONG;
 
 extern void LADFUNC2_EmitEscapedCharToScratch(LONG ch);
 
-void LADFUNC2_EmitEscapedStringWithLimit(const UBYTE *src, LONG *cursor, LONG limit)
+void LADFUNC2_EmitEscapedStringWithLimit(const char *src, LONG *cursor, LONG limit)
 {
     while (*src != 0) {
         LONG cur = *cursor;

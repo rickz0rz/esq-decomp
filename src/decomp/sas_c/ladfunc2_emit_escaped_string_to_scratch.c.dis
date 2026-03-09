@@ -9,18 +9,19 @@ LADFUNC2_EmitEscapedStringToScra:
 ___LADFUNC2_EmitEscapedStringToScra__1:
               MOVE.L         $8(A7),A5                ;2a6f 0008 
               MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___LADFUNC2_EmitEscapedStringToScra__6;6712 
+              BEQ.B          ___LADFUNC2_EmitEscapedStringToScra__6;6714 
 ___LADFUNC2_EmitEscapedStringToScra__2:
 ___LADFUNC2_EmitEscapedStringToScra__3:
               TST.B          (A5)                     ;4a15 
-              BEQ.B          ___LADFUNC2_EmitEscapedStringToScra__6;670e 
+              BEQ.B          ___LADFUNC2_EmitEscapedStringToScra__6;6710 
 ___LADFUNC2_EmitEscapedStringToScra__4:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A5)+,D0                 ;101d 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          LADFUNC2_EmitEscapedCharToScratc;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.B          ___LADFUNC2_EmitEscapedStringToScra__3;60ee 
+              BRA.B          ___LADFUNC2_EmitEscapedStringToScra__3;60ec 
 ___LADFUNC2_EmitEscapedStringToScra__5:
 ___LADFUNC2_EmitEscapedStringToScra__6:
               MOVE.L         (A7)+,A5                 ;2a5f 

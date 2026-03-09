@@ -12,22 +12,23 @@ ___LADFUNC2_EmitEscapedStringWithLi__1:
               MOVE.L         $14(A7),A5               ;2a6f 0014 
 ___LADFUNC2_EmitEscapedStringWithLi__2:
               TST.B          (A5)                     ;4a15 
-              BEQ.B          ___LADFUNC2_EmitEscapedStringWithLi__7;671a 
+              BEQ.B          ___LADFUNC2_EmitEscapedStringWithLi__7;671c 
 ___LADFUNC2_EmitEscapedStringWithLi__3:
               MOVE.L         (A3),D6                  ;2c13 
               MOVE.L         D6,D0                    ;2006 
               ADDQ.L         #$1,D0                   ;5280 
               MOVE.L         D0,(A3)                  ;2680 
               CMP.L          D7,D6                    ;bc87 
-              BGE.B          ___LADFUNC2_EmitEscapedStringWithLi__7;6c0e 
+              BGE.B          ___LADFUNC2_EmitEscapedStringWithLi__7;6c10 
 ___LADFUNC2_EmitEscapedStringWithLi__4:
 ___LADFUNC2_EmitEscapedStringWithLi__5:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A5)+,D0                 ;101d 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          LADFUNC2_EmitEscapedCharToScratc;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.B          ___LADFUNC2_EmitEscapedStringWithLi__2;60e2 
+              BRA.B          ___LADFUNC2_EmitEscapedStringWithLi__2;60e0 
 ___LADFUNC2_EmitEscapedStringWithLi__6:
 ___LADFUNC2_EmitEscapedStringWithLi__7:
               MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 

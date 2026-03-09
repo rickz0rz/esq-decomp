@@ -7,12 +7,12 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern UWORD LADFUNC_LineSlotWriteIndex;
 extern UWORD LADFUNC_LineControlCodeTable[];
-extern UBYTE *LADFUNC_LineTextBufferPtrs[];
+extern char *LADFUNC_LineTextBufferPtrs[];
 
 extern LONG _LVOTextLength(void *graphicsBase, void *rastPort, const char *text, LONG length);
-extern void GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(UBYTE *text, LONG controlCode);
+extern void GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(char *text, LONG controlCode);
 
-void LADFUNC_BuildHighlightLinesFromText(UBYTE *src)
+void LADFUNC_BuildHighlightLinesFromText(char *src)
 {
     const UWORD LINE_SLOT_COUNT = 20;
     const LONG LINE_PIXEL_WIDTH = 624;
@@ -20,7 +20,7 @@ void LADFUNC_BuildHighlightLinesFromText(UBYTE *src)
     LONG remaining;
     UBYTE control;
     UBYTE ch;
-    UBYTE segment[84];
+    char segment[84];
 
     LADFUNC_LineControlCodeTable[LADFUNC_LineSlotWriteIndex] = 4;
     LADFUNC_LineSlotWriteIndex = (UWORD)(LADFUNC_LineSlotWriteIndex + 1);
@@ -45,7 +45,7 @@ void LADFUNC_BuildHighlightLinesFromText(UBYTE *src)
         }
 
         if (remaining <= 0 || ch == 24 || ch == 25 || ch == 26) {
-            UBYTE *dst;
+            char *dst;
             LONG i;
 
             segment[segLen] = 0;
@@ -79,7 +79,7 @@ void LADFUNC_BuildHighlightLinesFromText(UBYTE *src)
     GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(segment, control);
 
     {
-        UBYTE *dst;
+        char *dst;
         LONG i;
 
         dst = LADFUNC_LineTextBufferPtrs[LADFUNC_LineSlotWriteIndex];

@@ -13,13 +13,13 @@ extern LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG n, LONG d);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
-extern void LADFUNC_DisplayTextPackedPens(void *rastPort, LONG x, LONG y, UBYTE packedPens, const UBYTE *text);
+extern void LADFUNC_DisplayTextPackedPens(void *rastPort, LONG x, LONG y, UBYTE packedPens, const char *text);
 
 void LADFUNC_DrawEntryLineWithAttrs(
     void *rastPort,
     LONG row,
     UBYTE *attrText,
-    UBYTE *lineText
+    char *lineText
 )
 {
     const LONG PREVIEW_PIXEL_WIDTH = 624;
@@ -38,7 +38,7 @@ void LADFUNC_DrawEntryLineWithAttrs(
     LONG y;
     UBYTE leadCtrl = 0;
     UBYTE leadAttr = 0;
-    UBYTE *segBuf;
+    char *segBuf;
 
     charWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_STR_SINGLE_SPACE_1, 1);
     cols = NEWGRID_JMPTBL_MATH_DivS32(PREVIEW_PIXEL_WIDTH, charWidth);
@@ -46,9 +46,9 @@ void LADFUNC_DrawEntryLineWithAttrs(
         cols = PREVIEW_MAX_COLS;
     }
 
-    segBuf = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+    segBuf = (char *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_14, SEGBUF_ALLOC_LINE, cols + 1, SEGBUF_ALLOC_FLAGS);
-    if (segBuf == (UBYTE *)0) {
+    if (segBuf == (char *)0) {
         return;
     }
 

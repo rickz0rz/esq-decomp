@@ -51,7 +51,7 @@ ___LADFUNC_DrawEntryLineWithAttrs__3:
               BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
               MOVE.L         D0,$1a(A7)               ;2f40 001a 
-              BEQ.W          ___LADFUNC_DrawEntryLineWithAttrs__39;6700 0254 
+              BEQ.W          ___LADFUNC_DrawEntryLineWithAttrs__39;6700 0272 
 ___LADFUNC_DrawEntryLineWithAttrs__4:
 ___LADFUNC_DrawEntryLineWithAttrs__5:
               MOVE.B         (A2),D0                  ;1012 
@@ -97,7 +97,7 @@ ___LADFUNC_DrawEntryLineWithAttrs__13:
               MOVE.L         D0,$30(A7)               ;2f40 0030 
               MOVEQ.L        #$18,D0                  ;7018 
               CMP.B          $2c(A7),D0               ;b02f 002c 
-              BNE.B          ___LADFUNC_DrawEntryLineWithAttrs__19;6674 
+              BNE.W          ___LADFUNC_DrawEntryLineWithAttrs__19;6600 0080 
 ___LADFUNC_DrawEntryLineWithAttrs__14:
               PEA            ($2).w                   ;4878 0002 
               MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
@@ -108,17 +108,20 @@ ___LADFUNC_DrawEntryLineWithAttrs__14:
 ___LADFUNC_DrawEntryLineWithAttrs__15:
               MOVE.L         $24(A7),D0               ;202f 0024 
               CMP.L          $28(A7),D0               ;b0af 0028 
-              BGE.B          ___LADFUNC_DrawEntryLineWithAttrs__18;6c10 
+              BGE.B          ___LADFUNC_DrawEntryLineWithAttrs__18;6c16 
 ___LADFUNC_DrawEntryLineWithAttrs__16:
+              MOVE.B         $44(A7),D0               ;102f 0044 
               MOVE.L         $1a(A7),A0               ;206f 001a 
-              MOVE.B         $44(A7),$0(A0,D0.L)      ;11af 0044 0800 
+              MOVE.L         $24(A7),D1               ;222f 0024 
+              MOVE.B         D0,$0(A0,D1.L)           ;1180 1800 
 ___LADFUNC_DrawEntryLineWithAttrs__17:
               ADDQ.L         #$1,$24(A7)              ;52af 0024 
-              BRA.B          ___LADFUNC_DrawEntryLineWithAttrs__15;60e6 
+              BRA.B          ___LADFUNC_DrawEntryLineWithAttrs__15;60e0 
 ___LADFUNC_DrawEntryLineWithAttrs__18:
+              MOVE.B         $23(A7),D0               ;102f 0023 
               MOVE.L         $1a(A7),A0               ;206f 001a 
-              MOVE.L         $28(A7),D0               ;202f 0028 
-              MOVE.B         $23(A7),$0(A0,D0.L)      ;11af 0023 0800 
+              MOVE.L         $28(A7),D1               ;222f 0028 
+              MOVE.B         D0,$0(A0,D1.L)           ;1180 1800 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $22(A7),D0               ;102f 0022 
               MOVE.L         A0,-(A7)                 ;2f08 
@@ -134,11 +137,11 @@ ___LADFUNC_DrawEntryLineWithAttrs__18:
               ADD.L          D0,$34(A7)               ;d1af 0034 
               MOVE.L         $28(A7),D0               ;202f 0028 
               SUB.L          D0,$38(A7)               ;91af 0038 
-              BRA.B          ___LADFUNC_DrawEntryLineWithAttrs__25;607a 
+              BRA.W          ___LADFUNC_DrawEntryLineWithAttrs__25;6000 0084 
 ___LADFUNC_DrawEntryLineWithAttrs__19:
               MOVEQ.L        #$1a,D0                  ;701a 
               CMP.B          $2c(A7),D0               ;b02f 002c 
-              BNE.B          ___LADFUNC_DrawEntryLineWithAttrs__25;6672 
+              BNE.B          ___LADFUNC_DrawEntryLineWithAttrs__25;667a 
 ___LADFUNC_DrawEntryLineWithAttrs__20:
               PEA            ($1).w                   ;4878 0001 
               MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
@@ -149,17 +152,20 @@ ___LADFUNC_DrawEntryLineWithAttrs__20:
 ___LADFUNC_DrawEntryLineWithAttrs__21:
               MOVE.L         $24(A7),D0               ;202f 0024 
               CMP.L          $28(A7),D0               ;b0af 0028 
-              BGE.B          ___LADFUNC_DrawEntryLineWithAttrs__24;6c10 
+              BGE.B          ___LADFUNC_DrawEntryLineWithAttrs__24;6c16 
 ___LADFUNC_DrawEntryLineWithAttrs__22:
+              MOVE.B         $44(A7),D0               ;102f 0044 
               MOVE.L         $1a(A7),A0               ;206f 001a 
-              MOVE.B         $44(A7),$0(A0,D0.L)      ;11af 0044 0800 
+              MOVE.L         $24(A7),D1               ;222f 0024 
+              MOVE.B         D0,$0(A0,D1.L)           ;1180 1800 
 ___LADFUNC_DrawEntryLineWithAttrs__23:
               ADDQ.L         #$1,$24(A7)              ;52af 0024 
-              BRA.B          ___LADFUNC_DrawEntryLineWithAttrs__21;60e6 
+              BRA.B          ___LADFUNC_DrawEntryLineWithAttrs__21;60e0 
 ___LADFUNC_DrawEntryLineWithAttrs__24:
+              MOVE.B         $23(A7),D0               ;102f 0023 
               MOVE.L         $1a(A7),A0               ;206f 001a 
-              MOVE.L         $28(A7),D0               ;202f 0028 
-              MOVE.B         $23(A7),$0(A0,D0.L)      ;11af 0023 0800 
+              MOVE.L         $28(A7),D1               ;222f 0028 
+              MOVE.B         D0,$0(A0,D1.L)           ;1180 1800 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $22(A7),D0               ;102f 0022 
               MOVE.L         A0,-(A7)                 ;2f08 
@@ -180,7 +186,7 @@ ___LADFUNC_DrawEntryLineWithAttrs__25:
 ___LADFUNC_DrawEntryLineWithAttrs__26:
               MOVE.L         $28(A7),D0               ;202f 0028 
               CMP.L          $3c(A7),D0               ;b0af 003c 
-              BGE.W          ___LADFUNC_DrawEntryLineWithAttrs__32;6c00 0084 
+              BGE.W          ___LADFUNC_DrawEntryLineWithAttrs__32;6c00 0086 
 ___LADFUNC_DrawEntryLineWithAttrs__27:
               MOVE.B         $0(A3,D0.L),$19(A7)      ;1f73 0800 0019 
               MOVE.L         D0,$24(A7)               ;2f40 0024 
@@ -202,8 +208,9 @@ ___LADFUNC_DrawEntryLineWithAttrs__30:
 ___LADFUNC_DrawEntryLineWithAttrs__31:
               MOVE.L         $24(A7),D0               ;202f 0024 
               SUB.L          $28(A7),D0               ;90af 0028 
+              MOVE.B         $23(A7),D1               ;122f 0023 
               MOVE.L         $1a(A7),A0               ;206f 001a 
-              MOVE.B         $23(A7),$0(A0,D0.L)      ;11af 0023 0800 
+              MOVE.B         D1,$0(A0,D0.L)           ;1181 0800 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $19(A7),D0               ;102f 0019 
               MOVE.L         A0,-(A7)                 ;2f08 
@@ -220,27 +227,30 @@ ___LADFUNC_DrawEntryLineWithAttrs__31:
               LEA            $18(A7),A7               ;4fef 0018 
               ADD.L          D0,$34(A7)               ;d1af 0034 
               MOVE.L         $24(A7),$28(A7)          ;2f6f 0024 0028 
-              BRA.W          ___LADFUNC_DrawEntryLineWithAttrs__26;6000 ff74 
+              BRA.W          ___LADFUNC_DrawEntryLineWithAttrs__26;6000 ff72 
 ___LADFUNC_DrawEntryLineWithAttrs__32:
               MOVE.L         $38(A7),D0               ;202f 0038 
               TST.L          D0                       ;4a80 
-              BLE.B          ___LADFUNC_DrawEntryLineWithAttrs__38;6f48 
+              BLE.B          ___LADFUNC_DrawEntryLineWithAttrs__38;6f50 
 ___LADFUNC_DrawEntryLineWithAttrs__33:
               CLR.L          $28(A7)                  ;42af 0028 
 ___LADFUNC_DrawEntryLineWithAttrs__34:
               MOVE.L         $28(A7),D0               ;202f 0028 
               CMP.L          $38(A7),D0               ;b0af 0038 
-              BGE.B          ___LADFUNC_DrawEntryLineWithAttrs__37;6c10 
+              BGE.B          ___LADFUNC_DrawEntryLineWithAttrs__37;6c16 
 ___LADFUNC_DrawEntryLineWithAttrs__35:
+              MOVE.B         $44(A7),D0               ;102f 0044 
               MOVE.L         $1a(A7),A0               ;206f 001a 
-              MOVE.B         $44(A7),$0(A0,D0.L)      ;11af 0044 0800 
+              MOVE.L         $28(A7),D1               ;222f 0028 
+              MOVE.B         D0,$0(A0,D1.L)           ;1180 1800 
 ___LADFUNC_DrawEntryLineWithAttrs__36:
               ADDQ.L         #$1,$28(A7)              ;52af 0028 
-              BRA.B          ___LADFUNC_DrawEntryLineWithAttrs__34;60e6 
+              BRA.B          ___LADFUNC_DrawEntryLineWithAttrs__34;60e0 
 ___LADFUNC_DrawEntryLineWithAttrs__37:
+              MOVE.B         $23(A7),D0               ;102f 0023 
               MOVE.L         $1a(A7),A0               ;206f 001a 
-              MOVE.L         $38(A7),D0               ;202f 0038 
-              MOVE.B         $23(A7),$0(A0,D0.L)      ;11af 0023 0800 
+              MOVE.L         $38(A7),D1               ;222f 0038 
+              MOVE.B         D0,$0(A0,D1.L)           ;1180 1800 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $22(A7),D0               ;102f 0022 
               MOVE.L         A0,-(A7)                 ;2f08 

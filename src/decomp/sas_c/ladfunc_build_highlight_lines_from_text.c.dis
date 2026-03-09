@@ -50,7 +50,7 @@ ___LADFUNC_BuildHighlightLinesFromT__7:
               MOVE.B         (A5)+,D0                 ;101d 
               MOVE.B         D0,$6f(A7)               ;1f40 006f 
               TST.B          D0                       ;4a00 
-              BEQ.W          ___LADFUNC_BuildHighlightLinesFromT__25;6700 00d8 
+              BEQ.W          ___LADFUNC_BuildHighlightLinesFromT__25;6700 00da 
 ___LADFUNC_BuildHighlightLinesFromT__8:
 ___LADFUNC_BuildHighlightLinesFromT__9:
               MOVEQ.L        #$d,D1                   ;720d 
@@ -130,7 +130,8 @@ ___LADFUNC_BuildHighlightLinesFromT__23:
               LEA            $1a(A7),A0               ;41ef 001a 
               ADD.L          D5,A0                    ;d1c5 
               ADDQ.L         #$1,D5                   ;5285 
-              MOVE.B         $6f(A7),(A0)             ;10af 006f 
+              MOVE.B         $6f(A7),D0               ;102f 006f 
+              MOVE.B         D0,(A0)                  ;1080 
               PEA            ($1).w                   ;4878 0001 
               PEA            $73(A7)                  ;486f 0073 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
@@ -139,7 +140,7 @@ ___LADFUNC_BuildHighlightLinesFromT__23:
               LEA            $10(A7),A7               ;4fef 0010 
               SUB.L          D0,$78(A7)               ;91af 0078 
 ___LADFUNC_BuildHighlightLinesFromT__24:
-              BRA.W          ___LADFUNC_BuildHighlightLinesFromT__7;6000 ff20 
+              BRA.W          ___LADFUNC_BuildHighlightLinesFromT__7;6000 ff1e 
 ___LADFUNC_BuildHighlightLinesFromT__25:
               CLR.B          $1a(A7,D5.L)             ;4237 581a 
               MOVEQ.L        #$0,D0                   ;7000 
