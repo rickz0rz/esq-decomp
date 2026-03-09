@@ -18,8 +18,8 @@ extern UWORD TEXTDISP_SecondaryGroupEntryCount;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
 
-extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 
 void NEWGRID_ClearEntryMarkerBits(void *unused, WORD modeSel)
 {

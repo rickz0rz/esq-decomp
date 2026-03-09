@@ -19,7 +19,7 @@ extern UBYTE CONFIG_NewgridWindowSpanHalfHoursAlt;
 
 extern LONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(UBYTE *slotPtr);
 
-void NEWGRID_InitSelectionWindowAlt(UBYTE *ctx, WORD row, LONG useAltSpan)
+void NEWGRID_InitSelectionWindowAlt(char *ctx, WORD row, LONG useAltSpan)
 {
     NEWGRID_SelectionWindow *window;
     LONG span;
