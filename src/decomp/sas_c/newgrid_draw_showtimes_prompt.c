@@ -41,7 +41,7 @@ extern LONG _LVOSetDrMd(void *gfxBase, void *rp, LONG mode);
 extern LONG _LVOTextLength(void *gfxBase, void *rp, char *text, LONG len);
 extern LONG _LVOMove(void *gfxBase, void *rp, LONG x, LONG y);
 extern LONG _LVOText(void *gfxBase, void *rp, char *text, LONG len);
-extern void NEWGRID_ValidateSelectionCode(void *rp, LONG code);
+extern void NEWGRID_ValidateSelectionCode(char *rp, LONG code);
 
 void NEWGRID_DrawShowtimesPrompt(char *rpCtx, char *outBuf, LONG mode)
 {

@@ -34,7 +34,7 @@ extern void _LVOSetDrMd(void *rastPort, LONG mode);
 extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
 extern void _LVOMove(void *rastPort, LONG x, LONG y);
 extern void _LVOText(void *rastPort, char *text, LONG len);
-extern void NEWGRID_ValidateSelectionCode(void *rastPort, LONG code);
+extern void NEWGRID_ValidateSelectionCode(char *rastPort, LONG code);
 
 void NEWGRID_DrawGridMessageAlt(char *gridCtx)
 {
