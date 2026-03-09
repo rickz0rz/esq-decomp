@@ -4,10 +4,10 @@ typedef unsigned char UBYTE;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern LONG _LVOTextLength(void *rastport, const char *text, LONG len);
-extern void _LVOText(void *rastport, const char *text, LONG len);
-extern void _LVOSetAPen(void *rastport, LONG pen);
-extern void TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(void *rastport, LONG framePen, LONG width, LONG depth);
+extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
+extern void _LVOText(char *rastport, const char *text, LONG len);
+extern void _LVOSetAPen(char *rastport, LONG pen);
+extern void TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(char *rastport, LONG framePen, LONG width, LONG depth);
 
 static LONG cstrlen_local(const char *s)
 {
@@ -18,7 +18,7 @@ static LONG cstrlen_local(const char *s)
     return n;
 }
 
-void SCRIPT_DrawInsetTextWithFrame(void *rastport, BYTE textPenOverride, BYTE framePen, const char *text)
+void SCRIPT_DrawInsetTextWithFrame(char *rastport, BYTE textPenOverride, BYTE framePen, const char *text)
 {
     const LONG PEN_NONE = -1;
     const LONG RP_X_OFFSET = 36;

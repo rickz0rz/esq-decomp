@@ -19,12 +19,12 @@ extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern void SCRIPT_BeginBannerCharTransition(LONG x, LONG y);
 extern void STRING_CopyPadNul(char *dst, const char *src, LONG n);
-extern void SCRIPT_DrawInsetTextWithFrame(void *rastport, BYTE textPenOverride, BYTE framePen, const char *text);
-extern LONG _LVOTextLength(void *rastport, const char *text, LONG len);
-extern void _LVOSetDrMd(void *rastport, LONG mode);
-extern void _LVOSetAPen(void *rastport, LONG pen);
-extern void _LVOMove(void *rastport, LONG x, LONG y);
-extern void _LVOText(void *rastport, const char *text, LONG len);
+extern void SCRIPT_DrawInsetTextWithFrame(char *rastport, BYTE textPenOverride, BYTE framePen, const char *text);
+extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
+extern void _LVOSetDrMd(char *rastport, LONG mode);
+extern void _LVOSetAPen(char *rastport, LONG pen);
+extern void _LVOMove(char *rastport, LONG x, LONG y);
+extern void _LVOText(char *rastport, const char *text, LONG len);
 
 typedef struct SCRIPT_DisplayContext {
     unsigned short flags0;
@@ -49,7 +49,7 @@ void SCRIPT_SetupHighlightEffect(const char *text)
     LONG div;
     char prefix[128];
     LONG prefixLen = 0;
-    void *rp;
+    char *rp;
     const char *cursor;
     const char *chunkStart;
     LONG chunkLen;
@@ -71,7 +71,7 @@ void SCRIPT_SetupHighlightEffect(const char *text)
         return;
     }
 
-    rp = (void *)&context->rastWord2;
+    rp = (char *)&context->rastWord2;
     WDISP_AccumulatorCaptureActive = 1;
     WDISP_AccumulatorFlushPending = 0;
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 0);

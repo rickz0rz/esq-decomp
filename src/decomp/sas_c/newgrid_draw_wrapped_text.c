@@ -8,11 +8,11 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
 extern char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst, LONG limit, const UBYTE *delims);
-extern LONG _LVOTextLength(void *rastport, const char *text, LONG len);
-extern void _LVOMove(void *rastport, LONG x, LONG y);
-extern void _LVOText(void *rastport, const char *text, LONG len);
+extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
+extern void _LVOMove(char *rastport, LONG x, LONG y);
+extern void _LVOText(char *rastport, const char *text, LONG len);
 
-char *NEWGRID_DrawWrappedText(void *rastport, LONG x, LONG y, LONG max_width, char *text, LONG draw_enable)
+char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, char *text, LONG draw_enable)
 {
     char word_buf[50];
     LONG drawn_width;
