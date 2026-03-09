@@ -42,7 +42,7 @@ void SCRIPT_ResetCtrlContext(char *ctx)
     p->pendingTextdispCmdChar = 0;
     p->pendingTextdispCmdArg = 0;
 
-    p->commandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString((char *)0, p->commandTextPtr);
+    p->commandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, p->commandTextPtr);
 
     p->secondarySearchText[0] = 0;
     p->primarySearchText[0] = 0;

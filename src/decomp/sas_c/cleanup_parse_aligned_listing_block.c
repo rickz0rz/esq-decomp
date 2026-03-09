@@ -111,8 +111,8 @@ LONG CLEANUP_ParseAlignedListingBlock(char *record, char *listing)
     COI_ClearAnimObjectStrings(entry);
     COI_FreeSubEntryTableEntries(entry);
 
-    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)0, listing);
-    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)0, CLOCK_STR_MISSING_TITLE_TEMPLATE);
+    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, listing);
+    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, CLOCK_STR_MISSING_TITLE_TEMPLATE);
 
     {
         void *a = (void *)0;
