@@ -6,7 +6,7 @@ typedef struct LadfuncEntry {
     UWORD startSlot;
     UWORD endSlot;
     UWORD isHighlighted;
-    UBYTE *textPtr;
+    char *textPtr;
     UBYTE *attrPtr;
 } LadfuncEntry;
 
@@ -78,10 +78,10 @@ LONG LADFUNC_LoadTextAdsFromFile(void)
         }
 
         if (textLen > 0) {
-            entry->textPtr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+            entry->textPtr = (char *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
                 Global_STR_LADFUNC_C_9, 591, textLen + 1, 0x10001
             );
-            if (entry->textPtr == (UBYTE *)0) {
+            if (entry->textPtr == (char *)0) {
                 return -1;
             }
 
@@ -112,14 +112,14 @@ LONG LADFUNC_LoadTextAdsFromFile(void)
                 entry->textPtr[out] = 0;
             }
         } else {
-            if (entry->textPtr != (UBYTE *)0) {
-                UBYTE *p = entry->textPtr;
+            if (entry->textPtr != (char *)0) {
+                char *p = entry->textPtr;
                 LONG oldLen = 0;
                 while (*p++ != 0) {
                     ++oldLen;
                 }
                 NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_11, 638, entry->textPtr, oldLen + 1);
-                entry->textPtr = (UBYTE *)0;
+                entry->textPtr = (char *)0;
                 if (entry->attrPtr != (UBYTE *)0) {
                     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_12, 642, entry->attrPtr, oldLen);
                     entry->attrPtr = (UBYTE *)0;

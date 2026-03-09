@@ -6,7 +6,7 @@ typedef struct LadfuncEntry {
     UWORD startSlot;
     UWORD endSlot;
     UWORD isHighlighted;
-    UBYTE *textPtr;
+    char *textPtr;
 } LadfuncEntry;
 
 extern UBYTE ED_DiagTextModeChar;
@@ -41,7 +41,7 @@ void LADFUNC_UpdateHighlightState(void)
         if (entry->endSlot < slot) {
             continue;
         }
-        if (entry->textPtr == (UBYTE *)0) {
+        if (entry->textPtr == (char *)0) {
             continue;
         }
 

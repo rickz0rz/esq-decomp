@@ -6,7 +6,7 @@ typedef struct LadfuncEntry {
     UWORD startSlot;
     UWORD endSlot;
     UWORD isHighlighted;
-    UBYTE *textPtr;
+    char *textPtr;
     UBYTE *attrPtr;
 } LadfuncEntry;
 
@@ -53,7 +53,7 @@ LONG LADFUNC_SaveTextAdsToFile(void)
 
     for (entryIndex = 0; entryIndex <= 46; ++entryIndex) {
         LadfuncEntry *entry = LADFUNC_EntryPtrTable[entryIndex];
-        UBYTE *text = entry->textPtr ? entry->textPtr : &empty;
+        char *text = entry->textPtr ? entry->textPtr : (char *)&empty;
         LONG textLen = 0;
         LONG i = 0;
         LONG segmentStart = 0;

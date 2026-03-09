@@ -26,7 +26,7 @@ ___LADFUNC_LoadTextAdsFromFile__1:
               BNE.B          ___LADFUNC_LoadTextAdsFromFile__3;6606 
 ___LADFUNC_LoadTextAdsFromFile__2:
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___LADFUNC_LoadTextAdsFromFile__37;6000 0222 
+              BRA.W          ___LADFUNC_LoadTextAdsFromFile__37;6000 0224 
 ___LADFUNC_LoadTextAdsFromFile__3:
               MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),$38(A7);2f6c 0000 0038 
               MOVE.L         Global_PTR_WORK_BUFFER(A4),A5;2a6c 0000 
@@ -36,7 +36,7 @@ ___LADFUNC_LoadTextAdsFromFile__4:
               MOVE.L         $1c(A7),D0               ;202f 001c 
               MOVEQ.L        #$2e,D1                  ;722e 
               CMP.L          D1,D0                    ;b081 
-              BGT.W          ___LADFUNC_LoadTextAdsFromFile__35;6e00 01e8 
+              BGT.W          ___LADFUNC_LoadTextAdsFromFile__35;6e00 01ea 
 ___LADFUNC_LoadTextAdsFromFile__5:
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
@@ -84,7 +84,7 @@ ___LADFUNC_LoadTextAdsFromFile__14:
 ___LADFUNC_LoadTextAdsFromFile__15:
               MOVE.L         $30(A7),D0               ;202f 0030 
               TST.L          D0                       ;4a80 
-              BLE.W          ___LADFUNC_LoadTextAdsFromFile__28;6f00 010c 
+              BLE.W          ___LADFUNC_LoadTextAdsFromFile__28;6f00 010e 
 ___LADFUNC_LoadTextAdsFromFile__16:
               ADDQ.L         #$1,D0                   ;5280 
               MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
@@ -97,7 +97,7 @@ ___LADFUNC_LoadTextAdsFromFile__16:
               BNE.B          ___LADFUNC_LoadTextAdsFromFile__18;6606 
 ___LADFUNC_LoadTextAdsFromFile__17:
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___LADFUNC_LoadTextAdsFromFile__37;6000 016c 
+              BRA.W          ___LADFUNC_LoadTextAdsFromFile__37;6000 016e 
 ___LADFUNC_LoadTextAdsFromFile__18:
               MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
               MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
@@ -109,7 +109,7 @@ ___LADFUNC_LoadTextAdsFromFile__18:
               BNE.B          ___LADFUNC_LoadTextAdsFromFile__20;6606 
 ___LADFUNC_LoadTextAdsFromFile__19:
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___LADFUNC_LoadTextAdsFromFile__37;6000 0146 
+              BRA.W          ___LADFUNC_LoadTextAdsFromFile__37;6000 0148 
 ___LADFUNC_LoadTextAdsFromFile__20:
               CLR.L          $28(A7)                  ;42af 0028 
               CLR.L          $2c(A7)                  ;42af 002c 
@@ -117,7 +117,7 @@ ___LADFUNC_LoadTextAdsFromFile__21:
               MOVE.L         $34(A7),D0               ;202f 0034 
               MOVE.L         $2c(A7),D1               ;222f 002c 
               CMP.L          D0,D1                    ;b280 
-              BGE.W          ___LADFUNC_LoadTextAdsFromFile__27;6c00 009c 
+              BGE.W          ___LADFUNC_LoadTextAdsFromFile__27;6c00 009e 
 ___LADFUNC_LoadTextAdsFromFile__22:
               MOVE.B         $0(A2,D1.L),D2           ;1432 1800 
               MOVE.B         D2,$24(A7)               ;1f42 0024 
@@ -160,19 +160,20 @@ ___LADFUNC_LoadTextAdsFromFile__24:
               BSR.W          LADFUNC_SetPackedPenLowNibble;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.B         D0,$3c(A7)               ;1f40 003c 
-              BRA.B          ___LADFUNC_LoadTextAdsFromFile__26;601c 
+              BRA.B          ___LADFUNC_LoadTextAdsFromFile__26;601e 
 ___LADFUNC_LoadTextAdsFromFile__25:
               MOVE.L         $28(A7),D0               ;202f 0028 
               MOVE.L         $6(A3),A0                ;206b 0006 
               ADD.L          D0,A0                    ;d1c0 
-              MOVE.B         $24(A7),(A0)             ;10af 0024 
+              MOVE.B         $24(A7),D1               ;122f 0024 
+              MOVE.B         D1,(A0)                  ;1081 
               MOVE.L         $a(A3),A0                ;206b 000a 
               ADD.L          D0,A0                    ;d1c0 
               MOVE.B         $3c(A7),(A0)             ;10af 003c 
               ADDQ.L         #$1,$28(A7)              ;52af 0028 
 ___LADFUNC_LoadTextAdsFromFile__26:
               ADDQ.L         #$1,$2c(A7)              ;52af 002c 
-              BRA.W          ___LADFUNC_LoadTextAdsFromFile__21;6000 ff5a 
+              BRA.W          ___LADFUNC_LoadTextAdsFromFile__21;6000 ff58 
 ___LADFUNC_LoadTextAdsFromFile__27:
               MOVE.L         $6(A3),A0                ;206b 0006 
               MOVE.L         A0,A1                    ;2248 
@@ -216,7 +217,7 @@ ___LADFUNC_LoadTextAdsFromFile__33:
               CLR.L          $a(A3)                   ;42ab 000a 
 ___LADFUNC_LoadTextAdsFromFile__34:
               ADDQ.L         #$1,$1c(A7)              ;52af 001c 
-              BRA.W          ___LADFUNC_LoadTextAdsFromFile__4;6000 fe10 
+              BRA.W          ___LADFUNC_LoadTextAdsFromFile__4;6000 fe0e 
 ___LADFUNC_LoadTextAdsFromFile__35:
               MOVE.L         $38(A7),D0               ;202f 0038 
               ADDQ.L         #$1,D0                   ;5280 
