@@ -50,7 +50,6 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
     const LONG ENTRY_TAG_OFFSET = 12;
     const LONG ENTRY_FLAGS_OFFSET = 27;
     const LONG ENTRY_BITMAP_OFFSET = 28;
-    const LONG AUX_TITLE_TABLE_OFFSET = 56;
     const LONG MATCH_FOUND_FLAG = -1;
     UBYTE *entry;
     UBYTE *nameShort;
@@ -64,8 +63,10 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
     LONG count;
     LONG idx;
     LONG slot;
+    LONG titleSlot;
     LONG ppvSbe;
     LONG nameLen;
+    UBYTE *nameEnd;
 
     found = 0;
     entry = (UBYTE *)entryPtr;
@@ -153,12 +154,22 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
             }
 
             slot = (LONG)TEXTDISP_FilterChannelSlotIndex;
-            candidateTitle = (UBYTE *)((ULONG *)((UBYTE *)aux + AUX_TITLE_TABLE_OFFSET))[slot];
-            if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY) {
+            titleSlot = slot;
+            candidateTitle = (UBYTE *)((ULONG *)((UBYTE *)aux + 56))[titleSlot];
+
+            if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY &&
+                slot == (LONG)CLOCK_HalfHourSlotIndex) {
+                while (titleSlot > 0 && candidateTitle == (UBYTE *)0) {
+                    candidateTitle = (UBYTE *)((ULONG *)((UBYTE *)aux + 56))[titleSlot];
+                    titleSlot--;
+                }
+            }
+
+            if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY && candidateTitle != (UBYTE *)0) {
                 candidate = (void *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
                 if (candidate == (void *)0 ||
                     TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
-                        candidate, aux, slot, MINUTES_PER_DAY, CONFIG_TimeWindowMinutes) == 0) {
+                        candidate, aux, titleSlot, MINUTES_PER_DAY, CONFIG_TimeWindowMinutes) == 0) {
                     candidateTitle = (UBYTE *)0;
                 }
             }
@@ -172,23 +183,24 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
             }
 
             if (TEXTDISP_FilterSportsMatchFlag != 0 &&
-                TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(aux, slot) == 0) {
+                TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(aux, titleSlot) == 0) {
                 TEXTDISP_FilterCandidateCursor++;
                 continue;
             }
 
             candidateName = nameLong;
-            nameLen = 0;
-            while (candidateName[nameLen] != CH_NUL) {
-                nameLen++;
+            nameEnd = candidateName;
+            while (*nameEnd != CH_NUL) {
+                nameEnd++;
             }
+            nameLen = (LONG)(nameEnd - candidateName);
             if (STRING_CompareNoCaseN((const char *)candidateName, (const char *)candidateTitle, nameLen) == 0) {
                 candidate = (void *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
                 if (candidate != (void *)0 &&
-                    TLIBA2_JMPTBL_ESQ_TestBit1Based((void *)((UBYTE *)candidate + ENTRY_BITMAP_OFFSET), slot) ==
+                    TLIBA2_JMPTBL_ESQ_TestBit1Based((void *)((UBYTE *)candidate + ENTRY_BITMAP_OFFSET), titleSlot) ==
                         MATCH_FOUND_FLAG) {
                     found = 1;
-                    TEXTDISP_SetSelectionFields(entry, mode, idx, slot);
+                    TEXTDISP_SetSelectionFields(entry, mode, idx, titleSlot);
                     TEXTDISP_BuildEntryDetailLine(entry);
                 }
             }
