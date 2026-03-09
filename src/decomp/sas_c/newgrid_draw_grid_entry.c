@@ -28,7 +28,7 @@ extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, LONG ch);
 extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *set);
 extern LONG NEWGRID_Apply24HourFormatting(char *dst, LONG row, LONG mode);
-extern LONG NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(char *ctx, void *coi, LONG row, char *text, LONG fmt);
+extern LONG NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(char *ctx, char *coi, LONG row, char *text, LONG fmt);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layout, const char *src);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(char *layout, const char *src);
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
@@ -84,7 +84,7 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
     }
 
     if (renderMode && textLines == 3) {
-        NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(rowMeta, coi, row, NEWGRID_EntryTextScratchPtr, clockFmt);
+        NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(rowMeta, (char *)coi, row, NEWGRID_EntryTextScratchPtr, clockFmt);
         NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, NEWGRID_EntryTextScratchPtr);
         return;
     }
@@ -183,7 +183,7 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
 
     if (clockFmt == -1 && renderMode && textLines > 1) {
         NEWGRID_EntryTextScratchPtr[0] = 0;
-        NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(rowMeta, coi, row, NEWGRID_EntryTextScratchPtr, -1);
+        NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(rowMeta, (char *)coi, row, NEWGRID_EntryTextScratchPtr, -1);
         NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, NEWGRID_EntryTextScratchPtr);
     }
 }
