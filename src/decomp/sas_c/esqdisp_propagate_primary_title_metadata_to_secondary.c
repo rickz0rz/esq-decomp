@@ -27,7 +27,7 @@ extern ESQDISP_TitleData *TEXTDISP_SecondaryTitlePtrTable[];
 
 extern LONG ESQSHARED_JMPTBL_ESQ_TestBit1Based(void *bitset_base, LONG bit_index);
 extern LONG ESQSHARED_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
-extern void *ESQPARS_ReplaceOwnedString(const void *new_ptr, void *old_ptr);
+extern char *ESQPARS_ReplaceOwnedString(char *new_ptr, char *old_ptr);
 
 void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void)
 {
@@ -104,7 +104,7 @@ void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void)
                 }
 
                 secondaryTitle->slotFlags[1] = (UBYTE)(primaryTitle->slotAttr252[selector_slot] | 0x80);
-                secondaryTitle->titleTable[1] = (char *)ESQPARS_ReplaceOwnedString(
+                secondaryTitle->titleTable[1] = ESQPARS_ReplaceOwnedString(
                     primaryTitle->titleTable[selector_slot],
                     secondaryTitle->titleTable[1]
                 );
