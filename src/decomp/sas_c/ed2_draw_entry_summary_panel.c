@@ -12,6 +12,11 @@ typedef struct ED2_Entry {
     UWORD flags46;
 } ED2_Entry;
 
+typedef struct ED2_DisplayContext {
+    UBYTE pad0[2];
+    UBYTE rastPort[1];
+} ED2_DisplayContext;
+
 extern UWORD ED2_SelectedEntryIndex;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE *ED2_SelectedEntryDataPtr;
@@ -43,6 +48,7 @@ extern void GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 void ED2_DrawEntrySummaryPanel(void)
 {
     char panelTextBuffer[120];
+    ED2_DisplayContext *context;
     ED2_Entry *entry;
     void *rastPort;
     UWORD flags8;
@@ -69,7 +75,8 @@ void ED2_DrawEntrySummaryPanel(void)
         return;
     }
 
-    rastPort = (void *)((UBYTE *)WDISP_DisplayContextBase + 2);
+    context = (ED2_DisplayContext *)WDISP_DisplayContextBase;
+    rastPort = (void *)context->rastPort;
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(panelTextBuffer, Global_STR_CLU_CLU_POS1,
                                   (LONG)ED2_SelectedEntryIndex,
