@@ -3,7 +3,7 @@ typedef signed long LONG;
 extern void COI_GetAnimFieldPointerByMode(void);
 extern char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern void LADFUNC_GetPackedPenLowNibble(void);
-extern void ESQDISP_GetEntryPointerByMode(void);
+extern char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern void COI_TestEntryWithinTimeWindow(void);
 extern void CLEANUP_FormatClockFormatEntry(void);
 extern void ESQDISP_ComputeScheduleOffsetForRow(void);
@@ -14,7 +14,7 @@ extern void LADFUNC_GetPackedPenHighNibble(void);
 void TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(void){COI_GetAnimFieldPointerByMode();}
 char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryAuxPointerByMode(index, mode);}
 void TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble(void){LADFUNC_GetPackedPenLowNibble();}
-void TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(void){ESQDISP_GetEntryPointerByMode();}
+char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryPointerByMode(index, mode);}
 void TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(void){COI_TestEntryWithinTimeWindow();}
 void TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(void){CLEANUP_FormatClockFormatEntry();}
 void TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(void){ESQDISP_ComputeScheduleOffsetForRow();}

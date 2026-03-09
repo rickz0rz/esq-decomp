@@ -1,3 +1,5 @@
-extern void ESQDISP_GetEntryPointerByMode(void);
+typedef signed long LONG;
 
-void NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(void){ESQDISP_GetEntryPointerByMode();}
+extern char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+
+char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryPointerByMode(index, mode);}
