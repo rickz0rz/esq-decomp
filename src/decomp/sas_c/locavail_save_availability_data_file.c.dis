@@ -2,26 +2,26 @@
 __code:
 LOCAVAIL_SaveAvailabilityDataFil:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$b4,D0                  ;90bc 0000 00b4 
+              SUB.L          #$b0,D0                  ;90bc 0000 00b0 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$a8,A7                  ;9efc 00a8 
+              SUB.W          #$a4,A7                  ;9efc 00a4 
               MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
 ___LOCAVAIL_SaveAvailabilityDataFil__1:
-              MOVE.L         $cc(A7),A3               ;266f 00cc 
-              MOVE.L         $c8(A7),A5               ;2a6f 00c8 
+              MOVE.L         $c8(A7),A3               ;266f 00c8 
+              MOVE.L         $c4(A7),A5               ;2a6f 00c4 
               MOVE.B         LOCAVAIL_TAG_UVGTI(A4),D0;102c 0000 
-              MOVE.B         D0,$b8(A7)               ;1f40 00b8 
+              MOVE.B         D0,$b4(A7)               ;1f40 00b4 
               MOVE.B         LOCAVAIL_TAG_UVGTI+$1(A4),D0;102c 0001 
-              MOVE.B         D0,$b9(A7)               ;1f40 00b9 
+              MOVE.B         D0,$b5(A7)               ;1f40 00b5 
               MOVE.B         LOCAVAIL_TAG_UVGTI+$2(A4),D0;102c 0002 
-              MOVE.B         D0,$ba(A7)               ;1f40 00ba 
+              MOVE.B         D0,$b6(A7)               ;1f40 00b6 
               MOVE.B         LOCAVAIL_TAG_UVGTI+$3(A4),D0;102c 0003 
-              MOVE.B         D0,$bb(A7)               ;1f40 00bb 
+              MOVE.B         D0,$b7(A7)               ;1f40 00b7 
               MOVE.B         LOCAVAIL_TAG_UVGTI+$4(A4),D0;102c 0004 
-              MOVE.B         D0,$bc(A7)               ;1f40 00bc 
+              MOVE.B         D0,$b8(A7)               ;1f40 00b8 
               MOVE.B         LOCAVAIL_TAG_UVGTI+$5(A4),D0;102c 0005 
-              MOVE.B         D0,$bd(A7)               ;1f40 00bd 
+              MOVE.B         D0,$b9(A7)               ;1f40 00b9 
               MOVEQ.L        #$1,D6                   ;7c01 
               MOVE.L         MODE_NEWFILE(A4),-(A7)   ;2f2c 0000 
               PEA            LOCAVAIL_PATH_DF0_COLON_LOCAVAIL(A4);486c 0000 
@@ -29,28 +29,28 @@ ___LOCAVAIL_SaveAvailabilityDataFil__1:
               MOVE.L         D0,D7                    ;2e00 
               ADDQ.W         #$8,A7                   ;504f 
               MOVE.L         D7,D0                    ;2007 
-              BEQ.W          ___LOCAVAIL_SaveAvailabilityDataFil__27;6700 019c 
+              BEQ.W          ___LOCAVAIL_SaveAvailabilityDataFil__27;6700 018c 
 ___LOCAVAIL_SaveAvailabilityDataFil__2:
 ___LOCAVAIL_SaveAvailabilityDataFil__3:
               MOVE.L         A5,A2                    ;244d 
-              MOVE.L         A3,$c0(A7)               ;2f4b 00c0 
+              MOVE.L         A3,$bc(A7)               ;2f4b 00bc 
               LEA            LOCAVAIL_STR_LA_VER_1_COLON_CURD(A4),A0;41ec 0000 
-              MOVE.L         A0,$b4(A7)               ;2f48 00b4 
+              MOVE.L         A0,$b0(A7)               ;2f48 00b0 
 ___LOCAVAIL_SaveAvailabilityDataFil__4:
-              MOVE.L         $b4(A7),$b0(A7)          ;2f6f 00b4 00b0 
+              MOVE.L         $b0(A7),$ac(A7)          ;2f6f 00b0 00ac 
 ___LOCAVAIL_SaveAvailabilityDataFil__5:
-              MOVE.L         $b0(A7),A0               ;206f 00b0 
+              MOVE.L         $ac(A7),A0               ;206f 00ac 
               TST.B          (A0)                     ;4a10 
               BEQ.B          ___LOCAVAIL_SaveAvailabilityDataFil__7;6706 
 ___LOCAVAIL_SaveAvailabilityDataFil__6:
-              ADDQ.L         #$1,$b0(A7)              ;52af 00b0 
+              ADDQ.L         #$1,$ac(A7)              ;52af 00ac 
               BRA.B          ___LOCAVAIL_SaveAvailabilityDataFil__5;60f2 
 ___LOCAVAIL_SaveAvailabilityDataFil__7:
-              MOVE.L         $b0(A7),D0               ;202f 00b0 
-              SUB.L          $b4(A7),D0               ;90af 00b4 
+              MOVE.L         $ac(A7),D0               ;202f 00ac 
+              SUB.L          $b0(A7),D0               ;90af 00b0 
               ADDQ.L         #$1,D0                   ;5280 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         $b8(A7),-(A7)            ;2f2f 00b8 
+              MOVE.L         $b4(A7),-(A7)            ;2f2f 00b4 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteBuff;6100 0000 
               MOVEQ.L        #$0,D0                   ;7000 
@@ -58,26 +58,25 @@ ___LOCAVAIL_SaveAvailabilityDataFil__7:
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteDeci;6100 0000 
-              LEA            $2(A2),A0                ;41ea 0002 
-              MOVE.L         (A0),(A7)                ;2e90 
+              MOVE.L         $2(A2),(A7)              ;2eaa 0002 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteDeci;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
               MOVE.B         $6(A2),D0                ;102a 0006 
-              MOVE.B         D0,$24(A7)               ;1f40 0024 
-              CLR.B          $25(A7)                  ;422f 0025 
-              LEA            $24(A7),A0               ;41ef 0024 
-              MOVE.L         A0,$b0(A7)               ;2f48 00b0 
+              MOVE.B         D0,$20(A7)               ;1f40 0020 
+              CLR.B          $21(A7)                  ;422f 0021 
+              LEA            $20(A7),A0               ;41ef 0020 
+              MOVE.L         A0,$ac(A7)               ;2f48 00ac 
 ___LOCAVAIL_SaveAvailabilityDataFil__8:
-              MOVE.L         $b0(A7),A0               ;206f 00b0 
+              MOVE.L         $ac(A7),A0               ;206f 00ac 
               TST.B          (A0)                     ;4a10 
               BEQ.B          ___LOCAVAIL_SaveAvailabilityDataFil__10;6706 
 ___LOCAVAIL_SaveAvailabilityDataFil__9:
-              ADDQ.L         #$1,$b0(A7)              ;52af 00b0 
+              ADDQ.L         #$1,$ac(A7)              ;52af 00ac 
               BRA.B          ___LOCAVAIL_SaveAvailabilityDataFil__8;60f2 
 ___LOCAVAIL_SaveAvailabilityDataFil__10:
-              MOVE.L         $b0(A7),D0               ;202f 00b0 
-              LEA            $24(A7),A0               ;41ef 0024 
+              MOVE.L         $ac(A7),D0               ;202f 00ac 
+              LEA            $20(A7),A0               ;41ef 0020 
               SUB.L          A0,D0                    ;9088 
               ADDQ.L         #$1,D0                   ;5280 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -87,86 +86,79 @@ ___LOCAVAIL_SaveAvailabilityDataFil__10:
               LEA            $c(A7),A7                ;4fef 000c 
               MOVEQ.L        #$0,D5                   ;7a00 
 ___LOCAVAIL_SaveAvailabilityDataFil__11:
-              LEA            $2(A2),A0                ;41ea 0002 
-              CMP.L          (A0),D5                  ;ba90 
-              BGE.W          ___LOCAVAIL_SaveAvailabilityDataFil__22;6c00 00e0 
+              CMP.L          $2(A2),D5                ;baaa 0002 
+              BGE.W          ___LOCAVAIL_SaveAvailabilityDataFil__22;6c00 00d4 
 ___LOCAVAIL_SaveAvailabilityDataFil__12:
-              LEA            $14(A2),A0               ;41ea 0014 
-              PEA            ($a).w                   ;4878 000a 
-              MOVE.L         D5,-(A7)                 ;2f05 
-              MOVE.L         A0,$24(A7)               ;2f48 0024 
-              BSR.W          NEWGRID_JMPTBL_MATH_Mulu32;6100 0000 
-              MOVE.L         $24(A7),A1               ;226f 0024 
-              MOVE.L         (A1),A0                  ;2051 
+              MOVE.L         D5,D0                    ;2005 
+              ASL.L          #$2,D0                   ;e580 
+              ADD.L          D5,D0                    ;d085 
+              ADD.L          D0,D0                    ;d080 
+              MOVE.L         $14(A2),A0               ;206a 0014 
               ADD.L          D0,A0                    ;d1c0 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A0),D0                  ;1010 
-              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D7,-(A7)                 ;2f07 
-              MOVE.L         A0,$b8(A7)               ;2f48 00b8 
+              MOVE.L         A0,$b0(A7)               ;2f48 00b0 
               BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteDeci;6100 0000 
-              MOVE.L         $b8(A7),A0               ;206f 00b8 
-              ADDQ.L         #$2,A0                   ;5488 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         (A0),D0                  ;3010 
-              MOVE.L         D0,(A7)                  ;2e80 
-              MOVE.L         D7,-(A7)                 ;2f07 
-              BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteDeci;6100 0000 
-              MOVE.L         $bc(A7),A0               ;206f 00bc 
-              ADDQ.L         #$4,A0                   ;5888 
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.L         $b0(A7),A0               ;206f 00b0 
+              MOVE.W         $2(A0),D0                ;3028 0002 
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteDeci;6100 0000 
-              LEA            $14(A7),A7               ;4fef 0014 
-              MOVE.L         $ac(A7),A0               ;206f 00ac 
-              ADDQ.L         #$4,A0                   ;5888 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         (A0),D0                  ;3010 
-              CLR.L          $a8(A7)                  ;42af 00a8 
-              MOVE.L         D0,$a4(A7)               ;2f40 00a4 
+              MOVE.L         $b4(A7),A0               ;206f 00b4 
+              MOVE.W         $4(A0),D0                ;3028 0004 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteDeci;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $a8(A7),A0               ;206f 00a8 
+              MOVE.W         $4(A0),D0                ;3028 0004 
+              CLR.L          $a4(A7)                  ;42af 00a4 
+              MOVE.L         D0,$a0(A7)               ;2f40 00a0 
 ___LOCAVAIL_SaveAvailabilityDataFil__13:
-              MOVE.L         $a8(A7),D0               ;202f 00a8 
-              CMP.L          $a4(A7),D0               ;b0af 00a4 
+              MOVE.L         $a4(A7),D0               ;202f 00a4 
+              CMP.L          $a0(A7),D0               ;b0af 00a0 
               BGE.B          ___LOCAVAIL_SaveAvailabilityDataFil__18;6c32 
 ___LOCAVAIL_SaveAvailabilityDataFil__14:
-              MOVE.L         $ac(A7),A0               ;206f 00ac 
-              ADDQ.L         #$6,A0                   ;5c88 
-              MOVE.L         (A0),A1                  ;2250 
-              ADD.L          D0,A1                    ;d3c0 
-              MOVE.B         (A1),D1                  ;1211 
-              MOVE.B         D1,$23(A7)               ;1f41 0023 
+              MOVE.L         $a8(A7),A1               ;226f 00a8 
+              MOVE.L         $6(A1),A0                ;2069 0006 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.B         (A0),D1                  ;1210 
+              MOVE.B         D1,$1f(A7)               ;1f41 001f 
               MOVEQ.L        #$5,D2                   ;7405 
               CMP.B          D2,D1                    ;b202 
               BCC.B          ___LOCAVAIL_SaveAvailabilityDataFil__16;6410 
 ___LOCAVAIL_SaveAvailabilityDataFil__15:
               MOVEQ.L        #$0,D2                   ;7400 
               MOVE.B         D1,D2                    ;1401 
-              LEA            $b8(A7),A0               ;41ef 00b8 
+              LEA            $b4(A7),A0               ;41ef 00b4 
               ADD.W          D2,A0                    ;d0c2 
-              MOVE.B         (A0),$24(A7,D0.L)        ;1f90 0824 
+              MOVE.B         (A0),$20(A7,D0.L)        ;1f90 0820 
               BRA.B          ___LOCAVAIL_SaveAvailabilityDataFil__17;6006 
 ___LOCAVAIL_SaveAvailabilityDataFil__16:
-              MOVE.B         $b8(A7),$24(A7,D0.L)     ;1faf 00b8 0824 
+              MOVE.B         $b4(A7),$20(A7,D0.L)     ;1faf 00b4 0820 
 ___LOCAVAIL_SaveAvailabilityDataFil__17:
-              ADDQ.L         #$1,$a8(A7)              ;52af 00a8 
+              ADDQ.L         #$1,$a4(A7)              ;52af 00a4 
               BRA.B          ___LOCAVAIL_SaveAvailabilityDataFil__13;60c4 
 ___LOCAVAIL_SaveAvailabilityDataFil__18:
-              MOVE.L         $a8(A7),D0               ;202f 00a8 
-              CLR.B          $24(A7,D0.L)             ;4237 0824 
-              LEA            $24(A7),A0               ;41ef 0024 
-              MOVE.L         A0,$b0(A7)               ;2f48 00b0 
+              MOVE.L         $a4(A7),D0               ;202f 00a4 
+              CLR.B          $20(A7,D0.L)             ;4237 0820 
+              LEA            $20(A7),A0               ;41ef 0020 
+              MOVE.L         A0,$ac(A7)               ;2f48 00ac 
 ___LOCAVAIL_SaveAvailabilityDataFil__19:
-              MOVE.L         $b0(A7),A0               ;206f 00b0 
+              MOVE.L         $ac(A7),A0               ;206f 00ac 
               TST.B          (A0)                     ;4a10 
               BEQ.B          ___LOCAVAIL_SaveAvailabilityDataFil__21;6706 
 ___LOCAVAIL_SaveAvailabilityDataFil__20:
-              ADDQ.L         #$1,$b0(A7)              ;52af 00b0 
+              ADDQ.L         #$1,$ac(A7)              ;52af 00ac 
               BRA.B          ___LOCAVAIL_SaveAvailabilityDataFil__19;60f2 
 ___LOCAVAIL_SaveAvailabilityDataFil__21:
-              MOVE.L         $b0(A7),D0               ;202f 00b0 
-              LEA            $24(A7),A0               ;41ef 0024 
+              MOVE.L         $ac(A7),D0               ;202f 00ac 
+              LEA            $20(A7),A0               ;41ef 0020 
               SUB.L          A0,D0                    ;9088 
               ADDQ.L         #$1,D0                   ;5280 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -175,14 +167,14 @@ ___LOCAVAIL_SaveAvailabilityDataFil__21:
               BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteBuff;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               ADDQ.L         #$1,D5                   ;5285 
-              BRA.W          ___LOCAVAIL_SaveAvailabilityDataFil__11;6000 ff1a 
+              BRA.W          ___LOCAVAIL_SaveAvailabilityDataFil__11;6000 ff28 
 ___LOCAVAIL_SaveAvailabilityDataFil__22:
-              MOVE.L         $c0(A7),A2               ;246f 00c0 
-              CLR.L          $c0(A7)                  ;42af 00c0 
+              MOVE.L         $bc(A7),A2               ;246f 00bc 
+              CLR.L          $bc(A7)                  ;42af 00bc 
               LEA            LOCAVAIL_STR_LA_VER_1_COLON_NXTD(A4),A0;41ec 0000 
-              MOVE.L         A0,$b4(A7)               ;2f48 00b4 
+              MOVE.L         A0,$b0(A7)               ;2f48 00b0 
               MOVE.L         A2,D0                    ;200a 
-              BNE.W          ___LOCAVAIL_SaveAvailabilityDataFil__4;6600 fe80 
+              BNE.W          ___LOCAVAIL_SaveAvailabilityDataFil__4;6600 fe90 
 ___LOCAVAIL_SaveAvailabilityDataFil__23:
 ___LOCAVAIL_SaveAvailabilityDataFil__24:
 ___LOCAVAIL_SaveAvailabilityDataFil__25:
@@ -193,7 +185,7 @@ ___LOCAVAIL_SaveAvailabilityDataFil__25:
 ___LOCAVAIL_SaveAvailabilityDataFil__26:
 ___LOCAVAIL_SaveAvailabilityDataFil__27:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
-              ADD.W          #$a8,A7                  ;defc 00a8 
+              ADD.W          #$a4,A7                  ;defc 00a4 
               RTS                                     ;4e75 
 __const:
 __strings:
@@ -206,7 +198,6 @@ __strings:
               XREF           LOCAVAIL_STR_LA_VER_1_COLON_CURD
               XREF           GROUP_AY_JMPTBL_DISKIO_WriteBuff
               XREF           GROUP_AY_JMPTBL_DISKIO_WriteDeci
-              XREF           NEWGRID_JMPTBL_MATH_Mulu32
               XREF           LOCAVAIL_STR_LA_VER_1_COLON_NXTD
               XREF           GROUP_AY_JMPTBL_DISKIO_CloseBuff
               XDEF           LOCAVAIL_SaveAvailabilityDataFil

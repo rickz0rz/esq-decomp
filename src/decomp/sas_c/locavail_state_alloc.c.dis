@@ -2,63 +2,52 @@
 __code:
 LOCAVAIL_CopyFilterStateStructRe:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              SUBQ.L         #$8,D0                   ;5180 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$c,A7                   ;9efc 000c 
-              MOVEM.L        A2/A3/A5/A6,-(A7)        ;48e7 0036 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
 ___LOCAVAIL_CopyFilterStateStructRe__1:
-              MOVE.L         $24(A7),A3               ;266f 0024 
-              MOVE.L         $20(A7),A5               ;2a6f 0020 
+              MOVE.L         $1c(A7),A3               ;266f 001c 
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
               MOVE.L         A5,A2                    ;244d 
-              MOVE.L         A3,A0                    ;204b 
-              MOVE.B         (A0),(A2)                ;1490 
-              LEA            $2(A2),A1                ;43ea 0002 
-              LEA            $2(A0),A6                ;4de8 0002 
-              MOVE.L         (A6),(A1)                ;2296 
-              MOVE.B         $6(A0),$6(A2)            ;1568 0006 0006 
-              LEA            $10(A0),A1               ;43e8 0010 
-              MOVE.L         (A1),A6                  ;2c51 
-              LEA            $10(A2),A1               ;43ea 0010 
-              MOVE.L         A6,(A1)                  ;228e 
-              MOVE.L         A1,$10(A7)               ;2f49 0010 
-              LEA            $14(A2),A1               ;43ea 0014 
-              MOVE.L         A6,$14(A7)               ;2f4e 0014 
-              LEA            $14(A0),A6               ;4de8 0014 
-              MOVE.L         (A6),(A1)                ;2296 
-              MOVE.L         A0,$18(A7)               ;2f48 0018 
+              MOVE.L         A3,$10(A7)               ;2f4b 0010 
               MOVE.L         $10(A7),A0               ;206f 0010 
-              TST.L          (A0)                     ;4a90 
-              BEQ.B          ___LOCAVAIL_CopyFilterStateStructRe__4;6706 
+              MOVE.B         (A0),(A2)                ;1490 
+              MOVE.L         $2(A0),$2(A2)            ;2568 0002 0002 
+              MOVE.B         $6(A0),$6(A2)            ;1568 0006 0006 
+              MOVE.L         $10(A0),A1               ;2268 0010 
+              MOVE.L         A1,$10(A2)               ;2549 0010 
+              MOVE.L         $14(A0),$14(A2)          ;2568 0014 0014 
+              MOVE.L         A1,$c(A7)                ;2f49 000c 
+              TST.L          $10(A2)                  ;4aaa 0010 
+              BEQ.B          ___LOCAVAIL_CopyFilterStateStructRe__4;6702 
 ___LOCAVAIL_CopyFilterStateStructRe__2:
-              MOVE.L         $14(A7),A0               ;206f 0014 
-              ADDQ.L         #$1,(A0)                 ;5290 
+              ADDQ.L         #$1,(A1)                 ;5291 
 ___LOCAVAIL_CopyFilterStateStructRe__3:
 ___LOCAVAIL_CopyFilterStateStructRe__4:
-              MOVEM.L        (A7)+,A2/A3/A5/A6        ;4cdf 6c00 
-              ADD.W          #$c,A7                   ;defc 000c 
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              ADDQ.W         #$8,A7                   ;504f 
               RTS                                     ;4e75 
 __const:
 __strings:
 LOCAVAIL_AllocNodeArraysForState:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$4,A7                   ;594f 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___LOCAVAIL_AllocNodeArraysForState__1:
-              MOVE.L         $20(A7),A5               ;2a6f 0020 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
               MOVE.L         A5,A3                    ;264d 
               MOVEQ.L        #$0,D7                   ;7e00 
-              LEA            $2(A3),A0                ;41eb 0002 
-              MOVE.L         (A0),D6                  ;2c10 
+              MOVE.L         $2(A3),D6                ;2c2b 0002 
               TST.L          D6                       ;4a86 
-              BLE.B          ___LOCAVAIL_AllocNodeArraysForState__6;6f6e 
+              BLE.B          ___LOCAVAIL_AllocNodeArraysForState__6;6f5a 
 ___LOCAVAIL_AllocNodeArraysForState__2:
               MOVEQ.L        #$64,D0                  ;7064 
               CMP.L          D0,D6                    ;bc80 
-              BGE.B          ___LOCAVAIL_AllocNodeArraysForState__6;6c68 
+              BGE.B          ___LOCAVAIL_AllocNodeArraysForState__6;6c54 
 ___LOCAVAIL_AllocNodeArraysForState__3:
               MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
               PEA            ($4).w                   ;4878 0004 
@@ -67,29 +56,22 @@ ___LOCAVAIL_AllocNodeArraysForState__3:
               BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
               MOVE.L         D0,A2                    ;2440 
               LEA            $10(A7),A7               ;4fef 0010 
-              LEA            $10(A3),A0               ;41eb 0010 
-              MOVE.L         A2,(A0)                  ;208a 
+              MOVE.L         A2,$10(A3)               ;274a 0010 
               MOVE.L         A2,D0                    ;200a 
-              BEQ.B          ___LOCAVAIL_AllocNodeArraysForState__6;6742 
+              BEQ.B          ___LOCAVAIL_AllocNodeArraysForState__6;6730 
 ___LOCAVAIL_AllocNodeArraysForState__4:
               CLR.L          (A2)                     ;4292 
-              LEA            $2(A3),A0                ;41eb 0002 
               PEA            ($a).w                   ;4878 000a 
-              MOVE.L         (A0),-(A7)               ;2f10 
+              MOVE.L         $2(A3),-(A7)             ;2f2b 0002 
               BSR.W          GROUP_AY_JMPTBL_MATH_Mulu32;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
-              LEA            $14(A3),A0               ;41eb 0014 
               MOVE.L         #$10001,(A7)             ;2ebc 0001 0001 
               MOVE.L         D5,-(A7)                 ;2f05 
               PEA            ($e5).w                  ;4878 00e5 
               PEA            Global_STR_LOCAVAIL_C_5(A4);486c 0000 
-              MOVE.L         A0,$2c(A7)               ;2f48 002c 
               BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              MOVE.L         D0,$14(A3)               ;2740 0014 
               LEA            $14(A7),A7               ;4fef 0014 
-              MOVE.L         $18(A7),A0               ;206f 0018 
-              MOVE.L         D0,(A0)                  ;2080 
-              LEA            $14(A3),A0               ;41eb 0014 
-              TST.L          (A0)                     ;4a90 
               BEQ.B          ___LOCAVAIL_AllocNodeArraysForState__6;6702 
 ___LOCAVAIL_AllocNodeArraysForState__5:
               MOVEQ.L        #$1,D7                   ;7e01 
@@ -98,7 +80,6 @@ ___LOCAVAIL_AllocNodeArraysForState__6:
 ___LOCAVAIL_AllocNodeArraysForState__7:
 ___LOCAVAIL_AllocNodeArraysForState__8:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF

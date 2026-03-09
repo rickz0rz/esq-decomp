@@ -3,6 +3,26 @@ typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct LOCAVAIL_NodeRecord {
+    UBYTE tokenIndex0;
+    UBYTE pad1;
+    UWORD duration2;
+    UWORD payloadSize4;
+    UBYTE *payload6;
+} LOCAVAIL_NodeRecord;
+
+typedef struct LOCAVAIL_FilterState {
+    UBYTE mode0;
+    UBYTE pad1;
+    LONG nodeCount2;
+    UBYTE modeChar6;
+    UBYTE pad7;
+    LONG field8;
+    LONG field12;
+    UBYTE pad16[4];
+    LOCAVAIL_NodeRecord *nodeTable20;
+} LOCAVAIL_FilterState;
+
 extern LONG MODE_NEWFILE;
 extern UBYTE LOCAVAIL_TAG_UVGTI[];
 extern const char LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Save[];
@@ -17,8 +37,8 @@ extern LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 
 LONG LOCAVAIL_SaveAvailabilityDataFile(void *primaryStatePtr, void *secondaryStatePtr)
 {
-    UBYTE *state;
-    UBYTE *secondaryState;
+    LOCAVAIL_FilterState *state;
+    LOCAVAIL_FilterState *secondaryState;
     LONG fileHandle;
     LONG result;
     char encodeMap[6];
@@ -39,8 +59,8 @@ LONG LOCAVAIL_SaveAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
         return 0;
     }
 
-    state = (UBYTE *)primaryStatePtr;
-    secondaryState = (UBYTE *)secondaryStatePtr;
+    state = (LOCAVAIL_FilterState *)primaryStatePtr;
+    secondaryState = (LOCAVAIL_FilterState *)secondaryStatePtr;
     {
         const char *header = LOCAVAIL_STR_LA_VER_1_COLON_CURDAY;
 
@@ -55,10 +75,10 @@ LONG LOCAVAIL_SaveAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
             GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(
                 fileHandle, header, (LONG)(scan - header) + 1);
 
-            GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fileHandle, (LONG)state[0]);
-            GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fileHandle, *(LONG *)(state + 2));
+            GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fileHandle, (LONG)state->mode0);
+            GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fileHandle, state->nodeCount2);
 
-            outBuf[0] = (char)state[6];
+            outBuf[0] = (char)state->modeChar6;
             outBuf[1] = '\0';
             scan = outBuf;
             while (*scan != 0) {
@@ -68,22 +88,22 @@ LONG LOCAVAIL_SaveAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
                 fileHandle, outBuf, (LONG)(scan - outBuf) + 1);
 
             nodeIndex = 0;
-            while (nodeIndex < *(LONG *)(state + 2)) {
-                UBYTE *node;
+            while (nodeIndex < state->nodeCount2) {
+                LOCAVAIL_NodeRecord *node;
                 LONG payloadIndex;
                 LONG payloadLen;
 
-                node = *(UBYTE **)(state + 20) + NEWGRID_JMPTBL_MATH_Mulu32(nodeIndex, 10);
-                GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fileHandle, (LONG)node[0]);
-                GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fileHandle, (LONG)*(UWORD *)(node + 2));
-                GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fileHandle, (LONG)*(UWORD *)(node + 4));
+                node = state->nodeTable20 + nodeIndex;
+                GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fileHandle, (LONG)node->tokenIndex0);
+                GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fileHandle, (LONG)node->duration2);
+                GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fileHandle, (LONG)node->payloadSize4);
 
-                payloadLen = (LONG)*(UWORD *)(node + 4);
+                payloadLen = (LONG)node->payloadSize4;
                 payloadIndex = 0;
                 while (payloadIndex < payloadLen) {
                     UBYTE cls;
 
-                    cls = *(*(UBYTE **)(node + 6) + payloadIndex);
+                    cls = node->payload6[payloadIndex];
                     if (cls < 5) {
                         outBuf[payloadIndex] = encodeMap[cls];
                     } else {
@@ -104,9 +124,9 @@ LONG LOCAVAIL_SaveAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
             }
 
             state = secondaryState;
-            secondaryState = (UBYTE *)0;
+            secondaryState = (LOCAVAIL_FilterState *)0;
             header = LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY;
-            if (state == (UBYTE *)0) {
+            if (state == (LOCAVAIL_FilterState *)0) {
                 break;
             }
         }
