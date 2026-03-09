@@ -14,7 +14,7 @@ extern char TEXTDISP_ChannelLabelBufferTerminatorByte[];
 extern const char Global_STR_ALIGNED_ON[];
 extern const char Global_STR_ALIGNED_CHANNEL_1[];
 
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 
 void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix)
