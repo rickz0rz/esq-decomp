@@ -5,17 +5,17 @@ extern LONG NEWGRID2_DispatchStateIndex;
 extern LONG NEWGRID2_CachedModeIndex;
 extern LONG NEWGRID2_ShowtimesSelectionContextPtr;
 
-extern LONG NEWGRID2_ProcessGridState(void *gridCtx, LONG *selectionCtxPtr, LONG modeSel);
+extern LONG NEWGRID2_ProcessGridState(char *gridCtx, LONG *selectionCtxPtr, LONG modeSel);
 extern void NEWGRID_InitSelectionWindowAlt(LONG *selectionCtxPtr, LONG rowIndex, LONG modeSel);
 extern LONG NEWGRID_UpdateSelectionFromInputAlt(LONG stateIndex, LONG *selectionCtxPtr, LONG modeSel);
-extern void NEWGRID_DrawShowtimesPrompt(void *gridCtx, LONG selectionCtx, LONG modeSel);
+extern void NEWGRID_DrawShowtimesPrompt(char *gridCtx, LONG selectionCtx, LONG modeSel);
 extern LONG NEWGRID_TestModeFlagActive(LONG modeSel);
-extern LONG NEWGRID_ValidateSelectionCode(void *gridCtx, LONG limit);
+extern LONG NEWGRID_ValidateSelectionCode(char *gridCtx, LONG limit);
 extern LONG NEWGRID_GetGridModeIndex(void);
-extern LONG NEWGRID_ComputeColumnIndex(void *gridCtx);
+extern LONG NEWGRID_ComputeColumnIndex(char *gridCtx);
 extern void NEWGRID_ClearMarkersIfSelectable(LONG modeSel, LONG rowIndex);
 
-LONG NEWGRID2_HandleGridState(void *gridCtx, WORD rowIndex, LONG modeSel)
+LONG NEWGRID2_HandleGridState(char *gridCtx, WORD rowIndex, LONG modeSel)
 {
     LONG d5 = 0;
     LONG d0;

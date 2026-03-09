@@ -6,14 +6,14 @@ extern LONG NEWGRID2_LastDispatchResult;
 extern LONG NEWGRID_GridOperationId;
 extern WORD ESQDISP_PendingGridReinitFlag;
 
-extern LONG NEWGRID_HandleGridSelection(void *gridCtx, LONG rowIndex);
-extern LONG NEWGRID_ProcessAltEntryState(void *gridCtx, LONG rowIndex, LONG selector);
-extern LONG NEWGRID2_HandleGridState(void *gridCtx, WORD rowIndex, LONG modeSel);
-extern LONG NEWGRID_ProcessSecondaryState(void *gridCtx, LONG rowIndex);
-extern LONG NEWGRID_ProcessScheduleState(void *gridCtx, LONG rowIndex, LONG selector);
-extern LONG NEWGRID_ProcessShowtimesWorkflow(void *gridCtx, LONG rowIndex, LONG selector);
+extern LONG NEWGRID_HandleGridSelection(char *gridCtx, LONG rowIndex);
+extern LONG NEWGRID_ProcessAltEntryState(char *gridCtx, LONG rowIndex, LONG selector);
+extern LONG NEWGRID2_HandleGridState(char *gridCtx, WORD rowIndex, LONG modeSel);
+extern LONG NEWGRID_ProcessSecondaryState(char *gridCtx, LONG rowIndex);
+extern LONG NEWGRID_ProcessScheduleState(char *gridCtx, LONG rowIndex, LONG selector);
+extern LONG NEWGRID_ProcessShowtimesWorkflow(char *gridCtx, LONG rowIndex, LONG selector);
 
-LONG NEWGRID2_DispatchGridOperation(LONG operationId, void *gridCtx, WORD rowIndex, WORD selector)
+LONG NEWGRID2_DispatchGridOperation(LONG operationId, char *gridCtx, WORD rowIndex, WORD selector)
 {
     LONG op = operationId;
 

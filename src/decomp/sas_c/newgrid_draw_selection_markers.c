@@ -43,7 +43,7 @@ static LONG asr1_round_toward_zero(LONG v)
 }
 
 LONG NEWGRID_DrawSelectionMarkers(
-    UBYTE *ctx,
+    char *ctx,
     WORD col,
     WORD rowKind,
     LONG colorSel,
