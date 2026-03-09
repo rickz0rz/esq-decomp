@@ -13,12 +13,12 @@ extern ULONG Global_HandleTableFlags;
 extern ULONG Global_AppErrorCode;
 extern ULONG Global_DosIoErr;
 
-extern LONG DOS_OpenWithErrorState(const UBYTE *name, LONG mode);
-extern LONG DOS_OpenNewFileIfMissing(const UBYTE *name, LONG err_code);
-extern LONG DOS_DeleteAndRecreateFile(const UBYTE *name, LONG err_code);
+extern LONG DOS_OpenWithErrorState(const char *name, LONG mode);
+extern LONG DOS_OpenNewFileIfMissing(const char *name, LONG err_code);
+extern LONG DOS_DeleteAndRecreateFile(const char *name, LONG err_code);
 extern LONG DOS_CloseWithSignalCheck(LONG handle);
 
-LONG HANDLE_OpenEntryWithFlags(const UBYTE *name, ULONG flags, LONG aux)
+LONG HANDLE_OpenEntryWithFlags(const char *name, ULONG flags, LONG aux)
 {
     LONG slot = 3;
     LONG open_handle;

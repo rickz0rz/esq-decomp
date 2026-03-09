@@ -28,23 +28,24 @@ ___COI_LoadOiDataFile__1:
               BNE.B          ___COI_LoadOiDataFile__3 ;6606 
 ___COI_LoadOiDataFile__2:
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___COI_LoadOiDataFile__14;6000 00b6 
+              BRA.W          ___COI_LoadOiDataFile__14;6000 00b8 
 ___COI_LoadOiDataFile__3:
               MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D6;2c2c 0000 
               MOVEQ.L        #$0,D5                   ;7a00 
               MOVEQ.L        #$0,D4                   ;7800 
 ___COI_LoadOiDataFile__4:
               MOVE.L         Global_PTR_WORK_BUFFER(A4),D0;202c 0000 
-              BEQ.B          ___COI_LoadOiDataFile__10;6760 
+              BEQ.B          ___COI_LoadOiDataFile__10;6762 
 ___COI_LoadOiDataFile__5:
               CMP.L          D6,D5                    ;ba86 
-              BGE.B          ___COI_LoadOiDataFile__10;6c5c 
+              BGE.B          ___COI_LoadOiDataFile__10;6c5e 
 ___COI_LoadOiDataFile__6:
               MOVE.L         D0,A0                    ;2040 
               ADD.L          D5,A0                    ;d1c5 
               MOVE.L         A0,A5                    ;2a48 
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         COI_STR_LINEFEED_CR_1(A4),D0;102c 0000 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          GROUP_AI_JMPTBL_STR_FindCharPtr;6100 0000 
@@ -58,7 +59,7 @@ ___COI_LoadOiDataFile__7:
               ADDQ.L         #$1,D4                   ;5284 
               MOVE.B         (A5),(A1)                ;1295 
               ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___COI_LoadOiDataFile__4 ;60cc 
+              BRA.B          ___COI_LoadOiDataFile__4 ;60ca 
 ___COI_LoadOiDataFile__8:
               CLR.B          $18(A7,D4.L)             ;4237 4818 
               PEA            $18(A7)                  ;486f 0018 
