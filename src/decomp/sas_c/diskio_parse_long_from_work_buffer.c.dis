@@ -9,8 +9,8 @@ DISKIO_ParseLongFromWorkBuffer:
 ___DISKIO_ParseLongFromWorkBuffer__1:
               BSR.W          DISKIO_ConsumeCStringFromWorkBuf;6100 0000 
               MOVE.L         D0,A5                    ;2a40 
-              MOVE.L         #$ffff,A0                ;207c 0000 ffff 
-              CMP.L          A5,A0                    ;b1cd 
+              MOVE.L         A5,A0                    ;204d 
+              CMP.L          #$ffff,A0                ;b1fc 0000 ffff 
               BNE.B          ___DISKIO_ParseLongFromWorkBuffer__3;6608 
 ___DISKIO_ParseLongFromWorkBuffer__2:
               MOVE.L         #$ffff,D0                ;203c 0000 ffff 

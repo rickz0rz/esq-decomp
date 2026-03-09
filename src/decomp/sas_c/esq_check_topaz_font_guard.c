@@ -5,20 +5,20 @@ typedef signed long LONG;
 
 extern void *Global_REF_INTUITION_LIBRARY;
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern UBYTE Global_STR_PLEASE_STANDBY_1[];
-extern UBYTE Global_STR_ATTENTION_SYSTEM_ENGINEER_1[];
-extern UBYTE Global_STR_REPORT_CODE_ER003[];
-extern UBYTE Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE[];
+extern char Global_STR_PLEASE_STANDBY_1[];
+extern char Global_STR_ATTENTION_SYSTEM_ENGINEER_1[];
+extern char Global_STR_REPORT_CODE_ER003[];
+extern char Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE[];
 
 extern void GROUP_MAIN_B_JMPTBL_DOS_Delay(LONG ticks);
 extern LONG GROUP_MAIN_B_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-extern void GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(const UBYTE *text);
+extern void GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(const char *text);
 extern void GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode(LONG code);
 
 extern void _LVOSetAPen(void *rastPort, LONG pen);
 extern void _LVORectFill(void *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
 extern void _LVOMove(void *rastPort, LONG x, LONG y);
-extern void _LVOText(void *rastPort, const UBYTE *text, LONG length);
+extern void _LVOText(void *rastPort, const char *text, LONG length);
 extern void _LVOSizeWindow(void *window, LONG deltaX, LONG deltaY);
 extern void _LVORemakeDisplay(void);
 extern void _LVOFreeMem(void *memory, LONG byteSize);
@@ -60,7 +60,7 @@ void ESQ_CheckTopazFontGuard(void)
     ESQ_TopazFontView *topazFont;
     ESQ_WindowView *window;
     ESQ_SecondaryLine *secondaryLine;
-    UBYTE *rastPort;
+    char *rastPort;
     LONG widthSlots;
     LONG freeStart;
     LONG freeEnd;

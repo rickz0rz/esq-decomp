@@ -12,9 +12,9 @@ extern void *Global_REF_RASTPORT_1;
 extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *new_value, char *old_value);
 extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rast, LONG x, LONG y, char *text);
 
-char *ESQPROTO_ParseDigitLabelAndDisplay(const UBYTE *in)
+char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in)
 {
-    const UBYTE *p = in;
+    const char *p = in;
     char local[16];
     ULONG i = 0;
     UWORD digit = (UWORD)(*p++);
@@ -25,7 +25,7 @@ char *ESQPROTO_ParseDigitLabelAndDisplay(const UBYTE *in)
     }
 
     for (;;) {
-        UBYTE c = *p++;
+        char c = *p++;
         local[i] = c;
         if (c == 0x12 || i >= 10UL) {
             break;
