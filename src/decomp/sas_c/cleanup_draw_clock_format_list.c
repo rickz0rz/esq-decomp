@@ -2,6 +2,18 @@ typedef unsigned char UBYTE;
 typedef unsigned short UWORD;
 typedef long LONG;
 
+typedef struct CLEANUP_Font {
+    UBYTE pad0[26];
+    UWORD height26;
+} CLEANUP_Font;
+
+typedef struct CLEANUP_RastPort {
+    UBYTE pad0[4];
+    void *bitmap4;
+    UBYTE pad8[44];
+    CLEANUP_Font *font52;
+} CLEANUP_RastPort;
+
 enum {
     CLOCK_FORMAT_WRAP_MAX = 48,
     CLOCK_FORMAT_COLUMN_COUNT = 3,
@@ -41,9 +53,11 @@ static LONG cleanup_wrap_clock_idx(LONG base, LONG add)
 
 void CLEANUP_DrawClockFormatList(LONG startIndex)
 {
+    CLEANUP_RastPort *rp;
     char textBuffer[89];
     LONG row;
 
+    rp = (CLEANUP_RastPort *)NEWGRID_MainRastPortPtr;
     GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds(0, 5, 6, 0);
     _LVOSetAPen();
     _LVORectFill();
@@ -66,7 +80,7 @@ void CLEANUP_DrawClockFormatList(LONG startIndex)
         }
 
         BEVEL_DrawBevelFrameWithTopRight(
-            (void *)NEWGRID_MainRastPortPtr,
+            rp,
             rowStartX + CLOCK_FORMAT_BEVEL_X_OFFSET,
             0,
             rowRightX,
@@ -83,8 +97,7 @@ void CLEANUP_DrawClockFormatList(LONG startIndex)
         textX = rowStartX +
                 (((columnWidth - (LONG)(textCursor - (UBYTE *)textBuffer) - CLOCK_FORMAT_TEXT_PAD) + 1) >> 1) +
                 CLOCK_FORMAT_TEXT_X_OFFSET;
-        fontHeight = (LONG)(*(UWORD *)(*(LONG *)(NEWGRID_MainRastPortPtr + CLOCK_FORMAT_FONT_PTR_OFFSET) +
-                                       CLOCK_FORMAT_FONT_HEIGHT_OFFSET));
+        fontHeight = (LONG)rp->font52->height26;
         textY = (((CLOCK_FORMAT_TEXT_ROW_HEIGHT - fontHeight) + 1) >> 1) + fontHeight - 1;
 
         (void)textX;
