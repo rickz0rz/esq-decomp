@@ -4,34 +4,60 @@ typedef unsigned char UBYTE;
 
 extern LONG ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(LONG oldPtr, LONG newPtr);
 
+typedef struct SCRIPT_CtrlContextSnapshot {
+    UBYTE pad0[2];
+    UWORD primarySearchFirstFlag;
+    UWORD primaryChannelCode;
+    UWORD secondaryChannelCode;
+    UWORD currentMatchIndex;
+    UWORD channelRangeArmedFlag;
+    UWORD channelSourceMode;
+    UWORD channelRangeDigitChar;
+    LONG searchMatchCountOrIndex;
+    LONG playbackCursor;
+    UWORD runtimeMode;
+    UBYTE pad26[200];
+    UBYTE primarySearchText[200];
+    UBYTE secondarySearchText[200];
+    UWORD activeGroupId;
+    UBYTE bannerFallbackEntryIndex[4];
+    UBYTE pad432[4];
+    UBYTE type20SubtypeCache;
+    UBYTE pendingWeatherCommandChar;
+    UBYTE pendingTextdispCmdChar;
+    UBYTE pendingTextdispCmdArg;
+    LONG commandTextPtr;
+    UBYTE bannerSelectedEntryIndex[4];
+} SCRIPT_CtrlContextSnapshot;
+
 void SCRIPT_ResetCtrlContext(void *ctx)
 {
-    UBYTE *p;
+    SCRIPT_CtrlContextSnapshot *p;
     LONG i;
 
-    p = (UBYTE *)ctx;
+    p = (SCRIPT_CtrlContextSnapshot *)ctx;
 
-    p[436] = 0;
-    p[437] = 120;
-    p[438] = 0;
-    p[439] = 0;
+    p->type20SubtypeCache = 0;
+    p->pendingWeatherCommandChar = 120;
+    p->pendingTextdispCmdChar = 0;
+    p->pendingTextdispCmdArg = 0;
 
-    *(LONG *)(p + 440) = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(*(LONG *)(p + 440), 0);
+    p->commandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(p->commandTextPtr, 0);
 
-    p[226] = 0;
-    p[26] = 0;
-    *(UWORD *)(p + 6) = 0;
-    *(UWORD *)(p + 4) = 0;
-    *(UWORD *)(p + 10) = 0;
-    *(UWORD *)(p + 12) = 0;
-    *(UWORD *)(p + 14) = 0;
-    *(LONG *)(p + 16) = 0;
-    *(LONG *)(p + 20) = 0;
-    *(UWORD *)(p + 24) = 0;
-    *(UWORD *)(p + 426) = 1;
+    p->secondarySearchText[0] = 0;
+    p->primarySearchText[0] = 0;
+    p->secondaryChannelCode = 0;
+    p->primaryChannelCode = 0;
+    p->channelRangeArmedFlag = 0;
+    p->channelSourceMode = 0;
+    p->channelRangeDigitChar = 0;
+    p->searchMatchCountOrIndex = 0;
+    p->playbackCursor = 0;
+    p->runtimeMode = 0;
+    p->activeGroupId = 1;
 
     for (i = 0; i < 4; i++) {
-        p[428 + i] = 0;
-        p[0x1b0 + i] = 0;
+        p->bannerFallbackEntryIndex[i] = 0;
+        p->bannerSelectedEntryIndex[i] = 0;
     }
 }
