@@ -44,7 +44,9 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
     void *newAllocNode;
     LONG parsedValue;
     LONG sourceLen;
-    char *cursor;
+    char *sourceEnd;
+    char *sourceDst;
+    char *sourceSrc;
     UBYTE *weatherBlock;
 
     if (PARSEINI_ParsedDescriptorListHead == (void *)0) {
@@ -128,12 +130,11 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
     }
 
     if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_TAG_SOURCE) == 0) {
-        sourceLen = 0;
-        cursor = entryValue;
-        while (*cursor != 0) {
-            ++cursor;
-            ++sourceLen;
+        sourceEnd = entryValue;
+        while (*sourceEnd != 0) {
+            ++sourceEnd;
         }
+        sourceLen = (LONG)(sourceEnd - entryValue);
 
         if (sourceLen > 0) {
             if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryValue, PARSEINI_TAG_PPV) == 0) {
@@ -149,11 +150,11 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
             }
             *((LONG *)((UBYTE *)newAllocNode + 8)) = 0;
 
-            cursor = (char *)newAllocNode;
-            while (*entryValue != 0) {
-                *cursor++ = *entryValue++;
-            }
-            *cursor = 0;
+            sourceDst = (char *)newAllocNode;
+            sourceSrc = entryValue;
+            do {
+                *sourceDst++ = *sourceSrc++;
+            } while (sourceDst[-1] != 0);
 
             if (*((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 230)) == 0) {
                 *((LONG *)((UBYTE *)PARSEINI_CurrentWeatherBlockPtr + 230)) = (LONG)newAllocNode;
