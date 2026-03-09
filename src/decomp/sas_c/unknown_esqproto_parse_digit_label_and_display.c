@@ -4,18 +4,18 @@ typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 
 extern UWORD WDISP_WeatherStatusDigitChar;
-extern UBYTE WDISP_WeatherStatusLabelBuffer[];
-extern UBYTE *WDISP_WeatherStatusTextPtr;
+extern char WDISP_WeatherStatusLabelBuffer[];
+extern char *WDISP_WeatherStatusTextPtr;
 extern UWORD ED_DiagnosticsScreenActive;
 extern void *Global_REF_RASTPORT_1;
 
-extern UBYTE *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(UBYTE *new_value, UBYTE *old_value);
-extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rast, LONG x, LONG y, UBYTE *text);
+extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *new_value, char *old_value);
+extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rast, LONG x, LONG y, char *text);
 
-UBYTE *ESQPROTO_ParseDigitLabelAndDisplay(const UBYTE *in)
+char *ESQPROTO_ParseDigitLabelAndDisplay(const UBYTE *in)
 {
     const UBYTE *p = in;
-    UBYTE local[16];
+    char local[16];
     ULONG i = 0;
     UWORD digit = (UWORD)(*p++);
 
@@ -36,14 +36,14 @@ UBYTE *ESQPROTO_ParseDigitLabelAndDisplay(const UBYTE *in)
     local[i] = 0;
 
     {
-        const UBYTE *src = local;
-        UBYTE *dst = WDISP_WeatherStatusLabelBuffer;
+        char *src = local;
+        char *dst = WDISP_WeatherStatusLabelBuffer;
         while ((*dst++ = *src++) != 0) {
         }
     }
 
     WDISP_WeatherStatusTextPtr =
-        ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString((UBYTE *)p, WDISP_WeatherStatusTextPtr);
+        ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString((char *)p, WDISP_WeatherStatusTextPtr);
 
     if (ED_DiagnosticsScreenActive != 0) {
         UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(
