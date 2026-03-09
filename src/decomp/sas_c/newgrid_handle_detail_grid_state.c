@@ -26,7 +26,7 @@ extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight,
 extern void NEWGRID_DrawGridEntry(char *rastPort, char *entry, char *aux, LONG row, LONG mode, LONG enabled, LONG bevel);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG lineIndex);
 extern void PARSEINI_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, const char *arg0, const char *arg1);
-extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *rastPort, const char *text);
+extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
 extern LONG NEWGRID_DrawGridFrameVariant2(char *ctx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
 
