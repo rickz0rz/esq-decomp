@@ -2,26 +2,26 @@
 __code:
 DISKIO2_CopyAndSanitizeSlotStrin:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              SUB.L          #$20,D0                  ;90bc 0000 0020 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$10,A7                  ;9efc 0010 
+              SUB.W          #$18,A7                  ;9efc 0018 
               MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
 ___DISKIO2_CopyAndSanitizeSlotStrin__1:
-              MOVE.W         $32(A7),D7               ;3e2f 0032 
-              MOVE.L         $2c(A7),A2               ;246f 002c 
-              MOVE.L         $28(A7),A3               ;266f 0028 
-              MOVE.L         $24(A7),A5               ;2a6f 0024 
+              MOVE.W         $3a(A7),D7               ;3e2f 003a 
+              MOVE.L         $34(A7),A2               ;246f 0034 
+              MOVE.L         $30(A7),A3               ;266f 0030 
+              MOVE.L         $2c(A7),A5               ;2a6f 002c 
               MOVE.L         A5,$18(A7)               ;2f4d 0018 
-              LEA            $38(A2),A0               ;41ea 0038 
+              MOVE.L         A2,$20(A7)               ;2f4a 0020 
               SWAP           D7                       ;4847 
               CLR.W          D7                       ;4247 
               SWAP           D7                       ;4847 
               MOVE.L         D7,D0                    ;2007 
               ASL.L          #$2,D0                   ;e580 
-              ADD.L          D0,A0                    ;d1c0 
-              MOVE.L         (A0),A1                  ;2250 
-              MOVE.L         A1,$1c(A7)               ;2f49 001c 
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.L         $38(A0,D0.L),A0          ;2070 0838 
+              MOVE.L         A0,$1c(A7)               ;2f48 001c 
               MOVE.L         A3,D0                    ;200b 
               BEQ.B          ___DISKIO2_CopyAndSanitizeSlotStrin__5;6710 
 ___DISKIO2_CopyAndSanitizeSlotStrin__2:
@@ -36,28 +36,30 @@ ___DISKIO2_CopyAndSanitizeSlotStrin__4:
               CMP.W          D1,D7                    ;be41 
               BCS.B          ___DISKIO2_CopyAndSanitizeSlotStrin__6;6506 
 ___DISKIO2_CopyAndSanitizeSlotStrin__5:
-              MOVE.L         A1,D0                    ;2009 
-              BRA.W          ___DISKIO2_CopyAndSanitizeSlotStrin__25;6000 009c 
+              MOVE.L         A0,D0                    ;2008 
+              BRA.W          ___DISKIO2_CopyAndSanitizeSlotStrin__25;6000 00a6 
 ___DISKIO2_CopyAndSanitizeSlotStrin__6:
-              MOVE.L         A1,D0                    ;2009 
+              MOVE.L         A0,D0                    ;2008 
               BEQ.B          ___DISKIO2_CopyAndSanitizeSlotStrin__8;6704 
 ___DISKIO2_CopyAndSanitizeSlotStrin__7:
-              TST.B          (A1)                     ;4a11 
+              TST.B          (A0)                     ;4a10 
               BNE.B          ___DISKIO2_CopyAndSanitizeSlotStrin__9;6606 
 ___DISKIO2_CopyAndSanitizeSlotStrin__8:
-              MOVE.L         A1,D0                    ;2009 
-              BRA.W          ___DISKIO2_CopyAndSanitizeSlotStrin__25;6000 008e 
+              MOVE.L         A0,D0                    ;2008 
+              BRA.W          ___DISKIO2_CopyAndSanitizeSlotStrin__25;6000 0098 
 ___DISKIO2_CopyAndSanitizeSlotStrin__9:
+              MOVE.L         A3,$24(A7)               ;2f4b 0024 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D7,D0                    ;3007 
-              ADDQ.L         #$7,D0                   ;5e80 
-              BTST           #$1,$0(A2,D0.L)          ;0832 0001 0800 
-              BNE.B          ___DISKIO2_CopyAndSanitizeSlotStrin__12;660c 
+              MOVE.L         $20(A7),A1               ;226f 0020 
+              BTST           #$1,$7(A1,D0.L)          ;0831 0001 0807 
+              BNE.B          ___DISKIO2_CopyAndSanitizeSlotStrin__12;6610 
 ___DISKIO2_CopyAndSanitizeSlotStrin__10:
-              BTST           #$4,$1b(A3)              ;082b 0004 001b 
+              MOVE.L         $24(A7),A1               ;226f 0024 
+              BTST           #$4,$1b(A1)              ;0829 0004 001b 
               BNE.B          ___DISKIO2_CopyAndSanitizeSlotStrin__12;6604 
 ___DISKIO2_CopyAndSanitizeSlotStrin__11:
-              MOVE.L         A1,D0                    ;2009 
+              MOVE.L         A0,D0                    ;2008 
               BRA.B          ___DISKIO2_CopyAndSanitizeSlotStrin__25;6072 
 ___DISKIO2_CopyAndSanitizeSlotStrin__12:
               MOVE.L         $1c(A7),A0               ;206f 001c 
@@ -114,7 +116,7 @@ ___DISKIO2_CopyAndSanitizeSlotStrin__23:
 ___DISKIO2_CopyAndSanitizeSlotStrin__24:
 ___DISKIO2_CopyAndSanitizeSlotStrin__25:
               MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
-              ADD.W          #$10,A7                  ;defc 0010 
+              ADD.W          #$18,A7                  ;defc 0018 
               RTS                                     ;4e75 
 __const:
 __strings:

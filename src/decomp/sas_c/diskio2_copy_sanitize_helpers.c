@@ -3,6 +3,18 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 
+typedef struct DISKIO2_Entry {
+    UBYTE pad0[27];
+    UBYTE flags27;
+} DISKIO2_Entry;
+
+typedef struct DISKIO2_AuxData {
+    UBYTE pad0[7];
+    UBYTE slotFlags[49];
+    UBYTE pad1[0x38 - 0x38];
+    const char *slotTextTable[49];
+} DISKIO2_AuxData;
+
 extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *text, long ch);
 extern char *GROUP_AH_JMPTBL_STR_FindAnyCharPtr(const char *text, const char *charMask);
 
@@ -14,12 +26,15 @@ char *DISKIO2_CopyAndSanitizeSlotString(
     const UBYTE *entryTable,
     UWORD slotIndex)
 {
+    const DISKIO2_Entry *entryView;
+    const DISKIO2_AuxData *auxView;
     const char *src;
     char *dstStart;
     char *cutPos;
 
     dstStart = dst;
-    src = ((const char *const *)(entryTable + 56UL))[(ULONG)slotIndex];
+    auxView = (const DISKIO2_AuxData *)entryTable;
+    src = auxView->slotTextTable[(ULONG)slotIndex];
     if (flags == 0 || entryTable == 0 || (WORD)slotIndex <= 0 || slotIndex >= 49U) {
         return (char *)src;
     }
@@ -27,8 +42,9 @@ char *DISKIO2_CopyAndSanitizeSlotString(
         return (char *)src;
     }
 
-    if ((entryTable[7U + slotIndex] & 0x02U) == 0) {
-        if ((flags[27] & 0x10U) == 0) {
+    entryView = (const DISKIO2_Entry *)flags;
+    if ((auxView->slotFlags[slotIndex] & 0x02U) == 0) {
+        if ((entryView->flags27 & 0x10U) == 0) {
             return (char *)src;
         }
     }
