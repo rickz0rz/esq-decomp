@@ -9,7 +9,7 @@ typedef struct LADFUNC_EntryRecord {
     UWORD startSlot;
     UWORD endSlot;
     UBYTE align_pad[2];
-    UBYTE *textPtr;
+    char *textPtr;
     UBYTE *attrPtr;
 } LADFUNC_EntryRecord;
 
@@ -18,13 +18,13 @@ extern LADFUNC_EntryRecord *LADFUNC_EntryPtrTable[];
 extern void LADFUNC_RepackEntryTextAndAttrBuffers(UBYTE *textBuf, UBYTE *attrBuf);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
-extern UBYTE *ESQPARS_ReplaceOwnedString(UBYTE *newText, UBYTE *oldText);
+extern char *ESQPARS_ReplaceOwnedString(char *newText, char *oldText);
 
 extern const char Global_STR_LADFUNC_C_28[];
 extern const char Global_STR_LADFUNC_C_29[];
 extern const char Global_STR_LADFUNC_C_30[];
 
-void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, UBYTE *textBuf, UBYTE *attrBuf)
+void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, char *textBuf, UBYTE *attrBuf)
 {
     const LONG ENTRY_RECORD_SIZE = 14;
     const LONG MEMF_PUBLIC_CLEAR = (MEMF_PUBLIC + MEMF_CLEAR);
@@ -54,8 +54,8 @@ void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, UBYTE *textBuf, 
     }
 
     oldTextLen = 0;
-    if (entry->textPtr != (UBYTE *)0) {
-        UBYTE *p = entry->textPtr;
+    if (entry->textPtr != (char *)0) {
+        char *p = entry->textPtr;
         while (*p != 0) {
             ++p;
         }
@@ -74,8 +74,8 @@ void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, UBYTE *textBuf, 
     }
 
     newTextLen = 0;
-    if (entry->textPtr != (UBYTE *)0) {
-        UBYTE *p = entry->textPtr;
+    if (entry->textPtr != (char *)0) {
+        char *p = entry->textPtr;
         while (*p != 0) {
             ++p;
         }

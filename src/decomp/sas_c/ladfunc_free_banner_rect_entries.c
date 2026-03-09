@@ -6,7 +6,7 @@ typedef struct LadfuncEntry {
     UWORD startSlot;
     UWORD endSlot;
     UWORD isHighlighted;
-    UBYTE *textPtr;
+    char *textPtr;
     UBYTE *attrPtr;
 } LadfuncEntry;
 
@@ -14,7 +14,7 @@ extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 extern const char Global_STR_LADFUNC_C_2[];
 extern const char Global_STR_LADFUNC_C_3[];
 
-extern UBYTE *ESQPARS_ReplaceOwnedString(UBYTE *oldString, const UBYTE *newString);
+extern char *ESQPARS_ReplaceOwnedString(char *oldString, const char *newString);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 
 void LADFUNC_FreeBannerRectEntries(void)
@@ -30,19 +30,19 @@ void LADFUNC_FreeBannerRectEntries(void)
     for (i = 0; i <= ENTRY_LAST_INDEX; ++i) {
         LadfuncEntry *entry = LADFUNC_EntryPtrTable[i];
         LONG len = LEN_EMPTY;
-        UBYTE *p;
+        char *p;
 
         if (entry == (LadfuncEntry *)0) {
             continue;
         }
 
-        if (entry->textPtr != (UBYTE *)0) {
+        if (entry->textPtr != (char *)0) {
             p = entry->textPtr;
             while (*p != CH_NUL) {
                 ++p;
             }
             len = (LONG)(p - entry->textPtr);
-            (void)ESQPARS_ReplaceOwnedString(entry->textPtr, (const UBYTE *)0);
+            (void)ESQPARS_ReplaceOwnedString(entry->textPtr, (const char *)0);
         }
 
         if (len > LEN_EMPTY && entry->attrPtr != (UBYTE *)0) {
