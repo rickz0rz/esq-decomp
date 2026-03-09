@@ -3,7 +3,7 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
 extern const char *DST_DefaultDatPathPtr;
-extern void *Global_PTR_WORK_BUFFER;
+extern char *Global_PTR_WORK_BUFFER;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern UBYTE Global_STR_G2[];
 extern UBYTE Global_STR_G3[];
@@ -43,7 +43,7 @@ LONG DST_LoadBannerPairFromFiles(void *pair)
         return RESULT_FAIL;
     }
 
-    work = (char *)Global_PTR_WORK_BUFFER;
+    work = Global_PTR_WORK_BUFFER;
     scratch_len = Global_REF_LONG_FILE_SCRATCH;
 
     hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, (const char *)Global_STR_G2);
