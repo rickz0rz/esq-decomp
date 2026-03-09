@@ -27,10 +27,15 @@ void TEXTDISP_SetRastForMode(UWORD modeIndex)
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(7, 0, 4);
 
-    idx = (LONG)modeIndex * 3;
+    idx = (LONG)(UWORD)modeIndex;
+    idx = idx + idx + (LONG)(UWORD)modeIndex;
     WDISP_PaletteTriplesRBase = *(((UBYTE *)&WDISP_PaletteTriplesRBase) + idx);
     WDISP_PaletteTriplesGBase = *(((UBYTE *)&WDISP_PaletteTriplesGBase) + idx);
     WDISP_PaletteTriplesBBase = *(((UBYTE *)&WDISP_PaletteTriplesBBase) + idx);
 
-    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, (void *)((unsigned char *)WDISP_DisplayContextBase + 2), (LONG)modeIndex);
+    _LVOSetRast(
+        Global_REF_GRAPHICS_LIBRARY,
+        (void *)((unsigned char *)WDISP_DisplayContextBase + 2),
+        (LONG)(UWORD)modeIndex
+    );
 }
