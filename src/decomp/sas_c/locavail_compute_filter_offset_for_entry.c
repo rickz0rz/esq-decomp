@@ -3,6 +3,24 @@ typedef signed short WORD;
 typedef signed char BYTE;
 typedef unsigned char UBYTE;
 
+typedef struct LOCAVAIL_NodeRecord {
+    UBYTE tokenIndex0;
+    UBYTE pad1;
+    WORD duration2;
+    WORD payloadSize4;
+    UBYTE *payload6;
+} LOCAVAIL_NodeRecord;
+
+typedef struct LOCAVAIL_FilterState {
+    UBYTE mode0;
+    UBYTE pad1;
+    LONG nodeCount2;
+    LONG selectedNode8;
+    LONG selectedPayload12;
+    UBYTE pad16[4];
+    LOCAVAIL_NodeRecord *nodeTable20;
+} LOCAVAIL_FilterState;
+
 extern LONG LOCAVAIL_FilterStep;
 extern LONG LOCAVAIL_FilterPrevClassId;
 extern LONG ESQIFF_GAdsBrushListCount;
@@ -18,27 +36,27 @@ extern LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 
 void LOCAVAIL_ComputeFilterOffsetForEntry(const BYTE *text, void *statePtr)
 {
-    UBYTE *state;
-    UBYTE *node;
+    LOCAVAIL_FilterState *state;
+    LOCAVAIL_NodeRecord *node;
     UBYTE *payload;
     LONG selectedNodeIndex;
     LONG selectedPayloadIndex;
     LONG textIndex;
 
-    state = (UBYTE *)statePtr;
+    state = (LOCAVAIL_FilterState *)statePtr;
     selectedNodeIndex = -1;
     payload = (UBYTE *)0;
     selectedPayloadIndex = -1;
 
     if (LOCAVAIL_FilterStep != 0) {
-        *(LONG *)(state + 8) = selectedNodeIndex;
-        *(LONG *)(state + 12) = selectedPayloadIndex;
+        state->selectedNode8 = selectedNodeIndex;
+        state->selectedPayload12 = selectedPayloadIndex;
         return;
     }
 
     if (LOCAVAIL_FilterPrevClassId != -1) {
-        *(LONG *)(state + 8) = selectedNodeIndex;
-        *(LONG *)(state + 12) = selectedPayloadIndex;
+        state->selectedNode8 = selectedNodeIndex;
+        state->selectedPayload12 = selectedPayloadIndex;
         return;
     }
 
@@ -46,25 +64,25 @@ void LOCAVAIL_ComputeFilterOffsetForEntry(const BYTE *text, void *statePtr)
     while (*text != 0) {
         LONG mappedClass;
         LONG nodeIndex;
-        UBYTE *matchedNode;
+        LOCAVAIL_NodeRecord *matchedNode;
 
         mappedClass = LOCAVAIL_MapFilterTokenCharToClass((UBYTE)*text);
-        matchedNode = (UBYTE *)0;
+        matchedNode = (LOCAVAIL_NodeRecord *)0;
         nodeIndex = 0;
 
-        while (mappedClass != 0 && nodeIndex < *(LONG *)(state + 2)) {
-            node = *(UBYTE **)(state + 20) + NEWGRID_JMPTBL_MATH_Mulu32(nodeIndex, 10);
-            if ((LONG)node[0] == (textIndex + 1)) {
-                payload = *(UBYTE **)(node + 6);
+        while (mappedClass != 0 && nodeIndex < state->nodeCount2) {
+            node = state->nodeTable20 + nodeIndex;
+            if ((LONG)node->tokenIndex0 == (textIndex + 1)) {
+                payload = node->payload6;
                 matchedNode = node;
                 break;
             }
             ++nodeIndex;
         }
 
-        if (mappedClass != 0 && matchedNode != (UBYTE *)0) {
+        if (mappedClass != 0 && matchedNode != (LOCAVAIL_NodeRecord *)0) {
             mappedClass -= 1;
-            if (mappedClass < (LONG)*(WORD *)(matchedNode + 4) && payload[mappedClass] != 0) {
+            if (mappedClass < (LONG)matchedNode->payloadSize4 && payload[mappedClass] != 0) {
                 if (selectedNodeIndex == -1 && selectedPayloadIndex == -1) {
                     selectedNodeIndex = nodeIndex;
                     selectedPayloadIndex = mappedClass;
@@ -80,8 +98,8 @@ void LOCAVAIL_ComputeFilterOffsetForEntry(const BYTE *text, void *statePtr)
     if (selectedNodeIndex != -1 && selectedPayloadIndex != -1) {
         LONG gateClass;
 
-        node = *(UBYTE **)(state + 20) + NEWGRID_JMPTBL_MATH_Mulu32(selectedNodeIndex, 10);
-        payload = *(UBYTE **)(node + 6);
+        node = state->nodeTable20 + selectedNodeIndex;
+        payload = node->payload6;
         gateClass = (LONG)payload[selectedPayloadIndex] - 1;
 
         switch (gateClass) {
@@ -113,6 +131,6 @@ void LOCAVAIL_ComputeFilterOffsetForEntry(const BYTE *text, void *statePtr)
         }
     }
 
-    *(LONG *)(state + 8) = selectedNodeIndex;
-    *(LONG *)(state + 12) = selectedPayloadIndex;
+    state->selectedNode8 = selectedNodeIndex;
+    state->selectedPayload12 = selectedPayloadIndex;
 }

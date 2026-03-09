@@ -2,100 +2,90 @@
 __code:
 LOCAVAIL_ComputeFilterOffsetForE:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$20,D0                  ;90bc 0000 0020 
+              SUB.L          #$1c,D0                  ;90bc 0000 001c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$18,A7                  ;9efc 0018 
-              MOVEM.L        D5/D6/D7/A2/A3/A5/A6,-(A7);48e7 0736 
+              SUB.W          #$14,A7                  ;9efc 0014 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
 ___LOCAVAIL_ComputeFilterOffsetForE__1:
-              MOVE.L         $3c(A7),A3               ;266f 003c 
-              MOVE.L         $38(A7),A5               ;2a6f 0038 
+              MOVE.L         $38(A7),A3               ;266f 0038 
+              MOVE.L         $34(A7),A5               ;2a6f 0034 
               MOVE.L         A3,A2                    ;244b 
               MOVEQ.L        #$ff,D7                  ;7eff 
-              CLR.L          $2c(A7)                  ;42af 002c 
+              CLR.L          $28(A7)                  ;42af 0028 
               MOVEQ.L        #$ff,D6                  ;7cff 
               TST.L          LOCAVAIL_FilterStep(A4)  ;4aac 0000 
-              BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__3;6710 
+              BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__3;670c 
 ___LOCAVAIL_ComputeFilterOffsetForE__2:
-              LEA            $8(A2),A0                ;41ea 0008 
-              MOVE.L         D7,(A0)                  ;2087 
-              LEA            $c(A2),A0                ;41ea 000c 
-              MOVE.L         D6,(A0)                  ;2086 
-              BRA.W          ___LOCAVAIL_ComputeFilterOffsetForE__42;6000 0180 
+              MOVE.L         D7,$6(A2)                ;2547 0006 
+              MOVE.L         D6,$a(A2)                ;2546 000a 
+              BRA.W          ___LOCAVAIL_ComputeFilterOffsetForE__42;6000 0156 
 ___LOCAVAIL_ComputeFilterOffsetForE__3:
               MOVEQ.L        #$ff,D0                  ;70ff 
               CMP.L          LOCAVAIL_FilterPrevClassId(A4),D0;b0ac 0000 
-              BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__5;6710 
+              BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__5;670c 
 ___LOCAVAIL_ComputeFilterOffsetForE__4:
-              LEA            $8(A2),A0                ;41ea 0008 
-              MOVE.L         D7,(A0)                  ;2087 
-              LEA            $c(A2),A0                ;41ea 000c 
-              MOVE.L         D6,(A0)                  ;2086 
-              BRA.W          ___LOCAVAIL_ComputeFilterOffsetForE__42;6000 0168 
+              MOVE.L         D7,$6(A2)                ;2547 0006 
+              MOVE.L         D6,$a(A2)                ;2546 000a 
+              BRA.W          ___LOCAVAIL_ComputeFilterOffsetForE__42;6000 0142 
 ___LOCAVAIL_ComputeFilterOffsetForE__5:
               MOVEQ.L        #$0,D5                   ;7a00 
 ___LOCAVAIL_ComputeFilterOffsetForE__6:
               MOVE.B         (A5),D0                  ;1015 
-              BEQ.W          ___LOCAVAIL_ComputeFilterOffsetForE__21;6700 00b2 
+              BEQ.W          ___LOCAVAIL_ComputeFilterOffsetForE__21;6700 00a2 
 ___LOCAVAIL_ComputeFilterOffsetForE__7:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
               MOVE.L         D1,-(A7)                 ;2f01 
               BSR.W          LOCAVAIL_MapFilterTokenCharToCla;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
+              CLR.L          $1c(A7)                  ;42af 001c 
               CLR.L          $20(A7)                  ;42af 0020 
-              CLR.L          $24(A7)                  ;42af 0024 
-              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
 ___LOCAVAIL_ComputeFilterOffsetForE__8:
-              TST.L          $28(A7)                  ;4aaf 0028 
-              BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__13;674c 
+              TST.L          $24(A7)                  ;4aaf 0024 
+              BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__13;673a 
 ___LOCAVAIL_ComputeFilterOffsetForE__9:
-              LEA            $2(A2),A0                ;41ea 0002 
-              MOVE.L         $24(A7),D0               ;202f 0024 
-              CMP.L          (A0),D0                  ;b090 
-              BGE.B          ___LOCAVAIL_ComputeFilterOffsetForE__13;6c40 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              CMP.L          $2(A2),D0                ;b0aa 0002 
+              BGE.B          ___LOCAVAIL_ComputeFilterOffsetForE__13;6c30 
 ___LOCAVAIL_ComputeFilterOffsetForE__10:
-              LEA            $14(A2),A0               ;41ea 0014 
-              PEA            ($a).w                   ;4878 000a 
-              MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         A0,$24(A7)               ;2f48 0024 
-              BSR.W          NEWGRID_JMPTBL_MATH_Mulu32;6100 0000 
-              ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         $1c(A7),A1               ;226f 001c 
-              MOVE.L         (A1),A0                  ;2051 
-              ADD.L          D0,A0                    ;d1c0 
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         (A0),D0                  ;1010 
-              MOVE.L         D5,D1                    ;2205 
-              ADDQ.L         #$1,D1                   ;5281 
-              MOVE.L         A0,$30(A7)               ;2f48 0030 
-              CMP.L          D1,D0                    ;b081 
-              BNE.B          ___LOCAVAIL_ComputeFilterOffsetForE__12;660e 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D0,D1                    ;d280 
+              ADD.L          D1,D1                    ;d281 
+              MOVE.L         $12(A2),A0               ;206a 0012 
+              ADD.L          D1,A0                    ;d1c1 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         (A0),D1                  ;1210 
+              MOVE.L         D5,D2                    ;2405 
+              ADDQ.L         #$1,D2                   ;5282 
+              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              CMP.L          D2,D1                    ;b282 
+              BNE.B          ___LOCAVAIL_ComputeFilterOffsetForE__12;660c 
 ___LOCAVAIL_ComputeFilterOffsetForE__11:
-              LEA            $6(A0),A1                ;43e8 0006 
-              MOVE.L         (A1),$2c(A7)             ;2f51 002c 
-              MOVE.L         A0,$20(A7)               ;2f48 0020 
+              MOVE.L         $6(A0),$28(A7)           ;2f68 0006 0028 
+              MOVE.L         A0,$1c(A7)               ;2f48 001c 
               BRA.B          ___LOCAVAIL_ComputeFilterOffsetForE__13;6006 
 ___LOCAVAIL_ComputeFilterOffsetForE__12:
-              ADDQ.L         #$1,$24(A7)              ;52af 0024 
-              BRA.B          ___LOCAVAIL_ComputeFilterOffsetForE__8;60ae 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+              BRA.B          ___LOCAVAIL_ComputeFilterOffsetForE__8;60c0 
 ___LOCAVAIL_ComputeFilterOffsetForE__13:
-              MOVE.L         $28(A7),D0               ;202f 0028 
-              BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__20;6738 
+              MOVE.L         $24(A7),D0               ;202f 0024 
+              BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__20;673a 
 ___LOCAVAIL_ComputeFilterOffsetForE__14:
-              MOVE.L         $20(A7),D1               ;222f 0020 
-              BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__20;6732 
+              TST.L          $1c(A7)                  ;4aaf 001c 
+              BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__20;6734 
 ___LOCAVAIL_ComputeFilterOffsetForE__15:
-              SUBQ.L         #$1,$28(A7)              ;53af 0028 
-              MOVE.L         D1,A0                    ;2041 
-              ADDQ.L         #$4,A0                   ;5888 
-              MOVE.W         (A0),D0                  ;3010 
+              SUBQ.L         #$1,$24(A7)              ;53af 0024 
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              MOVE.W         $4(A0),D0                ;3028 0004 
               EXT.L          D0                       ;48c0 
-              MOVE.L         $28(A7),D1               ;222f 0028 
+              MOVE.L         $24(A7),D1               ;222f 0024 
               CMP.L          D0,D1                    ;b280 
               BGE.B          ___LOCAVAIL_ComputeFilterOffsetForE__20;6c1e 
 ___LOCAVAIL_ComputeFilterOffsetForE__16:
-              MOVE.L         $2c(A7),A0               ;206f 002c 
+              MOVE.L         $28(A7),A0               ;206f 0028 
               TST.B          $0(A0,D1.L)              ;4a30 1800 
               BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__20;6714 
 ___LOCAVAIL_ComputeFilterOffsetForE__17:
@@ -107,39 +97,34 @@ ___LOCAVAIL_ComputeFilterOffsetForE__18:
               ADDQ.L         #$1,D0                   ;5280 
               BNE.B          ___LOCAVAIL_ComputeFilterOffsetForE__20;6608 
 ___LOCAVAIL_ComputeFilterOffsetForE__19:
-              MOVE.L         $24(A7),D7               ;2e2f 0024 
+              MOVE.L         $20(A7),D7               ;2e2f 0020 
               MOVE.L         D1,D6                    ;2c01 
               BRA.B          ___LOCAVAIL_ComputeFilterOffsetForE__21;6008 
 ___LOCAVAIL_ComputeFilterOffsetForE__20:
               ADDQ.L         #$1,D5                   ;5285 
               ADDQ.L         #$1,A5                   ;528d 
-              BRA.W          ___LOCAVAIL_ComputeFilterOffsetForE__6;6000 ff4c 
+              BRA.W          ___LOCAVAIL_ComputeFilterOffsetForE__6;6000 ff5c 
 ___LOCAVAIL_ComputeFilterOffsetForE__21:
               MOVEQ.L        #$ff,D0                  ;70ff 
               CMP.L          D0,D7                    ;be80 
-              BEQ.W          ___LOCAVAIL_ComputeFilterOffsetForE__41;6700 009c 
+              BEQ.W          ___LOCAVAIL_ComputeFilterOffsetForE__41;6700 008a 
 ___LOCAVAIL_ComputeFilterOffsetForE__22:
-              MOVE.L         D6,D0                    ;2006 
-              ADDQ.L         #$1,D0                   ;5280 
-              BEQ.W          ___LOCAVAIL_ComputeFilterOffsetForE__41;6700 0094 
+              CMP.L          D0,D6                    ;bc80 
+              BEQ.W          ___LOCAVAIL_ComputeFilterOffsetForE__41;6700 0084 
 ___LOCAVAIL_ComputeFilterOffsetForE__23:
-              LEA            $14(A2),A0               ;41ea 0014 
-              PEA            ($a).w                   ;4878 000a 
-              MOVE.L         D7,-(A7)                 ;2f07 
-              MOVE.L         A0,$24(A7)               ;2f48 0024 
-              BSR.W          NEWGRID_JMPTBL_MATH_Mulu32;6100 0000 
-              ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         $1c(A7),A1               ;226f 001c 
-              MOVE.L         (A1),A0                  ;2051 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              ADD.L          D7,D0                    ;d087 
+              ADD.L          D0,D0                    ;d080 
+              MOVE.L         $12(A2),A0               ;206a 0012 
               ADD.L          D0,A0                    ;d1c0 
-              LEA            $6(A0),A1                ;43e8 0006 
-              MOVE.L         (A1),A6                  ;2c51 
+              MOVE.L         $6(A0),A1                ;2268 0006 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         $0(A6,D6.L),D0           ;1036 6800 
+              MOVE.B         $0(A1,D6.L),D0           ;1031 6800 
               SUBQ.L         #$1,D0                   ;5380 
-              MOVE.L         D0,$28(A7)               ;2f40 0028 
-              MOVE.L         A0,$30(A7)               ;2f48 0030 
-              MOVE.L         A6,$2c(A7)               ;2f4e 002c 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              MOVE.L         A1,$28(A7)               ;2f49 0028 
 ___LOCAVAIL_ComputeFilterOffsetForE__24:
               TST.L          D0                       ;4a80 
               BEQ.B          ___LOCAVAIL_ComputeFilterOffsetForE__29;670e 
@@ -197,13 +182,11 @@ ___LOCAVAIL_ComputeFilterOffsetForE__40:
               MOVEQ.L        #$ff,D7                  ;7eff 
               MOVEQ.L        #$ff,D6                  ;7cff 
 ___LOCAVAIL_ComputeFilterOffsetForE__41:
-              LEA            $8(A2),A0                ;41ea 0008 
-              MOVE.L         D7,(A0)                  ;2087 
-              LEA            $c(A2),A0                ;41ea 000c 
-              MOVE.L         D6,(A0)                  ;2086 
+              MOVE.L         D7,$6(A2)                ;2547 0006 
+              MOVE.L         D6,$a(A2)                ;2546 000a 
 ___LOCAVAIL_ComputeFilterOffsetForE__42:
-              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5/A6;4cdf 6ce0 
-              ADD.W          #$18,A7                  ;defc 0018 
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$14,A7                  ;defc 0014 
               RTS                                     ;4e75 
 __const:
 __strings:
@@ -212,7 +195,6 @@ __strings:
               XREF           LOCAVAIL_FilterStep
               XREF           LOCAVAIL_FilterPrevClassId
               XREF           LOCAVAIL_MapFilterTokenCharToCla
-              XREF           NEWGRID_JMPTBL_MATH_Mulu32
               XREF           ED_DiagVinModeChar
               XREF           LOCAVAIL_STR_YYLLZ_FilterGateChe
               XREF           GROUP_AS_JMPTBL_STR_FindCharPtr
