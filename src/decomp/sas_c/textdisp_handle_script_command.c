@@ -55,71 +55,73 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
     LONG doCleanup = 1;
     char scratch[200];
 
-    if (command == CMD_CHANNEL) {
-        WDISP_SPrintf(scratch, TEXTDISP_CommandPrefixFormat, arg);
+    if (command != (UBYTE)0xffu) {
+        if (command == CMD_CHANNEL) {
+            WDISP_SPrintf(scratch, TEXTDISP_CommandPrefixFormat, arg);
 
-        if (TEXTDISP_SelectGroupAndEntry(
-                arg, TEXTDISP_PrimarySearchText, (LONG)(WORD)TEXTDISP_PrimaryChannelCode) == 0) {
-            TEXTDISP_StatusGroupId = TEXTDISP_ActiveGroupId;
-            TEXTDISP_LastDispatchMatchIndex = TEXTDISP_CurrentMatchIndex;
-            TEXTDISP_LastDispatchGroupId = (WORD)SCRIPT_GetBannerCharOrFallback();
-        } else if ((WORD)(TEXTDISP_PrimaryFirstMatchIndex + 1) != 0) {
-            TEXTDISP_StatusGroupId = GROUP_PRIMARY;
-            TEXTDISP_LastDispatchMatchIndex = TEXTDISP_PrimaryFirstMatchIndex;
-            TEXTDISP_LastDispatchGroupId = BANNER_UNKNOWN;
-        } else if ((WORD)(TEXTDISP_SecondaryFirstMatchIndex + 1) != 0) {
-            TEXTDISP_StatusGroupId = GROUP_SECONDARY;
-            TEXTDISP_LastDispatchMatchIndex = TEXTDISP_SecondaryFirstMatchIndex;
-            TEXTDISP_LastDispatchGroupId = BANNER_UNKNOWN;
-        } else {
-            TEXTDISP_StatusGroupId = INDEX_NOT_FOUND;
-            TEXTDISP_LastDispatchMatchIndex = INDEX_NOT_FOUND;
-            TEXTDISP_LastDispatchGroupId = BANNER_UNKNOWN;
-        }
-
-        TEXTDISP_BuildNowShowingStatusLine(
-            (LONG)TEXTDISP_StatusGroupId,
-            (LONG)TEXTDISP_LastDispatchMatchIndex,
-            (LONG)TEXTDISP_LastDispatchGroupId
-        );
-        SCRIPT_ResetBannerCharDefaults();
-        doFinalize = FLAG_FALSE;
-    } else if (command == CMD_JOIN) {
-        TEXTDISP_BuildEntryPairStatusLine(
-            (LONG)TEXTDISP_StatusGroupId,
-            (LONG)TEXTDISP_LastDispatchMatchIndex,
-            (LONG)TEXTDISP_LastDispatchGroupId
-        );
-        doFinalize = FLAG_FALSE;
-    } else {
-        if (scriptType == SCRIPT_FILTER) {
-            if (TEXTDISP_CommandBufferPtr == (void *)0) {
-                TEXTDISP_CommandBufferPtr = MEMORY_AllocateMemory(
-                    Global_STR_TEXTDISP_C_1,
-                    BUFFER_ALLOC_LINE,
-                    BUFFER_SIZE,
-                    (MEMF_PUBLIC + MEMF_CLEAR)
-                );
+            if (TEXTDISP_SelectGroupAndEntry(
+                    arg, TEXTDISP_PrimarySearchText, (LONG)(WORD)TEXTDISP_PrimaryChannelCode) == 0) {
+                TEXTDISP_StatusGroupId = TEXTDISP_ActiveGroupId;
+                TEXTDISP_LastDispatchMatchIndex = TEXTDISP_CurrentMatchIndex;
+                TEXTDISP_LastDispatchGroupId = (WORD)SCRIPT_GetBannerCharOrFallback();
+            } else if ((WORD)(TEXTDISP_PrimaryFirstMatchIndex + 1) != 0) {
+                TEXTDISP_StatusGroupId = GROUP_PRIMARY;
+                TEXTDISP_LastDispatchMatchIndex = TEXTDISP_PrimaryFirstMatchIndex;
+                TEXTDISP_LastDispatchGroupId = BANNER_UNKNOWN;
+            } else if ((WORD)(TEXTDISP_SecondaryFirstMatchIndex + 1) != 0) {
+                TEXTDISP_StatusGroupId = GROUP_SECONDARY;
+                TEXTDISP_LastDispatchMatchIndex = TEXTDISP_SecondaryFirstMatchIndex;
+                TEXTDISP_LastDispatchGroupId = BANNER_UNKNOWN;
+            } else {
+                TEXTDISP_StatusGroupId = INDEX_NOT_FOUND;
+                TEXTDISP_LastDispatchMatchIndex = INDEX_NOT_FOUND;
+                TEXTDISP_LastDispatchGroupId = BANNER_UNKNOWN;
             }
 
-            if (TEXTDISP_CommandBufferPtr != (void *)0) {
-                TEXTDISP_SetEntryTextFields(TEXTDISP_CommandBufferPtr, (const UBYTE *)arg, (const UBYTE *)TEXTDISP_PrimarySearchText);
+            TEXTDISP_BuildNowShowingStatusLine(
+                (LONG)TEXTDISP_StatusGroupId,
+                (LONG)TEXTDISP_LastDispatchMatchIndex,
+                (LONG)TEXTDISP_LastDispatchGroupId
+            );
+            SCRIPT_ResetBannerCharDefaults();
+            doFinalize = FLAG_FALSE;
+        } else if (command == CMD_JOIN) {
+            TEXTDISP_BuildEntryPairStatusLine(
+                (LONG)TEXTDISP_StatusGroupId,
+                (LONG)TEXTDISP_LastDispatchMatchIndex,
+                (LONG)TEXTDISP_LastDispatchGroupId
+            );
+            doFinalize = FLAG_FALSE;
+        } else {
+            if (scriptType == SCRIPT_FILTER) {
+                if (TEXTDISP_CommandBufferPtr == (void *)0) {
+                    TEXTDISP_CommandBufferPtr = MEMORY_AllocateMemory(
+                        Global_STR_TEXTDISP_C_1,
+                        BUFFER_ALLOC_LINE,
+                        BUFFER_SIZE,
+                        (MEMF_PUBLIC + MEMF_CLEAR)
+                    );
+                }
 
-                if (TEXTDISP_FilterAndSelectEntry(TEXTDISP_CommandBufferPtr, MODE_FILTER) == 0) {
-                    char *dst = (char *)TEXTDISP_CommandBufferPtr + ENTRY_HIGHLIGHT_TEXT_OFFSET;
-                    char *src = TEXTDISP_DefaultSpacePad;
-                    while ((*dst++ = *src++) != CH_NUL) {
+                if (TEXTDISP_CommandBufferPtr != (void *)0) {
+                    TEXTDISP_SetEntryTextFields(TEXTDISP_CommandBufferPtr, (const UBYTE *)arg, (const UBYTE *)TEXTDISP_PrimarySearchText);
+
+                    if (TEXTDISP_FilterAndSelectEntry(TEXTDISP_CommandBufferPtr, MODE_FILTER) == 0) {
+                        char *dst = (char *)TEXTDISP_CommandBufferPtr + ENTRY_HIGHLIGHT_TEXT_OFFSET;
+                        char *src = TEXTDISP_DefaultSpacePad;
+                        while ((*dst++ = *src++) != CH_NUL) {
+                        }
                     }
                 }
             }
-        }
 
-        if (TEXTDISP_CommandBufferPtr != (void *)0) {
-            TEXTDISP_DrawHighlightFrame(TEXTDISP_CommandBufferPtr);
-            TEXTDISP_FilterAndSelectEntry(TEXTDISP_CommandBufferPtr, MODE_EXACT);
-        }
+            if (TEXTDISP_CommandBufferPtr != (void *)0) {
+                TEXTDISP_DrawHighlightFrame(TEXTDISP_CommandBufferPtr);
+                TEXTDISP_FilterAndSelectEntry(TEXTDISP_CommandBufferPtr, MODE_EXACT);
+            }
 
-        doCleanup = FLAG_FALSE;
+            doCleanup = FLAG_FALSE;
+        }
     }
 
     if (doFinalize != 0) {
