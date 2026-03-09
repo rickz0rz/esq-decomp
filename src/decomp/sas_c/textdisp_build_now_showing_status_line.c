@@ -132,7 +132,7 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             STRING_AppendAtNull(line, SCRIPT_AlignedPrefixEmptyA);
             STRING_AppendAtNull(line, title);
 
-            timeToken = TEXTDISP_FindControlToken((const char *)aux->titleTable[(LONG)entryIndex]);
+            timeToken = TEXTDISP_FindControlToken(aux->titleTable[(LONG)entryIndex]);
         } else {
             if ((TEXTDISP_PrimaryChannelCode > CHANNEL_CODE_DEFAULT &&
                  TEXTDISP_PrimaryChannelCode <= CHANNEL_RANGE_A_MAX) ||

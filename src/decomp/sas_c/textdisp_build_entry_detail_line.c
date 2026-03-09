@@ -70,7 +70,7 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
     LONG longLen;
     char tmp[TMP_BUFFER_LEN];
 
-    entry = (TEXTDISP_SelectionEntry *)entryPtr;
+    entry = entryPtr;
     if (entry == (TEXTDISP_SelectionEntry *)TEXTDISP_NULL) {
         return;
     }
@@ -102,11 +102,11 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
         segment++;
     }
     if (segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
-        STRING_AppendAtNull((char *)detail, SCRIPT_AlignedPrefixEmptyF);
-        STRING_AppendAtNull((char *)detail, (const char *)segment);
+        STRING_AppendAtNull(detail, SCRIPT_AlignedPrefixEmptyF);
+        STRING_AppendAtNull(detail, segment);
     }
 
-    if (aux != (void *)TEXTDISP_NULL && entryIndex >= TEXTDISP_NULL) {
+    if (aux != (char *)TEXTDISP_NULL && entryIndex >= TEXTDISP_NULL) {
         auxData = (TEXTDISP_AuxData *)aux;
         segment = TEXTDISP_SkipControlCodes(auxData->titleTable[entryIndex]);
     } else {
@@ -157,7 +157,7 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
             hit[TEXTDISP_NULL] = TEXTDISP_NULL;
         }
 
-        STRING_AppendAtNull((char *)detail, tmp);
+        STRING_AppendAtNull(detail, tmp);
     }
 
     TEXTDISP_FormatEntryTimeForIndex(tmp, entryIndex, aux);
@@ -168,8 +168,8 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
     }
 
     if (segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
-        STRING_AppendAtNull((char *)detail, SCRIPT_AlignedPrefixEmptyG);
-        STRING_AppendAtNull((char *)detail, (const char *)segment);
+        STRING_AppendAtNull(detail, SCRIPT_AlignedPrefixEmptyG);
+        STRING_AppendAtNull(detail, segment);
     }
 
     out = TEXTDISP_NULL;
@@ -184,9 +184,9 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
     tmp[out] = TEXTDISP_NULL;
 
     if (tmp[TEXTDISP_NULL] != TEXTDISP_NULL) {
-        STRING_AppendAtNull((char *)detail, Global_STR_ALIGNED_CHANNEL_2);
-        STRING_AppendAtNull((char *)detail, tmp);
+        STRING_AppendAtNull(detail, Global_STR_ALIGNED_CHANNEL_2);
+        STRING_AppendAtNull(detail, tmp);
     }
 
-    TEXTDISP_TrimTextToPixelWidth((char *)detail, DETAIL_TRIM_PIXEL_WIDTH);
+    TEXTDISP_TrimTextToPixelWidth(detail, DETAIL_TRIM_PIXEL_WIDTH);
 }
