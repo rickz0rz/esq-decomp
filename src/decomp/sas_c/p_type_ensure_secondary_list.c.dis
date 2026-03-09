@@ -1,0 +1,35 @@
+              SECTION      text,CODE
+__code:
+P_TYPE_EnsureSecondaryList:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___P_TYPE_EnsureSecondaryList__1:
+              MOVE.L         P_TYPE_PrimaryGroupListPtr(A4),D0;202c 0000 
+              BEQ.B          ___P_TYPE_EnsureSecondaryList__6;671a 
+___P_TYPE_EnsureSecondaryList__2:
+___P_TYPE_EnsureSecondaryList__3:
+              MOVE.L         P_TYPE_SecondaryGroupListPtr(A4),D1;222c 0000 
+              BNE.B          ___P_TYPE_EnsureSecondaryList__6;6614 
+___P_TYPE_EnsureSecondaryList__4:
+___P_TYPE_EnsureSecondaryList__5:
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          P_TYPE_CloneEntry        ;6100 0000 
+              MOVE.L         D0,P_TYPE_SecondaryGroupListPtr(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.B         TEXTDISP_SecondaryGroupCode(A4),(A0);10ac 0000 
+___P_TYPE_EnsureSecondaryList__6:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           P_TYPE_PrimaryGroupListPtr
+              XREF           P_TYPE_SecondaryGroupListPtr
+              XREF           P_TYPE_CloneEntry
+              XREF           TEXTDISP_SecondaryGroupCode
+              XDEF           P_TYPE_EnsureSecondaryList
+              END

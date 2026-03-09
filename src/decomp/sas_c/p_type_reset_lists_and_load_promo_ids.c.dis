@@ -1,0 +1,20 @@
+              SECTION      text,CODE
+__code:
+P_TYPE_ResetListsAndLoadPromoIds:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___P_TYPE_ResetListsAndLoadPromoIds__1:
+              CLR.L          P_TYPE_SecondaryGroupListPtr(A4);42ac 0000 
+              CLR.L          P_TYPE_PrimaryGroupListPtr(A4);42ac 0000 
+              BSR.W          P_TYPE_LoadPromoIdDataFile;6100 0000 
+___P_TYPE_ResetListsAndLoadPromoIds__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           P_TYPE_SecondaryGroupListPtr
+              XREF           P_TYPE_PrimaryGroupListPtr
+              XREF           P_TYPE_LoadPromoIdDataFile
+              XDEF           P_TYPE_ResetListsAndLoadPromoIds
+              END
