@@ -1,0 +1,29 @@
+typedef signed long LONG;
+typedef unsigned char UBYTE;
+
+extern LONG PARSE_ReadSignedLong(const UBYTE *in, LONG *out_value);
+
+LONG PARSE_ReadSignedLong_ParseLoop(const UBYTE *in, LONG *out_value)
+{
+    return PARSE_ReadSignedLong(in, out_value);
+}
+
+LONG PARSE_ReadSignedLong_ParseLoopEntry(const UBYTE *in, LONG *out_value)
+{
+    return PARSE_ReadSignedLong(in, out_value);
+}
+
+LONG PARSE_ReadSignedLong_ParseDone(const UBYTE *in, LONG *out_value)
+{
+    return PARSE_ReadSignedLong(in, out_value);
+}
+
+LONG PARSE_ReadSignedLong_StoreResult(const UBYTE *in, LONG *out_value)
+{
+    return PARSE_ReadSignedLong(in, out_value);
+}
+
+LONG PARSE_ReadSignedLong_NegateValue(LONG value)
+{
+    return -value;
+}

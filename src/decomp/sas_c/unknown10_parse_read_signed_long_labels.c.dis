@@ -1,0 +1,93 @@
+              SECTION      text,CODE
+__code:
+PARSE_ReadSignedLong_ParseLoop:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___PARSE_ReadSignedLong_ParseLoop__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSE_ReadSignedLong     ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___PARSE_ReadSignedLong_ParseLoop__2:
+___PARSE_ReadSignedLong_ParseLoop__3:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+__const:
+__strings:
+PARSE_ReadSignedLong_ParseLoopEn:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___PARSE_ReadSignedLong_ParseLoopEn__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSE_ReadSignedLong     ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___PARSE_ReadSignedLong_ParseLoopEn__2:
+___PARSE_ReadSignedLong_ParseLoopEn__3:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+PARSE_ReadSignedLong_ParseDone:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___PARSE_ReadSignedLong_ParseDone__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSE_ReadSignedLong     ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___PARSE_ReadSignedLong_ParseDone__2:
+___PARSE_ReadSignedLong_ParseDone__3:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+PARSE_ReadSignedLong_StoreResult:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___PARSE_ReadSignedLong_StoreResult__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSE_ReadSignedLong     ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___PARSE_ReadSignedLong_StoreResult__2:
+___PARSE_ReadSignedLong_StoreResult__3:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+PARSE_ReadSignedLong_NegateValue:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___PARSE_ReadSignedLong_NegateValue__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,D0                    ;2007 
+              NEG.L          D0                       ;4480 
+___PARSE_ReadSignedLong_NegateValue__2:
+___PARSE_ReadSignedLong_NegateValue__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           PARSE_ReadSignedLong
+              XDEF           PARSE_ReadSignedLong_ParseLoop
+              XDEF           PARSE_ReadSignedLong_ParseLoopEn
+              XDEF           PARSE_ReadSignedLong_ParseDone
+              XDEF           PARSE_ReadSignedLong_StoreResult
+              XDEF           PARSE_ReadSignedLong_NegateValue
+              END
