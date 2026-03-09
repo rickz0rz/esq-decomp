@@ -1,15 +1,15 @@
 typedef unsigned char UBYTE;
 typedef signed short WORD;
 
-extern UBYTE WDISP_StatusListMatchPattern[];
+extern char WDISP_StatusListMatchPattern[];
 
-void ESQPROTO_CopyLabelToGlobal(const UBYTE *src)
+void ESQPROTO_CopyLabelToGlobal(const char *src)
 {
-    UBYTE tmp[12];
+    char tmp[12];
     WORD i = 0;
 
     while (1) {
-        UBYTE ch = *src++;
+        char ch = *src++;
         tmp[i] = ch;
         if (ch == 0x12) {
             break;

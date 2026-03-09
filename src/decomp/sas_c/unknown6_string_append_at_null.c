@@ -1,8 +1,8 @@
 typedef unsigned char UBYTE;
 
-UBYTE *STRING_AppendAtNull(UBYTE *dst, const UBYTE *src)
+char *STRING_AppendAtNull(char *dst, const char *src)
 {
-    UBYTE *ret;
+    char *ret;
 
     ret = dst;
 
