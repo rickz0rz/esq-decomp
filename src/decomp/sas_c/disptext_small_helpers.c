@@ -17,7 +17,7 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void DISPTEXT_FinalizeLineTable(void);
 extern void DISPLIB_CommitCurrentLinePenAndAdvance(LONG lineIndex);
-extern LONG _LVOTextLength(void *gfxBase, void *rp, const char *text, LONG len);
+extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG len);
 
 void DISPTEXT_SetCurrentLineIndex(LONG lineIndex)
 {
@@ -90,7 +90,7 @@ LONG DISPTEXT_IsCurrentLineLast(void)
     return DISPTEXT_RESULT_FALSE;
 }
 
-LONG DISPTEXT_MeasureCurrentLineLength(void *rp)
+LONG DISPTEXT_MeasureCurrentLineLength(char *rp)
 {
     LONG lineIndex;
     char *linePtr;

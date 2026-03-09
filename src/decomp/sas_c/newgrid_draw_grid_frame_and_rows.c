@@ -25,15 +25,15 @@ extern LONG DISPTEXT_ControlMarkerXOffsetPx;
 
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
 extern LONG NEWGRID_SetRowColor(char *gridCtx, WORD selector, LONG colorIndex);
-extern LONG _LVOSetAPen(void *gfxBase, void *rp, LONG pen);
-extern LONG _LVORectFill(void *gfxBase, void *rp, LONG minx, LONG miny, LONG maxx, LONG maxy);
+extern LONG _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
+extern LONG _LVORectFill(void *gfxBase, char *rp, LONG minx, LONG miny, LONG maxx, LONG maxy);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount(void);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength(void *rp);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength(char *rp);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(void);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(void);
-extern void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(void *rp, LONG x, LONG y);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(void *rp, LONG x, LONG y, LONG maxx, LONG maxy);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(void *rp, LONG x, LONG y, LONG maxx, LONG maxy);
+extern void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(char *rp, LONG x, LONG y);
+extern void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(char *rp, LONG x, LONG y, LONG maxx, LONG maxy);
+extern void NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(char *rp, LONG x, LONG y, LONG maxx, LONG maxy);
 
 static LONG asr1_round_toward_zero(LONG v)
 {
@@ -62,9 +62,9 @@ LONG NEWGRID_DrawGridFrameAndRows(char *ctx, LONG rowColorIndex)
 
     ctxView = (NEWGRID_Context *)ctx;
     rp = &ctxView->rastPort;
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, NEWGRID_SetRowColor(ctx, 0, rowColorIndex));
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, (char *)rp, NEWGRID_SetRowColor(ctx, 0, rowColorIndex));
     rowHeight = (LONG)NEWGRID_RowHeightPx;
-    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, rp, 0, 0, 695, rowHeight + 3);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, (char *)rp, 0, 0, 695, rowHeight + 3);
 
     x = 42;
     yBase = 0;
@@ -73,7 +73,7 @@ LONG NEWGRID_DrawGridFrameAndRows(char *ctx, LONG rowColorIndex)
         LONG textWidth;
         LONG pad;
 
-        textWidth = NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength(rp);
+        textWidth = NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength((char *)rp);
         pad = 612 - textWidth;
         x += asr1_round_toward_zero(pad);
         yBase = 4;
@@ -97,17 +97,17 @@ LONG NEWGRID_DrawGridFrameAndRows(char *ctx, LONG rowColorIndex)
             yDraw = asr1_round_toward_zero(asr1_round_toward_zero(rowHeight) - fontHeight) + fontHeight + yBase - 1;
         }
 
-        NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(rp, x, yDraw);
+        NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine((char *)rp, x, yDraw);
         row += 1;
         yBase += asr1_round_toward_zero((LONG)NEWGRID_RowHeightPx) + DISPTEXT_ControlMarkerXOffsetPx;
     }
 
     isLast = NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast();
     if (hasMultiple != 0) {
-        NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(rp, 0, 0, 695, (LONG)NEWGRID_RowHeightPx + 3);
+        NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel((char *)rp, 0, 0, 695, (LONG)NEWGRID_RowHeightPx + 3);
     }
     if (isLast != 0) {
-        NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(rp, 0, yBase - 1, 695, 0);
+        NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel((char *)rp, 0, yBase - 1, 695, 0);
     }
 
     ctxView->selectionCode = (WORD)asr1_round_toward_zero(yBase);
