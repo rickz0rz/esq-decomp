@@ -10,13 +10,11 @@ ___NEWGRID_ComputeColumnIndex__1:
               MOVE.L         $18(A7),A5               ;2a6f 0018 
               MOVE.L         A5,A3                    ;264d 
               MOVEQ.L        #$0,D7                   ;7e00 
-              LEA            $36(A3),A0               ;41eb 0036 
-              CMPI.B         #$40,(A0)                ;0c10 0040 
-              BCC.B          ___NEWGRID_ComputeColumnIndex__5;6422 
+              CMPI.B         #$40,$36(A3)             ;0c2b 0040 0036 
+              BCC.B          ___NEWGRID_ComputeColumnIndex__5;6420 
 ___NEWGRID_ComputeColumnIndex__2:
-              LEA            $34(A3),A0               ;41eb 0034 
               MOVEQ.L        #$0,D5                   ;7a00 
-              MOVE.W         (A0),D5                  ;3a10 
+              MOVE.W         $34(A3),D5               ;3a2b 0034 
               MOVEQ.L        #$0,D6                   ;7c00 
               MOVE.W         NEWGRID_RowHeightPx(A4),D6;3c2c 0000 
               TST.L          D6                       ;4a86 
