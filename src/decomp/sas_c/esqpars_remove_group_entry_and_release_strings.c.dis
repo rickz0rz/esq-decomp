@@ -2,13 +2,12 @@
 __code:
 ESQPARS_RemoveGroupEntryAndRelea:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$4,A7                   ;594f 
               MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
 ___ESQPARS_RemoveGroupEntryAndRelea__1:
-              MOVE.W         $26(A7),D7               ;3e2f 0026 
+              MOVE.W         $22(A7),D7               ;3e2f 0022 
               BSR.W          ESQPARS_JMPTBL_SCRIPT_ResetCtrlC;6100 0000 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D7,D0                    ;3007 
@@ -35,7 +34,7 @@ ___ESQPARS_RemoveGroupEntryAndRelea__3:
               CLR.B          TEXTDISP_PrimaryGroupPresentFlag(A4);422c 0000 
 ___ESQPARS_RemoveGroupEntryAndRelea__4:
               TST.L          D6                       ;4a86 
-              BMI.W          ___ESQPARS_RemoveGroupEntryAndRelea__23;6b00 00d4 
+              BMI.W          ___ESQPARS_RemoveGroupEntryAndRelea__23;6b00 00cc 
 ___ESQPARS_RemoveGroupEntryAndRelea__5:
               MOVE.L         D7,D0                    ;2007 
               SUBQ.W         #$2,D0                   ;5540 
@@ -63,42 +62,40 @@ ___ESQPARS_RemoveGroupEntryAndRelea__8:
               MOVEQ.L        #$0,D5                   ;7a00 
 ___ESQPARS_RemoveGroupEntryAndRelea__9:
               MOVE.L         A3,D0                    ;200b 
-              BEQ.B          ___ESQPARS_RemoveGroupEntryAndRelea__17;674a 
+              BEQ.B          ___ESQPARS_RemoveGroupEntryAndRelea__17;6742 
 ___ESQPARS_RemoveGroupEntryAndRelea__10:
               MOVEQ.L        #$31,D0                  ;7031 
               CMP.L          D0,D5                    ;ba80 
-              BGE.B          ___ESQPARS_RemoveGroupEntryAndRelea__17;6c44 
+              BGE.B          ___ESQPARS_RemoveGroupEntryAndRelea__17;6c3c 
 ___ESQPARS_RemoveGroupEntryAndRelea__11:
               MOVE.L         D5,D0                    ;2005 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         A3,A0                    ;204b 
-              ADD.L          D0,A0                    ;d1c0 
-              LEA            $38(A0),A2               ;45e8 0038 
-              MOVE.L         (A2),A0                  ;2052 
-              MOVE.L         A0,$1c(A7)               ;2f48 001c 
+              MOVE.L         $38(A3,D0.L),A2          ;2473 0838 
+              MOVE.L         A2,D0                    ;200a 
               BEQ.B          ___ESQPARS_RemoveGroupEntryAndRelea__16;672c 
 ___ESQPARS_RemoveGroupEntryAndRelea__12:
               MOVEQ.L        #$0,D4                   ;7800 
 ___ESQPARS_RemoveGroupEntryAndRelea__13:
-              MOVE.L         $1c(A7),A0               ;206f 001c 
-              TST.B          $0(A0,D4.L)              ;4a30 4800 
+              TST.B          $0(A2,D4.L)              ;4a32 4800 
               BEQ.B          ___ESQPARS_RemoveGroupEntryAndRelea__15;6704 
 ___ESQPARS_RemoveGroupEntryAndRelea__14:
               ADDQ.L         #$1,D4                   ;5284 
-              BRA.B          ___ESQPARS_RemoveGroupEntryAndRelea__13;60f2 
+              BRA.B          ___ESQPARS_RemoveGroupEntryAndRelea__13;60f6 
 ___ESQPARS_RemoveGroupEntryAndRelea__15:
               MOVE.L         D4,D0                    ;2004 
               ADDQ.L         #$1,D0                   ;5280 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
+              MOVE.L         A2,-(A7)                 ;2f0a 
               PEA            ($401).w                 ;4878 0401 
               PEA            Global_STR_ESQPARS_C_2(A4);486c 0000 
               BSR.W          ESQIFF_JMPTBL_MEMORY_DeallocateM;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              CLR.L          (A2)                     ;4292 
+              MOVE.L         D5,D0                    ;2005 
+              ASL.L          #$2,D0                   ;e580 
+              CLR.L          $38(A3,D0.L)             ;42b3 0838 
 ___ESQPARS_RemoveGroupEntryAndRelea__16:
               ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___ESQPARS_RemoveGroupEntryAndRelea__9;60b2 
+              BRA.B          ___ESQPARS_RemoveGroupEntryAndRelea__9;60ba 
 ___ESQPARS_RemoveGroupEntryAndRelea__17:
               MOVE.L         A3,D0                    ;200b 
               BEQ.B          ___ESQPARS_RemoveGroupEntryAndRelea__19;6716 
@@ -124,11 +121,10 @@ ___ESQPARS_RemoveGroupEntryAndRelea__20:
               LEA            $10(A7),A7               ;4fef 0010 
 ___ESQPARS_RemoveGroupEntryAndRelea__21:
               SUBQ.L         #$1,D6                   ;5386 
-              BRA.W          ___ESQPARS_RemoveGroupEntryAndRelea__4;6000 ff2a 
+              BRA.W          ___ESQPARS_RemoveGroupEntryAndRelea__4;6000 ff32 
 ___ESQPARS_RemoveGroupEntryAndRelea__22:
 ___ESQPARS_RemoveGroupEntryAndRelea__23:
               MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
-              ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:
 __strings:

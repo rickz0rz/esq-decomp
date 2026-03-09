@@ -3,6 +3,11 @@ typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 typedef signed long LONG;
 
+typedef struct ESQPARS_TitleTable {
+    UBYTE pad0[56];
+    char *titleTable[49];
+} ESQPARS_TitleTable;
+
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_SecondaryGroupEntryCount;
@@ -41,36 +46,35 @@ void ESQPARS_RemoveGroupEntryAndReleaseStrings(UWORD mode)
 
     for (; idx >= 0; --idx) {
         void *entry;
-        void *title_table;
+        ESQPARS_TitleTable *titleTable;
         LONG slot;
 
         if (mode == 2) {
             entry = TEXTDISP_SecondaryEntryPtrTable[idx];
             TEXTDISP_SecondaryEntryPtrTable[idx] = (void *)0;
-            title_table = TEXTDISP_SecondaryTitlePtrTable[idx];
+            titleTable = (ESQPARS_TitleTable *)TEXTDISP_SecondaryTitlePtrTable[idx];
             TEXTDISP_SecondaryTitlePtrTable[idx] = (void *)0;
         } else {
             entry = TEXTDISP_PrimaryEntryPtrTable[idx];
             TEXTDISP_PrimaryEntryPtrTable[idx] = (void *)0;
-            title_table = TEXTDISP_PrimaryTitlePtrTable[idx];
+            titleTable = (ESQPARS_TitleTable *)TEXTDISP_PrimaryTitlePtrTable[idx];
             TEXTDISP_PrimaryTitlePtrTable[idx] = (void *)0;
         }
 
-        for (slot = 0; title_table != (void *)0 && slot < 49; ++slot) {
-            char **slot_ptr = (char **)((UBYTE *)title_table + 56 + (slot * 4));
-            char *s = *slot_ptr;
+        for (slot = 0; titleTable != (ESQPARS_TitleTable *)0 && slot < 49; ++slot) {
+            char *s = titleTable->titleTable[slot];
             if (s != (char *)0) {
                 ULONG n = 0;
                 while (s[n] != 0) {
                     ++n;
                 }
                 ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_2, 1025, s, n + 1);
-                *slot_ptr = (char *)0;
+                titleTable->titleTable[slot] = (char *)0;
             }
         }
 
-        if (title_table != (void *)0) {
-            ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_3, 1031, title_table, 500);
+        if (titleTable != (ESQPARS_TitleTable *)0) {
+            ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_3, 1031, titleTable, 500);
         }
 
         ESQPARS_JMPTBL_COI_FreeEntryResources(entry);
