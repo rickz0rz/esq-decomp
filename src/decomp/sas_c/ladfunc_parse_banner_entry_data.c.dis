@@ -64,7 +64,7 @@ ___LADFUNC_ParseBannerEntryData__6:
               BSR.W          LADFUNC_ResetEntryTextBuffers;6100 0000 
 ___LADFUNC_ParseBannerEntryData__7:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 021c 
+              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 0222 
 ___LADFUNC_ParseBannerEntryData__8:
               MOVEQ.L        #$4c,D0                  ;704c 
               CMP.B          D0,D7                    ;be00 
@@ -89,7 +89,7 @@ ___LADFUNC_ParseBannerEntryData__11:
               BCS.B          ___LADFUNC_ParseBannerEntryData__13;6506 
 ___LADFUNC_ParseBannerEntryData__12:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 01e8 
+              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 01ee 
 ___LADFUNC_ParseBannerEntryData__13:
               MOVE.W         LADFUNC_ParsedEntryCount(A4),D0;302c 0000 
               MOVE.W         D0,D1                    ;3200 
@@ -103,7 +103,7 @@ ___LADFUNC_ParseBannerEntryData__13:
               BLT.B          ___LADFUNC_ParseBannerEntryData__15;6d06 
 ___LADFUNC_ParseBannerEntryData__14:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 01c8 
+              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 01ce 
 ___LADFUNC_ParseBannerEntryData__15:
               SUBQ.B         #$1,$1b9(A7)             ;532f 01b9 
               MOVEQ.L        #$0,D0                   ;7000 
@@ -130,22 +130,23 @@ ___LADFUNC_ParseBannerEntryData__15:
               BNE.B          ___LADFUNC_ParseBannerEntryData__17;6606 
 ___LADFUNC_ParseBannerEntryData__16:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 0176 
+              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 017c 
 ___LADFUNC_ParseBannerEntryData__17:
               MOVE.B         (A5)+,D0                 ;101d 
               MOVE.B         D0,$1d8(A7)              ;1f40 01d8 
-              BEQ.W          ___LADFUNC_ParseBannerEntryData__30;6700 00ca 
+              BEQ.W          ___LADFUNC_ParseBannerEntryData__30;6700 00d0 
 ___LADFUNC_ParseBannerEntryData__18:
               MOVE.W         $20(A7),D1               ;322f 0020 
               CMP.W          $1ca(A7),D1              ;b26f 01ca 
-              BCC.W          ___LADFUNC_ParseBannerEntryData__30;6400 00be 
+              BCC.W          ___LADFUNC_ParseBannerEntryData__30;6400 00c4 
 ___LADFUNC_ParseBannerEntryData__19:
 ___LADFUNC_ParseBannerEntryData__20:
               CMP.B          $1c9(A7),D0              ;b02f 01c9 
-              BNE.B          ___LADFUNC_ParseBannerEntryData__26;6656 
+              BNE.B          ___LADFUNC_ParseBannerEntryData__26;665a 
 ___LADFUNC_ParseBannerEntryData__21:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A5)+,D0                 ;101d 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
@@ -161,14 +162,15 @@ ___LADFUNC_ParseBannerEntryData__22:
               ADDQ.W         #$8,A7                   ;504f 
               MOVE.B         D0,$1b8(A7)              ;1f40 01b8 
 ___LADFUNC_ParseBannerEntryData__23:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A5)+,D0                 ;101d 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.L         D0,$1d0(A7)              ;2f40 01d0 
               CMP.B          $1c7(A7),D0              ;b02f 01c7 
-              BHI.B          ___LADFUNC_ParseBannerEntryData__17;62a4 
+              BHI.B          ___LADFUNC_ParseBannerEntryData__17;62a0 
 ___LADFUNC_ParseBannerEntryData__24:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         $1b8(A7),D1              ;122f 01b8 
@@ -178,17 +180,17 @@ ___LADFUNC_ParseBannerEntryData__24:
               ADDQ.W         #$8,A7                   ;504f 
               MOVE.B         D0,$1b8(A7)              ;1f40 01b8 
 ___LADFUNC_ParseBannerEntryData__25:
-              BRA.B          ___LADFUNC_ParseBannerEntryData__17;608e 
+              BRA.B          ___LADFUNC_ParseBannerEntryData__17;608a 
 ___LADFUNC_ParseBannerEntryData__26:
               MOVE.B         $1d8(A7),D0              ;102f 01d8 
               CMP.B          $1c8(A7),D0              ;b02f 01c8 
               BNE.B          ___LADFUNC_ParseBannerEntryData__28;6638 
 ___LADFUNC_ParseBannerEntryData__27:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A5)+,D0                 ;101d 
+              EXT.W          D0                       ;4880 
               MOVE.W         D0,(A2)                  ;3480 
-              MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         (A5)+,D1                 ;121d 
+              EXT.W          D1                       ;4881 
               MOVE.W         D1,$2(A2)                ;3541 0002 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         (A2),D0                  ;3012 
@@ -205,17 +207,18 @@ ___LADFUNC_ParseBannerEntryData__27:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
               MOVE.W         D1,$2(A2)                ;3541 0002 
-              BRA.W          ___LADFUNC_ParseBannerEntryData__17;6000 ff4e 
+              BRA.W          ___LADFUNC_ParseBannerEntryData__17;6000 ff4a 
 ___LADFUNC_ParseBannerEntryData__28:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         $20(A7),D0               ;302f 0020 
               MOVE.B         $1b8(A7),$0(A3,D0.L)     ;17af 01b8 0800 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         D0,D1                    ;3200 
-              MOVE.B         $1d8(A7),$22(A7,D1.L)    ;1faf 01d8 1822 
+              MOVE.B         $1d8(A7),D2              ;142f 01d8 
+              MOVE.B         D2,$22(A7,D1.L)          ;1f82 1822 
               ADDQ.W         #$1,$20(A7)              ;526f 0020 
 ___LADFUNC_ParseBannerEntryData__29:
-              BRA.W          ___LADFUNC_ParseBannerEntryData__17;6000 ff30 
+              BRA.W          ___LADFUNC_ParseBannerEntryData__17;6000 ff2a 
 ___LADFUNC_ParseBannerEntryData__30:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         $20(A7),D0               ;302f 0020 

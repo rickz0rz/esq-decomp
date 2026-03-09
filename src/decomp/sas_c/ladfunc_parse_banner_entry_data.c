@@ -9,7 +9,7 @@ typedef struct LADFUNC_EntryRecord {
     UWORD startSlot;
     UWORD endSlot;
     UBYTE align_pad[2];
-    UBYTE *textPtr;
+    char *textPtr;
     UBYTE *attrPtr;
 } LADFUNC_EntryRecord;
 
@@ -32,12 +32,12 @@ extern LONG LADFUNC_ParseHexDigit(LONG ch);
 extern UBYTE LADFUNC_SetPackedPenHighNibble(LONG packed, LONG hi);
 extern UBYTE LADFUNC_SetPackedPenLowNibble(LONG packed, LONG lo);
 extern LONG ESQIFF2_ValidateAsciiNumericByte(LONG ch);
-extern UBYTE *ESQPARS_ReplaceOwnedString(UBYTE *newText, UBYTE *oldText);
+extern char *ESQPARS_ReplaceOwnedString(char *newText, char *oldText);
 extern void LADFUNC_UpdateHighlightState(void);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 
-LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const UBYTE *in)
+LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const char *in)
 {
     const UBYTE DEFAULT_PEN_HIGH = 2;
     const UBYTE DEFAULT_PEN_LOW = 1;
@@ -56,7 +56,7 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const UBYTE *in)
     UBYTE entryByte;
     UBYTE packedPens;
     UBYTE *tempAttr;
-    UBYTE textScratch[402];
+    char textScratch[402];
     UWORD textLen;
     LADFUNC_EntryRecord *entry;
 
@@ -100,7 +100,7 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const UBYTE *in)
     }
 
     for (;;) {
-        UBYTE c = *in++;
+        UBYTE c = (UBYTE)*in++;
 
         if (c == 0 || textLen >= TEXT_SCRATCH_MAX) {
             break;
