@@ -7,16 +7,16 @@ extern WORD TEXTDISP_ActiveGroupId;
 extern WORD TEXTDISP_LinePenOverrideEnabledFlag;
 extern WORD TEXTDISP_LinePenOverrideStateWord;
 extern LONG WDISP_DisplayContextBase;
-extern UBYTE TEXTDISP_EntryShortNameScratch[];
-extern UBYTE TEXTDISP_ChannelLabelBuffer[];
+extern char TEXTDISP_EntryShortNameScratch[];
+extern char TEXTDISP_ChannelLabelBuffer[];
 extern void *Global_REF_RASTPORT_2;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern void TEXTDISP_BuildEntryShortName(UBYTE *entry, UBYTE *out);
+extern void TEXTDISP_BuildEntryShortName(UBYTE *entry, char *out);
 extern void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix);
-extern void TEXTDISP_TrimTextToPixelWidth(UBYTE *text, LONG maxWidth);
-extern void TEXTDISP_DrawInsetRectFrame(UBYTE *text, LONG drawMode);
+extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth);
+extern void TEXTDISP_DrawInsetRectFrame(char *text, LONG drawMode);
 extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG mode);
 
 typedef struct TEXTDISP_DisplayContext {
@@ -29,8 +29,8 @@ void TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode)
 {
     TEXTDISP_DisplayContext *context;
     UBYTE *entry;
-    UBYTE *src;
-    UBYTE *dst;
+    char *src;
+    char *dst;
     void *rastPort;
     LONG trimWidth;
 

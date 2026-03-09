@@ -4,12 +4,12 @@ typedef unsigned char UBYTE;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern UBYTE WDISP_CharClassTable[];
 
-extern LONG _LVOTextLength(void *rastport, UBYTE *text, LONG len);
+extern LONG _LVOTextLength(void *rastport, char *text, LONG len);
 
-LONG ESQFUNC_TrimTextToPixelWidthWordBoundary(void *rastport, LONG max_width, UBYTE *text)
+LONG ESQFUNC_TrimTextToPixelWidthWordBoundary(void *rastport, LONG max_width, char *text)
 {
     LONG len;
-    UBYTE *scan;
+    char *scan;
 
     scan = text;
     while (*scan != 0) {

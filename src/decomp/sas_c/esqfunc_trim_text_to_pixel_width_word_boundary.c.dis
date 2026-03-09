@@ -27,7 +27,7 @@ ___ESQFUNC_TrimTextToPixelWidthWord__5:
               BGT.B          ___ESQFUNC_TrimTextToPixelWidthWord__7;6e04 
 ___ESQFUNC_TrimTextToPixelWidthWord__6:
               MOVE.L         D6,D0                    ;2006 
-              BRA.B          ___ESQFUNC_TrimTextToPixelWidthWord__17;6046 
+              BRA.B          ___ESQFUNC_TrimTextToPixelWidthWord__17;604a 
 ___ESQFUNC_TrimTextToPixelWidthWord__7:
               MOVE.L         D6,-(A7)                 ;2f06 
               MOVE.L         A3,-(A7)                 ;2f0b 
@@ -38,29 +38,31 @@ ___ESQFUNC_TrimTextToPixelWidthWord__7:
               BGT.B          ___ESQFUNC_TrimTextToPixelWidthWord__9;6e04 
 ___ESQFUNC_TrimTextToPixelWidthWord__8:
               MOVE.L         D6,D0                    ;2006 
-              BRA.B          ___ESQFUNC_TrimTextToPixelWidthWord__17;6030 
+              BRA.B          ___ESQFUNC_TrimTextToPixelWidthWord__17;6034 
 ___ESQFUNC_TrimTextToPixelWidthWord__9:
               SUBQ.L         #$1,D6                   ;5386 
-              BLE.B          ___ESQFUNC_TrimTextToPixelWidthWord__12;6f12 
+              BLE.B          ___ESQFUNC_TrimTextToPixelWidthWord__12;6f14 
 ___ESQFUNC_TrimTextToPixelWidthWord__10:
 ___ESQFUNC_TrimTextToPixelWidthWord__11:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $ffffffff(A3,D6.L),D0    ;1033 68ff 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
               LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
-              BTST           #$3,$0(A0,D0.W)          ;0830 0003 0000 
-              BEQ.B          ___ESQFUNC_TrimTextToPixelWidthWord__9;67ea 
+              BTST           #$3,$0(A0,D1.W)          ;0830 0003 1000 
+              BEQ.B          ___ESQFUNC_TrimTextToPixelWidthWord__9;67e8 
 ___ESQFUNC_TrimTextToPixelWidthWord__12:
               TST.L          D6                       ;4a86 
-              BLE.B          ___ESQFUNC_TrimTextToPixelWidthWord__5;6fc8 
+              BLE.B          ___ESQFUNC_TrimTextToPixelWidthWord__5;6fc6 
 ___ESQFUNC_TrimTextToPixelWidthWord__13:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $ffffffff(A3,D6.L),D0    ;1033 68ff 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
               LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
-              BTST           #$3,$0(A0,D0.W)          ;0830 0003 0000 
-              BEQ.B          ___ESQFUNC_TrimTextToPixelWidthWord__5;67b6 
+              BTST           #$3,$0(A0,D1.W)          ;0830 0003 1000 
+              BEQ.B          ___ESQFUNC_TrimTextToPixelWidthWord__5;67b2 
 ___ESQFUNC_TrimTextToPixelWidthWord__14:
               SUBQ.L         #$1,D6                   ;5386 
-              BRA.B          ___ESQFUNC_TrimTextToPixelWidthWord__12;60e6 
+              BRA.B          ___ESQFUNC_TrimTextToPixelWidthWord__12;60e4 
 ___ESQFUNC_TrimTextToPixelWidthWord__15:
 ___ESQFUNC_TrimTextToPixelWidthWord__16:
 ___ESQFUNC_TrimTextToPixelWidthWord__17:
