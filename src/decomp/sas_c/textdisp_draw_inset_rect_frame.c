@@ -7,19 +7,27 @@ extern void *Global_REF_RASTPORT_2;
 
 extern void TLIBA1_DrawFormattedTextBlock(void *rastPort, const char *text, LONG x1, LONG y1, LONG x2, LONG y2);
 
+typedef struct TEXTDISP_DisplayContext {
+    UBYTE pad0[2];
+    WORD width;
+    WORD height;
+    UBYTE pad6[4];
+    UBYTE rastPort[1];
+} TEXTDISP_DisplayContext;
+
 void TEXTDISP_DrawInsetRectFrame(UBYTE *text, WORD mode)
 {
-    UBYTE *context;
+    TEXTDISP_DisplayContext *context;
     LONG x1;
     LONG y1;
     LONG x2;
     LONG y2;
 
-    context = (UBYTE *)WDISP_DisplayContextBase;
+    context = (TEXTDISP_DisplayContext *)WDISP_DisplayContextBase;
     x1 = 0;
-    x2 = (LONG)*(WORD *)(context + 2) - 1;
+    x2 = (LONG)context->width - 1;
     y1 = 0;
-    y2 = (LONG)*(WORD *)(context + 4) - 1;
+    y2 = (LONG)context->height - 1;
 
     if (mode == 2) {
         x1 = x2;
@@ -33,6 +41,6 @@ void TEXTDISP_DrawInsetRectFrame(UBYTE *text, WORD mode)
     if (mode == 3) {
         TLIBA1_DrawFormattedTextBlock(Global_REF_RASTPORT_2, (const char *)text, x1, y1, x2, y2);
     } else {
-        TLIBA1_DrawFormattedTextBlock((void *)(context + 10), (const char *)text, x1, y1, x2, y2);
+        TLIBA1_DrawFormattedTextBlock((void *)context->rastPort, (const char *)text, x1, y1, x2, y2);
     }
 }

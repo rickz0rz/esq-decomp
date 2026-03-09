@@ -12,14 +12,12 @@ ___TEXTDISP_DrawInsetRectFrame__1:
               MOVE.L         $20(A7),A5               ;2a6f 0020 
               MOVE.L         WDISP_DisplayContextBase(A4),A3;266c 0000 
               MOVEQ.L        #$0,D6                   ;7c00 
-              LEA            $2(A3),A0                ;41eb 0002 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.W         $2(A3),D0                ;302b 0002 
               EXT.L          D0                       ;48c0 
               MOVE.L         D0,D4                    ;2800 
               SUBQ.L         #$1,D4                   ;5384 
               MOVEQ.L        #$0,D5                   ;7a00 
-              LEA            $4(A3),A0                ;41eb 0004 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.W         $4(A3),D0                ;302b 0004 
               EXT.L          D0                       ;48c0 
               SUBQ.L         #$1,D0                   ;5380 
               MOVEM.L        D0,$18(A7)               ;48ef 0001 0018 
