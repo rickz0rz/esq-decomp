@@ -1,15 +1,15 @@
 extern void NEWGRID_SetSelectionMarkers(void);
-extern void STR_FindCharPtr(void);
+extern char *STR_FindCharPtr(char *s, long ch);
 extern void TLIBA1_DrawTextWithInsetSegments(void);
 extern void FORMAT_FormatToBuffer2(void);
-extern void STR_SkipClass3Chars(void);
+extern char *STR_SkipClass3Chars(char *s);
 extern void STRING_AppendAtNull(void);
 extern void STR_CopyUntilAnyDelimN(void);
 
 void GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers(void){NEWGRID_SetSelectionMarkers();}
-void GROUP_AI_JMPTBL_STR_FindCharPtr(void){STR_FindCharPtr();}
+char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, long ch){return STR_FindCharPtr(s, ch);}
 void GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments(void){TLIBA1_DrawTextWithInsetSegments();}
 void GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2(void){FORMAT_FormatToBuffer2();}
-void GROUP_AI_JMPTBL_STR_SkipClass3Chars(void){STR_SkipClass3Chars();}
+char *GROUP_AI_JMPTBL_STR_SkipClass3Chars(char *s){return STR_SkipClass3Chars(s);}
 void GROUP_AI_JMPTBL_STRING_AppendAtNull(void){STRING_AppendAtNull();}
 void GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN(void){STR_CopyUntilAnyDelimN();}
