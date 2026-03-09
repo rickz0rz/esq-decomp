@@ -23,7 +23,7 @@ extern UWORD ED2_SelectedFlagByteOffset;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE *ED2_SelectedEntryDataPtr;
 extern UBYTE *ED2_SelectedEntryTitlePtr;
-extern UBYTE *TEXTDISP_PrimaryTitlePtrTable[];
+extern char *TEXTDISP_PrimaryTitlePtrTable[];
 extern LONG WDISP_DisplayContextBase;
 
 extern const char Global_STR_ED2_C_1[];
@@ -71,7 +71,7 @@ void ED2_DrawEntryDetailsPanel(void)
         ED2_SelectedEntryTitlePtr = (UBYTE *)0;
         ED2_SelectedEntryIndex = 0;
     } else {
-        ED2_SelectedEntryTitlePtr = TEXTDISP_PrimaryTitlePtrTable[ED2_SelectedEntryIndex];
+        ED2_SelectedEntryTitlePtr = (UBYTE *)TEXTDISP_PrimaryTitlePtrTable[ED2_SelectedEntryIndex];
     }
 
     if (ED2_SelectedEntryTitlePtr == (UBYTE *)0 || ED2_SelectedEntryDataPtr == (UBYTE *)0) {
@@ -86,7 +86,7 @@ void ED2_DrawEntryDetailsPanel(void)
         ED2_SelectedFlagByteOffset = 1;
     }
 
-    ED2_SelectedEntryTitlePtr = TEXTDISP_PrimaryTitlePtrTable[ED2_SelectedEntryIndex];
+    ED2_SelectedEntryTitlePtr = (UBYTE *)TEXTDISP_PrimaryTitlePtrTable[ED2_SelectedEntryIndex];
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(panelTextBuffer, Global_STR_PI_CLU_POS1,
                                   (LONG)ED2_SelectedEntryIndex,
