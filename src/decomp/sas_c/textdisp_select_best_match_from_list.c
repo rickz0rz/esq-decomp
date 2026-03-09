@@ -19,8 +19,8 @@ extern UBYTE TEXTDISP_FindModeActiveFlag;
 extern UWORD TEXTDISP_SbeFilterActiveFlag;
 extern UBYTE TEXTDISP_CandidateIndexList[];
 extern UBYTE TEXTDISP_Tag_SPT_Select[];
-extern UBYTE *TEXTDISP_PrimaryTitlePtrTable[];
-extern UBYTE *TEXTDISP_SecondaryTitlePtrTable[];
+extern char *TEXTDISP_PrimaryTitlePtrTable[];
+extern char *TEXTDISP_SecondaryTitlePtrTable[];
 
 extern UWORD CLOCK_HalfHourSlotIndex;
 extern UBYTE CLOCK_CurrentDayOfWeekIndex;
@@ -29,7 +29,7 @@ extern UBYTE Global_STR_TEXTDISP_C_3[];
 extern LONG TEXTDISP_FindEntryMatchIndex(void *titles, LONG mode, LONG flags);
 extern LONG TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG idx);
 
-static UBYTE *TEXTDISP_GetActiveTitlePtr(UWORD matchIndex, LONG *groupCodeOut)
+static char *TEXTDISP_GetActiveTitlePtr(UWORD matchIndex, LONG *groupCodeOut)
 {
     if (TEXTDISP_ActiveGroupId != 0) {
         *groupCodeOut = (LONG)TEXTDISP_PrimaryGroupCode;
@@ -40,7 +40,7 @@ static UBYTE *TEXTDISP_GetActiveTitlePtr(UWORD matchIndex, LONG *groupCodeOut)
     return TEXTDISP_SecondaryTitlePtrTable[matchIndex];
 }
 
-static UWORD TEXTDISP_GetUsageCount(UBYTE *titlePtr, WORD slotIndex)
+static UWORD TEXTDISP_GetUsageCount(char *titlePtr, WORD slotIndex)
 {
     return ((UWORD *)titlePtr)[200 + (UWORD)slotIndex];
 }
@@ -100,7 +100,7 @@ LONG TEXTDISP_SelectBestMatchFromList(void *titles, UWORD candidateCount, UWORD 
         LONG timeOffset;
         LONG minIndex;
         LONG specialFlag;
-        UBYTE *titlePtr;
+        char *titlePtr;
         UWORD usageCount;
 
         TEXTDISP_CurrentMatchIndex = (UWORD)TEXTDISP_CandidateIndexList[i];
@@ -198,7 +198,7 @@ LONG TEXTDISP_SelectBestMatchFromList(void *titles, UWORD candidateCount, UWORD 
 
         if (TEXTDISP_BannerCharSelected != 100) {
             LONG groupCode;
-            UBYTE *titlePtr = TEXTDISP_GetActiveTitlePtr(
+            char *titlePtr = TEXTDISP_GetActiveTitlePtr(
                 (UWORD)TEXTDISP_BannerSelectedEntryIndex,
                 &groupCode);
 

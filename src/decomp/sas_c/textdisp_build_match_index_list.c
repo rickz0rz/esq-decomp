@@ -18,9 +18,9 @@ extern UWORD TEXTDISP_SbeFilterActiveFlag;
 extern UWORD TEXTDISP_FindModeActiveFlag;
 extern UBYTE TEXTDISP_CandidateIndexList[];
 
-extern UBYTE *TEXTDISP_PrimaryTitlePtrTable[];
+extern char *TEXTDISP_PrimaryTitlePtrTable[];
 extern TEXTDISP_CandidateEntry *TEXTDISP_PrimaryEntryPtrTable[];
-extern UBYTE *TEXTDISP_SecondaryTitlePtrTable[];
+extern char *TEXTDISP_SecondaryTitlePtrTable[];
 extern TEXTDISP_CandidateEntry *TEXTDISP_SecondaryEntryPtrTable[];
 
 extern const char TEXTDISP_Tag_PPV[];
@@ -49,7 +49,7 @@ LONG TEXTDISP_BuildMatchIndexList(UBYTE *patternPtr, UWORD cmdChar)
     LONG entryCount;
     LONG ppvOrSbeFlag;
     LONG sportsFilterFlag;
-    UBYTE *title;
+    char *title;
     TEXTDISP_CandidateEntry *entry;
 
     matchCount = 0;
