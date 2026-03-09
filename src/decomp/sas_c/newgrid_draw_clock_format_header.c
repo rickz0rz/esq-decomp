@@ -3,6 +3,25 @@ typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Font {
+    UBYTE pad0[26];
+    UWORD ySize;
+} NEWGRID_Font;
+
+typedef struct NEWGRID_RastPort {
+    UBYTE pad0[52];
+    NEWGRID_Font *font;
+} NEWGRID_RastPort;
+
+typedef struct NEWGRID_Context {
+    UBYTE pad0[32];
+    ULONG selectedState;
+    UBYTE pad1[18];
+    UWORD selectionCode;
+    UBYTE pad2[6];
+    NEWGRID_RastPort rastPort;
+} NEWGRID_Context;
+
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
@@ -22,11 +41,13 @@ extern void NEWGRID_ValidateSelectionCode(void *grid_ctx, LONG code);
 void NEWGRID_DrawClockFormatHeader(void *grid_ctx, LONG start_slot)
 {
     UBYTE label[97];
-    UBYTE *rast;
+    NEWGRID_Context *ctx;
+    NEWGRID_RastPort *rast;
     LONG left_x;
     LONG col;
 
-    rast = (UBYTE *)grid_ctx + 60;
+    ctx = (NEWGRID_Context *)grid_ctx;
+    rast = &ctx->rastPort;
 
     _LVOSetDrMd(rast, 0);
     _LVOSetAPen(rast, NEWGRID_SetRowColor(grid_ctx, 0, 0));
@@ -79,7 +100,7 @@ void NEWGRID_DrawClockFormatHeader(void *grid_ctx, LONG start_slot)
         }
         text_x = x + (pad >> 1) + 2;
 
-        font_h = *(UWORD *)(*(UBYTE **)(rast + 52) + 26);
+        font_h = rast->font->ySize;
         text_y = 34 - (LONG)font_h;
         if (text_y < 0) {
             text_y += 1;
@@ -90,7 +111,7 @@ void NEWGRID_DrawClockFormatHeader(void *grid_ctx, LONG start_slot)
         _LVOText(rast, label, text_len);
     }
 
-    *(UWORD *)((UBYTE *)grid_ctx + 52) = 17;
+    ctx->selectionCode = 17;
     NEWGRID_ValidateSelectionCode(grid_ctx, 64);
-    *(ULONG *)((UBYTE *)grid_ctx + 32) = (ULONG)*(UWORD *)((UBYTE *)grid_ctx + 52);
+    ctx->selectedState = (ULONG)ctx->selectionCode;
 }

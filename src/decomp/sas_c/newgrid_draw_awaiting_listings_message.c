@@ -3,6 +3,25 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Font {
+    UBYTE pad0[26];
+    UWORD ySize;
+} NEWGRID_Font;
+
+typedef struct NEWGRID_RastPort {
+    UBYTE pad0[52];
+    NEWGRID_Font *font;
+} NEWGRID_RastPort;
+
+typedef struct NEWGRID_Context {
+    UBYTE pad0[32];
+    LONG selectedState;
+    UBYTE pad1[18];
+    UWORD selectionCode;
+    UBYTE pad2[6];
+    NEWGRID_RastPort rastPort;
+} NEWGRID_Context;
+
 extern UWORD NEWGRID_RowHeightPx;
 extern UBYTE *Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
 extern void *Global_REF_GRAPHICS_LIBRARY;
@@ -15,7 +34,8 @@ extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LON
 
 LONG NEWGRID_DrawAwaitingListingsMessage(void *gridCtx)
 {
-    UBYTE *rast;
+    NEWGRID_Context *ctx;
+    NEWGRID_RastPort *rast;
     LONG rowH;
     LONG yMax;
     UBYTE *msg;
@@ -29,7 +49,8 @@ LONG NEWGRID_DrawAwaitingListingsMessage(void *gridCtx)
 
     (void)Global_REF_GRAPHICS_LIBRARY;
 
-    rast = (UBYTE *)gridCtx + 60;
+    ctx = (NEWGRID_Context *)gridCtx;
+    rast = &ctx->rastPort;
     rowH = (LONG)(UWORD)NEWGRID_RowHeightPx;
     yMax = rowH - 1;
     msg = Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
@@ -51,7 +72,7 @@ LONG NEWGRID_DrawAwaitingListingsMessage(void *gridCtx)
     }
     x = (x >> 1) + 36;
 
-    fontH = *(UWORD *)(*(UBYTE **)((UBYTE *)gridCtx + 112) + 26);
+    fontH = rast->font->ySize;
     y = rowH - (LONG)fontH;
     if (y < 0) {
         y += 1;
@@ -62,8 +83,8 @@ LONG NEWGRID_DrawAwaitingListingsMessage(void *gridCtx)
     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(rast, 0, 0, 695, yMax);
 
     mid = (WORD)((UWORD)NEWGRID_RowHeightPx >> 1);
-    *(UWORD *)((UBYTE *)gridCtx + 52) = (UWORD)mid;
-    *(LONG *)((UBYTE *)gridCtx + 32) = (LONG)(UWORD)mid;
+    ctx->selectionCode = (UWORD)mid;
+    ctx->selectedState = (LONG)(UWORD)mid;
 
     return 0;
 }

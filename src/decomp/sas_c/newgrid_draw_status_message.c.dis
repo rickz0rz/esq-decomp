@@ -10,6 +10,7 @@ NEWGRID_DrawStatusMessage:
 ___NEWGRID_DrawStatusMessage__1:
               MOVE.W         $d6(A7),D7               ;3e2f 00d6 
               MOVE.L         $d0(A7),A5               ;2a6f 00d0 
+              MOVE.L         A5,A3                    ;264d 
               PEA            ($21).w                  ;4878 0021 
               MOVE.L         GCOMMAND_MplexMessageFramePen(A4),D0;202c 0000 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -24,12 +25,12 @@ ___NEWGRID_DrawStatusMessage__1:
               BSR.W          NEWGRID2_JMPTBL_CLEANUP_FormatCl;6100 0000 
               PEA            $39(A7)                  ;486f 0039 
               BSR.W          NEWGRID2_JMPTBL_STR_SkipClass3Ch;6100 0000 
-              MOVE.L         D0,A3                    ;2640 
-              MOVE.L         A3,(A7)                  ;2e8b 
+              MOVE.L         D0,A2                    ;2440 
+              MOVE.L         A2,(A7)                  ;2e8a 
               MOVE.L         GCOMMAND_MplexAtTemplatePtr(A4),-(A7);2f2c 0000 
               PEA            $6c(A7)                  ;486f 006c 
               BSR.W          PARSEINI_JMPTBL_WDISP_SPrintf;6100 0000 
-              LEA            $3c(A5),A2               ;45ed 003c 
+              LEA            $3e(A3),A0               ;41eb 003e 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
               MOVEQ.L        #$23,D1                  ;7223 
@@ -39,7 +40,8 @@ ___NEWGRID_DrawStatusMessage__1:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D1,-(A7)                 ;2f01 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A0,$80(A7)               ;2f48 0080 
               BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
@@ -50,14 +52,14 @@ ___NEWGRID_DrawStatusMessage__2:
               PEA            ($2b7).w                 ;4878 02b7 
               CLR.L          -(A7)                    ;42a7 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         $90(A7),-(A7)            ;2f2f 0090 
               BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
               LEA            $50(A7),A7               ;4fef 0050 
               MOVE.L         GCOMMAND_MplexMessageTextPen(A4),-(A7);2f2c 0000 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
               BSR.W          _LVOSetAPen              ;6100 0000 
               CLR.L          (A7)                     ;4297 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
               BSR.W          _LVOSetDrMd              ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVEQ.L        #$0,D6                   ;7c00 
@@ -69,11 +71,11 @@ ___NEWGRID_DrawStatusMessage__4:
               BRA.B          ___NEWGRID_DrawStatusMessage__3;60f6 
 ___NEWGRID_DrawStatusMessage__5:
               TST.L          D6                       ;4a86 
-              BLE.B          ___NEWGRID_DrawStatusMessage__9;6f2e 
+              BLE.B          ___NEWGRID_DrawStatusMessage__9;6f30 
 ___NEWGRID_DrawStatusMessage__6:
               MOVE.L         D6,-(A7)                 ;2f06 
               PEA            $4c(A7)                  ;486f 004c 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
               BSR.W          _LVOTextLength           ;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
               LEA            $c(A7),A7                ;4fef 000c 
@@ -91,11 +93,11 @@ ___NEWGRID_DrawStatusMessage__6:
 ___NEWGRID_DrawStatusMessage__7:
 ___NEWGRID_DrawStatusMessage__8:
               SUBQ.L         #$1,D6                   ;5386 
-              BRA.B          ___NEWGRID_DrawStatusMessage__5;60ce 
+              BRA.B          ___NEWGRID_DrawStatusMessage__5;60cc 
 ___NEWGRID_DrawStatusMessage__9:
               MOVE.L         D6,-(A7)                 ;2f06 
               PEA            $4c(A7)                  ;486f 004c 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
               BSR.W          _LVOTextLength           ;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
               LEA            $c(A7),A7                ;4fef 000c 
@@ -119,41 +121,36 @@ ___NEWGRID_DrawStatusMessage__11:
               ADD.L          D1,D0                    ;d081 
               MOVEQ.L        #$24,D1                  ;7224 
               ADD.L          D1,D0                    ;d081 
-              LEA            $70(A5),A0               ;41ed 0070 
-              MOVE.L         (A0),A1                  ;2250 
-              LEA            $1a(A1),A0               ;41e9 001a 
+              MOVE.L         $44(A7),A1               ;226f 0044 
+              MOVE.L         $34(A1),A0               ;2069 0034 
               MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.W         (A0),D1                  ;3210 
+              MOVE.W         $1a(A0),D1               ;3228 001a 
               MOVEQ.L        #$22,D2                  ;7422 
               SUB.L          D1,D2                    ;9481 
               MOVEM.L        D0,$40(A7)               ;48ef 0001 0040 
               MOVEM.L        D2,$3c(A7)               ;48ef 0004 003c 
-              MOVEM.L        A1,$44(A7)               ;48ef 0200 0044 
               BGE.B          ___NEWGRID_DrawStatusMessage__13;6c04 
 ___NEWGRID_DrawStatusMessage__12:
               ADDQ.L         #$1,$3c(A7)              ;52af 003c 
 ___NEWGRID_DrawStatusMessage__13:
               MOVE.L         $3c(A7),D1               ;222f 003c 
               ASR.L          #$1,D1                   ;e281 
-              LEA            $1a(A1),A0               ;41e9 001a 
               MOVEQ.L        #$0,D2                   ;7400 
-              MOVE.W         (A0),D2                  ;3410 
+              MOVE.W         $1a(A0),D2               ;3428 001a 
               ADD.L          D2,D1                    ;d282 
               SUBQ.L         #$1,D1                   ;5381 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A1,-(A7)                 ;2f09 
               MOVE.L         D1,$48(A7)               ;2f41 0048 
               BSR.W          _LVOMove                 ;6100 0000 
               MOVE.L         D6,(A7)                  ;2e86 
               PEA            $54(A7)                  ;486f 0054 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         $54(A7),-(A7)            ;2f2f 0054 
               BSR.W          _LVOText                 ;6100 0000 
-              LEA            $34(A5),A0               ;41ed 0034 
-              MOVE.W         #$11,(A0)                ;30bc 0011 
-              LEA            $20(A5),A0               ;41ed 0020 
+              MOVE.W         #$11,$36(A3)             ;377c 0011 0036 
               MOVEQ.L        #$11,D0                  ;7011 
-              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         D0,$20(A3)               ;2740 0020 
               PEA            ($42).w                  ;4878 0042 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_ValidateSelectionCode;6100 0000 
