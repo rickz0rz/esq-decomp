@@ -10,7 +10,7 @@ extern WORD TEXTDISP_AliasCount;
 extern AliasRecord *TEXTDISP_AliasPtrTable[];
 extern const char Global_STR_ESQPARS_C_1[];
 
-extern char *ESQPARS_ReplaceOwnedString(char *newValue, char *oldValue);
+extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *fileName, LONG line, void *ptr, LONG size);
 
 void ESQPARS_ClearAliasStringPointers(void)

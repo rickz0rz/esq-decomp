@@ -11,7 +11,7 @@ extern LONG TEXTDISP_SourceConfigEntryCount;
 extern UBYTE TEXTDISP_SourceConfigFlagMask;
 
 extern const char Global_STR_TEXTDISP_C_3[];
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newStr, char *oldStr);
+extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newStr, char *oldStr);
 extern void MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 
 void TEXTDISP_ClearSourceConfig(void)

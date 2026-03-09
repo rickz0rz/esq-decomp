@@ -17,7 +17,7 @@ extern const char *TEXTDISP_PtrPrevueSportsTag;
 
 extern const char Global_STR_TEXTDISP_C_4[];
 extern TEXTDISP_SourceConfigEntry *MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newStr, char *oldStr);
+extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newStr, char *oldStr);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
 
 void TEXTDISP_AddSourceConfigEntry(char *name, const char *tag)
