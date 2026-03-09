@@ -19,7 +19,7 @@ extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 extern LONG LADFUNC_ComposePackedPenByte(UBYTE highNibble, UBYTE lowNibble);
 extern LONG GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
 extern LONG GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(void);
-extern UBYTE *GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(void);
+extern char *GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(void);
 extern LONG LADFUNC_ParseHexDigit(LONG ch);
 extern LONG LADFUNC_SetPackedPenHighNibble(UBYTE packed, UBYTE nibble);
 extern LONG LADFUNC_SetPackedPenLowNibble(UBYTE packed, UBYTE nibble);
@@ -56,7 +56,7 @@ LONG LADFUNC_LoadTextAdsFromFile(void)
 
     for (entryIndex = 0; entryIndex <= 46; ++entryIndex) {
         LadfuncEntry *entry = LADFUNC_EntryPtrTable[entryIndex];
-        UBYTE *encoded;
+        char *encoded;
         LONG encodedLen = 0;
         LONG textLen = 0;
         LONG i;
@@ -70,7 +70,7 @@ LONG LADFUNC_LoadTextAdsFromFile(void)
         }
 
         for (i = 0; i < encodedLen; ++i) {
-            if (encoded[i] == ATTR_ESCAPE_MARKER && (i + 2) < encodedLen) {
+            if ((UBYTE)encoded[i] == ATTR_ESCAPE_MARKER && (i + 2) < encodedLen) {
                 i += 2;
             } else {
                 ++textLen;
@@ -95,7 +95,7 @@ LONG LADFUNC_LoadTextAdsFromFile(void)
             {
                 LONG out = 0;
                 for (i = 0; i < encodedLen; ++i) {
-                    UBYTE ch = encoded[i];
+                    UBYTE ch = (UBYTE)encoded[i];
                     if (ch == ATTR_ESCAPE_MARKER && (i + 2) < encodedLen) {
                         UBYTE hi = (UBYTE)LADFUNC_ParseHexDigit((LONG)encoded[++i]);
                         currentAttr = (UBYTE)LADFUNC_SetPackedPenHighNibble(currentAttr, hi);
