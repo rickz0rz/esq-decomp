@@ -1,15 +1,17 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
+typedef struct TLIBA2_EntryAux {
+    UBYTE pad0[56];
+    char *titleTable[49];
+} TLIBA2_EntryAux;
+
 extern char *STR_FindCharPtr(char *s, LONG ch);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 
 LONG TLIBA2_ParseEntryTimeWindow(void *entryContext, LONG entryIndex, LONG *outPair)
 {
     const LONG PTR_NULL = 0;
-    const LONG TITLE_TABLE_OFFSET = 56;
-    const LONG TITLE_PTR_SHIFT = 4;
-    const LONG TITLE_PTR_STRIDE = 4;
     const LONG ASCII_LPAREN = 40;
     const LONG ASCII_COLON = 58;
     const LONG ASCII_RPAREN = 41;
@@ -20,6 +22,7 @@ LONG TLIBA2_ParseEntryTimeWindow(void *entryContext, LONG entryIndex, LONG *outP
     const LONG TWO = 2;
     const LONG RESULT_OK = 1;
     const LONG RESULT_FAIL = 0;
+    TLIBA2_EntryAux *entryAux;
     char *entryText;
     char *openParen;
     char *colon;
@@ -31,7 +34,8 @@ LONG TLIBA2_ParseEntryTimeWindow(void *entryContext, LONG entryIndex, LONG *outP
     if (entryContext == (void *)PTR_NULL) {
         entryText = (char *)PTR_NULL;
     } else {
-        entryText = *((char **)((UBYTE *)entryContext + TITLE_TABLE_OFFSET + (entryIndex * TITLE_PTR_STRIDE)));
+        entryAux = (TLIBA2_EntryAux *)entryContext;
+        entryText = entryAux->titleTable[entryIndex];
     }
     if (entryText == (char *)PTR_NULL) {
         return RESULT_FAIL;
