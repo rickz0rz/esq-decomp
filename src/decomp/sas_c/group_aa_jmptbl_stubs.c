@@ -1,21 +1,21 @@
-extern void STRING_CompareNoCase(void);
-extern void STRING_CompareN(void);
-extern void GCOMMAND_FindPathSeparator(void);
+extern long STRING_CompareNoCase(const char *a, const char *b);
+extern long STRING_CompareN(const char *a, const char *b, long maxLen);
+extern char *GCOMMAND_FindPathSeparator(char *path);
 extern void GRAPHICS_AllocRaster(void);
 
-void GROUP_AA_JMPTBL_STRING_CompareNoCase(void)
+long GROUP_AA_JMPTBL_STRING_CompareNoCase(const char *a, const char *b)
 {
-    STRING_CompareNoCase();
+    return STRING_CompareNoCase(a, b);
 }
 
-void GROUP_AA_JMPTBL_STRING_CompareN(void)
+long GROUP_AA_JMPTBL_STRING_CompareN(const char *a, const char *b, long maxLen)
 {
-    STRING_CompareN();
+    return STRING_CompareN(a, b, maxLen);
 }
 
-void GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(void)
+char *GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(char *path)
 {
-    GCOMMAND_FindPathSeparator();
+    return GCOMMAND_FindPathSeparator(path);
 }
 
 void GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(void)

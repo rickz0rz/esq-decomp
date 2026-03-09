@@ -1,20 +1,40 @@
               SECTION      text,CODE
 __code:
 GROUP_AS_JMPTBL_STR_FindCharPtr:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
 ___GROUP_AS_JMPTBL_STR_FindCharPtr__1:
+              MOVE.L         $10(A7),D7               ;2e2f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          STR_FindCharPtr          ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___GROUP_AS_JMPTBL_STR_FindCharPtr__2:
+___GROUP_AS_JMPTBL_STR_FindCharPtr__3:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 __const:
 __strings:
 GROUP_AS_JMPTBL_ESQ_FindSubstrin:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
 ___GROUP_AS_JMPTBL_ESQ_FindSubstrin__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQ_FindSubstringCaseFold;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___GROUP_AS_JMPTBL_ESQ_FindSubstrin__2:
+___GROUP_AS_JMPTBL_ESQ_FindSubstrin__3:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF

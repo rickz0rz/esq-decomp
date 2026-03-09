@@ -1,12 +1,12 @@
-extern void STR_FindCharPtr(void);
-extern void ESQ_FindSubstringCaseFold(void);
+extern char *STR_FindCharPtr(char *s, long ch);
+extern char *ESQ_FindSubstringCaseFold(char *haystack, char *needle);
 
-void GROUP_AS_JMPTBL_STR_FindCharPtr(void)
+char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long ch)
 {
-    STR_FindCharPtr();
+    return STR_FindCharPtr(s, ch);
 }
 
-void GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(void)
+char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(char *haystack, char *needle)
 {
-    ESQ_FindSubstringCaseFold();
+    return ESQ_FindSubstringCaseFold(haystack, needle);
 }
