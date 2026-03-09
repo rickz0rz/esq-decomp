@@ -17,11 +17,21 @@ ___UNKNOWN_JMPTBL_DISPLIB_DisplayTe__1:
 ___UNKNOWN_JMPTBL_DISPLIB_DisplayTe__2:
               RTS                                     ;4e75 
 UNKNOWN_JMPTBL_ESQ_WildcardMatch:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
 ___UNKNOWN_JMPTBL_ESQ_WildcardMatch__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQ_WildcardMatch        ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___UNKNOWN_JMPTBL_ESQ_WildcardMatch__2:
+___UNKNOWN_JMPTBL_ESQ_WildcardMatch__3:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
               RTS                                     ;4e75 
 UNKNOWN_JMPTBL_DST_NormalizeDayO:
               CMP.L          __base(A4),A7            ;bfec 0000 

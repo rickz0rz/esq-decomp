@@ -5,7 +5,7 @@ extern void ESQDISP_GetEntryPointerByMode(void);
 extern void COI_TestEntryWithinTimeWindow(void);
 extern void CLEANUP_FormatClockFormatEntry(void);
 extern void ESQDISP_ComputeScheduleOffsetForRow(void);
-extern void ESQ_FindSubstringCaseFold(void);
+extern char *ESQ_FindSubstringCaseFold(char *haystack, char *needle);
 extern void DISPLIB_FindPreviousValidEntryIndex(void);
 extern void LADFUNC_GetPackedPenHighNibble(void);
 
@@ -16,6 +16,6 @@ void TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(void){ESQDISP_GetEntryPointerBy
 void TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(void){COI_TestEntryWithinTimeWindow();}
 void TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(void){CLEANUP_FormatClockFormatEntry();}
 void TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(void){ESQDISP_ComputeScheduleOffsetForRow();}
-void TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(void){ESQ_FindSubstringCaseFold();}
+char *TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(char *haystack, char *needle){return ESQ_FindSubstringCaseFold(haystack, needle);}
 void TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(void){DISPLIB_FindPreviousValidEntryIndex();}
 void TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble(void){LADFUNC_GetPackedPenHighNibble();}

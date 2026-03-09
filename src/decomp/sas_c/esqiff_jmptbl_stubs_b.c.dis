@@ -1,20 +1,40 @@
               SECTION      text,CODE
 __code:
 ESQIFF_JMPTBL_TEXTDISP_FindEntry:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___ESQIFF_JMPTBL_TEXTDISP_FindEntry__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          TEXTDISP_FindEntryIndexByWildcar;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQIFF_JMPTBL_TEXTDISP_FindEntry__2:
+___ESQIFF_JMPTBL_TEXTDISP_FindEntry__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 __const:
 __strings:
 ESQIFF_JMPTBL_STRING_CompareN:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
 ___ESQIFF_JMPTBL_STRING_CompareN__1:
+              MOVE.L         $18(A7),D7               ;2e2f 0018 
+              MOVE.L         $14(A7),A3               ;266f 0014 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          STRING_CompareN          ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
 ___ESQIFF_JMPTBL_STRING_CompareN__2:
+___ESQIFF_JMPTBL_STRING_CompareN__3:
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
               RTS                                     ;4e75 
 ESQIFF_JMPTBL_ESQ_NoOp:
               CMP.L          __base(A4),A7            ;bfec 0000 
