@@ -20,6 +20,6 @@ void NEWGRID_ResetShowtimeBuckets(void)
     for (i = 0; i < 10; ++i) {
         NEWGRID_ShowtimeBucketEntryTable[i].key = 0x3100;
         NEWGRID_ShowtimeBucketEntryTable[i].text =
-            PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(0, NEWGRID_ShowtimeBucketEntryTable[i].text);
+            PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, NEWGRID_ShowtimeBucketEntryTable[i].text);
     }
 }

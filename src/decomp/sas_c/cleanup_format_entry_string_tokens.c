@@ -33,7 +33,7 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input
     char *separatorPtr;
 
     if (input == (char *)0 || input[0] == 0 || GROUP_AI_JMPTBL_STR_FindCharPtr(input, TOKEN_SEPARATOR) == (char *)0) {
-        *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((char *)0, (char *)*field_a);
+        *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, (char *)*field_a);
         *field_b = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(CLOCK_STR_EMPTY_TOKEN_TEMPLATE, *field_b);
         return;
     }

@@ -12,14 +12,14 @@ char *ESQIFF2_ClearLineHeadTailByMode(WORD mode)
     char *result;
 
     if (mode == 2) {
-        result = ESQPARS_ReplaceOwnedString((char *)0, ESQIFF_SecondaryLineHeadPtr);
+        result = ESQPARS_ReplaceOwnedString((const char *)0, ESQIFF_SecondaryLineHeadPtr);
         ESQIFF_SecondaryLineHeadPtr = result;
-        result = ESQPARS_ReplaceOwnedString((char *)0, ESQIFF_SecondaryLineTailPtr);
+        result = ESQPARS_ReplaceOwnedString((const char *)0, ESQIFF_SecondaryLineTailPtr);
         ESQIFF_SecondaryLineTailPtr = result;
     } else {
-        result = ESQPARS_ReplaceOwnedString((char *)0, ESQIFF_PrimaryLineHeadPtr);
+        result = ESQPARS_ReplaceOwnedString((const char *)0, ESQIFF_PrimaryLineHeadPtr);
         ESQIFF_PrimaryLineHeadPtr = result;
-        result = ESQPARS_ReplaceOwnedString((char *)0, ESQIFF_PrimaryLineTailPtr);
+        result = ESQPARS_ReplaceOwnedString((const char *)0, ESQIFF_PrimaryLineTailPtr);
         ESQIFF_PrimaryLineTailPtr = result;
     }
 

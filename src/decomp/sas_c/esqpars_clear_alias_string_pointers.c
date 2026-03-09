@@ -23,8 +23,8 @@ void ESQPARS_ClearAliasStringPointers(void)
             continue;
         }
 
-        alias->label_ptr = ESQPARS_ReplaceOwnedString(0, alias->label_ptr);
-        alias->value_ptr = ESQPARS_ReplaceOwnedString(0, alias->value_ptr);
+        alias->label_ptr = ESQPARS_ReplaceOwnedString((const char *)0, alias->label_ptr);
+        alias->value_ptr = ESQPARS_ReplaceOwnedString((const char *)0, alias->value_ptr);
         ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_1, 945, alias, 8);
         TEXTDISP_AliasPtrTable[i] = 0;
     }
