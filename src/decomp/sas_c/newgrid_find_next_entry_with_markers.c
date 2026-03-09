@@ -22,9 +22,9 @@ typedef struct NEWGRID_AuxData {
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 
-extern void NEWGRID_UpdatePresetEntry(UBYTE **outEntry, UBYTE **outAux, LONG selector, LONG index);
+extern void NEWGRID_UpdatePresetEntry(char **outEntry, char **outAux, LONG selector, LONG index);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG bitIndex);
-extern LONG NEWGRID_ShouldOpenEditor(UBYTE *entry);
+extern LONG NEWGRID_ShouldOpenEditor(char *entry);
 
 LONG NEWGRID_FindNextEntryWithMarkers(LONG scanMode, LONG startIndex, WORD selector)
 {
@@ -59,7 +59,7 @@ LONG NEWGRID_FindNextEntryWithMarkers(LONG scanMode, LONG startIndex, WORD selec
 
         entry = 0;
         aux = 0;
-        (void)NEWGRID_UpdatePresetEntry((UBYTE **)&entry, (UBYTE **)&aux, (LONG)selector, idx);
+        (void)NEWGRID_UpdatePresetEntry((char **)&entry, (char **)&aux, (LONG)selector, idx);
 
         if (entry == 0 || aux == 0) {
             ++idx;
@@ -77,7 +77,7 @@ LONG NEWGRID_FindNextEntryWithMarkers(LONG scanMode, LONG startIndex, WORD selec
             ++idx;
             continue;
         }
-        if (NEWGRID_ShouldOpenEditor((UBYTE *)entry) != 0) {
+        if (NEWGRID_ShouldOpenEditor((char *)entry) != 0) {
             ++idx;
             continue;
         }
