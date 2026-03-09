@@ -63,8 +63,9 @@ static int str_eq_nullable(const char *a, const char *b)
     return 0;
 }
 
-void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
+void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
 {
+    NewgridCtx *ctx;
     char baseTime[50];
     char tempTime[50];
     const char *baseTitle;
@@ -75,6 +76,7 @@ void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
     LONG commaWidth;
     UWORD row;
 
+    ctx = (NewgridCtx *)entryState;
     if (!ctx || !ctx->coi || !ctx->entries || !out) return;
     if ((((NEWGRID_CoiHeader *)ctx->coi)->flags47 & 0x10) == 0) return;
     if (!TEXTDISP_PrimaryGroupPresentFlag) return;
@@ -94,10 +96,10 @@ void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
 
     widthBudget = 0x264;
     if (baseF2 && baseF2[0]) {
-        widthBudget -= _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp60, baseF2, 0x7fffffff);
-        widthBudget -= _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp60, " ", 1);
+        widthBudget -= _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, gridCtx, baseF2, 0x7fffffff);
+        widthBudget -= _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, gridCtx, " ", 1);
     }
-    commaWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp60, ", ", 2);
+    commaWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, gridCtx, ", ", 2);
 
     NEWGRID_ResetShowtimeBuckets();
 
@@ -161,13 +163,13 @@ void NEWGRID_BuildShowtimesText(void *rp60, NewgridCtx *ctx, char *out)
                 if (out[0] == 0) {
                     PARSEINI_JMPTBL_STRING_AppendAtNull(out, Global_STR_SHOWTIMES_AND_SINGLE_SPACE);
                     NEWGRID_AddShowtimeBucketEntry(NEWGRID2_JMPTBL_STR_SkipClass3Chars(baseTime), row);
-                    widthBudget -= _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp60,
+                    widthBudget -= _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, gridCtx,
                                                   Global_STR_SHOWTIMES_AND_SINGLE_SPACE, 0x7fffffff);
                 }
 
                 TEXTDISP_FormatEntryTimeForIndex(tempTime, idx, coi);
                 if (NEWGRID_AddShowtimeBucketEntry(NEWGRID2_JMPTBL_STR_SkipClass3Chars(tempTime), idx) == 0) {
-                    LONG w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rp60,
+                    LONG w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, gridCtx,
                                             NEWGRID2_JMPTBL_STR_SkipClass3Chars(tempTime), 0x7fffffff);
                     widthBudget -= (commaWidth + w);
                 }
