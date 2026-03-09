@@ -1,7 +1,11 @@
 typedef signed long LONG;
 
+typedef struct LOCAVAIL_FilterState {
+    char groupCode;
+} LOCAVAIL_FilterState;
+
 extern LONG LOCAVAIL_FilterModeFlag;
-extern char LOCAVAIL_PrimaryFilterState;
+extern LOCAVAIL_FilterState LOCAVAIL_PrimaryFilterState;
 
 extern void LOCAVAIL_ResetFilterCursorState(void *statePtr);
 
