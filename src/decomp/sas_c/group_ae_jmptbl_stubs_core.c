@@ -1,6 +1,8 @@
+typedef signed long LONG;
+
 extern void TLIBA_FindFirstWildcardMatchIndex(void);
 extern void SCRIPT_BuildTokenIndexMap(void);
-extern void ESQDISP_GetEntryAuxPointerByMode(void);
+extern char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern void LADFUNC_ParseHexDigit(void);
 extern void SCRIPT_DeallocateBufferArray(void);
 extern void WDISP_SPrintf(void);
@@ -10,7 +12,7 @@ extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 
 void GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(void){TLIBA_FindFirstWildcardMatchIndex();}
 void GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(void){SCRIPT_BuildTokenIndexMap();}
-void GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(void){ESQDISP_GetEntryAuxPointerByMode();}
+char *GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryAuxPointerByMode(index, mode);}
 void GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(void){LADFUNC_ParseHexDigit();}
 void GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray(void){SCRIPT_DeallocateBufferArray();}
 void GROUP_AE_JMPTBL_WDISP_SPrintf(void){WDISP_SPrintf();}
