@@ -42,7 +42,7 @@ extern void TEXTDISP_SetEntryTextFields(TEXTDISP_SelectionEntry *entry, const ch
 extern LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entry, LONG mode);
 extern void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entry);
 
-LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *arg)
+LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, char *arg)
 {
     const UBYTE CMD_CHANNEL = 'C';
     const UBYTE CMD_JOIN = 'J';
@@ -68,7 +68,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, const char *a
             WDISP_SPrintf(scratch, TEXTDISP_CommandPrefixFormat, arg);
 
             if (TEXTDISP_SelectGroupAndEntry(
-                    (char *)arg, TEXTDISP_PrimarySearchText, (LONG)(WORD)TEXTDISP_PrimaryChannelCode) == 0) {
+                    arg, TEXTDISP_PrimarySearchText, (LONG)(WORD)TEXTDISP_PrimaryChannelCode) == 0) {
                 TEXTDISP_StatusGroupId = TEXTDISP_ActiveGroupId;
                 TEXTDISP_LastDispatchMatchIndex = TEXTDISP_CurrentMatchIndex;
                 TEXTDISP_LastDispatchGroupId = (WORD)SCRIPT_GetBannerCharOrFallback();
