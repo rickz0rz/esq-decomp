@@ -3,12 +3,17 @@ typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
-typedef struct TextdispAux {
+typedef struct TEXTDISP_AuxData {
     UBYTE pad0[7];
     UBYTE slotMask[49];
     UBYTE pad1[0x38 - 0x38];
     UBYTE *titlePtrBySlot[49];
-} TextdispAux;
+} TEXTDISP_AuxData;
+
+typedef struct TEXTDISP_CandidateEntry {
+    UBYTE pad0[28];
+    UBYTE selectionBits[1];
+} TEXTDISP_CandidateEntry;
 
 extern UWORD TEXTDISP_ActiveGroupId;
 extern UWORD TEXTDISP_CurrentMatchIndex;
@@ -33,13 +38,12 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
     const LONG SLOT_FIRST = 1;
     const LONG SLOT_MAX = 49;
     const LONG SLOT_NONE = 0;
-    const LONG ENTRY_BITMAP_OFFSET = 28;
     const UBYTE MASK_SLOT_BLOCKED = 0x80u;
     const LONG BIT_TEST_TRUE = -1;
     const UBYTE CH_NUL = 0;
     const LONG MATCH_TRUE = -1;
-    TextdispAux *aux;
-    UBYTE *entry;
+    TEXTDISP_AuxData *aux;
+    TEXTDISP_CandidateEntry *entry;
     UBYTE *inputCtrl;
     UBYTE *inputStart;
     UBYTE *entryTitle;
@@ -69,14 +73,16 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
 
     if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
         slot = (LONG)CLOCK_HalfHourSlotIndex;
-        aux = (TextdispAux *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+        aux = (TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_PRIMARY);
-        entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, GROUP_PRIMARY);
+        entry = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+            (LONG)TEXTDISP_CurrentMatchIndex, GROUP_PRIMARY);
     } else {
         slot = SLOT_FIRST;
-        aux = (TextdispAux *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+        aux = (TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
-        entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
+        entry = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+            (LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
     }
 
     if ((UWORD)mode == MODE_NEXT) {
@@ -123,7 +129,7 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
             continue;
         }
 
-        if (TLIBA2_JMPTBL_ESQ_TestBit1Based((void *)(entry + ENTRY_BITMAP_OFFSET), slot) != BIT_TEST_TRUE) {
+        if (TLIBA2_JMPTBL_ESQ_TestBit1Based((void *)entry->selectionBits, slot) != BIT_TEST_TRUE) {
             slot++;
             continue;
         }
