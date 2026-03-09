@@ -10,7 +10,7 @@ extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *ptr, ULONG size,
 extern const char CTASKS_PATH_OINFO_DAT[];
 extern const char Global_STR_DISKIO2_C_23[];
 volatile ULONG Global_REF_LONG_FILE_SCRATCH;
-volatile void *Global_PTR_WORK_BUFFER;
+volatile char *Global_PTR_WORK_BUFFER;
 volatile UBYTE TEXTDISP_PrimaryGroupCode;
 volatile char *ESQIFF_PrimaryLineHeadPtr;
 volatile char *ESQIFF_PrimaryLineTailPtr;
@@ -25,7 +25,7 @@ long DISKIO2_LoadOinfoDataFile(void)
     char *newHead = 0;
     char *newTail = 0;
     ULONG fileLen;
-    void *workBuf;
+    char *workBuf;
     ULONG parsedGroupCode;
 
     if (DISKIO_LoadFileToWorkBuffer(CTASKS_PATH_OINFO_DAT) == RESULT_FAIL) {
@@ -33,7 +33,7 @@ long DISKIO2_LoadOinfoDataFile(void)
     }
 
     fileLen = Global_REF_LONG_FILE_SCRATCH;
-    workBuf = (void *)Global_PTR_WORK_BUFFER;
+    workBuf = (char *)Global_PTR_WORK_BUFFER;
 
     parsedGroupCode = (ULONG)DISKIO_ParseLongFromWorkBuffer();
     parsedGroupCode &= GROUPCODE_MASK;
