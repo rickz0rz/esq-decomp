@@ -1,0 +1,197 @@
+              SECTION      text,CODE
+__code:
+asr1_round_toward_zero:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___asr1_round_toward_zero__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              TST.L          D7                       ;4a87 
+              BPL.B          ___asr1_round_toward_zero__3;6a02 
+___asr1_round_toward_zero__2:
+              ADDQ.L         #$1,D7                   ;5287 
+___asr1_round_toward_zero__3:
+              MOVE.L         D7,D0                    ;2007 
+              ASR.L          #$1,D0                   ;e280 
+___asr1_round_toward_zero__4:
+___asr1_round_toward_zero__5:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+NEWGRID_DrawGridHeaderRows:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$2c,D0                  ;90bc 0000 002c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$18,A7                  ;9efc 0018 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___NEWGRID_DrawGridHeaderRows__1:
+              MOVE.L         $40(A7),D6               ;2c2f 0040 
+              MOVE.L         $3c(A7),D7               ;2e2f 003c 
+              MOVE.L         $38(A7),A5               ;2a6f 0038 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.W         NEWGRID_RowHeightPx(A4),D5;3a2c 0000 
+              EXT.L          D5                       ;48c5 
+              MOVE.L         D5,D0                    ;2005 
+              ADDQ.L         #$3,D0                   ;5680 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              PEA            ($7).w                   ;4878 0007 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_DrawGridFrame    ;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$2a,D1                  ;722a 
+              ADD.L          D1,D0                    ;d081 
+              CLR.L          $2c(A7)                  ;42af 002c 
+              CLR.L          $28(A7)                  ;42af 0028 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+___NEWGRID_DrawGridHeaderRows__2:
+              CMPI.L         #$2,$2c(A7)              ;0caf 0000 0002 002c 
+              BGE.W          ___NEWGRID_DrawGridHeaderRows__14;6c00 008c 
+___NEWGRID_DrawGridHeaderRows__3:
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_IsCurre;6100 0000 
+              TST.L          D0                       ;4a80 
+              BNE.W          ___NEWGRID_DrawGridHeaderRows__14;6600 0082 
+___NEWGRID_DrawGridHeaderRows__4:
+___NEWGRID_DrawGridHeaderRows__5:
+              MOVE.L         $28(A7),$24(A7)          ;2f6f 0028 0024 
+              MOVE.L         $70(A3),A0               ;206b 0070 
+              MOVE.W         $1a(A0),D0               ;3028 001a 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_IsLastL;6100 0000 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___NEWGRID_DrawGridHeaderRows__9;6720 
+___NEWGRID_DrawGridHeaderRows__6:
+              MOVE.L         D5,-(A7)                 ;2f05 
+              BSR.W          asr1_round_toward_zero   ;6100 ff54 
+___NEWGRID_DrawGridHeaderRows__7:
+              SUB.L          $24(A7),D0               ;90af 0024 
+              SUBQ.L         #$4,D0                   ;5980 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          asr1_round_toward_zero   ;6100 ff48 
+___NEWGRID_DrawGridHeaderRows__8:
+              ADDQ.W         #$4,A7                   ;584f 
+              ADD.L          $20(A7),D0               ;d0af 0020 
+              SUBQ.L         #$1,D0                   ;5380 
+              ADD.L          D0,$24(A7)               ;d1af 0024 
+              BRA.B          ___NEWGRID_DrawGridHeaderRows__12;601c 
+___NEWGRID_DrawGridHeaderRows__9:
+              MOVE.L         D5,-(A7)                 ;2f05 
+              BSR.W          asr1_round_toward_zero   ;6100 ff34 
+___NEWGRID_DrawGridHeaderRows__10:
+              SUB.L          $24(A7),D0               ;90af 0024 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          asr1_round_toward_zero   ;6100 ff2a 
+___NEWGRID_DrawGridHeaderRows__11:
+              ADDQ.W         #$4,A7                   ;584f 
+              ADD.L          $20(A7),D0               ;d0af 0020 
+              SUBQ.L         #$1,D0                   ;5380 
+              ADD.L          D0,$24(A7)               ;d1af 0024 
+___NEWGRID_DrawGridHeaderRows__12:
+              LEA            $3c(A3),A2               ;45eb 003c 
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_RenderC;6100 0000 
+              ADDQ.L         #$1,$38(A7)              ;52af 0038 
+              MOVE.L         D5,(A7)                  ;2e85 
+              BSR.W          asr1_round_toward_zero   ;6100 ff02 
+___NEWGRID_DrawGridHeaderRows__13:
+              LEA            $c(A7),A7                ;4fef 000c 
+              ADD.L          D0,$28(A7)               ;d1af 0028 
+              BRA.W          ___NEWGRID_DrawGridHeaderRows__2;6000 ff6c 
+___NEWGRID_DrawGridHeaderRows__14:
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_IsCurre;6100 0000 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              BEQ.B          ___NEWGRID_DrawGridHeaderRows__16;6756 
+___NEWGRID_DrawGridHeaderRows__15:
+              MOVE.L         DISPTEXT_ControlMarkerXOffsetPx(A4),D0;202c 0000 
+              ADD.L          D0,$28(A7)               ;d1af 0028 
+              LEA            $3c(A3),A0               ;41eb 003c 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$23,D1                  ;7223 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         $28(A7),D1               ;222f 0028 
+              SUBQ.L         #$1,D1                   ;5381 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
+              LEA            $3c(A3),A0               ;41eb 003c 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$24,D1                  ;7224 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         $3c(A7),D1               ;222f 003c 
+              SUBQ.L         #$1,D1                   ;5381 
+              MOVE.L         D1,(A7)                  ;2e81 
+              PEA            ($2b7).w                 ;4878 02b7 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
+              LEA            $24(A7),A7               ;4fef 0024 
+              BRA.B          ___NEWGRID_DrawGridHeaderRows__17;604c 
+___NEWGRID_DrawGridHeaderRows__16:
+              LEA            $3c(A3),A0               ;41eb 003c 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$23,D1                  ;7223 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         $28(A7),D1               ;222f 0028 
+              SUBQ.L         #$1,D1                   ;5381 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawVertic;6100 0000 
+              LEA            $3c(A3),A0               ;41eb 003c 
+              MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$24,D1                  ;7224 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         $3c(A7),D1               ;222f 003c 
+              SUBQ.L         #$1,D1                   ;5381 
+              MOVE.L         D1,(A7)                  ;2e81 
+              PEA            ($2b7).w                 ;4878 02b7 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawVertic;6100 0000 
+              LEA            $24(A7),A7               ;4fef 0024 
+___NEWGRID_DrawGridHeaderRows__17:
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              BSR.W          asr1_round_toward_zero   ;6100 fe42 
+___NEWGRID_DrawGridHeaderRows__18:
+              MOVE.W         D0,$34(A3)               ;3740 0034 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+___NEWGRID_DrawGridHeaderRows__19:
+___NEWGRID_DrawGridHeaderRows__20:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$18,A7                  ;defc 0018 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_RowHeightPx
+              XREF           NEWGRID_DrawGridFrame
+              XREF           NEWGRID_ColumnStartXPx
+              XREF           NEWGRID2_JMPTBL_DISPTEXT_IsCurre
+              XREF           NEWGRID2_JMPTBL_DISPTEXT_IsLastL
+              XREF           NEWGRID2_JMPTBL_DISPTEXT_RenderC
+              XREF           DISPTEXT_ControlMarkerXOffsetPx
+              XREF           NEWGRID2_JMPTBL_BEVEL_DrawBevelF
+              XREF           NEWGRID2_JMPTBL_BEVEL_DrawVertic
+              XDEF           NEWGRID_DrawGridHeaderRows
+              END
