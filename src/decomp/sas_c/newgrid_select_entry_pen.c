@@ -1,6 +1,14 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[27];
+    UBYTE flags27;
+    UBYTE pad1[13];
+    UBYTE overridePen41;
+    UBYTE overrideLayoutPen42;
+} NEWGRID_Entry;
+
 extern LONG NEWGRID_GridOperationId;
 extern LONG NEWGRID_OverridePenIndex;
 
@@ -13,20 +21,22 @@ extern LONG GCOMMAND_PpvShowtimesRowPen;
 
 LONG NEWGRID_SelectEntryPen(UBYTE *entry)
 {
+    NEWGRID_Entry *entryView;
     LONG pen;
     LONG override;
     LONG op;
 
     pen = -1;
+    entryView = (NEWGRID_Entry *)entry;
 
-    if (entry != 0) {
-        if (entry[41] != (UBYTE)0xFF) {
-            pen = (LONG)entry[41];
-        } else if ((entry[27] & 0x02) != 0) {
+    if (entryView != 0) {
+        if (entryView->overridePen41 != (UBYTE)0xFF) {
+            pen = (LONG)entryView->overridePen41;
+        } else if ((entryView->flags27 & 0x02) != 0) {
             pen = 4;
-        } else if ((entry[27] & 0x40) != 0) {
+        } else if ((entryView->flags27 & 0x40) != 0) {
             pen = 5;
-        } else if ((entry[27] & 0x10) != 0) {
+        } else if ((entryView->flags27 & 0x10) != 0) {
             pen = 7;
         }
     }
@@ -59,8 +69,8 @@ LONG NEWGRID_SelectEntryPen(UBYTE *entry)
     }
 
     override = -1;
-    if (entry != 0 && entry[42] != (UBYTE)0xFF) {
-        override = (LONG)entry[42];
+    if (entryView != 0 && entryView->overrideLayoutPen42 != (UBYTE)0xFF) {
+        override = (LONG)entryView->overrideLayoutPen42;
     }
 
     if (override == -1) {

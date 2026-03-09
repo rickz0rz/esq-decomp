@@ -5,11 +5,11 @@ NEWGRID_TestEntrySelectable:
               SUBQ.L         #$4,D0                   ;5980 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
 ___NEWGRID_TestEntrySelectable__1:
-              MOVE.L         $18(A7),D7               ;2e2f 0018 
-              MOVE.L         $14(A7),A3               ;266f 0014 
-              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         $1c(A7),D7               ;2e2f 001c 
+              MOVE.L         $18(A7),A3               ;266f 0018 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
               TST.L          D7                       ;4a87 
               BEQ.B          ___NEWGRID_TestEntrySelectable__4;670a 
 ___NEWGRID_TestEntrySelectable__2:
@@ -18,7 +18,7 @@ ___NEWGRID_TestEntrySelectable__2:
               BEQ.B          ___NEWGRID_TestEntrySelectable__4;6704 
 ___NEWGRID_TestEntrySelectable__3:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___NEWGRID_TestEntrySelectable__17;603a 
+              BRA.B          ___NEWGRID_TestEntrySelectable__17;603c 
 ___NEWGRID_TestEntrySelectable__4:
               MOVE.L         A5,D0                    ;200d 
               BEQ.B          ___NEWGRID_TestEntrySelectable__6;6704 
@@ -27,9 +27,10 @@ ___NEWGRID_TestEntrySelectable__5:
               BNE.B          ___NEWGRID_TestEntrySelectable__7;6604 
 ___NEWGRID_TestEntrySelectable__6:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___NEWGRID_TestEntrySelectable__17;602e 
+              BRA.B          ___NEWGRID_TestEntrySelectable__17;6030 
 ___NEWGRID_TestEntrySelectable__7:
-              BTST           #$7,$28(A5)              ;082d 0007 0028 
+              MOVE.L         A5,A2                    ;244d 
+              BTST           #$7,$28(A2)              ;082a 0007 0028 
               BNE.B          ___NEWGRID_TestEntrySelectable__9;6604 
 ___NEWGRID_TestEntrySelectable__8:
               MOVEQ.L        #$0,D0                   ;7000 
@@ -38,7 +39,7 @@ ___NEWGRID_TestEntrySelectable__9:
               TST.L          D7                       ;4a87 
               BNE.B          ___NEWGRID_TestEntrySelectable__13;6610 
 ___NEWGRID_TestEntrySelectable__10:
-              BTST           #$2,$1b(A5)              ;082d 0002 001b 
+              BTST           #$2,$1b(A2)              ;082a 0002 001b 
               BEQ.B          ___NEWGRID_TestEntrySelectable__12;6704 
 ___NEWGRID_TestEntrySelectable__11:
               MOVEQ.L        #$1,D0                   ;7001 
@@ -57,7 +58,7 @@ ___NEWGRID_TestEntrySelectable__15:
               MOVEQ.L        #$1,D0                   ;7001 
 ___NEWGRID_TestEntrySelectable__16:
 ___NEWGRID_TestEntrySelectable__17:
-              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
               RTS                                     ;4e75 
 __const:
 __strings:

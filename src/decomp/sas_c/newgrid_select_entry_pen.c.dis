@@ -3,15 +3,16 @@ __code:
 NEWGRID_SelectEntryPen:
               CMP.L          __base(A4),A7            ;bfec 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D5/D6/D7/A5,-(A7)        ;48e7 0704 
+              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
 ___NEWGRID_SelectEntryPen__1:
-              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
               MOVEQ.L        #$ff,D7                  ;7eff 
-              MOVE.L         A5,D0                    ;200d 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.L         A3,D0                    ;200b 
               BEQ.B          ___NEWGRID_SelectEntryPen__10;6736 
 ___NEWGRID_SelectEntryPen__2:
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         $29(A5),D0               ;102d 0029 
+              MOVE.B         $29(A3),D0               ;102b 0029 
               MOVEQ.L        #$0,D1                   ;7200 
               NOT.B          D1                       ;4601 
               CMP.L          D1,D0                    ;b081 
@@ -21,19 +22,19 @@ ___NEWGRID_SelectEntryPen__3:
               MOVE.B         D0,D7                    ;1e00 
               BRA.B          ___NEWGRID_SelectEntryPen__10;6022 
 ___NEWGRID_SelectEntryPen__4:
-              BTST           #$1,$1b(A5)              ;082d 0001 001b 
+              BTST           #$1,$1b(A3)              ;082b 0001 001b 
               BEQ.B          ___NEWGRID_SelectEntryPen__6;6704 
 ___NEWGRID_SelectEntryPen__5:
               MOVEQ.L        #$4,D7                   ;7e04 
               BRA.B          ___NEWGRID_SelectEntryPen__10;6016 
 ___NEWGRID_SelectEntryPen__6:
-              BTST           #$6,$1b(A5)              ;082d 0006 001b 
+              BTST           #$6,$1b(A3)              ;082b 0006 001b 
               BEQ.B          ___NEWGRID_SelectEntryPen__8;6704 
 ___NEWGRID_SelectEntryPen__7:
               MOVEQ.L        #$5,D7                   ;7e05 
               BRA.B          ___NEWGRID_SelectEntryPen__10;600a 
 ___NEWGRID_SelectEntryPen__8:
-              BTST           #$4,$1b(A5)              ;082d 0004 001b 
+              BTST           #$4,$1b(A3)              ;082b 0004 001b 
               BEQ.B          ___NEWGRID_SelectEntryPen__10;6702 
 ___NEWGRID_SelectEntryPen__9:
               MOVEQ.L        #$7,D7                   ;7e07 
@@ -87,11 +88,11 @@ ___NEWGRID_SelectEntryPen__22:
               MOVEQ.L        #$7,D7                   ;7e07 
 ___NEWGRID_SelectEntryPen__23:
               MOVEQ.L        #$ff,D6                  ;7cff 
-              MOVE.L         A5,D0                    ;200d 
+              MOVE.L         A3,D0                    ;200b 
               BEQ.B          ___NEWGRID_SelectEntryPen__26;6712 
 ___NEWGRID_SelectEntryPen__24:
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         $2a(A5),D0               ;102d 002a 
+              MOVE.B         $2a(A3),D0               ;102b 002a 
               MOVEQ.L        #$0,D1                   ;7200 
               NOT.B          D1                       ;4601 
               CMP.L          D1,D0                    ;b081 
@@ -144,7 +145,7 @@ ___NEWGRID_SelectEntryPen__39:
               MOVE.L         D7,D0                    ;2007 
 ___NEWGRID_SelectEntryPen__40:
 ___NEWGRID_SelectEntryPen__41:
-              MOVEM.L        (A7)+,D5/D6/D7/A5        ;4cdf 20e0 
+              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
               RTS                                     ;4e75 
 __const:
 __strings:
