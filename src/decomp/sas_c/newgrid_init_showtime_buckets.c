@@ -3,7 +3,7 @@ typedef unsigned char UBYTE;
 
 typedef struct NEWGRID_ShowtimeBucketEntry {
     LONG key;
-    UBYTE *text;
+    char *text;
 } NEWGRID_ShowtimeBucketEntry;
 
 extern NEWGRID_ShowtimeBucketEntry *NEWGRID_ShowtimeBucketPtrTable[];

@@ -3,16 +3,16 @@ typedef unsigned char UBYTE;
 
 typedef struct NEWGRID_ShowtimeBucketEntry {
     LONG key;
-    UBYTE *text;
+    char *text;
 } NEWGRID_ShowtimeBucketEntry;
 
 extern LONG NEWGRID_ShowtimeBucketCount;
 extern NEWGRID_ShowtimeBucketEntry *NEWGRID_ShowtimeBucketPtrTable[];
 extern UBYTE NEWGRID_ShowtimeBucketSeparator;
 
-extern void PARSEINI_JMPTBL_STRING_AppendAtNull(UBYTE *dst, const UBYTE *src);
+extern void PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
-void NEWGRID_AppendShowtimeBuckets(UBYTE *outText)
+void NEWGRID_AppendShowtimeBuckets(char *outText)
 {
     LONG i;
 
