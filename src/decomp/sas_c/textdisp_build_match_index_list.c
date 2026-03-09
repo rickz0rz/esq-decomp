@@ -19,9 +19,9 @@ extern UWORD TEXTDISP_FindModeActiveFlag;
 extern UBYTE TEXTDISP_CandidateIndexList[];
 
 extern UBYTE *TEXTDISP_PrimaryTitlePtrTable[];
-extern UBYTE *TEXTDISP_PrimaryEntryPtrTable[];
+extern TEXTDISP_CandidateEntry *TEXTDISP_PrimaryEntryPtrTable[];
 extern UBYTE *TEXTDISP_SecondaryTitlePtrTable[];
-extern UBYTE *TEXTDISP_SecondaryEntryPtrTable[];
+extern TEXTDISP_CandidateEntry *TEXTDISP_SecondaryEntryPtrTable[];
 
 extern const char TEXTDISP_Tag_PPV[];
 extern const char TEXTDISP_Tag_SBE[];
@@ -103,10 +103,10 @@ LONG TEXTDISP_BuildMatchIndexList(UBYTE *patternPtr, UWORD cmdChar)
     while (idx < entryCount) {
         if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
             title = TEXTDISP_PrimaryTitlePtrTable[idx];
-            entry = (TEXTDISP_CandidateEntry *)TEXTDISP_PrimaryEntryPtrTable[idx];
+            entry = TEXTDISP_PrimaryEntryPtrTable[idx];
         } else {
             title = TEXTDISP_SecondaryTitlePtrTable[idx];
-            entry = (TEXTDISP_CandidateEntry *)TEXTDISP_SecondaryEntryPtrTable[idx];
+            entry = TEXTDISP_SecondaryEntryPtrTable[idx];
         }
 
         if ((entry->flags27 & (1u << BIT_SHIFT_HIDDEN)) != 0) {

@@ -9,7 +9,7 @@ typedef struct NEWGRID_Entry {
 
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
 extern WORD TEXTDISP_SecondaryGroupEntryCount;
-extern UBYTE *TEXTDISP_SecondaryEntryPtrTable[];
+extern NEWGRID_Entry *TEXTDISP_SecondaryEntryPtrTable[];
 extern LONG *NEWGRID_SecondaryIndexCachePtr;
 extern LONG CLOCK_DaySlotIndex;
 
@@ -62,7 +62,7 @@ WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, 
                 NEWGRID_SecondaryIndexCachePtr[keyIndex] = cacheIndex;
             } else {
                 a = entry->titleText;
-                b = ((NEWGRID_Entry *)TEXTDISP_SecondaryEntryPtrTable[cacheIndex])->titleText;
+                b = TEXTDISP_SecondaryEntryPtrTable[cacheIndex]->titleText;
                 while (*a == *b) {
                     if (*a == 0) {
                         break;
