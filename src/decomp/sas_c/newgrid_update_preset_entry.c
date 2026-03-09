@@ -4,7 +4,7 @@ typedef unsigned char UBYTE;
 
 typedef struct NEWGRID_Entry {
     UBYTE pad0[12];
-    UBYTE titleText[1];
+    char titleText[1];
 } NEWGRID_Entry;
 
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
@@ -16,7 +16,7 @@ extern LONG CLOCK_DaySlotIndex;
 extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern UBYTE *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(LONG *clockSlotPtr);
-extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(UBYTE *pattern);
+extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(char *pattern);
 
 WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, LONG keyIndex)
 {
@@ -24,8 +24,8 @@ WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, 
     LONG normalizeFlag;
     NEWGRID_Entry *entry;
     UBYTE *aux;
-    UBYTE *a;
-    UBYTE *b;
+    char *a;
+    char *b;
 
     normalizeFlag = 0;
     entry = (NEWGRID_Entry *)*entryOut;
@@ -58,7 +58,7 @@ WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, 
         if (NEWGRID_SecondaryIndexCachePtr != 0) {
             cacheIndex = NEWGRID_SecondaryIndexCachePtr[keyIndex];
             if (cacheIndex < 0 || cacheIndex >= (LONG)(WORD)TEXTDISP_SecondaryGroupEntryCount) {
-                cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
+                cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex((char *)aux);
                 NEWGRID_SecondaryIndexCachePtr[keyIndex] = cacheIndex;
             } else {
                 a = entry->titleText;
@@ -71,12 +71,12 @@ WORD NEWGRID_UpdatePresetEntry(UBYTE **entryOut, UBYTE **auxOut, WORD rowIndex, 
                     b++;
                 }
                 if (*a != *b) {
-                    cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
+                    cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex((char *)aux);
                     NEWGRID_SecondaryIndexCachePtr[keyIndex] = cacheIndex;
                 }
             }
         } else {
-            cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
+            cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex((char *)aux);
         }
 
         entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(cacheIndex, 2);

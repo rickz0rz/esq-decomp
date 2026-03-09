@@ -23,7 +23,7 @@ typedef struct NEWGRID_Context {
 } NEWGRID_Context;
 
 extern UWORD NEWGRID_RowHeightPx;
-extern UBYTE *Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
+extern char *Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void NEWGRID_DrawGridFrame(void *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
@@ -53,7 +53,7 @@ LONG NEWGRID_DrawAwaitingListingsMessage(void *gridCtx)
     rast = &ctx->rastPort;
     rowH = (LONG)(UWORD)NEWGRID_RowHeightPx;
     yMax = rowH - 1;
-    msg = (char *)Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
+    msg = Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
     p = msg;
     msgLen = 0;
 
