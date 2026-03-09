@@ -7,7 +7,7 @@ typedef struct TEXTDISP_EntryTextFields {
     char longName[200];
 } TEXTDISP_EntryTextFields;
 
-extern UBYTE CONFIG_LRBN_FlagChar;
+extern char CONFIG_LRBN_FlagChar;
 extern UWORD TEXTDISP_LrbnEntryWidthPx;
 extern UWORD CONFIG_BannerCopperHeadByte;
 extern LONG TEXTDISP_EntryTextBaseWidthPx;

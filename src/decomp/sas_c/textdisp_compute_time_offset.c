@@ -17,7 +17,7 @@ extern WORD Global_WORD_CURRENT_MINUTE;
 extern WORD CLOCK_CurrentAmPmFlag;
 
 extern LONG TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(LONG rowIndex, LONG mode, LONG mode2, LONG slot);
-extern void TLIBA2_ComputeBroadcastTimeWindow(WORD groupCode, void *entryContext, LONG entryIndex, LONG slotIndex, LONG *outDateTriplet, LONG *outTimePair);
+extern void TLIBA2_ComputeBroadcastTimeWindow(WORD groupCode, char *entryContext, LONG entryIndex, LONG slotIndex, LONG *outDateTriplet, LONG *outTimePair);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 
 LONG TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG index)
@@ -40,7 +40,7 @@ LONG TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG index)
 
     TLIBA2_ComputeBroadcastTimeWindow(
         (WORD)groupCode,
-        (void *)title,
+        (char *)title,
         index,
         slotIndex,
         dateTriplet,
