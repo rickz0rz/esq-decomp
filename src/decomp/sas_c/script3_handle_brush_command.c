@@ -18,8 +18,8 @@ extern WORD SCRIPT_PlaybackFallbackCounter;
 
 extern void SCRIPT_LoadCtrlContextSnapshot(UBYTE *ctx);
 extern void SCRIPT_SaveCtrlContextSnapshot(UBYTE *ctx);
-extern LONG SCRIPT_SelectPlaybackCursorFromSearchText(LONG matchCountOrIndex, UBYTE *parseBuffer);
-extern void SCRIPT_SplitAndNormalizeSearchBuffer(UBYTE *parseBuffer, LONG parseLen);
+extern LONG SCRIPT_SelectPlaybackCursorFromSearchText(LONG matchCountOrIndex, char *parseBuffer);
+extern void SCRIPT_SplitAndNormalizeSearchBuffer(char *parseBuffer, LONG parseLen);
 extern void TEXTDISP_HandleScriptCommand(LONG command, LONG arg, char *text);
 extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newValue, char *oldValue);
 
@@ -40,7 +40,7 @@ LONG SCRIPT_HandleBrushCommand(UBYTE *ctx, UBYTE *cmd, LONG cmdLen)
     if (sub >= 0 && sub < 22) {
         switch (sub) {
         case 0:
-            if (SCRIPT_SelectPlaybackCursorFromSearchText(0, cmd) == 0) {
+            if (SCRIPT_SelectPlaybackCursorFromSearchText(0, (char *)cmd) == 0) {
                 ok = 0;
             }
             break;
@@ -71,7 +71,7 @@ LONG SCRIPT_HandleBrushCommand(UBYTE *ctx, UBYTE *cmd, LONG cmdLen)
             SCRIPT_PlaybackCursor = 14;
             break;
         case 15:
-            SCRIPT_SplitAndNormalizeSearchBuffer(cmd, cmdLen);
+            SCRIPT_SplitAndNormalizeSearchBuffer((char *)cmd, cmdLen);
             break;
         case 20:
             SCRIPT_PendingTextdispCmdChar = cmd[1];

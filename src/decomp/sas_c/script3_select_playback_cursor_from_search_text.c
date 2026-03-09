@@ -6,9 +6,9 @@ extern LONG SCRIPT_SearchMatchCountOrIndex;
 extern UWORD SCRIPT_ChannelRangeArmedFlag;
 extern UWORD SCRIPT_PrimarySearchFirstFlag;
 extern UWORD TEXTDISP_SecondaryChannelCode;
-extern UBYTE TEXTDISP_SecondarySearchText;
+extern char TEXTDISP_SecondarySearchText[];
 extern UWORD TEXTDISP_PrimaryChannelCode;
-extern UBYTE TEXTDISP_PrimarySearchText;
+extern char TEXTDISP_PrimarySearchText[];
 extern LONG SCRIPT_PlaybackCursor;
 
 extern LONG TEXTDISP_SelectGroupAndEntry(char *arg, char *searchText, LONG channelCode);
@@ -42,7 +42,7 @@ LONG SCRIPT_SelectPlaybackCursorFromSearchText(LONG matchIndex, char *text)
     if (SCRIPT_PrimarySearchFirstFlag == FLAG_FALSE) {
         if (TEXTDISP_SelectGroupAndEntry(
                 text + split + SECONDARY_TEXT_STEP,
-                (char *)&TEXTDISP_SecondarySearchText,
+                TEXTDISP_SecondarySearchText,
                 (LONG)TEXTDISP_SecondaryChannelCode) == FLAG_TRUE) {
             SCRIPT_PlaybackCursor = CURSOR_SECONDARY_MATCH;
             return ok;
@@ -51,7 +51,7 @@ LONG SCRIPT_SelectPlaybackCursorFromSearchText(LONG matchIndex, char *text)
 
     if (TEXTDISP_SelectGroupAndEntry(
             text + PRIMARY_TEXT_OFFSET,
-            (char *)&TEXTDISP_PrimarySearchText,
+            TEXTDISP_PrimarySearchText,
             (LONG)TEXTDISP_PrimaryChannelCode) == FLAG_TRUE) {
         SCRIPT_PlaybackCursor = CURSOR_PRIMARY_MATCH;
         return ok;
@@ -60,7 +60,7 @@ LONG SCRIPT_SelectPlaybackCursorFromSearchText(LONG matchIndex, char *text)
     if (SCRIPT_PrimarySearchFirstFlag != FLAG_FALSE) {
         if (TEXTDISP_SelectGroupAndEntry(
                 text + split + SECONDARY_TEXT_STEP,
-                (char *)&TEXTDISP_SecondarySearchText,
+                TEXTDISP_SecondarySearchText,
                 (LONG)TEXTDISP_SecondaryChannelCode) == FLAG_TRUE) {
             SCRIPT_PlaybackCursor = CURSOR_SECONDARY_MATCH;
             return ok;
