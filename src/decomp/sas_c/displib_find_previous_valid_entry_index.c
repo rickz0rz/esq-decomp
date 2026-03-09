@@ -8,7 +8,7 @@ typedef struct DISPLIB_Entry {
 
 typedef struct DISPLIB_AuxData {
     UBYTE pad0[56];
-    long titleTable[49];
+    const UBYTE *titleTable[49];
 } DISPLIB_AuxData;
 
 enum {
