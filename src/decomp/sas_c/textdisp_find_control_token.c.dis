@@ -26,16 +26,23 @@ ___TEXTDISP_FindControlToken__1:
               MOVE.B         #$a3,$14(A7)             ;1f7c 00a3 0014 
 ___TEXTDISP_FindControlToken__2:
               MOVE.B         (A5),D0                  ;1015 
-              CMP.B          D0,D7                    ;be00 
-              BEQ.W          ___TEXTDISP_FindControlToken__20;6700 0080 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D7,D1                    ;1207 
+              CMP.L          D1,D0                    ;b081 
+              BEQ.W          ___TEXTDISP_FindControlToken__20;6700 0086 
 ___TEXTDISP_FindControlToken__3:
+              MOVE.B         (A5),D0                  ;1015 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D6,D1                    ;1206 
-              AND.B          D0,D1                    ;c200 
-              TST.B          D1                       ;4a01 
+              AND.L          D1,D0                    ;c081 
               BNE.B          ___TEXTDISP_FindControlToken__5;6604 
 ___TEXTDISP_FindControlToken__4:
               ADDQ.L         #$1,A5                   ;528d 
-              BRA.B          ___TEXTDISP_FindControlToken__2;60ec 
+              BRA.B          ___TEXTDISP_FindControlToken__2;60de 
 ___TEXTDISP_FindControlToken__5:
               MOVE.B         (A5),D0                  ;1015 
               MOVE.B         D0,$13(A7)               ;1f40 0013 
@@ -93,7 +100,7 @@ ___TEXTDISP_FindControlToken__18:
               BRA.B          ___TEXTDISP_FindControlToken__22;6008 
 ___TEXTDISP_FindControlToken__19:
               ADDQ.L         #$1,A5                   ;528d 
-              BRA.W          ___TEXTDISP_FindControlToken__2;6000 ff7c 
+              BRA.W          ___TEXTDISP_FindControlToken__2;6000 ff6e 
 ___TEXTDISP_FindControlToken__20:
               MOVEQ.L        #$0,D0                   ;7000 
 ___TEXTDISP_FindControlToken__21:

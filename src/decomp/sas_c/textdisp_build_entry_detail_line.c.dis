@@ -57,8 +57,8 @@ ___TEXTDISP_BuildEntryDetailLine__8:
               MOVE.B         (A0),D0                  ;1010 
               BEQ.B          ___TEXTDISP_BuildEntryDetailLine__14;6728 
 ___TEXTDISP_BuildEntryDetailLine__9:
-              MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
+              EXT.W          D1                       ;4881 
               LEA            WDISP_CharClassTable(A4),A1;43ec 0000 
               MOVE.B         $0(A1,D1.W),D2           ;1431 1000 
               MOVE.B         D2,$1f(A7)               ;1f42 001f 
@@ -146,8 +146,8 @@ ___TEXTDISP_BuildEntryDetailLine__30:
               MOVE.B         (A0),D0                  ;1010 
               BEQ.B          ___TEXTDISP_BuildEntryDetailLine__33;6716 
 ___TEXTDISP_BuildEntryDetailLine__31:
-              MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
+              EXT.W          D1                       ;4881 
               LEA            WDISP_CharClassTable(A4),A1;43ec 0000 
               BTST           #$3,$0(A1,D1.W)          ;0831 0003 1000 
               BEQ.B          ___TEXTDISP_BuildEntryDetailLine__33;6706 
@@ -191,8 +191,8 @@ ___TEXTDISP_BuildEntryDetailLine__39:
               MOVE.B         (A0),D0                  ;1010 
               BEQ.B          ___TEXTDISP_BuildEntryDetailLine__42;6716 
 ___TEXTDISP_BuildEntryDetailLine__40:
-              MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
+              EXT.W          D1                       ;4881 
               LEA            WDISP_CharClassTable(A4),A1;43ec 0000 
               BTST           #$3,$0(A1,D1.W)          ;0831 0003 1000 
               BNE.B          ___TEXTDISP_BuildEntryDetailLine__42;6606 
@@ -230,8 +230,8 @@ ___TEXTDISP_BuildEntryDetailLine__47:
               MOVE.B         (A0),D0                  ;1010 
               BEQ.B          ___TEXTDISP_BuildEntryDetailLine__50;6716 
 ___TEXTDISP_BuildEntryDetailLine__48:
-              MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
+              EXT.W          D1                       ;4881 
               LEA            WDISP_CharClassTable(A4),A1;43ec 0000 
               BTST           #$3,$0(A1,D1.W)          ;0831 0003 1000 
               BEQ.B          ___TEXTDISP_BuildEntryDetailLine__50;6706 

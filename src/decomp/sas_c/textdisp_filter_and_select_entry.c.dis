@@ -40,17 +40,25 @@ ___TEXTDISP_FilterAndSelectEntry__3:
               SUB.L          A2,A2                    ;95ca 
               CLR.L          $58(A7)                  ;42af 0058 
               MOVE.L         A3,D1                    ;220b 
-              BEQ.B          ___TEXTDISP_FilterAndSelectEntry__7;6718 
+              BEQ.B          ___TEXTDISP_FilterAndSelectEntry__7;6728 
 ___TEXTDISP_FilterAndSelectEntry__4:
               MOVE.L         A3,A2                    ;244b 
               LEA            $a(A3),A0                ;41eb 000a 
-              MOVE.L         A0,$58(A7)               ;2f48 0058 
               MOVE.B         (A2),D1                  ;1212 
-              CMP.B          D6,D1                    ;b206 
-              BEQ.B          ___TEXTDISP_FilterAndSelectEntry__6;6706 
+              EXT.W          D1                       ;4881 
+              EXT.L          D1                       ;48c1 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D6,D2                    ;1406 
+              MOVE.L         A0,$58(A7)               ;2f48 0058 
+              CMP.L          D2,D1                    ;b282 
+              BEQ.B          ___TEXTDISP_FilterAndSelectEntry__6;670e 
 ___TEXTDISP_FilterAndSelectEntry__5:
               MOVE.B         (A0),D1                  ;1210 
-              CMP.B          D6,D1                    ;b206 
+              EXT.W          D1                       ;4881 
+              EXT.L          D1                       ;48c1 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D6,D2                    ;1406 
+              CMP.L          D2,D1                    ;b282 
               BNE.B          ___TEXTDISP_FilterAndSelectEntry__7;6602 
 ___TEXTDISP_FilterAndSelectEntry__6:
               MOVE.B         D6,D7                    ;1e06 
@@ -100,12 +108,12 @@ ___TEXTDISP_FilterAndSelectEntry__14:
               MOVE.B         D0,TEXTDISP_FilterModeId(A4);1940 0000 
 ___TEXTDISP_FilterAndSelectEntry__15:
               TST.L          $44(A7)                  ;4aaf 0044 
-              BNE.W          ___TEXTDISP_FilterAndSelectEntry__77;6600 036a 
+              BNE.W          ___TEXTDISP_FilterAndSelectEntry__77;6600 0372 
 ___TEXTDISP_FilterAndSelectEntry__16:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         TEXTDISP_FilterModeId(A4),D0;102c 0000 
               CMP.L          $78(A7),D0               ;b0af 0078 
-              BEQ.W          ___TEXTDISP_FilterAndSelectEntry__77;6700 035c 
+              BEQ.W          ___TEXTDISP_FilterAndSelectEntry__77;6700 0364 
 ___TEXTDISP_FilterAndSelectEntry__17:
               MOVE.W         TEXTDISP_FilterChannelSlotIndex(A4),D1;322c 0000 
               BNE.W          ___TEXTDISP_FilterAndSelectEntry__39;6600 012a 
@@ -232,17 +240,17 @@ ___TEXTDISP_FilterAndSelectEntry__38:
               MOVE.W         D0,TEXTDISP_FilterChannelSlotIndex(A4);3940 0000 
 ___TEXTDISP_FilterAndSelectEntry__39:
               TST.L          $44(A7)                  ;4aaf 0044 
-              BNE.W          ___TEXTDISP_FilterAndSelectEntry__70;6600 01da 
+              BNE.W          ___TEXTDISP_FilterAndSelectEntry__70;6600 01e2 
 ___TEXTDISP_FilterAndSelectEntry__40:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_FilterChannelSlotIndex(A4),D0;302c 0000 
               CMP.L          $70(A7),D0               ;b0af 0070 
-              BGE.W          ___TEXTDISP_FilterAndSelectEntry__70;6c00 01cc 
+              BGE.W          ___TEXTDISP_FilterAndSelectEntry__70;6c00 01d4 
 ___TEXTDISP_FilterAndSelectEntry__41:
               MOVE.W         TEXTDISP_FilterCandidateCursor(A4),D0;302c 0000 
               MOVE.W         TEXTDISP_FilterMatchCount(A4),D1;322c 0000 
               CMP.W          D1,D0                    ;b041 
-              BCC.W          ___TEXTDISP_FilterAndSelectEntry__70;6400 01be 
+              BCC.W          ___TEXTDISP_FilterAndSelectEntry__70;6400 01c6 
 ___TEXTDISP_FilterAndSelectEntry__42:
 ___TEXTDISP_FilterAndSelectEntry__43:
               MOVEQ.L        #$0,D1                   ;7200 
@@ -364,11 +372,15 @@ ___TEXTDISP_FilterAndSelectEntry__62:
 ___TEXTDISP_FilterAndSelectEntry__63:
               MOVE.L         $24(A7),A0               ;206f 0024 
               MOVE.B         (A0),D0                  ;1010 
-              CMP.B          D6,D0                    ;b006 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D6,D1                    ;1206 
+              CMP.L          D1,D0                    ;b081 
               BEQ.B          ___TEXTDISP_FilterAndSelectEntry__65;6706 
 ___TEXTDISP_FilterAndSelectEntry__64:
               ADDQ.L         #$1,$24(A7)              ;52af 0024 
-              BRA.B          ___TEXTDISP_FilterAndSelectEntry__63;60f0 
+              BRA.B          ___TEXTDISP_FilterAndSelectEntry__63;60e8 
 ___TEXTDISP_FilterAndSelectEntry__65:
               MOVE.L         $24(A7),D0               ;202f 0024 
               SUB.L          $54(A7),D0               ;90af 0054 
@@ -412,10 +424,10 @@ ___TEXTDISP_FilterAndSelectEntry__69:
               MOVE.W         TEXTDISP_FilterCandidateCursor(A4),D0;302c 0000 
               ADDQ.W         #$1,D0                   ;5240 
               MOVE.W         D0,TEXTDISP_FilterCandidateCursor(A4);3940 0000 
-              BRA.W          ___TEXTDISP_FilterAndSelectEntry__39;6000 fe22 
+              BRA.W          ___TEXTDISP_FilterAndSelectEntry__39;6000 fe1a 
 ___TEXTDISP_FilterAndSelectEntry__70:
               TST.L          $44(A7)                  ;4aaf 0044 
-              BNE.W          ___TEXTDISP_FilterAndSelectEntry__15;6600 fcd4 
+              BNE.W          ___TEXTDISP_FilterAndSelectEntry__15;6600 fccc 
 ___TEXTDISP_FilterAndSelectEntry__71:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_FilterChannelSlotIndex(A4),D0;302c 0000 
@@ -425,7 +437,7 @@ ___TEXTDISP_FilterAndSelectEntry__72:
               ADDQ.W         #$1,D0                   ;5240 
               MOVE.W         D0,TEXTDISP_FilterChannelSlotIndex(A4);3940 0000 
               CLR.W          TEXTDISP_FilterCandidateCursor(A4);426c 0000 
-              BRA.W          ___TEXTDISP_FilterAndSelectEntry__15;6000 fcba 
+              BRA.W          ___TEXTDISP_FilterAndSelectEntry__15;6000 fcb2 
 ___TEXTDISP_FilterAndSelectEntry__73:
               CLR.W          TEXTDISP_FilterChannelSlotIndex(A4);426c 0000 
               MOVEQ.L        #$0,D0                   ;7000 
@@ -435,12 +447,12 @@ ___TEXTDISP_FilterAndSelectEntry__73:
 ___TEXTDISP_FilterAndSelectEntry__74:
               MOVE.L         $7c(A7),D0               ;202f 007c 
               MOVE.B         D0,TEXTDISP_FilterModeId(A4);1940 0000 
-              BRA.W          ___TEXTDISP_FilterAndSelectEntry__15;6000 fc9e 
+              BRA.W          ___TEXTDISP_FilterAndSelectEntry__15;6000 fc96 
 ___TEXTDISP_FilterAndSelectEntry__75:
               MOVE.L         $78(A7),D0               ;202f 0078 
               MOVE.B         D0,TEXTDISP_FilterModeId(A4);1940 0000 
 ___TEXTDISP_FilterAndSelectEntry__76:
-              BRA.W          ___TEXTDISP_FilterAndSelectEntry__15;6000 fc92 
+              BRA.W          ___TEXTDISP_FilterAndSelectEntry__15;6000 fc8a 
 ___TEXTDISP_FilterAndSelectEntry__77:
               TST.L          $44(A7)                  ;4aaf 0044 
               BNE.B          ___TEXTDISP_FilterAndSelectEntry__79;6608 

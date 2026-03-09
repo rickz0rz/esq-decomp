@@ -22,7 +22,7 @@ extern UWORD CLOCK_HalfHourSlotIndex;
 extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern UBYTE *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(void *entryPtr, void *auxPtr, LONG startIndex);
-extern UBYTE *TEXTDISP_FindControlToken(UBYTE *textPtr);
+extern char *TEXTDISP_FindControlToken(char *textPtr);
 extern LONG TEXTDISP_FindQuotedSpan(UBYTE *src, UBYTE **outStart, UBYTE *endHint, LONG *hasQuotes);
 extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(void *bitsetPtr, LONG index);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
@@ -44,10 +44,10 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
     const LONG MATCH_TRUE = -1;
     TEXTDISP_AuxData *aux;
     TEXTDISP_CandidateEntry *entry;
-    UBYTE *inputCtrl;
+    char *inputCtrl;
     UBYTE *inputStart;
     UBYTE *entryTitle;
-    UBYTE *entryCtrl;
+    char *entryCtrl;
     UBYTE *entryStart;
     LONG inputHasQuotes;
     LONG entryHasQuotes;
@@ -113,7 +113,7 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
         slot = SLOT_FIRST;
     }
 
-    inputCtrl = TEXTDISP_FindControlToken(input);
+    inputCtrl = TEXTDISP_FindControlToken((char *)input);
     inputLen = TEXTDISP_FindQuotedSpan(input, &inputStart, inputCtrl, &inputHasQuotes);
     inputSaved = inputStart[inputLen];
     inputStart[inputLen] = CH_NUL;
@@ -135,12 +135,12 @@ LONG TEXTDISP_FindEntryMatchIndex(UBYTE *input, LONG mode, LONG flags)
         }
 
         entryTitle = aux->titlePtrBySlot[(UWORD)slot];
-        entryCtrl = TEXTDISP_FindControlToken(entryTitle);
+        entryCtrl = TEXTDISP_FindControlToken((char *)entryTitle);
 
         tokenOk = 0;
-        if (inputCtrl == (UBYTE *)0) {
+        if (inputCtrl == (char *)0) {
             tokenOk = GROUP_PRIMARY;
-        } else if (entryCtrl != (UBYTE *)0 && entryCtrl[0] == inputCtrl[0]) {
+        } else if (entryCtrl != (char *)0 && entryCtrl[0] == inputCtrl[0]) {
             tokenOk = GROUP_PRIMARY;
         }
 

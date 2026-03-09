@@ -47,7 +47,7 @@ extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(void *bits, LONG index);
 extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 extern LONG TEXTDISP_GetGroupEntryCount(LONG mode);
 extern LONG TEXTDISP_ShouldOpenEditorForEntry(void *entry);
-extern UBYTE *TEXTDISP_SkipControlCodes(UBYTE *text);
+extern char *TEXTDISP_SkipControlCodes(char *text);
 extern void TEXTDISP_SetSelectionFields(void *entry, LONG mode, LONG displayIndex, LONG entryIndex);
 extern void TEXTDISP_BuildEntryDetailLine(void *entry);
 extern void TEXTDISP_ResetSelectionState(void *entry);
@@ -68,10 +68,10 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
     const LONG BIT_SHIFT_PPV_SBE = 4;
     const LONG MATCH_FOUND_FLAG = -1;
     TEXTDISP_SelectionEntry *entry;
-    UBYTE *nameShort;
-    UBYTE *nameLong;
-    UBYTE *candidateName;
-    UBYTE *candidateTitle;
+    char *nameShort;
+    char *nameLong;
+    char *candidateName;
+    char *candidateTitle;
     TEXTDISP_AuxData *aux;
     TEXTDISP_CandidateEntry *candidate;
     LONG found;
@@ -82,7 +82,7 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
     LONG titleSlot;
     LONG ppvSbe;
     LONG nameLen;
-    UBYTE *nameEnd;
+    char *nameEnd;
 
     found = 0;
     entry = (TEXTDISP_SelectionEntry *)entryPtr;
@@ -90,8 +90,8 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
         modeChar = CH_NUL;
     }
 
-    nameShort = (UBYTE *)0;
-    nameLong = (UBYTE *)0;
+    nameShort = (char *)0;
+    nameLong = (char *)0;
     if (entry != (TEXTDISP_SelectionEntry *)0) {
         nameShort = entry->shortName;
         nameLong = entry->longName;
@@ -175,25 +175,25 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
 
             if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY &&
                 slot == (LONG)CLOCK_HalfHourSlotIndex) {
-                while (titleSlot > 0 && candidateTitle == (UBYTE *)0) {
+                while (titleSlot > 0 && candidateTitle == (char *)0) {
                     candidateTitle = aux->titleTable[titleSlot];
                     titleSlot--;
                 }
             }
 
-            if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY && candidateTitle != (UBYTE *)0) {
+            if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY && candidateTitle != (char *)0) {
                 candidate = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
                 if (candidate == (TEXTDISP_CandidateEntry *)0 ||
                     TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
                         candidate, aux, titleSlot, MINUTES_PER_DAY, CONFIG_TimeWindowMinutes) == 0) {
-                    candidateTitle = (UBYTE *)0;
+                    candidateTitle = (char *)0;
                 }
             }
 
-            if (candidateTitle != (UBYTE *)0) {
+            if (candidateTitle != (char *)0) {
                 candidateTitle = TEXTDISP_SkipControlCodes(candidateTitle);
             }
-            if (candidateTitle == (UBYTE *)0) {
+            if (candidateTitle == (char *)0) {
                 TEXTDISP_FilterCandidateCursor++;
                 continue;
             }

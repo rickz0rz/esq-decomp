@@ -1,6 +1,6 @@
 typedef unsigned char UBYTE;
 
-UBYTE *TEXTDISP_FindControlToken(UBYTE *textPtr)
+char *TEXTDISP_FindControlToken(char *textPtr)
 {
     const UBYTE CH_NUL = 0;
     const UBYTE MASK_CONTROL = 0x80;
@@ -37,5 +37,5 @@ UBYTE *TEXTDISP_FindControlToken(UBYTE *textPtr)
         textPtr += 1;
     }
 
-    return (UBYTE *)0;
+    return (char *)0;
 }

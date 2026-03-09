@@ -2,9 +2,9 @@ typedef unsigned char UBYTE;
 
 extern UBYTE WDISP_CharClassTable[];
 
-UBYTE *TEXTDISP_SkipControlCodes(UBYTE *text)
+char *TEXTDISP_SkipControlCodes(char *text)
 {
-    if (text == (UBYTE *)0) {
+    if (text == (char *)0) {
         return text;
     }
 

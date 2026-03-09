@@ -44,7 +44,7 @@ extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mod
 extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern void TEXTDISP_ResetSelectionState(void *entry);
 extern void TEXTDISP_BuildEntryShortName(void *entry, char *dst);
-extern UBYTE *TEXTDISP_SkipControlCodes(UBYTE *text);
+extern char *TEXTDISP_SkipControlCodes(char *text);
 extern void STRING_AppendAtNull(char *dst, const char *src);
 extern void WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
 extern char *TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
@@ -57,9 +57,9 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
     UBYTE *entry;
     void *aux;
     UBYTE *program;
-    UBYTE *detail;
-    UBYTE *segment;
-    UBYTE *hit;
+    char *detail;
+    char *segment;
+    char *hit;
     TEXTDISP_AuxData *auxData;
     LONG i;
     LONG out;
@@ -86,7 +86,7 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
 
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(groupIndex, mode);
     program = (UBYTE *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(groupIndex, mode);
-    detail = ((TEXTDISP_SelectionEntry *)entry)->detailLine;
+    detail = (char *)((TEXTDISP_SelectionEntry *)entry)->detailLine;
     detail[TEXTDISP_NULL] = TEXTDISP_NULL;
 
     TEXTDISP_BuildEntryShortName(program, tmp);
@@ -110,10 +110,10 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
         auxData = (TEXTDISP_AuxData *)aux;
         segment = TEXTDISP_SkipControlCodes(auxData->titleTable[entryIndex]);
     } else {
-        segment = (UBYTE *)TEXTDISP_NULL;
+        segment = (char *)TEXTDISP_NULL;
     }
 
-    if (segment != (UBYTE *)TEXTDISP_NULL && segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
+    if (segment != (char *)TEXTDISP_NULL && segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
         titleLen = TEXTDISP_NULL;
         while (segment[titleLen] != TEXTDISP_NULL) {
             titleLen++;
@@ -135,15 +135,15 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
 
         WDISP_SPrintf(tmp, SCRIPT_AlignedStringFormat, (const char *)segment);
 
-        hit = (UBYTE *)TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrAtSeparator);
-        if (hit == (UBYTE *)TEXTDISP_NULL) {
-            hit = (UBYTE *)TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsDotSeparator);
+        hit = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrAtSeparator);
+        if (hit == (char *)TEXTDISP_NULL) {
+            hit = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsDotSeparator);
         }
-        if (hit == (UBYTE *)TEXTDISP_NULL) {
-            hit = (UBYTE *)TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsSeparator);
+        if (hit == (char *)TEXTDISP_NULL) {
+            hit = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsSeparator);
         }
 
-        if (hit != (UBYTE *)TEXTDISP_NULL) {
+        if (hit != (char *)TEXTDISP_NULL) {
             hit[TEXTDISP_NULL] = CONTROL_TOKEN_A;
             while (hit[TEXTDISP_NULL] != TEXTDISP_NULL &&
                    (WDISP_CharClassTable[hit[TEXTDISP_NULL]] & CLASS_SKIP_MASK) == TEXTDISP_NULL) {
@@ -152,8 +152,8 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
             hit[TEXTDISP_NULL] = CONTROL_TOKEN_A;
         }
 
-        hit = (UBYTE *)STR_FindCharPtr(tmp, CHAR_LPAREN);
-        if (hit != (UBYTE *)TEXTDISP_NULL) {
+        hit = STR_FindCharPtr(tmp, CHAR_LPAREN);
+        if (hit != (char *)TEXTDISP_NULL) {
             hit[TEXTDISP_NULL] = TEXTDISP_NULL;
         }
 
@@ -161,7 +161,7 @@ void TEXTDISP_BuildEntryDetailLine(void *entryPtr)
     }
 
     TEXTDISP_FormatEntryTimeForIndex(tmp, entryIndex, aux);
-    segment = (UBYTE *)tmp;
+    segment = tmp;
     while (segment[TEXTDISP_NULL] != TEXTDISP_NULL &&
            (WDISP_CharClassTable[segment[TEXTDISP_NULL]] & CLASS_SKIP_MASK) != TEXTDISP_NULL) {
         segment++;

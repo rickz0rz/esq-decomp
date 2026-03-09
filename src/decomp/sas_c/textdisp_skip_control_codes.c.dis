@@ -18,8 +18,8 @@ ___TEXTDISP_SkipControlCodes__3:
 ___TEXTDISP_SkipControlCodes__4:
               ADDQ.L         #$8,A5                   ;508d 
 ___TEXTDISP_SkipControlCodes__5:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A5),D0                  ;1015 
+              EXT.W          D0                       ;4880 
               LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
               BTST           #$3,$0(A0,D0.W)          ;0830 0003 0000 
               BEQ.B          ___TEXTDISP_SkipControlCodes__7;6704 
