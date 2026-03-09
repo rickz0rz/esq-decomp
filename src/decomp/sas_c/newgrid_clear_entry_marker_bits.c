@@ -3,6 +3,16 @@ typedef signed short WORD;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[47];
+    UBYTE flags47;
+} NEWGRID_Entry;
+
+typedef struct NEWGRID_AuxData {
+    UBYTE pad0[7];
+    UBYTE rowFlags[49];
+} NEWGRID_AuxData;
+
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UWORD TEXTDISP_SecondaryGroupEntryCount;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
@@ -16,13 +26,12 @@ void NEWGRID_ClearEntryMarkerBits(void *unused, WORD modeSel)
     const WORD MODE_PRIMARY_ALLOWED = 1;
     const LONG MODE_PRIMARY = 1;
     const LONG MODE_SECONDARY = 2;
-    const LONG ENTRY_FLAGS_OFFSET = 47;
     const LONG BIT_SHIFT_ENTRY_MARKER = 4;
     const UBYTE FLAG_FALSE = 0;
     LONG i;
     LONG j;
-    UBYTE *entry;
-    UBYTE *aux;
+    NEWGRID_Entry *entry;
+    NEWGRID_AuxData *aux;
 
     (void)unused;
 
@@ -32,11 +41,11 @@ void NEWGRID_ClearEntryMarkerBits(void *unused, WORD modeSel)
             if (TEXTDISP_PrimaryGroupPresentFlag == FLAG_FALSE) {
                 break;
             }
-            entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
-            if ((entry[ENTRY_FLAGS_OFFSET] & (1u << BIT_SHIFT_ENTRY_MARKER)) != 0) {
-                aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
+            entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
+            if ((entry->flags47 & (1u << BIT_SHIFT_ENTRY_MARKER)) != 0) {
+                aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
                 for (j = 1; j < 49; ++j) {
-                    aux[7 + j] &= (UBYTE)~(1u << 5);
+                    aux->rowFlags[j] &= (UBYTE)~(1u << 5);
                 }
             }
             ++i;
@@ -48,11 +57,11 @@ void NEWGRID_ClearEntryMarkerBits(void *unused, WORD modeSel)
         if (TEXTDISP_SecondaryGroupPresentFlag == FLAG_FALSE) {
             break;
         }
-        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
-        if ((entry[ENTRY_FLAGS_OFFSET] & (1u << BIT_SHIFT_ENTRY_MARKER)) != 0) {
-            aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
+        entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
+        if ((entry->flags47 & (1u << BIT_SHIFT_ENTRY_MARKER)) != 0) {
+            aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
             for (j = 1; j < 49; ++j) {
-                aux[7 + j] &= (UBYTE)~(1u << 5);
+                aux->rowFlags[j] &= (UBYTE)~(1u << 5);
             }
         }
         ++i;
