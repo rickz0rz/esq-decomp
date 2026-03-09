@@ -17,17 +17,20 @@ extern void DATETIME_CopyPairAndRecalc(void *dst, const void *lhs, const void *r
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, ULONG size);
 extern void DST_UpdateBannerQueue(void *pair);
 
+typedef struct DST_BannerPair {
+    void *primaryBanner;
+    void *secondaryBanner;
+} DST_BannerPair;
+
 LONG DST_LoadBannerPairFromFiles(void *pair)
 {
     const LONG RESULT_FAIL = 0;
     const LONG RESULT_OK = 1;
     const LONG LINE_PARSE_WIDTH = 4;
     const LONG DATETIME_PARSE_WIDTH = 19;
-    const LONG PAIR_PRIMARY_OFFSET = 0;
-    const LONG PAIR_SECONDARY_OFFSET = 4;
     const LONG FREE_LINE = 889;
     const ULONG STR_TERM_BYTES = 1;
-    UBYTE *p = (UBYTE *)pair;
+    DST_BannerPair *p = (DST_BannerPair *)pair;
     UBYTE parsed_a[22];
     UBYTE parsed_b[22];
     char *work;
@@ -47,14 +50,14 @@ LONG DST_LoadBannerPairFromFiles(void *pair)
     if (hit != (char *)0) {
         DATETIME_ParseString(parsed_a, hit, LINE_PARSE_WIDTH);
         DATETIME_ParseString(parsed_b, hit, DATETIME_PARSE_WIDTH);
-        DATETIME_CopyPairAndRecalc(*(void **)(p + PAIR_SECONDARY_OFFSET), parsed_a, parsed_b);
+        DATETIME_CopyPairAndRecalc(p->secondaryBanner, parsed_a, parsed_b);
     }
 
     hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, (const char *)Global_STR_G3);
     if (hit != (char *)0) {
         DATETIME_ParseString(parsed_a, hit, LINE_PARSE_WIDTH);
         DATETIME_ParseString(parsed_b, hit, DATETIME_PARSE_WIDTH);
-        DATETIME_CopyPairAndRecalc(*(void **)(p + PAIR_PRIMARY_OFFSET), parsed_a, parsed_b);
+        DATETIME_CopyPairAndRecalc(p->primaryBanner, parsed_a, parsed_b);
     }
 
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
