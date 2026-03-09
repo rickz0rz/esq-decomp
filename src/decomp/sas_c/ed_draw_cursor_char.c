@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef unsigned char UBYTE;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void *Global_REF_RASTPORT_1;
+extern char *Global_REF_RASTPORT_1;
 
 extern LONG ED_EditCursorOffset;
 extern LONG ED_CursorColumnIndex;
@@ -14,10 +14,10 @@ extern LONG GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(LONG value);
 extern LONG GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(LONG value);
 extern void ED_UpdateCursorPosFromIndex(LONG index);
 extern LONG ESQIFF_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-extern LONG _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOSetBPen(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOMove(void *gfxBase, void *rastPort, LONG x, LONG y);
-extern LONG _LVOText(void *gfxBase, void *rastPort, const char *text, LONG len);
+extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
+extern LONG _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
 
 void ED_DrawCursorChar(void)
 {
