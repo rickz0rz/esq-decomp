@@ -1,6 +1,8 @@
-extern void ESQDISP_GetEntryPointerByMode(void);
+typedef signed long LONG;
 
-void GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(void)
+extern char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+
+char *GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode)
 {
-    ESQDISP_GetEntryPointerByMode();
+    return ESQDISP_GetEntryPointerByMode(index, mode);
 }
