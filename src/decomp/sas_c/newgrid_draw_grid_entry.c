@@ -28,9 +28,9 @@ extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, LONG ch);
 extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *set);
 extern LONG NEWGRID_Apply24HourFormatting(char *dst, LONG row, LONG mode);
-extern LONG NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(void *ctx, void *coi, LONG row, char *text, LONG fmt);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *layout, const char *src);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(void *layout, const char *src);
+extern LONG NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(char *ctx, void *coi, LONG row, char *text, LONG fmt);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layout, const char *src);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(char *layout, const char *src);
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 
 static char *advance_until_space(char *p)
@@ -40,7 +40,7 @@ static char *advance_until_space(char *p)
     return p;
 }
 
-void NEWGRID_DrawGridEntry(void *layout, char *rowMeta, CoiSet *coi, UWORD row, UWORD textLines, LONG renderMode, LONG clockFmt)
+void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, UWORD textLines, LONG renderMode, LONG clockFmt)
 {
     NEWGRID_Entry *entry;
     char splitMask[4];

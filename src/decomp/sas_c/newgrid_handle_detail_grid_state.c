@@ -23,7 +23,7 @@ extern char NEWGRID_ChannelRowFmt[];
 
 extern LONG NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LONG keyIndex);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
-extern void NEWGRID_DrawGridEntry(void *rastPort, char *entry, char *aux, LONG row, LONG mode, LONG enabled, LONG bevel);
+extern void NEWGRID_DrawGridEntry(char *rastPort, char *entry, char *aux, LONG row, LONG mode, LONG enabled, LONG bevel);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG lineIndex);
 extern void PARSEINI_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, const char *arg0, const char *arg1);
 extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *rastPort, const char *text);
