@@ -31,14 +31,14 @@ extern void *Global_HANDLE_PREVUEC_FONT;
 extern char TLIBA1_FMT_VIEWMODE_PCT_LD[];
 
 extern LONG MATH_Mulu32(LONG left, LONG right);
-extern LONG _LVOSetFont(void *gfxBase, void *rastPort, void *font);
-extern LONG _LVOSetRast(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, void *rastPort, LONG mode);
-extern LONG _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOSetBPen(void *gfxBase, void *rastPort, LONG pen);
-extern void TLIBA3_DrawViewModeGuides(void *rastPort);
+extern LONG _LVOSetFont(void *gfxBase, char *rastPort, void *font);
+extern LONG _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
+extern void TLIBA3_DrawViewModeGuides(char *rastPort);
 extern void WDISP_SPrintf(char *dst, const char *fmt, LONG value);
-extern void TLIBA3_DrawCenteredWrappedTextLines(void *rastPort, char *text, LONG y);
+extern void TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, char *text, LONG y);
 
 void TLIBA3_DrawViewModeOverlay(LONG viewMode)
 {
@@ -55,29 +55,29 @@ void TLIBA3_DrawViewModeOverlay(LONG viewMode)
     (void)viewH;
 
     rp = &vm->rastPort10;
-    _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, rp, Global_HANDLE_PREVUEC_FONT);
+    _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, (char *)rp, Global_HANDLE_PREVUEC_FONT);
 
     vm = (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE));
     rp = &vm->rastPort10;
-    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, rp, VM_PEN_0);
+    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, (char *)rp, VM_PEN_0);
 
     vm = (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE));
     rp = &vm->rastPort10;
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rp, 1);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, (char *)rp, 1);
 
     vm = (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE));
     rp = &vm->rastPort10;
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, VM_PEN_1);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, (char *)rp, VM_PEN_1);
 
     vm = (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE));
     rp = &vm->rastPort10;
-    _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, rp, VM_PEN_0);
+    _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, (char *)rp, VM_PEN_0);
 
-    TLIBA3_DrawViewModeGuides(rp);
+    TLIBA3_DrawViewModeGuides((char *)rp);
 
     WDISP_SPrintf(title, TLIBA1_FMT_VIEWMODE_PCT_LD, viewMode);
 
     vm = (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE));
     rp = &vm->rastPort10;
-    TLIBA3_DrawCenteredWrappedTextLines(rp, title, VM_TITLE_Y);
+    TLIBA3_DrawCenteredWrappedTextLines((char *)rp, title, VM_TITLE_Y);
 }
