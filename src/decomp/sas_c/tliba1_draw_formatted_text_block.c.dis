@@ -23,25 +23,25 @@ __const:
 __strings:
 TLIBA1_DrawFormattedTextBlock:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$48,D0                  ;90bc 0000 0048 
+              SUB.L          #$4c,D0                  ;90bc 0000 004c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$38,A7                  ;9efc 0038 
+              SUB.W          #$3c,A7                  ;9efc 003c 
               MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
 ___TLIBA1_DrawFormattedTextBlock__1:
-              MOVE.W         $6a(A7),D5               ;3a2f 006a 
-              MOVE.W         $66(A7),D6               ;3c2f 0066 
-              MOVE.W         $62(A7),D7               ;3e2f 0062 
-              MOVE.L         $7c(A7),A2               ;246f 007c 
-              MOVE.L         $5c(A7),A3               ;266f 005c 
-              MOVE.L         $58(A7),A5               ;2a6f 0058 
+              MOVE.W         $6e(A7),D5               ;3a2f 006e 
+              MOVE.W         $6a(A7),D6               ;3c2f 006a 
+              MOVE.W         $66(A7),D7               ;3e2f 0066 
+              MOVE.L         $80(A7),A2               ;246f 0080 
+              MOVE.L         $60(A7),A3               ;266f 0060 
+              MOVE.L         $5c(A7),A5               ;2a6f 005c 
               MOVE.W         D5,D0                    ;3005 
               EXT.L          D0                       ;48c0 
               MOVE.W         D7,D1                    ;3207 
               EXT.L          D1                       ;48c1 
               SUB.L          D1,D0                    ;9081 
               ADDQ.L         #$1,D0                   ;5280 
-              MOVE.W         $6e(A7),D1               ;322f 006e 
+              MOVE.W         $72(A7),D1               ;322f 0072 
               EXT.L          D1                       ;48c1 
               MOVE.W         D6,D2                    ;3406 
               EXT.L          D2                       ;48c2 
@@ -50,9 +50,10 @@ ___TLIBA1_DrawFormattedTextBlock__1:
               CLR.L          $48(A7)                  ;42af 0048 
               CLR.L          $44(A7)                  ;42af 0044 
               MOVE.L         A3,$40(A7)               ;2f4b 0040 
-              MOVE.B         $19(A5),$3c(A7)          ;1f6d 0019 003c 
-              LEA            $34(A5),A0               ;41ed 0034 
-              MOVE.L         (A0),$1c(A7)             ;2f50 001c 
+              MOVE.L         A5,$54(A7)               ;2f4d 0054 
+              MOVE.L         $54(A7),A0               ;206f 0054 
+              MOVE.B         $19(A0),$3c(A7)          ;1f68 0019 003c 
+              MOVE.L         $34(A0),$1c(A7)          ;2f68 0034 001c 
               PEA            ($1).w                   ;4878 0001 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D0,$58(A7)               ;2f40 0058 
@@ -120,7 +121,7 @@ ___TLIBA1_DrawFormattedTextBlock__17:
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          _LVOSetFont              ;6100 0000 
               MOVE.L         A3,(A7)                  ;2e8b 
-              BSR.W          TLIBA1_StrLen            ;6100 fed8 
+              BSR.W          TLIBA1_StrLen            ;6100 fed2 
 ___TLIBA1_DrawFormattedTextBlock__18:
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         A3,-(A7)                 ;2f0b 
@@ -194,7 +195,7 @@ ___TLIBA1_DrawFormattedTextBlock__27:
               LEA            $24(A7),A7               ;4fef 0024 
 ___TLIBA1_DrawFormattedTextBlock__28:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
-              ADD.W          #$38,A7                  ;defc 0038 
+              ADD.W          #$3c,A7                  ;defc 003c 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF

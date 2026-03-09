@@ -19,6 +19,13 @@ extern void _LVOSetAPen(void *rastPort, LONG pen);
 extern void _LVOSetFont(void *rastPort, void *font);
 extern void TLIBA1_DrawInlineStyledText(void *rastPort, LONG x, LONG y, char *text);
 
+typedef struct TLIBA1_RastPort {
+    UBYTE pad0[25];
+    UBYTE fgPen25;
+    UBYTE pad26[26];
+    void *font52;
+} TLIBA1_RastPort;
+
 static LONG TLIBA1_StrLen(const char *s)
 {
     LONG n;
@@ -48,6 +55,7 @@ void TLIBA1_DrawFormattedTextBlock(
     WORD arg16,
     WORD arg17)
 {
+    TLIBA1_RastPort *rp;
     LONG boxW;
     LONG boxH;
     LONG runCount;
@@ -78,8 +86,9 @@ void TLIBA1_DrawFormattedTextBlock(
     runCount = 0;
     runGate = 0;
     p = text;
-    savedPen = *((UBYTE *)rastPort + 25);
-    savedFont = *(void **)((UBYTE *)rastPort + 52);
+    rp = (TLIBA1_RastPort *)rastPort;
+    savedPen = rp->fgPen25;
+    savedFont = rp->font52;
 
     (void)MATH_DivS32(boxH, 1);
 
