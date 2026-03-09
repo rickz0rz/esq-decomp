@@ -1,28 +1,36 @@
               SECTION      text,CODE
 __code:
 ESQSHARED_InitEntryDefaults:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
               MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
 ___ESQSHARED_InitEntryDefaults__1:
-              MOVE.L         $10(A7),A5               ;2a6f 0010 
-              MOVE.B         #$2,$28(A5)              ;1b7c 0002 0028 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.B         #$2,$28(A3)              ;177c 0002 0028 
               MOVEQ.L        #$ff,D0                  ;70ff 
-              MOVE.B         D0,$29(A5)               ;1b40 0029 
-              MOVE.B         D0,$2a(A5)               ;1b40 002a 
-              LEA            $2b(A5),A3               ;47ed 002b 
-              LEA            ESQPARS_DefaultEntryCodeString(A4),A2;45ec 0000 
+              MOVE.B         D0,$29(A3)               ;1740 0029 
+              MOVE.B         D0,$2a(A3)               ;1740 002a 
+              LEA            $2b(A3),A2               ;45eb 002b 
+              LEA            ESQPARS_DefaultEntryCodeString(A4),A0;41ec 0000 
+              MOVE.L         A0,$c(A7)                ;2f48 000c 
 ___ESQSHARED_InitEntryDefaults__2:
-              MOVE.B         (A2),(A3)+               ;16d2 
+              MOVE.L         $c(A7),A0                ;206f 000c 
+              MOVE.B         (A0),(A2)+               ;14d0 
 ___ESQSHARED_InitEntryDefaults__3:
-              MOVE.B         (A2)+,D0                 ;101a 
+              MOVE.L         $c(A7),A0                ;206f 000c 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$c(A7)                ;2f48 000c 
               TST.B          D0                       ;4a00 
-              BNE.B          ___ESQSHARED_InitEntryDefaults__2;66f8 
+              BNE.B          ___ESQSHARED_InitEntryDefaults__2;66ec 
 ___ESQSHARED_InitEntryDefaults__4:
-              LEA            $2e(A5),A0               ;41ed 002e 
-              MOVE.W         #$3,(A0)                 ;30bc 0003 
+              MOVE.W         #$3,$2e(A3)              ;377c 0003 002e 
 ___ESQSHARED_InitEntryDefaults__5:
               MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:
 __strings:

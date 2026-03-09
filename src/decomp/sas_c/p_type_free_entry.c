@@ -1,6 +1,12 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
+typedef struct P_TYPE_Entry {
+    UBYTE pad0[2];
+    LONG payloadLength;
+    UBYTE *payload;
+} P_TYPE_Entry;
+
 extern UBYTE Global_STR_P_TYPE_C_4;
 extern UBYTE Global_STR_P_TYPE_C_5;
 
@@ -8,16 +14,20 @@ extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(UBYTE *tagName, LONG line, voi
 
 void P_TYPE_FreeEntry(UBYTE *entry)
 {
+    P_TYPE_Entry *entryView;
+
     if (entry == (UBYTE *)0) {
         return;
     }
 
-    if (*(UBYTE **)(entry + 6) != (UBYTE *)0) {
+    entryView = (P_TYPE_Entry *)entry;
+
+    if (entryView->payload != (UBYTE *)0) {
         SCRIPT_JMPTBL_MEMORY_DeallocateMemory(
             &Global_STR_P_TYPE_C_4,
             92,
-            *(UBYTE **)(entry + 6),
-            *(LONG *)(entry + 2));
+            entryView->payload,
+            entryView->payloadLength);
     }
 
     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(&Global_STR_P_TYPE_C_5, 95, entry, 10);

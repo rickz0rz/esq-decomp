@@ -2,22 +2,34 @@ typedef unsigned char UBYTE;
 typedef signed char BYTE;
 typedef unsigned short UWORD;
 
+typedef struct ESQSHARED_Entry {
+    UBYTE pad0[40];
+    UBYTE editMode40;
+    UBYTE overridePen41;
+    UBYTE overrideLayoutPen42;
+    UBYTE codeText43[3];
+    UWORD flags46;
+} ESQSHARED_Entry;
+
 extern UBYTE ESQPARS_DefaultEntryCodeString[];
 
 void ESQSHARED_InitEntryDefaults(UBYTE *entry)
 {
+    ESQSHARED_Entry *entryView;
     UBYTE *dst;
     UBYTE *src;
 
-    entry[40] = 2;
-    entry[41] = (UBYTE)(BYTE)-1;
-    entry[42] = (UBYTE)(BYTE)-1;
+    entryView = (ESQSHARED_Entry *)entry;
 
-    dst = &entry[43];
+    entryView->editMode40 = 2;
+    entryView->overridePen41 = (UBYTE)(BYTE)-1;
+    entryView->overrideLayoutPen42 = (UBYTE)(BYTE)-1;
+
+    dst = entryView->codeText43;
     src = ESQPARS_DefaultEntryCodeString;
     do {
         *dst++ = *src;
     } while (*src++ != 0);
 
-    *(UWORD *)(entry + 46) = 3;
+    entryView->flags46 = 3;
 }

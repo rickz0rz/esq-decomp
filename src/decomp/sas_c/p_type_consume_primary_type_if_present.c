@@ -1,28 +1,34 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
+typedef struct P_TYPE_Entry {
+    UBYTE pad0[2];
+    LONG payloadLength;
+    UBYTE *payload;
+} P_TYPE_Entry;
+
 extern UBYTE *P_TYPE_PrimaryGroupListPtr;
 
 LONG P_TYPE_ConsumePrimaryTypeIfPresent(UBYTE *inOutBytePtr)
 {
     LONG found;
     LONG i;
-    UBYTE *entry;
+    P_TYPE_Entry *entry;
     UBYTE *payload;
 
     found = 0;
 
     if (P_TYPE_PrimaryGroupListPtr != (UBYTE *)0) {
-        entry = P_TYPE_PrimaryGroupListPtr;
-        if (*(LONG *)(entry + 2) > 0) {
+        entry = (P_TYPE_Entry *)P_TYPE_PrimaryGroupListPtr;
+        if (entry->payloadLength > 0) {
             i = 0;
             while (found == 0) {
-                entry = P_TYPE_PrimaryGroupListPtr;
-                if (i >= *(LONG *)(entry + 2)) {
+                entry = (P_TYPE_Entry *)P_TYPE_PrimaryGroupListPtr;
+                if (i >= entry->payloadLength) {
                     break;
                 }
 
-                payload = *(UBYTE **)(entry + 6);
+                payload = entry->payload;
                 if (*inOutBytePtr == payload[i]) {
                     found = 1;
                 }
