@@ -10,14 +10,14 @@ extern WORD WDISP_WeatherStatusDigitChar;
 extern LONG P_TYPE_WeatherForecastMsgPtr;
 extern char *SCRIPT_PtrNoForecastWeatherData;
 
-extern void WDISP_DrawWeatherStatusDayEntry(void *rastPort, LONG dayIndex, LONG x, LONG y);
+extern void WDISP_DrawWeatherStatusDayEntry(char *rastPort, LONG dayIndex, LONG x, LONG y);
 
-extern LONG _LVOSetRast(void *gfxBase, void *rastPort, LONG pen);
-extern LONG _LVOTextLength(void *gfxBase, void *rastPort, const char *text, LONG len);
-extern LONG _LVOMove(void *gfxBase, void *rastPort, LONG x, LONG y);
-extern LONG _LVOText(void *gfxBase, void *rastPort, const char *text, LONG len);
+extern LONG _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
+extern LONG _LVOTextLength(void *gfxBase, char *rastPort, const char *text, LONG len);
+extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
+extern LONG _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
 
-void WDISP_DrawWeatherStatusSummary(void *rastPort, LONG xSpan, LONG ySpan)
+void WDISP_DrawWeatherStatusSummary(char *rastPort, LONG xSpan, LONG ySpan)
 {
     LONG i;
     char *textPtr;

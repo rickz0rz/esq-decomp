@@ -25,7 +25,7 @@ extern void STRING_AppendAtNull(char *dst, const char *src);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 extern void WDISP_SPrintf(char *dst, const char *fmt, LONG value);
 
-void WDISP_DrawWeatherStatusDayEntry(void *rastPort, LONG dayIndex, LONG xSpan, LONG ySpan)
+void WDISP_DrawWeatherStatusDayEntry(char *rastPort, LONG dayIndex, LONG xSpan, LONG ySpan)
 {
     WeatherDayEntry *entry;
     LONG brushIndex;

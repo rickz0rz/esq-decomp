@@ -25,7 +25,7 @@ extern void *WDISP_JMPTBL_BRUSH_FindBrushByPredicate(void *predicate, void *list
 extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *src, char *oldPtr);
 extern void MEMORY_DeallocateMemory(const char *tag, LONG pool, void *ptr, LONG size);
 
-void WDISP_DrawWeatherStatusOverlay(void *rastPort, LONG xSpan, LONG ySpan)
+void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG xSpan, LONG ySpan)
 {
     WDISP_WeatherBrush *brush;
     char *textCopy;
