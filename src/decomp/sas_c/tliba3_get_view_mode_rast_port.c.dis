@@ -14,9 +14,8 @@ ___TLIBA3_GetViewModeRastPort__1:
               LEA            TLIBA3_VmArrayRuntimeTable(A4),A0;41ec 0000 
               ADD.L          D0,A0                    ;d1c0 
               MOVE.L         A0,A5                    ;2a48 
-              LEA            $a(A5),A0                ;41ed 000a 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         A0,D0                    ;2008 
+              MOVE.L         $a(A5),D0                ;202d 000a 
 ___TLIBA3_GetViewModeRastPort__2:
 ___TLIBA3_GetViewModeRastPort__3:
               MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 

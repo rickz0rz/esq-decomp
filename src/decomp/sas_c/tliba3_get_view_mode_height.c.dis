@@ -14,8 +14,7 @@ ___TLIBA3_GetViewModeHeight__1:
               LEA            TLIBA3_VmArrayRuntimeTable(A4),A0;41ec 0000 
               ADD.L          D0,A0                    ;d1c0 
               MOVE.L         A0,A5                    ;2a48 
-              LEA            $4(A5),A0                ;41ed 0004 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.W         $4(A5),D0                ;302d 0004 
               EXT.L          D0                       ;48c0 
               ADDQ.W         #$8,A7                   ;504f 
 ___TLIBA3_GetViewModeHeight__2:
