@@ -10,7 +10,7 @@ ___DST_FreeBannerStruct__1:
               MOVE.L         $c(A7),A5                ;2a6f 000c 
               MOVE.L         A5,A3                    ;264d 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.B          ___DST_FreeBannerStruct__8;674e 
+              BEQ.B          ___DST_FreeBannerStruct__8;674c 
 ___DST_FreeBannerStruct__2:
 ___DST_FreeBannerStruct__3:
               MOVE.L         (A3),D0                  ;2013 
@@ -23,8 +23,7 @@ ___DST_FreeBannerStruct__4:
               BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
 ___DST_FreeBannerStruct__5:
-              LEA            $4(A3),A0                ;41eb 0004 
-              MOVE.L         (A0),D0                  ;2010 
+              MOVE.L         $4(A3),D0                ;202b 0004 
               BEQ.B          ___DST_FreeBannerStruct__7;6716 
 ___DST_FreeBannerStruct__6:
               PEA            ($16).w                  ;4878 0016 

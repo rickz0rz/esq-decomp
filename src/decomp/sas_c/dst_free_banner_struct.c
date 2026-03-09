@@ -8,20 +8,25 @@ extern UBYTE Global_STR_DST_C_3[];
 
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, ULONG size);
 
+typedef struct DST_BannerStruct {
+    void *primaryBanner;
+    void *secondaryBanner;
+} DST_BannerStruct;
+
 void DST_FreeBannerStruct(void *banner)
 {
-    UBYTE *p = (UBYTE *)banner;
+    DST_BannerStruct *p = (DST_BannerStruct *)banner;
 
-    if (p == (UBYTE *)0) {
+    if (p == (DST_BannerStruct *)0) {
         return;
     }
 
-    if (*(void **)(p + 0) != (void *)0) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_1, 773, *(void **)(p + 0), 22);
+    if (p->primaryBanner != (void *)0) {
+        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_1, 773, p->primaryBanner, 22);
     }
 
-    if (*(void **)(p + 4) != (void *)0) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_2, 777, *(void **)(p + 4), 22);
+    if (p->secondaryBanner != (void *)0) {
+        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_2, 777, p->secondaryBanner, 22);
     }
 
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_3, 779, p, 18);
