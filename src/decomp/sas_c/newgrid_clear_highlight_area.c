@@ -12,8 +12,8 @@ extern LONG NEWGRID_RefreshStateFlag;
 extern void _LVODisable(void);
 extern void _LVOEnable(void);
 extern void GCOMMAND_ResetHighlightMessages(void);
-extern void _LVOSetAPen(void *rastPort, LONG pen);
-extern void _LVORectFill(void *rastPort, LONG xMin, LONG yMin, LONG xMax, LONG yMax);
+extern void _LVOSetAPen(char *rastPort, LONG pen);
+extern void _LVORectFill(char *rastPort, LONG xMin, LONG yMin, LONG xMax, LONG yMax);
 
 void NEWGRID_ClearHighlightArea(void)
 {
@@ -28,6 +28,6 @@ void NEWGRID_ClearHighlightArea(void)
         return;
     }
 
-    _LVOSetAPen(NEWGRID_MainRastPortPtr, 7);
-    _LVORectFill(NEWGRID_MainRastPortPtr, 0, 68, 695, 267);
+    _LVOSetAPen((char *)NEWGRID_MainRastPortPtr, 7);
+    _LVORectFill((char *)NEWGRID_MainRastPortPtr, 0, 68, 695, 267);
 }

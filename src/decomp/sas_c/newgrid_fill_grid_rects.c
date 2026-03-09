@@ -4,8 +4,8 @@ typedef signed short WORD;
 extern WORD NEWGRID_ColumnStartXPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern void _LVOSetAPen(void *rastPort, LONG pen);
-extern void _LVORectFill(void *rastPort, LONG xMin, LONG yMin, LONG xMax, LONG yMax);
+extern void _LVOSetAPen(char *rastPort, LONG pen);
+extern void _LVORectFill(char *rastPort, LONG xMin, LONG yMin, LONG xMax, LONG yMax);
 
 void NEWGRID_FillGridRects(char *rastPort, LONG firstPen, LONG secondPen, LONG yMax)
 {
