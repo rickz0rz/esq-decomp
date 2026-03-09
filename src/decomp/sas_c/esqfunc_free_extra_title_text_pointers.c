@@ -7,8 +7,12 @@ struct TitleEntry {
     char *extra_text[35];
 };
 
+typedef struct ESQFUNC_EntryTableEntry {
+    char pad0[1];
+} ESQFUNC_EntryTableEntry;
+
 extern WORD TEXTDISP_PrimaryGroupEntryCount;
-extern void *TEXTDISP_PrimaryEntryPtrTable[];
+extern ESQFUNC_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
 extern TitleEntry *TEXTDISP_PrimaryTitlePtrTable[];
 
 extern void ESQPARS_ReplaceOwnedString(LONG flags, char *ptr);
