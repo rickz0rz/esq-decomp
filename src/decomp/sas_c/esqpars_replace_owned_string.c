@@ -16,7 +16,7 @@ extern ULONG AvailMem(ULONG requirements);
 extern const char Global_STR_ESQPARS_C_5[];
 extern const char Global_STR_ESQPARS_C_6[];
 
-void *ESQPARS_ReplaceOwnedString(char *new_src, char *old_owned)
+char *ESQPARS_ReplaceOwnedString(char *new_src, char *old_owned)
 {
     ULONG old_len = 0;
     ULONG new_len = 0;
@@ -34,7 +34,7 @@ void *ESQPARS_ReplaceOwnedString(char *new_src, char *old_owned)
     }
 
     if (new_src == (char *)0) {
-        return (void *)0;
+        return (char *)0;
     }
 
     while (new_src[new_len] != 0) {
@@ -43,7 +43,7 @@ void *ESQPARS_ReplaceOwnedString(char *new_src, char *old_owned)
     new_len++;
 
     if (new_len == 1) {
-        return (void *)0;
+        return (char *)0;
     }
 
     dst = (char *)0;
@@ -62,5 +62,5 @@ void *ESQPARS_ReplaceOwnedString(char *new_src, char *old_owned)
         } while (new_src[i++] != 0);
     }
 
-    return (void *)dst;
+    return dst;
 }
