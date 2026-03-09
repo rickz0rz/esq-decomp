@@ -8,7 +8,22 @@ typedef struct RastPort {
 } RastPort;
 
 typedef struct HighlightMsg {
-    UBYTE raw[116];
+    UBYTE pad_00[8];
+    UBYTE type8;
+    UBYTE pad_09[5];
+    void *replyPort14;
+    UBYTE pad_18[4];
+    LONG paramA20;
+    LONG paramB24;
+    LONG paramC28;
+    LONG paramD32;
+    UBYTE pad_36[20];
+    UWORD stateWord52;
+    UBYTE pattern55[5];
+    RastPort rastPort60;
+    void *selectionParams64;
+    UBYTE pad_68[48];
+    void *nodePtr112;
 } HighlightMsg;
 
 typedef struct SelectionParams {
@@ -31,40 +46,40 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_HANDLE_PREVUEC_FONT;
 extern void *AbsExecBase;
 
-extern void ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(void);
-extern void ESQDISP_InitHighlightMessagePattern(void);
-extern void _LVOInitRastPort(void);
-extern void _LVOSetFont(void);
-extern void _LVOSetDrMd(void);
-extern void _LVOPutMsg(void);
+extern void ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(HighlightMsg *msg, LONG code);
+extern void ESQDISP_InitHighlightMessagePattern(HighlightMsg *msg);
+extern void _LVOInitRastPort(RastPort *rp);
+extern void _LVOSetFont(RastPort *rp, void *font);
+extern void _LVOSetDrMd(RastPort *rp, LONG mode);
+extern void _LVOPutMsg(void *port, HighlightMsg *msg);
 
 void ESQDISP_QueueHighlightDrawMessage(HighlightMsg *msg, SelectionParams *params)
 {
     RastPort *rp;
     HighlightMsgNodeFlags *nodeFlags;
 
-    msg->raw[8] = 5;
-    *(UWORD *)(msg->raw + 18) = 0x00A0;
-    *(void **)(msg->raw + 14) = ESQ_HighlightReplyPort;
+    msg->type8 = 5;
+    *(UWORD *)msg->pad_18 = 0x00A0;
+    msg->replyPort14 = ESQ_HighlightReplyPort;
 
-    *(LONG *)(msg->raw + 20) = params->a;
-    *(LONG *)(msg->raw + 24) = params->b;
-    *(LONG *)(msg->raw + 28) = params->c;
+    msg->paramA20 = params->a;
+    msg->paramB24 = params->b;
+    msg->paramC28 = params->c;
 
-    *(UWORD *)(msg->raw + 52) = 0;
+    msg->stateWord52 = 0;
     ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(msg, 0);
 
-    *(LONG *)(msg->raw + 32) = 0;
+    msg->paramD32 = 0;
     ESQDISP_InitHighlightMessagePattern(msg);
 
-    rp = (RastPort *)(msg->raw + 60);
+    rp = &msg->rastPort60;
     _LVOInitRastPort(rp);
 
-    *(void **)(msg->raw + 64) = params;
+    msg->selectionParams64 = params;
     _LVOSetFont(rp, Global_HANDLE_PREVUEC_FONT);
     _LVOSetDrMd(rp, 0);
 
-    nodeFlags = *(HighlightMsgNodeFlags **)(msg->raw + 112);
+    nodeFlags = (HighlightMsgNodeFlags *)msg->nodePtr112;
     nodeFlags->flags55 = 1;
     nodeFlags->flags53 |= 1;
 
