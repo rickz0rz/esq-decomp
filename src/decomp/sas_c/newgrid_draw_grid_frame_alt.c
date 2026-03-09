@@ -23,7 +23,7 @@ extern WORD NEWGRID_RowHeightPx;
 extern WORD NEWGRID_ColumnStartXPx;
 extern LONG DISPTEXT_ControlMarkerXOffsetPx;
 
-extern void NEWGRID_DrawGridFrame(UBYTE *rpCtx, LONG type, LONG penA, LONG penB, LONG height);
+extern void NEWGRID_DrawGridFrame(char *rpCtx, LONG type, LONG penA, LONG penB, LONG height);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(void);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(void);
@@ -41,7 +41,7 @@ static LONG asr1_round_toward_zero(LONG v)
     return v >> 1;
 }
 
-LONG NEWGRID_DrawGridFrameAlt(UBYTE *ctx)
+LONG NEWGRID_DrawGridFrameAlt(char *ctx)
 {
     NEWGRID_Context *ctxView;
     LONG hasMultiple;
