@@ -2,8 +2,18 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[27];
+    UBYTE flags27;
+} NEWGRID_Entry;
+
+typedef struct NEWGRID_AuxBase {
+    UBYTE pad0[56];
+    UBYTE *titleTable[49];
+} NEWGRID_AuxBase;
+
 typedef struct CoiSet {
-    UBYTE *ptr;
+    NEWGRID_AuxBase *ptr;
     UBYTE *rows;
     UBYTE timeFmtByte498;
 } CoiSet;
@@ -32,12 +42,14 @@ static char *advance_until_space(char *p)
 
 void NEWGRID_DrawGridEntry(void *layout, UBYTE *rowMeta, CoiSet *coi, UWORD row, UWORD textLines, LONG renderMode, LONG clockFmt)
 {
+    NEWGRID_Entry *entry;
     char splitMask[4];
     char *timeText;
     char *split;
     char *tail;
     char *subtitle;
 
+    entry = (NEWGRID_Entry *)rowMeta;
     splitMask[0] = NEWGRID_GridEntryDelimiterBar[0];
     splitMask[1] = NEWGRID_GridEntryDelimiterBar[1];
     splitMask[2] = NEWGRID_GridEntryDelimiterBar[2];
@@ -48,7 +60,7 @@ void NEWGRID_DrawGridEntry(void *layout, UBYTE *rowMeta, CoiSet *coi, UWORD row,
         return;
     }
 
-    timeText = (char *)coi->ptr[(LONG)row * 4 + 56];
+    timeText = (char *)coi->ptr->titleTable[(LONG)row];
     if (!timeText || !*timeText) {
         NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, SCRIPT_PtrNoDataPlaceholder);
         return;
@@ -66,7 +78,7 @@ void NEWGRID_DrawGridEntry(void *layout, UBYTE *rowMeta, CoiSet *coi, UWORD row,
 
     NEWGRID_Apply24HourFormatting((char *)NEWGRID_EntryTextScratchPtr, row, coi->timeFmtByte498);
 
-    if ((((UBYTE *)coi)[7 + row] & 0x02) == 0 && ((rowMeta[27] & 0x10) == 0)) {
+    if ((((UBYTE *)coi)[7 + row] & 0x02) == 0 && ((entry->flags27 & 0x10) == 0)) {
         NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, (char *)NEWGRID_EntryTextScratchPtr);
         return;
     }

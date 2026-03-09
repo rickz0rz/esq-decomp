@@ -31,18 +31,19 @@ __const:
 __strings:
 NEWGRID_DrawGridEntry:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$38,D0                  ;90bc 0000 0038 
+              SUB.L          #$3c,D0                  ;90bc 0000 003c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$24,A7                  ;9efc 0024 
+              SUB.W          #$28,A7                  ;9efc 0028 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___NEWGRID_DrawGridEntry__1:
-              MOVE.L         $54(A7),D5               ;2a2f 0054 
-              MOVE.W         $52(A7),D6               ;3c2f 0052 
-              MOVE.W         $4e(A7),D7               ;3e2f 004e 
-              MOVE.L         $48(A7),A2               ;246f 0048 
-              MOVE.L         $44(A7),A3               ;266f 0044 
-              MOVE.L         $40(A7),A5               ;2a6f 0040 
+              MOVE.L         $58(A7),D5               ;2a2f 0058 
+              MOVE.W         $56(A7),D6               ;3c2f 0056 
+              MOVE.W         $52(A7),D7               ;3e2f 0052 
+              MOVE.L         $4c(A7),A2               ;246f 004c 
+              MOVE.L         $48(A7),A3               ;266f 0048 
+              MOVE.L         $44(A7),A5               ;2a6f 0044 
+              MOVE.L         A3,$3c(A7)               ;2f4b 003c 
               MOVE.B         NEWGRID_GridEntryDelimiterBar(A4),$38(A7);1f6c 0000 0038 
               MOVE.B         NEWGRID_GridEntryDelimiterBar+$1(A4),$39(A7);1f6c 0001 0039 
               MOVE.B         NEWGRID_GridEntryDelimiterBar+$2(A4),$3a(A7);1f6c 0002 003a 
@@ -70,29 +71,27 @@ ___NEWGRID_DrawGridEntry__6:
               ADDQ.W         #$8,A7                   ;504f 
               BRA.W          ___NEWGRID_DrawGridEntry__75;6000 0380 
 ___NEWGRID_DrawGridEntry__7:
+              MOVE.L         (A2),A0                  ;2052 
               SWAP           D7                       ;4847 
               CLR.W          D7                       ;4247 
               SWAP           D7                       ;4847 
               MOVE.L         D7,D0                    ;2007 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         (A2),A0                  ;2052 
               ADD.L          D0,A0                    ;d1c0 
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         $38(A0),D0               ;1028 0038 
-              MOVE.L         D0,$34(A7)               ;2f40 0034 
-              BEQ.B          ___NEWGRID_DrawGridEntry__9;6706 
+              MOVE.L         $38(A0),A1               ;2268 0038 
+              MOVE.L         A1,$34(A7)               ;2f49 0034 
+              BEQ.B          ___NEWGRID_DrawGridEntry__9;6704 
 ___NEWGRID_DrawGridEntry__8:
-              MOVE.L         D0,A0                    ;2040 
-              TST.B          (A0)                     ;4a10 
+              TST.B          (A1)                     ;4a11 
               BNE.B          ___NEWGRID_DrawGridEntry__10;6610 
 ___NEWGRID_DrawGridEntry__9:
               MOVE.L         SCRIPT_PtrNoDataPlaceholder(A4),-(A7);2f2c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_LayoutA;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              BRA.W          ___NEWGRID_DrawGridEntry__75;6000 0350 
+              BRA.W          ___NEWGRID_DrawGridEntry__75;6000 0354 
 ___NEWGRID_DrawGridEntry__10:
-              MOVE.L         $58(A7),D0               ;202f 0058 
+              MOVE.L         $5c(A7),D0               ;202f 005c 
               MOVEQ.L        #$3,D1                   ;7203 
               CMP.L          D1,D0                    ;b081 
               BEQ.B          ___NEWGRID_DrawGridEntry__12;6704 
@@ -136,9 +135,10 @@ ___NEWGRID_DrawGridEntry__18:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D7,D0                    ;3007 
               BTST           #$1,$7(A2,D0.L)          ;0832 0001 0807 
-              BNE.B          ___NEWGRID_DrawGridEntry__21;6618 
+              BNE.B          ___NEWGRID_DrawGridEntry__21;661c 
 ___NEWGRID_DrawGridEntry__19:
-              BTST           #$4,$1b(A3)              ;082b 0004 001b 
+              MOVE.L         $3c(A7),A0               ;206f 003c 
+              BTST           #$4,$1b(A0)              ;0828 0004 001b 
               BNE.B          ___NEWGRID_DrawGridEntry__21;6610 
 ___NEWGRID_DrawGridEntry__20:
               MOVE.L         NEWGRID_EntryTextScratchPtr(A4),-(A7);2f2c 0000 
@@ -156,7 +156,7 @@ ___NEWGRID_DrawGridEntry__22:
 ___NEWGRID_DrawGridEntry__23:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         D7,D0                    ;3007 
-              MOVE.L         $58(A7),-(A7)            ;2f2f 0058 
+              MOVE.L         $5c(A7),-(A7)            ;2f2f 005c 
               MOVE.L         NEWGRID_EntryTextScratchPtr(A4),-(A7);2f2c 0000 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A2,-(A7)                 ;2f0a 
@@ -196,7 +196,7 @@ ___NEWGRID_DrawGridEntry__28:
               MOVE.L         D0,$30(A7)               ;2f40 0030 
 ___NEWGRID_DrawGridEntry__29:
               MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
-              BSR.W          advance_until_space      ;6100 fe38 
+              BSR.W          advance_until_space      ;6100 fe34 
 ___NEWGRID_DrawGridEntry__30:
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.L         D0,$30(A7)               ;2f40 0030 
@@ -240,7 +240,7 @@ ___NEWGRID_DrawGridEntry__38:
               MOVE.L         A1,$30(A7)               ;2f49 0030 
 ___NEWGRID_DrawGridEntry__39:
               MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
-              BSR.W          advance_until_space      ;6100 fdd0 
+              BSR.W          advance_until_space      ;6100 fdcc 
 ___NEWGRID_DrawGridEntry__40:
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.L         D0,$30(A7)               ;2f40 0030 
@@ -312,7 +312,7 @@ ___NEWGRID_DrawGridEntry__52:
               BEQ.W          ___NEWGRID_DrawGridEntry__64;6700 009a 
 ___NEWGRID_DrawGridEntry__53:
               MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
-              BSR.W          advance_until_space      ;6100 fd18 
+              BSR.W          advance_until_space      ;6100 fd14 
 ___NEWGRID_DrawGridEntry__54:
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.L         D0,$30(A7)               ;2f40 0030 
@@ -414,7 +414,7 @@ ___NEWGRID_DrawGridEntry__69:
               ADDQ.W         #$8,A7                   ;504f 
 ___NEWGRID_DrawGridEntry__70:
               MOVEQ.L        #$ff,D0                  ;70ff 
-              CMP.L          $58(A7),D0               ;b0af 0058 
+              CMP.L          $5c(A7),D0               ;b0af 005c 
               BNE.B          ___NEWGRID_DrawGridEntry__75;6632 
 ___NEWGRID_DrawGridEntry__71:
               TST.L          D5                       ;4a85 
@@ -441,7 +441,7 @@ ___NEWGRID_DrawGridEntry__73:
 ___NEWGRID_DrawGridEntry__74:
 ___NEWGRID_DrawGridEntry__75:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$24,A7                  ;defc 0024 
+              ADD.W          #$28,A7                  ;defc 0028 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
