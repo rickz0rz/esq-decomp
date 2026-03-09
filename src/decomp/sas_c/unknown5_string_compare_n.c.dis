@@ -10,18 +10,20 @@ ___STRING_CompareN__1:
               MOVE.L         $14(A7),A5               ;2a6f 0014 
 ___STRING_CompareN__2:
               TST.L          D7                       ;4a87 
-              BEQ.B          ___STRING_CompareN__8    ;6720 
+              BEQ.B          ___STRING_CompareN__8    ;6724 
 ___STRING_CompareN__3:
               TST.B          (A5)                     ;4a15 
-              BEQ.B          ___STRING_CompareN__8    ;671c 
+              BEQ.B          ___STRING_CompareN__8    ;6720 
 ___STRING_CompareN__4:
               TST.B          (A3)                     ;4a13 
-              BEQ.B          ___STRING_CompareN__8    ;6718 
+              BEQ.B          ___STRING_CompareN__8    ;671c 
 ___STRING_CompareN__5:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A5)+,D0                 ;101d 
-              MOVEQ.L        #$0,D1                   ;7200 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               MOVE.B         (A3)+,D1                 ;121b 
+              EXT.W          D1                       ;4881 
+              EXT.L          D1                       ;48c1 
               SUB.L          D1,D0                    ;9081 
               MOVE.L         D0,D6                    ;2c00 
               TST.L          D6                       ;4a86 
@@ -31,7 +33,7 @@ ___STRING_CompareN__6:
               BRA.B          ___STRING_CompareN__16   ;601a 
 ___STRING_CompareN__7:
               SUBQ.L         #$1,D7                   ;5387 
-              BRA.B          ___STRING_CompareN__2    ;60dc 
+              BRA.B          ___STRING_CompareN__2    ;60d8 
 ___STRING_CompareN__8:
               MOVE.L         D7,D0                    ;2007 
               BEQ.B          ___STRING_CompareN__16   ;6712 

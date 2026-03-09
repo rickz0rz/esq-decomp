@@ -4,7 +4,7 @@ typedef unsigned char UBYTE;
 
 extern ULONG STRING_ToUpperChar(ULONG c);
 
-LONG STRING_CompareNoCaseN(const UBYTE *a, const UBYTE *b, LONG maxLen)
+LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG maxLen)
 {
     LONG diff;
     ULONG ua;

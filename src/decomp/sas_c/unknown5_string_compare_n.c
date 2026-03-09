@@ -1,7 +1,7 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-LONG STRING_CompareN(const UBYTE *a, const UBYTE *b, LONG maxLen)
+LONG STRING_CompareN(const char *a, const char *b, LONG maxLen)
 {
     LONG diff;
 

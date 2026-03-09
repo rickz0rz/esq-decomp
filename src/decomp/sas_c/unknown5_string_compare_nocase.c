@@ -1,7 +1,7 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-LONG STRING_CompareNoCase(const UBYTE *a, const UBYTE *b)
+LONG STRING_CompareNoCase(const char *a, const char *b)
 {
     UBYTE ca;
     UBYTE cb;

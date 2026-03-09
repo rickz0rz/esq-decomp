@@ -11,10 +11,11 @@ ___PARSEINI_ParseHexValueFromString__1:
               MOVEQ.L        #$0,D7                   ;7e00 
 ___PARSEINI_ParseHexValueFromString__2:
               MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___PARSEINI_ParseHexValueFromString__6;672a 
+              BEQ.B          ___PARSEINI_ParseHexValueFromString__6;672c 
 ___PARSEINI_ParseHexValueFromString__3:
-              MOVEQ.L        #$0,D6                   ;7c00 
               MOVE.B         (A5),D6                  ;1c15 
+              EXT.W          D6                       ;4886 
+              EXT.L          D6                       ;48c6 
               MOVE.L         D6,D0                    ;2006 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
@@ -31,7 +32,7 @@ ___PARSEINI_ParseHexValueFromString__5:
               MOVE.B         D0,D1                    ;1200 
               ADD.L          D1,D7                    ;de81 
               ADDQ.L         #$1,A5                   ;528d 
-              BRA.B          ___PARSEINI_ParseHexValueFromString__2;60d2 
+              BRA.B          ___PARSEINI_ParseHexValueFromString__2;60d0 
 ___PARSEINI_ParseHexValueFromString__6:
               MOVE.L         D7,D0                    ;2007 
 ___PARSEINI_ParseHexValueFromString__7:

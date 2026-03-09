@@ -12,21 +12,23 @@ ___STRING_CompareNoCaseN__1:
               MOVE.L         $1c(A7),A5               ;2a6f 001c 
 ___STRING_CompareNoCaseN__2:
               TST.L          D7                       ;4a87 
-              BEQ.B          ___STRING_CompareNoCaseN__8;6730 
+              BEQ.B          ___STRING_CompareNoCaseN__8;6734 
 ___STRING_CompareNoCaseN__3:
               TST.B          (A5)                     ;4a15 
-              BEQ.B          ___STRING_CompareNoCaseN__8;672c 
+              BEQ.B          ___STRING_CompareNoCaseN__8;6730 
 ___STRING_CompareNoCaseN__4:
               TST.B          (A3)                     ;4a13 
-              BEQ.B          ___STRING_CompareNoCaseN__8;6728 
+              BEQ.B          ___STRING_CompareNoCaseN__8;672c 
 ___STRING_CompareNoCaseN__5:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A5)+,D0                 ;101d 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          STRING_ToUpperChar       ;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A3)+,D0                 ;101b 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               MOVE.L         D0,(A7)                  ;2e80 
               BSR.W          STRING_ToUpperChar       ;6100 0000 
               MOVE.L         D0,D4                    ;2800 
@@ -39,7 +41,7 @@ ___STRING_CompareNoCaseN__6:
               BRA.B          ___STRING_CompareNoCaseN__16;601a 
 ___STRING_CompareNoCaseN__7:
               SUBQ.L         #$1,D7                   ;5387 
-              BRA.B          ___STRING_CompareNoCaseN__2;60cc 
+              BRA.B          ___STRING_CompareNoCaseN__2;60c8 
 ___STRING_CompareNoCaseN__8:
               MOVE.L         D7,D0                    ;2007 
               BEQ.B          ___STRING_CompareNoCaseN__16;6712 

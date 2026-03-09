@@ -34,7 +34,7 @@ extern const char Global_STR_ASTERISK_3[];
 extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *a, const char *b);
 extern LONG TEXTDISP_ShouldOpenEditorForEntry(void *entry);
 
-LONG TEXTDISP_BuildMatchIndexList(UBYTE *patternPtr, UWORD cmdChar)
+LONG TEXTDISP_BuildMatchIndexList(char *patternPtr, UWORD cmdChar)
 {
     const LONG GROUP_PRIMARY = 1;
     const LONG MATCH_FALSE = 0;
@@ -53,7 +53,7 @@ LONG TEXTDISP_BuildMatchIndexList(UBYTE *patternPtr, UWORD cmdChar)
     TEXTDISP_CandidateEntry *entry;
 
     matchCount = 0;
-    if (patternPtr == (UBYTE *)0) {
+    if (patternPtr == (char *)0) {
         return MATCH_FALSE;
     }
 
@@ -71,17 +71,17 @@ LONG TEXTDISP_BuildMatchIndexList(UBYTE *patternPtr, UWORD cmdChar)
             ? SPORTS_MATCH_TRUE
             : MATCH_FALSE;
     if (UNKNOWN_JMPTBL_ESQ_WildcardMatch((const char *)patternPtr, TEXTDISP_Tag_SPT_Filter) == 0) {
-        patternPtr = (UBYTE *)Global_STR_ASTERISK_2;
+        patternPtr = (char *)Global_STR_ASTERISK_2;
     }
 
     {
-        const UBYTE *prefix = TEXTDISP_Tag_FIND1;
-        const UBYTE *scan = patternPtr;
+        const char *prefix = TEXTDISP_Tag_FIND1;
+        const char *scan = patternPtr;
 
         while (*prefix == *scan) {
             if (*prefix == 0) {
                 TEXTDISP_FindModeActiveFlag = MATCH_TRUE;
-                patternPtr = (UBYTE *)Global_STR_ASTERISK_3;
+                patternPtr = (char *)Global_STR_ASTERISK_3;
                 break;
             }
             ++prefix;
