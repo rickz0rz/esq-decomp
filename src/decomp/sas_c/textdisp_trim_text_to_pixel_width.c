@@ -5,11 +5,17 @@ extern LONG WDISP_DisplayContextBase;
 
 extern LONG _LVOTextLength(void *rastPort, UBYTE *text, LONG len);
 
+typedef struct TEXTDISP_DisplayContext {
+    UBYTE pad0[2];
+    UBYTE rastPort[1];
+} TEXTDISP_DisplayContext;
+
 void TEXTDISP_TrimTextToPixelWidth(UBYTE *text, LONG maxWidth)
 {
     UBYTE controlPrefix;
     UBYTE *current;
     UBYTE *lastSpace;
+    TEXTDISP_DisplayContext *context;
     void *rastPort;
     LONG totalWidth;
     LONG currentWidth;
@@ -19,7 +25,8 @@ void TEXTDISP_TrimTextToPixelWidth(UBYTE *text, LONG maxWidth)
     current = text;
     lastSpace = (UBYTE *)0;
     currentWidth = 0;
-    rastPort = (void *)((UBYTE *)WDISP_DisplayContextBase + 2);
+    context = (TEXTDISP_DisplayContext *)WDISP_DisplayContextBase;
+    rastPort = (void *)context->rastPort;
 
     len = 0;
     while (text[len] != 0) {
