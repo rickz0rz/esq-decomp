@@ -23,8 +23,30 @@ ___SCRIPT_CopyWeatherUpdateText__5:
               RTS                                     ;4e75 
 __const:
 __strings:
+SCRIPT_CopyWeatherUpdateForStrin:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___SCRIPT_CopyWeatherUpdateForStrin__1:
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              LEA            Global_STR_WEATHER_UPDATE_FOR(A4),A3;47ec 0000 
+              MOVE.L         A5,A2                    ;244d 
+___SCRIPT_CopyWeatherUpdateForStrin__2:
+              MOVE.L         A2,A0                    ;204a 
+              ADDQ.L         #$1,A2                   ;528a 
+              MOVE.B         (A3)+,D0                 ;101b 
+              MOVE.B         D0,(A0)                  ;1080 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___SCRIPT_CopyWeatherUpdateForStrin__5;6702 
+___SCRIPT_CopyWeatherUpdateForStrin__3:
+              BRA.B          ___SCRIPT_CopyWeatherUpdateForStrin__2;60f2 
+___SCRIPT_CopyWeatherUpdateForStrin__4:
+___SCRIPT_CopyWeatherUpdateForStrin__5:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
               XREF           Global_STR_WEATHER_UPDATE_FOR
               XDEF           SCRIPT_CopyWeatherUpdateText
+              XDEF           SCRIPT_CopyWeatherUpdateForStrin
               END

@@ -10,3 +10,14 @@ void SCRIPT_CopyWeatherUpdateText(char *outBuffer)
     while ((*dst++ = *src++) != '\0') {
     }
 }
+
+void SCRIPT_CopyWeatherUpdateForString(char *outBuffer)
+{
+    const char *src;
+    char *dst;
+
+    src = Global_STR_WEATHER_UPDATE_FOR;
+    dst = outBuffer;
+    while ((*dst++ = *src++) != '\0') {
+    }
+}
