@@ -2,6 +2,25 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Font {
+    UBYTE pad0[26];
+    UWORD ySize;
+} NEWGRID_Font;
+
+typedef struct NEWGRID_RastPort {
+    UBYTE pad0[52];
+    NEWGRID_Font *font;
+} NEWGRID_RastPort;
+
+typedef struct NEWGRID_Context {
+    UBYTE pad0[32];
+    LONG selectedState;
+    UBYTE pad1[18];
+    UWORD selectionCode;
+    UBYTE pad2[6];
+    NEWGRID_RastPort rastPort;
+} NEWGRID_Context;
+
 extern UBYTE *SCRIPT_PtrMovieSummaryForPrefix;
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
@@ -19,17 +38,18 @@ extern void NEWGRID_ValidateSelectionCode(void *gridCtx, LONG code);
 
 void NEWGRID_DrawEmptyGridMessage(UBYTE *gridCtx, UWORD slot)
 {
+    NEWGRID_Context *ctx;
     UBYTE banner[128];
     UBYTE slot_text[31];
     UBYTE *src;
     UBYTE *dst;
-    UBYTE *rast;
-    UBYTE *font;
+    NEWGRID_RastPort *rast;
     LONG len;
     LONG text_w;
     LONG x;
     LONG y;
 
+    ctx = (NEWGRID_Context *)gridCtx;
     NEWGRID_DrawGridFrame(gridCtx, 7, 6, 6, 33);
 
     src = SCRIPT_PtrMovieSummaryForPrefix;
@@ -40,7 +60,7 @@ void NEWGRID_DrawEmptyGridMessage(UBYTE *gridCtx, UWORD slot)
     NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry((LONG)slot, slot_text);
     PARSEINI_JMPTBL_STRING_AppendAtNull(banner, slot_text);
 
-    rast = gridCtx + 60;
+    rast = &ctx->rastPort;
     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
         rast, 0, 0, (LONG)(UWORD)NEWGRID_ColumnStartXPx + 35, 33
     );
@@ -63,17 +83,16 @@ void NEWGRID_DrawEmptyGridMessage(UBYTE *gridCtx, UWORD slot)
     }
     x = ((LONG)(UWORD)NEWGRID_ColumnStartXPx) + (x >> 1) + 36;
 
-    font = *(UBYTE **)(gridCtx + 112);
-    y = 34 - (LONG)(UWORD)(*(UWORD *)(font + 26));
+    y = 34 - (LONG)rast->font->ySize;
     if (y < 0) {
         ++y;
     }
-    y = (y >> 1) + (LONG)(UWORD)(*(UWORD *)(font + 26)) - 1;
+    y = (y >> 1) + (LONG)rast->font->ySize - 1;
 
     _LVOMove(rast, x, y);
     _LVOText(rast, banner, len);
 
-    *(UWORD *)(gridCtx + 52) = 17;
-    *(LONG *)(gridCtx + 32) = 17;
+    ctx->selectionCode = 17;
+    ctx->selectedState = 17;
     NEWGRID_ValidateSelectionCode(gridCtx, 65);
 }

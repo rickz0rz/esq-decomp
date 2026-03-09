@@ -2,6 +2,25 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Font {
+    UBYTE pad0[26];
+    UWORD ySize;
+} NEWGRID_Font;
+
+typedef struct NEWGRID_RastPort {
+    UBYTE pad0[52];
+    NEWGRID_Font *font;
+} NEWGRID_RastPort;
+
+typedef struct NEWGRID_Context {
+    UBYTE pad0[32];
+    LONG selectedState;
+    UBYTE pad1[18];
+    UWORD selectionCode;
+    UBYTE pad2[6];
+    NEWGRID_RastPort rastPort;
+} NEWGRID_Context;
+
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
@@ -19,7 +38,8 @@ extern void _LVOText(void *rastPort, UBYTE *text, LONG len);
 void NEWGRID_DrawDateBanner(void *gridCtx)
 {
     UBYTE dateText[100];
-    UBYTE *rast;
+    NEWGRID_Context *ctx;
+    NEWGRID_RastPort *rast;
     UBYTE *p;
     LONG dateLen;
     LONG xBase;
@@ -29,7 +49,8 @@ void NEWGRID_DrawDateBanner(void *gridCtx)
 
     (void)Global_REF_GRAPHICS_LIBRARY;
 
-    rast = (UBYTE *)gridCtx + 60;
+    ctx = (NEWGRID_Context *)gridCtx;
+    rast = &ctx->rastPort;
     NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING(dateText);
 
     _LVOSetDrMd(rast, 0);
@@ -55,7 +76,7 @@ void NEWGRID_DrawDateBanner(void *gridCtx)
     }
     x = xBase + (x >> 1) + 36;
 
-    fontH = *(UWORD *)(*(UBYTE **)(rast + 52) + 26);
+    fontH = rast->font->ySize;
     y = 34 - (LONG)fontH;
     if (y < 0) {
         y += 1;
@@ -65,6 +86,6 @@ void NEWGRID_DrawDateBanner(void *gridCtx)
     _LVOMove(rast, x, y);
     _LVOText(rast, dateText, dateLen);
 
-    *(UWORD *)((UBYTE *)gridCtx + 52) = 17;
-    *(LONG *)((UBYTE *)gridCtx + 32) = 17;
+    ctx->selectionCode = 17;
+    ctx->selectedState = 17;
 }
