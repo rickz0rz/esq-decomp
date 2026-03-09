@@ -21,16 +21,17 @@ __const:
 __strings:
 NEWGRID_DrawGridFrameAlt:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$2c,D0                  ;90bc 0000 002c 
+              SUB.L          #$28,D0                  ;90bc 0000 0028 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$18,A7                  ;9efc 0018 
+              SUB.W          #$14,A7                  ;9efc 0014 
               MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
 ___NEWGRID_DrawGridFrameAlt__1:
-              MOVE.L         $38(A7),A5               ;2a6f 0038 
+              MOVE.L         $34(A7),A5               ;2a6f 0034 
+              MOVE.L         A5,A3                    ;264d 
               MOVE.W         NEWGRID_RowHeightPx(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
-              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
               ADDQ.L         #$3,D0                   ;5680 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVEQ.L        #$6,D1                   ;7206 
@@ -43,7 +44,7 @@ ___NEWGRID_DrawGridFrameAlt__1:
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$2a,D1                  ;722a 
               ADD.L          D1,D0                    ;d081 
-              MOVE.L         D0,$40(A7)               ;2f40 0040 
+              MOVE.L         D0,$3c(A7)               ;2f40 003c 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_HasMult;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               LEA            $14(A7),A7               ;4fef 0014 
@@ -52,94 +53,92 @@ ___NEWGRID_DrawGridFrameAlt__1:
 ___NEWGRID_DrawGridFrameAlt__2:
               MOVEQ.L        #$2,D0                   ;7002 
               CMP.L          D0,D6                    ;bc80 
-              BGE.W          ___NEWGRID_DrawGridFrameAlt__19;6c00 00c0 
+              BGE.W          ___NEWGRID_DrawGridFrameAlt__19;6c00 00bc 
 ___NEWGRID_DrawGridFrameAlt__3:
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_IsCurre;6100 0000 
               TST.L          D0                       ;4a80 
-              BNE.W          ___NEWGRID_DrawGridFrameAlt__19;6600 00b6 
+              BNE.W          ___NEWGRID_DrawGridFrameAlt__19;6600 00b2 
 ___NEWGRID_DrawGridFrameAlt__4:
 ___NEWGRID_DrawGridFrameAlt__5:
-              MOVE.L         D5,$30(A7)               ;2f45 0030 
-              LEA            $70(A5),A0               ;41ed 0070 
-              MOVE.L         (A0),A2                  ;2450 
-              LEA            $1a(A2),A0               ;41ea 001a 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.L         D5,$2c(A7)               ;2f45 002c 
+              MOVE.L         $70(A3),A0               ;206b 0070 
+              MOVE.W         $1a(A0),D0               ;3028 001a 
               EXT.L          D0                       ;48c0 
-              MOVEM.L        D0,$24(A7)               ;48ef 0001 0024 
+              MOVEM.L        D0,$20(A7)               ;48ef 0001 0020 
               TST.L          D6                       ;4a86 
               BNE.B          ___NEWGRID_DrawGridFrameAlt__10;6626 
 ___NEWGRID_DrawGridFrameAlt__6:
               TST.L          D7                       ;4a87 
               BEQ.B          ___NEWGRID_DrawGridFrameAlt__10;6722 
 ___NEWGRID_DrawGridFrameAlt__7:
-              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
-              BSR.W          asr1_round_toward_zero   ;6100 ff56 
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              BSR.W          asr1_round_toward_zero   ;6100 ff58 
 ___NEWGRID_DrawGridFrameAlt__8:
-              SUB.L          $28(A7),D0               ;90af 0028 
+              SUB.L          $24(A7),D0               ;90af 0024 
               SUBQ.L         #$4,D0                   ;5980 
               MOVE.L         D0,(A7)                  ;2e80 
-              BSR.W          asr1_round_toward_zero   ;6100 ff4a 
+              BSR.W          asr1_round_toward_zero   ;6100 ff4c 
 ___NEWGRID_DrawGridFrameAlt__9:
               ADDQ.W         #$4,A7                   ;584f 
-              ADD.L          $24(A7),D0               ;d0af 0024 
+              ADD.L          $20(A7),D0               ;d0af 0020 
               ADDQ.L         #$3,D0                   ;5680 
-              ADD.L          D0,$30(A7)               ;d1af 0030 
+              ADD.L          D0,$2c(A7)               ;d1af 002c 
               BRA.B          ___NEWGRID_DrawGridFrameAlt__17;6048 
 ___NEWGRID_DrawGridFrameAlt__10:
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_IsLastL;6100 0000 
               TST.L          D0                       ;4a80 
               BEQ.B          ___NEWGRID_DrawGridFrameAlt__14;6722 
 ___NEWGRID_DrawGridFrameAlt__11:
-              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
-              BSR.W          asr1_round_toward_zero   ;6100 ff2c 
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              BSR.W          asr1_round_toward_zero   ;6100 ff2e 
 ___NEWGRID_DrawGridFrameAlt__12:
-              SUB.L          $28(A7),D0               ;90af 0028 
+              SUB.L          $24(A7),D0               ;90af 0024 
               SUBQ.L         #$4,D0                   ;5980 
               MOVE.L         D0,(A7)                  ;2e80 
-              BSR.W          asr1_round_toward_zero   ;6100 ff20 
+              BSR.W          asr1_round_toward_zero   ;6100 ff22 
 ___NEWGRID_DrawGridFrameAlt__13:
               ADDQ.W         #$4,A7                   ;584f 
-              ADD.L          $24(A7),D0               ;d0af 0024 
+              ADD.L          $20(A7),D0               ;d0af 0020 
               SUBQ.L         #$1,D0                   ;5380 
-              ADD.L          D0,$30(A7)               ;d1af 0030 
+              ADD.L          D0,$2c(A7)               ;d1af 002c 
               BRA.B          ___NEWGRID_DrawGridFrameAlt__17;601e 
 ___NEWGRID_DrawGridFrameAlt__14:
-              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
-              BSR.W          asr1_round_toward_zero   ;6100 ff0a 
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              BSR.W          asr1_round_toward_zero   ;6100 ff0c 
 ___NEWGRID_DrawGridFrameAlt__15:
-              SUB.L          $28(A7),D0               ;90af 0028 
+              SUB.L          $24(A7),D0               ;90af 0024 
               MOVE.L         D0,(A7)                  ;2e80 
-              BSR.W          asr1_round_toward_zero   ;6100 ff00 
+              BSR.W          asr1_round_toward_zero   ;6100 ff02 
 ___NEWGRID_DrawGridFrameAlt__16:
               ADDQ.W         #$4,A7                   ;584f 
-              ADD.L          $24(A7),D0               ;d0af 0024 
+              ADD.L          $20(A7),D0               ;d0af 0020 
               SUBQ.L         #$1,D0                   ;5380 
-              ADD.L          D0,$30(A7)               ;d1af 0030 
+              ADD.L          D0,$2c(A7)               ;d1af 002c 
 ___NEWGRID_DrawGridFrameAlt__17:
-              LEA            $3c(A5),A3               ;47ed 003c 
-              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
-              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
-              MOVE.L         A3,-(A7)                 ;2f0b 
+              LEA            $3c(A3),A2               ;45eb 003c 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_RenderC;6100 0000 
               ADDQ.L         #$1,D6                   ;5286 
-              MOVE.L         $34(A7),(A7)             ;2eaf 0034 
-              BSR.W          asr1_round_toward_zero   ;6100 fed8 
+              MOVE.L         $30(A7),(A7)             ;2eaf 0030 
+              BSR.W          asr1_round_toward_zero   ;6100 feda 
 ___NEWGRID_DrawGridFrameAlt__18:
               LEA            $c(A7),A7                ;4fef 000c 
               ADD.L          DISPTEXT_ControlMarkerXOffsetPx(A4),D0;d0ac 0000 
               ADD.L          D0,D5                    ;da80 
-              BRA.W          ___NEWGRID_DrawGridFrameAlt__2;6000 ff3c 
+              BRA.W          ___NEWGRID_DrawGridFrameAlt__2;6000 ff40 
 ___NEWGRID_DrawGridFrameAlt__19:
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_IsCurre;6100 0000 
-              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
               TST.L          D7                       ;4a87 
               BEQ.W          ___NEWGRID_DrawGridFrameAlt__24;6700 00a2 
 ___NEWGRID_DrawGridFrameAlt__20:
-              MOVE.L         $28(A7),D5               ;2a2f 0028 
+              MOVE.L         $24(A7),D5               ;2a2f 0024 
               TST.L          D0                       ;4a80 
               BEQ.B          ___NEWGRID_DrawGridFrameAlt__22;674c 
 ___NEWGRID_DrawGridFrameAlt__21:
-              LEA            $3c(A5),A0               ;41ed 003c 
+              LEA            $3c(A3),A0               ;41eb 003c 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$23,D1                  ;7223 
@@ -153,7 +152,7 @@ ___NEWGRID_DrawGridFrameAlt__21:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
-              LEA            $3c(A5),A0               ;41ed 003c 
+              LEA            $3c(A3),A0               ;41eb 003c 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$24,D1                  ;7224 
@@ -169,7 +168,7 @@ ___NEWGRID_DrawGridFrameAlt__21:
               LEA            $24(A7),A7               ;4fef 0024 
               BRA.W          ___NEWGRID_DrawGridFrameAlt__27;6000 00e4 
 ___NEWGRID_DrawGridFrameAlt__22:
-              LEA            $3c(A5),A0               ;41ed 003c 
+              LEA            $3c(A3),A0               ;41eb 003c 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$23,D1                  ;7223 
@@ -183,7 +182,7 @@ ___NEWGRID_DrawGridFrameAlt__22:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevele;6100 0000 
-              LEA            $3c(A5),A0               ;41ed 003c 
+              LEA            $3c(A3),A0               ;41eb 003c 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$24,D1                  ;7224 
@@ -203,7 +202,7 @@ ___NEWGRID_DrawGridFrameAlt__24:
               TST.L          D0                       ;4a80 
               BEQ.B          ___NEWGRID_DrawGridFrameAlt__26;674a 
 ___NEWGRID_DrawGridFrameAlt__25:
-              LEA            $3c(A5),A0               ;41ed 003c 
+              LEA            $3c(A3),A0               ;41eb 003c 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$23,D1                  ;7223 
@@ -217,7 +216,7 @@ ___NEWGRID_DrawGridFrameAlt__25:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
-              LEA            $3c(A5),A0               ;41ed 003c 
+              LEA            $3c(A3),A0               ;41eb 003c 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$24,D1                  ;7224 
@@ -233,7 +232,7 @@ ___NEWGRID_DrawGridFrameAlt__25:
               LEA            $24(A7),A7               ;4fef 0024 
               BRA.B          ___NEWGRID_DrawGridFrameAlt__27;6048 
 ___NEWGRID_DrawGridFrameAlt__26:
-              LEA            $3c(A5),A0               ;41ed 003c 
+              LEA            $3c(A3),A0               ;41eb 003c 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$23,D1                  ;7223 
@@ -247,7 +246,7 @@ ___NEWGRID_DrawGridFrameAlt__26:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawVertic;6100 0000 
-              LEA            $3c(A5),A0               ;41ed 003c 
+              LEA            $3c(A3),A0               ;41eb 003c 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$24,D1                  ;7224 
@@ -262,19 +261,16 @@ ___NEWGRID_DrawGridFrameAlt__26:
               BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawVertic;6100 0000 
               LEA            $24(A7),A7               ;4fef 0024 
 ___NEWGRID_DrawGridFrameAlt__27:
-              LEA            $34(A5),A0               ;41ed 0034 
               MOVE.L         D5,-(A7)                 ;2f05 
-              MOVE.L         A0,$20(A7)               ;2f48 0020 
-              BSR.W          asr1_round_toward_zero   ;6100 fd78 
+              BSR.W          asr1_round_toward_zero   ;6100 fd82 
 ___NEWGRID_DrawGridFrameAlt__28:
-              MOVE.L         $20(A7),A0               ;206f 0020 
-              MOVE.W         D0,(A0)                  ;3080 
+              MOVE.W         D0,$34(A3)               ;3740 0034 
               ADDQ.W         #$4,A7                   ;584f 
-              MOVE.L         $20(A7),D0               ;202f 0020 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
 ___NEWGRID_DrawGridFrameAlt__29:
 ___NEWGRID_DrawGridFrameAlt__30:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
-              ADD.W          #$18,A7                  ;defc 0018 
+              ADD.W          #$14,A7                  ;defc 0014 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF

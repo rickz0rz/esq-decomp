@@ -2,6 +2,23 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Font {
+    UBYTE pad0[26];
+    WORD ySize;
+} NEWGRID_Font;
+
+typedef struct NEWGRID_RastPort {
+    UBYTE pad0[52];
+    NEWGRID_Font *font;
+} NEWGRID_RastPort;
+
+typedef struct NEWGRID_Context {
+    UBYTE pad0[52];
+    WORD selectionCode;
+    UBYTE pad1[6];
+    NEWGRID_RastPort rastPort;
+} NEWGRID_Context;
+
 extern WORD NEWGRID_RowHeightPx;
 extern WORD NEWGRID_ColumnStartXPx;
 extern LONG DISPTEXT_ControlMarkerXOffsetPx;
@@ -26,6 +43,7 @@ static LONG asr1_round_toward_zero(LONG v)
 
 LONG NEWGRID_DrawGridFrameAlt(UBYTE *ctx)
 {
+    NEWGRID_Context *ctxView;
     LONG hasMultiple;
     LONG row;
     LONG yBase;
@@ -34,9 +52,9 @@ LONG NEWGRID_DrawGridFrameAlt(UBYTE *ctx)
     LONG rowHeight;
     LONG fontHeight;
     LONG isLast;
-    UBYTE *rp;
-    UBYTE *font;
+    NEWGRID_RastPort *rp;
 
+    ctxView = (NEWGRID_Context *)ctx;
     rowHeight = (LONG)NEWGRID_RowHeightPx;
     NEWGRID_DrawGridFrame(ctx, 7, 6, 6, rowHeight + 3);
 
@@ -51,8 +69,7 @@ LONG NEWGRID_DrawGridFrameAlt(UBYTE *ctx)
         }
 
         yDraw = yBase;
-        font = *(UBYTE **)(ctx + 112);
-        fontHeight = (LONG)*(WORD *)(font + 26);
+        fontHeight = (LONG)ctxView->rastPort.font->ySize;
 
         if (row == 0 && hasMultiple != 0) {
             yDraw += asr1_round_toward_zero(asr1_round_toward_zero(rowHeight) - fontHeight - 4) + fontHeight + 3;
@@ -62,7 +79,7 @@ LONG NEWGRID_DrawGridFrameAlt(UBYTE *ctx)
             yDraw += asr1_round_toward_zero(asr1_round_toward_zero(rowHeight) - fontHeight) + fontHeight - 1;
         }
 
-        rp = ctx + 60;
+        rp = &ctxView->rastPort;
         NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(rp, x, yDraw);
         row += 1;
         yBase += asr1_round_toward_zero(rowHeight) + DISPTEXT_ControlMarkerXOffsetPx;
@@ -72,22 +89,22 @@ LONG NEWGRID_DrawGridFrameAlt(UBYTE *ctx)
     if (hasMultiple != 0) {
         yBase = rowHeight;
         if (isLast != 0) {
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(ctx + 60, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(ctx + 60, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
+            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
+            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
         } else {
-            NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(ctx + 60, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
-            NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(ctx + 60, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
+            NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
+            NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
         }
     } else {
         if (isLast != 0) {
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(ctx + 60, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(ctx + 60, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
+            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
+            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
         } else {
-            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(ctx + 60, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
-            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(ctx + 60, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
+            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 35, 0, (LONG)yBase - 1, 0);
+            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(&ctxView->rastPort, (LONG)NEWGRID_ColumnStartXPx + 36, 0, 695, (LONG)yBase - 1);
         }
     }
 
-    *(WORD *)(ctx + 52) = (WORD)asr1_round_toward_zero(yBase);
+    ctxView->selectionCode = (WORD)asr1_round_toward_zero(yBase);
     return isLast;
 }
