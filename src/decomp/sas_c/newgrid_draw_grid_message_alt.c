@@ -27,7 +27,7 @@ extern char *GCOMMAND_PPVPeriodTemplatePtr;
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 
-extern LONG NEWGRID_DrawGridFrame(void *rastPort, LONG style, LONG penA, LONG penB, LONG rowHeight);
+extern LONG NEWGRID_DrawGridFrame(char *rastPort, LONG style, LONG penA, LONG penB, LONG rowHeight);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void _LVOSetAPen(void *rastPort, LONG pen);
 extern void _LVOSetDrMd(void *rastPort, LONG mode);
@@ -36,7 +36,7 @@ extern void _LVOMove(void *rastPort, LONG x, LONG y);
 extern void _LVOText(void *rastPort, char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(void *rastPort, LONG code);
 
-void NEWGRID_DrawGridMessageAlt(UBYTE *gridCtx)
+void NEWGRID_DrawGridMessageAlt(char *gridCtx)
 {
     NEWGRID_Context *ctx;
     NEWGRID_RastPort *rastPort;

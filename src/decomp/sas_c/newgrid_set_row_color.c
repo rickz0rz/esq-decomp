@@ -7,7 +7,7 @@ typedef struct NEWGRID_Context {
     UBYTE rowPens[4];
 } NEWGRID_Context;
 
-LONG NEWGRID_SetRowColor(UBYTE *gridCtx, WORD selector, LONG colorIndex)
+LONG NEWGRID_SetRowColor(char *gridCtx, WORD selector, LONG colorIndex)
 {
     NEWGRID_Context *ctx;
     LONG pen;
