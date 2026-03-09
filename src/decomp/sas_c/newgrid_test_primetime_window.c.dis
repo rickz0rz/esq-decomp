@@ -3,23 +3,23 @@ __code:
 NEWGRID_TestPrimeTimeWindow:
               CMP.L          __base(A4),A7            ;bfec 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D6/D7/A3/A5,-(A7)        ;48e7 0314 
+              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
 ___NEWGRID_TestPrimeTimeWindow__1:
-              MOVE.L         $14(A7),D7               ;2e2f 0014 
-              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVE.L         $18(A7),D7               ;2e2f 0018 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
               MOVE.L         A5,D0                    ;200d 
               BEQ.B          ___NEWGRID_TestPrimeTimeWindow__17;6748 
 ___NEWGRID_TestPrimeTimeWindow__2:
 ___NEWGRID_TestPrimeTimeWindow__3:
-              LEA            $30(A5),A0               ;41ed 0030 
-              MOVE.L         (A0),A3                  ;2650 
-              MOVE.L         A3,D1                    ;220b 
+              MOVE.L         D0,A3                    ;2640 
+              MOVE.L         $30(A3),A2               ;246b 0030 
+              MOVE.L         A2,D1                    ;220a 
               BNE.B          ___NEWGRID_TestPrimeTimeWindow__5;6604 
 ___NEWGRID_TestPrimeTimeWindow__4:
               MOVEQ.L        #$0,D0                   ;7000 
               BRA.B          ___NEWGRID_TestPrimeTimeWindow__17;603a 
 ___NEWGRID_TestPrimeTimeWindow__5:
-              MOVE.B         $1(A3),D6                ;1c2b 0001 
+              MOVE.B         $1(A2),D6                ;1c2a 0001 
               MOVEQ.L        #$4e,D0                  ;704e 
               CMP.B          D0,D6                    ;bc00 
               BEQ.B          ___NEWGRID_TestPrimeTimeWindow__7;6706 
@@ -59,7 +59,7 @@ ___NEWGRID_TestPrimeTimeWindow__15:
               MOVEQ.L        #$1,D0                   ;7001 
 ___NEWGRID_TestPrimeTimeWindow__16:
 ___NEWGRID_TestPrimeTimeWindow__17:
-              MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
               RTS                                     ;4e75 
 __const:
 __strings:

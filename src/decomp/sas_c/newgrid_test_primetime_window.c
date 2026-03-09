@@ -1,21 +1,33 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_ModeInfo {
+    UBYTE pad0[1];
+    UBYTE modeChar;
+} NEWGRID_ModeInfo;
+
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[48];
+    NEWGRID_ModeInfo *modeInfo;
+} NEWGRID_Entry;
+
 LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, UBYTE *entry)
 {
-    UBYTE *modePtr;
+    NEWGRID_Entry *entryView;
+    NEWGRID_ModeInfo *modePtr;
     UBYTE c;
 
     if (entry == 0) {
         return 0;
     }
 
-    modePtr = *(UBYTE **)(entry + 48);
+    entryView = (NEWGRID_Entry *)entry;
+    modePtr = entryView->modeInfo;
     if (modePtr == 0) {
         return 0;
     }
 
-    c = modePtr[1];
+    c = modePtr->modeChar;
     if (c == 'N' || c == 'n') {
         return 0;
     }

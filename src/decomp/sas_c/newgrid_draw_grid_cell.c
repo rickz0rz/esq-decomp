@@ -2,6 +2,12 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct NEWGRID_Entry {
+    UBYTE pad0[1];
+    UBYTE leftText[18];
+    UBYTE rightText[1];
+} NEWGRID_Entry;
+
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_RowHeightPx;
 
@@ -12,13 +18,15 @@ extern void NEWGRID_DrawGridCellText(void *rastPort, UBYTE *leftText, UBYTE *rig
 
 void NEWGRID_DrawGridCell(void *rastPort, UBYTE *cell, LONG rowFlag)
 {
+    NEWGRID_Entry *cellView;
     UBYTE *left;
     UBYTE *right;
     LONG x2;
     LONG y2;
 
-    left = NEWGRID2_JMPTBL_STR_SkipClass3Chars(cell + 1);
-    right = NEWGRID2_JMPTBL_STR_SkipClass3Chars(cell + 19);
+    cellView = (NEWGRID_Entry *)cell;
+    left = NEWGRID2_JMPTBL_STR_SkipClass3Chars(cellView->leftText);
+    right = NEWGRID2_JMPTBL_STR_SkipClass3Chars(cellView->rightText);
 
     x2 = (LONG)(UWORD)NEWGRID_ColumnStartXPx + 35;
     y2 = (LONG)(UWORD)NEWGRID_RowHeightPx - 1;
