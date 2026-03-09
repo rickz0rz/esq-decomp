@@ -28,8 +28,8 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void NEWGRID_DrawGridFrame(void *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
 extern void _LVOSetAPen(void *rastPort, LONG pen);
-extern LONG _LVOTextLength(void *rastPort, UBYTE *text, LONG len);
-extern void NEWGRID_DrawWrappedText(void *rastPort, LONG x, LONG y, LONG width, UBYTE *text, LONG centered);
+extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
+extern void NEWGRID_DrawWrappedText(void *rastPort, LONG x, LONG y, LONG width, char *text, LONG centered);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
 LONG NEWGRID_DrawAwaitingListingsMessage(void *gridCtx)
@@ -38,8 +38,8 @@ LONG NEWGRID_DrawAwaitingListingsMessage(void *gridCtx)
     NEWGRID_RastPort *rast;
     LONG rowH;
     LONG yMax;
-    UBYTE *msg;
-    UBYTE *p;
+    char *msg;
+    char *p;
     LONG msgLen;
     LONG textW;
     LONG x;
@@ -53,7 +53,7 @@ LONG NEWGRID_DrawAwaitingListingsMessage(void *gridCtx)
     rast = &ctx->rastPort;
     rowH = (LONG)(UWORD)NEWGRID_RowHeightPx;
     yMax = rowH - 1;
-    msg = Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
+    msg = (char *)Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
     p = msg;
     msgLen = 0;
 

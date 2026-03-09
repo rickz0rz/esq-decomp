@@ -28,23 +28,23 @@ extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 
 extern void NEWGRID_DrawGridFrame(void *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
-extern void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slot, UBYTE *out_text);
-extern UBYTE *NEWGRID2_JMPTBL_STR_SkipClass3Chars(UBYTE *s);
-extern void PARSEINI_JMPTBL_WDISP_SPrintf(UBYTE *dst, UBYTE *fmt, UBYTE *arg);
+extern void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slot, char *out_text);
+extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
+extern void PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, char *arg);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void _LVOSetAPen(void *rastPort, LONG pen);
 extern void _LVOSetDrMd(void *rastPort, LONG mode);
-extern LONG _LVOTextLength(void *rastPort, UBYTE *text, LONG len);
+extern LONG _LVOTextLength(void *rastPort, char *text, LONG len);
 extern void _LVOMove(void *rastPort, LONG x, LONG y);
-extern void _LVOText(void *rastPort, UBYTE *text, LONG len);
+extern void _LVOText(void *rastPort, char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(void *gridCtx, LONG code);
 
 void NEWGRID_DrawStatusMessage(UBYTE *gridCtx, UWORD slot)
 {
     NEWGRID_Context *ctx;
-    UBYTE text_buf[132];
-    UBYTE slot_text[31];
-    UBYTE *msg;
+    char text_buf[132];
+    char slot_text[31];
+    char *msg;
     NEWGRID_RastPort *rast;
     LONG len;
     LONG width;
@@ -56,7 +56,7 @@ void NEWGRID_DrawStatusMessage(UBYTE *gridCtx, UWORD slot)
 
     NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry((LONG)slot, slot_text);
     msg = NEWGRID2_JMPTBL_STR_SkipClass3Chars(slot_text);
-    PARSEINI_JMPTBL_WDISP_SPrintf(text_buf, GCOMMAND_MplexAtTemplatePtr, msg);
+    PARSEINI_JMPTBL_WDISP_SPrintf(text_buf, (char *)GCOMMAND_MplexAtTemplatePtr, msg);
 
     rast = &ctx->rastPort;
     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
