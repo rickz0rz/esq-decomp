@@ -32,8 +32,12 @@ void TEXTDISP_UpdateHighlightOrPreview(void)
             return;
         }
 
-        if (WDISP_HighlightActive == FLAG_TRUE && classId == CLASS_PREVIEW) {
-            TEXTDISP_DrawNextEntryPreview();
+        if ((LONG)(WORD)WDISP_HighlightActive == FLAG_TRUE) {
+            if (classId == CLASS_PREVIEW) {
+                TEXTDISP_DrawNextEntryPreview();
+            } else {
+                TEXTDISP_ResetSelectionAndRefresh();
+            }
         } else {
             TEXTDISP_ResetSelectionAndRefresh();
         }
@@ -45,7 +49,7 @@ void TEXTDISP_UpdateHighlightOrPreview(void)
         return;
     }
 
-    if (WDISP_HighlightActive == FLAG_TRUE) {
+    if ((LONG)(WORD)WDISP_HighlightActive == FLAG_TRUE) {
         TEXTDISP_DrawNextEntryPreview();
     } else {
         TEXTDISP_ResetSelectionAndRefresh();
