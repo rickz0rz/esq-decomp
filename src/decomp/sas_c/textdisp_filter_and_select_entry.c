@@ -3,6 +3,27 @@ typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
+typedef struct TEXTDISP_AuxData {
+    UBYTE pad0[56];
+    UBYTE *titleTable[49];
+} TEXTDISP_AuxData;
+
+typedef struct TEXTDISP_SelectionEntry {
+    UBYTE shortName[10];
+    UBYTE longName[200];
+    LONG mode;
+    LONG groupIndex;
+    UWORD selectionIndex;
+    UBYTE detailLine[524];
+} TEXTDISP_SelectionEntry;
+
+typedef struct TEXTDISP_CandidateEntry {
+    UBYTE pad0[12];
+    UBYTE tagText[15];
+    UBYTE flags27;
+    UBYTE selectionBits[1];
+} TEXTDISP_CandidateEntry;
+
 extern UWORD TEXTDISP_FilterChannelSlotIndex;
 extern UBYTE TEXTDISP_FilterModeId;
 extern UWORD TEXTDISP_FilterPpvSbeMatchFlag;
@@ -45,19 +66,14 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
     const LONG MINUTES_PER_DAY = 1440;
     const LONG BIT_SHIFT_HIDDEN = 3;
     const LONG BIT_SHIFT_PPV_SBE = 4;
-    const LONG ENTRY_SHORT_NAME_OFFSET = 0;
-    const LONG ENTRY_LONG_NAME_OFFSET = 10;
-    const LONG ENTRY_TAG_OFFSET = 12;
-    const LONG ENTRY_FLAGS_OFFSET = 27;
-    const LONG ENTRY_BITMAP_OFFSET = 28;
     const LONG MATCH_FOUND_FLAG = -1;
-    UBYTE *entry;
+    TEXTDISP_SelectionEntry *entry;
     UBYTE *nameShort;
     UBYTE *nameLong;
     UBYTE *candidateName;
     UBYTE *candidateTitle;
-    void *aux;
-    void *candidate;
+    TEXTDISP_AuxData *aux;
+    TEXTDISP_CandidateEntry *candidate;
     LONG found;
     LONG mode;
     LONG count;
@@ -69,16 +85,16 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
     UBYTE *nameEnd;
 
     found = 0;
-    entry = (UBYTE *)entryPtr;
-    if (entry == (UBYTE *)0) {
+    entry = (TEXTDISP_SelectionEntry *)entryPtr;
+    if (entry == (TEXTDISP_SelectionEntry *)0) {
         modeChar = CH_NUL;
     }
 
     nameShort = (UBYTE *)0;
     nameLong = (UBYTE *)0;
-    if (entry != (UBYTE *)0) {
-        nameShort = entry + ENTRY_SHORT_NAME_OFFSET;
-        nameLong = entry + ENTRY_LONG_NAME_OFFSET;
+    if (entry != (TEXTDISP_SelectionEntry *)0) {
+        nameShort = entry->shortName;
+        nameLong = entry->longName;
         if (nameShort[0] == CH_NUL || nameLong[0] == CH_NUL) {
             modeChar = CH_NUL;
         }
@@ -108,15 +124,15 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
             TEXTDISP_FilterMatchCount = 0;
 
             for (idx = 0; idx < count; idx++) {
-                candidate = (void *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
-                if (candidate == (void *)0) {
+                candidate = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
+                if (candidate == (TEXTDISP_CandidateEntry *)0) {
                     continue;
                 }
-                if ((((UBYTE *)candidate)[ENTRY_FLAGS_OFFSET] & (1u << BIT_SHIFT_HIDDEN)) != 0) {
+                if ((candidate->flags27 & (1u << BIT_SHIFT_HIDDEN)) != 0) {
                     continue;
                 }
                 if (TEXTDISP_FilterPpvSbeMatchFlag != 0 &&
-                    ((((UBYTE *)candidate)[ENTRY_FLAGS_OFFSET] & (1u << BIT_SHIFT_PPV_SBE)) != 0)) {
+                    ((candidate->flags27 & (1u << BIT_SHIFT_PPV_SBE)) != 0)) {
                     TEXTDISP_CandidateIndexList[TEXTDISP_FilterMatchCount++] = (UBYTE)idx;
                     continue;
                 }
@@ -125,7 +141,7 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
                     continue;
                 }
                 if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(
-                        (const char *)(candidate ? ((UBYTE *)candidate + ENTRY_TAG_OFFSET) : (UBYTE *)0),
+                        (const char *)candidate->tagText,
                         (const char *)nameShort) == 0) {
                     TEXTDISP_CandidateIndexList[TEXTDISP_FilterMatchCount++] = (UBYTE)idx;
                 }
@@ -147,27 +163,27 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
 
             idx = (LONG)TEXTDISP_CandidateIndexList[TEXTDISP_FilterCandidateCursor];
             mode = (LONG)TEXTDISP_FilterModeId;
-            aux = (void *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(idx, mode);
-            if (aux == (void *)0) {
+            aux = (TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(idx, mode);
+            if (aux == (TEXTDISP_AuxData *)0) {
                 TEXTDISP_FilterCandidateCursor++;
                 continue;
             }
 
             slot = (LONG)TEXTDISP_FilterChannelSlotIndex;
             titleSlot = slot;
-            candidateTitle = (UBYTE *)((ULONG *)((UBYTE *)aux + 56))[titleSlot];
+            candidateTitle = aux->titleTable[titleSlot];
 
             if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY &&
                 slot == (LONG)CLOCK_HalfHourSlotIndex) {
                 while (titleSlot > 0 && candidateTitle == (UBYTE *)0) {
-                    candidateTitle = (UBYTE *)((ULONG *)((UBYTE *)aux + 56))[titleSlot];
+                    candidateTitle = aux->titleTable[titleSlot];
                     titleSlot--;
                 }
             }
 
             if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY && candidateTitle != (UBYTE *)0) {
-                candidate = (void *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
-                if (candidate == (void *)0 ||
+                candidate = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
+                if (candidate == (TEXTDISP_CandidateEntry *)0 ||
                     TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
                         candidate, aux, titleSlot, MINUTES_PER_DAY, CONFIG_TimeWindowMinutes) == 0) {
                     candidateTitle = (UBYTE *)0;
@@ -195,9 +211,9 @@ LONG TEXTDISP_FilterAndSelectEntry(void *entryPtr, UBYTE modeChar)
             }
             nameLen = (LONG)(nameEnd - candidateName);
             if (STRING_CompareNoCaseN((const char *)candidateName, (const char *)candidateTitle, nameLen) == 0) {
-                candidate = (void *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
-                if (candidate != (void *)0 &&
-                    TLIBA2_JMPTBL_ESQ_TestBit1Based((void *)((UBYTE *)candidate + ENTRY_BITMAP_OFFSET), titleSlot) ==
+                candidate = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
+                if (candidate != (TEXTDISP_CandidateEntry *)0 &&
+                    TLIBA2_JMPTBL_ESQ_TestBit1Based((void *)candidate->selectionBits, titleSlot) ==
                         MATCH_FOUND_FLAG) {
                     found = 1;
                     TEXTDISP_SetSelectionFields(entry, mode, idx, titleSlot);

@@ -2,22 +2,23 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
-typedef struct TEXTDISP_State {
-    UBYTE pad0[210];
-    LONG selectionMode;
-    LONG selectedIndex;
-    WORD selectedSubIndex;
-    UBYTE selectedFlags;
-} TEXTDISP_State;
+typedef struct TEXTDISP_SelectionEntry {
+    UBYTE shortName[10];
+    UBYTE longName[200];
+    LONG mode;
+    LONG groupIndex;
+    WORD selectionIndex;
+    UBYTE detailLine[524];
+} TEXTDISP_SelectionEntry;
 
-void TEXTDISP_ResetSelectionState(TEXTDISP_State *state)
+void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *state)
 {
-    if (state == (TEXTDISP_State *)0) {
+    if (state == (TEXTDISP_SelectionEntry *)0) {
         return;
     }
 
-    state->selectionMode = 3;
-    state->selectedIndex = -1;
-    state->selectedSubIndex = -1;
-    state->selectedFlags = 0;
+    state->mode = 3;
+    state->groupIndex = -1;
+    state->selectionIndex = -1;
+    state->detailLine[0] = 0;
 }
