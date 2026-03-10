@@ -18,7 +18,7 @@ extern const char *Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE;
 
 extern ULONG ESQFUNC_PwBrushListHead;
 extern ULONG ESQFUNC_WeatherBrushPredicateNames;
-extern ULONG ESQFUNC_STR_I5[];
+extern const char *ESQFUNC_STR_I5[];
 extern const char Global_STR_WDISP_C[];
 
 extern void *WDISP_JMPTBL_BRUSH_FindBrushByPredicate(void *predicate, void *listHead);

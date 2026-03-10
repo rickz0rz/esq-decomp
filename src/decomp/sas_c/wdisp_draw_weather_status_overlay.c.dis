@@ -22,11 +22,11 @@ ___WDISP_DrawWeatherStatusOverlay__2:
 ___WDISP_DrawWeatherStatusOverlay__3:
               MOVE.L         P_TYPE_WeatherCurrentMsgPtr(A4),A0;206c 0000 
               MOVE.L         A0,$24(A7)               ;2f48 0024 
-              BNE.W          ___WDISP_DrawWeatherStatusOverlay__27;6600 00ea 
+              BNE.W          ___WDISP_DrawWeatherStatusOverlay__27;6600 00e8 
 ___WDISP_DrawWeatherStatusOverlay__4:
               MOVE.L         Global_STR_PTR_NO_CURRENT_WEATHE(A4),$24(A7);2f6c 0000 0024 
 ___WDISP_DrawWeatherStatusOverlay__5:
-              BRA.W          ___WDISP_DrawWeatherStatusOverlay__27;6000 00e0 
+              BRA.W          ___WDISP_DrawWeatherStatusOverlay__27;6000 00de 
 ___WDISP_DrawWeatherStatusOverlay__6:
               MOVE.B         WDISP_WeatherStatusBrushIndex(A4),D0;102c 0000 
               SUBQ.B         #$1,D0                   ;5300 
@@ -38,16 +38,15 @@ ___WDISP_DrawWeatherStatusOverlay__7:
               BSR.W          WDISP_JMPTBL_BRUSH_FindBrushByPr;6100 0000 
               MOVE.L         D0,A3                    ;2640 
               ADDQ.W         #$8,A7                   ;504f 
-              BRA.B          ___WDISP_DrawWeatherStatusOverlay__9;6020 
+              BRA.B          ___WDISP_DrawWeatherStatusOverlay__9;601e 
 ___WDISP_DrawWeatherStatusOverlay__8:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         WDISP_WeatherStatusBrushIndex(A4),D0;102c 0000 
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
-              LEA            ESQFUNC_STR_I5(A4),A0    ;41ec 0000 
-              MOVE.L         $0(A0,D1.L),A0           ;2070 1800 
               PEA            ESQFUNC_PwBrushListHead(A4);486c 0000 
-              MOVE.L         A0,-(A7)                 ;2f08 
+              LEA            ESQFUNC_STR_I5(A4),A0    ;41ec 0000 
+              MOVE.L         $0(A0,D1.L),-(A7)        ;2f30 1800 
               BSR.W          WDISP_JMPTBL_BRUSH_FindBrushByPr;6100 0000 
               MOVE.L         D0,A3                    ;2640 
               ADDQ.W         #$8,A7                   ;504f 

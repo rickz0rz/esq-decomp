@@ -13,10 +13,9 @@ ___ESQIFF_DrawWeatherStatusOverlayI__1:
               MOVE.B         WDISP_WeatherStatusBrushIndex(A4),D0;102c 0000 
               MOVE.L         D0,D1                    ;2200 
               ASL.L          #$2,D1                   ;e581 
-              LEA            ESQFUNC_STR_I5(A4),A0    ;41ec 0000 
-              MOVE.L         $0(A0,D1.L),A0           ;2070 1800 
               PEA            ESQFUNC_PwBrushListHead(A4);486c 0000 
-              MOVE.L         A0,-(A7)                 ;2f08 
+              LEA            ESQFUNC_STR_I5(A4),A0    ;41ec 0000 
+              MOVE.L         $0(A0,D1.L),-(A7)        ;2f30 1800 
               BSR.W          ESQIFF_JMPTBL_BRUSH_FindBrushByP;6100 0000 
               MOVE.L         D0,A3                    ;2640 
               CLR.L          (A7)                     ;4297 
@@ -84,8 +83,8 @@ __strings:
               XREF           __base
               XREF           _XCOVF
               XREF           WDISP_WeatherStatusBrushIndex
-              XREF           ESQFUNC_STR_I5
               XREF           ESQFUNC_PwBrushListHead
+              XREF           ESQFUNC_STR_I5
               XREF           ESQIFF_JMPTBL_BRUSH_FindBrushByP
               XREF           WDISP_WeatherStatusOverlayTextPt
               XREF           ESQPARS_ReplaceOwnedString

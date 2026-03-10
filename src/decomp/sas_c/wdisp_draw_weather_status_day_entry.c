@@ -12,7 +12,7 @@ typedef struct WeatherDayEntry {
 } WeatherDayEntry;
 
 extern WeatherDayEntry WDISP_StatusDayEntry0[];
-extern ULONG ESQFUNC_STR_I5[];
+extern const char *ESQFUNC_STR_I5[];
 extern ULONG ESQFUNC_PwBrushListHead;
 extern const char Global_STR_PERCENT_D_SLASH[];
 extern const char Global_STR_PERCENT_D[];

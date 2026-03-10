@@ -5,7 +5,7 @@ typedef unsigned char UBYTE;
 extern UBYTE WDISP_WeatherStatusBrushIndex;
 extern char *WDISP_WeatherStatusOverlayTextPtr;
 extern ULONG ESQFUNC_PwBrushListHead;
-extern ULONG ESQFUNC_STR_I5[];
+extern const char *ESQFUNC_STR_I5[];
 extern const char Global_STR_ESQIFF_C_1[];
 
 extern void *ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(void *predicate, void *listHead);
