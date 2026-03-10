@@ -5,7 +5,7 @@ extern UBYTE ED_CustomPaletteTriplesDefaultTemplate24B[];
 extern LONG ED_StateRingIndex;
 extern UBYTE ED_StateRingTable[];
 extern UBYTE ED_LastKeyCode;
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 extern LONG ED_CustomPaletteCapturePhaseMod4;
 extern LONG ED_CustomPaletteCaptureIndexOrSentinel;
 extern UBYTE KYBD_CustomPaletteCaptureScratchBase[];

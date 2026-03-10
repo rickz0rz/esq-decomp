@@ -10,7 +10,7 @@ typedef long LONG;
 #define LOCAL_FALLBACK_COPY_OFFSET 1
 
 extern const char CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY[];
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 extern UBYTE DISPTEXT_InsetNibblePrimary;
 extern UBYTE DISPTEXT_InsetNibbleSecondary;
 
