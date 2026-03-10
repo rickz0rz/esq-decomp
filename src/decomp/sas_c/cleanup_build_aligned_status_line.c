@@ -44,10 +44,10 @@ void CLEANUP_BuildAlignedStatusLine(char *out, UWORD isPrimary, UWORD modeSel, U
     if (CLEANUP_TestEntryFlagYAndBit1(entry, (LONG)slot, alignToken) != 0) {
         fieldText6 = COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT6);
     } else {
-        fieldText6 = (const char *)0;
+        fieldText6 = 0;
     }
 
-    if (fieldText6 == (const char *)0) {
+    if (fieldText6 == 0) {
         CLOCK_AlignedInsetRenderGateFlag = 0;
         return;
     }
@@ -67,7 +67,7 @@ void CLEANUP_BuildAlignedStatusLine(char *out, UWORD isPrimary, UWORD modeSel, U
     GROUP_AI_JMPTBL_STRING_AppendAtNull(out, wrappedText);
 
     fieldText7 = COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT7);
-    if (fieldText7 == (const char *)0) {
+    if (fieldText7 == 0) {
         fieldText7 = CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY;
     }
 
