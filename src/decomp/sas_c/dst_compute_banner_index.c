@@ -12,7 +12,7 @@ typedef struct DST_BannerTimeContext {
     WORD pmFlag18;
 } DST_BannerTimeContext;
 
-LONG DST_ComputeBannerIndex(void *ctx, WORD arg_2, UBYTE arg_3)
+LONG DST_ComputeBannerIndex(void *ctx, WORD lane, UBYTE slot_hint)
 {
     const LONG HOURS_PER_HALF_DAY = 12;
     const LONG PM_HOUR_OFFSET = 12;
@@ -27,7 +27,7 @@ LONG DST_ComputeBannerIndex(void *ctx, WORD arg_2, UBYTE arg_3)
     LONG nonzero;
     WORD folded;
 
-    DST_BuildBannerTimeEntry((LONG)arg_2, (LONG)arg_3, &out_word, ctx);
+    DST_BuildBannerTimeEntry(lane, slot_hint, &out_word, ctx);
 
     rem = (LONG)((WORD)(p->hourWord8) % HOURS_PER_HALF_DAY);
     if (p->pmFlag18) {
