@@ -69,7 +69,7 @@ LONG NEWGRID_SelectEntryPen(char *entry)
     }
 
     override = -1;
-    if (entryView != 0 && entryView->overrideLayoutPen42 != (UBYTE)0xFF) {
+    if (entryView && entryView->overrideLayoutPen42 != (UBYTE)0xFF) {
         override = (LONG)entryView->overrideLayoutPen42;
     }
 
