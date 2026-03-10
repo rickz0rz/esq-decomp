@@ -2,7 +2,7 @@
 __code:
 TLIBA2_ResolveEntryWindowWithDef:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              SUB.L          #$24,D0                  ;90bc 0000 0024 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
               MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
@@ -12,12 +12,16 @@ ___TLIBA2_ResolveEntryWindowWithDef__1:
               MOVE.L         $10(A7),A5               ;2a6f 0010 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.L         D0,-(A7)                 ;2f00 
+              CLR.L          -(A7)                    ;42a7 
+              CLR.L          -(A7)                    ;42a7 
+              CLR.L          -(A7)                    ;42a7 
               MOVE.L         D0,-(A7)                 ;2f00 
+              CLR.L          -(A7)                    ;42a7 
               MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          TLIBA2_ResolveEntryWindowAndSlot;6100 0000 
-              LEA            $14(A7),A7               ;4fef 0014 
+              LEA            $24(A7),A7               ;4fef 0024 
 ___TLIBA2_ResolveEntryWindowWithDef__2:
 ___TLIBA2_ResolveEntryWindowWithDef__3:
               MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
