@@ -168,11 +168,18 @@ ___GROUP_AM_JMPTBL_ESQ_InitAudio1Dm__1:
 ___GROUP_AM_JMPTBL_ESQ_InitAudio1Dm__2:
               RTS                                     ;4e75 
 GROUP_AM_JMPTBL_LIST_InitHeader:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___GROUP_AM_JMPTBL_LIST_InitHeader__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          LIST_InitHeader          ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___GROUP_AM_JMPTBL_LIST_InitHeader__2:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 GROUP_AM_JMPTBL_ESQ_SetCopperEff:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -182,11 +189,21 @@ ___GROUP_AM_JMPTBL_ESQ_SetCopperEff__1:
 ___GROUP_AM_JMPTBL_ESQ_SetCopperEff__2:
               RTS                                     ;4e75 
 GROUP_AM_JMPTBL_LOCAVAIL_LoadAva:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
 ___GROUP_AM_JMPTBL_LOCAVAIL_LoadAva__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          LOCAVAIL_LoadAvailabilityDataFil;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___GROUP_AM_JMPTBL_LOCAVAIL_LoadAva__2:
+___GROUP_AM_JMPTBL_LOCAVAIL_LoadAva__3:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
               RTS                                     ;4e75 
 GROUP_AM_JMPTBL_GCOMMAND_InitPre:
               CMP.L          __base(A4),A7            ;bfec 0000 
