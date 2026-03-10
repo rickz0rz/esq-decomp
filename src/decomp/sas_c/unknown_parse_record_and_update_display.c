@@ -28,7 +28,7 @@ LONG UNKNOWN_ParseRecordAndUpdateDisplay(const char *in)
     const UBYTE BRUSH_MAX = 6u;
     const UBYTE BRUSH_DEFAULT = 1;
     const UBYTE TOKEN_RECORD_END = 0x12;
-    const ULONG LABEL_MAX = 10u;
+    const ULONG LABEL_SCAN_LIMIT = 10u;
     const UBYTE CH_NUL = 0;
     const LONG RESULT_OK = 0;
     const LONG DISPLAY_X = 0;
@@ -54,7 +54,7 @@ LONG UNKNOWN_ParseRecordAndUpdateDisplay(const char *in)
     for (;;) {
         char c = *p++;
         local[i] = c;
-        if (c == TOKEN_RECORD_END || i >= LABEL_MAX) {
+        if (c == TOKEN_RECORD_END || i >= LABEL_SCAN_LIMIT) {
             break;
         }
         i++;
