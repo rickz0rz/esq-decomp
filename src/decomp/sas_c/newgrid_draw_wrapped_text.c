@@ -1,9 +1,9 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern const UBYTE NEWGRID_WrapWordSpacer;
-extern const UBYTE NEWGRID_WrapReturnSpacer;
-extern const UBYTE Global_STR_SINGLE_SPACE;
+extern const UBYTE NEWGRID_WrapWordSpacer[];
+extern const UBYTE NEWGRID_WrapReturnSpacer[];
+extern const UBYTE Global_STR_SINGLE_SPACE[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
@@ -31,7 +31,7 @@ char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, ch
     }
 
     word_start = next;
-    space_w = _LVOTextLength(rastport, &Global_STR_SINGLE_SPACE, 1);
+    space_w = _LVOTextLength(rastport, (const char *)Global_STR_SINGLE_SPACE, 1);
     _LVOMove(rastport, x, y);
 
     while (next != (char *)0) {
@@ -40,7 +40,7 @@ char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, ch
         LONG rem_w;
         char *scan;
 
-        next = NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(next, word_buf, 50, &NEWGRID_WrapWordSpacer);
+        next = NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(next, word_buf, 50, NEWGRID_WrapWordSpacer);
         next = NEWGRID2_JMPTBL_STR_SkipClass3Chars(next);
 
         if (word_buf[0] == 0) {
@@ -92,7 +92,7 @@ char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, ch
         }
 
         if (draw_enable != 0) {
-            _LVOText(rastport, &NEWGRID_WrapReturnSpacer, 1);
+            _LVOText(rastport, (const char *)NEWGRID_WrapReturnSpacer, 1);
         }
 
         drawn_width += space_w;
