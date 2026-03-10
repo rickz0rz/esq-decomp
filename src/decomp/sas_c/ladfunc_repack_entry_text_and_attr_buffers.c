@@ -33,7 +33,7 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *textBuf, UBYTE *attrBuf)
     LONG row;
 
     {
-        char *p = textBuf;
+        const char *p = textBuf;
         while (*p != 0) {
             ++p;
         }
