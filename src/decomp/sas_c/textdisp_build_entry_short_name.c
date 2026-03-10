@@ -19,7 +19,7 @@ extern char *STRING_AppendAtNull(char *dst, const char *src);
 void TEXTDISP_BuildEntryShortName(const char *entry, char *out)
 {
     out[0] = 0;
-    if (entry != (const char *)0) {
+    if (entry != 0) {
         const TEXTDISP_Entry *entryView;
         LONG aliasIndex;
 
