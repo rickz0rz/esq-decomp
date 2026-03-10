@@ -1,9 +1,9 @@
 typedef signed long LONG;
 
-char *GCOMMAND_FindPathSeparator(char *pathPtr)
+char *GCOMMAND_FindPathSeparator(const char *pathPtr)
 {
-    char *start = pathPtr;
-    char *p = pathPtr;
+    const char *start = pathPtr;
+    const char *p = pathPtr;
     LONG distance;
 
     while (*p != '\0') {
@@ -19,7 +19,7 @@ char *GCOMMAND_FindPathSeparator(char *pathPtr)
     while (distance != 0) {
         if (*p == ':' || *p == '/') {
             ++p;
-            return p;
+            return (char *)p;
         }
 
         if (distance != 1) {
@@ -28,5 +28,5 @@ char *GCOMMAND_FindPathSeparator(char *pathPtr)
         --distance;
     }
 
-    return p;
+    return (char *)p;
 }
