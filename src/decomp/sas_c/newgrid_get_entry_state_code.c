@@ -14,12 +14,12 @@ typedef struct NEWGRID_AuxData {
     char *titleTable[49];
 } NEWGRID_AuxData;
 
-extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG bitIndex);
+extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
 
-LONG NEWGRID_GetEntryStateCode(char *gridCtx, char *entryAuxBase, WORD rowIndex)
+LONG NEWGRID_GetEntryStateCode(const char *gridCtx, const char *entryAuxBase, WORD rowIndex)
 {
-    NEWGRID_Entry *entry;
-    NEWGRID_AuxData *aux;
+    const NEWGRID_Entry *entry;
+    const NEWGRID_AuxData *aux;
     LONG row;
 
     row = (LONG)rowIndex;
@@ -27,8 +27,8 @@ LONG NEWGRID_GetEntryStateCode(char *gridCtx, char *entryAuxBase, WORD rowIndex)
         return 1;
     }
 
-    entry = (NEWGRID_Entry *)gridCtx;
-    aux = (NEWGRID_AuxData *)entryAuxBase;
+    entry = (const NEWGRID_Entry *)gridCtx;
+    aux = (const NEWGRID_AuxData *)entryAuxBase;
 
     if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, row) + 1 != 0) {
         return 0;

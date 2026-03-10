@@ -41,7 +41,7 @@ extern LONG NEWGRID_SelectEntryPen(char *entryPtr);
 extern LONG NEWGRID_DrawGridFrame(char *ctx, LONG style, LONG pen, LONG entryPen, LONG rowHeight);
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG idx, LONG mode);
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG idx, LONG mode);
-extern LONG NEWGRID_GetEntryStateCode(char *entry, char *aux, LONG row);
+extern LONG NEWGRID_GetEntryStateCode(const char *entry, const char *aux, LONG row);
 extern LONG NEWGRID_TestEntryState(LONG baseState, LONG titleIdx, LONG wildcardIdx, LONG rowIdx);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG row);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG h, LONG pen);
@@ -106,7 +106,7 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
         aux = (const NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((mode == 2) ? wildcardIdx : titleIdx, mode);
 
         if (entry && aux) {
-            state = NEWGRID_GetEntryStateCode((char *)entry, (char *)aux, modeIdx);
+            state = NEWGRID_GetEntryStateCode((const char *)entry, (const char *)aux, modeIdx);
             nextSpan = 1;
             while ((LONG)row + (LONG)nextSpan < 3) {
                 if (!NEWGRID_TestEntryState(state, titleIdx, wildcardIdx, modeIdx + nextSpan)) break;
