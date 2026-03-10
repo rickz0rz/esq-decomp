@@ -19,19 +19,20 @@ ___CLEANUP_UpdateEntryFlagBytes__1:
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         D0,A3                    ;2640 
               MOVE.L         A3,D0                    ;200b 
-              BNE.B          ___CLEANUP_UpdateEntryFlagBytes__6;6624 
+              BNE.B          ___CLEANUP_UpdateEntryFlagBytes__6;6626 
 ___CLEANUP_UpdateEntryFlagBytes__2:
               LEA            CLOCK_STR_FALLBACK_ENTRY_FLAGS_P(A4),A2;45ec 0000 
               LEA            $19(A7),A0               ;41ef 0019 
               MOVE.L         A0,$14(A7)               ;2f48 0014 
 ___CLEANUP_UpdateEntryFlagBytes__3:
+              MOVE.B         (A2)+,D0                 ;101a 
               MOVE.L         $14(A7),A0               ;206f 0014 
-              MOVE.B         (A2)+,(A0)+              ;10da 
+              MOVE.B         D0,(A0)+                 ;10c0 
               MOVE.L         A0,$14(A7)               ;2f48 0014 
 ___CLEANUP_UpdateEntryFlagBytes__4:
               MOVE.L         $14(A7),A0               ;206f 0014 
               TST.B          $ffffffff(A0)            ;4a28 ffff 
-              BNE.B          ___CLEANUP_UpdateEntryFlagBytes__3;66ec 
+              BNE.B          ___CLEANUP_UpdateEntryFlagBytes__3;66ea 
 ___CLEANUP_UpdateEntryFlagBytes__5:
               LEA            $19(A7),A3               ;47ef 0019 
 ___CLEANUP_UpdateEntryFlagBytes__6:

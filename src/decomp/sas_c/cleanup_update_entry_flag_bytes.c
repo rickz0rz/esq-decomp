@@ -2,16 +2,14 @@ typedef unsigned char UBYTE;
 typedef unsigned short UWORD;
 typedef long LONG;
 
-enum {
-    ENTRY_MODE_FLAGS = 7,
-    ENTRY_FLAGS_HEX_PRIMARY_INDEX = 6,
-    ENTRY_FLAGS_HEX_SECONDARY_INDEX = 7,
-    CHARCLASS_HEX_MASK = 0x80,
-    INSET_NIBBLE_INVALID = 0xFF,
-    LOCAL_FALLBACK_COPY_OFFSET = 1
-};
+#define ENTRY_MODE_FLAGS 7
+#define ENTRY_FLAGS_HEX_PRIMARY_INDEX 6
+#define ENTRY_FLAGS_HEX_SECONDARY_INDEX 7
+#define CHARCLASS_HEX_MASK 0x80
+#define INSET_NIBBLE_INVALID 0xFF
+#define LOCAL_FALLBACK_COPY_OFFSET 1
 
-extern UBYTE CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY[];
+extern const char CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY[];
 extern UBYTE WDISP_CharClassTable[];
 extern UBYTE DISPTEXT_InsetNibblePrimary;
 extern UBYTE DISPTEXT_InsetNibbleSecondary;
@@ -27,10 +25,10 @@ void CLEANUP_UpdateEntryFlagBytes(void *entry, UWORD slot)
 
     flagText = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
     if (flagText == (UBYTE *)0) {
-        UBYTE *s = CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY;
+        const char *s = CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY;
         UBYTE *d = &local[LOCAL_FALLBACK_COPY_OFFSET];
         do {
-            *d = *s;
+            *d = (UBYTE)*s;
             d++;
             s++;
         } while (d[-1] != 0);
