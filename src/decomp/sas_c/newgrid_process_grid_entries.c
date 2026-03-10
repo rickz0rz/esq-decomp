@@ -38,7 +38,7 @@ extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
 extern LONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(UWORD *slot);
 extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const char *title);
 extern LONG NEWGRID_SelectEntryPen(const void *entryPtr);
-extern LONG NEWGRID_DrawGridFrame(char *ctx, LONG style, LONG pen, LONG entryPen, LONG rowHeight);
+extern void NEWGRID_DrawGridFrame(char *ctx, LONG style, LONG pen, LONG entryPen, LONG rowHeight);
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG idx, LONG mode);
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG idx, LONG mode);
 extern LONG NEWGRID_GetEntryStateCode(const void *entry, const void *aux, UWORD row);
