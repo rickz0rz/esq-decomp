@@ -1,5 +1,6 @@
 typedef unsigned char UBYTE;
 typedef long LONG;
+typedef unsigned long ULONG;
 
 enum {
     BRUSH_NULL_BYTE = 0,
@@ -20,7 +21,7 @@ extern const char BRUSH_STR_ALIAS_CODE_DT[];
 extern const char BRUSH_STR_FALLBACK_DITHER[];
 
 LONG GROUP_AA_JMPTBL_STRING_CompareN(const void *lhs, const void *rhs, LONG n);
-void GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG n);
+void GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 void *BRUSH_FindBrushByPredicate(const void *key, void *list_head_ptr);
 
 typedef struct BRUSH_Node {

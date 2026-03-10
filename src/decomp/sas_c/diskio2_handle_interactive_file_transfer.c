@@ -9,7 +9,7 @@ extern void GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(LONG mask, LONG m
 extern void GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi(void);
 extern LONG GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
 extern void DISPLIB_DisplayTextAtPosition(char *rp, LONG x, LONG y, const char *text);
-extern void GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG maxLen);
+extern void GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG maxLen);
 extern LONG GROUP_AH_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 extern LONG GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(const char *text);
 extern LONG GROUP_AG_JMPTBL_DOS_OpenFileWithMode(const char *path, LONG mode);

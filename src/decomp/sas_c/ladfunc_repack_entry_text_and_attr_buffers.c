@@ -1,5 +1,6 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
+typedef unsigned long ULONG;
 
 #define MEMF_PUBLIC 0x00000001L
 #define MEMF_CLEAR  0x00010000L
@@ -9,7 +10,7 @@ extern LONG ED_TextLimit;
 extern LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern char *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
-extern void GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG n);
+extern void GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 extern void GROUP_AW_JMPTBL_MEM_Move(void *dst, const void *src, LONG n);
 
 extern const char Global_STR_LADFUNC_C_24[];

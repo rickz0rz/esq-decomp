@@ -1,5 +1,6 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
+typedef unsigned long ULONG;
 
 extern UBYTE GCOMMAND_PpvParseScratchSeedLong[];
 extern UBYTE WDISP_CharClassTable[];
@@ -21,7 +22,7 @@ extern char *GCOMMAND_PPVListingsTemplatePtr;
 extern char *GCOMMAND_PPVPeriodTemplatePtr;
 
 extern void FLIB2_LoadDigitalPpvDefaults(void);
-extern void GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG n);
+extern void GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *text);
 extern LONG LADFUNC_ParseHexDigit(LONG c);
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *text, LONG ch);
