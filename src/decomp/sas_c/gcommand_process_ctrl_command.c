@@ -24,6 +24,7 @@ LONG GCOMMAND_ProcessCtrlCommand(const GCOMMAND_CtrlPacket *cmdPtr)
     const UBYTE COMMAND_PROBE_DRIVE_B = 16;
     const LONG STATE_RING_ENTRY_SIZE = 5;
     const LONG STATE_RING_ENTRY_COUNT = 20;
+    const LONG STATE_RING_INDEX_RESET = 0;
     const LONG RESULT_DONE = 0;
     const WORD DRIVE_PROBE_REQUESTED = 1;
     const LONG EXEC_COMPARE_REJECT = -1;
@@ -42,7 +43,7 @@ LONG GCOMMAND_ProcessCtrlCommand(const GCOMMAND_CtrlPacket *cmdPtr)
         if (rc > 0 && rc != EXEC_COMPARE_REJECT) {
             ED_StateRingWriteIndex += 1;
             if (ED_StateRingWriteIndex >= STATE_RING_ENTRY_COUNT) {
-                ED_StateRingWriteIndex = 0;
+                ED_StateRingWriteIndex = STATE_RING_INDEX_RESET;
             }
         }
     } else if (type == COMMAND_PROBE_DRIVE_B || type == COMMAND_PROBE_DRIVE_A) {
