@@ -7,10 +7,10 @@ typedef struct P_TYPE_Entry {
     UBYTE *payload;
 } P_TYPE_Entry;
 
-extern UBYTE Global_STR_P_TYPE_C_4;
-extern UBYTE Global_STR_P_TYPE_C_5;
+extern const UBYTE Global_STR_P_TYPE_C_4;
+extern const UBYTE Global_STR_P_TYPE_C_5;
 
-extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(UBYTE *tagName, LONG line, void *ptr, LONG bytes);
+extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const void *tagName, LONG line, void *ptr, LONG bytes);
 
 void P_TYPE_FreeEntry(UBYTE *entry)
 {
