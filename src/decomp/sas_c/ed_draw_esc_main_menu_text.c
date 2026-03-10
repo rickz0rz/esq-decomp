@@ -11,8 +11,8 @@ extern const char Global_STR_SPECIAL_FUNCTIONS[];
 extern const char Global_STR_VERSIONS_SCREEN[];
 
 extern void ED_DrawMenuSelectionHighlight(LONG menuIndex);
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 void ED_DrawEscMainMenuText(void)
