@@ -16,10 +16,10 @@ enum {
 
 static const ULONG MEMF_PUBLIC_CLEAR = 0x10001UL;
 
-extern const UBYTE Global_STR_BRUSH_C_19[];
+extern const char Global_STR_BRUSH_C_19[];
 extern void *BRUSH_LastAllocatedNode;
 
-void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
+void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG line, LONG bytes, ULONG flags);
 
 typedef struct BRUSH_Node {
     UBYTE name[BRUSH_NODE_TYPE_OFFSET];

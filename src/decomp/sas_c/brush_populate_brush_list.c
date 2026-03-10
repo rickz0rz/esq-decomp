@@ -11,13 +11,13 @@ enum {
 };
 
 extern void *AbsExecBase;
-extern const UBYTE Global_STR_BRUSH_C_8[];
+extern const char Global_STR_BRUSH_C_8[];
 extern LONG BRUSH_LoadInProgressFlag;
 extern void *PARSEINI_ParsedDescriptorListHead;
 
 void _LVOForbid(void);
 void _LVOPermit(void);
-void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
+void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, LONG bytes);
 void *BRUSH_LoadBrushAsset(void *descriptor);
 void BRUSH_NormalizeBrushNames(void **head_ptr);
 

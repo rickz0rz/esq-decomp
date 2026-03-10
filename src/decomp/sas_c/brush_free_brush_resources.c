@@ -7,9 +7,9 @@ enum {
     BRUSH_RESOURCE_NODE_SIZE = 238
 };
 
-extern const UBYTE Global_STR_BRUSH_C_9[];
+extern const char Global_STR_BRUSH_C_9[];
 
-void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
+void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, LONG bytes);
 
 void BRUSH_FreeBrushResources(void **headPtr)
 {
