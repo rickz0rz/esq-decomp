@@ -16,23 +16,23 @@ extern const char DISPTEXT_STR_SINGLE_SPACE_PREFIX_2[];
 extern const char DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX[];
 
 extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG count);
-extern char *DISPTEXT_BuildLineWithWidth(char *rp, char *src, char *scratch, LONG widthPx);
+extern char *DISPTEXT_BuildLineWithWidth(char *rp, const char *src, char *scratch, LONG widthPx);
 extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern void DISPLIB_CommitCurrentLinePenAndAdvance(LONG pen);
 extern LONG DISPTEXT_AppendToBuffer(char *src);
 extern void DISPTEXT_BuildLinePointerTable(LONG lockValue);
 
-LONG DISPTEXT_LayoutAndAppendToBuffer(char *rp, char *src)
+LONG DISPTEXT_LayoutAndAppendToBuffer(char *rp, const char *src)
 {
     LONG availableWidth;
     char lineScratch[268];
 
     if (DISPTEXT_LineTableLockFlag != 0) {
-        return (src == (char *)0) ? -1 : 0;
+        return (src == 0) ? -1 : 0;
     }
 
     if ((UWORD)DISPTEXT_CurrentLineIndex >= (UWORD)DISPTEXT_TargetLineIndex) {
-        return (src == (char *)0) ? -1 : 0;
+        return (src == 0) ? -1 : 0;
     }
 
     if (DISPTEXT_LineLengthTable[(UWORD)DISPTEXT_CurrentLineIndex] != 0) {
@@ -78,7 +78,7 @@ LONG DISPTEXT_LayoutAndAppendToBuffer(char *rp, char *src)
     }
 
     for (;;) {
-        if (src == (char *)0 || *src == 0) {
+        if (src == 0 || *src == 0) {
             break;
         }
         if ((UWORD)DISPTEXT_CurrentLineIndex >= (UWORD)DISPTEXT_TargetLineIndex) {
@@ -103,7 +103,7 @@ LONG DISPTEXT_LayoutAndAppendToBuffer(char *rp, char *src)
             availableWidth -= DISPTEXT_ControlMarkerWidthPx;
         }
 
-        if (src != (char *)0) {
+        if (src != 0) {
             LONG idx = (LONG)(UWORD)DISPTEXT_CurrentLineIndex;
             DISPLIB_CommitCurrentLinePenAndAdvance(DISPTEXT_LinePenTable[idx]);
         }
@@ -114,5 +114,5 @@ LONG DISPTEXT_LayoutAndAppendToBuffer(char *rp, char *src)
         DISPTEXT_BuildLinePointerTable(0);
     }
 
-    return (src == (char *)0) ? -1 : 0;
+    return (src == 0) ? -1 : 0;
 }

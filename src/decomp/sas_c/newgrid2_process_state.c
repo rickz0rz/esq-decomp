@@ -37,7 +37,7 @@ extern LONG NEWGRID_DrawGridEntry(
 );
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG index);
 extern LONG NEWGRID_AppendShowtimesForRow(char *gridCtx, char *entryCtx, char *scratch, LONG keyValue);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, char *scratch);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, const char *scratch);
 extern LONG NEWGRID_DrawGridFrameVariant4(char *gridCtx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
 
