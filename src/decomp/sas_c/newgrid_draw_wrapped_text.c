@@ -1,13 +1,13 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern const UBYTE NEWGRID_WrapWordSpacer[];
+extern const char NEWGRID_WrapWordSpacer[];
 extern const UBYTE NEWGRID_WrapReturnSpacer[];
 extern const UBYTE Global_STR_SINGLE_SPACE[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
-extern char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst, LONG limit, const UBYTE *delims);
+extern char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst, LONG limit, const char *delims);
 extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
 extern void _LVOMove(char *rastport, LONG x, LONG y);
 extern void _LVOText(char *rastport, const char *text, LONG len);

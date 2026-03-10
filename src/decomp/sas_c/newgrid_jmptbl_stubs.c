@@ -9,7 +9,7 @@ extern void DISPTEXT_FreeBuffers(void);
 extern void *MEMORY_AllocateMemory(ULONG byteSize, ULONG attributes);
 extern void DISPTEXT_InitBuffers(void);
 extern LONG DATETIME_NormalizeStructToSeconds(void *dt);
-extern char *STR_CopyUntilAnyDelimN(char *src, char *dst, LONG maxLen, char *delims);
+extern char *STR_CopyUntilAnyDelimN(const char *src, char *dst, LONG maxLen, const char *delims);
 extern void WDISP_UpdateSelectionPreviewPanel(void);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 
@@ -21,6 +21,6 @@ void NEWGRID_JMPTBL_DISPTEXT_FreeBuffers(void){DISPTEXT_FreeBuffers();}
 void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *tagName, LONG line, LONG size, LONG flags){return MEMORY_AllocateMemory(size, flags);}
 void NEWGRID_JMPTBL_DISPTEXT_InitBuffers(void){DISPTEXT_InitBuffers();}
 LONG NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(void *dt){return DATETIME_NormalizeStructToSeconds(dt);}
-char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst, LONG maxLen, const char *delims){return STR_CopyUntilAnyDelimN(src, dst, maxLen, (char *)delims);}
+char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst, LONG maxLen, const char *delims){return STR_CopyUntilAnyDelimN(src, dst, maxLen, delims);}
 void NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel(void){WDISP_UpdateSelectionPreviewPanel();}
 LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b){return MATH_Mulu32(a, b);}
