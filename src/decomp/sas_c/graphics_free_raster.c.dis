@@ -16,6 +16,7 @@ ___GRAPHICS_FreeRaster__1:
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOFreeRaster           ;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
+              MOVEQ.L        #$0,D0                   ;7000 
 ___GRAPHICS_FreeRaster__2:
 ___GRAPHICS_FreeRaster__3:
               MOVEM.L        (A7)+,D6/D7/A5           ;4cdf 20c0 

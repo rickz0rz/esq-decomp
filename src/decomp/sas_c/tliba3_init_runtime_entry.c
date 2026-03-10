@@ -38,7 +38,7 @@ extern ULONG WDISP_DisplayContextPlanePointer0[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern LONG MATH_Mulu32(LONG left, LONG right);
-extern LONG _LVOInitBitMap(void *gfxBase, void *bitMap, LONG depth, LONG width, LONG height);
+extern void _LVOInitBitMap(void *gfxBase, void *bitMap, LONG depth, LONG width, LONG height);
 
 void TLIBA3_InitRuntimeEntry(
     LONG idx,
