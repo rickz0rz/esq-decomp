@@ -10,7 +10,7 @@ extern WORD DISPTEXT_ControlMarkersEnabledFlag;
 
 extern const char DISPTEXT_STR_SINGLE_SPACE_MEASURE[];
 extern const char DISPTEXT_STR_SINGLE_SPACE_APPEND[];
-extern char DISPTEXT_STR_SINGLE_SPACE_DELIM[];
+extern const char DISPTEXT_STR_SINGLE_SPACE_DELIM[];
 
 extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG count);
 extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);

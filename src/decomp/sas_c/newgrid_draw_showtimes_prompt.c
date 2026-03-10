@@ -26,7 +26,7 @@ extern const char *SCRIPT_PtrSportsOnPrefix;
 extern const char *SCRIPT_PtrSummaryOfPrefix;
 extern const char *SCRIPT_PtrChannelSuffix;
 extern WORD Global_WORD_SELECT_CODE_IS_RAVESC;
-extern char NEWGRID_ShowtimeRangeDash[];
+extern const char NEWGRID_ShowtimeRangeDash[];
 extern WORD NEWGRID_RowHeightPx;
 extern WORD NEWGRID_ColumnStartXPx;
 extern WORD NEWGRID_ColumnWidthPx;

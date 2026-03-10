@@ -18,8 +18,8 @@ enum {
 extern LONG GCOMMAND_PpvSelectionWindowMinutes;
 extern LONG GCOMMAND_PpvSelectionToleranceMinutes;
 extern LONG CONFIG_TimeWindowMinutes;
-extern char COI_FMT_WRAP_CHAR_STRING_CHAR[];
-extern char COI_STR_SINGLE_SPACE[];
+extern const char COI_FMT_WRAP_CHAR_STRING_CHAR[];
+extern const char COI_STR_SINGLE_SPACE[];
 
 LONG COI_TestEntryWithinTimeWindow(void *entry, void *ctx, LONG slot, LONG window, LONG tolerance);
 LONG COI_GetAnimFieldPointerByMode(void *entry, LONG slot, LONG mode);
