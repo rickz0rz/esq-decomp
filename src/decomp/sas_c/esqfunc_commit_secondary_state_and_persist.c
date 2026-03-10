@@ -7,7 +7,7 @@ extern WORD ESQPARS2_ReadModeFlags;
 extern WORD ESQDISP_PendingGridReinitFlag;
 extern UBYTE LOCAVAIL_PrimaryFilterState;
 extern UBYTE LOCAVAIL_SecondaryFilterState;
-extern UBYTE DST_BannerWindowPrimary;
+extern void *DST_BannerWindowPrimary;
 
 extern void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void);
 extern void ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup(void);
@@ -45,7 +45,7 @@ void ESQFUNC_CommitSecondaryStateAndPersist(void)
         &LOCAVAIL_PrimaryFilterState,
         &LOCAVAIL_SecondaryFilterState);
 
-    DATETIME_SavePairToFile(&DST_BannerWindowPrimary);
+    DATETIME_SavePairToFile(DST_BannerWindowPrimary);
     ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList();
     ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile();
     ESQFUNC_UpdateDiskWarningAndRefreshTick();

@@ -1,7 +1,7 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern UBYTE DST_BannerWindowPrimary[];
+extern void *DST_BannerWindowPrimary;
 extern UBYTE LOCAVAIL_PrimaryFilterState[];
 extern UBYTE LOCAVAIL_SecondaryFilterState[];
 

@@ -22,12 +22,12 @@ ___ESQFUNC_CommitSecondaryStateAndP__1:
               PEA            LOCAVAIL_SecondaryFilterState(A4);486c 0000 
               PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 
               BSR.W          ESQPARS_JMPTBL_LOCAVAIL_SaveAvai;6100 0000 
-              PEA            DST_BannerWindowPrimary(A4);486c 0000 
+              MOVE.L         DST_BannerWindowPrimary(A4),(A7);2eac 0000 
               BSR.W          DATETIME_SavePairToFile  ;6100 0000 
               BSR.W          ESQFUNC_JMPTBL_P_TYPE_PromoteSec;6100 0000 
               BSR.W          ESQPARS_JMPTBL_P_TYPE_WritePromo;6100 0000 
               BSR.W          ESQFUNC_UpdateDiskWarningAndRefr;6100 0000 
-              LEA            $c(A7),A7                ;4fef 000c 
+              ADDQ.W         #$8,A7                   ;504f 
               MOVE.W         D5,ESQPARS2_ReadModeFlags(A4);3945 0000 
 ___ESQFUNC_CommitSecondaryStateAndP__2:
               MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 

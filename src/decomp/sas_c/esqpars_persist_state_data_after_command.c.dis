@@ -8,7 +8,7 @@ ESQPARS_PersistStateDataAfterCom:
 ___ESQPARS_PersistStateDataAfterCom__1:
               BSR.W          ESQPARS_JMPTBL_DISKIO2_FlushData;6100 0000 
               BSR.W          LADFUNC_SaveTextAdsToFile;6100 0000 
-              PEA            DST_BannerWindowPrimary(A4);486c 0000 
+              MOVE.L         DST_BannerWindowPrimary(A4),-(A7);2f2c 0000 
               BSR.W          ESQPARS_JMPTBL_DATETIME_SavePair;6100 0000 
               PEA            LOCAVAIL_SecondaryFilterState(A4);486c 0000 
               PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 

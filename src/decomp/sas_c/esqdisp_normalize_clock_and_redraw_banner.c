@@ -6,12 +6,12 @@ typedef struct ESQDISP_RastPort {
 } ESQDISP_RastPort;
 
 extern UBYTE CLOCK_DaySlotIndex;
-extern UBYTE DST_BannerWindowPrimary;
+extern void *DST_BannerWindowPrimary;
 extern ESQDISP_RastPort *Global_REF_RASTPORT_1;
 extern UBYTE Global_REF_696_400_BITMAP;
 
 extern void ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData(UBYTE *slot_index, void *clock_data);
-extern long DST_UpdateBannerQueue(UBYTE *banner_window);
+extern long DST_UpdateBannerQueue(void *banner_window);
 extern void DST_RefreshBannerBuffer(void);
 extern void ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner(void);
 extern void ESQDISP_DrawStatusBanner_Impl(short highlight_flag);
