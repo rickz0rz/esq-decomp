@@ -4,7 +4,7 @@ typedef unsigned char UBYTE;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern const UBYTE WDISP_CharClassTable[];
 
-extern LONG _LVOTextLength(char *rastport, char *text, LONG len);
+extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
 
 LONG ESQFUNC_TrimTextToPixelWidthWordBoundary(char *rastport, LONG max_width, char *text)
 {
