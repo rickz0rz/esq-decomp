@@ -24,8 +24,8 @@ LONG TLIBA2_ParseEntryTimeWindow(const void *entryContext, LONG entryIndex, LONG
     const LONG RESULT_FAIL = 0;
     const TLIBA2_EntryAux *entryAux;
     const char *entryText;
-    char *openParen;
-    char *colon;
+    const char *openParen;
+    const char *colon;
     char *closeParen;
     char *greaterThan;
     LONG ok;
