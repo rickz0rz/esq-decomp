@@ -11,11 +11,11 @@ typedef struct NEWGRID_Context {
 extern LONG NEWGRID_GridEditorWorkflowState;
 
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
-extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, char *text);
+extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
 extern LONG NEWGRID_DrawGridFrameAndRows(char *gridCtx, LONG rowPen);
 
-LONG NEWGRID_HandleGridEditorState(char *gridCtx, LONG layoutPen, LONG rowPen, char *sourceText)
+LONG NEWGRID_HandleGridEditorState(char *gridCtx, LONG layoutPen, LONG rowPen, const char *sourceText)
 {
     NEWGRID_Context *ctxView;
 

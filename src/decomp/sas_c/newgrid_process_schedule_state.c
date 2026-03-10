@@ -26,7 +26,7 @@ extern LONG GCOMMAND_MplexEditorLayoutPen;
 extern UWORD CLOCK_DaySlotIndex;
 extern const NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
-extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG a, LONG b, char *sourceText);
+extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG a, LONG b, const char *sourceText);
 extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern LONG NEWGRID_UpdateGridState(char *ctx, LONG index, LONG row);
 extern LONG NEWGRID_HandleDetailGridState(char *ctx, LONG index, LONG row);

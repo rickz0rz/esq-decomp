@@ -29,7 +29,7 @@ extern LONG GCOMMAND_PpvEditorLayoutPen;
 
 typedef struct NEWGRID_Entry NEWGRID_Entry;
 
-extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG a, LONG b, char *sourceText);
+extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG a, LONG b, const char *sourceText);
 extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern LONG NEWGRID_UpdateGridState(char *ctx, LONG index, LONG row);
 extern LONG NEWGRID_HandleShowtimesState(char *ctx, char *selCtxPtr);
