@@ -10,7 +10,7 @@ extern LONG TLIBA_FindFirstWildcardMatchIndex(const char *pattern);
 extern LONG MATH_DivS32(LONG num, LONG den);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 
-LONG TLIBA2_ResolveEntryWindowAndSlotCount(void *entryContext, void *entryState, LONG entryIndex, LONG *outRange, LONG flags, LONG *outSlotCount, LONG *outStart, LONG *outEnd, LONG wildcardMode)
+LONG TLIBA2_ResolveEntryWindowAndSlotCount(const void *entryContext, void *entryState, LONG entryIndex, LONG *outRange, LONG flags, LONG *outSlotCount, LONG *outStart, LONG *outEnd, LONG wildcardMode)
 {
     const char *title;
     char *pOpen;
@@ -41,7 +41,7 @@ LONG TLIBA2_ResolveEntryWindowAndSlotCount(void *entryContext, void *entryState,
 
     count = 0;
     for (i = entryIndex; i < 49; ++i) {
-        if (TLIBA2_JMPTBL_ESQ_TestBit1Based((char *)entryContext + 28, i) != 0) {
+        if (TLIBA2_JMPTBL_ESQ_TestBit1Based((UBYTE *)((const char *)entryContext + 28), i) != 0) {
             ++count;
         }
     }

@@ -1,7 +1,7 @@
 typedef signed long LONG;
 
 extern LONG TLIBA2_ResolveEntryWindowAndSlotCount(
-    void *entryTable,
+    const void *entryTable,
     void *entryState,
     LONG entryIndex,
     LONG *outRange,
@@ -11,7 +11,7 @@ extern LONG TLIBA2_ResolveEntryWindowAndSlotCount(
     LONG *outEnd,
     LONG wildcardMode);
 
-LONG TLIBA2_ResolveEntryWindowWithDefaultRange(void *entryTable, void *entryState, LONG entryIndex)
+LONG TLIBA2_ResolveEntryWindowWithDefaultRange(const void *entryTable, void *entryState, LONG entryIndex)
 {
     return TLIBA2_ResolveEntryWindowAndSlotCount(
         entryTable,

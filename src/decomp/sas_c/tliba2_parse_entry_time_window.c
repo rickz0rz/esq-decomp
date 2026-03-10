@@ -9,7 +9,7 @@ typedef struct TLIBA2_EntryAux {
 extern char *STR_FindCharPtr(const char *s, LONG ch);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 
-LONG TLIBA2_ParseEntryTimeWindow(void *entryContext, LONG entryIndex, LONG *outPair)
+LONG TLIBA2_ParseEntryTimeWindow(const void *entryContext, LONG entryIndex, LONG *outPair)
 {
     const LONG PTR_NULL = 0;
     const LONG ASCII_LPAREN = 40;
@@ -31,7 +31,7 @@ LONG TLIBA2_ParseEntryTimeWindow(void *entryContext, LONG entryIndex, LONG *outP
     LONG ok;
 
     ok = RESULT_FAIL;
-    if (entryContext == (void *)PTR_NULL) {
+    if (entryContext == (const void *)PTR_NULL) {
         entryText = (const char *)PTR_NULL;
     } else {
         entryAux = (const TLIBA2_EntryAux *)entryContext;
