@@ -10,11 +10,20 @@ ___ESQSHARED_JMPTBL_DST_BuildBanner__2:
 __const:
 __strings:
 ESQSHARED_JMPTBL_ESQ_ReverseBits:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
 ___ESQSHARED_JMPTBL_ESQ_ReverseBits__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQ_ReverseBitsIn6Bytes  ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___ESQSHARED_JMPTBL_ESQ_ReverseBits__2:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
               RTS                                     ;4e75 
 ESQSHARED_JMPTBL_ESQ_SetBit1Base:
               MOVE.L         A7,D0                    ;200f 
