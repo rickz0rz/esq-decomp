@@ -50,7 +50,7 @@ extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG h, LONG pen);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths();
 extern LONG NEWGRID_DrawEntryRowOrPlaceholder(char *scratch, char *entry, LONG aux, LONG row, LONG span, LONG state);
 extern LONG NEWGRID_DrawSelectionMarkers(char *ctx, LONG row, LONG span, LONG pen, LONG leftState, LONG rightState);
-extern LONG NEWGRID_DrawGridCell(char *scratch, char *entry, LONG style);
+extern void NEWGRID_DrawGridCell(char *scratch, char *entry, LONG style);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
 
 LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
