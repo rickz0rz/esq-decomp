@@ -39,7 +39,7 @@ extern const char Global_STR_SHOWING_AT_AND_SINGLE_SPACE[];
 extern const char NEWGRID_ShowtimeGenreSpacer[];
 
 extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG len);
-extern LONG NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(char *coi, LONG row, LONG field);
+extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const char *coi, LONG row, LONG field);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, char *entries);
 extern void NEWGRID_ResetShowtimeBuckets(void);
 extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **coiPtr, LONG row, LONG col);
@@ -86,10 +86,10 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
     row = ctx->focusRow;
     if (row > 48) row = (UWORD)(row - 48);
 
-    baseTitle = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 1);
-    baseF1 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 2);
-    baseF2 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 6);
-    baseF3 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 7);
+    baseTitle = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 1);
+    baseF1 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 2);
+    baseF2 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 6);
+    baseF3 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 7);
     TEXTDISP_FormatEntryTimeForIndex(baseTime, row, ctx->entries);
 
     if (!baseTitle || !baseTitle[0]) return;
@@ -145,10 +145,10 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
                     continue;
                 }
 
-                t = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entry, idx, 1);
-                f1 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entry, idx, 2);
-                f2 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entry, idx, 6);
-                f3 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((char *)entry, idx, 7);
+                t = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entry, idx, 1);
+                f1 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entry, idx, 2);
+                f2 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entry, idx, 6);
+                f3 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entry, idx, 7);
 
                 if (!str_eq_nullable(baseTitle, t) ||
                     !str_eq_nullable(baseF1, f1) ||
