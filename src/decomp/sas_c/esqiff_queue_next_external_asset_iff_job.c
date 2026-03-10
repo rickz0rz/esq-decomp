@@ -22,18 +22,18 @@ extern WORD TEXTDISP_CurrentMatchIndex;
 extern LONG Global_REF_LONG_DF0_LOGO_LST_DATA;
 extern LONG Global_REF_LONG_GFX_G_ADS_DATA;
 
-extern BYTE ESQIFF_PATH_DF0_COLON[];
-extern BYTE ESQIFF_PATH_RAM_COLON_LOGOS_SLASH[];
+extern const char ESQIFF_PATH_DF0_COLON[];
+extern const char ESQIFF_PATH_RAM_COLON_LOGOS_SLASH[];
 
 extern void _LVOForbid(void);
 extern void _LVOPermit(void);
 
 extern void ESQDISP_ProcessGridMessagesIfIdle(void);
 extern LONG ESQIFF_ReadNextExternalAssetPathEntry(BYTE *out);
-extern BYTE *GCOMMAND_FindPathSeparator(BYTE *path);
-extern WORD ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(BYTE *path);
-extern LONG ESQIFF_JMPTBL_STRING_CompareNoCaseN(BYTE *lhs, BYTE *rhs, LONG n);
-extern void *ESQIFF_JMPTBL_BRUSH_AllocBrushNode(BYTE *label, LONG flags);
+extern char *GCOMMAND_FindPathSeparator(char *path);
+extern WORD ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(char *path);
+extern LONG ESQIFF_JMPTBL_STRING_CompareNoCaseN(const char *lhs, const char *rhs, LONG n);
+extern void *ESQIFF_JMPTBL_BRUSH_AllocBrushNode(const char *label, LONG flags);
 extern void ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(void);
 
 WORD ESQIFF_QueueNextExternalAssetIffJob(void)
