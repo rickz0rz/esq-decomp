@@ -7,8 +7,8 @@ extern LONG ED_EditCursorOffset;
 
 extern LONG ESQIFF_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern void ED_DrawCursorChar(void);
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
 
 void ED_RedrawRow(LONG rowIndex)
 {

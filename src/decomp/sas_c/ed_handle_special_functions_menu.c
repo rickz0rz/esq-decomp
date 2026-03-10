@@ -21,8 +21,8 @@ extern void ED_DrawDiagnosticRegisterValues(void);
 extern void ED_DrawESCMenuBottomHelp(void);
 extern void ED_DrawSpecialFunctionsMenu(void);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
 
 static void ED_DrawSpecialMenuSelection(void)
 {

@@ -15,9 +15,9 @@ extern WORD Global_UIBusyFlag;
 extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 
 extern void ED2_HandleMenuActions(void);
 extern void ED1_HandleEscMenuInput(void);

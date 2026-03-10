@@ -11,8 +11,8 @@ extern UBYTE ED_EditBufferLive[];
 
 extern LONG GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(LONG value);
 extern LONG ESQIFF_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
 extern void ED_DrawCursorChar(void);
 
 void ED_RedrawAllRows(void)
