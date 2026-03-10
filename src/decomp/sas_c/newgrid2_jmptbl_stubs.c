@@ -35,7 +35,7 @@ extern void BEVEL_DrawBeveledFrame(char *rastPort, LONG leftX, LONG topY, LONG r
 extern LONG DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *title, LONG index);
 extern LONG ESQ_TestBit1Based(const UBYTE *base, ULONG bitIndex);
 extern LONG DISPTEXT_MeasureCurrentLineLength(char *rp);
-extern void DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
+extern LONG DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
 extern LONG DISPTEXT_HasMultipleLines(void);
 extern void BEVEL_DrawHorizontalBevel(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY);
 extern LONG MATH_DivS32(LONG a, LONG b);
@@ -84,7 +84,7 @@ void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(char *rastPort, LONG leftX, LONG top
 LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *title, LONG index){return DISPLIB_FindPreviousValidEntryIndex(entry, title, index);}
 LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *base, ULONG bitIndex){return ESQ_TestBit1Based(base, bitIndex);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength(char *rp){return DISPTEXT_MeasureCurrentLineLength(rp);}
-void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen){DISPTEXT_SetLayoutParams(width, rowHeight, pen);}
+LONG NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen){return DISPTEXT_SetLayoutParams(width, rowHeight, pen);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(void){return DISPTEXT_HasMultipleLines();}
 void NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY){BEVEL_DrawHorizontalBevel(rastPort, leftX, topY, rightX, bottomY);}
 LONG NEWGRID2_JMPTBL_MATH_DivS32(LONG a, LONG b){return MATH_DivS32(a, b);}
