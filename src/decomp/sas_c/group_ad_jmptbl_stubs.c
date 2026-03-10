@@ -7,7 +7,7 @@ extern void DATETIME_NormalizeMonthRange(void);
 extern LONG DST_ComputeBannerIndex(void *ctx, WORD arg2, UBYTE arg3);
 extern void ESQFUNC_SelectAndApplyBrushForCurrentEntry(void);
 extern void ESQIFF_RunCopperDropTransition(void);
-extern void GRAPHICS_BltBitMapRastPort(void);
+extern LONG GRAPHICS_BltBitMapRastPort(void *bitMap, LONG sx, LONG sy, char *rastPort, LONG dx, LONG dy, LONG width, LONG height, LONG minterm, LONG mask);
 extern void SCRIPT_UpdateSerialShadowFromCtrlByte(UBYTE ctrlByte);
 extern void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix);
 extern void TEXTDISP_BuildEntryShortName(char *entry, char *out);
@@ -24,7 +24,7 @@ void GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange(void){DATETIME_NormalizeMonthR
 LONG GROUP_AD_JMPTBL_DST_ComputeBannerIndex(void *ctx, WORD arg2, UBYTE arg3){return DST_ComputeBannerIndex(ctx, arg2, arg3);}
 void GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry(void){ESQFUNC_SelectAndApplyBrushForCurrentEntry();}
 void GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition(void){ESQIFF_RunCopperDropTransition();}
-void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void){GRAPHICS_BltBitMapRastPort();}
+LONG GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void *bitMap, LONG sx, LONG sy, char *rastPort, LONG dx, LONG dy, LONG width, LONG height, LONG minterm, LONG mask){return GRAPHICS_BltBitMapRastPort(bitMap, sx, sy, rastPort, dx, dy, width, height, minterm, mask);}
 void GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(UBYTE ctrlByte){SCRIPT_UpdateSerialShadowFromCtrlByte(ctrlByte);}
 void GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel(WORD includeOnPrefix){TEXTDISP_BuildChannelLabel(includeOnPrefix);}
 void GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName(char *entry, char *out){TEXTDISP_BuildEntryShortName(entry, out);}
