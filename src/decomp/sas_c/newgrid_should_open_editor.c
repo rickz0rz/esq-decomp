@@ -14,8 +14,8 @@ extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 LONG NEWGRID_ShouldOpenEditor(const char *entry)
 {
     const NEWGRID_Entry *entryView;
-    char *primaryScan;
-    char *secondaryScan;
+    const char *primaryScan;
+    const char *secondaryScan;
 
     if (entry == (char *)0) {
         return 0;
