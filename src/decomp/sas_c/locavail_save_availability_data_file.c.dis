@@ -10,18 +10,12 @@ LOCAVAIL_SaveAvailabilityDataFil:
 ___LOCAVAIL_SaveAvailabilityDataFil__1:
               MOVE.L         $c8(A7),A3               ;266f 00c8 
               MOVE.L         $c4(A7),A5               ;2a6f 00c4 
-              MOVE.B         LOCAVAIL_TAG_UVGTI(A4),D0;102c 0000 
-              MOVE.B         D0,$b4(A7)               ;1f40 00b4 
-              MOVE.B         LOCAVAIL_TAG_UVGTI+$1(A4),D0;102c 0001 
-              MOVE.B         D0,$b5(A7)               ;1f40 00b5 
-              MOVE.B         LOCAVAIL_TAG_UVGTI+$2(A4),D0;102c 0002 
-              MOVE.B         D0,$b6(A7)               ;1f40 00b6 
-              MOVE.B         LOCAVAIL_TAG_UVGTI+$3(A4),D0;102c 0003 
-              MOVE.B         D0,$b7(A7)               ;1f40 00b7 
-              MOVE.B         LOCAVAIL_TAG_UVGTI+$4(A4),D0;102c 0004 
-              MOVE.B         D0,$b8(A7)               ;1f40 00b8 
-              MOVE.B         LOCAVAIL_TAG_UVGTI+$5(A4),D0;102c 0005 
-              MOVE.B         D0,$b9(A7)               ;1f40 00b9 
+              MOVE.B         LOCAVAIL_TAG_UVGTI(A4),$b4(A7);1f6c 0000 00b4 
+              MOVE.B         LOCAVAIL_TAG_UVGTI+$1(A4),$b5(A7);1f6c 0001 00b5 
+              MOVE.B         LOCAVAIL_TAG_UVGTI+$2(A4),$b6(A7);1f6c 0002 00b6 
+              MOVE.B         LOCAVAIL_TAG_UVGTI+$3(A4),$b7(A7);1f6c 0003 00b7 
+              MOVE.B         LOCAVAIL_TAG_UVGTI+$4(A4),$b8(A7);1f6c 0004 00b8 
+              MOVE.B         LOCAVAIL_TAG_UVGTI+$5(A4),$b9(A7);1f6c 0005 00b9 
               MOVEQ.L        #$1,D6                   ;7c01 
               MOVE.L         MODE_NEWFILE(A4),-(A7)   ;2f2c 0000 
               PEA            LOCAVAIL_PATH_DF0_COLON_LOCAVAIL(A4);486c 0000 

@@ -36,7 +36,7 @@ extern UBYTE TEXTDISP_SecondaryGroupCode;
 extern const char Global_STR_LOCAVAIL_C_7[];
 extern const char Global_STR_LOCAVAIL_C_8[];
 extern const char LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load[];
-extern UBYTE LOCAVAIL_STR_LA_VER[];
+extern const char LOCAVAIL_STR_LA_VER[];
 
 extern LONG GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
 extern char *GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(void);
@@ -92,7 +92,7 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
 
     while (success != 0 &&
            section != (char *)0 &&
-           GROUP_AY_JMPTBL_STRING_CompareNoCaseN(section, (const char *)LOCAVAIL_STR_LA_VER, 6) == 0) {
+           GROUP_AY_JMPTBL_STRING_CompareNoCaseN(section, LOCAVAIL_STR_LA_VER, 6) == 0) {
         LONG nodeCount;
         LONG nodeIndex;
 

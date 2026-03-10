@@ -24,7 +24,7 @@ typedef struct LOCAVAIL_FilterState {
 } LOCAVAIL_FilterState;
 
 extern LONG MODE_NEWFILE;
-extern UBYTE LOCAVAIL_TAG_UVGTI[];
+extern const char LOCAVAIL_TAG_UVGTI[];
 extern const char LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Save[];
 extern const char LOCAVAIL_STR_LA_VER_1_COLON_CURDAY[];
 extern const char LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY[];

@@ -7,7 +7,7 @@ typedef unsigned short UWORD;
 #define MEMF_CLEAR  0x00010000L
 
 extern UBYTE WDISP_CharClassTable[];
-extern UBYTE LOCAVAIL_TAG_FV[];
+extern const char LOCAVAIL_TAG_FV[];
 extern const char Global_STR_LOCAVAIL_C_6[];
 
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
