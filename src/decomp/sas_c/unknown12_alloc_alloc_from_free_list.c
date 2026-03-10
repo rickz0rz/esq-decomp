@@ -12,7 +12,7 @@ extern LONG Global_AllocBytesTotal;
 extern LONG MATH_DivS32(LONG dividend, LONG divisor);
 extern LONG MATH_Mulu32(LONG lhs, LONG rhs);
 extern void *MEMLIST_AllocTracked(LONG size);
-extern void ALLOC_InsertFreeBlock(void *block, LONG size);
+extern LONG ALLOC_InsertFreeBlock(void *block, LONG size);
 
 void *ALLOC_AllocFromFreeList(LONG size)
 {
