@@ -44,11 +44,11 @@ extern UBYTE GCOMMAND_PpvDetailLayoutFlag;
 extern char *GCOMMAND_PPVListingsTemplatePtr;
 extern char *GCOMMAND_PPVPeriodTemplatePtr;
 
-extern char FLIB_STR_DIGITAL_NICHE_LISTINGS;
-extern char FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS;
-extern char FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S;
-extern char FLIB_STR_DIGITAL_PPV_LISTINGS;
-extern char Global_STR_DIGITAL_PPV_PERIOD;
+extern const char FLIB_STR_DIGITAL_NICHE_LISTINGS;
+extern const char FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS;
+extern const char FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S;
+extern const char FLIB_STR_DIGITAL_PPV_LISTINGS;
+extern const char Global_STR_DIGITAL_PPV_PERIOD;
 
 extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 extern void GCOMMAND_LoadDefaultTable(void);

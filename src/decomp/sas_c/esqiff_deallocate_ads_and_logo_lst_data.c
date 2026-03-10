@@ -4,8 +4,8 @@ extern LONG Global_REF_LONG_GFX_G_ADS_DATA;
 extern LONG Global_REF_LONG_GFX_G_ADS_FILESIZE;
 extern LONG Global_REF_LONG_DF0_LOGO_LST_DATA;
 extern LONG Global_REF_LONG_DF0_LOGO_LST_FILESIZE;
-extern char Global_STR_ESQIFF_C_7;
-extern char Global_STR_ESQIFF_C_8;
+extern const char Global_STR_ESQIFF_C_7;
+extern const char Global_STR_ESQIFF_C_8;
 
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG width, void *ptr, LONG size);
 
