@@ -1,8 +1,9 @@
 typedef signed long LONG;
+typedef unsigned short UWORD;
 typedef signed char BYTE;
 typedef unsigned char UBYTE;
 
-extern void CLEANUP_RenderAlignedStatusScreen(void);
+extern void CLEANUP_RenderAlignedStatusScreen(UWORD sourceMode, UWORD modeSel, UWORD slot);
 extern void ESQPARS_ApplyRtcBytesAndPersist(BYTE *src);
 extern void ESQ_SetCopperEffect_Custom(void);
 extern LONG GCOMMAND_GetBannerChar(void);
@@ -14,7 +15,7 @@ extern void SCRIPT_UpdateSerialShadowFromCtrlByte(UBYTE ctrlByte);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG entryIndex, char *entryTable);
 extern void TLIBA3_SelectNextViewMode(void);
 
-void GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen(void){CLEANUP_RenderAlignedStatusScreen();}
+void GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen(LONG sourceMode, LONG modeSel, LONG slot){CLEANUP_RenderAlignedStatusScreen((UWORD)sourceMode, (UWORD)modeSel, (UWORD)slot);}
 void GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(const UBYTE *src){ESQPARS_ApplyRtcBytesAndPersist((BYTE *)src);}
 void GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom(void){ESQ_SetCopperEffect_Custom();}
 LONG GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar(void){return GCOMMAND_GetBannerChar();}

@@ -1,4 +1,5 @@
 typedef signed long LONG;
+typedef unsigned short UWORD;
 typedef signed char BYTE;
 typedef unsigned char UBYTE;
 
@@ -13,7 +14,7 @@ extern void ESQPARS_ApplyRtcBytesAndPersist(BYTE *src);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern void GCOMMAND_AdjustBannerCopperOffset(BYTE delta);
 extern void ESQ_SetCopperEffect_Custom(void);
-extern void CLEANUP_RenderAlignedStatusScreen(void);
+extern void CLEANUP_RenderAlignedStatusScreen(UWORD sourceMode, UWORD modeSel, UWORD slot);
 extern void LOCAVAIL_ComputeFilterOffsetForEntry(const BYTE *text, void *statePtr);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 extern void LOCAVAIL_SetFilterModeAndResetState(LONG mode);
@@ -30,7 +31,7 @@ void SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(BYTE *src){ESQPARS_ApplyRtcB
 LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s){return PARSE_ReadSignedLongSkipClass3_Alt(s);}
 void SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset(BYTE delta){GCOMMAND_AdjustBannerCopperOffset(delta);}
 void SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom(void){ESQ_SetCopperEffect_Custom();}
-void SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(void){CLEANUP_RenderAlignedStatusScreen();}
+void SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(LONG sourceMode, LONG modeSel, LONG slot){CLEANUP_RenderAlignedStatusScreen((UWORD)sourceMode, (UWORD)modeSel, (UWORD)slot);}
 void SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry(const BYTE *text, void *statePtr){LOCAVAIL_ComputeFilterOffsetForEntry(text, statePtr);}
 LONG SCRIPT3_JMPTBL_MATH_Mulu32(LONG a, LONG b){return MATH_Mulu32(a, b);}
 void SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState(LONG mode){LOCAVAIL_SetFilterModeAndResetState(mode);}
