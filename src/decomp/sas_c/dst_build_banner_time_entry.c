@@ -34,7 +34,7 @@ extern UBYTE CLOCK_FormatVariantCode;
 extern void *DST_BannerWindowSecondary;
 extern void *DST_BannerWindowPrimary;
 
-extern WORD DATETIME_IsLeapYear(LONG year);
+extern LONG DATETIME_IsLeapYear(LONG year);
 extern LONG GROUP_AG_JMPTBL_MATH_DivS32(LONG a, LONG b);
 extern ULONG GROUP_AG_JMPTBL_MATH_Mulu32(ULONG a, ULONG b);
 extern LONG DATETIME_BuildFromBaseDay(void *a, void *b, LONG day, LONG base);

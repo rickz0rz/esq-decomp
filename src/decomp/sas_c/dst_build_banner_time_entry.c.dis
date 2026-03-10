@@ -45,7 +45,7 @@ ___DST_BuildBannerTimeEntry__8:
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          DATETIME_IsLeapYear      ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              TST.W          D0                       ;4a40 
+              TST.L          D0                       ;4a80 
               BEQ.B          ___DST_BuildBannerTimeEntry__10;6708 
 ___DST_BuildBannerTimeEntry__9:
               MOVE.L         #$16e,D0                 ;203c 0000 016e 
