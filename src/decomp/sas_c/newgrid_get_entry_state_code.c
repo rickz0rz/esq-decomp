@@ -11,7 +11,7 @@ typedef struct NEWGRID_AuxData {
     UBYTE pad0[7];
     UBYTE rowFlags[49];
     UBYTE pad1[0x38 - 0x38];
-    char *titleTable[49];
+    const char *titleTable[49];
 } NEWGRID_AuxData;
 
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
