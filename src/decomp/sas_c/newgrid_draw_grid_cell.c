@@ -14,13 +14,13 @@ extern UWORD NEWGRID_RowHeightPx;
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
-extern void NEWGRID_DrawGridCellText(char *rastPort, char *leftText, char *rightText, LONG rowFlag);
+extern void NEWGRID_DrawGridCellText(char *rastPort, const char *leftText, const char *rightText, LONG rowFlag);
 
 void NEWGRID_DrawGridCell(char *rastPort, char *cell, LONG rowFlag)
 {
     NEWGRID_Entry *cellView;
-    char *left;
-    char *right;
+    const char *left;
+    const char *right;
     LONG x2;
     LONG y2;
 
