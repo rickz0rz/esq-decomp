@@ -4,13 +4,13 @@ typedef unsigned char UBYTE;
 extern LONG NEWGRID2_BufferAllocationFlag;
 extern void *NEWGRID_SecondaryIndexCachePtr;
 extern void *NEWGRID_EntryTextScratchPtr;
-extern UBYTE Global_STR_NEWGRID2_C_3;
-extern UBYTE Global_STR_NEWGRID2_C_4;
-extern UBYTE Global_STR_NEWGRID2_C_5;
-extern UBYTE Global_STR_NEWGRID2_C_6;
+extern const UBYTE Global_STR_NEWGRID2_C_3;
+extern const UBYTE Global_STR_NEWGRID2_C_4;
+extern const UBYTE Global_STR_NEWGRID2_C_5;
+extern const UBYTE Global_STR_NEWGRID2_C_6;
 
-extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(UBYTE *tagName, LONG line, LONG size, LONG flags);
-extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(UBYTE *tagName, LONG line, void *ptr, LONG bytes);
+extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *tagName, LONG line, LONG size, LONG flags);
+extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);
 extern void NEWGRID_RebuildIndexCache(void);
 
 void NEWGRID2_EnsureBuffersAllocated(void)

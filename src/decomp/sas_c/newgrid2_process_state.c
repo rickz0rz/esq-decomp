@@ -18,11 +18,11 @@ typedef struct NEWGRID2_StateEntry {
 
 extern LONG NEWGRID_RenderStateLatch;
 extern WORD NEWGRID_PrimeTimeLayoutEnable;
-extern UBYTE Global_STR_NEWGRID2_C_1;
-extern UBYTE Global_STR_NEWGRID2_C_2;
+extern const UBYTE Global_STR_NEWGRID2_C_1;
+extern const UBYTE Global_STR_NEWGRID2_C_2;
 
-extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(UBYTE *tagName, LONG line, LONG size, LONG flags);
-extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(UBYTE *tagName, LONG line, void *ptr, LONG bytes);
+extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *tagName, LONG line, LONG size, LONG flags);
+extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);
 
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG height, LONG pen);
 extern LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, char *entryHead);

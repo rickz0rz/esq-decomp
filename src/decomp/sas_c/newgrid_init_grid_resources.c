@@ -24,20 +24,20 @@ extern UWORD NEWGRID_RowHeightPx;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_HANDLE_PREVUEC_FONT;
-extern UBYTE Global_STR_NEWGRID_C_1;
-extern UBYTE Global_STR_NEWGRID_C_2;
-extern UBYTE Global_STR_44_44_44;
+extern const UBYTE Global_STR_NEWGRID_C_1;
+extern const UBYTE Global_STR_NEWGRID_C_2;
+extern const char Global_STR_44_44_44[];
 extern UBYTE Global_REF_696_400_BITMAP;
 extern UBYTE WDISP_BannerGridBitmapStruct;
 
 extern void NEWGRID2_EnsureBuffersAllocated(void);
 extern void NEWGRID_JMPTBL_DISPTEXT_InitBuffers(void);
 extern void NEWGRID_InitShowtimeBuckets(void);
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(UBYTE *tagName, LONG width, LONG height, LONG flags);
+extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *tagName, LONG width, LONG height, LONG flags);
 extern void _LVOInitRastPort(char *rastPort);
 extern void _LVOSetDrMd(char *rastPort, LONG mode);
 extern void _LVOSetFont(char *rastPort, void *font);
-extern LONG _LVOTextLength(char *rastPort, char *text, LONG len);
+extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
 extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG a, LONG b);
 extern void NEWGRID_DrawTopBorderLine(void);
 
@@ -78,7 +78,7 @@ void NEWGRID_InitGridResources(void)
 
     NEWGRID_DrawTopBorderLine();
 
-    d0 = _LVOTextLength((char *)NEWGRID_MainRastPortPtr, (char *)&Global_STR_44_44_44, 8);
+    d0 = _LVOTextLength((char *)NEWGRID_MainRastPortPtr, Global_STR_44_44_44, 8);
     NEWGRID_SampleTimeTextWidthPx = (UWORD)d0;
     d0 += 12;
     NEWGRID_ColumnStartXPx = (UWORD)d0;
