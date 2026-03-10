@@ -37,7 +37,7 @@ extern LONG NEWGRID_DrawGridHeaderRows(char *ctx, LONG framePen, LONG markerPen)
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
 extern LONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(UWORD *slot);
 extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const char *title);
-extern LONG NEWGRID_SelectEntryPen(char *entryPtr);
+extern LONG NEWGRID_SelectEntryPen(const void *entryPtr);
 extern LONG NEWGRID_DrawGridFrame(char *ctx, LONG style, LONG pen, LONG entryPen, LONG rowHeight);
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG idx, LONG mode);
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG idx, LONG mode);
@@ -87,7 +87,7 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
             TEXTDISP_PrimaryTitlePtrTable[titleIdx]);
     }
 
-    NEWGRID_SelectedGridEntryPtr = NEWGRID_SelectEntryPen((char *)TEXTDISP_PrimaryEntryPtrTable[titleIdx]);
+    NEWGRID_SelectedGridEntryPtr = NEWGRID_SelectEntryPen(TEXTDISP_PrimaryEntryPtrTable[titleIdx]);
     NEWGRID_HeaderFramePenId = (NEWGRID_GridOperationId == 5) ? GCOMMAND_NicheFramePen : 7;
     NEWGRID_DrawGridFrame(ctx, 7, NEWGRID_HeaderFramePenId, NEWGRID_SelectedGridEntryPtr, (LONG)NEWGRID_RowHeightPx + 3);
 

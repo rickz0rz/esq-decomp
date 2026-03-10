@@ -19,15 +19,15 @@ extern LONG GCOMMAND_MplexDetailRowPen;
 extern LONG GCOMMAND_PpvShowtimesLayoutPen;
 extern LONG GCOMMAND_PpvShowtimesRowPen;
 
-LONG NEWGRID_SelectEntryPen(char *entry)
+LONG NEWGRID_SelectEntryPen(const void *entry)
 {
-    NEWGRID_Entry *entryView;
+    const NEWGRID_Entry *entryView;
     LONG pen;
     LONG override;
     LONG op;
 
     pen = -1;
-    entryView = (NEWGRID_Entry *)entry;
+    entryView = (const NEWGRID_Entry *)entry;
 
     if (entryView) {
         if (entryView->overridePen41 != (UBYTE)0xFF) {
