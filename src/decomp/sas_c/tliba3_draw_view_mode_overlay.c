@@ -38,7 +38,7 @@ extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
 extern void TLIBA3_DrawViewModeGuides(char *rastPort);
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG value);
-extern void TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, char *text, LONG y);
+extern void TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y);
 
 void TLIBA3_DrawViewModeOverlay(LONG viewMode)
 {
