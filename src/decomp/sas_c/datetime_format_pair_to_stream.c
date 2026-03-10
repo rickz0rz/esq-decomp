@@ -26,7 +26,7 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, void *pairStruct)
 {
     char outBuf[87];
     char scratch[51];
-    char *outCursor;
+    const char *outCursor;
     void *t;
     LONG hour12;
     LONG writeResult;
