@@ -46,7 +46,7 @@ extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(const char *aux, LO
 extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bits, LONG index);
 extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 extern LONG TEXTDISP_GetGroupEntryCount(LONG mode);
-extern LONG TEXTDISP_ShouldOpenEditorForEntry(TEXTDISP_CandidateEntry *entry);
+extern LONG TEXTDISP_ShouldOpenEditorForEntry(const TEXTDISP_CandidateEntry *entry);
 extern char *TEXTDISP_SkipControlCodes(const char *text);
 extern void TEXTDISP_SetSelectionFields(TEXTDISP_SelectionEntry *entry, LONG mode, LONG displayIndex, LONG entryIndex);
 extern void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entry);
@@ -137,7 +137,7 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
                     continue;
                 }
                 if (TEXTDISP_FilterSportsMatchFlag != 0 &&
-                    TEXTDISP_ShouldOpenEditorForEntry((TEXTDISP_CandidateEntry *)candidate) != 0) {
+                    TEXTDISP_ShouldOpenEditorForEntry(candidate) != 0) {
                     TEXTDISP_CandidateIndexList[TEXTDISP_FilterMatchCount++] = (UBYTE)idx;
                     continue;
                 }
