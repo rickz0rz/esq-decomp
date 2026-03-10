@@ -25,6 +25,7 @@ GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW:
 ___GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW__1:
               BSR.W          FORMAT_RawDoFmtWithScratchBuffer;6100 0000 
 ___GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW__2:
+___GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW__3:
               RTS                                     ;4e75 
 GROUP_AJ_JMPTBL_MATH_DivU32:
               MOVE.L         A7,D0                    ;200f 
