@@ -43,6 +43,10 @@ extern void ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(void);
 
 WORD ESQIFF_QueueNextExternalAssetIffJob(void)
 {
+    const WORD RESULT_NO_CANDIDATE = -1;
+    const WORD RESULT_PENDING = 1;
+    const UBYTE SOURCE_TYPE_LOGO = 4;
+    const UBYTE SOURCE_TYPE_GADS = 5;
     BYTE candidate[41];
     BYTE wildcardProbe[41];
     BYTE snapshot[41];
@@ -181,7 +185,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         BYTE *p1;
         BYTE ch;
 
-        timeoutState = 1;
+        timeoutState = RESULT_PENDING;
         ESQDISP_ProcessGridMessagesIfIdle();
 
         if (ESQIFF_AssetSourceSelect != 0) {
@@ -211,17 +215,17 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
             pendingNode = (ESQIFF_PendingBrushNode *)ESQIFF_JMPTBL_BRUSH_AllocBrushNode(candidate, 0);
             ESQIFF_PendingExternalBrushNode = (LONG)pendingNode;
             if (ESQIFF_AssetSourceSelect != 0) {
-                pendingNode->sourceType190 = 4;
+                pendingNode->sourceType190 = SOURCE_TYPE_LOGO;
                 CTASKS_PendingLogoBrushDescriptor = (LONG)pendingNode;
             } else {
-                pendingNode->sourceType190 = 5;
+                pendingNode->sourceType190 = SOURCE_TYPE_GADS;
                 CTASKS_PendingGAdsBrushDescriptor = (LONG)pendingNode;
             }
             ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess();
         }
 
         ESQDISP_ProcessGridMessagesIfIdle();
-        if (timeoutState == -1) {
+        if (timeoutState == RESULT_NO_CANDIDATE) {
             ESQIFF_ReadNextExternalAssetPathEntry(candidate);
         }
 
@@ -237,7 +241,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
             }
         }
 
-        if (timeoutState == -1) {
+        if (timeoutState == RESULT_NO_CANDIDATE) {
             continue;
         }
         break;
@@ -245,7 +249,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
 
 finalize_no_candidate:
     if (accepted == 0) {
-        timeoutState = -1;
+        timeoutState = RESULT_NO_CANDIDATE;
     }
 
     return timeoutState;
