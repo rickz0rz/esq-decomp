@@ -6,7 +6,7 @@ extern char *TEXTDISP_SecondaryTitlePtrTable[];
 extern char *TLIBA2_FindLastCharInString(char *str, LONG targetChar);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitsetBase, LONG bitIndex);
-extern LONG TLIBA_FindFirstWildcardMatchIndex(char *pattern);
+extern LONG TLIBA_FindFirstWildcardMatchIndex(const char *pattern);
 extern LONG MATH_DivS32(LONG num, LONG den);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 
