@@ -58,9 +58,9 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
     const WORD RESULT_PENDING = 1;
     const UBYTE SOURCE_TYPE_LOGO = 4;
     const UBYTE SOURCE_TYPE_GADS = 5;
-    BYTE candidate[ESQIFF_PATH_BUFFER_CHARS];
-    BYTE wildcardProbe[ESQIFF_PATH_BUFFER_CHARS];
-    BYTE snapshot[ESQIFF_PATH_BUFFER_CHARS];
+    char candidate[ESQIFF_PATH_BUFFER_CHARS];
+    char wildcardProbe[ESQIFF_PATH_BUFFER_CHARS];
+    char snapshot[ESQIFF_PATH_BUFFER_CHARS];
     WORD initialLineIndex;
     WORD accepted;
     WORD savedMatchIndex;
@@ -113,10 +113,10 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
 
     for (;;) {
         WORD i;
-        BYTE *measure;
+        const char *measure;
         LONG pathLen;
 
-        ESQIFF_ReadNextExternalAssetPathEntry(candidate);
+        ESQIFF_ReadNextExternalAssetPathEntry((BYTE *)candidate);
 
         measure = candidate;
         while (*measure != 0) {
@@ -184,17 +184,17 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
     }
 
     {
-        BYTE *src = candidate;
-        BYTE *dst = snapshot;
+        const char *src = candidate;
+        char *dst = snapshot;
         do {
             *dst++ = *src;
         } while (*src++ != 0);
     }
 
     for (;;) {
-        BYTE *p0;
-        BYTE *p1;
-        BYTE ch;
+        const char *p0;
+        const char *p1;
+        char ch;
 
         timeoutState = RESULT_PENDING;
         ESQDISP_ProcessGridMessagesIfIdle();
@@ -209,7 +209,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         duplicateHeadPath = 0;
         if (headPath != 0) {
             p0 = candidate;
-            p1 = (BYTE *)headPath;
+            p1 = headPath;
             for (;;) {
                 ch = *p0++;
                 if (*p1++ != ch) {
@@ -237,7 +237,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
 
         ESQDISP_ProcessGridMessagesIfIdle();
         if (timeoutState == RESULT_NO_CANDIDATE) {
-            ESQIFF_ReadNextExternalAssetPathEntry(candidate);
+            ESQIFF_ReadNextExternalAssetPathEntry((BYTE *)candidate);
         }
 
         p0 = snapshot;
