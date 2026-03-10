@@ -1,10 +1,11 @@
 typedef signed long LONG;
+typedef signed short WORD;
 typedef unsigned char UBYTE;
 
 extern LONG ESQIFF2_ReadSerialRecordIntoBuffer(UBYTE *dst, LONG recordMode, LONG extensionCount);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text);
 extern unsigned char ESQ_WildcardMatch(const char *str, const char *pattern);
-extern void DST_NormalizeDayOfYear(void);
+extern LONG DST_NormalizeDayOfYear(WORD day_of_year, WORD year);
 extern LONG ESQ_GenerateXorChecksumByte(UBYTE seed, UBYTE *src, LONG length);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 
@@ -23,9 +24,9 @@ unsigned char UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *str, const char *patt
     return ESQ_WildcardMatch(str, pattern);
 }
 
-void UNKNOWN_JMPTBL_DST_NormalizeDayOfYear(void)
+LONG UNKNOWN_JMPTBL_DST_NormalizeDayOfYear(LONG day, LONG year)
 {
-    DST_NormalizeDayOfYear();
+    return DST_NormalizeDayOfYear((WORD)day, (WORD)year);
 }
 
 LONG UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte(UBYTE seed, const UBYTE *buf, LONG len)
