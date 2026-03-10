@@ -12,8 +12,8 @@ extern LONG DISKIO_Drive0WriteProtectedCode;
 extern LONG DISKIO_DriveMediaStatusCodeTable;
 extern WORD Global_RefreshTickCounter;
 extern ESQFUNC_RastPortHolder Global_REF_RASTPORT_2;
-extern char Global_STR_DISK_0_IS_WRITE_PROTECTED[];
-extern char Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0[];
+extern const char Global_STR_DISK_0_IS_WRITE_PROTECTED[];
+extern const char Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0[];
 
 extern void ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(void);
 extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y);

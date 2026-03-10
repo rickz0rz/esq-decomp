@@ -3,8 +3,8 @@ typedef signed long LONG;
 extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern LONG Global_REF_BOOL_IS_LINE_OR_PAGE;
-extern char Global_STR_LINE[];
-extern char Global_STR_PAGE[];
+extern const char Global_STR_LINE[];
+extern const char Global_STR_PAGE[];
 
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
@@ -13,7 +13,7 @@ extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const 
 
 void SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE(void)
 {
-    char *label;
+    const char *label;
 
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
     _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 6);
