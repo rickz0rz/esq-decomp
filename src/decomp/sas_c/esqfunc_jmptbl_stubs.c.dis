@@ -80,11 +80,22 @@ ___ESQFUNC_JMPTBL_PARSEINI_MonitorC__1:
 ___ESQFUNC_JMPTBL_PARSEINI_MonitorC__2:
               RTS                                     ;4e75 
 ESQFUNC_JMPTBL_LADFUNC_ParseHexD:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___ESQFUNC_JMPTBL_LADFUNC_ParseHexD__1:
+              MOVE.B         $b(A7),D7                ;1e2f 000b 
+              MOVE.B         D7,D0                    ;1007 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQFUNC_JMPTBL_LADFUNC_ParseHexD__2:
+___ESQFUNC_JMPTBL_LADFUNC_ParseHexD__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 ESQFUNC_JMPTBL_CLEANUP_ProcessAl:
               CMP.L          __base(A4),A7            ;bfec 0000 

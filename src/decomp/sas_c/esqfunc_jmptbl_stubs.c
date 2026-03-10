@@ -1,3 +1,6 @@
+typedef signed long LONG;
+typedef signed char BYTE;
+
 extern void TEXTDISP_SetRastForMode(void);
 extern void P_TYPE_PromoteSecondaryList(void);
 extern void DISKIO_ProbeDrivesAndAssignPaths(void);
@@ -9,7 +12,7 @@ extern void SCRIPT_GetCtrlLineFlag(void);
 extern void LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
 extern void PARSEINI_MonitorClockChange(void);
-extern void LADFUNC_ParseHexDigit(void);
+extern LONG LADFUNC_ParseHexDigit(BYTE ch);
 extern void CLEANUP_ProcessAlerts(void);
 extern void ESQ_GetHalfHourSlotIndex(void);
 extern void CLEANUP_DrawClockBanner(void);
@@ -36,7 +39,7 @@ void ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag(void){SCRIPT_GetCtrlLineFlag();}
 void ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void){LOCAVAIL_SyncSecondaryFilterForCurrentGroup();}
 void ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(void){TEXTDISP_ResetSelectionAndRefresh();}
 void ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange(void){PARSEINI_MonitorClockChange();}
-void ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(void){LADFUNC_ParseHexDigit();}
+LONG ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(BYTE ch){return LADFUNC_ParseHexDigit(ch);}
 void ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(void){CLEANUP_ProcessAlerts();}
 void ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex(void){ESQ_GetHalfHourSlotIndex();}
 void ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner(void){CLEANUP_DrawClockBanner();}
