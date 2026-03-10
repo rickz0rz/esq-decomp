@@ -29,10 +29,10 @@ extern WORD ESQIFF_ExternalAssetFlags;
 extern WORD SCRIPT_CtrlInterfaceEnabledFlag;
 extern const char *Global_PTR_STR_GFX_G_ADS;
 extern const char *Global_PTR_STR_DF0_LOGO_LST;
-extern const BYTE Global_STR_ESQIFF_C_3;
-extern const BYTE Global_STR_ESQIFF_C_4;
-extern const BYTE Global_STR_ESQIFF_C_5;
-extern const BYTE Global_STR_ESQIFF_C_6;
+extern const BYTE Global_STR_ESQIFF_C_3[];
+extern const BYTE Global_STR_ESQIFF_C_4[];
+extern const BYTE Global_STR_ESQIFF_C_5[];
+extern const BYTE Global_STR_ESQIFF_C_6[];
 extern void *Global_REF_DOS_LIBRARY_2;
 extern MinList ESQIFF_GAdsBrushListHead;
 extern MinList ESQIFF_LogoBrushListHead;
@@ -67,7 +67,7 @@ void ESQIFF_ReloadExternalAssetCatalogBuffers(LONG mode)
 
         if (Global_REF_LONG_GFX_G_ADS_DATA != 0 && Global_REF_LONG_GFX_G_ADS_FILESIZE != 0) {
             ESQIFF_JMPTBL_MEMORY_DeallocateMemory(
-                &Global_STR_ESQIFF_C_3,
+                Global_STR_ESQIFF_C_3,
                 882,
                 (void *)Global_REF_LONG_GFX_G_ADS_DATA,
                 Global_REF_LONG_GFX_G_ADS_FILESIZE + 1);
@@ -82,7 +82,7 @@ void ESQIFF_ReloadExternalAssetCatalogBuffers(LONG mode)
             Global_REF_LONG_GFX_G_ADS_FILESIZE = size;
             if (size > 0) {
                 data = ESQIFF_JMPTBL_MEMORY_AllocateMemory(
-                    &Global_STR_ESQIFF_C_4,
+                    Global_STR_ESQIFF_C_4,
                     898,
                     (ULONG)(size + 1),
                     MEMF_PUBLIC);
@@ -115,7 +115,7 @@ void ESQIFF_ReloadExternalAssetCatalogBuffers(LONG mode)
 
     if (Global_REF_LONG_DF0_LOGO_LST_DATA != 0 && Global_REF_LONG_DF0_LOGO_LST_FILESIZE != 0) {
         ESQIFF_JMPTBL_MEMORY_DeallocateMemory(
-            &Global_STR_ESQIFF_C_5,
+            Global_STR_ESQIFF_C_5,
             963,
             (void *)Global_REF_LONG_DF0_LOGO_LST_DATA,
             Global_REF_LONG_DF0_LOGO_LST_FILESIZE + 1);
@@ -133,7 +133,7 @@ void ESQIFF_ReloadExternalAssetCatalogBuffers(LONG mode)
     Global_REF_LONG_DF0_LOGO_LST_FILESIZE = size;
     if (size > 0) {
         data = ESQIFF_JMPTBL_MEMORY_AllocateMemory(
-            &Global_STR_ESQIFF_C_6,
+            Global_STR_ESQIFF_C_6,
             979,
             (ULONG)(size + 1),
             MEMF_PUBLIC);
