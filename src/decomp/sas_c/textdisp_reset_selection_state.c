@@ -13,7 +13,7 @@ typedef struct TEXTDISP_SelectionEntry {
 
 void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *state)
 {
-    if (state == (TEXTDISP_SelectionEntry *)0) {
+    if (state == 0) {
         return;
     }
 
