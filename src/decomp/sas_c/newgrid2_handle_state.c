@@ -16,7 +16,7 @@ extern LONG NEWGRID2_DispatchStateIndex;
 extern LONG NEWGRID2_CachedModeIndex;
 extern LONG NEWGRID2_ShowtimesSelectionContextPtr;
 
-extern LONG NEWGRID2_ProcessGridState(char *gridCtx, char *selectionCtxPtr, LONG modeSel);
+extern LONG NEWGRID2_ProcessGridState(char *gridCtx, const void *selectionCtxPtr, LONG modeSel);
 extern void NEWGRID_InitSelectionWindowAlt(NEWGRID2_SelectionWindow *selectionCtxPtr, WORD rowIndex, LONG modeSel);
 extern LONG NEWGRID_UpdateSelectionFromInputAlt(LONG stateIndex, NEWGRID2_SelectionWindow *selectionCtxPtr, LONG modeSel);
 extern void NEWGRID_DrawShowtimesPrompt(char *gridCtx, LONG selectionCtx, LONG modeSel);
