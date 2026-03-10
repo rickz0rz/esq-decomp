@@ -17,7 +17,7 @@ extern LONG DATETIME_NormalizeStructToSeconds(void *dt);
 LONG DATETIME_CopyPairAndRecalc(DateTimePair *pair, void *src_in, void *src_out)
 {
     LONG secondsResult;
-    UBYTE *src;
+    const UBYTE *src;
     UBYTE *dst;
     short copyCount;
 
