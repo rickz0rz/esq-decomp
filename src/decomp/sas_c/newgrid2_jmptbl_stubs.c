@@ -4,7 +4,7 @@ typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
-extern LONG COI_GetAnimFieldPointerByMode(void *entry, UWORD key, UWORD mode);
+extern LONG COI_GetAnimFieldPointerByMode(const void *entry, UWORD key, UWORD mode);
 extern void DISPTEXT_SetCurrentLineIndex(LONG lineIndex);
 extern LONG DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, const char *src);
 extern LONG DISPTEXT_GetTotalLineCount(void);
@@ -39,7 +39,7 @@ extern void BEVEL_DrawHorizontalBevel(char *rastPort, LONG leftX, LONG topY, LON
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 
-char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(char *entry, LONG key, LONG field){return (char *)COI_GetAnimFieldPointerByMode((void *)entry, (UWORD)key, (UWORD)field);}
+const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const char *entry, LONG key, LONG field){return (const char *)COI_GetAnimFieldPointerByMode(entry, (UWORD)key, (UWORD)field);}
 void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG lineIndex){DISPTEXT_SetCurrentLineIndex(lineIndex);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, const char *src){return DISPTEXT_LayoutAndAppendToBuffer(layoutCtx, src);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount(void){return DISPTEXT_GetTotalLineCount();}

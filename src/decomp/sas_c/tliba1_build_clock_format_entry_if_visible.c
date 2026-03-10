@@ -6,7 +6,7 @@ extern LONG CONFIG_TimeWindowMinutes;
 
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(void *entry, LONG modeIndex, LONG fieldId);
+extern const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(const void *entry, LONG modeIndex, LONG fieldId);
 extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(void *entry, void *aux, LONG modeIndex, LONG dayMinutes, LONG windowMinutes);
 extern void TLIBA1_FormatClockFormatEntry(char *dst, const char *f0, const char *f1, const char *f2, const char *f3, const char *f4, LONG style);
 
@@ -39,11 +39,11 @@ WORD TLIBA1_BuildClockFormatEntryIfVisible(WORD groupIndex, WORD modeIndex, char
     entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)groupIndex, displayMode);
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((LONG)groupIndex, displayMode);
 
-    f0 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode((void *)entry, (LONG)modeIndex, FIELD_ID_0);
-    f1 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode((void *)entry, (LONG)modeIndex, FIELD_ID_1);
-    f2 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode((void *)entry, (LONG)modeIndex, FIELD_ID_2);
-    f3 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode((void *)entry, (LONG)modeIndex, FIELD_ID_3);
-    f4 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode((void *)entry, (LONG)modeIndex, FIELD_ID_4);
+    f0 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, FIELD_ID_0);
+    f1 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, FIELD_ID_1);
+    f2 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, FIELD_ID_2);
+    f3 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, FIELD_ID_3);
+    f4 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)modeIndex, FIELD_ID_4);
 
     visible = FLAG_TRUE;
     if (modeIndex != MODE_ANY) {
