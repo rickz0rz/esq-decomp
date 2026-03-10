@@ -4,12 +4,12 @@ typedef unsigned char UBYTE;
 #define MEMF_PUBLIC 0x00000001L
 #define MEMF_CLEAR  0x00010000L
 
-extern const UBYTE Global_STR_P_TYPE_C_1[];
-extern const UBYTE Global_STR_P_TYPE_C_2[];
-extern const UBYTE Global_STR_P_TYPE_C_3[];
+extern const char Global_STR_P_TYPE_C_1[];
+extern const char Global_STR_P_TYPE_C_2[];
+extern const char Global_STR_P_TYPE_C_3[];
 
-extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const void *tagName, LONG line, LONG size, LONG flags);
-extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const void *tagName, LONG line, void *ptr, LONG bytes);
+extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *tagName, LONG line, LONG size, LONG flags);
+extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);
 
 typedef struct P_TYPE_Entry {
     UBYTE typeByte;

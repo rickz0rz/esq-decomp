@@ -15,7 +15,7 @@ extern LONG LADFUNC_SaveAdsFileHandle;
 
 extern const char KYBD_PATH_DF0_LOCAL_ADS[];
 extern const char LADFUNC_FMT_AttrEscapePrefixCharHex[];
-extern const UBYTE LADFUNC_TextAdLineBreakBuffer[];
+extern const char LADFUNC_TextAdLineBreakBuffer[];
 
 extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 

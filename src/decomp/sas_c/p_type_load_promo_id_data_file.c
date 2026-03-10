@@ -17,7 +17,7 @@ extern UBYTE TEXTDISP_PrimaryGroupCode;
 extern UBYTE TEXTDISP_SecondaryGroupCode;
 extern char *Global_PTR_WORK_BUFFER;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
-extern const UBYTE Global_STR_P_TYPE_C_6[];
+extern const char Global_STR_P_TYPE_C_6[];
 extern PTypeEntry *P_TYPE_PrimaryGroupListPtr;
 extern PTypeEntry *P_TYPE_SecondaryGroupListPtr;
 
@@ -26,7 +26,7 @@ extern char *P_TYPE_JMPTBL_STRING_FindSubstring(const char *haystack, const char
 extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *src);
 extern PTypeEntry *P_TYPE_AllocateEntry(UBYTE type_byte, LONG len, const UBYTE *src);
 extern void P_TYPE_FreeEntry(PTypeEntry *entry);
-extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const void *tag_name, LONG width, void *ptr, LONG size);
+extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tag_name, LONG width, void *ptr, LONG size);
 
 static LONG p_type_strlen_local(const char *s)
 {
