@@ -33,11 +33,11 @@ extern UBYTE CTASKS_PendingPrimaryOiDiskId;
 extern COI_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
 extern COI_EntryTableEntry *TEXTDISP_SecondaryEntryPtrTable[];
 
-extern char Global_STR_DF0_OI_PERCENT_2_LX_DAT_1[];
-extern char COI_FMT_LONG_DEC_A[];
-extern char COI_FMT_DEC_A[];
-extern UBYTE COI_FieldDelimiterTab[];
-extern UBYTE COI_RecordTerminatorCrLf[];
+extern const char Global_STR_DF0_OI_PERCENT_2_LX_DAT_1[];
+extern const char COI_FMT_LONG_DEC_A[];
+extern const char COI_FMT_DEC_A[];
+extern const UBYTE COI_FieldDelimiterTab[];
+extern const UBYTE COI_RecordTerminatorCrLf[];
 
 LONG GROUP_AG_JMPTBL_MATH_DivS32(LONG a, LONG b);
 LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG a, LONG b, LONG c);

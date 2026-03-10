@@ -3,8 +3,8 @@ typedef signed long LONG;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern char *Global_REF_RASTPORT_1;
 
-extern char Global_STR_VIN_BCK_FWD_SSPD_AD_LINE[];
-extern char Global_STR_TZ_DST_CONT_TXT_GRPH[];
+extern const char Global_STR_VIN_BCK_FWD_SSPD_AD_LINE[];
+extern const char Global_STR_TZ_DST_CONT_TXT_GRPH[];
 
 extern char ED_DiagVinModeChar[];
 extern char ESQ_STR_B[];
@@ -21,7 +21,7 @@ extern char ED_DiagGraphModeChar[];
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
-extern LONG _LVOText(void *gfxBase, char *rastPort, char *text, LONG len);
+extern LONG _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 void ED_DrawDiagnosticModeText(void)
