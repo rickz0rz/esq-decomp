@@ -250,11 +250,11 @@ ___NEWGRID_ProcessScheduleState__40:
               LEA            $c(A7),A7                ;4fef 000c 
               BRA.B          ___NEWGRID_ProcessScheduleState__42;6020 
 ___NEWGRID_ProcessScheduleState__41:
+              MOVE.W         NEWGRID_ScheduleRowOffset(A4),D0;302c 0000 
+              MOVE.W         D7,D1                    ;3207 
+              ADD.W          D0,D1                    ;d240 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         D7,D0                    ;3007 
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.W         NEWGRID_ScheduleRowOffset(A4),D1;322c 0000 
-              ADD.L          D1,D0                    ;d081 
+              MOVE.W         D1,D0                    ;3001 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         NEWGRID_SelectedPrimaryEntryInde(A4),-(A7);2f2c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
