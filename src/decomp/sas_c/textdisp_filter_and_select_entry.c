@@ -212,7 +212,7 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
             if (STRING_CompareNoCaseN(candidateName, candidateTitle, nameLen) == 0) {
                 candidate = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
                 if (candidate != (const TEXTDISP_CandidateEntry *)0 &&
-                    TLIBA2_JMPTBL_ESQ_TestBit1Based((void *)candidate->selectionBits, titleSlot) ==
+                    TLIBA2_JMPTBL_ESQ_TestBit1Based(candidate->selectionBits, titleSlot) ==
                         MATCH_FOUND_FLAG) {
                     found = 1;
                     TEXTDISP_SetSelectionFields(entry, mode, idx, titleSlot);

@@ -26,7 +26,7 @@ extern LONG NEWGRID_SelectedGridEntryPtr;
 extern LONG NEWGRID_OverridePenIndex;
 
 extern LONG NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LONG keyIndex);
-extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG bitIndex);
+extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
 extern WORD NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG rowIndex);
 extern LONG NEWGRID_SelectEntryPen(char *entry);
 extern void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode);
