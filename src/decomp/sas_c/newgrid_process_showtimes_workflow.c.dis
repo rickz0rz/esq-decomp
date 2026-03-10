@@ -5,11 +5,12 @@ NEWGRID_ProcessShowtimesWorkflow:
               SUB.L          #$10,D0                  ;90bc 0000 0010 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___NEWGRID_ProcessShowtimesWorkflow__1:
-              MOVE.W         $1e(A7),D7               ;3e2f 001e 
-              MOVE.L         $18(A7),A5               ;2a6f 0018 
-              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.W         $26(A7),D6               ;3c2f 0026 
+              MOVE.W         $22(A7),D7               ;3e2f 0022 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVEQ.L        #$0,D5                   ;7a00 
               MOVE.L         A5,D0                    ;200d 
               BNE.B          ___NEWGRID_ProcessShowtimesWorkflow__10;667a 
 ___NEWGRID_ProcessShowtimesWorkflow__2:
@@ -143,7 +144,7 @@ ___NEWGRID_ProcessShowtimesWorkflow__23:
               MOVE.L         NEWGRID_ShowtimesWorkflowState(A4),-(A7);2f2c 0000 
               BSR.W          NEWGRID_UpdateSelectionFromInput;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVEQ.L        #$1,D5                   ;7a01 
 ___NEWGRID_ProcessShowtimesWorkflow__24:
               TST.L          NEWGRID_ShowtimesSelectionContex(A4);4aac 0000 
               BEQ.B          ___NEWGRID_ProcessShowtimesWorkflow__34;6778 
@@ -176,7 +177,7 @@ ___NEWGRID_ProcessShowtimesWorkflow__28:
               CMP.B          D1,D0                    ;b001 
               BNE.W          ___NEWGRID_ProcessShowtimesWorkflow__47;6600 008e 
 ___NEWGRID_ProcessShowtimesWorkflow__29:
-              TST.L          D6                       ;4a86 
+              TST.L          D5                       ;4a85 
               BEQ.B          ___NEWGRID_ProcessShowtimesWorkflow__32;671e 
 ___NEWGRID_ProcessShowtimesWorkflow__30:
               CMPI.L         #$1,NEWGRID_ShowtimesColumnAdjust(A4);0cac 0000 0001 0000 
@@ -253,7 +254,7 @@ ___NEWGRID_ProcessShowtimesWorkflow__49:
               MOVE.L         NEWGRID_ShowtimesWorkflowState(A4),D0;202c 0000 
 ___NEWGRID_ProcessShowtimesWorkflow__50:
 ___NEWGRID_ProcessShowtimesWorkflow__51:
-              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
               RTS                                     ;4e75 
 __const:
 __strings:

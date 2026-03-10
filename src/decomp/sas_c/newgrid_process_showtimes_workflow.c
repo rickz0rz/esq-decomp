@@ -41,9 +41,10 @@ extern LONG NEWGRID_GetGridModeIndex(void);
 extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
 extern LONG NEWGRID_ClearEntryMarkerBits(LONG row);
 
-LONG NEWGRID_ProcessShowtimesWorkflow(char *ctx, UWORD rowBase)
+LONG NEWGRID_ProcessShowtimesWorkflow(char *ctx, UWORD rowBase, UWORD selector)
 {
     LONG steppedFrom34 = 0;
+    (void)selector;
 
     if (!ctx) {
         if (NEWGRID_ShowtimesWorkflowState == 2 || NEWGRID_ShowtimesWorkflowState == 7) {
