@@ -81,11 +81,19 @@ ___ESQPARS_JMPTBL_TEXTDISP_ApplySou__1:
 ___ESQPARS_JMPTBL_TEXTDISP_ApplySou__2:
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_BRUSH_PlaneMaskFo:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___ESQPARS_JMPTBL_BRUSH_PlaneMaskFo__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          BRUSH_PlaneMaskForIndex  ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQPARS_JMPTBL_BRUSH_PlaneMaskFo__2:
+___ESQPARS_JMPTBL_BRUSH_PlaneMaskFo__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_SCRIPT_ResetCtrlC:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -138,11 +146,21 @@ ___ESQPARS_JMPTBL_PARSE_ReadSignedL__3:
               MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_DISKIO2_HandleInt:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___ESQPARS_JMPTBL_DISKIO2_HandleInt__1:
+              MOVE.B         $b(A7),D7                ;1e2f 000b 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          DISKIO2_HandleInteractiveFileTra;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQPARS_JMPTBL_DISKIO2_HandleInt__2:
+___ESQPARS_JMPTBL_DISKIO2_HandleInt__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_P_TYPE_WritePromo:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -152,18 +170,33 @@ ___ESQPARS_JMPTBL_P_TYPE_WritePromo__1:
 ___ESQPARS_JMPTBL_P_TYPE_WritePromo__2:
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_COI_FreeEntryReso:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___ESQPARS_JMPTBL_COI_FreeEntryReso__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          COI_FreeEntryResources   ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQPARS_JMPTBL_COI_FreeEntryReso__2:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_DST_UpdateBannerQ:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___ESQPARS_JMPTBL_DST_UpdateBannerQ__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          DST_UpdateBannerQueue    ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQPARS_JMPTBL_DST_UpdateBannerQ__2:
+___ESQPARS_JMPTBL_DST_UpdateBannerQ__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_ESQPROTO_ParseDig:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -228,6 +261,7 @@ ESQPARS_JMPTBL_DISKIO_SaveConfig:
 ___ESQPARS_JMPTBL_DISKIO_SaveConfig__1:
               BSR.W          DISKIO_SaveConfigToFileHandle;6100 0000 
 ___ESQPARS_JMPTBL_DISKIO_SaveConfig__2:
+___ESQPARS_JMPTBL_DISKIO_SaveConfig__3:
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
