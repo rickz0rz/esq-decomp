@@ -1,3 +1,8 @@
-extern void BEVEL_DrawVerticalBevelPair(void);
+typedef signed long LONG;
 
-void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(void){BEVEL_DrawVerticalBevelPair();}
+extern void BEVEL_DrawVerticalBevelPair(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY);
+
+void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY)
+{
+    BEVEL_DrawVerticalBevelPair(rastPort, leftX, topY, rightX, bottomY);
+}
