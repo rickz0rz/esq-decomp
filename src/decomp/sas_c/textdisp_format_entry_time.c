@@ -36,7 +36,7 @@ void TEXTDISP_FormatEntryTime(char *out, WORD entryIndex)
     timeText = title->titleTable[(LONG)entryIndex];
     slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)title->slotCode);
 
-    if (timeText == (char *)0 || *timeText == 0) {
+    if (timeText == 0 || *timeText == 0) {
         *out = 0;
         return;
     }
@@ -91,7 +91,7 @@ void TEXTDISP_FormatEntryTimeForIndex(char *out, WORD entryIndex, char *entryTab
     timeText = aux->titleTable[(LONG)entryIndex];
     slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)aux->slotCode);
 
-    if (timeText == (char *)0 || *timeText == 0) {
+    if (timeText == 0 || *timeText == 0) {
         *out = 0;
         return;
     }
