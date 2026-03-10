@@ -146,9 +146,9 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
         entryCtrl = TEXTDISP_FindControlToken(entryTitle);
 
         tokenOk = 0;
-        if (inputCtrl == (const char *)0) {
+        if (inputCtrl == 0) {
             tokenOk = GROUP_PRIMARY;
-        } else if (entryCtrl != (const char *)0 && entryCtrl[0] == inputCtrl[0]) {
+        } else if (entryCtrl != 0 && entryCtrl[0] == inputCtrl[0]) {
             tokenOk = GROUP_PRIMARY;
         }
 
