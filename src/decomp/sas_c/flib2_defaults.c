@@ -51,9 +51,9 @@ extern const char FLIB_STR_DIGITAL_PPV_LISTINGS[];
 extern const char Global_STR_DIGITAL_PPV_PERIOD[];
 
 extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
-extern void GCOMMAND_LoadDefaultTable(void);
-extern void GCOMMAND_LoadMplexTemplate(void);
-extern void GCOMMAND_LoadPPV3Template(void);
+extern LONG GCOMMAND_LoadDefaultTable(void);
+extern LONG GCOMMAND_LoadMplexTemplate(void);
+extern LONG GCOMMAND_LoadPPV3Template(void);
 
 void FLIB2_LoadDigitalNicheDefaults(void)
 {
