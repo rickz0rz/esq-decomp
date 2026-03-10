@@ -50,25 +50,51 @@ ___ESQPARS_JMPTBL_ESQPROTO_VerifyCh__3:
               MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_P_TYPE_ParseAndSt:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___ESQPARS_JMPTBL_P_TYPE_ParseAndSt__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          P_TYPE_ParseAndStoreTypeRecord;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQPARS_JMPTBL_P_TYPE_ParseAndSt__2:
+___ESQPARS_JMPTBL_P_TYPE_ParseAndSt__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_ESQPROTO_CopyLabe:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___ESQPARS_JMPTBL_ESQPROTO_CopyLabe__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQPROTO_CopyLabelToGlobal;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQPARS_JMPTBL_ESQPROTO_CopyLabe__2:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_DST_HandleBannerC:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
 ___ESQPARS_JMPTBL_DST_HandleBannerC__1:
+              MOVE.B         $f(A7),D7                ;1e2f 000f 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          DST_HandleBannerCommand32_33;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___ESQPARS_JMPTBL_DST_HandleBannerC__2:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_ESQ_SeedMinuteEve:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -233,11 +259,19 @@ ___ESQPARS_JMPTBL_DST_UpdateBannerQ__3:
               MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_ESQPROTO_ParseDig:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___ESQPARS_JMPTBL_ESQPROTO_ParseDig__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQPROTO_ParseDigitLabelAndDispl;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQPARS_JMPTBL_ESQPROTO_ParseDig__2:
+___ESQPARS_JMPTBL_ESQPROTO_ParseDig__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_DISKIO_ParseConfi:
               MOVE.L         A7,D0                    ;200f 

@@ -6,9 +6,9 @@ typedef unsigned long ULONG;
 
 extern LONG DATETIME_SavePairToFile(void *pair);
 extern LONG ESQPROTO_VerifyChecksumAndParseList(UBYTE seed);
-extern void P_TYPE_ParseAndStoreTypeRecord(void);
-extern void ESQPROTO_CopyLabelToGlobal(void);
-extern void DST_HandleBannerCommand32_33(void);
+extern LONG P_TYPE_ParseAndStoreTypeRecord(const char *src);
+extern void ESQPROTO_CopyLabelToGlobal(const char *src);
+extern void DST_HandleBannerCommand32_33(UBYTE cmd, const char *text);
 extern void ESQ_SeedMinuteEventThresholds(void);
 extern void PARSEINI_HandleFontCommand(void);
 extern void TEXTDISP_ApplySourceConfigAllEntries(void);
@@ -23,7 +23,7 @@ extern LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode);
 extern void P_TYPE_WritePromoIdDataFile(void);
 extern void COI_FreeEntryResources(void *entry);
 extern LONG DST_UpdateBannerQueue(void *pair);
-extern void ESQPROTO_ParseDigitLabelAndDisplay(void);
+extern char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in);
 extern void DISKIO_ParseConfigBuffer(char *buffer, ULONG size);
 extern void CLEANUP_ParseAlignedListingBlock(void);
 extern long SCRIPT_ReadNextRbfByte(void);
@@ -35,9 +35,9 @@ void ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(void){DISKIO2_FlushDataFilesI
 void ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(void){NEWGRID_RebuildIndexCache();}
 LONG ESQPARS_JMPTBL_DATETIME_SavePairToFile(void *pair){return DATETIME_SavePairToFile(pair);}
 LONG ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList(LONG cmdChar){return ESQPROTO_VerifyChecksumAndParseList((UBYTE)cmdChar);}
-void ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord(void){P_TYPE_ParseAndStoreTypeRecord();}
-void ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal(void){ESQPROTO_CopyLabelToGlobal();}
-void ESQPARS_JMPTBL_DST_HandleBannerCommand32_33(void){DST_HandleBannerCommand32_33();}
+LONG ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord(const char *src){return P_TYPE_ParseAndStoreTypeRecord(src);}
+void ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal(const char *src){ESQPROTO_CopyLabelToGlobal(src);}
+void ESQPARS_JMPTBL_DST_HandleBannerCommand32_33(UBYTE cmd, const char *text){DST_HandleBannerCommand32_33(cmd, text);}
 void ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds(void){ESQ_SeedMinuteEventThresholds();}
 void ESQPARS_JMPTBL_PARSEINI_HandleFontCommand(void){PARSEINI_HandleFontCommand();}
 void ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries(void){TEXTDISP_ApplySourceConfigAllEntries();}
@@ -52,7 +52,7 @@ LONG ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode){retur
 void ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(void){P_TYPE_WritePromoIdDataFile();}
 void ESQPARS_JMPTBL_COI_FreeEntryResources(void *entry){COI_FreeEntryResources(entry);}
 LONG ESQPARS_JMPTBL_DST_UpdateBannerQueue(void *pair){return DST_UpdateBannerQueue(pair);}
-void ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay(void){ESQPROTO_ParseDigitLabelAndDisplay();}
+char *ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay(const char *in){return ESQPROTO_ParseDigitLabelAndDisplay(in);}
 void ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer(char *buffer, ULONG size){DISKIO_ParseConfigBuffer(buffer, size);}
 void ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock(void){CLEANUP_ParseAlignedListingBlock();}
 unsigned char ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void){return (unsigned char)SCRIPT_ReadNextRbfByte();}
