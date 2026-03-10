@@ -25,7 +25,7 @@ extern void FLIB2_LoadDigitalPpvDefaults(void);
 extern char *GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *text);
 extern LONG LADFUNC_ParseHexDigit(LONG c);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *text, LONG ch);
+extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern LONG GCOMMAND_LoadPPVTemplate(void);
 
