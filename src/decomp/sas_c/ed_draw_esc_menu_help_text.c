@@ -9,8 +9,8 @@ extern const char Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1[];
 extern const char Global_STR_PUSH_ANY_KEY_TO_SELECT_1[];
 
 extern void ED_DrawHelpPanels(LONG mode);
-extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 extern void ED_DrawEscMainMenuText(void);
 

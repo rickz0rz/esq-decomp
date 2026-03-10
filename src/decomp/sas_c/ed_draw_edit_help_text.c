@@ -15,9 +15,9 @@ extern const char Global_STR_SHIFT_LEFT_PREV_AD_CTRLC_COLOR_MODE[];
 extern const char Global_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND[];
 
 extern void ED_DrawBottomHelpBarBackground(void);
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
-extern LONG _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 void ED_DrawEditHelpText(void)

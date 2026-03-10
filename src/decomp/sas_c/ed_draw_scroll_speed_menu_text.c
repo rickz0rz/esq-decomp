@@ -13,8 +13,8 @@ extern const char Global_STR_SCROLL_SPEED_5[];
 extern const char Global_STR_SCROLL_SPEED_6[];
 extern const char Global_STR_SCROLL_SPEED_7[];
 
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
