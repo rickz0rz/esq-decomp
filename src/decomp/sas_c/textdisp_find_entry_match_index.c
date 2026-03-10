@@ -62,8 +62,8 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
 
     mask = (UBYTE)flags;
 
-    inputStart = (char *)0;
-    entryStart = (char *)0;
+    inputStart = 0;
+    entryStart = 0;
     inputHasQuotes = 0;
     entryHasQuotes = 0;
 
@@ -127,7 +127,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
     inputStart[inputLen] = CH_NUL;
 
     while (slot < SLOT_MAX) {
-        if (aux->titlePtrBySlot[(UWORD)slot] == (char *)0) {
+        if (aux->titlePtrBySlot[(UWORD)slot] == 0) {
             slot++;
             continue;
         }
