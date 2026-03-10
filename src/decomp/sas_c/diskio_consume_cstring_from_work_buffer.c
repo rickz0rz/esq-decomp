@@ -19,11 +19,11 @@ char *DISKIO_ConsumeCStringFromWorkBuffer(void)
 
     while (Global_REF_LONG_FILE_SCRATCH-- > DISKIO_COUNT_ZERO) {
         UBYTE ch;
-        char *p;
+        const char *p;
 
         p = Global_PTR_WORK_BUFFER;
         ch = *p++;
-        Global_PTR_WORK_BUFFER = p;
+        Global_PTR_WORK_BUFFER = (char *)p;
         if (ch == DISKIO_CSTRING_CH_NUL) {
             break;
         }
