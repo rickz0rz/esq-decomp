@@ -14,8 +14,8 @@ LONG GCOMMAND_ProcessCtrlCommand(char *cmdPtr)
     UBYTE type = (UBYTE)cmdPtr[4];
 
     if (type == 1) {
-        UBYTE *entry = ED_StateRingTable + (ED_StateRingWriteIndex * 5);
-        rc = GROUP_AV_JMPTBL_EXEC_CallVector_48(cmdPtr, entry, 5, (void *)0);
+        char *entry = (char *)&ED_StateRingTable[ED_StateRingWriteIndex * 5];
+        rc = GROUP_AV_JMPTBL_EXEC_CallVector_48(cmdPtr, entry, 5, 0);
         if (rc > 0 && rc != -1) {
             ED_StateRingWriteIndex += 1;
             if (ED_StateRingWriteIndex >= 20) {
