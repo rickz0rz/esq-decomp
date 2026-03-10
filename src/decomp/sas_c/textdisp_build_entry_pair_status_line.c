@@ -7,7 +7,7 @@ extern const char SCRIPT_AlignedPrefixEmptyD[];
 extern const char SCRIPT_AlignedPrefixEmptyE[];
 extern const char SCRIPT_SpacerTripleC[];
 
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux, LONG index, LONG window, LONG minutes);
 extern const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(char *entry, LONG index, LONG fieldId);
@@ -27,7 +27,7 @@ void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD e
     const LONG FIELD_PART_B = 3;
     const LONG ZERO = 0;
     const UBYTE CH_NUL = 0;
-    char *aux;
+    const char *aux;
     const char *entry;
     LONG idx;
     const char *partA;
@@ -38,12 +38,12 @@ void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD e
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(idx, modeFlag ? MODE_PRIMARY : MODE_SECONDARY);
     entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, modeFlag ? MODE_PRIMARY : MODE_SECONDARY);
 
-    if (entry == (char *)0 || aux == (char *)0) {
+    if (entry == (const char *)0 || aux == (const char *)0) {
         return;
     }
 
     if (TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
-            (char *)entry, aux, (LONG)entryIndex, WINDOW_HALF_HOUR, CONFIG_TimeWindowMinutes) == 0) {
+            (char *)entry, (char *)aux, (LONG)entryIndex, WINDOW_HALF_HOUR, CONFIG_TimeWindowMinutes) == 0) {
         return;
     }
 
