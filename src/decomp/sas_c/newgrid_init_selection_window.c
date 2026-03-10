@@ -27,7 +27,7 @@ extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LON
 extern LONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(UBYTE *slotPtr);
 extern LONG SCRIPT3_JMPTBL_MATH_DivS32(LONG num, LONG den);
 
-void NEWGRID_InitSelectionWindow(char *ctx, WORD row)
+void NEWGRID_InitSelectionWindow(NEWGRID_SelectionWindow *ctx, WORD row)
 {
     NEWGRID_SelectionWindow *window;
     LONG i;
@@ -37,7 +37,7 @@ void NEWGRID_InitSelectionWindow(char *ctx, WORD row)
         return;
     }
 
-    window = (NEWGRID_SelectionWindow *)ctx;
+    window = ctx;
     window->entry = 0;
     window->aux = 0;
     window->index = 0;

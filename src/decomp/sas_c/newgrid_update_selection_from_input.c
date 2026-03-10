@@ -40,7 +40,7 @@ extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entr
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG idx);
 extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *aux, LONG idx, LONG win, LONG tol);
-extern LONG NEWGRID_InitSelectionWindow(SelCtx *ctx, LONG rowBase);
+extern void NEWGRID_InitSelectionWindow(SelCtx *ctx, UWORD rowBase);
 
 LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
 {
