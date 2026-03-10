@@ -24,12 +24,13 @@ LONG GCOMMAND_ProcessCtrlCommand(const GCOMMAND_CtrlPacket *cmdPtr)
     const UBYTE COMMAND_PROBE_DRIVE_B = 16;
     const LONG STATE_RING_ENTRY_SIZE = 5;
     const LONG STATE_RING_ENTRY_COUNT = 20;
+    const LONG RESULT_DONE = 0;
     const WORD DRIVE_PROBE_REQUESTED = 1;
     const LONG EXEC_COMPARE_REJECT = -1;
     LONG rc;
     UBYTE type;
     if (cmdPtr == 0) {
-        return 0;
+        return RESULT_DONE;
     }
 
     type = cmdPtr->type4;
@@ -48,5 +49,5 @@ LONG GCOMMAND_ProcessCtrlCommand(const GCOMMAND_CtrlPacket *cmdPtr)
         GCOMMAND_DriveProbeRequestedFlag = DRIVE_PROBE_REQUESTED;
     }
 
-    return 0;
+    return RESULT_DONE;
 }

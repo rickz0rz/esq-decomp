@@ -2,31 +2,33 @@
 __code:
 GCOMMAND_ProcessCtrlCommand:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$28,D0                  ;90bc 0000 0028 
+              SUB.L          #$2c,D0                  ;90bc 0000 002c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$18,A7                  ;9efc 0018 
-              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
+              SUB.W          #$1c,A7                  ;9efc 001c 
+              MOVEM.L        D2/D5/D6/D7/A3/A5,-(A7)  ;48e7 2714 
 ___GCOMMAND_ProcessCtrlCommand__1:
-              MOVE.L         $30(A7),A5               ;2a6f 0030 
+              MOVE.L         $38(A7),A5               ;2a6f 0038 
               MOVEQ.L        #$1,D7                   ;7e01 
               MOVEQ.L        #$f,D6                   ;7c0f 
               MOVEQ.L        #$10,D5                  ;7a10 
               MOVEQ.L        #$5,D0                   ;7005 
               MOVEQ.L        #$14,D1                  ;7214 
-              MOVE.L         D1,$24(A7)               ;2f41 0024 
-              MOVE.W         #$1,$20(A7)              ;3f7c 0001 0020 
-              MOVEQ.L        #$ff,D1                  ;72ff 
-              MOVE.L         D1,$18(A7)               ;2f41 0018 
-              MOVE.L         D0,$28(A7)               ;2f40 0028 
-              MOVE.L         A5,D1                    ;220d 
+              MOVE.L         D1,$2c(A7)               ;2f41 002c 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         #$1,$24(A7)              ;3f7c 0001 0024 
+              MOVEQ.L        #$ff,D2                  ;74ff 
+              MOVE.L         D2,$1c(A7)               ;2f42 001c 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVEM.L        D1,$28(A7)               ;48ef 0002 0028 
+              MOVE.L         A5,D2                    ;240d 
               BNE.B          ___GCOMMAND_ProcessCtrlCommand__3;6604 
 ___GCOMMAND_ProcessCtrlCommand__2:
-              MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___GCOMMAND_ProcessCtrlCommand__14;6060 
+              MOVE.L         D1,D0                    ;2001 
+              BRA.B          ___GCOMMAND_ProcessCtrlCommand__14;6062 
 ___GCOMMAND_ProcessCtrlCommand__3:
               MOVE.B         $4(A5),D0                ;102d 0004 
-              MOVE.B         D0,$17(A7)               ;1f40 0017 
+              MOVE.B         D0,$1b(A7)               ;1f40 001b 
               CMP.B          D7,D0                    ;b007 
               BNE.B          ___GCOMMAND_ProcessCtrlCommand__9;6644 
 ___GCOMMAND_ProcessCtrlCommand__4:
@@ -38,20 +40,20 @@ ___GCOMMAND_ProcessCtrlCommand__4:
               ADD.L          D1,A0                    ;d1c1 
               MOVE.L         A0,A3                    ;2648 
               CLR.L          -(A7)                    ;42a7 
-              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          GROUP_AV_JMPTBL_EXEC_CallVector_;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
               BLE.B          ___GCOMMAND_ProcessCtrlCommand__12;6f28 
 ___GCOMMAND_ProcessCtrlCommand__5:
-              CMP.L          $18(A7),D0               ;b0af 0018 
+              CMP.L          $1c(A7),D0               ;b0af 001c 
               BEQ.B          ___GCOMMAND_ProcessCtrlCommand__12;6722 
 ___GCOMMAND_ProcessCtrlCommand__6:
               ADDQ.L         #$1,ED_StateRingWriteIndex(A4);52ac 0000 
               MOVE.L         ED_StateRingWriteIndex(A4),D0;202c 0000 
-              CMP.L          $24(A7),D0               ;b0af 0024 
+              CMP.L          $2c(A7),D0               ;b0af 002c 
               BLT.B          ___GCOMMAND_ProcessCtrlCommand__12;6d14 
 ___GCOMMAND_ProcessCtrlCommand__7:
               CLR.L          ED_StateRingWriteIndex(A4);42ac 0000 
@@ -64,13 +66,13 @@ ___GCOMMAND_ProcessCtrlCommand__10:
               CMP.B          D6,D0                    ;b006 
               BNE.B          ___GCOMMAND_ProcessCtrlCommand__12;6606 
 ___GCOMMAND_ProcessCtrlCommand__11:
-              MOVE.W         $20(A7),GCOMMAND_DriveProbeRequestedFlag(A4);396f 0020 0000 
+              MOVE.W         $24(A7),GCOMMAND_DriveProbeRequestedFlag(A4);396f 0024 0000 
 ___GCOMMAND_ProcessCtrlCommand__12:
-              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $28(A7),D0               ;202f 0028 
 ___GCOMMAND_ProcessCtrlCommand__13:
 ___GCOMMAND_ProcessCtrlCommand__14:
-              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
-              ADD.W          #$18,A7                  ;defc 0018 
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A3/A5  ;4cdf 28e4 
+              ADD.W          #$1c,A7                  ;defc 001c 
               RTS                                     ;4e75 
 __const:
 __strings:
