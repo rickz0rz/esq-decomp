@@ -20,9 +20,9 @@ UBYTE *P_TYPE_CloneEntry(UBYTE *dstEntry, UBYTE *srcEntry)
     LONG len;
 
     P_TYPE_FreeEntry(dstEntry);
-    result = (UBYTE *)0;
+    result = 0;
 
-    if (srcEntry != (UBYTE *)0) {
+    if (srcEntry) {
         srcEntryView = (P_TYPE_Entry *)srcEntry;
         i = 0;
         len = srcEntryView->payloadLength;
