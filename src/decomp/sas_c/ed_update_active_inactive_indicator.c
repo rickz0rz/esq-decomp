@@ -9,7 +9,7 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern void _LVORectFill(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
-extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 extern const char Global_STR_ACTIVE_INACTIVE[];
 

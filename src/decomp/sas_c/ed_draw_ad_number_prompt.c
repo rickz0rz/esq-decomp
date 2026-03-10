@@ -20,7 +20,7 @@ extern void ED_DrawHelpPanels(LONG panelMode);
 extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
-extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 extern LONG GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(char *dst, LONG value, LONG width);
 extern LONG GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte(LONG hi, LONG lo);
 extern void ED_RedrawCursorChar(void);

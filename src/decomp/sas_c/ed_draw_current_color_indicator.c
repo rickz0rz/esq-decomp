@@ -8,7 +8,7 @@ extern const char Global_STR_CURRENT_COLOR_FORMATTED[];
 extern LONG GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(LONG value);
 extern LONG GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(LONG value);
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);

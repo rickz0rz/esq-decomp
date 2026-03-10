@@ -7,7 +7,7 @@ extern const char Global_STR_ARE_YOU_SURE[];
 extern void ED_DrawHelpPanels(LONG panelMode);
 extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 void ED_DrawAreYouSurePrompt(void)
 {
