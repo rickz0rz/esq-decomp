@@ -17,7 +17,7 @@ extern TEXTDISP_AliasEntry *TEXTDISP_AliasPtrTable[];
 
 extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 
-LONG TEXTDISP_FindAliasIndexByName(char *entryPtr)
+LONG TEXTDISP_FindAliasIndexByName(const char *entryPtr)
 {
     const LONG INDEX_NOT_FOUND = -1;
     const UBYTE CH_NUL = 0;
@@ -26,7 +26,7 @@ LONG TEXTDISP_FindAliasIndexByName(char *entryPtr)
     char *dst;
     LONG idx;
 
-    src = ((TEXTDISP_CandidateEntry *)entryPtr)->tagText;
+    src = ((const TEXTDISP_CandidateEntry *)entryPtr)->tagText;
     dst = nameBuf;
     do {
         *dst = *src;
