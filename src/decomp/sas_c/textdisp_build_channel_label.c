@@ -30,7 +30,7 @@ void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix)
     entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, mode);
     entryText = 0;
 
-    if (entry != (const TEXTDISP_CandidateEntry *)0) {
+    if (entry != 0) {
         const char *src = entry->text;
         char *dst = entryName;
         entryText = entry->text;
