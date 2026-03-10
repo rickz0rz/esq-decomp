@@ -1,5 +1,6 @@
 typedef signed long LONG;
 typedef signed short WORD;
+typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 typedef struct NEWGRID_Entry {
@@ -23,7 +24,7 @@ extern const char NEWGRID_ChannelRowFmt[];
 
 extern LONG NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LONG keyIndex);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
-extern void NEWGRID_DrawGridEntry(char *rastPort, char *entry, char *aux, LONG row, LONG mode, LONG enabled, LONG bevel);
+extern void NEWGRID_DrawGridEntry(char *rastPort, char *entry, char *aux, UWORD row, UWORD mode, LONG enabled, LONG bevel);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG lineIndex);
 extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, const char *arg0, const char *arg1);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
@@ -56,9 +57,9 @@ LONG NEWGRID_HandleDetailGridState(char *ctx, LONG keyIndex, WORD rowIndex)
         NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20, GCOMMAND_MplexDetailLayoutPen);
 
         if (GCOMMAND_MplexDetailLayoutFlag == (UBYTE)'N') {
-            NEWGRID_DrawGridEntry(ctxView->rastPort, (char *)entry, (char *)aux, (LONG)rowIndex, 2, 1, 4);
+            NEWGRID_DrawGridEntry(ctxView->rastPort, (char *)entry, (char *)aux, (UWORD)rowIndex, 2, 1, 4);
         } else {
-            NEWGRID_DrawGridEntry(ctxView->rastPort, (char *)entry, (char *)aux, (LONG)rowIndex, 3, 1, 4);
+            NEWGRID_DrawGridEntry(ctxView->rastPort, (char *)entry, (char *)aux, (UWORD)rowIndex, 3, 1, 4);
         }
 
         NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(GCOMMAND_MplexDetailInitialLineIndex);

@@ -1,5 +1,6 @@
 typedef signed long LONG;
 typedef signed short WORD;
+typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 typedef struct NEWGRID_Context {
@@ -22,7 +23,7 @@ extern LONG GCOMMAND_PpvShowtimesInitialLineIndex;
 extern UBYTE GCOMMAND_PpvDetailLayoutFlag;
 
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
-extern void NEWGRID_DrawGridEntry(char *rastPort, char *entryPtr0, char *entryPtr1, LONG row, LONG mode, LONG enabled, LONG bevel);
+extern void NEWGRID_DrawGridEntry(char *rastPort, char *entryPtr0, char *entryPtr1, UWORD row, UWORD mode, LONG enabled, LONG bevel);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG idx);
 extern void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
@@ -57,9 +58,9 @@ LONG NEWGRID_HandleShowtimesState(char *gridCtx, char *entryState)
         }
 
         if (GCOMMAND_PpvDetailLayoutFlag == (UBYTE)78) {
-            NEWGRID_DrawGridEntry(ctxView->rastPort, stateView->entryPtr, stateView->auxPtr, row, 2, 1, -1);
+            NEWGRID_DrawGridEntry(ctxView->rastPort, stateView->entryPtr, stateView->auxPtr, (UWORD)row, 2, 1, -1);
         } else {
-            NEWGRID_DrawGridEntry(ctxView->rastPort, stateView->entryPtr, stateView->auxPtr, row, 3, 1, -1);
+            NEWGRID_DrawGridEntry(ctxView->rastPort, stateView->entryPtr, stateView->auxPtr, (UWORD)row, 3, 1, -1);
         }
 
         NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(GCOMMAND_PpvShowtimesInitialLineIndex);

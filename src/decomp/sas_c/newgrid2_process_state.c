@@ -1,5 +1,6 @@
 typedef signed long LONG;
 typedef signed short WORD;
+typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 typedef struct NEWGRID2_Context {
@@ -26,12 +27,12 @@ extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line
 
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG height, LONG pen);
 extern LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, char *entryHead);
-extern LONG NEWGRID_DrawGridEntry(
+extern void NEWGRID_DrawGridEntry(
     char *layoutCtx,
     char *entryPtr,
     char *auxPtr,
-    LONG rowSlot,
-    LONG style,
+    UWORD rowSlot,
+    UWORD style,
     LONG enableMarkers,
     LONG mode
 );
@@ -74,7 +75,7 @@ LONG NEWGRID2_ProcessGridState(char *gridCtx, char *entryCtx, LONG keyValue)
                     grid->rastPort,
                     entry->entryPtr,
                     entry->auxPtr,
-                    (LONG)rowSlot,
+                    (UWORD)rowSlot,
                     1,
                     1,
                     3
@@ -84,7 +85,7 @@ LONG NEWGRID2_ProcessGridState(char *gridCtx, char *entryCtx, LONG keyValue)
                     grid->rastPort,
                     entry->entryPtr,
                     entry->auxPtr,
-                    (LONG)rowSlot,
+                    (UWORD)rowSlot,
                     3,
                     1,
                     3

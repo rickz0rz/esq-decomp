@@ -8,7 +8,7 @@ extern UBYTE CONFIG_NewgridPlaceholderBevelFlag;
 extern const char *SCRIPT_PtrNoDataPlaceholder;
 extern const char *SCRIPT_PtrOffAirPlaceholder;
 
-extern void NEWGRID_DrawGridEntry(char *gridCtx, char *entryPtr, LONG rowMeta, LONG row, LONG col, LONG style, LONG mode);
+extern void NEWGRID_DrawGridEntry(char *gridCtx, char *entryPtr, char *auxPtr, UWORD row, UWORD col, LONG style, LONG mode);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *gridCtx, const char *text);
 
 void NEWGRID_DrawEntryRowOrPlaceholder(char *gridCtx, char *entryPtr, LONG rowMeta, WORD row, WORD col, LONG state)
@@ -19,11 +19,11 @@ void NEWGRID_DrawEntryRowOrPlaceholder(char *gridCtx, char *entryPtr, LONG rowMe
             if (CONFIG_NewgridPlaceholderBevelFlag == (UBYTE)89) {
                 enabled = -1;
             }
-            NEWGRID_DrawGridEntry(gridCtx, entryPtr, rowMeta, (LONG)row, (LONG)col, enabled, 2);
+            NEWGRID_DrawGridEntry(gridCtx, entryPtr, (char *)rowMeta, row, col, enabled, 2);
             return;
         }
 
-        NEWGRID_DrawGridEntry(gridCtx, entryPtr, rowMeta, (LONG)row, 3, 1, 2);
+        NEWGRID_DrawGridEntry(gridCtx, entryPtr, (char *)rowMeta, row, 3, 1, 2);
         return;
     }
 

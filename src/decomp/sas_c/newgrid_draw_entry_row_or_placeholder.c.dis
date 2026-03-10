@@ -6,51 +6,54 @@ NEWGRID_DrawEntryRowOrPlaceholde:
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
               SUBQ.W         #$4,A7                   ;594f 
-              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+              MOVEM.L        D2/D3/D4/D5/D6/D7/A3/A5,-(A7);48e7 3f14 
 ___NEWGRID_DrawEntryRowOrPlaceholde__1:
-              MOVE.L         $34(A7),D4               ;282f 0034 
-              MOVE.W         $32(A7),D5               ;3a2f 0032 
-              MOVE.W         $2e(A7),D6               ;3c2f 002e 
-              MOVE.L         $28(A7),D7               ;2e2f 0028 
-              MOVE.L         $24(A7),A3               ;266f 0024 
-              MOVE.L         $20(A7),A5               ;2a6f 0020 
+              MOVE.L         $3c(A7),D4               ;282f 003c 
+              MOVE.W         $3a(A7),D5               ;3a2f 003a 
+              MOVE.W         $36(A7),D6               ;3c2f 0036 
+              MOVE.L         $30(A7),D7               ;2e2f 0030 
+              MOVE.L         $2c(A7),A3               ;266f 002c 
+              MOVE.L         $28(A7),A5               ;2a6f 0028 
               MOVE.L         D4,D0                    ;2004 
               SUBQ.L         #$2,D0                   ;5580 
-              BNE.B          ___NEWGRID_DrawEntryRowOrPlaceholde__7;6660 
+              BNE.B          ___NEWGRID_DrawEntryRowOrPlaceholde__7;6666 
 ___NEWGRID_DrawEntryRowOrPlaceholde__2:
               TST.W          NEWGRID_EntryPlaceholderModeFlag(A4);4a6c 0000 
-              BEQ.B          ___NEWGRID_DrawEntryRowOrPlaceholde__6;6738 
+              BEQ.B          ___NEWGRID_DrawEntryRowOrPlaceholde__6;673c 
 ___NEWGRID_DrawEntryRowOrPlaceholde__3:
-              CLR.L          $18(A7)                  ;42af 0018 
+              CLR.L          $20(A7)                  ;42af 0020 
               MOVE.B         CONFIG_NewgridPlaceholderBevelFl(A4),D0;102c 0000 
               MOVEQ.L        #$59,D1                  ;7259 
               CMP.B          D1,D0                    ;b001 
               BNE.B          ___NEWGRID_DrawEntryRowOrPlaceholde__5;6606 
 ___NEWGRID_DrawEntryRowOrPlaceholde__4:
               MOVEQ.L        #$ff,D0                  ;70ff 
-              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
 ___NEWGRID_DrawEntryRowOrPlaceholde__5:
               MOVE.W         D6,D0                    ;3006 
-              EXT.L          D0                       ;48c0 
-              MOVE.W         D5,D1                    ;3205 
-              EXT.L          D1                       ;48c1 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              MOVE.W         D5,D2                    ;3405 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         D2,D3                    ;3602 
               PEA            ($2).w                   ;4878 0002 
-              MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
+              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              MOVE.L         D3,-(A7)                 ;2f03 
               MOVE.L         D1,-(A7)                 ;2f01 
-              MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_DrawGridEntry    ;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
-              BRA.B          ___NEWGRID_DrawEntryRowOrPlaceholde__10;6040 
+              BRA.B          ___NEWGRID_DrawEntryRowOrPlaceholde__10;6042 
 ___NEWGRID_DrawEntryRowOrPlaceholde__6:
               MOVE.W         D6,D0                    ;3006 
-              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
               PEA            ($2).w                   ;4878 0002 
               PEA            ($1).w                   ;4878 0001 
               PEA            ($3).w                   ;4878 0003 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A5,-(A7)                 ;2f0d 
@@ -72,7 +75,7 @@ ___NEWGRID_DrawEntryRowOrPlaceholde__9:
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_LayoutA;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___NEWGRID_DrawEntryRowOrPlaceholde__10:
-              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A3/A5;4cdf 28fc 
               ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:
