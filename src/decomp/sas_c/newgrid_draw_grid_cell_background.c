@@ -14,7 +14,7 @@ extern UWORD NEWGRID_RowHeightPx;
 extern UBYTE CONFIG_NewgridPlaceholderBevelFlag;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern void NEWGRID_SetRowColor(char *gridCtx, LONG row, LONG colorSel);
+extern LONG NEWGRID_SetRowColor(char *gridCtx, LONG row, LONG colorSel);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern void _LVORectFill(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
