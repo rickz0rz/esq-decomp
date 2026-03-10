@@ -11,7 +11,7 @@ typedef struct NEWGRID_AuxData {
     UBYTE pad0[7];
     UBYTE rowFlags[49];
     UBYTE pad1[0x38 - 0x38];
-    char *titleTable[49];
+    const char *titleTable[49];
 } NEWGRID_AuxData;
 
 typedef struct NEWGRID_Context {
