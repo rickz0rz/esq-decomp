@@ -8,10 +8,10 @@ typedef struct PTypeEntry {
     UBYTE *payload;
 } PTypeEntry;
 
-extern char P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load[];
-extern char P_TYPE_STR_CURDAY_COLON_LoadSection[];
-extern char P_TYPE_STR_NXTDAY_COLON_LoadSection[];
-extern char P_TYPE_STR_TYPES_COLON[];
+extern const char P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load[];
+extern const char P_TYPE_STR_CURDAY_COLON_LoadSection[];
+extern const char P_TYPE_STR_NXTDAY_COLON_LoadSection[];
+extern const char P_TYPE_STR_TYPES_COLON[];
 extern const UBYTE WDISP_CharClassTable[];
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 extern UBYTE TEXTDISP_SecondaryGroupCode;
