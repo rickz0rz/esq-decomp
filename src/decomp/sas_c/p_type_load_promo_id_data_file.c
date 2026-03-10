@@ -17,7 +17,7 @@ extern UBYTE TEXTDISP_PrimaryGroupCode;
 extern UBYTE TEXTDISP_SecondaryGroupCode;
 extern char *Global_PTR_WORK_BUFFER;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
-extern const UBYTE Global_STR_P_TYPE_C_6;
+extern const UBYTE Global_STR_P_TYPE_C_6[];
 extern PTypeEntry *P_TYPE_PrimaryGroupListPtr;
 extern PTypeEntry *P_TYPE_SecondaryGroupListPtr;
 
@@ -106,6 +106,6 @@ LONG P_TYPE_LoadPromoIdDataFile(void)
         }
     }
 
-    SCRIPT_JMPTBL_MEMORY_DeallocateMemory(&Global_STR_P_TYPE_C_6, 406, work, scratch_len + 1);
+    SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_6, 406, work, scratch_len + 1);
     return 1;
 }

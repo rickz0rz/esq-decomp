@@ -7,8 +7,8 @@ typedef struct P_TYPE_Entry {
     UBYTE *payload;
 } P_TYPE_Entry;
 
-extern const UBYTE Global_STR_P_TYPE_C_4;
-extern const UBYTE Global_STR_P_TYPE_C_5;
+extern const UBYTE Global_STR_P_TYPE_C_4[];
+extern const UBYTE Global_STR_P_TYPE_C_5[];
 
 extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const void *tagName, LONG line, void *ptr, LONG bytes);
 
@@ -24,11 +24,11 @@ void P_TYPE_FreeEntry(UBYTE *entry)
 
     if (entryView->payload != (UBYTE *)0) {
         SCRIPT_JMPTBL_MEMORY_DeallocateMemory(
-            &Global_STR_P_TYPE_C_4,
+            Global_STR_P_TYPE_C_4,
             92,
             entryView->payload,
             entryView->payloadLength);
     }
 
-    SCRIPT_JMPTBL_MEMORY_DeallocateMemory(&Global_STR_P_TYPE_C_5, 95, entry, 10);
+    SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_5, 95, entry, 10);
 }
