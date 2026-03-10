@@ -37,11 +37,11 @@ LONG GCOMMAND_LoadMplexTemplate(void)
     _LVOCopyMem(AbsExecBase, GCOMMAND_DigitalMplexEnabledFlag, loadedBuffer, 52);
     Global_PTR_WORK_BUFFER += 52;
 
-    GCOMMAND_MplexListingsTemplatePtr = (char *)0;
-    GCOMMAND_MplexAtTemplatePtr = (char *)0;
+    GCOMMAND_MplexListingsTemplatePtr = 0;
+    GCOMMAND_MplexAtTemplatePtr = 0;
 
     splitPtr = GROUP_AS_JMPTBL_STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
-    if (splitPtr != (char *)0 && *splitPtr != 0) {
+    if (splitPtr && *splitPtr) {
         *splitPtr = 0;
         splitPtr++;
     }
@@ -59,14 +59,14 @@ LONG GCOMMAND_LoadMplexTemplate(void)
         loadedBuffer,
         loadedSize + 1);
 
-    fmtSlot = (char *)0;
-    if (GCOMMAND_MplexAtTemplatePtr != (char *)0 && *GCOMMAND_MplexAtTemplatePtr != 0) {
+    fmtSlot = 0;
+    if (GCOMMAND_MplexAtTemplatePtr && *GCOMMAND_MplexAtTemplatePtr) {
         fmtSlot = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(
             GCOMMAND_MplexAtTemplatePtr,
             GCOMMAND_FMT_PCT_T_MplexTemplateLoad);
     }
 
-    if (fmtSlot != (char *)0 && *fmtSlot != 0) {
+    if (fmtSlot && *fmtSlot) {
         fmtSlot[1] = 's';
     }
 

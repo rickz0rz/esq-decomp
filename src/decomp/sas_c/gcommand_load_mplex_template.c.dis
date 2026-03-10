@@ -14,7 +14,7 @@ ___GCOMMAND_LoadMplexTemplate__1:
               BNE.B          ___GCOMMAND_LoadMplexTemplate__3;6606 
 ___GCOMMAND_LoadMplexTemplate__2:
               MOVEQ.L        #$1,D0                   ;7001 
-              BRA.W          ___GCOMMAND_LoadMplexTemplate__14;6000 00aa 
+              BRA.W          ___GCOMMAND_LoadMplexTemplate__14;6000 00a8 
 ___GCOMMAND_LoadMplexTemplate__3:
               MOVE.L         Global_PTR_WORK_BUFFER(A4),A5;2a6c 0000 
               MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D7;2e2c 0000 
@@ -31,8 +31,8 @@ ___GCOMMAND_LoadMplexTemplate__3:
               MOVE.L         Global_PTR_WORK_BUFFER(A4),-(A7);2f2c 0000 
               BSR.W          GROUP_AS_JMPTBL_STR_FindCharPtr;6100 0000 
               MOVE.L         D0,A3                    ;2640 
-              TST.L          D0                       ;4a80 
               LEA            $18(A7),A7               ;4fef 0018 
+              MOVE.L         A3,D0                    ;200b 
               BEQ.B          ___GCOMMAND_LoadMplexTemplate__6;6706 
 ___GCOMMAND_LoadMplexTemplate__4:
               TST.B          (A3)                     ;4a13 
@@ -58,11 +58,10 @@ ___GCOMMAND_LoadMplexTemplate__6:
               LEA            $18(A7),A7               ;4fef 0018 
               SUB.L          A2,A2                    ;95ca 
               MOVE.L         GCOMMAND_MplexAtTemplatePtr(A4),D0;202c 0000 
-              BEQ.B          ___GCOMMAND_LoadMplexTemplate__9;6716 
+              BEQ.B          ___GCOMMAND_LoadMplexTemplate__9;6714 
 ___GCOMMAND_LoadMplexTemplate__7:
               MOVE.L         D0,A0                    ;2040 
-              MOVE.B         (A0),D1                  ;1210 
-              TST.B          D1                       ;4a01 
+              TST.B          (A0)                     ;4a10 
               BEQ.B          ___GCOMMAND_LoadMplexTemplate__9;670e 
 ___GCOMMAND_LoadMplexTemplate__8:
               PEA            GCOMMAND_FMT_PCT_T_MplexTemplate(A4);486c 0000 
