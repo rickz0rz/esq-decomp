@@ -50,14 +50,14 @@ void LADFUNC_BuildEntryBuffersOrDefault(LONG entryIndex, char *outText, UBYTE *o
     }
 
     {
-        char *src = entry->textPtr;
+        const char *src = entry->textPtr;
         char *dst = outText;
         while ((*dst++ = *src++) != CH_NUL) {
         }
     }
 
     {
-        char *p = outText;
+        const char *p = outText;
         while (*p != CH_NUL) {
             ++p;
         }
