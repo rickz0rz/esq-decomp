@@ -17,7 +17,7 @@ extern const char ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR[];
 extern const char Global_STR_CLOCKCMD_EQUALS_PCT_C[];
 
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern LONG ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y);
+extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y);
 extern LONG _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
 
 typedef struct ED1_DisplayContext {
