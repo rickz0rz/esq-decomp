@@ -49,17 +49,19 @@ LONG TEXTDISP_BuildMatchIndexList(char *patternPtr, UWORD cmdChar)
     LONG entryCount;
     LONG ppvOrSbeFlag;
     LONG sportsFilterFlag;
-    char *title;
+    const char *patternText;
+    const char *title;
     TEXTDISP_CandidateEntry *entry;
 
     matchCount = 0;
     if (patternPtr == (char *)0) {
         return MATCH_FALSE;
     }
+    patternText = patternPtr;
 
-    if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternPtr, TEXTDISP_Tag_PPV) == 0) {
+    if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternText, TEXTDISP_Tag_PPV) == 0) {
         ppvOrSbeFlag = MATCH_TRUE;
-    } else if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternPtr, TEXTDISP_Tag_SBE) == 0) {
+    } else if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SBE) == 0) {
         TEXTDISP_SbeFilterActiveFlag = MATCH_TRUE;
         ppvOrSbeFlag = MATCH_TRUE;
     } else {
@@ -67,21 +69,21 @@ LONG TEXTDISP_BuildMatchIndexList(char *patternPtr, UWORD cmdChar)
     }
 
     sportsFilterFlag =
-        (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternPtr, TEXTDISP_Tag_SPORTS) == 0)
+        (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SPORTS) == 0)
             ? SPORTS_MATCH_TRUE
             : MATCH_FALSE;
-    if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternPtr, TEXTDISP_Tag_SPT_Filter) == 0) {
-        patternPtr = (char *)Global_STR_ASTERISK_2;
+    if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SPT_Filter) == 0) {
+        patternText = Global_STR_ASTERISK_2;
     }
 
     {
         const char *prefix = TEXTDISP_Tag_FIND1;
-        const char *scan = patternPtr;
+        const char *scan = patternText;
 
         while (*prefix == *scan) {
             if (*prefix == 0) {
                 TEXTDISP_FindModeActiveFlag = MATCH_TRUE;
-                patternPtr = (char *)Global_STR_ASTERISK_3;
+                patternText = Global_STR_ASTERISK_3;
                 break;
             }
             ++prefix;
@@ -132,7 +134,7 @@ LONG TEXTDISP_BuildMatchIndexList(char *patternPtr, UWORD cmdChar)
             continue;
         }
 
-        if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternPtr, title) == 0) {
+        if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternText, title) == 0) {
             TEXTDISP_CandidateIndexList[matchCount++] = (UBYTE)idx;
         }
         idx += 1;
