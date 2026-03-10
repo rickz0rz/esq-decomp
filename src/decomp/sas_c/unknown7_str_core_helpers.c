@@ -74,10 +74,10 @@ char *STR_FindAnyCharPtr(const char *s, const char *charset)
     return STR_FindAnyCharInSet(s, charset);
 }
 
-char *STR_SkipClass3Chars(char *s)
+char *STR_SkipClass3Chars(const char *s)
 {
     while ((Global_CharClassTable[(UBYTE)*s] & (1U << 3)) != 0U) {
         ++s;
     }
-    return s;
+    return (char *)s;
 }

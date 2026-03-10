@@ -21,7 +21,7 @@ extern void DISPTEXT_RenderCurrentLine(char *rp, LONG x, LONG y);
 extern void COI_ProcessEntrySelectionState(void);
 extern void CLEANUP_FormatClockFormatEntry(LONG slotIndex, UBYTE *out);
 extern ULONG ESQ_GetHalfHourSlotIndex(void *timePtr);
-extern char *STR_SkipClass3Chars(char *s);
+extern char *STR_SkipClass3Chars(const char *s);
 extern char *STRING_AppendN(char *dst, const char *src, ULONG maxBytes);
 extern LONG ESQDISP_ComputeScheduleOffsetForRow(WORD row, UBYTE slot);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(char *s);
@@ -56,7 +56,7 @@ void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(char *rp, LONG x, LONG y){DISPTE
 void NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(void){COI_ProcessEntrySelectionState();}
 void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slotIndex, UBYTE *out){CLEANUP_FormatClockFormatEntry(slotIndex, out);}
 ULONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(void *timePtr){return ESQ_GetHalfHourSlotIndex(timePtr);}
-char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s){return STR_SkipClass3Chars(s);}
+char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s){return STR_SkipClass3Chars(s);}
 char *NEWGRID2_JMPTBL_STRING_AppendN(char *dst, const char *src, ULONG maxBytes){return STRING_AppendN(dst, src, maxBytes);}
 LONG NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(WORD row, UBYTE slot){return ESQDISP_ComputeScheduleOffsetForRow(row, slot);}
 LONG NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s){return PARSE_ReadSignedLongSkipClass3_Alt(s);}
