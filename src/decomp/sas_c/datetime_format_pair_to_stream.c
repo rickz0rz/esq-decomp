@@ -27,8 +27,9 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
     char outBuf[87];
     char scratch[51];
     const char *outCursor;
+    const void *inTime;
+    const void *outTime;
     const void * const *pairPtrs;
-    const void *t;
     LONG hour12;
     LONG writeResult;
 
@@ -40,21 +41,21 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
 
     pairPtrs = (const void * const *)pairStruct;
 
-    t = pairPtrs[0];
-    if (t != 0) {
+    inTime = pairPtrs[0];
+    if (inTime != 0) {
         GROUP_AM_JMPTBL_WDISP_SPrintf(scratch, DST_FMT_PCT_C_InTimePrefixChar, DATETIME_IN_PREFIX_TOKEN);
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
 
         GROUP_AM_JMPTBL_WDISP_SPrintf(
             scratch,
             DST_FMT_PCT_04D_PCT_03D_InTimeDateCode,
-            (LONG)WORD_AT(t, 6),
-            (LONG)WORD_AT(t, 16));
+            (LONG)WORD_AT(inTime, 6),
+            (LONG)WORD_AT(inTime, 16));
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
 
-        (void)GROUP_AG_JMPTBL_MATH_DivS32((LONG)WORD_AT(t, 8), DATETIME_HOURS_PER_HALF_DAY);
-        hour12 = ((LONG)WORD_AT(t, 8)) / DATETIME_HOURS_PER_HALF_DAY;
-        if (WORD_AT(t, 18) != 0) {
+        (void)GROUP_AG_JMPTBL_MATH_DivS32((LONG)WORD_AT(inTime, 8), DATETIME_HOURS_PER_HALF_DAY);
+        hour12 = ((LONG)WORD_AT(inTime, 8)) / DATETIME_HOURS_PER_HALF_DAY;
+        if (WORD_AT(inTime, 18) != 0) {
             hour12 += DATETIME_HOURS_PER_HALF_DAY;
         }
 
@@ -62,27 +63,27 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
             scratch,
             DST_FMT_PCT_02D_COLON_PCT_02D_InTimeClock,
             hour12,
-            (LONG)WORD_AT(t, 10));
+            (LONG)WORD_AT(inTime, 10));
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
     } else {
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, DST_STR_NO_IN_TIME);
     }
 
-    t = pairPtrs[1];
-    if (t != 0) {
+    outTime = pairPtrs[1];
+    if (outTime != 0) {
         GROUP_AM_JMPTBL_WDISP_SPrintf(scratch, DST_FMT_PCT_C_OutTimePrefixChar, DATETIME_OUT_PREFIX_TOKEN);
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
 
         GROUP_AM_JMPTBL_WDISP_SPrintf(
             scratch,
             DST_FMT_PCT_04D_PCT_03D_OutTimeDateCode,
-            (LONG)WORD_AT(t, 6),
-            (LONG)WORD_AT(t, 16));
+            (LONG)WORD_AT(outTime, 6),
+            (LONG)WORD_AT(outTime, 16));
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
 
-        (void)GROUP_AG_JMPTBL_MATH_DivS32((LONG)WORD_AT(t, 8), DATETIME_HOURS_PER_HALF_DAY);
-        hour12 = ((LONG)WORD_AT(t, 8)) / DATETIME_HOURS_PER_HALF_DAY;
-        if (WORD_AT(t, 18) != 0) {
+        (void)GROUP_AG_JMPTBL_MATH_DivS32((LONG)WORD_AT(outTime, 8), DATETIME_HOURS_PER_HALF_DAY);
+        hour12 = ((LONG)WORD_AT(outTime, 8)) / DATETIME_HOURS_PER_HALF_DAY;
+        if (WORD_AT(outTime, 18) != 0) {
             hour12 += DATETIME_HOURS_PER_HALF_DAY;
         }
 
@@ -90,7 +91,7 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
             scratch,
             DST_FMT_PCT_02D_COLON_PCT_02D_OutTimeClock,
             hour12,
-            (LONG)WORD_AT(t, 10));
+            (LONG)WORD_AT(outTime, 10));
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
     } else {
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, DST_STR_NO_OUT_TIME);
