@@ -68,8 +68,8 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
     WORD savedMatchIndex;
     WORD timeoutState;
     WORD sourceSelect;
+    WORD duplicateHeadPath;
     volatile LONG pollLimit;
-    LONG duplicateHeadPath;
     const ESQIFF_PendingBrushNode *headNode;
     const char *headPath;
     ESQIFF_PendingBrushNode *pendingNode;
