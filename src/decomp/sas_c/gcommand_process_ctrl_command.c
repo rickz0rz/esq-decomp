@@ -2,6 +2,11 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
+typedef struct GCOMMAND_CtrlPacket {
+    UBYTE pad0[4];
+    UBYTE type4;
+} GCOMMAND_CtrlPacket;
+
 extern UBYTE ED_StateRingTable[];
 extern LONG ED_StateRingWriteIndex;
 extern WORD GCOMMAND_DriveProbeRequestedFlag;
@@ -12,12 +17,14 @@ LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
 {
     LONG rc;
     UBYTE type;
+    const GCOMMAND_CtrlPacket *cmdView;
 
     if (cmdPtr == 0) {
         return 0;
     }
 
-    type = (UBYTE)cmdPtr[4];
+    cmdView = (const GCOMMAND_CtrlPacket *)cmdPtr;
+    type = cmdView->type4;
 
     if (type == 1) {
         char *entry = (char *)&ED_StateRingTable[ED_StateRingWriteIndex * 5];

@@ -5,14 +5,15 @@ GCOMMAND_ProcessCtrlCommand:
               SUB.L          #$10,D0                  ;90bc 0000 0010 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D2/D6/D7/A3/A5,-(A7)     ;48e7 2314 
+              MOVEM.L        D2/D6/D7/A2/A3/A5,-(A7)  ;48e7 2334 
 ___GCOMMAND_ProcessCtrlCommand__1:
-              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
               MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___GCOMMAND_ProcessCtrlCommand__14;6762 
+              BEQ.B          ___GCOMMAND_ProcessCtrlCommand__14;6764 
 ___GCOMMAND_ProcessCtrlCommand__2:
 ___GCOMMAND_ProcessCtrlCommand__3:
-              MOVE.B         $4(A5),D6                ;1c2d 0004 
+              MOVE.L         D0,A3                    ;2640 
+              MOVE.B         $4(A3),D6                ;1c2b 0004 
               MOVE.L         D6,D1                    ;2206 
               SUBQ.B         #$1,D1                   ;5301 
               BNE.B          ___GCOMMAND_ProcessCtrlCommand__9;6644 
@@ -23,10 +24,10 @@ ___GCOMMAND_ProcessCtrlCommand__4:
               ADD.L          D1,D2                    ;d481 
               LEA            ED_StateRingTable(A4),A0 ;41ec 0000 
               ADD.L          D2,A0                    ;d1c2 
-              MOVE.L         A0,A3                    ;2648 
+              MOVE.L         A0,A2                    ;2448 
               CLR.L          -(A7)                    ;42a7 
               PEA            ($5).w                   ;4878 0005 
-              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A2,-(A7)                 ;2f0a 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          GROUP_AV_JMPTBL_EXEC_CallVector_;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
@@ -59,7 +60,7 @@ ___GCOMMAND_ProcessCtrlCommand__12:
               MOVEQ.L        #$0,D0                   ;7000 
 ___GCOMMAND_ProcessCtrlCommand__13:
 ___GCOMMAND_ProcessCtrlCommand__14:
-              MOVEM.L        (A7)+,D2/D6/D7/A3/A5     ;4cdf 28c4 
+              MOVEM.L        (A7)+,D2/D6/D7/A2/A3/A5  ;4cdf 2cc4 
               RTS                                     ;4e75 
 __const:
 __strings:
