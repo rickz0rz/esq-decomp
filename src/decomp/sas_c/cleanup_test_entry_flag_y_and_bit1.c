@@ -14,10 +14,10 @@ const char *COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mod
 
 LONG CLEANUP_TestEntryFlagYAndBit1(const void *entry, UWORD slot, LONG idx)
 {
-    const UBYTE *flagsText;
+    const char *flagsText;
 
-    flagsText = (const UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
-    if (flagsText == (const UBYTE *)0) {
+    flagsText = COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
+    if (flagsText == 0) {
         return 0;
     }
 
