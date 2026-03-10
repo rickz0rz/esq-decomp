@@ -61,7 +61,7 @@ void NEWGRID_DrawClockFormatHeader(char *grid_ctx, LONG start_slot)
         LONG col_w;
         LONG x;
         LONG right;
-        char *p;
+        const char *p;
         LONG text_len;
         LONG text_w;
         LONG pad;
