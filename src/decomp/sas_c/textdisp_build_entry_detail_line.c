@@ -41,7 +41,7 @@ extern const char SCRIPT_StrVsSeparator[];
 extern const char Global_STR_ALIGNED_CHANNEL_2[];
 
 extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
 extern void TEXTDISP_BuildEntryShortName(const char *entry, char *dst);
 extern char *TEXTDISP_SkipControlCodes(char *text);
