@@ -217,6 +217,7 @@ ESQFUNC_JMPTBL_ESQ_HandleSerialR:
 ___ESQFUNC_JMPTBL_ESQ_HandleSerialR__1:
               BSR.W          ESQ_HandleSerialRbfInterrupt;6100 0000 
 ___ESQFUNC_JMPTBL_ESQ_HandleSerialR__2:
+___ESQFUNC_JMPTBL_ESQ_HandleSerialR__3:
               RTS                                     ;4e75 
 ESQFUNC_JMPTBL_TEXTDISP_TickDisp:
               CMP.L          __base(A4),A7            ;bfec 0000 

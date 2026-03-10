@@ -23,7 +23,7 @@ extern void P_TYPE_EnsureSecondaryList(void);
 extern void PARSEINI_NormalizeClockData(void *dstClockData, void *srcClockData);
 extern void ESQ_TickGlobalCounters(void);
 extern void SCRIPT_HandleSerialCtrlCmd(void);
-extern void ESQ_HandleSerialRbfInterrupt(void);
+extern LONG ESQ_HandleSerialRbfInterrupt(void);
 extern void TEXTDISP_TickDisplayState(void);
 extern void ESQ_PollCtrlInput(void);
 extern void LOCAVAIL_RebuildFilterStateFromCurrentGroup(void);
@@ -50,7 +50,7 @@ void ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList(void){P_TYPE_EnsureSecondaryList(
 void ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData(void *dstClockData, void *srcClockData){PARSEINI_NormalizeClockData(dstClockData, srcClockData);}
 void ESQFUNC_JMPTBL_ESQ_TickGlobalCounters(void){ESQ_TickGlobalCounters();}
 void ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd(void){SCRIPT_HandleSerialCtrlCmd();}
-void ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt(void){ESQ_HandleSerialRbfInterrupt();}
+LONG ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt(void){return ESQ_HandleSerialRbfInterrupt();}
 void ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState(void){TEXTDISP_TickDisplayState();}
 void ESQFUNC_JMPTBL_ESQ_PollCtrlInput(void){ESQ_PollCtrlInput();}
 void ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup(void){LOCAVAIL_RebuildFilterStateFromCurrentGroup();}

@@ -9,7 +9,7 @@ extern const char Global_STR_ESQFUNC_C_4[];
 extern const char Global_STR_RS232_RECEIVE_HANDLER[];
 
 extern struct Interrupt *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const void *fileTag, LONG line, ULONG bytes, ULONG flags);
-extern void ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt(void);
+extern LONG ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt(void);
 
 #ifndef MEMF_PUBLIC
 #define MEMF_PUBLIC 1UL
