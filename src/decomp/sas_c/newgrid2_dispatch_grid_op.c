@@ -1,5 +1,6 @@
 typedef signed long LONG;
 typedef signed short WORD;
+typedef unsigned short UWORD;
 
 extern LONG NEWGRID2_PendingOperationId;
 extern LONG NEWGRID2_LastDispatchResult;
@@ -11,7 +12,7 @@ extern LONG NEWGRID_ProcessAltEntryState(char *gridCtx, LONG rowIndex, LONG sele
 extern LONG NEWGRID2_HandleGridState(char *gridCtx, WORD rowIndex, LONG modeSel);
 extern LONG NEWGRID_ProcessSecondaryState(char *gridCtx, LONG rowIndex);
 extern LONG NEWGRID_ProcessScheduleState(char *gridCtx, LONG rowIndex, LONG selector);
-extern LONG NEWGRID_ProcessShowtimesWorkflow(char *gridCtx, LONG rowIndex, LONG selector);
+extern LONG NEWGRID_ProcessShowtimesWorkflow(char *gridCtx, UWORD rowIndex, UWORD selector);
 
 LONG NEWGRID2_DispatchGridOperation(LONG operationId, char *gridCtx, WORD rowIndex, WORD selector)
 {
@@ -54,7 +55,11 @@ LONG NEWGRID2_DispatchGridOperation(LONG operationId, char *gridCtx, WORD rowInd
                 NEWGRID2_LastDispatchResult = NEWGRID_ProcessScheduleState(gridCtx, (LONG)rowIndex, (LONG)selector);
                 break;
             case 7:
-                NEWGRID2_LastDispatchResult = NEWGRID_ProcessShowtimesWorkflow(gridCtx, (LONG)rowIndex, (LONG)selector);
+                NEWGRID2_LastDispatchResult = NEWGRID_ProcessShowtimesWorkflow(
+                    gridCtx,
+                    (UWORD)rowIndex,
+                    (UWORD)selector
+                );
                 break;
         }
     }
