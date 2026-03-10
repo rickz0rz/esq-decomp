@@ -24,6 +24,7 @@ LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
     const UBYTE COMMAND_PROBE_DRIVE_B = 16;
     const LONG STATE_RING_ENTRY_SIZE = 5;
     const LONG STATE_RING_ENTRY_COUNT = 20;
+    const WORD DRIVE_PROBE_REQUESTED = 1;
     const LONG EXEC_COMPARE_REJECT = -1;
     LONG rc;
     UBYTE type;
@@ -47,7 +48,7 @@ LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
             }
         }
     } else if (type == COMMAND_PROBE_DRIVE_B || type == COMMAND_PROBE_DRIVE_A) {
-        GCOMMAND_DriveProbeRequestedFlag = 1;
+        GCOMMAND_DriveProbeRequestedFlag = DRIVE_PROBE_REQUESTED;
     }
 
     return 0;
