@@ -93,7 +93,7 @@ ___ESQIFF2_ParseGroupRecordAndRefre__3:
               MOVE.B         TEXTDISP_PrimaryGroupRecordCheck(A4),D1;122c 0000 
               MOVE.B         ESQIFF_RecordChecksumByte(A4),D3;162c 0000 
               CMP.B          D3,D1                    ;b203 
-              BEQ.W          ___ESQIFF2_ParseGroupRecordAndRefre__67;6700 028e 
+              BEQ.W          ___ESQIFF2_ParseGroupRecordAndRefre__67;6700 0290 
 ___ESQIFF2_ParseGroupRecordAndRefre__4:
               MOVE.W         D2,TEXTDISP_PrimaryGroupRecordLengt(A4);3942 0000 
               MOVE.B         ESQIFF_RecordChecksumByte(A4),TEXTDISP_PrimaryGroupRecordCheck(A4);196c 0000 0000 
@@ -115,7 +115,7 @@ ___ESQIFF2_ParseGroupRecordAndRefre__8:
 ___ESQIFF2_ParseGroupRecordAndRefre__9:
               MOVE.B         TEXTDISP_SecondaryGroupCode(A4),D0;102c 0000 
               CMP.B          D0,D1                    ;b200 
-              BNE.W          ___ESQIFF2_ParseGroupRecordAndRefre__67;6600 025c 
+              BNE.W          ___ESQIFF2_ParseGroupRecordAndRefre__67;6600 025e 
 ___ESQIFF2_ParseGroupRecordAndRefre__10:
               MOVE.W         TEXTDISP_SecondaryGroupRecordLen(A4),D0;302c 0000 
               MOVE.W         ESQIFF_RecordLength(A4),D1;322c 0000 
@@ -125,7 +125,7 @@ ___ESQIFF2_ParseGroupRecordAndRefre__11:
               MOVE.B         TEXTDISP_SecondaryGroupRecordChe(A4),D0;102c 0000 
               MOVE.B         ESQIFF_RecordChecksumByte(A4),D2;142c 0000 
               CMP.B          D2,D0                    ;b002 
-              BEQ.W          ___ESQIFF2_ParseGroupRecordAndRefre__67;6700 0242 
+              BEQ.W          ___ESQIFF2_ParseGroupRecordAndRefre__67;6700 0244 
 ___ESQIFF2_ParseGroupRecordAndRefre__12:
               MOVE.W         D1,TEXTDISP_SecondaryGroupRecordLen(A4);3941 0000 
               MOVE.B         ESQIFF_RecordChecksumByte(A4),TEXTDISP_SecondaryGroupRecordChe(A4);196c 0000 0000 
@@ -357,7 +357,7 @@ ___ESQIFF2_ParseGroupRecordAndRefre__63:
               BSR.W          ESQIFF2_ValidateFieldIndexAndLen;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
-              BEQ.B          ___ESQIFF2_ParseGroupRecordAndRefre__67;6754 
+              BEQ.B          ___ESQIFF2_ParseGroupRecordAndRefre__67;6756 
 ___ESQIFF2_ParseGroupRecordAndRefre__64:
 ___ESQIFF2_ParseGroupRecordAndRefre__65:
               MOVE.L         D6,D0                    ;2006 
@@ -381,8 +381,9 @@ ___ESQIFF2_ParseGroupRecordAndRefre__66:
               MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          ESQSHARED_CreateGroupEntryAndTit;6100 0000 
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $41(A7),D0               ;102f 0041 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               MOVE.L         D0,(A7)                  ;2e80 
               BSR.W          ESQIFF2_PadEntriesToMaxTitleWidt;6100 0000 
               BSR.W          ESQPARS_JMPTBL_TEXTDISP_ApplySou;6100 0000 
