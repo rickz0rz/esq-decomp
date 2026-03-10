@@ -45,7 +45,7 @@ extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
 extern void TEXTDISP_BuildEntryShortName(char *entry, char *dst);
 extern char *TEXTDISP_SkipControlCodes(char *text);
-extern void STRING_AppendAtNull(char *dst, const char *src);
+extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern void WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
 extern char *TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
 extern char *STR_FindCharPtr(char *s, LONG ch);

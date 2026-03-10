@@ -17,7 +17,7 @@ extern WORD TEXTDISP_MaxEntryTitleLength;
 extern ESQIFF2_Entry *TEXTDISP_SecondaryEntryPtrTable[];
 extern ESQIFF2_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
-extern LONG GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
+extern char *GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
 LONG ESQIFF2_PadEntriesToMaxTitleWidth(BYTE group_code)
 {

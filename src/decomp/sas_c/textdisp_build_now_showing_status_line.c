@@ -55,7 +55,7 @@ extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux, LONG index, LONG window, LONG minutes);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG index, char *aux);
 extern char *STR_SkipClass3Chars(char *src);
-extern void STRING_AppendAtNull(char *dst, const char *src);
+extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern char *TEXTDISP_FindControlToken(const char *src);
 extern void WDISP_SPrintf(char *dst, const char *fmt, LONG value);
 extern void TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(char *line, LONG mode, LONG groupIndex, LONG entryIndex, LONG a, LONG b);
