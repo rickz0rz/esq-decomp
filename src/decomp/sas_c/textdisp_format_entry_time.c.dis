@@ -118,9 +118,8 @@ ___TEXTDISP_FormatEntryTime__13:
 ___TEXTDISP_FormatEntryTime__14:
               MOVE.L         D6,D0                    ;2006 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         Global_REF_STR_CLOCK_FORMAT(A4),A0;206c 0000 
-              ADD.L          D0,A0                    ;d1c0 
-              MOVE.L         (A0),$1c(A7)             ;2f50 001c 
+              LEA            Global_REF_STR_CLOCK_FORMAT(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),$1c(A7)      ;2f70 0800 001c 
 ___TEXTDISP_FormatEntryTime__15:
               MOVE.L         A5,A0                    ;204d 
               ADDQ.L         #$1,A5                   ;528d 
@@ -267,9 +266,8 @@ ___TEXTDISP_FormatEntryTimeForIndex__10:
 ___TEXTDISP_FormatEntryTimeForIndex__11:
               MOVE.L         D6,D0                    ;2006 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         Global_REF_STR_CLOCK_FORMAT(A4),A0;206c 0000 
-              ADD.L          D0,A0                    ;d1c0 
-              MOVE.L         (A0),$18(A7)             ;2f50 0018 
+              LEA            Global_REF_STR_CLOCK_FORMAT(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),$18(A7)      ;2f70 0800 0018 
 ___TEXTDISP_FormatEntryTimeForIndex__12:
               MOVE.L         A5,A0                    ;204d 
               ADDQ.L         #$1,A5                   ;528d 

@@ -4,7 +4,7 @@ typedef unsigned char UBYTE;
 
 typedef struct TEXTDISP_AuxData {
     UBYTE pad0[56];
-    char *titleTable[110];
+    const char *titleTable[110];
     UBYTE pad1[2];
     UBYTE slotCode;
 } TEXTDISP_AuxData;
@@ -12,9 +12,9 @@ typedef struct TEXTDISP_AuxData {
 extern WORD TEXTDISP_ActiveGroupId;
 extern WORD TEXTDISP_CurrentMatchIndex;
 extern UBYTE CLOCK_FormatVariantCode;
-extern char *TEXTDISP_PrimaryTitlePtrTable[];
-extern char *TEXTDISP_SecondaryTitlePtrTable[];
-extern char **Global_REF_STR_CLOCK_FORMAT;
+extern const char *TEXTDISP_PrimaryTitlePtrTable[];
+extern const char *TEXTDISP_SecondaryTitlePtrTable[];
+extern const char *Global_REF_STR_CLOCK_FORMAT[];
 
 extern LONG TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(LONG row, LONG slot);
 extern void TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out);
@@ -23,14 +23,14 @@ extern LONG MATH_Mulu32(LONG a, LONG b);
 
 void TEXTDISP_FormatEntryTime(char *out, WORD entryIndex)
 {
-    TEXTDISP_AuxData *title;
-    char *timeText;
+    const TEXTDISP_AuxData *title;
+    const char *timeText;
     LONG slotIndex;
 
     if (TEXTDISP_ActiveGroupId != 0) {
-        title = (TEXTDISP_AuxData *)TEXTDISP_PrimaryTitlePtrTable[(LONG)TEXTDISP_CurrentMatchIndex];
+        title = (const TEXTDISP_AuxData *)TEXTDISP_PrimaryTitlePtrTable[(LONG)TEXTDISP_CurrentMatchIndex];
     } else {
-        title = (TEXTDISP_AuxData *)TEXTDISP_SecondaryTitlePtrTable[(LONG)TEXTDISP_CurrentMatchIndex];
+        title = (const TEXTDISP_AuxData *)TEXTDISP_SecondaryTitlePtrTable[(LONG)TEXTDISP_CurrentMatchIndex];
     }
 
     timeText = title->titleTable[(LONG)entryIndex];
@@ -52,7 +52,7 @@ void TEXTDISP_FormatEntryTime(char *out, WORD entryIndex)
         LONG minuteRemainder;
         LONG variantRemainder;
         LONG variant;
-        char *src;
+        const char *src;
 
         minutes = MATH_Mulu32((LONG)(UBYTE)(timeText[4] - '0'), 10);
         minutes += (LONG)(UBYTE)(timeText[5] - '0');
@@ -83,11 +83,11 @@ void TEXTDISP_FormatEntryTime(char *out, WORD entryIndex)
 
 void TEXTDISP_FormatEntryTimeForIndex(char *out, WORD entryIndex, char *entryTable)
 {
-    TEXTDISP_AuxData *aux;
-    char *timeText;
+    const TEXTDISP_AuxData *aux;
+    const char *timeText;
     LONG slotIndex;
 
-    aux = (TEXTDISP_AuxData *)entryTable;
+    aux = (const TEXTDISP_AuxData *)entryTable;
     timeText = aux->titleTable[(LONG)entryIndex];
     slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)aux->slotCode);
 
@@ -107,7 +107,7 @@ void TEXTDISP_FormatEntryTimeForIndex(char *out, WORD entryIndex, char *entryTab
         LONG minuteRemainder;
         LONG variantRemainder;
         LONG variant;
-        char *src;
+        const char *src;
 
         minutes = MATH_Mulu32((LONG)(UBYTE)(timeText[4] - '0'), 10);
         minutes += (LONG)(UBYTE)(timeText[5] - '0');
