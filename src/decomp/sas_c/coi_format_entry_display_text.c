@@ -21,7 +21,7 @@ extern LONG CONFIG_TimeWindowMinutes;
 extern const char COI_FMT_WRAP_CHAR_STRING_CHAR[];
 extern const char COI_STR_SINGLE_SPACE[];
 
-LONG COI_TestEntryWithinTimeWindow(void *entry, void *ctx, LONG slot, LONG window, LONG tolerance);
+LONG COI_TestEntryWithinTimeWindow(const void *entry, const void *ctx, LONG slot, LONG window, LONG tolerance);
 const char *COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
 LONG CLEANUP_TestEntryFlagYAndBit1(const void *entry, LONG slot, LONG mode);
 void CLEANUP_UpdateEntryFlagBytes(void *entry, LONG slot);
