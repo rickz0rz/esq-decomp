@@ -34,25 +34,26 @@ ___DISKIO2_HandleInteractiveFileTra__4:
 ___DISKIO2_HandleInteractiveFileTra__5:
               MOVEQ.L        #$1f,D0                  ;701f 
               CMP.B          D0,D6                    ;bc00 
-              BCC.B          ___DISKIO2_HandleInteractiveFileTra__9;642a 
+              BCC.B          ___DISKIO2_HandleInteractiveFileTra__9;642c 
 ___DISKIO2_HandleInteractiveFileTra__6:
               BSR.W          GROUP_AH_JMPTBL_SCRIPT_ReadSeria;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
               TST.B          D5                       ;4a05 
-              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__9;6720 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__9;6722 
 ___DISKIO2_HandleInteractiveFileTra__7:
 ___DISKIO2_HandleInteractiveFileTra__8:
               MOVE.L         D6,D0                    ;2006 
               ADDQ.B         #$1,D6                   ;5206 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
+              MOVE.B         D5,D0                    ;1005 
               LEA            DISKIO2_TransferFilenameBuffer(A4),A0;41ec 0000 
-              MOVE.B         D5,$0(A0,D1.W)           ;1185 1000 
-              MOVE.B         DISKIO2_TransferXorChecksumByte(A4),D0;102c 0000 
-              EOR.B          D5,D0                    ;bb00 
-              MOVE.B         D0,DISKIO2_TransferXorChecksumByte(A4);1940 0000 
+              MOVE.B         D0,$0(A0,D1.W)           ;1180 1000 
+              MOVE.B         DISKIO2_TransferXorChecksumByte(A4),D1;122c 0000 
+              EOR.B          D0,D1                    ;b101 
+              MOVE.B         D1,DISKIO2_TransferXorChecksumByte(A4);1941 0000 
               BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
-              BRA.B          ___DISKIO2_HandleInteractiveFileTra__5;60d0 
+              BRA.B          ___DISKIO2_HandleInteractiveFileTra__5;60ce 
 ___DISKIO2_HandleInteractiveFileTra__9:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         D6,D0                    ;1006 
@@ -111,31 +112,32 @@ ___DISKIO2_HandleInteractiveFileTra__15:
               LEA            $c(A7),A7                ;4fef 000c 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         D7,D0                    ;1007 
-              BEQ.W          ___DISKIO2_HandleInteractiveFileTra__32;6700 0110 
+              BEQ.W          ___DISKIO2_HandleInteractiveFileTra__32;6700 0114 
 ___DISKIO2_HandleInteractiveFileTra__16:
               CLR.B          $24(A7)                  ;422f 0024 
               BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
 ___DISKIO2_HandleInteractiveFileTra__17:
               CMPI.B         #$8,$24(A7)              ;0c2f 0008 0024 
-              BCC.B          ___DISKIO2_HandleInteractiveFileTra__21;642e 
+              BCC.B          ___DISKIO2_HandleInteractiveFileTra__21;6430 
 ___DISKIO2_HandleInteractiveFileTra__18:
               BSR.W          GROUP_AH_JMPTBL_SCRIPT_ReadSeria;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
               TST.B          D5                       ;4a05 
-              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__21;6724 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__21;6726 
 ___DISKIO2_HandleInteractiveFileTra__19:
 ___DISKIO2_HandleInteractiveFileTra__20:
               MOVE.B         $24(A7),D0               ;102f 0024 
               ADDQ.B         #$1,$24(A7)              ;522f 0024 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D0,D1                    ;1200 
+              MOVE.B         D5,D0                    ;1005 
               LEA            DISKIO2_TransferSizeTokenBuffer(A4),A0;41ec 0000 
-              MOVE.B         D5,$0(A0,D1.W)           ;1185 1000 
-              MOVE.B         DISKIO2_TransferXorChecksumByte(A4),D0;102c 0000 
-              EOR.B          D5,D0                    ;bb00 
-              MOVE.B         D0,DISKIO2_TransferXorChecksumByte(A4);1940 0000 
+              MOVE.B         D0,$0(A0,D1.W)           ;1180 1000 
+              MOVE.B         DISKIO2_TransferXorChecksumByte(A4),D1;122c 0000 
+              EOR.B          D0,D1                    ;b101 
+              MOVE.B         D1,DISKIO2_TransferXorChecksumByte(A4);1941 0000 
               BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
-              BRA.B          ___DISKIO2_HandleInteractiveFileTra__17;60ca 
+              BRA.B          ___DISKIO2_HandleInteractiveFileTra__17;60c8 
 ___DISKIO2_HandleInteractiveFileTra__21:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $24(A7),D0               ;102f 0024 
@@ -191,16 +193,17 @@ ___DISKIO2_HandleInteractiveFileTra__27:
               BSR.W          GROUP_AH_JMPTBL_PARSE_ReadSigned;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               CMP.L          $114(A7),D0              ;b0af 0114 
-              BLE.B          ___DISKIO2_HandleInteractiveFileTra__32;6f26 
+              BLE.B          ___DISKIO2_HandleInteractiveFileTra__32;6f28 
 ___DISKIO2_HandleInteractiveFileTra__28:
               LEA            DISKIO2_TransferFilenameBuffer(A4),A3;47ec 0000 
               LEA            BRUSH_SnapshotHeader(A4),A2;45ec 0000 
 ___DISKIO2_HandleInteractiveFileTra__29:
-              MOVE.B         (A3),(A2)+               ;14d3 
+              MOVE.B         (A3),D0                  ;1013 
+              MOVE.B         D0,(A2)+                 ;14c0 
 ___DISKIO2_HandleInteractiveFileTra__30:
               MOVE.B         (A3)+,D0                 ;101b 
               TST.B          D0                       ;4a00 
-              BNE.B          ___DISKIO2_HandleInteractiveFileTra__29;66f8 
+              BNE.B          ___DISKIO2_HandleInteractiveFileTra__29;66f6 
 ___DISKIO2_HandleInteractiveFileTra__31:
               CLR.L          -(A7)                    ;42a7 
               PEA            ($4).w                   ;4878 0004 

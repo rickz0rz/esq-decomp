@@ -50,8 +50,8 @@ extern const char DISKIO2_TransferFilenameExtPtr[];
 
 extern WORD ED_DiagnosticsScreenActive;
 extern UBYTE DISKIO2_TransferXorChecksumByte;
-extern UBYTE DISKIO2_TransferFilenameBuffer[64];
-extern UBYTE DISKIO2_TransferSizeTokenBuffer[16];
+extern char DISKIO2_TransferFilenameBuffer[64];
+extern char DISKIO2_TransferSizeTokenBuffer[16];
 extern ULONG DISKIO2_InteractiveTransferArmedFlag;
 extern LONG DISKIO_WriteFileHandle;
 extern WORD ESQPARS2_ReadModeFlags;
@@ -101,15 +101,15 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
         }
     }
 
-    GROUP_AG_JMPTBL_STRING_CopyPadNul(targetPath, (const char *)DISKIO2_TransferFilenameBuffer, 64);
+    GROUP_AG_JMPTBL_STRING_CopyPadNul(targetPath, DISKIO2_TransferFilenameBuffer, 64);
     GROUP_AG_JMPTBL_STRING_CopyPadNul(targetPath, Global_STR_RAM, 4);
 
     if (ED_DiagnosticsScreenActive != 0) {
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 180, Global_STR_FILENAME);
-        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 205, 180, (const char *)DISKIO2_TransferFilenameBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 205, 180, DISKIO2_TransferFilenameBuffer);
     }
 
-    GROUP_AG_JMPTBL_STRING_CopyPadNul(shortName, (const char *)DISKIO2_TransferFilenameBuffer, 4);
+    GROUP_AG_JMPTBL_STRING_CopyPadNul(shortName, DISKIO2_TransferFilenameBuffer, 4);
 
     if (crc32Mode != 0U) {
         UBYTE tokenLen = 0;
@@ -139,11 +139,11 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
             _LVOUnLock(Global_REF_DOS_LIBRARY_2, lock);
         }
 
-        if (GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3((const char *)DISKIO2_TransferSizeTokenBuffer) > targetMax) {
-            UBYTE *s = DISKIO2_TransferFilenameBuffer;
+        if (GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(DISKIO2_TransferSizeTokenBuffer) > targetMax) {
+            char *s = DISKIO2_TransferFilenameBuffer;
             UBYTE *d = BRUSH_SnapshotHeader;
             do {
-                *d++ = *s;
+                *d++ = (UBYTE)*s;
             } while (*s++ != 0);
 
             GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(4, 0);
@@ -233,7 +233,7 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
         GROUP_AG_JMPTBL_STRING_CopyPadNul(scratch, Global_STR_COPY_NIL, 12);
         GROUP_AI_JMPTBL_STRING_AppendAtNull(scratch, targetPath);
         GROUP_AI_JMPTBL_STRING_AppendAtNull(scratch, DISKIO2_STR_ShellCommandArgSeparator);
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(scratch, (const char *)DISKIO2_TransferFilenameBuffer);
+        GROUP_AI_JMPTBL_STRING_AppendAtNull(scratch, DISKIO2_TransferFilenameBuffer);
         _LVOExecute(Global_REF_DOS_LIBRARY_2, scratch, 0, 0);
         _LVODeleteFile(Global_REF_DOS_LIBRARY_2, targetPath);
         DISKIO_ResetCtrlInputStateIfIdle();
