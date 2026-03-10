@@ -1,27 +1,52 @@
               SECTION      text,CODE
 __code:
 PARSEINI2_JMPTBL_CLOCK_ConvertAm:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
 ___PARSEINI2_JMPTBL_CLOCK_ConvertAm__1:
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          CLOCK_ConvertAmigaSecondsToClock;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___PARSEINI2_JMPTBL_CLOCK_ConvertAm__2:
+___PARSEINI2_JMPTBL_CLOCK_ConvertAm__3:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 __const:
 __strings:
 PARSEINI2_JMPTBL_ESQ_CalcDayOfYe:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___PARSEINI2_JMPTBL_ESQ_CalcDayOfYe__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQ_CalcDayOfYearFromMonthDay;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___PARSEINI2_JMPTBL_ESQ_CalcDayOfYe__2:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 PARSEINI2_JMPTBL_CLOCK_CheckDate:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___PARSEINI2_JMPTBL_CLOCK_CheckDate__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          CLOCK_CheckDateOrSecondsFromEpoc;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___PARSEINI2_JMPTBL_CLOCK_CheckDate__2:
+___PARSEINI2_JMPTBL_CLOCK_CheckDate__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 PARSEINI2_JMPTBL_BATTCLOCK_GetSe:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -29,27 +54,52 @@ PARSEINI2_JMPTBL_BATTCLOCK_GetSe:
 ___PARSEINI2_JMPTBL_BATTCLOCK_GetSe__1:
               BSR.W          BATTCLOCK_GetSecondsFromBatteryB;6100 0000 
 ___PARSEINI2_JMPTBL_BATTCLOCK_GetSe__2:
+___PARSEINI2_JMPTBL_BATTCLOCK_GetSe__3:
               RTS                                     ;4e75 
 PARSEINI2_JMPTBL_DATETIME_IsLeap:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___PARSEINI2_JMPTBL_DATETIME_IsLeap__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          DATETIME_IsLeapYear      ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___PARSEINI2_JMPTBL_DATETIME_IsLeap__2:
+___PARSEINI2_JMPTBL_DATETIME_IsLeap__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 PARSEINI2_JMPTBL_BATTCLOCK_Write:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___PARSEINI2_JMPTBL_BATTCLOCK_Write__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          BATTCLOCK_WriteSecondsToBatteryB;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___PARSEINI2_JMPTBL_BATTCLOCK_Write__2:
+___PARSEINI2_JMPTBL_BATTCLOCK_Write__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 PARSEINI2_JMPTBL_CLOCK_SecondsFr:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___PARSEINI2_JMPTBL_CLOCK_SecondsFr__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          CLOCK_SecondsFromEpoch   ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___PARSEINI2_JMPTBL_CLOCK_SecondsFr__2:
+___PARSEINI2_JMPTBL_CLOCK_SecondsFr__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
