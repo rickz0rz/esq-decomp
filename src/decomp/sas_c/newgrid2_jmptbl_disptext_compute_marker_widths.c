@@ -1,3 +1,5 @@
-extern void DISPTEXT_ComputeMarkerWidths(void);
+typedef signed long LONG;
 
-void NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths(void){DISPTEXT_ComputeMarkerWidths();}
+extern void DISPTEXT_ComputeMarkerWidths(char *rp, LONG a, LONG b);
+
+void NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths(char *rp, LONG a, LONG b){DISPTEXT_ComputeMarkerWidths(rp, a, b);}
