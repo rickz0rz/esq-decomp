@@ -20,7 +20,7 @@ extern void SCRIPT_LoadCtrlContextSnapshot(char *ctx);
 extern void SCRIPT_SaveCtrlContextSnapshot(char *ctx);
 extern LONG SCRIPT_SelectPlaybackCursorFromSearchText(LONG matchCountOrIndex, char *parseBuffer);
 extern void SCRIPT_SplitAndNormalizeSearchBuffer(char *parseBuffer, LONG parseLen);
-extern void TEXTDISP_HandleScriptCommand(LONG command, LONG arg, char *text);
+extern LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, char *arg);
 extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 
 LONG SCRIPT_HandleBrushCommand(char *ctx, char *cmd, LONG cmdLen)
@@ -100,7 +100,7 @@ LONG SCRIPT_HandleBrushCommand(char *ctx, char *cmd, LONG cmdLen)
     SCRIPT_SaveCtrlContextSnapshot(ctx);
 
     if (SCRIPT_PlaybackCursor != 0) {
-        TEXTDISP_HandleScriptCommand(-1, -1, (char *)0);
+        TEXTDISP_HandleScriptCommand((UBYTE)0xffu, (UBYTE)0xffu, (char *)0);
     }
 
     SCRIPT_RuntimeMode = savedRuntimeMode;

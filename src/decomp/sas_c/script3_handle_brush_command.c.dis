@@ -174,10 +174,11 @@ ___SCRIPT_HandleBrushCommand__30:
               BSR.W          SCRIPT_SaveCtrlContextSnapshot;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               TST.L          SCRIPT_PlaybackCursor(A4);4aac 0000 
-              BEQ.B          ___SCRIPT_HandleBrushCommand__32;6710 
+              BEQ.B          ___SCRIPT_HandleBrushCommand__32;6712 
 ___SCRIPT_HandleBrushCommand__31:
               CLR.L          -(A7)                    ;42a7 
-              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVEQ.L        #$0,D0                   ;7000 
+              NOT.B          D0                       ;4600 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          TEXTDISP_HandleScriptCommand;6100 0000 

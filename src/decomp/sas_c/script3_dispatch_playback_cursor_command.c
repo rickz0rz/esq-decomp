@@ -28,7 +28,7 @@ extern void SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom(void);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
 extern void SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(LONG mode, LONG arg, LONG flags);
 extern void WDISP_HandleWeatherStatusCommand(LONG command);
-extern void TEXTDISP_HandleScriptCommand(LONG command, LONG arg, char *text);
+extern LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, char *arg);
 extern void SCRIPT_AssertCtrlLineNow(void);
 extern void SCRIPT_ClearSearchTextsAndChannels(void);
 
@@ -88,7 +88,7 @@ void SCRIPT_DispatchPlaybackCursorCommand(LONG *cursorPtr)
         break;
     case 8:
         TEXTDISP_CurrentMatchIndex = -1;
-        TEXTDISP_HandleScriptCommand((LONG)SCRIPT_PendingTextdispCmdChar, (LONG)SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr);
+        TEXTDISP_HandleScriptCommand(SCRIPT_PendingTextdispCmdChar, SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr);
         break;
     case 9:
         SCRIPT_AssertCtrlLineNow();

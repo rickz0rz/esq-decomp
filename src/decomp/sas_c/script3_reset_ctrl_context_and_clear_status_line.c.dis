@@ -7,7 +7,8 @@ SCRIPT_ResetCtrlContextAndClearS:
               BCS.W          _XCOVF                   ;6500 0000 
 ___SCRIPT_ResetCtrlContextAndClearS__1:
               CLR.L          -(A7)                    ;42a7 
-              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVEQ.L        #$0,D0                   ;7000 
+              NOT.B          D0                       ;4600 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          TEXTDISP_HandleScriptCommand;6100 0000 
