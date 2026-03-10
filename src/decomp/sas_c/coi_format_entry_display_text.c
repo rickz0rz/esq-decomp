@@ -28,7 +28,7 @@ void CLEANUP_UpdateEntryFlagBytes(void *entry, LONG slot);
 LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG a, LONG b, LONG c);
 char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
-void COI_FormatEntryDisplayText(void *entry, void *ctx, WORD slot, char *out_buf, LONG mode_marker)
+void COI_FormatEntryDisplayText(void *entry, const void *ctx, WORD slot, char *out_buf, LONG mode_marker)
 {
     const char *parts[COI_PART_COUNT];
     LONG window;
@@ -36,7 +36,7 @@ void COI_FormatEntryDisplayText(void *entry, void *ctx, WORD slot, char *out_buf
     LONG slot_l;
     LONG i;
     char wrap_buf[COI_WRAP_BUF_LEN];
-    char *wrap_ptr;
+    const char *wrap_ptr;
 
     if (mode_marker == COI_MODE_MARKER_PPV) {
         window = GCOMMAND_PpvSelectionWindowMinutes;
