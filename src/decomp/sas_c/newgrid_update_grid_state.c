@@ -33,7 +33,7 @@ extern void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowInde
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG unused);
 extern LONG NEWGRID_DrawGridFrameAndRows(char *grid, LONG selectedEntryState);
 
-void NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
+LONG NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
 {
     const LONG GRID_NULL = 0;
     const LONG GRIDSTATE_READY = 4;
@@ -50,7 +50,7 @@ void NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
     gridView = (NEWGRID_Context *)grid;
     if (grid == (char *)GRID_NULL) {
         NEWGRID_GridStateFrameLatch = GRIDSTATE_READY;
-        return;
+        return NEWGRID_GridStateFrameLatch;
     }
 
     frameState = NEWGRID_GridStateFrameLatch;
@@ -99,4 +99,6 @@ void NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
     } else {
         NEWGRID_GridStateFrameLatch = GRIDSTATE_READY;
     }
+
+    return NEWGRID_GridStateFrameLatch;
 }

@@ -25,7 +25,7 @@ ___NEWGRID_UpdateGridState__1:
               BNE.B          ___NEWGRID_UpdateGridState__3;6608 
 ___NEWGRID_UpdateGridState__2:
               MOVE.L         D0,NEWGRID_GridStateFrameLatch(A4);2940 0000 
-              BRA.W          ___NEWGRID_UpdateGridState__18;6000 0100 
+              BRA.W          ___NEWGRID_UpdateGridState__19;6000 0106 
 ___NEWGRID_UpdateGridState__3:
               MOVE.L         NEWGRID_GridStateFrameLatch(A4),D3;262c 0000 
               MOVEM.L        D3,$30(A7)               ;48ef 0008 0030 
@@ -120,11 +120,14 @@ ___NEWGRID_UpdateGridState__14:
               BNE.B          ___NEWGRID_UpdateGridState__16;6608 
 ___NEWGRID_UpdateGridState__15:
               MOVE.L         $40(A7),NEWGRID_GridStateFrameLatch(A4);296f 0040 0000 
-              BRA.B          ___NEWGRID_UpdateGridState__18;6006 
+              BRA.B          ___NEWGRID_UpdateGridState__17;6008 
 ___NEWGRID_UpdateGridState__16:
-              MOVE.L         $44(A7),NEWGRID_GridStateFrameLatch(A4);296f 0044 0000 
+              MOVE.L         $44(A7),D0               ;202f 0044 
+              MOVE.L         D0,NEWGRID_GridStateFrameLatch(A4);2940 0000 
 ___NEWGRID_UpdateGridState__17:
+              MOVE.L         NEWGRID_GridStateFrameLatch(A4),D0;202c 0000 
 ___NEWGRID_UpdateGridState__18:
+___NEWGRID_UpdateGridState__19:
               MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A2/A3/A5;4cdf 2cec 
               ADD.W          #$28,A7                  ;defc 0028 
               RTS                                     ;4e75 
