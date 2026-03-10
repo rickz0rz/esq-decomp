@@ -5,8 +5,8 @@ extern char *Global_REF_RASTPORT_1;
 extern LONG ED_EditCursorOffset;
 
 extern LONG ESQIFF_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
 
 void ED_DrawMenuSelectionHighlight(LONG menuIndex)
 {

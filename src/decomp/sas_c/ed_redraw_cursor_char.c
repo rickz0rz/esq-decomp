@@ -3,7 +3,7 @@ typedef signed long LONG;
 extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern void ED_DrawCursorChar(void);
 
 void ED_RedrawCursorChar(void)

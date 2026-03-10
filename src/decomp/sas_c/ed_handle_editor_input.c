@@ -53,8 +53,8 @@ extern void SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR(LONG mode);
 extern LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern LONG GROUP_AG_JMPTBL_MATH_DivS32(LONG a, LONG b);
 extern void DISPLIB_DisplayTextAtPosition(char *rp, LONG x, LONG y, const char *text);
-extern LONG _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
-extern LONG _LVOSetBPen(void *gfxBase, char *rp, LONG pen);
+extern void _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
+extern void _LVOSetBPen(void *gfxBase, char *rp, LONG pen);
 
 static void sync_current_char_and_maybe_draw_indicator(void)
 {

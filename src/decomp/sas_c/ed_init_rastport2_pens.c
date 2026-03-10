@@ -9,9 +9,9 @@ extern LONG WDISP_DisplayContextBase;
 extern LONG ED_Rastport2PenModeSelector;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
 
 void ED_InitRastport2Pens(void)
 {
