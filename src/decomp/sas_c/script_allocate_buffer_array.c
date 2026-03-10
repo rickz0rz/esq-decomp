@@ -1,10 +1,10 @@
 typedef short WORD;
 typedef signed long LONG;
 
-extern char Global_STR_SCRIPT_C_1[];
+extern const char Global_STR_SCRIPT_C_1[];
 
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(
-    char *fileName,
+    const char *fileName,
     LONG lineNumber,
     LONG byteSize,
     LONG flags);

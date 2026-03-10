@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef unsigned long ULONG;
 typedef signed short WORD;
 
-extern char Global_STR_ESQFUNC_C_5[];
+extern const char Global_STR_ESQFUNC_C_5[];
 extern void *LADFUNC_LineTextBufferPtrs[];
 extern WORD LADFUNC_LineSlotWriteIndex;
 extern WORD LADFUNC_LineSlotSecondaryIndex;
