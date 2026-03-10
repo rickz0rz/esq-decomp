@@ -32,7 +32,7 @@ extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
 LONG NEWGRID_HandleShowtimesState(char *gridCtx, char *entryState)
 {
     NEWGRID_Context *ctxView;
-    NEWGRID_ShowtimesEntryState *stateView;
+    const NEWGRID_ShowtimesEntryState *stateView;
     char text[130];
     LONG row;
     LONG nextState;
