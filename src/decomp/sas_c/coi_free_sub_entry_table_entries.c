@@ -21,11 +21,11 @@ enum {
 
 static const LONG SUBENTRY_TABLE_PTR_SHIFT = 2;
 
-extern const UBYTE Global_STR_COI_C_4[];
+extern const char Global_STR_COI_C_4[];
 
 char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 void GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray(void *table, LONG elem_size, LONG count);
-void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
+void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, LONG bytes);
 
 typedef struct COI_SubEntry {
     WORD key0;
