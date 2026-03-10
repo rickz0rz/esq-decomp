@@ -14,7 +14,7 @@ extern void WDISP_DrawWeatherStatusDayEntry(char *rastPort, LONG dayIndex, LONG 
 
 extern LONG _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOTextLength(void *gfxBase, char *rastPort, const char *text, LONG len);
-extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
+extern void _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern void _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
 
 void WDISP_DrawWeatherStatusSummary(char *rastPort, LONG xSpan, LONG ySpan)

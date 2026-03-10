@@ -27,7 +27,7 @@ typedef struct TLIBA3_RastPortWrap {
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern const char TLIBA1_FMT_PCT_03LD_HorizontalScaleTick[];
 
-extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
+extern void _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern LONG _LVODraw(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern LONG _LVOTextLength(void *gfxBase, char *rastPort, const char *text, LONG len);
 extern void _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
