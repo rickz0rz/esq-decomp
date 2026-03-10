@@ -82,12 +82,12 @@ extern void PARSEINI_LoadWeatherMessageStrings(const char *entryKey, char *entry
 extern LONG PARSEINI_ParseRangeKeyValue(char *sourceLine, short *rangeTable);
 extern void PARSEINI_ParseColorTable(const char *entryKey, char *entryValue, LONG mode);
 
-static char *PARSEINI_SkipClass3Chars(char *s)
+static char *PARSEINI_SkipClass3Chars(const char *s)
 {
     while (*s != 0 && (WDISP_CharClassTable[(UBYTE)*s] & 8) != 0) {
         ++s;
     }
-    return s;
+    return (char *)s;
 }
 
 static void PARSEINI_TrimTrailingClass3(char *s)
