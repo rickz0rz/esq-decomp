@@ -9,7 +9,7 @@ struct RastPort {
     UBYTE DrawMode;
 };
 
-extern UBYTE *ESQIFF_RecordBufferPtr;
+extern char *ESQIFF_RecordBufferPtr;
 extern LONG Global_LONG_PATCH_VERSION_NUMBER;
 extern WORD Global_UIBusyFlag;
 extern WORD ED_DiagnosticsScreenActive;
@@ -43,10 +43,10 @@ void ESQIFF2_ShowVersionMismatchOverlay(void)
     char *p;
     LONG i;
 
-    ESQIFF_RecordBufferPtr[20] = 0;
+    ESQIFF_RecordBufferPtr[20] = (char)0;
     GROUP_AM_JMPTBL_WDISP_SPrintf(textbuf, ESQIFF_FMT_PCT_S_DOT_PCT_LD, Global_STR_MAJOR_MINOR_VERSION_1, Global_LONG_PATCH_VERSION_NUMBER);
 
-    if ((UBYTE)ESQSHARED_JMPTBL_ESQ_WildcardMatch(textbuf, (const char *)(ESQIFF_RecordBufferPtr + 1)) == 0) {
+    if ((UBYTE)ESQSHARED_JMPTBL_ESQ_WildcardMatch(textbuf, ESQIFF_RecordBufferPtr + 1) == 0) {
         return;
     }
 
@@ -77,7 +77,7 @@ void ESQIFF2_ShowVersionMismatchOverlay(void)
         p += 4;
     }
     *p = '\0';
-    GROUP_AR_JMPTBL_STRING_AppendAtNull(textbuf, (const char *)(ESQIFF_RecordBufferPtr + 1));
+    GROUP_AR_JMPTBL_STRING_AppendAtNull(textbuf, ESQIFF_RecordBufferPtr + 1);
     GROUP_AR_JMPTBL_STRING_AppendAtNull(textbuf, Global_STR_APOSTROPHE);
 
     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)Global_REF_RASTPORT_1, 30, 150, textbuf);
