@@ -24,8 +24,8 @@ extern UWORD NEWGRID_RowHeightPx;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_HANDLE_PREVUEC_FONT;
-extern const UBYTE Global_STR_NEWGRID_C_1[];
-extern const UBYTE Global_STR_NEWGRID_C_2[];
+extern const char Global_STR_NEWGRID_C_1[];
+extern const char Global_STR_NEWGRID_C_2[];
 extern const char Global_STR_44_44_44[];
 extern UBYTE Global_REF_696_400_BITMAP;
 extern UBYTE WDISP_BannerGridBitmapStruct;

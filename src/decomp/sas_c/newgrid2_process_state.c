@@ -18,8 +18,8 @@ typedef struct NEWGRID2_StateEntry {
 
 extern LONG NEWGRID_RenderStateLatch;
 extern WORD NEWGRID_PrimeTimeLayoutEnable;
-extern const UBYTE Global_STR_NEWGRID2_C_1[];
-extern const UBYTE Global_STR_NEWGRID2_C_2[];
+extern const char Global_STR_NEWGRID2_C_1[];
+extern const char Global_STR_NEWGRID2_C_2[];
 
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *tagName, LONG line, LONG size, LONG flags);
 extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);

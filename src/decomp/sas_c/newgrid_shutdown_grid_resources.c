@@ -6,7 +6,7 @@ typedef struct NEWGRID_RastPort NEWGRID_RastPort;
 
 extern NEWGRID_RastPort *NEWGRID_MainRastPortPtr;
 extern WORD NEWGRID_GridResourcesInitializedFlag;
-extern const UBYTE Global_STR_NEWGRID_C_3[];
+extern const char Global_STR_NEWGRID_C_3[];
 
 extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);
 extern void NEWGRID2_FreeBuffersIfAllocated(void);
