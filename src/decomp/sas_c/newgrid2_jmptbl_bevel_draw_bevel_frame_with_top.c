@@ -1,3 +1,8 @@
-extern void BEVEL_DrawBevelFrameWithTop(void);
+typedef signed long LONG;
 
-void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(void){BEVEL_DrawBevelFrameWithTop();}
+extern void BEVEL_DrawBevelFrameWithTop(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY);
+
+void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY)
+{
+    BEVEL_DrawBevelFrameWithTop(rastPort, leftX, topY, rightX, bottomY);
+}
