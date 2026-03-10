@@ -2,13 +2,13 @@
 __code:
 TEXTDISP_BuildChannelLabel:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$20,D0                  ;90bc 0000 0020 
+              SUB.L          #$24,D0                  ;90bc 0000 0024 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$18,A7                  ;9efc 0018 
+              SUB.W          #$1c,A7                  ;9efc 001c 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___TEXTDISP_BuildChannelLabel__1:
-              MOVE.W         $36(A7),D7               ;3e2f 0036 
+              MOVE.W         $3a(A7),D7               ;3e2f 003a 
               MOVE.W         TEXTDISP_ActiveGroupId(A4),D0;302c 0000 
               SCC            D0,#$700                 ;57c0 
               MOVEQ.L        #$1,D6                   ;7c01 
@@ -22,28 +22,34 @@ ___TEXTDISP_BuildChannelLabel__1:
               ADDQ.W         #$8,A7                   ;504f 
               SUB.L          A3,A3                    ;97cb 
               MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___TEXTDISP_BuildChannelLabel__6;6722 
+              BEQ.B          ___TEXTDISP_BuildChannelLabel__6;6732 
 ___TEXTDISP_BuildChannelLabel__2:
-              LEA            $1(A5),A2                ;45ed 0001 
-              LEA            $1b(A7),A0               ;41ef 001b 
+              LEA            $1(A5),A0                ;41ed 0001 
+              LEA            $1b(A7),A1               ;43ef 001b 
               LEA            $1(A5),A3                ;47ed 0001 
-              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              MOVE.L         A0,$30(A7)               ;2f48 0030 
+              MOVE.L         A1,$2c(A7)               ;2f49 002c 
 ___TEXTDISP_BuildChannelLabel__3:
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         (A2),(A0)+               ;10d2 
-              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              MOVE.L         $30(A7),A0               ;206f 0030 
+              MOVE.L         $2c(A7),A1               ;226f 002c 
+              MOVE.B         (A0),(A1)+               ;12d0 
+              MOVE.L         A1,$2c(A7)               ;2f49 002c 
 ___TEXTDISP_BuildChannelLabel__4:
-              MOVE.B         (A2)+,D0                 ;101a 
+              MOVE.L         $30(A7),A0               ;206f 0030 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$30(A7)               ;2f48 0030 
               TST.B          D0                       ;4a00 
-              BNE.B          ___TEXTDISP_BuildChannelLabel__3;66f0 
+              BNE.B          ___TEXTDISP_BuildChannelLabel__3;66e4 
 ___TEXTDISP_BuildChannelLabel__5:
               BRA.B          ___TEXTDISP_BuildChannelLabel__7;6004 
 ___TEXTDISP_BuildChannelLabel__6:
               CLR.B          $1b(A7)                  ;422f 001b 
 ___TEXTDISP_BuildChannelLabel__7:
+              LEA            $1b(A7),A2               ;45ef 001b 
               MOVEQ.L        #$0,D5                   ;7a00 
 ___TEXTDISP_BuildChannelLabel__8:
-              TST.B          $1b(A7,D5.L)             ;4a37 581b 
+              MOVE.B         (A2)+,D0                 ;101a 
+              TST.B          D0                       ;4a00 
               BEQ.B          ___TEXTDISP_BuildChannelLabel__10;6704 
 ___TEXTDISP_BuildChannelLabel__9:
               ADDQ.L         #$1,D5                   ;5285 
@@ -75,14 +81,15 @@ ___TEXTDISP_BuildChannelLabel__16:
               PEA            TEXTDISP_ChannelLabelBuffer(A4);486c 0000 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
+              LEA            TEXTDISP_ChannelLabelBuffer(A4),A2;45ec 0000 
               MOVEQ.L        #$0,D5                   ;7a00 
 ___TEXTDISP_BuildChannelLabel__17:
-              LEA            TEXTDISP_ChannelLabelBuffer(A4),A0;41ec 0000 
-              TST.B          $0(A0,D5.L)              ;4a30 5800 
+              MOVE.B         (A2)+,D0                 ;101a 
+              TST.B          D0                       ;4a00 
               BEQ.B          ___TEXTDISP_BuildChannelLabel__19;6704 
 ___TEXTDISP_BuildChannelLabel__18:
               ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___TEXTDISP_BuildChannelLabel__17;60f2 
+              BRA.B          ___TEXTDISP_BuildChannelLabel__17;60f6 
 ___TEXTDISP_BuildChannelLabel__19:
               LEA            TEXTDISP_ChannelLabelBufferTermi(A4),A0;41ec 0000 
               CLR.B          $0(A0,D5.L)              ;4230 5800 
@@ -90,7 +97,7 @@ ___TEXTDISP_BuildChannelLabel__19:
               MOVE.L         D0,TEXTDISP_ChannelLabelReadyFlag(A4);2940 0000 
 ___TEXTDISP_BuildChannelLabel__20:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$18,A7                  ;defc 0018 
+              ADD.W          #$1c,A7                  ;defc 001c 
               RTS                                     ;4e75 
 __const:
 __strings:

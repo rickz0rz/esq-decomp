@@ -22,6 +22,7 @@ void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix)
     char entryName[17];
     const TEXTDISP_CandidateEntry *entry;
     const char *entryText;
+    const char *scan;
     LONG mode;
     LONG len;
 
@@ -40,8 +41,9 @@ void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix)
         entryName[0] = 0;
     }
 
+    scan = entryName;
     len = 0;
-    while (entryName[len] != 0) {
+    while (*scan++ != 0) {
         ++len;
     }
 
@@ -61,8 +63,9 @@ void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix)
     STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer, Global_STR_ALIGNED_CHANNEL_1);
     STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer, entryText);
 
+    scan = TEXTDISP_ChannelLabelBuffer;
     len = 0;
-    while (TEXTDISP_ChannelLabelBuffer[len] != 0) {
+    while (*scan++ != 0) {
         ++len;
     }
     TEXTDISP_ChannelLabelBufferTerminatorByte[len] = 0;
