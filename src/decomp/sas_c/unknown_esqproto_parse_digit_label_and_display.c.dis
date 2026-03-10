@@ -2,58 +2,68 @@
 __code:
 ESQPROTO_ParseDigitLabelAndDispl:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$30,D0                  ;90bc 0000 0030 
+              SUB.L          #$44,D0                  ;90bc 0000 0044 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$20,A7                  ;9efc 0020 
+              SUB.W          #$34,A7                  ;9efc 0034 
               MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
 ___ESQPROTO_ParseDigitLabelAndDispl__1:
-              MOVE.L         $40(A7),A5               ;2a6f 0040 
-              MOVEQ.L        #$a,D7                   ;7e0a 
-              MOVEQ.L        #$12,D6                  ;7c12 
-              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVE.L         $54(A7),A5               ;2a6f 0054 
+              MOVEQ.L        #$30,D7                  ;7e30 
+              MOVEQ.L        #$39,D6                  ;7c39 
+              MOVEQ.L        #$30,D5                  ;7a30 
+              MOVEQ.L        #$a,D0                   ;700a 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
+              MOVE.B         #$12,$48(A7)             ;1f7c 0012 0048 
+              CLR.L          $20(A7)                  ;42af 0020 
+              MOVE.L         #$ac,$44(A7)             ;2f7c 0000 00ac 0044 
+              CLR.L          $30(A7)                  ;42af 0030 
               MOVE.L         A5,A3                    ;264d 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A3),D0                  ;1013 
               LEA            $1(A5),A2                ;45ed 0001 
               MOVE.W         D0,WDISP_WeatherStatusDigitChar(A4);3940 0000 
-              MOVE.W         D0,$24(A7)               ;3f40 0024 
-              MOVEQ.L        #$30,D1                  ;7230 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D7,D1                    ;1207 
+              MOVE.W         D0,$28(A7)               ;3f40 0028 
               CMP.W          D1,D0                    ;b041 
-              BCS.B          ___ESQPROTO_ParseDigitLabelAndDispl__3;6506 
+              BCS.B          ___ESQPROTO_ParseDigitLabelAndDispl__3;6508 
 ___ESQPROTO_ParseDigitLabelAndDispl__2:
-              MOVEQ.L        #$39,D2                  ;7439 
-              CMP.W          D2,D0                    ;b042 
-              BLS.B          ___ESQPROTO_ParseDigitLabelAndDispl__4;6304 
-___ESQPROTO_ParseDigitLabelAndDispl__3:
-              MOVE.W         D1,WDISP_WeatherStatusDigitChar(A4);3941 0000 
-___ESQPROTO_ParseDigitLabelAndDispl__4:
-              MOVE.B         (A2)+,D0                 ;101a 
-              MOVE.B         D0,$2c(A7,D5.L)          ;1f80 582c 
-              MOVE.B         D0,$28(A7)               ;1f40 0028 
-              EXT.W          D0                       ;4880 
-              EXT.L          D0                       ;48c0 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D6,D1                    ;1206 
-              CMP.L          D1,D0                    ;b081 
-              BEQ.B          ___ESQPROTO_ParseDigitLabelAndDispl__9;6708 
+              CMP.W          D1,D0                    ;b041 
+              BLS.B          ___ESQPROTO_ParseDigitLabelAndDispl__4;6304 
+___ESQPROTO_ParseDigitLabelAndDispl__3:
+              MOVE.W         D5,WDISP_WeatherStatusDigitChar(A4);3945 0000 
+___ESQPROTO_ParseDigitLabelAndDispl__4:
+              MOVE.B         (A2)+,D0                 ;101a 
+              MOVE.L         $30(A7),D1               ;222f 0030 
+              MOVE.B         D0,$34(A7,D1.L)          ;1f80 1834 
+              MOVE.B         D0,$2c(A7)               ;1f40 002c 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         $48(A7),D2               ;142f 0048 
+              CMP.L          D2,D0                    ;b082 
+              BEQ.B          ___ESQPROTO_ParseDigitLabelAndDispl__9;670c 
 ___ESQPROTO_ParseDigitLabelAndDispl__5:
-              CMP.L          D7,D5                    ;ba87 
-              BCC.B          ___ESQPROTO_ParseDigitLabelAndDispl__9;6404 
+              CMP.L          $4c(A7),D1               ;b2af 004c 
+              BCC.B          ___ESQPROTO_ParseDigitLabelAndDispl__9;6406 
 ___ESQPROTO_ParseDigitLabelAndDispl__6:
 ___ESQPROTO_ParseDigitLabelAndDispl__7:
-              ADDQ.L         #$1,D5                   ;5285 
+              ADDQ.L         #$1,$30(A7)              ;52af 0030 
 ___ESQPROTO_ParseDigitLabelAndDispl__8:
-              BRA.B          ___ESQPROTO_ParseDigitLabelAndDispl__4;60e2 
+              BRA.B          ___ESQPROTO_ParseDigitLabelAndDispl__4;60d8 
 ___ESQPROTO_ParseDigitLabelAndDispl__9:
-              CLR.B          $2c(A7,D5.L)             ;4237 582c 
-              LEA            $2c(A7),A0               ;41ef 002c 
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              CLR.B          $34(A7,D0.L)             ;4237 0834 
+              LEA            $34(A7),A0               ;41ef 0034 
               LEA            WDISP_WeatherStatusLabelBuffer(A4),A1;43ec 0000 
               MOVE.L         A0,$1c(A7)               ;2f48 001c 
-              MOVE.L         A1,$20(A7)               ;2f49 0020 
+              MOVE.L         A1,$24(A7)               ;2f49 0024 
 ___ESQPROTO_ParseDigitLabelAndDispl__10:
-              MOVE.L         $20(A7),A0               ;206f 0020 
-              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+              MOVE.L         $24(A7),A0               ;206f 0024 
+              ADDQ.L         #$1,$24(A7)              ;52af 0024 
               MOVE.L         $1c(A7),A1               ;226f 001c 
               MOVE.B         (A1)+,D0                 ;1019 
               MOVE.B         D0,(A0)                  ;1080 
@@ -68,11 +78,11 @@ ___ESQPROTO_ParseDigitLabelAndDispl__12:
               MOVE.L         D0,WDISP_WeatherStatusTextPtr(A4);2940 0000 
               ADDQ.W         #$8,A7                   ;504f 
               MOVE.W         ED_DiagnosticsScreenActive(A4),D0;302c 0000 
-              BEQ.B          ___ESQPROTO_ParseDigitLabelAndDispl__14;6716 
+              BEQ.B          ___ESQPROTO_ParseDigitLabelAndDispl__14;6718 
 ___ESQPROTO_ParseDigitLabelAndDispl__13:
               MOVE.L         WDISP_WeatherStatusTextPtr(A4),-(A7);2f2c 0000 
-              PEA            ($ac).w                  ;4878 00ac 
-              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          UNKNOWN_JMPTBL_DISPLIB_DisplayTe;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
@@ -81,7 +91,7 @@ ___ESQPROTO_ParseDigitLabelAndDispl__14:
 ___ESQPROTO_ParseDigitLabelAndDispl__15:
 ___ESQPROTO_ParseDigitLabelAndDispl__16:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
-              ADD.W          #$20,A7                  ;defc 0020 
+              ADD.W          #$34,A7                  ;defc 0034 
               RTS                                     ;4e75 
 __const:
 __strings:

@@ -18,8 +18,13 @@ extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rast, LONG x, LON
 
 char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in)
 {
+    const UBYTE DIGIT_MIN = '0';
+    const UBYTE DIGIT_MAX = '9';
+    const UWORD DIGIT_FALLBACK = '0';
     const ULONG LABEL_SCAN_LIMIT = 10UL;
     const UBYTE TOKEN_RECORD_END = 0x12;
+    const LONG DISPLAY_X = 0;
+    const LONG DISPLAY_Y = 172;
     const ESQPROTO_DigitLabelHeader *header;
     const char *p;
     char local[16];
@@ -31,8 +36,8 @@ char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in)
     p = in + sizeof(ESQPROTO_DigitLabelHeader);
 
     WDISP_WeatherStatusDigitChar = digit;
-    if (digit < (UWORD)'0' || digit > (UWORD)'9') {
-        WDISP_WeatherStatusDigitChar = (UWORD)'0';
+    if (digit < (UWORD)DIGIT_MIN || digit > (UWORD)DIGIT_MAX) {
+        WDISP_WeatherStatusDigitChar = DIGIT_FALLBACK;
     }
 
     for (;;) {
@@ -58,7 +63,7 @@ char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in)
 
     if (ED_DiagnosticsScreenActive != 0) {
         UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(
-            Global_REF_RASTPORT_1, 0, 172, WDISP_WeatherStatusTextPtr);
+            Global_REF_RASTPORT_1, DISPLAY_X, DISPLAY_Y, WDISP_WeatherStatusTextPtr);
     }
 
     return WDISP_WeatherStatusTextPtr;
