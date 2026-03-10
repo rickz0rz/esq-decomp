@@ -17,7 +17,7 @@ LONG NEWGRID_ShouldOpenEditor(const char *entry)
     const char *primaryScan;
     const char *secondaryScan;
 
-    if (entry == (char *)0) {
+    if (entry == 0) {
         return 0;
     }
 
@@ -25,11 +25,11 @@ LONG NEWGRID_ShouldOpenEditor(const char *entry)
     primaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->primaryText);
     secondaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->shortText);
 
-    if (primaryScan != (char *)0 && *primaryScan != 0) {
+    if (primaryScan != 0 && *primaryScan != 0) {
         return 0;
     }
 
-    if (secondaryScan != (char *)0 && *secondaryScan != 0) {
+    if (secondaryScan != 0 && *secondaryScan != 0) {
         return 0;
     }
 
