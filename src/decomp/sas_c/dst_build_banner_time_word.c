@@ -3,7 +3,7 @@ typedef signed short WORD;
 typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
-extern void DST_BuildBannerTimeEntry(LONG arg0, LONG arg1, WORD *out_word, ULONG arg3);
+extern LONG DST_BuildBannerTimeEntry(WORD arg0, UBYTE arg1, WORD *out_word, ULONG arg3);
 
 LONG DST_BuildBannerTimeWord(WORD arg_1, LONG arg_2, UBYTE arg_3)
 {

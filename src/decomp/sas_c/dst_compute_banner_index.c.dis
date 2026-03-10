@@ -6,20 +6,21 @@ DST_ComputeBannerIndex:
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
               SUBQ.W         #$8,A7                   ;514f 
-              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+              MOVEM.L        D2/D4/D5/D6/D7/A3/A5,-(A7);48e7 2f14 
 ___DST_ComputeBannerIndex__1:
-              MOVE.B         $2f(A7),D6               ;1c2f 002f 
-              MOVE.W         $2a(A7),D7               ;3e2f 002a 
-              MOVE.L         $24(A7),A5               ;2a6f 0024 
+              MOVE.B         $33(A7),D6               ;1c2f 0033 
+              MOVE.W         $2e(A7),D7               ;3e2f 002e 
+              MOVE.L         $28(A7),A5               ;2a6f 0028 
               MOVE.L         A5,A3                    ;264d 
-              CLR.W          $1a(A7)                  ;426f 001a 
-              MOVE.W         D7,D0                    ;3007 
+              CLR.W          $1e(A7)                  ;426f 001e 
+              MOVE.L         D7,D0                    ;2007 
               EXT.L          D0                       ;48c0 
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         D6,D1                    ;1206 
+              MOVE.L         D6,D1                    ;2206 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D1,D2                    ;1401 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              PEA            $1e(A7)                  ;486f 001e 
-              MOVE.L         D1,-(A7)                 ;2f01 
+              PEA            $22(A7)                  ;486f 0022 
+              MOVE.L         D2,-(A7)                 ;2f02 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          DST_BuildBannerTimeEntry ;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
@@ -46,18 +47,18 @@ ___DST_ComputeBannerIndex__5:
               NEG.B          D0                       ;4400 
               EXT.W          D0                       ;4880 
               EXT.L          D0                       ;48c0 
-              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
               MOVEQ.L        #$26,D1                  ;7226 
               ADD.L          D1,D0                    ;d081 
               EXT.L          D0                       ;48c0 
               DIVS.W         #$30,D0                  ;81fc 0030 
               SWAP           D0                       ;4840 
-              MOVE.W         D0,$18(A7)               ;3f40 0018 
+              MOVE.W         D0,$1c(A7)               ;3f40 001c 
               ADDQ.W         #$1,D0                   ;5240 
               EXT.L          D0                       ;48c0 
 ___DST_ComputeBannerIndex__6:
 ___DST_ComputeBannerIndex__7:
-              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              MOVEM.L        (A7)+,D2/D4/D5/D6/D7/A3/A5;4cdf 28f4 
               ADDQ.W         #$8,A7                   ;504f 
               RTS                                     ;4e75 
 __const:

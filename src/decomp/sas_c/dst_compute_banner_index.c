@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
-extern void DST_BuildBannerTimeEntry(LONG arg0, LONG arg1, WORD *out_word, void *ctx);
+extern LONG DST_BuildBannerTimeEntry(WORD arg0, UBYTE arg1, WORD *out_word, void *ctx);
 
 typedef struct DST_BannerTimeContext {
     UBYTE pad0[8];

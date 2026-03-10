@@ -6,27 +6,28 @@ DST_BuildBannerTimeWord:
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
               SUBQ.W         #$4,A7                   ;594f 
-              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
+              MOVEM.L        D2/D5/D6/D7,-(A7)        ;48e7 2700 
 ___DST_BuildBannerTimeWord__1:
-              MOVE.B         $1f(A7),D5               ;1a2f 001f 
-              MOVE.L         $18(A7),D6               ;2c2f 0018 
-              MOVE.W         $16(A7),D7               ;3e2f 0016 
-              CLR.W          $e(A7)                   ;426f 000e 
-              MOVE.W         D7,D0                    ;3007 
+              MOVE.B         $23(A7),D5               ;1a2f 0023 
+              MOVE.L         $1c(A7),D6               ;2c2f 001c 
+              MOVE.W         $1a(A7),D7               ;3e2f 001a 
+              CLR.W          $12(A7)                  ;426f 0012 
+              MOVE.L         D7,D0                    ;2007 
               EXT.L          D0                       ;48c0 
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         D5,D1                    ;1205 
+              MOVE.L         D5,D1                    ;2205 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D1,D2                    ;1401 
               CLR.L          -(A7)                    ;42a7 
-              PEA            $12(A7)                  ;486f 0012 
-              MOVE.L         D1,-(A7)                 ;2f01 
+              PEA            $16(A7)                  ;486f 0016 
+              MOVE.L         D2,-(A7)                 ;2f02 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          DST_BuildBannerTimeEntry ;6100 0000 
-              MOVE.W         $1e(A7),D0               ;302f 001e 
+              MOVE.W         $22(A7),D0               ;302f 0022 
               EXT.L          D0                       ;48c0 
               LEA            $10(A7),A7               ;4fef 0010 
 ___DST_BuildBannerTimeWord__2:
 ___DST_BuildBannerTimeWord__3:
-              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              MOVEM.L        (A7)+,D2/D5/D6/D7        ;4cdf 00e4 
               ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:
