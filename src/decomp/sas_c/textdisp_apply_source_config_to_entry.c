@@ -25,7 +25,7 @@ void TEXTDISP_ApplySourceConfigToEntry(TEXTDISP_Entry *entry)
     const UBYTE CH_NUL = 0;
     LONG i;
 
-    if (entry == (TEXTDISP_Entry *)0) {
+    if (entry == 0) {
         return;
     }
 

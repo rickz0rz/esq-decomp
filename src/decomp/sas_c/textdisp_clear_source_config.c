@@ -23,10 +23,10 @@ void TEXTDISP_ClearSourceConfig(void)
 
     for (i = 0; i < TEXTDISP_SourceConfigEntryCount; ++i) {
         TEXTDISP_SourceConfigEntry *entry = TEXTDISP_SourceConfigEntryTable[i];
-        if (entry != (TEXTDISP_SourceConfigEntry *)0) {
-            entry->ownedName = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, entry->ownedName);
+        if (entry != 0) {
+            entry->ownedName = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(0, entry->ownedName);
             MEMORY_DeallocateMemory(Global_STR_TEXTDISP_C_3, SOURCECFG_FREE_LINE, entry, SOURCECFG_ENTRY_SIZE);
-            TEXTDISP_SourceConfigEntryTable[i] = (TEXTDISP_SourceConfigEntry *)0;
+            TEXTDISP_SourceConfigEntryTable[i] = 0;
         }
     }
 
