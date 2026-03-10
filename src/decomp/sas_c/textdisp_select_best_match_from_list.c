@@ -29,7 +29,7 @@ extern const UBYTE Global_STR_TEXTDISP_C_3[];
 extern LONG TEXTDISP_FindEntryMatchIndex(char *titles, LONG mode, LONG flags);
 extern LONG TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG idx);
 
-static char *TEXTDISP_GetActiveTitlePtr(UWORD matchIndex, LONG *groupCodeOut)
+static const char *TEXTDISP_GetActiveTitlePtr(UWORD matchIndex, LONG *groupCodeOut)
 {
     if (TEXTDISP_ActiveGroupId != 0) {
         *groupCodeOut = (LONG)TEXTDISP_PrimaryGroupCode;
@@ -40,7 +40,7 @@ static char *TEXTDISP_GetActiveTitlePtr(UWORD matchIndex, LONG *groupCodeOut)
     return TEXTDISP_SecondaryTitlePtrTable[matchIndex];
 }
 
-static UWORD TEXTDISP_GetUsageCount(char *titlePtr, WORD slotIndex)
+static UWORD TEXTDISP_GetUsageCount(const char *titlePtr, WORD slotIndex)
 {
     return ((UWORD *)titlePtr)[200 + (UWORD)slotIndex];
 }
@@ -100,7 +100,7 @@ LONG TEXTDISP_SelectBestMatchFromList(char *titles, UWORD candidateCount, UWORD 
         LONG timeOffset;
         LONG minIndex;
         LONG specialFlag;
-        char *titlePtr;
+        const char *titlePtr;
         UWORD usageCount;
 
         TEXTDISP_CurrentMatchIndex = (UWORD)TEXTDISP_CandidateIndexList[i];
@@ -198,7 +198,7 @@ LONG TEXTDISP_SelectBestMatchFromList(char *titles, UWORD candidateCount, UWORD 
 
         if (TEXTDISP_BannerCharSelected != 100) {
             LONG groupCode;
-            char *titlePtr = TEXTDISP_GetActiveTitlePtr(
+            const char *titlePtr = TEXTDISP_GetActiveTitlePtr(
                 (UWORD)TEXTDISP_BannerSelectedEntryIndex,
                 &groupCode);
 
