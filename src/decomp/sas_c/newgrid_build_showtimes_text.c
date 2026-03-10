@@ -137,7 +137,8 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
 
                 if (row == ctx->startRow) {
                     const char *entryText = (const char *)entry;
-                    LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, (const char *)coi, idx);
+                    const char *auxText = (const char *)coi;
+                    LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, idx);
                     if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState((char *)entryMut, (char *)coiMut, prev,
                         GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes) == 0) {
                         col++;
