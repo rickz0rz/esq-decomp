@@ -72,7 +72,7 @@ LONG NEWGRID2_HandleGridState(char *gridCtx, WORD rowIndex, LONG modeSel)
                 goto return_state;
             }
             NEWGRID2_DispatchStateIndex = NEWGRID2_ProcessGridState(
-                gridCtx, (char *)&NEWGRID2_ShowtimesSelectionContextPtr, modeSel
+                gridCtx, &NEWGRID2_ShowtimesSelectionContextPtr, modeSel
             );
             d0 = NEWGRID_TestModeFlagActive(modeSel);
             if (d0 == 0) {
