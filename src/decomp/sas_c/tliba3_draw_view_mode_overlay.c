@@ -28,7 +28,7 @@ enum {
 extern UBYTE TLIBA3_VmArrayRuntimeTable[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_HANDLE_PREVUEC_FONT;
-extern char TLIBA1_FMT_VIEWMODE_PCT_LD[];
+extern const char TLIBA1_FMT_VIEWMODE_PCT_LD[];
 
 extern LONG MATH_Mulu32(LONG left, LONG right);
 extern LONG _LVOSetFont(void *gfxBase, char *rastPort, void *font);

@@ -15,11 +15,11 @@ enum {
 #define TOKEN_FIELD_BOOL_MAX_INDEX 5
 #define CHARCLASS_ALNUM_MASK 7
 
-extern char CLOCK_STR_TOKEN_PAIR_DEFAULTS[];
+extern const char CLOCK_STR_TOKEN_PAIR_DEFAULTS[];
 extern char CLEANUP_TokenPairScratch[];
-extern char CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[];
-extern char CLOCK_STR_EMPTY_TOKEN_TEMPLATE[];
-extern char CLOCK_STR_BOOL_CHARS_YyNn[];
+extern const char CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[];
+extern const char CLOCK_STR_EMPTY_TOKEN_TEMPLATE[];
+extern const char CLOCK_STR_BOOL_CHARS_YyNn[];
 extern const UBYTE WDISP_CharClassTable[];
 
 char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *s, LONG c);
