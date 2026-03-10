@@ -15,7 +15,7 @@ extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry,
 extern void NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(char *entry, LONG rowIndex);
 extern void NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(
     char *rastPort, const char *fmt, LONG fmtRow, const char *src, LONG srcRow, LONG fallbackText);
-extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, LONG fallbackText);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, LONG fallbackText);
 
 void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode)
 {
