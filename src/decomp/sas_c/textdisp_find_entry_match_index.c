@@ -21,7 +21,7 @@ extern UWORD CLOCK_HalfHourSlotIndex;
 
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entryPtr, char *auxPtr, LONG startIndex);
+extern LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entryPtr, const char *auxPtr, LONG startIndex);
 extern const char *TEXTDISP_FindControlToken(const char *textPtr);
 extern LONG TEXTDISP_FindQuotedSpan(const char *src, char **outStart, const char *endHint, LONG *hasQuotes);
 extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitsetPtr, LONG index);
@@ -92,7 +92,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
             slot = SLOT_FIRST;
         }
     } else if ((UWORD)mode == MODE_PREV) {
-        slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((char *)entry, (char *)aux, slot);
+        slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((const char *)entry, (const char *)aux, slot);
         if (slot == SLOT_NONE || (aux->slotMask[(UWORD)slot] & MASK_SLOT_BLOCKED) != 0) {
             if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
                 slot = (LONG)CLOCK_HalfHourSlotIndex;
@@ -101,7 +101,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
             }
         }
     } else if ((UWORD)mode == MODE_PREV_BEFORE) {
-        slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((char *)entry, (char *)aux, slot - 1);
+        slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((const char *)entry, (const char *)aux, slot - 1);
         if (slot == SLOT_NONE || (aux->slotMask[(UWORD)slot] & MASK_SLOT_BLOCKED) != 0) {
             if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
                 slot = (LONG)CLOCK_HalfHourSlotIndex;
