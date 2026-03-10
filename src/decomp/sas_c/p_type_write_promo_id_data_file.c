@@ -54,7 +54,7 @@ void P_TYPE_WritePromoIdDataFile(void)
         }
         SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(handle, start, (LONG)((scan - start) - 1));
 
-        if (entry != (PTypeEntry *)0 && entry->len > 0) {
+        if (entry && entry->len > 0) {
             PARSEINI_JMPTBL_WDISP_SPrintf(lineBuf, P_TYPE_FMT_PCT_03D_PCT_02D, (LONG)entry->type_byte, entry->len);
 
             start = lineBuf;
