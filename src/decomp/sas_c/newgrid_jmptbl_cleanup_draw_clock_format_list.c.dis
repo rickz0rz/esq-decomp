@@ -1,11 +1,18 @@
               SECTION      text,CODE
 __code:
 NEWGRID_JMPTBL_CLEANUP_DrawClock:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___NEWGRID_JMPTBL_CLEANUP_DrawClock__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          CLEANUP_DrawClockFormatList;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___NEWGRID_JMPTBL_CLEANUP_DrawClock__2:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 __const:
 __strings:
