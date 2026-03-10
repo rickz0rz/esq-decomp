@@ -11,7 +11,13 @@ extern LONG GROUP_AV_JMPTBL_EXEC_CallVector_48(void *a0, void *a1, LONG d1, void
 LONG GCOMMAND_ProcessCtrlCommand(char *cmdPtr)
 {
     LONG rc;
-    UBYTE type = (UBYTE)cmdPtr[4];
+    UBYTE type;
+
+    if (cmdPtr == 0) {
+        return 0;
+    }
+
+    type = (UBYTE)cmdPtr[4];
 
     if (type == 1) {
         char *entry = (char *)&ED_StateRingTable[ED_StateRingWriteIndex * 5];
