@@ -1,4 +1,7 @@
-extern void SIGNAL_CreateMsgPortWithSignal(void);
+typedef signed long LONG;
+typedef unsigned long ULONG;
+
+extern void *SIGNAL_CreateMsgPortWithSignal(const char *name, LONG pri);
 extern void LADFUNC_ClearBannerRectEntries(void);
 extern void PARSEINI_UpdateClockFromRtc(void);
 extern void SCRIPT_InitCtrlContext(void);
@@ -11,7 +14,7 @@ extern void TEXTDISP_LoadSourceConfig(void);
 extern void KYBD_InitializeInputDevices(void);
 extern void ESQ_CheckCompatibleVideoChip(void);
 extern void ESQ_CheckAvailableFastMemory(void);
-extern void STRUCT_AllocWithOwner(void);
+extern void *STRUCT_AllocWithOwner(void *owner, ULONG size);
 extern void GCOMMAND_ResetBannerFadeState(void);
 extern void TLIBA3_InitPatternTable(void);
 extern void ESQ_FormatDiskErrorMessage(void);
@@ -29,7 +32,7 @@ extern void WDISP_SPrintf(void);
 extern void CLEANUP_ShutdownSystem(void);
 extern void LADFUNC_AllocBannerRectEntries(void);
 
-void GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal(void){SIGNAL_CreateMsgPortWithSignal();}
+void *GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal(const char *name, LONG pri){return SIGNAL_CreateMsgPortWithSignal(name, pri);}
 void GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries(void){LADFUNC_ClearBannerRectEntries();}
 void GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc(void){PARSEINI_UpdateClockFromRtc();}
 void GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext(void){SCRIPT_InitCtrlContext();}
@@ -42,7 +45,7 @@ void GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig(void){TEXTDISP_LoadSourceConfig()
 void GROUP_AM_JMPTBL_KYBD_InitializeInputDevices(void){KYBD_InitializeInputDevices();}
 void GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip(void){ESQ_CheckCompatibleVideoChip();}
 void GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory(void){ESQ_CheckAvailableFastMemory();}
-void GROUP_AM_JMPTBL_STRUCT_AllocWithOwner(void){STRUCT_AllocWithOwner();}
+void *GROUP_AM_JMPTBL_STRUCT_AllocWithOwner(void *owner, ULONG size){return STRUCT_AllocWithOwner(owner, size);}
 void GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState(void){GCOMMAND_ResetBannerFadeState();}
 void GROUP_AM_JMPTBL_TLIBA3_InitPatternTable(void){TLIBA3_InitPatternTable();}
 void GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage(void){ESQ_FormatDiskErrorMessage();}
