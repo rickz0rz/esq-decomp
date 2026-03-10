@@ -1,7 +1,7 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern UBYTE Global_CharClassTable[];
+extern const UBYTE Global_CharClassTable[];
 
 char *STR_CopyUntilAnyDelimN(const char *src, char *dst, LONG maxLen, const char *delims)
 {

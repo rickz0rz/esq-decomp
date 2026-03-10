@@ -1,7 +1,7 @@
 typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
-extern UBYTE Global_CharClassTable[];
+extern const UBYTE Global_CharClassTable[];
 
 char *STRING_ToUpperInPlace(char *s)
 {
