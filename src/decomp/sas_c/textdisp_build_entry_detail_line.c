@@ -31,7 +31,7 @@ enum {
     DETAIL_TRIM_PIXEL_WIDTH = 284
 };
 
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 extern const char SCRIPT_AlignedPrefixEmptyF[];
 extern const char SCRIPT_AlignedPrefixEmptyG[];
 extern const char SCRIPT_AlignedStringFormat[];

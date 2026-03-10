@@ -20,7 +20,7 @@ extern char CLEANUP_TokenPairScratch[];
 extern char CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[];
 extern char CLOCK_STR_EMPTY_TOKEN_TEMPLATE[];
 extern char CLOCK_STR_BOOL_CHARS_YyNn[];
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 
 char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *s, LONG c);
 char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);

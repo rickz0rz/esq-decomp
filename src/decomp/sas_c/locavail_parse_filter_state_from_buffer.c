@@ -6,7 +6,7 @@ typedef unsigned short UWORD;
 #define MEMF_PUBLIC 0x00000001L
 #define MEMF_CLEAR  0x00010000L
 
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 extern const char LOCAVAIL_TAG_FV[];
 extern const char Global_STR_LOCAVAIL_C_6[];
 

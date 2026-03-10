@@ -24,7 +24,7 @@ enum {
 
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern char *Global_PTR_WORK_BUFFER;
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 
 extern AliasPair *TEXTDISP_AliasPtrTable[];
 extern UWORD TEXTDISP_AliasCount;

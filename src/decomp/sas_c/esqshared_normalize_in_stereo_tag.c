@@ -2,7 +2,7 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
 extern const char Global_STR_IN_STEREO[];
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 
 extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(const char *text, const char *needle);
 extern char *ESQSHARED_JMPTBL_STR_SkipClass3Chars(const char *text);
