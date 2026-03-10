@@ -2,9 +2,9 @@ typedef signed long LONG;
 
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
 extern long DISKIO_ParseLongFromWorkBuffer(void);
-extern void DISKIO_WriteDecimalField(void);
-extern void DISKIO_WriteBufferedBytes(void);
-extern void DISKIO_CloseBufferedFileAndFlush(void);
+extern void DISKIO_WriteDecimalField(LONG handle, LONG value);
+extern LONG DISKIO_WriteBufferedBytes(LONG handle, const void *src, LONG len);
+extern LONG DISKIO_CloseBufferedFileAndFlush(LONG fileHandle);
 extern long STRING_CompareNoCaseN(const char *a, const char *b, LONG maxLen);
 extern long MATH_Mulu32(LONG a, LONG b);
 extern long DISKIO_LoadFileToWorkBuffer(const char *path);
@@ -21,19 +21,19 @@ long GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(void)
     return DISKIO_ParseLongFromWorkBuffer();
 }
 
-void GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(void)
+void GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(LONG handle, LONG value)
 {
-    DISKIO_WriteDecimalField();
+    DISKIO_WriteDecimalField(handle, value);
 }
 
-void GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(void)
+LONG GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(LONG handle, const void *src, LONG len)
 {
-    DISKIO_WriteBufferedBytes();
+    return DISKIO_WriteBufferedBytes(handle, src, len);
 }
 
-void GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(void)
+LONG GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG fileHandle)
 {
-    DISKIO_CloseBufferedFileAndFlush();
+    return DISKIO_CloseBufferedFileAndFlush(fileHandle);
 }
 
 long GROUP_AY_JMPTBL_STRING_CompareNoCaseN(const char *a, const char *b, LONG maxLen)
