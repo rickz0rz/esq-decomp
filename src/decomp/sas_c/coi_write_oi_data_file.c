@@ -33,23 +33,23 @@ extern UBYTE CTASKS_PendingPrimaryOiDiskId;
 extern COI_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
 extern COI_EntryTableEntry *TEXTDISP_SecondaryEntryPtrTable[];
 
-extern UBYTE Global_STR_DF0_OI_PERCENT_2_LX_DAT_1[];
-extern UBYTE COI_FMT_LONG_DEC_A[];
-extern UBYTE COI_FMT_DEC_A[];
+extern char Global_STR_DF0_OI_PERCENT_2_LX_DAT_1[];
+extern char COI_FMT_LONG_DEC_A[];
+extern char COI_FMT_DEC_A[];
 extern UBYTE COI_FieldDelimiterTab[];
 extern UBYTE COI_RecordTerminatorCrLf[];
 
 LONG GROUP_AG_JMPTBL_MATH_DivS32(LONG a, LONG b);
-LONG GROUP_AE_JMPTBL_WDISP_SPrintf(UBYTE *out, const UBYTE *fmt, LONG a, LONG b, LONG c);
-LONG DISKIO_OpenFileWithBuffer(const UBYTE *path, LONG mode);
+LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG a, LONG b, LONG c);
+LONG DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
 LONG DISKIO_WriteBufferedBytes(LONG fh, const void *data, LONG len);
 LONG DISKIO_CloseBufferedFileAndFlush(LONG fh);
-LONG ESQ_WildcardMatch(const UBYTE *a, const UBYTE *b);
+LONG ESQ_WildcardMatch(const char *a, const char *b);
 
 LONG COI_WriteOiDataFile(UBYTE disk_id)
 {
-    UBYTE path_buf[112];
-    UBYTE tmp[152];
+    char path_buf[112];
+    char tmp[152];
     LONG fh;
     WORD count;
     WORD i;
@@ -109,7 +109,7 @@ LONG COI_WriteOiDataFile(UBYTE disk_id)
         }
 
         if (entry != (void *)0) {
-            ESQ_WildcardMatch((const UBYTE *)entry, (const UBYTE *)entry);
+            ESQ_WildcardMatch((const char *)entry, (const char *)entry);
             DISKIO_WriteBufferedBytes(fh, entry, COI_WRITE_ONE);
             DISKIO_WriteBufferedBytes(fh, COI_RecordTerminatorCrLf, COI_WRITE_TWO);
         }
