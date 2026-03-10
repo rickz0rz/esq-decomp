@@ -227,11 +227,19 @@ ___GROUP_AM_JMPTBL_OVERRIDE_INTUITI__1:
 ___GROUP_AM_JMPTBL_OVERRIDE_INTUITI__2:
               RTS                                     ;4e75 
 GROUP_AM_JMPTBL_BUFFER_FlushAllA:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___GROUP_AM_JMPTBL_BUFFER_FlushAllA__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          BUFFER_FlushAllAndCloseWithCode;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___GROUP_AM_JMPTBL_BUFFER_FlushAllA__2:
+___GROUP_AM_JMPTBL_BUFFER_FlushAllA__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 GROUP_AM_JMPTBL_FLIB2_ResetAndLo:
               CMP.L          __base(A4),A7            ;bfec 0000 

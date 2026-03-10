@@ -27,7 +27,7 @@ extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondaryStatePtr);
 extern void GCOMMAND_InitPresetDefaults(void);
 extern void OVERRIDE_INTUITION_FUNCS(void);
-extern void BUFFER_FlushAllAndCloseWithCode(void);
+extern LONG BUFFER_FlushAllAndCloseWithCode(LONG code);
 extern void FLIB2_ResetAndLoadListingTemplates(void);
 extern void WDISP_SPrintf(void);
 extern void CLEANUP_ShutdownSystem(void);
@@ -58,7 +58,7 @@ void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void){ESQ_SetCopperEf
 LONG GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondaryStatePtr){return LOCAVAIL_LoadAvailabilityDataFile(primaryStatePtr, secondaryStatePtr);}
 void GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults(void){GCOMMAND_InitPresetDefaults();}
 void GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS(void){OVERRIDE_INTUITION_FUNCS();}
-void GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(void){BUFFER_FlushAllAndCloseWithCode();}
+LONG GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(LONG code){return BUFFER_FlushAllAndCloseWithCode(code);}
 void GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates(void){FLIB2_ResetAndLoadListingTemplates();}
 void GROUP_AM_JMPTBL_WDISP_SPrintf(void){WDISP_SPrintf();}
 void GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem(void){CLEANUP_ShutdownSystem();}
