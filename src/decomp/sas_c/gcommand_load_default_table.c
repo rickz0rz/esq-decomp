@@ -31,8 +31,8 @@ LONG GCOMMAND_LoadDefaultTable(void)
     _LVOCopyMem(AbsExecBase, GCOMMAND_DigitalNicheEnabledFlag, loadedBuffer, 32);
     Global_PTR_WORK_BUFFER += 32;
 
-    GCOMMAND_DigitalNicheListingsTemplatePtr = (char *)0;
-    GCOMMAND_DigitalNicheListingsTemplatePtr = ESQPARS_ReplaceOwnedString(Global_PTR_WORK_BUFFER, (char *)0);
+    GCOMMAND_DigitalNicheListingsTemplatePtr = 0;
+    GCOMMAND_DigitalNicheListingsTemplatePtr = ESQPARS_ReplaceOwnedString(Global_PTR_WORK_BUFFER, 0);
 
     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_GCOMMAND_C_1, 335, loadedBuffer, loadedSize + 1);
 
