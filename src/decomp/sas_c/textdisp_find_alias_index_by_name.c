@@ -47,7 +47,7 @@ LONG TEXTDISP_FindAliasIndexByName(char *entryPtr)
             ++scan;
         }
 
-        if (STRING_CompareNoCaseN((const char *)nameBuf, (const char *)alias, (LONG)(scan - alias)) == 0) {
+        if (STRING_CompareNoCaseN(nameBuf, alias, (LONG)(scan - alias)) == 0) {
             return idx;
         }
         idx += 1;

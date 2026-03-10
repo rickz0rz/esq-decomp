@@ -208,7 +208,7 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
                 nameEnd++;
             }
             nameLen = (LONG)(nameEnd - candidateName);
-            if (STRING_CompareNoCaseN((const char *)candidateName, (const char *)candidateTitle, nameLen) == 0) {
+            if (STRING_CompareNoCaseN(candidateName, candidateTitle, nameLen) == 0) {
                 candidate = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
                 if (candidate != (TEXTDISP_CandidateEntry *)0 &&
                     TLIBA2_JMPTBL_ESQ_TestBit1Based((void *)candidate->selectionBits, titleSlot) ==
