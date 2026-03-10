@@ -9,7 +9,7 @@ typedef struct NEWGRID_Entry {
 
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
 extern WORD TEXTDISP_SecondaryGroupEntryCount;
-extern NEWGRID_Entry *TEXTDISP_SecondaryEntryPtrTable[];
+extern const NEWGRID_Entry *TEXTDISP_SecondaryEntryPtrTable[];
 extern LONG *NEWGRID_SecondaryIndexCachePtr;
 extern LONG CLOCK_DaySlotIndex;
 
@@ -22,13 +22,13 @@ WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LO
 {
     LONG cacheIndex;
     LONG normalizeFlag;
-    NEWGRID_Entry *entry;
+    const NEWGRID_Entry *entry;
     const char *aux;
     const char *a;
     const char *b;
 
     normalizeFlag = 0;
-    entry = (NEWGRID_Entry *)*entryOut;
+    entry = (const NEWGRID_Entry *)*entryOut;
     aux = *auxOut;
 
     if (rowIndex > 48) {
@@ -36,7 +36,7 @@ WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LO
         normalizeFlag = 1;
     }
 
-    entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(keyIndex, 1);
+    entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(keyIndex, 1);
     aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(keyIndex, 1);
     if (entry == 0 || aux == 0) {
         *entryOut = (char *)entry;
@@ -48,7 +48,7 @@ WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LO
         if ((WORD)(NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) != 0) {
             if (normalizeFlag == 0) {
                 *entryOut = (char *)entry;
-        *auxOut = (char *)aux;
+                *auxOut = (char *)aux;
                 return rowIndex;
             }
         }
@@ -58,7 +58,7 @@ WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LO
         if (NEWGRID_SecondaryIndexCachePtr != 0) {
             cacheIndex = NEWGRID_SecondaryIndexCachePtr[keyIndex];
             if (cacheIndex < 0 || cacheIndex >= (LONG)(WORD)TEXTDISP_SecondaryGroupEntryCount) {
-                cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex((char *)aux);
+                cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
                 NEWGRID_SecondaryIndexCachePtr[keyIndex] = cacheIndex;
             } else {
                 a = entry->titleText;
@@ -71,15 +71,15 @@ WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LO
                     b++;
                 }
                 if (*a != *b) {
-                    cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex((char *)aux);
+                    cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
                     NEWGRID_SecondaryIndexCachePtr[keyIndex] = cacheIndex;
                 }
             }
         } else {
-            cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex((char *)aux);
+            cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
         }
 
-        entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(cacheIndex, 2);
+        entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(cacheIndex, 2);
         aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(cacheIndex, 2);
     }
 

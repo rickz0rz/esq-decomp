@@ -3,7 +3,7 @@ typedef signed short WORD;
 
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern LONG NEWGRID_GetEntryStateCode(char *entryPtr, char *entryAuxPtr, WORD selector);
+extern LONG NEWGRID_GetEntryStateCode(const char *entryPtr, const char *entryAuxPtr, WORD selector);
 
 LONG NEWGRID_TestEntryState(LONG mode, LONG primaryIndex, LONG secondaryIndex, WORD selector)
 {
@@ -40,7 +40,7 @@ LONG NEWGRID_TestEntryState(LONG mode, LONG primaryIndex, LONG secondaryIndex, W
         entryAuxPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(primaryIndex, MODE_PRIMARY);
     }
 
-    state = NEWGRID_GetEntryStateCode((char *)entryPtr, (char *)entryAuxPtr, selector);
+    state = NEWGRID_GetEntryStateCode(entryPtr, entryAuxPtr, selector);
 
     if (mode == TEST_MODE_UNSET) {
         if (state == STATE_UNSET) {

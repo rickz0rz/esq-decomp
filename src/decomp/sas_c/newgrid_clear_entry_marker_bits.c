@@ -31,7 +31,7 @@ void NEWGRID_ClearEntryMarkerBits(void *unused, WORD modeSel)
     LONG i;
     LONG j;
     const NEWGRID_Entry *entry;
-    NEWGRID_AuxData *aux;
+    const NEWGRID_AuxData *aux;
 
     (void)unused;
 
@@ -43,9 +43,9 @@ void NEWGRID_ClearEntryMarkerBits(void *unused, WORD modeSel)
             }
             entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
             if ((entry->flags47 & (1u << BIT_SHIFT_ENTRY_MARKER)) != 0) {
-                aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
+                aux = (const NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
                 for (j = 1; j < 49; ++j) {
-                    aux->rowFlags[j] &= (UBYTE)~(1u << 5);
+                    ((NEWGRID_AuxData *)aux)->rowFlags[j] &= (UBYTE)~(1u << 5);
                 }
             }
             ++i;
@@ -59,9 +59,9 @@ void NEWGRID_ClearEntryMarkerBits(void *unused, WORD modeSel)
         }
         entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
         if ((entry->flags47 & (1u << BIT_SHIFT_ENTRY_MARKER)) != 0) {
-            aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
+            aux = (const NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
             for (j = 1; j < 49; ++j) {
-                aux->rowFlags[j] &= (UBYTE)~(1u << 5);
+                ((NEWGRID_AuxData *)aux)->rowFlags[j] &= (UBYTE)~(1u << 5);
             }
         }
         ++i;
