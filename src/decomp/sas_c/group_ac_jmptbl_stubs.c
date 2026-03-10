@@ -1,8 +1,9 @@
 typedef signed short WORD;
+typedef signed long LONG;
 
 extern void DST_RefreshBannerBuffer(void);
 extern long DST_UpdateBannerQueue(void *pair);
-extern void ESQDISP_DrawStatusBanner(void);
+extern void ESQDISP_DrawStatusBanner(WORD mode);
 extern void ESQFUNC_DrawDiagnosticsScreen(void);
 extern void ESQFUNC_DrawEscMenuVersion(void);
 extern void ESQFUNC_DrawMemoryStatusScreen(void);
@@ -16,7 +17,7 @@ extern void SCRIPT_PollHandshakeAndApplyTimeout(void);
 
 void GROUP_AC_JMPTBL_DST_RefreshBannerBuffer(void){DST_RefreshBannerBuffer();}
 long GROUP_AC_JMPTBL_DST_UpdateBannerQueue(void *pair){return DST_UpdateBannerQueue(pair);}
-void GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(void){ESQDISP_DrawStatusBanner();}
+void GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(LONG mode){ESQDISP_DrawStatusBanner((WORD)mode);}
 void GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen(void){ESQFUNC_DrawDiagnosticsScreen();}
 void GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion(void){ESQFUNC_DrawEscMenuVersion();}
 void GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen(void){ESQFUNC_DrawMemoryStatusScreen();}
