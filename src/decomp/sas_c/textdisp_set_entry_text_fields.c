@@ -13,7 +13,7 @@ extern UWORD TEXTDISP_LrbnEntryWidthPx;
 extern UWORD CONFIG_BannerCopperHeadByte;
 extern LONG TEXTDISP_EntryTextBaseWidthPx;
 
-extern void STRING_CopyPadNul(char *dst, const char *src, ULONG n);
+extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 
 void TEXTDISP_SetEntryTextFields(TEXTDISP_EntryTextFields *entry, const char *shortText, const char *longText)
 {
