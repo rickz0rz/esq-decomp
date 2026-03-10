@@ -41,7 +41,7 @@ extern const char ED2_STR_DNICHE[];
 extern const char ED2_STR_DMPLEX[];
 extern const char ED2_STR_CF2_DPPV[];
 
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
+extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, char *text, LONG y);
 extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 

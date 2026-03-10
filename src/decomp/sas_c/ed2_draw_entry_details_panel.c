@@ -46,7 +46,7 @@ extern const char ED2_STR_PREVDAYSDATA[];
 
 extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG pool, LONG size, LONG flags);
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG pool, void *ptr, LONG size);
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
+extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, char *text, LONG y);
 extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern UBYTE *DISKIO2_CopyAndSanitizeSlotString(UBYTE *buf, UBYTE *entryData, UBYTE *titlePtr, LONG slot);
