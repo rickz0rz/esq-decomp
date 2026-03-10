@@ -22,7 +22,7 @@ LONG ESQ_HandleSerialRbfInterrupt(SerialIntCtx *ctx, UBYTE *rbfBase)
 {
     const UWORD SERIAL_ERR_BIT = 0x8000;
     const UWORD RBF_WRAP = 0xFA00;
-    const WORD RBF_OVERFLOW_WATERMARK = 0xDAC0;
+    const UWORD RBF_OVERFLOW_WATERMARK = 0xDAC0;
     const WORD READMODE_RBF_OVERFLOW = 0x0102;
     const WORD INTREQ_RBF = 0x0800;
     const LONG COUNTER_STEP = 1;
@@ -55,7 +55,7 @@ LONG ESQ_HandleSerialRbfInterrupt(SerialIntCtx *ctx, UBYTE *rbfBase)
         Global_WORD_MAX_VALUE = fill;
     }
 
-    if (fill >= RBF_OVERFLOW_WATERMARK && ESQPARS2_ReadModeFlags != READMODE_RBF_OVERFLOW) {
+    if ((UWORD)fill >= RBF_OVERFLOW_WATERMARK && ESQPARS2_ReadModeFlags != READMODE_RBF_OVERFLOW) {
         ESQPARS2_ReadModeFlags = READMODE_RBF_OVERFLOW;
         SCRIPT_SerialReadModeOverflowCount += COUNTER_STEP;
     }

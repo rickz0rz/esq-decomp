@@ -12,7 +12,7 @@ ___ESQ_HandleSerialRbfInterrupt__1:
               MOVE.L         $38(A7),A5               ;2a6f 0038 
               MOVE.W         #$8000,D7                ;3e3c 8000 
               MOVE.W         #$fa00,D6                ;3c3c fa00 
-              MOVE.W         #$ffffdac0,D5            ;3a3c dac0 
+              MOVE.W         #$dac0,D5                ;3a3c dac0 
               MOVE.W         #$102,D0                 ;303c 0102 
               MOVE.W         #$800,D1                 ;323c 0800 
               MOVEQ.L        #$1,D2                   ;7401 
@@ -66,7 +66,7 @@ ___ESQ_HandleSerialRbfInterrupt__8:
               MOVE.W         D0,Global_WORD_MAX_VALUE(A4);3940 0000 
 ___ESQ_HandleSerialRbfInterrupt__9:
               CMP.W          D5,D0                    ;b045 
-              BLT.B          ___ESQ_HandleSerialRbfInterrupt__12;6d14 
+              BCS.B          ___ESQ_HandleSerialRbfInterrupt__12;6514 
 ___ESQ_HandleSerialRbfInterrupt__10:
               MOVE.W         ESQPARS2_ReadModeFlags(A4),D0;302c 0000 
               MOVE.W         $30(A7),D1               ;322f 0030 
