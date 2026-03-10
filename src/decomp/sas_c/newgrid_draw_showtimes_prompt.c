@@ -22,9 +22,9 @@ typedef struct NEWGRID_Context {
 } NEWGRID_Context;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern char *SCRIPT_PtrSportsOnPrefix;
-extern char *SCRIPT_PtrSummaryOfPrefix;
-extern char *SCRIPT_PtrChannelSuffix;
+extern const char *SCRIPT_PtrSportsOnPrefix;
+extern const char *SCRIPT_PtrSummaryOfPrefix;
+extern const char *SCRIPT_PtrChannelSuffix;
 extern WORD Global_WORD_SELECT_CODE_IS_RAVESC;
 extern char NEWGRID_ShowtimeRangeDash[];
 extern WORD NEWGRID_RowHeightPx;
@@ -38,9 +38,9 @@ extern void NEWGRID_DrawGridFrame(char *rp, LONG type, LONG penA, LONG penB, LON
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG width, LONG color, LONG style);
 extern LONG _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
 extern LONG _LVOSetDrMd(void *gfxBase, char *rp, LONG mode);
-extern LONG _LVOTextLength(void *gfxBase, char *rp, char *text, LONG len);
+extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG len);
 extern LONG _LVOMove(void *gfxBase, char *rp, LONG x, LONG y);
-extern LONG _LVOText(void *gfxBase, char *rp, char *text, LONG len);
+extern LONG _LVOText(void *gfxBase, char *rp, const char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(char *rp, LONG code);
 
 void NEWGRID_DrawShowtimesPrompt(char *rpCtx, char *outBuf, LONG mode)
@@ -50,7 +50,7 @@ void NEWGRID_DrawShowtimesPrompt(char *rpCtx, char *outBuf, LONG mode)
     char tmpSuffix[10];
     char *titlePart;
     char *channelPart;
-    char *src;
+    const char *src;
     char *dst;
     NEWGRID_RastPort *rp;
     LONG len;

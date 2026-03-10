@@ -14,7 +14,7 @@ extern UWORD WDISP_WeatherStatusDigitChar;
 extern UBYTE WDISP_WeatherStatusBrushIndex;
 extern char *WDISP_WeatherStatusOverlayTextPtr;
 extern char *P_TYPE_WeatherCurrentMsgPtr;
-extern char *Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE;
+extern const char *Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE;
 
 extern ULONG ESQFUNC_PwBrushListHead;
 extern ULONG ESQFUNC_WeatherBrushPredicateNames;
@@ -30,7 +30,7 @@ void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG xSpan, LONG ySpan)
     WDISP_WeatherBrush *brush;
     char *textCopy;
     char *scan;
-    char *fallback;
+    const char *fallback;
     LONG textLen;
     LONG lineCount;
     LONG brushWidth;
