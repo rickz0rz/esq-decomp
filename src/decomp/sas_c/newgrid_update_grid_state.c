@@ -27,7 +27,7 @@ extern LONG NEWGRID_OverridePenIndex;
 
 extern LONG NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LONG keyIndex);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
-extern WORD NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG rowIndex);
+extern WORD NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *aux, LONG rowIndex);
 extern LONG NEWGRID_SelectEntryPen(char *entry);
 extern void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG unused);
@@ -61,7 +61,7 @@ void NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
 
         if (entry != 0 && aux != 0) {
             if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, (LONG)rowIndex) == SELECTED_NONE) {
-                rowIndex = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((char *)entry, (char *)aux, (LONG)rowIndex);
+                rowIndex = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((const char *)entry, (const char *)aux, (LONG)rowIndex);
                 pen = NEWGRID_SelectEntryPen((char *)entry);
                 NEWGRID_SelectedGridEntryPtr = pen;
                 if ((aux->rowFlags[rowIndex] & ROW_FLAG_BADGE) != 0) {

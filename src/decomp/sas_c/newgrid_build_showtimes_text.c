@@ -43,7 +43,7 @@ extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry,
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, char *entries);
 extern void NEWGRID_ResetShowtimeBuckets(void);
 extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **coiPtr, LONG row, LONG col);
-extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *coi, LONG idx);
+extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *coi, LONG idx);
 extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *coi, LONG idx, LONG winMins, LONG tolMins);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitsetBase, LONG bitIdx);
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
@@ -132,7 +132,7 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
                 }
 
                 if (row == ctx->startRow) {
-                    LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((char *)entry, (char *)coi, idx);
+                    LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((const char *)entry, (const char *)coi, idx);
                     if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState((char *)entry, (char *)coi, prev,
                         GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes) == 0) {
                         col++;
