@@ -1,11 +1,29 @@
               SECTION      text,CODE
 __code:
 NEWGRID2_JMPTBL_COI_SelectAnimFi:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/D3/D6/D7/A5,-(A7)     ;48e7 3304 
 ___NEWGRID2_JMPTBL_COI_SelectAnimFi__1:
-              BSR.W          COI_SelectAnimFieldPointer;6100 0000 
+              MOVE.L         $20(A7),D6               ;2c2f 0020 
+              MOVE.L         $1c(A7),D7               ;2e2f 001c 
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              MOVE.L         D6,D2                    ;2406 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         D2,D3                    ;3602 
+              MOVE.L         D3,-(A7)                 ;2f03 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          COI_GetAnimFieldPointerByMode;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
 ___NEWGRID2_JMPTBL_COI_SelectAnimFi__2:
+___NEWGRID2_JMPTBL_COI_SelectAnimFi__3:
+              MOVEM.L        (A7)+,D2/D3/D6/D7/A5     ;4cdf 20cc 
               RTS                                     ;4e75 
 __const:
 __strings:
@@ -521,7 +539,7 @@ ___NEWGRID2_JMPTBL_MATH_Mulu32__3:
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
-              XREF           COI_SelectAnimFieldPointer
+              XREF           COI_GetAnimFieldPointerByMode
               XREF           DISPTEXT_SetCurrentLineIndex
               XREF           DISPTEXT_LayoutAndAppendToBuffer
               XREF           DISPTEXT_GetTotalLineCount
