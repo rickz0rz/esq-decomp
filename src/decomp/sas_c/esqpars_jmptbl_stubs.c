@@ -18,7 +18,7 @@ extern void PARSEINI_WriteRtcFromGlobals(void);
 extern LONG LOCAVAIL_SaveAvailabilityDataFile(void *primaryStatePtr, void *secondaryStatePtr);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text);
 extern LONG LADFUNC_SaveTextAdsToFile(void);
-extern long PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern long PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 extern LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode);
 extern void P_TYPE_WritePromoIdDataFile(void);
 extern void COI_FreeEntryResources(void *entry);
@@ -47,7 +47,7 @@ void ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals(void){PARSEINI_WriteRtcFromGlob
 LONG ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(void *primaryStatePtr, void *secondaryStatePtr){return LOCAVAIL_SaveAvailabilityDataFile(primaryStatePtr, secondaryStatePtr);}
 void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text){DISPLIB_DisplayTextAtPosition(rastPort, x, y, text);}
 LONG ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile(void){return LADFUNC_SaveTextAdsToFile();}
-long ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s){return PARSE_ReadSignedLongSkipClass3_Alt(s);}
+long ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *s){return PARSE_ReadSignedLongSkipClass3_Alt(s);}
 LONG ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode){return DISKIO2_HandleInteractiveFileTransfer(crc32Mode);}
 void ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(void){P_TYPE_WritePromoIdDataFile();}
 void ESQPARS_JMPTBL_COI_FreeEntryResources(void *entry){COI_FreeEntryResources(entry);}

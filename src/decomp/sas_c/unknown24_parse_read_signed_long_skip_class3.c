@@ -5,7 +5,7 @@ extern char *STR_SkipClass3Chars(const char *s);
 extern LONG PARSE_ReadSignedLong(const char *in, LONG *outValue);
 extern LONG PARSE_ReadSignedLong_NoBranch(const char *in, LONG *outValue);
 
-LONG PARSE_ReadSignedLongSkipClass3(char *cursor)
+LONG PARSE_ReadSignedLongSkipClass3(const char *cursor)
 {
     LONG parsedValue;
 
@@ -18,7 +18,7 @@ LONG PARSE_ReadSignedLongSkipClass3(char *cursor)
     return parsedValue;
 }
 
-LONG PARSE_ReadSignedLongSkipClass3_Alt(char *cursor)
+LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *cursor)
 {
     LONG parsedValue;
 
