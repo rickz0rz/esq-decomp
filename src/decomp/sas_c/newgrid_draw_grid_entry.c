@@ -28,7 +28,7 @@ extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, LONG ch);
 extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *set);
 extern void NEWGRID_Apply24HourFormatting(char *dst, LONG row, LONG mode);
-extern LONG NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(char *ctx, char *coi, LONG row, char *text, LONG fmt);
+extern void NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(char *ctx, char *coi, LONG row, char *text, LONG fmt);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layout, const char *src);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(char *layout, const char *src);
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
