@@ -8,7 +8,7 @@ typedef struct NEWGRID_ShowtimeBucketEntry {
 
 extern LONG NEWGRID_ShowtimeBucketCount;
 extern NEWGRID_ShowtimeBucketEntry *NEWGRID_ShowtimeBucketPtrTable[];
-extern const UBYTE NEWGRID_ShowtimeBucketSeparator[];
+extern const char NEWGRID_ShowtimeBucketSeparator[];
 
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
@@ -19,7 +19,7 @@ void NEWGRID_AppendShowtimeBuckets(char *outText)
     PARSEINI_JMPTBL_STRING_AppendAtNull(outText, NEWGRID_ShowtimeBucketPtrTable[0]->text);
     i = 1;
     while (i < NEWGRID_ShowtimeBucketCount) {
-        PARSEINI_JMPTBL_STRING_AppendAtNull(outText, (const char *)NEWGRID_ShowtimeBucketSeparator);
+        PARSEINI_JMPTBL_STRING_AppendAtNull(outText, NEWGRID_ShowtimeBucketSeparator);
         PARSEINI_JMPTBL_STRING_AppendAtNull(outText, NEWGRID_ShowtimeBucketPtrTable[i]->text);
         ++i;
     }
