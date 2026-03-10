@@ -15,6 +15,11 @@ extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG max_len);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *in);
 extern ULONG MATH_Mulu32(ULONG a, ULONG b);
 
+typedef struct UNKNOWN_StatusListHeader {
+    UBYTE dayMode0;
+    UBYTE marker1;
+} UNKNOWN_StatusListHeader;
+
 typedef struct UNKNOWN_StatusEntry {
     LONG dayKey0;
     LONG flag1;
@@ -53,6 +58,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
     const ULONG KEY_FIELD_LEN = 3u;
     const ULONG FLAG_FIELD_LEN = 1u;
     const ULONG VALUE_FIELD_LEN = 3u;
+    const UNKNOWN_StatusListHeader *header;
     const char *p = in;
     char list_name[16];
     char field_buf[8];
@@ -77,8 +83,10 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
         entry->dayKey0 = UNKNOWN_JMPTBL_DST_NormalizeDayOfYear(day, year);
     }
 
-    TLIBA1_DayEntryModeCounter = *p++;
-    marker = *p++;
+    header = (const UNKNOWN_StatusListHeader *)p;
+    TLIBA1_DayEntryModeCounter = header->dayMode0;
+    marker = header->marker1;
+    p += sizeof(UNKNOWN_StatusListHeader);
 
     while (marker == RECORD_MARKER_PLUS) {
         LONG key;
