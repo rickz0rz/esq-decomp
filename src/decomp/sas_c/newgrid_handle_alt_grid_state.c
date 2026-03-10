@@ -28,7 +28,7 @@ extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight,
 extern void NEWGRID_DrawGridEntry(char *rastPort, char *entry, char *aux, UWORD row, UWORD mode, LONG enabled, LONG bevel);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
 extern LONG NEWGRID_DrawGridFrameAlt(char *ctx);
-extern void NEWGRID_DrawGridCell(char *rastPort, char *cell, LONG rowFlag);
+extern void NEWGRID_DrawGridCell(char *rastPort, const void *cell, LONG rowFlag);
 
 LONG NEWGRID_HandleAltGridState(char *ctx, LONG keyIndex, WORD rowIndex)
 {
@@ -83,7 +83,7 @@ LONG NEWGRID_HandleAltGridState(char *ctx, LONG keyIndex, WORD rowIndex)
 
         NEWGRID_AltGridStateLatch = state;
         drawFlag = (state == 4) ? 1 : 0;
-        NEWGRID_DrawGridCell(ctxView->rastPort, (char *)entry, drawFlag);
+        NEWGRID_DrawGridCell(ctxView->rastPort, entry, drawFlag);
         return NEWGRID_AltGridStateLatch;
     }
 

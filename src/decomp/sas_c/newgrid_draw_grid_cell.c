@@ -16,15 +16,15 @@ extern void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(char *rastPort, LONG x1, LONG
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID_DrawGridCellText(char *rastPort, const char *leftText, const char *rightText, LONG rowFlag);
 
-void NEWGRID_DrawGridCell(char *rastPort, char *cell, LONG rowFlag)
+void NEWGRID_DrawGridCell(char *rastPort, const void *cell, LONG rowFlag)
 {
-    NEWGRID_Entry *cellView;
+    const NEWGRID_Entry *cellView;
     const char *left;
     const char *right;
     LONG x2;
     LONG y2;
 
-    cellView = (NEWGRID_Entry *)cell;
+    cellView = (const NEWGRID_Entry *)cell;
     left = NEWGRID2_JMPTBL_STR_SkipClass3Chars(cellView->leftText);
     right = NEWGRID2_JMPTBL_STR_SkipClass3Chars(cellView->rightText);
 
