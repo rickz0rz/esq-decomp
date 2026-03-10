@@ -25,7 +25,7 @@ extern ESQDISP_Entry *TEXTDISP_SecondaryEntryPtrTable[];
 extern ESQDISP_TitleData *TEXTDISP_PrimaryTitlePtrTable[];
 extern ESQDISP_TitleData *TEXTDISP_SecondaryTitlePtrTable[];
 
-extern LONG ESQSHARED_JMPTBL_ESQ_TestBit1Based(void *bitset_base, LONG bit_index);
+extern LONG ESQSHARED_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset_base, LONG bit_index);
 extern LONG ESQSHARED_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 extern char *ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 

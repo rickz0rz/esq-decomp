@@ -37,7 +37,7 @@ extern LONG GCOMMAND_PpvSelectionWindowMinutes;
 extern LONG NEWGRID_ClearEntryMarkerBits(LONG row);
 extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG col);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG idx);
-extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(void *bitset, LONG idx);
+extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG idx);
 extern LONG NEWGRID_ShouldOpenEditor(char *entry);
 extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *aux, LONG idx, LONG win, LONG tol);
 extern LONG NEWGRID_InitSelectionWindow(SelCtx *ctx, LONG rowBase);

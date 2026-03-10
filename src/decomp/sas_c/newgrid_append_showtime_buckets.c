@@ -10,7 +10,7 @@ extern LONG NEWGRID_ShowtimeBucketCount;
 extern NEWGRID_ShowtimeBucketEntry *NEWGRID_ShowtimeBucketPtrTable[];
 extern UBYTE NEWGRID_ShowtimeBucketSeparator;
 
-extern void PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
+extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
 void NEWGRID_AppendShowtimeBuckets(char *outText)
 {
