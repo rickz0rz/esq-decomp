@@ -12,7 +12,7 @@ extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
 extern void _LVOMove(char *rastport, LONG x, LONG y);
 extern void _LVOText(char *rastport, const char *text, LONG len);
 
-char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, char *text, LONG draw_enable)
+char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, const char *text, LONG draw_enable)
 {
     char word_buf[50];
     LONG drawn_width;
