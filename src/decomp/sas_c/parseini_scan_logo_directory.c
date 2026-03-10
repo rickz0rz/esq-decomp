@@ -14,7 +14,7 @@ extern const char Global_STR_PARSEINI_C_5[];
 extern LONG _LVOExecute(const char *cmd, LONG input, LONG output);
 extern LONG PARSEINI_JMPTBL_HANDLE_OpenWithMode(const char *path, const char *modeStr);
 extern LONG PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(char *dst, LONG maxLen, LONG handle);
-extern char *PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(char *path);
+extern char *PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(const char *path);
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
 extern void PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(LONG handle);
 

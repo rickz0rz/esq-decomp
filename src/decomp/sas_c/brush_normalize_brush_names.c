@@ -6,7 +6,7 @@ enum {
     BRUSH_NODE_NEXT_OFFSET = 368
 };
 
-char *GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(char *path);
+char *GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(const char *path);
 
 typedef struct BRUSH_Node {
     char name[BRUSH_NODE_NEXT_OFFSET];

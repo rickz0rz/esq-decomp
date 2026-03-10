@@ -30,7 +30,7 @@ extern void _LVOPermit(void);
 
 extern void ESQDISP_ProcessGridMessagesIfIdle(void);
 extern LONG ESQIFF_ReadNextExternalAssetPathEntry(BYTE *out);
-extern char *GCOMMAND_FindPathSeparator(char *path);
+extern char *GCOMMAND_FindPathSeparator(const char *path);
 extern WORD ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(char *path);
 extern LONG ESQIFF_JMPTBL_STRING_CompareNoCaseN(const char *lhs, const char *rhs, LONG n);
 extern void *ESQIFF_JMPTBL_BRUSH_AllocBrushNode(const char *label, LONG flags);
