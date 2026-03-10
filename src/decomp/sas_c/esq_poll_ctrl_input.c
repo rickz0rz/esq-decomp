@@ -1,15 +1,13 @@
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
-enum {
-    CUSTOM_BASE = 0x00DFF000UL,
-    CUSTOM_INTREQ_OFFSET = 0x009C,
-    INTREQ_SETCLR = 0x0100
-};
+#define CUSTOM_BASE 0x00DFF000UL
+#define CUSTOM_INTREQ_OFFSET 0x009C
+#define INTREQ_SETCLR 0x0100
 
 extern void ESQ_CaptureCtrlBit4Stream(void);
 extern void ESQ_CaptureCtrlBit3Stream(void);
-extern const UBYTE ESQ_STR_B[];
+extern const char ESQ_STR_B[];
 
 void ESQ_PollCtrlInput(void)
 {

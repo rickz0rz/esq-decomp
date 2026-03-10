@@ -1,7 +1,7 @@
 typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
-extern const UBYTE kHexDigitTable[];
+extern const char kHexDigitTable[];
 
 ULONG FORMAT_U32ToHexString(UBYTE *dst, ULONG value)
 {

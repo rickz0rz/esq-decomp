@@ -16,11 +16,12 @@ ___FORMAT_U32ToHexString__2:
               MOVEQ.L        #$f,D0                   ;700f 
               AND.L          D0,D5                    ;ca80 
               LEA            kHexDigitTable(A4),A0    ;41ec 0000 
-              MOVE.B         $0(A0,D5.L),(A3)+        ;16f0 5800 
+              MOVE.B         $0(A0,D5.L),D0           ;1030 5800 
+              MOVE.B         D0,(A3)+                 ;16c0 
               LSR.L          #$4,D7                   ;e88f 
 ___FORMAT_U32ToHexString__3:
               TST.L          D7                       ;4a87 
-              BNE.B          ___FORMAT_U32ToHexString__2;66ec 
+              BNE.B          ___FORMAT_U32ToHexString__2;66ea 
 ___FORMAT_U32ToHexString__4:
               MOVE.L         A3,D0                    ;200b 
               LEA            $14(A7),A0               ;41ef 0014 
