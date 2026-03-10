@@ -119,10 +119,11 @@ ___ED_DrawAdNumberPrompt__3:
 ___ED_DrawAdNumberPrompt__4:
               MOVE.L         $14(A7),D0               ;202f 0014 
               CMP.L          $20(A7),D0               ;b0af 0020 
-              BGE.B          ___ED_DrawAdNumberPrompt__7;6c2a 
+              BGE.B          ___ED_DrawAdNumberPrompt__7;6c2c 
 ___ED_DrawAdNumberPrompt__5:
+              MOVE.B         $1c(A7),D1               ;122f 001c 
               LEA            ED_EditBufferScratch(A4),A0;41ec 0000 
-              MOVE.B         $1c(A7),$0(A0,D0.L)      ;11af 001c 0800 
+              MOVE.B         D1,$0(A0,D0.L)           ;1181 0800 
               MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
               MOVE.L         $14(A7),-(A7)            ;2f2f 0014 
               BSR.W          GROUP_AL_JMPTBL_LADFUNC_PackNibb;6100 0000 
@@ -132,7 +133,7 @@ ___ED_DrawAdNumberPrompt__5:
               MOVE.B         D0,$0(A0,D1.L)           ;1180 1800 
 ___ED_DrawAdNumberPrompt__6:
               ADDQ.L         #$1,$14(A7)              ;52af 0014 
-              BRA.B          ___ED_DrawAdNumberPrompt__4;60cc 
+              BRA.B          ___ED_DrawAdNumberPrompt__4;60ca 
 ___ED_DrawAdNumberPrompt__7:
               CLR.B          ED_AdNumberPromptStateBlock(A4);422c 0000 
               BSR.W          ED_RedrawCursorChar      ;6100 0000 

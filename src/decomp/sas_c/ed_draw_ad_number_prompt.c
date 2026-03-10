@@ -6,7 +6,7 @@ extern char *Global_REF_RASTPORT_1;
 
 extern LONG ED_MaxAdNumber;
 extern LONG ED_EditCursorOffset;
-extern UBYTE ED_EditBufferScratch[];
+extern char ED_EditBufferScratch[];
 extern UBYTE ED_EditBufferLive[];
 extern UBYTE ED_AdNumberPromptStateBlock;
 
@@ -57,8 +57,8 @@ void ED_DrawAdNumberPrompt(void)
 
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG, X_LEFT, Global_STR_ENTER_AD_NUMBER_ONE_HYPHEN);
 
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth((char *)ED_EditBufferScratch, ED_MaxAdNumber, DEC_WIDTH_2);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG, X_ADMAX, (char *)ED_EditBufferScratch);
+    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, ED_MaxAdNumber, DEC_WIDTH_2);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG, X_ADMAX, ED_EditBufferScratch);
 
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG, X_HELP, Global_STR_LEFT_PARENTHESIS_THEN);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG2, X_LEFT, Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_2);

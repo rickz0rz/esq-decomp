@@ -13,7 +13,7 @@ extern LONG ED_TextLimit;
 extern LONG ED_AdDisplayResetFlag;
 extern LONG ED_EditCursorOffset;
 extern LONG ED_ViewportOffset;
-extern UBYTE ED_EditBufferScratch[];
+extern char ED_EditBufferScratch[];
 extern UBYTE ED_EditBufferLive[];
 
 extern const char Global_STR_EDITING_AD_NUMBER_FORMATTED_2[];
@@ -43,7 +43,7 @@ void ED_LoadCurrentAdIntoBuffers(void)
     LONG topY;
 
     adIndex = Global_REF_LONG_CURRENT_EDITING_AD_NUMBER - 1;
-    GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault(adIndex, ED_EditBufferScratch, ED_EditBufferLive);
+    GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault(adIndex, (UBYTE *)ED_EditBufferScratch, ED_EditBufferLive);
 
     textLen = 0;
     while (ED_EditBufferScratch[textLen] != 0) {
