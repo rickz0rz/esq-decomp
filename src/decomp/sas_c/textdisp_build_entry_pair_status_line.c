@@ -38,7 +38,7 @@ void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD e
     aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(idx, modeFlag ? MODE_PRIMARY : MODE_SECONDARY);
     entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, modeFlag ? MODE_PRIMARY : MODE_SECONDARY);
 
-    if (entry == (const char *)0 || aux == (const char *)0) {
+    if (entry == 0 || aux == 0) {
         return;
     }
 
@@ -55,12 +55,12 @@ void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD e
     partB = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)entryIndex, FIELD_PART_B);
 
     line[0] = CH_NUL;
-    if (partA != (const char *)0) {
+    if (partA != 0) {
         STRING_AppendAtNull(line, SCRIPT_AlignedPrefixEmptyD);
         STRING_AppendAtNull(line, partA);
     }
 
-    if (partB != (const char *)0) {
+    if (partB != 0) {
         if (line[0] != CH_NUL) {
             STRING_AppendAtNull(line, SCRIPT_SpacerTripleC);
         }
