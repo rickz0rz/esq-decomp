@@ -28,7 +28,7 @@ extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *entries, LONG
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, char *entries);
 extern void NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG preset);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitsetBase, LONG bitIndex);
-extern const char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
+extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
 static int str_eq_nullable(const char *a, const char *b)

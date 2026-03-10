@@ -46,7 +46,7 @@ extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **coiPtr, LONG row, 
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *coi, LONG idx);
 extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *coi, LONG idx, LONG winMins, LONG tolMins);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitsetBase, LONG bitIdx);
-extern const char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
+extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern LONG NEWGRID_AddShowtimeBucketEntry(const char *text, LONG row);
 extern void NEWGRID_AppendShowtimeBuckets(char *out);
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
