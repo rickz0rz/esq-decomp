@@ -7,7 +7,7 @@ extern void CLEANUP_RenderAlignedStatusScreen(UWORD sourceMode, UWORD modeSel, U
 extern void ESQPARS_ApplyRtcBytesAndPersist(BYTE *src);
 extern void ESQ_SetCopperEffect_Custom(void);
 extern LONG GCOMMAND_GetBannerChar(void);
-extern void PARSEINI_ParseIniBufferAndDispatch(const char *path);
+extern LONG PARSEINI_ParseIniBufferAndDispatch(const char *path);
 extern void PARSEINI_ScanLogoDirectory(void);
 extern LONG PARSEINI_WriteErrorLogEntry(void);
 extern void SCRIPT_DeassertCtrlLineNow(void);
@@ -19,7 +19,7 @@ void GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen(LONG sourceMode, LONG mod
 void GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(const UBYTE *src){ESQPARS_ApplyRtcBytesAndPersist((BYTE *)src);}
 void GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom(void){ESQ_SetCopperEffect_Custom();}
 LONG GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar(void){return GCOMMAND_GetBannerChar();}
-void GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(const char *path){PARSEINI_ParseIniBufferAndDispatch(path);}
+LONG GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(const char *path){return PARSEINI_ParseIniBufferAndDispatch(path);}
 void GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory(void){PARSEINI_ScanLogoDirectory();}
 LONG GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry(void){return PARSEINI_WriteErrorLogEntry();}
 void GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow(void){SCRIPT_DeassertCtrlLineNow();}

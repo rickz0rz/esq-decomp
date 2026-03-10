@@ -38,7 +38,7 @@ extern void _LVOSetFont(void *graphicsBase, char *rastPort, void *font);
 extern LONG SCRIPT3_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern void TLIBA3_SetFontForAllViewModes(void *font);
 extern LONG SCRIPT_CheckPathExists(const char *path);
-extern void PARSEINI_ParseIniBufferAndDispatch(const char *path);
+extern LONG PARSEINI_ParseIniBufferAndDispatch(const char *path);
 extern void TEXTDISP_ApplySourceConfigAllEntries(void);
 extern void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(LONG arg);
 extern void PARSEINI_JMPTBL_BRUSH_FreeBrushList(void **headPtr, LONG flags);

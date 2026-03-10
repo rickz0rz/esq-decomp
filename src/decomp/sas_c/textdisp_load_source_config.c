@@ -6,7 +6,7 @@ extern LONG TEXTDISP_SourceConfigEntryCount;
 extern UBYTE TEXTDISP_SourceConfigFlagMask;
 
 extern const char Global_STR_DF0_SOURCECFG_INI_2[];
-extern void PARSEINI_ParseIniBufferAndDispatch(const char *path);
+extern LONG PARSEINI_ParseIniBufferAndDispatch(const char *path);
 
 void TEXTDISP_LoadSourceConfig(void)
 {

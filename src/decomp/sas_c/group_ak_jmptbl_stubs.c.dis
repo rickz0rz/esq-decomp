@@ -70,6 +70,7 @@ ___GROUP_AK_JMPTBL_PARSEINI_ParseIn__1:
               BSR.W          PARSEINI_ParseIniBufferAndDispat;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___GROUP_AK_JMPTBL_PARSEINI_ParseIn__2:
+___GROUP_AK_JMPTBL_PARSEINI_ParseIn__3:
               MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 GROUP_AK_JMPTBL_PARSEINI_ScanLog:
