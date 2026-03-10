@@ -6,7 +6,7 @@ extern char *Global_REF_RASTPORT_1;
 
 extern UBYTE ED_LastKeyCode;
 extern LONG ED_EditCursorOffset;
-extern UBYTE ED_EditBufferScratch[];
+extern char ED_EditBufferScratch[];
 extern UBYTE ED_MenuStateId;
 extern UBYTE ED_AdNumberInputDigitTens;
 extern UBYTE ED_AdNumberInputDigitOnes;

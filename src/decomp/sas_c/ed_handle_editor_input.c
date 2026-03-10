@@ -7,7 +7,7 @@ extern LONG ED_TextModeReinitPendingFlag;
 extern LONG Global_REF_BOOL_IS_TEXT_OR_CURSOR;
 extern LONG Global_REF_BOOL_IS_LINE_OR_PAGE;
 extern UBYTE ED_EditBufferLive[];
-extern UBYTE ED_EditBufferScratch[];
+extern char ED_EditBufferScratch[];
 extern UBYTE ED_EditBufferLiveShiftBase[];
 extern UBYTE ED_EditBufferScratchShiftBase[];
 extern UBYTE ED_EditBufferLiveIndexBaseMinus1[];
