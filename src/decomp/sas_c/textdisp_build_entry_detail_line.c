@@ -40,7 +40,7 @@ extern const char SCRIPT_StrVsDotSeparator[];
 extern const char SCRIPT_StrVsSeparator[];
 extern const char Global_STR_ALIGNED_CHANNEL_2[];
 
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
 extern void TEXTDISP_BuildEntryShortName(const char *entry, char *dst);
@@ -55,12 +55,12 @@ extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG px);
 void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
 {
     TEXTDISP_SelectionEntry *entry;
-    char *aux;
+    const char *aux;
     const char *program;
     char *detail;
     const char *segment;
     char *hit;
-    TEXTDISP_AuxData *auxData;
+    const TEXTDISP_AuxData *auxData;
     LONG i;
     LONG out;
     LONG mode;
@@ -106,14 +106,14 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
         STRING_AppendAtNull(detail, segment);
     }
 
-    if (aux != (char *)TEXTDISP_NULL && entryIndex >= TEXTDISP_NULL) {
-        auxData = (TEXTDISP_AuxData *)aux;
+    if (aux != (const char *)TEXTDISP_NULL && entryIndex >= TEXTDISP_NULL) {
+        auxData = (const TEXTDISP_AuxData *)aux;
         segment = TEXTDISP_SkipControlCodes(auxData->titleTable[entryIndex]);
     } else {
         segment = (const char *)TEXTDISP_NULL;
     }
 
-    if (segment != (char *)TEXTDISP_NULL && segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
+    if (segment != (const char *)TEXTDISP_NULL && segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
         titleLen = TEXTDISP_NULL;
         while (segment[titleLen] != TEXTDISP_NULL) {
             titleLen++;
@@ -160,7 +160,7 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
         STRING_AppendAtNull(detail, tmp);
     }
 
-    TEXTDISP_FormatEntryTimeForIndex(tmp, entryIndex, aux);
+    TEXTDISP_FormatEntryTimeForIndex(tmp, entryIndex, (char *)aux);
     segment = tmp;
     while (segment[TEXTDISP_NULL] != TEXTDISP_NULL &&
            (WDISP_CharClassTable[segment[TEXTDISP_NULL]] & CLASS_SKIP_MASK) != TEXTDISP_NULL) {
