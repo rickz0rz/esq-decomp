@@ -9,7 +9,7 @@ extern UBYTE CONFIG_NewgridSelectionCode35EnabledFlag;
 
 extern LONG NEWGRID_HandleAltGridState(char *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_FindNextEntryWithMarkers(LONG mode, LONG startIndex, WORD selector);
-extern void NEWGRID_DrawEmptyGridMessage(char *ctx, LONG rowIndex, LONG selector);
+extern void NEWGRID_DrawEmptyGridMessage(char *ctx, unsigned short slot);
 extern void NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
 extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
@@ -50,7 +50,7 @@ LONG NEWGRID_ProcessAltEntryState(char *ctx, WORD rowIndex, WORD selector)
             NEWGRID_AltEntryWorkflowState = 1;
             /* fallthrough */
         case 1:
-            NEWGRID_DrawEmptyGridMessage(ctx, (LONG)rowIndex, (LONG)selector);
+            NEWGRID_DrawEmptyGridMessage(ctx, (unsigned short)rowIndex);
             NEWGRID_AltEntryWorkflowState = 3;
             return NEWGRID_AltEntryWorkflowState;
         case 2:
