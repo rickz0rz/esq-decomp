@@ -7,7 +7,7 @@ enum {
     COI_AUX_DEALLOC_BYTES = 42
 };
 
-extern UBYTE Global_STR_COI_C_3[];
+extern const char Global_STR_COI_C_3[];
 
 void COI_FreeSubEntryTableEntries(void *entry);
 void COI_ClearAnimObjectStrings(void *entry);

@@ -14,7 +14,7 @@ enum {
 
 static const ULONG COI_MEMF_PUBLIC_CLEAR = 0x10001UL;
 
-extern UBYTE Global_STR_COI_C_5[];
+extern const char Global_STR_COI_C_5[];
 
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
 void GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray(void *table, LONG elem_size, LONG count);

@@ -7,7 +7,7 @@ extern char *Global_PTR_WORK_BUFFER;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern const char Global_STR_G2[];
 extern const char Global_STR_G3[];
-extern UBYTE Global_STR_DST_C_7[];
+extern const char Global_STR_DST_C_7[];
 
 extern void DST_RebuildBannerPair(void *pair);
 extern LONG DISKIO_LoadFileToWorkBuffer(const char *path);
