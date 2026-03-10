@@ -1,14 +1,14 @@
 typedef signed long LONG;
 
-extern void ALLOCATE_AllocAndInitializeIOStdReq(void);
+extern void *ALLOCATE_AllocAndInitializeIOStdReq(void *replyPort);
 extern void *SIGNAL_CreateMsgPortWithSignal(const char *name, LONG pri);
 extern void DISKIO_ProbeDrivesAndAssignPaths(void);
 extern void ESQ_InvokeGcommandInit(void);
-extern void EXEC_CallVector_48(void);
+extern LONG EXEC_CallVector_48(void *a0, void *a1, LONG d1, void *a2);
 
-void GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq(void)
+void *GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq(void *replyPort)
 {
-    ALLOCATE_AllocAndInitializeIOStdReq();
+    return ALLOCATE_AllocAndInitializeIOStdReq(replyPort);
 }
 
 void *GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal(const char *name, LONG pri)
@@ -26,7 +26,7 @@ void GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit(void)
     ESQ_InvokeGcommandInit();
 }
 
-void GROUP_AV_JMPTBL_EXEC_CallVector_48(void)
+LONG GROUP_AV_JMPTBL_EXEC_CallVector_48(void *a0, void *a1, LONG d1, void *a2)
 {
-    EXEC_CallVector_48();
+    return EXEC_CallVector_48(a0, a1, d1, a2);
 }
