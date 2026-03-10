@@ -107,9 +107,9 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, NEWGRID_EntryTextScratchPtr);
 
     if (renderMode && split && textLines > 1) {
-        char *p = PARSEINI_JMPTBL_STR_FindCharPtr(split, 40);
+        const char *p = PARSEINI_JMPTBL_STR_FindCharPtr(split, 40);
         if (p && p[5] == ')') {
-            split = p + 6;
+            split = (char *)(p + 6);
         }
 
         split = advance_until_space(split);
