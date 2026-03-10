@@ -31,8 +31,8 @@ extern void *Global_HANDLE_PREVUEC_FONT;
 extern const char TLIBA1_FMT_VIEWMODE_PCT_LD[];
 
 extern LONG MATH_Mulu32(LONG left, LONG right);
-extern LONG _LVOSetFont(void *gfxBase, char *rastPort, void *font);
-extern LONG _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetFont(void *gfxBase, char *rastPort, void *font);
+extern void _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
 extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern void _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);

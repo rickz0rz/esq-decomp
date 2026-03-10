@@ -46,7 +46,7 @@ extern void TEXTDISP_ResetSelectionAndRefresh(void);
 
 extern void _LVOSetDrMd(char *rastPort, LONG mode);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
-extern LONG _LVOSetFont(char *rastPort, void *font);
+extern void _LVOSetFont(char *rastPort, void *font);
 
 typedef struct WDISP_DisplayContext {
     UBYTE pad0[2];

@@ -11,7 +11,7 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern LONG TLIBA3_BuildDisplayContextForViewMode(LONG viewMode, LONG a, LONG b);
-extern LONG _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
 
 typedef struct TEXTDISP_DisplayContext {
     UBYTE pad0[2];
