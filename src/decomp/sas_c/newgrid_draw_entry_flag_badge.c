@@ -13,8 +13,7 @@ extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight,
 extern LONG NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(const void *entry, LONG rowIndex, LONG mode);
 extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry, LONG rowIndex, LONG field);
 extern void NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(char *entry, LONG rowIndex);
-extern void NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(
-    char *rastPort, const char *fmt, LONG fmtRow, const char *src, LONG srcRow, LONG fallbackText);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(char *rastPort, const char *fmt, ...);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *fallbackText);
 
 void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowIndex, const char *fallbackText, LONG layoutMode)
