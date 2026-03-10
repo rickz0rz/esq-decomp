@@ -15,7 +15,7 @@ extern WORD TEXTDISP_PrimaryGroupEntryCount;
 extern ESQFUNC_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
 extern TitleEntry *TEXTDISP_PrimaryTitlePtrTable[];
 
-extern void ESQPARS_ReplaceOwnedString(LONG flags, char *ptr);
+extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 
 void ESQFUNC_FreeExtraTitleTextPointers(WORD max_index)
 {
@@ -23,7 +23,6 @@ void ESQFUNC_FreeExtraTitleTextPointers(WORD max_index)
     const WORD SLOT_FIRST = 0;
     const WORD FLAG_FALSE = 0;
     const WORD FLAG_TRUE = 1;
-    const LONG REPLACE_FLAGS_NONE = 0;
     WORD entry_index;
 
     for (entry_index = 0; entry_index < TEXTDISP_PrimaryGroupEntryCount; ++entry_index) {
@@ -53,7 +52,7 @@ void ESQFUNC_FreeExtraTitleTextPointers(WORD max_index)
                 continue;
             }
 
-            ESQPARS_ReplaceOwnedString(REPLACE_FLAGS_NONE, ptr);
+            ESQPARS_ReplaceOwnedString((const char *)0, ptr);
             title_entry->extra_text[slot_index] = (char *)0;
         }
     }
