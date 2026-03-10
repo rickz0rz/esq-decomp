@@ -27,14 +27,14 @@ void TEXTDISP_SetEntryTextFields(TEXTDISP_EntryTextFields *entry, const char *sh
         return;
     }
 
-    if (shortText != (const char *)0) {
+    if (shortText != 0) {
         STRING_CopyPadNul(entry->shortName, shortText, 9);
         entry->shortName[9] = 0;
     } else {
         entry->shortName[0] = 0;
     }
 
-    if (shortText != (const char *)0) {
+    if (shortText != 0) {
         STRING_CopyPadNul(entry->longName, longText, 199);
         entry->longName[199] = 0;
     } else {
