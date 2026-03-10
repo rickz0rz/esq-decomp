@@ -23,6 +23,7 @@ WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LO
     LONG cacheIndex;
     LONG normalizeFlag;
     const NEWGRID_Entry *entry;
+    const NEWGRID_Entry *cachedEntry;
     const char *aux;
     const char *a;
     const char *b;
@@ -62,7 +63,8 @@ WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LO
                 NEWGRID_SecondaryIndexCachePtr[keyIndex] = cacheIndex;
             } else {
                 a = entry->titleText;
-                b = TEXTDISP_SecondaryEntryPtrTable[cacheIndex]->titleText;
+                cachedEntry = TEXTDISP_SecondaryEntryPtrTable[cacheIndex];
+                b = cachedEntry->titleText;
                 while (*a == *b) {
                     if (*a == 0) {
                         break;

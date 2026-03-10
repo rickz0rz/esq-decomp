@@ -43,7 +43,7 @@ extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG idx, LONG 
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG idx, LONG mode);
 extern LONG NEWGRID_GetEntryStateCode(const char *entry, const char *aux, LONG row);
 extern LONG NEWGRID_TestEntryState(LONG baseState, LONG titleIdx, LONG wildcardIdx, LONG rowIdx);
-extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG row);
+extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *aux, LONG row);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG h, LONG pen);
 /* Keep K&R-style declaration: SAS/C long-name significance causes a prototype clash
  * with NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount in this translation unit. */
@@ -114,7 +114,7 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
             }
 
             if (state == 3) {
-                LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((char *)entry, (char *)aux, modeIdx);
+                LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((const char *)entry, (const char *)aux, modeIdx);
                 state = (prev == 0) ? 1 : 2;
             }
 
