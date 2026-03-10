@@ -8,6 +8,11 @@ typedef struct ESQIFF_PendingBrushNode {
     UBYTE sourceType190;
 } ESQIFF_PendingBrushNode;
 
+#define ESQIFF_PATH_BUFFER_CHARS 41
+#define ESQIFF_WILDCARD_SCAN_LIMIT 40
+#define ESQIFF_DF0_PREFIX_LEN 4
+#define ESQIFF_RAM_LOGOS_PREFIX_LEN 11
+
 extern WORD CTASKS_IffTaskDoneFlag;
 extern LONG CTASKS_PendingLogoBrushDescriptor;
 extern LONG CTASKS_PendingGAdsBrushDescriptor;
@@ -47,9 +52,9 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
     const WORD RESULT_PENDING = 1;
     const UBYTE SOURCE_TYPE_LOGO = 4;
     const UBYTE SOURCE_TYPE_GADS = 5;
-    BYTE candidate[41];
-    BYTE wildcardProbe[41];
-    BYTE snapshot[41];
+    BYTE candidate[ESQIFF_PATH_BUFFER_CHARS];
+    BYTE wildcardProbe[ESQIFF_PATH_BUFFER_CHARS];
+    BYTE snapshot[ESQIFF_PATH_BUFFER_CHARS];
     WORD initialLineIndex;
     WORD accepted;
     WORD savedMatchIndex;
@@ -118,7 +123,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
                 if (ESQIFF_ExternalAssetPathCommaFlag != 0) {
                     accepted = 1;
                 } else {
-                    for (i = 0; i < 40; ++i) {
+                    for (i = 0; i < ESQIFF_WILDCARD_SCAN_LIMIT; ++i) {
                         wildcardProbe[i] = candidate[i];
                         if (wildcardProbe[i] == 0) {
                             break;
@@ -140,10 +145,10 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
                 }
             } else {
                 if (ESQIFF_JMPTBL_STRING_CompareNoCaseN(
-                        ESQIFF_PATH_DF0_COLON, candidate, 4) == 0) {
+                        ESQIFF_PATH_DF0_COLON, candidate, ESQIFF_DF0_PREFIX_LEN) == 0) {
                     /* rejected prefix */
                 } else if (ESQIFF_JMPTBL_STRING_CompareNoCaseN(
-                               ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, candidate, 11) == 0) {
+                               ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, candidate, ESQIFF_RAM_LOGOS_PREFIX_LEN) == 0) {
                     /* rejected prefix */
                 } else {
                     accepted = 1;
