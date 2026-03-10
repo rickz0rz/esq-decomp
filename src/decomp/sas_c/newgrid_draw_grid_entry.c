@@ -9,7 +9,7 @@ typedef struct NEWGRID_Entry {
 
 typedef struct NEWGRID_AuxBase {
     UBYTE pad0[56];
-    char *titleTable[49];
+    const char *titleTable[49];
 } NEWGRID_AuxBase;
 
 typedef struct CoiSet {
