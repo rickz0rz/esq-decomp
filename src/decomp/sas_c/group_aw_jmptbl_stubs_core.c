@@ -3,7 +3,7 @@ typedef signed long LONG;
 extern LONG TLIBA3_BuildDisplayContextForViewMode(LONG viewMode, LONG a1, LONG a2);
 extern void DISPLIB_ApplyInlineAlignmentPadding(void);
 extern void ESQIFF_RunCopperRiseTransition(void);
-extern void DISPLIB_DisplayTextAtPosition(void);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text);
 extern void MEM_Move(void);
 extern void WDISP_SPrintf(void);
 extern void ESQ_SetCopperEffect_OffDisableHighlight(void);
@@ -24,9 +24,9 @@ void GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition(void)
     ESQIFF_RunCopperRiseTransition();
 }
 
-void GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition(void)
+void GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text)
 {
-    DISPLIB_DisplayTextAtPosition();
+    DISPLIB_DisplayTextAtPosition(rastPort, x, y, text);
 }
 
 void GROUP_AW_JMPTBL_MEM_Move(void)

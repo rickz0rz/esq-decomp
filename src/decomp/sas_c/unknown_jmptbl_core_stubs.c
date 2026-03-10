@@ -1,21 +1,21 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern void ESQIFF2_ReadSerialRecordIntoBuffer(void);
-extern void DISPLIB_DisplayTextAtPosition(void);
+extern LONG ESQIFF2_ReadSerialRecordIntoBuffer(UBYTE *dst, LONG recordMode, LONG extensionCount);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text);
 extern unsigned char ESQ_WildcardMatch(char *str, char *pattern);
 extern void DST_NormalizeDayOfYear(void);
 extern LONG ESQ_GenerateXorChecksumByte(UBYTE seed, UBYTE *src, LONG length);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 
-void UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer(void)
+LONG UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer(UBYTE *dst, LONG recordMode, LONG extensionCount)
 {
-    ESQIFF2_ReadSerialRecordIntoBuffer();
+    return ESQIFF2_ReadSerialRecordIntoBuffer(dst, recordMode, extensionCount);
 }
 
-void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(void)
+void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text)
 {
-    DISPLIB_DisplayTextAtPosition();
+    DISPLIB_DisplayTextAtPosition(rastPort, x, y, text);
 }
 
 unsigned char UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *str, const char *pattern)

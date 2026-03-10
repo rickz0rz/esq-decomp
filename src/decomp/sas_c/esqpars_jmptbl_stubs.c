@@ -15,7 +15,7 @@ extern unsigned long BRUSH_PlaneMaskForIndex(long planeIndex);
 extern void SCRIPT_ResetCtrlContextAndClearStatusLine(void);
 extern void PARSEINI_WriteRtcFromGlobals(void);
 extern void LOCAVAIL_SaveAvailabilityDataFile(void);
-extern void DISPLIB_DisplayTextAtPosition(void);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text);
 extern void LADFUNC_SaveTextAdsToFile(void);
 extern long PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode);
@@ -44,7 +44,7 @@ unsigned long ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(long planeIndex){return BRU
 void ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine(void){SCRIPT_ResetCtrlContextAndClearStatusLine();}
 void ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals(void){PARSEINI_WriteRtcFromGlobals();}
 void ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(void){LOCAVAIL_SaveAvailabilityDataFile();}
-void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(void){DISPLIB_DisplayTextAtPosition();}
+void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text){DISPLIB_DisplayTextAtPosition(rastPort, x, y, text);}
 void ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile(void){LADFUNC_SaveTextAdsToFile();}
 long ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s){return PARSE_ReadSignedLongSkipClass3_Alt(s);}
 LONG ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode){return DISKIO2_HandleInteractiveFileTransfer(crc32Mode);}
