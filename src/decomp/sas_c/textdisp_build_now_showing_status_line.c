@@ -74,8 +74,8 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
     LONG out;
     char line[STATUS_LINE_BUFFER_LEN];
     char scratch[STATUS_SCRATCH_BUFFER_LEN];
-    char *title;
-    char *timeToken;
+    const char *title;
+    const char *timeToken;
 
     idx = (LONG)groupIndex;
     modeKind = modeFlag ? MODE_KIND_PRIMARY : MODE_KIND_SECONDARY;
@@ -83,7 +83,7 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
     entry = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, modeKind);
 
     line[TEXTDISP_NULL] = TEXTDISP_NULL;
-    timeToken = (char *)TEXTDISP_NULL;
+    timeToken = (const char *)TEXTDISP_NULL;
     bannerKind = MODE_KIND_PRIMARY;
 
     if (entry != (TEXTDISP_CandidateEntry *)TEXTDISP_NULL && aux != (TEXTDISP_AuxData *)TEXTDISP_NULL) {
@@ -123,7 +123,7 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
 
             bannerKind = bannerDigit;
             if ((bannerKind - MODE_KIND_PRIMARY) == TEXTDISP_NULL) {
-                title = (char *)Global_STR_ALIGNED_NOW_SHOWING;
+                title = Global_STR_ALIGNED_NOW_SHOWING;
             } else {
                 TEXTDISP_FormatEntryTimeForIndex(scratch, (LONG)entryIndex, (char *)aux);
                 title = STR_SkipClass3Chars(scratch);
@@ -162,7 +162,7 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             }
         }
 
-        if (timeToken != (char *)TEXTDISP_NULL) {
+        if (timeToken != (const char *)TEXTDISP_NULL) {
             if (line[TEXTDISP_NULL] != TEXTDISP_NULL) {
                 STRING_AppendAtNull(line, SCRIPT_SpacerTripleB);
             }
