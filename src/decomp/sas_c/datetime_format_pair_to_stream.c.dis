@@ -2,14 +2,14 @@
 __code:
 DATETIME_FormatPairToStream:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$9c,D0                  ;90bc 0000 009c 
+              SUB.L          #$a0,D0                  ;90bc 0000 00a0 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$8c,A7                  ;9efc 008c 
+              SUB.W          #$90,A7                  ;9efc 0090 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___DATETIME_FormatPairToStream__1:
-              MOVE.L         $a8(A7),D7               ;2e2f 00a8 
-              MOVE.L         $ac(A7),A5               ;2a6f 00ac 
+              MOVE.L         $ac(A7),D7               ;2e2f 00ac 
+              MOVE.L         $b0(A7),A5               ;2a6f 00b0 
               CLR.B          $4d(A7)                  ;422f 004d 
               MOVE.L         A5,D0                    ;200d 
               BNE.B          ___DATETIME_FormatPairToStream__3;6612 
@@ -18,11 +18,13 @@ ___DATETIME_FormatPairToStream__2:
               PEA            $51(A7)                  ;486f 0051 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              BRA.W          ___DATETIME_FormatPairToStream__15;6000 017a 
+              BRA.W          ___DATETIME_FormatPairToStream__15;6000 0196 
 ___DATETIME_FormatPairToStream__3:
-              MOVE.L         (A5),A2                  ;2455 
-              MOVE.L         A2,D0                    ;200a 
-              BEQ.W          ___DATETIME_FormatPairToStream__8;6700 00a6 
+              MOVE.L         A5,A2                    ;244d 
+              MOVE.L         (A2),A0                  ;2052 
+              MOVE.L         A0,$a4(A7)               ;2f48 00a4 
+              MOVE.L         A0,D0                    ;2008 
+              BEQ.W          ___DATETIME_FormatPairToStream__8;6700 00b0 
 ___DATETIME_FormatPairToStream__4:
               PEA            ($4).w                   ;4878 0004 
               MOVE.L         DST_FMT_PCT_C_InTimePrefixChar(A4),-(A7);2f2c 0000 
@@ -31,11 +33,13 @@ ___DATETIME_FormatPairToStream__4:
               PEA            $25(A7)                  ;486f 0025 
               PEA            $5d(A7)                  ;486f 005d 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
-              LEA            $6(A2),A0                ;41ea 0006 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.L         $b8(A7),A0               ;206f 00b8 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$6,A1                   ;5c89 
+              MOVE.W         (A1),D0                  ;3011 
               EXT.L          D0                       ;48c0 
-              LEA            $10(A2),A0               ;41ea 0010 
-              MOVE.W         (A0),D1                  ;3210 
+              LEA            $10(A0),A1               ;43e8 0010 
+              MOVE.W         (A1),D1                  ;3211 
               EXT.L          D1                       ;48c1 
               MOVE.L         D1,(A7)                  ;2e81 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -45,29 +49,32 @@ ___DATETIME_FormatPairToStream__4:
               PEA            $39(A7)                  ;486f 0039 
               PEA            $71(A7)                  ;486f 0071 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
-              LEA            $8(A2),A0                ;41ea 0008 
+              MOVE.L         $cc(A7),A0               ;206f 00cc 
+              ADDQ.L         #$8,A0                   ;5088 
               MOVE.W         (A0),D0                  ;3010 
               EXT.L          D0                       ;48c0 
               PEA            ($c).w                   ;4878 000c 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
               LEA            $30(A7),A7               ;4fef 0030 
-              LEA            $8(A2),A0                ;41ea 0008 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.L         $a4(A7),A0               ;206f 00a4 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$8,A1                   ;5089 
+              MOVE.W         (A1),D0                  ;3011 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$c,D1                   ;720c 
+___DATETIME_FormatPairToStream__5:
               BSR.W          _CXD33                   ;6100 0000 
               MOVE.L         D0,D6                    ;2c00 
-              LEA            $12(A2),A0               ;41ea 0012 
-___DATETIME_FormatPairToStream__5:
-              TST.W          (A0)                     ;4a50 
+              LEA            $12(A0),A1               ;43e8 0012 
+              TST.W          (A1)                     ;4a51 
               BEQ.B          ___DATETIME_FormatPairToStream__7;6704 
 ___DATETIME_FormatPairToStream__6:
               MOVEQ.L        #$c,D0                   ;700c 
               ADD.L          D0,D6                    ;dc80 
 ___DATETIME_FormatPairToStream__7:
-              LEA            $a(A2),A0                ;41ea 000a 
-              MOVE.W         (A0),D0                  ;3010 
+              LEA            $a(A0),A1                ;43e8 000a 
+              MOVE.W         (A1),D0                  ;3011 
               EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D6,-(A7)                 ;2f06 
@@ -85,10 +92,10 @@ ___DATETIME_FormatPairToStream__8:
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___DATETIME_FormatPairToStream__9:
-              LEA            $4(A5),A0                ;41ed 0004 
-              MOVE.L         (A0),A2                  ;2450 
-              MOVE.L         A2,D0                    ;200a 
-              BEQ.W          ___DATETIME_FormatPairToStream__14;6700 00a6 
+              MOVE.L         $4(A2),A0                ;206a 0004 
+              MOVE.L         A0,$a4(A7)               ;2f48 00a4 
+              MOVE.L         A0,D0                    ;2008 
+              BEQ.W          ___DATETIME_FormatPairToStream__14;6700 00b0 
 ___DATETIME_FormatPairToStream__10:
               PEA            ($13).w                  ;4878 0013 
               MOVE.L         DST_FMT_PCT_C_OutTimePrefixChar(A4),-(A7);2f2c 0000 
@@ -97,11 +104,13 @@ ___DATETIME_FormatPairToStream__10:
               PEA            $25(A7)                  ;486f 0025 
               PEA            $5d(A7)                  ;486f 005d 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
-              LEA            $6(A2),A0                ;41ea 0006 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.L         $b8(A7),A0               ;206f 00b8 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$6,A1                   ;5c89 
+              MOVE.W         (A1),D0                  ;3011 
               EXT.L          D0                       ;48c0 
-              LEA            $10(A2),A0               ;41ea 0010 
-              MOVE.W         (A0),D1                  ;3210 
+              LEA            $10(A0),A1               ;43e8 0010 
+              MOVE.W         (A1),D1                  ;3211 
               EXT.L          D1                       ;48c1 
               MOVE.L         D1,(A7)                  ;2e81 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -111,29 +120,32 @@ ___DATETIME_FormatPairToStream__10:
               PEA            $39(A7)                  ;486f 0039 
               PEA            $71(A7)                  ;486f 0071 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
-              LEA            $8(A2),A0                ;41ea 0008 
+              MOVE.L         $cc(A7),A0               ;206f 00cc 
+              ADDQ.L         #$8,A0                   ;5088 
               MOVE.W         (A0),D0                  ;3010 
               EXT.L          D0                       ;48c0 
               PEA            ($c).w                   ;4878 000c 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
               LEA            $30(A7),A7               ;4fef 0030 
-              LEA            $8(A2),A0                ;41ea 0008 
-              MOVE.W         (A0),D0                  ;3010 
+              MOVE.L         $a4(A7),A0               ;206f 00a4 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$8,A1                   ;5089 
+              MOVE.W         (A1),D0                  ;3011 
               EXT.L          D0                       ;48c0 
               MOVEQ.L        #$c,D1                   ;720c 
+___DATETIME_FormatPairToStream__11:
               BSR.W          _CXD33                   ;6100 0000 
               MOVE.L         D0,D6                    ;2c00 
-              LEA            $12(A2),A0               ;41ea 0012 
-___DATETIME_FormatPairToStream__11:
-              TST.W          (A0)                     ;4a50 
+              LEA            $12(A0),A1               ;43e8 0012 
+              TST.W          (A1)                     ;4a51 
               BEQ.B          ___DATETIME_FormatPairToStream__13;6704 
 ___DATETIME_FormatPairToStream__12:
               MOVEQ.L        #$c,D0                   ;700c 
               ADD.L          D0,D6                    ;dc80 
 ___DATETIME_FormatPairToStream__13:
-              LEA            $a(A2),A0                ;41ea 000a 
-              MOVE.W         (A0),D0                  ;3010 
+              LEA            $a(A0),A1                ;43e8 000a 
+              MOVE.W         (A1),D0                  ;3011 
               EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D6,-(A7)                 ;2f06 
@@ -172,7 +184,7 @@ ___DATETIME_FormatPairToStream__18:
 ___DATETIME_FormatPairToStream__19:
 ___DATETIME_FormatPairToStream__20:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$8c,A7                  ;defc 008c 
+              ADD.W          #$90,A7                  ;defc 0090 
               RTS                                     ;4e75 
 __const:
 __strings:

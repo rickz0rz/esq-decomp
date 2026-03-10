@@ -27,6 +27,7 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
     char outBuf[87];
     char scratch[51];
     const char *outCursor;
+    const void * const *pairPtrs;
     const void *t;
     LONG hour12;
     LONG writeResult;
@@ -37,7 +38,9 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
         goto emit;
     }
 
-    t = *(void **)pairStruct;
+    pairPtrs = (const void * const *)pairStruct;
+
+    t = pairPtrs[0];
     if (t != 0) {
         GROUP_AM_JMPTBL_WDISP_SPrintf(scratch, DST_FMT_PCT_C_InTimePrefixChar, DATETIME_IN_PREFIX_TOKEN);
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
@@ -65,7 +68,7 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, DST_STR_NO_IN_TIME);
     }
 
-    t = *(void **)((char *)pairStruct + DATETIME_PAIR_OUT_PTR_OFFSET);
+    t = pairPtrs[1];
     if (t != 0) {
         GROUP_AM_JMPTBL_WDISP_SPrintf(scratch, DST_FMT_PCT_C_OutTimePrefixChar, DATETIME_OUT_PREFIX_TOKEN);
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
