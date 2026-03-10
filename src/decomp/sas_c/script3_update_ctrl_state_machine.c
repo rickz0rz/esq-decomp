@@ -6,7 +6,7 @@ extern WORD SCRIPT_CtrlHandshakeStage;
 extern WORD SCRIPT_CtrlHandshakeRetryCount;
 extern UBYTE ED_DiagVinModeChar;
 extern WORD Global_UIBusyFlag;
-extern char SCRIPT_Tag_YL[];
+extern const char SCRIPT_Tag_YL[];
 
 extern char *STR_FindCharPtr(const char *s, WORD c);
 extern UBYTE SCRIPT_ReadHandshakeBit3Flag(void);
