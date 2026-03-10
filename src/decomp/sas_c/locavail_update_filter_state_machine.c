@@ -12,7 +12,7 @@ extern LONG ESQIFF_GAdsBrushListCount;
 extern WORD WDISP_HighlightActive;
 extern UBYTE ED_DiagVinModeChar;
 extern UBYTE ED_DiagGraphModeChar;
-extern UBYTE LOCAVAIL_STR_YYLLZ_FilterStateUpdate[];
+extern const char LOCAVAIL_STR_YYLLZ_FilterStateUpdate[];
 
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
 extern UBYTE GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void);
