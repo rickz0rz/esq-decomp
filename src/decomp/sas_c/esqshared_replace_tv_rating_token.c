@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef unsigned char UBYTE;
 
 extern const char *Global_TBL_TV_PROGRAM_RATINGS[];
-extern UBYTE ESQPARS2_TvRatingTokenGlyphMap[];
+extern const UBYTE ESQPARS2_TvRatingTokenGlyphMap[];
 extern void *AbsExecBase;
 
 extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(const char *text, const char *needle);
