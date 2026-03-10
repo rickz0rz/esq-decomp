@@ -1,11 +1,27 @@
               SECTION      text,CODE
 __code:
 GROUP_AI_JMPTBL_NEWGRID_SetSelec:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
 ___GROUP_AI_JMPTBL_NEWGRID_SetSelec__1:
+              MOVE.L         $1c(A7),D6               ;2c2f 001c 
+              MOVE.L         $18(A7),D7               ;2e2f 0018 
+              MOVE.L         $28(A7),A2               ;246f 0028 
+              MOVE.L         $24(A7),A3               ;266f 0024 
+              MOVE.L         $20(A7),A5               ;2a6f 0020 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          NEWGRID_SetSelectionMarkers;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
 ___GROUP_AI_JMPTBL_NEWGRID_SetSelec__2:
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
               RTS                                     ;4e75 
 __const:
 __strings:
@@ -27,18 +43,47 @@ ___GROUP_AI_JMPTBL_STR_FindCharPtr__3:
               MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 GROUP_AI_JMPTBL_TLIBA1_DrawTextW:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
 ___GROUP_AI_JMPTBL_TLIBA1_DrawTextW__1:
+              MOVE.L         $2c(A7),D4               ;282f 002c 
+              MOVE.L         $28(A7),D5               ;2a2f 0028 
+              MOVE.L         $24(A7),D6               ;2c2f 0024 
+              MOVE.L         $20(A7),D7               ;2e2f 0020 
+              MOVE.L         $30(A7),A3               ;266f 0030 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          TLIBA1_DrawTextWithInsetSegments;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
 ___GROUP_AI_JMPTBL_TLIBA1_DrawTextW__2:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
               RTS                                     ;4e75 
 GROUP_AI_JMPTBL_FORMAT_FormatToB:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
 ___GROUP_AI_JMPTBL_FORMAT_FormatToB__1:
+              MOVE.L         $18(A7),A2               ;246f 0018 
+              MOVE.L         $14(A7),A3               ;266f 0014 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          FORMAT_FormatToBuffer2   ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
 ___GROUP_AI_JMPTBL_FORMAT_FormatToB__2:
+___GROUP_AI_JMPTBL_FORMAT_FormatToB__3:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
               RTS                                     ;4e75 
 GROUP_AI_JMPTBL_STR_SkipClass3Ch:
               MOVE.L         A7,D0                    ;200f 
@@ -73,11 +118,25 @@ ___GROUP_AI_JMPTBL_STRING_AppendAtN__3:
               MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
               RTS                                     ;4e75 
 GROUP_AI_JMPTBL_STR_CopyUntilAny:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
 ___GROUP_AI_JMPTBL_STR_CopyUntilAny__1:
+              MOVE.L         $1c(A7),D7               ;2e2f 001c 
+              MOVE.L         $20(A7),A2               ;246f 0020 
+              MOVE.L         $18(A7),A3               ;266f 0018 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          STR_CopyUntilAnyDelimN   ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
 ___GROUP_AI_JMPTBL_STR_CopyUntilAny__2:
+___GROUP_AI_JMPTBL_STR_CopyUntilAny__3:
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
