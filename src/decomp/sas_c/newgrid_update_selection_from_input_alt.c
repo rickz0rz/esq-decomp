@@ -88,7 +88,8 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
                     if (NEWGRID_AltSelectionEntryCursor == ctx->row) {
                         {
                             const char *entryText = (const char *)entry;
-                            idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, (const char *)aux, idx);
+                            const char *auxText = (const char *)aux;
+                            idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, idx);
                         }
                     }
                     if (idx > 0) {
