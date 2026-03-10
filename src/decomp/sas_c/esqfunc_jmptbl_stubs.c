@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef signed char BYTE;
 typedef unsigned long ULONG;
 
-extern void TEXTDISP_SetRastForMode(void);
+extern void TEXTDISP_SetRastForMode(LONG mode);
 extern void P_TYPE_PromoteSecondaryList(void);
 extern void DISKIO_ProbeDrivesAndAssignPaths(void);
 extern void PARSEINI_UpdateCtrlHDeltaMax(void);
@@ -29,7 +29,7 @@ extern void ESQ_PollCtrlInput(void);
 extern void LOCAVAIL_RebuildFilterStateFromCurrentGroup(void);
 extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG maxLen);
 
-void ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(void){TEXTDISP_SetRastForMode();}
+void ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(LONG mode){TEXTDISP_SetRastForMode(mode);}
 void ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList(void){P_TYPE_PromoteSecondaryList();}
 void ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(void){DISKIO_ProbeDrivesAndAssignPaths();}
 void ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax(void){PARSEINI_UpdateCtrlHDeltaMax();}
