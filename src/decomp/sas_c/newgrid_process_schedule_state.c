@@ -19,7 +19,7 @@ extern UBYTE GCOMMAND_MplexWorkflowMode;
 extern UBYTE GCOMMAND_DigitalMplexEnabledFlag;
 extern UBYTE GCOMMAND_MplexDetailLayoutFlag;
 extern LONG GCOMMAND_MplexSearchRowLimit;
-extern LONG GCOMMAND_MplexListingsTemplatePtr;
+extern const char *GCOMMAND_MplexListingsTemplatePtr;
 extern LONG GCOMMAND_MplexEditorRowPen;
 extern LONG GCOMMAND_MplexEditorLayoutPen;
 
@@ -95,10 +95,10 @@ LONG NEWGRID_ProcessScheduleState(char *ctx, UWORD rowBase, UWORD rowCur)
     case 2:
         if (NEWGRID_ScheduleEditorGateFlag) {
             NEWGRID_ScheduleWorkflowState = NEWGRID_HandleGridEditorState(
-                (char *)ctx,
+                ctx,
                 GCOMMAND_MplexEditorLayoutPen,
                 GCOMMAND_MplexEditorRowPen,
-                (char *)GCOMMAND_MplexListingsTemplatePtr);
+                GCOMMAND_MplexListingsTemplatePtr);
             if (NEWGRID_ScheduleWorkflowState == 5) {
                 NEWGRID_ScheduleWorkflowState = 2;
                 return NEWGRID_ScheduleWorkflowState;
@@ -153,10 +153,10 @@ LONG NEWGRID_ProcessScheduleState(char *ctx, UWORD rowBase, UWORD rowCur)
     case 7:
         if (NEWGRID_ScheduleAltSelectorFlag) {
             NEWGRID_ScheduleWorkflowState = NEWGRID_HandleGridEditorState(
-                (char *)ctx,
+                ctx,
                 GCOMMAND_MplexEditorLayoutPen,
                 GCOMMAND_MplexEditorRowPen,
-                (char *)GCOMMAND_MplexListingsTemplatePtr);
+                GCOMMAND_MplexListingsTemplatePtr);
             if (NEWGRID_ScheduleWorkflowState == 5) {
                 NEWGRID_ScheduleWorkflowState = 7;
                 return NEWGRID_ScheduleWorkflowState;
