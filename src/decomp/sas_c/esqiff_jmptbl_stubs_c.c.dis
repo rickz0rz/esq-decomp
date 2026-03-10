@@ -19,11 +19,20 @@ ___ESQIFF_JMPTBL_ESQ_MoveCopperEntr__2:
 __const:
 __strings:
 ESQIFF_JMPTBL_MEMORY_DeallocateM:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
 ___ESQIFF_JMPTBL_MEMORY_DeallocateM__1:
+              MOVE.L         $18(A7),D7               ;2e2f 0018 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          MEMORY_DeallocateMemory  ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___ESQIFF_JMPTBL_MEMORY_DeallocateM__2:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 ESQIFF_JMPTBL_DISKIO_ForceUiRefr:
               CMP.L          __base(A4),A7            ;bfec 0000 
