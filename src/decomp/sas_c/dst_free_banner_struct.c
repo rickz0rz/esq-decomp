@@ -17,15 +17,15 @@ void DST_FreeBannerStruct(void *banner)
 {
     DST_BannerStruct *p = (DST_BannerStruct *)banner;
 
-    if (p == (DST_BannerStruct *)0) {
+    if (p == 0) {
         return;
     }
 
-    if (p->primaryBanner != (void *)0) {
+    if (p->primaryBanner != 0) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_1, 773, p->primaryBanner, 22);
     }
 
-    if (p->secondaryBanner != (void *)0) {
+    if (p->secondaryBanner != 0) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_2, 777, p->secondaryBanner, 22);
     }
 
