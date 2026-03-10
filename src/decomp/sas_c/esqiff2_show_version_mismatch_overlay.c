@@ -30,7 +30,7 @@ extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern LONG ESQSHARED_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 extern void GCOMMAND_SeedBannerFromPrefs(void);
 extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(struct RastPort *rp, WORD x, WORD y, const char *text);
-extern LONG GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
+extern char *GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
 extern void Disable(void);
 extern void Enable(void);

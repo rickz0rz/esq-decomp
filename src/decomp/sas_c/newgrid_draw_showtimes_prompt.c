@@ -33,7 +33,7 @@ extern WORD NEWGRID_ColumnWidthPx;
 
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
 extern void NEWGRID2_JMPTBL_STRING_AppendN(char *dst, char *src, LONG len);
-extern void PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern void NEWGRID_DrawGridFrame(char *rp, LONG type, LONG penA, LONG penB, LONG height);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG width, LONG color, LONG style);
 extern LONG _LVOSetAPen(void *gfxBase, char *rp, LONG pen);

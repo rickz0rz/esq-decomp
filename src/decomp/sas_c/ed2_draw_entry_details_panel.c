@@ -48,7 +48,7 @@ extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG pool, LON
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG pool, void *ptr, LONG size);
 extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, char *text, LONG y);
-extern void GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
+extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern UBYTE *DISKIO2_CopyAndSanitizeSlotString(UBYTE *buf, UBYTE *entryData, UBYTE *titlePtr, LONG slot);
 extern void GROUP_AK_JMPTBL_TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG slot, UBYTE *titlePtr);
 

@@ -4,8 +4,8 @@ typedef signed short WORD;
 extern WORD TEXTDISP_ActiveGroupId;
 extern LONG CONFIG_TimeWindowMinutes;
 
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(void *entry, LONG modeIndex, LONG fieldId);
 extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(void *entry, void *aux, LONG modeIndex, LONG dayMinutes, LONG windowMinutes);
 extern void TLIBA1_FormatClockFormatEntry(char *dst, char *f0, char *f1, char *f2, char *f3, char *f4, LONG style);
@@ -26,8 +26,8 @@ WORD TLIBA1_BuildClockFormatEntryIfVisible(WORD groupIndex, WORD modeIndex, char
     const WORD FLAG_FALSE = 0;
     const char CH_NUL = 0;
     LONG displayMode;
-    void *entry;
-    void *aux;
+    char *entry;
+    char *aux;
     char *f0;
     char *f1;
     char *f2;
