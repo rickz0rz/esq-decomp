@@ -14,7 +14,7 @@ extern const UBYTE WDISP_CharClassTable[];
 extern UBYTE DISPTEXT_InsetNibblePrimary;
 extern UBYTE DISPTEXT_InsetNibbleSecondary;
 
-LONG COI_GetAnimFieldPointerByMode(void *entry, LONG slot, LONG mode);
+LONG COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
 LONG GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(LONG c);
 
 void CLEANUP_UpdateEntryFlagBytes(void *entry, UWORD slot)
