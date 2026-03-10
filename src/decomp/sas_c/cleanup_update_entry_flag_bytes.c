@@ -20,11 +20,11 @@ LONG GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(LONG c);
 void CLEANUP_UpdateEntryFlagBytes(void *entry, UWORD slot)
 {
     UBYTE local[16];
-    const UBYTE *flagText;
+    const char *flagText;
     LONG parsedNibble;
 
-    flagText = (const UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
-    if (flagText == (UBYTE *)0) {
+    flagText = COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
+    if (flagText == 0) {
         const char *s = CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY;
         UBYTE *d = &local[LOCAL_FALLBACK_COPY_OFFSET];
         do {
@@ -32,18 +32,18 @@ void CLEANUP_UpdateEntryFlagBytes(void *entry, UWORD slot)
             d++;
             s++;
         } while (d[-1] != 0);
-        flagText = &local[LOCAL_FALLBACK_COPY_OFFSET];
+        flagText = (const char *)&local[LOCAL_FALLBACK_COPY_OFFSET];
     }
 
-    if ((WDISP_CharClassTable[flagText[ENTRY_FLAGS_HEX_PRIMARY_INDEX]] & CHARCLASS_HEX_MASK) != 0) {
-        parsedNibble = GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)flagText[ENTRY_FLAGS_HEX_PRIMARY_INDEX]);
+    if ((WDISP_CharClassTable[(UBYTE)flagText[ENTRY_FLAGS_HEX_PRIMARY_INDEX]] & CHARCLASS_HEX_MASK) != 0) {
+        parsedNibble = GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)(UBYTE)flagText[ENTRY_FLAGS_HEX_PRIMARY_INDEX]);
         DISPTEXT_InsetNibblePrimary = (UBYTE)parsedNibble;
     } else {
         DISPTEXT_InsetNibblePrimary = INSET_NIBBLE_INVALID;
     }
 
-    if ((WDISP_CharClassTable[flagText[ENTRY_FLAGS_HEX_SECONDARY_INDEX]] & CHARCLASS_HEX_MASK) != 0) {
-        parsedNibble = GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)flagText[ENTRY_FLAGS_HEX_SECONDARY_INDEX]);
+    if ((WDISP_CharClassTable[(UBYTE)flagText[ENTRY_FLAGS_HEX_SECONDARY_INDEX]] & CHARCLASS_HEX_MASK) != 0) {
+        parsedNibble = GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((LONG)(UBYTE)flagText[ENTRY_FLAGS_HEX_SECONDARY_INDEX]);
         DISPTEXT_InsetNibbleSecondary = (UBYTE)parsedNibble;
     } else {
         DISPTEXT_InsetNibbleSecondary = INSET_NIBBLE_INVALID;

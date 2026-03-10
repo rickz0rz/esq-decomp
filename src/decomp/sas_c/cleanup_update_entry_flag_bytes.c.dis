@@ -36,10 +36,11 @@ ___CLEANUP_UpdateEntryFlagBytes__4:
 ___CLEANUP_UpdateEntryFlagBytes__5:
               LEA            $19(A7),A3               ;47ef 0019 
 ___CLEANUP_UpdateEntryFlagBytes__6:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $6(A3),D0                ;102b 0006 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
               LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
-              BTST           #$7,$0(A0,D0.W)          ;0830 0007 0000 
+              BTST           #$7,$0(A0,D1.W)          ;0830 0007 1000 
               BEQ.B          ___CLEANUP_UpdateEntryFlagBytes__8;6716 
 ___CLEANUP_UpdateEntryFlagBytes__7:
               MOVEQ.L        #$0,D1                   ;7200 
@@ -54,10 +55,11 @@ ___CLEANUP_UpdateEntryFlagBytes__7:
 ___CLEANUP_UpdateEntryFlagBytes__8:
               SCC            DISPTEXT_InsetNibblePrimary(A4);50ec 0000 
 ___CLEANUP_UpdateEntryFlagBytes__9:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $7(A3),D0                ;102b 0007 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
               LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
-              BTST           #$7,$0(A0,D0.W)          ;0830 0007 0000 
+              BTST           #$7,$0(A0,D1.W)          ;0830 0007 1000 
               BEQ.B          ___CLEANUP_UpdateEntryFlagBytes__11;6716 
 ___CLEANUP_UpdateEntryFlagBytes__10:
               MOVEQ.L        #$0,D1                   ;7200 
