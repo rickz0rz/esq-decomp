@@ -9,7 +9,7 @@ typedef struct TEXTDISP_CandidateEntry {
 } TEXTDISP_CandidateEntry;
 
 typedef struct TEXTDISP_AliasEntry {
-    char *aliasText;
+    const char *aliasText;
 } TEXTDISP_AliasEntry;
 
 extern WORD TEXTDISP_AliasCount;
@@ -36,7 +36,7 @@ LONG TEXTDISP_FindAliasIndexByName(const char *entryPtr)
 
     idx = 0;
     while ((WORD)idx < TEXTDISP_AliasCount) {
-        TEXTDISP_AliasEntry *aliasEntry;
+        const TEXTDISP_AliasEntry *aliasEntry;
         const char *alias;
         const char *scan;
 
