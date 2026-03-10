@@ -35,7 +35,7 @@ extern LONG NEWGRID_UpdateGridState(char *ctx, LONG index, LONG row);
 extern LONG NEWGRID_HandleShowtimesState(char *ctx, const void *selCtxPtr);
 extern void NEWGRID_InitSelectionWindow(NEWGRID_SelectionWindow *selCtxPtr, UWORD rowBase);
 extern LONG NEWGRID_UpdateSelectionFromInput(LONG state, NEWGRID_SelectionWindow *selCtxPtr);
-extern LONG NEWGRID_DrawGridMessageAlt(char *ctx);
+extern void NEWGRID_DrawGridMessageAlt(char *ctx);
 extern LONG NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
 extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
