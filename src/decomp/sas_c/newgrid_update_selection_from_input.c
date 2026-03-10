@@ -24,7 +24,7 @@ typedef struct NEWGRID_Entry {
 typedef struct NEWGRID_AuxData {
     UBYTE pad0[7];
     UBYTE rowFlags[49];
-    char *payloadTable[49];
+    const char *payloadTable[49];
 } NEWGRID_AuxData;
 
 extern LONG NEWGRID_SelectionScanEntryIndex;
@@ -37,7 +37,7 @@ extern LONG GCOMMAND_PpvSelectionWindowMinutes;
 extern LONG NEWGRID_ClearEntryMarkerBits(LONG row);
 extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG col);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG idx);
-extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG idx);
+extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG idx);
 extern LONG NEWGRID_ShouldOpenEditor(char *entry);
 extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *aux, LONG idx, LONG win, LONG tol);
 extern LONG NEWGRID_InitSelectionWindow(SelCtx *ctx, LONG rowBase);
@@ -47,8 +47,8 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
     LONG found = 0;
     LONG col = 0;
     LONG idx = 0;
-    NEWGRID_Entry *entry = 0;
-    NEWGRID_AuxData *aux = 0;
+    const NEWGRID_Entry *entry = 0;
+    const NEWGRID_AuxData *aux = 0;
 
     if (state == 0) {
         NEWGRID_SelectionScanEntryIndex = ctx->start;
@@ -130,8 +130,8 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
     }
 
     if (found) {
-        ctx->entry = entry;
-        ctx->aux = aux;
+        ctx->entry = (void *)entry;
+        ctx->aux = (void *)aux;
         ctx->index = NEWGRID_SelectionScanEntryIndex;
 
         if (NEWGRID_SelectionScanRow > '0' && idx < 49) {
@@ -139,7 +139,7 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
         } else {
             ctx->row = (UWORD)idx;
         }
-        aux->rowFlags[idx] |= 0x20;
+        ((NEWGRID_AuxData *)aux)->rowFlags[idx] |= 0x20;
     } else {
         NEWGRID_InitSelectionWindow(ctx, 0);
     }
