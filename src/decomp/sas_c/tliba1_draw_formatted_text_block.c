@@ -29,8 +29,10 @@ typedef struct TLIBA1_RastPort {
 static LONG TLIBA1_StrLen(const char *s)
 {
     LONG n;
+    const char *p;
     n = 0;
-    while (s[n] != 0) {
+    p = s;
+    while (*p++ != 0) {
         ++n;
     }
     return n;
