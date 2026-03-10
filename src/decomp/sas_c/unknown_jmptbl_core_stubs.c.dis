@@ -41,11 +41,25 @@ ___UNKNOWN_JMPTBL_DST_NormalizeDayO__1:
 ___UNKNOWN_JMPTBL_DST_NormalizeDayO__2:
               RTS                                     ;4e75 
 UNKNOWN_JMPTBL_ESQ_GenerateXorCh:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7/A5,-(A7)           ;48e7 0304 
 ___UNKNOWN_JMPTBL_ESQ_GenerateXorCh__1:
+              MOVE.L         $18(A7),D6               ;2c2f 0018 
+              MOVE.B         $13(A7),D7               ;1e2f 0013 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          ESQ_GenerateXorChecksumByte;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
 ___UNKNOWN_JMPTBL_ESQ_GenerateXorCh__2:
+___UNKNOWN_JMPTBL_ESQ_GenerateXorCh__3:
+              MOVEM.L        (A7)+,D6/D7/A5           ;4cdf 20c0 
               RTS                                     ;4e75 
 ESQPROTO_JMPTBL_ESQPARS_ReplaceO:
               MOVE.L         A7,D0                    ;200f 
