@@ -37,7 +37,7 @@ LONG ESQIFF2_PadEntriesToMaxTitleWidth(BYTE group_code)
     while (d6 < entry_count) {
         ESQIFF2_Entry *entry;
         char *title;
-        char *p;
+        const char *p;
         WORD pad;
         WORD d5;
 
