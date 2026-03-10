@@ -17,25 +17,50 @@ ___ESQSHARED_JMPTBL_ESQ_ReverseBits__1:
 ___ESQSHARED_JMPTBL_ESQ_ReverseBits__2:
               RTS                                     ;4e75 
 ESQSHARED_JMPTBL_ESQ_SetBit1Base:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
 ___ESQSHARED_JMPTBL_ESQ_SetBit1Base__1:
+              MOVE.L         $10(A7),D7               ;2e2f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQ_SetBit1Based         ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___ESQSHARED_JMPTBL_ESQ_SetBit1Base__2:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 ESQSHARED_JMPTBL_ESQ_AdjustBrack:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
 ___ESQSHARED_JMPTBL_ESQ_AdjustBrack__1:
+              MOVE.L         $10(A7),D7               ;2e2f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQ_AdjustBracketedHourInString;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___ESQSHARED_JMPTBL_ESQ_AdjustBrack__2:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 ESQSHARED_JMPTBL_COI_EnsureAnimO:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___ESQSHARED_JMPTBL_COI_EnsureAnimO__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          COI_EnsureAnimObjectAllocated;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQSHARED_JMPTBL_COI_EnsureAnimO__2:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 ESQSHARED_JMPTBL_ESQ_WildcardMat:
               MOVE.L         A7,D0                    ;200f 
