@@ -27,7 +27,7 @@ extern const char Global_STR_ESQPARS_C_3[];
 extern const char Global_STR_ESQPARS_C_4[];
 
 extern void ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine(void);
-extern void ESQIFF2_ClearLineHeadTailByMode(LONG mode);
+extern char *ESQIFF2_ClearLineHeadTailByMode(UWORD mode);
 extern void ESQPARS_JMPTBL_COI_FreeEntryResources(void *entry);
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, ULONG size);
 
@@ -36,7 +36,7 @@ void ESQPARS_RemoveGroupEntryAndReleaseStrings(UWORD mode)
     LONG idx;
 
     ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine();
-    ESQIFF2_ClearLineHeadTailByMode((LONG)mode);
+    ESQIFF2_ClearLineHeadTailByMode(mode);
 
     if (mode == 2) {
         idx = (LONG)TEXTDISP_SecondaryGroupEntryCount - 1;
