@@ -1,3 +1,5 @@
+typedef signed long LONG;
+
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
 extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern void DISKIO_WriteDecimalField(void);
@@ -6,7 +8,7 @@ extern void DISKIO_CloseBufferedFileAndFlush(void);
 extern long STRING_CompareNoCaseN(void);
 extern long MATH_Mulu32(void);
 extern long DISKIO_LoadFileToWorkBuffer(void);
-extern void SCRIPT_ReadHandshakeBit5Mask(void);
+extern LONG SCRIPT_ReadHandshakeBit5Mask(void);
 extern void DISKIO_OpenFileWithBuffer(void);
 
 char *GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(void)
@@ -49,9 +51,9 @@ long GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(void)
     return DISKIO_LoadFileToWorkBuffer();
 }
 
-void GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void)
+LONG GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void)
 {
-    SCRIPT_ReadHandshakeBit5Mask();
+    return SCRIPT_ReadHandshakeBit5Mask();
 }
 
 void GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(void)

@@ -1,3 +1,5 @@
-extern void SCRIPT_ReadHandshakeBit5Mask(void);
+typedef signed long LONG;
 
-void ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void){SCRIPT_ReadHandshakeBit5Mask();}
+extern LONG SCRIPT_ReadHandshakeBit5Mask(void);
+
+LONG ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void){return SCRIPT_ReadHandshakeBit5Mask();}

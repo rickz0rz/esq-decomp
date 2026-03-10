@@ -6,6 +6,7 @@ ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi:
 ___ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi__1:
               BSR.W          SCRIPT_ReadHandshakeBit5Mask;6100 0000 
 ___ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi__2:
+___ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi__3:
               RTS                                     ;4e75 
 __const:
 __strings:
