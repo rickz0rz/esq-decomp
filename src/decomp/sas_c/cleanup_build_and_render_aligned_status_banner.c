@@ -39,11 +39,11 @@ void CLEANUP_BuildAndRenderAlignedStatusBanner(UWORD sourceMode, UWORD modeSel, 
     altClockBuffer[0] = CH_NUL;
     parsedStatusBuffer[0] = CH_NUL;
 
-    if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_F) != (char *)0) {
+    if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_F) != 0) {
         GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(
             MATCH_IDX_DEFAULT, CLOCK_IDX_DEFAULT, clockBuffer, ALT_STYLE_DEFAULT);
     }
-    if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_O) != (char *)0) {
+    if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN, CLOCK_TEMPLATE_TOKEN_O) != 0) {
         GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(
             MATCH_IDX_DEFAULT, CLOCK_IDX_DEFAULT, altClockBuffer, ALT_STYLE_ALT);
     }
@@ -54,8 +54,8 @@ void CLEANUP_BuildAndRenderAlignedStatusBanner(UWORD sourceMode, UWORD modeSel, 
 
     CLEANUP_UpdateEntryFlagBytes((void *)statusLineBuffer, slot);
 
-    fieldA = (char *)CH_NUL;
-    fieldB = (char *)CH_NUL;
+    fieldA = 0;
+    fieldB = 0;
     CLEANUP_FormatEntryStringTokens((void **)&fieldA, (void **)&fieldB, parsedStatusBuffer);
 
     CLEANUP_DrawInsetRectFrame();

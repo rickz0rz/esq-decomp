@@ -71,12 +71,8 @@ ___CLEANUP_BuildAndRenderAlignedSta__5:
               MOVE.L         D0,(A7)                  ;2e80 
               PEA            $1b4(A7)                 ;486f 01b4 
               BSR.W          CLEANUP_UpdateEntryFlagBytes;6100 0000 
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         $40c(A7),D0              ;102f 040c 
-              MOVE.L         D0,$34(A7)               ;2f40 0034 
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         D0,D1                    ;1200 
-              MOVE.L         D1,$30(A7)               ;2f41 0030 
+              CLR.L          $34(A7)                  ;42af 0034 
+              CLR.L          $30(A7)                  ;42af 0030 
               PEA            $38(A7)                  ;486f 0038 
               PEA            $34(A7)                  ;486f 0034 
               PEA            $3c(A7)                  ;486f 003c 
@@ -110,7 +106,7 @@ ___CLEANUP_RenderAlignedStatusScree__1:
               MOVE.L         D2,-(A7)                 ;2f02 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          CLEANUP_BuildAndRenderAlignedSta;6100 feb4 
+              BSR.W          CLEANUP_BuildAndRenderAlignedSta;6100 febe 
 ___CLEANUP_RenderAlignedStatusScree__2:
               LEA            $c(A7),A7                ;4fef 000c 
 ___CLEANUP_RenderAlignedStatusScree__3:
