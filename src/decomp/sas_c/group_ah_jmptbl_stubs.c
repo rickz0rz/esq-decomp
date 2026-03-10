@@ -17,7 +17,7 @@ extern LONG GCOMMAND_LoadMplexFile(void);
 extern LONG GCOMMAND_LoadPPVTemplate(void);
 extern LONG LOCAVAIL_SaveAvailabilityDataFile(void *primaryStatePtr, void *secondaryStatePtr);
 extern void NEWGRID_RebuildIndexCache(void);
-extern LONG PARSE_ReadSignedLongSkipClass3(char *cursor);
+extern LONG PARSE_ReadSignedLongSkipClass3(const char *cursor);
 extern void P_TYPE_WritePromoIdDataFile(void);
 extern LONG SCRIPT_ReadNextRbfByte(void);
 extern char *STR_FindAnyCharPtr(const char *s, const char *charset);
@@ -36,7 +36,7 @@ LONG GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile(void){return GCOMMAND_LoadMplexFile(
 LONG GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate(void){return GCOMMAND_LoadPPVTemplate();}
 LONG GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(void *primaryStatePtr, void *secondaryStatePtr){return LOCAVAIL_SaveAvailabilityDataFile(primaryStatePtr, secondaryStatePtr);}
 void GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache(void){NEWGRID_RebuildIndexCache();}
-LONG GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(char *cursor){return PARSE_ReadSignedLongSkipClass3(cursor);}
+LONG GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(const char *cursor){return PARSE_ReadSignedLongSkipClass3(cursor);}
 void GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile(void){P_TYPE_WritePromoIdDataFile();}
 LONG GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(void){return SCRIPT_ReadNextRbfByte();}
 char *GROUP_AH_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *charset){return STR_FindAnyCharPtr(s, charset);}
