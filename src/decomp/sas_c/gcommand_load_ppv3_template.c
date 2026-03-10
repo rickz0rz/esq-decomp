@@ -28,6 +28,7 @@ LONG GCOMMAND_LoadPPV3Template(void)
     LONG usedFallbackDelete;
     char *loadedBuffer;
     LONG loadedSize;
+    const char *splitSearch;
     char *splitPtr;
 
     copySize = 0;
@@ -58,7 +59,8 @@ LONG GCOMMAND_LoadPPV3Template(void)
     GCOMMAND_PPVListingsTemplatePtr = 0;
 
     Global_PTR_WORK_BUFFER += copySize;
-    splitPtr = GROUP_AS_JMPTBL_STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
+    splitSearch = GROUP_AS_JMPTBL_STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
+    splitPtr = (char *)splitSearch;
 
     if (splitPtr && *splitPtr) {
         *splitPtr = 0;
