@@ -7,7 +7,7 @@ extern UWORD CLOCK_HalfHourSlotIndex;
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 
 LONG GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const void *entry);
-char *GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG mode, LONG idx);
+const char *GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG mode, LONG idx);
 LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG slot);
 
 typedef struct COI_AuxEntry {
