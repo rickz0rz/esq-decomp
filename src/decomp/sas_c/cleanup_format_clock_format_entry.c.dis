@@ -43,10 +43,11 @@ ___CLEANUP_FormatClockFormatEntry__5:
 ___CLEANUP_FormatClockFormatEntry__6:
 ___CLEANUP_FormatClockFormatEntry__7:
               TST.L          D6                       ;4a86 
-              BLE.B          ___CLEANUP_FormatClockFormatEntry__10;6f48 
+              BLE.B          ___CLEANUP_FormatClockFormatEntry__10;6f4a 
 ___CLEANUP_FormatClockFormatEntry__8:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         $fffffffe(A5),D0         ;102d fffe 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
               MOVE.L         D0,D5                    ;2a00 
               MOVEQ.L        #$30,D1                  ;7230 
               SUB.L          D1,D5                    ;9a81 

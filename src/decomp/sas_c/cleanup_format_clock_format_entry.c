@@ -8,15 +8,15 @@ enum {
 };
 
 extern UBYTE CLOCK_FormatVariantCode;
-extern const UBYTE *Global_REF_STR_CLOCK_FORMAT[];
+extern const char *Global_REF_STR_CLOCK_FORMAT[];
 
 LONG GROUP_AG_JMPTBL_MATH_DivS32(LONG a, LONG b);
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 
-void CLEANUP_FormatClockFormatEntry(LONG slotIndex, UBYTE *out)
+void CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out)
 {
     LONG variant;
-    const UBYTE *src;
+    const char *src;
 
     while (slotIndex > CLOCK_FORMAT_SLOTS_PER_BANK) {
         slotIndex -= CLOCK_FORMAT_SLOTS_PER_BANK;
@@ -36,9 +36,9 @@ void CLEANUP_FormatClockFormatEntry(LONG slotIndex, UBYTE *out)
         variant += GROUP_AG_JMPTBL_MATH_Mulu32(decimalDigit, DECIMAL_BASE);
 
         decimalDigit = GROUP_AG_JMPTBL_MATH_DivS32(variant, DECIMAL_BASE);
-        out[-2] = (UBYTE)(decimalDigit + '0');
+        out[-2] = (char)(decimalDigit + '0');
 
         decimalDigit = GROUP_AG_JMPTBL_MATH_DivS32(variant, DECIMAL_BASE);
-        out[-1] = (UBYTE)(decimalDigit + '0');
+        out[-1] = (char)(decimalDigit + '0');
     }
 }
