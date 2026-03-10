@@ -22,11 +22,11 @@ typedef struct Unknown36Request {
 
 extern ULONG AbsExecBase;
 extern ULONG Global_DosLibrary;
-extern const UBYTE *Global_UNKNOWN36_MessagePtr;
+extern const char *Global_UNKNOWN36_MessagePtr;
 extern UBYTE *Global_UNKNOWN36_RequesterOutPtr;
-extern const UBYTE Global_UNKNOWN36_RequesterText0[];
-extern const UBYTE Global_UNKNOWN36_RequesterText1[];
-extern const UBYTE Global_UNKNOWN36_RequesterText2[];
+extern const char Global_UNKNOWN36_RequesterText0[];
+extern const char Global_UNKNOWN36_RequesterText1[];
+extern const char Global_UNKNOWN36_RequesterText2[];
 
 extern LONG STREAM_BufferedPutcOrFlush(LONG ch, void *node);
 extern LONG ALLOC_InsertFreeBlock(void *block, LONG size);
@@ -34,7 +34,7 @@ extern LONG HANDLE_CloseByIndex(LONG handleIndex);
 
 extern void *_LVOFindTask(void *execBase, void *name);
 extern LONG _LVOWrite(void *dosBase, LONG fh, const void *buf, LONG len);
-extern void *_LVOOpenLibrary(void *execBase, const UBYTE *name, ULONG ver);
+extern void *_LVOOpenLibrary(void *execBase, const char *name, ULONG ver);
 extern LONG EXEC_CallVector_348(void *libBase, void *a0, void *a1, void *a2, void *a3, LONG d0, LONG d1, LONG d2, LONG d3);
 
 LONG UNKNOWN36_FinalizeRequest(Unknown36Request *req)
@@ -64,11 +64,11 @@ LONG UNKNOWN36_FinalizeRequest(Unknown36Request *req)
 
 LONG UNKNOWN36_ShowAbortRequester(void)
 {
-    static const UBYTE kBreakPrefix[] = "*** Break: ";
-    static const UBYTE kIntuitionLib[] = "intuition.library";
+    static const char kBreakPrefix[] = "*** Break: ";
+    static const char kIntuitionLib[] = "intuition.library";
 
     UBYTE local[82];
-    const UBYTE *msg = Global_UNKNOWN36_MessagePtr;
+    const char *msg = Global_UNKNOWN36_MessagePtr;
     LONG len = (UBYTE)msg[-1];
     LONG i;
     UBYTE *task;
@@ -111,9 +111,9 @@ LONG UNKNOWN36_ShowAbortRequester(void)
         rc = EXEC_CallVector_348(
             intuition,
             0,
-            Global_UNKNOWN36_RequesterText0,
-            Global_UNKNOWN36_RequesterText1,
-            Global_UNKNOWN36_RequesterText2,
+            (void *)Global_UNKNOWN36_RequesterText0,
+            (void *)Global_UNKNOWN36_RequesterText1,
+            (void *)Global_UNKNOWN36_RequesterText2,
             0,
             0,
             250,
