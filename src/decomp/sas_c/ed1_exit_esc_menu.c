@@ -43,7 +43,7 @@ extern void ESQFUNC_UpdateDiskWarningAndRefreshTick(void);
 extern void ED1_ClearEscMenuMode(void);
 extern void ESQFUNC_UpdateRefreshModeState(LONG suspendFlag, LONG lastRequest);
 extern void ED1_JMPTBL_NEWGRID_DrawTopBorderLine(void);
-extern void ED1_JMPTBL_LADFUNC_SaveTextAdsToFile(void);
+extern LONG ED1_JMPTBL_LADFUNC_SaveTextAdsToFile(void);
 extern void ED1_WaitForFlagAndClearBit0(void);
 extern void ESQIFF_JMPTBL_BRUSH_FreeBrushList(MinList *head, LONG freePayload);
 extern void ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs(void);

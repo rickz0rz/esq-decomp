@@ -1,9 +1,10 @@
+typedef signed long LONG;
 typedef unsigned long ULONG;
 
 extern void GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(ULONG mask, ULONG value);
 extern void DISKIO2_DisplayStatusLine(const char *text);
 extern void DISKIO2_FlushDataFilesIfNeeded(void);
-extern void ED1_JMPTBL_LADFUNC_SaveTextAdsToFile(void);
+extern LONG ED1_JMPTBL_LADFUNC_SaveTextAdsToFile(void);
 extern void DISKIO_SaveConfigToFileHandle(void);
 extern void GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(void *primary, void *secondary);
 extern void DISKIO2_WriteQTableIniFile(void);
