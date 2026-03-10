@@ -43,6 +43,7 @@ ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi:
 ___ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi__1:
               BSR.W          SCRIPT_ReadHandshakeBit3Flag;6100 0000 
 ___ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi__2:
+___ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi__3:
               RTS                                     ;4e75 
 ESQFUNC_JMPTBL_TLIBA3_DrawCenter:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -57,6 +58,7 @@ ESQFUNC_JMPTBL_SCRIPT_GetCtrlLin:
 ___ESQFUNC_JMPTBL_SCRIPT_GetCtrlLin__1:
               BSR.W          SCRIPT_GetCtrlLineFlag   ;6100 0000 
 ___ESQFUNC_JMPTBL_SCRIPT_GetCtrlLin__2:
+___ESQFUNC_JMPTBL_SCRIPT_GetCtrlLin__3:
               RTS                                     ;4e75 
 ESQFUNC_JMPTBL_LOCAVAIL_SyncSeco:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -105,11 +107,19 @@ ___ESQFUNC_JMPTBL_CLEANUP_ProcessAl__1:
 ___ESQFUNC_JMPTBL_CLEANUP_ProcessAl__2:
               RTS                                     ;4e75 
 ESQFUNC_JMPTBL_ESQ_GetHalfHourSl:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___ESQFUNC_JMPTBL_ESQ_GetHalfHourSl__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQ_GetHalfHourSlotIndex ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQFUNC_JMPTBL_ESQ_GetHalfHourSl__2:
+___ESQFUNC_JMPTBL_ESQ_GetHalfHourSl__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 ESQFUNC_JMPTBL_CLEANUP_DrawClock:
               CMP.L          __base(A4),A7            ;bfec 0000 

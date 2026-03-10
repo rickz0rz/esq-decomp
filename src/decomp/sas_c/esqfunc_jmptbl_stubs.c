@@ -7,15 +7,15 @@ extern void P_TYPE_PromoteSecondaryList(void);
 extern void DISKIO_ProbeDrivesAndAssignPaths(void);
 extern void PARSEINI_UpdateCtrlHDeltaMax(void);
 extern void ESQ_ClampBannerCharRange(void);
-extern void SCRIPT_ReadHandshakeBit3Flag(void);
+extern LONG SCRIPT_ReadHandshakeBit3Flag(void);
 extern void TLIBA3_DrawCenteredWrappedTextLines(void);
-extern void SCRIPT_GetCtrlLineFlag(void);
+extern LONG SCRIPT_GetCtrlLineFlag(void);
 extern void LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
 extern void PARSEINI_MonitorClockChange(void);
 extern LONG LADFUNC_ParseHexDigit(BYTE ch);
 extern void CLEANUP_ProcessAlerts(void);
-extern void ESQ_GetHalfHourSlotIndex(void);
+extern ULONG ESQ_GetHalfHourSlotIndex(void *timePtr);
 extern void CLEANUP_DrawClockBanner(void);
 extern void PARSEINI_ComputeHTCMaxValues(void);
 extern void LADFUNC_UpdateHighlightState(void);
@@ -34,15 +34,15 @@ void ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList(void){P_TYPE_PromoteSecondaryLis
 void ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(void){DISKIO_ProbeDrivesAndAssignPaths();}
 void ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax(void){PARSEINI_UpdateCtrlHDeltaMax();}
 void ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange(void){ESQ_ClampBannerCharRange();}
-void ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag(void){SCRIPT_ReadHandshakeBit3Flag();}
+LONG ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag(void){return SCRIPT_ReadHandshakeBit3Flag();}
 void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void){TLIBA3_DrawCenteredWrappedTextLines();}
-void ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag(void){SCRIPT_GetCtrlLineFlag();}
+LONG ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag(void){return SCRIPT_GetCtrlLineFlag();}
 void ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void){LOCAVAIL_SyncSecondaryFilterForCurrentGroup();}
 void ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(void){TEXTDISP_ResetSelectionAndRefresh();}
 void ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange(void){PARSEINI_MonitorClockChange();}
 LONG ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(BYTE ch){return LADFUNC_ParseHexDigit(ch);}
 void ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(void){CLEANUP_ProcessAlerts();}
-void ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex(void){ESQ_GetHalfHourSlotIndex();}
+ULONG ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex(void *timePtr){return ESQ_GetHalfHourSlotIndex(timePtr);}
 void ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner(void){CLEANUP_DrawClockBanner();}
 void ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues(void){PARSEINI_ComputeHTCMaxValues();}
 void ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(void){LADFUNC_UpdateHighlightState();}
