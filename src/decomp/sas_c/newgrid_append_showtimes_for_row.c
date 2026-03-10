@@ -65,7 +65,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
     const char *f3_n;
     UBYTE mode0;
     UBYTE modeN;
-    NEWGRID_Entry *entryCur;
+    const NEWGRID_Entry *entryCur;
     NEWGRID_AuxData *auxCur;
 
     out[0] = 0;
@@ -73,7 +73,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
     if (!ctx || !ctx->coi || !ctx->entries) {
         return;
     }
-    entryCur = (NEWGRID_Entry *)ctx->coi;
+    entryCur = (const NEWGRID_Entry *)ctx->coi;
     auxCur = (NEWGRID_AuxData *)ctx->entries;
 
     row = ctx->row;
