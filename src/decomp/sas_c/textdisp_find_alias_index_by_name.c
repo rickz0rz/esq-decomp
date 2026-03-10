@@ -22,7 +22,7 @@ LONG TEXTDISP_FindAliasIndexByName(char *entryPtr)
     const LONG INDEX_NOT_FOUND = -1;
     const UBYTE CH_NUL = 0;
     char nameBuf[22];
-    char *src;
+    const char *src;
     char *dst;
     LONG idx;
 
@@ -37,8 +37,8 @@ LONG TEXTDISP_FindAliasIndexByName(char *entryPtr)
     idx = 0;
     while ((WORD)idx < TEXTDISP_AliasCount) {
         TEXTDISP_AliasEntry *aliasEntry;
-        char *alias;
-        char *scan;
+        const char *alias;
+        const char *scan;
 
         aliasEntry = TEXTDISP_AliasPtrTable[idx];
         alias = aliasEntry->aliasText;

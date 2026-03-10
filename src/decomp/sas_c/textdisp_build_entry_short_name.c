@@ -26,7 +26,7 @@ void TEXTDISP_BuildEntryShortName(char *entry, char *out)
         entryView = (TEXTDISP_Entry *)entry;
         aliasIndex = TEXTDISP_FindAliasIndexByName(entry);
         if (aliasIndex != -1) {
-            char *src = TEXTDISP_AliasPtrTable[aliasIndex]->aliasText;
+            const char *src = TEXTDISP_AliasPtrTable[aliasIndex]->aliasText;
             do {
                 *out++ = *src;
             } while (*src++ != 0);
@@ -34,7 +34,7 @@ void TEXTDISP_BuildEntryShortName(char *entry, char *out)
         }
 
         {
-            char *fallback = entryView->fallbackName;
+            const char *fallback = entryView->fallbackName;
             LONG len = 0;
 
             while (fallback[len] != 0) {
