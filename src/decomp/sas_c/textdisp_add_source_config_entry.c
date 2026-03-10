@@ -35,7 +35,7 @@ void TEXTDISP_AddSourceConfigEntry(char *name, const char *tag)
         (MEMF_PUBLIC + MEMF_CLEAR)
     );
 
-    if (*slot == (TEXTDISP_SourceConfigEntry *)0) {
+    if (*slot == 0) {
         return;
     }
 
