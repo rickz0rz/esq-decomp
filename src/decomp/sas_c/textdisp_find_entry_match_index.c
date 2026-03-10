@@ -152,7 +152,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
 
             if (inputHasQuotes != 0) {
                 if (entryHasQuotes != 0 && inputLen == entryLen &&
-                    STRING_CompareNoCase((const char *)inputStart, (const char *)entryStart) == 0) {
+                    STRING_CompareNoCase(inputStart, entryStart) == 0) {
                     isMatch = MATCH_TRUE;
                 }
             } else {

@@ -52,7 +52,7 @@ LONG P_TYPE_LoadPromoIdDataFile(void)
 
     for (section = 0; section < 2; ++section) {
         const char *section_header = (section == 0) ? P_TYPE_STR_CURDAY_COLON_LoadSection : P_TYPE_STR_NXTDAY_COLON_LoadSection;
-        char *cursor = P_TYPE_JMPTBL_STRING_FindSubstring((const char *)work, section_header);
+        char *cursor = P_TYPE_JMPTBL_STRING_FindSubstring(work, section_header);
         LONG slot = 2;
 
         if (cursor == (char *)0) {
