@@ -12,12 +12,12 @@ enum {
 
 LONG COI_GetAnimFieldPointerByMode(void *entry, LONG slot, LONG mode);
 
-LONG CLEANUP_TestEntryFlagYAndBit1(void *entry, UWORD slot, LONG idx)
+LONG CLEANUP_TestEntryFlagYAndBit1(const void *entry, UWORD slot, LONG idx)
 {
-    UBYTE *flagsText;
+    const UBYTE *flagsText;
 
-    flagsText = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
-    if (flagsText == (UBYTE *)0) {
+    flagsText = (const UBYTE *)COI_GetAnimFieldPointerByMode((void *)entry, (LONG)slot, ENTRY_MODE_FLAGS);
+    if (flagsText == (const UBYTE *)0) {
         return 0;
     }
 
@@ -29,7 +29,7 @@ LONG CLEANUP_TestEntryFlagYAndBit1(void *entry, UWORD slot, LONG idx)
         return 0;
     }
 
-    if ((*(UBYTE *)((UBYTE *)entry + ENTRY_FLAGS_BYTE_OFFSET) & ENTRY_FLAGS_BIT1_MASK) == 0) {
+    if ((*(const UBYTE *)((const UBYTE *)entry + ENTRY_FLAGS_BYTE_OFFSET) & ENTRY_FLAGS_BIT1_MASK) == 0) {
         return 0;
     }
 

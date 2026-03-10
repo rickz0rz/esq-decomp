@@ -26,7 +26,7 @@ extern char *STR_SkipClass3Chars(const char *s);
 extern char *STRING_AppendN(char *dst, const char *src, ULONG maxBytes);
 extern LONG ESQDISP_ComputeScheduleOffsetForRow(WORD row, UBYTE slot);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(char *s);
-extern LONG CLEANUP_TestEntryFlagYAndBit1(void *entry, UBYTE slot, LONG idx);
+extern LONG CLEANUP_TestEntryFlagYAndBit1(const void *entry, UBYTE slot, LONG idx);
 extern LONG DISPTEXT_IsCurrentLineLast(void);
 extern LONG DISPTEXT_IsLastLineSelected(void);
 extern void BEVEL_DrawBeveledFrame(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY);
@@ -61,7 +61,7 @@ char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s){return STR_SkipClass3Ch
 char *NEWGRID2_JMPTBL_STRING_AppendN(char *dst, const char *src, ULONG maxBytes){return STRING_AppendN(dst, src, maxBytes);}
 LONG NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(WORD row, UBYTE slot){return ESQDISP_ComputeScheduleOffsetForRow(row, slot);}
 LONG NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s){return PARSE_ReadSignedLongSkipClass3_Alt(s);}
-LONG NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(void *entry, UBYTE slot, LONG idx){return CLEANUP_TestEntryFlagYAndBit1(entry, slot, idx);}
+LONG NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(const void *entry, UBYTE slot, LONG idx){return CLEANUP_TestEntryFlagYAndBit1(entry, slot, idx);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void){return DISPTEXT_IsCurrentLineLast();}
 LONG NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(void){return DISPTEXT_IsLastLineSelected();}
 void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY){BEVEL_DrawBeveledFrame(rastPort, leftX, topY, rightX, bottomY);}
