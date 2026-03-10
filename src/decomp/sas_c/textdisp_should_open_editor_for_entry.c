@@ -10,7 +10,7 @@ typedef struct TEXTDISP_Entry {
 
 extern LONG TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(const TEXTDISP_Entry *entry);
 
-LONG TEXTDISP_ShouldOpenEditorForEntry(TEXTDISP_Entry *entry)
+LONG TEXTDISP_ShouldOpenEditorForEntry(const TEXTDISP_Entry *entry)
 {
     LONG result = 0;
 

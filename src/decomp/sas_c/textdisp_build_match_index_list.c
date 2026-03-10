@@ -32,7 +32,7 @@ extern const char Global_STR_ASTERISK_2[];
 extern const char Global_STR_ASTERISK_3[];
 
 extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *a, const char *b);
-extern LONG TEXTDISP_ShouldOpenEditorForEntry(TEXTDISP_CandidateEntry *entry);
+extern LONG TEXTDISP_ShouldOpenEditorForEntry(const TEXTDISP_CandidateEntry *entry);
 
 LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar)
 {
