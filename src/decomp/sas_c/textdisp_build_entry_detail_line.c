@@ -5,7 +5,7 @@ typedef unsigned char UBYTE;
 
 typedef struct TEXTDISP_AuxData {
     UBYTE pad0[56];
-    char *titleTable[49];
+    const char *titleTable[49];
 } TEXTDISP_AuxData;
 
 typedef struct TEXTDISP_SelectionEntry {
