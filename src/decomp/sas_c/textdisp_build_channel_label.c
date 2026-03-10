@@ -21,15 +21,18 @@ void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix)
 {
     char entryName[17];
     const TEXTDISP_CandidateEntry *entry;
+    const char *entryText;
     LONG mode;
     LONG len;
 
     mode = (TEXTDISP_ActiveGroupId == 0) ? 2 : 1;
     entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, mode);
+    entryText = (const char *)0;
 
     if (entry != (const TEXTDISP_CandidateEntry *)0) {
         const char *src = entry->text;
         char *dst = entryName;
+        entryText = entry->text;
         do {
             *dst++ = *src;
         } while (*src++ != 0);
@@ -56,7 +59,7 @@ void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix)
     }
 
     STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer, Global_STR_ALIGNED_CHANNEL_1);
-    STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer, entry->text);
+    STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer, entryText);
 
     len = 0;
     while (TEXTDISP_ChannelLabelBuffer[len] != 0) {
