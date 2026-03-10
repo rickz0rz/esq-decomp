@@ -42,7 +42,7 @@ extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG len);
 extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry, LONG row, LONG field);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, char *entries);
 extern void NEWGRID_ResetShowtimeBuckets(void);
-extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **coiPtr, LONG row, LONG col);
+extern short NEWGRID_UpdatePresetEntry(char **entryPtr, char **coiPtr, LONG row, LONG col);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *coi, LONG idx);
 extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *coi, LONG idx, LONG winMins, LONG tolMins);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitsetBase, LONG bitIdx);
