@@ -43,6 +43,14 @@ extern void DATETIME_SecondsToStruct(void *out_struct, LONG seconds);
 
 LONG DST_BuildBannerTimeEntry(WORD lane, UBYTE slot_hint, WORD *row_out, DST_DateTimeLike *out_dt)
 {
+    const WORD BANNER_SLOT_CURSOR_NONE = 0x00ff;
+    const WORD LANE_DAY_INCREMENT_START = 39;
+    const LONG DAYS_IN_LEAP_YEAR = 366;
+    const LONG DAYS_IN_COMMON_YEAR = 365;
+    const LONG BASE_DAY_INDEX = 54;
+    const UBYTE SECONDARY_SLOT_MODE_ENABLED = 89;
+    const LONG ROW_SECONDS_STEP = 0x0e10;
+    const LONG FORMAT_VARIANT_SECONDS_STEP = 60;
     DST_ClockState scratch = CLOCK_DaySlotIndex;
     LONG day_of_year = (LONG)slot_hint;
     LONG days_in_year;
@@ -51,15 +59,15 @@ LONG DST_BuildBannerTimeEntry(WORD lane, UBYTE slot_hint, WORD *row_out, DST_Dat
     WORD class_primary;
     WORD row;
 
-    if (WDISP_BannerSlotCursor >= 0x00ff && (WORD)slot_hint != WDISP_BannerSlotCursor) {
+    if (WDISP_BannerSlotCursor >= BANNER_SLOT_CURSOR_NONE && (WORD)slot_hint != WDISP_BannerSlotCursor) {
         day_of_year |= 1;
     }
 
-    if (lane >= 39) {
+    if (lane >= LANE_DAY_INCREMENT_START) {
         day_of_year += 1;
     }
 
-    days_in_year = (DATETIME_IsLeapYear((LONG)CLOCK_CacheYear) != 0) ? 366 : 0x16d;
+    days_in_year = (DATETIME_IsLeapYear((LONG)CLOCK_CacheYear) != 0) ? DAYS_IN_LEAP_YEAR : DAYS_IN_COMMON_YEAR;
     if (day_of_year > days_in_year) {
         day_of_year -= days_in_year;
     }
@@ -69,14 +77,14 @@ LONG DST_BuildBannerTimeEntry(WORD lane, UBYTE slot_hint, WORD *row_out, DST_Dat
     (void)GROUP_AG_JMPTBL_MATH_DivS32((((LONG)lane - 1) >> 1) + 5, 12);
     (void)GROUP_AG_JMPTBL_MATH_DivS32((((LONG)lane - 1) >> 1) + 5, 24);
 
-    seconds = DATETIME_BuildFromBaseDay(&scratch, &scratch, 54, (LONG)scratch.w20);
+    seconds = DATETIME_BuildFromBaseDay(&scratch, &scratch, BASE_DAY_INDEX, (LONG)scratch.w20);
 
-    if (ESQ_SecondarySlotModeFlagChar == 89) {
+    if (ESQ_SecondarySlotModeFlagChar == SECONDARY_SLOT_MODE_ENABLED) {
         class_secondary = DATETIME_ClassifyValueInRange(DST_BannerWindowSecondary, seconds);
     }
     class_primary = DATETIME_ClassifyValueInRange(DST_BannerWindowPrimary, seconds);
 
-    row = (WORD)((LONG)(UBYTE)ESQ_STR_6 - 54);
+    row = (WORD)((LONG)(UBYTE)ESQ_STR_6 - BASE_DAY_INDEX);
     if (class_primary == 1) {
         row -= 1;
     }
@@ -88,8 +96,8 @@ LONG DST_BuildBannerTimeEntry(WORD lane, UBYTE slot_hint, WORD *row_out, DST_Dat
 
     if (out_dt != (DST_DateTimeLike *)0) {
         LONG adjust = (class_primary == 1) ? 1 : 0;
-        LONG sec2 = seconds + (LONG)GROUP_AG_JMPTBL_MATH_Mulu32((ULONG)(row + adjust), 0x0e10);
-        sec2 += (LONG)GROUP_AG_JMPTBL_MATH_Mulu32((ULONG)(UBYTE)CLOCK_FormatVariantCode, 60);
+        LONG sec2 = seconds + (LONG)GROUP_AG_JMPTBL_MATH_Mulu32((ULONG)(row + adjust), ROW_SECONDS_STEP);
+        sec2 += (LONG)GROUP_AG_JMPTBL_MATH_Mulu32((ULONG)(UBYTE)CLOCK_FormatVariantCode, FORMAT_VARIANT_SECONDS_STEP);
         DATETIME_SecondsToStruct(out_dt, sec2);
         out_dt->w14 = (UWORD)class_secondary;
     }
