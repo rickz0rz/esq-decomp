@@ -7,7 +7,7 @@ typedef struct TEXTDISP_AuxData {
     UBYTE pad0[7];
     UBYTE slotMask[49];
     UBYTE pad1[0x38 - 0x38];
-    char *titlePtrBySlot[49];
+    const char *titlePtrBySlot[49];
 } TEXTDISP_AuxData;
 
 typedef struct TEXTDISP_CandidateEntry {

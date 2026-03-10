@@ -6,13 +6,13 @@ typedef long LONG;
 extern UWORD CLOCK_HalfHourSlotIndex;
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 
-LONG GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(void *entry);
+LONG GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const void *entry);
 char *GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG mode, LONG idx);
 LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG slot);
 
 typedef struct COI_AuxEntry {
     UBYTE pad0[56];
-    char *titleTable[49];
+    const char *titleTable[49];
     UBYTE pad252[246];
     UBYTE groupCode498;
 } COI_AuxEntry;
@@ -26,11 +26,11 @@ LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, WORD slot)
     const LONG DELTA_DAY_MINUTES = 2880;
     const LONG SLOT_MINUTES = 30;
     const LONG DELTA_INVALID = -1;
-    COI_AuxEntry *e;
+    const COI_AuxEntry *e;
     LONG out;
     LONG s;
 
-    e = (COI_AuxEntry *)entry;
+    e = (const COI_AuxEntry *)entry;
     s = SLOT_INVALID;
     out = DELTA_INVALID;
 
@@ -45,8 +45,8 @@ LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, WORD slot)
 
     if (s > SLOT_LAST && TEXTDISP_PrimaryGroupCode == e->groupCode498) {
         s = GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(e);
-        e = (COI_AuxEntry *)GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(s, AUX_POINTER_MODE_SECONDARY);
-        if (e != (COI_AuxEntry *)0) {
+        e = (const COI_AuxEntry *)GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(s, AUX_POINTER_MODE_SECONDARY);
+        if (e != (const COI_AuxEntry *)0) {
             s = SLOT_FIRST;
             while (s < SLOT_INVALID && e->titleTable[s] == 0) {
                 s += 1;
