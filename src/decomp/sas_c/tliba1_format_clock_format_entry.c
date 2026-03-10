@@ -1,12 +1,12 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern char TLIBA1_FormatFallbackBuffer[];
+extern const char TLIBA1_FormatFallbackBuffer[];
 extern char *TEXTDISP_FormatEntryFallbackTable;
-extern char TLIBA1_FormatFallbackFieldPtr0[];
-extern char TLIBA1_FormatFallbackFieldPtr1[];
-extern char TLIBA1_FormatFallbackFieldPtr2[];
-extern char TLIBA1_FormatFallbackFieldPtr3[];
+extern const char TLIBA1_FormatFallbackFieldPtr0[];
+extern const char TLIBA1_FormatFallbackFieldPtr1[];
+extern const char TLIBA1_FormatFallbackFieldPtr2[];
+extern const char TLIBA1_FormatFallbackFieldPtr3[];
 extern const char TLIBA1_FMT_PCT_C_PCT_S[];
 
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG c, const char *s);
@@ -22,10 +22,10 @@ static LONG TLIBA1_StrLen(const char *s)
     return n;
 }
 
-void TLIBA1_FormatClockFormatEntry(char *dst, char *f0, char *f1, char *f2, char *f3, const char *fallbackStyle, LONG useFallbackSet)
+void TLIBA1_FormatClockFormatEntry(char *dst, const char *f0, const char *f1, const char *f2, const char *f3, const char *fallbackStyle, LONG useFallbackSet)
 {
     char scratch[512];
-    char *fieldList[4];
+    const char *fieldList[4];
     LONG i;
     LONG lenField;
     LONG lenDst;
