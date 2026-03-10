@@ -1,10 +1,12 @@
+typedef signed long LONG;
+
 extern void ESQIFF_RestoreBasePaletteTriples(void);
 extern long ESQFUNC_TrimTextToPixelWidthWordBoundary(char *rastport, long max_width, char *text);
 extern void GCOMMAND_ExpandPresetBlock(unsigned char *packed);
 extern void ESQIFF_QueueIffBrushLoad(void);
 extern void ESQIFF_RunCopperDropTransition(void);
 extern void *BRUSH_FindBrushByPredicate(void *searchKey, void *listHeadPtr);
-extern void BRUSH_FreeBrushList(void);
+extern void BRUSH_FreeBrushList(void **headPtr, LONG freeAll);
 extern unsigned long BRUSH_PlaneMaskForIndex(long planeIndex);
 extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void ESQIFF_RenderWeatherStatusBrushSlice(void);
@@ -18,7 +20,7 @@ void WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock(unsigned char *packed){GCOMMAND_Exp
 void WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad(void){ESQIFF_QueueIffBrushLoad();}
 void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void){ESQIFF_RunCopperDropTransition();}
 void *WDISP_JMPTBL_BRUSH_FindBrushByPredicate(void *searchKey, void *listHeadPtr){return BRUSH_FindBrushByPredicate(searchKey, listHeadPtr);}
-void WDISP_JMPTBL_BRUSH_FreeBrushList(void){BRUSH_FreeBrushList();}
+void WDISP_JMPTBL_BRUSH_FreeBrushList(void **headPtr, LONG freeAll){BRUSH_FreeBrushList(headPtr, freeAll);}
 unsigned long WDISP_JMPTBL_BRUSH_PlaneMaskForIndex(long planeIndex){return BRUSH_PlaneMaskForIndex(planeIndex);}
 void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void){ESQ_SetCopperEffect_OnEnableHighlight();}
 void WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice(void){ESQIFF_RenderWeatherStatusBrushSlice();}
