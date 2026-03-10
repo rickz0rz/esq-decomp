@@ -113,7 +113,7 @@ LONG LADFUNC_LoadTextAdsFromFile(void)
             }
         } else {
             if (entry->textPtr != (char *)0) {
-                char *p = entry->textPtr;
+                const char *p = entry->textPtr;
                 LONG oldLen = 0;
                 while (*p++ != 0) {
                     ++oldLen;
