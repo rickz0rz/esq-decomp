@@ -6,7 +6,7 @@ typedef signed long LONG;
 extern void GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi(void);
 extern LONG GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
 extern LONG DISKIO_WriteBytesToOutputHandleGuarded(const void *data, UWORD byteCount);
-extern void GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(UWORD arg);
+extern void GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(LONG arg);
 
 extern UBYTE DISKIO2_TransferBlockSequence;
 extern UBYTE DISKIO2_TransferXorChecksumByte;
