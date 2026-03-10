@@ -35,9 +35,10 @@ void TEXTDISP_BuildEntryShortName(const char *entry, char *out)
 
         {
             const char *fallback = entryView->fallbackName;
+            const char *scan = fallback;
             LONG len = 0;
 
-            while (fallback[len] != 0) {
+            while (*scan++ != 0) {
                 ++len;
             }
 
