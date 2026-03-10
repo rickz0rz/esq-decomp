@@ -2,7 +2,7 @@ typedef unsigned long ULONG;
 
 extern const char Global_STR_CLOSED_CAPTIONED[];
 
-extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(char *text, const char *needle);
+extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(const char *text, const char *needle);
 extern void CopyMem(const void *src, void *dst, ULONG len);
 
 void ESQSHARED_CompressClosedCaptionedTag(char *text)

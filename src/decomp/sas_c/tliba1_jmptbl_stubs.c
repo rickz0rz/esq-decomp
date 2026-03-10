@@ -9,7 +9,7 @@ extern char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG COI_TestEntryWithinTimeWindow(UBYTE *entry, void *time_ctx, WORD slot, LONG max_offset, LONG fallback_delta);
 extern void CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out);
 extern LONG ESQDISP_ComputeScheduleOffsetForRow(WORD row, UBYTE slot);
-extern char *ESQ_FindSubstringCaseFold(char *haystack, char *needle);
+extern char *ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
 extern LONG DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *title, LONG index);
 extern LONG LADFUNC_GetPackedPenHighNibble(UBYTE packed);
 
@@ -20,6 +20,6 @@ char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode){return 
 LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(UBYTE *entry, void *time_ctx, WORD slot, LONG max_offset, LONG fallback_delta){return COI_TestEntryWithinTimeWindow(entry, time_ctx, slot, max_offset, fallback_delta);}
 void TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out){CLEANUP_FormatClockFormatEntry(slotIndex, out);}
 LONG TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(WORD row, UBYTE slot){return ESQDISP_ComputeScheduleOffsetForRow(row, slot);}
-char *TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(char *haystack, char *needle){return ESQ_FindSubstringCaseFold(haystack, needle);}
+char *TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle){return ESQ_FindSubstringCaseFold(haystack, needle);}
 LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *title, LONG index){return DISPLIB_FindPreviousValidEntryIndex(entry, title, index);}
 LONG TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble(LONG v){return LADFUNC_GetPackedPenHighNibble((UBYTE)v);}

@@ -5,7 +5,7 @@ extern char *Global_TBL_TV_PROGRAM_RATINGS[];
 extern UBYTE ESQPARS2_TvRatingTokenGlyphMap[];
 extern void *AbsExecBase;
 
-extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(char *text, const char *needle);
+extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(const char *text, const char *needle);
 extern void _LVOCopyMem(void *execBase, const void *src, void *dst, LONG size);
 
 void ESQSHARED_ReplaceTvRatingToken(char *text)
