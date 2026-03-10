@@ -17,7 +17,7 @@ extern void ESQDISP_PromoteSecondaryLineHeadTailIfMarked(void);
 extern void ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(void);
 extern LONG ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile(void);
 extern void ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(void *primary, void *secondary);
-extern void DATETIME_SavePairToFile(void *pair);
+extern LONG DATETIME_SavePairToFile(void *pair);
 extern void ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList(void);
 extern void ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(void);
 extern void ESQFUNC_UpdateDiskWarningAndRefreshTick(void);

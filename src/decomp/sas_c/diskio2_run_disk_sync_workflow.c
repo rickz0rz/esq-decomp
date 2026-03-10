@@ -9,7 +9,7 @@ extern void DISKIO_SaveConfigToFileHandle(void);
 extern void GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(void *primary, void *secondary);
 extern void DISKIO2_WriteQTableIniFile(void);
 extern void GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry(void);
-extern void DATETIME_SavePairToFile(void *pair);
+extern LONG DATETIME_SavePairToFile(void *pair);
 extern void GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile(void);
 extern void GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile(void);
 extern void GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile(void);

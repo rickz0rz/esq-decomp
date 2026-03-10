@@ -7,7 +7,7 @@ extern UBYTE LOCAVAIL_SecondaryFilterState[];
 
 extern void ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(void);
 extern LONG LADFUNC_SaveTextAdsToFile(void);
-extern void ESQPARS_JMPTBL_DATETIME_SavePairToFile(void *pair);
+extern LONG ESQPARS_JMPTBL_DATETIME_SavePairToFile(void *pair);
 extern void LOCAVAIL_SaveAvailabilityDataFile(void *primary, void *secondary);
 extern void ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(void);
 
