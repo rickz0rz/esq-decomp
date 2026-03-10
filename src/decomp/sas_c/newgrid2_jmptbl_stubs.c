@@ -16,7 +16,7 @@ extern void BEVEL_DrawVerticalBevel(char *rastPort, LONG x, LONG topY, LONG bott
 extern LONG DISPTEXT_LayoutSourceToLines(char *rp, char *src);
 extern void CLEANUP_UpdateEntryFlagBytes(void *entry, UBYTE slot);
 extern void COI_RenderClockFormatEntryVariant(void);
-extern LONG ESQDISP_TestEntryBits0And2(UBYTE *entry);
+extern LONG ESQDISP_TestEntryBits0And2(const UBYTE *entry);
 extern LONG DISPTEXT_ComputeVisibleLineCount(LONG maxLines);
 extern void DISPTEXT_RenderCurrentLine(char *rp, LONG x, LONG y);
 extern void COI_ProcessEntrySelectionState(void);
@@ -51,7 +51,7 @@ void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(char *rastPort, LONG x, LONG topY, 
 LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(char *layout, const char *src){return DISPTEXT_LayoutSourceToLines(layout, (char *)src);}
 void NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(void *entry, UBYTE slot){CLEANUP_UpdateEntryFlagBytes(entry, slot);}
 void NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(void){COI_RenderClockFormatEntryVariant();}
-LONG NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(UBYTE *entry){return ESQDISP_TestEntryBits0And2(entry);}
+LONG NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(const UBYTE *entry){return ESQDISP_TestEntryBits0And2(entry);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG maxLines){return DISPTEXT_ComputeVisibleLineCount(maxLines);}
 void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(char *rp, LONG x, LONG y){DISPTEXT_RenderCurrentLine(rp, x, y);}
 void NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(void){COI_ProcessEntrySelectionState();}

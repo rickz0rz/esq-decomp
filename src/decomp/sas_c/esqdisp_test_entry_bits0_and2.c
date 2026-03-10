@@ -1,7 +1,7 @@
 typedef unsigned char UBYTE;
 typedef signed long LONG;
 
-LONG ESQDISP_TestEntryBits0And2_Core(UBYTE *entry)
+LONG ESQDISP_TestEntryBits0And2_Core(const UBYTE *entry)
 {
     if (entry == 0) {
         return 0;
@@ -18,7 +18,7 @@ LONG ESQDISP_TestEntryBits0And2_Core(UBYTE *entry)
     return 1;
 }
 
-LONG ESQDISP_TestEntryBits0And2(UBYTE *entry)
+LONG ESQDISP_TestEntryBits0And2(const UBYTE *entry)
 {
     return ESQDISP_TestEntryBits0And2_Core(entry);
 }
