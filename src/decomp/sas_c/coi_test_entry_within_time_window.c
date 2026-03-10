@@ -57,11 +57,11 @@ LONG COI_TestEntryWithinTimeWindow(const UBYTE *entry, const void *time_ctx, WOR
     result = 1;
     delta_minutes = 0;
     offset_minutes = 0;
-    sub_entry = (COI_SubEntry *)0;
-    anim = (COI_AnimObject *)0;
+    sub_entry = 0;
+    anim = 0;
     entryView = (const COI_Entry *)entry;
 
-    if (entry == (const UBYTE *)0 || time_ctx == (const void *)0 || slot < COI_SLOT_MIN_VALID) {
+    if (entry == 0 || time_ctx == 0 || slot < COI_SLOT_MIN_VALID) {
         result = COI_RESULT_FALSE;
         return result;
     }
@@ -78,7 +78,7 @@ LONG COI_TestEntryWithinTimeWindow(const UBYTE *entry, const void *time_ctx, WOR
         COI_SubEntry **table;
 
         anim = entryView->anim;
-        if (anim != (COI_AnimObject *)0) {
+        if (anim != 0) {
             count = (LONG)anim->subEntryCount;
             i = 0;
             while (i < count) {
@@ -87,11 +87,11 @@ LONG COI_TestEntryWithinTimeWindow(const UBYTE *entry, const void *time_ctx, WOR
                 if (sub_entry->slotKey0 == slot) {
                     break;
                 }
-                sub_entry = (COI_SubEntry *)0;
+                sub_entry = 0;
                 i += 1;
             }
 
-            if (sub_entry != (COI_SubEntry *)0) {
+            if (sub_entry != 0) {
                 delta_minutes = sub_entry->delta26;
             } else {
                 delta_minutes = anim->fallbackDelta32;
