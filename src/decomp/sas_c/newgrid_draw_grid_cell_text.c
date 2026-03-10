@@ -38,6 +38,7 @@ void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *s
     LONG w;
     LONG n;
     LONG fontY;
+    const char *scan;
 
     rp = (NEWGRID_RastPort *)rastPort;
 
@@ -87,7 +88,8 @@ void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *s
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, (char *)rp, 0);
 
     n = 0;
-    while (primary[n] != 0) n++;
+    scan = primary;
+    while (*scan++ != 0) n++;
     while (n > 0 && primary[n - 1] == ' ') n--;
     if (n > 0) {
         w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rp, primary, n);
@@ -101,7 +103,8 @@ void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *s
     }
 
     n = 0;
-    while (secondary[n] != 0) n++;
+    scan = secondary;
+    while (*scan++ != 0) n++;
     while (n > 0 && secondary[n - 1] == ' ') n--;
     if (n > 0) {
         w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rp, secondary, n);
