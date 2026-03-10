@@ -68,10 +68,10 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
     const LONG BIT_SHIFT_PPV_SBE = 4;
     const LONG MATCH_FOUND_FLAG = -1;
     TEXTDISP_SelectionEntry *entry;
-    char *nameShort;
-    char *nameLong;
-    char *candidateName;
-    char *candidateTitle;
+    const char *nameShort;
+    const char *nameLong;
+    const char *candidateName;
+    const char *candidateTitle;
     TEXTDISP_AuxData *aux;
     TEXTDISP_CandidateEntry *candidate;
     LONG found;
@@ -82,7 +82,7 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
     LONG titleSlot;
     LONG ppvSbe;
     LONG nameLen;
-    char *nameEnd;
+    const char *nameEnd;
 
     found = 0;
     entry = entryPtr;
@@ -90,8 +90,8 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
         modeChar = CH_NUL;
     }
 
-    nameShort = (char *)0;
-    nameLong = (char *)0;
+    nameShort = (const char *)0;
+    nameLong = (const char *)0;
     if (entry != (TEXTDISP_SelectionEntry *)0) {
         nameShort = entry->shortName;
         nameLong = entry->longName;
@@ -173,25 +173,25 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
 
             if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY &&
                 slot == (LONG)CLOCK_HalfHourSlotIndex) {
-                while (titleSlot > 0 && candidateTitle == (char *)0) {
+                while (titleSlot > 0 && candidateTitle == (const char *)0) {
                     candidateTitle = aux->titleTable[titleSlot];
                     titleSlot--;
                 }
             }
 
-            if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY && candidateTitle != (char *)0) {
+            if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY && candidateTitle != (const char *)0) {
                 candidate = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
                 if (candidate == (TEXTDISP_CandidateEntry *)0 ||
                     TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
                         (char *)candidate, (char *)aux, titleSlot, MINUTES_PER_DAY, CONFIG_TimeWindowMinutes) == 0) {
-                    candidateTitle = (char *)0;
+                    candidateTitle = (const char *)0;
                 }
             }
 
-            if (candidateTitle != (char *)0) {
-                candidateTitle = TEXTDISP_SkipControlCodes(candidateTitle);
+            if (candidateTitle != (const char *)0) {
+                candidateTitle = TEXTDISP_SkipControlCodes((char *)candidateTitle);
             }
-            if (candidateTitle == (char *)0) {
+            if (candidateTitle == (const char *)0) {
                 TEXTDISP_FilterCandidateCursor++;
                 continue;
             }
