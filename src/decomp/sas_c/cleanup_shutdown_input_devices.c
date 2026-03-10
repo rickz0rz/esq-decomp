@@ -10,7 +10,7 @@ extern LONG Global_REF_DATA_INPUT_BUFFER;
 extern LONG Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE;
 extern LONG Global_REF_INPUTDEVICE_MSGPORT;
 extern LONG Global_REF_CONSOLEDEVICE_MSGPORT;
-extern char Global_STR_CLEANUP_C_5[];
+extern const char Global_STR_CLEANUP_C_5[];
 
 void _LVODoIO(void);
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);

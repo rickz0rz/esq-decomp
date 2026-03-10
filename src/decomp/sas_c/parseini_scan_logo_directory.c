@@ -8,8 +8,8 @@ extern const char PARSEINI_STR_RB_LogoListPrimary[];
 extern const char PARSEINI_STR_RB_LogoListSecondary[];
 extern const char PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST[];
 extern const char PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT[];
-extern char Global_STR_PARSEINI_C_4[];
-extern char Global_STR_PARSEINI_C_5[];
+extern const char Global_STR_PARSEINI_C_4[];
+extern const char Global_STR_PARSEINI_C_5[];
 
 extern LONG _LVOExecute(const char *cmd, LONG input, LONG output);
 extern LONG PARSEINI_JMPTBL_HANDLE_OpenWithMode(const char *path, const char *modeStr);

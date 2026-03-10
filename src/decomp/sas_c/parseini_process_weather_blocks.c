@@ -29,7 +29,7 @@ typedef struct PARSEINI_WeatherBlock {
 extern void *PARSEINI_ParsedDescriptorListHead;
 extern void *PARSEINI_CurrentWeatherBlockTempPtr;
 extern void *PARSEINI_CurrentWeatherBlockPtr;
-extern char Global_STR_PARSEINI_C_3[];
+extern const char Global_STR_PARSEINI_C_3[];
 
 extern const char PARSEINI_TAG_FILENAME_WeatherBlock[];
 extern const char PARSEINI_STR_LOADCOLOR[];
@@ -57,7 +57,7 @@ extern const char PARSEINI_TAG_ID[];
 extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
 extern void *PARSEINI_JMPTBL_BRUSH_AllocBrushNode(char *entryText, void *existingNode);
 extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
-extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
+extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
 extern char *SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 
 void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
