@@ -1,6 +1,6 @@
 extern void ESQIFF_RestoreBasePaletteTriples(void);
-extern void ESQFUNC_TrimTextToPixelWidthWordBoundary(void);
-extern void GCOMMAND_ExpandPresetBlock(void);
+extern long ESQFUNC_TrimTextToPixelWidthWordBoundary(char *rastport, long max_width, char *text);
+extern void GCOMMAND_ExpandPresetBlock(unsigned char *packed);
 extern void ESQIFF_QueueIffBrushLoad(void);
 extern void ESQIFF_RunCopperDropTransition(void);
 extern void *BRUSH_FindBrushByPredicate(void *searchKey, void *listHeadPtr);
@@ -13,8 +13,8 @@ extern char *NEWGRID_DrawWrappedText(char *rastport, long x, long y, long max_wi
 extern void NEWGRID_ResetRowTable(void);
 
 void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void){ESQIFF_RestoreBasePaletteTriples();}
-void WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary(void){ESQFUNC_TrimTextToPixelWidthWordBoundary();}
-void WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock(void){GCOMMAND_ExpandPresetBlock();}
+long WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary(char *rastport, long max_width, char *text){return ESQFUNC_TrimTextToPixelWidthWordBoundary(rastport, max_width, text);}
+void WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock(unsigned char *packed){GCOMMAND_ExpandPresetBlock(packed);}
 void WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad(void){ESQIFF_QueueIffBrushLoad();}
 void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void){ESQIFF_RunCopperDropTransition();}
 void *WDISP_JMPTBL_BRUSH_FindBrushByPredicate(void *searchKey, void *listHeadPtr){return BRUSH_FindBrushByPredicate(searchKey, listHeadPtr);}
