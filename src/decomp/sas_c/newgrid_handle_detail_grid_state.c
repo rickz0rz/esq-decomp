@@ -19,7 +19,7 @@ extern LONG NEWGRID_DetailGridStateLatch;
 extern LONG GCOMMAND_MplexDetailLayoutPen;
 extern UBYTE GCOMMAND_MplexDetailLayoutFlag;
 extern LONG GCOMMAND_MplexDetailInitialLineIndex;
-extern char NEWGRID_ChannelRowFmt[];
+extern const char NEWGRID_ChannelRowFmt[];
 
 extern LONG NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LONG keyIndex);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);

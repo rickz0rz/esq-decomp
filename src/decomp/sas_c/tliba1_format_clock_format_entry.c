@@ -7,7 +7,7 @@ extern char TLIBA1_FormatFallbackFieldPtr0[];
 extern char TLIBA1_FormatFallbackFieldPtr1[];
 extern char TLIBA1_FormatFallbackFieldPtr2[];
 extern char TLIBA1_FormatFallbackFieldPtr3[];
-extern char TLIBA1_FMT_PCT_C_PCT_S[];
+extern const char TLIBA1_FMT_PCT_C_PCT_S[];
 
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG c, const char *s);
 extern char *STRING_AppendAtNull(char *dst, const char *src);

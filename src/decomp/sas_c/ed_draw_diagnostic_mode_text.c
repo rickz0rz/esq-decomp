@@ -7,14 +7,14 @@ extern const char Global_STR_VIN_BCK_FWD_SSPD_AD_LINE[];
 extern const char Global_STR_TZ_DST_CONT_TXT_GRPH[];
 
 extern char ED_DiagVinModeChar[];
-extern char ESQ_STR_B[];
-extern char ESQ_STR_E[];
-extern char ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED[];
-extern char ESQ_TAG_36[];
+extern const char ESQ_STR_B[];
+extern const char ESQ_STR_E[];
+extern const char ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED[];
+extern const char ESQ_TAG_36[];
 extern char ED_DiagScrollSpeedChar[];
-extern char ESQ_STR_6[];
+extern const char ESQ_STR_6[];
 extern char ESQ_SecondarySlotModeFlagChar[];
-extern char ESQ_STR_Y[];
+extern const char ESQ_STR_Y[];
 extern char ED_DiagTextModeChar[];
 extern char ED_DiagGraphModeChar[];
 
