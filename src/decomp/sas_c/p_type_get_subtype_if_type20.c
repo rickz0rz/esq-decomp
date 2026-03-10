@@ -12,7 +12,7 @@ LONG P_TYPE_GetSubtypeIfType20(UBYTE *entry)
     P_TYPE_Entry *entryView;
 
     subtype = 0;
-    if (entry != (UBYTE *)0) {
+    if (entry) {
         entryView = (P_TYPE_Entry *)entry;
         if (entryView->typeByte == (UBYTE)20 && entryView->subtypeByte != (UBYTE)0) {
             subtype = (LONG)entryView->subtypeByte;
