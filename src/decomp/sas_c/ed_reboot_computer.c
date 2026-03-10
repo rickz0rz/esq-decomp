@@ -4,7 +4,7 @@ extern char *Global_REF_RASTPORT_1;
 extern const char Global_STR_REBOOTING_COMPUTER[];
 
 extern LONG ED_IsConfirmKey(void);
-extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 extern void ED1_JMPTBL_ESQ_ColdReboot(void);
 extern void ED_DrawESCMenuBottomHelp(void);
 

@@ -24,7 +24,7 @@ extern void ED_DrawSpecialFunctionsMenu(void);
 extern void ED_DrawBottomHelpBarBackground(void);
 extern void ED_DrawEscMainMenuText(void);
 extern LONG ESQIFF_JMPTBL_MATH_DivS32(LONG a, LONG b);
-extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 
 void ED1_HandleEscMenuInput(void)

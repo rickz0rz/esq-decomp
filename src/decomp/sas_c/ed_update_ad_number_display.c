@@ -15,7 +15,7 @@ extern LONG ED_AdDisplayStateLatchA;
 extern const char Global_STR_AD_NUMBER_FORMATTED[];
 
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 extern void ED_UpdateActiveInactiveIndicator(void);
 
 void ED_UpdateAdNumberDisplay(void)

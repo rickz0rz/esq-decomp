@@ -20,7 +20,7 @@ extern void ED_DrawMenuSelectionHighlight(LONG menuBase);
 extern void ED_DrawDiagnosticRegisterValues(void);
 extern void ED_DrawESCMenuBottomHelp(void);
 extern void ED_DrawSpecialFunctionsMenu(void);
-extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
 

@@ -9,7 +9,7 @@ extern const char Global_STR_PUSH_ANY_KEY_TO_SELECT_2[];
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern LONG _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
-extern LONG DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 void ED_DrawDiagnosticModeHelpText(void)
 {
