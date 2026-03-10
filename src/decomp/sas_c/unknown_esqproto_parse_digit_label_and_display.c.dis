@@ -2,46 +2,47 @@
 __code:
 ESQPROTO_ParseDigitLabelAndDispl:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$28,D0                  ;90bc 0000 0028 
+              SUB.L          #$2c,D0                  ;90bc 0000 002c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$18,A7                  ;9efc 0018 
+              SUB.W          #$1c,A7                  ;9efc 001c 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___ESQPROTO_ParseDigitLabelAndDispl__1:
-              MOVE.L         $34(A7),A5               ;2a6f 0034 
-              MOVEQ.L        #$0,D7                   ;7e00 
-              MOVE.L         A5,A3                    ;264d 
+              MOVE.L         $38(A7),A5               ;2a6f 0038 
+              MOVEQ.L        #$a,D7                   ;7e0a 
               MOVEQ.L        #$0,D6                   ;7c00 
-              MOVE.B         (A3),D6                  ;1c13 
+              MOVE.L         A5,A3                    ;264d 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVE.B         (A3),D5                  ;1a13 
               LEA            $1(A5),A2                ;45ed 0001 
-              MOVE.W         D6,WDISP_WeatherStatusDigitChar(A4);3946 0000 
+              MOVE.W         D5,WDISP_WeatherStatusDigitChar(A4);3945 0000 
               MOVEQ.L        #$30,D0                  ;7030 
-              CMP.W          D0,D6                    ;bc40 
+              CMP.W          D0,D5                    ;ba40 
               BCS.B          ___ESQPROTO_ParseDigitLabelAndDispl__3;6506 
 ___ESQPROTO_ParseDigitLabelAndDispl__2:
               MOVEQ.L        #$39,D1                  ;7239 
-              CMP.W          D1,D6                    ;bc41 
+              CMP.W          D1,D5                    ;ba41 
               BLS.B          ___ESQPROTO_ParseDigitLabelAndDispl__4;6304 
 ___ESQPROTO_ParseDigitLabelAndDispl__3:
               MOVE.W         D0,WDISP_WeatherStatusDigitChar(A4);3940 0000 
 ___ESQPROTO_ParseDigitLabelAndDispl__4:
-              MOVE.B         (A2)+,D5                 ;1a1a 
-              MOVE.B         D5,$20(A7,D7.L)          ;1f85 7820 
-              MOVEQ.L        #$12,D0                  ;7012 
-              CMP.B          D0,D5                    ;ba00 
-              BEQ.B          ___ESQPROTO_ParseDigitLabelAndDispl__9;670a 
+              MOVE.B         (A2)+,D0                 ;101a 
+              MOVE.B         D0,$24(A7,D6.L)          ;1f80 6824 
+              MOVE.B         D0,$20(A7)               ;1f40 0020 
+              MOVEQ.L        #$12,D1                  ;7212 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___ESQPROTO_ParseDigitLabelAndDispl__9;6708 
 ___ESQPROTO_ParseDigitLabelAndDispl__5:
-              MOVEQ.L        #$a,D0                   ;700a 
-              CMP.L          D0,D7                    ;be80 
+              CMP.L          D7,D6                    ;bc87 
               BCC.B          ___ESQPROTO_ParseDigitLabelAndDispl__9;6404 
 ___ESQPROTO_ParseDigitLabelAndDispl__6:
 ___ESQPROTO_ParseDigitLabelAndDispl__7:
-              ADDQ.L         #$1,D7                   ;5287 
+              ADDQ.L         #$1,D6                   ;5286 
 ___ESQPROTO_ParseDigitLabelAndDispl__8:
-              BRA.B          ___ESQPROTO_ParseDigitLabelAndDispl__4;60ea 
+              BRA.B          ___ESQPROTO_ParseDigitLabelAndDispl__4;60e8 
 ___ESQPROTO_ParseDigitLabelAndDispl__9:
-              CLR.B          $20(A7,D7.L)             ;4237 7820 
-              LEA            $20(A7),A0               ;41ef 0020 
+              CLR.B          $24(A7,D6.L)             ;4237 6824 
+              LEA            $24(A7),A0               ;41ef 0024 
               LEA            WDISP_WeatherStatusLabelBuffer(A4),A1;43ec 0000 
               MOVE.L         A0,$1c(A7)               ;2f48 001c 
               MOVE.L         A1,$18(A7)               ;2f49 0018 
@@ -75,7 +76,7 @@ ___ESQPROTO_ParseDigitLabelAndDispl__14:
 ___ESQPROTO_ParseDigitLabelAndDispl__15:
 ___ESQPROTO_ParseDigitLabelAndDispl__16:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$18,A7                  ;defc 0018 
+              ADD.W          #$1c,A7                  ;defc 001c 
               RTS                                     ;4e75 
 __const:
 __strings:

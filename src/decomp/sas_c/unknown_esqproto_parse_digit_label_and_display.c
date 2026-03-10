@@ -18,6 +18,7 @@ extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rast, LONG x, LON
 
 char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in)
 {
+    const ULONG LABEL_SCAN_LIMIT = 10UL;
     const ESQPROTO_DigitLabelHeader *header;
     const char *p;
     char local[16];
@@ -36,7 +37,7 @@ char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in)
     for (;;) {
         char c = *p++;
         local[i] = c;
-        if (c == 0x12 || i >= 10UL) {
+        if (c == 0x12 || i >= LABEL_SCAN_LIMIT) {
             break;
         }
         i++;
