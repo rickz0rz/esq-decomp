@@ -59,6 +59,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
     const LONG STATUS_ENTRY_NOT_FOUND = -1;
     const UWORD NEXT_DAY_INCREMENT = 1u;
     const UBYTE RECORD_MARKER_PLUS = '+';
+    const UBYTE RECORD_MARKER_NONE = 0;
     const UBYTE FIELD_UNKNOWN_MARKER = '?';
     const LONG FIELD_UNKNOWN_VALUE = -999;
     const ULONG KEY_FIELD_LEN = 3u;
@@ -113,7 +114,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
         }
 
         if (found < 0 || found > STATUS_ENTRY_MAX_INDEX) {
-            marker = 0;
+            marker = RECORD_MARKER_NONE;
         }
 
         if (marker == RECORD_MARKER_PLUS) {
