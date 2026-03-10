@@ -1,12 +1,15 @@
-extern void SCRIPT_BeginBannerCharTransition(void);
-extern void LADFUNC2_EmitEscapedStringToScratch(void);
+typedef signed long LONG;
+typedef signed short WORD;
 
-void GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition(void)
+extern WORD SCRIPT_BeginBannerCharTransition(LONG targetChar, LONG speedMs);
+extern void LADFUNC2_EmitEscapedStringToScratch(const char *src);
+
+WORD GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition(LONG targetChar, LONG speedMs)
 {
-    SCRIPT_BeginBannerCharTransition();
+    return SCRIPT_BeginBannerCharTransition(targetChar, speedMs);
 }
 
-void GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch(void)
+void GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch(const char *src)
 {
-    LADFUNC2_EmitEscapedStringToScratch();
+    LADFUNC2_EmitEscapedStringToScratch(src);
 }
