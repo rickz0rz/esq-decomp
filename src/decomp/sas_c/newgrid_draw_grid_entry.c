@@ -33,11 +33,11 @@ extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layout, const
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(char *layout, const char *src);
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 
-static char *advance_until_space(char *p)
+static char *advance_until_space(const char *p)
 {
     if (!p) return 0;
     while (*p != 0 && *p != ' ') p++;
-    return p;
+    return (char *)p;
 }
 
 void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, UWORD textLines, LONG renderMode, LONG clockFmt)
