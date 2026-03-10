@@ -52,11 +52,19 @@ ___WDISP_JMPTBL_BRUSH_FreeBrushList__1:
 ___WDISP_JMPTBL_BRUSH_FreeBrushList__2:
               RTS                                     ;4e75 
 WDISP_JMPTBL_BRUSH_PlaneMaskForI:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___WDISP_JMPTBL_BRUSH_PlaneMaskForI__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          BRUSH_PlaneMaskForIndex  ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___WDISP_JMPTBL_BRUSH_PlaneMaskForI__2:
+___WDISP_JMPTBL_BRUSH_PlaneMaskForI__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 WDISP_JMPTBL_ESQ_SetCopperEffect:
               CMP.L          __base(A4),A7            ;bfec 0000 
