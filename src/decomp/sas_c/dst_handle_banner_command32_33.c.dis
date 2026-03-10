@@ -2,24 +2,27 @@
 __code:
 DST_HandleBannerCommand32_33:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$38,D0                  ;90bc 0000 0038 
+              SUB.L          #$3c,D0                  ;90bc 0000 003c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$2c,A7                  ;9efc 002c 
-              MOVEM.L        D5/D6/D7/A5,-(A7)        ;48e7 0704 
+              SUB.W          #$30,A7                  ;9efc 0030 
+              MOVEM.L        D4/D5/D6/D7/A5,-(A7)     ;48e7 0f04 
 ___DST_HandleBannerCommand32_33__1:
-              MOVE.B         $43(A7),D7               ;1e2f 0043 
-              MOVE.L         $44(A7),A5               ;2a6f 0044 
+              MOVE.B         $4b(A7),D7               ;1e2f 004b 
+              MOVE.L         $4c(A7),A5               ;2a6f 004c 
               MOVEQ.L        #$32,D6                  ;7c32 
               MOVEQ.L        #$33,D5                  ;7a33 
+              MOVEQ.L        #$4,D4                   ;7804 
+              MOVEQ.L        #$13,D0                  ;7013 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
               CMP.B          D6,D7                    ;be06 
-              BNE.B          ___DST_HandleBannerCommand32_33__3;6632 
+              BNE.B          ___DST_HandleBannerCommand32_33__3;6630 
 ___DST_HandleBannerCommand32_33__2:
-              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         D4,-(A7)                 ;2f04 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              PEA            $2e(A7)                  ;486f 002e 
+              PEA            $32(A7)                  ;486f 0032 
               BSR.W          DATETIME_ParseString     ;6100 0000 
-              PEA            ($13).w                  ;4878 0013 
+              MOVE.L         $4c(A7),(A7)             ;2eaf 004c 
               MOVE.L         A5,-(A7)                 ;2f0d 
               PEA            $24(A7)                  ;486f 0024 
               BSR.W          DATETIME_ParseString     ;6100 0000 
@@ -27,17 +30,17 @@ ___DST_HandleBannerCommand32_33__2:
               PEA            $42(A7)                  ;486f 0042 
               MOVE.L         DST_BannerWindowSecondary(A4),-(A7);2f2c 0000 
               BSR.W          DATETIME_CopyPairAndRecalc;6100 0000 
-              LEA            $24(A7),A7               ;4fef 0024 
-              BRA.B          ___DST_HandleBannerCommand32_33__5;6034 
+              LEA            $20(A7),A7               ;4fef 0020 
+              BRA.B          ___DST_HandleBannerCommand32_33__5;6032 
 ___DST_HandleBannerCommand32_33__3:
               CMP.B          D5,D7                    ;be05 
-              BNE.B          ___DST_HandleBannerCommand32_33__5;6630 
+              BNE.B          ___DST_HandleBannerCommand32_33__5;662e 
 ___DST_HandleBannerCommand32_33__4:
-              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         D4,-(A7)                 ;2f04 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              PEA            $2e(A7)                  ;486f 002e 
+              PEA            $32(A7)                  ;486f 0032 
               BSR.W          DATETIME_ParseString     ;6100 0000 
-              PEA            ($13).w                  ;4878 0013 
+              MOVE.L         $4c(A7),(A7)             ;2eaf 004c 
               MOVE.L         A5,-(A7)                 ;2f0d 
               PEA            $24(A7)                  ;486f 0024 
               BSR.W          DATETIME_ParseString     ;6100 0000 
@@ -45,14 +48,14 @@ ___DST_HandleBannerCommand32_33__4:
               PEA            $42(A7)                  ;486f 0042 
               MOVE.L         DST_BannerWindowPrimary(A4),-(A7);2f2c 0000 
               BSR.W          DATETIME_CopyPairAndRecalc;6100 0000 
-              LEA            $24(A7),A7               ;4fef 0024 
+              LEA            $20(A7),A7               ;4fef 0020 
 ___DST_HandleBannerCommand32_33__5:
               PEA            DST_BannerWindowPrimary(A4);486c 0000 
               BSR.W          DST_UpdateBannerQueue    ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___DST_HandleBannerCommand32_33__6:
-              MOVEM.L        (A7)+,D5/D6/D7/A5        ;4cdf 20e0 
-              ADD.W          #$2c,A7                  ;defc 002c 
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A5     ;4cdf 20f0 
+              ADD.W          #$30,A7                  ;defc 0030 
               RTS                                     ;4e75 
 __const:
 __strings:
