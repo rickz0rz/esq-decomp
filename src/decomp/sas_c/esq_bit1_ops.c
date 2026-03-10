@@ -1,4 +1,4 @@
-long ESQ_TestBit1Based(unsigned char *base, unsigned long bitIndex)
+long ESQ_TestBit1Based(const unsigned char *base, unsigned long bitIndex)
 {
     unsigned long n = bitIndex - 1;
     unsigned long byte_i = (n & 0xFFFFUL) >> 3;

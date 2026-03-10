@@ -30,7 +30,7 @@ extern LONG DISPTEXT_IsCurrentLineLast(void);
 extern LONG DISPTEXT_IsLastLineSelected(void);
 extern void BEVEL_DrawBeveledFrame(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY);
 extern LONG DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *title, LONG index);
-extern LONG ESQ_TestBit1Based(UBYTE *base, ULONG bitIndex);
+extern LONG ESQ_TestBit1Based(const UBYTE *base, ULONG bitIndex);
 extern LONG DISPTEXT_MeasureCurrentLineLength(char *rp);
 extern void DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
 extern LONG DISPTEXT_HasMultipleLines(void);
@@ -65,7 +65,7 @@ LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void){return DISPTEXT_IsCurrentL
 LONG NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(void){return DISPTEXT_IsLastLineSelected();}
 void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY){BEVEL_DrawBeveledFrame(rastPort, leftX, topY, rightX, bottomY);}
 LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *title, LONG index){return DISPLIB_FindPreviousValidEntryIndex(entry, title, index);}
-LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *base, ULONG bitIndex){return ESQ_TestBit1Based(base, bitIndex);}
+LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *base, ULONG bitIndex){return ESQ_TestBit1Based(base, bitIndex);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength(char *rp){return DISPTEXT_MeasureCurrentLineLength(rp);}
 void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen){DISPTEXT_SetLayoutParams(width, rowHeight, pen);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(void){return DISPTEXT_HasMultipleLines();}
