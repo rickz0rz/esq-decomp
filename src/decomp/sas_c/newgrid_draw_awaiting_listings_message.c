@@ -29,7 +29,7 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void NEWGRID_DrawGridFrame(char *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
-extern void NEWGRID_DrawWrappedText(char *rastPort, LONG x, LONG y, LONG width, const char *text, LONG centered);
+extern char *NEWGRID_DrawWrappedText(char *rastPort, LONG x, LONG y, LONG width, const char *text, LONG centered);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
 LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
