@@ -136,14 +136,14 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
         WDISP_SPrintf(tmp, SCRIPT_AlignedStringFormat, segment);
 
         hit = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrAtSeparator);
-        if (hit == (char *)TEXTDISP_NULL) {
+        if (hit == 0) {
             hit = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsDotSeparator);
         }
-        if (hit == (char *)TEXTDISP_NULL) {
+        if (hit == 0) {
             hit = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsSeparator);
         }
 
-        if (hit != (char *)TEXTDISP_NULL) {
+        if (hit != 0) {
             hit[TEXTDISP_NULL] = CONTROL_TOKEN_A;
             while (hit[TEXTDISP_NULL] != TEXTDISP_NULL &&
                    (WDISP_CharClassTable[hit[TEXTDISP_NULL]] & CLASS_SKIP_MASK) == TEXTDISP_NULL) {
@@ -153,7 +153,7 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
         }
 
         hit = STR_FindCharPtr(tmp, CHAR_LPAREN);
-        if (hit != (char *)TEXTDISP_NULL) {
+        if (hit != 0) {
             hit[TEXTDISP_NULL] = TEXTDISP_NULL;
         }
 
