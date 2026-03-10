@@ -64,7 +64,7 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
     line_len = 0;
 
     while (Global_PTR_WORK_BUFFER != (char *)0 && offs < file_size) {
-        char *p;
+        const char *p;
 
         p = Global_PTR_WORK_BUFFER + offs;
         if (GROUP_AI_JMPTBL_STR_FindCharPtr(p, (LONG)COI_STR_LINEFEED_CR_1[0]) == (char *)0) {
