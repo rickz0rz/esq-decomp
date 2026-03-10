@@ -56,6 +56,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
 {
     const ULONG STATUS_ENTRY_COUNT = 4u;
     const LONG STATUS_ENTRY_MAX_INDEX = 3;
+    const UWORD NEXT_DAY_INCREMENT = 1u;
     const UBYTE RECORD_MARKER_PLUS = '+';
     const UBYTE FIELD_UNKNOWN_MARKER = '?';
     const LONG FIELD_UNKNOWN_VALUE = -999;
@@ -80,7 +81,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
 
     for (i = 0; i < STATUS_ENTRY_COUNT; ++i) {
         UNKNOWN_StatusEntry *entry = status_entry_ptr(i);
-        LONG day = (LONG)((UWORD)(CLOCK_CurrentDayOfYear + (UWORD)i + 1u));
+        LONG day = (LONG)((UWORD)(CLOCK_CurrentDayOfYear + (UWORD)i + NEXT_DAY_INCREMENT));
         LONG year = (LONG)CLOCK_CurrentYearValue;
 
         entry->inactive4 = 1;
