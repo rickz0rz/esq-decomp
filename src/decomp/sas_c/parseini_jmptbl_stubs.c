@@ -32,7 +32,7 @@ extern void ESQFUNC_DrawEscMenuVersion(void);
 long PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b){return STRING_CompareNoCase(a, b);}
 void PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0(void){ED1_WaitForFlagAndClearBit0();}
 void PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk(void){DISKIO2_ParseIniFileFromDisk();}
-char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, long ch){return STR_FindCharPtr((char *)s, ch);}
+char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, long ch){return STR_FindCharPtr(s, ch);}
 void *PARSEINI_JMPTBL_HANDLE_OpenWithMode(const char *path, const char *mode, char *unused){return HANDLE_OpenWithMode(path, mode, unused);}
 void PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(void){ESQIFF_QueueIffBrushLoad();}
 void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(void){ESQIFF_HandleBrushIniReloadHotkey();}
@@ -50,7 +50,7 @@ char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src){return STR
 long PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path){return DISKIO_LoadFileToWorkBuffer(path);}
 void PARSEINI_JMPTBL_WDISP_SPrintf(void){WDISP_SPrintf();}
 UBYTE *PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(UBYTE *dst, LONG max_len, void *stream){return STREAM_ReadLineWithLimit(dst, max_len, stream);}
-char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *set){return STR_FindAnyCharPtr((char *)s, (char *)set);}
+char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *set){return STR_FindAnyCharPtr(s, set);}
 void PARSEINI_JMPTBL_ED1_ExitEscMenu(void){ED1_ExitEscMenu();}
 char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, char *oldText){return ESQPARS_ReplaceOwnedString(newText, oldText);}
 void PARSEINI_JMPTBL_ED1_EnterEscMenu(void){ED1_EnterEscMenu();}

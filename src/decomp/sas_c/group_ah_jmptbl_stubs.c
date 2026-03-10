@@ -39,4 +39,4 @@ void GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache(void){NEWGRID_RebuildIndexCache()
 LONG GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(char *cursor){return PARSE_ReadSignedLongSkipClass3(cursor);}
 void GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile(void){P_TYPE_WritePromoIdDataFile();}
 LONG GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(void){return SCRIPT_ReadNextRbfByte();}
-char *GROUP_AH_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *charset){return STR_FindAnyCharPtr((char *)s, (char *)charset);}
+char *GROUP_AH_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *charset){return STR_FindAnyCharPtr(s, charset);}
