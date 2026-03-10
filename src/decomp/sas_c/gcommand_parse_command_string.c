@@ -61,7 +61,9 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
     UBYTE uc;
     char *tail;
     char *split;
+    const char *splitSearch;
     char *fmtSlot;
+    const char *fmtSearch;
 
     scratch[0] = (char)GCOMMAND_MplexParseScratchSeedWord[0];
     scratch[1] = (char)GCOMMAND_MplexParseScratchSeedWord[1];
@@ -70,7 +72,7 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
 
     FLIB2_LoadDigitalMplexDefaults();
 
-    if (cmd == (char *)0 || *cmd == 0) {
+    if (cmd == 0 || *cmd == 0) {
         return GCOMMAND_LoadMplexFile();
     }
 
@@ -197,8 +199,9 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
 
     tail = cmd + tailIndex;
     if (*tail != 0) {
-        split = GROUP_AS_JMPTBL_STR_FindCharPtr(tail, 18);
-        if (split != (char *)0 && *split != 0) {
+        splitSearch = GROUP_AS_JMPTBL_STR_FindCharPtr(tail, 18);
+        split = (char *)splitSearch;
+        if (split != 0 && *split != 0) {
             *split = 0;
             split++;
 
@@ -223,13 +226,14 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
         }
     }
 
-    fmtSlot = (char *)0;
-    if (GCOMMAND_MplexAtTemplatePtr != (char *)0 && *GCOMMAND_MplexAtTemplatePtr != 0) {
-        fmtSlot = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(
+    fmtSearch = 0;
+    if (GCOMMAND_MplexAtTemplatePtr != 0 && *GCOMMAND_MplexAtTemplatePtr != 0) {
+        fmtSearch = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(
             GCOMMAND_MplexAtTemplatePtr,
             GCOMMAND_FMT_PCT_T_MplexTemplateParse);
     }
-    if (fmtSlot != (char *)0 && *fmtSlot != 0) {
+    fmtSlot = (char *)fmtSearch;
+    if (fmtSlot != 0 && *fmtSlot != 0) {
         fmtSlot[1] = 's';
     }
 

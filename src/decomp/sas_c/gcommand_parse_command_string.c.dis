@@ -52,21 +52,21 @@ ___fold_upper_if_alpha__5:
               RTS                                     ;4e75 
 GCOMMAND_ParseCommandString:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$1c,D0                  ;90bc 0000 001c 
+              SUB.L          #$24,D0                  ;90bc 0000 0024 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$10,A7                  ;9efc 0010 
+              SUB.W          #$18,A7                  ;9efc 0018 
               MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
 ___GCOMMAND_ParseCommandString__1:
-              MOVE.L         $30(A7),A5               ;2a6f 0030 
+              MOVE.L         $38(A7),A5               ;2a6f 0038 
               MOVE.B         GCOMMAND_MplexParseScratchSeedWo(A4),D0;102c 0000 
-              MOVE.B         D0,$28(A7)               ;1f40 0028 
+              MOVE.B         D0,$30(A7)               ;1f40 0030 
               MOVE.B         GCOMMAND_MplexParseScratchSeedWo+$1(A4),D0;102c 0001 
-              MOVE.B         D0,$29(A7)               ;1f40 0029 
+              MOVE.B         D0,$31(A7)               ;1f40 0031 
               MOVE.B         GCOMMAND_MplexParseScratchSeedWo+$2(A4),D0;102c 0002 
-              MOVE.B         D0,$2a(A7)               ;1f40 002a 
+              MOVE.B         D0,$32(A7)               ;1f40 0032 
               MOVE.B         GCOMMAND_MplexParseScratchSeedWo+$3(A4),D0;102c 0003 
-              MOVE.B         D0,$2b(A7)               ;1f40 002b 
+              MOVE.B         D0,$33(A7)               ;1f40 0033 
               BSR.W          FLIB2_LoadDigitalMplexDefaults;6100 0000 
               MOVE.L         A5,D0                    ;200d 
               BEQ.B          ___GCOMMAND_ParseCommandString__3;6704 
@@ -75,14 +75,14 @@ ___GCOMMAND_ParseCommandString__2:
               BNE.B          ___GCOMMAND_ParseCommandString__4;6608 
 ___GCOMMAND_ParseCommandString__3:
               BSR.W          GCOMMAND_LoadMplexFile   ;6100 0000 
-              BRA.W          ___GCOMMAND_ParseCommandString__92;6000 02fe 
+              BRA.W          ___GCOMMAND_ParseCommandString__92;6000 0302 
 ___GCOMMAND_ParseCommandString__4:
               PEA            ($2).w                   ;4878 0002 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              PEA            $30(A7)                  ;486f 0030 
+              PEA            $38(A7)                  ;486f 0038 
               BSR.W          GROUP_AW_JMPTBL_STRING_CopyPadNu;6100 0000 
-              CLR.B          $36(A7)                  ;422f 0036 
-              PEA            $34(A7)                  ;486f 0034 
+              CLR.B          $3e(A7)                  ;422f 003e 
+              PEA            $3c(A7)                  ;486f 003c 
               BSR.W          ESQPARS_JMPTBL_PARSE_ReadSignedL;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               LEA            $10(A7),A7               ;4fef 0010 
@@ -120,7 +120,7 @@ ___GCOMMAND_ParseCommandString__11:
               MOVE.B         D0,D1                    ;1200 
               MOVEQ.L        #$30,D0                  ;7030 
               SUB.L          D0,D1                    ;9280 
-              MOVEM.L        D1,$24(A7)               ;48ef 0002 0024 
+              MOVEM.L        D1,$2c(A7)               ;48ef 0002 002c 
               BLT.B          ___GCOMMAND_ParseCommandString__14;6d0a 
 ___GCOMMAND_ParseCommandString__12:
               MOVEQ.L        #$9,D0                   ;7009 
@@ -136,13 +136,13 @@ ___GCOMMAND_ParseCommandString__15:
               CMP.L          D6,D0                    ;b086 
               BGE.B          ___GCOMMAND_ParseCommandString__20;6c2c 
 ___GCOMMAND_ParseCommandString__16:
-              MOVE.B         $0(A5,D5.L),$28(A7)      ;1f75 5800 0028 
-              MOVE.B         $1(A5,D5.L),$29(A7)      ;1f75 5801 0029 
-              CLR.B          $2a(A7)                  ;422f 002a 
-              PEA            $28(A7)                  ;486f 0028 
+              MOVE.B         $0(A5,D5.L),$30(A7)      ;1f75 5800 0030 
+              MOVE.B         $1(A5,D5.L),$31(A7)      ;1f75 5801 0031 
+              CLR.B          $32(A7)                  ;422f 0032 
+              PEA            $30(A7)                  ;486f 0030 
               BSR.W          ESQPARS_JMPTBL_PARSE_ReadSignedL;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
               BLT.B          ___GCOMMAND_ParseCommandString__19;6d0a 
 ___GCOMMAND_ParseCommandString__17:
               MOVEQ.L        #$63,D1                  ;7263 
@@ -158,13 +158,13 @@ ___GCOMMAND_ParseCommandString__20:
               CMP.L          D6,D0                    ;b086 
               BGE.B          ___GCOMMAND_ParseCommandString__25;6c2c 
 ___GCOMMAND_ParseCommandString__21:
-              MOVE.B         $0(A5,D5.L),$28(A7)      ;1f75 5800 0028 
-              MOVE.B         $1(A5,D5.L),$29(A7)      ;1f75 5801 0029 
-              CLR.B          $2a(A7)                  ;422f 002a 
-              PEA            $28(A7)                  ;486f 0028 
+              MOVE.B         $0(A5,D5.L),$30(A7)      ;1f75 5800 0030 
+              MOVE.B         $1(A5,D5.L),$31(A7)      ;1f75 5801 0031 
+              CLR.B          $32(A7)                  ;422f 0032 
+              PEA            $30(A7)                  ;486f 0030 
               BSR.W          ESQPARS_JMPTBL_PARSE_ReadSignedL;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
               BLT.B          ___GCOMMAND_ParseCommandString__24;6d0a 
 ___GCOMMAND_ParseCommandString__22:
               MOVEQ.L        #$1d,D1                  ;721d 
@@ -185,7 +185,7 @@ ___GCOMMAND_ParseCommandString__26:
               BSR.W          parse_pen_1_to_3         ;6100 fe66 
 ___GCOMMAND_ParseCommandString__27:
               ADDQ.W         #$4,A7                   ;584f 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
               BLT.B          ___GCOMMAND_ParseCommandString__29;6d04 
 ___GCOMMAND_ParseCommandString__28:
               MOVE.L         D0,GCOMMAND_MplexMessageTextPen(A4);2940 0000 
@@ -224,7 +224,7 @@ ___GCOMMAND_ParseCommandString__35:
               BSR.W          parse_pen_1_to_3         ;6100 fe14 
 ___GCOMMAND_ParseCommandString__36:
               ADDQ.W         #$4,A7                   ;584f 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
               BLT.B          ___GCOMMAND_ParseCommandString__38;6d04 
 ___GCOMMAND_ParseCommandString__37:
               MOVE.L         D0,GCOMMAND_MplexEditorLayoutPen(A4);2940 0000 
@@ -263,7 +263,7 @@ ___GCOMMAND_ParseCommandString__44:
               BSR.W          parse_pen_1_to_3         ;6100 fdc2 
 ___GCOMMAND_ParseCommandString__45:
               ADDQ.W         #$4,A7                   ;584f 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
               BLT.B          ___GCOMMAND_ParseCommandString__47;6d04 
 ___GCOMMAND_ParseCommandString__46:
               MOVE.L         D0,GCOMMAND_MplexDetailLayoutPen(A4);2940 0000 
@@ -280,7 +280,7 @@ ___GCOMMAND_ParseCommandString__49:
               BSR.W          parse_pen_1_to_3         ;6100 fda2 
 ___GCOMMAND_ParseCommandString__50:
               ADDQ.W         #$4,A7                   ;584f 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
               BLT.B          ___GCOMMAND_ParseCommandString__52;6d04 
 ___GCOMMAND_ParseCommandString__51:
               MOVE.L         D0,GCOMMAND_MplexDetailInitialLineI(A4);2940 0000 
@@ -371,14 +371,15 @@ ___GCOMMAND_ParseCommandString__73:
               MOVE.L         A5,A3                    ;264d 
               ADD.L          D6,A3                    ;d7c6 
               TST.B          (A3)                     ;4a13 
-              BEQ.B          ___GCOMMAND_ParseCommandString__84;6762 
+              BEQ.B          ___GCOMMAND_ParseCommandString__84;6766 
 ___GCOMMAND_ParseCommandString__74:
               PEA            ($12).w                  ;4878 0012 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          GROUP_AS_JMPTBL_STR_FindCharPtr;6100 0000 
-              MOVE.L         D0,A2                    ;2440 
-              TST.L          D0                       ;4a80 
               ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D0,A2                    ;2440 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              MOVE.L         A2,D0                    ;200a 
               BEQ.B          ___GCOMMAND_ParseCommandString__83;6740 
 ___GCOMMAND_ParseCommandString__75:
               TST.B          (A2)                     ;4a12 
@@ -435,10 +436,10 @@ ___GCOMMAND_ParseCommandString__86:
               ADDQ.W         #$8,A7                   ;504f 
               MOVE.L         D0,$20(A7)               ;2f40 0020 
 ___GCOMMAND_ParseCommandString__87:
-              TST.L          $20(A7)                  ;4aaf 0020 
-              BEQ.B          ___GCOMMAND_ParseCommandString__90;670e 
-___GCOMMAND_ParseCommandString__88:
               MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              BEQ.B          ___GCOMMAND_ParseCommandString__90;670a 
+___GCOMMAND_ParseCommandString__88:
               TST.B          (A0)                     ;4a10 
               BEQ.B          ___GCOMMAND_ParseCommandString__90;6706 
 ___GCOMMAND_ParseCommandString__89:
@@ -448,7 +449,7 @@ ___GCOMMAND_ParseCommandString__90:
 ___GCOMMAND_ParseCommandString__91:
 ___GCOMMAND_ParseCommandString__92:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
-              ADD.W          #$10,A7                  ;defc 0010 
+              ADD.W          #$18,A7                  ;defc 0018 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
