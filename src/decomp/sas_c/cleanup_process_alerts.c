@@ -36,7 +36,7 @@ extern WORD WDISP_BannerCharRangeEnd;
 extern UBYTE ED_MenuStateId;
 extern WORD CLOCK_DaySlotIndex;
 extern WORD CLOCK_CurrentDayOfWeekIndex;
-extern LONG DST_BannerWindowPrimary;
+extern void *DST_BannerWindowPrimary;
 extern LONG Global_REF_RASTPORT_1;
 
 LONG ESQ_TickClockAndFlagEvents(void *clock_ref);
