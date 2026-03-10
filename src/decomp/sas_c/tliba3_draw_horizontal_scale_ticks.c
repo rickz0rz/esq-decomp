@@ -30,7 +30,7 @@ extern const char TLIBA1_FMT_PCT_03LD_HorizontalScaleTick[];
 extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern LONG _LVODraw(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern LONG _LVOTextLength(void *gfxBase, char *rastPort, const char *text, LONG len);
-extern LONG _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
+extern void _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG value);
 extern LONG MATH_Mulu32(LONG left, LONG right);
 

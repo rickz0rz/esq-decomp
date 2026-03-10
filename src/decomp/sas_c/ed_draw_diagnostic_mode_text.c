@@ -21,7 +21,7 @@ extern char ED_DiagGraphModeChar[];
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
-extern LONG _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
+extern void _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 void ED_DrawDiagnosticModeText(void)

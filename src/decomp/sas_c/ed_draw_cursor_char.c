@@ -17,7 +17,7 @@ extern LONG ESQIFF_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
-extern LONG _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
+extern void _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
 
 void ED_DrawCursorChar(void)
 {
