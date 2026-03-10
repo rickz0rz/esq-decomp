@@ -26,7 +26,7 @@ LONG COI_GetAnimFieldPointerByMode(void *entry, LONG slot, LONG mode);
 LONG CLEANUP_TestEntryFlagYAndBit1(void *entry, LONG slot, LONG mode);
 void CLEANUP_UpdateEntryFlagBytes(void *entry, LONG slot);
 LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG a, LONG b, LONG c);
-LONG GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
+char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
 void COI_FormatEntryDisplayText(void *entry, void *ctx, WORD slot, char *out_buf, LONG mode_marker)
 {

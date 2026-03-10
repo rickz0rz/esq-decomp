@@ -2,32 +2,30 @@
 __code:
 STRING_FindSubstring:
               MOVE.L         A7,D0                    ;200f 
-              SUBQ.L         #$8,D0                   ;5180 
+              SUBQ.L         #$4,D0                   ;5980 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$8,A7                   ;514f 
+              SUBQ.W         #$4,A7                   ;594f 
               MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
 ___STRING_FindSubstring__1:
-              MOVE.L         $1c(A7),A3               ;266f 001c 
-              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVE.L         $18(A7),A3               ;266f 0018 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
 ___STRING_FindSubstring__2:
               MOVE.L         A5,$c(A7)                ;2f4d 000c 
-              MOVE.L         A3,$10(A7)               ;2f4b 0010 
+              MOVE.L         A3,A2                    ;244b 
 ___STRING_FindSubstring__3:
-              MOVE.L         $10(A7),A0               ;206f 0010 
-              TST.B          (A0)                     ;4a10 
+              TST.B          (A2)                     ;4a12 
               BNE.B          ___STRING_FindSubstring__5;6604 
 ___STRING_FindSubstring__4:
               MOVE.L         A5,D0                    ;200d 
-              BRA.B          ___STRING_FindSubstring__15;602e 
+              BRA.B          ___STRING_FindSubstring__14;6024 
 ___STRING_FindSubstring__5:
-              MOVE.L         $c(A7),A1                ;226f 000c 
-              MOVE.B         (A1)+,D0                 ;1019 
-              MOVE.B         (A0)+,D1                 ;1218 
-              MOVE.L         A0,$10(A7)               ;2f48 0010 
-              MOVE.L         A1,$c(A7)                ;2f49 000c 
+              MOVE.L         $c(A7),A0                ;206f 000c 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.B         (A2)+,D1                 ;121a 
+              MOVE.L         A0,$c(A7)                ;2f48 000c 
               CMP.B          D1,D0                    ;b001 
-              BEQ.B          ___STRING_FindSubstring__3;67e0 
+              BEQ.B          ___STRING_FindSubstring__3;67e8 
 ___STRING_FindSubstring__6:
 ___STRING_FindSubstring__7:
 ___STRING_FindSubstring__8:
@@ -36,22 +34,18 @@ ___STRING_FindSubstring__8:
               BNE.B          ___STRING_FindSubstring__10;6604 
 ___STRING_FindSubstring__9:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___STRING_FindSubstring__15;600e 
+              BRA.B          ___STRING_FindSubstring__14;6008 
 ___STRING_FindSubstring__10:
               ADDQ.L         #$1,A5                   ;528d 
               TST.B          (A5)                     ;4a15 
-              BNE.B          ___STRING_FindSubstring__12;6604 
+              BNE.B          ___STRING_FindSubstring__2;66d0 
 ___STRING_FindSubstring__11:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___STRING_FindSubstring__15;6004 
 ___STRING_FindSubstring__12:
-              MOVE.L         A5,A2                    ;244d 
 ___STRING_FindSubstring__13:
-              BRA.B          ___STRING_FindSubstring__2;60be 
 ___STRING_FindSubstring__14:
-___STRING_FindSubstring__15:
               MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
-              ADDQ.W         #$8,A7                   ;504f 
+              ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:
 __strings:

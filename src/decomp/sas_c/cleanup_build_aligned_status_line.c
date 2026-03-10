@@ -27,7 +27,7 @@ char *GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG slot, LONG mode);
 LONG CLEANUP_TestEntryFlagYAndBit1(void *entry, LONG slot, LONG mode);
 LONG COI_GetAnimFieldPointerByMode(void *entry, LONG slot, LONG mode);
 LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG a, LONG b, LONG c);
-LONG GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
+char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 LONG GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(LONG c);
 
 void CLEANUP_BuildAlignedStatusLine(char *out, UWORD isPrimary, UWORD modeSel, UWORD slot, LONG alignToken)
