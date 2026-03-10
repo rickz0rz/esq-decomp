@@ -1,4 +1,5 @@
 typedef signed long LONG;
+typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
 extern LONG ED_ViewportOffset;
@@ -9,7 +10,7 @@ extern UBYTE ED_LineTransformSuffixScratchBuffer[];
 extern UBYTE ED_LineTransformTailScratchBuffer[];
 
 extern LONG ESQIFF_JMPTBL_MATH_Mulu32(LONG value, LONG scale);
-extern void ESQFUNC_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG count);
+extern void ESQFUNC_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG count);
 
 void ED_TransformLineSpacing_Mode3(void)
 {

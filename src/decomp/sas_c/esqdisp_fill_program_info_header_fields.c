@@ -1,6 +1,7 @@
 typedef unsigned char UBYTE;
 typedef unsigned short UWORD;
 typedef signed short WORD;
+typedef unsigned long ULONG;
 
 typedef struct ProgramInfoHeader {
     UBYTE pad_00[40];
@@ -12,7 +13,7 @@ typedef struct ProgramInfoHeader {
     UWORD field46;
 } ProgramInfoHeader;
 
-extern void ESQFUNC_JMPTBL_STRING_CopyPadNul(void);
+extern char *ESQFUNC_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG count);
 
 void ESQDISP_FillProgramInfoHeaderFields(
     ProgramInfoHeader *header,

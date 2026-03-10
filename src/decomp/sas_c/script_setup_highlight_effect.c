@@ -1,4 +1,5 @@
 typedef signed long LONG;
+typedef unsigned long ULONG;
 typedef short WORD;
 typedef signed char BYTE;
 typedef unsigned char UBYTE;
@@ -18,7 +19,7 @@ extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
 extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern void SCRIPT_BeginBannerCharTransition(LONG x, LONG y);
-extern void STRING_CopyPadNul(char *dst, const char *src, LONG n);
+extern void STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 extern void SCRIPT_DrawInsetTextWithFrame(char *rastport, BYTE textPenOverride, BYTE framePen, const char *text);
 extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
 extern void _LVOSetDrMd(char *rastport, LONG mode);

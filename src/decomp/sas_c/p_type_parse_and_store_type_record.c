@@ -1,4 +1,5 @@
 typedef signed long LONG;
+typedef unsigned long ULONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
@@ -14,7 +15,7 @@ extern UBYTE TEXTDISP_SecondaryGroupCode;
 extern PTypeEntry *P_TYPE_PrimaryGroupListPtr;
 extern PTypeEntry *P_TYPE_SecondaryGroupListPtr;
 
-extern void SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG count);
+extern void SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG count);
 extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *src);
 extern void P_TYPE_FreeEntry(PTypeEntry *entry);
 extern PTypeEntry *P_TYPE_AllocateEntry(UBYTE typeByte, LONG length, UBYTE *dataPtr);
