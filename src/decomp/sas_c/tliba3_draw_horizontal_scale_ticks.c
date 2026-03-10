@@ -53,7 +53,7 @@ void TLIBA3_DrawHorizontalScaleTicks(TLIBA3_RastPortWrap *rp, LONG y)
             LONG textWidth;
             LONG textX;
             LONG textY;
-            char *p;
+            const char *p;
 
             _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, y);
             _LVODraw(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, y + MAJOR_TICK_HEIGHT);
