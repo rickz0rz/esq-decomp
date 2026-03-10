@@ -4,7 +4,7 @@ typedef unsigned short UWORD;
 extern UWORD TEXTDISP_SecondaryGroupEntryCount;
 extern char *TEXTDISP_SecondaryTitlePtrTable[];
 
-extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(char *pattern, char *text);
+extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 
 LONG TLIBA_FindFirstWildcardMatchIndex(char *wildcardPattern)
 {

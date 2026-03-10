@@ -3,7 +3,7 @@ typedef unsigned char UBYTE;
 
 extern LONG ESQIFF2_ReadSerialRecordIntoBuffer(UBYTE *dst, LONG recordMode, LONG extensionCount);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text);
-extern unsigned char ESQ_WildcardMatch(char *str, char *pattern);
+extern unsigned char ESQ_WildcardMatch(const char *str, const char *pattern);
 extern void DST_NormalizeDayOfYear(void);
 extern LONG ESQ_GenerateXorChecksumByte(UBYTE seed, UBYTE *src, LONG length);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
@@ -20,7 +20,7 @@ void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y
 
 unsigned char UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *str, const char *pattern)
 {
-    return ESQ_WildcardMatch((char *)str, (char *)pattern);
+    return ESQ_WildcardMatch(str, pattern);
 }
 
 void UNKNOWN_JMPTBL_DST_NormalizeDayOfYear(void)

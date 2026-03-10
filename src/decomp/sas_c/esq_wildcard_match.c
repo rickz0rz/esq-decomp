@@ -1,4 +1,4 @@
-unsigned char ESQ_WildcardMatch(char *str, char *pattern)
+unsigned char ESQ_WildcardMatch(const char *str, const char *pattern)
 {
     unsigned char c0;
     unsigned char c1;
