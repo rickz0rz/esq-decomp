@@ -3,6 +3,11 @@ typedef signed short WORD;
 typedef signed char BYTE;
 typedef unsigned char UBYTE;
 
+typedef struct ESQIFF_PendingBrushNode {
+    char pathText[190];
+    UBYTE sourceType190;
+} ESQIFF_PendingBrushNode;
+
 extern WORD CTASKS_IffTaskDoneFlag;
 extern LONG CTASKS_PendingLogoBrushDescriptor;
 extern LONG CTASKS_PendingGAdsBrushDescriptor;
@@ -48,8 +53,8 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
     WORD sourceSelect;
     volatile LONG pollLimit;
     LONG duplicateHeadPath;
-    BYTE *headPath;
-    BYTE *pendingNode;
+    char *headPath;
+    ESQIFF_PendingBrushNode *pendingNode;
 
     duplicateHeadPath = 0;
 
@@ -179,9 +184,9 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         ESQDISP_ProcessGridMessagesIfIdle();
 
         if (ESQIFF_AssetSourceSelect != 0) {
-            headPath = (BYTE *)ESQIFF_LogoBrushListHead;
+            headPath = (char *)ESQIFF_LogoBrushListHead;
         } else {
-            headPath = (BYTE *)ESQIFF_GAdsBrushListHead;
+            headPath = (char *)ESQIFF_GAdsBrushListHead;
         }
 
         duplicateHeadPath = 0;
@@ -201,13 +206,13 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         }
 
         if (duplicateHeadPath == 0) {
-            pendingNode = (BYTE *)ESQIFF_JMPTBL_BRUSH_AllocBrushNode(candidate, 0);
+            pendingNode = (ESQIFF_PendingBrushNode *)ESQIFF_JMPTBL_BRUSH_AllocBrushNode(candidate, 0);
             ESQIFF_PendingExternalBrushNode = (LONG)pendingNode;
             if (ESQIFF_AssetSourceSelect != 0) {
-                pendingNode[190] = 4;
+                pendingNode->sourceType190 = 4;
                 CTASKS_PendingLogoBrushDescriptor = (LONG)pendingNode;
             } else {
-                pendingNode[190] = 5;
+                pendingNode->sourceType190 = 5;
                 CTASKS_PendingGAdsBrushDescriptor = (LONG)pendingNode;
             }
             ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess();
