@@ -5,7 +5,7 @@ extern const char Global_STR_LOADING_TEXT_ADS_FROM_DH2[];
 
 extern LONG ED_IsConfirmKey(void);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
-extern void GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile(void);
+extern LONG GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile(void);
 extern void ED_DrawESCMenuBottomHelp(void);
 
 void ED_LoadTextAdsFromDh2(void)
