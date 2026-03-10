@@ -21,12 +21,14 @@ char *DISKIO_ConsumeLineFromWorkBuffer(void)
 
     while (Global_REF_LONG_FILE_SCRATCH-- > DISKIO_COUNT_ZERO) {
         UBYTE ch;
+        const char *scan;
 
-        ch = *Global_PTR_WORK_BUFFER;
+        scan = Global_PTR_WORK_BUFFER;
+        ch = *scan;
         if (ch == DISKIO_CH_CR || ch == DISKIO_CH_LF) {
             break;
         }
-        Global_PTR_WORK_BUFFER++;
+        Global_PTR_WORK_BUFFER = (char *)(scan + 1);
     }
 
     *Global_PTR_WORK_BUFFER++ = DISKIO_CH_NUL;
@@ -37,12 +39,14 @@ char *DISKIO_ConsumeLineFromWorkBuffer(void)
 
     while (1) {
         UBYTE ch;
+        const char *scan;
 
-        ch = *Global_PTR_WORK_BUFFER;
+        scan = Global_PTR_WORK_BUFFER;
+        ch = *scan;
         if (ch != DISKIO_CH_CR && ch != DISKIO_CH_LF) {
             break;
         }
-        Global_PTR_WORK_BUFFER++;
+        Global_PTR_WORK_BUFFER = (char *)(scan + 1);
         Global_REF_LONG_FILE_SCRATCH--;
     }
 
