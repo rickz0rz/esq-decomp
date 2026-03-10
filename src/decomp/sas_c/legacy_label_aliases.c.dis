@@ -6,7 +6,6 @@ LAB_0386:
 ___LAB_0386__1:
               BSR.W          CTASKS_IFFTaskCleanup    ;6100 0000 
 ___LAB_0386__2:
-___LAB_0386__3:
               RTS                                     ;4e75 
 __const:
 __strings:

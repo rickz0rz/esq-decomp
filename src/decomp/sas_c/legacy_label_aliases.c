@@ -1,13 +1,13 @@
 typedef signed long LONG;
 
-extern LONG CTASKS_IFFTaskCleanup(void);
+extern void CTASKS_IFFTaskCleanup(void);
 extern void LADFUNC_UpdateHighlightState(void);
 extern void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void);
 extern LONG PARSEINI_TestMemoryAndOpenTopazFont(void **fontHandlePtr, void *textAttr);
 
-LONG LAB_0386(void)
+void LAB_0386(void)
 {
-    return CTASKS_IFFTaskCleanup();
+    CTASKS_IFFTaskCleanup();
 }
 
 void LADFUNC_UpdateHighlightCycle(void)
