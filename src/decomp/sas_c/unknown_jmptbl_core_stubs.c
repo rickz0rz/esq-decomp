@@ -18,9 +18,9 @@ void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(void)
     DISPLIB_DisplayTextAtPosition();
 }
 
-unsigned char UNKNOWN_JMPTBL_ESQ_WildcardMatch(char *str, char *pattern)
+unsigned char UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *str, const char *pattern)
 {
-    return ESQ_WildcardMatch(str, pattern);
+    return ESQ_WildcardMatch((char *)str, (char *)pattern);
 }
 
 void UNKNOWN_JMPTBL_DST_NormalizeDayOfYear(void)

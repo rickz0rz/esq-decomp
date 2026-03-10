@@ -16,6 +16,6 @@ void ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes(void){ESQ_ReverseBitsIn6Bytes();}
 void ESQSHARED_JMPTBL_ESQ_SetBit1Based(void){ESQ_SetBit1Based();}
 void ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString(void){ESQ_AdjustBracketedHourInString();}
 void ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated(void){COI_EnsureAnimObjectAllocated();}
-unsigned char ESQSHARED_JMPTBL_ESQ_WildcardMatch(char *str, char *pattern){return ESQ_WildcardMatch(str, pattern);}
+unsigned char ESQSHARED_JMPTBL_ESQ_WildcardMatch(const char *str, const char *pattern){return ESQ_WildcardMatch((char *)str, (char *)pattern);}
 char *ESQSHARED_JMPTBL_STR_SkipClass3Chars(char *s){return STR_SkipClass3Chars(s);}
 LONG ESQSHARED_JMPTBL_ESQ_TestBit1Based(UBYTE *base, ULONG bitIndex){return ESQ_TestBit1Based(base, bitIndex);}
