@@ -83,7 +83,7 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
     entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, modeKind);
 
     line[TEXTDISP_NULL] = TEXTDISP_NULL;
-    timeToken = (const char *)TEXTDISP_NULL;
+    timeToken = 0;
     bannerKind = MODE_KIND_PRIMARY;
 
     if (entry != (const TEXTDISP_CandidateEntry *)TEXTDISP_NULL && aux != (const TEXTDISP_AuxData *)TEXTDISP_NULL) {
@@ -162,7 +162,7 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             }
         }
 
-        if (timeToken != (const char *)TEXTDISP_NULL) {
+        if (timeToken != 0) {
             if (line[TEXTDISP_NULL] != TEXTDISP_NULL) {
                 STRING_AppendAtNull(line, SCRIPT_SpacerTripleB);
             }
@@ -181,7 +181,7 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
             TEXTDISP_NULL,
             TEXTDISP_NULL);
     } else {
-        if (P_TYPE_WeatherBottomLineMsgPtr != (const char *)TEXTDISP_NULL &&
+        if (P_TYPE_WeatherBottomLineMsgPtr != 0 &&
             P_TYPE_WeatherBottomLineMsgPtr[TEXTDISP_NULL] != TEXTDISP_NULL) {
             STRING_AppendAtNull(line, SCRIPT_AlignedPrefixEmptyC);
             STRING_AppendAtNull(line, P_TYPE_WeatherBottomLineMsgPtr);
