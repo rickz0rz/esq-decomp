@@ -42,8 +42,8 @@ void NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
     const LONG PEN_OVERRIDE_FLAGGED = 5;
     const UBYTE ROW_FLAG_BADGE = 0x04;
     NEWGRID_Context *gridView;
-    NEWGRID_Entry *entry;
-    NEWGRID_AuxData *aux;
+    const NEWGRID_Entry *entry;
+    const NEWGRID_AuxData *aux;
     LONG frameState;
     LONG pen;
 
@@ -57,7 +57,14 @@ void NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
     if (frameState == GRIDSTATE_LATCHED) {
         gridView->selectedState = SELECTED_NONE;
     } else if (frameState == GRIDSTATE_READY) {
-        rowIndex = (WORD)NEWGRID_UpdatePresetEntry((char **)&entry, (char **)&aux, rowIndex, keyIndex);
+        {
+            char *entryOut;
+            char *auxOut;
+
+            rowIndex = (WORD)NEWGRID_UpdatePresetEntry(&entryOut, &auxOut, rowIndex, keyIndex);
+            entry = (const NEWGRID_Entry *)entryOut;
+            aux = (const NEWGRID_AuxData *)auxOut;
+        }
 
         if (entry != 0 && aux != 0) {
             if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, (LONG)rowIndex) == SELECTED_NONE) {

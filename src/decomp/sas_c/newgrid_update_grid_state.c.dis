@@ -2,89 +2,89 @@
 __code:
 NEWGRID_UpdateGridState:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$38,D0                  ;90bc 0000 0038 
+              SUB.L          #$3c,D0                  ;90bc 0000 003c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$24,A7                  ;9efc 0024 
-              MOVEM.L        D2/D3/D5/D6/D7/A3/A5,-(A7);48e7 3714 
+              SUB.W          #$28,A7                  ;9efc 0028 
+              MOVEM.L        D2/D3/D5/D6/D7/A2/A3/A5,-(A7);48e7 3734 
 ___NEWGRID_UpdateGridState__1:
-              MOVE.W         $4e(A7),D6               ;3c2f 004e 
-              MOVE.L         $48(A7),D7               ;2e2f 0048 
-              MOVE.L         $44(A7),A5               ;2a6f 0044 
+              MOVE.W         $56(A7),D6               ;3c2f 0056 
+              MOVE.L         $50(A7),D7               ;2e2f 0050 
+              MOVE.L         $4c(A7),A5               ;2a6f 004c 
               MOVEQ.L        #$0,D5                   ;7a00 
               MOVEQ.L        #$4,D0                   ;7004 
               MOVEQ.L        #$5,D1                   ;7205 
               MOVEQ.L        #$ff,D2                  ;74ff 
-              MOVE.B         #$4,$1f(A7)              ;1f7c 0004 001f 
+              MOVE.B         #$4,$23(A7)              ;1f7c 0004 0023 
               MOVE.L         A5,A3                    ;264d 
-              MOVE.L         D0,$3c(A7)               ;2f40 003c 
-              MOVEM.L        D1,$30(A7)               ;48ef 0002 0030 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
               MOVEM.L        D1,$38(A7)               ;48ef 0002 0038 
-              MOVEM.L        D2,$34(A7)               ;48ef 0004 0034 
+              MOVEM.L        D1,$40(A7)               ;48ef 0002 0040 
+              MOVEM.L        D2,$3c(A7)               ;48ef 0004 003c 
               CMP.L          D5,A5                    ;bbc5 
               BNE.B          ___NEWGRID_UpdateGridState__3;6608 
 ___NEWGRID_UpdateGridState__2:
               MOVE.L         D0,NEWGRID_GridStateFrameLatch(A4);2940 0000 
-              BRA.W          ___NEWGRID_UpdateGridState__18;6000 00fc 
+              BRA.W          ___NEWGRID_UpdateGridState__18;6000 00f4 
 ___NEWGRID_UpdateGridState__3:
               MOVE.L         NEWGRID_GridStateFrameLatch(A4),D3;262c 0000 
-              MOVEM.L        D3,$24(A7)               ;48ef 0008 0024 
+              MOVEM.L        D3,$30(A7)               ;48ef 0008 0030 
               CMP.L          D3,D1                    ;b283 
               BNE.B          ___NEWGRID_UpdateGridState__5;6608 
 ___NEWGRID_UpdateGridState__4:
               MOVE.L         D2,$20(A3)               ;2742 0020 
-              BRA.W          ___NEWGRID_UpdateGridState__14;6000 00c8 
+              BRA.W          ___NEWGRID_UpdateGridState__14;6000 00c0 
 ___NEWGRID_UpdateGridState__5:
               CMP.L          D0,D3                    ;b680 
-              BNE.W          ___NEWGRID_UpdateGridState__13;6600 00be 
+              BNE.W          ___NEWGRID_UpdateGridState__13;6600 00b6 
 ___NEWGRID_UpdateGridState__6:
               MOVE.W         D6,D0                    ;3006 
               EXT.L          D0                       ;48c0 
               MOVE.L         D7,-(A7)                 ;2f07 
               MOVE.L         D0,-(A7)                 ;2f00 
-              PEA            $30(A7)                  ;486f 0030 
-              PEA            $38(A7)                  ;486f 0038 
+              PEA            $2c(A7)                  ;486f 002c 
+              PEA            $34(A7)                  ;486f 0034 
               BSR.W          NEWGRID_UpdatePresetEntry;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
               MOVE.L         D0,D6                    ;2c00 
-              TST.L          $2c(A7)                  ;4aaf 002c 
-              BEQ.W          ___NEWGRID_UpdateGridState__14;6700 00a0 
+              MOVE.L         $28(A7),A2               ;246f 0028 
+              MOVE.L         $24(A7),A0               ;206f 0024 
+              MOVE.L         A0,$34(A7)               ;2f48 0034 
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.W          ___NEWGRID_UpdateGridState__14;6700 008e 
 ___NEWGRID_UpdateGridState__7:
-              TST.L          $28(A7)                  ;4aaf 0028 
-              BEQ.W          ___NEWGRID_UpdateGridState__14;6700 0098 
+              MOVE.L         A0,D0                    ;2008 
+              BEQ.W          ___NEWGRID_UpdateGridState__14;6700 0088 
 ___NEWGRID_UpdateGridState__8:
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              ADD.W          #$1c,A0                  ;d0fc 001c 
+              LEA            $1c(A2),A1               ;43ea 001c 
               MOVE.W         D6,D0                    ;3006 
               EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A1,-(A7)                 ;2f09 
               BSR.W          NEWGRID2_JMPTBL_ESQ_TestBit1Base;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               CMP.L          D2,D0                    ;b082 
-              BNE.B          ___NEWGRID_UpdateGridState__14;667c 
+              BNE.B          ___NEWGRID_UpdateGridState__14;6670 
 ___NEWGRID_UpdateGridState__9:
               MOVE.W         D6,D0                    ;3006 
               EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
-              MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          NEWGRID2_JMPTBL_DISPLIB_FindPrev;6100 0000 
               MOVE.L         D0,D6                    ;2c00 
-              MOVE.L         $38(A7),(A7)             ;2eaf 0038 
+              MOVE.L         A2,(A7)                  ;2e8a 
               BSR.W          NEWGRID_SelectEntryPen   ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         D0,NEWGRID_SelectedGridEntryPtr(A4);2940 0000 
-              MOVE.L         $28(A7),A0               ;206f 0028 
-              MOVE.L         A0,A1                    ;2248 
-              ADD.W          D6,A1                    ;d2c6 
-              MOVE.B         $7(A1),D1                ;1229 0007 
-              AND.B          $1f(A7),D1               ;c22f 001f 
-              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         $34(A7),A0               ;206f 0034 
+              MOVE.B         $7(A0,D6.W),D1           ;1230 6007 
+              AND.B          $23(A7),D1               ;c22f 0023 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
               TST.B          D1                       ;4a01 
               BEQ.B          ___NEWGRID_UpdateGridState__11;6706 
 ___NEWGRID_UpdateGridState__10:
-              MOVE.L         $30(A7),NEWGRID_SelectedGridEntryPtr(A4);296f 0030 0000 
+              MOVE.L         $38(A7),NEWGRID_SelectedGridEntryPtr(A4);296f 0038 0000 
 ___NEWGRID_UpdateGridState__11:
               LEA            $3c(A3),A1               ;43eb 003c 
               MOVE.W         D6,D0                    ;3006 
@@ -92,12 +92,11 @@ ___NEWGRID_UpdateGridState__11:
               EXT.L          D6                       ;48c6 
               MOVE.L         D6,D1                    ;2206 
               ASL.L          #$2,D1                   ;e581 
-              ADD.L          D1,A0                    ;d1c1 
-              MOVE.L         $38(A0),D1               ;2228 0038 
+              MOVE.L         $38(A0,D1.L),D2          ;2430 1838 
               MOVE.L         NEWGRID_OverridePenIndex(A4),-(A7);2f2c 0000 
-              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D2,-(A7)                 ;2f02 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         A2,-(A7)                 ;2f0a 
               MOVE.L         A1,-(A7)                 ;2f09 
               BSR.W          NEWGRID_DrawEntryFlagBadge;6100 0000 
               CLR.L          (A7)                     ;4297 
@@ -116,14 +115,14 @@ ___NEWGRID_UpdateGridState__14:
               TST.L          D0                       ;4a80 
               BNE.B          ___NEWGRID_UpdateGridState__16;6608 
 ___NEWGRID_UpdateGridState__15:
-              MOVE.L         $38(A7),NEWGRID_GridStateFrameLatch(A4);296f 0038 0000 
+              MOVE.L         $40(A7),NEWGRID_GridStateFrameLatch(A4);296f 0040 0000 
               BRA.B          ___NEWGRID_UpdateGridState__18;6006 
 ___NEWGRID_UpdateGridState__16:
-              MOVE.L         $3c(A7),NEWGRID_GridStateFrameLatch(A4);296f 003c 0000 
+              MOVE.L         $44(A7),NEWGRID_GridStateFrameLatch(A4);296f 0044 0000 
 ___NEWGRID_UpdateGridState__17:
 ___NEWGRID_UpdateGridState__18:
-              MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A3/A5;4cdf 28ec 
-              ADD.W          #$24,A7                  ;defc 0024 
+              MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A2/A3/A5;4cdf 2cec 
+              ADD.W          #$28,A7                  ;defc 0028 
               RTS                                     ;4e75 
 __const:
 __strings:
