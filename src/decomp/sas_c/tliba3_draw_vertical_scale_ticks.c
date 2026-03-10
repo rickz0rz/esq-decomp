@@ -44,7 +44,7 @@ void TLIBA3_DrawVerticalScaleTicks(TLIBA3_RastPortWrap *rp, LONG x)
 
     for (y = TICK_ZERO; y < maxY; ++y) {
         if ((y % MAJOR_TICK_INTERVAL) == TICK_ZERO && y != TICK_ZERO) {
-            char *p;
+            const char *p;
             LONG len;
 
             _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, y);
