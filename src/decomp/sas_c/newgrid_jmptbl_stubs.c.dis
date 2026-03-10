@@ -20,11 +20,21 @@ ___NEWGRID_JMPTBL_MATH_DivS32__3:
 __const:
 __strings:
 NEWGRID_JMPTBL_DATETIME_SecondsT:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
 ___NEWGRID_JMPTBL_DATETIME_SecondsT__1:
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          DATETIME_SecondsToStruct ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___NEWGRID_JMPTBL_DATETIME_SecondsT__2:
+___NEWGRID_JMPTBL_DATETIME_SecondsT__3:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 NEWGRID_JMPTBL_GENERATE_GRID_DAT:
               MOVE.L         A7,D0                    ;200f 
@@ -76,11 +86,25 @@ ___NEWGRID_JMPTBL_DATETIME_Normaliz__1:
 ___NEWGRID_JMPTBL_DATETIME_Normaliz__2:
               RTS                                     ;4e75 
 NEWGRID_JMPTBL_STR_CopyUntilAnyD:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
 ___NEWGRID_JMPTBL_STR_CopyUntilAnyD__1:
+              MOVE.L         $1c(A7),D7               ;2e2f 001c 
+              MOVE.L         $20(A7),A2               ;246f 0020 
+              MOVE.L         $18(A7),A3               ;266f 0018 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          STR_CopyUntilAnyDelimN   ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
 ___NEWGRID_JMPTBL_STR_CopyUntilAnyD__2:
+___NEWGRID_JMPTBL_STR_CopyUntilAnyD__3:
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
               RTS                                     ;4e75 
 NEWGRID_JMPTBL_WDISP_UpdateSelec:
               CMP.L          __base(A4),A7            ;bfec 0000 
