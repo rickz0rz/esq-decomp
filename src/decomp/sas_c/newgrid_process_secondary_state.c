@@ -1,5 +1,6 @@
 typedef signed long LONG;
 typedef signed short WORD;
+typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 typedef struct NEWGRID_Entry NEWGRID_Entry;
@@ -22,7 +23,7 @@ extern UBYTE CONFIG_NewgridSelectionCode48_49EnabledFlag;
 
 extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG layoutPen, LONG rowPen, const char *sourceText);
 extern LONG NEWGRID_UpdateGridState(char *ctx, LONG keyIndex, WORD rowIndex);
-extern LONG NEWGRID_ProcessGridEntries(char *ctx, LONG keyIndex, WORD rowIndex);
+extern LONG NEWGRID_ProcessGridEntries(char *ctx, LONG keyIndex, UWORD rowIndex);
 extern LONG NEWGRID_FindNextEntryWithFlags(LONG mode, LONG startIndex);
 extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern void NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
