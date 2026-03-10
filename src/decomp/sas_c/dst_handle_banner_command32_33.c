@@ -15,7 +15,7 @@ extern DST_BannerWindowPair *DST_BannerWindowSecondary;
 
 extern void DATETIME_ParseString(void *out_struct, const char *text, LONG width);
 extern LONG DATETIME_CopyPairAndRecalc(DST_BannerWindowPair *dst, const void *lhs, const void *rhs);
-extern LONG DST_UpdateBannerQueue(void *pair);
+extern LONG DST_UpdateBannerQueue(DST_BannerWindowPair **pair);
 
 void DST_HandleBannerCommand32_33(UBYTE cmd, const char *text)
 {
