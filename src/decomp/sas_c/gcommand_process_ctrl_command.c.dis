@@ -23,19 +23,20 @@ ___GCOMMAND_ProcessCtrlCommand__1:
               BNE.B          ___GCOMMAND_ProcessCtrlCommand__3;6604 
 ___GCOMMAND_ProcessCtrlCommand__2:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___GCOMMAND_ProcessCtrlCommand__14;6064 
+              BRA.B          ___GCOMMAND_ProcessCtrlCommand__14;6062 
 ___GCOMMAND_ProcessCtrlCommand__3:
               MOVE.L         A5,A3                    ;264d 
               MOVE.B         $4(A3),D0                ;102b 0004 
               MOVE.B         D0,$1b(A7)               ;1f40 001b 
               CMP.B          D7,D0                    ;b007 
-              BNE.B          ___GCOMMAND_ProcessCtrlCommand__9;6646 
+              BNE.B          ___GCOMMAND_ProcessCtrlCommand__9;6644 
 ___GCOMMAND_ProcessCtrlCommand__4:
               MOVE.L         ED_StateRingWriteIndex(A4),D0;202c 0000 
-              MOVE.L         $2c(A7),D1               ;222f 002c 
-              BSR.W          _CXM33                   ;6100 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D0,D1                    ;d280 
               LEA            ED_StateRingTable(A4),A0 ;41ec 0000 
-              ADD.L          D0,A0                    ;d1c0 
+              ADD.L          D1,A0                    ;d1c1 
               MOVE.L         A0,A2                    ;2448 
               CLR.L          -(A7)                    ;42a7 
               MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
@@ -77,7 +78,6 @@ __strings:
               XREF           __base
               XREF           _XCOVF
               XREF           ED_StateRingWriteIndex
-              XREF           _CXM33
               XREF           ED_StateRingTable
               XREF           GROUP_AV_JMPTBL_EXEC_CallVector_
               XREF           GCOMMAND_DriveProbeRequestedFlag

@@ -11,7 +11,7 @@ typedef struct GCOMMAND_StateRingEntry {
     UBYTE raw[5];
 } GCOMMAND_StateRingEntry;
 
-extern UBYTE ED_StateRingTable[];
+extern GCOMMAND_StateRingEntry ED_StateRingTable[];
 extern LONG ED_StateRingWriteIndex;
 extern WORD GCOMMAND_DriveProbeRequestedFlag;
 
@@ -39,7 +39,7 @@ LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
 
     if (type == COMMAND_STATE_RING) {
         GCOMMAND_StateRingEntry *entry =
-            (GCOMMAND_StateRingEntry *)&ED_StateRingTable[ED_StateRingWriteIndex * STATE_RING_ENTRY_SIZE];
+            &ED_StateRingTable[ED_StateRingWriteIndex];
         rc = GROUP_AV_JMPTBL_EXEC_CallVector_48((void *)cmdPtr, entry, STATE_RING_ENTRY_SIZE, 0);
         if (rc > 0 && rc != EXEC_COMPARE_REJECT) {
             ED_StateRingWriteIndex += 1;
