@@ -42,6 +42,7 @@ void NEWGRID_DrawEmptyGridMessage(char *gridCtx, UWORD slot)
     char banner[128];
     char slot_text[31];
     const char *src;
+    const char *scan;
     char *dst;
     NEWGRID_RastPort *rast;
     LONG len;
@@ -71,8 +72,9 @@ void NEWGRID_DrawEmptyGridMessage(char *gridCtx, UWORD slot)
     _LVOSetAPen((char *)rast, 3);
     _LVOSetDrMd((char *)rast, 0);
 
+    scan = banner;
     len = 0;
-    while (banner[len] != 0) {
+    while (*scan++ != 0) {
         ++len;
     }
 

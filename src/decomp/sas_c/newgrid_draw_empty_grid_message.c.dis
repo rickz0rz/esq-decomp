@@ -2,14 +2,14 @@
 __code:
 NEWGRID_DrawEmptyGridMessage:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c4,D0                  ;90bc 0000 00c4 
+              SUB.L          #$c8,D0                  ;90bc 0000 00c8 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$b0,A7                  ;9efc 00b0 
+              SUB.W          #$b4,A7                  ;9efc 00b4 
               MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
 ___NEWGRID_DrawEmptyGridMessage__1:
-              MOVE.W         $d6(A7),D7               ;3e2f 00d6 
-              MOVE.L         $d0(A7),A5               ;2a6f 00d0 
+              MOVE.W         $da(A7),D7               ;3e2f 00da 
+              MOVE.L         $d4(A7),A5               ;2a6f 00d4 
               MOVE.L         A5,A3                    ;264d 
               PEA            ($21).w                  ;4878 0021 
               MOVEQ.L        #$6,D0                   ;7006 
@@ -20,7 +20,7 @@ ___NEWGRID_DrawEmptyGridMessage__1:
               BSR.W          NEWGRID_DrawGridFrame    ;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
               MOVE.L         SCRIPT_PtrMovieSummaryForPrefix(A4),A2;246c 0000 
-              LEA            $4c(A7),A0               ;41ef 004c 
+              LEA            $50(A7),A0               ;41ef 0050 
               MOVE.L         A0,$48(A7)               ;2f48 0048 
 ___NEWGRID_DrawEmptyGridMessage__2:
               MOVE.L         $48(A7),A0               ;206f 0048 
@@ -37,7 +37,7 @@ ___NEWGRID_DrawEmptyGridMessage__4:
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          NEWGRID2_JMPTBL_CLEANUP_FormatCl;6100 0000 
               PEA            $25(A7)                  ;486f 0025 
-              PEA            $58(A7)                  ;486f 0058 
+              PEA            $5c(A7)                  ;486f 005c 
               BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
               LEA            $3e(A3),A0               ;41eb 003e 
               MOVEQ.L        #$0,D0                   ;7000 
@@ -70,16 +70,21 @@ ___NEWGRID_DrawEmptyGridMessage__5:
               MOVE.L         $84(A7),-(A7)            ;2f2f 0084 
               BSR.W          _LVOSetDrMd              ;6100 0000 
               LEA            $44(A7),A7               ;4fef 0044 
+              LEA            $50(A7),A0               ;41ef 0050 
               MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.L         A0,$4c(A7)               ;2f48 004c 
 ___NEWGRID_DrawEmptyGridMessage__6:
-              TST.B          $4c(A7,D6.L)             ;4a37 684c 
+              MOVE.L         $4c(A7),A0               ;206f 004c 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$4c(A7)               ;2f48 004c 
+              TST.B          D0                       ;4a00 
               BEQ.B          ___NEWGRID_DrawEmptyGridMessage__8;6704 
 ___NEWGRID_DrawEmptyGridMessage__7:
               ADDQ.L         #$1,D6                   ;5286 
-              BRA.B          ___NEWGRID_DrawEmptyGridMessage__6;60f6 
+              BRA.B          ___NEWGRID_DrawEmptyGridMessage__6;60ee 
 ___NEWGRID_DrawEmptyGridMessage__8:
               MOVE.L         D6,-(A7)                 ;2f06 
-              PEA            $50(A7)                  ;486f 0050 
+              PEA            $54(A7)                  ;486f 0054 
               MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
               BSR.W          _LVOTextLength           ;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
@@ -128,7 +133,7 @@ ___NEWGRID_DrawEmptyGridMessage__12:
               MOVE.L         D1,$48(A7)               ;2f41 0048 
               BSR.W          _LVOMove                 ;6100 0000 
               MOVE.L         D6,(A7)                  ;2e86 
-              PEA            $58(A7)                  ;486f 0058 
+              PEA            $5c(A7)                  ;486f 005c 
               MOVE.L         $54(A7),-(A7)            ;2f2f 0054 
               BSR.W          _LVOText                 ;6100 0000 
               MOVE.W         #$11,$36(A3)             ;377c 0011 0036 
@@ -140,7 +145,7 @@ ___NEWGRID_DrawEmptyGridMessage__12:
               LEA            $1c(A7),A7               ;4fef 001c 
 ___NEWGRID_DrawEmptyGridMessage__13:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
-              ADD.W          #$b0,A7                  ;defc 00b0 
+              ADD.W          #$b4,A7                  ;defc 00b4 
               RTS                                     ;4e75 
 __const:
 __strings:
