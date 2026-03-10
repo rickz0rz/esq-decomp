@@ -7,7 +7,7 @@ typedef struct TLIBA2_EntryAux {
 } TLIBA2_EntryAux;
 
 extern char *STR_FindCharPtr(const char *s, LONG ch);
-extern LONG PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 
 LONG TLIBA2_ParseEntryTimeWindow(void *entryContext, LONG entryIndex, LONG *outPair)
 {

@@ -11,7 +11,7 @@ extern NEWGRID_ShowtimeBucketEntry NEWGRID_ShowtimeBucketEntryTable[];
 extern NEWGRID_ShowtimeBucketEntry *NEWGRID_ShowtimeBucketPtrTable[];
 
 extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
-extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *text);
+extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
 extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 
 LONG NEWGRID_AddShowtimeBucketEntry(char *entryText, LONG bucketGroup, LONG unused)
