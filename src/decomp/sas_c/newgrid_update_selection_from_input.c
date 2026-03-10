@@ -39,7 +39,7 @@ extern short NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row,
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *aux, LONG idx);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG idx);
 extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
-extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *aux, LONG idx, LONG win, LONG tol);
+extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(const void *entry, const void *aux, LONG idx, LONG win, LONG tol);
 extern void NEWGRID_InitSelectionWindow(SelCtx *ctx, UWORD rowBase);
 
 LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)

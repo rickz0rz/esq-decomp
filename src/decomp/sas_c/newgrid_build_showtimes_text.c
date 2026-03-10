@@ -44,7 +44,7 @@ extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, char *entries)
 extern void NEWGRID_ResetShowtimeBuckets(void);
 extern short NEWGRID_UpdatePresetEntry(char **entryPtr, char **coiPtr, LONG row, LONG col);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *coi, LONG idx);
-extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *coi, LONG idx, LONG winMins, LONG tolMins);
+extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(const void *entry, const void *coi, LONG idx, LONG winMins, LONG tolMins);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitsetBase, LONG bitIdx);
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern LONG NEWGRID_AddShowtimeBucketEntry(const char *text, LONG row);

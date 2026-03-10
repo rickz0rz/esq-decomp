@@ -21,7 +21,7 @@ extern void COI_RenderClockFormatEntryVariant(void);
 extern LONG ESQDISP_TestEntryBits0And2(const UBYTE *entry);
 extern LONG DISPTEXT_ComputeVisibleLineCount(LONG maxLines);
 extern void DISPTEXT_RenderCurrentLine(char *rp, LONG x, LONG y);
-extern LONG COI_ProcessEntrySelectionState(void *entry, void *aux, LONG idx, LONG win, LONG tol);
+extern LONG COI_ProcessEntrySelectionState(const void *entry, const void *aux, LONG idx, LONG win, LONG tol);
 extern void CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out);
 extern ULONG ESQ_GetHalfHourSlotIndex(void *timePtr);
 extern char *STR_SkipClass3Chars(const char *s);
@@ -70,7 +70,7 @@ void NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(void){COI_RenderClockForm
 LONG NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(const UBYTE *entry){return ESQDISP_TestEntryBits0And2(entry);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG maxLines){return DISPTEXT_ComputeVisibleLineCount(maxLines);}
 void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(char *rp, LONG x, LONG y){DISPTEXT_RenderCurrentLine(rp, x, y);}
-LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(void *entry, void *aux, LONG idx, LONG win, LONG tol){return COI_ProcessEntrySelectionState(entry, aux, idx, win, tol);}
+LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(const void *entry, const void *aux, LONG idx, LONG win, LONG tol){return COI_ProcessEntrySelectionState(entry, aux, idx, win, tol);}
 void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out){CLEANUP_FormatClockFormatEntry(slotIndex, out);}
 ULONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(void *timePtr){return ESQ_GetHalfHourSlotIndex(timePtr);}
 char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s){return STR_SkipClass3Chars(s);}
