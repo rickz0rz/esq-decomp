@@ -16,9 +16,9 @@ ___CLEANUP_UpdateEntryFlagBytes__1:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          COI_GetAnimFieldPointerByMode;6100 0000 
-              LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         D0,A3                    ;2640 
-              MOVE.L         A3,D0                    ;200b 
+              TST.L          D0                       ;4a80 
+              LEA            $c(A7),A7                ;4fef 000c 
               BNE.B          ___CLEANUP_UpdateEntryFlagBytes__6;6626 
 ___CLEANUP_UpdateEntryFlagBytes__2:
               LEA            CLOCK_STR_FALLBACK_ENTRY_FLAGS_P(A4),A2;45ec 0000 

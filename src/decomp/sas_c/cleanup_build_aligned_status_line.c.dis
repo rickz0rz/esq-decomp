@@ -39,8 +39,8 @@ ___CLEANUP_BuildAlignedStatusLine__2:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          COI_GetAnimFieldPointerByMode;6100 0000 
-              LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         D0,A2                    ;2440 
+              LEA            $c(A7),A7                ;4fef 000c 
               BRA.B          ___CLEANUP_BuildAlignedStatusLine__4;6002 
 ___CLEANUP_BuildAlignedStatusLine__3:
               SUB.L          A2,A2                    ;95ca 

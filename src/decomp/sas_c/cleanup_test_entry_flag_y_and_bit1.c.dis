@@ -16,17 +16,19 @@ ___CLEANUP_TestEntryFlagYAndBit1__1:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          COI_GetAnimFieldPointerByMode;6100 0000 
-              LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         D0,A3                    ;2640 
-              MOVE.L         A3,D0                    ;200b 
-              BEQ.B          ___CLEANUP_TestEntryFlagYAndBit1__12;672a 
+              TST.L          D0                       ;4a80 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BNE.B          ___CLEANUP_TestEntryFlagYAndBit1__3;6604 
 ___CLEANUP_TestEntryFlagYAndBit1__2:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___CLEANUP_TestEntryFlagYAndBit1__12;602a 
 ___CLEANUP_TestEntryFlagYAndBit1__3:
               TST.L          D6                       ;4a86 
               BMI.B          ___CLEANUP_TestEntryFlagYAndBit1__5;6b06 
 ___CLEANUP_TestEntryFlagYAndBit1__4:
-              MOVEQ.L        #$5,D1                   ;7205 
-              CMP.L          D1,D6                    ;bc81 
+              MOVEQ.L        #$5,D0                   ;7005 
+              CMP.L          D0,D6                    ;bc80 
               BLE.B          ___CLEANUP_TestEntryFlagYAndBit1__6;6f04 
 ___CLEANUP_TestEntryFlagYAndBit1__5:
               MOVEQ.L        #$0,D0                   ;7000 

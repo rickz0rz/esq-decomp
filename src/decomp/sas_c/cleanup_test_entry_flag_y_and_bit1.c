@@ -10,7 +10,7 @@ enum {
     ENTRY_FLAGS_BIT1_MASK = 2
 };
 
-LONG COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
+const char *COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
 
 LONG CLEANUP_TestEntryFlagYAndBit1(const void *entry, UWORD slot, LONG idx)
 {

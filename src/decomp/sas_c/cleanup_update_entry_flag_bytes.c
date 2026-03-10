@@ -14,16 +14,16 @@ extern const UBYTE WDISP_CharClassTable[];
 extern UBYTE DISPTEXT_InsetNibblePrimary;
 extern UBYTE DISPTEXT_InsetNibbleSecondary;
 
-LONG COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
+const char *COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
 LONG GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(LONG c);
 
 void CLEANUP_UpdateEntryFlagBytes(void *entry, UWORD slot)
 {
     UBYTE local[16];
-    UBYTE *flagText;
+    const UBYTE *flagText;
     LONG parsedNibble;
 
-    flagText = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
+    flagText = (const UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ENTRY_MODE_FLAGS);
     if (flagText == (UBYTE *)0) {
         const char *s = CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY;
         UBYTE *d = &local[LOCAL_FALLBACK_COPY_OFFSET];
