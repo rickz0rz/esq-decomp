@@ -17,7 +17,7 @@ extern WORD GCOMMAND_DriveProbeRequestedFlag;
 
 extern LONG GROUP_AV_JMPTBL_EXEC_CallVector_48(void *a0, void *a1, LONG d1, void *a2);
 
-LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
+LONG GCOMMAND_ProcessCtrlCommand(const GCOMMAND_CtrlPacket *cmdPtr)
 {
     const UBYTE COMMAND_STATE_RING = 1;
     const UBYTE COMMAND_PROBE_DRIVE_A = 15;
@@ -28,14 +28,11 @@ LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
     const LONG EXEC_COMPARE_REJECT = -1;
     LONG rc;
     UBYTE type;
-    const GCOMMAND_CtrlPacket *cmdView;
-
     if (cmdPtr == 0) {
         return 0;
     }
 
-    cmdView = (const GCOMMAND_CtrlPacket *)cmdPtr;
-    type = cmdView->type4;
+    type = cmdPtr->type4;
 
     if (type == COMMAND_STATE_RING) {
         GCOMMAND_StateRingEntry *entry =
