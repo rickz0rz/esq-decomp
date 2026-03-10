@@ -1,12 +1,23 @@
 typedef signed long LONG;
 typedef signed short WORD;
 
+typedef struct NEWGRID2_SelectionWindow {
+    void *entry;
+    void *aux;
+    LONG index;
+    LONG start;
+    LONG end;
+    WORD row;
+    WORD initialRow;
+    WORD rowLimit;
+} NEWGRID2_SelectionWindow;
+
 extern LONG NEWGRID2_DispatchStateIndex;
 extern LONG NEWGRID2_CachedModeIndex;
 extern LONG NEWGRID2_ShowtimesSelectionContextPtr;
 
 extern LONG NEWGRID2_ProcessGridState(char *gridCtx, char *selectionCtxPtr, LONG modeSel);
-extern void NEWGRID_InitSelectionWindowAlt(LONG *selectionCtxPtr, LONG rowIndex, LONG modeSel);
+extern void NEWGRID_InitSelectionWindowAlt(NEWGRID2_SelectionWindow *selectionCtxPtr, WORD rowIndex, LONG modeSel);
 extern LONG NEWGRID_UpdateSelectionFromInputAlt(LONG stateIndex, LONG *selectionCtxPtr, LONG modeSel);
 extern void NEWGRID_DrawShowtimesPrompt(char *gridCtx, LONG selectionCtx, LONG modeSel);
 extern LONG NEWGRID_TestModeFlagActive(LONG modeSel);
@@ -30,7 +41,7 @@ LONG NEWGRID2_HandleGridState(char *gridCtx, WORD rowIndex, LONG modeSel)
 
     switch (NEWGRID2_DispatchStateIndex) {
         case 0:
-            NEWGRID_InitSelectionWindowAlt(&NEWGRID2_ShowtimesSelectionContextPtr, (LONG)rowIndex, modeSel);
+            NEWGRID_InitSelectionWindowAlt((NEWGRID2_SelectionWindow *)&NEWGRID2_ShowtimesSelectionContextPtr, rowIndex, modeSel);
             /* fallthrough */
         case 1:
             d0 = NEWGRID_UpdateSelectionFromInputAlt(
