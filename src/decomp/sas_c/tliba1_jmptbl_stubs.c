@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
-extern LONG COI_GetAnimFieldPointerByMode(void *entry, LONG slot, LONG mode);
+extern LONG COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
 extern char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern LONG LADFUNC_GetPackedPenLowNibble(UBYTE packed);
 extern char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
@@ -13,7 +13,7 @@ extern char *ESQ_FindSubstringCaseFold(const char *haystack, const char *needle)
 extern LONG DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *title, LONG index);
 extern LONG LADFUNC_GetPackedPenHighNibble(UBYTE packed);
 
-char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(void *entry, LONG slot, LONG mode){return (char *)COI_GetAnimFieldPointerByMode(entry, slot, mode);}
+const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode){return (const char *)COI_GetAnimFieldPointerByMode(entry, slot, mode);}
 char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryAuxPointerByMode(index, mode);}
 LONG TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble(LONG v){return LADFUNC_GetPackedPenLowNibble((UBYTE)v);}
 char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryPointerByMode(index, mode);}

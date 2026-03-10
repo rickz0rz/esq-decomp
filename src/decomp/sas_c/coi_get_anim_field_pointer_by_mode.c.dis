@@ -17,7 +17,7 @@ ___COI_GetAnimFieldPointerByMode__1:
               MOVE.L         A3,D0                    ;200b 
               BEQ.B          ___COI_GetAnimFieldPointerByMode__3;6706 
 ___COI_GetAnimFieldPointerByMode__2:
-              MOVE.L         $30(A3),D0               ;202b 0030 
+              TST.L          $30(A3)                  ;4aab 0030 
               BNE.B          ___COI_GetAnimFieldPointerByMode__4;6606 
 ___COI_GetAnimFieldPointerByMode__3:
               MOVEQ.L        #$0,D0                   ;7000 

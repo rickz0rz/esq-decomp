@@ -37,28 +37,28 @@ typedef struct COI_Entry {
     COI_AnimObject *anim;
 } COI_Entry;
 
-LONG COI_GetAnimFieldPointerByMode(void *entry, UWORD key, UWORD mode)
+LONG COI_GetAnimFieldPointerByMode(const void *entry, UWORD key, UWORD mode)
 {
-    COI_Entry *e;
-    COI_AnimObject *anim;
-    COI_SubEntry *sub;
+    const COI_Entry *e;
+    const COI_AnimObject *anim;
+    const COI_SubEntry *sub;
     WORD found;
     WORD i;
     LONG out;
 
-    e = (COI_Entry *)entry;
-    sub = (COI_SubEntry *)0;
+    e = (const COI_Entry *)entry;
+    sub = (const COI_SubEntry *)0;
     found = 0;
 
-    if (e == (COI_Entry *)0 || e->anim == (COI_AnimObject *)0) {
+    if (e == (const COI_Entry *)0 || e->anim == (const COI_AnimObject *)0) {
         return 0;
     }
 
     anim = e->anim;
     i = 0;
     while (i < anim->subEntryCount) {
-        COI_SubEntry **table;
-        COI_SubEntry *cur;
+        COI_SubEntry * const *table;
+        const COI_SubEntry *cur;
 
         table = anim->subEntryTable;
         cur = table[i];
