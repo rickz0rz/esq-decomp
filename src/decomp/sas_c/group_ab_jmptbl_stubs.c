@@ -1,19 +1,20 @@
 typedef signed long LONG;
+typedef signed short WORD;
 
-extern void ESQPARS_RemoveGroupEntryAndReleaseStrings(void);
+extern void ESQPARS_RemoveGroupEntryAndReleaseStrings(WORD mode);
 extern void ESQFUNC_FreeLineTextBuffers(void);
 extern void ESQIFF_DeallocateAdsAndLogoLstData(void);
 extern void LADFUNC_FreeBannerRectEntries(void);
 extern void UNKNOWN2A_Stub0(void);
 extern void NEWGRID_ShutdownGridResources(void);
-extern void LOCAVAIL_FreeResourceChain(void);
+extern void LOCAVAIL_FreeResourceChain(void *state);
 extern LONG GRAPHICS_FreeRaster(void *raster, LONG width, LONG height);
-extern void IOSTDREQ_Free(void);
-extern void ESQIFF2_ClearLineHeadTailByMode(void);
+extern void IOSTDREQ_Free(void *req);
+extern char *ESQIFF2_ClearLineHeadTailByMode(WORD mode);
 
-void GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(void)
+void GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(WORD mode)
 {
-    ESQPARS_RemoveGroupEntryAndReleaseStrings();
+    ESQPARS_RemoveGroupEntryAndReleaseStrings(mode);
 }
 
 void GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers(void)
@@ -41,9 +42,9 @@ void GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources(void)
     NEWGRID_ShutdownGridResources();
 }
 
-void GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(void)
+void GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(void *state)
 {
-    LOCAVAIL_FreeResourceChain();
+    LOCAVAIL_FreeResourceChain(state);
 }
 
 LONG GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const void *tag, LONG line, void *raster, LONG width, LONG height)
@@ -53,12 +54,12 @@ LONG GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const void *tag, LONG line, void *raste
     return GRAPHICS_FreeRaster(raster, width, height);
 }
 
-void GROUP_AB_JMPTBL_IOSTDREQ_Free(void)
+void GROUP_AB_JMPTBL_IOSTDREQ_Free(void *req)
 {
-    IOSTDREQ_Free();
+    IOSTDREQ_Free(req);
 }
 
-void GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(void)
+char *GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(WORD mode)
 {
-    ESQIFF2_ClearLineHeadTailByMode();
+    return ESQIFF2_ClearLineHeadTailByMode(mode);
 }
