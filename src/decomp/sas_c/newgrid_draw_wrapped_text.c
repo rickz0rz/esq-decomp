@@ -23,10 +23,10 @@ char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, co
 
     drawn_width = 0;
     trim_len = 0;
-    next = (char *)0;
-    word_start = (char *)0;
+    next = 0;
+    word_start = 0;
 
-    if (text != (char *)0) {
+    if (text != 0) {
         next = NEWGRID2_JMPTBL_STR_SkipClass3Chars(text);
     }
 
@@ -34,7 +34,7 @@ char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, co
     space_w = _LVOTextLength(rastport, Global_STR_SINGLE_SPACE, 1);
     _LVOMove(rastport, x, y);
 
-    while (next != (char *)0) {
+    while (next != 0) {
         LONG word_len;
         LONG word_w;
         LONG rem_w;
@@ -44,7 +44,7 @@ char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, co
         next = NEWGRID2_JMPTBL_STR_SkipClass3Chars(next);
 
         if (word_buf[0] == 0) {
-            return (char *)0;
+            return 0;
         }
 
         scan = word_buf;
