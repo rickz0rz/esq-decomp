@@ -5,7 +5,7 @@ extern WORD SCRIPT_CtrlLineAssertedTicks;
 extern WORD ESQIFF_ExternalAssetFlags;
 extern WORD LADFUNC_EntryCount;
 
-extern WORD SCRIPT_ReadHandshakeBit5Mask(void);
+extern long SCRIPT_ReadHandshakeBit5Mask(void);
 
 void SCRIPT_PollHandshakeAndApplyTimeout(void)
 {
