@@ -67,6 +67,7 @@ GROUP_AM_JMPTBL_LADFUNC_LoadText:
 ___GROUP_AM_JMPTBL_LADFUNC_LoadText__1:
               BSR.W          LADFUNC_LoadTextAdsFromFile;6100 0000 
 ___GROUP_AM_JMPTBL_LADFUNC_LoadText__2:
+___GROUP_AM_JMPTBL_LADFUNC_LoadText__3:
               RTS                                     ;4e75 
 GROUP_AM_JMPTBL_DISKIO_LoadConfi:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -74,6 +75,7 @@ GROUP_AM_JMPTBL_DISKIO_LoadConfi:
 ___GROUP_AM_JMPTBL_DISKIO_LoadConfi__1:
               BSR.W          DISKIO_LoadConfigFromDisk;6100 0000 
 ___GROUP_AM_JMPTBL_DISKIO_LoadConfi__2:
+___GROUP_AM_JMPTBL_DISKIO_LoadConfi__3:
               RTS                                     ;4e75 
 GROUP_AM_JMPTBL_TEXTDISP_LoadSou:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -95,6 +97,7 @@ GROUP_AM_JMPTBL_ESQ_CheckCompati:
 ___GROUP_AM_JMPTBL_ESQ_CheckCompati__1:
               BSR.W          ESQ_CheckCompatibleVideoChip;6100 0000 
 ___GROUP_AM_JMPTBL_ESQ_CheckCompati__2:
+___GROUP_AM_JMPTBL_ESQ_CheckCompati__3:
               RTS                                     ;4e75 
 GROUP_AM_JMPTBL_ESQ_CheckAvailab:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -102,6 +105,7 @@ GROUP_AM_JMPTBL_ESQ_CheckAvailab:
 ___GROUP_AM_JMPTBL_ESQ_CheckAvailab__1:
               BSR.W          ESQ_CheckAvailableFastMemory;6100 0000 
 ___GROUP_AM_JMPTBL_ESQ_CheckAvailab__2:
+___GROUP_AM_JMPTBL_ESQ_CheckAvailab__3:
               RTS                                     ;4e75 
 GROUP_AM_JMPTBL_STRUCT_AllocWith:
               MOVE.L         A7,D0                    ;200f 
@@ -140,6 +144,7 @@ GROUP_AM_JMPTBL_ESQ_FormatDiskEr:
 ___GROUP_AM_JMPTBL_ESQ_FormatDiskEr__1:
               BSR.W          ESQ_FormatDiskErrorMessage;6100 0000 
 ___GROUP_AM_JMPTBL_ESQ_FormatDiskEr__2:
+___GROUP_AM_JMPTBL_ESQ_FormatDiskEr__3:
               RTS                                     ;4e75 
 GROUP_AM_JMPTBL_SCRIPT_PrimeBann:
               CMP.L          __base(A4),A7            ;bfec 0000 

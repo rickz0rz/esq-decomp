@@ -1,5 +1,6 @@
 typedef signed long LONG;
 typedef unsigned long ULONG;
+typedef unsigned short UWORD;
 
 extern void *SIGNAL_CreateMsgPortWithSignal(const char *name, LONG pri);
 extern void LADFUNC_ClearBannerRectEntries(void);
@@ -8,16 +9,16 @@ extern void SCRIPT_InitCtrlContext(void);
 extern void DISKIO2_ParseIniFileFromDisk(void);
 extern void ESQ_CheckTopazFontGuard(void);
 extern void P_TYPE_ResetListsAndLoadPromoIds(void);
-extern void LADFUNC_LoadTextAdsFromFile(void);
-extern void DISKIO_LoadConfigFromDisk(void);
+extern LONG LADFUNC_LoadTextAdsFromFile(void);
+extern LONG DISKIO_LoadConfigFromDisk(void);
 extern void TEXTDISP_LoadSourceConfig(void);
 extern void KYBD_InitializeInputDevices(void);
-extern void ESQ_CheckCompatibleVideoChip(void);
-extern void ESQ_CheckAvailableFastMemory(void);
+extern UWORD ESQ_CheckCompatibleVideoChip(void);
+extern ULONG ESQ_CheckAvailableFastMemory(void);
 extern void *STRUCT_AllocWithOwner(void *owner, ULONG size);
 extern void GCOMMAND_ResetBannerFadeState(void);
 extern void TLIBA3_InitPatternTable(void);
-extern void ESQ_FormatDiskErrorMessage(void);
+extern LONG ESQ_FormatDiskErrorMessage(void);
 extern void SCRIPT_PrimeBannerTransitionFromHexCode(void);
 extern void LOCAVAIL_ResetFilterStateStruct(void);
 extern void ESQ_InitAudio1Dma(void);
@@ -39,16 +40,16 @@ void GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext(void){SCRIPT_InitCtrlContext();}
 void GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk(void){DISKIO2_ParseIniFileFromDisk();}
 void GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard(void){ESQ_CheckTopazFontGuard();}
 void GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds(void){P_TYPE_ResetListsAndLoadPromoIds();}
-void GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile(void){LADFUNC_LoadTextAdsFromFile();}
-void GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk(void){DISKIO_LoadConfigFromDisk();}
+LONG GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile(void){return LADFUNC_LoadTextAdsFromFile();}
+LONG GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk(void){return DISKIO_LoadConfigFromDisk();}
 void GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig(void){TEXTDISP_LoadSourceConfig();}
 void GROUP_AM_JMPTBL_KYBD_InitializeInputDevices(void){KYBD_InitializeInputDevices();}
-void GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip(void){ESQ_CheckCompatibleVideoChip();}
-void GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory(void){ESQ_CheckAvailableFastMemory();}
+UWORD GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip(void){return ESQ_CheckCompatibleVideoChip();}
+ULONG GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory(void){return ESQ_CheckAvailableFastMemory();}
 void *GROUP_AM_JMPTBL_STRUCT_AllocWithOwner(void *owner, ULONG size){return STRUCT_AllocWithOwner(owner, size);}
 void GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState(void){GCOMMAND_ResetBannerFadeState();}
 void GROUP_AM_JMPTBL_TLIBA3_InitPatternTable(void){TLIBA3_InitPatternTable();}
-void GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage(void){ESQ_FormatDiskErrorMessage();}
+LONG GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage(void){return ESQ_FormatDiskErrorMessage();}
 void GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode(void){SCRIPT_PrimeBannerTransitionFromHexCode();}
 void GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(void){LOCAVAIL_ResetFilterStateStruct();}
 void GROUP_AM_JMPTBL_ESQ_InitAudio1Dma(void){ESQ_InitAudio1Dma();}
