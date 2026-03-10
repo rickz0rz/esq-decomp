@@ -11,8 +11,8 @@ enum {
 
 static const ULONG COI_MEMF_PUBLIC_CLEAR = 0x10001UL;
 
-extern UBYTE Global_STR_COI_C_2[];
-extern UBYTE COI_STR_DEFAULT_TOKEN_TEMPLATE_B[];
+extern const char Global_STR_COI_C_2[];
+extern const char COI_STR_DEFAULT_TOKEN_TEMPLATE_B[];
 
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
 char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);

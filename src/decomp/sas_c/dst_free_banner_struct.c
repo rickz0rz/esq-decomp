@@ -2,9 +2,9 @@ typedef signed long LONG;
 typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
-extern UBYTE Global_STR_DST_C_1[];
-extern UBYTE Global_STR_DST_C_2[];
-extern UBYTE Global_STR_DST_C_3[];
+extern const char Global_STR_DST_C_1[];
+extern const char Global_STR_DST_C_2[];
+extern const char Global_STR_DST_C_3[];
 
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, ULONG size);
 

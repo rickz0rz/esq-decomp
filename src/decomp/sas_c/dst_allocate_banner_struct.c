@@ -10,9 +10,9 @@ typedef struct DST_BannerStruct {
     WORD state16;
 } DST_BannerStruct;
 
-extern UBYTE Global_STR_DST_C_4[];
-extern UBYTE Global_STR_DST_C_5[];
-extern UBYTE Global_STR_DST_C_6[];
+extern const char Global_STR_DST_C_4[];
+extern const char Global_STR_DST_C_5[];
+extern const char Global_STR_DST_C_6[];
 
 extern void DST_FreeBannerStruct(void *banner);
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
