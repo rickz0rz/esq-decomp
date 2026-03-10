@@ -91,8 +91,6 @@ void SCRIPT_SetupHighlightEffect(const char *text)
     }
 
     (void)_LVOTextLength(rp, prefix, len_local(prefix));
-    if (CLOCK_AlignedInsetRenderGateFlag && CLEANUP_AlignedInsetNibblePrimary != (UBYTE)0xFF) {
-    }
     _LVOSetDrMd(rp, 0);
     _LVOSetAPen(rp, 1);
     _LVOMove(rp, 0, widthSlot - 26);

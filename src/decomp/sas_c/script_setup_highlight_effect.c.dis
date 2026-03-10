@@ -69,7 +69,7 @@ ___SCRIPT_SetupHighlightEffect__2:
               BNE.B          ___SCRIPT_SetupHighlightEffect__4;6608 
 ___SCRIPT_SetupHighlightEffect__3:
               BSR.W          TEXTDISP_JMPTBL_ESQIFF_RunCopper;6100 0000 
-              BRA.W          ___SCRIPT_SetupHighlightEffect__36;6000 01d0 
+              BRA.W          ___SCRIPT_SetupHighlightEffect__34;6000 01ba 
 ___SCRIPT_SetupHighlightEffect__4:
               LEA            $2(A3),A2                ;45eb 0002 
               MOVE.W         #$1,WDISP_AccumulatorCaptureActive(A4);397c 0001 0000 
@@ -116,17 +116,7 @@ ___SCRIPT_SetupHighlightEffect__14:
               PEA            $30(A7)                  ;486f 0030 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          _LVOTextLength           ;6100 0000 
-              LEA            $c(A7),A7                ;4fef 000c 
-              TST.B          CLOCK_AlignedInsetRenderGateFlag(A4);4a2c 0000 
-              BEQ.B          ___SCRIPT_SetupHighlightEffect__16;670c 
-___SCRIPT_SetupHighlightEffect__15:
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         CLEANUP_AlignedInsetNibblePrimar(A4),D0;102c 0000 
-              MOVEQ.L        #$0,D1                   ;7200 
-              NOT.B          D1                       ;4601 
-              CMP.L          D1,D0                    ;b081 
-___SCRIPT_SetupHighlightEffect__16:
-              CLR.L          -(A7)                    ;42a7 
+              CLR.L          (A7)                     ;4297 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          _LVOSetDrMd              ;6100 0000 
               PEA            ($1).w                   ;4878 0001 
@@ -139,52 +129,52 @@ ___SCRIPT_SetupHighlightEffect__16:
               CLR.L          -(A7)                    ;42a7 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          _LVOMove                 ;6100 0000 
-              LEA            $18(A7),A7               ;4fef 0018 
+              LEA            $20(A7),A7               ;4fef 0020 
               MOVE.L         A5,A0                    ;204d 
               CLR.L          $20(A7)                  ;42af 0020 
               MOVE.L         A0,$24(A7)               ;2f48 0024 
               MOVE.L         A0,$28(A7)               ;2f48 0028 
-___SCRIPT_SetupHighlightEffect__17:
+___SCRIPT_SetupHighlightEffect__15:
               MOVE.L         $28(A7),A0               ;206f 0028 
               MOVE.B         (A0),D0                  ;1010 
-              BEQ.W          ___SCRIPT_SetupHighlightEffect__33;6700 00e0 
-___SCRIPT_SetupHighlightEffect__18:
+              BEQ.W          ___SCRIPT_SetupHighlightEffect__31;6700 00e0 
+___SCRIPT_SetupHighlightEffect__16:
               MOVE.B         D0,$1f(A7)               ;1f40 001f 
               MOVEQ.L        #$13,D1                  ;7213 
               CMP.B          D1,D0                    ;b001 
-              BEQ.B          ___SCRIPT_SetupHighlightEffect__22;6714 
-___SCRIPT_SetupHighlightEffect__19:
+              BEQ.B          ___SCRIPT_SetupHighlightEffect__20;6714 
+___SCRIPT_SetupHighlightEffect__17:
               MOVEQ.L        #$14,D1                  ;7214 
               CMP.B          D1,D0                    ;b001 
-              BEQ.B          ___SCRIPT_SetupHighlightEffect__22;670e 
-___SCRIPT_SetupHighlightEffect__20:
+              BEQ.B          ___SCRIPT_SetupHighlightEffect__20;670e 
+___SCRIPT_SetupHighlightEffect__18:
               MOVEQ.L        #$18,D1                  ;7218 
               CMP.B          D1,D0                    ;b001 
-              BEQ.B          ___SCRIPT_SetupHighlightEffect__22;6708 
-___SCRIPT_SetupHighlightEffect__21:
+              BEQ.B          ___SCRIPT_SetupHighlightEffect__20;6708 
+___SCRIPT_SetupHighlightEffect__19:
               MOVEQ.L        #$19,D1                  ;7219 
               CMP.B          D1,D0                    ;b001 
-              BNE.W          ___SCRIPT_SetupHighlightEffect__30;6600 00ae 
-___SCRIPT_SetupHighlightEffect__22:
+              BNE.W          ___SCRIPT_SetupHighlightEffect__28;6600 00ae 
+___SCRIPT_SetupHighlightEffect__20:
               MOVE.L         $20(A7),D0               ;202f 0020 
               TST.L          D0                       ;4a80 
-              BLE.B          ___SCRIPT_SetupHighlightEffect__24;6f10 
-___SCRIPT_SetupHighlightEffect__23:
+              BLE.B          ___SCRIPT_SetupHighlightEffect__22;6f10 
+___SCRIPT_SetupHighlightEffect__21:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          _LVOText                 ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-___SCRIPT_SetupHighlightEffect__24:
+___SCRIPT_SetupHighlightEffect__22:
               MOVE.B         $1f(A7),D0               ;102f 001f 
               MOVEQ.L        #$18,D1                  ;7218 
               CMP.B          D1,D0                    ;b001 
-              BEQ.B          ___SCRIPT_SetupHighlightEffect__26;6706 
-___SCRIPT_SetupHighlightEffect__25:
+              BEQ.B          ___SCRIPT_SetupHighlightEffect__24;6706 
+___SCRIPT_SetupHighlightEffect__23:
               MOVEQ.L        #$19,D2                  ;7419 
               CMP.B          D2,D0                    ;b002 
-              BNE.B          ___SCRIPT_SetupHighlightEffect__27;6628 
-___SCRIPT_SetupHighlightEffect__26:
+              BNE.B          ___SCRIPT_SetupHighlightEffect__25;6628 
+___SCRIPT_SetupHighlightEffect__24:
               CMP.B          D1,D0                    ;b001 
               SCC            D0,#$600                 ;56c0 
               MOVEQ.L        #$1,D1                   ;7201 
@@ -199,12 +189,12 @@ ___SCRIPT_SetupHighlightEffect__26:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.L         D0,$20(A7)               ;2f40 0020 
               MOVE.L         A0,$24(A7)               ;2f48 0024 
-              BRA.B          ___SCRIPT_SetupHighlightEffect__17;6088 
-___SCRIPT_SetupHighlightEffect__27:
+              BRA.B          ___SCRIPT_SetupHighlightEffect__15;6088 
+___SCRIPT_SetupHighlightEffect__25:
               MOVEQ.L        #$14,D0                  ;7014 
               CMP.B          $1f(A7),D0               ;b02f 001f 
-              BNE.B          ___SCRIPT_SetupHighlightEffect__29;663e 
-___SCRIPT_SetupHighlightEffect__28:
+              BNE.B          ___SCRIPT_SetupHighlightEffect__27;663e 
+___SCRIPT_SetupHighlightEffect__26:
               MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
               MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               PEA            $34(A7)                  ;486f 0034 
@@ -224,32 +214,32 @@ ___SCRIPT_SetupHighlightEffect__28:
               BSR.W          SCRIPT_DrawInsetTextWithFrame;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
               CLR.B          CLOCK_AlignedInsetRenderGateFlag(A4);422c 0000 
-___SCRIPT_SetupHighlightEffect__29:
+___SCRIPT_SetupHighlightEffect__27:
               ADDQ.L         #$1,$28(A7)              ;52af 0028 
               MOVE.L         $28(A7),A0               ;206f 0028 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.L         D0,$20(A7)               ;2f40 0020 
               MOVE.L         A0,$24(A7)               ;2f48 0024 
-              BRA.W          ___SCRIPT_SetupHighlightEffect__17;6000 ff2e 
-___SCRIPT_SetupHighlightEffect__30:
+              BRA.W          ___SCRIPT_SetupHighlightEffect__15;6000 ff2e 
+___SCRIPT_SetupHighlightEffect__28:
               CMPI.B         #$20,$1f(A7)             ;0c2f 0020 001f 
-              BCS.B          ___SCRIPT_SetupHighlightEffect__32;6504 
-___SCRIPT_SetupHighlightEffect__31:
+              BCS.B          ___SCRIPT_SetupHighlightEffect__30;6504 
+___SCRIPT_SetupHighlightEffect__29:
               ADDQ.L         #$1,$20(A7)              ;52af 0020 
-___SCRIPT_SetupHighlightEffect__32:
+___SCRIPT_SetupHighlightEffect__30:
               ADDQ.L         #$1,$28(A7)              ;52af 0028 
-              BRA.W          ___SCRIPT_SetupHighlightEffect__17;6000 ff1a 
-___SCRIPT_SetupHighlightEffect__33:
+              BRA.W          ___SCRIPT_SetupHighlightEffect__15;6000 ff1a 
+___SCRIPT_SetupHighlightEffect__31:
               MOVE.L         $20(A7),D0               ;202f 0020 
               TST.L          D0                       ;4a80 
-              BLE.B          ___SCRIPT_SetupHighlightEffect__35;6f10 
-___SCRIPT_SetupHighlightEffect__34:
+              BLE.B          ___SCRIPT_SetupHighlightEffect__33;6f10 
+___SCRIPT_SetupHighlightEffect__32:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          _LVOText                 ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-___SCRIPT_SetupHighlightEffect__35:
+___SCRIPT_SetupHighlightEffect__33:
               PEA            ($3).w                   ;4878 0003 
               CLR.L          -(A7)                    ;42a7 
               PEA            ($4).w                   ;4878 0004 
@@ -257,7 +247,7 @@ ___SCRIPT_SetupHighlightEffect__35:
               MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
               BSR.W          TEXTDISP_JMPTBL_ESQIFF_RunCopper;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-___SCRIPT_SetupHighlightEffect__36:
+___SCRIPT_SetupHighlightEffect__34:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
               ADD.W          #$90,A7                  ;defc 0090 
               RTS                                     ;4e75 
@@ -275,14 +265,14 @@ ___SCRIPT_SetupHighlightEffect__36:
               XREF           WDISP_AccumulatorCaptureActive
               XREF           WDISP_AccumulatorFlushPending
               XREF           _LVOTextLength
-              XREF           CLOCK_AlignedInsetRenderGateFlag
-              XREF           CLEANUP_AlignedInsetNibblePrimar
               XREF           _LVOSetDrMd
               XREF           _LVOSetAPen
               XREF           _LVOMove
               XREF           _LVOText
               XREF           STRING_CopyPadNul
+              XREF           CLEANUP_AlignedInsetNibblePrimar
               XREF           CLEANUP_AlignedInsetNibbleSecond
               XREF           SCRIPT_DrawInsetTextWithFrame
+              XREF           CLOCK_AlignedInsetRenderGateFlag
               XDEF           SCRIPT_SetupHighlightEffect
               END
