@@ -22,11 +22,11 @@ typedef struct TLIBA3_RastPortWrap {
 #define CHAR_ADVANCE 1
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern char TLIBA1_FMT_PCT_03LD_VerticalScaleTick[];
+extern const char TLIBA1_FMT_PCT_03LD_VerticalScaleTick[];
 
 extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern LONG _LVODraw(void *gfxBase, char *rastPort, LONG x, LONG y);
-extern LONG _LVOText(void *gfxBase, char *rastPort, char *text, LONG len);
+extern LONG _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG value);
 
 void TLIBA3_DrawVerticalScaleTicks(TLIBA3_RastPortWrap *rp, LONG x)
