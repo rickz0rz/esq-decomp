@@ -24,7 +24,7 @@ extern const char Global_STR_SHOWING_AT_AND_SINGLE_SPACE[];
 extern const char NEWGRID_ShowtimeListSeparator[];
 
 extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry, LONG row, LONG field);
-extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *entries, LONG row);
+extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(const char *entries, LONG row);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, char *entries);
 extern void NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG preset);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitsetBase, LONG bitIndex);
@@ -94,7 +94,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
     }
 
     mode0 = 0;
-    if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((char *)auxCur, (LONG)row) != 0) {
+    if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((const char *)auxCur, (LONG)row) != 0) {
         mode0 = 1;
     }
 
@@ -130,7 +130,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
         f3_n = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 7);
 
         modeN = 0;
-        if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((char *)auxCur, srcIdx) != 0) {
+        if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((const char *)auxCur, srcIdx) != 0) {
             modeN = 1;
         }
 
