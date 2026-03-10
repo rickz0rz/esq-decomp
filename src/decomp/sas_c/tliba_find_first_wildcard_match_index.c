@@ -6,7 +6,7 @@ extern char *TEXTDISP_SecondaryTitlePtrTable[];
 
 extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 
-LONG TLIBA_FindFirstWildcardMatchIndex(char *wildcardPattern)
+LONG TLIBA_FindFirstWildcardMatchIndex(const char *wildcardPattern)
 {
     LONG i;
     LONG matchIndex;

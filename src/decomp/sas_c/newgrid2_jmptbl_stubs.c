@@ -8,7 +8,7 @@ extern LONG COI_GetAnimFieldPointerByMode(void *entry, UWORD key, UWORD mode);
 extern void DISPTEXT_SetCurrentLineIndex(LONG lineIndex);
 extern LONG DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, const char *src);
 extern LONG DISPTEXT_GetTotalLineCount(void);
-extern LONG TLIBA_FindFirstWildcardMatchIndex(char *wildcardPattern);
+extern LONG TLIBA_FindFirstWildcardMatchIndex(const char *wildcardPattern);
 extern void DISPTEXT_BuildLayoutForSource(void);
 extern void BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY);
 extern char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
@@ -43,7 +43,7 @@ char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(char *entry, LONG key, LONG fie
 void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG lineIndex){DISPTEXT_SetCurrentLineIndex(lineIndex);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, const char *src){return DISPTEXT_LayoutAndAppendToBuffer(layoutCtx, src);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount(void){return DISPTEXT_GetTotalLineCount();}
-LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(char *wildcardPattern){return TLIBA_FindFirstWildcardMatchIndex(wildcardPattern);}
+LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const char *wildcardPattern){return TLIBA_FindFirstWildcardMatchIndex(wildcardPattern);}
 void NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(void){DISPTEXT_BuildLayoutForSource();}
 void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY){BEVEL_DrawBevelFrameWithTopRight(rastPort, leftX, topY, rightX, bottomY);}
 char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryAuxPointerByMode(index, mode);}
