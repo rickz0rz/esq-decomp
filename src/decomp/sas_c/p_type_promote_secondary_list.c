@@ -16,5 +16,5 @@ void P_TYPE_PromoteSecondaryList(void)
 {
     P_TYPE_FreeEntry(P_TYPE_PrimaryGroupListPtr);
     P_TYPE_PrimaryGroupListPtr = P_TYPE_SecondaryGroupListPtr;
-    P_TYPE_SecondaryGroupListPtr = (PTypeEntry *)0;
+    P_TYPE_SecondaryGroupListPtr = 0;
 }
