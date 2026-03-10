@@ -28,7 +28,7 @@ void LADFUNC_ResetEntryTextBuffers(void)
     for (i = 0; i <= ENTRY_LAST_INDEX; ++i) {
         LadfuncEntry *entry = LADFUNC_EntryPtrTable[i];
         LONG len = LEN_EMPTY;
-        char *p;
+        const char *p;
 
         if (entry == (LadfuncEntry *)0) {
             continue;
