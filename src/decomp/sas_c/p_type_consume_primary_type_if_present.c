@@ -18,7 +18,7 @@ LONG P_TYPE_ConsumePrimaryTypeIfPresent(UBYTE *inOutBytePtr)
 
     found = 0;
 
-    if (P_TYPE_PrimaryGroupListPtr != (UBYTE *)0) {
+    if (P_TYPE_PrimaryGroupListPtr) {
         entry = (P_TYPE_Entry *)P_TYPE_PrimaryGroupListPtr;
         if (entry->payloadLength > 0) {
             i = 0;
