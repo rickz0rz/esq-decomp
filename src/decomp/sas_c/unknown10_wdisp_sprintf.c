@@ -5,9 +5,9 @@ extern LONG Global_PrintfByteCount;
 extern UBYTE *Global_PrintfBufferPtr;
 
 extern void UNKNOWN10_PrintfPutcToBuffer(LONG ch);
-extern void WDISP_FormatWithCallback(void (*outputFunc)(LONG), char *formatStr, void *varArgsPtr);
+extern void WDISP_FormatWithCallback(void (*outputFunc)(LONG), const char *formatStr, void *varArgsPtr);
 
-LONG WDISP_SPrintf(char *outBuf, char *formatStr, ...)
+LONG WDISP_SPrintf(char *outBuf, const char *formatStr, ...)
 {
     Global_PrintfByteCount = 0;
     Global_PrintfBufferPtr = (UBYTE *)outBuf;
