@@ -22,7 +22,7 @@ extern LONG MATH_Mulu32(LONG a, LONG b);
 
 LONG TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG index)
 {
-    TEXTDISP_AuxData *aux;
+    const TEXTDISP_AuxData *aux;
     LONG dateTriplet[3];
     LONG timePair[2];
     LONG dayDelta;
@@ -31,7 +31,7 @@ LONG TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG index)
     LONG currentHour12;
     LONG slotIndex;
 
-    aux = (TEXTDISP_AuxData *)title;
+    aux = (const TEXTDISP_AuxData *)title;
     slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(
         index,
         groupCode,

@@ -18,9 +18,9 @@ extern UWORD TEXTDISP_SbeFilterActiveFlag;
 extern UWORD TEXTDISP_FindModeActiveFlag;
 extern UBYTE TEXTDISP_CandidateIndexList[];
 
-extern char *TEXTDISP_PrimaryTitlePtrTable[];
+extern const char *TEXTDISP_PrimaryTitlePtrTable[];
 extern TEXTDISP_CandidateEntry *TEXTDISP_PrimaryEntryPtrTable[];
-extern char *TEXTDISP_SecondaryTitlePtrTable[];
+extern const char *TEXTDISP_SecondaryTitlePtrTable[];
 extern TEXTDISP_CandidateEntry *TEXTDISP_SecondaryEntryPtrTable[];
 
 extern const char TEXTDISP_Tag_PPV[];
