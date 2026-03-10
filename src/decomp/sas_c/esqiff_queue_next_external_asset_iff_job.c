@@ -48,6 +48,12 @@ extern void ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(void);
 
 WORD ESQIFF_QueueNextExternalAssetIffJob(void)
 {
+    const WORD SOURCE_SELECT_GADS = 0;
+    const WORD SOURCE_SELECT_LOGO = 1;
+    const WORD RESULT_REJECTED = 0;
+    const WORD RESULT_ACCEPTED = 1;
+    const LONG LOGO_LIST_MAX_COUNT = 1;
+    const LONG GADS_LIST_MAX_COUNT = 2;
     const WORD RESULT_NO_CANDIDATE = -1;
     const WORD RESULT_PENDING = 1;
     const UBYTE SOURCE_TYPE_LOGO = 4;
@@ -75,16 +81,16 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
     }
 
     if (ESQIFF_AssetSourceSelect != 0) {
-        if (ESQIFF_LogoBrushListCount >= 1) {
+        if (ESQIFF_LogoBrushListCount >= LOGO_LIST_MAX_COUNT) {
             _LVOPermit();
-            return 0;
+            return RESULT_REJECTED;
         }
     }
 
-    if (ESQIFF_AssetSourceSelect == 0) {
-        if (ESQIFF_GAdsBrushListCount >= 2) {
+    if (ESQIFF_AssetSourceSelect == SOURCE_SELECT_GADS) {
+        if (ESQIFF_GAdsBrushListCount >= GADS_LIST_MAX_COUNT) {
             _LVOPermit();
-            return 0;
+            return RESULT_REJECTED;
         }
     }
 
@@ -92,11 +98,11 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
 
     candidate[0] = 0;
     initialLineIndex = ESQIFF_LogoListLineIndex;
-    accepted = 0;
+    accepted = RESULT_REJECTED;
 
-    if (Global_REF_LONG_DF0_LOGO_LST_DATA != 0 && ESQIFF_AssetSourceSelect != 0) {
+    if (Global_REF_LONG_DF0_LOGO_LST_DATA != 0 && ESQIFF_AssetSourceSelect == SOURCE_SELECT_LOGO) {
         /* candidate source is usable */
-    } else if (Global_REF_LONG_GFX_G_ADS_DATA != 0 && ESQIFF_AssetSourceSelect == 0) {
+    } else if (Global_REF_LONG_GFX_G_ADS_DATA != 0 && ESQIFF_AssetSourceSelect == SOURCE_SELECT_GADS) {
         /* candidate source is usable */
     } else {
         goto finalize_no_candidate;
@@ -119,9 +125,9 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         pathLen = (LONG)(measure - candidate);
         if (pathLen != 0) {
             sourceSelect = ESQIFF_AssetSourceSelect;
-            if (sourceSelect != 0) {
+            if (sourceSelect == SOURCE_SELECT_LOGO) {
                 if (ESQIFF_ExternalAssetPathCommaFlag != 0) {
-                    accepted = 1;
+                    accepted = RESULT_ACCEPTED;
                 } else {
                     for (i = 0; i < ESQIFF_WILDCARD_SCAN_LIMIT; ++i) {
                         wildcardProbe[i] = candidate[i];
@@ -137,7 +143,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
 
                     if (ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(
                             GCOMMAND_FindPathSeparator(wildcardProbe)) == 1) {
-                        accepted = 1;
+                        accepted = RESULT_ACCEPTED;
                         ESQIFF_ExternalAssetStateTable = TEXTDISP_CurrentMatchIndex;
                     } else {
                         ESQDISP_ProcessGridMessagesIfIdle();
@@ -151,12 +157,12 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
                                ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, candidate, ESQIFF_RAM_LOGOS_PREFIX_LEN) == 0) {
                     /* rejected prefix */
                 } else {
-                    accepted = 1;
+                    accepted = RESULT_ACCEPTED;
                 }
             }
         }
 
-        if (accepted != 0) {
+        if (accepted != RESULT_REJECTED) {
             break;
         }
 
@@ -193,7 +199,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         timeoutState = RESULT_PENDING;
         ESQDISP_ProcessGridMessagesIfIdle();
 
-        if (ESQIFF_AssetSourceSelect != 0) {
+        if (ESQIFF_AssetSourceSelect == SOURCE_SELECT_LOGO) {
             headNodeLong = ESQIFF_LogoBrushListHead;
         } else {
             headNodeLong = ESQIFF_GAdsBrushListHead;
@@ -219,7 +225,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         if (duplicateHeadPath == 0) {
             pendingNode = (ESQIFF_PendingBrushNode *)ESQIFF_JMPTBL_BRUSH_AllocBrushNode(candidate, 0);
             ESQIFF_PendingExternalBrushNode = (LONG)pendingNode;
-            if (ESQIFF_AssetSourceSelect != 0) {
+            if (ESQIFF_AssetSourceSelect == SOURCE_SELECT_LOGO) {
                 pendingNode->sourceType190 = SOURCE_TYPE_LOGO;
                 CTASKS_PendingLogoBrushDescriptor = (LONG)pendingNode;
             } else {
@@ -253,7 +259,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
     }
 
 finalize_no_candidate:
-    if (accepted == 0) {
+    if (accepted == RESULT_REJECTED) {
         timeoutState = RESULT_NO_CANDIDATE;
     }
 
