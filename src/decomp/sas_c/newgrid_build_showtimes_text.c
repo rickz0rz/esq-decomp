@@ -117,15 +117,19 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
         for (row = ctx->startRow; row < rowEnd; row++) {
                 LONG col = ctx->startCol;
                 while (col < ctx->endCol) {
-                NEWGRID_Entry *entry = 0;
-                NEWGRID_AuxData *coi = 0;
+                NEWGRID_Entry *entryMut = 0;
+                NEWGRID_AuxData *coiMut = 0;
+                const NEWGRID_Entry *entry = 0;
+                const NEWGRID_AuxData *coi = 0;
                 LONG idx;
                 const char *t;
                 const char *f1;
                 const char *f2;
                 const char *f3;
 
-                idx = NEWGRID_UpdatePresetEntry((char **)&entry, (char **)&coi, row, col);
+                idx = NEWGRID_UpdatePresetEntry((char **)&entryMut, (char **)&coiMut, row, col);
+                entry = entryMut;
+                coi = coiMut;
                 if (!entry || !coi) {
                     col++;
                     continue;
@@ -133,7 +137,7 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
 
                 if (row == ctx->startRow) {
                     LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((const char *)entry, (const char *)coi, idx);
-                    if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState((char *)entry, (char *)coi, prev,
+                    if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState((char *)entryMut, (char *)coiMut, prev,
                         GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes) == 0) {
                         col++;
                         continue;
@@ -158,7 +162,7 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
                     continue;
                 }
 
-                coi->rowFlags[idx] |= 0x20;
+                coiMut->rowFlags[idx] |= 0x20;
 
                 if (out[0] == 0) {
                     PARSEINI_JMPTBL_STRING_AppendAtNull(out, Global_STR_SHOWTIMES_AND_SINGLE_SPACE);
@@ -167,7 +171,7 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
                                                   Global_STR_SHOWTIMES_AND_SINGLE_SPACE, 0x7fffffff);
                 }
 
-                TEXTDISP_FormatEntryTimeForIndex(tempTime, idx, (char *)coi);
+                TEXTDISP_FormatEntryTimeForIndex(tempTime, idx, (char *)coiMut);
                 if (NEWGRID_AddShowtimeBucketEntry(NEWGRID2_JMPTBL_STR_SkipClass3Chars(tempTime), idx) == 0) {
                     LONG w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, gridCtx,
                                             NEWGRID2_JMPTBL_STR_SkipClass3Chars(tempTime), 0x7fffffff);
