@@ -40,7 +40,7 @@ void NEWGRID_DrawDateBanner(char *gridCtx)
     char dateText[100];
     NEWGRID_Context *ctx;
     NEWGRID_RastPort *rast;
-    char *p;
+    const char *p;
     LONG dateLen;
     LONG xBase;
     LONG x;
