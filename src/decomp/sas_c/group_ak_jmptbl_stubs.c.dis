@@ -65,6 +65,7 @@ GROUP_AK_JMPTBL_PARSEINI_WriteEr:
 ___GROUP_AK_JMPTBL_PARSEINI_WriteEr__1:
               BSR.W          PARSEINI_WriteErrorLogEntry;6100 0000 
 ___GROUP_AK_JMPTBL_PARSEINI_WriteEr__2:
+___GROUP_AK_JMPTBL_PARSEINI_WriteEr__3:
               RTS                                     ;4e75 
 GROUP_AK_JMPTBL_SCRIPT_DeassertC:
               CMP.L          __base(A4),A7            ;bfec 0000 

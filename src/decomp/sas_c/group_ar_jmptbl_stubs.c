@@ -1,9 +1,9 @@
-extern void PARSEINI_WriteErrorLogEntry(void);
+extern long PARSEINI_WriteErrorLogEntry(void);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 
-void GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry(void)
+long GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry(void)
 {
-    PARSEINI_WriteErrorLogEntry();
+    return PARSEINI_WriteErrorLogEntry();
 }
 
 char *GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, const char *src)

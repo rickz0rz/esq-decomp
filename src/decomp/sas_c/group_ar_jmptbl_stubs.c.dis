@@ -6,6 +6,7 @@ GROUP_AR_JMPTBL_PARSEINI_WriteEr:
 ___GROUP_AR_JMPTBL_PARSEINI_WriteEr__1:
               BSR.W          PARSEINI_WriteErrorLogEntry;6100 0000 
 ___GROUP_AR_JMPTBL_PARSEINI_WriteEr__2:
+___GROUP_AR_JMPTBL_PARSEINI_WriteEr__3:
               RTS                                     ;4e75 
 __const:
 __strings:
