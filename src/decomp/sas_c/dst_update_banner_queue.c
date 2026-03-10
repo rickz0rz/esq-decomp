@@ -25,7 +25,6 @@ typedef struct DST_BannerPair {
 
 LONG DST_UpdateBannerQueue(void *pair)
 {
-    const LONG PTR_NULL = 0;
     const LONG COUNTDOWN_ACTIVE = 1;
     const LONG STEP_FORWARD = 1;
     const LONG STEP_BACKWARD = -1;
@@ -36,11 +35,11 @@ LONG DST_UpdateBannerQueue(void *pair)
     DST_BannerPair *p = (DST_BannerPair *)pair;
     LONG changed = FLAG_FALSE;
 
-    if (p == (DST_BannerPair *)PTR_NULL) {
+    if (!p) {
         return FLAG_FALSE;
     }
 
-    if (p->primaryBanner != (DST_BannerStruct *)PTR_NULL) {
+    if (p->primaryBanner) {
         DST_BannerStruct *slot0 = p->primaryBanner;
         slot0->countdown16 = DST_PrimaryCountdown;
 
@@ -60,7 +59,7 @@ LONG DST_UpdateBannerQueue(void *pair)
     }
 
     if (ESQ_SecondarySlotModeFlagChar == SECONDARY_MODE_ENABLED) {
-        if (p->secondaryBanner != (DST_BannerStruct *)PTR_NULL) {
+        if (p->secondaryBanner) {
             DST_BannerStruct *slot1 = p->secondaryBanner;
             slot1->countdown16 = DST_SecondaryCountdown;
 

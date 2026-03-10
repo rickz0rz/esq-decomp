@@ -1,4 +1,4 @@
-extern long DATETIME_NormalizeStructToSeconds(void *in_struct);
+extern long DATETIME_NormalizeStructToSeconds(const void *in_struct);
 extern void DATETIME_SecondsToStruct(long seconds, void *out_struct);
 extern long GROUP_AG_JMPTBL_MATH_Mulu32(long lhs, long rhs);
 
@@ -10,7 +10,7 @@ enum {
     DATETIME_STRUCT_DST_FLAG_OFFSET = 14
 };
 
-long DATETIME_BuildFromBaseDay(void *in_struct, void *out_struct, long daySlot, long dstFlagWord)
+long DATETIME_BuildFromBaseDay(const void *in_struct, void *out_struct, long daySlot, long dstFlagWord)
 {
     long base_seconds;
     long scaled_offset;
