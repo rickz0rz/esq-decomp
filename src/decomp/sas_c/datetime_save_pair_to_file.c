@@ -26,7 +26,7 @@ LONG DATETIME_SavePairToFile(const DateTimePair *pair)
     const LONG FILEHANDLE_INVALID = 0;
     LONG outputFileHandle;
 
-    if (pair == 0) {
+    if (!pair) {
         return DATETIME_SAVE_FAILED;
     }
     if (!pair->in_ptr) {
