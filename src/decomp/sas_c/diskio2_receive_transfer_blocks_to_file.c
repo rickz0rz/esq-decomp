@@ -17,7 +17,7 @@ extern ULONG DISKIO2_TransferCrcErrorCount;
 extern UWORD ESQIFF_ParseAttemptCount;
 extern UBYTE ESQIFF_RecordChecksumByte;
 extern ULONG DISKIO2_TransferCrc32Table[256];
-extern UBYTE DISKIO2_TransferFilenameBuffer[];
+extern char DISKIO2_TransferFilenameBuffer[];
 extern UBYTE BRUSH_SnapshotHeader[];
 
 LONG DISKIO2_ReceiveTransferBlocksToFile(UBYTE verifyCrc32)
@@ -46,10 +46,10 @@ LONG DISKIO2_ReceiveTransferBlocksToFile(UBYTE verifyCrc32)
         }
 
         {
-            UBYTE *src = DISKIO2_TransferFilenameBuffer;
+            char *src = DISKIO2_TransferFilenameBuffer;
             UBYTE *dst = BRUSH_SnapshotHeader;
             do {
-                *dst++ = *src;
+                *dst++ = (UBYTE)*src;
             } while (*src++ != 0);
         }
         GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(1);

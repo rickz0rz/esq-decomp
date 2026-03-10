@@ -34,23 +34,24 @@ ___DISKIO2_ReceiveTransferBlocksToF__5:
               MOVE.B         DISKIO2_TransferBlockSequence(A4),D1;122c 0000 
               MOVE.B         D0,$1f(A7)               ;1f40 001f 
               CMP.B          D0,D1                    ;b200 
-              BEQ.B          ___DISKIO2_ReceiveTransferBlocksToF__12;672c 
+              BEQ.B          ___DISKIO2_ReceiveTransferBlocksToF__12;672e 
 ___DISKIO2_ReceiveTransferBlocksToF__6:
               ADDQ.B         #$1,D0                   ;5200 
               CMP.B          D1,D0                    ;b001 
               BNE.B          ___DISKIO2_ReceiveTransferBlocksToF__8;6606 
 ___DISKIO2_ReceiveTransferBlocksToF__7:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___DISKIO2_ReceiveTransferBlocksToF__41;6000 01a8 
+              BRA.W          ___DISKIO2_ReceiveTransferBlocksToF__41;6000 01aa 
 ___DISKIO2_ReceiveTransferBlocksToF__8:
               LEA            DISKIO2_TransferFilenameBuffer(A4),A5;4bec 0000 
               LEA            BRUSH_SnapshotHeader(A4),A3;47ec 0000 
 ___DISKIO2_ReceiveTransferBlocksToF__9:
-              MOVE.B         (A5),(A3)+               ;16d5 
+              MOVE.B         (A5),D0                  ;1015 
+              MOVE.B         D0,(A3)+                 ;16c0 
 ___DISKIO2_ReceiveTransferBlocksToF__10:
               MOVE.B         (A5)+,D0                 ;101d 
               TST.B          D0                       ;4a00 
-              BNE.B          ___DISKIO2_ReceiveTransferBlocksToF__9;66f8 
+              BNE.B          ___DISKIO2_ReceiveTransferBlocksToF__9;66f6 
 ___DISKIO2_ReceiveTransferBlocksToF__11:
               PEA            ($1).w                   ;4878 0001 
               BSR.W          GROUP_AH_JMPTBL_ESQIFF2_ShowAtte;6100 0000 
