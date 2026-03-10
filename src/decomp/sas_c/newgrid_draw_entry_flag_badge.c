@@ -30,7 +30,7 @@ void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowIndex, cons
             if (animPtr != 0) {
                 NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(entry, (LONG)rowIndex);
                 NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(
-                    rastPort, NEWGRID_EntryDetailFmtStr, 19, animPtr, 20, (LONG)fallbackText
+                    rastPort, NEWGRID_EntryDetailFmtStr, 19, animPtr, 20, fallbackText
                 );
                 return;
             }

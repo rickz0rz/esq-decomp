@@ -88,16 +88,25 @@ NEWGRID2_JMPTBL_DISPTEXT_BuildLa:
               BCS.W          _XCOVF                   ;6500 0000 
               MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
 ___NEWGRID2_JMPTBL_DISPTEXT_BuildLa__1:
-              MOVE.L         $18(A7),D7               ;2e2f 0018 
-              MOVE.L         $14(A7),A3               ;266f 0014 
               MOVE.L         $10(A7),A5               ;2a6f 0010 
-              MOVE.L         D7,-(A7)                 ;2f07 
-              MOVE.L         A3,-(A7)                 ;2f0b 
-              MOVE.L         A5,-(A7)                 ;2f0d 
-              BSR.W          DISPTEXT_BuildLayoutForSource;6100 0000 
-              LEA            $c(A7),A7                ;4fef 000c 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              LEA            $18(A7),A3               ;47ef 0018 
+              TST.L          DISPTEXT_LineTableLockFlag(A4);4aac 0000 
+              BNE.B          ___NEWGRID2_JMPTBL_DISPTEXT_BuildLa__3;661e 
 ___NEWGRID2_JMPTBL_DISPTEXT_BuildLa__2:
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
+              PEA            Global_REF_1000_BYTES_ALLOCATED_(A4);486c 0000 
+              BSR.W          GROUP_AI_JMPTBL_FORMAT_FormatToB;6100 0000 
+              PEA            Global_REF_1000_BYTES_ALLOCATED_(A4);486c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          DISPTEXT_LayoutAndAppendToBuffer;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              LEA            $14(A7),A7               ;4fef 0014 
 ___NEWGRID2_JMPTBL_DISPTEXT_BuildLa__3:
+              MOVE.L         D7,D0                    ;2007 
+___NEWGRID2_JMPTBL_DISPTEXT_BuildLa__4:
+___NEWGRID2_JMPTBL_DISPTEXT_BuildLa__5:
               MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
               RTS                                     ;4e75 
 NEWGRID2_JMPTBL_BEVEL_DrawBevelF:
@@ -572,7 +581,9 @@ ___NEWGRID2_JMPTBL_MATH_Mulu32__3:
               XREF           DISPTEXT_LayoutAndAppendToBuffer
               XREF           DISPTEXT_GetTotalLineCount
               XREF           TLIBA_FindFirstWildcardMatchInde
-              XREF           DISPTEXT_BuildLayoutForSource
+              XREF           DISPTEXT_LineTableLockFlag
+              XREF           Global_REF_1000_BYTES_ALLOCATED_
+              XREF           GROUP_AI_JMPTBL_FORMAT_FormatToB
               XREF           BEVEL_DrawBevelFrameWithTopRight
               XREF           ESQDISP_GetEntryAuxPointerByMode
               XREF           BEVEL_DrawVerticalBevel

@@ -7,14 +7,14 @@ DISPTEXT_BuildLayoutForSource:
               BCS.W          _XCOVF                   ;6500 0000 
               MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
 ___DISPTEXT_BuildLayoutForSource__1:
-              MOVE.L         $14(A7),A3               ;266f 0014 
               MOVE.L         $10(A7),A5               ;2a6f 0010 
               MOVEQ.L        #$0,D7                   ;7e00 
+              LEA            $18(A7),A3               ;47ef 0018 
               TST.L          DISPTEXT_LineTableLockFlag(A4);4aac 0000 
               BNE.B          ___DISPTEXT_BuildLayoutForSource__3;661e 
 ___DISPTEXT_BuildLayoutForSource__2:
-              PEA            $18(A7)                  ;486f 0018 
               MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
               PEA            Global_REF_1000_BYTES_ALLOCATED_(A4);486c 0000 
               BSR.W          GROUP_AI_JMPTBL_FORMAT_FormatToB;6100 0000 
               PEA            Global_REF_1000_BYTES_ALLOCATED_(A4);486c 0000 

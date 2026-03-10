@@ -5,11 +5,13 @@ typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
 extern const char *COI_GetAnimFieldPointerByMode(const void *entry, UWORD key, UWORD mode);
+extern LONG DISPTEXT_LineTableLockFlag;
+extern char Global_REF_1000_BYTES_ALLOCATED_1[];
 extern void DISPTEXT_SetCurrentLineIndex(LONG lineIndex);
 extern LONG DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, const char *src);
 extern LONG DISPTEXT_GetTotalLineCount(void);
 extern LONG TLIBA_FindFirstWildcardMatchIndex(const char *wildcardPattern);
-extern LONG DISPTEXT_BuildLayoutForSource(char *rp, const char *fmt, LONG arg3);
+extern void GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2(char *dst, const char *fmt, void *argList);
 extern void BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY);
 extern const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern void BEVEL_DrawVerticalBevel(char *rastPort, LONG x, LONG topY, LONG bottomY);
@@ -44,7 +46,21 @@ void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG lineIndex){DISPTEXT_SetCu
 LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, const char *src){return DISPTEXT_LayoutAndAppendToBuffer(layoutCtx, src);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount(void){return DISPTEXT_GetTotalLineCount();}
 LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const char *wildcardPattern){return TLIBA_FindFirstWildcardMatchIndex(wildcardPattern);}
-LONG NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(char *rp, const char *fmt, LONG arg3){return DISPTEXT_BuildLayoutForSource(rp, fmt, arg3);}
+LONG NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(char *rp, const char *fmt, ...)
+{
+    LONG status = 0;
+    void *argList = (void *)(&fmt + 1);
+
+    if (DISPTEXT_LineTableLockFlag == 0) {
+        GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2(
+            Global_REF_1000_BYTES_ALLOCATED_1,
+            fmt,
+            argList);
+        status = DISPTEXT_LayoutAndAppendToBuffer(rp, Global_REF_1000_BYTES_ALLOCATED_1);
+    }
+
+    return status;
+}
 void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG leftX, LONG topY, LONG rightX, LONG bottomY){BEVEL_DrawBevelFrameWithTopRight(rastPort, leftX, topY, rightX, bottomY);}
 const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryAuxPointerByMode(index, mode);}
 void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(char *rastPort, LONG x, LONG topY, LONG bottomY){BEVEL_DrawVerticalBevel(rastPort, x, topY, bottomY);}
