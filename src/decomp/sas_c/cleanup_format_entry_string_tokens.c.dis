@@ -2,15 +2,15 @@
 __code:
 CLEANUP_FormatEntryStringTokens:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$28,D0                  ;90bc 0000 0028 
+              SUB.L          #$2c,D0                  ;90bc 0000 002c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$20,A7                  ;9efc 0020 
+              SUB.W          #$24,A7                  ;9efc 0024 
               MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
 ___CLEANUP_FormatEntryStringTokens__1:
-              MOVE.L         $40(A7),A2               ;246f 0040 
-              MOVE.L         $3c(A7),A3               ;266f 003c 
-              MOVE.L         $38(A7),A5               ;2a6f 0038 
+              MOVE.L         $44(A7),A2               ;246f 0044 
+              MOVE.L         $40(A7),A3               ;266f 0040 
+              MOVE.L         $3c(A7),A5               ;2a6f 003c 
               MOVE.L         A2,D0                    ;200a 
               BEQ.B          ___CLEANUP_FormatEntryStringTokens__4;6714 
 ___CLEANUP_FormatEntryStringTokens__2:
@@ -33,7 +33,7 @@ ___CLEANUP_FormatEntryStringTokens__4:
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,(A3)                  ;2680 
               LEA            $c(A7),A7                ;4fef 000c 
-              BRA.W          ___CLEANUP_FormatEntryStringTokens__52;6000 01d0 
+              BRA.W          ___CLEANUP_FormatEntryStringTokens__52;6000 01d8 
 ___CLEANUP_FormatEntryStringTokens__5:
               MOVEQ.L        #$0,D7                   ;7e00 
 ___CLEANUP_FormatEntryStringTokens__6:
@@ -50,34 +50,38 @@ ___CLEANUP_FormatEntryStringTokens__9:
               CLR.B          $2b(A7)                  ;422f 002b 
               MOVEQ.L        #$0,D7                   ;7e00 
               LEA            CLEANUP_TokenPairScratch(A4),A0;41ec 0000 
-              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              MOVE.L         A0,$30(A7)               ;2f48 0030 
 ___CLEANUP_FormatEntryStringTokens__10:
-              MOVE.L         $2c(A7),A0               ;206f 002c 
+              MOVE.L         $30(A7),A0               ;206f 0030 
               TST.B          (A0)                     ;4a10 
               BEQ.B          ___CLEANUP_FormatEntryStringTokens__12;670c 
 ___CLEANUP_FormatEntryStringTokens__11:
               MOVE.B         (A0)+,$15(A7,D7.L)       ;1f98 7815 
               ADDQ.L         #$1,D7                   ;5287 
-              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              MOVE.L         A0,$30(A7)               ;2f48 0030 
               BRA.B          ___CLEANUP_FormatEntryStringTokens__10;60ec 
 ___CLEANUP_FormatEntryStringTokens__12:
               CLR.B          $15(A7,D7.L)             ;4237 7815 
               MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.L         A2,$2c(A7)               ;2f4a 002c 
 ___CLEANUP_FormatEntryStringTokens__13:
               MOVEQ.L        #$5,D0                   ;7005 
               CMP.L          D0,D7                    ;be80 
-              BGE.B          ___CLEANUP_FormatEntryStringTokens__17;6c18 
+              BGE.B          ___CLEANUP_FormatEntryStringTokens__17;6c1c 
 ___CLEANUP_FormatEntryStringTokens__14:
-              MOVEQ.L        #$3a,D0                  ;703a 
-              CMP.B          $0(A2,D7.L),D0           ;b032 7800 
+              MOVE.L         $2c(A7),A0               ;206f 002c 
+              MOVE.B         (A0),D0                  ;1010 
+              MOVEQ.L        #$3a,D1                  ;723a 
+              CMP.B          D1,D0                    ;b001 
               BEQ.B          ___CLEANUP_FormatEntryStringTokens__17;6710 
 ___CLEANUP_FormatEntryStringTokens__15:
-              TST.B          $0(A2,D7.L)              ;4a32 7800 
-              BEQ.B          ___CLEANUP_FormatEntryStringTokens__17;670a 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___CLEANUP_FormatEntryStringTokens__17;670c 
 ___CLEANUP_FormatEntryStringTokens__16:
-              MOVE.B         $0(A2,D7.L),$15(A7,D7.L) ;1fb2 7800 7815 
+              MOVE.B         D0,$15(A7,D7.L)          ;1f80 7815 
+              ADDQ.L         #$1,$2c(A7)              ;52af 002c 
               ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___CLEANUP_FormatEntryStringTokens__13;60e2 
+              BRA.B          ___CLEANUP_FormatEntryStringTokens__13;60de 
 ___CLEANUP_FormatEntryStringTokens__17:
               CLR.B          $15(A7,D7.L)             ;4237 7815 
               MOVE.L         (A5),-(A7)               ;2f15 
@@ -87,15 +91,15 @@ ___CLEANUP_FormatEntryStringTokens__17:
               ADDQ.W         #$8,A7                   ;504f 
               MOVEQ.L        #$0,D7                   ;7e00 
               LEA            CLOCK_STR_TOKEN_OUTPUT_TEMPLATE(A4),A0;41ec 0000 
-              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              MOVE.L         A0,$30(A7)               ;2f48 0030 
 ___CLEANUP_FormatEntryStringTokens__18:
-              MOVE.L         $2c(A7),A0               ;206f 002c 
+              MOVE.L         $30(A7),A0               ;206f 0030 
               TST.B          (A0)                     ;4a10 
               BEQ.B          ___CLEANUP_FormatEntryStringTokens__20;670c 
 ___CLEANUP_FormatEntryStringTokens__19:
               MOVE.B         (A0)+,$15(A7,D7.L)       ;1f98 7815 
               ADDQ.L         #$1,D7                   ;5287 
-              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              MOVE.L         A0,$30(A7)               ;2f48 0030 
               BRA.B          ___CLEANUP_FormatEntryStringTokens__18;60ec 
 ___CLEANUP_FormatEntryStringTokens__20:
               CLR.B          $15(A7,D7.L)             ;4237 7815 
@@ -103,10 +107,10 @@ ___CLEANUP_FormatEntryStringTokens__20:
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          GROUP_AI_JMPTBL_STR_FindCharPtr;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
               BEQ.B          ___CLEANUP_FormatEntryStringTokens__22;6704 
 ___CLEANUP_FormatEntryStringTokens__21:
-              ADDQ.L         #$1,$30(A7)              ;52af 0030 
+              ADDQ.L         #$1,$34(A7)              ;52af 0034 
 ___CLEANUP_FormatEntryStringTokens__22:
               MOVEQ.L        #$0,D7                   ;7e00 
 ___CLEANUP_FormatEntryStringTokens__23:
@@ -114,7 +118,7 @@ ___CLEANUP_FormatEntryStringTokens__23:
               CMP.L          D0,D7                    ;be80 
               BGE.W          ___CLEANUP_FormatEntryStringTokens__51;6c00 0112 
 ___CLEANUP_FormatEntryStringTokens__24:
-              MOVE.L         $30(A7),D0               ;202f 0030 
+              MOVE.L         $34(A7),D0               ;202f 0034 
               BEQ.W          ___CLEANUP_FormatEntryStringTokens__51;6700 010a 
 ___CLEANUP_FormatEntryStringTokens__25:
               MOVE.L         D0,A0                    ;2040 
@@ -177,7 +181,7 @@ ___CLEANUP_FormatEntryStringTokens__38:
               TST.B          D1                       ;4a01 
               BEQ.B          ___CLEANUP_FormatEntryStringTokens__48;675e 
 ___CLEANUP_FormatEntryStringTokens__39:
-              MOVE.L         $30(A7),A1               ;226f 0030 
+              MOVE.L         $34(A7),A1               ;226f 0034 
               TST.B          $1(A1,D7.L)              ;4a31 7801 
               BEQ.B          ___CLEANUP_FormatEntryStringTokens__48;6754 
 ___CLEANUP_FormatEntryStringTokens__40:
@@ -238,7 +242,7 @@ ___CLEANUP_FormatEntryStringTokens__51:
               ADDQ.W         #$8,A7                   ;504f 
 ___CLEANUP_FormatEntryStringTokens__52:
               MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
-              ADD.W          #$20,A7                  ;defc 0020 
+              ADD.W          #$24,A7                  ;defc 0024 
               RTS                                     ;4e75 
 __const:
 __strings:
