@@ -11,9 +11,9 @@ typedef struct NEWGRID_Entry {
 
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 
-LONG NEWGRID_ShouldOpenEditor(char *entry)
+LONG NEWGRID_ShouldOpenEditor(const char *entry)
 {
-    NEWGRID_Entry *entryView;
+    const NEWGRID_Entry *entryView;
     char *primaryScan;
     char *secondaryScan;
 
@@ -21,7 +21,7 @@ LONG NEWGRID_ShouldOpenEditor(char *entry)
         return 0;
     }
 
-    entryView = (NEWGRID_Entry *)entry;
+    entryView = (const NEWGRID_Entry *)entry;
     primaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->primaryText);
     secondaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->shortText);
 

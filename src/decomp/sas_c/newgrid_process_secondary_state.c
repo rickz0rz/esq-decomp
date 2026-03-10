@@ -11,7 +11,7 @@ struct NEWGRID_Entry {
 extern LONG NEWGRID_SecondaryWorkflowState;
 extern LONG NEWGRID_SecondarySelectedEntryIndex;
 extern LONG NEWGRID_SecondarySelectionHintCounter;
-extern NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
+extern const NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
 extern UBYTE GCOMMAND_DigitalNicheEnabledFlag;
 extern LONG GCOMMAND_NicheEditorLayoutPen;
@@ -24,7 +24,7 @@ extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG layoutPen, LONG rowPen
 extern LONG NEWGRID_UpdateGridState(char *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_ProcessGridEntries(char *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_FindNextEntryWithFlags(LONG mode, LONG startIndex);
-extern LONG NEWGRID_ShouldOpenEditor(NEWGRID_Entry *entry);
+extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern void NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
 extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
@@ -33,7 +33,7 @@ LONG NEWGRID_ProcessSecondaryState(char *ctx, WORD rowIndex)
 {
     LONG scannedThisStep;
     LONG state;
-    NEWGRID_Entry *entry;
+    const NEWGRID_Entry *entry;
 
     scannedThisStep = 0;
 

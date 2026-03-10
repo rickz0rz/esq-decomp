@@ -13,9 +13,9 @@ extern LONG NEWGRID_GridSelectionEntryIndex;
 extern LONG NEWGRID_GridSelectionColumnAdjust;
 extern UBYTE CONFIG_NewgridSelectionCode48_49EnabledFlag;
 extern UBYTE CONFIG_NewgridSelectionCode32EnabledFlag;
-extern NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
+extern const NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
-extern LONG NEWGRID_ShouldOpenEditor(NEWGRID_Entry *entry);
+extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern LONG NEWGRID_UpdateGridState(char *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_ProcessGridEntries(char *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_FindNextFlaggedEntry(LONG mode, LONG startIndex);
@@ -26,7 +26,7 @@ extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
 LONG NEWGRID_HandleGridSelection(char *ctx, WORD rowIndex)
 {
     LONG scannedThisStep;
-    NEWGRID_Entry *entry;
+    const NEWGRID_Entry *entry;
     LONG state;
 
     scannedThisStep = 0;
