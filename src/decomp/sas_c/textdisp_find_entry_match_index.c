@@ -19,7 +19,7 @@ extern UWORD TEXTDISP_ActiveGroupId;
 extern UWORD TEXTDISP_CurrentMatchIndex;
 extern UWORD CLOCK_HalfHourSlotIndex;
 
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entryPtr, char *auxPtr, LONG startIndex);
 extern char *TEXTDISP_FindControlToken(char *textPtr);
@@ -42,7 +42,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
     const LONG BIT_TEST_TRUE = -1;
     const UBYTE CH_NUL = 0;
     const LONG MATCH_TRUE = -1;
-    TEXTDISP_AuxData *aux;
+    const TEXTDISP_AuxData *aux;
     const TEXTDISP_CandidateEntry *entry;
     char *inputCtrl;
     char *inputStart;
@@ -73,13 +73,13 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
 
     if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
         slot = (LONG)CLOCK_HalfHourSlotIndex;
-        aux = (TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+        aux = (const TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_PRIMARY);
         entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_PRIMARY);
     } else {
         slot = SLOT_FIRST;
-        aux = (TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+        aux = (const TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
         entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
