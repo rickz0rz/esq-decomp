@@ -184,6 +184,7 @@ ESQPARS_JMPTBL_SCRIPT_ReadSerial:
 ___ESQPARS_JMPTBL_SCRIPT_ReadSerial__1:
               BSR.W          SCRIPT_ReadNextRbfByte   ;6100 0000 
 ___ESQPARS_JMPTBL_SCRIPT_ReadSerial__2:
+___ESQPARS_JMPTBL_SCRIPT_ReadSerial__3:
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_ESQ_GenerateXorCh:
               CMP.L          __base(A4),A7            ;bfec 0000 

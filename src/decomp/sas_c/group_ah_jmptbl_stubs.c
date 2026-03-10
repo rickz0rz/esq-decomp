@@ -18,7 +18,7 @@ extern LONG LOCAVAIL_SaveAvailabilityDataFile(void *primaryStatePtr, void *secon
 extern void NEWGRID_RebuildIndexCache(void);
 extern LONG PARSE_ReadSignedLongSkipClass3(char *cursor);
 extern void P_TYPE_WritePromoIdDataFile(void);
-extern void SCRIPT_ReadNextRbfByte(void);
+extern LONG SCRIPT_ReadNextRbfByte(void);
 extern char *STR_FindAnyCharPtr(char *s, char *charset);
 
 void GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(ULONG mask, LONG setMode){ESQDISP_UpdateStatusMaskAndRefresh(mask, setMode);}
@@ -37,5 +37,5 @@ LONG GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(void *primaryStatePtr, vo
 void GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache(void){NEWGRID_RebuildIndexCache();}
 LONG GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(char *cursor){return PARSE_ReadSignedLongSkipClass3(cursor);}
 void GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile(void){P_TYPE_WritePromoIdDataFile();}
-void GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(void){SCRIPT_ReadNextRbfByte();}
+LONG GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(void){return SCRIPT_ReadNextRbfByte();}
 char *GROUP_AH_JMPTBL_STR_FindAnyCharPtr(char *s, char *charset){return STR_FindAnyCharPtr(s, charset);}

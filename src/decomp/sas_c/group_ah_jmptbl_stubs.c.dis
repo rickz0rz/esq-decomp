@@ -180,6 +180,7 @@ GROUP_AH_JMPTBL_SCRIPT_ReadSeria:
 ___GROUP_AH_JMPTBL_SCRIPT_ReadSeria__1:
               BSR.W          SCRIPT_ReadNextRbfByte   ;6100 0000 
 ___GROUP_AH_JMPTBL_SCRIPT_ReadSeria__2:
+___GROUP_AH_JMPTBL_SCRIPT_ReadSeria__3:
               RTS                                     ;4e75 
 GROUP_AH_JMPTBL_STR_FindAnyCharP:
               MOVE.L         A7,D0                    ;200f 

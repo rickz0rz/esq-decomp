@@ -22,7 +22,7 @@ extern void DST_UpdateBannerQueue(void);
 extern void ESQPROTO_ParseDigitLabelAndDisplay(void);
 extern void DISKIO_ParseConfigBuffer(void);
 extern void CLEANUP_ParseAlignedListingBlock(void);
-extern void SCRIPT_ReadNextRbfByte(void);
+extern long SCRIPT_ReadNextRbfByte(void);
 extern void ESQ_GenerateXorChecksumByte(void);
 extern void DST_RefreshBannerBuffer(void);
 extern void DISKIO_SaveConfigToFileHandle(void);
@@ -51,7 +51,7 @@ void ESQPARS_JMPTBL_DST_UpdateBannerQueue(void){DST_UpdateBannerQueue();}
 void ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay(void){ESQPROTO_ParseDigitLabelAndDisplay();}
 void ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer(void){DISKIO_ParseConfigBuffer();}
 void ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock(void){CLEANUP_ParseAlignedListingBlock();}
-void ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void){SCRIPT_ReadNextRbfByte();}
+unsigned char ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void){return (unsigned char)SCRIPT_ReadNextRbfByte();}
 void ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(void){ESQ_GenerateXorChecksumByte();}
 void ESQPARS_JMPTBL_DST_RefreshBannerBuffer(void){DST_RefreshBannerBuffer();}
 void ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle(void){DISKIO_SaveConfigToFileHandle();}
