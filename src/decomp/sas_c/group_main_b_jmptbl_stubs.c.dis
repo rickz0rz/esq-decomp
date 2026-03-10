@@ -12,6 +12,7 @@ ___GROUP_MAIN_B_JMPTBL_DOS_Delay__1:
               BSR.W          DOS_Delay                ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___GROUP_MAIN_B_JMPTBL_DOS_Delay__2:
+___GROUP_MAIN_B_JMPTBL_DOS_Delay__3:
               MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 __const:
