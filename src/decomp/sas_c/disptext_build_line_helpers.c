@@ -27,6 +27,7 @@ char *DISPTEXT_BuildLineWithWidth(char *rp, const char *src, char *out, LONG wid
 
     for (;;) {
         const char *wordStart;
+        const char *scan;
         LONG wordLen;
         LONG wordWidth;
 
@@ -50,7 +51,8 @@ char *DISPTEXT_BuildLineWithWidth(char *rp, const char *src, char *out, LONG wid
         src = GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN(src, wordBuf, 50, DISPTEXT_STR_SINGLE_SPACE_DELIM);
 
         wordLen = 0;
-        while (wordBuf[wordLen] != 0) {
+        scan = wordBuf;
+        while (*scan++ != 0) {
             wordLen++;
         }
 

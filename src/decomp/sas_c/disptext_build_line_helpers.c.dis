@@ -2,16 +2,16 @@
 __code:
 DISPTEXT_BuildLineWithWidth:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$54,D0                  ;90bc 0000 0054 
+              SUB.L          #$58,D0                  ;90bc 0000 0058 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$44,A7                  ;9efc 0044 
+              SUB.W          #$48,A7                  ;9efc 0048 
               MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 3f34 
 ___DISPTEXT_BuildLineWithWidth__1:
-              MOVE.L         $78(A7),D7               ;2e2f 0078 
-              MOVE.L         $74(A7),A2               ;246f 0074 
-              MOVE.L         $70(A7),A3               ;266f 0070 
-              MOVE.L         $6c(A7),A5               ;2a6f 006c 
+              MOVE.L         $7c(A7),D7               ;2e2f 007c 
+              MOVE.L         $78(A7),A2               ;246f 0078 
+              MOVE.L         $74(A7),A3               ;266f 0074 
+              MOVE.L         $70(A7),A5               ;2a6f 0070 
               PEA            ($1).w                   ;4878 0001 
               PEA            DISPTEXT_STR_SINGLE_SPACE_MEASUR(A4);486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
@@ -22,15 +22,15 @@ ___DISPTEXT_BuildLineWithWidth__1:
               CLR.B          (A2)                     ;4212 
 ___DISPTEXT_BuildLineWithWidth__2:
               MOVE.L         A3,D0                    ;200b 
-              BEQ.W          ___DISPTEXT_BuildLineWithWidth__32;6700 012c 
+              BEQ.W          ___DISPTEXT_BuildLineWithWidth__32;6700 013c 
 ___DISPTEXT_BuildLineWithWidth__3:
 ___DISPTEXT_BuildLineWithWidth__4:
               TST.B          (A3)                     ;4a13 
-              BEQ.W          ___DISPTEXT_BuildLineWithWidth__32;6700 0126 
+              BEQ.W          ___DISPTEXT_BuildLineWithWidth__32;6700 0136 
 ___DISPTEXT_BuildLineWithWidth__5:
 ___DISPTEXT_BuildLineWithWidth__6:
               CMP.L          D6,D7                    ;be86 
-              BLE.W          ___DISPTEXT_BuildLineWithWidth__32;6f00 0120 
+              BLE.W          ___DISPTEXT_BuildLineWithWidth__32;6f00 0130 
 ___DISPTEXT_BuildLineWithWidth__7:
 ___DISPTEXT_BuildLineWithWidth__8:
               TST.B          (A2)                     ;4a12 
@@ -45,7 +45,7 @@ ___DISPTEXT_BuildLineWithWidth__10:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          GROUP_AI_JMPTBL_STR_SkipClass3Ch;6100 0000 
               MOVE.L         D0,A3                    ;2640 
-              MOVE.L         A3,$68(A7)               ;2f4b 0068 
+              MOVE.L         A3,$6c(A7)               ;2f4b 006c 
               PEA            DISPTEXT_STR_SINGLE_SPACE_DELIM(A4);486c 0000 
               PEA            ($32).w                  ;4878 0032 
               PEA            $32(A7)                  ;486f 0032 
@@ -54,12 +54,17 @@ ___DISPTEXT_BuildLineWithWidth__10:
               MOVE.L         D0,A3                    ;2640 
               LEA            $14(A7),A7               ;4fef 0014 
               MOVEQ.L        #$0,D5                   ;7a00 
+              LEA            $26(A7),A0               ;41ef 0026 
+              MOVE.L         A0,$64(A7)               ;2f48 0064 
 ___DISPTEXT_BuildLineWithWidth__11:
-              TST.B          $26(A7,D5.L)             ;4a37 5826 
+              MOVE.L         $64(A7),A0               ;206f 0064 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$64(A7)               ;2f48 0064 
+              TST.B          D0                       ;4a00 
               BEQ.B          ___DISPTEXT_BuildLineWithWidth__13;6704 
 ___DISPTEXT_BuildLineWithWidth__12:
               ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___DISPTEXT_BuildLineWithWidth__11;60f6 
+              BRA.B          ___DISPTEXT_BuildLineWithWidth__11;60ee 
 ___DISPTEXT_BuildLineWithWidth__13:
               MOVE.L         D5,-(A7)                 ;2f05 
               PEA            $2a(A7)                  ;486f 002a 
@@ -67,7 +72,7 @@ ___DISPTEXT_BuildLineWithWidth__13:
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOTextLength           ;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVE.L         $64(A7),A0               ;206f 0064 
+              MOVE.L         $68(A7),A0               ;206f 0068 
               MOVE.B         (A0),D1                  ;1210 
               MOVEM.L        D0,$60(A7)               ;48ef 0001 0060 
               MOVEQ.L        #$13,D0                  ;7013 
@@ -99,10 +104,10 @@ ___DISPTEXT_BuildLineWithWidth__19:
 ___DISPTEXT_BuildLineWithWidth__20:
               MOVE.L         A0,A3                    ;2648 
               MOVEQ.L        #$0,D7                   ;7e00 
-              BRA.W          ___DISPTEXT_BuildLineWithWidth__2;6000 ff50 
+              BRA.W          ___DISPTEXT_BuildLineWithWidth__2;6000 ff40 
 ___DISPTEXT_BuildLineWithWidth__21:
               CMP.B          D0,D1                    ;b200 
-              BEQ.W          ___DISPTEXT_BuildLineWithWidth__2;6700 ff4a 
+              BEQ.W          ___DISPTEXT_BuildLineWithWidth__2;6700 ff3a 
 ___DISPTEXT_BuildLineWithWidth__22:
 ___DISPTEXT_BuildLineWithWidth__23:
               MOVE.L         $60(A7),D0               ;202f 0060 
@@ -131,28 +136,28 @@ ___DISPTEXT_BuildLineWithWidth__27:
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___DISPTEXT_BuildLineWithWidth__28:
-              MOVE.L         $64(A7),A0               ;206f 0064 
+              MOVE.L         $68(A7),A0               ;206f 0068 
               ADD.L          D5,A0                    ;d1c5 
               MOVE.L         A0,A3                    ;2648 
               MOVEQ.L        #$0,D7                   ;7e00 
-              BRA.W          ___DISPTEXT_BuildLineWithWidth__2;6000 ff00 
+              BRA.W          ___DISPTEXT_BuildLineWithWidth__2;6000 fef0 
 ___DISPTEXT_BuildLineWithWidth__29:
               PEA            $26(A7)                  ;486f 0026 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               SUB.L          $60(A7),D7               ;9eaf 0060 
-              MOVE.L         $64(A7),A0               ;206f 0064 
+              MOVE.L         $68(A7),A0               ;206f 0068 
               MOVE.B         (A0),D0                  ;1010 
               MOVEQ.L        #$13,D1                  ;7213 
               CMP.B          D1,D0                    ;b001 
-              BNE.W          ___DISPTEXT_BuildLineWithWidth__2;6600 fee2 
+              BNE.W          ___DISPTEXT_BuildLineWithWidth__2;6600 fed2 
 ___DISPTEXT_BuildLineWithWidth__30:
               MOVE.W         DISPTEXT_ControlMarkersEnabledFl(A4),D0;302c 0000 
               ORI.W          #$ffffffff,D0            ;0040 ffff 
               MOVE.W         D0,DISPTEXT_ControlMarkersEnabledFl(A4);3940 0000 
 ___DISPTEXT_BuildLineWithWidth__31:
-              BRA.W          ___DISPTEXT_BuildLineWithWidth__2;6000 fed2 
+              BRA.W          ___DISPTEXT_BuildLineWithWidth__2;6000 fec2 
 ___DISPTEXT_BuildLineWithWidth__32:
               TST.B          (A3)                     ;4a13 
               BNE.B          ___DISPTEXT_BuildLineWithWidth__34;6602 
@@ -163,7 +168,7 @@ ___DISPTEXT_BuildLineWithWidth__34:
 ___DISPTEXT_BuildLineWithWidth__35:
 ___DISPTEXT_BuildLineWithWidth__36:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
-              ADD.W          #$44,A7                  ;defc 0044 
+              ADD.W          #$48,A7                  ;defc 0048 
               RTS                                     ;4e75 
 __const:
 __strings:
