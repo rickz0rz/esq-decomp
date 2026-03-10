@@ -18,8 +18,8 @@ extern UWORD TEXTDISP_SecondaryGroupEntryCount;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
 
-extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 
 void NEWGRID_ClearEntryMarkerBits(void *unused, WORD modeSel)
 {
@@ -30,7 +30,7 @@ void NEWGRID_ClearEntryMarkerBits(void *unused, WORD modeSel)
     const UBYTE FLAG_FALSE = 0;
     LONG i;
     LONG j;
-    NEWGRID_Entry *entry;
+    const NEWGRID_Entry *entry;
     NEWGRID_AuxData *aux;
 
     (void)unused;
@@ -41,7 +41,7 @@ void NEWGRID_ClearEntryMarkerBits(void *unused, WORD modeSel)
             if (TEXTDISP_PrimaryGroupPresentFlag == FLAG_FALSE) {
                 break;
             }
-            entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
+            entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
             if ((entry->flags47 & (1u << BIT_SHIFT_ENTRY_MARKER)) != 0) {
                 aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
                 for (j = 1; j < 49; ++j) {
@@ -57,7 +57,7 @@ void NEWGRID_ClearEntryMarkerBits(void *unused, WORD modeSel)
         if (TEXTDISP_SecondaryGroupPresentFlag == FLAG_FALSE) {
             break;
         }
-        entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
+        entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
         if ((entry->flags47 & (1u << BIT_SHIFT_ENTRY_MARKER)) != 0) {
             aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
             for (j = 1; j < 49; ++j) {

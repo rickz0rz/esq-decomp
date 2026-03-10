@@ -13,8 +13,8 @@ extern UWORD TEXTDISP_SecondaryGroupEntryCount;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
 
-extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern LONG NEWGRID_TestEntrySelectable(char *entry, char *aux, LONG selectionCode);
 
 void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
@@ -27,7 +27,7 @@ void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
     const UBYTE FLAG_FALSE = 0;
     LONG i;
     LONG j;
-    char *entry;
+    const char *entry;
     NEWGRID_AuxData *aux;
 
     if (modeSel > MODE_PRIMARY_ALLOWED) {
@@ -38,7 +38,7 @@ void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
             }
             entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
             aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
-            if (NEWGRID_TestEntrySelectable(entry, (char *)aux, selectionCode) != 0) {
+            if (NEWGRID_TestEntrySelectable((char *)entry, (char *)aux, selectionCode) != 0) {
                 for (j = SLOT_FIRST; j < SLOT_LIMIT; ++j) {
                     aux->rowFlags[j] &= (UBYTE)~(1u << 5);
                 }
@@ -54,7 +54,7 @@ void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
         }
         entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
         aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
-        if (NEWGRID_TestEntrySelectable(entry, (char *)aux, selectionCode) != 0) {
+        if (NEWGRID_TestEntrySelectable((char *)entry, (char *)aux, selectionCode) != 0) {
             for (j = SLOT_FIRST; j < SLOT_LIMIT; ++j) {
                 aux->rowFlags[j] &= (UBYTE)~(1u << 5);
             }
