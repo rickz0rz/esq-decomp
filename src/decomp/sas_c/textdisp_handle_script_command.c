@@ -37,7 +37,7 @@ extern LONG TEXTDISP_SelectGroupAndEntry(const char *cmd, char *primarySearch, L
 extern UBYTE SCRIPT_GetBannerCharOrFallback(void);
 extern void TEXTDISP_BuildNowShowingStatusLine(LONG group, LONG match, LONG bannerChar);
 extern void SCRIPT_ResetBannerCharDefaults(void);
-extern void TEXTDISP_BuildEntryPairStatusLine(LONG group, LONG match, LONG bannerChar);
+extern void TEXTDISP_BuildEntryPairStatusLine(unsigned short group, unsigned short match, unsigned short bannerChar);
 extern void TEXTDISP_SetEntryTextFields(TEXTDISP_SelectionEntry *entry, const char *shortText, const char *longText);
 extern LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entry, LONG mode);
 extern void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entry);
