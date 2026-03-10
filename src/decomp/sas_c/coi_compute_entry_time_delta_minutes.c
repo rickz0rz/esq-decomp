@@ -17,7 +17,7 @@ typedef struct COI_AuxEntry {
     UBYTE groupCode498;
 } COI_AuxEntry;
 
-LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, WORD slot)
+LONG COI_ComputeEntryTimeDeltaMinutes(const void *entry, WORD slot)
 {
     const LONG SLOT_INVALID = 49;
     const LONG SLOT_FIRST = 1;

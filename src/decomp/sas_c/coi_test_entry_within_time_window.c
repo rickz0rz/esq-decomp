@@ -22,7 +22,7 @@ extern UWORD CLOCK_HalfHourSlotIndex;
 
 LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG lead_char, const char *time_ctx, LONG slot);
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, LONG slot);
+LONG COI_ComputeEntryTimeDeltaMinutes(const void *entry, LONG slot);
 
 typedef struct COI_SubEntry {
     WORD slotKey0;
@@ -104,7 +104,7 @@ LONG COI_TestEntryWithinTimeWindow(const UBYTE *entry, const void *time_ctx, WOR
             delta_minutes = fallback_delta;
         }
     } else {
-        delta_minutes = COI_ComputeEntryTimeDeltaMinutes((void *)entry, (LONG)slot) - offset_minutes;
+        delta_minutes = COI_ComputeEntryTimeDeltaMinutes(entry, (LONG)slot) - offset_minutes;
     }
 
     if (delta_minutes < 0 || offset_minutes > max_offset || offset_minutes < -delta_minutes) {
