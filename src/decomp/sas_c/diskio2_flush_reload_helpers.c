@@ -18,11 +18,9 @@ volatile UBYTE CTASKS_PendingPrimaryOiDiskId;
 volatile UBYTE CTASKS_SecondaryOiWritePendingFlag;
 volatile UBYTE CTASKS_PendingSecondaryOiDiskId;
 
-enum {
-    DISKIO2_FLAG_CLEAR = 0,
-    DISKIO2_FLAG_SET = 1,
-    DISKIO2_MAX_PRIMARY_ENTRY_COUNT_PLUS_ONE = 0xC9U
-};
+#define DISKIO2_FLAG_CLEAR 0
+#define DISKIO2_FLAG_SET 1
+#define DISKIO2_MAX_PRIMARY_ENTRY_COUNT_PLUS_ONE 0xC9U
 
 void DISKIO2_FlushDataFilesIfNeeded(void)
 {
