@@ -31,9 +31,9 @@ extern LONG NEWGRID_SetRowColor(char *gridCtx, LONG mode, LONG pen);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern void _LVORectFill(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
-extern LONG _LVOTextLength(char *rastPort, char *text, LONG len);
+extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
 extern void _LVOMove(char *rastPort, LONG x, LONG y);
-extern void _LVOText(char *rastPort, char *text, LONG len);
+extern void _LVOText(char *rastPort, const char *text, LONG len);
 
 void NEWGRID_DrawDateBanner(char *gridCtx)
 {
