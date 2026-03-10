@@ -15,7 +15,7 @@ extern UBYTE GCOMMAND_NicheWorkflowMode;
 extern char *GCOMMAND_DigitalNicheListingsTemplatePtr;
 
 extern void FLIB2_LoadDigitalNicheDefaults(void);
-extern void GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
+extern char *GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *text);
 extern LONG LADFUNC_ParseHexDigit(LONG c);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);

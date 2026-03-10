@@ -23,7 +23,7 @@ extern char *GCOMMAND_MplexAtTemplatePtr;
 extern const char GCOMMAND_FMT_PCT_T_MplexTemplateParse[];
 
 extern void FLIB2_LoadDigitalMplexDefaults(void);
-extern void GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
+extern char *GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *text);
 extern LONG LADFUNC_ParseHexDigit(LONG c);
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *text, LONG ch);

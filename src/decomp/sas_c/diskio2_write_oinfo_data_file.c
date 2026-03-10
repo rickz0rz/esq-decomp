@@ -3,8 +3,8 @@ typedef unsigned long ULONG;
 
 extern long DISKIO_OpenFileWithBuffer(const char *path, long mode);
 extern void DISKIO_WriteDecimalField(long handle, long value);
-extern void DISKIO_WriteBufferedBytes(long handle, const char *buf, ULONG len);
-extern void DISKIO_CloseBufferedFileAndFlush(long handle);
+extern long DISKIO_WriteBufferedBytes(long handle, const char *buf, ULONG len);
+extern long DISKIO_CloseBufferedFileAndFlush(long handle);
 
 extern const char CTASKS_PATH_OINFO_DAT[];
 extern long MODE_NEWFILE;
@@ -22,8 +22,8 @@ long DISKIO2_WriteOinfoDataFile(void)
     const char CH_NUL = 0;
     const ULONG STR_TERM_BYTES = 1;
     char empty = 0;
-    const char *line;
-    const char *scan;
+    const volatile char *line;
+    const volatile char *scan;
     ULONG len;
 
     DISKIO2_OinfoFileHandle = DISKIO_OpenFileWithBuffer(
@@ -37,21 +37,25 @@ long DISKIO2_WriteOinfoDataFile(void)
         DISKIO2_OinfoFileHandle,
         (long)TEXTDISP_PrimaryGroupCode);
 
-    line = ESQIFF_PrimaryLineHeadPtr != 0 ? ESQIFF_PrimaryLineHeadPtr : &empty;
+    line = ESQIFF_PrimaryLineHeadPtr != 0
+        ? (const volatile char *)ESQIFF_PrimaryLineHeadPtr
+        : (const volatile char *)&empty;
     scan = line;
     while (*scan != CH_NUL) {
         scan++;
     }
     len = (ULONG)(scan - line) + STR_TERM_BYTES;
-    DISKIO_WriteBufferedBytes(DISKIO2_OinfoFileHandle, line, len);
+    DISKIO_WriteBufferedBytes(DISKIO2_OinfoFileHandle, (const char *)line, len);
 
-    line = ESQIFF_PrimaryLineTailPtr != 0 ? ESQIFF_PrimaryLineTailPtr : &empty;
+    line = ESQIFF_PrimaryLineTailPtr != 0
+        ? (const volatile char *)ESQIFF_PrimaryLineTailPtr
+        : (const volatile char *)&empty;
     scan = line;
     while (*scan != CH_NUL) {
         scan++;
     }
     len = (ULONG)(scan - line) + STR_TERM_BYTES;
-    DISKIO_WriteBufferedBytes(DISKIO2_OinfoFileHandle, line, len);
+    DISKIO_WriteBufferedBytes(DISKIO2_OinfoFileHandle, (const char *)line, len);
 
     DISKIO_CloseBufferedFileAndFlush(DISKIO2_OinfoFileHandle);
     return RESULT_OK;

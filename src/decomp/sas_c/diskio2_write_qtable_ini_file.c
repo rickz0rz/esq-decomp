@@ -7,8 +7,8 @@ struct AliasPair {
 };
 
 extern long DISKIO_OpenFileWithBuffer(const char *path, long mode);
-extern void DISKIO_WriteBufferedBytes(long handle, const void *buf, ULONG len);
-extern void DISKIO_CloseBufferedFileAndFlush(long handle);
+extern long DISKIO_WriteBufferedBytes(long handle, const void *buf, ULONG len);
+extern long DISKIO_CloseBufferedFileAndFlush(long handle);
 
 extern const char CTASKS_PATH_QTABLE_INI[];
 extern long MODE_NEWFILE;

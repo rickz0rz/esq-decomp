@@ -17,8 +17,8 @@ extern PTypeEntry *P_TYPE_PrimaryGroupListPtr;
 extern PTypeEntry *P_TYPE_SecondaryGroupListPtr;
 
 extern LONG SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
-extern void SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(LONG handle, const void *buf, LONG len);
-extern void SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG handle);
+extern LONG SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(LONG handle, const void *buf, LONG len);
+extern LONG SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG handle);
 extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 
 void P_TYPE_WritePromoIdDataFile(void)

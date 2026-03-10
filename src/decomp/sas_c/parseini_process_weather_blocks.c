@@ -1,5 +1,6 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
+typedef unsigned long ULONG;
 
 #define MEMF_PUBLIC 1L
 #define MEMF_CLEAR 65536L
@@ -57,7 +58,7 @@ extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
 extern void *PARSEINI_JMPTBL_BRUSH_AllocBrushNode(char *entryText, void *existingNode);
 extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
-extern void SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, char *src, LONG n);
+extern char *SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 
 void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
 {
