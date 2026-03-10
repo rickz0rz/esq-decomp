@@ -24,7 +24,7 @@ void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth)
 
     controlPrefix = 25;
     current = text;
-    lastSpace = (char *)0;
+    lastSpace = 0;
     currentWidth = 0;
     context = (TEXTDISP_DisplayContext *)WDISP_DisplayContextBase;
     rastPort = (char *)context->rastPort;
@@ -50,13 +50,13 @@ void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth)
             }
             totalWidth = _LVOTextLength(rastPort, current, len);
             currentWidth = 0;
-            lastSpace = (char *)0;
+            lastSpace = 0;
             continue;
         }
 
         currentWidth += _LVOTextLength(rastPort, current, 1);
         if (currentWidth > maxWidth) {
-            if (lastSpace == (char *)0) {
+            if (lastSpace == 0) {
                 return;
             }
 
@@ -70,7 +70,7 @@ void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth)
             }
             totalWidth = _LVOTextLength(rastPort, current, len);
             currentWidth = 0;
-            lastSpace = (char *)0;
+            lastSpace = 0;
             continue;
         }
 
