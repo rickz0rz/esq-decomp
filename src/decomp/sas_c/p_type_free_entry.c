@@ -16,13 +16,13 @@ void P_TYPE_FreeEntry(UBYTE *entry)
 {
     P_TYPE_Entry *entryView;
 
-    if (entry == (UBYTE *)0) {
+    if (!entry) {
         return;
     }
 
     entryView = (P_TYPE_Entry *)entry;
 
-    if (entryView->payload != (UBYTE *)0) {
+    if (entryView->payload) {
         SCRIPT_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_P_TYPE_C_4,
             92,
