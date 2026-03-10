@@ -71,7 +71,7 @@ extern const char TLIBA1_FMT_BPL5PTH_COLON_0X_PCT_04LX_0X_PCT_04L[];
 extern const char TLIBA1_FMT_BPL5PTL_COLON_0X_PCT_04LX_0X_PCT_04L[];
 extern const char TLIBA1_STR_PatternDumpSeparatorNewline[];
 
-extern void FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
+extern LONG FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
 
 static ULONG join_ptr_words(UWORD hi, UWORD lo)
 {

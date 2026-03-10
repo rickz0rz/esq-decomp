@@ -6,6 +6,7 @@ GROUP_AX_JMPTBL_FORMAT_RawDoFmtW:
 ___GROUP_AX_JMPTBL_FORMAT_RawDoFmtW__1:
               BSR.W          FORMAT_RawDoFmtWithScratchBuffer;6100 0000 
 ___GROUP_AX_JMPTBL_FORMAT_RawDoFmtW__2:
+___GROUP_AX_JMPTBL_FORMAT_RawDoFmtW__3:
               RTS                                     ;4e75 
 __const:
 __strings:
