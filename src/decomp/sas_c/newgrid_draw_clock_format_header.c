@@ -33,9 +33,9 @@ extern void _LVORectFill(char *rastport, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastport, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slot, char *out_text);
 extern ULONG NEWGRID_JMPTBL_MATH_Mulu32(ULONG a, ULONG b);
-extern LONG _LVOTextLength(char *rastport, char *text, LONG len);
+extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
 extern void _LVOMove(char *rastport, LONG x, LONG y);
-extern void _LVOText(char *rastport, char *text, LONG len);
+extern void _LVOText(char *rastport, const char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(char *grid_ctx, LONG code);
 
 void NEWGRID_DrawClockFormatHeader(char *grid_ctx, LONG start_slot)
