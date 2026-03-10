@@ -11,7 +11,7 @@ typedef struct TEXTDISP_Entry {
 } TEXTDISP_Entry;
 
 extern TEXTDISP_AliasEntry *TEXTDISP_AliasPtrTable[];
-extern char TEXTDISP_CenterAlignToken[];
+extern const char TEXTDISP_CenterAlignToken[];
 
 extern LONG TEXTDISP_FindAliasIndexByName(const char *name);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
