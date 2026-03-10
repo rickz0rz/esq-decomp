@@ -47,7 +47,7 @@ LONG NEWGRID_ProcessShowtimesWorkflow(char *ctx, UWORD rowBase)
 
     if (!ctx) {
         if (NEWGRID_ShowtimesWorkflowState == 2 || NEWGRID_ShowtimesWorkflowState == 7) {
-            NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState((char *)ctx, 0, 0, 0);
+            NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState(ctx, 0, 0, 0);
         } else if (NEWGRID_ShowtimesWorkflowState == 5) {
             if (NEWGRID_ShouldOpenEditor((const NEWGRID_Entry *)NEWGRID_ShowtimesSelectionContextPtr.entry) != 0) {
                 NEWGRID_ShowtimesWorkflowState = NEWGRID_UpdateGridState(ctx, 0, 0);
