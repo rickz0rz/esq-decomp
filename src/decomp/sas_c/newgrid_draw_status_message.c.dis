@@ -2,14 +2,14 @@
 __code:
 NEWGRID_DrawStatusMessage:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c4,D0                  ;90bc 0000 00c4 
+              SUB.L          #$c8,D0                  ;90bc 0000 00c8 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$b0,A7                  ;9efc 00b0 
+              SUB.W          #$b4,A7                  ;9efc 00b4 
               MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
 ___NEWGRID_DrawStatusMessage__1:
-              MOVE.W         $d6(A7),D7               ;3e2f 00d6 
-              MOVE.L         $d0(A7),A5               ;2a6f 00d0 
+              MOVE.W         $da(A7),D7               ;3e2f 00da 
+              MOVE.L         $d4(A7),A5               ;2a6f 00d4 
               MOVE.L         A5,A3                    ;264d 
               PEA            ($21).w                  ;4878 0021 
               MOVE.L         GCOMMAND_MplexMessageFramePen(A4),D0;202c 0000 
@@ -28,7 +28,7 @@ ___NEWGRID_DrawStatusMessage__1:
               MOVE.L         D0,A2                    ;2440 
               MOVE.L         A2,(A7)                  ;2e8a 
               MOVE.L         GCOMMAND_MplexAtTemplatePtr(A4),-(A7);2f2c 0000 
-              PEA            $6c(A7)                  ;486f 006c 
+              PEA            $70(A7)                  ;486f 0070 
               BSR.W          PARSEINI_JMPTBL_WDISP_SPrintf;6100 0000 
               LEA            $3e(A3),A0               ;41eb 003e 
               MOVEQ.L        #$0,D0                   ;7000 
@@ -41,7 +41,7 @@ ___NEWGRID_DrawStatusMessage__1:
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         A0,-(A7)                 ;2f08 
-              MOVE.L         A0,$80(A7)               ;2f48 0080 
+              MOVE.L         A0,$84(A7)               ;2f48 0084 
               BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D0;302c 0000 
@@ -52,30 +52,35 @@ ___NEWGRID_DrawStatusMessage__2:
               PEA            ($2b7).w                 ;4878 02b7 
               CLR.L          -(A7)                    ;42a7 
               MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         $90(A7),-(A7)            ;2f2f 0090 
+              MOVE.L         $94(A7),-(A7)            ;2f2f 0094 
               BSR.W          NEWGRID2_JMPTBL_BEVEL_DrawBevelF;6100 0000 
               LEA            $50(A7),A7               ;4fef 0050 
               MOVE.L         GCOMMAND_MplexMessageTextPen(A4),-(A7);2f2c 0000 
-              MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
+              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
               BSR.W          _LVOSetAPen              ;6100 0000 
               CLR.L          (A7)                     ;4297 
-              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
               BSR.W          _LVOSetDrMd              ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
+              LEA            $4c(A7),A0               ;41ef 004c 
               MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.L         A0,$44(A7)               ;2f48 0044 
 ___NEWGRID_DrawStatusMessage__3:
-              TST.B          $48(A7,D6.L)             ;4a37 6848 
+              MOVE.L         $44(A7),A0               ;206f 0044 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$44(A7)               ;2f48 0044 
+              TST.B          D0                       ;4a00 
               BEQ.B          ___NEWGRID_DrawStatusMessage__5;6704 
 ___NEWGRID_DrawStatusMessage__4:
               ADDQ.L         #$1,D6                   ;5286 
-              BRA.B          ___NEWGRID_DrawStatusMessage__3;60f6 
+              BRA.B          ___NEWGRID_DrawStatusMessage__3;60ee 
 ___NEWGRID_DrawStatusMessage__5:
               TST.L          D6                       ;4a86 
               BLE.B          ___NEWGRID_DrawStatusMessage__9;6f30 
 ___NEWGRID_DrawStatusMessage__6:
               MOVE.L         D6,-(A7)                 ;2f06 
-              PEA            $4c(A7)                  ;486f 004c 
-              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
+              PEA            $50(A7)                  ;486f 0050 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
               BSR.W          _LVOTextLength           ;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
               LEA            $c(A7),A7                ;4fef 000c 
@@ -96,8 +101,8 @@ ___NEWGRID_DrawStatusMessage__8:
               BRA.B          ___NEWGRID_DrawStatusMessage__5;60cc 
 ___NEWGRID_DrawStatusMessage__9:
               MOVE.L         D6,-(A7)                 ;2f06 
-              PEA            $4c(A7)                  ;486f 004c 
-              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
+              PEA            $50(A7)                  ;486f 0050 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
               BSR.W          _LVOTextLength           ;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
               LEA            $c(A7),A7                ;4fef 000c 
@@ -121,7 +126,7 @@ ___NEWGRID_DrawStatusMessage__11:
               ADD.L          D1,D0                    ;d081 
               MOVEQ.L        #$24,D1                  ;7224 
               ADD.L          D1,D0                    ;d081 
-              MOVE.L         $44(A7),A1               ;226f 0044 
+              MOVE.L         $48(A7),A1               ;226f 0048 
               MOVE.L         $34(A1),A0               ;2069 0034 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         $1a(A0),D1               ;3228 001a 
@@ -145,8 +150,8 @@ ___NEWGRID_DrawStatusMessage__13:
               MOVE.L         D1,$48(A7)               ;2f41 0048 
               BSR.W          _LVOMove                 ;6100 0000 
               MOVE.L         D6,(A7)                  ;2e86 
-              PEA            $54(A7)                  ;486f 0054 
-              MOVE.L         $54(A7),-(A7)            ;2f2f 0054 
+              PEA            $58(A7)                  ;486f 0058 
+              MOVE.L         $58(A7),-(A7)            ;2f2f 0058 
               BSR.W          _LVOText                 ;6100 0000 
               MOVE.W         #$11,$36(A3)             ;377c 0011 0036 
               MOVEQ.L        #$11,D0                  ;7011 
@@ -157,7 +162,7 @@ ___NEWGRID_DrawStatusMessage__13:
               LEA            $1c(A7),A7               ;4fef 001c 
 ___NEWGRID_DrawStatusMessage__14:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
-              ADD.W          #$b0,A7                  ;defc 00b0 
+              ADD.W          #$b4,A7                  ;defc 00b4 
               RTS                                     ;4e75 
 __const:
 __strings:

@@ -46,6 +46,7 @@ void NEWGRID_DrawStatusMessage(char *gridCtx, UWORD slot)
     char slot_text[31];
     const char *msg;
     NEWGRID_RastPort *rast;
+    const char *scan;
     LONG len;
     LONG width;
     LONG x;
@@ -69,8 +70,9 @@ void NEWGRID_DrawStatusMessage(char *gridCtx, UWORD slot)
     _LVOSetAPen((char *)rast, GCOMMAND_MplexMessageTextPen);
     _LVOSetDrMd((char *)rast, 0);
 
+    scan = text_buf;
     len = 0;
-    while (text_buf[len] != 0) {
+    while (*scan++ != 0) {
         ++len;
     }
 
