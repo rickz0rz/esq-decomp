@@ -54,6 +54,8 @@ static UNKNOWN_StatusEntry *status_entry_ptr(ULONG index)
 
 LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
 {
+    const ULONG STATUS_ENTRY_COUNT = 4u;
+    const LONG STATUS_ENTRY_MAX_INDEX = 3;
     const UBYTE RECORD_MARKER_PLUS = '+';
     const UBYTE FIELD_UNKNOWN_MARKER = '?';
     const LONG FIELD_UNKNOWN_VALUE = -999;
@@ -76,7 +78,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
         return 0;
     }
 
-    for (i = 0; i < 4u; ++i) {
+    for (i = 0; i < STATUS_ENTRY_COUNT; ++i) {
         UNKNOWN_StatusEntry *entry = status_entry_ptr(i);
         LONG day = (LONG)((UWORD)(CLOCK_CurrentDayOfYear + (UWORD)i + 1u));
         LONG year = (LONG)CLOCK_CurrentYearValue;
@@ -100,7 +102,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
         key = PARSE_ReadSignedLongSkipClass3_Alt(field_buf);
         p += KEY_FIELD_LEN;
 
-        for (idx = 0; idx <= 4; ++idx) {
+        for (idx = 0; idx <= (LONG)STATUS_ENTRY_COUNT; ++idx) {
             UNKNOWN_StatusEntry *entry = status_entry_ptr((ULONG)idx);
             if (entry->dayKey0 == key) {
                 found = idx;
@@ -108,7 +110,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
             }
         }
 
-        if (found < 0 || found > 3) {
+        if (found < 0 || found > STATUS_ENTRY_MAX_INDEX) {
             marker = 0;
         }
 
