@@ -20,7 +20,7 @@ extern LONG _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
 extern LONG _LVOSetDrMd(void *gfxBase, char *rp, LONG drawMode);
 extern LONG _LVOMove(void *gfxBase, char *rp, LONG x, LONG y);
 extern LONG _LVOText(void *gfxBase, char *rp, const char *text, LONG count);
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *text, LONG ch);
+extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
 extern void GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments(
     char *rp,
     LONG x,

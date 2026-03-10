@@ -8,7 +8,7 @@ extern UBYTE ED_DiagVinModeChar;
 extern WORD Global_UIBusyFlag;
 extern char SCRIPT_Tag_YL[];
 
-extern char *STR_FindCharPtr(char *s, WORD c);
+extern char *STR_FindCharPtr(const char *s, WORD c);
 extern UBYTE SCRIPT_ReadHandshakeBit3Flag(void);
 extern void SCRIPT_DeassertCtrlLineNow(void);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);

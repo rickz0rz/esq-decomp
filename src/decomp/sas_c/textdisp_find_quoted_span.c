@@ -1,7 +1,7 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern char *STR_FindCharPtr(char *s, LONG needle);
+extern char *STR_FindCharPtr(const char *s, LONG needle);
 extern UBYTE WDISP_CharClassTable[];
 
 LONG TEXTDISP_FindQuotedSpan(char *src, char **outStart, char *endHint, LONG *hasQuotes)

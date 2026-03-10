@@ -6,7 +6,7 @@ typedef struct TLIBA2_EntryAux {
     char *titleTable[49];
 } TLIBA2_EntryAux;
 
-extern char *STR_FindCharPtr(char *s, LONG ch);
+extern char *STR_FindCharPtr(const char *s, LONG ch);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 
 LONG TLIBA2_ParseEntryTimeWindow(void *entryContext, LONG entryIndex, LONG *outPair)

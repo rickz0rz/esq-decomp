@@ -10,7 +10,7 @@ extern char *DISPTEXT_LinePtrTable[];
 
 extern void DISPTEXT_FinalizeLineTable(void);
 extern LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, LONG ch);
+extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *s, LONG ch);
 
 LONG DISPTEXT_ComputeVisibleLineCount(LONG maxLines)
 {

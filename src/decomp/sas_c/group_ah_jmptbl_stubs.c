@@ -20,7 +20,7 @@ extern void NEWGRID_RebuildIndexCache(void);
 extern LONG PARSE_ReadSignedLongSkipClass3(char *cursor);
 extern void P_TYPE_WritePromoIdDataFile(void);
 extern LONG SCRIPT_ReadNextRbfByte(void);
-extern char *STR_FindAnyCharPtr(char *s, char *charset);
+extern char *STR_FindAnyCharPtr(const char *s, const char *charset);
 
 void GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(ULONG mask, LONG setMode){ESQDISP_UpdateStatusMaskAndRefresh(mask, setMode);}
 void GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi(void){ESQFUNC_WaitForClockChangeAndServiceUi();}

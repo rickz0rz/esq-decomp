@@ -62,8 +62,8 @@ extern LONG GCOMMAND_GradientPresetTable[];
 
 extern LONG PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
 extern LONG PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer(void);
-extern char *PARSEINI_JMPTBL_STR_FindCharPtr(char *s, LONG ch);
-extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(char *s, const char *delim);
+extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, LONG ch);
+extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *delim);
 extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
 extern void PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(LONG *table);
 extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);

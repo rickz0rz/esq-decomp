@@ -6,7 +6,7 @@ extern UBYTE CLOCK_AlignedInsetRenderGateFlag;
 extern UBYTE CLEANUP_AlignedInsetNibbleSecondary;
 extern UBYTE CLEANUP_AlignedInsetNibblePrimary;
 
-extern char *STR_FindCharPtr(char *s, LONG ch);
+extern char *STR_FindCharPtr(const char *s, LONG ch);
 extern LONG _LVOTextLength(char *rastPort, char *text, LONG len);
 extern LONG MEM_Move(UBYTE *src, UBYTE *dst, LONG len);
 extern LONG TLIBA1_ParseStyleCodeChar(UBYTE c);

@@ -48,7 +48,7 @@ extern char *TEXTDISP_SkipControlCodes(char *text);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
 extern char *TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
-extern char *STR_FindCharPtr(char *s, LONG ch);
+extern char *STR_FindCharPtr(const char *s, LONG ch);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG index, char *aux);
 extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG px);
 
