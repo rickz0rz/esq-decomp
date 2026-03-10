@@ -55,6 +55,8 @@ static UNKNOWN_StatusEntry *status_entry_ptr(ULONG index)
 LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
 {
     const UBYTE RECORD_MARKER_PLUS = '+';
+    const UBYTE FIELD_UNKNOWN_MARKER = '?';
+    const LONG FIELD_UNKNOWN_VALUE = -999;
     const ULONG KEY_FIELD_LEN = 3u;
     const ULONG FLAG_FIELD_LEN = 1u;
     const ULONG VALUE_FIELD_LEN = 3u;
@@ -117,7 +119,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
 
             STRING_CopyPadNul(field_buf, p, FLAG_FIELD_LEN);
             field_buf[1] = 0;
-            if (field_buf[0] == (UBYTE)'?') {
+            if (field_buf[0] == FIELD_UNKNOWN_MARKER) {
                 entry->flag1 = 1;
             } else {
                 entry->flag1 = PARSE_ReadSignedLongSkipClass3_Alt(field_buf);
@@ -126,8 +128,8 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
             p += FLAG_FIELD_LEN;
             STRING_CopyPadNul(field_buf, p, VALUE_FIELD_LEN);
             field_buf[3] = 0;
-            if (field_buf[0] == (UBYTE)'?') {
-                entry->value2 = -999;
+            if (field_buf[0] == FIELD_UNKNOWN_MARKER) {
+                entry->value2 = FIELD_UNKNOWN_VALUE;
             } else {
                 entry->value2 = PARSE_ReadSignedLongSkipClass3_Alt(field_buf);
             }
@@ -135,8 +137,8 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
             p += VALUE_FIELD_LEN;
             STRING_CopyPadNul(field_buf, p, VALUE_FIELD_LEN);
             field_buf[3] = 0;
-            if (field_buf[0] == (UBYTE)'?') {
-                entry->value3 = -999;
+            if (field_buf[0] == FIELD_UNKNOWN_MARKER) {
+                entry->value3 = FIELD_UNKNOWN_VALUE;
             } else {
                 entry->value3 = PARSE_ReadSignedLongSkipClass3_Alt(field_buf);
             }
