@@ -59,6 +59,25 @@ static WORD ESQIFF_HasRejectedAssetPrefix(const char *path)
     return 0;
 }
 
+static void ESQIFF_CopyCString(char *dst, const char *src)
+{
+    while ((*dst++ = *src++) != 0) {
+    }
+}
+
+static WORD ESQIFF_StringEquals(const char *lhs, const char *rhs)
+{
+    for (;;) {
+        char ch = *lhs++;
+        if (*rhs++ != ch) {
+            return 0;
+        }
+        if (ch == 0) {
+            return 1;
+        }
+    }
+}
+
 WORD ESQIFF_QueueNextExternalAssetIffJob(void)
 {
     const WORD SOURCE_SELECT_GADS = 0;
@@ -192,19 +211,9 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         pollLimit = GADS_SOURCE_POLL_LIMIT;
     }
 
-    {
-        const char *src = candidate;
-        char *dst = snapshot;
-        do {
-            *dst++ = *src;
-        } while (*src++ != 0);
-    }
+    ESQIFF_CopyCString(snapshot, candidate);
 
     for (;;) {
-        const char *p0;
-        const char *p1;
-        char ch;
-
         timeoutState = RESULT_PENDING;
         ESQDISP_ProcessGridMessagesIfIdle();
 
@@ -216,19 +225,8 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         headPath = (headNode != 0) ? headNode->pathText : 0;
 
         duplicateHeadPath = 0;
-        if (headPath != 0) {
-            p0 = candidate;
-            p1 = headPath;
-            for (;;) {
-                ch = *p0++;
-                if (*p1++ != ch) {
-                    break;
-                }
-                if (ch == 0) {
-                    duplicateHeadPath = 1;
-                    break;
-                }
-            }
+        if (headPath != 0 && ESQIFF_StringEquals(candidate, headPath)) {
+            duplicateHeadPath = 1;
         }
 
         if (duplicateHeadPath == 0) {
@@ -252,16 +250,8 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
             ESQIFF_ReadNextExternalAssetPathEntry((BYTE *)candidate);
         }
 
-        p0 = snapshot;
-        p1 = candidate;
-        for (;;) {
-            ch = *p0++;
-            if (*p1++ != ch) {
-                break;
-            }
-            if (ch == 0) {
-                goto finalize_no_candidate;
-            }
+        if (ESQIFF_StringEquals(snapshot, candidate)) {
+            goto finalize_no_candidate;
         }
 
         if (timeoutState == RESULT_NO_CANDIDATE) {
