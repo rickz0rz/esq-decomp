@@ -8,7 +8,7 @@ extern char Global_STR_CURSOR[];
 extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
 extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
-extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, char *text);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text);
 
 void SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR(LONG modeFlag)
 {
