@@ -33,7 +33,7 @@ extern const char TEXTDISP_CommandPrefixFormat[];
 extern TEXTDISP_SelectionEntry *MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
-extern LONG TEXTDISP_SelectGroupAndEntry(char *cmd, char *primarySearch, LONG channelCode);
+extern LONG TEXTDISP_SelectGroupAndEntry(const char *cmd, char *primarySearch, LONG channelCode);
 extern UBYTE SCRIPT_GetBannerCharOrFallback(void);
 extern void TEXTDISP_BuildNowShowingStatusLine(LONG group, LONG match, LONG bannerChar);
 extern void SCRIPT_ResetBannerCharDefaults(void);

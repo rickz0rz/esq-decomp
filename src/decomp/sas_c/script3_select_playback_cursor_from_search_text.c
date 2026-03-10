@@ -11,7 +11,7 @@ extern UWORD TEXTDISP_PrimaryChannelCode;
 extern char TEXTDISP_PrimarySearchText[];
 extern LONG SCRIPT_PlaybackCursor;
 
-extern LONG TEXTDISP_SelectGroupAndEntry(char *arg, char *searchText, LONG channelCode);
+extern LONG TEXTDISP_SelectGroupAndEntry(const char *arg, char *searchText, LONG channelCode);
 
 LONG SCRIPT_SelectPlaybackCursorFromSearchText(LONG matchIndex, char *text)
 {
