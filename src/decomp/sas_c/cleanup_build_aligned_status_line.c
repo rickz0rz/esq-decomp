@@ -24,7 +24,7 @@ extern UBYTE CLEANUP_AlignedInsetNibbleSecondary;
 extern UBYTE CLOCK_AlignedInsetRenderGateFlag;
 
 const char *GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG slot, LONG mode);
-LONG CLEANUP_TestEntryFlagYAndBit1(void *entry, LONG slot, LONG mode);
+LONG CLEANUP_TestEntryFlagYAndBit1(const void *entry, LONG slot, LONG mode);
 const char *COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
 LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG a, LONG b, LONG c);
 char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
@@ -41,7 +41,7 @@ void CLEANUP_BuildAlignedStatusLine(char *out, UWORD isPrimary, UWORD modeSel, U
         (LONG)modeSel,
         isPrimary ? ALIGNED_STATUS_MODE_PRIMARY : ALIGNED_STATUS_MODE_SECONDARY
     );
-    if (CLEANUP_TestEntryFlagYAndBit1((void *)entry, (LONG)slot, alignToken) != 0) {
+    if (CLEANUP_TestEntryFlagYAndBit1(entry, (LONG)slot, alignToken) != 0) {
         fieldText6 = COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT6);
     } else {
         fieldText6 = (const char *)0;
