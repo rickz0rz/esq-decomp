@@ -11,7 +11,7 @@ extern LONG DISKIO_DriveWriteProtectStatusCodeDrive1;
 
 extern void ESQDISP_ProcessGridMessagesIfIdle(void);
 extern void ESQIFF_ReloadExternalAssetCatalogBuffers(WORD which);
-extern void ESQIFF_QueueNextExternalAssetIffJob(void);
+extern WORD ESQIFF_QueueNextExternalAssetIffJob(void);
 
 void ESQIFF_ServiceExternalAssetSourceState(WORD mode)
 {
