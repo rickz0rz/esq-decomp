@@ -12,7 +12,7 @@ extern void SCRIPT_UpdateSerialShadowFromCtrlByte(UBYTE ctrlByte);
 extern void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix);
 extern void TEXTDISP_BuildEntryShortName(const char *entry, char *out);
 extern void TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode);
-extern void TEXTDISP_DrawInsetRectFrame(char *text, WORD mode);
+extern void TEXTDISP_DrawInsetRectFrame(const char *text, WORD mode);
 extern void TEXTDISP_FormatEntryTime(char *out, WORD entryIndex);
 extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth);
 extern WORD TLIBA1_BuildClockFormatEntryIfVisible(WORD groupIndex, WORD modeIndex, char *outText, WORD style);
@@ -29,7 +29,7 @@ void GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(UBYTE ctrlByte){SCRIP
 void GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel(WORD includeOnPrefix){TEXTDISP_BuildChannelLabel(includeOnPrefix);}
 void GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName(const char *entry, char *out){TEXTDISP_BuildEntryShortName(entry, out);}
 void GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode){TEXTDISP_DrawChannelBanner(mode, drawMode);}
-void GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame(char *text, WORD mode){TEXTDISP_DrawInsetRectFrame(text, mode);}
+void GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame(const char *text, WORD mode){TEXTDISP_DrawInsetRectFrame(text, mode);}
 void GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime(char *out, WORD entryIndex){TEXTDISP_FormatEntryTime(out, entryIndex);}
 void GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth){TEXTDISP_TrimTextToPixelWidth(text, maxWidth);}
 WORD GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(WORD groupIndex, WORD modeIndex, char *outText, WORD style){return TLIBA1_BuildClockFormatEntryIfVisible(groupIndex, modeIndex, outText, style);}

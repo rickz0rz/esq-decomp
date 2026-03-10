@@ -16,7 +16,7 @@ extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG 
 extern void TEXTDISP_BuildEntryShortName(const char *entry, char *out);
 extern void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix);
 extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth);
-extern void TEXTDISP_DrawInsetRectFrame(char *text, LONG drawMode);
+extern void TEXTDISP_DrawInsetRectFrame(const char *text, LONG drawMode);
 extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 
 typedef struct TEXTDISP_DisplayContext {

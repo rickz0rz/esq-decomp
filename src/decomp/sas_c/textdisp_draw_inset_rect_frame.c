@@ -15,7 +15,7 @@ typedef struct TEXTDISP_DisplayContext {
     UBYTE rastPort[1];
 } TEXTDISP_DisplayContext;
 
-void TEXTDISP_DrawInsetRectFrame(char *text, WORD mode)
+void TEXTDISP_DrawInsetRectFrame(const char *text, WORD mode)
 {
     TEXTDISP_DisplayContext *context;
     LONG x1;
