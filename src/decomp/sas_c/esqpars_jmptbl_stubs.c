@@ -1,6 +1,9 @@
 extern void DISKIO2_FlushDataFilesIfNeeded(void);
 extern void NEWGRID_RebuildIndexCache(void);
-extern void DATETIME_SavePairToFile(void);
+typedef unsigned char UBYTE;
+typedef signed long LONG;
+
+extern LONG DATETIME_SavePairToFile(void *pair);
 extern void ESQPROTO_VerifyChecksumAndParseList(void);
 extern void P_TYPE_ParseAndStoreTypeRecord(void);
 extern void ESQPROTO_CopyLabelToGlobal(void);
@@ -23,13 +26,13 @@ extern void ESQPROTO_ParseDigitLabelAndDisplay(void);
 extern void DISKIO_ParseConfigBuffer(void);
 extern void CLEANUP_ParseAlignedListingBlock(void);
 extern long SCRIPT_ReadNextRbfByte(void);
-extern void ESQ_GenerateXorChecksumByte(void);
+extern LONG ESQ_GenerateXorChecksumByte(UBYTE seed, const UBYTE *src, LONG length);
 extern void DST_RefreshBannerBuffer(void);
 extern void DISKIO_SaveConfigToFileHandle(void);
 
 void ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(void){DISKIO2_FlushDataFilesIfNeeded();}
 void ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(void){NEWGRID_RebuildIndexCache();}
-void ESQPARS_JMPTBL_DATETIME_SavePairToFile(void){DATETIME_SavePairToFile();}
+LONG ESQPARS_JMPTBL_DATETIME_SavePairToFile(void *pair){return DATETIME_SavePairToFile(pair);}
 void ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList(void){ESQPROTO_VerifyChecksumAndParseList();}
 void ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord(void){P_TYPE_ParseAndStoreTypeRecord();}
 void ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal(void){ESQPROTO_CopyLabelToGlobal();}
@@ -52,6 +55,6 @@ void ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay(void){ESQPROTO_ParseDigit
 void ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer(void){DISKIO_ParseConfigBuffer();}
 void ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock(void){CLEANUP_ParseAlignedListingBlock();}
 unsigned char ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void){return (unsigned char)SCRIPT_ReadNextRbfByte();}
-void ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(void){ESQ_GenerateXorChecksumByte();}
+LONG ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(UBYTE seed, const UBYTE *buffer, LONG len){return ESQ_GenerateXorChecksumByte(seed, buffer, len);}
 void ESQPARS_JMPTBL_DST_RefreshBannerBuffer(void){DST_RefreshBannerBuffer();}
 void ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle(void){DISKIO_SaveConfigToFileHandle();}
