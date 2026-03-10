@@ -38,7 +38,7 @@ extern LONG NEWGRID_ClearEntryMarkerBits(LONG row);
 extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG col);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG idx);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG idx);
-extern LONG NEWGRID_ShouldOpenEditor(char *entry);
+extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *aux, LONG idx, LONG win, LONG tol);
 extern LONG NEWGRID_InitSelectionWindow(SelCtx *ctx, LONG rowBase);
 
@@ -110,7 +110,7 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
                 continue;
             }
 
-            if (NEWGRID_ShouldOpenEditor((char *)entry) != 0) {
+            if (NEWGRID_ShouldOpenEditor(entry) != 0) {
                 found = ((NEWGRID_SelectionScanRow == ctx->row) && (aux->payloadTable[idx] != 0)) ? 1 : 0;
             } else {
                 if ((aux->payloadTable[idx] != 0) && ((aux->rowFlags[NEWGRID_SelectionScanRow] & 0x80) == 0)) {

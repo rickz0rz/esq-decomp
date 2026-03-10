@@ -8,7 +8,7 @@ typedef struct TEXTDISP_Entry {
     UBYTE flags40;
 } TEXTDISP_Entry;
 
-extern LONG TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(TEXTDISP_Entry *entry);
+extern LONG TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(const TEXTDISP_Entry *entry);
 
 LONG TEXTDISP_ShouldOpenEditorForEntry(TEXTDISP_Entry *entry)
 {

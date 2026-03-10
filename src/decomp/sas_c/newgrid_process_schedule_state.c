@@ -24,10 +24,10 @@ extern LONG GCOMMAND_MplexEditorRowPen;
 extern LONG GCOMMAND_MplexEditorLayoutPen;
 
 extern UWORD CLOCK_DaySlotIndex;
-extern NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
+extern const NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
 extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG a, LONG b, char *sourceText);
-extern LONG NEWGRID_ShouldOpenEditor(char *entry);
+extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern LONG NEWGRID_UpdateGridState(char *ctx, LONG index, LONG row);
 extern LONG NEWGRID_HandleDetailGridState(char *ctx, LONG index, LONG row);
 extern LONG NEWGRID_FindNextEntryWithAltMarkers(LONG state, LONG selected, LONG row);
@@ -45,8 +45,8 @@ LONG NEWGRID_ProcessScheduleState(char *ctx, UWORD rowBase, UWORD rowCur)
             NEWGRID_HandleGridEditorState((char *)ctx, 0, 0, 0);
         } else if (NEWGRID_ScheduleWorkflowState == 5) {
             LONG idx = NEWGRID_SelectedPrimaryEntryIndex;
-            NEWGRID_Entry *entry = TEXTDISP_PrimaryEntryPtrTable[idx];
-            if (NEWGRID_ShouldOpenEditor((char *)entry) != 0) {
+            const NEWGRID_Entry *entry = TEXTDISP_PrimaryEntryPtrTable[idx];
+            if (NEWGRID_ShouldOpenEditor(entry) != 0) {
                 NEWGRID_UpdateGridState(ctx, 0, 0);
             } else {
                 NEWGRID_HandleDetailGridState(ctx, 0, 0);
@@ -118,8 +118,8 @@ LONG NEWGRID_ProcessScheduleState(char *ctx, UWORD rowBase, UWORD rowCur)
 
     case 5:
         if (NEWGRID_SelectedPrimaryEntryIndex != -1) {
-            NEWGRID_Entry *entry = TEXTDISP_PrimaryEntryPtrTable[NEWGRID_SelectedPrimaryEntryIndex];
-            if (NEWGRID_ShouldOpenEditor((char *)entry) != 0) {
+            const NEWGRID_Entry *entry = TEXTDISP_PrimaryEntryPtrTable[NEWGRID_SelectedPrimaryEntryIndex];
+            if (NEWGRID_ShouldOpenEditor(entry) != 0) {
                 NEWGRID_ScheduleWorkflowState = NEWGRID_UpdateGridState(
                     ctx, NEWGRID_SelectedPrimaryEntryIndex, (LONG)rowBase + NEWGRID_ScheduleRowOffset);
             } else {

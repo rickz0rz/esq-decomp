@@ -27,8 +27,10 @@ extern LONG GCOMMAND_PPVListingsTemplatePtr;
 extern LONG GCOMMAND_PpvEditorRowPen;
 extern LONG GCOMMAND_PpvEditorLayoutPen;
 
+typedef struct NEWGRID_Entry NEWGRID_Entry;
+
 extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG a, LONG b, char *sourceText);
-extern LONG NEWGRID_ShouldOpenEditor(char *entry);
+extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern LONG NEWGRID_UpdateGridState(char *ctx, LONG index, LONG row);
 extern LONG NEWGRID_HandleShowtimesState(char *ctx, char *selCtxPtr);
 extern LONG NEWGRID_InitSelectionWindow(NEWGRID_SelectionWindow *selCtxPtr, LONG rowBase);
@@ -47,7 +49,7 @@ LONG NEWGRID_ProcessShowtimesWorkflow(char *ctx, UWORD rowBase)
         if (NEWGRID_ShowtimesWorkflowState == 2 || NEWGRID_ShowtimesWorkflowState == 7) {
             NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState((char *)ctx, 0, 0, 0);
         } else if (NEWGRID_ShowtimesWorkflowState == 5) {
-            if (NEWGRID_ShouldOpenEditor((char *)NEWGRID_ShowtimesSelectionContextPtr.entry) != 0) {
+            if (NEWGRID_ShouldOpenEditor((const NEWGRID_Entry *)NEWGRID_ShowtimesSelectionContextPtr.entry) != 0) {
                 NEWGRID_ShowtimesWorkflowState = NEWGRID_UpdateGridState(ctx, 0, 0);
             } else {
                 NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleShowtimesState((char *)ctx, (char *)&NEWGRID_ShowtimesSelectionContextPtr);
@@ -90,7 +92,7 @@ LONG NEWGRID_ProcessShowtimesWorkflow(char *ctx, UWORD rowBase)
 
         case 5:
             if (NEWGRID_ShowtimesSelectionContextPtr.entry != 0) {
-                if (NEWGRID_ShouldOpenEditor((char *)NEWGRID_ShowtimesSelectionContextPtr.entry) != 0) {
+                if (NEWGRID_ShouldOpenEditor((const NEWGRID_Entry *)NEWGRID_ShowtimesSelectionContextPtr.entry) != 0) {
                     NEWGRID_ShowtimesWorkflowState = NEWGRID_UpdateGridState(
                         ctx, NEWGRID_ShowtimesWorkflowArgLong, (LONG)NEWGRID_ShowtimesWorkflowArgWord);
                 } else {

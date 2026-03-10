@@ -23,8 +23,8 @@ extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 
 extern void NEWGRID_UpdatePresetEntry(char **outEntry, char **outAux, LONG selector, LONG index);
-extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset, LONG bitIndex);
-extern LONG NEWGRID_ShouldOpenEditor(char *entry);
+extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
+extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 
 LONG NEWGRID_FindNextEntryWithMarkers(LONG scanMode, LONG startIndex, WORD selector)
 {
@@ -50,8 +50,8 @@ LONG NEWGRID_FindNextEntryWithMarkers(LONG scanMode, LONG startIndex, WORD selec
     }
 
     while (found == 0) {
-        NEWGRID_Entry *entry;
-        NEWGRID_AuxData *aux;
+        const NEWGRID_Entry *entry;
+        const NEWGRID_AuxData *aux;
 
         if (idx >= (LONG)(UWORD)TEXTDISP_PrimaryGroupEntryCount) {
             break;
@@ -77,7 +77,7 @@ LONG NEWGRID_FindNextEntryWithMarkers(LONG scanMode, LONG startIndex, WORD selec
             ++idx;
             continue;
         }
-        if (NEWGRID_ShouldOpenEditor((char *)entry) != 0) {
+        if (NEWGRID_ShouldOpenEditor(entry) != 0) {
             ++idx;
             continue;
         }
