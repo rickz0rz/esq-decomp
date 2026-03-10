@@ -23,13 +23,13 @@ typedef struct NEWGRID_Context {
 } NEWGRID_Context;
 
 extern UWORD NEWGRID_RowHeightPx;
-extern char *Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
+extern const char *Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void NEWGRID_DrawGridFrame(char *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
-extern LONG _LVOTextLength(char *rastPort, char *text, LONG len);
-extern void NEWGRID_DrawWrappedText(char *rastPort, LONG x, LONG y, LONG width, char *text, LONG centered);
+extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
+extern void NEWGRID_DrawWrappedText(char *rastPort, LONG x, LONG y, LONG width, const char *text, LONG centered);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
 LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
@@ -38,8 +38,8 @@ LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
     NEWGRID_RastPort *rast;
     LONG rowH;
     LONG yMax;
-    char *msg;
-    char *p;
+    const char *msg;
+    const char *p;
     LONG msgLen;
     LONG textW;
     LONG x;

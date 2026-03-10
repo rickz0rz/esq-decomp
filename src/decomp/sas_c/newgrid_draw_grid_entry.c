@@ -22,7 +22,7 @@ extern UWORD Global_WORD_SELECT_CODE_IS_RAVESC;
 extern char *NEWGRID_EntryTextScratchPtr;
 extern const char NEWGRID_GridEntryDelimiterBar[];
 extern const char NEWGRID_EntrySplitDelimiterMask[];
-extern char *SCRIPT_PtrNoDataPlaceholder;
+extern const char *SCRIPT_PtrNoDataPlaceholder;
 
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, LONG ch);
