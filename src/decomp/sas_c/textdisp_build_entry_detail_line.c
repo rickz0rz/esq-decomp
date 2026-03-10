@@ -43,7 +43,7 @@ extern const char Global_STR_ALIGNED_CHANNEL_2[];
 extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
-extern void TEXTDISP_BuildEntryShortName(char *entry, char *dst);
+extern void TEXTDISP_BuildEntryShortName(const char *entry, char *dst);
 extern char *TEXTDISP_SkipControlCodes(char *text);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
@@ -56,9 +56,9 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
 {
     TEXTDISP_SelectionEntry *entry;
     char *aux;
-    char *program;
+    const char *program;
     char *detail;
-    char *segment;
+    const char *segment;
     char *hit;
     TEXTDISP_AuxData *auxData;
     LONG i;
@@ -110,7 +110,7 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
         auxData = (TEXTDISP_AuxData *)aux;
         segment = TEXTDISP_SkipControlCodes(auxData->titleTable[entryIndex]);
     } else {
-        segment = (char *)TEXTDISP_NULL;
+        segment = (const char *)TEXTDISP_NULL;
     }
 
     if (segment != (char *)TEXTDISP_NULL && segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
@@ -174,7 +174,7 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
 
     out = TEXTDISP_NULL;
     for (i = TEXTDISP_NULL;
-         program != (char *)TEXTDISP_NULL &&
+         program != (const char *)TEXTDISP_NULL &&
          program[i + ENTRY_PROGRAM_TEXT_START_OFFSET] != TEXTDISP_NULL;
          i++) {
         if (program[i + ENTRY_PROGRAM_TEXT_START_OFFSET] != ASCII_SPACE) {

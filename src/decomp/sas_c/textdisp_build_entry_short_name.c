@@ -16,7 +16,7 @@ extern const char TEXTDISP_CenterAlignToken[];
 extern LONG TEXTDISP_FindAliasIndexByName(const char *name);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 
-void TEXTDISP_BuildEntryShortName(char *entry, char *out)
+void TEXTDISP_BuildEntryShortName(const char *entry, char *out)
 {
     out[0] = 0;
     if (entry != (char *)0) {
