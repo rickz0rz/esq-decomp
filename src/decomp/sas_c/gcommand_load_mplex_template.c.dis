@@ -2,9 +2,10 @@
 __code:
 GCOMMAND_LoadMplexTemplate:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
               MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
 ___GCOMMAND_LoadMplexTemplate__1:
               PEA            GCOMMAND_PATH_DF0_COLON_DIGITAL_(A4);486c 0000 
@@ -14,7 +15,7 @@ ___GCOMMAND_LoadMplexTemplate__1:
               BNE.B          ___GCOMMAND_LoadMplexTemplate__3;6606 
 ___GCOMMAND_LoadMplexTemplate__2:
               MOVEQ.L        #$1,D0                   ;7001 
-              BRA.W          ___GCOMMAND_LoadMplexTemplate__14;6000 00a8 
+              BRA.W          ___GCOMMAND_LoadMplexTemplate__14;6000 00b4 
 ___GCOMMAND_LoadMplexTemplate__3:
               MOVE.L         Global_PTR_WORK_BUFFER(A4),A5;2a6c 0000 
               MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D7;2e2c 0000 
@@ -57,6 +58,7 @@ ___GCOMMAND_LoadMplexTemplate__6:
               BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
               LEA            $18(A7),A7               ;4fef 0018 
               SUB.L          A2,A2                    ;95ca 
+              CLR.L          $10(A7)                  ;42af 0010 
               MOVE.L         GCOMMAND_MplexAtTemplatePtr(A4),D0;202c 0000 
               BEQ.B          ___GCOMMAND_LoadMplexTemplate__9;6714 
 ___GCOMMAND_LoadMplexTemplate__7:
@@ -71,17 +73,20 @@ ___GCOMMAND_LoadMplexTemplate__8:
               ADDQ.W         #$8,A7                   ;504f 
 ___GCOMMAND_LoadMplexTemplate__9:
               MOVE.L         A2,D0                    ;200a 
-              BEQ.B          ___GCOMMAND_LoadMplexTemplate__12;670a 
+              BEQ.B          ___GCOMMAND_LoadMplexTemplate__12;6712 
 ___GCOMMAND_LoadMplexTemplate__10:
               TST.B          (A2)                     ;4a12 
-              BEQ.B          ___GCOMMAND_LoadMplexTemplate__12;6706 
+              BEQ.B          ___GCOMMAND_LoadMplexTemplate__12;670e 
 ___GCOMMAND_LoadMplexTemplate__11:
-              MOVE.B         #$73,$1(A2)              ;157c 0073 0001 
+              MOVE.L         A2,$10(A7)               ;2f4a 0010 
+              MOVE.L         $10(A7),A0               ;206f 0010 
+              MOVE.B         #$73,$1(A0)              ;117c 0073 0001 
 ___GCOMMAND_LoadMplexTemplate__12:
               MOVEQ.L        #$1,D0                   ;7001 
 ___GCOMMAND_LoadMplexTemplate__13:
 ___GCOMMAND_LoadMplexTemplate__14:
               MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
+              ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:
 __strings:

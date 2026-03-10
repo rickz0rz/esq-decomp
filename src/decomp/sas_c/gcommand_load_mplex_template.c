@@ -24,6 +24,7 @@ LONG GCOMMAND_LoadMplexTemplate(void)
     char *loadedBuffer;
     LONG loadedSize;
     char *splitPtr;
+    const char *fmtSlotSearch;
     char *fmtSlot;
 
     if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(
@@ -59,14 +60,16 @@ LONG GCOMMAND_LoadMplexTemplate(void)
         loadedBuffer,
         loadedSize + 1);
 
+    fmtSlotSearch = 0;
     fmtSlot = 0;
     if (GCOMMAND_MplexAtTemplatePtr && *GCOMMAND_MplexAtTemplatePtr) {
-        fmtSlot = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(
+        fmtSlotSearch = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(
             GCOMMAND_MplexAtTemplatePtr,
             GCOMMAND_FMT_PCT_T_MplexTemplateLoad);
     }
 
-    if (fmtSlot && *fmtSlot) {
+    if (fmtSlotSearch && *fmtSlotSearch) {
+        fmtSlot = (char *)fmtSlotSearch;
         fmtSlot[1] = 's';
     }
 
