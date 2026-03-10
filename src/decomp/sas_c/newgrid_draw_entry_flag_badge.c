@@ -11,7 +11,7 @@ extern const char NEWGRID_EntryDetailFmtStr[];
 
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
 extern LONG NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(char *entry, LONG rowIndex, LONG mode);
-extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const char *entry, LONG rowIndex, LONG field);
+extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry, LONG rowIndex, LONG field);
 extern void NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(char *entry, LONG rowIndex);
 extern void NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(
     char *rastPort, const char *fmt, LONG fmtRow, const char *src, LONG srcRow, LONG fallbackText);

@@ -23,7 +23,7 @@ extern const char Global_STR_SHOWTIMES_AND_SINGLE_SPACE[];
 extern const char Global_STR_SHOWING_AT_AND_SINGLE_SPACE[];
 extern const char NEWGRID_ShowtimeListSeparator[];
 
-extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const char *coi, LONG row, LONG field);
+extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry, LONG row, LONG field);
 extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *entries, LONG row);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, char *entries);
 extern void NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG preset);
@@ -85,10 +85,10 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
         row = (UWORD)(row - 48);
     }
 
-    title0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entryCur, (LONG)row, 1);
-    f1_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entryCur, (LONG)row, 2);
-    f2_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entryCur, (LONG)row, 6);
-    f3_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entryCur, (LONG)row, 7);
+    title0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 1);
+    f1_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 2);
+    f2_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 6);
+    f3_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 7);
     if (!title0 || title0[0] == 0) {
         return;
     }
@@ -124,10 +124,10 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
             continue;
         }
 
-        titleN = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entryCur, srcIdx, 1);
-        f1_n = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entryCur, srcIdx, 2);
-        f2_n = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entryCur, srcIdx, 6);
-        f3_n = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer((const char *)entryCur, srcIdx, 7);
+        titleN = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 1);
+        f1_n = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 2);
+        f2_n = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 6);
+        f3_n = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 7);
 
         modeN = 0;
         if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((char *)auxCur, srcIdx) != 0) {
