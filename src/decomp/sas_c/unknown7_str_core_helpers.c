@@ -3,7 +3,7 @@ typedef unsigned char UBYTE;
 
 extern UBYTE Global_CharClassTable[];
 
-char *STR_CopyUntilAnyDelimN(char *src, char *dst, LONG maxLen, char *delims)
+char *STR_CopyUntilAnyDelimN(const char *src, char *dst, LONG maxLen, const char *delims)
 {
     LONG i;
 
@@ -35,13 +35,13 @@ char *STR_CopyUntilAnyDelimN(char *src, char *dst, LONG maxLen, char *delims)
     return src + i;
 }
 
-char *STR_FindChar(char *s, LONG ch)
+char *STR_FindChar(const char *s, LONG ch)
 {
     UBYTE target = (UBYTE)ch;
 
     while (1) {
         if ((UBYTE)*s == target) {
-            return s;
+            return (char *)s;
         }
         if (*s++ == '\0') {
             return (char *)0;
@@ -49,18 +49,18 @@ char *STR_FindChar(char *s, LONG ch)
     }
 }
 
-char *STR_FindCharPtr(char *s, LONG ch)
+char *STR_FindCharPtr(const char *s, LONG ch)
 {
     return STR_FindChar(s, ch);
 }
 
-char *STR_FindAnyCharInSet(char *s, char *charset)
+char *STR_FindAnyCharInSet(const char *s, const char *charset)
 {
     while (*s != '\0') {
-        char *p = charset;
+        const char *p = charset;
         while (*p != '\0') {
             if (*p == *s) {
-                return s;
+                return (char *)s;
             }
             ++p;
         }
@@ -69,7 +69,7 @@ char *STR_FindAnyCharInSet(char *s, char *charset)
     return (char *)0;
 }
 
-char *STR_FindAnyCharPtr(char *s, char *charset)
+char *STR_FindAnyCharPtr(const char *s, const char *charset)
 {
     return STR_FindAnyCharInSet(s, charset);
 }

@@ -1,7 +1,7 @@
-char *ESQ_FindSubstringCaseFold(char *haystack, char *needle)
+char *ESQ_FindSubstringCaseFold(const char *haystack, const char *needle)
 {
-    char *start;
-    char *pat;
+    const char *start;
+    const char *pat;
     char c;
 
     if (*needle == 0) {
@@ -16,11 +16,11 @@ char *ESQ_FindSubstringCaseFold(char *haystack, char *needle)
             if (*pat != 0) {
                 return 0;
             }
-            return start;
+            return (char *)start;
         }
 
         if (*pat == 0) {
-            return start;
+            return (char *)start;
         }
 
         c = *haystack++;
