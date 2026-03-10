@@ -5,10 +5,10 @@ typedef signed long LONG;
 
 extern void *Global_REF_INTUITION_LIBRARY;
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern char Global_STR_PLEASE_STANDBY_1[];
-extern char Global_STR_ATTENTION_SYSTEM_ENGINEER_1[];
-extern char Global_STR_REPORT_CODE_ER003[];
-extern char Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE[];
+extern const char Global_STR_PLEASE_STANDBY_1[];
+extern const char Global_STR_ATTENTION_SYSTEM_ENGINEER_1[];
+extern const char Global_STR_REPORT_CODE_ER003[];
+extern const char Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE[];
 
 extern void GROUP_MAIN_B_JMPTBL_DOS_Delay(LONG ticks);
 extern LONG GROUP_MAIN_B_JMPTBL_MATH_Mulu32(LONG a, LONG b);

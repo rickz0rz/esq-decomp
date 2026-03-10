@@ -11,9 +11,9 @@ typedef struct RENDER_RastPort {
 
 extern LONG Global_REF_RASTPORT_1;
 extern LONG Global_REF_696_400_BITMAP;
-extern char *Global_JMPTBL_SHORT_DAYS_OF_WEEK[];
-extern char *Global_JMPTBL_SHORT_MONTHS[];
-extern char Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED[];
+extern const char *Global_JMPTBL_SHORT_DAYS_OF_WEEK[];
+extern const char *Global_JMPTBL_SHORT_MONTHS[];
+extern const char Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED[];
 extern WORD CLOCK_CurrentDayOfWeekIndex;
 extern WORD CLOCK_CurrentMonthIndex;
 extern WORD CLOCK_CurrentDayOfMonth;
@@ -24,15 +24,15 @@ void _LVORectFill(void);
 void _LVOTextLength(void);
 void _LVOMove(void);
 void _LVOText(void);
-LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, char *a, char *b, LONG c);
+LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, const char *a, const char *b, LONG c);
 void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void);
 
 void RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY(void)
 {
     RENDER_RastPort *rp;
     char text[32];
-    char *dow;
-    char *mon;
+    const char *dow;
+    const char *mon;
     LONG text_w;
     LONG x;
 

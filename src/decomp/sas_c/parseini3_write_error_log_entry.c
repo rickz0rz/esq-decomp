@@ -4,9 +4,9 @@ typedef short WORD;
 extern void *NEWGRID2_ErrorLogEntryPtr;
 extern WORD FLIB_LogEntryByteCount;
 extern char CLOCK_FileEofMarkerCtrlZ;
-extern char Global_STR_DF0_ERR_LOG[];
+extern const char Global_STR_DF0_ERR_LOG[];
 
-extern LONG SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(char *path, LONG mode);
+extern LONG SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
 extern LONG SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(LONG fileHandle, void *buffer, LONG byteCount);
 extern LONG SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG fileHandle);
 
