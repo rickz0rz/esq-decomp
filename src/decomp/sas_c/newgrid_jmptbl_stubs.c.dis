@@ -51,11 +51,20 @@ ___NEWGRID_JMPTBL_GENERATE_GRID_DAT__2:
               MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 NEWGRID_JMPTBL_MEMORY_Deallocate:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
 ___NEWGRID_JMPTBL_MEMORY_Deallocate__1:
+              MOVE.L         $18(A7),D7               ;2e2f 0018 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          MEMORY_DeallocateMemory  ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___NEWGRID_JMPTBL_MEMORY_Deallocate__2:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 NEWGRID_JMPTBL_DISPTEXT_FreeBuff:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -65,11 +74,21 @@ ___NEWGRID_JMPTBL_DISPTEXT_FreeBuff__1:
 ___NEWGRID_JMPTBL_DISPTEXT_FreeBuff__2:
               RTS                                     ;4e75 
 NEWGRID_JMPTBL_MEMORY_AllocateMe:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
 ___NEWGRID_JMPTBL_MEMORY_AllocateMe__1:
+              MOVE.L         $18(A7),D6               ;2c2f 0018 
+              MOVE.L         $14(A7),D7               ;2e2f 0014 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          MEMORY_AllocateMemory    ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___NEWGRID_JMPTBL_MEMORY_AllocateMe__2:
+___NEWGRID_JMPTBL_MEMORY_AllocateMe__3:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
               RTS                                     ;4e75 
 NEWGRID_JMPTBL_DISPTEXT_InitBuff:
               CMP.L          __base(A4),A7            ;bfec 0000 
