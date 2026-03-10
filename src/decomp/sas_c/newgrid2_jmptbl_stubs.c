@@ -12,7 +12,7 @@ extern void DISPTEXT_BuildLayoutForSource(void);
 extern void BEVEL_DrawBevelFrameWithTopRight(void);
 extern char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern void BEVEL_DrawVerticalBevel(void);
-extern void DISPTEXT_LayoutSourceToLines(void);
+extern LONG DISPTEXT_LayoutSourceToLines(char *rp, char *src);
 extern void CLEANUP_UpdateEntryFlagBytes(void *entry, UBYTE slot);
 extern void COI_RenderClockFormatEntryVariant(void);
 extern LONG ESQDISP_TestEntryBits0And2(UBYTE *entry);
@@ -47,7 +47,7 @@ void NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(void){DISPTEXT_BuildLayoutFor
 void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void){BEVEL_DrawBevelFrameWithTopRight();}
 char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryAuxPointerByMode(index, mode);}
 void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(void){BEVEL_DrawVerticalBevel();}
-void NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(void){DISPTEXT_LayoutSourceToLines();}
+LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(char *layout, const char *src){return DISPTEXT_LayoutSourceToLines(layout, (char *)src);}
 void NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(void *entry, UBYTE slot){CLEANUP_UpdateEntryFlagBytes(entry, slot);}
 void NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(void){COI_RenderClockFormatEntryVariant();}
 LONG NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(UBYTE *entry){return ESQDISP_TestEntryBits0And2(entry);}
