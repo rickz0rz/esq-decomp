@@ -44,11 +44,11 @@ extern UBYTE GCOMMAND_PpvDetailLayoutFlag;
 extern char *GCOMMAND_PPVListingsTemplatePtr;
 extern char *GCOMMAND_PPVPeriodTemplatePtr;
 
-extern const char FLIB_STR_DIGITAL_NICHE_LISTINGS;
-extern const char FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS;
-extern const char FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S;
-extern const char FLIB_STR_DIGITAL_PPV_LISTINGS;
-extern const char Global_STR_DIGITAL_PPV_PERIOD;
+extern const char FLIB_STR_DIGITAL_NICHE_LISTINGS[];
+extern const char FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS[];
+extern const char FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S[];
+extern const char FLIB_STR_DIGITAL_PPV_LISTINGS[];
+extern const char Global_STR_DIGITAL_PPV_PERIOD[];
 
 extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 extern void GCOMMAND_LoadDefaultTable(void);
@@ -66,7 +66,7 @@ void FLIB2_LoadDigitalNicheDefaults(void)
     GCOMMAND_NicheForceMode5Flag = 0;
     GCOMMAND_NicheWorkflowMode = 'B';
     GCOMMAND_DigitalNicheListingsTemplatePtr = ESQPARS_ReplaceOwnedString(
-        &FLIB_STR_DIGITAL_NICHE_LISTINGS,
+        FLIB_STR_DIGITAL_NICHE_LISTINGS,
         GCOMMAND_DigitalNicheListingsTemplatePtr
     );
 }
@@ -87,11 +87,11 @@ void FLIB2_LoadDigitalMplexDefaults(void)
     GCOMMAND_MplexWorkflowMode = 'B';
     GCOMMAND_MplexDetailLayoutFlag = 'N';
     GCOMMAND_MplexListingsTemplatePtr = ESQPARS_ReplaceOwnedString(
-        &FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS,
+        FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS,
         GCOMMAND_MplexListingsTemplatePtr
     );
     GCOMMAND_MplexAtTemplatePtr = ESQPARS_ReplaceOwnedString(
-        &FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S,
+        FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S,
         GCOMMAND_MplexAtTemplatePtr
     );
 }
@@ -113,11 +113,11 @@ void FLIB2_LoadDigitalPpvDefaults(void)
     GCOMMAND_PpvShowtimesWorkflowMode = 'B';
     GCOMMAND_PpvDetailLayoutFlag = 0x59;
     GCOMMAND_PPVListingsTemplatePtr = ESQPARS_ReplaceOwnedString(
-        &FLIB_STR_DIGITAL_PPV_LISTINGS,
+        FLIB_STR_DIGITAL_PPV_LISTINGS,
         GCOMMAND_PPVListingsTemplatePtr
     );
     GCOMMAND_PPVPeriodTemplatePtr = ESQPARS_ReplaceOwnedString(
-        &Global_STR_DIGITAL_PPV_PERIOD,
+        Global_STR_DIGITAL_PPV_PERIOD,
         GCOMMAND_PPVPeriodTemplatePtr
     );
 }
