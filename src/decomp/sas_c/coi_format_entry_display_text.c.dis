@@ -44,8 +44,8 @@ ___COI_FormatEntryDisplayText__6:
               MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          COI_GetAnimFieldPointerByMode;6100 0000 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
               LEA            $c(A7),A7                ;4fef 000c 
-              MOVE.L         D0,$40(A7)               ;2f40 0040 
               MOVE.L         D6,D0                    ;2006 
               ADDQ.L         #$1,D0                   ;5280 
               BNE.B          ___COI_FormatEntryDisplayText__8;6610 
@@ -70,8 +70,8 @@ ___COI_FormatEntryDisplayText__8:
               MOVE.L         $54(A7),-(A7)            ;2f2f 0054 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          COI_GetAnimFieldPointerByMode;6100 0000 
+              MOVE.L         D0,$70(A7)               ;2f40 0070 
               LEA            $24(A7),A7               ;4fef 0024 
-              MOVE.L         D0,$4c(A7)               ;2f40 004c 
 ___COI_FormatEntryDisplayText__9:
               CLR.L          $50(A7)                  ;42af 0050 
               MOVE.L         D6,-(A7)                 ;2f06 

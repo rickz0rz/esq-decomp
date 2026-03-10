@@ -22,7 +22,7 @@ extern const char COI_FMT_WRAP_CHAR_STRING_CHAR[];
 extern const char COI_STR_SINGLE_SPACE[];
 
 LONG COI_TestEntryWithinTimeWindow(void *entry, void *ctx, LONG slot, LONG window, LONG tolerance);
-LONG COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
+const char *COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
 LONG CLEANUP_TestEntryFlagYAndBit1(const void *entry, LONG slot, LONG mode);
 void CLEANUP_UpdateEntryFlagBytes(void *entry, LONG slot);
 LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG a, LONG b, LONG c);
@@ -52,7 +52,7 @@ void COI_FormatEntryDisplayText(void *entry, void *ctx, WORD slot, char *out_buf
         return;
     }
 
-    parts[0] = (const char *)COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_TITLE);
+    parts[0] = COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_TITLE);
 
     if (mode_marker == COI_MODE_MARKER_PPV) {
         parts[1] = (const char *)0;
@@ -60,16 +60,16 @@ void COI_FormatEntryDisplayText(void *entry, void *ctx, WORD slot, char *out_buf
         parts[3] = (const char *)0;
         mode_marker = COI_FIELD_MODE_FLAG3;
     } else {
-        parts[1] = (const char *)COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_FLAG3);
-        parts[2] = (const char *)COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_FLAG4);
-        parts[3] = (const char *)COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_TEXT);
+        parts[1] = COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_FLAG3);
+        parts[2] = COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_FLAG4);
+        parts[3] = COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_TEXT);
     }
     parts[4] = (const char *)0;
 
     if (CLEANUP_TestEntryFlagYAndBit1(entry, slot_l, mode_marker) != 0) {
         const char *wrap_field;
 
-        wrap_field = (const char *)COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_WRAP);
+        wrap_field = COI_GetAnimFieldPointerByMode(entry, slot_l, COI_FIELD_MODE_WRAP);
         GROUP_AE_JMPTBL_WDISP_SPrintf(
             wrap_buf,
             COI_FMT_WRAP_CHAR_STRING_CHAR,
