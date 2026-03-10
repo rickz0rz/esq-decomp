@@ -31,8 +31,8 @@ extern char Global_STR_CLEANUP_C_15[];
 extern UWORD WDISP_HighlightRasterHeightPx;
 extern LONG ESQDISP_HighlightBitmapTable;
 extern char Global_STR_CLEANUP_C_16[];
-extern LONG WDISP_WeatherStatusTextPtr;
-extern LONG WDISP_WeatherStatusOverlayTextPtr;
+extern char *WDISP_WeatherStatusTextPtr;
+extern char *WDISP_WeatherStatusOverlayTextPtr;
 extern LONG Global_REF_BACKED_UP_INTUITION_AUTOREQUEST;
 extern LONG Global_REF_BACKED_UP_INTUITION_DISPLAYALERT;
 extern LONG Global_REF_INTUITION_LIBRARY;
@@ -57,7 +57,7 @@ void GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers(void);
 void GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources(void);
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(void *rast, LONG width, LONG height, LONG line, const char *file);
-LONG GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(LONG new_ptr, LONG old_ptr);
+char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 void _LVOSetFunction(void);
 void _LVOVBeamPos(void);
 void GROUP_AB_JMPTBL_UNKNOWN2A_Stub0(void);
@@ -115,8 +115,8 @@ void CLEANUP_ShutdownSystem(void)
         }
     }
 
-    WDISP_WeatherStatusTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(CLEANUP_NULL, WDISP_WeatherStatusTextPtr);
-    WDISP_WeatherStatusOverlayTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(CLEANUP_NULL, WDISP_WeatherStatusOverlayTextPtr);
+    WDISP_WeatherStatusTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)CLEANUP_NULL, WDISP_WeatherStatusTextPtr);
+    WDISP_WeatherStatusOverlayTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)CLEANUP_NULL, WDISP_WeatherStatusOverlayTextPtr);
 
     _LVOSetFunction();
     _LVOSetFunction();

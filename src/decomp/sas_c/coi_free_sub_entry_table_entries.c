@@ -23,7 +23,7 @@ static const LONG SUBENTRY_TABLE_PTR_SHIFT = 2;
 
 extern const UBYTE Global_STR_COI_C_4[];
 
-LONG GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const void *new_ptr, void *old_ptr);
+char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 void GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray(void *table, LONG elem_size, LONG count);
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
 
@@ -67,30 +67,30 @@ void COI_FreeSubEntryTableEntries(void *entry)
     while (i < anim->subEntryCount) {
         COI_SubEntry **table;
         COI_SubEntry *sub;
-        LONG owned;
+        char *owned;
 
         table = anim->subEntryTable;
         sub = table[i];
 
         sub->key0 = 0;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((void *)0, sub->str0);
-        sub->str0 = (void *)owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, sub->str0);
+        sub->str0 = owned;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((void *)0, sub->str1);
-        sub->str1 = (void *)owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, sub->str1);
+        sub->str1 = owned;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((void *)0, sub->str2);
-        sub->str2 = (void *)owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, sub->str2);
+        sub->str2 = owned;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((void *)0, sub->str3);
-        sub->str3 = (void *)owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, sub->str3);
+        sub->str3 = owned;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((void *)0, sub->str4);
-        sub->str4 = (void *)owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, sub->str4);
+        sub->str4 = owned;
 
-        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((void *)0, sub->str5);
-        sub->str5 = (void *)owned;
+        owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, sub->str5);
+        sub->str5 = owned;
 
         sub->extraPtr = 0;
         i += 1;

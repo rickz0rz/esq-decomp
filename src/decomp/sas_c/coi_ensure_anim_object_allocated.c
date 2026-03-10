@@ -15,7 +15,7 @@ extern UBYTE Global_STR_COI_C_2[];
 extern UBYTE COI_STR_DEFAULT_TOKEN_TEMPLATE_B[];
 
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
-LONG GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const void *new_ptr, void *old_ptr);
+char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 
 typedef struct COI_AnimObject {
     UBYTE pad0[28];
@@ -51,12 +51,12 @@ void COI_EnsureAnimObjectAllocated(void *entry)
     e->anim = anim;
 
     if (anim != (COI_AnimObject *)0) {
-        void *old_str;
-        LONG new_owned;
+        char *old_str;
+        char *new_owned;
 
         old_str = anim->defaultStr;
         new_owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(COI_STR_DEFAULT_TOKEN_TEMPLATE_B, old_str);
-        anim->defaultStr = (void *)new_owned;
+        anim->defaultStr = new_owned;
         anim->sentinel = ANIM_SENTINEL_INVALID;
     }
 }
