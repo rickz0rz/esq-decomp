@@ -13,9 +13,9 @@ extern LONG MATH_Mulu32(LONG a, LONG b);
 LONG TLIBA2_ResolveEntryWindowAndSlotCount(const void *entryContext, void *entryState, LONG entryIndex, LONG *outRange, LONG flags, LONG *outSlotCount, LONG *outStart, LONG *outEnd, LONG wildcardMode)
 {
     const char *title;
-    char *pOpen;
-    char *pColon;
-    char *pClose;
+    const char *pOpen;
+    const char *pColon;
+    const char *pClose;
     LONG count;
     LONG i;
     LONG wildcardIndex;
