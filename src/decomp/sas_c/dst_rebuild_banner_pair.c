@@ -17,9 +17,9 @@ LONG DST_RebuildBannerPair(void *pair)
     DST_FreeBannerPair(p);
 
     p->primaryBanner = DST_AllocateBannerStruct(p->primaryBanner);
-    if (p->primaryBanner != (void *)0) {
+    if (p->primaryBanner != 0) {
         p->secondaryBanner = DST_AllocateBannerStruct(p->secondaryBanner);
-        if (p->primaryBanner != (void *)0) {
+        if (p->primaryBanner != 0) {
             ok = 1;
         }
     }
