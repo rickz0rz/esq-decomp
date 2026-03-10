@@ -92,7 +92,11 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
             slot = SLOT_FIRST;
         }
     } else if ((UWORD)mode == MODE_PREV) {
-        slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((const char *)entry, (const char *)aux, slot);
+        {
+            const char *entryText = (const char *)entry;
+            const char *auxText = (const char *)aux;
+            slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, slot);
+        }
         if (slot == SLOT_NONE || (aux->slotMask[(UWORD)slot] & MASK_SLOT_BLOCKED) != 0) {
             if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
                 slot = (LONG)CLOCK_HalfHourSlotIndex;
@@ -101,7 +105,11 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
             }
         }
     } else if ((UWORD)mode == MODE_PREV_BEFORE) {
-        slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((const char *)entry, (const char *)aux, slot - 1);
+        {
+            const char *entryText = (const char *)entry;
+            const char *auxText = (const char *)aux;
+            slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, slot - 1);
+        }
         if (slot == SLOT_NONE || (aux->slotMask[(UWORD)slot] & MASK_SLOT_BLOCKED) != 0) {
             if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
                 slot = (LONG)CLOCK_HalfHourSlotIndex;

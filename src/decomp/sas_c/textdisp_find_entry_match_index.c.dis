@@ -2,49 +2,49 @@
 __code:
 TEXTDISP_FindEntryMatchIndex:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$70,D0                  ;90bc 0000 0070 
+              SUB.L          #$84,D0                  ;90bc 0000 0084 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$60,A7                  ;9efc 0060 
+              SUB.W          #$74,A7                  ;9efc 0074 
               MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 3f34 
 ___TEXTDISP_FindEntryMatchIndex__1:
-              MOVE.L         $90(A7),D6               ;2c2f 0090 
-              MOVE.L         $8c(A7),D7               ;2e2f 008c 
-              MOVE.L         $88(A7),A5               ;2a6f 0088 
+              MOVE.L         $a4(A7),D6               ;2c2f 00a4 
+              MOVE.L         $a0(A7),D7               ;2e2f 00a0 
+              MOVE.L         $9c(A7),A5               ;2a6f 009c 
               MOVEQ.L        #$1,D5                   ;7a01 
               MOVEQ.L        #$2,D0                   ;7002 
               MOVEQ.L        #$1,D1                   ;7201 
               MOVEQ.L        #$3,D2                   ;7403 
-              MOVE.L         D2,$74(A7)               ;2f42 0074 
+              MOVE.L         D2,$88(A7)               ;2f42 0088 
               MOVEQ.L        #$31,D2                  ;7431 
-              CLR.L          $68(A7)                  ;42af 0068 
-              MOVE.B         #$80,$64(A7)             ;1f7c 0080 0064 
+              CLR.L          $7c(A7)                  ;42af 007c 
+              MOVE.B         #$80,$78(A7)             ;1f7c 0080 0078 
               MOVEQ.L        #$ff,D3                  ;76ff 
               MOVEQ.L        #$0,D4                   ;7800 
-              MOVE.L         D0,$78(A7)               ;2f40 0078 
-              MOVE.L         D0,$80(A7)               ;2f40 0080 
+              MOVE.L         D0,$8c(A7)               ;2f40 008c 
+              MOVE.L         D0,$94(A7)               ;2f40 0094 
               MOVE.L         D6,D0                    ;2006 
+              CLR.L          $6c(A7)                  ;42af 006c 
+              CLR.L          $60(A7)                  ;42af 0060 
+              CLR.L          $5c(A7)                  ;42af 005c 
               CLR.L          $58(A7)                  ;42af 0058 
-              CLR.L          $4c(A7)                  ;42af 004c 
-              CLR.L          $48(A7)                  ;42af 0048 
-              CLR.L          $44(A7)                  ;42af 0044 
-              MOVE.B         D0,$25(A7)               ;1f40 0025 
+              MOVE.B         D0,$2f(A7)               ;1f40 002f 
               MOVE.B         (A5),D0                  ;1015 
               EXT.W          D0                       ;4880 
               EXT.L          D0                       ;48c0 
-              MOVE.L         D1,$70(A7)               ;2f41 0070 
-              MOVE.L         D1,$7c(A7)               ;2f41 007c 
+              MOVE.L         D1,$84(A7)               ;2f41 0084 
+              MOVE.L         D1,$90(A7)               ;2f41 0090 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.B         D4,D1                    ;1204 
-              MOVE.L         D2,$6c(A7)               ;2f42 006c 
-              MOVEM.L        D3,$28(A7)               ;48ef 0008 0028 
-              MOVEM.L        D3,$2c(A7)               ;48ef 0008 002c 
-              MOVE.B         D4,$60(A7)               ;1f44 0060 
+              MOVE.L         D2,$80(A7)               ;2f42 0080 
+              MOVEM.L        D3,$30(A7)               ;48ef 0008 0030 
+              MOVEM.L        D3,$34(A7)               ;48ef 0008 0034 
+              MOVE.B         D4,$74(A7)               ;1f44 0074 
               CMP.L          D1,D0                    ;b081 
               BNE.B          ___TEXTDISP_FindEntryMatchIndex__3;6606 
 ___TEXTDISP_FindEntryMatchIndex__2:
               MOVE.L         D2,D0                    ;2002 
-              BRA.W          ___TEXTDISP_FindEntryMatchIndex__56;6000 02ee 
+              BRA.W          ___TEXTDISP_FindEntryMatchIndex__56;6000 0306 
 ___TEXTDISP_FindEntryMatchIndex__3:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_ActiveGroupId(A4),D0;302c 0000 
@@ -57,7 +57,7 @@ ___TEXTDISP_FindEntryMatchIndex__4:
               MOVE.W         TEXTDISP_CurrentMatchIndex(A4),D1;322c 0000 
               MOVE.L         D5,-(A7)                 ;2f05 
               MOVE.L         D1,-(A7)                 ;2f01 
-              MOVE.L         D0,$40(A7)               ;2f40 0040 
+              MOVE.L         D0,$54(A7)               ;2f40 0054 
               BSR.W          TLIBA1_JMPTBL_ESQDISP_GetEntryAu;6100 0000 
               MOVE.L         D0,A3                    ;2640 
               MOVEQ.L        #$0,D0                   ;7000 
@@ -69,16 +69,16 @@ ___TEXTDISP_FindEntryMatchIndex__4:
               LEA            $c(A7),A7                ;4fef 000c 
               BRA.B          ___TEXTDISP_FindEntryMatchIndex__6;602e 
 ___TEXTDISP_FindEntryMatchIndex__5:
-              MOVE.L         $70(A7),$38(A7)          ;2f6f 0070 0038 
+              MOVE.L         $84(A7),$4c(A7)          ;2f6f 0084 004c 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_CurrentMatchIndex(A4),D0;302c 0000 
-              MOVE.L         $80(A7),-(A7)            ;2f2f 0080 
+              MOVE.L         $94(A7),-(A7)            ;2f2f 0094 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          TLIBA1_JMPTBL_ESQDISP_GetEntryAu;6100 0000 
               MOVE.L         D0,A3                    ;2640 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_CurrentMatchIndex(A4),D0;302c 0000 
-              MOVE.L         $88(A7),(A7)             ;2eaf 0088 
+              MOVE.L         $9c(A7),(A7)             ;2eaf 009c 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          TLIBA1_JMPTBL_ESQDISP_GetEntryPo;6100 0000 
               MOVE.L         D0,A2                    ;2440 
@@ -87,7 +87,7 @@ ___TEXTDISP_FindEntryMatchIndex__6:
               MOVE.L         D7,D0                    ;2007 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         D0,D1                    ;3200 
-              CMP.L          $78(A7),D1               ;b2af 0078 
+              CMP.L          $8c(A7),D1               ;b2af 008c 
               BNE.B          ___TEXTDISP_FindEntryMatchIndex__11;6626 
 ___TEXTDISP_FindEntryMatchIndex__7:
               MOVEQ.L        #$0,D1                   ;7200 
@@ -98,35 +98,39 @@ ___TEXTDISP_FindEntryMatchIndex__8:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         CLOCK_HalfHourSlotIndex(A4),D1;322c 0000 
               ADDQ.L         #$1,D1                   ;5281 
-              MOVE.L         D1,$38(A7)               ;2f41 0038 
-              BRA.W          ___TEXTDISP_FindEntryMatchIndex__26;6000 00c6 
+              MOVE.L         D1,$4c(A7)               ;2f41 004c 
+              BRA.W          ___TEXTDISP_FindEntryMatchIndex__26;6000 00de 
 ___TEXTDISP_FindEntryMatchIndex__9:
-              MOVE.L         $70(A7),D1               ;222f 0070 
-              MOVE.L         D1,$38(A7)               ;2f41 0038 
+              MOVE.L         $84(A7),D1               ;222f 0084 
+              MOVE.L         D1,$4c(A7)               ;2f41 004c 
 ___TEXTDISP_FindEntryMatchIndex__10:
-              BRA.W          ___TEXTDISP_FindEntryMatchIndex__26;6000 00ba 
+              BRA.W          ___TEXTDISP_FindEntryMatchIndex__26;6000 00d2 
 ___TEXTDISP_FindEntryMatchIndex__11:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         D0,D1                    ;3200 
-              CMP.L          $7c(A7),D1               ;b2af 007c 
-              BNE.B          ___TEXTDISP_FindEntryMatchIndex__18;664e 
+              CMP.L          $90(A7),D1               ;b2af 0090 
+              BNE.B          ___TEXTDISP_FindEntryMatchIndex__18;665a 
 ___TEXTDISP_FindEntryMatchIndex__12:
-              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
-              MOVE.L         A3,-(A7)                 ;2f0b 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A2,A0                    ;204a 
+              MOVE.L         A3,A1                    ;224b 
+              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A0,$32(A7)               ;2f48 0032 
+              MOVE.L         A1,$48(A7)               ;2f49 0048 
               BSR.W          TLIBA1_JMPTBL_DISPLIB_FindPrevio;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              MOVE.L         D0,$38(A7)               ;2f40 0038 
-              MOVE.L         $68(A7),D1               ;222f 0068 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
+              MOVE.L         $7c(A7),D1               ;222f 007c 
               CMP.L          D0,D1                    ;b280 
               BEQ.B          ___TEXTDISP_FindEntryMatchIndex__14;6712 
 ___TEXTDISP_FindEntryMatchIndex__13:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         D0,D1                    ;3200 
               MOVE.B         $7(A3,D1.L),D0           ;1033 1807 
-              AND.B          $64(A7),D0               ;c02f 0064 
+              AND.B          $78(A7),D0               ;c02f 0078 
               TST.B          D0                       ;4a00 
-              BEQ.W          ___TEXTDISP_FindEntryMatchIndex__26;6700 0082 
+              BEQ.W          ___TEXTDISP_FindEntryMatchIndex__26;6700 008e 
 ___TEXTDISP_FindEntryMatchIndex__14:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_ActiveGroupId(A4),D0;302c 0000 
@@ -135,35 +139,39 @@ ___TEXTDISP_FindEntryMatchIndex__14:
 ___TEXTDISP_FindEntryMatchIndex__15:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         CLOCK_HalfHourSlotIndex(A4),D0;302c 0000 
-              MOVE.L         D0,$38(A7)               ;2f40 0038 
-              BRA.B          ___TEXTDISP_FindEntryMatchIndex__26;606a 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
+              BRA.B          ___TEXTDISP_FindEntryMatchIndex__26;6076 
 ___TEXTDISP_FindEntryMatchIndex__16:
-              MOVE.L         $70(A7),D0               ;202f 0070 
-              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              MOVE.L         $84(A7),D0               ;202f 0084 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
 ___TEXTDISP_FindEntryMatchIndex__17:
-              BRA.B          ___TEXTDISP_FindEntryMatchIndex__26;6060 
+              BRA.B          ___TEXTDISP_FindEntryMatchIndex__26;606c 
 ___TEXTDISP_FindEntryMatchIndex__18:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         D0,D1                    ;3200 
-              CMP.L          $74(A7),D1               ;b2af 0074 
-              BNE.B          ___TEXTDISP_FindEntryMatchIndex__25;6650 
+              CMP.L          $88(A7),D1               ;b2af 0088 
+              BNE.B          ___TEXTDISP_FindEntryMatchIndex__25;665c 
 ___TEXTDISP_FindEntryMatchIndex__19:
-              MOVE.L         $38(A7),D1               ;222f 0038 
+              MOVE.L         A2,A0                    ;204a 
+              MOVE.L         A3,A1                    ;224b 
+              MOVE.L         $4c(A7),D1               ;222f 004c 
               SUBQ.L         #$1,D1                   ;5381 
               MOVE.L         D1,-(A7)                 ;2f01 
-              MOVE.L         A3,-(A7)                 ;2f0b 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A0,$36(A7)               ;2f48 0036 
+              MOVE.L         A1,$48(A7)               ;2f49 0048 
               BSR.W          TLIBA1_JMPTBL_DISPLIB_FindPrevio;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              MOVE.L         D0,$38(A7)               ;2f40 0038 
-              MOVE.L         $68(A7),D1               ;222f 0068 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
+              MOVE.L         $7c(A7),D1               ;222f 007c 
               CMP.L          D0,D1                    ;b280 
               BEQ.B          ___TEXTDISP_FindEntryMatchIndex__21;6710 
 ___TEXTDISP_FindEntryMatchIndex__20:
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         D0,D1                    ;3200 
               MOVE.B         $7(A3,D1.L),D0           ;1033 1807 
-              AND.B          $64(A7),D0               ;c02f 0064 
+              AND.B          $78(A7),D0               ;c02f 0078 
               TST.B          D0                       ;4a00 
               BEQ.B          ___TEXTDISP_FindEntryMatchIndex__26;6726 
 ___TEXTDISP_FindEntryMatchIndex__21:
@@ -174,33 +182,33 @@ ___TEXTDISP_FindEntryMatchIndex__21:
 ___TEXTDISP_FindEntryMatchIndex__22:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         CLOCK_HalfHourSlotIndex(A4),D0;302c 0000 
-              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
               BRA.B          ___TEXTDISP_FindEntryMatchIndex__26;6010 
 ___TEXTDISP_FindEntryMatchIndex__23:
-              MOVE.L         $70(A7),D0               ;202f 0070 
-              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              MOVE.L         $84(A7),D0               ;202f 0084 
+              MOVE.L         D0,$4c(A7)               ;2f40 004c 
 ___TEXTDISP_FindEntryMatchIndex__24:
               BRA.B          ___TEXTDISP_FindEntryMatchIndex__26;6006 
 ___TEXTDISP_FindEntryMatchIndex__25:
-              MOVE.L         $70(A7),$38(A7)          ;2f6f 0070 0038 
+              MOVE.L         $84(A7),$4c(A7)          ;2f6f 0084 004c 
 ___TEXTDISP_FindEntryMatchIndex__26:
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          TEXTDISP_FindControlToken;6100 0000 
-              PEA            $4c(A7)                  ;486f 004c 
+              PEA            $60(A7)                  ;486f 0060 
               MOVE.L         D0,-(A7)                 ;2f00 
-              PEA            $64(A7)                  ;486f 0064 
+              PEA            $78(A7)                  ;486f 0078 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              MOVE.L         D0,$70(A7)               ;2f40 0070 
+              MOVE.L         D0,$84(A7)               ;2f40 0084 
               BSR.W          TEXTDISP_FindQuotedSpan  ;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
-              MOVE.L         $58(A7),A0               ;206f 0058 
+              MOVE.L         $6c(A7),A0               ;206f 006c 
               ADD.L          D0,A0                    ;d1c0 
-              MOVE.B         (A0),$27(A7)             ;1f50 0027 
+              MOVE.B         (A0),$40(A7)             ;1f50 0040 
               MOVE.B         D4,(A0)                  ;1084 
-              MOVE.L         D0,$40(A7)               ;2f40 0040 
+              MOVE.L         D0,$54(A7)               ;2f40 0054 
 ___TEXTDISP_FindEntryMatchIndex__27:
-              MOVE.L         $38(A7),D0               ;202f 0038 
-              CMP.L          $6c(A7),D0               ;b0af 006c 
+              MOVE.L         $4c(A7),D0               ;202f 004c 
+              CMP.L          $80(A7),D0               ;b0af 0080 
               BGE.W          ___TEXTDISP_FindEntryMatchIndex__54;6c00 0152 
 ___TEXTDISP_FindEntryMatchIndex__28:
               SWAP           D0                       ;4840 
@@ -211,33 +219,33 @@ ___TEXTDISP_FindEntryMatchIndex__28:
               TST.L          $38(A3,D1.L)             ;4ab3 1838 
               BNE.B          ___TEXTDISP_FindEntryMatchIndex__30;6606 
 ___TEXTDISP_FindEntryMatchIndex__29:
-              ADDQ.L         #$1,$38(A7)              ;52af 0038 
+              ADDQ.L         #$1,$4c(A7)              ;52af 004c 
               BRA.B          ___TEXTDISP_FindEntryMatchIndex__27;60de 
 ___TEXTDISP_FindEntryMatchIndex__30:
-              MOVE.L         $38(A7),D0               ;202f 0038 
+              MOVE.L         $4c(A7),D0               ;202f 004c 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         D0,D1                    ;3200 
               MOVE.B         $7(A3,D1.L),D2           ;1433 1807 
-              MOVE.B         $25(A7),D1               ;122f 0025 
+              MOVE.B         $2f(A7),D1               ;122f 002f 
               AND.B          D1,D2                    ;c401 
               CMP.B          D1,D2                    ;b401 
               BEQ.B          ___TEXTDISP_FindEntryMatchIndex__32;6706 
 ___TEXTDISP_FindEntryMatchIndex__31:
-              ADDQ.L         #$1,$38(A7)              ;52af 0038 
+              ADDQ.L         #$1,$4c(A7)              ;52af 004c 
               BRA.B          ___TEXTDISP_FindEntryMatchIndex__27;60c2 
 ___TEXTDISP_FindEntryMatchIndex__32:
               LEA            $1c(A2),A0               ;41ea 001c 
-              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          TLIBA2_JMPTBL_ESQ_TestBit1Based;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              CMP.L          $2c(A7),D0               ;b0af 002c 
+              CMP.L          $34(A7),D0               ;b0af 0034 
               BEQ.B          ___TEXTDISP_FindEntryMatchIndex__34;6706 
 ___TEXTDISP_FindEntryMatchIndex__33:
-              ADDQ.L         #$1,$38(A7)              ;52af 0038 
+              ADDQ.L         #$1,$4c(A7)              ;52af 004c 
               BRA.B          ___TEXTDISP_FindEntryMatchIndex__27;60a6 
 ___TEXTDISP_FindEntryMatchIndex__34:
-              MOVE.L         $38(A7),D0               ;202f 0038 
+              MOVE.L         $4c(A7),D0               ;202f 004c 
               SWAP           D0                       ;4840 
               CLR.W          D0                       ;4240 
               SWAP           D0                       ;4840 
@@ -245,15 +253,15 @@ ___TEXTDISP_FindEntryMatchIndex__34:
               ASL.L          #$2,D1                   ;e581 
               MOVE.L         $38(A3,D1.L),A0          ;2073 1838 
               MOVE.L         A0,-(A7)                 ;2f08 
-              MOVE.L         A0,$58(A7)               ;2f48 0058 
+              MOVE.L         A0,$6c(A7)               ;2f48 006c 
               BSR.W          TEXTDISP_FindControlToken;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              CLR.L          $34(A7)                  ;42af 0034 
-              MOVE.L         D0,$50(A7)               ;2f40 0050 
-              TST.L          $5c(A7)                  ;4aaf 005c 
+              CLR.L          $48(A7)                  ;42af 0048 
+              MOVE.L         D0,$64(A7)               ;2f40 0064 
+              TST.L          $70(A7)                  ;4aaf 0070 
               BNE.B          ___TEXTDISP_FindEntryMatchIndex__36;6606 
 ___TEXTDISP_FindEntryMatchIndex__35:
-              MOVE.L         D5,$34(A7)               ;2f45 0034 
+              MOVE.L         D5,$48(A7)               ;2f45 0048 
               BRA.B          ___TEXTDISP_FindEntryMatchIndex__39;6016 
 ___TEXTDISP_FindEntryMatchIndex__36:
               TST.L          D0                       ;4a80 
@@ -261,92 +269,92 @@ ___TEXTDISP_FindEntryMatchIndex__36:
 ___TEXTDISP_FindEntryMatchIndex__37:
               MOVE.L         D0,A0                    ;2040 
               MOVE.B         (A0),D1                  ;1210 
-              MOVE.L         $5c(A7),A1               ;226f 005c 
+              MOVE.L         $70(A7),A1               ;226f 0070 
               CMP.B          (A1),D1                  ;b211 
               BNE.B          ___TEXTDISP_FindEntryMatchIndex__39;6606 
 ___TEXTDISP_FindEntryMatchIndex__38:
               MOVE.L         D5,D1                    ;2205 
-              MOVE.L         D1,$34(A7)               ;2f41 0034 
+              MOVE.L         D1,$48(A7)               ;2f41 0048 
 ___TEXTDISP_FindEntryMatchIndex__39:
-              CLR.L          $30(A7)                  ;42af 0030 
-              TST.L          $34(A7)                  ;4aaf 0034 
+              CLR.L          $44(A7)                  ;42af 0044 
+              TST.L          $48(A7)                  ;4aaf 0048 
               BEQ.W          ___TEXTDISP_FindEntryMatchIndex__50;6700 008a 
 ___TEXTDISP_FindEntryMatchIndex__40:
-              PEA            $44(A7)                  ;486f 0044 
+              PEA            $58(A7)                  ;486f 0058 
               MOVE.L         D0,-(A7)                 ;2f00 
-              PEA            $54(A7)                  ;486f 0054 
-              MOVE.L         $60(A7),-(A7)            ;2f2f 0060 
+              PEA            $68(A7)                  ;486f 0068 
+              MOVE.L         $74(A7),-(A7)            ;2f2f 0074 
               BSR.W          TEXTDISP_FindQuotedSpan  ;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVE.L         $4c(A7),A0               ;206f 004c 
+              MOVE.L         $60(A7),A0               ;206f 0060 
               MOVE.L         A0,A1                    ;2248 
               ADD.L          D0,A1                    ;d3c0 
-              MOVE.B         (A1),$26(A7)             ;1f51 0026 
-              MOVE.B         $60(A7),D1               ;122f 0060 
+              MOVE.B         (A1),$38(A7)             ;1f51 0038 
+              MOVE.B         $74(A7),D1               ;122f 0074 
               MOVE.B         D1,(A1)                  ;1281 
-              MOVE.L         D0,$3c(A7)               ;2f40 003c 
-              TST.L          $48(A7)                  ;4aaf 0048 
+              MOVE.L         D0,$50(A7)               ;2f40 0050 
+              TST.L          $5c(A7)                  ;4aaf 005c 
               BEQ.B          ___TEXTDISP_FindEntryMatchIndex__46;6728 
 ___TEXTDISP_FindEntryMatchIndex__41:
-              TST.L          $44(A7)                  ;4aaf 0044 
+              TST.L          $58(A7)                  ;4aaf 0058 
               BEQ.B          ___TEXTDISP_FindEntryMatchIndex__49;6744 
 ___TEXTDISP_FindEntryMatchIndex__42:
-              MOVE.L         $40(A7),D1               ;222f 0040 
+              MOVE.L         $54(A7),D1               ;222f 0054 
               CMP.L          D0,D1                    ;b280 
               BNE.B          ___TEXTDISP_FindEntryMatchIndex__49;663c 
 ___TEXTDISP_FindEntryMatchIndex__43:
-              MOVE.L         $4c(A7),-(A7)            ;2f2f 004c 
-              MOVE.L         $5c(A7),-(A7)            ;2f2f 005c 
+              MOVE.L         $60(A7),-(A7)            ;2f2f 0060 
+              MOVE.L         $70(A7),-(A7)            ;2f2f 0070 
               BSR.W          STRING_CompareNoCase     ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
               BNE.B          ___TEXTDISP_FindEntryMatchIndex__49;662a 
 ___TEXTDISP_FindEntryMatchIndex__44:
-              MOVE.L         $28(A7),$30(A7)          ;2f6f 0028 0030 
+              MOVE.L         $30(A7),$44(A7)          ;2f6f 0030 0044 
 ___TEXTDISP_FindEntryMatchIndex__45:
               BRA.B          ___TEXTDISP_FindEntryMatchIndex__49;6022 
 ___TEXTDISP_FindEntryMatchIndex__46:
-              MOVE.L         $40(A7),D1               ;222f 0040 
+              MOVE.L         $54(A7),D1               ;222f 0054 
               CMP.L          D0,D1                    ;b280 
               BGT.B          ___TEXTDISP_FindEntryMatchIndex__49;6e1a 
 ___TEXTDISP_FindEntryMatchIndex__47:
-              MOVE.L         $58(A7),-(A7)            ;2f2f 0058 
-              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
+              MOVE.L         $6c(A7),-(A7)            ;2f2f 006c 
+              MOVE.L         $64(A7),-(A7)            ;2f2f 0064 
               BSR.W          TLIBA1_JMPTBL_ESQ_FindSubstringC;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
               BEQ.B          ___TEXTDISP_FindEntryMatchIndex__49;6708 
 ___TEXTDISP_FindEntryMatchIndex__48:
-              MOVE.L         $28(A7),D0               ;202f 0028 
-              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
 ___TEXTDISP_FindEntryMatchIndex__49:
-              MOVE.L         $4c(A7),A0               ;206f 004c 
-              ADD.L          $3c(A7),A0               ;d1ef 003c 
-              MOVE.B         $26(A7),(A0)             ;10af 0026 
+              MOVE.L         $60(A7),A0               ;206f 0060 
+              ADD.L          $50(A7),A0               ;d1ef 0050 
+              MOVE.B         $38(A7),(A0)             ;10af 0038 
 ___TEXTDISP_FindEntryMatchIndex__50:
-              TST.L          $30(A7)                  ;4aaf 0030 
+              TST.L          $44(A7)                  ;4aaf 0044 
               BEQ.B          ___TEXTDISP_FindEntryMatchIndex__53;6718 
 ___TEXTDISP_FindEntryMatchIndex__51:
-              TST.L          $34(A7)                  ;4aaf 0034 
+              TST.L          $48(A7)                  ;4aaf 0048 
               BEQ.B          ___TEXTDISP_FindEntryMatchIndex__53;6712 
 ___TEXTDISP_FindEntryMatchIndex__52:
-              MOVE.L         $58(A7),A0               ;206f 0058 
-              ADD.L          $40(A7),A0               ;d1ef 0040 
-              MOVE.B         $27(A7),(A0)             ;10af 0027 
-              MOVE.L         $38(A7),D0               ;202f 0038 
+              MOVE.L         $6c(A7),A0               ;206f 006c 
+              ADD.L          $54(A7),A0               ;d1ef 0054 
+              MOVE.B         $40(A7),(A0)             ;10af 0040 
+              MOVE.L         $4c(A7),D0               ;202f 004c 
               BRA.B          ___TEXTDISP_FindEntryMatchIndex__56;6018 
 ___TEXTDISP_FindEntryMatchIndex__53:
-              ADDQ.L         #$1,$38(A7)              ;52af 0038 
+              ADDQ.L         #$1,$4c(A7)              ;52af 004c 
               BRA.W          ___TEXTDISP_FindEntryMatchIndex__27;6000 fea6 
 ___TEXTDISP_FindEntryMatchIndex__54:
-              MOVE.L         $58(A7),A0               ;206f 0058 
-              ADD.L          $40(A7),A0               ;d1ef 0040 
-              MOVE.B         $27(A7),(A0)             ;10af 0027 
-              MOVE.L         $38(A7),D0               ;202f 0038 
+              MOVE.L         $6c(A7),A0               ;206f 006c 
+              ADD.L          $54(A7),A0               ;d1ef 0054 
+              MOVE.B         $40(A7),(A0)             ;10af 0040 
+              MOVE.L         $4c(A7),D0               ;202f 004c 
 ___TEXTDISP_FindEntryMatchIndex__55:
 ___TEXTDISP_FindEntryMatchIndex__56:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
-              ADD.W          #$60,A7                  ;defc 0060 
+              ADD.W          #$74,A7                  ;defc 0074 
               RTS                                     ;4e75 
 __const:
 __strings:
