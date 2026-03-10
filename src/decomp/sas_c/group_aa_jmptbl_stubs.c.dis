@@ -54,11 +54,24 @@ ___GROUP_AA_JMPTBL_GCOMMAND_FindPat__3:
               MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 GROUP_AA_JMPTBL_GRAPHICS_AllocRa:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A5,-(A7)     ;48e7 0f04 
 ___GROUP_AA_JMPTBL_GRAPHICS_AllocRa__1:
+              MOVE.L         $28(A7),D4               ;282f 0028 
+              MOVE.L         $24(A7),D5               ;2a2f 0024 
+              MOVE.L         $20(A7),D6               ;2c2f 0020 
+              MOVE.L         $1c(A7),D7               ;2e2f 001c 
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              MOVE.L         D5,-(A7)                 ;2f05 
               BSR.W          GRAPHICS_AllocRaster     ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___GROUP_AA_JMPTBL_GRAPHICS_AllocRa__2:
+___GROUP_AA_JMPTBL_GRAPHICS_AllocRa__3:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A5     ;4cdf 20f0 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF

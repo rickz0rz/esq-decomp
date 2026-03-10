@@ -1,7 +1,7 @@
 extern long STRING_CompareNoCase(const char *a, const char *b);
 extern long STRING_CompareN(const char *a, const char *b, long maxLen);
 extern char *GCOMMAND_FindPathSeparator(char *path);
-extern void GRAPHICS_AllocRaster(void);
+extern void *GRAPHICS_AllocRaster(long width, long height);
 
 long GROUP_AA_JMPTBL_STRING_CompareNoCase(const char *a, const char *b)
 {
@@ -18,7 +18,10 @@ char *GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(char *path)
     return GCOMMAND_FindPathSeparator(path);
 }
 
-void GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(void)
+void *GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(const void *tag, long line, long plane_off, long width, long height)
 {
-    GRAPHICS_AllocRaster();
+    (void)tag;
+    (void)line;
+    (void)plane_off;
+    return GRAPHICS_AllocRaster(width, height);
 }
