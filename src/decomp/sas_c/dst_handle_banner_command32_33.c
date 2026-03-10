@@ -5,8 +5,13 @@ typedef struct DST_ParsedDateTime {
     UBYTE raw[22];
 } DST_ParsedDateTime;
 
-extern void *DST_BannerWindowPrimary;
-extern void *DST_BannerWindowSecondary;
+typedef struct DST_BannerWindowPair {
+    void *in_ptr;
+    void *out_ptr;
+} DST_BannerWindowPair;
+
+extern DST_BannerWindowPair *DST_BannerWindowPrimary;
+extern DST_BannerWindowPair *DST_BannerWindowSecondary;
 
 extern void DATETIME_ParseString(void *out_struct, const char *text, LONG width);
 extern LONG DATETIME_CopyPairAndRecalc(void *dst, const void *lhs, const void *rhs);
