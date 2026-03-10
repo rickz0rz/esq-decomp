@@ -27,7 +27,7 @@ extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
 extern void GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults(UBYTE *entry);
-extern void COI_EnsureAnimObjectAllocated(UBYTE *entry);
+extern void COI_EnsureAnimObjectAllocated(void *entry);
 extern char *GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(const char *text, ULONG flags);
 extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern long COI_LoadOiDataFile(long diskId);
@@ -100,7 +100,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
             }
 
             GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults((UBYTE *)entry);
-            COI_EnsureAnimObjectAllocated((UBYTE *)entry);
+            COI_EnsureAnimObjectAllocated((void *)entry);
 
             {
                 UWORD i;
