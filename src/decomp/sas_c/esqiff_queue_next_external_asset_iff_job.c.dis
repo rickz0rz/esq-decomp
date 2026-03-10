@@ -28,7 +28,7 @@ ___ESQIFF_QueueNextExternalAssetIff__1:
 ___ESQIFF_QueueNextExternalAssetIff__2:
               BSR.W          _LVOPermit               ;6100 0000 
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__87;6000 02c6 
+              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__87;6000 02ca 
 ___ESQIFF_QueueNextExternalAssetIff__3:
               MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
               BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__6;6714 
@@ -39,7 +39,7 @@ ___ESQIFF_QueueNextExternalAssetIff__4:
 ___ESQIFF_QueueNextExternalAssetIff__5:
               BSR.W          _LVOPermit               ;6100 0000 
               MOVE.W         D5,D0                    ;3005 
-              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__87;6000 02ac 
+              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__87;6000 02b0 
 ___ESQIFF_QueueNextExternalAssetIff__6:
               MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
               CMP.W          D7,D0                    ;b047 
@@ -51,7 +51,7 @@ ___ESQIFF_QueueNextExternalAssetIff__7:
 ___ESQIFF_QueueNextExternalAssetIff__8:
               BSR.W          _LVOPermit               ;6100 0000 
               MOVE.W         D5,D0                    ;3005 
-              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__87;6000 0290 
+              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__87;6000 0294 
 ___ESQIFF_QueueNextExternalAssetIff__9:
               BSR.W          _LVOPermit               ;6100 0000 
               CLR.B          $99(A7)                  ;422f 0099 
@@ -66,11 +66,11 @@ ___ESQIFF_QueueNextExternalAssetIff__10:
 ___ESQIFF_QueueNextExternalAssetIff__11:
 ___ESQIFF_QueueNextExternalAssetIff__12:
               TST.L          Global_REF_LONG_GFX_G_ADS_DATA(A4);4aac 0000 
-              BEQ.W          ___ESQIFF_QueueNextExternalAssetIff__83;6700 0254 
+              BEQ.W          ___ESQIFF_QueueNextExternalAssetIff__83;6700 0258 
 ___ESQIFF_QueueNextExternalAssetIff__13:
               MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
               CMP.W          D7,D0                    ;b047 
-              BNE.W          ___ESQIFF_QueueNextExternalAssetIff__83;6600 024a 
+              BNE.W          ___ESQIFF_QueueNextExternalAssetIff__83;6600 024e 
 ___ESQIFF_QueueNextExternalAssetIff__14:
 ___ESQIFF_QueueNextExternalAssetIff__15:
 ___ESQIFF_QueueNextExternalAssetIff__16:
@@ -80,18 +80,20 @@ ___ESQIFF_QueueNextExternalAssetIff__17:
               PEA            $99(A7)                  ;486f 0099 
               BSR.W          ESQIFF_ReadNextExternalAssetPath;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              LEA            $99(A7),A2               ;45ef 0099 
+              LEA            $99(A7),A0               ;41ef 0099 
+              MOVE.L         A0,$6c(A7)               ;2f48 006c 
 ___ESQIFF_QueueNextExternalAssetIff__18:
-              TST.B          (A2)                     ;4a12 
-              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__20;6704 
+              MOVE.L         $6c(A7),A0               ;206f 006c 
+              TST.B          (A0)                     ;4a10 
+              BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__20;6706 
 ___ESQIFF_QueueNextExternalAssetIff__19:
-              ADDQ.L         #$1,A2                   ;528a 
-              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__18;60f8 
+              ADDQ.L         #$1,$6c(A7)              ;52af 006c 
+              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__18;60f2 
 ___ESQIFF_QueueNextExternalAssetIff__20:
-              MOVE.L         A2,D0                    ;200a 
+              MOVE.L         $6c(A7),D0               ;202f 006c 
               LEA            $99(A7),A0               ;41ef 0099 
               SUB.L          A0,D0                    ;9088 
-              MOVE.L         D0,$6c(A7)               ;2f40 006c 
+              MOVE.L         D0,$7c(A7)               ;2f40 007c 
               BEQ.W          ___ESQIFF_QueueNextExternalAssetIff__40;6700 00ba 
 ___ESQIFF_QueueNextExternalAssetIff__21:
               MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
@@ -105,9 +107,9 @@ ___ESQIFF_QueueNextExternalAssetIff__23:
               MOVE.W         $d4(A7),$7a(A7)          ;3f6f 00d4 007a 
               BRA.W          ___ESQIFF_QueueNextExternalAssetIff__40;6000 009c 
 ___ESQIFF_QueueNextExternalAssetIff__24:
-              CLR.W          $88(A7)                  ;426f 0088 
+              CLR.W          $8c(A7)                  ;426f 008c 
 ___ESQIFF_QueueNextExternalAssetIff__25:
-              MOVE.W         $88(A7),D0               ;302f 0088 
+              MOVE.W         $8c(A7),D0               ;302f 008c 
               MOVEQ.L        #$28,D1                  ;7228 
               CMP.W          D1,D0                    ;b041 
               BGE.B          ___ESQIFF_QueueNextExternalAssetIff__31;6c2c 
@@ -128,7 +130,7 @@ ___ESQIFF_QueueNextExternalAssetIff__29:
               CLR.B          $44(A7,D0.L)             ;4237 0844 
               BRA.B          ___ESQIFF_QueueNextExternalAssetIff__31;6006 
 ___ESQIFF_QueueNextExternalAssetIff__30:
-              ADDQ.W         #$1,$88(A7)              ;526f 0088 
+              ADDQ.W         #$1,$8c(A7)              ;526f 008c 
               BRA.B          ___ESQIFF_QueueNextExternalAssetIff__25;60ca 
 ___ESQIFF_QueueNextExternalAssetIff__31:
               PEA            $43(A7)                  ;486f 0043 
@@ -175,13 +177,13 @@ ___ESQIFF_QueueNextExternalAssetIff__41:
 ___ESQIFF_QueueNextExternalAssetIff__42:
               MOVE.W         ESQIFF_LogoListLineIndex(A4),D0;302c 0000 
               CMP.W          $94(A7),D0               ;b06f 0094 
-              BNE.W          ___ESQIFF_QueueNextExternalAssetIff__17;6600 ff10 
+              BNE.W          ___ESQIFF_QueueNextExternalAssetIff__17;6600 ff04 
 ___ESQIFF_QueueNextExternalAssetIff__43:
 ___ESQIFF_QueueNextExternalAssetIff__44:
 ___ESQIFF_QueueNextExternalAssetIff__45:
               MOVE.W         $78(A7),TEXTDISP_CurrentMatchIndex(A4);396f 0078 0000 
               TST.W          $7a(A7)                  ;4a6f 007a 
-              BEQ.W          ___ESQIFF_QueueNextExternalAssetIff__83;6700 0140 
+              BEQ.W          ___ESQIFF_QueueNextExternalAssetIff__83;6700 0138 
 ___ESQIFF_QueueNextExternalAssetIff__46:
 ___ESQIFF_QueueNextExternalAssetIff__47:
               MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
@@ -194,17 +196,17 @@ ___ESQIFF_QueueNextExternalAssetIff__49:
 ___ESQIFF_QueueNextExternalAssetIff__50:
               LEA            $99(A7),A0               ;41ef 0099 
               LEA            $19(A7),A1               ;43ef 0019 
-              MOVE.L         A0,$7c(A7)               ;2f48 007c 
+              MOVE.L         A0,$88(A7)               ;2f48 0088 
               MOVE.L         A1,$84(A7)               ;2f49 0084 
 ___ESQIFF_QueueNextExternalAssetIff__51:
-              MOVE.L         $7c(A7),A0               ;206f 007c 
+              MOVE.L         $88(A7),A0               ;206f 0088 
               MOVE.L         $84(A7),A1               ;226f 0084 
               MOVE.B         (A0),(A1)+               ;12d0 
               MOVE.L         A1,$84(A7)               ;2f49 0084 
 ___ESQIFF_QueueNextExternalAssetIff__52:
-              MOVE.L         $7c(A7),A0               ;206f 007c 
+              MOVE.L         $88(A7),A0               ;206f 0088 
               MOVE.B         (A0)+,D0                 ;1018 
-              MOVE.L         A0,$7c(A7)               ;2f48 007c 
+              MOVE.L         A0,$88(A7)               ;2f48 0088 
               TST.B          D0                       ;4a00 
               BNE.B          ___ESQIFF_QueueNextExternalAssetIff__51;66e4 
 ___ESQIFF_QueueNextExternalAssetIff__53:
@@ -212,36 +214,35 @@ ___ESQIFF_QueueNextExternalAssetIff__53:
               BSR.W          ESQDISP_ProcessGridMessagesIfIdl;6100 0000 
               MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
               CMP.W          D6,D0                    ;b046 
-              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__55;6608 
+              BNE.B          ___ESQIFF_QueueNextExternalAssetIff__55;6606 
 ___ESQIFF_QueueNextExternalAssetIff__54:
-              MOVE.L         ESQIFF_LogoBrushListHead(A4),$8c(A7);2f6c 0000 008c 
-              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__56;6008 
+              MOVE.L         ESQIFF_LogoBrushListHead(A4),A5;2a6c 0000 
+              BRA.B          ___ESQIFF_QueueNextExternalAssetIff__56;6004 
 ___ESQIFF_QueueNextExternalAssetIff__55:
-              MOVE.L         ESQIFF_GAdsBrushListHead(A4),D0;202c 0000 
-              MOVE.L         D0,$8c(A7)               ;2f40 008c 
+              MOVE.L         ESQIFF_GAdsBrushListHead(A4),A5;2a6c 0000 
 ___ESQIFF_QueueNextExternalAssetIff__56:
-              MOVE.L         $8c(A7),D0               ;202f 008c 
+              MOVE.L         A5,D0                    ;200d 
               BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__58;6704 
 ___ESQIFF_QueueNextExternalAssetIff__57:
-              MOVE.L         D0,A5                    ;2a40 
+              MOVE.L         A5,A3                    ;264d 
               BRA.B          ___ESQIFF_QueueNextExternalAssetIff__59;6002 
 ___ESQIFF_QueueNextExternalAssetIff__58:
-              SUB.L          A5,A5                    ;9bcd 
+              SUB.L          A3,A3                    ;97cb 
 ___ESQIFF_QueueNextExternalAssetIff__59:
               CLR.L          $90(A7)                  ;42af 0090 
-              MOVE.L         A5,D0                    ;200d 
+              MOVE.L         A3,D0                    ;200b 
               BEQ.B          ___ESQIFF_QueueNextExternalAssetIff__66;6732 
 ___ESQIFF_QueueNextExternalAssetIff__60:
               LEA            $99(A7),A0               ;41ef 0099 
-              MOVE.L         A5,$84(A7)               ;2f4d 0084 
-              MOVE.L         A0,$7c(A7)               ;2f48 007c 
+              MOVE.L         A3,$84(A7)               ;2f4b 0084 
+              MOVE.L         A0,$88(A7)               ;2f48 0088 
 ___ESQIFF_QueueNextExternalAssetIff__61:
-              MOVE.L         $7c(A7),A0               ;206f 007c 
+              MOVE.L         $88(A7),A0               ;206f 0088 
               MOVE.B         (A0)+,D0                 ;1018 
               MOVE.L         $84(A7),A1               ;226f 0084 
               MOVE.B         (A1)+,D1                 ;1219 
               MOVE.B         D0,$83(A7)               ;1f40 0083 
-              MOVE.L         A0,$7c(A7)               ;2f48 007c 
+              MOVE.L         A0,$88(A7)               ;2f48 0088 
               MOVE.L         A1,$84(A7)               ;2f49 0084 
               CMP.B          D0,D1                    ;b200 
               BNE.B          ___ESQIFF_QueueNextExternalAssetIff__66;660a 
@@ -260,19 +261,19 @@ ___ESQIFF_QueueNextExternalAssetIff__67:
               CLR.L          -(A7)                    ;42a7 
               PEA            $9d(A7)                  ;486f 009d 
               BSR.W          ESQIFF_JMPTBL_BRUSH_AllocBrushNo;6100 0000 
-              MOVE.L         D0,A3                    ;2640 
+              MOVE.L         D0,A2                    ;2440 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         A3,ESQIFF_PendingExternalBrushNode(A4);294b 0000 
+              MOVE.L         A2,ESQIFF_PendingExternalBrushNode(A4);294a 0000 
               MOVE.W         ESQIFF_AssetSourceSelect(A4),D0;302c 0000 
               CMP.W          D6,D0                    ;b046 
               BNE.B          ___ESQIFF_QueueNextExternalAssetIff__69;660c 
 ___ESQIFF_QueueNextExternalAssetIff__68:
-              MOVE.B         $c3(A7),$be(A3)          ;176f 00c3 00be 
-              MOVE.L         A3,CTASKS_PendingLogoBrushDescripto(A4);294b 0000 
+              MOVE.B         $c3(A7),$be(A2)          ;156f 00c3 00be 
+              MOVE.L         A2,CTASKS_PendingLogoBrushDescripto(A4);294a 0000 
               BRA.B          ___ESQIFF_QueueNextExternalAssetIff__70;600a 
 ___ESQIFF_QueueNextExternalAssetIff__69:
-              MOVE.B         $c2(A7),$be(A3)          ;176f 00c2 00be 
-              MOVE.L         A3,CTASKS_PendingGAdsBrushDescripto(A4);294b 0000 
+              MOVE.B         $c2(A7),$be(A2)          ;156f 00c2 00be 
+              MOVE.L         A2,CTASKS_PendingGAdsBrushDescripto(A4);294a 0000 
 ___ESQIFF_QueueNextExternalAssetIff__70:
               BSR.W          ESQIFF_JMPTBL_CTASKS_StartIffTas;6100 0000 
 ___ESQIFF_QueueNextExternalAssetIff__71:
@@ -287,15 +288,15 @@ ___ESQIFF_QueueNextExternalAssetIff__72:
 ___ESQIFF_QueueNextExternalAssetIff__73:
               LEA            $19(A7),A0               ;41ef 0019 
               LEA            $99(A7),A1               ;43ef 0099 
-              MOVE.L         A0,$7c(A7)               ;2f48 007c 
+              MOVE.L         A0,$88(A7)               ;2f48 0088 
               MOVE.L         A1,$84(A7)               ;2f49 0084 
 ___ESQIFF_QueueNextExternalAssetIff__74:
-              MOVE.L         $7c(A7),A0               ;206f 007c 
+              MOVE.L         $88(A7),A0               ;206f 0088 
               MOVE.B         (A0)+,D0                 ;1018 
               MOVE.L         $84(A7),A1               ;226f 0084 
               MOVE.B         (A1)+,D1                 ;1219 
               MOVE.B         D0,$83(A7)               ;1f40 0083 
-              MOVE.L         A0,$7c(A7)               ;2f48 007c 
+              MOVE.L         A0,$88(A7)               ;2f48 0088 
               MOVE.L         A1,$84(A7)               ;2f49 0084 
               CMP.B          D0,D1                    ;b200 
               BNE.B          ___ESQIFF_QueueNextExternalAssetIff__79;6606 
@@ -311,7 +312,7 @@ ___ESQIFF_QueueNextExternalAssetIff__79:
               CMP.W          $c6(A7),D0               ;b06f 00c6 
               BNE.B          ___ESQIFF_QueueNextExternalAssetIff__83;6604 
 ___ESQIFF_QueueNextExternalAssetIff__80:
-              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__53;6000 ff08 
+              BRA.W          ___ESQIFF_QueueNextExternalAssetIff__53;6000 ff10 
 ___ESQIFF_QueueNextExternalAssetIff__81:
 ___ESQIFF_QueueNextExternalAssetIff__82:
 ___ESQIFF_QueueNextExternalAssetIff__83:

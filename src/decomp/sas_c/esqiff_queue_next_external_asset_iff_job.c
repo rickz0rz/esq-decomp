@@ -68,7 +68,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
     WORD sourceSelect;
     volatile LONG pollLimit;
     LONG duplicateHeadPath;
-    LONG headNodeLong;
+    const ESQIFF_PendingBrushNode *headNode;
     const char *headPath;
     ESQIFF_PendingBrushNode *pendingNode;
 
@@ -200,11 +200,11 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         ESQDISP_ProcessGridMessagesIfIdle();
 
         if (ESQIFF_AssetSourceSelect == SOURCE_SELECT_LOGO) {
-            headNodeLong = ESQIFF_LogoBrushListHead;
+            headNode = (const ESQIFF_PendingBrushNode *)ESQIFF_LogoBrushListHead;
         } else {
-            headNodeLong = ESQIFF_GAdsBrushListHead;
+            headNode = (const ESQIFF_PendingBrushNode *)ESQIFF_GAdsBrushListHead;
         }
-        headPath = (headNodeLong != 0) ? ((const ESQIFF_PendingBrushNode *)headNodeLong)->pathText : 0;
+        headPath = (headNode != 0) ? headNode->pathText : 0;
 
         duplicateHeadPath = 0;
         if (headPath != 0) {
