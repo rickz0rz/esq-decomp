@@ -51,11 +51,23 @@ ___PARSEINI_JMPTBL_STR_FindCharPtr__3:
               MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 PARSEINI_JMPTBL_HANDLE_OpenWithM:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
 ___PARSEINI_JMPTBL_HANDLE_OpenWithM__1:
+              MOVE.L         $18(A7),A2               ;246f 0018 
+              MOVE.L         $14(A7),A3               ;266f 0014 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          HANDLE_OpenWithMode      ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
 ___PARSEINI_JMPTBL_HANDLE_OpenWithM__2:
+___PARSEINI_JMPTBL_HANDLE_OpenWithM__3:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
               RTS                                     ;4e75 
 PARSEINI_JMPTBL_ESQIFF_QueueIffB:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -116,11 +128,20 @@ ___PARSEINI_JMPTBL_ED1_DrawDiagnost__1:
 ___PARSEINI_JMPTBL_ED1_DrawDiagnost__2:
               RTS                                     ;4e75 
 PARSEINI_JMPTBL_BRUSH_FreeBrushL:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
 ___PARSEINI_JMPTBL_BRUSH_FreeBrushL__1:
+              MOVE.L         $10(A7),D7               ;2e2f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          BRUSH_FreeBrushList      ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___PARSEINI_JMPTBL_BRUSH_FreeBrushL__2:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 PARSEINI_JMPTBL_GCOMMAND_Validat:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -130,11 +151,21 @@ ___PARSEINI_JMPTBL_GCOMMAND_Validat__1:
 ___PARSEINI_JMPTBL_GCOMMAND_Validat__2:
               RTS                                     ;4e75 
 PARSEINI_JMPTBL_BRUSH_AllocBrush:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
 ___PARSEINI_JMPTBL_BRUSH_AllocBrush__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          BRUSH_AllocBrushNode     ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___PARSEINI_JMPTBL_BRUSH_AllocBrush__2:
+___PARSEINI_JMPTBL_BRUSH_AllocBrush__3:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
               RTS                                     ;4e75 
 PARSEINI_JMPTBL_UNKNOWN36_Finali:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -190,11 +221,23 @@ ___PARSEINI_JMPTBL_WDISP_SPrintf__1:
 ___PARSEINI_JMPTBL_WDISP_SPrintf__2:
               RTS                                     ;4e75 
 PARSEINI_JMPTBL_STREAM_ReadLineW:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
 ___PARSEINI_JMPTBL_STREAM_ReadLineW__1:
+              MOVE.L         $14(A7),D7               ;2e2f 0014 
+              MOVE.L         $18(A7),A3               ;266f 0018 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          STREAM_ReadLineWithLimit ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
 ___PARSEINI_JMPTBL_STREAM_ReadLineW__2:
+___PARSEINI_JMPTBL_STREAM_ReadLineW__3:
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
               RTS                                     ;4e75 
 PARSEINI_JMPTBL_STR_FindAnyCharP:
               MOVE.L         A7,D0                    ;200f 
