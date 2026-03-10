@@ -32,8 +32,8 @@ ___NEWGRID_HandleDetailGridState__4:
               PEA            $5c(A7)                  ;486f 005c 
               PEA            $64(A7)                  ;486f 0064 
               BSR.W          NEWGRID_UpdatePresetEntry;6100 0000 
-              LEA            $10(A7),A7               ;4fef 0010 
               MOVE.L         D0,D6                    ;2c00 
+              LEA            $10(A7),A7               ;4fef 0010 
               TST.L          $58(A7)                  ;4aaf 0058 
               BEQ.B          ___NEWGRID_HandleDetailGridState__6;6706 
 ___NEWGRID_HandleDetailGridState__5:

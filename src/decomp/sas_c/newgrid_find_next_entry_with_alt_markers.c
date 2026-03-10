@@ -21,7 +21,7 @@ typedef struct NEWGRID_AuxData {
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 
-extern LONG NEWGRID_UpdatePresetEntry(char **outEntry, char **outAux, LONG selector, LONG index);
+extern WORD NEWGRID_UpdatePresetEntry(char **outEntry, char **outAux, LONG selector, LONG index);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
 
 LONG NEWGRID_FindNextEntryWithAltMarkers(LONG scanMode, LONG startIndex, WORD selector)
