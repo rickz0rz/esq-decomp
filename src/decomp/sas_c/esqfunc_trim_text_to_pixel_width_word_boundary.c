@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef unsigned char UBYTE;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 
 extern LONG _LVOTextLength(char *rastport, char *text, LONG len);
 

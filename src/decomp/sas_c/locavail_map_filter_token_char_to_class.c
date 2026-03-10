@@ -1,7 +1,7 @@
 typedef unsigned char UBYTE;
 typedef signed long LONG;
 
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 
 LONG LOCAVAIL_MapFilterTokenCharToClass(UBYTE token)
 {

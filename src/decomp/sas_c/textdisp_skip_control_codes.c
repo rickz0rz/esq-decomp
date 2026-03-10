@@ -1,6 +1,6 @@
 typedef unsigned char UBYTE;
 
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 
 char *TEXTDISP_SkipControlCodes(char *text)
 {
