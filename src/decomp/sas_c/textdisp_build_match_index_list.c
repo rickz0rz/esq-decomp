@@ -54,7 +54,7 @@ LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar)
     TEXTDISP_CandidateEntry *entry;
 
     matchCount = 0;
-    if (patternPtr == (const char *)0) {
+    if (patternPtr == 0) {
         return MATCH_FALSE;
     }
     patternText = patternPtr;
