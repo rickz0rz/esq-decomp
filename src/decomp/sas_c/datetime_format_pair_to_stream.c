@@ -22,7 +22,7 @@ extern const char *DST_STR_NO_IN_TIME;
 extern const char *DST_STR_NO_OUT_TIME;
 extern const char *DST_STR_NO_DST_DATA;
 
-LONG DATETIME_FormatPairToStream(LONG fileHandle, void *pairStruct)
+LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
 {
     char outBuf[87];
     char scratch[51];
