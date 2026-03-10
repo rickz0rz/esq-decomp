@@ -2,18 +2,16 @@ typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 typedef long LONG;
 
-enum {
-    CTASKS_FLAG_CLEAR = 0,
-    CTASKS_ALLOC_LINE = 203,
-    CTASKS_TASKPROC_SIZE = 14,
-    CTASKS_MEMF_PUBLIC_CLEAR = 0x10001UL,
-    CTASKS_LIST_SIZE_OFFSET = 0,
-    CTASKS_LIST_TASKENTRY_OFFSET = 10,
-    CTASKS_LIST_MAGIC_OFFSET = 8,
-    CTASKS_LIST_MAGIC = 20217,
-    CTASKS_BPTRLIST_OFFSET = 4,
-    CTASKS_BPTRLIST_SHIFT = 2
-};
+#define CTASKS_FLAG_CLEAR 0
+#define CTASKS_ALLOC_LINE 203
+#define CTASKS_TASKPROC_SIZE 14
+#define CTASKS_MEMF_PUBLIC_CLEAR 0x10001UL
+#define CTASKS_LIST_SIZE_OFFSET 0
+#define CTASKS_LIST_TASKENTRY_OFFSET 10
+#define CTASKS_LIST_MAGIC_OFFSET 8
+#define CTASKS_LIST_MAGIC 20217
+#define CTASKS_BPTRLIST_OFFSET 4
+#define CTASKS_BPTRLIST_SHIFT 2
 
 extern UWORD CTASKS_CloseTaskCompletionFlag;
 extern LONG CTASKS_CloseTaskFileHandle;
@@ -21,7 +19,7 @@ extern LONG Global_REF_LIST_CLOSE_TASK_PROC;
 extern LONG CTASKS_CloseTaskSegListBPTR;
 extern LONG CTASKS_CloseTaskProcPtr;
 extern LONG Global_REF_DOS_LIBRARY_2;
-extern char Global_STR_CTASKS_C_4[];
+extern const char Global_STR_CTASKS_C_4[];
 extern char Global_STR_CLOSE_TASK[];
 
 void CTASKS_CloseTaskTeardown(void);

@@ -8,7 +8,7 @@ extern LONG CTASKS_PendingGAdsBrushDescriptor;
 extern LONG CTASKS_PendingIffBrushDescriptor;
 extern LONG BRUSH_LoadInProgressFlag;
 extern LONG Global_REF_LIST_IFF_TASK_PROC;
-extern char Global_STR_CTASKS_C_1[];
+extern const char Global_STR_CTASKS_C_1[];
 
 void GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult(void *desc);
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);

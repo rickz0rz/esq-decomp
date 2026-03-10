@@ -7,7 +7,7 @@ extern LONG Global_REF_LIST_CLOSE_TASK_PROC;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern LONG Global_REF_DOS_LIBRARY_2;
 extern LONG AbsExecBase;
-extern char Global_STR_CTASKS_C_3[];
+extern const char Global_STR_CTASKS_C_3[];
 
 LONG GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
 void _LVOClose(void);
