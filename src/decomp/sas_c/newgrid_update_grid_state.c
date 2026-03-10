@@ -70,7 +70,8 @@ void NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
             if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, (LONG)rowIndex) == SELECTED_NONE) {
                 {
                     const char *entryText = (const char *)entry;
-                    rowIndex = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, (const char *)aux, (LONG)rowIndex);
+                    const char *auxText = (const char *)aux;
+                    rowIndex = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, (LONG)rowIndex);
                 }
                 pen = NEWGRID_SelectEntryPen((char *)entry);
                 NEWGRID_SelectedGridEntryPtr = pen;
