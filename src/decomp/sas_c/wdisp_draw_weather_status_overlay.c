@@ -30,6 +30,7 @@ void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG xSpan, LONG ySpan)
     WDISP_WeatherBrush *brush;
     char *textCopy;
     char *scan;
+    const char *lenScan;
     const char *fallback;
     LONG textLen;
     LONG lineCount;
@@ -76,7 +77,8 @@ void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG xSpan, LONG ySpan)
     }
 
     textLen = 0;
-    while (textCopy[textLen] != 0) {
+    lenScan = textCopy;
+    while (*lenScan++ != 0) {
         textLen++;
     }
 
