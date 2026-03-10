@@ -1,7 +1,7 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern char *Global_TBL_MOVIE_RATINGS[];
+extern const char *Global_TBL_MOVIE_RATINGS[];
 extern UBYTE ESQPARS2_MovieRatingTokenGlyphMap[];
 extern void *AbsExecBase;
 
@@ -17,7 +17,7 @@ void ESQSHARED_ReplaceMovieRatingToken(char *text)
         char *hit = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(text, Global_TBL_MOVIE_RATINGS[i]);
         if (hit != (char *)0) {
             char *dst = hit;
-            char *token = Global_TBL_MOVIE_RATINGS[i];
+            const char *token = Global_TBL_MOVIE_RATINGS[i];
             LONG token_len = 0;
             LONG tail_len = 0;
             char *tail;
