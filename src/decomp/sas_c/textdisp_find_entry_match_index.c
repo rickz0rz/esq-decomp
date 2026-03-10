@@ -20,7 +20,7 @@ extern UWORD TEXTDISP_CurrentMatchIndex;
 extern UWORD CLOCK_HalfHourSlotIndex;
 
 extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entryPtr, char *auxPtr, LONG startIndex);
 extern char *TEXTDISP_FindControlToken(char *textPtr);
 extern LONG TEXTDISP_FindQuotedSpan(char *src, char **outStart, char *endHint, LONG *hasQuotes);
@@ -43,10 +43,10 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
     const UBYTE CH_NUL = 0;
     const LONG MATCH_TRUE = -1;
     TEXTDISP_AuxData *aux;
-    TEXTDISP_CandidateEntry *entry;
+    const TEXTDISP_CandidateEntry *entry;
     char *inputCtrl;
     char *inputStart;
-    char *entryTitle;
+    const char *entryTitle;
     char *entryCtrl;
     char *entryStart;
     LONG inputHasQuotes;
@@ -75,13 +75,13 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
         slot = (LONG)CLOCK_HalfHourSlotIndex;
         aux = (TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_PRIMARY);
-        entry = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+        entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_PRIMARY);
     } else {
         slot = SLOT_FIRST;
         aux = (TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
-        entry = (TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+        entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
     }
 
@@ -146,7 +146,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
 
         isMatch = 0;
         if (tokenOk != 0) {
-            entryLen = TEXTDISP_FindQuotedSpan(entryTitle, &entryStart, entryCtrl, &entryHasQuotes);
+            entryLen = TEXTDISP_FindQuotedSpan((char *)entryTitle, &entryStart, entryCtrl, &entryHasQuotes);
             entrySaved = entryStart[entryLen];
             entryStart[entryLen] = CH_NUL;
 
