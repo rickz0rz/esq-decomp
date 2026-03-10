@@ -1,7 +1,9 @@
               SECTION      text,CODE
 __code:
 COI_ProcessEntrySelectionState:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
               MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
 ___COI_ProcessEntrySelectionState__1:
@@ -10,7 +12,15 @@ ___COI_ProcessEntrySelectionState__1:
               MOVE.L         $20(A7),D7               ;2e2f 0020 
               MOVE.L         $1c(A7),A3               ;266f 001c 
               MOVE.L         $18(A7),A5               ;2a6f 0018 
-              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D7,D0                    ;2007 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          COI_TestEntryWithinTimeWindow;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
 ___COI_ProcessEntrySelectionState__2:
 ___COI_ProcessEntrySelectionState__3:
               MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
@@ -19,5 +29,6 @@ __const:
 __strings:
               XREF           __base
               XREF           _XCOVF
+              XREF           COI_TestEntryWithinTimeWindow
               XDEF           COI_ProcessEntrySelectionState
               END
