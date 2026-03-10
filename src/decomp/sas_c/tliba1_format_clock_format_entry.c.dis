@@ -3,12 +3,14 @@ __code:
 TLIBA1_StrLen:
               CMP.L          __base(A4),A7            ;bfec 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
 ___TLIBA1_StrLen__1:
-              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
               MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.L         A5,A3                    ;264d 
 ___TLIBA1_StrLen__2:
-              TST.B          $0(A5,D7.L)              ;4a35 7800 
+              MOVE.B         (A3)+,D0                 ;101b 
+              TST.B          D0                       ;4a00 
               BEQ.B          ___TLIBA1_StrLen__4      ;6704 
 ___TLIBA1_StrLen__3:
               ADDQ.L         #$1,D7                   ;5287 
@@ -17,7 +19,7 @@ ___TLIBA1_StrLen__4:
               MOVE.L         D7,D0                    ;2007 
 ___TLIBA1_StrLen__5:
 ___TLIBA1_StrLen__6:
-              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
               RTS                                     ;4e75 
 __const:
 __strings:
@@ -84,7 +86,7 @@ ___TLIBA1_FormatClockFormatEntry__17:
               MOVE.L         D6,D1                    ;2206 
               ASL.L          #$2,D1                   ;e581 
               MOVE.L         $20(A7,D1.L),-(A7)       ;2f37 1820 
-              BSR.W          TLIBA1_StrLen            ;6100 ff40 
+              BSR.W          TLIBA1_StrLen            ;6100 ff3e 
 ___TLIBA1_FormatClockFormatEntry__18:
               MOVE.L         D0,D5                    ;2a00 
               ADDQ.W         #$4,A7                   ;584f 
@@ -96,7 +98,7 @@ ___TLIBA1_FormatClockFormatEntry__19:
 ___TLIBA1_FormatClockFormatEntry__20:
 ___TLIBA1_FormatClockFormatEntry__21:
               MOVE.L         A5,-(A7)                 ;2f0d 
-              BSR.W          TLIBA1_StrLen            ;6100 ff2a 
+              BSR.W          TLIBA1_StrLen            ;6100 ff28 
 ___TLIBA1_FormatClockFormatEntry__22:
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.L         D0,$1c(A7)               ;2f40 001c 
