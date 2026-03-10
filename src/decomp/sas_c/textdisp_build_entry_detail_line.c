@@ -106,14 +106,14 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
         STRING_AppendAtNull(detail, segment);
     }
 
-    if (aux != (const char *)TEXTDISP_NULL && entryIndex >= TEXTDISP_NULL) {
+    if (aux != 0 && entryIndex >= TEXTDISP_NULL) {
         auxData = (const TEXTDISP_AuxData *)aux;
         segment = TEXTDISP_SkipControlCodes(auxData->titleTable[entryIndex]);
     } else {
-        segment = (const char *)TEXTDISP_NULL;
+        segment = 0;
     }
 
-    if (segment != (const char *)TEXTDISP_NULL && segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
+    if (segment != 0 && segment[TEXTDISP_NULL] != TEXTDISP_NULL) {
         titleLen = TEXTDISP_NULL;
         while (segment[titleLen] != TEXTDISP_NULL) {
             titleLen++;
@@ -174,7 +174,7 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
 
     out = TEXTDISP_NULL;
     for (i = TEXTDISP_NULL;
-         program != (const char *)TEXTDISP_NULL &&
+         program != 0 &&
          program[i + ENTRY_PROGRAM_TEXT_START_OFFSET] != TEXTDISP_NULL;
          i++) {
         if (program[i + ENTRY_PROGRAM_TEXT_START_OFFSET] != ASCII_SPACE) {
