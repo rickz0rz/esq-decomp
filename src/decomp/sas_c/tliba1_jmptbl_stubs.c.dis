@@ -39,11 +39,22 @@ ___TLIBA1_JMPTBL_ESQDISP_GetEntryAu__3:
               MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
               RTS                                     ;4e75 
 TLIBA1_JMPTBL_LADFUNC_ExtractLow:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___TLIBA1_JMPTBL_LADFUNC_ExtractLow__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
               BSR.W          LADFUNC_GetPackedPenLowNibble;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___TLIBA1_JMPTBL_LADFUNC_ExtractLow__2:
+___TLIBA1_JMPTBL_LADFUNC_ExtractLow__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 TLIBA1_JMPTBL_ESQDISP_GetEntryPo:
               MOVE.L         A7,D0                    ;200f 
@@ -161,11 +172,22 @@ ___TLIBA1_JMPTBL_DISPLIB_FindPrevio__3:
               MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
               RTS                                     ;4e75 
 TLIBA1_JMPTBL_LADFUNC_ExtractHig:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___TLIBA1_JMPTBL_LADFUNC_ExtractHig__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
               BSR.W          LADFUNC_GetPackedPenHighNibble;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___TLIBA1_JMPTBL_LADFUNC_ExtractHig__2:
+___TLIBA1_JMPTBL_LADFUNC_ExtractHig__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
