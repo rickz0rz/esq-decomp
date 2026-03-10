@@ -25,12 +25,14 @@ typedef struct UNKNOWN_StatusEntry {
 
 static void copy_label_0x12(const char **pp, char *dst)
 {
+    const char TOKEN_RECORD_END = 0x12;
+    const ULONG LABEL_SCAN_LIMIT = 10u;
     ULONG i = 0;
 
     for (;;) {
         char c = *(*pp)++;
         dst[i] = c;
-        if (c == 0x12 || i >= 10u) {
+        if (c == TOKEN_RECORD_END || i >= LABEL_SCAN_LIMIT) {
             break;
         }
         i++;
@@ -47,6 +49,7 @@ static UNKNOWN_StatusEntry *status_entry_ptr(ULONG index)
 
 LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
 {
+    const UBYTE RECORD_MARKER_PLUS = '+';
     const ULONG KEY_FIELD_LEN = 3u;
     const ULONG FLAG_FIELD_LEN = 1u;
     const ULONG VALUE_FIELD_LEN = 3u;
@@ -77,7 +80,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
     TLIBA1_DayEntryModeCounter = *p++;
     marker = *p++;
 
-    while (marker == (UBYTE)'+') {
+    while (marker == RECORD_MARKER_PLUS) {
         LONG key;
         LONG found = -1;
         LONG idx;
@@ -99,7 +102,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
             marker = 0;
         }
 
-        if (marker == (UBYTE)'+') {
+        if (marker == RECORD_MARKER_PLUS) {
             UNKNOWN_StatusEntry *entry = status_entry_ptr((ULONG)found);
 
             entry->inactive4 = 0;
