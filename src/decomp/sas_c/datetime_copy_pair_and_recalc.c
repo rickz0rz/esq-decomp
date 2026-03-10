@@ -32,15 +32,15 @@ LONG DATETIME_CopyPairAndRecalc(DateTimePair *pair, void *src_in, void *src_out)
         return secondsResult;
     }
 
-    src = (UBYTE *)src_in;
-    dst = (UBYTE *)pair->in_ptr;
+    src = src_in;
+    dst = pair->in_ptr;
     copyCount = DATETIME_STRUCT_COPY_COUNT;
     do {
         *dst++ = *src++;
     } while ((copyCount--) != 0);
 
-    src = (UBYTE *)src_out;
-    dst = (UBYTE *)pair->out_ptr;
+    src = src_out;
+    dst = pair->out_ptr;
     copyCount = DATETIME_STRUCT_COPY_COUNT;
     do {
         *dst++ = *src++;
