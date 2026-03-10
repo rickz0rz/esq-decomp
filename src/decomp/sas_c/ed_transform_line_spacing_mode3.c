@@ -6,7 +6,7 @@ extern LONG ED_ViewportOffset;
 extern LONG ED_EditCursorOffset;
 extern char ED_EditBufferScratch[];
 extern UBYTE ED_EditBufferLive[];
-extern UBYTE ED_LineTransformSuffixScratchBuffer[];
+extern char ED_LineTransformSuffixScratchBuffer[];
 extern UBYTE ED_LineTransformTailScratchBuffer[];
 
 extern LONG ESQIFF_JMPTBL_MATH_Mulu32(LONG value, LONG scale);
