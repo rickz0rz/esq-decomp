@@ -30,8 +30,8 @@ extern void ED_LoadCurrentAdIntoBuffers(void);
 extern void ED_DrawHelpPanels(LONG panelMode);
 extern void ED_UpdateAdNumberDisplay(void);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 
 static LONG ED_ParseAdNumberFromDigits(void)
 {

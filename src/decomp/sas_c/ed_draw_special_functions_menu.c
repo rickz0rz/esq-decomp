@@ -8,8 +8,8 @@ extern const char Global_STR_SAVE_DATA_TO_DISK[];
 extern const char Global_STR_LOAD_TEXT_ADS_FROM_DISK[];
 extern const char Global_STR_REBOOT_COMPUTER[];
 
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 void ED_DrawSpecialFunctionsMenu(void)
