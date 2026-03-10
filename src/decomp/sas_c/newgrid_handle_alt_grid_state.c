@@ -4,7 +4,7 @@ typedef unsigned char UBYTE;
 
 typedef struct NEWGRID_AuxData {
     UBYTE pad0[56];
-    char *titleTable[49];
+    const char *titleTable[49];
 } NEWGRID_AuxData;
 
 typedef struct NEWGRID_Context {
