@@ -41,6 +41,7 @@ void NEWGRID_DrawGridMessageAlt(char *gridCtx)
     NEWGRID_Context *ctx;
     NEWGRID_RastPort *rastPort;
     const char *msg;
+    const char *scan;
     LONG len;
     LONG width;
     LONG x;
@@ -63,8 +64,9 @@ void NEWGRID_DrawGridMessageAlt(char *gridCtx)
     _LVOSetDrMd((char *)rastPort, 0);
 
     msg = GCOMMAND_PPVPeriodTemplatePtr;
+    scan = msg;
     len = 0;
-    while (msg[len] != 0) {
+    while (*scan++ != 0) {
         ++len;
     }
 

@@ -2,13 +2,13 @@
 __code:
 NEWGRID_DrawGridMessageAlt:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$1c,D0                  ;90bc 0000 001c 
+              SUB.L          #$24,D0                  ;90bc 0000 0024 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$8,A7                   ;514f 
-              MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
+              SUB.W          #$10,A7                  ;9efc 0010 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___NEWGRID_DrawGridMessageAlt__1:
-              MOVE.L         $28(A7),A5               ;2a6f 0028 
+              MOVE.L         $2c(A7),A5               ;2a6f 002c 
               MOVE.L         A5,A3                    ;264d 
               LEA            $3e(A3),A2               ;45eb 003e 
               PEA            ($21).w                  ;4878 0021 
@@ -47,21 +47,25 @@ ___NEWGRID_DrawGridMessageAlt__1:
 ___NEWGRID_DrawGridMessageAlt__2:
               BSR.W          _LVOSetDrMd              ;6100 0000 
               LEA            $44(A7),A7               ;4fef 0044 
-              MOVE.L         GCOMMAND_PPVPeriodTemplatePtr(A4),$20(A7);2f6c 0000 0020 
+              MOVE.L         GCOMMAND_PPVPeriodTemplatePtr(A4),A0;206c 0000 
               MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.L         A0,$20(A7)               ;2f48 0020 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
 ___NEWGRID_DrawGridMessageAlt__3:
               MOVE.L         $20(A7),A0               ;206f 0020 
-              TST.B          $0(A0,D7.L)              ;4a30 7800 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$20(A7)               ;2f48 0020 
+              TST.B          D0                       ;4a00 
               BEQ.B          ___NEWGRID_DrawGridMessageAlt__5;6704 
 ___NEWGRID_DrawGridMessageAlt__4:
               ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___NEWGRID_DrawGridMessageAlt__3;60f2 
+              BRA.B          ___NEWGRID_DrawGridMessageAlt__3;60ee 
 ___NEWGRID_DrawGridMessageAlt__5:
               TST.L          D7                       ;4a87 
               BLE.B          ___NEWGRID_DrawGridMessageAlt__9;6f2e 
 ___NEWGRID_DrawGridMessageAlt__6:
               MOVE.L         D7,-(A7)                 ;2f07 
-              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          _LVOTextLength           ;6100 0000 
               MOVE.L         D0,D6                    ;2c00 
@@ -83,7 +87,7 @@ ___NEWGRID_DrawGridMessageAlt__8:
               BRA.B          ___NEWGRID_DrawGridMessageAlt__5;60ce 
 ___NEWGRID_DrawGridMessageAlt__9:
               MOVE.L         D7,-(A7)                 ;2f07 
-              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          _LVOTextLength           ;6100 0000 
               MOVE.L         D0,D6                    ;2c00 
@@ -115,24 +119,23 @@ ___NEWGRID_DrawGridMessageAlt__11:
               MOVE.W         $1a(A0),D0               ;3028 001a 
               MOVEQ.L        #$22,D1                  ;7222 
               SUB.L          D0,D1                    ;9280 
-              MOVE.L         D1,D4                    ;2801 
-              MOVE.L         D0,$1c(A7)               ;2f40 001c 
-              TST.L          D4                       ;4a84 
-              BPL.B          ___NEWGRID_DrawGridMessageAlt__13;6a02 
+              MOVEM.L        D0,$18(A7)               ;48ef 0001 0018 
+              MOVEM.L        D1,$1c(A7)               ;48ef 0002 001c 
+              BGE.B          ___NEWGRID_DrawGridMessageAlt__13;6c04 
 ___NEWGRID_DrawGridMessageAlt__12:
-              ADDQ.L         #$1,D4                   ;5284 
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
 ___NEWGRID_DrawGridMessageAlt__13:
-              MOVE.L         D4,D1                    ;2204 
+              MOVE.L         $1c(A7),D1               ;222f 001c 
               ASR.L          #$1,D1                   ;e281 
               ADD.L          D0,D1                    ;d280 
-              MOVE.L         D1,D4                    ;2801 
-              SUBQ.L         #$1,D4                   ;5384 
-              MOVE.L         D4,-(A7)                 ;2f04 
+              SUBQ.L         #$1,D1                   ;5381 
+              MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D5,-(A7)                 ;2f05 
               MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         D1,$28(A7)               ;2f41 0028 
               BSR.W          _LVOMove                 ;6100 0000 
               MOVE.L         D7,(A7)                  ;2e87 
-              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          _LVOText                 ;6100 0000 
               MOVE.W         #$11,$36(A3)             ;377c 0011 0036 
@@ -143,8 +146,8 @@ ___NEWGRID_DrawGridMessageAlt__13:
               BSR.W          NEWGRID_ValidateSelectionCode;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
 ___NEWGRID_DrawGridMessageAlt__14:
-              MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
-              ADDQ.W         #$8,A7                   ;504f 
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$10,A7                  ;defc 0010 
               RTS                                     ;4e75 
 __const:
 __strings:
