@@ -10,7 +10,7 @@ BRUSH_CloneBrushRecord:
 ___BRUSH_CloneBrushRecord__1:
               MOVE.L         $34(A7),A5               ;2a6f 0034 
               MOVE.L         A5,A3                    ;264d 
-              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         __MERGED(A4),-(A7)       ;2f2c 0000 
               PEA            ($174).w                 ;4878 0174 
               PEA            ($4e0).w                 ;4878 04e0 
               PEA            Global_STR_BRUSH_C_17(A4);486c 0000 
@@ -283,4 +283,9 @@ __strings:
               XREF           _LVOPermit
               XREF           _LVOInitRastPort
               XDEF           BRUSH_CloneBrushRecord
+
+              SECTION        __MERGED,DATA
+__MERGED
+MEMF_PUBLIC_CLEAR:
+              DC.L           $00010001
               END
