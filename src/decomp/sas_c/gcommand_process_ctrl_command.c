@@ -19,6 +19,9 @@ extern LONG GROUP_AV_JMPTBL_EXEC_CallVector_48(void *a0, void *a1, LONG d1, void
 
 LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
 {
+    const UBYTE COMMAND_STATE_RING = 1;
+    const UBYTE COMMAND_PROBE_DRIVE_A = 15;
+    const UBYTE COMMAND_PROBE_DRIVE_B = 16;
     LONG rc;
     UBYTE type;
     const GCOMMAND_CtrlPacket *cmdView;
@@ -30,7 +33,7 @@ LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
     cmdView = (const GCOMMAND_CtrlPacket *)cmdPtr;
     type = cmdView->type4;
 
-    if (type == 1) {
+    if (type == COMMAND_STATE_RING) {
         GCOMMAND_StateRingEntry *entry =
             (GCOMMAND_StateRingEntry *)&ED_StateRingTable[ED_StateRingWriteIndex * 5];
         rc = GROUP_AV_JMPTBL_EXEC_CallVector_48((void *)cmdPtr, entry, 5, 0);
@@ -40,7 +43,7 @@ LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
                 ED_StateRingWriteIndex = 0;
             }
         }
-    } else if (type == 16 || type == 15) {
+    } else if (type == COMMAND_PROBE_DRIVE_B || type == COMMAND_PROBE_DRIVE_A) {
         GCOMMAND_DriveProbeRequestedFlag = 1;
     }
 
