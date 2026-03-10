@@ -20,7 +20,7 @@ typedef struct NEWGRID_Entry {
 typedef struct NEWGRID_AuxData {
     UBYTE pad0[7];
     UBYTE rowFlags[49];
-    char *payloadTable[49];
+    const char *payloadTable[49];
 } NEWGRID_AuxData;
 
 extern LONG NEWGRID_AltSelectionRowCursor;
@@ -35,7 +35,7 @@ extern LONG NEWGRID_TestEntrySelectable(const char *entry, const char *aux, LONG
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG idx);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG idx);
 extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *aux, LONG idx, LONG day, LONG window);
-extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *aux, LONG idx);
+extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(const char *aux, LONG idx);
 
 LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
 {
@@ -100,7 +100,7 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
                                                 1440,
                                                 CONFIG_TimeWindowMinutes) != 0) {
                                             if (mode != 1 ||
-                                                TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((char *)aux, idx) != 0) {
+                                                TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility((const char *)aux, idx) != 0) {
                                                 matched = 1;
                                             }
                                         }
