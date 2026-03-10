@@ -18,8 +18,10 @@ extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x,
 static LONG TLIBA1_StrLen(const char *s)
 {
     LONG n;
+    const char *p;
     n = 0;
-    while (s[n] != 0) {
+    p = s;
+    while (*p++ != 0) {
         ++n;
     }
     return n;
