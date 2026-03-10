@@ -7,7 +7,7 @@ typedef struct NEWGRID_Entry {
     UBYTE flags27;
 } NEWGRID_Entry;
 
-extern char NEWGRID_EntryDetailFmtStr;
+extern const char NEWGRID_EntryDetailFmtStr[];
 
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
 extern LONG NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(char *entry, LONG rowIndex, LONG mode);
@@ -31,7 +31,7 @@ void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowIndex, LONG
             if (animPtr != 0) {
                 NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(entry, (LONG)rowIndex);
                 NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(
-                    rastPort, &NEWGRID_EntryDetailFmtStr, 19, animPtr, 20, fallbackText
+                    rastPort, NEWGRID_EntryDetailFmtStr, 19, animPtr, 20, fallbackText
                 );
                 return;
             }
