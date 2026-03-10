@@ -4,7 +4,7 @@ typedef unsigned short UWORD;
 extern void DISKIO2_WriteCurDayDataFile(void);
 extern void DISKIO2_WriteNxtDayDataFile(void);
 extern void DISKIO2_WriteOinfoDataFile(void);
-extern void COI_WriteOiDataFile(long diskId);
+extern long COI_WriteOiDataFile(long diskId);
 
 extern void DISKIO2_LoadCurDayDataFile(void);
 extern void DISKIO2_LoadNxtDayDataFile(void);
