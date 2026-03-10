@@ -133,7 +133,7 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
             segment++;
         }
 
-        WDISP_SPrintf(tmp, SCRIPT_AlignedStringFormat, (const char *)segment);
+        WDISP_SPrintf(tmp, SCRIPT_AlignedStringFormat, segment);
 
         hit = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrAtSeparator);
         if (hit == (char *)TEXTDISP_NULL) {
