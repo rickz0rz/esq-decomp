@@ -35,13 +35,11 @@ extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ..
 
 void DST_FormatBannerDateTime(char *dst, const DST_BannerTimeInfo *info)
 {
-    const WORD FLAG_FALSE = 0;
     const char *dow = Global_JMPTBL_SHORT_DAYS_OF_WEEK[(UWORD)info->day_of_week_index];
     const char *mon = Global_JMPTBL_SHORT_MONTHS[(UWORD)info->month_index];
-    const char *ampm = (info->ampm_flag != FLAG_FALSE) ? DST_TAG_PM : DST_TAG_AM;
+    const char *ampm = info->ampm_flag ? DST_TAG_PM : DST_TAG_AM;
     const char *dst_tag = (info->dst_mode_flag == DST_MODE_DST) ? DST_TAG_DST : DST_TAG_STD;
-    const char *year_tag =
-        (info->leap_year_flag != FLAG_FALSE) ? DST_STR_LEAP_YEAR : DST_STR_NORM_YEAR;
+    const char *year_tag = info->leap_year_flag ? DST_STR_LEAP_YEAR : DST_STR_NORM_YEAR;
 
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
         DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_,
