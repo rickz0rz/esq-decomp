@@ -14,9 +14,9 @@ extern LONG GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(LONG value);
 extern LONG GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(LONG value);
 extern void ED_UpdateCursorPosFromIndex(LONG index);
 extern LONG ESQIFF_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
-extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetBPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern void _LVOText(void *gfxBase, char *rastPort, const char *text, LONG len);
 
 void ED_DrawCursorChar(void)
