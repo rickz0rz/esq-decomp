@@ -14,7 +14,7 @@ enum {
 
 extern LONG DATETIME_NormalizeStructToSeconds(void *dt);
 
-LONG DATETIME_CopyPairAndRecalc(DateTimePair *pair, void *src_in, void *src_out)
+LONG DATETIME_CopyPairAndRecalc(DateTimePair *pair, const void *src_in, const void *src_out)
 {
     LONG secondsResult;
     const UBYTE *src;
@@ -46,8 +46,8 @@ LONG DATETIME_CopyPairAndRecalc(DateTimePair *pair, void *src_in, void *src_out)
         *dst++ = *src++;
     } while ((copyCount--) != 0);
 
-    pair->in_seconds = DATETIME_NormalizeStructToSeconds(src_in);
-    secondsResult = DATETIME_NormalizeStructToSeconds(src_out);
+    pair->in_seconds = DATETIME_NormalizeStructToSeconds((void *)src_in);
+    secondsResult = DATETIME_NormalizeStructToSeconds((void *)src_out);
     pair->out_seconds = secondsResult;
     return secondsResult;
 }
