@@ -7,7 +7,7 @@ extern void DISPLIB_ApplyInlineAlignmentPadding(char *text, UBYTE alignCode);
 extern void ESQIFF_RunCopperRiseTransition(void);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text);
 extern LONG MEM_Move(UBYTE *src, UBYTE *dst, LONG length);
-extern void WDISP_SPrintf(void);
+extern long WDISP_SPrintf(void);
 extern void ESQ_SetCopperEffect_OffDisableHighlight(void);
 extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG maxLen);
 
@@ -36,9 +36,9 @@ LONG GROUP_AW_JMPTBL_MEM_Move(void *dst, const void *src, LONG n)
     return MEM_Move((UBYTE *)src, (UBYTE *)dst, n);
 }
 
-void GROUP_AW_JMPTBL_WDISP_SPrintf(void)
+long GROUP_AW_JMPTBL_WDISP_SPrintf(void)
 {
-    WDISP_SPrintf();
+    return WDISP_SPrintf();
 }
 
 void GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(void)

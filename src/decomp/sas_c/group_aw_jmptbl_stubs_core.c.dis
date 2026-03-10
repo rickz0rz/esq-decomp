@@ -91,6 +91,7 @@ GROUP_AW_JMPTBL_WDISP_SPrintf:
 ___GROUP_AW_JMPTBL_WDISP_SPrintf__1:
               BSR.W          WDISP_SPrintf            ;6100 0000 
 ___GROUP_AW_JMPTBL_WDISP_SPrintf__2:
+___GROUP_AW_JMPTBL_WDISP_SPrintf__3:
               RTS                                     ;4e75 
 GROUP_AW_JMPTBL_ESQ_SetCopperEff:
               CMP.L          __base(A4),A7            ;bfec 0000 
