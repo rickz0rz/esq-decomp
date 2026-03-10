@@ -29,7 +29,7 @@ LONG NEWGRID_SelectEntryPen(char *entry)
     pen = -1;
     entryView = (NEWGRID_Entry *)entry;
 
-    if (entryView != 0) {
+    if (entryView) {
         if (entryView->overridePen41 != (UBYTE)0xFF) {
             pen = (LONG)entryView->overridePen41;
         } else if ((entryView->flags27 & 0x02) != 0) {
