@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 
 extern UWORD TEXTDISP_SecondaryGroupEntryCount;
-extern char *TEXTDISP_SecondaryTitlePtrTable[];
+extern const char *TEXTDISP_SecondaryTitlePtrTable[];
 
 extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 

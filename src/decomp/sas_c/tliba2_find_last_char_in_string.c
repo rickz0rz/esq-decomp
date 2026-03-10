@@ -1,10 +1,10 @@
 typedef unsigned char UBYTE;
 
-char *TLIBA2_FindLastCharInString(char *str, UBYTE targetChar)
+char *TLIBA2_FindLastCharInString(const char *str, UBYTE targetChar)
 {
-    char *p;
+    const char *p;
 
-    if (str == (char *)0) {
+    if (str == (const char *)0) {
         return (char *)0;
     }
 
@@ -19,7 +19,7 @@ char *TLIBA2_FindLastCharInString(char *str, UBYTE targetChar)
 
     for (;;) {
         if ((UBYTE)*p == targetChar) {
-            return p;
+            return (char *)p;
         }
         if (p == str) {
             break;
