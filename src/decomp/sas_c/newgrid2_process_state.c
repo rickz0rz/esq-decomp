@@ -37,7 +37,7 @@ extern void NEWGRID_DrawGridEntry(
     LONG mode
 );
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG index);
-extern LONG NEWGRID_AppendShowtimesForRow(char *gridCtx, char *entryCtx, char *scratch, LONG keyValue);
+extern void NEWGRID_AppendShowtimesForRow(void *entryCtx, char *scratch, LONG keyValue);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, const char *scratch);
 extern LONG NEWGRID_DrawGridFrameVariant4(char *gridCtx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
@@ -97,7 +97,7 @@ LONG NEWGRID2_ProcessGridState(char *gridCtx, const void *entryCtx, LONG keyValu
             );
             if (scratch != 0) {
                 NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(3);
-                NEWGRID_AppendShowtimesForRow(gridCtx, (char *)entry, scratch, keyValue);
+                NEWGRID_AppendShowtimesForRow((void *)entry, scratch, keyValue);
                 NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(grid->rastPort, scratch);
                 SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_NEWGRID2_C_2, 3953, scratch, 2000);
             }

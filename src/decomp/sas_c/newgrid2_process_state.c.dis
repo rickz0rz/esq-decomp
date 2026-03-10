@@ -19,7 +19,7 @@ ___NEWGRID2_ProcessGridState__1:
 ___NEWGRID2_ProcessGridState__2:
               MOVEQ.L        #$4,D0                   ;7004 
               MOVE.L         D0,NEWGRID_RenderStateLatch(A4);2940 0000 
-              BRA.W          ___NEWGRID2_ProcessGridState__30;6000 017a 
+              BRA.W          ___NEWGRID2_ProcessGridState__30;6000 0178 
 ___NEWGRID2_ProcessGridState__3:
               MOVE.L         NEWGRID_RenderStateLatch(A4),D0;202c 0000 
 ___NEWGRID2_ProcessGridState__4:
@@ -27,22 +27,22 @@ ___NEWGRID2_ProcessGridState__4:
               BEQ.B          ___NEWGRID2_ProcessGridState__7;670a 
 ___NEWGRID2_ProcessGridState__5:
               SUBQ.L         #$1,D0                   ;5380 
-              BEQ.W          ___NEWGRID2_ProcessGridState__23;6700 0140 
+              BEQ.W          ___NEWGRID2_ProcessGridState__23;6700 013e 
 ___NEWGRID2_ProcessGridState__6:
-              BRA.W          ___NEWGRID2_ProcessGridState__27;6000 015e 
+              BRA.W          ___NEWGRID2_ProcessGridState__27;6000 015c 
 ___NEWGRID2_ProcessGridState__7:
               MOVE.L         $1c(A7),A0               ;206f 001c 
               TST.L          (A0)                     ;4a90 
               BNE.B          ___NEWGRID2_ProcessGridState__9;6608 
 ___NEWGRID2_ProcessGridState__8:
               MOVE.L         NEWGRID_RenderStateLatch(A4),D0;202c 0000 
-              BRA.W          ___NEWGRID2_ProcessGridState__30;6000 0158 
+              BRA.W          ___NEWGRID2_ProcessGridState__30;6000 0156 
 ___NEWGRID2_ProcessGridState__9:
               TST.L          $4(A0)                   ;4aa8 0004 
               BNE.B          ___NEWGRID2_ProcessGridState__11;6608 
 ___NEWGRID2_ProcessGridState__10:
               MOVE.L         NEWGRID_RenderStateLatch(A4),D0;202c 0000 
-              BRA.W          ___NEWGRID2_ProcessGridState__30;6000 014a 
+              BRA.W          ___NEWGRID2_ProcessGridState__30;6000 0148 
 ___NEWGRID2_ProcessGridState__11:
               PEA            ($1).w                   ;4878 0001 
               PEA            ($14).w                  ;4878 0014 
@@ -109,25 +109,24 @@ ___NEWGRID2_ProcessGridState__17:
               BSR.W          SCRIPT_JMPTBL_MEMORY_AllocateMem;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
               MOVE.L         D0,$18(A7)               ;2f40 0018 
-              BEQ.B          ___NEWGRID2_ProcessGridState__19;673e 
+              BEQ.B          ___NEWGRID2_ProcessGridState__19;673c 
 ___NEWGRID2_ProcessGridState__18:
               PEA            ($3).w                   ;4878 0003 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_SetCurr;6100 0000 
               MOVE.L         D7,(A7)                  ;2e87 
               MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
               MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
-              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_AppendShowtimesForRow;6100 0000 
               LEA            $3c(A2),A0               ;41ea 003c 
-              MOVE.L         $28(A7),(A7)             ;2eaf 0028 
+              MOVE.L         $24(A7),(A7)             ;2eaf 0024 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_LayoutA;6100 0000 
               PEA            ($7d0).w                 ;4878 07d0 
-              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
               PEA            ($f71).w                 ;4878 0f71 
               PEA            Global_STR_NEWGRID2_C_2(A4);486c 0000 
               BSR.W          SCRIPT_JMPTBL_MEMORY_DeallocateM;6100 0000 
-              LEA            $24(A7),A7               ;4fef 0024 
+              LEA            $20(A7),A7               ;4fef 0020 
 ___NEWGRID2_ProcessGridState__19:
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_DrawGridFrameVariant4;6100 0000 
