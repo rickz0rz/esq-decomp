@@ -39,8 +39,8 @@ extern LONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(UWORD *slot);
 extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const char *title);
 extern LONG NEWGRID_SelectEntryPen(char *entryPtr);
 extern LONG NEWGRID_DrawGridFrame(char *ctx, LONG style, LONG pen, LONG entryPen, LONG rowHeight);
-extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG idx, LONG mode);
-extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG idx, LONG mode);
+extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG idx, LONG mode);
+extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG idx, LONG mode);
 extern LONG NEWGRID_GetEntryStateCode(char *entry, char *aux, LONG row);
 extern LONG NEWGRID_TestEntryState(LONG baseState, LONG titleIdx, LONG wildcardIdx, LONG rowIdx);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG row);
@@ -92,8 +92,8 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
     NEWGRID_DrawGridFrame(ctx, 7, NEWGRID_HeaderFramePenId, NEWGRID_SelectedGridEntryPtr, (LONG)NEWGRID_RowHeightPx + 3);
 
     while (row < 3) {
-        NEWGRID_Entry *entry = 0;
-        NEWGRID_AuxData *aux = 0;
+        const NEWGRID_Entry *entry = 0;
+        const NEWGRID_AuxData *aux = 0;
         LONG state = 0;
         LONG leftState = 0;
         LONG rightState = 0;
@@ -102,8 +102,8 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
         LONG mode = (rowIdx > 48 || startRow == 1 || (NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) ? 2 : 1;
         LONG modeIdx = (mode == 2 && rowIdx > 48) ? (rowIdx - 48) : rowIdx;
 
-        entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode((mode == 2) ? wildcardIdx : titleIdx, mode);
-        aux = (NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((mode == 2) ? wildcardIdx : titleIdx, mode);
+        entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode((mode == 2) ? wildcardIdx : titleIdx, mode);
+        aux = (const NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((mode == 2) ? wildcardIdx : titleIdx, mode);
 
         if (entry && aux) {
             state = NEWGRID_GetEntryStateCode((char *)entry, (char *)aux, modeIdx);
