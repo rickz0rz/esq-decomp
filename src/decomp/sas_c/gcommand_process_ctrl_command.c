@@ -15,7 +15,7 @@ extern GCOMMAND_StateRingEntry ED_StateRingTable[];
 extern LONG ED_StateRingWriteIndex;
 extern WORD GCOMMAND_DriveProbeRequestedFlag;
 
-extern LONG GROUP_AV_JMPTBL_EXEC_CallVector_48(void *a0, void *a1, LONG d1, void *a2);
+extern LONG GROUP_AV_JMPTBL_EXEC_CallVector_48(const void *a0, void *a1, LONG d1, void *a2);
 
 LONG GCOMMAND_ProcessCtrlCommand(const GCOMMAND_CtrlPacket *cmdPtr)
 {
@@ -37,7 +37,7 @@ LONG GCOMMAND_ProcessCtrlCommand(const GCOMMAND_CtrlPacket *cmdPtr)
     if (type == COMMAND_STATE_RING) {
         GCOMMAND_StateRingEntry *entry =
             &ED_StateRingTable[ED_StateRingWriteIndex];
-        rc = GROUP_AV_JMPTBL_EXEC_CallVector_48((void *)cmdPtr, entry, STATE_RING_ENTRY_SIZE, 0);
+        rc = GROUP_AV_JMPTBL_EXEC_CallVector_48(cmdPtr, entry, STATE_RING_ENTRY_SIZE, 0);
         if (rc > 0 && rc != EXEC_COMPARE_REJECT) {
             ED_StateRingWriteIndex += 1;
             if (ED_StateRingWriteIndex >= STATE_RING_ENTRY_COUNT) {
