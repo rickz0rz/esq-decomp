@@ -36,7 +36,7 @@ extern LONG GCOMMAND_PpvSelectionWindowMinutes;
 
 extern LONG NEWGRID_ClearEntryMarkerBits(LONG row);
 extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG col);
-extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG idx);
+extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *aux, LONG idx);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG idx);
 extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *aux, LONG idx, LONG win, LONG tol);
@@ -94,7 +94,7 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
             }
 
             if (NEWGRID_SelectionScanRow == ctx->row) {
-                idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((char *)entry, (char *)aux, idx);
+                idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((const char *)entry, (const char *)aux, idx);
             }
             if (idx <= 0) {
                 NEWGRID_SelectionScanEntryIndex += 1;
