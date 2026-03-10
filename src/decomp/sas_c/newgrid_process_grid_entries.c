@@ -42,7 +42,7 @@ extern LONG NEWGRID_DrawGridFrame(char *ctx, LONG style, LONG pen, LONG entryPen
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG idx, LONG mode);
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG idx, LONG mode);
 extern LONG NEWGRID_GetEntryStateCode(const void *entry, const void *aux, LONG row);
-extern LONG NEWGRID_TestEntryState(LONG baseState, LONG titleIdx, LONG wildcardIdx, LONG rowIdx);
+extern LONG NEWGRID_TestEntryState(LONG baseState, LONG titleIdx, LONG wildcardIdx, UWORD rowIdx);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *aux, LONG row);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG h, LONG pen);
 /* Keep K&R-style declaration: SAS/C long-name significance causes a prototype clash
