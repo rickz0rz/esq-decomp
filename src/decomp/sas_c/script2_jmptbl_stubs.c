@@ -1,5 +1,5 @@
-extern void ESQ_CaptureCtrlBit4StreamBufferByte(void);
-extern void ESQ_ReadSerialRbfByte(void);
+extern long ESQ_CaptureCtrlBit4StreamBufferByte(void);
+extern long ESQ_ReadSerialRbfByte(void);
 
-void SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte(void){ESQ_CaptureCtrlBit4StreamBufferByte();}
-void SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte(void){ESQ_ReadSerialRbfByte();}
+long SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte(void){return ESQ_CaptureCtrlBit4StreamBufferByte();}
+long SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte(void){return ESQ_ReadSerialRbfByte();}
