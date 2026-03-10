@@ -5,7 +5,7 @@ typedef signed long LONG;
 typedef unsigned long ULONG;
 
 extern LONG DATETIME_SavePairToFile(void *pair);
-extern void ESQPROTO_VerifyChecksumAndParseList(void);
+extern LONG ESQPROTO_VerifyChecksumAndParseList(UBYTE seed);
 extern void P_TYPE_ParseAndStoreTypeRecord(void);
 extern void ESQPROTO_CopyLabelToGlobal(void);
 extern void DST_HandleBannerCommand32_33(void);
@@ -34,7 +34,7 @@ extern LONG DISKIO_SaveConfigToFileHandle(void);
 void ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(void){DISKIO2_FlushDataFilesIfNeeded();}
 void ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(void){NEWGRID_RebuildIndexCache();}
 LONG ESQPARS_JMPTBL_DATETIME_SavePairToFile(void *pair){return DATETIME_SavePairToFile(pair);}
-void ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList(void){ESQPROTO_VerifyChecksumAndParseList();}
+LONG ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList(LONG cmdChar){return ESQPROTO_VerifyChecksumAndParseList((UBYTE)cmdChar);}
 void ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord(void){P_TYPE_ParseAndStoreTypeRecord();}
 void ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal(void){ESQPROTO_CopyLabelToGlobal();}
 void ESQPARS_JMPTBL_DST_HandleBannerCommand32_33(void){DST_HandleBannerCommand32_33();}

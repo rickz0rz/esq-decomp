@@ -32,11 +32,22 @@ ___ESQPARS_JMPTBL_DATETIME_SavePair__3:
               MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_ESQPROTO_VerifyCh:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___ESQPARS_JMPTBL_ESQPROTO_VerifyCh__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
               BSR.W          ESQPROTO_VerifyChecksumAndParseL;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQPARS_JMPTBL_ESQPROTO_VerifyCh__2:
+___ESQPARS_JMPTBL_ESQPROTO_VerifyCh__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 ESQPARS_JMPTBL_P_TYPE_ParseAndSt:
               CMP.L          __base(A4),A7            ;bfec 0000 
