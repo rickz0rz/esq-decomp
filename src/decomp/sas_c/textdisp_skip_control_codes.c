@@ -2,10 +2,10 @@ typedef unsigned char UBYTE;
 
 extern const UBYTE WDISP_CharClassTable[];
 
-char *TEXTDISP_SkipControlCodes(const char *text)
+const char *TEXTDISP_SkipControlCodes(const char *text)
 {
     if (text == (char *)0) {
-        return (char *)text;
+        return text;
     }
 
     if (text[0] == 40) {
@@ -16,5 +16,5 @@ char *TEXTDISP_SkipControlCodes(const char *text)
         ++text;
     }
 
-    return (char *)text;
+    return text;
 }

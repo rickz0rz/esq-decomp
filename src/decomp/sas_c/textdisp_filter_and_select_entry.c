@@ -47,7 +47,7 @@ extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bits, LONG index);
 extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 extern LONG TEXTDISP_GetGroupEntryCount(LONG mode);
 extern LONG TEXTDISP_ShouldOpenEditorForEntry(const TEXTDISP_CandidateEntry *entry);
-extern char *TEXTDISP_SkipControlCodes(const char *text);
+extern const char *TEXTDISP_SkipControlCodes(const char *text);
 extern void TEXTDISP_SetSelectionFields(TEXTDISP_SelectionEntry *entry, LONG mode, LONG displayIndex, LONG entryIndex);
 extern void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entry);
 extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
