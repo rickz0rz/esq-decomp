@@ -5,7 +5,7 @@ typedef unsigned char UBYTE;
 #define DISKIO_WORKBUF_SENTINEL_ERROR 0xFFFF
 
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern LONG GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *text);
+extern LONG GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
 
 LONG DISKIO_ParseLongFromWorkBuffer(void)
 {
