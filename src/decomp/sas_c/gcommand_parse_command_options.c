@@ -3,7 +3,7 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
 extern UBYTE GCOMMAND_NicheParseScratchSeedWord[];
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 extern UBYTE GCOMMAND_DigitalNicheEnabledFlag[];
 extern LONG GCOMMAND_NicheTextPen;
 extern LONG GCOMMAND_NicheFramePen;

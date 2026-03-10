@@ -12,7 +12,7 @@ extern char P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load[];
 extern char P_TYPE_STR_CURDAY_COLON_LoadSection[];
 extern char P_TYPE_STR_NXTDAY_COLON_LoadSection[];
 extern char P_TYPE_STR_TYPES_COLON[];
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 extern UBYTE TEXTDISP_SecondaryGroupCode;
 extern char *Global_PTR_WORK_BUFFER;

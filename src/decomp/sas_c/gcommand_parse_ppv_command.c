@@ -3,7 +3,7 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
 extern UBYTE GCOMMAND_PpvParseScratchSeedLong[];
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 extern UBYTE GCOMMAND_DigitalPpvEnabledFlag[];
 extern LONG GCOMMAND_PpvModeCycleCount;
 extern LONG GCOMMAND_PpvSelectionWindowMinutes;

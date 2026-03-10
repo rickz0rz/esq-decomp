@@ -3,7 +3,7 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
 extern UBYTE GCOMMAND_MplexParseScratchSeedWord[];
-extern UBYTE WDISP_CharClassTable[];
+extern const UBYTE WDISP_CharClassTable[];
 extern UBYTE GCOMMAND_DigitalMplexEnabledFlag[];
 extern LONG GCOMMAND_MplexModeCycleCount;
 extern LONG GCOMMAND_MplexSearchRowLimit;
