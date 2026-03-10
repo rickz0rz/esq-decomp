@@ -50,7 +50,7 @@ extern const char *SCRIPT_StrChannelLabel_TuesdaysFridays[];
 extern const char *TEXTDISP_PrimarySearchText;
 extern const char *P_TYPE_WeatherBottomLineMsgPtr;
 
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux, LONG index, LONG window, LONG minutes);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG index, char *aux);
@@ -63,7 +63,7 @@ extern void SCRIPT_SetupHighlightEffect(char *line);
 
 void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD entryIndex)
 {
-    TEXTDISP_AuxData *aux;
+    const TEXTDISP_AuxData *aux;
     const TEXTDISP_CandidateEntry *entry;
     LONG modeKind;
     LONG channelEnabled;
@@ -79,14 +79,14 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
 
     idx = (LONG)groupIndex;
     modeKind = modeFlag ? MODE_KIND_PRIMARY : MODE_KIND_SECONDARY;
-    aux = (TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(idx, modeKind);
+    aux = (const TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(idx, modeKind);
     entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, modeKind);
 
     line[TEXTDISP_NULL] = TEXTDISP_NULL;
     timeToken = (const char *)TEXTDISP_NULL;
     bannerKind = MODE_KIND_PRIMARY;
 
-    if (entry != (TEXTDISP_CandidateEntry *)TEXTDISP_NULL && aux != (TEXTDISP_AuxData *)TEXTDISP_NULL) {
+    if (entry != (const TEXTDISP_CandidateEntry *)TEXTDISP_NULL && aux != (const TEXTDISP_AuxData *)TEXTDISP_NULL) {
         if (TEXTDISP_PrimaryChannelCode == TEXTDISP_NULL) {
             TEXTDISP_PrimaryChannelCode = CHANNEL_CODE_DEFAULT;
         }
