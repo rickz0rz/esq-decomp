@@ -55,7 +55,7 @@ LONG P_TYPE_LoadPromoIdDataFile(void)
         char *cursor = P_TYPE_JMPTBL_STRING_FindSubstring(work, section_header);
         LONG slot = 2;
 
-        if (cursor == (char *)0) {
+        if (!cursor) {
             continue;
         }
 
@@ -89,7 +89,7 @@ LONG P_TYPE_LoadPromoIdDataFile(void)
                 payload_len = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(cursor);
                 if (payload_len > 0) {
                     char *types = P_TYPE_JMPTBL_STRING_FindSubstring(cursor, P_TYPE_STR_TYPES_COLON);
-                    if (types != (char *)0) {
+                    if (types) {
                         UBYTE saved;
 
                         types += 7;
