@@ -1,48 +1,115 @@
               SECTION      text,CODE
 __code:
 GROUP_AL_JMPTBL_LADFUNC_PackNibb:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
 ___GROUP_AL_JMPTBL_LADFUNC_PackNibb__1:
+              MOVE.B         $13(A7),D6               ;1c2f 0013 
+              MOVE.B         $f(A7),D7                ;1e2f 000f 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D6,D1                    ;1206 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          LADFUNC_ComposePackedPenByte;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___GROUP_AL_JMPTBL_LADFUNC_PackNibb__2:
+___GROUP_AL_JMPTBL_LADFUNC_PackNibb__3:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
               RTS                                     ;4e75 
 __const:
 __strings:
 GROUP_AL_JMPTBL_LADFUNC_ExtractL:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___GROUP_AL_JMPTBL_LADFUNC_ExtractL__1:
+              MOVE.B         $b(A7),D7                ;1e2f 000b 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          LADFUNC_GetPackedPenLowNibble;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___GROUP_AL_JMPTBL_LADFUNC_ExtractL__2:
+___GROUP_AL_JMPTBL_LADFUNC_ExtractL__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 GROUP_AL_JMPTBL_LADFUNC_UpdateEn:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
 ___GROUP_AL_JMPTBL_LADFUNC_UpdateEn__1:
+              MOVE.L         $10(A7),D7               ;2e2f 0010 
+              MOVE.L         $18(A7),A3               ;266f 0018 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          LADFUNC_UpdateEntryFromTextAndAt;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
 ___GROUP_AL_JMPTBL_LADFUNC_UpdateEn__2:
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
               RTS                                     ;4e75 
 GROUP_AL_JMPTBL_ESQ_WriteDecFixe:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7/A5,-(A7)           ;48e7 0304 
 ___GROUP_AL_JMPTBL_ESQ_WriteDecFixe__1:
+              MOVE.L         $18(A7),D6               ;2c2f 0018 
+              MOVE.L         $14(A7),D7               ;2e2f 0014 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQ_WriteDecFixedWidth   ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
 ___GROUP_AL_JMPTBL_ESQ_WriteDecFixe__2:
+              MOVEM.L        (A7)+,D6/D7/A5           ;4cdf 20c0 
               RTS                                     ;4e75 
 GROUP_AL_JMPTBL_LADFUNC_BuildEnt:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
 ___GROUP_AL_JMPTBL_LADFUNC_BuildEnt__1:
+              MOVE.L         $10(A7),D7               ;2e2f 0010 
+              MOVE.L         $18(A7),A3               ;266f 0018 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          LADFUNC_BuildEntryBuffersOrDefau;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
 ___GROUP_AL_JMPTBL_LADFUNC_BuildEnt__2:
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
               RTS                                     ;4e75 
 GROUP_AL_JMPTBL_LADFUNC_ExtractH:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___GROUP_AL_JMPTBL_LADFUNC_ExtractH__1:
+              MOVE.B         $b(A7),D7                ;1e2f 000b 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          LADFUNC_GetPackedPenHighNibble;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___GROUP_AL_JMPTBL_LADFUNC_ExtractH__2:
+___GROUP_AL_JMPTBL_LADFUNC_ExtractH__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
