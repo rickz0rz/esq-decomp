@@ -20,6 +20,6 @@ void NEWGRID_JMPTBL_DISPTEXT_FreeBuffers(void){DISPTEXT_FreeBuffers();}
 void NEWGRID_JMPTBL_MEMORY_AllocateMemory(void){MEMORY_AllocateMemory();}
 void NEWGRID_JMPTBL_DISPTEXT_InitBuffers(void){DISPTEXT_InitBuffers();}
 LONG NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(void *dt){return DATETIME_NormalizeStructToSeconds(dt);}
-char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst, LONG maxLen, char *delims){return STR_CopyUntilAnyDelimN(src, dst, maxLen, delims);}
+char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst, LONG maxLen, const char *delims){return STR_CopyUntilAnyDelimN(src, dst, maxLen, (char *)delims);}
 void NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel(void){WDISP_UpdateSelectionPreviewPanel();}
 LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b){return MATH_Mulu32(a, b);}
