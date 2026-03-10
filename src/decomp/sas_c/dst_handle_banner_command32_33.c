@@ -5,8 +5,8 @@ extern void *DST_BannerWindowPrimary;
 extern void *DST_BannerWindowSecondary;
 
 extern void DATETIME_ParseString(void *out_struct, const char *text, LONG width);
-extern void DATETIME_CopyPairAndRecalc(void *dst, const void *lhs, const void *rhs);
-extern void DST_UpdateBannerQueue(void *pair);
+extern LONG DATETIME_CopyPairAndRecalc(void *dst, const void *lhs, const void *rhs);
+extern LONG DST_UpdateBannerQueue(void *pair);
 
 void DST_HandleBannerCommand32_33(UBYTE cmd, const char *text)
 {
