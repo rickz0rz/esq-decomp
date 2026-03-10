@@ -23,7 +23,7 @@ extern LONG NEWGRID_ShowtimesColumnAdjust;
 
 extern UBYTE GCOMMAND_PpvShowtimesWorkflowMode;
 extern UBYTE GCOMMAND_DigitalPpvEnabledFlag;
-extern LONG GCOMMAND_PPVListingsTemplatePtr;
+extern const char *GCOMMAND_PPVListingsTemplatePtr;
 extern LONG GCOMMAND_PpvEditorRowPen;
 extern LONG GCOMMAND_PpvEditorLayoutPen;
 
@@ -75,7 +75,7 @@ LONG NEWGRID_ProcessShowtimesWorkflow(char *ctx, UWORD rowBase)
         case 2:
             if (GCOMMAND_PpvShowtimesWorkflowMode == 'B' || GCOMMAND_PpvShowtimesWorkflowMode == 'F') {
                 NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState(
-                    (char *)ctx, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, (char *)GCOMMAND_PPVListingsTemplatePtr);
+                    ctx, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, GCOMMAND_PPVListingsTemplatePtr);
                 if (NEWGRID_ShowtimesWorkflowState == 5) {
                     NEWGRID_ShowtimesWorkflowState = 2;
                     break;
@@ -119,7 +119,7 @@ LONG NEWGRID_ProcessShowtimesWorkflow(char *ctx, UWORD rowBase)
         case 7:
             if (GCOMMAND_PpvShowtimesWorkflowMode == 'B' || GCOMMAND_PpvShowtimesWorkflowMode == 'L') {
                 NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState(
-                    (char *)ctx, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, (char *)GCOMMAND_PPVListingsTemplatePtr);
+                    ctx, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, GCOMMAND_PPVListingsTemplatePtr);
                 if (NEWGRID_ShowtimesWorkflowState == 5) {
                     NEWGRID_ShowtimesWorkflowState = 7;
                     break;
