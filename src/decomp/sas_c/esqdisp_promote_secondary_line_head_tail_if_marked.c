@@ -6,7 +6,7 @@ extern char *ESQIFF_PrimaryLineHeadPtr;
 extern char *ESQIFF_SecondaryLineTailPtr;
 extern char *ESQIFF_PrimaryLineTailPtr;
 
-extern void ESQIFF2_ClearLineHeadTailByMode(WORD mode);
+extern char *ESQIFF2_ClearLineHeadTailByMode(WORD mode);
 
 void ESQDISP_PromoteSecondaryLineHeadTailIfMarked(void)
 {
