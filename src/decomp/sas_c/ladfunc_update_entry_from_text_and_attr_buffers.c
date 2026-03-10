@@ -55,7 +55,7 @@ void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, char *textBuf, U
 
     oldTextLen = 0;
     if (entry->textPtr != (char *)0) {
-        char *p = entry->textPtr;
+        const char *p = entry->textPtr;
         while (*p != 0) {
             ++p;
         }
@@ -75,7 +75,7 @@ void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, char *textBuf, U
 
     newTextLen = 0;
     if (entry->textPtr != (char *)0) {
-        char *p = entry->textPtr;
+        const char *p = entry->textPtr;
         while (*p != 0) {
             ++p;
         }
