@@ -15,6 +15,7 @@ ___FORMAT_RawDoFmtWithScratchBuffer__1:
               PEA            FORMAT_ScratchBuffer(A4) ;486c 0000 
               BSR.W          PARALLEL_RawDoFmtStackArgs;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
+              MOVEQ.L        #$0,D0                   ;7000 
 ___FORMAT_RawDoFmtWithScratchBuffer__2:
 ___FORMAT_RawDoFmtWithScratchBuffer__3:
               MOVE.L         (A7)+,A5                 ;2a5f 
