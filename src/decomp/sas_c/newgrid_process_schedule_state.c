@@ -30,7 +30,7 @@ extern LONG NEWGRID_HandleGridEditorState(char *ctx, LONG a, LONG b, const char 
 extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern LONG NEWGRID_UpdateGridState(char *ctx, LONG index, UWORD row);
 extern LONG NEWGRID_HandleDetailGridState(char *ctx, LONG index, UWORD row);
-extern LONG NEWGRID_FindNextEntryWithAltMarkers(LONG state, LONG selected, LONG row);
+extern LONG NEWGRID_FindNextEntryWithAltMarkers(LONG state, LONG selected, UWORD row);
 extern void NEWGRID_DrawStatusMessage(char *ctx, UWORD row);
 extern LONG NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
