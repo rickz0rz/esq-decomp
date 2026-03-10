@@ -3,7 +3,7 @@ typedef short WORD;
 
 extern void *NEWGRID2_ErrorLogEntryPtr;
 extern WORD FLIB_LogEntryByteCount;
-extern char CLOCK_FileEofMarkerCtrlZ;
+extern const char CLOCK_FileEofMarkerCtrlZ[];
 extern const char Global_STR_DF0_ERR_LOG[];
 
 extern LONG SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
@@ -29,7 +29,7 @@ LONG PARSEINI_WriteErrorLogEntry(void)
         (LONG)FLIB_LogEntryByteCount);
     SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(
         fileHandle,
-        (void *)&CLOCK_FileEofMarkerCtrlZ,
+        (void *)CLOCK_FileEofMarkerCtrlZ,
         1L);
 
     return SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(fileHandle);
