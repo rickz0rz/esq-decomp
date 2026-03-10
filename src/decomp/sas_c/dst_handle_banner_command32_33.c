@@ -14,14 +14,16 @@ extern LONG DST_UpdateBannerQueue(void *pair);
 
 void DST_HandleBannerCommand32_33(UBYTE cmd, const char *text)
 {
+    const UBYTE COMMAND_SECONDARY_WINDOW = 0x32;
+    const UBYTE COMMAND_PRIMARY_WINDOW = 0x33;
     DST_ParsedDateTime parsedA;
     DST_ParsedDateTime parsedB;
 
-    if (cmd == 0x32) {
+    if (cmd == COMMAND_SECONDARY_WINDOW) {
         DATETIME_ParseString(&parsedA, text, 4);
         DATETIME_ParseString(&parsedB, text, 19);
         DATETIME_CopyPairAndRecalc(DST_BannerWindowSecondary, &parsedA, &parsedB);
-    } else if (cmd == 0x33) {
+    } else if (cmd == COMMAND_PRIMARY_WINDOW) {
         DATETIME_ParseString(&parsedA, text, 4);
         DATETIME_ParseString(&parsedB, text, 19);
         DATETIME_CopyPairAndRecalc(DST_BannerWindowPrimary, &parsedA, &parsedB);
