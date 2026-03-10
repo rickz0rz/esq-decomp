@@ -15,11 +15,11 @@ extern PTypeEntry *P_TYPE_CloneEntry(PTypeEntry *dstEntry, PTypeEntry *srcEntry)
 
 void P_TYPE_EnsureSecondaryList(void)
 {
-    if (P_TYPE_PrimaryGroupListPtr == (PTypeEntry *)0) {
+    if (!P_TYPE_PrimaryGroupListPtr) {
         return;
     }
 
-    if (P_TYPE_SecondaryGroupListPtr != (PTypeEntry *)0) {
+    if (P_TYPE_SecondaryGroupListPtr) {
         return;
     }
 
