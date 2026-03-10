@@ -1,6 +1,8 @@
-extern void GCOMMAND_ProcessCtrlCommand(void);
+typedef signed long LONG;
 
-void ESQ_InvokeGcommandInit(void)
+extern LONG GCOMMAND_ProcessCtrlCommand(char *cmdPtr);
+
+void ESQ_InvokeGcommandInit(void *cmdPtr)
 {
-    GCOMMAND_ProcessCtrlCommand();
+    GCOMMAND_ProcessCtrlCommand((char *)cmdPtr);
 }

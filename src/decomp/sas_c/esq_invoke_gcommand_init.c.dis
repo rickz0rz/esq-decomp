@@ -1,11 +1,18 @@
               SECTION      text,CODE
 __code:
 ESQ_InvokeGcommandInit:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___ESQ_InvokeGcommandInit__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          GCOMMAND_ProcessCtrlCommand;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___ESQ_InvokeGcommandInit__2:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 __const:
 __strings:
