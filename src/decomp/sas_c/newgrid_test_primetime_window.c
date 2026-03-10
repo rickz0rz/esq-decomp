@@ -11,17 +11,17 @@ typedef struct NEWGRID_Entry {
     NEWGRID_ModeInfo *modeInfo;
 } NEWGRID_Entry;
 
-LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, char *entry)
+LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, const void *entry)
 {
-    NEWGRID_Entry *entryView;
-    NEWGRID_ModeInfo *modePtr;
+    const NEWGRID_Entry *entryView;
+    const NEWGRID_ModeInfo *modePtr;
     UBYTE c;
 
     if (entry == 0) {
         return 0;
     }
 
-    entryView = (NEWGRID_Entry *)entry;
+    entryView = (const NEWGRID_Entry *)entry;
     modePtr = entryView->modeInfo;
     if (modePtr == 0) {
         return 0;

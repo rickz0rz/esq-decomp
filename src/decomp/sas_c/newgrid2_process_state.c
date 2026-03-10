@@ -26,7 +26,7 @@ extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *tagName, LONG line,
 extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);
 
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG height, LONG pen);
-extern LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, char *entryHead);
+extern LONG NEWGRID_TestPrimeTimeWindow(LONG rowSlot, const void *entryHead);
 extern void NEWGRID_DrawGridEntry(
     char *layoutCtx,
     char *entryPtr,
