@@ -16,20 +16,19 @@ extern LONG DATETIME_NormalizeStructToSeconds(void *dt);
 
 LONG DATETIME_CopyPairAndRecalc(DateTimePair *pair, void *src_in, void *src_out)
 {
-    const LONG PTR_NULL = 0;
     LONG secondsResult;
     UBYTE *src;
     UBYTE *dst;
     short copyCount;
 
     secondsResult = (LONG)pair;
-    if (pair == (DateTimePair *)PTR_NULL) {
+    if (!pair) {
         return secondsResult;
     }
-    if (pair->in_ptr == (void *)PTR_NULL) {
+    if (!pair->in_ptr) {
         return secondsResult;
     }
-    if (pair->out_ptr == (void *)PTR_NULL) {
+    if (!pair->out_ptr) {
         return secondsResult;
     }
 
