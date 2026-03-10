@@ -14,7 +14,7 @@ extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *gridCtx, cons
 void NEWGRID_DrawEntryRowOrPlaceholder(char *gridCtx, char *entryPtr, LONG rowMeta, WORD row, WORD col, LONG state)
 {
     if (state == 2) {
-        if (NEWGRID_EntryPlaceholderModeFlag != 0) {
+        if (NEWGRID_EntryPlaceholderModeFlag) {
             LONG enabled = 0;
             if (CONFIG_NewgridPlaceholderBevelFlag == (UBYTE)89) {
                 enabled = -1;
@@ -27,7 +27,7 @@ void NEWGRID_DrawEntryRowOrPlaceholder(char *gridCtx, char *entryPtr, LONG rowMe
         return;
     }
 
-    if (state == 0) {
+    if (!state) {
         NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(gridCtx, SCRIPT_PtrOffAirPlaceholder);
         return;
     }

@@ -18,7 +18,7 @@ ___NEWGRID_DrawEntryRowOrPlaceholde__1:
               SUBQ.L         #$2,D0                   ;5580 
               BNE.B          ___NEWGRID_DrawEntryRowOrPlaceholde__7;6660 
 ___NEWGRID_DrawEntryRowOrPlaceholde__2:
-              MOVE.W         NEWGRID_EntryPlaceholderModeFlag(A4),D0;302c 0000 
+              TST.W          NEWGRID_EntryPlaceholderModeFlag(A4);4a6c 0000 
               BEQ.B          ___NEWGRID_DrawEntryRowOrPlaceholde__6;6738 
 ___NEWGRID_DrawEntryRowOrPlaceholde__3:
               CLR.L          $18(A7)                  ;42af 0018 
