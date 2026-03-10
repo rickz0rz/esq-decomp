@@ -1,11 +1,13 @@
-extern void MEMORY_DeallocateMemory(void);
-extern void DISKIO_WriteBufferedBytes(void);
-extern void DISKIO_CloseBufferedFileAndFlush(void);
-extern void MEMORY_AllocateMemory(void);
-extern void DISKIO_OpenFileWithBuffer(void);
+typedef signed long LONG;
 
-void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(void){MEMORY_DeallocateMemory();}
-void SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(void){DISKIO_WriteBufferedBytes();}
-void SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(void){DISKIO_CloseBufferedFileAndFlush();}
-void SCRIPT_JMPTBL_MEMORY_AllocateMemory(void){MEMORY_AllocateMemory();}
-void SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(void){DISKIO_OpenFileWithBuffer();}
+extern void MEMORY_DeallocateMemory(const void *tagName, LONG line, void *ptr, LONG bytes);
+extern LONG DISKIO_WriteBufferedBytes(LONG handle, const void *buffer, LONG len);
+extern LONG DISKIO_CloseBufferedFileAndFlush(LONG handle);
+extern void *MEMORY_AllocateMemory(const void *tagName, LONG line, LONG bytes, LONG flags);
+extern LONG DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
+
+void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const void *tagName, LONG line, void *ptr, LONG bytes){MEMORY_DeallocateMemory(tagName, line, ptr, bytes);}
+LONG SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(LONG handle, const void *buffer, LONG len){return DISKIO_WriteBufferedBytes(handle, buffer, len);}
+LONG SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG handle){return DISKIO_CloseBufferedFileAndFlush(handle);}
+void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const void *tagName, LONG line, LONG bytes, LONG flags){return MEMORY_AllocateMemory(tagName, line, bytes, flags);}
+LONG SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(const char *path, LONG mode){return DISKIO_OpenFileWithBuffer(path, mode);}
