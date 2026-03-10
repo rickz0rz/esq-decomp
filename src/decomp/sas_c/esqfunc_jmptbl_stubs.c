@@ -1,5 +1,6 @@
 typedef signed long LONG;
 typedef signed char BYTE;
+typedef unsigned long ULONG;
 
 extern void TEXTDISP_SetRastForMode(void);
 extern void P_TYPE_PromoteSecondaryList(void);
@@ -26,7 +27,7 @@ extern void ESQ_HandleSerialRbfInterrupt(void);
 extern void TEXTDISP_TickDisplayState(void);
 extern void ESQ_PollCtrlInput(void);
 extern void LOCAVAIL_RebuildFilterStateFromCurrentGroup(void);
-extern void STRING_CopyPadNul(void);
+extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG maxLen);
 
 void ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(void){TEXTDISP_SetRastForMode();}
 void ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList(void){P_TYPE_PromoteSecondaryList();}
@@ -53,4 +54,4 @@ void ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt(void){ESQ_HandleSerialRbfInterr
 void ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState(void){TEXTDISP_TickDisplayState();}
 void ESQFUNC_JMPTBL_ESQ_PollCtrlInput(void){ESQ_PollCtrlInput();}
 void ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup(void){LOCAVAIL_RebuildFilterStateFromCurrentGroup();}
-void ESQFUNC_JMPTBL_STRING_CopyPadNul(void){STRING_CopyPadNul();}
+char *ESQFUNC_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG maxLen){return STRING_CopyPadNul(dst, src, maxLen);}
