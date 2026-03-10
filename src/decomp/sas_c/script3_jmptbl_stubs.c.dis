@@ -236,6 +236,7 @@ ___SCRIPT3_JMPTBL_STRING_CopyPadNul__1:
               BSR.W          STRING_CopyPadNul        ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
 ___SCRIPT3_JMPTBL_STRING_CopyPadNul__2:
+___SCRIPT3_JMPTBL_STRING_CopyPadNul__3:
               MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
               RTS                                     ;4e75 
               XREF           __base

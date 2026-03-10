@@ -17,7 +17,7 @@ extern void CLEANUP_RenderAlignedStatusScreen(void);
 extern void LOCAVAIL_ComputeFilterOffsetForEntry(const BYTE *text, void *statePtr);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 extern void LOCAVAIL_SetFilterModeAndResetState(LONG mode);
-extern void STRING_CopyPadNul(char *dst, const char *src, LONG n);
+extern char *STRING_CopyPadNul(char *dst, const char *src, LONG n);
 
 void SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(void *ctxPtr, void *statePtr){LOCAVAIL_UpdateFilterStateMachine(ctxPtr, statePtr);}
 LONG SCRIPT3_JMPTBL_MATH_DivS32(LONG dividend, LONG divisor){return MATH_DivS32(dividend, divisor);}
@@ -34,4 +34,4 @@ void SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(void){CLEANUP_RenderAligne
 void SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry(const BYTE *text, void *statePtr){LOCAVAIL_ComputeFilterOffsetForEntry(text, statePtr);}
 LONG SCRIPT3_JMPTBL_MATH_Mulu32(LONG a, LONG b){return MATH_Mulu32(a, b);}
 void SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState(LONG mode){LOCAVAIL_SetFilterModeAndResetState(mode);}
-void SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG n){STRING_CopyPadNul(dst, src, n);}
+char *SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, LONG n){return STRING_CopyPadNul(dst, src, n);}
