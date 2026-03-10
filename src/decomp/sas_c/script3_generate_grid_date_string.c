@@ -9,7 +9,7 @@ extern const char *Global_JMPTBL_DAYS_OF_WEEK[];
 extern const char *Global_JMPTBL_MONTHS[];
 extern const char Global_STR_GRID_DATE_FORMAT_STRING[];
 
-extern void PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, const char *dayName, const char *monthName, LONG dayOfMonth, LONG yearValue);
+extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, const char *dayName, const char *monthName, LONG dayOfMonth, LONG yearValue);
 
 void GENERATE_GRID_DATE_STRING(char *outBuffer)
 {

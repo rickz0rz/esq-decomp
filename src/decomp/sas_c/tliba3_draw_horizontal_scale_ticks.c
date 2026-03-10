@@ -31,7 +31,7 @@ extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern LONG _LVODraw(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern LONG _LVOTextLength(void *gfxBase, char *rastPort, char *text, LONG len);
 extern LONG _LVOText(void *gfxBase, char *rastPort, char *text, LONG len);
-extern void WDISP_SPrintf(char *dst, const char *fmt, LONG value);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG value);
 extern LONG MATH_Mulu32(LONG left, LONG right);
 
 void TLIBA3_DrawHorizontalScaleTicks(TLIBA3_RastPortWrap *rp, LONG y)

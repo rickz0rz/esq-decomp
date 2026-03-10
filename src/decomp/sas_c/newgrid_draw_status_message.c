@@ -30,7 +30,7 @@ extern UWORD NEWGRID_ColumnWidthPx;
 extern void NEWGRID_DrawGridFrame(char *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
 extern void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slot, char *out_text);
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
-extern void PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, char *arg);
+extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, char *arg);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern void _LVOSetDrMd(char *rastPort, LONG mode);
