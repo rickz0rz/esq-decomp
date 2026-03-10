@@ -110,7 +110,7 @@ LONG TEXTDISP_SelectBestMatchFromList(char *titles, UWORD candidateCount, UWORD 
         }
 
         titlePtr = TEXTDISP_GetActiveTitlePtr(TEXTDISP_CurrentMatchIndex, &groupCode);
-        timeOffset = TEXTDISP_ComputeTimeOffset(groupCode, (const char *)titlePtr, slotIndex);
+        timeOffset = TEXTDISP_ComputeTimeOffset(groupCode, titlePtr, slotIndex);
 
         specialFlag = 0;
         if (TEXTDISP_ActiveGroupId != 0) {
@@ -137,7 +137,7 @@ LONG TEXTDISP_SelectBestMatchFromList(char *titles, UWORD candidateCount, UWORD 
             candidateSlot = slotIndex;
         }
 
-        timeOffset = TEXTDISP_ComputeTimeOffset(groupCode, (const char *)titlePtr, candidateSlot);
+        timeOffset = TEXTDISP_ComputeTimeOffset(groupCode, titlePtr, candidateSlot);
 
         if (TEXTDISP_ActiveGroupId != 0 &&
             slotIndex == (LONG)CLOCK_HalfHourSlotIndex &&
