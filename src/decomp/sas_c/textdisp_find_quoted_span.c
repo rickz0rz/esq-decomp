@@ -4,7 +4,7 @@ typedef unsigned char UBYTE;
 extern char *STR_FindCharPtr(const char *s, LONG needle);
 extern const UBYTE WDISP_CharClassTable[];
 
-LONG TEXTDISP_FindQuotedSpan(char *src, char **outStart, char *endHint, LONG *hasQuotes)
+LONG TEXTDISP_FindQuotedSpan(const char *src, char **outStart, const char *endHint, LONG *hasQuotes)
 {
     const LONG FLAG_FALSE = 0;
     const LONG FLAG_TRUE = 1;
@@ -13,8 +13,8 @@ LONG TEXTDISP_FindQuotedSpan(char *src, char **outStart, char *endHint, LONG *ha
     const LONG PREFIX_SKIP_LEN = 8;
     const LONG CHARCLASS_WHITESPACE = 8;
     const LONG PTR_BACK_ONE = 1;
-    char *start;
-    char *end;
+    const char *start;
+    const char *end;
     char *firstQuote;
     char *secondQuote;
 
@@ -58,6 +58,6 @@ LONG TEXTDISP_FindQuotedSpan(char *src, char **outStart, char *endHint, LONG *ha
         --end;
     }
 
-    *outStart = start;
+    *outStart = (char *)start;
     return (LONG)(end - start) + PTR_BACK_ONE;
 }

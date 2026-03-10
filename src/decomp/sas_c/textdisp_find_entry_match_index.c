@@ -23,7 +23,7 @@ extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LO
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entryPtr, char *auxPtr, LONG startIndex);
 extern char *TEXTDISP_FindControlToken(const char *textPtr);
-extern LONG TEXTDISP_FindQuotedSpan(char *src, char **outStart, char *endHint, LONG *hasQuotes);
+extern LONG TEXTDISP_FindQuotedSpan(const char *src, char **outStart, const char *endHint, LONG *hasQuotes);
 extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitsetPtr, LONG index);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
 extern LONG TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
@@ -114,7 +114,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
     }
 
     inputCtrl = TEXTDISP_FindControlToken(input);
-    inputLen = TEXTDISP_FindQuotedSpan(input, &inputStart, (char *)inputCtrl, &inputHasQuotes);
+    inputLen = TEXTDISP_FindQuotedSpan(input, &inputStart, inputCtrl, &inputHasQuotes);
     inputSaved = inputStart[inputLen];
     inputStart[inputLen] = CH_NUL;
 
@@ -146,7 +146,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
 
         isMatch = 0;
         if (tokenOk != 0) {
-            entryLen = TEXTDISP_FindQuotedSpan((char *)entryTitle, &entryStart, (char *)entryCtrl, &entryHasQuotes);
+            entryLen = TEXTDISP_FindQuotedSpan(entryTitle, &entryStart, entryCtrl, &entryHasQuotes);
             entrySaved = entryStart[entryLen];
             entryStart[entryLen] = CH_NUL;
 
