@@ -24,7 +24,7 @@ LONG DST_ComputeBannerIndex(void *ctx, WORD arg_2, UBYTE arg_3)
     DST_BuildBannerTimeEntry((LONG)arg_2, (LONG)arg_3, &out_word, ctx);
 
     rem = (LONG)((WORD)(p->hourWord8) % 12);
-    if (p->pmFlag18 != 0) {
+    if (p->pmFlag18) {
         rem += 12;
     }
 
@@ -33,7 +33,7 @@ LONG DST_ComputeBannerIndex(void *ctx, WORD arg_2, UBYTE arg_3)
         idx += 1;
     }
 
-    nonzero = (idx != 0) ? 1 : 0;
+    nonzero = (idx != 0);
     folded = (WORD)((WORD)(nonzero + 0x26) % 48);
 
     return (LONG)(WORD)(folded + 1);

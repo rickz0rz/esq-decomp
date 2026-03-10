@@ -43,18 +43,18 @@ ___DST_ComputeBannerIndex__4:
 ___DST_ComputeBannerIndex__5:
               TST.L          D4                       ;4a84 
               SCC            D0,#$600                 ;56c0 
-              MOVEQ.L        #$0,D1                   ;7200 
-              SUB.B          D0,D1                    ;9200 
-              MOVE.L         D1,$1c(A7)               ;2f41 001c 
-              MOVEQ.L        #$26,D0                  ;7026 
-              ADD.L          D0,D1                    ;d280 
-              EXT.L          D1                       ;48c1 
-              DIVS.W         #$30,D1                  ;83fc 0030 
-              SWAP           D1                       ;4841 
-              MOVE.W         D1,$18(A7)               ;3f41 0018 
-              ADDQ.W         #$1,D1                   ;5241 
-              EXT.L          D1                       ;48c1 
-              MOVE.L         D1,D0                    ;2001 
+              NEG.B          D0                       ;4400 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              MOVEQ.L        #$26,D1                  ;7226 
+              ADD.L          D1,D0                    ;d081 
+              EXT.L          D0                       ;48c0 
+              DIVS.W         #$30,D0                  ;81fc 0030 
+              SWAP           D0                       ;4840 
+              MOVE.W         D0,$18(A7)               ;3f40 0018 
+              ADDQ.W         #$1,D0                   ;5240 
+              EXT.L          D0                       ;48c0 
 ___DST_ComputeBannerIndex__6:
 ___DST_ComputeBannerIndex__7:
               MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
