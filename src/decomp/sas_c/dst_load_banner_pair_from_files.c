@@ -47,14 +47,14 @@ LONG DST_LoadBannerPairFromFiles(void *pair)
     scratch_len = Global_REF_LONG_FILE_SCRATCH;
 
     hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, Global_STR_G2);
-    if (hit != (char *)0) {
+    if (hit != 0) {
         DATETIME_ParseString(parsed_a, hit, LINE_PARSE_WIDTH);
         DATETIME_ParseString(parsed_b, hit, DATETIME_PARSE_WIDTH);
         DATETIME_CopyPairAndRecalc(p->secondaryBanner, parsed_a, parsed_b);
     }
 
     hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, Global_STR_G3);
-    if (hit != (char *)0) {
+    if (hit != 0) {
         DATETIME_ParseString(parsed_a, hit, LINE_PARSE_WIDTH);
         DATETIME_ParseString(parsed_b, hit, DATETIME_PARSE_WIDTH);
         DATETIME_CopyPairAndRecalc(p->primaryBanner, parsed_a, parsed_b);

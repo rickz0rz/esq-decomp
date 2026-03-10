@@ -19,9 +19,9 @@ extern const char *DST_STR_G3_COLON;
 extern LONG DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
 extern LONG DISKIO_WriteBufferedBytes(LONG fileHandle, const void *src, LONG len);
 extern LONG DISKIO_CloseBufferedFileAndFlush(LONG fileHandle);
-extern LONG DATETIME_FormatPairToStream(LONG fileHandle, DateTimePair *pair);
+extern LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pair);
 
-LONG DATETIME_SavePairToFile(DateTimePair *pair)
+LONG DATETIME_SavePairToFile(const DateTimePair *pair)
 {
     const LONG FILEHANDLE_INVALID = 0;
     LONG outputFileHandle;
@@ -42,10 +42,10 @@ LONG DATETIME_SavePairToFile(DateTimePair *pair)
     }
 
     (void)DISKIO_WriteBufferedBytes(outputFileHandle, DST_STR_G2_COLON, DATETIME_SAVE_PREFIX_LEN);
-    (void)DATETIME_FormatPairToStream(outputFileHandle, (DateTimePair *)pair->out_ptr);
+    (void)DATETIME_FormatPairToStream(outputFileHandle, pair->out_ptr);
 
     (void)DISKIO_WriteBufferedBytes(outputFileHandle, DST_STR_G3_COLON, DATETIME_SAVE_PREFIX_LEN);
-    (void)DATETIME_FormatPairToStream(outputFileHandle, (DateTimePair *)pair->in_ptr);
+    (void)DATETIME_FormatPairToStream(outputFileHandle, pair->in_ptr);
 
     (void)DISKIO_CloseBufferedFileAndFlush(outputFileHandle);
     return DATETIME_SAVE_SUCCESS;

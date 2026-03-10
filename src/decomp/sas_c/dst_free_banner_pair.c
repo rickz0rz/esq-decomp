@@ -12,8 +12,8 @@ void DST_FreeBannerPair(void *pair)
     DST_BannerPair *pairView = (DST_BannerPair *)pair;
 
     DST_FreeBannerStruct(pairView->first);
-    pairView->first = (void *)0;
+    pairView->first = 0;
 
     DST_FreeBannerStruct(pairView->second);
-    pairView->second = (void *)0;
+    pairView->second = 0;
 }
