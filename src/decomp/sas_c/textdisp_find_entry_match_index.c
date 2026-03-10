@@ -22,7 +22,7 @@ extern UWORD CLOCK_HalfHourSlotIndex;
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entryPtr, char *auxPtr, LONG startIndex);
-extern char *TEXTDISP_FindControlToken(const char *textPtr);
+extern const char *TEXTDISP_FindControlToken(const char *textPtr);
 extern LONG TEXTDISP_FindQuotedSpan(const char *src, char **outStart, const char *endHint, LONG *hasQuotes);
 extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitsetPtr, LONG index);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);

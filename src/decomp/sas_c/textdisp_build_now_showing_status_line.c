@@ -56,7 +56,7 @@ extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux, 
 extern void TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG index, char *aux);
 extern char *STR_SkipClass3Chars(const char *src);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
-extern char *TEXTDISP_FindControlToken(const char *src);
+extern const char *TEXTDISP_FindControlToken(const char *src);
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG value);
 extern void TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(char *line, LONG mode, LONG groupIndex, LONG entryIndex, LONG a, LONG b);
 extern void SCRIPT_SetupHighlightEffect(char *line);
