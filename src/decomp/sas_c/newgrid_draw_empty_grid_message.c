@@ -21,7 +21,7 @@ typedef struct NEWGRID_Context {
     NEWGRID_RastPort rastPort;
 } NEWGRID_Context;
 
-extern char *SCRIPT_PtrMovieSummaryForPrefix;
+extern const char *SCRIPT_PtrMovieSummaryForPrefix;
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 
@@ -41,7 +41,7 @@ void NEWGRID_DrawEmptyGridMessage(char *gridCtx, UWORD slot)
     NEWGRID_Context *ctx;
     char banner[128];
     char slot_text[31];
-    char *src;
+    const char *src;
     char *dst;
     NEWGRID_RastPort *rast;
     LONG len;
