@@ -51,6 +51,7 @@ void NEWGRID_DrawShowtimesPrompt(char *rpCtx, char *outBuf, LONG mode)
     char *titlePart;
     char *channelPart;
     const char *src;
+    const char *scan;
     char *dst;
     NEWGRID_RastPort *rp;
     LONG len;
@@ -102,8 +103,9 @@ void NEWGRID_DrawShowtimesPrompt(char *rpCtx, char *outBuf, LONG mode)
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, (char *)rp, 3);
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, (char *)rp, 0);
 
+    scan = prompt;
     len = 0;
-    while (prompt[len] != 0) {
+    while (*scan++ != 0) {
         len++;
     }
 
