@@ -2,8 +2,8 @@ typedef signed long LONG;
 typedef signed short WORD;
 typedef unsigned char UBYTE;
 
-extern void DATETIME_AdjustMonthIndex(void);
-extern void DATETIME_NormalizeMonthRange(void);
+extern LONG DATETIME_AdjustMonthIndex(void *ctx);
+extern LONG DATETIME_NormalizeMonthRange(void *ctx);
 extern LONG DST_ComputeBannerIndex(void *ctx, WORD arg2, UBYTE arg3);
 extern void ESQFUNC_SelectAndApplyBrushForCurrentEntry(void);
 extern void ESQIFF_RunCopperDropTransition(void);
@@ -19,8 +19,8 @@ extern WORD TLIBA1_BuildClockFormatEntryIfVisible(WORD groupIndex, WORD modeInde
 extern long TLIBA3_BuildDisplayContextForViewMode(long viewMode, long a1, long a2);
 extern long TLIBA3_GetViewModeHeight(long viewModeIndex);
 
-void GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex(void){DATETIME_AdjustMonthIndex();}
-void GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange(void){DATETIME_NormalizeMonthRange();}
+LONG GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex(void *ctx){return DATETIME_AdjustMonthIndex(ctx);}
+LONG GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange(void *ctx){return DATETIME_NormalizeMonthRange(ctx);}
 LONG GROUP_AD_JMPTBL_DST_ComputeBannerIndex(void *ctx, WORD arg2, UBYTE arg3){return DST_ComputeBannerIndex(ctx, arg2, arg3);}
 void GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry(void){ESQFUNC_SelectAndApplyBrushForCurrentEntry();}
 void GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition(void){ESQIFF_RunCopperDropTransition();}
