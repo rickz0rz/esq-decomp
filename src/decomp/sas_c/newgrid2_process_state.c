@@ -42,10 +42,10 @@ extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, co
 extern LONG NEWGRID_DrawGridFrameVariant4(char *gridCtx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
 
-LONG NEWGRID2_ProcessGridState(char *gridCtx, char *entryCtx, LONG keyValue)
+LONG NEWGRID2_ProcessGridState(char *gridCtx, const void *entryCtx, LONG keyValue)
 {
     NEWGRID2_Context *grid = (NEWGRID2_Context *)gridCtx;
-    NEWGRID2_StateEntry *entry = (NEWGRID2_StateEntry *)entryCtx;
+    const NEWGRID2_StateEntry *entry = (const NEWGRID2_StateEntry *)entryCtx;
     char *scratch = 0;
     WORD rowSlot;
 
