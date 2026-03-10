@@ -44,7 +44,7 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
 {
     NEWGRID_Entry *entry;
     char splitMask[4];
-    char *timeText;
+    const char *timeText;
     char *split;
     char *tail;
     char *subtitle;

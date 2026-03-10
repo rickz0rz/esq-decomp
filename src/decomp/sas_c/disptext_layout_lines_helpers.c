@@ -13,9 +13,9 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 extern const char DISPTEXT_STR_SINGLE_SPACE_PREFIX_1[];
 
 extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG count);
-extern char *DISPTEXT_BuildLineWithWidth(char *rp, char *src, char *scratch, LONG widthPx);
+extern char *DISPTEXT_BuildLineWithWidth(char *rp, const char *src, char *scratch, LONG widthPx);
 
-LONG DISPTEXT_LayoutSourceToLines(char *rp, char *src)
+LONG DISPTEXT_LayoutSourceToLines(char *rp, const char *src)
 {
     LONG lineOffset = 0;
     LONG availableWidth;
@@ -23,12 +23,12 @@ LONG DISPTEXT_LayoutSourceToLines(char *rp, char *src)
     UWORD current;
 
     if (DISPTEXT_LineTableLockFlag != 0) {
-        return (src == (char *)0) ? -1 : 0;
+        return (src == 0) ? -1 : 0;
     }
 
     current = (UWORD)DISPTEXT_CurrentLineIndex;
     if (current >= (UWORD)DISPTEXT_TargetLineIndex) {
-        return (src == (char *)0) ? -1 : 0;
+        return (src == 0) ? -1 : 0;
     }
 
     if (DISPTEXT_LineLengthTable[current] != 0) {
@@ -65,7 +65,7 @@ LONG DISPTEXT_LayoutSourceToLines(char *rp, char *src)
     for (;;) {
         current = (UWORD)DISPTEXT_CurrentLineIndex;
 
-        if (src == (char *)0 || *src == 0) {
+        if (src == 0 || *src == 0) {
             break;
         }
         if ((LONG)current + lineOffset >= (LONG)(UWORD)DISPTEXT_TargetLineIndex) {
@@ -79,10 +79,10 @@ LONG DISPTEXT_LayoutSourceToLines(char *rp, char *src)
             availableWidth -= DISPTEXT_ControlMarkerWidthPx;
         }
 
-        if (src != (char *)0) {
+        if (src != 0) {
             lineOffset += 1;
         }
     }
 
-    return (src == (char *)0) ? -1 : 0;
+    return (src == 0) ? -1 : 0;
 }
