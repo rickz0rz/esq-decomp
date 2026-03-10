@@ -224,6 +224,9 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
 
         if (duplicateHeadPath == 0) {
             pendingNode = (ESQIFF_PendingBrushNode *)ESQIFF_JMPTBL_BRUSH_AllocBrushNode(candidate, 0);
+            if (pendingNode == 0) {
+                break;
+            }
             ESQIFF_PendingExternalBrushNode = (LONG)pendingNode;
             if (ESQIFF_AssetSourceSelect == SOURCE_SELECT_LOGO) {
                 pendingNode->sourceType190 = SOURCE_TYPE_LOGO;
