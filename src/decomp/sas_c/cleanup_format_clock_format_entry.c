@@ -8,7 +8,7 @@ enum {
 };
 
 extern UBYTE CLOCK_FormatVariantCode;
-extern UBYTE **Global_REF_STR_CLOCK_FORMAT;
+extern const UBYTE *Global_REF_STR_CLOCK_FORMAT[];
 
 LONG GROUP_AG_JMPTBL_MATH_DivS32(LONG a, LONG b);
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
@@ -16,7 +16,7 @@ LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 void CLEANUP_FormatClockFormatEntry(LONG slotIndex, UBYTE *out)
 {
     LONG variant;
-    UBYTE *src;
+    const UBYTE *src;
 
     while (slotIndex > CLOCK_FORMAT_SLOTS_PER_BANK) {
         slotIndex -= CLOCK_FORMAT_SLOTS_PER_BANK;

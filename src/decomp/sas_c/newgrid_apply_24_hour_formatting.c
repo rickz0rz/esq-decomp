@@ -3,7 +3,7 @@ typedef signed short WORD;
 typedef unsigned char UBYTE;
 
 extern UBYTE Global_REF_STR_USE_24_HR_CLOCK;
-extern char *Global_JMPTBL_HALF_HOURS_24_HR_FMT[];
+extern const char *Global_JMPTBL_HALF_HOURS_24_HR_FMT[];
 
 extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
 extern LONG NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(LONG rowIndex, LONG minuteIndex);
@@ -11,7 +11,7 @@ extern LONG NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(LONG rowIndex, L
 void NEWGRID_Apply24HourFormatting(char *text, WORD rowIndex, UBYTE minuteIndex)
 {
     char *timePtr;
-    char *slot;
+    const char *slot;
     LONG idx;
 
     if (Global_REF_STR_USE_24_HR_CLOCK != 'Y') {
