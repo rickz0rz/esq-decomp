@@ -2,27 +2,28 @@
 __code:
 NEWGRID_DrawEntryFlagBadge:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$1c,D0                  ;90bc 0000 001c 
+              SUB.L          #$20,D0                  ;90bc 0000 0020 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$4,A7                   ;594f 
-              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
 ___NEWGRID_DrawEntryFlagBadge__1:
-              MOVE.L         $30(A7),D5               ;2a2f 0030 
-              MOVE.L         $2c(A7),D6               ;2c2f 002c 
+              MOVE.L         $30(A7),D6               ;2c2f 0030 
               MOVE.W         $2a(A7),D7               ;3e2f 002a 
+              MOVE.L         $2c(A7),A2               ;246f 002c 
               MOVE.L         $24(A7),A3               ;266f 0024 
               MOVE.L         $20(A7),A5               ;2a6f 0020 
-              MOVE.L         A3,A2                    ;244b 
-              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         A3,$18(A7)               ;2f4b 0018 
+              MOVE.L         D6,-(A7)                 ;2f06 
               PEA            ($14).w                  ;4878 0014 
               PEA            ($264).w                 ;4878 0264 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_SetLayo;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              MOVE.L         A2,D0                    ;200a 
-              BEQ.B          ___NEWGRID_DrawEntryFlagBadge__6;6764 
+              TST.L          $18(A7)                  ;4aaf 0018 
+              BEQ.B          ___NEWGRID_DrawEntryFlagBadge__6;6768 
 ___NEWGRID_DrawEntryFlagBadge__2:
-              BTST           #$4,$1b(A2)              ;082a 0004 001b 
+              MOVE.L         $18(A7),A0               ;206f 0018 
+              BTST           #$4,$1b(A0)              ;0828 0004 001b 
               BEQ.B          ___NEWGRID_DrawEntryFlagBadge__6;675c 
 ___NEWGRID_DrawEntryFlagBadge__3:
               MOVE.W         D7,D0                    ;3007 
@@ -42,7 +43,7 @@ ___NEWGRID_DrawEntryFlagBadge__4:
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          NEWGRID2_JMPTBL_COI_SelectAnimFi;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
               BEQ.B          ___NEWGRID_DrawEntryFlagBadge__6;672a 
 ___NEWGRID_DrawEntryFlagBadge__5:
               MOVE.W         D7,D0                    ;3007 
@@ -50,9 +51,9 @@ ___NEWGRID_DrawEntryFlagBadge__5:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A3,-(A7)                 ;2f0b 
               BSR.W          NEWGRID2_JMPTBL_CLEANUP_UpdateEn;6100 0000 
-              MOVE.L         D6,(A7)                  ;2e86 
+              MOVE.L         A2,(A7)                  ;2e8a 
               PEA            ($14).w                  ;4878 0014 
-              MOVE.L         $24(A7),-(A7)            ;2f2f 0024 
+              MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
               PEA            ($13).w                  ;4878 0013 
               PEA            NEWGRID_EntryDetailFmtStr(A4);486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
@@ -60,13 +61,13 @@ ___NEWGRID_DrawEntryFlagBadge__5:
               LEA            $1c(A7),A7               ;4fef 001c 
               BRA.B          ___NEWGRID_DrawEntryFlagBadge__7;600a 
 ___NEWGRID_DrawEntryFlagBadge__6:
-              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         A2,-(A7)                 ;2f0a 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID2_JMPTBL_DISPTEXT_LayoutA;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___NEWGRID_DrawEntryFlagBadge__7:
-              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADDQ.W         #$4,A7                   ;584f 
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
+              ADDQ.W         #$8,A7                   ;504f 
               RTS                                     ;4e75 
 __const:
 __strings:

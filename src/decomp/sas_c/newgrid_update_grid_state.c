@@ -29,7 +29,7 @@ extern WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIn
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *aux, LONG rowIndex);
 extern LONG NEWGRID_SelectEntryPen(const void *entry);
-extern void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode);
+extern void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowIndex, const char *fallbackText, LONG layoutMode);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG unused);
 extern LONG NEWGRID_DrawGridFrameAndRows(char *grid, LONG selectedEntryState);
 
@@ -83,7 +83,7 @@ LONG NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
                     gridView->rastPort,
                     (char *)entry,
                     rowIndex,
-                    (LONG)aux->titleTable[rowIndex],
+                    aux->titleTable[rowIndex],
                     NEWGRID_OverridePenIndex
                 );
 
