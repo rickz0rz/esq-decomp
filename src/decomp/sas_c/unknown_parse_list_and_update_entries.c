@@ -15,6 +15,14 @@ extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG max_len);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *in);
 extern ULONG MATH_Mulu32(ULONG a, ULONG b);
 
+typedef struct UNKNOWN_StatusEntry {
+    LONG dayKey0;
+    LONG flag1;
+    LONG value2;
+    LONG value3;
+    LONG inactive4;
+} UNKNOWN_StatusEntry;
+
 static void copy_label_0x12(const char **pp, char *dst)
 {
     ULONG i = 0;
@@ -31,10 +39,10 @@ static void copy_label_0x12(const char **pp, char *dst)
     dst[i] = 0;
 }
 
-static LONG *status_entry_ptr(ULONG index)
+static UNKNOWN_StatusEntry *status_entry_ptr(ULONG index)
 {
     ULONG off = MATH_Mulu32(index, 20u);
-    return (LONG *)(WDISP_StatusDayEntry0 + off);
+    return (UNKNOWN_StatusEntry *)(WDISP_StatusDayEntry0 + off);
 }
 
 LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
@@ -55,12 +63,12 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
     }
 
     for (i = 0; i < 4u; ++i) {
-        LONG *entry = status_entry_ptr(i);
+        UNKNOWN_StatusEntry *entry = status_entry_ptr(i);
         LONG day = (LONG)((UWORD)(CLOCK_CurrentDayOfYear + (UWORD)i + 1u));
         LONG year = (LONG)CLOCK_CurrentYearValue;
 
-        entry[4] = 1;
-        entry[0] = UNKNOWN_JMPTBL_DST_NormalizeDayOfYear(day, year);
+        entry->inactive4 = 1;
+        entry->dayKey0 = UNKNOWN_JMPTBL_DST_NormalizeDayOfYear(day, year);
     }
 
     TLIBA1_DayEntryModeCounter = *p++;
@@ -77,8 +85,8 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
         p += 3;
 
         for (idx = 0; idx <= 4; ++idx) {
-            LONG *entry = status_entry_ptr((ULONG)idx);
-            if (entry[0] == key) {
+            UNKNOWN_StatusEntry *entry = status_entry_ptr((ULONG)idx);
+            if (entry->dayKey0 == key) {
                 found = idx;
                 break;
             }
@@ -89,34 +97,34 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
         }
 
         if (marker == (UBYTE)'+') {
-            LONG *entry = status_entry_ptr((ULONG)found);
+            UNKNOWN_StatusEntry *entry = status_entry_ptr((ULONG)found);
 
-            entry[4] = 0;
+            entry->inactive4 = 0;
 
             STRING_CopyPadNul(field_buf, p, 1u);
             field_buf[1] = 0;
             if (field_buf[0] == (UBYTE)'?') {
-                entry[1] = 1;
+                entry->flag1 = 1;
             } else {
-                entry[1] = PARSE_ReadSignedLongSkipClass3_Alt(field_buf);
+                entry->flag1 = PARSE_ReadSignedLongSkipClass3_Alt(field_buf);
             }
 
             p += 1;
             STRING_CopyPadNul(field_buf, p, 3u);
             field_buf[3] = 0;
             if (field_buf[0] == (UBYTE)'?') {
-                entry[2] = -999;
+                entry->value2 = -999;
             } else {
-                entry[2] = PARSE_ReadSignedLongSkipClass3_Alt(field_buf);
+                entry->value2 = PARSE_ReadSignedLongSkipClass3_Alt(field_buf);
             }
 
             p += 3;
             STRING_CopyPadNul(field_buf, p, 3u);
             field_buf[3] = 0;
             if (field_buf[0] == (UBYTE)'?') {
-                entry[3] = -999;
+                entry->value3 = -999;
             } else {
-                entry[3] = PARSE_ReadSignedLongSkipClass3_Alt(field_buf);
+                entry->value3 = PARSE_ReadSignedLongSkipClass3_Alt(field_buf);
             }
 
             p += 3;
