@@ -2,43 +2,46 @@
 __code:
 TEXTDISP_TrimTextToPixelWidth:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$1c,D0                  ;90bc 0000 001c 
+              SUB.L          #$20,D0                  ;90bc 0000 0020 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$10,A7                  ;9efc 0010 
+              SUB.W          #$14,A7                  ;9efc 0014 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___TEXTDISP_TrimTextToPixelWidth__1:
-              MOVE.L         $30(A7),D7               ;2e2f 0030 
-              MOVE.L         $2c(A7),A5               ;2a6f 002c 
+              MOVE.L         $34(A7),D7               ;2e2f 0034 
+              MOVE.L         $30(A7),A5               ;2a6f 0030 
               MOVEQ.L        #$19,D6                  ;7c19 
               MOVE.L         A5,A3                    ;264d 
               SUB.L          A2,A2                    ;95ca 
-              CLR.L          $1c(A7)                  ;42af 001c 
-              MOVE.L         WDISP_DisplayContextBase(A4),$24(A7);2f6c 0000 0024 
-              MOVE.L         $24(A7),A0               ;206f 0024 
+              CLR.L          $20(A7)                  ;42af 0020 
+              MOVE.L         WDISP_DisplayContextBase(A4),$28(A7);2f6c 0000 0028 
+              MOVE.L         $28(A7),A0               ;206f 0028 
               ADDQ.L         #$2,A0                   ;5488 
-              CLR.L          $18(A7)                  ;42af 0018 
-              MOVE.L         A0,$20(A7)               ;2f48 0020 
+              CLR.L          $1c(A7)                  ;42af 001c 
+              MOVE.L         A5,$18(A7)               ;2f4d 0018 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
 ___TEXTDISP_TrimTextToPixelWidth__2:
-              MOVE.L         $18(A7),D0               ;202f 0018 
-              TST.B          $0(A5,D0.L)              ;4a35 0800 
+              MOVE.L         $18(A7),A0               ;206f 0018 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$18(A7)               ;2f48 0018 
+              TST.B          D0                       ;4a00 
               BEQ.B          ___TEXTDISP_TrimTextToPixelWidth__4;6706 
 ___TEXTDISP_TrimTextToPixelWidth__3:
-              ADDQ.L         #$1,$18(A7)              ;52af 0018 
-              BRA.B          ___TEXTDISP_TrimTextToPixelWidth__2;60f0 
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.B          ___TEXTDISP_TrimTextToPixelWidth__2;60ec 
 ___TEXTDISP_TrimTextToPixelWidth__4:
-              MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
+              MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
               BSR.W          _LVOTextLength           ;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
               LEA            $c(A7),A7                ;4fef 000c 
 ___TEXTDISP_TrimTextToPixelWidth__5:
               CMP.L          D7,D5                    ;ba87 
-              BLE.W          ___TEXTDISP_TrimTextToPixelWidth__25;6f00 00b2 
+              BLE.W          ___TEXTDISP_TrimTextToPixelWidth__25;6f00 00c2 
 ___TEXTDISP_TrimTextToPixelWidth__6:
               MOVE.B         (A3),D0                  ;1013 
-              BEQ.W          ___TEXTDISP_TrimTextToPixelWidth__25;6700 00ac 
+              BEQ.W          ___TEXTDISP_TrimTextToPixelWidth__25;6700 00bc 
 ___TEXTDISP_TrimTextToPixelWidth__7:
 ___TEXTDISP_TrimTextToPixelWidth__8:
               MOVEQ.L        #$18,D1                  ;7218 
@@ -47,64 +50,70 @@ ___TEXTDISP_TrimTextToPixelWidth__8:
 ___TEXTDISP_TrimTextToPixelWidth__9:
               MOVEQ.L        #$19,D1                  ;7219 
               CMP.B          D1,D0                    ;b001 
-              BNE.B          ___TEXTDISP_TrimTextToPixelWidth__14;6634 
+              BNE.B          ___TEXTDISP_TrimTextToPixelWidth__14;663c 
 ___TEXTDISP_TrimTextToPixelWidth__10:
               MOVE.B         D0,D6                    ;1c00 
               ADDQ.L         #$1,A3                   ;528b 
-              CLR.L          $18(A7)                  ;42af 0018 
+              CLR.L          $1c(A7)                  ;42af 001c 
+              MOVE.L         A3,$18(A7)               ;2f4b 0018 
 ___TEXTDISP_TrimTextToPixelWidth__11:
-              MOVE.L         $18(A7),D0               ;202f 0018 
-              TST.B          $0(A3,D0.L)              ;4a33 0800 
+              MOVE.L         $18(A7),A0               ;206f 0018 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$18(A7)               ;2f48 0018 
+              TST.B          D0                       ;4a00 
               BEQ.B          ___TEXTDISP_TrimTextToPixelWidth__13;6706 
 ___TEXTDISP_TrimTextToPixelWidth__12:
-              ADDQ.L         #$1,$18(A7)              ;52af 0018 
-              BRA.B          ___TEXTDISP_TrimTextToPixelWidth__11;60f0 
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.B          ___TEXTDISP_TrimTextToPixelWidth__11;60ec 
 ___TEXTDISP_TrimTextToPixelWidth__13:
-              MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
+              MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
               BSR.W          _LVOTextLength           ;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
               LEA            $c(A7),A7                ;4fef 000c 
-              CLR.L          $1c(A7)                  ;42af 001c 
+              CLR.L          $20(A7)                  ;42af 0020 
               SUB.L          A2,A2                    ;95ca 
-              BRA.B          ___TEXTDISP_TrimTextToPixelWidth__5;60b4 
+              BRA.B          ___TEXTDISP_TrimTextToPixelWidth__5;60ac 
 ___TEXTDISP_TrimTextToPixelWidth__14:
               PEA            ($1).w                   ;4878 0001 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
               BSR.W          _LVOTextLength           ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
-              ADD.L          D0,$1c(A7)               ;d1af 001c 
-              MOVE.L         $1c(A7),D0               ;202f 001c 
+              ADD.L          D0,$20(A7)               ;d1af 0020 
+              MOVE.L         $20(A7),D0               ;202f 0020 
               CMP.L          D7,D0                    ;b087 
-              BLE.B          ___TEXTDISP_TrimTextToPixelWidth__21;6f3e 
+              BLE.B          ___TEXTDISP_TrimTextToPixelWidth__21;6f46 
 ___TEXTDISP_TrimTextToPixelWidth__15:
               MOVE.L         A2,D0                    ;200a 
-              BEQ.B          ___TEXTDISP_TrimTextToPixelWidth__25;6748 
+              BEQ.B          ___TEXTDISP_TrimTextToPixelWidth__25;6750 
 ___TEXTDISP_TrimTextToPixelWidth__16:
 ___TEXTDISP_TrimTextToPixelWidth__17:
               MOVE.B         D6,D0                    ;1006 
               MOVE.B         D0,(A2)                  ;1480 
               LEA            $1(A2),A3                ;47ea 0001 
-              CLR.L          $18(A7)                  ;42af 0018 
+              CLR.L          $1c(A7)                  ;42af 001c 
+              MOVE.L         A3,$18(A7)               ;2f4b 0018 
 ___TEXTDISP_TrimTextToPixelWidth__18:
-              MOVE.L         $18(A7),D0               ;202f 0018 
-              TST.B          $0(A3,D0.L)              ;4a33 0800 
+              MOVE.L         $18(A7),A0               ;206f 0018 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$18(A7)               ;2f48 0018 
+              TST.B          D0                       ;4a00 
               BEQ.B          ___TEXTDISP_TrimTextToPixelWidth__20;6706 
 ___TEXTDISP_TrimTextToPixelWidth__19:
-              ADDQ.L         #$1,$18(A7)              ;52af 0018 
-              BRA.B          ___TEXTDISP_TrimTextToPixelWidth__18;60f0 
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.B          ___TEXTDISP_TrimTextToPixelWidth__18;60ec 
 ___TEXTDISP_TrimTextToPixelWidth__20:
-              MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
+              MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
               BSR.W          _LVOTextLength           ;6100 0000 
               MOVE.L         D0,D5                    ;2a00 
               LEA            $c(A7),A7                ;4fef 000c 
-              CLR.L          $1c(A7)                  ;42af 001c 
+              CLR.L          $20(A7)                  ;42af 0020 
               SUB.L          A2,A2                    ;95ca 
-              BRA.W          ___TEXTDISP_TrimTextToPixelWidth__5;6000 ff5a 
+              BRA.W          ___TEXTDISP_TrimTextToPixelWidth__5;6000 ff4a 
 ___TEXTDISP_TrimTextToPixelWidth__21:
               MOVEQ.L        #$20,D0                  ;7020 
               CMP.B          (A3),D0                  ;b013 
@@ -113,11 +122,11 @@ ___TEXTDISP_TrimTextToPixelWidth__22:
               MOVE.L         A3,A2                    ;244b 
 ___TEXTDISP_TrimTextToPixelWidth__23:
               ADDQ.L         #$1,A3                   ;528b 
-              BRA.W          ___TEXTDISP_TrimTextToPixelWidth__5;6000 ff4c 
+              BRA.W          ___TEXTDISP_TrimTextToPixelWidth__5;6000 ff3c 
 ___TEXTDISP_TrimTextToPixelWidth__24:
 ___TEXTDISP_TrimTextToPixelWidth__25:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$10,A7                  ;defc 0010 
+              ADD.W          #$14,A7                  ;defc 0014 
               RTS                                     ;4e75 
 __const:
 __strings:

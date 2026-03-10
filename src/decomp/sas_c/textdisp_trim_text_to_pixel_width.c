@@ -20,6 +20,7 @@ void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth)
     LONG totalWidth;
     LONG currentWidth;
     LONG len;
+    const char *scan;
 
     controlPrefix = 25;
     current = text;
@@ -29,7 +30,8 @@ void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth)
     rastPort = (char *)context->rastPort;
 
     len = 0;
-    while (text[len] != 0) {
+    scan = text;
+    while (*scan++ != 0) {
         ++len;
     }
     totalWidth = _LVOTextLength(rastPort, text, len);
@@ -42,7 +44,8 @@ void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth)
         if (*current == 24 || *current == 25) {
             controlPrefix = *current++;
             len = 0;
-            while (current[len] != 0) {
+            scan = current;
+            while (*scan++ != 0) {
                 ++len;
             }
             totalWidth = _LVOTextLength(rastPort, current, len);
@@ -61,7 +64,8 @@ void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth)
             current = lastSpace + 1;
 
             len = 0;
-            while (current[len] != 0) {
+            scan = current;
+            while (*scan++ != 0) {
                 ++len;
             }
             totalWidth = _LVOTextLength(rastPort, current, len);
