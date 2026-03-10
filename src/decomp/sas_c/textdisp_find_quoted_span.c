@@ -15,8 +15,8 @@ LONG TEXTDISP_FindQuotedSpan(const char *src, char **outStart, const char *endHi
     const LONG PTR_BACK_ONE = 1;
     const char *start;
     const char *end;
-    char *firstQuote;
-    char *secondQuote;
+    const char *firstQuote;
+    const char *secondQuote;
 
     *hasQuotes = FLAG_FALSE;
 
