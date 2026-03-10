@@ -21,11 +21,11 @@ void DST_FreeBannerStruct(void *banner)
         return;
     }
 
-    if (p->primaryBanner != 0) {
+    if (p->primaryBanner) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_1, 773, p->primaryBanner, 22);
     }
 
-    if (p->secondaryBanner != 0) {
+    if (p->secondaryBanner) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_2, 777, p->secondaryBanner, 22);
     }
 
