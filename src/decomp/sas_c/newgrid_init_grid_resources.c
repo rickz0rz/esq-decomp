@@ -24,8 +24,8 @@ extern UWORD NEWGRID_RowHeightPx;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_HANDLE_PREVUEC_FONT;
-extern const UBYTE Global_STR_NEWGRID_C_1;
-extern const UBYTE Global_STR_NEWGRID_C_2;
+extern const UBYTE Global_STR_NEWGRID_C_1[];
+extern const UBYTE Global_STR_NEWGRID_C_2[];
 extern const char Global_STR_44_44_44[];
 extern UBYTE Global_REF_696_400_BITMAP;
 extern UBYTE WDISP_BannerGridBitmapStruct;
@@ -56,7 +56,7 @@ void NEWGRID_InitGridResources(void)
     NEWGRID_JMPTBL_DISPTEXT_InitBuffers();
     NEWGRID_InitShowtimeBuckets();
 
-    NEWGRID_MainRastPortPtr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(&Global_STR_NEWGRID_C_1, 99, 100, 0x10001);
+    NEWGRID_MainRastPortPtr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_NEWGRID_C_1, 99, 100, 0x10001);
     if (NEWGRID_MainRastPortPtr == 0) {
         return;
     }
@@ -66,7 +66,7 @@ void NEWGRID_InitGridResources(void)
     _LVOSetDrMd((char *)NEWGRID_MainRastPortPtr, 0);
     _LVOSetFont((char *)NEWGRID_MainRastPortPtr, Global_HANDLE_PREVUEC_FONT);
 
-    NEWGRID_HeaderRastPortPtr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(&Global_STR_NEWGRID_C_2, 112, 100, 0x10001);
+    NEWGRID_HeaderRastPortPtr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_NEWGRID_C_2, 112, 100, 0x10001);
     if (NEWGRID_HeaderRastPortPtr == 0) {
         return;
     }

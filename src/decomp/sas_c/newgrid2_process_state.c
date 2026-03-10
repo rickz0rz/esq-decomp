@@ -18,8 +18,8 @@ typedef struct NEWGRID2_StateEntry {
 
 extern LONG NEWGRID_RenderStateLatch;
 extern WORD NEWGRID_PrimeTimeLayoutEnable;
-extern const UBYTE Global_STR_NEWGRID2_C_1;
-extern const UBYTE Global_STR_NEWGRID2_C_2;
+extern const UBYTE Global_STR_NEWGRID2_C_1[];
+extern const UBYTE Global_STR_NEWGRID2_C_2[];
 
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *tagName, LONG line, LONG size, LONG flags);
 extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);
@@ -92,13 +92,13 @@ LONG NEWGRID2_ProcessGridState(char *gridCtx, char *entryCtx, LONG keyValue)
             }
 
             scratch = SCRIPT_JMPTBL_MEMORY_AllocateMemory(
-                &Global_STR_NEWGRID2_C_1, 3947, 2000, 0x10001
+                Global_STR_NEWGRID2_C_1, 3947, 2000, 0x10001
             );
             if (scratch != 0) {
                 NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(3);
                 NEWGRID_AppendShowtimesForRow(gridCtx, (char *)entry, scratch, keyValue);
                 NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(grid->rastPort, scratch);
-                SCRIPT_JMPTBL_MEMORY_DeallocateMemory(&Global_STR_NEWGRID2_C_2, 3953, scratch, 2000);
+                SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_NEWGRID2_C_2, 3953, scratch, 2000);
             }
 
             if (NEWGRID_DrawGridFrameVariant4(gridCtx) != 0) {
