@@ -24,7 +24,7 @@ extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(LONG *outPercent);
 extern LONG DISKIO_QueryVolumeSoftErrorCount(LONG *outCount);
 extern void ED_DrawDiagnosticModeText(void);
-extern LONG _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
+extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 
 void ED1_DrawDiagnosticsScreen(void)
 {

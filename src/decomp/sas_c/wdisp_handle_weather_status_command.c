@@ -44,8 +44,8 @@ extern void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG x, LONG y);
 extern void WDISP_DrawWeatherStatusSummary(char *rastPort, LONG x, LONG y);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
 
-extern LONG _LVOSetDrMd(char *rastPort, LONG mode);
-extern LONG _LVOSetAPen(char *rastPort, LONG pen);
+extern void _LVOSetDrMd(char *rastPort, LONG mode);
+extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern LONG _LVOSetFont(char *rastPort, void *font);
 
 typedef struct WDISP_DisplayContext {

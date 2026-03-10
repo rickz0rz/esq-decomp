@@ -18,7 +18,7 @@ enum {
 };
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
+extern void _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern LONG _LVODraw(void *gfxBase, char *rastPort, LONG x, LONG y);
 
 void TLIBA3_DrawOuterFrameBorder(TLIBA3_RastPortWrap *rp)

@@ -25,8 +25,8 @@ extern LONG DISPTEXT_ControlMarkerXOffsetPx;
 
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
 extern LONG NEWGRID_SetRowColor(char *gridCtx, WORD selector, LONG colorIndex);
-extern LONG _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
-extern LONG _LVORectFill(void *gfxBase, char *rp, LONG minx, LONG miny, LONG maxx, LONG maxy);
+extern void _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
+extern void _LVORectFill(void *gfxBase, char *rp, LONG minx, LONG miny, LONG maxx, LONG maxy);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount(void);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength(char *rp);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(void);

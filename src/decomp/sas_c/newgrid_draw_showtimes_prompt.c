@@ -36,10 +36,10 @@ extern void NEWGRID2_JMPTBL_STRING_AppendN(char *dst, char *src, LONG len);
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern void NEWGRID_DrawGridFrame(char *rp, LONG type, LONG penA, LONG penB, LONG height);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG width, LONG color, LONG style);
-extern LONG _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
-extern LONG _LVOSetDrMd(void *gfxBase, char *rp, LONG mode);
+extern void _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
+extern void _LVOSetDrMd(void *gfxBase, char *rp, LONG mode);
 extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG len);
-extern LONG _LVOMove(void *gfxBase, char *rp, LONG x, LONG y);
+extern void _LVOMove(void *gfxBase, char *rp, LONG x, LONG y);
 extern void _LVOText(void *gfxBase, char *rp, const char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(char *rp, LONG code);
 

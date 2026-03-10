@@ -24,8 +24,8 @@ extern WORD NEWGRID_RowHeightPx;
 extern LONG DISPTEXT_ControlMarkerXOffsetPx;
 
 extern LONG NEWGRID_SetRowColor(char *gridCtx, WORD selector, LONG colorIndex);
-extern LONG _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
-extern LONG _LVORectFill(void *gfxBase, char *rp, LONG minx, LONG miny, LONG maxx, LONG maxy);
+extern void _LVOSetAPen(void *gfxBase, char *rp, LONG pen);
+extern void _LVORectFill(void *gfxBase, char *rp, LONG minx, LONG miny, LONG maxx, LONG maxy);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(void);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(char *rp, LONG x, LONG y, LONG maxx, LONG maxy);

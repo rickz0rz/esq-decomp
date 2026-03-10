@@ -21,10 +21,10 @@ extern UBYTE CTASKS_STR_C;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
-extern LONG _LVOSetAPen(void *gfx, char *rp, LONG pen);
-extern LONG _LVOSetDrMd(void *gfx, char *rp, LONG mode);
+extern void _LVOSetAPen(void *gfx, char *rp, LONG pen);
+extern void _LVOSetDrMd(void *gfx, char *rp, LONG mode);
 extern LONG _LVOTextLength(void *gfx, char *rp, const char *text, LONG len);
-extern LONG _LVOMove(void *gfx, char *rp, LONG x, LONG y);
+extern void _LVOMove(void *gfx, char *rp, LONG x, LONG y);
 extern void _LVOText(void *gfx, char *rp, const char *text, LONG len);
 
 void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *secondary, LONG alignMode)

@@ -34,7 +34,7 @@ extern LONG MATH_DivS32(LONG a, LONG b);
 extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
 extern void SCRIPT_BeginBannerCharTransition(LONG bannerChar, LONG duration);
-extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG drawMode);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG drawMode);
 extern void TLIBA1_DrawFormattedTextBlock(char *rastPort, const char *text, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);

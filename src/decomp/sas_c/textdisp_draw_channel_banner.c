@@ -17,7 +17,7 @@ extern void TEXTDISP_BuildEntryShortName(const char *entry, char *out);
 extern void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix);
 extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth);
 extern void TEXTDISP_DrawInsetRectFrame(char *text, LONG drawMode);
-extern LONG _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
+extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 
 typedef struct TEXTDISP_DisplayContext {
     UBYTE pad0[2];
