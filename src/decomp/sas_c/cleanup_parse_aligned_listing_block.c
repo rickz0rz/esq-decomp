@@ -29,7 +29,7 @@ extern CLEANUP_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
 extern char CLOCK_STR_MISSING_TITLE_TEMPLATE[];
 
 LONG COI_CountEscape14BeforeNull(char *buf, LONG max_len);
-LONG GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(const char *s, void *map, LONG max_tokens, const char *delims, LONG n_delims, LONG max_len, LONG stop_on_empty);
+LONG GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(char *inputBytes, WORD *outIndexByToken, WORD tokenCount, const char *tokenTable, WORD maxScanCount, char terminatorByte, WORD fillMissingFlag);
 LONG ESQ_WildcardMatch(const char *a, const char *b);
 void COI_ClearAnimObjectStrings(void *entry);
 void COI_FreeSubEntryTableEntries(void *entry);
@@ -80,10 +80,10 @@ LONG CLEANUP_ParseAlignedListingBlock(char *record, char *listing)
     escapeCount = COI_CountEscape14BeforeNull(record + recordOffset, (LONG)ESQIFF_RecordLength - recordOffset);
     tokenCount = GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(record + recordOffset,
                                                             slotMap,
-                                                            SLOT_MAP_MAX_TOKENS,
+                                                            (WORD)SLOT_MAP_MAX_TOKENS,
                                                             record + recordOffset,
-                                                            DELIMITER_COUNT_ONE,
-                                                            (LONG)ESQIFF_RecordLength - recordOffset,
+                                                            (WORD)((LONG)ESQIFF_RecordLength - recordOffset),
+                                                            0,
                                                             0);
 
     for (i = 0; i < entry_count && i < SLOT_MAP_COUNT; i += 1) {

@@ -30,7 +30,7 @@ LONG DISKIO_LoadFileToWorkBuffer(const char *path);
 LONG GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
 char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *s, LONG c);
 LONG GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
-LONG GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(const char *s, void *map, LONG max_tokens, const char *delims, LONG n_delims, LONG max_len, LONG stop_on_empty);
+LONG GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(char *inputBytes, WORD *outIndexByToken, WORD tokenCount, const char *tokenTable, WORD maxScanCount, char terminatorByte, WORD fillMissingFlag);
 LONG ESQ_WildcardMatch(const char *a, const char *b);
 char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 void CLEANUP_FormatEntryStringTokens(void *entry);
@@ -40,6 +40,7 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
 {
     char path_buf[566];
     char line_buf[486];
+    WORD token_index_by_token[COI_TOKEN_MAX];
     LONG file_size;
     LONG offs;
     LONG line_len;
@@ -77,12 +78,12 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
         (void)parsed;
         GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
             line_buf,
-            line_buf,
-            COI_TOKEN_MAX,
+            token_index_by_token,
+            (WORD)COI_TOKEN_MAX,
             COI_STR_LINEFEED_CR_2,
-            COI_DELIM_COUNT,
-            COI_TOKEN_MAXLEN,
-            COI_STOP_ON_EMPTY);
+            (WORD)COI_TOKEN_MAXLEN,
+            COI_STR_LINEFEED_CR_2[0],
+            (WORD)COI_STOP_ON_EMPTY);
         break;
     }
 

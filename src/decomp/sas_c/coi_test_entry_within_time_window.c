@@ -20,7 +20,7 @@ enum {
 
 extern UWORD CLOCK_HalfHourSlotIndex;
 
-LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG lead_char, void *time_ctx, LONG slot);
+LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG lead_char, const char *time_ctx, LONG slot);
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, LONG slot);
 

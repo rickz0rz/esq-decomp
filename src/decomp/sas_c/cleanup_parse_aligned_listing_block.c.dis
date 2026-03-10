@@ -17,7 +17,7 @@ ___CLEANUP_ParseAlignedListingBlock__2:
               BNE.B          ___CLEANUP_ParseAlignedListingBlock__4;6606 
 ___CLEANUP_ParseAlignedListingBlock__3:
               MOVEQ.L        #$1,D0                   ;7001 
-              BRA.W          ___CLEANUP_ParseAlignedListingBlock__34;6000 01a0 
+              BRA.W          ___CLEANUP_ParseAlignedListingBlock__34;6000 01a2 
 ___CLEANUP_ParseAlignedListingBlock__4:
               CLR.L          $2c(A7)                  ;42af 002c 
 ___CLEANUP_ParseAlignedListingBlock__5:
@@ -65,7 +65,7 @@ ___CLEANUP_ParseAlignedListingBlock__12:
               BRA.B          ___CLEANUP_ParseAlignedListingBlock__14;6006 
 ___CLEANUP_ParseAlignedListingBlock__13:
               MOVEQ.L        #$1,D0                   ;7001 
-              BRA.W          ___CLEANUP_ParseAlignedListingBlock__34;6000 012e 
+              BRA.W          ___CLEANUP_ParseAlignedListingBlock__34;6000 0130 
 ___CLEANUP_ParseAlignedListingBlock__14:
               MOVEQ.L        #$31,D0                  ;7031 
               CMP.B          $0(A5,D7.L),D0           ;b035 7800 
@@ -87,9 +87,11 @@ ___CLEANUP_ParseAlignedListingBlock__16:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         ESQIFF_RecordLength(A4),D0;302c 0000 
               SUB.L          D7,D0                    ;9087 
-              CLR.L          (A7)                     ;4297 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         D0,-(A7)                 ;2f00 
-              PEA            ($1).w                   ;4878 0001 
               MOVE.L         A0,-(A7)                 ;2f08 
               PEA            ($9).w                   ;4878 0009 
               PEA            $48(A7)                  ;486f 0048 

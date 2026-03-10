@@ -2,13 +2,13 @@
 __code:
 COI_LoadOiDataFile:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$43c,D0                 ;90bc 0000 043c 
+              SUB.L          #$454,D0                 ;90bc 0000 0454 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$420,A7                 ;9efc 0420 
+              SUB.W          #$438,A7                 ;9efc 0438 
               MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
 ___COI_LoadOiDataFile__1:
-              MOVE.B         $43f(A7),D7              ;1e2f 043f 
+              MOVE.B         $457(A7),D7              ;1e2f 0457 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         D7,D0                    ;1007 
               PEA            ($2).w                   ;4878 0002 
@@ -19,26 +19,26 @@ ___COI_LoadOiDataFile__1:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            Global_STR_DF0_OI_PERCENT_2_LX_D(A4);486c 0000 
-              PEA            $212(A7)                 ;486f 0212 
+              PEA            $22a(A7)                 ;486f 022a 
               BSR.W          GROUP_AE_JMPTBL_WDISP_SPrintf;6100 0000 
-              PEA            $216(A7)                 ;486f 0216 
+              PEA            $22e(A7)                 ;486f 022e 
               BSR.W          DISKIO_LoadFileToWorkBuffer;6100 0000 
               LEA            $1c(A7),A7               ;4fef 001c 
               ADDQ.L         #$1,D0                   ;5280 
               BNE.B          ___COI_LoadOiDataFile__3 ;6606 
 ___COI_LoadOiDataFile__2:
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.W          ___COI_LoadOiDataFile__14;6000 00b6 
+              BRA.W          ___COI_LoadOiDataFile__14;6000 00be 
 ___COI_LoadOiDataFile__3:
               MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D6;2c2c 0000 
               MOVEQ.L        #$0,D5                   ;7a00 
               MOVEQ.L        #$0,D4                   ;7800 
 ___COI_LoadOiDataFile__4:
               MOVE.L         Global_PTR_WORK_BUFFER(A4),D0;202c 0000 
-              BEQ.B          ___COI_LoadOiDataFile__10;6762 
+              BEQ.B          ___COI_LoadOiDataFile__10;676a 
 ___COI_LoadOiDataFile__5:
               CMP.L          D6,D5                    ;ba86 
-              BGE.B          ___COI_LoadOiDataFile__10;6c5e 
+              BGE.B          ___COI_LoadOiDataFile__10;6c66 
 ___COI_LoadOiDataFile__6:
               MOVE.L         D0,A0                    ;2040 
               ADD.L          D5,A0                    ;d1c5 
@@ -53,7 +53,7 @@ ___COI_LoadOiDataFile__6:
               TST.L          D0                       ;4a80 
               BNE.B          ___COI_LoadOiDataFile__8 ;6610 
 ___COI_LoadOiDataFile__7:
-              LEA            $18(A7),A0               ;41ef 0018 
+              LEA            $30(A7),A0               ;41ef 0030 
               MOVE.L         A0,A1                    ;2248 
               ADD.L          D4,A1                    ;d3c4 
               ADDQ.L         #$1,D4                   ;5284 
@@ -61,21 +61,22 @@ ___COI_LoadOiDataFile__7:
               ADDQ.L         #$1,D5                   ;5285 
               BRA.B          ___COI_LoadOiDataFile__4 ;60ca 
 ___COI_LoadOiDataFile__8:
-              CLR.B          $18(A7,D4.L)             ;4237 4818 
-              PEA            $18(A7)                  ;486f 0018 
+              CLR.B          $30(A7,D4.L)             ;4237 4830 
+              PEA            $30(A7)                  ;486f 0030 
               BSR.W          GROUP_AG_JMPTBL_PARSE_ReadSigned;6100 0000 
-              MOVEQ.L        #$1,D1                   ;7201 
-              MOVE.L         D1,(A7)                  ;2e81 
-              PEA            ($1a).w                  ;4878 001a 
+              MOVE.B         COI_STR_LINEFEED_CR_2(A4),D1;122c 0000 
+              EXT.W          D1                       ;4881 
+              EXT.L          D1                       ;48c1 
+              PEA            ($1).w                   ;4878 0001 
               MOVE.L         D1,-(A7)                 ;2f01 
+              PEA            ($1a).w                  ;4878 001a 
               PEA            COI_STR_LINEFEED_CR_2(A4);486c 0000 
               PEA            ($b).w                   ;4878 000b 
-              LEA            $2c(A7),A0               ;41ef 002c 
-              MOVE.L         A0,-(A7)                 ;2f08 
-              MOVE.L         A0,-(A7)                 ;2f08 
-              MOVE.L         D0,$450(A7)              ;2f40 0450 
+              PEA            $32(A7)                  ;486f 0032 
+              PEA            $4c(A7)                  ;486f 004c 
+              MOVE.L         D0,$46c(A7)              ;2f40 046c 
               BSR.W          GROUP_AE_JMPTBL_SCRIPT_BuildToke;6100 0000 
-              LEA            $1c(A7),A7               ;4fef 001c 
+              LEA            $20(A7),A7               ;4fef 0020 
 ___COI_LoadOiDataFile__9:
 ___COI_LoadOiDataFile__10:
               MOVE.L         Global_PTR_WORK_BUFFER(A4),D0;202c 0000 
@@ -106,7 +107,7 @@ ___COI_LoadOiDataFile__12:
 ___COI_LoadOiDataFile__13:
 ___COI_LoadOiDataFile__14:
               MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
-              ADD.W          #$420,A7                 ;defc 0420 
+              ADD.W          #$438,A7                 ;defc 0438 
               RTS                                     ;4e75 
 __const:
 __strings:

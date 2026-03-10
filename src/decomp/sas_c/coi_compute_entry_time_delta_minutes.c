@@ -8,7 +8,7 @@ extern UBYTE TEXTDISP_PrimaryGroupCode;
 
 LONG GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(void *entry);
 char *GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG mode, LONG idx);
-LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG lead, void *entry, LONG slot);
+LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG slot);
 
 typedef struct COI_AuxEntry {
     UBYTE pad0[56];
@@ -61,6 +61,6 @@ LONG COI_ComputeEntryTimeDeltaMinutes(void *entry, WORD slot)
         return out;
     }
 
-    out = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((LONG)e->groupCode498, e, s);
+    out = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((LONG)e->groupCode498, (const char *)e, s);
     return out;
 }
