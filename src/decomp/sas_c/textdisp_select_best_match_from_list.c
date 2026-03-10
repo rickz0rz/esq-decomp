@@ -18,13 +18,13 @@ extern UBYTE TEXTDISP_SecondaryGroupCode;
 extern UBYTE TEXTDISP_FindModeActiveFlag;
 extern UWORD TEXTDISP_SbeFilterActiveFlag;
 extern UBYTE TEXTDISP_CandidateIndexList[];
-extern UBYTE TEXTDISP_Tag_SPT_Select[];
+extern const UBYTE TEXTDISP_Tag_SPT_Select[];
 extern char *TEXTDISP_PrimaryTitlePtrTable[];
 extern char *TEXTDISP_SecondaryTitlePtrTable[];
 
 extern UWORD CLOCK_HalfHourSlotIndex;
 extern UBYTE CLOCK_CurrentDayOfWeekIndex;
-extern UBYTE Global_STR_TEXTDISP_C_3[];
+extern const UBYTE Global_STR_TEXTDISP_C_3[];
 
 extern LONG TEXTDISP_FindEntryMatchIndex(char *titles, LONG mode, LONG flags);
 extern LONG TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG idx);
