@@ -27,7 +27,7 @@ LONG PARSEINI_ParseRangeKeyValue(char *sourceLine, WORD *rangeTable)
     LONG parsedRangeLen;
     LONG slotIndex;
     LONG colorValue;
-    char *p;
+    const char *p;
 
     keyToken = sourceLine;
     splitPtr = (sourceLine != (char *)0) ? PARSEINI_JMPTBL_STR_FindCharPtr(sourceLine, 61) : (char *)0;
@@ -62,7 +62,7 @@ LONG PARSEINI_ParseRangeKeyValue(char *sourceLine, WORD *rangeTable)
     if (PARSEINI_JMPTBL_STRING_CompareNoCaseN(keyToken, PARSEINI_TAG_COLOR, 5) == 0) {
         colorIndex = 0;
         p = keyToken + 5;
-        if (p != (char *)0 && *p != 0) {
+        if (p != (const char *)0 && *p != 0) {
             colorIndex = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(p);
         }
 
