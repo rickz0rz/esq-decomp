@@ -2,13 +2,11 @@ typedef unsigned short UWORD;
 typedef signed short WORD;
 typedef signed long LONG;
 
-enum {
-    DISPTEXT_BUILD_LINE_PTRS_FLAG = 1,
-    DISPTEXT_MAX_LINE_WIDTH_PX = 624,
-    DISPTEXT_MAX_TARGET_LINES = 20,
-    DISPTEXT_RESULT_FALSE = 0,
-    DISPTEXT_RESULT_TRUE = 1
-};
+#define DISPTEXT_BUILD_LINE_PTRS_FLAG 1
+#define DISPTEXT_MAX_LINE_WIDTH_PX 624
+#define DISPTEXT_MAX_TARGET_LINES 20
+#define DISPTEXT_RESULT_FALSE 0
+#define DISPTEXT_RESULT_TRUE 1
 
 extern LONG DISPTEXT_LineTableLockFlag;
 extern WORD DISPTEXT_CurrentLineIndex;
@@ -16,9 +14,9 @@ extern WORD DISPTEXT_TargetLineIndex;
 extern WORD DISPTEXT_LineLengthTable[];
 extern LONG DISPTEXT_LineWidthPx;
 
-extern void DISPTEXT_BuildLinePointerTable(void);
+extern void DISPTEXT_BuildLinePointerTable(LONG lockValue);
 extern void DISPLIB_ResetTextBufferAndLineTables(void);
-extern void DISPLIB_CommitCurrentLinePenAndAdvance(void);
+extern void DISPLIB_CommitCurrentLinePenAndAdvance(LONG pen);
 
 void DISPTEXT_FinalizeLineTable(void)
 {
