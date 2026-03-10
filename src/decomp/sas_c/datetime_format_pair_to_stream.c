@@ -34,7 +34,7 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
     LONG writeResult;
 
     outBuf[0] = 0;
-    if (pairStruct == 0) {
+    if (!pairStruct) {
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, DST_STR_NO_DST_DATA);
         goto emit;
     }
@@ -42,7 +42,7 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
     pairPtrs = (const void * const *)pairStruct;
 
     inTime = pairPtrs[0];
-    if (inTime != 0) {
+    if (inTime) {
         GROUP_AM_JMPTBL_WDISP_SPrintf(scratch, DST_FMT_PCT_C_InTimePrefixChar, DATETIME_IN_PREFIX_TOKEN);
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
 
@@ -70,7 +70,7 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
     }
 
     outTime = pairPtrs[1];
-    if (outTime != 0) {
+    if (outTime) {
         GROUP_AM_JMPTBL_WDISP_SPrintf(scratch, DST_FMT_PCT_C_OutTimePrefixChar, DATETIME_OUT_PREFIX_TOKEN);
         GROUP_AI_JMPTBL_STRING_AppendAtNull(outBuf, scratch);
 
