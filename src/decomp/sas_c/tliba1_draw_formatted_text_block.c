@@ -60,7 +60,7 @@ void TLIBA1_DrawFormattedTextBlock(
     LONG boxH;
     LONG runCount;
     LONG runGate;
-    char *p;
+    const char *p;
     UBYTE savedPen;
     void *savedFont;
     UBYTE *records;
