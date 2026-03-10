@@ -37,5 +37,5 @@ const char *TEXTDISP_FindControlToken(const char *textPtr)
         textPtr += 1;
     }
 
-    return (const char *)0;
+    return 0;
 }
