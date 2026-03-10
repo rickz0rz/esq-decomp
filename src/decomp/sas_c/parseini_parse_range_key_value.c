@@ -11,7 +11,7 @@ extern const char PARSEINI_TAG_DONE[];
 extern const char PARSEINI_TAG_COLOR[];
 
 extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, LONG ch);
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
+extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *delim);
 extern LONG PARSEINI_JMPTBL_STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 extern void PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable(WORD *rangeTable);

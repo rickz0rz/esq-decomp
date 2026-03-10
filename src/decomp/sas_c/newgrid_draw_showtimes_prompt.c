@@ -31,7 +31,7 @@ extern WORD NEWGRID_RowHeightPx;
 extern WORD NEWGRID_ColumnStartXPx;
 extern WORD NEWGRID_ColumnWidthPx;
 
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
+extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern void NEWGRID2_JMPTBL_STRING_AppendN(char *dst, char *src, LONG len);
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern void NEWGRID_DrawGridFrame(char *rp, LONG type, LONG penA, LONG penB, LONG height);

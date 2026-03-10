@@ -5,7 +5,7 @@ extern const char Global_STR_IN_STEREO[];
 extern UBYTE WDISP_CharClassTable[];
 
 extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(const char *text, const char *needle);
-extern char *ESQSHARED_JMPTBL_STR_SkipClass3Chars(char *text);
+extern char *ESQSHARED_JMPTBL_STR_SkipClass3Chars(const char *text);
 extern void CopyMem(const void *src, void *dst, ULONG len);
 
 void ESQSHARED_NormalizeInStereoTag(char *text, ULONG flags)

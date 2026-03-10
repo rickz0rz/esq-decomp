@@ -6,7 +6,7 @@ extern const UBYTE NEWGRID_WrapReturnSpacer;
 extern const UBYTE Global_STR_SINGLE_SPACE;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
+extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst, LONG limit, const UBYTE *delims);
 extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
 extern void _LVOMove(char *rastport, LONG x, LONG y);

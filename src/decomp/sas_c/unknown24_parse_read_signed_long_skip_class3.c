@@ -1,7 +1,7 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-extern char *STR_SkipClass3Chars(char *s);
+extern char *STR_SkipClass3Chars(const char *s);
 extern LONG PARSE_ReadSignedLong(const char *in, LONG *outValue);
 extern LONG PARSE_ReadSignedLong_NoBranch(const char *in, LONG *outValue);
 

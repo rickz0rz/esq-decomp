@@ -9,7 +9,7 @@ typedef struct NEWGRID_Entry {
     UBYTE flags27;
 } NEWGRID_Entry;
 
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
+extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 
 LONG NEWGRID_ShouldOpenEditor(char *entry)
 {
