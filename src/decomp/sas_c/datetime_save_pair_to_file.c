@@ -29,10 +29,10 @@ LONG DATETIME_SavePairToFile(const DateTimePair *pair)
     if (pair == 0) {
         return DATETIME_SAVE_FAILED;
     }
-    if (pair->in_ptr == 0) {
+    if (!pair->in_ptr) {
         return DATETIME_SAVE_FAILED;
     }
-    if (pair->out_ptr == 0) {
+    if (!pair->out_ptr) {
         return DATETIME_SAVE_FAILED;
     }
 
