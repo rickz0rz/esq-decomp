@@ -3,7 +3,7 @@ typedef unsigned char UBYTE;
 
 extern LONG WDISP_DisplayContextBase;
 
-extern LONG _LVOTextLength(char *rastPort, char *text, LONG len);
+extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
 
 typedef struct TEXTDISP_DisplayContext {
     UBYTE pad0[2];
