@@ -4,7 +4,7 @@ extern const UBYTE WDISP_CharClassTable[];
 
 const char *TEXTDISP_SkipControlCodes(const char *text)
 {
-    if (text == (char *)0) {
+    if (text == 0) {
         return text;
     }
 
