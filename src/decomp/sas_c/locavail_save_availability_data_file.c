@@ -30,8 +30,8 @@ extern const char LOCAVAIL_STR_LA_VER_1_COLON_CURDAY[];
 extern const char LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY[];
 
 extern LONG GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
-extern void GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG handle);
-extern void GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(LONG handle, const void *buf, LONG len);
+extern LONG GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG handle);
+extern LONG GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(LONG handle, const void *buf, LONG len);
 extern void GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(LONG handle, LONG value);
 extern LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 

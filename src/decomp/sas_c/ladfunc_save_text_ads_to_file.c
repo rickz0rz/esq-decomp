@@ -22,8 +22,8 @@ extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 extern LONG LADFUNC_ComposePackedPenByte(UBYTE highNibble, UBYTE lowNibble);
 extern LONG GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
 extern void GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(LONG fileHandle, LONG value);
-extern void GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(LONG fileHandle, const void *data, LONG size);
-extern void GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG fileHandle);
+extern LONG GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(LONG fileHandle, const void *data, LONG size);
+extern LONG GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG fileHandle);
 extern LONG GROUP_AW_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG argCount, LONG value);
 
 #ifndef MODE_NEWFILE
