@@ -31,16 +31,16 @@ extern LONG NEWGRID_DrawGridFrame(char *rastPort, LONG style, LONG penA, LONG pe
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern void _LVOSetDrMd(char *rastPort, LONG mode);
-extern LONG _LVOTextLength(char *rastPort, char *text, LONG len);
+extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
 extern void _LVOMove(char *rastPort, LONG x, LONG y);
-extern void _LVOText(char *rastPort, char *text, LONG len);
+extern void _LVOText(char *rastPort, const char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(char *rastPort, LONG code);
 
 void NEWGRID_DrawGridMessageAlt(char *gridCtx)
 {
     NEWGRID_Context *ctx;
     NEWGRID_RastPort *rastPort;
-    char *msg;
+    const char *msg;
     LONG len;
     LONG width;
     LONG x;
