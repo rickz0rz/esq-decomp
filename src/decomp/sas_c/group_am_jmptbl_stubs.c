@@ -20,7 +20,7 @@ extern void GCOMMAND_ResetBannerFadeState(void);
 extern void TLIBA3_InitPatternTable(void);
 extern LONG ESQ_FormatDiskErrorMessage(void);
 extern void SCRIPT_PrimeBannerTransitionFromHexCode(void);
-extern void LOCAVAIL_ResetFilterStateStruct(void);
+extern void LOCAVAIL_ResetFilterStateStruct(void *state);
 extern void ESQ_InitAudio1Dma(void);
 extern void LIST_InitHeader(void *header);
 extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
@@ -51,7 +51,7 @@ void GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState(void){GCOMMAND_ResetBannerFad
 void GROUP_AM_JMPTBL_TLIBA3_InitPatternTable(void){TLIBA3_InitPatternTable();}
 LONG GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage(void){return ESQ_FormatDiskErrorMessage();}
 void GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode(void){SCRIPT_PrimeBannerTransitionFromHexCode();}
-void GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(void){LOCAVAIL_ResetFilterStateStruct();}
+void GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(void *state){LOCAVAIL_ResetFilterStateStruct(state);}
 void GROUP_AM_JMPTBL_ESQ_InitAudio1Dma(void){ESQ_InitAudio1Dma();}
 void GROUP_AM_JMPTBL_LIST_InitHeader(void *header){LIST_InitHeader(header);}
 void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void){ESQ_SetCopperEffect_OnEnableHighlight();}
