@@ -3,7 +3,7 @@ typedef signed long LONG;
 extern void *ALLOCATE_AllocAndInitializeIOStdReq(void *replyPort);
 extern void *SIGNAL_CreateMsgPortWithSignal(const char *name, LONG pri);
 extern void DISKIO_ProbeDrivesAndAssignPaths(void);
-extern void ESQ_InvokeGcommandInit(void *cmdPtr);
+extern void ESQ_InvokeGcommandInit(void *cmdPtr, void *unusedA1);
 extern LONG EXEC_CallVector_48(void *a0, void *a1, LONG d1, void *a2);
 
 void *GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq(void *replyPort)
@@ -21,9 +21,9 @@ void GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(void)
     DISKIO_ProbeDrivesAndAssignPaths();
 }
 
-void GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit(void *cmdPtr)
+void GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit(void *cmdPtr, void *unusedA1)
 {
-    ESQ_InvokeGcommandInit(cmdPtr);
+    ESQ_InvokeGcommandInit(cmdPtr, unusedA1);
 }
 
 LONG GROUP_AV_JMPTBL_EXEC_CallVector_48(void *a0, void *a1, LONG d1, void *a2)
