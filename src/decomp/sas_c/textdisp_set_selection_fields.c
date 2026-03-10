@@ -27,7 +27,7 @@ void TEXTDISP_SetSelectionFields(TEXTDISP_SelectionEntry *state, LONG mode, LONG
     LONG outDisplay;
     LONG outEntry;
 
-    if (state == (TEXTDISP_SelectionEntry *)0) {
+    if (state == 0) {
         return;
     }
 
