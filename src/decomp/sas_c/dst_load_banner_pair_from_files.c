@@ -5,8 +5,8 @@ typedef unsigned long ULONG;
 extern const char *DST_DefaultDatPathPtr;
 extern char *Global_PTR_WORK_BUFFER;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
-extern UBYTE Global_STR_G2[];
-extern UBYTE Global_STR_G3[];
+extern const char Global_STR_G2[];
+extern const char Global_STR_G3[];
 extern UBYTE Global_STR_DST_C_7[];
 
 extern void DST_RebuildBannerPair(void *pair);
@@ -46,14 +46,14 @@ LONG DST_LoadBannerPairFromFiles(void *pair)
     work = Global_PTR_WORK_BUFFER;
     scratch_len = Global_REF_LONG_FILE_SCRATCH;
 
-    hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, (const char *)Global_STR_G2);
+    hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, Global_STR_G2);
     if (hit != (char *)0) {
         DATETIME_ParseString(parsed_a, hit, LINE_PARSE_WIDTH);
         DATETIME_ParseString(parsed_b, hit, DATETIME_PARSE_WIDTH);
         DATETIME_CopyPairAndRecalc(p->secondaryBanner, parsed_a, parsed_b);
     }
 
-    hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, (const char *)Global_STR_G3);
+    hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, Global_STR_G3);
     if (hit != (char *)0) {
         DATETIME_ParseString(parsed_a, hit, LINE_PARSE_WIDTH);
         DATETIME_ParseString(parsed_b, hit, DATETIME_PARSE_WIDTH);
