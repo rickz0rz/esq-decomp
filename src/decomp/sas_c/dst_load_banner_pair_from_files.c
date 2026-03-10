@@ -9,13 +9,13 @@ extern const char Global_STR_G2[];
 extern const char Global_STR_G3[];
 extern const char Global_STR_DST_C_7[];
 
-extern void DST_RebuildBannerPair(void *pair);
+extern LONG DST_RebuildBannerPair(void *pair);
 extern LONG DISKIO_LoadFileToWorkBuffer(const char *path);
 extern char *GROUP_AJ_JMPTBL_STRING_FindSubstring(const char *text, const char *needle);
 extern void DATETIME_ParseString(void *out_struct, const char *text, LONG width);
-extern void DATETIME_CopyPairAndRecalc(void *dst, const void *lhs, const void *rhs);
+extern LONG DATETIME_CopyPairAndRecalc(void *dst, const void *lhs, const void *rhs);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, ULONG size);
-extern void DST_UpdateBannerQueue(void *pair);
+extern LONG DST_UpdateBannerQueue(void *pair);
 
 typedef struct DST_BannerPair {
     void *primaryBanner;
