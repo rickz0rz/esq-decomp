@@ -23,7 +23,7 @@ extern void *WDISP_JMPTBL_BRUSH_FindBrushByPredicate(void *predicate, void *list
 extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern LONG MATH_Mulu32(LONG a, LONG b);
-extern void WDISP_SPrintf(char *dst, const char *fmt, LONG value);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG value);
 
 void WDISP_DrawWeatherStatusDayEntry(char *rastPort, LONG dayIndex, LONG xSpan, LONG ySpan)
 {

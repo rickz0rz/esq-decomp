@@ -27,7 +27,7 @@ extern char TLIBA1_FMT_PCT_03LD_VerticalScaleTick[];
 extern LONG _LVOMove(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern LONG _LVODraw(void *gfxBase, char *rastPort, LONG x, LONG y);
 extern LONG _LVOText(void *gfxBase, char *rastPort, char *text, LONG len);
-extern void WDISP_SPrintf(char *dst, const char *fmt, LONG value);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG value);
 
 void TLIBA3_DrawVerticalScaleTicks(TLIBA3_RastPortWrap *rp, LONG x)
 {
