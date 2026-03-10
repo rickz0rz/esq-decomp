@@ -8,7 +8,7 @@ extern WORD SCRIPT_ReadModeActiveLatch;
 extern WORD ESQPARS2_ReadModeFlags;
 
 extern LONG SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(void);
-extern void SCRIPT_BeginBannerCharTransition(LONG targetChar, LONG speedMs);
+extern WORD SCRIPT_BeginBannerCharTransition(LONG targetChar, LONG speedMs);
 
 void SCRIPT_ApplyPendingBannerTarget(void)
 {

@@ -11,7 +11,7 @@ extern UWORD SCRIPT_RuntimeModeDispatchLatch;
 extern char CONFIG_MSN_FlagChar;
 extern char CONFIG_MsnRuntimeModeSelectorChar_LRBN;
 
-extern void SCRIPT_BeginBannerCharTransition(LONG bannerChar, LONG speedMs);
+extern short SCRIPT_BeginBannerCharTransition(LONG bannerChar, LONG speedMs);
 extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void TEXTDISP_SetRastForMode(LONG mode);
 extern void SCRIPT_UpdateSerialShadowFromCtrlByte(LONG value);

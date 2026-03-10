@@ -18,7 +18,7 @@ extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
 extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 extern LONG MATH_DivS32(LONG a, LONG b);
-extern void SCRIPT_BeginBannerCharTransition(LONG x, LONG y);
+extern WORD SCRIPT_BeginBannerCharTransition(LONG x, LONG y);
 extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 extern void SCRIPT_DrawInsetTextWithFrame(char *rastport, BYTE textPenOverride, BYTE framePen, const char *text);
 extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
