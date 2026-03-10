@@ -43,7 +43,7 @@ extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG 
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const void *entry, const void *aux, LONG index, LONG window, LONG minutes);
 extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *aux, LONG slot);
-extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(UBYTE *bits, LONG index);
+extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bits, LONG index);
 extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 extern LONG TEXTDISP_GetGroupEntryCount(LONG mode);
 extern LONG TEXTDISP_ShouldOpenEditorForEntry(TEXTDISP_CandidateEntry *entry);

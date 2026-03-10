@@ -24,7 +24,7 @@ extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG 
 extern LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entryPtr, char *auxPtr, LONG startIndex);
 extern const char *TEXTDISP_FindControlToken(const char *textPtr);
 extern LONG TEXTDISP_FindQuotedSpan(const char *src, char **outStart, const char *endHint, LONG *hasQuotes);
-extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitsetPtr, LONG index);
+extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitsetPtr, LONG index);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
 extern LONG TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
 
