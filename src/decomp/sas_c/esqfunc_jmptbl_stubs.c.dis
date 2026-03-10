@@ -110,6 +110,7 @@ ESQFUNC_JMPTBL_PARSEINI_MonitorC:
 ___ESQFUNC_JMPTBL_PARSEINI_MonitorC__1:
               BSR.W          PARSEINI_MonitorClockChange;6100 0000 
 ___ESQFUNC_JMPTBL_PARSEINI_MonitorC__2:
+___ESQFUNC_JMPTBL_PARSEINI_MonitorC__3:
               RTS                                     ;4e75 
 ESQFUNC_JMPTBL_LADFUNC_ParseHexD:
               MOVE.L         A7,D0                    ;200f 

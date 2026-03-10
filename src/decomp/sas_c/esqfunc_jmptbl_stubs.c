@@ -12,7 +12,7 @@ extern void TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text
 extern LONG SCRIPT_GetCtrlLineFlag(void);
 extern void LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
-extern void PARSEINI_MonitorClockChange(void);
+extern LONG PARSEINI_MonitorClockChange(void);
 extern LONG LADFUNC_ParseHexDigit(BYTE ch);
 extern void CLEANUP_ProcessAlerts(void);
 extern ULONG ESQ_GetHalfHourSlotIndex(void *timePtr);
@@ -39,7 +39,7 @@ void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const ch
 LONG ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag(void){return SCRIPT_GetCtrlLineFlag();}
 void ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void){LOCAVAIL_SyncSecondaryFilterForCurrentGroup();}
 void ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(void){TEXTDISP_ResetSelectionAndRefresh();}
-void ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange(void){PARSEINI_MonitorClockChange();}
+LONG ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange(void){return PARSEINI_MonitorClockChange();}
 LONG ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(BYTE ch){return LADFUNC_ParseHexDigit(ch);}
 void ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(void){CLEANUP_ProcessAlerts();}
 ULONG ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex(void *timePtr){return ESQ_GetHalfHourSlotIndex(timePtr);}
