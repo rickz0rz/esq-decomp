@@ -36,7 +36,7 @@ void _LVOMove(void);
 void _LVOText(void);
 void ESQ_FormatTimeStamp(char *dst, void *clock_ref);
 LONG GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(LONG hour, LONG ampm);
-void GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b, LONG c);
+LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b, LONG c);
 void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void);
 
 void CLEANUP_DrawGridTimeBanner(void)

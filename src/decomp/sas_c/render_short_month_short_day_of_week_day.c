@@ -24,7 +24,7 @@ void _LVORectFill(void);
 void _LVOTextLength(void);
 void _LVOMove(void);
 void _LVOText(void);
-void GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, char *a, char *b, LONG c);
+LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, char *a, char *b, LONG c);
 void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void);
 
 void RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY(void)
