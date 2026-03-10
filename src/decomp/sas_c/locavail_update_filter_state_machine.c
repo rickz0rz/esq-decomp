@@ -92,7 +92,7 @@ void LOCAVAIL_UpdateFilterStateMachine(void *ctxPtr, void *statePtr)
 
         switch (value) {
         case 1:
-            if (GROUP_AS_JMPTBL_STR_FindCharPtr((const char *)LOCAVAIL_STR_YYLLZ_FilterStateUpdate, (LONG)ED_DiagVinModeChar) != (char *)0 &&
+            if (GROUP_AS_JMPTBL_STR_FindCharPtr(LOCAVAIL_STR_YYLLZ_FilterStateUpdate, (LONG)ED_DiagVinModeChar) != (char *)0 &&
                 GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask() != 0) {
                 ctx->mode20 = 10;
                 return;

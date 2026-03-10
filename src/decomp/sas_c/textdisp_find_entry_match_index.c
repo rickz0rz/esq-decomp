@@ -157,7 +157,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
                 }
             } else {
                 if (inputLen <= entryLen &&
-                    TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold((const char *)entryStart, (const char *)inputStart) != 0) {
+                    TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(entryStart, inputStart) != 0) {
                     isMatch = MATCH_TRUE;
                 }
             }

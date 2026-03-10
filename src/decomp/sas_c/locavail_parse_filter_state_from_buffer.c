@@ -58,7 +58,7 @@ LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
         parseBuf[0] = (char)((UBYTE)parseBuf[0] - 32);
     }
 
-    if (GROUP_AS_JMPTBL_STR_FindCharPtr((const char *)LOCAVAIL_TAG_FV, (LONG)(UBYTE)parseBuf[0]) != (char *)0) {
+    if (GROUP_AS_JMPTBL_STR_FindCharPtr(LOCAVAIL_TAG_FV, (LONG)(UBYTE)parseBuf[0]) != (char *)0) {
         scratchState.modeChar = (UBYTE)parseBuf[0];
 
         parseBuf[0] = (char)*buffer++;
