@@ -54,6 +54,8 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
     const WORD RESULT_ACCEPTED = 1;
     const LONG LOGO_LIST_MAX_COUNT = 1;
     const LONG GADS_LIST_MAX_COUNT = 2;
+    const LONG LOGO_SOURCE_POLL_LIMIT = 0xFA00;
+    const LONG GADS_SOURCE_POLL_LIMIT = 0x13880;
     const WORD RESULT_NO_CANDIDATE = -1;
     const WORD RESULT_PENDING = 1;
     const UBYTE SOURCE_TYPE_LOGO = 4;
@@ -178,9 +180,9 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
     }
 
     if (ESQIFF_AssetSourceSelect != 0) {
-        pollLimit = 0xFA00;
+        pollLimit = LOGO_SOURCE_POLL_LIMIT;
     } else {
-        pollLimit = 0x13880;
+        pollLimit = GADS_SOURCE_POLL_LIMIT;
     }
 
     {
