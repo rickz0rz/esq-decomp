@@ -105,12 +105,12 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
         TEXTDISP_FilterModeId = MODE_FILTER_PRIMARY;
 
         ppvSbe = 1;
-        if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_PPV, (const char *)nameShort) != 0 &&
-            UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_SBE, (const char *)nameShort) != 0) {
+        if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_PPV, nameShort) != 0 &&
+            UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_SBE, nameShort) != 0) {
             ppvSbe = 0;
         }
         TEXTDISP_FilterPpvSbeMatchFlag = (UWORD)ppvSbe;
-        TEXTDISP_FilterSportsMatchFlag = (UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_SPORTS, (const char *)nameShort) == 0) ? 1 : 0;
+        TEXTDISP_FilterSportsMatchFlag = (UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_SPORTS, nameShort) == 0) ? 1 : 0;
     }
 
     if (modeChar != CH_MODE_FILTER && modeChar != CH_MODE_EXACT) {
@@ -140,9 +140,7 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
                     TEXTDISP_CandidateIndexList[TEXTDISP_FilterMatchCount++] = (UBYTE)idx;
                     continue;
                 }
-                if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(
-                        (const char *)candidate->tagText,
-                        (const char *)nameShort) == 0) {
+                if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(candidate->tagText, nameShort) == 0) {
                     TEXTDISP_CandidateIndexList[TEXTDISP_FilterMatchCount++] = (UBYTE)idx;
                 }
             }
