@@ -15,7 +15,7 @@ extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
 
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern LONG NEWGRID_TestEntrySelectable(const char *entry, const char *aux, LONG selectionCode);
+extern LONG NEWGRID_TestEntrySelectable(const void *entry, const void *aux, LONG selectionCode);
 
 void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
 {
@@ -39,7 +39,7 @@ void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
             }
             entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
             aux = (const NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
-            if (NEWGRID_TestEntrySelectable(entry, (const char *)aux, selectionCode) != 0) {
+            if (NEWGRID_TestEntrySelectable(entry, aux, selectionCode) != 0) {
                 auxWrite = (NEWGRID_AuxData *)aux;
                 for (j = SLOT_FIRST; j < SLOT_LIMIT; ++j) {
                     auxWrite->rowFlags[j] &= (UBYTE)~(1u << 5);
@@ -56,7 +56,7 @@ void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
         }
         entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
         aux = (const NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
-        if (NEWGRID_TestEntrySelectable(entry, (const char *)aux, selectionCode) != 0) {
+        if (NEWGRID_TestEntrySelectable(entry, aux, selectionCode) != 0) {
             auxWrite = (NEWGRID_AuxData *)aux;
             for (j = SLOT_FIRST; j < SLOT_LIMIT; ++j) {
                 auxWrite->rowFlags[j] &= (UBYTE)~(1u << 5);

@@ -31,7 +31,7 @@ extern LONG CONFIG_TimeWindowMinutes;
 
 extern LONG NEWGRID_ClearMarkersIfSelectable(LONG mode, LONG row);
 extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG col);
-extern LONG NEWGRID_TestEntrySelectable(const char *entry, const char *aux, LONG mode);
+extern LONG NEWGRID_TestEntrySelectable(const void *entry, const void *aux, LONG mode);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry, char *aux, LONG idx);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG idx);
 extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry, char *aux, LONG idx, LONG day, LONG window);
@@ -74,7 +74,7 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
 
         row = NEWGRID_AltSelectionEntryCursor;
         NEWGRID_UpdatePresetEntry((char **)&entry, (char **)&aux, row, NEWGRID_AltSelectionRowCursor);
-        if (NEWGRID_TestEntrySelectable((const char *)entry, (const char *)aux, mode)) {
+        if (NEWGRID_TestEntrySelectable(entry, aux, mode)) {
             matched = 0;
             idx = NEWGRID_AltSelectionEntryCursor;
             if (idx > 0 && idx < ctx->rowLimit) {
