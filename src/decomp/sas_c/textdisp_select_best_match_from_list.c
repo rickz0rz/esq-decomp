@@ -19,8 +19,8 @@ extern UBYTE TEXTDISP_FindModeActiveFlag;
 extern UWORD TEXTDISP_SbeFilterActiveFlag;
 extern UBYTE TEXTDISP_CandidateIndexList[];
 extern const UBYTE TEXTDISP_Tag_SPT_Select[];
-extern char *TEXTDISP_PrimaryTitlePtrTable[];
-extern char *TEXTDISP_SecondaryTitlePtrTable[];
+extern const char *TEXTDISP_PrimaryTitlePtrTable[];
+extern const char *TEXTDISP_SecondaryTitlePtrTable[];
 
 extern UWORD CLOCK_HalfHourSlotIndex;
 extern UBYTE CLOCK_CurrentDayOfWeekIndex;
