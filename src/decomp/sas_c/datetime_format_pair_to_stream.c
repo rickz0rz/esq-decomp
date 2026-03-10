@@ -99,7 +99,7 @@ LONG DATETIME_FormatPairToStream(LONG fileHandle, const void *pairStruct)
 
 emit:
     outCursor = outBuf;
-    while (*outCursor != 0) {
+    while (*outCursor) {
         outCursor++;
     }
     writeResult = DISKIO_WriteBufferedBytes(fileHandle, outBuf, (LONG)(outCursor - outBuf));
