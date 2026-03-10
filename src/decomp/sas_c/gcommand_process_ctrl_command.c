@@ -24,6 +24,7 @@ LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
     const UBYTE COMMAND_PROBE_DRIVE_B = 16;
     const LONG STATE_RING_ENTRY_SIZE = 5;
     const LONG STATE_RING_ENTRY_COUNT = 20;
+    const LONG EXEC_COMPARE_REJECT = -1;
     LONG rc;
     UBYTE type;
     const GCOMMAND_CtrlPacket *cmdView;
@@ -39,7 +40,7 @@ LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
         GCOMMAND_StateRingEntry *entry =
             (GCOMMAND_StateRingEntry *)&ED_StateRingTable[ED_StateRingWriteIndex * STATE_RING_ENTRY_SIZE];
         rc = GROUP_AV_JMPTBL_EXEC_CallVector_48((void *)cmdPtr, entry, STATE_RING_ENTRY_SIZE, 0);
-        if (rc > 0 && rc != -1) {
+        if (rc > 0 && rc != EXEC_COMPARE_REJECT) {
             ED_StateRingWriteIndex += 1;
             if (ED_StateRingWriteIndex >= STATE_RING_ENTRY_COUNT) {
                 ED_StateRingWriteIndex = 0;
