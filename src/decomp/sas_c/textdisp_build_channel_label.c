@@ -28,7 +28,7 @@ void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix)
 
     mode = (TEXTDISP_ActiveGroupId == 0) ? 2 : 1;
     entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, mode);
-    entryText = (const char *)0;
+    entryText = 0;
 
     if (entry != (const TEXTDISP_CandidateEntry *)0) {
         const char *src = entry->text;
