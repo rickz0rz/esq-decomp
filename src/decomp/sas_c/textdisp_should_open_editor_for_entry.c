@@ -14,7 +14,7 @@ LONG TEXTDISP_ShouldOpenEditorForEntry(const TEXTDISP_Entry *entry)
 {
     LONG result = 0;
 
-    if (entry != (TEXTDISP_Entry *)0) {
+    if (entry != 0) {
         if ((entry->flags40 & 0x01) != 0 &&
             (entry->flags40 & 0x08) != 0 &&
             TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(entry) == 0 &&

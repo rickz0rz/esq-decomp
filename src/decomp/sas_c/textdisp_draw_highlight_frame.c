@@ -69,7 +69,7 @@ void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entryPtr)
     LONG y2;
 
     entry = entryPtr;
-    if (entry == (TEXTDISP_SelectionEntry *)0 || entry->detailLine[0] == ZERO) {
+    if (entry == 0 || entry->detailLine[0] == ZERO) {
         return;
     }
 
