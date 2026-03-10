@@ -19,7 +19,7 @@ extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern long DISKIO_LoadFileToWorkBuffer(const char *path);
 extern void WDISP_SPrintf(void);
 extern void STREAM_ReadLineWithLimit(void);
-extern char *STR_FindAnyCharPtr(char *s, const char *set);
+extern char *STR_FindAnyCharPtr(char *s, char *set);
 extern void ED1_ExitEscMenu(void);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern void ED1_EnterEscMenu(void);
@@ -46,7 +46,7 @@ char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src){return STR
 long PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path){return DISKIO_LoadFileToWorkBuffer(path);}
 void PARSEINI_JMPTBL_WDISP_SPrintf(void){WDISP_SPrintf();}
 void PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(void){STREAM_ReadLineWithLimit();}
-char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(char *s, const char *set){return STR_FindAnyCharPtr(s, set);}
+char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *set){return STR_FindAnyCharPtr((char *)s, (char *)set);}
 void PARSEINI_JMPTBL_ED1_ExitEscMenu(void){ED1_ExitEscMenu();}
 char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, char *oldText){return ESQPARS_ReplaceOwnedString(newText, oldText);}
 void PARSEINI_JMPTBL_ED1_EnterEscMenu(void){ED1_EnterEscMenu();}
