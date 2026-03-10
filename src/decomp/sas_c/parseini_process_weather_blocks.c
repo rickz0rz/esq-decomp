@@ -56,7 +56,7 @@ extern const char PARSEINI_TAG_ID[];
 
 extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
 extern void *PARSEINI_JMPTBL_BRUSH_AllocBrushNode(char *entryText, void *existingNode);
-extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
 extern char *SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 

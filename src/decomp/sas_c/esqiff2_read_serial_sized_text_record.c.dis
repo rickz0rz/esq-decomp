@@ -13,19 +13,22 @@ ___ESQIFF2_ReadSerialSizedTextRecor__1:
               MOVE.L         #$2328,D6                ;2c3c 0000 2328 
               MOVE.W         #$2328,D5                ;3a3c 2328 
               MOVEQ.L        #$0,D0                   ;7000 
-              CLR.B          $2c(A7)                  ;422f 002c 
-              MOVE.B         #$20,$23(A7)             ;1f7c 0020 0023 
+              MOVEQ.L        #$0,D1                   ;7200 
+              CLR.B          $23(A7)                  ;422f 0023 
+              MOVE.B         #$20,$22(A7)             ;1f7c 0020 0022 
               MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVEM.W        D1,$2c(A7)               ;48af 0002 002c 
               CMP.L          D0,D7                    ;be80 
               BLE.B          ___ESQIFF2_ReadSerialSizedTextRecor__3;6f04 
 ___ESQIFF2_ReadSerialSizedTextRecor__2:
               CMP.L          D6,D7                    ;be86 
-              BLT.B          ___ESQIFF2_ReadSerialSizedTextRecor__4;6d04 
+              BLT.B          ___ESQIFF2_ReadSerialSizedTextRecor__4;6d06 
 ___ESQIFF2_ReadSerialSizedTextRecor__3:
-              BRA.W          ___ESQIFF2_ReadSerialSizedTextRecor__21;6000 00f8 
+              MOVE.W         D1,D0                    ;3001 
+              BRA.W          ___ESQIFF2_ReadSerialSizedTextRecor__21;6000 00fc 
 ___ESQIFF2_ReadSerialSizedTextRecor__4:
-              MOVE.W         D0,$28(A7)               ;3f40 0028 
-              MOVE.L         D0,$1a(A7)               ;2f40 001a 
+              MOVE.L         $30(A7),$1a(A7)          ;2f6f 0030 001a 
+              MOVE.W         D1,$28(A7)               ;3f41 0028 
 ___ESQIFF2_ReadSerialSizedTextRecor__5:
               MOVE.L         $1a(A7),D0               ;202f 001a 
               CMP.L          D7,D0                    ;b087 
@@ -46,12 +49,12 @@ ___ESQIFF2_ReadSerialSizedTextRecor__7:
               BRA.B          ___ESQIFF2_ReadSerialSizedTextRecor__5;60ce 
 ___ESQIFF2_ReadSerialSizedTextRecor__8:
               MOVE.W         $28(A7),D0               ;302f 0028 
-              MOVE.B         $2c(A7),$0(A5,D0.W)      ;1baf 002c 0000 
+              MOVE.B         $23(A7),$0(A5,D0.W)      ;1baf 0023 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQPARS_JMPTBL_PARSE_ReadSignedL;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.W         $28(A7),D1               ;322f 0028 
-              MOVE.B         $23(A7),$0(A5,D1.W)      ;1baf 0023 1000 
+              MOVE.B         $22(A7),$0(A5,D1.W)      ;1baf 0022 1000 
               MOVE.L         $30(A7),$24(A7)          ;2f6f 0030 0024 
               MOVE.L         D0,$1e(A7)               ;2f40 001e 
 ___ESQIFF2_ReadSerialSizedTextRecor__9:
@@ -63,7 +66,7 @@ ___ESQIFF2_ReadSerialSizedTextRecor__10:
               MOVE.W         $28(A7),D0               ;302f 0028 
               EXT.L          D0                       ;48c0 
               MOVE.B         $ffffffff(A5,D0.L),D1    ;1235 08ff 
-              CMP.B          $2c(A7),D1               ;b22f 002c 
+              CMP.B          $23(A7),D1               ;b22f 0023 
               BEQ.B          ___ESQIFF2_ReadSerialSizedTextRecor__14;6734 
 ___ESQIFF2_ReadSerialSizedTextRecor__11:
               MOVE.L         $24(A7),D0               ;202f 0024 
@@ -93,16 +96,16 @@ ___ESQIFF2_ReadSerialSizedTextRecor__15:
               MOVE.W         $28(A7),D0               ;302f 0028 
               EXT.L          D0                       ;48c0 
               MOVE.B         $ffffffff(A5,D0.L),D2    ;1435 08ff 
-              MOVE.B         $2c(A7),D0               ;102f 002c 
+              MOVE.B         $23(A7),D0               ;102f 0023 
               CMP.B          D0,D2                    ;b400 
               BNE.B          ___ESQIFF2_ReadSerialSizedTextRecor__17;660a 
 ___ESQIFF2_ReadSerialSizedTextRecor__16:
               MOVE.L         $24(A7),D2               ;242f 0024 
               CMP.L          $1e(A7),D2               ;b4af 001e 
-              BEQ.B          ___ESQIFF2_ReadSerialSizedTextRecor__18;670c 
+              BEQ.B          ___ESQIFF2_ReadSerialSizedTextRecor__18;670e 
 ___ESQIFF2_ReadSerialSizedTextRecor__17:
-              MOVE.B         $2c(A7),$0(A5,D1.L)      ;1baf 002c 1800 
-              MOVE.W         D1,$28(A7)               ;3f41 0028 
+              MOVE.W         $2c(A7),$28(A7)          ;3f6f 002c 0028 
+              MOVE.B         $23(A7),$0(A5,D1.L)      ;1baf 0023 1800 
               BRA.B          ___ESQIFF2_ReadSerialSizedTextRecor__19;600c 
 ___ESQIFF2_ReadSerialSizedTextRecor__18:
               BSR.W          ESQFUNC_WaitForClockChangeAndSer;6100 0000 
