@@ -24,7 +24,7 @@ extern WORD TEXTDISP_PrimaryFirstMatchIndex;
 extern WORD TEXTDISP_SecondaryFirstMatchIndex;
 extern WORD TEXTDISP_PrimaryChannelCode;
 extern char TEXTDISP_PrimarySearchText[];
-extern char TEXTDISP_DefaultSpacePad[];
+extern const char TEXTDISP_DefaultSpacePad[];
 
 extern const char Global_STR_TEXTDISP_C_1[];
 extern const char Global_STR_TEXTDISP_C_2[];
@@ -116,7 +116,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, char *arg)
 
                     if (TEXTDISP_FilterAndSelectEntry(TEXTDISP_CommandBufferPtr, MODE_FILTER) == 0) {
                         char *dst = (char *)TEXTDISP_CommandBufferPtr->detailLine;
-                        char *src = TEXTDISP_DefaultSpacePad;
+                        const char *src = TEXTDISP_DefaultSpacePad;
                         while ((*dst++ = *src++) != CH_NUL) {
                         }
                     }
