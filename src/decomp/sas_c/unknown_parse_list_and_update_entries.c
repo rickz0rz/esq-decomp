@@ -56,6 +56,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
 {
     const ULONG STATUS_ENTRY_COUNT = 4u;
     const LONG STATUS_ENTRY_MAX_INDEX = 3;
+    const LONG STATUS_ENTRY_NOT_FOUND = -1;
     const UWORD NEXT_DAY_INCREMENT = 1u;
     const UBYTE RECORD_MARKER_PLUS = '+';
     const UBYTE FIELD_UNKNOWN_MARKER = '?';
@@ -95,7 +96,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
 
     while (marker == RECORD_MARKER_PLUS) {
         LONG key;
-        LONG found = -1;
+        LONG found = STATUS_ENTRY_NOT_FOUND;
         LONG idx;
 
         STRING_CopyPadNul(field_buf, p, KEY_FIELD_LEN);
