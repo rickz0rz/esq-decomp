@@ -1,11 +1,16 @@
-extern void NEWGRID_ShouldOpenEditor(void);
-extern void ESQDISP_TestEntryGridEligibility(void);
-extern void ESQIFF_RunCopperRiseTransition(void);
-extern void CLEANUP_BuildAlignedStatusLine(void);
-extern void CLEANUP_DrawInsetRectFrame(void);
+typedef signed long LONG;
+typedef signed short WORD;
+typedef unsigned short UWORD;
+typedef unsigned char UBYTE;
 
-void TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(void){NEWGRID_ShouldOpenEditor();}
-void TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(void){ESQDISP_TestEntryGridEligibility();}
+extern LONG NEWGRID_ShouldOpenEditor(char *entry);
+extern LONG ESQDISP_TestEntryGridEligibility(UBYTE *entry, WORD index);
+extern void ESQIFF_RunCopperRiseTransition(void);
+extern void CLEANUP_BuildAlignedStatusLine(char *out, UWORD isPrimary, UWORD modeSel, UWORD slot, LONG alignToken);
+extern void CLEANUP_DrawInsetRectFrame(UBYTE *rp, UBYTE pen, UWORD w, UWORD h);
+
+LONG TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(char *entry){return NEWGRID_ShouldOpenEditor(entry);}
+LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *entry, LONG index){return ESQDISP_TestEntryGridEligibility((UBYTE *)entry, (WORD)index);}
 void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void){ESQIFF_RunCopperRiseTransition();}
-void TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(void){CLEANUP_BuildAlignedStatusLine();}
-void TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(void){CLEANUP_DrawInsetRectFrame();}
+void TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(char *out, UWORD isPrimary, UWORD modeSel, UWORD slot, LONG alignToken){CLEANUP_BuildAlignedStatusLine(out, isPrimary, modeSel, slot, alignToken);}
+void TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(char *rastport, LONG framePen, LONG width, LONG depth){CLEANUP_DrawInsetRectFrame((UBYTE *)rastport, (UBYTE)framePen, (UWORD)width, (UWORD)depth);}

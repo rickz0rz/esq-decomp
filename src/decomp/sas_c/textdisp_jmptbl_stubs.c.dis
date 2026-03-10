@@ -1,20 +1,40 @@
               SECTION      text,CODE
 __code:
 TEXTDISP_JMPTBL_NEWGRID_ShouldOp:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___TEXTDISP_JMPTBL_NEWGRID_ShouldOp__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_ShouldOpenEditor ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
 ___TEXTDISP_JMPTBL_NEWGRID_ShouldOp__2:
+___TEXTDISP_JMPTBL_NEWGRID_ShouldOp__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 __const:
 __strings:
 TEXTDISP_JMPTBL_ESQDISP_TestEntr:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
 ___TEXTDISP_JMPTBL_ESQDISP_TestEntr__1:
+              MOVE.L         $10(A7),D7               ;2e2f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         D7,D0                    ;2007 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQDISP_TestEntryGridEligibility;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___TEXTDISP_JMPTBL_ESQDISP_TestEntr__2:
+___TEXTDISP_JMPTBL_ESQDISP_TestEntr__3:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
               RTS                                     ;4e75 
 TEXTDISP_JMPTBL_ESQIFF_RunCopper:
               CMP.L          __base(A4),A7            ;bfec 0000 
@@ -24,18 +44,61 @@ ___TEXTDISP_JMPTBL_ESQIFF_RunCopper__1:
 ___TEXTDISP_JMPTBL_ESQIFF_RunCopper__2:
               RTS                                     ;4e75 
 TEXTDISP_JMPTBL_CLEANUP_BuildAli:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/D4/D5/D6/D7/A5,-(A7)  ;48e7 2f04 
 ___TEXTDISP_JMPTBL_CLEANUP_BuildAli__1:
+              MOVE.L         $2c(A7),D4               ;282f 002c 
+              MOVE.W         $2a(A7),D5               ;3a2f 002a 
+              MOVE.W         $26(A7),D6               ;3c2f 0026 
+              MOVE.W         $22(A7),D7               ;3e2f 0022 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D7,D0                    ;3007 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D6,D1                    ;3206 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D5,D2                    ;3405 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          CLEANUP_BuildAlignedStatusLine;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
 ___TEXTDISP_JMPTBL_CLEANUP_BuildAli__2:
+              MOVEM.L        (A7)+,D2/D4/D5/D6/D7/A5  ;4cdf 20f4 
               RTS                                     ;4e75 
 TEXTDISP_JMPTBL_CLEANUP_DrawInse:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/D3/D4/D5/D6/D7/A5,-(A7);48e7 3f04 
 ___TEXTDISP_JMPTBL_CLEANUP_DrawInse__1:
+              MOVE.L         $2c(A7),D5               ;2a2f 002c 
+              MOVE.L         $28(A7),D6               ;2c2f 0028 
+              MOVE.L         $24(A7),D7               ;2e2f 0024 
+              MOVE.L         $20(A7),A5               ;2a6f 0020 
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D6,D2                    ;2406 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         D2,D3                    ;3602 
+              MOVE.L         D5,D4                    ;2805 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D4,D0                    ;3004 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D3,-(A7)                 ;2f03 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          CLEANUP_DrawInsetRectFrame;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
 ___TEXTDISP_JMPTBL_CLEANUP_DrawInse__2:
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A5;4cdf 20fc 
               RTS                                     ;4e75 
               XREF           __base
               XREF           _XCOVF
