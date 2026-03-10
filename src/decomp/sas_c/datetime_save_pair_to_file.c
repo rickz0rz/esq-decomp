@@ -26,13 +26,13 @@ LONG DATETIME_SavePairToFile(DateTimePair *pair)
     const LONG FILEHANDLE_INVALID = 0;
     LONG outputFileHandle;
 
-    if (pair == (DateTimePair *)0) {
+    if (pair == 0) {
         return DATETIME_SAVE_FAILED;
     }
-    if (pair->in_ptr == (void *)0) {
+    if (pair->in_ptr == 0) {
         return DATETIME_SAVE_FAILED;
     }
-    if (pair->out_ptr == (void *)0) {
+    if (pair->out_ptr == 0) {
         return DATETIME_SAVE_FAILED;
     }
 
