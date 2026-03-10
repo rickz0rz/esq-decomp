@@ -94,7 +94,10 @@ LONG NEWGRID_UpdateSelectionFromInput(LONG state, SelCtx *ctx)
             }
 
             if (NEWGRID_SelectionScanRow == ctx->row) {
-                idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((const char *)entry, (const char *)aux, idx);
+                {
+                    const char *entryText = (const char *)entry;
+                    idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, (const char *)aux, idx);
+                }
             }
             if (idx <= 0) {
                 NEWGRID_SelectionScanEntryIndex += 1;
