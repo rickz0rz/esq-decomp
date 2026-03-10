@@ -4,7 +4,7 @@ typedef signed short WORD;
 extern WORD TEXTDISP_PrimaryGroupEntryCount;
 extern WORD TEXTDISP_SecondaryGroupEntryCount;
 
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern void TEXTDISP_ApplySourceConfigToEntry(char *entry);
 
 void TEXTDISP_ApplySourceConfigAllEntries(void)
@@ -14,12 +14,12 @@ void TEXTDISP_ApplySourceConfigAllEntries(void)
     LONG i;
 
     for (i = 0; i < (LONG)TEXTDISP_PrimaryGroupEntryCount; ++i) {
-        char *entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
-        TEXTDISP_ApplySourceConfigToEntry(entry);
+        const char *entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
+        TEXTDISP_ApplySourceConfigToEntry((char *)entry);
     }
 
     for (i = 0; i < (LONG)TEXTDISP_SecondaryGroupEntryCount; ++i) {
-        char *entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
-        TEXTDISP_ApplySourceConfigToEntry(entry);
+        const char *entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
+        TEXTDISP_ApplySourceConfigToEntry((char *)entry);
     }
 }

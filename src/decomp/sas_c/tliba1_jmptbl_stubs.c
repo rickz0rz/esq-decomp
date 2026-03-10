@@ -5,7 +5,7 @@ typedef unsigned char UBYTE;
 extern LONG COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
 extern const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern LONG LADFUNC_GetPackedPenLowNibble(UBYTE packed);
-extern char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG COI_TestEntryWithinTimeWindow(const UBYTE *entry, const void *time_ctx, WORD slot, LONG max_offset, LONG fallback_delta);
 extern void CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out);
 extern LONG ESQDISP_ComputeScheduleOffsetForRow(WORD row, UBYTE slot);
@@ -16,7 +16,7 @@ extern LONG LADFUNC_GetPackedPenHighNibble(UBYTE packed);
 const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode){return (const char *)COI_GetAnimFieldPointerByMode(entry, slot, mode);}
 const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryAuxPointerByMode(index, mode);}
 LONG TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble(LONG v){return LADFUNC_GetPackedPenLowNibble((UBYTE)v);}
-char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryPointerByMode(index, mode);}
+const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryPointerByMode(index, mode);}
 LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const UBYTE *entry, const void *time_ctx, WORD slot, LONG max_offset, LONG fallback_delta){return COI_TestEntryWithinTimeWindow(entry, time_ctx, slot, max_offset, fallback_delta);}
 void TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out){CLEANUP_FormatClockFormatEntry(slotIndex, out);}
 LONG TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(WORD row, UBYTE slot){return ESQDISP_ComputeScheduleOffsetForRow(row, slot);}
