@@ -17,7 +17,7 @@ extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern char *GROUP_AI_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern char *GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN(const char *src, char *dst, LONG maxLen, const char *delims);
 
-char *DISPTEXT_BuildLineWithWidth(char *rp, char *src, char *out, LONG widthPx)
+char *DISPTEXT_BuildLineWithWidth(char *rp, const char *src, char *out, LONG widthPx)
 {
     char wordBuf[50];
     LONG sepWidth;
@@ -26,7 +26,7 @@ char *DISPTEXT_BuildLineWithWidth(char *rp, char *src, char *out, LONG widthPx)
     out[0] = 0;
 
     for (;;) {
-        char *wordStart;
+        const char *wordStart;
         LONG wordLen;
         LONG wordWidth;
 
@@ -101,8 +101,8 @@ char *DISPTEXT_BuildLineWithWidth(char *rp, char *src, char *out, LONG widthPx)
     }
 
     if (*src == 0) {
-        src = (char *)0;
+        src = 0;
     }
 
-    return src;
+    return (char *)src;
 }
