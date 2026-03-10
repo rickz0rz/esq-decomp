@@ -8,7 +8,7 @@ extern void DISKIO_ProbeDrivesAndAssignPaths(void);
 extern LONG PARSEINI_UpdateCtrlHDeltaMax(void);
 extern void ESQ_ClampBannerCharRange(LONG currentChar, LONG startBandChar, LONG endBandChar);
 extern LONG SCRIPT_ReadHandshakeBit3Flag(void);
-extern void TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, char *text, LONG y);
+extern void TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y);
 extern LONG SCRIPT_GetCtrlLineFlag(void);
 extern void LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
@@ -35,7 +35,7 @@ void ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(void){DISKIO_ProbeDrivesAnd
 LONG ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax(void){return PARSEINI_UpdateCtrlHDeltaMax();}
 void ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange(LONG currentChar, LONG startBandChar, LONG endBandChar){ESQ_ClampBannerCharRange(currentChar, startBandChar, endBandChar);}
 LONG ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag(void){return SCRIPT_ReadHandshakeBit3Flag();}
-void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y){TLIBA3_DrawCenteredWrappedTextLines(rastPort, (char *)text, y);}
+void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y){TLIBA3_DrawCenteredWrappedTextLines(rastPort, text, y);}
 LONG ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag(void){return SCRIPT_GetCtrlLineFlag();}
 void ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void){LOCAVAIL_SyncSecondaryFilterForCurrentGroup();}
 void ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(void){TEXTDISP_ResetSelectionAndRefresh();}
