@@ -3,6 +3,13 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 
+typedef struct UNKNOWN_StatusRecordHeader {
+    UBYTE countdown0;
+    UBYTE color1;
+    UBYTE brush2;
+    UBYTE pad3;
+} UNKNOWN_StatusRecordHeader;
+
 extern char WDISP_WeatherStatusLabelBuffer[];
 extern char *WDISP_WeatherStatusOverlayTextPtr;
 extern UBYTE WDISP_WeatherStatusCountdown;
@@ -26,14 +33,19 @@ LONG UNKNOWN_ParseRecordAndUpdateDisplay(const char *in)
     const LONG RESULT_OK = 0;
     const LONG DISPLAY_X = 0;
     const LONG DISPLAY_Y = 172;
-    const char *p = in;
+    const UNKNOWN_StatusRecordHeader *header;
+    const char *p;
     char local[16];
-    UBYTE countdown = *p++;
-    UBYTE color = *p++;
-    UBYTE brush = *p++;
+    UBYTE countdown;
+    UBYTE color;
+    UBYTE brush;
     ULONG i = 0;
 
-    p += 1;
+    header = (const UNKNOWN_StatusRecordHeader *)in;
+    countdown = header->countdown0;
+    color = header->color1;
+    brush = header->brush2;
+    p = in + sizeof(UNKNOWN_StatusRecordHeader);
 
     if (brush < BRUSH_MIN || brush > BRUSH_MAX) {
         brush = BRUSH_DEFAULT;
