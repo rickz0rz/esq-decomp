@@ -10,7 +10,7 @@ typedef struct NEWGRID_Entry {
 extern const char NEWGRID_EntryDetailFmtStr[];
 
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
-extern LONG NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(char *entry, LONG rowIndex, LONG mode);
+extern LONG NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(const void *entry, LONG rowIndex, LONG mode);
 extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry, LONG rowIndex, LONG field);
 extern void NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(char *entry, LONG rowIndex);
 extern void NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(
@@ -19,10 +19,10 @@ extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, LON
 
 void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowIndex, LONG fallbackText, LONG layoutMode)
 {
-    NEWGRID_Entry *entryView;
+    const NEWGRID_Entry *entryView;
     const char *animPtr;
 
-    entryView = (NEWGRID_Entry *)entry;
+    entryView = (const NEWGRID_Entry *)entry;
     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20, layoutMode);
 
     if (entryView != 0 && (entryView->flags27 & (1u << 4)) != 0) {
