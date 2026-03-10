@@ -23,7 +23,7 @@ void TEXTDISP_SetEntryTextFields(TEXTDISP_EntryTextFields *entry, const char *sh
         TEXTDISP_EntryTextBaseWidthPx = (LONG)CONFIG_BannerCopperHeadByte;
     }
 
-    if (entry == (TEXTDISP_EntryTextFields *)0) {
+    if (entry == 0) {
         return;
     }
 
