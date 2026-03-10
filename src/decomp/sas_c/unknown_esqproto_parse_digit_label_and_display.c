@@ -3,6 +3,10 @@ typedef unsigned char UBYTE;
 typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 
+typedef struct ESQPROTO_DigitLabelHeader {
+    UBYTE digit0;
+} ESQPROTO_DigitLabelHeader;
+
 extern UWORD WDISP_WeatherStatusDigitChar;
 extern char WDISP_WeatherStatusLabelBuffer[];
 extern char *WDISP_WeatherStatusTextPtr;
@@ -14,10 +18,15 @@ extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rast, LONG x, LON
 
 char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in)
 {
-    const char *p = in;
+    const ESQPROTO_DigitLabelHeader *header;
+    const char *p;
     char local[16];
     ULONG i = 0;
-    UWORD digit = (UWORD)(*p++);
+    UWORD digit;
+
+    header = (const ESQPROTO_DigitLabelHeader *)in;
+    digit = (UWORD)header->digit0;
+    p = in + sizeof(ESQPROTO_DigitLabelHeader);
 
     WDISP_WeatherStatusDigitChar = digit;
     if (digit < (UWORD)'0' || digit > (UWORD)'9') {
