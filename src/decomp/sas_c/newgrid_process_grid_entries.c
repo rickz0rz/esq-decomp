@@ -48,7 +48,7 @@ extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG x, LONG h, LONG pen);
 /* Keep K&R-style declaration: SAS/C long-name significance causes a prototype clash
  * with NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount in this translation unit. */
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths();
-extern LONG NEWGRID_DrawEntryRowOrPlaceholder(char *scratch, char *entry, LONG aux, LONG row, LONG span, LONG state);
+extern void NEWGRID_DrawEntryRowOrPlaceholder(char *scratch, char *entry, LONG aux, LONG row, LONG span, LONG state);
 extern LONG NEWGRID_DrawSelectionMarkers(char *ctx, LONG row, LONG span, LONG pen, LONG leftState, LONG rightState);
 extern void NEWGRID_DrawGridCell(char *scratch, const void *entry, LONG style);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);

@@ -39,7 +39,7 @@ extern void NEWGRID_DrawGridMessageAlt(char *ctx);
 extern LONG NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
 extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
-extern LONG NEWGRID_ClearEntryMarkerBits(LONG row);
+extern void NEWGRID_ClearEntryMarkerBits(LONG row);
 
 LONG NEWGRID_ProcessShowtimesWorkflow(char *ctx, UWORD rowBase, UWORD selector)
 {
