@@ -25,11 +25,11 @@ void *DST_AllocateBannerStruct(void *banner)
     DST_FreeBannerStruct(p);
 
     p = (DST_BannerStruct *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_DST_C_4, 798, 18, 0x10001);
-    if (p != 0) {
+    if (p) {
         p->first = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_DST_C_5, 803, 22, 0x10001);
-        if (p->first != 0) {
+        if (p->first) {
             p->second = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_DST_C_6, 807, 22, 0x10001);
-            if (p->second != 0) {
+            if (p->second) {
                 ok = 1;
                 p->state16 = 0;
             }

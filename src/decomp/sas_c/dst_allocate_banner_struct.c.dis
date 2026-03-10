@@ -18,8 +18,8 @@ ___DST_AllocateBannerStruct__1:
               PEA            Global_STR_DST_C_4(A4)   ;486c 0000 
               BSR.W          GROUP_AG_JMPTBL_MEMORY_AllocateM;6100 0000 
               MOVE.L         D0,A3                    ;2640 
-              TST.L          D0                       ;4a80 
               LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         A3,D0                    ;200b 
               BEQ.B          ___DST_AllocateBannerStruct__5;6744 
 ___DST_AllocateBannerStruct__2:
               MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
