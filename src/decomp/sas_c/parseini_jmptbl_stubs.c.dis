@@ -151,11 +151,21 @@ ___PARSEINI_JMPTBL_GCOMMAND_InitPre__1:
 ___PARSEINI_JMPTBL_GCOMMAND_InitPre__2:
               RTS                                     ;4e75 
 PARSEINI_JMPTBL_STRING_AppendAtN:
-              CMP.L          __base(A4),A7            ;bfec 0000 
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
 ___PARSEINI_JMPTBL_STRING_AppendAtN__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          STRING_AppendAtNull      ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
 ___PARSEINI_JMPTBL_STRING_AppendAtN__2:
+___PARSEINI_JMPTBL_STRING_AppendAtN__3:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
               RTS                                     ;4e75 
 PARSEINI_JMPTBL_DISKIO_LoadFileT:
               MOVE.L         A7,D0                    ;200f 

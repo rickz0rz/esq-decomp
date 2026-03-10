@@ -15,7 +15,7 @@ extern void GCOMMAND_ValidatePresetTable(void);
 extern void BRUSH_AllocBrushNode(void);
 extern void UNKNOWN36_FinalizeRequest(void);
 extern void GCOMMAND_InitPresetTableFromPalette(void);
-extern void STRING_AppendAtNull(void);
+extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern long DISKIO_LoadFileToWorkBuffer(const char *path);
 extern void WDISP_SPrintf(void);
 extern void STREAM_ReadLineWithLimit(void);
@@ -42,7 +42,7 @@ void PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable(void){GCOMMAND_ValidatePresetT
 void PARSEINI_JMPTBL_BRUSH_AllocBrushNode(void){BRUSH_AllocBrushNode();}
 void PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(void){UNKNOWN36_FinalizeRequest();}
 void PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(void){GCOMMAND_InitPresetTableFromPalette();}
-void PARSEINI_JMPTBL_STRING_AppendAtNull(void){STRING_AppendAtNull();}
+char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src){return STRING_AppendAtNull(dst, src);}
 long PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path){return DISKIO_LoadFileToWorkBuffer(path);}
 void PARSEINI_JMPTBL_WDISP_SPrintf(void){WDISP_SPrintf();}
 void PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(void){STREAM_ReadLineWithLimit();}
