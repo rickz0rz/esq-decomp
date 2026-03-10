@@ -5,7 +5,7 @@ extern void GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(ULONG mask, ULONG
 extern void DISKIO2_DisplayStatusLine(const char *text);
 extern void DISKIO2_FlushDataFilesIfNeeded(void);
 extern LONG ED1_JMPTBL_LADFUNC_SaveTextAdsToFile(void);
-extern void DISKIO_SaveConfigToFileHandle(void);
+extern LONG DISKIO_SaveConfigToFileHandle(void);
 extern void GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(void *primary, void *secondary);
 extern void DISKIO2_WriteQTableIniFile(void);
 extern void GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry(void);
