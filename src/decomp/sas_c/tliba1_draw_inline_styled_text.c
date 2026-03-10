@@ -12,7 +12,7 @@ extern LONG MEM_Move(UBYTE *src, UBYTE *dst, LONG len);
 extern LONG TLIBA1_ParseStyleCodeChar(UBYTE c);
 extern LONG TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble(LONG v);
 extern LONG TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble(LONG v);
-extern void TLIBA1_DrawTextWithInsetSegments(char *rastPort, LONG x, LONG y, LONG styleA, LONG styleB, char *text);
+extern void TLIBA1_DrawTextWithInsetSegments(char *rastPort, LONG x, LONG y, LONG styleA, LONG styleB, const char *text);
 extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text);
 
 static LONG TLIBA1_StrLen(const char *s)

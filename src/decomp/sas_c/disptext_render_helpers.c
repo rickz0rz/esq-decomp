@@ -27,7 +27,7 @@ extern void GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments(
     LONG y,
     LONG insetSecondary,
     LONG insetPrimary,
-    char *text);
+    const char *text);
 
 void DISPTEXT_RenderCurrentLine(char *rp, LONG x, LONG y)
 {
