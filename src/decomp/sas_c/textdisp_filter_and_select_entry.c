@@ -86,13 +86,13 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
 
     found = 0;
     entry = entryPtr;
-    if (entry == (TEXTDISP_SelectionEntry *)0) {
+    if (entry == 0) {
         modeChar = CH_NUL;
     }
 
-    nameShort = (const char *)0;
-    nameLong = (const char *)0;
-    if (entry != (TEXTDISP_SelectionEntry *)0) {
+    nameShort = 0;
+    nameLong = 0;
+    if (entry != 0) {
         nameShort = entry->shortName;
         nameLong = entry->longName;
         if (nameShort[0] == CH_NUL || nameLong[0] == CH_NUL) {
@@ -125,7 +125,7 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
 
             for (idx = 0; idx < count; idx++) {
                 candidate = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
-                if (candidate == (const TEXTDISP_CandidateEntry *)0) {
+                if (candidate == 0) {
                     continue;
                 }
                 if ((candidate->flags27 & (1u << BIT_SHIFT_HIDDEN)) != 0) {
@@ -163,7 +163,7 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
             idx = (LONG)TEXTDISP_CandidateIndexList[TEXTDISP_FilterCandidateCursor];
             mode = (LONG)TEXTDISP_FilterModeId;
             aux = (const TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(idx, mode);
-            if (aux == (const TEXTDISP_AuxData *)0) {
+            if (aux == 0) {
                 TEXTDISP_FilterCandidateCursor++;
                 continue;
             }
@@ -174,25 +174,25 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
 
             if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY &&
                 slot == (LONG)CLOCK_HalfHourSlotIndex) {
-                while (titleSlot > 0 && candidateTitle == (const char *)0) {
+                while (titleSlot > 0 && candidateTitle == 0) {
                     candidateTitle = aux->titleTable[titleSlot];
                     titleSlot--;
                 }
             }
 
-            if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY && candidateTitle != (const char *)0) {
+            if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY && candidateTitle != 0) {
                 candidate = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
-                if (candidate == (const TEXTDISP_CandidateEntry *)0 ||
+                if (candidate == 0 ||
                     TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
                         candidate, aux, titleSlot, MINUTES_PER_DAY, CONFIG_TimeWindowMinutes) == 0) {
-                    candidateTitle = (const char *)0;
+                    candidateTitle = 0;
                 }
             }
 
-            if (candidateTitle != (const char *)0) {
+            if (candidateTitle != 0) {
                 candidateTitle = TEXTDISP_SkipControlCodes(candidateTitle);
             }
-            if (candidateTitle == (const char *)0) {
+            if (candidateTitle == 0) {
                 TEXTDISP_FilterCandidateCursor++;
                 continue;
             }
