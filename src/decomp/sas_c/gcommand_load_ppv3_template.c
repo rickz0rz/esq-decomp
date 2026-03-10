@@ -54,13 +54,13 @@ LONG GCOMMAND_LoadPPV3Template(void)
 
     _LVOCopyMem(AbsExecBase, GCOMMAND_DigitalPpvEnabledFlag, loadedBuffer, copySize);
 
-    GCOMMAND_PPVPeriodTemplatePtr = (char *)0;
-    GCOMMAND_PPVListingsTemplatePtr = (char *)0;
+    GCOMMAND_PPVPeriodTemplatePtr = 0;
+    GCOMMAND_PPVListingsTemplatePtr = 0;
 
     Global_PTR_WORK_BUFFER += copySize;
     splitPtr = GROUP_AS_JMPTBL_STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
 
-    if (splitPtr != (char *)0 && *splitPtr != 0) {
+    if (splitPtr && *splitPtr) {
         *splitPtr = 0;
         splitPtr++;
     }
@@ -78,7 +78,7 @@ LONG GCOMMAND_LoadPPV3Template(void)
         loadedBuffer,
         loadedSize + 1);
 
-    if (usedFallbackDelete != 0) {
+    if (usedFallbackDelete) {
         GCOMMAND_LoadPPVTemplate();
     }
 

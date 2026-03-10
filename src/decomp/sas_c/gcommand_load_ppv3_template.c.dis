@@ -51,8 +51,8 @@ ___GCOMMAND_LoadPPV3Template__7:
               MOVE.L         Global_PTR_WORK_BUFFER(A4),-(A7);2f2c 0000 
               BSR.W          GROUP_AS_JMPTBL_STR_FindCharPtr;6100 0000 
               MOVE.L         D0,A3                    ;2640 
-              TST.L          D0                       ;4a80 
               LEA            $18(A7),A7               ;4fef 0018 
+              MOVE.L         A3,D0                    ;200b 
               BEQ.B          ___GCOMMAND_LoadPPV3Template__10;6706 
 ___GCOMMAND_LoadPPV3Template__8:
               TST.B          (A3)                     ;4a13 
