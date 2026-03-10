@@ -29,7 +29,7 @@ extern const char Global_STR_APOSTROPHE[];
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern LONG ESQSHARED_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 extern void GCOMMAND_SeedBannerFromPrefs(void);
-extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(struct RastPort *rp, WORD x, WORD y, const char *text);
+extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rp, WORD x, WORD y, const char *text);
 extern char *GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
 extern void Disable(void);
@@ -66,10 +66,10 @@ void ESQIFF2_ShowVersionMismatchOverlay(void)
     RectFill(Global_REF_RASTPORT_1, 0, 60, 679, (UBYTE)(~100));
     SetAPen(Global_REF_RASTPORT_1, 3);
 
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 30, 90, ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA);
+    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)Global_REF_RASTPORT_1, 30, 90, ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA);
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(textbuf, ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD, Global_STR_MAJOR_MINOR_VERSION_2, Global_LONG_PATCH_VERSION_NUMBER);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 30, 120, textbuf);
+    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)Global_REF_RASTPORT_1, 30, 120, textbuf);
 
     p = textbuf;
     for (i = 0; i <= 4; ++i) {
@@ -80,5 +80,5 @@ void ESQIFF2_ShowVersionMismatchOverlay(void)
     GROUP_AR_JMPTBL_STRING_AppendAtNull(textbuf, (const char *)(ESQIFF_RecordBufferPtr + 1));
     GROUP_AR_JMPTBL_STRING_AppendAtNull(textbuf, Global_STR_APOSTROPHE);
 
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 30, 150, textbuf);
+    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)Global_REF_RASTPORT_1, 30, 150, textbuf);
 }
