@@ -71,7 +71,7 @@ void CLEANUP_DrawClockFormatList(LONG startIndex)
         LONG textX;
         LONG textY;
         LONG fontHeight;
-        UBYTE *textCursor;
+        const char *textCursor;
 
         if (row < CLOCK_FORMAT_FINAL_COLUMN_INDEX) {
             rowRightX = rowStartX + columnWidth + CLOCK_FORMAT_BEVEL_EXTRA_WIDTH;
@@ -87,7 +87,7 @@ void CLEANUP_DrawClockFormatList(LONG startIndex)
             33);
         CLEANUP_FormatClockFormatEntry(clockIndex, textBuffer);
 
-        textCursor = (UBYTE *)textBuffer;
+        textCursor = textBuffer;
         while (*textCursor != 0) {
             textCursor++;
         }
@@ -95,7 +95,7 @@ void CLEANUP_DrawClockFormatList(LONG startIndex)
         _LVOTextLength();
 
         textX = rowStartX +
-                (((columnWidth - (LONG)(textCursor - (UBYTE *)textBuffer) - CLOCK_FORMAT_TEXT_PAD) + 1) >> 1) +
+                (((columnWidth - (LONG)(textCursor - textBuffer) - CLOCK_FORMAT_TEXT_PAD) + 1) >> 1) +
                 CLOCK_FORMAT_TEXT_X_OFFSET;
         fontHeight = (LONG)rp->font52->height26;
         textY = (((CLOCK_FORMAT_TEXT_ROW_HEIGHT - fontHeight) + 1) >> 1) + fontHeight - 1;
