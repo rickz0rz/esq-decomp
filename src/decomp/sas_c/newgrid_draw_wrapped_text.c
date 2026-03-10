@@ -7,7 +7,7 @@ extern const char Global_STR_SINGLE_SPACE[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
-extern char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst, LONG limit, const char *delims);
+extern char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(const char *src, char *dst, LONG limit, const char *delims);
 extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
 extern void _LVOMove(char *rastport, LONG x, LONG y);
 extern void _LVOText(char *rastport, const char *text, LONG len);
