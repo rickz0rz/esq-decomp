@@ -12,7 +12,7 @@ extern char TEXTDISP_ChannelLabelBuffer[];
 extern char *Global_REF_RASTPORT_2;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern void TEXTDISP_BuildEntryShortName(const char *entry, char *out);
 extern void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix);
 extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth);
@@ -28,8 +28,8 @@ typedef struct TEXTDISP_DisplayContext {
 void TEXTDISP_DrawChannelBanner(WORD mode, WORD drawMode)
 {
     TEXTDISP_DisplayContext *context;
-    char *entry;
-    char *src;
+    const char *entry;
+    const char *src;
     char *dst;
     char *rastPort;
     LONG trimWidth;
