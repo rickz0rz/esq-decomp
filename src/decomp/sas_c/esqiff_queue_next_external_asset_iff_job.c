@@ -46,6 +46,19 @@ extern LONG ESQIFF_JMPTBL_STRING_CompareNoCaseN(const char *lhs, const char *rhs
 extern void *ESQIFF_JMPTBL_BRUSH_AllocBrushNode(const char *label, LONG flags);
 extern void ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(void);
 
+static WORD ESQIFF_HasRejectedAssetPrefix(const char *path)
+{
+    if (ESQIFF_JMPTBL_STRING_CompareNoCaseN(
+            ESQIFF_PATH_DF0_COLON, path, ESQIFF_DF0_PREFIX_LEN) == 0) {
+        return 1;
+    }
+    if (ESQIFF_JMPTBL_STRING_CompareNoCaseN(
+            ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, path, ESQIFF_RAM_LOGOS_PREFIX_LEN) == 0) {
+        return 1;
+    }
+    return 0;
+}
+
 WORD ESQIFF_QueueNextExternalAssetIffJob(void)
 {
     const WORD SOURCE_SELECT_GADS = 0;
@@ -152,13 +165,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
                     }
                 }
             } else {
-                if (ESQIFF_JMPTBL_STRING_CompareNoCaseN(
-                        ESQIFF_PATH_DF0_COLON, candidate, ESQIFF_DF0_PREFIX_LEN) == 0) {
-                    /* rejected prefix */
-                } else if (ESQIFF_JMPTBL_STRING_CompareNoCaseN(
-                               ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, candidate, ESQIFF_RAM_LOGOS_PREFIX_LEN) == 0) {
-                    /* rejected prefix */
-                } else {
+                if (!ESQIFF_HasRejectedAssetPrefix(candidate)) {
                     accepted = RESULT_ACCEPTED;
                 }
             }
