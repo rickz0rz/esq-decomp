@@ -12,7 +12,7 @@ typedef struct NEWGRID_Entry {
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 
-extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 
 LONG NEWGRID_FindNextEntryWithFlags(LONG scanMode, LONG startIndex)
 {
@@ -52,7 +52,7 @@ LONG NEWGRID_FindNextEntryWithFlags(LONG scanMode, LONG startIndex)
         }
 
         {
-            NEWGRID_Entry *entry = (NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, MODE_PRIMARY);
+            const NEWGRID_Entry *entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, MODE_PRIMARY);
             if (entry != 0) {
                 if (((entry->flags47 & ENTRY_FLAG_A_MASK) != 0) &&
                     ((entry->flags40 & ENTRY_FLAG_B_MASK) != 0)) {
