@@ -8,7 +8,7 @@ extern WORD GCOMMAND_DriveProbeRequestedFlag;
 
 extern LONG GROUP_AV_JMPTBL_EXEC_CallVector_48(void *a0, void *a1, LONG d1, void *a2);
 
-LONG GCOMMAND_ProcessCtrlCommand(char *cmdPtr)
+LONG GCOMMAND_ProcessCtrlCommand(const UBYTE *cmdPtr)
 {
     LONG rc;
     UBYTE type;
@@ -21,7 +21,7 @@ LONG GCOMMAND_ProcessCtrlCommand(char *cmdPtr)
 
     if (type == 1) {
         char *entry = (char *)&ED_StateRingTable[ED_StateRingWriteIndex * 5];
-        rc = GROUP_AV_JMPTBL_EXEC_CallVector_48(cmdPtr, entry, 5, 0);
+        rc = GROUP_AV_JMPTBL_EXEC_CallVector_48((void *)cmdPtr, entry, 5, 0);
         if (rc > 0 && rc != -1) {
             ED_StateRingWriteIndex += 1;
             if (ED_StateRingWriteIndex >= 20) {
