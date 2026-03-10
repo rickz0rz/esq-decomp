@@ -41,7 +41,7 @@ extern const char SCRIPT_FilterTag_SPORTS[];
 extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux, LONG index, LONG window, LONG minutes);
+extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const char *entry, const char *aux, LONG index, LONG window, LONG minutes);
 extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *aux, LONG slot);
 extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(UBYTE *bits, LONG index);
 extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);

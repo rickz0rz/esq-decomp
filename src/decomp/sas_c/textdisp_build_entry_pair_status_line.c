@@ -9,7 +9,7 @@ extern const char SCRIPT_SpacerTripleC[];
 
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux, LONG index, LONG window, LONG minutes);
+extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const char *entry, const char *aux, LONG index, LONG window, LONG minutes);
 extern const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(const char *entry, LONG index, LONG fieldId);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern void TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(char *line, LONG mode, LONG groupIndex, LONG entryIndex, LONG a, LONG b);
@@ -43,7 +43,7 @@ void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD e
     }
 
     if (TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
-            (char *)entry, (char *)aux, (LONG)entryIndex, WINDOW_HALF_HOUR, CONFIG_TimeWindowMinutes) == 0) {
+            entry, aux, (LONG)entryIndex, WINDOW_HALF_HOUR, CONFIG_TimeWindowMinutes) == 0) {
         return;
     }
 

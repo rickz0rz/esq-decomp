@@ -45,9 +45,9 @@ typedef struct COI_Entry {
     COI_AnimObject *anim;
 } COI_Entry;
 
-LONG COI_TestEntryWithinTimeWindow(UBYTE *entry, void *time_ctx, WORD slot, LONG max_offset, LONG fallback_delta)
+LONG COI_TestEntryWithinTimeWindow(const UBYTE *entry, const void *time_ctx, WORD slot, LONG max_offset, LONG fallback_delta)
 {
-    COI_Entry *entryView;
+    const COI_Entry *entryView;
     LONG result;
     LONG offset_minutes;
     LONG delta_minutes;
@@ -59,9 +59,9 @@ LONG COI_TestEntryWithinTimeWindow(UBYTE *entry, void *time_ctx, WORD slot, LONG
     offset_minutes = 0;
     sub_entry = (COI_SubEntry *)0;
     anim = (COI_AnimObject *)0;
-    entryView = (COI_Entry *)entry;
+    entryView = (const COI_Entry *)entry;
 
-    if (entry == (UBYTE *)0 || time_ctx == (void *)0 || slot < COI_SLOT_MIN_VALID) {
+    if (entry == (const UBYTE *)0 || time_ctx == (const void *)0 || slot < COI_SLOT_MIN_VALID) {
         result = COI_RESULT_FALSE;
         return result;
     }
@@ -104,7 +104,7 @@ LONG COI_TestEntryWithinTimeWindow(UBYTE *entry, void *time_ctx, WORD slot, LONG
             delta_minutes = fallback_delta;
         }
     } else {
-        delta_minutes = COI_ComputeEntryTimeDeltaMinutes(entry, (LONG)slot) - offset_minutes;
+        delta_minutes = COI_ComputeEntryTimeDeltaMinutes((void *)entry, (LONG)slot) - offset_minutes;
     }
 
     if (delta_minutes < 0 || offset_minutes > max_offset || offset_minutes < -delta_minutes) {

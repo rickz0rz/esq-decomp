@@ -52,7 +52,7 @@ extern const char *P_TYPE_WeatherBottomLineMsgPtr;
 
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux, LONG index, LONG window, LONG minutes);
+extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const char *entry, const char *aux, LONG index, LONG window, LONG minutes);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG index, char *aux);
 extern char *STR_SkipClass3Chars(const char *src);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
