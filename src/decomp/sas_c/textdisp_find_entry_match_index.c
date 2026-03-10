@@ -22,7 +22,7 @@ extern UWORD CLOCK_HalfHourSlotIndex;
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entryPtr, char *auxPtr, LONG startIndex);
-extern char *TEXTDISP_FindControlToken(char *textPtr);
+extern char *TEXTDISP_FindControlToken(const char *textPtr);
 extern LONG TEXTDISP_FindQuotedSpan(char *src, char **outStart, char *endHint, LONG *hasQuotes);
 extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(UBYTE *bitsetPtr, LONG index);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
@@ -44,10 +44,10 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
     const LONG MATCH_TRUE = -1;
     const TEXTDISP_AuxData *aux;
     const TEXTDISP_CandidateEntry *entry;
-    char *inputCtrl;
+    const char *inputCtrl;
     char *inputStart;
     const char *entryTitle;
-    char *entryCtrl;
+    const char *entryCtrl;
     char *entryStart;
     LONG inputHasQuotes;
     LONG entryHasQuotes;
@@ -113,8 +113,8 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
         slot = SLOT_FIRST;
     }
 
-    inputCtrl = TEXTDISP_FindControlToken((char *)input);
-    inputLen = TEXTDISP_FindQuotedSpan(input, &inputStart, inputCtrl, &inputHasQuotes);
+    inputCtrl = TEXTDISP_FindControlToken(input);
+    inputLen = TEXTDISP_FindQuotedSpan(input, &inputStart, (char *)inputCtrl, &inputHasQuotes);
     inputSaved = inputStart[inputLen];
     inputStart[inputLen] = CH_NUL;
 
@@ -135,18 +135,18 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
         }
 
         entryTitle = aux->titlePtrBySlot[(UWORD)slot];
-        entryCtrl = TEXTDISP_FindControlToken((char *)entryTitle);
+        entryCtrl = TEXTDISP_FindControlToken(entryTitle);
 
         tokenOk = 0;
-        if (inputCtrl == (char *)0) {
+        if (inputCtrl == (const char *)0) {
             tokenOk = GROUP_PRIMARY;
-        } else if (entryCtrl != (char *)0 && entryCtrl[0] == inputCtrl[0]) {
+        } else if (entryCtrl != (const char *)0 && entryCtrl[0] == inputCtrl[0]) {
             tokenOk = GROUP_PRIMARY;
         }
 
         isMatch = 0;
         if (tokenOk != 0) {
-            entryLen = TEXTDISP_FindQuotedSpan((char *)entryTitle, &entryStart, entryCtrl, &entryHasQuotes);
+            entryLen = TEXTDISP_FindQuotedSpan((char *)entryTitle, &entryStart, (char *)entryCtrl, &entryHasQuotes);
             entrySaved = entryStart[entryLen];
             entryStart[entryLen] = CH_NUL;
 
