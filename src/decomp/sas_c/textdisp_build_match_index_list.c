@@ -34,7 +34,7 @@ extern const char Global_STR_ASTERISK_3[];
 extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *a, const char *b);
 extern LONG TEXTDISP_ShouldOpenEditorForEntry(TEXTDISP_CandidateEntry *entry);
 
-LONG TEXTDISP_BuildMatchIndexList(char *patternPtr, UWORD cmdChar)
+LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar)
 {
     const LONG GROUP_PRIMARY = 1;
     const LONG MATCH_FALSE = 0;
@@ -54,7 +54,7 @@ LONG TEXTDISP_BuildMatchIndexList(char *patternPtr, UWORD cmdChar)
     TEXTDISP_CandidateEntry *entry;
 
     matchCount = 0;
-    if (patternPtr == (char *)0) {
+    if (patternPtr == (const char *)0) {
         return MATCH_FALSE;
     }
     patternText = patternPtr;

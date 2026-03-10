@@ -14,10 +14,10 @@ extern UBYTE TEXTDISP_BannerCharSelected;
 extern UBYTE TEXTDISP_BannerFallbackEntryIndex;
 extern UBYTE TEXTDISP_BannerSelectedEntryIndex;
 
-extern LONG TEXTDISP_BuildMatchIndexList(char *patternPtr, UWORD cmdChar);
-extern LONG TEXTDISP_SelectBestMatchFromList(char *statePtr, LONG matchCount, LONG cmdChar, char *patternPtr);
+extern LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar);
+extern LONG TEXTDISP_SelectBestMatchFromList(char *statePtr, LONG matchCount, LONG cmdChar, const char *patternPtr);
 
-LONG TEXTDISP_SelectGroupAndEntry(char *patternPtr, char *statePtr, UWORD cmdChar)
+LONG TEXTDISP_SelectGroupAndEntry(const char *patternPtr, char *statePtr, UWORD cmdChar)
 {
     LONG matchCount;
     LONG selectResult;
