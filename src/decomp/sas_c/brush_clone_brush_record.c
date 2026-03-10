@@ -54,13 +54,13 @@ enum {
 
 extern void *AbsExecBase;
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern const UBYTE Global_STR_BRUSH_C_17[];
-extern const UBYTE Global_STR_BRUSH_C_18[];
+extern const char Global_STR_BRUSH_C_17[];
+extern const char Global_STR_BRUSH_C_18[];
 extern LONG BRUSH_PendingAlertCode;
 extern UBYTE BRUSH_SnapshotHeader[];
 
-void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
-void *GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(const void *tag, LONG line, LONG plane_off, LONG width, LONG height);
+void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG line, LONG bytes, ULONG flags);
+void *GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(const char *tag, LONG line, LONG plane_off, LONG width, LONG height);
 void _LVOInitBitMap(void *bitmap, LONG depth, LONG width, LONG height);
 void _LVOInitRastPort(void *rp);
 void _LVOForbid(void);

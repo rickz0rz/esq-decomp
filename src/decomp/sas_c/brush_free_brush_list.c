@@ -21,12 +21,12 @@ enum {
     BRUSH_FREE_NODE_LINE = 567
 };
 
-extern const UBYTE Global_STR_BRUSH_C_5[];
-extern const UBYTE Global_STR_BRUSH_C_6[];
-extern const UBYTE Global_STR_BRUSH_C_7[];
+extern const char Global_STR_BRUSH_C_5[];
+extern const char Global_STR_BRUSH_C_6[];
+extern const char Global_STR_BRUSH_C_7[];
 
-void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const void *tag, LONG line, void *raster, LONG width, LONG height);
-void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
+void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const char *tag, LONG line, void *raster, LONG width, LONG height);
+void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, LONG bytes);
 
 typedef struct BRUSH_AuxNode {
     UBYTE pad0[BRUSH_AUX_NEXT_OFFSET];

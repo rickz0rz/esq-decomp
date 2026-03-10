@@ -4,13 +4,13 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 extern void *Global_REF_DOS_LIBRARY_2;
-extern const UBYTE Global_STR_BRUSH_C_1[];
-extern const UBYTE Global_STR_BRUSH_C_2[];
-extern const UBYTE Global_STR_BRUSH_C_3[];
-extern const UBYTE Global_STR_BRUSH_C_4[];
+extern const char Global_STR_BRUSH_C_1[];
+extern const char Global_STR_BRUSH_C_2[];
+extern const char Global_STR_BRUSH_C_3[];
+extern const char Global_STR_BRUSH_C_4[];
 
-void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
-void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
+void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG line, LONG bytes, ULONG flags);
+void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, LONG bytes);
 LONG _LVORead(LONG fh, void *buf, LONG len);
 
 enum {
