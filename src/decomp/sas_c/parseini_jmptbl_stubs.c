@@ -21,7 +21,7 @@ extern LONG UNKNOWN36_FinalizeRequest(void *req);
 extern void GCOMMAND_InitPresetTableFromPalette(UWORD *presetTable);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern long DISKIO_LoadFileToWorkBuffer(const char *path);
-extern void WDISP_SPrintf(void);
+extern long WDISP_SPrintf(void);
 extern UBYTE *STREAM_ReadLineWithLimit(UBYTE *dst, LONG max_len, void *stream);
 extern char *STR_FindAnyCharPtr(const char *s, const char *set);
 extern void ED1_ExitEscMenu(void);
@@ -48,7 +48,7 @@ LONG PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(void *req){return UNKNOWN36_Final
 void PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(UWORD *presetTable){GCOMMAND_InitPresetTableFromPalette(presetTable);}
 char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src){return STRING_AppendAtNull(dst, src);}
 long PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path){return DISKIO_LoadFileToWorkBuffer(path);}
-void PARSEINI_JMPTBL_WDISP_SPrintf(void){WDISP_SPrintf();}
+long PARSEINI_JMPTBL_WDISP_SPrintf(void){return WDISP_SPrintf();}
 UBYTE *PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(UBYTE *dst, LONG max_len, void *stream){return STREAM_ReadLineWithLimit(dst, max_len, stream);}
 char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *set){return STR_FindAnyCharPtr(s, set);}
 void PARSEINI_JMPTBL_ED1_ExitEscMenu(void){ED1_ExitEscMenu();}

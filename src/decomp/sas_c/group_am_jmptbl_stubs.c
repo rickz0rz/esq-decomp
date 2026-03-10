@@ -29,7 +29,7 @@ extern void GCOMMAND_InitPresetDefaults(void);
 extern void OVERRIDE_INTUITION_FUNCS(void);
 extern LONG BUFFER_FlushAllAndCloseWithCode(LONG code);
 extern void FLIB2_ResetAndLoadListingTemplates(void);
-extern void WDISP_SPrintf(void);
+extern long WDISP_SPrintf(void);
 extern void CLEANUP_ShutdownSystem(void);
 extern void LADFUNC_AllocBannerRectEntries(void);
 
@@ -60,6 +60,6 @@ void GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults(void){GCOMMAND_InitPresetDefaul
 void GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS(void){OVERRIDE_INTUITION_FUNCS();}
 LONG GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(LONG code){return BUFFER_FlushAllAndCloseWithCode(code);}
 void GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates(void){FLIB2_ResetAndLoadListingTemplates();}
-void GROUP_AM_JMPTBL_WDISP_SPrintf(void){WDISP_SPrintf();}
+long GROUP_AM_JMPTBL_WDISP_SPrintf(void){return WDISP_SPrintf();}
 void GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem(void){CLEANUP_ShutdownSystem();}
 void GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries(void){LADFUNC_AllocBannerRectEntries();}
