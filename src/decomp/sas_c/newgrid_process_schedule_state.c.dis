@@ -169,11 +169,11 @@ ___NEWGRID_ProcessScheduleState__29:
 ___NEWGRID_ProcessScheduleState__30:
               BRA.W          ___NEWGRID_ProcessScheduleState__67;6000 01e0 
 ___NEWGRID_ProcessScheduleState__31:
+              MOVE.W         NEWGRID_ScheduleRowOffset(A4),D0;302c 0000 
+              MOVE.W         D6,D1                    ;3206 
+              ADD.W          D0,D1                    ;d240 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         D6,D0                    ;3006 
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.W         NEWGRID_ScheduleRowOffset(A4),D1;322c 0000 
-              ADD.L          D1,D0                    ;d081 
+              MOVE.W         D1,D0                    ;3001 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          NEWGRID_DrawStatusMessage;6100 0000 

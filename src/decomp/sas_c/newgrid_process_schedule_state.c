@@ -31,7 +31,7 @@ extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern LONG NEWGRID_UpdateGridState(char *ctx, LONG index, LONG row);
 extern LONG NEWGRID_HandleDetailGridState(char *ctx, LONG index, LONG row);
 extern LONG NEWGRID_FindNextEntryWithAltMarkers(LONG state, LONG selected, LONG row);
-extern LONG NEWGRID_DrawStatusMessage(char *ctx, LONG row);
+extern void NEWGRID_DrawStatusMessage(char *ctx, UWORD row);
 extern LONG NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);
 extern LONG NEWGRID_ComputeColumnIndex(char *ctx);
@@ -87,7 +87,7 @@ LONG NEWGRID_ProcessScheduleState(char *ctx, UWORD rowBase, UWORD rowCur)
     }
 
     case 1:
-        NEWGRID_DrawStatusMessage(ctx, (LONG)rowCur + NEWGRID_ScheduleRowOffset);
+        NEWGRID_DrawStatusMessage(ctx, (UWORD)((LONG)rowCur + NEWGRID_ScheduleRowOffset));
         NEWGRID_ScheduleSelectionCodeCache = 0;
         NEWGRID_ScheduleWorkflowState = NEWGRID_ScheduleEditorGateFlag ? 2 : 3;
         break;
