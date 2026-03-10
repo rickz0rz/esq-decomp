@@ -7,7 +7,7 @@ extern WORD TLIBA2_BroadcastWindowClockSnapshotA[];
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 
 extern void TLIBA2_JMPTBL_DST_AddTimeOffset(WORD *clockData, LONG hourDelta, LONG minuteDelta);
-extern LONG TLIBA2_ParseEntryTimeWindow(void *entryContext, LONG entryIndex, LONG *outPair);
+extern LONG TLIBA2_ParseEntryTimeWindow(const void *entryContext, LONG entryIndex, LONG *outPair);
 
 void TLIBA2_ComputeBroadcastTimeWindow(WORD groupCode, void *entryContext, LONG entryIndex, LONG slotIndex, LONG *outDateTriplet, LONG *outTimePair)
 {
@@ -50,7 +50,7 @@ void TLIBA2_ComputeBroadcastTimeWindow(WORD groupCode, void *entryContext, LONG 
     }
 
     if (entryContext != (void *)0) {
-        parseOk = TLIBA2_ParseEntryTimeWindow(entryContext, entryIndex, parsedRange);
+        parseOk = TLIBA2_ParseEntryTimeWindow((const void *)entryContext, entryIndex, parsedRange);
     } else {
         parseOk = 0;
     }

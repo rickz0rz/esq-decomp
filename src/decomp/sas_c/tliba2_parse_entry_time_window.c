@@ -3,7 +3,7 @@ typedef unsigned char UBYTE;
 
 typedef struct TLIBA2_EntryAux {
     UBYTE pad0[56];
-    char *titleTable[49];
+    const char *titleTable[49];
 } TLIBA2_EntryAux;
 
 extern char *STR_FindCharPtr(const char *s, LONG ch);
@@ -22,8 +22,8 @@ LONG TLIBA2_ParseEntryTimeWindow(void *entryContext, LONG entryIndex, LONG *outP
     const LONG TWO = 2;
     const LONG RESULT_OK = 1;
     const LONG RESULT_FAIL = 0;
-    TLIBA2_EntryAux *entryAux;
-    char *entryText;
+    const TLIBA2_EntryAux *entryAux;
+    const char *entryText;
     char *openParen;
     char *colon;
     char *closeParen;
@@ -32,12 +32,12 @@ LONG TLIBA2_ParseEntryTimeWindow(void *entryContext, LONG entryIndex, LONG *outP
 
     ok = RESULT_FAIL;
     if (entryContext == (void *)PTR_NULL) {
-        entryText = (char *)PTR_NULL;
+        entryText = (const char *)PTR_NULL;
     } else {
-        entryAux = (TLIBA2_EntryAux *)entryContext;
+        entryAux = (const TLIBA2_EntryAux *)entryContext;
         entryText = entryAux->titleTable[entryIndex];
     }
-    if (entryText == (char *)PTR_NULL) {
+    if (entryText == (const char *)PTR_NULL) {
         return RESULT_FAIL;
     }
 
