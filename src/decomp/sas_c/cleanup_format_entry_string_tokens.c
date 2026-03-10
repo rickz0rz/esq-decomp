@@ -31,6 +31,7 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input
     char formattedTokenText[11];
     LONG i;
     char *separatorPtr;
+    const char *scan;
 
     if (input == (char *)0 || input[0] == 0 || GROUP_AI_JMPTBL_STR_FindCharPtr(input, TOKEN_SEPARATOR) == (char *)0) {
         *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, (char *)*field_a);
@@ -44,8 +45,9 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input
     defaultTokenText[TOKEN_MAX_LEN] = 0;
 
     i = 0;
-    while (CLEANUP_TokenPairScratch[i] != 0) {
-        formattedTokenText[i] = CLEANUP_TokenPairScratch[i];
+    scan = CLEANUP_TokenPairScratch;
+    while (*scan != 0) {
+        formattedTokenText[i] = *scan++;
         i += 1;
     }
     formattedTokenText[i] = 0;
@@ -60,8 +62,9 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input
     *field_a = (void *)GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(formattedTokenText, (char *)*field_a);
 
     i = 0;
-    while (CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[i] != 0) {
-        formattedTokenText[i] = CLOCK_STR_TOKEN_OUTPUT_TEMPLATE[i];
+    scan = CLOCK_STR_TOKEN_OUTPUT_TEMPLATE;
+    while (*scan != 0) {
+        formattedTokenText[i] = *scan++;
         i += 1;
     }
     formattedTokenText[i] = 0;
