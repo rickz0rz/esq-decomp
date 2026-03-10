@@ -106,6 +106,7 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
         aux = (const NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((mode == 2) ? wildcardIdx : titleIdx, mode);
 
         if (entry && aux) {
+            const char *entryText = (const char *)entry;
             state = NEWGRID_GetEntryStateCode(entry, aux, modeIdx);
             nextSpan = 1;
             while ((LONG)row + (LONG)nextSpan < 3) {
@@ -114,7 +115,7 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
             }
 
             if (state == 3) {
-                LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex((const char *)entry, (const char *)aux, modeIdx);
+                LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, (const char *)aux, modeIdx);
                 state = (prev == 0) ? 1 : 2;
             }
 
