@@ -22,8 +22,8 @@ extern UWORD ESQIFF_AssetSourceSelect;
 extern LONG Global_REF_LIST_IFF_TASK_PROC;
 extern LONG CTASKS_IffTaskSegListBPTR;
 extern LONG CTASKS_IffTaskProcPtr;
-extern char Global_STR_IFF_TASK_1[];
-extern char Global_STR_IFF_TASK_2[];
+extern const char Global_STR_IFF_TASK_1[];
+extern const char Global_STR_IFF_TASK_2[];
 extern const char Global_STR_CTASKS_C_2[];
 
 void CTASKS_IFFTaskCleanup(void);

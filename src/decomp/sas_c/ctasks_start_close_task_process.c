@@ -20,7 +20,7 @@ extern LONG CTASKS_CloseTaskSegListBPTR;
 extern LONG CTASKS_CloseTaskProcPtr;
 extern LONG Global_REF_DOS_LIBRARY_2;
 extern const char Global_STR_CTASKS_C_4[];
-extern char Global_STR_CLOSE_TASK[];
+extern const char Global_STR_CLOSE_TASK[];
 
 void CTASKS_CloseTaskTeardown(void);
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
