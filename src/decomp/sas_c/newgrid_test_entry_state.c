@@ -21,8 +21,8 @@ LONG NEWGRID_TestEntryState(LONG mode, LONG primaryIndex, LONG secondaryIndex, W
     const LONG STATE_UNSET = 0;
     const LONG STATE_PRESENT = 1;
     const LONG STATE_BLOCKED = 3;
-    const char *entryPtr;
-    const char *entryAuxPtr;
+    const void *entryPtr;
+    const void *entryAuxPtr;
     LONG state;
     LONG result;
 
