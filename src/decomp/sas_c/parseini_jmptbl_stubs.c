@@ -28,7 +28,7 @@ extern void ESQFUNC_DrawEscMenuVersion(void);
 long PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b){return STRING_CompareNoCase(a, b);}
 void PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0(void){ED1_WaitForFlagAndClearBit0();}
 void PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk(void){DISKIO2_ParseIniFileFromDisk();}
-char *PARSEINI_JMPTBL_STR_FindCharPtr(char *s, long ch){return STR_FindCharPtr(s, ch);}
+char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, long ch){return STR_FindCharPtr((char *)s, ch);}
 void PARSEINI_JMPTBL_HANDLE_OpenWithMode(void){HANDLE_OpenWithMode();}
 void PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(void){ESQIFF_QueueIffBrushLoad();}
 void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(void){ESQIFF_HandleBrushIniReloadHotkey();}
