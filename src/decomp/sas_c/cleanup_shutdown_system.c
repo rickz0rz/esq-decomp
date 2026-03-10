@@ -56,7 +56,7 @@ void GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(UWORD group);
 void GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers(void);
 void GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources(void);
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(void *rast, LONG width, LONG height, LONG line, const char *file);
+LONG GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const void *file, LONG line, void *rast, LONG width, LONG height);
 char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 void _LVOSetFunction(void);
 void _LVOVBeamPos(void);
@@ -111,7 +111,7 @@ void CLEANUP_ShutdownSystem(void)
         for (colIndex = 0; colIndex < CLEANUP_RASTER_COLS; colIndex++) {
             LONG rasterOffset = GROUP_AG_JMPTBL_MATH_Mulu32(rowIndex, CLEANUP_RASTER_ROW_STRIDE) + (colIndex << CLEANUP_RASTER_COL_SHIFT);
             LONG rasterPtr = *(LONG *)(ESQDISP_HighlightBitmapTable + rasterOffset + CLEANUP_RASTER_PTR_OFFSET);
-            GROUP_AB_JMPTBL_GRAPHICS_FreeRaster((void *)rasterPtr, 696, (LONG)WDISP_HighlightRasterHeightPx, 329, Global_STR_CLEANUP_C_16);
+            GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_16, 329, (void *)rasterPtr, 696, (LONG)WDISP_HighlightRasterHeightPx);
         }
     }
 

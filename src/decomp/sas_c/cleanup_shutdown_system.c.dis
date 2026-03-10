@@ -89,13 +89,13 @@ ___CLEANUP_ShutdownSystem__6:
               MOVE.L         (A0),D4                  ;2810 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         WDISP_HighlightRasterHeightPx(A4),D0;302c 0000 
-              PEA            Global_STR_CLEANUP_C_16(A4);486c 0000 
-              PEA            ($149).w                 ;4878 0149 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,(A7)                  ;2e80 
               PEA            ($2b8).w                 ;4878 02b8 
               MOVE.L         D4,-(A7)                 ;2f04 
+              PEA            ($149).w                 ;4878 0149 
+              PEA            Global_STR_CLEANUP_C_16(A4);486c 0000 
               BSR.W          GROUP_AB_JMPTBL_GRAPHICS_FreeRas;6100 0000 
-              LEA            $1c(A7),A7               ;4fef 001c 
+              LEA            $18(A7),A7               ;4fef 0018 
 ___CLEANUP_ShutdownSystem__7:
               ADDQ.L         #$1,D6                   ;5286 
               BRA.B          ___CLEANUP_ShutdownSystem__5;60ba 

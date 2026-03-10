@@ -25,7 +25,7 @@ extern char Global_STR_CLEANUP_C_11[];
 extern char Global_STR_CLEANUP_C_12[];
 
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
-void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(void *rast, LONG width, LONG height, LONG line, const char *file);
+LONG GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const void *file, LONG line, void *rast, LONG width, LONG height);
 void _LVOCloseFont(void);
 void _LVOCloseLibrary(void);
 
@@ -56,38 +56,38 @@ void CLEANUP_ReleaseDisplayResources(void)
 
     for (i = 0; i < RASTER_TABLE_COUNT; i++) {
         GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
+            Global_STR_CLEANUP_C_8,
+            FREE_LIVE_LINE,
             *(void **)(WDISP_LivePlaneRasterTable0 + (i << PTR_STRIDE_SHIFT)),
             RASTER_WIDE,
-            RASTER_H_2,
-            FREE_LIVE_LINE,
-            Global_STR_CLEANUP_C_8);
+            RASTER_H_2);
     }
     for (i = 0; i < RASTER_TABLE_COUNT; i++) {
         GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
+            Global_STR_CLEANUP_C_9,
+            FREE_352_LINE,
             *(void **)(WDISP_352x240RasterPtrTable + (i << PTR_STRIDE_SHIFT)),
             RASTER_NARROW,
-            RASTER_H_240,
-            FREE_352_LINE,
-            Global_STR_CLEANUP_C_9);
+            RASTER_H_240);
     }
     for (i = 0; i < RASTER_TABLE_COUNT; i++) {
         GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
+            Global_STR_CLEANUP_C_10,
+            FREE_BANNER_LINE,
             *(void **)(WDISP_BannerRowScratchRasterTable0 + (i << PTR_STRIDE_SHIFT)),
             RASTER_WIDE,
-            RASTER_H_34,
-            FREE_BANNER_LINE,
-            Global_STR_CLEANUP_C_10);
+            RASTER_H_34);
     }
     for (i = 0; i < RASTER_TABLE_COUNT; i++) {
         GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
+            Global_STR_CLEANUP_C_11,
+            FREE_CTX_LINE,
             *(void **)(WDISP_DisplayContextPlanePointer0 + (i << PTR_STRIDE_SHIFT)),
             RASTER_WIDE,
-            RASTER_H_240,
-            FREE_CTX_LINE,
-            Global_STR_CLEANUP_C_11);
+            RASTER_H_240);
     }
     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
-        (void *)WDISP_BannerWorkRasterPtr, RASTER_WIDE, RASTER_H_34, FREE_WORK_LINE, Global_STR_CLEANUP_C_12);
+        Global_STR_CLEANUP_C_12, FREE_WORK_LINE, (void *)WDISP_BannerWorkRasterPtr, RASTER_WIDE, RASTER_H_34);
 
     _LVOCloseFont();
     _LVOCloseFont();
