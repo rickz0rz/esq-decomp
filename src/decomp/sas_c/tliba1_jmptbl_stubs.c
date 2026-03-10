@@ -17,7 +17,7 @@ const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(const void *entry, LONG 
 const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryAuxPointerByMode(index, mode);}
 LONG TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble(LONG v){return LADFUNC_GetPackedPenLowNibble((UBYTE)v);}
 const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode){return ESQDISP_GetEntryPointerByMode(index, mode);}
-LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const UBYTE *entry, const void *time_ctx, WORD slot, LONG max_offset, LONG fallback_delta){return COI_TestEntryWithinTimeWindow(entry, time_ctx, slot, max_offset, fallback_delta);}
+LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const void *entry, const void *time_ctx, WORD slot, LONG max_offset, LONG fallback_delta){return COI_TestEntryWithinTimeWindow((const UBYTE *)entry, time_ctx, slot, max_offset, fallback_delta);}
 void TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out){CLEANUP_FormatClockFormatEntry(slotIndex, out);}
 LONG TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(WORD row, UBYTE slot){return ESQDISP_ComputeScheduleOffsetForRow(row, slot);}
 char *TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle){return ESQ_FindSubstringCaseFold(haystack, needle);}

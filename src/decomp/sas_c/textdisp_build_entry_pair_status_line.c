@@ -9,8 +9,8 @@ extern const char SCRIPT_SpacerTripleC[];
 
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const char *entry, const char *aux, LONG index, LONG window, LONG minutes);
-extern const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(const char *entry, LONG index, LONG fieldId);
+extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const void *entry, const void *aux, LONG index, LONG window, LONG minutes);
+extern const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(const void *entry, LONG index, LONG fieldId);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern void TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(char *line, LONG mode, LONG groupIndex, LONG entryIndex, LONG a, LONG b);
 extern void SCRIPT_SetupHighlightEffect(char *line);
