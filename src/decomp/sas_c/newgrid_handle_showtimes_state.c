@@ -30,7 +30,7 @@ extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, con
 extern LONG NEWGRID_DrawGridFrameVariant3(char *gridCtx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
 
-LONG NEWGRID_HandleShowtimesState(char *gridCtx, char *entryState)
+LONG NEWGRID_HandleShowtimesState(char *gridCtx, const void *entryState)
 {
     NEWGRID_Context *ctxView;
     const NEWGRID_ShowtimesEntryState *stateView;
@@ -44,7 +44,7 @@ LONG NEWGRID_HandleShowtimesState(char *gridCtx, char *entryState)
     }
 
     ctxView = (NEWGRID_Context *)gridCtx;
-    stateView = (NEWGRID_ShowtimesEntryState *)entryState;
+    stateView = (const NEWGRID_ShowtimesEntryState *)entryState;
     if (NEWGRID_ShowtimesWorkflowStateLatch == 4) {
         if (stateView->entryPtr == 0 || stateView->auxPtr == 0) {
             return NEWGRID_ShowtimesWorkflowStateLatch;
@@ -64,7 +64,7 @@ LONG NEWGRID_HandleShowtimesState(char *gridCtx, char *entryState)
         }
 
         NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(GCOMMAND_PpvShowtimesInitialLineIndex);
-        NEWGRID_BuildShowtimesText(gridCtx, entryState, text);
+        NEWGRID_BuildShowtimesText(gridCtx, (char *)entryState, text);
         NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(ctxView->rastPort, text);
 
         if (NEWGRID_DrawGridFrameVariant3(gridCtx) != 0) {
