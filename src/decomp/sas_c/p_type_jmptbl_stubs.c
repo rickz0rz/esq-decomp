@@ -1,3 +1,3 @@
-extern void STRING_FindSubstring(void);
+extern char *STRING_FindSubstring(char *haystack, const char *needle);
 
-void P_TYPE_JMPTBL_STRING_FindSubstring(void){STRING_FindSubstring();}
+char *P_TYPE_JMPTBL_STRING_FindSubstring(const char *haystack, const char *needle){return STRING_FindSubstring((char *)haystack, needle);}
