@@ -29,7 +29,7 @@ extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern LONG CONFIG_TimeWindowMinutes;
 
-extern LONG NEWGRID_ClearMarkersIfSelectable(LONG mode, LONG row);
+extern void NEWGRID_ClearMarkersIfSelectable(LONG mode, LONG row);
 extern LONG NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG col);
 extern LONG NEWGRID_TestEntrySelectable(const void *entry, const void *aux, LONG mode);
 extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *aux, LONG idx);
