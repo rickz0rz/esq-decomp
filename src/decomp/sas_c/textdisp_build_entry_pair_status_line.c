@@ -8,7 +8,7 @@ extern const char SCRIPT_AlignedPrefixEmptyE[];
 extern const char SCRIPT_SpacerTripleC[];
 
 extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux, LONG index, LONG window, LONG minutes);
 extern const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(char *entry, LONG index, LONG fieldId);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
@@ -28,7 +28,7 @@ void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD e
     const LONG ZERO = 0;
     const UBYTE CH_NUL = 0;
     char *aux;
-    char *entry;
+    const char *entry;
     LONG idx;
     const char *partA;
     const char *partB;
@@ -43,7 +43,7 @@ void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD e
     }
 
     if (TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
-            entry, aux, (LONG)entryIndex, WINDOW_HALF_HOUR, CONFIG_TimeWindowMinutes) == 0) {
+            (char *)entry, aux, (LONG)entryIndex, WINDOW_HALF_HOUR, CONFIG_TimeWindowMinutes) == 0) {
         return;
     }
 
@@ -51,8 +51,8 @@ void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD e
         entryIndex = SLOT_INVALID;
     }
 
-    partA = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)entryIndex, FIELD_PART_A);
-    partB = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (LONG)entryIndex, FIELD_PART_B);
+    partA = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode((char *)entry, (LONG)entryIndex, FIELD_PART_A);
+    partB = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode((char *)entry, (LONG)entryIndex, FIELD_PART_B);
 
     line[0] = CH_NUL;
     if (partA != (const char *)0) {
