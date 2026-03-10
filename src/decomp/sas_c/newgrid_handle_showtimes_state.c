@@ -25,7 +25,7 @@ extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight,
 extern void NEWGRID_DrawGridEntry(char *rastPort, char *entryPtr0, char *entryPtr1, LONG row, LONG mode, LONG enabled, LONG bevel);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG idx);
 extern void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out);
-extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
+extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
 extern LONG NEWGRID_DrawGridFrameVariant3(char *gridCtx);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
 

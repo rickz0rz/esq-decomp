@@ -19,7 +19,7 @@ extern LONG _LVOTextLength(void *gfxBase, char *rp, const char *text, LONG count
 extern char *DISPTEXT_BuildLineWithWidth(char *rp, const char *src, char *scratch, LONG widthPx);
 extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern void DISPLIB_CommitCurrentLinePenAndAdvance(LONG pen);
-extern LONG DISPTEXT_AppendToBuffer(char *src);
+extern LONG DISPTEXT_AppendToBuffer(const char *src);
 extern void DISPTEXT_BuildLinePointerTable(LONG lockValue);
 
 LONG DISPTEXT_LayoutAndAppendToBuffer(char *rp, const char *src)

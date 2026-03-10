@@ -14,7 +14,7 @@ extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
 extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 
-LONG DISPTEXT_AppendToBuffer(char *src)
+LONG DISPTEXT_AppendToBuffer(const char *src)
 {
     const ULONG AVAILMEM_CHIP_FLAG = 1;
     const ULONG TEXTBUFFER_ALLOC_FLAGS = 1;
@@ -27,7 +27,7 @@ LONG DISPTEXT_AppendToBuffer(char *src)
         ULONG srcLen = 0;
         ULONG allocSize;
         ULONG avail;
-        char *scan;
+        const char *scan;
 
         scan = DISPTEXT_TextBufferPtr;
         while (*scan++ != 0) {
