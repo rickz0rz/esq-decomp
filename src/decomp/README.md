@@ -25,6 +25,7 @@ The repository currently has two active decomp lanes:
 - The script builds the file and emits sibling `.o` and `.dis` artifacts for inspection.
 - Existing `src/decomp/sas_c/*.c` files are the best local reference for coding style, type conventions, and “mostly equivalent” reconstruction patterns.
 - In the current tree, most existing SAS/C compare lanes are already populated; remaining work often means tightening those files or adding new ports for GCC-only targets.
+- Do not infer the canonical SAS/C source name from older `unknownNN_*` object/disassembly artifacts alone. Several targets were renamed to role-based filenames after promotion, so the target-specific compare script is the authoritative mapping from assembly slice to current `src/decomp/sas_c/*.c` source.
 
 ## Files
 - `src/decomp/replacements.map`: module substitution map.
