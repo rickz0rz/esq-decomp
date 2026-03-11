@@ -4,11 +4,12 @@ typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
-extern const char *COI_GetAnimFieldPointerByMode(const void *entry, UWORD key, UWORD mode);
+extern const char *COI_SelectAnimFieldPointer(const void *entry, LONG key, LONG mode);
 extern LONG DISPTEXT_LineTableLockFlag;
 extern char Global_REF_1000_BYTES_ALLOCATED_1[];
 extern void DISPTEXT_SetCurrentLineIndex(LONG lineIndex);
 extern LONG DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, const char *src);
+extern LONG DISPTEXT_BuildLayoutForSource();
 extern LONG DISPTEXT_GetTotalLineCount(void);
 extern LONG TLIBA_FindFirstWildcardMatchIndex(const char *wildcardPattern);
 extern void GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2(char *dst, const char *fmt, void *argList);
@@ -41,15 +42,20 @@ extern void BEVEL_DrawHorizontalBevel(char *rastPort, LONG leftX, LONG topY, LON
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 
-const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry, LONG key, LONG field){return COI_GetAnimFieldPointerByMode(entry, (UWORD)key, (UWORD)field);}
+const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry, LONG key, LONG field){return COI_SelectAnimFieldPointer(entry, key, field);}
 void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG lineIndex){DISPTEXT_SetCurrentLineIndex(lineIndex);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layoutCtx, const char *src){return DISPTEXT_LayoutAndAppendToBuffer(layoutCtx, src);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount(void){return DISPTEXT_GetTotalLineCount();}
 LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const char *wildcardPattern){return TLIBA_FindFirstWildcardMatchIndex(wildcardPattern);}
 LONG NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(char *rp, const char *fmt, ...)
 {
+    LONG (*volatile target)() = DISPTEXT_BuildLayoutForSource;
     LONG status = 0;
     void *argList = (void *)(&fmt + 1);
+
+    if (target == 0) {
+        return 0;
+    }
 
     if (DISPTEXT_LineTableLockFlag == 0) {
         GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2(
