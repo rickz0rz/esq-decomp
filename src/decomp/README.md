@@ -5389,6 +5389,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown21_dos_open_new_file_if_missing.c`
 - `src/decomp/sas_c/unknown21_dos_delete_and_recreate_file.c`
 - `src/decomp/sas_c/unknown24_parse_read_signed_long_skip_class3.c`
+- `src/decomp/sas_c/unknown24_parse_read_signed_long_skip_class3_alt.c`
 - `src/decomp/sas_c/unknown24_memlist_alloc_free.c`
 - `src/decomp/sas_c/unknown25_struct_alloc_free.c`
 - `src/decomp/sas_c/unknown27_format_buffer2.c`

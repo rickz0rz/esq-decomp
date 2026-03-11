@@ -17,7 +17,7 @@ mkdir -p "$OUT_DIR"
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_parse_read_signed_long_skip_class3.log" 2>&1
 
 awk '$0 ~ /^PARSE_ReadSignedLongSkipClass3:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/parse_read_signed_long_skip_class3.original.s"
-awk '$0 ~ /^PARSE_ReadSignedLongSkipClass3:$/ {in_func=1} in_func { if ($0 ~ /^PARSE_ReadSignedLongSkipClass3_Alt:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/parse_read_signed_long_skip_class3.sasc.dis.s"
+awk '$0 ~ /^PARSE_ReadSignedLongSkipClass3:$/ {in_func=1} in_func { if ($0 ~ /^__const:$/ || $0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^END$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/parse_read_signed_long_skip_class3.sasc.dis.s"
 
 normalize() {
   sed -E \

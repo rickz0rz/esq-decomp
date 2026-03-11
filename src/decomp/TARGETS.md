@@ -1680,6 +1680,7 @@ Run:
 Current notes:
 - GCC uses the same compact wrapper style as Target 071; key behavior is preserved: null guard, class3 skip call, `PARSE_ReadSignedLong_NoBranch` dispatch, parsed-value return.
 - Semantic gate validates those invariants explicitly.
+- The SAS/C lane now uses a dedicated `unknown24_parse_read_signed_long_skip_class3_alt.c` source, but SAS/C 6.51 still shortens the emitted export in `.dis` to `PARSE_ReadSignedLongSkipClass3_A`; compare scripts normalize that alias back to `_Alt`.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
 ## Target 073: `modules/submodules/unknown24.s` (`MEMLIST_FreeAll`)
