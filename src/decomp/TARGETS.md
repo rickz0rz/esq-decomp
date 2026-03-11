@@ -1539,6 +1539,7 @@ Current notes:
 - GCC may vary zero-check idioms around handle failure, but preserves signal callback check, `DOS_Open` call, `DOS_IoErr` path, app error code set to `2`, and `-1` failure return.
 - Semantic gate validates callback test/call, ioerr clear+store, open/ioerr calls, failure code path, and `RTS`.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+- SAS/C lane now lives at `src/decomp/sas_c/dos_open_with_error_state.c`; `compare_sasc_dos_open_with_error_state_trial.sh` builds that named source directly.
 
 ## Target 067: `modules/submodules/unknown37.s` (`HANDLE_CloseByIndex`)
 

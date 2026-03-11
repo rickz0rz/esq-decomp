@@ -4561,7 +4561,7 @@ Recent promoted targets:
 - Unknown19 `DOS_ReadWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_read_with_error_state_trial.sh`
 - Unknown17 `DOS_WriteWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_write_with_error_state_trial.sh`
 - Unknown18 `DOS_SeekWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_seek_with_error_state_trial.sh`
-- Unknown20 `DOS_OpenWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_open_with_error_state_trial.sh`
+- `DOS_OpenWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_open_with_error_state_trial.sh`
 - Unknown21 `IOSTDREQ_Free` SAS/C compare script: `src/decomp/scripts/compare_sasc_iostdreq_free_trial.sh`
 - Unknown21 `IOSTDREQ_CleanupSignalAndMsgport` SAS/C compare script: `src/decomp/scripts/compare_sasc_iostdreq_cleanup_signal_and_msgport_trial.sh`
 - Unknown21 `DOS_OpenNewFileIfMissing` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_open_new_file_if_missing_trial.sh`
@@ -5383,7 +5383,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown19_dos_read_with_error_state.c`
 - `src/decomp/sas_c/unknown17_dos_write_with_error_state.c`
 - `src/decomp/sas_c/unknown18_dos_seek_with_error_state.c`
-- `src/decomp/sas_c/unknown20_dos_open_with_error_state.c`
+- `src/decomp/sas_c/dos_open_with_error_state.c`
 - `src/decomp/sas_c/unknown21_iostdreq_free.c`
 - `src/decomp/sas_c/unknown21_iostdreq_cleanup_signal_and_msgport.c`
 - `src/decomp/sas_c/unknown21_dos_open_new_file_if_missing.c`

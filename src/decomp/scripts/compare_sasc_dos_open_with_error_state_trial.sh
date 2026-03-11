@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-SASC_SRC="unknown20_dos_open_with_error_state.c"
+SASC_SRC="dos_open_with_error_state.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown20.s"
