@@ -1,6 +1,10 @@
 typedef signed long LONG;
 typedef unsigned long ULONG;
 
+#define MEMF_PUBLIC 1UL
+#define DISPTEXT_AVAILMEM_THRESHOLD 0x2710UL
+#define DISPTEXT_ALLOC_SOURCE_LINE 127UL
+
 extern void *AbsExecBase;
 extern char *DISPTEXT_TextBufferPtr;
 extern const char Global_STR_DISPTEXT_C_1[];
@@ -16,38 +20,33 @@ extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, cha
 
 LONG DISPTEXT_AppendToBuffer(const char *src)
 {
-    const ULONG AVAILMEM_CHIP_FLAG = 1;
-    const ULONG TEXTBUFFER_ALLOC_FLAGS = 1;
-    const ULONG AVAILMEM_MIN_ALLOC_THRESHOLD = 0x2710UL;
-    const ULONG ALLOC_SOURCE_LINE = 127;
     char *newBuffer = (char *)0;
 
     if (DISPTEXT_TextBufferPtr != (char *)0) {
-        ULONG dstLen = 0;
-        ULONG srcLen = 0;
+        char *dstEnd;
+        const char *srcEnd;
         ULONG allocSize;
-        ULONG avail;
-        const char *scan;
 
-        scan = DISPTEXT_TextBufferPtr;
-        while (*scan++ != 0) {
-            dstLen++;
+        dstEnd = DISPTEXT_TextBufferPtr;
+        while (*dstEnd++ != 0) {
         }
+        dstEnd--;
 
-        scan = src;
-        while (*scan++ != 0) {
-            srcLen++;
+        srcEnd = src;
+        while (*srcEnd++ != 0) {
         }
+        srcEnd--;
 
-        allocSize = dstLen + srcLen + 1;
-        avail = _LVOAvailMem(AbsExecBase, AVAILMEM_CHIP_FLAG);
+        allocSize = (ULONG)(dstEnd - DISPTEXT_TextBufferPtr);
+        allocSize += (ULONG)(srcEnd - src);
+        allocSize += 1;
 
-        if (avail > AVAILMEM_MIN_ALLOC_THRESHOLD) {
+        if (_LVOAvailMem(AbsExecBase, MEMF_PUBLIC) > DISPTEXT_AVAILMEM_THRESHOLD) {
             newBuffer = (char *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
                 Global_STR_DISPTEXT_C_1,
-                ALLOC_SOURCE_LINE,
+                DISPTEXT_ALLOC_SOURCE_LINE,
                 allocSize,
-                TEXTBUFFER_ALLOC_FLAGS);
+                MEMF_PUBLIC);
         }
 
         if (newBuffer != (char *)0) {
@@ -65,5 +64,8 @@ LONG DISPTEXT_AppendToBuffer(const char *src)
         DISPTEXT_TextBufferPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(src, DISPTEXT_TextBufferPtr);
     }
 
-    return (DISPTEXT_TextBufferPtr != (char *)0) ? -1L : 0L;
+    if (DISPTEXT_TextBufferPtr != (char *)0) {
+        return -1L;
+    }
+    return 0L;
 }

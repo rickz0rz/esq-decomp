@@ -2,57 +2,53 @@
 __code:
 DISPTEXT_AppendToBuffer:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$2c,D0                  ;90bc 0000 002c 
+              SUB.L          #$1c,D0                  ;90bc 0000 001c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$1c,A7                  ;9efc 001c 
-              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
 ___DISPTEXT_AppendToBuffer__1:
-              MOVE.L         $38(A7),A5               ;2a6f 0038 
-              MOVEQ.L        #$1,D7                   ;7e01 
-              MOVEQ.L        #$1,D6                   ;7c01 
-              MOVE.L         #$2710,D5                ;2a3c 0000 2710 
-              MOVEQ.L        #$7f,D0                  ;707f 
-              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVE.L         $20(A7),A5               ;2a6f 0020 
               SUB.L          A3,A3                    ;97cb 
               MOVE.L         DISPTEXT_TextBufferPtr(A4),D0;202c 0000 
-              BEQ.W          ___DISPTEXT_AppendToBuffer__16;6700 00a4 
+              BEQ.W          ___DISPTEXT_AppendToBuffer__16;6700 00a8 
 ___DISPTEXT_AppendToBuffer__2:
-              CLR.L          $2c(A7)                  ;42af 002c 
-              CLR.L          $28(A7)                  ;42af 0028 
               MOVE.L         D0,A2                    ;2440 
 ___DISPTEXT_AppendToBuffer__3:
               MOVE.B         (A2)+,D0                 ;101a 
               TST.B          D0                       ;4a00 
-              BEQ.B          ___DISPTEXT_AppendToBuffer__5;6706 
+              BNE.B          ___DISPTEXT_AppendToBuffer__3;66fa 
 ___DISPTEXT_AppendToBuffer__4:
-              ADDQ.L         #$1,$2c(A7)              ;52af 002c 
-              BRA.B          ___DISPTEXT_AppendToBuffer__3;60f4 
 ___DISPTEXT_AppendToBuffer__5:
-              MOVE.L         A5,A2                    ;244d 
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.L         A5,$18(A7)               ;2f4d 0018 
 ___DISPTEXT_AppendToBuffer__6:
-              MOVE.B         (A2)+,D0                 ;101a 
+              MOVE.L         $18(A7),A0               ;206f 0018 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$18(A7)               ;2f48 0018 
               TST.B          D0                       ;4a00 
-              BEQ.B          ___DISPTEXT_AppendToBuffer__8;6706 
+              BNE.B          ___DISPTEXT_AppendToBuffer__6;66f2 
 ___DISPTEXT_AppendToBuffer__7:
-              ADDQ.L         #$1,$28(A7)              ;52af 0028 
-              BRA.B          ___DISPTEXT_AppendToBuffer__6;60f4 
 ___DISPTEXT_AppendToBuffer__8:
-              MOVE.L         $2c(A7),D0               ;202f 002c 
-              ADD.L          $28(A7),D0               ;d0af 0028 
-              ADDQ.L         #$1,D0                   ;5280 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              SUBQ.L         #$1,$18(A7)              ;53af 0018 
+              MOVE.L         A2,D0                    ;200a 
+              SUB.L          DISPTEXT_TextBufferPtr(A4),D0;90ac 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              MOVE.L         $18(A7),D0               ;202f 0018 
+              MOVE.L         A5,D1                    ;220d 
+              SUB.L          D1,D0                    ;9081 
+              ADD.L          D0,D7                    ;de80 
+              ADDQ.L         #$1,D7                   ;5287 
+              PEA            ($1).w                   ;4878 0001 
               MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
-              MOVE.L         D0,$2c(A7)               ;2f40 002c 
               BSR.W          _LVOAvailMem             ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         D0,$20(A7)               ;2f40 0020 
-              CMP.L          D5,D0                    ;b085 
+              CMPI.L         #$2710,D0                ;0c80 0000 2710 
               BLS.B          ___DISPTEXT_AppendToBuffer__10;6318 
 ___DISPTEXT_AppendToBuffer__9:
-              MOVE.L         D6,-(A7)                 ;2f06 
-              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
-              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              PEA            ($7f).w                  ;4878 007f 
               PEA            Global_STR_DISPTEXT_C_1(A4);486c 0000 
               BSR.W          GROUP_AG_JMPTBL_MEMORY_AllocateM;6100 0000 
               MOVE.L         D0,A3                    ;2640 
@@ -61,15 +57,15 @@ ___DISPTEXT_AppendToBuffer__10:
               MOVE.L         A3,D0                    ;200b 
               BEQ.B          ___DISPTEXT_AppendToBuffer__17;6750 
 ___DISPTEXT_AppendToBuffer__11:
-              MOVE.L         A3,$1c(A7)               ;2f4b 001c 
-              MOVE.L         DISPTEXT_TextBufferPtr(A4),$18(A7);2f6c 0000 0018 
+              MOVE.L         A3,$14(A7)               ;2f4b 0014 
+              MOVE.L         DISPTEXT_TextBufferPtr(A4),$10(A7);2f6c 0000 0010 
 ___DISPTEXT_AppendToBuffer__12:
-              MOVE.L         $1c(A7),A0               ;206f 001c 
-              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
-              MOVE.L         $18(A7),A1               ;226f 0018 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              ADDQ.L         #$1,$14(A7)              ;52af 0014 
+              MOVE.L         $10(A7),A1               ;226f 0010 
               MOVE.B         (A1)+,D0                 ;1019 
               MOVE.B         D0,(A0)                  ;1080 
-              MOVE.L         A1,$18(A7)               ;2f49 0018 
+              MOVE.L         A1,$10(A7)               ;2f49 0010 
               TST.B          D0                       ;4a00 
               BNE.B          ___DISPTEXT_AppendToBuffer__12;66e8 
 ___DISPTEXT_AppendToBuffer__13:
@@ -96,14 +92,13 @@ ___DISPTEXT_AppendToBuffer__17:
               BEQ.B          ___DISPTEXT_AppendToBuffer__19;6704 
 ___DISPTEXT_AppendToBuffer__18:
               MOVEQ.L        #$ff,D0                  ;70ff 
-              BRA.B          ___DISPTEXT_AppendToBuffer__20;6002 
+              BRA.B          ___DISPTEXT_AppendToBuffer__21;6002 
 ___DISPTEXT_AppendToBuffer__19:
               MOVEQ.L        #$0,D0                   ;7000 
 ___DISPTEXT_AppendToBuffer__20:
 ___DISPTEXT_AppendToBuffer__21:
-___DISPTEXT_AppendToBuffer__22:
-              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$1c,A7                  ;defc 001c 
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
+              ADD.W          #$c,A7                   ;defc 000c 
               RTS                                     ;4e75 
 __const:
 __strings:
