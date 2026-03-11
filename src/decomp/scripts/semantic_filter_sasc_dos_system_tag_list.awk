@@ -7,7 +7,7 @@ function t(s){sub(/;.*/,"",s);sub(/^[ \t]+/,"",s);sub(/[ \t]+$/,"",s);gsub(/[ \t
   if(l~/^MOVEM\.L .*D2.*A6.*,-\(A7\)$/ || l~/^MOVE\.L D2,-\(A7\)$/ || l~/^MOVEM\.L D6\/D7,-\(A7\)$/) h_save=1
   if(l~/GLOBAL_REF_DOS_LIBRARY_2/) h_base=1
   if(l~/^MOVEM\.L .*D1-D2/ || l~/^MOVE\.L .*D1$/ || l~/^MOVE\.L .*D2$/ || l~/^MOVE\.L D[0-7],-\(A7\)$/) h_args=1
-  if(l~/^(JSR|BSR(\.W)?) _LVOSYSTEMTAGLIST(\(A[0-7]\))?$/) h_call=1
+  if(l~/^(JSR|BSR(\.W)?) _LVOSYSTEMTAGLIST(\(A[0-7]\))?$/ || (l~/^JSR / && l~/\(A6\)$/)) h_call=1
   if(l~/^MOVEM\.L \(A7\)\+,.*D2.*A6/ || l~/^MOVE\.L \(A7\)\+,D2$/ || l~/^MOVEM\.L \(A7\)\+,D6\/D7$/) h_restore=1
   if(l~/^MOVE\.L D[0-7],D0$/) h_ret=1
   if(l~/^RTS$/) h_rts=1
