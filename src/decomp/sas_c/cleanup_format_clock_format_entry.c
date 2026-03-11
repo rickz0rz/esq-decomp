@@ -16,14 +16,16 @@ LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 void CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out)
 {
     LONG variant;
+    LONG quotient;
     const char *src;
 
     while (slotIndex > CLOCK_FORMAT_SLOTS_PER_BANK) {
         slotIndex -= CLOCK_FORMAT_SLOTS_PER_BANK;
     }
 
-    GROUP_AG_JMPTBL_MATH_DivS32((LONG)CLOCK_FormatVariantCode, CLOCK_VARIANT_DIVISOR);
-    variant = GROUP_AG_JMPTBL_MATH_DivS32((LONG)CLOCK_FormatVariantCode, CLOCK_VARIANT_DIVISOR);
+    quotient = GROUP_AG_JMPTBL_MATH_DivS32((LONG)CLOCK_FormatVariantCode, CLOCK_VARIANT_DIVISOR);
+    variant = (LONG)CLOCK_FormatVariantCode -
+        GROUP_AG_JMPTBL_MATH_Mulu32(quotient, CLOCK_VARIANT_DIVISOR);
 
     src = Global_REF_STR_CLOCK_FORMAT[slotIndex];
     while ((*out++ = *src++) != 0) {
@@ -35,10 +37,10 @@ void CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out)
         decimalDigit = (LONG)(out[-2] - '0');
         variant += GROUP_AG_JMPTBL_MATH_Mulu32(decimalDigit, DECIMAL_BASE);
 
-        decimalDigit = GROUP_AG_JMPTBL_MATH_DivS32(variant, DECIMAL_BASE);
-        out[-2] = (char)(decimalDigit + '0');
+        quotient = GROUP_AG_JMPTBL_MATH_DivS32(variant, DECIMAL_BASE);
+        out[-2] = (char)(quotient + '0');
 
-        decimalDigit = GROUP_AG_JMPTBL_MATH_DivS32(variant, DECIMAL_BASE);
+        decimalDigit = variant - GROUP_AG_JMPTBL_MATH_Mulu32(quotient, DECIMAL_BASE);
         out[-1] = (char)(decimalDigit + '0');
     }
 }

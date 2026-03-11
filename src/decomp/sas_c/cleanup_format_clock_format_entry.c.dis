@@ -2,13 +2,14 @@
 __code:
 CLEANUP_FormatClockFormatEntry:
               MOVE.L         A7,D0                    ;200f 
-              SUBQ.L         #$8,D0                   ;5180 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
 ___CLEANUP_FormatClockFormatEntry__1:
-              MOVE.L         $18(A7),D7               ;2e2f 0018 
-              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.L         $20(A7),D7               ;2e2f 0020 
+              MOVE.L         $24(A7),A5               ;2a6f 0024 
 ___CLEANUP_FormatClockFormatEntry__2:
               MOVEQ.L        #$30,D0                  ;7030 
               CMP.L          D0,D7                    ;be80 
@@ -22,13 +23,17 @@ ___CLEANUP_FormatClockFormatEntry__4:
               PEA            ($1e).w                  ;4878 001e 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         CLOCK_FormatVariantCode(A4),D0;102c 0000 
               PEA            ($1e).w                  ;4878 001e 
-              MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
-              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         $18(A7),D1               ;222f 0018 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,D6                    ;2c01 
               MOVE.L         D7,D0                    ;2007 
               ASL.L          #$2,D0                   ;e580 
               LEA            Global_REF_STR_CLOCK_FORMAT(A4),A0;41ec 0000 
@@ -43,16 +48,16 @@ ___CLEANUP_FormatClockFormatEntry__5:
 ___CLEANUP_FormatClockFormatEntry__6:
 ___CLEANUP_FormatClockFormatEntry__7:
               TST.L          D6                       ;4a86 
-              BLE.B          ___CLEANUP_FormatClockFormatEntry__10;6f4a 
+              BLE.B          ___CLEANUP_FormatClockFormatEntry__10;6f4c 
 ___CLEANUP_FormatClockFormatEntry__8:
               MOVE.B         $fffffffe(A5),D0         ;102d fffe 
               EXT.W          D0                       ;4880 
               EXT.L          D0                       ;48c0 
-              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         D0,D4                    ;2800 
               MOVEQ.L        #$30,D1                  ;7230 
-              SUB.L          D1,D5                    ;9a81 
+              SUB.L          D1,D4                    ;9881 
               PEA            ($a).w                   ;4878 000a 
-              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D4,-(A7)                 ;2f04 
               BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
               ADD.L          D0,D6                    ;dc80 
               PEA            ($a).w                   ;4878 000a 
@@ -64,17 +69,19 @@ ___CLEANUP_FormatClockFormatEntry__8:
               ADD.L          D1,D0                    ;d081 
               MOVE.B         D0,$fffffffe(A5)         ;1b40 fffe 
               PEA            ($a).w                   ;4878 000a 
-              MOVE.L         D6,-(A7)                 ;2f06 
-              BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
-              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
               LEA            $18(A7),A7               ;4fef 0018 
-              MOVE.L         D5,D0                    ;2005 
+              MOVE.L         D6,D4                    ;2806 
+              SUB.L          D0,D4                    ;9880 
+              MOVE.L         D4,D0                    ;2004 
               MOVEQ.L        #$30,D1                  ;7230 
               ADD.L          D1,D0                    ;d081 
               MOVE.B         D0,$ffffffff(A5)         ;1b40 ffff 
 ___CLEANUP_FormatClockFormatEntry__9:
 ___CLEANUP_FormatClockFormatEntry__10:
-              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:
 __strings:
@@ -82,7 +89,7 @@ __strings:
               XREF           _XCOVF
               XREF           CLOCK_FormatVariantCode
               XREF           GROUP_AG_JMPTBL_MATH_DivS32
-              XREF           Global_REF_STR_CLOCK_FORMAT
               XREF           GROUP_AG_JMPTBL_MATH_Mulu32
+              XREF           Global_REF_STR_CLOCK_FORMAT
               XDEF           CLEANUP_FormatClockFormatEntry
               END
