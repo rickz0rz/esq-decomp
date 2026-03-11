@@ -87,8 +87,10 @@ Why this target:
 Artifacts:
 - C candidate: `src/decomp/c/replacements/clock_convert_amiga_seconds.c`
 - GCC C candidate: `src/decomp/c/replacements/clock_convert_amiga_seconds_gcc.c`
+- SAS/C restored source: `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
 - Compile/compare script: `src/decomp/scripts/compare_clock_convert_trial.sh`
 - GCC compile/compare script: `src/decomp/scripts/compare_clock_convert_trial_gcc.sh`
+- SAS/C compile/compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
 
 Run:
 - `VBCC_ROOT=/Users/rj/Downloads/vbcc_installer bash src/decomp/scripts/compare_clock_convert_trial.sh`
@@ -98,6 +100,7 @@ Current notes:
 - Inline asm body matches core wrapper sequence (`A6` save, utility base load, `Amiga2Date` call, `A6` restore).
 - vbcc still wraps with function prologue/epilogue scaffolding (`LINK/UNLK`, local labels).
 - GCC lane uses a `naked` function with full body emitted via inline asm to suppress GCC prologue/epilogue.
+- SAS/C lane already existed but was easy to miss because it uses the longer file name `unknown41_clock_convert_amiga_seconds_to_clock_data.c`; the dedicated compare script now drives `sc-build-with-dis.sh` directly against that file.
 - Promotion gate script is wired: `src/decomp/scripts/promote_clock_target_gcc.sh` validates Target 003 GCC lane by running compare script, enforcing canonicalized normalized equivalence, then enforcing `decomp-build.sh` and canonical `test-hash.sh`.
 - Current promotion decision: pass (on GCC profile `-O0 -fomit-frame-pointer` + m68k freestanding flags).
 

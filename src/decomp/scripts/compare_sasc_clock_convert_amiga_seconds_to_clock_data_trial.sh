@@ -14,8 +14,22 @@ mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_clock_convert_amiga_seconds_to_clock_data.log" 2>&1
 
-awk '$0 ~ /^CLOCK_ConvertAmigaSecondsToClockData:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/clock_convert_amiga_seconds_to_clock_data.original.s"
-awk '$0 ~ /^CLOCK_ConvertAmigaSecondsToClock/ {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/clock_convert_amiga_seconds_to_clock_data.sasc.dis.s"
+awk '
+  $0 ~ /^CLOCK_ConvertAmigaSecondsToClockData:$/ {in_func=1}
+  in_func {
+    if ($0 ~ /^;!======/) exit
+    print
+  }
+' "$ORIG_ASM" >"${OUT_DIR}/clock_convert_amiga_seconds_to_clock_data.original.s"
+
+awk '
+  $0 ~ /^CLOCK_ConvertAmigaSecondsToClockData:$/ ||
+  $0 ~ /^CLOCK_ConvertAmigaSecondsToClock[A-Za-z0-9_]*:$/ {in_func=1}
+  in_func {
+    if ($0 ~ /^__const:$/ || $0 ~ /^__strings:$/) exit
+    print
+  }
+' "$SASC_DIS" >"${OUT_DIR}/clock_convert_amiga_seconds_to_clock_data.sasc.dis.s"
 
 normalize() {
   sed -E \
