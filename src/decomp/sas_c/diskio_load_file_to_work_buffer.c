@@ -18,47 +18,39 @@ extern LONG _LVORead(void *dosBase, LONG fileHandle, void *buffer, LONG length);
 
 LONG DISKIO_LoadFileToWorkBuffer(const char *path)
 {
-    const LONG MODE_OLDFILE = 1005;
-    const LONG FILEHANDLE_INVALID = 0;
-    const LONG RESULT_FAIL = -1;
-    const LONG SIZE_MIN_VALID = 0;
-    const LONG ALLOC_LINE = 472;
-    const LONG FREE_LINE = 492;
-    const ULONG MEMF_PUBLIC_CLEAR = 0x10001UL;
-    const ULONG STR_TERM_BYTES = 1;
     LONG fileHandle;
     LONG bytesRead;
 
-    fileHandle = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(path, MODE_OLDFILE);
-    if (fileHandle == FILEHANDLE_INVALID) {
-        return RESULT_FAIL;
+    fileHandle = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(path, 1005);
+    if (fileHandle == 0) {
+        return -1;
     }
 
     Global_REF_LONG_FILE_SCRATCH = DISKIO_GetFilesizeFromHandle(fileHandle);
-    if (Global_REF_LONG_FILE_SCRATCH <= SIZE_MIN_VALID) {
+    if (Global_REF_LONG_FILE_SCRATCH <= 0) {
         _LVOClose(Global_REF_DOS_LIBRARY_2, fileHandle);
-        return RESULT_FAIL;
+        return -1;
     }
 
     Global_PTR_WORK_BUFFER = (char *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_DISKIO_C_3,
-        ALLOC_LINE,
-        (ULONG)(Global_REF_LONG_FILE_SCRATCH + STR_TERM_BYTES),
-        MEMF_PUBLIC_CLEAR);
-    if (Global_PTR_WORK_BUFFER == (char *)FILEHANDLE_INVALID) {
+        472,
+        (ULONG)(Global_REF_LONG_FILE_SCRATCH + 1),
+        0x10001UL);
+    if (Global_PTR_WORK_BUFFER == 0) {
         _LVOClose(Global_REF_DOS_LIBRARY_2, fileHandle);
-        return RESULT_FAIL;
+        return -1;
     }
 
     bytesRead = _LVORead(Global_REF_DOS_LIBRARY_2, fileHandle, Global_PTR_WORK_BUFFER, Global_REF_LONG_FILE_SCRATCH);
     if (bytesRead != Global_REF_LONG_FILE_SCRATCH) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_DISKIO_C_4,
-            FREE_LINE,
+            492,
             Global_PTR_WORK_BUFFER,
-            (ULONG)(Global_REF_LONG_FILE_SCRATCH + STR_TERM_BYTES));
+            (ULONG)(Global_REF_LONG_FILE_SCRATCH + 1));
         _LVOClose(Global_REF_DOS_LIBRARY_2, fileHandle);
-        return RESULT_FAIL;
+        return -1;
     }
 
     _LVOClose(Global_REF_DOS_LIBRARY_2, fileHandle);
