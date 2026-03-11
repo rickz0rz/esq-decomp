@@ -20,7 +20,6 @@ extern LONG SCRIPT_SerialReadModeOverflowCount;
 
 LONG ESQ_HandleSerialRbfInterrupt(SerialIntCtx *ctx, UBYTE *rbfBase)
 {
-    const UWORD SERIAL_ERR_BIT = 0x8000;
     const UWORD RBF_WRAP = 0xFA00;
     const UWORD RBF_OVERFLOW_WATERMARK = 0xDAC0;
     const WORD READMODE_RBF_OVERFLOW = 0x0102;
@@ -35,7 +34,7 @@ LONG ESQ_HandleSerialRbfInterrupt(SerialIntCtx *ctx, UBYTE *rbfBase)
     rbfBase[head] = (UBYTE)ctx->serial_word_24;
     serialWord = ctx->serial_word_24;
 
-    if (((UWORD)serialWord & SERIAL_ERR_BIT) != 0) {
+    if (serialWord < 0) {
         ESQ_SerialRbfErrorCount = (WORD)(ESQ_SerialRbfErrorCount + COUNTER_STEP);
     }
 

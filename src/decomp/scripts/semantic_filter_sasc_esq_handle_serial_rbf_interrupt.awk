@@ -26,7 +26,7 @@ function t(s, x) {
     if (ENTRY_ALT_PREFIX != "" && index(l, ENTRY_ALT_PREFIX) == 1) has_entry = 1
 
     if (l ~ /GLOBAL_WORD_H_VALUE/) has_head_load = 1
-    if (l ~ /BTST #15/ || l ~ /BTST #\$F/ || l ~ /AND\.W #\$?8000/ || l ~ /AND\.L #\$?8000/ || l ~ /^TST\.W \(24,A0\)$/ || l ~ /^JLT /) has_error_bit_test = 1
+    if (l ~ /BTST #15/ || l ~ /BTST #\$F/ || l ~ /AND\.W #\$?8000/ || l ~ /AND\.L #\$?8000/ || l ~ /^TST\.W \(24,A0\)$/ || l ~ /^TST\.W D[0-7]$/ || l ~ /^JLT / || l ~ /^BMI / || l ~ /^BPL /) has_error_bit_test = 1
     if (l ~ /#\$?FA00/ || l ~ /#64000/ || l ~ /#-1536/) has_head_wrap = 1
     if (l ~ /#\$?DAC0/ || l ~ /FFFFDAC0/ || l ~ /#56000/ || l ~ /#-9536/) has_overflow_gate = 1
     if (l ~ /#\$?102/ || l ~ /#258/ || l ~ /ESQPARS2_READMODEFLAGS/) has_mode_set = 1
