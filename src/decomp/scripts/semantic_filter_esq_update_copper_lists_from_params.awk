@@ -31,11 +31,11 @@ function trim(s,    t) {
     if (u ~ /ESQ_COPPEREFFECTLISTA/) has_list_a = 1
     if (u ~ /ESQ_COPPEREFFECTLISTB/) has_list_b = 1
 
-    if (u ~ /#6,A[01]/ || u ~ /#6,D[0-7]/ || u ~ /#6,SP/ || u ~ /#6/) has_add6 = 1
+    if (u ~ /#6,A[0-7]/ || u ~ /#\$6,A[0-7]/ || u ~ /#6,D[0-7]/ || u ~ /#6,SP/ || u ~ /ADDQ\.[BWL] #\$?6,A[0-7]/) has_add6 = 1
     if (u ~ /#\$?100,D[0-7]/ || u ~ /#256,D[0-7]/ || u ~ /#\$?100,A[0-7]/ || u ~ /#256,A[0-7]/) has_mask_100 = 1
     if (u ~ /BCLR #8,D[0-7]/ || u ~ /#\$?FEFF,D[0-7]/ || u ~ /#65279,D[0-7]/ || u ~ /#-257,D[0-7]/) has_clear_bit8 = 1
 
-    if (u ~ /^ROL\.[BWL] #/ || u ~ /^ROL\.L #/ || u ~ /^ROR\./ || u ~ /LSL\.[BWL] #5,D[0-7]/ || u ~ /ROL32/) has_rol = 1
+    if (u ~ /^ROL\.[BWL] #/ || u ~ /^ROL\.L #/ || u ~ /^ROR\./ || u ~ /LSL\.[BWL] #5,D[0-7]/ || u ~ /ASL\.L #\$?5,D[0-7]/ || u ~ /ROL32/) has_rol = 1
     if (u ~ /^DBF / || u ~ /^DBRA / || u ~ /^J(B?NE|EQ|LT|LE|GT|GE) / || u ~ /^B(NE|EQ|LT|LE|GT|GE|PL|MI)/) has_loop = 1
 
     if (u ~ /136\(/ || u ~ /140\(/ || u ~ /#136,/ || u ~ /#140,/ || u ~ /68\(/ || u ~ /70\(/ || u ~ /\(134,/ || u ~ /\(138,/ || u ~ /\(270,/ || u ~ /\(271,/) has_off_136_or_140 = 1
