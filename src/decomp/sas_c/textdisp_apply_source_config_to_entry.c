@@ -10,7 +10,6 @@ typedef struct TEXTDISP_Entry {
 
 typedef struct TEXTDISP_SourceConfigEntry {
     char *name;
-    UBYTE pad0[3];
     UBYTE flagMask;
 } TEXTDISP_SourceConfigEntry;
 
@@ -22,7 +21,6 @@ extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 
 void TEXTDISP_ApplySourceConfigToEntry(TEXTDISP_Entry *entry)
 {
-    const UBYTE CH_NUL = 0;
     LONG i;
 
     if (entry == 0) {
@@ -33,13 +31,17 @@ void TEXTDISP_ApplySourceConfigToEntry(TEXTDISP_Entry *entry)
 
     for (i = 0; i < TEXTDISP_SourceConfigEntryCount; ++i) {
         TEXTDISP_SourceConfigEntry *cfg = TEXTDISP_SourceConfigEntryTable[i];
-        LONG n = 0;
+        char *name = cfg->name;
+        char *scan = name;
+        LONG n;
 
-        while (cfg->name[n] != CH_NUL) {
-            ++n;
+        while (*scan != 0) {
+            ++scan;
         }
 
-        if (STRING_CompareNoCaseN(cfg->name, entry->name, n) == 0) {
+        n = (LONG)(scan - name);
+
+        if (STRING_CompareNoCaseN(name, entry->name, n) == 0) {
             entry->flags40 |= cfg->flagMask;
         }
     }

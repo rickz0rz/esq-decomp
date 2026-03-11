@@ -33,7 +33,11 @@ function trim(s, t) {
     if (index(u, "TEXTDISP_SOURCECONFIGENTRYCOUNT") > 0) has_count = 1
     if (u ~ /TST\.B .*\(A[0-7]\)\+/ || u ~ /SUBA\.L/) has_strlen = 1
     if (index(u, "TST.B (A0)") > 0) saw_strlen_tst = 1
+    if (u ~ /MOVE\.B \(A[0-7]\)\+,D0/) saw_strlen_tst = 1
     if (index(u, "ADD.L D6,A0") > 0) saw_strlen_add = 1
+    if (u ~ /SUB\.L \(A[0-7]\),D0/) saw_strlen_add = 1
+    if (u ~ /ADDQ\.L #\$1,\$[0-9A-F]+\((A7|SP)\)/) saw_strlen_add = 1
+    if (u ~ /SUB\.L D[0-7],D0/) saw_strlen_add = 1
     if (index(u, "STRING_COMPARENOCASEN") > 0 || index(u, "STRING_COMPARENOCASEN") > 0) has_compare = 1
     if ((index(u, "OR.B") > 0) && (index(u, "40(A3)") > 0 || index(u, "$28(") > 0)) has_or_flags = 1
     if (u == "RTS") has_return = 1

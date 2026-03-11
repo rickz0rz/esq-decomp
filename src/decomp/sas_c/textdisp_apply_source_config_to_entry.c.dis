@@ -2,61 +2,61 @@
 __code:
 TEXTDISP_ApplySourceConfigToEntr:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
 ___TEXTDISP_ApplySourceConfigToEntr__1:
-              MOVE.L         $18(A7),A5               ;2a6f 0018 
-              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
               MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___TEXTDISP_ApplySourceConfigToEntr__12;6758 
+              BEQ.B          ___TEXTDISP_ApplySourceConfigToEntr__12;675e 
 ___TEXTDISP_ApplySourceConfigToEntr__2:
 ___TEXTDISP_ApplySourceConfigToEntr__3:
               MOVE.B         TEXTDISP_SourceConfigFlagMask(A4),D0;102c 0000 
               NOT.B          D0                       ;4600 
               AND.B          D0,$28(A5)               ;c12d 0028 
-              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVEQ.L        #$0,D7                   ;7e00 
 ___TEXTDISP_ApplySourceConfigToEntr__4:
-              CMP.L          TEXTDISP_SourceConfigEntryCount(A4),D6;bcac 0000 
-              BGE.B          ___TEXTDISP_ApplySourceConfigToEntr__12;6c46 
+              CMP.L          TEXTDISP_SourceConfigEntryCount(A4),D7;beac 0000 
+              BGE.B          ___TEXTDISP_ApplySourceConfigToEntr__12;6c4c 
 ___TEXTDISP_ApplySourceConfigToEntr__5:
-              MOVE.L         D6,D0                    ;2006 
+              MOVE.L         D7,D0                    ;2007 
               ASL.L          #$2,D0                   ;e580 
               LEA            TEXTDISP_SourceConfigEntryTable(A4),A0;41ec 0000 
               MOVE.L         $0(A0,D0.L),A3           ;2670 0800 
-              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVE.L         (A3),A2                  ;2453 
+              MOVE.L         A2,$14(A7)               ;2f4a 0014 
 ___TEXTDISP_ApplySourceConfigToEntr__6:
-              MOVE.L         (A3),A0                  ;2053 
-              ADD.L          D5,A0                    ;d1c5 
-              MOVE.B         (A0),D0                  ;1010 
-              EXT.W          D0                       ;4880 
-              EXT.L          D0                       ;48c0 
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         D7,D1                    ;1207 
-              CMP.L          D1,D0                    ;b081 
-              BEQ.B          ___TEXTDISP_ApplySourceConfigToEntr__8;6704 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              TST.B          (A0)                     ;4a10 
+              BEQ.B          ___TEXTDISP_ApplySourceConfigToEntr__8;6706 
 ___TEXTDISP_ApplySourceConfigToEntr__7:
-              ADDQ.L         #$1,D5                   ;5285 
-              BRA.B          ___TEXTDISP_ApplySourceConfigToEntr__6;60ea 
+              ADDQ.L         #$1,$14(A7)              ;52af 0014 
+              BRA.B          ___TEXTDISP_ApplySourceConfigToEntr__6;60f2 
 ___TEXTDISP_ApplySourceConfigToEntr__8:
+              MOVE.L         $14(A7),D0               ;202f 0014 
+              MOVE.L         A2,D1                    ;220a 
+              SUB.L          D1,D0                    ;9081 
+              MOVE.L         D0,D6                    ;2c00 
               LEA            $c(A5),A0                ;41ed 000c 
-              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D6,-(A7)                 ;2f06 
               MOVE.L         A0,-(A7)                 ;2f08 
-              MOVE.L         (A3),-(A7)               ;2f13 
+              MOVE.L         D1,-(A7)                 ;2f01 
               BSR.W          STRING_CompareNoCaseN    ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               TST.L          D0                       ;4a80 
               BNE.B          ___TEXTDISP_ApplySourceConfigToEntr__10;6608 
 ___TEXTDISP_ApplySourceConfigToEntr__9:
-              MOVE.B         $7(A3),D0                ;102b 0007 
+              MOVE.B         $4(A3),D0                ;102b 0004 
               OR.B           D0,$28(A5)               ;812d 0028 
 ___TEXTDISP_ApplySourceConfigToEntr__10:
-              ADDQ.L         #$1,D6                   ;5286 
-              BRA.B          ___TEXTDISP_ApplySourceConfigToEntr__4;60b4 
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___TEXTDISP_ApplySourceConfigToEntr__4;60ae 
 ___TEXTDISP_ApplySourceConfigToEntr__11:
 ___TEXTDISP_ApplySourceConfigToEntr__12:
-              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
+              ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:
 __strings:
