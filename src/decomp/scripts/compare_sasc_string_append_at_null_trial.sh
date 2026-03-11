@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-SASC_SRC="unknown6_string_append_at_null.c"
+SASC_SRC="string_append_at_null.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown6.s"
@@ -25,6 +25,11 @@ normalize() {
     -e 's/[[:space:]]+$//' \
     -e '/^$/d' \
     -e 's/^___[A-Za-z0-9_]+__[0-9]+:$//' \
+    -e '/^__const:$/d' \
+    -e '/^__strings:$/d' \
+    -e '/^XREF /d' \
+    -e '/^XDEF /d' \
+    -e '/^END$/d' \
     -e '/^const:$/d' \
     -e '/^strings:$/d' \
     -e '/^$/d'
@@ -35,8 +40,8 @@ normalize <"${OUT_DIR}/string_append_at_null.sasc.dis.s" >"${OUT_DIR}/string_app
 
 diff -u "${OUT_DIR}/string_append_at_null.original.norm.s" "${OUT_DIR}/string_append_at_null.sasc.norm.s" >"${OUT_DIR}/string_append_at_null.diff" || true
 
-awk -f src/decomp/scripts/semantic_filter_sasc_string_append_at_null.awk "${OUT_DIR}/string_append_at_null.original.norm.s" >"${OUT_DIR}/string_append_at_null.original.semantic.txt"
-awk -f src/decomp/scripts/semantic_filter_sasc_string_append_at_null.awk "${OUT_DIR}/string_append_at_null.sasc.norm.s" >"${OUT_DIR}/string_append_at_null.sasc.semantic.txt"
+awk -f src/decomp/scripts/semantic_filter_str_append.awk "${OUT_DIR}/string_append_at_null.original.norm.s" >"${OUT_DIR}/string_append_at_null.original.semantic.txt"
+awk -f src/decomp/scripts/semantic_filter_str_append.awk "${OUT_DIR}/string_append_at_null.sasc.norm.s" >"${OUT_DIR}/string_append_at_null.sasc.semantic.txt"
 diff -u "${OUT_DIR}/string_append_at_null.original.semantic.txt" "${OUT_DIR}/string_append_at_null.sasc.semantic.txt" >"${OUT_DIR}/string_append_at_null.semantic.diff" || true
 
 echo "wrote: ${OUT_DIR}/string_append_at_null.diff"

@@ -20,10 +20,10 @@ function trim(s,    t) {
     gsub(/[ \t]+/, " ", line)
     u = toupper(line)
 
-    if ((u ~ /^MOVEA?\.L .*A0$/) || (u ~ /^MOVEA?\.L .*A1$/)) has_arg_loads = 1
+    if (u ~ /^MOVEA?\.L .*A[0-7]$/) has_arg_loads = 1
     if (u ~ /^MOVE\.L A0,D0$/ || u ~ /^MOVE\.L .*D0$/) has_ret_seed = 1
 
-    if (u ~ /^TST\.B \(A0\)\+$/ || u ~ /^CMP\.B #0,\(A0\)\+$/ || u ~ /^TST\.B \(A[0-7]\)\+$/) has_find_null_loop = 1
+    if (u ~ /^TST\.B \(A0\)\+$/ || u ~ /^CMP\.B #0,\(A0\)\+$/ || u ~ /^TST\.B \(A[0-7]\)\+$/ || u ~ /^MOVE\.B \(A[0-7]\)\+,D[0-7]$/) has_find_null_loop = 1
     if (u ~ /^(BNE|BNE\.S|JNE|JNE\.S) /) has_find_null_loop = 1
 
     if (u ~ /^SUBQ\.L #1,A0$/ || u ~ /^SUBQ\.L #1,A[0-7]$/ || u ~ /^LEA -1\(A[0-7]\),A[0-7]$/ || u ~ /^MOVE\.L A[0-7],A[0-7]$/) {

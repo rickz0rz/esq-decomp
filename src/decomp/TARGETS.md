@@ -247,17 +247,21 @@ Why this target:
 - Strengthens confidence in C-string idiom equivalence (scan-to-NUL then copy-through-NUL).
 
 Artifacts:
+- SAS/C restored source: `src/decomp/sas_c/string_append_at_null.c`
+- SAS/C compare script: `src/decomp/scripts/compare_sasc_string_append_at_null_trial.sh`
 - GCC C candidate: `src/decomp/c/replacements/string_append_at_null_gcc.c`
 - GCC compile/compare script: `src/decomp/scripts/compare_string_append_at_null_trial_gcc.sh`
 - Semantic filter: `src/decomp/scripts/semantic_filter_str_append.awk`
 - Promotion gate: `src/decomp/scripts/promote_string_append_at_null_target_gcc.sh`
 
 Run:
+- `bash src/decomp/scripts/compare_sasc_string_append_at_null_trial.sh`
 - `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_string_append_at_null_trial_gcc.sh`
 - `bash src/decomp/scripts/promote_string_append_at_null_target_gcc.sh`
 
 Current notes:
 - GCC may avoid the explicit `SUBQ #1,A0` by preserving a pre-increment-safe write pointer in a second register; semantic gate treats both forms as equivalent.
+- SAS/C lane now builds directly from `src/decomp/sas_c/string_append_at_null.c`; use the SAS/C compare script for direct object/disassembly inspection before falling back to the GCC promotion lane.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
 ## Target 011: `modules/submodules/unknown5.s` (`STRING_AppendN`)
