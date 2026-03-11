@@ -2,83 +2,79 @@
 __code:
 LADFUNC2_EmitEscapedCharToScratc:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              SUBQ.L         #$8,D0                   ;5180 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$8,A7                   ;514f 
-              MOVEM.L        D4/D5/D6/D7,-(A7)        ;48e7 0f00 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
 ___LADFUNC2_EmitEscapedCharToScratc__1:
-              MOVE.L         $1c(A7),D7               ;2e2f 001c 
-              MOVEQ.L        #$20,D6                  ;7c20 
-              MOVEQ.L        #$40,D5                  ;7a40 
-              MOVEQ.L        #$a8,D4                  ;78a8 
-              MOVE.B         #$a9,$17(A7)             ;1f7c 00a9 0017 
-              MOVE.B         #$22,$16(A7)             ;1f7c 0022 0016 
-              MOVE.B         #$2c,$15(A7)             ;1f7c 002c 0015 
-              MOVE.B         #$7e,$14(A7)             ;1f7c 007e 0014 
-              MOVE.L         D7,D0                    ;2007 
-              MOVE.B         D0,$13(A7)               ;1f40 0013 
-              CMP.B          D6,D0                    ;b006 
-              BCC.B          ___LADFUNC2_EmitEscapedCharToScratc__3;6414 
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         D7,D6                    ;2c07 
+              MOVEQ.L        #$20,D0                  ;7020 
+              CMP.B          D0,D6                    ;bc00 
+              BCC.B          ___LADFUNC2_EmitEscapedCharToScratc__3;6416 
 ___LADFUNC2_EmitEscapedCharToScratc__2:
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         D0,D1                    ;1200 
-              ADD.L          D5,D1                    ;d285 
-              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVEQ.L        #$40,D1                  ;7240 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         D0,-(A7)                 ;2f00 
               PEA            LADFUNC_FMT_ControlCharCaretEsca(A4);486c 0000 
               BSR.W          GROUP_AX_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              BRA.B          ___LADFUNC2_EmitEscapedCharToScratc__10;6074 
+              BRA.B          ___LADFUNC2_EmitEscapedCharToScratc__10;6068 
 ___LADFUNC2_EmitEscapedCharToScratc__3:
-              MOVE.B         $13(A7),D0               ;102f 0013 
-              CMP.B          D4,D0                    ;b004 
-              BNE.B          ___LADFUNC2_EmitEscapedCharToScratc__5;661a 
-___LADFUNC2_EmitEscapedCharToScratc__4:
-              MOVE.B         $16(A7),D1               ;122f 0016 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         D1,D0                    ;1001 
+              MOVE.B         D6,D0                    ;1006 
+              MOVEQ.L        #$54,D1                  ;7254 
+              ADD.L          D1,D1                    ;d281 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___LADFUNC2_EmitEscapedCharToScratc__5;6614 
+___LADFUNC2_EmitEscapedCharToScratc__4:
+              MOVEQ.L        #$22,D6                  ;7c22 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            LADFUNC_FMT_ReplacementQuoteChar(A4);486c 0000 
-              MOVE.B         D1,$1b(A7)               ;1f41 001b 
               BSR.W          GROUP_AX_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              BRA.B          ___LADFUNC2_EmitEscapedCharToScratc__10;6052 
+              BRA.B          ___LADFUNC2_EmitEscapedCharToScratc__10;6048 
 ___LADFUNC2_EmitEscapedCharToScratc__5:
-              MOVE.B         $13(A7),D0               ;102f 0013 
-              CMP.B          $17(A7),D0               ;b02f 0017 
-              BNE.B          ___LADFUNC2_EmitEscapedCharToScratc__7;661a 
-___LADFUNC2_EmitEscapedCharToScratc__6:
-              MOVE.B         $15(A7),D1               ;122f 0015 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         D1,D0                    ;1001 
+              MOVE.B         D6,D0                    ;1006 
+              MOVEQ.L        #$56,D1                  ;7256 
+              NOT.B          D1                       ;4601 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___LADFUNC2_EmitEscapedCharToScratc__7;6614 
+___LADFUNC2_EmitEscapedCharToScratc__6:
+              MOVEQ.L        #$2c,D6                  ;7c2c 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            LADFUNC_FMT_ReplacementCommaChar(A4);486c 0000 
-              MOVE.B         D1,$1b(A7)               ;1f41 001b 
               BSR.W          GROUP_AX_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              BRA.B          ___LADFUNC2_EmitEscapedCharToScratc__10;602e 
+              BRA.B          ___LADFUNC2_EmitEscapedCharToScratc__10;6028 
 ___LADFUNC2_EmitEscapedCharToScratc__7:
-              MOVE.B         $13(A7),D0               ;102f 0013 
-              CMP.B          $14(A7),D0               ;b02f 0014 
+              MOVEQ.L        #$7e,D0                  ;707e 
+              CMP.B          D0,D6                    ;bc00 
               BLS.B          ___LADFUNC2_EmitEscapedCharToScratc__9;6312 
 ___LADFUNC2_EmitEscapedCharToScratc__8:
-              MOVEQ.L        #$0,D1                   ;7200 
-              MOVE.B         D0,D1                    ;1200 
-              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVE.L         D0,-(A7)                 ;2f00 
               PEA            LADFUNC_FMT_HexEscapeByte(A4);486c 0000 
               BSR.W          GROUP_AX_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              BRA.B          ___LADFUNC2_EmitEscapedCharToScratc__10;6012 
+              BRA.B          ___LADFUNC2_EmitEscapedCharToScratc__10;6010 
 ___LADFUNC2_EmitEscapedCharToScratc__9:
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.B         $13(A7),D0               ;102f 0013 
+              MOVE.B         D6,D0                    ;1006 
               MOVE.L         D0,-(A7)                 ;2f00 
               PEA            LADFUNC_FMT_LiteralChar(A4);486c 0000 
               BSR.W          GROUP_AX_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___LADFUNC2_EmitEscapedCharToScratc__10:
-              MOVEM.L        (A7)+,D4/D5/D6/D7        ;4cdf 00f0 
-              ADDQ.W         #$8,A7                   ;504f 
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
               RTS                                     ;4e75 
 __const:
 __strings:

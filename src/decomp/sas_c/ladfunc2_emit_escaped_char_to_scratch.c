@@ -11,41 +11,34 @@ extern void GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ..
 
 void LADFUNC2_EmitEscapedCharToScratch(LONG ch)
 {
-    const UBYTE ASCII_CONTROL_MAX = 32;
-    const LONG ASCII_CARET_OFFSET = 64;
-    const UBYTE ESCAPE_QUOTE_TOKEN = 168;
-    const UBYTE ESCAPE_COMMA_TOKEN = 169;
-    const UBYTE ASCII_QUOTE = 34;
-    const UBYTE ASCII_COMMA = 44;
-    const UBYTE ASCII_PRINTABLE_MAX = 126;
     UBYTE c;
 
     c = (UBYTE)ch;
 
-    if (c < ASCII_CONTROL_MAX) {
+    if (c < 32) {
         GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_ControlCharCaretEscape,
-            (LONG)c + ASCII_CARET_OFFSET);
+            (LONG)c + 64);
         return;
     }
 
-    if (c == ESCAPE_QUOTE_TOKEN) {
-        c = ASCII_QUOTE;
+    if (c == 168) {
+        c = 34;
         GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_ReplacementQuoteChar,
             (LONG)c);
         return;
     }
 
-    if (c == ESCAPE_COMMA_TOKEN) {
-        c = ASCII_COMMA;
+    if (c == (UBYTE)~86) {
+        c = 44;
         GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_ReplacementCommaChar,
             (LONG)c);
         return;
     }
 
-    if (c > ASCII_PRINTABLE_MAX) {
+    if (c > 126) {
         GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_HexEscapeByte,
             (LONG)c);
