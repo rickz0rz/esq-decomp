@@ -2,16 +2,29 @@
 
 This directory provides an opt-in workflow for replacing assembly modules incrementally while preserving the canonical `src/Prevue.asm` build as the baseline reference.
 
+The repository currently has two active decomp lanes:
+- `src/decomp/sas_c/`: restored SAS/C-style C sources used to generate `.o` and `.dis` files for direct disassembly comparison.
+- `src/decomp/c/replacements/`: GCC trial candidates and promotion scaffolding for targets that have not yet been folded into the SAS/C lane.
+
 ## Goals
 - Keep `./build.sh` and `./test-hash.sh` unchanged and authoritative.
 - Allow module-by-module replacement experiments in a separate build output.
 - Make hash divergence explicit while conversions are in progress.
+- Preserve “mostly equivalent” behavior rather than rewriting the program into modernized C.
 
 ## Execution Cadence
 - Prioritize non-`*JMPTBL*` exports for primary decomp progress; these carry actual behavior.
 - Treat `*JMPTBL*` exports as parallel/backfill work items (useful for coverage, lower reverse-engineering value).
 - For each target change, run only its local compare/promote gate first.
 - Run `src/decomp/scripts/run_all_promotions.sh` periodically as a regression sweep (not required after every single target).
+- Before starting a target, check whether it already exists in `src/decomp/sas_c/` and whether a `.dis` has already been generated. Many listed targets are already present there, even when a GCC lane also exists.
+- Prefer landing new restored behavior in `src/decomp/sas_c/` when practical. Treat GCC replacement files as staging/reference material unless the target is explicitly staying in the GCC lane.
+
+## SAS/C Lane
+- `./sc-build-with-dis.sh <filename>.c` expects a filename from `src/decomp/sas_c/`.
+- The script builds the file and emits sibling `.o` and `.dis` artifacts for inspection.
+- Existing `src/decomp/sas_c/*.c` files are the best local reference for coding style, type conventions, and “mostly equivalent” reconstruction patterns.
+- In the current tree, most existing SAS/C compare lanes are already populated; remaining work often means tightening those files or adding new ports for GCC-only targets.
 
 ## Files
 - `src/decomp/replacements.map`: module substitution map.

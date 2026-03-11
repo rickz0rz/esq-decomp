@@ -19,8 +19,8 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     if (u ~ /_LVOSETAPEN/) has_setapen = 1
     if (u ~ /_LVORECTFILL/) has_rectfill = 1
     if (u ~ /BEVEL_DRAWBEVELFRAMEWITHTOPRIGHT/ || u ~ /BEVEL_DRAWBEVELFRAMEWITHTOPR/) has_bevel = 1
-    if ((u ~ /GLOBAL_REF_696_400_BITMAP/ && (u ~ /4\(A0\)/ || u ~ /4\(A[0-7]\)/)) || u ~ /MOVE.L A0,\(A1\)/) has_bitmap_swap = 1
-    if (u ~ /MOVE.L -4\(A5\),4\(A0\)/ || u ~ /MOVE.L D[0-7],4\(A[0-7]\)/ || u ~ /MOVE.L D[0-7],\(A0\)/) has_restore = 1
+    if ((u ~ /GLOBAL_REF_696_400_BITMAP/ && (u ~ /4\(A0\)/ || u ~ /4\(A[0-7]\)/)) || u ~ /MOVE.L A0,\(A[0-7]\)/) has_bitmap_swap = 1
+    if (u ~ /MOVE.L -4\(A5\),4\(A0\)/ || u ~ /MOVE.L D[0-7],4\(A[0-7]\)/ || u ~ /MOVE.L D[0-7],\(A[0-7]\)/) has_restore = 1
     if (u ~ /#256/ || u ~ /#\$100/ || u ~ /PEA \(\$100\)\.W/ || u ~ /PEA 256\.W/) has_dims = 1
     if (u == "RTS") has_return = 1
 }

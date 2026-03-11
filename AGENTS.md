@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-`src/Prevue.asm` is the root include; it stitches together feature modules under `src/modules/groups/` (UI control in `gcommand.s`, keyboard input in `kybd.s`, disk helpers in `diskio2.s`) plus shared routines from `src/subroutines/`. Display tables and highlight presets live in `src/data/`, while interrupt-specific logic sits in `src/interrupts/`. `src/decomp/` holds experimental C decomp/cleanup helpers and does not participate in the build. Keep module-level assets beside their code: banner strings go in the matching data file, and new shared macros belong in `macros.s` or `text-formatting.s`. External requirements (Workbench ROM, HDD image) are stored under `assets/kickstart/` and `assets/disks/prevue/`. Treat `build/` as disposable output.
+`src/Prevue.asm` is the root include; it stitches together feature modules under `src/modules/groups/` (UI control in `gcommand.s`, keyboard input in `kybd.s`, disk helpers in `diskio2.s`) plus shared routines from `src/subroutines/`. Display tables and highlight presets live in `src/data/`, while interrupt-specific logic sits in `src/interrupts/`. `src/decomp/` holds the experimental C decomp/cleanup helpers and replacement scaffolding; the main restored SAS/C-style sources live in `src/decomp/sas_c/`. Keep module-level assets beside their code: banner strings go in the matching data file, and new shared macros belong in `macros.s` or `text-formatting.s`. External requirements (Workbench ROM, HDD image) are stored under `assets/kickstart/` and `assets/disks/prevue/`. Treat `build/` as disposable output.
 
 Recent re-org notes:
 - Code has been split into smaller files along more logical boundaries; module names may change again as functionality becomes clearer.
@@ -24,6 +24,14 @@ For targeted experiments, invoke vasm directly (example path):
 ~/Downloads/vasm/vasmm68k_mot -Fhunkexe -linedebug -o build/ESQ src/Prevue.asm
 ```
 Never commit generated binaries; stash them or place them in `build/`.
+
+SAS/C decomp workflow:
+```bash
+./sc-build-with-dis.sh some_target.c
+```
+- The argument must be the filename of a source that already exists in `src/decomp/sas_c/`.
+- The script emits matching `.o` and `.dis` files beside the source file for assembly comparison.
+- Treat existing `src/decomp/sas_c/*.c` files as the canonical style guide for new decomp work.
 
 ## Coding Style & Naming Conventions
 Use four-space indentation, uppercase opcodes, and align operands as in the existing modules. Public entry points should follow the `MODULE_ActionVerb` pattern (`GCOMMAND_LoadDefaultTable`, `KYBD_HandleRepeat`), with the original `LAB_xxxx` label retained immediately below the alias. Local labels stay lowercase with a leading dot. Favor short descriptive comments over block prose; explain hardware magic numbers and state transitions, not obvious move instructions. Share repeated sequences through macros and keep configuration flags (`includeCustomAriAssembly`) centralized.
@@ -110,12 +118,20 @@ If unsure, use a conservative name with `??`, e.g., `(PickChoiceFromTable??)`.
 
 ## Testing Guidelines
 Every change should be followed by `./test-hash.sh` as the default verification step. If the output matches the canonical hash (`6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2`), the build is in a good spot; otherwise investigate or document why. When touching input handling or drawing code, capture emulator traces or screenshots to supplement the hash result.
+For decomp work, run the narrowest target-specific compare/build script first. Many targets already have SAS/C or GCC compare lanes in `src/decomp/scripts/`; use those before escalating to full-project verification.
 
 ## Commit & Pull Request Guidelines
 Commits should be small, scoped, and written in imperative mood (`Rename GROUP_AS_JMPTBL_STR_FindCharPtr highlight helpers`). Reference affected modules in the body and call out any new tables or configuration knobs. Pull requests need a brief summary, testing evidence (hash output, emulator logs), and links to related research threads. Highlight any remaining anonymous labels (`LAB_****`) that still require naming so reviewers can coordinate follow-up work.
 
 ## Documentation & Review Workflow
 Update inline comments, `README.md`, and tables in `src/data/` when you rename labels or introduce new presets so future contributors can follow the thread. Cross-link helpers between modules (e.g., note when `gcommand.s` exports are consumed by `wdisp.s`) and record open renaming targets in the AGENTS checklist to keep the disassembly uniformly annotated.
+When decomp workflow assumptions change, update `README.md`, `src/decomp/README.md`, and the reusable continuation prompt in `docs/decomp-continuation-prompt.md` so a fresh session can pick up the work without rediscovering the process.
+
+## Decomp Scope Notes
+- The decomp target is “mostly equivalent” C, not cleanup for readability alone.
+- The intended long-term coverage is all root `src/*.s` files, `src/Prevue.asm`, and everything under `src/interrupts/`, `src/data/`, and `src/modules/` recursively.
+- Do not assume a `TARGETS.md` entry means the SAS/C lane is still missing; check `src/decomp/sas_c/` and any existing `.dis` output first.
+- In the current repository state, much of the remaining work is either tightening existing `src/decomp/sas_c` matches or porting GCC-only replacement candidates into the SAS/C lane.
 
 ## AGENTS Checklist
 - [x] Add semantic aliases for Digital Niche/Mplex option-state globals in `src/data/wdisp.s` (`22D*`/`22E*` range) and propagate to callsites.
