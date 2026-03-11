@@ -10,24 +10,24 @@ ___ESQ_GenerateXorChecksumByte__1:
               MOVE.L         $1c(A7),A5               ;2a6f 001c 
               MOVEQ.L        #$0,D5                   ;7a00 
               MOVE.B         ESQIFF_RecordChecksumByte(A4),D5;1a2c 0000 
-              TST.B          ESQIFF_UseCachedChecksumFlag(A4);4a2c 0000 
+              MOVE.B         ESQIFF_UseCachedChecksumFlag(A4),D0;102c 0000 
+              TST.B          D0                       ;4a00 
               BEQ.B          ___ESQ_GenerateXorChecksumByte__3;6704 
 ___ESQ_GenerateXorChecksumByte__2:
               MOVE.L         D5,D0                    ;2005 
               BRA.B          ___ESQ_GenerateXorChecksumByte__8;601e 
 ___ESQ_GenerateXorChecksumByte__3:
               MOVE.L         D7,D5                    ;2a07 
-              MOVE.L         D6,D4                    ;2806 
               EORI.W         #$ff,D5                  ;0a45 00ff 
+              MOVE.L         D6,D4                    ;2806 
 ___ESQ_GenerateXorChecksumByte__4:
-              TST.W          D4                       ;4a44 
-              BEQ.B          ___ESQ_GenerateXorChecksumByte__6;670a 
-___ESQ_GenerateXorChecksumByte__5:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A5)+,D0                 ;101d 
               EOR.L          D0,D5                    ;b185 
               SUBQ.W         #$1,D4                   ;5344 
-              BRA.B          ___ESQ_GenerateXorChecksumByte__4;60f2 
+___ESQ_GenerateXorChecksumByte__5:
+              CMPI.W         #$ffff,D4                ;0c44 ffff 
+              BNE.B          ___ESQ_GenerateXorChecksumByte__4;66f2 
 ___ESQ_GenerateXorChecksumByte__6:
               MOVE.L         D5,D0                    ;2005 
               MOVEQ.L        #$0,D1                   ;7200 

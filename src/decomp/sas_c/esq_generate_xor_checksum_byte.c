@@ -1,24 +1,28 @@
-extern unsigned char ESQIFF_RecordChecksumByte;
-extern unsigned char ESQIFF_UseCachedChecksumFlag;
+typedef unsigned long ULONG;
+typedef unsigned short UWORD;
+typedef unsigned char UBYTE;
 
-unsigned long ESQ_GenerateXorChecksumByte(unsigned long seed, unsigned char *src, unsigned long length)
+extern UBYTE ESQIFF_RecordChecksumByte;
+extern UBYTE ESQIFF_UseCachedChecksumFlag;
+
+ULONG ESQ_GenerateXorChecksumByte(ULONG seed, UBYTE *src, ULONG length)
 {
-    unsigned long d0;
-    unsigned short n;
+    ULONG checksum;
+    UWORD count;
 
-    d0 = (unsigned long)ESQIFF_RecordChecksumByte;
-    if (ESQIFF_UseCachedChecksumFlag) {
-        return d0;
+    checksum = (ULONG)ESQIFF_RecordChecksumByte;
+    if (ESQIFF_UseCachedChecksumFlag != 0) {
+        return checksum;
     }
 
-    d0 = seed;
-    n = (unsigned short)length;
-    d0 ^= 0xFFUL;
+    checksum = seed;
+    checksum ^= 0xFFUL;
+    count = (UWORD)length;
 
-    while (n != 0) {
-        d0 ^= (unsigned long)(*src++);
-        n--;
-    }
+    do {
+        checksum ^= (ULONG)(*src++);
+        count--;
+    } while (count != 0xFFFFU);
 
-    return d0 & 0xFFUL;
+    return checksum & 0xFFUL;
 }
