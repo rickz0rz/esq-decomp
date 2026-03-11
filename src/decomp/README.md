@@ -5366,6 +5366,7 @@ Recent promoted targets:
 - SAS/C trial sources currently used:
 - `src/decomp/sas_c/test_memory_pair.c`
 - `src/decomp/sas_c/string_to_upper_char.c`
+- `src/decomp/sas_c/list_init_header.c`
 - `src/decomp/sas_c/unknown34_pair.c`
 - `src/decomp/sas_c/unknown34_dos_read_by_index.c`
 - `src/decomp/sas_c/unknown11_dos_seek_by_index.c`

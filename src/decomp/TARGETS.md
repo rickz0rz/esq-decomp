@@ -181,17 +181,21 @@ Why this target:
 - Good bridge from loop/call targets into pointer-field write patterns.
 
 Artifacts:
+- SAS/C restored source: `src/decomp/sas_c/list_init_header.c`
+- SAS/C compare script: `src/decomp/scripts/compare_sasc_list_init_header_trial.sh`
 - GCC C candidate: `src/decomp/c/replacements/list_init_header_gcc.c`
 - GCC compile/compare script: `src/decomp/scripts/compare_list_init_header_trial_gcc.sh`
 - Semantic filter: `src/decomp/scripts/semantic_filter_list_init.awk`
 - Promotion gate: `src/decomp/scripts/promote_list_init_header_target_gcc.sh`
 
 Run:
+- `bash src/decomp/scripts/compare_sasc_list_init_header_trial.sh`
 - `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_list_init_header_trial_gcc.sh`
 - `bash src/decomp/scripts/promote_list_init_header_target_gcc.sh`
 
 Current notes:
 - GCC may encode the `+4` head adjustment via `LEA` temporary pointer and use indexed displacement syntax (`(4,a0)`/`(8,a0)`), but semantics remain equivalent.
+- SAS/C lane now builds directly from `src/decomp/sas_c/list_init_header.c`; `unknown34_pair.c` remains the paired lane for the combined `LIST_InitHeader` + `MEM_Move` compare script.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
 ## Target 008: `modules/submodules/unknown34.s` (`DOS_ReadByIndex`)

@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-SASC_SRC="unknown34_pair.c"
+SASC_SRC="list_init_header.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown34.s"
