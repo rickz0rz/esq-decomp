@@ -3,25 +3,25 @@ __code:
 STRING_ToUpperChar:
               CMP.L          __base(A4),A7            ;bfec 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
 ___STRING_ToUpperChar__1:
-              MOVE.L         $8(A7),D7                ;2e2f 0008 
-              MOVE.L         D7,D0                    ;2007 
-              MOVEQ.L        #$61,D1                  ;7261 
-              CMP.B          D1,D0                    ;b001 
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         D7,D6                    ;2c07 
+              MOVEQ.L        #$61,D0                  ;7061 
+              CMP.B          D0,D6                    ;bc00 
               BCS.B          ___STRING_ToUpperChar__4 ;650a 
 ___STRING_ToUpperChar__2:
-              MOVEQ.L        #$7a,D1                  ;727a 
-              CMP.B          D1,D0                    ;b001 
+              MOVEQ.L        #$7a,D0                  ;707a 
+              CMP.B          D0,D6                    ;bc00 
               BHI.B          ___STRING_ToUpperChar__4 ;6204 
 ___STRING_ToUpperChar__3:
-              MOVEQ.L        #$20,D1                  ;7220 
-              SUB.L          D1,D7                    ;9e81 
+              SUBI.B         #$20,D6                  ;0406 0020 
 ___STRING_ToUpperChar__4:
-              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
 ___STRING_ToUpperChar__5:
 ___STRING_ToUpperChar__6:
-              MOVE.L         (A7)+,D7                 ;2e1f 
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
               RTS                                     ;4e75 
 __const:
 __strings:

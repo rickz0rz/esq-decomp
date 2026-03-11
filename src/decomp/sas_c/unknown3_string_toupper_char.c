@@ -3,9 +3,12 @@ typedef unsigned char UBYTE;
 
 ULONG STRING_ToUpperChar(ULONG c)
 {
-    if ((UBYTE)c >= 'a' && (UBYTE)c <= 'z') {
-        c -= 0x20;
+    UBYTE ch;
+
+    ch = (UBYTE)c;
+    if (ch >= 'a' && ch <= 'z') {
+        ch -= 0x20;
     }
 
-    return c;
+    return (ULONG)ch;
 }

@@ -10,7 +10,7 @@ ___DOS_Delay__1:
               MOVE.L         $c(A7),D7                ;2e2f 000c 
               MOVE.L         D7,D0                    ;2007 
               MOVE.L         Global_REF_DOS_LIBRARY_2(A4),A6;2c6c 0000 
-              JSR            $fffffff4(A6)            ;4eae fff4 
+              JSR            $ffffff0c(A6)            ;4eae ff0c 
 ___DOS_Delay__2:
 ___DOS_Delay__3:
               MOVEM.L        (A7)+,D7/A6              ;4cdf 4080 
