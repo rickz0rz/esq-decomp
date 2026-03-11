@@ -3,16 +3,17 @@ typedef signed long LONG;
 typedef unsigned char UBYTE;
 
 typedef struct ListHeader {
-    struct ListHeader *head;
-    ULONG count;
-    struct ListHeader *tail;
+    ULONG head;
+    ULONG zero;
+    ULONG tail;
 } ListHeader;
 
 void LIST_InitHeader(ListHeader *header)
 {
-    header->head = (ListHeader *)((UBYTE *)header + 4);
-    header->count = 0;
-    header->tail = header;
+    header->head = (ULONG)header;
+    header->head += 4;
+    header->zero = 0;
+    header->tail = (ULONG)header;
 }
 
 LONG MEM_Move(UBYTE *src, UBYTE *dst, LONG length)
