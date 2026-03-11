@@ -22,8 +22,8 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     if (u ~ /CLEANUP_DRAWDATEBANNERSEGMENT/ || u ~ /CLEANUP_DRAWDATEBANNERSE/) has_date = 1
     if (u ~ /CLEANUP_DRAWBANNERSPACERSEGMENT/ || u ~ /CLEANUP_DRAWBANNERSPACERS/) has_spacer = 1
     if (u ~ /CLEANUP_DRAWTIMEBANNERSEGMENT/ || u ~ /CLEANUP_DRAWTIMEBANNERSE/) has_time = 1
-    if ((u ~ /GLOBAL_REF_696_400_BITMAP/ && (u ~ /4\(A0\)/ || u ~ /4\(A[0-7]\)/)) || u ~ /MOVE.L A0,\(A1\)/) has_bitmap_swap = 1
-    if (u ~ /MOVE.L -4\(A5\),4\(A0\)/ || u ~ /MOVE.L D[0-7],4\(A[0-7]\)/ || u ~ /MOVE.L D[0-7],\(A0\)/) has_restore = 1
+    if ((u ~ /GLOBAL_REF_696_400_BITMAP/ && (u ~ /\$?4\(A0\)/ || u ~ /\$?4\(A[0-7]\)/)) || u ~ /MOVE.L A0,\(A1\)/ || u ~ /MOVE.L A0,\$?4\(A[0-7]\)/) has_bitmap_swap = 1
+    if (u ~ /MOVE.L -4\(A5\),\$?4\(A0\)/ || u ~ /MOVE.L D[0-7],\$?4\(A[0-7]\)/ || u ~ /MOVE.L D[0-7],\(A0\)/) has_restore = 1
     if (u == "RTS") has_return = 1
 }
 END {
