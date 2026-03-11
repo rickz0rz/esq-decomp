@@ -1,32 +1,30 @@
 void ESQ_AdjustBracketedHourInString(char *text_ptr, long hour_offset)
 {
-    char off = (char)hour_offset;
     char *p = text_ptr;
+    char off = (char)hour_offset;
 
     for (;;) {
         char ch;
 
-        do {
-            ch = *p++;
+        while ((ch = *p++) != '[') {
             if (ch == '\0') {
                 return;
             }
-        } while (ch != '[');
+        }
 
         p[-1] = '(';
 
         if (off != 0) {
             char hour = 0;
-            char tens_or_space = *p++;
-            char ones = *p++;
-            char *q = p;
-            char lead = ' ';
+            char digit;
 
-            if (tens_or_space != ' ') {
+            ch = *p++;
+            if (ch != ' ') {
                 hour = 10;
             }
 
-            hour = (char)(hour + (char)(ones - '0'));
+            digit = *p++;
+            hour = (char)(hour + (char)(digit - '0'));
             hour = (char)(hour + off);
             if (hour < 1) {
                 hour = (char)(hour + 12);
@@ -34,21 +32,21 @@ void ESQ_AdjustBracketedHourInString(char *text_ptr, long hour_offset)
             while (hour > 12) {
                 hour = (char)(hour - 12);
             }
-            if (hour >= 10) {
+            if (hour < 10) {
+                p[-1] = (char)(hour + '0');
+                p[-2] = ' ';
+            } else {
                 hour = (char)(hour - 10);
-                lead = '1';
+                p[-1] = (char)(hour + '0');
+                p[-2] = '1';
             }
-
-            *--q = (char)(hour + '0');
-            *--q = lead;
         }
 
-        do {
-            ch = *p++;
+        while ((ch = *p++) != ']') {
             if (ch == '\0') {
                 return;
             }
-        } while (ch != ']');
+        }
 
         p[-1] = ')';
     }
