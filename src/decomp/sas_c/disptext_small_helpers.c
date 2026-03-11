@@ -39,7 +39,7 @@ void DISPTEXT_SetCurrentLineIndex(LONG lineIndex)
 LONG DISPTEXT_GetTotalLineCount(void)
 {
     DISPTEXT_FinalizeLineTable();
-    return (LONG)(UWORD)DISPTEXT_TargetLineIndex;
+    return (UWORD)DISPTEXT_TargetLineIndex;
 }
 
 LONG DISPTEXT_HasMultipleLines(void)
