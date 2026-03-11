@@ -4789,6 +4789,7 @@ Recent promoted targets:
 - Group MAIN_B `GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_b_jmptbl_stream_buffered_write_string_trial.sh`
 - Group MAIN_B `GROUP_MAIN_B_JMPTBL_MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_b_jmptbl_math_mulu32_trial.sh`
 - Group MAIN_B `GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_b_jmptbl_buffer_flush_all_and_close_with_code_trial.sh`
+- Utility `STREAM_BufferedWriteString` SAS/C compare script: `src/decomp/scripts/compare_sasc_stream_buffered_write_string_trial.sh`
 - Group AL `GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_al_jmptbl_ladfunc_pack_nibbles_to_byte_trial.sh`
 - Group AL `GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_al_jmptbl_ladfunc_extract_low_nibble_trial.sh`
 - Group AL `GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_al_jmptbl_ladfunc_update_entry_buffers_for_ad_index_trial.sh`

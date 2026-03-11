@@ -106,7 +106,7 @@ Current notes:
 
 ## Target 004: `modules/submodules/unknown3.s` (`STRING_ToUpperChar`)
 
-Status: promoted (GCC gate)
+Status: promoted (GCC gate) + SAS/C lane added
 
 Why this target:
 - Small non-wrapper logic function with real control flow.
@@ -1991,17 +1991,21 @@ Why this target:
 - Captures buffer-cursor/update flow and flush fallback behavior in a compact loop-based routine.
 
 Artifacts:
+- SAS/C restored source: `src/decomp/sas_c/stream_buffered_write_string.c`
+- SAS/C compile/compare script: `src/decomp/scripts/compare_sasc_stream_buffered_write_string_trial.sh`
 - GCC C candidate: `src/decomp/c/replacements/stream_buffered_write_string_gcc.c`
 - GCC compile/compare script: `src/decomp/scripts/compare_stream_buffered_write_string_trial_gcc.sh`
 - Semantic filter: `src/decomp/scripts/semantic_filter_stream_buffered_write_string.awk`
 - Promotion gate: `src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh`
 
 Run:
+- `bash src/decomp/scripts/compare_sasc_stream_buffered_write_string_trial.sh`
 - `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_stream_buffered_write_string_trial_gcc.sh`
 - `bash src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh`
 
 Current notes:
 - C candidate preserves byte-at-a-time write loop, `WriteRemaining` decrement and overflow fallback via `STREAM_BufferedPutcOrFlush`, trailing `-1` flush call, and length return behavior.
+- SAS/C lane now builds directly from `src/decomp/sas_c/stream_buffered_write_string.c` and reuses the existing semantic filter for local parity checks.
 - Semantic gate validates length-scan/load flow, required `Global_PreallocHandleNode1_*` references, flush sentinel path, and terminal return invariants.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
