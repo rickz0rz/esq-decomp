@@ -18,7 +18,6 @@ void TEXTDISP_ClearSourceConfig(void)
 {
     const LONG SOURCECFG_FREE_LINE = 1153;
     const LONG SOURCECFG_ENTRY_SIZE = 6;
-    const LONG ZERO = 0;
     LONG i;
 
     for (i = 0; i < TEXTDISP_SourceConfigEntryCount; ++i) {
@@ -30,6 +29,6 @@ void TEXTDISP_ClearSourceConfig(void)
         }
     }
 
-    TEXTDISP_SourceConfigEntryCount = ZERO;
-    TEXTDISP_SourceConfigFlagMask = ZERO;
+    TEXTDISP_SourceConfigEntryCount = 0;
+    TEXTDISP_SourceConfigFlagMask = 0;
 }
