@@ -9,38 +9,25 @@ extern LONG ED_EditCursorOffset;
 
 LONG ED_GetEscMenuActionCode(void)
 {
-    const LONG RING_STRIDE = 2;
-    const LONG RING_EXTRA = 1;
-    const LONG KEY_OFFSET_3 = 3;
-    const LONG KEY_OFFSET_10 = 10;
-    const LONG KEY_OFFSET_14 = 14;
-    const LONG KEY_OFFSET_80 = 0x80;
-    const LONG CURSOR_MAX_MENU = 6;
-    const LONG ACTION_NONE = 0;
-    const LONG ACTION_FALLBACK = 8;
-    const LONG ACTION_MENU_A = 9;
-    const LONG ACTION_MENU_B = 10;
     LONG d0;
-    LONG idx;
 
-    idx = ED_StateRingIndex;
-    ED_LastMenuInputChar = ED_StateRingTable[(idx << RING_STRIDE) + idx + RING_EXTRA];
+    ED_LastMenuInputChar =
+        ED_StateRingTable[(ED_StateRingIndex << 2) + ED_StateRingIndex + 1];
 
     d0 = (LONG)ED_LastKeyCode;
-    d0 -= KEY_OFFSET_3;
+    d0 -= 3;
     if (d0 == 0) {
-        return ACTION_FALLBACK;
+        return 8;
     }
 
-    d0 -= KEY_OFFSET_10;
+    d0 -= 10;
     if (d0 == 0) {
-        LONG sel = ED_EditCursorOffset;
-
-        if (sel >= CURSOR_MAX_MENU) {
-            return ACTION_FALLBACK;
+        d0 = ED_EditCursorOffset;
+        if (d0 >= 6) {
+            return 8;
         }
 
-        switch (sel) {
+        switch (d0) {
         case 0: return 1;
         case 1: return 2;
         case 2: return 3;
@@ -49,20 +36,20 @@ LONG ED_GetEscMenuActionCode(void)
         case 5: return 6;
         }
 
-        return ACTION_FALLBACK;
+        return 8;
     }
 
-    d0 -= KEY_OFFSET_14;
+    d0 -= 14;
     if (d0 == 0) {
-        return ACTION_NONE;
+        return 0;
     }
 
-    d0 -= KEY_OFFSET_80;
+    d0 -= 0x80;
     if (d0 == 0) {
         if (ED_LastMenuInputChar == 'A') {
-            return ACTION_MENU_A;
+            return 9;
         }
     }
 
-    return ACTION_MENU_B;
+    return 10;
 }

@@ -1,60 +1,37 @@
               SECTION      text,CODE
 __code:
 ED_GetEscMenuActionCode:
-              MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$2c,D0                  ;90bc 0000 002c 
-              CMP.L          __base(A4),D0            ;b0ac 0000 
+              CMP.L          __base(A4),A7            ;bfec 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$2c,A7                  ;9efc 002c 
-              MOVEM.L        D2/D3/D4/D5/D6/D7,-(A7)  ;48e7 3f00 
+              MOVE.L         D7,-(A7)                 ;2f07 
 ___ED_GetEscMenuActionCode__1:
-              MOVEQ.L        #$2,D7                   ;7e02 
-              MOVEQ.L        #$1,D6                   ;7c01 
-              MOVEQ.L        #$3,D5                   ;7a03 
-              MOVEQ.L        #$a,D0                   ;700a 
-              MOVEQ.L        #$e,D1                   ;720e 
-              MOVE.L         D1,$3c(A7)               ;2f41 003c 
-              MOVE.L         #$80,$38(A7)             ;2f7c 0000 0080 0038 
-              MOVEQ.L        #$6,D1                   ;7206 
-              CLR.L          $30(A7)                  ;42af 0030 
-              MOVEQ.L        #$8,D2                   ;7408 
-              MOVEQ.L        #$9,D3                   ;7609 
-              MOVE.L         D3,$28(A7)               ;2f43 0028 
-              MOVE.L         ED_StateRingIndex(A4),D3 ;262c 0000 
-              MOVE.L         D3,D4                    ;2803 
-              ASL.L          D7,D4                    ;efa4 
-              ADD.L          D3,D4                    ;d883 
-              ADD.L          D6,D4                    ;d886 
-              LEA            ED_StateRingTable(A4),A0 ;41ec 0000 
-              MOVE.B         $0(A0,D4.L),ED_LastMenuInputChar(A4);1970 4800 0000 
-              MOVEQ.L        #$0,D4                   ;7800 
-              MOVE.B         ED_LastKeyCode(A4),D4    ;182c 0000 
-              MOVE.L         D4,$20(A7)               ;2f44 0020 
-              SUB.L          D5,D4                    ;9885 
-              MOVEM.L        D0,$24(A7)               ;48ef 0001 0024 
-              MOVEM.L        D0,$40(A7)               ;48ef 0001 0040 
-              MOVEM.L        D1,$34(A7)               ;48ef 0002 0034 
-              MOVEM.L        D2,$2c(A7)               ;48ef 0004 002c 
-              MOVEM.L        D3,$1c(A7)               ;48ef 0008 001c 
-              MOVEM.L        D4,$20(A7)               ;48ef 0010 0020 
-              BNE.B          ___ED_GetEscMenuActionCode__3;6606 
+              MOVE.L         ED_StateRingIndex(A4),D0 ;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D0,D1                    ;d280 
+              LEA            ED_StateRingTable+$1(A4),A0;41ec 0001 
+              MOVE.B         $0(A0,D1.L),ED_LastMenuInputChar(A4);1970 1800 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.B         ED_LastKeyCode(A4),D7    ;1e2c 0000 
+              SUBQ.L         #$3,D7                   ;5787 
+              BNE.B          ___ED_GetEscMenuActionCode__3;6604 
 ___ED_GetEscMenuActionCode__2:
-              MOVE.L         D2,D0                    ;2002 
-              BRA.W          ___ED_GetEscMenuActionCode__24;6000 008c 
+              MOVEQ.L        #$8,D0                   ;7008 
+              BRA.B          ___ED_GetEscMenuActionCode__24;6072 
 ___ED_GetEscMenuActionCode__3:
-              MOVE.L         $40(A7),D0               ;202f 0040 
-              SUB.L          D0,$20(A7)               ;91af 0020 
-              BNE.B          ___ED_GetEscMenuActionCode__17;6652 
+              MOVEQ.L        #$a,D0                   ;700a 
+              SUB.L          D0,D7                    ;9e80 
+              BNE.B          ___ED_GetEscMenuActionCode__17;664a 
 ___ED_GetEscMenuActionCode__4:
-              MOVE.L         ED_EditCursorOffset(A4),D0;202c 0000 
-              MOVEM.L        D0,$18(A7)               ;48ef 0001 0018 
-              CMP.L          D1,D0                    ;b081 
+              MOVE.L         ED_EditCursorOffset(A4),D7;2e2c 0000 
+              MOVEQ.L        #$6,D0                   ;7006 
+              CMP.L          D0,D7                    ;be80 
               BLT.B          ___ED_GetEscMenuActionCode__6;6d04 
 ___ED_GetEscMenuActionCode__5:
-              MOVE.L         D2,D0                    ;2002 
-              BRA.B          ___ED_GetEscMenuActionCode__24;606e 
+              MOVEQ.L        #$8,D0                   ;7008 
+              BRA.B          ___ED_GetEscMenuActionCode__24;605e 
 ___ED_GetEscMenuActionCode__6:
-              MOVE.L         $18(A7),D0               ;202f 0018 
+              MOVE.L         D7,D0                    ;2007 
 ___ED_GetEscMenuActionCode__7:
 ___ED_GetEscMenuActionCode__8:
               CMPI.L         #$6,D0                   ;0c80 0000 0006 
@@ -72,50 +49,50 @@ __switch_ED_GetEscMenuActionCode_9:
               DC.W           ___ED_GetEscMenuActionCode__15-__switch_ED_GetEscMenuActionCode_9
 ___ED_GetEscMenuActionCode__10:
               MOVEQ.L        #$1,D0                   ;7001 
-              BRA.B          ___ED_GetEscMenuActionCode__24;6048 
+              BRA.B          ___ED_GetEscMenuActionCode__24;603a 
 ___ED_GetEscMenuActionCode__11:
               MOVEQ.L        #$2,D0                   ;7002 
-              BRA.B          ___ED_GetEscMenuActionCode__24;6044 
+              BRA.B          ___ED_GetEscMenuActionCode__24;6036 
 ___ED_GetEscMenuActionCode__12:
               MOVEQ.L        #$3,D0                   ;7003 
-              BRA.B          ___ED_GetEscMenuActionCode__24;6040 
+              BRA.B          ___ED_GetEscMenuActionCode__24;6032 
 ___ED_GetEscMenuActionCode__13:
               MOVEQ.L        #$4,D0                   ;7004 
-              BRA.B          ___ED_GetEscMenuActionCode__24;603c 
+              BRA.B          ___ED_GetEscMenuActionCode__24;602e 
 ___ED_GetEscMenuActionCode__14:
               MOVEQ.L        #$5,D0                   ;7005 
-              BRA.B          ___ED_GetEscMenuActionCode__24;6038 
+              BRA.B          ___ED_GetEscMenuActionCode__24;602a 
 ___ED_GetEscMenuActionCode__15:
               MOVEQ.L        #$6,D0                   ;7006 
-              BRA.B          ___ED_GetEscMenuActionCode__24;6034 
+              BRA.B          ___ED_GetEscMenuActionCode__24;6026 
 ___ED_GetEscMenuActionCode__16:
-              MOVE.L         $2c(A7),D0               ;202f 002c 
-              BRA.B          ___ED_GetEscMenuActionCode__24;602e 
+              MOVEQ.L        #$8,D0                   ;7008 
+              BRA.B          ___ED_GetEscMenuActionCode__24;6022 
 ___ED_GetEscMenuActionCode__17:
-              MOVE.L         $3c(A7),D0               ;202f 003c 
-              SUB.L          D0,$20(A7)               ;91af 0020 
-              BNE.B          ___ED_GetEscMenuActionCode__19;6606 
+              MOVEQ.L        #$e,D0                   ;700e 
+              SUB.L          D0,D7                    ;9e80 
+              BNE.B          ___ED_GetEscMenuActionCode__19;6604 
 ___ED_GetEscMenuActionCode__18:
-              MOVE.L         $30(A7),D0               ;202f 0030 
-              BRA.B          ___ED_GetEscMenuActionCode__24;601e 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___ED_GetEscMenuActionCode__24;6018 
 ___ED_GetEscMenuActionCode__19:
-              MOVE.L         $38(A7),D0               ;202f 0038 
-              SUB.L          D0,$20(A7)               ;91af 0020 
-              BNE.B          ___ED_GetEscMenuActionCode__22;6610 
+              MOVEQ.L        #$40,D0                  ;7040 
+              ADD.L          D0,D0                    ;d080 
+              SUB.L          D0,D7                    ;9e80 
+              BNE.B          ___ED_GetEscMenuActionCode__22;660e 
 ___ED_GetEscMenuActionCode__20:
               MOVE.B         ED_LastMenuInputChar(A4),D0;102c 0000 
               MOVEQ.L        #$41,D1                  ;7241 
               CMP.B          D1,D0                    ;b001 
-              BNE.B          ___ED_GetEscMenuActionCode__22;6606 
+              BNE.B          ___ED_GetEscMenuActionCode__22;6604 
 ___ED_GetEscMenuActionCode__21:
-              MOVE.L         $28(A7),D0               ;202f 0028 
-              BRA.B          ___ED_GetEscMenuActionCode__24;6004 
+              MOVEQ.L        #$9,D0                   ;7009 
+              BRA.B          ___ED_GetEscMenuActionCode__24;6002 
 ___ED_GetEscMenuActionCode__22:
-              MOVE.L         $24(A7),D0               ;202f 0024 
+              MOVEQ.L        #$a,D0                   ;700a 
 ___ED_GetEscMenuActionCode__23:
 ___ED_GetEscMenuActionCode__24:
-              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7  ;4cdf 00fc 
-              ADD.W          #$2c,A7                  ;defc 002c 
+              MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 __const:
 __strings:
