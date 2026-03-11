@@ -22,7 +22,7 @@ function trim(s, t) {
 
     if (u ~ /^SCRIPT_SETCTRLCONTEXTMODE:/) has_entry = 1
     if (u ~ /MOVE\.W .*\(A3\)/ || u ~ /MOVE\.W .*\(A0\)/) has_write_mode = 1
-    if (u ~ /#1,2\(A3\)/ || u ~ /#1,2\(A0\)/ || index(u, "#$1,(A0)") > 0 || index(u, "#$1,(A3)") > 0) has_write_flag = 1
+    if (u ~ /#1,2\(A3\)/ || u ~ /#1,2\(A0\)/ || u ~ /#\$1,\$2\(A3\)/ || u ~ /#\$1,\$2\(A0\)/ || index(u, "#$1,(A0)") > 0 || index(u, "#$1,(A3)") > 0) has_write_flag = 1
     if (index(u, "SCRIPT_RESETCTRLCONTEXT") > 0 || index(u, "SCRIPT_RESETCTRLCONTEX") > 0) has_reset = 1
     if (u == "RTS") has_return = 1
 }
