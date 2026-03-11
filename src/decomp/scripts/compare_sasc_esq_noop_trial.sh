@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
-SASC_SRC="esq_noop_triplet.c"
+SASC_SRC="esq_noop.c"
 SASC_DIS="src/decomp/sas_c/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/groups/a/a/app2.s"
 OUT_DIR="build/decomp/sasc_trial"
