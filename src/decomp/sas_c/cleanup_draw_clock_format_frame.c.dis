@@ -5,9 +5,11 @@ CLEANUP_DrawClockFormatFrame:
               SUB.L          #$24,D0                  ;90bc 0000 0024 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D5/D6/D7/A5,-(A7)        ;48e7 0704 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___CLEANUP_DrawClockFormatFrame__1:
               MOVE.L         NEWGRID_MainRastPortPtr(A4),A5;2a6c 0000 
+              MOVE.L         NEWGRID_MainRastPortPtr(A4),A3;266c 0000 
+              MOVE.L         $4(A5),A2                ;246d 0004 
               MOVEQ.L        #$0,D7                   ;7e00 
               MOVE.W         NEWGRID_ColumnStartXPx(A4),D7;3e2c 0000 
               MOVE.L         D7,D6                    ;2c07 
@@ -22,14 +24,14 @@ ___CLEANUP_DrawClockFormatFrame__1:
               MOVE.L         D5,-(A7)                 ;2f05 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D6,-(A7)                 ;2f06 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
               CLR.L          -(A7)                    ;42a7 
               MOVE.L         D6,-(A7)                 ;2f06 
-              MOVE.L         $4(A5),-(A7)             ;2f2d 0004 
+              MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          GROUP_AD_JMPTBL_GRAPHICS_BltBitM;6100 0000 
               LEA            $24(A7),A7               ;4fef 0024 
 ___CLEANUP_DrawClockFormatFrame__2:
-              MOVEM.L        (A7)+,D5/D6/D7/A5        ;4cdf 20e0 
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
               RTS                                     ;4e75 
 __const:
 __strings:
