@@ -38,9 +38,9 @@ void LADFUNC_FreeBannerRectEntries(void)
 
         if (entry->textPtr != (char *)0) {
             p = entry->textPtr;
-            while (*p != CH_NUL) {
-                ++p;
+            while (*p++ != CH_NUL) {
             }
+            --p;
             len = (LONG)(p - entry->textPtr);
             (void)ESQPARS_ReplaceOwnedString((const char *)0, entry->textPtr);
         }
