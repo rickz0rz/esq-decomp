@@ -5,20 +5,20 @@ DOS_Delay:
               SUBQ.L         #$4,D0                   ;5980 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVEM.L        D7/A6,-(A7)              ;48e7 0102 
 ___DOS_Delay__1:
-              MOVE.L         $8(A7),D7                ;2e2f 0008 
-              MOVE.L         D7,-(A7)                 ;2f07 
-              BSR.W          _LVODelay                ;6100 0000 
-              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         D7,D1                    ;2207 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),A6;2c6c 0000 
+              JSR            $ffffff3a(A6)            ;4eae ff3a 
 ___DOS_Delay__2:
 ___DOS_Delay__3:
-              MOVE.L         (A7)+,D7                 ;2e1f 
+              MOVEM.L        (A7)+,D7/A6              ;4cdf 4080 
               RTS                                     ;4e75 
 __const:
 __strings:
               XREF           __base
               XREF           _XCOVF
-              XREF           _LVODelay
+              XREF           Global_REF_DOS_LIBRARY_2
               XDEF           DOS_Delay
               END
