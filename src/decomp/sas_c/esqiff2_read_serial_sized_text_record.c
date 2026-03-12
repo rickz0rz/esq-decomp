@@ -1,4 +1,5 @@
 typedef unsigned char UBYTE;
+typedef unsigned short UWORD;
 typedef signed short WORD;
 typedef signed long LONG;
 
@@ -10,46 +11,60 @@ extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 
 WORD ESQIFF2_ReadSerialSizedTextRecord(char *dst, LONG payload_size)
 {
-    const LONG RECORD_MAX_LEN = 0x2328L;
-    const WORD RECORD_MAX_LEN_W = (WORD)0x2328;
-    const LONG ZERO = 0;
-    const WORD ZERO_W = (WORD)0;
-    const char CH_NUL = '\0';
-    const char CH_SPACE = ' ';
-    LONG payload_read;
-    WORD write_pos;
-    LONG trailer_len;
-    LONG trailer_read;
+    register LONG trailer_len;
+    register WORD write_pos;
+    register LONG payload_read;
+    WORD index;
 
-    if (payload_size <= ZERO || payload_size >= RECORD_MAX_LEN) {
-        return ZERO_W;
+    if (payload_size <= 0) {
+        return 0;
     }
 
-    payload_read = ZERO;
-    write_pos = ZERO_W;
-    while (payload_read < payload_size && write_pos < RECORD_MAX_LEN_W) {
+    if (payload_size >= 0x2328L) {
+        return 0;
+    }
+
+    write_pos = 0;
+    payload_read = 0;
+    while (payload_read < payload_size && (UWORD)write_pos < (UWORD)0x2328) {
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        dst[write_pos++] = (char)ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
-        payload_read++;
+        index = write_pos;
+        write_pos = (WORD)(write_pos + 1);
+        dst[(UWORD)index] = (char)ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        payload_read = payload_read + 1;
     }
 
-    dst[write_pos] = CH_NUL;
+    dst[(UWORD)write_pos] = '\0';
     trailer_len = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(dst);
-    dst[write_pos] = CH_SPACE;
-    trailer_read = ZERO;
+    dst[(UWORD)write_pos] = ' ';
+    payload_read = 0;
 
-    while (write_pos > ZERO &&
-           dst[write_pos - 1] != CH_NUL &&
-           trailer_read < trailer_len &&
-           write_pos < RECORD_MAX_LEN_W) {
+    for (;;) {
+        if ((LONG)(UWORD)write_pos <= 0) {
+            break;
+        }
+        index = (WORD)(write_pos - 1);
+        if (dst[(UWORD)index] == '\0') {
+            break;
+        }
+        if (payload_read >= trailer_len) {
+            break;
+        }
+        if ((UWORD)write_pos >= (UWORD)0x2328) {
+            break;
+        }
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        dst[write_pos++] = (char)ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
-        trailer_read++;
+        index = write_pos;
+        write_pos = (WORD)(write_pos + 1);
+        dst[(UWORD)index] = (char)ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        payload_read = payload_read + 1;
     }
 
-    if (!(write_pos > ZERO && dst[write_pos - 1] == CH_NUL && trailer_read == trailer_len)) {
-        write_pos = ZERO_W;
-        dst[ZERO] = CH_NUL;
+    if ((LONG)(UWORD)write_pos <= 0 ||
+        dst[(LONG)(UWORD)write_pos - 1] != '\0' ||
+        payload_read != trailer_len) {
+        write_pos = 0;
+        dst[0] = '\0';
     } else {
         ESQFUNC_WaitForClockChangeAndServiceUi();
         ESQIFF_RecordChecksumByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();

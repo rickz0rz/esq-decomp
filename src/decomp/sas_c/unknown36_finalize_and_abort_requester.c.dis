@@ -1,0 +1,227 @@
+              SECTION      text,CODE
+__code:
+UNKNOWN36_FinalizeRequest:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7/A5,-(A7)           ;48e7 0304 
+___UNKNOWN36_FinalizeRequest__1:
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         $18(A5),D0               ;202d 0018 
+              BTST           #$1,D0                   ;0800 0001 
+              BEQ.B          ___UNKNOWN36_FinalizeRequest__3;6710 
+___UNKNOWN36_FinalizeRequest__2:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            ($ffffffff).w            ;4878 ffff 
+              BSR.W          STREAM_BufferedPutcOrFlush;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.B          ___UNKNOWN36_FinalizeRequest__4;6002 
+___UNKNOWN36_FinalizeRequest__3:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___UNKNOWN36_FinalizeRequest__4:
+              MOVEQ.L        #$c,D0                   ;700c 
+              AND.L          $18(A5),D0               ;c0ad 0018 
+              BNE.B          ___UNKNOWN36_FinalizeRequest__7;6612 
+___UNKNOWN36_FinalizeRequest__5:
+              MOVE.L         $14(A5),D0               ;202d 0014 
+              BEQ.B          ___UNKNOWN36_FinalizeRequest__7;670c 
+___UNKNOWN36_FinalizeRequest__6:
+              MOVE.L         $10(A5),-(A7)            ;2f2d 0010 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ALLOC_InsertFreeBlock    ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___UNKNOWN36_FinalizeRequest__7:
+              CLR.L          $18(A5)                  ;42ad 0018 
+              MOVE.L         $1c(A5),-(A7)            ;2f2d 001c 
+              BSR.W          HANDLE_CloseByIndex      ;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D7,D0                    ;2007 
+              ADDQ.L         #$1,D0                   ;5280 
+              BEQ.B          ___UNKNOWN36_FinalizeRequest__9;6704 
+___UNKNOWN36_FinalizeRequest__8:
+              TST.L          D6                       ;4a86 
+              BEQ.B          ___UNKNOWN36_FinalizeRequest__10;6704 
+___UNKNOWN36_FinalizeRequest__9:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___UNKNOWN36_FinalizeRequest__12;6002 
+___UNKNOWN36_FinalizeRequest__10:
+              MOVEQ.L        #$0,D0                   ;7000 
+___UNKNOWN36_FinalizeRequest__11:
+___UNKNOWN36_FinalizeRequest__12:
+              MOVEM.L        (A7)+,D6/D7/A5           ;4cdf 20c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+UNKNOWN36_ShowAbortRequester:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$7c,D0                  ;90bc 0000 007c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$58,A7                  ;9efc 0058 
+              MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
+___UNKNOWN36_ShowAbortRequester__1:
+              MOVE.L         Global_UNKNOWN36_MessagePtr(A4),A5;2a6c 0000 
+              MOVE.B         $ffffffff(A5),D0         ;102d ffff 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.B         D0,D7                    ;1e00 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVEQ.L        #$4f,D0                  ;704f 
+              CMP.L          D0,D7                    ;be80 
+              BLE.B          ___UNKNOWN36_ShowAbortRequester__3;6f02 
+___UNKNOWN36_ShowAbortRequester__2:
+              MOVE.L         D0,D7                    ;2e00 
+___UNKNOWN36_ShowAbortRequester__3:
+              MOVEQ.L        #$0,D6                   ;7c00 
+___UNKNOWN36_ShowAbortRequester__4:
+              CMP.L          D7,D6                    ;bc87 
+              BGE.B          ___UNKNOWN36_ShowAbortRequester__7;6c0c 
+___UNKNOWN36_ShowAbortRequester__5:
+              MOVE.B         $0(A5,D6.L),D0           ;1035 6800 
+              MOVE.B         D0,$1e(A7,D6.L)          ;1f80 681e 
+___UNKNOWN36_ShowAbortRequester__6:
+              ADDQ.L         #$1,D6                   ;5286 
+              BRA.B          ___UNKNOWN36_ShowAbortRequester__4;60f0 
+___UNKNOWN36_ShowAbortRequester__7:
+              CLR.B          $1e(A7,D7.L)             ;4237 781e 
+              MOVE.L         AbsExecBase(A4),A0       ;206c 0000 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          _LVOFindTask             ;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              ADDQ.W         #$8,A7                   ;504f 
+              LEA            $ac(A3),A0               ;41eb 00ac 
+              MOVE.L         (A0),D0                  ;2010 
+              BEQ.B          ___UNKNOWN36_ShowAbortRequester__9;670a 
+___UNKNOWN36_ShowAbortRequester__8:
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         D0,A2                    ;2440 
+              LEA            $38(A2),A0               ;41ea 0038 
+              MOVE.L         (A0),D5                  ;2a10 
+___UNKNOWN36_ShowAbortRequester__9:
+              TST.L          D5                       ;4a85 
+              BNE.B          ___UNKNOWN36_ShowAbortRequester__11;6606 
+___UNKNOWN36_ShowAbortRequester__10:
+              LEA            $a0(A3),A0               ;41eb 00a0 
+              MOVE.L         (A0),D5                  ;2a10 
+___UNKNOWN36_ShowAbortRequester__11:
+              TST.L          D5                       ;4a85 
+              BEQ.B          ___UNKNOWN36_ShowAbortRequester__13;6738 
+___UNKNOWN36_ShowAbortRequester__12:
+              MOVE.L         Global_DosLibrary(A4),A0 ;206c 0000 
+              PEA            ($b).w                   ;4878 000b 
+              PEA            __MERGED(A4)             ;486c 0000 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          _LVOWrite                ;6100 0000 
+              MOVE.B         #$a,$2e(A7,D7.L)         ;1fbc 000a 782e 
+              MOVE.L         Global_DosLibrary(A4),A0 ;206c 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,(A7)                  ;2e80 
+              PEA            $2e(A7)                  ;486f 002e 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          _LVOWrite                ;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___UNKNOWN36_ShowAbortRequester__19;605c 
+___UNKNOWN36_ShowAbortRequester__13:
+              MOVE.L         AbsExecBase(A4),A0       ;206c 0000 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            __MERGED+$c(A4)          ;486c 000c 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          _LVOOpenLibrary          ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         D0,$70(A7)               ;2f40 0070 
+              BNE.B          ___UNKNOWN36_ShowAbortRequester__15;6604 
+___UNKNOWN36_ShowAbortRequester__14:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___UNKNOWN36_ShowAbortRequester__19;603e 
+___UNKNOWN36_ShowAbortRequester__15:
+              LEA            $1e(A7),A0               ;41ef 001e 
+              MOVE.L         A0,Global_UNKNOWN36_RequesterOutPtr(A4);2948 0000 
+              PEA            ($3c).w                  ;4878 003c 
+              PEA            ($fa).w                  ;4878 00fa 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            Global_UNKNOWN36_RequesterText2(A4);486c 0000 
+              PEA            Global_UNKNOWN36_RequesterText1(A4);486c 0000 
+              PEA            Global_UNKNOWN36_RequesterText0(A4);486c 0000 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         $90(A7),-(A7)            ;2f2f 0090 
+              BSR.W          EXEC_CallVector_348      ;6100 0000 
+              MOVE.L         D0,D4                    ;2800 
+              LEA            $24(A7),A7               ;4fef 0024 
+              MOVE.L         D4,D0                    ;2004 
+              SUBQ.L         #$1,D0                   ;5380 
+              BNE.B          ___UNKNOWN36_ShowAbortRequester__17;6604 
+___UNKNOWN36_ShowAbortRequester__16:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___UNKNOWN36_ShowAbortRequester__19;6002 
+___UNKNOWN36_ShowAbortRequester__17:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+___UNKNOWN36_ShowAbortRequester__18:
+___UNKNOWN36_ShowAbortRequester__19:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
+              ADD.W          #$58,A7                  ;defc 0058 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           STREAM_BufferedPutcOrFlush
+              XREF           ALLOC_InsertFreeBlock
+              XREF           HANDLE_CloseByIndex
+              XREF           Global_UNKNOWN36_MessagePtr
+              XREF           AbsExecBase
+              XREF           _LVOFindTask
+              XREF           Global_DosLibrary
+              XREF           _LVOWrite
+              XREF           _LVOOpenLibrary
+              XREF           Global_UNKNOWN36_RequesterOutPtr
+              XREF           Global_UNKNOWN36_RequesterText2
+              XREF           Global_UNKNOWN36_RequesterText1
+              XREF           Global_UNKNOWN36_RequesterText0
+              XREF           EXEC_CallVector_348
+              XDEF           UNKNOWN36_FinalizeRequest
+              XDEF           UNKNOWN36_ShowAbortRequester
+
+              SECTION        __MERGED,DATA
+__MERGED
+kBreakPrefix:
+              DC.B           $2A
+              DC.B           $2A
+              DC.B           $2A
+              DC.B           $20
+              DC.B           $42
+              DC.B           $72
+              DC.B           $65
+              DC.B           $61
+              DC.B           $6B
+              DC.B           $3A
+              DC.B           $20
+              DC.B           $00
+kIntuitionLib:
+              DC.B           $69
+              DC.B           $6E
+              DC.B           $74
+              DC.B           $75
+              DC.B           $69
+              DC.B           $74
+              DC.B           $69
+              DC.B           $6F
+              DC.B           $6E
+              DC.B           $2E
+              DC.B           $6C
+              DC.B           $69
+              DC.B           $62
+              DC.B           $72
+              DC.B           $61
+              DC.B           $72
+              DC.B           $79
+              DC.B           $00
+              DC.B           $00
+              DC.B           $00
+              END
