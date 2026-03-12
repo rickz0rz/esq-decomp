@@ -25,6 +25,7 @@ long DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *title, l
 {
     const DISPLIB_Entry *entryView;
     const DISPLIB_AuxData *auxView;
+    const char *const *titleSlot;
     long step;
     long floorIndex;
     long isWideRange;
@@ -44,8 +45,10 @@ long DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *title, l
         floorIndex = 1;
     }
 
-    while (auxView->titleTable[index] == 0) {
+    titleSlot = &auxView->titleTable[index];
+    while (*titleSlot == 0) {
         index--;
+        titleSlot--;
         if (index < floorIndex) {
             index = 0;
             DISPLIB_PreviousSearchWrappedFlag = SEARCH_WRAP_FLAG_CLEAR;
