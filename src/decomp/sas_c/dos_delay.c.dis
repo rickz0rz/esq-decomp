@@ -13,6 +13,7 @@ ___DOS_Delay__1:
               BSR.W          _LVODelay                ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___DOS_Delay__2:
+___DOS_Delay__3:
               MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 __const:

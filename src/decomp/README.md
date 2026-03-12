@@ -5686,7 +5686,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown22_math_divu32.c`
 - `src/decomp/sas_c/unknown22_signal_create_msgport_with_signal.c`
 - `src/decomp/sas_c/unknown22_allocate_alloc_and_initialize_iostdreq.c`
-- `src/decomp/sas_c/unknown40_dos_delay.c`
+- `src/decomp/sas_c/dos_delay.c`
 - `src/decomp/sas_c/unknown40_dos_system_tag_list.c`
 - `src/decomp/sas_c/unknown40_battclock_get_seconds.c`
 - `src/decomp/sas_c/unknown40_battclock_write_seconds.c`
@@ -6190,7 +6190,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/battclock_write_seconds_to_battery_backed_clock.c`
 - `src/decomp/scripts/compare_sasc_dos_delay_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_dos_delay.awk`
-- `src/decomp/sas_c/unknown40_dos_delay.c`
+- `src/decomp/sas_c/dos_delay.c`
 - `src/decomp/scripts/compare_sasc_dos_system_tag_list_trial.sh`
 - `src/decomp/scripts/compare_sasc_dos_system_taglist_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_dos_system_tag_list.awk`
