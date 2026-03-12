@@ -11,32 +11,35 @@ extern LONG Global_AllocBytesTotal;
 
 char *STRING_FindSubstring(const char *haystack, const char *needle)
 {
-    const char *p;
-    const char *q;
+    register const char *currentHaystack;
+    register const char *currentNeedle;
 
-    for (;;) {
-        q = haystack;
-        p = needle;
+check_at_current:
+    currentHaystack = haystack;
+    currentNeedle = needle;
 
-        for (;;) {
-            if (*p == 0) {
-                return (char *)haystack;
-            }
-            if (*q++ != *p++) {
-                break;
-            }
-        }
-
-        if (*q == 0) {
-            return (char *)0;
-        }
-
-        haystack++;
-        if (*haystack == 0) {
-            return (char *)0;
-        }
-
+compare_loop:
+    if (*currentNeedle == 0) {
+        return (char *)haystack;
     }
+
+    if (*currentHaystack++ != *currentNeedle++) {
+        goto advance_start;
+    }
+
+    goto compare_loop;
+
+advance_start:
+    if (*currentHaystack == 0) {
+        return (char *)0;
+    }
+
+    haystack++;
+    if (*haystack == 0) {
+        return (char *)0;
+    }
+
+    goto check_at_current;
 }
 
 LONG ALLOC_InsertFreeBlock(AllocNode *block, LONG size)
