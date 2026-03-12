@@ -4,8 +4,8 @@ function t(s){sub(/;.*/,"",s);sub(/^[ \t]+/,"",s);sub(/[ \t]+$/,"",s);gsub(/[ \t
   l=t($0)
   if(l=="") next
   if(l~/^STRING_APPENDN:/) h_entry=1
-  if(l~/^TST\.B \(A[0-5]\)\+$/ || l~/^TST\.B \$?0\(A[0-5],D[0-7]\.L\)$/) h_findsrc=1
-  if(l~/^TST\.B \(A[0-5]\)\+$/ || l~/^TST\.B \$?0\(A[0-5],D[0-7]\.L\)$/) h_finddst=1
+  if(l~/^TST\.B \(A[0-5]\)\+$/ || l~/^TST\.B \$?0\(A[0-5],D[0-7]\.L\)$/ || l~/^MOVE\.B \(A[0-5]\)\+,D[0-7]$/) h_findsrc=1
+  if(l~/^TST\.B \(A[0-5]\)\+$/ || l~/^TST\.B \$?0\(A[0-5],D[0-7]\.L\)$/ || l~/^MOVE\.B \(A[0-5]\)\+,D[0-7]$/) h_finddst=1
   if(l~/^CMP\.L D[067],D[067]$/ || l~/^BLS\./ || l~/^BHI\./) h_min=1
   if(l~/^MOVE\.B \(A[0-5]\)\+,\(A[0-5]\)\+$/) h_copy=1
   if(l~/^CLR\.B .*\(A[0-5].*\)$/ || l~/^MOVE\.B #\$?0,\(A[0-5]\)$/) h_nul=1
