@@ -1,15 +1,36 @@
-long ESQ_TestBit1Based(const unsigned char *base, unsigned long bitIndex)
+typedef unsigned long ULONG;
+typedef signed long LONG;
+typedef unsigned short UWORD;
+typedef unsigned char UBYTE;
+
+LONG ESQ_TestBit1Based(const UBYTE *base, ULONG bitIndex)
 {
-    unsigned long n = bitIndex - 1;
-    unsigned long byte_i = (n & 0xFFFFUL) >> 3;
-    unsigned long bit_i = n & 7UL;
-    return (base[byte_i] & (1UL << bit_i)) ? -1L : 0L;
+    ULONG n;
+    ULONG bitOffset;
+    UWORD byteOffset;
+
+    n = bitIndex - 1;
+    bitOffset = n & 7;
+    byteOffset = (UWORD)n;
+    byteOffset >>= 3;
+
+    if ((base[byteOffset] & (UBYTE)(1UL << bitOffset)) != 0) {
+        return -1;
+    }
+
+    return 0;
 }
 
-void ESQ_SetBit1Based(unsigned char *base, unsigned long bitIndex)
+void ESQ_SetBit1Based(UBYTE *base, ULONG bitIndex)
 {
-    unsigned long n = bitIndex - 1;
-    unsigned long byte_i = (n & 0xFFFFUL) >> 3;
-    unsigned long bit_i = n & 7UL;
-    base[byte_i] |= (unsigned char)(1UL << bit_i);
+    ULONG n;
+    ULONG bitOffset;
+    UWORD byteOffset;
+
+    n = bitIndex - 1;
+    bitOffset = n & 7;
+    byteOffset = (UWORD)n;
+    byteOffset >>= 3;
+
+    base[byteOffset] = (UBYTE)(base[byteOffset] | (UBYTE)(1UL << bitOffset));
 }
