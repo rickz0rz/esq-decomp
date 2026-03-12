@@ -21,7 +21,7 @@ function trim(s,    t) {
 
     if (u ~ /^MOVE\.L .+,-\((A7|SP)\)$/ || u ~ /^MOVE\.W .+,-\((A7|SP)\)$/) arg_pushes++
     if (u ~ /(BSR|JSR|JBSR).*STR_FINDCHAR/ || u ~ /^JSR \(A[0-7]\)$/) has_call = 1
-    if (u ~ /^ADDQ\.(W|L) #8,(A7|SP)$/ || u ~ /^LEA \(8,(A7|SP)\),(A7|SP)$/) has_stack_cleanup = 1
+    if (u ~ /^ADDQ\.(W|L) #\$?8,(A7|SP)$/ || u ~ /^LEA \(\$?8,(A7|SP)\),(A7|SP)$/) has_stack_cleanup = 1
     if (u == "RTS") has_rts = 1
 }
 

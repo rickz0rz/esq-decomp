@@ -26,14 +26,14 @@ function trim(s,    t) {
     u = toupper(line)
 
     if (u ~ /^(MOVEM\.L|LINK\.W)/ || u ~ /^MOVE\.L D[0-7],-\((A7|SP)\)$/) has_prologue = 1
-    if (u ~ /^MOVEA?\.L [0-9]+\((A7|SP)\),A[0-7]$/ || u ~ /^MOVE\.L \([0-9]+,(A7|SP)\),A[0-7]$/) has_ptr_load = 1
-    if (u ~ /^MOVE\.L [0-9]+\((A7|SP)\),(D|A)[0-7]$/ || u ~ /^MOVE\.L \([0-9]+,(A7|SP)\),(D|A)[0-7]$/) has_target_load = 1
-    if (u ~ /^MOVE\.B \(A[0-7]\)\+?,D[0-7]$/ || u ~ /^MOVEQ #0,D[0-7]$/) has_byte_read = 1
+    if (u ~ /^MOVEA?\.L \$?[0-9A-F]+\((A7|SP)\),A[0-7]$/ || u ~ /^MOVE\.L \(\$?[0-9A-F]+,(A7|SP)\),A[0-7]$/) has_ptr_load = 1
+    if (u ~ /^MOVE\.L \$?[0-9A-F]+\((A7|SP)\),(D|A)[0-7]$/ || u ~ /^MOVE\.L \(\$?[0-9A-F]+,(A7|SP)\),(D|A)[0-7]$/) has_target_load = 1
+    if (u ~ /^MOVE\.B \(A[0-7]\)\+?,D[0-7]$/ || u ~ /^MOVEQ(\.L)? #\$?0,D[0-7]$/) has_byte_read = 1
     if (u ~ /^CMP\.(L|B) (D|A)[0-7],(D|A)[0-7]$/ || u ~ /^CMP\.(L|B) D[0-7],\(A[0-7]\)$/ || u ~ /^CMPI\.B #0,D[0-7]$/) has_compare = 1
     if (u ~ /^MOVE\.L A[0-7],D0$/) has_match_return_ptr = 1
     if (u ~ /^ADDQ\.L #1,A[0-7]$/ || u ~ /^MOVE\.B \(A[0-7]\)\+,D[0-7]$/) has_advance = 1
     if (u ~ /^TST\.B D[0-7]$/ || u ~ /^TST\.B \(A[0-7]\)$/) has_nul_test = 1
-    if (u ~ /^MOVEQ #0,D0$/ || u ~ /^CLR\.L D0$/) has_not_found_zero = 1
+    if (u ~ /^MOVEQ(\.L)? #\$?0,D0$/ || u ~ /^CLR\.L D0$/) has_not_found_zero = 1
     if (u == "RTS") has_rts = 1
 }
 
