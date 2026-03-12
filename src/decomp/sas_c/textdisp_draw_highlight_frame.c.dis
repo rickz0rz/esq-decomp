@@ -47,7 +47,7 @@ ___TEXTDISP_DrawHighlightFrame__4:
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
               MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
-              BSR.W          WDISP_JMPTBL_ESQ_SetCopperEffect;6100 0000 
+              BSR.W          ESQ_SetCopperEffect_OnEnableHigh;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
               MOVE.L         WDISP_DisplayContextBase(A4),A2;246c 0000 
               MOVEQ.L        #$0,D0                   ;7000 
@@ -91,8 +91,8 @@ ___TEXTDISP_DrawHighlightFrame__9:
               LEA            $6(A2),A0                ;41ea 0006 
               MOVE.L         D0,$34(A7)               ;2f40 0034 
               MOVE.L         A0,$44(A7)               ;2f48 0044 
-              BSR.W          WDISP_JMPTBL_ESQIFF_RunCopperDro;6100 0000 
-              BSR.W          WDISP_JMPTBL_ESQIFF_RestoreBaseP;6100 0000 
+              BSR.W          ESQIFF_RunCopperDropTransition;6100 0000 
+              BSR.W          ESQIFF_RestoreBasePaletteTriples;6100 0000 
               MOVE.B         CONFIG_LRBN_FlagChar(A4),D0;102c 0000 
               EXT.W          D0                       ;4880 
               EXT.L          D0                       ;48c0 
@@ -159,7 +159,7 @@ ___TEXTDISP_DrawHighlightFrame__14:
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
               MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
-              BSR.W          TEXTDISP_JMPTBL_ESQIFF_RunCopper;6100 0000 
+              BSR.W          ESQIFF_RunCopperRiseTransition;6100 0000 
               MOVE.L         A3,(A7)                  ;2e8b 
               BSR.W          TEXTDISP_ResetSelectionState;6100 0000 
 ___TEXTDISP_DrawHighlightFrame__15:
@@ -175,13 +175,13 @@ __strings:
               XREF           TLIBA3_ClearViewModeRastPort
               XREF           TLIBA3_BuildDisplayContextForVie
               XREF           WDISP_DisplayContextBase
-              XREF           WDISP_JMPTBL_ESQ_SetCopperEffect
+              XREF           ESQ_SetCopperEffect_OnEnableHigh
               XREF           TEXTDISP_EntryTextBaseWidthPx
               XREF           MATH_Mulu32
               XREF           WDISP_AccumulatorCaptureActive
               XREF           WDISP_AccumulatorFlushPending
-              XREF           WDISP_JMPTBL_ESQIFF_RunCopperDro
-              XREF           WDISP_JMPTBL_ESQIFF_RestoreBaseP
+              XREF           ESQIFF_RunCopperDropTransition
+              XREF           ESQIFF_RestoreBasePaletteTriples
               XREF           CONFIG_LRBN_FlagChar
               XREF           MATH_DivS32
               XREF           SCRIPT_BeginBannerCharTransition
@@ -190,7 +190,7 @@ __strings:
               XREF           _LVOSetDrMd
               XREF           TEXTDISP_LinePenOverrideEnabledF
               XREF           TLIBA1_DrawFormattedTextBlock
-              XREF           TEXTDISP_JMPTBL_ESQIFF_RunCopper
+              XREF           ESQIFF_RunCopperRiseTransition
               XREF           TEXTDISP_ResetSelectionState
               XDEF           TEXTDISP_DrawHighlightFrame
               END

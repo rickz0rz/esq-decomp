@@ -13,10 +13,10 @@ extern UBYTE CLEANUP_AlignedInsetNibbleSecondary;
 
 extern void TLIBA3_ClearViewModeRastPort(LONG mode, LONG unused);
 extern void *TLIBA3_BuildDisplayContextForViewMode(LONG mode, LONG a, LONG b);
-extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
-extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
-extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
-extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void ESQIFF_RunCopperDropTransition(void);
+extern void ESQIFF_RestoreBasePaletteTriples(void);
+extern void ESQIFF_RunCopperRiseTransition(void);
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern WORD SCRIPT_BeginBannerCharTransition(LONG x, LONG y);
 extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG n);
@@ -57,18 +57,18 @@ void SCRIPT_SetupHighlightEffect(const char *text)
 
     TLIBA3_ClearViewModeRastPort(4, 0);
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 3);
-    WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+    ESQ_SetCopperEffect_OnEnableHighlight();
 
     context = (SCRIPT_DisplayContext *)WDISP_DisplayContextBase;
     widthSlot = (LONG)context->width4;
-    WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
-    WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
+    ESQIFF_RunCopperDropTransition();
+    ESQIFF_RestoreBasePaletteTriples();
 
     div = MATH_DivS32(widthSlot, ((context->flags0 & (1 << 2)) != 0) ? 2 : 1);
     SCRIPT_BeginBannerCharTransition((WORD)(div + 22), 500);
 
     if (text == 0 || *text == '\0') {
-        TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
+        ESQIFF_RunCopperRiseTransition();
         return;
     }
 
@@ -132,5 +132,5 @@ void SCRIPT_SetupHighlightEffect(const char *text)
     }
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 3);
-    TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
+    ESQIFF_RunCopperRiseTransition();
 }

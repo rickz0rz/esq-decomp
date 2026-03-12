@@ -36,10 +36,10 @@ extern WORD ACCUMULATOR_Row3_SaturateFlag;
 
 extern void TLIBA3_ClearViewModeRastPort(LONG mode, LONG clearPen);
 extern void *TLIBA3_BuildDisplayContextForViewMode(LONG mode, LONG a, LONG b);
-extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
-extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
-extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
-extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void ESQIFF_RestoreBasePaletteTriples(void);
+extern void ESQIFF_RunCopperDropTransition(void);
+extern void ESQIFF_RunCopperRiseTransition(void);
 extern void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG x, LONG y);
 extern void WDISP_DrawWeatherStatusSummary(char *rastPort, LONG x, LONG y);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
@@ -70,15 +70,15 @@ void WDISP_HandleWeatherStatusCommand(LONG command)
 
     TLIBA3_ClearViewModeRastPort(4, 0);
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 4);
-    WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+    ESQ_SetCopperEffect_OnEnableHighlight();
 
     context = (WDISP_DisplayContext *)WDISP_DisplayContextBase;
     localRastPort = (char *)&context->left;
     width = (LONG)context->width;
     left = (LONG)context->left;
 
-    WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
-    WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
+    ESQIFF_RestoreBasePaletteTriples();
+    ESQIFF_RunCopperDropTransition();
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 0);
 
@@ -147,5 +147,5 @@ void WDISP_HandleWeatherStatusCommand(LONG command)
     ACCUMULATOR_Row3_Sum = 0;
     ACCUMULATOR_Row3_SaturateFlag = 0;
 
-    TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
+    ESQIFF_RunCopperRiseTransition();
 }

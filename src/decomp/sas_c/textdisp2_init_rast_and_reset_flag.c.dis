@@ -11,7 +11,7 @@ ___TEXTDISP_InitRastAndResetFlag__1:
               PEA            ($4).w                   ;4878 0004 
               BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
               MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
-              BSR.W          WDISP_JMPTBL_ESQIFF_RestoreBaseP;6100 0000 
+              BSR.W          ESQIFF_RestoreBasePaletteTriples;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               CLR.W          WDISP_AccumulatorFlushPending(A4);426c 0000 
 ___TEXTDISP_InitRastAndResetFlag__2:
@@ -22,7 +22,7 @@ __strings:
               XREF           _XCOVF
               XREF           TLIBA3_BuildDisplayContextForVie
               XREF           WDISP_DisplayContextBase
-              XREF           WDISP_JMPTBL_ESQIFF_RestoreBaseP
+              XREF           ESQIFF_RestoreBasePaletteTriples
               XREF           WDISP_AccumulatorFlushPending
               XDEF           TEXTDISP_InitRastAndResetFlag
               END

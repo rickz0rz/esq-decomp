@@ -39,12 +39,12 @@ ___SCRIPT_SetupHighlightEffect__1:
               PEA            ($4).w                   ;4878 0004 
               BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
               MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
-              BSR.W          WDISP_JMPTBL_ESQ_SetCopperEffect;6100 0000 
+              BSR.W          ESQ_SetCopperEffect_OnEnableHigh;6100 0000 
               MOVE.L         WDISP_DisplayContextBase(A4),A3;266c 0000 
               MOVEQ.L        #$0,D7                   ;7e00 
               MOVE.W         $4(A3),D7                ;3e2b 0004 
-              BSR.W          WDISP_JMPTBL_ESQIFF_RunCopperDro;6100 0000 
-              BSR.W          WDISP_JMPTBL_ESQIFF_RestoreBaseP;6100 0000 
+              BSR.W          ESQIFF_RunCopperDropTransition;6100 0000 
+              BSR.W          ESQIFF_RestoreBasePaletteTriples;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
               BTST           #$2,$1(A3)               ;082b 0002 0001 
               SCC            D0,#$600                 ;56c0 
@@ -68,7 +68,7 @@ ___SCRIPT_SetupHighlightEffect__2:
               TST.B          (A5)                     ;4a15 
               BNE.B          ___SCRIPT_SetupHighlightEffect__4;6608 
 ___SCRIPT_SetupHighlightEffect__3:
-              BSR.W          TEXTDISP_JMPTBL_ESQIFF_RunCopper;6100 0000 
+              BSR.W          ESQIFF_RunCopperRiseTransition;6100 0000 
               BRA.W          ___SCRIPT_SetupHighlightEffect__34;6000 01ba 
 ___SCRIPT_SetupHighlightEffect__4:
               LEA            $2(A3),A2                ;45eb 0002 
@@ -245,7 +245,7 @@ ___SCRIPT_SetupHighlightEffect__33:
               PEA            ($4).w                   ;4878 0004 
               BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
               MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
-              BSR.W          TEXTDISP_JMPTBL_ESQIFF_RunCopper;6100 0000 
+              BSR.W          ESQIFF_RunCopperRiseTransition;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
 ___SCRIPT_SetupHighlightEffect__34:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
@@ -256,12 +256,12 @@ ___SCRIPT_SetupHighlightEffect__34:
               XREF           TLIBA3_ClearViewModeRastPort
               XREF           TLIBA3_BuildDisplayContextForVie
               XREF           WDISP_DisplayContextBase
-              XREF           WDISP_JMPTBL_ESQ_SetCopperEffect
-              XREF           WDISP_JMPTBL_ESQIFF_RunCopperDro
-              XREF           WDISP_JMPTBL_ESQIFF_RestoreBaseP
+              XREF           ESQ_SetCopperEffect_OnEnableHigh
+              XREF           ESQIFF_RunCopperDropTransition
+              XREF           ESQIFF_RestoreBasePaletteTriples
               XREF           MATH_DivS32
               XREF           SCRIPT_BeginBannerCharTransition
-              XREF           TEXTDISP_JMPTBL_ESQIFF_RunCopper
+              XREF           ESQIFF_RunCopperRiseTransition
               XREF           WDISP_AccumulatorCaptureActive
               XREF           WDISP_AccumulatorFlushPending
               XREF           _LVOTextLength

@@ -75,7 +75,7 @@ ___PARSEINI_ParseColorTable__12:
               SUBQ.L         #$4,D0                   ;5980 
               BNE.B          ___PARSEINI_ParseColorTable__15;6604 
 ___PARSEINI_ParseColorTable__13:
-              BSR.W          TEXTDISP_JMPTBL_ESQIFF_RunCopper;6100 0000 
+              BSR.W          ESQIFF_RunCopperRiseTransition;6100 0000 
 ___PARSEINI_ParseColorTable__14:
 ___PARSEINI_ParseColorTable__15:
               MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
@@ -91,6 +91,6 @@ __strings:
               XREF           PARSEINI_JMPTBL_WDISP_SPrintf
               XREF           PARSEINI_JMPTBL_STRING_CompareNo
               XREF           SCRIPT3_JMPTBL_LADFUNC_ParseHexD
-              XREF           TEXTDISP_JMPTBL_ESQIFF_RunCopper
+              XREF           ESQIFF_RunCopperRiseTransition
               XDEF           PARSEINI_ParseColorTable
               END

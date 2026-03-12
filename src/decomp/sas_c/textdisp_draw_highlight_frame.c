@@ -28,15 +28,15 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void TLIBA3_ClearViewModeRastPort(LONG viewMode, LONG unused);
 extern LONG TLIBA3_BuildDisplayContextForViewMode(LONG viewMode, LONG a, LONG b);
-extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 extern LONG MATH_DivS32(LONG a, LONG b);
-extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
-extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
+extern void ESQIFF_RunCopperDropTransition(void);
+extern void ESQIFF_RestoreBasePaletteTriples(void);
 extern short SCRIPT_BeginBannerCharTransition(LONG bannerChar, LONG duration);
 extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG drawMode);
 extern void TLIBA1_DrawFormattedTextBlock(char *rastPort, const char *text, LONG x1, LONG y1, LONG x2, LONG y2);
-extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
+extern void ESQIFF_RunCopperRiseTransition(void);
 extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
 
 void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entryPtr)
@@ -75,7 +75,7 @@ void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entryPtr)
 
     TLIBA3_ClearViewModeRastPort(MODE_HIGHLIGHT, ZERO);
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(MODE_HIGHLIGHT, ZERO, VIEWCFG_THREE);
-    WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+    ESQ_SetCopperEffect_OnEnableHighlight();
 
     dc = (TEXTDISP_DisplayContext *)WDISP_DisplayContextBase;
     widthPx = (LONG)dc->width;
@@ -91,8 +91,8 @@ void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entryPtr)
     WDISP_AccumulatorFlushPending = ZERO;
 
     rastPort = (char *)dc->rastPort;
-    WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
-    WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
+    ESQIFF_RunCopperDropTransition();
+    ESQIFF_RestoreBasePaletteTriples();
 
     if (CONFIG_LRBN_FlagChar == CH_BANNER_YES) {
         gridCols = ((dc->flags & (1u << BIT_SHIFT_DUAL_GRID)) != 0) ? GRIDCOLS_DOUBLE : GRIDCOLS_SINGLE;
@@ -110,6 +110,6 @@ void TEXTDISP_DrawHighlightFrame(TEXTDISP_SelectionEntry *entryPtr)
     TLIBA1_DrawFormattedTextBlock(rastPort, entry->detailLine, x1, y1, x2, y2);
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(MODE_HIGHLIGHT, ZERO, VIEWCFG_THREE);
-    TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
+    ESQIFF_RunCopperRiseTransition();
     TEXTDISP_ResetSelectionState(entry);
 }

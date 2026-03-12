@@ -28,15 +28,15 @@ ___WDISP_HandleWeatherStatusCommand__4:
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
               MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
-              BSR.W          WDISP_JMPTBL_ESQ_SetCopperEffect;6100 0000 
+              BSR.W          ESQ_SetCopperEffect_OnEnableHigh;6100 0000 
               MOVE.L         WDISP_DisplayContextBase(A4),A5;2a6c 0000 
               LEA            $2(A5),A3                ;47ed 0002 
               MOVEQ.L        #$0,D6                   ;7c00 
               MOVE.W         $4(A5),D6                ;3c2d 0004 
               MOVEQ.L        #$0,D5                   ;7a00 
               MOVE.W         $2(A5),D5                ;3a2d 0002 
-              BSR.W          WDISP_JMPTBL_ESQIFF_RestoreBaseP;6100 0000 
-              BSR.W          WDISP_JMPTBL_ESQIFF_RunCopperDro;6100 0000 
+              BSR.W          ESQIFF_RestoreBasePaletteTriples;6100 0000 
+              BSR.W          ESQIFF_RunCopperDropTransition;6100 0000 
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.L         D0,(A7)                  ;2e80 
               MOVE.L         D0,-(A7)                 ;2f00 
@@ -176,7 +176,7 @@ ___WDISP_HandleWeatherStatusCommand__34:
               CLR.W          ACCUMULATOR_Row2_SaturateFlag(A4);426c 0000 
               CLR.W          ACCUMULATOR_Row3_Sum(A4) ;426c 0000 
               CLR.W          ACCUMULATOR_Row3_SaturateFlag(A4);426c 0000 
-              BSR.W          TEXTDISP_JMPTBL_ESQIFF_RunCopper;6100 0000 
+              BSR.W          ESQIFF_RunCopperRiseTransition;6100 0000 
 ___WDISP_HandleWeatherStatusCommand__35:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A3/A5;4cdf 28fc 
               RTS                                     ;4e75 
@@ -188,9 +188,9 @@ __strings:
               XREF           TLIBA3_ClearViewModeRastPort
               XREF           TLIBA3_BuildDisplayContextForVie
               XREF           WDISP_DisplayContextBase
-              XREF           WDISP_JMPTBL_ESQ_SetCopperEffect
-              XREF           WDISP_JMPTBL_ESQIFF_RestoreBaseP
-              XREF           WDISP_JMPTBL_ESQIFF_RunCopperDro
+              XREF           ESQ_SetCopperEffect_OnEnableHigh
+              XREF           ESQIFF_RestoreBasePaletteTriples
+              XREF           ESQIFF_RunCopperDropTransition
               XREF           _LVOSetDrMd
               XREF           _LVOSetAPen
               XREF           Global_HANDLE_PREVUEC_FONT
@@ -218,6 +218,6 @@ __strings:
               XREF           ACCUMULATOR_Row2_SaturateFlag
               XREF           ACCUMULATOR_Row3_Sum
               XREF           ACCUMULATOR_Row3_SaturateFlag
-              XREF           TEXTDISP_JMPTBL_ESQIFF_RunCopper
+              XREF           ESQIFF_RunCopperRiseTransition
               XDEF           WDISP_HandleWeatherStatusCommand
               END

@@ -16,7 +16,7 @@ extern const char Global_STR_COLOR_PERCENT_D[];
 extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, LONG indexValue);
 extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
 extern LONG SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(LONG ch);
-extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
+extern void ESQIFF_RunCopperRiseTransition(void);
 
 void PARSEINI_ParseColorTable(const char *entryKey, const char *entryValue, LONG mode)
 {
@@ -54,6 +54,6 @@ void PARSEINI_ParseColorTable(const char *entryKey, const char *entryValue, LONG
     }
 
     if (mode == PARSE_COLOR_MODE_CUSTOM) {
-        TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
+        ESQIFF_RunCopperRiseTransition();
     }
 }
