@@ -28,6 +28,8 @@ The repository currently has two active decomp lanes:
 - Current toolchain note: the checked SAS/C 6.51 setup treats `#pragma nostackcheck` as an unrecognized pragma (Warning 95), so it should not be used as a decomp tuning hint in new restored sources.
 - In the current tree, most existing SAS/C compare lanes are already populated; remaining work often means tightening those files or adding new ports for GCC-only targets.
 - Current pass note: every checked `compare_sasc_*` script in `src/decomp/scripts/` already resolved to an existing `src/decomp/sas_c/*.c` source. Do not spend time assuming there is still a missing first-pass SAS/C file behind a compare lane; start from mismatch reduction or a GCC-only compare/promotion lane instead.
+- Additional triage note: a large subset of checked `compare_sasc_*` lanes already has empty semantic diffs. Raw `.diff` output is often just SAS/C frame setup, merged constant pools, or stack-check scaffolding. Treat a non-empty `.semantic.diff` as the actual signal for mismatch-reduction work.
+- Practical workflow: use `src/decomp/scripts/run_sasc_core_sweep.sh --filter <substring>` to quickly confirm whether a target family still has semantic deltas before spending time on manual asm/C inspection.
 - Do not infer the canonical SAS/C source name from older `unknownNN_*` object/disassembly artifacts alone. Several targets were renamed to role-based filenames after promotion, so the target-specific compare script is the authoritative mapping from assembly slice to current `src/decomp/sas_c/*.c` source.
 
 ## Files

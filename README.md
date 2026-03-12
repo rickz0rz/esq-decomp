@@ -41,10 +41,12 @@ Keep any generated binaries out of version control.
 - The current decomp goal is “mostly equivalent” C for the original assembly, not source beautification or optimization. Preserve control flow, stack shape, and data layout unless a change is explicitly part of the reverse-engineering work.
 - `src/decomp/sas_c/` is the restored SAS/C-oriented source tree. Running `./sc-build-with-dis.sh <file>.c` against a file in that directory produces matching `.o` and `.dis` artifacts beside the source for local disassembly comparison.
 - Existing work in `src/decomp/sas_c/` can be used as the style and structure reference for new restored functions. Many helper/compare lanes already compile there successfully.
+- Current repo state: a broad set of checked `compare_sasc_*` lanes already produces empty semantic diffs, so do not assume an existing SAS/C target still needs first-pass recovery just because its raw asm diff is large or because an older GCC trial still exists.
 - Remaining decomp work is not just “write more assembly comments”: the scope is to cover the root `src/*.s` files, `src/Prevue.asm`, and all files under `src/interrupts/`, `src/data/`, and `src/modules/` recursively.
 - In practice, the next decomp steps tend to fall into two buckets:
   - tighten or split existing `src/decomp/sas_c/` files when a function already exists there but needs a better match;
   - add new `src/decomp/sas_c/*.c` ports for targets that currently exist only as GCC trial/replacement files under `src/decomp/c/replacements/`.
+- When triaging a candidate, prefer `src/decomp/scripts/run_sasc_core_sweep.sh --filter <substring>` or the target-specific `compare_sasc_*` script before reading large asm slices by hand. If the semantic diff is empty, move on unless you specifically need a better non-semantic codegen match.
 - Treat compiler-emitted jump-table wrapper exports as low priority unless they are required glue for a current target. When writing restored C, prefer calling the underlying target directly instead of recreating wrapper layers just for symmetry.
 - When you rename a label, keep the original `LAB_xxxx` symbol in place and add the new alias directly above it. This preserves binary parity while growing readable names.
 - Record noteworthy alias work and outstanding anonymous labels in [`AGENTS.md`](AGENTS.md) so future passes know where to continue.
