@@ -28,7 +28,7 @@ function trim(s, t){
 
     if (u ~ /GROUP_AE_JMPTBL_ESQPARS_REPLACEO/) has_replace_call = 1
 
-    if (u ~ /CLR\.L 32\(A[0-7]\)/ || u ~ /LEA \$20\(A[0-7]\),A0/ || u ~ /CLR\.L \(A0\)/) has_write_tail = 1
+    if (u ~ /CLR\.L (32|\$20)\(A[0-7]\)/ || u ~ /LEA \$20\(A[0-7]\),A0/ || u ~ /CLR\.L \(A0\)/) has_write_tail = 1
 
 }
 

@@ -32,6 +32,7 @@ void COI_ClearAnimObjectStrings(void *entry)
 {
     COI_Entry *e;
     COI_AnimObject *anim;
+    LONG *statusPtr;
     char *owned;
 
     e = (COI_Entry *)entry;
@@ -44,10 +45,7 @@ void COI_ClearAnimObjectStrings(void *entry)
         return;
     }
 
-    anim->flags0 = COI_NULL;
-    anim->flags1 = COI_NULL;
-    anim->flags2 = COI_NULL;
-    anim->flags3 = COI_NULL;
+    ((LONG *)anim)[0] = COI_NULL;
 
     owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned0);
     anim->owned0 = owned;
@@ -70,5 +68,6 @@ void COI_ClearAnimObjectStrings(void *entry)
     owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned6);
     anim->owned6 = owned;
 
-    anim->status = COI_NULL;
+    statusPtr = &anim->status;
+    *statusPtr = COI_NULL;
 }

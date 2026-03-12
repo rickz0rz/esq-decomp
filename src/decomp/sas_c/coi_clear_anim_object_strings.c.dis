@@ -2,27 +2,24 @@
 __code:
 COI_ClearAnimObjectStrings:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$4,A7                   ;594f 
+              SUBQ.W         #$8,A7                   ;514f 
               MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
 ___COI_ClearAnimObjectStrings__1:
-              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
               MOVE.L         A5,A3                    ;264d 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.W          ___COI_ClearAnimObjectStrings__7;6700 009c 
+              BEQ.W          ___COI_ClearAnimObjectStrings__6;6700 0092 
 ___COI_ClearAnimObjectStrings__2:
 ___COI_ClearAnimObjectStrings__3:
               MOVE.L         $30(A3),A2               ;246b 0030 
               MOVE.L         A2,D0                    ;200a 
-              BEQ.W          ___COI_ClearAnimObjectStrings__7;6700 0092 
+              BEQ.W          ___COI_ClearAnimObjectStrings__6;6700 0088 
 ___COI_ClearAnimObjectStrings__4:
 ___COI_ClearAnimObjectStrings__5:
-              CLR.B          (A2)                     ;4212 
-              CLR.B          $1(A2)                   ;422a 0001 
-              CLR.B          $2(A2)                   ;422a 0002 
-              CLR.B          $3(A2)                   ;422a 0003 
+              CLR.L          (A2)                     ;4292 
               MOVE.L         $4(A2),-(A7)             ;2f2a 0004 
               CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
@@ -57,12 +54,12 @@ ___COI_ClearAnimObjectStrings__5:
               MOVE.L         D0,$2c(A7)               ;2f40 002c 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               MOVE.L         D0,$1c(A2)               ;2540 001c 
-              CLR.L          $20(A2)                  ;42aa 0020 
+              LEA            $20(A2),A0               ;41ea 0020 
+              CLR.L          (A0)                     ;4290 
               LEA            $20(A7),A7               ;4fef 0020 
 ___COI_ClearAnimObjectStrings__6:
-___COI_ClearAnimObjectStrings__7:
               MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
-              ADDQ.W         #$4,A7                   ;584f 
+              ADDQ.W         #$8,A7                   ;504f 
               RTS                                     ;4e75 
 __const:
 __strings:
