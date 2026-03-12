@@ -11,14 +11,14 @@ extern const char ESQ_STR_B[];
 
 void ESQ_PollCtrlInput(void)
 {
-    volatile UWORD *custom16;
+    const UBYTE *statusPacket;
 
     ESQ_CaptureCtrlBit4Stream();
 
-    if (ESQ_STR_B[18] == 'N') {
+    statusPacket = (const UBYTE *)ESQ_STR_B;
+    if (statusPacket[18] == 'N') {
         ESQ_CaptureCtrlBit3Stream();
     }
 
-    custom16 = (volatile UWORD *)CUSTOM_BASE;
-    custom16[CUSTOM_INTREQ_OFFSET / 2] = INTREQ_SETCLR;
+    *(volatile UWORD *)(CUSTOM_BASE + CUSTOM_INTREQ_OFFSET) = INTREQ_SETCLR;
 }
