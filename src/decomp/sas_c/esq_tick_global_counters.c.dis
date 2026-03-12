@@ -1,38 +1,9 @@
               SECTION      text,CODE
 __code:
-ESQ_AccumulateRow:
+ESQ_TickGlobalCounters:
               CMP.L          __base(A4),A7            ;bfec 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D6/D7/A3/A5,-(A7)        ;48e7 0314 
-___ESQ_AccumulateRow__1:
-              MOVE.W         $16(A7),D7               ;3e2f 0016 
-              MOVE.L         $1c(A7),A3               ;266f 001c 
-              MOVE.L         $18(A7),A5               ;2a6f 0018 
-              TST.W          D7                       ;4a47 
-              BEQ.B          ___ESQ_AccumulateRow__6  ;6714 
-___ESQ_AccumulateRow__2:
-___ESQ_AccumulateRow__3:
-              MOVE.W         (A5),D0                  ;3015 
-              ADD.W          D7,D0                    ;d047 
-              MOVE.L         D0,D6                    ;2c00 
-              CMPI.W         #$4000,D6                ;0c46 4000 
-              BLT.B          ___ESQ_AccumulateRow__5  ;6d06 
-___ESQ_AccumulateRow__4:
-              MOVE.W         #$1,(A3)                 ;36bc 0001 
-              MOVEQ.L        #$0,D6                   ;7c00 
-___ESQ_AccumulateRow__5:
-              MOVE.W         D6,(A5)                  ;3a86 
-___ESQ_AccumulateRow__6:
-              MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 
-              RTS                                     ;4e75 
-__const:
-__strings:
-ESQ_TickGlobalCounters:
-              MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c,D0                   ;90bc 0000 000c 
-              CMP.L          __base(A4),D0            ;b0ac 0000 
-              BCS.W          _XCOVF                   ;6500 0000 
-              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
 ___ESQ_TickGlobalCounters__1:
               MOVE.W         ESQ_GlobalTickCounter(A4),D0;302c 0000 
               MOVE.W         D0,D7                    ;3e00 
@@ -89,46 +60,77 @@ ___ESQ_TickGlobalCounters__11:
 ___ESQ_TickGlobalCounters__12:
               MOVE.W         D7,ESQ_TickModulo60Counter(A4);3947 0000 
               MOVE.W         WDISP_AccumulatorCaptureActive(A4),D0;302c 0000 
-              BEQ.B          ___ESQ_TickGlobalCounters__18;6754 
+              BEQ.W          ___ESQ_TickGlobalCounters__29;6700 0082 
 ___ESQ_TickGlobalCounters__13:
               MOVE.W         ACCUMULATOR_Row0_CaptureValue(A4),D0;302c 0000 
-              EXT.L          D0                       ;48c0 
-              PEA            ACCUMULATOR_Row0_SaturateFlag(A4);486c 0000 
-              PEA            ACCUMULATOR_Row0_Sum(A4) ;486c 0000 
-              MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          ESQ_AccumulateRow        ;6100 ff24 
+              BEQ.B          ___ESQ_TickGlobalCounters__17;671a 
 ___ESQ_TickGlobalCounters__14:
-              MOVE.W         ACCUMULATOR_Row1_CaptureValue(A4),D0;302c 0000 
-              EXT.L          D0                       ;48c0 
-              PEA            ACCUMULATOR_Row1_SaturateFlag(A4);486c 0000 
-              PEA            ACCUMULATOR_Row1_Sum(A4) ;486c 0000 
-              MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          ESQ_AccumulateRow        ;6100 ff10 
+              MOVE.W         ACCUMULATOR_Row0_Sum(A4),D1;322c 0000 
+              ADD.W          D0,D1                    ;d240 
+              MOVE.L         D1,D6                    ;2c01 
+              CMPI.W         #$4000,D6                ;0c46 4000 
+              BLT.B          ___ESQ_TickGlobalCounters__16;6d08 
 ___ESQ_TickGlobalCounters__15:
-              MOVE.W         ACCUMULATOR_Row2_CaptureValue(A4),D0;302c 0000 
-              EXT.L          D0                       ;48c0 
-              PEA            ACCUMULATOR_Row2_SaturateFlag(A4);486c 0000 
-              PEA            ACCUMULATOR_Row2_Sum(A4) ;486c 0000 
-              MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          ESQ_AccumulateRow        ;6100 fefc 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.W         D0,ACCUMULATOR_Row0_SaturateFlag(A4);3940 0000 
+              MOVEQ.L        #$0,D6                   ;7c00 
 ___ESQ_TickGlobalCounters__16:
-              MOVE.W         ACCUMULATOR_Row3_CaptureValue(A4),D0;302c 0000 
-              EXT.L          D0                       ;48c0 
-              PEA            ACCUMULATOR_Row3_SaturateFlag(A4);486c 0000 
-              PEA            ACCUMULATOR_Row3_Sum(A4) ;486c 0000 
-              MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          ESQ_AccumulateRow        ;6100 fee8 
+              MOVE.W         D6,ACCUMULATOR_Row0_Sum(A4);3946 0000 
 ___ESQ_TickGlobalCounters__17:
-              LEA            $30(A7),A7               ;4fef 0030 
+              MOVE.W         ACCUMULATOR_Row1_CaptureValue(A4),D0;302c 0000 
+              BEQ.B          ___ESQ_TickGlobalCounters__21;671a 
 ___ESQ_TickGlobalCounters__18:
-              MOVE.W         WDISP_AccumulatorFlushPending(A4),D0;302c 0000 
-              BEQ.B          ___ESQ_TickGlobalCounters__21;6704 
+              MOVE.W         ACCUMULATOR_Row1_Sum(A4),D1;322c 0000 
+              ADD.W          D0,D1                    ;d240 
+              MOVE.L         D1,D6                    ;2c01 
+              CMPI.W         #$4000,D6                ;0c46 4000 
+              BLT.B          ___ESQ_TickGlobalCounters__20;6d08 
 ___ESQ_TickGlobalCounters__19:
-              BSR.W          ESQIFF_ServicePendingCopperPalet;6100 0000 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.W         D0,ACCUMULATOR_Row1_SaturateFlag(A4);3940 0000 
+              MOVEQ.L        #$0,D6                   ;7c00 
 ___ESQ_TickGlobalCounters__20:
+              MOVE.W         D6,ACCUMULATOR_Row1_Sum(A4);3946 0000 
 ___ESQ_TickGlobalCounters__21:
-              MOVE.L         (A7)+,D7                 ;2e1f 
+              MOVE.W         ACCUMULATOR_Row2_CaptureValue(A4),D0;302c 0000 
+              BEQ.B          ___ESQ_TickGlobalCounters__25;671a 
+___ESQ_TickGlobalCounters__22:
+              MOVE.W         ACCUMULATOR_Row2_Sum(A4),D1;322c 0000 
+              ADD.W          D0,D1                    ;d240 
+              MOVE.L         D1,D6                    ;2c01 
+              CMPI.W         #$4000,D6                ;0c46 4000 
+              BLT.B          ___ESQ_TickGlobalCounters__24;6d08 
+___ESQ_TickGlobalCounters__23:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.W         D0,ACCUMULATOR_Row2_SaturateFlag(A4);3940 0000 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___ESQ_TickGlobalCounters__24:
+              MOVE.W         D6,ACCUMULATOR_Row2_Sum(A4);3946 0000 
+___ESQ_TickGlobalCounters__25:
+              MOVE.W         ACCUMULATOR_Row3_CaptureValue(A4),D0;302c 0000 
+              BEQ.B          ___ESQ_TickGlobalCounters__29;671a 
+___ESQ_TickGlobalCounters__26:
+              MOVE.W         ACCUMULATOR_Row3_Sum(A4),D1;322c 0000 
+              ADD.W          D0,D1                    ;d240 
+              MOVE.L         D1,D6                    ;2c01 
+              CMPI.W         #$4000,D6                ;0c46 4000 
+              BLT.B          ___ESQ_TickGlobalCounters__28;6d08 
+___ESQ_TickGlobalCounters__27:
+              MOVE.W         #$1,ACCUMULATOR_Row3_SaturateFlag(A4);397c 0001 0000 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___ESQ_TickGlobalCounters__28:
+              MOVE.W         D6,ACCUMULATOR_Row3_Sum(A4);3946 0000 
+___ESQ_TickGlobalCounters__29:
+              MOVE.W         WDISP_AccumulatorFlushPending(A4),D0;302c 0000 
+              BEQ.B          ___ESQ_TickGlobalCounters__32;6704 
+___ESQ_TickGlobalCounters__30:
+              BSR.W          ESQIFF_ServicePendingCopperPalet;6100 0000 
+___ESQ_TickGlobalCounters__31:
+___ESQ_TickGlobalCounters__32:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
               RTS                                     ;4e75 
+__const:
+__strings:
               XREF           __base
               XREF           _XCOVF
               XREF           ESQ_GlobalTickCounter
@@ -144,17 +146,17 @@ ___ESQ_TickGlobalCounters__21:
               XREF           CLOCK_CurrentDayOfWeekIndexPtr
               XREF           WDISP_AccumulatorCaptureActive
               XREF           ACCUMULATOR_Row0_CaptureValue
-              XREF           ACCUMULATOR_Row0_SaturateFlag
               XREF           ACCUMULATOR_Row0_Sum
+              XREF           ACCUMULATOR_Row0_SaturateFlag
               XREF           ACCUMULATOR_Row1_CaptureValue
-              XREF           ACCUMULATOR_Row1_SaturateFlag
               XREF           ACCUMULATOR_Row1_Sum
+              XREF           ACCUMULATOR_Row1_SaturateFlag
               XREF           ACCUMULATOR_Row2_CaptureValue
-              XREF           ACCUMULATOR_Row2_SaturateFlag
               XREF           ACCUMULATOR_Row2_Sum
+              XREF           ACCUMULATOR_Row2_SaturateFlag
               XREF           ACCUMULATOR_Row3_CaptureValue
-              XREF           ACCUMULATOR_Row3_SaturateFlag
               XREF           ACCUMULATOR_Row3_Sum
+              XREF           ACCUMULATOR_Row3_SaturateFlag
               XREF           WDISP_AccumulatorFlushPending
               XREF           ESQIFF_ServicePendingCopperPalet
               XDEF           ESQ_TickGlobalCounters

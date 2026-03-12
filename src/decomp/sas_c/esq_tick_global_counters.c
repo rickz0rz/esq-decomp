@@ -27,25 +27,10 @@ extern void ESQ_ColdReboot(void);
 extern void ESQSHARED4_TickCopperAndBannerTransitions(void);
 extern void ESQIFF_ServicePendingCopperPaletteMoves(void);
 
-static void ESQ_AccumulateRow(short value, short *sum, short *saturate_flag)
-{
-    short next;
-
-    if (value == 0) {
-        return;
-    }
-
-    next = (short)(*sum + value);
-    if (next >= (short)0x4000) {
-        *saturate_flag = 1;
-        next = 0;
-    }
-    *sum = next;
-}
-
 void ESQ_TickGlobalCounters(void)
 {
     short tick;
+    short next;
 
     tick = (short)(ESQ_GlobalTickCounter + 1);
     if (tick == (short)0x5460) {
@@ -82,10 +67,41 @@ void ESQ_TickGlobalCounters(void)
     ESQ_TickModulo60Counter = tick;
 
     if (WDISP_AccumulatorCaptureActive != 0) {
-        ESQ_AccumulateRow(ACCUMULATOR_Row0_CaptureValue, &ACCUMULATOR_Row0_Sum, &ACCUMULATOR_Row0_SaturateFlag);
-        ESQ_AccumulateRow(ACCUMULATOR_Row1_CaptureValue, &ACCUMULATOR_Row1_Sum, &ACCUMULATOR_Row1_SaturateFlag);
-        ESQ_AccumulateRow(ACCUMULATOR_Row2_CaptureValue, &ACCUMULATOR_Row2_Sum, &ACCUMULATOR_Row2_SaturateFlag);
-        ESQ_AccumulateRow(ACCUMULATOR_Row3_CaptureValue, &ACCUMULATOR_Row3_Sum, &ACCUMULATOR_Row3_SaturateFlag);
+        if (ACCUMULATOR_Row0_CaptureValue != 0) {
+            next = (short)(ACCUMULATOR_Row0_Sum + ACCUMULATOR_Row0_CaptureValue);
+            if (next >= (short)0x4000) {
+                ACCUMULATOR_Row0_SaturateFlag = 1;
+                next = 0;
+            }
+            ACCUMULATOR_Row0_Sum = next;
+        }
+
+        if (ACCUMULATOR_Row1_CaptureValue != 0) {
+            next = (short)(ACCUMULATOR_Row1_Sum + ACCUMULATOR_Row1_CaptureValue);
+            if (next >= (short)0x4000) {
+                ACCUMULATOR_Row1_SaturateFlag = 1;
+                next = 0;
+            }
+            ACCUMULATOR_Row1_Sum = next;
+        }
+
+        if (ACCUMULATOR_Row2_CaptureValue != 0) {
+            next = (short)(ACCUMULATOR_Row2_Sum + ACCUMULATOR_Row2_CaptureValue);
+            if (next >= (short)0x4000) {
+                ACCUMULATOR_Row2_SaturateFlag = 1;
+                next = 0;
+            }
+            ACCUMULATOR_Row2_Sum = next;
+        }
+
+        if (ACCUMULATOR_Row3_CaptureValue != 0) {
+            next = (short)(ACCUMULATOR_Row3_Sum + ACCUMULATOR_Row3_CaptureValue);
+            if (next >= (short)0x4000) {
+                ACCUMULATOR_Row3_SaturateFlag = 1;
+                next = 0;
+            }
+            ACCUMULATOR_Row3_Sum = next;
+        }
     }
 
     if (WDISP_AccumulatorFlushPending != 0) {
