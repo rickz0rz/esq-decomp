@@ -70,7 +70,7 @@ ___KYBD_InitializeInputDevices__2:
               MOVE.L         A0,Global_REF_DATA_INPUT_BUFFER(A4);2948 0000 
               MOVE.L         $60(A7),D0               ;202f 0060 
               MOVE.L         INPUTDEVICE_HandlerUserDataLong(A4),$0(A5,D0.L);2bac 0000 0800 
-              LEA            GROUP_AV_JMPTBL_ESQ_InvokeGcomma(PC),A0;41fa 0000 
+              LEA            ESQ_InvokeGcommandInit(PC),A0;41fa 0000 
               MOVE.L         $5c(A7),D0               ;202f 005c 
               MOVE.L         A0,$0(A5,D0.L)           ;2b88 0800 
               MOVE.L         $58(A7),D0               ;202f 0058 
@@ -118,7 +118,7 @@ __strings:
               XREF           NEWGRID_JMPTBL_MEMORY_AllocateMe
               XREF           Global_REF_DATA_INPUT_BUFFER
               XREF           INPUTDEVICE_HandlerUserDataLong
-              XREF           GROUP_AV_JMPTBL_ESQ_InvokeGcomma
+              XREF           ESQ_InvokeGcommandInit
               XREF           Struct_IOStdReq__io_Command
               XREF           Struct_IOStdReq__io_Data
               XREF           _LVODoIO

@@ -29,7 +29,7 @@ extern void *GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq(void *msgPort);
 extern LONG _LVOOpenDevice(void *execBase, const char *name, LONG unit, void *ioReq, LONG flags);
 extern LONG _LVODoIO(void *execBase, void *ioReq);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
-extern void GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit(void);
+extern void ESQ_InvokeGcommandInit(void);
 
 void KYBD_InitializeInputDevices(void)
 {
@@ -73,7 +73,7 @@ void KYBD_InitializeInputDevices(void)
     Global_REF_DATA_INPUT_BUFFER = inputBuf;
 
     *(LONG *)(inputBuf + INPUTBUF_HANDLER_DATA_OFFSET) = INPUTDEVICE_HandlerUserDataLong;
-    *(LONG *)(inputBuf + INPUTBUF_HANDLER_FN_OFFSET) = (LONG)GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit;
+    *(LONG *)(inputBuf + INPUTBUF_HANDLER_FN_OFFSET) = (LONG)ESQ_InvokeGcommandInit;
     *(UBYTE *)(inputBuf + INPUTBUF_FLAGS_OFFSET) = INPUTBUF_FLAGS_VALUE;
 
     *(UWORD *)((UBYTE *)Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE + Struct_IOStdReq__io_Command) = IOREQ_CMD_ADDHANDLER;
