@@ -2,26 +2,26 @@
 
 char *STRING_FindSubstring(char *haystack, char *needle)
 {
-    register char *currentHaystack;
-    register char *currentNeedle;
+    register char *a2;
+    register char *a3;
 
 check_at_current:
-    currentHaystack = haystack;
-    currentNeedle = needle;
+    a2 = haystack;
+    a3 = needle;
 
 compare_loop:
-    if (*currentNeedle == 0) {
+    if (*a3 == 0) {
         return haystack;
     }
 
-    if (*currentHaystack++ != *currentNeedle++) {
+    if (*a2++ != *a3++) {
         goto advance_start;
     }
 
     goto compare_loop;
 
 advance_start:
-    if (*currentHaystack == 0) {
+    if (*a2 == 0) {
         return 0;
     }
 
