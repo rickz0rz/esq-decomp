@@ -3,33 +3,34 @@ typedef unsigned long ULONG;
 
 char *STRING_AppendN(char *dst, const char *src, ULONG maxBytes)
 {
-    ULONG srcLen;
-    ULONG dstLen;
-    ULONG n;
+    const char *srcEnd;
+    char *dstEnd;
     char *out;
+    ULONG copyLen;
+    ULONG count;
 
-    srcLen = 0;
-    while (src[srcLen] != 0) {
-        srcLen++;
+    srcEnd = src;
+    while (*srcEnd != 0) {
+        srcEnd++;
+    }
+    copyLen = (ULONG)(srcEnd - src);
+
+    dstEnd = dst;
+    while (*dstEnd != 0) {
+        dstEnd++;
+    }
+    out = dstEnd;
+
+    if (copyLen > maxBytes) {
+        copyLen = maxBytes;
     }
 
-    dstLen = 0;
-    while (dst[dstLen] != 0) {
-        dstLen++;
+    count = copyLen;
+    while (count != 0) {
+        *dstEnd++ = *src++;
+        count--;
     }
 
-    out = dst + dstLen;
-
-    n = srcLen;
-    if (n > maxBytes) {
-        n = maxBytes;
-    }
-
-    while (n != 0) {
-        *out++ = *src++;
-        n--;
-    }
-
-    *out = 0;
+    out[copyLen] = 0;
     return dst;
 }
