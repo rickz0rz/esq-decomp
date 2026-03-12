@@ -10,7 +10,7 @@ ___DISKIO_ForceUiRefreshIfIdle__2:
 ___DISKIO_ForceUiRefreshIfIdle__3:
               MOVE.W         #$100,ESQPARS2_ReadModeFlags(A4);397c 0100 0000 
               MOVE.W         #$ffffffff,Global_RefreshTickCounter(A4);397c ffff 0000 
-              BSR.W          GROUP_AG_JMPTBL_TEXTDISP_ResetSe;6100 0000 
+              BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
 ___DISKIO_ForceUiRefreshIfIdle__4:
               RTS                                     ;4e75 
 __const:
@@ -20,6 +20,6 @@ __strings:
               XREF           Global_UIBusyFlag
               XREF           ESQPARS2_ReadModeFlags
               XREF           Global_RefreshTickCounter
-              XREF           GROUP_AG_JMPTBL_TEXTDISP_ResetSe
+              XREF           TEXTDISP_ResetSelectionAndRefres
               XDEF           DISKIO_ForceUiRefreshIfIdle
               END

@@ -10,7 +10,7 @@ extern WORD Global_UIBusyFlag;
 extern WORD ESQPARS2_ReadModeFlags;
 extern WORD Global_RefreshTickCounter;
 
-extern void GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(void);
+extern void TEXTDISP_ResetSelectionAndRefresh(void);
 
 void DISKIO_ForceUiRefreshIfIdle(void)
 {
@@ -20,5 +20,5 @@ void DISKIO_ForceUiRefreshIfIdle(void)
 
     ESQPARS2_ReadModeFlags = DISKIO_READMODE_GUARD_FLAG;
     Global_RefreshTickCounter = DISKIO_REFRESH_FORCE_NOW;
-    GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh();
+    TEXTDISP_ResetSelectionAndRefresh();
 }
