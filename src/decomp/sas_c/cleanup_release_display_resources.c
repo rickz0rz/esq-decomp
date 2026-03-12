@@ -1,5 +1,6 @@
 typedef long LONG;
 
+extern void *AbsExecBase;
 extern LONG Global_REF_96_BYTES_ALLOCATED;
 extern LONG Global_REF_RASTPORT_1;
 extern LONG WDISP_LivePlaneRasterTable0;
@@ -26,8 +27,8 @@ extern const char Global_STR_CLEANUP_C_12[];
 
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
 LONG GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const void *file, LONG line, void *rast, LONG width, LONG height);
-void _LVOCloseFont(void);
-void _LVOCloseLibrary(void);
+void _LVOCloseFont(void *graphicsBase, void *font);
+void _LVOCloseLibrary(void *execBase, void *libraryBase);
 
 void CLEANUP_ReleaseDisplayResources(void)
 {
@@ -38,15 +39,16 @@ void CLEANUP_ReleaseDisplayResources(void)
     const LONG RASTER_WIDE = 696;
     const LONG RASTER_NARROW = 352;
     const LONG RASTER_H_2 = 2;
-    const LONG RASTER_H_34 = 34;
+    const LONG RASTER_H_509 = 509;
+    const LONG RASTER_H_15 = 15;
     const LONG RASTER_H_240 = 240;
     const LONG FREE96_LINE = 148;
     const LONG FREE_RP_LINE = 152;
     const LONG FREE_LIVE_LINE = 158;
-    const LONG FREE_352_LINE = 163;
+    const LONG FREE_352_LINE = 169;
     const LONG FREE_BANNER_LINE = 168;
-    const LONG FREE_CTX_LINE = 173;
-    const LONG FREE_WORK_LINE = 178;
+    const LONG FREE_CTX_LINE = 187;
+    const LONG FREE_WORK_LINE = 200;
     LONG i;
 
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
@@ -76,9 +78,9 @@ void CLEANUP_ReleaseDisplayResources(void)
             FREE_BANNER_LINE,
             *(void **)(WDISP_BannerRowScratchRasterTable0 + (i << PTR_STRIDE_SHIFT)),
             RASTER_WIDE,
-            RASTER_H_34);
+            RASTER_H_509);
     }
-    for (i = 0; i < RASTER_TABLE_COUNT; i++) {
+    for (i = 3; i < 5; i++) {
         GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
             Global_STR_CLEANUP_C_11,
             FREE_CTX_LINE,
@@ -87,16 +89,27 @@ void CLEANUP_ReleaseDisplayResources(void)
             RASTER_H_240);
     }
     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
-        Global_STR_CLEANUP_C_12, FREE_WORK_LINE, (void *)WDISP_BannerWorkRasterPtr, RASTER_WIDE, RASTER_H_34);
+        Global_STR_CLEANUP_C_12, FREE_WORK_LINE, (void *)WDISP_BannerWorkRasterPtr, RASTER_WIDE, RASTER_H_15);
 
-    _LVOCloseFont();
-    _LVOCloseFont();
-    _LVOCloseFont();
-    _LVOCloseFont();
+    if (Global_HANDLE_PREVUE_FONT != 0) {
+        _LVOCloseFont((void *)Global_REF_GRAPHICS_LIBRARY, (void *)Global_HANDLE_PREVUE_FONT);
+    }
+    if (Global_HANDLE_TOPAZ_FONT != 0) {
+        _LVOCloseFont((void *)Global_REF_GRAPHICS_LIBRARY, (void *)Global_HANDLE_TOPAZ_FONT);
+    }
+    if (Global_HANDLE_H26F_FONT != 0) {
+        _LVOCloseFont((void *)Global_REF_GRAPHICS_LIBRARY, (void *)Global_HANDLE_H26F_FONT);
+    }
+    if (Global_HANDLE_PREVUEC_FONT != 0) {
+        _LVOCloseFont((void *)Global_REF_GRAPHICS_LIBRARY, (void *)Global_HANDLE_PREVUEC_FONT);
+    }
 
-    _LVOCloseLibrary();
-    _LVOCloseLibrary();
-    _LVOCloseLibrary();
-    _LVOCloseLibrary();
-    _LVOCloseLibrary();
+    if (Global_REF_UTILITY_LIBRARY != 0) {
+        _LVOCloseLibrary(AbsExecBase, (void *)Global_REF_UTILITY_LIBRARY);
+    }
+
+    _LVOCloseLibrary(AbsExecBase, (void *)Global_REF_DISKFONT_LIBRARY);
+    _LVOCloseLibrary(AbsExecBase, (void *)Global_REF_DOS_LIBRARY);
+    _LVOCloseLibrary(AbsExecBase, (void *)Global_REF_INTUITION_LIBRARY);
+    _LVOCloseLibrary(AbsExecBase, (void *)Global_REF_GRAPHICS_LIBRARY);
 }

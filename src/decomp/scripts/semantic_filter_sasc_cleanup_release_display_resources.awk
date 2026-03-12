@@ -23,9 +23,9 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     if (u ~ /#96/ || u ~ /#\$60/ || u ~ /PEA 96\.W/ || u ~ /PEA \(\$60\)\.W/) has_dealloc_96 = 1
     if (u ~ /#100/ || u ~ /#\$64/ || u ~ /PEA 100\.W/ || u ~ /PEA \(\$64\)\.W/) has_dealloc_100 = 1
     if (u ~ /GRAPHICS_FREERASTER/ || u ~ /GRAPHICS_FREERAS/) has_freeraster = 1
-    if (u ~ /#696/ || u ~ /#\$2B8/) has_696 = 1
-    if (u ~ /#352/ || u ~ /#\$160/) has_352 = 1
-    if (u ~ /#240/ || u ~ /#\$F0/) has_240 = 1
+    if (u ~ /(^|[^0-9])696([^0-9]|$)/ || u ~ /\$2B8/) has_696 = 1
+    if (u ~ /(^|[^0-9])352([^0-9]|$)/ || u ~ /\$160/) has_352 = 1
+    if (u ~ /(^|[^0-9])240([^0-9]|$)/ || u ~ /\$F0/) has_240 = 1
     if (u ~ /_LVOCLOSEFONT/) has_closefont = 1
     if (u ~ /_LVOCLOSELIBRARY/) has_closelib = 1
     if (u == "RTS") has_return = 1
