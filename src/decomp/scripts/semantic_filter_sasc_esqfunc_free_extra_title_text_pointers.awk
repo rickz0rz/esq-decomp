@@ -10,6 +10,7 @@ BEGIN {
     has_movem_restore = 0
     has_unlk = 0
     has_rts = 0
+    has_stack_guard = 0
 }
 
 function trim(s, t) {
@@ -28,18 +29,22 @@ function trim(s, t) {
 
     if (uline ~ /^ESQFUNC_FREEEXTRATITLETEXTPOINTERS:/ || uline ~ /^ESQFUNC_FREEEXTRATITLETEXTPO[A-Z0-9_]*:/) has_entry = 1
     if (uline ~ /^LINK\.W A5,#-20$/ || uline ~ /^SUB\.W #\$14,A7$/ || uline ~ /^SUBQ\.L #\$14,A7$/ || uline ~ /^MOVEM\.L D4\/D5\/D6\/D7\/A3\/A5,-\(A7\)$/) has_link = 1
-    if (uline ~ /^MOVEM\.L D4-D7,-\(A7\)$/ || uline ~ /^MOVEM\.L D4\/D5\/D6\/D7,-\(A7\)$/ || uline ~ /^MOVEM\.L D4\/D5\/D6\/D7\/A3\/A5,-\(A7\)$/) has_movem_save = 1
+    if (index(uline, "__BASE(A4)") > 0 || index(uline, "_XCOVF") > 0) has_stack_guard = 1
+    if (uline ~ /^MOVEM\.L D4-D7,-\(A7\)$/ || uline ~ /^MOVEM\.L D4\/D5\/D6\/D7,-\(A7\)$/ || uline ~ /^MOVEM\.L D4\/D5\/D6\/D7\/A3\/A5,-\(A7\)$/ || uline ~ /^MOVEM\.L D5\/D6\/D7\/A3\/A5,-\(A7\)$/) has_movem_save = 1
     if (uline ~ /^\.ENTRY_LOOP:$/ || uline ~ /TEXTDISP_PRIMARYGROUPENTRYCOUNT/) has_entry_loop = 1
-    if (uline ~ /^\.SLOT_LOOP:$/ || uline ~ /56\(A0,D0\.L\)/ || uline ~ /\$38\(A5,D0\.L\)/) has_slot_loop = 1
+    if (uline ~ /^\.SLOT_LOOP:$/ || uline ~ /56\(A0,D0\.L\)/ || uline ~ /\$38\(A5,D0\.L\)/ || uline ~ /\$38\(A5,D1\.L\)/) has_slot_loop = 1
     if (uline ~ /ESQPARS_REPLACEOWNEDSTRING/ || uline ~ /ESQPARS_REPLACEOWNEDSTRI/) has_replace = 1
-    if (uline ~ /^CLR\.L 56\(A0,D0\.L\)$/ || uline ~ /^MOVE\.L D[0-7],56\(A0,D0\.L\)$/ || uline ~ /^CLR\.L 56\(A[0-7],D0\.L\)$/ || uline ~ /^CLR\.L \$38\(A5,D0\.L\)$/) has_clear_slot = 1
-    if (uline ~ /^MOVEQ #1,D6$/ || uline ~ /^MOVEQ\.L #\$1,D6$/ || uline ~ /^MOVEQ\.L #\$1,D4$/) has_mark_first = 1
-    if (uline ~ /^MOVEM\.L \(A7\)\+,D4-D7$/ || uline ~ /^MOVEM\.L \(A7\)\+,D4\/D5\/D6\/D7$/ || uline ~ /^MOVEM\.L \(A7\)\+,D4\/D5\/D6\/D7\/A3\/A5$/) has_movem_restore = 1
-    if (uline ~ /^UNLK A5$/ || uline ~ /^ADD\.W #\$14,A7$/ || uline ~ /^ADDQ\.L #\$14,A7$/ || uline ~ /^MOVEM\.L \(A7\)\+,D4\/D5\/D6\/D7\/A3\/A5$/) has_unlk = 1
+    if (uline ~ /^CLR\.L 56\(A0,D0\.L\)$/ || uline ~ /^MOVE\.L D[0-7],56\(A0,D0\.L\)$/ || uline ~ /^CLR\.L 56\(A[0-7],D0\.L\)$/ || uline ~ /^CLR\.L \$38\(A5,D0\.L\)$/ || uline ~ /^CLR\.L \$38\(A5,D1\.L\)$/) has_clear_slot = 1
+    if (uline ~ /^MOVEQ #1,D6$/ || uline ~ /^MOVEQ\.L #\$1,D6$/ || uline ~ /^MOVEQ\.L #\$1,D4$/ || uline ~ /^MOVE\.W #\$1,\$1C\(A7\)$/ || uline ~ /^MOVE\.W \$1C\(A7\),\$16\(A7\)$/) has_mark_first = 1
+    if (uline ~ /^MOVEM\.L \(A7\)\+,D4-D7$/ || uline ~ /^MOVEM\.L \(A7\)\+,D4\/D5\/D6\/D7$/ || uline ~ /^MOVEM\.L \(A7\)\+,D4\/D5\/D6\/D7\/A3\/A5$/ || uline ~ /^MOVEM\.L \(A7\)\+,D5\/D6\/D7\/A3\/A5$/) has_movem_restore = 1
+    if (uline ~ /^UNLK A5$/ || uline ~ /^ADD\.W #\$14,A7$/ || uline ~ /^ADDQ\.L #\$14,A7$/ || uline ~ /^MOVEM\.L \(A7\)\+,D4\/D5\/D6\/D7\/A3\/A5$/ || uline ~ /^ADD\.W #\$C,A7$/) has_unlk = 1
     if (uline ~ /^RTS$/) has_rts = 1
 }
 
 END {
+    if (has_stack_guard) has_link = 1
+    if (has_stack_guard && has_movem_restore) has_unlk = 1
+
     print "HAS_ENTRY=" has_entry
     print "HAS_LINK=" has_link
     print "HAS_MOVEM_SAVE=" has_movem_save
