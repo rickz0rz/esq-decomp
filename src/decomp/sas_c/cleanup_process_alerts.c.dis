@@ -27,7 +27,7 @@ ___CLEANUP_ProcessAlerts__7:
               SUBQ.L         #$1,CLEANUP_AlertCooldownTicks(A4);53ac 0000 
               BGT.B          ___CLEANUP_ProcessAlerts__9;6e0a 
 ___CLEANUP_ProcessAlerts__8:
-              BSR.W          GROUP_AC_JMPTBL_ESQFUNC_DrawDiag;6100 0000 
+              BSR.W          ESQFUNC_DrawDiagnosticsScreen;6100 0000 
               MOVEQ.L        #$1,D0                   ;7001 
               MOVE.L         D0,CLEANUP_AlertCooldownTicks(A4);2940 0000 
 ___CLEANUP_ProcessAlerts__9:
@@ -55,7 +55,7 @@ ___CLEANUP_ProcessAlerts__14:
 ___CLEANUP_ProcessAlerts__15:
               MOVEQ.L        #$4,D0                   ;7004 
               MOVE.L         D0,LOCAVAIL_FilterStep(A4);2940 0000 
-              BSR.W          GROUP_AG_JMPTBL_TEXTDISP_ResetSe;6100 0000 
+              BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
 ___CLEANUP_ProcessAlerts__16:
               CLR.W          CLEANUP_PendingAlertFlag(A4);426c 0000 
               PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
@@ -72,19 +72,19 @@ ___CLEANUP_ProcessAlerts__17:
               CMP.W          D1,D0                    ;b041 
               BGE.B          ___CLEANUP_ProcessAlerts__20;6c10 
 ___CLEANUP_ProcessAlerts__18:
-              BSR.W          GROUP_AC_JMPTBL_SCRIPT_ClearCtrl;6100 0000 
+              BSR.W          SCRIPT_ClearCtrlLineIfEnabled;6100 0000 
               MOVE.W         TEXTDISP_DeferredActionDelayTick(A4),D0;302c 0000 
               BNE.B          ___CLEANUP_ProcessAlerts__20;6606 
 ___CLEANUP_ProcessAlerts__19:
               MOVE.W         #$ffffffff,TEXTDISP_DeferredActionDelayTick(A4);397c ffff 0000 
 ___CLEANUP_ProcessAlerts__20:
-              BSR.W          GROUP_AC_JMPTBL_SCRIPT_UpdateCtr;6100 0000 
+              BSR.W          SCRIPT_PollHandshakeAndApplyTime;6100 0000 
               MOVEQ.L        #$1,D0                   ;7001 
               CMP.L          BRUSH_PendingAlertCode(A4),D0;b0ac 0000 
               BNE.B          ___CLEANUP_ProcessAlerts__22;6612 
 ___CLEANUP_ProcessAlerts__21:
               PEA            ($3).w                   ;4878 0003 
-              BSR.W          GROUP_AH_JMPTBL_ESQIFF2_ShowAtte;6100 0000 
+              BSR.W          ESQIFF2_ShowAttentionOverlay;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               MOVEQ.L        #$4,D0                   ;7004 
               MOVE.L         D0,BRUSH_PendingAlertCode(A4);2940 0000 
@@ -95,7 +95,7 @@ ___CLEANUP_ProcessAlerts__22:
               BNE.B          ___CLEANUP_ProcessAlerts__24;6612 
 ___CLEANUP_ProcessAlerts__23:
               PEA            ($4).w                   ;4878 0004 
-              BSR.W          GROUP_AH_JMPTBL_ESQIFF2_ShowAtte;6100 0000 
+              BSR.W          ESQIFF2_ShowAttentionOverlay;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               MOVEQ.L        #$4,D0                   ;7004 
               MOVE.L         D0,BRUSH_PendingAlertCode(A4);2940 0000 
@@ -106,7 +106,7 @@ ___CLEANUP_ProcessAlerts__24:
               BNE.B          ___CLEANUP_ProcessAlerts__26;6610 
 ___CLEANUP_ProcessAlerts__25:
               PEA            ($5).w                   ;4878 0005 
-              BSR.W          GROUP_AH_JMPTBL_ESQIFF2_ShowAtte;6100 0000 
+              BSR.W          ESQIFF2_ShowAttentionOverlay;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               MOVEQ.L        #$4,D0                   ;7004 
               MOVE.L         D0,BRUSH_PendingAlertCode(A4);2940 0000 
@@ -135,13 +135,13 @@ ___CLEANUP_ProcessAlerts__31:
               MOVE.B         D0,TLIBA1_DayEntryModeCounter(A4);1940 0000 
 ___CLEANUP_ProcessAlerts__32:
               PEA            DST_BannerWindowPrimary(A4);486c 0000 
-              BSR.W          GROUP_AC_JMPTBL_DST_UpdateBanner;6100 0000 
+              BSR.W          DST_UpdateBannerQueue    ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               TST.L          D0                       ;4a80 
               BEQ.B          ___CLEANUP_ProcessAlerts__34;670a 
 ___CLEANUP_ProcessAlerts__33:
               PEA            ($1).w                   ;4878 0001 
-              BSR.W          GROUP_AC_JMPTBL_ESQDISP_DrawStat;6100 0000 
+              BSR.W          ESQDISP_DrawStatusBanner ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___CLEANUP_ProcessAlerts__34:
               MOVE.B         ESQ_AlertType235ModeFlagChar(A4),D0;102c 0000 
@@ -155,7 +155,7 @@ ___CLEANUP_ProcessAlerts__35:
 ___CLEANUP_ProcessAlerts__36:
               CLR.W          ESQDISP_StatusBannerClampGateFla(A4);426c 0000 
               CLR.L          -(A7)                    ;42a7 
-              BSR.W          GROUP_AC_JMPTBL_ESQDISP_DrawStat;6100 0000 
+              BSR.W          ESQDISP_DrawStatusBanner ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               MOVE.W         #$1,ESQDISP_StatusBannerClampGateFla(A4);397c 0001 0000 
 ___CLEANUP_ProcessAlerts__37:
@@ -176,9 +176,9 @@ ___CLEANUP_ProcessAlerts__40:
               BNE.B          ___CLEANUP_ProcessAlerts__42;6610 
 ___CLEANUP_ProcessAlerts__41:
               BSR.W          PARSEINI_UpdateClockFromRtc;6100 0000 
-              BSR.W          GROUP_AC_JMPTBL_DST_RefreshBanne;6100 0000 
+              BSR.W          DST_RefreshBannerBuffer  ;6100 0000 
               CLR.L          -(A7)                    ;42a7 
-              BSR.W          GROUP_AC_JMPTBL_ESQDISP_DrawStat;6100 0000 
+              BSR.W          ESQDISP_DrawStatusBanner ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___CLEANUP_ProcessAlerts__42:
               MOVE.B         ESQ_AlertType235ModeFlagChar(A4),D0;102c 0000 
@@ -253,7 +253,7 @@ ___CLEANUP_ProcessAlerts__52:
               EXT.L          D0                       ;48c0 
               PEA            ($2).w                   ;4878 0002 
               MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
+              BSR.W          MATH_DivS32              ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               SUBQ.L         #$1,D0                   ;5380 
               BNE.B          ___CLEANUP_ProcessAlerts__54;6604 
@@ -263,16 +263,16 @@ ___CLEANUP_ProcessAlerts__54:
               MOVE.W         WDISP_BannerCharRangeStart(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
               MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          GROUP_AC_JMPTBL_ESQFUNC_FreeExtr;6100 0000 
+              BSR.W          ESQFUNC_FreeExtraTitleTextPointe;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___CLEANUP_ProcessAlerts__55:
-              BSR.W          GROUP_AC_JMPTBL_SCRIPT_UpdateCtr;6100 0000 
+              BSR.W          SCRIPT_UpdateCtrlStateMachine;6100 0000 
               MOVE.B         ED_MenuStateId(A4),D0    ;102c 0000 
               SUBQ.B         #$8,D0                   ;5100 
               TST.B          D0                       ;4a00 
               BNE.B          ___CLEANUP_ProcessAlerts__57;6606 
 ___CLEANUP_ProcessAlerts__56:
-              BSR.W          GROUP_AC_JMPTBL_ESQFUNC_DrawEscM;6100 0000 
+              BSR.W          ESQFUNC_DrawEscMenuVersion;6100 0000 
               BRA.B          ___CLEANUP_ProcessAlerts__59;600e 
 ___CLEANUP_ProcessAlerts__57:
               MOVE.B         ED_MenuStateId(A4),D0    ;102c 0000 
@@ -280,7 +280,7 @@ ___CLEANUP_ProcessAlerts__57:
               TST.B          D0                       ;4a00 
               BNE.B          ___CLEANUP_ProcessAlerts__59;6604 
 ___CLEANUP_ProcessAlerts__58:
-              BSR.W          GROUP_AC_JMPTBL_ESQFUNC_DrawMemo;6100 0000 
+              BSR.W          ESQFUNC_DrawMemoryStatusScreen;6100 0000 
 ___CLEANUP_ProcessAlerts__59:
               CLR.L          CLEANUP_AlertProcessingFlag(A4);42ac 0000 
 ___CLEANUP_ProcessAlerts__60:
@@ -295,28 +295,28 @@ __strings:
               XREF           CLEANUP_DiagOverlayAutoRefreshFl
               XREF           Global_UIBusyFlag
               XREF           CLEANUP_AlertCooldownTicks
-              XREF           GROUP_AC_JMPTBL_ESQFUNC_DrawDiag
+              XREF           ESQFUNC_DrawDiagnosticsScreen
               XREF           LOCAVAIL_FilterStep
               XREF           LOCAVAIL_FilterCooldownTicks
-              XREF           GROUP_AG_JMPTBL_TEXTDISP_ResetSe
+              XREF           TEXTDISP_ResetSelectionAndRefres
               XREF           CLOCK_DaySlotIndex
               XREF           ESQ_TickClockAndFlagEvents
               XREF           CLOCK_CurrentDayOfWeekIndex
               XREF           TEXTDISP_DeferredActionDelayTick
-              XREF           GROUP_AC_JMPTBL_SCRIPT_ClearCtrl
-              XREF           GROUP_AC_JMPTBL_SCRIPT_UpdateCtr
+              XREF           SCRIPT_ClearCtrlLineIfEnabled
+              XREF           SCRIPT_PollHandshakeAndApplyTime
               XREF           BRUSH_PendingAlertCode
-              XREF           GROUP_AH_JMPTBL_ESQIFF2_ShowAtte
+              XREF           ESQIFF2_ShowAttentionOverlay
               XREF           WDISP_WeatherStatusCountdown
               XREF           CLEANUP_BannerTickCounter
               XREF           TLIBA1_DayEntryModeCounter
               XREF           DST_BannerWindowPrimary
-              XREF           GROUP_AC_JMPTBL_DST_UpdateBanner
-              XREF           GROUP_AC_JMPTBL_ESQDISP_DrawStat
+              XREF           DST_UpdateBannerQueue
+              XREF           ESQDISP_DrawStatusBanner
               XREF           ESQ_AlertType235ModeFlagChar
               XREF           ESQDISP_StatusBannerClampGateFla
               XREF           PARSEINI_UpdateClockFromRtc
-              XREF           GROUP_AC_JMPTBL_DST_RefreshBanne
+              XREF           DST_RefreshBannerBuffer
               XREF           BANNER_ResetPendingFlag
               XREF           CLOCK_HalfHourSlotIndex
               XREF           DISPLIB_NormalizeValueByStep
@@ -326,10 +326,11 @@ __strings:
               XREF           _LVOSetAPen
               XREF           CLEANUP_DrawGridTimeBanner
               XREF           CLEANUP_DrawClockBanner
-              XREF           GROUP_AG_JMPTBL_MATH_DivS32
-              XREF           GROUP_AC_JMPTBL_ESQFUNC_FreeExtr
+              XREF           MATH_DivS32
+              XREF           ESQFUNC_FreeExtraTitleTextPointe
+              XREF           SCRIPT_UpdateCtrlStateMachine
               XREF           ED_MenuStateId
-              XREF           GROUP_AC_JMPTBL_ESQFUNC_DrawEscM
-              XREF           GROUP_AC_JMPTBL_ESQFUNC_DrawMemo
+              XREF           ESQFUNC_DrawEscMenuVersion
+              XREF           ESQFUNC_DrawMemoryStatusScreen
               XDEF           CLEANUP_ProcessAlerts
               END
