@@ -33,7 +33,7 @@ function trim(s, t) {
     if (u ~ /^MOVEQ(\.L)? #\$11,D[0-7]$/ || u ~ /^MOVEQ(\.L)? #17,D[0-7]$/ || u ~ /^CMP\.[LW] D[0-7],D[0-7]$/) has_row_loop_17 = 1
     if (index(u, "GCOMMAND_PRESETFALLBACKVALUE0") > 0 || index(u, "GCOMMAND_PRESETFALLBACKVALUE1") > 0 || index(u, "GCOMMAND_PRESETFALLBACKVALUE2") > 0 || index(u, "GCOMMAND_PRESETFALLBACKVALUE3") > 0) has_fallback_refs = 1
     if (index(u, "GCOMMAND_PRESETVALUETABLE") > 0) has_value_table_ref = 1
-    if (u ~ /^MOVE\.W D[0-7],[0-9]+\(A[0-7],D[0-7]\.L\)$/ || u ~ /^MOVE\.W \(A[0-7]\),[0-9]+\(A[0-7],D[0-7]\.L\)$/ || u ~ /^MOVE\.W D[0-7],\(A[0-7]\)$/) has_row_writes = 1
+    if (u ~ /^MOVE\.W D[0-7],[0-9]+\(A[0-7],D[0-7]\.L\)$/ || u ~ /^MOVE\.W D[0-7],\$[0-9A-F]+\([A][0-7],D[0-7]\.L\)$/ || u ~ /^MOVE\.W \(A[0-7]\),[0-9]+\(A[0-7],D[0-7]\.L\)$/ || u ~ /^MOVE\.W \(A[0-7]\),\$[0-9A-F]+\([A][0-7],D[0-7]\.L\)$/ || u ~ /^MOVE\.W D[0-7],\(A[0-7]\)$/) has_row_writes = 1
     if (index(u, "GCOMMAND_TICKPRESETWORKENTRIES") > 0 && (u ~ /^BSR(\.[A-Z]+)? / || u ~ /^JSR /)) has_tick_call = 1
     if (index(u, "GCOMMAND_BANNERREBUILDPENDINGFLAG") > 0 || index(u, "GCOMMAND_BANNERREBUILDPENDINGFLA") > 0) has_clear_pending = 1
     if (u == "RTS") has_return = 1

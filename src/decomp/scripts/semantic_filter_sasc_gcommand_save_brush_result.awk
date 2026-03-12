@@ -34,9 +34,9 @@ function trim(s, t) {
 
     if (index(u, "GROUP_AU_JMPTBL_BRUSH_POPULATEBRUSHLIST") > 0 || index(u, "GROUP_AU_JMPTBL_BRUSH_POPULATEB") > 0) has_populate = 1
 
-    if (u ~ /^SUBQ\.W #4,D[0-7]$/ || u ~ /^SUBQ\.W #\$4,D[0-7]$/ || u ~ /^CMPI\.W #4,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W #4,D[0-7]$/ || u ~ /^CMPI\.W #\$4,CTASKS_IFFTASKSTATE/) has_state4_check = 1
-    if (u ~ /^SUBQ\.W #5,D[0-7]$/ || u ~ /^SUBQ\.W #\$5,D[0-7]$/ || u ~ /^CMPI\.W #5,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W #5,D[0-7]$/ || u ~ /^CMPI\.W #\$5,CTASKS_IFFTASKSTATE/) has_state5_check = 1
-    if (u ~ /^SUBQ\.W #6,D[0-7]$/ || u ~ /^SUBQ\.W #\$6,D[0-7]$/ || u ~ /^CMPI\.W #6,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W #6,D[0-7]$/ || u ~ /^CMPI\.W #\$6,CTASKS_IFFTASKSTATE/) has_state6_check = 1
+    if (u ~ /^SUBQ\.W #4,D[0-7]$/ || u ~ /^SUBQ\.W #\$4,D[0-7]$/ || u ~ /^CMPI\.W #4,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W #4,D[0-7]$/ || u ~ /^CMPI\.W #\$4,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W D5,D[0-7]$/) has_state4_check = 1
+    if (u ~ /^SUBQ\.W #5,D[0-7]$/ || u ~ /^SUBQ\.W #\$5,D[0-7]$/ || u ~ /^CMPI\.W #5,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W #5,D[0-7]$/ || u ~ /^CMPI\.W #\$5,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W D4,D[0-7]$/) has_state5_check = 1
+    if (u ~ /^SUBQ\.W #6,D[0-7]$/ || u ~ /^SUBQ\.W #\$6,D[0-7]$/ || u ~ /^CMPI\.W #6,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W #6,D[0-7]$/ || u ~ /^CMPI\.W #\$6,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W \$1C\(A7\),D[0-7]$/) has_state6_check = 1
 
     if (index(u, "_LVOFORBID") > 0) has_forbid = 1
     if (index(u, "_LVOPERMIT") > 0) has_permit = 1
