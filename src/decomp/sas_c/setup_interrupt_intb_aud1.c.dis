@@ -21,7 +21,7 @@ ___SETUP_INTERRUPT_INTB_AUD1__1:
               MOVE.L         A0,$a(A5)                ;2b48 000a 
               LEA            CTRL_SampleEntryScratch(A4),A0;41ec 0000 
               MOVE.L         A0,$e(A5)                ;2b48 000e 
-              LEA            ESQFUNC_JMPTBL_ESQ_PollCtrlInput(PC),A0;41fa 0000 
+              LEA            ESQ_PollCtrlInput(PC),A0 ;41fa 0000 
               MOVE.L         A0,$12(A5)               ;2b48 0012 
               MOVE.L         A5,A1                    ;224d 
               MOVEQ.L        #$8,D0                   ;7008 
@@ -40,7 +40,7 @@ __strings:
               XREF           Global_REF_INTERRUPT_STRUCT_INTB
               XREF           Global_STR_JOYSTICK_INT
               XREF           CTRL_SampleEntryScratch
-              XREF           ESQFUNC_JMPTBL_ESQ_PollCtrlInput
+              XREF           ESQ_PollCtrlInput
               XREF           Global_REF_INTB_AUD1_INTERRUPT
               XDEF           SETUP_INTERRUPT_INTB_AUD1
               END

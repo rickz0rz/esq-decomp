@@ -2,135 +2,129 @@
 __code:
 ESQ_TickClockAndFlagEvents:
               MOVE.L         A7,D0                    ;200f 
-              SUBQ.L         #$8,D0                   ;5180 
+              SUBQ.L         #$4,D0                   ;5980 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$4,A7                   ;594f 
-              MOVEM.L        D4/D5/D6/D7/A5,-(A7)     ;48e7 0f04 
+              MOVEM.L        D2/D5/D6/D7/A5,-(A7)     ;48e7 2704 
 ___ESQ_TickClockAndFlagEvents__1:
-              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
               MOVEQ.L        #$0,D7                   ;7e00 
-              MOVEQ.L        #$0,D6                   ;7c00 
-              MOVEQ.L        #$1,D5                   ;7a01 
-              MOVEQ.L        #$3c,D4                  ;783c 
               MOVE.W         $c(A5),D0                ;302d 000c 
-              CMP.W          D4,D0                    ;b044 
-              BLT.W          ___ESQ_TickClockAndFlagEvents__28;6d00 00f6 
+              MOVEQ.L        #$3c,D1                  ;723c 
+              CMP.W          D1,D0                    ;b041 
+              BLT.W          ___ESQ_TickClockAndFlagEvents__29;6d00 00de 
 ___ESQ_TickClockAndFlagEvents__2:
 ___ESQ_TickClockAndFlagEvents__3:
-              SUB.W          D4,$c(A5)                ;996d 000c 
-              MOVE.W         D5,D7                    ;3e05 
-              MOVE.W         $a(A5),D0                ;302d 000a 
-              ADD.W          D5,D0                    ;d045 
-              MOVE.W         D0,$a(A5)                ;3b40 000a 
-              MOVE.W         D0,$16(A7)               ;3f40 0016 
-              MOVEQ.L        #$1e,D1                  ;721e 
-              CMP.W          D1,D0                    ;b041 
+              MOVEQ.L        #$3c,D2                  ;743c 
+              SUB.W          D2,$c(A5)                ;956d 000c 
+              MOVEQ.L        #$1,D7                   ;7e01 
+              MOVE.W         $a(A5),D6                ;3c2d 000a 
+              ADDQ.W         #$1,D6                   ;5246 
+              MOVE.W         D6,$a(A5)                ;3b46 000a 
+              MOVEQ.L        #$1e,D0                  ;701e 
+              CMP.W          D0,D6                    ;bc40 
               BNE.B          ___ESQ_TickClockAndFlagEvents__5;6606 
 ___ESQ_TickClockAndFlagEvents__4:
               MOVEQ.L        #$2,D7                   ;7e02 
-              BRA.W          ___ESQ_TickClockAndFlagEvents__28;6000 00d6 
+              BRA.W          ___ESQ_TickClockAndFlagEvents__29;6000 00c0 
 ___ESQ_TickClockAndFlagEvents__5:
-              CMP.W          D4,D0                    ;b044 
-              BLT.W          ___ESQ_TickClockAndFlagEvents__19;6d00 0096 
+              CMP.W          D1,D6                    ;bc41 
+              BLT.W          ___ESQ_TickClockAndFlagEvents__20;6d00 0084 
 ___ESQ_TickClockAndFlagEvents__6:
-              MOVE.W         D6,$a(A5)                ;3b46 000a 
+              CLR.W          $a(A5)                   ;426d 000a 
               MOVEQ.L        #$2,D7                   ;7e02 
-              MOVE.W         $8(A5),D1                ;322d 0008 
-              ADD.W          D5,D1                    ;d245 
-              MOVE.W         D1,$8(A5)                ;3b41 0008 
-              MOVE.W         D1,$16(A7)               ;3f41 0016 
+              MOVE.W         $8(A5),D6                ;3c2d 0008 
+              ADDQ.W         #$1,D6                   ;5246 
+              MOVE.W         D6,$8(A5)                ;3b46 0008 
               MOVEQ.L        #$c,D0                   ;700c 
-              CMP.W          D0,D1                    ;b240 
-              BLT.W          ___ESQ_TickClockAndFlagEvents__28;6d00 00b4 
+              CMP.W          D0,D6                    ;bc40 
+              BLT.W          ___ESQ_TickClockAndFlagEvents__29;6d00 00a2 
 ___ESQ_TickClockAndFlagEvents__7:
-              CMP.W          D0,D1                    ;b240 
-              BEQ.B          ___ESQ_TickClockAndFlagEvents__9;6708 
 ___ESQ_TickClockAndFlagEvents__8:
-              MOVE.W         D5,$8(A5)                ;3b45 0008 
-              BRA.W          ___ESQ_TickClockAndFlagEvents__28;6000 00a8 
+              CMP.W          D0,D6                    ;bc40 
+              BEQ.B          ___ESQ_TickClockAndFlagEvents__10;670a 
 ___ESQ_TickClockAndFlagEvents__9:
-              NOT.W          $12(A5)                  ;466d 0012 
-              BLT.W          ___ESQ_TickClockAndFlagEvents__28;6d00 00a0 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.W         D0,$8(A5)                ;3b40 0008 
+              BRA.W          ___ESQ_TickClockAndFlagEvents__29;6000 0094 
 ___ESQ_TickClockAndFlagEvents__10:
-              MOVE.W         (A5),D0                  ;3015 
-              ADD.W          D5,D0                    ;d045 
-              MOVE.W         D0,(A5)                  ;3a80 
-              MOVE.W         D0,$16(A7)               ;3f40 0016 
-              SUBQ.W         #$7,D0                   ;5f40 
-              BNE.B          ___ESQ_TickClockAndFlagEvents__12;6602 
+              NOT.W          $12(A5)                  ;466d 0012 
+              BLT.W          ___ESQ_TickClockAndFlagEvents__29;6d00 008c 
 ___ESQ_TickClockAndFlagEvents__11:
-              MOVE.W         D6,(A5)                  ;3a86 
 ___ESQ_TickClockAndFlagEvents__12:
-              MOVE.W         $10(A5),D0               ;302d 0010 
-              ADD.W          D5,D0                    ;d045 
-              MOVE.W         D0,$10(A5)               ;3b40 0010 
-              MOVE.W         #$16e,D1                 ;323c 016e 
-              MOVE.W         D0,$16(A7)               ;3f40 0016 
-              MOVEM.W        D1,$14(A7)               ;48af 0002 0014 
-              TST.W          $14(A5)                  ;4a6d 0014 
-              BEQ.B          ___ESQ_TickClockAndFlagEvents__14;6704 
+              MOVE.W         (A5),D6                  ;3c15 
+              ADDQ.W         #$1,D6                   ;5246 
+              MOVE.W         D6,(A5)                  ;3a86 
+              MOVE.L         D6,D0                    ;2006 
+              SUBQ.W         #$7,D0                   ;5f40 
+              BNE.B          ___ESQ_TickClockAndFlagEvents__14;6602 
 ___ESQ_TickClockAndFlagEvents__13:
-              ADD.W          D5,$14(A7)               ;db6f 0014 
+              CLR.W          (A5)                     ;4255 
 ___ESQ_TickClockAndFlagEvents__14:
-              CMP.W          $14(A7),D0               ;b06f 0014 
-              BLT.B          ___ESQ_TickClockAndFlagEvents__17;6d22 
+              MOVE.W         $10(A5),D6               ;3c2d 0010 
+              ADDQ.W         #$1,D6                   ;5246 
+              MOVE.W         D6,$10(A5)               ;3b46 0010 
+              MOVE.W         #$16e,D5                 ;3a3c 016e 
+              TST.W          $14(A5)                  ;4a6d 0014 
+              BEQ.B          ___ESQ_TickClockAndFlagEvents__16;6702 
 ___ESQ_TickClockAndFlagEvents__15:
-              MOVE.W         $6(A5),D1                ;322d 0006 
-              ADD.W          D5,D1                    ;d245 
-              MOVE.W         D1,$6(A5)                ;3b41 0006 
-              MOVE.W         D5,$10(A5)               ;3b45 0010 
-              MOVE.W         D6,$14(A5)               ;3b46 0014 
-              MOVE.W         D1,$16(A7)               ;3f41 0016 
-              ANDI.W         #$3,D1                   ;0241 0003 
-              BNE.B          ___ESQ_TickClockAndFlagEvents__17;6606 
+              ADDQ.W         #$1,D5                   ;5245 
 ___ESQ_TickClockAndFlagEvents__16:
-              MOVE.W         #$ffffffff,$14(A5)       ;3b7c ffff 0014 
+              CMP.W          D5,D6                    ;bc45 
+              BLT.B          ___ESQ_TickClockAndFlagEvents__19;6d22 
 ___ESQ_TickClockAndFlagEvents__17:
+              MOVE.W         $6(A5),D6                ;3c2d 0006 
+              ADDQ.W         #$1,D6                   ;5246 
+              MOVE.W         D6,$6(A5)                ;3b46 0006 
+              MOVE.W         #$1,$10(A5)              ;3b7c 0001 0010 
+              CLR.W          $14(A5)                  ;426d 0014 
+              MOVE.W         D6,D0                    ;3006 
+              ANDI.W         #$3,D0                   ;0240 0003 
+              BNE.B          ___ESQ_TickClockAndFlagEvents__19;6606 
+___ESQ_TickClockAndFlagEvents__18:
+              MOVE.W         #$ffffffff,$14(A5)       ;3b7c ffff 0014 
+___ESQ_TickClockAndFlagEvents__19:
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQ_UpdateMonthDayFromDayOfYear;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-___ESQ_TickClockAndFlagEvents__18:
-              BRA.B          ___ESQ_TickClockAndFlagEvents__28;603a 
-___ESQ_TickClockAndFlagEvents__19:
-              MOVE.W         CLOCK_MinuteTriggerBaseOffset(A4),D0;302c 0000 
-              MOVE.W         $16(A7),D1               ;322f 0016 
-              CMP.W          D1,D0                    ;b041 
-              BEQ.B          ___ESQ_TickClockAndFlagEvents__21;6708 
+              BRA.B          ___ESQ_TickClockAndFlagEvents__29;6036 
 ___ESQ_TickClockAndFlagEvents__20:
-              MOVE.W         CLOCK_MinuteTriggerBaseOffsetPlu(A4),D0;302c 0000 
-              CMP.W          D1,D0                    ;b041 
-              BNE.B          ___ESQ_TickClockAndFlagEvents__22;6604 
+              MOVE.W         CLOCK_MinuteTriggerBaseOffset(A4),D0;302c 0000 
+              CMP.W          D6,D0                    ;b046 
+              BEQ.B          ___ESQ_TickClockAndFlagEvents__22;6708 
 ___ESQ_TickClockAndFlagEvents__21:
-              MOVEQ.L        #$5,D7                   ;7e05 
-              BRA.B          ___ESQ_TickClockAndFlagEvents__28;6022 
+              MOVE.W         CLOCK_MinuteTriggerBaseOffsetPlu(A4),D0;302c 0000 
+              CMP.W          D6,D0                    ;b046 
+              BNE.B          ___ESQ_TickClockAndFlagEvents__23;6604 
 ___ESQ_TickClockAndFlagEvents__22:
-              MOVEQ.L        #$14,D0                  ;7014 
-              CMP.W          D0,D1                    ;b240 
-              BEQ.B          ___ESQ_TickClockAndFlagEvents__24;6706 
+              MOVEQ.L        #$5,D7                   ;7e05 
+              BRA.B          ___ESQ_TickClockAndFlagEvents__29;6022 
 ___ESQ_TickClockAndFlagEvents__23:
-              MOVEQ.L        #$32,D0                  ;7032 
-              CMP.W          D0,D1                    ;b240 
-              BNE.B          ___ESQ_TickClockAndFlagEvents__25;6604 
+              MOVEQ.L        #$14,D0                  ;7014 
+              CMP.W          D0,D6                    ;bc40 
+              BEQ.B          ___ESQ_TickClockAndFlagEvents__25;6706 
 ___ESQ_TickClockAndFlagEvents__24:
-              MOVEQ.L        #$4,D7                   ;7e04 
-              BRA.B          ___ESQ_TickClockAndFlagEvents__28;6012 
+              MOVEQ.L        #$32,D0                  ;7032 
+              CMP.W          D0,D6                    ;bc40 
+              BNE.B          ___ESQ_TickClockAndFlagEvents__26;6604 
 ___ESQ_TickClockAndFlagEvents__25:
-              MOVE.W         CLOCK_MinuteTrigger30MinusBase(A4),D0;302c 0000 
-              CMP.W          D1,D0                    ;b041 
-              BEQ.B          ___ESQ_TickClockAndFlagEvents__27;6708 
+              MOVEQ.L        #$4,D7                   ;7e04 
+              BRA.B          ___ESQ_TickClockAndFlagEvents__29;6012 
 ___ESQ_TickClockAndFlagEvents__26:
-              MOVE.W         CLOCK_MinuteTrigger60MinusBase(A4),D0;302c 0000 
-              CMP.W          D0,D1                    ;b240 
-              BNE.B          ___ESQ_TickClockAndFlagEvents__28;6602 
+              MOVE.W         CLOCK_MinuteTrigger30MinusBase(A4),D0;302c 0000 
+              CMP.W          D6,D0                    ;b046 
+              BEQ.B          ___ESQ_TickClockAndFlagEvents__28;6708 
 ___ESQ_TickClockAndFlagEvents__27:
-              MOVEQ.L        #$3,D7                   ;7e03 
+              MOVE.W         CLOCK_MinuteTrigger60MinusBase(A4),D0;302c 0000 
+              CMP.W          D0,D6                    ;bc40 
+              BNE.B          ___ESQ_TickClockAndFlagEvents__29;6602 
 ___ESQ_TickClockAndFlagEvents__28:
-              MOVE.W         D7,D0                    ;3007 
+              MOVEQ.L        #$3,D7                   ;7e03 
 ___ESQ_TickClockAndFlagEvents__29:
+              MOVE.W         D7,D0                    ;3007 
 ___ESQ_TickClockAndFlagEvents__30:
-              MOVEM.L        (A7)+,D4/D5/D6/D7/A5     ;4cdf 20f0 
-              ADDQ.W         #$4,A7                   ;584f 
+___ESQ_TickClockAndFlagEvents__31:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A5     ;4cdf 20e4 
               RTS                                     ;4e75 
 __const:
 __strings:

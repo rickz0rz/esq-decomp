@@ -8,7 +8,7 @@ extern const char Global_STR_JOYSTICK_INT[];
 extern UBYTE CTRL_SampleEntryScratch;
 
 extern struct Interrupt *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const void *fileTag, LONG line, ULONG bytes, ULONG flags);
-extern void ESQFUNC_JMPTBL_ESQ_PollCtrlInput(void);
+extern void ESQ_PollCtrlInput(void);
 
 #ifndef MEMF_CHIP
 #define MEMF_CHIP 2UL
@@ -28,7 +28,7 @@ void SETUP_INTERRUPT_INTB_AUD1(void)
     intr->is_Node.ln_Pri = 0;
     intr->is_Node.ln_Name = (char *)Global_STR_JOYSTICK_INT;
     intr->is_Data = (APTR)&CTRL_SampleEntryScratch;
-    intr->is_Code = (VOID (*)())ESQFUNC_JMPTBL_ESQ_PollCtrlInput;
+    intr->is_Code = (VOID (*)())ESQ_PollCtrlInput;
 
     Global_REF_INTB_AUD1_INTERRUPT = SetIntVector(INTB_AUD1, intr);
 }
