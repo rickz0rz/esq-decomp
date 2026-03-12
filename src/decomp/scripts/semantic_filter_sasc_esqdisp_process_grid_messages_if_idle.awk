@@ -25,7 +25,7 @@ function t(s, x) {
     if (l ~ /ESQDISP_GRIDMESSAGEPUMPBLOCKFLAG/) has_block_flag_test = 1
     if (l ~ /GLOBAL_UIBUSYFLAG/) has_ui_busy_test = 1
     if (l ~ /NEWGRID_MESSAGEPUMPSUSPENDFLAG/) has_suspend_flag_test = 1
-    if (l ~ /ESQDISP_JMPTBL_NEWGRID_PROCESSGRIDMESSAGES/ || l ~ /ESQDISP_JMPTBL_NEWGRID_PROCESSGR/) has_dispatch_call = 1
+    if (l ~ /ESQDISP_JMPTBL_NEWGRID_PROCESSGRIDMESSAGES/ || l ~ /ESQDISP_JMPTBL_NEWGRID_PROCESSGR/ || l ~ /NEWGRID_PROCESSGRIDMESSAGES/ || l ~ /NEWGRID_PROCESSGRIDMESSAGE/) has_dispatch_call = 1
     if (l ~ /^RTS$/) has_return = 1
 }
 

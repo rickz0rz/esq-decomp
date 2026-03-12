@@ -16,7 +16,7 @@ ___ESQDISP_ProcessGridMessagesIfIdl__5:
               BNE.B          ___ESQDISP_ProcessGridMessagesIfIdl__8;6604 
 ___ESQDISP_ProcessGridMessagesIfIdl__6:
 ___ESQDISP_ProcessGridMessagesIfIdl__7:
-              BSR.W          ESQDISP_JMPTBL_NEWGRID_ProcessGr;6100 0000 
+              BSR.W          NEWGRID_ProcessGridMessages;6100 0000 
 ___ESQDISP_ProcessGridMessagesIfIdl__8:
               RTS                                     ;4e75 
 __const:
@@ -26,6 +26,6 @@ __strings:
               XREF           ESQDISP_GridMessagePumpBlockFlag
               XREF           Global_UIBusyFlag
               XREF           NEWGRID_MessagePumpSuspendFlag
-              XREF           ESQDISP_JMPTBL_NEWGRID_ProcessGr
+              XREF           NEWGRID_ProcessGridMessages
               XDEF           ESQDISP_ProcessGridMessagesIfIdl
               END
