@@ -11,6 +11,11 @@ BEGIN {
     has_loop = 0
     has_off_136_or_140 = 0
     has_rts = 0
+
+    saw_asl5 = 0
+    saw_lsr3 = 0
+    saw_lsr7 = 0
+    saw_orl = 0
 }
 
 function trim(s,    t) {
@@ -35,9 +40,14 @@ function trim(s,    t) {
     if (u ~ /ESQ_COPPEREFFECTLISTA/) has_list_a = 1
     if (u ~ /ESQ_COPPEREFFECTLISTB/) has_list_b = 1
 
-    if (u ~ /#6,A[01]/ || u ~ /#6,D[0-7]/ || u ~ /#6,SP/ || u ~ /#6/ || u ~ /\+\$?6\(/ || u ~ /\$6\(A[0-7]\)/) has_add6 = 1
+    if (u ~ /#\$?6,(A[0-7]|D[0-7]|SP)/ || u ~ /\+\$?6\(/ || u ~ /\$6\(A[0-7]\)/) has_add6 = 1
     if (u ~ /#\$?100,D[0-7]/ || u ~ /#256,D[0-7]/ || u ~ /#\$?100,A[0-7]/ || u ~ /#256,A[0-7]/) has_mask_100 = 1
     if (u ~ /BCLR #8,D[0-7]/ || u ~ /#\$?FEFF,D[0-7]/ || u ~ /#65279,D[0-7]/ || u ~ /#-257,D[0-7]/) has_clear_bit8 = 1
+
+    if (u ~ /^ASL\.L #\$?5,D[0-7]/) saw_asl5 = 1
+    if (u ~ /^LSR\.L #\$?3,D[0-7]/) saw_lsr3 = 1
+    if (u ~ /^LSR\.L #\$?7,D[0-7]/) saw_lsr7 = 1
+    if (u ~ /^OR\.L D[0-7],D[0-7]/) saw_orl = 1
 
     if (u ~ /^ROL\.[BWL] #/ || u ~ /^ROL\.L #/ || u ~ /^ROR\./ || u ~ /LSL\.[BWL] #5,D[0-7]/ || u ~ /ROL32/) has_rol = 1
     if (u ~ /^DBF / || u ~ /^DBRA / || u ~ /^J(B?NE|EQ|LT|LE|GT|GE) / || u ~ /^B(NE|EQ|LT|LE|GT|GE|PL|MI)/) has_loop = 1
@@ -47,6 +57,8 @@ function trim(s,    t) {
 }
 
 END {
+    if (!has_rol && ((saw_asl5 && saw_lsr3 && saw_orl) || (saw_lsr7 && saw_orl))) has_rol = 1
+
     if (ENTRY != "") print "HAS_ENTRY=" has_entry
     print "HAS_SEED=" has_seed
     print "HAS_TEMPLATE=" has_template
