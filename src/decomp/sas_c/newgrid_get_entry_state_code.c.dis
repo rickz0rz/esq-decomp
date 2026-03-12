@@ -2,15 +2,15 @@
 __code:
 NEWGRID_GetEntryStateCode:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$4,A7                   ;594f 
-              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        D6/D7/A2/A3/A5/A6,-(A7)  ;48e7 0336 
 ___NEWGRID_GetEntryStateCode__1:
-              MOVE.W         $26(A7),D7               ;3e2f 0026 
-              MOVE.L         $20(A7),A3               ;266f 0020 
-              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.W         $2e(A7),D7               ;3e2f 002e 
+              MOVE.L         $28(A7),A3               ;266f 0028 
+              MOVE.L         $24(A7),A5               ;2a6f 0024 
               MOVE.W         D7,D6                    ;3c07 
               EXT.L          D6                       ;48c6 
               MOVE.L         A5,D0                    ;200d 
@@ -27,30 +27,34 @@ ___NEWGRID_GetEntryStateCode__4:
               BLT.B          ___NEWGRID_GetEntryStateCode__6;6d04 
 ___NEWGRID_GetEntryStateCode__5:
               MOVEQ.L        #$1,D0                   ;7001 
-              BRA.B          ___NEWGRID_GetEntryStateCode__14;603c 
+              BRA.B          ___NEWGRID_GetEntryStateCode__14;604a 
 ___NEWGRID_GetEntryStateCode__6:
               MOVE.L         A5,A2                    ;244d 
-              MOVE.L         A3,$14(A7)               ;2f4b 0014 
-              LEA            $1c(A2),A0               ;41ea 001c 
+              MOVE.L         A3,A0                    ;204b 
+              LEA            $38(A0),A1               ;43e8 0038 
+              LEA            $1c(A2),A6               ;4dea 001c 
               MOVE.L         D6,-(A7)                 ;2f06 
-              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A6,-(A7)                 ;2f0e 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              MOVE.L         A1,$20(A7)               ;2f49 0020 
               BSR.W          NEWGRID2_JMPTBL_ESQ_TestBit1Base;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               ADDQ.L         #$1,D0                   ;5280 
               BEQ.B          ___NEWGRID_GetEntryStateCode__8;6704 
 ___NEWGRID_GetEntryStateCode__7:
               MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___NEWGRID_GetEntryStateCode__14;6020 
+              BRA.B          ___NEWGRID_GetEntryStateCode__14;6024 
 ___NEWGRID_GetEntryStateCode__8:
               MOVE.L         D6,D0                    ;2006 
               ASL.L          #$2,D0                   ;e580 
-              MOVE.L         $14(A7),A0               ;206f 0014 
-              TST.L          $38(A0,D0.L)             ;4ab0 0838 
+              MOVE.L         $18(A7),A0               ;206f 0018 
+              TST.L          $0(A0,D0.L)              ;4ab0 0800 
               BNE.B          ___NEWGRID_GetEntryStateCode__10;6604 
 ___NEWGRID_GetEntryStateCode__9:
               MOVEQ.L        #$3,D0                   ;7003 
-              BRA.B          ___NEWGRID_GetEntryStateCode__14;600e 
+              BRA.B          ___NEWGRID_GetEntryStateCode__14;6012 
 ___NEWGRID_GetEntryStateCode__10:
+              MOVE.L         $1c(A7),A0               ;206f 001c 
               BTST           #$7,$7(A0,D6.L)          ;0830 0007 6807 
               BNE.B          ___NEWGRID_GetEntryStateCode__12;6604 
 ___NEWGRID_GetEntryStateCode__11:
@@ -60,8 +64,8 @@ ___NEWGRID_GetEntryStateCode__12:
               MOVEQ.L        #$3,D0                   ;7003 
 ___NEWGRID_GetEntryStateCode__13:
 ___NEWGRID_GetEntryStateCode__14:
-              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
-              ADDQ.W         #$4,A7                   ;584f 
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5/A6  ;4cdf 6cc0 
+              ADDQ.W         #$8,A7                   ;504f 
               RTS                                     ;4e75 
 __const:
 __strings:

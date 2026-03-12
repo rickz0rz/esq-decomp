@@ -29,7 +29,7 @@ function trim(s, t) {
     if (u ~ /^NEWGRID_GETENTRYSTATECODE:/ || u ~ /^NEWGRID_GETENTRYSTATECOD[A-Z0-9_]*:/) has_entry=1
     if (n ~ /NEWGRID2JMPTBLESQTESTBIT1BASED/ || n ~ /NEWGRID2JMPTBLESQTESTBIT1B/) has_testbit=1
     if (n ~ /BTST7/) has_btst7=1
-    if (n ~ /56\(A2/ || n ~ /56A2/ || u ~ /\$38\(A0\)/ || u ~ /LEA \$38\(A0\),A1/) has_aux56=1
+    if (n ~ /56\(A2/ || n ~ /56A2/ || u ~ /\$38\(A0\)/ || u ~ /\$38\(A0,[A-Z0-9.]+\)/ || u ~ /LEA \$38\(A0\),A1/) has_aux56=1
     if (u ~ /#49([^0-9]|$)/ || u ~ /#\$31/ || u ~ /49\.[Ww]/ || u ~ /\(\$31\)/) has_const49=1
     if (u ~ /#1([^0-9]|$)/ || u ~ /#\$01/ || u ~ /#\$1([^0-9A-F]|$)/ || u ~ /1\.[Ww]/ || u ~ /\(\$1\)/) has_const1=1
     if (u ~ /#2([^0-9]|$)/ || u ~ /#\$02/ || u ~ /#\$2([^0-9A-F]|$)/ || u ~ /2\.[Ww]/ || u ~ /\(\$2\)/) has_const2=1
