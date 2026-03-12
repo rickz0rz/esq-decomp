@@ -6,7 +6,7 @@ function t(s){sub(/;.*/,"",s);sub(/^[ \t]+/,"",s);sub(/[ \t]+$/,"",s);gsub(/[ \t
   if(l~/GLOBAL_MEMLISTHEAD/) head=1
   if(l~/^(BEQ|BNE|BRA)(\.|\s)/) loop=1
   if(l~/8\(A[0-7]\),D0/ || l~/\$8\(A[0-7]\),D0/ || l~/\$8\(A[0-7]\),-\(A7\)/) freesz=1
-  if(l~/^(JSR|BSR(\.W)?) _LVOFREEMEM(\(A[0-7]\))?$/) call=1
+  if(l~/^(JSR|BSR(\.W)?) _LVOFREEMEM(\(A[0-7]\))?$/ || l~/^JSR \$FFFFFF2E\(A[0-7]\)$/) call=1
   if(l~/GLOBAL_MEMLISTTAIL/ || l~/GLOBAL_MEMLISTHEAD/) clear=1
   if(l~/^RTS$/) rts=1
 }

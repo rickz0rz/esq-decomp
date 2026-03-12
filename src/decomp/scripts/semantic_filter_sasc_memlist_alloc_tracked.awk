@@ -4,7 +4,7 @@ function t(s){sub(/;.*/,"",s);sub(/^[ \t]+/,"",s);sub(/[ \t]+$/,"",s);gsub(/[ \t
   l=t($0)
   if(l=="") next
   if(l~/#12/ || l~/\$C/ || l~/ADD\.L D0,D[67]/) sizeb=1
-  if(l~/^(JSR|BSR(\.W)?) _LVOALLOCMEM(\(A[0-7]\))?$/) alloc=1
+  if(l~/^(JSR|BSR(\.W)?) _LVOALLOCMEM(\(A[0-7]\))?$/ || l~/^JSR \$FFFFFF3A\(A[0-7]\)$/) alloc=1
   if(l~/^MOVEQ(\.L)? #\$?0,D0$/ || l~/^CLR\.L D0$/) nullret=1
   if(l~/8\(A[0-7]\)/ || l~/\$8\(A[0-7]\)/) wsize=1
   if(l~/GLOBAL_MEMLISTHEAD/ || l~/GLOBAL_MEMLISTTAIL/) link=1

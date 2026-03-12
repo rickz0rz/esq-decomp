@@ -10,9 +10,12 @@ extern MemNode *Global_MemListHead;
 extern MemNode *Global_MemListTail;
 extern MemNode *Global_MemListFirstAllocNode;
 
-extern void *AbsExecBase;
-extern void *_LVOAllocMem(void *execBase, ULONG size, ULONG flags);
-extern void _LVOFreeMem(void *execBase, void *memory, ULONG size);
+struct ExecBase;
+extern struct ExecBase *AbsExecBase;
+#pragma libcall AbsExecBase AllocMem c6 1002
+#pragma libcall AbsExecBase FreeMem d2 902
+extern void *AllocMem(ULONG byteSize, ULONG requirements);
+extern void FreeMem(void *memoryBlock, ULONG byteSize);
 
 void MEMLIST_FreeAll(void)
 {
@@ -21,7 +24,7 @@ void MEMLIST_FreeAll(void)
 
     while (node) {
         next = node->next;
-        _LVOFreeMem(AbsExecBase, node, node->size);
+        FreeMem(node, node->size);
         node = next;
     }
 
@@ -32,7 +35,7 @@ void MEMLIST_FreeAll(void)
 void *MEMLIST_AllocTracked(ULONG requestedSize)
 {
     ULONG allocSize = requestedSize + 12UL;
-    MemNode *node = (MemNode *)_LVOAllocMem(AbsExecBase, allocSize, 0UL);
+    MemNode *node = (MemNode *)AllocMem(allocSize, 0UL);
 
     if (!node) {
         return (void *)0;
