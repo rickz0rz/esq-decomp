@@ -6,36 +6,33 @@ CLEANUP_ShutdownInputDevices:
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
 ___CLEANUP_ShutdownInputDevices__1:
-              MOVEQ.L        #$1c,D0                  ;701c 
-              ADD.L          Global_REF_IOSTDREQ_STRUCT_INPUT(A4),D0;d0ac 0000 
-              MOVE.L         D0,A0                    ;2040 
-              MOVE.W         #$a,(A0)                 ;30bc 000a 
-              MOVEQ.L        #$28,D0                  ;7028 
-              ADD.L          Global_REF_IOSTDREQ_STRUCT_INPUT(A4),D0;d0ac 0000 
-              MOVE.L         D0,A0                    ;2040 
-              MOVE.L         Global_REF_DATA_INPUT_BUFFER(A4),(A0);20ac 0000 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_INPUT(A4),A0;206c 0000 
+              MOVE.W         #$a,$1c(A0)              ;317c 000a 001c 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_INPUT(A4),A0;206c 0000 
+              MOVE.L         Global_REF_DATA_INPUT_BUFFER(A4),$28(A0);216c 0000 0028 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_INPUT(A4),-(A7);2f2c 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
               BSR.W          _LVODoIO                 ;6100 0000 
-              MOVE.L         Global_REF_DATA_INPUT_BUFFER(A4),A0;206c 0000 
               PEA            ($14).w                  ;4878 0014 
-              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         Global_REF_DATA_INPUT_BUFFER(A4),-(A7);2f2c 0000 
               PEA            ($7f).w                  ;4878 007f 
               PEA            Global_STR_CLEANUP_C_5(A4);486c 0000 
               BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_INPUT(A4),(A7);2eac 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
               BSR.W          _LVOCloseDevice          ;6100 0000 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_CONSO(A4),(A7);2eac 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
               BSR.W          _LVOCloseDevice          ;6100 0000 
-              MOVE.L         Global_REF_INPUTDEVICE_MSGPORT(A4),A0;206c 0000 
-              MOVE.L         A0,(A7)                  ;2e88 
+              MOVE.L         Global_REF_INPUTDEVICE_MSGPORT(A4),(A7);2eac 0000 
               BSR.W          GROUP_AG_JMPTBL_IOSTDREQ_Cleanup;6100 0000 
-              MOVE.L         Global_REF_CONSOLEDEVICE_MSGPORT(A4),A0;206c 0000 
-              MOVE.L         A0,(A7)                  ;2e88 
+              MOVE.L         Global_REF_CONSOLEDEVICE_MSGPORT(A4),(A7);2eac 0000 
               BSR.W          GROUP_AG_JMPTBL_IOSTDREQ_Cleanup;6100 0000 
-              MOVE.L         Global_REF_IOSTDREQ_STRUCT_INPUT(A4),A0;206c 0000 
-              MOVE.L         A0,(A7)                  ;2e88 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_INPUT(A4),(A7);2eac 0000 
               BSR.W          GROUP_AB_JMPTBL_IOSTDREQ_Free;6100 0000 
-              MOVE.L         Global_REF_IOSTDREQ_STRUCT_CONSO(A4),A0;206c 0000 
-              MOVE.L         A0,(A7)                  ;2e88 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_CONSO(A4),(A7);2eac 0000 
               BSR.W          GROUP_AB_JMPTBL_IOSTDREQ_Free;6100 0000 
-              LEA            $10(A7),A7               ;4fef 0010 
+              LEA            $20(A7),A7               ;4fef 0020 
 ___CLEANUP_ShutdownInputDevices__2:
               RTS                                     ;4e75 
 __const:
@@ -44,14 +41,15 @@ __strings:
               XREF           _XCOVF
               XREF           Global_REF_IOSTDREQ_STRUCT_INPUT
               XREF           Global_REF_DATA_INPUT_BUFFER
+              XREF           AbsExecBase
               XREF           _LVODoIO
               XREF           Global_STR_CLEANUP_C_5
               XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
               XREF           _LVOCloseDevice
+              XREF           Global_REF_IOSTDREQ_STRUCT_CONSO
               XREF           Global_REF_INPUTDEVICE_MSGPORT
               XREF           GROUP_AG_JMPTBL_IOSTDREQ_Cleanup
               XREF           Global_REF_CONSOLEDEVICE_MSGPORT
               XREF           GROUP_AB_JMPTBL_IOSTDREQ_Free
-              XREF           Global_REF_IOSTDREQ_STRUCT_CONSO
               XDEF           CLEANUP_ShutdownInputDevices
               END
