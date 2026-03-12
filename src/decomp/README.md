@@ -5686,6 +5686,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/newgrid2_jmptbl_bevel_draw_vertical_bevel_pair.c`
 - `src/decomp/sas_c/wdisp_jmptbl_stubs.c`
 - `src/decomp/sas_c/unknown22_dos_close_with_signal_check.c`
+- `src/decomp/sas_c/memory_allocate.c`
 - `src/decomp/sas_c/unknown22_math_mulu32.c`
 - `src/decomp/sas_c/unknown22_math_divs32.c`
 - `src/decomp/sas_c/unknown22_math_divu32.c`
@@ -5703,6 +5704,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown42_parallel_string_and_rawdofmt.c`
 - `src/decomp/sas_c/unknown42_parallel_hw_and_rawdofmt.c`
 - Semantic checkpoints for SAS/C trials:
+- `src/decomp/scripts/compare_sasc_memory_allocate_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_memory_allocate.awk`
 - `src/decomp/scripts/semantic_filter_sasc_memory_deallocate.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_toupper.awk`
