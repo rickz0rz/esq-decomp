@@ -9,17 +9,17 @@ SCRIPT_ResetCtrlContext:
 ___SCRIPT_ResetCtrlContext__1:
               MOVE.L         $10(A7),A5               ;2a6f 0010 
               MOVE.L         A5,A3                    ;264d 
-              CLR.B          $27c(A3)                 ;422b 027c 
-              MOVE.B         #$78,$27d(A3)            ;177c 0078 027d 
-              CLR.B          $27e(A3)                 ;422b 027e 
-              CLR.B          $27f(A3)                 ;422b 027f 
-              MOVE.L         $280(A3),-(A7)           ;2f2b 0280 
+              CLR.B          $1b4(A3)                 ;422b 01b4 
+              MOVE.B         #$78,$1b5(A3)            ;177c 0078 01b5 
+              CLR.B          $1b6(A3)                 ;422b 01b6 
+              CLR.B          $1b7(A3)                 ;422b 01b7 
+              MOVE.L         $1b8(A3),-(A7)           ;2f2b 01b8 
               CLR.L          -(A7)                    ;42a7 
               BSR.W          ESQPROTO_JMPTBL_ESQPARS_ReplaceO;6100 0000 
-              MOVE.L         D0,$280(A3)              ;2740 0280 
+              MOVE.L         D0,$1b8(A3)              ;2740 01b8 
               ADDQ.W         #$8,A7                   ;504f 
-              CLR.B          $1aa(A3)                 ;422b 01aa 
               CLR.B          $e2(A3)                  ;422b 00e2 
+              CLR.B          $1a(A3)                  ;422b 001a 
               CLR.W          $6(A3)                   ;426b 0006 
               CLR.W          $4(A3)                   ;426b 0004 
               CLR.W          $a(A3)                   ;426b 000a 
@@ -28,7 +28,7 @@ ___SCRIPT_ResetCtrlContext__1:
               CLR.L          $10(A3)                  ;42ab 0010 
               CLR.L          $14(A3)                  ;42ab 0014 
               CLR.W          $18(A3)                  ;426b 0018 
-              MOVE.W         #$1,$272(A3)             ;377c 0001 0272 
+              MOVE.W         #$1,$1aa(A3)             ;377c 0001 01aa 
               MOVEQ.L        #$0,D7                   ;7e00 
 ___SCRIPT_ResetCtrlContext__2:
               MOVEQ.L        #$4,D0                   ;7004 
@@ -36,10 +36,10 @@ ___SCRIPT_ResetCtrlContext__2:
               BGE.B          ___SCRIPT_ResetCtrlContext__6;6c1c 
 ___SCRIPT_ResetCtrlContext__3:
               MOVE.L         D7,D0                    ;2007 
-              ADD.L          #$274,D0                 ;0680 0000 0274 
+              ADD.L          #$1ac,D0                 ;0680 0000 01ac 
               CLR.B          $0(A3,D0.L)              ;4233 0800 
               MOVE.L         D7,D0                    ;2007 
-              ADD.L          #$284,D0                 ;0680 0000 0284 
+              ADD.L          #$1b0,D0                 ;0680 0000 01b0 
               CLR.B          $0(A3,D0.L)              ;4233 0800 
 ___SCRIPT_ResetCtrlContext__4:
               ADDQ.L         #$1,D7                   ;5287 
