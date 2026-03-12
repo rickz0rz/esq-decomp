@@ -20,8 +20,8 @@ function trim(s,    t) {
     gsub(/[ \t]+/, " ", line)
     u = toupper(line)
 
-    if (u ~ /JSR .*HANDLE_GETENTRYBYINDEX/) has_lookup_call = 1
-    if (u ~ /JSR .*DOS_SEEKWITHERRORSTATE/) has_seek_call = 1
+    if (u ~ /(JSR|BSR|BSR\.S|BSR\.W) .*HANDLE_GETENTRYBYINDEX/) has_lookup_call = 1
+    if (u ~ /(JSR|BSR|BSR\.S|BSR\.W) .*DOS_SEEKWITHERRORSTATE/) has_seek_call = 1
 
     if (u ~ /^TST\.L D0$/ || u ~ /^MOVE\.L A[0-7],D0$/ || u ~ /^CMP\.L #0,D0$/) has_null_guard = 1
     if (u ~ /^(BEQ|BEQ\.S|JEQ|JEQ\.S) /) has_null_guard = 1
@@ -29,7 +29,7 @@ function trim(s,    t) {
     if (u ~ /GLOBAL_DOSIOERR/ || u ~ /GLOBAL_DOSIOERR\(A4\)/) has_ioerr_test = 1
     if (u ~ /^TST\.L .*GLOBAL_DOSIOERR/ || u ~ /^TST\.L GLOBAL_DOSIOERR\(A4\)$/) has_ioerr_test = 1
 
-    if (u ~ /^MOVEQ #-1,D0$/ || u ~ /^MOVE\.L #-1,D0$/) has_minus_one_path = 1
+    if (u ~ /^MOVEQ(\.L)? #-1,D0$/ || u ~ /^MOVEQ(\.L)? #\$FF,D0$/ || u ~ /^MOVE\.L #-1,D0$/ || u ~ /^MOVE\.L #\$FFFFFFFF,D0$/) has_minus_one_path = 1
 
     if (u == "RTS") has_rts = 1
 }
