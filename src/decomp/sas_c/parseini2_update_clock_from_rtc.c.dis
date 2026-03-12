@@ -16,13 +16,13 @@ ___PARSEINI_UpdateClockFromRtc__3:
               BEQ.W          ___PARSEINI_UpdateClockFromRtc__8;6700 0084 
 ___PARSEINI_UpdateClockFromRtc__4:
 ___PARSEINI_UpdateClockFromRtc__5:
-              BSR.W          BATTCLOCK_GetSecondsFromBatteryB;6100 0000 
+              BSR.W          PARSEINI2_JMPTBL_BATTCLOCK_GetSe;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               PEA            $1a(A7)                  ;486f 001a 
               MOVE.L         D7,-(A7)                 ;2f07 
-              BSR.W          CLOCK_ConvertAmigaSecondsToClock;6100 0000 
+              BSR.W          PARSEINI2_JMPTBL_CLOCK_ConvertAm;6100 0000 
               PEA            $22(A7)                  ;486f 0022 
-              BSR.W          CLOCK_CheckDateOrSecondsFromEpoc;6100 0000 
+              BSR.W          PARSEINI2_JMPTBL_CLOCK_CheckDate;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               TST.L          D0                       ;4a80 
               BNE.B          ___PARSEINI_UpdateClockFromRtc__7;6610 
@@ -62,9 +62,9 @@ __strings:
               XREF           _XCOVF
               XREF           Global_REF_UTILITY_LIBRARY
               XREF           Global_REF_BATTCLOCK_RESOURCE
-              XREF           BATTCLOCK_GetSecondsFromBatteryB
-              XREF           CLOCK_ConvertAmigaSecondsToClock
-              XREF           CLOCK_CheckDateOrSecondsFromEpoc
+              XREF           PARSEINI2_JMPTBL_BATTCLOCK_GetSe
+              XREF           PARSEINI2_JMPTBL_CLOCK_ConvertAm
+              XREF           PARSEINI2_JMPTBL_CLOCK_CheckDate
               XREF           PARSEINI_FallbackClockDataRecord
               XREF           CLOCK_DaySlotIndex
               XREF           PARSEINI_NormalizeClockData

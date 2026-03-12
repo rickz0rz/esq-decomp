@@ -24,9 +24,9 @@ extern WORD CLOCK_CacheMinuteOrSecond;
 extern WORD Global_REF_CLOCKDATA_STRUCT;
 
 extern LONG PARSEINI_AdjustHoursTo24HrFormat(WORD hour, WORD amPmFlag);
-extern LONG CLOCK_CheckDateOrSecondsFromEpoch(struct ClockData *clockData);
-extern LONG CLOCK_SecondsFromEpoch(struct ClockData *clockData);
-extern void BATTCLOCK_WriteSecondsToBatteryBackedClock(LONG seconds);
+extern LONG PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(struct ClockData *clockData);
+extern LONG PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch(struct ClockData *clockData);
+extern void PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock(LONG seconds);
 
 void PARSEINI_WriteRtcFromGlobals(void)
 {
@@ -51,10 +51,10 @@ void PARSEINI_WriteRtcFromGlobals(void)
     clockData.min = CLOCK_CacheMinuteOrSecond;
     clockData.sec = Global_REF_CLOCKDATA_STRUCT;
 
-    if (CLOCK_CheckDateOrSecondsFromEpoch(&clockData) == 0) {
+    if (PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(&clockData) == 0) {
         return;
     }
 
-    seconds = CLOCK_SecondsFromEpoch(&clockData);
-    BATTCLOCK_WriteSecondsToBatteryBackedClock(seconds);
+    seconds = PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch(&clockData);
+    PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock(seconds);
 }
