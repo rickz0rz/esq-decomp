@@ -35,7 +35,7 @@ void COI_AllocSubEntryTable(void *entry)
     COI_AnimObject *anim;
     LONG bytes;
     LONG count;
-    void *table;
+    void **tableSlot;
 
     if (entry == (void *)0) {
         return;
@@ -52,12 +52,12 @@ void COI_AllocSubEntryTable(void *entry)
     }
 
     bytes = count << COI_ENTRY_PTR_STRIDE_SHIFT;
-    table = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    tableSlot = &anim->subEntryTable;
+    *tableSlot = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_COI_C_5,
         COI_ALLOC_LINE,
         bytes,
         COI_MEMF_PUBLIC_CLEAR);
-    anim->subEntryTable = table;
 
-    GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray(table, COI_SUBENTRY_ELEM_SIZE, count);
+    GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray(*tableSlot, COI_SUBENTRY_ELEM_SIZE, count);
 }

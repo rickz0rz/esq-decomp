@@ -26,16 +26,16 @@ ___COI_AllocSubEntryTable__6:
 ___COI_AllocSubEntryTable__7:
               MOVE.L         D6,D7                    ;2e06 
               ASL.L          #$2,D7                   ;e587 
+              LEA            $26(A3),A2               ;45eb 0026 
               MOVE.L         __MERGED(A4),-(A7)       ;2f2c 0000 
               MOVE.L         D7,-(A7)                 ;2f07 
               PEA            ($463).w                 ;4878 0463 
               PEA            Global_STR_COI_C_5(A4)   ;486c 0000 
               BSR.W          GROUP_AG_JMPTBL_MEMORY_AllocateM;6100 0000 
-              MOVE.L         D0,A2                    ;2440 
-              MOVE.L         A2,$26(A3)               ;274a 0026 
+              MOVE.L         D0,(A2)                  ;2480 
               MOVE.L         D6,(A7)                  ;2e86 
               PEA            ($1e).w                  ;4878 001e 
-              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          GROUP_AE_JMPTBL_SCRIPT_AllocateB;6100 0000 
               LEA            $18(A7),A7               ;4fef 0018 
 ___COI_AllocSubEntryTable__8:

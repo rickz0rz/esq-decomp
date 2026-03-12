@@ -16,7 +16,7 @@ function trim(s, t){ t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,""
     if (u ~ /^COI_ALLOCSUBENTRYTABLE[A-Z0-9_]*:/) has_label = 1
     if (u ~ /BEQ\.[BWS]? .*RETURN_STATUS/ || u ~ /BEQ\.[BWS]? .*__COI_ALLOCSUBENTRYTABLE/ || u ~ /BLE\.[BWS]?/) has_guard = 1
     if (u ~ /GROUP_AG_JMPTBL_MEMORY_ALLOCATEM/ || u ~ /GROUP_AG_JMPTBL_MEMORY_ALLOCATEMEMORY/) has_alloc = 1
-    if (u ~ /MOVE\.L D0,38\(A0\)/ || u ~ /LEA \$26\(A[0-7]\),A0/ || u ~ /MOVE\.L D[0-7],\(A0\)/) has_store_table = 1
+    if (u ~ /MOVE\.L D0,38\(A0\)/ || u ~ /LEA \$26\(A[0-7]\),A[0-7]/ || u ~ /MOVE\.L D[0-7],\(A[0-7]\)/) has_store_table = 1
     if (u ~ /GROUP_AE_JMPTBL_SCRIPT_ALLOCATEB/ || u ~ /GROUP_AE_JMPTBL_SCRIPT_ALLOCATEBUFFERARRAY/) has_alloc_array = 1
     if (u == "RTS") has_rts = 1
 }
