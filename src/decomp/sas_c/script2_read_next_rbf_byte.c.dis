@@ -4,7 +4,7 @@ SCRIPT_ReadNextRbfByte:
               CMP.L          __base(A4),A7            ;bfec 0000 
               BCS.W          _XCOVF                   ;6500 0000 
 ___SCRIPT_ReadNextRbfByte__1:
-              BSR.W          SCRIPT2_JMPTBL_ESQ_ReadSerialRbf;6100 0000 
+              BSR.W          ESQ_ReadSerialRbfByte    ;6100 0000 
 ___SCRIPT_ReadNextRbfByte__2:
 ___SCRIPT_ReadNextRbfByte__3:
               RTS                                     ;4e75 
@@ -12,6 +12,6 @@ __const:
 __strings:
               XREF           __base
               XREF           _XCOVF
-              XREF           SCRIPT2_JMPTBL_ESQ_ReadSerialRbf
+              XREF           ESQ_ReadSerialRbfByte
               XDEF           SCRIPT_ReadNextRbfByte
               END

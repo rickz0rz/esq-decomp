@@ -1,6 +1,6 @@
-extern long SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte(void);
+extern long ESQ_ReadSerialRbfByte(void);
 
 long SCRIPT_ReadNextRbfByte(void)
 {
-    return SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte();
+    return ESQ_ReadSerialRbfByte();
 }
