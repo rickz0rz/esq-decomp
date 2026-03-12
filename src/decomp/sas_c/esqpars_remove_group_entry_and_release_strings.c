@@ -26,16 +26,16 @@ extern const char Global_STR_ESQPARS_C_2[];
 extern const char Global_STR_ESQPARS_C_3[];
 extern const char Global_STR_ESQPARS_C_4[];
 
-extern void ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine(void);
+extern void SCRIPT_ResetCtrlContextAndClearStatusLine(void);
 extern char *ESQIFF2_ClearLineHeadTailByMode(UWORD mode);
-extern void ESQPARS_JMPTBL_COI_FreeEntryResources(void *entry);
+extern void COI_FreeEntryResources(void *entry);
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, ULONG size);
 
 void ESQPARS_RemoveGroupEntryAndReleaseStrings(UWORD mode)
 {
     LONG idx;
 
-    ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine();
+    SCRIPT_ResetCtrlContextAndClearStatusLine();
     ESQIFF2_ClearLineHeadTailByMode(mode);
 
     if (mode == 2) {
@@ -81,7 +81,7 @@ void ESQPARS_RemoveGroupEntryAndReleaseStrings(UWORD mode)
             ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_3, 1031, titleTable, 500);
         }
 
-        ESQPARS_JMPTBL_COI_FreeEntryResources(entry);
+        COI_FreeEntryResources(entry);
 
         if (entry != (void *)0) {
             ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_4, 1040, entry, 52);
