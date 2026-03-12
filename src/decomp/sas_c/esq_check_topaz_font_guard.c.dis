@@ -17,9 +17,9 @@ ___ESQ_CheckTopazFontGuard__1:
               BEQ.B          ___ESQ_CheckTopazFontGuard__3;6714 
 ___ESQ_CheckTopazFontGuard__2:
               PEA            Global_STR_YOU_CANNOT_RE_RUN_THE(A4);486c 0000 
-              BSR.W          GROUP_MAIN_B_JMPTBL_STREAM_Buffe;6100 0000 
+              BSR.W          STREAM_BufferedWriteString;6100 0000 
               CLR.L          (A7)                     ;4297 
-              BSR.W          GROUP_MAIN_B_JMPTBL_BUFFER_Flush;6100 0000 
+              BSR.W          BUFFER_FlushAllAndCloseWithCode;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               BRA.W          ___ESQ_CheckTopazFontGuard__9;6000 012e 
 ___ESQ_CheckTopazFontGuard__3:
@@ -28,7 +28,7 @@ ___ESQ_CheckTopazFontGuard__3:
               BHI.W          ___ESQ_CheckTopazFontGuard__7;6200 00a8 
 ___ESQ_CheckTopazFontGuard__4:
               PEA            ($fa).w                  ;4878 00fa 
-              BSR.W          GROUP_MAIN_B_JMPTBL_DOS_Delay;6100 0000 
+              BSR.W          DOS_Delay                ;6100 0000 
               LEA            $54(A3),A0               ;41eb 0054 
               PEA            ($2).w                   ;4878 0002 
               MOVE.L         A0,-(A7)                 ;2f08 
@@ -84,7 +84,7 @@ ___ESQ_CheckTopazFontGuard__7:
               MOVE.L         D1,$24(A7)               ;2f41 0024 
               BSR.W          _LVOSizeWindow           ;6100 0000 
               PEA            ($64).w                  ;4878 0064 
-              BSR.W          GROUP_MAIN_B_JMPTBL_DOS_Delay;6100 0000 
+              BSR.W          DOS_Delay                ;6100 0000 
               MOVEQ.L        #$32,D0                  ;7032 
               MOVE.W         D0,$e(A3)                ;3740 000e 
               MOVE.L         $34(A7),A0               ;206f 0034 
@@ -94,7 +94,7 @@ ___ESQ_CheckTopazFontGuard__7:
               EXT.L          D0                       ;48c0 
               PEA            ($280).w                 ;4878 0280 
               MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          GROUP_MAIN_B_JMPTBL_MATH_Mulu32;6100 0000 
+              BSR.W          MATH_Mulu32              ;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               ASR.L          #$3,D7                   ;e687 
               MOVEQ.L        #$7d,D6                  ;7c7d 
@@ -124,9 +124,9 @@ __strings:
               XREF           _XCOVF
               XREF           Global_REF_INTUITION_LIBRARY
               XREF           Global_STR_YOU_CANNOT_RE_RUN_THE
-              XREF           GROUP_MAIN_B_JMPTBL_STREAM_Buffe
-              XREF           GROUP_MAIN_B_JMPTBL_BUFFER_Flush
-              XREF           GROUP_MAIN_B_JMPTBL_DOS_Delay
+              XREF           STREAM_BufferedWriteString
+              XREF           BUFFER_FlushAllAndCloseWithCode
+              XREF           DOS_Delay
               XREF           _LVOSetAPen
               XREF           _LVORectFill
               XREF           _LVOMove
@@ -135,7 +135,7 @@ __strings:
               XREF           Global_STR_ATTENTION_SYSTEM_ENGI
               XREF           Global_STR_REPORT_CODE_ER003
               XREF           _LVOSizeWindow
-              XREF           GROUP_MAIN_B_JMPTBL_MATH_Mulu32
+              XREF           MATH_Mulu32
               XREF           _LVORemakeDisplay
               XREF           _LVOFreeMem
               XDEF           ESQ_CheckTopazFontGuard

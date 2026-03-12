@@ -15,6 +15,7 @@ The repository currently has two active decomp lanes:
 ## Execution Cadence
 - Prioritize non-`*JMPTBL*` exports for primary decomp progress; these carry actual behavior.
 - Treat `*JMPTBL*` exports as parallel/backfill work items (useful for coverage, lower reverse-engineering value).
+- Unless a wrapper is required for a specific compare lane or build dependency, skip `*JMPTBL*` recreation for now and call the underlying routine directly from restored C.
 - For each target change, run only its local compare/promote gate first.
 - Run `src/decomp/scripts/run_all_promotions.sh` periodically as a regression sweep (not required after every single target).
 - Before starting a target, check whether it already exists in `src/decomp/sas_c/` and whether a `.dis` has already been generated. Many listed targets are already present there, even when a GCC lane also exists.

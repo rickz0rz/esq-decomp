@@ -27,7 +27,7 @@ extern ULONG Global_SignalCallbackPtr;
 
 extern char *STRING_AppendN(char *dst, const char *src, ULONG max_bytes);
 extern LONG HANDLE_CloseAllAndReturnWithCode(LONG code);
-extern LONG UNKNOWN29_JMPTBL_ESQ_MainInitAndRun(LONG argc, char **argv);
+extern LONG ESQ_MainInitAndRun(LONG argc, char **argv);
 extern LONG BUFFER_FlushAllAndCloseWithCode(LONG code);
 extern LONG UNKNOWN36_ShowAbortRequester(void);
 
@@ -157,6 +157,6 @@ LONG ESQ_ParseCommandLineAndRun(char *cmdline)
     }
 
     Global_SignalCallbackPtr = (ULONG)(UBYTE *)&UNKNOWN36_ShowAbortRequester;
-    UNKNOWN29_JMPTBL_ESQ_MainInitAndRun((LONG)Global_ArgCount, Global_ArgvPtr);
+    ESQ_MainInitAndRun((LONG)Global_ArgCount, Global_ArgvPtr);
     return BUFFER_FlushAllAndCloseWithCode(0);
 }

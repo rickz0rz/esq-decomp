@@ -36,8 +36,8 @@ extern void * _LVOGetMsg(void *execBase, void *port);
 extern LONG _LVOCurrentDir(void *dosBase, LONG lock);
 extern LONG _LVOSupervisor(void *dosBase, LONG code);
 
-extern void GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook(void);
-extern LONG GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun(char *cmdline);
+extern void ESQ_MainEntryNoOpHook(void);
+extern LONG ESQ_ParseCommandLineAndRun(char *cmdline);
 extern LONG ESQ_ShutdownAndReturn(LONG exitCode);
 
 static void ESQ_CopyCString(char *dst, const char *src)
@@ -145,7 +145,7 @@ LONG ESQ_StartupEntry(UBYTE *startupCmdString, LONG startupCmdLength)
         cmdlinePtr = Global_WBStartupCmdBuffer;
     }
 
-    GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook();
-    GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun(cmdlinePtr);
+    ESQ_MainEntryNoOpHook();
+    ESQ_ParseCommandLineAndRun(cmdlinePtr);
     return ESQ_ShutdownAndReturn(0);
 }

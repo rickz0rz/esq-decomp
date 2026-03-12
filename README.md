@@ -45,6 +45,7 @@ Keep any generated binaries out of version control.
 - In practice, the next decomp steps tend to fall into two buckets:
   - tighten or split existing `src/decomp/sas_c/` files when a function already exists there but needs a better match;
   - add new `src/decomp/sas_c/*.c` ports for targets that currently exist only as GCC trial/replacement files under `src/decomp/c/replacements/`.
+- Treat compiler-emitted jump-table wrapper exports as low priority unless they are required glue for a current target. When writing restored C, prefer calling the underlying target directly instead of recreating wrapper layers just for symmetry.
 - When you rename a label, keep the original `LAB_xxxx` symbol in place and add the new alias directly above it. This preserves binary parity while growing readable names.
 - Record noteworthy alias work and outstanding anonymous labels in [`AGENTS.md`](AGENTS.md) so future passes know where to continue.
 - Follow the inline documentation template in `AGENTS.md` for function headers, symbol blocks, and struct offsets; keep notes in code rather than new markdown docs.

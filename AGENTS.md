@@ -132,6 +132,7 @@ When decomp workflow assumptions change, update `README.md`, `src/decomp/README.
 - The intended long-term coverage is all root `src/*.s` files, `src/Prevue.asm`, and everything under `src/interrupts/`, `src/data/`, and `src/modules/` recursively.
 - Do not assume a `TARGETS.md` entry means the SAS/C lane is still missing; check `src/decomp/sas_c/` and any existing `.dis` output first.
 - In the current repository state, much of the remaining work is either tightening existing `src/decomp/sas_c` matches or porting GCC-only replacement candidates into the SAS/C lane.
+- Treat `*JMPTBL*` exports as probable compiler/linker artifacts unless proven otherwise. Skip them for now when there is a direct callable target available, and prefer restoring the underlying routine before adding wrapper coverage.
 
 ## AGENTS Checklist
 - [x] Add semantic aliases for Digital Niche/Mplex option-state globals in `src/data/wdisp.s` (`22D*`/`22E*` range) and propagate to callsites.

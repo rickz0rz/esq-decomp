@@ -10,10 +10,10 @@ extern const char Global_STR_ATTENTION_SYSTEM_ENGINEER_1[];
 extern const char Global_STR_REPORT_CODE_ER003[];
 extern const char Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE[];
 
-extern void GROUP_MAIN_B_JMPTBL_DOS_Delay(LONG ticks);
-extern LONG GROUP_MAIN_B_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-extern void GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(const char *text);
-extern void GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode(LONG code);
+extern LONG DOS_Delay(LONG ticks);
+extern LONG MATH_Mulu32(LONG a, LONG b);
+extern void STREAM_BufferedWriteString(const char *text);
+extern LONG BUFFER_FlushAllAndCloseWithCode(LONG code);
 
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern void _LVORectFill(char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
@@ -72,14 +72,14 @@ void ESQ_CheckTopazFontGuard(void)
     secondaryLine = &topazFont->secondaryLine;
 
     if (secondaryLine->mode5 != 2) {
-        GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE);
-        GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode(0);
+        STREAM_BufferedWriteString(Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE);
+        BUFFER_FlushAllAndCloseWithCode(0);
         return;
     }
 
     window = intuition->window34;
     if (intuition->monitorDepth20 <= 33) {
-        GROUP_MAIN_B_JMPTBL_DOS_Delay(250);
+        DOS_Delay(250);
 
         rastPort = topazFont->rastPort54;
         _LVOSetAPen(rastPort, 2);
@@ -102,13 +102,13 @@ void ESQ_CheckTopazFontGuard(void)
     deltaY = 50 - (LONG)(WORD)(window->height10);
     _LVOSizeWindow(window, 0, deltaY);
 
-    GROUP_MAIN_B_JMPTBL_DOS_Delay(100);
+    DOS_Delay(100);
 
     topazFont->height14 = 50;
     secondaryLine->height2 = 50;
     secondaryLine->mode5 = 1;
 
-    widthSlots = GROUP_MAIN_B_JMPTBL_MATH_Mulu32((LONG)(WORD)(topazFont->height14), 640);
+    widthSlots = MATH_Mulu32((LONG)(WORD)(topazFont->height14), 640);
     widthSlots >>= 3;
 
     freeStart = secondaryLine->freeStart8 + 4000;

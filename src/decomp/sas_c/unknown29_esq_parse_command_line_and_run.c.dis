@@ -206,7 +206,7 @@ ___ESQ_ParseCommandLineAndRun__41:
               MOVE.L         A0,Global_SignalCallbackPtr(A4);2948 0000 
               MOVE.L         Global_ArgvPtr(A4),-(A7) ;2f2c 0000 
               MOVE.L         D0,-(A7)                 ;2f00 
-              BSR.W          UNKNOWN29_JMPTBL_ESQ_MainInitAnd;6100 0000 
+              BSR.W          ESQ_MainInitAndRun       ;6100 0000 
               CLR.L          (A7)                     ;4297 
               BSR.W          BUFFER_FlushAllAndCloseWithCode;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
@@ -245,7 +245,7 @@ __strings:
               XREF           Global_PreallocHandleNode2_OpenF
               XREF           UNKNOWN36_ShowAbortRequester
               XREF           Global_SignalCallbackPtr
-              XREF           UNKNOWN29_JMPTBL_ESQ_MainInitAnd
+              XREF           ESQ_MainInitAndRun
               XREF           BUFFER_FlushAllAndCloseWithCode
               XDEF           ESQ_ParseCommandLineAndRun
 

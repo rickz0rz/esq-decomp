@@ -237,9 +237,9 @@ ___ESQ_StartupEntry__21:
 ___ESQ_StartupEntry__22:
               LEA            Global_WBStartupCmdBuffer(A4),A3;47ec 0000 
 ___ESQ_StartupEntry__23:
-              BSR.W          GROUP_MAIN_A_JMPTBL_ESQ_MainEntr;6100 0000 
+              BSR.W          ESQ_MainEntryNoOpHook    ;6100 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              BSR.W          GROUP_MAIN_A_JMPTBL_ESQ_ParseCom;6100 0000 
+              BSR.W          ESQ_ParseCommandLineAndRun;6100 0000 
               CLR.L          (A7)                     ;4297 
               BSR.W          ESQ_ShutdownAndReturn    ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
@@ -268,8 +268,8 @@ ___ESQ_StartupEntry__25:
               XREF           _LVOSupervisor
               XREF           Global_WBStartupWindowPtr
               XREF           Global_WBStartupCmdBuffer
-              XREF           GROUP_MAIN_A_JMPTBL_ESQ_MainEntr
-              XREF           GROUP_MAIN_A_JMPTBL_ESQ_ParseCom
+              XREF           ESQ_MainEntryNoOpHook
+              XREF           ESQ_ParseCommandLineAndRun
               XDEF           ESQ_StartupEntry
 
               SECTION        __MERGED,DATA

@@ -6,8 +6,8 @@ extern void *Global_SavedMsg;
 extern LONG Global_WBStartupWindowPtr;
 extern void *Global_SavedStackPointer;
 
-extern void GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll(void);
-extern void GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook(void);
+extern void MEMLIST_FreeAll(void);
+extern void ESQ_MainExitNoOpHook(void);
 
 extern void CloseLibrary(void *lib);
 extern void execPrivate1(LONG arg);
@@ -20,9 +20,9 @@ LONG ESQ_ShutdownAndReturn(LONG exit_code)
         ((void (*)(void))Global_ExitHookPtr)();
     }
 
-    GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll();
+    MEMLIST_FreeAll();
     CloseLibrary(Global_DosLibrary);
-    GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook();
+    ESQ_MainExitNoOpHook();
 
     if (Global_SavedMsg != (void *)0) {
         if (Global_WBStartupWindowPtr != 0) {
