@@ -61,7 +61,7 @@ ___NEWGRID_ProcessGridEntries__10:
               BEQ.B          ___NEWGRID_ProcessGridEntries__12;670e 
 ___NEWGRID_ProcessGridEntries__11:
               PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
-              BSR.W          NEWGRID2_JMPTBL_ESQ_GetHalfHourS;6100 0000 
+              BSR.W          ESQ_GetHalfHourSlotIndex ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               SUBQ.L         #$1,D0                   ;5380 
               BNE.B          ___NEWGRID_ProcessGridEntries__13;6614 
@@ -129,7 +129,7 @@ ___NEWGRID_ProcessGridEntries__19:
               BEQ.B          ___NEWGRID_ProcessGridEntries__21;670e 
 ___NEWGRID_ProcessGridEntries__20:
               PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
-              BSR.W          NEWGRID2_JMPTBL_ESQ_GetHalfHourS;6100 0000 
+              BSR.W          ESQ_GetHalfHourSlotIndex ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               SUBQ.L         #$1,D0                   ;5380 
               BNE.B          ___NEWGRID_ProcessGridEntries__22;6604 
@@ -453,7 +453,7 @@ __strings:
               XREF           NEWGRID_DrawGridHeaderRows
               XREF           NEWGRID2_JMPTBL_DISPTEXT_IsCurre
               XREF           CLOCK_DaySlotIndex
-              XREF           NEWGRID2_JMPTBL_ESQ_GetHalfHourS
+              XREF           ESQ_GetHalfHourSlotIndex
               XREF           TEXTDISP_PrimaryTitlePtrTable
               XREF           NEWGRID2_JMPTBL_TLIBA_FindFirstW
               XREF           TEXTDISP_PrimaryEntryPtrTable

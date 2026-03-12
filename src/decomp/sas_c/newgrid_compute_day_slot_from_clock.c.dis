@@ -36,7 +36,7 @@ ___NEWGRID_ComputeDaySlotFromClock__4:
 ___NEWGRID_ComputeDaySlotFromClock__5:
               MOVE.W         $14(A5),$2e(A7)          ;3f6d 0014 002e 
               PEA            $1a(A7)                  ;486f 001a 
-              BSR.W          NEWGRID2_JMPTBL_ESQ_GetHalfHourS;6100 0000 
+              BSR.W          ESQ_GetHalfHourSlotIndex ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               MOVEQ.L        #$0,D1                   ;7200 
               MOVE.W         D0,D1                    ;3200 
@@ -76,6 +76,6 @@ __const:
 __strings:
               XREF           __base
               XREF           _XCOVF
-              XREF           NEWGRID2_JMPTBL_ESQ_GetHalfHourS
+              XREF           ESQ_GetHalfHourSlotIndex
               XDEF           NEWGRID_ComputeDaySlotFromClock
               END

@@ -28,7 +28,7 @@ ___NEWGRID_InitSelectionWindowAlt__4:
               BEQ.B          ___NEWGRID_InitSelectionWindowAlt__6;670e 
 ___NEWGRID_InitSelectionWindowAlt__5:
               PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
-              BSR.W          NEWGRID2_JMPTBL_ESQ_GetHalfHourS;6100 0000 
+              BSR.W          ESQ_GetHalfHourSlotIndex ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               SUBQ.L         #$1,D0                   ;5380 
               BNE.B          ___NEWGRID_InitSelectionWindowAlt__7;6606 
@@ -73,7 +73,7 @@ __strings:
               XREF           __base
               XREF           _XCOVF
               XREF           CLOCK_DaySlotIndex
-              XREF           NEWGRID2_JMPTBL_ESQ_GetHalfHourS
+              XREF           ESQ_GetHalfHourSlotIndex
               XREF           CONFIG_NewgridWindowSpanHalfHour
               XDEF           NEWGRID_InitSelectionWindowAlt
               END

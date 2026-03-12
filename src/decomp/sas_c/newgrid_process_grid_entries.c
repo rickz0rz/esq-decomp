@@ -35,7 +35,7 @@ extern NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
 extern LONG NEWGRID_DrawGridHeaderRows(char *ctx, LONG framePen, LONG markerPen);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
-extern LONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(UWORD *slot);
+extern LONG ESQ_GetHalfHourSlotIndex(UWORD *slot);
 extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const char *title);
 extern LONG NEWGRID_SelectEntryPen(const void *entryPtr);
 extern void NEWGRID_DrawGridFrame(char *ctx, LONG style, LONG pen, LONG entryPen, LONG rowHeight);
@@ -82,7 +82,7 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
         return NEWGRID_GridEntriesWorkflowState;
     }
 
-    if ((startRow > 44 || startRow == 1 || (NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0)) {
+    if ((startRow > 44 || startRow == 1 || (ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0)) {
         wildcardIdx = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(
             TEXTDISP_PrimaryTitlePtrTable[titleIdx]);
     }
@@ -99,7 +99,7 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
         LONG rightState = 0;
         UWORD nextSpan = 1;
         LONG rowIdx = (LONG)startRow + (LONG)row;
-        LONG mode = (rowIdx > 48 || startRow == 1 || (NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) ? 2 : 1;
+        LONG mode = (rowIdx > 48 || startRow == 1 || (ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) ? 2 : 1;
         LONG modeIdx = (mode == 2 && rowIdx > 48) ? (rowIdx - 48) : rowIdx;
 
         entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode((mode == 2) ? wildcardIdx : titleIdx, mode);

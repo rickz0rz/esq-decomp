@@ -17,7 +17,7 @@ extern UBYTE CLOCK_DaySlotIndex;
 extern UBYTE CONFIG_NewgridWindowSpanHalfHoursPrimary;
 extern UBYTE CONFIG_NewgridWindowSpanHalfHoursAlt;
 
-extern LONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(UBYTE *slotPtr);
+extern LONG ESQ_GetHalfHourSlotIndex(UBYTE *slotPtr);
 
 void NEWGRID_InitSelectionWindowAlt(NEWGRID_SelectionWindow *ctx, WORD row, LONG useAltSpan)
 {
@@ -36,7 +36,7 @@ void NEWGRID_InitSelectionWindowAlt(NEWGRID_SelectionWindow *ctx, WORD row, LONG
     window->row = row;
 
     if (row < 48) {
-        if (row == 1 || (NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) {
+        if (row == 1 || (ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) {
             window->row = (WORD)(window->row + 48);
         }
     }

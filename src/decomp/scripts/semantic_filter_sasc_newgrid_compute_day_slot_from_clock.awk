@@ -26,7 +26,7 @@ function trim(s, t) {
     gsub(/[^A-Z0-9]/, "", n)
 
     if (u ~ /^NEWGRID_COMPUTEDAYSLOTFROMCLOCK:/ || u ~ /^NEWGRID_COMPUTEDAYSLOTFROMCLOC[A-Z0-9_]*:/) has_entry=1
-    if (n ~ /NEWGRID2JMPTBLESQGETHALFHOURSLOTINDEX/ || n ~ /NEWGRID2JMPTBLESQGETHALFHOURSLOTIND/ || n ~ /NEWGRID2JMPTBLESQGETHALFHOURS/) has_halfhour_call=1
+    if (n ~ /NEWGRID2JMPTBLESQGETHALFHOURSLOTINDEX/ || n ~ /NEWGRID2JMPTBLESQGETHALFHOURSLOTIND/ || n ~ /NEWGRID2JMPTBLESQGETHALFHOURS/ || n ~ /ESQGETHALFHOURSLOTINDEX/ || n ~ /ESQGETHALFHOURSLOTIND/ || n ~ /ESQGETHALFHOURS/) has_halfhour_call=1
     if (u ~ /#50([^0-9]|$)/ || u ~ /#\$32/ || u ~ /50\.[Ww]/ || u ~ /#49([^0-9]|$)/ || u ~ /#\$31/) has_const50=1
     if (u ~ /#20([^0-9]|$)/ || u ~ /#\$14/ || u ~ /20\.[Ww]/ || u ~ /#-20([^0-9]|$)/ || u ~ /#\$FFEC/) has_const20=1
     if (u ~ /#29([^0-9]|$)/ || u ~ /#\$1D/ || u ~ /29\.[Ww]/ || u ~ /#9([^0-9]|$)/ || u ~ /#\$09/) has_const29=1

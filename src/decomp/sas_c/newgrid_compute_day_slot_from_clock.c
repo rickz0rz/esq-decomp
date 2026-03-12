@@ -22,7 +22,7 @@ typedef struct NEWGRID_ClockView {
     UWORD minute;
 } NEWGRID_ClockView;
 
-extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(void *clockPtr);
+extern WORD ESQ_GetHalfHourSlotIndex(void *clockPtr);
 
 LONG NEWGRID_ComputeDaySlotFromClock(void *clockPtr)
 {
@@ -48,7 +48,7 @@ LONG NEWGRID_ComputeDaySlotFromClock(void *clockPtr)
 
     scratch.word10 = ((NEWGRID_ClockView *)clockPtr)->minute;
 
-    slot = (UWORD)NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&scratch);
+    slot = (UWORD)ESQ_GetHalfHourSlotIndex(&scratch);
     minute = (WORD)scratch.word10;
 
     if ((minute >= MINUTE_ROUND_UP_HI) || ((minute >= MINUTE_ROUND_UP_LO_A) && (minute <= MINUTE_ROUND_UP_LO_B))) {

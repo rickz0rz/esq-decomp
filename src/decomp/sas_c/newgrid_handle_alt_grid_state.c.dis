@@ -40,7 +40,7 @@ ___NEWGRID_HandleAltGridState__5:
               BEQ.B          ___NEWGRID_HandleAltGridState__7;670e 
 ___NEWGRID_HandleAltGridState__6:
               PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
-              BSR.W          NEWGRID2_JMPTBL_ESQ_GetHalfHourS;6100 0000 
+              BSR.W          ESQ_GetHalfHourSlotIndex ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               SUBQ.W         #$1,D0                   ;5340 
               BNE.B          ___NEWGRID_HandleAltGridState__8;6624 
@@ -193,7 +193,7 @@ __strings:
               XREF           NEWGRID_AltGridStateLatch
               XREF           NEWGRID2_JMPTBL_ESQDISP_GetEntry
               XREF           CLOCK_DaySlotIndex
-              XREF           NEWGRID2_JMPTBL_ESQ_GetHalfHourS
+              XREF           ESQ_GetHalfHourSlotIndex
               XREF           NEWGRID2_JMPTBL_TLIBA_FindFirstW
               XREF           NEWGRID_ColumnWidthPx
               XREF           NEWGRID2_JMPTBL_DISPTEXT_SetLayo

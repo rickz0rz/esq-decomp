@@ -48,7 +48,7 @@ ___NEWGRID_UpdatePresetEntry__6:
               BEQ.B          ___NEWGRID_UpdatePresetEntry__10;6722 
 ___NEWGRID_UpdatePresetEntry__7:
               PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
-              BSR.W          NEWGRID2_JMPTBL_ESQ_GetHalfHourS;6100 0000 
+              BSR.W          ESQ_GetHalfHourSlotIndex ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               SUBQ.W         #$1,D0                   ;5340 
               BEQ.B          ___NEWGRID_UpdatePresetEntry__10;6714 
@@ -165,7 +165,7 @@ __strings:
               XREF           _XCOVF
               XREF           NEWGRID2_JMPTBL_ESQDISP_GetEntry
               XREF           CLOCK_DaySlotIndex
-              XREF           NEWGRID2_JMPTBL_ESQ_GetHalfHourS
+              XREF           ESQ_GetHalfHourSlotIndex
               XREF           TEXTDISP_SecondaryGroupPresentFl
               XREF           NEWGRID_SecondaryIndexCachePtr
               XREF           TEXTDISP_SecondaryGroupEntryCoun

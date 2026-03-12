@@ -23,7 +23,7 @@ typedef struct NEWGRID_ClockView {
 } NEWGRID_ClockView;
 
 extern LONG GCOMMAND_MplexClockOffsetMinutes;
-extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(void *clockPtr);
+extern WORD ESQ_GetHalfHourSlotIndex(void *clockPtr);
 
 LONG NEWGRID_ComputeDaySlotFromClockWithOffset(void *clockPtr)
 {
@@ -43,7 +43,7 @@ LONG NEWGRID_ComputeDaySlotFromClockWithOffset(void *clockPtr)
 
     scratch.word10 = *(UWORD *)src;
 
-    slot = (UWORD)NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&scratch);
+    slot = (UWORD)ESQ_GetHalfHourSlotIndex(&scratch);
     offsetMinutes = GCOMMAND_MplexClockOffsetMinutes;
     minute = (WORD)scratch.word10;
 

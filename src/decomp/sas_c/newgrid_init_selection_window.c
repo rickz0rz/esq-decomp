@@ -24,7 +24,7 @@ extern UBYTE CLOCK_DaySlotIndex;
 extern LONG GCOMMAND_PpvSelectionWindowMinutes;
 
 extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern LONG NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(UBYTE *slotPtr);
+extern LONG ESQ_GetHalfHourSlotIndex(UBYTE *slotPtr);
 extern LONG SCRIPT3_JMPTBL_MATH_DivS32(LONG num, LONG den);
 
 void NEWGRID_InitSelectionWindow(NEWGRID_SelectionWindow *ctx, WORD row)
@@ -69,7 +69,7 @@ void NEWGRID_InitSelectionWindow(NEWGRID_SelectionWindow *ctx, WORD row)
 
     window->row = (UWORD)row;
     if (row < 48) {
-        if (row == 1 || (NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) {
+        if (row == 1 || (ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) {
             window->row = (UWORD)(window->row + 48);
         }
     }

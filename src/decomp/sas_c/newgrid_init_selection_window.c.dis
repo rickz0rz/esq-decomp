@@ -80,7 +80,7 @@ ___NEWGRID_InitSelectionWindow__17:
               BEQ.B          ___NEWGRID_InitSelectionWindow__19;670e 
 ___NEWGRID_InitSelectionWindow__18:
               PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
-              BSR.W          NEWGRID2_JMPTBL_ESQ_GetHalfHourS;6100 0000 
+              BSR.W          ESQ_GetHalfHourSlotIndex ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               SUBQ.L         #$1,D0                   ;5380 
               BNE.B          ___NEWGRID_InitSelectionWindow__20;6606 
@@ -118,7 +118,7 @@ __strings:
               XREF           TEXTDISP_PrimaryGroupEntryCount
               XREF           NEWGRID2_JMPTBL_ESQDISP_GetEntry
               XREF           CLOCK_DaySlotIndex
-              XREF           NEWGRID2_JMPTBL_ESQ_GetHalfHourS
+              XREF           ESQ_GetHalfHourSlotIndex
               XREF           GCOMMAND_PpvSelectionWindowMinut
               XREF           SCRIPT3_JMPTBL_MATH_DivS32
               XDEF           NEWGRID_InitSelectionWindow
