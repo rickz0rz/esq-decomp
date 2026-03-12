@@ -1,30 +1,10 @@
 typedef unsigned char UBYTE;
 typedef unsigned short UWORD;
-typedef unsigned long ULONG;
 typedef signed long LONG;
 
 typedef struct RastPort {
-    UBYTE pad[56];
+    UBYTE pad[4];
 } RastPort;
-
-typedef struct HighlightMsg {
-    UBYTE pad_00[8];
-    UBYTE type8;
-    UBYTE pad_09[5];
-    void *replyPort14;
-    UBYTE pad_18[4];
-    LONG paramA20;
-    LONG paramB24;
-    LONG paramC28;
-    LONG paramD32;
-    UBYTE pad_36[20];
-    UWORD stateWord52;
-    UBYTE pattern55[5];
-    RastPort rastPort60;
-    void *selectionParams64;
-    UBYTE pad_68[48];
-    void *nodePtr112;
-} HighlightMsg;
 
 typedef struct SelectionParams {
     UBYTE pad_00[8];
@@ -33,12 +13,33 @@ typedef struct SelectionParams {
     LONG c;
 } SelectionParams;
 
-typedef struct HighlightMsgNodeFlags {
+typedef struct HighlightNodeFlags {
     UBYTE pad_00[53];
     UBYTE flags53;
     UBYTE pad_54;
     UBYTE flags55;
-} HighlightMsgNodeFlags;
+} HighlightNodeFlags;
+
+typedef UBYTE HighlightMsg;
+
+enum {
+    HIGHLIGHTMSG_Type8 = 8,
+    HIGHLIGHTMSG_ReplyPort14 = 14,
+    HIGHLIGHTMSG_Length18 = 18,
+    HIGHLIGHTMSG_ParamA20 = 20,
+    HIGHLIGHTMSG_ParamB24 = 24,
+    HIGHLIGHTMSG_ParamC28 = 28,
+    HIGHLIGHTMSG_ParamD32 = 32,
+    HIGHLIGHTMSG_StateWord52 = 52,
+    HIGHLIGHTMSG_RastPort60 = 60,
+    HIGHLIGHTMSG_SelectionParams64 = 64,
+    HIGHLIGHTMSG_NodePtr112 = 112
+};
+
+enum {
+    HIGHLIGHTNODE_Flags53 = 53,
+    HIGHLIGHTNODE_Flags55 = 55
+};
 
 extern void *ESQ_HighlightReplyPort;
 extern void *ESQ_HighlightMsgPort;
@@ -56,32 +57,32 @@ extern void _LVOPutMsg(void *port, HighlightMsg *msg);
 void ESQDISP_QueueHighlightDrawMessage(HighlightMsg *msg, SelectionParams *params)
 {
     RastPort *rp;
-    HighlightMsgNodeFlags *nodeFlags;
+    HighlightNodeFlags *node;
 
-    msg->type8 = 5;
-    *(UWORD *)msg->pad_18 = 0x00A0;
-    msg->replyPort14 = ESQ_HighlightReplyPort;
+    *(UBYTE *)(msg + HIGHLIGHTMSG_Type8) = 5;
+    *(UWORD *)(msg + HIGHLIGHTMSG_Length18) = 0x00A0;
+    *(void **)(msg + HIGHLIGHTMSG_ReplyPort14) = ESQ_HighlightReplyPort;
 
-    msg->paramA20 = params->a;
-    msg->paramB24 = params->b;
-    msg->paramC28 = params->c;
+    *(LONG *)(msg + HIGHLIGHTMSG_ParamA20) = params->a;
+    *(LONG *)(msg + HIGHLIGHTMSG_ParamB24) = params->b;
+    *(LONG *)(msg + HIGHLIGHTMSG_ParamC28) = params->c;
 
-    msg->stateWord52 = 0;
+    *(UWORD *)(msg + HIGHLIGHTMSG_StateWord52) = 0;
     ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(msg, 0);
 
-    msg->paramD32 = 0;
+    *(LONG *)(msg + HIGHLIGHTMSG_ParamD32) = 0;
     ESQDISP_InitHighlightMessagePattern(msg);
 
-    rp = &msg->rastPort60;
+    rp = (RastPort *)(msg + HIGHLIGHTMSG_RastPort60);
     _LVOInitRastPort(rp);
 
-    msg->selectionParams64 = params;
+    *(SelectionParams **)(msg + HIGHLIGHTMSG_SelectionParams64) = params;
     _LVOSetFont(rp, Global_HANDLE_PREVUEC_FONT);
     _LVOSetDrMd(rp, 0);
 
-    nodeFlags = (HighlightMsgNodeFlags *)msg->nodePtr112;
-    nodeFlags->flags55 = 1;
-    nodeFlags->flags53 |= 1;
+    node = *(HighlightNodeFlags **)(msg + HIGHLIGHTMSG_NodePtr112);
+    node->flags55 = 1;
+    node->flags53 |= 1;
 
     _LVOPutMsg(ESQ_HighlightMsgPort, msg);
 }

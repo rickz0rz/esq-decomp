@@ -10,40 +10,50 @@ ESQDISP_QueueHighlightDrawMessag:
 ___ESQDISP_QueueHighlightDrawMessag__1:
               MOVE.L         $18(A7),A3               ;266f 0018 
               MOVE.L         $14(A7),A5               ;2a6f 0014 
-              MOVE.B         #$5,$8(A5)               ;1b7c 0005 0008 
+              LEA            $8(A5),A0                ;41ed 0008 
+              MOVE.B         #$5,(A0)                 ;10bc 0005 
               LEA            $12(A5),A0               ;41ed 0012 
               MOVE.W         #$a0,(A0)                ;30bc 00a0 
-              MOVE.L         ESQ_HighlightReplyPort(A4),$e(A5);2b6c 0000 000e 
-              MOVE.L         $8(A3),$16(A5)           ;2b6b 0008 0016 
-              MOVE.L         $c(A3),$1a(A5)           ;2b6b 000c 001a 
-              MOVE.L         $10(A3),$1e(A5)          ;2b6b 0010 001e 
-              CLR.W          $3a(A5)                  ;426d 003a 
+              LEA            $e(A5),A0                ;41ed 000e 
+              MOVE.L         ESQ_HighlightReplyPort(A4),(A0);20ac 0000 
+              LEA            $14(A5),A0               ;41ed 0014 
+              MOVE.L         $8(A3),(A0)              ;20ab 0008 
+              LEA            $18(A5),A0               ;41ed 0018 
+              MOVE.L         $c(A3),(A0)              ;20ab 000c 
+              LEA            $1c(A5),A0               ;41ed 001c 
+              MOVE.L         $10(A3),(A0)             ;20ab 0010 
+              LEA            $34(A5),A0               ;41ed 0034 
+              CLR.W          (A0)                     ;4250 
               CLR.L          -(A7)                    ;42a7 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          ESQIFF_JMPTBL_NEWGRID_ValidateSe;6100 0000 
-              CLR.L          $22(A5)                  ;42ad 0022 
+              LEA            $20(A5),A0               ;41ed 0020 
+              CLR.L          (A0)                     ;4290 
               MOVE.L         A5,(A7)                  ;2e8d 
               BSR.W          ESQDISP_InitHighlightMessagePatt;6100 0000 
-              LEA            $41(A5),A2               ;45ed 0041 
+              LEA            $3c(A5),A2               ;45ed 003c 
               MOVE.L         A2,(A7)                  ;2e8a 
               BSR.W          _LVOInitRastPort         ;6100 0000 
-              MOVE.L         A3,$7a(A5)               ;2b4b 007a 
+              LEA            $40(A5),A0               ;41ed 0040 
+              MOVE.L         A3,(A0)                  ;208b 
               MOVE.L         Global_HANDLE_PREVUEC_FONT(A4),(A7);2eac 0000 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          _LVOSetFont              ;6100 0000 
               CLR.L          (A7)                     ;4297 
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          _LVOSetDrMd              ;6100 0000 
-              MOVE.L         $ae(A5),$1c(A7)          ;2f6d 00ae 001c 
+              LEA            $70(A5),A0               ;41ed 0070 
+              MOVE.L         (A0),$1c(A7)             ;2f50 001c 
               MOVEQ.L        #$1,D0                   ;7001 
               MOVE.L         $1c(A7),A0               ;206f 001c 
               MOVE.B         D0,$37(A0)               ;1140 0037 
               BSET           #$0,$35(A0)              ;08e8 0000 0035 
+___ESQDISP_QueueHighlightDrawMessag__2:
               MOVE.L         A5,(A7)                  ;2e8d 
               MOVE.L         ESQ_HighlightMsgPort(A4),-(A7);2f2c 0000 
               BSR.W          _LVOPutMsg               ;6100 0000 
               LEA            $14(A7),A7               ;4fef 0014 
-___ESQDISP_QueueHighlightDrawMessag__2:
+___ESQDISP_QueueHighlightDrawMessag__3:
               MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
               ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
