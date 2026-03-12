@@ -1976,6 +1976,7 @@ Why this target:
 - Extends promotion coverage from helper wrappers into a high-leverage orchestration function.
 
 Artifacts:
+- SAS/C restored source: `src/decomp/sas_c/esq_parse_command_line_and_run.c`
 - GCC C candidate: `src/decomp/c/replacements/esq_parse_command_line_and_run_gcc.c`
 - GCC compile/compare script: `src/decomp/scripts/compare_esq_parse_command_line_and_run_trial_gcc.sh`
 - Semantic filter: `src/decomp/scripts/semantic_filter_esq_parse_command_line_and_run.awk`
@@ -1988,6 +1989,7 @@ Run:
 Current notes:
 - C candidate preserves quoted/unquoted argv tokenization, zero-arg console-name fallback setup, DOS input/output/open handle wiring, default open-flag propagation, and final dispatch into `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` followed by `BUFFER_FlushAllAndCloseWithCode`.
 - Semantic gate validates required global/state references, parser constants (`space/tab/newline/quote`, length `40`), DOS/Exec call paths, and terminal return path invariants.
+- SAS/C lane now uses the canonical role-based filename `src/decomp/sas_c/esq_parse_command_line_and_run.c`; the compare script is the authoritative mapping for this former `unknown29` target.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
 ## Target 086: `modules/submodules/unknown2b.s` (`STREAM_BufferedWriteString`)

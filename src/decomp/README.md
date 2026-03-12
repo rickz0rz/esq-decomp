@@ -4695,7 +4695,7 @@ Recent promoted targets:
 - Unknown15 `STREAM_ReadLineWithLimit` SAS/C compare script: `src/decomp/scripts/compare_sasc_stream_read_line_with_limit_trial.sh`
 - Unknown16 `BUFFER_FlushAllAndCloseWithCode` SAS/C compare script: `src/decomp/scripts/compare_sasc_buffer_flush_all_and_close_with_code_trial.sh`
 - Unknown29 `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown29_jmptbl_esq_main_init_and_run_trial.sh`
-- Unknown29 `ESQ_ParseCommandLineAndRun` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_parse_command_line_and_run_trial.sh`
+- Unknown29 `ESQ_ParseCommandLineAndRun` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_parse_command_line_and_run_trial.sh` (canonical source: `src/decomp/sas_c/esq_parse_command_line_and_run.c`)
 - Unknown2B `ESQ_MainEntryNoOpHook` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_main_entry_noop_hook_trial.sh`
 - Unknown2B `ESQ_MainExitNoOpHook` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_main_exit_noop_hook_trial.sh`
 - Unknown2B `DOS_OpenFileWithMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_open_file_with_mode_trial.sh`
@@ -5532,7 +5532,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown15_stream_read_line_with_limit.c`
 - `src/decomp/sas_c/unknown16_buffer_flush_all_and_close_with_code.c`
 - `src/decomp/sas_c/unknown29_jmptbl_esq_main_init_and_run.c`
-- `src/decomp/sas_c/unknown29_esq_parse_command_line_and_run.c`
+- `src/decomp/sas_c/esq_parse_command_line_and_run.c`
 - `src/decomp/sas_c/esq_main_entry_noop_hook.c`
 - `src/decomp/sas_c/esq_main_exit_noop_hook.c`
 - `src/decomp/sas_c/dos_open_file_with_mode.c`

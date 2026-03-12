@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-SASC_SRC="unknown29_esq_parse_command_line_and_run.c"
+SASC_SRC="esq_parse_command_line_and_run.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown29.s"
