@@ -3,56 +3,45 @@ __code:
 ESQDISP_TestEntryGridEligibility:
               CMP.L          __base(A4),A7            ;bfec 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
+              MOVEM.L        D6/D7/A5,-(A7)           ;48e7 0304 
 ___ESQDISP_TestEntryGridEligibility__1:
               MOVE.W         $16(A7),D7               ;3e2f 0016 
               MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVEQ.L        #$0,D6                   ;7c00 
               TST.W          D7                       ;4a47 
-              BGT.B          ___ESQDISP_TestEntryGridEligibility__3;6e04 
+              BLE.B          ___ESQDISP_TestEntryGridEligibility__9;6f34 
 ___ESQDISP_TestEntryGridEligibility__2:
-              MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___ESQDISP_TestEntryGridEligibility__15;6042 
-___ESQDISP_TestEntryGridEligibility__3:
               MOVEQ.L        #$31,D0                  ;7031 
               CMP.W          D0,D7                    ;be40 
-              BLT.B          ___ESQDISP_TestEntryGridEligibility__5;6d04 
-___ESQDISP_TestEntryGridEligibility__4:
-              MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___ESQDISP_TestEntryGridEligibility__15;6038 
-___ESQDISP_TestEntryGridEligibility__5:
+              BGE.B          ___ESQDISP_TestEntryGridEligibility__9;6c2e 
+___ESQDISP_TestEntryGridEligibility__3:
               MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___ESQDISP_TestEntryGridEligibility__15;6734 
+              BEQ.B          ___ESQDISP_TestEntryGridEligibility__9;672a 
+___ESQDISP_TestEntryGridEligibility__4:
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              BTST           #$4,$7(A5,D0.L)          ;0835 0004 0807 
+              BEQ.B          ___ESQDISP_TestEntryGridEligibility__6;6704 
+___ESQDISP_TestEntryGridEligibility__5:
+              MOVEQ.L        #$1,D6                   ;7c01 
+              BRA.B          ___ESQDISP_TestEntryGridEligibility__9;601a 
 ___ESQDISP_TestEntryGridEligibility__6:
+              MOVE.W         D7,D0                    ;3007 
+              SUBQ.W         #$4,D0                   ;5940 
+              CMPI.B         #$5,$0(A5,D0.W)          ;0c35 0005 0000 
+              BCS.B          ___ESQDISP_TestEntryGridEligibility__9;650e 
 ___ESQDISP_TestEntryGridEligibility__7:
-              MOVE.L         D0,A3                    ;2640 
-              MOVE.W         D7,D1                    ;3207 
-              EXT.L          D1                       ;48c1 
-              BTST           #$4,$7(A3,D1.L)          ;0833 0004 1807 
-              BEQ.B          ___ESQDISP_TestEntryGridEligibility__9;6704 
+              MOVE.W         D7,D0                    ;3007 
+              SUBQ.W         #$4,D0                   ;5940 
+              CMPI.B         #$a,$0(A5,D0.W)          ;0c35 000a 0000 
+              BHI.B          ___ESQDISP_TestEntryGridEligibility__9;6202 
 ___ESQDISP_TestEntryGridEligibility__8:
-              MOVEQ.L        #$1,D0                   ;7001 
-              BRA.B          ___ESQDISP_TestEntryGridEligibility__15;6022 
+              MOVEQ.L        #$1,D6                   ;7c01 
 ___ESQDISP_TestEntryGridEligibility__9:
-              MOVE.W         D7,D0                    ;3007 
-              SUBQ.W         #$4,D0                   ;5940 
-              CMPI.B         #$5,$0(A3,D0.W)          ;0c33 0005 0000 
-              BCC.B          ___ESQDISP_TestEntryGridEligibility__11;6404 
+              MOVE.L         D6,D0                    ;2006 
 ___ESQDISP_TestEntryGridEligibility__10:
-              MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___ESQDISP_TestEntryGridEligibility__15;6012 
 ___ESQDISP_TestEntryGridEligibility__11:
-              MOVE.W         D7,D0                    ;3007 
-              SUBQ.W         #$4,D0                   ;5940 
-              CMPI.B         #$a,$0(A3,D0.W)          ;0c33 000a 0000 
-              BHI.B          ___ESQDISP_TestEntryGridEligibility__13;6204 
-___ESQDISP_TestEntryGridEligibility__12:
-              MOVEQ.L        #$1,D0                   ;7001 
-              BRA.B          ___ESQDISP_TestEntryGridEligibility__15;6002 
-___ESQDISP_TestEntryGridEligibility__13:
-              MOVEQ.L        #$0,D0                   ;7000 
-___ESQDISP_TestEntryGridEligibility__14:
-___ESQDISP_TestEntryGridEligibility__15:
-              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
+              MOVEM.L        (A7)+,D6/D7/A5           ;4cdf 20c0 
               RTS                                     ;4e75 
 __const:
 __strings:

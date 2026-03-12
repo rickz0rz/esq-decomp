@@ -2,35 +2,27 @@ typedef unsigned char UBYTE;
 typedef short WORD;
 typedef signed long LONG;
 
-LONG ESQDISP_TestEntryGridEligibility(const void *entry, WORD index)
+LONG ESQDISP_TestEntryGridEligibility(const UBYTE *entry, WORD index)
 {
-    const UBYTE *bytes;
+    LONG result;
 
-    if (index <= 0) {
-        return 0;
+    result = 0;
+
+    if (index > 0) {
+        if (index < 49) {
+            if (entry != 0) {
+                if ((entry[7 + index] & 0x10) != 0) {
+                    result = 1;
+                } else {
+                    if (entry[(WORD)(index - 4)] >= 5) {
+                        if (entry[(WORD)(index - 4)] <= 10) {
+                            result = 1;
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    if (index >= 49) {
-        return 0;
-    }
-
-    if (entry == 0) {
-        return 0;
-    }
-
-    bytes = entry;
-
-    if ((bytes[7 + index] & 0x10) != 0) {
-        return 1;
-    }
-
-    if (bytes[(WORD)(index - 4)] < 5) {
-        return 0;
-    }
-
-    if (bytes[(WORD)(index - 4)] <= 10) {
-        return 1;
-    }
-
-    return 0;
+    return result;
 }
