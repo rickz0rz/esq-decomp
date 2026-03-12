@@ -1,18 +1,23 @@
-typedef unsigned short UWORD;
+typedef long LONG;
+typedef short WORD;
 
-void ESQ_WriteDecFixedWidth(char *outBuf, long value, long digits)
+void ESQ_WriteDecFixedWidth(char *outBuf, LONG value, LONG digits)
 {
-    register UWORD count;
-    register long currentValue;
-    register char *p;
+    WORD count;
+    WORD currentValue;
+    WORD quotient;
+    WORD remainder;
+    char *p;
 
     p = outBuf + digits;
     *p = '\0';
-    count = (UWORD)(digits - 1);
-    currentValue = value;
+    count = (WORD)(digits - 1);
+    currentValue = (WORD)value;
 
     do {
-        *--p = (char)(currentValue % 10 + '0');
-        currentValue /= 10;
+        quotient = (WORD)(currentValue / 10);
+        remainder = (WORD)(currentValue % 10);
+        *--p = (char)(remainder + '0');
+        currentValue = quotient;
     } while (count-- != 0);
 }
