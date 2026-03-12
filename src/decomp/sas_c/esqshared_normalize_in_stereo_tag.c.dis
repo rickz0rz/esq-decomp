@@ -2,45 +2,40 @@
 __code:
 ESQSHARED_NormalizeInStereoTag:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$24,D0                  ;90bc 0000 0024 
+              SUB.L          #$1c,D0                  ;90bc 0000 001c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$18,A7                  ;9efc 0018 
+              SUB.W          #$10,A7                  ;9efc 0010 
               MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
 ___ESQSHARED_NormalizeInStereoTag__1:
-              MOVE.L         $38(A7),D7               ;2e2f 0038 
-              MOVE.L         $34(A7),A5               ;2a6f 0034 
-              MOVEQ.L        #$91,D6                  ;7c91 
-              MOVEQ.L        #$40,D5                  ;7a40 
-              ADD.L          D5,D5                    ;da85 
-              MOVEQ.L        #$9,D0                   ;7009 
-              MOVE.L         D0,$2c(A7)               ;2f40 002c 
-              MOVE.B         #$8,$28(A7)              ;1f7c 0008 0028 
-              CLR.B          $1f(A7)                  ;422f 001f 
+              MOVE.L         $30(A7),D7               ;2e2f 0030 
+              MOVE.L         $2c(A7),A5               ;2a6f 002c 
+              MOVEQ.L        #$9,D6                   ;7c09 
+              MOVEQ.L        #$8,D5                   ;7a08 
+              CLR.B          $24(A7)                  ;422f 0024 
               MOVEQ.L        #$1,D0                   ;7001 
-              MOVE.L         D0,$1a(A7)               ;2f40 001a 
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
               PEA            Global_STR_IN_STEREO(A4) ;486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          GROUP_AS_JMPTBL_ESQ_FindSubstrin;6100 0000 
               MOVE.L         D0,A3                    ;2640 
               TST.L          D0                       ;4a80 
               ADDQ.W         #$8,A7                   ;504f 
-              BEQ.W          ___ESQSHARED_NormalizeInStereoTag__18;6700 00aa 
+              BEQ.W          ___ESQSHARED_NormalizeInStereoTag__18;6700 00a8 
 ___ESQSHARED_NormalizeInStereoTag__2:
 ___ESQSHARED_NormalizeInStereoTag__3:
-              MOVE.B         D6,D0                    ;1006 
-              MOVE.B         D0,(A3)                  ;1680 
+              MOVE.B         #$91,(A3)                ;16bc 0091 
               MOVE.L         A3,A2                    ;244b 
-              ADD.L          $2c(A7),A2               ;d5ef 002c 
-              MOVE.L         D7,D1                    ;2207 
-              AND.L          D5,D1                    ;c285 
-              BNE.B          ___ESQSHARED_NormalizeInStereoTag__13;6668 
+              ADD.L          D6,A2                    ;d5c6 
+              MOVE.L         D7,D0                    ;2007 
+              BTST           #$7,D0                   ;0800 0007 
+              BNE.B          ___ESQSHARED_NormalizeInStereoTag__13;6666 
 ___ESQSHARED_NormalizeInStereoTag__4:
               MOVE.B         (A2),D1                  ;1212 
-              CMP.B          $1f(A7),D1               ;b22f 001f 
-              BNE.B          ___ESQSHARED_NormalizeInStereoTag__8;661e 
+              CMP.B          $24(A7),D1               ;b22f 0024 
+              BNE.B          ___ESQSHARED_NormalizeInStereoTag__8;661c 
 ___ESQSHARED_NormalizeInStereoTag__5:
-              MOVE.B         $1f(A7),(A3)             ;16af 001f 
+              MOVE.B         $24(A7),(A3)             ;16af 0024 
               SUBQ.L         #$1,A3                   ;538b 
 ___ESQSHARED_NormalizeInStereoTag__6:
               MOVE.B         (A3),D0                  ;1013 
@@ -48,50 +43,50 @@ ___ESQSHARED_NormalizeInStereoTag__6:
               MOVE.B         D0,D1                    ;1200 
               LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
               MOVE.B         $0(A0,D1.W),D0           ;1030 1000 
-              AND.B          $28(A7),D0               ;c02f 0028 
+              AND.B          D5,D0                    ;c005 
               TST.B          D0                       ;4a00 
-              BNE.B          ___ESQSHARED_NormalizeInStereoTag__5;66e4 
+              BNE.B          ___ESQSHARED_NormalizeInStereoTag__5;66e6 
 ___ESQSHARED_NormalizeInStereoTag__7:
               BRA.B          ___ESQSHARED_NormalizeInStereoTag__18;6072 
 ___ESQSHARED_NormalizeInStereoTag__8:
               MOVE.L         A2,-(A7)                 ;2f0a 
               BSR.W          ESQSHARED_JMPTBL_STR_SkipClass3C;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              CLR.L          $20(A7)                  ;42af 0020 
-              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              CLR.L          $1c(A7)                  ;42af 001c 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
 ___ESQSHARED_NormalizeInStereoTag__9:
-              MOVE.L         $24(A7),A0               ;206f 0024 
-              MOVE.L         $20(A7),D0               ;202f 0020 
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
               MOVE.B         $0(A0,D0.L),D0           ;1030 0800 
-              CMP.B          $1f(A7),D0               ;b02f 001f 
+              CMP.B          $24(A7),D0               ;b02f 0024 
               BEQ.B          ___ESQSHARED_NormalizeInStereoTag__11;6706 
 ___ESQSHARED_NormalizeInStereoTag__10:
-              ADDQ.L         #$1,$20(A7)              ;52af 0020 
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
               BRA.B          ___ESQSHARED_NormalizeInStereoTag__9;60e8 
 ___ESQSHARED_NormalizeInStereoTag__11:
-              MOVE.L         $20(A7),D0               ;202f 0020 
-              ADD.L          $1a(A7),D0               ;d0af 001a 
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              ADD.L          $18(A7),D0               ;d0af 0018 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               BSR.W          CopyMem                  ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
 ___ESQSHARED_NormalizeInStereoTag__12:
               BRA.B          ___ESQSHARED_NormalizeInStereoTag__18;6030 
 ___ESQSHARED_NormalizeInStereoTag__13:
               ADDQ.L         #$1,A3                   ;528b 
-              CLR.L          $24(A7)                  ;42af 0024 
+              CLR.L          $20(A7)                  ;42af 0020 
 ___ESQSHARED_NormalizeInStereoTag__14:
-              MOVE.L         $24(A7),D0               ;202f 0024 
+              MOVE.L         $20(A7),D0               ;202f 0020 
               MOVE.B         $0(A2,D0.L),D0           ;1032 0800 
-              CMP.B          $1f(A7),D0               ;b02f 001f 
+              CMP.B          $24(A7),D0               ;b02f 0024 
               BEQ.B          ___ESQSHARED_NormalizeInStereoTag__16;6706 
 ___ESQSHARED_NormalizeInStereoTag__15:
-              ADDQ.L         #$1,$24(A7)              ;52af 0024 
+              ADDQ.L         #$1,$20(A7)              ;52af 0020 
               BRA.B          ___ESQSHARED_NormalizeInStereoTag__14;60ec 
 ___ESQSHARED_NormalizeInStereoTag__16:
-              MOVE.L         $24(A7),D0               ;202f 0024 
-              ADD.L          $1a(A7),D0               ;d0af 001a 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              ADD.L          $18(A7),D0               ;d0af 0018 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         A2,-(A7)                 ;2f0a 
@@ -100,7 +95,7 @@ ___ESQSHARED_NormalizeInStereoTag__16:
 ___ESQSHARED_NormalizeInStereoTag__17:
 ___ESQSHARED_NormalizeInStereoTag__18:
               MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
-              ADD.W          #$18,A7                  ;defc 0018 
+              ADD.W          #$10,A7                  ;defc 0010 
               RTS                                     ;4e75 
 __const:
 __strings:

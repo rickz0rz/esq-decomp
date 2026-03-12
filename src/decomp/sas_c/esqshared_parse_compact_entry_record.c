@@ -14,7 +14,6 @@ void ESQSHARED_ParseCompactEntryRecord(UBYTE *record)
 {
     const UBYTE TITLE_TERM_TOKEN = 0x12;
     const UBYTE TITLE_KEY_MAX = 8;
-    const char CH_NUL = '\0';
     UBYTE group_code;
     UBYTE slot_index;
     UBYTE mode_byte;
@@ -37,7 +36,7 @@ void ESQSHARED_ParseCompactEntryRecord(UBYTE *record)
         ++i;
     } while (1);
 
-    title_key[i] = CH_NUL;
+    ((UBYTE *)title_key)[i] = 0;
     mode_byte = *record++;
 
     ESQSHARED_UpdateMatchingEntriesByTitle(

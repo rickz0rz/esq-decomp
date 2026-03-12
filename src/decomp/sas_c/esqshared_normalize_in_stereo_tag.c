@@ -10,8 +10,6 @@ extern void CopyMem(const void *src, void *dst, ULONG len);
 
 void ESQSHARED_NormalizeInStereoTag(char *text, ULONG flags)
 {
-    const UBYTE TOKEN_STEREO_MARKER = 0x91;
-    const ULONG FLAG_KEEP_HEAD = 0x80UL;
     const ULONG IN_STEREO_LEN = 9;
     const UBYTE CHARCLASS_3_MASK = 0x08;
     const char CH_NUL = '\0';
@@ -21,11 +19,11 @@ void ESQSHARED_NormalizeInStereoTag(char *text, ULONG flags)
         return;
     }
 
-    *tag = (char)TOKEN_STEREO_MARKER;
+    *tag = (char)0x91;
 
     {
         char *tail = tag + IN_STEREO_LEN;
-        if ((flags & FLAG_KEEP_HEAD) == 0) {
+        if ((((UBYTE)flags) & 0x80) == 0) {
             if (*tail == CH_NUL) {
                 do {
                     *tag = CH_NUL;
