@@ -11,3 +11,4 @@ bin/
 
 # Build output
 *.o
+*.dis
