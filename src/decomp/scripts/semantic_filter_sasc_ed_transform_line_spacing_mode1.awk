@@ -27,7 +27,7 @@ function t(s, x){
 
     if((l~/MOVEQ(\.L)? #\$?20,D[0-7]/) && (l~/CMP\.B .*D[0-7]/ || l~/CMP\.B .*#\$?20/))h_lead_loop=1
     if((l~/MOVEQ(\.L)? #\$?27,D[0-7]/) && l~/SUB\.L D4,D1/)h_tail_loop=1
-    if((l~/MOVE\.B \$17\(A7\),\$18\(A7,D[0-7]\.L\)/) || (l~/MOVE\.B \(A0\),-90\(A5,D[067]\.L\)/))h_fill_write=1
+    if((l~/MOVE\.B \$[0-9A-F]+\(A7\),\$[0-9A-F]+\(A7,D[0-7]\.L\)/) || (l~/MOVE\.B \(A0\),-90\(A5,D[067]\.L\)/))h_fill_write=1
 
     if(l~/ED_EDITBUFFERSCRATCH/)h_scratch_write=1
     if(l~/ED_EDITBUFFERLIVE/)h_live_write=1
