@@ -38,10 +38,9 @@ void LADFUNC_ResetEntryTextBuffers(void)
         }
 
         p = entry->textPtr;
-        while (*p != CH_NUL) {
-            ++p;
+        while (*p++ != CH_NUL) {
         }
-        len = (LONG)(p - entry->textPtr);
+        len = (LONG)((p - entry->textPtr) - 1);
 
         if (len > LEN_EMPTY && entry->attrPtr != (UBYTE *)0) {
             NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_4, ATTR_FREE_LINE, entry->attrPtr, len);
