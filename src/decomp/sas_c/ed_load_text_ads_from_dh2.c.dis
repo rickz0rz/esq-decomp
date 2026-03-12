@@ -18,7 +18,7 @@ ___ED_LoadTextAdsFromDh2__2:
               PEA            ($78).w                  ;4878 0078 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              BSR.W          GROUP_AM_JMPTBL_LADFUNC_LoadText;6100 0000 
+              BSR.W          LADFUNC_LoadTextAdsFromFile;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
 ___ED_LoadTextAdsFromDh2__3:
               BSR.W          ED_DrawESCMenuBottomHelp ;6100 0000 
@@ -33,7 +33,7 @@ __strings:
               XREF           Global_STR_LOADING_TEXT_ADS_FROM
               XREF           Global_REF_RASTPORT_1
               XREF           DISPLIB_DisplayTextAtPosition
-              XREF           GROUP_AM_JMPTBL_LADFUNC_LoadText
+              XREF           LADFUNC_LoadTextAdsFromFile
               XREF           ED_DrawESCMenuBottomHelp
               XDEF           ED_LoadTextAdsFromDh2
               END
