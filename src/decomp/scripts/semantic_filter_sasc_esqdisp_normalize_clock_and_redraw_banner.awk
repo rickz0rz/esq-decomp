@@ -25,13 +25,25 @@ function trim(s, t) {
     uline = toupper(line)
 
     if (uline ~ /^ESQDISP_NORMALIZECLOCKANDREDRAWBANNER:/ || uline ~ /^ESQDISP_NORMALIZECLOCKANDREDRAWB:/ || uline ~ /^ESQDISP_NORMALIZECLOCKANDRE[A-Z0-9_]*:/) has_entry = 1
-    if (uline ~ /ESQFUNC_JMPTBL_PARSEINI_NORMALIZECLOCKDATA/ || uline ~ /ESQFUNC_JMPTBL_PARSEINI_NORMALIZECLOC/ || uline ~ /ESQFUNC_JMPTBL_PARSEINI_NORMALIZ/) has_normalize = 1
+    if (uline ~ /ESQFUNC_JMPTBL_PARSEINI_NORMALIZECLOCKDATA/ ||
+        uline ~ /ESQFUNC_JMPTBL_PARSEINI_NORMALIZECLOC/ ||
+        uline ~ /ESQFUNC_JMPTBL_PARSEINI_NORMALIZ/ ||
+        uline ~ /PARSEINI_NORMALIZECLOCKDATA/ ||
+        uline ~ /PARSEINI_NORMALIZECLOC/ ||
+        uline ~ /PARSEINI_NORMALIZ/) has_normalize = 1
     if (uline ~ /DST_UPDATEBANNERQUEUE/ || uline ~ /DST_UPDATEBANNERQUEU/) has_update_queue = 1
     if (uline ~ /DST_REFRESHBANNERBUFFER/ || uline ~ /DST_REFRESHBANNERBUFF/) has_refresh = 1
     if (uline ~ /ESQFUNC_JMPTBL_CLEANUP_DRAWCLOCKBANNER/ || uline ~ /ESQFUNC_JMPTBL_CLEANUP_DRAWCLOCKBAN/ || uline ~ /ESQFUNC_JMPTBL_CLEANUP_DRAWCLOCK/) has_draw_clock = 1
     if (uline ~ /ESQDISP_DRAWSTATUSBANNER_IMPL/ || uline ~ /ESQDISP_DRAWSTATUSBANNER_IMP/) has_draw_status = 1
-    if (uline ~ /^MOVE\.L 4\(A0\),-4\(A5\)$/ || uline ~ /^MOVE\.L 4\(A0\),D0$/ || uline ~ /^MOVE\.L 4\(A0\),/ || uline ~ /^MOVE\.L \(A1\),A3$/) has_save_bitmap = 1
-    if (uline ~ /^MOVE\.L -4\(A5\),4\(A0\)$/ || uline ~ /^MOVE\.L D0,4\(A0\)$/ || uline ~ /^MOVE\.L A3,\(A0\)$/) has_restore_bitmap = 1
+    if (uline ~ /^MOVE\.L 4\(A0\),-4\(A5\)$/ ||
+        uline ~ /^MOVE\.L \$4\(A0\),A3$/ ||
+        uline ~ /^MOVE\.L 4\(A0\),D0$/ ||
+        uline ~ /^MOVE\.L 4\(A0\),/ ||
+        uline ~ /^MOVE\.L \(A1\),A3$/) has_save_bitmap = 1
+    if (uline ~ /^MOVE\.L -4\(A5\),4\(A0\)$/ ||
+        uline ~ /^MOVE\.L D0,4\(A0\)$/ ||
+        uline ~ /^MOVE\.L A3,\$4\(A0\)$/ ||
+        uline ~ /^MOVE\.L A3,\(A0\)$/) has_restore_bitmap = 1
     if (uline ~ /^RTS$/) has_return = 1
 }
 

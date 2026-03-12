@@ -10,7 +10,7 @@ ___ESQDISP_NormalizeClockAndRedrawB__1:
               MOVE.L         $c(A7),A5                ;2a6f 000c 
               MOVE.L         A5,-(A7)                 ;2f0d 
               PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
-              BSR.W          ESQFUNC_JMPTBL_PARSEINI_Normaliz;6100 0000 
+              BSR.W          PARSEINI_NormalizeClockData;6100 0000 
               PEA            DST_BannerWindowPrimary(A4);486c 0000 
               BSR.W          DST_UpdateBannerQueue    ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
@@ -38,7 +38,7 @@ __strings:
               XREF           __base
               XREF           _XCOVF
               XREF           CLOCK_DaySlotIndex
-              XREF           ESQFUNC_JMPTBL_PARSEINI_Normaliz
+              XREF           PARSEINI_NormalizeClockData
               XREF           DST_BannerWindowPrimary
               XREF           DST_UpdateBannerQueue
               XREF           DST_RefreshBannerBuffer

@@ -38,7 +38,7 @@ ___ESQPARS_ApplyRtcBytesAndPersist__1:
               BSR.W          ESQDISP_NormalizeClockAndRedrawB;6100 0000 
               MOVE.W         ESQPARS2_ReadModeFlags(A4),D7;3e2c 0000 
               MOVE.W         #$100,ESQPARS2_ReadModeFlags(A4);397c 0100 0000 
-              BSR.W          ESQPARS_JMPTBL_PARSEINI_WriteRtc;6100 0000 
+              BSR.W          PARSEINI_WriteRtcFromGlobals;6100 0000 
               MOVE.W         D7,ESQPARS2_ReadModeFlags(A4);3947 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___ESQPARS_ApplyRtcBytesAndPersist__2:
@@ -51,6 +51,6 @@ __strings:
               XREF           _XCOVF
               XREF           ESQDISP_NormalizeClockAndRedrawB
               XREF           ESQPARS2_ReadModeFlags
-              XREF           ESQPARS_JMPTBL_PARSEINI_WriteRtc
+              XREF           PARSEINI_WriteRtcFromGlobals
               XDEF           ESQPARS_ApplyRtcBytesAndPersist
               END

@@ -5,7 +5,7 @@ typedef signed long LONG;
 extern WORD ESQPARS2_ReadModeFlags;
 
 extern void ESQDISP_NormalizeClockAndRedrawBanner(void *clock_data);
-extern void ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals(void);
+extern void PARSEINI_WriteRtcFromGlobals(void);
 
 void ESQPARS_ApplyRtcBytesAndPersist(BYTE *src)
 {
@@ -25,6 +25,6 @@ void ESQPARS_ApplyRtcBytesAndPersist(BYTE *src)
 
     saved_mode = ESQPARS2_ReadModeFlags;
     ESQPARS2_ReadModeFlags = 256;
-    ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals();
+    PARSEINI_WriteRtcFromGlobals();
     ESQPARS2_ReadModeFlags = saved_mode;
 }

@@ -175,7 +175,7 @@ ___CLEANUP_ProcessAlerts__40:
               SUBQ.L         #$2,D0                   ;5580 
               BNE.B          ___CLEANUP_ProcessAlerts__42;6610 
 ___CLEANUP_ProcessAlerts__41:
-              BSR.W          GROUP_AC_JMPTBL_PARSEINI_UpdateC;6100 0000 
+              BSR.W          PARSEINI_UpdateClockFromRtc;6100 0000 
               BSR.W          GROUP_AC_JMPTBL_DST_RefreshBanne;6100 0000 
               CLR.L          -(A7)                    ;42a7 
               BSR.W          GROUP_AC_JMPTBL_ESQDISP_DrawStat;6100 0000 
@@ -315,7 +315,7 @@ __strings:
               XREF           GROUP_AC_JMPTBL_ESQDISP_DrawStat
               XREF           ESQ_AlertType235ModeFlagChar
               XREF           ESQDISP_StatusBannerClampGateFla
-              XREF           GROUP_AC_JMPTBL_PARSEINI_UpdateC
+              XREF           PARSEINI_UpdateClockFromRtc
               XREF           GROUP_AC_JMPTBL_DST_RefreshBanne
               XREF           BANNER_ResetPendingFlag
               XREF           CLOCK_HalfHourSlotIndex

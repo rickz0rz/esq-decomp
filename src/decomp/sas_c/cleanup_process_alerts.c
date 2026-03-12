@@ -47,7 +47,7 @@ void GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout(void);
 void GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(LONG code);
 LONG GROUP_AC_JMPTBL_DST_UpdateBannerQueue(void *banner_window);
 void GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(LONG code);
-void GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc(void);
+void PARSEINI_UpdateClockFromRtc(void);
 void GROUP_AC_JMPTBL_DST_RefreshBannerBuffer(void);
 LONG DISPLIB_NormalizeValueByStep(LONG value, LONG step, LONG modulo);
 void _LVOSetAPen(void);
@@ -135,7 +135,7 @@ void CLEANUP_ProcessAlerts(void)
 
     if ((ESQ_AlertType235ModeFlagChar == CLEANUP_ALERT_Y_CHAR && tickCode == CLEANUP_TICK_CODE_5) ||
         (ESQ_AlertType235ModeFlagChar != CLEANUP_ALERT_Y_CHAR && tickCode == CLEANUP_TICK_CODE_2)) {
-        GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc();
+        PARSEINI_UpdateClockFromRtc();
         GROUP_AC_JMPTBL_DST_RefreshBannerBuffer();
         GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(CLEANUP_FLAG_CLEAR);
     }
