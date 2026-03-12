@@ -16,8 +16,8 @@ extern const char *TEXTDISP_PrimaryTitlePtrTable[];
 extern const char *TEXTDISP_SecondaryTitlePtrTable[];
 extern const char *Global_REF_STR_CLOCK_FORMAT[];
 
-extern LONG TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(LONG row, LONG slot);
-extern void TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out);
+extern LONG ESQDISP_ComputeScheduleOffsetForRow(LONG row, LONG slot);
+extern void CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out);
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 
@@ -34,7 +34,7 @@ void TEXTDISP_FormatEntryTime(char *out, WORD entryIndex)
     }
 
     timeText = title->titleTable[(LONG)entryIndex];
-    slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)title->slotCode);
+    slotIndex = ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)title->slotCode);
 
     if (timeText == 0 || *timeText == 0) {
         *out = 0;
@@ -43,7 +43,7 @@ void TEXTDISP_FormatEntryTime(char *out, WORD entryIndex)
 
     if (timeText[0] != '(' || timeText[3] != ':') {
         slotIndex += MATH_DivS32((LONG)(UBYTE)CLOCK_FormatVariantCode, 30);
-        TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(slotIndex, out);
+        CLEANUP_FormatClockFormatEntry(slotIndex, out);
         return;
     }
 
@@ -89,7 +89,7 @@ void TEXTDISP_FormatEntryTimeForIndex(char *out, WORD entryIndex, char *entryTab
 
     aux = (const TEXTDISP_AuxData *)entryTable;
     timeText = aux->titleTable[(LONG)entryIndex];
-    slotIndex = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)aux->slotCode);
+    slotIndex = ESQDISP_ComputeScheduleOffsetForRow((LONG)entryIndex, (LONG)aux->slotCode);
 
     if (timeText == 0 || *timeText == 0) {
         *out = 0;
@@ -98,7 +98,7 @@ void TEXTDISP_FormatEntryTimeForIndex(char *out, WORD entryIndex, char *entryTab
 
     if (timeText[0] != '(' || timeText[3] != ':') {
         slotIndex += MATH_DivS32((LONG)(UBYTE)CLOCK_FormatVariantCode, 30);
-        TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(slotIndex, out);
+        CLEANUP_FormatClockFormatEntry(slotIndex, out);
         return;
     }
 
