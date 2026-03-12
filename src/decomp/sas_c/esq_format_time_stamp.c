@@ -1,73 +1,56 @@
+typedef long LONG;
+typedef short WORD;
+
 void ESQ_FormatTimeStamp(char *outBuf, void *timePtr)
 {
-    const LONG OUTBUF_END_OFFSET = 0x0B;
-    const LONG TIME_HOUR_OFFSET = 8;
-    const LONG TIME_MINUTE_OFFSET = 10;
-    const LONG TIME_SECOND_OFFSET = 12;
-    const LONG TIME_AMPM_OFFSET = 18;
-    const short BASE10 = 10;
-    const char CH_NUL = '\0';
-    const char CH_M = 'M';
-    const char CH_P = 'P';
-    const char CH_A = 'A';
-    const char CH_SPACE = ' ';
-    const char CH_COLON = ':';
-    const char CH_0 = '0';
-    unsigned char *t;
     char *p;
-    short hour;
-    short minute;
-    short second;
-    short ampm;
-    short q;
-    short r;
-    char tens;
-    char ones;
+    unsigned char *t;
+    WORD hour;
+    WORD minute;
+    WORD second;
+    WORD ampm;
+    WORD q;
+    WORD r;
 
     t = (unsigned char *)timePtr;
-    p = outBuf + OUTBUF_END_OFFSET;
+    p = outBuf + 0x0B;
 
-    *p = CH_NUL;
-    *--p = CH_M;
+    *p = '\0';
+    *--p = 'M';
 
-    ampm = *(short *)(t + TIME_AMPM_OFFSET);
+    ampm = *(WORD *)(t + 18);
     if (ampm < 0) {
-        *--p = CH_P;
+        *--p = 'P';
     } else {
-        *--p = CH_A;
+        *--p = 'A';
     }
 
-    *--p = CH_SPACE;
+    *--p = ' ';
 
-    second = *(short *)(t + TIME_SECOND_OFFSET);
-    q = (short)(second / BASE10);
-    r = (short)(second % BASE10);
-    tens = (char)(q + CH_0);
-    ones = (char)(r + CH_0);
-    *--p = ones;
-    *--p = tens;
+    second = *(WORD *)(t + 12);
+    q = (WORD)(second / 10);
+    r = (WORD)(second % 10);
+    *--p = (char)(r + '0');
+    *--p = (char)(q + '0');
 
-    *--p = CH_COLON;
+    *--p = ':';
 
-    minute = *(short *)(t + TIME_MINUTE_OFFSET);
-    q = (short)(minute / BASE10);
-    r = (short)(minute % BASE10);
-    tens = (char)(q + CH_0);
-    ones = (char)(r + CH_0);
-    *--p = ones;
-    *--p = tens;
+    minute = *(WORD *)(t + 10);
+    q = (WORD)(minute / 10);
+    r = (WORD)(minute % 10);
+    *--p = (char)(r + '0');
+    *--p = (char)(q + '0');
 
-    *--p = CH_COLON;
+    *--p = ':';
 
-    hour = *(short *)(t + TIME_HOUR_OFFSET);
-    q = (short)(hour / BASE10);
-    r = (short)(hour % BASE10);
-    ones = (char)(r + CH_0);
-    *--p = ones;
+    hour = *(WORD *)(t + 8);
+    q = (WORD)(hour / 10);
+    r = (WORD)(hour % 10);
+    *--p = (char)(r + '0');
 
     if (q == 0) {
-        *--p = CH_SPACE;
+        *--p = ' ';
     } else {
-        *--p = (char)(q + CH_0);
+        *--p = (char)(q + '0');
     }
 }

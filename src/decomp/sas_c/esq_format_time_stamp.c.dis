@@ -2,41 +2,36 @@
 __code:
 ESQ_FormatTimeStamp:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              SUBQ.L         #$8,D0                   ;5180 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$c,A7                   ;9efc 000c 
+              SUBQ.W         #$8,A7                   ;514f 
               MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 3f34 
 ___ESQ_FormatTimeStamp__1:
-              MOVE.L         $38(A7),A3               ;266f 0038 
-              MOVE.L         $34(A7),A5               ;2a6f 0034 
-              MOVE.L         A3,A2                    ;244b 
-              LEA            $b(A5),A0                ;41ed 000b 
-              CLR.B          (A0)                     ;4210 
-              MOVE.L         A0,$2c(A7)               ;2f48 002c 
-              SUBQ.L         #$1,A0                   ;5388 
-              MOVE.B         #$4d,(A0)                ;10bc 004d 
-              LEA            $12(A2),A1               ;43ea 0012 
-              MOVE.W         (A1),D0                  ;3011 
-              MOVEM.W        D0,$2a(A7)               ;48af 0001 002a 
-              MOVE.L         A0,$2c(A7)               ;2f48 002c 
-              TST.W          D0                       ;4a40 
-              BPL.B          ___ESQ_FormatTimeStamp__3;6a0e 
+              MOVE.L         $34(A7),A3               ;266f 0034 
+              MOVE.L         $30(A7),A5               ;2a6f 0030 
+              MOVE.L         A3,A0                    ;204b 
+              LEA            $b(A5),A2                ;45ed 000b 
+              CLR.B          (A2)                     ;4212 
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.B         #$4d,(A2)                ;14bc 004d 
+              LEA            $12(A0),A1               ;43e8 0012 
+              MOVE.W         (A1),D4                  ;3811 
+              MOVE.L         A0,$28(A7)               ;2f48 0028 
+              TST.W          D4                       ;4a44 
+              BPL.B          ___ESQ_FormatTimeStamp__3;6a08 
 ___ESQ_FormatTimeStamp__2:
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         #$50,(A0)                ;10bc 0050 
-              BRA.B          ___ESQ_FormatTimeStamp__4;600c 
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.B         #$50,(A2)                ;14bc 0050 
+              BRA.B          ___ESQ_FormatTimeStamp__4;6006 
 ___ESQ_FormatTimeStamp__3:
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         #$41,(A0)                ;10bc 0041 
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.B         #$41,(A2)                ;14bc 0041 
 ___ESQ_FormatTimeStamp__4:
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
+              SUBQ.L         #$1,A2                   ;538a 
               MOVEQ.L        #$20,D0                  ;7020 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         D0,(A0)                  ;1080 
-              LEA            $c(A2),A1                ;43ea 000c 
+              MOVE.B         D0,(A2)                  ;1480 
+              LEA            $c(A0),A1                ;43e8 000c 
               MOVE.W         (A1),D5                  ;3a11 
               MOVE.W         D5,D1                    ;3205 
               EXT.L          D1                       ;48c1 
@@ -46,86 +41,72 @@ ___ESQ_FormatTimeStamp__4:
               EXT.L          D3                       ;48c3 
               DIVS.W         D2,D3                    ;87c2 
               SWAP           D3                       ;4843 
-              MOVE.W         D1,$28(A7)               ;3f41 0028 
-              EXT.L          D1                       ;48c1 
-              MOVEQ.L        #$30,D4                  ;7830 
-              ADD.L          D4,D1                    ;d284 
-              MOVE.W         D3,$26(A7)               ;3f43 0026 
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.W         D3,$24(A7)               ;3f43 0024 
               EXT.L          D3                       ;48c3 
-              ADD.L          D4,D3                    ;d684 
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         D3,(A0)                  ;1083 
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         D1,(A0)                  ;1081 
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
-              MOVE.B         D1,$25(A7)               ;1f41 0025 
+              MOVEQ.L        #$30,D0                  ;7030 
+              ADD.L          D0,D3                    ;d680 
+              MOVE.B         D3,(A2)                  ;1483 
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.W         D1,$26(A7)               ;3f41 0026 
+              EXT.L          D1                       ;48c1 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.B         D1,(A2)                  ;1481 
+              SUBQ.L         #$1,A2                   ;538a 
               MOVEQ.L        #$3a,D1                  ;723a 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         D1,(A0)                  ;1081 
-              LEA            $a(A2),A1                ;43ea 000a 
+              MOVE.B         D1,(A2)                  ;1481 
+              LEA            $a(A0),A1                ;43e8 000a 
               MOVE.W         (A1),D6                  ;3c11 
-              MOVE.B         D3,$24(A7)               ;1f43 0024 
               MOVE.W         D6,D3                    ;3606 
               EXT.L          D3                       ;48c3 
               DIVS.W         D2,D3                    ;87c2 
+              MOVE.W         D6,D2                    ;3406 
+              EXT.L          D2                       ;48c2 
+              MOVEQ.L        #$a,D1                   ;720a 
+              DIVS.W         D1,D2                    ;85c1 
+              SWAP           D2                       ;4842 
+              SUBQ.L         #$1,A2                   ;538a 
 ___ESQ_FormatTimeStamp__5:
-              MOVE.W         D6,D0                    ;3006 
-              EXT.L          D0                       ;48c0 
-              DIVS.W         D2,D0                    ;81c2 
-              SWAP           D0                       ;4840 
-              MOVE.W         D3,$28(A7)               ;3f43 0028 
+              MOVE.W         D2,$24(A7)               ;3f42 0024 
+              EXT.L          D2                       ;48c2 
+              ADD.L          D0,D2                    ;d480 
+              MOVE.B         D2,(A2)                  ;1482 
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.W         D3,$26(A7)               ;3f43 0026 
               EXT.L          D3                       ;48c3 
-              ADD.L          D4,D3                    ;d684 
-              MOVE.W         D0,$26(A7)               ;3f40 0026 
-              EXT.L          D0                       ;48c0 
-              ADD.L          D4,D0                    ;d084 
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         D0,(A0)                  ;1080 
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         D3,(A0)                  ;1083 
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         D1,(A0)                  ;1081 
-              LEA            $8(A2),A1                ;43ea 0008 
+              ADD.L          D0,D3                    ;d680 
+              MOVE.B         D3,(A2)                  ;1483 
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.B         #$3a,(A2)                ;14bc 003a 
+              LEA            $8(A0),A1                ;43e8 0008 
               MOVE.W         (A1),D7                  ;3e11 
-              MOVE.W         D7,D1                    ;3207 
-              EXT.L          D1                       ;48c1 
-              DIVS.W         D2,D1                    ;83c2 
               MOVE.W         D7,D2                    ;3407 
               EXT.L          D2                       ;48c2 
-              DIVS.W         #$a,D2                   ;85fc 000a 
-              SWAP           D2                       ;4842 
-              MOVE.W         D2,$26(A7)               ;3f42 0026 
-              EXT.L          D2                       ;48c2 
-              ADD.L          D4,D2                    ;d484 
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         D2,(A0)                  ;1082 
-              MOVE.W         D1,$28(A7)               ;3f41 0028 
-              MOVE.B         D2,$24(A7)               ;1f42 0024 
-              MOVE.B         D3,$25(A7)               ;1f43 0025 
-___ESQ_FormatTimeStamp__6:
-              TST.W          D1                       ;4a41 
-              BNE.B          ___ESQ_FormatTimeStamp__8;660e 
-___ESQ_FormatTimeStamp__7:
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         #$20,(A0)                ;10bc 0020 
-              BRA.B          ___ESQ_FormatTimeStamp__10;600e 
-___ESQ_FormatTimeStamp__8:
-              SUBQ.L         #$1,$2c(A7)              ;53af 002c 
+              DIVS.W         D1,D2                    ;85c1 
+              MOVE.W         D7,D1                    ;3207 
               EXT.L          D1                       ;48c1 
-              ADD.L          D4,D1                    ;d284 
-              MOVE.L         $2c(A7),A0               ;206f 002c 
-              MOVE.B         D1,(A0)                  ;1081 
+              DIVS.W         #$a,D1                   ;83fc 000a 
+              SWAP           D1                       ;4841 
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.W         D1,$24(A7)               ;3f41 0024 
+              EXT.L          D1                       ;48c1 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.B         D1,(A2)                  ;1481 
+              MOVE.W         D2,$26(A7)               ;3f42 0026 
+              BNE.B          ___ESQ_FormatTimeStamp__7;6608 
+___ESQ_FormatTimeStamp__6:
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.B         #$20,(A2)                ;14bc 0020 
+              BRA.B          ___ESQ_FormatTimeStamp__9;6008 
+___ESQ_FormatTimeStamp__7:
+              SUBQ.L         #$1,A2                   ;538a 
+              EXT.L          D2                       ;48c2 
+              ADD.L          D0,D2                    ;d480 
+              MOVE.B         D2,(A2)                  ;1482 
+___ESQ_FormatTimeStamp__8:
 ___ESQ_FormatTimeStamp__9:
-___ESQ_FormatTimeStamp__10:
               MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
-              ADD.W          #$c,A7                   ;defc 000c 
+              ADDQ.W         #$8,A7                   ;504f 
               RTS                                     ;4e75 
 __const:
 __strings:
