@@ -28,7 +28,8 @@ function trim(s, t) {
     if (n ~ /NEWGRIDSHOWTIMEBUCKETCOUNT/) has_bucket_count=1
     if (n ~ /NEWGRIDSHOWTIMEBUCKETPTRTABLE/) has_bucket_ptr_table=1
     if (n ~ /NEWGRIDSHOWTIMEBUCKETSEPARATOR/) has_separator=1
-    if ((u ~ /^(JSR|BSR|JMP)(\.[A-Z])?[ \t]/) && n ~ /PARSEINIJMPTBLSTRINGAPPENDATN/) append_calls++
+    if ((u ~ /^(JSR|BSR|JMP)(\.[A-Z])?[ \t]/) &&
+        (n ~ /PARSEINIJMPTBLSTRINGAPPENDATN/ || n ~ /STRINGAPPENDATNULL/)) append_calls++
     if (u ~ /ADDQ\.L #1,D[0-7]/ || u ~ /CMP\.L .*D7/) has_loop_counter=1
     if (u == "RTS") has_rts=1
 }

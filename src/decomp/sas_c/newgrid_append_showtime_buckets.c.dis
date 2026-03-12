@@ -11,7 +11,7 @@ ___NEWGRID_AppendShowtimeBuckets__1:
               MOVE.L         NEWGRID_ShowtimeBucketPtrTable(A4),A0;206c 0000 
               MOVE.L         $4(A0),-(A7)             ;2f28 0004 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
+              BSR.W          STRING_AppendAtNull      ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               MOVEQ.L        #$1,D7                   ;7e01 
 ___NEWGRID_AppendShowtimeBuckets__2:
@@ -20,14 +20,14 @@ ___NEWGRID_AppendShowtimeBuckets__2:
 ___NEWGRID_AppendShowtimeBuckets__3:
               PEA            NEWGRID_ShowtimeBucketSeparator(A4);486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
+              BSR.W          STRING_AppendAtNull      ;6100 0000 
               MOVE.L         D7,D0                    ;2007 
               ASL.L          #$2,D0                   ;e580 
               LEA            NEWGRID_ShowtimeBucketPtrTable(A4),A0;41ec 0000 
               MOVE.L         $0(A0,D0.L),A0           ;2070 0800 
               MOVE.L         $4(A0),(A7)              ;2ea8 0004 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              BSR.W          PARSEINI_JMPTBL_STRING_AppendAtN;6100 0000 
+              BSR.W          STRING_AppendAtNull      ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               ADDQ.L         #$1,D7                   ;5287 
               BRA.B          ___NEWGRID_AppendShowtimeBuckets__2;60d2 
@@ -40,7 +40,7 @@ __strings:
               XREF           __base
               XREF           _XCOVF
               XREF           NEWGRID_ShowtimeBucketPtrTable
-              XREF           PARSEINI_JMPTBL_STRING_AppendAtN
+              XREF           STRING_AppendAtNull
               XREF           NEWGRID_ShowtimeBucketCount
               XREF           NEWGRID_ShowtimeBucketSeparator
               XDEF           NEWGRID_AppendShowtimeBuckets

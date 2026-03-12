@@ -10,17 +10,17 @@ extern LONG NEWGRID_ShowtimeBucketCount;
 extern NEWGRID_ShowtimeBucketEntry *NEWGRID_ShowtimeBucketPtrTable[];
 extern const char NEWGRID_ShowtimeBucketSeparator[];
 
-extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
+extern char *STRING_AppendAtNull(char *dst, const char *src);
 
 void NEWGRID_AppendShowtimeBuckets(char *outText)
 {
     LONG i;
 
-    PARSEINI_JMPTBL_STRING_AppendAtNull(outText, NEWGRID_ShowtimeBucketPtrTable[0]->text);
+    STRING_AppendAtNull(outText, NEWGRID_ShowtimeBucketPtrTable[0]->text);
     i = 1;
     while (i < NEWGRID_ShowtimeBucketCount) {
-        PARSEINI_JMPTBL_STRING_AppendAtNull(outText, NEWGRID_ShowtimeBucketSeparator);
-        PARSEINI_JMPTBL_STRING_AppendAtNull(outText, NEWGRID_ShowtimeBucketPtrTable[i]->text);
+        STRING_AppendAtNull(outText, NEWGRID_ShowtimeBucketSeparator);
+        STRING_AppendAtNull(outText, NEWGRID_ShowtimeBucketPtrTable[i]->text);
         ++i;
     }
 }
