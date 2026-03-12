@@ -33,7 +33,8 @@ function trim(s, t) {
     if (u ~ /MOVE\.L A2,D0/ || u ~ /MOVE\.L A3,D0/ || u ~ /TST\.L A2/) has_check_arg_aux=1
     if (u ~ /BTST #7,40\(A3\)/ || u ~ /BTST #\$7,\$28\(A5\)/ || (n ~ /40A3/ && n ~ /BTST7/) || (n ~ /28A5/ && n ~ /BTST7/)) has_bit7_gate=1
     if (u ~ /BTST #2,27\(A3\)/ || u ~ /BTST #\$2,\$1B\(A5\)/ || (n ~ /27A3/ && n ~ /BTST2/) || (n ~ /1BA5/ && n ~ /BTST2/)) has_bit2_gate=1
-    if (n ~ /NEWGRID2JMPTBLESQDISPTESTENTRYBITS0AND2/ || n ~ /NEWGRID2JMPTBLESQDISPTESTENTR/) has_mode1_call=1
+    if (n ~ /NEWGRID2JMPTBLESQDISPTESTENTRYBITS0AND2/ || n ~ /NEWGRID2JMPTBLESQDISPTESTENTR/ ||
+        n ~ /ESQDISPTESTENTRYBITS0AND2/ || n ~ /ESQDISPTESTENTR/) has_mode1_call=1
     if (u ~ /#0([^0-9]|$)/ || u ~ /#\$00/ || u ~ /#\$0([^0-9A-F]|$)/ || u ~ /0\.[Ww]/ || u ~ /\(\$0\)/ || u ~ /CLR\./) has_const0=1
     if (u ~ /#1([^0-9]|$)/ || u ~ /#\$01/ || u ~ /#\$1([^0-9A-F]|$)/ || u ~ /1\.[Ww]/ || u ~ /\(\$1\)/) has_const1=1
     if (u == "RTS") has_rts=1

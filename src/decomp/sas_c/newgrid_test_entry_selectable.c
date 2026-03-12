@@ -8,7 +8,7 @@ typedef struct NEWGRID_Entry {
     UBYTE flags40;
 } NEWGRID_Entry;
 
-extern LONG NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(const char *entry);
+extern LONG ESQDISP_TestEntryBits0And2(const UBYTE *entry);
 
 LONG NEWGRID_TestEntrySelectable(const void *entry, const void *aux, LONG mode)
 {
@@ -31,7 +31,7 @@ LONG NEWGRID_TestEntrySelectable(const void *entry, const void *aux, LONG mode)
         return 0;
     }
 
-    if (NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(entry) == 0) {
+    if (ESQDISP_TestEntryBits0And2((const UBYTE *)entry) == 0) {
         return 0;
     }
 

@@ -48,7 +48,7 @@ ___NEWGRID_TestEntrySelectable__12:
               BRA.B          ___NEWGRID_TestEntrySelectable__17;600e 
 ___NEWGRID_TestEntrySelectable__13:
               MOVE.L         A5,-(A7)                 ;2f0d 
-              BSR.W          NEWGRID2_JMPTBL_ESQDISP_TestEntr;6100 0000 
+              BSR.W          ESQDISP_TestEntryBits0And2;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               TST.L          D0                       ;4a80 
               BEQ.B          ___NEWGRID_TestEntrySelectable__17;6702 
@@ -63,6 +63,6 @@ __const:
 __strings:
               XREF           __base
               XREF           _XCOVF
-              XREF           NEWGRID2_JMPTBL_ESQDISP_TestEntr
+              XREF           ESQDISP_TestEntryBits0And2
               XDEF           NEWGRID_TestEntrySelectable
               END
