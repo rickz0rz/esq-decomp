@@ -22,10 +22,10 @@ function trim(s,    t) {
     u = toupper(line)
 
     if (u ~ /DST_FREEBANNERSTRUCT|BSR\.W DST_FREEBANNERSTRUCT/) call_count++
-    if (u ~ /\(A[0-7]\)|\(0,A[0-7]\)/) slot0 = 1
-    if (u ~ /4\(A[0-7]\)|\(4,A[0-7]\)|\(A[0-7]\)\+/) slot1 = 1
+    if (u ~ /\(A[0-7]\)|\(\$?0,A[0-7]\)/) slot0 = 1
+    if (u ~ /\$?4\(A[0-7]\)|\(\$?4,A[0-7]\)|\(A[0-7]\)\+/) slot1 = 1
     if (u ~ /^CLR\.L \(A[0-7]\)$/ || u ~ /^MOVE\.L #0,\(A[0-7]\)$/) clear0 = 1
-    if (u ~ /^CLR\.L 4\(A[0-7]\)$/ || u ~ /^MOVE\.L #0,4\(A[0-7]\)$/ || u ~ /^CLR\.L \(A[0-7]\)\+$/ || u ~ /^CLR\.L \(A0\)$/) clear1 = 1
+    if (u ~ /^CLR\.L \$?4\(A[0-7]\)$/ || u ~ /^MOVE\.L #0,\$?4\(A[0-7]\)$/ || u ~ /^CLR\.L \(A[0-7]\)\+$/ || u ~ /^CLR\.L \(A0\)$/) clear1 = 1
     if (u ~ /^RTS$/ || u ~ /^JMP / || u ~ /^JSR / || u ~ /^BSR / || u ~ /^BSR\.W /) has_rts_or_jmp = 1
 }
 
