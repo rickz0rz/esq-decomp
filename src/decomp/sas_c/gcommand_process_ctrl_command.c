@@ -19,36 +19,29 @@ extern LONG GROUP_AV_JMPTBL_EXEC_CallVector_48(const void *a0, void *a1, LONG d1
 
 LONG GCOMMAND_ProcessCtrlCommand(const GCOMMAND_CtrlPacket *cmdPtr)
 {
-    const UBYTE COMMAND_STATE_RING = 1;
-    const UBYTE COMMAND_PROBE_DRIVE_A = 15;
-    const UBYTE COMMAND_PROBE_DRIVE_B = 16;
-    const LONG STATE_RING_ENTRY_SIZE = 5;
-    const LONG STATE_RING_ENTRY_COUNT = 20;
-    const LONG STATE_RING_INDEX_RESET = 0;
-    const LONG RESULT_DONE = 0;
-    const WORD DRIVE_PROBE_REQUESTED = 1;
-    const LONG EXEC_COMPARE_REJECT = -1;
-    LONG rc;
     UBYTE type;
-    if (cmdPtr == 0) {
-        return RESULT_DONE;
-    }
-
     type = cmdPtr->type4;
 
-    if (type == COMMAND_STATE_RING) {
+    if (type == 1) {
+        LONG rc;
         GCOMMAND_StateRingEntry *entry =
             &ED_StateRingTable[ED_StateRingWriteIndex];
-        rc = GROUP_AV_JMPTBL_EXEC_CallVector_48(cmdPtr, entry, STATE_RING_ENTRY_SIZE, 0);
-        if (rc > 0 && rc != EXEC_COMPARE_REJECT) {
+        rc = GROUP_AV_JMPTBL_EXEC_CallVector_48(cmdPtr, entry, 5, 0);
+        if (rc > 0) {
+            if (rc == -1) {
+                return 0;
+            }
+
             ED_StateRingWriteIndex += 1;
-            if (ED_StateRingWriteIndex >= STATE_RING_ENTRY_COUNT) {
-                ED_StateRingWriteIndex = STATE_RING_INDEX_RESET;
+            if (ED_StateRingWriteIndex >= 20) {
+                ED_StateRingWriteIndex = 0;
             }
         }
-    } else if (type == COMMAND_PROBE_DRIVE_B || type == COMMAND_PROBE_DRIVE_A) {
-        GCOMMAND_DriveProbeRequestedFlag = DRIVE_PROBE_REQUESTED;
+    } else if (type == 16) {
+        GCOMMAND_DriveProbeRequestedFlag = 1;
+    } else if (type == 15) {
+        GCOMMAND_DriveProbeRequestedFlag = 1;
     }
 
-    return RESULT_DONE;
+    return 0;
 }
