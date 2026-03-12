@@ -25,12 +25,12 @@ function trim(s, t) {
     u = toupper(line)
 
     if (u ~ /^GCOMMAND_LOADDEFAULTTABLE[A-Z0-9_]*:/) has_entry = 1
-    if (index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILETOWORKBUFFER") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILET") > 0) has_load_call = 1
+    if (index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILETOWORKBUFFER") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILET") > 0 || index(u, "DISKIO_LOADFILETOWORKBUFFER") > 0) has_load_call = 1
     if (index(u, "_LVOCOPYMEM") > 0) has_copy_mem = 1
     if (index(u, "GCOMMAND_DIGITALNICHEENABLEDFLAG") > 0) has_template_ref = 1
     if (index(u, "GLOBAL_PTR_WORK_BUFFER") > 0 && (u ~ /^ADD(\.L)? / || u ~ /^MOVE\.L /)) has_work_ptr_advance = 1
     if (index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0) has_replace_owned = 1
-    if (index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCATEMEMORY") > 0 || index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCAT") > 0) has_dealloc = 1
+    if (index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCATEMEMORY") > 0 || index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCAT") > 0 || index(u, "MEMORY_DEALLOCATEMEMORY") > 0) has_dealloc = 1
     if (u ~ /^MOVEQ(\.L)? #1,D0$/ || u ~ /^MOVEQ(\.L)? #\$1,D0$/) has_return_one = 1
     if (u == "RTS") has_return = 1
 }

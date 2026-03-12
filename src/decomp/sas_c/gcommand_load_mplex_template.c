@@ -12,12 +12,12 @@ extern const char GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateLoad[];
 extern const char GCOMMAND_FMT_PCT_T_MplexTemplateLoad[];
 extern const char Global_STR_GCOMMAND_C_2[];
 
-extern LONG GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
+extern LONG DISKIO_LoadFileToWorkBuffer(const char *path);
 extern void _LVOCopyMem(void *execBase, const void *src, void *dst, LONG size);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
-extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(const char *text, const char *needle);
+extern char *STR_FindCharPtr(const char *text, LONG ch);
+extern char *ESQ_FindSubstringCaseFold(const char *text, const char *needle);
 extern char *ESQPARS_ReplaceOwnedString(const char *newString, char *oldString);
-extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
+extern void MEMORY_DeallocateMemory(void *ptr, LONG size);
 
 LONG GCOMMAND_LoadMplexTemplate(void)
 {
@@ -27,7 +27,7 @@ LONG GCOMMAND_LoadMplexTemplate(void)
     const char *fmtSlotSearch;
     char *fmtSlot;
 
-    if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(
+    if (DISKIO_LoadFileToWorkBuffer(
             GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateLoad) == -1) {
         return 1;
     }
@@ -41,7 +41,7 @@ LONG GCOMMAND_LoadMplexTemplate(void)
     GCOMMAND_MplexListingsTemplatePtr = 0;
     GCOMMAND_MplexAtTemplatePtr = 0;
 
-    splitPtr = GROUP_AS_JMPTBL_STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
+    splitPtr = STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
     if (splitPtr && *splitPtr) {
         *splitPtr = 0;
         splitPtr++;
@@ -54,16 +54,12 @@ LONG GCOMMAND_LoadMplexTemplate(void)
         splitPtr,
         GCOMMAND_MplexListingsTemplatePtr);
 
-    NEWGRID_JMPTBL_MEMORY_DeallocateMemory(
-        Global_STR_GCOMMAND_C_2,
-        575,
-        loadedBuffer,
-        loadedSize + 1);
+    MEMORY_DeallocateMemory(loadedBuffer, loadedSize + 1);
 
     fmtSlotSearch = 0;
     fmtSlot = 0;
     if (GCOMMAND_MplexAtTemplatePtr && *GCOMMAND_MplexAtTemplatePtr) {
-        fmtSlotSearch = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(
+        fmtSlotSearch = ESQ_FindSubstringCaseFold(
             GCOMMAND_MplexAtTemplatePtr,
             GCOMMAND_FMT_PCT_T_MplexTemplateLoad);
     }

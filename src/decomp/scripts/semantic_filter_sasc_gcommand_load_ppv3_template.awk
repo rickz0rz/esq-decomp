@@ -33,7 +33,7 @@ function trim(s, t) {
 
     if (u ~ /^GCOMMAND_LOADPPV3TEMPLATE[A-Z0-9_]*:/) has_entry = 1
 
-    if (index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILETOWORKBUFFER") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILET") > 0) load_file_call_count += 1
+    if (index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILETOWORKBUFFER") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILET") > 0 || index(u, "DISKIO_LOADFILETOWORKBUFFER") > 0) load_file_call_count += 1
 
     if (index(u, "_LVODELETEFILE") > 0) has_delete_file = 1
 
@@ -43,11 +43,11 @@ function trim(s, t) {
     if (u ~ /^MOVEQ(\.L)? #56,D[0-7]$/ || u ~ /^MOVEQ(\.L)? #\$38,D[0-7]$/) has_copy_size_56 = 1
     if (u ~ /^MOVEQ(\.L)? #52,D[0-7]$/ || u ~ /^MOVEQ(\.L)? #\$34,D[0-7]$/) has_copy_size_52 = 1
 
-    if (index(u, "GROUP_AS_JMPTBL_STR_FINDCHARPTR") > 0 || index(u, "GROUP_AS_JMPTBL_STR_FINDCHARP") > 0) has_find_char = 1
+    if (index(u, "GROUP_AS_JMPTBL_STR_FINDCHARPTR") > 0 || index(u, "GROUP_AS_JMPTBL_STR_FINDCHARP") > 0 || index(u, "STR_FINDCHARPTR") > 0) has_find_char = 1
 
     if (index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRI") > 0) replace_owned_count += 1
 
-    if (index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCATEMEMORY") > 0 || index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCAT") > 0) has_dealloc = 1
+    if (index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCATEMEMORY") > 0 || index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCAT") > 0 || index(u, "MEMORY_DEALLOCATEMEMORY") > 0) has_dealloc = 1
 
     if (index(u, "GCOMMAND_LOADPPVTEMPLATE") > 0) has_call_load_ppv_template = 1
 

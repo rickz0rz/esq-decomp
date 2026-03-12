@@ -30,18 +30,18 @@ function trim(s, t) {
 
     if (u ~ /^GCOMMAND_LOADMPLEXTEMPLATE[A-Z0-9_]*:/) has_entry = 1
 
-    if (index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILETOWORKBUFFER") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILET") > 0) has_load_call = 1
+    if (index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILETOWORKBUFFER") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_LOADFILET") > 0 || index(u, "DISKIO_LOADFILETOWORKBUFFER") > 0) has_load_call = 1
     if (index(u, "_LVOCOPYMEM") > 0) has_copy_mem = 1
     if (index(u, "GCOMMAND_DIGITALMPLEXENABLEDFLAG") > 0) has_template_ref = 1
     if (index(u, "GLOBAL_PTR_WORK_BUFFER") > 0 && (u ~ /^ADD(\.L)? / || u ~ /^MOVE\.L /)) has_work_ptr_advance = 1
 
-    if (index(u, "GROUP_AS_JMPTBL_STR_FINDCHARPTR") > 0 || index(u, "GROUP_AS_JMPTBL_STR_FINDCHARP") > 0) has_find_char = 1
+    if (index(u, "GROUP_AS_JMPTBL_STR_FINDCHARPTR") > 0 || index(u, "GROUP_AS_JMPTBL_STR_FINDCHARP") > 0 || index(u, "STR_FINDCHARPTR") > 0) has_find_char = 1
 
     if (index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRI") > 0) replace_owned_count += 1
 
-    if (index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCATEMEMORY") > 0 || index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCAT") > 0) has_dealloc = 1
+    if (index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCATEMEMORY") > 0 || index(u, "NEWGRID_JMPTBL_MEMORY_DEALLOCAT") > 0 || index(u, "MEMORY_DEALLOCATEMEMORY") > 0) has_dealloc = 1
 
-    if (index(u, "GROUP_AS_JMPTBL_ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "GROUP_AS_JMPTBL_ESQ_FINDSUBSTRI") > 0) has_find_substring = 1
+    if (index(u, "GROUP_AS_JMPTBL_ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "GROUP_AS_JMPTBL_ESQ_FINDSUBSTRI") > 0 || index(u, "ESQ_FINDSUBSTRINGCASEFOLD") > 0) has_find_substring = 1
 
     if (u ~ /^MOVE\.B #\$73,1\(A[0-7]\)$/ || u ~ /^MOVE\.B #\$73,\$1\(A[0-7]\)$/ || u ~ /^MOVE\.B #115,1\(A[0-7]\)$/) has_set_suffix_s = 1
 

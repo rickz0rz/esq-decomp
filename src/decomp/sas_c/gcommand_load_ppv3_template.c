@@ -14,11 +14,11 @@ extern const char GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLo
 extern const char GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete[];
 extern const char Global_STR_GCOMMAND_C_3[];
 
-extern LONG GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
+extern LONG DISKIO_LoadFileToWorkBuffer(const char *path);
 extern void _LVOCopyMem(void *execBase, const void *src, void *dst, LONG size);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
+extern char *STR_FindCharPtr(const char *text, LONG ch);
 extern char *ESQPARS_ReplaceOwnedString(const char *newString, char *oldString);
-extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
+extern void MEMORY_DeallocateMemory(void *ptr, LONG size);
 extern LONG _LVODeleteFile(void *dosBase, const char *name);
 extern LONG GCOMMAND_LoadPPVTemplate(void);
 
@@ -34,10 +34,10 @@ LONG GCOMMAND_LoadPPV3Template(void)
     copySize = 0;
     usedFallbackDelete = 0;
 
-    if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(
+    if (DISKIO_LoadFileToWorkBuffer(
             GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad) != -1) {
         copySize = 56;
-    } else if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(
+    } else if (DISKIO_LoadFileToWorkBuffer(
                    GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad) != -1) {
         copySize = 52;
         _LVODeleteFile(
@@ -59,7 +59,7 @@ LONG GCOMMAND_LoadPPV3Template(void)
     GCOMMAND_PPVListingsTemplatePtr = 0;
 
     Global_PTR_WORK_BUFFER += copySize;
-    splitSearch = GROUP_AS_JMPTBL_STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
+    splitSearch = STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
     splitPtr = (char *)splitSearch;
 
     if (splitPtr && *splitPtr) {
@@ -74,11 +74,7 @@ LONG GCOMMAND_LoadPPV3Template(void)
         splitPtr,
         GCOMMAND_PPVListingsTemplatePtr);
 
-    NEWGRID_JMPTBL_MEMORY_DeallocateMemory(
-        Global_STR_GCOMMAND_C_3,
-        993,
-        loadedBuffer,
-        loadedSize + 1);
+    MEMORY_DeallocateMemory(loadedBuffer, loadedSize + 1);
 
     if (usedFallbackDelete) {
         GCOMMAND_LoadPPVTemplate();
