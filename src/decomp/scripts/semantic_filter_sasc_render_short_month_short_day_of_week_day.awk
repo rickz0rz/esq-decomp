@@ -11,6 +11,7 @@ BEGIN {
     has_blt = 0
     has_center_const = 0
     has_return = 0
+    pending_bitmap_reg = ""
 }
 function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
 {
@@ -20,6 +21,14 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     u = toupper(line)
 
     if (u ~ /^RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY[A-Z0-9_]*:/ || u ~ /^RENDER_SHORT_MONTH_SHORT_DAY_OF_[A-Z0-9_]*:/) has_label = 1
+    if (u ~ /^LEA GLOBAL_REF_696_400_BITMAP\(A4\),A[0-7]$/) {
+        pending_bitmap_reg = substr(u, length(u), 1)
+    } else if (pending_bitmap_reg != "" && u ~ ("^MOVE\\.L A" pending_bitmap_reg ",(\\$4\\(A[0-7]\\)|4\\(A[0-7]\\)|STRUCT_RASTPORT__BITMAP\\(A[0-7]\\))$")) {
+        has_bitmap_swap = 1
+        pending_bitmap_reg = ""
+    } else {
+        pending_bitmap_reg = ""
+    }
     if ((u ~ /GLOBAL_REF_696_400_BITMAP/ && (u ~ /4\(A0\)/ || u ~ /4\(A[0-7]\)/ || u ~ /4\(A1\)/ || u ~ /STRUCT_RASTPORT__BITMAP\(A0\)/)) || u ~ /MOVE.L A0,\(A1\)/) has_bitmap_swap = 1
     if (u ~ /WDISP_SPRINTF/ || u ~ /WDISP_SPRINT/) has_sprintf = 1
     if (u ~ /_LVOSETAPEN/) has_setapen = 1
