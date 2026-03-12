@@ -31,8 +31,8 @@ function trim(s, t) {
     if (n ~ /PTYPEFREEENTRY/) has_free=1
     if (n ~ /PTYPEALLOCATEENTRY/) has_alloc=1
     if (n ~ /TSTL/ && (n ~ /A2/ || n ~ /A3/ || n ~ /A5/) || n ~ /BEQ/) has_null_check=1
-    if (n ~ /2A2/ || n ~ /2A0/) has_len_access=1
-    if (n ~ /6A2/ || n ~ /6A1/ || n ~ /6A0/ || n ~ /LEA6A3A0/ || n ~ /MOVELA0A1/) has_payload_access=1
+    if (n ~ /2A3/ || n ~ /2A2/ || n ~ /2A0/) has_len_access=1
+    if (n ~ /6A3/ || n ~ /6A2/ || n ~ /6A1/ || n ~ /6A0/ || n ~ /LEA6A3A0/ || n ~ /MOVELA0A1/) has_payload_access=1
     if (n ~ /MOVEB/ && n ~ /A5/ && n ~ /A0/ || n ~ /D7L/) has_scratch_copy=1
     if (n ~ /CLRB/ || n ~ /MOVEB0/) has_clear_term=1
     if (u ~ /#104([^0-9]|$)/ || u ~ /#\$68/ || u ~ /104\.[Ww]/ || u ~ /\(\$68\)/ || u ~ /-100\(A5/) has_const104=1

@@ -14,25 +14,22 @@ extern UBYTE *P_TYPE_AllocateEntry(UBYTE typeByte, LONG length, UBYTE *dataPtr);
 UBYTE *P_TYPE_CloneEntry(UBYTE *dstEntry, UBYTE *srcEntry)
 {
     UBYTE scratch[104];
-    UBYTE *result;
     P_TYPE_Entry *srcEntryView;
     LONG i;
-    LONG len;
 
     P_TYPE_FreeEntry(dstEntry);
-    result = 0;
+    dstEntry = 0;
 
     if (srcEntry) {
         srcEntryView = (P_TYPE_Entry *)srcEntry;
         i = 0;
-        len = srcEntryView->payloadLength;
-        while (i < len) {
+        while (i < srcEntryView->payloadLength) {
             scratch[i] = srcEntryView->payload[i];
             i += 1;
         }
         scratch[i] = 0;
-        result = P_TYPE_AllocateEntry(srcEntryView->typeByte, len, scratch);
+        dstEntry = P_TYPE_AllocateEntry(srcEntryView->typeByte, srcEntryView->payloadLength, scratch);
     }
 
-    return result;
+    return dstEntry;
 }

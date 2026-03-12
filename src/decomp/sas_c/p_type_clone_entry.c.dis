@@ -2,52 +2,48 @@
 __code:
 P_TYPE_CloneEntry:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$78,D0                  ;90bc 0000 0078 
+              SUB.L          #$74,D0                  ;90bc 0000 0074 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUB.W          #$6c,A7                  ;9efc 006c 
-              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
+              SUB.W          #$68,A7                  ;9efc 0068 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
 ___P_TYPE_CloneEntry__1:
-              MOVE.L         $88(A7),A3               ;266f 0088 
-              MOVE.L         $84(A7),A5               ;2a6f 0084 
+              MOVE.L         $80(A7),A3               ;266f 0080 
+              MOVE.L         $7c(A7),A5               ;2a6f 007c 
               MOVE.L         A5,-(A7)                 ;2f0d 
               BSR.W          P_TYPE_FreeEntry         ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              SUB.L          A2,A2                    ;95ca 
+              SUB.L          A5,A5                    ;9bcd 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.B          ___P_TYPE_CloneEntry__6  ;6742 
+              BEQ.B          ___P_TYPE_CloneEntry__6  ;6734 
 ___P_TYPE_CloneEntry__2:
-              MOVE.L         A3,$14(A7)               ;2f4b 0014 
+              MOVE.L         A3,A2                    ;244b 
               MOVEQ.L        #$0,D7                   ;7e00 
-              MOVE.L         $14(A7),A0               ;206f 0014 
-              MOVE.L         $2(A0),D6                ;2c28 0002 
 ___P_TYPE_CloneEntry__3:
-              CMP.L          D6,D7                    ;be86 
-              BGE.B          ___P_TYPE_CloneEntry__5  ;6c12 
+              CMP.L          $2(A2),D7                ;beaa 0002 
+              BGE.B          ___P_TYPE_CloneEntry__5  ;6c0e 
 ___P_TYPE_CloneEntry__4:
-              MOVE.L         $14(A7),A1               ;226f 0014 
-              MOVE.L         $6(A1),A0                ;2069 0006 
+              MOVE.L         $6(A2),A0                ;206a 0006 
               ADD.L          D7,A0                    ;d1c7 
-              MOVE.B         (A0),$18(A7,D7.L)        ;1f90 7818 
+              MOVE.B         (A0),$10(A7,D7.L)        ;1f90 7810 
               ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___P_TYPE_CloneEntry__3  ;60ea 
+              BRA.B          ___P_TYPE_CloneEntry__3  ;60ec 
 ___P_TYPE_CloneEntry__5:
-              CLR.B          $18(A7,D7.L)             ;4237 7818 
+              CLR.B          $10(A7,D7.L)             ;4237 7810 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.L         $14(A7),A0               ;206f 0014 
-              MOVE.B         (A0),D0                  ;1010 
-              PEA            $18(A7)                  ;486f 0018 
-              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.B         (A2),D0                  ;1012 
+              PEA            $10(A7)                  ;486f 0010 
+              MOVE.L         $2(A2),-(A7)             ;2f2a 0002 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          P_TYPE_AllocateEntry     ;6100 0000 
-              MOVE.L         D0,A2                    ;2440 
+              MOVE.L         D0,A5                    ;2a40 
               LEA            $c(A7),A7                ;4fef 000c 
 ___P_TYPE_CloneEntry__6:
-              MOVE.L         A2,D0                    ;200a 
+              MOVE.L         A5,D0                    ;200d 
 ___P_TYPE_CloneEntry__7:
 ___P_TYPE_CloneEntry__8:
-              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
-              ADD.W          #$6c,A7                  ;defc 006c 
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
+              ADD.W          #$68,A7                  ;defc 0068 
               RTS                                     ;4e75 
 __const:
 __strings:
