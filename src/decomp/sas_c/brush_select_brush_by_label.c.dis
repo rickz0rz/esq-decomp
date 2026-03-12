@@ -26,7 +26,7 @@ ___BRUSH_SelectBrushByLabel__4:
               PEA            ($2).w                   ;4878 0002 
               PEA            BRUSH_STR_ALIAS_CODE_00(A4);486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              BSR.W          GROUP_AA_JMPTBL_STRING_CompareN;6100 0000 
+              BSR.W          STRING_CompareN          ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               TST.L          D0                       ;4a80 
               BEQ.B          ___BRUSH_SelectBrushByLabel__6;6716 
@@ -34,7 +34,7 @@ ___BRUSH_SelectBrushByLabel__5:
               PEA            ($2).w                   ;4878 0002 
               PEA            BRUSH_STR_ALIAS_CODE_11(A4);486c 0000 
               MOVE.L         A5,-(A7)                 ;2f0d 
-              BSR.W          GROUP_AA_JMPTBL_STRING_CompareN;6100 0000 
+              BSR.W          STRING_CompareN          ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               TST.L          D0                       ;4a80 
               BNE.B          ___BRUSH_SelectBrushByLabel__7;6616 
@@ -42,14 +42,14 @@ ___BRUSH_SelectBrushByLabel__6:
               PEA            ($2).w                   ;4878 0002 
               PEA            BRUSH_STR_ALIAS_CODE_DT(A4);486c 0000 
               PEA            $15(A7)                  ;486f 0015 
-              BSR.W          GROUP_AG_JMPTBL_STRING_CopyPadNu;6100 0000 
+              BSR.W          STRING_CopyPadNul        ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               BRA.B          ___BRUSH_SelectBrushByLabel__8;6012 
 ___BRUSH_SelectBrushByLabel__7:
               PEA            ($2).w                   ;4878 0002 
               MOVE.L         A5,-(A7)                 ;2f0d 
               PEA            $15(A7)                  ;486f 0015 
-              BSR.W          GROUP_AG_JMPTBL_STRING_CopyPadNu;6100 0000 
+              BSR.W          STRING_CopyPadNul        ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
 ___BRUSH_SelectBrushByLabel__8:
               CLR.B          $f(A7)                   ;422f 000f 
@@ -61,7 +61,7 @@ ___BRUSH_SelectBrushByLabel__10:
               PEA            ($2).w                   ;4878 0002 
               PEA            $11(A7)                  ;486f 0011 
               MOVE.L         A0,-(A7)                 ;2f08 
-              BSR.W          GROUP_AA_JMPTBL_STRING_CompareN;6100 0000 
+              BSR.W          STRING_CompareN          ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               TST.L          D0                       ;4a80 
               BNE.B          ___BRUSH_SelectBrushByLabel__12;6604 
@@ -96,10 +96,10 @@ __strings:
               XREF           ESQIFF_BrushIniListHead
               XREF           BRUSH_SelectedNode
               XREF           BRUSH_STR_ALIAS_CODE_00
-              XREF           GROUP_AA_JMPTBL_STRING_CompareN
+              XREF           STRING_CompareN
               XREF           BRUSH_STR_ALIAS_CODE_11
               XREF           BRUSH_STR_ALIAS_CODE_DT
-              XREF           GROUP_AG_JMPTBL_STRING_CopyPadNu
+              XREF           STRING_CopyPadNul
               XREF           BRUSH_STR_FALLBACK_DITHER
               XREF           BRUSH_FindBrushByPredicate
               XREF           BRUSH_ScriptPrimarySelection

@@ -20,8 +20,8 @@ extern const char BRUSH_STR_ALIAS_CODE_11[];
 extern const char BRUSH_STR_ALIAS_CODE_DT[];
 extern const char BRUSH_STR_FALLBACK_DITHER[];
 
-LONG GROUP_AA_JMPTBL_STRING_CompareN(const void *lhs, const void *rhs, LONG n);
-char *GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
+LONG STRING_CompareN(const char *lhs, const char *rhs, LONG n);
+char *STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 void *BRUSH_FindBrushByPredicate(const void *key, void *list_head_ptr);
 
 typedef struct BRUSH_Node {
@@ -46,19 +46,18 @@ void BRUSH_SelectBrushByLabel(const char *brushLabel)
     nodeCursor = (BRUSH_Node *)ESQIFF_BrushIniListHead;
     BRUSH_SelectedNode = (void *)BRUSH_NULL_BYTE;
 
-    if (GROUP_AA_JMPTBL_STRING_CompareN(brushLabel, BRUSH_STR_ALIAS_CODE_00, BRUSH_LABEL_COMPARE_LEN) ==
+    if (STRING_CompareN(brushLabel, BRUSH_STR_ALIAS_CODE_00, BRUSH_LABEL_COMPARE_LEN) ==
             0 ||
-        GROUP_AA_JMPTBL_STRING_CompareN(brushLabel, BRUSH_STR_ALIAS_CODE_11, BRUSH_LABEL_COMPARE_LEN) ==
+        STRING_CompareN(brushLabel, BRUSH_STR_ALIAS_CODE_11, BRUSH_LABEL_COMPARE_LEN) ==
             0) {
-        GROUP_AG_JMPTBL_STRING_CopyPadNul(aliasCode, BRUSH_STR_ALIAS_CODE_DT, BRUSH_LABEL_COMPARE_LEN);
+        STRING_CopyPadNul(aliasCode, BRUSH_STR_ALIAS_CODE_DT, BRUSH_LABEL_COMPARE_LEN);
     } else {
-        GROUP_AG_JMPTBL_STRING_CopyPadNul(aliasCode, brushLabel, BRUSH_LABEL_COMPARE_LEN);
+        STRING_CopyPadNul(aliasCode, brushLabel, BRUSH_LABEL_COMPARE_LEN);
     }
     aliasCode[2] = BRUSH_NULL_BYTE;
 
     while (nodeCursor != (BRUSH_Node *)BRUSH_NULL_BYTE) {
-        if (GROUP_AA_JMPTBL_STRING_CompareN(nodeCursor->label, aliasCode, BRUSH_LABEL_COMPARE_LEN) ==
-            0) {
+        if (STRING_CompareN(nodeCursor->label, aliasCode, BRUSH_LABEL_COMPARE_LEN) == 0) {
             BRUSH_SelectedNode = (void *)nodeCursor;
         }
         nodeCursor = nodeCursor->next;
