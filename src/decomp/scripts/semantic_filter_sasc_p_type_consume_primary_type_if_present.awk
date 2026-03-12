@@ -27,8 +27,8 @@ function trim(s, t) {
 
     if (u ~ /^P_TYPE_CONSUMEPRIMARYTYPEIFPRESENT:/ || u ~ /^P_TYPE_CONSUMEPRIMARYTYPEIFPRESENT[A-Z0-9_]*:/ || u ~ /^P_TYPE_CONSUMEPRIMARYTYPEIFPRESE:/ || u ~ /^P_TYPE_CONSUMEPRIMARYTYPEIFPRESE[A-Z0-9_]*:/) has_entry=1
     if (n ~ /PTYPEPRIMARYGROUPLISTPTR/) has_primary_ptr=1
-    if (n ~ /2A0/ || n ~ /2A1/ || n ~ /CMPLA0D6/ || n ~ /CMPL2A0D6/) has_length_check=1
-    if (n ~ /6A1/ || n ~ /6A0/ || n ~ /LEA6A3A0/ || n ~ /MOVELA0A2/ || n ~ /MOVEAL6A1A0/) has_payload_ptr=1
+    if (n ~ /2A0/ || n ~ /2A1/ || n ~ /2A3/ || n ~ /CMPLA0D6/ || n ~ /CMPL2A0D6/ || n ~ /CMPL2A3D6/) has_length_check=1
+    if (n ~ /6A1/ || n ~ /6A0/ || n ~ /6A3/ || n ~ /LEA6A3A0/ || n ~ /MOVELA0A2/ || n ~ /MOVEAL6A1A0/ || n ~ /MOVEL6A3A2/) has_payload_ptr=1
     if (n ~ /CMPB/ && (n ~ /A0/ || n ~ /A2/ || n ~ /A3/ || n ~ /A5/)) has_byte_compare=1
     if (n ~ /CLRB/ && (n ~ /A3/ || n ~ /A5/ || n ~ /A0/)) has_clear_input=1
     if (u ~ /MOVEQ[.]L #1,D7/ || u ~ /MOVEQ #1,D7/ || u ~ /MOVEQ.L #\$1,D7/ || n ~ /MOVEQL1D7/ || n ~ /MOVEQL1D7/ || n ~ /MOVEQ1D7/) has_found_set=1

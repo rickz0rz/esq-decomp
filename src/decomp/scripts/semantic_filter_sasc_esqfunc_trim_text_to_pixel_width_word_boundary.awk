@@ -27,7 +27,7 @@ function trim(s, t) {
     if (uline ~ /LVOTEXTLENGTH\(A6\)/ || uline ~ /BSR\.W _LVOTEXTLENGTH/ || uline ~ /BSR\.W LVOTEXTLENGTH/) has_textlen_call = 1
     if (uline ~ /^CMP\.L D7,D0$/ || uline ~ /^CMP\.L D[0-7],D0$/) has_cmp_width = 1
     if (uline ~ /WDISP_CHARCLASSTABLE/ || uline ~ /WDISP_CHARCLASSTABL/) has_class_table = 1
-    if (uline ~ /^BTST #3,\(A0\)$/ || uline ~ /^BTST #\$3,\(A0\)$/ || uline ~ /^BTST #\$3,\$0\(A0,D0\.W\)$/ || uline ~ /^BTST #3,\$0\(A0,D0\.W\)$/) has_btst = 1
+    if (uline ~ /^BTST #3,\(A0\)$/ || uline ~ /^BTST #\$3,\(A0\)$/ || uline ~ /^BTST #\$3,\$0\(A0,D0\.W\)$/ || uline ~ /^BTST #3,\$0\(A0,D0\.W\)$/ || uline ~ /^BTST #\$3,\$0\(A0,D1\.W\)$/ || uline ~ /^BTST #3,\$0\(A0,D1\.W\)$/) has_btst = 1
     if (uline ~ /^ESQFUNC_TRIMTEXTTOPIXELWIDTHWORDBOUNDARY_RETURN:/ || uline ~ /^ESQFUNC_TRIMTEXTTOPIXELWIDTHWO[A-Z0-9_]*_RETURN:/ || uline ~ /^MOVE\.L D6,D0$/) has_return_label = 1
     if (uline ~ /^MOVEM\.L \(A7\)\+,D6-D7\/A2-A3$/ || uline ~ /^MOVEM\.L \(A7\)\+,D6\/D7\/A2\/A3$/ || uline ~ /^MOVEM\.L \(A7\)\+,D6\/D7\/A2\/A3\/A5$/) has_restore = 1
     if (uline ~ /^RTS$/) has_rts = 1
