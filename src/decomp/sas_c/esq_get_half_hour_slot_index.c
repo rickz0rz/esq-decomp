@@ -1,34 +1,36 @@
-extern unsigned char CLOCK_HalfHourSlotLookup[];
-
-unsigned long ESQ_GetHalfHourSlotIndex(void *timePtr)
-{
+typedef struct ClockSlotTime {
+    short unknown0;
+    short unknown2;
+    short unknown4;
+    short unknown6;
     short hour;
     short minute;
+    short unknown12;
+    short unknown14;
+    short unknown16;
     short ampmFlag;
-    short slot;
-    unsigned char *base;
+} ClockSlotTime;
 
-    base = (unsigned char *)timePtr;
-    hour = *(short *)(base + 8);
-    ampmFlag = *(short *)(base + 18);
+extern unsigned char CLOCK_HalfHourSlotLookup[];
 
-    if (ampmFlag < 0) {
-        hour = (short)(hour + 12);
-    } else {
-        if (hour == 12) {
-            hour = 0;
-        }
+unsigned long ESQ_GetHalfHourSlotIndex(ClockSlotTime *timePtr)
+{
+    unsigned short slot;
+
+    slot = (unsigned short)timePtr->hour;
+    if (timePtr->ampmFlag < 0) {
+        slot = (unsigned short)(slot + 12);
+    } else if (slot == 12) {
+        slot = 0;
     }
 
-    if (hour != 24) {
-        hour = (short)(hour + hour);
+    if (slot != 24) {
+        slot = (unsigned short)(slot + slot);
     }
 
-    slot = hour;
-    minute = *(short *)(base + 10);
-    if (minute >= 30) {
-        slot = (short)(slot + 1);
+    if (timePtr->minute >= 30) {
+        slot = (unsigned short)(slot + 1);
     }
 
-    return (unsigned long)CLOCK_HalfHourSlotLookup[(unsigned short)slot];
+    return (unsigned long)CLOCK_HalfHourSlotLookup[slot];
 }
