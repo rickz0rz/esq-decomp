@@ -5,69 +5,53 @@ ESQ_IncCopperListsTowardsTargets:
               SUBQ.L         #$8,D0                   ;5180 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        D5/D6/D7/A5,-(A7)        ;48e7 0704 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
 ___ESQ_IncCopperListsTowardsTargets__1:
-              LEA            WDISP_PaletteTriplesRBase(A4),A5;4bec 0000 
+              LEA            WDISP_PaletteTriplesRBase(A4),A2;45ec 0000 
+              LEA            ESQ_CopperStatusDigitsA(A4),A5;4bec 0000 
+              LEA            ESQ_CopperStatusDigitsB(A4),A3;47ec 0000 
               MOVEQ.L        #$0,D7                   ;7e00 
 ___ESQ_IncCopperListsTowardsTargets__2:
               MOVEQ.L        #$7,D0                   ;7007 
               CMP.W          D0,D7                    ;be40 
-              BGT.B          ___ESQ_IncCopperListsTowardsTargets__5;6e3a 
+              BGT.B          ___ESQ_IncCopperListsTowardsTargets__5;6e1c 
 ___ESQ_IncCopperListsTowardsTargets__3:
-              EXT.L          D7                       ;48c7 
-              MOVE.L         D7,D0                    ;2007 
-              ASL.L          #$2,D0                   ;e580 
-              LEA            ESQ_CopperStatusDigitsA(A4),A0;41ec 0000 
-              MOVE.W         $0(A0,D0.L),D6           ;3c30 0800 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         D6,D0                    ;3006 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.W         (A5),D0                  ;3015 
+              MOVE.L         A2,-(A7)                 ;2f0a 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          ESQ_BumpColorTowardTargets;6100 0000 
-              MOVE.L         D0,D6                    ;2c00 
+              MOVE.W         D0,(A5)                  ;3a80 
               ADDQ.W         #$8,A7                   ;504f 
-              EXT.L          D7                       ;48c7 
-              MOVE.L         D7,D0                    ;2007 
-              ASL.L          #$2,D0                   ;e580 
-              LEA            ESQ_CopperStatusDigitsA(A4),A0;41ec 0000 
-              MOVE.W         D6,$0(A0,D0.L)           ;3186 0800 
-              LEA            ESQ_CopperStatusDigitsB(A4),A0;41ec 0000 
-              MOVE.W         D6,$0(A0,D0.L)           ;3186 0800 
-              ADDQ.L         #$3,A5                   ;568d 
+              MOVE.W         D0,(A3)                  ;3680 
+              ADDQ.L         #$4,A5                   ;588d 
+              ADDQ.L         #$4,A3                   ;588b 
+              ADDQ.L         #$3,A2                   ;568a 
 ___ESQ_IncCopperListsTowardsTargets__4:
               ADDQ.W         #$1,D7                   ;5247 
-              BRA.B          ___ESQ_IncCopperListsTowardsTargets__2;60c0 
+              BRA.B          ___ESQ_IncCopperListsTowardsTargets__2;60de 
 ___ESQ_IncCopperListsTowardsTargets__5:
               MOVEQ.L        #$0,D7                   ;7e00 
 ___ESQ_IncCopperListsTowardsTargets__6:
               MOVEQ.L        #$17,D0                  ;7017 
               CMP.W          D0,D7                    ;be40 
-              BGT.B          ___ESQ_IncCopperListsTowardsTargets__10;6e32 
+              BGT.B          ___ESQ_IncCopperListsTowardsTargets__10;6e18 
 ___ESQ_IncCopperListsTowardsTargets__7:
-              EXT.L          D7                       ;48c7 
-              MOVE.L         D7,D0                    ;2007 
-              ASL.L          #$2,D0                   ;e580 
-              LEA            ESQ_CopperStatusDigitsA+$20(A4),A0;41ec 0020 
-              MOVE.W         $0(A0,D0.L),D5           ;3a30 0800 
               MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.W         D5,D0                    ;3005 
-              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.W         (A5),D0                  ;3015 
+              MOVE.L         A2,-(A7)                 ;2f0a 
               MOVE.L         D0,-(A7)                 ;2f00 
               BSR.W          ESQ_BumpColorTowardTargets;6100 0000 
-              MOVE.L         D0,D5                    ;2a00 
+              MOVE.W         D0,(A5)                  ;3a80 
               ADDQ.W         #$8,A7                   ;504f 
-              EXT.L          D7                       ;48c7 
-              MOVE.L         D7,D0                    ;2007 
-              ASL.L          #$2,D0                   ;e580 
-              LEA            ESQ_CopperStatusDigitsA+$20(A4),A0;41ec 0020 
-              MOVE.W         D5,$0(A0,D0.L)           ;3185 0800 
-              ADDQ.L         #$3,A5                   ;568d 
+              ADDQ.L         #$4,A5                   ;588d 
+              ADDQ.L         #$3,A2                   ;568a 
 ___ESQ_IncCopperListsTowardsTargets__8:
               ADDQ.W         #$1,D7                   ;5247 
-              BRA.B          ___ESQ_IncCopperListsTowardsTargets__6;60c8 
+              BRA.B          ___ESQ_IncCopperListsTowardsTargets__6;60e2 
 ___ESQ_IncCopperListsTowardsTargets__9:
 ___ESQ_IncCopperListsTowardsTargets__10:
-              MOVEM.L        (A7)+,D5/D6/D7/A5        ;4cdf 20e0 
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
               RTS                                     ;4e75 
 __const:
 __strings:
@@ -75,7 +59,7 @@ __strings:
               XREF           _XCOVF
               XREF           WDISP_PaletteTriplesRBase
               XREF           ESQ_CopperStatusDigitsA
-              XREF           ESQ_BumpColorTowardTargets
               XREF           ESQ_CopperStatusDigitsB
+              XREF           ESQ_BumpColorTowardTargets
               XDEF           ESQ_IncCopperListsTowardsTargets
               END

@@ -31,8 +31,8 @@ function trim(s,    t) {
     if (u ~ /ESQ_COPPERSTATUSDIGITSA/) has_list_a = 1
     if (u ~ /ESQ_COPPERSTATUSDIGITSB/) has_list_b = 1
     if (u ~ /ESQ_DECCOLORSTEP/) has_dec_call = 1
-    if ((u ~ /MOVE\.W D0,0\(A2,D5\.W\)/ || u ~ /MOVE\.W D0,0\(A3,D5\.W\)/ || u ~ /MOVE\.W D0,\(A[23]\)/ || u ~ /MOVE\.W D0,\$0\(A[35],D[0-7]\.W\)/ || u ~ /MOVE\.W D[0-7],\$0\(A3,D[0-7]\.W\)/) && u !~ /MOVE\.W D[0-7],D[0-7]/) has_dual_store = 1
-    if ((u ~ /MOVE\.W D0,0\(A2,D5\.W\)/ || u ~ /MOVE\.W D0,\(A2\)/ || u ~ /MOVE\.W D0,\$0\(A[25],D[0-7]\.W\)/ || u ~ /MOVE\.W D[0-7],\$0\(A5,D[0-7]\.W\)/) && u !~ /MOVE\.W D[0-7],D[0-7]/) has_primary_store = 1
+    if ((u ~ /MOVE\.W D0,0\(A2,D5\.W\)/ || u ~ /MOVE\.W D0,0\(A3,D5\.W\)/ || u ~ /MOVE\.W D0,\(A[23]\)/ || u ~ /MOVE\.W D[0-7],\(A3\)/ || u ~ /MOVE\.W D0,\$0\(A[35],D[0-7]\.W\)/ || u ~ /MOVE\.W D[0-7],\$0\(A3,D[0-7]\.W\)/) && u !~ /MOVE\.W D[0-7],D[0-7]/) has_dual_store = 1
+    if ((u ~ /MOVE\.W D0,0\(A2,D5\.W\)/ || u ~ /MOVE\.W D0,\(A2\)/ || u ~ /MOVE\.W D0,\(A5\)/ || u ~ /MOVE\.W D[0-7],\(A5\)/ || u ~ /MOVE\.W D0,\$0\(A[25],D[0-7]\.W\)/ || u ~ /MOVE\.W D[0-7],\$0\(A5,D[0-7]\.W\)/) && u !~ /MOVE\.W D[0-7],D[0-7]/) has_primary_store = 1
     if (u ~ /#4/ || u ~ /ADDQ\.[BWL] #\$?4,/ || u ~ /ADDI\.[BWL] #\$?4,/) has_stride4 = 1
     if (u ~ /#7/ || u ~ /#8/ || u ~ /#\$?7/) has_loop8 = 1
     if (u ~ /#23/ || u ~ /#24/ || u ~ /#\$?17/) has_loop24 = 1

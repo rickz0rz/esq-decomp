@@ -13,18 +13,20 @@ extern unsigned short ESQ_DecColorStep(unsigned short color);
 
 void ESQ_DecCopperListsPrimary(void)
 {
+    ESQ_CopperWordSlot *slotA;
+    ESQ_CopperWordSlot *slotB;
     short i;
 
+    slotA = &ESQ_CopperStatusDigitsA.slots[0];
+    slotB = &ESQ_CopperStatusDigitsB.slots[0];
     for (i = 0; i <= 7; ++i) {
-        unsigned short v = ESQ_CopperStatusDigitsA.slots[i].color;
-        v = ESQ_DecColorStep(v);
-        ESQ_CopperStatusDigitsA.slots[i].color = v;
-        ESQ_CopperStatusDigitsB.slots[i].color = v;
+        slotB->color = slotA->color = ESQ_DecColorStep(slotA->color);
+        ++slotA;
+        ++slotB;
     }
 
     for (i = 0; i <= 23; ++i) {
-        unsigned short v = ESQ_CopperStatusDigitsA.slots[i + 8].color;
-        v = ESQ_DecColorStep(v);
-        ESQ_CopperStatusDigitsA.slots[i + 8].color = v;
+        slotA->color = ESQ_DecColorStep(slotA->color);
+        ++slotA;
     }
 }
