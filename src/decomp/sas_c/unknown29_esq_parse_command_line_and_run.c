@@ -1,5 +1,6 @@
 typedef signed long LONG;
 typedef unsigned long ULONG;
+typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
 extern void *AbsExecBase;
@@ -52,7 +53,6 @@ typedef struct ESQ_WBStartupMsg {
 
 LONG ESQ_ParseCommandLineAndRun(char *cmdline)
 {
-    static const char kConsolePrefix[] = "con.10/10/320/80/";
     char *p = cmdline;
 
     while (Global_ArgCount < 32UL) {
@@ -107,11 +107,25 @@ LONG ESQ_ParseCommandLineAndRun(char *cmdline)
         LONG handle;
         ULONG handleBase;
         UBYTE *task;
-        ULONG i = 0;
 
-        do {
-            Global_ConsoleNameBuffer[i] = kConsolePrefix[i];
-        } while (kConsolePrefix[i++] != 0);
+        Global_ConsoleNameBuffer[0] = 'c';
+        Global_ConsoleNameBuffer[1] = 'o';
+        Global_ConsoleNameBuffer[2] = 'n';
+        Global_ConsoleNameBuffer[3] = '.';
+        Global_ConsoleNameBuffer[4] = '1';
+        Global_ConsoleNameBuffer[5] = '0';
+        Global_ConsoleNameBuffer[6] = '/';
+        Global_ConsoleNameBuffer[7] = '1';
+        Global_ConsoleNameBuffer[8] = '0';
+        Global_ConsoleNameBuffer[9] = '/';
+        Global_ConsoleNameBuffer[10] = '3';
+        Global_ConsoleNameBuffer[11] = '2';
+        Global_ConsoleNameBuffer[12] = '0';
+        Global_ConsoleNameBuffer[13] = '/';
+        Global_ConsoleNameBuffer[14] = '8';
+        Global_ConsoleNameBuffer[15] = '0';
+        Global_ConsoleNameBuffer[16] = '/';
+        Global_ConsoleNameBuffer[17] = 0;
 
         STRING_AppendN(Global_ConsoleNameBuffer, appendSrc, 40UL);
         handle = _LVOOpen(Global_DosLibrary, Global_ConsoleNameBuffer, MODE_NEWFILE);
