@@ -29,7 +29,7 @@ function trim(s, t) {
 
     if (u ~ /^GCOMMAND_LOADMPLEXFILE[A-Z0-9_]*:/) has_entry = 1
 
-    if (index(u, "GROUP_AY_JMPTBL_DISKIO_OPENFILEWITHBUFFER") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_OPENFILEW") > 0) has_open = 1
+    if (index(u, "GROUP_AY_JMPTBL_DISKIO_OPENFILEWITHBUFFER") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_OPENFILEW") > 0 || index(u, "DISKIO_OPENFILEWITHBUFFER") > 0 || index(u, "DISKIO_OPENFILEWITHBUFFE") > 0) has_open = 1
     if (index(u, "MODE_NEWFILE") > 0) has_mode = 1
 
     if (index(u, "GCOMMAND_DIGITALMPLEXENABLEDFLAG") > 0) has_template_ref = 1
@@ -44,9 +44,9 @@ function trim(s, t) {
         else has_scan2 = 1
     }
 
-    if (index(u, "GROUP_AY_JMPTBL_DISKIO_WRITEBUFFEREDBYTES") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_WRITEBUFFER") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_WRITEBUFF") > 0) write_call_count += 1
+    if (index(u, "GROUP_AY_JMPTBL_DISKIO_WRITEBUFFEREDBYTES") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_WRITEBUFFER") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_WRITEBUFF") > 0 || index(u, "DISKIO_WRITEBUFFEREDBYTES") > 0 || index(u, "DISKIO_WRITEBUFFEREDBYTE") > 0) write_call_count += 1
 
-    if (index(u, "GROUP_AY_JMPTBL_DISKIO_CLOSEBUFFEREDFILEANDFLUSH") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_CLOSEBUFFE") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_CLOSEBUFF") > 0) has_close = 1
+    if (index(u, "GROUP_AY_JMPTBL_DISKIO_CLOSEBUFFEREDFILEANDFLUSH") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_CLOSEBUFFE") > 0 || index(u, "GROUP_AY_JMPTBL_DISKIO_CLOSEBUFF") > 0 || index(u, "DISKIO_CLOSEBUFFEREDFILEANDFLUSH") > 0 || index(u, "DISKIO_CLOSEBUFFEREDFILEANDFLUS") > 0) has_close = 1
     if (u == "RTS") has_return = 1
 }
 

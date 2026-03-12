@@ -6,9 +6,9 @@ extern WORD FLIB_LogEntryByteCount;
 extern const char CLOCK_FileEofMarkerCtrlZ[];
 extern const char Global_STR_DF0_ERR_LOG[];
 
-extern LONG SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
-extern LONG SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(LONG fileHandle, void *buffer, LONG byteCount);
-extern LONG SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG fileHandle);
+extern LONG DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
+extern LONG DISKIO_WriteBufferedBytes(LONG fileHandle, const void *buffer, LONG byteCount);
+extern LONG DISKIO_CloseBufferedFileAndFlush(LONG fileHandle);
 
 LONG PARSEINI_WriteErrorLogEntry(void)
 {
@@ -18,19 +18,19 @@ LONG PARSEINI_WriteErrorLogEntry(void)
         return -1L;
     }
 
-    fileHandle = SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(Global_STR_DF0_ERR_LOG, 1006L);
+    fileHandle = DISKIO_OpenFileWithBuffer(Global_STR_DF0_ERR_LOG, 1006L);
     if (fileHandle == 0) {
         return -1L;
     }
 
-    SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(
+    DISKIO_WriteBufferedBytes(
         fileHandle,
         NEWGRID2_ErrorLogEntryPtr,
         (LONG)FLIB_LogEntryByteCount);
-    SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(
+    DISKIO_WriteBufferedBytes(
         fileHandle,
         (void *)CLOCK_FileEofMarkerCtrlZ,
         1L);
 
-    return SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(fileHandle);
+    return DISKIO_CloseBufferedFileAndFlush(fileHandle);
 }

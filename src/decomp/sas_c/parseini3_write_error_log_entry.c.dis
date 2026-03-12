@@ -15,7 +15,7 @@ ___PARSEINI_WriteErrorLogEntry__2:
 ___PARSEINI_WriteErrorLogEntry__3:
               PEA            ($3ee).w                 ;4878 03ee 
               PEA            Global_STR_DF0_ERR_LOG(A4);486c 0000 
-              BSR.W          SCRIPT_JMPTBL_DISKIO_OpenFileWit;6100 0000 
+              BSR.W          DISKIO_OpenFileWithBuffer;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D7                       ;4a87 
@@ -29,13 +29,13 @@ ___PARSEINI_WriteErrorLogEntry__5:
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         NEWGRID2_ErrorLogEntryPtr(A4),-(A7);2f2c 0000 
               MOVE.L         D7,-(A7)                 ;2f07 
-              BSR.W          SCRIPT_JMPTBL_DISKIO_WriteBuffer;6100 0000 
+              BSR.W          DISKIO_WriteBufferedBytes;6100 0000 
               PEA            ($1).w                   ;4878 0001 
               PEA            CLOCK_FileEofMarkerCtrlZ(A4);486c 0000 
               MOVE.L         D7,-(A7)                 ;2f07 
-              BSR.W          SCRIPT_JMPTBL_DISKIO_WriteBuffer;6100 0000 
+              BSR.W          DISKIO_WriteBufferedBytes;6100 0000 
               MOVE.L         D7,(A7)                  ;2e87 
-              BSR.W          SCRIPT_JMPTBL_DISKIO_CloseBuffer;6100 0000 
+              BSR.W          DISKIO_CloseBufferedFileAndFlush;6100 0000 
               LEA            $18(A7),A7               ;4fef 0018 
 ___PARSEINI_WriteErrorLogEntry__6:
 ___PARSEINI_WriteErrorLogEntry__7:
@@ -47,10 +47,10 @@ __strings:
               XREF           _XCOVF
               XREF           NEWGRID2_ErrorLogEntryPtr
               XREF           Global_STR_DF0_ERR_LOG
-              XREF           SCRIPT_JMPTBL_DISKIO_OpenFileWit
+              XREF           DISKIO_OpenFileWithBuffer
               XREF           FLIB_LogEntryByteCount
-              XREF           SCRIPT_JMPTBL_DISKIO_WriteBuffer
+              XREF           DISKIO_WriteBufferedBytes
               XREF           CLOCK_FileEofMarkerCtrlZ
-              XREF           SCRIPT_JMPTBL_DISKIO_CloseBuffer
+              XREF           DISKIO_CloseBufferedFileAndFlush
               XDEF           PARSEINI_WriteErrorLogEntry
               END

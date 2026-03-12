@@ -6,9 +6,9 @@ extern const char GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateSave[];
 extern UBYTE GCOMMAND_DigitalMplexEnabledFlag[];
 extern UBYTE GCOMMAND_MplexTemplateFieldSeparatorByteStorage;
 
-extern LONG GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
-extern LONG GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(LONG handle, const void *buffer, LONG len);
-extern LONG GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG handle);
+extern LONG DISKIO_OpenFileWithBuffer(const char *path, LONG mode);
+extern LONG DISKIO_WriteBufferedBytes(LONG handle, const void *buffer, LONG len);
+extern LONG DISKIO_CloseBufferedFileAndFlush(LONG handle);
 
 LONG GCOMMAND_LoadMplexFile(void)
 {
@@ -25,7 +25,7 @@ LONG GCOMMAND_LoadMplexFile(void)
     UBYTE *scan;
     LONG i;
 
-    fileHandle = GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(
+    fileHandle = DISKIO_OpenFileWithBuffer(
         GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateSave,
         MODE_NEWFILE);
     if (fileHandle == 0) {
@@ -41,16 +41,16 @@ LONG GCOMMAND_LoadMplexFile(void)
     templateWords[TEMPLATE_FIRST_TEXT_INDEX] = 0;
     templateWords[TEMPLATE_SECOND_TEXT_INDEX] = 0;
 
-    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(fileHandle, templateWords, TEMPLATE_BLOCK_BYTES);
+    DISKIO_WriteBufferedBytes(fileHandle, templateWords, TEMPLATE_BLOCK_BYTES);
 
     scan = firstText;
     while (*scan != 0) {
         scan++;
     }
 
-    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(fileHandle, firstText, (LONG)(scan - firstText));
+    DISKIO_WriteBufferedBytes(fileHandle, firstText, (LONG)(scan - firstText));
 
-    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(
+    DISKIO_WriteBufferedBytes(
         fileHandle, &GCOMMAND_MplexTemplateFieldSeparatorByteStorage, SEP_BYTES);
 
     scan = secondText;
@@ -58,8 +58,8 @@ LONG GCOMMAND_LoadMplexFile(void)
         scan++;
     }
 
-    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(
+    DISKIO_WriteBufferedBytes(
         fileHandle, secondText, (LONG)(scan - secondText) + STR_TERM_BYTES);
 
-    return GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(fileHandle);
+    return DISKIO_CloseBufferedFileAndFlush(fileHandle);
 }

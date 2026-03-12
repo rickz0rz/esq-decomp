@@ -17,7 +17,7 @@ ___DISKIO_ParseLongFromWorkBuffer__2:
               BRA.B          ___DISKIO_ParseLongFromWorkBuffer__5;6008 
 ___DISKIO_ParseLongFromWorkBuffer__3:
               MOVE.L         A5,-(A7)                 ;2f0d 
-              BSR.W          GROUP_AG_JMPTBL_PARSE_ReadSigned;6100 0000 
+              BSR.W          PARSE_ReadSignedLongSkipClass3_A;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___DISKIO_ParseLongFromWorkBuffer__4:
 ___DISKIO_ParseLongFromWorkBuffer__5:
@@ -28,6 +28,6 @@ __strings:
               XREF           __base
               XREF           _XCOVF
               XREF           DISKIO_ConsumeCStringFromWorkBuf
-              XREF           GROUP_AG_JMPTBL_PARSE_ReadSigned
+              XREF           PARSE_ReadSignedLongSkipClass3_A
               XDEF           DISKIO_ParseLongFromWorkBuffer
               END
