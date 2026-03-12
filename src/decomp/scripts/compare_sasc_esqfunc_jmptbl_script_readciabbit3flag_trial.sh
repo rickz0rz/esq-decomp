@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
-SASC_SRC="esqfunc_jmptbl_stubs.c"
+SASC_SRC="esqfunc_jmptbl_script_read_ciab_bit3_flag.c"
 SASC_DIS="src/decomp/sas_c/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/groups/a/n/esqfunc.s"
 OUT_DIR="build/decomp/sasc_trial"
