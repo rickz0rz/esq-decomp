@@ -33,22 +33,22 @@ ___NEWGRID_FindNextEntryWithMarkers__6:
               BEQ.B          ___NEWGRID_FindNextEntryWithMarkers__8;6706 
 ___NEWGRID_FindNextEntryWithMarkers__7:
               MOVE.L         D4,D0                    ;2004 
-              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__36;6000 0108 
+              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__36;6000 010a 
 ___NEWGRID_FindNextEntryWithMarkers__8:
               MOVE.B         TEXTDISP_PrimaryGroupPresentFlag(A4),D0;102c 0000 
               TST.B          D0                       ;4a00 
               BNE.B          ___NEWGRID_FindNextEntryWithMarkers__10;6606 
 ___NEWGRID_FindNextEntryWithMarkers__9:
               MOVE.L         D4,D0                    ;2004 
-              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__36;6000 00fa 
+              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__36;6000 00fc 
 ___NEWGRID_FindNextEntryWithMarkers__10:
               TST.L          $18(A7)                  ;4aaf 0018 
-              BNE.W          ___NEWGRID_FindNextEntryWithMarkers__32;6600 00e8 
+              BNE.W          ___NEWGRID_FindNextEntryWithMarkers__32;6600 00ea 
 ___NEWGRID_FindNextEntryWithMarkers__11:
               MOVEQ.L        #$0,D0                   ;7000 
               MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
               CMP.L          D0,D4                    ;b880 
-              BGE.W          ___NEWGRID_FindNextEntryWithMarkers__32;6c00 00dc 
+              BGE.W          ___NEWGRID_FindNextEntryWithMarkers__32;6c00 00de 
 ___NEWGRID_FindNextEntryWithMarkers__12:
 ___NEWGRID_FindNextEntryWithMarkers__13:
               CLR.L          $14(A7)                  ;42af 0014 
@@ -137,15 +137,16 @@ ___NEWGRID_FindNextEntryWithMarkers__29:
               MOVE.L         D5,D0                    ;2005 
               ASL.L          #$2,D0                   ;e580 
               ADD.L          D0,A0                    ;d1c0 
-              TST.L          $38(A0)                  ;4aa8 0038 
+              LEA            $38(A0),A1               ;43e8 0038 
+              TST.L          (A1)                     ;4a91 
               BNE.B          ___NEWGRID_FindNextEntryWithMarkers__31;6606 
 ___NEWGRID_FindNextEntryWithMarkers__30:
               ADDQ.L         #$1,D4                   ;5284 
-              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff1e 
+              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff1c 
 ___NEWGRID_FindNextEntryWithMarkers__31:
               MOVEQ.L        #$1,D0                   ;7001 
               MOVE.L         D0,$18(A7)               ;2f40 0018 
-              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff14 
+              BRA.W          ___NEWGRID_FindNextEntryWithMarkers__10;6000 ff12 
 ___NEWGRID_FindNextEntryWithMarkers__32:
               TST.L          $18(A7)                  ;4aaf 0018 
               BNE.B          ___NEWGRID_FindNextEntryWithMarkers__34;6602 

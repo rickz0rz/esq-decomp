@@ -22,8 +22,6 @@ LONG NEWGRID_FindNextEntryWithFlags(LONG scanMode, LONG startIndex)
     const LONG INDEX_INVALID = -1;
     const LONG FLAG_FALSE = 0;
     const LONG FLAG_TRUE = 1;
-    const UBYTE ENTRY_FLAG_A_MASK = 0x04;
-    const UBYTE ENTRY_FLAG_B_MASK = 0x80;
     LONG idx;
     LONG found;
 
@@ -54,8 +52,8 @@ LONG NEWGRID_FindNextEntryWithFlags(LONG scanMode, LONG startIndex)
         {
             const NEWGRID_Entry *entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, MODE_PRIMARY);
             if (entry != 0) {
-                if (((entry->flags47 & ENTRY_FLAG_A_MASK) != 0) &&
-                    ((entry->flags40 & ENTRY_FLAG_B_MASK) != 0)) {
+                if ((((const UBYTE *)entry)[47] & 0x04) != 0 &&
+                    (((const UBYTE *)entry)[40] & 0x80) != 0) {
                     found = FLAG_TRUE;
                     continue;
                 }
