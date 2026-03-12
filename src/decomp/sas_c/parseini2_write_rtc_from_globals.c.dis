@@ -33,17 +33,17 @@ ___PARSEINI_WriteRtcFromGlobals__5:
               MOVE.W         CLOCK_CacheMinuteOrSecond(A4),$14(A7);3f6c 0000 0014 
               MOVE.W         Global_REF_CLOCKDATA_STRUCT(A4),$12(A7);3f6c 0000 0012 
               PEA            $12(A7)                  ;486f 0012 
-              BSR.W          PARSEINI2_JMPTBL_CLOCK_CheckDate;6100 0000 
+              BSR.W          CLOCK_CheckDateOrSecondsFromEpoc;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               TST.L          D0                       ;4a80 
               BEQ.B          ___PARSEINI_WriteRtcFromGlobals__8;6712 
 ___PARSEINI_WriteRtcFromGlobals__6:
 ___PARSEINI_WriteRtcFromGlobals__7:
               PEA            $a(A7)                   ;486f 000a 
-              BSR.W          PARSEINI2_JMPTBL_CLOCK_SecondsFr;6100 0000 
+              BSR.W          CLOCK_SecondsFromEpoch   ;6100 0000 
               MOVE.L         D0,D7                    ;2e00 
               MOVE.L         D7,(A7)                  ;2e87 
-              BSR.W          PARSEINI2_JMPTBL_BATTCLOCK_Write;6100 0000 
+              BSR.W          BATTCLOCK_WriteSecondsToBatteryB;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___PARSEINI_WriteRtcFromGlobals__8:
               MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
@@ -64,8 +64,8 @@ __strings:
               XREF           PARSEINI_AdjustHoursTo24HrFormat
               XREF           CLOCK_CacheMinuteOrSecond
               XREF           Global_REF_CLOCKDATA_STRUCT
-              XREF           PARSEINI2_JMPTBL_CLOCK_CheckDate
-              XREF           PARSEINI2_JMPTBL_CLOCK_SecondsFr
-              XREF           PARSEINI2_JMPTBL_BATTCLOCK_Write
+              XREF           CLOCK_CheckDateOrSecondsFromEpoc
+              XREF           CLOCK_SecondsFromEpoch
+              XREF           BATTCLOCK_WriteSecondsToBatteryB
               XDEF           PARSEINI_WriteRtcFromGlobals
               END

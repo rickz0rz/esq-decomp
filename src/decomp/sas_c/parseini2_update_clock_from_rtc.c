@@ -31,9 +31,9 @@ extern WORD CLOCK_DaySlotIndex;
 extern WORD DST_PrimaryCountdown;
 extern struct ClockNormData PARSEINI_FallbackClockDataRecord;
 
-extern LONG PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock(void);
-extern void PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData(LONG seconds, struct ClockData *clockData);
-extern LONG PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(struct ClockData *clockData);
+extern LONG BATTCLOCK_GetSecondsFromBatteryBackedClock(void);
+extern void CLOCK_ConvertAmigaSecondsToClockData(LONG seconds, struct ClockData *clockData);
+extern LONG CLOCK_CheckDateOrSecondsFromEpoch(struct ClockData *clockData);
 extern void PARSEINI_NormalizeClockData(struct ClockNormData *dstClockData, struct ClockNormData *srcClockData);
 
 void PARSEINI_UpdateClockFromRtc(void)
@@ -49,9 +49,9 @@ void PARSEINI_UpdateClockFromRtc(void)
         return;
     }
 
-    seconds = PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock();
-    PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData(seconds, &clockData);
-    if (PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(&clockData) == 0) {
+    seconds = BATTCLOCK_GetSecondsFromBatteryBackedClock();
+    CLOCK_ConvertAmigaSecondsToClockData(seconds, &clockData);
+    if (CLOCK_CheckDateOrSecondsFromEpoch(&clockData) == 0) {
         PARSEINI_NormalizeClockData((struct ClockNormData *)&CLOCK_DaySlotIndex, &PARSEINI_FallbackClockDataRecord);
         return;
     }
