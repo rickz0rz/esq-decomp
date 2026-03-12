@@ -1,11 +1,13 @@
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
+typedef LONG (*WdispOutputFunc)(LONG);
+
 extern LONG Global_PrintfByteCount;
 extern UBYTE *Global_PrintfBufferPtr;
 
-extern void UNKNOWN10_PrintfPutcToBuffer(LONG ch);
-extern void WDISP_FormatWithCallback(void (*outputFunc)(LONG), const char *formatStr, void *varArgsPtr);
+extern LONG UNKNOWN10_PrintfPutcToBuffer(LONG ch);
+extern void WDISP_FormatWithCallback(WdispOutputFunc outputFunc, const char *formatStr, void *varArgsPtr);
 
 LONG WDISP_SPrintf(char *outBuf, const char *formatStr, ...)
 {

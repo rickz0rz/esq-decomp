@@ -1,8 +1,10 @@
 typedef signed long LONG;
 
-extern char *FORMAT_ParseFormatSpec(char *fmt, void **varArgsPtr, void (*outputFunc)(LONG));
+typedef LONG (*WdispOutputFunc)(LONG);
 
-void WDISP_FormatWithCallback(void (*outputFunc)(LONG), char *formatStr, void *varArgsPtr)
+extern char *FORMAT_ParseFormatSpec(char *fmt, void **varArgsPtr, WdispOutputFunc outputFunc);
+
+void WDISP_FormatWithCallback(WdispOutputFunc outputFunc, char *formatStr, void *varArgsPtr)
 {
     char ch;
 

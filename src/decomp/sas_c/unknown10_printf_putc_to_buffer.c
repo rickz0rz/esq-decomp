@@ -4,7 +4,7 @@ typedef unsigned char UBYTE;
 extern LONG Global_PrintfByteCount;
 extern UBYTE *Global_PrintfBufferPtr;
 
-void UNKNOWN10_PrintfPutcToBuffer(LONG ch)
+LONG UNKNOWN10_PrintfPutcToBuffer(LONG ch)
 {
     UBYTE *p;
 
@@ -12,4 +12,6 @@ void UNKNOWN10_PrintfPutcToBuffer(LONG ch)
     p = Global_PrintfBufferPtr;
     *p++ = (UBYTE)ch;
     Global_PrintfBufferPtr = p;
+
+    return ch;
 }

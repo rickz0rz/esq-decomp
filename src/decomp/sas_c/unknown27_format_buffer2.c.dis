@@ -12,6 +12,7 @@ ___FORMAT_Buffer2WriteChar__1:
               MOVE.L         D7,D0                    ;2007 
               MOVE.B         D0,(A0)                  ;1080 
 ___FORMAT_Buffer2WriteChar__2:
+___FORMAT_Buffer2WriteChar__3:
               MOVE.L         (A7)+,D7                 ;2e1f 
               RTS                                     ;4e75 
 __const:

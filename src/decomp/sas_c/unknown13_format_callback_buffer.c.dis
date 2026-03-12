@@ -20,7 +20,7 @@ ___FORMAT_CallbackWriteChar__2:
               MOVE.B         D0,(A3)                  ;1680 
               MOVEQ.L        #$0,D6                   ;7c00 
               MOVE.B         D0,D6                    ;1c00 
-              BRA.B          ___FORMAT_CallbackWriteChar__5;6012 
+              BRA.B          ___FORMAT_CallbackWriteChar__4;6012 
 ___FORMAT_CallbackWriteChar__3:
               MOVE.L         D7,D0                    ;2007 
               MOVEQ.L        #$0,D1                   ;7200 
@@ -31,7 +31,9 @@ ___FORMAT_CallbackWriteChar__3:
               MOVE.L         D0,D6                    ;2c00 
               ADDQ.W         #$8,A7                   ;504f 
 ___FORMAT_CallbackWriteChar__4:
+              MOVE.L         D6,D0                    ;2006 
 ___FORMAT_CallbackWriteChar__5:
+___FORMAT_CallbackWriteChar__6:
               MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 
               RTS                                     ;4e75 
 __const:
@@ -49,7 +51,7 @@ ___FORMAT_FormatToCallbackBuffer__1:
               MOVE.L         A5,Global_FormatCallbackBufferPtr(A4);294d 0000 
               PEA            $14(A7)                  ;486f 0014 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              PEA            $ffffff84(PC)            ;487a ff84 
+              PEA            $ffffff82(PC)            ;487a ff82 
               BSR.W          WDISP_FormatWithCallback ;6100 0000 
               MOVE.L         A5,(A7)                  ;2e8d 
               PEA            ($ffffffff).w            ;4878 ffff 

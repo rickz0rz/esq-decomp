@@ -1,5 +1,7 @@
 typedef signed long LONG;
 
+typedef LONG (*WdispOutputFunc)(LONG);
+
 typedef struct FormatCallbackBuffer {
     LONG unk0;
     unsigned char *cursor; /* +4 */
@@ -11,9 +13,9 @@ extern LONG Global_FormatCallbackByteCount;
 extern void *Global_FormatCallbackBufferPtr;
 
 extern LONG STREAM_BufferedPutcOrFlush(LONG ch, void *node);
-extern void WDISP_FormatWithCallback(void (*cb)(LONG), char *format, void *args);
+extern void WDISP_FormatWithCallback(WdispOutputFunc cb, char *format, void *args);
 
-void FORMAT_CallbackWriteChar(LONG ch)
+LONG FORMAT_CallbackWriteChar(LONG ch)
 {
     LONG out;
     FormatCallbackBuffer *buf;
@@ -31,7 +33,7 @@ void FORMAT_CallbackWriteChar(LONG ch)
         out = STREAM_BufferedPutcOrFlush((unsigned char)ch, buf);
     }
 
-    (void)out;
+    return out;
 }
 
 LONG FORMAT_FormatToCallbackBuffer(void *callbackBuffer, char *format, void *args)
