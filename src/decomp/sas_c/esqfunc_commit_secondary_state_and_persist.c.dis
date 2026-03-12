@@ -13,19 +13,19 @@ ___ESQFUNC_CommitSecondaryStateAndP__1:
               MOVE.W         D7,ESQPARS2_ReadModeFlags(A4);3947 0000 
               MOVE.W         D6,ESQDISP_PendingGridReinitFlag(A4);3946 0000 
               BSR.W          ESQDISP_PropagatePrimaryTitleMet;6100 0000 
-              BSR.W          ESQFUNC_JMPTBL_LOCAVAIL_RebuildF;6100 0000 
+              BSR.W          LOCAVAIL_RebuildFilterStateFromC;6100 0000 
               BSR.W          ESQDISP_PromoteSecondaryGroupToP;6100 0000 
               BSR.W          ESQDISP_MirrorPrimaryEntriesToSe;6100 0000 
               BSR.W          ESQDISP_PromoteSecondaryLineHead;6100 0000 
-              BSR.W          ESQPARS_JMPTBL_DISKIO2_FlushData;6100 0000 
-              BSR.W          ESQPARS_JMPTBL_LADFUNC_SaveTextA;6100 0000 
+              BSR.W          DISKIO2_FlushDataFilesIfNeeded;6100 0000 
+              BSR.W          LADFUNC_SaveTextAdsToFile;6100 0000 
               PEA            LOCAVAIL_SecondaryFilterState(A4);486c 0000 
               PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 
-              BSR.W          ESQPARS_JMPTBL_LOCAVAIL_SaveAvai;6100 0000 
+              BSR.W          LOCAVAIL_SaveAvailabilityDataFil;6100 0000 
               MOVE.L         DST_BannerWindowPrimary(A4),(A7);2eac 0000 
               BSR.W          DATETIME_SavePairToFile  ;6100 0000 
-              BSR.W          ESQFUNC_JMPTBL_P_TYPE_PromoteSec;6100 0000 
-              BSR.W          ESQPARS_JMPTBL_P_TYPE_WritePromo;6100 0000 
+              BSR.W          P_TYPE_PromoteSecondaryList;6100 0000 
+              BSR.W          P_TYPE_WritePromoIdDataFile;6100 0000 
               BSR.W          ESQFUNC_UpdateDiskWarningAndRefr;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               MOVE.W         D5,ESQPARS2_ReadModeFlags(A4);3945 0000 
@@ -39,19 +39,19 @@ __strings:
               XREF           ESQPARS2_ReadModeFlags
               XREF           ESQDISP_PendingGridReinitFlag
               XREF           ESQDISP_PropagatePrimaryTitleMet
-              XREF           ESQFUNC_JMPTBL_LOCAVAIL_RebuildF
+              XREF           LOCAVAIL_RebuildFilterStateFromC
               XREF           ESQDISP_PromoteSecondaryGroupToP
               XREF           ESQDISP_MirrorPrimaryEntriesToSe
               XREF           ESQDISP_PromoteSecondaryLineHead
-              XREF           ESQPARS_JMPTBL_DISKIO2_FlushData
-              XREF           ESQPARS_JMPTBL_LADFUNC_SaveTextA
+              XREF           DISKIO2_FlushDataFilesIfNeeded
+              XREF           LADFUNC_SaveTextAdsToFile
               XREF           LOCAVAIL_SecondaryFilterState
               XREF           LOCAVAIL_PrimaryFilterState
-              XREF           ESQPARS_JMPTBL_LOCAVAIL_SaveAvai
+              XREF           LOCAVAIL_SaveAvailabilityDataFil
               XREF           DST_BannerWindowPrimary
               XREF           DATETIME_SavePairToFile
-              XREF           ESQFUNC_JMPTBL_P_TYPE_PromoteSec
-              XREF           ESQPARS_JMPTBL_P_TYPE_WritePromo
+              XREF           P_TYPE_PromoteSecondaryList
+              XREF           P_TYPE_WritePromoIdDataFile
               XREF           ESQFUNC_UpdateDiskWarningAndRefr
               XDEF           ESQFUNC_CommitSecondaryStateAndP
               END

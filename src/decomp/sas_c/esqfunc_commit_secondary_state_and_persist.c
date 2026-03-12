@@ -10,16 +10,16 @@ extern UBYTE LOCAVAIL_SecondaryFilterState;
 extern void *DST_BannerWindowPrimary;
 
 extern void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void);
-extern void ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup(void);
+extern void LOCAVAIL_RebuildFilterStateFromCurrentGroup(void);
 extern void ESQDISP_PromoteSecondaryGroupToPrimary(void);
 extern void ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty(void);
 extern void ESQDISP_PromoteSecondaryLineHeadTailIfMarked(void);
-extern void ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(void);
-extern LONG ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile(void);
-extern LONG ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(void *primary, void *secondary);
+extern void DISKIO2_FlushDataFilesIfNeeded(void);
+extern LONG LADFUNC_SaveTextAdsToFile(void);
+extern LONG LOCAVAIL_SaveAvailabilityDataFile(void *primary, void *secondary);
 extern LONG DATETIME_SavePairToFile(void *pair);
-extern void ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList(void);
-extern void ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(void);
+extern void P_TYPE_PromoteSecondaryList(void);
+extern void P_TYPE_WritePromoIdDataFile(void);
 extern void ESQFUNC_UpdateDiskWarningAndRefreshTick(void);
 
 void ESQFUNC_CommitSecondaryStateAndPersist(void)
@@ -33,21 +33,21 @@ void ESQFUNC_CommitSecondaryStateAndPersist(void)
     ESQDISP_PendingGridReinitFlag = FLAG_PENDING;
 
     ESQDISP_PropagatePrimaryTitleMetadataToSecondary();
-    ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup();
+    LOCAVAIL_RebuildFilterStateFromCurrentGroup();
     ESQDISP_PromoteSecondaryGroupToPrimary();
     ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty();
     ESQDISP_PromoteSecondaryLineHeadTailIfMarked();
 
-    ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded();
-    ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile();
+    DISKIO2_FlushDataFilesIfNeeded();
+    LADFUNC_SaveTextAdsToFile();
 
-    ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(
+    LOCAVAIL_SaveAvailabilityDataFile(
         &LOCAVAIL_PrimaryFilterState,
         &LOCAVAIL_SecondaryFilterState);
 
     DATETIME_SavePairToFile(DST_BannerWindowPrimary);
-    ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList();
-    ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile();
+    P_TYPE_PromoteSecondaryList();
+    P_TYPE_WritePromoIdDataFile();
     ESQFUNC_UpdateDiskWarningAndRefreshTick();
 
     ESQPARS2_ReadModeFlags = savedFlags;
