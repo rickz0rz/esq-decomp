@@ -21,7 +21,10 @@ function trim(s, t) {
     u = toupper(line)
 
     if (u ~ /^TEXTDISP_UPDATEHIGHLIGHTORPREVIEW:/ || u ~ /^TEXTDISP_UPDATEHIGHLIGHTORPRE[A-Z0-9_]*:/) has_entry = 1
-    if (index(u, "TEXTDISP2_JMPTBL_ESQIFF_PLAYNEXTEXTERNALASSETFRAME") > 0 || index(u, "TEXTDISP2_JMPTBL_ESQIFF_PLAYNEXT") > 0) has_play_next = 1
+    if (index(u, "TEXTDISP2_JMPTBL_ESQIFF_PLAYNEXTEXTERNALASSETFRAME") > 0 ||
+        index(u, "TEXTDISP2_JMPTBL_ESQIFF_PLAYNEXT") > 0 ||
+        index(u, "ESQIFF_PLAYNEXTEXTERNALASSETFRAME") > 0 ||
+        index(u, "ESQIFF_PLAYNEXTEXTERNALASSETFRAM") > 0) has_play_next = 1
     if (index(u, "TEXTDISP_DRAWNEXTENTRYPREVIEW") > 0 || index(u, "TEXTDISP_DRAWNEXTENTRYPRE") > 0) has_draw_next = 1
     if (index(u, "TEXTDISP_RESETSELECTIONANDREFRESH") > 0 || index(u, "TEXTDISP_RESETSELECTIONANDRE") > 0) has_reset = 1
     if (u == "RTS") has_return = 1

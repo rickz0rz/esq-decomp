@@ -16,7 +16,7 @@ ___TEXTDISP_UpdateHighlightOrPrevie__1:
               MOVE.B         D0,$18(A7)               ;1f40 0018 
               MOVE.L         LOCAVAIL_FilterModeFlag(A4),D1;222c 0000 
               CMP.L          D7,D1                    ;b287 
-              BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__14;6654 
+              BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__14;6658 
 ___TEXTDISP_UpdateHighlightOrPrevie__2:
               MOVE.L         LOCAVAIL_FilterClassId(A4),D1;222c 0000 
               MOVEM.L        D1,$14(A7)               ;48ef 0002 0014 
@@ -28,16 +28,18 @@ ___TEXTDISP_UpdateHighlightOrPrevie__3:
 ___TEXTDISP_UpdateHighlightOrPrevie__4:
               MOVE.B         ED_DiagGraphModeChar(A4),D1;122c 0000 
               CMP.B          D0,D1                    ;b200 
-              BEQ.B          ___TEXTDISP_UpdateHighlightOrPrevie__7;6712 
+              BEQ.B          ___TEXTDISP_UpdateHighlightOrPrevie__7;6716 
 ___TEXTDISP_UpdateHighlightOrPrevie__5:
               MOVE.L         $14(A7),D0               ;202f 0014 
               CMP.L          D5,D0                    ;b085 
-              BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__7;660a 
+              BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__7;660e 
 ___TEXTDISP_UpdateHighlightOrPrevie__6:
-              MOVE.L         D7,-(A7)                 ;2f07 
-              BSR.W          TEXTDISP2_JMPTBL_ESQIFF_PlayNext;6100 0000 
+              MOVE.L         D7,D0                    ;2007 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQIFF_PlayNextExternalAssetFram;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__20;604c 
+              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__20;6050 
 ___TEXTDISP_UpdateHighlightOrPrevie__7:
               MOVE.W         WDISP_HighlightActive(A4),D0;302c 0000 
               EXT.L          D0                       ;48c0 
@@ -49,22 +51,24 @@ ___TEXTDISP_UpdateHighlightOrPrevie__8:
               BNE.B          ___TEXTDISP_UpdateHighlightOrPrevie__10;6606 
 ___TEXTDISP_UpdateHighlightOrPrevie__9:
               BSR.W          TEXTDISP_DrawNextEntryPreview;6100 0000 
-              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__20;6034 
+              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__20;6038 
 ___TEXTDISP_UpdateHighlightOrPrevie__10:
               BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
 ___TEXTDISP_UpdateHighlightOrPrevie__11:
-              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__20;602e 
+              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__20;6032 
 ___TEXTDISP_UpdateHighlightOrPrevie__12:
               BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
 ___TEXTDISP_UpdateHighlightOrPrevie__13:
-              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__20;6028 
+              BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__20;602c 
 ___TEXTDISP_UpdateHighlightOrPrevie__14:
               MOVE.B         ED_DiagGraphModeChar(A4),D0;102c 0000 
               CMP.B          $18(A7),D0               ;b02f 0018 
-              BEQ.B          ___TEXTDISP_UpdateHighlightOrPrevie__16;670a 
+              BEQ.B          ___TEXTDISP_UpdateHighlightOrPrevie__16;670e 
 ___TEXTDISP_UpdateHighlightOrPrevie__15:
-              MOVE.L         D7,-(A7)                 ;2f07 
-              BSR.W          TEXTDISP2_JMPTBL_ESQIFF_PlayNext;6100 0000 
+              MOVE.L         D7,D0                    ;2007 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQIFF_PlayNextExternalAssetFram;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
               BRA.B          ___TEXTDISP_UpdateHighlightOrPrevie__20;6014 
 ___TEXTDISP_UpdateHighlightOrPrevie__16:
@@ -90,7 +94,7 @@ __strings:
               XREF           LOCAVAIL_FilterClassId
               XREF           LOCAVAIL_FilterPrevClassId
               XREF           ED_DiagGraphModeChar
-              XREF           TEXTDISP2_JMPTBL_ESQIFF_PlayNext
+              XREF           ESQIFF_PlayNextExternalAssetFram
               XREF           WDISP_HighlightActive
               XREF           TEXTDISP_DrawNextEntryPreview
               XREF           TEXTDISP_ResetSelectionAndRefres

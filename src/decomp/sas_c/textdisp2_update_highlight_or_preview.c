@@ -8,7 +8,7 @@ extern LONG LOCAVAIL_FilterPrevClassId;
 extern UBYTE ED_DiagGraphModeChar;
 extern WORD WDISP_HighlightActive;
 
-extern void TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(LONG value);
+extern void ESQIFF_PlayNextExternalAssetFrame(WORD value);
 extern void TEXTDISP_DrawNextEntryPreview(void);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
 
@@ -28,7 +28,7 @@ void TEXTDISP_UpdateHighlightOrPreview(void)
         }
 
         if (ED_DiagGraphModeChar != DIAG_MODE_NONE && classId == CLASS_EXTERNAL_ASSET) {
-            TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(FLAG_TRUE);
+            ESQIFF_PlayNextExternalAssetFrame((WORD)FLAG_TRUE);
             return;
         }
 
@@ -45,7 +45,7 @@ void TEXTDISP_UpdateHighlightOrPreview(void)
     }
 
     if (ED_DiagGraphModeChar != DIAG_MODE_NONE) {
-        TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(FLAG_TRUE);
+        ESQIFF_PlayNextExternalAssetFrame((WORD)FLAG_TRUE);
         return;
     }
 
