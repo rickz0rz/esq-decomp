@@ -25,7 +25,7 @@ function t(s, x){
     if(l~/^MOVE\.B D[0-7],(42|\$2A)\(A[0-7]\)$/ || l~/^MOVE\.B #\$?FF,(42|\$2A)\(A[0-7]\)$/)h_set42=1
     if(l~/ESQPARS_DEFAULTENTRYCODESTRING/)h_default_src=1
     if(l~/^MOVE\.B \(A[0-7]\)\+,\(A[0-7]\)\+$/ || l~/^MOVE\.B \(A[0-7]\),\(A[0-7]\)\+$/ || l~/^MOVE\.B \(A[0-7]\)\+,D[0-7]$/)h_copy_loop=1
-    if(l~/^MOVE\.W #\$?3,46\(A[0-7]\)$/ || l~/^MOVE\.W #\$?3,\(A[0-7]\)$/)h_set46=1
+    if(l~/^MOVE\.W #\$?3,(46|\$2E)\(A[0-7]\)$/ || l~/^MOVE\.W #\$?3,\(A[0-7]\)$/)h_set46=1
     if(l=="RTS")h_rts=1
 }
 END{
