@@ -5381,13 +5381,13 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown5_string_copy_pad_nul.c`
 - `src/decomp/sas_c/unknown5_string_compare_nocase_n.c`
 - `src/decomp/sas_c/unknown33_string_find_substring.c`
-- `src/decomp/sas_c/unknown26_dos_write_by_index.c`
+- `src/decomp/sas_c/dos_write_by_index.c`
 - `src/decomp/sas_c/unknown4_string_toupper_inplace.c`
 - `src/decomp/sas_c/unknown3_string_toupper_char.c`
 - `src/decomp/sas_c/unknown23_handle_get_entry_by_index.c`
 - `src/decomp/sas_c/unknown37_handle_close_by_index.c`
 - `src/decomp/sas_c/unknown19_dos_read_with_error_state.c`
-- `src/decomp/sas_c/unknown17_dos_write_with_error_state.c`
+- `src/decomp/sas_c/dos_write_with_error_state.c`
 - `src/decomp/sas_c/unknown18_dos_seek_with_error_state.c`
 - `src/decomp/sas_c/dos_open_with_error_state.c`
 - `src/decomp/sas_c/unknown21_iostdreq_free.c`
