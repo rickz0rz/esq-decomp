@@ -15,26 +15,20 @@ LONG NEWGRID_ShouldOpenEditor(const char *entry)
     const NEWGRID_Entry *entryView;
     const char *primaryScan;
     const char *secondaryScan;
+    LONG shouldOpen;
 
-    if (entry == 0) {
-        return 0;
-    }
-
+    shouldOpen = 0;
     entryView = (const NEWGRID_Entry *)entry;
-    primaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->primaryText);
-    secondaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->shortText);
+    if (entryView != 0) {
+        primaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->primaryText);
+        secondaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->shortText);
 
-    if (primaryScan != 0 && *primaryScan != 0) {
-        return 0;
+        if ((primaryScan == 0 || *primaryScan == 0) &&
+            (secondaryScan == 0 || *secondaryScan == 0) &&
+            (entryView->flags27 & 0x20) != 0) {
+            shouldOpen = 1;
+        }
     }
 
-    if (secondaryScan != 0 && *secondaryScan != 0) {
-        return 0;
-    }
-
-    if ((entryView->flags27 & 0x20) == 0) {
-        return 0;
-    }
-
-    return 1;
+    return shouldOpen;
 }

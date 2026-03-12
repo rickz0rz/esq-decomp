@@ -6,14 +6,14 @@ NEWGRID_ShouldOpenEditor:
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
               SUBQ.W         #$4,A7                   ;594f 
-              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
 ___NEWGRID_ShouldOpenEditor__1:
-              MOVE.L         $14(A7),A5               ;2a6f 0014 
-              MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___NEWGRID_ShouldOpenEditor__13;674a 
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___NEWGRID_ShouldOpenEditor__8;6738 
 ___NEWGRID_ShouldOpenEditor__2:
-___NEWGRID_ShouldOpenEditor__3:
-              MOVE.L         D0,A3                    ;2640 
               LEA            $13(A3),A0               ;41eb 0013 
               MOVE.L         A0,-(A7)                 ;2f08 
               BSR.W          NEWGRID2_JMPTBL_STR_SkipClass3Ch;6100 0000 
@@ -22,36 +22,29 @@ ___NEWGRID_ShouldOpenEditor__3:
               MOVE.L         A0,(A7)                  ;2e88 
               BSR.W          NEWGRID2_JMPTBL_STR_SkipClass3Ch;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
-              MOVE.L         D0,$c(A7)                ;2f40 000c 
+              MOVE.L         D0,$10(A7)               ;2f40 0010 
               MOVE.L         A2,D1                    ;220a 
-              BEQ.B          ___NEWGRID_ShouldOpenEditor__6;6708 
-___NEWGRID_ShouldOpenEditor__4:
+              BEQ.B          ___NEWGRID_ShouldOpenEditor__4;6704 
+___NEWGRID_ShouldOpenEditor__3:
               TST.B          (A2)                     ;4a12 
-              BEQ.B          ___NEWGRID_ShouldOpenEditor__6;6704 
+              BNE.B          ___NEWGRID_ShouldOpenEditor__8;6614 
+___NEWGRID_ShouldOpenEditor__4:
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___NEWGRID_ShouldOpenEditor__6;6706 
 ___NEWGRID_ShouldOpenEditor__5:
-              MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___NEWGRID_ShouldOpenEditor__13;6020 
-___NEWGRID_ShouldOpenEditor__6:
-              TST.L          $c(A7)                   ;4aaf 000c 
-              BEQ.B          ___NEWGRID_ShouldOpenEditor__9;670c 
-___NEWGRID_ShouldOpenEditor__7:
-              MOVE.L         $c(A7),A0                ;206f 000c 
+              MOVE.L         D0,A0                    ;2040 
               TST.B          (A0)                     ;4a10 
-              BEQ.B          ___NEWGRID_ShouldOpenEditor__9;6704 
-___NEWGRID_ShouldOpenEditor__8:
-              MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___NEWGRID_ShouldOpenEditor__13;600e 
-___NEWGRID_ShouldOpenEditor__9:
+              BNE.B          ___NEWGRID_ShouldOpenEditor__8;660a 
+___NEWGRID_ShouldOpenEditor__6:
               BTST           #$5,$1b(A3)              ;082b 0005 001b 
-              BNE.B          ___NEWGRID_ShouldOpenEditor__11;6604 
+              BEQ.B          ___NEWGRID_ShouldOpenEditor__8;6702 
+___NEWGRID_ShouldOpenEditor__7:
+              MOVEQ.L        #$1,D7                   ;7e01 
+___NEWGRID_ShouldOpenEditor__8:
+              MOVE.L         D7,D0                    ;2007 
+___NEWGRID_ShouldOpenEditor__9:
 ___NEWGRID_ShouldOpenEditor__10:
-              MOVEQ.L        #$0,D0                   ;7000 
-              BRA.B          ___NEWGRID_ShouldOpenEditor__13;6002 
-___NEWGRID_ShouldOpenEditor__11:
-              MOVEQ.L        #$1,D0                   ;7001 
-___NEWGRID_ShouldOpenEditor__12:
-___NEWGRID_ShouldOpenEditor__13:
-              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
               ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:
