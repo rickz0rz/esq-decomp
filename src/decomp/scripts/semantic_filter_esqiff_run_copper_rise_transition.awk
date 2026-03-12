@@ -20,8 +20,9 @@ function trim(s, t) {
     uline = toupper(line)
 
     if (uline ~ /^ESQIFF_RUNCOPPERRISETRANSITION:/) has_entry = 1
-    if (uline ~ /^MOVE\.W #15,COPPER_ANIMATIONLANE3_COUNTDOWN$/) has_set_countdown = 1
-    if (uline ~ /^BSR\.W ESQIFF_RUNPENDINGCOPPERANIMATIONS$/) has_call = 1
+    if (index(uline, "MOVE.W #15,COPPER_ANIMATIONLANE3_COUNTDOWN") == 1 ||
+        index(uline, "MOVE.W #$F,COPPER_ANIMATIONLANE3_COUNTDOWN") == 1) has_set_countdown = 1
+    if (index(uline, "BSR.W ESQIFF_RUNPENDINGCOPPERANIMATION") == 1) has_call = 1
     if (uline ~ /^RTS$/) has_rts = 1
 }
 

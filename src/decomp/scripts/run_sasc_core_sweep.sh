@@ -1039,6 +1039,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqiff_read_next_external_asset_path_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_reload_external_asset_catalog_buffers_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_queue_next_external_asset_iff_job_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqiff_run_copper_rise_transition_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_service_pending_copper_palette_moves_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_service_external_asset_source_state_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_draw_weather_status_overlay_into_brush_trial.sh"
