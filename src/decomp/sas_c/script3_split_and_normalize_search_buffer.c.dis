@@ -134,7 +134,7 @@ ___SCRIPT_SplitAndNormalizeSearchBu__23:
 ___SCRIPT_SplitAndNormalizeSearchBu__24:
               MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               PEA            TEXTDISP_PrimarySearchText(A4);486c 0000 
-              BSR.W          SCRIPT3_JMPTBL_ESQSHARED_ApplyPr;6100 0000 
+              BSR.W          ESQSHARED_ApplyProgramTitleTextF;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___SCRIPT_SplitAndNormalizeSearchBu__25:
               MOVE.B         TEXTDISP_SecondarySearchText(A4),D0;102c 0000 
@@ -147,7 +147,7 @@ ___SCRIPT_SplitAndNormalizeSearchBu__25:
 ___SCRIPT_SplitAndNormalizeSearchBu__26:
               MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
               PEA            TEXTDISP_SecondarySearchText(A4);486c 0000 
-              BSR.W          SCRIPT3_JMPTBL_ESQSHARED_ApplyPr;6100 0000 
+              BSR.W          ESQSHARED_ApplyProgramTitleTextF;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___SCRIPT_SplitAndNormalizeSearchBu__27:
 ___SCRIPT_SplitAndNormalizeSearchBu__28:
@@ -160,6 +160,6 @@ __strings:
               XREF           _XCOVF
               XREF           TEXTDISP_SecondarySearchText
               XREF           TEXTDISP_PrimarySearchText
-              XREF           SCRIPT3_JMPTBL_ESQSHARED_ApplyPr
+              XREF           ESQSHARED_ApplyProgramTitleTextF
               XDEF           SCRIPT_SplitAndNormalizeSearchBu
               END

@@ -5,7 +5,7 @@ typedef unsigned char UBYTE;
 extern char TEXTDISP_PrimarySearchText[];
 extern char TEXTDISP_SecondarySearchText[];
 
-extern void SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(char *text, LONG maxLen);
+extern char *ESQSHARED_ApplyProgramTitleTextFilters(char *text, LONG maxLen);
 
 void SCRIPT_SplitAndNormalizeSearchBuffer(char *parseBuffer, LONG parseLen)
 {
@@ -62,10 +62,10 @@ void SCRIPT_SplitAndNormalizeSearchBuffer(char *parseBuffer, LONG parseLen)
     }
 
     if (TEXTDISP_PrimarySearchText[0] != CH_NUL) {
-        SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(TEXTDISP_PrimarySearchText, FILTER_MAXLEN);
+        ESQSHARED_ApplyProgramTitleTextFilters(TEXTDISP_PrimarySearchText, FILTER_MAXLEN);
     }
 
     if (TEXTDISP_SecondarySearchText[0] != CH_NUL) {
-        SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(TEXTDISP_SecondarySearchText, FILTER_MAXLEN);
+        ESQSHARED_ApplyProgramTitleTextFilters(TEXTDISP_SecondarySearchText, FILTER_MAXLEN);
     }
 }
