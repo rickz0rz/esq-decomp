@@ -30,7 +30,7 @@ ___DISKIO_WriteBufferedBytes__5:
               MOVEQ.L        #$0,D0                   ;7000 
               BRA.B          ___DISKIO_WriteBufferedBytes__19;606e 
 ___DISKIO_WriteBufferedBytes__6:
-              BSR.W          GROUP_AG_JMPTBL_ESQFUNC_ServiceU;6100 0000 
+              BSR.W          ESQFUNC_ServiceUiTickIfRunning;6100 0000 
 ___DISKIO_WriteBufferedBytes__7:
               TST.L          D6                       ;4a86 
               BEQ.B          ___DISKIO_WriteBufferedBytes__10;6718 
@@ -45,7 +45,7 @@ ___DISKIO_WriteBufferedBytes__9:
               SUBQ.L         #$1,D6                   ;5386 
               BRA.B          ___DISKIO_WriteBufferedBytes__7;60e4 
 ___DISKIO_WriteBufferedBytes__10:
-              BSR.W          GROUP_AG_JMPTBL_ESQFUNC_ServiceU;6100 0000 
+              BSR.W          ESQFUNC_ServiceUiTickIfRunning;6100 0000 
               TST.L          DISKIO_BufferState+$8(A4);4aac 0008 
               BNE.B          ___DISKIO_WriteBufferedBytes__14;663e 
 ___DISKIO_WriteBufferedBytes__11:
@@ -68,7 +68,7 @@ ___DISKIO_WriteBufferedBytes__13:
               MOVE.L         D4,D5                    ;2a04 
               MOVE.L         DISKIO_BufferControl(A4),DISKIO_BufferState(A4);296c 0000 0000 
               MOVE.L         D1,DISKIO_BufferState+$8(A4);2941 0008 
-              BSR.W          GROUP_AG_JMPTBL_ESQFUNC_ServiceU;6100 0000 
+              BSR.W          ESQFUNC_ServiceUiTickIfRunning;6100 0000 
 ___DISKIO_WriteBufferedBytes__14:
               TST.L          D6                       ;4a86 
               BNE.B          ___DISKIO_WriteBufferedBytes__7;6698 
@@ -86,7 +86,7 @@ __strings:
               XREF           __base
               XREF           _XCOVF
               XREF           DISKIO_BufferControl
-              XREF           GROUP_AG_JMPTBL_ESQFUNC_ServiceU
+              XREF           ESQFUNC_ServiceUiTickIfRunning
               XREF           DISKIO_BufferState
               XREF           Global_REF_DOS_LIBRARY_2
               XREF           _LVOWrite

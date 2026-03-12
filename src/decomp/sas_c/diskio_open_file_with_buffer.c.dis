@@ -12,7 +12,7 @@ ___DISKIO_OpenFileWithBuffer__1:
               MOVE.L         #$11e,D6                 ;2c3c 0000 011e 
               MOVEQ.L        #$1,D5                   ;7a01 
               MOVEQ.L        #$0,D4                   ;7800 
-              BSR.W          GROUP_AG_JMPTBL_ESQFUNC_ServiceU;6100 0000 
+              BSR.W          ESQFUNC_ServiceUiTickIfRunning;6100 0000 
               TST.L          DISKIO_OpenCount(A4)     ;4aac 0000 
               BEQ.B          ___DISKIO_OpenFileWithBuffer__3;6704 
 ___DISKIO_OpenFileWithBuffer__2:
@@ -45,7 +45,7 @@ ___DISKIO_OpenFileWithBuffer__6:
               MOVE.L         DISKIO_BufferState+$4(A4),DISKIO_BufferState+$8(A4);296c 0004 0008 
               MOVE.L         D0,DISKIO_BufferState(A4);2940 0000 
 ___DISKIO_OpenFileWithBuffer__7:
-              BSR.W          GROUP_AG_JMPTBL_ESQFUNC_ServiceU;6100 0000 
+              BSR.W          ESQFUNC_ServiceUiTickIfRunning;6100 0000 
               MOVE.L         D4,D0                    ;2004 
 ___DISKIO_OpenFileWithBuffer__8:
 ___DISKIO_OpenFileWithBuffer__9:
@@ -55,7 +55,7 @@ __const:
 __strings:
               XREF           __base
               XREF           _XCOVF
-              XREF           GROUP_AG_JMPTBL_ESQFUNC_ServiceU
+              XREF           ESQFUNC_ServiceUiTickIfRunning
               XREF           DISKIO_OpenCount
               XREF           DISKIO_BufferControl
               XREF           GROUP_AG_JMPTBL_DOS_OpenFileWith

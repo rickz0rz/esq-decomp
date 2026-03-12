@@ -20,7 +20,7 @@ extern LONG DISKIO_OpenCount;
 extern WORD ESQPARS2_ReadModeFlags;
 extern const char Global_STR_DISKIO_C_1[];
 
-extern void GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(void);
+extern void ESQFUNC_ServiceUiTickIfRunning(void);
 extern LONG GROUP_AG_JMPTBL_DOS_OpenFileWithMode(const char *path, LONG mode);
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, ULONG size, ULONG flags);
 
@@ -31,7 +31,7 @@ LONG DISKIO_OpenFileWithBuffer(const char *filePath, LONG accessMode)
     LONG handle;
 
     handle = 0;
-    GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+    ESQFUNC_ServiceUiTickIfRunning();
 
     if (DISKIO_OpenCount != 0) {
         return handle;
@@ -56,6 +56,6 @@ LONG DISKIO_OpenFileWithBuffer(const char *filePath, LONG accessMode)
         DISKIO_BufferState.BufferPtr = DISKIO_BufferControl.BufferBase;
     }
 
-    GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+    ESQFUNC_ServiceUiTickIfRunning();
     return handle;
 }

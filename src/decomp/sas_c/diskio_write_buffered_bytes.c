@@ -23,7 +23,7 @@ extern struct DiskIoBufferState DISKIO_BufferState;
 extern struct DiskIoBufferControl DISKIO_BufferControl;
 extern void *Global_REF_DOS_LIBRARY_2;
 
-extern void GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(void);
+extern void ESQFUNC_ServiceUiTickIfRunning(void);
 extern LONG _LVOWrite(void *dosBase, LONG fileHandle, const void *buffer, LONG length);
 
 LONG DISKIO_WriteBufferedBytes(LONG handle, const UBYTE *src, LONG len)
@@ -42,7 +42,7 @@ LONG DISKIO_WriteBufferedBytes(LONG handle, const UBYTE *src, LONG len)
         return DISKIO_RESULT_ZERO;
     }
 
-    GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+    ESQFUNC_ServiceUiTickIfRunning();
 
     for (;;) {
         while (len != 0 && DISKIO_BufferState.Remaining != 0) {
@@ -55,7 +55,7 @@ LONG DISKIO_WriteBufferedBytes(LONG handle, const UBYTE *src, LONG len)
             len--;
         }
 
-        GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+        ESQFUNC_ServiceUiTickIfRunning();
 
         if (DISKIO_BufferState.Remaining == 0) {
             LONG wrote;
@@ -75,7 +75,7 @@ LONG DISKIO_WriteBufferedBytes(LONG handle, const UBYTE *src, LONG len)
             writeResult = requested;
             DISKIO_BufferState.BufferPtr = DISKIO_BufferControl.BufferBase;
             DISKIO_BufferState.Remaining = DISKIO_BufferState.BufferSize;
-            GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+            ESQFUNC_ServiceUiTickIfRunning();
         }
 
         if (len == DISKIO_RESULT_ZERO) {
