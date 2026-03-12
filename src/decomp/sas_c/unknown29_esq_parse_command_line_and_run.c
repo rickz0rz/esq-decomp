@@ -2,12 +2,13 @@ typedef signed long LONG;
 typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
+extern void *AbsExecBase;
 extern ULONG Global_ArgCount;
 extern char *Global_ArgvStorage[];
 extern char **Global_ArgvPtr;
 extern char *Global_SavedMsg;
 extern char Global_ConsoleNameBuffer[];
-extern ULONG Global_DosLibrary;
+extern void *Global_DosLibrary;
 
 extern LONG Global_HandleEntry0_Ptr;
 extern ULONG Global_HandleEntry0_Flags;
@@ -31,10 +32,10 @@ extern LONG ESQ_MainInitAndRun(LONG argc, char **argv);
 extern LONG BUFFER_FlushAllAndCloseWithCode(LONG code);
 extern LONG UNKNOWN36_ShowAbortRequester(void);
 
-extern LONG DOS_LVO_OPEN(const char *name, LONG mode);
-extern LONG DOS_LVO_INPUT(void);
-extern LONG DOS_LVO_OUTPUT(void);
-extern UBYTE *EXEC_FIND_TASK_NULL(void);
+extern LONG _LVOOpen(void *dosBase, const char *name, LONG mode);
+extern LONG _LVOInput(void *dosBase);
+extern LONG _LVOOutput(void *dosBase);
+extern UBYTE *_LVOFindTask(void *execBase, void *taskName);
 
 #define MODE_OLDFILE 1005
 #define MODE_NEWFILE 1006
@@ -51,6 +52,7 @@ typedef struct ESQ_WBStartupMsg {
 
 LONG ESQ_ParseCommandLineAndRun(char *cmdline)
 {
+    static const char kConsolePrefix[] = "con.10/10/320/80/";
     char *p = cmdline;
 
     while (Global_ArgCount < 32UL) {
@@ -96,42 +98,37 @@ LONG ESQ_ParseCommandLineAndRun(char *cmdline)
         }
     }
 
-    if (Global_ArgCount == 0) {
-        Global_ArgvPtr = (char **)Global_SavedMsg;
-    } else {
-        Global_ArgvPtr = Global_ArgvStorage;
-    }
+    Global_ArgvPtr = (Global_ArgCount == 0) ? (char **)Global_SavedMsg : Global_ArgvStorage;
 
     if (Global_ArgCount == 0) {
-        static const char kConsolePrefix[] = "con.10/10/320/80/";
-        ESQ_WBStartupMsg *saved_msg = (ESQ_WBStartupMsg *)Global_SavedMsg;
-        ESQ_WBArgRecord *arg_record = saved_msg->argList36;
-        char *append_src = arg_record->namePtr4;
-        LONG h;
+        ESQ_WBStartupMsg *savedMsg = (ESQ_WBStartupMsg *)Global_SavedMsg;
+        ESQ_WBArgRecord *argRecord = savedMsg->argList36;
+        char *appendSrc = argRecord->namePtr4;
+        LONG handle;
+        ULONG handleBase;
         UBYTE *task;
-        UBYTE *fh_ptr;
         ULONG i = 0;
 
         do {
             Global_ConsoleNameBuffer[i] = kConsolePrefix[i];
         } while (kConsolePrefix[i++] != 0);
 
-        STRING_AppendN(Global_ConsoleNameBuffer, append_src, 40UL);
-        h = DOS_LVO_OPEN(Global_ConsoleNameBuffer, MODE_NEWFILE);
+        STRING_AppendN(Global_ConsoleNameBuffer, appendSrc, 40UL);
+        handle = _LVOOpen(Global_DosLibrary, Global_ConsoleNameBuffer, MODE_NEWFILE);
 
-        Global_HandleEntry0_Ptr = h;
-        Global_HandleEntry1_Ptr = h;
+        Global_HandleEntry0_Ptr = handle;
+        Global_HandleEntry1_Ptr = handle;
         Global_HandleEntry1_Flags = 16UL;
-        Global_HandleEntry2_Ptr = h;
+        Global_HandleEntry2_Ptr = handle;
         Global_HandleEntry2_Flags = 16UL;
 
-        fh_ptr = (UBYTE *)(((ULONG)h) << 2);
-        task = EXEC_FIND_TASK_NULL();
-        *(ULONG *)(task + 164) = *(ULONG *)(fh_ptr + 8);
+        handleBase = ((ULONG)handle) << 2;
+        task = _LVOFindTask(AbsExecBase, (void *)0);
+        *(ULONG *)(task + 164) = *(ULONG *)(handleBase + 8);
     } else {
-        Global_HandleEntry0_Ptr = DOS_LVO_INPUT();
-        Global_HandleEntry1_Ptr = DOS_LVO_OUTPUT();
-        Global_HandleEntry2_Ptr = DOS_LVO_OPEN("*", MODE_OLDFILE);
+        Global_HandleEntry0_Ptr = _LVOInput(Global_DosLibrary);
+        Global_HandleEntry1_Ptr = _LVOOutput(Global_DosLibrary);
+        Global_HandleEntry2_Ptr = _LVOOpen(Global_DosLibrary, "*", MODE_OLDFILE);
     }
 
     {
@@ -156,7 +153,7 @@ LONG ESQ_ParseCommandLineAndRun(char *cmdline)
         Global_PreallocHandleNode2_OpenFlags = (base_flags | 0x80UL);
     }
 
-    Global_SignalCallbackPtr = (ULONG)(UBYTE *)&UNKNOWN36_ShowAbortRequester;
+    Global_SignalCallbackPtr = (ULONG)UNKNOWN36_ShowAbortRequester;
     ESQ_MainInitAndRun((LONG)Global_ArgCount, Global_ArgvPtr);
     return BUFFER_FlushAllAndCloseWithCode(0);
 }
