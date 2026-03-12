@@ -36,7 +36,7 @@ function trim(s, t) {
     if (n ~ /TEXTDISPPRIMARYGROUPENTRYCOUNT/ || n ~ /TEXTDISPPRIMARYGROUPENTRYCO/) has_count=1
     if (n ~ /BTST3/ ) has_btst3=1
     if (n ~ /BTST7/ ) has_btst7=1
-    if (n ~ /56A0/ || n ~ /56\(A0/ || n ~ /LEA38A0/ || n ~ /SELECTORTEXTPTRBASE/) has_aux56=1
+    if (n ~ /56A0/ || n ~ /56\(A0/ || n ~ /38A0/ || n ~ /SELECTORTEXTPTRBASE/) has_aux56=1
     if (u ~ /#4([^0-9]|$)/ || u ~ /#\$04/ || u ~ /#\$4([^0-9A-F]|$)/ || u ~ /4\.[Ww]/ || u ~ /\(\$4\)/) has_const4=1
     if (u ~ /#-1/ || u ~ /#\$FFFFFFFF/ || u ~ /#\$FF/) has_constm1=1
     if (u == "RTS") has_rts=1

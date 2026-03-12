@@ -32,8 +32,8 @@ function trim(s, t) {
     if (n ~ /NEWGRID2JMPTBLESQDISPGETENTRYPOINTERBYMODE/ || n ~ /NEWGRID2JMPTBLESQDISPGETENTRYPOINTERBYM/ || n ~ /NEWGRID2JMPTBLESQDISPGETENTRY/) has_getptr=1
     if (n ~ /TEXTDISPPRIMARYGROUPPRESENTFLAG/ || n ~ /TEXTDISPPRIMARYGROUPPRESENTF/) has_present=1
     if (n ~ /TEXTDISPPRIMARYGROUPENTRYCOUNT/ || n ~ /TEXTDISPPRIMARYGROUPENTRYCO/) has_count=1
-    if (n ~ /BTST02FA5/ || n ~ /BTST047/) has_btst0=1
-    if (n ~ /BTST728A5/ || n ~ /BTST740/) has_btst7=1
+    if (n ~ /BTST0/) has_btst0=1
+    if (n ~ /BTST7/) has_btst7=1
     if (u ~ /#1([^0-9]|$)/ || u ~ /#\$01/ || u ~ /#\$1([^0-9A-F]|$)/ || u ~ /1\.[Ww]/ || u ~ /\(\$1\)/) has_const1=1
     if (u ~ /#3([^0-9]|$)/ || u ~ /#\$03/ || u ~ /#\$3([^0-9A-F]|$)/ || u ~ /3\.[Ww]/ || u ~ /\(\$3\)/) has_const3=1
     if (u ~ /#4([^0-9]|$)/ || u ~ /#\$04/ || u ~ /#\$4([^0-9A-F]|$)/ || u ~ /4\.[Ww]/ || u ~ /\(\$4\)/ || u ~ /SUBQ\.L #\$1,D0/ || u ~ /SUBQ\.L #1,D0/) has_const4=1
