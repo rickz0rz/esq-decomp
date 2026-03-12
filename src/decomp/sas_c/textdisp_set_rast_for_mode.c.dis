@@ -9,7 +9,7 @@ TEXTDISP_SetRastForMode:
 ___TEXTDISP_SetRastForMode__1:
               MOVE.W         $e(A7),D7                ;3e2f 000e 
               CLR.W          WDISP_AccumulatorFlushPending(A4);426c 0000 
-              BSR.W          WDISP_JMPTBL_ESQIFF_RunCopperDro;6100 0000 
+              BSR.W          ESQIFF_RunCopperDropTransition;6100 0000 
               TST.W          D7                       ;4a47 
               BNE.B          ___TEXTDISP_SetRastForMode__3;6618 
 ___TEXTDISP_SetRastForMode__2:
@@ -62,7 +62,7 @@ __strings:
               XREF           __base
               XREF           _XCOVF
               XREF           WDISP_AccumulatorFlushPending
-              XREF           WDISP_JMPTBL_ESQIFF_RunCopperDro
+              XREF           ESQIFF_RunCopperDropTransition
               XREF           TLIBA3_BuildDisplayContextForVie
               XREF           WDISP_DisplayContextBase
               XREF           WDISP_PaletteTriplesRBase

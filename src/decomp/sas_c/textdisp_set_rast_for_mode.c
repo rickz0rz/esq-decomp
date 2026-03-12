@@ -9,7 +9,7 @@ extern UBYTE WDISP_PaletteTriplesGBase[];
 extern UBYTE WDISP_PaletteTriplesBBase[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
+extern void ESQIFF_RunCopperDropTransition(void);
 extern LONG TLIBA3_BuildDisplayContextForViewMode(LONG viewMode, LONG a1, LONG a2);
 extern void _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
 
@@ -23,7 +23,7 @@ void TEXTDISP_SetRastForMode(WORD modeIndex)
     TEXTDISP_DisplayContext *context;
 
     WDISP_AccumulatorFlushPending = 0;
-    WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
+    ESQIFF_RunCopperDropTransition();
 
     if (modeIndex == 0) {
         WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 0);
