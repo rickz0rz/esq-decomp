@@ -43,16 +43,16 @@ function trim(s, t) {
     if (u ~ /\$9A/ || n ~ /PEA9AW/) saw_9a=1
     if (n ~ /MATHMULU32/) saw_mul_call=1
     if (u ~ /MOVE\.W D6,\(A1\)/ || u ~ /MOVE\.W D6,\$0\(A1\)/ || u ~ /MOVE\.W D0,\(A5\)/ || u ~ /MOVE\.W D0,\$0\(A5\)/) has_store0=1
-    if (u ~ /MOVE\.W D5,2\(A1\)/ || u ~ /MOVE\.W D5,\$2\(A1\)/ || u ~ /MOVE\.W D1,\(A0\)/) has_store2=1
-    if (u ~ /MOVE\.W D4,4\(A1\)/ || u ~ /MOVE\.W D4,\$4\(A1\)/ || u ~ /LEA \$4\(A5\),A0/) has_store4=1
-    if (u ~ /MOVE\.W 26\(A5\),6\(A1\)/ || u ~ /MOVE\.W 26\(A5\),\$6\(A1\)/ || u ~ /LEA \$6\(A5\),A0/) has_store6=1
-    if (u ~ /MOVE\.W 30\(A5\),8\(A1\)/ || u ~ /MOVE\.W 30\(A5\),\$8\(A1\)/ || u ~ /LEA \$8\(A5\),A0/) has_store8=1
+    if (u ~ /MOVE\.W D5,2\(A1\)/ || u ~ /MOVE\.W D5,\$2\(A1\)/ || u ~ /MOVE\.W D1,\(A0\)/ || u ~ /MOVE\.W D1,\$2\(A5\)/) has_store2=1
+    if (u ~ /MOVE\.W D4,4\(A1\)/ || u ~ /MOVE\.W D4,\$4\(A1\)/ || u ~ /LEA \$4\(A5\),A0/ || u ~ /MOVE\.W D2,\$4\(A5\)/) has_store4=1
+    if (u ~ /MOVE\.W 26\(A5\),6\(A1\)/ || u ~ /MOVE\.W 26\(A5\),\$6\(A1\)/ || u ~ /LEA \$6\(A5\),A0/ || u ~ /MOVE\.W D2,\$6\(A5\)/) has_store6=1
+    if (u ~ /MOVE\.W 30\(A5\),8\(A1\)/ || u ~ /MOVE\.W 30\(A5\),\$8\(A1\)/ || u ~ /LEA \$8\(A5\),A0/ || u ~ /MOVE\.W D2,\$8\(A5\)/) has_store8=1
     if (u ~ /MOVEQ #24,D1/ || n ~ /MOVEQ24D1/ || n ~ /MOVEQL18D1/) has_copy_loop=1
-    if (u ~ /MOVE\.L A3,14\(A1\)/ || u ~ /MOVE\.L A3,\$E\(A1\)/ || (u ~ /LEA \$E\(A5\),A0/)) has_set_bitmap_ptr=1
+    if (u ~ /MOVE\.L A3,14\(A1\)/ || u ~ /MOVE\.L A3,\$E\(A1\)/ || u ~ /MOVE\.L A0,\$E\(A5\)/ || (u ~ /LEA \$E\(A5\),A0/)) has_set_bitmap_ptr=1
     if (n ~ /LVOINITBITMAP/) has_init_bitmap=1
-    if (u ~ /\$76\(A0\)/ || u ~ /118\(A0\)/ || u ~ /WDISP_DISPLAYCONTEXTPLANEPOINTER0/) has_plane_copy=1
-    if (u ~ /MOVE\.W D1,150\(A1\)/ || u ~ /MOVE\.W D1,\$96\(A1\)/ || (u ~ /LEA \$96\(A5\),A0/ && has_store150==0)) has_store150=1
-    if (u ~ /MOVE\.W D1,152\(A0\)/ || u ~ /MOVE\.W D1,\$98\(A0\)/ || (u ~ /LEA \$98\(A5\),A0/ && has_store152==0)) has_store152=1
+    if (u ~ /\$76\(A0\)/ || u ~ /\$76\(A5,D1\.L\)/ || u ~ /118\(A0\)/ || u ~ /WDISP_DISPLAYCONTEXTPLANEPOINTER0/ || u ~ /WDISP_DISPLAYCONTEXTPLANEPOINTER\(A4\)/) has_plane_copy=1
+    if (u ~ /MOVE\.W D1,150\(A1\)/ || u ~ /MOVE\.W D1,\$96\(A1\)/ || u ~ /CLR\.W \$96\(A5\)/ || (u ~ /LEA \$96\(A5\),A0/ && has_store150==0)) has_store150=1
+    if (u ~ /MOVE\.W D1,152\(A0\)/ || u ~ /MOVE\.W D1,\$98\(A0\)/ || u ~ /CLR\.W \$98\(A5\)/ || (u ~ /LEA \$98\(A5\),A0/ && has_store152==0)) has_store152=1
     if (u == "RTS") has_rts=1
 }
 
