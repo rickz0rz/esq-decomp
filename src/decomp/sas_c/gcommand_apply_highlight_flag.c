@@ -7,29 +7,71 @@ extern UWORD ESQ_CopperEffectTemplateRowsSet1[];
 extern UWORD ESQ_CopperListBannerA[];
 extern UWORD ESQ_CopperListBannerB[];
 
-static void GCOMMAND_ApplyHighlightWord(UWORD *base, LONG wordOffset, LONG value)
-{
-    UWORD w = base[wordOffset];
-    w = (UWORD)((w & (UWORD)~3U) | (UWORD)value);
-    base[wordOffset] = w;
-}
-
 void GCOMMAND_ApplyHighlightFlag(void)
 {
-    LONG value = (GCOMMAND_HighlightFlag != 0) ? 2 : 0;
+    UWORD value;
+    UWORD *base;
+    UWORD temp;
 
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperEffectTemplateRowsSet0, 13, value);
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperEffectTemplateRowsSet1, 13, value);
+    if (GCOMMAND_HighlightFlag != 0) {
+        value = 2U;
+    } else {
+        value = 0U;
+    }
 
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperListBannerA, 15, value);
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperListBannerA, 57, value);
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperListBannerA, 339, value);
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperListBannerA, 363, value);
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperListBannerA, 1961, value);
+    base = ESQ_CopperEffectTemplateRowsSet0;
+    temp = base[13];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[13] = temp;
 
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperListBannerB, 15, value);
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperListBannerB, 57, value);
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperListBannerB, 339, value);
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperListBannerB, 363, value);
-    GCOMMAND_ApplyHighlightWord(ESQ_CopperListBannerB, 1961, value);
+    base = ESQ_CopperEffectTemplateRowsSet1;
+    temp = base[13];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[13] = temp;
+
+    base = ESQ_CopperListBannerA;
+    temp = base[15];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[15] = temp;
+    temp = base[57];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[57] = temp;
+    temp = base[339];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[339] = temp;
+    temp = base[363];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[363] = temp;
+    temp = base[1961];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[1961] = temp;
+
+    base = ESQ_CopperListBannerB;
+    temp = base[15];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[15] = temp;
+    temp = base[57];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[57] = temp;
+    temp = base[339];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[339] = temp;
+    temp = base[363];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[363] = temp;
+    temp = base[1961];
+    temp &= (UWORD)-3;
+    temp |= value;
+    base[1961] = temp;
 }
