@@ -8,28 +8,31 @@ ___ESQ_GenerateXorChecksumByte__1:
               MOVE.L         $20(A7),D6               ;2c2f 0020 
               MOVE.L         $18(A7),D7               ;2e2f 0018 
               MOVE.L         $1c(A7),A5               ;2a6f 001c 
-              MOVEQ.L        #$0,D5                   ;7a00 
               MOVE.B         ESQIFF_RecordChecksumByte(A4),D5;1a2c 0000 
               MOVE.B         ESQIFF_UseCachedChecksumFlag(A4),D0;102c 0000 
               TST.B          D0                       ;4a00 
-              BEQ.B          ___ESQ_GenerateXorChecksumByte__3;6704 
+              BEQ.B          ___ESQ_GenerateXorChecksumByte__3;6706 
 ___ESQ_GenerateXorChecksumByte__2:
-              MOVE.L         D5,D0                    ;2005 
-              BRA.B          ___ESQ_GenerateXorChecksumByte__8;601e 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D5,D0                    ;1005 
+              BRA.B          ___ESQ_GenerateXorChecksumByte__8;6024 
 ___ESQ_GenerateXorChecksumByte__3:
               MOVE.L         D7,D5                    ;2a07 
-              EORI.W         #$ff,D5                  ;0a45 00ff 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D5,D0                    ;1005 
+              EORI.W         #$ff,D0                  ;0a40 00ff 
+              MOVE.L         D0,D5                    ;2a00 
               MOVE.L         D6,D4                    ;2806 
 ___ESQ_GenerateXorChecksumByte__4:
-              MOVEQ.L        #$0,D0                   ;7000 
               MOVE.B         (A5)+,D0                 ;101d 
-              EOR.L          D0,D5                    ;b185 
+              EOR.B          D0,D5                    ;b105 
               SUBQ.W         #$1,D4                   ;5344 
 ___ESQ_GenerateXorChecksumByte__5:
               CMPI.W         #$ffff,D4                ;0c44 ffff 
-              BNE.B          ___ESQ_GenerateXorChecksumByte__4;66f2 
+              BNE.B          ___ESQ_GenerateXorChecksumByte__4;66f4 
 ___ESQ_GenerateXorChecksumByte__6:
-              MOVE.L         D5,D0                    ;2005 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D5,D0                    ;1005 
               MOVEQ.L        #$0,D1                   ;7200 
               NOT.B          D1                       ;4601 
               AND.L          D1,D0                    ;c081 

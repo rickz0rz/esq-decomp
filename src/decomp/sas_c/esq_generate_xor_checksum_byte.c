@@ -5,24 +5,24 @@ typedef unsigned char UBYTE;
 extern UBYTE ESQIFF_RecordChecksumByte;
 extern UBYTE ESQIFF_UseCachedChecksumFlag;
 
-ULONG ESQ_GenerateXorChecksumByte(ULONG seed, UBYTE *src, ULONG length)
+ULONG ESQ_GenerateXorChecksumByte(ULONG seed, const UBYTE *src, ULONG length)
 {
-    ULONG checksum;
+    UBYTE checksum;
     UWORD count;
 
-    checksum = (ULONG)ESQIFF_RecordChecksumByte;
+    checksum = ESQIFF_RecordChecksumByte;
     if (ESQIFF_UseCachedChecksumFlag != 0) {
-        return checksum;
+        return (ULONG)checksum;
     }
 
-    checksum = seed;
-    checksum ^= 0xFFUL;
+    checksum = (UBYTE)seed;
+    checksum ^= 0xFF;
     count = (UWORD)length;
 
     do {
-        checksum ^= (ULONG)(*src++);
+        checksum ^= *src++;
         count--;
     } while (count != 0xFFFFU);
 
-    return checksum & 0xFFUL;
+    return ((ULONG)checksum) & 0xFFUL;
 }
