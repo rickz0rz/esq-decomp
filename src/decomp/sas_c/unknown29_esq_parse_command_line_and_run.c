@@ -41,19 +41,15 @@ extern UBYTE *_LVOFindTask(void *execBase, void *taskName);
 #define MODE_OLDFILE 1005
 #define MODE_NEWFILE 1006
 
-typedef struct ESQ_WBArgRecord {
-    ULONG lock0;
-    char *namePtr4;
-} ESQ_WBArgRecord;
-
-typedef struct ESQ_WBStartupMsg {
-    UBYTE pad0[36];
-    ESQ_WBArgRecord *argList36;
-} ESQ_WBStartupMsg;
-
 LONG ESQ_ParseCommandLineAndRun(char *cmdline)
 {
-    static const char kConsolePrefix[] = "con.10/10/320/80/";
+    static const ULONG kConsolePrefixLongs[] = {
+        0x636F6E2EUL,
+        0x31302F31UL,
+        0x302F3332UL,
+        0x302F3830UL
+    };
+    static const UWORD kConsolePrefixTail = 0x2F00U;
     char *p = cmdline;
 
     while (Global_ArgCount < 32UL) {
@@ -106,17 +102,19 @@ LONG ESQ_ParseCommandLineAndRun(char *cmdline)
     }
 
     if (Global_ArgCount == 0) {
-        ESQ_WBStartupMsg *savedMsg = (ESQ_WBStartupMsg *)Global_SavedMsg;
-        ESQ_WBArgRecord *argRecord = savedMsg->argList36;
+        UBYTE *savedMsg = (UBYTE *)Global_SavedMsg;
+        UBYTE *argRecord = *(UBYTE **)(savedMsg + 36);
         LONG handle;
-        const char *src = kConsolePrefix;
-        char *dst = Global_ConsoleNameBuffer;
+        const ULONG *srcLong = kConsolePrefixLongs;
+        ULONG *dstLong = (ULONG *)Global_ConsoleNameBuffer;
 
-        do {
-            *dst++ = *src;
-        } while (*src++ != '\0');
+        *dstLong++ = *srcLong++;
+        *dstLong++ = *srcLong++;
+        *dstLong++ = *srcLong++;
+        *dstLong++ = *srcLong++;
+        *(UWORD *)dstLong = kConsolePrefixTail;
 
-        STRING_AppendN(Global_ConsoleNameBuffer, argRecord->namePtr4, 40UL);
+        STRING_AppendN(Global_ConsoleNameBuffer, *(char **)(argRecord + 4), 40UL);
         handle = _LVOOpen(Global_DosLibrary, Global_ConsoleNameBuffer, MODE_NEWFILE);
 
         Global_HandleEntry0_Ptr = handle;
