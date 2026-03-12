@@ -10,15 +10,15 @@ char *STRING_AppendN(char *dst, const char *src, ULONG maxBytes)
     ULONG count;
 
     srcEnd = src;
-    while (*srcEnd != 0) {
-        srcEnd++;
+    while (*srcEnd++ != 0) {
     }
+    srcEnd--;
     copyLen = (ULONG)(srcEnd - src);
 
     dstEnd = dst;
-    while (*dstEnd != 0) {
-        dstEnd++;
+    while (*dstEnd++ != 0) {
     }
+    dstEnd--;
     out = dstEnd;
 
     if (copyLen > maxBytes) {

@@ -13,12 +13,12 @@ ___STRING_AppendN__1:
               MOVE.L         $24(A7),A5               ;2a6f 0024 
               MOVE.L         A3,A2                    ;244b 
 ___STRING_AppendN__2:
-              TST.B          (A2)                     ;4a12 
-              BEQ.B          ___STRING_AppendN__4     ;6704 
+              MOVE.B         (A2)+,D0                 ;101a 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___STRING_AppendN__2     ;66fa 
 ___STRING_AppendN__3:
-              ADDQ.L         #$1,A2                   ;528a 
-              BRA.B          ___STRING_AppendN__2     ;60f8 
 ___STRING_AppendN__4:
+              SUBQ.L         #$1,A2                   ;538a 
               MOVE.L         A2,D0                    ;200a 
               MOVE.L         A3,D1                    ;220b 
               SUB.L          D1,D0                    ;9081 
@@ -26,12 +26,13 @@ ___STRING_AppendN__4:
               MOVE.L         A5,$1c(A7)               ;2f4d 001c 
 ___STRING_AppendN__5:
               MOVE.L         $1c(A7),A0               ;206f 001c 
-              TST.B          (A0)                     ;4a10 
-              BEQ.B          ___STRING_AppendN__7     ;6706 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$1c(A7)               ;2f48 001c 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___STRING_AppendN__5     ;66f2 
 ___STRING_AppendN__6:
-              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
-              BRA.B          ___STRING_AppendN__5     ;60f2 
 ___STRING_AppendN__7:
+              SUBQ.L         #$1,$1c(A7)              ;53af 001c 
               MOVE.L         $1c(A7),$18(A7)          ;2f6f 001c 0018 
               CMP.L          D7,D6                    ;bc87 
               BLS.B          ___STRING_AppendN__9     ;6302 
