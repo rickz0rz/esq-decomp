@@ -56,6 +56,8 @@ LONG ESQ_ParseCommandLineAndRun(char *cmdline)
     char *p = cmdline;
 
     while (Global_ArgCount < 32UL) {
+        char **argvSlot;
+
         while (*p == (UBYTE)' ' || *p == (UBYTE)'\t' || *p == (UBYTE)'\n') {
             ++p;
         }
@@ -64,70 +66,58 @@ LONG ESQ_ParseCommandLineAndRun(char *cmdline)
             break;
         }
 
-        {
-            ULONG slot = Global_ArgCount;
-            Global_ArgCount = slot + 1UL;
+        argvSlot = &Global_ArgvStorage[Global_ArgCount];
+        ++Global_ArgCount;
 
-            if (*p == (UBYTE)'"') {
-                ++p;
-                Global_ArgvStorage[slot] = p;
+        if (*p == (UBYTE)'"') {
+            ++p;
+            *argvSlot = p;
 
-                while (*p != 0 && *p != (UBYTE)'"') {
-                    ++p;
-                }
-
-                if (*p == 0) {
-                    HANDLE_CloseAllAndReturnWithCode(1);
-                    continue;
-                }
-
-                *p++ = 0;
-                continue;
-            }
-
-            Global_ArgvStorage[slot] = p;
-            while (*p != 0 && *p != (UBYTE)' ' && *p != (UBYTE)'\t' && *p != (UBYTE)'\n') {
+            while (*p != 0 && *p != (UBYTE)'"') {
                 ++p;
             }
 
             if (*p == 0) {
-                break;
+                HANDLE_CloseAllAndReturnWithCode(1);
+                continue;
             }
 
             *p++ = 0;
+            continue;
         }
+
+        *argvSlot = p;
+        while (*p != 0 && *p != (UBYTE)' ' && *p != (UBYTE)'\t' && *p != (UBYTE)'\n') {
+            ++p;
+        }
+
+        if (*p == 0) {
+            break;
+        }
+
+        *p++ = 0;
     }
 
-    Global_ArgvPtr = (Global_ArgCount == 0) ? (char **)Global_SavedMsg : Global_ArgvStorage;
+    if (Global_ArgCount == 0) {
+        Global_ArgvPtr = (char **)Global_SavedMsg;
+    } else {
+        Global_ArgvPtr = Global_ArgvStorage;
+    }
 
     if (Global_ArgCount == 0) {
         ESQ_WBStartupMsg *savedMsg = (ESQ_WBStartupMsg *)Global_SavedMsg;
         ESQ_WBArgRecord *argRecord = savedMsg->argList36;
-        char *appendSrc = argRecord->namePtr4;
         LONG handle;
         ULONG handleBase;
         UBYTE *task;
 
-        Global_ConsoleNameBuffer[0] = 'c';
-        Global_ConsoleNameBuffer[1] = 'o';
-        Global_ConsoleNameBuffer[2] = 'n';
-        Global_ConsoleNameBuffer[3] = '.';
-        Global_ConsoleNameBuffer[4] = '1';
-        Global_ConsoleNameBuffer[5] = '0';
-        Global_ConsoleNameBuffer[6] = '/';
-        Global_ConsoleNameBuffer[7] = '1';
-        Global_ConsoleNameBuffer[8] = '0';
-        Global_ConsoleNameBuffer[9] = '/';
-        Global_ConsoleNameBuffer[10] = '3';
-        Global_ConsoleNameBuffer[11] = '2';
-        Global_ConsoleNameBuffer[12] = '0';
-        Global_ConsoleNameBuffer[13] = '/';
-        Global_ConsoleNameBuffer[14] = '8';
-        Global_ConsoleNameBuffer[15] = '0';
-        Global_ConsoleNameBuffer[16] = '/';
-        Global_ConsoleNameBuffer[17] = 0;
+        *(ULONG *)(Global_ConsoleNameBuffer + 0) = 0x636F6E2EUL;
+        *(ULONG *)(Global_ConsoleNameBuffer + 4) = 0x31302F31UL;
+        *(ULONG *)(Global_ConsoleNameBuffer + 8) = 0x302F3332UL;
+        *(ULONG *)(Global_ConsoleNameBuffer + 12) = 0x302F3830UL;
+        *(UWORD *)(Global_ConsoleNameBuffer + 16) = 0x2F00U;
 
-        STRING_AppendN(Global_ConsoleNameBuffer, appendSrc, 40UL);
+        STRING_AppendN(Global_ConsoleNameBuffer, argRecord->namePtr4, 40UL);
         handle = _LVOOpen(Global_DosLibrary, Global_ConsoleNameBuffer, MODE_NEWFILE);
 
         Global_HandleEntry0_Ptr = handle;
@@ -146,25 +136,31 @@ LONG ESQ_ParseCommandLineAndRun(char *cmdline)
     }
 
     {
-        ULONG d7 = (Global_ArgCount == 0) ? 0UL : 16UL;
-        ULONG base_flags;
+        ULONG d7;
+        ULONG baseFlags;
+
+        if (Global_ArgCount == 0) {
+            d7 = 0UL;
+        } else {
+            d7 = 16UL;
+        }
 
         Global_HandleEntry0_Flags |= (d7 | 0x8001UL);
         Global_HandleEntry1_Flags |= (d7 | 0x8002UL);
         Global_HandleEntry2_Flags |= 0x8003UL;
 
         if (Global_DefaultHandleFlags == 0) {
-            base_flags = 0x8000UL;
+            baseFlags = 0x8000UL;
         } else {
-            base_flags = 0UL;
+            baseFlags = 0UL;
         }
 
         Global_PreallocHandleNode0_HandleIndex = 0UL;
-        Global_PreallocHandleNode0_OpenFlags = (base_flags | 1UL);
+        Global_PreallocHandleNode0_OpenFlags = (baseFlags | 1UL);
         Global_PreallocHandleNode1_HandleIndex = 1UL;
-        Global_PreallocHandleNode1_OpenFlags = (base_flags | 2UL);
+        Global_PreallocHandleNode1_OpenFlags = (baseFlags | 2UL);
         Global_PreallocHandleNode2_HandleIndex = 2UL;
-        Global_PreallocHandleNode2_OpenFlags = (base_flags | 0x80UL);
+        Global_PreallocHandleNode2_OpenFlags = (baseFlags | 0x80UL);
     }
 
     Global_SignalCallbackPtr = (ULONG)UNKNOWN36_ShowAbortRequester;
