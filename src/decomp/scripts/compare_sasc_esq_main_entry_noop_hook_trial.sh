@@ -4,20 +4,19 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-SASC_SRC="unknown2b_main_noop_hooks.c"
+SASC_SRC="esq_main_entry_noop_hook.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown2b.s"
 OUT_DIR="build/decomp/sasc_trial"
 ENTRY_ORIG="ESQ_MainEntryNoOpHook"
-ENTRY_NEXT="ESQ_MainExitNoOpHook"
 
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_esq_main_entry_noop_hook.log" 2>&1
 
 awk -v e="^${ENTRY_ORIG}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/esq_main_entry_noop_hook.original.s"
-awk -v e="^${ENTRY_ORIG}:$" -v n="^${ENTRY_NEXT}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ n) exit; print }' "$SASC_DIS" >"${OUT_DIR}/esq_main_entry_noop_hook.sasc.dis.s"
+awk -v e="^${ENTRY_ORIG}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/esq_main_entry_noop_hook.sasc.dis.s"
 
 normalize() {
   sed -E \

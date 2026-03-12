@@ -5529,7 +5529,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown16_buffer_flush_all_and_close_with_code.c`
 - `src/decomp/sas_c/unknown29_jmptbl_esq_main_init_and_run.c`
 - `src/decomp/sas_c/unknown29_esq_parse_command_line_and_run.c`
-- `src/decomp/sas_c/unknown2b_main_noop_hooks.c`
+- `src/decomp/sas_c/esq_main_entry_noop_hook.c`
+- `src/decomp/sas_c/esq_main_exit_noop_hook.c`
 - `src/decomp/sas_c/dos_open_file_with_mode.c`
 - `src/decomp/sas_c/graphics_alloc_raster.c`
 - `src/decomp/sas_c/graphics_free_raster.c`
