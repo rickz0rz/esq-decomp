@@ -31,7 +31,7 @@ extern const char TEXTDISP_Tag_FIND1[];
 extern const char Global_STR_ASTERISK_2[];
 extern const char Global_STR_ASTERISK_3[];
 
-extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *a, const char *b);
+extern LONG ESQ_WildcardMatch(const char *a, const char *b);
 extern LONG TEXTDISP_ShouldOpenEditorForEntry(const TEXTDISP_CandidateEntry *entry);
 
 LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar)
@@ -59,9 +59,9 @@ LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar)
     }
     patternText = patternPtr;
 
-    if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternText, TEXTDISP_Tag_PPV) == 0) {
+    if (ESQ_WildcardMatch(patternText, TEXTDISP_Tag_PPV) == 0) {
         ppvOrSbeFlag = MATCH_TRUE;
-    } else if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SBE) == 0) {
+    } else if (ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SBE) == 0) {
         TEXTDISP_SbeFilterActiveFlag = MATCH_TRUE;
         ppvOrSbeFlag = MATCH_TRUE;
     } else {
@@ -69,10 +69,10 @@ LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar)
     }
 
     sportsFilterFlag =
-        (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SPORTS) == 0)
+        (ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SPORTS) == 0)
             ? SPORTS_MATCH_TRUE
             : MATCH_FALSE;
-    if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SPT_Filter) == 0) {
+    if (ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SPT_Filter) == 0) {
         patternText = Global_STR_ASTERISK_2;
     }
 
@@ -134,7 +134,7 @@ LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar)
             continue;
         }
 
-        if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(patternText, title) == 0) {
+        if (ESQ_WildcardMatch(patternText, title) == 0) {
             TEXTDISP_CandidateIndexList[matchCount++] = (UBYTE)idx;
         }
         idx += 1;

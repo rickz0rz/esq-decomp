@@ -33,7 +33,7 @@ ___TEXTDISP_BuildMatchIndexList__3:
               MOVE.L         A5,A3                    ;264d 
               PEA            TEXTDISP_Tag_PPV(A4)     ;486c 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              BSR.W          UNKNOWN_JMPTBL_ESQ_WildcardMatch;6100 0000 
+              BSR.W          ESQ_WildcardMatch        ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
               BNE.B          ___TEXTDISP_BuildMatchIndexList__5;6608 
@@ -43,7 +43,7 @@ ___TEXTDISP_BuildMatchIndexList__4:
 ___TEXTDISP_BuildMatchIndexList__5:
               PEA            TEXTDISP_Tag_SBE(A4)     ;486c 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              BSR.W          UNKNOWN_JMPTBL_ESQ_WildcardMatch;6100 0000 
+              BSR.W          ESQ_WildcardMatch        ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
               BNE.B          ___TEXTDISP_BuildMatchIndexList__7;660e 
@@ -57,7 +57,7 @@ ___TEXTDISP_BuildMatchIndexList__7:
 ___TEXTDISP_BuildMatchIndexList__8:
               PEA            TEXTDISP_Tag_SPORTS(A4)  ;486c 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              BSR.W          UNKNOWN_JMPTBL_ESQ_WildcardMatch;6100 0000 
+              BSR.W          ESQ_WildcardMatch        ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
               BNE.B          ___TEXTDISP_BuildMatchIndexList__10;6606 
@@ -70,7 +70,7 @@ ___TEXTDISP_BuildMatchIndexList__11:
               PEA            TEXTDISP_Tag_SPT_Filter(A4);486c 0000 
               MOVE.L         A3,-(A7)                 ;2f0b 
               MOVE.L         D0,$38(A7)               ;2f40 0038 
-              BSR.W          UNKNOWN_JMPTBL_ESQ_WildcardMatch;6100 0000 
+              BSR.W          ESQ_WildcardMatch        ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
               BNE.B          ___TEXTDISP_BuildMatchIndexList__13;6604 
@@ -216,7 +216,7 @@ ___TEXTDISP_BuildMatchIndexList__39:
 ___TEXTDISP_BuildMatchIndexList__40:
               MOVE.L         A2,-(A7)                 ;2f0a 
               MOVE.L         A3,-(A7)                 ;2f0b 
-              BSR.W          UNKNOWN_JMPTBL_ESQ_WildcardMatch;6100 0000 
+              BSR.W          ESQ_WildcardMatch        ;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               TST.L          D0                       ;4a80 
               BNE.B          ___TEXTDISP_BuildMatchIndexList__42;6612 
@@ -241,7 +241,7 @@ __strings:
               XREF           __base
               XREF           _XCOVF
               XREF           TEXTDISP_Tag_PPV
-              XREF           UNKNOWN_JMPTBL_ESQ_WildcardMatch
+              XREF           ESQ_WildcardMatch
               XREF           TEXTDISP_Tag_SBE
               XREF           TEXTDISP_SbeFilterActiveFlag
               XREF           TEXTDISP_Tag_SPORTS

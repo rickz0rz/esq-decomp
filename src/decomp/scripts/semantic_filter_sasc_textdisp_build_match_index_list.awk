@@ -34,7 +34,7 @@ function trim(s, t) {
     gsub(/[^A-Z0-9]/, "", n)
 
     if (u ~ /^TEXTDISP_BUILDMATCHINDEXLIST:/ || u ~ /^TEXTDISP_BUILDMATCHINDEXLIS[A-Z0-9_]*:/) has_entry=1
-    if (n ~ /UNKNOWNJMPTBLESQWILDCARDMATCH/) has_wildcard=1
+    if (n ~ /UNKNOWNJMPTBLESQWILDCARDMATCH/ || n ~ /ESQWILDCARDMATCH/) has_wildcard=1
     if (n ~ /TEXTDISPSHOULDOPENEDITORFORENTRY/ || n ~ /TEXTDISPSHOULDOPENEDITORFORENTR/) has_open_editor=1
     if (n ~ /TEXTDISPACTIVEGROUPID/) has_active_group=1
     if (n ~ /TEXTDISPPRIMARYGROUPENTRYCOUNT/) has_primary_count=1
