@@ -22,7 +22,11 @@ function t(s, x) {
     if (l ~ /^DISKIO_FORCEUIREFRESHIFIDLE:/) has_entry = 1
     if (index(l, "GLOBAL_UIBUSYFLAG") > 0 && (l ~ /^TST\.W / || l ~ /^TST\.L / || l ~ /^MOVE\.W .*?,D0$/ || l ~ /^MOVE\.L .*?,D0$/)) has_guard = 1
     if (index(l, "ESQPARS2_READMODEFLAGS") > 0 && (index(l, "#$100") > 0 || index(l, "#256") > 0)) has_setflag = 1
-    if ((index(l, "GROUP_AG_JMPTBL_TEXTDISP_RESETSELECTIONANDREFRESH") > 0 || index(l, "GROUP_AG_JMPTBL_TEXTDISP_RESETSE") > 0) && (l ~ /^JSR / || l ~ /^BSR(\.[A-Z]+)? /)) has_refresh_call = 1
+    if ((index(l, "GROUP_AG_JMPTBL_TEXTDISP_RESETSELECTIONANDREFRESH") > 0 ||
+         index(l, "GROUP_AG_JMPTBL_TEXTDISP_RESETSE") > 0 ||
+         index(l, "TEXTDISP_RESETSELECTIONANDREFRESH") > 0 ||
+         index(l, "TEXTDISP_RESETSELECTIONANDREFRES") > 0) &&
+        (l ~ /^JSR / || l ~ /^BSR(\.[A-Z]+)? /)) has_refresh_call = 1
     if (l ~ /^RTS$/) has_rts = 1
 }
 
