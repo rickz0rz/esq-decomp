@@ -35,10 +35,10 @@ extern const char Global_STR_GRID_TIME_FORMAT[];
 extern LONG NEWGRID_MainRastPortPtr;
 extern UWORD NEWGRID_ColumnStartXPx;
 
-LONG GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(LONG hour, LONG ampm);
-LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b, LONG c);
+LONG PARSEINI_AdjustHoursTo24HrFormat(WORD hour, WORD amPmFlag);
+LONG WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b, LONG c);
 void BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG w, LONG h);
-void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
+LONG GRAPHICS_BltBitMapRastPort(
     void *src_bitmap,
     LONG src_x,
     LONG src_y,
@@ -68,8 +68,8 @@ void CLEANUP_DrawClockBanner(void)
     rp = (CLEANUP_RastPort *)NEWGRID_MainRastPortPtr;
 
     if (Global_REF_STR_USE_24_HR_CLOCK == 'Y') {
-        LONG hour = GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat((LONG)Global_WORD_CURRENT_HOUR, (LONG)CLOCK_CurrentAmPmFlag);
-        GROUP_AE_JMPTBL_WDISP_SPrintf(
+        LONG hour = PARSEINI_AdjustHoursTo24HrFormat(Global_WORD_CURRENT_HOUR, CLOCK_CurrentAmPmFlag);
+        WDISP_SPrintf(
             timeText,
             Global_STR_EXTRA_TIME_FORMAT,
             hour,
@@ -77,7 +77,7 @@ void CLEANUP_DrawClockBanner(void)
             (LONG)Global_WORD_CURRENT_SECOND
         );
     } else {
-        GROUP_AE_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             timeText,
             Global_STR_GRID_TIME_FORMAT,
             (LONG)Global_WORD_CURRENT_HOUR,
@@ -107,7 +107,7 @@ void CLEANUP_DrawClockBanner(void)
     _LVOSetAPen();
     _LVOText();
 
-    GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
+    GRAPHICS_BltBitMapRastPort(
         rp->bitmap4,
         0,
         0,
@@ -116,6 +116,7 @@ void CLEANUP_DrawClockBanner(void)
         CLOCK_BANNER_BLIT_SIZE,
         CLOCK_BANNER_BLIT_SIZE,
         CLOCK_BANNER_BLIT_SIZE,
-        192
+        192,
+        -1
     );
 }
