@@ -49,7 +49,7 @@ ___SCRIPT_HandleSerialCtrlCmd__12:
               CLR.W          SCRIPT_StatusMaskRefreshPending(A4);426c 0000 
               CLR.L          -(A7)                    ;42a7 
               PEA            ($20).w                  ;4878 0020 
-              BSR.W          SCRIPT3_JMPTBL_ESQDISP_UpdateSta;6100 0000 
+              BSR.W          ESQDISP_UpdateStatusMaskAndRefre;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
 ___SCRIPT_HandleSerialCtrlCmd__13:
               BSR.W          PARSEINI_CheckCtrlHChange;6100 0000 
@@ -202,7 +202,7 @@ ___SCRIPT_HandleSerialCtrlCmd__40:
               PEA            SCRIPT_CTRL_CONTEXT(A4)  ;486c 0000 
               BSR.W          SCRIPT_HandleBrushCommand;6100 0000 
               BSR.W          SCRIPT_ApplyPendingBannerTarget;6100 0000 
-              BSR.W          WDISP_JMPTBL_ESQ_SetCopperEffect;6100 0000 
+              BSR.W          ESQ_SetCopperEffect_OnEnableHigh;6100 0000 
               CLR.L          (A7)                     ;4297 
               BSR.W          TEXTDISP_SetRastForMode  ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
@@ -246,7 +246,7 @@ ___SCRIPT_HandleSerialCtrlCmd__46:
 ___SCRIPT_HandleSerialCtrlCmd__47:
               PEA            ($1).w                   ;4878 0001 
               PEA            ($20).w                  ;4878 0020 
-              BSR.W          SCRIPT3_JMPTBL_ESQDISP_UpdateSta;6100 0000 
+              BSR.W          ESQDISP_UpdateStatusMaskAndRefre;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               MOVE.W         Global_REF_CLOCKDATA_STRUCT(A4),Global_WORD_CLOCK_SECONDS(A4);396c 0000 0000 
               MOVE.W         SCRIPT_CtrlCmdChecksumErrorCount(A4),D0;302c 0000 
@@ -302,7 +302,7 @@ __strings:
               XREF           SCRIPT_StatusMaskRefreshPending
               XREF           Global_REF_CLOCKDATA_STRUCT
               XREF           Global_WORD_CLOCK_SECONDS
-              XREF           SCRIPT3_JMPTBL_ESQDISP_UpdateSta
+              XREF           ESQDISP_UpdateStatusMaskAndRefre
               XREF           PARSEINI_CheckCtrlHChange
               XREF           Global_UIBusyFlag
               XREF           SCRIPT_ESQ_CaptureCtrlBit4Stream
@@ -314,7 +314,7 @@ __strings:
               XREF           SCRIPT_CTRL_CONTEXT
               XREF           SCRIPT_HandleBrushCommand
               XREF           SCRIPT_ApplyPendingBannerTarget
-              XREF           WDISP_JMPTBL_ESQ_SetCopperEffect
+              XREF           ESQ_SetCopperEffect_OnEnableHigh
               XREF           TEXTDISP_SetRastForMode
               XREF           TEXTDISP_DeferredActionCountdown
               XREF           SCRIPT_ProcessCtrlContextPlaybac

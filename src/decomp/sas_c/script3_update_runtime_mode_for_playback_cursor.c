@@ -12,7 +12,7 @@ extern char CONFIG_MSN_FlagChar;
 extern char CONFIG_MsnRuntimeModeSelectorChar_LRBN;
 
 extern short SCRIPT_BeginBannerCharTransition(LONG bannerChar, LONG speedMs);
-extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void TEXTDISP_SetRastForMode(LONG mode);
 extern void SCRIPT_UpdateSerialShadowFromCtrlByte(LONG value);
 extern void SCRIPT_ClearSearchTextsAndChannels(void);
@@ -32,7 +32,7 @@ UWORD SCRIPT_UpdateRuntimeModeForPlaybackCursor(void)
         SCRIPT_RuntimeMode = 2;
         SCRIPT_RuntimeModeDispatchLatch = 1;
 
-        WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+        ESQ_SetCopperEffect_OnEnableHighlight();
         TEXTDISP_SetRastForMode(0);
 
         shadowByte = 0;

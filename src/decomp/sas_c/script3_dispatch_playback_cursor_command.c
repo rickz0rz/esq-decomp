@@ -21,12 +21,12 @@ extern char *SCRIPT_CommandTextPtr;
 extern WORD SCRIPT_RuntimeMode;
 extern WORD SCRIPT_PlaybackFallbackCounter;
 
-extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void TEXTDISP_SetRastForMode(LONG mode);
 extern void SCRIPT_UpdateSerialShadowFromCtrlByte(UBYTE value);
-extern void SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom(void);
+extern void ESQ_SetCopperEffect_Custom(void);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
-extern void SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(LONG mode, LONG arg, LONG flags);
+extern void CLEANUP_RenderAlignedStatusScreen(WORD mode, WORD arg, WORD flags);
 extern void WDISP_HandleWeatherStatusCommand(LONG command);
 extern LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, char *arg);
 extern void SCRIPT_AssertCtrlLineNow(void);
@@ -51,7 +51,7 @@ void SCRIPT_DispatchPlaybackCursorCommand(LONG *cursorPtr)
         break;
     case 1:
         TEXTDISP_CurrentMatchIndex = -1;
-        WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+        ESQ_SetCopperEffect_OnEnableHighlight();
         TEXTDISP_SetRastForMode(0);
         if (CONFIG_MSN_FlagChar == 'M') {
             SCRIPT_UpdateSerialShadowFromCtrlByte(3);
@@ -61,7 +61,7 @@ void SCRIPT_DispatchPlaybackCursorCommand(LONG *cursorPtr)
         break;
     case 2:
         TEXTDISP_CurrentMatchIndex = -1;
-        WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+        ESQ_SetCopperEffect_OnEnableHighlight();
         TEXTDISP_SetRastForMode(0);
         SCRIPT_UpdateSerialShadowFromCtrlByte(1);
         break;
@@ -74,13 +74,13 @@ void SCRIPT_DispatchPlaybackCursorCommand(LONG *cursorPtr)
         }
         break;
     case 4:
-        SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen((LONG)TEXTDISP_ChannelSourceMode, (LONG)SCRIPT_ChannelRangeDigitChar, 0);
+        CLEANUP_RenderAlignedStatusScreen(TEXTDISP_ChannelSourceMode, SCRIPT_ChannelRangeDigitChar, 0);
         break;
     case 5:
-        SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(1, 53, SCRIPT_SearchMatchCountOrIndex);
+        CLEANUP_RenderAlignedStatusScreen(1, 53, (WORD)SCRIPT_SearchMatchCountOrIndex);
         break;
     case 6:
-        SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(0, 53, SCRIPT_SearchMatchCountOrIndex);
+        CLEANUP_RenderAlignedStatusScreen(0, 53, (WORD)SCRIPT_SearchMatchCountOrIndex);
         break;
     case 7:
         TEXTDISP_CurrentMatchIndex = -1;
@@ -95,7 +95,7 @@ void SCRIPT_DispatchPlaybackCursorCommand(LONG *cursorPtr)
         SCRIPT_RuntimeMode = 1;
         break;
     case 10:
-        WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+        ESQ_SetCopperEffect_OnEnableHighlight();
         TEXTDISP_SetRastForMode(0);
         SCRIPT_PendingBannerTargetChar = (WORD)(CONFIG_BannerCopperHeadByte + 28);
         SCRIPT_PendingBannerSpeedMs = 1000;
@@ -105,7 +105,7 @@ void SCRIPT_DispatchPlaybackCursorCommand(LONG *cursorPtr)
         SCRIPT_PendingBannerSpeedMs = 1000;
         break;
     case 12:
-        SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom();
+        ESQ_SetCopperEffect_Custom();
         break;
     case 13:
         SCRIPT_ReadModeActiveLatch = 1;

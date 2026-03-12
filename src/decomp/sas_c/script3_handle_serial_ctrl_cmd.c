@@ -29,10 +29,10 @@ extern LONG PARSEINI_CheckCtrlHChange(void);
 extern LONG SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte(void);
 extern LONG SCRIPT_HandleBrushCommand(char *ctx, char *cmd, LONG cmdLen);
 extern void SCRIPT_ApplyPendingBannerTarget(void);
-extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void TEXTDISP_SetRastForMode(LONG mode);
 extern void SCRIPT_ProcessCtrlContextPlaybackTick(char *ctx);
-extern void SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(LONG mode, LONG flag);
+extern void ESQDISP_UpdateStatusMaskAndRefresh(LONG mode, LONG flag);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
 
 void SCRIPT_HandleSerialCtrlCmd(void)
@@ -55,7 +55,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
             Global_WORD_CLOCK_SECONDS = (WORD)(Global_WORD_CLOCK_SECONDS + 1);
             if (Global_WORD_CLOCK_SECONDS >= 3) {
                 SCRIPT_StatusMaskRefreshPending = 0;
-                SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(32, 0);
+                ESQDISP_UpdateStatusMaskAndRefresh(32, 0);
             }
         }
     }
@@ -129,7 +129,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
             if (Global_WORD_SELECT_CODE_IS_RAVESC != 0) {
                 SCRIPT_HandleBrushCommand((char *)SCRIPT_CTRL_CONTEXT, SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
                 SCRIPT_ApplyPendingBannerTarget();
-                WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+                ESQ_SetCopperEffect_OnEnableHighlight();
                 TEXTDISP_SetRastForMode(0);
             } else {
                 if (TEXTDISP_DeferredActionCountdown == 0) {
@@ -146,7 +146,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
                 }
             }
         } else {
-            SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(32, 1);
+            ESQDISP_UpdateStatusMaskAndRefresh(32, 1);
             Global_WORD_CLOCK_SECONDS = Global_REF_CLOCKDATA_STRUCT;
             SCRIPT_CtrlCmdChecksumErrorCount = (WORD)(SCRIPT_CtrlCmdChecksumErrorCount + 1);
             SCRIPT_StatusMaskRefreshPending = 1;

@@ -29,7 +29,7 @@ ___SCRIPT_UpdateRuntimeModeForPlayb__4:
               MOVE.W         #$ffff,TEXTDISP_CurrentMatchIndex(A4);397c ffff 0000 
               MOVE.W         #$2,SCRIPT_RuntimeMode(A4);397c 0002 0000 
               MOVE.W         #$1,SCRIPT_RuntimeModeDispatchLatch(A4);397c 0001 0000 
-              BSR.W          WDISP_JMPTBL_ESQ_SetCopperEffect;6100 0000 
+              BSR.W          ESQ_SetCopperEffect_OnEnableHigh;6100 0000 
               CLR.L          -(A7)                    ;42a7 
               BSR.W          TEXTDISP_SetRastForMode  ;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
@@ -108,7 +108,7 @@ __strings:
               XREF           SCRIPT_CtrlHandshakeRetryCount
               XREF           TEXTDISP_CurrentMatchIndex
               XREF           SCRIPT_RuntimeModeDispatchLatch
-              XREF           WDISP_JMPTBL_ESQ_SetCopperEffect
+              XREF           ESQ_SetCopperEffect_OnEnableHigh
               XREF           TEXTDISP_SetRastForMode
               XREF           CONFIG_MSN_FlagChar
               XREF           CONFIG_MsnRuntimeModeSelectorCha
