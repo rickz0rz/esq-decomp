@@ -27,52 +27,39 @@ extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(void *clockPtr);
 
 LONG NEWGRID_ComputeDaySlotFromClockWithOffset(void *clockPtr)
 {
-    const LONG CLOCK_COPY_WORDS32 = 5;
-    const LONG MINUTES_PER_HOUR = 60;
-    const LONG HALF_HOUR_MARK = 30;
-    const LONG LOWER_HALF_MAX = 29;
-    const LONG SLOT_STEP = 1;
-    const LONG SLOT_LAST = 48;
-    const LONG SLOT_FIRST = 1;
     NEWGRID_ClockScratch scratch;
+    ULONG *src;
+    ULONG *dst;
+    WORD copyCount;
     LONG slot;
     LONG offsetMinutes;
-    LONG upperThreshold;
-    LONG lowerThreshold;
     LONG minute;
-    ULONG *src32;
-    ULONG *dst32;
-    LONG i;
+    src = (ULONG *)clockPtr;
+    dst = (ULONG *)&scratch;
 
-    src32 = (ULONG *)clockPtr;
-    dst32 = (ULONG *)&scratch;
-    for (i = 0; i < CLOCK_COPY_WORDS32; ++i) {
-        dst32[i] = src32[i];
+    for (copyCount = 4; copyCount >= 0; --copyCount) {
+        *dst++ = *src++;
     }
-    scratch.word10 = ((NEWGRID_ClockView *)clockPtr)->minute;
+
+    scratch.word10 = *(UWORD *)src;
 
     slot = (UWORD)NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&scratch);
-
     offsetMinutes = GCOMMAND_MplexClockOffsetMinutes;
     minute = (WORD)scratch.word10;
 
-    upperThreshold = MINUTES_PER_HOUR - offsetMinutes;
-    if (minute >= upperThreshold) {
-        slot += SLOT_STEP;
-        if (slot > SLOT_LAST) {
-            slot = SLOT_FIRST;
+    if (minute < 60 - offsetMinutes) {
+        if (minute < 30 - offsetMinutes) {
+            return slot;
         }
-        return slot;
+
+        if ((WORD)scratch.word10 > 29) {
+            return slot;
+        }
     }
 
-    lowerThreshold = HALF_HOUR_MARK - offsetMinutes;
-    if (minute >= lowerThreshold) {
-        if (minute <= LOWER_HALF_MAX) {
-            slot += SLOT_STEP;
-            if (slot > SLOT_LAST) {
-                slot = SLOT_FIRST;
-            }
-        }
+    ++slot;
+    if (slot > 48) {
+        slot = 1;
     }
 
     return slot;
