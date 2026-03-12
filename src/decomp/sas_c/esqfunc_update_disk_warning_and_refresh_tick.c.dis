@@ -7,7 +7,7 @@ ESQFUNC_UpdateDiskWarningAndRefr:
               BCS.W          _XCOVF                   ;6500 0000 
               MOVE.L         D7,-(A7)                 ;2f07 
 ___ESQFUNC_UpdateDiskWarningAndRefr__1:
-              BSR.W          ESQFUNC_JMPTBL_DISKIO_ProbeDrive;6100 0000 
+              BSR.W          DISKIO_ProbeDrivesAndAssignPaths;6100 0000 
               TST.L          DISKIO_Drive0WriteProtectedCode(A4);4aac 0000 
               BEQ.B          ___ESQFUNC_UpdateDiskWarningAndRefr__3;671c 
 ___ESQFUNC_UpdateDiskWarningAndRefr__2:
@@ -15,7 +15,7 @@ ___ESQFUNC_UpdateDiskWarningAndRefr__2:
               PEA            ($5a).w                  ;4878 005a 
               PEA            Global_STR_YOU_MUST_REINSERT_SYS(A4);486c 0000 
               PEA            Global_REF_RASTPORT_2+$2(A4);486c 0002 
-              BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
+              BSR.W          TLIBA3_DrawCenteredWrappedTextLi;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               BRA.B          ___ESQFUNC_UpdateDiskWarningAndRefr__8;6030 
 ___ESQFUNC_UpdateDiskWarningAndRefr__3:
@@ -26,7 +26,7 @@ ___ESQFUNC_UpdateDiskWarningAndRefr__4:
               PEA            ($5a).w                  ;4878 005a 
               PEA            Global_STR_DISK_0_IS_WRITE_PROTE(A4);486c 0000 
               PEA            Global_REF_RASTPORT_2+$2(A4);486c 0002 
-              BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
+              BSR.W          TLIBA3_DrawCenteredWrappedTextLi;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
               BRA.B          ___ESQFUNC_UpdateDiskWarningAndRefr__8;600e 
 ___ESQFUNC_UpdateDiskWarningAndRefr__5:
@@ -44,12 +44,12 @@ __const:
 __strings:
               XREF           __base
               XREF           _XCOVF
-              XREF           ESQFUNC_JMPTBL_DISKIO_ProbeDrive
+              XREF           DISKIO_ProbeDrivesAndAssignPaths
               XREF           DISKIO_Drive0WriteProtectedCode
               XREF           Global_RefreshTickCounter
               XREF           Global_STR_YOU_MUST_REINSERT_SYS
               XREF           Global_REF_RASTPORT_2
-              XREF           ESQFUNC_JMPTBL_TLIBA3_DrawCenter
+              XREF           TLIBA3_DrawCenteredWrappedTextLi
               XREF           DISKIO_DriveMediaStatusCodeTable
               XREF           Global_STR_DISK_0_IS_WRITE_PROTE
               XDEF           ESQFUNC_UpdateDiskWarningAndRefr
