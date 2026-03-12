@@ -37,18 +37,16 @@ typedef struct SCRIPT_CtrlContextSnapshot {
     LONG searchMatchCountOrIndex;
     LONG playbackCursor;
     UWORD runtimeMode;
-    UBYTE pad26[200];
     char primarySearchText[200];
     char secondarySearchText[200];
     UWORD activeGroupId;
-    UBYTE pad428[8];
+    UBYTE bannerFallbackEntryIndex[4];
+    UBYTE bannerSelectedEntryIndex[4];
     UBYTE type20SubtypeCache;
     UBYTE pendingWeatherCommandChar;
     UBYTE pendingTextdispCmdChar;
     UBYTE pendingTextdispCmdArg;
     char *commandTextPtr;
-    UBYTE bannerFallbackEntryIndex[4];
-    UBYTE bannerSelectedEntryIndex[4];
 } SCRIPT_CtrlContextSnapshot;
 
 void SCRIPT_LoadCtrlContextSnapshot(char *ctx)
