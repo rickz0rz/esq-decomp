@@ -38,8 +38,8 @@ function trim(s,    t) {
     if (u ~ /#\$16|#22|22\.W|\(\$16\)\.W|PEA 22\.W/) c22 = 1
     if (u ~ /#\$10001|#65537|65537\.W|65537\.L|MEMF_PUBLIC|MEMF_CLEAR/) cflags = 1
     if (u ~ /^MOVE\.L [D][0-7],\(A[0-7]\)$/) slot0 = 1
-    if (u ~ /^MOVE\.L [D][0-7],4\(A[0-7]\)$/ || u ~ /^MOVE\.L [D][0-7],\(4,A[0-7]\)$/) slot1 = 1
-    if (u ~ /^CLR\.W 16\(A[0-7]\)$/ || u ~ /^CLR\.W \(16,A[0-7]\)$/ || u ~ /^MOVE\.W #0,16\(A[0-7]\)$/ || u ~ /^MOVE\.W #0,\(16,A[0-7]\)$/) clear16 = 1
+    if (u ~ /^MOVE\.L [D][0-7],[$]4\(A[0-7]\)$/ || u ~ /^MOVE\.L [D][0-7],4\(A[0-7]\)$/ || u ~ /^MOVE\.L [D][0-7],\(4,A[0-7]\)$/) slot1 = 1
+    if (u ~ /^CLR\.W [$]10\(A[0-7]\)$/ || u ~ /^CLR\.W 16\(A[0-7]\)$/ || u ~ /^CLR\.W \(16,A[0-7]\)$/ || u ~ /^MOVE\.W #0,[$]10\(A[0-7]\)$/ || u ~ /^MOVE\.W #0,16\(A[0-7]\)$/ || u ~ /^MOVE\.W #0,\(16,A[0-7]\)$/) clear16 = 1
     if (u ~ /^LEA \$4\(A3\),A0$/ || u ~ /^LEA 4\(A3\),A0$/) saw_slot1_ptr = 1
     if (u ~ /^LEA \$10\(A3\),A0$/ || u ~ /^LEA 16\(A3\),A0$/) saw_state16_ptr = 1
     if (saw_slot1_ptr && u ~ /^MOVE\.L [D][0-7],\(A0\)$/) slot1 = 1
