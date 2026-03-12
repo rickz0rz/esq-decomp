@@ -17,7 +17,6 @@ LONG GCOMMAND_LoadPPVTemplate(void)
     const LONG TEMPLATE_SECOND_TEXT_INDEX = 13;
     const LONG TEMPLATE_BLOCK_BYTES = 56;
     const LONG SEP_BYTES = 1;
-    const LONG CH_NUL = 0;
     const LONG STR_TERM_BYTES = 1;
     LONG fileHandle;
     LONG templateWords[14];
@@ -39,13 +38,13 @@ LONG GCOMMAND_LoadPPVTemplate(void)
 
     firstText = (UBYTE *)templateWords[TEMPLATE_FIRST_TEXT_INDEX];
     secondText = (UBYTE *)templateWords[TEMPLATE_SECOND_TEXT_INDEX];
-    templateWords[TEMPLATE_FIRST_TEXT_INDEX] = CH_NUL;
-    templateWords[TEMPLATE_SECOND_TEXT_INDEX] = CH_NUL;
+    templateWords[TEMPLATE_FIRST_TEXT_INDEX] = 0;
+    templateWords[TEMPLATE_SECOND_TEXT_INDEX] = 0;
 
     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(fileHandle, templateWords, TEMPLATE_BLOCK_BYTES);
 
     scan = firstText;
-    while (*scan != CH_NUL) {
+    while (*scan != 0) {
         scan++;
     }
 
@@ -55,7 +54,7 @@ LONG GCOMMAND_LoadPPVTemplate(void)
         fileHandle, &GCOMMAND_PpvTemplateFieldSeparatorByteStorage, SEP_BYTES);
 
     scan = secondText;
-    while (*scan != CH_NUL) {
+    while (*scan != 0) {
         scan++;
     }
 
