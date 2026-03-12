@@ -8,6 +8,7 @@ typedef struct SelCtx {
     LONG index;
     LONG start;
     LONG end;
+    UWORD selectedRow;
     UWORD row;
     UWORD rowLimit;
 } SelCtx;
@@ -40,11 +41,10 @@ extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(const void *aux, LO
 LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
 {
     LONG found = 0;
-    LONG matched = 0;
+    LONG matched;
     LONG idx = 0;
-    LONG row = 0;
-    const NEWGRID_Entry *entry = 0;
-    const NEWGRID_AuxData *aux = 0;
+    char *entry = 0;
+    char *aux = 0;
 
     switch (state) {
     case 0:
@@ -68,45 +68,61 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
         break;
     }
 
-    while (!found) {
-        if (NEWGRID_AltSelectionRowCursor >= TEXTDISP_PrimaryGroupEntryCount) break;
-        if (!TEXTDISP_PrimaryGroupPresentFlag || state == 5) break;
+scan_loop:
+    if (found != 0) {
+        goto finalize_selection;
+    }
 
-        row = NEWGRID_AltSelectionEntryCursor;
-        NEWGRID_UpdatePresetEntry((char **)&entry, (char **)&aux, row, NEWGRID_AltSelectionRowCursor);
-        if (NEWGRID_TestEntrySelectable(entry, aux, mode)) {
-            matched = 0;
-            idx = NEWGRID_AltSelectionEntryCursor;
-            if (idx > 0 && idx < ctx->rowLimit) {
-                if (idx == 49) {
-                    idx = NEWGRID_UpdatePresetEntry((char **)&entry, (char **)&aux, idx, NEWGRID_AltSelectionRowCursor);
-                } else if (idx > 48) {
-                    idx -= 48;
+    if (NEWGRID_AltSelectionRowCursor >= TEXTDISP_PrimaryGroupEntryCount) {
+        goto finalize_selection;
+    }
+
+    if (TEXTDISP_PrimaryGroupPresentFlag == 0) {
+        goto finalize_selection;
+    }
+
+    if (state == 5) {
+        goto finalize_selection;
+    }
+
+    NEWGRID_UpdatePresetEntry(&entry, &aux, (LONG)NEWGRID_AltSelectionEntryCursor,
+        NEWGRID_AltSelectionRowCursor);
+    if (NEWGRID_TestEntrySelectable(entry, aux, mode) != 0) {
+entry_loop:
+        if (found != 0) {
+            goto scan_reset;
+        }
+
+        matched = 0;
+        idx = (LONG)NEWGRID_AltSelectionEntryCursor;
+        if (idx > 0 && idx < (LONG)ctx->rowLimit) {
+            if (idx == 49) {
+                idx = NEWGRID_UpdatePresetEntry(&entry, &aux, idx, NEWGRID_AltSelectionRowCursor);
+            } else if (idx > 48) {
+                idx -= 48;
+            }
+
+            if (entry != 0 && aux != 0) {
+                if (NEWGRID_AltSelectionEntryCursor == ctx->row) {
+                    idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, idx);
                 }
 
-                if (entry && aux) {
-                    if (NEWGRID_AltSelectionEntryCursor == ctx->row) {
-                        {
-                            const char *entryText = (const char *)entry;
-                            const char *auxText = (const char *)aux;
-                            idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, idx);
-                        }
-                    }
-                    if (idx > 0) {
-                        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, idx) == -1) {
-                            if ((aux->rowFlags[idx] & 0x20) == 0) {
-                                if ((aux->rowFlags[NEWGRID_AltSelectionEntryCursor] & 0x80) == 0) {
-                                    if (aux->payloadTable[idx] != 0) {
-                                        if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
-                                                (char *)entry,
-                                                (char *)aux,
-                                                idx,
-                                                1440,
-                                                CONFIG_TimeWindowMinutes) != 0) {
-                                            if (mode != 1 ||
-                                                TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(aux, idx) != 0) {
-                                                matched = 1;
-                                            }
+                if (idx > 0) {
+                    if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(
+                            ((NEWGRID_Entry *)entry)->selectionBits,
+                            idx) == -1) {
+                        if ((((NEWGRID_AuxData *)aux)->rowFlags[idx] & 0x20) == 0) {
+                            if ((((NEWGRID_AuxData *)aux)->rowFlags[NEWGRID_AltSelectionEntryCursor] & 0x80) == 0) {
+                                if (((NEWGRID_AuxData *)aux)->payloadTable[idx] != 0) {
+                                    if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
+                                            entry,
+                                            aux,
+                                            idx,
+                                            1440,
+                                            CONFIG_TimeWindowMinutes) != 0) {
+                                        if (mode != 1 ||
+                                            TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(aux, idx) != 0) {
+                                            matched = 1;
                                         }
                                     }
                                 }
@@ -115,33 +131,47 @@ LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
                     }
                 }
             }
-            found = matched;
         }
 
-        if (!found) {
-            NEWGRID_AltSelectionEntryCursor = (UWORD)(NEWGRID_AltSelectionEntryCursor + 1);
-            if (state == 4) {
-                state = 5;
-            } else {
-                NEWGRID_AltSelectionEntryCursor = ctx->row;
-                NEWGRID_AltSelectionRowCursor += 1;
-            }
-        } else {
-            break;
+        found = matched;
+        if (found != 0) {
+            goto entry_loop;
         }
+
+        NEWGRID_AltSelectionEntryCursor += 1;
+        goto entry_loop;
     }
 
-    if (found && state != 5) {
-        ctx->entry = (void *)entry;
-        ctx->aux = (void *)aux;
+scan_reset:
+    if (found != 0) {
+        goto scan_loop;
+    }
+
+    if (state == 4) {
+        state = 5;
+    } else {
+        NEWGRID_AltSelectionEntryCursor = ctx->row;
+        NEWGRID_AltSelectionRowCursor += 1;
+    }
+
+    goto scan_loop;
+
+finalize_selection:
+    if (found != 0 && state != 5) {
+        ctx->entry = entry;
+        ctx->aux = aux;
         ctx->index = NEWGRID_AltSelectionRowCursor;
+
         if (NEWGRID_AltSelectionEntryCursor > '0' && idx < 49) {
-            ctx->row = (UWORD)(idx + 48);
+            ctx->selectedRow = (UWORD)(idx + 48);
         } else {
-            ctx->row = (UWORD)idx;
+            ctx->selectedRow = (UWORD)idx;
         }
+
         ((NEWGRID_AuxData *)aux)->rowFlags[idx] |= 0x20;
-    } else if (!found) {
+    }
+
+    if (found == 0) {
         ctx->entry = 0;
         ctx->aux = 0;
     }
