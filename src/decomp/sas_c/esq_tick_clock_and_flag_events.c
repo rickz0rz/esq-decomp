@@ -22,85 +22,84 @@ extern void ESQ_UpdateMonthDayFromDayOfYear(ClockFields *time_ptr);
 short ESQ_TickClockAndFlagEvents(ClockFields *time_ptr)
 {
     short status = 0;
+    short zero = 0;
+    short one = 1;
+    short sixty = 60;
+    short value;
+    short limit;
 
-    if (time_ptr->second >= 60) {
-        short v;
-        short one = 1;
-        short zero = 0;
-
-        time_ptr->second = (short)(time_ptr->second - 60);
-        status = 1;
-
-        v = (short)(time_ptr->minute + one);
-        time_ptr->minute = v;
-
-        if (v == 30) {
-            status = 2;
-            return status;
-        }
-
-        if (v >= 60) {
-            time_ptr->minute = zero;
-            status = 2;
-
-            v = (short)(time_ptr->hour + one);
-            time_ptr->hour = v;
-            if (v >= 12) {
-                if (v != 12) {
-                    time_ptr->hour = one;
-                    return status;
-                }
-
-                time_ptr->am_pm_flag ^= (short)-1;
-                if (time_ptr->am_pm_flag >= 0) {
-                    v = (short)(time_ptr->day_of_week + one);
-                    time_ptr->day_of_week = v;
-                    if (v == 7) {
-                        time_ptr->day_of_week = zero;
-                    }
-
-                    v = (short)(time_ptr->day_of_year + one);
-                    time_ptr->day_of_year = v;
-
-                    {
-                        short limit = 0x016E;
-                        if (time_ptr->leap_flag != 0) {
-                            limit = (short)(limit + one);
-                        }
-                        if (v >= limit) {
-                            short year = (short)(time_ptr->year + one);
-                            short leap = zero;
-                            time_ptr->year = year;
-                            time_ptr->day_of_year = one;
-                            if (((unsigned short)year & 3u) == 0u) {
-                                leap = (short)-1;
-                            }
-                            time_ptr->leap_flag = leap;
-                        }
-                    }
-
-                    ESQ_UpdateMonthDayFromDayOfYear(time_ptr);
-                }
-            }
-
-            return status;
-        }
-
-        if (v == CLOCK_MinuteTriggerBaseOffset || v == CLOCK_MinuteTriggerBaseOffsetPlus30) {
-            status = 5;
-            return status;
-        }
-
-        if (v == 20 || v == 50) {
-            status = 4;
-            return status;
-        }
-
-        if (v == CLOCK_MinuteTrigger30MinusBase || v == CLOCK_MinuteTrigger60MinusBase) {
-            status = 3;
-            return status;
-        }
+    if (time_ptr->second < sixty) {
+        goto done;
     }
 
+    time_ptr->second = (short)(time_ptr->second - sixty);
+    status = one;
+
+    value = (short)(time_ptr->minute + one);
+    time_ptr->minute = value;
+
+    if (value == 30) {
+        status = 2;
+        goto done;
+    }
+
+    if (value >= sixty) {
+        time_ptr->minute = zero;
+        status = 2;
+
+        value = (short)(time_ptr->hour + one);
+        time_ptr->hour = value;
+        if (value >= 12) {
+            if (value != 12) {
+                time_ptr->hour = one;
+                goto done;
+            }
+
+            time_ptr->am_pm_flag ^= (short)-1;
+            if (time_ptr->am_pm_flag >= 0) {
+                value = (short)(time_ptr->day_of_week + one);
+                time_ptr->day_of_week = value;
+                if (value == 7) {
+                    time_ptr->day_of_week = zero;
+                }
+
+                value = (short)(time_ptr->day_of_year + one);
+                time_ptr->day_of_year = value;
+                limit = 0x016E;
+                if (time_ptr->leap_flag != 0) {
+                    limit = (short)(limit + one);
+                }
+                if (value >= limit) {
+                    value = (short)(time_ptr->year + one);
+                    time_ptr->year = value;
+                    time_ptr->day_of_year = one;
+                    time_ptr->leap_flag = zero;
+                    if (((unsigned short)value & 3u) == 0u) {
+                        time_ptr->leap_flag = (short)-1;
+                    }
+                }
+
+                ESQ_UpdateMonthDayFromDayOfYear(time_ptr);
+            }
+        }
+
+        goto done;
+    }
+
+    if (value == CLOCK_MinuteTriggerBaseOffset || value == CLOCK_MinuteTriggerBaseOffsetPlus30) {
+        status = 5;
+        goto done;
+    }
+
+    if (value == 20 || value == 50) {
+        status = 4;
+        goto done;
+    }
+
+    if (value == CLOCK_MinuteTrigger30MinusBase || value == CLOCK_MinuteTrigger60MinusBase) {
+        status = 3;
+    }
+
+done:
     return status;
 }
