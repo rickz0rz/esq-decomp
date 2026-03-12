@@ -25,7 +25,7 @@ function trim(s,    t) {
     l = trim($0)
     if (l == "") next
 
-    if (l ~ /^MOVE\.B #\$?7,ED_MENUSTATEID(\(A[0-7]\))?$/ || l ~ /^MOVE\.B #\$?07,ED_MENUSTATEID(\(A[0-7]\))?$/) has_mode7 = 1
+    if (l ~ /^MOVE\.B #\$?7,ED_MENUSTATEID(\(A[0-7]\))?$/ || l ~ /^MOVE\.B #\$?07,ED_MENUSTATEID(\(A[0-7]\))?$/ || l ~ /^MOVE\.B D[0-7],ED_MENUSTATEID(\(A[0-7]\))?$/) has_mode7 = 1
     if (l ~ /^MOVE\.W #\$?1,ED_DIAGNOSTICSSCREENACTIVE(\(A[0-7]\))?$/ || l ~ /^MOVEQ(\.L)? #\$?1,D0$/) has_diag_active = 1
 
     if (l ~ /(JSR|BSR).*ED_DRAWBOTTOMHELPBARBACKGROUND/) has_bottom_bg = 1

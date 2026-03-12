@@ -5,19 +5,19 @@ P_TYPE_FreeEntry:
               SUB.L          #$10,D0                  ;90bc 0000 0010 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+              MOVE.L         A5,-(A7)                 ;2f0d 
 ___P_TYPE_FreeEntry__1:
-              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
               MOVE.L         A5,D0                    ;200d 
-              BEQ.B          ___P_TYPE_FreeEntry__6   ;6734 
+              BEQ.B          ___P_TYPE_FreeEntry__6   ;6736 
 ___P_TYPE_FreeEntry__2:
 ___P_TYPE_FreeEntry__3:
-              MOVE.L         A5,A3                    ;264d 
-              MOVE.L         $6(A3),D0                ;202b 0006 
-              BEQ.B          ___P_TYPE_FreeEntry__5   ;6716 
+              LEA            $6(A5),A0                ;41ed 0006 
+              TST.L          (A0)                     ;4a90 
+              BEQ.B          ___P_TYPE_FreeEntry__5   ;6718 
 ___P_TYPE_FreeEntry__4:
-              MOVE.L         $2(A3),-(A7)             ;2f2b 0002 
-              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $2(A5),-(A7)             ;2f2d 0002 
+              MOVE.L         $6(A5),-(A7)             ;2f2d 0006 
               PEA            ($5c).w                  ;4878 005c 
               PEA            Global_STR_P_TYPE_C_4(A4);486c 0000 
               BSR.W          SCRIPT_JMPTBL_MEMORY_DeallocateM;6100 0000 
@@ -30,7 +30,7 @@ ___P_TYPE_FreeEntry__5:
               BSR.W          SCRIPT_JMPTBL_MEMORY_DeallocateM;6100 0000 
               LEA            $10(A7),A7               ;4fef 0010 
 ___P_TYPE_FreeEntry__6:
-              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              MOVE.L         (A7)+,A5                 ;2a5f 
               RTS                                     ;4e75 
 __const:
 __strings:
