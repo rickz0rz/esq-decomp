@@ -39,14 +39,13 @@ LONG GCOMMAND_LoadCommandFile(void)
     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(fileHandle, templateWords, TEMPLATE_BLOCK_BYTES);
 
     scan = textStart;
-    while (*scan != CH_NUL) {
-        scan++;
-    }
+    do {
+    } while (*scan++ != CH_NUL);
 
     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(
         fileHandle,
         textStart,
-        (LONG)(scan - textStart) + ONE);
+        (LONG)(scan - textStart));
 
     return GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(fileHandle);
 }

@@ -19,7 +19,7 @@ ___GCOMMAND_LoadCommandFile__1:
               BSR.W          GROUP_AY_JMPTBL_DISKIO_OpenFileW;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
               MOVE.L         D0,$40(A7)               ;2f40 0040 
-              BEQ.B          ___GCOMMAND_LoadCommandFile__12;676e 
+              BEQ.B          ___GCOMMAND_LoadCommandFile__11;6766 
 ___GCOMMAND_LoadCommandFile__2:
 ___GCOMMAND_LoadCommandFile__3:
               CLR.L          $14(A7)                  ;42af 0014 
@@ -47,17 +47,13 @@ ___GCOMMAND_LoadCommandFile__7:
               LEA            $c(A7),A7                ;4fef 000c 
               MOVE.L         A5,A3                    ;264d 
 ___GCOMMAND_LoadCommandFile__8:
-              MOVE.B         (A3),D0                  ;1013 
+              MOVE.B         (A3)+,D0                 ;101b 
               CMP.B          $44(A7),D0               ;b02f 0044 
-              BEQ.B          ___GCOMMAND_LoadCommandFile__10;6704 
+              BNE.B          ___GCOMMAND_LoadCommandFile__8;66f8 
 ___GCOMMAND_LoadCommandFile__9:
-              ADDQ.L         #$1,A3                   ;528b 
-              BRA.B          ___GCOMMAND_LoadCommandFile__8;60f4 
-___GCOMMAND_LoadCommandFile__10:
               MOVE.L         A3,D0                    ;200b 
               MOVE.L         A5,D1                    ;220d 
               SUB.L          D1,D0                    ;9081 
-              ADD.L          $3c(A7),D0               ;d0af 003c 
               MOVE.L         D0,-(A7)                 ;2f00 
               MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         $48(A7),-(A7)            ;2f2f 0048 
@@ -65,8 +61,8 @@ ___GCOMMAND_LoadCommandFile__10:
               MOVE.L         $4c(A7),(A7)             ;2eaf 004c 
               BSR.W          GROUP_AY_JMPTBL_DISKIO_CloseBuff;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
+___GCOMMAND_LoadCommandFile__10:
 ___GCOMMAND_LoadCommandFile__11:
-___GCOMMAND_LoadCommandFile__12:
               MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
               ADD.W          #$34,A7                  ;defc 0034 
               RTS                                     ;4e75 
