@@ -3,15 +3,15 @@ typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
 typedef struct PreallocHandleNode {
-    LONG unk0;
-    LONG unk4;
-    LONG BufferBase;      /* +8 */
-    LONG BufferCursor;    /* +12 */
-    LONG ReadRemaining;   /* +16 */
-    LONG WriteRemaining;  /* +20 */
-    LONG OpenFlags;       /* +24 */
-    LONG BufferCapacity;  /* +28 */
-    LONG HandleIndex;     /* +32 */
+    struct PreallocHandleNode *Next; /* +0  */
+    UBYTE *BufferCursor;             /* +4  */
+    LONG ReadRemaining;              /* +8  */
+    LONG WriteRemaining;             /* +12 */
+    UBYTE *BufferBase;               /* +16 */
+    LONG BufferCapacity;             /* +20 */
+    ULONG OpenFlags;                 /* +24 (mode/state bytes at +26/+27) */
+    LONG HandleIndex;                /* +28 */
+    UBYTE InlineByte;                /* +32 */
 } PreallocHandleNode;
 
 extern ULONG Global_DefaultHandleFlags;
@@ -28,7 +28,7 @@ PreallocHandleNode *HANDLE_OpenFromModeString(const char *name, const char *mode
     ULONG handleModeBits;
     ULONG finalOpenFlagsBase;
 
-    if (node->OpenFlags != 0) {
+    if (node->OpenFlags != 0UL) {
         (void)UNKNOWN36_FinalizeRequest(node);
     }
 
@@ -72,7 +72,7 @@ PreallocHandleNode *HANDLE_OpenFromModeString(const char *name, const char *mode
         return (PreallocHandleNode *)0;
     }
 
-    node->BufferBase = 0;
+    node->BufferBase = (UBYTE *)0;
     node->BufferCapacity = 0;
     node->HandleIndex = openHandle;
     node->BufferCursor = node->BufferBase;
@@ -80,7 +80,7 @@ PreallocHandleNode *HANDLE_OpenFromModeString(const char *name, const char *mode
     node->ReadRemaining = 0;
 
     finalOpenFlagsBase = (defaultFlags == 0UL) ? 0x8000UL : 0UL;
-    node->OpenFlags = (LONG)(handleModeBits | finalOpenFlagsBase);
+    node->OpenFlags = handleModeBits | finalOpenFlagsBase;
 
     return node;
 }

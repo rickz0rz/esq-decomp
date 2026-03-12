@@ -3,14 +3,15 @@ typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
 typedef struct PreallocHandleNode {
-    LONG BufferBase;      /* +0 */
-    LONG BufferCursor;    /* +4 */
-    LONG ReadRemaining;   /* +8 */
-    LONG WriteRemaining;  /* +12 */
-    LONG BufferCapacity;  /* +16 */
-    LONG HandleIndex;     /* +20 */
-    LONG OpenFlags;       /* +24 */
-    struct PreallocHandleNode *Next; /* +32 */
+    struct PreallocHandleNode *Next; /* +0  */
+    UBYTE *BufferCursor;             /* +4  */
+    LONG ReadRemaining;              /* +8  */
+    LONG WriteRemaining;             /* +12 */
+    UBYTE *BufferBase;               /* +16 */
+    LONG BufferCapacity;             /* +20 */
+    ULONG OpenFlags;                 /* +24 (mode/state bytes at +26/+27) */
+    LONG HandleIndex;                /* +28 */
+    UBYTE InlineByte;                /* +32 */
 } PreallocHandleNode;
 
 extern UBYTE Global_PreallocHandleNode0;
@@ -28,9 +29,11 @@ LONG BUFFER_FlushAllAndCloseWithCode(LONG code)
 
         state = *((UBYTE *)&node->OpenFlags + 3);
         if ((state & (1U << 2)) == 0U && (state & (1U << 1)) != 0U) {
-            LONG pending = node->BufferCursor - node->BufferBase;
+            LONG pending;
+
+            pending = (LONG)(node->BufferCursor - node->BufferBase);
             if (pending != 0) {
-                (void)DOS_WriteByIndex(node->HandleIndex, (void *)(ULONG)node->BufferBase, pending);
+                (void)DOS_WriteByIndex(node->HandleIndex, (void *)node->BufferBase, pending);
             }
         }
         node = node->Next;

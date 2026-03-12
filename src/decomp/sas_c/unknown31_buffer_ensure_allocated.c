@@ -1,14 +1,17 @@
 typedef signed long LONG;
+typedef unsigned long ULONG;
+typedef unsigned char UBYTE;
 
 typedef struct PreallocHandleNode {
-    LONG unk0;
-    LONG unk4;
-    LONG BufferBase;      /* +8 */
-    LONG BufferCursor;    /* +12 */
-    LONG ReadRemaining;   /* +16 */
-    LONG WriteRemaining;  /* +20 */
-    LONG OpenFlags;       /* +24 */
-    LONG BufferCapacity;  /* +28 */
+    struct PreallocHandleNode *Next; /* +0  */
+    UBYTE *BufferCursor;             /* +4  */
+    LONG ReadRemaining;              /* +8  */
+    LONG WriteRemaining;             /* +12 */
+    UBYTE *BufferBase;               /* +16 */
+    LONG BufferCapacity;             /* +20 */
+    ULONG OpenFlags;                 /* +24 (mode/state bytes at +26/+27) */
+    LONG HandleIndex;                /* +28 */
+    UBYTE InlineByte;                /* +32 */
 } PreallocHandleNode;
 
 extern LONG Global_StreamBufferAllocSize;
@@ -18,8 +21,14 @@ extern void *ALLOC_AllocFromFreeList(LONG size);
 
 LONG BUFFER_EnsureAllocated(PreallocHandleNode *node)
 {
-    if (node->BufferCapacity == 0 || (node->OpenFlags & (1L << 3)) != 0) {
-        LONG p = (LONG)ALLOC_AllocFromFreeList(Global_StreamBufferAllocSize);
+    UBYTE *state;
+
+    state = ((UBYTE *)&node->OpenFlags) + 3;
+
+    if (node->BufferCapacity == 0 || (*state & (1u << 3)) != 0) {
+        UBYTE *p;
+
+        p = (UBYTE *)ALLOC_AllocFromFreeList(Global_StreamBufferAllocSize);
         node->BufferCursor = p;
         node->BufferBase = p;
 
@@ -29,7 +38,7 @@ LONG BUFFER_EnsureAllocated(PreallocHandleNode *node)
         }
 
         node->BufferCapacity = Global_StreamBufferAllocSize;
-        node->OpenFlags &= -13;
+        node->OpenFlags &= ~12UL;
         node->WriteRemaining = 0;
         node->ReadRemaining = 0;
     }

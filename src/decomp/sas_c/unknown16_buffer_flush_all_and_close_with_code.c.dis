@@ -16,26 +16,25 @@ ___BUFFER_FlushAllAndCloseWithCode__3:
               LEA            $18(A5),A0               ;41ed 0018 
               MOVE.B         $3(A0),D6                ;1c28 0003 
               BTST           #$2,D6                   ;0806 0002 
-              BNE.B          ___BUFFER_FlushAllAndCloseWithCode__7;6624 
+              BNE.B          ___BUFFER_FlushAllAndCloseWithCode__7;6626 
 ___BUFFER_FlushAllAndCloseWithCode__4:
               BTST           #$1,D6                   ;0806 0001 
-              BEQ.B          ___BUFFER_FlushAllAndCloseWithCode__7;671e 
+              BEQ.B          ___BUFFER_FlushAllAndCloseWithCode__7;6720 
 ___BUFFER_FlushAllAndCloseWithCode__5:
-              MOVE.L         (A5),D0                  ;2015 
-              MOVE.L         $4(A5),D1                ;222d 0004 
-              SUB.L          D0,D1                    ;9280 
-              MOVE.L         D1,D5                    ;2a01 
+              MOVE.L         $4(A5),D0                ;202d 0004 
+              SUB.L          $10(A5),D0               ;90ad 0010 
+              MOVE.L         D0,D5                    ;2a00 
               TST.L          D5                       ;4a85 
-              BEQ.B          ___BUFFER_FlushAllAndCloseWithCode__7;6710 
+              BEQ.B          ___BUFFER_FlushAllAndCloseWithCode__7;6712 
 ___BUFFER_FlushAllAndCloseWithCode__6:
               MOVE.L         D5,-(A7)                 ;2f05 
-              MOVE.L         D0,-(A7)                 ;2f00 
-              MOVE.L         $14(A5),-(A7)            ;2f2d 0014 
+              MOVE.L         $10(A5),-(A7)            ;2f2d 0010 
+              MOVE.L         $1c(A5),-(A7)            ;2f2d 001c 
               BSR.W          DOS_WriteByIndex         ;6100 0000 
               LEA            $c(A7),A7                ;4fef 000c 
 ___BUFFER_FlushAllAndCloseWithCode__7:
               MOVE.L         A5,A0                    ;204d 
-              MOVE.L         $1c(A0),A5               ;2a68 001c 
+              MOVE.L         (A0),A5                  ;2a50 
               BRA.B          ___BUFFER_FlushAllAndCloseWithCode__2;60c2 
 ___BUFFER_FlushAllAndCloseWithCode__8:
               MOVE.L         D7,-(A7)                 ;2f07 

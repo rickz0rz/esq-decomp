@@ -153,24 +153,24 @@ ___HANDLE_OpenFromModeString__31:
               MOVEQ.L        #$0,D0                   ;7000 
               BRA.B          ___HANDLE_OpenFromModeString__37;6038 
 ___HANDLE_OpenFromModeString__32:
-              MOVEQ.L        #$0,D0                   ;7000 
-              MOVE.L         D0,$8(A2)                ;2540 0008 
-              MOVE.L         D0,$1c(A2)               ;2540 001c 
-              MOVE.L         $24(A7),$20(A2)          ;256f 0024 0020 
-              MOVE.L         $8(A2),$c(A2)            ;256a 0008 000c 
-              MOVE.L         D0,$14(A2)               ;2540 0014 
-              MOVE.L         D0,$10(A2)               ;2540 0010 
+              SUB.L          A0,A0                    ;91c8 
+              MOVE.L         A0,$10(A2)               ;2548 0010 
+              MOVE.L         A0,$14(A2)               ;2548 0014 
+              MOVE.L         $24(A7),$1c(A2)          ;256f 0024 001c 
+              MOVE.L         $10(A2),$4(A2)           ;256a 0010 0004 
+              MOVE.L         A0,$c(A2)                ;2548 000c 
+              MOVE.L         A0,$8(A2)                ;2548 0008 
               TST.L          D7                       ;4a87 
               BNE.B          ___HANDLE_OpenFromModeString__34;6608 
 ___HANDLE_OpenFromModeString__33:
-              MOVE.L         #$8000,D1                ;223c 0000 8000 
+              MOVE.L         #$8000,D0                ;203c 0000 8000 
               BRA.B          ___HANDLE_OpenFromModeString__35;6002 
 ___HANDLE_OpenFromModeString__34:
-              MOVE.L         D0,D1                    ;2200 
+              MOVE.L         A0,D0                    ;2008 
 ___HANDLE_OpenFromModeString__35:
-              MOVE.L         $20(A7),D0               ;202f 0020 
-              OR.L           D1,D0                    ;8081 
-              MOVE.L         D0,$18(A2)               ;2540 0018 
+              MOVE.L         $20(A7),D1               ;222f 0020 
+              OR.L           D0,D1                    ;8280 
+              MOVE.L         D1,$18(A2)               ;2541 0018 
               MOVE.L         A2,D0                    ;200a 
 ___HANDLE_OpenFromModeString__36:
 ___HANDLE_OpenFromModeString__37:
