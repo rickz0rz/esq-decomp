@@ -26,29 +26,26 @@ extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, 
 
 LONG DISKIO_OpenFileWithBuffer(const char *filePath, LONG accessMode)
 {
-    const LONG HANDLE_INVALID = 0;
-    const LONG OPENCOUNT_STEP = 1;
-    const WORD READMODE_STREAMING = 0x100;
     const LONG ALLOC_LINE = 286;
     const ULONG MEMF_PUBLIC = 1;
     LONG handle;
 
-    handle = HANDLE_INVALID;
+    handle = 0;
     GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
 
-    if (DISKIO_OpenCount != HANDLE_INVALID) {
+    if (DISKIO_OpenCount != 0) {
         return handle;
     }
 
     DISKIO_BufferControl.ErrorFlag = 0;
     handle = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(filePath, accessMode);
-    if (handle != HANDLE_INVALID) {
-        if (DISKIO_OpenCount == HANDLE_INVALID) {
+    if (handle != 0) {
+        if (DISKIO_OpenCount == 0) {
             DISKIO_BufferState.SavedF45 = ESQPARS2_ReadModeFlags;
         }
 
-        DISKIO_OpenCount += OPENCOUNT_STEP;
-        ESQPARS2_ReadModeFlags = READMODE_STREAMING;
+        DISKIO_OpenCount += 1;
+        ESQPARS2_ReadModeFlags = 0x100;
 
         DISKIO_BufferControl.BufferBase = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
             Global_STR_DISKIO_C_1,
