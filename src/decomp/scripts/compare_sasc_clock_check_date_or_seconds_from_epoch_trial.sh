@@ -4,14 +4,13 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-SASC_SRC="unknown42_clock_wrappers.c"
+SASC_SRC="clock_check_date_or_seconds_from_epoch.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown42.s"
 OUT_DIR="build/decomp/sasc_trial"
 ENTRY_ORIG="CLOCK_CheckDateOrSecondsFromEpoch"
 ENTRY_SASC_REGEX="^CLOCK_CheckDateOrSecondsFromEpoc[h]?:$"
-NEXT_ENTRY_SASC="CLOCK_SecondsFromEpoch"
 
 mkdir -p "$OUT_DIR"
 
@@ -25,10 +24,11 @@ awk -v e="^${ENTRY_ORIG}:$" '
   }
 ' "$ORIG_ASM" >"${OUT_DIR}/clock_check_date_or_seconds_from_epoch.original.s"
 
-awk -v e="^${ENTRY_ORIG}:$" -v e2="$ENTRY_SASC_REGEX" -v n="^${NEXT_ENTRY_SASC}:$" '
+awk -v e="^${ENTRY_ORIG}:$" -v e2="$ENTRY_SASC_REGEX" '
   $0 ~ e || $0 ~ e2 {in_func=1}
   in_func {
-    if ($0 ~ n) exit
+    if (($0 ~ /^[A-Z0-9_]+:$/ || $0 ~ /^_?[A-Z0-9_]+:$/) && $0 !~ e && $0 !~ e2) exit
+    if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/) exit
     print
   }
 ' "$SASC_DIS" >"${OUT_DIR}/clock_check_date_or_seconds_from_epoch.sasc.dis.s"

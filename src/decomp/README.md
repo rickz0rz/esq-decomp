@@ -5693,7 +5693,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown40_battclock_get_seconds.c`
 - `src/decomp/sas_c/unknown40_battclock_write_seconds.c`
 - `src/decomp/sas_c/unknown40_exec_call_vector_48.c`
-- `src/decomp/sas_c/unknown42_clock_wrappers.c`
+- `src/decomp/sas_c/clock_check_date_or_seconds_from_epoch.c`
+- `src/decomp/sas_c/clock_seconds_from_epoch.c`
 - `src/decomp/sas_c/unknown42_parallel_ready.c`
 - `src/decomp/sas_c/unknown42_parallel_writechar.c`
 - `src/decomp/sas_c/unknown42_parallel_string_and_rawdofmt.c`
