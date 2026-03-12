@@ -1,17 +1,16 @@
-typedef unsigned char UBYTE;
-
-UBYTE *STRING_AppendAtNull(UBYTE *dst, const UBYTE *src)
+char *STRING_AppendAtNull(char *dst, const char *src)
 {
-    UBYTE *ret;
+    char *ret;
 
     ret = dst;
-
-    while (*dst++ != 0) {}
-    dst--;
+    while (*dst != 0) {
+        ++dst;
+    }
 
     do {
-        *dst++ = *src++;
-    } while (dst[-1] != 0);
+        *dst = *src;
+        ++src;
+    } while (*dst++ != 0);
 
     return ret;
 }

@@ -9,21 +9,21 @@ ___STRING_AppendAtNull__1:
               MOVE.L         $10(A7),A5               ;2a6f 0010 
               MOVE.L         A5,A2                    ;244d 
 ___STRING_AppendAtNull__2:
+              TST.B          (A5)                     ;4a15 
+              BEQ.B          ___STRING_AppendAtNull__4;6704 
+___STRING_AppendAtNull__3:
+              ADDQ.L         #$1,A5                   ;528d 
+              BRA.B          ___STRING_AppendAtNull__2;60f8 
+___STRING_AppendAtNull__4:
+              MOVE.B         (A3)+,(A5)               ;1a9b 
+___STRING_AppendAtNull__5:
               MOVE.B         (A5)+,D0                 ;101d 
               TST.B          D0                       ;4a00 
-              BNE.B          ___STRING_AppendAtNull__2;66fa 
-___STRING_AppendAtNull__3:
-___STRING_AppendAtNull__4:
-              SUBQ.L         #$1,A5                   ;538d 
-___STRING_AppendAtNull__5:
-              MOVE.B         (A3)+,(A5)+              ;1adb 
+              BNE.B          ___STRING_AppendAtNull__4;66f8 
 ___STRING_AppendAtNull__6:
-              TST.B          $ffffffff(A5)            ;4a2d ffff 
-              BNE.B          ___STRING_AppendAtNull__5;66f8 
-___STRING_AppendAtNull__7:
               MOVE.L         A2,D0                    ;200a 
+___STRING_AppendAtNull__7:
 ___STRING_AppendAtNull__8:
-___STRING_AppendAtNull__9:
               MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
               RTS                                     ;4e75 
 __const:
