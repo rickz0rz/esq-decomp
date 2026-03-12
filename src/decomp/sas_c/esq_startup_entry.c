@@ -40,52 +40,16 @@ extern void ESQ_MainEntryNoOpHook(void);
 extern LONG ESQ_ParseCommandLineAndRun(char *cmdline);
 extern LONG ESQ_ShutdownAndReturn(LONG exitCode);
 
-static void ESQ_CopyCString(char *dst, const char *src)
+LONG ESQ_StartupEntry(UBYTE *startupCmdString, LONG startupCmdLength)
 {
-    while ((*dst++ = *src++) != 0) {
-    }
-}
-
-static char *ESQ_BuildCliStartupCommand(UBYTE *currentTask, char *startupCmdString, LONG startupCmdLength)
-{
+    UBYTE *currentTask;
+    char *cmdlinePtr;
     ULONG cliBptr;
     ULONG tailBptr;
     char *tail;
     char *dst;
     LONG tailLength;
-    LONG i;
-
-    cliBptr = *(ULONG *)(currentTask + TASK_CLI_FLAG_OFFSET);
-    if (cliBptr == 0) {
-        return startupCmdString;
-    }
-
-    tailBptr = *(ULONG *)((UBYTE *)(cliBptr << 2) + CLI_BPTR_COMMAND_OFFSET);
-    if (tailBptr == 0) {
-        return startupCmdString;
-    }
-
-    tail = (char *)(tailBptr << 2);
-    tailLength = (LONG)(UBYTE)*tail++;
-    Global_ScratchPtr_592 = tail;
-    Global_CommandLineSize = startupCmdLength + tailLength + 128;
-
-    dst = BUFFER_5929_LONGWORDS;
-    for (i = 0; i < tailLength; ++i) {
-        dst[i] = tail[i];
-    }
-    dst[tailLength] = ' ';
-    for (i = 0; i < startupCmdLength; ++i) {
-        dst[tailLength + 1 + i] = startupCmdString[i];
-    }
-    dst[tailLength + 1 + startupCmdLength] = 0;
-    return dst;
-}
-
-LONG ESQ_StartupEntry(UBYTE *startupCmdString, LONG startupCmdLength)
-{
-    UBYTE *currentTask;
-    char *cmdlinePtr;
+    char *src;
     LONG i;
 
     for (i = 0; i <= 5928; ++i) {
@@ -105,8 +69,28 @@ LONG ESQ_StartupEntry(UBYTE *startupCmdString, LONG startupCmdLength)
     currentTask = *(UBYTE **)((UBYTE *)AbsExecBase + EXECBASE_THIS_TASK_OFFSET);
     Global_SavedDirLock = *(LONG *)(currentTask + TASK_SAVED_DIRLOCK_OFFSET);
 
-    if (*(LONG *)(currentTask + TASK_CLI_FLAG_OFFSET) != 0) {
-        cmdlinePtr = ESQ_BuildCliStartupCommand(currentTask, startupCmdString, startupCmdLength);
+    cliBptr = *(ULONG *)(currentTask + TASK_CLI_FLAG_OFFSET);
+    if (cliBptr != 0) {
+        tailBptr = *(ULONG *)((UBYTE *)(cliBptr << 2) + CLI_BPTR_COMMAND_OFFSET);
+        if (tailBptr == 0) {
+            cmdlinePtr = (char *)startupCmdString;
+        } else {
+            tail = (char *)(tailBptr << 2);
+            tailLength = (LONG)(UBYTE)*tail++;
+            Global_ScratchPtr_592 = tail;
+            Global_CommandLineSize = startupCmdLength + tailLength + 128;
+
+            dst = BUFFER_5929_LONGWORDS;
+            for (i = 0; i < tailLength; ++i) {
+                dst[i] = tail[i];
+            }
+            dst[tailLength] = ' ';
+            for (i = 0; i < startupCmdLength; ++i) {
+                dst[tailLength + 1 + i] = startupCmdString[i];
+            }
+            dst[tailLength + 1 + startupCmdLength] = 0;
+            cmdlinePtr = dst;
+        }
     } else {
         void *savedMsg;
         UBYTE *argList;
@@ -133,7 +117,10 @@ LONG ESQ_StartupEntry(UBYTE *startupCmdString, LONG startupCmdLength)
         if (argList != (UBYTE *)0) {
             Global_ScratchPtr_592 = *(char **)(argList + WBARG_NAME_OFFSET);
             if (Global_ScratchPtr_592 != (char *)0) {
-                ESQ_CopyCString(Global_WBStartupCmdBuffer, Global_ScratchPtr_592);
+                dst = Global_WBStartupCmdBuffer;
+                src = Global_ScratchPtr_592;
+                while ((*dst++ = *src++) != 0) {
+                }
             } else {
                 Global_WBStartupCmdBuffer[0] = 0;
             }
