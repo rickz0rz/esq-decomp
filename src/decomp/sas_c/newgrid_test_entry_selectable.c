@@ -12,8 +12,6 @@ extern LONG NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(const char *entry);
 
 LONG NEWGRID_TestEntrySelectable(const void *entry, const void *aux, LONG mode)
 {
-    const NEWGRID_Entry *entryView;
-
     if (mode != 0 && mode != 1) {
         return 0;
     }
@@ -22,14 +20,12 @@ LONG NEWGRID_TestEntrySelectable(const void *entry, const void *aux, LONG mode)
         return 0;
     }
 
-    entryView = (const NEWGRID_Entry *)entry;
-
-    if ((entryView->flags40 & (UBYTE)0x80) == 0) {
+    if ((((const NEWGRID_Entry *)entry)->flags40 & (UBYTE)0x80) == 0) {
         return 0;
     }
 
     if (mode == 0) {
-        if ((entryView->flags27 & (UBYTE)0x04) != 0) {
+        if ((((const NEWGRID_Entry *)entry)->flags27 & (UBYTE)0x04) != 0) {
             return 1;
         }
         return 0;
