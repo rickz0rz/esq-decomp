@@ -1,5 +1,3 @@
-#pragma nostackcheck
-
 char *STRING_FindSubstring(char *haystack, char *needle)
 {
     register char *a2;

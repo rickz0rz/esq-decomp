@@ -24,6 +24,7 @@ The repository currently has two active decomp lanes:
 - `./sc-build-with-dis.sh <filename>.c` expects a filename from `src/decomp/sas_c/`.
 - The script builds the file and emits sibling `.o` and `.dis` artifacts for inspection.
 - Existing `src/decomp/sas_c/*.c` files are the best local reference for coding style, type conventions, and “mostly equivalent” reconstruction patterns.
+- Current toolchain note: the checked SAS/C 6.51 setup treats `#pragma nostackcheck` as an unrecognized pragma (Warning 95), so it should not be used as a decomp tuning hint in new restored sources.
 - In the current tree, most existing SAS/C compare lanes are already populated; remaining work often means tightening those files or adding new ports for GCC-only targets.
 - Current pass note: every checked `compare_sasc_*` script in `src/decomp/scripts/` already resolved to an existing `src/decomp/sas_c/*.c` source. Do not spend time assuming there is still a missing first-pass SAS/C file behind a compare lane; start from mismatch reduction or a GCC-only compare/promotion lane instead.
 - Do not infer the canonical SAS/C source name from older `unknownNN_*` object/disassembly artifacts alone. Several targets were renamed to role-based filenames after promotion, so the target-specific compare script is the authoritative mapping from assembly slice to current `src/decomp/sas_c/*.c` source.

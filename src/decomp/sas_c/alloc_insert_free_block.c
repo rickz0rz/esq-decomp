@@ -1,5 +1,3 @@
-#pragma nostackcheck
-
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
