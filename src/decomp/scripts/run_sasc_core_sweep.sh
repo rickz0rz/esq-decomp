@@ -683,6 +683,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_group_ab_jmptbl_iostdreq_free_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ab_jmptbl_graphics_free_raster_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ab_jmptbl_esqfunc_free_line_text_buffers_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqfunc_free_line_text_buffers_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ab_jmptbl_esqiff2_clear_line_head_tail_by_mode_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ab_jmptbl_esqiff_deallocate_ads_and_logo_lst_data_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ab_jmptbl_esqpars_remove_group_entry_and_release_strings_trial.sh"

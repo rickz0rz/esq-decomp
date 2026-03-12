@@ -19935,6 +19935,7 @@ Why this target:
 Artifacts:
 - GCC C candidate: `src/decomp/c/replacements/esqfunc_free_line_text_buffers_gcc.c`
 - GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_free_line_text_buffers_trial_gcc.sh`
+- SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_free_line_text_buffers_trial.sh`
 - Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_free_line_text_buffers.awk`
 - Promotion gate: `src/decomp/scripts/promote_esqfunc_free_line_text_buffers_target_gcc.sh`
 

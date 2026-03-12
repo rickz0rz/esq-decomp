@@ -870,6 +870,7 @@ The repository currently has two active decomp lanes:
 - `src/decomp/scripts/compare_esqfunc_jmptbl_textdisp_tick_display_state_trial_gcc.sh`: GCC-specific compare lane for `Target 879` (`ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState`).
 - `src/decomp/scripts/compare_esqfunc_allocate_line_text_buffers_trial_gcc.sh`: GCC-specific compare lane for `Target 880` (`ESQFUNC_AllocateLineTextBuffers`).
 - `src/decomp/scripts/compare_esqfunc_free_line_text_buffers_trial_gcc.sh`: GCC-specific compare lane for `Target 881` (`ESQFUNC_FreeLineTextBuffers`).
+- `src/decomp/scripts/compare_sasc_esqfunc_free_line_text_buffers_trial.sh`: SAS/C compare lane for `Target 881` (`ESQFUNC_FreeLineTextBuffers`).
 - `src/decomp/scripts/compare_esqfunc_update_disk_warning_and_refresh_tick_trial_gcc.sh`: GCC-specific compare lane for `Target 882` (`ESQFUNC_UpdateDiskWarningAndRefreshTick`).
 - `src/decomp/scripts/compare_esqfunc_wait_for_clock_change_and_service_ui_trial_gcc.sh`: GCC-specific compare lane for `Target 883` (`ESQFUNC_WaitForClockChangeAndServiceUi`).
 - `src/decomp/scripts/compare_esqfunc_commit_secondary_state_and_persist_trial_gcc.sh`: GCC-specific compare lane for `Target 884` (`ESQFUNC_CommitSecondaryStateAndPersist`).

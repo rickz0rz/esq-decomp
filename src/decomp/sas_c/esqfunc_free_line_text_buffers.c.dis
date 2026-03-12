@@ -1,0 +1,46 @@
+              SECTION      text,CODE
+__code:
+ESQFUNC_FreeLineTextBuffers:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ESQFUNC_FreeLineTextBuffers__1:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ESQFUNC_FreeLineTextBuffers__2:
+              MOVEQ.L        #$14,D0                  ;7014 
+              CMP.W          D0,D7                    ;be40 
+              BGE.B          ___ESQFUNC_FreeLineTextBuffers__6;6c34 
+___ESQFUNC_FreeLineTextBuffers__3:
+              EXT.L          D7                       ;48c7 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              PEA            ($3c).w                  ;4878 003c 
+              LEA            LADFUNC_LineTextBufferPtrs(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),-(A7)        ;2f30 0800 
+              PEA            ($4d3).w                 ;4878 04d3 
+              PEA            Global_STR_ESQFUNC_C_6(A4);486c 0000 
+              BSR.W          ESQIFF_JMPTBL_MEMORY_DeallocateM;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              EXT.L          D7                       ;48c7 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            LADFUNC_LineTextBufferPtrs(A4),A0;41ec 0000 
+              CLR.L          $0(A0,D0.L)              ;42b0 0800 
+___ESQFUNC_FreeLineTextBuffers__4:
+              ADDQ.W         #$1,D7                   ;5247 
+              BRA.B          ___ESQFUNC_FreeLineTextBuffers__2;60c6 
+___ESQFUNC_FreeLineTextBuffers__5:
+___ESQFUNC_FreeLineTextBuffers__6:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LADFUNC_LineTextBufferPtrs
+              XREF           Global_STR_ESQFUNC_C_6
+              XREF           ESQIFF_JMPTBL_MEMORY_DeallocateM
+              XDEF           ESQFUNC_FreeLineTextBuffers
+              END
