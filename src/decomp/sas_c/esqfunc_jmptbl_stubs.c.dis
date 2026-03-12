@@ -56,14 +56,6 @@ ___ESQFUNC_JMPTBL_ESQ_ClampBannerCh__1:
 ___ESQFUNC_JMPTBL_ESQ_ClampBannerCh__2:
               MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
               RTS                                     ;4e75 
-ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi:
-              CMP.L          __base(A4),A7            ;bfec 0000 
-              BCS.W          _XCOVF                   ;6500 0000 
-___ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi__1:
-              BSR.W          SCRIPT_ReadHandshakeBit3Flag;6100 0000 
-___ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi__2:
-___ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi__3:
-              RTS                                     ;4e75 
 ESQFUNC_JMPTBL_TLIBA3_DrawCenter:
               MOVE.L         A7,D0                    ;200f 
               SUB.L          #$c,D0                   ;90bc 0000 000c 
@@ -266,7 +258,6 @@ ___ESQFUNC_JMPTBL_STRING_CopyPadNul__3:
               XREF           DISKIO_ProbeDrivesAndAssignPaths
               XREF           PARSEINI_UpdateCtrlHDeltaMax
               XREF           ESQ_ClampBannerCharRange
-              XREF           SCRIPT_ReadHandshakeBit3Flag
               XREF           TLIBA3_DrawCenteredWrappedTextLi
               XREF           SCRIPT_GetCtrlLineFlag
               XREF           LOCAVAIL_SyncSecondaryFilterForC
@@ -292,7 +283,6 @@ ___ESQFUNC_JMPTBL_STRING_CopyPadNul__3:
               XDEF           ESQFUNC_JMPTBL_DISKIO_ProbeDrive
               XDEF           ESQFUNC_JMPTBL_PARSEINI_UpdateCt
               XDEF           ESQFUNC_JMPTBL_ESQ_ClampBannerCh
-              XDEF           ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi
               XDEF           ESQFUNC_JMPTBL_TLIBA3_DrawCenter
               XDEF           ESQFUNC_JMPTBL_SCRIPT_GetCtrlLin
               XDEF           ESQFUNC_JMPTBL_LOCAVAIL_SyncSeco

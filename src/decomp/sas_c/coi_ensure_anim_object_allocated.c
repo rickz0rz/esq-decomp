@@ -31,32 +31,26 @@ typedef struct COI_Entry {
 void COI_EnsureAnimObjectAllocated(void *entry)
 {
     COI_Entry *e;
-    COI_AnimObject *anim;
 
     e = (COI_Entry *)entry;
     if (e == (COI_Entry *)0) {
         return;
     }
 
-    anim = e->anim;
-    if (anim != (COI_AnimObject *)0) {
+    if (e->anim != (COI_AnimObject *)0) {
         return;
     }
 
-    anim = (COI_AnimObject *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    e->anim = (COI_AnimObject *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_COI_C_2,
         COI_ALLOC_LINE,
         STRUCT_ANIMOB_SIZE,
         COI_MEMF_PUBLIC_CLEAR);
-    e->anim = anim;
 
-    if (anim != (COI_AnimObject *)0) {
-        char *old_str;
-        char *new_owned;
-
-        old_str = anim->defaultStr;
-        new_owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(COI_STR_DEFAULT_TOKEN_TEMPLATE_B, old_str);
-        anim->defaultStr = new_owned;
-        anim->sentinel = ANIM_SENTINEL_INVALID;
+    if (e->anim != (COI_AnimObject *)0) {
+        e->anim->defaultStr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            COI_STR_DEFAULT_TOKEN_TEMPLATE_B,
+            (char *)e->anim->defaultStr);
+        e->anim->sentinel = ANIM_SENTINEL_INVALID;
     }
 }

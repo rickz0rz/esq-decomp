@@ -2,20 +2,19 @@
 __code:
 COI_EnsureAnimObjectAllocated:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
-              SUBQ.W         #$8,A7                   ;514f 
-              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
 ___COI_EnsureAnimObjectAllocated__1:
-              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
               MOVE.L         A5,A3                    ;264d 
               MOVE.L         A3,D0                    ;200b 
-              BEQ.B          ___COI_EnsureAnimObjectAllocated__8;674c 
+              BEQ.B          ___COI_EnsureAnimObjectAllocated__8;674a 
 ___COI_EnsureAnimObjectAllocated__2:
 ___COI_EnsureAnimObjectAllocated__3:
-              MOVE.L         $30(A3),A2               ;246b 0030 
-              MOVE.L         A2,D0                    ;200a 
+              TST.L          $30(A3)                  ;4aab 0030 
               BNE.B          ___COI_EnsureAnimObjectAllocated__8;6644 
 ___COI_EnsureAnimObjectAllocated__4:
 ___COI_EnsureAnimObjectAllocated__5:
@@ -24,26 +23,25 @@ ___COI_EnsureAnimObjectAllocated__5:
               PEA            ($5b2).w                 ;4878 05b2 
               PEA            Global_STR_COI_C_2(A4)   ;486c 0000 
               BSR.W          GROUP_AG_JMPTBL_MEMORY_AllocateM;6100 0000 
-              MOVE.L         D0,A2                    ;2440 
+              MOVE.L         D0,$30(A3)               ;2740 0030 
               LEA            $10(A7),A7               ;4fef 0010 
-              MOVE.L         A2,$30(A3)               ;274a 0030 
-              MOVE.L         A2,D0                    ;200a 
-              BEQ.B          ___COI_EnsureAnimObjectAllocated__8;6722 
+              BEQ.B          ___COI_EnsureAnimObjectAllocated__8;6726 
 ___COI_EnsureAnimObjectAllocated__6:
-              MOVE.L         $1c(A2),A0               ;206a 001c 
-              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.L         $1c(A0),-(A7)            ;2f28 001c 
               PEA            COI_STR_DEFAULT_TOKEN_TEMPLATE_B(A4);486c 0000 
-              MOVE.L         A0,$18(A7)               ;2f48 0018 
+              MOVE.L         D0,$10(A7)               ;2f40 0010 
               BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
               ADDQ.W         #$8,A7                   ;504f 
-              MOVE.L         D0,$1c(A2)               ;2540 001c 
-              MOVEQ.L        #$ff,D1                  ;72ff 
-              MOVE.L         D1,$20(A2)               ;2541 0020 
-              MOVE.L         D0,$c(A7)                ;2f40 000c 
+              MOVE.L         $8(A7),A0                ;206f 0008 
+              MOVE.L         D0,$1c(A0)               ;2140 001c 
+              MOVE.L         $30(A3),A0               ;206b 0030 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,$20(A0)               ;2140 0020 
 ___COI_EnsureAnimObjectAllocated__7:
 ___COI_EnsureAnimObjectAllocated__8:
-              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
-              ADDQ.W         #$8,A7                   ;504f 
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              ADDQ.W         #$4,A7                   ;584f 
               RTS                                     ;4e75 
 __const:
 __strings:
