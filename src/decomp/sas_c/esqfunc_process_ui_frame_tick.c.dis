@@ -9,7 +9,7 @@ ___ESQFUNC_ProcessUiFrameTick__1:
               MOVE.W         GCOMMAND_DriveProbeRequestedFlag(A4),D0;302c 0000 
               BEQ.B          ___ESQFUNC_ProcessUiFrameTick__3;6704 
 ___ESQFUNC_ProcessUiFrameTick__2:
-              BSR.W          ESQFUNC_JMPTBL_DISKIO_ProbeDrive;6100 0000 
+              BSR.W          DISKIO_ProbeDrivesAndAssignPaths;6100 0000 
 ___ESQFUNC_ProcessUiFrameTick__3:
               MOVEQ.L        #$1,D0                   ;7001 
               CMP.L          ESQDISP_DisplayActiveFlag(A4),D0;b0ac 0000 
@@ -26,12 +26,12 @@ ___ESQFUNC_ProcessUiFrameTick__7:
               MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
               BNE.B          ___ESQFUNC_ProcessUiFrameTick__9;6604 
 ___ESQFUNC_ProcessUiFrameTick__8:
-              BSR.W          ESQFUNC_JMPTBL_SCRIPT_HandleSeri;6100 0000 
+              BSR.W          SCRIPT_HandleSerialCtrlCmd;6100 0000 
 ___ESQFUNC_ProcessUiFrameTick__9:
               MOVE.W         CLEANUP_PendingAlertFlag(A4),D0;302c 0000 
               BEQ.W          ___ESQFUNC_ProcessUiFrameTick__35;6700 00f2 
 ___ESQFUNC_ProcessUiFrameTick__10:
-              BSR.W          ESQFUNC_JMPTBL_CLEANUP_ProcessAl;6100 0000 
+              BSR.W          CLEANUP_ProcessAlerts    ;6100 0000 
               TST.L          ESQDISP_SecondaryPersistRequestF(A4);4aac 0000 
               BEQ.B          ___ESQFUNC_ProcessUiFrameTick__12;6708 
 ___ESQFUNC_ProcessUiFrameTick__11:
@@ -52,7 +52,7 @@ ___ESQFUNC_ProcessUiFrameTick__15:
               MOVE.W         D0,D1                    ;3200 
               ANDI.L         #$fffd,D1                ;0281 0000 fffd 
               MOVE.W         D1,ESQFUNC_IffTaskGateFlags(A4);3941 0000 
-              BSR.W          ESQFUNC_JMPTBL_TEXTDISP_ResetSel;6100 0000 
+              BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
               BRA.B          ___ESQFUNC_ProcessUiFrameTick__19;6024 
 ___ESQFUNC_ProcessUiFrameTick__16:
               BTST           #$0,D0                   ;0800 0000 
@@ -129,7 +129,7 @@ ___ESQFUNC_ProcessUiFrameTick__34:
               BSR.W          ESQIFF_ServiceExternalAssetSourc;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___ESQFUNC_ProcessUiFrameTick__35:
-              BSR.W          ESQFUNC_JMPTBL_TEXTDISP_TickDisp;6100 0000 
+              BSR.W          TEXTDISP_TickDisplayState;6100 0000 
               MOVE.B         ESQDISP_StatusRefreshPendingFlag(A4),D0;102c 0000 
               TST.B          D0                       ;4a00 
               BEQ.B          ___ESQFUNC_ProcessUiFrameTick__39;6710 
@@ -148,20 +148,20 @@ __strings:
               XREF           __base
               XREF           _XCOVF
               XREF           GCOMMAND_DriveProbeRequestedFlag
-              XREF           ESQFUNC_JMPTBL_DISKIO_ProbeDrive
+              XREF           DISKIO_ProbeDrivesAndAssignPaths
               XREF           ESQDISP_DisplayActiveFlag
               XREF           ESQDISP_PollInputModeAndRefreshS
               XREF           Global_UIBusyFlag
               XREF           ESQDISP_ProcessGridMessagesIfIdl
               XREF           ED_DispatchEscMenuState
-              XREF           ESQFUNC_JMPTBL_SCRIPT_HandleSeri
+              XREF           SCRIPT_HandleSerialCtrlCmd
               XREF           CLEANUP_PendingAlertFlag
-              XREF           ESQFUNC_JMPTBL_CLEANUP_ProcessAl
+              XREF           CLEANUP_ProcessAlerts
               XREF           ESQDISP_SecondaryPersistRequestF
               XREF           ESQFUNC_CommitSecondaryStateAndP
               XREF           CTASKS_IffTaskDoneFlag
               XREF           ESQFUNC_IffTaskGateFlags
-              XREF           ESQFUNC_JMPTBL_TEXTDISP_ResetSel
+              XREF           TEXTDISP_ResetSelectionAndRefres
               XREF           ESQIFF_PlayNextExternalAssetFram
               XREF           Global_REF_LONG_DF0_LOGO_LST_DAT
               XREF           ESQIFF_ExternalAssetFlags
@@ -173,7 +173,7 @@ __strings:
               XREF           ESQIFF_LogoBrushListCount
               XREF           ESQIFF_ServiceExternalAssetSourc
               XREF           ESQIFF_GAdsBrushListCount
-              XREF           ESQFUNC_JMPTBL_TEXTDISP_TickDisp
+              XREF           TEXTDISP_TickDisplayState
               XREF           ESQDISP_StatusRefreshPendingFlag
               XREF           GCOMMAND_HighlightHoldoffTickCou
               XREF           ESQDISP_RefreshStatusIndicatorsF
