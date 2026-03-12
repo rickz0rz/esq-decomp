@@ -31,17 +31,17 @@ function trim(s, t) {
     gsub(/[^A-Z0-9]/, "", n)
 
     if (u ~ /^TEXTDISP_FINDENTRYMATCHINDEX:/ || u ~ /^TEXTDISP_FINDENTRYMATCHINDE[A-Z0-9_]*:/) has_entry=1
-    if (n ~ /TSTBA0/ || n ~ /TSTBA5/ || n ~ /MOVEQ(L)?(49|31)D0/) has_empty_guard=1
+    if (n ~ /TSTBA0/ || n ~ /TSTBA5/ || n ~ /MOVEBA5D[01]/ || n ~ /MOVEQ(L)?(49|31)D0/) has_empty_guard=1
     if (n ~ /TEXTDISPACTIVEGROUPID/ || n ~ /CLOCKHALFHOURSLOTINDEX/ || n ~ /GETENTRYAUXPOINTERBYMODE/ || n ~ /GETENTRYPOINTERBYMODE/) has_group_mode_dispatch=1
     if (n ~ /FINDPREVIOUSVALIDENTRYINDEX/ || n ~ /FINDPREVIO/) has_prev_valid_call=1
     if (n ~ /TEXTDISPFINDCONTROLTOKEN/) has_find_control=1
     if (n ~ /TEXTDISPFINDQUOTEDSPAN/) has_find_quoted=1
     if (n ~ /CMPW49D5/ || n ~ /MOVEQ(L)?(49|31)D0/ || n ~ /CMPWD0D5/ || n ~ /MOVEQL31D1/ || n ~ /CMPLD1D0/ || n ~ /BGEWRESTOREINPUTCHAR/ || n ~ /SLOT49/) has_slot_scan=1
-    if (n ~ /ANDBD6D0/ || n ~ /CMPBD6D0/ || n ~ /ANDBD5D2/ || n ~ /CMPBD5D2/ || n ~ /AND/ && n ~ /MASK/) has_mask_check=1
+    if (n ~ /ANDBD6D0/ || n ~ /CMPBD6D0/ || n ~ /ANDBD5D2/ || n ~ /CMPBD5D2/ || n ~ /ANDBD[0-7]D[0-7]/ || n ~ /CMPBD[0-7]D[0-7]/ || n ~ /AND/ && n ~ /MASK/) has_mask_check=1
     if (n ~ /TESTBIT1BASED/) has_slot_bit_test=1
     if (n ~ /STRINGCOMPARENOCASE/) has_compare_path=1
     if (n ~ /FINDSUBSTRINGCASEFOLD/ || n ~ /FINDSUBSTRINGC/) has_substring_path=1
-    if (n ~ /MOVEB39A5D0/ || n ~ /MOVEB1FA7A0/ || n ~ /MOVEB1EA7A0/ || n ~ /MOVEBD0A0/ || n ~ /RETURN/) has_restore_return=1
+    if (n ~ /MOVEB39A5D0/ || n ~ /MOVEB1FA7A0/ || n ~ /MOVEB1EA7A0/ || n ~ /MOVEB26A7A0/ || n ~ /MOVEB27A7A0/ || n ~ /MOVEB40A7A0/ || n ~ /MOVEBD0A0/ || n ~ /RETURN/) has_restore_return=1
     if (u == "RTS") has_rts=1
 }
 

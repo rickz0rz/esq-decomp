@@ -42,7 +42,7 @@ ___NEWGRID_ShouldOpenEditor__8:
               MOVEQ.L        #$0,D0                   ;7000 
               BRA.B          ___NEWGRID_ShouldOpenEditor__13;600e 
 ___NEWGRID_ShouldOpenEditor__9:
-              BTST           #$5,$1c(A3)              ;082b 0005 001c 
+              BTST           #$5,$1b(A3)              ;082b 0005 001b 
               BNE.B          ___NEWGRID_ShouldOpenEditor__11;6604 
 ___NEWGRID_ShouldOpenEditor__10:
               MOVEQ.L        #$0,D0                   ;7000 

@@ -4,8 +4,7 @@ typedef unsigned char UBYTE;
 typedef struct NEWGRID_Entry {
     UBYTE pad0[1];
     UBYTE shortText[18];
-    UBYTE primaryText[1];
-    UBYTE pad1[8];
+    UBYTE primaryText[8];
     UBYTE flags27;
 } NEWGRID_Entry;
 
