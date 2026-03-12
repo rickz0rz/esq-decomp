@@ -31,7 +31,7 @@ ___DISKIO2_RunDiskSyncWorkflow__1:
               MOVE.L         $8(A7),D7                ;2e2f 0008 
               PEA            ($1).w                   ;4878 0001 
               PEA            ($100).w                 ;4878 0100 
-              BSR.W          GROUP_AH_JMPTBL_ESQDISP_UpdateSt;6100 0000 
+              BSR.W          ESQDISP_UpdateStatusMaskAndRefre;6100 0000 
               PEA            DISKIO2_STR_SAVING_PROGRAMMING_D(A4);486c 0000 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.B          DISKIO2_ShowStatusIfEnabled;61b0 
@@ -41,7 +41,7 @@ ___DISKIO2_RunDiskSyncWorkflow__2:
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.B          DISKIO2_ShowStatusIfEnabled;61a4 
 ___DISKIO2_RunDiskSyncWorkflow__3:
-              BSR.W          ED1_JMPTBL_LADFUNC_SaveTextAdsTo;6100 0000 
+              BSR.W          LADFUNC_SaveTextAdsToFile;6100 0000 
               PEA            DISKIO2_STR_SAVING_CONFIGURATION(A4);486c 0000 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.B          DISKIO2_ShowStatusIfEnabled;6198 
@@ -53,7 +53,7 @@ ___DISKIO2_RunDiskSyncWorkflow__4:
 ___DISKIO2_RunDiskSyncWorkflow__5:
               MOVE.L         LOCAVAIL_SecondaryFilterState(A4),(A7);2eac 0000 
               MOVE.L         LOCAVAIL_PrimaryFilterState(A4),-(A7);2f2c 0000 
-              BSR.W          GROUP_AH_JMPTBL_LOCAVAIL_SaveAva;6100 0000 
+              BSR.W          LOCAVAIL_SaveAvailabilityDataFil;6100 0000 
               PEA            DISKIO2_STR_SAVING_QTABLE_DOT(A4);486c 0000 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          DISKIO2_ShowStatusIfEnabled;6100 ff78 
@@ -63,7 +63,7 @@ ___DISKIO2_RunDiskSyncWorkflow__6:
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          DISKIO2_ShowStatusIfEnabled;6100 ff6a 
 ___DISKIO2_RunDiskSyncWorkflow__7:
-              BSR.W          GROUP_AK_JMPTBL_PARSEINI_WriteEr;6100 0000 
+              BSR.W          PARSEINI_WriteErrorLogEntry;6100 0000 
               PEA            DISKIO2_STR_SAVING_DST_DATA_DOT(A4);486c 0000 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          DISKIO2_ShowStatusIfEnabled;6100 ff5c 
@@ -75,17 +75,17 @@ ___DISKIO2_RunDiskSyncWorkflow__8:
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          DISKIO2_ShowStatusIfEnabled;6100 ff46 
 ___DISKIO2_RunDiskSyncWorkflow__9:
-              BSR.W          GROUP_AH_JMPTBL_P_TYPE_WriteProm;6100 0000 
+              BSR.W          P_TYPE_WritePromoIdDataFile;6100 0000 
               PEA            DISKIO2_STR_SAVING_DATA_VIEW_CON(A4);486c 0000 
               MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          DISKIO2_ShowStatusIfEnabled;6100 ff38 
 ___DISKIO2_RunDiskSyncWorkflow__10:
-              BSR.W          GROUP_AH_JMPTBL_GCOMMAND_LoadCom;6100 0000 
-              BSR.W          GROUP_AH_JMPTBL_GCOMMAND_LoadMpl;6100 0000 
-              BSR.W          GROUP_AH_JMPTBL_GCOMMAND_LoadPPV;6100 0000 
+              BSR.W          GCOMMAND_LoadCommandFile ;6100 0000 
+              BSR.W          GCOMMAND_LoadMplexFile   ;6100 0000 
+              BSR.W          GCOMMAND_LoadPPVTemplate ;6100 0000 
               CLR.L          (A7)                     ;4297 
               PEA            ($100).w                 ;4878 0100 
-              BSR.W          GROUP_AH_JMPTBL_ESQDISP_UpdateSt;6100 0000 
+              BSR.W          ESQDISP_UpdateStatusMaskAndRefre;6100 0000 
               LEA            $18(A7),A7               ;4fef 0018 
 ___DISKIO2_RunDiskSyncWorkflow__11:
               MOVE.L         (A7)+,D7                 ;2e1f 
@@ -93,29 +93,29 @@ ___DISKIO2_RunDiskSyncWorkflow__11:
               XREF           __base
               XREF           _XCOVF
               XREF           DISKIO2_DisplayStatusLine
-              XREF           GROUP_AH_JMPTBL_ESQDISP_UpdateSt
+              XREF           ESQDISP_UpdateStatusMaskAndRefre
               XREF           DISKIO2_STR_SAVING_PROGRAMMING_D
               XREF           DISKIO2_FlushDataFilesIfNeeded
               XREF           DISKIO2_STR_SAVING_TEXT_ADS_DOT
-              XREF           ED1_JMPTBL_LADFUNC_SaveTextAdsTo
+              XREF           LADFUNC_SaveTextAdsToFile
               XREF           DISKIO2_STR_SAVING_CONFIGURATION
               XREF           DISKIO_SaveConfigToFileHandle
               XREF           DISKIO2_STR_SAVING_LOCAL_AVAIL_C
               XREF           LOCAVAIL_SecondaryFilterState
               XREF           LOCAVAIL_PrimaryFilterState
-              XREF           GROUP_AH_JMPTBL_LOCAVAIL_SaveAva
+              XREF           LOCAVAIL_SaveAvailabilityDataFil
               XREF           DISKIO2_STR_SAVING_QTABLE_DOT
               XREF           DISKIO2_WriteQTableIniFile
               XREF           DISKIO2_STR_SAVING_ERROR_LOG_DOT
-              XREF           GROUP_AK_JMPTBL_PARSEINI_WriteEr
+              XREF           PARSEINI_WriteErrorLogEntry
               XREF           DISKIO2_STR_SAVING_DST_DATA_DOT
               XREF           DST_BannerWindowPrimary
               XREF           DATETIME_SavePairToFile
               XREF           DISKIO2_STR_SAVING_PROMO_TYPES
-              XREF           GROUP_AH_JMPTBL_P_TYPE_WriteProm
+              XREF           P_TYPE_WritePromoIdDataFile
               XREF           DISKIO2_STR_SAVING_DATA_VIEW_CON
-              XREF           GROUP_AH_JMPTBL_GCOMMAND_LoadCom
-              XREF           GROUP_AH_JMPTBL_GCOMMAND_LoadMpl
-              XREF           GROUP_AH_JMPTBL_GCOMMAND_LoadPPV
+              XREF           GCOMMAND_LoadCommandFile
+              XREF           GCOMMAND_LoadMplexFile
+              XREF           GCOMMAND_LoadPPVTemplate
               XDEF           DISKIO2_RunDiskSyncWorkflow
               END
