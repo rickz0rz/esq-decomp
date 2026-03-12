@@ -5,7 +5,7 @@ extern LONG Global_DosIoErr;
 extern LONG Global_AppErrorCode;
 extern void *Global_DosLibrary;
 
-extern void SIGNAL_PollAndDispatch(void);
+extern LONG SIGNAL_PollAndDispatch(void);
 extern LONG _LVOOpen(void *dosBase, const char *path, LONG mode);
 extern LONG _LVOIoErr(void *dosBase);
 

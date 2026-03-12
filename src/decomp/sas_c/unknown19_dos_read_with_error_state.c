@@ -7,7 +7,7 @@ extern LONG Global_DosIoErr;
 extern LONG Global_AppErrorCode;
 extern void *Global_DosLibrary;
 
-extern void SIGNAL_PollAndDispatch(void);
+extern LONG SIGNAL_PollAndDispatch(void);
 extern LONG _LVORead(void *dosBase, LONG fh, void *buffer, LONG len);
 extern LONG _LVOIoErr(void *dosBase);
 

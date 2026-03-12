@@ -10,7 +10,7 @@ extern LONG Global_DosIoErr;
 extern LONG Global_AppErrorCode;
 extern void *Global_DosLibrary;
 
-extern void SIGNAL_PollAndDispatch(void);
+extern LONG SIGNAL_PollAndDispatch(void);
 extern LONG _LVOLock(void *dosBase, char *name, LONG mode);
 extern void _LVOUnLock(void *dosBase, LONG lock);
 extern LONG _LVODeleteFile(void *dosBase, char *name);
