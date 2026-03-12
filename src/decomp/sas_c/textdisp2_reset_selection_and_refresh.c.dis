@@ -10,7 +10,7 @@ ___TEXTDISP_ResetSelectionAndRefres__1:
               BSR.W          SCRIPT_UpdateSerialShadowFromCtr;6100 0000 
               MOVE.W         #$ffffffff,TEXTDISP_CurrentMatchIndex(A4);397c ffff 0000 
               CLR.L          (A7)                     ;4297 
-              BSR.W          TEXTDISP2_JMPTBL_ESQIFF_PlayNext;6100 0000 
+              BSR.W          ESQIFF_PlayNextExternalAssetFram;6100 0000 
               ADDQ.W         #$4,A7                   ;584f 
 ___TEXTDISP_ResetSelectionAndRefres__2:
               RTS                                     ;4e75 
@@ -20,6 +20,6 @@ __strings:
               XREF           _XCOVF
               XREF           SCRIPT_UpdateSerialShadowFromCtr
               XREF           TEXTDISP_CurrentMatchIndex
-              XREF           TEXTDISP2_JMPTBL_ESQIFF_PlayNext
+              XREF           ESQIFF_PlayNextExternalAssetFram
               XDEF           TEXTDISP_ResetSelectionAndRefres
               END

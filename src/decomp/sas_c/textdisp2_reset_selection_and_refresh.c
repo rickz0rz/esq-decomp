@@ -4,11 +4,11 @@ typedef short WORD;
 extern WORD TEXTDISP_CurrentMatchIndex;
 
 extern void SCRIPT_UpdateSerialShadowFromCtrlByte(LONG value);
-extern void TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(LONG value);
+extern void ESQIFF_PlayNextExternalAssetFrame(WORD value);
 
 void TEXTDISP_ResetSelectionAndRefresh(void)
 {
     SCRIPT_UpdateSerialShadowFromCtrlByte(3);
     TEXTDISP_CurrentMatchIndex = (WORD)-1;
-    TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame((LONG)0);
+    ESQIFF_PlayNextExternalAssetFrame((WORD)0);
 }

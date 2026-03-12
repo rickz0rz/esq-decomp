@@ -23,7 +23,13 @@ function trim(s, t) {
     if (u ~ /^TEXTDISP_RESETSELECTIONANDREFRESH:/ || u ~ /^TEXTDISP_RESETSELECTIONANDRE[A-Z0-9_]*:/) has_entry = 1
     if (index(u, "SCRIPT_UPDATESERIALSHADOWFROMCTRLBYTE") > 0 || index(u, "SCRIPT_UPDATESERIALSHADOWFR") > 0) has_update_shadow = 1
     if (index(u, "TEXTDISP_CURRENTMATCHINDEX") > 0) has_clear_match = 1
-    if (index(u, "TEXTDISP2_JMPTBL_ESQIFF_PLAYNEXTEXTERNALASSETFRAME") > 0 || index(u, "TEXTDISP2_JMPTBL_ESQIFF_PLAYNEXTEXTERNAL") > 0 || index(u, "TEXTDISP2_JMPTBL_ESQIFF_PLAYNEXT") > 0) has_play_next = 1
+    if (index(u, "TEXTDISP2_JMPTBL_ESQIFF_PLAYNEXTEXTERNALASSETFRAME") > 0 ||
+        index(u, "TEXTDISP2_JMPTBL_ESQIFF_PLAYNEXTEXTERNAL") > 0 ||
+        index(u, "TEXTDISP2_JMPTBL_ESQIFF_PLAYNEXT") > 0 ||
+        index(u, "ESQIFF_PLAYNEXTEXTERNALASSETFRAME") > 0 ||
+        index(u, "ESQIFF_PLAYNEXTEXTERNALASSETFRAM") > 0) {
+        has_play_next = 1
+    }
     if (u == "RTS") has_return = 1
 }
 
