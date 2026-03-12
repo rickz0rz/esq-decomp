@@ -5371,6 +5371,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown34_dos_read_by_index.c`
 - `src/decomp/sas_c/unknown11_dos_seek_by_index.c`
 - `src/decomp/sas_c/unknown12_alloc_alloc_from_free_list.c`
+- `src/decomp/sas_c/alloc_insert_free_block.c`
 - `src/decomp/sas_c/unknown6_string_append_at_null.c`
 - `src/decomp/sas_c/unknown5_string_append_n.c`
 - `src/decomp/sas_c/unknown5_string_compare_n.c`
