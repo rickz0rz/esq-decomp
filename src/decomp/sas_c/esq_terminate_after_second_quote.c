@@ -2,10 +2,6 @@ void ESQ_TerminateAfterSecondQuote(char *text)
 {
     char c;
 
-    if (!text) {
-        return;
-    }
-
     for (;;) {
         c = *text++;
         if (!c) {

@@ -1,9 +1,9 @@
 #pragma nostackcheck
 
-char *STRING_FindSubstring(const char *haystack, const char *needle)
+char *STRING_FindSubstring(char *haystack, char *needle)
 {
-    const char *currentHaystack;
-    const char *currentNeedle;
+    register char *currentHaystack;
+    register char *currentNeedle;
 
 check_at_current:
     currentHaystack = haystack;
@@ -11,7 +11,7 @@ check_at_current:
 
 compare_loop:
     if (*currentNeedle == 0) {
-        return (char *)haystack;
+        return haystack;
     }
 
     if (*currentHaystack++ != *currentNeedle++) {
@@ -22,12 +22,12 @@ compare_loop:
 
 advance_start:
     if (*currentHaystack == 0) {
-        return (char *)0;
+        return 0;
     }
 
     haystack++;
     if (*haystack == 0) {
-        return (char *)0;
+        return 0;
     }
 
     goto check_at_current;
