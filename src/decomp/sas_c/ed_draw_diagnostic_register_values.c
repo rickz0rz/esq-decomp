@@ -18,7 +18,7 @@ extern const char Global_STR_B_EQUALS[];
 extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
-extern LONG GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(char *dst, LONG value, LONG width);
+extern void ESQ_WriteDecFixedWidth(char *dst, LONG value, LONG width);
 
 static LONG ED_DiagPaletteIndex3(void)
 {
@@ -48,21 +48,21 @@ void ED_DrawDiagnosticRegisterValues(void)
 
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_REG, COL_LEFT, Global_STR_REGISTER);
 
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, ED_TempCopyOffset, DEC_WIDTH_2);
+    ESQ_WriteDecFixedWidth(ED_EditBufferScratch, ED_TempCopyOffset, DEC_WIDTH_2);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_REG, COL_REG_VALUE, ED_EditBufferScratch);
 
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_R_LABEL, Global_STR_R_EQUALS);
     idx3 = ED_DiagPaletteIndex3();
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue0[idx3], DEC_WIDTH_2);
+    ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue0[idx3], DEC_WIDTH_2);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_R_VALUE, ED_EditBufferScratch);
 
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_G_LABEL, Global_STR_G_EQUALS);
     idx3 = ED_DiagPaletteIndex3();
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue1[idx3], DEC_WIDTH_2);
+    ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue1[idx3], DEC_WIDTH_2);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_G_VALUE, ED_EditBufferScratch);
 
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_B_LABEL, Global_STR_B_EQUALS);
     idx3 = ED_DiagPaletteIndex3();
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue2[idx3], DEC_WIDTH_2);
+    ESQ_WriteDecFixedWidth(ED_EditBufferScratch, (LONG)GCOMMAND_PresetFallbackValue2[idx3], DEC_WIDTH_2);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW_RGB, COL_B_VALUE, ED_EditBufferScratch);
 }

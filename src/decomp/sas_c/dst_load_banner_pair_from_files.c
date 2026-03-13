@@ -11,7 +11,7 @@ extern const char Global_STR_DST_C_7[];
 
 extern LONG DST_RebuildBannerPair(void *pair);
 extern LONG DISKIO_LoadFileToWorkBuffer(const char *path);
-extern char *GROUP_AJ_JMPTBL_STRING_FindSubstring(const char *text, const char *needle);
+extern char *STRING_FindSubstring(const char *text, const char *needle);
 extern void DATETIME_ParseString(void *out_struct, const char *text, LONG width);
 extern LONG DATETIME_CopyPairAndRecalc(void *dst, const void *lhs, const void *rhs);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, ULONG size);
@@ -46,14 +46,14 @@ LONG DST_LoadBannerPairFromFiles(void *pair)
     work = Global_PTR_WORK_BUFFER;
     scratch_len = Global_REF_LONG_FILE_SCRATCH;
 
-    hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, Global_STR_G2);
+    hit = STRING_FindSubstring(work, Global_STR_G2);
     if (hit != 0) {
         DATETIME_ParseString(parsed_a, hit, LINE_PARSE_WIDTH);
         DATETIME_ParseString(parsed_b, hit, DATETIME_PARSE_WIDTH);
         DATETIME_CopyPairAndRecalc(p->secondaryBanner, parsed_a, parsed_b);
     }
 
-    hit = GROUP_AJ_JMPTBL_STRING_FindSubstring(work, Global_STR_G3);
+    hit = STRING_FindSubstring(work, Global_STR_G3);
     if (hit != 0) {
         DATETIME_ParseString(parsed_a, hit, LINE_PARSE_WIDTH);
         DATETIME_ParseString(parsed_b, hit, DATETIME_PARSE_WIDTH);

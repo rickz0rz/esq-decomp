@@ -8,7 +8,7 @@ extern char *Global_PTR_WORK_BUFFER;
 extern const char Global_STR_DISKIO_C_3[];
 extern const char Global_STR_DISKIO_C_4[];
 
-extern LONG GROUP_AG_JMPTBL_DOS_OpenFileWithMode(const char *path, LONG mode);
+extern LONG DOS_OpenFileWithMode(const char *path, LONG mode);
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, ULONG size, ULONG flags);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, ULONG size);
 
@@ -21,7 +21,7 @@ LONG DISKIO_LoadFileToWorkBuffer(const char *path)
     LONG fileHandle;
     LONG bytesRead;
 
-    fileHandle = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(path, 1005);
+    fileHandle = DOS_OpenFileWithMode(path, 1005);
     if (fileHandle == 0) {
         return -1;
     }

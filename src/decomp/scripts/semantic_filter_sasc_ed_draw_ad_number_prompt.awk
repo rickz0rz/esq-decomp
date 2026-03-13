@@ -4,7 +4,7 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     l=t($0)
     if(l=="")next
     if(l~/(JSR|BSR).*ED_DRAWHELPPANELS/)h_help=1
-    if(l~/(JSR|BSR).*GROUP_AL_JMPTBL_ESQ_WRITEDECFIXE/)h_write_dec=1
+    if(l~/(JSR|BSR).*(GROUP_AL_JMPTBL_ESQ_WRITEDECFIXE|ESQ_WRITEDECFIXEDWIDT)/)h_write_dec=1
     if(l~/(JSR|BSR).*_LVOSETAPEN/)setapen_calls++
     if(l~/(JSR|BSR).*_LVOSETDRMD/)setdrmd_calls++
     if(l~/(JSR|BSR).*_LVORECTFILL/)rect_calls++

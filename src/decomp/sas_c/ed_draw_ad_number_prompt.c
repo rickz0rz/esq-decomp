@@ -21,7 +21,7 @@ extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern void _LVORectFill(void *gfxBase, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
-extern LONG GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(char *dst, LONG value, LONG width);
+extern void ESQ_WriteDecFixedWidth(char *dst, LONG value, LONG width);
 extern LONG GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte(LONG hi, LONG lo);
 extern void ED_RedrawCursorChar(void);
 
@@ -57,7 +57,7 @@ void ED_DrawAdNumberPrompt(void)
 
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG, X_LEFT, Global_STR_ENTER_AD_NUMBER_ONE_HYPHEN);
 
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, ED_MaxAdNumber, DEC_WIDTH_2);
+    ESQ_WriteDecFixedWidth(ED_EditBufferScratch, ED_MaxAdNumber, DEC_WIDTH_2);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG, X_ADMAX, ED_EditBufferScratch);
 
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, Y_MSG, X_HELP, Global_STR_LEFT_PARENTHESIS_THEN);
