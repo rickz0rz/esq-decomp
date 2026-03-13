@@ -6,7 +6,7 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
  if (u ~ /^SNE D[0-7]$/ || u ~ /^NEG\.B D[0-7]$/ || u ~ /^EXT\.W D[0-7]$/ || u ~ /^EXT\.L D[0-7]$/ || u ~ /^MOVEQ(\.L)? #\$FF,D[0-7]$/ || u ~ /^MOVEQ(\.L)? #\$0,D[0-7]$/) has_boolize=1
  if (n ~ /PARSEINICTRLHCHANGEGATEFLAG/) has_gate=1
  if (n ~ /PARSEINICTRLHCLOCKSNAPSHOT/ || n ~ /GLOBALREFCLOCKDATASTRUCT/) has_snapshot=1
- if (n ~ /SCRIPT3JMPTBLESQDISPUPDATESTATUSMASKANDREFRESH/ || n ~ /SCRIPT3JMPTBLESQDISPUPDATESTA/) has_call=1
+ if (n ~ /SCRIPT3JMPTBLESQDISPUPDATESTATUSMASKANDREFRESH/ || n ~ /SCRIPT3JMPTBLESQDISPUPDATESTA/ || n ~ /ESQDISPUPDATESTATUSMASKANDREFRESH/ || n ~ /ESQDISPUPDATESTATUSMASKANDREFRES/ || n ~ /ESQDISPUPDATESTATUSMASKANDREFRE/) has_call=1
  if (u ~ /#3/ || u ~ /\$3/) has_thresh3=1
  if (u ~ /^CLR\.W PARSEINI_CTRLHCHANGEPENDINGFLAG/ || n ~ /PARSEINICTRLHCHANGEPENDINGFLAGA4/) has_clear_pending=1
  if (u=="RTS") has_return=1

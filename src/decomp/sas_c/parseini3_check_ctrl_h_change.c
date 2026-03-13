@@ -10,7 +10,7 @@ extern WORD PARSEINI_CtrlHClockSnapshot;
 extern WORD PARSEINI_CtrlHChangeGateCounter;
 extern WORD PARSEINI_CtrlHChangePendingFlag;
 
-extern void SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(LONG statusMask, LONG statusValue);
+extern void ESQDISP_UpdateStatusMaskAndRefresh(LONG statusMask, LONG statusValue);
 
 LONG PARSEINI_CheckCtrlHChange(void)
 {
@@ -31,7 +31,7 @@ LONG PARSEINI_CheckCtrlHChange(void)
             return changed;
         }
         PARSEINI_CtrlHChangePendingFlag = FLAG_TRUE;
-        SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(STATUSMASK_CTRL_H, FLAG_TRUE);
+        ESQDISP_UpdateStatusMaskAndRefresh(STATUSMASK_CTRL_H, FLAG_TRUE);
         return changed;
     }
 
@@ -53,6 +53,6 @@ LONG PARSEINI_CheckCtrlHChange(void)
     }
 
     PARSEINI_CtrlHChangePendingFlag = FLAG_FALSE;
-    SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(STATUSMASK_CTRL_H, CHANGED_FALSE);
+    ESQDISP_UpdateStatusMaskAndRefresh(STATUSMASK_CTRL_H, CHANGED_FALSE);
     return changed;
 }

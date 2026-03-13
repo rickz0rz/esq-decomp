@@ -9,7 +9,7 @@ extern WORD PARSEINI_ClockSecondsSnapshot;
 extern WORD PARSEINI_ClockChangeActiveFlag;
 extern WORD PARSEINI_ClockChangeSampleCounter;
 
-extern void SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(LONG statusMask, LONG statusValue);
+extern void ESQDISP_UpdateStatusMaskAndRefresh(LONG statusMask, LONG statusValue);
 
 LONG PARSEINI_MonitorClockChange(void)
 {
@@ -29,7 +29,7 @@ LONG PARSEINI_MonitorClockChange(void)
             return changed;
         }
         PARSEINI_ClockChangeActiveFlag = FLAG_TRUE;
-        SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(STATUSMASK_CLOCK, STATUSMASK_CLOCK);
+        ESQDISP_UpdateStatusMaskAndRefresh(STATUSMASK_CLOCK, STATUSMASK_CLOCK);
         return changed;
     }
 
@@ -49,6 +49,6 @@ LONG PARSEINI_MonitorClockChange(void)
     }
 
     PARSEINI_ClockChangeActiveFlag = FLAG_FALSE;
-    SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(STATUSMASK_CLOCK, CHANGED_FALSE);
+    ESQDISP_UpdateStatusMaskAndRefresh(STATUSMASK_CLOCK, CHANGED_FALSE);
     return changed;
 }
