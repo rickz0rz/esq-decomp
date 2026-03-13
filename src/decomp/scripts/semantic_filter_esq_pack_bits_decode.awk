@@ -6,6 +6,7 @@ BEGIN {
     has_output_limit_cmp = 0
     has_return_src = 0
     has_rts = 0
+    ff_reg = ""
 }
 
 function trim(s,    t) {
@@ -25,7 +26,11 @@ function trim(s,    t) {
     if (u ~ /TST\.B D[0-7]/ || u ~ /BMI(\.W|\.S)? / || u ~ /BPL(\.W|\.S)? / || u ~ /^JLT / || u ~ /^JGE / || u ~ /^BLT(\.W|\.S)? / || u ~ /^BGE(\.W|\.S)? /) has_signed_run_test = 1
     if (u ~ /MOVE\.B \(A[0-7]\)\+,\(A[0-7]\)\+/) has_literal_copy = 1
     if (u ~ /MOVE\.B D[0-7],\(A[0-7]\)\+/ || u ~ /MOVE\.B \(A[0-7]\),\(A[0-7]\)\+/) has_repeat_copy = 1
+    if (u ~ /^MOVEQ(\.L)? #\$FF,D[0-7]$/ || u ~ /^MOVEQ(\.L)? #-1,D[0-7]$/) {
+        ff_reg = substr(u, length(u), 1)
+    }
     if (u ~ /CMPI\.[BWL] #\$?FF,D[0-7]/ || u ~ /CMP\.[BWL] #\$?FF,D[0-7]/ || u ~ /CMP\.B #-1,D[0-7]/ || u ~ /CMPI\.B #-1,D[0-7]/) has_ff_skip = 1
+    if (ff_reg != "" && u ~ ("^CMP\\.[BWL] D" ff_reg ",D[0-7]$")) has_ff_skip = 1
     if (u ~ /^CMP\.[BWL] D[0-7],D[0-7]/ || u ~ /^CMPI\.[BWL] .*D[0-7]/) has_output_limit_cmp = 1
     if (u ~ /^MOVE\.L A[0-7],D0$/) has_return_src = 1
     if (u == "RTS") has_rts = 1
