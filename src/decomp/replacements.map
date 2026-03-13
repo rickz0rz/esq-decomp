@@ -16,6 +16,7 @@ modules/submodules/unknown41.s decomp/replacements/modules/submodules/unknown41.
 modules/groups/_main/b/b.s decomp/replacements/modules/groups/_main/b/b.s
 modules/submodules/unknown2b.s decomp/replacements/modules/submodules/unknown2b.s
 modules/submodules/unknown42.s decomp/replacements/modules/submodules/unknown42.s
+modules/groups/a/a/brush.s decomp/replacements/modules/groups/a/a/brush.s
 modules/groups/a/a/bevel.s decomp/replacements/modules/groups/a/a/bevel.s
 modules/groups/a/b/cleanup.s decomp/replacements/modules/groups/a/b/cleanup.s
 modules/groups/a/c/cleanup2.s decomp/replacements/modules/groups/a/c/cleanup2.s
