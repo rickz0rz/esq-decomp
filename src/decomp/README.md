@@ -45,6 +45,7 @@ The repository currently has two active decomp lanes:
 - Additional triage note (March 13, 2026): `src/decomp/scripts/list_missing_sasc_non_jmptbl_exports.py` now checks for real SAS/C function definitions rather than exact-word hits alone. It currently prints no rows in this checkout, so do not assume a non-wrapper GCC file still needs first-pass promotion without running that helper first.
 - Current hybrid-integration note (March 13, 2026): `modules/groups/a/a/app.s` is now wired into `src/decomp/replacements.map` as a passthrough hybrid boundary. Its restored SAS/C coverage already spans the non-`JMPTBL` serial/control helpers in that module, so future object-level replacement work can land there without another root include-graph edit.
 - Current hybrid-integration note (March 13, 2026): `modules/groups/a/u/gcommand3.s` is now wired into `src/decomp/replacements.map` as a passthrough hybrid boundary. Its restored SAS/C coverage already spans the non-`JMPTBL` banner/highlight helpers in that module, so future object-level replacement work can land there without another root include-graph edit.
+- Current hybrid-integration note (March 13, 2026, later re-validated): `modules/groups/a/i/displib.s` is now wired into `src/decomp/replacements.map` as a passthrough hybrid boundary. Its restored SAS/C coverage already spans the non-`JMPTBL` text/layout helpers in that module, so future object-level replacement work can land there without another root include-graph edit.
 
 ## Files
 - `src/decomp/replacements.map`: module substitution map.
