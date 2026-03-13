@@ -41,7 +41,7 @@
         next
     }
 
-    if (line ~ /GROUP_AM_JMPTBL_WDISP_SPrintf/) {
+    if (line ~ /GROUP_AM_JMPTBL_WDISP_SPrintf/ || line ~ /WDISP_SPrintf/) {
         print "sprintf_" pending_format
         pending_display = pending_format
         next
@@ -67,7 +67,9 @@
         next
     }
 
-    if (line ~ /ESQPARS_JMPTBL_DISPLIB_DisplayTe/ || line ~ /ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition/) {
+    if (line ~ /ESQPARS_JMPTBL_DISPLIB_DisplayTe/ ||
+        line ~ /ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition/ ||
+        line ~ /DISPLIB_DisplayTextAtPosition/) {
         if (pending_display == "")
             pending_display = "unknown"
         print "display_" pending_display

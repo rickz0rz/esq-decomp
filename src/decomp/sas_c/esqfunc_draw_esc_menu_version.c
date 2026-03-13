@@ -22,8 +22,8 @@ extern const char Global_STR_ROM_VERSION_1_3[];
 extern const char Global_STR_ROM_VERSION_2_04[];
 extern const char Global_STR_PUSH_ANY_KEY_TO_CONTINUE_1[];
 
-extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, ...);
+extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
 
@@ -37,12 +37,12 @@ void ESQFUNC_DrawEscMenuVersion(void)
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, ESQFUNC_PRIMARY_PEN);
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, ESQFUNC_DRAW_MODE_JAM1);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(
+    WDISP_SPrintf(
         versionLineBuffer,
         Global_STR_BUILD_NUMBER_FORMATTED,
         Global_LONG_BUILD_NUMBER,
         Global_PTR_STR_BUILD_ID);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(
+    DISPLIB_DisplayTextAtPosition(
         Global_REF_RASTPORT_1,
         ESQFUNC_BUILD_TEXT_Y,
         ESQFUNC_VERSION_TEXT_X,
@@ -54,18 +54,18 @@ void ESQFUNC_DrawEscMenuVersion(void)
         romVersionString = Global_STR_ROM_VERSION_2_04;
     }
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(
+    WDISP_SPrintf(
         versionLineBuffer,
         Global_STR_ROM_VERSION_FORMATTED,
         romVersionString);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(
+    DISPLIB_DisplayTextAtPosition(
         Global_REF_RASTPORT_1,
         ESQFUNC_ROM_TEXT_Y,
         ESQFUNC_VERSION_TEXT_X,
         versionLineBuffer);
 
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, ESQFUNC_PROMPT_PEN);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(
+    DISPLIB_DisplayTextAtPosition(
         Global_REF_RASTPORT_1,
         ESQFUNC_PROMPT_TEXT_Y,
         ESQFUNC_VERSION_TEXT_X,
