@@ -22,8 +22,8 @@ extern UBYTE WDISP_AccumulatorRow1_CopperIndexEnd;
 extern UBYTE WDISP_AccumulatorRow2_CopperIndexEnd;
 extern UBYTE WDISP_AccumulatorRow3_CopperIndexEnd;
 
-extern void ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(LONG start, LONG end);
-extern void ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(LONG start, LONG end);
+extern void ESQ_MoveCopperEntryTowardEnd(LONG start, LONG end);
+extern void ESQ_MoveCopperEntryTowardStart(LONG start, LONG end);
 
 static void service_row(WORD *saturate, WORD *moveFlags, UBYTE *indexStart, UBYTE *indexEnd)
 {
@@ -36,9 +36,9 @@ static void service_row(WORD *saturate, WORD *moveFlags, UBYTE *indexStart, UBYT
 
     *saturate = 0;
     if ((*moveFlags & 2) != 0) {
-        ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd((LONG)*indexStart, (LONG)*indexEnd);
+        ESQ_MoveCopperEntryTowardEnd((LONG)*indexStart, (LONG)*indexEnd);
     } else {
-        ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart((LONG)*indexStart, (LONG)*indexEnd);
+        ESQ_MoveCopperEntryTowardStart((LONG)*indexStart, (LONG)*indexEnd);
     }
 }
 
