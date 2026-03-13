@@ -31,8 +31,8 @@ function trim(s,    t) {
     gsub(/[ \t]+/, " ", line)
     u = toupper(line)
 
-    if (u ~ /UNKNOWN_JMPTBL_ESQ_WILDCARDMATCH/) has_wildcard_call = 1
-    if (u ~ /UNKNOWN_JMPTBL_DST_NORMALIZEDAYO/ || u ~ /UNKNOWN_JMPTBL_DST_NORMALIZEDAYOFYEAR/) has_normalize_call = 1
+    if (u ~ /UNKNOWN_JMPTBL_ESQ_WILDCARDMATCH/ || u ~ /ESQ_WILDCARDMATCH/) has_wildcard_call = 1
+    if (u ~ /UNKNOWN_JMPTBL_DST_NORMALIZEDAYO/ || u ~ /UNKNOWN_JMPTBL_DST_NORMALIZEDAYOFYEAR/ || u ~ /DST_NORMALIZEDAYO/ || u ~ /DST_NORMALIZEDAYOFYEAR/) has_normalize_call = 1
     if (u ~ /STRING_COPYPADNUL/) has_copy_pad_call = 1
     if (u ~ /PARSE_READSIGNEDLONGSKIPCLASS3_A/ || u ~ /PARSE_READSIGNEDLONGSKIPCLASS3_ALT/) has_parse_long_call = 1
     if (u ~ /MATH_MULU32/) has_mulu_call = 1

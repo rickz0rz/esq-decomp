@@ -9,8 +9,8 @@ extern UWORD CLOCK_CurrentYearValue;
 extern UBYTE TLIBA1_DayEntryModeCounter;
 extern UBYTE WDISP_StatusDayEntry0[];
 
-extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
-extern LONG UNKNOWN_JMPTBL_DST_NormalizeDayOfYear(LONG day, LONG year);
+extern LONG ESQ_WildcardMatch(const char *pattern, const char *text);
+extern LONG DST_NormalizeDayOfYear(LONG day, LONG year);
 extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG max_len);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *in);
 extern ULONG MATH_Mulu32(ULONG a, ULONG b);
@@ -77,7 +77,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
         return 0;
     }
 
-    if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(WDISP_StatusListMatchPattern, list_name) != 0) {
+    if (ESQ_WildcardMatch(WDISP_StatusListMatchPattern, list_name) != 0) {
         return 0;
     }
 
@@ -87,7 +87,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
         LONG year = (LONG)CLOCK_CurrentYearValue;
 
         entry->inactive4 = 1;
-        entry->dayKey0 = UNKNOWN_JMPTBL_DST_NormalizeDayOfYear(day, year);
+        entry->dayKey0 = DST_NormalizeDayOfYear(day, year);
     }
 
     header = (const UNKNOWN_StatusListHeader *)p;
