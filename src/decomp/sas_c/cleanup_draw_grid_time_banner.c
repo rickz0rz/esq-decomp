@@ -35,9 +35,9 @@ void _LVOTextLength(void);
 void _LVOMove(void);
 void _LVOText(void);
 void ESQ_FormatTimeStamp(char *dst, void *clock_ref);
-LONG GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(LONG hour, LONG ampm);
-LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b, LONG c);
-void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void);
+LONG PARSEINI_AdjustHoursTo24HrFormat(WORD hour, WORD amPmFlag);
+LONG WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b, LONG c);
+LONG GRAPHICS_BltBitMapRastPort(void *bitMap, LONG sx, LONG sy, void *rastPort, LONG dx, LONG dy, LONG width, LONG height, LONG minterm, LONG mask);
 
 void CLEANUP_DrawGridTimeBanner(void)
 {
@@ -60,8 +60,8 @@ void CLEANUP_DrawGridTimeBanner(void)
     timeBuffer[GRID_TIME_SUFFIX_INDEX] = 0;
 
     if (Global_REF_STR_USE_24_HR_CLOCK == 'Y') {
-        LONG hour = GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat((LONG)Global_WORD_CURRENT_HOUR, (LONG)CLOCK_CurrentAmPmFlag);
-        GROUP_AE_JMPTBL_WDISP_SPrintf(
+        LONG hour = PARSEINI_AdjustHoursTo24HrFormat(Global_WORD_CURRENT_HOUR, CLOCK_CurrentAmPmFlag);
+        WDISP_SPrintf(
             timeBuffer,
             Global_STR_GRID_TIME_FORMAT_DUPLICATE,
             hour,
@@ -97,5 +97,16 @@ void CLEANUP_DrawGridTimeBanner(void)
         _LVOText();
     }
 
-    GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort();
+    GRAPHICS_BltBitMapRastPort(
+        *(void **)((UBYTE *)rp + 4),
+        x,
+        0,
+        rp,
+        x + 448,
+        40,
+        textWidth,
+        ((LONG)(UWORD)(*(UWORD *)((UBYTE *)rp + 58))) - 2,
+        0,
+        192
+    );
 }
