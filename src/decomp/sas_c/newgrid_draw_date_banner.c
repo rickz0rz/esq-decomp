@@ -30,7 +30,7 @@ extern void _LVOSetDrMd(char *rastPort, LONG mode);
 extern LONG NEWGRID_SetRowColor(char *gridCtx, LONG mode, LONG pen);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern void _LVORectFill(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
 extern void _LVOMove(char *rastPort, LONG x, LONG y);
 extern void _LVOText(char *rastPort, const char *text, LONG len);
@@ -59,8 +59,8 @@ void NEWGRID_DrawDateBanner(char *gridCtx)
     _LVORectFill((char *)rast, 0, 0, 695, 33);
 
     xBase = (LONG)(UWORD)NEWGRID_ColumnStartXPx;
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight((char *)rast, 0, 0, xBase + 35, 33);
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight((char *)rast, xBase + 36, 0, 695, 33);
+    BEVEL_DrawBevelFrameWithTopRight((char *)rast, 0, 0, xBase + 35, 33);
+    BEVEL_DrawBevelFrameWithTopRight((char *)rast, xBase + 36, 0, 695, 33);
 
     _LVOSetAPen((char *)rast, 3);
 

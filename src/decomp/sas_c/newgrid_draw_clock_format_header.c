@@ -30,8 +30,8 @@ extern LONG NEWGRID_SetRowColor(char *grid_ctx, LONG mode, LONG pen);
 extern void _LVOSetDrMd(char *rastport, LONG mode);
 extern void _LVOSetAPen(char *rastport, LONG pen);
 extern void _LVORectFill(char *rastport, LONG x1, LONG y1, LONG x2, LONG y2);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastport, LONG x1, LONG y1, LONG x2, LONG y2);
-extern void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slot, char *out_text);
+extern void BEVEL_DrawBevelFrameWithTopRight(char *rastport, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void CLEANUP_FormatClockFormatEntry(LONG slot, char *out_text);
 extern ULONG NEWGRID_JMPTBL_MATH_Mulu32(ULONG a, ULONG b);
 extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
 extern void _LVOMove(char *rastport, LONG x, LONG y);
@@ -54,7 +54,7 @@ void NEWGRID_DrawClockFormatHeader(char *grid_ctx, LONG start_slot)
     _LVORectFill((char *)rast, 0, 0, 695, 33);
 
     left_x = (LONG)(UWORD)NEWGRID_ColumnStartXPx;
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight((char *)rast, 0, 0, left_x + 35, 33);
+    BEVEL_DrawBevelFrameWithTopRight((char *)rast, 0, 0, left_x + 35, 33);
 
     for (col = 0; col < 3; ++col) {
         LONG slot;
@@ -74,7 +74,7 @@ void NEWGRID_DrawClockFormatHeader(char *grid_ctx, LONG start_slot)
             slot -= 48;
         }
 
-        NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(slot, label);
+        CLEANUP_FormatClockFormatEntry(slot, label);
 
         col_w = (LONG)(UWORD)NEWGRID_ColumnWidthPx;
         x = left_x + (LONG)NEWGRID_JMPTBL_MATH_Mulu32((ULONG)col, (ULONG)col_w) + 36;
@@ -84,7 +84,7 @@ void NEWGRID_DrawClockFormatHeader(char *grid_ctx, LONG start_slot)
             right = x + col_w - 1;
         }
 
-        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight((char *)rast, x, 0, right, 33);
+        BEVEL_DrawBevelFrameWithTopRight((char *)rast, x, 0, right, 33);
         _LVOSetAPen((char *)rast, 3);
 
         p = label;

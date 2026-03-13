@@ -26,9 +26,9 @@ extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 
 extern void NEWGRID_DrawGridFrame(char *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
-extern void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(LONG slot, char *out_text);
+extern void CLEANUP_FormatClockFormatEntry(LONG slot, char *out_text);
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern void _LVOSetDrMd(char *rastPort, LONG mode);
 extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
@@ -58,14 +58,14 @@ void NEWGRID_DrawEmptyGridMessage(char *gridCtx, UWORD slot)
     while ((*dst++ = *src++) != 0) {
     }
 
-    NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry((LONG)slot, slot_text);
+    CLEANUP_FormatClockFormatEntry((LONG)slot, slot_text);
     PARSEINI_JMPTBL_STRING_AppendAtNull(banner, slot_text);
 
     rast = &ctx->rastPort;
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
+    BEVEL_DrawBevelFrameWithTopRight(
         (char *)rast, 0, 0, (LONG)(UWORD)NEWGRID_ColumnStartXPx + 35, 33
     );
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
+    BEVEL_DrawBevelFrameWithTopRight(
         (char *)rast, (LONG)(UWORD)NEWGRID_ColumnStartXPx + 36, 0, 695, 33
     );
 

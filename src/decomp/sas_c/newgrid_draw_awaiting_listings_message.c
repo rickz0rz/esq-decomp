@@ -30,7 +30,7 @@ extern void NEWGRID_DrawGridFrame(char *gridCtx, LONG mode, LONG firstPen, LONG 
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
 extern char *NEWGRID_DrawWrappedText(char *rastPort, LONG x, LONG y, LONG width, const char *text, LONG centered);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
 LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
 {
@@ -80,7 +80,7 @@ LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
     y = (y >> 1) + (LONG)fontH - 1;
 
     NEWGRID_DrawWrappedText((char *)rast, x, y, 612, msg, 1);
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight((char *)rast, 0, 0, 695, yMax);
+    BEVEL_DrawBevelFrameWithTopRight((char *)rast, 0, 0, 695, yMax);
 
     mid = (WORD)((UWORD)NEWGRID_RowHeightPx >> 1);
     ctx->selectionCode = (UWORD)mid;
