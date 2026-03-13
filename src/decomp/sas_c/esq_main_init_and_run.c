@@ -280,9 +280,9 @@ extern void _LVOBltClear(void *graphicsBase, void *memory, LONG byteCount, LONG 
 extern void _LVODisable(void *execBase);
 extern void _LVOEnable(void *execBase);
 
-extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const char *fileTag, LONG line, LONG bytes, LONG flags);
-extern LONG ESQIFF_JMPTBL_MATH_DivS32(LONG value, LONG divisor);
-extern void *ESQDISP_JMPTBL_GRAPHICS_AllocRaster(const char *fileTag, LONG line, LONG width, LONG height);
+extern void *MEMORY_AllocateMemory(LONG bytes, LONG flags);
+extern LONG MATH_DivS32(LONG value, LONG divisor);
+extern void *GRAPHICS_AllocRaster(LONG width, LONG height);
 extern LONG TLIBA3_BuildDisplayContextForViewMode(LONG viewMode, LONG arg1, LONG arg2);
 extern void BRUSH_PopulateBrushList(void *descriptorHead, void **listHead);
 extern void BRUSH_SelectBrushByLabel(const char *label);
@@ -447,18 +447,18 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         Global_HANDLE_PREVUE_FONT = Global_HANDLE_TOPAZ_FONT;
     }
 
-    Global_REF_RASTPORT_1 = (ESQ_RastPort *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQ_C_1, 623, 100, MEMF_PUBLIC + MEMF_CLEAR);
+    Global_REF_RASTPORT_1 = (ESQ_RastPort *)MEMORY_AllocateMemory(100, MEMF_PUBLIC + MEMF_CLEAR);
     _LVOInitRastPort(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1);
     Global_REF_RASTPORT_1->bitmap = &Global_REF_696_400_BITMAP;
     _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_HANDLE_PREVUEC_FONT);
 
     WDISP_HighlightRasterHeightPx = 68;
-    d0 = ESQIFF_JMPTBL_MATH_DivS32((LONG)(UWORD)WDISP_HighlightRasterHeightPx, 2);
+    d0 = MATH_DivS32((LONG)(UWORD)WDISP_HighlightRasterHeightPx, 2);
     if (d0 != 0) {
         --WDISP_HighlightRasterHeightPx;
     }
 
-    Global_REF_RASTPORT_2 = (ESQ_RastPort *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQ_C_2, 645, 100, MEMF_PUBLIC + MEMF_CLEAR);
+    Global_REF_RASTPORT_2 = (ESQ_RastPort *)MEMORY_AllocateMemory(100, MEMF_PUBLIC + MEMF_CLEAR);
     _LVOInitRastPort(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2);
     Global_REF_RASTPORT_2->bitmap = &Global_REF_320_240_BITMAP;
     _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, Global_HANDLE_PREVUEC_FONT);
@@ -469,7 +469,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 
     _LVOInitBitMap(Global_REF_GRAPHICS_LIBRARY, &Global_REF_320_240_BITMAP, 4, 352, 240);
     for (i = 0; i < 4; ++i) {
-        WDISP_352x240RasterPtrTable[i] = ESQDISP_JMPTBL_GRAPHICS_AllocRaster(Global_STR_ESQ_C_3, 668, 352, 240);
+        WDISP_352x240RasterPtrTable[i] = GRAPHICS_AllocRaster(352, 240);
         _LVOBltClear(Global_REF_GRAPHICS_LIBRARY, WDISP_352x240RasterPtrTable[i], 10560, 0);
     }
 
@@ -481,7 +481,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         Global_REF_STR_CLOCK_FORMAT = &Global_JMPTBL_HALF_HOURS_12_HR_FMT;
     }
 
-    ESQ_HighlightMsgPort = (ESQ_MessagePort *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQ_C_4, 683, 34, MEMF_PUBLIC + MEMF_CLEAR);
+    ESQ_HighlightMsgPort = (ESQ_MessagePort *)MEMORY_AllocateMemory(34, MEMF_PUBLIC + MEMF_CLEAR);
     if (ESQ_HighlightMsgPort == (ESQ_MessagePort *)0) {
         return 0;
     }
@@ -491,7 +491,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     write_byte(ESQ_HighlightMsgPort, 14, 2);
     LIST_InitHeader(ESQ_HighlightMsgPort->list20);
 
-    ESQ_HighlightReplyPort = (ESQ_MessagePort *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQ_C_5, 698, 34, MEMF_PUBLIC + MEMF_CLEAR);
+    ESQ_HighlightReplyPort = (ESQ_MessagePort *)MEMORY_AllocateMemory(34, MEMF_PUBLIC + MEMF_CLEAR);
     if (ESQ_HighlightReplyPort == (ESQ_MessagePort *)0) {
         return 0;
     }
@@ -556,7 +556,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     }
     Global_REF_BAUD_RATE = baudRate;
 
-    ESQIFF_RecordBufferPtr = ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQ_C_6, 854, 9000, MEMF_PUBLIC + MEMF_CLEAR);
+    ESQIFF_RecordBufferPtr = MEMORY_AllocateMemory(9000, MEMF_PUBLIC + MEMF_CLEAR);
     WDISP_SerialMessagePortPtr = SIGNAL_CreateMsgPortWithSignal(Global_STR_SERIAL_READ, 0);
     if (WDISP_SerialMessagePortPtr == (void *)0) {
         return 0;
@@ -584,13 +584,13 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     KYBD_InitializeInputDevices();
     ESQFUNC_AllocateLineTextBuffers();
 
-    Global_REF_96_BYTES_ALLOCATED = ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQ_C_7, 984, 96, MEMF_PUBLIC);
+    Global_REF_96_BYTES_ALLOCATED = MEMORY_AllocateMemory(96, MEMF_PUBLIC);
 
     _LVOInitBitMap(Global_REF_GRAPHICS_LIBRARY, &Global_REF_696_400_BITMAP, 3, 696, 400);
     _LVOInitBitMap(Global_REF_GRAPHICS_LIBRARY, &Global_REF_696_241_BITMAP, 4, 696, 241);
 
     for (i = 0; i < 3; ++i) {
-        (&WDISP_BannerRowScratchRasterTable0)[i] = ESQDISP_JMPTBL_GRAPHICS_AllocRaster(Global_STR_ESQ_C_8, 991, 696, 509);
+        (&WDISP_BannerRowScratchRasterTable0)[i] = GRAPHICS_AllocRaster(696, 509);
         _LVOBltClear(Global_REF_GRAPHICS_LIBRARY, (&WDISP_BannerRowScratchRasterTable0)[i], 0xaef8, 0);
     }
 
@@ -603,7 +603,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     }
 
     for (i = 3; i < 5; ++i) {
-        (&WDISP_DisplayContextPlanePointer0)[i] = ESQDISP_JMPTBL_GRAPHICS_AllocRaster(Global_STR_ESQ_C_9, 1008, 696, 241);
+        (&WDISP_DisplayContextPlanePointer0)[i] = GRAPHICS_AllocRaster(696, 241);
         _LVOBltClear(Global_REF_GRAPHICS_LIBRARY, (&WDISP_DisplayContextPlanePointer0)[i], 0x52d8, 0);
     }
 
@@ -621,7 +621,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 
     _LVOInitBitMap(Global_REF_GRAPHICS_LIBRARY, &WDISP_BannerGridBitmapStruct, 3, 696, 2);
     for (i = 0; i < 3; ++i) {
-        (&WDISP_LivePlaneRasterTable0)[i] = ESQDISP_JMPTBL_GRAPHICS_AllocRaster(Global_STR_ESQ_C_10, 1027, 696, 2);
+        (&WDISP_LivePlaneRasterTable0)[i] = GRAPHICS_AllocRaster(696, 2);
         _LVOBltClear(Global_REF_GRAPHICS_LIBRARY, (&WDISP_LivePlaneRasterTable0)[i], 176, 0);
     }
 
@@ -629,7 +629,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQSHARED_LivePlaneBase1 = WDISP_LivePlaneRasterTable1;
     ESQSHARED_LivePlaneBase2 = WDISP_LivePlaneRasterTable2;
 
-    WDISP_BannerWorkRasterPtr = ESQDISP_JMPTBL_GRAPHICS_AllocRaster(Global_STR_ESQ_C_11, 1038, 696, 15);
+    WDISP_BannerWorkRasterPtr = GRAPHICS_AllocRaster(696, 15);
     WDISP_AccumulatorFlushPending = 0;
     NEWGRID_RefreshStateFlag = 0;
     NEWGRID_MessagePumpSuspendFlag = -1;
