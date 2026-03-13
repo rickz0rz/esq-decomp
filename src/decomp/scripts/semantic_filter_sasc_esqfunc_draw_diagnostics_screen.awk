@@ -36,11 +36,11 @@ function trim(s,    t) {
     if (n ~ /LVOSETFONT/ && n ~ /GLOBALHANDLETOPAZFONT/) has_set_font_topaz = 1
     if (n ~ /LVOSETFONT/ && n ~ /GLOBALHANDLEPREVUECFONT/) has_set_font_prevuec = 1
     if (n ~ /ESQCOPPERSTATUSDIGITSA/ || n ~ /ESQCOPPERSTATUSDIGITSBCOLORREGISTERSA/ || n ~ /TAILCOLORWORD/) has_copper_init = 1
-    if (n ~ /READCIABBIT5MASK/ || n ~ /SCRIPTREADHANDSHAKEBIT5MASK/) has_bit5 = 1
+    if (n ~ /READCIABBIT5MASK/ || n ~ /SCRIPTREADHANDSHAKEBIT5MASK/ || n ~ /READCIABBI/) has_bit5 = 1
     if (n ~ /SCRIPTGETCTRLLINEFLAG/) has_ctrl_line = 1
-    if (n ~ /READCIABBIT3FLAG/ || n ~ /SCRIPTREADHANDSHAKEBIT3FLAG/) has_bit3 = 1
+    if (n ~ /READCIABBIT3FLAG/ || n ~ /SCRIPTREADHANDSHAKEBIT3FLAG/ || n ~ /READCIABBI/) has_bit3 = 1
     if (n ~ /WDISPSPRINTF/) has_sprintf = 1
-    if (n ~ /DRAWCENTEREDWRAPPEDTEXTLINES/) has_draw_centered = 1
+    if (n ~ /DRAWCENTEREDWRAPPEDTEXTLINES/ || n ~ /DRAWCENTEREDWRAPPEDTEXTLI/) has_draw_centered = 1
     if (n ~ /LVOAVAILMEM/) has_availmem = 1
     if (n ~ /PARSEINICOMPUTEHTCMAXVALUES/) has_compute_htc = 1
     if (n ~ /PARSEINIUPDATECTRLHDELTAMAX/) has_update_ctrl_h = 1
