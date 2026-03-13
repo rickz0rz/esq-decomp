@@ -26,11 +26,11 @@ extern const char ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA[];
 extern const char ESQIFF_STR_CORRECT_VERSION_IS[];
 extern const char Global_STR_APOSTROPHE[];
 
-extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern LONG ESQSHARED_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, ...);
+extern UBYTE ESQ_WildcardMatch(const char *pattern, const char *text);
 extern void GCOMMAND_SeedBannerFromPrefs(void);
-extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rp, WORD x, WORD y, const char *text);
-extern char *GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
+extern void DISPLIB_DisplayTextAtPosition(char *rp, WORD x, WORD y, const char *text);
+extern char *STRING_AppendAtNull(char *dst, const char *src);
 
 extern void Disable(void);
 extern void Enable(void);
@@ -44,9 +44,9 @@ void ESQIFF2_ShowVersionMismatchOverlay(void)
     LONG i;
 
     ESQIFF_RecordBufferPtr[20] = (char)0;
-    GROUP_AM_JMPTBL_WDISP_SPrintf(textbuf, ESQIFF_FMT_PCT_S_DOT_PCT_LD, Global_STR_MAJOR_MINOR_VERSION_1, Global_LONG_PATCH_VERSION_NUMBER);
+    WDISP_SPrintf(textbuf, ESQIFF_FMT_PCT_S_DOT_PCT_LD, Global_STR_MAJOR_MINOR_VERSION_1, Global_LONG_PATCH_VERSION_NUMBER);
 
-    if ((UBYTE)ESQSHARED_JMPTBL_ESQ_WildcardMatch(textbuf, ESQIFF_RecordBufferPtr + 1) == 0) {
+    if (ESQ_WildcardMatch(textbuf, ESQIFF_RecordBufferPtr + 1) == 0) {
         return;
     }
 
@@ -66,10 +66,10 @@ void ESQIFF2_ShowVersionMismatchOverlay(void)
     RectFill(Global_REF_RASTPORT_1, 0, 60, 679, (UBYTE)(~100));
     SetAPen(Global_REF_RASTPORT_1, 3);
 
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)Global_REF_RASTPORT_1, 30, 90, ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA);
+    DISPLIB_DisplayTextAtPosition((char *)Global_REF_RASTPORT_1, 30, 90, ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(textbuf, ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD, Global_STR_MAJOR_MINOR_VERSION_2, Global_LONG_PATCH_VERSION_NUMBER);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)Global_REF_RASTPORT_1, 30, 120, textbuf);
+    WDISP_SPrintf(textbuf, ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD, Global_STR_MAJOR_MINOR_VERSION_2, Global_LONG_PATCH_VERSION_NUMBER);
+    DISPLIB_DisplayTextAtPosition((char *)Global_REF_RASTPORT_1, 30, 120, textbuf);
 
     p = textbuf;
     for (i = 0; i <= 4; ++i) {
@@ -77,8 +77,8 @@ void ESQIFF2_ShowVersionMismatchOverlay(void)
         p += 4;
     }
     *p = '\0';
-    GROUP_AR_JMPTBL_STRING_AppendAtNull(textbuf, ESQIFF_RecordBufferPtr + 1);
-    GROUP_AR_JMPTBL_STRING_AppendAtNull(textbuf, Global_STR_APOSTROPHE);
+    STRING_AppendAtNull(textbuf, ESQIFF_RecordBufferPtr + 1);
+    STRING_AppendAtNull(textbuf, Global_STR_APOSTROPHE);
 
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)Global_REF_RASTPORT_1, 30, 150, textbuf);
+    DISPLIB_DisplayTextAtPosition((char *)Global_REF_RASTPORT_1, 30, 150, textbuf);
 }
