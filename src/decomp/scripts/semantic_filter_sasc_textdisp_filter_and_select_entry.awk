@@ -30,7 +30,8 @@ function trim(s, t) {
     u = toupper(line)
 
     if (u ~ /^TEXTDISP_FILTERANDSELECTENTRY:/ || u ~ /^TEXTDISP_FILTERANDSELECTENT[A-Z0-9_]*:/) has_entry = 1
-    if (index(u, "UNKNOWN_JMPTBL_ESQ_WILDCARDMATCH") > 0 || index(u, "UNKNOWN_JMPTBL_ESQ_WILDCAR") > 0) has_wildcard = 1
+    if (index(u, "UNKNOWN_JMPTBL_ESQ_WILDCARDMATCH") > 0 || index(u, "UNKNOWN_JMPTBL_ESQ_WILDCAR") > 0 ||
+        index(u, "ESQ_WILDCARDMATCH") > 0 || index(u, "ESQ_WILDCARDMATC") > 0) has_wildcard = 1
     if (index(u, "TEXTDISP_GETGROUPENTRYCOUNT") > 0 || index(u, "TEXTDISP_GETGROUPENTR") > 0) has_count = 1
     if (index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYPOINTERBYMODE") > 0 || index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYPO") > 0) has_get_entry = 1
     if (index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYAUXPOINTERBYMODE") > 0 || index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYAU") > 0) has_get_aux = 1
@@ -38,7 +39,8 @@ function trim(s, t) {
     if (index(u, "TEXTDISP_SKIPCONTROLCODES") > 0 || index(u, "TEXTDISP_SKIPCONTROLC") > 0) has_skip_codes = 1
     if (index(u, "TEXTDISP_JMPTBL_ESQDISP_TESTENTRYGRIDELIGIBILITY") > 0 || index(u, "TEXTDISP_JMPTBL_ESQDISP_TESTENTRYGR") > 0 || index(u, "TEXTDISP_JMPTBL_ESQDISP_TESTENTR") > 0) has_grid = 1
     if (index(u, "STRING_COMPARENOCASEN") > 0 || index(u, "STRING_COMPARENOCASE") > 0) has_cmp = 1
-    if (index(u, "TLIBA2_JMPTBL_ESQ_TESTBIT1BASED") > 0 || index(u, "TLIBA2_JMPTBL_ESQ_TESTBIT1B") > 0) has_testbit = 1
+    if (index(u, "TLIBA2_JMPTBL_ESQ_TESTBIT1BASED") > 0 || index(u, "TLIBA2_JMPTBL_ESQ_TESTBIT1B") > 0 ||
+        index(u, "ESQ_TESTBIT1BASED") > 0 || index(u, "ESQ_TESTBIT1BASE") > 0) has_testbit = 1
     if (index(u, "TEXTDISP_SETSELECTIONFIELDS") > 0 || index(u, "TEXTDISP_SETSELECTIONF") > 0) has_set_selection = 1
     if (index(u, "TEXTDISP_BUILDENTRYDETAILLINE") > 0 || index(u, "TEXTDISP_BUILDENTRYDETAI") > 0) has_build_detail = 1
     if (index(u, "TEXTDISP_RESETSELECTIONSTATE") > 0 || index(u, "TEXTDISP_RESETSELECTIO") > 0) has_reset = 1

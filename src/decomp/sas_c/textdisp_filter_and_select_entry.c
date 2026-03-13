@@ -38,12 +38,12 @@ extern const char SCRIPT_FilterTag_PPV[];
 extern const char SCRIPT_FilterTag_SBE[];
 extern const char SCRIPT_FilterTag_SPORTS[];
 
-extern LONG UNKNOWN_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
+extern UBYTE ESQ_WildcardMatch(const char *pattern, const char *text);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const void *entry, const void *aux, LONG index, LONG window, LONG minutes);
 extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(const void *aux, LONG slot);
-extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bits, LONG index);
+extern LONG ESQ_TestBit1Based(const UBYTE *bits, LONG index);
 extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 extern LONG TEXTDISP_GetGroupEntryCount(LONG mode);
 extern LONG TEXTDISP_ShouldOpenEditorForEntry(const TEXTDISP_CandidateEntry *entry);
@@ -105,12 +105,12 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
         TEXTDISP_FilterModeId = MODE_FILTER_PRIMARY;
 
         ppvSbe = 1;
-        if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_PPV, nameShort) != 0 &&
-            UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_SBE, nameShort) != 0) {
+        if (ESQ_WildcardMatch(SCRIPT_FilterTag_PPV, nameShort) != 0 &&
+            ESQ_WildcardMatch(SCRIPT_FilterTag_SBE, nameShort) != 0) {
             ppvSbe = 0;
         }
         TEXTDISP_FilterPpvSbeMatchFlag = (UWORD)ppvSbe;
-        TEXTDISP_FilterSportsMatchFlag = (UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_SPORTS, nameShort) == 0) ? 1 : 0;
+        TEXTDISP_FilterSportsMatchFlag = (ESQ_WildcardMatch(SCRIPT_FilterTag_SPORTS, nameShort) == 0) ? 1 : 0;
     }
 
     if (modeChar != CH_MODE_FILTER && modeChar != CH_MODE_EXACT) {
@@ -141,7 +141,7 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
                     TEXTDISP_CandidateIndexList[TEXTDISP_FilterMatchCount++] = (UBYTE)idx;
                     continue;
                 }
-                if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(candidate->tagText, nameShort) == 0) {
+                if (ESQ_WildcardMatch(candidate->tagText, nameShort) == 0) {
                     TEXTDISP_CandidateIndexList[TEXTDISP_FilterMatchCount++] = (UBYTE)idx;
                 }
             }
@@ -212,7 +212,7 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
             if (STRING_CompareNoCaseN(candidateName, candidateTitle, nameLen) == 0) {
                 candidate = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
                 if (candidate != 0 &&
-                    TLIBA2_JMPTBL_ESQ_TestBit1Based(candidate->selectionBits, titleSlot) ==
+                    ESQ_TestBit1Based(candidate->selectionBits, titleSlot) ==
                         MATCH_FOUND_FLAG) {
                     found = 1;
                     TEXTDISP_SetSelectionFields(entry, mode, idx, titleSlot);
