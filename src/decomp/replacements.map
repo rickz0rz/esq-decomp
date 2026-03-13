@@ -41,6 +41,7 @@ modules/groups/a/w/ladfunc.s decomp/replacements/modules/groups/a/w/ladfunc.s
 modules/groups/a/y/locavail.s decomp/replacements/modules/groups/a/y/locavail.s
 modules/groups/b/a/parseini.s decomp/replacements/modules/groups/b/a/parseini.s
 modules/groups/b/a/parseini3.s decomp/replacements/modules/groups/b/a/parseini3.s
+modules/groups/b/a/tliba2.s decomp/replacements/modules/groups/b/a/tliba2.s
 modules/groups/b/a/newgrid.s decomp/replacements/modules/groups/b/a/newgrid.s
 modules/groups/b/a/script2.s decomp/replacements/modules/groups/b/a/script2.s
 modules/groups/b/a/script3.s decomp/replacements/modules/groups/b/a/script3.s
