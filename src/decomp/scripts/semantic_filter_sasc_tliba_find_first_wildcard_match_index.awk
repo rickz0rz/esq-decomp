@@ -4,7 +4,7 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
  line=trim($0); if(line=="") next; gsub(/[ \t]+/," ",line); u=toupper(line); n=u; gsub(/[^A-Z0-9]/,"",n)
  if (u ~ /^TLIBA_FINDFIRSTWILDCARDMATCHINDEX:/ || u ~ /^TLIBA_FINDFIRSTWILDCARDMATCHIND[A-Z0-9_]*:/) has_entry=1
  if (n ~ /TEXTDISPSECONDARYGROUPENTRYCOUNT/ || n ~ /TEXTDISPSECONDARYTITLEPTRTABLE/) has_count=1
- if (n ~ /UNKNOWNJMPTBLESQWILDCARDMATCH/ || n ~ /UNKNOWNJMPTBLESQWILDCARDMAT/) has_wildcard=1
+ if (n ~ /UNKNOWNJMPTBLESQWILDCARDMATCH/ || n ~ /UNKNOWNJMPTBLESQWILDCARDMAT/ || n ~ /ESQWILDCARDMATCH/) has_wildcard=1
  if (u ~ /^MOVE\.L D7,D6/ || u ~ /^MOVE\.L D6,D0/ || n ~ /MOVEQD6/) has_index=1
  if (u=="RTS") has_return=1
 }
