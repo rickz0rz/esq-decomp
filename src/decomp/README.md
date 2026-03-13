@@ -33,6 +33,7 @@ The repository currently has two active decomp lanes:
 - Do not infer the canonical SAS/C source name from older `unknownNN_*` object/disassembly artifacts alone. Several targets were renamed to role-based filenames after promotion, so the target-specific compare script is the authoritative mapping from assembly slice to current `src/decomp/sas_c/*.c` source.
 - Additional triage note: shared helper files now hide many restored symbols behind broader filenames (for example `disptext_*_helpers.c`). Before assuming a target is missing from the SAS/C lane, `rg` for the exported symbol inside `src/decomp/sas_c/`, not just for a guessed filename.
 - Semantic filters for restored callers should accept either the original wrapper call or the direct underlying symbol when the decomp guidance prefers bypassing `*JMPTBL*` wrappers.
+- SAS/C `.dis` output can truncate long exported wrapper names (for example multiple `*_DrawClock*` stubs collapse to a shorter `...DrawClock` label even when the underlying callee name remains intact). When a `compare_sasc_*` extractor targets a stub label, verify the emitted `.dis` symbol before “fixing” the script to the full C identifier.
 
 ## Files
 - `src/decomp/replacements.map`: module substitution map.
