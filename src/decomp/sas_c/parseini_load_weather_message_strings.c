@@ -8,25 +8,25 @@ extern const char PARSEINI_STR_WEATHERCURRENT[];
 extern const char PARSEINI_STR_WEATHERFORECAST[];
 extern const char PARSEINI_STR_BOTTOMLINETAG[];
 
-extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
-extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
+extern LONG STRING_CompareNoCase(const char *a, const char *b);
+extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 
 void PARSEINI_LoadWeatherMessageStrings(const char *entryKey, char *entryValue)
 {
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_STR_WEATHERCURRENT) == 0) {
+    if (STRING_CompareNoCase(entryKey, PARSEINI_STR_WEATHERCURRENT) == 0) {
         P_TYPE_WeatherCurrentMsgPtr =
-            PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(entryValue, P_TYPE_WeatherCurrentMsgPtr);
+            ESQPARS_ReplaceOwnedString(entryValue, P_TYPE_WeatherCurrentMsgPtr);
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_STR_WEATHERFORECAST) == 0) {
+    if (STRING_CompareNoCase(entryKey, PARSEINI_STR_WEATHERFORECAST) == 0) {
         P_TYPE_WeatherForecastMsgPtr =
-            PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(entryValue, P_TYPE_WeatherForecastMsgPtr);
+            ESQPARS_ReplaceOwnedString(entryValue, P_TYPE_WeatherForecastMsgPtr);
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, PARSEINI_STR_BOTTOMLINETAG) == 0) {
+    if (STRING_CompareNoCase(entryKey, PARSEINI_STR_BOTTOMLINETAG) == 0) {
         P_TYPE_WeatherBottomLineMsgPtr =
-            PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(entryValue, P_TYPE_WeatherBottomLineMsgPtr);
+            ESQPARS_ReplaceOwnedString(entryValue, P_TYPE_WeatherBottomLineMsgPtr);
     }
 }

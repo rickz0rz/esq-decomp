@@ -3,7 +3,7 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
 {
  line=trim($0); if(line=="") next; gsub(/[ \t]+/," ",line); u=toupper(line); n=u; gsub(/[^A-Z0-9]/,"",n)
  if (u ~ /^SCRIPT_ALLOCATEBUFFERARRAY:/) has_entry=1
- if (n ~ /SCRIPTJMPTBLMEMORYALLOCATEMEMORY/ || n ~ /SCRIPTJMPTBLMEMORYALLOCATEMEMOR/ || n ~ /SCRIPTJMPTBLMEMORYALLOCATEMEM/) has_alloc=1
+ if (n ~ /SCRIPTJMPTBLMEMORYALLOCATEMEMORY/ || n ~ /SCRIPTJMPTBLMEMORYALLOCATEMEMOR/ || n ~ /SCRIPTJMPTBLMEMORYALLOCATEMEM/ || n ~ /MEMORYALLOCATEMEMORY/ || n ~ /MEMORYALLOCATEMEMOR/ || n ~ /MEMORYALLOCATEMEM/) has_alloc=1
  if (n ~ /GLOBALSTRSCRIPTC1/ || n ~ /GLOBALSCRIPTC1/) has_file=1
  if (u ~ /394/ || u ~ /\$18A/) has_line=1
  if (u ~ /65537/ || u ~ /\$10001/ || (u ~ /MEMF_PUBLIC/ && u ~ /MEMF_CLEAR/)) has_flags=1
