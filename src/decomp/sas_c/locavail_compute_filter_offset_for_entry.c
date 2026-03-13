@@ -30,7 +30,7 @@ extern UBYTE ED_DiagGraphModeChar;
 extern const char LOCAVAIL_STR_YYLLZ_FilterGateCheck[];
 
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
-extern UBYTE GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void);
+extern UBYTE SCRIPT_ReadHandshakeBit5Mask(void);
 extern LONG LOCAVAIL_MapFilterTokenCharToClass(UBYTE token);
 extern LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 
@@ -106,7 +106,7 @@ void LOCAVAIL_ComputeFilterOffsetForEntry(const BYTE *text, void *statePtr)
         case 0:
             if (GROUP_AS_JMPTBL_STR_FindCharPtr(LOCAVAIL_STR_YYLLZ_FilterGateCheck,
                                                 (LONG)ED_DiagVinModeChar) == (char *)0 ||
-                GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask() == 0) {
+                SCRIPT_ReadHandshakeBit5Mask() == 0) {
                 selectedNodeIndex = -1;
                 selectedPayloadIndex = -1;
             }

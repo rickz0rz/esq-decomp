@@ -54,7 +54,7 @@ extern void GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn(void);
 extern void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(void);
 extern void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default(void);
-extern UBYTE ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void);
+extern UBYTE SCRIPT_ReadHandshakeBit5Mask(void);
 extern void GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow(void);
 extern void GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow(void);
 extern void ED_DrawESCMenuBottomHelp(void);
@@ -147,7 +147,7 @@ void ED2_HandleDiagnosticsMenuActions(void)
         break;
     case 54:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 270, ED2_STR_VIDEO_SWITCH);
-        if (ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask() == 0) {
+        if (SCRIPT_ReadHandshakeBit5Mask() == 0) {
             DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 235, 270, ED2_STR_OPEN);
         } else {
             DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 235, 270, ED2_STR_CLOSED);

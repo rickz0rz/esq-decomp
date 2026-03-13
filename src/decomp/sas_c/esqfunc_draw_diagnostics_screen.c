@@ -92,9 +92,9 @@ extern void _LVOSetFont(void *graphicsBase, char *rastPort, void *font);
 extern LONG _LVOAvailMem(LONG execBase, LONG attributes);
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern void TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y);
-extern LONG ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void);
+extern LONG SCRIPT_ReadHandshakeBit5Mask(void);
 extern LONG SCRIPT_GetCtrlLineFlag(void);
-extern LONG ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag(void);
+extern LONG SCRIPT_ReadHandshakeBit3Flag(void);
 extern LONG PARSEINI_ComputeHTCMaxValues(void);
 extern LONG PARSEINI_UpdateCtrlHDeltaMax(void);
 
@@ -132,7 +132,7 @@ void ESQFUNC_DrawDiagnosticsScreen(void)
     rastPort = (char *)displayContext->rastPort;
     _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_HANDLE_TOPAZ_FONT);
 
-    if (ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask() != 0) {
+    if (SCRIPT_ReadHandshakeBit5Mask() != 0) {
         cartSwitchText = ESQFUNC_STR_CLOSED_ENABLED;
     } else {
         cartSwitchText = ESQFUNC_STR_OPEN_DISABLED;
@@ -144,7 +144,7 @@ void ESQFUNC_DrawDiagnosticsScreen(void)
         cartReleaseText = ESQFUNC_TAG_OPEN;
     }
 
-    if (ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag() != 0) {
+    if (SCRIPT_ReadHandshakeBit3Flag() != 0) {
         videoSwitchText = ESQFUNC_STR_CLOSED_ON_AIR;
     } else {
         videoSwitchText = ESQFUNC_STR_OPEN_OFF_AIR;
