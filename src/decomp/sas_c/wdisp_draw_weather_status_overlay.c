@@ -21,7 +21,7 @@ extern ULONG ESQFUNC_WeatherBrushPredicateNames;
 extern const char *ESQFUNC_STR_I5[];
 extern const char Global_STR_WDISP_C[];
 
-extern void *WDISP_JMPTBL_BRUSH_FindBrushByPredicate(void *predicate, void *listHead);
+extern void *BRUSH_FindBrushByPredicate(void *predicate, void *listHead);
 extern char *ESQPARS_ReplaceOwnedString(const char *src, char *oldPtr);
 extern void MEMORY_DeallocateMemory(const char *tag, LONG pool, void *ptr, LONG size);
 
@@ -51,12 +51,12 @@ void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG xSpan, LONG ySpan)
     }
 
     if (WDISP_WeatherStatusBrushIndex == 1) {
-        brush = (WDISP_WeatherBrush *)WDISP_JMPTBL_BRUSH_FindBrushByPredicate(
+        brush = (WDISP_WeatherBrush *)BRUSH_FindBrushByPredicate(
             (void *)ESQFUNC_WeatherBrushPredicateNames,
             (void *)&ESQFUNC_PwBrushListHead
         );
     } else {
-        brush = (WDISP_WeatherBrush *)WDISP_JMPTBL_BRUSH_FindBrushByPredicate(
+        brush = (WDISP_WeatherBrush *)BRUSH_FindBrushByPredicate(
             (void *)ESQFUNC_STR_I5[(ULONG)WDISP_WeatherStatusBrushIndex],
             (void *)&ESQFUNC_PwBrushListHead);
     }
