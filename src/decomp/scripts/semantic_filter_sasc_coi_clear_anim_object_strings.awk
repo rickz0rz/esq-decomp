@@ -26,7 +26,7 @@ function trim(s, t){
 
     if (u ~ /MOVE.B D0,\(A[0-7]\)/ || u ~ /CLR\.L \(A[0-7]\)/) has_zero_head = 1
 
-    if (u ~ /GROUP_AE_JMPTBL_ESQPARS_REPLACEO/) has_replace_call = 1
+    if (u ~ /GROUP_AE_JMPTBL_ESQPARS_REPLACEO/ || u ~ /ESQPARS_REPLACEOWNEDSTRING/) has_replace_call = 1
 
     if (u ~ /CLR\.L (32|\$20)\(A[0-7]\)/ || u ~ /LEA \$20\(A[0-7]\),A0/ || u ~ /CLR\.L \(A0\)/) has_write_tail = 1
 

@@ -6,7 +6,7 @@ enum {
     ENTRY_ANIM_OFFSET = 48
 };
 
-char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
+char *ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 
 typedef struct COI_AnimObject {
     UBYTE flags0;
@@ -47,25 +47,25 @@ void COI_ClearAnimObjectStrings(void *entry)
 
     ((LONG *)anim)[0] = COI_NULL;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned0);
+    owned = ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned0);
     anim->owned0 = owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned1);
+    owned = ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned1);
     anim->owned1 = owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned2);
+    owned = ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned2);
     anim->owned2 = owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned3);
+    owned = ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned3);
     anim->owned3 = owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned4);
+    owned = ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned4);
     anim->owned4 = owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned5);
+    owned = ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned5);
     anim->owned5 = owned;
 
-    owned = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned6);
+    owned = ESQPARS_ReplaceOwnedString((const char *)COI_NULL, anim->owned6);
     anim->owned6 = owned;
 
     statusPtr = &anim->status;
