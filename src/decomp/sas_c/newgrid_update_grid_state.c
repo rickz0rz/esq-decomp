@@ -30,7 +30,7 @@ extern LONG ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
 extern LONG DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *aux, LONG rowIndex);
 extern LONG NEWGRID_SelectEntryPen(const void *entry);
 extern void NEWGRID_DrawEntryFlagBadge(char *rastPort, char *entry, WORD rowIndex, const char *fallbackText, LONG layoutMode);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG unused);
+extern LONG DISPTEXT_ComputeVisibleLineCount(LONG maxLines);
 extern LONG NEWGRID_DrawGridFrameAndRows(char *grid, LONG selectedEntryState);
 
 LONG NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
@@ -87,7 +87,7 @@ LONG NEWGRID_UpdateGridState(char *grid, LONG keyIndex, WORD rowIndex)
                     NEWGRID_OverridePenIndex
                 );
 
-                gridView->selectedState = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(0);
+                gridView->selectedState = DISPTEXT_ComputeVisibleLineCount(0);
             }
         }
     } else {

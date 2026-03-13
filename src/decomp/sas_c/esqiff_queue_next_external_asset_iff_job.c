@@ -41,18 +41,18 @@ extern void _LVOPermit(void);
 extern void ESQDISP_ProcessGridMessagesIfIdle(void);
 extern LONG ESQIFF_ReadNextExternalAssetPathEntry(BYTE *out);
 extern char *GCOMMAND_FindPathSeparator(const char *path);
-extern WORD ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(char *path);
-extern LONG ESQIFF_JMPTBL_STRING_CompareNoCaseN(const char *lhs, const char *rhs, LONG n);
-extern void *ESQIFF_JMPTBL_BRUSH_AllocBrushNode(const char *label, LONG flags);
-extern void ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(void);
+extern WORD TEXTDISP_FindEntryIndexByWildcard(char *path);
+extern LONG STRING_CompareNoCaseN(const char *lhs, const char *rhs, LONG n);
+extern void *BRUSH_AllocBrushNode(const char *label, void *prevTail);
+extern void CTASKS_StartIffTaskProcess(void);
 
 static WORD ESQIFF_HasRejectedAssetPrefix(const char *path)
 {
-    if (ESQIFF_JMPTBL_STRING_CompareNoCaseN(
+    if (STRING_CompareNoCaseN(
             ESQIFF_PATH_DF0_COLON, path, ESQIFF_DF0_PREFIX_LEN) == 0) {
         return 1;
     }
-    if (ESQIFF_JMPTBL_STRING_CompareNoCaseN(
+    if (STRING_CompareNoCaseN(
             ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, path, ESQIFF_RAM_LOGOS_PREFIX_LEN) == 0) {
         return 1;
     }
@@ -175,7 +175,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
                         }
                     }
 
-                    if (ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(
+                    if (TEXTDISP_FindEntryIndexByWildcard(
                             GCOMMAND_FindPathSeparator(wildcardProbe)) == 1) {
                         accepted = RESULT_ACCEPTED;
                         ESQIFF_ExternalAssetStateTable = TEXTDISP_CurrentMatchIndex;
@@ -230,7 +230,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         }
 
         if (duplicateHeadPath == 0) {
-            pendingNode = (ESQIFF_PendingBrushNode *)ESQIFF_JMPTBL_BRUSH_AllocBrushNode(candidate, 0);
+            pendingNode = (ESQIFF_PendingBrushNode *)BRUSH_AllocBrushNode(candidate, 0);
             if (pendingNode == 0) {
                 break;
             }
@@ -242,7 +242,7 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
                 pendingNode->sourceType190 = SOURCE_TYPE_GADS;
                 CTASKS_PendingGAdsBrushDescriptor = (LONG)pendingNode;
             }
-            ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess();
+            CTASKS_StartIffTaskProcess();
         }
 
         ESQDISP_ProcessGridMessagesIfIdle();
