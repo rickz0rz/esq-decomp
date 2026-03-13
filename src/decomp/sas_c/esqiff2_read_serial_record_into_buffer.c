@@ -6,7 +6,7 @@ typedef signed long LONG;
 extern UBYTE ESQIFF_RecordChecksumByte;
 
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
-extern UBYTE ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
+extern LONG SCRIPT_ReadNextRbfByte(void);
 
 LONG ESQIFF2_ReadSerialRecordIntoBuffer(UBYTE *dst, WORD record_mode, WORD extension_count)
 {
@@ -19,7 +19,7 @@ LONG ESQIFF2_ReadSerialRecordIntoBuffer(UBYTE *dst, WORD record_mode, WORD exten
         }
 
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        dst[(UWORD)d4] = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        dst[(UWORD)d4] = (UBYTE)SCRIPT_ReadNextRbfByte();
 
         if (dst[(UWORD)d4] == 0) {
             if (record_mode == 0) {
@@ -38,7 +38,7 @@ LONG ESQIFF2_ReadSerialRecordIntoBuffer(UBYTE *dst, WORD record_mode, WORD exten
                 ESQFUNC_WaitForClockChangeAndServiceUi();
                 index = d4;
                 d4 = (WORD)(d4 + 1);
-                dst[(UWORD)index] = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+                dst[(UWORD)index] = (UBYTE)SCRIPT_ReadNextRbfByte();
                 d5 = (WORD)(d5 + 1);
             }
             continue;
@@ -50,7 +50,7 @@ LONG ESQIFF2_ReadSerialRecordIntoBuffer(UBYTE *dst, WORD record_mode, WORD exten
             ESQFUNC_WaitForClockChangeAndServiceUi();
             index = d4;
             d4 = (WORD)(d4 + 1);
-            dst[(UWORD)index] = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+            dst[(UWORD)index] = (UBYTE)SCRIPT_ReadNextRbfByte();
             local_0x12_counter = (WORD)(local_0x12_counter + 1);
             if ((UWORD)local_0x12_counter >= (UWORD)0x12e) {
                 return 0;
@@ -62,6 +62,6 @@ LONG ESQIFF2_ReadSerialRecordIntoBuffer(UBYTE *dst, WORD record_mode, WORD exten
     }
 
     ESQFUNC_WaitForClockChangeAndServiceUi();
-    ESQIFF_RecordChecksumByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+    ESQIFF_RecordChecksumByte = (UBYTE)SCRIPT_ReadNextRbfByte();
     return (LONG)(UWORD)d4;
 }

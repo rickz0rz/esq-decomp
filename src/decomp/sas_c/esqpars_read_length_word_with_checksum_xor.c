@@ -5,7 +5,7 @@ typedef signed long LONG;
 extern UWORD ESQIFF_RecordLength;
 
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
-extern UBYTE ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
+extern LONG SCRIPT_ReadNextRbfByte(void);
 
 UBYTE ESQPARS_ReadLengthWordWithChecksumXor(UBYTE xor_seed)
 {
@@ -18,7 +18,7 @@ UBYTE ESQPARS_ReadLengthWordWithChecksumXor(UBYTE xor_seed)
     for (i = 0; i < 2; ++i) {
         UBYTE b;
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        b = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        b = (UBYTE)SCRIPT_ReadNextRbfByte();
         accum ^= b;
         length = (UWORD)((length << 8) | (UWORD)b);
         ESQIFF_RecordLength = length;

@@ -33,7 +33,7 @@ function trim(s, t) {
     if (u ~ /^CMP\.W D7,D6$/ || u ~ /^CMP\.W D[0-7],D[0-7]$/) has_loop_cmp = 1
     if (u ~ /^BGE\.[SWB] ESQIFF2_READSERIALBYTESWITHXOR_RETURN$/ || u ~ /^BGE\.[SWB] ___ESQIFF2_READRBFBYTESWITHX/ || u ~ /^BCC\.[SWB] ___ESQIFF2_READRBFBYTESWITHX/ || u ~ /^BCC\.[SWB] ESQIFF2_READSERIALBYTESWITHXOR_RETURN$/) has_loop_exit = 1
     if (index(u, "ESQFUNC_WAITFORCLOCKCHANGEANDSERVICEUI") > 0 || index(u, "WAITFORCLOCKCHANGEANDSERVICEUI") > 0 || index(u, "ESQFUNC_WAITFORCLOCKCHANGEANDSER") > 0 || index(u, "WAITFORCLOCKCHANGEANDSER") > 0) has_wait = 1
-    if (index(u, "ESQPARS_JMPTBL_SCRIPT_READSERIALRBFBYTE") > 0 || index(u, "READSERIALRBFBYTE") > 0 || index(u, "ESQPARS_JMPTBL_SCRIPT_READSERIAL") > 0 || index(u, "READSERIAL") > 0) has_read = 1
+    if (index(u, "ESQPARS_JMPTBL_SCRIPT_READSERIALRBFBYTE") > 0 || index(u, "SCRIPT_READNEXTRBFBYTE") > 0 || index(u, "READSERIALRBFBYTE") > 0 || index(u, "ESQPARS_JMPTBL_SCRIPT_READSERIAL") > 0 || index(u, "READSERIAL") > 0) has_read = 1
     if (u ~ /^MOVE\.B D0,\(A3\)$/ || u ~ /^MOVE\.B D[0-7],\(A[0-7]\)$/ || u ~ /^MOVE\.B D[0-7],\(A[0-7]\)\+$/) has_store = 1
     if (u ~ /^EOR\.B D0,\(A2\)$/ || u ~ /^EOR\.B D[0-7],\(A[0-7]\)$/) has_xor = 1
     if (u ~ /^ADDQ\.W #1,D6$/ || u ~ /^ADDQ\.W #\$1,D6$/ || u ~ /^ADDQ\.W #1,D[0-7]$/) has_inc = 1
