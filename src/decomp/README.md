@@ -5333,7 +5333,7 @@ Recent promoted targets:
 - APP2 `ESQ_GenerateXorChecksumByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_generate_xor_checksum_byte_trial.sh`
 - APP2 `ESQ_FindSubstringCaseFold` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_find_substring_case_fold_trial.sh`
 - APP2 `ESQ_WriteDecFixedWidth` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_write_dec_fixed_width_trial.sh`
-- APP2 `ESQ_PackBitsDecode` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_packbits_decode_trial.sh`
+- APP2 `ESQ_PackBitsDecode` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_pack_bits_decode_trial.sh` (legacy alias: `compare_sasc_esq_packbits_decode_trial.sh`)
 - APP2 `ESQ_GetHalfHourSlotIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_get_half_hour_slot_index_trial.sh`
 - APP2 `ESQ_ClampBannerCharRange` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_clamp_banner_char_range_trial.sh`
 - APP2 `ESQ_ReverseBitsIn6Bytes` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_reverse_bits_in6_bytes_trial.sh`
