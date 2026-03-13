@@ -5,7 +5,7 @@ typedef unsigned char UBYTE;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 
-extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 
 LONG NEWGRID_FindNextFlaggedEntry(LONG modeSelector, LONG startIndex)
 {
@@ -43,7 +43,7 @@ LONG NEWGRID_FindNextFlaggedEntry(LONG modeSelector, LONG startIndex)
         }
 
         {
-            const UBYTE *entry = (const UBYTE *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, MODE_PRIMARY);
+            const UBYTE *entry = (const UBYTE *)ESQDISP_GetEntryPointerByMode(idx, MODE_PRIMARY);
             if (entry != 0) {
                 if (((entry[47] & 0x01) != 0) &&
                     ((entry[40] & 0x80) != 0)) {

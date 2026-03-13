@@ -31,6 +31,8 @@ The repository currently has two active decomp lanes:
 - Additional triage note: a large subset of checked `compare_sasc_*` lanes already has empty semantic diffs. Raw `.diff` output is often just SAS/C frame setup, merged constant pools, or stack-check scaffolding. Treat a non-empty `.semantic.diff` as the actual signal for mismatch-reduction work.
 - Practical workflow: use `src/decomp/scripts/run_sasc_core_sweep.sh --filter <substring>` to quickly confirm whether a target family still has semantic deltas before spending time on manual asm/C inspection.
 - Do not infer the canonical SAS/C source name from older `unknownNN_*` object/disassembly artifacts alone. Several targets were renamed to role-based filenames after promotion, so the target-specific compare script is the authoritative mapping from assembly slice to current `src/decomp/sas_c/*.c` source.
+- Additional triage note: shared helper files now hide many restored symbols behind broader filenames (for example `disptext_*_helpers.c`). Before assuming a target is missing from the SAS/C lane, `rg` for the exported symbol inside `src/decomp/sas_c/`, not just for a guessed filename.
+- Semantic filters for restored callers should accept either the original wrapper call or the direct underlying symbol when the decomp guidance prefers bypassing `*JMPTBL*` wrappers.
 
 ## Files
 - `src/decomp/replacements.map`: module substitution map.
