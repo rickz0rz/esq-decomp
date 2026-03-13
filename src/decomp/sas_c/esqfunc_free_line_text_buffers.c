@@ -5,18 +5,15 @@ typedef signed short WORD;
 extern const char Global_STR_ESQFUNC_C_6[];
 extern void *LADFUNC_LineTextBufferPtrs[];
 
-extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *fileTag, LONG line, void *ptr, ULONG bytes);
+extern void MEMORY_DeallocateMemory(void *ptr, ULONG bytes);
 
 void ESQFUNC_FreeLineTextBuffers(void)
 {
     WORD i;
 
+    (void)Global_STR_ESQFUNC_C_6;
     for (i = 0; i < 20; ++i) {
-        ESQIFF_JMPTBL_MEMORY_DeallocateMemory(
-            Global_STR_ESQFUNC_C_6,
-            1235,
-            LADFUNC_LineTextBufferPtrs[i],
-            60);
+        MEMORY_DeallocateMemory(LADFUNC_LineTextBufferPtrs[i], 60);
         LADFUNC_LineTextBufferPtrs[i] = 0;
     }
 }
