@@ -30,7 +30,7 @@ extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, ULONG line,
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
 extern void GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults(UBYTE *entry);
 extern void COI_EnsureAnimObjectAllocated(void *entry);
-extern char *GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(const char *text, ULONG flags);
+extern char *ESQSHARED_ApplyProgramTitleTextFilters(const char *text, ULONG flags);
 extern void GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket(const char *text);
 extern long COI_LoadOiDataFile(long diskId);
 
@@ -249,7 +249,7 @@ long DISKIO2_LoadCurDayDataFile(void)
                     break;
                 }
 
-                str = GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(str, (ULONG)entry->flags27);
+                str = ESQSHARED_ApplyProgramTitleTextFilters(str, (ULONG)entry->flags27);
                 title->slotTextTable[slot] = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(str, title->slotTextTable[slot]);
                 if (title->slotTextTable[slot] != 0) {
                     entry->flags40 = (UBYTE)(entry->flags40 | 0x80);
