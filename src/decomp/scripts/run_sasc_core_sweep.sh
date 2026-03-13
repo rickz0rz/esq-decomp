@@ -266,6 +266,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqdisp_apply_status_mask_to_indicators_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_compute_schedule_offset_for_row_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_fill_program_info_header_fields_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqdisp_parse_program_info_command_record_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_init_highlight_message_pattern_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_jmptbl_graphics_allocraster_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_jmptbl_newgrid_processgridmessages_trial.sh"
