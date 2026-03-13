@@ -19,14 +19,14 @@ extern UWORD TEXTDISP_ActiveGroupId;
 extern UWORD TEXTDISP_CurrentMatchIndex;
 extern UWORD CLOCK_HalfHourSlotIndex;
 
-extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern LONG TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entryPtr, const char *auxPtr, LONG startIndex);
+extern const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern LONG DISPLIB_FindPreviousValidEntryIndex(const char *entryPtr, const char *auxPtr, LONG startIndex);
 extern const char *TEXTDISP_FindControlToken(const char *textPtr);
 extern LONG TEXTDISP_FindQuotedSpan(const char *src, char **outStart, const char *endHint, LONG *hasQuotes);
-extern LONG TLIBA2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitsetPtr, LONG index);
+extern LONG ESQ_TestBit1Based(const UBYTE *bitsetPtr, LONG index);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
-extern LONG TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
+extern LONG ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
 
 LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
 {
@@ -73,15 +73,15 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
 
     if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
         slot = (LONG)CLOCK_HalfHourSlotIndex;
-        aux = (const TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+        aux = (const TEXTDISP_AuxData *)ESQDISP_GetEntryAuxPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_PRIMARY);
-        entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+        entry = (const TEXTDISP_CandidateEntry *)ESQDISP_GetEntryPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_PRIMARY);
     } else {
         slot = SLOT_FIRST;
-        aux = (const TEXTDISP_AuxData *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+        aux = (const TEXTDISP_AuxData *)ESQDISP_GetEntryAuxPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
-        entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+        entry = (const TEXTDISP_CandidateEntry *)ESQDISP_GetEntryPointerByMode(
             (LONG)TEXTDISP_CurrentMatchIndex, GROUP_SECONDARY);
     }
 
@@ -95,7 +95,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
         {
             const char *entryText = (const char *)entry;
             const char *auxText = (const char *)aux;
-            slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, slot);
+            slot = DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, slot);
         }
         if (slot == SLOT_NONE || (aux->slotMask[(UWORD)slot] & MASK_SLOT_BLOCKED) != 0) {
             if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
@@ -108,7 +108,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
         {
             const char *entryText = (const char *)entry;
             const char *auxText = (const char *)aux;
-            slot = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, slot - 1);
+            slot = DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, slot - 1);
         }
         if (slot == SLOT_NONE || (aux->slotMask[(UWORD)slot] & MASK_SLOT_BLOCKED) != 0) {
             if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
@@ -137,7 +137,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
             continue;
         }
 
-        if (TLIBA2_JMPTBL_ESQ_TestBit1Based((void *)entry->selectionBits, slot) != BIT_TEST_TRUE) {
+        if (ESQ_TestBit1Based((void *)entry->selectionBits, slot) != BIT_TEST_TRUE) {
             slot++;
             continue;
         }
@@ -165,7 +165,7 @@ LONG TEXTDISP_FindEntryMatchIndex(char *input, LONG mode, LONG flags)
                 }
             } else {
                 if (inputLen <= entryLen &&
-                    TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(entryStart, inputStart) != 0) {
+                    ESQ_FindSubstringCaseFold(entryStart, inputStart) != 0) {
                     isMatch = MATCH_TRUE;
                 }
             }
