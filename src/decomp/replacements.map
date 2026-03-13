@@ -24,6 +24,7 @@ modules/groups/a/a/brush.s decomp/replacements/modules/groups/a/a/brush.s
 modules/groups/a/a/bevel.s decomp/replacements/modules/groups/a/a/bevel.s
 modules/groups/a/b/cleanup.s decomp/replacements/modules/groups/a/b/cleanup.s
 modules/groups/a/c/cleanup2.s decomp/replacements/modules/groups/a/c/cleanup2.s
+modules/groups/a/d/cleanup3.s decomp/replacements/modules/groups/a/d/cleanup3.s
 modules/groups/a/e/coi.s decomp/replacements/modules/groups/a/e/coi.s
 modules/groups/a/e/cleanup4.s decomp/replacements/modules/groups/a/e/cleanup4.s
 modules/groups/a/f/ctasks.s decomp/replacements/modules/groups/a/f/ctasks.s
