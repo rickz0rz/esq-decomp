@@ -13,3 +13,4 @@ modules/submodules/memory.s decomp/replacements/modules/submodules/memory.s
 modules/submodules/unknown3.s decomp/replacements/modules/submodules/unknown3.s
 modules/submodules/unknown41.s decomp/replacements/modules/submodules/unknown41.s
 modules/groups/_main/b/b.s decomp/replacements/modules/groups/_main/b/b.s
+modules/submodules/unknown2b.s decomp/replacements/modules/submodules/unknown2b.s
