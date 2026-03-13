@@ -26,7 +26,8 @@ function t(s, x) {
     if (l ~ /DISPTEXT_CURRENTLINEINDEX/) has_current = 1
     if (l ~ /DISPTEXT_TARGETLINEINDEX/) has_target = 1
     if (l ~ /CMP\.[WL] D1,D0/ || l ~ /CMP\.[WL] D0,D1/ || l ~ /CMP\.L D1,D0/ || l ~ /CMP\.L D6,D7/ || l ~ /CMP\.L D7,D6/) has_compare = 1
-    if (l ~ /SEQ D[0-7]/ || l ~ /NEG\.B D[0-7]/ || l ~ /EXT\.L D[0-7]/ || l ~ /MOVEQ(\.L)? #\$?FF,D0/) has_booleanize = 1
+    if (l ~ /SEQ D[0-7]/ || l ~ /NEG\.B D[0-7]/ || l ~ /EXT\.L D[0-7]/ ||
+        l ~ /MOVEQ(\.L)? #\$?FF,D0/ || l ~ /MOVEQ(\.L)? #-1,D0/) has_booleanize = 1
     if (l ~ /^RTS$/) has_return = 1
 }
 

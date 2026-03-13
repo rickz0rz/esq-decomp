@@ -39,7 +39,8 @@ function trim(s, t) {
         n ~ /DISPLIBFINDPREVIOUSVALIDENTRYINDEX/ || n ~ /DISPLIBFINDPREVIOUSVALID/ || n ~ /DISPLIBFINDPREV/) has_find_prev=1
     if (n ~ /NEWGRIDSELECTENTRYPEN/) has_select_pen=1
     if (n ~ /NEWGRIDDRAWENTRYFLAGBADGE/) has_draw_badge=1
-    if (n ~ /NEWGRID2JMPTBLDISPTEXTCOMPUTEVISIBLELINECOUNT/ || n ~ /NEWGRID2JMPTBLDISPTEXTCOMPUTEVISIBLE/ || n ~ /NEWGRID2JMPTBLDISPTEXTCOMPUTE/) has_visible_count=1
+    if (n ~ /NEWGRID2JMPTBLDISPTEXTCOMPUTEVISIBLELINECOUNT/ || n ~ /NEWGRID2JMPTBLDISPTEXTCOMPUTEVISIBLE/ || n ~ /NEWGRID2JMPTBLDISPTEXTCOMPUTE/ ||
+        n ~ /DISPTEXTCOMPUTEVISIBLELINECOUNT/ || n ~ /DISPTEXTCOMPUTEVISIBLE/) has_visible_count=1
     if (n ~ /NEWGRIDDRAWGRIDFRAMEANDROWS/) has_draw_frame=1
     if (u ~ /#4([^0-9]|$)/ || u ~ /#\$04/ || u ~ /#\$4([^0-9A-F]|$)/ || u ~ /4\.[Ww]/ || u ~ /\(\$4\)/) has_const4=1
     if (u ~ /#5([^0-9]|$)/ || u ~ /#\$05/ || u ~ /#\$5([^0-9A-F]|$)/ || u ~ /5\.[Ww]/ || u ~ /\(\$5\)/) has_const5=1
