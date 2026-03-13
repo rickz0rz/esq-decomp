@@ -6,12 +6,8 @@ extern UBYTE *Global_PrintfBufferPtr;
 
 LONG UNKNOWN10_PrintfPutcToBuffer(LONG ch)
 {
-    UBYTE *p;
-
     Global_PrintfByteCount += 1;
-    p = Global_PrintfBufferPtr;
-    *p++ = (UBYTE)ch;
-    Global_PrintfBufferPtr = p;
+    *Global_PrintfBufferPtr++ = (UBYTE)ch;
 
     return ch;
 }
