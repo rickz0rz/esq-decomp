@@ -9,8 +9,12 @@ extern void WDISP_FormatWithCallback(WdispOutputFunc cb, const char *format, voi
 
 LONG FORMAT_Buffer2WriteChar(LONG ch)
 {
+    char *cursor;
+
     Global_FormatByteCount2 += 1;
-    *Global_FormatBufferPtr2++ = (char)ch;
+    cursor = Global_FormatBufferPtr2;
+    *cursor = (char)ch;
+    Global_FormatBufferPtr2 = cursor + 1;
 
     return ch;
 }
