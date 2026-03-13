@@ -11,8 +11,10 @@ extern LONG NEWGRID_LastRefreshRequest;
 
 extern void ESQSHARED4_ComputeBannerRowBlitGeometry(void);
 
-void ESQFUNC_UpdateRefreshModeState(LONG request)
+void ESQFUNC_UpdateRefreshModeState(LONG unusedSuspendFlag, LONG request)
 {
+    (void)unusedSuspendFlag;
+
     ESQFUNC_WeatherSliceWidthInitGate = 1;
 
     if (NEWGRID_MessagePumpSuspendFlag != 0) {
