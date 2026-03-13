@@ -23,13 +23,13 @@ extern LONG GCOMMAND_MplexDetailInitialLineIndex;
 extern const char NEWGRID_ChannelRowFmt[];
 
 extern WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LONG keyIndex);
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
+extern void DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
 extern void NEWGRID_DrawGridEntry(char *rastPort, char *entry, char *aux, UWORD row, UWORD mode, LONG enabled, LONG bevel);
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG lineIndex);
-extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, const char *arg0, const char *arg1);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
+extern void DISPTEXT_SetCurrentLineIndex(LONG lineIndex);
+extern LONG WDISP_SPrintf(char *out, const char *fmt, const char *arg0, const char *arg1);
+extern LONG DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
 extern LONG NEWGRID_DrawGridFrameVariant2(char *ctx);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
+extern LONG DISPTEXT_ComputeVisibleLineCount(LONG mode);
 
 LONG NEWGRID_HandleDetailGridState(char *ctx, LONG keyIndex, WORD rowIndex)
 {
@@ -54,7 +54,7 @@ LONG NEWGRID_HandleDetailGridState(char *ctx, LONG keyIndex, WORD rowIndex)
             return NEWGRID_DetailGridStateLatch;
         }
 
-        NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20, GCOMMAND_MplexDetailLayoutPen);
+        DISPTEXT_SetLayoutParams(612, 20, GCOMMAND_MplexDetailLayoutPen);
 
         if (GCOMMAND_MplexDetailLayoutFlag == (UBYTE)'N') {
             NEWGRID_DrawGridEntry(ctxView->rastPort, (char *)entry, (char *)aux, (UWORD)rowIndex, 2, 1, 4);
@@ -62,9 +62,9 @@ LONG NEWGRID_HandleDetailGridState(char *ctx, LONG keyIndex, WORD rowIndex)
             NEWGRID_DrawGridEntry(ctxView->rastPort, (char *)entry, (char *)aux, (UWORD)rowIndex, 3, 1, 4);
         }
 
-        NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(GCOMMAND_MplexDetailInitialLineIndex);
-        PARSEINI_JMPTBL_WDISP_SPrintf(channelRow, NEWGRID_ChannelRowFmt, entry->channelText, entry->shortText);
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(ctxView->rastPort, channelRow);
+        DISPTEXT_SetCurrentLineIndex(GCOMMAND_MplexDetailInitialLineIndex);
+        WDISP_SPrintf(channelRow, NEWGRID_ChannelRowFmt, entry->channelText, entry->shortText);
+        DISPTEXT_LayoutAndAppendToBuffer(ctxView->rastPort, channelRow);
 
         if (NEWGRID_DrawGridFrameVariant2(ctx) != 0) {
             nextState = 4;
@@ -73,7 +73,7 @@ LONG NEWGRID_HandleDetailGridState(char *ctx, LONG keyIndex, WORD rowIndex)
         }
 
         NEWGRID_DetailGridStateLatch = nextState;
-        ctxView->selectedState = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
+        ctxView->selectedState = DISPTEXT_ComputeVisibleLineCount(2);
         return NEWGRID_DetailGridStateLatch;
     }
 

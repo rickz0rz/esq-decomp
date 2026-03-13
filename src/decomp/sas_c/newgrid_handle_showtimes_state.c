@@ -22,13 +22,13 @@ extern LONG GCOMMAND_PpvShowtimesLayoutPen;
 extern LONG GCOMMAND_PpvShowtimesInitialLineIndex;
 extern UBYTE GCOMMAND_PpvDetailLayoutFlag;
 
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
+extern void DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
 extern void NEWGRID_DrawGridEntry(char *rastPort, char *entryPtr0, char *entryPtr1, UWORD row, UWORD mode, LONG enabled, LONG bevel);
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(LONG idx);
+extern void DISPTEXT_SetCurrentLineIndex(LONG idx);
 extern void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
+extern LONG DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
 extern LONG NEWGRID_DrawGridFrameVariant3(char *gridCtx);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
+extern LONG DISPTEXT_ComputeVisibleLineCount(LONG mode);
 
 LONG NEWGRID_HandleShowtimesState(char *gridCtx, const void *entryState)
 {
@@ -50,7 +50,7 @@ LONG NEWGRID_HandleShowtimesState(char *gridCtx, const void *entryState)
             return NEWGRID_ShowtimesWorkflowStateLatch;
         }
 
-        NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20, GCOMMAND_PpvShowtimesLayoutPen);
+        DISPTEXT_SetLayoutParams(612, 20, GCOMMAND_PpvShowtimesLayoutPen);
 
         row = (LONG)stateView->rowIndex;
         if (row > 48) {
@@ -63,9 +63,9 @@ LONG NEWGRID_HandleShowtimesState(char *gridCtx, const void *entryState)
             NEWGRID_DrawGridEntry(ctxView->rastPort, stateView->entryPtr, stateView->auxPtr, (UWORD)row, 3, 1, -1);
         }
 
-        NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(GCOMMAND_PpvShowtimesInitialLineIndex);
+        DISPTEXT_SetCurrentLineIndex(GCOMMAND_PpvShowtimesInitialLineIndex);
         NEWGRID_BuildShowtimesText(gridCtx, (char *)entryState, text);
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(ctxView->rastPort, text);
+        DISPTEXT_LayoutAndAppendToBuffer(ctxView->rastPort, text);
 
         if (NEWGRID_DrawGridFrameVariant3(gridCtx) != 0) {
             NEWGRID_ShowtimesWorkflowStateLatch = 4;
@@ -73,7 +73,7 @@ LONG NEWGRID_HandleShowtimesState(char *gridCtx, const void *entryState)
             NEWGRID_ShowtimesWorkflowStateLatch = 5;
         }
 
-        ctxView->selectedState = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
+        ctxView->selectedState = DISPTEXT_ComputeVisibleLineCount(2);
         return NEWGRID_ShowtimesWorkflowStateLatch;
     }
 

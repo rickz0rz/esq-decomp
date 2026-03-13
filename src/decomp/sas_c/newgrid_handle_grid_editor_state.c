@@ -10,9 +10,9 @@ typedef struct NEWGRID_Context {
 
 extern LONG NEWGRID_GridEditorWorkflowState;
 
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG mode);
+extern void DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
+extern LONG DISPTEXT_LayoutAndAppendToBuffer(char *rastPort, const char *text);
+extern LONG DISPTEXT_ComputeVisibleLineCount(LONG mode);
 extern LONG NEWGRID_DrawGridFrameAndRows(char *gridCtx, LONG rowPen);
 
 LONG NEWGRID_HandleGridEditorState(char *gridCtx, LONG layoutPen, LONG rowPen, const char *sourceText)
@@ -27,9 +27,9 @@ LONG NEWGRID_HandleGridEditorState(char *gridCtx, LONG layoutPen, LONG rowPen, c
     ctxView = (NEWGRID_Context *)gridCtx;
 
     if (NEWGRID_GridEditorWorkflowState == 4) {
-        NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20, layoutPen);
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(ctxView->rastPort, sourceText);
-        ctxView->selectedState = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(0);
+        DISPTEXT_SetLayoutParams(612, 20, layoutPen);
+        DISPTEXT_LayoutAndAppendToBuffer(ctxView->rastPort, sourceText);
+        ctxView->selectedState = DISPTEXT_ComputeVisibleLineCount(0);
 
         if (NEWGRID_DrawGridFrameAndRows(gridCtx, rowPen) != 0) {
             NEWGRID_GridEditorWorkflowState = 4;
