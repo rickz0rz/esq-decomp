@@ -29,7 +29,8 @@ function trim(s, t) {
         uline ~ /^ESQIFF_PLAYNEXTEXTERNALASSETFRAME:/) has_entry = 1
     if (uline ~ /_LVOFORBID/) has_forbid = 1
     if (uline ~ /_LVOPERMIT/) has_permit = 1
-    if (uline ~ /ESQIFF_JMPTBL_BRUSH_POPBRUSHHEAD/) has_pop_brush = 1
+    if (uline ~ /ESQIFF_JMPTBL_BRUSH_POPBRUSHHEAD/ ||
+        uline ~ /BRUSH_POPBRUSHHEAD/) has_pop_brush = 1
     if (uline ~ /ESQIFF_SHOWEXTERNALASSETWITHCOPP/ ||
         uline ~ /ESQIFF_SHOWEXTERNALASSETWITHCOPPERFX/) has_show_fx = 1
     if (uline ~ /ESQIFF_SERVICEEXTERNALASSETSOURC/ ||
