@@ -21,7 +21,7 @@ extern void SCRIPT_SaveCtrlContextSnapshot(char *ctx);
 extern LONG SCRIPT_SelectPlaybackCursorFromSearchText(LONG matchCountOrIndex, char *parseBuffer);
 extern void SCRIPT_SplitAndNormalizeSearchBuffer(char *parseBuffer, LONG parseLen);
 extern LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, char *arg);
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
+extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 
 LONG SCRIPT_HandleBrushCommand(char *ctx, char *cmd, LONG cmdLen)
 {
@@ -76,7 +76,7 @@ LONG SCRIPT_HandleBrushCommand(char *ctx, char *cmd, LONG cmdLen)
         case 20:
             SCRIPT_PendingTextdispCmdChar = cmd[1];
             SCRIPT_PendingTextdispCmdArg = cmd[2];
-            SCRIPT_CommandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(cmd + 3, SCRIPT_CommandTextPtr);
+            SCRIPT_CommandTextPtr = ESQPARS_ReplaceOwnedString(cmd + 3, SCRIPT_CommandTextPtr);
             SCRIPT_PendingBannerTargetChar = -2;
             SCRIPT_PlaybackCursor = 9;
             break;

@@ -19,7 +19,7 @@ extern UWORD ED_DiagnosticsScreenActive;
 extern char *Global_REF_RASTPORT_1;
 
 extern LONG ESQ_WildcardMatch(const char *pattern, const char *text);
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_value, char *old_value);
+extern char *ESQPARS_ReplaceOwnedString(const char *new_value, char *old_value);
 extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rast, LONG x, LONG y, const char *text);
 
 LONG UNKNOWN_ParseRecordAndUpdateDisplay(const char *in)
@@ -70,7 +70,7 @@ LONG UNKNOWN_ParseRecordAndUpdateDisplay(const char *in)
     }
 
     WDISP_WeatherStatusOverlayTextPtr =
-        ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(p, WDISP_WeatherStatusOverlayTextPtr);
+        ESQPARS_ReplaceOwnedString(p, WDISP_WeatherStatusOverlayTextPtr);
     WDISP_WeatherStatusCountdown = countdown;
     WDISP_WeatherStatusColorCode = color;
     WDISP_WeatherStatusBrushIndex = brush;

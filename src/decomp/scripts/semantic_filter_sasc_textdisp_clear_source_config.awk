@@ -27,7 +27,7 @@ function trim(s, t) {
     if (u ~ /^TEXTDISP_CLEARSOURCECONFIG:/ || u ~ /^TEXTDISP_CLEARSOURCECONFI[A-Z0-9_]*:/) has_entry = 1
     if (index(u, "TEXTDISP_SOURCECONFIGENTRYCOUNT") > 0) has_loop_count = 1
     if (index(u, "TEXTDISP_SOURCECONFIGENTRYTABLE") > 0) has_table = 1
-    if (index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEO") > 0) has_replace = 1
+    if (index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEO") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEO") > 0) has_replace = 1
     if (index(u, "MEMORY_DEALLOCATEMEMORY") > 0) has_free = 1
     if ((index(u, "CLR.L (A0)") > 0) || (index(u, "CLR.L $0(") > 0)) has_clear_slot = 1
     if (index(u, "CLR.L TEXTDISP_SOURCECONFIGENTRYCOUNT") > 0) has_clear_count = 1

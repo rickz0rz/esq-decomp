@@ -30,7 +30,7 @@ function trim(s, t) {
     if (index(u, "TEXTDISP_SOURCECONFIGENTRYCOUNT") > 0) has_count = 1
     if (index(u, "TEXTDISP_SOURCECONFIGENTRYTABLE") > 0) has_table = 1
     if (index(u, "MEMORY_ALLOCATEMEMORY") > 0) has_alloc = 1
-    if (index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEO") > 0) has_replace = 1
+    if (index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEO") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEO") > 0) has_replace = 1
     if (index(u, "STRING_COMPARENOCAS") > 0) has_compare = 1
     if (u ~ /MOVEQ #8,/ || index(u, "MOVEQ.L #$8,") > 0 || index(u, "MOVE.B #$8,") > 0 || index(u, "MOVE.B #8,") > 0) has_set_flag8 = 1
     if (index(u, "OR.B") > 0) saw_or = 1

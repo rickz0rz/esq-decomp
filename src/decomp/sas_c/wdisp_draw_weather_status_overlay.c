@@ -22,7 +22,7 @@ extern const char *ESQFUNC_STR_I5[];
 extern const char Global_STR_WDISP_C[];
 
 extern void *WDISP_JMPTBL_BRUSH_FindBrushByPredicate(void *predicate, void *listHead);
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(const char *src, char *oldPtr);
+extern char *ESQPARS_ReplaceOwnedString(const char *src, char *oldPtr);
 extern void MEMORY_DeallocateMemory(const char *tag, LONG pool, void *ptr, LONG size);
 
 void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG xSpan, LONG ySpan)
@@ -71,7 +71,7 @@ void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG xSpan, LONG ySpan)
     (void)brushWidth;
     (void)brushHeight;
 
-    textCopy = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(WDISP_WeatherStatusOverlayTextPtr, (char *)0);
+    textCopy = ESQPARS_ReplaceOwnedString(WDISP_WeatherStatusOverlayTextPtr, (char *)0);
     if (textCopy == (char *)0) {
         return;
     }
