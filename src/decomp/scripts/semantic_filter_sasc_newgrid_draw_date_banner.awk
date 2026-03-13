@@ -38,7 +38,11 @@ function trim(s, t) {
     gsub(/[^A-Z0-9]/, "", n)
 
     if (u ~ /^NEWGRID_DRAWDATEBANNER:/ || u ~ /^NEWGRID_DRAWDATEBANNE[A-Z0-9_]*:/) has_entry=1
-    if (n ~ /NEWGRIDJMPTBLGENERATEGRIDDATESTRING/ || n ~ /NEWGRIDJMPTBLGENERATEGRIDDATESTR/ || n ~ /NEWGRIDJMPTBLGENERATEGRIDDAT/) has_generate_date_call=1
+    if (n ~ /NEWGRIDJMPTBLGENERATEGRIDDATESTRING/ ||
+        n ~ /NEWGRIDJMPTBLGENERATEGRIDDATESTR/ ||
+        n ~ /NEWGRIDJMPTBLGENERATEGRIDDAT/ ||
+        n ~ /GENERATEGRIDDATESTRING/ ||
+        n ~ /GENERATEGRIDDATESTR/) has_generate_date_call=1
     if (n ~ /LVOSETDRMD/) has_setdrmd_call=1
     if (n ~ /NEWGRIDSETROWCOLOR/) has_setrowcolor_call=1
     if (n ~ /LVOSETAPEN/) has_setapen_call=1

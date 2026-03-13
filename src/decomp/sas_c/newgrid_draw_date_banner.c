@@ -25,7 +25,7 @@ extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern void NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING(char *outText);
+extern void GENERATE_GRID_DATE_STRING(char *outText);
 extern void _LVOSetDrMd(char *rastPort, LONG mode);
 extern LONG NEWGRID_SetRowColor(char *gridCtx, LONG mode, LONG pen);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
@@ -51,7 +51,7 @@ void NEWGRID_DrawDateBanner(char *gridCtx)
 
     ctx = (NEWGRID_Context *)gridCtx;
     rast = &ctx->rastPort;
-    NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING(dateText);
+    GENERATE_GRID_DATE_STRING(dateText);
 
     _LVOSetDrMd((char *)rast, 0);
     _LVOSetAPen((char *)rast, NEWGRID_SetRowColor(gridCtx, 0, 7));
