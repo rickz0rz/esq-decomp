@@ -18,3 +18,4 @@ modules/submodules/unknown2b.s decomp/replacements/modules/submodules/unknown2b.
 modules/submodules/unknown42.s decomp/replacements/modules/submodules/unknown42.s
 modules/groups/a/a/bevel.s decomp/replacements/modules/groups/a/a/bevel.s
 modules/groups/a/j/dst.s decomp/replacements/modules/groups/a/j/dst.s
+modules/groups/a/j/dst2.s decomp/replacements/modules/groups/a/j/dst2.s
