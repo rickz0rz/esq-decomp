@@ -26,4 +26,5 @@ modules/groups/a/e/cleanup4.s decomp/replacements/modules/groups/a/e/cleanup4.s
 modules/groups/a/g/diskio1.s decomp/replacements/modules/groups/a/g/diskio1.s
 modules/groups/a/j/dst.s decomp/replacements/modules/groups/a/j/dst.s
 modules/groups/a/j/dst2.s decomp/replacements/modules/groups/a/j/dst2.s
+modules/groups/a/o/esqiff2.s decomp/replacements/modules/groups/a/o/esqiff2.s
 modules/groups/b/a/parseini3.s decomp/replacements/modules/groups/b/a/parseini3.s
