@@ -231,6 +231,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqfunc_trim_text_to_pixel_width_word_boundary_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_trim_text_to_pixel_width_word_boundary_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_commit_secondary_state_and_persist_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqfunc_draw_memory_status_screen_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_update_disk_warning_and_refresh_tick_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_update_refresh_mode_state_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_wait_for_clock_change_and_service_ui_trial.sh"
