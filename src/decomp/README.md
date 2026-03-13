@@ -5559,7 +5559,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/graphics_alloc_raster.c`
 - `src/decomp/sas_c/graphics_free_raster.c`
 - `src/decomp/sas_c/unknown_esqproto_copy_label_to_global.c`
-- `src/decomp/sas_c/unknown_esqproto_parse_digit_label_and_display.c`
+- `src/decomp/sas_c/esqproto_parse_digit_label_and_display.c`
 - `src/decomp/sas_c/unknown_parse_record_and_update_display.c`
 - `src/decomp/sas_c/unknown_parse_list_and_update_entries.c`
 - `src/decomp/sas_c/unknown_esqproto_verify_checksum_and_parse_record.c`
