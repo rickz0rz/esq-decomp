@@ -13,9 +13,9 @@ extern UBYTE ESQFUNC_BasePaletteRgbTriples[];
 
 extern const char Global_STR_COLOR_PERCENT_D[];
 
-extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, LONG indexValue);
-extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
-extern LONG SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(LONG ch);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG indexValue);
+extern LONG STRING_CompareNoCase(const char *a, const char *b);
+extern LONG LADFUNC_ParseHexDigit(LONG ch);
 extern void ESQIFF_RunCopperRiseTransition(void);
 
 void PARSEINI_ParseColorTable(const char *entryKey, const char *entryValue, LONG mode)
@@ -39,14 +39,14 @@ void PARSEINI_ParseColorTable(const char *entryKey, const char *entryValue, LONG
 
     colorIndex = 0;
     while (colorIndex < maxColors) {
-        PARSEINI_JMPTBL_WDISP_SPrintf(keyBuffer, Global_STR_COLOR_PERCENT_D, colorIndex);
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(entryKey, keyBuffer) == 0) {
+        WDISP_SPrintf(keyBuffer, Global_STR_COLOR_PERCENT_D, colorIndex);
+        if (STRING_CompareNoCase(entryKey, keyBuffer) == 0) {
             channelIndex = 0;
             while (channelIndex < PARSE_COLOR_CHANNEL_COUNT) {
                 tripleOffset = (colorIndex << 2) - colorIndex;
                 tripleOffset += channelIndex;
                 targetTriples[tripleOffset] =
-                    (UBYTE)SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit((LONG)(UBYTE)entryValue[channelIndex]);
+                    (UBYTE)LADFUNC_ParseHexDigit((LONG)(UBYTE)entryValue[channelIndex]);
                 ++channelIndex;
             }
         }

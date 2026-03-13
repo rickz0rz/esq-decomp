@@ -4,9 +4,9 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
  line=trim($0); if(line=="") next; gsub(/[ \t]+/," ",line); u=toupper(line); n=u; gsub(/[^A-Z0-9]/,"",n)
  if (u ~ /^PARSEINI_PARSECOLORTABLE:/ || u ~ /^PARSEINI_PARSECOLORTABL[A-Z0-9_]*:/) has_entry=1
  if (u ~ /#4/ || u ~ /#5/ || n ~ /KYBDCUSTOMPALETTETRIPLESRBASE/ || n ~ /ESQFUNCBASEPALETTERGBTRIPLES/) has_mode=1
- if (n ~ /PARSEINIJMPTBLWDISPSPRINTF/ || n ~ /GLOBALSTRCOLORPERCENTD/) has_sprintf=1
- if (n ~ /PARSEINIJMPTBLSTRINGCOMPARENOCASE/ || n ~ /PARSEINIJMPTBLSTRINGCOMPARENO/) has_compare=1
- if (n ~ /SCRIPT3JMPTBLLADFUNCPARSEHEXDIGIT/ || n ~ /SCRIPT3JMPTBLLADFUNCPARSEHEXD/) has_parsehex=1
+ if (n ~ /PARSEINIJMPTBLWDISPSPRINTF/ || n ~ /WDISPSPRINTF/ || n ~ /GLOBALSTRCOLORPERCENTD/) has_sprintf=1
+ if (n ~ /PARSEINIJMPTBLSTRINGCOMPARENOCASE/ || n ~ /PARSEINIJMPTBLSTRINGCOMPARENO/ || n ~ /STRINGCOMPARENOCASE/ || n ~ /STRINGCOMPARENO/) has_compare=1
+ if (n ~ /SCRIPT3JMPTBLLADFUNCPARSEHEXDIGIT/ || n ~ /SCRIPT3JMPTBLLADFUNCPARSEHEXD/ || n ~ /LADFUNCPARSEHEXDIGIT/ || n ~ /LADFUNCPARSEHEXD/) has_parsehex=1
  if (u ~ /LSL\.L #2/ || u ~ /ASL\.L #2/ || u ~ /^ADD\.L D[0-7],D[0-7]$/ || u ~ /^MOVE\.B D[0-7],\$0\(A2,D[0-7]\.L\)$/ || u ~ /^MOVE\.B D[0-7],0\(A0,D[0-7]\.L\)$/) has_triples=1
  if (n ~ /TEXTDISPJMPTBLESQIFFRUNCOPPERRISETRANSITION/ || n ~ /TEXTDISPJMPTBLESQIFFRUNCOPPERRISETRANSITIO/ || n ~ /TEXTDISPJMPTBLESQIFFRUNCOPPER/ || n ~ /ESQIFFRUNCOPPERRISETRANSITION/ || n ~ /ESQIFFRUNCOPPERRISETRANSITIO/ || n ~ /ESQIFFRUNCOPPER/) has_copper=1
  if (u=="RTS") has_return=1
