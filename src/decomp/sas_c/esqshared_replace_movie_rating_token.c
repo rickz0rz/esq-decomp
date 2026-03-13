@@ -5,7 +5,7 @@ extern const char *Global_TBL_MOVIE_RATINGS[];
 extern const UBYTE ESQPARS2_MovieRatingTokenGlyphMap[];
 extern void *AbsExecBase;
 
-extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(const char *text, const char *needle);
+extern char *ESQ_FindSubstringCaseFold(const char *text, const char *needle);
 extern void _LVOCopyMem(void *execBase, const void *src, void *dst, LONG size);
 
 void ESQSHARED_ReplaceMovieRatingToken(char *text)
@@ -14,7 +14,7 @@ void ESQSHARED_ReplaceMovieRatingToken(char *text)
     LONG i = 0;
 
     while (i < 7 && found == 0) {
-        char *hit = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(text, Global_TBL_MOVIE_RATINGS[i]);
+        char *hit = ESQ_FindSubstringCaseFold(text, Global_TBL_MOVIE_RATINGS[i]);
         if (hit != (char *)0) {
             char *dst = hit;
             const char *token = Global_TBL_MOVIE_RATINGS[i];

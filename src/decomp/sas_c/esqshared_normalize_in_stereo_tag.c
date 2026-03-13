@@ -4,8 +4,8 @@ typedef unsigned long ULONG;
 extern const char Global_STR_IN_STEREO[];
 extern const UBYTE WDISP_CharClassTable[];
 
-extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(const char *text, const char *needle);
-extern char *ESQSHARED_JMPTBL_STR_SkipClass3Chars(const char *text);
+extern char *ESQ_FindSubstringCaseFold(const char *text, const char *needle);
+extern char *STR_SkipClass3Chars(const char *text);
 extern void CopyMem(const void *src, void *dst, ULONG len);
 
 void ESQSHARED_NormalizeInStereoTag(char *text, ULONG flags)
@@ -14,7 +14,7 @@ void ESQSHARED_NormalizeInStereoTag(char *text, ULONG flags)
     const UBYTE CHARCLASS_3_MASK = 0x08;
     const char CH_NUL = '\0';
     const ULONG ONE = 1;
-    char *tag = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(text, Global_STR_IN_STEREO);
+    char *tag = ESQ_FindSubstringCaseFold(text, Global_STR_IN_STEREO);
     if (tag == (char *)0) {
         return;
     }
@@ -30,7 +30,7 @@ void ESQSHARED_NormalizeInStereoTag(char *text, ULONG flags)
                     --tag;
                 } while ((WDISP_CharClassTable[(UBYTE)*tag] & CHARCLASS_3_MASK) != 0);
             } else {
-                char *src = ESQSHARED_JMPTBL_STR_SkipClass3Chars(tail);
+                char *src = STR_SkipClass3Chars(tail);
                 ULONG len = 0;
                 while (src[len] != CH_NUL) {
                     ++len;
