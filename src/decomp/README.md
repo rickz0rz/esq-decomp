@@ -5419,9 +5419,9 @@ Recent promoted targets:
 - `src/decomp/sas_c/parse_read_signed_long_skip_class3_alt.c`
 - `src/decomp/sas_c/memlist_alloc_free.c`
 - `src/decomp/sas_c/unknown25_struct_alloc_free.c`
-- `src/decomp/sas_c/unknown27_format_buffer2.c`
-- `src/decomp/sas_c/unknown2a_format_raw_dofmt_with_scratch_buffer.c`
-- `src/decomp/sas_c/unknown28_wdisp_format_with_callback.c`
+- `src/decomp/sas_c/format_to_buffer2.c`
+- `src/decomp/sas_c/format_raw_dofmt_with_scratch_buffer.c`
+- `src/decomp/sas_c/wdisp_format_with_callback.c`
 - `src/decomp/sas_c/unknown30_exec_call_vector_348.c`
 - `src/decomp/sas_c/unknown31_buffer_ensure_allocated.c`
 - `src/decomp/sas_c/unknown32_handle_close_all_and_return_with_code.c`
