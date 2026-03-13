@@ -19,6 +19,7 @@ extern void *PARSEINI_BannerBrushResourceHead;
 extern const char Global_STR_PERCENT_S_2[];
 extern const char Global_STR_DF0_GRADIENT_INI_3[];
 extern const char Global_STR_DF0_BANNER_INI_2[];
+extern const char Global_STR_DF0_BANNER_INI_3[];
 extern const char Global_STR_DF0_DEFAULT_INI_2[];
 extern const char Global_STR_DF0_SOURCECFG_INI_1[];
 
@@ -41,6 +42,7 @@ extern LONG SCRIPT_CheckPathExists(const char *path);
 extern LONG PARSEINI_ParseIniBufferAndDispatch(const char *path);
 extern void TEXTDISP_ApplySourceConfigAllEntries(void);
 extern void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(LONG arg);
+extern void PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(LONG arg);
 extern void PARSEINI_JMPTBL_BRUSH_FreeBrushList(void **headPtr, LONG flags);
 extern void PARSEINI_JMPTBL_BRUSH_FreeBrushResources(void **headPtr);
 
@@ -132,7 +134,7 @@ void PARSEINI_HandleFontCommand(const char *command)
             PARSEINI_TestMemoryAndOpenTopazFont(&Global_HANDLE_PREVUE_FONT, Global_STRUCT_TEXTATTR_PREVUE_FONT);
             return;
         }
-        if (c2 == (UBYTE)'R') {
+        if (c2 == (UBYTE)'Q') {
             PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk();
             return;
         }
@@ -154,15 +156,15 @@ void PARSEINI_HandleFontCommand(const char *command)
 
             PARSEINI_JMPTBL_BRUSH_FreeBrushList(&WDISP_WeatherStatusBrushListHead, 0);
             PARSEINI_JMPTBL_BRUSH_FreeBrushResources(&PARSEINI_BannerBrushResourceHead);
-            PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BANNER_INI_2);
-            PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(1);
+            PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BANNER_INI_3);
+            PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(1);
             return;
         }
         if (c2 == (UBYTE)'d') {
             PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_DEFAULT_INI_2);
             return;
         }
-        if (c2 == (UBYTE)'m') {
+        if (c2 == (UBYTE)'s') {
             PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_SOURCECFG_INI_1);
             TEXTDISP_ApplySourceConfigAllEntries();
             return;
