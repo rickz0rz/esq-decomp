@@ -16,8 +16,8 @@ mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_${BASE}.log" 2>&1
 
-awk -v e="^${ENTRY}:$" '
-  $0 ~ e {in_func=1}
+awk '
+  $0 ~ /^DISKIO_WriteDecimalField:$/ { in_func=1 }
   in_func {
     if ($0 ~ /^;!======/) exit
     print
@@ -25,10 +25,10 @@ awk -v e="^${ENTRY}:$" '
 ' "$ORIG_ASM" >"${OUT_DIR}/${BASE}.original.s"
 
 awk -v e="^${ENTRY}:$" -v e2="$ENTRY_SASC_REGEX" '
-  $0 ~ e || $0 ~ e2 {in_func=1}
+  $0 ~ e || $0 ~ e2 { in_func=1 }
   in_func {
     if (($0 ~ /^[A-Z0-9_]+:$/ || $0 ~ /^_?[A-Z0-9_]+:$/) && $0 !~ e && $0 !~ e2) exit
-    if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/) exit
+    if ($0 ~ /^__const:$/ || $0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/) exit
     print
   }
 ' "$SASC_DIS" >"${OUT_DIR}/${BASE}.sasc.dis.s"
@@ -51,8 +51,18 @@ normalize <"${OUT_DIR}/${BASE}.sasc.dis.s" >"${OUT_DIR}/${BASE}.sasc.norm.s"
 
 diff -u "${OUT_DIR}/${BASE}.original.norm.s" "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.diff" || true
 
-awk -f src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk "${OUT_DIR}/${BASE}.original.norm.s" >"${OUT_DIR}/${BASE}.original.semantic.txt"
-awk -f src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.sasc.semantic.txt"
+awk '
+  /^DISKIO_WriteDecimalField:/ { print "LABEL"; next }
+  /GROUP_AE_JMPTBL_WDISP_SPrintf\(PC\)|WDISP_SPrintf/ { print "CALL_SPRINTF"; next }
+  /DISKIO_WriteBufferedBytes/ { print "CALL_WRITE"; next }
+' "${OUT_DIR}/${BASE}.original.norm.s" >"${OUT_DIR}/${BASE}.original.semantic.txt"
+
+awk '
+  /^DISKIO_WriteDecimalField/ { print "LABEL"; next }
+  /WDISP_SPrintf/ { print "CALL_SPRINTF"; next }
+  /DISKIO_WriteBufferedBytes/ { print "CALL_WRITE"; next }
+' "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.sasc.semantic.txt"
+
 diff -u "${OUT_DIR}/${BASE}.original.semantic.txt" "${OUT_DIR}/${BASE}.sasc.semantic.txt" >"${OUT_DIR}/${BASE}.semantic.diff" || true
 
 echo "wrote: ${OUT_DIR}/${BASE}.diff"

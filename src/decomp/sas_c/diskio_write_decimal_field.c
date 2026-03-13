@@ -1,29 +1,20 @@
 typedef signed long LONG;
-typedef unsigned char UBYTE;
-
-enum {
-    DISKIO_PRINTF_ARG_UNUSED = 0,
-    DISKIO_DECIMAL_FIELD_BUFFER_LEN = 10
-};
 
 extern const char Global_STR_PERCENT_LD[];
-
-extern LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG a, LONG b, LONG c);
-extern LONG DISKIO_WriteBufferedBytes(LONG handle, const void *data, LONG len);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG value);
+extern LONG DISKIO_WriteBufferedBytes(LONG handle, const void *src, LONG len);
 
 void DISKIO_WriteDecimalField(LONG handle, LONG value)
 {
-    char fieldBuffer[DISKIO_DECIMAL_FIELD_BUFFER_LEN];
-    char *cursor = fieldBuffer;
+    char scratch[10];
+    char *scan;
 
-    GROUP_AE_JMPTBL_WDISP_SPrintf(fieldBuffer,
-                                  Global_STR_PERCENT_LD,
-                                  value,
-                                  DISKIO_PRINTF_ARG_UNUSED,
-                                  DISKIO_PRINTF_ARG_UNUSED);
+    WDISP_SPrintf(scratch, Global_STR_PERCENT_LD, value);
 
-    while (*cursor++) {
+    scan = scratch;
+    while (*scan != 0) {
+        scan++;
     }
 
-    DISKIO_WriteBufferedBytes(handle, fieldBuffer, (LONG)(cursor - fieldBuffer));
+    DISKIO_WriteBufferedBytes(handle, scratch, (LONG)(scan - scratch) + 1);
 }
