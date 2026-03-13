@@ -4707,7 +4707,7 @@ Recent promoted targets:
 - Unknown10 `WDISP_SPrintf` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_sprintf_trial.sh`
 - Unknown10 `PARSE_ReadSignedLong` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_trial.sh`
 - Unknown10 `PARSE_ReadSignedLong_NoBranch` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_nobranch_trial.sh`
-- Unknown10 `HANDLE_OpenEntryWithFlags` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_open_entry_with_flags_trial.sh`
+- Unknown10 `HANDLE_OpenEntryWithFlags` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_open_entry_with_flags_trial.sh` (canonical source: `src/decomp/sas_c/handle_open_entry_with_flags.c`)
 - `FORMAT_CallbackWriteChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_callback_write_char_trial.sh` (canonical source: `src/decomp/sas_c/format_to_callback_buffer.c`)
 - `FORMAT_FormatToCallbackBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_to_callback_buffer_trial.sh` (canonical source: `src/decomp/sas_c/format_to_callback_buffer.c`)
 - Unknown14 `HANDLE_OpenFromModeString` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_open_from_mode_string_trial.sh`
@@ -5547,7 +5547,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown10_wdisp_sprintf.c`
 - `src/decomp/sas_c/unknown10_parse_read_signed_long.c`
 - `src/decomp/sas_c/unknown10_parse_read_signed_long_nobranch.c`
-- `src/decomp/sas_c/unknown10_handle_open_entry_with_flags.c`
+- `src/decomp/sas_c/handle_open_entry_with_flags.c`
 - `src/decomp/sas_c/format_to_callback_buffer.c`
 - `src/decomp/sas_c/handle_open_from_mode_string.c`
 - `src/decomp/sas_c/stream_read_line_with_limit.c`
