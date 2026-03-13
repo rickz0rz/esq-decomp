@@ -32,7 +32,7 @@ extern void _LVOSetAPen(char *rastport, LONG pen);
 extern void _LVORectFill(char *rastport, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void BEVEL_DrawBevelFrameWithTopRight(char *rastport, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void CLEANUP_FormatClockFormatEntry(LONG slot, char *out_text);
-extern ULONG NEWGRID_JMPTBL_MATH_Mulu32(ULONG a, ULONG b);
+extern ULONG MATH_Mulu32(ULONG a, ULONG b);
 extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
 extern void _LVOMove(char *rastport, LONG x, LONG y);
 extern void _LVOText(char *rastport, const char *text, LONG len);
@@ -77,7 +77,7 @@ void NEWGRID_DrawClockFormatHeader(char *grid_ctx, LONG start_slot)
         CLEANUP_FormatClockFormatEntry(slot, label);
 
         col_w = (LONG)(UWORD)NEWGRID_ColumnWidthPx;
-        x = left_x + (LONG)NEWGRID_JMPTBL_MATH_Mulu32((ULONG)col, (ULONG)col_w) + 36;
+        x = left_x + (LONG)MATH_Mulu32((ULONG)col, (ULONG)col_w) + 36;
         if (col == 2) {
             right = 695;
         } else {

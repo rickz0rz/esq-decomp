@@ -27,7 +27,7 @@ function trim(s, t) {
     if (u ~ /^NEWGRID_COMPUTECOLUMNINDEX:/ || u ~ /^NEWGRID_COMPUTECOLUMNINDE[A-Z0-9_]*:/) has_entry=1
     if (n ~ /NEWGRIDROWHEIGHTPX/) has_row_height=1
     if (u ~ /CMPI\.B .*54\(A[0-7]\)/ || u ~ /CMPI\.B #\$40,\(A[0-7]\)/ || u ~ /CMPI\.B #\$40,\$36\(A[0-7]\)/ || u ~ /CMP\.B #\$40/) has_sel_char_check=1
-    if (n ~ /NEWGRIDJMPTBLMATHDIVS32/) has_div_call=1
+    if (n ~ /NEWGRIDJMPTBLMATHDIVS32/ || n ~ /MATHDIVS32/) has_div_call=1
     if (u ~ /ASR\.L #2,D[0-7]/ || u ~ /ASR\.L #\$2,D[0-7]/ || u ~ /LSR\.L #2,D[0-7]/ || u ~ /LSR\.L #\$2,D[0-7]/) has_shift_quarter=1
     if (u ~ /^MOVE\.L D[0-7],D0$/) has_result_return=1
     if (u == "RTS") has_rts=1

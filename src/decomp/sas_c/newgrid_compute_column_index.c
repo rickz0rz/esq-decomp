@@ -9,7 +9,7 @@ typedef struct NEWGRID_Context {
 } NEWGRID_Context;
 
 extern UWORD NEWGRID_RowHeightPx;
-extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG a, LONG b);
+extern LONG MATH_DivS32(LONG a, LONG b);
 
 LONG NEWGRID_ComputeColumnIndex(char *gridCtx)
 {
@@ -25,7 +25,7 @@ LONG NEWGRID_ComputeColumnIndex(char *gridCtx)
             quarter += 3;
         }
         quarter >>= 2;
-        result = NEWGRID_JMPTBL_MATH_DivS32(width, quarter);
+        result = MATH_DivS32(width, quarter);
     }
 
     return result;
