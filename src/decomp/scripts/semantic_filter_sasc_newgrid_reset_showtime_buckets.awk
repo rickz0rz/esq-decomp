@@ -27,7 +27,7 @@ function trim(s, t) {
     if (u ~ /^NEWGRID_RESETSHOWTIMEBUCKETS:/) has_entry=1
     if (n ~ /NEWGRIDSHOWTIMEBUCKETCOUNT/) has_bucket_count=1
     if (n ~ /NEWGRIDSHOWTIMEBUCKETENTRYTABLE/ || n ~ /NEWGRIDSHOWTIMEBUCKETENTRYTABL/) has_entry_table=1
-    if (n ~ /PARSEINIJMPTBLESQPARSREPLACEOWNEDSTRING/ || n ~ /PARSEINIJMPTBLESQPARSREPLACEOWNEDS/ || n ~ /PARSEINIJMPTBLESQPARSREPLACEO/) has_replace_owned=1
+    if (n ~ /PARSEINIJMPTBLESQPARSREPLACEOWNEDSTRING/ || n ~ /PARSEINIJMPTBLESQPARSREPLACEOWNEDS/ || n ~ /PARSEINIJMPTBLESQPARSREPLACEO/ || n ~ /ESQPARSREPLACEOWNEDSTRING/ || n ~ /ESQPARSREPLACEOWNEDSTR/) has_replace_owned=1
     if (u ~ /#10([^0-9]|$)/ || u ~ /#\$0A/ || u ~ /#\$A([^0-9A-F]|$)/ || u ~ /10\.[Ww]/ || u ~ /\(\$A\)/) has_const10=1
     if (u ~ /#\$3100/ || u ~ /#12544/ || u ~ /3100/) has_const3100=1
     if (u == "RTS") has_rts=1

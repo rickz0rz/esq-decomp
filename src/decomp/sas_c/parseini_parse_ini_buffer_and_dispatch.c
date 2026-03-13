@@ -60,14 +60,14 @@ extern char *P_TYPE_WeatherBottomLineMsgPtr;
 extern LONG P_TYPE_WeatherBrushRefreshPendingFlag;
 extern LONG GCOMMAND_GradientPresetTable[];
 
-extern LONG PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
-extern LONG PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer(void);
-extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, LONG ch);
-extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *delim);
-extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
-extern void PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(LONG *table);
-extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
-extern char *PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(const char *path);
+extern LONG DISKIO_LoadFileToWorkBuffer(const char *path);
+extern char *DISKIO_ConsumeLineFromWorkBuffer(void);
+extern char *STR_FindCharPtr(const char *s, LONG ch);
+extern char *STR_FindAnyCharPtr(const char *s, const char *delim);
+extern LONG STRING_CompareNoCase(const char *a, const char *b);
+extern void GCOMMAND_InitPresetTableFromPalette(UWORD *table);
+extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
+extern char *GCOMMAND_FindPathSeparator(const char *path);
 extern void *HANDLE_OpenWithMode(const char *path, const char *modeStr, char *unused);
 extern void PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(char *brushPath);
 extern void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(void);
@@ -108,7 +108,7 @@ static char *PARSEINI_SplitKeyValueLine(char *line, const char *keyDelim)
     char *valuePtr;
     char *cutPtr;
 
-    valuePtr = PARSEINI_JMPTBL_STR_FindCharPtr(line, 61);
+    valuePtr = STR_FindCharPtr(line, 61);
     if (valuePtr == (char *)0) {
         return (char *)0;
     }
@@ -116,7 +116,7 @@ static char *PARSEINI_SplitKeyValueLine(char *line, const char *keyDelim)
     *valuePtr++ = 0;
     valuePtr = PARSEINI_SkipClass3Chars(valuePtr);
 
-    cutPtr = PARSEINI_JMPTBL_STR_FindAnyCharPtr(line, keyDelim);
+    cutPtr = STR_FindAnyCharPtr(line, keyDelim);
     if (cutPtr != (char *)0) {
         *cutPtr = 0;
     }
@@ -139,7 +139,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
     section = PARSEINI_SECTION_NONE;
     aliasIndex = -1;
 
-    if (PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(path) == -1) {
+    if (DISKIO_LoadFileToWorkBuffer(path) == -1) {
         return -1;
     }
 
@@ -149,7 +149,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
     for (;;) {
         char *headerEnd;
 
-        linePtr = (char *)PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer();
+        linePtr = DISKIO_ConsumeLineFromWorkBuffer();
         if ((LONG)linePtr == -1) {
             break;
         }
@@ -160,7 +160,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
         }
 
         if (*linePtr == '[') {
-            headerEnd = PARSEINI_JMPTBL_STR_FindCharPtr(linePtr + 1, 93);
+            headerEnd = STR_FindCharPtr(linePtr + 1, 93);
             if (headerEnd == (char *)0) {
                 continue;
             }
@@ -168,46 +168,46 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
             *headerEnd = 0;
             ++linePtr;
 
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, P_TYPE_STR_QTABLE) == 0) {
+            if (STRING_CompareNoCase(linePtr, P_TYPE_STR_QTABLE) == 0) {
                 section = PARSEINI_SECTION_QTABLE;
                 continue;
             }
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, P_TYPE_TAG_BACKDROP) == 0) {
+            if (STRING_CompareNoCase(linePtr, P_TYPE_TAG_BACKDROP) == 0) {
                 section = PARSEINI_SECTION_BACKDROP;
                 continue;
             }
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, P_TYPE_TAG_GRADIENT) == 0) {
+            if (STRING_CompareNoCase(linePtr, P_TYPE_TAG_GRADIENT) == 0) {
                 section = PARSEINI_SECTION_GRADIENT;
-                PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(GCOMMAND_GradientPresetTable);
+                GCOMMAND_InitPresetTableFromPalette((UWORD *)GCOMMAND_GradientPresetTable);
                 continue;
             }
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, P_TYPE_TAG_TEXTADS) == 0) {
+            if (STRING_CompareNoCase(linePtr, P_TYPE_TAG_TEXTADS) == 0) {
                 section = PARSEINI_SECTION_TEXTADS;
                 continue;
             }
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, P_TYPE_TAG_BRUSH) == 0) {
+            if (STRING_CompareNoCase(linePtr, P_TYPE_TAG_BRUSH) == 0) {
                 section = PARSEINI_SECTION_BRUSH;
                 continue;
             }
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, P_TYPE_TAG_BANNER) == 0) {
+            if (STRING_CompareNoCase(linePtr, P_TYPE_TAG_BANNER) == 0) {
                 section = PARSEINI_SECTION_BANNER;
                 P_TYPE_WeatherBrushRefreshPendingFlag = 0;
                 continue;
             }
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, P_TYPE_STR_DEFAULT_TEXT) == 0) {
+            if (STRING_CompareNoCase(linePtr, P_TYPE_STR_DEFAULT_TEXT) == 0) {
                 section = PARSEINI_SECTION_DEFAULT_TEXT;
-                P_TYPE_WeatherCurrentMsgPtr = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(
+                P_TYPE_WeatherCurrentMsgPtr = ESQPARS_ReplaceOwnedString(
                     (char *)Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,
                     P_TYPE_WeatherCurrentMsgPtr);
-                P_TYPE_WeatherForecastMsgPtr = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(
+                P_TYPE_WeatherForecastMsgPtr = ESQPARS_ReplaceOwnedString(
                     (char *)SCRIPT_PtrNoForecastWeatherData,
                     P_TYPE_WeatherForecastMsgPtr);
-                P_TYPE_WeatherBottomLineMsgPtr = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(
+                P_TYPE_WeatherBottomLineMsgPtr = ESQPARS_ReplaceOwnedString(
                     (char *)SCRIPT_PtrWeatherDataAvailabilityDisclaimer,
                     P_TYPE_WeatherBottomLineMsgPtr);
                 continue;
             }
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, P_TYPE_STR_SOURCE_CONFIG) == 0) {
+            if (STRING_CompareNoCase(linePtr, P_TYPE_STR_SOURCE_CONFIG) == 0) {
                 TEXTDISP_ClearSourceConfig();
                 section = PARSEINI_SECTION_SOURCE_CONFIG;
                 continue;
@@ -242,23 +242,23 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
 
             alias->key = (char *)0;
             alias->value = (char *)0;
-            alias->key = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(linePtr, alias->key);
+            alias->key = ESQPARS_ReplaceOwnedString(linePtr, alias->key);
 
-            quoteStart = PARSEINI_JMPTBL_STR_FindCharPtr(valuePtr, 34);
+            quoteStart = STR_FindCharPtr(valuePtr, 34);
             if (quoteStart == (char *)0) {
                 TEXTDISP_AliasCount = 0;
                 return 0;
             }
 
             ++quoteStart;
-            quoteEnd = PARSEINI_JMPTBL_STR_FindCharPtr(quoteStart, 34);
+            quoteEnd = STR_FindCharPtr(quoteStart, 34);
             if (quoteEnd == (char *)0) {
                 TEXTDISP_AliasCount = 0;
                 return 0;
             }
 
             *quoteEnd = 0;
-            alias->value = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(quoteStart, alias->value);
+            alias->value = ESQPARS_ReplaceOwnedString(quoteStart, alias->value);
             TEXTDISP_AliasCount = (UWORD)(aliasIndex + 1);
             continue;
         }
@@ -283,9 +283,9 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
             }
 
             if (section == PARSEINI_SECTION_BRUSH) {
-                if (PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, PARSEINI_TAG_FILENAME) == 0 ||
-                    PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, PARSEINI_TAG_BRUSH) == 0) {
-                    valuePtr = PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(valuePtr);
+                if (STRING_CompareNoCase(linePtr, PARSEINI_TAG_FILENAME) == 0 ||
+                    STRING_CompareNoCase(linePtr, PARSEINI_TAG_BRUSH) == 0) {
+                    valuePtr = GCOMMAND_FindPathSeparator(valuePtr);
                     if (HANDLE_OpenWithMode(valuePtr, PARSEINI_MODE_RB, (char *)0) != 0) {
                         PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(valuePtr);
                         PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey();
