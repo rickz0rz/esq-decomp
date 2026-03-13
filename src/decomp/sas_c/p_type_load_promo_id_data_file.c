@@ -21,12 +21,12 @@ extern const char Global_STR_P_TYPE_C_6[];
 extern PTypeEntry *P_TYPE_PrimaryGroupListPtr;
 extern PTypeEntry *P_TYPE_SecondaryGroupListPtr;
 
-extern LONG PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
+extern LONG DISKIO_LoadFileToWorkBuffer(const char *path);
 extern char *STRING_FindSubstring(char *haystack, char *needle);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *src);
 extern PTypeEntry *P_TYPE_AllocateEntry(UBYTE type_byte, LONG len, const UBYTE *src);
 extern void P_TYPE_FreeEntry(PTypeEntry *entry);
-extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tag_name, LONG width, void *ptr, LONG size);
+extern void MEMORY_DeallocateMemory(void *ptr, LONG size);
 
 static LONG p_type_strlen_local(const char *s)
 {
@@ -43,7 +43,7 @@ LONG P_TYPE_LoadPromoIdDataFile(void)
     LONG scratch_len;
     LONG section;
 
-    if (PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load) == -1) {
+    if (DISKIO_LoadFileToWorkBuffer(P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load) == -1) {
         return 1;
     }
 
@@ -106,6 +106,6 @@ LONG P_TYPE_LoadPromoIdDataFile(void)
         }
     }
 
-    SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_6, 406, work, scratch_len + 1);
+    MEMORY_DeallocateMemory(work, scratch_len + 1);
     return 1;
 }
