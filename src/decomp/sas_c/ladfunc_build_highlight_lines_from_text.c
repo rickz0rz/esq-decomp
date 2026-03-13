@@ -10,7 +10,7 @@ extern UWORD LADFUNC_LineControlCodeTable[];
 extern char *LADFUNC_LineTextBufferPtrs[];
 
 extern LONG _LVOTextLength(void *graphicsBase, char *rastPort, const char *text, LONG length);
-extern void GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(char *text, LONG controlCode);
+extern void DISPLIB_ApplyInlineAlignmentPadding(char *text, UBYTE alignCode);
 
 void LADFUNC_BuildHighlightLinesFromText(char *src)
 {
@@ -49,7 +49,7 @@ void LADFUNC_BuildHighlightLinesFromText(char *src)
             LONG i;
 
             segment[segLen] = 0;
-            GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(segment, control);
+            DISPLIB_ApplyInlineAlignmentPadding(segment, control);
 
             dst = LADFUNC_LineTextBufferPtrs[LADFUNC_LineSlotWriteIndex];
             for (i = 0;; ++i) {
@@ -76,7 +76,7 @@ void LADFUNC_BuildHighlightLinesFromText(char *src)
     }
 
     segment[segLen] = 0;
-    GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(segment, control);
+    DISPLIB_ApplyInlineAlignmentPadding(segment, control);
 
     {
         char *dst;

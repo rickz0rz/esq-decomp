@@ -32,7 +32,7 @@ function trim(s, t) {
     if (index(u, "LADFUNC_LINECONTROLCODETABLE") > 0) has_ctrl_table = 1
     if (index(u, "LADFUNC_LINETEXTBUFFERPTRS") > 0) has_ptr_table = 1
     if (index(u, "_LVOTEXTLENGTH") > 0) has_textlength = 1
-    if (index(u, "GROUP_AW_JMPTBL_DISPLIB_APPLYINLINEALIGNMENTPADDING") > 0 || index(u, "GROUP_AW_JMPTBL_DISPLIB_APPLYINLINEALIGNMENTP") > 0 || index(u, "GROUP_AW_JMPTBL_DISPLIB_APPLYINL") > 0) has_padding = 1
+    if (index(u, "DISPLIB_APPLYINLINEALIGNMENTPADDING") > 0 || index(u, "DISPLIB_APPLYINLINEALIGNMENTP") > 0 || index(u, "DISPLIB_APPLYINL") > 0) has_padding = 1
 
     if (u ~ /#24/ || index(u, "#$18") > 0) has_prefix_24 = 1
     if (u ~ /#25/ || index(u, "#$19") > 0) has_prefix_25 = 1
