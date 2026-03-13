@@ -29,17 +29,18 @@ function trim(s, t) {
     uline = toupper(line)
 
     if (uline ~ /^ESQIFF_QUEUEIFFBRUSHLOAD:/) has_entry = 1
-    if (uline ~ /ESQIFF_JMPTBL_BRUSH_ALLOCBRUSHNODE/) has_alloc = 1
-    if (uline ~ /ESQIFF_JMPTBL_BRUSH_CLONEBRUSHRECORD/) has_clone = 1
-    if (uline ~ /ESQIFF_JMPTBL_CTASKS_STARTIFFTASKPROCESS/) has_start_iff = 1
-    if (uline ~ /ESQIFF_JMPTBL_MEMORY_DEALLOCATEMEMORY/) has_dealloc = 1
-    if (uline ~ /ESQIFF_DRAWWEATHERSTATUSOVERLAYINTOBRUSH/) has_overlay = 1
+    if (uline ~ /ESQIFF_JMPTBL_BRUSH_ALLOCBRUSHNO/ || uline ~ /ESQIFF_JMPTBL_BRUSH_ALLOCBRUSHNODE/) has_alloc = 1
+    if (uline ~ /ESQIFF_JMPTBL_BRUSH_CLONEBRUSHRE/ || uline ~ /ESQIFF_JMPTBL_BRUSH_CLONEBRUSHRECORD/) has_clone = 1
+    if (uline ~ /ESQIFF_JMPTBL_CTASKS_STARTIFFTAS/ || uline ~ /ESQIFF_JMPTBL_CTASKS_STARTIFFTASKPROCESS/) has_start_iff = 1
+    if (uline ~ /ESQIFF_JMPTBL_MEMORY_DEALLOCATEM/ || uline ~ /ESQIFF_JMPTBL_MEMORY_DEALLOCATEMEMORY/) has_dealloc = 1
+    if (uline ~ /ESQIFF_DRAWWEATHERSTATUSOVERLAYI/ || uline ~ /ESQIFF_DRAWWEATHERSTATUSOVERLAYINTOBRUSH/) has_overlay = 1
     if (uline ~ /ESQIFF_JMPTBL_BRUSH_SELECTBRUSHBYLABEL/) has_select_label = 1
     if (uline ~ /ESQIFF_JMPTBL_BRUSH_FINDBRUSHBYPREDICATE/) has_find_pred = 1
     if (uline ~ /ESQIFF_JMPTBL_BRUSH_FINDTYPE3BRUSH/) has_find_type3 = 1
-    if (uline ~ /^MOVE\.L D0,CTASKS_PENDINGIFFBRUSHDESCRIPTOR$/) has_pending_desc = 1
-    if (uline ~ /^MOVE\.W #6,CTASKS_IFFTASKSTATE$/) has_task_state = 1
-    if (uline ~ /^MOVE\.L 234\(A0\),ESQIFF_BANNERBRUSHRESOURCECURSOR$/) has_cursor_advance = 1
+    if (uline ~ /CTASKS_PENDINGIFFBRUSHDESCRIPTOR(\(A4\))?$/) has_pending_desc = 1
+    if (uline ~ /^MOVE\.W #(\$)?6,CTASKS_IFFTASKSTATE(\(A4\))?$/) has_task_state = 1
+    if (uline ~ /ESQIFF_BANNERBRUSHRESOURCECURSOR(\(A4\))?$/ &&
+        uline ~ /(234\(A0\)|\$EA\(A5\))/) has_cursor_advance = 1
     if (uline ~ /^RTS$/) has_rts = 1
 }
 
