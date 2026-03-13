@@ -27,7 +27,7 @@ extern UWORD NEWGRID_ColumnWidthPx;
 
 extern void NEWGRID_DrawGridFrame(char *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
 extern void CLEANUP_FormatClockFormatEntry(LONG slot, char *out_text);
-extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
+extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern void BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern void _LVOSetDrMd(char *rastPort, LONG mode);
@@ -59,7 +59,7 @@ void NEWGRID_DrawEmptyGridMessage(char *gridCtx, UWORD slot)
     }
 
     CLEANUP_FormatClockFormatEntry((LONG)slot, slot_text);
-    PARSEINI_JMPTBL_STRING_AppendAtNull(banner, slot_text);
+    STRING_AppendAtNull(banner, slot_text);
 
     rast = &ctx->rastPort;
     BEVEL_DrawBevelFrameWithTopRight(

@@ -21,7 +21,7 @@ function trim(s,    t) {
         has_push_filter_ptr = 1
     }
 
-    if (l ~ /(JSR|BSR).*ED1_JMPTBL_LOCAVAIL_RESETFILTERC/) has_reset_call = 1
+    if (l ~ /(JSR|BSR).*(ED1_JMPTBL_LOCAVAIL_RESETFILTERC|LOCAVAIL_RESETFILTERCURSORSTATE|LOCAVAIL_RESETFILTERC)/) has_reset_call = 1
 
     if (l ~ /^UNLK A5$/ || l ~ /^RTS$/ || l ~ /^ADDQ\.W #\$?4,A7$/) has_return = 1
 }

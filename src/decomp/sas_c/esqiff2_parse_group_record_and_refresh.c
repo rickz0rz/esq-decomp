@@ -30,7 +30,7 @@ extern void ESQPARS_RemoveGroupEntryAndReleaseStrings(UWORD mode);
 extern LONG ESQIFF2_ValidateFieldIndexAndLength(LONG field_index, LONG field_length);
 extern void ESQSHARED_CreateGroupEntryAndTitle(LONG group_code, LONG display_mode, UBYTE *field0, UBYTE *field1, UBYTE *field2, UBYTE *field3);
 extern LONG ESQIFF2_PadEntriesToMaxTitleWidth(signed char group_code);
-extern void ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries(void);
+extern void TEXTDISP_ApplySourceConfigAllEntries(void);
 extern void NEWGRID_RebuildIndexCache(void);
 
 static UBYTE *ParseGroup_FieldPtrFromIndex(UWORD field_index)
@@ -197,6 +197,6 @@ void ESQIFF2_ParseGroupRecordAndRefresh(UBYTE *src)
                                        ESQIFF_ParseField2Buffer,
                                        ESQIFF_ParseField3Buffer);
     ESQIFF2_PadEntriesToMaxTitleWidth((signed char)group_code);
-    ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries();
+    TEXTDISP_ApplySourceConfigAllEntries();
     NEWGRID_RebuildIndexCache();
 }
