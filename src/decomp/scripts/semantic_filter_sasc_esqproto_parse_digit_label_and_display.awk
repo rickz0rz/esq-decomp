@@ -25,9 +25,9 @@ function trim(s,    t) {
     if (u ~ /WDISP_WEATHERSTATUSDIGITCHAR/) has_digit_global = 1
     if (u ~ /WDISP_WEATHERSTATUSLABELBUFFER/) has_label_buffer = 1
     if (u ~ /WDISP_WEATHERSTATUSTEXTPTR/) has_text_ptr = 1
-    if (u ~ /ESQPROTO_JMPTBL_ESQPARS_REPLACEO/ || u ~ /ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING/) has_replace_call = 1
+    if (u ~ /ESQPROTO_JMPTBL_ESQPARS_REPLACEO/ || u ~ /ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING/ || u ~ /ESQPARS_REPLACEOWNEDSTRING/) has_replace_call = 1
     if (u ~ /ED_DIAGNOSTICSSCREENACTIVE/) has_diag_test = 1
-    if (u ~ /UNKNOWN_JMPTBL_DISPLIB_DISPLAYT/ || u ~ /UNKNOWN_JMPTBL_DISPLIB_DISPLAYTEXTATPOSITION/) has_display_call = 1
+    if (u ~ /UNKNOWN_JMPTBL_DISPLIB_DISPLAYT/ || u ~ /UNKNOWN_JMPTBL_DISPLIB_DISPLAYTEXTATPOSITION/ || u ~ /DISPLIB_DISPLAYTEXTATPOSITION/) has_display_call = 1
     if (u ~ /^RTS$/ || u ~ /^JMP / || u ~ /^JSR / || u ~ /^BSR / || u ~ /^BSR\.W /) has_rts_or_jmp = 1
 }
 
