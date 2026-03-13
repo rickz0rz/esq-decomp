@@ -20,8 +20,8 @@ extern LONG CLOCK_DaySlotIndex;
 extern WORD NEWGRID_ColumnWidthPx;
 extern WORD NEWGRID_ShowtimeEntryVariantFlag;
 
-extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(LONG *slot);
 extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const char *pattern);
 extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(LONG width, LONG rowHeight, LONG pen);
@@ -46,14 +46,14 @@ LONG NEWGRID_HandleAltGridState(char *ctx, LONG keyIndex, WORD rowIndex)
 
     ctxView = (NEWGRID_Context *)ctx;
     if (NEWGRID_AltGridStateLatch == 4) {
-        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(keyIndex, 1);
-        aux = (const NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(keyIndex, 1);
+        entry = ESQDISP_GetEntryPointerByMode(keyIndex, 1);
+        aux = (const NEWGRID_AuxData *)ESQDISP_GetEntryAuxPointerByMode(keyIndex, 1);
 
         if (aux != 0) {
             if (rowIndex == 1 || (WORD)(NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) {
                 keyIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex((char *)aux);
-                entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(keyIndex, 2);
-                aux = (const NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(keyIndex, 2);
+                entry = ESQDISP_GetEntryPointerByMode(keyIndex, 2);
+                aux = (const NEWGRID_AuxData *)ESQDISP_GetEntryAuxPointerByMode(keyIndex, 2);
             }
         }
 
