@@ -32,3 +32,4 @@ modules/groups/a/n/esqdisp.s decomp/replacements/modules/groups/a/n/esqdisp.s
 modules/groups/a/o/esqiff2.s decomp/replacements/modules/groups/a/o/esqiff2.s
 modules/groups/b/a/parseini3.s decomp/replacements/modules/groups/b/a/parseini3.s
 modules/groups/b/a/newgrid.s decomp/replacements/modules/groups/b/a/newgrid.s
+modules/groups/b/a/script3.s decomp/replacements/modules/groups/b/a/script3.s
