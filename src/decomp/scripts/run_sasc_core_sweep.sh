@@ -1163,7 +1163,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_parallel_writechard0_trial.sh"
     "src/decomp/scripts/compare_sasc_render_short_month_short_day_of_week_day_trial.sh"
     "src/decomp/scripts/compare_sasc_string_toupper_char_trial.sh"
-    "src/decomp/scripts/compare_sasc_unknown10_printf_putc_to_buffer_trial.sh"
+    "src/decomp/scripts/compare_sasc_printf_putc_to_buffer_trial.sh"
     "src/decomp/scripts/compare_sasc_unknown2a_stub0_trial.sh"
     "src/decomp/scripts/compare_sasc_unknown36_finalize_request_trial.sh"
     "src/decomp/scripts/compare_sasc_unknown36_show_abort_requester_trial.sh"

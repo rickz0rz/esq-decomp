@@ -4702,7 +4702,7 @@ Recent promoted targets:
 - Unknown8 `FORMAT_U32ToDecimalString` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_u32_to_decimal_string_trial.sh`
 - Unknown9 `FORMAT_U32ToOctalString` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_u32_to_octal_string_trial.sh`
 - Unknown10 `FORMAT_U32ToHexString` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_u32_to_hex_trial.sh`
-- Unknown10 `UNKNOWN10_PrintfPutcToBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown10_printf_putc_to_buffer_trial.sh`
+- `UNKNOWN10_PrintfPutcToBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_printf_putc_to_buffer_trial.sh` (legacy alias: `compare_sasc_unknown10_printf_putc_to_buffer_trial.sh`)
 - Unknown10 `WDISP_SPrintf` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_sprintf_trial.sh`
 - Unknown10 `PARSE_ReadSignedLong` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_trial.sh`
 - Unknown10 `PARSE_ReadSignedLong_NoBranch` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_nobranch_trial.sh`
@@ -5542,7 +5542,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown8_format_u32_to_decimal_string.c`
 - `src/decomp/sas_c/unknown9_format_u32_to_octal_string.c`
 - `src/decomp/sas_c/unknown10_format_u32_to_hex_string.c`
-- `src/decomp/sas_c/unknown10_printf_putc_to_buffer.c`
+- `src/decomp/sas_c/printf_putc_to_buffer.c`
 - `src/decomp/sas_c/unknown10_wdisp_sprintf.c`
 - `src/decomp/sas_c/unknown10_parse_read_signed_long.c`
 - `src/decomp/sas_c/unknown10_parse_read_signed_long_nobranch.c`
