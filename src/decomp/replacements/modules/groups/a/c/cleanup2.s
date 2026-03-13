@@ -1,0 +1,1633 @@
+;------------------------------------------------------------------------------
+; DECOMP TARGETS cleanup2 banner/alert helper cluster
+; SOURCE: modules/groups/a/c/cleanup2.s
+; PURPOSE:
+;   Hybrid replacement boundary for the cleanup2 banner-draw/date-format/alert
+;   helpers whose direct SAS/C compare lanes already resolve cleanly in the
+;   current checkout.
+;------------------------------------------------------------------------------
+
+    XDEF    CLEANUP_DrawBannerSpacerSegment
+    XDEF    CLEANUP_DrawClockBanner
+    XDEF    CLEANUP_DrawClockFormatFrame
+    XDEF    CLEANUP_DrawClockFormatList
+    XDEF    CLEANUP_DrawDateBannerSegment
+    XDEF    CLEANUP_DrawDateTimeBannerRow
+    XDEF    CLEANUP_DrawGridTimeBanner
+    XDEF    CLEANUP_DrawTimeBannerSegment
+    XDEF    CLEANUP_FormatClockFormatEntry
+    XDEF    CLEANUP_ProcessAlerts
+    XDEF    RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY
+
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_ProcessAlerts   (Process alert/timer/banner state machine)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D2/D7
+; CALLS:
+;   GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen, GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQ_TickClockAndFlagEvents,
+;   GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled, GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout,
+;   GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay, GROUP_AC_JMPTBL_DST_UpdateBannerQueue, GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner,
+;   GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc, GROUP_AC_JMPTBL_DST_RefreshBannerBuffer,
+;   DISPLIB_NormalizeValueByStep, CLEANUP_DrawGridTimeBanner, CLEANUP_DrawClockBanner,
+;   GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers, GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine,
+;   GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion, GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen,
+;   _LVOSetAPen, GROUP_AG_JMPTBL_MATH_DivS32
+; READS:
+;   CLEANUP_PendingAlertFlag, CLEANUP_AlertProcessingFlag, CLEANUP_DiagOverlayAutoRefreshFlag, Global_UIBusyFlag,
+;   CLEANUP_AlertCooldownTicks, LOCAVAIL_FilterStep, LOCAVAIL_FilterCooldownTicks, CLOCK_DaySlotIndex, CLOCK_CurrentDayOfWeekIndex,
+;   TEXTDISP_DeferredActionDelayTicks, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown, CLEANUP_BannerTickCounter,
+;   TLIBA1_DayEntryModeCounter, DST_BannerWindowPrimary, ESQ_AlertType235ModeFlagChar, ESQ_AlertType4ModeFlagChar, ED_MenuStateId, CLOCK_HalfHourSlotIndex,
+;   Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY
+; WRITES:
+;   CLEANUP_AlertProcessingFlag, CLEANUP_AlertCooldownTicks, LOCAVAIL_FilterStep,
+;   LOCAVAIL_FilterCooldownTicks, CLEANUP_PendingAlertFlag, TEXTDISP_DeferredActionDelayTicks, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown,
+;   CLEANUP_BannerTickCounter, TLIBA1_DayEntryModeCounter, ESQDISP_StatusBannerClampGateFlag, BANNER_ResetPendingFlag,
+;   WDISP_BannerCharRangeStart, WDISP_BannerCharRangeEnd
+; DESC:
+;   Processes pending alert state, advances the alert/badge state machine,
+;   handles brush alerts, updates banner timers, and redraws the banner/clock.
+; NOTES:
+;   - Uses LOCAVAIL_FilterStep as a multi-step alert state (2 → 3 → 4).
+;   - Clears the one-shot pending flag (CLEANUP_PendingAlertFlag) after processing.
+;------------------------------------------------------------------------------
+; Process pending alert/notification state and update on-screen banners.
+CLEANUP_ProcessAlerts:
+    MOVEM.L D2/D7,-(A7)
+    TST.W   CLEANUP_PendingAlertFlag
+    BEQ.W   .return_status
+
+    TST.L   CLEANUP_AlertProcessingFlag
+    BNE.W   .return_status
+
+    MOVEQ   #1,D0
+    MOVE.L  D0,CLEANUP_AlertProcessingFlag
+    TST.B   CLEANUP_DiagOverlayAutoRefreshFlag
+    BEQ.S   .update_alert_state
+
+    TST.W   Global_UIBusyFlag
+    BNE.S   .update_alert_state
+
+    SUBQ.L  #1,CLEANUP_AlertCooldownTicks
+    BGT.S   .update_alert_state
+
+    JSR     GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen(PC)
+
+    MOVEQ   #1,D0
+    MOVE.L  D0,CLEANUP_AlertCooldownTicks
+
+.update_alert_state:
+    MOVEQ   #2,D0
+    CMP.L   LOCAVAIL_FilterStep,D0
+    BNE.S   .check_state_three
+
+    MOVE.W  LOCAVAIL_FilterCooldownTicks,D0
+    BGT.S   .after_state_update
+
+    MOVE.L  D0,D1
+    ADDI.W  #10,D1
+    MOVE.W  D1,LOCAVAIL_FilterCooldownTicks
+    MOVEQ   #3,D0
+    MOVE.L  D0,LOCAVAIL_FilterStep
+    BRA.S   .after_state_update
+
+.check_state_three:
+    MOVEQ   #3,D0
+    CMP.L   LOCAVAIL_FilterStep,D0
+    BNE.S   .after_state_update
+
+    MOVE.W  LOCAVAIL_FilterCooldownTicks,D0
+    BGT.S   .after_state_update
+
+    MOVEQ   #4,D0
+    MOVE.L  D0,LOCAVAIL_FilterStep
+    JSR     GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(PC)
+
+.after_state_update:
+    CLR.W   CLEANUP_PendingAlertFlag
+    PEA     CLOCK_DaySlotIndex
+    JSR     ESQ_TickClockAndFlagEvents(PC)
+
+    MOVE.L  D0,D7
+    EXT.L   D7
+    PEA     CLOCK_CurrentDayOfWeekIndex
+    JSR     ESQ_TickClockAndFlagEvents(PC)
+
+    ADDQ.W  #8,A7
+    MOVE.W  TEXTDISP_DeferredActionDelayTicks,D0
+    BLT.S   .update_banner_queue
+
+    MOVEQ   #11,D1
+    CMP.W   D1,D0
+    BGE.S   .update_banner_queue
+
+    JSR     GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled(PC)
+
+    MOVE.W  TEXTDISP_DeferredActionDelayTicks,D0
+    BNE.S   .update_banner_queue
+
+    MOVE.W  #(-1),TEXTDISP_DeferredActionDelayTicks
+
+.update_banner_queue:
+    JSR     GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout(PC)
+
+    MOVEQ   #1,D0
+    CMP.L   BRUSH_PendingAlertCode,D0   ; brush loader flagged \"category 1\" alert
+    BNE.S   .handle_brush_alert_code1
+
+    PEA     3.W
+    JSR     GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(PC)
+
+    ADDQ.W  #4,A7
+    MOVEQ   #4,D0
+    MOVE.L  D0,BRUSH_PendingAlertCode
+
+.handle_brush_alert_code1:
+    MOVEQ   #2,D0
+    CMP.L   BRUSH_PendingAlertCode,D0   ; same, but for wider-than-allowed brushes
+    BNE.S   .handle_brush_alert_code2
+
+    PEA     4.W
+    JSR     GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(PC)
+
+    ADDQ.W  #4,A7
+    MOVEQ   #4,D0
+    MOVE.L  D0,BRUSH_PendingAlertCode
+
+.handle_brush_alert_code2:
+    MOVEQ   #3,D0
+    CMP.L   BRUSH_PendingAlertCode,D0   ; or for taller-than-allowed brushes
+    BNE.S   .handle_brush_alert_code3
+
+    PEA     5.W
+    JSR     GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(PC)
+
+    ADDQ.W  #4,A7
+    MOVEQ   #4,D0
+    MOVE.L  D0,BRUSH_PendingAlertCode
+
+.handle_brush_alert_code3:
+    TST.L   D7
+    BEQ.S   .after_banner_poll
+
+    MOVE.B  WDISP_WeatherStatusCountdown,D0
+    MOVEQ   #0,D1
+    CMP.B   D1,D0
+    BLS.S   .decrement_banner_counter
+
+    SUBQ.B  #1,D0
+    MOVE.B  D0,WDISP_WeatherStatusCountdown
+
+.decrement_banner_counter:
+    SUBQ.L  #1,CLEANUP_BannerTickCounter
+    BNE.S   .poll_banner_event
+
+    MOVEQ   #60,D0
+    MOVE.L  D0,CLEANUP_BannerTickCounter
+    MOVE.B  TLIBA1_DayEntryModeCounter,D0
+    CMP.B   D1,D0
+    BLS.S   .poll_banner_event
+
+    SUBQ.B  #1,D0
+    MOVE.B  D0,TLIBA1_DayEntryModeCounter
+
+.poll_banner_event:
+    PEA     DST_BannerWindowPrimary
+    JSR     GROUP_AC_JMPTBL_DST_UpdateBannerQueue(PC)
+
+    ADDQ.W  #4,A7
+    TST.L   D0
+    BEQ.S   .after_banner_poll
+
+    PEA     1.W
+    JSR     GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(PC)
+
+    ADDQ.W  #4,A7
+
+.after_banner_poll:
+    MOVE.B  ESQ_AlertType235ModeFlagChar,D0
+    MOVEQ   #89,D1
+    CMP.B   D1,D0
+    BNE.S   .handle_alert_type2
+
+    MOVEQ   #2,D0
+    CMP.L   D0,D7
+    BNE.S   .handle_alert_type2
+
+    CLR.W   ESQDISP_StatusBannerClampGateFlag
+    CLR.L   -(A7)
+    JSR     GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(PC)
+
+    ADDQ.W  #4,A7
+    MOVE.W  #1,ESQDISP_StatusBannerClampGateFlag
+
+.handle_alert_type2:
+    MOVE.B  ESQ_AlertType235ModeFlagChar,D0
+    MOVEQ   #89,D1
+    CMP.B   D1,D0
+    BNE.S   .check_alert_type5_or_type2
+
+    MOVEQ   #5,D2
+    CMP.L   D2,D7
+    BEQ.S   .handle_alert_type5_or_type2
+
+.check_alert_type5_or_type2:
+    CMP.B   D1,D0
+    BEQ.S   .init_alert_counters
+
+    MOVEQ   #2,D0
+    CMP.L   D0,D7
+    BNE.S   .init_alert_counters
+
+.handle_alert_type5_or_type2:
+    JSR     GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc(PC)
+
+    JSR     GROUP_AC_JMPTBL_DST_RefreshBannerBuffer(PC)
+
+    CLR.L   -(A7)
+    JSR     GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(PC)
+
+    ADDQ.W  #4,A7
+
+.init_alert_counters:
+    MOVE.B  ESQ_AlertType235ModeFlagChar,D0
+    MOVEQ   #89,D1
+    CMP.B   D1,D0
+    BNE.S   .advance_alert_counters
+
+    MOVEQ   #3,D0
+    CMP.L   D0,D7
+    BNE.S   .advance_alert_counters
+
+    MOVEQ   #1,D0
+    MOVE.W  D0,BANNER_ResetPendingFlag
+    MOVE.W  CLOCK_HalfHourSlotIndex,D1
+    ADDQ.W  #1,D1
+    EXT.L   D1
+    PEA     48.W
+    PEA     1.W
+    MOVE.L  D1,-(A7)
+    JSR     DISPLIB_NormalizeValueByStep(PC)
+
+    MOVE.W  D0,WDISP_BannerCharRangeStart
+    MOVE.W  CLOCK_HalfHourSlotIndex,D0
+    ADDQ.W  #2,D0
+    EXT.L   D0
+    PEA     48.W
+    PEA     1.W
+    MOVE.L  D0,-(A7)
+    JSR     DISPLIB_NormalizeValueByStep(PC)
+
+    LEA     24(A7),A7
+    MOVE.W  D0,WDISP_BannerCharRangeEnd
+
+.advance_alert_counters:
+    MOVE.B  ESQ_AlertType4ModeFlagChar,D0
+    MOVEQ   #89,D1
+    CMP.B   D1,D0
+    BNE.S   .draw_banner
+
+    MOVEQ   #4,D0
+    CMP.L   D0,D7
+    BNE.S   .draw_banner
+
+    MOVE.W  WDISP_BannerCharRangeStart,D0
+    MOVE.L  D0,D1
+    ADDQ.W  #1,D1
+    MOVE.W  D1,WDISP_BannerCharRangeStart
+    EXT.L   D1
+    PEA     48.W
+    PEA     1.W
+    MOVE.L  D1,-(A7)
+    JSR     DISPLIB_NormalizeValueByStep(PC)
+
+    LEA     12(A7),A7
+    MOVE.W  D0,WDISP_BannerCharRangeStart
+    MOVE.W  WDISP_BannerCharRangeEnd,D0
+    MOVE.L  D0,D1
+    ADDQ.W  #1,D1
+    MOVE.W  D1,WDISP_BannerCharRangeEnd
+    EXT.L   D1
+    PEA     48.W
+    PEA     1.W
+    MOVE.L  D1,-(A7)
+    JSR     DISPLIB_NormalizeValueByStep(PC)
+
+    LEA     12(A7),A7
+    MOVE.W  D0,WDISP_BannerCharRangeEnd
+
+.draw_banner:
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEQ   #1,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    TST.W   Global_UIBusyFlag
+    BEQ.S   .draw_clock_banner
+
+    BSR.W   CLEANUP_DrawGridTimeBanner
+
+    BRA.S   .after_banner_draw
+
+.draw_clock_banner:
+    BSR.W   CLEANUP_DrawClockBanner
+
+.after_banner_draw:
+    MOVEQ   #2,D0
+    CMP.L   D0,D7
+    BNE.S   .update_grid_flash
+
+    MOVEQ   #0,D1
+    MOVE.W  CLOCK_HalfHourSlotIndex,D1
+    MOVE.L  D1,D0
+    MOVEQ   #2,D1
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+
+    SUBQ.L  #1,D1
+    BNE.S   .maybe_clear_brush_alert
+
+    CLR.L   BRUSH_PendingAlertCode
+
+.maybe_clear_brush_alert:
+    MOVE.W  WDISP_BannerCharRangeStart,D0
+    EXT.L   D0
+    MOVE.L  D0,-(A7)
+    JSR     GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers(PC)
+
+    ADDQ.W  #4,A7
+
+.update_grid_flash:
+    JSR     GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine(PC)
+
+    MOVE.B  ED_MenuStateId,D0
+    SUBQ.B  #8,D0
+    BNE.S   .check_grid_flash_alt
+
+    JSR     GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion(PC)
+
+    BRA.S   .finish
+
+.check_grid_flash_alt:
+    MOVE.B  ED_MenuStateId,D0
+    SUBQ.B  #7,D0
+    BNE.S   .finish
+
+    JSR     GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen(PC)
+
+.finish:
+    CLR.L   CLEANUP_AlertProcessingFlag
+
+.return_status:
+    MOVEM.L (A7)+,D2/D7
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_DrawClockBanner   (DrawClockBanner)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D3/A0-A1/A5-A6
+; CALLS:
+;   GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat, GROUP_AE_JMPTBL_WDISP_SPrintf, _LVOSetAPen,
+;   _LVORectFill, _LVOMove, _LVOText, BEVEL_DrawBevelFrameWithTopRight, GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
+; READS:
+;   Global_UIBusyFlag, Global_REF_STR_USE_24_HR_CLOCK, Global_WORD_CURRENT_HOUR,
+;   CLOCK_CurrentAmPmFlag, Global_WORD_CURRENT_MINUTE, Global_WORD_CURRENT_SECOND,
+;   Global_STR_EXTRA_TIME_FORMAT, Global_STR_GRID_TIME_FORMAT,
+;   NEWGRID_MainRastPortPtr, NEWGRID_ColumnStartXPx, Global_REF_GRAPHICS_LIBRARY
+; WRITES:
+;   Stack buffer at -10(A5)
+; DESC:
+;   Formats the current time string and renders it into the top banner area.
+; NOTES:
+;   - Centers the rendered time based on the font metrics.
+;------------------------------------------------------------------------------
+; Render the top-of-screen clock/banner text.
+CLEANUP_DrawClockBanner:
+    LINK.W  A5,#-12
+    MOVEM.L D2-D3,-(A7)
+    TST.W   Global_UIBusyFlag
+    BNE.W   .done
+
+    MOVE.B  Global_REF_STR_USE_24_HR_CLOCK,D0
+    MOVEQ   #89,D1
+    CMP.B   D1,D0
+    BNE.S   .format_grid_time
+
+    MOVE.W  Global_WORD_CURRENT_HOUR,D0
+    EXT.L   D0
+    MOVE.W  CLOCK_CurrentAmPmFlag,D1
+    EXT.L   D1
+    MOVE.L  D1,-(A7)
+    MOVE.L  D0,-(A7)
+    JSR     GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(PC)
+
+    MOVE.W  Global_WORD_CURRENT_MINUTE,D1
+    EXT.L   D1
+    MOVE.W  Global_WORD_CURRENT_SECOND,D2
+    EXT.L   D2
+    MOVE.L  D2,(A7)
+    MOVE.L  D1,-(A7)
+    MOVE.L  D0,-(A7)
+    PEA     Global_STR_EXTRA_TIME_FORMAT
+    PEA     -10(A5)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
+
+    LEA     24(A7),A7
+    BRA.S   .draw_banner
+
+.format_grid_time:
+    MOVE.W  Global_WORD_CURRENT_HOUR,D0
+    EXT.L   D0
+    MOVE.W  Global_WORD_CURRENT_MINUTE,D1
+    EXT.L   D1
+    MOVE.W  Global_WORD_CURRENT_SECOND,D2
+    EXT.L   D2
+    MOVE.L  D2,-(A7)
+    MOVE.L  D1,-(A7)
+    MOVE.L  D0,-(A7)
+    PEA     Global_STR_GRID_TIME_FORMAT
+    PEA     -10(A5)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
+
+    LEA     20(A7),A7
+
+.draw_banner:
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEQ   #7,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEQ   #0,D0
+    MOVE.L  D0,D1
+    MOVEQ   #35,D2
+    MOVEQ   #33,D3
+    JSR     _LVORectFill(A6)
+
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEQ   #7,D0
+    JSR     _LVOSetAPen(A6)
+
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    ADD.L   D2,D0
+    MOVE.L  D0,D2
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEQ   #36,D0
+    MOVEQ   #0,D1
+    JSR     _LVORectFill(A6)
+
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVEQ   #35,D1
+    ADD.L   D1,D0
+    MOVE.L  D3,-(A7)
+    MOVE.L  D0,-(A7)
+    MOVEQ   #0,D1
+    MOVE.L  D1,-(A7)
+    MOVE.L  D1,-(A7)
+    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
+    JSR     BEVEL_DrawBevelFrameWithTopRight(PC)
+
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEA.L 52(A1),A0
+    MOVEQ   #0,D0
+    MOVE.W  26(A0),D0
+    MOVEQ   #34,D1
+    SUB.L   D0,D1
+    TST.L   D1
+    BPL.S   .center_text_y
+
+    ADDQ.L  #1,D1
+
+.center_text_y:
+    ASR.L   #1,D1
+    MOVEQ   #0,D0
+    MOVE.W  26(A0),D0
+    ADD.L   D0,D1
+    SUBQ.L  #1,D1
+    MOVEQ   #44,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOMove(A6)
+
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEQ   #1,D0
+    JSR     _LVOSetAPen(A6)
+
+    LEA     -10(A5),A0
+
+    MOVEA.L A0,A1
+
+.measure_text_loop:
+    TST.B   (A1)+
+    BNE.S   .measure_text_loop
+
+    SUBQ.L  #1,A1
+    SUBA.L  A0,A1
+    MOVE.L  A1,D0
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    JSR     _LVOText(A6)
+
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVEQ   #36,D1
+    ADD.L   D1,D0
+    PEA     192.W
+    MOVEQ   #34,D1
+    MOVE.L  D1,-(A7)
+    MOVE.L  D0,-(A7)
+    MOVE.L  D1,-(A7)
+    MOVEQ   #0,D2
+    MOVE.L  D2,-(A7)
+    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
+    MOVE.L  D2,-(A7)
+    MOVE.L  D2,-(A7)
+    MOVEA.L NEWGRID_MainRastPortPtr,A0
+    MOVE.L  4(A0),-(A7)
+    JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
+
+.done:
+    MOVEM.L -20(A5),D2-D3
+    UNLK    A5
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_FormatClockFormatEntry   (FormatClockFormatEntryuncertain)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D1/D6-D7/A0-A3
+; CALLS:
+;   GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AG_JMPTBL_MATH_Mulu32
+; READS:
+;   CLOCK_FormatVariantCode, Global_REF_STR_CLOCK_FORMAT
+; WRITES:
+;   outText buffer (A3)
+; DESC:
+;   Copies a clock-format string for slotIndex into outText and optionally
+;   adjusts two digit positions based on CLOCK_FormatVariantCode.
+; NOTES:
+;   - Wraps slotIndex by subtracting 48 until within range.
+;------------------------------------------------------------------------------
+CLEANUP_FormatClockFormatEntry:
+    MOVEM.L D6-D7/A2-A3,-(A7)
+    MOVE.L  20(A7),D7
+    MOVEA.L 24(A7),A3
+
+.wrap_slot_index_loop:
+    MOVEQ   #48,D0
+    CMP.L   D0,D7
+    BLE.S   .slot_index_ready
+
+    SUB.L   D0,D7
+    BRA.S   .wrap_slot_index_loop
+
+.slot_index_ready:
+    MOVEQ   #0,D0
+    MOVE.B  CLOCK_FormatVariantCode,D0
+    MOVEQ   #30,D1
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+
+    MOVE.L  D1,D6
+    MOVE.L  D7,D0
+    ASL.L   #2,D0
+    MOVEA.L Global_REF_STR_CLOCK_FORMAT,A0
+    ADDA.L  D0,A0
+    MOVEA.L (A0),A1
+    MOVEA.L A3,A2
+
+.copy_format_loop:
+    MOVE.B  (A1)+,(A2)+
+    BNE.S   .copy_format_loop
+
+    TST.L   D6
+    BLE.S   .done
+
+    MOVE.B  3(A3),D0
+    EXT.W   D0
+    EXT.L   D0
+    MOVEQ   #48,D1
+    SUB.L   D1,D0
+    MOVEQ   #10,D1
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+
+    ADD.L   D0,D6
+    MOVE.L  D6,D0
+    MOVEQ   #10,D1
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+
+    MOVEQ   #48,D1
+    ADD.L   D1,D0
+    MOVE.B  D0,3(A3)
+    MOVE.L  D6,D0
+    MOVEQ   #10,D1
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+
+    MOVEQ   #48,D0
+    ADD.L   D0,D1
+    MOVE.B  D1,4(A3)
+
+.done:
+    MOVEM.L (A7)+,D6-D7/A2-A3
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_DrawClockFormatList   (DrawClockFormatListuncertain)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +85: arg_2 (via 89(A5))
+;   stack +116: arg_3 (via 120(A5))
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A1/A5-A6
+; CALLS:
+;   GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds, _LVOSetAPen, _LVORectFill, GROUP_AG_JMPTBL_MATH_Mulu32, BEVEL_DrawBevelFrameWithTopRight,
+;   CLEANUP_FormatClockFormatEntry, _LVOTextLength, _LVOMove, _LVOText
+; READS:
+;   NEWGRID_ColumnStartXPx, NEWGRID_ColumnWidthPx, NEWGRID_MainRastPortPtr, Global_REF_GRAPHICS_LIBRARY
+; WRITES:
+;   Stack text buffer at -89(A5)
+; DESC:
+;   Renders a multi-row list of clock-format strings starting at baseSlotIndex
+;   into the grid rastport area.
+; NOTES:
+;   - Draws two rows in a loop, then renders the final row separately.
+;------------------------------------------------------------------------------
+CLEANUP_DrawClockFormatList:
+    LINK.W  A5,#-100
+    MOVEM.L D2-D3/D5-D7,-(A7)
+    MOVE.L  8(A5),D7
+    MOVEQ   #0,D0
+    MOVE.L  D0,-(A7)
+    PEA     6.W
+    PEA     5.W
+    MOVE.L  D0,-(A7)
+    JSR     GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds(PC)
+
+    LEA     16(A7),A7
+
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEQ   #7,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVEQ   #36,D1
+
+    ADD.L   D1,D0
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEQ   #0,D1
+    MOVE.L  #695,D2
+    MOVEQ   #33,D3
+    JSR     _LVORectFill(A6)
+
+    MOVEQ   #0,D6
+
+.row_loop:
+    MOVEQ   #2,D0
+    CMP.L   D0,D6
+    BGE.W   .final_row
+
+    MOVE.L  D7,D0
+    ADD.L   D6,D0
+    MOVEQ   #48,D1
+    CMP.L   D1,D0
+    BLE.S   .row_index_no_wrap
+
+    SUB.L   D1,D0
+    BRA.S   .row_index_ready
+
+.row_index_no_wrap:
+    MOVE.L  D7,D0
+    ADD.L   D6,D0
+
+.row_index_ready:
+    MOVE.L  D0,D5
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVEQ   #0,D1
+    MOVE.W  NEWGRID_ColumnWidthPx,D1
+    MOVE.L  D0,20(A7)
+    MOVE.L  D6,D0
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+
+    MOVE.L  20(A7),D1
+    ADD.L   D0,D1
+    MOVEQ   #36,D0
+    ADD.L   D0,D1
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVEQ   #0,D2
+    MOVE.W  NEWGRID_ColumnWidthPx,D2
+    MOVE.L  D0,24(A7)
+    MOVE.L  D6,D0
+    MOVE.L  D1,20(A7)
+    MOVE.L  D2,D1
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+
+    MOVE.L  24(A7),D1
+    ADD.L   D0,D1
+    MOVEQ   #0,D0
+    MOVE.W  D2,D0
+    ADD.L   D0,D1
+    MOVEQ   #35,D0
+    ADD.L   D0,D1
+    PEA     33.W
+    MOVE.L  D1,-(A7)
+    CLR.L   -(A7)
+    MOVE.L  32(A7),-(A7)
+    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
+    JSR     BEVEL_DrawBevelFrameWithTopRight(PC)
+
+    PEA     -89(A5)
+    MOVE.L  D5,-(A7)
+    BSR.W   CLEANUP_FormatClockFormatEntry
+
+    LEA     28(A7),A7
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVEQ   #0,D1
+    MOVE.W  NEWGRID_ColumnWidthPx,D1
+    MOVE.L  D0,20(A7)
+    MOVE.L  D6,D0
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+
+    MOVE.L  20(A7),D1
+    ADD.L   D0,D1
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnWidthPx,D0
+    LEA     -89(A5),A0
+    MOVEA.L A0,A1
+
+.measure_row_text_loop:
+    TST.B   (A1)+
+    BNE.S   .measure_row_text_loop
+
+    SUBQ.L  #1,A1
+    SUBA.L  A0,A1
+    MOVE.L  D0,24(A7)
+    MOVE.L  D1,20(A7)
+    MOVE.L  A1,D0
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOTextLength(A6)
+
+    MOVE.L  24(A7),D1
+    SUB.L   D0,D1
+    SUBQ.L  #8,D1
+    TST.L   D1
+    BPL.S   .center_row_text_x
+
+    ADDQ.L  #1,D1
+
+.center_row_text_x:
+    ASR.L   #1,D1
+    MOVE.L  20(A7),D0
+    ADD.L   D1,D0
+    MOVEQ   #42,D1
+    ADD.L   D1,D0
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEA.L 52(A1),A0
+    MOVEQ   #0,D1
+    MOVE.W  26(A0),D1
+    MOVEQ   #34,D2
+    SUB.L   D1,D2
+    TST.L   D2
+    BPL.S   .center_row_text_y
+
+    ADDQ.L  #1,D2
+
+.center_row_text_y:
+    ASR.L   #1,D2
+    MOVEQ   #0,D1
+    MOVE.W  26(A0),D1
+    ADD.L   D1,D2
+    SUBQ.L  #1,D2
+    MOVE.L  D2,D1
+    JSR     _LVOMove(A6)
+
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEQ   #3,D0
+    JSR     _LVOSetAPen(A6)
+
+    LEA     -89(A5),A0
+    MOVEA.L A0,A1
+
+.draw_row_text_loop:
+    TST.B   (A1)+
+    BNE.S   .draw_row_text_loop
+
+    SUBQ.L  #1,A1
+    SUBA.L  A0,A1
+    MOVE.L  A1,D0
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    JSR     _LVOText(A6)
+
+    ADDQ.L  #1,D6
+    BRA.W   .row_loop
+
+.final_row:
+    MOVEQ   #2,D6
+    MOVE.L  D7,D0
+    ADD.L   D6,D0
+    MOVEQ   #48,D1
+    CMP.L   D1,D0
+    BLE.S   .final_index_no_wrap
+
+    SUB.L   D1,D0
+    BRA.S   .final_index_ready
+
+.final_index_no_wrap:
+    MOVE.L  D7,D0
+    ADD.L   D6,D0
+
+.final_index_ready:
+    MOVE.L  D0,D5
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVEQ   #0,D1
+    MOVE.W  NEWGRID_ColumnWidthPx,D1
+    MOVE.L  D0,20(A7)
+    MOVE.L  D6,D0
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+
+    MOVE.L  20(A7),D1
+    ADD.L   D0,D1
+    MOVEQ   #36,D0
+    ADD.L   D0,D1
+    PEA     33.W
+    PEA     695.W
+    CLR.L   -(A7)
+    MOVE.L  D1,-(A7)
+    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
+    JSR     BEVEL_DrawBevelFrameWithTopRight(PC)
+
+    PEA     -89(A5)
+    MOVE.L  D5,-(A7)
+    BSR.W   CLEANUP_FormatClockFormatEntry
+
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVEQ   #0,D1
+    MOVE.W  NEWGRID_ColumnWidthPx,D1
+    MOVE.L  D0,48(A7)
+    MOVE.L  D6,D0
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+
+    MOVE.L  48(A7),D1
+    ADD.L   D0,D1
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnWidthPx,D0
+    LEA     -89(A5),A0
+    MOVEA.L A0,A1
+
+.measure_final_text_loop:
+    TST.B   (A1)+
+    BNE.S   .measure_final_text_loop
+
+    SUBQ.L  #1,A1
+    SUBA.L  A0,A1
+    MOVE.L  D0,52(A7)
+    MOVE.L  D1,48(A7)
+    MOVE.L  A1,D0
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOTextLength(A6)
+
+    MOVE.L  52(A7),D1
+    SUB.L   D0,D1
+    SUBQ.L  #8,D1
+    TST.L   D1
+    BPL.S   .center_final_text_x
+
+    ADDQ.L  #1,D1
+
+.center_final_text_x:
+    ASR.L   #1,D1
+    MOVE.L  48(A7),D0
+    ADD.L   D1,D0
+    MOVEQ   #42,D1
+    ADD.L   D1,D0
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEA.L 52(A1),A0
+    MOVEQ   #0,D1
+    MOVE.W  26(A0),D1
+    MOVEQ   #34,D2
+    SUB.L   D1,D2
+    TST.L   D2
+    BPL.S   .center_final_text_y
+
+    ADDQ.L  #1,D2
+
+.center_final_text_y:
+    ASR.L   #1,D2
+    MOVEQ   #0,D1
+    MOVE.W  26(A0),D1
+    ADD.L   D1,D2
+    SUBQ.L  #1,D2
+    MOVE.L  D2,D1
+    JSR     _LVOMove(A6)
+
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEQ   #3,D0
+    JSR     _LVOSetAPen(A6)
+
+    LEA     -89(A5),A0
+    MOVEA.L A0,A1
+
+.draw_final_text_loop:
+    TST.B   (A1)+
+    BNE.S   .draw_final_text_loop
+
+    SUBQ.L  #1,A1
+    SUBA.L  A0,A1
+    MOVE.L  A1,D0
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    JSR     _LVOText(A6)
+
+    MOVEM.L -120(A5),D2-D3/D5-D7
+    UNLK    A5
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_DrawClockFormatFrame   (DrawClockFormatFrameuncertain)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D3/A0
+; CALLS:
+;   GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
+; READS:
+;   NEWGRID_ColumnStartXPx, NEWGRID_MainRastPortPtr
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the frame/box for the clock format list area.
+; NOTES:
+;   - Uses NEWGRID_ColumnStartXPx as a layout offset.
+;------------------------------------------------------------------------------
+CLEANUP_DrawClockFormatFrame:
+    MOVEM.L D2-D3,-(A7)
+    MOVEQ   #0,D0
+    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVE.L  D0,D1
+    MOVEQ   #36,D2
+    ADD.L   D2,D1
+    MOVEQ   #0,D3
+    MOVE.W  D0,D3
+    ADD.L   D2,D3
+    MOVEQ   #0,D2
+    MOVE.W  D0,D2
+    MOVE.L  #660,D0
+    SUB.L   D2,D0
+    PEA     192.W
+    MOVEQ   #34,D2
+    MOVE.L  D2,-(A7)
+    MOVE.L  D0,-(A7)
+    MOVE.L  D2,-(A7)
+    MOVE.L  D3,-(A7)
+    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
+    CLR.L   -(A7)
+    MOVE.L  D1,-(A7)
+    MOVEA.L NEWGRID_MainRastPortPtr,A0
+    MOVE.L  4(A0),-(A7)
+    JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
+
+    LEA     36(A7),A7
+    MOVEM.L (A7)+,D2-D3
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_DrawGridTimeBanner   (DrawGridTimeBanneruncertain)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A1/A5-A6
+; CALLS:
+;   ESQ_FormatTimeStamp, _LVOSetAPen, _LVOSetDrMd, _LVORectFill, _LVOTextLength,
+;   _LVOMove, _LVOText, GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat, GROUP_AE_JMPTBL_WDISP_SPrintf,
+;   GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
+; READS:
+;   CLOCK_CurrentDayOfWeekIndex, Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY,
+;   Global_REF_STR_USE_24_HR_CLOCK, Global_WORD_CURRENT_HOUR, CLOCK_CurrentAmPmFlag,
+;   Global_WORD_CURRENT_MINUTE, Global_WORD_CURRENT_SECOND,
+;   Global_STR_GRID_TIME_FORMAT_DUPLICATE, Global_STR_12_44_44_SINGLE_SPACE,
+;   Global_STR_12_44_44_PM
+; WRITES:
+;   Stack buffers at -32(A5) and -23(A5)
+; DESC:
+;   Formats and renders the time banner into the main rastport, centered
+;   based on measured text widths.
+; NOTES:
+;   - Draws an extra AM/PM suffix when using 12-hour format.
+;------------------------------------------------------------------------------
+CLEANUP_DrawGridTimeBanner:
+    LINK.W  A5,#-40
+    MOVEM.L D2-D7,-(A7)
+    MOVEQ   #0,D5
+    PEA     CLOCK_CurrentDayOfWeekIndex
+    PEA     -32(A5)
+    JSR     ESQ_FormatTimeStamp(PC)
+
+    ADDQ.W  #8,A7
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEQ   #7,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  32(A0),D0
+    ANDI.W  #$fff7,D0
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  D0,32(A0)
+    MOVEA.L A0,A1
+    MOVEQ   #0,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetDrMd(A6)
+
+    MOVEQ   #0,D0
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  58(A0),D0
+    SUBQ.L  #1,D0
+    MOVEA.L A0,A1
+    MOVE.L  D0,D3
+    MOVEQ   #0,D0
+    MOVE.L  D0,D1
+    MOVEQ   #40,D2
+    NOT.B   D2
+    JSR     _LVORectFill(A6)
+
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEQ   #3,D0
+    JSR     _LVOSetAPen(A6)
+
+    MOVE.B  -23(A5),D4
+    CLR.B   -23(A5)
+    MOVE.B  Global_REF_STR_USE_24_HR_CLOCK,D0
+    MOVEQ   #89,D1
+    CMP.B   D1,D0
+    BNE.S   .measure_sample_width
+
+    MOVE.W  Global_WORD_CURRENT_HOUR,D0
+    EXT.L   D0
+    MOVE.W  CLOCK_CurrentAmPmFlag,D1
+    EXT.L   D1
+    MOVE.L  D1,-(A7)
+    MOVE.L  D0,-(A7)
+    JSR     GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(PC)
+
+    MOVE.W  Global_WORD_CURRENT_MINUTE,D1
+    EXT.L   D1
+    MOVE.W  Global_WORD_CURRENT_SECOND,D2
+    EXT.L   D2
+    MOVE.L  D2,(A7)
+    MOVE.L  D1,-(A7)
+    MOVE.L  D0,-(A7)
+    PEA     Global_STR_GRID_TIME_FORMAT_DUPLICATE
+    PEA     -32(A5)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
+
+    LEA     24(A7),A7
+
+.measure_sample_width:
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    LEA     Global_STR_12_44_44_SINGLE_SPACE,A0
+    MOVEQ   #9,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOTextLength(A6)
+
+    MOVE.L  D0,D6
+
+    MOVE.B  Global_REF_STR_USE_24_HR_CLOCK,D0
+    MOVEQ   #78,D1
+    CMP.B   D1,D0
+    BNE.S   .no_ampm_suffix
+
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    LEA     Global_STR_12_44_44_PM,A0
+    MOVEQ   #11,D0
+    JSR     _LVOTextLength(A6)
+
+    MOVE.L  D0,D5
+
+    BRA.S   .center_time_text
+
+.no_ampm_suffix:
+    MOVE.L  D6,D5
+
+.center_time_text:
+    MOVEQ   #108,D0
+    ADD.L   D0,D0
+    SUB.L   D5,D0
+    TST.L   D0
+    BPL.S   .center_time_x
+
+    ADDQ.L  #1,D0
+
+.center_time_x:
+    ASR.L   #1,D0
+    MOVE.L  D0,D7
+    MOVEQ   #0,D0
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  62(A0),D0
+    MOVE.L  D0,24(A7)
+    MOVEA.L A0,A1
+    MOVE.L  D7,D0
+    MOVE.L  24(A7),D1
+    JSR     _LVOMove(A6)
+
+    LEA     -32(A5),A0
+    MOVEA.L A0,A1
+
+.time_text_len_loop:
+    TST.B   (A1)+
+    BNE.S   .time_text_len_loop
+
+    SUBQ.L  #1,A1
+    SUBA.L  A0,A1
+    MOVE.L  A1,D0
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    JSR     _LVOText(A6)
+
+    MOVE.B  Global_REF_STR_USE_24_HR_CLOCK,D0
+    MOVEQ   #78,D1
+    CMP.B   D1,D0
+    BNE.S   .done
+
+    MOVE.B  D4,-23(A5)
+    MOVE.L  D7,D0
+    ADD.L   D6,D0
+    MOVEQ   #0,D1
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  62(A0),D1
+    MOVEA.L A0,A1
+    JSR     _LVOMove(A6)
+
+    LEA     -23(A5),A0
+    MOVEA.L A0,A1
+
+.ampm_text_len_loop:
+    TST.B   (A1)+
+    BNE.S   .ampm_text_len_loop
+
+    SUBQ.L  #1,A1
+    SUBA.L  A0,A1
+    MOVE.L  A1,D0
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    JSR     _LVOText(A6)
+
+.done:
+    MOVE.L  D7,D0
+    ADDI.L  #448,D0
+    MOVEQ   #0,D1
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  58(A0),D1
+    SUBQ.L  #2,D1
+    PEA     192.W
+    MOVE.L  D1,-(A7)
+    MOVE.L  D5,-(A7)
+    PEA     40.W
+    MOVE.L  D0,-(A7)
+    MOVE.L  A0,-(A7)
+    CLR.L   -(A7)
+    MOVE.L  D7,-(A7)
+    MOVE.L  4(A0),-(A7)
+    JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
+
+    MOVEM.L -64(A5),D2-D7
+    UNLK    A5
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY   (Routine at RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   A0/A1/A6/A7/D0/D1/D2/D3/D5/D6/D7
+; CALLS:
+;   GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort, GROUP_AE_JMPTBL_WDISP_SPrintf, _LVOMove, _LVORectFill, _LVOSetAPen, _LVOSetDrMd, _LVOText, _LVOTextLength
+; READS:
+;   Global_JMPTBL_SHORT_DAYS_OF_WEEK, Global_JMPTBL_SHORT_MONTHS, Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED, CLOCK_CurrentDayOfWeekIndex, CLOCK_CurrentMonthIndex, CLOCK_CurrentDayOfMonth, fff7
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY:
+;------------------------------------------------------------------------------
+; FUNC: RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY   (RenderShortMonthShortDowDay)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A1/A5-A6
+; CALLS:
+;   GROUP_AE_JMPTBL_WDISP_SPrintf, _LVOSetAPen, _LVOSetDrMd, _LVORectFill,
+;   _LVOTextLength, _LVOMove, _LVOText, GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
+; READS:
+;   CLOCK_CurrentDayOfWeekIndex, CLOCK_CurrentMonthIndex, CLOCK_CurrentDayOfMonth, Global_JMPTBL_SHORT_DAYS_OF_WEEK,
+;   Global_JMPTBL_SHORT_MONTHS, Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED,
+;   Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY
+; WRITES:
+;   Stack buffer at -32(A5)
+; DESC:
+;   Formats and renders "Mon Jan 1" style text in the banner area.
+; NOTES:
+;   - Centers the string based on measured text width.
+;------------------------------------------------------------------------------
+    LINK.W  A5,#-36
+    MOVEM.L D2-D3/D5-D7,-(A7)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
+
+    MOVE.W  CLOCK_CurrentDayOfWeekIndex,D0
+    EXT.L   D0
+    ASL.L   #2,D0
+    LEA     Global_JMPTBL_SHORT_DAYS_OF_WEEK,A0
+    ADDA.L  D0,A0
+
+    MOVE.W  CLOCK_CurrentMonthIndex,D0
+    EXT.L   D0
+    ASL.L   #2,D0
+    LEA     Global_JMPTBL_SHORT_MONTHS,A1
+    ADDA.L  D0,A1
+
+    MOVE.W  CLOCK_CurrentDayOfMonth,D0
+    EXT.L   D0
+
+    MOVE.L  D0,-(A7)
+    MOVE.L  (A1),-(A7)
+    MOVE.L  (A0),-(A7)
+    PEA     Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED
+    PEA     -32(A5)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
+
+    LEA     20(A7),A7
+
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEQ   #7,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  32(A0),D0
+    ANDI.W  #$fff7,D0
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  D0,32(A0)
+    MOVEA.L A0,A1
+    MOVEQ   #0,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetDrMd(A6)
+
+    MOVEQ   #0,D0
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  58(A0),D0
+    SUBQ.L  #1,D0
+    MOVEA.L A0,A1
+    MOVE.L  D0,D3
+    MOVEQ   #0,D0
+    MOVE.L  D0,D1
+    MOVEQ   #40,D2
+    NOT.B   D2
+    JSR     _LVORectFill(A6)
+
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEQ   #3,D0
+    JSR     _LVOSetAPen(A6)
+
+    LEA     -32(A5),A0
+    MOVEA.L A0,A1
+
+.date_text_len_loop:
+    TST.B   (A1)+
+    BNE.S   .date_text_len_loop
+
+    SUBQ.L  #1,A1
+    SUBA.L  A0,A1
+    MOVE.L  A1,D6
+    MOVE.L  D6,D0
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    JSR     _LVOTextLength(A6)
+
+    MOVE.L  D0,D5
+    MOVEQ   #108,D0
+    ADD.L   D0,D0
+    SUB.L   D5,D0
+    TST.L   D0
+    BPL.S   .center_date_text_x
+
+    ADDQ.L  #1,D0
+
+.center_date_text_x:
+    ASR.L   #1,D0
+    MOVE.L  D0,D7
+    MOVEQ   #0,D0
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  62(A0),D0
+    MOVE.L  D0,20(A7)
+    MOVEA.L A0,A1
+    MOVE.L  D7,D0
+    MOVE.L  20(A7),D1
+    JSR     _LVOMove(A6)
+
+    MOVE.L  D6,D0
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    LEA     -32(A5),A0
+    JSR     _LVOText(A6)
+
+    MOVEQ   #0,D0
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  58(A0),D0
+    SUBQ.L  #2,D0
+    PEA     192.W
+    MOVE.L  D0,-(A7)
+    PEA     208.W
+    PEA     40.W
+    PEA     44.W
+    MOVE.L  A0,-(A7)
+    MOVEQ   #0,D1
+    MOVE.L  D1,-(A7)
+    MOVE.L  D1,-(A7)
+    MOVE.L  4(A0),-(A7)
+    JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
+
+    MOVEM.L -56(A5),D2-D3/D5-D7
+    UNLK    A5
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_DrawDateBannerSegment   (DrawDateBannerSegmentuncertain)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D3/A0-A1/A5-A6
+; CALLS:
+;   _LVOSetAPen, _LVORectFill, RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY,
+;   BEVEL_DrawBevelFrameWithTopRight
+; READS:
+;   Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY, Global_REF_696_400_BITMAP
+; WRITES:
+;   RastPort BitMap (temporary swap)
+; DESC:
+;   Draws the left banner segment containing the short date (day/month).
+; NOTES:
+;   - Temporarily swaps the rastport bitmap to Global_REF_696_400_BITMAP.
+;------------------------------------------------------------------------------
+CLEANUP_DrawDateBannerSegment:
+    LINK.W  A5,#-4
+    MOVEM.L D2-D3,-(A7)
+
+.rastPortBitmap = -4
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  Struct_RastPort__BitMap(A0),.rastPortBitmap(A5)
+    MOVE.L  #Global_REF_696_400_BITMAP,Struct_RastPort__BitMap(A0)
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEQ   #7,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  Struct_RastPort__Flags(A0),D0
+    ANDI.W  #$fff7,D0
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  D0,Struct_RastPort__Flags(A0)
+    MOVEA.L A0,A1
+    MOVEQ   #40,D0
+    MOVEQ   #34,D1
+    MOVEQ   #0,D2
+    NOT.B   D2
+    MOVEQ   #67,D3
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVORectFill(A6)
+
+    BSR.W   RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY
+
+    PEA     67.W
+    PEA     255.W
+    PEA     34.W
+    CLR.L   -(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
+    JSR     BEVEL_DrawBevelFrameWithTopRight(PC)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  .rastPortBitmap(A5),Struct_RastPort__BitMap(A0)
+
+    MOVEM.L -12(A5),D2-D3
+    UNLK    A5
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_DrawBannerSpacerSegment   (DrawBannerSpacerSegmentuncertain)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D3/A0-A1/A5-A6
+; CALLS:
+;   _LVOSetAPen, _LVORectFill, BEVEL_DrawBevelFrameWithTopRight
+; READS:
+;   Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY, Global_REF_696_400_BITMAP
+; WRITES:
+;   RastPort BitMap (temporary swap)
+; DESC:
+;   Clears/draws the middle banner segment (no text).
+;------------------------------------------------------------------------------
+CLEANUP_DrawBannerSpacerSegment:
+    LINK.W  A5,#-4
+    MOVEM.L D2-D3,-(A7)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  4(A0),-4(A5)
+    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEQ   #7,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  32(A0),D0
+    ANDI.W  #$fff7,D0
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  D0,32(A0)
+    MOVEA.L A0,A1
+    MOVE.L  #256,D0
+    MOVEQ   #34,D1
+    MOVE.L  #447,D2
+    MOVEQ   #67,D3
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVORectFill(A6)
+
+    MOVE.L  D3,-(A7)
+    MOVE.L  D2,-(A7)
+    PEA     34.W
+    PEA     256.W
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
+    JSR     BEVEL_DrawBevelFrameWithTopRight(PC)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  -4(A5),4(A0)
+    MOVEM.L -12(A5),D2-D3
+    UNLK    A5
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_DrawTimeBannerSegment   (DrawTimeBannerSegmentuncertain)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D3/A0-A1/A5-A6
+; CALLS:
+;   _LVOSetAPen, _LVORectFill, CLEANUP_DrawGridTimeBanner, BEVEL_DrawBevelFrameWithTopRight
+; READS:
+;   Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY, Global_REF_696_400_BITMAP
+; WRITES:
+;   RastPort BitMap (temporary swap)
+; DESC:
+;   Draws the right banner segment containing the time string.
+;------------------------------------------------------------------------------
+CLEANUP_DrawTimeBannerSegment:
+    LINK.W  A5,#-4
+    MOVEM.L D2-D3,-(A7)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  4(A0),-4(A5)
+    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEQ   #7,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  32(A0),D0
+    ANDI.W  #$fff7,D0
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  D0,32(A0)
+    MOVEA.L A0,A1
+    MOVE.L  #448,D0
+    MOVEQ   #34,D1
+    MOVE.L  #663,D2
+    MOVEQ   #67,D3
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVORectFill(A6)
+
+    BSR.W   CLEANUP_DrawGridTimeBanner
+
+    PEA     67.W
+    PEA     695.W
+    PEA     34.W
+    PEA     448.W
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
+    JSR     BEVEL_DrawBevelFrameWithTopRight(PC)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  -4(A5),4(A0)
+    MOVEM.L -12(A5),D2-D3
+    UNLK    A5
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_DrawDateTimeBannerRow   (DrawDateTimeBannerRowuncertain)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D3/A0-A1/A5-A6
+; CALLS:
+;   _LVOSetAPen, _LVORectFill, CLEANUP_DrawDateBannerSegment,
+;   CLEANUP_DrawBannerSpacerSegment, CLEANUP_DrawTimeBannerSegment
+; READS:
+;   Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY, Global_REF_696_400_BITMAP
+; WRITES:
+;   RastPort BitMap (temporary swap)
+; DESC:
+;   Clears the banner row and draws left date, middle spacer, and right time.
+;------------------------------------------------------------------------------
+CLEANUP_DrawDateTimeBannerRow:
+    LINK.W  A5,#-4
+    MOVEM.L D2-D3,-(A7)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  4(A0),-4(A5)
+    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEQ   #7,D0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  32(A0),D0
+    ANDI.W  #$fff7,D0
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.W  D0,32(A0)
+    MOVEA.L A0,A1
+    MOVEQ   #0,D0
+    MOVEQ   #34,D1
+    MOVE.L  #695,D2
+    MOVEQ   #67,D3
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVORectFill(A6)
+
+    BSR.W   CLEANUP_DrawDateBannerSegment
+
+    BSR.W   CLEANUP_DrawBannerSpacerSegment
+
+    BSR.W   CLEANUP_DrawTimeBannerSegment
+
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  -4(A5),4(A0)
+
+    MOVEM.L (A7)+,D2-D3
+    UNLK    A5
+    RTS
+
+;!======
+
+    ; Alignment
+    ALIGN_WORD
