@@ -173,6 +173,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esq_set_copper_effect_custom_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_set_copper_effect_off_disable_highlight_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_set_copper_effect_on_enable_highlight_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqiff_restore_base_palette_triples_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared_compress_closed_captioned_tag_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared_init_entry_defaults_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared_parse_compact_entry_record_trial.sh"

@@ -22,8 +22,9 @@ function trim(s, t) {
 
     if (uline ~ /^ESQIFF_RESTOREBASEPALETTETRIPLES:/) has_entry = 1
     if (uline ~ /^CMP\.W D0,D7$/) has_loop_cmp = 1
-    if (uline ~ /^MOVE\.B \(A1\),\(A0\)$/) has_copy = 1
-    if (uline ~ /^ADDQ\.W #1,D7$/) has_inc = 1
+    if (uline ~ /^MOVE\.B \(A[0-7]\)\+?,\(A[0-7]\)\+?$/ ||
+        uline ~ /^MOVE\.B \$0\(A0,D7\.W\),\$0\(A1,D7\.W\)$/) has_copy = 1
+    if (uline ~ /^ADDQ\.W #(\$)?1,D7$/) has_inc = 1
     if (uline ~ /^RTS$/) has_rts = 1
 }
 
