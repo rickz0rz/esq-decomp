@@ -14,8 +14,8 @@ typedef struct DISKIO2_TitleData {
     const char *slotTextTable[49];
 } DISKIO2_TitleData;
 
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *text, long ch);
-extern char *GROUP_AH_JMPTBL_STR_FindAnyCharPtr(const char *text, const char *charMask);
+extern char *STR_FindCharPtr(const char *text, long ch);
+extern char *STR_FindAnyCharPtr(const char *text, const char *charMask);
 
 extern const char NEWGRID_EntrySplitDelimiterMask[];
 
@@ -56,12 +56,12 @@ char *DISKIO2_CopyAndSanitizeSlotString(
     }
     *dst = 0;
 
-    cutPos = GROUP_AI_JMPTBL_STR_FindCharPtr(dstStart, 34L);
+    cutPos = STR_FindCharPtr(dstStart, 34L);
     if (cutPos != 0) {
-        cutPos = GROUP_AI_JMPTBL_STR_FindCharPtr(cutPos + 1, 34L);
+        cutPos = STR_FindCharPtr(cutPos + 1, 34L);
     }
     if (cutPos != 0) {
-        char *delimPos = GROUP_AH_JMPTBL_STR_FindAnyCharPtr(
+        char *delimPos = STR_FindAnyCharPtr(
             cutPos,
             NEWGRID_EntrySplitDelimiterMask);
         if (delimPos != 0) {
