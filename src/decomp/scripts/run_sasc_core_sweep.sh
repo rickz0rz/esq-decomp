@@ -706,6 +706,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_group_ad_jmptbl_datetime_normalize_month_range_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ad_jmptbl_dst_compute_banner_index_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ad_jmptbl_esqfunc_select_and_apply_brush_for_current_entry_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqiff_run_copper_drop_transition_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ad_jmptbl_esqiff_run_copper_drop_transition_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ad_jmptbl_esqiff_run_copper_rise_transition_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ad_jmptbl_graphics_blt_bitmap_rast_port_trial.sh"
