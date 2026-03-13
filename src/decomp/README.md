@@ -5361,7 +5361,7 @@ Recent promoted targets:
 - APP2 `ESQ_ColdReboot` + `ESQ_ColdRebootViaSupervisor` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_cold_reboot_pair_trial.sh`
 - APP2 `ESQ_ColdReboot` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_cold_reboot_trial.sh`
 - APP2 `ESQ_ColdRebootViaSupervisor` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_cold_reboot_via_supervisor_trial.sh`
-- Unknown22 `DOS_CloseWithSignalCheck` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_close_with_signal_check_trial.sh`
+- `DOS_CloseWithSignalCheck` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_close_with_signal_check_trial.sh`
 - Unknown22 `MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_mulu32_trial.sh`
 - Unknown22 `MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_divs32_trial.sh`
 - Unknown22 `MATH_DivU32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_divu32_trial.sh`
@@ -5703,7 +5703,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/newgrid2_jmptbl_disptext_compute_marker_widths.c`
 - `src/decomp/sas_c/newgrid2_jmptbl_bevel_draw_vertical_bevel_pair.c`
 - `src/decomp/sas_c/wdisp_jmptbl_stubs.c`
-- `src/decomp/sas_c/unknown22_dos_close_with_signal_check.c`
+- `src/decomp/sas_c/dos_close_with_signal_check.c`
 - `src/decomp/sas_c/memory_allocate.c`
 - `src/decomp/sas_c/unknown22_math_mulu32.c`
 - `src/decomp/sas_c/unknown22_math_divs32.c`
