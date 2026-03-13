@@ -8,7 +8,7 @@ typedef struct TEXTDISP_Entry {
     UBYTE flags40;
 } TEXTDISP_Entry;
 
-extern LONG TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(const TEXTDISP_Entry *entry);
+extern LONG NEWGRID_ShouldOpenEditor(const TEXTDISP_Entry *entry);
 
 LONG TEXTDISP_ShouldOpenEditorForEntry(const TEXTDISP_Entry *entry)
 {
@@ -17,7 +17,7 @@ LONG TEXTDISP_ShouldOpenEditorForEntry(const TEXTDISP_Entry *entry)
     if (entry != 0) {
         if ((entry->flags40 & 0x01) != 0 &&
             (entry->flags40 & 0x08) != 0 &&
-            TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(entry) == 0 &&
+            NEWGRID_ShouldOpenEditor(entry) == 0 &&
             (entry->flags27 & 0x08) == 0) {
             result = 1;
         }
