@@ -23,7 +23,7 @@ function trim(s, t) {
     u = toupper(line)
 
     if (u ~ /^SCRIPT_RESETCTRLCONTEXT:/) has_entry = 1
-    if (index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNED") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEO") > 0) has_replace_owned = 1
+    if (index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNED") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEO") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEOWNED") > 0) has_replace_owned = 1
     if (index(u, "436(A3)") > 0 || index(u, "436(A5)") > 0 || index(u, "436(A0)") > 0 || index(u, "$1B4(A3)") > 0) has_write_436 = 1
     if (index(u, "#120,437") > 0 || index(u, "#$78,437") > 0 || index(u, "437(A3)") > 0 || index(u, "#$78,$1B5(A3)") > 0) has_write_437 = 1
     if (index(u, "#1,426") > 0 || index(u, "426(A3)") > 0 || index(u, "#$1,(A0)") > 0 || index(u, "$1AA(A3)") > 0) has_write_426 = 1

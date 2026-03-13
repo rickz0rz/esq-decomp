@@ -23,7 +23,7 @@ function trim(s, t) {
     u = toupper(line)
 
     if (u ~ /^SCRIPT_SAVECTRLCONTEXTSNAPSHOT:/) has_entry = 1
-    if (index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEO") > 0) has_replace_owned = 1
+    if (index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEO") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEOWNED") > 0) has_replace_owned = 1
     if (index(u, "TEXTDISP_PRIMARYSEARCHTEXT") > 0) has_primary_copy = 1
     if (index(u, "TEXTDISP_SECONDARYSEARCHTEXT") > 0) has_secondary_copy = 1
     if (index(u, "TEXTDISP_ACTIVEGROUPID") > 0 || index(u, "426(A3)") > 0 || index(u, "$1AA(A3)") > 0) has_active_group = 1

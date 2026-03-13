@@ -24,7 +24,7 @@ function trim(s, t) {
     u = toupper(line)
 
     if (u ~ /^SCRIPT_LOADCTRLCONTEXTSNAPSHOT:/) has_entry = 1
-    if (index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEO") > 0) has_replace_owned = 1
+    if (index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPROTO_JMPTBL_ESQPARS_REPLACEO") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEOWNED") > 0) has_replace_owned = 1
     if (index(u, "TEXTDISP_PRIMARYSEARCHTEXT") > 0) has_primary_copy = 1
     if (index(u, "TEXTDISP_SECONDARYSEARCHTEXT") > 0) has_secondary_copy = 1
     if (index(u, "SCRIPT_RUNTIMEMODE") > 0) has_runtime_gate = 1

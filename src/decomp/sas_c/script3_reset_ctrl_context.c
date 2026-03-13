@@ -2,7 +2,7 @@ typedef signed long LONG;
 typedef unsigned short UWORD;
 typedef unsigned char UBYTE;
 
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newPtr, char *oldPtr);
+extern char *ESQPARS_ReplaceOwnedString(const char *newPtr, char *oldPtr);
 
 typedef struct SCRIPT_CtrlContextSnapshot {
     UBYTE pad0[2];
@@ -40,7 +40,7 @@ void SCRIPT_ResetCtrlContext(char *ctx)
     p->pendingTextdispCmdChar = 0;
     p->pendingTextdispCmdArg = 0;
 
-    p->commandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, p->commandTextPtr);
+    p->commandTextPtr = ESQPARS_ReplaceOwnedString((const char *)0, p->commandTextPtr);
 
     p->secondarySearchText[0] = 0;
     p->primarySearchText[0] = 0;
