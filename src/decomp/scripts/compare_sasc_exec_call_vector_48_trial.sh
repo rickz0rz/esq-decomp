@@ -5,39 +5,51 @@ ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
 SASC_SRC="unknown40_exec_call_vector_48.c"
-SASC_DIR="src/decomp/sas_c"
-SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
+SASC_DIS="src/decomp/sas_c/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown40.s"
 OUT_DIR="build/decomp/sasc_trial"
+BASE="exec_call_vector_48"
+ENTRY="EXEC_CallVector_48"
 
 mkdir -p "$OUT_DIR"
 
-./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_exec_call_vector_48.log" 2>&1
+./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_${BASE}.log" 2>&1
 
-awk '$0 ~ /^EXEC_CallVector_48:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/exec_call_vector_48.original.s"
-awk '$0 ~ /^EXEC_CallVector_48:$/ {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/exec_call_vector_48.sasc.dis.s"
+awk -v e="^${ENTRY}:$" '
+    $0 ~ e { inf=1 }
+    inf { if ($0 ~ /^;!======/) exit; print }
+' "$ORIG_ASM" >"${OUT_DIR}/${BASE}.original.s"
+
+awk -v e="^${ENTRY}:$" -v e2="^${ENTRY}[A-Za-z0-9_]*:$" '
+    $0 ~ e || $0 ~ e2 { inf=1 }
+    inf {
+        if ($0 ~ /^[A-Z][A-Z0-9_]*:$/ && $0 !~ e && $0 !~ e2) exit
+        if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/) exit
+        print
+    }
+' "$SASC_DIS" >"${OUT_DIR}/${BASE}.sasc.dis.s"
 
 normalize() {
-  sed -E \
-    -e 's/;.*$//' \
-    -e 's/^[[:space:]]+//' \
-    -e 's/[[:space:]]+/ /g' \
-    -e 's/[[:space:]]+$//' \
-    -e '/^$/d' \
-    -e 's/^___[A-Za-z0-9_]+__[0-9]+:$//' \
-    -e '/^const:$/d' \
-    -e '/^strings:$/d' \
-    -e '/^$/d'
+    sed -E \
+        -e 's/;.*$//' \
+        -e 's/^[[:space:]]+//' \
+        -e 's/[[:space:]]+/ /g' \
+        -e 's/[[:space:]]+$//' \
+        -e '/^$/d' \
+        -e 's/^___[A-Za-z0-9_]+__[0-9]+:$//' \
+        -e '/^const:$/d' \
+        -e '/^strings:$/d' \
+        -e '/^$/d'
 }
 
-normalize <"${OUT_DIR}/exec_call_vector_48.original.s" >"${OUT_DIR}/exec_call_vector_48.original.norm.s"
-normalize <"${OUT_DIR}/exec_call_vector_48.sasc.dis.s" >"${OUT_DIR}/exec_call_vector_48.sasc.norm.s"
+normalize <"${OUT_DIR}/${BASE}.original.s" >"${OUT_DIR}/${BASE}.original.norm.s"
+normalize <"${OUT_DIR}/${BASE}.sasc.dis.s" >"${OUT_DIR}/${BASE}.sasc.norm.s"
 
-diff -u "${OUT_DIR}/exec_call_vector_48.original.norm.s" "${OUT_DIR}/exec_call_vector_48.sasc.norm.s" >"${OUT_DIR}/exec_call_vector_48.diff" || true
+diff -u "${OUT_DIR}/${BASE}.original.norm.s" "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.diff" || true
 
-awk -f src/decomp/scripts/semantic_filter_sasc_exec_call_vector_48.awk "${OUT_DIR}/exec_call_vector_48.original.norm.s" >"${OUT_DIR}/exec_call_vector_48.original.semantic.txt"
-awk -f src/decomp/scripts/semantic_filter_sasc_exec_call_vector_48.awk "${OUT_DIR}/exec_call_vector_48.sasc.norm.s" >"${OUT_DIR}/exec_call_vector_48.sasc.semantic.txt"
-diff -u "${OUT_DIR}/exec_call_vector_48.original.semantic.txt" "${OUT_DIR}/exec_call_vector_48.sasc.semantic.txt" >"${OUT_DIR}/exec_call_vector_48.semantic.diff" || true
+awk -f src/decomp/scripts/semantic_filter_sasc_exec_call_vector_48.awk "${OUT_DIR}/${BASE}.original.norm.s" >"${OUT_DIR}/${BASE}.original.semantic.txt"
+awk -f src/decomp/scripts/semantic_filter_sasc_exec_call_vector_48.awk "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.sasc.semantic.txt"
+diff -u "${OUT_DIR}/${BASE}.original.semantic.txt" "${OUT_DIR}/${BASE}.sasc.semantic.txt" >"${OUT_DIR}/${BASE}.semantic.diff" || true
 
-echo "wrote: ${OUT_DIR}/exec_call_vector_48.diff"
-echo "wrote: ${OUT_DIR}/exec_call_vector_48.semantic.diff"
+echo "wrote: ${OUT_DIR}/${BASE}.diff"
+echo "wrote: ${OUT_DIR}/${BASE}.semantic.diff"

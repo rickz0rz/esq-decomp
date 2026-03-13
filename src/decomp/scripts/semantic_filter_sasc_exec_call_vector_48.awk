@@ -1,16 +1,44 @@
-BEGIN {h_entry=0; h_args=0; h_call=0; h_rts=0}
-function t(s){sub(/;.*/,"",s);sub(/^[ \t]+/,"",s);sub(/[ \t]+$/,"",s);gsub(/[ \t]+/," ",s);return toupper(s)}
-{
-  l=t($0)
-  if(l=="") next
-  if(l~/^EXEC_CALLVECTOR_48:/) h_entry=1
-  if(l~/A0-A1/ || l~/D1\/A2/ || l~/MOVE\.L D[0-7],-\(A7\)$/ || l~/MOVE\.L A[0-7],-\(A7\)$/) h_args=1
-  if(l~/^(JSR|BSR(\.W)?) _LVOEXECPRIVATE3(\(A[0-7]\))?$/) h_call=1
-  if(l~/^RTS$/) h_rts=1
+BEGIN {
+    has_label = 0
+    has_libbase_load = 0
+    has_private_call = 0
+    has_return = 0
 }
+
+function trim(s, t) {
+    t = s
+    sub(/;.*/, "", t)
+    sub(/^[ \t]+/, "", t)
+    sub(/[ \t]+$/, "", t)
+    return t
+}
+
+{
+    line = trim($0)
+    if (line == "") {
+        next
+    }
+
+    gsub(/[ \t]+/, " ", line)
+    upper = toupper(line)
+
+    if (upper ~ /^EXEC_CALLVECTOR_48[A-Z0-9_]*:/) {
+        has_label = 1
+    }
+    if (upper ~ /INPUTDEVICE_LIBRARYBASEFROMCONSO/ || upper ~ /MOVEA\.L .*A6/ || upper ~ /MOVE\.L .*INPUTDEVICE_.*A6/) {
+        has_libbase_load = 1
+    }
+    if (upper ~ /EXECPRIVATE3/ || upper ~ /LVOEXECPRIVATE3/ || upper ~ /JSR \$FFFFFFD0\(A6\)/ || upper ~ /JSR \$FFFFFFD0 \(A6\)/) {
+        has_private_call = 1
+    }
+    if (upper == "RTS") {
+        has_return = 1
+    }
+}
+
 END {
-  print "HAS_ENTRY=" h_entry
-  print "HAS_ARGS=" h_args
-  print "HAS_CALL=" h_call
-  print "HAS_RTS=" h_rts
+    print "HAS_LABEL=" has_label
+    print "HAS_LIBBASE_LOAD=" has_libbase_load
+    print "HAS_PRIVATE_CALL=" has_private_call
+    print "HAS_RETURN=" has_return
 }
