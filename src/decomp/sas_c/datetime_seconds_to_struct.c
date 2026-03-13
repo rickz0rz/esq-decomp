@@ -19,9 +19,9 @@ enum {
     DATETIME_MONTHS_PER_YEAR = 12
 };
 
-extern LONG GROUP_AG_JMPTBL_MATH_DivS32(LONG a, LONG b);
-extern ULONG GROUP_AJ_JMPTBL_MATH_DivU32(ULONG a, ULONG b);
-extern LONG GROUP_AJ_JMPTBL_MATH_Mulu32(LONG a, LONG b);
+extern LONG MATH_DivS32(LONG a, LONG b);
+extern ULONG MATH_DivU32(ULONG a, ULONG b);
+extern LONG MATH_Mulu32(LONG a, LONG b);
 extern LONG DATETIME_IsLeapYear(LONG year);
 extern LONG DATETIME_NormalizeMonthRange(void *dt);
 extern UBYTE DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES[];
@@ -41,20 +41,20 @@ void *DATETIME_SecondsToStruct(LONG seconds, void *dt)
         seconds = 0;
     }
 
-    (void)GROUP_AG_JMPTBL_MATH_DivS32(seconds, DATETIME_SECONDS_PER_MINUTE);
+    (void)MATH_DivS32(seconds, DATETIME_SECONDS_PER_MINUTE);
     W(dt, 12) = (short)(seconds % DATETIME_SECONDS_PER_MINUTE);
     seconds /= DATETIME_SECONDS_PER_MINUTE;
 
-    (void)GROUP_AG_JMPTBL_MATH_DivS32(seconds, DATETIME_SECONDS_PER_MINUTE);
+    (void)MATH_DivS32(seconds, DATETIME_SECONDS_PER_MINUTE);
     W(dt, 10) = (short)(seconds % DATETIME_SECONDS_PER_MINUTE);
     seconds /= DATETIME_SECONDS_PER_MINUTE;
 
-    (void)GROUP_AG_JMPTBL_MATH_DivS32(seconds, DATETIME_HOURS_PER_4YEAR_BLOCK);
+    (void)MATH_DivS32(seconds, DATETIME_HOURS_PER_4YEAR_BLOCK);
     years4 = seconds / DATETIME_HOURS_PER_4YEAR_BLOCK;
     W(dt, 6) = (short)(DATETIME_BASE_YEAR + years4 * 4);
-    dayAcc = GROUP_AJ_JMPTBL_MATH_Mulu32(years4, DATETIME_DAYS_PER_4YEAR_BLOCK);
+    dayAcc = MATH_Mulu32(years4, DATETIME_DAYS_PER_4YEAR_BLOCK);
 
-    (void)GROUP_AG_JMPTBL_MATH_DivS32(seconds, DATETIME_HOURS_PER_4YEAR_BLOCK);
+    (void)MATH_DivS32(seconds, DATETIME_HOURS_PER_4YEAR_BLOCK);
     remainingHours = seconds % DATETIME_HOURS_PER_4YEAR_BLOCK;
 
     for (;;) {
@@ -65,18 +65,18 @@ void *DATETIME_SecondsToStruct(LONG seconds, void *dt)
         if (remainingHours < currentYearHours) {
             break;
         }
-        (void)GROUP_AG_JMPTBL_MATH_DivS32(currentYearHours, DATETIME_HOURS_PER_DAY);
+        (void)MATH_DivS32(currentYearHours, DATETIME_HOURS_PER_DAY);
         dayAcc += (currentYearHours / DATETIME_HOURS_PER_DAY);
         W(dt, 6) = (short)(W(dt, 6) + 1);
         remainingHours -= currentYearHours;
     }
 
-    (void)GROUP_AG_JMPTBL_MATH_DivS32(remainingHours, DATETIME_HOURS_PER_DAY);
+    (void)MATH_DivS32(remainingHours, DATETIME_HOURS_PER_DAY);
     W(dt, 8) = (short)(remainingHours % DATETIME_HOURS_PER_DAY);
     remainingHours /= DATETIME_HOURS_PER_DAY;
 
     dayAcc += remainingHours + DATETIME_WEEKDAY_EPOCH_OFFSET;
-    (void)GROUP_AJ_JMPTBL_MATH_DivU32((ULONG)dayAcc, DATETIME_DAYS_PER_WEEK);
+    (void)MATH_DivU32((ULONG)dayAcc, DATETIME_DAYS_PER_WEEK);
     W(dt, 0) = (short)((ULONG)dayAcc % DATETIME_DAYS_PER_WEEK);
 
     dayOfYear = remainingHours + 1;
