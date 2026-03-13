@@ -19,10 +19,10 @@ extern LONG ED_SavedScrollSpeedIndex;
 extern UBYTE ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED;
 extern WORD ESQPARS2_StateIndex;
 
-extern LONG ESQPARS_JMPTBL_DST_UpdateBannerQueue(void *window);
-extern void ESQPARS_JMPTBL_DST_RefreshBannerBuffer(void);
+extern LONG DST_UpdateBannerQueue(void *window);
+extern void DST_RefreshBannerBuffer(void);
 extern void ESQDISP_DrawStatusBanner(UWORD mode);
-extern void ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds(ULONG minute, ULONG offset);
+extern void ESQ_SeedMinuteEventThresholds(ULONG minute, ULONG offset);
 extern void ED_DrawDiagnosticModeText(void);
 
 void ESQIFF2_ApplyIncomingStatusPacket(UBYTE *src)
@@ -44,8 +44,8 @@ void ESQIFF2_ApplyIncomingStatusPacket(UBYTE *src)
         ESQ_STR_6 = 0x36;
     }
 
-    if (ESQPARS_JMPTBL_DST_UpdateBannerQueue(DST_BannerWindowPrimary) == 0) {
-        ESQPARS_JMPTBL_DST_RefreshBannerBuffer();
+    if (DST_UpdateBannerQueue(DST_BannerWindowPrimary) == 0) {
+        DST_RefreshBannerBuffer();
     }
 
     ESQDISP_DrawStatusBanner(1);
@@ -57,7 +57,7 @@ void ESQIFF2_ApplyIncomingStatusPacket(UBYTE *src)
         CLOCK_MinuteEventBaseOffset = 1;
     }
 
-    ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds((ULONG)CLOCK_MinuteEventBaseMinute, (ULONG)CLOCK_MinuteEventBaseOffset);
+    ESQ_SeedMinuteEventThresholds((ULONG)CLOCK_MinuteEventBaseMinute, (ULONG)CLOCK_MinuteEventBaseOffset);
 
     if (ED_DiagnosticsScreenActive != 0) {
         ED_DrawDiagnosticModeText();
