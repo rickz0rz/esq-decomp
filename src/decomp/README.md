@@ -5700,10 +5700,10 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown40_exec_call_vector_48.c`
 - `src/decomp/sas_c/clock_check_date_or_seconds_from_epoch.c`
 - `src/decomp/sas_c/clock_seconds_from_epoch.c`
-- `src/decomp/sas_c/unknown42_parallel_ready.c`
-- `src/decomp/sas_c/unknown42_parallel_writechar.c`
-- `src/decomp/sas_c/unknown42_parallel_string_and_rawdofmt.c`
-- `src/decomp/sas_c/unknown42_parallel_hw_and_rawdofmt.c`
+- `src/decomp/sas_c/parallel_ready.c`
+- `src/decomp/sas_c/parallel_write_char_d0.c`
+- `src/decomp/sas_c/parallel_string_and_raw_dofmt.c`
+- `src/decomp/sas_c/parallel_write_char_hw_and_raw_dofmt.c`
 - Semantic checkpoints for SAS/C trials:
 - `src/decomp/scripts/compare_sasc_memory_allocate_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_memory_allocate.awk`

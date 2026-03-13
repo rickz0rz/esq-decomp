@@ -6,7 +6,7 @@ cd "$ROOT_DIR"
 
 ENTRY="PARALLEL_RawDoFmtCommon"
 
-SASC_SRC="unknown42_parallel_string_and_rawdofmt.c"
+SASC_SRC="parallel_string_and_raw_dofmt.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown42.s"
