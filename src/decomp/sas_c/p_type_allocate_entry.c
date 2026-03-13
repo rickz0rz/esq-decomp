@@ -20,13 +20,13 @@ typedef struct P_TYPE_Entry {
 
 void *P_TYPE_AllocateEntry(UBYTE typeByte, LONG length, UBYTE *dataPtr)
 {
-    const LONG ENTRY_SIZE = 10;
     const LONG ALLOC_ENTRY_LINE = 47;
     const LONG ALLOC_PAYLOAD_LINE = 58;
     const LONG FREE_ENTRY_LINE = 77;
     const LONG PTR_NULL = 0;
     P_TYPE_Entry *entry;
     UBYTE *payload;
+    UBYTE value;
     LONG i;
     LONG srcLen;
 
@@ -36,7 +36,7 @@ void *P_TYPE_AllocateEntry(UBYTE typeByte, LONG length, UBYTE *dataPtr)
     }
 
     entry = (P_TYPE_Entry *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(
-        Global_STR_P_TYPE_C_1, ALLOC_ENTRY_LINE, ENTRY_SIZE, MEMF_PUBLIC + MEMF_CLEAR);
+        Global_STR_P_TYPE_C_1, ALLOC_ENTRY_LINE, 10L, MEMF_PUBLIC + MEMF_CLEAR);
     if (entry == (P_TYPE_Entry *)PTR_NULL) {
         return (void *)PTR_NULL;
     }
@@ -58,14 +58,15 @@ void *P_TYPE_AllocateEntry(UBYTE typeByte, LONG length, UBYTE *dataPtr)
     }
 
     if (entry->payloadPtr == (UBYTE *)PTR_NULL) {
-        SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_3, FREE_ENTRY_LINE, entry, ENTRY_SIZE);
+        SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_3, FREE_ENTRY_LINE, entry, 10L);
         return (void *)PTR_NULL;
     }
 
     payload = entry->payloadPtr;
     i = 0;
     while (i < length) {
-        payload[i] = dataPtr[i];
+        value = dataPtr[i];
+        payload[i] = value;
         i += 1;
     }
 

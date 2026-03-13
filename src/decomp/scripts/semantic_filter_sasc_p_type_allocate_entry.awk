@@ -35,7 +35,7 @@ function trim(s, t) {
     if (n ~ /SCRIPTJMPTBLMEMORYALLOCATEMEMORY/ || n ~ /SCRIPTJMPTBLMEMORYALLOCATEMEM/) has_alloc=1
     if (n ~ /SCRIPTJMPTBLMEMORYDEALLOCATEMEMORY/ || n ~ /SCRIPTJMPTBLMEMORYDEALLOCATEM/) has_dealloc=1
     if (n ~ /CMP/ && n ~ /D6/ || n ~ /DBF/) has_loop=1
-    if (n ~ /MOVEB0A3D5LA0/ || n ~ /MOVEB0A3D0/ || n ~ /MOVEB0A3/ || n ~ /MOVEB0A5D5L0A2D5L/) has_copy=1
+    if (n ~ /MOVEB0A3D5LA0/ || n ~ /MOVEB0A3D0/ || n ~ /MOVEB0A3D1/ || n ~ /MOVEB0A3/ || n ~ /MOVEB0A5D5L0A2D5L/ || n ~ /MOVEB0A5D0LD1/ || n ~ /MOVEB0A5D0LD0/) has_copy=1
     if (u ~ /#10([^0-9]|$)/ || u ~ /#\$0A/ || u ~ /10\.[Ww]/ || u ~ /\(\$A\)/) has_const10=1
     if (u ~ /#47([^0-9]|$)/ || u ~ /#\$2F/ || u ~ /47\.[Ww]/ || u ~ /\(\$2F\)/) has_const47=1
     if (u ~ /#58([^0-9]|$)/ || u ~ /#\$3A/ || u ~ /58\.[Ww]/ || u ~ /\(\$3A\)/) has_const58=1
