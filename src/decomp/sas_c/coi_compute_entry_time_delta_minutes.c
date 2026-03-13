@@ -6,8 +6,8 @@ typedef long LONG;
 extern UWORD CLOCK_HalfHourSlotIndex;
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 
-LONG GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const void *entry);
-const char *GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG mode, LONG idx);
+LONG TLIBA_FindFirstWildcardMatchIndex(const char *wildcardPattern);
+const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 LONG TEXTDISP_ComputeTimeOffset(LONG groupCode, const char *title, LONG slot);
 
 typedef struct COI_AuxEntry {
@@ -44,8 +44,8 @@ LONG COI_ComputeEntryTimeDeltaMinutes(const void *entry, WORD slot)
     }
 
     if (s > SLOT_LAST && TEXTDISP_PrimaryGroupCode == e->groupCode498) {
-        s = GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(e);
-        e = (const COI_AuxEntry *)GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(s, AUX_POINTER_MODE_SECONDARY);
+        s = TLIBA_FindFirstWildcardMatchIndex((const char *)e);
+        e = (const COI_AuxEntry *)ESQDISP_GetEntryAuxPointerByMode(s, AUX_POINTER_MODE_SECONDARY);
         if (e != (const COI_AuxEntry *)0) {
             s = SLOT_FIRST;
             while (s < SLOT_INVALID && e->titleTable[s] == 0) {
