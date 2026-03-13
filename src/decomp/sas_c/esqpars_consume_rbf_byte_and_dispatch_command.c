@@ -12,19 +12,19 @@ extern UBYTE *ESQIFF_RecordBufferPtr;
 
 extern UWORD DATACErrs;
 
-extern UBYTE ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
+extern LONG SCRIPT_ReadNextRbfByte(void);
 extern LONG ESQIFF2_ReadSerialRecordIntoBuffer(void *buffer, LONG arg1, LONG arg2);
 extern LONG ESQ_GenerateXorChecksumByte(LONG seed, const UBYTE *buffer, LONG len);
 extern UBYTE ESQSHARED_MatchSelectionCodeWithOptionalSuffix(const UBYTE *record);
-extern void ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord(LONG cmdChar);
-extern void ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList(LONG cmdChar);
+extern LONG ESQPROTO_VerifyChecksumAndParseRecord(UBYTE seed);
+extern LONG ESQPROTO_VerifyChecksumAndParseList(UBYTE seed);
 
 LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
 {
     UBYTE cmdByte;
     UWORD armed;
 
-    cmdByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+    cmdByte = (UBYTE)SCRIPT_ReadNextRbfByte();
     armed = ESQPARS_CommandPreambleArmedFlag;
 
     if (armed == 0) {
@@ -57,9 +57,9 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
                 ESQPARS_SelectionMatchCode = (UWORD)ESQSHARED_MatchSelectionCodeWithOptionalSuffix(ESQIFF_RecordBufferPtr);
             }
         } else if (cmdByte == (UBYTE)'W') {
-            ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord((LONG)cmdByte);
+            ESQPROTO_VerifyChecksumAndParseRecord(cmdByte);
         } else if (cmdByte == (UBYTE)'w') {
-            ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList((LONG)cmdByte);
+            ESQPROTO_VerifyChecksumAndParseList(cmdByte);
         }
 
         ESQPARS_Preamble55SeenFlag = 0;
