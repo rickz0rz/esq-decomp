@@ -34,6 +34,7 @@ The repository currently has two active decomp lanes:
 - Additional triage note: shared helper files now hide many restored symbols behind broader filenames (for example `disptext_*_helpers.c`). Before assuming a target is missing from the SAS/C lane, `rg` for the exported symbol inside `src/decomp/sas_c/`, not just for a guessed filename.
 - Semantic filters for restored callers should accept either the original wrapper call or the direct underlying symbol when the decomp guidance prefers bypassing `*JMPTBL*` wrappers.
 - SAS/C `.dis` output can truncate long exported wrapper names (for example multiple `*_DrawClock*` stubs collapse to a shorter `...DrawClock` label even when the underlying callee name remains intact). When a `compare_sasc_*` extractor targets a stub label, verify the emitted `.dis` symbol before “fixing” the script to the full C identifier.
+- Current triage note (March 13, 2026): spot-checked SAS/C sweep families for `esq_main`, `esq_startup_entry`, `_main/b` boot/guard helpers (`ESQ_CheckAvailableFastMemory`, `ESQ_CheckCompatibleVideoChip`, `ESQ_FormatDiskErrorMessage`), `script3`, and `parseini3` all currently resolve to zero-byte semantic diffs. Treat those families as low-priority unless you are explicitly chasing raw codegen cleanup or a newly introduced regression.
 
 ## Files
 - `src/decomp/replacements.map`: module substitution map.
