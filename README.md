@@ -54,6 +54,7 @@ Keep any generated binaries out of version control.
 - Current hybrid-integration note (March 13, 2026, later re-validated): `modules/groups/b/a/parseini.s` is now seeded in `src/decomp/replacements.map` as a passthrough hybrid boundary. Treat the PARSEINI config/weather/font helper cluster as integration-ready at the module boundary, even though the replacement file still includes the canonical asm module verbatim for now.
 - Current hybrid-integration note (March 13, 2026): `modules/groups/b/a/tliba2.s` is now seeded in `src/decomp/replacements.map` as a passthrough hybrid boundary. Treat the TLIBA2 broadcast-window/time-parse helper cluster as integration-ready at the module boundary, even though the replacement file still includes the canonical asm module verbatim for now.
 - Current hybrid-integration note (March 13, 2026, later re-validated): `modules/groups/b/a/script4.s` is now seeded in `src/decomp/replacements.map` as a passthrough hybrid boundary. Treat the SCRIPT4 banner-char/inset/highlight helper cluster as integration-ready at the module boundary, even though the replacement file still includes the canonical asm module verbatim for now.
+- Current hybrid-integration note (March 13, 2026): `modules/groups/b/a/textdisp3.s` is now seeded in `src/decomp/replacements.map` as a passthrough hybrid boundary. Treat the TEXTDISP3 text/layout helper cluster as integration-ready for future object-level replacement work, even though the replacement file still includes the canonical asm module verbatim for now.
 - Remaining decomp work is not just “write more assembly comments”: the scope is to cover the root `src/*.s` files, `src/Prevue.asm`, and all files under `src/interrupts/`, `src/data/`, and `src/modules/` recursively.
 - In practice, the next decomp steps tend to fall into two buckets:
   - tighten or split existing `src/decomp/sas_c/` files when a function already exists there but needs a better match;
@@ -89,6 +90,7 @@ Keep any generated binaries out of version control.
 - Seeded `modules/groups/b/a/parseini.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the PARSEINI config/weather/font helper module has full non-`JMPTBL` SAS/C compare coverage.
 - Seeded `modules/groups/b/a/tliba2.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the TLIBA2 broadcast-window/time-parse helper module has full non-`JMPTBL` SAS/C compare coverage.
 - Seeded `modules/groups/b/a/script4.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the SCRIPT4 banner-char/inset/highlight helper module has full non-`JMPTBL` SAS/C compare coverage.
+- Seeded `modules/groups/b/a/textdisp3.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the TEXTDISP3 text/layout helper module has a useful restored non-`JMPTBL` SAS/C foothold in the current checkout.
 
 ## Contributor Guide
 If you plan to extend or annotate the disassembly, read the contributor guidelines in [`AGENTS.md`](AGENTS.md) for module organization, coding style, testing expectations, and review workflow.
