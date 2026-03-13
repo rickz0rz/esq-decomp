@@ -11,7 +11,7 @@ extern const char LOCAVAIL_TAG_FV[];
 extern const char Global_STR_LOCAVAIL_C_6[];
 
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
-extern LONG NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
+extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
 extern LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
 extern void LOCAVAIL_ResetFilterStateStruct(void *state);
@@ -64,7 +64,7 @@ LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
         parseBuf[0] = (char)*buffer++;
         parseBuf[1] = (char)*buffer++;
         parseBuf[2] = '\0';
-        nodeCount = NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
+        nodeCount = PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
         scratchState.nodeCount = nodeCount;
 
         if (LOCAVAIL_AllocNodeArraysForState(&scratchState) != 0) {
@@ -84,7 +84,7 @@ LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
                 parseBuf[0] = (char)*buffer++;
                 parseBuf[1] = (char)*buffer++;
                 parseBuf[2] = '\0';
-                node->tokenIndex = (UBYTE)NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
+                node->tokenIndex = (UBYTE)PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
                 if (node->tokenIndex == 0 || node->tokenIndex >= 100) {
                     success = 0;
                     break;
@@ -95,7 +95,7 @@ LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
                 parseBuf[2] = (char)*buffer++;
                 parseBuf[3] = (char)*buffer++;
                 parseBuf[4] = '\0';
-                node->duration = (UWORD)NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
+                node->duration = (UWORD)PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
                 if ((LONG)(short)node->duration <= 0 || node->duration >= 0x0E11U) {
                     success = 0;
                     break;
@@ -104,7 +104,7 @@ LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
                 parseBuf[0] = (char)*buffer++;
                 parseBuf[1] = (char)*buffer++;
                 parseBuf[2] = '\0';
-                node->payloadSize = (UWORD)NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
+                node->payloadSize = (UWORD)PARSE_ReadSignedLongSkipClass3_Alt(parseBuf);
                 payloadLen = (LONG)node->payloadSize;
                 if ((LONG)(short)node->payloadSize <= 0 || payloadLen >= 100) {
                     success = 0;

@@ -7,7 +7,7 @@ extern UBYTE ESQIFF_RecordChecksumByte;
 
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
 extern LONG SCRIPT_ReadNextRbfByte(void);
-extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
+extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 
 WORD ESQIFF2_ReadSerialSizedTextRecord(char *dst, LONG payload_size)
 {
@@ -35,7 +35,7 @@ WORD ESQIFF2_ReadSerialSizedTextRecord(char *dst, LONG payload_size)
     }
 
     dst[(UWORD)write_pos] = '\0';
-    trailer_len = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(dst);
+    trailer_len = PARSE_ReadSignedLongSkipClass3_Alt(dst);
     dst[(UWORD)write_pos] = ' ';
     payload_read = 0;
 
