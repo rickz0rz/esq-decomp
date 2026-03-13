@@ -23,7 +23,7 @@ extern PTypeEntry *P_TYPE_SecondaryGroupListPtr;
 
 extern LONG PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
 extern char *STRING_FindSubstring(char *haystack, char *needle);
-extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *src);
+extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *src);
 extern PTypeEntry *P_TYPE_AllocateEntry(UBYTE type_byte, LONG len, const UBYTE *src);
 extern void P_TYPE_FreeEntry(PTypeEntry *entry);
 extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tag_name, LONG width, void *ptr, LONG size);
@@ -65,7 +65,7 @@ LONG P_TYPE_LoadPromoIdDataFile(void)
         }
 
         {
-            LONG parsed_group = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(cursor);
+            LONG parsed_group = PARSE_ReadSignedLongSkipClass3_Alt(cursor);
             if ((UBYTE)parsed_group == TEXTDISP_PrimaryGroupCode) {
                 slot = 0;
             } else if ((UBYTE)parsed_group == TEXTDISP_SecondaryGroupCode) {
@@ -86,7 +86,7 @@ LONG P_TYPE_LoadPromoIdDataFile(void)
                     ++cursor;
                 }
 
-                payload_len = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(cursor);
+                payload_len = PARSE_ReadSignedLongSkipClass3_Alt(cursor);
                 if (payload_len > 0) {
                     char *types = STRING_FindSubstring(cursor, (char *)P_TYPE_STR_TYPES_COLON);
                     if (types) {
