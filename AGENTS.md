@@ -148,6 +148,7 @@ When decomp workflow assumptions change, update `README.md`, `src/decomp/README.
 - [x] Document confirmed `SECTION S_1` in-place string-length crash root cause (`Global_GraphicsLibraryBase_A4` stale displacement into `GRAPHICS_BltBitMapRastPort`) and mitigation options in `CHECKPOINT_layout_coupling_population.md` (`5.18`).
 - [x] Add persistent pass-coverage tracker in `CHECKPOINT_doc_coverage_matrix.md` so doc/rename sweeps do not re-process completed scopes.
 - [x] Add `modules/groups/a/b/cleanup.s` to `src/decomp/replacements.map` and seed the matching hybrid replacement boundary now that the six-function cleanup teardown cluster has green restored SAS/C compare lanes.
+- [x] Add `modules/groups/a/e/cleanup4.s` to `src/decomp/replacements.map` and seed the aligned-status/inset helper replacement boundary now that the six-function cleanup4 SAS/C cluster is green in the maintained sweep.
 - [x] Rename/document `src/data/wdisp.s` anonymous banner/interrupt globals (`2258`/`2280`/`228F`/`2290`) and propagate callsites (`TEXTDISP`/`APP2`/`CLEANUP2`/`ESQDISP`/`ESQIFF2`/`ESQFUNC`).
 - [x] Confirm and rename secondary live-clock trailing fields in `src/data/wdisp.s` (`227D`/`227F` region) to `CLOCK_CurrentDayOfYear`/`CLOCK_CurrentAmPmFlag`/`CLOCK_CurrentLeapYearFlag`, with trace-backed producer notes from `ESQ_TickClockAndFlagEvents`.
 - [x] Rename/document active `src/data/wdisp.s` ED transform/index helper symbols in the `21EF`/`21F5`/`21F6`/`21F9` cluster and propagate callsites in `ed.s`/`ed3.s`.
