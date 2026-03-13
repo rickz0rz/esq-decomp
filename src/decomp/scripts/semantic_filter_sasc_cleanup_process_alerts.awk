@@ -16,6 +16,9 @@ BEGIN {
     has_update_ctrl_state = 0
     has_finish_clear = 0
     has_return = 0
+    tick_call_count = 0
+    has_first_tick_store = 0
+    has_second_tick_store = 0
 }
 function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
 {
@@ -41,6 +44,12 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     if (u ~ /UPDATECTRLSTATEMACHINE/ || u ~ /GROUP_AC_JMPTBL_SCRIPT_UPDATECTR/) has_update_ctrl_state = 1
     if (u ~ /CLEANUP_ALERTPROCESSINGFLAG/ && (u ~ /CLR.L/ || u ~ /MOVEQ.L #0/ || u ~ /MOVE.L D[0-7],CLEANUP_ALERTPROCESSINGFLAG/)) has_finish_clear = 1
     if (u == "RTS") has_return = 1
+    if (u ~ /ESQ_TICKCLOCKANDFLAGEVENTS/ || u ~ /TICKCLOCKANDFLAGEVENTS/) {
+        tick_call_count++
+        next
+    }
+    if (tick_call_count == 1 && u ~ /^MOVE\.[BWL] D0,/) has_first_tick_store = 1
+    if (tick_call_count == 2 && u ~ /^MOVE\.[BWL] D0,/) has_second_tick_store = 1
 }
 END {
     print "HAS_LABEL=" has_label
@@ -60,4 +69,6 @@ END {
     print "HAS_UPDATE_CTRL_STATE=" has_update_ctrl_state
     print "HAS_FINISH_CLEAR=" has_finish_clear
     print "HAS_RETURN=" has_return
+    print "HAS_FIRST_TICK_STORE=" has_first_tick_store
+    print "HAS_SECOND_TICK_STORE=" has_second_tick_store
 }

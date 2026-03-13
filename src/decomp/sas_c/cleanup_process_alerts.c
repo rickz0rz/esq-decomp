@@ -89,7 +89,7 @@ void CLEANUP_ProcessAlerts(void)
 
     CLEANUP_PendingAlertFlag = CLEANUP_FLAG_CLEAR;
     tickCode = ESQ_TickClockAndFlagEvents(&CLOCK_DaySlotIndex);
-    tickCode = ESQ_TickClockAndFlagEvents(&CLOCK_CurrentDayOfWeekIndex);
+    ESQ_TickClockAndFlagEvents(&CLOCK_CurrentDayOfWeekIndex);
 
     if (TEXTDISP_DeferredActionDelayTicks >= 0 && TEXTDISP_DeferredActionDelayTicks < 11) {
         SCRIPT_ClearCtrlLineIfEnabled();
