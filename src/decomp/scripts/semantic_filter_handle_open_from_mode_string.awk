@@ -8,7 +8,7 @@ BEGIN {
 /Global_DefaultHandleFlags/ { dflt=1 }
 /#43|\+|SEQ|NEG|EXT/ { plus=1 }
 /BufferBase|BufferCursor|ReadRemaining|WriteRemaining|BufferCapacity|HandleIndex|OpenFlags/ { init=1 }
-/\(24,a2\)|\(20,a2\)|\(16,a2\)|\(12,a2\)|\(8,a2\)|\(4,a2\)|\(a2\)/ { init=1 }
+/\(24,a2\)|\(20,a2\)|\(16,a2\)|\(12,a2\)|\(8,a2\)|\(4,a2\)|\$(18|14|10|c|8|4)\(A2\)/ { init=1 }
 /#\$4000|#16384|#0x4000|#\$8000|#32768|#0x8000/ { out=1 }
 /^RTS$/ { rts=1 }
 
