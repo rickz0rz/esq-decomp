@@ -14,7 +14,7 @@ extern char TEXTDISP_ChannelLabelBufferTerminatorByte[];
 extern const char Global_STR_ALIGNED_ON[];
 extern const char Global_STR_ALIGNED_CHANNEL_1[];
 
-extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 
 void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix)
@@ -27,7 +27,7 @@ void TEXTDISP_BuildChannelLabel(WORD includeOnPrefix)
     LONG len;
 
     mode = (TEXTDISP_ActiveGroupId == 0) ? 2 : 1;
-    entry = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, mode);
+    entry = (const TEXTDISP_CandidateEntry *)ESQDISP_GetEntryPointerByMode((LONG)TEXTDISP_CurrentMatchIndex, mode);
     entryText = 0;
 
     if (entry != 0) {
