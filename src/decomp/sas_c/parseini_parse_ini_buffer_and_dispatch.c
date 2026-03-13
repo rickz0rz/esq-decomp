@@ -71,8 +71,8 @@ extern char *GCOMMAND_FindPathSeparator(const char *path);
 extern void *HANDLE_OpenWithMode(const char *path, const char *modeStr, char *unused);
 extern void ESQIFF_QueueIffBrushLoad(short mode);
 extern void ESQIFF_HandleBrushIniReloadHotkey(LONG hotkey);
-extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
-extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);
+extern void *MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
+extern void MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);
 
 extern void TEXTDISP_ClearSourceConfig(void);
 extern void TEXTDISP_AddSourceConfigEntry(char *name, const char *tag);
@@ -230,7 +230,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
             }
 
             ++aliasIndex;
-            TEXTDISP_AliasPtrTable[aliasIndex] = (AliasPair *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(
+            TEXTDISP_AliasPtrTable[aliasIndex] = (AliasPair *)MEMORY_AllocateMemory(
                 Global_STR_PARSEINI_C_1,
                 QTABLE_ALLOC_LINE,
                 QTABLE_ALLOC_SIZE,
@@ -322,7 +322,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
         }
     }
 
-    SCRIPT_JMPTBL_MEMORY_DeallocateMemory(
+    MEMORY_DeallocateMemory(
         (char *)Global_STR_PARSEINI_C_2,
         FREE_WORKBUF_LINE,
         workBuffer,
