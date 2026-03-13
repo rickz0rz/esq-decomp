@@ -23248,3 +23248,23 @@ Run:
 Current notes:
 - Candidate preserves `_LVOLock` guard, InfoData allocate/query/free sequence, `_LVOUnLock` cleanup path, and `D7` return-value transfer.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1034: `modules/groups/b/a/script3.s` (`SCRIPT_CopyWeatherUpdateForString`)
+
+Status: restored (SAS/C lane) + compare lane documented
+
+Why this target:
+- Small non-`JMPTBL` string-copy helper in active `script3` behavior code.
+- Easy to miss in the current tree because the restored source lives in a paired file with the sibling `SCRIPT_CopyWeatherUpdateText` helper.
+
+Artifacts:
+- SAS/C restored source: `src/decomp/sas_c/script_copy_weather_update_text.c`
+- SAS/C compare script: `src/decomp/scripts/compare_sasc_script_copy_weather_update_for_string_trial.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_sasc_script_copy_weather_update_for_string.awk`
+
+Run:
+- `bash src/decomp/scripts/compare_sasc_script_copy_weather_update_for_string_trial.sh`
+
+Current notes:
+- `SCRIPT_CopyWeatherUpdateForString` is restored in the shared source file `script_copy_weather_update_text.c`, alongside the same byte-copy loop for `SCRIPT_CopyWeatherUpdateText`.
+- Local validation on March 13, 2026 produced an empty semantic diff for `compare_sasc_script_copy_weather_update_for_string_trial.sh`; remaining raw diff noise is SAS/C prologue/scaffolding only.
