@@ -36,7 +36,7 @@ extern LONG NEWGRID_TestEntrySelectable(const void *entry, const void *aux, LONG
 extern LONG DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *aux, LONG idx);
 extern LONG ESQ_TestBit1Based(const UBYTE *bitset, LONG idx);
 extern LONG COI_ProcessEntrySelectionState(const void *entry, const void *aux, LONG idx, LONG day, LONG window);
-extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(const void *aux, LONG idx);
+extern LONG ESQDISP_TestEntryGridEligibility(const UBYTE *entry, UWORD index);
 
 LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
 {
@@ -121,7 +121,7 @@ entry_loop:
                                             1440,
                                             CONFIG_TimeWindowMinutes) != 0) {
                                         if (mode != 1 ||
-                                            TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(aux, idx) != 0) {
+                                            ESQDISP_TestEntryGridEligibility((const UBYTE *)aux, (UWORD)idx) != 0) {
                                             matched = 1;
                                         }
                                     }

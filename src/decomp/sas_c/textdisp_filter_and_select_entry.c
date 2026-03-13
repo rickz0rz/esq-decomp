@@ -42,7 +42,7 @@ extern UBYTE ESQ_WildcardMatch(const char *pattern, const char *text);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const void *entry, const void *aux, LONG index, LONG window, LONG minutes);
-extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(const void *aux, LONG slot);
+extern LONG ESQDISP_TestEntryGridEligibility(const UBYTE *entry, UWORD index);
 extern LONG ESQ_TestBit1Based(const UBYTE *bits, LONG index);
 extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
 extern LONG TEXTDISP_GetGroupEntryCount(LONG mode);
@@ -198,7 +198,7 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
             }
 
             if (TEXTDISP_FilterSportsMatchFlag != 0 &&
-                TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(aux, titleSlot) == 0) {
+                ESQDISP_TestEntryGridEligibility((const UBYTE *)aux, (UWORD)titleSlot) == 0) {
                 TEXTDISP_FilterCandidateCursor++;
                 continue;
             }
