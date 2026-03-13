@@ -177,6 +177,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqiff_handle_brush_ini_reload_hotkey_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_render_weather_status_brush_slice_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_restore_base_palette_triples_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqiff_show_external_asset_with_copper_fx_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared_compress_closed_captioned_tag_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared_init_entry_defaults_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared_parse_compact_entry_record_trial.sh"
