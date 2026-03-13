@@ -21,7 +21,7 @@ enum {
 extern UWORD CLOCK_HalfHourSlotIndex;
 
 LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG lead_char, const char *time_ctx, LONG slot);
-LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
+LONG MATH_Mulu32(LONG a, LONG b);
 LONG COI_ComputeEntryTimeDeltaMinutes(const void *entry, LONG slot);
 
 typedef struct COI_SubEntry {
@@ -69,7 +69,7 @@ LONG COI_TestEntryWithinTimeWindow(const UBYTE *entry, const void *time_ctx, WOR
     if (slot < COI_SLOT_INVALID) {
         offset_minutes = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((LONG)entryView->leadChar0, time_ctx, (LONG)slot);
     } else {
-        offset_minutes = GROUP_AG_JMPTBL_MATH_Mulu32((LONG)slot - (LONG)CLOCK_HalfHourSlotIndex, COI_SLOT_MINUTES);
+        offset_minutes = MATH_Mulu32((LONG)slot - (LONG)CLOCK_HalfHourSlotIndex, COI_SLOT_MINUTES);
     }
 
     if ((entryView->flags27 & COI_FLAG_HAS_ANIM_TABLE) != 0) {

@@ -1,6 +1,6 @@
 extern long DATETIME_NormalizeStructToSeconds(const void *in_struct);
 extern void DATETIME_SecondsToStruct(long seconds, void *out_struct);
-extern long GROUP_AG_JMPTBL_MATH_Mulu32(long lhs, long rhs);
+extern long MATH_Mulu32(long lhs, long rhs);
 
 enum {
     DATETIME_SLOT_BASE_OFFSET = 0x36,
@@ -23,7 +23,7 @@ long DATETIME_BuildFromBaseDay(const void *in_struct, void *out_struct, long day
         normalized_slot -= 1;
     }
 
-    scaled_offset = GROUP_AG_JMPTBL_MATH_Mulu32(normalized_slot, DATETIME_SLOT_SECONDS);
+    scaled_offset = MATH_Mulu32(normalized_slot, DATETIME_SLOT_SECONDS);
     result_seconds = base_seconds + scaled_offset;
 
     DATETIME_SecondsToStruct(result_seconds, out_struct);

@@ -21,7 +21,7 @@ function trim(s,    t) {
     u = toupper(line)
 
     if (u ~ /DATETIME_NORMALIZESTRUCTTOSECOND/) saw_normalize_call = 1
-    if (u ~ /GROUP_AG_JMPTBL_MATH_MULU32/) saw_mulu32_call = 1
+    if (u ~ /GROUP_AG_JMPTBL_MATH_MULU32/ || u ~ /MATH_MULU32/) saw_mulu32_call = 1
     if (u ~ /DATETIME_SECONDSTOSTRUCT/) saw_seconds_to_struct_call = 1
     if (u ~ /CLR\\.W 14\\(A2\\)/ || u ~ /CLR\\.W 14\\(A[0-7]\\)/ || u ~ /^CLR\\.W \\(A0\\)$/ || u ~ /^LEA \\$E\\(A3\\),A0$/) saw_clear_out_field = 1
     if (u ~ /^RTS$/) saw_return = 1

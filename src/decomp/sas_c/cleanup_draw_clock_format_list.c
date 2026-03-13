@@ -33,7 +33,7 @@ extern LONG NEWGRID_MainRastPortPtr;
 extern LONG Global_REF_GRAPHICS_LIBRARY;
 
 void GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds(LONG a, LONG b, LONG c, LONG d);
-LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
+LONG MATH_Mulu32(LONG a, LONG b);
 void BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG w, LONG h);
 void CLEANUP_FormatClockFormatEntry(LONG idx, char *dst);
 void _LVOSetAPen(void);
@@ -66,7 +66,7 @@ void CLEANUP_DrawClockFormatList(LONG startIndex)
         LONG clockIndex = cleanup_wrap_clock_idx(startIndex, row);
         LONG columnStartX = (LONG)NEWGRID_ColumnStartXPx;
         LONG columnWidth = (LONG)NEWGRID_ColumnWidthPx;
-        LONG rowStartX = columnStartX + GROUP_AG_JMPTBL_MATH_Mulu32(row, columnWidth);
+        LONG rowStartX = columnStartX + MATH_Mulu32(row, columnWidth);
         LONG rowRightX;
         LONG textX;
         LONG textY;
