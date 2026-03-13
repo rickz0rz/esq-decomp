@@ -290,10 +290,10 @@ extern void *ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(const char *label, void *l
 extern void *ESQIFF_JMPTBL_BRUSH_FindType3Brush(void *listHead);
 
 extern LONG BUFFER_FlushAllAndCloseWithCode(LONG code);
-extern void GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS(void);
+extern void OVERRIDE_INTUITION_FUNCS(void);
 extern void LIST_InitHeader(void *list);
 extern void ESQ_SetCopperEffect_OffDisableHighlight(void);
-extern void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern LONG ESQ_FormatDiskErrorMessage(void);
 extern void ESQ_CheckAvailableFastMemory(void);
 extern void ESQ_CheckCompatibleVideoChip(void);
@@ -305,20 +305,20 @@ extern void ESQ_InitAudio1Dma(void);
 extern void SCRIPT_InitCtrlContext(void);
 extern void KYBD_InitializeInputDevices(void);
 extern LONG DISKIO_LoadConfigFromDisk(void);
-extern void GROUP_AM_JMPTBL_TLIBA3_InitPatternTable(void);
+extern void TLIBA3_InitPatternTable(void);
 extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern void GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode(void);
-extern void GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults(void);
-extern void GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState(void);
+extern void SCRIPT_PrimeBannerTransitionFromHexCode(void);
+extern void GCOMMAND_InitPresetDefaults(void);
+extern void GCOMMAND_ResetBannerFadeState(void);
 extern void GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries(void);
 extern void GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries(void);
-extern void GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk(void);
-extern void GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig(void);
-extern void GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates(void);
-extern void GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile(void);
-extern void GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds(void);
-extern void GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(void *state);
-extern void GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile(void *primary, void *secondary);
+extern void DISKIO2_ParseIniFileFromDisk(void);
+extern void TEXTDISP_LoadSourceConfig(void);
+extern void FLIB2_ResetAndLoadListingTemplates(void);
+extern LONG LADFUNC_LoadTextAdsFromFile(void);
+extern void P_TYPE_ResetListsAndLoadPromoIds(void);
+extern void LOCAVAIL_ResetFilterStateStruct(void *state);
+extern LONG LOCAVAIL_LoadAvailabilityDataFile(void *primary, void *secondary);
 
 extern void ESQDISP_AllocateHighlightBitmaps(void *entry);
 extern void ESQDISP_QueueHighlightDrawMessage(void *slot, void *bitmap);
@@ -333,19 +333,19 @@ extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
 extern void ESQIFF_RestoreBasePaletteTriples(void);
 extern void ESQIFF_RunCopperDropTransition(void);
 extern void ESQIFF_RunCopperRiseTransition(void);
-extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void *rastPort, const char *text, LONG y);
-extern void ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(void);
-extern void GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(const char *path);
+extern void TLIBA3_DrawCenteredWrappedTextLines(void *rastPort, const char *text, LONG y);
+extern void DISKIO_ProbeDrivesAndAssignPaths(void);
+extern void PARSEINI_ParseIniBufferAndDispatch(const char *path);
 extern void ESQFUNC_RebuildPwBrushListFromTagTable(void);
-extern void ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(void);
+extern void LADFUNC_UpdateHighlightState(void);
 extern void ESQDISP_UpdateStatusMaskAndRefresh(LONG mask, LONG arg1);
 extern void DST_LoadBannerPairFromFiles(void **pairPtr);
 extern void ESQFUNC_UpdateDiskWarningAndRefreshTick(void);
-extern void ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(LONG mode);
+extern void TEXTDISP_SetRastForMode(LONG mode);
 extern void ESQFUNC_ServiceUiTickIfRunning(void);
-extern LONG ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange(void);
+extern LONG PARSEINI_MonitorClockChange(void);
 extern void ESQPARS_ConsumeRbfByteAndDispatchCommand(void);
-extern LONG GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem(void);
+extern LONG CLEANUP_ShutdownSystem(void);
 extern void DISKIO2_ReloadDataFilesAndRebuildIndex(void);
 
 extern LONG DISKIO_DriveWriteProtectStatusCodeDrive1;
@@ -425,7 +425,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         Global_LONG_ROM_VERSION_CHECK = 2;
     }
 
-    GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS();
+    OVERRIDE_INTUITION_FUNCS();
 
     Global_HANDLE_TOPAZ_FONT = _LVOOpenFont(Global_REF_GRAPHICS_LIBRARY, Global_STRUCT_TEXTATTR_TOPAZ_FONT);
     if (Global_HANDLE_TOPAZ_FONT == (void *)0) {
@@ -639,7 +639,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     }
 
     ESQSHARED4_InitializeBannerCopperSystem();
-    GROUP_AM_JMPTBL_TLIBA3_InitPatternTable();
+    TLIBA3_InitPatternTable();
     SETUP_INTERRUPT_INTB_VERTB();
 
     Global_UIBusyFlag = 0;
@@ -703,11 +703,11 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
 
     displayRastPort = (char *)(WDISP_DisplayContextBase + DISPLAY_RASTPORT2_DELTA);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, DISKIO_ErrorMessageScratch, 150);
-    ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths();
+    TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, DISKIO_ErrorMessageScratch, 150);
+    DISKIO_ProbeDrivesAndAssignPaths();
 
     if (DISKIO_DriveWriteProtectStatusCodeDrive1 == 218) {
-        ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_STR_NO_DF1_PRESENT, 150);
+        TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_STR_NO_DF1_PRESENT, 150);
     }
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(
@@ -723,23 +723,23 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         *(LONG *)(DISKIO_ErrorMessageScratch + i) = *(const LONG *)(ESQ_STR_38_Spaces + i);
     }
 
-    GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode();
-    GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults();
-    GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_GRADIENT_INI_2);
-    GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState();
+    SCRIPT_PrimeBannerTransitionFromHexCode();
+    GCOMMAND_InitPresetDefaults();
+    PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_GRADIENT_INI_2);
+    GCOMMAND_ResetBannerFadeState();
 
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_SelectCodeBuffer, 60);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_StartupVersionBannerBuffer, 90);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_STR_SystemInitializing, 120);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_STR_PleaseStandByEllipsis, 150);
+    TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_SelectCodeBuffer, 60);
+    TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_StartupVersionBannerBuffer, 90);
+    TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_STR_SystemInitializing, 120);
+    TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_STR_PleaseStandByEllipsis, 150);
 
     if (IS_COMPATIBLE_VIDEO_CHIP != 0 || HAS_REQUESTED_FAST_MEMORY != 0) {
-        ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_STR_AttentionSystemEngineer, 180);
+        TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_STR_AttentionSystemEngineer, 180);
         if (HAS_REQUESTED_FAST_MEMORY != 0) {
-            ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_STR_ReportErrorCodeEr011ToTVGuide, 210);
+            TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, ESQ_STR_ReportErrorCodeEr011ToTVGuide, 210);
         }
         if (IS_COMPATIBLE_VIDEO_CHIP != 0) {
-            ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+            TLIBA3_DrawCenteredWrappedTextLines(
                 displayRastPort,
                 ESQ_STR_ReportErrorCodeER012ToTVGuide,
                 (HAS_REQUESTED_FAST_MEMORY != 0) ? 240 : 210
@@ -754,10 +754,10 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries();
     GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries();
     DISKIO2_ReloadDataFilesAndRebuildIndex();
-    GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk();
-    GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig();
-    GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_DEFAULT_INI_1);
-    GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BRUSH_INI_1);
+    DISKIO2_ParseIniFileFromDisk();
+    TEXTDISP_LoadSourceConfig();
+    PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_DEFAULT_INI_1);
+    PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BRUSH_INI_1);
     ESQIFF_JMPTBL_BRUSH_PopulateBrushList(PARSEINI_ParsedDescriptorListHead, ESQIFF_BrushIniListHead);
     BRUSH_SelectedNode = ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel(ESQ_STR_DT);
     if (BRUSH_SelectedNode == (void *)0) {
@@ -766,19 +766,19 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 
     ESQFUNC_FallbackType3BrushNode = ESQIFF_JMPTBL_BRUSH_FindType3Brush(ESQIFF_BrushIniListHead);
     ESQFUNC_RebuildPwBrushListFromTagTable();
-    GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BANNER_INI_1);
-    GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates();
-    GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile();
-    ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState();
+    PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BANNER_INI_1);
+    FLIB2_ResetAndLoadListingTemplates();
+    LADFUNC_LoadTextAdsFromFile();
+    LADFUNC_UpdateHighlightState();
 
     ESQ_StartupWriteOnlyLong2272 = 1;
     WDISP_BannerCharIndex = WDISP_BannerCharRangeStart;
     ESQDISP_UpdateStatusMaskAndRefresh(4095, 0);
     INTENA = 0x8100;
-    GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds();
-    GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(LOCAVAIL_PrimaryFilterState);
-    GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(LOCAVAIL_SecondaryFilterState);
-    GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile(LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState);
+    P_TYPE_ResetListsAndLoadPromoIds();
+    LOCAVAIL_ResetFilterStateStruct(LOCAVAIL_PrimaryFilterState);
+    LOCAVAIL_ResetFilterStateStruct(LOCAVAIL_SecondaryFilterState);
+    LOCAVAIL_LoadAvailabilityDataFile(LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState);
 
     DST_BannerWindowPrimary = (void *)0;
     DST_BannerWindowSecondary = (void *)0;
@@ -808,7 +808,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     _LVOEnable(AbsExecBase);
 
     ESQIFF_ExternalAssetFlags = 0;
-    ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(0);
+    TEXTDISP_SetRastForMode(0);
     ESQ_SetCopperEffect_OffDisableHighlight();
 
     for (i = 0; i < 0x12e; ++i) {
@@ -816,14 +816,14 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     }
 
     if (Global_WORD_SELECT_CODE_IS_RAVESC != 0) {
-        GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
-        ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(0);
+        ESQ_SetCopperEffect_OnEnableHighlight();
+        TEXTDISP_SetRastForMode(0);
     }
 
     ESQ_MainLoopUiTickEnabledFlag = 1;
     for (;;) {
         ESQFUNC_ServiceUiTickIfRunning();
-        d0 = ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange();
+        d0 = PARSEINI_MonitorClockChange();
         if (d0 != 0 && ESQ_ShutdownRequestedFlag == 0) {
             ESQPARS_ConsumeRbfByteAndDispatchCommand();
         }
@@ -832,5 +832,5 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         }
     }
 
-    return GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem();
+    return CLEANUP_ShutdownSystem();
 }
