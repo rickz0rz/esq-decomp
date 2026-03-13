@@ -32,7 +32,9 @@ function trim(s, t) {
 
     if (u ~ /^MOVE\.B 190\(A[0-7]\),D[0-7]$/ || u ~ /^MOVE\.B \$BE\(A[0-7]\),D[0-7]$/ || index(u, "CTASKS_IFFTASKSTATE") > 0) has_state_byte_read = 1
 
-    if (index(u, "GROUP_AU_JMPTBL_BRUSH_POPULATEBRUSHLIST") > 0 || index(u, "GROUP_AU_JMPTBL_BRUSH_POPULATEB") > 0) has_populate = 1
+    if (index(u, "GROUP_AU_JMPTBL_BRUSH_POPULATEBRUSHLIST") > 0 ||
+        index(u, "GROUP_AU_JMPTBL_BRUSH_POPULATEB") > 0 ||
+        index(u, "BRUSH_POPULATEBRUSHLIST") > 0) has_populate = 1
 
     if (u ~ /^SUBQ\.W #4,D[0-7]$/ || u ~ /^SUBQ\.W #\$4,D[0-7]$/ || u ~ /^CMPI\.W #4,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W #4,D[0-7]$/ || u ~ /^CMPI\.W #\$4,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W D5,D[0-7]$/) has_state4_check = 1
     if (u ~ /^SUBQ\.W #5,D[0-7]$/ || u ~ /^SUBQ\.W #\$5,D[0-7]$/ || u ~ /^CMPI\.W #5,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W #5,D[0-7]$/ || u ~ /^CMPI\.W #\$5,CTASKS_IFFTASKSTATE/ || u ~ /^CMP\.W D4,D[0-7]$/) has_state5_check = 1
@@ -41,7 +43,9 @@ function trim(s, t) {
     if (index(u, "_LVOFORBID") > 0) has_forbid = 1
     if (index(u, "_LVOPERMIT") > 0) has_permit = 1
 
-    if (index(u, "GROUP_AU_JMPTBL_BRUSH_APPENDBRUSHNODE") > 0 || index(u, "GROUP_AU_JMPTBL_BRUSH_APPENDBRU") > 0) has_append = 1
+    if (index(u, "GROUP_AU_JMPTBL_BRUSH_APPENDBRUSHNODE") > 0 ||
+        index(u, "GROUP_AU_JMPTBL_BRUSH_APPENDBRU") > 0 ||
+        index(u, "BRUSH_APPENDBRUSHNODE") > 0) has_append = 1
 
     if (index(u, "ESQIFF_LOGOBRUSHLISTHEAD") > 0 || index(u, "ESQIFF_LOGOBRUSHLISTCOUNT") > 0 || index(u, "ESQIFF_LOGOBRUSHLIST") > 0) has_logo_ref = 1
     if (index(u, "ESQIFF_GADSBRUSHLISTHEAD") > 0 || index(u, "ESQIFF_GADSBRUSHLISTCOUNT") > 0 || index(u, "ESQIFF_GADSBRUSHLIST") > 0) has_gads_ref = 1
