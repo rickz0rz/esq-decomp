@@ -273,6 +273,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqdisp_test_entry_grid_eligibility_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_test_word_is_zero_booleanize_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_update_status_mask_and_refresh_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqiff_run_pending_copper_animations_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_jmptbl_cleanup_drawclockbanner_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_jmptbl_cleanup_processalerts_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_jmptbl_diskio_probedrivesandassignpaths_trial.sh"
