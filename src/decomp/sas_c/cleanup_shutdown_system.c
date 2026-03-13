@@ -54,7 +54,7 @@ char *GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(UWORD mode);
 void GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData(void);
 void GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(UWORD group);
 void GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers(void);
-void GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources(void);
+void NEWGRID_ShutdownGridResources(void);
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 LONG GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const void *file, LONG line, void *rast, LONG width, LONG height);
 char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
@@ -94,7 +94,7 @@ void CLEANUP_ShutdownSystem(void)
     GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(CLEANUP_REMOVE_GROUP_SECONDARY);
     GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(CLEANUP_REMOVE_GROUP_PRIMARY);
     GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers();
-    GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources();
+    NEWGRID_ShutdownGridResources();
 
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
         Global_STR_CLEANUP_C_14,
