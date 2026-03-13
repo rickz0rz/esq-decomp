@@ -20,7 +20,7 @@ enum {
 
 extern UWORD CLOCK_HalfHourSlotIndex;
 
-LONG GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(LONG lead_char, const char *time_ctx, LONG slot);
+LONG TEXTDISP_ComputeTimeOffset(LONG lead_char, const char *time_ctx, LONG slot);
 LONG MATH_Mulu32(LONG a, LONG b);
 LONG COI_ComputeEntryTimeDeltaMinutes(const void *entry, LONG slot);
 
@@ -67,7 +67,7 @@ LONG COI_TestEntryWithinTimeWindow(const UBYTE *entry, const void *time_ctx, WOR
     }
 
     if (slot < COI_SLOT_INVALID) {
-        offset_minutes = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((LONG)entryView->leadChar0, time_ctx, (LONG)slot);
+        offset_minutes = TEXTDISP_ComputeTimeOffset((LONG)entryView->leadChar0, time_ctx, (LONG)slot);
     } else {
         offset_minutes = MATH_Mulu32((LONG)slot - (LONG)CLOCK_HalfHourSlotIndex, COI_SLOT_MINUTES);
     }
