@@ -32,7 +32,7 @@ extern UBYTE CTASKS_SecondaryOiWritePendingFlag;
 extern UBYTE CTASKS_PrimaryOiWritePendingFlag;
 
 extern void ESQPARS_RemoveGroupEntryAndReleaseStrings(WORD mode);
-extern void ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(void);
+extern void NEWGRID_RebuildIndexCache(void);
 
 void ESQDISP_PromoteSecondaryGroupToPrimary(void)
 {
@@ -70,5 +70,5 @@ void ESQDISP_PromoteSecondaryGroupToPrimary(void)
     CTASKS_PrimaryOiWritePendingFlag = CTASKS_SecondaryOiWritePendingFlag;
     CTASKS_PendingSecondaryOiDiskId = 0xFF;
     CTASKS_SecondaryOiWritePendingFlag = 0;
-    ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache();
+    NEWGRID_RebuildIndexCache();
 }
