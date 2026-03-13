@@ -13,10 +13,10 @@ typedef struct NEWGRID_ClockScratch {
 } NEWGRID_ClockScratch;
 
 extern UBYTE CLOCK_FormatVariantCode;
-extern LONG NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(void *clockPtr);
-extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG a, LONG b);
-extern ULONG NEWGRID_JMPTBL_MATH_Mulu32(ULONG a, ULONG b);
-extern void NEWGRID_JMPTBL_DATETIME_SecondsToStruct(LONG seconds, void *clockPtr);
+extern LONG DATETIME_NormalizeStructToSeconds(void *clockPtr);
+extern LONG MATH_DivS32(LONG a, LONG b);
+extern ULONG MATH_Mulu32(ULONG a, ULONG b);
+extern void *DATETIME_SecondsToStruct(LONG seconds, void *clockPtr);
 extern LONG NEWGRID_ComputeDaySlotFromClockWithOffset(void *clockPtr);
 
 LONG NEWGRID_AdjustClockStringBySlotWithOffset(void *clockPtr)
@@ -34,10 +34,10 @@ LONG NEWGRID_AdjustClockStringBySlotWithOffset(void *clockPtr)
         dst[i] = src[i];
     }
 
-    seconds = NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(&scratch);
-    slotDiv = NEWGRID_JMPTBL_MATH_DivS32((LONG)(UBYTE)CLOCK_FormatVariantCode, 30);
-    seconds -= (LONG)NEWGRID_JMPTBL_MATH_Mulu32(60, (ULONG)slotDiv);
+    seconds = DATETIME_NormalizeStructToSeconds(&scratch);
+    slotDiv = MATH_DivS32((LONG)(UBYTE)CLOCK_FormatVariantCode, 30);
+    seconds -= (LONG)MATH_Mulu32(60, (ULONG)slotDiv);
 
-    NEWGRID_JMPTBL_DATETIME_SecondsToStruct(seconds, &scratch);
+    DATETIME_SecondsToStruct(seconds, &scratch);
     return NEWGRID_ComputeDaySlotFromClockWithOffset(&scratch);
 }
