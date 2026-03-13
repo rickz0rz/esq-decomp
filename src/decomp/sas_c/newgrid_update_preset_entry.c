@@ -15,7 +15,7 @@ extern LONG CLOCK_DaySlotIndex;
 
 extern const char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(LONG *clockSlotPtr);
+extern WORD ESQ_GetHalfHourSlotIndex(LONG *clockSlotPtr);
 extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const char *pattern);
 
 WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LONG keyIndex)
@@ -46,7 +46,7 @@ WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LO
     }
 
     if (rowIndex != 1) {
-        if ((WORD)(NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) != 0) {
+        if ((WORD)(ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) != 0) {
             if (normalizeFlag == 0) {
                 *entryOut = (char *)entry;
                 *auxOut = (char *)aux;

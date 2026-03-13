@@ -26,7 +26,7 @@ extern long DISKIO_OpenFileWithBuffer(const char *path, long mode);
 extern void DISKIO_WriteDecimalField(long handle, long value);
 extern long DISKIO_WriteBufferedBytes(long handle, const void *buf, ULONG len);
 extern long DISKIO_CloseBufferedFileAndFlush(long handle);
-extern long GROUP_AH_JMPTBL_ESQ_TestBit1Based(const UBYTE *mask, long oneBasedBit);
+extern long ESQ_TestBit1Based(const UBYTE *mask, long oneBasedBit);
 extern char *DISKIO2_CopyAndSanitizeSlotString(char *dst, const UBYTE *entry, const UBYTE *title, UWORD slot);
 
 extern const char Global_STR_DISKIO2_C_14[];
@@ -105,7 +105,7 @@ long DISKIO2_WriteNxtDayDataFile(void)
             if (title->slotTextTable[slot] == 0) {
                 continue;
             }
-            if (GROUP_AH_JMPTBL_ESQ_TestBit1Based(entry->slotMask, (long)slot) != -1) {
+            if (ESQ_TestBit1Based(entry->slotMask, (long)slot) != -1) {
                 continue;
             }
 
