@@ -68,7 +68,7 @@ extern LONG PARSEINI_JMPTBL_STRING_CompareNoCase(const char *a, const char *b);
 extern void PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(LONG *table);
 extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 extern char *PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(const char *path);
-extern LONG PARSEINI_JMPTBL_HANDLE_OpenWithMode(char *path, const char *modeStr);
+extern void *HANDLE_OpenWithMode(const char *path, const char *modeStr, char *unused);
 extern void PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(char *brushPath);
 extern void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(void);
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
@@ -286,7 +286,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
                 if (PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, PARSEINI_TAG_FILENAME) == 0 ||
                     PARSEINI_JMPTBL_STRING_CompareNoCase(linePtr, PARSEINI_TAG_BRUSH) == 0) {
                     valuePtr = PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(valuePtr);
-                    if (PARSEINI_JMPTBL_HANDLE_OpenWithMode(valuePtr, PARSEINI_MODE_RB) != 0) {
+                    if (HANDLE_OpenWithMode(valuePtr, PARSEINI_MODE_RB, (char *)0) != 0) {
                         PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(valuePtr);
                         PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey();
                     }

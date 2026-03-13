@@ -22,7 +22,7 @@ extern PTypeEntry *P_TYPE_PrimaryGroupListPtr;
 extern PTypeEntry *P_TYPE_SecondaryGroupListPtr;
 
 extern LONG PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(const char *path);
-extern char *P_TYPE_JMPTBL_STRING_FindSubstring(const char *haystack, const char *needle);
+extern char *STRING_FindSubstring(char *haystack, char *needle);
 extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *src);
 extern PTypeEntry *P_TYPE_AllocateEntry(UBYTE type_byte, LONG len, const UBYTE *src);
 extern void P_TYPE_FreeEntry(PTypeEntry *entry);
@@ -52,7 +52,7 @@ LONG P_TYPE_LoadPromoIdDataFile(void)
 
     for (section = 0; section < 2; ++section) {
         const char *section_header = (section == 0) ? P_TYPE_STR_CURDAY_COLON_LoadSection : P_TYPE_STR_NXTDAY_COLON_LoadSection;
-        char *cursor = P_TYPE_JMPTBL_STRING_FindSubstring(work, section_header);
+        char *cursor = STRING_FindSubstring(work, (char *)section_header);
         LONG slot = 2;
 
         if (!cursor) {
@@ -88,7 +88,7 @@ LONG P_TYPE_LoadPromoIdDataFile(void)
 
                 payload_len = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(cursor);
                 if (payload_len > 0) {
-                    char *types = P_TYPE_JMPTBL_STRING_FindSubstring(cursor, P_TYPE_STR_TYPES_COLON);
+                    char *types = STRING_FindSubstring(cursor, (char *)P_TYPE_STR_TYPES_COLON);
                     if (types) {
                         UBYTE saved;
 

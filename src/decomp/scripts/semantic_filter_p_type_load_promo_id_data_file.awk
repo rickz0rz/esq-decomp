@@ -4,7 +4,7 @@ BEGIN {
 
 /^P_TYPE_LoadPromoIdDataFile:$/ { label=1 }
 /PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer/ { loadf=1 }
-/P_TYPE_JMPTBL_STRING_FindSubstring/ { find=1 }
+/P_TYPE_JMPTBL_STRING_FindSubstring|STRING_FindSubstring/ { find=1 }
 /SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt/ { parse=1 }
 /P_TYPE_AllocateEntry/ { alloc=1 }
 /P_TYPE_FreeEntry/ { freef=1 }
