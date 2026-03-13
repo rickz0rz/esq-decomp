@@ -30,13 +30,13 @@ function trim(s, t) {
 
     if (u ~ /^TEXTDISP_BUILDENTRYDETAILLINE:/ || u ~ /^TEXTDISP_BUILDENTRYDETAILLI[A-Z0-9_]*:/) has_entry = 1
     if (index(u, "TEXTDISP_RESETSELECTIONSTATE") > 0 || index(u, "TEXTDISP_RESETSELECTIO") > 0) has_reset = 1
-    if (index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYAUXPOINTERBYMODE") > 0 || index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYAU") > 0) has_get_aux = 1
-    if (index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYPOINTERBYMODE") > 0 || index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYPO") > 0) has_get_entry = 1
+    if (index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYAUXPOINTERBYMODE") > 0 || index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYAU") > 0 || index(u, "ESQDISP_GETENTRYAUXPOINTERBYMODE") > 0 || index(u, "ESQDISP_GETENTRYAUXPOINTERB") > 0) has_get_aux = 1
+    if (index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYPOINTERBYMODE") > 0 || index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYPO") > 0 || index(u, "ESQDISP_GETENTRYPOINTERBYMODE") > 0 || index(u, "ESQDISP_GETENTRYPOINTERB") > 0) has_get_entry = 1
     if (index(u, "TEXTDISP_BUILDENTRYSHORTNAME") > 0 || index(u, "TEXTDISP_BUILDENTRYSHOR") > 0) has_build_short = 1
     if (index(u, "TEXTDISP_SKIPCONTROLCODES") > 0 || index(u, "TEXTDISP_SKIPCONTROLC") > 0) has_skip_codes = 1
     if (index(u, "STRING_APPENDATNULL") > 0) has_append = 1
     if (index(u, "WDISP_SPRINTF") > 0 || index(u, "WDISP_SPRI") > 0) has_sprintf = 1
-    if (index(u, "TLIBA1_JMPTBL_ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "TLIBA1_JMPTBL_ESQ_FINDSUB") > 0) has_find_sub = 1
+    if (index(u, "TLIBA1_JMPTBL_ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "TLIBA1_JMPTBL_ESQ_FINDSUB") > 0 || index(u, "ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "ESQ_FINDSUBSTRINGCASEF") > 0) has_find_sub = 1
     if (index(u, "STR_FINDCHARPTR") > 0 || index(u, "STR_FINDCHARP") > 0) has_find_char = 1
     if (index(u, "TEXTDISP_FORMATENTRYTIMEFORINDEX") > 0 || index(u, "TEXTDISP_FORMATENTRYTIMEF") > 0) has_format_time = 1
     if (index(u, "TEXTDISP_TRIMTEXTTOPIXELWIDTH") > 0 || index(u, "TEXTDISP_TRIMTEXTTOPIXE") > 0) has_trim = 1

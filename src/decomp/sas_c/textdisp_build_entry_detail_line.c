@@ -40,14 +40,14 @@ extern const char SCRIPT_StrVsDotSeparator[];
 extern const char SCRIPT_StrVsSeparator[];
 extern const char Global_STR_ALIGNED_CHANNEL_2[];
 
-extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
-extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
 extern void TEXTDISP_BuildEntryShortName(const char *entry, char *dst);
 extern const char *TEXTDISP_SkipControlCodes(const char *text);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
-extern char *TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
+extern char *ESQ_FindSubstringCaseFold(const char *haystack, const char *needle);
 extern char *STR_FindCharPtr(const char *s, LONG ch);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *dst, LONG index, char *aux);
 extern void TEXTDISP_TrimTextToPixelWidth(char *text, LONG px);
@@ -84,8 +84,8 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
         return;
     }
 
-    aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(groupIndex, mode);
-    program = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(groupIndex, mode);
+    aux = ESQDISP_GetEntryAuxPointerByMode(groupIndex, mode);
+    program = ESQDISP_GetEntryPointerByMode(groupIndex, mode);
     detail = entry->detailLine;
     detail[TEXTDISP_NULL] = TEXTDISP_NULL;
 
@@ -135,12 +135,12 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
 
         WDISP_SPrintf(tmp, SCRIPT_AlignedStringFormat, segment);
 
-        hit = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrAtSeparator);
+        hit = ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrAtSeparator);
         if (hit == 0) {
-            hit = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsDotSeparator);
+            hit = ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsDotSeparator);
         }
         if (hit == 0) {
-            hit = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsSeparator);
+            hit = ESQ_FindSubstringCaseFold(tmp, SCRIPT_StrVsSeparator);
         }
 
         if (hit != 0) {
