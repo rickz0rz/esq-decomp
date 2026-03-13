@@ -5393,11 +5393,11 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown12_alloc_alloc_from_free_list.c`
 - `src/decomp/sas_c/alloc_insert_free_block.c`
 - `src/decomp/sas_c/unknown6_string_append_at_null.c`
-- `src/decomp/sas_c/unknown5_string_append_n.c`
-- `src/decomp/sas_c/unknown5_string_compare_n.c`
-- `src/decomp/sas_c/unknown5_string_compare_nocase.c`
+- `src/decomp/sas_c/string_append_n.c`
+- `src/decomp/sas_c/string_compare_n.c`
+- `src/decomp/sas_c/string_compare_nocase.c`
 - `src/decomp/sas_c/unknown5_string_copy_pad_nul.c`
-- `src/decomp/sas_c/unknown5_string_compare_nocase_n.c`
+- `src/decomp/sas_c/string_compare_nocase_n.c`
 - `src/decomp/sas_c/string_find_substring.c`
 - `src/decomp/sas_c/dos_write_by_index.c`
 - `src/decomp/sas_c/unknown4_string_toupper_inplace.c`
