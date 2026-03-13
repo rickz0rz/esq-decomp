@@ -33,7 +33,12 @@ function trim(s, t) {
         uline ~ /PARSEINI_NORMALIZ/) has_normalize = 1
     if (uline ~ /DST_UPDATEBANNERQUEUE/ || uline ~ /DST_UPDATEBANNERQUEU/) has_update_queue = 1
     if (uline ~ /DST_REFRESHBANNERBUFFER/ || uline ~ /DST_REFRESHBANNERBUFF/) has_refresh = 1
-    if (uline ~ /ESQFUNC_JMPTBL_CLEANUP_DRAWCLOCKBANNER/ || uline ~ /ESQFUNC_JMPTBL_CLEANUP_DRAWCLOCKBAN/ || uline ~ /ESQFUNC_JMPTBL_CLEANUP_DRAWCLOCK/) has_draw_clock = 1
+    if (uline ~ /ESQFUNC_JMPTBL_CLEANUP_DRAWCLOCKBANNER/ ||
+        uline ~ /ESQFUNC_JMPTBL_CLEANUP_DRAWCLOCKBAN/ ||
+        uline ~ /ESQFUNC_JMPTBL_CLEANUP_DRAWCLOCK/ ||
+        uline ~ /CLEANUP_DRAWCLOCKBANNER/ ||
+        uline ~ /CLEANUP_DRAWCLOCKBAN/ ||
+        uline ~ /CLEANUP_DRAWCLOCK/) has_draw_clock = 1
     if (uline ~ /ESQDISP_DRAWSTATUSBANNER_IMPL/ || uline ~ /ESQDISP_DRAWSTATUSBANNER_IMP/) has_draw_status = 1
     if (uline ~ /^MOVE\.L 4\(A0\),-4\(A5\)$/ ||
         uline ~ /^MOVE\.L \$4\(A0\),A3$/ ||
