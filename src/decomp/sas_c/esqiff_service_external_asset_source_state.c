@@ -17,8 +17,6 @@ void ESQIFF_ServiceExternalAssetSourceState(WORD mode)
 {
     const WORD FLAG_FALSE = 0;
     const WORD FLAG_TRUE = -1;
-    const WORD EXTERNAL_SRC_BIT_DRIVE0 = 2;
-    const WORD EXTERNAL_SRC_BIT_DRIVE1 = 1;
     const WORD RELOAD_DRIVE0 = 0;
     const WORD RELOAD_DRIVE1 = 1;
 
@@ -41,13 +39,13 @@ void ESQIFF_ServiceExternalAssetSourceState(WORD mode)
     }
 
     if (DISKIO_Drive0WriteProtectedCode == FLAG_FALSE) {
-        if ((ESQIFF_ExternalAssetFlags & EXTERNAL_SRC_BIT_DRIVE0) != EXTERNAL_SRC_BIT_DRIVE0) {
+        if ((ESQIFF_ExternalAssetFlags & 2) != 2) {
             ESQIFF_ReloadExternalAssetCatalogBuffers(RELOAD_DRIVE0);
         }
     }
 
     if (DISKIO_DriveWriteProtectStatusCodeDrive1 == FLAG_FALSE) {
-        if ((ESQIFF_ExternalAssetFlags & EXTERNAL_SRC_BIT_DRIVE1) != EXTERNAL_SRC_BIT_DRIVE1) {
+        if ((ESQIFF_ExternalAssetFlags & 1) != 1) {
             ESQIFF_ReloadExternalAssetCatalogBuffers(RELOAD_DRIVE1);
         }
     }

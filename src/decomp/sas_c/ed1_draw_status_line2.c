@@ -28,9 +28,6 @@ typedef struct ED1_DisplayContext {
 void ED1_DrawStatusLine2(void)
 {
     const LONG PEN_BG = 2;
-    const LONG STATUS_Y_BUDGET = 120;
-    const LONG STATUS_Y_CYCLE = 150;
-    const LONG STATUS_Y_CLOCK = 180;
     ED1_DisplayContext *context;
     char statusLine[51];
     char *rastPort;
@@ -47,7 +44,7 @@ void ED1_DrawStatusLine2(void)
         (LONG)CONFIG_NicheModeCycleBudget_Static,
         (LONG)CONFIG_NicheModeCycleBudget_Custom
     );
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, STATUS_Y_BUDGET);
+    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 120);
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(
         statusLine,
@@ -56,12 +53,12 @@ void ED1_DrawStatusLine2(void)
         CONFIG_ModeCycleGateDuration,
         CONFIG_TimeWindowMinutes
     );
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, STATUS_Y_CYCLE);
+    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 150);
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(
         statusLine,
         Global_STR_CLOCKCMD_EQUALS_PCT_C,
         (LONG)CTASKS_STR_1
     );
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, STATUS_Y_CLOCK);
+    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 180);
 }
