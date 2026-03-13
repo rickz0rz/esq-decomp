@@ -5,7 +5,7 @@ enum {
     BRUSH_NODE_NEXT_OFFSET = 368
 };
 
-LONG GROUP_AA_JMPTBL_STRING_CompareNoCase(void *a, void *b);
+LONG STRING_CompareNoCase(const char *a, const char *b);
 
 typedef struct BRUSH_Node {
     unsigned char pad0[BRUSH_NODE_NEXT_OFFSET];
@@ -18,7 +18,7 @@ void *BRUSH_FindBrushByPredicate(void *searchKey, void *listHeadPtr)
 
     nodeCursor = *(BRUSH_Node **)listHeadPtr;
     while (nodeCursor != (BRUSH_Node *)BRUSH_NULL) {
-        if (GROUP_AA_JMPTBL_STRING_CompareNoCase((void *)nodeCursor, searchKey) == BRUSH_NULL) {
+        if (STRING_CompareNoCase((const char *)nodeCursor, (const char *)searchKey) == BRUSH_NULL) {
             return (void *)nodeCursor;
         }
         nodeCursor = nodeCursor->next;
