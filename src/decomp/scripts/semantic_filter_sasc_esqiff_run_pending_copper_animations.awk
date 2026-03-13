@@ -26,10 +26,10 @@ function trim(s, t) {
     uline = toupper(line)
 
     if (uline ~ /^ESQIFF_RUNPENDINGCOPPERANIMATIONS?:/) has_entry = 1
-    if (uline ~ /ESQIFF_JMPTBL_ESQ_NOOP_006A/) has_noop_006a = 1
-    if (uline ~ /ESQIFF_JMPTBL_ESQ_NOOP_0074/) has_noop_0074 = 1
-    if (uline ~ /ESQIFF_JMPTBL_ESQ_DECCOPPERLISTS(PRIMARY)?/) has_dec_primary = 1
-    if (uline ~ /ESQIFF_JMPTBL_ESQ_INCCOPPERLISTS(TOWARDSTARGETS)?/) has_inc_targets = 1
+    if (uline ~ /ESQIFF_JMPTBL_ESQ_NOOP_006A/ || uline ~ /ESQ_NOOP_006A/) has_noop_006a = 1
+    if (uline ~ /ESQIFF_JMPTBL_ESQ_NOOP_0074/ || uline ~ /ESQ_NOOP_0074/) has_noop_0074 = 1
+    if (uline ~ /ESQIFF_JMPTBL_ESQ_DECCOPPERLISTS(PRIMARY)?/ || uline ~ /ESQ_DECCOPPERLISTS(PRIMARY)?/) has_dec_primary = 1
+    if (uline ~ /ESQIFF_JMPTBL_ESQ_INCCOPPERLISTS(TOWARDSTARGETS)?/ || uline ~ /ESQ_INCCOPPERLISTS(TOWARDSTARGETS)?/) has_inc_targets = 1
     if (uline ~ /^MOVE\.W D0,COPPER_ANIMATIONLANE0_COUNTDOWN/) has_lane0_store = 1
     if (uline ~ /^MOVE\.W D0,COPPER_ANIMATIONLANE1_COUNTDOWN/) has_lane1_store = 1
     if (uline ~ /^MOVE\.W D0,COPPER_ANIMATIONLANE2_COUNTDOWN/) has_lane2_store = 1
