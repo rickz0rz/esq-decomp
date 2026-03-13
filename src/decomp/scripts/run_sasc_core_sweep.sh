@@ -228,6 +228,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_start_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_end_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_free_extra_title_text_pointers_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqfunc_rebuild_pw_brush_list_from_tag_table_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_process_ui_frame_tick_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_service_ui_tick_if_running_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_trim_text_to_pixel_width_word_boundary_trial.sh"
