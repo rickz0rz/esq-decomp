@@ -24,14 +24,13 @@ extern const char NEWGRID_GridEntryDelimiterBar[];
 extern const char NEWGRID_EntrySplitDelimiterMask[];
 extern const char *SCRIPT_PtrNoDataPlaceholder;
 
-extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
-extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, LONG ch);
-extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *set);
+extern char *STR_FindCharPtr(const char *s, LONG ch);
+extern char *STR_FindAnyCharPtr(const char *s, const char *set);
 extern void NEWGRID_Apply24HourFormatting(char *dst, LONG row, LONG mode);
-extern void NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(char *ctx, char *coi, LONG row, char *text, LONG fmt);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *layout, const char *src);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(char *layout, const char *src);
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
+extern void COI_RenderClockFormatEntryVariant(char *ctx, char *coi, LONG row, char *text, LONG fmt);
+extern LONG DISPTEXT_LayoutAndAppendToBuffer(char *layout, const char *src);
+extern LONG DISPTEXT_LayoutSourceToLines(char *layout, const char *src);
+extern char *STR_SkipClass3Chars(const char *s);
 
 static char *advance_until_space(const char *p)
 {
@@ -56,13 +55,13 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
     splitMask[3] = 0;
 
     if (!rowMeta || !coi || row <= 0 || row >= 49 || !coi->ptr) {
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, SCRIPT_PtrNoDataPlaceholder);
+        DISPTEXT_LayoutAndAppendToBuffer(layout, SCRIPT_PtrNoDataPlaceholder);
         return;
     }
 
     timeText = coi->ptr->titleTable[(LONG)row];
     if (!timeText || !*timeText) {
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, SCRIPT_PtrNoDataPlaceholder);
+        DISPTEXT_LayoutAndAppendToBuffer(layout, SCRIPT_PtrNoDataPlaceholder);
         return;
     }
 
@@ -79,22 +78,22 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
     NEWGRID_Apply24HourFormatting(NEWGRID_EntryTextScratchPtr, row, coi->timeFmtByte498);
 
     if ((((UBYTE *)coi)[7 + row] & 0x02) == 0 && ((entry->flags27 & 0x10) == 0)) {
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, NEWGRID_EntryTextScratchPtr);
+        DISPTEXT_LayoutAndAppendToBuffer(layout, NEWGRID_EntryTextScratchPtr);
         return;
     }
 
     if (renderMode && textLines == 3) {
-        NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(rowMeta, (char *)coi, row, NEWGRID_EntryTextScratchPtr, clockFmt);
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, NEWGRID_EntryTextScratchPtr);
+        COI_RenderClockFormatEntryVariant(rowMeta, (char *)coi, row, NEWGRID_EntryTextScratchPtr, clockFmt);
+        DISPTEXT_LayoutAndAppendToBuffer(layout, NEWGRID_EntryTextScratchPtr);
         return;
     }
 
-    split = PARSEINI_JMPTBL_STR_FindCharPtr(NEWGRID_EntryTextScratchPtr, 34);
+    split = STR_FindCharPtr(NEWGRID_EntryTextScratchPtr, 34);
     if (split) {
-        split = PARSEINI_JMPTBL_STR_FindCharPtr(split + 1, 34);
+        split = STR_FindCharPtr(split + 1, 34);
     }
     if (split) {
-        tail = PARSEINI_JMPTBL_STR_FindAnyCharPtr(split, NEWGRID_EntrySplitDelimiterMask);
+        tail = STR_FindAnyCharPtr(split, NEWGRID_EntrySplitDelimiterMask);
         if (tail) split = tail;
         split = advance_until_space(split);
         if (*split) {
@@ -104,10 +103,10 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
         }
     }
 
-    NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, NEWGRID_EntryTextScratchPtr);
+    DISPTEXT_LayoutAndAppendToBuffer(layout, NEWGRID_EntryTextScratchPtr);
 
     if (renderMode && split && textLines > 1) {
-        const char *p = PARSEINI_JMPTBL_STR_FindCharPtr(split, 40);
+        const char *p = STR_FindCharPtr(split, 40);
         if (p && p[5] == ')') {
             split = (char *)(p + 6);
         }
@@ -115,19 +114,19 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
         split = advance_until_space(split);
         if (*split) {
             *split++ = 0;
-            if (NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(layout, p) != 0) {
-                NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, p);
+            if (DISPTEXT_LayoutSourceToLines(layout, p) != 0) {
+                DISPTEXT_LayoutAndAppendToBuffer(layout, p);
             }
         }
 
         if (split) {
-            subtitle = NEWGRID2_JMPTBL_STR_SkipClass3Chars(split);
+            subtitle = STR_SkipClass3Chars(split);
             if (subtitle) {
-                char *d1 = PARSEINI_JMPTBL_STR_FindCharPtr(subtitle, 44);
+                char *d1 = STR_FindCharPtr(subtitle, 44);
                 char *d2;
                 char *fallback = 0;
                 if (d1) {
-                    d2 = PARSEINI_JMPTBL_STR_FindCharPtr(d1, 46);
+                    d2 = STR_FindCharPtr(d1, 46);
                     if (d2) {
                         split = d2;
                     } else {
@@ -136,7 +135,7 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
                         *split = '.';
                     }
                 } else {
-                    d2 = PARSEINI_JMPTBL_STR_FindCharPtr(subtitle, 46);
+                    d2 = STR_FindCharPtr(subtitle, 46);
                     split = d2;
                     if (!d2) subtitle = 0;
                 }
@@ -149,17 +148,17 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
                         split = 0;
                     }
 
-                    if (NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(layout, subtitle) != 0) {
-                        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, subtitle);
+                    if (DISPTEXT_LayoutSourceToLines(layout, subtitle) != 0) {
+                        DISPTEXT_LayoutAndAppendToBuffer(layout, subtitle);
                     } else if (fallback) {
                         fallback[0] = '.';
                         fallback[1] = 0;
                         fallback += 2;
-                        fallback = NEWGRID2_JMPTBL_STR_SkipClass3Chars(fallback);
-                        if (NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(layout, subtitle) != 0) {
-                            NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, subtitle);
-                        } else if (NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(layout, fallback) != 0) {
-                            NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, fallback);
+                        fallback = STR_SkipClass3Chars(fallback);
+                        if (DISPTEXT_LayoutSourceToLines(layout, subtitle) != 0) {
+                            DISPTEXT_LayoutAndAppendToBuffer(layout, subtitle);
+                        } else if (DISPTEXT_LayoutSourceToLines(layout, fallback) != 0) {
+                            DISPTEXT_LayoutAndAppendToBuffer(layout, fallback);
                         }
                     }
                 }
@@ -168,22 +167,22 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
     }
 
     if (split) {
-        char *delim = PARSEINI_JMPTBL_STR_FindAnyCharPtr(split, splitMask);
+        char *delim = STR_FindAnyCharPtr(split, splitMask);
         char *next = 0;
         if (delim) {
-            next = PARSEINI_JMPTBL_STR_FindAnyCharPtr(delim + 1, splitMask);
+            next = STR_FindAnyCharPtr(delim + 1, splitMask);
             while (next) {
                 split = next + 1;
-                next = PARSEINI_JMPTBL_STR_FindAnyCharPtr(split, splitMask);
+                next = STR_FindAnyCharPtr(split, splitMask);
             }
             *split = 0;
-            NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, delim);
+            DISPTEXT_LayoutAndAppendToBuffer(layout, delim);
         }
     }
 
     if (clockFmt == -1 && renderMode && textLines > 1) {
         NEWGRID_EntryTextScratchPtr[0] = 0;
-        NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(rowMeta, (char *)coi, row, NEWGRID_EntryTextScratchPtr, -1);
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(layout, NEWGRID_EntryTextScratchPtr);
+        COI_RenderClockFormatEntryVariant(rowMeta, (char *)coi, row, NEWGRID_EntryTextScratchPtr, -1);
+        DISPTEXT_LayoutAndAppendToBuffer(layout, NEWGRID_EntryTextScratchPtr);
     }
 }
