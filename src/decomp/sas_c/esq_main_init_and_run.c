@@ -289,17 +289,17 @@ extern void *ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel(const char *label);
 extern void *ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(const char *label, void *listHead);
 extern void *ESQIFF_JMPTBL_BRUSH_FindType3Brush(void *listHead);
 
-extern LONG GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(LONG code);
+extern LONG BUFFER_FlushAllAndCloseWithCode(LONG code);
 extern void GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS(void);
-extern void GROUP_AM_JMPTBL_LIST_InitHeader(void *list);
-extern void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(void);
+extern void LIST_InitHeader(void *list);
+extern void ESQ_SetCopperEffect_OffDisableHighlight(void);
 extern void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
-extern LONG GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage(void);
-extern void GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory(void);
-extern void GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip(void);
-extern void GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard(void);
-extern void GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc(void);
-extern void *GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal(const char *name, LONG signal);
+extern LONG ESQ_FormatDiskErrorMessage(void);
+extern void ESQ_CheckAvailableFastMemory(void);
+extern void ESQ_CheckCompatibleVideoChip(void);
+extern void ESQ_CheckTopazFontGuard(void);
+extern void PARSEINI_UpdateClockFromRtc(void);
+extern void *SIGNAL_CreateMsgPortWithSignal(const char *name, LONG signal);
 extern void *GROUP_AM_JMPTBL_STRUCT_AllocWithOwner(void *owner, LONG size);
 extern void GROUP_AM_JMPTBL_ESQ_InitAudio1Dma(void);
 extern void GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext(void);
@@ -399,22 +399,22 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 
     Global_REF_GRAPHICS_LIBRARY = _LVOOpenLibrary(AbsExecBase, Global_STR_GRAPHICS_LIBRARY, 0);
     if (Global_REF_GRAPHICS_LIBRARY == (void *)0) {
-        return GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(0);
+        return BUFFER_FlushAllAndCloseWithCode(0);
     }
 
     Global_REF_DISKFONT_LIBRARY = _LVOOpenLibrary(AbsExecBase, Global_STR_DISKFONT_LIBRARY, 0);
     if (Global_REF_DISKFONT_LIBRARY == (void *)0) {
-        return GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(0);
+        return BUFFER_FlushAllAndCloseWithCode(0);
     }
 
     Global_REF_DOS_LIBRARY = _LVOOpenLibrary(AbsExecBase, Global_STR_DOS_LIBRARY, 0);
     if (Global_REF_DOS_LIBRARY == (void *)0) {
-        return GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(0);
+        return BUFFER_FlushAllAndCloseWithCode(0);
     }
 
     Global_REF_INTUITION_LIBRARY = _LVOOpenLibrary(AbsExecBase, Global_STR_INTUITION_LIBRARY, 0);
     if (Global_REF_INTUITION_LIBRARY == (void *)0) {
-        return GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(0);
+        return BUFFER_FlushAllAndCloseWithCode(0);
     }
 
     if ((LONG)(UWORD)read_word(Global_REF_GRAPHICS_LIBRARY, LIB_VERSION_OFFSET) >= 37) {
@@ -489,7 +489,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQ_HighlightMsgPort->sigBit9 = 0;
     ESQ_HighlightMsgPort->flags8 = 4;
     write_byte(ESQ_HighlightMsgPort, 14, 2);
-    GROUP_AM_JMPTBL_LIST_InitHeader(ESQ_HighlightMsgPort->list20);
+    LIST_InitHeader(ESQ_HighlightMsgPort->list20);
 
     ESQ_HighlightReplyPort = (ESQ_MessagePort *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQ_C_5, 698, 34, MEMF_PUBLIC + MEMF_CLEAR);
     if (ESQ_HighlightReplyPort == (ESQ_MessagePort *)0) {
@@ -499,7 +499,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQ_HighlightReplyPort->sigBit9 = 0;
     ESQ_HighlightReplyPort->flags8 = 4;
     write_byte(ESQ_HighlightReplyPort, 14, 2);
-    GROUP_AM_JMPTBL_LIST_InitHeader(ESQ_HighlightReplyPort->list20);
+    LIST_InitHeader(ESQ_HighlightReplyPort->list20);
 
     for (i = 0; i < 4; ++i) {
         ESQDISP_QueueHighlightDrawMessage(
@@ -508,7 +508,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         );
     }
 
-    GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight();
+    ESQ_SetCopperEffect_OffDisableHighlight();
     WDISP_HighlightBufferMode = 0;
     if ((LONG)(UWORD)read_word(Global_REF_GRAPHICS_LIBRARY, LIB_VERSION_OFFSET) >= 34) {
         WDISP_HighlightBufferMode = 1;
@@ -518,19 +518,19 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         WDISP_HighlightBufferMode = 2;
     }
 
-    if (GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage() != 0) {
+    if (ESQ_FormatDiskErrorMessage() != 0) {
         return 0;
     }
 
-    GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory();
-    GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip();
-    GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard();
+    ESQ_CheckAvailableFastMemory();
+    ESQ_CheckCompatibleVideoChip();
+    ESQ_CheckTopazFontGuard();
 
     CLOCK_DaySlotIndexPtr = (LONG)&CLOCK_DaySlotIndex;
     CLOCK_CurrentDayOfWeekIndexPtr = (LONG)&CLOCK_CurrentDayOfWeekIndex;
     DST_PrimaryCountdown = 0;
     DST_SecondaryCountdown = 0;
-    GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc();
+    PARSEINI_UpdateClockFromRtc();
     DST_RefreshBannerBuffer();
 
     SCRIPT_CtrlInterfaceEnabledFlag = 0;
@@ -557,7 +557,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     Global_REF_BAUD_RATE = baudRate;
 
     ESQIFF_RecordBufferPtr = ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQ_C_6, 854, 9000, MEMF_PUBLIC + MEMF_CLEAR);
-    WDISP_SerialMessagePortPtr = GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal(Global_STR_SERIAL_READ, 0);
+    WDISP_SerialMessagePortPtr = SIGNAL_CreateMsgPortWithSignal(Global_STR_SERIAL_READ, 0);
     if (WDISP_SerialMessagePortPtr == (void *)0) {
         return 0;
     }
@@ -809,7 +809,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 
     ESQIFF_ExternalAssetFlags = 0;
     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(0);
-    GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight();
+    ESQ_SetCopperEffect_OffDisableHighlight();
 
     for (i = 0; i < 0x12e; ++i) {
         CLEANUP_AlignedStatusEntryCycleTable[i] = 0;
