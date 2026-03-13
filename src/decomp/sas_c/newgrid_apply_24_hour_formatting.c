@@ -5,7 +5,7 @@ typedef unsigned char UBYTE;
 extern UBYTE Global_REF_STR_USE_24_HR_CLOCK;
 extern const char *Global_JMPTBL_HALF_HOURS_24_HR_FMT[];
 
-extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
+extern char *STR_FindCharPtr(const char *text, LONG ch);
 extern LONG NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(LONG rowIndex, LONG minuteIndex);
 
 void NEWGRID_Apply24HourFormatting(char *text, WORD rowIndex, UBYTE minuteIndex)
@@ -21,7 +21,7 @@ void NEWGRID_Apply24HourFormatting(char *text, WORD rowIndex, UBYTE minuteIndex)
         return;
     }
 
-    timePtr = PARSEINI_JMPTBL_STR_FindCharPtr(text, 40);
+    timePtr = STR_FindCharPtr(text, 40);
     if (timePtr == 0) {
         return;
     }

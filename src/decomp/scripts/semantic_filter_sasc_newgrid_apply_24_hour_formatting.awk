@@ -26,7 +26,7 @@ function trim(s, t) {
 
     if (u ~ /^NEWGRID_APPLY24HOURFORMATTING:/ || u ~ /^NEWGRID_APPLY24HOURFORMATTIN[A-Z0-9_]*:/) has_entry=1
     if (n ~ /GLOBALREFSTRUSE24HRCLOCK/) has_24h_flag=1
-    if (n ~ /PARSEINIJMPTBLSTRFINDCHARPTR/) has_find_char=1
+    if (n ~ /PARSEINIJMPTBLSTRFINDCHARPTR/ || n ~ /STRFINDCHARPTR/) has_find_char=1
     if (u ~ /CMP\.B .*3\(A[0-7]\)/ || u ~ /CMPI\.B #\$3A/) has_colon_check=1
     if ((u ~ /^(JSR|BSR|JMP)(\.[A-Z])?[ \t]/) && n ~ /NEWGRID2JMPTBLESQDISPCOMPUTES/) schedule_calls++
     if (n ~ /GLOBALJMPTBLHALFHOURS24HRF/) has_table=1
