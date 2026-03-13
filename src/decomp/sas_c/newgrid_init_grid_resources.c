@@ -31,14 +31,14 @@ extern UBYTE Global_REF_696_400_BITMAP;
 extern UBYTE WDISP_BannerGridBitmapStruct;
 
 extern void NEWGRID2_EnsureBuffersAllocated(void);
-extern void NEWGRID_JMPTBL_DISPTEXT_InitBuffers(void);
+extern void DISPTEXT_InitBuffers(void);
 extern void NEWGRID_InitShowtimeBuckets(void);
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *tagName, LONG width, LONG height, LONG flags);
+extern void *MEMORY_AllocateMemory(LONG size, LONG flags);
 extern void _LVOInitRastPort(char *rastPort);
 extern void _LVOSetDrMd(char *rastPort, LONG mode);
 extern void _LVOSetFont(char *rastPort, void *font);
 extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
-extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG a, LONG b);
+extern LONG MATH_DivS32(LONG a, LONG b);
 extern void NEWGRID_DrawTopBorderLine(void);
 
 void NEWGRID_InitGridResources(void)
@@ -53,10 +53,10 @@ void NEWGRID_InitGridResources(void)
 
     NEWGRID_GridResourcesInitializedFlag = 1;
     NEWGRID2_EnsureBuffersAllocated();
-    NEWGRID_JMPTBL_DISPTEXT_InitBuffers();
+    DISPTEXT_InitBuffers();
     NEWGRID_InitShowtimeBuckets();
 
-    NEWGRID_MainRastPortPtr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_NEWGRID_C_1, 99, 100, 0x10001);
+    NEWGRID_MainRastPortPtr = MEMORY_AllocateMemory(100, 0x10001);
     if (NEWGRID_MainRastPortPtr == 0) {
         return;
     }
@@ -66,7 +66,7 @@ void NEWGRID_InitGridResources(void)
     _LVOSetDrMd((char *)NEWGRID_MainRastPortPtr, 0);
     _LVOSetFont((char *)NEWGRID_MainRastPortPtr, Global_HANDLE_PREVUEC_FONT);
 
-    NEWGRID_HeaderRastPortPtr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_NEWGRID_C_2, 112, 100, 0x10001);
+    NEWGRID_HeaderRastPortPtr = MEMORY_AllocateMemory(100, 0x10001);
     if (NEWGRID_HeaderRastPortPtr == 0) {
         return;
     }
@@ -84,14 +84,14 @@ void NEWGRID_InitGridResources(void)
     NEWGRID_ColumnStartXPx = (UWORD)d0;
     d1 = (LONG)(UWORD)d0;
     d0 = 624 - d1;
-    d0 = NEWGRID_JMPTBL_MATH_DivS32(d0, 3);
+    d0 = MATH_DivS32(d0, 3);
     NEWGRID_ColumnWidthPx = (UWORD)d0;
 
     mainRast = NEWGRID_MainRastPortPtr;
     d0 = (LONG)(UWORD)mainRast->font->ySize;
     d0 = ((d0 - 1) * 2) + 8;
     NEWGRID_RowHeightPx = (UWORD)d0;
-    d1 = NEWGRID_JMPTBL_MATH_DivS32(d0, 2);
+    d1 = MATH_DivS32(d0, 2);
     if (d1 != 0) {
         NEWGRID_RowHeightPx = (UWORD)((UWORD)NEWGRID_RowHeightPx - 1);
     }

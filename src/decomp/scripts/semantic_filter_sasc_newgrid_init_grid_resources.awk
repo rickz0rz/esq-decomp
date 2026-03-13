@@ -45,14 +45,14 @@ function trim(s, t) {
 
     if (u ~ /^NEWGRID_INITGRIDRESOURCES:/ || u ~ /^NEWGRID_INITGRIDRESOUR[A-Z0-9_]*:/) has_entry=1
     if (n ~ /NEWGRID2ENSUREBUFFERSALLOCATED/ || n ~ /NEWGRID2ENSUREBUFFERSALLOCA/) has_ensure_call=1
-    if (n ~ /NEWGRIDJMPTBLDISPTEXTINITBUFFERS/ || n ~ /NEWGRIDJMPTBLDISPTEXTINITBU/) has_init_buffers_call=1
+    if (n ~ /NEWGRIDJMPTBLDISPTEXTINITBUFFERS/ || n ~ /NEWGRIDJMPTBLDISPTEXTINITBU/ || n ~ /DISPTEXTINITBUFFERS/) has_init_buffers_call=1
     if (n ~ /NEWGRIDINITSHOWTIMEBUCKETS/) has_init_buckets_call=1
-    if (n ~ /NEWGRIDJMPTBLMEMORYALLOCATEMEMORY/ || n ~ /NEWGRIDJMPTBLMEMORYALLOCATE/) has_alloc_call=1
+    if (n ~ /NEWGRIDJMPTBLMEMORYALLOCATEMEMORY/ || n ~ /NEWGRIDJMPTBLMEMORYALLOCATE/ || n ~ /MEMORYALLOCATEMEMORY/) has_alloc_call=1
     if (n ~ /LVOINITRASTPORT/) has_init_rast_call=1
     if (n ~ /LVOSETDRMD/) has_setdrmd_call=1
     if (n ~ /LVOSETFONT/) has_setfont_call=1
     if (n ~ /LVOTEXTLENGTH/ || n ~ /TEXTLENGTH/) has_textlength_call=1
-    if (n ~ /NEWGRIDJMPTBLMATHDIVS32/ || n ~ /NEWGRIDJMPTBLMATHDIVS/) has_div_call=1
+    if (n ~ /NEWGRIDJMPTBLMATHDIVS32/ || n ~ /NEWGRIDJMPTBLMATHDIVS/ || n ~ /MATHDIVS32/) has_div_call=1
     if (n ~ /NEWGRIDDRAWTOPBORDERLINE/ || n ~ /NEWGRIDDRAWTOPBORDERL/) has_topborder_call=1
     if (n ~ /NEWGRIDGRIDRESOURCESINITIALIZEDFLAG/ || n ~ /NEWGRIDGRIDRESOURCESINIT/) has_grid_init_flag=1
     if (n ~ /NEWGRIDMAINRASTPORTPTR/ || n ~ /NEWGRIDMAINRASTPORTP/) has_main_rast_ptr=1
