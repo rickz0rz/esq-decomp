@@ -24,14 +24,14 @@ typedef struct DISKIO2_TitleData {
 extern long DISKIO_LoadFileToWorkBuffer(const char *path);
 extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
-extern long GROUP_AH_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
+extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
+extern long ESQ_WildcardMatch(const char *pattern, const char *text);
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
-extern void GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults(UBYTE *entry);
+extern void ESQSHARED_InitEntryDefaults(UBYTE *entry);
 extern void COI_EnsureAnimObjectAllocated(void *entry);
 extern char *ESQSHARED_ApplyProgramTitleTextFilters(const char *text, ULONG flags);
-extern void GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket(const char *text);
+extern void ESQIFF2_ApplyIncomingStatusPacket(UBYTE *src);
 extern long COI_LoadOiDataFile(long diskId);
 
 extern const char CTASKS_PATH_CURDAY_DAT[];
@@ -96,7 +96,7 @@ long DISKIO2_LoadCurDayDataFile(void)
 
     if (DISKIO_LoadFileToWorkBuffer(CTASKS_PATH_CURDAY_DAT) == -1) {
         DST_PrimaryCountdown = 0;
-        GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket(statusText);
+        ESQIFF2_ApplyIncomingStatusPacket((UBYTE *)statusText);
         return -1;
     }
 
@@ -104,7 +104,7 @@ long DISKIO2_LoadCurDayDataFile(void)
     workBuf = Global_PTR_WORK_BUFFER;
 
     DST_PrimaryCountdown = (WORD)DISKIO_ParseLongFromWorkBuffer();
-    GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket(statusText);
+    ESQIFF2_ApplyIncomingStatusPacket((UBYTE *)statusText);
 
     str = DISKIO_ConsumeCStringFromWorkBuffer();
     if (str == (char *)-1) {
@@ -119,15 +119,15 @@ long DISKIO2_LoadCurDayDataFile(void)
         }
     }
 
-    if (GROUP_AH_JMPTBL_ESQ_WildcardMatch(DISKIO2_STR_DREV_1, (char *)DISKIO_ErrorMessageScratch) != 0) {
+    if (ESQ_WildcardMatch(DISKIO2_STR_DREV_1, (char *)DISKIO_ErrorMessageScratch) != 0) {
         DISKIO_CurrentDriveRevisionIndex = 1;
-    } else if (GROUP_AH_JMPTBL_ESQ_WildcardMatch(DISKIO2_STR_DREV_2, (char *)DISKIO_ErrorMessageScratch) != 0) {
+    } else if (ESQ_WildcardMatch(DISKIO2_STR_DREV_2, (char *)DISKIO_ErrorMessageScratch) != 0) {
         DISKIO_CurrentDriveRevisionIndex = 2;
-    } else if (GROUP_AH_JMPTBL_ESQ_WildcardMatch(DISKIO2_STR_DREV_3, (char *)DISKIO_ErrorMessageScratch) != 0) {
+    } else if (ESQ_WildcardMatch(DISKIO2_STR_DREV_3, (char *)DISKIO_ErrorMessageScratch) != 0) {
         DISKIO_CurrentDriveRevisionIndex = 3;
-    } else if (GROUP_AH_JMPTBL_ESQ_WildcardMatch(DISKIO2_STR_DREV_4, (char *)DISKIO_ErrorMessageScratch) != 0) {
+    } else if (ESQ_WildcardMatch(DISKIO2_STR_DREV_4, (char *)DISKIO_ErrorMessageScratch) != 0) {
         DISKIO_CurrentDriveRevisionIndex = 4;
-    } else if (GROUP_AH_JMPTBL_ESQ_WildcardMatch(DISKIO2_STR_DREV_5, (char *)DISKIO_ErrorMessageScratch) != 0) {
+    } else if (ESQ_WildcardMatch(DISKIO2_STR_DREV_5, (char *)DISKIO_ErrorMessageScratch) != 0) {
         DISKIO_CurrentDriveRevisionIndex = 5;
     } else {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
@@ -154,7 +154,7 @@ long DISKIO2_LoadCurDayDataFile(void)
                 Global_STR_DISKIO2_C_7, 588, (char *)workBuf, fileLen + 1);
             return -1;
         }
-        WDISP_WeatherStatusTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+        WDISP_WeatherStatusTextPtr = ESQPARS_ReplaceOwnedString(
             str,
             (char *)WDISP_WeatherStatusTextPtr);
     }
@@ -187,7 +187,7 @@ long DISKIO2_LoadCurDayDataFile(void)
                 break;
             }
 
-            GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults((UBYTE *)entry);
+            ESQSHARED_InitEntryDefaults((UBYTE *)entry);
             COI_EnsureAnimObjectAllocated((void *)entry);
 
             {
@@ -250,7 +250,7 @@ long DISKIO2_LoadCurDayDataFile(void)
                 }
 
                 str = ESQSHARED_ApplyProgramTitleTextFilters(str, (ULONG)entry->flags27);
-                title->slotTextTable[slot] = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(str, title->slotTextTable[slot]);
+                title->slotTextTable[slot] = ESQPARS_ReplaceOwnedString(str, title->slotTextTable[slot]);
                 if (title->slotTextTable[slot] != 0) {
                     entry->flags40 = (UBYTE)(entry->flags40 | 0x80);
                 }
