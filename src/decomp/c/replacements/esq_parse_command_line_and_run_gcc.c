@@ -29,7 +29,7 @@ extern u32 Global_SignalCallbackPtr;
 
 u8 *STRING_AppendN(u8 *dst, const u8 *src, u32 max_bytes) __attribute__((noinline));
 s32 HANDLE_CloseAllAndReturnWithCode(s32 code) __attribute__((noinline));
-s32 UNKNOWN29_JMPTBL_ESQ_MainInitAndRun(s32 argc, u8 **argv) __attribute__((noinline));
+s32 ESQ_MainInitAndRun(s32 argc, u8 **argv) __attribute__((noinline));
 s32 BUFFER_FlushAllAndCloseWithCode(s32 code) __attribute__((noinline));
 s32 UNKNOWN36_ShowAbortRequester(void) __attribute__((noinline));
 
@@ -209,6 +209,6 @@ s32 ESQ_ParseCommandLineAndRun(u8 *cmdline)
     }
 
     Global_SignalCallbackPtr = (u32)(u8 *)&UNKNOWN36_ShowAbortRequester;
-    UNKNOWN29_JMPTBL_ESQ_MainInitAndRun((s32)Global_ArgCount, Global_ArgvPtr);
+    ESQ_MainInitAndRun((s32)Global_ArgCount, Global_ArgvPtr);
     return BUFFER_FlushAllAndCloseWithCode(0);
 }

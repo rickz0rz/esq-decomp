@@ -75,7 +75,7 @@ function trim(s,    t) {
 
     if (u ~ /HANDLE_CLOSEALLANDRETURNWITHCODE/) has_closeall_call = 1
     if (u ~ /STRING_APPENDN/) has_appendn_call = 1
-    if (u ~ /UNKNOWN29_JMPTBL_ESQ_MAININITANDRUN/) has_maininit_call = 1
+    if (u ~ /UNKNOWN29_JMPTBL_ESQ_MAININITANDRUN/ || u ~ /ESQ_MAININITANDRUN/) has_maininit_call = 1
     if (u ~ /BUFFER_FLUSHALLANDCLOSEWITHCODE/) has_flush_call = 1
     if (u ~ /_LVOOPEN/ || u ~ /LVOOPEN/ || u ~ /DOS_LVO_OPEN/) has_open_call = 1
     if (u ~ /_LVOINPUT/ || u ~ /LVOINPUT/ || u ~ /DOS_LVO_INPUT/) has_input_call = 1
