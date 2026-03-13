@@ -28,13 +28,13 @@ function trim(s, t) {
     gsub(/[^A-Z0-9]/, "", n)
 
     if (u ~ /^NEWGRID_DRAWENTRYFLAGBADGE:/ || u ~ /^NEWGRID_DRAWENTRYFLAGBADG[A-Z0-9_]*:/) has_entry=1
-    if (n ~ /NEWGRID2JMPTBLDISPTEXTSETLAYO/) has_set_layout=1
+    if (n ~ /(NEWGRID2JMPTBLDISPTEXTSETLAYO|DISPTEXTSETLAYOUTPARA)/) has_set_layout=1
     if (u ~ /BTST #\$?4,/) has_bit4_check=1
-    if (n ~ /NEWGRID2JMPTBLCLEANUPTESTENTR/) has_test_flag=1
-    if (n ~ /NEWGRID2JMPTBLCOISELECTANIMFI/) has_select_anim=1
-    if (n ~ /NEWGRID2JMPTBLCLEANUPUPDATEEN/) has_update_flags=1
-    if (n ~ /NEWGRID2JMPTBLDISPTEXTBUILDLA/) has_build_layout=1
-    if (n ~ /NEWGRID2JMPTBLDISPTEXTLAYOUTA/) has_fallback_layout=1
+    if (n ~ /(NEWGRID2JMPTBLCLEANUPTESTENTR|CLEANUPTESTENTRYFLAGYANDBIT1)/) has_test_flag=1
+    if (n ~ /(NEWGRID2JMPTBLCOISELECTANIMFI|COISELECTANIMFIELDPOINTER)/) has_select_anim=1
+    if (n ~ /(NEWGRID2JMPTBLCLEANUPUPDATEEN|CLEANUPUPDATEENTRYFLAGBYTES)/) has_update_flags=1
+    if (n ~ /(NEWGRID2JMPTBLDISPTEXTBUILDLA|DISPTEXTBUILDLAYOUTFORSOURCE)/) has_build_layout=1
+    if (n ~ /(NEWGRID2JMPTBLDISPTEXTLAYOUTA|DISPTEXTLAYOUTANDAPPENDTOBUFFER)/) has_fallback_layout=1
     if (n ~ /NEWGRIDENTRYDETAILFMTSTR/) has_fmt_str=1
     if (u == "RTS") has_rts=1
 }
