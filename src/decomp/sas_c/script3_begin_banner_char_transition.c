@@ -14,7 +14,7 @@ extern WORD SCRIPT_BannerTransitionStepBudget;
 extern WORD SCRIPT_BannerTransitionStepSign;
 extern WORD SCRIPT_PendingBannerSpeedMs;
 
-extern LONG SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(void);
+extern LONG GCOMMAND_GetBannerChar(void);
 extern LONG SCRIPT3_JMPTBL_MATH_DivS32(LONG dividend, LONG divisor);
 extern LONG SCRIPT3_JMPTBL_MATH_Mulu32(LONG left, LONG right);
 
@@ -46,7 +46,7 @@ WORD SCRIPT_BeginBannerCharTransition(LONG targetChar, LONG speedMs)
         speedMs = 0x1d4c;
     }
 
-    current = SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar();
+    current = GCOMMAND_GetBannerChar();
     if (SCRIPT_BannerTransitionActive != 0) {
         return started;
     }

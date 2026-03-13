@@ -1,4 +1,5 @@
 typedef signed long LONG;
+typedef signed char BYTE;
 typedef short WORD;
 typedef unsigned char UBYTE;
 
@@ -9,8 +10,8 @@ extern WORD SCRIPT_BannerTransitionStepBudget;
 extern WORD SCRIPT_BannerTransitionStepSign;
 extern UBYTE SCRIPT_BannerTransitionTargetChar;
 
-extern LONG SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(void);
-extern void SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset(LONG delta);
+extern LONG GCOMMAND_GetBannerChar(void);
+extern void GCOMMAND_AdjustBannerCopperOffset(BYTE delta);
 
 void SCRIPT_UpdateBannerCharTransition(void)
 {
@@ -28,7 +29,7 @@ void SCRIPT_UpdateBannerCharTransition(void)
         return;
     }
 
-    current = SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar();
+    current = GCOMMAND_GetBannerChar();
     target = (LONG)SCRIPT_BannerTransitionTargetChar;
 
     if ((LONG)(WORD)current == target) {
@@ -58,5 +59,5 @@ void SCRIPT_UpdateBannerCharTransition(void)
         delta = (WORD)(target - (LONG)(WORD)current);
     }
 
-    SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset((LONG)(WORD)delta);
+    GCOMMAND_AdjustBannerCopperOffset((BYTE)delta);
 }

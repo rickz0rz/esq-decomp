@@ -9,14 +9,14 @@ extern WORD SCRIPT_BannerTransitionStepDelta;
 extern WORD SCRIPT_BannerTransitionStepBudget;
 extern WORD SCRIPT_BannerTransitionStepSign;
 
-extern LONG SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(void);
+extern LONG GCOMMAND_GetBannerChar(void);
 
 void SCRIPT_PrimeBannerTransitionFromHexCode(void)
 {
     LONG current;
     LONG delta;
 
-    current = SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar();
+    current = GCOMMAND_GetBannerChar();
     SCRIPT_BannerTransitionActive = 0;
 
     delta = (LONG)(UBYTE)CONFIG_BannerCopperHeadByte - current;

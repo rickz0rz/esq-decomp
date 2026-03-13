@@ -23,7 +23,12 @@ function trim(s, t) {
     u = toupper(line)
 
     if (u ~ /^SCRIPT_PRIMEBANNERTRANSITIONFROMHEXCODE:/ || u ~ /^SCRIPT_PRIMEBANNERTRANSITIONFROMHEX[A-Z0-9_]*:/ || u ~ /^SCRIPT_PRIMEBANNERTRANSITIONFROM[A-Z0-9_]*:/) has_entry = 1
-    if (index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNERCHAR") > 0 || index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNERC") > 0 || index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNE") > 0) has_get_banner = 1
+    if (index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNERCHAR") > 0 ||
+        index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNERC") > 0 ||
+        index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNE") > 0 ||
+        index(u, "GCOMMAND_GETBANNERCHAR") > 0 ||
+        index(u, "GCOMMAND_GETBANNERC") > 0 ||
+        index(u, "GCOMMAND_GETBANNE") > 0) has_get_banner = 1
     if (index(u, "SCRIPT_BANNERTRANSITIONTARGETCHAR") > 0 || index(u, "SCRIPT_BANNERTRANSITIONTARGETCHA") > 0) has_target = 1
     if (index(u, "SCRIPT_BANNERTRANSITIONSTEPDELTA") > 0 || index(u, "SCRIPT_BANNERTRANSITIONSTEPDELT") > 0) has_delta = 1
     if (index(u, "SCRIPT_BANNERTRANSITIONSTEPSIGN") > 0 || index(u, "SCRIPT_BANNERTRANSITIONSTEPSIG") > 0) has_sign = 1
