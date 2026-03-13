@@ -69,8 +69,8 @@ extern void GCOMMAND_InitPresetTableFromPalette(UWORD *table);
 extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 extern char *GCOMMAND_FindPathSeparator(const char *path);
 extern void *HANDLE_OpenWithMode(const char *path, const char *modeStr, char *unused);
-extern void PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(char *brushPath);
-extern void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(void);
+extern void ESQIFF_QueueIffBrushLoad(short mode);
+extern void ESQIFF_HandleBrushIniReloadHotkey(LONG hotkey);
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
 extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);
 
@@ -287,8 +287,8 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
                     STRING_CompareNoCase(linePtr, PARSEINI_TAG_BRUSH) == 0) {
                     valuePtr = GCOMMAND_FindPathSeparator(valuePtr);
                     if (HANDLE_OpenWithMode(valuePtr, PARSEINI_MODE_RB, (char *)0) != 0) {
-                        PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(valuePtr);
-                        PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey();
+                        ESQIFF_QueueIffBrushLoad(0);
+                        ESQIFF_HandleBrushIniReloadHotkey('a');
                     }
                 }
             } else {

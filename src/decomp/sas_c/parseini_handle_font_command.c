@@ -41,19 +41,19 @@ extern void TLIBA3_SetFontForAllViewModes(void *font);
 extern LONG SCRIPT_CheckPathExists(const char *path);
 extern LONG PARSEINI_ParseIniBufferAndDispatch(const char *path);
 extern void TEXTDISP_ApplySourceConfigAllEntries(void);
-extern void PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(LONG arg);
-extern void PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(LONG arg);
-extern void PARSEINI_JMPTBL_BRUSH_FreeBrushList(void **headPtr, LONG flags);
-extern void PARSEINI_JMPTBL_BRUSH_FreeBrushResources(void **headPtr);
+extern void ESQIFF_HandleBrushIniReloadHotkey(LONG hotkey);
+extern void ESQIFF_QueueIffBrushLoad(short mode);
+extern void BRUSH_FreeBrushList(void **headPtr, LONG flags);
+extern void BRUSH_FreeBrushResources(void **headPtr);
 
 extern void PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0(void);
 extern void PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1(void);
-extern void PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable(void);
+extern void ESQFUNC_RebuildPwBrushListFromTagTable(void);
 extern void PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk(void);
 extern void PARSEINI_JMPTBL_ED1_EnterEscMenu(void);
 extern void PARSEINI_JMPTBL_ED1_ExitEscMenu(void);
 extern void PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen(void);
-extern void PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion(void);
+extern void ESQFUNC_DrawEscMenuVersion(void);
 
 typedef struct PARSEINI_DisplayContext {
     UBYTE pad0[2];
@@ -93,7 +93,7 @@ void PARSEINI_HandleFontCommand(const char *command)
             return;
         }
         if (c2 == (UBYTE)'6') {
-            PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable();
+            ESQFUNC_RebuildPwBrushListFromTagTable();
             return;
         }
         if (c2 == (UBYTE)'7') {
@@ -139,7 +139,7 @@ void PARSEINI_HandleFontCommand(const char *command)
             return;
         }
         if (c2 == (UBYTE)'a') {
-            PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(97);
+            ESQIFF_HandleBrushIniReloadHotkey(97);
             return;
         }
         if (c2 == (UBYTE)'b') {
@@ -154,10 +154,10 @@ void PARSEINI_HandleFontCommand(const char *command)
             while (CTASKS_IffTaskDoneFlag == 0) {
             }
 
-            PARSEINI_JMPTBL_BRUSH_FreeBrushList(&WDISP_WeatherStatusBrushListHead, 0);
-            PARSEINI_JMPTBL_BRUSH_FreeBrushResources(&PARSEINI_BannerBrushResourceHead);
+            BRUSH_FreeBrushList(&WDISP_WeatherStatusBrushListHead, 0);
+            BRUSH_FreeBrushResources(&PARSEINI_BannerBrushResourceHead);
             PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BANNER_INI_3);
-            PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(1);
+            ESQIFF_QueueIffBrushLoad(1);
             return;
         }
         if (c2 == (UBYTE)'d') {
@@ -186,7 +186,7 @@ void PARSEINI_HandleFontCommand(const char *command)
         }
         if (c2 == (UBYTE)'2') {
             PARSEINI_JMPTBL_ED1_EnterEscMenu();
-            PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion();
+            ESQFUNC_DrawEscMenuVersion();
             return;
         }
     }
