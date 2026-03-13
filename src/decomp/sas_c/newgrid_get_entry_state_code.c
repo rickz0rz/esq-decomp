@@ -7,7 +7,7 @@ typedef struct NEWGRID_Entry {
     UBYTE selectionBits[1];
 } NEWGRID_Entry;
 
-extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
+extern LONG ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
 
 LONG NEWGRID_GetEntryStateCode(const void *gridCtx, const void *entryAuxBase, WORD rowIndex)
 {
@@ -25,7 +25,7 @@ LONG NEWGRID_GetEntryStateCode(const void *gridCtx, const void *entryAuxBase, WO
     aux = (const UBYTE *)entryAuxBase;
     titleTable = (const char * const *)(aux + 56);
 
-    if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, row) + 1 != 0) {
+    if (ESQ_TestBit1Based(entry->selectionBits, row) + 1 != 0) {
         return 0;
     }
 

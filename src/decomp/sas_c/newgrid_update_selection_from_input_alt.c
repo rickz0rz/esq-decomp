@@ -33,9 +33,9 @@ extern LONG CONFIG_TimeWindowMinutes;
 extern void NEWGRID_ClearMarkersIfSelectable(LONG mode, LONG row);
 extern short NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG col);
 extern LONG NEWGRID_TestEntrySelectable(const void *entry, const void *aux, LONG mode);
-extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *aux, LONG idx);
-extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG idx);
-extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(const void *entry, const void *aux, LONG idx, LONG day, LONG window);
+extern LONG DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *aux, LONG idx);
+extern LONG ESQ_TestBit1Based(const UBYTE *bitset, LONG idx);
+extern LONG COI_ProcessEntrySelectionState(const void *entry, const void *aux, LONG idx, LONG day, LONG window);
 extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(const void *aux, LONG idx);
 
 LONG NEWGRID_UpdateSelectionFromInputAlt(LONG state, SelCtx *ctx, LONG mode)
@@ -104,17 +104,17 @@ entry_loop:
 
             if (entry != 0 && aux != 0) {
                 if (NEWGRID_AltSelectionEntryCursor == ctx->row) {
-                    idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, aux, idx);
+                    idx = DISPLIB_FindPreviousValidEntryIndex(entry, aux, idx);
                 }
 
                 if (idx > 0) {
-                    if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(
+                    if (ESQ_TestBit1Based(
                             ((NEWGRID_Entry *)entry)->selectionBits,
                             idx) == -1) {
                         if ((((NEWGRID_AuxData *)aux)->rowFlags[idx] & 0x20) == 0) {
                             if ((((NEWGRID_AuxData *)aux)->rowFlags[NEWGRID_AltSelectionEntryCursor] & 0x80) == 0) {
                                 if (((NEWGRID_AuxData *)aux)->payloadTable[idx] != 0) {
-                                    if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
+                                    if (COI_ProcessEntrySelectionState(
                                             entry,
                                             aux,
                                             idx,

@@ -43,9 +43,9 @@ extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry,
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, char *entries);
 extern void NEWGRID_ResetShowtimeBuckets(void);
 extern short NEWGRID_UpdatePresetEntry(char **entryPtr, char **coiPtr, LONG row, LONG col);
-extern LONG NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *coi, LONG idx);
-extern LONG NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(const void *entry, const void *coi, LONG idx, LONG winMins, LONG tolMins);
-extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitsetBase, LONG bitIdx);
+extern LONG DISPLIB_FindPreviousValidEntryIndex(const char *entry, const char *coi, LONG idx);
+extern LONG COI_ProcessEntrySelectionState(const void *entry, const void *coi, LONG idx, LONG winMins, LONG tolMins);
+extern LONG ESQ_TestBit1Based(const UBYTE *bitsetBase, LONG bitIdx);
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern LONG NEWGRID_AddShowtimeBucketEntry(const char *text, LONG row);
 extern void NEWGRID_AppendShowtimeBuckets(char *out);
@@ -138,15 +138,15 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
                 if (row == ctx->startRow) {
                     const char *entryText = (const char *)entry;
                     const char *auxText = (const char *)coi;
-                    LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, idx);
-                    if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState((char *)entryMut, (char *)coiMut, prev,
+                    LONG prev = DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, idx);
+                    if (COI_ProcessEntrySelectionState((char *)entryMut, (char *)coiMut, prev,
                         GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes) == 0) {
                         col++;
                         continue;
                     }
                 }
 
-                if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, idx) != -1) {
+                if (ESQ_TestBit1Based(entry->selectionBits, idx) != -1) {
                     col++;
                     continue;
                 }

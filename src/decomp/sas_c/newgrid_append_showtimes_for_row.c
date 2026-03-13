@@ -27,7 +27,7 @@ extern const char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(const void *entry,
 extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(const void *entries, LONG row);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, char *entries);
 extern short NEWGRID_UpdatePresetEntry(char **entryPtr, char **auxPtr, LONG row, LONG preset);
-extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitsetBase, LONG bitIndex);
+extern LONG ESQ_TestBit1Based(const UBYTE *bitsetBase, LONG bitIndex);
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
 
@@ -116,7 +116,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
             continue;
         }
 
-        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entryCur->selectionBits, srcIdx) != -1) {
+        if (ESQ_TestBit1Based(entryCur->selectionBits, srcIdx) != -1) {
             continue;
         }
 

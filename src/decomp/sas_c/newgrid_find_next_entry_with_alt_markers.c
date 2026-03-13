@@ -22,7 +22,7 @@ extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 
 extern WORD NEWGRID_UpdatePresetEntry(char **outEntry, char **outAux, LONG selector, LONG index);
-extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
+extern LONG ESQ_TestBit1Based(const UBYTE *bitset, LONG bitIndex);
 
 LONG NEWGRID_FindNextEntryWithAltMarkers(LONG scanMode, LONG startIndex, WORD selector)
 {
@@ -73,7 +73,7 @@ LONG NEWGRID_FindNextEntryWithAltMarkers(LONG scanMode, LONG startIndex, WORD se
             ++idx;
             continue;
         }
-        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->selectionBits, (LONG)presetIndex) + 1 != 0) {
+        if (ESQ_TestBit1Based(entry->selectionBits, (LONG)presetIndex) + 1 != 0) {
             ++idx;
             continue;
         }
