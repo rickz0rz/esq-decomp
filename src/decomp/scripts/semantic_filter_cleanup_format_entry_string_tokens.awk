@@ -28,9 +28,11 @@ function trim(s, t) {
     if (uline ~ /^CLEANUP_FORMATENTRYSTRINGTOKENS:/) has_label = 1
     if (uline ~ /LINK.W A5,#-32/) has_link = 1
     if (uline ~ /MOVEM.L D7\/A2-A3\/A6,-\(A7\)/) has_save = 1
-    if (uline ~ /GROUP_AI_JMPTBL_STR_FINDCHARPTR/) has_find_char = 1
+    if (uline ~ /GROUP_AI_JMPTBL_STR_FINDCHARPTR/ ||
+        uline ~ /STR_FINDCHARPTR/) has_find_char = 1
     if (uline ~ /CLOCK_STR_TOKEN_PAIR_DEFAULTS/ || uline ~ /\.COPY_PREFIX_LOOP:/) has_default_copy = 1
-    if (uline ~ /GROUP_AE_JMPTBL_ESQPARS_REPLACEOWNEDSTRING/) has_replace_owned = 1
+    if (uline ~ /GROUP_AE_JMPTBL_ESQPARS_REPLACEOWNEDSTRING/ ||
+        uline ~ /ESQPARS_REPLACEOWNEDSTRING/) has_replace_owned = 1
     if (uline ~ /\.TOKEN_LOOP:/) has_token_loop = 1
     if (uline ~ /\.COMMIT_OUTPUT:/) has_commit_output = 1
     if (uline ~ /\.EMPTY_INPUT:/) has_empty_input = 1
