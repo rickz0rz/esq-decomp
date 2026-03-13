@@ -7,7 +7,6 @@ enum {
     DATETIME_OVERFLOW_FLAG_OFFSET = 18,
     DATETIME_OVERFLOW_NEGATIVE_ONE = -1,
     DATETIME_OVERFLOW_ZERO = 0,
-    DATETIME_MONTH_ZERO = 0,
     DATETIME_MONTH_MAX_INDEX = 11,
     DATETIME_MONTHS_PER_YEAR = 12
 };
@@ -26,7 +25,7 @@ LONG DATETIME_NormalizeMonthRange(void *ctx)
     normalizedMonth = (WORD)(month % DATETIME_MONTHS_PER_YEAR);
     *(WORD *)(ctxBytes + DATETIME_MONTH_OFFSET) = normalizedMonth;
 
-    if (normalizedMonth == DATETIME_MONTH_ZERO) {
+    if (normalizedMonth == 0) {
         *(WORD *)(ctxBytes + DATETIME_MONTH_OFFSET) = DATETIME_MONTHS_PER_YEAR;
     }
 
