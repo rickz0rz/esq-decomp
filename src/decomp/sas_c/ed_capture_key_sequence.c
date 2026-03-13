@@ -23,7 +23,6 @@ void ED_CaptureKeySequence(void)
     const LONG CAPTURE_INDEX_MAX = 8;
     const LONG HEX_VALUE_LIMIT = 13;
     const LONG INDEX_INVALID = -1;
-    const LONG MENU_STATE_DEFAULT = 0;
     UBYTE template24[24];
     LONG i;
     LONG ringOff;
@@ -45,7 +44,7 @@ void ED_CaptureKeySequence(void)
             ED_CustomPaletteCaptureIndexOrSentinel = (LONG)(UBYTE)parsed;
         } else {
             LONG index = ED_CustomPaletteCaptureIndexOrSentinel;
-            if (index >= MENU_STATE_DEFAULT && index < CAPTURE_INDEX_MAX && parsed < HEX_VALUE_LIMIT) {
+            if (index >= 0 && index < CAPTURE_INDEX_MAX && parsed < HEX_VALUE_LIMIT) {
                 LONG pos = (index << RING_STRIDE_SHIFT) - index + ED_CustomPaletteCapturePhaseMod4;
                 KYBD_CustomPaletteCaptureScratchBase[pos] = (UBYTE)parsed;
             } else {
@@ -57,17 +56,17 @@ void ED_CaptureKeySequence(void)
     }
 
     ED_CustomPaletteCapturePhaseMod4 = (ED_CustomPaletteCapturePhaseMod4 + 1) % CAPTURE_PHASE_WRAP;
-    if (ED_CustomPaletteCapturePhaseMod4 != MENU_STATE_DEFAULT) {
+    if (ED_CustomPaletteCapturePhaseMod4 != 0) {
         return;
     }
 
-    if (ED_CustomPaletteCaptureIndexOrSentinel < MENU_STATE_DEFAULT) {
-        ED_CustomPaletteCaptureIndexOrSentinel = MENU_STATE_DEFAULT;
+    if (ED_CustomPaletteCaptureIndexOrSentinel < 0) {
+        ED_CustomPaletteCaptureIndexOrSentinel = 0;
         for (i = 0; i < TEMPLATE_SIZE; ++i) {
             KYBD_CustomPaletteTriplesRBase[i] = template24[i];
             ED_CustomPaletteCaptureIndexOrSentinel = i + 1;
         }
     }
 
-    ED_MenuStateId = MENU_STATE_DEFAULT;
+    ED_MenuStateId = 0;
 }
