@@ -7,7 +7,7 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
 extern void _LVOText(char *rastport, const char *text, LONG len);
 extern void _LVOSetAPen(char *rastport, LONG pen);
-extern void TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(char *rastport, LONG framePen, LONG width, LONG depth);
+extern void CLEANUP_DrawInsetRectFrame(char *rastport, LONG framePen, LONG width, LONG depth);
 
 static LONG cstrlen_local(const char *s)
 {
@@ -40,7 +40,7 @@ void SCRIPT_DrawInsetTextWithFrame(char *rastport, BYTE textPenOverride, BYTE fr
         *(unsigned short *)(rp + RP_X_OFFSET) =
             (unsigned short)(*(unsigned short *)(rp + RP_X_OFFSET) + FRAME_WIDTH_PAD);
         textLen = cstrlen_local(text);
-        TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(
+        CLEANUP_DrawInsetRectFrame(
             rastport,
             (LONG)framePen,
             _LVOTextLength(rastport, text, textLen),

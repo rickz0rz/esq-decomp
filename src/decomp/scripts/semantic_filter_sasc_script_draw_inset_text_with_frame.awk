@@ -31,7 +31,12 @@ function trim(s, t) {
     if (n ~ /LVOTEXTLENGTH/) has_textlen = 1
     if (n ~ /LVOTEXT/) has_text = 1
     if (n ~ /LVOSETAPEN/) has_setapen = 1
-    if (n ~ /TEXTDISPJMPTBLCLEANUPDRAWINSETRECTFRAME/ || n ~ /TEXTDISPJMPTBLCLEANUPDRAWINSETRECTFR/ || n ~ /TEXTDISPJMPTBLCLEANUPDRAWINSE/) has_frame = 1
+    if (n ~ /TEXTDISPJMPTBLCLEANUPDRAWINSETRECTFRAME/ ||
+        n ~ /TEXTDISPJMPTBLCLEANUPDRAWINSETRECTFR/ ||
+        n ~ /TEXTDISPJMPTBLCLEANUPDRAWINSE/ ||
+        n ~ /CLEANUPDRAWINSETRECTFRAME/ ||
+        n ~ /CLEANUPDRAWINSETRECTFR/ ||
+        n ~ /CLEANUPDRAWINSE/) has_frame = 1
     if (u ~ /[^0-9]36[^0-9]/ || u ~ /^36$/ || u ~ /\$24/) has_off36 = 1
     if (u ~ /[^0-9]38[^0-9]/ || u ~ /^38$/ || u ~ /\$26/) has_off38 = 1
     if (u ~ /[^0-9]58[^0-9]/ || u ~ /^58$/ || u ~ /\$3A/) has_off58 = 1
