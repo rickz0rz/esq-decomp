@@ -11,6 +11,7 @@ Important current state:
 - Many existing SAS/C compare lanes are already populated; do not assume a missing decomp just because a target exists in `TARGETS.md`.
 - Before writing code, inspect whether the target already exists in `src/decomp/sas_c` and whether it already has a `.dis`.
 - Many checked `compare_sasc_*` lanes now have empty semantic diffs even when their raw asm diffs are still noisy from SAS/C scaffolding. Use the semantic diff, not the raw diff size, to decide whether a lane still needs tightening.
+- Current triage note (March 13, 2026): `src/decomp/scripts/list_missing_sasc_non_jmptbl_exports.py` currently prints no rows in this checkout, so do not assume a non-`JMPTBL` GCC trial is still missing from `src/decomp/sas_c` without checking first.
 - Remaining work often means either:
   1. tightening an existing SAS/C file to better match the original assembly/disassembly, or
   2. creating a new `src/decomp/sas_c/*.c` file for a target that currently exists only as a GCC trial in `src/decomp/c/replacements`.

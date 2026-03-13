@@ -38,6 +38,7 @@ The repository currently has two active decomp lanes:
 - Current triage note (March 13, 2026): spot-checked SAS/C sweep families for `esq_main`, `esq_startup_entry`, `_main/b` boot/guard helpers (`ESQ_CheckAvailableFastMemory`, `ESQ_CheckCompatibleVideoChip`, `ESQ_FormatDiskErrorMessage`), `script3`, and `parseini3` all currently resolve to zero-byte semantic diffs. Treat those families as low-priority unless you are explicitly chasing raw codegen cleanup or a newly introduced regression.
 - Additional triage note (March 13, 2026): the full `run_sasc_core_sweep.sh` maintained lane set plus the two out-of-sweep `compare_sasc_memory_allocate_trial.sh` and `compare_sasc_esqfunc_draw_esc_menu_version_trial.sh` checks also resolve to zero-byte semantic diffs.
 - Follow-up verification note (March 13, 2026): a full local rerun of the current `compare_sasc_*` script set likewise produced no non-empty `build/decomp/sasc_trial/*.semantic.diff` files. Treat the current SAS/C lane as semantically green by default and spend new effort on genuinely unported behavior or non-sweep compare lanes, not repeated core-sweep revalidation.
+- Additional triage note (March 13, 2026): `src/decomp/scripts/list_missing_sasc_non_jmptbl_exports.py` currently prints no rows in this checkout, so every scanned non-`JMPTBL` GCC replacement export already has at least one exact-word hit somewhere under `src/decomp/sas_c/`. Run that helper before assuming a non-wrapper GCC file still needs first-pass promotion.
 
 ## Files
 - `src/decomp/replacements.map`: module substitution map.
@@ -45,6 +46,7 @@ The repository currently has two active decomp lanes:
 - `src/decomp/TARGETS.md`: active decomp target registry and rationale.
 - `src/decomp/scripts/gen_hybrid_root.sh`: generates `build/decomp/Prevue_hybrid.asm` from `src/Prevue.asm` + replacement map.
 - `src/decomp/scripts/new_module_replacement.sh`: bootstraps a replacement module by copying original source and registering it.
+- `src/decomp/scripts/list_missing_sasc_non_jmptbl_exports.py`: lists non-`JMPTBL` GCC replacement exports that still have no exact-word hit in `src/decomp/sas_c/`.
 - `src/decomp/scripts/compare_memory_allocate_trial.sh`: compiles `Target 002` C trial and diffs generated asm vs original function slice.
 - `src/decomp/scripts/compare_memory_allocate_trial_gcc.sh`: GCC-specific compare lane for `Target 002` allocate function.
 - `src/decomp/scripts/compare_memory_deallocate_trial.sh`: compiles `Target 002` deallocate C trial and diffs generated asm vs original function slice.
