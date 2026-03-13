@@ -20,7 +20,7 @@ function up(s,    t) {
     l = up($0)
     if (l == "") next
 
-    if (ENTRY != "" && l == toupper(ENTRY) ":") has_entry = 1
+    if (ENTRY != "" && (l == toupper(ENTRY) ":" || l == "@" toupper(ENTRY) ":")) has_entry = 1
     if (l == "RTS") has_rts = 1
 
     if (index(l, "HIGHLIGHT_COPPEREFFECTPARAMA") > 0) has_store_a = 1

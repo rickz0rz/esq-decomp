@@ -1,4 +1,4 @@
-extern void ESQ_SetCopperEffectParams(unsigned char a, unsigned char b);
+extern void __regargs ESQ_SetCopperEffectParams(unsigned char a, unsigned char b);
 extern void GCOMMAND_EnableHighlight(void);
 
 void ESQ_SetCopperEffect_OnEnableHighlight(void)

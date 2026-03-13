@@ -3,7 +3,7 @@ extern unsigned char HIGHLIGHT_CopperEffectParamB;
 extern unsigned short HIGHLIGHT_CopperEffectSeed;
 extern void ESQ_UpdateCopperListsFromParams(void);
 
-void ESQ_SetCopperEffectParams(unsigned char a, unsigned char b)
+void __regargs ESQ_SetCopperEffectParams(unsigned char a, unsigned char b)
 {
     HIGHLIGHT_CopperEffectParamA = a;
     HIGHLIGHT_CopperEffectParamB = b;

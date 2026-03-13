@@ -1,4 +1,4 @@
-extern void ESQ_SetCopperEffectParams(unsigned char a, unsigned char b);
+extern void __regargs ESQ_SetCopperEffectParams(unsigned char a, unsigned char b);
 
 void ESQ_SetCopperEffect_Default(void)
 {
