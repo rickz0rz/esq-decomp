@@ -4707,7 +4707,7 @@ Recent promoted targets:
 - Unknown13 `FORMAT_CallbackWriteChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_callback_write_char_trial.sh`
 - Unknown13 `FORMAT_FormatToCallbackBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_to_callback_buffer_trial.sh`
 - Unknown14 `HANDLE_OpenFromModeString` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_open_from_mode_string_trial.sh`
-- Unknown15 `STREAM_ReadLineWithLimit` SAS/C compare script: `src/decomp/scripts/compare_sasc_stream_read_line_with_limit_trial.sh`
+- `STREAM_ReadLineWithLimit` SAS/C compare script: `src/decomp/scripts/compare_sasc_stream_read_line_with_limit_trial.sh`
 - Unknown16 `BUFFER_FlushAllAndCloseWithCode` SAS/C compare script: `src/decomp/scripts/compare_sasc_buffer_flush_all_and_close_with_code_trial.sh`
 - Unknown29 `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown29_jmptbl_esq_main_init_and_run_trial.sh`
 - Unknown29 `ESQ_ParseCommandLineAndRun` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_parse_command_line_and_run_trial.sh` (canonical source: `src/decomp/sas_c/esq_parse_command_line_and_run.c`)
@@ -5546,7 +5546,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown10_handle_open_entry_with_flags.c`
 - `src/decomp/sas_c/unknown13_format_callback_buffer.c`
 - `src/decomp/sas_c/unknown14_handle_open_from_mode_string.c`
-- `src/decomp/sas_c/unknown15_stream_read_line_with_limit.c`
+- `src/decomp/sas_c/stream_read_line_with_limit.c`
 - `src/decomp/sas_c/unknown16_buffer_flush_all_and_close_with_code.c`
 - `src/decomp/sas_c/unknown29_jmptbl_esq_main_init_and_run.c`
 - `src/decomp/sas_c/esq_parse_command_line_and_run.c`
