@@ -4413,6 +4413,9 @@ Recent promoted targets:
 - SAS/C-only lane (`ESQIFF_ShowExternalAssetWithCopperFx_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff_show_external_asset_with_copper_fx_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_return_stub.awk`
+- SAS/C lane (`ESQIFF_PlayNextExternalAssetFrame`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff_play_next_external_asset_frame_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff_play_next_external_asset_frame.awk`
 - SAS/C-only lane (`ESQIFF_PlayNextExternalAssetFrame_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff_play_next_external_asset_frame_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_return_stub.awk`
@@ -4673,6 +4676,7 @@ Recent promoted targets:
 - Unknown ESQIFF2 `ESQIFF2_ClearPrimaryEntryFlags34To39_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_clear_primary_entry_flags34_to39_return_trial.sh`
 - Unknown ESQ `ESQ_ShutdownAndReturn` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_shutdown_and_return_trial.sh`
 - Unknown ESQIFF `ESQIFF_ShowExternalAssetWithCopperFx_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_show_external_asset_with_copper_fx_return_trial.sh`
+- Unknown ESQIFF `ESQIFF_PlayNextExternalAssetFrame` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_play_next_external_asset_frame_trial.sh`
 - Unknown ESQIFF `ESQIFF_PlayNextExternalAssetFrame_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_play_next_external_asset_frame_return_trial.sh`
 - Unknown ESQSHARED4 `ESQSHARED4_ApplyBannerColorStep_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqshared4_apply_banner_color_step_return_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
@@ -5519,6 +5523,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/ladfunc_return_stubs.c`
 - `src/decomp/sas_c/esqiff2_return_stubs.c`
 - `src/decomp/sas_c/return_misc_stubs.c`
+- `src/decomp/sas_c/esqiff_play_next_external_asset_frame.c`
 - `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
 - `src/decomp/sas_c/diskio_write_decimal_field.c`
 - `src/decomp/sas_c/unknown7_str_core_helpers.c`
@@ -5895,6 +5900,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_unknown29_jmptbl_esq_main_init_and_run.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esq_parse_command_line_and_run.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esq_main_noop_hook.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esqiff_play_next_external_asset_frame.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqproto_copy_label_to_global.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqproto_parse_digit_label_and_display.awk`
 - `src/decomp/scripts/semantic_filter_sasc_unknown_parse_record_and_update_display.awk`
