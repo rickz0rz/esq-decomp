@@ -9,7 +9,7 @@ extern const char *SCRIPT_PtrNoDataPlaceholder;
 extern const char *SCRIPT_PtrOffAirPlaceholder;
 
 extern void NEWGRID_DrawGridEntry(char *gridCtx, char *entryPtr, char *auxPtr, UWORD row, UWORD col, LONG style, LONG mode);
-extern LONG NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *gridCtx, const char *text);
+extern LONG DISPTEXT_LayoutAndAppendToBuffer(char *gridCtx, const char *text);
 
 void NEWGRID_DrawEntryRowOrPlaceholder(char *gridCtx, char *entryPtr, LONG rowMeta, WORD row, WORD col, LONG state)
 {
@@ -28,9 +28,9 @@ void NEWGRID_DrawEntryRowOrPlaceholder(char *gridCtx, char *entryPtr, LONG rowMe
     }
 
     if (!state) {
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(gridCtx, SCRIPT_PtrOffAirPlaceholder);
+        DISPTEXT_LayoutAndAppendToBuffer(gridCtx, SCRIPT_PtrOffAirPlaceholder);
         return;
     }
 
-    NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(gridCtx, SCRIPT_PtrNoDataPlaceholder);
+    DISPTEXT_LayoutAndAppendToBuffer(gridCtx, SCRIPT_PtrNoDataPlaceholder);
 }
