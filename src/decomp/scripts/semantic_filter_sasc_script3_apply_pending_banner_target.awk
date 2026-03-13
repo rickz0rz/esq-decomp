@@ -22,7 +22,7 @@ function trim(s, t) {
     u = toupper(line)
 
     if (u ~ /^SCRIPT_APPLYPENDINGBANNERTARGET:/) has_entry = 1
-    if (index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNERCHAR") > 0 || index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNERC") > 0 || index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNE") > 0) has_get_banner = 1
+    if (index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNERCHAR") > 0 || index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNERC") > 0 || index(u, "SCRIPT3_JMPTBL_GCOMMAND_GETBANNE") > 0 || index(u, "GCOMMAND_GETBANNERCHAR") > 0 || index(u, "GCOMMAND_GETBANNERC") > 0 || index(u, "GCOMMAND_GETBANNE") > 0) has_get_banner = 1
     if (index(u, "SCRIPT_BEGINBANNERCHARTRANSITION") > 0 || index(u, "SCRIPT_BEGINBANNERCHARTR") > 0) has_begin_transition = 1
     if (index(u, "SCRIPT_PENDINGBANNERTARGETCHAR") > 0) has_pending_target = 1
     if (index(u, "ESQPARS2_READMODEFLAGS") > 0 || index(u, "SCRIPT_READMODEACTIVELATCH") > 0) has_readmode_clear = 1
