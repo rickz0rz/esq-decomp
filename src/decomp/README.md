@@ -5703,8 +5703,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown22_allocate_alloc_and_initialize_iostdreq.c`
 - `src/decomp/sas_c/dos_delay.c`
 - `src/decomp/sas_c/unknown40_dos_system_tag_list.c`
-- `src/decomp/sas_c/unknown40_battclock_get_seconds.c`
-- `src/decomp/sas_c/unknown40_battclock_write_seconds.c`
+- `src/decomp/sas_c/battclock_get_seconds_from_battery_backed_clock.c`
+- `src/decomp/sas_c/battclock_write_seconds_to_battery_backed_clock.c`
 - `src/decomp/sas_c/unknown40_exec_call_vector_48.c`
 - `src/decomp/sas_c/clock_check_date_or_seconds_from_epoch.c`
 - `src/decomp/sas_c/clock_seconds_from_epoch.c`

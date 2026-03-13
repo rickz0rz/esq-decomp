@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-SASC_SRC="unknown40_battclock_get_seconds.c"
+SASC_SRC="battclock_get_seconds_from_battery_backed_clock.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown40.s"
@@ -35,8 +35,8 @@ normalize <"${OUT_DIR}/battclock_get_seconds.sasc.dis.s" >"${OUT_DIR}/battclock_
 
 diff -u "${OUT_DIR}/battclock_get_seconds.original.norm.s" "${OUT_DIR}/battclock_get_seconds.sasc.norm.s" >"${OUT_DIR}/battclock_get_seconds.diff" || true
 
-awk -f src/decomp/scripts/semantic_filter_sasc_battclock_get_seconds.awk "${OUT_DIR}/battclock_get_seconds.original.norm.s" >"${OUT_DIR}/battclock_get_seconds.original.semantic.txt"
-awk -f src/decomp/scripts/semantic_filter_sasc_battclock_get_seconds.awk "${OUT_DIR}/battclock_get_seconds.sasc.norm.s" >"${OUT_DIR}/battclock_get_seconds.sasc.semantic.txt"
+awk -f src/decomp/scripts/semantic_filter_sasc_battclock_get_seconds_from_battery_backed_clock.awk "${OUT_DIR}/battclock_get_seconds.original.norm.s" >"${OUT_DIR}/battclock_get_seconds.original.semantic.txt"
+awk -f src/decomp/scripts/semantic_filter_sasc_battclock_get_seconds_from_battery_backed_clock.awk "${OUT_DIR}/battclock_get_seconds.sasc.norm.s" >"${OUT_DIR}/battclock_get_seconds.sasc.semantic.txt"
 diff -u "${OUT_DIR}/battclock_get_seconds.original.semantic.txt" "${OUT_DIR}/battclock_get_seconds.sasc.semantic.txt" >"${OUT_DIR}/battclock_get_seconds.semantic.diff" || true
 
 echo "wrote: ${OUT_DIR}/battclock_get_seconds.diff"
