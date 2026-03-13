@@ -4705,8 +4705,8 @@ Recent promoted targets:
 - Unknown10 `PARSE_ReadSignedLong` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_trial.sh`
 - Unknown10 `PARSE_ReadSignedLong_NoBranch` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_nobranch_trial.sh`
 - Unknown10 `HANDLE_OpenEntryWithFlags` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_open_entry_with_flags_trial.sh`
-- Unknown13 `FORMAT_CallbackWriteChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_callback_write_char_trial.sh`
-- Unknown13 `FORMAT_FormatToCallbackBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_to_callback_buffer_trial.sh`
+- `FORMAT_CallbackWriteChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_callback_write_char_trial.sh` (canonical source: `src/decomp/sas_c/format_to_callback_buffer.c`)
+- `FORMAT_FormatToCallbackBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_to_callback_buffer_trial.sh` (canonical source: `src/decomp/sas_c/format_to_callback_buffer.c`)
 - Unknown14 `HANDLE_OpenFromModeString` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_open_from_mode_string_trial.sh`
 - `STREAM_ReadLineWithLimit` SAS/C compare script: `src/decomp/scripts/compare_sasc_stream_read_line_with_limit_trial.sh`
 - Unknown16 `BUFFER_FlushAllAndCloseWithCode` SAS/C compare script: `src/decomp/scripts/compare_sasc_buffer_flush_all_and_close_with_code_trial.sh`
@@ -5545,7 +5545,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown10_parse_read_signed_long.c`
 - `src/decomp/sas_c/unknown10_parse_read_signed_long_nobranch.c`
 - `src/decomp/sas_c/unknown10_handle_open_entry_with_flags.c`
-- `src/decomp/sas_c/unknown13_format_callback_buffer.c`
+- `src/decomp/sas_c/format_to_callback_buffer.c`
 - `src/decomp/sas_c/unknown14_handle_open_from_mode_string.c`
 - `src/decomp/sas_c/stream_read_line_with_limit.c`
 - `src/decomp/sas_c/unknown16_buffer_flush_all_and_close_with_code.c`
