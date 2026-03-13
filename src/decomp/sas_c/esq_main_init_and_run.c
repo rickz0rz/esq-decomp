@@ -301,10 +301,10 @@ extern void ESQ_CheckTopazFontGuard(void);
 extern void PARSEINI_UpdateClockFromRtc(void);
 extern void *SIGNAL_CreateMsgPortWithSignal(const char *name, LONG signal);
 extern void *GROUP_AM_JMPTBL_STRUCT_AllocWithOwner(void *owner, LONG size);
-extern void GROUP_AM_JMPTBL_ESQ_InitAudio1Dma(void);
-extern void GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext(void);
-extern void GROUP_AM_JMPTBL_KYBD_InitializeInputDevices(void);
-extern LONG GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk(void);
+extern void ESQ_InitAudio1Dma(void);
+extern void SCRIPT_InitCtrlContext(void);
+extern void KYBD_InitializeInputDevices(void);
+extern LONG DISKIO_LoadConfigFromDisk(void);
 extern void GROUP_AM_JMPTBL_TLIBA3_InitPatternTable(void);
 extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern void GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode(void);
@@ -579,9 +579,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 
     SETUP_INTERRUPT_INTB_RBF();
     SETUP_INTERRUPT_INTB_AUD1();
-    GROUP_AM_JMPTBL_ESQ_InitAudio1Dma();
-    GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext();
-    GROUP_AM_JMPTBL_KYBD_InitializeInputDevices();
+    ESQ_InitAudio1Dma();
+    SCRIPT_InitCtrlContext();
+    KYBD_InitializeInputDevices();
     ESQFUNC_AllocateLineTextBuffers();
 
     Global_REF_96_BYTES_ALLOCATED = ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQ_C_7, 984, 96, MEMF_PUBLIC);
@@ -634,7 +634,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     NEWGRID_RefreshStateFlag = 0;
     NEWGRID_MessagePumpSuspendFlag = -1;
 
-    if (GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk() == -1) {
+    if (DISKIO_LoadConfigFromDisk() == -1) {
         ESQFUNC_UpdateRefreshModeState(0, 0);
     }
 
