@@ -42,6 +42,7 @@ Keep any generated binaries out of version control.
 - `src/decomp/sas_c/` is the restored SAS/C-oriented source tree. Running `./sc-build-with-dis.sh <file>.c` against a file in that directory produces matching `.o` and `.dis` artifacts beside the source for local disassembly comparison.
 - Existing work in `src/decomp/sas_c/` can be used as the style and structure reference for new restored functions. Many helper/compare lanes already compile there successfully.
 - Current repo state: a broad set of checked `compare_sasc_*` lanes already produces empty semantic diffs, so do not assume an existing SAS/C target still needs first-pass recovery just because its raw asm diff is large or because an older GCC trial still exists.
+- Current triage state (March 13, 2026): the maintained `run_sasc_core_sweep.sh` set and the remaining out-of-sweep `compare_sasc_memory_allocate_trial.sh` / `compare_sasc_esqfunc_draw_esc_menu_version_trial.sh` checks all currently produce zero-byte semantic diffs, so future triage should start from unported targets or non-sweep compare lanes rather than re-checking the already-green SAS/C core set.
 - Remaining decomp work is not just “write more assembly comments”: the scope is to cover the root `src/*.s` files, `src/Prevue.asm`, and all files under `src/interrupts/`, `src/data/`, and `src/modules/` recursively.
 - In practice, the next decomp steps tend to fall into two buckets:
   - tighten or split existing `src/decomp/sas_c/` files when a function already exists there but needs a better match;
