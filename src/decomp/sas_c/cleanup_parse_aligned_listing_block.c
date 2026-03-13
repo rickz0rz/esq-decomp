@@ -29,13 +29,13 @@ extern CLEANUP_EntryTableEntry *TEXTDISP_PrimaryEntryPtrTable[];
 extern char CLOCK_STR_MISSING_TITLE_TEMPLATE[];
 
 LONG COI_CountEscape14BeforeNull(char *buf, LONG max_len);
-LONG GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(char *inputBytes, WORD *outIndexByToken, WORD tokenCount, const char *tokenTable, WORD maxScanCount, char terminatorByte, WORD fillMissingFlag);
+LONG SCRIPT_BuildTokenIndexMap(char *inputBytes, WORD *outIndexByToken, WORD tokenCount, const char *tokenTable, WORD maxScanCount, char terminatorByte, WORD fillMissingFlag);
 LONG ESQ_WildcardMatch(const char *a, const char *b);
 void COI_ClearAnimObjectStrings(void *entry);
 void COI_FreeSubEntryTableEntries(void *entry);
-char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
+char *ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 void CLEANUP_FormatEntryStringTokens(void **a, void **b, char *in);
-LONG GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
+LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 void COI_AllocSubEntryTable(void *entry);
 LONG COI_WriteOiDataFile(UBYTE disk_id);
 
@@ -78,13 +78,13 @@ LONG CLEANUP_ParseAlignedListingBlock(char *record, char *listing)
     }
 
     escapeCount = COI_CountEscape14BeforeNull(record + recordOffset, (LONG)ESQIFF_RecordLength - recordOffset);
-    tokenCount = GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(record + recordOffset,
-                                                            slotMap,
-                                                            (WORD)SLOT_MAP_MAX_TOKENS,
-                                                            record + recordOffset,
-                                                            (WORD)((LONG)ESQIFF_RecordLength - recordOffset),
-                                                            0,
-                                                            0);
+    tokenCount = SCRIPT_BuildTokenIndexMap(record + recordOffset,
+                                           slotMap,
+                                           (WORD)SLOT_MAP_MAX_TOKENS,
+                                           record + recordOffset,
+                                           (WORD)((LONG)ESQIFF_RecordLength - recordOffset),
+                                           0,
+                                           0);
 
     for (i = 0; i < entry_count && i < SLOT_MAP_COUNT; i += 1) {
         CLEANUP_EntryTableEntry *candidate;
@@ -111,8 +111,8 @@ LONG CLEANUP_ParseAlignedListingBlock(char *record, char *listing)
     COI_ClearAnimObjectStrings(entry);
     COI_FreeSubEntryTableEntries(entry);
 
-    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, listing);
-    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)0, CLOCK_STR_MISSING_TITLE_TEMPLATE);
+    ESQPARS_ReplaceOwnedString((const char *)0, listing);
+    ESQPARS_ReplaceOwnedString((const char *)0, CLOCK_STR_MISSING_TITLE_TEMPLATE);
 
     {
         void *a = (void *)0;
@@ -120,7 +120,7 @@ LONG CLEANUP_ParseAlignedListingBlock(char *record, char *listing)
         CLEANUP_FormatEntryStringTokens(&a, &b, listing);
     }
 
-    (void)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(listing);
+    (void)PARSE_ReadSignedLongSkipClass3_Alt(listing);
     COI_AllocSubEntryTable(entry);
 
     (void)escapeCount;
