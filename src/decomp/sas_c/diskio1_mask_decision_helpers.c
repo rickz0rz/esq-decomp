@@ -5,7 +5,7 @@ enum {
     DISKIO1_MASK_SUM_ALL_BITS_SET = 0x5faUL
 };
 
-extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *text);
+extern void FORMAT_RawDoFmtWithScratchBuffer(const char *text);
 extern void DISKIO1_AppendTimeSlotMaskOffAirIfEmpty(void);
 extern void DISKIO1_FormatBlackoutMaskFlags(void);
 extern void DISKIO1_AppendTimeSlotMaskValueHeader(void);
@@ -26,7 +26,7 @@ void DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet(void)
         DISKIO1_AppendTimeSlotMaskOffAirIfEmpty();
         return;
     }
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NONE_TimeSlotMaskAllSet);
+    FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NONE_TimeSlotMaskAllSet);
     DISKIO1_FormatBlackoutMaskFlags();
 }
 
@@ -36,7 +36,7 @@ void DISKIO1_AppendTimeSlotMaskOffAirIfEmpty(void)
         DISKIO1_AppendTimeSlotMaskValueHeader();
         return;
     }
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(Global_STR_OFF_AIR_2);
+    FORMAT_RawDoFmtWithScratchBuffer(Global_STR_OFF_AIR_2);
     DISKIO1_FormatBlackoutMaskFlags();
 }
 
@@ -46,7 +46,7 @@ void DISKIO1_AppendBlackoutMaskNoneIfEmpty(void)
         DISKIO1_AppendBlackoutMaskAllIfAllBitsSet();
         return;
     }
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NONE_BlackoutMaskEmpty);
+    FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NONE_BlackoutMaskEmpty);
     DISKIO1_DumpDefaultCoiInfoBlock();
 }
 
@@ -56,6 +56,6 @@ void DISKIO1_AppendBlackoutMaskAllIfAllBitsSet(void)
         DISKIO1_AppendBlackoutMaskValueHeader();
         return;
     }
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_BLACKED_OUT);
+    FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_BLACKED_OUT);
     DISKIO1_DumpDefaultCoiInfoBlock();
 }
