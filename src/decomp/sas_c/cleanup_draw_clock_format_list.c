@@ -32,7 +32,7 @@ extern UWORD NEWGRID_ColumnWidthPx;
 extern LONG NEWGRID_MainRastPortPtr;
 extern LONG Global_REF_GRAPHICS_LIBRARY;
 
-void GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds(LONG a, LONG b, LONG c, LONG d);
+void GCOMMAND_UpdateBannerBounds(LONG left, LONG top, LONG right, LONG bottom);
 LONG MATH_Mulu32(LONG a, LONG b);
 void BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG w, LONG h);
 void CLEANUP_FormatClockFormatEntry(LONG idx, char *dst);
@@ -58,7 +58,7 @@ void CLEANUP_DrawClockFormatList(LONG startIndex)
     LONG row;
 
     rp = (CLEANUP_RastPort *)NEWGRID_MainRastPortPtr;
-    GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds(0, 5, 6, 0);
+    GCOMMAND_UpdateBannerBounds(0, 5, 6, 0);
     _LVOSetAPen();
     _LVORectFill();
 
