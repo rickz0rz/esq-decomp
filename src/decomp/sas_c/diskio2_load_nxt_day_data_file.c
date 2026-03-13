@@ -24,8 +24,8 @@ typedef struct DISKIO2_TitleData {
 extern long DISKIO_LoadFileToWorkBuffer(const char *path);
 extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
+extern void *MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
+extern void MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
 extern void ESQSHARED_InitEntryDefaults(UBYTE *entry);
 extern void COI_EnsureAnimObjectAllocated(void *entry);
 extern char *ESQSHARED_ApplyProgramTitleTextFilters(const char *text, ULONG flags);
@@ -82,9 +82,9 @@ long DISKIO2_LoadNxtDayDataFile(void)
         TEXTDISP_SecondaryGroupPresentFlag = 1;
 
         for (entryIndex = 0; entryIndex < parsedCount; entryIndex++) {
-            DISKIO2_Entry *entry = (DISKIO2_Entry *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+            DISKIO2_Entry *entry = (DISKIO2_Entry *)MEMORY_AllocateMemory(
                 Global_STR_DISKIO2_C_17, 948, 52, 0x10001UL);
-            DISKIO2_TitleData *title = (DISKIO2_TitleData *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+            DISKIO2_TitleData *title = (DISKIO2_TitleData *)MEMORY_AllocateMemory(
                 Global_STR_DISKIO2_C_18, 954, 500, 0x10001UL);
             UWORD slot;
 
@@ -94,7 +94,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
             }
             if (title == 0) {
                 result = -1;
-                GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+                MEMORY_DeallocateMemory(
                     Global_STR_DISKIO2_C_19, 958, entry, 52);
                 break;
             }
@@ -166,9 +166,9 @@ long DISKIO2_LoadNxtDayDataFile(void)
             }
 
             if (result == -1) {
-                GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+                MEMORY_DeallocateMemory(
                     Global_STR_DISKIO2_C_20, 1027, entry, 52);
-                GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+                MEMORY_DeallocateMemory(
                     Global_STR_DISKIO2_C_21, 1028, title, 500);
                 break;
             }
@@ -182,7 +182,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
     TEXTDISP_SecondaryGroupHeaderCode = headerCode;
     TEXTDISP_SecondaryGroupEntryCount = loadedCount;
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+    MEMORY_DeallocateMemory(
         Global_STR_DISKIO2_C_22,
         1041,
         (char *)workBuf,

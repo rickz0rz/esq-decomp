@@ -26,8 +26,8 @@ extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern long ESQ_WildcardMatch(const char *pattern, const char *text);
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
+extern void *MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
+extern void MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
 extern void ESQSHARED_InitEntryDefaults(UBYTE *entry);
 extern void COI_EnsureAnimObjectAllocated(void *entry);
 extern char *ESQSHARED_ApplyProgramTitleTextFilters(const char *text, ULONG flags);
@@ -108,7 +108,7 @@ long DISKIO2_LoadCurDayDataFile(void)
 
     str = DISKIO_ConsumeCStringFromWorkBuffer();
     if (str == (char *)-1) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        MEMORY_DeallocateMemory(
             Global_STR_DISKIO2_C_4, 520, (char *)workBuf, fileLen + 1);
         return -1;
     }
@@ -130,14 +130,14 @@ long DISKIO2_LoadCurDayDataFile(void)
     } else if (ESQ_WildcardMatch(DISKIO2_STR_DREV_5, (char *)DISKIO_ErrorMessageScratch) != 0) {
         DISKIO_CurrentDriveRevisionIndex = 5;
     } else {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        MEMORY_DeallocateMemory(
             Global_STR_DISKIO2_C_5, 561, (char *)workBuf, fileLen + 1);
         return -1;
     }
 
     str = DISKIO_ConsumeCStringFromWorkBuffer();
     if (str == (char *)-1) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        MEMORY_DeallocateMemory(
             Global_STR_DISKIO2_C_6, 570, (char *)workBuf, fileLen + 1);
         return -1;
     }
@@ -150,7 +150,7 @@ long DISKIO2_LoadCurDayDataFile(void)
     if (DISKIO_CurrentDriveRevisionIndex > 0) {
         str = DISKIO_ConsumeCStringFromWorkBuffer();
         if (str == (char *)-1) {
-            GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+            MEMORY_DeallocateMemory(
                 Global_STR_DISKIO2_C_7, 588, (char *)workBuf, fileLen + 1);
             return -1;
         }
@@ -170,9 +170,9 @@ long DISKIO2_LoadCurDayDataFile(void)
         TEXTDISP_MaxEntryTitleLength = 0;
 
         for (entryIndex = 0; entryIndex < parsedCount; entryIndex++) {
-            DISKIO2_Entry *entry = (DISKIO2_Entry *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+            DISKIO2_Entry *entry = (DISKIO2_Entry *)MEMORY_AllocateMemory(
                 Global_STR_DISKIO2_C_8, 634, 52, 0x10001UL);
-            DISKIO2_TitleData *title = (DISKIO2_TitleData *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+            DISKIO2_TitleData *title = (DISKIO2_TitleData *)MEMORY_AllocateMemory(
                 Global_STR_DISKIO2_C_9, 640, 500, 0x10001UL);
             UWORD slot;
 
@@ -182,7 +182,7 @@ long DISKIO2_LoadCurDayDataFile(void)
             }
             if (title == 0) {
                 result = -1;
-                GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+                MEMORY_DeallocateMemory(
                     Global_STR_DISKIO2_C_10, 644, entry, 52);
                 break;
             }
@@ -261,9 +261,9 @@ long DISKIO2_LoadCurDayDataFile(void)
             }
 
             if (result == -1) {
-                GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+                MEMORY_DeallocateMemory(
                     Global_STR_DISKIO2_C_11, 736, entry, 52);
-                GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+                MEMORY_DeallocateMemory(
                     Global_STR_DISKIO2_C_12, 737, title, 500);
                 break;
             }
@@ -279,7 +279,7 @@ long DISKIO2_LoadCurDayDataFile(void)
     TEXTDISP_PrimaryGroupHeaderCode = headerCode;
     TEXTDISP_PrimaryGroupEntryCount = loadedCount;
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+    MEMORY_DeallocateMemory(
         Global_STR_DISKIO2_C_13,
         764,
         (char *)workBuf,
