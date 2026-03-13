@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Report GCC promotion-lane coverage by original assembly module.
+"""Report hybrid replacement candidate coverage by original assembly module.
 
-This correlates promote_*_target_gcc.sh scripts with their compare_*_trial_gcc.sh
-scripts, resolves each compare lane back to its ORIG_ASM source module, and then
-cross-checks that module against src/decomp/replacements.map.
+This correlates GCC promotion lanes and restored SAS/C compare lanes back to
+their ORIG_ASM source modules, then cross-checks those modules against
+src/decomp/replacements.map.
 """
 
 from __future__ import annotations
@@ -21,21 +21,26 @@ RE_COMPARE_SCRIPT = re.compile(
 )
 RE_COMPARE_FALLBACK = re.compile(r"compare_[A-Za-z0-9_]+\.sh")
 RE_ORIG_ASM = re.compile(r'^ORIG_ASM="src/(?P<path>[^"]+\.s)"', re.MULTILINE)
+RE_ENTRY = re.compile(r'^ENTRY="(?P<entry>[^"]+)"', re.MULTILINE)
 
 
 @dataclass
 class ModuleStats:
-    compare_scripts: set[str] = field(default_factory=set)
+    gcc_compare_scripts: set[str] = field(default_factory=set)
     promote_scripts: set[str] = field(default_factory=set)
-    target_names: set[str] = field(default_factory=set)
-    non_jmptbl_targets: set[str] = field(default_factory=set)
+    gcc_target_names: set[str] = field(default_factory=set)
+    gcc_non_jmptbl_targets: set[str] = field(default_factory=set)
+    sasc_compare_scripts: set[str] = field(default_factory=set)
+    sasc_entry_names: set[str] = field(default_factory=set)
+    sasc_non_jmptbl_entries: set[str] = field(default_factory=set)
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Summarize GCC promotion-lane coverage by original asm module and "
-            "show which modules are already wired into replacements.map."
+            "Summarize GCC promotion-lane coverage and restored SAS/C compare "
+            "coverage by original asm module, and show which modules are "
+            "already wired into replacements.map."
         )
     )
     parser.add_argument(
@@ -132,12 +137,27 @@ def collect_module_stats(repo_root: Path) -> tuple[dict[str, ModuleStats], int]:
 
         stats = modules[module_path]
         stats.promote_scripts.add(promote_path.name)
-        stats.compare_scripts.add(compare_name)
+        stats.gcc_compare_scripts.add(compare_name)
 
         target_name = target_name_from_compare_script(compare_name)
-        stats.target_names.add(target_name)
+        stats.gcc_target_names.add(target_name)
         if "jmptbl" not in target_name.lower():
-            stats.non_jmptbl_targets.add(target_name)
+            stats.gcc_non_jmptbl_targets.add(target_name)
+
+    for compare_path in scripts_dir.glob("compare_sasc*_trial.sh"):
+        content = compare_path.read_text()
+        asm_match = RE_ORIG_ASM.search(content)
+        entry_match = RE_ENTRY.search(content)
+        if asm_match is None or entry_match is None:
+            continue
+
+        module_path = asm_match.group("path")
+        entry_name = entry_match.group("entry")
+        stats = modules[module_path]
+        stats.sasc_compare_scripts.add(compare_path.name)
+        stats.sasc_entry_names.add(entry_name)
+        if "jmptbl" not in entry_name.lower():
+            stats.sasc_non_jmptbl_entries.add(entry_name)
 
     return modules, unresolved_promotes
 
@@ -174,7 +194,7 @@ def main() -> int:
     non_jmptbl_unmapped = sum(
         1
         for module, stats in modules.items()
-        if module not in mapped_modules and stats.non_jmptbl_targets
+        if module not in mapped_modules and stats.gcc_non_jmptbl_targets
     )
 
     print(f"promotion modules: {total_modules}")
@@ -193,8 +213,9 @@ def main() -> int:
         rows.append(
             (
                 0 if module not in mapped_modules else 1,
-                -len(stats.non_jmptbl_targets),
-                -len(stats.target_names),
+                -len(stats.gcc_non_jmptbl_targets),
+                -len(stats.sasc_non_jmptbl_entries),
+                -len(stats.gcc_target_names),
                 module,
                 stats,
             )
@@ -205,16 +226,19 @@ def main() -> int:
         rows = rows[: args.top]
 
     header = (
-        f"{'status':7}  {'nonjmptbl':10}  {'total':5}  {'module':48}  sample targets"
+        f"{'status':7}  {'gcc_nonjmptbl':13}  {'sasc_nonjmptbl':14}  "
+        f"{'gcc_total':9}  {'sasc_total':10}  {'module':48}  sample targets"
     )
     print(header)
     print("-" * len(header))
-    for _, _, _, module, stats in rows:
+    for _, _, _, _, module, stats in rows:
         status = "mapped" if module in mapped_modules else "unmapped"
         print(
-            f"{status:7}  {len(stats.non_jmptbl_targets):10d}  "
-            f"{len(stats.target_names):5d}  {module:48}  "
-            f"{format_samples(stats.non_jmptbl_targets or stats.target_names)}"
+            f"{status:7}  {len(stats.gcc_non_jmptbl_targets):13d}  "
+            f"{len(stats.sasc_non_jmptbl_entries):14d}  "
+            f"{len(stats.gcc_target_names):9d}  {len(stats.sasc_entry_names):10d}  "
+            f"{module:48}  "
+            f"{format_samples(stats.gcc_non_jmptbl_targets or stats.sasc_non_jmptbl_entries or stats.gcc_target_names)}"
         )
 
     return 0

@@ -20,7 +20,7 @@ The repository currently has two active decomp lanes:
 - Run `src/decomp/scripts/run_all_promotions.sh` periodically as a regression sweep (not required after every single target).
 - Before starting a target, check whether it already exists in `src/decomp/sas_c/` and whether a `.dis` has already been generated. Many listed targets are already present there, even when a GCC lane also exists.
 - Prefer landing new restored behavior in `src/decomp/sas_c/` when practical. Treat GCC replacement files as staging/reference material unless the target is explicitly staying in the GCC lane.
-- For module-level hybrid build triage, use `src/decomp/scripts/report_hybrid_module_promotion_coverage.py` to correlate GCC promotion lanes back to original asm modules and compare that against `src/decomp/replacements.map`.
+- For module-level hybrid build triage, use `src/decomp/scripts/report_hybrid_module_promotion_coverage.py` to correlate GCC promotion lanes and restored SAS/C compare lanes back to original asm modules, then compare that against `src/decomp/replacements.map`.
 
 ## SAS/C Lane
 - `./sc-build-with-dis.sh <filename>.c` expects a filename from `src/decomp/sas_c/`.
@@ -51,7 +51,7 @@ The repository currently has two active decomp lanes:
 - `src/decomp/scripts/gen_hybrid_root.sh`: generates `build/decomp/Prevue_hybrid.asm` from `src/Prevue.asm` + replacement map.
 - `src/decomp/scripts/new_module_replacement.sh`: bootstraps a replacement module by copying original source and registering it.
 - `src/decomp/scripts/list_missing_sasc_non_jmptbl_exports.py`: lists non-`JMPTBL` GCC replacement exports that still have no exact-word hit in `src/decomp/sas_c/`.
-- `src/decomp/scripts/report_hybrid_module_promotion_coverage.py`: reports which original asm modules have GCC promotion-lane coverage and whether those modules are already wired into `src/decomp/replacements.map`.
+- `src/decomp/scripts/report_hybrid_module_promotion_coverage.py`: reports which original asm modules have GCC promotion-lane coverage, how much restored SAS/C compare coverage they already have, and whether those modules are already wired into `src/decomp/replacements.map`.
 - `src/decomp/scripts/compare_memory_allocate_trial.sh`: compiles `Target 002` C trial and diffs generated asm vs original function slice.
 - `src/decomp/scripts/compare_memory_allocate_trial_gcc.sh`: GCC-specific compare lane for `Target 002` allocate function.
 - `src/decomp/scripts/compare_memory_deallocate_trial.sh`: compiles `Target 002` deallocate C trial and diffs generated asm vs original function slice.
