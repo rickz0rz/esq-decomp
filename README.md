@@ -48,6 +48,7 @@ Keep any generated binaries out of version control.
 - Current hybrid-integration note (March 13, 2026, later re-validated): `modules/groups/a/a/app3.s` is now seeded in `src/decomp/replacements.map` as a passthrough hybrid boundary. Treat the APP3 reboot/init helper cluster as integration-ready at the module boundary, even though the replacement file still includes the canonical asm module verbatim for now.
 - Current hybrid-integration note (March 13, 2026): `modules/groups/a/u/gcommand3.s` is now seeded in `src/decomp/replacements.map` as a passthrough hybrid boundary. Treat the GCOMMAND3 banner/highlight helper cluster as integration-ready at the module boundary, even though the replacement file still includes the canonical asm module verbatim for now.
 - Current hybrid-integration note (March 13, 2026, later re-validated): `modules/groups/a/i/displib.s` is now seeded in `src/decomp/replacements.map` as a passthrough hybrid boundary. Treat the DISPLIB text/layout helper cluster as integration-ready at the module boundary, even though the replacement file still includes the canonical asm module verbatim for now.
+- Current hybrid-integration note (March 13, 2026, later re-validated): `modules/groups/b/a/script4.s` is now seeded in `src/decomp/replacements.map` as a passthrough hybrid boundary. Treat the SCRIPT4 banner-char/inset/highlight helper cluster as integration-ready at the module boundary, even though the replacement file still includes the canonical asm module verbatim for now.
 - Remaining decomp work is not just “write more assembly comments”: the scope is to cover the root `src/*.s` files, `src/Prevue.asm`, and all files under `src/interrupts/`, `src/data/`, and `src/modules/` recursively.
 - In practice, the next decomp steps tend to fall into two buckets:
   - tighten or split existing `src/decomp/sas_c/` files when a function already exists there but needs a better match;
@@ -76,6 +77,7 @@ Keep any generated binaries out of version control.
 - Seeded `modules/groups/a/a/app3.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the APP3 reboot/init helper module has full non-`JMPTBL` SAS/C compare coverage.
 - Seeded `modules/groups/a/u/gcommand3.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the GCOMMAND3 banner/highlight helper module has full non-`JMPTBL` SAS/C compare coverage.
 - Seeded `modules/groups/a/i/displib.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the DISPLIB text/layout helper module has full non-`JMPTBL` SAS/C compare coverage.
+- Seeded `modules/groups/b/a/script4.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the SCRIPT4 banner-char/inset/highlight helper module has full non-`JMPTBL` SAS/C compare coverage.
 
 ## Contributor Guide
 If you plan to extend or annotate the disassembly, read the contributor guidelines in [`AGENTS.md`](AGENTS.md) for module organization, coding style, testing expectations, and review workflow.
