@@ -14,7 +14,7 @@ extern UWORD DATACErrs;
 
 extern UBYTE ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
 extern LONG ESQIFF2_ReadSerialRecordIntoBuffer(void *buffer, LONG arg1, LONG arg2);
-extern LONG ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(LONG seed, const UBYTE *buffer, LONG len);
+extern LONG ESQ_GenerateXorChecksumByte(LONG seed, const UBYTE *buffer, LONG len);
 extern UBYTE ESQSHARED_MatchSelectionCodeWithOptionalSuffix(const UBYTE *record);
 extern void ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord(LONG cmdChar);
 extern void ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList(LONG cmdChar);
@@ -50,7 +50,7 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
             LONG checksum;
 
             ESQIFF_RecordLength = (UWORD)ESQIFF2_ReadSerialRecordIntoBuffer((void *)ESQIFF_RecordBufferPtr, 0, 0);
-            checksum = ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((LONG)cmdByte, ESQIFF_RecordBufferPtr, (LONG)ESQIFF_RecordLength);
+            checksum = ESQ_GenerateXorChecksumByte((LONG)cmdByte, ESQIFF_RecordBufferPtr, (LONG)ESQIFF_RecordLength);
             if ((UBYTE)checksum != ESQIFF_RecordChecksumByte) {
                 DATACErrs += 1;
             } else if (ESQIFF_RecordLength <= 16) {

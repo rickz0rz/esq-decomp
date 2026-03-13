@@ -44,7 +44,7 @@ extern void ED_DrawESCMenuHelpText(void);
 
 extern LONG _LVORead(void *dosBase, LONG fh, void *buf, LONG len);
 extern LONG _LVOClose(void *dosBase, LONG fh);
-extern LONG ESQIFF_JMPTBL_DOS_OpenFileWithMode(const char *path, LONG mode);
+extern LONG DOS_OpenFileWithMode(const char *path, LONG mode);
 extern void GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(const UBYTE *ptr);
 
 extern LONG ESQIFF_JMPTBL_MATH_Mulu32(LONG a, LONG b);
@@ -152,7 +152,7 @@ void ED2_HandleMenuActions(void)
         LONG i;
         LONG sync;
 
-        fh = ESQIFF_JMPTBL_DOS_OpenFileWithMode(Global_STR_DF0_CLOCK_CMD, 1005);
+        fh = DOS_OpenFileWithMode(Global_STR_DF0_CLOCK_CMD, 1005);
         if (fh != 0) {
             rd = _LVORead(Global_REF_DOS_LIBRARY_2, fh, buf, 50);
             sync = 0;

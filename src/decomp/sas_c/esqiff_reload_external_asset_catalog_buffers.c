@@ -45,7 +45,7 @@ extern LONG _LVOClose(void *dosBase, LONG fileHandle);
 extern void ESQIFF_JMPTBL_BRUSH_FreeBrushList(MinList *head, LONG freePayload);
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, LONG size);
 extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG line, ULONG bytes, ULONG flags);
-extern LONG ESQIFF_JMPTBL_DOS_OpenFileWithMode(const char *name, LONG mode);
+extern LONG DOS_OpenFileWithMode(const char *name, LONG mode);
 extern LONG ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(LONG fileHandle);
 
 void ESQIFF_ReloadExternalAssetCatalogBuffers(LONG mode)
@@ -76,7 +76,7 @@ void ESQIFF_ReloadExternalAssetCatalogBuffers(LONG mode)
         Global_REF_LONG_GFX_G_ADS_DATA = 0;
         Global_REF_LONG_GFX_G_ADS_FILESIZE = 0;
 
-        fh = ESQIFF_JMPTBL_DOS_OpenFileWithMode(Global_PTR_STR_GFX_G_ADS, MODE_OLDFILE);
+        fh = DOS_OpenFileWithMode(Global_PTR_STR_GFX_G_ADS, MODE_OLDFILE);
         if (fh > 0) {
             size = ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(fh);
             Global_REF_LONG_GFX_G_ADS_FILESIZE = size;
@@ -124,7 +124,7 @@ void ESQIFF_ReloadExternalAssetCatalogBuffers(LONG mode)
     Global_REF_LONG_DF0_LOGO_LST_DATA = 0;
     Global_REF_LONG_DF0_LOGO_LST_FILESIZE = 0;
 
-    fh = ESQIFF_JMPTBL_DOS_OpenFileWithMode(Global_PTR_STR_DF0_LOGO_LST, MODE_OLDFILE);
+    fh = DOS_OpenFileWithMode(Global_PTR_STR_DF0_LOGO_LST, MODE_OLDFILE);
     if (fh <= 0) {
         return;
     }

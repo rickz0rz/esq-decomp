@@ -12,7 +12,7 @@ extern const char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG 
 extern LONG TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(const void *entry, const void *aux, LONG index, LONG window, LONG minutes);
 extern const char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(const void *entry, LONG index, LONG fieldId);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
-extern void TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(char *line, LONG mode, LONG groupIndex, LONG entryIndex, LONG a, LONG b);
+extern void CLEANUP_BuildAlignedStatusLine(char *line, LONG mode, LONG groupIndex, LONG entryIndex, LONG a, LONG b);
 extern void SCRIPT_SetupHighlightEffect(char *line);
 
 void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD entryIndex)
@@ -68,7 +68,7 @@ void TEXTDISP_BuildEntryPairStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD e
         STRING_AppendAtNull(line, partB);
     }
 
-    TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(
+    CLEANUP_BuildAlignedStatusLine(
         line,
         (LONG)modeFlag,
         (LONG)groupIndex,
