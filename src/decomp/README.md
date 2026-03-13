@@ -5546,7 +5546,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown10_parse_read_signed_long_nobranch.c`
 - `src/decomp/sas_c/unknown10_handle_open_entry_with_flags.c`
 - `src/decomp/sas_c/format_to_callback_buffer.c`
-- `src/decomp/sas_c/unknown14_handle_open_from_mode_string.c`
+- `src/decomp/sas_c/handle_open_from_mode_string.c`
 - `src/decomp/sas_c/stream_read_line_with_limit.c`
 - `src/decomp/sas_c/unknown16_buffer_flush_all_and_close_with_code.c`
 - `src/decomp/sas_c/unknown29_jmptbl_esq_main_init_and_run.c`

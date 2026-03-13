@@ -2,85 +2,98 @@ typedef signed long LONG;
 typedef unsigned long ULONG;
 typedef unsigned char UBYTE;
 
-typedef struct PreallocHandleNode {
-    struct PreallocHandleNode *Next; /* +0  */
-    UBYTE *BufferCursor;             /* +4  */
-    LONG ReadRemaining;              /* +8  */
-    LONG WriteRemaining;             /* +12 */
-    UBYTE *BufferBase;               /* +16 */
-    LONG BufferCapacity;             /* +20 */
-    ULONG OpenFlags;                 /* +24 (mode/state bytes at +26/+27) */
-    LONG HandleIndex;                /* +28 */
-    UBYTE InlineByte;                /* +32 */
-} PreallocHandleNode;
+struct PreallocHandleNode {
+    struct PreallocHandleNode *Next;
+    void *BufferCursor;
+    LONG ReadRemaining;
+    LONG WriteRemaining;
+    void *BufferBase;
+    LONG BufferCapacity;
+    ULONG OpenFlags;
+    LONG HandleIndex;
+    UBYTE InlineByte;
+    UBYTE Pad33;
+};
 
 extern ULONG Global_DefaultHandleFlags;
 
-extern LONG UNKNOWN36_FinalizeRequest(PreallocHandleNode *node);
+extern LONG UNKNOWN36_FinalizeRequest(struct PreallocHandleNode *node);
 extern LONG HANDLE_OpenEntryWithFlags(const char *name, ULONG flags, LONG size);
 
-PreallocHandleNode *HANDLE_OpenFromModeString(const char *name, const char *mode, PreallocHandleNode *node)
+struct PreallocHandleNode *HANDLE_OpenFromModeString(
+    const char *path,
+    const char *mode,
+    struct PreallocHandleNode *node)
 {
-    ULONG defaultFlags;
-    ULONG idx;
-    LONG plus;
+    ULONG defaultHandleFlags;
+    LONG modeIndex;
+    LONG plusMode;
     LONG openHandle;
-    ULONG handleModeBits;
-    ULONG finalOpenFlagsBase;
+    ULONG openFlags;
+    ULONG finalFlags;
 
-    if (node->OpenFlags != 0UL) {
-        (void)UNKNOWN36_FinalizeRequest(node);
+    if (node->OpenFlags != 0) {
+        UNKNOWN36_FinalizeRequest(node);
     }
 
-    defaultFlags = Global_DefaultHandleFlags;
-    idx = 1;
+    defaultHandleFlags = Global_DefaultHandleFlags;
+    modeIndex = 1;
 
-    if ((UBYTE)mode[idx] == (UBYTE)'b') {
-        defaultFlags = 0x8000UL;
-        idx++;
-    } else if ((UBYTE)mode[idx] == (UBYTE)'a') {
-        defaultFlags = 0;
-        idx++;
+    if ((UBYTE)mode[modeIndex] == (UBYTE)'b') {
+        defaultHandleFlags = 0x8000;
+        modeIndex += 1;
+    } else if ((UBYTE)mode[modeIndex] == (UBYTE)'a') {
+        defaultHandleFlags = 0;
+        modeIndex += 1;
     }
 
-    plus = ((UBYTE)mode[idx] == (UBYTE)'+') ? -1 : 0;
+    plusMode = ((UBYTE)mode[modeIndex] == (UBYTE)'+') ? -1 : 0;
 
-    if ((UBYTE)mode[0] == (UBYTE)'a') {
-        openHandle = HANDLE_OpenEntryWithFlags(name, 0x8102UL, 12);
+    if ((UBYTE)mode[0] == (UBYTE)'w') {
+        openFlags = (plusMode != 0) ? 2 : 1;
+        openFlags |= 0x8000;
+        openFlags |= 0x100;
+        openFlags |= 0x200;
+        openHandle = HANDLE_OpenEntryWithFlags(path, openFlags, 12);
         if (openHandle == -1) {
-            return (PreallocHandleNode *)0;
+            return (struct PreallocHandleNode *)0;
         }
-        handleModeBits = (plus != 0) ? 128UL : 2UL;
-        handleModeBits |= 0x4000UL;
+
+        finalFlags = (plusMode != 0) ? 128 : 2;
     } else if ((UBYTE)mode[0] == (UBYTE)'r') {
-        ULONG flags;
-        flags = ((plus != 0) ? 2UL : 0UL) | 0x8000UL;
-        openHandle = HANDLE_OpenEntryWithFlags(name, flags, 12);
+        openFlags = (plusMode != 0) ? 2 : 0;
+        openFlags |= 0x8000;
+        openHandle = HANDLE_OpenEntryWithFlags(path, openFlags, 12);
         if (openHandle == -1) {
-            return (PreallocHandleNode *)0;
+            return (struct PreallocHandleNode *)0;
         }
-        handleModeBits = (plus != 0) ? 128UL : 1UL;
-    } else if ((UBYTE)mode[0] == (UBYTE)'w') {
-        ULONG flags;
-        flags = ((plus != 0) ? 2UL : 1UL) | 0x8000UL | 0x100UL | 0x200UL;
-        openHandle = HANDLE_OpenEntryWithFlags(name, flags, 12);
+
+        finalFlags = (plusMode != 0) ? 128 : 1;
+    } else if ((UBYTE)mode[0] == (UBYTE)'a') {
+        openHandle = HANDLE_OpenEntryWithFlags(path, 0x8102, 12);
         if (openHandle == -1) {
-            return (PreallocHandleNode *)0;
+            return (struct PreallocHandleNode *)0;
         }
-        handleModeBits = (plus != 0) ? 128UL : 2UL;
+
+        finalFlags = (plusMode != 0) ? 128 : 2;
+        finalFlags |= 0x4000;
     } else {
-        return (PreallocHandleNode *)0;
+        return (struct PreallocHandleNode *)0;
     }
 
-    node->BufferBase = (UBYTE *)0;
+    node->BufferBase = (void *)0;
     node->BufferCapacity = 0;
     node->HandleIndex = openHandle;
     node->BufferCursor = node->BufferBase;
     node->WriteRemaining = 0;
     node->ReadRemaining = 0;
 
-    finalOpenFlagsBase = (defaultFlags == 0UL) ? 0x8000UL : 0UL;
-    node->OpenFlags = handleModeBits | finalOpenFlagsBase;
+    openFlags = 0;
+    if (defaultHandleFlags == 0) {
+        openFlags = 0x8000;
+    }
+
+    node->OpenFlags = finalFlags | openFlags;
 
     return node;
 }
