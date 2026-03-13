@@ -30,10 +30,14 @@ function trim(s, t) {
     if (index(u, "_LVOUNLOCK") > 0) has_unlock = 1
     if (index(u, "GCOMMAND_PATH_GFX_COLON") > 0) has_gfx_ref = 1
     if (index(u, "GCOMMAND_STR_WORK_COLON") > 0) has_work_ref = 1
-    if (index(u, "GROUP_AT_JMPTBL_DOS_SYSTEMTAGLIST") > 0 || index(u, "GROUP_AT_JMPTBL_DOS_SYSTEMTAGL") > 0) has_system_tag_call = 1
-    if (index(u, "GROUP_AT_JMPTBL_ED1_WAITFORFLAGANDCLEARBIT0") > 0) has_wait0 = 1
-    if (index(u, "GROUP_AT_JMPTBL_ED1_WAITFORFLAGANDCLEARBIT1") > 0) has_wait1 = 1
-    if (index(u, "GROUP_AT_JMPTBL_ED1_WAITFORFLAGA") > 0) wait_call_count += 1
+    if (index(u, "GROUP_AT_JMPTBL_DOS_SYSTEMTAGLIST") > 0 || index(u, "GROUP_AT_JMPTBL_DOS_SYSTEMTAGL") > 0 ||
+        index(u, "DOS_SYSTEMTAGLIST") > 0) has_system_tag_call = 1
+    if (index(u, "GROUP_AT_JMPTBL_ED1_WAITFORFLAGANDCLEARBIT0") > 0 ||
+        index(u, "ED1_WAITFORFLAGANDCLEARBIT0") > 0) has_wait0 = 1
+    if (index(u, "GROUP_AT_JMPTBL_ED1_WAITFORFLAGANDCLEARBIT1") > 0 ||
+        index(u, "ED1_WAITFORFLAGANDCLEARBIT1") > 0) has_wait1 = 1
+    if (index(u, "GROUP_AT_JMPTBL_ED1_WAITFORFLAGA") > 0 ||
+        index(u, "ED1_WAITFORFLAGANDCLEARBIT") > 0) wait_call_count += 1
     if (u == "RTS") has_return = 1
 }
 

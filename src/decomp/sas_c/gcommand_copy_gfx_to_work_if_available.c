@@ -9,9 +9,9 @@ extern const char GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_WORK_COLON_[];
 extern LONG _LVOLock(void *dosBase, const char *name, LONG mode);
 extern LONG _LVOUnLock(void *dosBase, LONG lock);
 
-extern LONG GROUP_AT_JMPTBL_DOS_SystemTagList(LONG arg1, LONG arg2);
-extern void GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0(void);
-extern void GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1(void);
+extern LONG DOS_SystemTagList(LONG arg1, LONG arg2);
+extern void ED1_WaitForFlagAndClearBit0(void);
+extern void ED1_WaitForFlagAndClearBit1(void);
 
 void GCOMMAND_CopyGfxToWorkIfAvailable(void)
 {
@@ -31,10 +31,10 @@ void GCOMMAND_CopyGfxToWorkIfAvailable(void)
     }
     _LVOUnLock(Global_REF_DOS_LIBRARY_2, lock);
 
-    rc = GROUP_AT_JMPTBL_DOS_SystemTagList((LONG)GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_LOGO_DOT_LS, 0);
-    rc = GROUP_AT_JMPTBL_DOS_SystemTagList((LONG)GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_WORK_COLON_, 0);
+    rc = DOS_SystemTagList((LONG)GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_LOGO_DOT_LS, 0);
+    rc = DOS_SystemTagList((LONG)GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_WORK_COLON_, 0);
     (void)rc;
 
-    GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0();
-    GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1();
+    ED1_WaitForFlagAndClearBit0();
+    ED1_WaitForFlagAndClearBit1();
 }
