@@ -5415,8 +5415,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/dos_open_with_error_state.c`
 - `src/decomp/sas_c/unknown21_iostdreq_free.c`
 - `src/decomp/sas_c/unknown21_iostdreq_cleanup_signal_and_msgport.c`
-- `src/decomp/sas_c/unknown21_dos_open_new_file_if_missing.c`
-- `src/decomp/sas_c/unknown21_dos_delete_and_recreate_file.c`
+- `src/decomp/sas_c/dos_open_new_file_if_missing.c`
+- `src/decomp/sas_c/dos_delete_and_recreate_file.c`
 - `src/decomp/sas_c/parse_read_signed_long_skip_class3.c`
 - `src/decomp/sas_c/parse_read_signed_long_skip_class3_alt.c`
 - `src/decomp/sas_c/memlist_alloc_free.c`

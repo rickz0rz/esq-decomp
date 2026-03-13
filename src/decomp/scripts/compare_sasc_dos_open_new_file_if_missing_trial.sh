@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-SASC_SRC="unknown21_dos_open_new_file_if_missing.c"
+SASC_SRC="dos_open_new_file_if_missing.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown21.s"
