@@ -22,10 +22,10 @@ extern char *GCOMMAND_PPVListingsTemplatePtr;
 extern char *GCOMMAND_PPVPeriodTemplatePtr;
 
 extern void FLIB2_LoadDigitalPpvDefaults(void);
-extern char *GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
-extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
+extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG n);
+extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
 extern LONG LADFUNC_ParseHexDigit(LONG c);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
+extern char *STR_FindCharPtr(const char *text, LONG ch);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern LONG GCOMMAND_LoadPPVTemplate(void);
 
@@ -62,7 +62,7 @@ static LONG parse_valid_digits_value(const char *p, LONG n, LONG max)
     }
     tmp[n] = 0;
 
-    v = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(tmp);
+    v = PARSE_ReadSignedLongSkipClass3_Alt(tmp);
     if (v < 0 || v > max) {
         return -1;
     }
@@ -92,10 +92,10 @@ LONG GCOMMAND_ParsePPVCommand(char *cmd)
         return GCOMMAND_LoadPPVTemplate();
     }
 
-    GROUP_AW_JMPTBL_STRING_CopyPadNul(scratch, cmd, 2);
+    STRING_CopyPadNul(scratch, cmd, 2);
     scratch[2] = 0;
 
-    parsed = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+    parsed = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
     tailIndex = parsed + 2;
     idx = 2;
 
@@ -204,9 +204,9 @@ LONG GCOMMAND_ParsePPVCommand(char *cmd)
     }
 
     if ((idx + 1) < tailIndex) {
-        GROUP_AW_JMPTBL_STRING_CopyPadNul(scratch, cmd + idx, 2);
+        STRING_CopyPadNul(scratch, cmd + idx, 2);
         scratch[2] = 0;
-        GCOMMAND_PpvShowtimesRowSpan = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+        GCOMMAND_PpvShowtimesRowSpan = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
         idx += 2;
     }
 
@@ -216,7 +216,7 @@ LONG GCOMMAND_ParsePPVCommand(char *cmd)
 
     tail = cmd + tailIndex;
     if (*tail != 0) {
-        split = GROUP_AS_JMPTBL_STR_FindCharPtr(tail, 18);
+        split = STR_FindCharPtr(tail, 18);
         if (split != (char *)0 && *split == 18) {
             *split = 0;
             split++;

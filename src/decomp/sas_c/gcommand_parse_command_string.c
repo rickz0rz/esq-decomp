@@ -23,11 +23,11 @@ extern char *GCOMMAND_MplexAtTemplatePtr;
 extern const char GCOMMAND_FMT_PCT_T_MplexTemplateParse[];
 
 extern void FLIB2_LoadDigitalMplexDefaults(void);
-extern char *GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
-extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
+extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG n);
+extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
 extern LONG LADFUNC_ParseHexDigit(LONG c);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
-extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(const char *text, const char *needle);
+extern char *STR_FindCharPtr(const char *text, LONG ch);
+extern char *ESQ_FindSubstringCaseFold(const char *text, const char *needle);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern LONG GCOMMAND_LoadMplexFile(void);
 
@@ -76,10 +76,10 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
         return GCOMMAND_LoadMplexFile();
     }
 
-    GROUP_AW_JMPTBL_STRING_CopyPadNul(scratch, cmd, 2);
+    STRING_CopyPadNul(scratch, cmd, 2);
     scratch[2] = 0;
 
-    parsed = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+    parsed = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
     tailIndex = parsed + 2;
     idx = 2;
 
@@ -103,7 +103,7 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
         scratch[0] = cmd[idx];
         scratch[1] = cmd[idx + 1];
         scratch[2] = 0;
-        v = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+        v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
         if (v >= 0 && v <= 99) {
             GCOMMAND_MplexSearchRowLimit = v;
         }
@@ -114,7 +114,7 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
         scratch[0] = cmd[idx];
         scratch[1] = cmd[idx + 1];
         scratch[2] = 0;
-        v = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+        v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
         if (v >= 0 && v <= 29) {
             GCOMMAND_MplexClockOffsetMinutes = v;
         }
@@ -199,7 +199,7 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
 
     tail = cmd + tailIndex;
     if (*tail != 0) {
-        splitSearch = GROUP_AS_JMPTBL_STR_FindCharPtr(tail, 18);
+        splitSearch = STR_FindCharPtr(tail, 18);
         split = (char *)splitSearch;
         if (split != 0 && *split != 0) {
             *split = 0;
@@ -228,7 +228,7 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
 
     fmtSearch = 0;
     if (GCOMMAND_MplexAtTemplatePtr != 0 && *GCOMMAND_MplexAtTemplatePtr != 0) {
-        fmtSearch = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(
+        fmtSearch = ESQ_FindSubstringCaseFold(
             GCOMMAND_MplexAtTemplatePtr,
             GCOMMAND_FMT_PCT_T_MplexTemplateParse);
     }

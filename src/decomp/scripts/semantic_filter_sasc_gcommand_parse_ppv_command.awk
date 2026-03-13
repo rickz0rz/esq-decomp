@@ -33,13 +33,13 @@ function trim(s, t) {
     if (u ~ /^GCOMMAND_PARSEPPVCOMMAND[A-Z0-9_]*:/) has_entry = 1
 
     if (index(u, "FLIB2_LOADDIGITALPPVDEFAULTS") > 0) has_defaults = 1
-    if (index(u, "GROUP_AW_JMPTBL_STRING_COPYPADNUL") > 0 || index(u, "GROUP_AW_JMPTBL_STRING_COPYPAD") > 0) has_copy_pad = 1
-    if (index(u, "ESQPARS_JMPTBL_PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 || index(u, "ESQPARS_JMPTBL_PARSE_READSIGNE") > 0) has_parse_long = 1
+    if (index(u, "GROUP_AW_JMPTBL_STRING_COPYPADNUL") > 0 || index(u, "GROUP_AW_JMPTBL_STRING_COPYPAD") > 0 || index(u, "STRING_COPYPADNUL") > 0 || index(u, "STRING_COPYPAD") > 0) has_copy_pad = 1
+    if (index(u, "ESQPARS_JMPTBL_PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 || index(u, "ESQPARS_JMPTBL_PARSE_READSIGNE") > 0 || index(u, "PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 || index(u, "PARSE_READSIGNEDLONGSKIPCL") > 0) has_parse_long = 1
 
     if (index(u, "WDISP_CHARCLASSTABLE") > 0) has_charclass_ref = 1
     if (index(u, "LADFUNC_PARSEHEXDIGIT") > 0) has_parse_hex = 1
 
-    if (index(u, "GROUP_AS_JMPTBL_STR_FINDCHARPTR") > 0 || index(u, "GROUP_AS_JMPTBL_STR_FINDCHARP") > 0) has_find_char = 1
+    if (index(u, "GROUP_AS_JMPTBL_STR_FINDCHARPTR") > 0 || index(u, "GROUP_AS_JMPTBL_STR_FINDCHARP") > 0 || index(u, "STR_FINDCHARPTR") > 0 || index(u, "STR_FINDCHARP") > 0) has_find_char = 1
     if (index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRI") > 0) has_replace_owned = 1
     if (index(u, "GCOMMAND_LOADPPVTEMPLATE") > 0) has_load_ppv_template = 1
 

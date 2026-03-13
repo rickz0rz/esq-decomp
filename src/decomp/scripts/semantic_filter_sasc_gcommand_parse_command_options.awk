@@ -30,8 +30,8 @@ function trim(s, t) {
     if (u ~ /^GCOMMAND_PARSECOMMANDOPTIONS[A-Z0-9_]*:/) has_entry = 1
 
     if (index(u, "FLIB2_LOADDIGITALNICHEDEFAULTS") > 0) has_defaults = 1
-    if (index(u, "GROUP_AW_JMPTBL_STRING_COPYPADNUL") > 0 || index(u, "GROUP_AW_JMPTBL_STRING_COPYPAD") > 0) has_copy_pad = 1
-    if (index(u, "ESQPARS_JMPTBL_PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 || index(u, "ESQPARS_JMPTBL_PARSE_READSIGNE") > 0) has_parse_long = 1
+    if (index(u, "GROUP_AW_JMPTBL_STRING_COPYPADNUL") > 0 || index(u, "GROUP_AW_JMPTBL_STRING_COPYPAD") > 0 || index(u, "STRING_COPYPADNUL") > 0 || index(u, "STRING_COPYPAD") > 0) has_copy_pad = 1
+    if (index(u, "ESQPARS_JMPTBL_PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 || index(u, "ESQPARS_JMPTBL_PARSE_READSIGNE") > 0 || index(u, "PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 || index(u, "PARSE_READSIGNEDLONGSKIPCL") > 0) has_parse_long = 1
 
     if (index(u, "WDISP_CHARCLASSTABLE") > 0) has_charclass_ref = 1
     if (index(u, "LADFUNC_PARSEHEXDIGIT") > 0) has_parse_hex = 1

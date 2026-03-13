@@ -15,8 +15,8 @@ extern UBYTE GCOMMAND_NicheWorkflowMode;
 extern char *GCOMMAND_DigitalNicheListingsTemplatePtr;
 
 extern void FLIB2_LoadDigitalNicheDefaults(void);
-extern char *GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG n);
-extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
+extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG n);
+extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
 extern LONG LADFUNC_ParseHexDigit(LONG c);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern LONG GCOMMAND_LoadCommandFile(void);
@@ -52,10 +52,10 @@ LONG GCOMMAND_ParseCommandOptions(char *cmd)
         return GCOMMAND_LoadCommandFile();
     }
 
-    GROUP_AW_JMPTBL_STRING_CopyPadNul(scratch, cmd, 2);
+    STRING_CopyPadNul(scratch, cmd, 2);
     scratch[2] = 0;
 
-    parsed = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+    parsed = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
     tailIndex = parsed + 2;
     idx = 2;
 
