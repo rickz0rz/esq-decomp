@@ -32,9 +32,9 @@ function trim(s, t) {
     if (n ~ /NEWGRIDSHOWTIMEBUCKETCOUNT/) has_bucket_count=1
     if (n ~ /NEWGRIDSHOWTIMEBUCKETENTRYTABLE/) has_bucket_entry_table=1
     if (n ~ /NEWGRIDSHOWTIMEBUCKETPTRTABLE/) has_bucket_ptr_table=1
-    if (n ~ /PARSEINIJMPTBLSTRFINDCHARPTR/) has_find_char=1
-    if (n ~ /SCRIPT3JMPTBLPARSEREADSIGNEDL/) has_parse_long=1
-    if (n ~ /PARSEINIJMPTBLESQPARSREPLACEO/) has_replace_owned=1
+    if (n ~ /PARSEINIJMPTBLSTRFINDCHARPTR/ || n ~ /STRFINDCHARPTR/) has_find_char=1
+    if (n ~ /SCRIPT3JMPTBLPARSEREADSIGNEDL/ || n ~ /PARSEREADSIGNEDLONGSKIPCLASS3ALT/ || n ~ /PARSEREADSIGNEDLONGSKIPCLASS3A/) has_parse_long=1
+    if (n ~ /PARSEINIJMPTBLESQPARSREPLACEO/ || n ~ /ESQPARSREPLACEOWNEDSTRING/) has_replace_owned=1
     if (u ~ /CMP\.L .*D6/ || n ~ /SHOWTIMEBUCKETPTRTABLE/) has_wildcard_insert_loop=1
     if (u ~ /SUBQ\.L #1,D[0-7]/ || n ~ /SHOWTIMEBUCKETPTRTABLE/) has_shift_loop=1
     if (u ~ /MOVEQ #1,D0/ || u ~ /MOVEQ\.L #\$1,D0/) has_success_flag=1

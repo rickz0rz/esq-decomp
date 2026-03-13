@@ -10,9 +10,9 @@ extern LONG NEWGRID_ShowtimeBucketCount;
 extern NEWGRID_ShowtimeBucketEntry NEWGRID_ShowtimeBucketEntryTable[];
 extern NEWGRID_ShowtimeBucketEntry *NEWGRID_ShowtimeBucketPtrTable[];
 
-extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *text, LONG ch);
-extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
-extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
+extern char *STR_FindCharPtr(const char *text, LONG ch);
+extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *text);
+extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
 
 LONG NEWGRID_AddShowtimeBucketEntry(char *entryText, LONG bucketGroup, LONG unused)
 {
@@ -31,9 +31,9 @@ LONG NEWGRID_AddShowtimeBucketEntry(char *entryText, LONG bucketGroup, LONG unus
 
     (void)unused;
 
-    cursor = PARSEINI_JMPTBL_STR_FindCharPtr(entryText, ASCII_COLON);
+    cursor = STR_FindCharPtr(entryText, ASCII_COLON);
     cursor = cursor + 1;
-    key = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(cursor);
+    key = PARSE_ReadSignedLongSkipClass3_Alt(cursor);
     key += (bucketGroup << GROUP_SHIFT);
 
     if (NEWGRID_ShowtimeBucketCount >= BUCKET_MAX) {
@@ -42,7 +42,7 @@ LONG NEWGRID_AddShowtimeBucketEntry(char *entryText, LONG bucketGroup, LONG unus
 
     entry = &NEWGRID_ShowtimeBucketEntryTable[NEWGRID_ShowtimeBucketCount];
     entry->key = key;
-    entry->text = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(entryText, entry->text);
+    entry->text = ESQPARS_ReplaceOwnedString(entryText, entry->text);
 
     insertPos = NEWGRID_ShowtimeBucketCount;
     while (insertPos > INDEX_ZERO) {

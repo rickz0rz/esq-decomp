@@ -8,7 +8,7 @@ typedef struct NEWGRID_Entry {
     UBYTE flags27;
 } NEWGRID_Entry;
 
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
+extern char *STR_SkipClass3Chars(const char *s);
 
 LONG NEWGRID_ShouldOpenEditor(const char *entry)
 {
@@ -20,8 +20,8 @@ LONG NEWGRID_ShouldOpenEditor(const char *entry)
     shouldOpen = 0;
     entryView = (const NEWGRID_Entry *)entry;
     if (entryView != 0) {
-        primaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->primaryText);
-        secondaryScan = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entryView->shortText);
+        primaryScan = STR_SkipClass3Chars(entryView->primaryText);
+        secondaryScan = STR_SkipClass3Chars(entryView->shortText);
 
         if ((primaryScan == 0 || *primaryScan == 0) &&
             (secondaryScan == 0 || *secondaryScan == 0) &&

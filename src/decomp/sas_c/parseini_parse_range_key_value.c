@@ -10,12 +10,12 @@ extern const char PARSEINI_TAG_TABLE[];
 extern const char PARSEINI_TAG_DONE[];
 extern const char PARSEINI_TAG_COLOR[];
 
-extern char *PARSEINI_JMPTBL_STR_FindCharPtr(const char *s, LONG ch);
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
-extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(const char *s, const char *delim);
-extern LONG PARSEINI_JMPTBL_STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
-extern void PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable(WORD *rangeTable);
-extern LONG SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
+extern char *STR_FindCharPtr(const char *s, LONG ch);
+extern char *STR_SkipClass3Chars(const char *s);
+extern char *STR_FindAnyCharPtr(const char *s, const char *delim);
+extern LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG n);
+extern void GCOMMAND_ValidatePresetTable(WORD *rangeTable);
+extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 extern LONG PARSEINI_ParseHexValueFromString(const char *hexText);
 
 LONG PARSEINI_ParseRangeKeyValue(char *sourceLine, WORD *rangeTable)
@@ -30,19 +30,19 @@ LONG PARSEINI_ParseRangeKeyValue(char *sourceLine, WORD *rangeTable)
     const char *p;
 
     keyToken = sourceLine;
-    splitPtr = (sourceLine != (char *)0) ? PARSEINI_JMPTBL_STR_FindCharPtr(sourceLine, 61) : (char *)0;
+    splitPtr = (sourceLine != (char *)0) ? STR_FindCharPtr(sourceLine, 61) : (char *)0;
     valueToken = splitPtr;
 
     if (keyToken != (char *)0 && valueToken != (char *)0) {
-        keyToken = NEWGRID2_JMPTBL_STR_SkipClass3Chars(keyToken);
-        keyToken = PARSEINI_JMPTBL_STR_FindAnyCharPtr(keyToken, PARSEINI_DelimSpaceTab_RangeKey);
+        keyToken = STR_SkipClass3Chars(keyToken);
+        keyToken = STR_FindAnyCharPtr(keyToken, PARSEINI_DelimSpaceTab_RangeKey);
         if (keyToken != (char *)0) {
             *keyToken = 0;
         }
 
         *valueToken++ = 0;
-        valueToken = NEWGRID2_JMPTBL_STR_SkipClass3Chars(valueToken);
-        splitPtr = PARSEINI_JMPTBL_STR_FindAnyCharPtr(valueToken, PARSEINI_DelimSpaceSemicolonTab_RangeValue);
+        valueToken = STR_SkipClass3Chars(valueToken);
+        splitPtr = STR_FindAnyCharPtr(valueToken, PARSEINI_DelimSpaceSemicolonTab_RangeValue);
         if (splitPtr != (char *)0) {
             *splitPtr = 0;
         }
@@ -52,18 +52,18 @@ LONG PARSEINI_ParseRangeKeyValue(char *sourceLine, WORD *rangeTable)
         return 0;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCaseN(keyToken, PARSEINI_TAG_TABLE, 5) == 0 &&
-        PARSEINI_JMPTBL_STRING_CompareNoCaseN(valueToken, PARSEINI_TAG_DONE, 4) == 0) {
-        PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable(rangeTable);
+    if (STRING_CompareNoCaseN(keyToken, PARSEINI_TAG_TABLE, 5) == 0 &&
+        STRING_CompareNoCaseN(valueToken, PARSEINI_TAG_DONE, 4) == 0) {
+        GCOMMAND_ValidatePresetTable(rangeTable);
         PARSEINI_CurrentRangeTableIndex = -1;
         return 0;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCaseN(keyToken, PARSEINI_TAG_COLOR, 5) == 0) {
+    if (STRING_CompareNoCaseN(keyToken, PARSEINI_TAG_COLOR, 5) == 0) {
         colorIndex = 0;
         p = keyToken + 5;
         if (p != (const char *)0 && *p != 0) {
-            colorIndex = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(p);
+            colorIndex = PARSE_ReadSignedLongSkipClass3_Alt(p);
         }
 
         if (colorIndex < 0 || colorIndex >= 16) {
@@ -77,7 +77,7 @@ LONG PARSEINI_ParseRangeKeyValue(char *sourceLine, WORD *rangeTable)
             return 0;
         }
 
-        parsedRangeLen = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(valueToken);
+        parsedRangeLen = PARSE_ReadSignedLongSkipClass3_Alt(valueToken);
         if (parsedRangeLen < 1 || parsedRangeLen > 63) {
             parsedRangeLen = -1;
         } else {
@@ -95,7 +95,7 @@ LONG PARSEINI_ParseRangeKeyValue(char *sourceLine, WORD *rangeTable)
         return 0;
     }
 
-    slotIndex = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(keyToken);
+    slotIndex = PARSE_ReadSignedLongSkipClass3_Alt(keyToken);
     colorValue = PARSEINI_ParseHexValueFromString(valueToken);
     if (slotIndex <= 0) {
         return 0;

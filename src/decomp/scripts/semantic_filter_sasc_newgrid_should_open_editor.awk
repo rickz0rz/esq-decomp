@@ -27,7 +27,7 @@ function trim(s, t) {
     gsub(/[^A-Z0-9]/, "", n)
 
     if (u ~ /^NEWGRID_SHOULDOPENEDITOR:/ || u ~ /^NEWGRID_SHOULDOPENEDITO[A-Z0-9_]*:/) has_entry=1
-    if (n ~ /NEWGRID2JMPTBLSTRSKIPCLASS3CHARS/ || n ~ /NEWGRID2JMPTBLSTRSKIPCLASS3CHA/ || n ~ /NEWGRID2JMPTBLSTRSKIPCLASS3CH/) has_skipclass3=1
+    if (n ~ /NEWGRID2JMPTBLSTRSKIPCLASS3CHARS/ || n ~ /NEWGRID2JMPTBLSTRSKIPCLASS3CHA/ || n ~ /NEWGRID2JMPTBLSTRSKIPCLASS3CH/ || n ~ /STRSKIPCLASS3CHARS/) has_skipclass3=1
     if (u ~ /BTST[[:space:]]+#5/ || u ~ /BTST.*#\$05/ || u ~ /BTST.*#\$5([^0-9A-F]|$)/ || u ~ /LSR\.[LW][[:space:]]+#5/) has_btst_5=1
     if (u ~ /\(19,/ || u ~ /19\([A-Z][0-7]\)/ || u ~ /\+19/ || u ~ /\$13\([A-Z][0-7]\)/) has_offset19=1
     if (u ~ /\(1,/ || u ~ /1\([A-Z][0-7]\)/ || u ~ /\+1/) has_offset1=1
