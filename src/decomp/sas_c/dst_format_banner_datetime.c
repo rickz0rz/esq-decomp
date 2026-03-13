@@ -31,7 +31,7 @@ extern const char DST_STR_NORM_YEAR[];
 extern const char DST_STR_LEAP_YEAR[];
 extern const char DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_[];
 
-extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
+extern void FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
 
 void DST_FormatBannerDateTime(char *dst, const DST_BannerTimeInfo *info)
 {
@@ -41,7 +41,7 @@ void DST_FormatBannerDateTime(char *dst, const DST_BannerTimeInfo *info)
     const char *dst_tag = (info->dst_mode_flag == DST_MODE_DST) ? DST_TAG_DST : DST_TAG_STD;
     const char *year_tag = info->leap_year_flag ? DST_STR_LEAP_YEAR : DST_STR_NORM_YEAR;
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_,
         dst,
         dow,
