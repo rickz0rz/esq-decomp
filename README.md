@@ -79,6 +79,7 @@ Keep any generated binaries out of version control.
 - Seeded `modules/groups/a/u/gcommand3.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the GCOMMAND3 banner/highlight helper module has full non-`JMPTBL` SAS/C compare coverage.
 - Seeded `modules/groups/a/i/displib.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the DISPLIB text/layout helper module has full non-`JMPTBL` SAS/C compare coverage.
 - Seeded `modules/groups/a/n/esqfunc.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the ESQFUNC status/clock/UI-service helper module has strong restored non-`JMPTBL` SAS/C compare coverage.
+- Seeded `modules/groups/a/n/esqiff.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the ESQIFF external-asset/weather/copper helper module has strong restored non-`JMPTBL` SAS/C compare coverage.
 - Seeded `modules/groups/b/a/script4.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the SCRIPT4 banner-char/inset/highlight helper module has full non-`JMPTBL` SAS/C compare coverage.
 
 ## Contributor Guide
