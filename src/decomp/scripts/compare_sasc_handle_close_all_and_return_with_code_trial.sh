@@ -16,7 +16,13 @@ mkdir -p "$OUT_DIR"
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_handle_close_all_and_return_with_code.log" 2>&1
 
 awk '$0 ~ /^HANDLE_CloseAllAndReturnWithCode:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/handle_close_all_and_return_with_code.original.s"
-awk '$0 ~ /^HANDLE_CloseAllAndReturnWithCode:$/ {in_func=1} in_func { if ($0 ~ /^UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/handle_close_all_and_return_with_code.sasc.dis.s"
+awk '
+    $0 ~ /^HANDLE_CloseAllAndReturnWithCode:$/ {in_func=1}
+    in_func {
+        if (($0 ~ /^UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode:$/ || $0 ~ /^UNKNOWN32_JMPTBL_ESQ_ReturnWithS:$/ || $0 ~ /^__const:$/) && $0 !~ /^HANDLE_CloseAllAndReturnWithCode:$/) exit
+        print
+    }
+' "$SASC_DIS" >"${OUT_DIR}/handle_close_all_and_return_with_code.sasc.dis.s"
 
 normalize() {
   sed -E \
