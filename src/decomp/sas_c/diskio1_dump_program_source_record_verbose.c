@@ -38,7 +38,7 @@ struct DiskioProgramSourceRecord {
     unsigned short sourceFlagsWord;
 };
 
-extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
+extern void FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
 
 extern const char *Global_REF_STR_CLOCK_FORMAT[];
 extern const char DISKIO_FMT_CHANNEL_LINE_UP_PCT_D[];
@@ -61,53 +61,53 @@ void DISKIO1_DumpProgramSourceRecordVerbose(
     const struct DiskioProgramSourceRecord *rec,
     ULONG channelLineup)
 {
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_CHANNEL_LINE_UP_PCT_D,
         channelLineup);
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT,
         (ULONG)rec->etid,
         rec->channelNumber,
         rec->source,
         rec->callLetters);
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_ATTR);
+    FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_ATTR);
 
     if (rec->attrFlags == ATTR_FLAG_NONE) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_NONE_VerboseSourceAttrFlags);
     }
     if (rec->attrFlags & ATTR_FLAG_HILITE_SRC) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags);
     }
     if (rec->attrFlags & ATTR_FLAG_SUM_SRC) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags);
     }
     if (rec->attrFlags & ATTR_FLAG_VIDEO_TAG_DISABLE) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags);
     }
     if (rec->attrFlags & ATTR_FLAG_PPV_SRC) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags);
     }
     if (rec->attrFlags & ATTR_FLAG_DITTO) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_DITTO_VerboseSourceAttrFlags);
     }
     if (rec->attrFlags & ATTR_FLAG_ALT_HILITE_SRC) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags);
     }
     if (rec->attrFlags & ATTR_FLAG_STEREO) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_STEREO);
     }
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_STR_ProgramAttrCloseParenNewline);
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC,
         (ULONG)rec->timeSlotMask[MASK_INDEX_0],
         (ULONG)rec->timeSlotMask[MASK_INDEX_1],
@@ -115,7 +115,7 @@ void DISKIO1_DumpProgramSourceRecordVerbose(
         (ULONG)rec->timeSlotMask[MASK_INDEX_3],
         (ULONG)rec->timeSlotMask[MASK_INDEX_4],
         (ULONG)rec->timeSlotMask[MASK_LAST_INDEX]);
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_,
         (ULONG)rec->blackoutMask[MASK_INDEX_0],
         (ULONG)rec->blackoutMask[MASK_INDEX_1],
@@ -123,7 +123,7 @@ void DISKIO1_DumpProgramSourceRecordVerbose(
         (ULONG)rec->blackoutMask[MASK_INDEX_3],
         (ULONG)rec->blackoutMask[MASK_INDEX_4],
         (ULONG)rec->blackoutMask[MASK_LAST_INDEX]);
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord,
         (ULONG)rec->sourceFlagsByte,
         (ULONG)rec->sourceFlagsWord,

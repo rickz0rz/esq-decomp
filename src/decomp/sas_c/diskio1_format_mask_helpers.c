@@ -13,7 +13,7 @@ enum {
     DISKIO1_MASK_INDEX_INIT = 0
 };
 
-extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
+extern void FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
 extern void DISKIO1_AccumulateTimeSlotMaskSum(void);
 extern void DISKIO1_AccumulateBlackoutMaskSum(void);
 
@@ -28,9 +28,9 @@ volatile ULONG gDiskio1MaskArrayIndex;
 
 void DISKIO1_FormatTimeSlotMaskFlags(void)
 {
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_STR_AttrFlagsCloseParenNewline_A);
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX,
         (ULONG)gDiskio1TimeSlotMaskBytes[DISKIO1_MASK_INDEX_0],
         (ULONG)gDiskio1TimeSlotMaskBytes[DISKIO1_MASK_INDEX_1],
@@ -45,7 +45,7 @@ void DISKIO1_FormatTimeSlotMaskFlags(void)
 
 void DISKIO1_FormatBlackoutMaskFlags(void)
 {
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02,
         (ULONG)gDiskio1BlackoutMaskBytes[DISKIO1_MASK_INDEX_0],
         (ULONG)gDiskio1BlackoutMaskBytes[DISKIO1_MASK_INDEX_1],
