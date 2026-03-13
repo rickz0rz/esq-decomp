@@ -13,7 +13,7 @@ typedef struct ESQ_RastPort {
     UBYTE pad0[4];
     void *bitmap;
     UBYTE pad8[44];
-    ESQ_Font *font;
+    void *areaPtr;
 } ESQ_RastPort;
 
 typedef struct ESQ_MessagePort {
@@ -21,61 +21,42 @@ typedef struct ESQ_MessagePort {
     UBYTE flags8;
     UBYTE sigBit9;
     LONG sigTask10;
-    UBYTE pad14[6];
+    UBYTE type14;
+    UBYTE pad15[5];
     UBYTE list20[14];
 } ESQ_MessagePort;
+
+typedef struct ESQ_Task {
+    UBYTE pad0[184];
+    LONG windowPtr;
+} ESQ_Task;
+
+typedef struct ESQ_GfxLibrary {
+    UBYTE pad0[20];
+    UWORD version;
+} ESQ_GfxLibrary;
+
+typedef struct ESQ_SerialIORequest {
+    UBYTE pad0[28];
+    UWORD command;
+    UBYTE pad30[30];
+    LONG baudRate;
+    UBYTE pad64[15];
+    UBYTE flags79;
+} ESQ_SerialIORequest;
+
+typedef struct ESQ_LayerData {
+    UBYTE pad0[53];
+    UBYTE flags53;
+    UBYTE pad54;
+    UBYTE flag55;
+} ESQ_LayerData;
 
 enum {
     MEMF_PUBLIC = 1,
     MEMF_CLEAR = 0x10000,
-    TASK_WINDOW_PTR_OFFSET = 184,
-    LIB_VERSION_OFFSET = 20,
-    SERIAL_IO_BAUD_OFFSET = 60,
-    SERIAL_IO_FLAGS79_OFFSET = 79,
-    SERIAL_IO_COMMAND_OFFSET = 28,
-    RASTPORT_AREAPTR_OFFSET = 52,
     DISPLAY_RASTPORT2_DELTA = -458
 };
-
-static void *read_ptr(void *base, UWORD offset)
-{
-    return *(void **)((UBYTE *)base + offset);
-}
-
-static LONG read_long(void *base, UWORD offset)
-{
-    return *(LONG *)((UBYTE *)base + offset);
-}
-
-static WORD read_word(void *base, UWORD offset)
-{
-    return *(WORD *)((UBYTE *)base + offset);
-}
-
-static UBYTE read_byte(void *base, UWORD offset)
-{
-    return *((UBYTE *)base + offset);
-}
-
-static void write_ptr(void *base, UWORD offset, void *value)
-{
-    *(void **)((UBYTE *)base + offset) = value;
-}
-
-static void write_long(void *base, UWORD offset, LONG value)
-{
-    *(LONG *)((UBYTE *)base + offset) = value;
-}
-
-static void write_word(void *base, UWORD offset, WORD value)
-{
-    *(WORD *)((UBYTE *)base + offset) = value;
-}
-
-static void write_byte(void *base, UWORD offset, UBYTE value)
-{
-    *((UBYTE *)base + offset) = value;
-}
 
 extern void *AbsExecBase;
 
@@ -360,8 +341,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     LONG i;
     LONG d0;
     LONG baudRate;
-    void *task;
-    void *layerData;
+    ESQ_Task *task;
+    ESQ_LayerData *layerData;
+    ESQ_SerialIORequest *serialIoRequest;
     char *displayRastPort;
 
     if (argc >= 2) {
@@ -392,10 +374,10 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 
     _LVOExecute(Global_REF_DOS_LIBRARY_2, Global_STR_COPY_NIL_ASSIGN_RAM, 0, 0);
 
-    task = _LVOFindTask(AbsExecBase, (void *)0);
+    task = (ESQ_Task *)_LVOFindTask(AbsExecBase, (void *)0);
     WDISP_ExecBaseHookPtr = (LONG)task;
-    ESQ_ProcessWindowPtrBackup = read_long(task, TASK_WINDOW_PTR_OFFSET);
-    write_long(task, TASK_WINDOW_PTR_OFFSET, -1);
+    ESQ_ProcessWindowPtrBackup = task->windowPtr;
+    task->windowPtr = -1;
 
     Global_REF_GRAPHICS_LIBRARY = _LVOOpenLibrary(AbsExecBase, Global_STR_GRAPHICS_LIBRARY, 0);
     if (Global_REF_GRAPHICS_LIBRARY == (void *)0) {
@@ -417,7 +399,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         return BUFFER_FlushAllAndCloseWithCode(0);
     }
 
-    if ((LONG)(UWORD)read_word(Global_REF_GRAPHICS_LIBRARY, LIB_VERSION_OFFSET) >= 37) {
+    if ((LONG)((ESQ_GfxLibrary *)Global_REF_GRAPHICS_LIBRARY)->version >= 37) {
         Global_REF_UTILITY_LIBRARY = _LVOOpenLibrary(AbsExecBase, Global_STR_UTILITY_LIBRARY, 37);
         if (Global_REF_UTILITY_LIBRARY != (void *)0) {
             Global_REF_BATTCLOCK_RESOURCE = _LVOOpenResource(AbsExecBase, Global_STR_BATTCLOCK_RESOURCE);
@@ -488,7 +470,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQ_HighlightMsgPort->sigTask10 = 0;
     ESQ_HighlightMsgPort->sigBit9 = 0;
     ESQ_HighlightMsgPort->flags8 = 4;
-    write_byte(ESQ_HighlightMsgPort, 14, 2);
+    ESQ_HighlightMsgPort->type14 = 2;
     LIST_InitHeader(ESQ_HighlightMsgPort->list20);
 
     ESQ_HighlightReplyPort = (ESQ_MessagePort *)MEMORY_AllocateMemory(34, MEMF_PUBLIC + MEMF_CLEAR);
@@ -498,7 +480,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQ_HighlightReplyPort->sigTask10 = 0;
     ESQ_HighlightReplyPort->sigBit9 = 0;
     ESQ_HighlightReplyPort->flags8 = 4;
-    write_byte(ESQ_HighlightReplyPort, 14, 2);
+    ESQ_HighlightReplyPort->type14 = 2;
     LIST_InitHeader(ESQ_HighlightReplyPort->list20);
 
     for (i = 0; i < 4; ++i) {
@@ -510,7 +492,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 
     ESQ_SetCopperEffect_OffDisableHighlight();
     WDISP_HighlightBufferMode = 0;
-    if ((LONG)(UWORD)read_word(Global_REF_GRAPHICS_LIBRARY, LIB_VERSION_OFFSET) >= 34) {
+    if ((LONG)((ESQ_GfxLibrary *)Global_REF_GRAPHICS_LIBRARY)->version >= 34) {
         WDISP_HighlightBufferMode = 1;
     }
 
@@ -572,9 +554,10 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         return 0;
     }
 
-    write_byte(WDISP_SerialIoRequestPtr, SERIAL_IO_FLAGS79_OFFSET, 16);
-    write_long(WDISP_SerialIoRequestPtr, SERIAL_IO_BAUD_OFFSET, Global_REF_BAUD_RATE);
-    write_word(WDISP_SerialIoRequestPtr, SERIAL_IO_COMMAND_OFFSET, 11);
+    serialIoRequest = (ESQ_SerialIORequest *)WDISP_SerialIoRequestPtr;
+    serialIoRequest->flags79 = 16;
+    serialIoRequest->baudRate = Global_REF_BAUD_RATE;
+    serialIoRequest->command = 11;
     _LVODoIO(AbsExecBase, WDISP_SerialIoRequestPtr);
 
     SETUP_INTERRUPT_INTB_RBF();
@@ -613,9 +596,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQSHARED_DisplayContextPlaneBase3 = WDISP_DisplayContextPlanePointer3;
     ESQSHARED_DisplayContextPlaneBase4 = WDISP_DisplayContextPlanePointer4;
 
-    layerData = read_ptr(Global_REF_RASTPORT_1, RASTPORT_AREAPTR_OFFSET);
-    write_byte(layerData, 55, 1);
-    write_byte(layerData, 53, (UBYTE)(read_byte(layerData, 53) | 1));
+    layerData = (ESQ_LayerData *)Global_REF_RASTPORT_1->areaPtr;
+    layerData->flag55 = 1;
+    layerData->flags53 = (UBYTE)(layerData->flags53 | 1);
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(2, 0, 3);
 
