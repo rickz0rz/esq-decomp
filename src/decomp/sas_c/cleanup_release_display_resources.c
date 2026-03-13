@@ -44,9 +44,9 @@ void CLEANUP_ReleaseDisplayResources(void)
     const LONG RASTER_H_240 = 240;
     const LONG FREE96_LINE = 148;
     const LONG FREE_RP_LINE = 152;
-    const LONG FREE_LIVE_LINE = 158;
+    const LONG FREE_LIVE_LINE = 160;
     const LONG FREE_352_LINE = 169;
-    const LONG FREE_BANNER_LINE = 168;
+    const LONG FREE_BANNER_LINE = 178;
     const LONG FREE_CTX_LINE = 187;
     const LONG FREE_WORK_LINE = 200;
     LONG i;
