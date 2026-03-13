@@ -6,7 +6,7 @@ extern UBYTE ESQ_STR_A;
 extern char ESQ_SelectCodeBuffer[];
 extern char ESQPARS_SelectionSuffixBuffer[];
 
-extern UBYTE ESQSHARED_JMPTBL_ESQ_WildcardMatch(const char *text, const char *pattern);
+extern UBYTE ESQ_WildcardMatch(const char *text, const char *pattern);
 
 UBYTE ESQSHARED_MatchSelectionCodeWithOptionalSuffix(const char *src)
 {
@@ -60,11 +60,11 @@ UBYTE ESQSHARED_MatchSelectionCodeWithOptionalSuffix(const char *src)
     if (main_part[0] == '\0') {
         match_main = -1;
     } else {
-        match_main = (WORD)(signed char)ESQSHARED_JMPTBL_ESQ_WildcardMatch(ESQ_SelectCodeBuffer, main_part);
+        match_main = (WORD)(signed char)ESQ_WildcardMatch(ESQ_SelectCodeBuffer, main_part);
     }
 
     if (split_seen == 1) {
-        match_suffix = (WORD)(signed char)ESQSHARED_JMPTBL_ESQ_WildcardMatch(ESQPARS_SelectionSuffixBuffer, suffix_part);
+        match_suffix = (WORD)(signed char)ESQ_WildcardMatch(ESQPARS_SelectionSuffixBuffer, suffix_part);
     }
 
     if (match_main == 0 && match_suffix == 0 && suffix_gate == ESQ_STR_A) {

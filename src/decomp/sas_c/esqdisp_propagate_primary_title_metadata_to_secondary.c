@@ -25,8 +25,8 @@ extern ESQDISP_Entry *TEXTDISP_SecondaryEntryPtrTable[];
 extern ESQDISP_TitleData *TEXTDISP_PrimaryTitlePtrTable[];
 extern ESQDISP_TitleData *TEXTDISP_SecondaryTitlePtrTable[];
 
-extern LONG ESQSHARED_JMPTBL_ESQ_TestBit1Based(UBYTE *bitset_base, LONG bit_index);
-extern LONG ESQSHARED_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
+extern LONG ESQ_TestBit1Based(UBYTE *bitset_base, LONG bit_index);
+extern LONG ESQ_WildcardMatch(const char *pattern, const char *text);
 extern char *ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 
 void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void)
@@ -57,7 +57,7 @@ void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void)
         }
 
         secondaryEntry = TEXTDISP_SecondaryEntryPtrTable[secondary_index];
-        if ((LONG)(ESQSHARED_JMPTBL_ESQ_TestBit1Based((void *)secondaryEntry->selectionBits, 1L) + 1) != 0) {
+        if ((LONG)(ESQ_TestBit1Based((void *)secondaryEntry->selectionBits, 1L) + 1) != 0) {
             continue;
         }
 
@@ -74,7 +74,7 @@ void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void)
             }
 
             primaryTitle = TEXTDISP_PrimaryTitlePtrTable[primary_index];
-            if ((UBYTE)ESQSHARED_JMPTBL_ESQ_WildcardMatch(
+            if ((UBYTE)ESQ_WildcardMatch(
                     (const char *)secondaryTitle,
                     (const char *)primaryTitle) != 0) {
                 continue;
@@ -93,7 +93,7 @@ void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void)
                     break;
                 }
 
-                if ((LONG)(ESQSHARED_JMPTBL_ESQ_TestBit1Based((void *)primaryEntry->selectionBits, selector_slot) + 1) != 0) {
+                if ((LONG)(ESQ_TestBit1Based((void *)primaryEntry->selectionBits, selector_slot) + 1) != 0) {
                     selector_slot -= 1;
                     continue;
                 }

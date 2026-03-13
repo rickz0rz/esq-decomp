@@ -38,9 +38,9 @@ function trim(s, t) {
     if (uline ~ /TEXTDISP_SECONDARYGROUPENTRYCOUNT/ || uline ~ /TEXTDISP_SECONDARYGROUPENTRYCOUN/) saw_secondary_count = 1
     if (uline ~ /BLS\.W ESQDISP_PROPAGATEPRIMARYTITLEMETADATATOSECONDARY_RETURN/ || uline ~ /BLS\.W ESQDISP_PROPAGATEPRIMARYTITLEMETADATATO[A-Z0-9_]*_RETURN/ || uline ~ /BLE\.W ___ESQDISP_PROPAGATEPRIMARYTITLEMET[A-Z0-9_]*__31/) saw_bls_return = 1
     if (uline ~ /^\.LOOP_SECONDARY_ENTRIES:/ || uline ~ /LOOP_SECONDARY_ENTRIES/ || uline ~ /BRA\.W ___ESQDISP_PROPAGATEPRIMARYTITLEMET/ && uline ~ /__6/ || uline ~ /ADDQ\.L #\$1,D7/) saw_secondary_loop_branch = 1
-    if (uline ~ /ESQSHARED_JMPTBL_ESQ_TESTBIT1BASED/ || uline ~ /ESQSHARED_JMPTBL_ESQ_TESTBIT1BASE/ || uline ~ /ESQSHARED_JMPTBL_ESQ_TESTBIT1BAS/) has_test_secondary_slot_bit = 1
+    if (uline ~ /ESQSHARED_JMPTBL_ESQ_TESTBIT1BASED/ || uline ~ /ESQSHARED_JMPTBL_ESQ_TESTBIT1BASE/ || uline ~ /ESQSHARED_JMPTBL_ESQ_TESTBIT1BAS/ || uline ~ /ESQ_TESTBIT1BASED/ || uline ~ /ESQ_TESTBIT1BASE/ || uline ~ /ESQ_TESTBIT1BAS/) has_test_secondary_slot_bit = 1
     if (uline ~ /^\.LOOP_PRIMARY_CANDIDATES:/ || uline ~ /LOOP_PRIMARY_CANDIDATES/ || uline ~ /BRA\.W ___ESQDISP_PROPAGATEPRIMARYTITLEMET/ && uline ~ /__12/ || uline ~ /ADDQ\.L #\$1,\$2C\(A7\)/) saw_primary_candidate_loop_branch = 1
-    if (uline ~ /ESQSHARED_JMPTBL_ESQ_WILDCARDMATCH/ || uline ~ /ESQSHARED_JMPTBL_ESQ_WILDCARDMATC/ || uline ~ /ESQSHARED_JMPTBL_ESQ_WILDCARDMAT/) has_wildcard_match = 1
+    if (uline ~ /ESQSHARED_JMPTBL_ESQ_WILDCARDMATCH/ || uline ~ /ESQSHARED_JMPTBL_ESQ_WILDCARDMATC/ || uline ~ /ESQSHARED_JMPTBL_ESQ_WILDCARDMAT/ || uline ~ /ESQ_WILDCARDMATCH/ || uline ~ /ESQ_WILDCARDMATC/ || uline ~ /ESQ_WILDCARDMAT/) has_wildcard_match = 1
     if (uline ~ /^\.LOOP_SLOTS_DESCENDING:/ || uline ~ /LOOP_SLOTS_DESCENDING/ || uline ~ /SUBQ\.L #\$1,D[0-7]/ || uline ~ /SUBQ\.L #\$1,\$20\(A7\)/ || uline ~ /BRA\.W ___ESQDISP_PROPAGATEPRIMARYTITLEMET/ && uline ~ /__20/) saw_slot_scan_branch = 1
     if (uline ~ /ESQPARS_REPLACEOWNEDSTRING/ || uline ~ /ESQPARS_REPLACEOWNEDSTRI/) has_replace_owned_string = 1
     if (uline ~ /ORI\.W #\$80,D3/ || uline ~ /ORI\.W #\$80,D[0-7]/) saw_title_flag_ori = 1
