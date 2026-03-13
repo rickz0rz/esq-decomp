@@ -909,6 +909,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_script3_jmptbl_math_divs32_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_math_mulu32_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_generate_grid_date_string_trial.sh"
+    "src/decomp/scripts/compare_sasc_script_copy_weather_update_for_string_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_check_path_exists_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_set_ctrl_context_mode_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_init_ctrl_context_trial.sh"
