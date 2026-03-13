@@ -6,7 +6,7 @@ cd "$ROOT_DIR"
 
 ENTRY="SIGNAL_PollAndDispatch"
 
-SASC_SRC="unknown38_signal_poll_and_dispatch.c"
+SASC_SRC="signal_poll_and_dispatch.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown38.s"

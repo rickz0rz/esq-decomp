@@ -5410,7 +5410,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown32_handle_close_all_and_return_with_code.c`
 - `src/decomp/sas_c/unknown35_handle_open_with_mode.c`
 - `src/decomp/sas_c/unknown36_finalize_and_abort_requester.c`
-- `src/decomp/sas_c/unknown38_signal_poll_and_dispatch.c`
+- `src/decomp/sas_c/signal_poll_and_dispatch.c`
 - `src/decomp/sas_c/unknown39_graphics_bltbitmaprastport.c`
 - `src/decomp/sas_c/diskio_get_filesize_from_handle.c`
 - `src/decomp/sas_c/diskio_query_volume_soft_error_count.c`
