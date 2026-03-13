@@ -17,7 +17,7 @@ enum {
     PROGRAM_ATTR_PREV_DAYS_DATA = 0x80
 };
 
-extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
+extern void FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
 
 extern const char *Global_REF_STR_CLOCK_FORMAT[];
 extern const char DISKIO_FMT_PROGRAM_INFO_PCT_LD[];
@@ -41,15 +41,15 @@ void DISKIO1_DumpProgramInfoVerbose(const UBYTE *rec, ULONG programInfoId)
 {
     ULONG i;
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_PROGRAM_INFO_PCT_LD,
         programInfoId);
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo,
         rec);
 
     if (rec == (const UBYTE *)PROGRAM_NULL) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_A);
+        FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_A);
         return;
     }
 
@@ -57,57 +57,57 @@ void DISKIO1_DumpProgramInfoVerbose(const UBYTE *rec, ULONG programInfoId)
         ULONG attr = (ULONG)rec[PROGRAM_ATTR_TABLE_OFFSET + i];
         const char *line = ((const char *const *)(rec + PROGRAM_LINE_TABLE_OFFSET))[i];
 
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX,
             i,
             Global_REF_STR_CLOCK_FORMAT[i],
             attr);
 
         if (attr == PROGRAM_ATTR_NONE) {
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_NONE_VerboseProgramAttrFlags);
         }
         if (attr & PROGRAM_ATTR_MOVIE) {
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_MOVIE_VerboseProgramAttrFlags);
         }
         if (attr & PROGRAM_ATTR_ALT_HILITE) {
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_ALTHILITE_PROG_VerboseProgramAttrFlags);
         }
         if (attr & PROGRAM_ATTR_TAG) {
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_TAG_PROG_VerboseProgramAttrFlags);
         }
         if (attr & PROGRAM_ATTR_0X10) {
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_0X10);
         }
         if (attr & PROGRAM_ATTR_0X20) {
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_0X20_VerboseProgramAttrFlags);
         }
         if (attr & PROGRAM_ATTR_0X40) {
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_0X40);
         }
         if (attr & PROGRAM_ATTR_PREV_DAYS_DATA) {
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_PREV_DAYS_DATA_VerboseProgramAttrFlags);
         }
 
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_ProgramAttrCloseAndProgPrefix);
 
         if (line != (const char *)PROGRAM_NULL) {
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_FMT_PCT_S_VerboseProgramStringLine,
                 line);
         } else {
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_NullLine);
         }
     }
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_B);
+    FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_B);
 }
