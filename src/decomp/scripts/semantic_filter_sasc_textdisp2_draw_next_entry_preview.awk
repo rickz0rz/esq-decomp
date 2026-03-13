@@ -22,7 +22,12 @@ function trim(s, t) {
 
     if (u ~ /^TEXTDISP_DRAWNEXTENTRYPREVIEW:/ || u ~ /^TEXTDISP_DRAWNEXTENTRYPRE[A-Z0-9_]*:/) has_entry = 1
     if (index(u, "MATH_DIVS32") > 0) has_div = 1
-    if (index(u, "TEXTDISP2_JMPTBL_LADFUNC_DRAWENTRYPREVIEW") > 0 || index(u, "TEXTDISP2_JMPTBL_LADFUNC_DRAWENTRYP") > 0 || index(u, "TEXTDISP2_JMPTBL_LADFUNC_DRAWENT") > 0) has_draw = 1
+    if (index(u, "TEXTDISP2_JMPTBL_LADFUNC_DRAWENTRYPREVIEW") > 0 ||
+        index(u, "TEXTDISP2_JMPTBL_LADFUNC_DRAWENTRYP") > 0 ||
+        index(u, "TEXTDISP2_JMPTBL_LADFUNC_DRAWENT") > 0 ||
+        index(u, "LADFUNC_DRAWENTRYPREVIEW") > 0 ||
+        index(u, "LADFUNC_DRAWENTRYP") > 0 ||
+        index(u, "LADFUNC_DRAWENT") > 0) has_draw = 1
     if (index(u, "LADFUNC_ENTRYCOUNT") > 0) has_counter = 1
     if (u == "RTS") has_return = 1
 }
