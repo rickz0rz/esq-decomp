@@ -5394,11 +5394,11 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown5_string_compare_nocase.c`
 - `src/decomp/sas_c/unknown5_string_copy_pad_nul.c`
 - `src/decomp/sas_c/unknown5_string_compare_nocase_n.c`
-- `src/decomp/sas_c/unknown33_string_find_substring.c`
+- `src/decomp/sas_c/string_find_substring.c`
 - `src/decomp/sas_c/dos_write_by_index.c`
 - `src/decomp/sas_c/unknown4_string_toupper_inplace.c`
 - `src/decomp/sas_c/unknown3_string_toupper_char.c`
-- `src/decomp/sas_c/unknown23_handle_get_entry_by_index.c`
+- `src/decomp/sas_c/handle_get_entry_by_index.c`
 - `src/decomp/sas_c/unknown37_handle_close_by_index.c`
 - `src/decomp/sas_c/unknown19_dos_read_with_error_state.c`
 - `src/decomp/sas_c/dos_write_with_error_state.c`
@@ -5408,8 +5408,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown21_iostdreq_cleanup_signal_and_msgport.c`
 - `src/decomp/sas_c/unknown21_dos_open_new_file_if_missing.c`
 - `src/decomp/sas_c/unknown21_dos_delete_and_recreate_file.c`
-- `src/decomp/sas_c/unknown24_parse_read_signed_long_skip_class3.c`
-- `src/decomp/sas_c/unknown24_parse_read_signed_long_skip_class3_alt.c`
+- `src/decomp/sas_c/parse_read_signed_long_skip_class3.c`
+- `src/decomp/sas_c/parse_read_signed_long_skip_class3_alt.c`
 - `src/decomp/sas_c/unknown24_memlist_alloc_free.c`
 - `src/decomp/sas_c/unknown25_struct_alloc_free.c`
 - `src/decomp/sas_c/unknown27_format_buffer2.c`
@@ -5418,7 +5418,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown30_exec_call_vector_348.c`
 - `src/decomp/sas_c/unknown31_buffer_ensure_allocated.c`
 - `src/decomp/sas_c/unknown32_handle_close_all_and_return_with_code.c`
-- `src/decomp/sas_c/unknown35_handle_open_with_mode.c`
+- `src/decomp/sas_c/handle_open_with_mode.c`
 - `src/decomp/sas_c/unknown36_finalize_and_abort_requester.c`
 - `src/decomp/sas_c/signal_poll_and_dispatch.c`
 - `src/decomp/sas_c/unknown39_graphics_bltbitmaprastport.c`
