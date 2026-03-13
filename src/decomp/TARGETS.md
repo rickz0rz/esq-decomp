@@ -152,24 +152,28 @@ Current notes:
 
 ## Target 006: `modules/submodules/unknown8.s` (`FORMAT_U32ToDecimalString`)
 
-Status: promoted (GCC gate)
+Status: promoted (GCC gate) + SAS/C lane added
 
 Why this target:
 - Small function with both helper-call and loop-heavy logic.
 - Exercises the next tier: arithmetic helper call (`MATH_DivU32`) + digit accumulation + reverse emit loop.
 
 Artifacts:
+- SAS/C restored source: `src/decomp/sas_c/unknown8_format_u32_to_decimal_string.c`
+- SAS/C compare script: `src/decomp/scripts/compare_sasc_format_u32_to_decimal_string_trial.sh`
 - GCC C candidate: `src/decomp/c/replacements/format_u32_to_decimal_string_gcc.c`
 - GCC compile/compare script: `src/decomp/scripts/compare_format_u32_decimal_trial_gcc.sh`
 - Semantic filter: `src/decomp/scripts/semantic_filter_u32dec.awk`
 - Promotion gate: `src/decomp/scripts/promote_format_u32_decimal_target_gcc.sh`
 
 Run:
+- `bash src/decomp/scripts/compare_sasc_format_u32_to_decimal_string_trial.sh`
 - `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_format_u32_decimal_trial_gcc.sh`
 - `bash src/decomp/scripts/promote_format_u32_decimal_target_gcc.sh`
 
 Current notes:
 - GCC emits a different frame/layout and copy-loop structure, but preserves the required behavior: division step, ASCII digit conversion, reverse emit loop, NUL termination, and length return path.
+- The SAS/C port already existed under the older canonical filename `unknown8_format_u32_to_decimal_string.c`; the dedicated compare script now makes that lane discoverable without guessing the source name from the symbol.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
 ## Target 007: `modules/submodules/unknown34.s` (`LIST_InitHeader`)
