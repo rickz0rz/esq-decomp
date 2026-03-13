@@ -32,7 +32,7 @@ function trim(s, t) {
     if (line ~ /DISKIO2_RECEIVETRANSFERBLOCKSTO/) has_entry = 1
 
     if (line ~ /WAITFORCLOCKCHANGEANDSERVICEUI/ || line ~ /WAITFORC/) has_wait = 1
-    if (line ~ /READSERIALRBFBYTE/ || line ~ /READSERIA/) has_read_serial = 1
+    if (line ~ /READSERIALRBFBYTE/ || line ~ /READSERIA/ || line ~ /SCRIPTREADNEXTRBFBYTE/ || line ~ /READNEXTRBFBYTE/) has_read_serial = 1
     if (line ~ /ESQIFF_PARSEATTEMPTCOUNT/) has_attempt_count = 1
     if (line ~ /TRANSFERBLOCKSEQUENCE/ || line ~ /CMP.B D0,D1/ || line ~ /CMP.B D1,D0/) has_seq_check = 1
     if (line ~ /TRANSFERXORCHECKSUMBYTE/) has_xor_update = 1

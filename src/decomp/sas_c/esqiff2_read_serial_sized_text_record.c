@@ -6,7 +6,7 @@ typedef signed long LONG;
 extern UBYTE ESQIFF_RecordChecksumByte;
 
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
-extern UBYTE ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
+extern LONG SCRIPT_ReadNextRbfByte(void);
 extern LONG ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 
 WORD ESQIFF2_ReadSerialSizedTextRecord(char *dst, LONG payload_size)
@@ -30,7 +30,7 @@ WORD ESQIFF2_ReadSerialSizedTextRecord(char *dst, LONG payload_size)
         ESQFUNC_WaitForClockChangeAndServiceUi();
         index = write_pos;
         write_pos = (WORD)(write_pos + 1);
-        dst[(UWORD)index] = (char)ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        dst[(UWORD)index] = (char)SCRIPT_ReadNextRbfByte();
         payload_read = payload_read + 1;
     }
 
@@ -56,7 +56,7 @@ WORD ESQIFF2_ReadSerialSizedTextRecord(char *dst, LONG payload_size)
         ESQFUNC_WaitForClockChangeAndServiceUi();
         index = write_pos;
         write_pos = (WORD)(write_pos + 1);
-        dst[(UWORD)index] = (char)ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        dst[(UWORD)index] = (char)SCRIPT_ReadNextRbfByte();
         payload_read = payload_read + 1;
     }
 
@@ -67,7 +67,7 @@ WORD ESQIFF2_ReadSerialSizedTextRecord(char *dst, LONG payload_size)
         dst[0] = '\0';
     } else {
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        ESQIFF_RecordChecksumByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        ESQIFF_RecordChecksumByte = (UBYTE)SCRIPT_ReadNextRbfByte();
     }
 
     return write_pos;

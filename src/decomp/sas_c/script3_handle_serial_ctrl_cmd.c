@@ -26,7 +26,7 @@ extern WORD SCRIPT_CtrlCmdLengthErrorCount;
 extern WORD SCRIPT_RuntimeMode;
 
 extern LONG PARSEINI_CheckCtrlHChange(void);
-extern LONG SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte(void);
+extern LONG ESQ_CaptureCtrlBit4StreamBufferByte(void);
 extern LONG SCRIPT_HandleBrushCommand(char *ctx, char *cmd, LONG cmdLen);
 extern void SCRIPT_ApplyPendingBannerTarget(void);
 extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
@@ -70,7 +70,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
         Global_RefreshTickCounter = 0;
     }
 
-    inputByte = (UBYTE)SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte();
+    inputByte = (UBYTE)ESQ_CaptureCtrlBit4StreamBufferByte();
     state = SCRIPT_CTRL_STATE;
 
     if (state == 0) {

@@ -33,7 +33,7 @@ function trim(s, t) {
     if (u ~ /^LINK\.W A5,#-4$/ || u ~ /^LINK\.W A[0-7],#-[0-9]+$/ || u ~ /^LINK\.W A[0-7],#-\$[0-9A-F]+$/) has_frame = 1
     if (index(u, "__BASE(A4)") > 0 || index(u, "_XCOVF") > 0) has_stack_guard = 1
     if (u ~ /^TST\.L D7$/ || u ~ /^CMPI\.L #\$2328,D7$/ || u ~ /^CMPI\.L #9000,D7$/) has_size_guard = 1
-    if (index(u, "MOVE.B D0,0(A3,D1.L)") > 0 || index(u, "MOVE.B D0,$0(A5,D1.W)") > 0 || index(u, "ADDQ.W #1,D4") > 0 || index(u, "ADDQ.W #$1,D5") > 0 || index(u, "ADDQ.L #1,D6") > 0) has_initial_loop = 1
+    if (index(u, "MOVE.B D0,0(A3,D1.L)") > 0 || index(u, "MOVE.B D0,$0(A5,D1.W)") > 0 || index(u, "ADDQ.W #1,D4") > 0 || index(u, "ADDQ.W #$1,D5") > 0 || index(u, "ADDQ.L #1,D6") > 0 || index(u, "SCRIPT_READNEXTRBFBYTE") > 0 || index(u, "READNEXTRBFBYTE") > 0) has_initial_loop = 1
     if (index(u, "PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 || index(u, "READSIGNEDLONGSKIPCLASS3") > 0 || index(u, "PARSE_READSIGNEDL") > 0) has_trailer_parse = 1
     if (index(u, "TST.B -1(A3,D0.L)") > 0 || index(u, "TST.B $FFFFFFFF(A5,D0.L)") > 0 || index(u, "CMP.L D5,D6") > 0 || index(u, "CMP.L D4,D0") > 0 || index(u, "CMP.L D6,D4") > 0 || index(u, "CMPI.W #$2328,D4") > 0 || index(u, "CMPI.W #$2328,D5") > 0 || index(u, "CMPI.W #$2328,D0") > 0 || index(u, "CMPI.W #9000,D4") > 0) has_trailer_loop = 1
     if (index(u, "CLR.B (A3)") > 0 || index(u, "CLR.B (A5)") > 0 || index(u, "MOVEQ.L #$0,D4") > 0 || index(u, "MOVEQ #0,D4") > 0 || index(u, "MOVEQ.L #$0,D5") > 0 || index(u, "MOVEQ #0,D5") > 0) has_fail_path = 1

@@ -2,7 +2,7 @@ typedef unsigned char UBYTE;
 typedef unsigned short UWORD;
 
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
-extern UBYTE ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
+extern signed long SCRIPT_ReadNextRbfByte(void);
 
 UBYTE *ESQIFF2_ReadRbfBytesToBuffer(UBYTE *dst, UWORD count)
 {
@@ -12,7 +12,7 @@ UBYTE *ESQIFF2_ReadRbfBytesToBuffer(UBYTE *dst, UWORD count)
         UBYTE *slot = dst;
         dst++;
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        *slot = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        *slot = (UBYTE)SCRIPT_ReadNextRbfByte();
         ++i;
     }
 
