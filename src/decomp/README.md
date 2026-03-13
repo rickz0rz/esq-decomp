@@ -4589,8 +4589,8 @@ Recent promoted targets:
 - Unknown21 `DOS_DeleteAndRecreateFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_delete_and_recreate_file_trial.sh`
 - Unknown24 `PARSE_ReadSignedLongSkipClass3` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_skip_class3_trial.sh`
 - Unknown24 `PARSE_ReadSignedLongSkipClass3_Alt` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_skip_class3_alt_trial.sh`
-- Unknown24 `MEMLIST_FreeAll` SAS/C compare script: `src/decomp/scripts/compare_sasc_memlist_free_all_trial.sh`
-- Unknown24 `MEMLIST_AllocTracked` SAS/C compare script: `src/decomp/scripts/compare_sasc_memlist_alloc_tracked_trial.sh`
+- Unknown24 `MEMLIST_FreeAll` SAS/C compare script: `src/decomp/scripts/compare_sasc_memlist_free_all_trial.sh` (`src/decomp/sas_c/memlist_alloc_free.c`)
+- Unknown24 `MEMLIST_AllocTracked` SAS/C compare script: `src/decomp/scripts/compare_sasc_memlist_alloc_tracked_trial.sh` (`src/decomp/sas_c/memlist_alloc_free.c`)
 - Unknown25 `STRUCT_FreeWithSizeField` SAS/C compare script: `src/decomp/scripts/compare_sasc_struct_free_with_size_field_trial.sh`
 - Unknown25 `STRUCT_AllocWithOwner` SAS/C compare script: `src/decomp/scripts/compare_sasc_struct_alloc_with_owner_trial.sh`
 - Unknown27 `FORMAT_Buffer2WriteChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_buffer2_write_char_trial.sh`
@@ -5416,7 +5416,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown21_dos_delete_and_recreate_file.c`
 - `src/decomp/sas_c/parse_read_signed_long_skip_class3.c`
 - `src/decomp/sas_c/parse_read_signed_long_skip_class3_alt.c`
-- `src/decomp/sas_c/unknown24_memlist_alloc_free.c`
+- `src/decomp/sas_c/memlist_alloc_free.c`
 - `src/decomp/sas_c/unknown25_struct_alloc_free.c`
 - `src/decomp/sas_c/unknown27_format_buffer2.c`
 - `src/decomp/sas_c/unknown2a_format_raw_dofmt_with_scratch_buffer.c`
