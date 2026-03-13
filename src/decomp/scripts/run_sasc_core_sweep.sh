@@ -156,6 +156,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esq_shutdown_and_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_return_with_stack_code_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_main_entry_noop_hook_trial.sh"
+    "src/decomp/scripts/compare_sasc_esq_main_init_and_run_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_main_exit_noop_hook_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_wildcard_match_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_generate_xor_checksum_byte_trial.sh"
