@@ -34,8 +34,8 @@ function trim(s, t) {
     if (n ~ /TEXTDISPSECONDARYGROUPENTRYCOUN/) has_secondary_count=1
     if (n ~ /TEXTDISPPRIMARYGROUPPRESENTFLAG/) has_primary_present=1
     if (n ~ /TEXTDISPSECONDARYGROUPPRESENTFL/) has_secondary_present=1
-    if ((u ~ /^(JSR|BSR|JMP)(\.[A-Z])?[ \t]/) && n ~ /NEWGRID2JMPTBLESQDISPGETENTRY/) get_entry_calls++
-    if ((u ~ /^(JSR|BSR|JMP)(\.[A-Z])?[ \t]/) && n ~ /NEWGRID2JMPTBLESQDISPGETENTRY/) get_aux_calls++
+    if ((u ~ /^(JSR|BSR|JMP)(\.[A-Z])?[ \t]/) && (n ~ /NEWGRID2JMPTBLESQDISPGETENTRY/ || n ~ /ESQDISPGETENTRYPOINTERBYMODE/)) get_entry_calls++
+    if ((u ~ /^(JSR|BSR|JMP)(\.[A-Z])?[ \t]/) && (n ~ /NEWGRID2JMPTBLESQDISPGETENTRY/ || n ~ /ESQDISPGETENTRYAUXPOINTERBYMODE/)) get_aux_calls++
     if (n ~ /NEWGRIDTESTENTRYSELECTABLE/) has_test_selectable=1
     if (u ~ /BCLR #\$?5,/ || u ~ /AND\.B .*#\$DF/) has_clear_bit5=1
     if (u ~ /NOT\.B D[0-7]/) has_not_mask=1

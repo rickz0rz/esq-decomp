@@ -13,8 +13,8 @@ extern const NEWGRID_Entry *TEXTDISP_SecondaryEntryPtrTable[];
 extern LONG *NEWGRID_SecondaryIndexCachePtr;
 extern LONG CLOCK_DaySlotIndex;
 
-extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern WORD NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(LONG *clockSlotPtr);
 extern LONG NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(const char *pattern);
 
@@ -37,8 +37,8 @@ WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LO
         normalizeFlag = 1;
     }
 
-    entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(keyIndex, 1);
-    aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(keyIndex, 1);
+    entry = (const NEWGRID_Entry *)ESQDISP_GetEntryPointerByMode(keyIndex, 1);
+    aux = ESQDISP_GetEntryAuxPointerByMode(keyIndex, 1);
     if (entry == 0 || aux == 0) {
         *entryOut = (char *)entry;
         *auxOut = (char *)aux;
@@ -81,8 +81,8 @@ WORD NEWGRID_UpdatePresetEntry(char **entryOut, char **auxOut, WORD rowIndex, LO
             cacheIndex = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
         }
 
-        entry = (const NEWGRID_Entry *)NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(cacheIndex, 2);
-        aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(cacheIndex, 2);
+        entry = (const NEWGRID_Entry *)ESQDISP_GetEntryPointerByMode(cacheIndex, 2);
+        aux = ESQDISP_GetEntryAuxPointerByMode(cacheIndex, 2);
     }
 
     *entryOut = (char *)entry;

@@ -34,7 +34,7 @@ function trim(s, t) {
     if (n ~ /TEXTDISPSECONDARYGROUPENTRYCOUN/) has_secondary_count=1
     if (n ~ /TEXTDISPPRIMARYGROUPPRESENTFLAG/) has_primary_present=1
     if (n ~ /TEXTDISPSECONDARYGROUPPRESENTFL/) has_secondary_present=1
-    if ((u ~ /^(JSR|BSR|JMP)(\.[A-Z])?[ \t]/) && n ~ /NEWGRID2JMPTBLESQDISPGETENTRY/) {
+    if ((u ~ /^(JSR|BSR|JMP)(\.[A-Z])?[ \t]/) && (n ~ /NEWGRID2JMPTBLESQDISPGETENTRY/ || n ~ /ESQDISPGETENTRYPOINTERBYMODE/ || n ~ /ESQDISPGETENTRYAUXPOINTERBYMODE/)) {
         get_entry_calls++
         get_aux_calls++
     }

@@ -13,8 +13,8 @@ extern UWORD TEXTDISP_SecondaryGroupEntryCount;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
 
-extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern LONG NEWGRID_TestEntrySelectable(const void *entry, const void *aux, LONG selectionCode);
 
 void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
@@ -37,8 +37,8 @@ void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
             if (TEXTDISP_PrimaryGroupPresentFlag == FLAG_FALSE) {
                 break;
             }
-            entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
-            aux = (const NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
+            entry = ESQDISP_GetEntryPointerByMode(i, MODE_PRIMARY);
+            aux = (const NEWGRID_AuxData *)ESQDISP_GetEntryAuxPointerByMode(i, MODE_PRIMARY);
             if (NEWGRID_TestEntrySelectable(entry, aux, selectionCode) != 0) {
                 auxWrite = (NEWGRID_AuxData *)aux;
                 for (j = SLOT_FIRST; j < SLOT_LIMIT; ++j) {
@@ -54,8 +54,8 @@ void NEWGRID_ClearMarkersIfSelectable(LONG selectionCode, WORD modeSel)
         if (TEXTDISP_SecondaryGroupPresentFlag == FLAG_FALSE) {
             break;
         }
-        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
-        aux = (const NEWGRID_AuxData *)NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
+        entry = ESQDISP_GetEntryPointerByMode(i, MODE_SECONDARY);
+        aux = (const NEWGRID_AuxData *)ESQDISP_GetEntryAuxPointerByMode(i, MODE_SECONDARY);
         if (NEWGRID_TestEntrySelectable(entry, aux, selectionCode) != 0) {
             auxWrite = (NEWGRID_AuxData *)aux;
             for (j = SLOT_FIRST; j < SLOT_LIMIT; ++j) {

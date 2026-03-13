@@ -1,8 +1,8 @@
 typedef signed long LONG;
 typedef signed short WORD;
 
-extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
-extern const char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
+extern const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern LONG NEWGRID_GetEntryStateCode(const void *entryPtr, const void *entryAuxPtr, WORD selector);
 
 LONG NEWGRID_TestEntryState(LONG mode, LONG primaryIndex, LONG secondaryIndex, WORD selector)
@@ -13,15 +13,15 @@ LONG NEWGRID_TestEntryState(LONG mode, LONG primaryIndex, LONG secondaryIndex, W
     LONG result = 0;
 
     if (selector > 48 || selector == 1) {
-        entryPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(secondaryIndex, 2);
-        entryAuxPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(secondaryIndex, 2);
+        entryPtr = ESQDISP_GetEntryPointerByMode(secondaryIndex, 2);
+        entryAuxPtr = ESQDISP_GetEntryAuxPointerByMode(secondaryIndex, 2);
 
         while (selector > 48) {
             selector -= 48;
         }
     } else {
-        entryPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(primaryIndex, 1);
-        entryAuxPtr = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(primaryIndex, 1);
+        entryPtr = ESQDISP_GetEntryPointerByMode(primaryIndex, 1);
+        entryAuxPtr = ESQDISP_GetEntryAuxPointerByMode(primaryIndex, 1);
     }
 
     state = NEWGRID_GetEntryStateCode(entryPtr, entryAuxPtr, selector);
