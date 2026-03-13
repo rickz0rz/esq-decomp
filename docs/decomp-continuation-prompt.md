@@ -12,9 +12,16 @@ Important current state:
 - Before writing code, inspect whether the target already exists in `src/decomp/sas_c` and whether it already has a `.dis`.
 - Many checked `compare_sasc_*` lanes now have empty semantic diffs even when their raw asm diffs are still noisy from SAS/C scaffolding. Use the semantic diff, not the raw diff size, to decide whether a lane still needs tightening.
 - Current triage note (March 13, 2026): `src/decomp/scripts/list_missing_sasc_non_jmptbl_exports.py` currently prints no rows in this checkout, so do not assume a non-`JMPTBL` GCC trial is still missing from `src/decomp/sas_c` without checking first.
+- Current maintained-sweep note (validated locally on March 13, 2026 in this checkout): the SAS/C lane is not fully green right now. The maintained `run_sasc_core_sweep.sh` set currently has non-empty semantic diffs for:
+  - `string_append_at_null`
+  - `newgrid_init_grid_resources`
+  - `cleanup_build_and_render_aligned_status_banner`
+  - `cleanup_render_aligned_status_screen`
+- Current maintained-sweep note (validated locally on March 13, 2026 in this checkout): there is also at least one compare-lane build failure in the maintained set. `compare_sasc_diskio1_dump_default_coi_info_block_trial.sh` currently fails because `src/decomp/sas_c/diskio1_dump_default_coi_info_block.c` does not compile cleanly under SAS/C (see the generated `sc_build_*.log` in `build/decomp/sasc_trial/`).
 - Remaining work often means either:
   1. tightening an existing SAS/C file to better match the original assembly/disassembly, or
   2. creating a new `src/decomp/sas_c/*.c` file for a target that currently exists only as a GCC trial in `src/decomp/c/replacements`.
+- The broader build-integration project is still ahead of the function-level decomp work. `decomp-build.sh` is still a hybrid assembly build driven by `src/decomp/replacements.map`, not a full pure-SAS/C executable pipeline.
 - Treat `*JMPTBL*` exports as likely compiler artifacts unless there is evidence they need separate handling.
 - For now, avoid jump-table recreation work. Prefer direct calls to the real target from restored C unless a wrapper is strictly required for build glue or an existing validation lane.
 - Keep `_main` work in scope. The `_main` wrappers/stubs have some coverage already; prefer spending time on behavior-heavy `_main` routines and tightening existing non-`JMPTBL` ports.
@@ -22,14 +29,23 @@ Important current state:
 How to work:
 1. Read `AGENTS.md`, `README.md`, and `src/decomp/README.md` first.
 2. Inspect the repo before making assumptions.
-3. Prefer a bounded non-`JMPTBL` target with an existing compare script under `src/decomp/scripts/`.
+3. Before starting any new target, restore the maintained SAS/C baseline first:
+   - clear the currently known semantic mismatches (`string_append_at_null`, `newgrid_init_grid_resources`, `cleanup_build_and_render_aligned_status_banner`, `cleanup_render_aligned_status_screen`)
+   - fix maintained-lane compile failures such as `diskio1_dump_default_coi_info_block.c`
 4. If a SAS/C file already exists, build it with `./sc-build-with-dis.sh <file>.c` and run its `compare_sasc_*` script or `run_sasc_core_sweep.sh --filter <substring>` before assuming it still needs code changes.
-5. If only a GCC candidate exists, use `src/decomp/c/replacements/*_gcc.c` plus its compare script as the starting behavioral reference, but land the work in `src/decomp/sas_c` when appropriate.
-6. When a restored C file currently calls a jump-table wrapper and the underlying target already exists and is callable, prefer simplifying it to a direct call.
-7. Preserve “mostly equivalent” behavior: avoid cleanup or optimization unless required for equivalence.
-8. Update any relevant documentation when you discover or clarify workflow/state.
-9. After edits, run the narrowest useful validation first, then broader verification if applicable.
+5. After local target fixes, rerun the maintained sweep. Treat `run_sasc_core_sweep.sh --strict` with zero compare-script failures and zero non-empty semantic diffs as the required baseline before broader reruns.
+6. Only after the maintained sweep is green again should you spend time on the broader/full `compare_sasc_*` population or on fresh GCC-to-SAS/C ports.
+7. If only a GCC candidate exists, use `src/decomp/c/replacements/*_gcc.c` plus its compare script as the starting behavioral reference, but land the work in `src/decomp/sas_c` when appropriate.
+8. When a restored C file currently calls a jump-table wrapper and the underlying target already exists and is callable, prefer simplifying it to a direct call.
+9. Preserve “mostly equivalent” behavior: avoid cleanup or optimization unless required for equivalence.
+10. Update any relevant documentation when you discover or clarify workflow/state, especially when local validation disproves older March 13, 2026 notes.
+11. After the maintained SAS/C lane is green, shift priority from isolated function ports to build integration:
+   - consolidate restored SAS/C functions into replacement-ready module/object boundaries
+   - expand hybrid replacement coverage module by module
+   - keep `decomp-build.sh` hash-stable while replacement coverage grows
+   - only then plan a true whole-program SAS/C build/link path
 
 Execution preference:
-- Do not stop at planning. Pick the next concrete decomp target, implement it, run the local validation workflow, and summarize what changed and what remains.
-- Prefer continuing from existing in-progress areas before starting new broad sweeps, especially `_main` behavior code and existing SAS/C files that already compile but still need tightening.
+- Do not stop at planning. Start with the current maintained-sweep blocker set unless the user explicitly redirects you.
+- Prefer restoring the maintained SAS/C baseline before starting new broad sweeps or new target families.
+- Once the maintained sweep is green, prefer work that increases module-level replacement/build coverage over adding more isolated wrapper ports.

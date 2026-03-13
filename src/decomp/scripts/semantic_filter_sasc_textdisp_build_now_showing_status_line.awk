@@ -36,7 +36,7 @@ function trim(s, t) {
     if (index(u, "TEXTDISP_FINDCONTROLTOKEN") > 0 || index(u, "TEXTDISP_FINDCONTRO") > 0) has_find_token = 1
     if (index(u, "WDISP_SPRINTF") > 0 || index(u, "WDISP_SPRI") > 0) has_sprintf = 1
     if (index(u, "STRING_APPENDATNULL") > 0) has_append = 1
-    if (index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALIGNEDSTATUSLINE") > 0 || index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALI") > 0) has_build_aligned = 1
+    if (index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALIGNEDSTATUSLINE") > 0 || index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALI") > 0 || index(u, "CLEANUP_BUILDALIGNEDSTATUSLINE") > 0) has_build_aligned = 1
     if (index(u, "SCRIPT_SETUPHIGHLIGHTEFFECT") > 0 || index(u, "SCRIPT_SETUPHIGHLIGHTEF") > 0) has_highlight = 1
     if (u == "RTS") has_return = 1
 }

@@ -30,7 +30,7 @@ function trim(s, t) {
     if (index(u, "TLIBA1_JMPTBL_COI_TESTENTRYWITHINTIMEWINDOW") > 0 || index(u, "TLIBA1_JMPTBL_COI_TESTENTRYWITHIN") > 0 || index(u, "TLIBA1_JMPTBL_COI_TESTENTRYWITHI") > 0) has_window_test = 1
     if (index(u, "TLIBA1_JMPTBL_COI_GETANIMFIELDPOINTERBYMODE") > 0 || index(u, "TLIBA1_JMPTBL_COI_GETANIMFIELDPOI") > 0 || index(u, "TLIBA1_JMPTBL_COI_GETANIMFIELDPO") > 0) has_get_anim = 1
     if (index(u, "STRING_APPENDATNULL") > 0) has_append = 1
-    if (index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALIGNEDSTATUSLINE") > 0 || index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALIG") > 0 || index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALI") > 0) has_build_aligned = 1
+    if (index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALIGNEDSTATUSLINE") > 0 || index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALIG") > 0 || index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALI") > 0 || index(u, "CLEANUP_BUILDALIGNEDSTATUSLINE") > 0) has_build_aligned = 1
     if (index(u, "SCRIPT_SETUPHIGHLIGHTEFFECT") > 0 || index(u, "SCRIPT_SETUPHIGHLIGHTEF") > 0) has_highlight = 1
     if (u == "RTS") has_return = 1
 }

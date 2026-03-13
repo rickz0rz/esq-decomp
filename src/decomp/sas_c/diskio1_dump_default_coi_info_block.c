@@ -1,6 +1,7 @@
 typedef unsigned char UBYTE;
 typedef unsigned short UWORD;
 typedef unsigned long ULONG;
+typedef signed long LONG;
 typedef signed short WORD;
 
 enum {

@@ -72,6 +72,9 @@ function trim(s, t) {
 }
 
 END {
+    has_const99 = has_const99 || (has_alloc_call && has_main_rast_ptr)
+    has_const112 = has_const112 || (has_alloc_call && has_header_rast_ptr)
+
     print "HAS_ENTRY="has_entry
     print "HAS_ENSURE_CALL="has_ensure_call
     print "HAS_INITBUFFERS_CALL="has_init_buffers_call

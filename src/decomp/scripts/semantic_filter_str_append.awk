@@ -30,7 +30,7 @@ function trim(s,    t) {
         has_backstep_or_equiv = 1
     }
 
-    if (u ~ /^MOVE\.B \(A1\)\+,\(A0\)\+$/ || u ~ /^MOVE\.B \(A[0-7]\)\+,\(A[0-7]\)\+$/ || u ~ /^MOVE\.B \(A[0-7]\)\+,\(A[0-7]\)$/) has_copy_loop = 1
+    if (u ~ /^MOVE\.B \(A1\)\+,\(A0\)\+$/ || u ~ /^MOVE\.B \(A[0-7]\)\+,\(A[0-7]\)\+$/ || u ~ /^MOVE\.B \(A[0-7]\)\+,\(A[0-7]\)$/ || u ~ /^MOVE\.B \(A[0-7]\),\(A[0-7]\)\+$/ || u ~ /^MOVE\.B \(A[0-7]\)\+,D[0-7]$/) has_copy_loop = 1
     if (u ~ /^TST\.B -1\(A0\)$/ || u ~ /^CMP\.B #0,-1\(A0\)$/ || u ~ /^TST\.B -1\(A[0-7]\)$/) has_copy_loop = 1
 
     if (u == "RTS") has_rts = 1
