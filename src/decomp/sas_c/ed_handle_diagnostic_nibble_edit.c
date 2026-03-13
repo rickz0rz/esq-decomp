@@ -12,7 +12,7 @@ extern UBYTE GCOMMAND_PresetFallbackValue1[];
 extern UBYTE GCOMMAND_PresetFallbackValue2[];
 
 extern void ED_DrawESCMenuBottomHelp(void);
-extern void ED1_JMPTBL_ESQSHARED4_LoadDefaultPaletteToCopper_NoOp(void);
+extern void ESQSHARED4_LoadDefaultPaletteToCopper_NoOp(void);
 extern void ED_DrawDiagnosticRegisterValues(void);
 
 static void ED_IncNibble(UBYTE *base)
@@ -106,7 +106,7 @@ void ED_HandleDiagnosticNibbleEdit(void)
     }
 
     if (ED_TempCopyOffset >= 0 && ED_TempCopyOffset < 40) {
-        ED1_JMPTBL_ESQSHARED4_LoadDefaultPaletteToCopper_NoOp();
+        ESQSHARED4_LoadDefaultPaletteToCopper_NoOp();
     }
 
     ED_DrawDiagnosticRegisterValues();

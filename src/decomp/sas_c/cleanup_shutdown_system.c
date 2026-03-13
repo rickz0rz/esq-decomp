@@ -49,7 +49,7 @@ void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *
 void CLEANUP_ShutdownInputDevices(void);
 void CLEANUP_ReleaseDisplayResources(void);
 void GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries(void);
-void GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers(void);
+void ESQPARS_ClearAliasStringPointers(void);
 char *GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(UWORD mode);
 void GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData(void);
 void GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(UWORD group);
@@ -87,7 +87,7 @@ void CLEANUP_ShutdownSystem(void)
     CLEANUP_ReleaseDisplayResources();
 
     GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries();
-    GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers();
+    ESQPARS_ClearAliasStringPointers();
     GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(CLEANUP_LINEHEAD_MODE_PRIMARY);
     GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(CLEANUP_LINEHEAD_MODE_SECONDARY);
     GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData();
