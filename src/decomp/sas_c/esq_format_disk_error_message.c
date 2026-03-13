@@ -8,7 +8,7 @@ extern const char Global_STR_DISK_IS_FULL_FORMATTED[];
 
 extern LONG DISKIO_QueryVolumeSoftErrorCount(void *scratch);
 extern LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(void *scratch);
-extern LONG GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, LONG a);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG a);
 
 LONG ESQ_FormatDiskErrorMessage(void)
 {
@@ -17,7 +17,7 @@ LONG ESQ_FormatDiskErrorMessage(void)
     softErrors = DISKIO_QueryVolumeSoftErrorCount(COMMON_QueryDiskSoftErrorCountScratch);
 
     if (softErrors > 0) {
-        GROUP_AE_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             DISKIO_ErrorMessageScratch,
             Global_STR_DISK_ERRORS_FORMATTED,
             softErrors
@@ -26,7 +26,7 @@ LONG ESQ_FormatDiskErrorMessage(void)
         LONG pct;
 
         pct = DISKIO_QueryDiskUsagePercentAndSetBufferSize(COMMON_QueryDiskUsagePercentScratch);
-        GROUP_AE_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             DISKIO_ErrorMessageScratch,
             Global_STR_DISK_IS_FULL_FORMATTED,
             pct

@@ -29,7 +29,7 @@ function t(s, x) {
 
     if (l ~ /DISKIO_QUERYVOLUMESOFTERRORCOUNT/) has_query_soft = 1
     if (l ~ /DISKIO_QUERYDISKUSAGEPERCENTANDSETBUFFERSIZE/ || l ~ /DISKIO_QUERYDISKUSAGEPERCENTANDS/) has_query_pct = 1
-    if (l ~ /GROUP_AE_JMPTBL_WDISP_SPRINTF/) has_sprintf = 1
+    if (l ~ /GROUP_AE_JMPTBL_WDISP_SPRINTF/ || l ~ /WDISP_SPRINTF/) has_sprintf = 1
 
     if (l ~ /^TST\.L D[0-7]$/ || l ~ /^CMP\.L #\$?0,D[0-7]$/ || l ~ /^BLE(\.[A-Z]+)? / || l ~ /^BGT(\.[A-Z]+)? /) has_positive_branch = 1
 
