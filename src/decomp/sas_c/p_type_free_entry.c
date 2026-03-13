@@ -15,6 +15,7 @@ extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(const char *tagName, LONG line
 void P_TYPE_FreeEntry(UBYTE *entry)
 {
     P_TYPE_Entry *entryView;
+    UBYTE *payload;
 
     if (!entry) {
         return;
@@ -22,11 +23,12 @@ void P_TYPE_FreeEntry(UBYTE *entry)
 
     entryView = (P_TYPE_Entry *)entry;
 
-    if (entryView->payload) {
+    if (*(LONG *)(entry + 6) != 0) {
+        payload = entryView->payload;
         SCRIPT_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_P_TYPE_C_4,
             92,
-            entryView->payload,
+            payload,
             entryView->payloadLength);
     }
 
