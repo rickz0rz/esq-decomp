@@ -23,17 +23,17 @@ extern WORD CTASKS_CloseTaskCompletionFlag;
 extern WORD Global_UIBusyFlag;
 extern WORD ESQPARS2_ReadModeFlags;
 
-extern void GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(void);
+extern void ESQFUNC_ServiceUiTickIfRunning(void);
 extern LONG _LVOWrite(void *dosBase, LONG fileHandle, const void *buffer, LONG length);
 extern LONG _LVODelay(void *dosBase, LONG ticks);
 extern void CTASKS_StartCloseTaskProcess(LONG fileHandle);
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, ULONG size);
+extern void MEMORY_DeallocateMemory(void *ptr, ULONG size);
 
 LONG DISKIO_CloseBufferedFileAndFlush(LONG fileHandle)
 {
     LONG openCountBeforeClose;
 
-    GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+    ESQFUNC_ServiceUiTickIfRunning();
 
     if (fileHandle != 0) {
         LONG bytesPending;
@@ -48,21 +48,19 @@ LONG DISKIO_CloseBufferedFileAndFlush(LONG fileHandle)
                 bytesPending);
         }
 
-        GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+        ESQFUNC_ServiceUiTickIfRunning();
         CTASKS_StartCloseTaskProcess(fileHandle);
 
         while (CTASKS_CloseTaskCompletionFlag == 0) {
-            GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+            ESQFUNC_ServiceUiTickIfRunning();
             _LVODelay(Global_REF_DOS_LIBRARY_2, 5);
-            GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+            ESQFUNC_ServiceUiTickIfRunning();
         }
 
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
-            Global_STR_DISKIO_C_2,
-            353,
+        MEMORY_DeallocateMemory(
             DISKIO_BufferControl.BufferBase,
             (ULONG)DISKIO_BufferState.BufferSize);
-        GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+        ESQFUNC_ServiceUiTickIfRunning();
     }
 
     openCountBeforeClose = DISKIO_OpenCount;
