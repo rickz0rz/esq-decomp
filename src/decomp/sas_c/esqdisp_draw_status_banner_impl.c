@@ -41,14 +41,14 @@ extern LONG TLIBA1_StatusBannerPropagateGuard;
 extern StatusDayEntry WDISP_StatusDayEntry0[];
 
 extern void _LVOSetAPen(void *graphicsBase, void *rastPort, LONG pen);
-extern ULONG ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex(void *timePtr);
-extern void ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange(LONG currentChar,
-                                                    LONG startBandChar,
-                                                    LONG endBandChar);
-extern void ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(void);
+extern ULONG ESQ_GetHalfHourSlotIndex(void *timePtr);
+extern void ESQ_ClampBannerCharRange(LONG currentChar,
+                                     LONG startBandChar,
+                                     LONG endBandChar);
+extern void LADFUNC_UpdateHighlightState(void);
 extern void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void);
-extern void ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void);
-extern void ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList(void);
+extern void LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void);
+extern void P_TYPE_EnsureSecondaryList(void);
 
 void ESQDISP_DrawStatusBanner_Impl(WORD highlightFlag);
 
@@ -65,18 +65,18 @@ void ESQDISP_DrawStatusBanner_Impl(WORD highlightFlag)
 
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
 
-    slotIndex = (LONG)ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex);
+    slotIndex = (LONG)ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex);
     CLOCK_HalfHourSlotIndex = (WORD)slotIndex;
 
     if (ESQDISP_StatusBannerClampGateFlag != 0) {
-        ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange(
+        ESQ_ClampBannerCharRange(
             slotIndex,
             (LONG)ESQ_STR_B,
             (LONG)ESQ_STR_E
         );
     }
 
-    ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState();
+    LADFUNC_UpdateHighlightState();
 
     if (highlightFlag != 0) {
         BANNER_ResetPendingFlag = 1;
@@ -158,8 +158,8 @@ void ESQDISP_DrawStatusBanner_Impl(WORD highlightFlag)
     if (CLOCK_HalfHourSlotIndex >= 45 &&
         ESQDISP_SecondaryPropagationDoneFlag == 0) {
         ESQDISP_PropagatePrimaryTitleMetadataToSecondary();
-        ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup();
-        ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList();
+        LOCAVAIL_SyncSecondaryFilterForCurrentGroup();
+        P_TYPE_EnsureSecondaryList();
         ESQDISP_SecondaryPropagationDoneFlag = 1;
     }
 }

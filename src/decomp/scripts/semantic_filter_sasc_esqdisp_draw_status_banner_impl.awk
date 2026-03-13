@@ -35,9 +35,9 @@ function trim(s, t) {
 
     if (uline ~ /^ESQDISP_DRAWSTATUSBANNER_IMP/) has_entry = 1
     if (uline ~ /_LVOSETAPEN/) has_setapen = 1
-    if (uline ~ /ESQFUNC_JMPTBL_ESQ_GETHALFHOUR/) has_halfhour = 1
-    if (uline ~ /ESQFUNC_JMPTBL_ESQ_CLAMPBANNERCH/) has_clamp = 1
-    if (uline ~ /ESQFUNC_JMPTBL_LADFUNC_UPDATEHIG/) has_highlight = 1
+    if (uline ~ /ESQFUNC_JMPTBL_ESQ_GETHALFHOUR/ || uline ~ /ESQ_GETHALFHOUR/) has_halfhour = 1
+    if (uline ~ /ESQFUNC_JMPTBL_ESQ_CLAMPBANNERCH/ || uline ~ /ESQ_CLAMPBANNERCH/) has_clamp = 1
+    if (uline ~ /ESQFUNC_JMPTBL_LADFUNC_UPDATEHIG/ || uline ~ /LADFUNC_UPDATEHIG/) has_highlight = 1
     if (uline ~ /BANNER_RESETPENDINGFLAG/) has_banner_reset = 1
     if (uline ~ /TEXTDISP_PRIMARYGROUPCODE/) has_primary_code = 1
     if (uline ~ /TEXTDISP_SECONDARYGROUPCODE/) has_secondary_code = 1
@@ -50,8 +50,8 @@ function trim(s, t) {
     if (uline ~ /TLIBA1_STATUSBANNERPROPAGATEGUAR/) has_propagate_guard = 1
     if (uline ~ /ESQDISP_SECONDARYPERSISTREQUESTF/) has_persist_request = 1
     if (uline ~ /ESQDISP_PROPAGATEPRIMARYTITLEMET/) has_propagate_meta = 1
-    if (uline ~ /ESQFUNC_JMPTBL_LOCAVAIL_SYNCSECO/) has_sync_filter = 1
-    if (uline ~ /ESQFUNC_JMPTBL_P_TYPE_ENSURESECO/) has_ensure_secondary = 1
+    if (uline ~ /ESQFUNC_JMPTBL_LOCAVAIL_SYNCSECO/ || uline ~ /LOCAVAIL_SYNCSECO/) has_sync_filter = 1
+    if (uline ~ /ESQFUNC_JMPTBL_P_TYPE_ENSURESECO/ || uline ~ /P_TYPE_ENSURESECO/) has_ensure_secondary = 1
     if (uline ~ /^RTS$/) has_return = 1
 }
 
