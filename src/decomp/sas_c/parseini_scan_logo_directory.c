@@ -12,11 +12,11 @@ extern const char Global_STR_PARSEINI_C_4[];
 extern const char Global_STR_PARSEINI_C_5[];
 
 extern LONG _LVOExecute(const char *cmd, LONG input, LONG output);
-extern LONG PARSEINI_JMPTBL_HANDLE_OpenWithMode(const char *path, const char *modeStr);
-extern LONG PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(char *dst, LONG maxLen, LONG handle);
-extern char *PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(const char *path);
+extern void *HANDLE_OpenWithMode(const char *path, const char *modeStr, char *unused);
+extern char *STREAM_ReadLineWithLimit(char *dst, LONG maxLen, void *handle);
+extern char *GCOMMAND_FindPathSeparator(const char *path);
 extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
-extern void PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(LONG handle);
+extern LONG UNKNOWN36_FinalizeRequest(void *req);
 
 static LONG PARSEINI_StrLen(const char *s)
 {
@@ -49,12 +49,12 @@ void PARSEINI_ScanLogoDirectory(void)
 
     _LVOExecute(Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, 0, 0);
 
-    primaryHandle = PARSEINI_JMPTBL_HANDLE_OpenWithMode(PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST, PARSEINI_STR_RB_LogoListPrimary);
-    secondaryHandle = PARSEINI_JMPTBL_HANDLE_OpenWithMode(PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT, PARSEINI_STR_RB_LogoListSecondary);
+    primaryHandle = (LONG)HANDLE_OpenWithMode(PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST, PARSEINI_STR_RB_LogoListPrimary, (char *)0);
+    secondaryHandle = (LONG)HANDLE_OpenWithMode(PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT, PARSEINI_STR_RB_LogoListSecondary, (char *)0);
 
     i = 0;
     while (primaryHandle != 0 && i < 100) {
-        if (PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(lineBuf, 99, primaryHandle) == 0) {
+        if (STREAM_ReadLineWithLimit(lineBuf, 99, (void *)primaryHandle) == 0) {
             break;
         }
         for (j = 0; lineBuf[j] != 0; ++j) {
@@ -62,7 +62,7 @@ void PARSEINI_ScanLogoDirectory(void)
                 lineBuf[j] = 0;
             }
         }
-        lineStart = PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(lineBuf);
+        lineStart = GCOMMAND_FindPathSeparator(lineBuf);
         len = PARSEINI_StrLen(lineStart) + 1;
         primaryEntries[i] = (char *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_PARSEINI_C_4, 1263, len, 65537);
         if (primaryEntries[i] != (char *)0) {
@@ -77,7 +77,7 @@ void PARSEINI_ScanLogoDirectory(void)
 
     i = 0;
     while (secondaryHandle != 0 && i < 100) {
-        if (PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(lineBuf, 99, secondaryHandle) == 0) {
+        if (STREAM_ReadLineWithLimit(lineBuf, 99, (void *)secondaryHandle) == 0) {
             break;
         }
         for (j = 0; lineBuf[j] != 0; ++j) {
@@ -98,9 +98,9 @@ void PARSEINI_ScanLogoDirectory(void)
     }
 
     if (primaryHandle != 0) {
-        PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(primaryHandle);
+        (void)UNKNOWN36_FinalizeRequest((void *)primaryHandle);
     }
     if (secondaryHandle != 0) {
-        PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(secondaryHandle);
+        (void)UNKNOWN36_FinalizeRequest((void *)secondaryHandle);
     }
 }
