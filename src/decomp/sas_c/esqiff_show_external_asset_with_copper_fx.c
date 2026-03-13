@@ -90,7 +90,7 @@ extern LONG ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(
     LONG srcY1,
     char *dstRastPort,
     LONG forcedDstY);
-extern ULONG ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(LONG planeIndex);
+extern ULONG BRUSH_PlaneMaskForIndex(LONG planeIndex);
 extern void _LVOCopyMem(void *execBase, const void *src, void *dst, LONG size);
 extern void _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
 extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
@@ -214,8 +214,8 @@ void ESQIFF_ShowExternalAssetWithCopperFx(WORD refreshMode)
 
     paletteMode = *(ULONG *)(brush + ESQIFF_BRUSH_PALETTE_MODE_OFFSET);
     if (paletteMode == 0 || paletteMode == 1) {
-        copyLimit = ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(5) * 3UL;
-        brushLimit = ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(
+        copyLimit = BRUSH_PlaneMaskForIndex(5) * 3UL;
+        brushLimit = BRUSH_PlaneMaskForIndex(
             (LONG)brush[ESQIFF_BRUSH_PLANE_DEPTH_OFFSET]) * 3UL;
         copyIndex = 0;
         while (copyIndex < copyLimit && copyIndex < brushLimit) {

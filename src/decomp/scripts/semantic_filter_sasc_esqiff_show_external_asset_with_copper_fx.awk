@@ -36,7 +36,9 @@ function trim(s, t) {
     if (uline ~ /ESQIFF_JMPTBL_SCRIPT_BEGINBANNER/ ||
         uline ~ /ESQIFF_JMPTBL_SCRIPT_BEGINBANNERCHARTRANSITION/) has_begin_banner = 1
     if (uline ~ /ESQPARS_JMPTBL_BRUSH_PLANEMASKFO/ ||
-        uline ~ /ESQPARS_JMPTBL_BRUSH_PLANEMASKFORINDEX/) has_plane_mask = 1
+        uline ~ /ESQPARS_JMPTBL_BRUSH_PLANEMASKFORINDEX/ ||
+        uline ~ /BRUSH_PLANEMASKFO/ ||
+        uline ~ /BRUSH_PLANEMASKFORINDEX/) has_plane_mask = 1
     if (uline ~ /ESQIFF_RUNCOPPERRISETRANSITION/) has_run_rise = 1
     if (uline ~ /ESQIFF_RUNCOPPERDROPTRANSITION/) has_run_drop = 1
     if (uline ~ /_LVOSETAPEN/) has_set_apen = 1

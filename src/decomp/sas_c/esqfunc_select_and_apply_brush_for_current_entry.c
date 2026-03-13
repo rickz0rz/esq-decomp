@@ -71,7 +71,7 @@ extern LONG ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(
     LONG srcY1,
     char *dstRp,
     LONG forcedDstY);
-extern ULONG ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(LONG planeIndex);
+extern ULONG BRUSH_PlaneMaskForIndex(LONG planeIndex);
 extern void ESQIFF_RestoreBasePaletteTriples(void);
 extern void _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
 
@@ -179,8 +179,8 @@ LONG ESQFUNC_SelectAndApplyBrushForCurrentEntry(WORD useSecondarySelection)
         LONG paletteMode = *(LONG *)((UBYTE *)brushNode + ESQFUNC_BRUSH_PALETTE_MODE_OFFSET);
 
         if (paletteMode == 0 || paletteMode == 1 || paletteMode == 3) {
-            LONG copyLimit = (LONG)(ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(5) * 3UL);
-            LONG brushLimit = (LONG)(ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(
+            LONG copyLimit = (LONG)(BRUSH_PlaneMaskForIndex(5) * 3UL);
+            LONG brushLimit = (LONG)(BRUSH_PlaneMaskForIndex(
                 (LONG)*(UBYTE *)((UBYTE *)brushNode + ESQFUNC_BRUSH_DEPTH_OFFSET)) * 3UL);
             LONG copyCount = 0;
 

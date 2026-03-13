@@ -38,7 +38,7 @@ extern void RectFill(struct RastPort *rp, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void SetDrMd(struct RastPort *rp, LONG mode);
 extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rp, WORD x, WORD y, const char *text);
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern LONG ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(ULONG depth);
+extern LONG BRUSH_PlaneMaskForIndex(ULONG depth);
 
 void ESQIFF2_ShowAttentionOverlay(BYTE code)
 {
@@ -89,7 +89,7 @@ void ESQIFF2_ShowAttentionOverlay(BYTE code)
     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)rp, 35, 150, textbuf);
 
     if (d5 == 9 || d5 == 10) {
-        ULONG mask = (ULONG)ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(BRUSH_SnapshotDepth);
+        ULONG mask = (ULONG)BRUSH_PlaneMaskForIndex(BRUSH_SnapshotDepth);
         GROUP_AM_JMPTBL_WDISP_SPrintf(textbuf, Global_STR_FILE_WIDTH_COLORS_FORMATTED, BRUSH_SnapshotHeader, BRUSH_SnapshotWidth, mask);
         COI_AttentionOverlayBusyFlag = 1;
     } else {
