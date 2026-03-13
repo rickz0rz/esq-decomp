@@ -6,7 +6,7 @@ enum {
 };
 
 extern const UBYTE WDISP_CharClassTable[];
-extern LONG SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(LONG ch);
+extern LONG LADFUNC_ParseHexDigit(LONG ch);
 
 LONG PARSEINI_ParseHexValueFromString(const char *hexText)
 {
@@ -21,7 +21,7 @@ LONG PARSEINI_ParseHexValueFromString(const char *hexText)
         }
 
         parsedValue <<= 4;
-        parsedValue += (LONG)(UBYTE)SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(ch);
+        parsedValue += (LONG)(UBYTE)LADFUNC_ParseHexDigit(ch);
         ++hexText;
     }
 

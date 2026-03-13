@@ -15,8 +15,8 @@ extern WORD SCRIPT_BannerTransitionStepSign;
 extern WORD SCRIPT_PendingBannerSpeedMs;
 
 extern LONG GCOMMAND_GetBannerChar(void);
-extern LONG SCRIPT3_JMPTBL_MATH_DivS32(LONG dividend, LONG divisor);
-extern LONG SCRIPT3_JMPTBL_MATH_Mulu32(LONG left, LONG right);
+extern LONG MATH_DivS32(LONG dividend, LONG divisor);
+extern LONG MATH_Mulu32(LONG left, LONG right);
 
 WORD SCRIPT_BeginBannerCharTransition(LONG targetChar, LONG speedMs)
 {
@@ -65,7 +65,7 @@ WORD SCRIPT_BeginBannerCharTransition(LONG targetChar, LONG speedMs)
         }
     }
 
-    ticks = SCRIPT3_JMPTBL_MATH_DivS32(speedMs * 60, 1000);
+    ticks = MATH_DivS32(speedMs * 60, 1000);
     if (ticks <= 0) {
         SCRIPT_BannerTransitionStepDelta = (WORD)delta;
     } else {
@@ -77,12 +77,12 @@ WORD SCRIPT_BeginBannerCharTransition(LONG targetChar, LONG speedMs)
             absDelta = delta;
         }
 
-        stepDelta = SCRIPT3_JMPTBL_MATH_DivS32(absDelta, ticks);
+        stepDelta = MATH_DivS32(absDelta, ticks);
         SCRIPT_BannerTransitionStepDelta = (WORD)stepDelta;
 
-        remainder = absDelta - SCRIPT3_JMPTBL_MATH_Mulu32(stepDelta, ticks);
+        remainder = absDelta - MATH_Mulu32(stepDelta, ticks);
         if (remainder > 0) {
-            SCRIPT_BannerTransitionStepBudget = (WORD)SCRIPT3_JMPTBL_MATH_DivS32(ticks, remainder);
+            SCRIPT_BannerTransitionStepBudget = (WORD)MATH_DivS32(ticks, remainder);
         } else {
             SCRIPT_BannerTransitionStepBudget = 0;
         }

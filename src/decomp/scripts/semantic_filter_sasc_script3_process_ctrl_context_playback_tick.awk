@@ -24,7 +24,11 @@ function trim(s, t) {
     u = toupper(line)
 
     if (u ~ /^SCRIPT_PROCESSCTRLCONTEXTPLAYBACKTICK:/ || u ~ /^SCRIPT_PROCESSCTRLCONTEXTPLAYBAC[A-Z0-9_]*:/) has_entry = 1
-    if (index(u, "SCRIPT3_JMPTBL_LOCAVAIL_UPDATEFILTERSTATEMACHINE") > 0 || index(u, "SCRIPT3_JMPTBL_LOCAVAIL_UPDATEFILTERSTATE") > 0 || index(u, "SCRIPT3_JMPTBL_LOCAVAIL_UPDATEFI") > 0) has_update_filter = 1
+    if (index(u, "SCRIPT3_JMPTBL_LOCAVAIL_UPDATEFILTERSTATEMACHINE") > 0 ||
+        index(u, "SCRIPT3_JMPTBL_LOCAVAIL_UPDATEFILTERSTATE") > 0 ||
+        index(u, "SCRIPT3_JMPTBL_LOCAVAIL_UPDATEFI") > 0 ||
+        index(u, "LOCAVAIL_UPDATEFILTERSTATEMACHINE") > 0 ||
+        index(u, "LOCAVAIL_UPDATEFILTERSTATE") > 0) has_update_filter = 1
     if (index(u, "SCRIPT_LOADCTRLCONTEXTSNAPSHOT") > 0 || index(u, "SCRIPT_LOADCTRLCONTEXTSNAPS") > 0) has_load_snapshot = 1
     if (index(u, "SCRIPT_UPDATERUNTIMEMODEFORPLAYBACKCURSOR") > 0 || index(u, "SCRIPT_UPDATERUNTIMEMODEFORPLAYBA") > 0 || index(u, "SCRIPT_UPDATERUNTIMEMODEFORPLAYB") > 0) has_update_runtime = 1
     if (index(u, "SCRIPT_APPLYPENDINGBANNERTARGET") > 0 || index(u, "SCRIPT_APPLYPENDINGBANNERTAR") > 0) has_apply_pending = 1

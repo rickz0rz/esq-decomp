@@ -5,7 +5,8 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
  if (u ~ /^PARSEINI_PARSEHEXVALUEFROMSTRING:/ || u ~ /^PARSEINI_PARSEHEXVALUEFROMSTRIN[A-Z0-9_]*:/) has_entry=1
  if (n ~ /WDISPCHARCLASSTABLE/ || u ~ /BTST #7/ || u ~ /ANDI\.B #\$80/) has_classcheck=1
  if (u ~ /ASL\.L #4/ || u ~ /LSL\.L #4/ || u ~ /ADD\.L D[0-7],D[0-7]/) has_shift4=1
- if (n ~ /SCRIPT3JMPTBLLADFUNCPARSEHEXDIGIT/ || n ~ /SCRIPT3JMPTBLLADFUNCPARSEHEXDIGI/ || n ~ /SCRIPT3JMPTBLLADFUNCPARSEHEXD/) has_call=1
+ if (n ~ /SCRIPT3JMPTBLLADFUNCPARSEHEXDIGIT/ || n ~ /SCRIPT3JMPTBLLADFUNCPARSEHEXDIGI/ || n ~ /SCRIPT3JMPTBLLADFUNCPARSEHEXD/ ||
+     n ~ /LADFUNCPARSEHEXDIGIT/ || n ~ /LADFUNCPARSEHEXDIGI/ || n ~ /LADFUNCPARSEHEXD/) has_call=1
  if (u ~ /^ADD\.L D[0-7],D[0-7]$/ || u ~ /^ADD\.W D[0-7],D[0-7]$/ || u ~ /^OR\.B D[0-7],D[0-7]$/) has_accum=1
  if (u=="RTS") has_return=1
 }

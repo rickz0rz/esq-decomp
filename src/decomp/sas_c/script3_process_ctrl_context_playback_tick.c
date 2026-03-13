@@ -11,7 +11,7 @@ extern UWORD SCRIPT_RuntimeModeDispatchLatch;
 extern UWORD TEXTDISP_CurrentMatchIndex;
 extern UWORD TEXTDISP_CurrentMatchIndexSaved;
 
-extern void SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(char *ctx, void *state);
+extern void LOCAVAIL_UpdateFilterStateMachine(char *ctx, void *state);
 extern void SCRIPT_LoadCtrlContextSnapshot(char *ctx);
 extern UWORD SCRIPT_UpdateRuntimeModeForPlaybackCursor(void);
 extern void SCRIPT_ApplyPendingBannerTarget(void);
@@ -28,7 +28,7 @@ void SCRIPT_ProcessCtrlContextPlaybackTick(char *ctx)
     const LONG CURSOR_REMAP_VALUE = 2;
     const LONG RUNTIME_MODE_LATCHED = 2;
     const LONG CURSOR_DISPATCH_MAX = 15;
-    SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(ctx, &LOCAVAIL_PrimaryFilterState);
+    LOCAVAIL_UpdateFilterStateMachine(ctx, &LOCAVAIL_PrimaryFilterState);
     SCRIPT_LoadCtrlContextSnapshot(ctx);
 
     if (SCRIPT_RuntimeModeDeferredFlag != FLAG_FALSE) {
