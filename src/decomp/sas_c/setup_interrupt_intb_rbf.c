@@ -9,7 +9,7 @@ extern const char Global_STR_ESQFUNC_C_4[];
 extern const char Global_STR_RS232_RECEIVE_HANDLER[];
 
 extern struct Interrupt *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const void *fileTag, LONG line, ULONG bytes, ULONG flags);
-extern LONG ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt(void);
+extern LONG ESQ_HandleSerialRbfInterrupt(void);
 
 #ifndef MEMF_PUBLIC
 #define MEMF_PUBLIC 1UL
@@ -35,7 +35,7 @@ void SETUP_INTERRUPT_INTB_RBF(void)
     intr->is_Node.ln_Pri = 0;
     intr->is_Node.ln_Name = (char *)Global_STR_RS232_RECEIVE_HANDLER;
     intr->is_Data = Global_REF_INTB_RBF_64K_BUFFER;
-    intr->is_Code = (VOID (*)())ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt;
+    intr->is_Code = (VOID (*)())ESQ_HandleSerialRbfInterrupt;
 
     Global_REF_INTB_RBF_INTERRUPT = SetIntVector(INTB_RBF, intr);
 }

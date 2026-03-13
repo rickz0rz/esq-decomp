@@ -7,7 +7,7 @@ extern const char Global_STR_VERTICAL_BLANK_INT[];
 extern void ESQ_VerticalBlankInterruptUserData(void);
 
 extern struct Interrupt *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const void *fileTag, LONG line, ULONG bytes, ULONG flags);
-extern void ESQFUNC_JMPTBL_ESQ_TickGlobalCounters(void);
+extern void ESQ_TickGlobalCounters(void);
 
 #ifndef MEMF_PUBLIC
 #define MEMF_PUBLIC 1UL
@@ -27,7 +27,7 @@ void SETUP_INTERRUPT_INTB_VERTB(void)
     intr->is_Node.ln_Pri = 0;
     intr->is_Node.ln_Name = (char *)Global_STR_VERTICAL_BLANK_INT;
     intr->is_Data = (APTR)ESQ_VerticalBlankInterruptUserData;
-    intr->is_Code = (VOID (*)())ESQFUNC_JMPTBL_ESQ_TickGlobalCounters;
+    intr->is_Code = (VOID (*)())ESQ_TickGlobalCounters;
 
     AddIntVector(INTB_VERTB, intr);
 }
