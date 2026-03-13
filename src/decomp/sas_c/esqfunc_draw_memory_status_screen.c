@@ -72,10 +72,10 @@ extern const char Global_STR_C_HOUR_B_HOUR_CS_FORMATTED[];
 extern void _LVOSetAPen(void *graphicsBase, RastPortLike *rastPort, LONG pen);
 extern void _LVOSetDrMd(void *graphicsBase, RastPortLike *rastPort, LONG drawMode);
 extern LONG _LVOAvailMem(void *execBase, LONG attributes);
-extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(RastPortLike *rastPort, LONG y, LONG x, const char *text);
-extern LONG ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues(void);
-extern LONG ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax(void);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, ...);
+extern void DISPLIB_DisplayTextAtPosition(RastPortLike *rastPort, LONG y, LONG x, const char *text);
+extern LONG PARSEINI_ComputeHTCMaxValues(void);
+extern LONG PARSEINI_UpdateCtrlHDeltaMax(void);
 
 void ESQFUNC_DrawMemoryStatusScreen(void)
 {
@@ -97,29 +97,29 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
 
     if (ED_DiagnosticsViewMode == 0) {
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_DATA_CMDS_CERRS_LERRS,
             (LONG)ESQIFF_ParseAttemptCount,
             (LONG)DATACErrs,
             (LONG)ESQIFF_LineErrorCount
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 112, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 112, lineBuffer);
 
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_CTRL_CMDS_CERRS_LERRS,
             (LONG)SCRIPT_CtrlCmdCount,
             (LONG)SCRIPT_CtrlCmdChecksumErrorCount,
             (LONG)SCRIPT_CtrlCmdLengthErrorCount
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 142, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 142, lineBuffer);
 
         if ((ED_DiagAvailMemMask & 7) == 7) {
             chipLargest = _LVOAvailMem(AbsExecBase, 0x20002L);
             fastMem = _LVOAvailMem(AbsExecBase, 4);
             maxMem = _LVOAvailMem(AbsExecBase, 0x00020000L);
-            GROUP_AM_JMPTBL_WDISP_SPrintf(
+            WDISP_SPrintf(
                 lineBuffer,
                 Global_STR_L_CHIP_FAST_MAX,
                 chipLargest,
@@ -128,27 +128,27 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
             );
         } else if ((ED_DiagAvailMemMask & 1) == 1) {
             chipLargest = _LVOAvailMem(AbsExecBase, 2);
-            GROUP_AM_JMPTBL_WDISP_SPrintf(lineBuffer, Global_STR_CHIP_PLACEHOLDER, chipLargest);
+            WDISP_SPrintf(lineBuffer, Global_STR_CHIP_PLACEHOLDER, chipLargest);
         } else if ((ED_DiagAvailMemMask & 2) == 2) {
             fastMem = _LVOAvailMem(AbsExecBase, 4);
-            GROUP_AM_JMPTBL_WDISP_SPrintf(lineBuffer, Global_STR_FAST_PLACEHOLDER, fastMem);
+            WDISP_SPrintf(lineBuffer, Global_STR_FAST_PLACEHOLDER, fastMem);
         } else if ((ED_DiagAvailMemMask & 4) == 4) {
             maxMem = _LVOAvailMem(AbsExecBase, 0x00020000L);
-            GROUP_AM_JMPTBL_WDISP_SPrintf(lineBuffer, Global_STR_MAX_PLACEHOLDER, maxMem);
+            WDISP_SPrintf(lineBuffer, Global_STR_MAX_PLACEHOLDER, maxMem);
         } else {
-            GROUP_AM_JMPTBL_WDISP_SPrintf(lineBuffer, Global_STR_MEMORY_TYPES_DISABLED);
+            WDISP_SPrintf(lineBuffer, Global_STR_MEMORY_TYPES_DISABLED);
         }
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 172, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 172, lineBuffer);
 
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_DATA_OVERRUNS_FORMATTED,
             (LONG)ESQ_SerialRbfErrorCount
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 202, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 202, lineBuffer);
 
-        currentMaxValue = ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues();
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        currentMaxValue = PARSEINI_ComputeHTCMaxValues();
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_DATA_H_T_C_MAX_FORMATTED,
             (LONG)Global_WORD_H_VALUE,
@@ -156,10 +156,10 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
             currentMaxValue,
             (LONG)Global_WORD_MAX_VALUE
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 232, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 232, lineBuffer);
 
-        currentMaxValue = ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax();
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        currentMaxValue = PARSEINI_UpdateCtrlHDeltaMax();
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_CTRL_H_T_C_MAX_FORMATTED,
             (LONG)CTRL_H,
@@ -167,35 +167,35 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
             currentMaxValue,
             (LONG)CTRL_HDeltaMax
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 262, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 262, lineBuffer);
     }
 
     if (ED_DiagnosticsViewMode == 1) {
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_JULIAN_DAY_NEXT_FORMATTED,
             (LONG)(UBYTE)TEXTDISP_PrimaryGroupCode,
             (LONG)(UBYTE)TEXTDISP_SecondaryGroupCode
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 112, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 112, lineBuffer);
 
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_JDAY1_JDAY2_FORMATTED,
             (LONG)(UBYTE)TEXTDISP_PrimaryGroupHeaderCode,
             (LONG)(UBYTE)TEXTDISP_SecondaryGroupHeaderCode
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 142, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 142, lineBuffer);
 
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_CURCLU_NXTCLU_FORMATTED,
             (LONG)(UBYTE)TEXTDISP_PrimaryGroupPresentFlag,
             (LONG)(UBYTE)TEXTDISP_SecondaryGroupPresentFlag
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 172, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 172, lineBuffer);
 
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_C_DATE_C_MONTH_LP_YR_FORMATTED,
             (LONG)CLOCK_CacheDayIndex0,
@@ -203,9 +203,9 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
             (LONG)ESQFUNC_CListLinePointer,
             (LONG)CLOCK_CacheYear
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 202, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 202, lineBuffer);
 
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_B_DATE_B_MONTH_LP_YR_FORMATTED,
             (LONG)CLOCK_CurrentDayOfMonth,
@@ -213,25 +213,25 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
             (LONG)CLOCK_CurrentLeapYearFlag,
             (LONG)CLOCK_CurrentYearValue
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 232, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 232, lineBuffer);
 
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_C_DST_B_DST_PSHIFT_FORMATTED,
             (LONG)DST_PrimaryCountdown,
             (LONG)DST_SecondaryCountdown,
             (LONG)WDISP_BannerCharPhaseShift
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 262, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 262, lineBuffer);
 
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             lineBuffer,
             Global_STR_C_HOUR_B_HOUR_CS_FORMATTED,
             (LONG)CLOCK_CacheHour,
             (LONG)Global_WORD_CURRENT_HOUR,
             (LONG)CLOCK_HalfHourSlotIndex
         );
-        ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 292, lineBuffer);
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 292, lineBuffer);
     }
 
 restore_bitmap:

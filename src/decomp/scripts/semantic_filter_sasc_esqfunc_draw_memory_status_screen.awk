@@ -30,10 +30,10 @@ function trim(s, t) {
     if (uline ~ /LVOSETAPEN/) has_setapen = 1
     if (uline ~ /LVOSETDRMD/) has_setdrmd = 1
     if (uline ~ /LVOAVAILMEM/) has_availmem = 1
-    if (uline ~ /GROUP_AM_JMPTBL_WDISP_SPRINTF/) has_sprintf = 1
-    if (uline ~ /ESQPARS_JMPTBL_DISPLIB_DISPLAYTE/) has_display = 1
-    if (uline ~ /ESQFUNC_JMPTBL_PARSEINI_COMPUTEH/) has_compute_htc = 1
-    if (uline ~ /ESQFUNC_JMPTBL_PARSEINI_UPDATECT/) has_update_ctrl_h = 1
+    if (uline ~ /GROUP_AM_JMPTBL_WDISP_SPRINTF/ || uline ~ /WDISP_SPRINTF/) has_sprintf = 1
+    if (uline ~ /ESQPARS_JMPTBL_DISPLIB_DISPLAYTE/ || uline ~ /DISPLIB_DISPLAYTEXTATPOSITION/) has_display = 1
+    if (uline ~ /ESQFUNC_JMPTBL_PARSEINI_COMPUTEH/ || uline ~ /PARSEINI_COMPUTEHTCMAXVALUES/) has_compute_htc = 1
+    if (uline ~ /ESQFUNC_JMPTBL_PARSEINI_UPDATECT/ || uline ~ /PARSEINI_UPDATECTRLHDELTAMAX/) has_update_ctrl_h = 1
     if (uline ~ /^MOVE\.L A5,\$4\(A0\)$/ || uline ~ /^MOVE\.L -76\(A5\),4\(A0\)$/) has_restore_bitmap = 1
     if (uline ~ /^ADD\.W #\$4C,A7$/ || uline ~ /^UNLK A5$/) has_unlk = 1
     if (uline ~ /^RTS$/) has_rts = 1
