@@ -36,10 +36,12 @@ void LOCAVAIL_CopyFilterStateStructRetainRefs(void *dst_state, const void *src_s
 {
     LOCAVAIL_FilterState *dst = (LOCAVAIL_FilterState *)dst_state;
     const LOCAVAIL_FilterState *src = (const LOCAVAIL_FilterState *)src_state;
+    UBYTE *dst_bytes = (UBYTE *)dst;
+    const UBYTE *src_bytes = (const UBYTE *)src;
     ULONG *ref_hdr;
 
     dst->mode0 = src->mode0;
-    dst->nodeCount2 = src->nodeCount2;
+    *(LONG *)(dst_bytes + 2) = *(const LONG *)(src_bytes + 2);
     dst->modeChar6 = src->modeChar6;
     ref_hdr = src->sharedRef16;
     dst->sharedRef16 = ref_hdr;
@@ -53,21 +55,23 @@ void LOCAVAIL_CopyFilterStateStructRetainRefs(void *dst_state, const void *src_s
 LONG LOCAVAIL_AllocNodeArraysForState(void *state)
 {
     LOCAVAIL_FilterState *s = (LOCAVAIL_FilterState *)state;
+    LONG *count_ptr = (LONG *)(((UBYTE *)s) + 2);
     LONG ok = 0;
-    LONG count = s->nodeCount2;
 
-    if (count > 0 && count < 100) {
-        ULONG *ref_hdr = (ULONG *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
-            Global_STR_LOCAVAIL_C_4, 218, 4, MEMF_PUBLIC + MEMF_CLEAR);
-        s->sharedRef16 = ref_hdr;
-        if (ref_hdr != (ULONG *)0) {
-            LONG bytes;
-            *ref_hdr = 0;
-            bytes = GROUP_AY_JMPTBL_MATH_Mulu32(s->nodeCount2, 10);
-            s->nodeTable20 = (LOCAVAIL_NodeRecord *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
-                Global_STR_LOCAVAIL_C_5, 229, bytes, MEMF_PUBLIC + MEMF_CLEAR);
-            if (s->nodeTable20 != (LOCAVAIL_NodeRecord *)0) {
-                ok = 1;
+    if (*count_ptr > 0) {
+        if (*count_ptr < 100) {
+            s->sharedRef16 = (ULONG *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+                Global_STR_LOCAVAIL_C_4, 218, 4, MEMF_PUBLIC + MEMF_CLEAR);
+            if (s->sharedRef16 != (ULONG *)0) {
+                *(s->sharedRef16) = 0;
+                s->nodeTable20 = (LOCAVAIL_NodeRecord *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+                    Global_STR_LOCAVAIL_C_5,
+                    229,
+                    GROUP_AY_JMPTBL_MATH_Mulu32(*count_ptr, 10),
+                    MEMF_PUBLIC + MEMF_CLEAR);
+                if (s->nodeTable20 != (LOCAVAIL_NodeRecord *)0) {
+                    ok = 1;
+                }
             }
         }
     }

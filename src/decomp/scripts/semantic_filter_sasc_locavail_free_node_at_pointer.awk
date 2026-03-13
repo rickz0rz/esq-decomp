@@ -4,8 +4,8 @@ function t(s,x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub
   l=t($0); if(l=="")next
   if(l~/^LOCAVAIL_FREENODEATPOINTER:/ || l~/^LOCAVAIL_FREENODEATPOIN[A-Z0-9_]*:/)e=1
   if(l~/^MOVE\.L A[0-7],D[0-7]$/ || l~/^TST\.L A[0-7]$/ || l~/^BEQ\.[SWB] \./)n=1
-  if(l~/^TST\.L 6\(A[0-7]\)$/ || l~/^LEA \$?6\(A[0-7]\),A[0-7]$/ || l~/^MOVE\.L \(A[0-7]\),A[0-7]$/)buf=1
-  if(l~/^MOVE\.W 4\(A[0-7]\),D[0-7]$/ || l~/^TST\.W D[0-7]$/ || l~/^BLE\.[SWB] \./)size=1
+  if(l~/^TST\.L \$?6\(A[0-7]\)$/ || l~/^LEA \$?6\(A[0-7]\),A[0-7]$/ || l~/^MOVE\.L \$?6\(A[0-7]\),A[0-7]$/ || l~/^MOVE\.L \(A[0-7]\),A[0-7]$/)buf=1
+  if(l~/^MOVE\.W \$?4\(A[0-7]\),D[0-7]$/ || l~/^TST\.W D[0-7]$/ || l~/^BLE\.[SWB] \./)size=1
   if(l~/(JSR|BSR).*DEALLOCATE(MEMORY)?/)de=1
   if(l~/(JSR|BSR).*LOCAVAIL_FREENODERECORD/)fr=1
   if(l=="RTS")r=1

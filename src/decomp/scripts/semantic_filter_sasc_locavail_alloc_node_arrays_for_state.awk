@@ -3,7 +3,7 @@ function t(s,x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub
 {
   l=t($0); if(l=="")next
   if(l~/^LOCAVAIL_ALLOCNODEARRAYSFORSTATE:/ || l~/^LOCAVAIL_ALLOCNODEARRAYSFORSTAT[A-Z0-9_]*:/)e=1
-  if(l~/^MOVE\.L 2\(A[0-7]\),D[0-7]$/ || l~/^LEA \$?2\(A[0-7]\),A[0-7]$/ || l~/^MOVE\.L \(A[0-7]\),D[0-7]$/)count=1
+  if(l~/^MOVE\.L \$?2\(A[0-7]\),D[0-7]$/ || l~/^LEA \$?2\(A[0-7]\),A[0-7]$/ || l~/^MOVE\.L \(A[0-7]\),D[0-7]$/)count=1
   if(l~/^BLE\.[SWB] \./ || l~/^MOVEQ(\.L)? #\$?64,D[0-7]$/ || l~/^CMP\.L D[0-7],D[0-7]$/ || l~/^BGE\.[SWB] \./)range=1
   if(l~/(JSR|BSR).*ALLOCATEME(MORY)?/ && a1==0){a1=1; next}
   if(l~/(JSR|BSR).*MULU32/)mulu=1
