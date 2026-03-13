@@ -5706,7 +5706,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown22_math_divs32.c`
 - `src/decomp/sas_c/unknown22_math_divu32.c`
 - `src/decomp/sas_c/unknown22_signal_create_msgport_with_signal.c`
-- `src/decomp/sas_c/unknown22_allocate_alloc_and_initialize_iostdreq.c`
+- `src/decomp/sas_c/allocate_alloc_and_initialize_iostdreq.c`
 - `src/decomp/sas_c/dos_delay.c`
 - `src/decomp/sas_c/unknown40_dos_system_tag_list.c`
 - `src/decomp/sas_c/battclock_get_seconds_from_battery_backed_clock.c`
