@@ -3,10 +3,10 @@ typedef unsigned short UWORD;
 typedef unsigned long ULONG;
 typedef signed long LONG;
 
-extern void GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi(void);
+extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
 extern LONG SCRIPT_ReadNextRbfByte(void);
 extern LONG DISKIO_WriteBytesToOutputHandleGuarded(const void *data, UWORD byteCount);
-extern void GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(LONG arg);
+extern void ESQIFF2_ShowAttentionOverlay(LONG arg);
 
 extern UBYTE DISKIO2_TransferBlockSequence;
 extern UBYTE DISKIO2_TransferXorChecksumByte;
@@ -36,7 +36,7 @@ LONG DISKIO2_ReceiveTransferBlocksToFile(UBYTE verifyCrc32)
         crcTableLocal[i] = DISKIO2_TransferCrc32Table[i];
     }
 
-    GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+    ESQFUNC_WaitForClockChangeAndServiceUi();
     seqByte = (UBYTE)SCRIPT_ReadNextRbfByte();
     ESQIFF_ParseAttemptCount = (UWORD)(ESQIFF_ParseAttemptCount + 1U);
 
@@ -52,16 +52,16 @@ LONG DISKIO2_ReceiveTransferBlocksToFile(UBYTE verifyCrc32)
                 *dst++ = (UBYTE)*src;
             } while (*src++ != 0);
         }
-        GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(1);
+        ESQIFF2_ShowAttentionOverlay(1);
         return 1;
     }
 
     DISKIO2_TransferXorChecksumByte ^= seqByte;
-    GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+    ESQFUNC_WaitForClockChangeAndServiceUi();
     DISKIO2_TransferBlockLength = (UBYTE)SCRIPT_ReadNextRbfByte();
 
     if (DISKIO2_TransferBlockLength == 0U) {
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
         ESQIFF_RecordChecksumByte = (UBYTE)SCRIPT_ReadNextRbfByte();
         if (ESQIFF_RecordChecksumByte != DISKIO2_TransferXorChecksumByte) {
             crcMismatch = 1;
@@ -83,7 +83,7 @@ LONG DISKIO2_ReceiveTransferBlocksToFile(UBYTE verifyCrc32)
     DISKIO2_TransferXorChecksumByte ^= DISKIO2_TransferBlockLength;
     buffered = DISKIO2_TransferBufferedByteCount;
     for (payloadIndex = 0; payloadIndex < (UWORD)DISKIO2_TransferBlockLength; payloadIndex++) {
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
         nextByte = (UBYTE)SCRIPT_ReadNextRbfByte();
         DISKIO2_TransferXorChecksumByte ^= nextByte;
 
@@ -95,7 +95,7 @@ LONG DISKIO2_ReceiveTransferBlocksToFile(UBYTE verifyCrc32)
     if (verifyCrc32 != 0U) {
         receivedCrc = 0;
         for (i = 0; i < 4UL; i++) {
-            GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+            ESQFUNC_WaitForClockChangeAndServiceUi();
             nextByte = (UBYTE)SCRIPT_ReadNextRbfByte();
             DISKIO2_TransferXorChecksumByte ^= nextByte;
             receivedCrc = (receivedCrc << 8) | (ULONG)nextByte;
@@ -110,7 +110,7 @@ LONG DISKIO2_ReceiveTransferBlocksToFile(UBYTE verifyCrc32)
         return 0;
     }
 
-    GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+    ESQFUNC_WaitForClockChangeAndServiceUi();
     ESQIFF_RecordChecksumByte = (UBYTE)SCRIPT_ReadNextRbfByte();
     if (ESQIFF_RecordChecksumByte != DISKIO2_TransferXorChecksumByte) {
         return 0;

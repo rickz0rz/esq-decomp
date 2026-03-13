@@ -45,14 +45,14 @@ extern void ED_DrawESCMenuHelpText(void);
 extern LONG _LVORead(void *dosBase, LONG fh, void *buf, LONG len);
 extern LONG _LVOClose(void *dosBase, LONG fh);
 extern LONG DOS_OpenFileWithMode(const char *path, LONG mode);
-extern void GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(const UBYTE *ptr);
+extern void ESQPARS_ApplyRtcBytesAndPersist(UBYTE *ptr);
 
 extern LONG ESQIFF_JMPTBL_MATH_Mulu32(LONG a, LONG b);
-extern LONG GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar(void);
-extern void ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(LONG nextChar, LONG flags);
-extern void GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom(void);
-extern void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
-extern LONG ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(LONG mode, LONG a, LONG b);
+extern LONG GCOMMAND_GetBannerChar(void);
+extern void SCRIPT_BeginBannerCharTransition(LONG nextChar, LONG flags);
+extern void ESQ_SetCopperEffect_Custom(void);
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern LONG TLIBA3_BuildDisplayContextForViewMode(LONG mode, LONG a, LONG b);
 
 static void restore_display_state(void)
 {
@@ -117,26 +117,26 @@ void ED2_HandleMenuActions(void)
         ED1_EnterEscMenu();
         break;
     case 23: {
-        LONG ch = GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar() - 1;
-        ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(ch, 0);
+        LONG ch = GCOMMAND_GetBannerChar() - 1;
+        SCRIPT_BeginBannerCharTransition(ch, 0);
         break;
     }
     case 24: {
-        LONG ch = GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar() + 1;
-        ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(ch, 0);
+        LONG ch = GCOMMAND_GetBannerChar() + 1;
+        SCRIPT_BeginBannerCharTransition(ch, 0);
         break;
     }
     case 25:
-        ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition((LONG)CONFIG_BannerCopperHeadByte, 0);
+        SCRIPT_BeginBannerCharTransition((LONG)CONFIG_BannerCopperHeadByte, 0);
         break;
     case 26:
         HIGHLIGHT_CustomValue = 0x1f;
-        GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom();
+        ESQ_SetCopperEffect_Custom();
         break;
     case 27:
-        WDISP_DisplayContextBase = ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(3, 0, 4);
+        WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 4);
         ED_InitRastport2Pens();
-        GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+        ESQ_SetCopperEffect_OnEnableHighlight();
         SCRIPT_StatusRefreshHoldFlag = 1;
         break;
     case 28:
@@ -161,7 +161,7 @@ void ED2_HandleMenuActions(void)
                 else if (sync == 1 && buf[i] == 0xAA) sync = 2;
                 else if (sync == 2 && buf[i] == 'K') sync = 3;
                 else if (sync == 3) {
-                    GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(&buf[i]);
+                    ESQPARS_ApplyRtcBytesAndPersist(&buf[i]);
                     break;
                 } else sync = 0;
             }
