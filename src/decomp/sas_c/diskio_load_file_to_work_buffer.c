@@ -9,8 +9,8 @@ extern const char Global_STR_DISKIO_C_3[];
 extern const char Global_STR_DISKIO_C_4[];
 
 extern LONG DOS_OpenFileWithMode(const char *path, LONG mode);
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, ULONG size, ULONG flags);
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, ULONG size);
+extern void *MEMORY_AllocateMemory(ULONG size, ULONG flags);
+extern void MEMORY_DeallocateMemory(void *ptr, ULONG size);
 
 extern LONG DISKIO_GetFilesizeFromHandle(LONG fileHandle);
 extern LONG _LVOClose(void *dosBase, LONG fileHandle);
@@ -32,9 +32,7 @@ LONG DISKIO_LoadFileToWorkBuffer(const char *path)
         return -1;
     }
 
-    Global_PTR_WORK_BUFFER = (char *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
-        Global_STR_DISKIO_C_3,
-        472,
+    Global_PTR_WORK_BUFFER = (char *)MEMORY_AllocateMemory(
         (ULONG)(Global_REF_LONG_FILE_SCRATCH + 1),
         0x10001UL);
     if (Global_PTR_WORK_BUFFER == 0) {
@@ -44,9 +42,7 @@ LONG DISKIO_LoadFileToWorkBuffer(const char *path)
 
     bytesRead = _LVORead(Global_REF_DOS_LIBRARY_2, fileHandle, Global_PTR_WORK_BUFFER, Global_REF_LONG_FILE_SCRATCH);
     if (bytesRead != Global_REF_LONG_FILE_SCRATCH) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
-            Global_STR_DISKIO_C_4,
-            492,
+        MEMORY_DeallocateMemory(
             Global_PTR_WORK_BUFFER,
             (ULONG)(Global_REF_LONG_FILE_SCRATCH + 1));
         _LVOClose(Global_REF_DOS_LIBRARY_2, fileHandle);
