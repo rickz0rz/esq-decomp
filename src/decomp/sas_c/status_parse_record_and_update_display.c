@@ -3,12 +3,12 @@ typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 typedef unsigned short UWORD;
 
-typedef struct UNKNOWN_StatusRecordHeader {
+typedef struct WeatherStatusRecordHeader {
     UBYTE countdown0;
     UBYTE color1;
     UBYTE brush2;
     UBYTE pad3;
-} UNKNOWN_StatusRecordHeader;
+} WeatherStatusRecordHeader;
 
 extern char WDISP_WeatherStatusLabelBuffer[];
 extern char *WDISP_WeatherStatusOverlayTextPtr;
@@ -33,19 +33,19 @@ LONG UNKNOWN_ParseRecordAndUpdateDisplay(const char *in)
     const LONG RESULT_OK = 0;
     const LONG DISPLAY_X = 0;
     const LONG DISPLAY_Y = 172;
-    const UNKNOWN_StatusRecordHeader *header;
+    const WeatherStatusRecordHeader *header;
     const char *p;
-    char local[16];
+    char statusLabel[16];
     UBYTE countdown;
     UBYTE color;
     UBYTE brush;
     ULONG i = 0;
 
-    header = (const UNKNOWN_StatusRecordHeader *)in;
+    header = (const WeatherStatusRecordHeader *)in;
     countdown = header->countdown0;
     color = header->color1;
     brush = header->brush2;
-    p = in + sizeof(UNKNOWN_StatusRecordHeader);
+    p = in + sizeof(WeatherStatusRecordHeader);
 
     if (brush < BRUSH_MIN || brush > BRUSH_MAX) {
         brush = BRUSH_DEFAULT;
@@ -53,19 +53,19 @@ LONG UNKNOWN_ParseRecordAndUpdateDisplay(const char *in)
 
     for (;;) {
         char c = *p++;
-        local[i] = c;
+        statusLabel[i] = c;
         if (c == TOKEN_RECORD_END || i >= LABEL_SCAN_LIMIT) {
             break;
         }
         i++;
     }
 
-    local[i] = CH_NUL;
-    if (local[0] == CH_NUL) {
+    statusLabel[i] = CH_NUL;
+    if (statusLabel[0] == CH_NUL) {
         return RESULT_OK;
     }
 
-    if (ESQ_WildcardMatch(WDISP_WeatherStatusLabelBuffer, local) != 0) {
+    if (ESQ_WildcardMatch(WDISP_WeatherStatusLabelBuffer, statusLabel) != 0) {
         return RESULT_OK;
     }
 

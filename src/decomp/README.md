@@ -4724,8 +4724,8 @@ Recent promoted targets:
 - Unknown2B `DOS_MovepWordReadCallback` remains GCC-only for now (`compare_dos_movep_word_read_callback_trial_gcc.sh`): SAS/C here does not accept inline-assembly/register-binding forms needed to force the `MOVEP.W 0(A2),D6` callback shape.
 - Unknown `ESQPROTO_CopyLabelToGlobal` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_copy_label_to_global_trial.sh`
 - Unknown `ESQPROTO_ParseDigitLabelAndDisplay` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_parse_digit_label_and_display_trial.sh`
-- Unknown `UNKNOWN_ParseRecordAndUpdateDisplay` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_parse_record_and_update_display_trial.sh`
-- Unknown `UNKNOWN_ParseListAndUpdateEntries` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_parse_list_and_update_entries_trial.sh`
+- `UNKNOWN_ParseRecordAndUpdateDisplay` (weather/status overlay parser) SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_parse_record_and_update_display_trial.sh`
+- `UNKNOWN_ParseListAndUpdateEntries` (status-day list parser) SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_parse_list_and_update_entries_trial.sh`
 - Unknown `ESQPROTO_VerifyChecksumAndParseRecord` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_verify_checksum_and_parse_record_trial.sh`
 - Unknown `ESQPROTO_VerifyChecksumAndParseList` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_verify_checksum_and_parse_list_trial.sh`
 - DATETIME `DATETIME_IsLeapYear` SAS/C compare script: `src/decomp/scripts/compare_sasc_datetime_isleapyear_trial.sh`
@@ -5562,10 +5562,10 @@ Recent promoted targets:
 - `src/decomp/sas_c/graphics_free_raster.c`
 - `src/decomp/sas_c/unknown_esqproto_copy_label_to_global.c`
 - `src/decomp/sas_c/esqproto_parse_digit_label_and_display.c`
-- `src/decomp/sas_c/unknown_parse_record_and_update_display.c`
-- `src/decomp/sas_c/unknown_parse_list_and_update_entries.c`
-- `src/decomp/sas_c/unknown_esqproto_verify_checksum_and_parse_record.c`
-- `src/decomp/sas_c/unknown_esqproto_verify_checksum_and_parse_list.c`
+- `src/decomp/sas_c/status_parse_record_and_update_display.c`
+- `src/decomp/sas_c/status_parse_list_and_update_entries.c`
+- `src/decomp/sas_c/esqproto_verify_checksum_and_parse_status_record.c`
+- `src/decomp/sas_c/esqproto_verify_checksum_and_parse_status_list.c`
 - `src/decomp/sas_c/datetime_isleapyear.c`
 - `src/decomp/sas_c/script3_jmptbl_stubs.c`
 - `src/decomp/sas_c/textdisp_jmptbl_stubs.c`

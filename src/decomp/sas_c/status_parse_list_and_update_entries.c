@@ -15,41 +15,23 @@ extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG max_len);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *in);
 extern ULONG MATH_Mulu32(ULONG a, ULONG b);
 
-typedef struct UNKNOWN_StatusListHeader {
+typedef struct StatusListHeader {
     UBYTE dayMode0;
     UBYTE marker1;
-} UNKNOWN_StatusListHeader;
+} StatusListHeader;
 
-typedef struct UNKNOWN_StatusEntry {
+typedef struct StatusDayEntry {
     LONG dayKey0;
     LONG flag1;
     LONG value2;
     LONG value3;
     LONG inactive4;
-} UNKNOWN_StatusEntry;
+} StatusDayEntry;
 
-static void copy_label_0x12(const char **pp, char *dst)
-{
-    const char TOKEN_RECORD_END = 0x12;
-    const ULONG LABEL_SCAN_LIMIT = 10u;
-    ULONG i = 0;
-
-    for (;;) {
-        char c = *(*pp)++;
-        dst[i] = c;
-        if (c == TOKEN_RECORD_END || i >= LABEL_SCAN_LIMIT) {
-            break;
-        }
-        i++;
-    }
-
-    dst[i] = 0;
-}
-
-static UNKNOWN_StatusEntry *status_entry_ptr(ULONG index)
+static StatusDayEntry *status_day_entry_ptr(ULONG index)
 {
     ULONG off = MATH_Mulu32(index, 20u);
-    return (UNKNOWN_StatusEntry *)(WDISP_StatusDayEntry0 + off);
+    return (StatusDayEntry *)(WDISP_StatusDayEntry0 + off);
 }
 
 LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
@@ -65,14 +47,26 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
     const ULONG KEY_FIELD_LEN = 3u;
     const ULONG FLAG_FIELD_LEN = 1u;
     const ULONG VALUE_FIELD_LEN = 3u;
-    const UNKNOWN_StatusListHeader *header;
+    const char TOKEN_RECORD_END = 0x12;
+    const ULONG LABEL_SCAN_LIMIT = 10u;
+    const StatusListHeader *header;
     const char *p = in;
     char list_name[16];
     char field_buf[8];
     ULONG i;
     UBYTE marker;
 
-    copy_label_0x12(&p, list_name);
+    i = 0;
+    for (;;) {
+        char c = *p++;
+        list_name[i] = c;
+        if (c == TOKEN_RECORD_END || i >= LABEL_SCAN_LIMIT) {
+            break;
+        }
+        i++;
+    }
+
+    list_name[i] = 0;
     if (list_name[0] == 0) {
         return 0;
     }
@@ -82,7 +76,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
     }
 
     for (i = 0; i < STATUS_ENTRY_COUNT; ++i) {
-        UNKNOWN_StatusEntry *entry = status_entry_ptr(i);
+        StatusDayEntry *entry = status_day_entry_ptr(i);
         LONG day = (LONG)((UWORD)(CLOCK_CurrentDayOfYear + (UWORD)i + NEXT_DAY_INCREMENT));
         LONG year = (LONG)CLOCK_CurrentYearValue;
 
@@ -90,10 +84,10 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
         entry->dayKey0 = DST_NormalizeDayOfYear(day, year);
     }
 
-    header = (const UNKNOWN_StatusListHeader *)p;
+    header = (const StatusListHeader *)p;
     TLIBA1_DayEntryModeCounter = header->dayMode0;
     marker = header->marker1;
-    p += sizeof(UNKNOWN_StatusListHeader);
+    p += sizeof(StatusListHeader);
 
     while (marker == RECORD_MARKER_PLUS) {
         LONG key;
@@ -106,7 +100,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
         p += KEY_FIELD_LEN;
 
         for (idx = 0; idx <= (LONG)STATUS_ENTRY_COUNT; ++idx) {
-            UNKNOWN_StatusEntry *entry = status_entry_ptr((ULONG)idx);
+            StatusDayEntry *entry = status_day_entry_ptr((ULONG)idx);
             if (entry->dayKey0 == key) {
                 found = idx;
                 break;
@@ -118,7 +112,7 @@ LONG UNKNOWN_ParseListAndUpdateEntries(const char *in)
         }
 
         if (marker == RECORD_MARKER_PLUS) {
-            UNKNOWN_StatusEntry *entry = status_entry_ptr((ULONG)found);
+            StatusDayEntry *entry = status_day_entry_ptr((ULONG)found);
 
             entry->inactive4 = 0;
 
