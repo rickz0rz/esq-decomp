@@ -5,7 +5,7 @@ typedef unsigned char UBYTE;
 extern LONG DATETIME_AdjustMonthIndex(void *ctx);
 extern LONG DATETIME_NormalizeMonthRange(void *ctx);
 extern LONG DST_ComputeBannerIndex(void *ctx, WORD arg2, UBYTE arg3);
-extern void ESQFUNC_SelectAndApplyBrushForCurrentEntry(void);
+extern LONG ESQFUNC_SelectAndApplyBrushForCurrentEntry(WORD useSecondarySelection);
 extern void ESQIFF_RunCopperDropTransition(void);
 extern LONG GRAPHICS_BltBitMapRastPort(void *bitMap, LONG sx, LONG sy, char *rastPort, LONG dx, LONG dy, LONG width, LONG height, LONG minterm, LONG mask);
 extern void SCRIPT_UpdateSerialShadowFromCtrlByte(UBYTE ctrlByte);
@@ -22,7 +22,7 @@ extern long TLIBA3_GetViewModeHeight(long viewModeIndex);
 LONG GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex(void *ctx){return DATETIME_AdjustMonthIndex(ctx);}
 LONG GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange(void *ctx){return DATETIME_NormalizeMonthRange(ctx);}
 LONG GROUP_AD_JMPTBL_DST_ComputeBannerIndex(void *ctx, WORD arg2, UBYTE arg3){return DST_ComputeBannerIndex(ctx, arg2, arg3);}
-void GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry(void){ESQFUNC_SelectAndApplyBrushForCurrentEntry();}
+LONG GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry(LONG useSecondarySelection){return ESQFUNC_SelectAndApplyBrushForCurrentEntry((WORD)useSecondarySelection);}
 void GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition(void){ESQIFF_RunCopperDropTransition();}
 LONG GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void *bitMap, LONG sx, LONG sy, char *rastPort, LONG dx, LONG dy, LONG width, LONG height, LONG minterm, LONG mask){return GRAPHICS_BltBitMapRastPort(bitMap, sx, sy, rastPort, dx, dy, width, height, minterm, mask);}
 void GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(UBYTE ctrlByte){SCRIPT_UpdateSerialShadowFromCtrlByte(ctrlByte);}

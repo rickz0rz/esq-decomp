@@ -24,14 +24,14 @@ function trim(s, t) {
     gsub(/[ \t]+/, " ", line)
     uline = toupper(line)
 
-    if (uline ~ /^ESQFUNC_SELECTANDAPPLYBRUSHFORCURRENTENTRY:/) has_entry = 1
+    if (uline ~ /^ESQFUNC_SELECTANDAPPLYBRUSHFORCURRENTENTRY:/ || uline ~ /^ESQFUNC_SELECTANDAPPLYBRUSHFORCU/) has_entry = 1
     if (uline ~ /ESQFUNC_TAG_00/) has_compare00 = 1
     if (uline ~ /ESQFUNC_TAG_11/) has_compare11 = 1
     if (uline ~ /ESQFUNC_FALLBACKTYPE3BRUSHNODE/) has_fallback_type3 = 1
     if (uline ~ /ESQIFF_JMPTBL_BRUSH_SELECTBRUSHBYLABEL/) has_select_by_label = 1
     if (uline ~ /LVOBLTBITMAPRASTPORT\(A6\)/) has_blt = 1
     if (uline ~ /WDISP_PALETTETRIPLESRBASE/) has_restore_palette = 1
-    if (uline ~ /^UNLK A5$/) has_unlk = 1
+    if (uline ~ /^UNLK A5$/ || uline ~ /^ADD\.W #\$14,A7$/) has_unlk = 1
     if (uline ~ /^RTS$/) has_rts = 1
 }
 
