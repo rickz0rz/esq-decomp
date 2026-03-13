@@ -21,8 +21,8 @@ function trim(s,    t) {
     l = trim($0)
     if (l == "") next
 
-    if (l ~ /(JSR|BSR).*GROUP_AM_JMPTBL_WDISP_SPRINTF/) has_printf = 1
-    if (l ~ /(JSR|BSR).*ESQFUNC_JMPTBL_TLIBA3_DRAWCENTER/) has_draw = 1
+    if (l ~ /(JSR|BSR).*(GROUP_AM_JMPTBL_WDISP_SPRINTF|WDISP_SPRINTF)/) has_printf = 1
+    if (l ~ /(JSR|BSR).*(ESQFUNC_JMPTBL_TLIBA3_DRAWCENTER|TLIBA3_DRAWCENTER)/) has_draw = 1
     if (l ~ /^PEA 210\.W$/ || l ~ /^PEA \(\$D2\)\.W$/ || l ~ /^MOVE\.L #\$?D2,-\(A7\)$/ || l ~ /^MOVE\.W #\$?D2,-\(A7\)$/) has_y210 = 1
     if (l ~ /ESQPARS2_STATEINDEX/) has_state_idx = 1
     if (l ~ /ED2_FMT_SCRSPD_PCT_D/) has_fmt = 1

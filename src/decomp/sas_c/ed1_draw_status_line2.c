@@ -16,8 +16,8 @@ extern const char ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D[];
 extern const char ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR[];
 extern const char Global_STR_CLOCKCMD_EQUALS_PCT_C[];
 
-extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, ...);
+extern void TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y);
 extern void _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
 
 typedef struct ED1_DisplayContext {
@@ -37,28 +37,28 @@ void ED1_DrawStatusLine2(void)
 
     _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, rastPort, PEN_BG);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(
+    WDISP_SPrintf(
         statusLine,
         ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D,
         (LONG)CONFIG_NicheModeCycleBudget_Y,
         (LONG)CONFIG_NicheModeCycleBudget_Static,
         (LONG)CONFIG_NicheModeCycleBudget_Custom
     );
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 120);
+    TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 120);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(
+    WDISP_SPrintf(
         statusLine,
         ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR,
         (LONG)CONFIG_ModeCycleEnabledFlag,
         CONFIG_ModeCycleGateDuration,
         CONFIG_TimeWindowMinutes
     );
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 150);
+    TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 150);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(
+    WDISP_SPrintf(
         statusLine,
         Global_STR_CLOCKCMD_EQUALS_PCT_C,
         (LONG)CTASKS_STR_1
     );
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 180);
+    TLIBA3_DrawCenteredWrappedTextLines(rastPort, statusLine, 180);
 }

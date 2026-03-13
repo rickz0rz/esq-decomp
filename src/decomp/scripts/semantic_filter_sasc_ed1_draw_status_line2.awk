@@ -25,8 +25,8 @@ function trim(s,    t) {
     if (l == "") next
 
     if (l ~ /(JSR|BSR).*_LVOSETRAST/) has_setrast = 1
-    if (l ~ /(JSR|BSR).*GROUP_AM_JMPTBL_WDISP_SPRINTF/) has_printf = 1
-    if (l ~ /(JSR|BSR).*ESQFUNC_JMPTBL_TLIBA3_DRAWCENTER/) has_draw = 1
+    if (l ~ /(JSR|BSR).*(GROUP_AM_JMPTBL_WDISP_SPRINTF|WDISP_SPRINTF)/) has_printf = 1
+    if (l ~ /(JSR|BSR).*(ESQFUNC_JMPTBL_TLIBA3_DRAWCENTER|TLIBA3_DRAWCENTER)/) has_draw = 1
 
     if (l ~ /ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT/) has_fmt_a = 1
     if (l ~ /ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PC/ || l ~ /ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR/) has_fmt_b = 1
