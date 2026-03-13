@@ -35,7 +35,7 @@ function trim(s, t) {
 
     if (line ~ /UPDATESTATUSMASKANDREFRESH/ || line ~ /ESQDISP_UPDATEST/) has_status_refresh = 1
     if (line ~ /WAITFORCLOCKCHANGEANDSERVICEUI/ || line ~ /WAITFORC/) has_wait = 1
-    if (line ~ /READSERIALRBFBYTE/ || line ~ /READSERIA/) has_read_serial = 1
+    if (line ~ /READSERIALRBFBYTE/ || line ~ /SCRIPT_READNEXTRBFBYTE/ || line ~ /READSERIA/) has_read_serial = 1
     if (line ~ /TRANSFERFILENAMEBUFFER/) has_filename_loop = 1
     if (line ~ /WILDCARDMATCH/ || line ~ /CTASKS_EXT_GRF/) has_wildcard_guard = 1
     if (line ~ /STRING_COPYPADNUL/ || line ~ /COPYPADNUL/ || line ~ /COPYPADNU/) has_copy_pad_nul = 1

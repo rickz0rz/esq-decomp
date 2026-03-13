@@ -5,22 +5,22 @@ typedef signed short WORD;
 typedef signed long LONG;
 typedef char *STRPTR;
 
-extern void GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(LONG mask, LONG mode);
-extern void GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi(void);
-extern LONG GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
+extern void ESQDISP_UpdateStatusMaskAndRefresh(LONG mask, LONG mode);
+extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
+extern LONG SCRIPT_ReadNextRbfByte(void);
 extern void DISPLIB_DisplayTextAtPosition(char *rp, LONG x, LONG y, const char *text);
-extern char *GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG maxLen);
-extern LONG GROUP_AH_JMPTBL_ESQ_WildcardMatch(const char *pattern, const char *text);
-extern LONG GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(const char *text);
-extern LONG GROUP_AG_JMPTBL_DOS_OpenFileWithMode(const char *path, LONG mode);
+extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG maxLen);
+extern LONG ESQ_WildcardMatch(const char *pattern, const char *text);
+extern LONG PARSE_ReadSignedLongSkipClass3(const char *text);
+extern LONG DOS_OpenFileWithMode(const char *path, LONG mode);
 extern LONG DISKIO2_ReceiveTransferBlocksToFile(UBYTE verifyCrc32);
 extern void DISKIO_DrawTransferErrorMessageIfDiagnostics(LONG code);
 extern void DISKIO_ForceUiRefreshIfIdle(void);
 extern void DISKIO_ResetCtrlInputStateIfIdle(void);
 extern LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(char *out);
 extern LONG DISKIO_QueryVolumeSoftErrorCount(char *out);
-extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b);
-extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
+extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b);
+extern char *STRING_AppendAtNull(char *dst, const char *src);
 extern LONG _LVOLock(void *dosBase, STRPTR name, LONG mode);
 extern LONG _LVOUnLock(void *dosBase, LONG lock);
 extern LONG _LVODeleteFile(void *dosBase, STRPTR name);
@@ -76,24 +76,24 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
     char shortName[16];
     char scratch[156];
 
-    GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(4, 1);
+    ESQDISP_UpdateStatusMaskAndRefresh(4, 1);
 
     DISKIO2_TransferXorChecksumByte = (crc32Mode != 0U) ? 0xC2 : 0xB7;
-    GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+    ESQFUNC_WaitForClockChangeAndServiceUi();
 
     while (filenameLen < 0x1FU) {
-        b = (UBYTE)GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        b = (UBYTE)SCRIPT_ReadNextRbfByte();
         if (b == 0U) {
             break;
         }
         DISKIO2_TransferFilenameBuffer[filenameLen++] = b;
         DISKIO2_TransferXorChecksumByte ^= b;
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
     }
     DISKIO2_TransferFilenameBuffer[filenameLen] = 0;
 
     if (filenameLen == 13U) {
-        if (GROUP_AH_JMPTBL_ESQ_WildcardMatch(CTASKS_EXT_GRF, DISKIO2_TransferFilenameExtPtr) == 0) {
+        if (ESQ_WildcardMatch(CTASKS_EXT_GRF, DISKIO2_TransferFilenameExtPtr) == 0) {
             status = 0;
             if (ED_DiagnosticsScreenActive != 0) {
                 DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 240, Global_STR_SPECIAL_NGAD);
@@ -101,28 +101,28 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
         }
     }
 
-    GROUP_AG_JMPTBL_STRING_CopyPadNul(targetPath, DISKIO2_TransferFilenameBuffer, 64);
-    GROUP_AG_JMPTBL_STRING_CopyPadNul(targetPath, Global_STR_RAM, 4);
+    STRING_CopyPadNul(targetPath, DISKIO2_TransferFilenameBuffer, 64);
+    STRING_CopyPadNul(targetPath, Global_STR_RAM, 4);
 
     if (ED_DiagnosticsScreenActive != 0) {
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 180, Global_STR_FILENAME);
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 205, 180, DISKIO2_TransferFilenameBuffer);
     }
 
-    GROUP_AG_JMPTBL_STRING_CopyPadNul(shortName, DISKIO2_TransferFilenameBuffer, 4);
+    STRING_CopyPadNul(shortName, DISKIO2_TransferFilenameBuffer, 4);
 
     if (crc32Mode != 0U) {
         UBYTE tokenLen = 0;
         LONG lock;
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
         while (tokenLen < 8U) {
-            b = (UBYTE)GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+            b = (UBYTE)SCRIPT_ReadNextRbfByte();
             if (b == 0U) {
                 break;
             }
             DISKIO2_TransferSizeTokenBuffer[tokenLen++] = b;
             DISKIO2_TransferXorChecksumByte ^= b;
-            GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+            ESQFUNC_WaitForClockChangeAndServiceUi();
         }
         DISKIO2_TransferSizeTokenBuffer[tokenLen] = 0;
 
@@ -139,29 +139,29 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
             _LVOUnLock(Global_REF_DOS_LIBRARY_2, lock);
         }
 
-        if (GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(DISKIO2_TransferSizeTokenBuffer) > targetMax) {
+        if (PARSE_ReadSignedLongSkipClass3(DISKIO2_TransferSizeTokenBuffer) > targetMax) {
             char *s = DISKIO2_TransferFilenameBuffer;
             UBYTE *d = BRUSH_SnapshotHeader;
             do {
                 *d++ = (UBYTE)*s;
             } while (*s++ != 0);
 
-            GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(4, 0);
+            ESQDISP_UpdateStatusMaskAndRefresh(4, 0);
             DISKIO2_InteractiveTransferArmedFlag = 0;
             return -2;
         }
     }
 
-    GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-    ESQIFF_RecordChecksumByte = (UBYTE)GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+    ESQFUNC_WaitForClockChangeAndServiceUi();
+    ESQIFF_RecordChecksumByte = (UBYTE)SCRIPT_ReadNextRbfByte();
     if (ESQIFF_RecordChecksumByte != DISKIO2_TransferXorChecksumByte || status != 1) {
         goto finalize_overlay;
     }
 
-    DISKIO_WriteFileHandle = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(targetPath, 1006);
+    DISKIO_WriteFileHandle = DOS_OpenFileWithMode(targetPath, 1006);
     if (DISKIO_WriteFileHandle == 0) {
         DISKIO_DrawTransferErrorMessageIfDiagnostics(5);
-        GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(4, 0);
+        ESQDISP_UpdateStatusMaskAndRefresh(4, 0);
         return -1;
     }
 
@@ -175,18 +175,18 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
     DISKIO2_TransferBufferedByteCount = 0;
 
     while (1) {
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-        b = (UBYTE)GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
+        b = (UBYTE)SCRIPT_ReadNextRbfByte();
         if (b != 0x55U) {
             continue;
         }
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-        b = (UBYTE)GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
+        b = (UBYTE)SCRIPT_ReadNextRbfByte();
         if (b != 0xAAU) {
             continue;
         }
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-        b = (UBYTE)GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
+        b = (UBYTE)SCRIPT_ReadNextRbfByte();
 
         if (b == 0x48U || b == 0x3DU) {
             DISKIO2_TransferXorChecksumByte = (b == 0x3D) ? 0xC2 : 0xB7;
@@ -198,16 +198,16 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
         }
 
         if (b == 0xBBU) {
-            GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-            if ((UBYTE)GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte() != 0xBBU) {
+            ESQFUNC_WaitForClockChangeAndServiceUi();
+            if ((UBYTE)SCRIPT_ReadNextRbfByte() != 0xBBU) {
                 continue;
             }
-            GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-            if ((UBYTE)GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte() != 0x00U) {
+            ESQFUNC_WaitForClockChangeAndServiceUi();
+            if ((UBYTE)SCRIPT_ReadNextRbfByte() != 0x00U) {
                 continue;
             }
-            GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-            if ((UBYTE)GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte() != 0xFFU) {
+            ESQFUNC_WaitForClockChangeAndServiceUi();
+            if ((UBYTE)SCRIPT_ReadNextRbfByte() != 0xFFU) {
                 continue;
             }
             transferResult = 4;
@@ -230,10 +230,10 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
         _LVODeleteFile(Global_REF_DOS_LIBRARY_2, (STRPTR)DISKIO2_TransferFilenameBuffer);
         DISKIO_ForceUiRefreshIfIdle();
 
-        GROUP_AG_JMPTBL_STRING_CopyPadNul(scratch, Global_STR_COPY_NIL, 12);
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(scratch, targetPath);
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(scratch, DISKIO2_STR_ShellCommandArgSeparator);
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(scratch, DISKIO2_TransferFilenameBuffer);
+        STRING_CopyPadNul(scratch, Global_STR_COPY_NIL, 12);
+        STRING_AppendAtNull(scratch, targetPath);
+        STRING_AppendAtNull(scratch, DISKIO2_STR_ShellCommandArgSeparator);
+        STRING_AppendAtNull(scratch, DISKIO2_TransferFilenameBuffer);
         _LVOExecute(Global_REF_DOS_LIBRARY_2, scratch, 0, 0);
         _LVODeleteFile(Global_REF_DOS_LIBRARY_2, targetPath);
         DISKIO_ResetCtrlInputStateIfIdle();
@@ -250,12 +250,12 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
 
 finalize_overlay:
     DISKIO2_InteractiveTransferArmedFlag = 0;
-    GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(4, 0);
+    ESQDISP_UpdateStatusMaskAndRefresh(4, 0);
 
     if (ED_DiagnosticsScreenActive != 0) {
         LONG pct = DISKIO_QueryDiskUsagePercentAndSetBufferSize(DISKIO2_DiagnosticsDiskUsagePercentBuffer);
         LONG errs = DISKIO_QueryVolumeSoftErrorCount(DISKIO2_DiagnosticsSoftErrorCountBuffer);
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             targetPath,
             Global_STR_DISK_0_IS_FULL_WITH_ERRORS_FORMATTED,
             pct,
