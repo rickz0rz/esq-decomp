@@ -18,21 +18,12 @@ mkdir -p "$OUT_DIR"
 awk -v e="^${ENTRY_ORIG}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/esq_main_exit_noop_hook.original.s"
 awk -v e="^${ENTRY_ORIG}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/esq_main_exit_noop_hook.sasc.dis.s"
 
-normalize() {
-  sed -E \
-    -e 's/;.*$//' \
-    -e 's/^[[:space:]]+//' \
-    -e 's/[[:space:]]+/ /g' \
-    -e 's/[[:space:]]+$//' \
-    -e '/^$/d' \
-    -e 's/^___[A-Za-z0-9_]+__[0-9]+:$//' \
-    -e '/^const:$/d' \
-    -e '/^strings:$/d' \
-    -e '/^$/d'
-}
-
-normalize <"${OUT_DIR}/esq_main_exit_noop_hook.original.s" >"${OUT_DIR}/esq_main_exit_noop_hook.original.norm.s"
-normalize <"${OUT_DIR}/esq_main_exit_noop_hook.sasc.dis.s" >"${OUT_DIR}/esq_main_exit_noop_hook.sasc.norm.s"
+awk -f src/decomp/scripts/normalize_sasc_compare.awk \
+  "${OUT_DIR}/esq_main_exit_noop_hook.original.s" \
+  >"${OUT_DIR}/esq_main_exit_noop_hook.original.norm.s"
+awk -f src/decomp/scripts/normalize_sasc_compare.awk \
+  "${OUT_DIR}/esq_main_exit_noop_hook.sasc.dis.s" \
+  >"${OUT_DIR}/esq_main_exit_noop_hook.sasc.norm.s"
 
 diff -u "${OUT_DIR}/esq_main_exit_noop_hook.original.norm.s" "${OUT_DIR}/esq_main_exit_noop_hook.sasc.norm.s" >"${OUT_DIR}/esq_main_exit_noop_hook.diff" || true
 

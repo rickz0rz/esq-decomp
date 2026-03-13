@@ -14,7 +14,12 @@
         next
     }
 
-    if (line == "const:" || line == "strings:") {
+    if (line == "const:" || line == "strings:" ||
+        line == "__const:" || line == "__strings:") {
+        next
+    }
+
+    if (line ~ /^(XREF|XDEF|END)( |$)/) {
         next
     }
 
@@ -27,10 +32,10 @@
     }
 
     gsub(/\(A4\)/, "", line)
-    gsub(/MOVEQ\\.L #\\$0,/, "MOVEQ #0,", line)
-    gsub(/MOVEQ\\.L #\\$1,/, "MOVEQ #1,", line)
-    gsub(/MOVEQ\\.L #\\$ff,/, "MOVEQ #-1,", line)
-    gsub(/MOVEQ\\.L #\\$FF,/, "MOVEQ #-1,", line)
+    gsub(/MOVEQ\.L #\$0,/, "MOVEQ #0,", line)
+    gsub(/MOVEQ\.L #\$1,/, "MOVEQ #1,", line)
+    gsub(/MOVEQ\.L #\$ff,/, "MOVEQ #-1,", line)
+    gsub(/MOVEQ\.L #\$FF,/, "MOVEQ #-1,", line)
 
     print line
 }

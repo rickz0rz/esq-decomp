@@ -35,21 +35,12 @@ awk -v e="^${ENTRY}:$" -v e2="$ENTRY_SASC_REGEX" '
   }
 ' "$SASC_DIS" >"${OUT_DIR}/${BASE}.sasc.dis.s"
 
-normalize() {
-  sed -E \
-    -e 's/;.*$//' \
-    -e 's/^[[:space:]]+//' \
-    -e 's/[[:space:]]+/ /g' \
-    -e 's/[[:space:]]+$//' \
-    -e '/^$/d' \
-    -e 's/^___[A-Za-z0-9_]+__[0-9]+:$//' \
-    -e '/^const:$/d' \
-    -e '/^strings:$/d' \
-    -e '/^$/d'
-}
-
-normalize <"${OUT_DIR}/${BASE}.original.s" >"${OUT_DIR}/${BASE}.original.norm.s"
-normalize <"${OUT_DIR}/${BASE}.sasc.dis.s" >"${OUT_DIR}/${BASE}.sasc.norm.s"
+awk -f src/decomp/scripts/normalize_sasc_compare.awk \
+  "${OUT_DIR}/${BASE}.original.s" \
+  >"${OUT_DIR}/${BASE}.original.norm.s"
+awk -f src/decomp/scripts/normalize_sasc_compare.awk \
+  "${OUT_DIR}/${BASE}.sasc.dis.s" \
+  >"${OUT_DIR}/${BASE}.sasc.norm.s"
 
 diff -u "${OUT_DIR}/${BASE}.original.norm.s" "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.diff" || true
 
