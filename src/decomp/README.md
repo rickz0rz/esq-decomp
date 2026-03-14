@@ -21,6 +21,7 @@ The repository currently has two active decomp lanes:
 - Before starting a target, check whether it already exists in `src/decomp/sas_c/` and whether a `.dis` has already been generated. Many listed targets are already present there, even when a GCC lane also exists.
 - Prefer landing new restored behavior in `src/decomp/sas_c/` when practical. Treat GCC replacement files as staging/reference material unless the target is explicitly staying in the GCC lane.
 - For module-level hybrid build triage, use `src/decomp/scripts/report_hybrid_module_promotion_coverage.py` to correlate GCC promotion lanes and restored SAS/C compare lanes back to original asm modules, then compare that against `src/decomp/replacements.map`.
+- After the maintained SAS/C sweep is green, use `src/decomp/scripts/report_sasc_module_integration_candidates.py` to rank already-mapped modules by direct-export SAS/C coverage and by the number of `src/decomp/sas_c/*.c` files involved. Prefer low-source-count complete candidates first when choosing the next object-level integration target.
 - The coverage report normalizes compare lanes that still point at passthrough copies under `src/decomp/replacements/` back to their original `src/modules/...` paths before checking `src/decomp/replacements.map`; use the normalized module path as the source of truth when triaging “mapped” vs “unmapped” rows.
 
 ## SAS/C Lane
@@ -109,6 +110,7 @@ The repository currently has two active decomp lanes:
 - `src/decomp/scripts/new_module_replacement.sh`: bootstraps a replacement module by copying original source and registering it.
 - `src/decomp/scripts/list_missing_sasc_non_jmptbl_exports.py`: lists non-`JMPTBL` GCC replacement exports that still have no exact-word hit in `src/decomp/sas_c/`.
 - `src/decomp/scripts/report_hybrid_module_promotion_coverage.py`: reports which original asm modules have GCC promotion-lane coverage, how much restored SAS/C compare coverage they already have, and whether those modules are already wired into `src/decomp/replacements.map`.
+- `src/decomp/scripts/report_sasc_module_integration_candidates.py`: reports which mapped asm modules already have complete direct-export SAS/C compare coverage, how many `src/decomp/sas_c/*.c` files back those exports, and therefore which modules are the smallest next object-integration candidates.
 - `src/decomp/scripts/compare_memory_allocate_trial.sh`: compiles `Target 002` C trial and diffs generated asm vs original function slice.
 - `src/decomp/scripts/compare_memory_allocate_trial_gcc.sh`: GCC-specific compare lane for `Target 002` allocate function.
 - `src/decomp/scripts/compare_memory_deallocate_trial.sh`: compiles `Target 002` deallocate C trial and diffs generated asm vs original function slice.
