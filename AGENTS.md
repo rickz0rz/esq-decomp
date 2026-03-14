@@ -235,6 +235,7 @@ When decomp workflow assumptions change, update `README.md`, `src/decomp/README.
 - [x] Rename/document `src/data/wdisp.s` anonymous banner/interrupt globals (`2258`/`2280`/`228F`/`2290`) and propagate callsites (`TEXTDISP`/`APP2`/`CLEANUP2`/`ESQDISP`/`ESQIFF2`/`ESQFUNC`).
 - [x] Confirm and rename secondary live-clock trailing fields in `src/data/wdisp.s` (`227D`/`227F` region) to `CLOCK_CurrentDayOfYear`/`CLOCK_CurrentAmPmFlag`/`CLOCK_CurrentLeapYearFlag`, with trace-backed producer notes from `ESQ_TickClockAndFlagEvents`.
 - [x] Rename/document active `src/data/wdisp.s` ED transform/index helper symbols in the `21EF`/`21F5`/`21F6`/`21F9` cluster and propagate callsites in `ed.s`/`ed3.s`.
+- [x] Replace `src/decomp/replacements/modules/groups/a/l/ed3.s` passthrough include with the direct module body for the ED3 drawing-helper cluster, and update carry-forward docs so ED3 is tracked as an active object-level hybrid replacement instead of a seeded passthrough boundary.
 - [x] Add provisional `SYM` context for unresolved ED latch blocks in `src/data/wdisp.s` (`21FE`/`21FF`/`2202`) with observed writer paths and explicit confidence notes.
 - [x] Rename/document `src/data/wdisp.s` highlight-message save slots and interleave-copy offsets (`230D`-`2312`) and propagate callsites in `gcommand3.s`/`esqshared4.s`.
 - [x] Rename/document `src/data/wdisp.s` drive/input runtime globals (`2319`/`231A`/`231E`/`231F`) and propagate callsites in `diskio.s`/`esq*.s`/`kybd.s`/`unknown40.s`.
