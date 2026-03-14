@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern UWORD WDISP_WeatherStatusDigitChar;
 extern char WDISP_WeatherStatusLabelBuffer[];
 extern char *WDISP_WeatherStatusTextPtr;

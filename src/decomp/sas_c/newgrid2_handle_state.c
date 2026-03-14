@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 typedef struct NEWGRID2_SelectionWindow {
     void *entry;
     void *aux;

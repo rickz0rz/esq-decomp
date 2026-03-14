@@ -1,7 +1,4 @@
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 void ESQ_SetBit1Based(UBYTE *base, ULONG bitIndex)
 {
     ULONG n;

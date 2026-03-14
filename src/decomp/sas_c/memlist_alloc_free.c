@@ -1,5 +1,4 @@
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 typedef struct MemNode {
     struct MemNode *next;
     struct MemNode *prev;

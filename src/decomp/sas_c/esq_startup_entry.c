@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 enum {
     EXECBASE_THIS_TASK_OFFSET = 276,
     TASK_SAVED_DIRLOCK_OFFSET = 152,

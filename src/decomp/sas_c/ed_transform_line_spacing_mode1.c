@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG ED_ViewportOffset;
 extern LONG ED_EditCursorOffset;
 extern char ED_EditBufferScratch[];

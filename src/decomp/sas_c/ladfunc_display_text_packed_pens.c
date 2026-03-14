@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG LADFUNC_GetPackedPenLowNibble(UBYTE packed);
 extern LONG LADFUNC_GetPackedPenHighNibble(UBYTE packed);
 

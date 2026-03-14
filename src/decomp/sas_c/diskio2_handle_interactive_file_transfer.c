@@ -1,9 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef signed short WORD;
-typedef signed long LONG;
-typedef char *STRPTR;
+#include <exec/types.h>typedef char *STRPTR;
 
 extern void ESQDISP_UpdateStatusMaskAndRefresh(LONG mask, LONG mode);
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);

@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 enum {
     DST_MODE_DST = 1
 };

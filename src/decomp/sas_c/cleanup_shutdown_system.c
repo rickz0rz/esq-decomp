@@ -1,6 +1,4 @@
-typedef unsigned short UWORD;
-typedef long LONG;
-
+#include <exec/types.h>
 #define CLEANUP_NULL 0
 #define CLEANUP_LINEHEAD_MODE_PRIMARY 1
 #define CLEANUP_LINEHEAD_MODE_SECONDARY 2

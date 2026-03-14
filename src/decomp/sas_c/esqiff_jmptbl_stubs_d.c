@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void ESQ_MoveCopperEntryTowardEnd(LONG src_index, LONG dst_index);
 extern void *BRUSH_FindBrushByPredicate(void *searchKey, void *listHeadPtr);
 extern void BRUSH_FreeBrushList(void **headPtr, LONG freeAll);

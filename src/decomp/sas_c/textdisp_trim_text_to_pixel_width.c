@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG WDISP_DisplayContextBase;
 
 extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);

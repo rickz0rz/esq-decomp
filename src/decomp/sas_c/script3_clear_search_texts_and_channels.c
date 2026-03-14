@@ -1,6 +1,4 @@
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern char TEXTDISP_SecondarySearchText[];
 extern char TEXTDISP_PrimarySearchText[];
 extern UWORD TEXTDISP_SecondaryChannelCode;

@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern char *Global_REF_RASTPORT_1;
 

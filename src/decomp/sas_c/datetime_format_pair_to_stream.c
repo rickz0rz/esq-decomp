@@ -1,5 +1,4 @@
-typedef long LONG;
-
+#include <exec/types.h>
 #define WORD_AT(p, off) (*(short *)((char *)(p) + (off)))
 
 #define DATETIME_PAIR_OUT_PTR_OFFSET 4

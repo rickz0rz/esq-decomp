@@ -1,5 +1,4 @@
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 char *TLIBA2_FindLastCharInString(const char *str, UBYTE targetChar)
 {
     const char *p;

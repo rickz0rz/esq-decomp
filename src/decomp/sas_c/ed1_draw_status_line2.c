@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed char BYTE;
-
+#include <exec/types.h>
 extern LONG WDISP_DisplayContextBase;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 

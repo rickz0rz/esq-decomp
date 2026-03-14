@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern char *STR_SkipClass3Chars(const char *s);
 extern LONG PARSE_ReadSignedLong(const char *in, LONG *outValue);
 

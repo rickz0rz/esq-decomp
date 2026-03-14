@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 LONG PARSE_ReadSignedLong_NoBranch(const UBYTE *in, LONG *out_value)
 {
     const UBYTE kPlusSign = (UBYTE)'+';

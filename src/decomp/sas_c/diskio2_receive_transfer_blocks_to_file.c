@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
 extern LONG SCRIPT_ReadNextRbfByte(void);
 extern LONG DISKIO_WriteBytesToOutputHandleGuarded(const void *data, UWORD byteCount);

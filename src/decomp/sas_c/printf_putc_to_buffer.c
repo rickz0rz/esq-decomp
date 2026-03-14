@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG Global_PrintfByteCount;
 extern UBYTE *Global_PrintfBufferPtr;
 

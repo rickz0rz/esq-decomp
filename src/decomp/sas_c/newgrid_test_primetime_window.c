@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct NEWGRID_ModeInfo {
     UBYTE pad0[1];
     UBYTE modeChar;

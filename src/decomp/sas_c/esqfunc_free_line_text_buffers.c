@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern const char Global_STR_ESQFUNC_C_6[];
 extern void *LADFUNC_LineTextBufferPtrs[];
 

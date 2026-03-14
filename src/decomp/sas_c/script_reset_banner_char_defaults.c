@@ -1,6 +1,4 @@
-typedef short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE TEXTDISP_BannerCharSelected;
 extern UBYTE TEXTDISP_BannerCharFallback;
 extern WORD TEXTDISP_CurrentMatchIndex;

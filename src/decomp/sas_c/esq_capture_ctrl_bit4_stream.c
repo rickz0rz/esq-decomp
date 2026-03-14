@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed char BYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-
+#include <exec/types.h>
 extern WORD CTRL_Bit4CapturePhase;
 extern WORD CTRL_Bit4CaptureDelayCounter;
 extern WORD CTRL_Bit4SampleSlotIndex;

@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG DOS_Delay(LONG ticks);
 extern void STREAM_BufferedWriteString(const char *s);
 extern unsigned long MATH_Mulu32(unsigned long a, unsigned long b);

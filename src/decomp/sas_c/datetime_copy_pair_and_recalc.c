@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef long LONG;
-
+#include <exec/types.h>
 typedef struct DateTimePair {
     void *in_ptr;      /* +0 */
     void *out_ptr;     /* +4 */

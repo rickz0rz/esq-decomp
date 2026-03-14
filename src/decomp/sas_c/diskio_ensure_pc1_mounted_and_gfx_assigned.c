@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern void *Global_REF_DOS_LIBRARY_2;
 extern WORD DISKIO_Pc1MountAssignFlag;
 extern const char DISKIO_CMD_MOUNT_PC1[];

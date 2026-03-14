@@ -1,5 +1,4 @@
-typedef unsigned char UBYTE;
-typedef long LONG;
+#include <exec/types.h>
 
 enum {
     BRUSH_STATE_FONT_CHUNK_SIZE_OFFSET = 186,

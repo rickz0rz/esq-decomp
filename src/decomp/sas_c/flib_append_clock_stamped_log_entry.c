@@ -1,9 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef signed long LONG;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 #define MEMF_PUBLIC 1
 
 extern LONG ESQPARS2_LogAppendSpinlock;

@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef long LONG;
-
+#include <exec/types.h>
 typedef struct COI_EntryTableEntry {
     UBYTE pad0[1];
 } COI_EntryTableEntry;

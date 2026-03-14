@@ -1,7 +1,5 @@
 #include <exec/lists.h>
-
-typedef signed long LONG;
-typedef unsigned char UBYTE;
+#include <exec/types.h>
 
 void LIST_InitHeader(struct MinList *header)
 {

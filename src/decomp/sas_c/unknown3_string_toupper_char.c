@@ -1,6 +1,4 @@
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 ULONG STRING_ToUpperChar(ULONG c)
 {
     UBYTE ch;

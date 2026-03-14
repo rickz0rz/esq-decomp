@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void ESQFUNC_ServiceUiTickIfRunning(void);
 extern void ESQFUNC_UpdateRefreshModeState(LONG unusedSuspendFlag, LONG request);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);

@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void PARALLEL_WriteCharD0(LONG ch);
 extern void PARALLEL_RawDoFmt(char *fmt, void *args, void (*out)(LONG));
 

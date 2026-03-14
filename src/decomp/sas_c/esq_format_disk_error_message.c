@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern char COMMON_QueryDiskSoftErrorCountScratch[];
 extern char COMMON_QueryDiskUsagePercentScratch[];
 extern char DISKIO_ErrorMessageScratch[];

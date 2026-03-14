@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void _LVOFreeRaster(void *graphicsBase, void *raster, ULONG width, LONG height);
 

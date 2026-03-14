@@ -1,7 +1,4 @@
-typedef unsigned short UWORD;
-typedef signed short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 #define DISPTEXT_MIN_SELECTABLE_LINE_INDEX 1
 #define DISPTEXT_MAX_SELECTABLE_LINE_INDEX 3
 #define DISPTEXT_RESULT_FALSE 0

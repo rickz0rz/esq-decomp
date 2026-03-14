@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern UBYTE CONFIG_ParseiniLogoScanEnabledFlag;
 extern LONG Global_UIBusyFlag;
 extern LONG Global_REF_DOS_LIBRARY_2;

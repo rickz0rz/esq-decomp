@@ -1,9 +1,6 @@
 extern void DISKIO2_FlushDataFilesIfNeeded(void);
 extern void NEWGRID_RebuildIndexCache(void);
-typedef unsigned char UBYTE;
-typedef signed long LONG;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern LONG DATETIME_SavePairToFile(void *pair);
 extern LONG ESQPROTO_VerifyChecksumAndParseList(UBYTE seed);
 extern LONG P_TYPE_ParseAndStoreTypeRecord(const char *src);

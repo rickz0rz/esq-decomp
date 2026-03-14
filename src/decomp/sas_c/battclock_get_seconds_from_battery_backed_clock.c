@@ -1,4 +1,4 @@
-typedef long LONG;
+#include <exec/types.h>
 
 LONG _LVOReadBattClock(void);
 

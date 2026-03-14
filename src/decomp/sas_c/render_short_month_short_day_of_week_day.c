@@ -1,7 +1,4 @@
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef long LONG;
-
+#include <exec/types.h>
 typedef struct RENDER_RastPort {
     LONG textWidth0;
     LONG bitmap4;

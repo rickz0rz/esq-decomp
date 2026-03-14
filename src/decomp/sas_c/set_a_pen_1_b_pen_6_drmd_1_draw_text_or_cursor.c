@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern const char Global_STR_TEXT[];

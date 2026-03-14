@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern char *ESQPARS_ReplaceOwnedString(const char *newPtr, char *oldPtr);
 
 typedef struct SCRIPT_CtrlContextSnapshot {

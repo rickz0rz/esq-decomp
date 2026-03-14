@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef short WORD;
-
+#include <exec/types.h>
 extern WORD SERDAT;
 extern WORD SCRIPT_SerialShadowWord;
 

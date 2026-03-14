@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct TEXTDISP_AuxData {
     UBYTE pad0[56];
     const char *titleTable[110];

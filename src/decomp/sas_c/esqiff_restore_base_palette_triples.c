@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef short WORD;
-
+#include <exec/types.h>
 extern UBYTE WDISP_PaletteTriplesRBase[];
 extern UBYTE ESQFUNC_BasePaletteRgbTriples[];
 

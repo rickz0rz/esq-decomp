@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 #define PTR_HI_SHIFT 16
 #define DIWSTOP_EXTEND_ADDEND 0x100UL
 #define REG_DIWSTRT_ADDR_INDEX 0

@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern WORD CTRL_HPreviousSample;
 extern UBYTE CTRL_BUFFER[];
 

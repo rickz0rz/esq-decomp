@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct TLIBA3_ViewModeRuntimeEntry {
     UBYTE pad0[4];
     WORD height4;

@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 typedef struct DISKIO2_Entry {
     UBYTE pad0[1];
     UBYTE titleText[26];

@@ -1,7 +1,4 @@
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef long LONG;
-
+#include <exec/types.h>
 #define CTASKS_FLAG_CLEAR 0
 #define CTASKS_ALLOC_LINE 203
 #define CTASKS_TASKPROC_SIZE 14

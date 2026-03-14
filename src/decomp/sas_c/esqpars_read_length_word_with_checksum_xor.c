@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern UWORD ESQIFF_RecordLength;
 
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);

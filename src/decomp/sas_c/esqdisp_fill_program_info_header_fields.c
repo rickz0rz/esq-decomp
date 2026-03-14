@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef signed short WORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 typedef struct ProgramInfoHeader {
     UBYTE pad_00[40];
     UBYTE field40;

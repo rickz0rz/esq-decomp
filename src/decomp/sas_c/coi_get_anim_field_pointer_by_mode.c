@@ -1,8 +1,4 @@
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 enum {
     COI_ENTRY_ANIM_OFFSET = 48,
     COI_MODE_ANIM_POINTER = 5

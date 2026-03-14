@@ -1,7 +1,4 @@
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef long LONG;
-
+#include <exec/types.h>
 #define CTASKS_FLAG_FALSE 0
 #define CTASKS_TASKSTATE_LOGO 4
 #define CTASKS_TASKSTATE_GADS 5

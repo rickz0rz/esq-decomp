@@ -1,9 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-typedef signed char BYTE;
-
+#include <exec/types.h>
 extern WORD GCOMMAND_DriveProbeRequestedFlag;
 extern LONG ESQDISP_DisplayActiveFlag;
 extern WORD Global_UIBusyFlag;

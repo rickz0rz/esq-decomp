@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 typedef struct TEXTDISP_AliasEntry {
     LONG pad0;
     const char *aliasText;

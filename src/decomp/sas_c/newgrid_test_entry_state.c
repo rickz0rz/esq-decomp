@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern const char *ESQDISP_GetEntryPointerByMode(LONG index, LONG mode);
 extern const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern LONG NEWGRID_GetEntryStateCode(const void *entryPtr, const void *entryAuxPtr, WORD selector);

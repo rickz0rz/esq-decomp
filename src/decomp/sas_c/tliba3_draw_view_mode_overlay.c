@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct TLIBA3_RastPort {
     UBYTE pad0[100];
 } TLIBA3_RastPort;

@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct TEXTDISP_CandidateEntry {
     char shortName[10];
     char longName[2];

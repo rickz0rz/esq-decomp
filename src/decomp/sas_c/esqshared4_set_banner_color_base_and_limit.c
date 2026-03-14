@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern UWORD ESQPARS2_BannerColorBaseValue;
 extern UBYTE ESQ_BannerColorClampValueA;
 extern UBYTE ESQ_BannerColorClampValueB;

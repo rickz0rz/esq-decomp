@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern LONG Global_SignalCallbackPtr;
 extern void *Global_DosLibrary;
 

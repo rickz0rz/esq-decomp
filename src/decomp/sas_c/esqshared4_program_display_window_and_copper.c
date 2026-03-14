@@ -1,7 +1,4 @@
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern volatile UWORD DIWSTRT;
 extern volatile UWORD DIWSTOP;
 extern volatile UWORD DDFSTRT;

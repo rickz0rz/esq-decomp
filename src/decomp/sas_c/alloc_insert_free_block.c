@@ -1,6 +1,7 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
+#include <exec/memory.h>
+#include <exec/types.h>
 
+// Replace AllocNode with MemChunk across the board
 typedef struct AllocNode {
     struct AllocNode *next;
     LONG size;

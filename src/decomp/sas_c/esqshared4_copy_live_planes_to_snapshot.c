@@ -1,6 +1,4 @@
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern ULONG ESQSHARED_LivePlaneBase0;
 extern ULONG ESQSHARED_LivePlaneBase1;
 extern ULONG ESQSHARED_LivePlaneBase2;

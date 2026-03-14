@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef signed char BYTE;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct LOCAVAIL_NodeRecord {
     UBYTE tokenIndex0;
     UBYTE pad1;

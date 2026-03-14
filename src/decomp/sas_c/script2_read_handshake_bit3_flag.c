@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE CIAB_PRA;
 
 LONG SCRIPT_ReadHandshakeBit3Flag(void)

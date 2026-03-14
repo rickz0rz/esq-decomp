@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern LONG CLOCK_ConvertAmigaSecondsToClockData(LONG seconds, void *clockData);
 extern void ESQ_CalcDayOfYearFromMonthDay(void *timePtr);
 extern LONG CLOCK_CheckDateOrSecondsFromEpoch(void *clockData);

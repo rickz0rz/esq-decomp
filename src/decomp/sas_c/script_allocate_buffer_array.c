@@ -1,6 +1,4 @@
-typedef short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern const char Global_STR_SCRIPT_C_1[];
 
 extern void *MEMORY_AllocateMemory(

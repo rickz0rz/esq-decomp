@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern UWORD GCOMMAND_HighlightFlag;
 extern UWORD ESQ_CopperEffectTemplateRowsSet0[];
 extern UWORD ESQ_CopperEffectTemplateRowsSet1[];

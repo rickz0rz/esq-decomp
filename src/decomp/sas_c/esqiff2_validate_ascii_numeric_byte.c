@@ -1,6 +1,4 @@
-typedef signed char BYTE;
-typedef signed long LONG;
-
+#include <exec/types.h>
 LONG ESQIFF2_ValidateAsciiNumericByte(BYTE value)
 {
     LONG d0 = 1;

@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern ULONG ESQPARS2_BannerCopySourceOffset;
 extern ULONG ESQPARS2_BannerCopyTailOffset;
 extern ULONG ESQSHARED_BlitAddressOffset;

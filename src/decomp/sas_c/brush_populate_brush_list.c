@@ -1,5 +1,4 @@
-typedef unsigned char UBYTE;
-typedef long LONG;
+#include <exec/types.h>
 
 enum {
     BRUSH_FALSE = 0,

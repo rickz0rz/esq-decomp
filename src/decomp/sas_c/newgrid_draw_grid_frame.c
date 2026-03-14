@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct NEWGRID_Context {
     UBYTE pad0[60];
     UBYTE rastPort[1];

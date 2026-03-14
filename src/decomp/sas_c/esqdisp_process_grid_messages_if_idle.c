@@ -1,6 +1,4 @@
-typedef signed short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern WORD ESQDISP_GridMessagePumpBlockFlag;
 extern WORD Global_UIBusyFlag;
 extern LONG NEWGRID_MessagePumpSuspendFlag;

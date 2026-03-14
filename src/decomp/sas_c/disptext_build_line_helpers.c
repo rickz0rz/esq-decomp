@@ -1,7 +1,4 @@
-typedef unsigned short UWORD;
-typedef signed short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern WORD DISPTEXT_CurrentLineIndex;
 extern LONG DISPTEXT_ControlMarkerWidthPx;

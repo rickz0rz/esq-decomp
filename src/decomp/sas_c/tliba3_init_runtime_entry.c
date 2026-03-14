@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 enum {
     VM_ZERO = 0,
     VM_RUNTIME_STRIDE = 154,

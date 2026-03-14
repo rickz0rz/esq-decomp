@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG PARSE_ReadSignedLong(const char *in, LONG *out_value);
 
 LONG PARSE_ReadSignedLong_ParseLoop(const char *in, LONG *out_value)

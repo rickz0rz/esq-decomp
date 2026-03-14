@@ -1,5 +1,4 @@
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 enum {
     ATTRFLAG_HILITE_SRC_MASK = 0x02,
     ATTRFLAG_SUMMARY_SRC_MASK = 0x04,

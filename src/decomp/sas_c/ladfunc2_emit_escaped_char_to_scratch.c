@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern const char LADFUNC_FMT_ControlCharCaretEscape[];
 extern const char LADFUNC_FMT_ReplacementQuoteChar[];
 extern const char LADFUNC_FMT_ReplacementCommaChar[];

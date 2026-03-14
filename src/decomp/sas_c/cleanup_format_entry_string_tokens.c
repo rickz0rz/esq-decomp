@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef long LONG;
-
+#include <exec/types.h>
 enum {
     TOKEN_BUF_LEN = 11,
     TOKEN_MAX_LEN = 10,

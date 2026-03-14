@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 typedef struct ED_DisplayContext {
     unsigned char pad0[2];
     unsigned char rastPort[1];

@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef long LONG;
-
+#include <exec/types.h>
 enum {
     COI_DISK_SPLIT_DIVISOR = 2,
     COI_LOAD_FAIL = -1,

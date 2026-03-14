@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UWORD TEXTDISP_PrimaryFirstMatchIndex;
 extern UWORD TEXTDISP_SecondaryFirstMatchIndex;
 extern UWORD TEXTDISP_SbeFilterActiveFlag;

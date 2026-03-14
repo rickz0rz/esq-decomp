@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE ED_LastKeyCode;
 
 LONG ED_IsConfirmKey(void)

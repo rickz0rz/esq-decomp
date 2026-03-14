@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern char FORMAT_ScratchBuffer[];
 extern LONG FORMAT_FormatToBuffer2(char *outBuf, char *fmt, void *args);
 extern void PARALLEL_RawDoFmtStackArgs(char *buffer);

@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG CONFIG_RefreshIntervalSeconds;
 extern WORD CONFIG_BannerCopperHeadByte;
 extern UBYTE ESQPARS2_BannerQueueBuffer[];

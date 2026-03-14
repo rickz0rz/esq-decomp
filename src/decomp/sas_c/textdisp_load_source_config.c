@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG TEXTDISP_SourceConfigEntryTable[];
 extern LONG TEXTDISP_SourceConfigEntryCount;
 extern UBYTE TEXTDISP_SourceConfigFlagMask;

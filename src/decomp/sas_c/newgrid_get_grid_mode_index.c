@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern LONG NEWGRID_ModeSelectorState;
 
 LONG NEWGRID_GetGridModeIndex(void)

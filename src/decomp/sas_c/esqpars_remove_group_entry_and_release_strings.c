@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef signed long LONG;
-
+#include <exec/types.h>
 typedef struct ESQPARS_TitleTable {
     UBYTE pad0[56];
     char *titleTable[49];

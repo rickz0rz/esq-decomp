@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-typedef long LONG;
-
+#include <exec/types.h>
 #define W(ptr, off) (*(short *)((char *)(ptr) + (off)))
 
 enum {

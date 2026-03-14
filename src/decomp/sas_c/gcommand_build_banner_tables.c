@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void *AbsExecBase;
 extern UBYTE Global_REF_696_400_BITMAP[];
 extern UBYTE ESQ_CopperListBannerA[];

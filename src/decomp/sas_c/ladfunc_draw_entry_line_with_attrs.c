@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG ED_TextLimit;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 

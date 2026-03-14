@@ -1,6 +1,4 @@
-typedef long LONG;
-typedef short WORD;
-
+#include <exec/types.h>
 void ESQ_FormatTimeStamp(char *outBuf, void *timePtr)
 {
     char *p;

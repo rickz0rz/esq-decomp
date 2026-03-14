@@ -1,6 +1,4 @@
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern void *AbsExecBase;
 extern ULONG _LVOAvailMem(void *execBase, ULONG attributes);
 extern volatile UWORD HAS_REQUESTED_FAST_MEMORY;

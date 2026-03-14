@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern WORD CLOCK_CurrentDayOfWeekIndex[];
 extern WORD TLIBA2_BroadcastWindowClockSnapshotA[];
 extern UBYTE TEXTDISP_PrimaryGroupCode;

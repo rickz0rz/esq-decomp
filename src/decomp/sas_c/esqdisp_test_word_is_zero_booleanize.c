@@ -1,6 +1,4 @@
-typedef short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 LONG ESQDISP_TestWordIsZeroBooleanize(WORD value)
 {
     if (value == 0) {

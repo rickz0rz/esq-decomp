@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG CONFIG_TimeWindowMinutes;
 extern const char SCRIPT_AlignedPrefixEmptyD[];
 extern const char SCRIPT_AlignedPrefixEmptyE[];

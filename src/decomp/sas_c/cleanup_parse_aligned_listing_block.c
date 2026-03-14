@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef long LONG;
-
+#include <exec/types.h>
 typedef struct CLEANUP_EntryTableEntry {
     UBYTE pad0[12];
     UBYTE titleText[1];

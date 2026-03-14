@@ -1,4 +1,4 @@
-typedef long LONG;
+#include <exec/types.h>
 
 enum {
     RASTPORT_AOLPEN_OFFSET = 30,

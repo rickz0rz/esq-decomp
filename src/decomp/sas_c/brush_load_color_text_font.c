@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef long LONG;
+#include <exec/types.h>
 
 extern void *Global_REF_DOS_LIBRARY_2;
 extern const char Global_STR_BRUSH_C_1[];

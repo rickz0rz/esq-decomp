@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern LONG LOCAVAIL_FilterModeFlag;
 extern WORD LOCAVAIL_FilterWindowHalfSpan;
 

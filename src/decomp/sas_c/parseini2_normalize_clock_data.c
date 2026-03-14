@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef short WORD;
-
+#include <exec/types.h>
 struct ClockNormData {
     WORD w0;
     WORD w1;

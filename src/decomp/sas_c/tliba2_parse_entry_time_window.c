@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct TLIBA2_EntryAux {
     UBYTE pad0[56];
     char *titleTable[49];

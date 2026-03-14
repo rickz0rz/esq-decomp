@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE ED_MenuStateId;
 extern LONG ED_EditCursorOffset;
 extern UBYTE ED_EditBufferLive[];

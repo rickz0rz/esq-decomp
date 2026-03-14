@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern WORD Global_WORD_SELECT_CODE_IS_RAVESC;
 extern WORD COI_AttentionOverlayBusyFlag;
 extern WORD ESQIFF_AssetSourceSelect;

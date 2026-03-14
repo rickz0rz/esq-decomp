@@ -1,9 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct NEWGRID_ClockScratch {
     ULONG word0;
     ULONG word1;

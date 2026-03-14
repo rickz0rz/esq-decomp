@@ -1,5 +1,4 @@
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 char *STRING_AppendAtNull(char *dst, const char *src)
 {
     char *ret;

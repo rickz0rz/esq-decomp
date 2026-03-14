@@ -1,5 +1,4 @@
-typedef long LONG;
-
+#include <exec/types.h>
 extern LONG Global_DosIoErr;
 
 extern void *HANDLE_GetEntryByIndex(LONG handleIndex);

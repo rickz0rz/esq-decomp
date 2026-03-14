@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern long DISKIO_OpenFileWithBuffer(const char *path, long mode);
 extern void DISKIO_WriteDecimalField(long handle, long value);
 extern long DISKIO_WriteBufferedBytes(long handle, const char *buf, ULONG len);

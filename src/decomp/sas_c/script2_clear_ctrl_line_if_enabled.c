@@ -1,5 +1,4 @@
-typedef short WORD;
-
+#include <exec/types.h>
 extern WORD SCRIPT_CtrlInterfaceEnabledFlag;
 extern void SCRIPT_DeassertCtrlLine(void);
 

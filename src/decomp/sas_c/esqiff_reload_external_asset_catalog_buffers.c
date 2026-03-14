@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef signed char BYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 typedef struct MinList MinList;
 
 #ifndef MODE_OLDFILE

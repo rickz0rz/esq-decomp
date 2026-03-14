@@ -1,5 +1,4 @@
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern short TEXTDISP_FindEntryIndexByWildcard(char *path);
 extern long STRING_CompareN(const char *a, const char *b, long maxLen);
 extern void ESQ_NoOp(void);

@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void *BRUSH_PopBrushHead(void *head);
 extern void *BRUSH_AllocBrushNode(const char *brushLabel, void *prevTail);
 extern void ESQ_NoOp_006A(void);

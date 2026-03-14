@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG SCRIPT_SearchMatchCountOrIndex;
 extern UWORD SCRIPT_ChannelRangeArmedFlag;
 extern UWORD SCRIPT_PrimarySearchFirstFlag;

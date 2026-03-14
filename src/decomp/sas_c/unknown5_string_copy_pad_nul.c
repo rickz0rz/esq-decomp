@@ -1,6 +1,4 @@
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 char *STRING_CopyPadNul(char *dst, const char *src, ULONG maxLen)
 {
     char *ret;

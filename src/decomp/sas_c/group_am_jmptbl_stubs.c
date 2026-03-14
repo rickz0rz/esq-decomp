@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern void *SIGNAL_CreateMsgPortWithSignal(const char *name, LONG pri);
 extern void LADFUNC_ClearBannerRectEntries(void);
 extern void PARSEINI_UpdateClockFromRtc(void);

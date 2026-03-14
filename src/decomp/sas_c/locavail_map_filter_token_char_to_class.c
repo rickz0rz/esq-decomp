@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern const UBYTE WDISP_CharClassTable[];
 
 LONG LOCAVAIL_MapFilterTokenCharToClass(UBYTE token)

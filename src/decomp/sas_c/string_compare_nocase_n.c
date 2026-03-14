@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern ULONG STRING_ToUpperChar(ULONG c);
 
 LONG STRING_CompareNoCaseN(const char *a, const char *b, LONG maxLen)

@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UWORD SCRIPT_RuntimeMode;
 extern UBYTE CONFIG_RuntimeMode12BannerJumpEnabledFlag;
 extern UWORD CONFIG_BannerCopperHeadByte;

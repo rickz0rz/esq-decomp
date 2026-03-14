@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern WORD Global_WORD_T_VALUE;
 extern WORD Global_WORD_H_VALUE;
 extern WORD ESQPARS2_ReadModeFlags;

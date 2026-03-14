@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed short WORD;
-typedef signed long LONG;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 enum {
     ESQFUNC_FALSE = 0,
     ESQFUNC_TRUE = 1,

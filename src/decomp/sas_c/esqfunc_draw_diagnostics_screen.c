@@ -1,10 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef signed char BYTE;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct ESQFUNC_DisplayContext {
     UBYTE pad0[2];
     UBYTE rastPort[1];

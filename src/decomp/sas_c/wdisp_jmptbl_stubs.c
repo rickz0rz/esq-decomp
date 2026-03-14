@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void ESQIFF_RestoreBasePaletteTriples(void);
 extern long ESQFUNC_TrimTextToPixelWidthWordBoundary(char *rastport, long max_width, char *text);
 extern void GCOMMAND_ExpandPresetBlock(unsigned char *packed);

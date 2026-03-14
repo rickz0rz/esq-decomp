@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 #define WEATHER_SLICE_MAX_WIDTH 30
 #define WEATHER_SLICE_LEFT_PAD 42
 #define WEATHER_SLICE_FULL_WIDTH 696

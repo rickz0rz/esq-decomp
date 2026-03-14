@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 typedef struct {
     LONG Flags;
     LONG Handle;

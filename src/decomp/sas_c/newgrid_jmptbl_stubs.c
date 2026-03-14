@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern void *DATETIME_SecondsToStruct(LONG seconds, void *dt);
 extern void GENERATE_GRID_DATE_STRING(char *outText);

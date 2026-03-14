@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed char BYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 typedef struct ESQSHARED_Entry {
     UBYTE pad0[40];
     UBYTE editMode40;

@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern WORD TEXTDISP_ActiveGroupId;
 extern LONG CONFIG_TimeWindowMinutes;
 

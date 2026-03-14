@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern LONG DST_BuildBannerTimeEntry(WORD lane, UBYTE slot_hint, WORD *out_word, ULONG out_dt);
 
 LONG DST_BuildBannerTimeWord(WORD lane, LONG unused, UBYTE slot_hint)

@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef long LONG;
-
+#include <exec/types.h>
 enum {
     ENTRY_ANIM_PTR_OFFSET = 48,
     ANIM_COUNT_OFFSET = 36,

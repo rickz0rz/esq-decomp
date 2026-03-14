@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern short SCRIPT_BeginBannerCharTransition(LONG targetChar, LONG speedMs);
 extern void *MEMORY_AllocateMemory(ULONG byteSize, ULONG attributes);
 extern void CTASKS_StartIffTaskProcess(void);

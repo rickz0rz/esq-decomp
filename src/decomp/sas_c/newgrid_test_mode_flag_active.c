@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE CONFIG_NewgridSelectionCode34PrimaryEnabledFlag;
 extern UBYTE CONFIG_NewgridSelectionCode34AltEnabledFlag;
 

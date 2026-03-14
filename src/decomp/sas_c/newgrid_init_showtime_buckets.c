@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct NEWGRID_ShowtimeBucketEntry {
     LONG key;
     char *text;

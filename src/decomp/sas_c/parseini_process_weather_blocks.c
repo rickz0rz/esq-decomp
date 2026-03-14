@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 #define MEMF_PUBLIC 1L
 #define MEMF_CLEAR 65536L
 

@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern LONG Global_REF_LONG_GFX_G_ADS_DATA;
 extern LONG Global_REF_LONG_GFX_G_ADS_FILESIZE;
 extern LONG Global_REF_LONG_DF0_LOGO_LST_DATA;

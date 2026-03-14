@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-typedef signed long LONG;
-
+#include <exec/types.h>
 #define MEMF_PUBLIC 1
 #define ESQPARS_FREE_LINE 1081
 #define ESQPARS_ALLOC_LINE 1100

@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void *Global_REF_INTUITION_LIBRARY;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern const char Global_STR_PLEASE_STANDBY_1[];

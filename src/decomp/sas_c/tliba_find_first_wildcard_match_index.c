@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern UWORD TEXTDISP_SecondaryGroupEntryCount;
 extern const char *TEXTDISP_SecondaryTitlePtrTable[];
 

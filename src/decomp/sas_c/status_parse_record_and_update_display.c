@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 typedef struct WeatherStatusRecordHeader {
     UBYTE countdown0;
     UBYTE color1;

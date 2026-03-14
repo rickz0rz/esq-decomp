@@ -1,5 +1,4 @@
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern UWORD ESQPARS2_BannerColorStepCounter;
 
 void ESQSHARED4_SetBannerCopperColorAndThreshold(UWORD value);

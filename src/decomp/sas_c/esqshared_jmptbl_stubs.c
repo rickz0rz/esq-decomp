@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG DST_BuildBannerTimeWord(WORD arg_1, LONG arg_2, UBYTE arg_3);
 extern void ESQ_ReverseBitsIn6Bytes(UBYTE *dst, UBYTE *src);
 extern void ESQ_SetBit1Based(UBYTE *base, ULONG bitIndex);

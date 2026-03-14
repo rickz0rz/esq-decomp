@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct HighlightMsg {
     UBYTE pad0[20];
     LONG saved20;

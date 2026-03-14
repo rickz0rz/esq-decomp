@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
 extern signed long SCRIPT_ReadNextRbfByte(void);
 

@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void *Global_REF_DOS_LIBRARY_2;
 extern const char GCOMMAND_PATH_GFX_COLON[];
 extern const char GCOMMAND_STR_WORK_COLON[];

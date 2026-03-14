@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 UWORD ESQSHARED4_DecodeRgbNibbleTriplet(UBYTE *src)
 {
     UWORD r;

@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef short WORD;
-
+#include <exec/types.h>
 extern WORD Global_WORD_H_VALUE;
 extern WORD Global_WORD_T_VALUE;
 extern WORD Global_REF_CLOCKDATA_STRUCT;

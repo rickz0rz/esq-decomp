@@ -1,9 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef short WORD;
-typedef signed char BYTE;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void *WDISP_DisplayContextBase;
 extern WORD WDISP_AccumulatorCaptureActive;
 extern WORD WDISP_AccumulatorFlushPending;

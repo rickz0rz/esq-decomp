@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 #define DISKIO_DIAG_INACTIVE 0
 #define DISKIO_REASON_INDEX_OFFSET 1
 #define DISKIO_ERROR_TEXT_X 40

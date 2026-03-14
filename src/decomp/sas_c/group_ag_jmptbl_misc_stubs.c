@@ -1,6 +1,4 @@
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct StructWithOwner StructWithOwner;
 typedef struct MsgPort MSGPORT;
 

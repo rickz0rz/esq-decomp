@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern LONG TLIBA1_CurrentViewModeIndex;
 extern LONG WDISP_DisplayContextBase;
 

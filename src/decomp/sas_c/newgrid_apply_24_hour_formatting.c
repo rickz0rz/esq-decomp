@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE Global_REF_STR_USE_24_HR_CLOCK;
 extern const char *Global_JMPTBL_HALF_HOURS_24_HR_FMT[];
 

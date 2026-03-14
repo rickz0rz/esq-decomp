@@ -1,6 +1,4 @@
-typedef short WORD;
-typedef long LONG;
-
+#include <exec/types.h>
 #define ESQFUNC_PRIMARY_PEN 1
 #define ESQFUNC_PROMPT_PEN 3
 #define ESQFUNC_DRAW_MODE_JAM1 1

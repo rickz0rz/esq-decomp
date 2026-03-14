@@ -1,8 +1,4 @@
-typedef unsigned long ULONG;
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-typedef signed char BYTE;
-
+#include <exec/types.h>
 extern void ESQDISP_UpdateStatusMaskAndRefresh(ULONG mask, LONG setMode);
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
 extern void ESQIFF2_ApplyIncomingStatusPacket(UBYTE *src);

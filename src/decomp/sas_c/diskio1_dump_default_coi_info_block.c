@@ -1,9 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 enum {
     DISKIO_NULL = 0,
     DEFAULT_COI_TRAILING_RESERVED_BYTES = 12,

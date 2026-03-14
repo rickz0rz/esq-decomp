@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef short WORD;
-
+#include <exec/types.h>
 extern WORD SCRIPT_CtrlLineAssertedFlag;
 extern WORD SCRIPT_SerialShadowWord;
 

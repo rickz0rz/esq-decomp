@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern WORD SCRIPT_BannerTransitionActive;
 extern UBYTE CONFIG_BannerCopperHeadByte;
 extern UBYTE SCRIPT_BannerTransitionTargetChar;

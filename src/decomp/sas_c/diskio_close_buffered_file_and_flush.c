@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 struct DiskIoBufferState {
     void *BufferPtr;
     LONG BufferSize;

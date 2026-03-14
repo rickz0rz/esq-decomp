@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern const char *Global_TBL_TV_PROGRAM_RATINGS[];
 extern const UBYTE ESQPARS2_TvRatingTokenGlyphMap[];
 extern void *AbsExecBase;

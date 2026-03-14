@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef long LONG;
+#include <exec/types.h>
 
 #define BRUSH_NULL 0
 #define BRUSH_PLANE_PTR_SHIFT 2

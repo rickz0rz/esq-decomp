@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern const char Global_STR_PERCENT_LD[];
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG value);
 extern LONG DISKIO_WriteBufferedBytes(LONG handle, const void *src, LONG len);

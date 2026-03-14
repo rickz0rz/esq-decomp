@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef short WORD;
-
+#include <exec/types.h>
 extern WORD CTRL_H;
 extern WORD CTRL_HPreviousSample;
 extern WORD Global_REF_CLOCKDATA_STRUCT;

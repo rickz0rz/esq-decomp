@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct TEXTDISP_AuxData {
     UBYTE pad0[7];
     UBYTE slotMask[49];

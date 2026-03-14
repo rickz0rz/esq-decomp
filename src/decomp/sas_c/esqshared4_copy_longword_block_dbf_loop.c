@@ -1,6 +1,4 @@
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 void ESQSHARED4_CopyLongwordBlockDbfLoop(ULONG *src, ULONG *dst, UWORD count)
 {
     do {

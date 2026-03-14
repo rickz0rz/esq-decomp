@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef long LONG;
-
+#include <exec/types.h>
 #define ENTRY_MODE_FLAGS 7
 #define ENTRY_FLAGS_HEX_PRIMARY_INDEX 6
 #define ENTRY_FLAGS_HEX_SECONDARY_INDEX 7

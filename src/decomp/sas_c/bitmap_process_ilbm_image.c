@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
+#include <exec/types.h>
 
 extern void *Global_REF_DOS_LIBRARY_2;
 

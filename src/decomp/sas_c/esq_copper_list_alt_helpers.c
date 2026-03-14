@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef signed short WORD;
-
+#include <exec/types.h>
 typedef struct ESQ_CopperListHeader {
     UBYTE flag0;
 } ESQ_CopperListHeader;

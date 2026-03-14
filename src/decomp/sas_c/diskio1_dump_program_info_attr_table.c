@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 #define PROGRAM_NULL 0
 #define PROGRAM_SLOT_FIRST 1
 #define PROGRAM_SLOT_END 49

@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void ESQDISP_SetStatusIndicatorColorSlot(void);
 
 void ESQDISP_ApplyStatusMaskToIndicators(LONG statusMask)

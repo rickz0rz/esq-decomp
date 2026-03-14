@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 typedef struct TEXTDISP_CandidateEntry {
     char pad0[1];
     char text[1];

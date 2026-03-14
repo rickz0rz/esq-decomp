@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 enum {
     DISPLIB_INLINE_ALIGN_CENTER = 24,
     DISPLIB_INLINE_ALIGN_RIGHT = 26,

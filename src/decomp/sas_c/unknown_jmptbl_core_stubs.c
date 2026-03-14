@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG ESQIFF2_ReadSerialRecordIntoBuffer(UBYTE *dst, LONG recordMode, LONG extensionCount);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text);
 extern unsigned char ESQ_WildcardMatch(const char *str, const char *pattern);

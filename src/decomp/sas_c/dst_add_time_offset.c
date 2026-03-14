@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern LONG DATETIME_NormalizeStructToSeconds(void *dt);
 extern void DATETIME_SecondsToStruct(LONG seconds, void *dt);
 

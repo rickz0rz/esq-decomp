@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed char BYTE;
-typedef short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern WORD SCRIPT_BannerTransitionActive;
 extern WORD SCRIPT_BannerTransitionStepCursor;
 extern WORD SCRIPT_BannerTransitionStepDelta;

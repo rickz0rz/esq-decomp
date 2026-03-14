@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 #define DISKIO_PARSE_RESULT_FAIL      0xFFFF
 #define DISKIO_WORKBUF_SENTINEL_ERROR 0xFFFF
 

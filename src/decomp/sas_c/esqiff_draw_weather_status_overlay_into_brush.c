@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE WDISP_WeatherStatusBrushIndex;
 extern char *WDISP_WeatherStatusOverlayTextPtr;
 extern ULONG ESQFUNC_PwBrushListHead;

@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 enum {
     DISKIO1_MASK_INDEX_0 = 0,
     DISKIO1_MASK_INDEX_1 = 1,

@@ -1,5 +1,4 @@
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 typedef struct StructWithOwner {
     char pad0[8];
     signed char field8;

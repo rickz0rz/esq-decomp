@@ -1,9 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed char BYTE;
-typedef unsigned short UWORD;
-typedef signed short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 typedef struct ESQIFF2_Entry {
     UBYTE pad0[1];
     UBYTE titleText[1];

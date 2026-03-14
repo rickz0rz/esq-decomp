@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern UBYTE GCOMMAND_PpvParseScratchSeedLong[];
 extern const UBYTE WDISP_CharClassTable[];
 extern UBYTE GCOMMAND_DigitalPpvEnabledFlag[];

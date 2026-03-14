@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern long STRING_CompareNoCase(const char *a, const char *b);
 extern void ED1_WaitForFlagAndClearBit0(void);
 extern void DISKIO2_ParseIniFileFromDisk(void);

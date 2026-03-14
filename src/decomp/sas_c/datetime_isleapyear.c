@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 enum {
     DATETIME_BASE_YEAR = 1900
 };

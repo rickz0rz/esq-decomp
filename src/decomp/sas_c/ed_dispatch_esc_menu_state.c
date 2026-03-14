@@ -1,9 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef signed char BYTE;
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern LONG ED_StateRingIndex;
 extern LONG ED_StateRingWriteIndex;
 extern LONG ED_MenuDispatchReentryGuard;

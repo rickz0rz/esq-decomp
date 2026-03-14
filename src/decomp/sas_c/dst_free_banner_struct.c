@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern const char Global_STR_DST_C_1[];
 extern const char Global_STR_DST_C_2[];
 extern const char Global_STR_DST_C_3[];

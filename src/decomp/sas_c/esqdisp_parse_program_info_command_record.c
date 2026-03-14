@@ -1,9 +1,4 @@
-typedef signed char BYTE;
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 enum {
     CHARCLASS_LOWERCASE_MASK = 0x02,
     CHARCLASS_DIGIT_MASK = 0x04,

@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern char WDISP_StatusListMatchPattern[];
 
 void ESQPROTO_CopyLabelToGlobal(const char *src)

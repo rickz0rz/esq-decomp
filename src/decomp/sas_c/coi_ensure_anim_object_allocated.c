@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-typedef long LONG;
-
+#include <exec/types.h>
 enum {
     STRUCT_ANIMOB_SIZE = 42,
     ENTRY_ANIM_PTR_OFFSET = 48,

@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void NEWGRID_SetSelectionMarkers(LONG a, LONG b, char *m3, char *m2, char *m1, char *m0);
 extern char *STR_FindCharPtr(const char *s, long ch);
 extern void TLIBA1_DrawTextWithInsetSegments(char *rp, LONG x, LONG y, LONG insetSecondary, LONG insetPrimary, const char *text);

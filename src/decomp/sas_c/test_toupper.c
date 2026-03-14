@@ -1,5 +1,4 @@
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 UBYTE Test_ToUpperChar(UBYTE c)
 {
     if (c >= 'a' && c <= 'z') {

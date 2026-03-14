@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 #define MEMF_PUBLIC 1UL
 #define DISPTEXT_AVAILMEM_THRESHOLD 0x2710UL
 #define DISPTEXT_ALLOC_SOURCE_LINE 127UL

@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern UBYTE *ESQSHARED_BannerRowScratchRasterBase0;
 extern UBYTE *ESQSHARED_BannerRowScratchRasterBase1;
 extern UBYTE *ESQSHARED_BannerRowScratchRasterBase2;

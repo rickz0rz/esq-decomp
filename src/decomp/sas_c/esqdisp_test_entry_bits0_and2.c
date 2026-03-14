@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed long LONG;
-
+#include <exec/types.h>
 LONG ESQDISP_TestEntryBits0And2_Core(const UBYTE *entry)
 {
     if (entry == 0) {

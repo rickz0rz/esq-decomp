@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef const void *CPTR;
+#include <exec/types.h>typedef const void *CPTR;
 
 enum {
     DISKIO_READMODE_GUARD_FLAG = 0x100,

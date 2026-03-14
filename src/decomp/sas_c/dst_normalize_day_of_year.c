@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern LONG DATETIME_IsLeapYear(LONG year);
 
 LONG DST_NormalizeDayOfYear(WORD day_of_year, WORD year)

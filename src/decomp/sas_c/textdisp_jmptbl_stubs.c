@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG NEWGRID_ShouldOpenEditor(const char *entry);
 extern LONG ESQDISP_TestEntryGridEligibility(const void *entry, WORD index);
 extern void ESQIFF_RunCopperRiseTransition(void);

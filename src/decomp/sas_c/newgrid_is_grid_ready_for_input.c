@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
 extern UWORD TEXTDISP_SecondaryGroupEntryCount;
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;

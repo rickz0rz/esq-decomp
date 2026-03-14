@@ -1,7 +1,4 @@
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE ESQIFF_RecordChecksumByte;
 extern UBYTE ESQIFF_UseCachedChecksumFlag;
 

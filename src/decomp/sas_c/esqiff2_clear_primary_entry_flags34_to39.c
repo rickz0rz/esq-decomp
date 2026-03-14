@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 typedef struct ESQIFF2_Entry {
     UBYTE pad0[34];
     UBYTE flags34To39[6];

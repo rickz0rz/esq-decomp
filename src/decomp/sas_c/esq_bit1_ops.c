@@ -1,8 +1,4 @@
-typedef unsigned long ULONG;
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 LONG ESQ_TestBit1Based(const UBYTE *base, ULONG bitIndex)
 {
     ULONG n;

@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed char BYTE;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE ESQ_CopperListBannerA[];
 extern UBYTE ESQ_CopperListBannerB[];
 

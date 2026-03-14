@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct GCOMMAND_PresetEntry {
     UBYTE pad0[32];
     LONG value32;

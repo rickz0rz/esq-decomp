@@ -1,5 +1,4 @@
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 void *Test_MemMove(void *dst, const void *src, unsigned long len)
 {
     UBYTE *d = (UBYTE *)dst;

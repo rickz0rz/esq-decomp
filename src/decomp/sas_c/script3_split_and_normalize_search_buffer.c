@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern char TEXTDISP_PrimarySearchText[];
 extern char TEXTDISP_SecondarySearchText[];
 

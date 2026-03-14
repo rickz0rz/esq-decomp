@@ -1,5 +1,4 @@
-typedef signed short WORD;
-
+#include <exec/types.h>
 enum {
     DISKIO_STATE_CLEAR = 0
 };

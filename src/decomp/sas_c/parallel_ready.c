@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern LONG PARALLEL_CheckReadyStub(void);
 
 LONG PARALLEL_CheckReadyStub(void)

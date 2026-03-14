@@ -1,6 +1,4 @@
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 ULONG MATH_Mulu32(ULONG a, ULONG b)
 {
     ULONG d0 = a;

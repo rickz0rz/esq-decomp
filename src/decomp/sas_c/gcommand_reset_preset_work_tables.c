@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 typedef struct {
     LONG presetIndex;
     LONG currentValue;

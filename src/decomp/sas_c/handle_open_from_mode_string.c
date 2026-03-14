@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 struct PreallocHandleNode {
     struct PreallocHandleNode *Next;
     void *BufferCursor;

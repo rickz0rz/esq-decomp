@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void *Global_REF_DOS_LIBRARY_2;
 extern const char Global_STR_DISKIO_C_7[];
 extern const char Global_STR_DISKIO_C_8[];

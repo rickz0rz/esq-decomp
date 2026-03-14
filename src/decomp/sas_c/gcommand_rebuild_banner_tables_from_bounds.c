@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern WORD Global_UIBusyFlag;
 
 extern UBYTE ESQ_CopperListBannerA[];

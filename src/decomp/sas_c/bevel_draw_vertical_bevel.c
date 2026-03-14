@@ -1,4 +1,4 @@
-typedef long LONG;
+#include <exec/types.h>
 
 enum {
     BEVEL_STROKE_INDEX_START = 0,

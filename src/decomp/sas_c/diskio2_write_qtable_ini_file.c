@@ -1,6 +1,4 @@
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 struct AliasPair {
     char *key;
     char *value;

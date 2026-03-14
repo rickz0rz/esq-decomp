@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern UWORD CLOCK_CurrentDayOfWeekIndex;
 extern UWORD CLOCK_CurrentMonthIndex;
 extern UWORD CLOCK_CurrentDayOfMonth;

@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG MODE_NEWFILE;
 extern const char GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile[];
 extern UBYTE GCOMMAND_DigitalNicheEnabledFlag[];

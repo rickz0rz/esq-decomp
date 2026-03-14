@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern WORD WDISP_AccumulatorFlushPending;
 extern LONG WDISP_DisplayContextBase;
 extern UBYTE WDISP_PaletteTriplesRBase[];

@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void *AbsExecBase;
 extern ULONG Global_ArgCount;
 extern char *Global_ArgvStorage[];

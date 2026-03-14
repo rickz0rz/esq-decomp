@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void GCOMMAND_SetPresetEntry(LONG row, LONG value);
 
 void GCOMMAND_ExpandPresetBlock(UBYTE *packed)

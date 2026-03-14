@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef long LONG;
-
+#include <exec/types.h>
 #define CLEANUP_FLAG_CLEAR 0
 #define CLEANUP_FLAG_SET 1
 #define CLEANUP_ALERT_Y_CHAR 'Y'

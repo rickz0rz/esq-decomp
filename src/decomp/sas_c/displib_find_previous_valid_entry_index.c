@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 typedef struct DISPLIB_Entry {
     UBYTE pad0[27];
     UBYTE flags27;

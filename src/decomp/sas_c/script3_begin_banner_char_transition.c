@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef short WORD;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern char CONFIG_LRBN_FlagChar;
 extern char CONFIG_MSN_FlagChar;
 extern WORD Global_WORD_SELECT_CODE_IS_RAVESC;

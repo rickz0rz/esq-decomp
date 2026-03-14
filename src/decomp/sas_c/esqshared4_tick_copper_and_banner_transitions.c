@@ -1,9 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed char BYTE;
-typedef unsigned short UWORD;
-typedef signed short WORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern UBYTE ESQ_CopperEffectListA[];
 extern UBYTE ESQ_CopperEffectListB[];
 extern volatile UWORD VPOSR;

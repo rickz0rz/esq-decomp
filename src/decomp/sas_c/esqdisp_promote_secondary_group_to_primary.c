@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct ESQDISP_EntryTableEntry {
     char pad0[1];
 } ESQDISP_EntryTableEntry;

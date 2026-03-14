@@ -1,6 +1,4 @@
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern const char kHexDigitTable[];
 
 ULONG FORMAT_U32ToHexString(UBYTE *dst, ULONG value)

@@ -1,5 +1,4 @@
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 ULONG FORMAT_U32ToOctalString(char *out, ULONG value)
 {
     char tmp[12];

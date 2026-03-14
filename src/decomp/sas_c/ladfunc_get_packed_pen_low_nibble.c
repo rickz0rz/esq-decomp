@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed long LONG;
-
+#include <exec/types.h>
 LONG LADFUNC_GetPackedPenLowNibble(UBYTE packed)
 {
     const LONG NIBBLE_MASK = 0x0f;

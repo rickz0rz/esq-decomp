@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern UBYTE TEXTDISP_BannerFallbackValidFlag;
 extern UBYTE TEXTDISP_BannerSelectedValidFlag;
 extern UBYTE TEXTDISP_BannerCharSelected;

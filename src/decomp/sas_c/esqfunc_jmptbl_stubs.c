@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed char BYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern void TEXTDISP_SetRastForMode(LONG mode);
 extern void P_TYPE_PromoteSecondaryList(void);
 extern void DISKIO_ProbeDrivesAndAssignPaths(void);

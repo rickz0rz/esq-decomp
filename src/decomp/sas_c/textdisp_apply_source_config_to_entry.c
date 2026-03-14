@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct TEXTDISP_Entry {
     UBYTE pad0[12];
     char name[1];

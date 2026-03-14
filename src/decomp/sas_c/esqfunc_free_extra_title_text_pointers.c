@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 typedef struct TitleEntry TitleEntry;
 struct TitleEntry {
     char base_text_prefix[56];

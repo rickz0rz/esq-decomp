@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern char *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern LONG Global_REF_BOOL_IS_LINE_OR_PAGE;

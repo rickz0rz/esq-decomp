@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern WORD GCOMMAND_BannerRebuildPendingFlag;
 
 extern LONG GCOMMAND_BannerPhaseIndexCurrent;

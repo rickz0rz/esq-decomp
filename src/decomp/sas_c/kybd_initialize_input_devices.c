@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern const char Global_STR_INPUTDEVICE[];
 extern const char Global_STR_CONSOLEDEVICE[];
 extern const char Global_STR_INPUT_DEVICE[];

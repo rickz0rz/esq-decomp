@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef signed char BYTE;
-
+#include <exec/types.h>
 extern LONG Global_REF_LONG_DF0_LOGO_LST_DATA;
 extern LONG Global_REF_LONG_DF0_LOGO_LST_FILESIZE;
 extern LONG Global_REF_LONG_GFX_G_ADS_DATA;

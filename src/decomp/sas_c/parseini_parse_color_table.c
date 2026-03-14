@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 enum {
     PARSE_COLOR_MODE_CUSTOM = 4,
     PARSE_COLOR_MODE_BASE = 5,

@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void *Global_REF_DOS_LIBRARY_2;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern char *Global_PTR_WORK_BUFFER;

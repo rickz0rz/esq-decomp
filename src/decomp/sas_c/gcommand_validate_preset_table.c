@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void *AbsExecBase;
 extern UBYTE GCOMMAND_DefaultPresetTable[];
 extern UWORD GCOMMAND_PresetWorkResetPendingFlag;

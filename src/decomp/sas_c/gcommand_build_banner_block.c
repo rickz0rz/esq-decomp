@@ -1,9 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct GCOMMAND_BannerBlock {
     UBYTE lineByte0;
     UBYTE lineByte1;

@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern WORD ESQPARS2_StateIndex;
 extern LONG WDISP_DisplayContextBase;
 

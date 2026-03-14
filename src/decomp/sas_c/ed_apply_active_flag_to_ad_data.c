@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern LONG ED_AdActiveFlag;
 extern LONG Global_REF_LONG_CURRENT_EDITING_AD_NUMBER;
 extern UWORD *ED_AdRecordPtrTable[];

@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef long LONG;
-
+#include <exec/types.h>
 enum {
     RASTPORT_PEN_OFFSET = 25,
     RASTPORT_CP_X_OFFSET = 36,

@@ -1,6 +1,4 @@
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 #define CUSTOM_BASE 0x00DFF000UL
 #define CUSTOM_INTREQ_OFFSET 0x009C
 #define INTREQ_SETCLR 0x0100

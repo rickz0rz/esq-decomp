@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef long LONG;
-
+#include <exec/types.h>
 enum {
     COI_ENTRY_AUX_OFFSET = 48,
     COI_AUX_DEALLOC_LINE = 815,

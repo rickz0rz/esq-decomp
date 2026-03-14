@@ -1,7 +1,4 @@
-typedef unsigned short UWORD;
-typedef signed short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern LONG DISPTEXT_LineTableLockFlag;
 extern WORD DISPTEXT_CurrentLineIndex;
 extern WORD DISPTEXT_TargetLineIndex;

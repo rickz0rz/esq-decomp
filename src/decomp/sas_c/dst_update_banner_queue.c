@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE ESQ_SecondarySlotModeFlagChar;
 extern WORD DST_PrimaryCountdown;
 extern WORD DST_SecondaryCountdown;

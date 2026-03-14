@@ -1,6 +1,4 @@
-typedef unsigned short UWORD;
-typedef long LONG;
-
+#include <exec/types.h>
 extern LONG CTASKS_CloseTaskFileHandle;
 extern UWORD CTASKS_CloseTaskCompletionFlag;
 extern LONG Global_REF_LIST_CLOSE_TASK_PROC;

@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct GCOMMAND_Bitmap {
     UBYTE pad0[8];
     ULONG plane0Ptr;

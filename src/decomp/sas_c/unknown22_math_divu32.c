@@ -1,7 +1,4 @@
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 static ULONG swap32(ULONG v)
 {
     return (v << 16) | (v >> 16);

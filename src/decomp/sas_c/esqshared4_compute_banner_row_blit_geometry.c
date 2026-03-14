@@ -1,6 +1,4 @@
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern ULONG ESQPARS2_BannerRowCount;
 extern UWORD ESQPARS2_BannerRowWidthBytes;
 extern UWORD ESQPARS2_BannerCopyBlockSpanBytes;

@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef long LONG;
+#include <exec/types.h>
 
 #define BRUSH_NULL 0
 #define BRUSH_SELECT_SLOT_STATUS_FAIL 0

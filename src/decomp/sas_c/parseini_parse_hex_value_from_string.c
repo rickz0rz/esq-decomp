@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 enum {
     CHARCLASS_ALPHA_BIT_MASK = 0x80
 };

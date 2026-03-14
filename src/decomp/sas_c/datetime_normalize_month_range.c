@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 enum {
     DATETIME_MONTH_OFFSET = 8,
     DATETIME_OVERFLOW_FLAG_OFFSET = 18,

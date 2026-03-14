@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 LONG STRING_CompareN(const char *a, const char *b, LONG maxLen)
 {
     LONG diff;

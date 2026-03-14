@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct DST_ParsedDateTime {
     UBYTE raw[22];
 } DST_ParsedDateTime;

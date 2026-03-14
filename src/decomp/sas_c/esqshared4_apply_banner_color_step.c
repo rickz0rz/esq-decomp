@@ -1,5 +1,4 @@
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 void ESQSHARED4_SetBannerCopperColorAndThreshold(UWORD value);
 void ESQSHARED4_BindAndClearBannerWorkRaster(UWORD span);
 

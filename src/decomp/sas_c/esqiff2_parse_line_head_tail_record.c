@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 extern UBYTE TEXTDISP_SecondaryGroupCode;
 extern UWORD ESQIFF_RecordLength;

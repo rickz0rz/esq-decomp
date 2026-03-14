@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern LONG LOCAVAIL_GetFilterWindowHalfSpan(void);
 extern void LADFUNC_DrawEntryPreview(LONG entryIndex);
 extern void ESQIFF_RunPendingCopperAnimations(void);

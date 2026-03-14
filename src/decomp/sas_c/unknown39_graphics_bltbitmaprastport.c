@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void *Global_GraphicsLibraryBase_A4;
 extern LONG _LVOBltBitMapRastPort(void *gfxBase, void *bitMap, LONG sx, LONG sy, char *rastPort, LONG dx, LONG dy, LONG width, LONG height, LONG minterm, LONG mask);
 

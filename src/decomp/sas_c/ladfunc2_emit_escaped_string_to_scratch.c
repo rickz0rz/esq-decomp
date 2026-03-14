@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void LADFUNC2_EmitEscapedCharToScratch(LONG ch);
 
 void LADFUNC2_EmitEscapedStringToScratch(const char *src)

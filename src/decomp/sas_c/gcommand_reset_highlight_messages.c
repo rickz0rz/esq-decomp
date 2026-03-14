@@ -1,7 +1,4 @@
-typedef signed short WORD;
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct MsgLike {
     UBYTE pad0[20];
     LONG field20;

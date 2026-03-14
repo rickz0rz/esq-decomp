@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef long LONG;
+#include <exec/types.h>
 
 enum {
     ALIGNED_STATUS_MODE_PRIMARY = 1,

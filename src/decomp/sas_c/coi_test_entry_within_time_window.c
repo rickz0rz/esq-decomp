@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef long LONG;
-
+#include <exec/types.h>
 enum {
     COI_RESULT_FALSE = 0,
     COI_SLOT_MIN_VALID = 1,

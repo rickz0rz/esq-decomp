@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct TLIBA3_ViewModeRuntimeEntry {
     UBYTE pad0[10];
     char *rastPort10;

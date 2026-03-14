@@ -1,9 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 #define ESQIFF_BRUSH_HEIGHT_OFFSET 178
 #define ESQIFF_BRUSH_PLANE_DEPTH_OFFSET 184
 #define ESQIFF_BRUSH_FLAGS196_OFFSET 196

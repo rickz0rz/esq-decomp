@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 enum {
     DISKIO_WORKBUF_SENTINEL_ERROR = 0xFFFF
 };

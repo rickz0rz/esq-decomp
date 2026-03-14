@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern UBYTE ESQ_CopperListBannerA;
 extern UBYTE ESQ_CopperListBannerB;
 extern UBYTE ESQ_BannerSweepWaitRowA;

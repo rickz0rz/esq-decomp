@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef signed char BYTE;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct ESQIFF_PendingBrushNode {
     char pathText[190];
     UBYTE sourceType190;

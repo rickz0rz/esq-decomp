@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct WDISP_RastPortOverlay {
     UBYTE pad0[4];
     void *bitMap;

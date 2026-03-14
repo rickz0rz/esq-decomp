@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern UWORD ESQ_BannerColorSweepProgramA;
 extern UWORD ESQ_BannerColorSweepProgramB;
 extern UWORD ESQ_BannerColorSweepProgramA_AnchorColorWord;

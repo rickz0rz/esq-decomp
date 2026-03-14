@@ -1,6 +1,4 @@
-typedef signed short WORD;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern WORD CTASKS_IffTaskDoneFlag;
 extern WORD LADFUNC_EntryCount;
 extern UWORD ESQIFF_ExternalAssetFlags;

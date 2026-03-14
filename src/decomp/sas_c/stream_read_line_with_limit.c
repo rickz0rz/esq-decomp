@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct StreamBufferState {
     ULONG owner_or_link;
     UBYTE *buffer_cursor; /* +4 */

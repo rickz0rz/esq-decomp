@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 typedef void (*SignalCallbackFn)(void);
 
 extern LONG Global_SignalCallbackPtr;

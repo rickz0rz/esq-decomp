@@ -1,5 +1,4 @@
-typedef short WORD;
-
+#include <exec/types.h>
 extern char *ESQIFF_SecondaryLineHeadPtr;
 extern char *ESQIFF_SecondaryLineTailPtr;
 extern char *ESQIFF_PrimaryLineHeadPtr;

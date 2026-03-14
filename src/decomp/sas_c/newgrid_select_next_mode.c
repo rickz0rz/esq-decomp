@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef signed char BYTE;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG NEWGRID_ModeSelectionTable[7];
 extern LONG NEWGRID_ModeCycleCountdown;
 extern LONG NEWGRID_ModeCandidateIndex;

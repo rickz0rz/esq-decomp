@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef long LONG;
-
+#include <exec/types.h>
 enum {
     ENTRY_MODE_FLAGS = 7,
     ENTRY_FLAG_Y_MAX_INDEX = 5,

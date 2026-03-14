@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef long LONG;
+#include <exec/types.h>
 
 enum {
     CLOCK_TEMPLATE_TOKEN_F = 'F',

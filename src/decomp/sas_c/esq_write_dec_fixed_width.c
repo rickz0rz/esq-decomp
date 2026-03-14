@@ -1,6 +1,4 @@
-typedef long LONG;
-typedef short WORD;
-
+#include <exec/types.h>
 void ESQ_WriteDecFixedWidth(char *outBuf, LONG value, LONG digits)
 {
     WORD count;

@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern const char Global_STR_DF0_CONFIG_DAT_1[];
 extern const char Global_STR_DEFAULT_CONFIG_FORMATTED[];
 extern char BRUSH_LabelScratch[];

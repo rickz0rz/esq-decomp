@@ -1,7 +1,4 @@
-typedef unsigned short UWORD;
-typedef signed short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 #define DISPTEXT_BUILD_LINE_PTRS_FLAG 1
 #define DISPTEXT_MAX_LINE_WIDTH_PX 624
 #define DISPTEXT_MAX_TARGET_LINES 20

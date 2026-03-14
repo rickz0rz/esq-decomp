@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern const char Global_STR_IN_STEREO[];
 extern const UBYTE WDISP_CharClassTable[];
 

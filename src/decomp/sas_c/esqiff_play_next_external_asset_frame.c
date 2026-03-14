@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-
+#include <exec/types.h>
 extern LONG AbsExecBase;
 extern LONG Global_REF_GRAPHICS_LIBRARY;
 extern LONG WDISP_DisplayContextBase;

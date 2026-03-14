@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern const char TLIBA1_FormatFallbackBuffer[];
 extern char *TEXTDISP_FormatEntryFallbackTable;
 extern const char TLIBA1_FormatFallbackFieldPtr0[];

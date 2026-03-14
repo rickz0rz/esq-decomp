@@ -1,4 +1,4 @@
-typedef unsigned char UBYTE;
+#include <exec/types.h>
 
 enum {
     BRUSH_NULL = 0,

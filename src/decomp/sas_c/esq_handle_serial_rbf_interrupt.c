@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 typedef struct SerialIntCtx {
     UBYTE pad_00[24];
     WORD serial_word_24;

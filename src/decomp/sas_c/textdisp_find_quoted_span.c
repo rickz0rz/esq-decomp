@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern char *STR_FindCharPtr(const char *s, LONG needle);
 extern const UBYTE WDISP_CharClassTable[];
 

@@ -1,5 +1,4 @@
-typedef long LONG;
-
+#include <exec/types.h>
 enum {
     CUSTOM_INTENA = 0xDFF09A,
     INTENA_RBF_DISABLE_MASK = 0x0800,

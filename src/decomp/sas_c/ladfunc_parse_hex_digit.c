@@ -1,7 +1,4 @@
-typedef signed char BYTE;
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 enum {
     CHARCLASS_DECIMAL_DIGIT_BIT = 2,
     CHARCLASS_ALPHA_BIT = 7,

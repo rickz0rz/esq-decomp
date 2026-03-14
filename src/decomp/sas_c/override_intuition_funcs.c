@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void *AbsExecBase;
 extern void *Global_REF_INTUITION_LIBRARY;
 extern LONG Global_REF_BACKED_UP_INTUITION_AUTOREQUEST;

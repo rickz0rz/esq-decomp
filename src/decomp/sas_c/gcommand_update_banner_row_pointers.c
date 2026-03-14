@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG GCOMMAND_BannerRowIndexPrevious;
 extern LONG GCOMMAND_BannerRowIndexCurrent;
 

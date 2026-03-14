@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern UBYTE *ESQIFF_RecordBufferPtr;
 extern UBYTE ESQIFF_RecordChecksumByte;
 extern UWORD ESQIFF_ParseAttemptCount;

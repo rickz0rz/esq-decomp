@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern UWORD GCOMMAND_PresetSeedPackedWordTable[];
 

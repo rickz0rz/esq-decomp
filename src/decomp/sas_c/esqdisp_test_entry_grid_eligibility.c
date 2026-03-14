@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 LONG ESQDISP_TestEntryGridEligibility(const UBYTE *entry, WORD index)
 {
     LONG result;

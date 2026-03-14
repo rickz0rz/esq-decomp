@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE GCOMMAND_DigitalNicheEnabledFlag;
 extern LONG GCOMMAND_NicheTextPen;
 extern LONG GCOMMAND_NicheFramePen;

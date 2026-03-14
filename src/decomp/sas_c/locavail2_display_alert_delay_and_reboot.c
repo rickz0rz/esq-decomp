@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 enum {
     LOCAVAIL2_REBOOT_DELAY_SPIN_COUNT = 0xF4240
 };

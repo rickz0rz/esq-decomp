@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE CONFIG_RefreshIntervalMinutes;
 extern LONG CONFIG_RefreshIntervalSeconds;
 

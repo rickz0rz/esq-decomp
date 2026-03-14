@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern LONG GCOMMAND_NicheForceMode5Flag;
 extern LONG GCOMMAND_NicheModeCycleCount;
 

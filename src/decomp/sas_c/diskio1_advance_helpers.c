@@ -1,5 +1,4 @@
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void DISKIO1_AppendTimeSlotMaskSelectedTimes(void);
 extern void DISKIO1_AppendBlackoutMaskSelectedTimes(void);
 

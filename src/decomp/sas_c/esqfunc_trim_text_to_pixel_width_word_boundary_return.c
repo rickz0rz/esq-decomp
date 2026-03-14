@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 /*
  * Exported return-tail symbol from the original assembly. This C stub is used
  * to keep the SAS/C lane wired while this tail remains split from its parent

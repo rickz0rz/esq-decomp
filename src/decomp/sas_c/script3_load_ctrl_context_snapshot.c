@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern UBYTE SCRIPT_Type20SubtypeCache;
 extern UBYTE SCRIPT_PendingWeatherCommandChar;
 extern UBYTE SCRIPT_PendingTextdispCmdChar;

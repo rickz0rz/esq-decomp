@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern long DISKIO_LoadFileToWorkBuffer(const char *path);
 extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);

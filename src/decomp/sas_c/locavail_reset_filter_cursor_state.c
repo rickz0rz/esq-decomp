@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern LONG LOCAVAIL_FilterClassId;
 extern LONG LOCAVAIL_FilterStep;
 

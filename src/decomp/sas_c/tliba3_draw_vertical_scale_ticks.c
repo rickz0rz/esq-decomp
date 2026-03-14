@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 typedef struct TLIBA3_DimBlock {
     UWORD width;
     UWORD height;

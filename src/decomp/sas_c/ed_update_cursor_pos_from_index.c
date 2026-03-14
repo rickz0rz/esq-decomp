@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern LONG ED_TextLimit;
 extern LONG ED_CursorColumnIndex;
 extern LONG ED_ViewportOffset;

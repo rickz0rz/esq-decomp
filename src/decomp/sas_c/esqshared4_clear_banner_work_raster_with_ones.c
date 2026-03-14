@@ -1,6 +1,4 @@
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern ULONG *WDISP_BannerWorkRasterPtr;
 
 void ESQSHARED4_ClearBannerWorkRasterWithOnes(void)

@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern UBYTE ESQ_STR_A;
 extern char ESQ_SelectCodeBuffer[];
 extern char ESQPARS_SelectionSuffixBuffer[];

@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void *Global_REF_UTILITY_LIBRARY;
 extern LONG _LVOAmiga2Date(void *utilityBase, LONG seconds, void *clockData);
 

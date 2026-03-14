@@ -1,7 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern void ESQSHARED_UpdateMatchingEntriesByTitle(
     char *title_key,
     ULONG arg2,

@@ -1,10 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed char BYTE;
-typedef unsigned short UWORD;
-typedef signed short WORD;
-typedef unsigned long ULONG;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern UBYTE ED_DiagVinModeChar;
 extern UBYTE ESQ_STR_B[];
 extern LONG LOCAVAIL_FilterModeFlag;

@@ -1,8 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef signed short WORD;
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern LONG DISPTEXT_ControlMarkerXOffsetPx;
 extern LONG DISPTEXT_LineWidthPx;
 extern WORD DISPTEXT_CurrentLineIndex;

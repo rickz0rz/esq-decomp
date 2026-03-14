@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-
+#include <exec/types.h>
 extern void DISKIO2_WriteCurDayDataFile(void);
 extern void DISKIO2_WriteNxtDayDataFile(void);
 extern void DISKIO2_WriteOinfoDataFile(void);

@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern LONG ED_TextLimit;
 
 extern const char Global_STR_LADFUNC_C_20[];

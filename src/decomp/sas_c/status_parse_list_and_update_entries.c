@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern const char WDISP_StatusListMatchPattern[];
 extern UWORD CLOCK_CurrentDayOfYear;
 extern UWORD CLOCK_CurrentYearValue;

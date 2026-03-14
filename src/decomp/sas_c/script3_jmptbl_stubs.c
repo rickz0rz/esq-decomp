@@ -1,9 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef signed char BYTE;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void LOCAVAIL_UpdateFilterStateMachine(void *ctxPtr, void *statePtr);
 extern LONG MATH_DivS32(LONG dividend, LONG divisor);
 extern char *ESQSHARED_ApplyProgramTitleTextFilters(char *text, LONG maxLen);

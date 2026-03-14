@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 void NEWGRID_ResetRowTable(UBYTE *gridCtx)
 {
     LONG rowIndex;

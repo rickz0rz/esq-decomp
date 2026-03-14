@@ -1,5 +1,4 @@
-typedef signed long LONG;
-
+#include <exec/types.h>
 extern void *Global_REF_DOS_LIBRARY_2;
 extern LONG _LVOLock(void *dosBase, const char *path, LONG mode);
 extern void _LVOUnLock(void *dosBase, LONG lockHandle);

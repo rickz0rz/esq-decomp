@@ -1,7 +1,4 @@
-typedef unsigned short UWORD;
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct LadfuncEntry {
     UWORD startSlot;
     UWORD endSlot;

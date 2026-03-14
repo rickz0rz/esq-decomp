@@ -1,8 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern void *WDISP_DisplayContextBase;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_HANDLE_PREVUEC_FONT;

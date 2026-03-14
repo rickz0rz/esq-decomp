@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-
+#include <exec/types.h>
 extern ULONG MATH_DivU32(ULONG dividend, ULONG divisor);
 
 LONG MATH_DivS32(LONG dividend, LONG divisor)

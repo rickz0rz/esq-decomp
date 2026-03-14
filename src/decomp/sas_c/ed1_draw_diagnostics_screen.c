@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef signed char BYTE;
-
+#include <exec/types.h>
 extern BYTE ED_MenuStateId;
 extern WORD ED_DiagnosticsScreenActive;
 

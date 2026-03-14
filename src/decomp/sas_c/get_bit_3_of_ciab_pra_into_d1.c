@@ -1,6 +1,4 @@
-typedef unsigned char UBYTE;
-typedef short WORD;
-
+#include <exec/types.h>
 WORD GET_BIT_3_OF_CIAB_PRA_INTO_D1(void)
 {
     volatile UBYTE *ciabPra;

@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef short WORD;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 extern WORD Global_WORD_SELECT_CODE_IS_RAVESC;
 extern char CONFIG_MSN_FlagChar;
 extern WORD Global_RefreshTickCounter;

@@ -1,6 +1,4 @@
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
+#include <exec/types.h>
 typedef struct P_TYPE_Entry {
     UBYTE typeByte;
     UBYTE subtypeByte;
