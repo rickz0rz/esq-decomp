@@ -15,6 +15,7 @@ modules/groups/a/s/gcommand.s decomp/replacements/modules/groups/a/s/gcommand.s
 modules/groups/a/u/gcommand3.s decomp/replacements/modules/groups/a/u/gcommand3.s
 modules/submodules/memory.s decomp/replacements/modules/submodules/memory.s
 modules/submodules/unknown3.s decomp/replacements/modules/submodules/unknown3.s
+modules/submodules/unknown7.s decomp/replacements/modules/submodules/unknown7.s
 modules/submodules/unknown41.s decomp/replacements/modules/submodules/unknown41.s
 modules/submodules/unknown40.s decomp/replacements/modules/submodules/unknown40.s
 modules/groups/_main/b/b.s decomp/replacements/modules/groups/_main/b/b.s
