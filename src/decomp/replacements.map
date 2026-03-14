@@ -12,6 +12,7 @@ modules/groups/_main/a/xjump.s decomp/replacements/modules/groups/_main/a/xjump.
 modules/groups/_main/a/a.s decomp/replacements/modules/groups/_main/a/a.s
 modules/groups/a/q/esqshared4.s decomp/replacements/modules/groups/a/q/esqshared4.s
 modules/groups/a/s/gcommand.s decomp/replacements/modules/groups/a/s/gcommand.s
+modules/groups/a/t/gcommand2.s decomp/replacements/modules/groups/a/t/gcommand2.s
 modules/groups/a/u/gcommand3.s decomp/replacements/modules/groups/a/u/gcommand3.s
 modules/submodules/memory.s decomp/replacements/modules/submodules/memory.s
 modules/submodules/unknown3.s decomp/replacements/modules/submodules/unknown3.s
