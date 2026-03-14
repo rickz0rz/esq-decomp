@@ -82,6 +82,14 @@ def load_replacement_map(repo_root: Path) -> set[str]:
     return mapped
 
 
+def normalize_module_path(path: str) -> str:
+    """Map compare-script ORIG_ASM paths back to the canonical source include path."""
+    prefix = "decomp/replacements/"
+    if path.startswith(prefix):
+        return path[len(prefix) :]
+    return path
+
+
 def build_compare_module_index(scripts_dir: Path) -> dict[str, str]:
     index: dict[str, str] = {}
 
@@ -89,7 +97,7 @@ def build_compare_module_index(scripts_dir: Path) -> dict[str, str]:
         content = compare_path.read_text()
         match = RE_ORIG_ASM.search(content)
         if match:
-            index[compare_path.name] = match.group("path")
+            index[compare_path.name] = normalize_module_path(match.group("path"))
 
     return index
 
@@ -152,6 +160,7 @@ def collect_module_stats(repo_root: Path) -> tuple[dict[str, ModuleStats], int]:
             continue
 
         module_path = asm_match.group("path")
+        module_path = normalize_module_path(module_path)
         entry_name = entry_match.group("entry")
         stats = modules[module_path]
         stats.sasc_compare_scripts.add(compare_path.name)

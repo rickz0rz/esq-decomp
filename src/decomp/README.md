@@ -21,6 +21,7 @@ The repository currently has two active decomp lanes:
 - Before starting a target, check whether it already exists in `src/decomp/sas_c/` and whether a `.dis` has already been generated. Many listed targets are already present there, even when a GCC lane also exists.
 - Prefer landing new restored behavior in `src/decomp/sas_c/` when practical. Treat GCC replacement files as staging/reference material unless the target is explicitly staying in the GCC lane.
 - For module-level hybrid build triage, use `src/decomp/scripts/report_hybrid_module_promotion_coverage.py` to correlate GCC promotion lanes and restored SAS/C compare lanes back to original asm modules, then compare that against `src/decomp/replacements.map`.
+- The coverage report normalizes compare lanes that still point at passthrough copies under `src/decomp/replacements/` back to their original `src/modules/...` paths before checking `src/decomp/replacements.map`; use the normalized module path as the source of truth when triaging “mapped” vs “unmapped” rows.
 
 ## SAS/C Lane
 - `./sc-build-with-dis.sh <filename>.c` expects a filename from `src/decomp/sas_c/`.
