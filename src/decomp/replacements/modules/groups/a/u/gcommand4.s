@@ -2,9 +2,11 @@
 ; DECOMP TARGETS gcommand4 brush-result helper foothold module boundary
 ; SOURCE: modules/groups/a/u/gcommand4.s
 ; PURPOSE:
-;   Hybrid replacement boundary for the GCOMMAND4 module now that the restored
-;   SAS/C lane covers GCOMMAND_SaveBrushResult with a zero-byte semantic diff in
-;   the current checkout.
+;   Object-level hybrid replacement for the GCOMMAND4 module now that the
+;   restored SAS/C lane covers GCOMMAND_SaveBrushResult with a zero-byte
+;   semantic diff in the current checkout. This replacement now carries the
+;   module body directly instead of delegating back to the canonical asm
+;   include.
 ;------------------------------------------------------------------------------
 
     XDEF    GCOMMAND_SaveBrushResult
