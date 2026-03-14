@@ -42,6 +42,7 @@ modules/groups/a/o/esqiff2.s decomp/replacements/modules/groups/a/o/esqiff2.s
 modules/groups/a/o/esqpars.s decomp/replacements/modules/groups/a/o/esqpars.s
 modules/groups/a/p/esqshared.s decomp/replacements/modules/groups/a/p/esqshared.s
 modules/groups/a/r/flib.s decomp/replacements/modules/groups/a/r/flib.s
+modules/groups/a/x/ladfunc2.s decomp/replacements/modules/groups/a/x/ladfunc2.s
 modules/groups/a/w/ladfunc.s decomp/replacements/modules/groups/a/w/ladfunc.s
 modules/groups/a/y/locavail.s decomp/replacements/modules/groups/a/y/locavail.s
 modules/groups/b/a/parseini.s decomp/replacements/modules/groups/b/a/parseini.s
