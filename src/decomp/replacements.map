@@ -107,3 +107,6 @@ modules/groups/b/a/textdisp.s decomp/replacements/modules/groups/b/a/textdisp.s
 modules/groups/b/a/textdisp2.s decomp/replacements/modules/groups/b/a/textdisp2.s
 modules/groups/b/a/script4.s decomp/replacements/modules/groups/b/a/script4.s
 modules/groups/b/a/textdisp3.s decomp/replacements/modules/groups/b/a/textdisp3.s
+modules/submodules/unknown.s decomp/replacements/modules/submodules/unknown.s
+modules/submodules/unknown2a.s decomp/replacements/modules/submodules/unknown2a.s
+modules/submodules/unknown30.s decomp/replacements/modules/submodules/unknown30.s
