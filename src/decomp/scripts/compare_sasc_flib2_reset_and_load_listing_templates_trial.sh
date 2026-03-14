@@ -8,9 +8,9 @@ SASC_SRC="flib2_defaults.c"
 SASC_DIS="src/decomp/sas_c/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/groups/a/s/flib2.s"
 OUT_DIR="build/decomp/sasc_trial"
-BASE="flib2_load_digital_mplex_defaults"
-ENTRY="FLIB2_LoadDigitalMplexDefaults"
-ENTRY_SASC_REGEX="^FLIB2_LoadDigitalMplexDefaults[A-Za-z0-9_]*:$"
+BASE="flib2_reset_and_load_listing_templates"
+ENTRY="FLIB2_ResetAndLoadListingTemplates"
+ENTRY_SASC_REGEX="^FLIB2_ResetAndLoadListingTemplat[A-Za-z0-9_]*:$"
 
 mkdir -p "$OUT_DIR"
 
