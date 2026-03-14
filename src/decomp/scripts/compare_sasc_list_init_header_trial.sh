@@ -8,6 +8,7 @@ SASC_SRC="list_init_header.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown34.s"
+ENTRY_ORIG="LIST_InitHeader"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="list_init_header"
 

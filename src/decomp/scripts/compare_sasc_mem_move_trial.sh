@@ -8,6 +8,7 @@ SASC_SRC="unknown34_pair.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown34.s"
+ENTRY_ORIG="MEM_Move"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="mem_move"
 
