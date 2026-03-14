@@ -1,10 +1,15 @@
 /^___FLIB2_[A-Za-z0-9_]+__[0-9]+:$/ { next }
 /^__const:$/ { next }
 /^__strings:$/ { next }
+/^XREF / { next }
+/^XDEF / { next }
+/^END$/ { next }
 /^MOVE\.L A7,D0$/ { next }
 /^SUBQ\.L #\$8,D0$/ { next }
 /^CMP\.L __base\(A4\),D0$/ { next }
 /^BCS\.W _XCOVF$/ { next }
+/^CMP\.L __base\(A4\),A7$/ { next }
+/^BCS(\.[A-Z]+)? _XCOVF$/ { next }
 /^MOVEM(\.[A-Z]+)? / { next }
 
 function flush_zero_reg() {
@@ -53,6 +58,7 @@ function flush_pending_call() {
     gsub(/\.W/, "", line)
     gsub(/SYM\(A4\)/, "SYM", line)
     gsub(/SYM\(PC\)/, "SYM", line)
+    gsub(/^FLIB2_ResetAndLoadListingTemplat:$/, "FLIB2_ResetAndLoadListingTemplates:", line)
     gsub(/^BSR(\.[A-Z]+)? /, "CALL ", line)
     gsub(/^JSR /, "CALL ", line)
     gsub(/^BRA(\.[A-Z]+)? /, "BRANCH ", line)
@@ -85,6 +91,11 @@ function flush_pending_call() {
         next
     }
 
+    if (line == "SUBA A0,A0") {
+        const_val["A0"] = "0"
+        next
+    }
+
     if (line ~ /^MOVEQ #[0-9]+,D[0-7]$/) {
         split(substr(line, 8), imm_parts, ",")
         const_val[imm_parts[2]] = imm_parts[1]
@@ -103,6 +114,11 @@ function flush_pending_call() {
             }
             next
         }
+    }
+
+    if (line == "MOVE A0,SYM" && ("A0" in const_val) && const_val["A0"] == "0") {
+        print "CLR SYM"
+        next
     }
 
     flush_zero_reg()
