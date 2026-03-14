@@ -40,6 +40,12 @@ extern void ESQ_MainEntryNoOpHook(void);
 extern LONG ESQ_ParseCommandLineAndRun(char *cmdline);
 extern LONG ESQ_ShutdownAndReturn(LONG exitCode);
 
+/*
+ * Restored original entry ABI for the ESQ startup slice.
+ * This is not yet a hosted SAS/C `main()` replacement; a future pure-C build
+ * will likely need a thin CRT-facing wrapper or custom startup stub that
+ * marshals arguments into this original entry contract.
+ */
 LONG ESQ_StartupEntry(UBYTE *startupCmdString, LONG startupCmdLength)
 {
     UBYTE *currentTask;

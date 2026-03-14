@@ -110,6 +110,7 @@ Keep any generated binaries out of version control.
 - Seeded `modules/groups/b/a/tliba2.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the TLIBA2 broadcast-window/time-parse helper module has full non-`JMPTBL` SAS/C compare coverage.
 - Seeded `modules/groups/b/a/script4.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the SCRIPT4 banner-char/inset/highlight helper module has full non-`JMPTBL` SAS/C compare coverage.
 - Seeded `modules/groups/b/a/textdisp3.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the TEXTDISP3 text/layout helper module has a useful restored non-`JMPTBL` SAS/C foothold in the current checkout.
+- Seeded `modules/submodules/unknown40.s` in `src/decomp/replacements.map` with a passthrough hybrid boundary now that the UNKNOWN40 battery-clock / DOS wrapper helper module has green restored SAS/C compare coverage in the current checkout.
 
 ## Contributor Guide
 If you plan to extend or annotate the disassembly, read the contributor guidelines in [`AGENTS.md`](AGENTS.md) for module organization, coding style, testing expectations, and review workflow.
