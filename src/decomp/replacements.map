@@ -14,6 +14,7 @@ modules/groups/a/q/esqshared4.s decomp/replacements/modules/groups/a/q/esqshared
 modules/groups/a/s/gcommand.s decomp/replacements/modules/groups/a/s/gcommand.s
 modules/groups/a/t/gcommand2.s decomp/replacements/modules/groups/a/t/gcommand2.s
 modules/groups/a/u/gcommand3.s decomp/replacements/modules/groups/a/u/gcommand3.s
+modules/groups/a/u/gcommand4.s decomp/replacements/modules/groups/a/u/gcommand4.s
 modules/submodules/memory.s decomp/replacements/modules/submodules/memory.s
 modules/submodules/unknown3.s decomp/replacements/modules/submodules/unknown3.s
 modules/submodules/unknown4.s decomp/replacements/modules/submodules/unknown4.s
@@ -58,6 +59,7 @@ modules/groups/a/i/disptext.s decomp/replacements/modules/groups/a/i/disptext.s
 modules/groups/a/j/dst.s decomp/replacements/modules/groups/a/j/dst.s
 modules/groups/a/j/dst2.s decomp/replacements/modules/groups/a/j/dst2.s
 modules/groups/a/k/ed1.s decomp/replacements/modules/groups/a/k/ed1.s
+modules/groups/a/l/ed3.s decomp/replacements/modules/groups/a/l/ed3.s
 modules/groups/a/m/esq.s decomp/replacements/modules/groups/a/m/esq.s
 modules/groups/a/n/esqdisp.s decomp/replacements/modules/groups/a/n/esqdisp.s
 modules/groups/a/n/esqiff.s decomp/replacements/modules/groups/a/n/esqiff.s
