@@ -22,6 +22,8 @@ RE_COMPARE_SCRIPT = re.compile(
 RE_COMPARE_FALLBACK = re.compile(r"compare_[A-Za-z0-9_]+\.sh")
 RE_ORIG_ASM = re.compile(r'^ORIG_ASM="src/(?P<path>[^"]+\.s)"', re.MULTILINE)
 RE_ENTRY = re.compile(r'^ENTRY="(?P<entry>[^"]+)"', re.MULTILINE)
+RE_ENTRY_ORIG = re.compile(r'^ENTRY_ORIG="(?P<entry>[^"]+)"', re.MULTILINE)
+RE_TARGET = re.compile(r'^TARGET="(?P<entry>[^"]+)"', re.MULTILINE)
 
 
 @dataclass
@@ -90,6 +92,22 @@ def normalize_module_path(path: str) -> str:
     return path
 
 
+def extract_effective_entry_name(content: str) -> str | None:
+    target_match = RE_TARGET.search(content)
+    if target_match is not None:
+        return target_match.group("entry")
+
+    entry_match = RE_ENTRY.search(content)
+    if entry_match is not None:
+        return entry_match.group("entry")
+
+    entry_orig_match = RE_ENTRY_ORIG.search(content)
+    if entry_orig_match is not None:
+        return entry_orig_match.group("entry")
+
+    return None
+
+
 def build_compare_module_index(scripts_dir: Path) -> dict[str, str]:
     index: dict[str, str] = {}
 
@@ -155,13 +173,12 @@ def collect_module_stats(repo_root: Path) -> tuple[dict[str, ModuleStats], int]:
     for compare_path in scripts_dir.glob("compare_sasc*_trial.sh"):
         content = compare_path.read_text()
         asm_match = RE_ORIG_ASM.search(content)
-        entry_match = RE_ENTRY.search(content)
-        if asm_match is None or entry_match is None:
+        entry_name = extract_effective_entry_name(content)
+        if asm_match is None or entry_name is None:
             continue
 
         module_path = asm_match.group("path")
         module_path = normalize_module_path(module_path)
-        entry_name = entry_match.group("entry")
         stats = modules[module_path]
         stats.sasc_compare_scripts.add(compare_path.name)
         stats.sasc_entry_names.add(entry_name)

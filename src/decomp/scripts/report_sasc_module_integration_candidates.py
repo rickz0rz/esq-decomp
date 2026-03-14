@@ -19,6 +19,8 @@ from pathlib import Path
 
 RE_ORIG_ASM = re.compile(r'^ORIG_ASM="src/(?P<path>[^"]+\.s)"', re.MULTILINE)
 RE_ENTRY = re.compile(r'^ENTRY="(?P<entry>[^"]+)"', re.MULTILINE)
+RE_ENTRY_ORIG = re.compile(r'^ENTRY_ORIG="(?P<entry>[^"]+)"', re.MULTILINE)
+RE_TARGET = re.compile(r'^TARGET="(?P<entry>[^"]+)"', re.MULTILINE)
 RE_SASC_SRC = re.compile(r'^SASC_SRC="(?P<src>[^"]+\.c)"', re.MULTILINE)
 RE_XDEF = re.compile(r"^\s*XDEF\s+(?P<sym>[A-Za-z0-9_]+)", re.MULTILINE)
 
@@ -81,6 +83,22 @@ def normalize_module_path(path: str) -> str:
     return path
 
 
+def extract_effective_entry_name(content: str) -> str | None:
+    target_match = RE_TARGET.search(content)
+    if target_match is not None:
+        return target_match.group("entry")
+
+    entry_match = RE_ENTRY.search(content)
+    if entry_match is not None:
+        return entry_match.group("entry")
+
+    entry_orig_match = RE_ENTRY_ORIG.search(content)
+    if entry_orig_match is not None:
+        return entry_orig_match.group("entry")
+
+    return None
+
+
 def load_mapped_modules(repo_root: Path) -> list[str]:
     mapped: list[str] = []
     map_path = repo_root / "src/decomp/replacements.map"
@@ -117,13 +135,12 @@ def collect_sasc_compare_stats(repo_root: Path) -> dict[str, ModuleStats]:
     for compare_path in scripts_dir.glob("compare_sasc*_trial.sh"):
         content = compare_path.read_text()
         asm_match = RE_ORIG_ASM.search(content)
-        entry_match = RE_ENTRY.search(content)
+        entry_name = extract_effective_entry_name(content)
         src_match = RE_SASC_SRC.search(content)
-        if asm_match is None or entry_match is None or src_match is None:
+        if asm_match is None or entry_name is None or src_match is None:
             continue
 
         module_path = normalize_module_path(asm_match.group("path"))
-        entry_name = entry_match.group("entry")
         sasc_src = src_match.group("src")
 
         stats = stats_by_module[module_path]

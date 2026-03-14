@@ -3,13 +3,13 @@ BEGIN {
 }
 
 /^P_TYPE_WritePromoIdDataFile:$/ { label=1 }
-/SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer/ { openf=1 }
-/SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes/ { writef=1 }
-/SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush/ { closef=1 }
+/SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer|SCRIPT_JMPTBL_DISKIO_OpenFileWit/ { openf=1 }
+/SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes|SCRIPT_JMPTBL_DISKIO_WriteBuffer/ { writef=1 }
+/SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush|SCRIPT_JMPTBL_DISKIO_CloseBuffer/ { closef=1 }
 /PARSEINI_JMPTBL_WDISP_SPrintf/ { sprintf_call=1 }
 /P_TYPE_STR_NO_DATA/ { nodata=1 }
-/#1006([^0-9]|$)|#\$3ee|1006\.[Ww]/ { mode=1 }
-/#9([^0-9]|$)|#\$09|9\.[Ww]/ { len9=1 }
+/#1006([^0-9]|$)|#\$03?[Ee][Ee]|1006\.[Ww]|\(\$3ee\)\.[Ww]/ { mode=1 }
+/#9([^0-9]|$)|#\$09|9\.[Ww]|\(\$9\)\.[Ww]/ { len9=1 }
 /^RTS$/ { rts=1 }
 
 END {

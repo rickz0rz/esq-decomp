@@ -3,14 +3,14 @@ BEGIN {
 }
 
 /^P_TYPE_ParseAndStoreTypeRecord:$/ { label=1 }
-/SCRIPT3_JMPTBL_STRING_CopyPadNul/ { copypad=1 }
-/SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt/ { parse=1 }
+/SCRIPT3_JMPTBL_STRING_CopyPadNul|STRING_CopyPadNul/ { copypad=1 }
+/SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt|PARSE_ReadSignedLongSkipClass3/ { parse=1 }
 /P_TYPE_FreeEntry/ { freec=1 }
 /P_TYPE_AllocateEntry/ { allocc=1 }
 /TEXTDISP_PrimaryGroupCode|P_TYPE_PrimaryGroupListPtr/ { primary=1 }
 /TEXTDISP_SecondaryGroupCode|P_TYPE_SecondaryGroupListPtr/ { secondary=1 }
-/#1([^0-9]|$)|MOVEQ #1/ { one=1 }
-/#0([^0-9]|$)|MOVEQ #0|CLR\./ { zero=1 }
+/#\$?1([^0-9A-Fa-f]|$)|MOVEQ(\.[A-Z])? #\$?1/ { one=1 }
+/#\$?0([^0-9A-Fa-f]|$)|MOVEQ(\.[A-Z])? #\$?0|CLR\./ { zero=1 }
 /^RTS$/ { rts=1 }
 
 END {
