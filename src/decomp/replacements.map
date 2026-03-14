@@ -52,6 +52,7 @@ modules/groups/a/r/flib.s decomp/replacements/modules/groups/a/r/flib.s
 modules/groups/a/x/ladfunc2.s decomp/replacements/modules/groups/a/x/ladfunc2.s
 modules/groups/a/w/ladfunc.s decomp/replacements/modules/groups/a/w/ladfunc.s
 modules/groups/a/y/locavail.s decomp/replacements/modules/groups/a/y/locavail.s
+modules/groups/a/z/locavail2.s decomp/replacements/modules/groups/a/z/locavail2.s
 modules/groups/b/a/parseini.s decomp/replacements/modules/groups/b/a/parseini.s
 modules/groups/b/a/parseini2.s decomp/replacements/modules/groups/b/a/parseini2.s
 modules/groups/b/a/parseini3.s decomp/replacements/modules/groups/b/a/parseini3.s
