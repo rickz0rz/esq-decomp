@@ -1,21 +1,9 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
-typedef struct NEWGRID_Font {
-    UBYTE pad0[26];
-    WORD ySize;
-} NEWGRID_Font;
-
-typedef struct NEWGRID_RastPort {
-    UBYTE pad0[52];
-    NEWGRID_Font *font;
-} NEWGRID_RastPort;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 typedef struct NEWGRID_Context {
     UBYTE pad0[60];
-    NEWGRID_RastPort rastPort;
+    struct RastPort rastPort;
 } NEWGRID_Context;
 
 extern UWORD NEWGRID_ColumnStartXPx;
@@ -51,7 +39,7 @@ LONG NEWGRID_DrawSelectionMarkers(
     LONG secondarySel)
 {
     NEWGRID_Context *ctxView;
-    NEWGRID_RastPort *rp;
+    struct RastPort *rp;
     char m0;
     char m1;
     char m2;
@@ -85,7 +73,7 @@ LONG NEWGRID_DrawSelectionMarkers(
 
     x = (LONG)(UWORD)NEWGRID_ColumnStartXPx + ((LONG)(UWORD)NEWGRID_ColumnWidthPx * (LONG)col) + w0 + 42;
     rowHeight = (LONG)(UWORD)NEWGRID_RowHeightPx;
-    fontHeight = (LONG)rp->font->ySize;
+    fontHeight = (LONG)rp->Font->tf_YSize;
 
     yTop = asr1_round_toward_zero(asr1_round_toward_zero(rowHeight) - fontHeight - 4) + fontHeight + 3;
     yAlt = asr1_round_toward_zero(asr1_round_toward_zero(rowHeight) - fontHeight - 4) + fontHeight + asr1_round_toward_zero(rowHeight) - 1;

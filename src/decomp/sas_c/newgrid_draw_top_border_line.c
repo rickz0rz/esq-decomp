@@ -1,10 +1,6 @@
-typedef signed long LONG;
+#include <graphics/rastport.h>
 
-typedef struct NEWGRID_RastPort {
-    char unused;
-} NEWGRID_RastPort;
-
-extern NEWGRID_RastPort *NEWGRID_HeaderRastPortPtr;
+extern struct RastPort *NEWGRID_HeaderRastPortPtr;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void _LVOSetAPen(char *rastPort, LONG pen);

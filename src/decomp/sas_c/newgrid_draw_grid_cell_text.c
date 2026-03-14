@@ -1,16 +1,5 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
-typedef struct NEWGRID_Font {
-    UBYTE pad[26];
-    UWORD ySize;
-} NEWGRID_Font;
-
-typedef struct NEWGRID_RastPort {
-    UBYTE pad[52];
-    NEWGRID_Font *font;
-} NEWGRID_RastPort;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 extern UWORD Global_WORD_SELECT_CODE_IS_RAVESC;
 extern UWORD NEWGRID_SampleTimeTextWidthPx;
@@ -29,7 +18,7 @@ extern void _LVOText(void *gfx, char *rp, const char *text, LONG len);
 
 void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *secondary, LONG alignMode)
 {
-    NEWGRID_RastPort *rp;
+    struct RastPort *rp;
     char mergedSecondary[26];
     LONG baselineX;
     LONG rowHalfY;
@@ -40,7 +29,7 @@ void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *s
     LONG fontY;
     const char *scan;
 
-    rp = (NEWGRID_RastPort *)rastPort;
+    rp = (struct RastPort *)rastPort;
 
     if (Global_WORD_SELECT_CODE_IS_RAVESC) {
         n = 0;
@@ -57,7 +46,7 @@ void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *s
     baselineX = ((LONG)NEWGRID_SampleTimeTextWidthPx + 1) >> 1;
     baselineX += 42;
 
-    fontY = (LONG)rp->font->ySize;
+    fontY = (LONG)rp->Font->tf_YSize;
     rowHalfY = ((LONG)NEWGRID_RowHeightPx + 1) >> 1;
     rowHalfY -= ((fontY + 1) >> 1);
     rowHalfY -= 4;

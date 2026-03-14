@@ -1,13 +1,4 @@
-struct MinNode {
-    struct MinNode *mln_Succ;
-    struct MinNode *mln_Pred;
-};
-
-struct MinList {
-    struct MinNode *mlh_Head;
-    struct MinNode *mlh_Tail;
-    struct MinNode *mlh_TailPred;
-};
+#include <exec/lists.h>
 
 void Test_ListInit(struct MinList *list)
 {

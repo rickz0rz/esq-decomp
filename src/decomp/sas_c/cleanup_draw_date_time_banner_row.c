@@ -1,12 +1,4 @@
-typedef unsigned short UWORD;
-typedef long LONG;
-
-typedef struct CLEANUP_RastPort {
-    LONG pad0;
-    LONG bitmap4;
-    UWORD pad8[12];
-    UWORD flags32;
-} CLEANUP_RastPort;
+#include <graphics/rastport.h>
 
 enum {
     RASTPORT_BITMAP_OFFSET = 4,
@@ -25,16 +17,16 @@ void CLEANUP_DrawTimeBannerSegment(void);
 
 void CLEANUP_DrawDateTimeBannerRow(void)
 {
-    CLEANUP_RastPort *rp;
+    struct RastPort *rp;
     LONG savedBitmap;
 
-    rp = (CLEANUP_RastPort *)Global_REF_RASTPORT_1;
-    savedBitmap = rp->bitmap4;
-    rp->bitmap4 = (LONG)&Global_REF_696_400_BITMAP;
+    rp = (struct RastPort *)Global_REF_RASTPORT_1;
+    savedBitmap = (LONG)rp->BitMap;
+    rp->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
 
     _LVOSetAPen();
 
-    rp->flags32 = (UWORD)(rp->flags32 & RASTPORT_FLAGMASK_CLEAR_BIT3);
+    rp->Flags = (UWORD)(rp->Flags & RASTPORT_FLAGMASK_CLEAR_BIT3);
 
     _LVORectFill();
 
@@ -42,5 +34,5 @@ void CLEANUP_DrawDateTimeBannerRow(void)
     CLEANUP_DrawBannerSpacerSegment();
     CLEANUP_DrawTimeBannerSegment();
 
-    rp->bitmap4 = savedBitmap;
+    rp->BitMap = (struct BitMap *)savedBitmap;
 }

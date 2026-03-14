@@ -32,6 +32,9 @@ SAS/C decomp workflow:
 - The argument must be the filename of a source that already exists in `src/decomp/sas_c/`.
 - The script emits matching `.o` and `.dis` files beside the source file for assembly comparison.
 - Treat existing `src/decomp/sas_c/*.c` files as the canonical style guide for new decomp work.
+- When a needed AmigaOS struct already exists in `/Users/RJ/Downloads/SAS-C-hdd/sc/include`, include the canonical SAS/C header instead of re-declaring a local stand-in. Prefer real headers such as `graphics/rastport.h`, `graphics/gfx.h`, `graphics/text.h`, `exec/lists.h`, and similar whenever their layouts match the target usage.
+- Current carry-forward note: a March 13, 2026 pass already replaced many local stand-ins with canonical SAS/C headers for `RastPort`, `TextFont`, `BitMap`, `MinList`, `MsgPort`, `Message`, `IOStdReq`, and `Library`. Treat those as the default types going forward.
+- Known exceptions for now: `src/decomp/sas_c/cleanup_draw_grid_time_banner.c` and `src/decomp/sas_c/render_short_month_short_day_of_week_day.c` still rely on local overlay structs because they touch nonstandard cached/overlaid fields rather than plain header members.
 
 ## Coding Style & Naming Conventions
 Use four-space indentation, uppercase opcodes, and align operands as in the existing modules. Public entry points should follow the `MODULE_ActionVerb` pattern (`GCOMMAND_LoadDefaultTable`, `KYBD_HandleRepeat`), with the original `LAB_xxxx` label retained immediately below the alias. Local labels stay lowercase with a leading dot. Favor short descriptive comments over block prose; explain hardware magic numbers and state transitions, not obvious move instructions. Share repeated sequences through macros and keep configuration flags (`includeCustomAriAssembly`) centralized.

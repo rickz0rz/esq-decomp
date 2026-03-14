@@ -1,17 +1,9 @@
-typedef long LONG;
-typedef unsigned short UWORD;
-
-typedef struct IOStdReqApprox {
-    char pad0[28];
-    UWORD io_Command;
-    char pad30[10];
-    void *io_Data;
-} IOSTDREQ;
+#include <exec/io.h>
 
 extern void *AbsExecBase;
-extern IOSTDREQ *Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE;
+extern struct IOStdReq *Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE;
 extern void *Global_REF_DATA_INPUT_BUFFER;
-extern IOSTDREQ *Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE;
+extern struct IOStdReq *Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE;
 extern void *Global_REF_INPUTDEVICE_MSGPORT;
 extern void *Global_REF_CONSOLEDEVICE_MSGPORT;
 extern const char Global_STR_CLEANUP_C_5[];

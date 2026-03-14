@@ -1,18 +1,8 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef signed long LONG;
-
-typedef struct RastPort {
-    UBYTE pad_00[4];
-    void *BitMap;
-    UBYTE pad_08[17];
-    UBYTE FgPen;
-} RastPort;
+#include <graphics/rastport.h>
 
 extern UBYTE ESQDISP_StatusIndicatorDeferredApplyFlag;
 extern LONG ESQDISP_StatusIndicatorColorCache[];
-extern RastPort *Global_REF_RASTPORT_1;
+extern struct RastPort *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_REF_696_400_BITMAP;
 
@@ -23,7 +13,7 @@ extern void _LVORectFill(void);
 void ESQDISP_SetStatusIndicatorColorSlot(LONG color, LONG slot)
 {
     LONG y;
-    RastPort *rp;
+    struct RastPort *rp;
     UBYTE savedPen;
     void *savedBitMap;
 

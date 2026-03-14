@@ -1,16 +1,5 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
-typedef struct NEWGRID_Font {
-    UBYTE pad0[26];
-    UWORD ySize;
-} NEWGRID_Font;
-
-typedef struct NEWGRID_RastPort {
-    UBYTE pad0[52];
-    NEWGRID_Font *font;
-} NEWGRID_RastPort;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 typedef struct NEWGRID_Context {
     UBYTE pad0[32];
@@ -18,7 +7,7 @@ typedef struct NEWGRID_Context {
     UBYTE pad1[18];
     UWORD selectionCode;
     UBYTE pad2[6];
-    NEWGRID_RastPort rastPort;
+    struct RastPort rastPort;
 } NEWGRID_Context;
 
 extern LONG GCOMMAND_PpvMessageTextPen;
@@ -39,7 +28,7 @@ extern void NEWGRID_ValidateSelectionCode(char *rastPort, LONG code);
 void NEWGRID_DrawGridMessageAlt(char *gridCtx)
 {
     NEWGRID_Context *ctx;
-    NEWGRID_RastPort *rastPort;
+    struct RastPort *rastPort;
     const char *msg;
     const char *scan;
     LONG len;
@@ -85,7 +74,7 @@ void NEWGRID_DrawGridMessageAlt(char *gridCtx)
     }
     x = ((LONG)(UWORD)NEWGRID_ColumnStartXPx) + (x >> 1) + 36;
 
-    fh = (LONG)(UWORD)rastPort->font->ySize;
+    fh = (LONG)(UWORD)rastPort->Font->tf_YSize;
     y = 34 - fh;
     if (y < 0) {
         ++y;

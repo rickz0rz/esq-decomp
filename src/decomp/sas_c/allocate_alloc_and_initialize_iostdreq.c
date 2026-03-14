@@ -1,25 +1,4 @@
-typedef unsigned long ULONG;
-typedef signed long LONG;
-typedef unsigned char UBYTE;
-
-struct Node {
-    struct Node *ln_Succ;
-    struct Node *ln_Pred;
-    char *ln_Name;
-    UBYTE ln_Type;
-    signed char ln_Pri;
-};
-
-struct Message {
-    struct Node mn_Node;
-    void *mn_ReplyPort;
-    unsigned short mn_Length;
-};
-
-struct IOStdReq {
-    struct Message io_Message;
-    UBYTE pad[48 - sizeof(struct Message)];
-};
+#include <exec/io.h>
 
 extern void *AbsExecBase;
 extern void *_LVOAllocMem(void *execBase, ULONG size, ULONG flags);

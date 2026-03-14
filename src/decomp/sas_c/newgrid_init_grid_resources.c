@@ -1,22 +1,9 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
-typedef struct NEWGRID_Font {
-    UBYTE pad0[20];
-    UWORD ySize;
-} NEWGRID_Font;
-
-typedef struct NEWGRID_RastPort {
-    UBYTE pad0[4];
-    void *bitmap;
-    UBYTE pad1[44];
-    NEWGRID_Font *font;
-} NEWGRID_RastPort;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 extern UWORD NEWGRID_GridResourcesInitializedFlag;
-extern NEWGRID_RastPort *NEWGRID_MainRastPortPtr;
-extern NEWGRID_RastPort *NEWGRID_HeaderRastPortPtr;
+extern struct RastPort *NEWGRID_MainRastPortPtr;
+extern struct RastPort *NEWGRID_HeaderRastPortPtr;
 extern UWORD NEWGRID_SampleTimeTextWidthPx;
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
@@ -45,7 +32,7 @@ void NEWGRID_InitGridResources(void)
 {
     LONG d0;
     LONG d1;
-    NEWGRID_RastPort *mainRast;
+    struct RastPort *mainRast;
 
     if (NEWGRID_GridResourcesInitializedFlag != 0) {
         return;
@@ -62,7 +49,7 @@ void NEWGRID_InitGridResources(void)
     }
 
     _LVOInitRastPort((char *)NEWGRID_MainRastPortPtr);
-    NEWGRID_MainRastPortPtr->bitmap = &Global_REF_696_400_BITMAP;
+    NEWGRID_MainRastPortPtr->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
     _LVOSetDrMd((char *)NEWGRID_MainRastPortPtr, 0);
     _LVOSetFont((char *)NEWGRID_MainRastPortPtr, Global_HANDLE_PREVUEC_FONT);
 
@@ -72,7 +59,7 @@ void NEWGRID_InitGridResources(void)
     }
 
     _LVOInitRastPort((char *)NEWGRID_HeaderRastPortPtr);
-    NEWGRID_HeaderRastPortPtr->bitmap = &WDISP_BannerGridBitmapStruct;
+    NEWGRID_HeaderRastPortPtr->BitMap = (struct BitMap *)&WDISP_BannerGridBitmapStruct;
     _LVOSetDrMd((char *)NEWGRID_HeaderRastPortPtr, 0);
     _LVOSetFont((char *)NEWGRID_HeaderRastPortPtr, Global_HANDLE_PREVUEC_FONT);
 
@@ -88,7 +75,7 @@ void NEWGRID_InitGridResources(void)
     NEWGRID_ColumnWidthPx = (UWORD)d0;
 
     mainRast = NEWGRID_MainRastPortPtr;
-    d0 = (LONG)(UWORD)mainRast->font->ySize;
+    d0 = (LONG)(UWORD)mainRast->Font->tf_YSize;
     d0 = ((d0 - 1) * 2) + 8;
     NEWGRID_RowHeightPx = (UWORD)d0;
     d1 = MATH_DivS32(d0, 2);

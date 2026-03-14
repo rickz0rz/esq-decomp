@@ -1,22 +1,11 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
-typedef struct NEWGRID_Font {
-    UBYTE pad0[26];
-    WORD ySize;
-} NEWGRID_Font;
-
-typedef struct NEWGRID_RastPort {
-    UBYTE pad0[52];
-    NEWGRID_Font *font;
-} NEWGRID_RastPort;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 typedef struct NEWGRID_Context {
     UBYTE pad0[52];
     WORD selectionCode;
     UBYTE pad1[6];
-    NEWGRID_RastPort rastPort;
+    struct RastPort rastPort;
 } NEWGRID_Context;
 
 extern WORD NEWGRID_RowHeightPx;
@@ -48,7 +37,7 @@ LONG NEWGRID_DrawGridHeaderRows(char *ctx, LONG penA, LONG penB)
     LONG yDraw;
     LONG fontHeight;
     LONG isLast;
-    NEWGRID_RastPort *rp;
+    struct RastPort *rp;
 
     ctxView = (NEWGRID_Context *)ctx;
     rowHeight = (LONG)NEWGRID_RowHeightPx;
@@ -64,7 +53,7 @@ LONG NEWGRID_DrawGridHeaderRows(char *ctx, LONG penA, LONG penB)
         }
 
         yDraw = yBase;
-        fontHeight = (LONG)ctxView->rastPort.font->ySize;
+        fontHeight = (LONG)ctxView->rastPort.Font->tf_YSize;
 
         if (DISPTEXT_IsLastLineSelected() != 0) {
             yDraw += asr1_round_toward_zero(asr1_round_toward_zero(rowHeight) - fontHeight - 4) + fontHeight - 1;

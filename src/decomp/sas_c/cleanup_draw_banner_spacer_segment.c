@@ -1,12 +1,4 @@
-typedef unsigned short UWORD;
-typedef long LONG;
-
-typedef struct CLEANUP_RastPort {
-    LONG pad0;
-    LONG bitmap4;
-    UWORD pad8[12];
-    UWORD flags32;
-} CLEANUP_RastPort;
+#include <graphics/rastport.h>
 
 enum {
     RASTPORT_BITMAP_OFFSET = 4,
@@ -28,21 +20,21 @@ void BEVEL_DrawBevelFrameWithTopRight(char *rp, LONG x, LONG y, LONG w, LONG h);
 
 void CLEANUP_DrawBannerSpacerSegment(void)
 {
-    CLEANUP_RastPort *rp;
-    LONG *bitmapSlot;
+    struct RastPort *rp;
+    struct BitMap **bitmapSlot;
     LONG savedBitmap;
     LONG flags;
 
-    rp = (CLEANUP_RastPort *)Global_REF_RASTPORT_1;
-    bitmapSlot = &rp->bitmap4;
-    savedBitmap = *bitmapSlot;
-    *bitmapSlot = (LONG)&Global_REF_696_400_BITMAP;
+    rp = (struct RastPort *)Global_REF_RASTPORT_1;
+    bitmapSlot = &rp->BitMap;
+    savedBitmap = (LONG)*bitmapSlot;
+    *bitmapSlot = (struct BitMap *)&Global_REF_696_400_BITMAP;
 
     _LVOSetAPen((void *)Global_REF_GRAPHICS_LIBRARY, (char *)rp, 7);
 
-    flags = (LONG)(UWORD)rp->flags32;
+    flags = (LONG)(UWORD)rp->Flags;
     flags &= RASTPORT_FLAGMASK_CLEAR_BIT3;
-    rp->flags32 = (UWORD)flags;
+    rp->Flags = (UWORD)flags;
 
     _LVORectFill((void *)Global_REF_GRAPHICS_LIBRARY,
                  (char *)rp,
@@ -57,5 +49,5 @@ void CLEANUP_DrawBannerSpacerSegment(void)
                                      BANNER_SPACER_RIGHT,
                                      BANNER_SPACER_BOTTOM);
 
-    *bitmapSlot = savedBitmap;
+    *bitmapSlot = (struct BitMap *)savedBitmap;
 }

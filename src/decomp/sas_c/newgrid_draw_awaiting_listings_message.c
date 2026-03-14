@@ -1,17 +1,5 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
-typedef struct NEWGRID_Font {
-    UBYTE pad0[26];
-    UWORD ySize;
-} NEWGRID_Font;
-
-typedef struct NEWGRID_RastPort {
-    UBYTE pad0[52];
-    NEWGRID_Font *font;
-} NEWGRID_RastPort;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 typedef struct NEWGRID_Context {
     UBYTE pad0[32];
@@ -19,7 +7,7 @@ typedef struct NEWGRID_Context {
     UBYTE pad1[18];
     UWORD selectionCode;
     UBYTE pad2[6];
-    NEWGRID_RastPort rastPort;
+    struct RastPort rastPort;
 } NEWGRID_Context;
 
 extern UWORD NEWGRID_RowHeightPx;
@@ -35,7 +23,7 @@ extern void BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, L
 LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
 {
     NEWGRID_Context *ctx;
-    NEWGRID_RastPort *rast;
+    struct RastPort *rast;
     LONG rowH;
     LONG yMax;
     const char *msg;
@@ -72,7 +60,7 @@ LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
     }
     x = (x >> 1) + 36;
 
-    fontH = rast->font->ySize;
+    fontH = rast->Font->tf_YSize;
     y = rowH - (LONG)fontH;
     if (y < 0) {
         y += 1;

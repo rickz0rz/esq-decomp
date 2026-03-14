@@ -1,16 +1,5 @@
-typedef signed long LONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
-typedef struct NEWGRID_Font {
-    UBYTE pad0[26];
-    UWORD ySize;
-} NEWGRID_Font;
-
-typedef struct NEWGRID_RastPort {
-    UBYTE pad0[52];
-    NEWGRID_Font *font;
-} NEWGRID_RastPort;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 typedef struct NEWGRID_Context {
     UBYTE pad0[32];
@@ -18,7 +7,7 @@ typedef struct NEWGRID_Context {
     UBYTE pad1[18];
     UWORD selectionCode;
     UBYTE pad2[6];
-    NEWGRID_RastPort rastPort;
+    struct RastPort rastPort;
 } NEWGRID_Context;
 
 extern LONG GCOMMAND_MplexMessageFramePen;
@@ -45,7 +34,7 @@ void NEWGRID_DrawStatusMessage(char *gridCtx, UWORD slot)
     char text_buf[132];
     char slot_text[31];
     const char *msg;
-    NEWGRID_RastPort *rast;
+    struct RastPort *rast;
     const char *scan;
     LONG len;
     LONG width;
@@ -91,11 +80,11 @@ void NEWGRID_DrawStatusMessage(char *gridCtx, UWORD slot)
     }
     x = ((LONG)(UWORD)NEWGRID_ColumnStartXPx) + (x >> 1) + 36;
 
-    y = 34 - (LONG)rast->font->ySize;
+    y = 34 - (LONG)rast->Font->tf_YSize;
     if (y < 0) {
         ++y;
     }
-    y = (y >> 1) + (LONG)rast->font->ySize - 1;
+    y = (y >> 1) + (LONG)rast->Font->tf_YSize - 1;
 
     _LVOMove((char *)rast, x, y);
     _LVOText((char *)rast, text_buf, len);

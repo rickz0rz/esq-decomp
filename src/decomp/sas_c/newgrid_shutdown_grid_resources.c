@@ -1,10 +1,6 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
+#include <graphics/rastport.h>
 
-typedef struct NEWGRID_RastPort NEWGRID_RastPort;
-
-extern NEWGRID_RastPort *NEWGRID_MainRastPortPtr;
+extern struct RastPort *NEWGRID_MainRastPortPtr;
 extern WORD NEWGRID_GridResourcesInitializedFlag;
 extern const char Global_STR_NEWGRID_C_3[];
 

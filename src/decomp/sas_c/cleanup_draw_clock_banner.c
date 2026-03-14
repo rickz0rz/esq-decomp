@@ -1,19 +1,5 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef long LONG;
-
-typedef struct CLEANUP_Font {
-    UBYTE pad0[26];
-    UWORD height26;
-} CLEANUP_Font;
-
-typedef struct CLEANUP_RastPort {
-    UBYTE pad0[4];
-    void *bitmap4;
-    UBYTE pad8[44];
-    CLEANUP_Font *font52;
-} CLEANUP_RastPort;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 enum {
     CLOCK_BANNER_FRAME_WIDTH = 35,
@@ -56,7 +42,7 @@ void _LVOText(void);
 
 void CLEANUP_DrawClockBanner(void)
 {
-    CLEANUP_RastPort *rp;
+    struct RastPort *rp;
     char timeText[10];
     LONG y;
     LONG fontHeight;
@@ -65,7 +51,7 @@ void CLEANUP_DrawClockBanner(void)
         return;
     }
 
-    rp = (CLEANUP_RastPort *)NEWGRID_MainRastPortPtr;
+    rp = (struct RastPort *)NEWGRID_MainRastPortPtr;
 
     if (Global_REF_STR_USE_24_HR_CLOCK == 'Y') {
         LONG hour = PARSEINI_AdjustHoursTo24HrFormat(Global_WORD_CURRENT_HOUR, CLOCK_CurrentAmPmFlag);
@@ -99,7 +85,7 @@ void CLEANUP_DrawClockBanner(void)
         CLOCK_BANNER_FRAME_HEIGHT
     );
 
-    fontHeight = (LONG)rp->font52->height26;
+    fontHeight = (LONG)rp->Font->tf_YSize;
     y = (((34 - fontHeight) + 1) >> 1) + fontHeight - 1;
     (void)y;
 
@@ -108,7 +94,7 @@ void CLEANUP_DrawClockBanner(void)
     _LVOText();
 
     GRAPHICS_BltBitMapRastPort(
-        rp->bitmap4,
+        rp->BitMap,
         0,
         0,
         (char *)rp,

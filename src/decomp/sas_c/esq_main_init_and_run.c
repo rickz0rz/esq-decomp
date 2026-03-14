@@ -1,40 +1,11 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef short WORD;
-typedef unsigned char UBYTE;
-
-typedef struct ESQ_Font {
-    UBYTE pad0[20];
-    UWORD ySize;
-} ESQ_Font;
-
-typedef struct ESQ_RastPort {
-    UBYTE pad0[4];
-    void *bitmap;
-    UBYTE pad8[44];
-    void *areaPtr;
-} ESQ_RastPort;
-
-typedef struct ESQ_MessagePort {
-    UBYTE pad0[8];
-    UBYTE flags8;
-    UBYTE sigBit9;
-    LONG sigTask10;
-    UBYTE type14;
-    UBYTE pad15[5];
-    UBYTE list20[14];
-} ESQ_MessagePort;
+#include <exec/libraries.h>
+#include <exec/ports.h>
+#include <graphics/rastport.h>
 
 typedef struct ESQ_Task {
     UBYTE pad0[184];
     LONG windowPtr;
 } ESQ_Task;
-
-typedef struct ESQ_GfxLibrary {
-    UBYTE pad0[20];
-    UWORD version;
-} ESQ_GfxLibrary;
 
 typedef struct ESQ_SerialIORequest {
     UBYTE pad0[28];
@@ -73,11 +44,11 @@ extern void *Global_HANDLE_TOPAZ_FONT;
 extern void *Global_HANDLE_PREVUEC_FONT;
 extern void *Global_HANDLE_H26F_FONT;
 extern void *Global_HANDLE_PREVUE_FONT;
-extern ESQ_RastPort *Global_REF_RASTPORT_1;
-extern ESQ_RastPort *Global_REF_RASTPORT_2;
+extern struct RastPort *Global_REF_RASTPORT_1;
+extern struct RastPort *Global_REF_RASTPORT_2;
 extern void *Global_REF_STR_CLOCK_FORMAT;
-extern ESQ_MessagePort *ESQ_HighlightMsgPort;
-extern ESQ_MessagePort *ESQ_HighlightReplyPort;
+extern struct MsgPort *ESQ_HighlightMsgPort;
+extern struct MsgPort *ESQ_HighlightReplyPort;
 extern UWORD WDISP_HighlightBufferMode;
 extern UWORD WDISP_HighlightRasterHeightPx;
 extern void *WDISP_352x240RasterPtrTable[];
@@ -399,7 +370,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         return BUFFER_FlushAllAndCloseWithCode(0);
     }
 
-    if ((LONG)((ESQ_GfxLibrary *)Global_REF_GRAPHICS_LIBRARY)->version >= 37) {
+    if ((LONG)((struct Library *)Global_REF_GRAPHICS_LIBRARY)->lib_Version >= 37) {
         Global_REF_UTILITY_LIBRARY = _LVOOpenLibrary(AbsExecBase, Global_STR_UTILITY_LIBRARY, 37);
         if (Global_REF_UTILITY_LIBRARY != (void *)0) {
             Global_REF_BATTCLOCK_RESOURCE = _LVOOpenResource(AbsExecBase, Global_STR_BATTCLOCK_RESOURCE);
@@ -429,9 +400,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         Global_HANDLE_PREVUE_FONT = Global_HANDLE_TOPAZ_FONT;
     }
 
-    Global_REF_RASTPORT_1 = (ESQ_RastPort *)MEMORY_AllocateMemory(100, MEMF_PUBLIC + MEMF_CLEAR);
+    Global_REF_RASTPORT_1 = (struct RastPort *)MEMORY_AllocateMemory(100, MEMF_PUBLIC + MEMF_CLEAR);
     _LVOInitRastPort(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1);
-    Global_REF_RASTPORT_1->bitmap = &Global_REF_696_400_BITMAP;
+    Global_REF_RASTPORT_1->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
     _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_HANDLE_PREVUEC_FONT);
 
     WDISP_HighlightRasterHeightPx = 68;
@@ -440,9 +411,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         --WDISP_HighlightRasterHeightPx;
     }
 
-    Global_REF_RASTPORT_2 = (ESQ_RastPort *)MEMORY_AllocateMemory(100, MEMF_PUBLIC + MEMF_CLEAR);
+    Global_REF_RASTPORT_2 = (struct RastPort *)MEMORY_AllocateMemory(100, MEMF_PUBLIC + MEMF_CLEAR);
     _LVOInitRastPort(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2);
-    Global_REF_RASTPORT_2->bitmap = &Global_REF_320_240_BITMAP;
+    Global_REF_RASTPORT_2->BitMap = (struct BitMap *)&Global_REF_320_240_BITMAP;
     _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, Global_HANDLE_PREVUEC_FONT);
 
     for (i = 0; i < 4; ++i) {
@@ -463,25 +434,25 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         Global_REF_STR_CLOCK_FORMAT = &Global_JMPTBL_HALF_HOURS_12_HR_FMT;
     }
 
-    ESQ_HighlightMsgPort = (ESQ_MessagePort *)MEMORY_AllocateMemory(34, MEMF_PUBLIC + MEMF_CLEAR);
-    if (ESQ_HighlightMsgPort == (ESQ_MessagePort *)0) {
+    ESQ_HighlightMsgPort = (struct MsgPort *)MEMORY_AllocateMemory(34, MEMF_PUBLIC + MEMF_CLEAR);
+    if (ESQ_HighlightMsgPort == (struct MsgPort *)0) {
         return 0;
     }
-    ESQ_HighlightMsgPort->sigTask10 = 0;
-    ESQ_HighlightMsgPort->sigBit9 = 0;
-    ESQ_HighlightMsgPort->flags8 = 4;
-    ESQ_HighlightMsgPort->type14 = 2;
-    LIST_InitHeader(ESQ_HighlightMsgPort->list20);
+    ESQ_HighlightMsgPort->mp_SigTask = (void *)0;
+    ESQ_HighlightMsgPort->mp_SigBit = 0;
+    ESQ_HighlightMsgPort->mp_Flags = 4;
+    ESQ_HighlightMsgPort->mp_Node.ln_Type = 2;
+    LIST_InitHeader((struct MinList *)&ESQ_HighlightMsgPort->mp_MsgList);
 
-    ESQ_HighlightReplyPort = (ESQ_MessagePort *)MEMORY_AllocateMemory(34, MEMF_PUBLIC + MEMF_CLEAR);
-    if (ESQ_HighlightReplyPort == (ESQ_MessagePort *)0) {
+    ESQ_HighlightReplyPort = (struct MsgPort *)MEMORY_AllocateMemory(34, MEMF_PUBLIC + MEMF_CLEAR);
+    if (ESQ_HighlightReplyPort == (struct MsgPort *)0) {
         return 0;
     }
-    ESQ_HighlightReplyPort->sigTask10 = 0;
-    ESQ_HighlightReplyPort->sigBit9 = 0;
-    ESQ_HighlightReplyPort->flags8 = 4;
-    ESQ_HighlightReplyPort->type14 = 2;
-    LIST_InitHeader(ESQ_HighlightReplyPort->list20);
+    ESQ_HighlightReplyPort->mp_SigTask = (void *)0;
+    ESQ_HighlightReplyPort->mp_SigBit = 0;
+    ESQ_HighlightReplyPort->mp_Flags = 4;
+    ESQ_HighlightReplyPort->mp_Node.ln_Type = 2;
+    LIST_InitHeader((struct MinList *)&ESQ_HighlightReplyPort->mp_MsgList);
 
     for (i = 0; i < 4; ++i) {
         ESQDISP_QueueHighlightDrawMessage(
@@ -492,7 +463,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 
     ESQ_SetCopperEffect_OffDisableHighlight();
     WDISP_HighlightBufferMode = 0;
-    if ((LONG)((ESQ_GfxLibrary *)Global_REF_GRAPHICS_LIBRARY)->version >= 34) {
+    if ((LONG)((struct Library *)Global_REF_GRAPHICS_LIBRARY)->lib_Version >= 34) {
         WDISP_HighlightBufferMode = 1;
     }
 
@@ -676,10 +647,10 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 7);
     _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0, 0, 695, 399);
 
-    Global_REF_RASTPORT_1->bitmap = &Global_REF_696_241_BITMAP;
+    Global_REF_RASTPORT_1->BitMap = (struct BitMap *)&Global_REF_696_241_BITMAP;
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 7);
     _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0, 0, 0, 240);
-    Global_REF_RASTPORT_1->bitmap = &Global_REF_696_400_BITMAP;
+    Global_REF_RASTPORT_1->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
 
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
     _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 2);

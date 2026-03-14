@@ -1,17 +1,12 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef signed char BYTE;
-
-typedef struct RastPort RastPort;
-typedef struct TextFont TextFont;
-typedef struct BitMap BitMap;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 typedef struct MinList MinList;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern RastPort *Global_REF_RASTPORT_1;
-extern TextFont *Global_HANDLE_PREVUEC_FONT;
-extern BitMap Global_REF_696_400_BITMAP;
+extern struct RastPort *Global_REF_RASTPORT_1;
+extern struct TextFont *Global_HANDLE_PREVUEC_FONT;
+extern struct BitMap Global_REF_696_400_BITMAP;
 
 extern WORD COI_AttentionOverlayBusyFlag;
 extern WORD ED_DiagnosticsScreenActive;
@@ -33,8 +28,8 @@ extern LONG NEWGRID_RefreshStateFlag;
 extern LONG NEWGRID_LastRefreshRequest;
 extern LONG NEWGRID_MessagePumpSuspendFlag;
 
-extern void _LVOInitBitMap(void *gfxBase, BitMap *bm, LONG depth, LONG width, LONG height);
-extern void _LVOSetFont(void *gfxBase, RastPort *rp, TextFont *font);
+extern void _LVOInitBitMap(void *gfxBase, struct BitMap *bm, LONG depth, LONG width, LONG height);
+extern void _LVOSetFont(void *gfxBase, struct RastPort *rp, struct TextFont *font);
 
 extern void ED1_JMPTBL_GCOMMAND_ResetHighlightMessages(void);
 extern void GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode(void);

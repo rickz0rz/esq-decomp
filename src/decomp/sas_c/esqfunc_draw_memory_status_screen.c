@@ -1,14 +1,6 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef signed char BYTE;
-typedef unsigned char UBYTE;
+#include <graphics/rastport.h>
 
-typedef struct RastPortLike {
-    void *layerOrReserved;
-    void *bitmap;
-} RastPortLike;
-
-extern RastPortLike *Global_REF_RASTPORT_1;
+extern struct RastPort *Global_REF_RASTPORT_1;
 extern void *Global_REF_696_400_BITMAP;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *AbsExecBase;
@@ -69,11 +61,11 @@ extern const char Global_STR_B_DATE_B_MONTH_LP_YR_FORMATTED[];
 extern const char Global_STR_C_DST_B_DST_PSHIFT_FORMATTED[];
 extern const char Global_STR_C_HOUR_B_HOUR_CS_FORMATTED[];
 
-extern void _LVOSetAPen(void *graphicsBase, RastPortLike *rastPort, LONG pen);
-extern void _LVOSetDrMd(void *graphicsBase, RastPortLike *rastPort, LONG drawMode);
+extern void _LVOSetAPen(void *graphicsBase, struct RastPort *rastPort, LONG pen);
+extern void _LVOSetDrMd(void *graphicsBase, struct RastPort *rastPort, LONG drawMode);
 extern LONG _LVOAvailMem(void *execBase, LONG attributes);
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, ...);
-extern void DISPLIB_DisplayTextAtPosition(RastPortLike *rastPort, LONG y, LONG x, const char *text);
+extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rastPort, LONG y, LONG x, const char *text);
 extern LONG PARSEINI_ComputeHTCMaxValues(void);
 extern LONG PARSEINI_UpdateCtrlHDeltaMax(void);
 
@@ -86,8 +78,8 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
     LONG maxMem;
     LONG currentMaxValue;
 
-    savedBitmap = Global_REF_RASTPORT_1->bitmap;
-    Global_REF_RASTPORT_1->bitmap = Global_REF_696_400_BITMAP;
+    savedBitmap = Global_REF_RASTPORT_1->BitMap;
+    Global_REF_RASTPORT_1->BitMap = Global_REF_696_400_BITMAP;
 
     if (ED_DiagnosticsScreenActive == 0) {
         goto restore_bitmap;
@@ -235,5 +227,5 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
     }
 
 restore_bitmap:
-    Global_REF_RASTPORT_1->bitmap = savedBitmap;
+    Global_REF_RASTPORT_1->BitMap = savedBitmap;
 }

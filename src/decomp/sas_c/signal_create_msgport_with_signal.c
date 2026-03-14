@@ -1,31 +1,4 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef signed char BYTE;
-typedef unsigned char UBYTE;
-
-struct Node {
-    struct Node *ln_Succ;
-    struct Node *ln_Pred;
-    char *ln_Name;
-    BYTE ln_Type;
-    BYTE ln_Pri;
-};
-
-struct List {
-    struct Node *lh_Head;
-    struct Node *lh_Tail;
-    struct Node *lh_TailPred;
-    UBYTE lh_Type;
-    UBYTE l_pad;
-};
-
-struct MsgPort {
-    struct Node mp_Node;
-    UBYTE mp_Flags;
-    UBYTE mp_SigBit;
-    void *mp_SigTask;
-    struct List mp_MsgList;
-};
+#include <exec/ports.h>
 
 extern void *AbsExecBase;
 extern LONG _LVOAllocSignal(void *execBase, LONG signalNum);

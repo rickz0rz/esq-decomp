@@ -1,7 +1,4 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned long ULONG;
-typedef unsigned char UBYTE;
+#include <graphics/rastport.h>
 
 extern WORD TEXTDISP_LinePenOverrideEnabledFlag;
 extern UBYTE CLOCK_AlignedInsetRenderGateFlag;
@@ -18,13 +15,6 @@ extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern void _LVOSetFont(char *rastPort, void *font);
 extern void TLIBA1_DrawInlineStyledText(char *rastPort, LONG x, LONG y, char *text);
-
-typedef struct TLIBA1_RastPort {
-    UBYTE pad0[25];
-    UBYTE fgPen25;
-    UBYTE pad26[26];
-    void *font52;
-} TLIBA1_RastPort;
 
 static LONG TLIBA1_StrLen(const char *s)
 {
@@ -57,7 +47,7 @@ void TLIBA1_DrawFormattedTextBlock(
     WORD arg16,
     WORD arg17)
 {
-    TLIBA1_RastPort *rp;
+    struct RastPort *rp;
     LONG boxW;
     LONG boxH;
     LONG runCount;
@@ -88,9 +78,9 @@ void TLIBA1_DrawFormattedTextBlock(
     runCount = 0;
     runGate = 0;
     p = text;
-    rp = (TLIBA1_RastPort *)rastPort;
-    savedPen = rp->fgPen25;
-    savedFont = rp->font52;
+    rp = (struct RastPort *)rastPort;
+    savedPen = rp->FgPen;
+    savedFont = rp->Font;
 
     (void)MATH_DivS32(boxH, 1);
 

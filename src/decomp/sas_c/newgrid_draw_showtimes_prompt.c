@@ -1,16 +1,5 @@
-typedef signed long LONG;
-typedef signed short WORD;
-typedef unsigned char UBYTE;
-
-typedef struct NEWGRID_Font {
-    UBYTE pad0[26];
-    WORD ySize;
-} NEWGRID_Font;
-
-typedef struct NEWGRID_RastPort {
-    UBYTE pad0[52];
-    NEWGRID_Font *font;
-} NEWGRID_RastPort;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 typedef struct NEWGRID_Context {
     UBYTE pad0[32];
@@ -18,7 +7,7 @@ typedef struct NEWGRID_Context {
     UBYTE pad1[18];
     WORD selectionCode;
     UBYTE pad2[6];
-    NEWGRID_RastPort rastPort;
+    struct RastPort rastPort;
 } NEWGRID_Context;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
@@ -53,7 +42,7 @@ void NEWGRID_DrawShowtimesPrompt(char *rpCtx, char *outBuf, LONG mode)
     const char *src;
     const char *scan;
     char *dst;
-    NEWGRID_RastPort *rp;
+    struct RastPort *rp;
     LONG len;
     LONG x;
     LONG y;
@@ -112,7 +101,7 @@ void NEWGRID_DrawShowtimesPrompt(char *rpCtx, char *outBuf, LONG mode)
     width = (LONG)((unsigned short)NEWGRID_ColumnWidthPx) * 3;
     x = (LONG)NEWGRID_ColumnStartXPx + ((width - _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rp, prompt, len)) >> 1) + 36;
 
-    y = ((((LONG)34 - (LONG)rp->font->ySize) >> 1) + (LONG)rp->font->ySize) - 1;
+    y = ((((LONG)34 - (LONG)rp->Font->tf_YSize) >> 1) + (LONG)rp->Font->tf_YSize) - 1;
     _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, y);
     _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rp, prompt, len);
 

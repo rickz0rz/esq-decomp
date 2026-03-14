@@ -1,13 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed short WORD;
-typedef signed long LONG;
-
-struct RastPort {
-    UBYTE pad_0[4];
-    void *BitMap;
-    UBYTE pad_1[20];
-    UBYTE DrawMode;
-};
+#include <graphics/rastport.h>
 
 extern char *ESQIFF_RecordBufferPtr;
 extern LONG Global_LONG_PATCH_VERSION_NUMBER;

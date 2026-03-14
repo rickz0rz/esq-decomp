@@ -1,16 +1,4 @@
-typedef unsigned char UBYTE;
-typedef signed char BYTE;
-typedef unsigned short UWORD;
-typedef signed short WORD;
-typedef unsigned long ULONG;
-typedef signed long LONG;
-
-struct RastPort {
-    UBYTE pad0[4];
-    void *BitMap;
-    UBYTE pad1[20];
-    UBYTE DrawMode;
-};
+#include <graphics/rastport.h>
 
 extern WORD Global_UIBusyFlag;
 extern WORD ED_DiagnosticsScreenActive;

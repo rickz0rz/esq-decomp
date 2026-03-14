@@ -1,17 +1,5 @@
-typedef signed long LONG;
-typedef unsigned long ULONG;
-typedef unsigned short UWORD;
-typedef unsigned char UBYTE;
-
-typedef struct NEWGRID_Font {
-    UBYTE pad0[26];
-    UWORD ySize;
-} NEWGRID_Font;
-
-typedef struct NEWGRID_RastPort {
-    UBYTE pad0[52];
-    NEWGRID_Font *font;
-} NEWGRID_RastPort;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 typedef struct NEWGRID_Context {
     UBYTE pad0[32];
@@ -19,7 +7,7 @@ typedef struct NEWGRID_Context {
     UBYTE pad1[18];
     UWORD selectionCode;
     UBYTE pad2[6];
-    NEWGRID_RastPort rastPort;
+    struct RastPort rastPort;
 } NEWGRID_Context;
 
 extern UWORD NEWGRID_ColumnStartXPx;
@@ -42,7 +30,7 @@ void NEWGRID_DrawClockFormatHeader(char *grid_ctx, LONG start_slot)
 {
     char label[97];
     NEWGRID_Context *ctx;
-    NEWGRID_RastPort *rast;
+    struct RastPort *rast;
     LONG left_x;
     LONG col;
 
@@ -100,7 +88,7 @@ void NEWGRID_DrawClockFormatHeader(char *grid_ctx, LONG start_slot)
         }
         text_x = x + (pad >> 1) + 2;
 
-        font_h = rast->font->ySize;
+        font_h = rast->Font->tf_YSize;
         text_y = 34 - (LONG)font_h;
         if (text_y < 0) {
             text_y += 1;

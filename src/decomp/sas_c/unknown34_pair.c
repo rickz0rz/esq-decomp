@@ -1,19 +1,13 @@
-typedef unsigned long ULONG;
+#include <exec/lists.h>
+
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
-typedef struct ListHeader {
-    ULONG head;
-    ULONG zero;
-    ULONG tail;
-} ListHeader;
-
-void LIST_InitHeader(ListHeader *header)
+void LIST_InitHeader(struct MinList *header)
 {
-    header->head = (ULONG)header;
-    header->head += 4;
-    header->zero = 0;
-    header->tail = (ULONG)header;
+    header->mlh_Head = (struct MinNode *)&header->mlh_Tail;
+    header->mlh_Tail = (struct MinNode *)0;
+    header->mlh_TailPred = (struct MinNode *)&header->mlh_Head;
 }
 
 LONG MEM_Move(UBYTE *src, UBYTE *dst, LONG length)

@@ -1,10 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef signed long LONG;
-
-typedef struct RastPort {
-    UBYTE pad[4];
-} RastPort;
+#include <graphics/rastport.h>
 
 typedef struct SelectionParams {
     UBYTE pad_00[8];
@@ -49,14 +43,14 @@ extern void *AbsExecBase;
 
 extern void ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(HighlightMsg *msg, LONG code);
 extern void ESQDISP_InitHighlightMessagePattern(HighlightMsg *msg);
-extern void _LVOInitRastPort(RastPort *rp);
-extern void _LVOSetFont(RastPort *rp, void *font);
-extern void _LVOSetDrMd(RastPort *rp, LONG mode);
+extern void _LVOInitRastPort(struct RastPort *rp);
+extern void _LVOSetFont(struct RastPort *rp, void *font);
+extern void _LVOSetDrMd(struct RastPort *rp, LONG mode);
 extern void _LVOPutMsg(void *port, HighlightMsg *msg);
 
 void ESQDISP_QueueHighlightDrawMessage(HighlightMsg *msg, SelectionParams *params)
 {
-    RastPort *rp;
+    struct RastPort *rp;
     HighlightNodeFlags *node;
 
     *(UBYTE *)(msg + HIGHLIGHTMSG_Type8) = 5;
@@ -73,7 +67,7 @@ void ESQDISP_QueueHighlightDrawMessage(HighlightMsg *msg, SelectionParams *param
     *(LONG *)(msg + HIGHLIGHTMSG_ParamD32) = 0;
     ESQDISP_InitHighlightMessagePattern(msg);
 
-    rp = (RastPort *)(msg + HIGHLIGHTMSG_RastPort60);
+    rp = (struct RastPort *)(msg + HIGHLIGHTMSG_RastPort60);
     _LVOInitRastPort(rp);
 
     *(SelectionParams **)(msg + HIGHLIGHTMSG_SelectionParams64) = params;

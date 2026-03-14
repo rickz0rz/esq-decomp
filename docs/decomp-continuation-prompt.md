@@ -5,6 +5,9 @@ Project goal:
 - The restored SAS/C-oriented C sources live in `src/decomp/sas_c`.
 - `./sc-build-with-dis.sh <filename>.c` takes a filename from `src/decomp/sas_c` and emits matching `.o` and `.dis` files beside that source.
 - Existing `src/decomp/sas_c` files are the reference style for new work.
+- Prefer SAS/C system headers from `/Users/RJ/Downloads/SAS-C-hdd/sc/include` for standard AmigaOS structs instead of local duplicate struct declarations when the header layout matches the restored usage.
+- Current carry-forward rule (March 13, 2026): a broad header-substitution pass has already converted many restored files from local stand-ins to canonical SAS/C headers, especially `graphics/rastport.h`, `graphics/text.h`, `graphics/gfx.h`, `exec/lists.h`, `exec/ports.h`, `exec/io.h`, and `exec/libraries.h`. Do not reintroduce duplicate local definitions for `RastPort`, `TextFont`, `BitMap`, `MinList`, `MsgPort`, `Message`, `IOStdReq`, or `Library` when the shipped header layout is sufficient.
+- Current exception note (March 13, 2026): keep local overlay structs only when a file is still relying on nonstandard cached/overlaid fields that are not real header members. The known active examples are `src/decomp/sas_c/cleanup_draw_grid_time_banner.c` and `src/decomp/sas_c/render_short_month_short_day_of_week_day.c`.
 - Overall scope includes the root `src/*.s` files, `src/Prevue.asm`, and everything under `src/interrupts/`, `src/data/`, and `src/modules/` recursively.
 
 Important current state:

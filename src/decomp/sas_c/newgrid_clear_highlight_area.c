@@ -1,11 +1,7 @@
-typedef signed long LONG;
-
-typedef struct NEWGRID_RastPort {
-    char unused;
-} NEWGRID_RastPort;
+#include <graphics/rastport.h>
 
 extern void *AbsExecBase;
-extern NEWGRID_RastPort *NEWGRID_MainRastPortPtr;
+extern struct RastPort *NEWGRID_MainRastPortPtr;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern LONG NEWGRID_RefreshStateFlag;
 

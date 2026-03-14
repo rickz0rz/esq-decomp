@@ -1,14 +1,4 @@
-typedef unsigned short UWORD;
-typedef unsigned long ULONG;
-typedef signed long LONG;
-
-typedef struct BitMap {
-    UWORD BytesPerRow;
-    UWORD Rows;
-    UWORD Flags;
-    UWORD Depth;
-    void *Planes[8];
-} BitMap;
+#include <graphics/gfx.h>
 
 extern UWORD WDISP_HighlightRasterHeightPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
@@ -18,7 +8,7 @@ extern void _LVOInitBitMap(void *bitmap, LONG depth, LONG width, LONG height);
 extern void *_LVOBltClear(void *dst, ULONG byteSize, LONG flags);
 extern void *ESQDISP_JMPTBL_GRAPHICS_AllocRaster(const char *tag, LONG line, LONG width, LONG height);
 
-void ESQDISP_AllocateHighlightBitmaps(BitMap *bm)
+void ESQDISP_AllocateHighlightBitmaps(struct BitMap *bm)
 {
     LONG plane;
     ULONG height;

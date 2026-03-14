@@ -1,11 +1,4 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef long LONG;
-
-typedef struct CLEANUP_RastPort {
-    UBYTE pad0[4];
-    void *bitmap4;
-} CLEANUP_RastPort;
+#include <graphics/rastport.h>
 
 enum {
     RASTPORT_BITMAP_PTR_OFFSET = 4,
@@ -33,16 +26,16 @@ void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
 
 void CLEANUP_DrawClockFormatFrame(void)
 {
-    CLEANUP_RastPort *srcRp;
+    struct RastPort *srcRp;
     char *dstRp;
     void *srcBitmap;
     LONG baseX;
     LONG frameX;
     LONG frameWidth;
 
-    srcRp = (CLEANUP_RastPort *)NEWGRID_MainRastPortPtr;
+    srcRp = (struct RastPort *)NEWGRID_MainRastPortPtr;
     dstRp = (char *)NEWGRID_MainRastPortPtr;
-    srcBitmap = srcRp->bitmap4;
+    srcBitmap = srcRp->BitMap;
     baseX = (LONG)NEWGRID_ColumnStartXPx;
     frameX = baseX + CLOCK_FORMAT_FRAME_X_OFFSET;
     frameWidth = CLOCK_FORMAT_FRAME_RIGHT_EDGE - baseX;

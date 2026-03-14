@@ -1,18 +1,5 @@
-typedef unsigned char UBYTE;
-typedef unsigned short UWORD;
-typedef long LONG;
-
-typedef struct CLEANUP_Font {
-    UBYTE pad0[26];
-    UWORD height26;
-} CLEANUP_Font;
-
-typedef struct CLEANUP_RastPort {
-    UBYTE pad0[4];
-    void *bitmap4;
-    UBYTE pad8[44];
-    CLEANUP_Font *font52;
-} CLEANUP_RastPort;
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 enum {
     CLOCK_FORMAT_WRAP_MAX = 48,
@@ -53,11 +40,11 @@ static LONG cleanup_wrap_clock_idx(LONG base, LONG add)
 
 void CLEANUP_DrawClockFormatList(LONG startIndex)
 {
-    CLEANUP_RastPort *rp;
+    struct RastPort *rp;
     char textBuffer[89];
     LONG row;
 
-    rp = (CLEANUP_RastPort *)NEWGRID_MainRastPortPtr;
+    rp = (struct RastPort *)NEWGRID_MainRastPortPtr;
     GCOMMAND_UpdateBannerBounds(0, 5, 6, 0);
     _LVOSetAPen();
     _LVORectFill();
@@ -97,7 +84,7 @@ void CLEANUP_DrawClockFormatList(LONG startIndex)
         textX = rowStartX +
                 (((columnWidth - (LONG)(textCursor - textBuffer) - CLOCK_FORMAT_TEXT_PAD) + 1) >> 1) +
                 CLOCK_FORMAT_TEXT_X_OFFSET;
-        fontHeight = (LONG)rp->font52->height26;
+        fontHeight = (LONG)rp->Font->tf_YSize;
         textY = (((CLOCK_FORMAT_TEXT_ROW_HEIGHT - fontHeight) + 1) >> 1) + fontHeight - 1;
 
         (void)textX;
