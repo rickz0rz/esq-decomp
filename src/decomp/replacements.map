@@ -58,6 +58,7 @@ modules/groups/a/i/disptext.s decomp/replacements/modules/groups/a/i/disptext.s
 modules/groups/a/j/dst.s decomp/replacements/modules/groups/a/j/dst.s
 modules/groups/a/j/dst2.s decomp/replacements/modules/groups/a/j/dst2.s
 modules/groups/a/k/ed1.s decomp/replacements/modules/groups/a/k/ed1.s
+modules/groups/a/m/esq.s decomp/replacements/modules/groups/a/m/esq.s
 modules/groups/a/n/esqdisp.s decomp/replacements/modules/groups/a/n/esqdisp.s
 modules/groups/a/n/esqiff.s decomp/replacements/modules/groups/a/n/esqiff.s
 modules/groups/a/n/esqfunc.s decomp/replacements/modules/groups/a/n/esqfunc.s
