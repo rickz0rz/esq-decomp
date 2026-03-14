@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import subprocess
 from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -20,6 +21,7 @@ RE_ENTRY = re.compile(r'^ENTRY="(?P<entry>[^"]+)"', re.MULTILINE)
 RE_SASC_SRC = re.compile(r'^SASC_SRC="(?P<src>[^"]+\.c)"', re.MULTILINE)
 RE_XDEF = re.compile(r"^\s*XDEF\s+(?P<sym>[A-Za-z0-9_]+)", re.MULTILINE)
 RE_INCLUDE_ONLY = re.compile(r'^\s*include\s+"(?P<path>[^"]+)"')
+RE_WROTE_PATH = re.compile(r"^wrote:\s+(?P<path>.+)$", re.MULTILINE)
 
 
 @dataclass
@@ -44,6 +46,24 @@ class ModuleStats:
     @property
     def is_complete(self) -> bool:
         return bool(self.asm_direct_exports) and not self.missing_exports
+
+
+@dataclass
+class CompareVerification:
+    compare_script: str
+    ok: bool
+    raw_diff_bytes: int | None = None
+    semantic_diff_bytes: int | None = None
+    error: str | None = None
+
+
+@dataclass
+class ModuleVerification:
+    checked_scripts: int = 0
+    exact_ok: int = 0
+    semantic_ok: int = 0
+    failed: int = 0
+    compare_results: list[CompareVerification] = field(default_factory=list)
 
 
 def parse_args() -> argparse.Namespace:
@@ -76,6 +96,14 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Print covered exports, missing exports, and compare scripts under each "
             "reported row."
+        ),
+    )
+    parser.add_argument(
+        "--verify",
+        action="store_true",
+        help=(
+            "Run each reported compare_sasc_* script and summarize raw/semantic diff "
+            "status for safer object-integration triage."
         ),
     )
     return parser.parse_args()
@@ -177,6 +205,75 @@ def replacement_is_passthrough(repo_root: Path, module_path: str, replacement_pa
     return include_targets == [module_path]
 
 
+def parse_wrote_paths(output: str, repo_root: Path) -> list[Path]:
+    paths: list[Path] = []
+    for match in RE_WROTE_PATH.finditer(output):
+        raw_path = match.group("path").strip()
+        path = Path(raw_path)
+        if not path.is_absolute():
+            path = repo_root / raw_path
+        paths.append(path)
+    return paths
+
+
+def verify_compare_script(repo_root: Path, script_name: str) -> CompareVerification:
+    script_path = repo_root / "src/decomp/scripts" / script_name
+    result = subprocess.run(
+        ["bash", str(script_path)],
+        cwd=repo_root,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+    )
+
+    if result.returncode != 0:
+        return CompareVerification(
+            compare_script=script_name,
+            ok=False,
+            error=result.stdout.strip() or f"compare exited with status {result.returncode}",
+        )
+
+    diff_paths = parse_wrote_paths(result.stdout, repo_root)
+    raw_diff_bytes: int | None = None
+    semantic_diff_bytes: int | None = None
+
+    for path in diff_paths:
+        if not path.exists():
+            continue
+        size = path.stat().st_size
+        if path.name.endswith(".semantic.diff"):
+            semantic_diff_bytes = size
+        elif path.name.endswith(".diff"):
+            raw_diff_bytes = size
+
+    return CompareVerification(
+        compare_script=script_name,
+        ok=True,
+        raw_diff_bytes=raw_diff_bytes,
+        semantic_diff_bytes=semantic_diff_bytes,
+    )
+
+
+def verify_module(repo_root: Path, compare_scripts: set[str]) -> ModuleVerification:
+    module_verification = ModuleVerification()
+
+    for script_name in sorted(compare_scripts):
+        compare_result = verify_compare_script(repo_root, script_name)
+        module_verification.compare_results.append(compare_result)
+        module_verification.checked_scripts += 1
+
+        if not compare_result.ok:
+            module_verification.failed += 1
+            continue
+
+        if compare_result.semantic_diff_bytes == 0:
+            module_verification.semantic_ok += 1
+        if compare_result.raw_diff_bytes == 0:
+            module_verification.exact_ok += 1
+
+    return module_verification
+
+
 def main() -> int:
     args = parse_args()
     repo_root = Path(__file__).resolve().parents[3]
@@ -200,15 +297,25 @@ def main() -> int:
         if not args.all and not (passthrough and stats.is_complete):
             continue
 
+        verification = verify_module(repo_root, stats.compare_scripts) if args.verify else None
+
+        sort_bucket = 0 if passthrough and stats.is_complete else 1
+        if args.verify and verification is not None:
+            if verification.failed:
+                sort_bucket = 2
+            elif verification.checked_scripts and verification.exact_ok == verification.checked_scripts:
+                sort_bucket = -1
+
         rows.append(
             (
-                0 if passthrough and stats.is_complete else 1,
+                sort_bucket,
                 len(stats.direct_sasc_sources),
                 stats.direct_export_count,
                 module_path,
                 replacement_path,
                 passthrough,
                 stats,
+                verification,
             )
         )
 
@@ -222,12 +329,15 @@ def main() -> int:
 
     header = (
         f"{'status':10}  {'coverage':8}  {'sasc_srcs':9}  "
-        f"{'direct_xdefs':12}  {'module':48}  {'replacement':48}  {'sample sas_c files'}"
+        f"{'direct_xdefs':12}  "
     )
+    if args.verify:
+        header += f"{'exact':8}  {'semantic':10}  {'verify':8}  "
+    header += f"{'module':48}  {'replacement':48}  {'sample sas_c files'}"
     print(header)
     print("-" * len(header))
 
-    for _, _, _, module_path, replacement_path, passthrough, stats in rows:
+    for _, _, _, module_path, replacement_path, passthrough, stats, verification in rows:
         if passthrough and stats.is_complete:
             status = "ready"
         elif passthrough:
@@ -235,15 +345,32 @@ def main() -> int:
         else:
             status = "custom"
 
-        print(
+        if args.verify and verification is not None:
+            if verification.failed:
+                status = "verify-fail"
+            elif verification.checked_scripts and verification.exact_ok == verification.checked_scripts:
+                status = "exact-ready"
+            elif verification.checked_scripts and verification.semantic_ok == verification.checked_scripts:
+                status = "sem-ready"
+
+        row = (
             f"{status:10}  "
             f"{format_ratio(stats.covered_export_count, stats.direct_export_count):8}  "
             f"{len(stats.direct_sasc_sources):9d}  "
             f"{stats.direct_export_count:12d}  "
+        )
+        if args.verify and verification is not None:
+            row += (
+                f"{format_ratio(verification.exact_ok, verification.checked_scripts):8}  "
+                f"{format_ratio(verification.semantic_ok, verification.checked_scripts):10}  "
+                f"{verification.failed:8d}  "
+            )
+        row += (
             f"{module_path:48}  "
             f"{replacement_path:48}  "
             f"{format_samples(stats.direct_sasc_sources)}"
         )
+        print(row)
 
         if args.details:
             covered = stats.asm_direct_exports & stats.sasc_direct_entries
@@ -251,6 +378,26 @@ def main() -> int:
                 print(f"  exports: {format_samples(covered, limit=12)}")
             if stats.compare_scripts:
                 print(f"  compare: {format_samples(stats.compare_scripts, limit=8)}")
+            if args.verify and verification is not None:
+                for compare_result in verification.compare_results:
+                    if compare_result.ok:
+                        raw_value = (
+                            "??" if compare_result.raw_diff_bytes is None else str(compare_result.raw_diff_bytes)
+                        )
+                        sem_value = (
+                            "??"
+                            if compare_result.semantic_diff_bytes is None
+                            else str(compare_result.semantic_diff_bytes)
+                        )
+                        print(
+                            f"  verify: {compare_result.compare_script} "
+                            f"(raw={raw_value}, semantic={sem_value})"
+                        )
+                    else:
+                        print(
+                            f"  verify: {compare_result.compare_script} "
+                            f"(failed: {compare_result.error})"
+                        )
 
         if (args.all or args.details) and stats.missing_exports:
             print(f"  missing: {format_samples(stats.missing_exports, limit=12)}")

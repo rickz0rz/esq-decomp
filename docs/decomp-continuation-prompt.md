@@ -47,7 +47,7 @@ How to work:
 11. After the maintained SAS/C lane is green, shift priority from isolated function ports to build integration:
    - consolidate restored SAS/C functions into replacement-ready module/object boundaries
    - expand hybrid replacement coverage module by module
-   - use `src/decomp/scripts/report_passthrough_integration_candidates.py` to pick the next fully covered module boundary whose replacement file is still a verbatim asm passthrough
+   - use `src/decomp/scripts/report_passthrough_integration_candidates.py` to pick the next fully covered module boundary whose replacement file is still a verbatim asm passthrough; add `--verify` when you need fresh compare-script reruns to separate exact/raw-diff-clean candidates from semantic-only matches
    - keep `decomp-build.sh` hash-stable while replacement coverage grows
    - only then plan a true whole-program SAS/C build/link path
 
