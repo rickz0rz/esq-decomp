@@ -48,6 +48,7 @@ modules/groups/b/a/parseini.s decomp/replacements/modules/groups/b/a/parseini.s
 modules/groups/b/a/parseini2.s decomp/replacements/modules/groups/b/a/parseini2.s
 modules/groups/b/a/parseini3.s decomp/replacements/modules/groups/b/a/parseini3.s
 modules/groups/b/a/p_type.s decomp/replacements/modules/groups/b/a/p_type.s
+modules/groups/b/a/tliba1.s decomp/replacements/modules/groups/b/a/tliba1.s
 modules/groups/b/a/tliba2.s decomp/replacements/modules/groups/b/a/tliba2.s
 modules/groups/b/a/newgrid.s decomp/replacements/modules/groups/b/a/newgrid.s
 modules/groups/b/a/script2.s decomp/replacements/modules/groups/b/a/script2.s
