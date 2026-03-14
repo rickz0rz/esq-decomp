@@ -82,7 +82,7 @@ void FLIB2_LoadDigitalMplexDefaults(void)
     GCOMMAND_MplexEditorLayoutPen = 1;
     GCOMMAND_MplexEditorRowPen = 4;
     GCOMMAND_MplexDetailLayoutPen = 1;
-    GCOMMAND_MplexDetailInitialLineIndex = 10;
+    GCOMMAND_MplexDetailInitialLineIndex = 3;
     GCOMMAND_MplexDetailRowPen = 4;
     GCOMMAND_MplexWorkflowMode = 'B';
     GCOMMAND_MplexDetailLayoutFlag = 'N';
