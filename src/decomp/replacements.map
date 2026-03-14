@@ -9,6 +9,7 @@
 # Example:
 # modules/groups/a/a/bitmap.s decomp/replacements/modules/groups/a/a/bitmap.s
 modules/groups/_main/a/xjump.s decomp/replacements/modules/groups/_main/a/xjump.s
+modules/groups/_main/a/a.s decomp/replacements/modules/groups/_main/a/a.s
 modules/groups/a/q/esqshared4.s decomp/replacements/modules/groups/a/q/esqshared4.s
 modules/groups/a/s/gcommand.s decomp/replacements/modules/groups/a/s/gcommand.s
 modules/groups/a/u/gcommand3.s decomp/replacements/modules/groups/a/u/gcommand3.s
