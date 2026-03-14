@@ -6,7 +6,7 @@ function t(s){sub(/;.*/,"",s);sub(/^[ \t]+/,"",s);sub(/[ \t]+$/,"",s);gsub(/[ \t
   if(l~/^LIST_INITHEADER:/) h_entry=1
   if(l~/^MOVEA?\.L .*A[035]$/) h_a_load=1
   if(l~/^MOVE\.L (A[035]|D0),\(A[035]\)$/) h_set0=1
-  if(l~/^ADDQ\.L #\$?4,\(A[035]\)$/) h_add4=1
+  if(l~/^ADDQ\.L #\$?4,\(A[035]\)$/ || l~/^LEA \$?4\(A[035]\),(A[0-6]|D0)$/) h_add4=1
   if(l~/^CLR\.L (\$?4|4)\(A[035]\)$/) h_clr4=1
   if(l~/^MOVE\.L A[035],(\$?8|8)\(A[035]\)$/) h_set8=1
   if(l~/^RTS$/) h_rts=1

@@ -16,12 +16,12 @@ typedef struct ESQ_SerialIORequest {
     UBYTE flags79;
 } ESQ_SerialIORequest;
 
-typedef struct ESQ_LayerData {
+typedef struct ESQ_RastPortOverlay {
     UBYTE pad0[53];
     UBYTE flags53;
     UBYTE pad54;
     UBYTE flag55;
-} ESQ_LayerData;
+} ESQ_RastPortOverlay;
 
 enum {
     MEMF_PUBLIC = 1,
@@ -313,7 +313,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     LONG d0;
     LONG baudRate;
     ESQ_Task *task;
-    ESQ_LayerData *layerData;
+    ESQ_RastPortOverlay *rastPortOverlay;
     ESQ_SerialIORequest *serialIoRequest;
     char *displayRastPort;
 
@@ -567,9 +567,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQSHARED_DisplayContextPlaneBase3 = WDISP_DisplayContextPlanePointer3;
     ESQSHARED_DisplayContextPlaneBase4 = WDISP_DisplayContextPlanePointer4;
 
-    layerData = (ESQ_LayerData *)Global_REF_RASTPORT_1->areaPtr;
-    layerData->flag55 = 1;
-    layerData->flags53 = (UBYTE)(layerData->flags53 | 1);
+    rastPortOverlay = (ESQ_RastPortOverlay *)Global_REF_RASTPORT_1;
+    rastPortOverlay->flag55 = 1;
+    rastPortOverlay->flags53 = (UBYTE)(rastPortOverlay->flags53 | 1);
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(2, 0, 3);
 
