@@ -27,6 +27,7 @@ class ModuleStats:
     asm_direct_exports: set[str] = field(default_factory=set)
     sasc_direct_entries: set[str] = field(default_factory=set)
     direct_sasc_sources: set[str] = field(default_factory=set)
+    compare_scripts: set[str] = field(default_factory=set)
 
     @property
     def covered_export_count(self) -> int:
@@ -68,6 +69,14 @@ def parse_args() -> argparse.Namespace:
         "--module-filter",
         metavar="SUBSTR",
         help="Only show modules whose path contains SUBSTR.",
+    )
+    parser.add_argument(
+        "--details",
+        action="store_true",
+        help=(
+            "Print covered exports, missing exports, and compare scripts under each "
+            "reported row."
+        ),
     )
     return parser.parse_args()
 
@@ -136,6 +145,7 @@ def collect_sasc_compare_stats(repo_root: Path) -> dict[str, ModuleStats]:
         module_path = normalize_module_path(asm_match.group("path"))
         entry_name = entry_match.group("entry")
         sasc_src = src_match.group("src")
+        compare_script = compare_path.name
 
         if "jmptbl" in entry_name.lower():
             continue
@@ -143,6 +153,7 @@ def collect_sasc_compare_stats(repo_root: Path) -> dict[str, ModuleStats]:
         stats = stats_by_module[module_path]
         stats.sasc_direct_entries.add(entry_name)
         stats.direct_sasc_sources.add(sasc_src)
+        stats.compare_scripts.add(compare_script)
 
     return stats_by_module
 
@@ -234,8 +245,15 @@ def main() -> int:
             f"{format_samples(stats.direct_sasc_sources)}"
         )
 
-        if args.all and stats.missing_exports:
-            print(f"  missing: {format_samples(stats.missing_exports, limit=6)}")
+        if args.details:
+            covered = stats.asm_direct_exports & stats.sasc_direct_entries
+            if covered:
+                print(f"  exports: {format_samples(covered, limit=12)}")
+            if stats.compare_scripts:
+                print(f"  compare: {format_samples(stats.compare_scripts, limit=8)}")
+
+        if (args.all or args.details) and stats.missing_exports:
+            print(f"  missing: {format_samples(stats.missing_exports, limit=12)}")
 
     return 0
 
