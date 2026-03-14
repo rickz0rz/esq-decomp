@@ -1,12 +1,70 @@
 ;------------------------------------------------------------------------------
-; DECOMP TARGETS unknown38 signal / exit helper module boundary
+; DECOMP TARGETS unknown38 signal / exit helper foothold module boundary
 ; SOURCE: modules/submodules/unknown38.s
 ; PURPOSE:
-;   Seed a hybrid replacement boundary for the UNKNOWN38 submodule now that the
-;   restored SAS/C lane covers the current non-JMPTBL signal polling helper in
-;   the maintained sweep. The hybrid build still delegates to the canonical asm
-;   module for now; future passes can replace this routine here without touching
-;   the root include graph again.
+;   Object-level hybrid replacement for UNKNOWN38 now that the restored SAS/C
+;   lane covers SIGNAL_PollAndDispatch. This replacement now carries the module
+;   body directly instead of delegating back to the canonical asm include.
 ;------------------------------------------------------------------------------
 
-    include "modules/submodules/unknown38.s"
+    XDEF    SIGNAL_PollAndDispatch
+
+;------------------------------------------------------------------------------
+; FUNC: SIGNAL_PollAndDispatch   (Poll Ctrl-C/D break signals and invoke callback.)
+; ARGS:
+;   none
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0-D1/A0/A6
+; CALLS:
+;   _LVOSetSignal, Global_SignalCallbackPtr, HANDLE_CloseAllAndReturnWithCode
+; READS:
+;   Global_SignalCallbackPtr
+; WRITES:
+;   Global_SignalCallbackPtr (cleared on callback failure)
+; DESC:
+;   Checks for signals 0x3000; if present, calls the registered callback.
+;   If callback returns non-zero, clears it and exits through code 20.
+;------------------------------------------------------------------------------
+SIGNAL_PollAndDispatch:
+    MOVE.L  D7,-(A7)
+
+    MOVEQ   #0,D0
+    MOVE.L  #$3000,D1
+    MOVEA.L AbsExecBase,A6
+    JSR     _LVOSetSignal(A6)
+
+    MOVE.L  D0,D7
+    ANDI.L  #$3000,D7
+    TST.L   D7
+    BEQ.S   .return
+
+    TST.L   Global_SignalCallbackPtr(A4)
+    BEQ.S   .return
+
+    MOVEA.L Global_SignalCallbackPtr(A4),A0
+    JSR     (A0)
+
+    TST.L   D0
+    BNE.S   .callback_failed
+
+    BRA.S   .return
+
+.callback_failed:
+    CLR.L   Global_SignalCallbackPtr(A4)
+    PEA     20.W
+    JSR     HANDLE_CloseAllAndReturnWithCode(PC)
+
+    ADDQ.W  #4,A7
+
+.return:
+    MOVE.L  (A7)+,D7
+    RTS
+
+;!======
+
+    BSR.S   SIGNAL_PollAndDispatch
+    RTS
+
+    DC.W    $0000
