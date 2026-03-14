@@ -50,6 +50,7 @@ modules/groups/a/e/coi.s decomp/replacements/modules/groups/a/e/coi.s
 modules/groups/a/e/cleanup4.s decomp/replacements/modules/groups/a/e/cleanup4.s
 modules/groups/a/f/ctasks.s decomp/replacements/modules/groups/a/f/ctasks.s
 modules/groups/a/g/diskio.s decomp/replacements/modules/groups/a/g/diskio.s
+modules/groups/a/h/diskio2.s decomp/replacements/modules/groups/a/h/diskio2.s
 modules/groups/a/g/diskio1.s decomp/replacements/modules/groups/a/g/diskio1.s
 modules/groups/a/i/displib.s decomp/replacements/modules/groups/a/i/displib.s
 modules/groups/a/i/disptext.s decomp/replacements/modules/groups/a/i/disptext.s
