@@ -102,6 +102,7 @@ modules/groups/a/i/disptext.s decomp/replacements/modules/groups/a/i/disptext.s
 modules/groups/a/j/dst.s decomp/replacements/modules/groups/a/j/dst.s
 modules/groups/a/j/dst2.s decomp/replacements/modules/groups/a/j/dst2.s
 modules/groups/a/j/disptext2.s decomp/replacements/modules/groups/a/j/disptext2.s
+modules/groups/a/k/ed.s decomp/replacements/modules/groups/a/k/ed.s
 modules/groups/a/k/ed1.s decomp/replacements/modules/groups/a/k/ed1.s
 modules/groups/a/l/ed3.s decomp/replacements/modules/groups/a/l/ed3.s
 modules/groups/a/m/esq.s decomp/replacements/modules/groups/a/m/esq.s
