@@ -1,12 +1,135 @@
 ;------------------------------------------------------------------------------
-; DECOMP TARGETS unknown40 battery-clock / DOS wrapper module boundary
+; DECOMP TARGETS unknown40 battclock / DOS wrapper helper module boundary
 ; SOURCE: modules/submodules/unknown40.s
 ; PURPOSE:
-;   Seed a hybrid replacement boundary for the UNKNOWN40 submodule now that the
-;   restored SAS/C lane covers the current non-JMPTBL battery-clock and DOS
-;   wrapper helpers in the maintained sweep. The hybrid build still delegates
-;   to the canonical asm module for now; future passes can replace individual
-;   routines here without touching the root include graph again.
+;   Object-level hybrid replacement for UNKNOWN40 now that the restored SAS/C
+;   lane covers the module's current non-JMPTBL battery-clock, DOS wrapper,
+;   and Exec vector helper exports. This replacement now carries the module
+;   body directly instead of delegating back to the canonical asm include.
 ;------------------------------------------------------------------------------
 
-    include "modules/submodules/unknown40.s"
+    XDEF    BATTCLOCK_GetSecondsFromBatteryBackedClock
+    XDEF    BATTCLOCK_WriteSecondsToBatteryBackedClock
+    XDEF    DOS_Delay
+    XDEF    DOS_SystemTagList
+    XDEF    EXEC_CallVector_48
+
+;------------------------------------------------------------------------------
+; FUNC: BATTCLOCK_GetSecondsFromBatteryBackedClock   (Read seconds from the battery-backed clock.)
+; ARGS:
+;   none
+; RET:
+;   D0: seconds since Amiga epoch
+; CLOBBERS:
+;   D0/A6
+; CALLS:
+;   _LVOReadBattClock
+;------------------------------------------------------------------------------
+BATTCLOCK_GetSecondsFromBatteryBackedClock:
+    MOVE.L  A6,-(A7)
+
+    MOVEA.L Global_REF_BATTCLOCK_RESOURCE,A6
+    JSR     _LVOReadBattClock(A6)
+
+    MOVEA.L (A7)+,A6
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: BATTCLOCK_WriteSecondsToBatteryBackedClock   (Write seconds to the battery-backed clock.)
+; ARGS:
+;   stack +8: D0 = seconds since Amiga epoch
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0/A6
+; CALLS:
+;   _LVOWriteBattClock
+;------------------------------------------------------------------------------
+BATTCLOCK_WriteSecondsToBatteryBackedClock:
+    MOVE.L  A6,-(A7)
+
+    MOVEA.L Global_REF_BATTCLOCK_RESOURCE,A6
+    MOVE.L  8(A7),D0
+    JSR     _LVOWriteBattClock(A6)
+
+    MOVEA.L (A7)+,A6
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: EXEC_CallVector_48   (Exec.library call wrapper at LVO -48.)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D0/A0-A2/A6
+; DESC:
+;   Dispatches to _LVOexecPrivate3 using INPUTDEVICE_LibraryBaseFromConsoleIo as library base.
+; NOTES:
+;   Vector identity unknown; verify against call sites.
+;------------------------------------------------------------------------------
+EXEC_CallVector_48:
+    MOVEM.L A2/A6,-(A7)
+
+    MOVEA.L INPUTDEVICE_LibraryBaseFromConsoleIo,A6
+    MOVEM.L 12(A7),A0-A1
+    MOVEM.L 20(A7),D1/A2
+    JSR     _LVOexecPrivate3(A6)
+
+    MOVEM.L (A7)+,A2/A6
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: DOS_Delay   (Delay for D1 ticks.)
+; ARGS:
+;   stack +8: D1 = ticks
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D1/A6
+; CALLS:
+;   _LVODelay
+;------------------------------------------------------------------------------
+DOS_Delay:
+    MOVE.L  A6,-(A7)
+
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVE.L  8(A7),D1
+    JSR     _LVODelay(A6)
+
+    MOVEA.L (A7)+,A6
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: DOS_SystemTagList   (Call DOS SystemTagList.)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: status
+; CLOBBERS:
+;   D0-D2/A6
+; CALLS:
+;   _LVOSystemTagList
+;------------------------------------------------------------------------------
+DOS_SystemTagList:
+    MOVEM.L D2/A6,-(A7)
+
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEM.L 12(A7),D1-D2
+    JSR     _LVOSystemTagList(A6)
+
+    MOVEM.L (A7)+,D2/A6
+    RTS
+
+;!======
+
+    ; Alignment
+    ALIGN_WORD
