@@ -1,3 +1,6 @@
+#include <devices/serial.h>
+#include <dos/dosextens.h>
+#include <exec/io.h>
 #include <exec/libraries.h>
 #include <exec/memory.h>
 #include <exec/ports.h>
@@ -5,21 +8,8 @@
 
 #define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
-// Process
-typedef struct ESQ_Task {
-    UBYTE pad0[184];
-    LONG windowPtr;
-} ESQ_Task;
-
-// IOExtSer ?
-typedef struct ESQ_SerialIORequest {
-    UBYTE pad0[28];
-    UWORD command;
-    UBYTE pad30[30];
-    LONG baudRate;
-    UBYTE pad64[15];
-    UBYTE flags79;
-} ESQ_SerialIORequest;
+typedef struct Process Process;
+typedef struct IOExtSer IOExtSer;
 
 typedef struct ESQ_RastPortOverlay {
     UBYTE pad0[53];
@@ -315,9 +305,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     LONG i;
     LONG d0;
     LONG baudRate;
-    ESQ_Task *task;
+    Process *process;
     ESQ_RastPortOverlay *rastPortOverlay;
-    ESQ_SerialIORequest *serialIoRequest;
+    IOExtSer *serialIoRequest;
     char *displayRastPort;
 
     if (argc >= 2) {
@@ -348,10 +338,10 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 
     _LVOExecute(Global_REF_DOS_LIBRARY_2, Global_STR_COPY_NIL_ASSIGN_RAM, 0, 0);
 
-    task = (ESQ_Task *)_LVOFindTask(AbsExecBase, (void *)0);
-    WDISP_ExecBaseHookPtr = (LONG)task;
-    ESQ_ProcessWindowPtrBackup = task->windowPtr;
-    task->windowPtr = -1;
+    process = (Process *)_LVOFindTask(AbsExecBase, (void *)0);
+    WDISP_ExecBaseHookPtr = (LONG)process;
+    ESQ_ProcessWindowPtrBackup = process->pr_WindowPtr;
+    process->pr_WindowPtr = -1;
 
     Global_REF_GRAPHICS_LIBRARY = _LVOOpenLibrary(AbsExecBase, Global_STR_GRAPHICS_LIBRARY, 0);
     if (Global_REF_GRAPHICS_LIBRARY == (void *)0) {
@@ -528,10 +518,10 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         return 0;
     }
 
-    serialIoRequest = (ESQ_SerialIORequest *)WDISP_SerialIoRequestPtr;
-    serialIoRequest->flags79 = 16;
-    serialIoRequest->baudRate = Global_REF_BAUD_RATE;
-    serialIoRequest->command = 11;
+    serialIoRequest = (IOExtSer*)WDISP_SerialIoRequestPtr;
+    serialIoRequest->io_SerFlags = 16;
+    serialIoRequest->io_Baud = Global_REF_BAUD_RATE;
+    serialIoRequest->IOSer.io_Command = (UWORD)11;
     _LVODoIO(AbsExecBase, WDISP_SerialIoRequestPtr);
 
     SETUP_INTERRUPT_INTB_RBF();
