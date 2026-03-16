@@ -1,20 +1,13 @@
 #include <exec/memory.h>
 #include <exec/types.h>
 
+#include <dos/dos.h>
+
 struct DiskIoBufferState {
     void *BufferPtr;
     LONG BufferSize;
     LONG Remaining;
     short SavedF45;
-};
-
-struct InfoDataApprox {
-    ULONG pad0;
-    ULONG pad1;
-    ULONG pad2;
-    ULONG id_NumBlocks;
-    ULONG id_NumBlocksUsed;
-    ULONG id_BytesPerBlock;
 };
 
 extern void *Global_REF_DOS_LIBRARY_2;
@@ -40,10 +33,10 @@ LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(const char *path)
     const LONG BUFFER_BLOCK_MULT = 2;
     const LONG ALLOC_LINE = 567;
     const LONG FREE_LINE = 574;
-    const ULONG INFODATA_SIZE = 32;
+    const ULONG INFODATA_SIZE = sizeof(struct InfoData);
     LONG usagePercent;
     LONG lockHandle;
-    struct InfoDataApprox *info;
+    struct InfoData *info;
 
     usagePercent = 0;
     lockHandle = _LVOLock(Global_REF_DOS_LIBRARY_2, path, LOCK_READ);
@@ -51,7 +44,7 @@ LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(const char *path)
         return usagePercent;
     }
 
-    info = (struct InfoDataApprox *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    info = (struct InfoData *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_DISKIO_C_5, ALLOC_LINE, INFODATA_SIZE, MEMF_CLEAR);
     if (info != 0) {
         if (_LVOInfo(Global_REF_DOS_LIBRARY_2, lockHandle, info) == INFO_QUERY_OK) {

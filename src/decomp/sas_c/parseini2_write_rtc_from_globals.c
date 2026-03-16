@@ -1,13 +1,5 @@
 #include <exec/types.h>
-struct ClockData {
-    WORD sec;
-    WORD min;
-    WORD hour;
-    WORD mday;
-    WORD month;
-    WORD year;
-    WORD wday;
-};
+#include <utility/date.h>
 
 extern void *Global_REF_UTILITY_LIBRARY;
 extern void *Global_REF_BATTCLOCK_RESOURCE;

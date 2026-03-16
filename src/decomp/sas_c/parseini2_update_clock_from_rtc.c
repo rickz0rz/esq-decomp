@@ -1,13 +1,5 @@
 #include <exec/types.h>
-struct ClockData {
-    WORD sec;
-    WORD min;
-    WORD hour;
-    WORD mday;
-    WORD month;
-    WORD year;
-    WORD wday;
-};
+#include <utility/date.h>
 
 struct ClockNormData {
     WORD wday;
