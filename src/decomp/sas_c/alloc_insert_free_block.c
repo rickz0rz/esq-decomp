@@ -1,6 +1,8 @@
 #include <exec/memory.h>
 #include <exec/types.h>
 
+typedef struct MemChunk MemChunk;
+
 extern MemChunk *Global_AllocListHead;
 extern LONG Global_AllocBytesTotal;
 

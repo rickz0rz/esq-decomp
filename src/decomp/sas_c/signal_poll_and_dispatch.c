@@ -1,10 +1,12 @@
-#include <exec/types.h>typedef LONG (*SignalCallback)(void);
+#include <exec/types.h>
 
-extern void *AbsExecBase;
+typedef LONG (*SignalCallback)(void);
+
 extern LONG Global_SignalCallbackPtr;
+extern LONG HANDLE_CloseAllAndReturnWithCode(LONG code);
+extern void *AbsExecBase;
 
 extern LONG _LVOSetSignal(void *execBase, LONG newSignals, LONG signalMask);
-extern LONG HANDLE_CloseAllAndReturnWithCode(LONG code);
 
 LONG SIGNAL_PollAndDispatch(void)
 {

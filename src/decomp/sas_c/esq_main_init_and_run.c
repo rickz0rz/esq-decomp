@@ -5,6 +5,7 @@
 
 #define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
+// Process
 typedef struct ESQ_Task {
     UBYTE pad0[184];
     LONG windowPtr;
