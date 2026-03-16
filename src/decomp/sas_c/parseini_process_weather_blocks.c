@@ -1,6 +1,5 @@
+#include <exec/memory.h>
 #include <exec/types.h>
-#define MEMF_PUBLIC 1L
-#define MEMF_CLEAR 65536L
 
 typedef struct PARSEINI_WeatherSourceNode {
     char label[8];
@@ -22,6 +21,8 @@ typedef struct PARSEINI_WeatherBlock {
     LONG vertAlign;
     PARSEINI_WeatherSourceNode *sourceList;
 } PARSEINI_WeatherBlock;
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 extern void *PARSEINI_ParsedDescriptorListHead;
 extern void *PARSEINI_CurrentWeatherBlockTempPtr;
@@ -163,7 +164,7 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
             }
 
             prevSourceNode = PARSEINI_CurrentWeatherBlockTempPtr;
-            newAllocNode = MEMORY_AllocateMemory(Global_STR_PARSEINI_C_3, 670, 12, MEMF_PUBLIC + MEMF_CLEAR);
+            newAllocNode = MEMORY_AllocateMemory(Global_STR_PARSEINI_C_3, 670, 12, MEMF_PUBLIC_CLEAR);
             PARSEINI_CurrentWeatherBlockTempPtr = newAllocNode;
             if (newAllocNode == (void *)0) {
                 return;

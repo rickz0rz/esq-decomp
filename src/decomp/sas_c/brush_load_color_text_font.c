@@ -1,3 +1,4 @@
+#include <exec/memory.h>
 #include <exec/types.h>
 
 extern void *Global_REF_DOS_LIBRARY_2;
@@ -15,7 +16,6 @@ LONG _LVORead(LONG fh, void *buf, LONG len);
 #define BRUSH_LOW_NIBBLE_MASK 0x0FU
 #define COLOR_TEXT_FONT_SIZE 96
 #define COLOR_FONT_BLOCK_BYTES 3
-#define MEMF_PUBLIC 1
 #define BRUSH_COLOR_FONT_STATUS_ERROR (-1)
 #define BRUSH_COLOR_FONT_STATUS_OK 1
 #define BRUSH_ALLOC_LINE 396

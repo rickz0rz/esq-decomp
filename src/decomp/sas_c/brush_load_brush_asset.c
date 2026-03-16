@@ -1,4 +1,7 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 #define BRUSH_ILBM_PROCESS_OK 1
 #define BRUSH_NULL 0
@@ -41,7 +44,6 @@
 #define BRUSH_ALT_NODE_TYPE 11
 #define BRUSH_NODE_SIZE 372
 #define BRUSH_DECODE_BUFFER_SIZE 130000
-#define MEMF_PUBLIC_CLEAR 0x10001UL
 
 extern void *AbsExecBase;
 extern void *Global_REF_DOS_LIBRARY_2;

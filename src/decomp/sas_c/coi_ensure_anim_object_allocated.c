@@ -1,4 +1,6 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
 enum {
     STRUCT_ANIMOB_SIZE = 42,
     ENTRY_ANIM_PTR_OFFSET = 48,
@@ -6,7 +8,7 @@ enum {
     COI_ALLOC_LINE = 1458
 };
 
-static const ULONG COI_MEMF_PUBLIC_CLEAR = 0x10001UL;
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 extern const char Global_STR_COI_C_2[];
 extern const char COI_STR_DEFAULT_TOKEN_TEMPLATE_B[];
@@ -42,7 +44,7 @@ void COI_EnsureAnimObjectAllocated(void *entry)
         Global_STR_COI_C_2,
         COI_ALLOC_LINE,
         STRUCT_ANIMOB_SIZE,
-        COI_MEMF_PUBLIC_CLEAR);
+        MEMF_PUBLIC_CLEAR);
 
     if (e->anim != (COI_AnimObject *)0) {
         e->anim->defaultStr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(

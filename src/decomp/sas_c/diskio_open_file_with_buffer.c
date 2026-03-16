@@ -1,4 +1,6 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
 struct DiskIoBufferState {
     void *BufferPtr;
     LONG BufferSize;
@@ -24,7 +26,6 @@ extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, 
 LONG DISKIO_OpenFileWithBuffer(const char *filePath, LONG accessMode)
 {
     const LONG ALLOC_LINE = 286;
-    const ULONG MEMF_PUBLIC = 1;
     LONG handle;
 
     handle = 0;

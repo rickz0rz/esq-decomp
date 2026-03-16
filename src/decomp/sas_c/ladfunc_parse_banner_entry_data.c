@@ -1,6 +1,7 @@
+#include <exec/memory.h>
 #include <exec/types.h>
-#define MEMF_PUBLIC 0x00000001L
-#define MEMF_CLEAR  0x00010000L
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 typedef struct LADFUNC_EntryRecord {
     UWORD startSlot;
@@ -90,7 +91,7 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const char *in)
         Global_STR_LADFUNC_C_5,
         367,
         ATTR_TEMP_ALLOC_SIZE,
-        (MEMF_PUBLIC + MEMF_CLEAR)
+        (MEMF_PUBLIC_CLEAR)
     );
     if (tempAttr == (UBYTE *)0) {
         return 0;
@@ -147,7 +148,7 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const char *in)
         Global_STR_LADFUNC_C_7,
         ATTR_ALLOC_LINE,
         (LONG)textLen,
-        (MEMF_PUBLIC + MEMF_CLEAR)
+        (MEMF_PUBLIC_CLEAR)
     );
 
     if (entry->attrPtr != (UBYTE *)0) {

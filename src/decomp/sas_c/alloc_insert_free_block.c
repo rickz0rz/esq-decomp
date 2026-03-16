@@ -1,19 +1,13 @@
 #include <exec/memory.h>
 #include <exec/types.h>
 
-// Replace AllocNode with MemChunk across the board
-typedef struct AllocNode {
-    struct AllocNode *next;
-    LONG size;
-} AllocNode;
-
-extern AllocNode *Global_AllocListHead;
+extern MemChunk *Global_AllocListHead;
 extern LONG Global_AllocBytesTotal;
 
-LONG ALLOC_InsertFreeBlock(AllocNode *block, LONG size)
+LONG ALLOC_InsertFreeBlock(MemChunk *block, LONG size)
 {
-    AllocNode **prevLink;
-    AllocNode *freeNode;
+    MemChunk **prevLink;
+    MemChunk *freeNode;
     UBYTE *block_end;
 
     if (size <= 0) {
@@ -31,19 +25,19 @@ LONG ALLOC_InsertFreeBlock(AllocNode *block, LONG size)
     prevLink = &Global_AllocListHead;
     freeNode = Global_AllocListHead;
 
-    while (freeNode != (AllocNode *)0) {
-        UBYTE *node_end = (UBYTE *)freeNode + freeNode->size;
+    while (freeNode != (MemChunk *)0) {
+        UBYTE *node_end = (UBYTE *)freeNode + freeNode->mc_Bytes;
 
         if ((UBYTE *)freeNode > block_end) {
-            block->next = freeNode;
-            block->size = size;
+            block->mc_Next = freeNode;
+            block->mc_Bytes = size;
             *prevLink = block;
             return 0;
         }
 
         if ((UBYTE *)freeNode == block_end) {
-            block->next = freeNode->next;
-            block->size = size + freeNode->size;
+            block->mc_Next = freeNode->mc_Next;
+            block->mc_Bytes = size + freeNode->mc_Bytes;
             *prevLink = block;
             return 0;
         }
@@ -54,25 +48,25 @@ LONG ALLOC_InsertFreeBlock(AllocNode *block, LONG size)
         }
 
         if ((UBYTE *)block == node_end) {
-            if (freeNode->next != (AllocNode *)0 && (UBYTE *)freeNode->next > block_end) {
+            if (freeNode->mc_Next != (MemChunk *)0 && (UBYTE *)freeNode->mc_Next > block_end) {
                 Global_AllocBytesTotal -= size;
                 return -1;
             }
 
-            freeNode->size += size;
-            if (freeNode->next != (AllocNode *)0 && (UBYTE *)freeNode->next == block_end) {
-                freeNode->size += freeNode->next->size;
-                freeNode->next = freeNode->next->next;
+            freeNode->mc_Bytes += size;
+            if (freeNode->mc_Next != (MemChunk *)0 && (UBYTE *)freeNode->mc_Next == block_end) {
+                freeNode->mc_Bytes += freeNode->mc_Next->mc_Bytes;
+                freeNode->mc_Next = freeNode->mc_Next->mc_Next;
             }
             return 0;
         }
 
-        prevLink = &freeNode->next;
-        freeNode = freeNode->next;
+        prevLink = &freeNode->mc_Next;
+        freeNode = freeNode->mc_Next;
     }
 
     *prevLink = block;
-    block->next = (AllocNode *)0;
-    block->size = size;
+    block->mc_Next = (MemChunk *)0;
+    block->mc_Bytes = size;
     return 0;
 }

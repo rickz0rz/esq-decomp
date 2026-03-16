@@ -1,4 +1,6 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
 extern void *Global_REF_DOS_LIBRARY_2;
 extern const char Global_STR_DISKIO_C_7[];
 extern const char Global_STR_DISKIO_C_8[];
@@ -11,7 +13,6 @@ extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, L
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
 
 #define LOCK_READ_MODE (-2L)
-#define MEMF_CLEAR_FLAG 0x00010000UL
 #define STRUCT_INFODATA_SIZE 36L
 #define INFODATA_ALLOC_LINE 593L
 #define INFODATA_FREE_LINE 599L
@@ -37,7 +38,7 @@ LONG DISKIO_QueryVolumeSoftErrorCount(const char *path)
         Global_STR_DISKIO_C_7,
         INFODATA_ALLOC_LINE,
         STRUCT_INFODATA_SIZE,
-        MEMF_CLEAR_FLAG);
+        MEMF_CLEAR);
 
     if (infoData != 0) {
         if (_LVOInfo(Global_REF_DOS_LIBRARY_2, lockHandle, infoData) == RESULT_OK) {

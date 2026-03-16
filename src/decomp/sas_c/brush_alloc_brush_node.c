@@ -1,4 +1,7 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 enum {
     BRUSH_NULL = 0,
@@ -11,8 +14,6 @@ enum {
     BRUSH_NODE_ALIGN_V_OFFSET = 226,
     BRUSH_NODE_NEXT_OFFSET = 234
 };
-
-static const ULONG MEMF_PUBLIC_CLEAR = 0x10001UL;
 
 extern const char Global_STR_BRUSH_C_19[];
 extern void *BRUSH_LastAllocatedNode;

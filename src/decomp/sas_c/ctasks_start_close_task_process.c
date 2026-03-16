@@ -1,8 +1,12 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
 #define CTASKS_FLAG_CLEAR 0
 #define CTASKS_ALLOC_LINE 203
 #define CTASKS_TASKPROC_SIZE 14
-#define CTASKS_MEMF_PUBLIC_CLEAR 0x10001UL
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
+
 #define CTASKS_LIST_SIZE_OFFSET 0
 #define CTASKS_LIST_TASKENTRY_OFFSET 10
 #define CTASKS_LIST_MAGIC_OFFSET 8
@@ -35,7 +39,7 @@ void CTASKS_StartCloseTaskProcess(LONG file_handle)
         Global_STR_CTASKS_C_4,
         CTASKS_ALLOC_LINE,
         CTASKS_TASKPROC_SIZE,
-        CTASKS_MEMF_PUBLIC_CLEAR);
+        MEMF_PUBLIC_CLEAR);
     Global_REF_LIST_CLOSE_TASK_PROC = list_ptr;
 
     *(LONG *)(list_ptr + CTASKS_LIST_SIZE_OFFSET) = CTASKS_TASKPROC_SIZE;

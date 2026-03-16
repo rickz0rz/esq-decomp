@@ -1,4 +1,6 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
 enum {
     COI_ANIM_AUX_PTR_OFFSET = 48,
     COI_ANIM_COUNT_OFFSET = 36,
@@ -8,9 +10,9 @@ enum {
     COI_SUBENTRY_ELEM_SIZE = 30
 };
 
-static const ULONG COI_MEMF_PUBLIC_CLEAR = 0x10001UL;
-
 extern const char Global_STR_COI_C_5[];
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
 void GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray(void *table, LONG elem_size, LONG count);
@@ -53,7 +55,7 @@ void COI_AllocSubEntryTable(void *entry)
         Global_STR_COI_C_5,
         COI_ALLOC_LINE,
         bytes,
-        COI_MEMF_PUBLIC_CLEAR);
+        MEMF_PUBLIC_CLEAR);
 
     GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray(*tableSlot, COI_SUBENTRY_ELEM_SIZE, count);
 }

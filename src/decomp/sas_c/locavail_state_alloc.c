@@ -1,4 +1,8 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
+
 typedef struct LOCAVAIL_NodeRecord {
     UBYTE flag0;
     UBYTE pad1;
@@ -18,9 +22,6 @@ typedef struct LOCAVAIL_FilterState {
     ULONG *sharedRef16;
     LOCAVAIL_NodeRecord *nodeTable20;
 } LOCAVAIL_FilterState;
-
-#define MEMF_PUBLIC 0x00000001L
-#define MEMF_CLEAR  0x00010000L
 
 extern const char Global_STR_LOCAVAIL_C_4[];
 extern const char Global_STR_LOCAVAIL_C_5[];
@@ -57,14 +58,14 @@ LONG LOCAVAIL_AllocNodeArraysForState(void *state)
     if (*count_ptr > 0) {
         if (*count_ptr < 100) {
             s->sharedRef16 = (ULONG *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
-                Global_STR_LOCAVAIL_C_4, 218, 4, MEMF_PUBLIC + MEMF_CLEAR);
+                Global_STR_LOCAVAIL_C_4, 218, 4, MEMF_PUBLIC_CLEAR);
             if (s->sharedRef16 != (ULONG *)0) {
                 *(s->sharedRef16) = 0;
                 s->nodeTable20 = (LOCAVAIL_NodeRecord *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
                     Global_STR_LOCAVAIL_C_5,
                     229,
                     GROUP_AY_JMPTBL_MATH_Mulu32(*count_ptr, 10),
-                    MEMF_PUBLIC + MEMF_CLEAR);
+                    MEMF_PUBLIC_CLEAR);
                 if (s->nodeTable20 != (LOCAVAIL_NodeRecord *)0) {
                     ok = 1;
                 }

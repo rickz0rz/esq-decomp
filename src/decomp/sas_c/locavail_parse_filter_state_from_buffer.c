@@ -1,6 +1,7 @@
+#include <exec/memory.h>
 #include <exec/types.h>
-#define MEMF_PUBLIC 0x00000001L
-#define MEMF_CLEAR  0x00010000L
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 extern const UBYTE WDISP_CharClassTable[];
 extern const char LOCAVAIL_TAG_FV[];
@@ -108,7 +109,7 @@ LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr)
                 }
 
                 node->payload = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
-                    Global_STR_LOCAVAIL_C_6, 341, payloadLen, MEMF_PUBLIC + MEMF_CLEAR);
+                    Global_STR_LOCAVAIL_C_6, 341, payloadLen, MEMF_PUBLIC_CLEAR);
                 if (node->payload == (UBYTE *)0) {
                     success = 0;
                     break;

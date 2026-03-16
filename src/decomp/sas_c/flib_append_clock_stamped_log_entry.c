@@ -1,5 +1,5 @@
+#include <exec/memory.h>
 #include <exec/types.h>
-#define MEMF_PUBLIC 1
 
 extern LONG ESQPARS2_LogAppendSpinlock;
 extern UWORD FLIB_LogEntryByteCount;

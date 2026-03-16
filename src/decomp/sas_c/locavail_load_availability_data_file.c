@@ -1,4 +1,8 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
+
 typedef struct LOCAVAIL_NodeRecord {
     UBYTE tokenIndex0;
     UBYTE pad1;
@@ -19,8 +23,6 @@ typedef struct LOCAVAIL_FilterState {
     LOCAVAIL_NodeRecord *nodeTable20;
 } LOCAVAIL_FilterState;
 
-#define MEMF_PUBLIC 0x00000001L
-#define MEMF_CLEAR  0x00010000L
 #define WORKBUF_ERROR ((char *)0xFFFF)
 
 extern LONG Global_REF_LONG_FILE_SCRATCH;
@@ -132,7 +134,7 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
                 }
 
                 node->payload6 = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
-                    Global_STR_LOCAVAIL_C_7, 786, payloadLen, MEMF_PUBLIC + MEMF_CLEAR);
+                    Global_STR_LOCAVAIL_C_7, 786, payloadLen, MEMF_PUBLIC_CLEAR);
                 if (node->payload6 == (UBYTE *)0) {
                     success = 0;
                     break;

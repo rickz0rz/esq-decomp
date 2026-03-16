@@ -1,4 +1,22 @@
 #include <exec/types.h>
+
+extern void _LVOFreeSignal(void *execBase, LONG signalNum);
+extern void _LVOFreeMem(void *execBase, void *memory, ULONG size);
+
+void IOSTDREQ_CleanupSignalAndMsgport(struct MsgPort *port)
+{
+    if (port->mp_Node.ln_Name != NULL) {
+        _LVORemPort(AbsExecBase, port);
+    }
+
+    port->mp_Node.ln_Type = (signed char)-1;     // field8
+    port->mp_MsgList.lh_Head = (struct Node *)-1; // field20
+
+    _LVOFreeSignal(AbsExecBase, (LONG)port->mp_SigBit);
+    _LVOFreeMem(AbsExecBase, port, sizeof(struct MsgPort));
+}
+
+/*
 typedef struct MSGPORT_Tag {
     char pad0[8];
     signed char field8;
@@ -25,4 +43,4 @@ void IOSTDREQ_CleanupSignalAndMsgport(MSGPORT *port)
     port->field20 = -1;
     _LVOFreeSignal(AbsExecBase, (LONG)port->sigBit);
     _LVOFreeMem(AbsExecBase, port, 34UL);
-}
+}*/

@@ -1,6 +1,7 @@
+#include <exec/memory.h>
 #include <exec/types.h>
-#define MEMF_PUBLIC 0x00000001L
-#define MEMF_CLEAR  0x00010000L
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 extern LONG ED_TextLimit;
 
@@ -22,7 +23,6 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *textBuf, UBYTE *attrBuf)
     const LONG ROW_LAST_COL = 39;
     const LONG CENTER_PAD_LIMIT = 20;
     const UBYTE SPACE_CHAR = ' ';
-    const LONG MEMF_PUBLIC_CLEAR = (MEMF_PUBLIC + MEMF_CLEAR);
     LONG srcLen;
     char *textCopy;
     UBYTE *attrCopy;

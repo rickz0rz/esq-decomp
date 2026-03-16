@@ -1,5 +1,6 @@
 #include <proto/exec.h>
 #include <exec/interrupts.h>
+#include <exec/memory.h>
 
 extern struct Interrupt *Global_REF_INTERRUPT_STRUCT_INTB_AUD1;
 extern APTR Global_REF_INTB_AUD1_INTERRUPT;
@@ -10,9 +11,6 @@ extern UBYTE CTRL_SampleEntryScratch;
 extern struct Interrupt *MEMORY_AllocateMemory(ULONG bytes, ULONG flags);
 extern void ESQ_PollCtrlInput(void);
 
-#ifndef MEMF_CHIP
-#define MEMF_CHIP 2UL
-#endif
 #ifndef INTB_AUD1
 #define INTB_AUD1 8
 #endif

@@ -1,4 +1,7 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 #define BRUSH_NULL 0
 #define BRUSH_PLANE_PTR_SHIFT 2
@@ -45,7 +48,6 @@
 #define BRUSH_PLANE_PAIR_COPY_COUNT 4
 #define BRUSH_RASTPORT_COPY_BYTES 96
 #define BRUSH_RECORD_SIZE 372
-static const ULONG MEMF_PUBLIC_CLEAR = 0x10001UL;
 
 extern void *AbsExecBase;
 extern void *Global_REF_GRAPHICS_LIBRARY;

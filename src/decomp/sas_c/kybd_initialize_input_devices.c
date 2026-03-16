@@ -1,4 +1,6 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
 extern const char Global_STR_INPUTDEVICE[];
 extern const char Global_STR_CONSOLEDEVICE[];
 extern const char Global_STR_INPUT_DEVICE[];
@@ -37,7 +39,6 @@ void KYBD_InitializeInputDevices(void)
     const LONG CONSOLE_IO_LIBBASE_OFFSET = 20;
     const LONG INPUTBUF_ALLOC_LINE = 121;
     const LONG INPUTBUF_SIZE = 22;
-    const LONG MEMF_PUBLIC = 1;
     const LONG INPUTBUF_HANDLER_DATA_OFFSET = 14;
     const LONG INPUTBUF_HANDLER_FN_OFFSET = 18;
     const LONG INPUTBUF_FLAGS_OFFSET = 9;

@@ -1,6 +1,7 @@
+#include <exec/memory.h>
 #include <exec/types.h>
-#define MEMF_PUBLIC 0x00000001L
-#define MEMF_CLEAR  0x00010000L
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 extern const char Global_STR_P_TYPE_C_1[];
 extern const char Global_STR_P_TYPE_C_2[];
@@ -34,7 +35,7 @@ void *P_TYPE_AllocateEntry(UBYTE typeByte, LONG length, UBYTE *dataPtr)
     }
 
     entry = (P_TYPE_Entry *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(
-        Global_STR_P_TYPE_C_1, ALLOC_ENTRY_LINE, 10L, MEMF_PUBLIC + MEMF_CLEAR);
+        Global_STR_P_TYPE_C_1, ALLOC_ENTRY_LINE, 10L, MEMF_PUBLIC_CLEAR);
     if (entry == (P_TYPE_Entry *)PTR_NULL) {
         return (void *)PTR_NULL;
     }
@@ -49,7 +50,7 @@ void *P_TYPE_AllocateEntry(UBYTE typeByte, LONG length, UBYTE *dataPtr)
 
     if (srcLen == length) {
         payload = (UBYTE *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(
-            Global_STR_P_TYPE_C_2, ALLOC_PAYLOAD_LINE, length, MEMF_PUBLIC + MEMF_CLEAR);
+            Global_STR_P_TYPE_C_2, ALLOC_PAYLOAD_LINE, length, MEMF_PUBLIC_CLEAR);
         entry->payloadPtr = payload;
     } else {
         entry->payloadPtr = (UBYTE *)PTR_NULL;

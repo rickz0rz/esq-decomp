@@ -1,4 +1,6 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
 struct DiskIoBufferState {
     void *BufferPtr;
     LONG BufferSize;
@@ -39,7 +41,6 @@ LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(const char *path)
     const LONG ALLOC_LINE = 567;
     const LONG FREE_LINE = 574;
     const ULONG INFODATA_SIZE = 32;
-    const ULONG MEMF_CLEAR = 0x10000UL;
     LONG usagePercent;
     LONG lockHandle;
     struct InfoDataApprox *info;

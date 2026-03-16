@@ -1,6 +1,7 @@
+#include <exec/memory.h>
 #include <exec/types.h>
-#define MEMF_PUBLIC 0x00000001L
-#define MEMF_CLEAR  0x00010000L
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 typedef struct TEXTDISP_SourceConfigEntry {
     char *name;
@@ -30,7 +31,7 @@ void TEXTDISP_AddSourceConfigEntry(char *name, const char *tag)
         Global_STR_TEXTDISP_C_4,
         SOURCECFG_ALLOC_LINE,
         SOURCECFG_ALLOC_SIZE,
-        (MEMF_PUBLIC + MEMF_CLEAR)
+        MEMF_PUBLIC_CLEAR
     );
 
     if (*slot == 0) {

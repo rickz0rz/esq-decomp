@@ -1,12 +1,10 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
 typedef struct MinList MinList;
 
 #ifndef MODE_OLDFILE
 #define MODE_OLDFILE 1005
-#endif
-
-#ifndef MEMF_PUBLIC
-#define MEMF_PUBLIC 1UL
 #endif
 
 extern WORD CTASKS_IffTaskDoneFlag;

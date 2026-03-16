@@ -1,6 +1,7 @@
+#include <exec/memory.h>
 #include <exec/types.h>
-#define MEMF_PUBLIC 0x00000001L
-#define MEMF_CLEAR  0x00010000L
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 typedef struct AliasPair {
     char *key;
@@ -231,7 +232,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
                 Global_STR_PARSEINI_C_1,
                 QTABLE_ALLOC_LINE,
                 QTABLE_ALLOC_SIZE,
-                MEMF_PUBLIC + MEMF_CLEAR);
+                MEMF_PUBLIC_CLEAR);
             alias = TEXTDISP_AliasPtrTable[aliasIndex];
             if (alias == (AliasPair *)0) {
                 continue;

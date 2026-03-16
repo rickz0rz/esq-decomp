@@ -1,4 +1,8 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
+
 typedef struct TEXTDISP_SelectionEntry {
     char shortName[10];
     char longName[200];
@@ -7,9 +11,6 @@ typedef struct TEXTDISP_SelectionEntry {
     unsigned short selectionIndex;
     char detailLine[524];
 } TEXTDISP_SelectionEntry;
-
-#define MEMF_PUBLIC 0x00000001L
-#define MEMF_CLEAR  0x00010000L
 
 extern TEXTDISP_SelectionEntry *TEXTDISP_CommandBufferPtr;
 extern WORD TEXTDISP_StatusGroupId;
@@ -104,7 +105,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, char *arg)
                         Global_STR_TEXTDISP_C_1,
                         BUFFER_ALLOC_LINE,
                         BUFFER_SIZE,
-                        (MEMF_PUBLIC + MEMF_CLEAR)
+                        MEMF_PUBLIC_CLEAR
                     );
                 }
 

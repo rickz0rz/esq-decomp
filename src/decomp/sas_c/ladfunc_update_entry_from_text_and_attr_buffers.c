@@ -1,6 +1,5 @@
+#include <exec/memory.h>
 #include <exec/types.h>
-#define MEMF_PUBLIC 0x00000001L
-#define MEMF_CLEAR  0x00010000L
 
 typedef struct LADFUNC_EntryRecord {
     UWORD startSlot;
@@ -9,6 +8,8 @@ typedef struct LADFUNC_EntryRecord {
     char *textPtr;
     UBYTE *attrPtr;
 } LADFUNC_EntryRecord;
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 extern LADFUNC_EntryRecord *LADFUNC_EntryPtrTable[];
 
@@ -24,7 +25,7 @@ extern const char Global_STR_LADFUNC_C_30[];
 void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, char *textBuf, UBYTE *attrBuf)
 {
     const LONG ENTRY_RECORD_SIZE = 14;
-    const LONG MEMF_PUBLIC_CLEAR = (MEMF_PUBLIC + MEMF_CLEAR);
+    const LONG MEMF_PUBLIC_CLEAR = (MEMF_PUBLIC_CLEAR);
     LADFUNC_EntryRecord *entry;
     LONG oldTextLen;
     LONG newTextLen;

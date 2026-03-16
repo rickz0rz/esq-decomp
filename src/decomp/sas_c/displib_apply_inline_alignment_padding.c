@@ -1,11 +1,11 @@
+#include <exec/memory.h>
 #include <exec/types.h>
+
 enum {
     DISPLIB_INLINE_ALIGN_CENTER = 24,
     DISPLIB_INLINE_ALIGN_RIGHT = 26,
     DISPLIB_INLINE_TARGET_WIDTH_PX = 624
 };
-
-static const ULONG MEMF_PUBLIC = 0x1UL;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern char *Global_REF_RASTPORT_1;

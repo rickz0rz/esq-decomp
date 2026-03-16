@@ -1,4 +1,5 @@
 #include <proto/exec.h>
+#include <exec/memory.h>
 #include <exec/interrupts.h>
 
 extern struct Interrupt *Global_REF_INTERRUPT_STRUCT_INTB_VERTB;
@@ -9,9 +10,6 @@ extern void ESQ_VerticalBlankInterruptUserData(void);
 extern struct Interrupt *MEMORY_AllocateMemory(ULONG bytes, ULONG flags);
 extern void ESQ_TickGlobalCounters(void);
 
-#ifndef MEMF_PUBLIC
-#define MEMF_PUBLIC 1UL
-#endif
 #ifndef INTB_VERTB
 #define INTB_VERTB 5
 #endif
