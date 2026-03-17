@@ -6,7 +6,7 @@ typedef struct MemChunk MemChunk;
 extern MemChunk *Global_AllocListHead;
 extern LONG Global_AllocBytesTotal;
 
-LONG ALLOC_InsertFreeBlock(MemChunk *block, LONG size)
+LONG ALLOC_InsertFreeBlock(MemChunk *chunk, LONG size)
 {
     MemChunk **prevLink;
     MemChunk *freeNode;
@@ -21,7 +21,7 @@ LONG ALLOC_InsertFreeBlock(MemChunk *block, LONG size)
     }
 
     size = (size + 3) & ~3;
-    block_end = (UBYTE *)block + size;
+    block_end = (UBYTE *)chunk + size;
     Global_AllocBytesTotal += size;
 
     prevLink = &Global_AllocListHead;
@@ -31,25 +31,25 @@ LONG ALLOC_InsertFreeBlock(MemChunk *block, LONG size)
         UBYTE *node_end = (UBYTE *)freeNode + freeNode->mc_Bytes;
 
         if ((UBYTE *)freeNode > block_end) {
-            block->mc_Next = freeNode;
-            block->mc_Bytes = size;
-            *prevLink = block;
+            chunk->mc_Next = freeNode;
+            chunk->mc_Bytes = size;
+            *prevLink = chunk;
             return 0;
         }
 
         if ((UBYTE *)freeNode == block_end) {
-            block->mc_Next = freeNode->mc_Next;
-            block->mc_Bytes = size + freeNode->mc_Bytes;
-            *prevLink = block;
+            chunk->mc_Next = freeNode->mc_Next;
+            chunk->mc_Bytes = size + freeNode->mc_Bytes;
+            *prevLink = chunk;
             return 0;
         }
 
-        if ((UBYTE *)block < node_end) {
+        if ((UBYTE *)chunk < node_end) {
             Global_AllocBytesTotal -= size;
             return -1;
         }
 
-        if ((UBYTE *)block == node_end) {
+        if ((UBYTE *)chunk == node_end) {
             if (freeNode->mc_Next != (MemChunk *)0 && (UBYTE *)freeNode->mc_Next > block_end) {
                 Global_AllocBytesTotal -= size;
                 return -1;
@@ -67,8 +67,8 @@ LONG ALLOC_InsertFreeBlock(MemChunk *block, LONG size)
         freeNode = freeNode->mc_Next;
     }
 
-    *prevLink = block;
-    block->mc_Next = (MemChunk *)0;
-    block->mc_Bytes = size;
+    *prevLink = chunk;
+    chunk->mc_Next = (MemChunk *)0;
+    chunk->mc_Bytes = size;
     return 0;
 }

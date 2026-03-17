@@ -2,6 +2,7 @@
 
 struct ExecBase;
 extern struct ExecBase *AbsExecBase;
+
 #pragma libcall AbsExecBase AllocMem c6 1002
 extern APTR AllocMem(ULONG byteSize, ULONG requirements);
 

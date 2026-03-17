@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 struct DiskIoBufferState {
     void *BufferPtr;
     LONG BufferSize;

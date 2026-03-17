@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 LONG ESQIFF2_ValidateFieldIndexAndLength(WORD field_index, WORD field_length)
 {
     if (field_index > 3) {

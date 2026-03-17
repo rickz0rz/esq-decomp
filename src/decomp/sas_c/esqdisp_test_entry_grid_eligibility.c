@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 LONG ESQDISP_TestEntryGridEligibility(const UBYTE *entry, WORD index)
 {
     LONG result;

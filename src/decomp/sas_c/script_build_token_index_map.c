@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 LONG SCRIPT_BuildTokenIndexMap(
     char *inputBytes,
     WORD *outIndexByToken,

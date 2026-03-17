@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 char *STRING_AppendN(char *dst, const char *src, ULONG maxBytes)
 {
     const char *srcEnd;

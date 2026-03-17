@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef LONG (*WdispOutputFunc)(LONG);
 
 extern char *FORMAT_ParseFormatSpec(char *fmt, void **varArgsPtr, WdispOutputFunc outputFunc);

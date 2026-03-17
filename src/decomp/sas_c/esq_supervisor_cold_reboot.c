@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 void ESQ_SupervisorColdReboot(void)
 {
     volatile ULONG *p;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 char *GCOMMAND_FindPathSeparator(const char *pathPtr)
 {
     const char *start = pathPtr;

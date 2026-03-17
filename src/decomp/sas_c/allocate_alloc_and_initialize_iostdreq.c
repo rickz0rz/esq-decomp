@@ -1,4 +1,8 @@
 #include <exec/io.h>
+#include <exec/memory.h>
+#include <exec/nodes.h>
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 extern void *AbsExecBase;
 extern void *_LVOAllocMem(void *execBase, ULONG size, ULONG flags);
@@ -11,12 +15,12 @@ struct IOStdReq *ALLOCATE_AllocAndInitializeIOStdReq(void *replyPort)
         return (struct IOStdReq *)0;
     }
 
-    req = (struct IOStdReq *)_LVOAllocMem(AbsExecBase, 48UL, 0x10001UL);
+    req = (struct IOStdReq *)_LVOAllocMem(AbsExecBase, sizeof(struct IOStdReq), MEMF_PUBLIC_CLEAR);
     if (!req) {
         return (struct IOStdReq *)0;
     }
 
-    req->io_Message.mn_Node.ln_Type = 5;
+    req->io_Message.mn_Node.ln_Type = NT_MESSAGE;
     req->io_Message.mn_Node.ln_Pri = 0;
     req->io_Message.mn_ReplyPort = replyPort;
 

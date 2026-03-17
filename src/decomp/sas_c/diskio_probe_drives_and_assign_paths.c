@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 struct TrackdiskIoReqApprox {
     UBYTE pad0[28];
     UWORD io_Command;

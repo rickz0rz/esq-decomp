@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 LONG ESQDISP_TestWordIsZeroBooleanize(WORD value)
 {
     if (value == 0) {

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 const char *TEXTDISP_FindControlToken(const char *textPtr)
 {
     UWORD tokenDelta;

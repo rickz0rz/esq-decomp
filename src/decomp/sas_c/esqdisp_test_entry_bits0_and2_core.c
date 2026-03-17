@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 LONG ESQDISP_TestEntryBits0And2_Core(UBYTE *entry)
 {
     if (!entry) {

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 struct AliasPair {
     char *key;
     char *value;

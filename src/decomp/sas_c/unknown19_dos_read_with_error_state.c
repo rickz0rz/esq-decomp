@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef void (*SignalCallbackFn)(void);
 
 extern LONG Global_SignalCallbackPtr;

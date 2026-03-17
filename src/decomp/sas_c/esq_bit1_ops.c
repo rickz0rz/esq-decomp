@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 LONG ESQ_TestBit1Based(const UBYTE *base, ULONG bitIndex)
 {
     ULONG n;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 LONG STRING_CompareNoCase(const char *a, const char *b)
 {
     UBYTE ca;

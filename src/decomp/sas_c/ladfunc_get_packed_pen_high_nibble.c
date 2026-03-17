@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 LONG LADFUNC_GetPackedPenHighNibble(UBYTE packed)
 {
     const LONG NIBBLE_MASK = 0x0f;

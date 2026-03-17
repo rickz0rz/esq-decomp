@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef LONG (*WdispOutputFunc)(LONG);
 
 extern char *Global_FormatBufferPtr2;

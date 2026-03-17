@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 void ESQ_SetBit1Based(UBYTE *base, ULONG bitIndex)
 {
     ULONG n;

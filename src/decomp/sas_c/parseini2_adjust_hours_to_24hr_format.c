@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 LONG PARSEINI_AdjustHoursTo24HrFormat(WORD hour, WORD amPmFlag)
 {
     WORD result;

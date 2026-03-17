@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 UWORD ESQSHARED4_DecodeRgbNibbleTriplet(UBYTE *src)
 {
     UWORD r;

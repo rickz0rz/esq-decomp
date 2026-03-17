@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 void NEWGRID_SetSelectionMarkers(
     LONG primarySel,
     LONG secondarySel,
