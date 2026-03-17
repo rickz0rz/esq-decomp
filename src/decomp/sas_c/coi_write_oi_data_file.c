@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct COI_EntryTableEntry {
     UBYTE pad0[1];
 } COI_EntryTableEntry;

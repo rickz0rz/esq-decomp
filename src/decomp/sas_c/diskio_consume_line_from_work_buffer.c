@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     DISKIO_CH_LF = 10,
     DISKIO_CH_CR = 13,

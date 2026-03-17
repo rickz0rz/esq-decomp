@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct SerialIntCtx {
     UBYTE pad_00[24];
     WORD serial_word_24;

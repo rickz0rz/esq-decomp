@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD ESQFUNC_WeatherSliceWidthInitGate;
 extern LONG NEWGRID_MessagePumpSuspendFlag;
 extern LONG NEWGRID_RefreshStateFlag;

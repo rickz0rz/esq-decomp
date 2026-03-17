@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct GCOMMAND_CtrlPacket {
     unsigned char pad0[4];
     unsigned char type4;

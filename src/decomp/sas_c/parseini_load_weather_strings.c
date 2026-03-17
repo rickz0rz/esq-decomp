@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct PARSEINI_BrushNode {
     UBYTE pad0[190];
     UBYTE typeByte;

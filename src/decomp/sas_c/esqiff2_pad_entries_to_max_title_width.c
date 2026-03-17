@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct ESQIFF2_Entry {
     UBYTE pad0[1];
     UBYTE titleText[1];

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UWORD NEWGRID_EntryPlaceholderModeFlag;
 extern UBYTE CONFIG_NewgridPlaceholderBevelFlag;
 extern const char *SCRIPT_PtrNoDataPlaceholder;

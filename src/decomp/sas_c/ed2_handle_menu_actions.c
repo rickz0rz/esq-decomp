@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG ED_StateRingIndex;
 extern UBYTE ED_StateRingTable[];
 extern UBYTE ED_LastKeyCode;

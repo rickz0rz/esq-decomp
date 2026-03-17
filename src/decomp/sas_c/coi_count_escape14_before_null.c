@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     COI_DONE_FALSE = 0,
     COI_DONE_TRUE = 1

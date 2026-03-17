@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern char *Global_REF_RASTPORT_1;
 extern LONG Global_REF_LONG_CURRENT_EDITING_AD_NUMBER;
 

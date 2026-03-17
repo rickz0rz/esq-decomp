@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct LOCAVAIL_FilterState {
     UBYTE groupCode;
 } LOCAVAIL_FilterState;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const char *Global_TBL_MOVIE_RATINGS[];
 extern const UBYTE ESQPARS2_MovieRatingTokenGlyphMap[];
 extern void *AbsExecBase;

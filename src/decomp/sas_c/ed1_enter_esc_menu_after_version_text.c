@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern BYTE LOCAVAIL_PrimaryFilterState;
 
 extern void LOCAVAIL_ResetFilterCursorState(void *statePtr);

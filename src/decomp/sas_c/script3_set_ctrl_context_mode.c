@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct SCRIPT_CtrlContext {
     UWORD mode0;
     UWORD active2;

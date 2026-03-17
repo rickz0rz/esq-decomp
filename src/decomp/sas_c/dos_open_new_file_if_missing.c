@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG Global_SignalCallbackPtr;
 extern LONG Global_DosIoErr;
 extern LONG Global_AppErrorCode;

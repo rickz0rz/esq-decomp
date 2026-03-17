@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD Global_RefreshTickCounter;
 extern UBYTE ESQDISP_LatchedInputModeBit;
 extern LONG ESQDISP_InputModeDebounceCount;

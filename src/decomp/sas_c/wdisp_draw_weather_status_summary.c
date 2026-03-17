@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_HANDLE_PREVUEC_FONT;
 extern UBYTE TLIBA1_DayEntryModeCounter;

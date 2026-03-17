@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     DISKIO_SEEK_MODE_END = -1,
     DISKIO_SEEK_MODE_BEGIN = 0,

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern unsigned char Global_PTR_AUD1_DMA;
 extern WORD CTRL_Bit4CaptureDelayCounter;
 extern WORD CTRL_Bit4CapturePhase;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     DISKIO_UIBUSY_IDLE = 0,
     DISKIO_READMODE_GUARD_FLAG = 0x100,

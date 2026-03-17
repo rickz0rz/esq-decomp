@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG ED_StateRingIndex;
 extern LONG ED_StateRingWriteIndex;
 extern LONG ED_MenuDispatchReentryGuard;

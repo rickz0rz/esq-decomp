@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct DST_ParsedDateTime {
     UBYTE raw[22];
 } DST_ParsedDateTime;

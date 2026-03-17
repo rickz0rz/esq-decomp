@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD TEXTDISP_CurrentMatchIndex;
 
 extern void SCRIPT_UpdateSerialShadowFromCtrlByte(LONG value);

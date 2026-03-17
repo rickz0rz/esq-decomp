@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UWORD ESQIFF_RecordLength;
 
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);

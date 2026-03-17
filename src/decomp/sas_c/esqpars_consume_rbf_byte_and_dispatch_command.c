@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UWORD ESQPARS_Preamble55SeenFlag;
 extern UWORD ESQPARS_CommandPreambleArmedFlag;
 extern UWORD ESQPARS_SelectionMatchCode;

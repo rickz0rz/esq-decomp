@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD PARSEINI_MonitorClockChange(void);
 extern void ESQFUNC_ServiceUiTickIfRunning(void);
 

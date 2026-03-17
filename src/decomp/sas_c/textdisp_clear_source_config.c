@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct TEXTDISP_SourceConfigEntry {
     char *ownedName;
     unsigned short flags;

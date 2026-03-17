@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG NEWGRID_ModeSelectionTable[7];
 extern LONG NEWGRID_ModeCycleCountdown;
 extern LONG NEWGRID_ModeCandidateIndex;

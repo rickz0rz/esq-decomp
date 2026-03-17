@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG MATH_DivS32(LONG dividend, LONG divisor);
 extern LONG MATH_Mulu32(LONG lhs, LONG rhs);
 

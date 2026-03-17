@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const char LADFUNC_FMT_ControlCharCaretEscape[];
 extern const char LADFUNC_FMT_ReplacementQuoteChar[];
 extern const char LADFUNC_FMT_ReplacementCommaChar[];

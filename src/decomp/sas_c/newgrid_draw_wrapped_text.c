@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const char NEWGRID_WrapWordSpacer[];
 extern const char NEWGRID_WrapReturnSpacer[];
 extern const char Global_STR_SINGLE_SPACE[];

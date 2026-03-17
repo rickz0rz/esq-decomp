@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *AbsExecBase;
 extern LONG DesiredMemoryAvailability;
 extern void *Global_HANDLE_TOPAZ_FONT;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *AbsExecBase;
 extern WORD Global_UIBusyFlag;
 

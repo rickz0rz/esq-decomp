@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern char *ESQPARS_ReplaceOwnedString(const char *newPtr, char *oldPtr);
 
 typedef struct SCRIPT_CtrlContextSnapshot {

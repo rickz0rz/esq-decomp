@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct GCOMMAND_BannerBlock {
     UBYTE lineByte0;
     UBYTE lineByte1;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     PROCESS_TASK_CLI_PTR_OFFSET = 172,
     PROCESS_TASK_CONSOLE_FH_OFFSET = 160,

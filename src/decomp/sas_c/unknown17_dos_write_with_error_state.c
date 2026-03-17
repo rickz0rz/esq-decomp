@@ -1,10 +1,13 @@
 #include <exec/types.h>
+
 extern LONG Global_SignalCallbackPtr;
 extern LONG Global_DosIoErr;
 extern LONG Global_AppErrorCode;
+
 extern void *Global_DosLibrary;
 
 extern LONG SIGNAL_PollAndDispatch(void);
+
 extern LONG _LVOWrite(void *dosBase, LONG fh, void *buffer, LONG len);
 extern LONG _LVOIoErr(void *dosBase);
 

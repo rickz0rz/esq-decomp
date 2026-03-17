@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void DST_FreeBannerPair(void *pair);
 extern void *DST_AllocateBannerStruct(void *banner);
 

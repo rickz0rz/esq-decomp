@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
 extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern void DISKIO_WriteDecimalField(LONG handle, LONG value);

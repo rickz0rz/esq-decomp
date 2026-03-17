@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern ULONG ESQSHARED4_InterleaveCopyBaseOffset;
 extern ULONG ESQSHARED4_InterleaveCopyTailOffsetCurrent;
 

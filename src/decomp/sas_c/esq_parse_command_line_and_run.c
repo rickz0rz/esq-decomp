@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *AbsExecBase;
 extern ULONG Global_ArgCount;
 extern char *Global_ArgvStorage[];

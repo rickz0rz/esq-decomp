@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern ULONG ESQDISP_StatusIndicatorMask;
 extern void ESQDISP_ApplyStatusMaskToIndicators(void);
 

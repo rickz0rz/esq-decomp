@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct NEWGRID_AuxData {
     UBYTE pad0[56];
     const char *titleTable[49];

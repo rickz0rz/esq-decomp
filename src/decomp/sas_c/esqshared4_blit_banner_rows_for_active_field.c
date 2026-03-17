@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern ULONG ESQPARS2_BannerRowCopySpanBytes;
 extern ULONG ESQPARS2_BannerRowCopyStrideBytes;
 extern ULONG ESQPARS2_ActiveCopperListSelectFlag;

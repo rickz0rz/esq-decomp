@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void ESQSHARED_UpdateMatchingEntriesByTitle(
     char *title_key,
     ULONG arg2,

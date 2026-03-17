@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void DST_AddTimeOffset(void *dt, WORD hours, WORD minutes);
 extern LONG ESQ_TestBit1Based(const UBYTE *base, ULONG bitIndex);
 

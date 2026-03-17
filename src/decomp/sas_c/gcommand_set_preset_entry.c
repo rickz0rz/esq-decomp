@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct GCOMMAND_PresetEntry {
     WORD value0;
     char pad2[126];

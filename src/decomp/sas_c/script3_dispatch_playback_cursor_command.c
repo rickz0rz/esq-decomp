@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD SCRIPT_ReadModeActiveLatch;
 extern WORD ESQPARS2_ReadModeFlags;
 extern WORD TEXTDISP_CurrentMatchIndex;

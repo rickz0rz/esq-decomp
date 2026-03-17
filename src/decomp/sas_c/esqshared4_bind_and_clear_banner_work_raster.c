@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern ULONG *WDISP_BannerWorkRasterPtr;
 
 extern UWORD ESQ_BannerWorkRasterPtrA_LoWord;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void GCOMMAND_BuildBannerTables(UBYTE arg0, WORD arg1, UBYTE arg2);
 
 typedef struct GCOMMAND_CopperHeader {

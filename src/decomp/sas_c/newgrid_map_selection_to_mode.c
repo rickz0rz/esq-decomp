@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG GCOMMAND_NicheForceMode5Flag;
 extern LONG GCOMMAND_NicheModeCycleCount;
 

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE SCRIPT_Type20SubtypeCache;
 extern UBYTE SCRIPT_PendingWeatherCommandChar;
 extern UBYTE SCRIPT_PendingTextdispCmdChar;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     NIBBLE_MASK = 0x0f,
     HIGH_NIBBLE_SHIFT = 4

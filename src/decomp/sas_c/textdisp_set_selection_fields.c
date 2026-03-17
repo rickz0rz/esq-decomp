@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct TEXTDISP_SelectionEntry {
     char shortName[10];
     char longName[200];

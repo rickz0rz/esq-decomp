@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern volatile UBYTE CIAB_PRA;
 extern volatile UBYTE CIAA_DDRB;
 extern volatile UBYTE CIAA_PRB;

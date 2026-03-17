@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     DISPTEXT_LINE_EMPTY_LENGTH = 0
 };

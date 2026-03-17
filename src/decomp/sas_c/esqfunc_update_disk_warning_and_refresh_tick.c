@@ -1,5 +1,6 @@
 #include <exec/types.h>
 #include <exec/types.h>
+
 typedef struct ESQFUNC_RastPortHolder {
     UBYTE pad0[2];
     UBYTE rastPort[1];

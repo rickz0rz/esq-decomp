@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct TLIBA3_ViewModeRuntimeEntry {
     UBYTE pad0[4];
     WORD height4;

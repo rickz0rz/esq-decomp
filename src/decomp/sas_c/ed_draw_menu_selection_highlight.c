@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern char *Global_REF_RASTPORT_1;
 extern LONG ED_EditCursorOffset;

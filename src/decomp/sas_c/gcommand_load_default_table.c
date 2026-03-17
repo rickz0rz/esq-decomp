@@ -1,5 +1,6 @@
 #include <exec/types.h>
 #include <exec/types.h>
+
 extern char *Global_PTR_WORK_BUFFER;
 extern LONG Global_REF_LONG_FILE_SCRATCH;
 extern UBYTE GCOMMAND_DigitalNicheEnabledFlag[];

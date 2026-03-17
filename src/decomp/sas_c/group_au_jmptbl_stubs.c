@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *BRUSH_AppendBrushNode(void *head, void *node);
 extern void BRUSH_PopulateBrushList(void *descriptorList, void **outHeadPtr);
 

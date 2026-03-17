@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *Global_REF_DOS_LIBRARY_2;
 extern LONG _LVOOpen(void *dosBase, const char *name, LONG mode);
 

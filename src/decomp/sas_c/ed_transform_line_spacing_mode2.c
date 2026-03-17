@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG ED_ViewportOffset;
 extern LONG ED_EditCursorOffset;
 extern char ED_EditBufferScratch[];

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE ED_LastKeyCode;
 extern LONG ED_AdActiveFlag;
 extern LONG ED_SaveTextAdsOnExitFlag;

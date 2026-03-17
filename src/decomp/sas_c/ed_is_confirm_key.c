@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE ED_LastKeyCode;
 
 LONG ED_IsConfirmKey(void)

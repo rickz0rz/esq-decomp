@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const char Global_STR_DF0_CONFIG_DAT_2[];
 extern const char Global_STR_DISKIO_C_9[];
 extern LONG Global_REF_LONG_FILE_SCRATCH;

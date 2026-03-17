@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE Global_REF_696_400_BITMAP[];
 extern UBYTE ESQ_CopperListBannerA[];
 extern UBYTE ESQ_CopperListBannerB[];

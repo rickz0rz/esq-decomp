@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     DISKIO1_MASK_VALUE_FIRST_BIT_INDEX = 1
 };

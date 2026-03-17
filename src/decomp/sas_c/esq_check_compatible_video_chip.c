@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern volatile UWORD IS_COMPATIBLE_VIDEO_CHIP;
 
 UWORD ESQ_CheckCompatibleVideoChip(void)

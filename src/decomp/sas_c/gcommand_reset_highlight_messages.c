@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct MsgLike {
     UBYTE pad0[20];
     LONG field20;

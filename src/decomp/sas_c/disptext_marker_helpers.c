@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG DISPTEXT_ControlMarkerWidthPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 

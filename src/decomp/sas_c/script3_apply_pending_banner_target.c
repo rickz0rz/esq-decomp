@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD SCRIPT_PendingBannerTargetChar;
 extern WORD SCRIPT_PendingBannerSpeedMs;
 extern WORD CONFIG_BannerCopperHeadByte;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG DISPTEXT_LineTableLockFlag;
 extern WORD DISPTEXT_CurrentLineIndex;
 extern WORD DISPTEXT_TargetLineIndex;

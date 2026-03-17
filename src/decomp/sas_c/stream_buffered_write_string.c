@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG Global_PreallocHandleNode1_WriteRemaining;
 extern UBYTE *Global_PreallocHandleNode1_BufferCursor;
 extern UBYTE Global_PreallocHandleNode1;

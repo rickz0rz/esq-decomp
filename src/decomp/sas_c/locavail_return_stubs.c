@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct LOCAVAIL_NodeRecord {
     UBYTE flag0;
     UBYTE pad1;

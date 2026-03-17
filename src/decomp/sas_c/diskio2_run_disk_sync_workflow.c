@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void ESQDISP_UpdateStatusMaskAndRefresh(ULONG mask, ULONG value);
 extern void DISKIO2_DisplayStatusLine(const char *text);
 extern void DISKIO2_FlushDataFilesIfNeeded(void);

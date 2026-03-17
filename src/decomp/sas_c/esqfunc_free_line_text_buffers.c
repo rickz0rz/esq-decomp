@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const char Global_STR_ESQFUNC_C_6[];
 extern void *LADFUNC_LineTextBufferPtrs[];
 

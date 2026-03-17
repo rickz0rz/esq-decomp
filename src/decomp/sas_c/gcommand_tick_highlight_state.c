@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD GCOMMAND_BannerRebuildPendingFlag;
 
 extern LONG GCOMMAND_BannerPhaseIndexCurrent;

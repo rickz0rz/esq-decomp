@@ -5,9 +5,10 @@ extern struct RastPort *NEWGRID_MainRastPortPtr;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern LONG NEWGRID_RefreshStateFlag;
 
+extern void GCOMMAND_ResetHighlightMessages(void);
+
 extern void _LVODisable(void);
 extern void _LVOEnable(void);
-extern void GCOMMAND_ResetHighlightMessages(void);
 extern void _LVOSetAPen(char *rastPort, LONG pen);
 extern void _LVORectFill(char *rastPort, LONG xMin, LONG yMin, LONG xMax, LONG yMax);
 

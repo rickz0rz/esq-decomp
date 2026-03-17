@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD CLOCK_CurrentDayOfWeekIndex[];
 extern WORD TLIBA2_BroadcastWindowClockSnapshotA[];
 extern UBYTE TEXTDISP_PrimaryGroupCode;

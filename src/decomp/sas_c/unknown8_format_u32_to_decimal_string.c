@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern ULONG MATH_DivU32(ULONG dividend, ULONG divisor);
 
 ULONG FORMAT_U32ToDecimalString(char *out, ULONG value)

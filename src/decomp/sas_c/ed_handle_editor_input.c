@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG ED_TextModeReinitPendingFlag;
 extern LONG Global_REF_BOOL_IS_TEXT_OR_CURSOR;
 extern LONG Global_REF_BOOL_IS_LINE_OR_PAGE;

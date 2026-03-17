@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     CHARCLASS_ALPHA_BIT_MASK = 0x80
 };

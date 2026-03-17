@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct TLIBA2_EntryAux {
     UBYTE pad0[56];
     char *titleTable[49];

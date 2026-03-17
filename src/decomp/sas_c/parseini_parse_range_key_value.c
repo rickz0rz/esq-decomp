@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG PARSEINI_CurrentRangeTableIndex;
 
 extern const char PARSEINI_DelimSpaceTab_RangeKey[];

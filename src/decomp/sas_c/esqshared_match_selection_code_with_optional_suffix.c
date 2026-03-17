@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE ESQ_STR_A;
 extern char ESQ_SelectCodeBuffer[];
 extern char ESQPARS_SelectionSuffixBuffer[];

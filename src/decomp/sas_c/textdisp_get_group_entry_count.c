@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD TEXTDISP_PrimaryGroupEntryCount;
 extern WORD TEXTDISP_SecondaryGroupEntryCount;
 

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     COI_MODE_MARKER_PPV = -1,
     COI_WINDOW_FULL_DAY_MINUTES = 1440,

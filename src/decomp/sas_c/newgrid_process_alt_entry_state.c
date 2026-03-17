@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG NEWGRID_AltEntryWorkflowState;
 extern LONG NEWGRID_AltEntryCursor;
 extern LONG NEWGRID_AltEntryAttemptCounter;

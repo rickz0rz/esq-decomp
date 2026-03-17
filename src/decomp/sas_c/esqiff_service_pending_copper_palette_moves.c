@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD ACCUMULATOR_Row0_SaturateFlag;
 extern WORD ACCUMULATOR_Row1_SaturateFlag;
 extern WORD ACCUMULATOR_Row2_SaturateFlag;

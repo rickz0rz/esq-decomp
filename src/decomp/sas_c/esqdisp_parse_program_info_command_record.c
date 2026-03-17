@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     CHARCLASS_LOWERCASE_MASK = 0x02,
     CHARCLASS_DIGIT_MASK = 0x04,

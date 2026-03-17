@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern BYTE ED_MenuStateId;
 
 extern void ED_DrawBottomHelpBarBackground(void);

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG LOCAVAIL_FilterModeFlag;
 extern LONG LOCAVAIL_FilterStep;
 extern LONG LOCAVAIL_FilterClassId;

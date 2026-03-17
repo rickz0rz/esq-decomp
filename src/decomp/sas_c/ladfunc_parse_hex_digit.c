@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     CHARCLASS_DECIMAL_DIGIT_BIT = 2,
     CHARCLASS_ALPHA_BIT = 7,

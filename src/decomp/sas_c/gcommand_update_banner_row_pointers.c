@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG GCOMMAND_BannerRowIndexPrevious;
 extern LONG GCOMMAND_BannerRowIndexCurrent;
 

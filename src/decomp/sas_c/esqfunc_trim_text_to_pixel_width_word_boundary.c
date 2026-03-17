@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern const UBYTE WDISP_CharClassTable[];
 

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const UBYTE Global_CharClassTable[];
 
 char *STRING_ToUpperInPlace(char *s)

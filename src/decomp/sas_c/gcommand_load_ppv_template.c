@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG MODE_NEWFILE;
 extern const char GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplateSave[];
 extern UBYTE GCOMMAND_DigitalPpvEnabledFlag[];

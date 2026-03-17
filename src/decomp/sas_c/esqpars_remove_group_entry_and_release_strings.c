@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct ESQPARS_TitleTable {
     UBYTE pad0[56];
     char *titleTable[49];

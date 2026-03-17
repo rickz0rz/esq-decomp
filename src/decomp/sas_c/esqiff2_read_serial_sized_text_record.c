@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE ESQIFF_RecordChecksumByte;
 
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);

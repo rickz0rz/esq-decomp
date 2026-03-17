@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct WDISP_RastPortOverlay {
     UBYTE pad0[4];
     void *bitMap;

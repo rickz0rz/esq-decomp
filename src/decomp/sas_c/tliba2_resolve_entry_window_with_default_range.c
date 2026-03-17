@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG TLIBA2_ResolveEntryWindowAndSlotCount(
     const void *entryTable,
     void *entryState,

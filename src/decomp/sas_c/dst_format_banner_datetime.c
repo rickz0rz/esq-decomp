@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     DST_MODE_DST = 1
 };

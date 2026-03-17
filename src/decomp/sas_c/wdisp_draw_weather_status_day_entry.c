@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct WeatherDayEntry {
     LONG unk0;
     LONG brushIndex;

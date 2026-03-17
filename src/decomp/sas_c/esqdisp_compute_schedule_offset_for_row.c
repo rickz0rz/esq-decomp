@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG DST_BuildBannerTimeWord(WORD row, LONG unused, UBYTE slot);
 extern LONG DISPLIB_NormalizeValueByStep(LONG value, LONG step, LONG base);
 

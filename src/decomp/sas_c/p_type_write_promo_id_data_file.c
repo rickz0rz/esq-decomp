@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct PTypeEntry {
     UBYTE type_byte;
     UBYTE subtype_byte;

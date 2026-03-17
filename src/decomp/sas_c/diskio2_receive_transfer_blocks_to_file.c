@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
 extern LONG SCRIPT_ReadNextRbfByte(void);
 extern LONG DISKIO_WriteBytesToOutputHandleGuarded(const void *data, UWORD byteCount);

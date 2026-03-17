@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct TEXTDISP_Entry {
     UBYTE pad0[27];
     UBYTE flags27;

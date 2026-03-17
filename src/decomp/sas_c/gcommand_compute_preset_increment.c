@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG MATH_Mulu32(LONG a, LONG b);
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern UWORD GCOMMAND_DefaultPresetTable[];

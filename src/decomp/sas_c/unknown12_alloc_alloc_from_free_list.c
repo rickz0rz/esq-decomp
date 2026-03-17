@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct FreeBlock {
     struct FreeBlock *next;
     LONG size;

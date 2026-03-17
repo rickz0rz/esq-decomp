@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct ESQ_CopperListHeader {
     UBYTE flag0;
 } ESQ_CopperListHeader;

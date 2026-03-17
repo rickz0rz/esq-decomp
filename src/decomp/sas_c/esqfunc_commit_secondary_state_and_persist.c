@@ -1,5 +1,6 @@
 #include <exec/types.h>
 #include <exec/types.h>
+
 extern WORD ESQPARS2_ReadModeFlags;
 extern WORD ESQDISP_PendingGridReinitFlag;
 extern UBYTE LOCAVAIL_PrimaryFilterState;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct DST_ClockState {
     ULONG l0;
     ULONG l4;

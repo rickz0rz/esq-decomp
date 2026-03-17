@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct LadfuncEntry {
     UWORD startSlot;
     UWORD endSlot;

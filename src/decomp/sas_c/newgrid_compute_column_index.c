@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct NEWGRID_Context {
     UBYTE pad0[52];
     UWORD selectionCode;

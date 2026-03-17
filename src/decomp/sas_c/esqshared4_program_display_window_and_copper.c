@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern volatile UWORD DIWSTRT;
 extern volatile UWORD DIWSTOP;
 extern volatile UWORD DDFSTRT;

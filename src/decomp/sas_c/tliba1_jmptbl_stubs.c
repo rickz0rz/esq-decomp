@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const char *COI_GetAnimFieldPointerByMode(const void *entry, LONG slot, LONG mode);
 extern const char *ESQDISP_GetEntryAuxPointerByMode(LONG index, LONG mode);
 extern LONG LADFUNC_GetPackedPenLowNibble(UBYTE packed);

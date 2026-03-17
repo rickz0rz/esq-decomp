@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct ProgramInfoHeader {
     UBYTE pad_00[40];
     UBYTE field40;

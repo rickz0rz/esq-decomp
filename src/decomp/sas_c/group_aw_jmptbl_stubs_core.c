@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG TLIBA3_BuildDisplayContextForViewMode(LONG viewMode, LONG a1, LONG a2);
 extern void DISPLIB_ApplyInlineAlignmentPadding(char *text, UBYTE alignCode);
 extern void ESQIFF_RunCopperRiseTransition(void);

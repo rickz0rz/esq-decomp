@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD GCOMMAND_DriveProbeRequestedFlag;
 extern LONG ESQDISP_DisplayActiveFlag;
 extern WORD Global_UIBusyFlag;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(const char *table, LONG ch);
 
 UBYTE ED_FindNextCharInTable(UBYTE ch, const char *table)

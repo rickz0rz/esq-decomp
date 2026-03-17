@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD SCRIPT_BeginBannerCharTransition(LONG targetChar, LONG speedMs);
 extern void LADFUNC2_EmitEscapedStringToScratch(const char *src);
 

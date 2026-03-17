@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const UBYTE WDISP_CharClassTable[];
 
 const char *TEXTDISP_SkipControlCodes(const char *text)

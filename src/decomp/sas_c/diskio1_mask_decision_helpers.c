@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     DISKIO1_MASK_SUM_EMPTY = 0UL,
     DISKIO1_MASK_SUM_ALL_BITS_SET = 0x5faUL

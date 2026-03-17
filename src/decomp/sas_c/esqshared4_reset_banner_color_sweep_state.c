@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE ESQ_CopperBannerTailListA;
 extern UBYTE ESQ_CopperBannerTailListB;
 extern UWORD CONFIG_BannerCopperHeadByte;

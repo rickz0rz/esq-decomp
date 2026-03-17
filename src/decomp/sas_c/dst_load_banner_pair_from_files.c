@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const char *DST_DefaultDatPathPtr;
 extern char *Global_PTR_WORK_BUFFER;
 extern LONG Global_REF_LONG_FILE_SCRATCH;

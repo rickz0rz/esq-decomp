@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG NEWGRID_ModeSelectorState;
 
 LONG NEWGRID_GetGridModeIndex(void)

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG TLIBA_FindFirstWildcardMatchIndex(const char *wildcardPattern);
 extern LONG SCRIPT_BuildTokenIndexMap(char *inputBytes, short *outIndexByToken, short tokenCount, const char *tokenTable, short maxScanCount, char terminatorByte, short fillMissingFlag);
 extern LONG LADFUNC_ParseHexDigit(BYTE ch);

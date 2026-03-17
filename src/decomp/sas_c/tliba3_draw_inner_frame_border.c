@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct TLIBA3_DimBlock {
     UWORD width;
     UWORD height;

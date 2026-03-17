@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern char *P_TYPE_WeatherCurrentMsgPtr;
 extern char *P_TYPE_WeatherForecastMsgPtr;
 extern char *P_TYPE_WeatherBottomLineMsgPtr;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct WDISP_WeatherBrush {
     UBYTE pad0[176];
     UWORD width;

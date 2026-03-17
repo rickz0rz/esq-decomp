@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *DST_BannerWindowPrimary;
 extern UBYTE LOCAVAIL_PrimaryFilterState[];
 extern UBYTE LOCAVAIL_SecondaryFilterState[];

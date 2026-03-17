@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE ED_CustomPaletteTriplesDefaultTemplate24B[];
 extern LONG ED_StateRingIndex;
 extern UBYTE ED_StateRingTable[];

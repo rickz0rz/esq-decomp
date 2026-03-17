@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD SCRIPT_BannerTransitionActive;
 extern WORD SCRIPT_BannerTransitionStepCursor;
 extern WORD SCRIPT_BannerTransitionStepDelta;

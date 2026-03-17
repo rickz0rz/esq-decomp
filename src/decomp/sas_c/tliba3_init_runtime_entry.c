@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     VM_ZERO = 0,
     VM_RUNTIME_STRIDE = 154,

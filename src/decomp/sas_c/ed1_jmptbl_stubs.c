@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void NEWGRID_DrawTopBorderLine(void);
 extern void LOCAVAIL_ResetFilterCursorState(void);
 extern void GCOMMAND_ResetHighlightMessages(void);

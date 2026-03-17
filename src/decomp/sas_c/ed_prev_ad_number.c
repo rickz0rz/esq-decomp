@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG Global_REF_LONG_CURRENT_EDITING_AD_NUMBER;
 
 extern void ED_CommitCurrentAdEdits(void);

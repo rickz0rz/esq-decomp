@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern char *Global_REF_RASTPORT_1;
 extern const char Global_STR_LOADING_TEXT_ADS_FROM_DH2[];
 

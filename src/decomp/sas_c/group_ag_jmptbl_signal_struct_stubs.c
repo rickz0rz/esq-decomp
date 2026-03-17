@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct MsgPort MsgPort;
 typedef struct StructWithOwner StructWithOwner;
 

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *PARSEINI_ParsedDescriptorListHead;
 extern void *BRUSH_SelectedNode;
 extern void *ESQFUNC_FallbackType3BrushNode;

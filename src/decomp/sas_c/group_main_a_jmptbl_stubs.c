@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void ESQ_MainExitNoOpHook(void);
 extern void ESQ_MainEntryNoOpHook(void);
 extern void MEMLIST_FreeAll(void);

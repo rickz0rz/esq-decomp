@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG DISPTEXT_LineTableLockFlag;
 extern char Global_REF_1000_BYTES_ALLOCATED_1[];
 

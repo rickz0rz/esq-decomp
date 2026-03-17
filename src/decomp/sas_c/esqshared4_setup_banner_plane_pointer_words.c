@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE *ESQSHARED_BannerRowScratchRasterBase0;
 extern UBYTE *ESQSHARED_BannerRowScratchRasterBase1;
 extern UBYTE *ESQSHARED_BannerRowScratchRasterBase2;

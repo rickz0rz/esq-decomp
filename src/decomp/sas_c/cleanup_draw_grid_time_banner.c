@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct CLEANUP_RastPort {
     LONG textWidth0;
     UBYTE pad4[28];

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UWORD WDISP_AccumulatorFlushPending;
 extern LONG WDISP_DisplayContextBase;
 extern UBYTE WDISP_PaletteTriplesRBase;

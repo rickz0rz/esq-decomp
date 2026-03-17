@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct ESQDISP_Entry {
     UBYTE pad0[28];
     UBYTE selectionBits[1];

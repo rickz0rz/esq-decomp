@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UWORD WDISP_WeatherStatusDigitChar;
 extern char WDISP_WeatherStatusLabelBuffer[];
 extern char *WDISP_WeatherStatusTextPtr;

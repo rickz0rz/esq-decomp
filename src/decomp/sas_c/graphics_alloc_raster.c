@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *_LVOAllocRaster(void *graphicsBase, ULONG width, LONG height);
 

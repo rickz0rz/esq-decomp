@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *AbsExecBase;
 extern void *Global_ExitHookPtr;
 extern void *Global_DosLibrary;

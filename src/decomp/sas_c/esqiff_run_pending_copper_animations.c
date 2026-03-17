@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD COPPER_AnimationLane0_Countdown;
 extern WORD COPPER_AnimationLane1_Countdown;
 extern WORD COPPER_AnimationLane2_Countdown;

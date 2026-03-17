@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD CTRL_HPreviousSample;
 extern UBYTE CTRL_BUFFER[];
 

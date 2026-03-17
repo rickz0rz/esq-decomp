@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD CTRL_Bit3CapturePhase;
 extern WORD CTRL_Bit3CaptureDelayCounter;
 extern WORD CTRL_Bit3SampleSlotIndex;

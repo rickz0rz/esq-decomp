@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *AbsExecBase;
 extern void *Global_REF_INTUITION_LIBRARY;
 extern LONG Global_REF_BACKED_UP_INTUITION_AUTOREQUEST;
@@ -28,5 +29,6 @@ void OVERRIDE_INTUITION_FUNCS(void)
         Global_REF_INTUITION_LIBRARY,
         (void *)(LONG)_LVODisplayAlert,
         (LONG)LOCAVAIL2_DisplayAlertDelayAndReboot);
+
     Global_REF_BACKED_UP_INTUITION_DISPLAYALERT = oldFn;
 }

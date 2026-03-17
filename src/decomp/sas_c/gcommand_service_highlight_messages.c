@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct HighlightMsg {
     UBYTE pad0[20];
     LONG saved20;

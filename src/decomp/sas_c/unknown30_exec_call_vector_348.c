@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG _LVOFreeTrap(void *libBase, void *a0, void *a1, void *a2, void *a3, LONG d0, LONG d1, LONG d2, LONG d3);
 
 LONG EXEC_CallVector_348(void *libBase, void *a0, void *a1, void *a2, void *a3, LONG d0, LONG d1, LONG d2, LONG d3)

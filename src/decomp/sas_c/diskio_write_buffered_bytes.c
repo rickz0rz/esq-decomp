@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     DISKIO_RESULT_ZERO = 0,
     DISKIO_ERROR_FLAG_SET = 1,

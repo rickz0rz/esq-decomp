@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     ESQFUNC_NULL = 0,
     ESQFUNC_PW_BRUSH_DESCRIPTOR_COUNT = 6,

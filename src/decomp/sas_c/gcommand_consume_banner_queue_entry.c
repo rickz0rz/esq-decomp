@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD GCOMMAND_BannerQueueSlotCurrent;
 extern UBYTE ESQPARS2_BannerQueueBuffer[];
 extern WORD ESQPARS2_BannerQueueAttentionDelayTicks;

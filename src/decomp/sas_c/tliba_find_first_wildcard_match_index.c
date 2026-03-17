@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UWORD TEXTDISP_SecondaryGroupEntryCount;
 extern const char *TEXTDISP_SecondaryTitlePtrTable[];
 

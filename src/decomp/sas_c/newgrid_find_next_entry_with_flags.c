@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct NEWGRID_Entry {
     UBYTE pad0[40];
     UBYTE flags40;

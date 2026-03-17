@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct CLEANUP_EntryTableEntry {
     UBYTE pad0[12];
     UBYTE titleText[1];

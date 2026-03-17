@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG DATETIME_AdjustMonthIndex(void *ctx);
 extern LONG DATETIME_NormalizeMonthRange(void *ctx);
 extern LONG DST_ComputeBannerIndex(void *ctx, WORD arg2, UBYTE arg3);

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct StatusDayEntry {
     LONG dayOfYearKey;
     LONG flagOrBrushIndex;

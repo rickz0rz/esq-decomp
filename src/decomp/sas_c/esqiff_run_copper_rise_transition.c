@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD COPPER_AnimationLane3_Countdown;
 
 extern void ESQIFF_RunPendingCopperAnimations(void);

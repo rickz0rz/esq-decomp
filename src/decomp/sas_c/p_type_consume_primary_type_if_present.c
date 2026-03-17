@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct P_TYPE_Entry {
     UBYTE pad0[2];
     LONG payloadLength;

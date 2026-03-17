@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern char *STRING_FindSubstring(const char *haystack, const char *needle);
 extern long FORMAT_RawDoFmtWithScratchBuffer(void);
 extern ULONG MATH_DivU32(ULONG dividend, ULONG divisor);

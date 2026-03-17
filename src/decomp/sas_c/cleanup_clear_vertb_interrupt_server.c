@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     INTERRUPT_STRUCT_SIZE = 22,
     INTERRUPT_FREE_LINE = 57

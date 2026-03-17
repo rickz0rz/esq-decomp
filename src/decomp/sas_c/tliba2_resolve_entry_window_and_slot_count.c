@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const char *TEXTDISP_SecondaryTitlePtrTable[];
 
 extern char *TLIBA2_FindLastCharInString(const char *str, LONG targetChar);

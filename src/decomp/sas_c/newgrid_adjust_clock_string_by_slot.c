@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct NEWGRID_ClockScratch {
     ULONG word0;
     ULONG word1;

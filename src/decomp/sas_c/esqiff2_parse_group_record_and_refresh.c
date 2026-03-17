@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 extern UWORD TEXTDISP_PrimaryGroupRecordLength;
 extern UBYTE TEXTDISP_PrimaryGroupRecordChecksum;

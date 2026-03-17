@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     DATETIME_MONTH_OFFSET = 8,
     DATETIME_SIGNFLAG_OFFSET = 18,

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *WDISP_DisplayContextBase;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_HANDLE_PREVUEC_FONT;

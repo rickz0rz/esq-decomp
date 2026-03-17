@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct NewgridCtx {
     char *coi;
     char *entries;

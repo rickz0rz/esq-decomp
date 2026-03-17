@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UWORD CTASKS_IffTaskState;
 extern UWORD CTASKS_IffTaskDoneFlag;
 extern LONG CTASKS_PendingLogoBrushDescriptor;

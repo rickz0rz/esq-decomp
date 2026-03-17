@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG NEWGRID2_BufferAllocationFlag;
 extern void *NEWGRID_SecondaryIndexCachePtr;
 extern void *NEWGRID_EntryTextScratchPtr;

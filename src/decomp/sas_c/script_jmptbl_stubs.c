@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void MEMORY_DeallocateMemory(const void *tagName, LONG line, void *ptr, LONG bytes);
 extern LONG DISKIO_WriteBufferedBytes(LONG handle, const void *buffer, LONG len);
 extern LONG DISKIO_CloseBufferedFileAndFlush(LONG handle);

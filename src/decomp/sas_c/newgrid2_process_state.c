@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct NEWGRID2_Context {
     UBYTE pad0[32];
     LONG selectedState;

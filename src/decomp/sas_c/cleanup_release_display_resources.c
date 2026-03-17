@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *AbsExecBase;
 extern LONG Global_REF_96_BYTES_ALLOCATED;
 extern LONG Global_REF_RASTPORT_1;

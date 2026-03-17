@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void LOCAVAIL_UpdateFilterStateMachine(void *ctxPtr, void *statePtr);
 extern LONG MATH_DivS32(LONG dividend, LONG divisor);
 extern char *ESQSHARED_ApplyProgramTitleTextFilters(char *text, LONG maxLen);

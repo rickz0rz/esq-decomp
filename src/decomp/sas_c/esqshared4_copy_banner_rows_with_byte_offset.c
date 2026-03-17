@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern ULONG ESQPARS2_BannerCopySourceOffset;
 extern ULONG ESQPARS2_BannerCopyTailOffset;
 extern ULONG ESQSHARED_BlitAddressOffset;

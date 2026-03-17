@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD NEWGRID_ColumnStartXPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 

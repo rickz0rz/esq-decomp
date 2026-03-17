@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UWORD GCOMMAND_BannerFadeResetPendingFlag;
 extern ULONG ESQSHARED4_InterleaveCopyBaseOffset;
 extern ULONG ESQSHARED4_InterleaveCopyTailOffsetReset;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void CLEANUP_RenderAlignedStatusScreen(UWORD sourceMode, UWORD modeSel, UWORD slot);
 extern void ESQPARS_ApplyRtcBytesAndPersist(BYTE *src);
 extern void ESQ_SetCopperEffect_Custom(void);

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct NEWGRID_SelectionWindow {
     void *entry;
     void *aux;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG DISPTEXT_ControlMarkerXOffsetPx;
 extern LONG DISPTEXT_LineWidthPx;
 extern WORD DISPTEXT_CurrentLineIndex;

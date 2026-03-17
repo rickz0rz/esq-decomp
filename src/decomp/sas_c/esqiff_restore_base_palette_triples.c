@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE WDISP_PaletteTriplesRBase[];
 extern UBYTE ESQFUNC_BasePaletteRgbTriples[];
 

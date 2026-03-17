@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 ULONG STRING_ToUpperChar(ULONG c)
 {
     UBYTE ch;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct ED2_Entry {
     UBYTE pad0[1];
     UBYTE titleText[11];

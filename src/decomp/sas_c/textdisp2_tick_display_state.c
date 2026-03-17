@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD ESQ_GlobalTickCounter;
 extern WORD TEXTDISP_TickSuspendFlag;
 extern WORD Global_UIBusyFlag;

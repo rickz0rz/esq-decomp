@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     DISKIO1_MASK_INDEX_STEP = 1,
     DISKIO1_MASK_BYTE_COUNT = 6,

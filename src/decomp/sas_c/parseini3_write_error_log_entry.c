@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *NEWGRID2_ErrorLogEntryPtr;
 extern WORD FLIB_LogEntryByteCount;
 extern const char CLOCK_FileEofMarkerCtrlZ[];

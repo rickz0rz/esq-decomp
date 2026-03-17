@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct HandleEntry {
     void *ptr;
     LONG flags;

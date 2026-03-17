@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *AbsExecBase;
 extern UBYTE GCOMMAND_DefaultPresetTable[];
 extern UWORD GCOMMAND_PresetWorkResetPendingFlag;

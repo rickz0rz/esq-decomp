@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct NEWGRID_ShowtimeBucketEntry {
     LONG key;
     char *text;

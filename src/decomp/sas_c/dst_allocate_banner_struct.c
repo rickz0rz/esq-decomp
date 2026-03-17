@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct DST_BannerStruct {
     void *first;
     void *second;

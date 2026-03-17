@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct PreallocHandleNode {
     struct PreallocHandleNode *Next; /* +0  */
     UBYTE *BufferCursor;             /* +4  */

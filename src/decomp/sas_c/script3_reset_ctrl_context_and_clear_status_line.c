@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern char SCRIPT_CTRL_CONTEXT[];
 extern long TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, char *arg);
 extern void SCRIPT_ResetCtrlContext(char *ctx);

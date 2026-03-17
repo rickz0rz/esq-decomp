@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void NEWGRID_ProcessGridMessages(void);
 extern void *GRAPHICS_AllocRaster(LONG width, LONG height);
 

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     ACCESS_READ = -2,
     MODE_NEWFILE = 1006

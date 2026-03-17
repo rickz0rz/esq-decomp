@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern ULONG *ESQPARS2_BannerSnapshotPlane0DstPtr;
 extern ULONG *ESQPARS2_BannerSnapshotPlane1DstPtr;
 extern ULONG *ESQPARS2_BannerSnapshotPlane2DstPtr;

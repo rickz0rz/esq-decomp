@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 extern UWORD TEXTDISP_PrimaryGroupEntryCount;
 

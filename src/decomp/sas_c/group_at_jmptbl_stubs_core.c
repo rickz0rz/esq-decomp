@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void ED1_WaitForFlagAndClearBit0(void);
 extern LONG DOS_SystemTagList(LONG arg1, LONG arg2);
 

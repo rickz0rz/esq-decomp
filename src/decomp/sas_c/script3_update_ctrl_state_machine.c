@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD SCRIPT_RuntimeMode;
 extern WORD SCRIPT_CtrlHandshakeStage;
 extern WORD SCRIPT_CtrlHandshakeRetryCount;

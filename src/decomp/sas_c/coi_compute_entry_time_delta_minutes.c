@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UWORD CLOCK_HalfHourSlotIndex;
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 

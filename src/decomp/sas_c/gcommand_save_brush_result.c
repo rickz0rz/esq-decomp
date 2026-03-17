@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD CTASKS_IffTaskState;
 extern void *AbsExecBase;
 

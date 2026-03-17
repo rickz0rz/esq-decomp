@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *WDISP_DisplayContextBase;
 extern WORD WDISP_AccumulatorCaptureActive;
 extern WORD WDISP_AccumulatorFlushPending;

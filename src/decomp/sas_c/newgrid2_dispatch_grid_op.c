@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG NEWGRID2_PendingOperationId;
 extern LONG NEWGRID2_LastDispatchResult;
 extern LONG NEWGRID_GridOperationId;

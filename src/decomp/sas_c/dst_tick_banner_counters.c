@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE ESQ_STR_6;
 extern WORD WDISP_BannerCharPhaseShift;
 extern WORD DST_PrimaryCountdown;

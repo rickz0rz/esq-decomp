@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE ED_DiagVinModeChar;
 extern UBYTE ESQ_STR_B[];
 extern LONG LOCAVAIL_FilterModeFlag;

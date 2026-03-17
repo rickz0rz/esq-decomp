@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG LOCAVAIL_PrimaryFilterState;
 extern LONG SCRIPT_RuntimeModeDeferredFlag;
 extern UWORD SCRIPT_RuntimeMode;

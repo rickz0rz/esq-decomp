@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void ESQDISP_UpdateStatusMaskAndRefresh(ULONG mask, LONG setMode);
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
 extern void ESQIFF2_ApplyIncomingStatusPacket(UBYTE *src);

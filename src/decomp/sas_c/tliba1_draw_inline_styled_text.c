@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE CLOCK_AlignedInsetRenderGateFlag;
 extern UBYTE CLEANUP_AlignedInsetNibbleSecondary;
 extern UBYTE CLEANUP_AlignedInsetNibblePrimary;

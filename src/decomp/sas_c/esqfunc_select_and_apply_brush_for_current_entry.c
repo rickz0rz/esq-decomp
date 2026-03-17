@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     ESQFUNC_FALSE = 0,
     ESQFUNC_TRUE = 1,

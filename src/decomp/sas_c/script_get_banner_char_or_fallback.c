@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE TEXTDISP_BannerCharSelected;
 extern UBYTE TEXTDISP_BannerCharFallback;
 

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const char WDISP_StatusListMatchPattern[];
 extern UWORD CLOCK_CurrentDayOfYear;
 extern UWORD CLOCK_CurrentYearValue;

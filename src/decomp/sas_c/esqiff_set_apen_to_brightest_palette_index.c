@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE WDISP_PaletteDepthLog2;
 extern UBYTE WDISP_PaletteTriplesRBase[];
 extern UBYTE WDISP_PaletteTriplesGBase[];

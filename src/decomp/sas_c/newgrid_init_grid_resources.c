@@ -21,12 +21,12 @@ extern void NEWGRID2_EnsureBuffersAllocated(void);
 extern void DISPTEXT_InitBuffers(void);
 extern void NEWGRID_InitShowtimeBuckets(void);
 extern void *MEMORY_AllocateMemory(LONG size, LONG flags);
+extern LONG MATH_DivS32(LONG a, LONG b);
+extern void NEWGRID_DrawTopBorderLine(void);
 extern void _LVOInitRastPort(char *rastPort);
 extern void _LVOSetDrMd(char *rastPort, LONG mode);
 extern void _LVOSetFont(char *rastPort, void *font);
 extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
-extern LONG MATH_DivS32(LONG a, LONG b);
-extern void NEWGRID_DrawTopBorderLine(void);
 
 void NEWGRID_InitGridResources(void)
 {

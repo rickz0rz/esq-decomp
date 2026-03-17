@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 struct ClockNormData {
     WORD w0;
     WORD w1;

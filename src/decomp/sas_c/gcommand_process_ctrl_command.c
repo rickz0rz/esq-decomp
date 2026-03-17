@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct GCOMMAND_CtrlPacket {
     UBYTE pad0[4];
     UBYTE type4;

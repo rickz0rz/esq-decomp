@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct NEWGRID_AuxData {
     UBYTE pad0[7];
     UBYTE rowFlags[49];

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct LayoutCtx {
     UWORD currentHalfHeight;
     LONG currentVisibleLines;

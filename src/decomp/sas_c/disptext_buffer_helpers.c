@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG DISPTEXT_InitBuffersPending;
 extern char *DISPTEXT_TextBufferPtr;
 extern char *Global_REF_1000_BYTES_ALLOCATED_1;

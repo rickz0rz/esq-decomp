@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD Global_UIBusyFlag;
 
 extern UBYTE ESQ_CopperListBannerA[];

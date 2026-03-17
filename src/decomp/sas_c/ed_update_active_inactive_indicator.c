@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG ED_AdActiveFlag;
 extern LONG ED_ActiveIndicatorCachedState;
 

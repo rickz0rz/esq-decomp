@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG Global_REF_DOS_LIBRARY_2;
 
 extern const char Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK[];

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct TLIBA3_RastPort {
     UBYTE pad0[100];
 } TLIBA3_RastPort;

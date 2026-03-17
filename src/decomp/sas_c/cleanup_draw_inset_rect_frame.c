@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     RASTPORT_PEN_OFFSET = 25,
     RASTPORT_CP_X_OFFSET = 36,

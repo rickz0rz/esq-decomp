@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG WDISP_DisplayContextBase;
 extern char *Global_REF_RASTPORT_2;
 

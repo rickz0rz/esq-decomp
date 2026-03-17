@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     GRAPHICS_WORD_OFFSET = 206,
     RUNTIME_DIW_MASK = 2,

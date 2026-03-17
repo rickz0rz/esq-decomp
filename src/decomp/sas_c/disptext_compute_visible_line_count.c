@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD DISPTEXT_TargetLineIndex;
 extern WORD NEWGRID_RowHeightPx;
 extern WORD DISPTEXT_ControlMarkersEnabledFlag;

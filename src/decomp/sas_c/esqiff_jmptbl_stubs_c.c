@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void ESQ_MoveCopperEntryTowardStart(LONG dst_index, LONG src_index);
 extern void MEMORY_DeallocateMemory(void *ptr, LONG size);
 extern void DISKIO_ForceUiRefreshIfIdle(void);

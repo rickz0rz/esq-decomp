@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE GCOMMAND_NicheParseScratchSeedWord[];
 extern const UBYTE WDISP_CharClassTable[];
 extern UBYTE GCOMMAND_DigitalNicheEnabledFlag[];

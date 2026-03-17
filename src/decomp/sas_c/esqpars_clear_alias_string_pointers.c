@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct AliasRecord {
     char *label_ptr;
     char *value_ptr;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct NEWGRID_Entry NEWGRID_Entry;
 
 struct NEWGRID_Entry {

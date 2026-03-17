@@ -6,8 +6,6 @@
 #include <exec/ports.h>
 #include <graphics/rastport.h>
 
-#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
-
 typedef struct Process Process;
 typedef struct IOExtSer IOExtSer;
 
@@ -393,7 +391,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         Global_HANDLE_PREVUE_FONT = Global_HANDLE_TOPAZ_FONT;
     }
 
-    Global_REF_RASTPORT_1 = (struct RastPort *)MEMORY_AllocateMemory(100, MEMF_PUBLIC_CLEAR);
+    Global_REF_RASTPORT_1 = (struct RastPort *)MEMORY_AllocateMemory(100, (MEMF_PUBLIC | MEMF_CLEAR));
     _LVOInitRastPort(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1);
     Global_REF_RASTPORT_1->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
     _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_HANDLE_PREVUEC_FONT);
@@ -404,7 +402,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         --WDISP_HighlightRasterHeightPx;
     }
 
-    Global_REF_RASTPORT_2 = (struct RastPort *)MEMORY_AllocateMemory(100, MEMF_PUBLIC_CLEAR);
+    Global_REF_RASTPORT_2 = (struct RastPort *)MEMORY_AllocateMemory(100, (MEMF_PUBLIC | MEMF_CLEAR));
     _LVOInitRastPort(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2);
     Global_REF_RASTPORT_2->BitMap = (struct BitMap *)&Global_REF_320_240_BITMAP;
     _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, Global_HANDLE_PREVUEC_FONT);
@@ -427,7 +425,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         Global_REF_STR_CLOCK_FORMAT = &Global_JMPTBL_HALF_HOURS_12_HR_FMT;
     }
 
-    ESQ_HighlightMsgPort = (struct MsgPort *)MEMORY_AllocateMemory(34, MEMF_PUBLIC_CLEAR);
+    ESQ_HighlightMsgPort = (struct MsgPort *)MEMORY_AllocateMemory(34, (MEMF_PUBLIC | MEMF_CLEAR));
     if (ESQ_HighlightMsgPort == (struct MsgPort *)0) {
         return 0;
     }
@@ -437,7 +435,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQ_HighlightMsgPort->mp_Node.ln_Type = 2;
     LIST_InitHeader((struct MinList *)&ESQ_HighlightMsgPort->mp_MsgList);
 
-    ESQ_HighlightReplyPort = (struct MsgPort *)MEMORY_AllocateMemory(34, MEMF_PUBLIC_CLEAR);
+    ESQ_HighlightReplyPort = (struct MsgPort *)MEMORY_AllocateMemory(34, (MEMF_PUBLIC | MEMF_CLEAR));
     if (ESQ_HighlightReplyPort == (struct MsgPort *)0) {
         return 0;
     }
@@ -502,7 +500,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     }
     Global_REF_BAUD_RATE = baudRate;
 
-    ESQIFF_RecordBufferPtr = MEMORY_AllocateMemory(9000, MEMF_PUBLIC_CLEAR);
+    ESQIFF_RecordBufferPtr = MEMORY_AllocateMemory(9000, (MEMF_PUBLIC | MEMF_CLEAR));
     WDISP_SerialMessagePortPtr = SIGNAL_CreateMsgPortWithSignal(Global_STR_SERIAL_READ, 0);
     if (WDISP_SerialMessagePortPtr == (void *)0) {
         return 0;

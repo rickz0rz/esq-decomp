@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct {
     LONG Flags;
     LONG Value;

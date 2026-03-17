@@ -1,6 +1,7 @@
 extern void DISKIO2_FlushDataFilesIfNeeded(void);
 extern void NEWGRID_RebuildIndexCache(void);
 #include <exec/types.h>
+
 extern LONG DATETIME_SavePairToFile(void *pair);
 extern LONG ESQPROTO_VerifyChecksumAndParseList(UBYTE seed);
 extern LONG P_TYPE_ParseAndStoreTypeRecord(const char *src);

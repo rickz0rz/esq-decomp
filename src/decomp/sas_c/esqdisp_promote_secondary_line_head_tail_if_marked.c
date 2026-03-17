@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD ESQDISP_SecondaryLinePromotePendingFlag;
 extern char *ESQIFF_SecondaryLineHeadPtr;
 extern char *ESQIFF_PrimaryLineHeadPtr;

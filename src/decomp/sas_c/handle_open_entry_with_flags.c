@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct HANDLE_TableEntry {
     ULONG modeBits;
     LONG openHandle;

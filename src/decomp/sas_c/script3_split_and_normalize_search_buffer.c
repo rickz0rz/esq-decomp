@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern char TEXTDISP_PrimarySearchText[];
 extern char TEXTDISP_SecondarySearchText[];
 

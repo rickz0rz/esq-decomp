@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     DISPTEXT_LINE_TABLE_COUNT = 21,
     DISPTEXT_DEFAULT_PEN = 1,

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct StreamBufferState {
     ULONG owner_or_link;
     UBYTE *buffer_cursor; /* +4 */

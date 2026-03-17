@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE CONFIG_RefreshIntervalMinutes;
 extern LONG CONFIG_RefreshIntervalSeconds;
 

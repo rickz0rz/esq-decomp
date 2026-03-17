@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void *Global_REF_UTILITY_LIBRARY;
 extern LONG _LVOCheckDate(void *utilityBase, void *clockData);
 

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void CTASKS_IFFTaskCleanup(void);
 extern void LADFUNC_UpdateHighlightState(void);
 extern void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void);

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern BYTE ED_MenuStateId;
 extern WORD ED_DiagnosticsScreenActive;
 

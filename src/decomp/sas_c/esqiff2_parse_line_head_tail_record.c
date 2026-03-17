@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE TEXTDISP_PrimaryGroupCode;
 extern UBYTE TEXTDISP_SecondaryGroupCode;
 extern UWORD ESQIFF_RecordLength;

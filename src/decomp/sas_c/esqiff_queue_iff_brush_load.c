@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct ESQIFF_BannerBrushResource {
     char pathText[190];
     UBYTE sourceType190;

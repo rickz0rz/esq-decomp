@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UWORD ESQ_BannerColorSweepProgramA;
 extern UWORD ESQ_BannerColorSweepProgramB;
 extern UWORD ESQ_BannerColorSweepProgramA_AnchorColorWord;

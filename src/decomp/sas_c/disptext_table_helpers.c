@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG DISPTEXT_LineTableLockFlag;
 extern char *DISPTEXT_TextBufferPtr;
 extern char *DISPTEXT_LinePtrTable[];

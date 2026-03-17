@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern const char Global_STR_CLOSED_CAPTIONED[];
 
 extern char *ESQ_FindSubstringCaseFold(const char *text, const char *needle);

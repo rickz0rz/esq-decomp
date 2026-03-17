@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     CLOCK_FORMAT_SLOTS_PER_BANK = 48,
     CLOCK_VARIANT_DIVISOR = 30,

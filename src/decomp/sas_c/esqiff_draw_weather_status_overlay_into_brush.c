@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern UBYTE WDISP_WeatherStatusBrushIndex;
 extern char *WDISP_WeatherStatusOverlayTextPtr;
 extern ULONG ESQFUNC_PwBrushListHead;

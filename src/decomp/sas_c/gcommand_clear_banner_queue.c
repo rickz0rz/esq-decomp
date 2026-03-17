@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD ESQPARS2_BannerQueueAttentionCountdown;
 extern UBYTE ESQPARS2_BannerQueueBuffer[];
 

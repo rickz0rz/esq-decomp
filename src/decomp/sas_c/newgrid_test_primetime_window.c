@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct NEWGRID_ModeInfo {
     UBYTE pad0[1];
     UBYTE modeChar;

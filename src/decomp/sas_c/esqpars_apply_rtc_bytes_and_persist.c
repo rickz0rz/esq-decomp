@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern WORD ESQPARS2_ReadModeFlags;
 
 extern void ESQDISP_NormalizeClockAndRedrawBanner(void *clock_data);

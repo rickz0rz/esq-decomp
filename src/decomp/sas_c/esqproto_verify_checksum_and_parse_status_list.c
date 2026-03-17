@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     SERIAL_READ_DEFAULT_ARG = 0
 };

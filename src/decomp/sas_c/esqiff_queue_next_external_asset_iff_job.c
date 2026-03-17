@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct ESQIFF_PendingBrushNode {
     char pathText[190];
     UBYTE sourceType190;

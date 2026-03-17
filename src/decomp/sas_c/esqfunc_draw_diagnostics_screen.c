@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct ESQFUNC_DisplayContext {
     UBYTE pad0[2];
     UBYTE rastPort[1];

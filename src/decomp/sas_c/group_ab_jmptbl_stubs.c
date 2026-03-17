@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void ESQPARS_RemoveGroupEntryAndReleaseStrings(WORD mode);
 extern void ESQFUNC_FreeLineTextBuffers(void);
 extern void ESQIFF_DeallocateAdsAndLogoLstData(void);

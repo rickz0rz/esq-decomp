@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct WeatherStatusRecordHeader {
     UBYTE countdown0;
     UBYTE color1;

@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern void DST_RefreshBannerBuffer(void);
 extern long DST_UpdateBannerQueue(void *pair);
 extern void ESQDISP_DrawStatusBanner(WORD mode);

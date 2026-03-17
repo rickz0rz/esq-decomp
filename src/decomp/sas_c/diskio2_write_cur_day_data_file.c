@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 typedef struct DISKIO2_Entry {
     UBYTE pad0[27];
     UBYTE flags27;

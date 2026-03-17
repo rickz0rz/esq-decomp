@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *in);
 extern LONG DOS_OpenFileWithMode(const char *name, LONG mode);
 extern LONG SCRIPT_CheckPathExists(const char *path);

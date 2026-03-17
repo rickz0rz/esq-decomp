@@ -1,4 +1,5 @@
 #include <exec/types.h>
+
 enum {
     EXECBASE_THIS_TASK_OFFSET = 276,
     TASK_SAVED_DIRLOCK_OFFSET = 152,
