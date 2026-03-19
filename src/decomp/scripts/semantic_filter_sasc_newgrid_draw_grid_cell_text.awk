@@ -1,4 +1,4 @@
-BEGIN{h_entry=0;h_secondary_merge=0;h_layout=0;h_pen=0;h_drmd=0;h_trim=0;h_textlen=0;h_move=0;h_text=0;h_modecheck=0;h_rts=0}
+BEGIN{h_entry=0;h_secondary_merge=0;h_layout=0;h_pen=0;h_drmd=0;h_trim=0;h_textlen=0;h_move=0;h_text=0;h_modecheck=0;h_const42=0;h_hyphen=0;h_rts=0}
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
 {
     l=t($0)
@@ -13,6 +13,8 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /(JSR|BSR).*LVOMOVE/ || l ~ /_LVOMOVE/)h_move=1
     if(l ~ /(JSR|BSR).*LVOTEXT/ || l ~ /_LVOTEXT/)h_text=1
     if(l ~ /CTASKS_STR_C/ || l ~ /#\$53/)h_modecheck=1
+    if(l ~ /#42([^0-9]|$)/ || l ~ /#\$2A/)h_const42=1
+    if(l ~ /#\$2D/ || l ~ /#45([^0-9]|$)/)h_hyphen=1
     if(l=="RTS")h_rts=1
 }
 END{
@@ -26,5 +28,7 @@ END{
     print "HAS_MOVE="h_move
     print "HAS_TEXT_DRAW="h_text
     print "HAS_MODE_CHECK="h_modecheck
+    print "HAS_CONST_42="h_const42
+    print "HAS_HYPHEN_INSERT="h_hyphen
     print "HAS_RTS="h_rts
 }

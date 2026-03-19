@@ -1,4 +1,4 @@
-BEGIN { has_entry=0; has_load=0; has_consume=0; has_findchar=0; has_compare=0; has_init_preset=0; has_replace=0; has_open=0; has_brush_queue=0; has_weather=0; has_return=0 }
+BEGIN { has_entry=0; has_load=0; has_consume=0; has_findchar=0; has_compare=0; has_init_preset=0; has_replace=0; has_brush_queue=0; has_weather=0; has_qtable=0; has_sections=0; has_default_text=0; has_source_config=0; has_return=0 }
 function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
 {
  line=trim($0); if(line=="") next; gsub(/[ \t]+/," ",line); u=toupper(line); n=u; gsub(/[^A-Z0-9]/,"",n)
@@ -11,6 +11,10 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
  if (n ~ /PARSEINIJMPTBLESQPARSREPLACEOWNEDSTRING/ || n ~ /PARSEINIJMPTBLESQPARSREPLACEOWNEDSTR/ || n ~ /PARSEINIJMPTBLESQPARSREPLACEO/ || n ~ /ESQPARSREPLACEOWNEDSTRING/ || n ~ /ESQPARSREPLACEOWNEDSTR/) has_replace=1
  if (n ~ /PARSEINIJMPTBLESQIFFQUEUEIFFBRUSHLOAD/ || n ~ /PARSEINIJMPTBLESQIFFHANDLEBRUSHINIRELOADHOTKEY/ || n ~ /PARSEINIJMPTBLESQIFFQUEUEIFFBRUSH/ || n ~ /PARSEINIJMPTBLESQIFFHANDLEBRUSH/) has_brush_queue=1
  if (n ~ /PARSEINIPROCESSWEATHERBLOCKS/ || n ~ /PARSEINILOADWEATHERSTRINGS/ || n ~ /PARSEINILOADWEATHERMESSAGESTRINGS/ || n ~ /PARSEINIPARSECOLORTABLE/ || n ~ /PARSEINILOADWEATHERMESSAGES/) has_weather=1
+ if (n ~ /PTYPESTRQTABLE/ || n ~ /ALIASPTRTABLE/ || n ~ /ALIASCOUNT/) has_qtable=1
+ if (n ~ /PTYPE_TAG_BACKDROP/ || n ~ /PTYPE_TAG_GRADIENT/ || n ~ /PTYPE_TAG_TEXTADS/ || n ~ /PTYPE_TAG_BRUSH/ || n ~ /PTYPE_TAG_BANNER/) has_sections=1
+ if (n ~ /PTYPESTRDEFAULTTEXT/ || n ~ /NOCURRENTWEATHERDATA/ || n ~ /NOFORECASTWEATHERDATA/ || n ~ /WEATHERDATAAVAILABILITYDISCLAIMER/) has_default_text=1
+ if (n ~ /PTYPESTRSOURCECONFIG/ || n ~ /TEXTDISP_CLEARSOURCECONFIG/ || n ~ /TEXTDISP_ADDSOURCECONFIGENTRY/) has_source_config=1
  if (u ~ /^RTS$/) has_return=1
 }
-END { print "HAS_ENTRY="has_entry; print "HAS_LOAD="has_load; print "HAS_CONSUME="has_consume; print "HAS_FINDCHAR="has_findchar; print "HAS_COMPARE="has_compare; print "HAS_INIT_PRESET="has_init_preset; print "HAS_REPLACE="has_replace; print "HAS_OPEN="has_open; print "HAS_BRUSH_QUEUE="has_brush_queue; print "HAS_WEATHER="has_weather; print "HAS_RETURN="has_return }
+END { print "HAS_ENTRY="has_entry; print "HAS_LOAD="has_load; print "HAS_CONSUME="has_consume; print "HAS_FINDCHAR="has_findchar; print "HAS_COMPARE="has_compare; print "HAS_INIT_PRESET="has_init_preset; print "HAS_REPLACE="has_replace; print "HAS_BRUSH_QUEUE="has_brush_queue; print "HAS_WEATHER="has_weather; print "HAS_QTABLE="has_qtable; print "HAS_SECTIONS="has_sections; print "HAS_DEFAULT_TEXT="has_default_text; print "HAS_SOURCE_CONFIG="has_source_config; print "HAS_RETURN="has_return }

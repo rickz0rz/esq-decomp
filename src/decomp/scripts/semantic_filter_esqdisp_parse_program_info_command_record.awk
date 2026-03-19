@@ -13,6 +13,7 @@ BEGIN {
     has_hex_parse = 0
     has_copy_or_zero_tag = 0
     has_fill_header_call = 0
+    has_const12 = 0
     has_return = 0
 }
 
@@ -44,6 +45,7 @@ function trim(s, t) {
     if (uline ~ /ESQFUNC_JMPTBL_LADFUNC_PARSEHEXDIGIT/ || uline ~ /ESQFUNC_JMPTBL_LADFUNC_PARSEHEXD/) has_hex_parse = 1
     if (uline ~ /ESQFUNC_JMPTBL_STRING_COPYPADNUL/ || uline ~ /ESQDISP_PROGRAMINFOZEROTAG/) has_copy_or_zero_tag = 1
     if (uline ~ /ESQDISP_FILLPROGRAMINFOHEADERFIELDS/ || uline ~ /ESQDISP_FILLPROGRAMINFOHEADERFIE/) has_fill_header_call = 1
+    if (uline ~ /#\$12/ || uline ~ /#18([^0-9]|$)/) has_const12 = 1
     if (uline ~ /^RTS$/) has_return = 1
 }
 
@@ -64,5 +66,6 @@ END {
     print "HAS_HEX_PARSE=" has_hex_parse
     print "HAS_COPY_OR_ZERO_TAG=" has_copy_or_zero_tag
     print "HAS_FILL_HEADER_CALL=" has_fill_header_call
+    print "HAS_CONST_12=" has_const12
     print "HAS_RETURN=" has_return
 }

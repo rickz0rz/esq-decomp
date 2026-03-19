@@ -1,4 +1,4 @@
-BEGIN { has_entry=0; has_get_entry=0; has_get_anim=0; has_test_window=0; has_format=0; has_return=0 }
+BEGIN { has_entry=0; has_get_entry=0; has_get_anim=0; has_test_window=0; has_format=0; has_const1440=0; has_mode_any=0; has_field_5=0; has_field_4=0; has_return=0 }
 function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
 {
  line=trim($0); if(line=="") next; gsub(/[ \t]+/," ",line); u=toupper(line); n=u; gsub(/[^A-Z0-9]/,"",n)
@@ -7,6 +7,10 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
  if (n ~ /TLIBA1JMPTBLCOIGETANIMFIELDPOINTERBYMODE/ || n ~ /TLIBA1JMPTBLCOIGETANIMFIELDPOINTERBYMOD/ || n ~ /TLIBA1JMPTBLCOIGETANIMFIELDPO/ || n ~ /COIGETANIMFIELDPOINTERBYMODE/ || n ~ /COIGETANIMFIELDPOINTERBYMOD/) has_get_anim=1
  if (n ~ /TLIBA1JMPTBLCOITESTENTRYWITHINTIMEWINDOW/ || n ~ /TLIBA1JMPTBLCOITESTENTRYWITHINTIMEWIND/ || n ~ /TLIBA1JMPTBLCOITESTENTRYWITHI/ || n ~ /COITESTENTRYWITHINTIMEWINDOW/ || n ~ /COITESTENTRYWITHINTIMEWIND/ || n ~ /COITESTENTRYWITHI/) has_test_window=1
  if (n ~ /TLIBA1FORMATCLOCKFORMATENTRY/ || n ~ /TLIBA1FORMATCLOCKFORMATENTR/) has_format=1
+ if (u ~ /1440/ || u ~ /#\$5A0/) has_const1440=1
+ if (u ~ /#-1/ || u ~ /#\$FF/ || u ~ /#\$FFFFFFFF/) has_mode_any=1
+ if (u ~ /#5([^0-9]|$)/ || u ~ /#\$05/ || u ~ /5\.W/ || n ~ /MOVEQL5D2/) has_field_5=1
+ if (u ~ /#4([^0-9]|$)/ || u ~ /#\$04/ || u ~ /4\.W/ || n ~ /MOVEQL4D2/) has_field_4=1
  if (u=="RTS") has_return=1
 }
-END { print "HAS_ENTRY="has_entry; print "HAS_GET_ENTRY="has_get_entry; print "HAS_GET_ANIM="has_get_anim; print "HAS_TEST_WINDOW="has_test_window; print "HAS_FORMAT="has_format; print "HAS_RETURN="has_return }
+END { print "HAS_ENTRY="has_entry; print "HAS_GET_ENTRY="has_get_entry; print "HAS_GET_ANIM="has_get_anim; print "HAS_TEST_WINDOW="has_test_window; print "HAS_FORMAT="has_format; print "HAS_CONST_1440="has_const1440; print "HAS_MODE_ANY="has_mode_any; print "HAS_FIELD_5="has_field_5; print "HAS_FIELD_4="has_field_4; print "HAS_RETURN="has_return }

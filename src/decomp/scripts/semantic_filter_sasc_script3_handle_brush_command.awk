@@ -10,6 +10,14 @@ BEGIN {
     has_playback_cursor = 0
     has_primary_first = 0
     has_pending_target = 0
+    has_compare_n = 0
+    has_apply_rtc = 0
+    has_type20 = 0
+    has_locavail = 0
+    has_channel_update = 0
+    has_readsigned = 0
+    has_parsehex = 0
+    has_consts_14_15 = 0
     has_return = 0
 }
 
@@ -40,6 +48,14 @@ function trim(s, t) {
     if (n ~ /SCRIPTPLAYBACKCURSOR/ || n ~ /SCRIPTPLAYBACKCURSO/) has_playback_cursor = 1
     if (n ~ /SCRIPTPRIMARYSEARCHFIRSTFLAG/ || n ~ /SCRIPTPRIMARYSEARCHFIRSTFL/) has_primary_first = 1
     if (n ~ /SCRIPTPENDINGBANNERTARGETCHAR/ || n ~ /SCRIPTPENDINGBANNERTARGETCHA/) has_pending_target = 1
+    if (n ~ /SCRIPT3JMPTBLSTRINGCOMPAREN/ || n ~ /STRINGCOMPAREN/) has_compare_n = 1
+    if (n ~ /APPLYRTCBYTESANDPERSIST/ || n ~ /ESQPARSAPPLYRTCBYTES/) has_apply_rtc = 1
+    if (n ~ /PTYPEGETSUBTYPEIFTYPE20/ || n ~ /PTYPECONSUMEPRIMARYTYPEIFPRESENT/ || n ~ /SCRIPTTYPE20SUBTYPECACHE/) has_type20 = 1
+    if (n ~ /LOCAVAILSETFILTERMODEANDRESETSTATE/ || n ~ /LOCAVAILCOMPUTEFILTEROFFSETFORENTRY/ || n ~ /LOCAVAIL/) has_locavail = 1
+    if (n ~ /TEXTDISPUPDATECHANNELRANGEFLAGS/ || n ~ /CHANNELRANGEARMEDFLAG/ || n ~ /CHANNELRANGEDIGITCHAR/) has_channel_update = 1
+    if (n ~ /PARSEREADSIGNEDLONGSKIPCLASS3ALT/ || n ~ /READSIGNEDLONGSKIPCLASS3ALT/ || n ~ /PARSEREADSIGNEDLONGSKIPCLASS3A/ || n ~ /READSIGNEDLONGSKIPCLASS3A/) has_readsigned = 1
+    if (n ~ /LADFUNCPARSEHEXDIGIT/ || n ~ /PARSEHEXDIGIT/) has_parsehex = 1
+    if (u ~ /#14([^0-9]|$)/ || u ~ /#15([^0-9]|$)/ || u ~ /#\$E/ || u ~ /#\$0E/ || u ~ /#\$F/ || u ~ /#\$0F/) has_consts_14_15 = 1
     if (u == "RTS") has_return = 1
 }
 
@@ -55,5 +71,13 @@ END {
     print "HAS_PLAYBACK_CURSOR=" has_playback_cursor
     print "HAS_PRIMARY_FIRST=" has_primary_first
     print "HAS_PENDING_TARGET=" has_pending_target
+    print "HAS_COMPARE_N=" has_compare_n
+    print "HAS_APPLY_RTC=" has_apply_rtc
+    print "HAS_TYPE20=" has_type20
+    print "HAS_LOCAVAIL=" has_locavail
+    print "HAS_CHANNEL_UPDATE=" has_channel_update
+    print "HAS_READSIGNED=" has_readsigned
+    print "HAS_PARSE_HEX=" has_parsehex
+    print "HAS_CONSTS_14_15=" has_consts_14_15
     print "HAS_RETURN=" has_return
 }

@@ -25,7 +25,9 @@ LONG HANDLE_CloseByIndex(LONG handleIndex)
     }
 
     DOS_CloseWithSignalCheck(entry->Handle);
+
     entry->Flags = 0;
+
     if (Global_DosIoErr != 0) {
         return -1;
     }

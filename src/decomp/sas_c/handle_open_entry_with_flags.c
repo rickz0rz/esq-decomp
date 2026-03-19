@@ -1,3 +1,4 @@
+#include <dos/dos.h>
 #include <exec/types.h>
 
 typedef struct HANDLE_TableEntry {
@@ -66,7 +67,7 @@ LONG HANDLE_OpenEntryWithFlags(const char *name, ULONG flags, LONG aux)
             open_handle = DOS_OpenNewFileIfMissing(name, create_err_code);
         } else {
             if ((flags & (1UL << 9)) == 0UL) {
-                open_handle = DOS_OpenWithErrorState(name, 1005);
+                open_handle = DOS_OpenWithErrorState(name, MODE_OLDFILE);
                 if (open_handle < 0) {
                     flags |= (1UL << 9);
                 }
@@ -81,10 +82,10 @@ LONG HANDLE_OpenEntryWithFlags(const char *name, ULONG flags, LONG aux)
 
         if (did_create_path != 0 && (flags & 240UL) != 0UL && open_handle >= 0) {
             (void)DOS_CloseWithSignalCheck(open_handle);
-            open_handle = DOS_OpenWithErrorState(name, 1005);
+            open_handle = DOS_OpenWithErrorState(name, MODE_OLDFILE);
         }
     } else {
-        open_handle = DOS_OpenWithErrorState(name, 1005);
+        open_handle = DOS_OpenWithErrorState(name, MODE_OLDFILE);
     }
 
     if (Global_DosIoErr != 0) {

@@ -17,12 +17,12 @@ function t(s){sub(/;.*/,"",s);sub(/^[ \t]+/,"",s);sub(/[ \t]+$/,"",s);gsub(/[ \t
 END {
   print "HAS_ENTRY=" h_entry
   print "HAS_SIGNAL_GATE=" h_sig
-  print "HAS_CLEAR_DOSIOERR=0"
+  print "HAS_CLEAR_DOSIOERR=" h_clear
   print "HAS_CLOSE_CALL=" h_close
-  print "HAS_ZERO_CLOSE_CHECK=0"
-  print "HAS_IOERR_CAPTURE=0"
-  print "HAS_SET_ERR6=0"
-  print "HAS_NEG1_PATH=0"
+  print "HAS_ZERO_CLOSE_CHECK=" h_zero
+  print "HAS_IOERR_CAPTURE=" h_ioerr
+  print "HAS_SET_ERR6=" h_set6
+  print "HAS_NEG1_PATH=" h_neg1
   print "HAS_RET0_PATH=" h_ret0
   print "HAS_RTS=" h_rts
 }

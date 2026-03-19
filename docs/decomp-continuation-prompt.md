@@ -1,4 +1,4 @@
-You are continuing work in /Users/rj/Downloads/Git/github.com/rickz0rz/esq-decomp.
+You are continuing work in /Users/rj/Downloads/esq-asm.
 
 Project goal:
 - Produce mostly equivalent C from the existing Amiga assembly/disassembly.
@@ -11,6 +11,14 @@ Project goal:
 - Overall scope includes the root `src/*.s` files, `src/Prevue.asm`, and everything under `src/interrupts/`, `src/data/`, and `src/modules/` recursively.
 
 Important current state:
+- Current carry-forward note (March 19, 2026): a semantic-filter audit pass found and/or confirmed several real partial SAS/C ports that had previously been hidden by permissive `semantic_filter_sasc_*` scripts. The confirmed behavior restorations now landed in this checkout are:
+  - `src/decomp/sas_c/tliba1_draw_formatted_text_block.c`
+  - `src/decomp/sas_c/script3_handle_brush_command.c`
+  - `src/decomp/sas_c/esqpars_consume_rbf_byte_and_dispatch_command.c`
+- Current semantic-filter note (March 19, 2026): multiple `semantic_filter_sasc_*` scripts were tightened so “green” compare output is less likely to hide truncated implementations. The ESQPARS lane in particular now asserts the `g` command family, `!` path, title-table walking, reverse-bit handling, bit-test usage, owned-string replacement, banner/config/font/status helpers, and related parser-state markers.
+- Current ESQPARS status note (March 19, 2026): `ESQPARS_ConsumeRbfByteAndDispatchCommand` is materially broader than the earlier stub. It now covers the preamble/selection gate, `!`, `A`, `C/c`, `D`, `E`, `F`, `K`, `M`, `O`, `P/p`, `R`, `V/v`, `W/w`, `X`, `f`, `g`, `i/I/j`, `l/t`, `%`, `=`/`H`, and `x` families. The remaining work in that function is now micro-semantic, not missing top-level cases: exact reject-path byte consumption and fine-grained data/flag mutation inside the `!` and lower-`p` branches are the current highest-value follow-up.
+- Current verification note (March 19, 2026): after the ESQPARS restore and follow-up refinements, `bash src/decomp/scripts/compare_sasc_esqpars_consume_rbf_byte_and_dispatch_command_trial.sh` still produces an empty semantic diff, and `./test-hash.sh` still matches the canonical hash `6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2`.
+- Current workflow note (March 19, 2026): when a raw diff is still large but the semantic diff is empty, do not assume the function is done or assume it is broken. First check whether the filter was recently strengthened enough to cover the behavior-heavy branches. For `ESQPARS_ConsumeRbfByteAndDispatchCommand`, the next work should continue by inspecting `build/decomp/sasc_trial/esqpars_consume_rbf_byte_and_dispatch_command.{original,sasc}.norm.s` around the `!` and lower-`p` branches rather than widening back out to broad sweeps immediately.
 - Many existing SAS/C compare lanes are already populated; do not assume a missing decomp just because a target exists in `TARGETS.md`.
 - Before writing code, inspect whether the target already exists in `src/decomp/sas_c` and whether it already has a `.dis`.
 - Many checked `compare_sasc_*` lanes now have empty semantic diffs even when their raw asm diffs are still noisy from SAS/C scaffolding. Use the semantic diff, not the raw diff size, to decide whether a lane still needs tightening.

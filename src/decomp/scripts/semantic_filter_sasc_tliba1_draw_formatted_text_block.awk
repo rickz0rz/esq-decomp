@@ -11,8 +11,12 @@ BEGIN {
     has_const24=0
     has_const25=0
     has_const6=0
+    has_space_rewrite=0
+    has_const3=0
     has_const10=0
     has_const8=0
+    has_txbaseline=0
+    has_font_height=0
     has_const2115=0
     has_const2385=0
     has_return=0
@@ -46,8 +50,12 @@ function trim(s, t) {
     if (u ~ /#24/ || u ~ /#\$18/) has_const24=1
     if (u ~ /#25/ || u ~ /#\$19/) has_const25=1
     if (u ~ /#6([^0-9]|$)/ || u ~ /#\$06/ || u ~ /#\$6([^0-9A-F]|$)/) has_const6=1
+    if (u ~ /#3([^0-9]|$)/ || u ~ /#\$03/ || u ~ /#\$3([^0-9A-F]|$)/) has_const3=1
     if (u ~ /#10/ || u ~ /#\$0A/ || u ~ /#\$A([^0-9A-F]|$)/ || u ~ /\(\$A\)/) has_const10=1
     if (u ~ /#8([^0-9]|$)/ || u ~ /#\$08/ || u ~ /#\$8([^0-9A-F]|$)/) has_const8=1
+    if (u ~ /#32([^0-9]|$)/ || u ~ /#\$20/) has_space_rewrite=1
+    if (u ~ /TXBASELINE/ || u ~ /58\(A/ || u ~ /\$3A\(/) has_txbaseline=1
+    if (u ~ /TF_YSIZE/ || u ~ /20\(A/ || u ~ /\$14\(/) has_font_height=1
     if (u ~ /2115/ || u ~ /#\$843/ || u ~ /\$843/) has_const2115=1
     if (u ~ /2385/ || u ~ /#\$951/ || u ~ /\$951/) has_const2385=1
     if (u=="RTS") has_return=1
@@ -66,8 +74,12 @@ END {
     print "HAS_CONST_24="has_const24
     print "HAS_CONST_25="has_const25
     print "HAS_CONST_6="has_const6
+    print "HAS_SPACE_REWRITE="has_space_rewrite
+    print "HAS_CONST_3="has_const3
     print "HAS_CONST_10="has_const10
     print "HAS_CONST_8="has_const8
+    print "HAS_TX_BASELINE="has_txbaseline
+    print "HAS_FONT_HEIGHT="has_font_height
     print "HAS_CONST_2115="has_const2115
     print "HAS_CONST_2385="has_const2385
     print "HAS_RETURN="has_return

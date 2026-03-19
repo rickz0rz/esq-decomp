@@ -11,6 +11,8 @@ BEGIN {
     has_const29=0
     has_const30=0
     has_btst4=0
+    has_start_end=0
+    has_limit_plus1=0
     has_rts=0
 }
 
@@ -42,6 +44,8 @@ function trim(s, t) {
     if (u ~ /#29([^0-9]|$)/ || u ~ /#\$1D/ || u ~ /29\.[Ww]/ || u ~ /\(\$1D\)/) has_const29=1
     if (u ~ /#30([^0-9]|$)/ || u ~ /#\$1E/ || u ~ /30\.[Ww]/ || u ~ /\(\$1E\)/) has_const30=1
     if (n ~ /BTST42F/ || n ~ /BTST447A0/ || n ~ /BTST447/) has_btst4=1
+    if (n ~ /WINDOWSTART/ || n ~ /WINDOWEND/ || n ~ /TEXTDISPPRIMARYGROUPENTRYCOUNT/) has_start_end=1
+    if (n ~ /ROWLIMIT/ && (u ~ /ADDQ\.W #1/ || u ~ /ADDQ\.L #1/ || u ~ /ADD\.L D[0-7]/)) has_limit_plus1=1
     if (u == "RTS") has_rts=1
 }
 
@@ -58,5 +62,7 @@ END {
     print "HAS_CONST_29="has_const29
     print "HAS_CONST_30="has_const30
     print "HAS_BTST4="has_btst4
+    print "HAS_START_END_WINDOW="has_start_end
+    print "HAS_LIMIT_PLUS1="has_limit_plus1
     print "HAS_RTS="has_rts
 }
