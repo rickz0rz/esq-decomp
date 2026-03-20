@@ -3,6 +3,7 @@ BEGIN {
     has_select_buffer = 0
     has_ravesc = 0
     has_select_flag = 0
+    has_flush_close = 0
     has_execute_call = 0
     has_findtask_call = 0
     has_openlibrary_call = 0
@@ -30,12 +31,15 @@ BEGIN {
     has_topaz_guard = 0
     has_update_clock = 0
     has_dst_refresh = 0
+    has_baud_parse = 0
+    has_baud_validation = 0
     has_baud_2400 = 0
     has_baud_4800 = 0
     has_baud_9600 = 0
     has_signal_create = 0
     has_open_device = 0
     has_doio = 0
+    serial_setup_hits = 0
     has_int_rbf = 0
     has_int_aud1 = 0
     has_int_vertb = 0
@@ -48,6 +52,7 @@ BEGIN {
     has_banner_copper_init = 0
     has_drop_transition = 0
     has_rise_transition = 0
+    rise_transition_count = 0
     has_drive_probe = 0
     has_printf = 0
     has_prime_banner = 0
@@ -62,6 +67,13 @@ BEGIN {
     has_reset_lists = 0
     has_reset_filter = 0
     has_status_refresh = 0
+    has_brush_dt = 0
+    has_brush_dither_fallback = 0
+    has_brush_type3_fallback = 0
+    has_display_active_scan = 0
+    has_schedule_clear = 0
+    has_ravesc_highlight_restore = 0
+    has_main_loop_gate = 0
     has_rts = 0
 }
 
@@ -86,6 +98,7 @@ function trim(s, t) {
     if (u ~ /ESQ_SELECTCODEBUFFER/) has_select_buffer = 1
     if (u ~ /GLOBAL_STR_RAVESC/) has_ravesc = 1
     if (u ~ /GLOBAL_WORD_SELECT_CODE_IS_RAVESC/ || u ~ /GLOBAL_WORD_SELECT_CODE_IS_RAVES/) has_select_flag = 1
+    if (u ~ /BUFFER_FLUSHALLANDCLOSEWITHCODE/ || u ~ /FLUSHALLANDCLOSEWITHCODE/) has_flush_close = 1
     if (u ~ /_LVOEXECUTE/) has_execute_call = 1
     if (u ~ /_LVOFINDTASK/) has_findtask_call = 1
     if (u ~ /_LVOOPENLIBRARY/) has_openlibrary_call = 1
@@ -113,12 +126,16 @@ function trim(s, t) {
     if (u ~ /CHECKTOPAZFONTGUARD/ || u ~ /CHECKTOPAZFONTGUA/) has_topaz_guard = 1
     if (u ~ /UPDATECLOCKFROMRTC/ || u ~ /UPDATECLOCKFROMR/) has_update_clock = 1
     if (u ~ /DST_REFRESHBANNERBUFFER/ || u ~ /REFRESHBANNERBUFFER/) has_dst_refresh = 1
+    if (u ~ /PARSE_READSIGNEDLONGSKIPCLASS3_A/ || u ~ /PARSE_READSIGNEDLONGSKIPCLASS3_ALT/) has_baud_parse = 1
     if (u ~ /(^|[^0-9])2400([^0-9]|$)|\$960/) has_baud_2400 = 1
     if (u ~ /(^|[^0-9])4800([^0-9]|$)|\$12C0/) has_baud_4800 = 1
     if (u ~ /(^|[^0-9])9600([^0-9]|$)|\$2580/) has_baud_9600 = 1
     if (u ~ /CREATEMSGPORTWITHSIGNAL/ || u ~ /CREATEMSGPORTWITHSIG/) has_signal_create = 1
     if (u ~ /_LVOOPENDEVICE/) has_open_device = 1
     if (u ~ /_LVODOIO/) has_doio = 1
+    if (u ~ /WDISP_SERIALIOREQUESTPTR/ && u ~ /#16/) serial_setup_hits++
+    if (u ~ /WDISP_SERIALIOREQUESTPTR/ && u ~ /GLOBAL_REF_BAUD_RATE/) serial_setup_hits++
+    if (u ~ /WDISP_SERIALIOREQUESTPTR/ && (u ~ /#11/ || u ~ /#\$B/)) serial_setup_hits++
     if (u ~ /SETUP_INTERRUPT_INTB_RBF/) has_int_rbf = 1
     if (u ~ /SETUP_INTERRUPT_INTB_AUD1/) has_int_aud1 = 1
     if (u ~ /SETUP_INTERRUPT_INTB_VERTB/) has_int_vertb = 1
@@ -130,7 +147,10 @@ function trim(s, t) {
     if (u ~ /UPDATEREFRESHMODESTATE/ || u ~ /UPDATEREFRESHMODES/) has_refresh_mode = 1
     if (u ~ /INITIALIZEBANNERCOPPERSYSTEM/ || u ~ /INITIALIZEBANNERCOP/) has_banner_copper_init = 1
     if (u ~ /RUNCOPPERDROPTRANSITION/ || u ~ /RUNCOPPERDROPTRAN/) has_drop_transition = 1
-    if (u ~ /RUNCOPPERRISETRANSITION/ || u ~ /RUNCOPPERRISETRAN/) has_rise_transition = 1
+    if (u ~ /RUNCOPPERRISETRANSITION/ || u ~ /RUNCOPPERRISETRAN/) {
+        has_rise_transition = 1
+        rise_transition_count++
+    }
     if (u ~ /PROBEDRIVESANDASSIGNPATHS/ || u ~ /PROBEDRIVESANDASSI/) has_drive_probe = 1
     if (u ~ /WDISP_SPRINTF/ || u ~ /RAWDOFMT/ || u ~ /SPRINTF/) has_printf = 1
     if (u ~ /PRIMEBANNERTRANSITIONFROMHEXCODE/ || u ~ /PRIMEBANNERTRANSI/) has_prime_banner = 1
@@ -145,14 +165,25 @@ function trim(s, t) {
     if (u ~ /RESETLISTSANDLOADPROMOIDS/ || u ~ /RESETLISTSANDLOAD/) has_reset_lists = 1
     if (u ~ /RESETFILTERSTATESTRUCT/ || u ~ /RESETFILTERSTATEST/) has_reset_filter = 1
     if (u ~ /UPDATESTATUSMASKANDREFRESH/ || u ~ /UPDATESTATUSMASKA/) has_status_refresh = 1
+    if (u ~ /ESQ_STR_DT/ && u ~ /SELECTBRUSHBYLABEL/) has_brush_dt = 1
+    if (u ~ /ESQ_STR_DITHER/ && u ~ /FINDBRUSHBYPREDICATE/) has_brush_dither_fallback = 1
+    if (u ~ /FINDTYPE3BRUSH/ && u ~ /FALLBACKTYPE3BRUSH/) has_brush_type3_fallback = 1
+    if (u ~ /ESQ_TAG_GRANADA/) has_display_active_scan = 1
+    if (u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLET/ && (u ~ /#\$12E/ || u ~ /#302/)) has_schedule_clear = 1
+    if (u ~ /GLOBAL_WORD_SELECT_CODE_IS_RAVES/ && u ~ /ESQ_SETCOPPEREFFECT_ONENABLEHIGH/) has_ravesc_highlight_restore = 1
+    if (u ~ /MONITORCLOCKCHANGE/ || u ~ /ESQ_SHUTDOWNREQUESTEDFLAG/ || u ~ /CONSUMERBFBYTEANDDISPATCHCOMMAND/) has_main_loop_gate = 1
     if (u == "RTS") has_rts = 1
 }
 
 END {
+    has_baud_validation = (has_baud_parse && has_baud_2400 && has_baud_4800 && has_baud_9600) ? 1 : 0
+    has_serial_setup = (serial_setup_hits >= 3) ? 1 : 0
+    has_dual_rise_transition = (rise_transition_count >= 2) ? 1 : 0
     print "HAS_LABEL=" has_label
     print "HAS_SELECT_BUFFER=" has_select_buffer
     print "HAS_RAVESC=" has_ravesc
     print "HAS_SELECT_FLAG=" has_select_flag
+    print "HAS_FLUSH_CLOSE=" has_flush_close
     print "HAS_EXECUTE_CALL=" has_execute_call
     print "HAS_FINDTASK_CALL=" has_findtask_call
     print "HAS_OPENLIBRARY_CALL=" has_openlibrary_call
@@ -180,12 +211,15 @@ END {
     print "HAS_TOPAZ_GUARD=" has_topaz_guard
     print "HAS_UPDATE_CLOCK=" has_update_clock
     print "HAS_DST_REFRESH=" has_dst_refresh
+    print "HAS_BAUD_PARSE=" has_baud_parse
+    print "HAS_BAUD_VALIDATION=" has_baud_validation
     print "HAS_BAUD_2400=" has_baud_2400
     print "HAS_BAUD_4800=" has_baud_4800
     print "HAS_BAUD_9600=" has_baud_9600
     print "HAS_SIGNAL_CREATE=" has_signal_create
     print "HAS_OPEN_DEVICE=" has_open_device
     print "HAS_DOIO=" has_doio
+    print "HAS_SERIAL_SETUP=" has_serial_setup
     print "HAS_INT_RBF=" has_int_rbf
     print "HAS_INT_AUD1=" has_int_aud1
     print "HAS_INT_VERTB=" has_int_vertb
@@ -198,6 +232,7 @@ END {
     print "HAS_BANNER_COPPER_INIT=" has_banner_copper_init
     print "HAS_DROP_TRANSITION=" has_drop_transition
     print "HAS_RISE_TRANSITION=" has_rise_transition
+    print "HAS_DUAL_RISE_TRANSITION=" has_dual_rise_transition
     print "HAS_DRIVE_PROBE=" has_drive_probe
     print "HAS_PRINTF=" has_printf
     print "HAS_PRIME_BANNER=" has_prime_banner
@@ -212,5 +247,12 @@ END {
     print "HAS_RESET_FILTER=" has_reset_filter
     print "HAS_RELOAD_DATA=" has_reload_data
     print "HAS_STATUS_REFRESH=" has_status_refresh
+    print "HAS_BRUSH_DT=" has_brush_dt
+    print "HAS_BRUSH_DITHER_FALLBACK=" has_brush_dither_fallback
+    print "HAS_BRUSH_TYPE3_FALLBACK=" has_brush_type3_fallback
+    print "HAS_DISPLAY_ACTIVE_SCAN=" has_display_active_scan
+    print "HAS_SCHEDULE_CLEAR=" has_schedule_clear
+    print "HAS_RAVESC_HIGHLIGHT_RESTORE=" has_ravesc_highlight_restore
+    print "HAS_MAIN_LOOP_GATE=" has_main_loop_gate
     print "HAS_RTS=" has_rts
 }

@@ -18,9 +18,16 @@ BEGIN {
     h_apply_active=0
     h_help=0
     h_page_line_toggle=0
+    h_cursor_sync_line_page=0
+    h_insert_row_shift=0
+    h_delete_row_shift=0
+    h_insert_char=0
+    h_mode9_help=0
+    h_nav_dirs=0
     h_esc_commit_help=0
     h_insert_ascii=0
     h_finalize_branch=0
+    h_page_down=0
     h_consts=0
     h_rts=0
 }
@@ -56,9 +63,16 @@ function norm(s, t) {
     if (l ~ /ED_COMMITCURRENTADEDITS/) h_commit=1
     if (l ~ /ED_APPLYACTIVEFLAGTOADDATA/) h_apply_active=1
     if (l ~ /ED_DRAWESCMENUBOTTOMHELP/ || l ~ /ED_DRAWEDITHELPTEXT/) h_help=1
+    if (l ~ /ED_VIEWPORTOFFSET/ && l ~ /ED_EDITCURSOROFFSET/ && l ~ /#40/ || l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$30/) h_cursor_sync_line_page=1
+    if (l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$36/ || l ~ /ED_TEXTLIMIT/ && l ~ /ED_REDRAWROW/ && l ~ /MEM_MOVE/) h_insert_row_shift=1
+    if (l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$37/ || l ~ /ED_TEXTLIMIT/ && l ~ /ED_REDRAWROW/ && l ~ /MEM_MOVE/ && l ~ /ED_VIEWPORTOFFSET/) h_delete_row_shift=1
+    if (l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$39/ || l ~ /ED_EDITBUFFERSCRATCHSHIFTBASE/ && l ~ /ED_EDITBUFFERLIVESHIFTBASE/) h_insert_char=1
+    if (l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$40/ || l ~ /ED_MENUSTATEID/ && l ~ /ED_DRAWEDITHELPTEXT/) h_mode9_help=1
+    if (l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$42/ || l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$43/ || l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$44/ || l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$45/ || l ~ /ED_EDITCURSOROFFSET/ && l ~ /#40/) h_nav_dirs=1
     if (l ~ /ED_COMMITCURRENTADEDITS/ || l ~ /ED_DRAWESCMENUBOTTOMHELP/ || l ~ /TEXTMODEREINITPENDINGFLAG/ && l ~ /MOVEL/) h_esc_commit_help=1
     if (l ~ /#25/ || l ~ /#\$19/ || l ~ /EDITBUFFERSCRATCH/ && l ~ /ED_LASTKEYCODE/ || l ~ /CASEINSERTASCIICHAR/) h_insert_ascii=1
     if (l ~ /SYNCCURRENTCHARANDMAYBEDRAW/ || l ~ /ED_REDRAWCURSORCHAR/ || l ~ /ED_DRAWCURRENTCOLORINDICATOR/) h_finalize_branch=1
+    if (l ~ /ED_TEXTLIMIT/ && l ~ /ED_EDITCURSOROFFSET/ && l ~ /ED_VIEWPORTOFFSET/ && l ~ /#40/) h_page_down=1
     if (l ~ /ED2_STR_PAGE/ || l ~ /ED2_STR_LINE/ || l ~ /BOOLISLINEORPAGE/) h_page_line_toggle=1
     if (l ~ /#\$80/ || l ~ /#\$6C/ || l ~ /#\$35/ || l ~ /#\$36/) h_consts=1
     if (l == "RTS") h_rts=1
@@ -83,9 +97,16 @@ END {
     print "HAS_COMMIT=" h_commit
     print "HAS_APPLY_ACTIVE=" h_apply_active
     print "HAS_HELP_PATH=" h_help
+    print "HAS_CURSOR_SYNC_LINE_PAGE=" h_cursor_sync_line_page
+    print "HAS_INSERT_ROW_SHIFT=" h_insert_row_shift
+    print "HAS_DELETE_ROW_SHIFT=" h_delete_row_shift
+    print "HAS_INSERT_CHAR=" h_insert_char
+    print "HAS_MODE9_HELP=" h_mode9_help
+    print "HAS_NAV_DIRS=" h_nav_dirs
     print "HAS_ESC_COMMIT_HELP=" h_esc_commit_help
     print "HAS_INSERT_ASCII_PATH=" h_insert_ascii
     print "HAS_FINALIZE_BRANCH=" h_finalize_branch
+    print "HAS_PAGE_DOWN=" h_page_down
     print "HAS_PAGE_LINE_TOGGLE=" h_page_line_toggle
     print "HAS_KEY_CONSTS=" h_consts
     print "HAS_RTS=" h_rts

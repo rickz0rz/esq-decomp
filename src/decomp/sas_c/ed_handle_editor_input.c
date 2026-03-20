@@ -194,15 +194,15 @@ void ED_HandleEditorInput(void)
     case 9:
         break;
     case 13:
-        if (ED_TextLimit > 0) {
-            LONG maxOff = GROUP_AG_JMPTBL_MATH_Mulu32(ED_TextLimit - 1, 40);
-            if (ED_EditCursorOffset < maxOff) {
-                ED_EditCursorOffset = GROUP_AG_JMPTBL_MATH_Mulu32(ED_ViewportOffset + 1, 40);
-            } else {
-                ED_EditCursorOffset = maxOff;
-            }
+    {
+        LONG maxOff = GROUP_AG_JMPTBL_MATH_Mulu32(ED_TextLimit - 1, 40);
+        if (ED_EditCursorOffset < maxOff) {
+            ED_EditCursorOffset = GROUP_AG_JMPTBL_MATH_Mulu32(ED_ViewportOffset + 1, 40);
+        } else {
+            ED_EditCursorOffset = maxOff;
         }
         break;
+    }
     case 14:
         ED_AdActiveFlag = 0;
         ED_ApplyActiveFlagToAdData();
@@ -230,8 +230,9 @@ void ED_HandleEditorInput(void)
         case 0x31:
             _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
             _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 6);
-            d0 = GROUP_AG_JMPTBL_MATH_DivS32(Global_REF_BOOL_IS_LINE_OR_PAGE + 1, 2);
-            Global_REF_BOOL_IS_LINE_OR_PAGE = d0;
+            /* The asm stores D1 after DivS32 here, i.e. the remainder, not the quotient. */
+            (void)GROUP_AG_JMPTBL_MATH_DivS32(Global_REF_BOOL_IS_LINE_OR_PAGE + 1, 2);
+            Global_REF_BOOL_IS_LINE_OR_PAGE = (Global_REF_BOOL_IS_LINE_OR_PAGE + 1) % 2;
             DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 390,
                                           Global_REF_BOOL_IS_LINE_OR_PAGE ? ED2_STR_PAGE : ED2_STR_LINE);
             _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 2);

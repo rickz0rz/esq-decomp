@@ -1,75 +1,84 @@
-You are continuing work in /Users/rj/Downloads/esq-asm.
+You are continuing work in `/Users/rj/Downloads/esq-asm`.
 
-Project goal:
-- Produce mostly equivalent C from the existing Amiga assembly/disassembly.
-- The restored SAS/C-oriented C sources live in `src/decomp/sas_c`.
-- `./sc-build-with-dis.sh <filename>.c` takes a filename from `src/decomp/sas_c` and emits matching `.o` and `.dis` files beside that source.
-- Existing `src/decomp/sas_c` files are the reference style for new work.
-- Prefer SAS/C system headers from `/Users/RJ/Downloads/SAS-C-hdd/sc/include` for standard AmigaOS structs instead of local duplicate struct declarations when the header layout matches the restored usage.
-- Current carry-forward rule (March 13, 2026): a broad header-substitution pass has already converted many restored files from local stand-ins to canonical SAS/C headers, especially `graphics/rastport.h`, `graphics/text.h`, `graphics/gfx.h`, `exec/lists.h`, `exec/ports.h`, `exec/io.h`, and `exec/libraries.h`. Do not reintroduce duplicate local definitions for `RastPort`, `TextFont`, `BitMap`, `MinList`, `MsgPort`, `Message`, `IOStdReq`, or `Library` when the shipped header layout is sufficient.
-- Current exception note (March 13, 2026): keep local overlay structs only when a file is still relying on nonstandard cached/overlaid fields that are not real header members. The known active examples are `src/decomp/sas_c/cleanup_draw_grid_time_banner.c` and `src/decomp/sas_c/render_short_month_short_day_of_week_day.c`.
-- Overall scope includes the root `src/*.s` files, `src/Prevue.asm`, and everything under `src/interrupts/`, `src/data/`, and `src/modules/` recursively.
+## Objective
 
-Important current state:
-- Current carry-forward note (March 19, 2026): a semantic-filter audit pass found and/or confirmed several real partial SAS/C ports that had previously been hidden by permissive `semantic_filter_sasc_*` scripts. The confirmed behavior restorations now landed in this checkout are:
-  - `src/decomp/sas_c/tliba1_draw_formatted_text_block.c`
-  - `src/decomp/sas_c/script3_handle_brush_command.c`
-  - `src/decomp/sas_c/esqpars_consume_rbf_byte_and_dispatch_command.c`
-- Current semantic-filter note (March 19, 2026): multiple `semantic_filter_sasc_*` scripts were tightened so “green” compare output is less likely to hide truncated implementations. The ESQPARS lane now asserts the `g` command family, `!` path, title-table walking, reverse-bit handling, bit-test usage, owned-string replacement, lower-`p` bitmap/payload-width behavior, banner/config/font/status helpers, and related parser-state markers. `semantic_filter_sasc_ed_handle_editor_input.awk` was also strengthened to cover the ESC commit/help path, the insert-ASCII path, and the finalize/redraw branch.
-- Current ESQPARS status note (March 19, 2026): `ESQPARS_ConsumeRbfByteAndDispatchCommand` is materially broader than the earlier stub. It now covers the preamble/selection gate, `!`, `A`, `C/c`, `D`, `E`, `F`, `K`, `M`, `O`, `P/p`, `R`, `V/v`, `W/w`, `X`, `f`, `g`, `i/I/j`, `l/t`, `%`, `=`/`H`, and `x` families. Later March 19 follow-up passes also fixed several micro-semantic mismatches that had survived the initial restore: lower-`p` reject paths no longer clear `ESQPARS_ResetArmedFlag` too early; the `R` path now restores the real reset overlay loop; `K` now increments `DATACErrs` on failed validation in the same cases as the asm; `g` subtype `'1'` now reads the first payload byte from the stream instead of storing the literal subtype; `C` and `v` preserve `ESQPARS_ResetArmedFlag` on zero-length exits; uppercase `I` and lowercase `i` now match the asm's digit-label vs copy-label roles; lowercase `c` and uppercase `X` now match the original data-error accounting; and the finer `!` / lower-`p` reject-path byte-consumption audit did not turn up a further concrete mismatch after those fixes.
-- Current ED note (March 19, 2026): `ED_HandleEditorInput` was the next audited “semantic green, raw huge” lane. One real control-flow mismatch was fixed in `src/decomp/sas_c/ed_handle_editor_input.c`: the ESC case now returns immediately after forcing text mode, setting the reinit flag, committing edits, and drawing the ESC help, matching the original asm instead of falling through into the final sync/update block. The lane still has a large raw diff, but the strengthened semantic filter is now checking more of the actual branch shape.
-- Current verification note (March 19, 2026): after the ESQPARS restore/follow-up refinements and the ED ESC-path fix, `bash src/decomp/scripts/compare_sasc_esqpars_consume_rbf_byte_and_dispatch_command_trial.sh` and `bash src/decomp/scripts/compare_sasc_ed_handle_editor_input_trial.sh` both currently produce empty semantic diffs, and `./test-hash.sh` still matches the canonical hash `6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2`.
-- Current workflow note (March 19, 2026): when a raw diff is still large but the semantic diff is empty, do not assume the function is done or assume it is broken. First check whether the filter was recently strengthened enough to cover the behavior-heavy branches. `ESQPARS_ConsumeRbfByteAndDispatchCommand` is now past the obvious “missing command family” stage; the next high-value work is either more tiny state-preservation audits in remaining handlers or moving to the next large dispatcher/function whose semantic lane still looks easier to fake than to trust. `ED_HandleEditorInput` remains one such candidate because its raw diff is still large even after the ESC-return fix.
-- Many existing SAS/C compare lanes are already populated; do not assume a missing decomp just because a target exists in `TARGETS.md`.
-- Before writing code, inspect whether the target already exists in `src/decomp/sas_c` and whether it already has a `.dis`.
-- Many checked `compare_sasc_*` lanes now have empty semantic diffs even when their raw asm diffs are still noisy from SAS/C scaffolding. Use the semantic diff, not the raw diff size, to decide whether a lane still needs tightening.
-- Current triage note (March 13, 2026): `src/decomp/scripts/list_missing_sasc_non_jmptbl_exports.py` currently prints no rows in this checkout, so do not assume a non-`JMPTBL` GCC trial is still missing from `src/decomp/sas_c` without checking first.
-- Current maintained-sweep note (re-validated locally on March 13, 2026 in this checkout): the previously reported maintained-sweep blockers are already green here. Targeted `run_sasc_core_sweep.sh --strict --filter ...` reruns for `string_append_at_null`, `newgrid_init_grid_resources`, `cleanup_build_and_render_aligned_status_banner`, `cleanup_render_aligned_status_screen`, and `diskio1_dump_default_coi_info_block` all currently produce zero-byte semantic diffs, and `compare_sasc_diskio1_dump_default_coi_info_block_trial.sh` compiles successfully.
-- Current broader-triage note (March 13, 2026, later re-validated): the maintained baseline is green, and the previously listed out-of-sweep semantic diffs in `disptext_is_current_line_last`, `disptext_is_last_line_selected`, and `newgrid_update_grid_state` also now resolve to zero-byte semantic diffs in this checkout. Re-triage broader SAS/C mismatch work from fresh sweep output instead of reusing that older short list.
-- Current hybrid-integration note (March 14, 2026): `modules/groups/a/a/app.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries the APP serial/control helper module body directly, so this serial/control helper foothold is no longer waiting on a first module-body integration pass.
-- Current hybrid-integration note (March 14, 2026): `modules/groups/a/a/app2.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries the APP2 ESQ utility/helper module body directly, so this ESQ helper foothold is no longer waiting on a first module-body integration pass.
-- Current hybrid-integration note (March 14, 2026): `modules/groups/_main/a/a.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries the `_main` startup/shutdown helper module body directly, so the `ESQ_StartupEntry` / `ESQ_ReturnWithStackCode` / `ESQ_ShutdownAndReturn` foothold is no longer waiting on a first module-body integration pass.
-- Current hybrid-integration note (March 14, 2026): `modules/groups/a/a/app3.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries `ESQ_InvokeGcommandInit`, `ESQ_SupervisorColdReboot`, and `ESQ_TryRomWriteTest` directly, so this reboot/init helper foothold is no longer waiting on a first module-body integration pass.
-- Current hybrid-integration note (March 14, 2026): `modules/groups/a/e/coi.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries the COI entry/text helper module body directly, so this entry/animation-field helper cluster is no longer waiting on a first module-body integration pass.
-- Current hybrid-integration note (March 14, 2026): `modules/groups/b/a/script.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries the SCRIPT buffer allocation/deallocation/token-index helper module body directly, while retaining the module's `SCRIPT_JMPTBL_*` wrappers as build glue.
-- Current hybrid-integration note (March 14, 2026): `modules/groups/b/a/script2.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries the SCRIPT2 serial control / handshake helper module body directly, while retaining the module's `SCRIPT2_JMPTBL_*` wrappers as build glue.
-- Current hybrid-integration note (March 14, 2026): `modules/submodules/unknown11.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries `DOS_SeekByIndex` directly, so this DOS seek helper foothold is no longer waiting on a first module-body integration pass.
-- Current hybrid-integration note (March 14, 2026): `modules/submodules/unknown26.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries `DOS_WriteByIndex` directly, so this indexed DOS write helper foothold is no longer waiting on a first module-body integration pass.
-- Current hybrid-integration note (March 14, 2026): `modules/groups/a/u/gcommand3.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries the GCOMMAND3 banner/highlight helper module body directly, so this helper cluster is no longer waiting on a first module-body integration pass.
-- Current hybrid-integration note (March 14, 2026): `modules/groups/a/v/gcommand5.s` has now moved past the passthrough stage. Its replacement file carries the `GCOMMAND_ProcessCtrlCommand` module body directly, so do not keep treating GCOMMAND5 as an untouched include-only boundary.
-- Current hybrid-integration note (March 14, 2026): `modules/groups/a/o/esqiff2.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries the ESQIFF2 serial/status ingest helper module body directly, so this helper cluster is no longer waiting on a first module-body integration pass.
-- Current hybrid-integration note (March 13, 2026, later re-validated): `modules/groups/b/a/parseini.s` is now seeded in `src/decomp/replacements.map` as a passthrough hybrid boundary. Treat the PARSEINI config/weather/font helper cluster as integration-ready at the module boundary, even though the replacement file still includes the canonical asm module verbatim for now.
-- Current hybrid-integration note (March 14, 2026): `modules/groups/b/a/p_type.s` is now a direct object-level hybrid replacement rather than a passthrough include. The replacement file carries the P_TYPE promo-id/group-list helper module body directly, and the restored SAS/C compare coverage for its eleven direct exports now reports as complete in this checkout.
-- Current hybrid-integration note (March 13, 2026, later re-validated): `modules/groups/a/w/ladfunc.s` is now seeded in `src/decomp/replacements.map` as a passthrough hybrid boundary. Treat the LADFUNC text-ad/highlight helper cluster as integration-ready at the module boundary, even though the replacement file still includes the canonical asm module verbatim for now.
-- Remaining work often means either:
-  1. tightening an existing SAS/C file to better match the original assembly/disassembly, or
-  2. creating a new `src/decomp/sas_c/*.c` file for a target that currently exists only as a GCC trial in `src/decomp/c/replacements`.
-- The broader build-integration project is still ahead of the function-level decomp work. `decomp-build.sh` is still a hybrid assembly build driven by `src/decomp/replacements.map`, not a full pure-SAS/C executable pipeline.
-- Treat `*JMPTBL*` exports as likely compiler artifacts unless there is evidence they need separate handling.
-- For now, avoid jump-table recreation work. Prefer direct calls to the real target from restored C unless a wrapper is strictly required for build glue or an existing validation lane.
-- Keep `_main` work in scope. The `_main` wrappers/stubs have some coverage already; prefer spending time on behavior-heavy `_main` routines and tightening existing non-`JMPTBL` ports.
+Advance the Amiga assembly restoration by producing mostly equivalent SAS/C-style C and integrating that work into the hybrid build without breaking the maintained baseline.
 
-How to work:
-1. Read `AGENTS.md`, `README.md`, and `src/decomp/README.md` first.
-2. Inspect the repo before making assumptions.
-3. Before starting any new target, confirm the maintained SAS/C baseline is still green in the current checkout. Do not assume older March 13 notes are still current.
-4. If a SAS/C file already exists, build it with `./sc-build-with-dis.sh <file>.c` and run its `compare_sasc_*` script or `run_sasc_core_sweep.sh --filter <substring>` before assuming it still needs code changes.
-5. After local target fixes, rerun the maintained sweep. Treat `run_sasc_core_sweep.sh --strict` with zero compare-script failures and zero non-empty semantic diffs as the required baseline before broader reruns.
-6. With the maintained sweep green, prefer either:
-   - fresh broader SAS/C mismatch reduction based on current non-empty semantic diffs from new sweep output, or
-   - module-level build integration work that increases hybrid replacement coverage.
-7. If only a GCC candidate exists, use `src/decomp/c/replacements/*_gcc.c` plus its compare script as the starting behavioral reference, but land the work in `src/decomp/sas_c` when appropriate.
-8. When a restored C file currently calls a jump-table wrapper and the underlying target already exists and is callable, prefer simplifying it to a direct call.
-9. Preserve “mostly equivalent” behavior: avoid cleanup or optimization unless required for equivalence.
-10. Update any relevant documentation when you discover or clarify workflow/state, especially when local validation disproves older March 13, 2026 notes.
-11. After the maintained SAS/C lane is green, shift priority from isolated function ports to build integration:
-   - consolidate restored SAS/C functions into replacement-ready module/object boundaries
-   - expand hybrid replacement coverage module by module
-   - use `src/decomp/scripts/report_passthrough_integration_candidates.py` to pick the next fully covered module boundary whose replacement file is still a verbatim asm passthrough; add `--verify` when you need fresh compare-script reruns to separate exact/raw-diff-clean candidates from semantic-only matches
-   - keep `decomp-build.sh` hash-stable while replacement coverage grows
-   - only then plan a true whole-program SAS/C build/link path
+## Read First
 
-Execution preference:
-- Do not stop at planning. Start from the currently verified state in the checkout, not from stale blocker notes.
-- Prefer keeping the maintained SAS/C baseline green before starting new broad sweeps or new target families.
-- Once the maintained sweep is green, prefer work that increases module-level replacement/build coverage over adding more isolated wrapper ports.
+Before changing code, read:
+
+1. `AGENTS.md`
+2. `README.md`
+3. `src/decomp/README.md`
+
+Treat those files as the live source of project status. Do not rely on older checkpoint notes or copied status summaries.
+
+## Ground Rules
+
+- The main restored C sources live in `src/decomp/sas_c/`.
+- Run `./sc-build-with-dis.sh <filename>.c` only for files that already exist in `src/decomp/sas_c/`.
+- Existing `src/decomp/sas_c/*.c` files are the style guide for new decomp work.
+- Prefer canonical SAS/C headers from `/Users/RJ/Downloads/SAS-C-hdd/sc/include` when they match the real AmigaOS layout.
+- Do not reintroduce local duplicate definitions for standard types such as `RastPort`, `TextFont`, `BitMap`, `MinList`, `MsgPort`, `Message`, `IOStdReq`, or `Library` when shipped SAS/C headers already cover them.
+- Keep local overlay structs only where the code truly depends on nonstandard cached or overlaid fields. The known active exceptions are:
+  - `src/decomp/sas_c/cleanup_draw_grid_time_banner.c`
+  - `src/decomp/sas_c/render_short_month_short_day_of_week_day.c`
+- Treat `*JMPTBL*` exports as probable compiler artifacts unless there is evidence they need separate handling.
+- Prefer direct calls to the real target over recreating jump-table wrappers unless a wrapper is required for build glue or an existing validation lane.
+- Preserve behavior. Do not clean up, optimize, or reorganize code unless equivalence requires it.
+
+## Roadmap
+
+Work toward the full C application in this order:
+
+1. Restore behaviorally equivalent SAS/C functions and small modules.
+   Validate them with the narrowest compare lane available, semantic filters, and compiled C disassembly checks against the original assembly.
+2. Consolidate those restored functions into module-level hybrid replacements.
+   The current build is still hybrid, so this integration stage is the main bridge between isolated decomp wins and a full C executable.
+3. As restored coverage grows, normalize shared interfaces.
+   Centralize external variables, shared structs, and function declarations in reusable headers or common declarations where that improves correctness and integration.
+4. After enough module coverage is stable, build toward a true full-program C link.
+   The end goal is a functioning C application that matches the assembly behavior, but do not skip the hybrid integration stage to chase whole-program linking too early.
+
+## Working Plan
+
+1. Inspect the current checkout before choosing work.
+2. Confirm the maintained SAS/C baseline is still green in this checkout.
+3. If a target already exists in `src/decomp/sas_c/`, rebuild and compare it before assuming it still needs work.
+4. If the maintained baseline is green, choose the next task from one of these two buckets:
+   - tighten an existing SAS/C port whose semantic coverage still needs work
+   - promote already-covered restored code into module-level hybrid replacement coverage
+5. Make the narrowest change that improves equivalence or replacement coverage.
+6. Re-run the relevant target compare script or sweep.
+7. Reconfirm the maintained baseline after the change.
+8. Update docs if the workflow, validation expectations, or project state materially changed.
+
+## How To Choose Work
+
+Prefer this order:
+
+1. Keep the maintained SAS/C baseline green.
+2. With the baseline green, prioritize module-level hybrid replacement progress over isolated wrapper work.
+3. Only add brand-new SAS/C targets when existing ports and integration opportunities are not the better next step.
+
+Useful checks:
+
+- If a SAS/C file already exists, run its `compare_sasc_*` script or a filtered `run_sasc_core_sweep.sh` pass before editing.
+- If only a GCC version exists under `src/decomp/c/replacements`, use it as behavioral reference, but land new work in `src/decomp/sas_c` when appropriate.
+- Use semantic diffs, not raw diff size alone, to judge whether a lane still needs tightening.
+- Use `src/decomp/scripts/report_passthrough_integration_candidates.py` to find replacement-ready module boundaries that are still asm passthroughs.
+
+## Validation Expectations
+
+- For local function work, run the narrowest relevant compare/build script first.
+- For broader verification, use `run_sasc_core_sweep.sh --strict` and relevant `--filter` reruns.
+- Treat a green maintained sweep as the required baseline before starting broader triage or more integration work.
+- Keep `decomp-build.sh` and the overall project build hash-stable while replacement coverage grows.
+- Run `./test-hash.sh` only when your change modifies assembly-side files or otherwise affects the integrated assembly build. If you only edited C decomp files, do not run it.
+
+## Scope Reminder
+
+The long-term target includes the root `src/*.s` files, `src/Prevue.asm`, and everything under `src/interrupts/`, `src/data/`, and `src/modules/` recursively.
+
+The project is still a hybrid build. `decomp-build.sh` is not yet a pure SAS/C full-program pipeline, so favor work that increases replacement coverage cleanly and safely while preparing the eventual full-C link path.
