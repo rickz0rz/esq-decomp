@@ -1,4 +1,6 @@
 #include <exec/types.h>
+#include <graphics/rastport.h>
+#include <graphics/text.h>
 
 typedef struct ESQPARS_EntryRecord {
     UBYTE pad0[1];
@@ -113,7 +115,8 @@ extern ESQPARS_TitleRecord *TEXTDISP_PrimaryTitlePtrTable[];
 extern ESQPARS_TitleRecord *TEXTDISP_SecondaryTitlePtrTable[];
 
 extern UWORD DATACErrs;
-extern char *Global_REF_RASTPORT_1;
+extern struct RastPort *Global_REF_RASTPORT_1;
+extern struct BitMap *Global_REF_696_400_BITMAP;
 extern char *Global_STR_RESET_COMMAND_RECEIVED;
 
 extern LONG SCRIPT_ReadNextRbfByte(void);
@@ -160,6 +163,20 @@ extern char *ESQPARS_ReplaceOwnedString(const char *new_src, char *old_owned);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG x, LONG y, const char *text);
 extern void ESQ_PollCtrlInput(void);
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
+
+static LONG ESQPARS_ComputeResetOverlayX(struct RastPort *rastPort)
+{
+    LONG x;
+    LONG charWidth;
+
+    charWidth = (LONG)(UWORD)rastPort->Font->tf_XSize;
+    x = 34 - charWidth;
+    if (x < 0) {
+        x++;
+    }
+
+    return (x >> 1) + charWidth + 29;
+}
 
 static void ESQPARS_ClearPreambleState(void)
 {
@@ -468,7 +485,6 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         keyBuf[(UWORD)titleIndex] = 0;
 
         if (ESQPARS_ResolveGroupModeAndCount(groupCode, &mode, &count) == FLAG_FALSE) {
-            ESQPARS_ResetArmedFlag = 0;
             break;
         }
 
@@ -498,7 +514,6 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
 
         if (ESQPARS_BitmapHasAnySetBytes(bitmap) == FLAG_FALSE) {
             if (valid == 0) {
-                ESQPARS_ResetArmedFlag = 0;
                 break;
             }
             ESQIFF2_ReadRbfBytesWithXor(payload, payloadWidth, &xorAccum);
@@ -526,7 +541,6 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
             LONG row;
 
             if (valid == 0) {
-                ESQPARS_ResetArmedFlag = 0;
                 break;
             }
 
@@ -589,15 +603,20 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
 
     case ASCII_c:
         ESQPARS_IncrementParseAttemptCount();
-        if (ESQPARS_ReadRecordAndVerify(cmdByte, MODE_RECORD_PROGRAM_INFO, 0, MAX_PROGRAM_INFO_RECORD) !=
-            FLAG_FALSE &&
-            ESQIFF_RecordLength > 0) {
+        ESQIFF_RecordLength =
+            (UWORD)ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, MODE_RECORD_PROGRAM_INFO, 0);
+        if (ESQIFF_RecordLength != 0 &&
+            (UBYTE)ESQ_GenerateXorChecksumByte(
+                cmdByte, ESQIFF_RecordBufferPtr, (LONG)ESQIFF_RecordLength) ==
+                ESQIFF_RecordChecksumByte) {
             ESQDISP_ParseProgramInfoCommandRecord((char *)ESQIFF_RecordBufferPtr);
+        } else {
+            ESQPARS_IncrementDataErrorCount();
         }
         ESQPARS_ResetArmedFlag = 0;
         break;
 
-    case ASCII_i:
+    case ASCII_I:
         ESQPARS_IncrementParseAttemptCount();
         if (ESQPARS_ReadRecordAndVerify(cmdByte, MODE_RECORD_SIMPLE, 0, MAX_DIGIT_LABEL_RECORD) !=
             FLAG_FALSE) {
@@ -606,7 +625,7 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQPARS_ResetArmedFlag = 0;
         break;
 
-    case ASCII_I:
+    case ASCII_i:
     case ASCII_j:
         ESQPARS_IncrementParseAttemptCount();
         if (ESQPARS_ReadRecordAndVerify(cmdByte,
@@ -650,7 +669,7 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
                 ESQIFF_RecordBufferPtr[6] < 60 &&
                 CTASKS_STR_1 == '2') {
                 ESQPARS_ApplyRtcBytesAndPersist((BYTE *)ESQIFF_RecordBufferPtr);
-            } else if (CTASKS_STR_1 == '2') {
+            } else {
                 ESQPARS_IncrementDataErrorCount();
             }
             ESQPARS_ResetArmedFlag = 0;
@@ -672,9 +691,15 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
 
     case ASCII_X:
         ESQPARS_IncrementParseAttemptCount();
-        if (ESQPARS_ReadRecordAndVerify(cmdByte, MODE_RECORD_SIMPLE, 0, MAX_FONT_COMMAND_RECORD) !=
-            FLAG_FALSE) {
+        ESQIFF_RecordLength = (UWORD)ESQIFF2_ReadSerialRecordIntoBuffer(
+            ESQIFF_RecordBufferPtr, MODE_RECORD_SIMPLE, 0);
+        if ((UBYTE)ESQ_GenerateXorChecksumByte(
+                cmdByte, ESQIFF_RecordBufferPtr, (LONG)ESQIFF_RecordLength) ==
+                ESQIFF_RecordChecksumByte &&
+            ESQIFF_RecordLength <= MAX_FONT_COMMAND_RECORD) {
             PARSEINI_HandleFontCommand((const char *)ESQIFF_RecordBufferPtr);
+        } else {
+            ESQPARS_IncrementDataErrorCount();
         }
         ESQPARS_ResetArmedFlag = 0;
         break;
@@ -683,8 +708,10 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQPARS_IncrementParseAttemptCount();
         ESQIFF_RecordLength = (UWORD)ESQIFF2_ReadSerialRecordIntoBuffer(
             ESQIFF_RecordBufferPtr, MODE_RECORD_GROUP, GROUP_EXTENSION_COUNT);
-        if (ESQIFF_RecordLength != 0 &&
-            ESQPARS_VerifyExistingRecord(cmdByte, MAX_PROGRAM_INFO_RECORD) != FLAG_FALSE &&
+        if (ESQIFF_RecordLength == 0) {
+            break;
+        }
+        if (ESQPARS_VerifyExistingRecord(cmdByte, MAX_PROGRAM_INFO_RECORD) != FLAG_FALSE &&
             ESQIFF_StatusPacketReadyFlag == 1) {
             ESQIFF2_ParseGroupRecordAndRefresh(ESQIFF_RecordBufferPtr);
         }
@@ -741,7 +768,8 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         xorSeed = (UBYTE)(cmdByte ^ subcommand);
 
         if (subcommand == (UBYTE)'1') {
-            ESQIFF_RecordBufferPtr[0] = subcommand;
+            ESQFUNC_WaitForClockChangeAndServiceUi();
+            ESQIFF_RecordBufferPtr[0] = (UBYTE)SCRIPT_ReadNextRbfByte();
             ESQIFF_RecordLength = (UWORD)(ESQIFF2_ReadSerialRecordIntoBuffer(
                 ESQIFF_RecordBufferPtr + 1, MODE_RECORD_SIMPLE, 0) + 1);
             if ((UBYTE)ESQ_GenerateXorChecksumByte(
@@ -830,8 +858,16 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQFUNC_WaitForClockChangeAndServiceUi();
         if ((UBYTE)SCRIPT_ReadNextRbfByte() == (UBYTE)0xAD) {
             if (ESQPARS_ResetArmedFlag == 1) {
-                ESQPARS_PersistStateDataAfterCommand();
-                ESQPARS_ResetArmedFlag = 0;
+                ESQ_GlobalTickCounter = 21000;
+                Global_REF_RASTPORT_1->BitMap = Global_REF_696_400_BITMAP;
+
+                for (;;) {
+                    DISPLIB_DisplayTextAtPosition(
+                        (char *)Global_REF_RASTPORT_1,
+                        ESQPARS_ComputeResetOverlayX(Global_REF_RASTPORT_1),
+                        40,
+                        Global_STR_RESET_COMMAND_RECEIVED);
+                }
             }
         } else {
             ESQPARS_IncrementDataErrorCount();
@@ -846,8 +882,12 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
 
     case ASCII_v:
         ESQPARS_IncrementParseAttemptCount();
-        if (ESQPARS_ReadRecordAndVerify(cmdByte, MODE_RECORD_PROGRAM_INFO, 0, MAX_PROGRAM_INFO_RECORD) !=
-                FLAG_FALSE &&
+        ESQIFF_RecordLength =
+            (UWORD)ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, MODE_RECORD_PROGRAM_INFO, 0);
+        if (ESQIFF_RecordLength == 0) {
+            break;
+        }
+        if (ESQPARS_VerifyExistingRecord(cmdByte, MAX_PROGRAM_INFO_RECORD) != FLAG_FALSE &&
             ESQIFF_RecordBufferPtr[1] == '1') {
             CLEANUP_ParseAlignedListingBlock((char *)ESQIFF_RecordBufferPtr,
                                              (char *)ESQIFF_RecordBufferPtr);

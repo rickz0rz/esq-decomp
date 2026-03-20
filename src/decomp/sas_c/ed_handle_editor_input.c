@@ -212,7 +212,7 @@ void ED_HandleEditorInput(void)
         ED_TextModeReinitPendingFlag = 1;
         ED_CommitCurrentAdEdits();
         ED_DrawESCMenuBottomHelp();
-        break;
+        return;
     case 0x80:
         ringOff = (ED_StateRingIndex << 2) + ED_StateRingIndex;
         ED_LastMenuInputChar = ED_StateRingTable[ringOff + 1];

@@ -18,6 +18,9 @@ BEGIN {
     h_apply_active=0
     h_help=0
     h_page_line_toggle=0
+    h_esc_commit_help=0
+    h_insert_ascii=0
+    h_finalize_branch=0
     h_consts=0
     h_rts=0
 }
@@ -53,6 +56,9 @@ function norm(s, t) {
     if (l ~ /ED_COMMITCURRENTADEDITS/) h_commit=1
     if (l ~ /ED_APPLYACTIVEFLAGTOADDATA/) h_apply_active=1
     if (l ~ /ED_DRAWESCMENUBOTTOMHELP/ || l ~ /ED_DRAWEDITHELPTEXT/) h_help=1
+    if (l ~ /ED_COMMITCURRENTADEDITS/ || l ~ /ED_DRAWESCMENUBOTTOMHELP/ || l ~ /TEXTMODEREINITPENDINGFLAG/ && l ~ /MOVEL/) h_esc_commit_help=1
+    if (l ~ /#25/ || l ~ /#\$19/ || l ~ /EDITBUFFERSCRATCH/ && l ~ /ED_LASTKEYCODE/ || l ~ /CASEINSERTASCIICHAR/) h_insert_ascii=1
+    if (l ~ /SYNCCURRENTCHARANDMAYBEDRAW/ || l ~ /ED_REDRAWCURSORCHAR/ || l ~ /ED_DRAWCURRENTCOLORINDICATOR/) h_finalize_branch=1
     if (l ~ /ED2_STR_PAGE/ || l ~ /ED2_STR_LINE/ || l ~ /BOOLISLINEORPAGE/) h_page_line_toggle=1
     if (l ~ /#\$80/ || l ~ /#\$6C/ || l ~ /#\$35/ || l ~ /#\$36/) h_consts=1
     if (l == "RTS") h_rts=1
@@ -77,6 +83,9 @@ END {
     print "HAS_COMMIT=" h_commit
     print "HAS_APPLY_ACTIVE=" h_apply_active
     print "HAS_HELP_PATH=" h_help
+    print "HAS_ESC_COMMIT_HELP=" h_esc_commit_help
+    print "HAS_INSERT_ASCII_PATH=" h_insert_ascii
+    print "HAS_FINALIZE_BRANCH=" h_finalize_branch
     print "HAS_PAGE_LINE_TOGGLE=" h_page_line_toggle
     print "HAS_KEY_CONSTS=" h_consts
     print "HAS_RTS=" h_rts

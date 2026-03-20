@@ -34,9 +34,15 @@ BEGIN {
     has_boxoff=0
     has_diagnostics=0
     has_bang_path=0
+    has_bang_y_normalize=0
+    has_bang_slot_flag_write=0
     has_title_table_walk=0
     has_reverse_bits=0
     has_test_bit=0
+    has_bitmap_mode_split=0
+    has_payload_width_guard=0
+    has_attr_writes=0
+    has_sparse_payload_count=0
     has_replace_owned_string=0
     has_rts=0
 }
@@ -91,10 +97,16 @@ function trim(s, t) {
     if (n ~ /PARSEBANNERENTRYDATA/ || n ~ /130/ && n ~ /RECORD/) has_banner_entry=1
     if (n ~ /PERSISTONNEXTBOXOFFFLAG/ || n ~ /NOTB/ && n ~ /44/ || n ~ /UPDATESTATUSMASKANDREFRESH/ && n ~ /MODECLEAR/) has_boxoff=1
     if (n ~ /256/ && n ~ /GENERATEXORCHECKSUMBYTE/ || n ~ /DIAGNOSTICSPACKETBYTES/) has_diagnostics=1
-    if (n ~ /READRBFBYTESWITHXOR/ && n ~ /DE/ || n ~ /BANG/ && n ~ /REPLACEOWNEDSTRING/) has_bang_path=1
+    if (n ~ /REPLACEOWNEDSTRING/ || n ~ /89/ && n ~ /30/ || n ~ /59/ && n ~ /30/) has_bang_path=1
+    if (n ~ /89/ || n ~ /59/ || n ~ /Y/) has_bang_y_normalize=1
+    if (n ~ /SLOTFLAGS/ || n ~ /MOVEB1.*7A0/ || n ~ /MOVEBD2.*7A3/ || n ~ /7A0D0W/ || n ~ /7A3D1L/) has_bang_slot_flag_write=1
     if (n ~ /GETENTRYPOINTERBYMODE/ || n ~ /GETENTRYAUXPOINTERBYMODE/ || n ~ /PRIMARYTITLEPTRTABLE/ || n ~ /SECONDARYTITLEPTRTABLE/) has_title_table_walk=1
     if (n ~ /REVERSEBITSIN6BYTES/) has_reverse_bits=1
     if (n ~ /TESTBIT1BASED/) has_test_bit=1
+    if (n ~ /BITMAPHASANYSETBYTES/ || n ~ /TSTB100A7/ || n ~ /224/) has_bitmap_mode_split=1
+    if (n ~ /PAYLOADWIDTH/ || n ~ /223A5/ || n ~ /1/ && n ~ /3/ && n ~ /CMP/) has_payload_width_guard=1
+    if (n ~ /SLOTATTR252/ || n ~ /SLOTATTR301/ || n ~ /SLOTATTR350/ || n ~ /FC/ || n ~ /12D/ || n ~ /15E/) has_attr_writes=1
+    if (n ~ /MATHMULU32/ || n ~ /44A7/ || n ~ /COUNTMARKEDROWS/) has_sparse_payload_count=1
     if (n ~ /REPLACEOWNEDSTRING/) has_replace_owned_string=1
     if (u == "RTS") has_rts=1
 }
@@ -135,9 +147,15 @@ END {
     print "HAS_BOXOFF_PATH=" has_boxoff
     print "HAS_DIAGNOSTICS_PATH=" has_diagnostics
     print "HAS_BANG_PATH=" has_bang_path
+    print "HAS_BANG_Y_NORMALIZE=" has_bang_y_normalize
+    print "HAS_BANG_SLOT_FLAG_WRITE=" has_bang_slot_flag_write
     print "HAS_TITLE_TABLE_WALK=" has_title_table_walk
     print "HAS_REVERSE_BITS=" has_reverse_bits
     print "HAS_TEST_BIT=" has_test_bit
+    print "HAS_BITMAP_MODE_SPLIT=" has_bitmap_mode_split
+    print "HAS_PAYLOAD_WIDTH_GUARD=" has_payload_width_guard
+    print "HAS_ATTR_WRITES=" has_attr_writes
+    print "HAS_SPARSE_PAYLOAD_COUNT=" has_sparse_payload_count
     print "HAS_REPLACE_OWNED_STRING=" has_replace_owned_string
     print "HAS_RTS=" has_rts
 }
