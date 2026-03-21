@@ -53,6 +53,7 @@ Work toward the full C application in this order:
 6. Re-run the relevant target compare script or sweep.
 7. Reconfirm the maintained baseline after the change.
 8. Update docs if the workflow, validation expectations, or project state materially changed.
+9. At the end of the run, make a git commit with a meaningful commit message that explains the changes made.
 
 ## How To Choose Work
 
