@@ -8,6 +8,7 @@ SASC_SRC="unknown25_struct_alloc_free.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown25.s"
+TARGET="STRUCT_AllocWithOwner"
 OUT_DIR="build/decomp/sasc_trial"
 
 mkdir -p "$OUT_DIR"

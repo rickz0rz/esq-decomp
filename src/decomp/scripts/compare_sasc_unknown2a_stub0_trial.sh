@@ -9,13 +9,15 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown2a.s"
 OUT_DIR="build/decomp/sasc_trial"
+BASE="unknown2a_stub0"
+TARGET="UNKNOWN2A_Stub0"
 
 mkdir -p "$OUT_DIR"
 
-./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_unknown2a_stub0.log" 2>&1
+./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_${BASE}.log" 2>&1
 
-awk '$0 ~ /^UNKNOWN2A_Stub0:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/unknown2a_stub0.original.s"
-awk '$0 ~ /^UNKNOWN2A_Stub0:$/ {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/unknown2a_stub0.sasc.dis.s"
+awk '$0 ~ /^UNKNOWN2A_Stub0:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/${BASE}.original.s"
+awk '$0 ~ /^UNKNOWN2A_Stub0:$/ {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/${BASE}.sasc.dis.s"
 
 normalize() {
   sed -E \
@@ -30,14 +32,14 @@ normalize() {
     -e '/^$/d'
 }
 
-normalize <"${OUT_DIR}/unknown2a_stub0.original.s" >"${OUT_DIR}/unknown2a_stub0.original.norm.s"
-normalize <"${OUT_DIR}/unknown2a_stub0.sasc.dis.s" >"${OUT_DIR}/unknown2a_stub0.sasc.norm.s"
+normalize <"${OUT_DIR}/${BASE}.original.s" >"${OUT_DIR}/${BASE}.original.norm.s"
+normalize <"${OUT_DIR}/${BASE}.sasc.dis.s" >"${OUT_DIR}/${BASE}.sasc.norm.s"
 
-diff -u "${OUT_DIR}/unknown2a_stub0.original.norm.s" "${OUT_DIR}/unknown2a_stub0.sasc.norm.s" >"${OUT_DIR}/unknown2a_stub0.diff" || true
+diff -u "${OUT_DIR}/${BASE}.original.norm.s" "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.diff" || true
 
-awk -f src/decomp/scripts/semantic_filter_sasc_unknown2a_stub0.awk "${OUT_DIR}/unknown2a_stub0.original.norm.s" >"${OUT_DIR}/unknown2a_stub0.original.semantic.txt"
-awk -f src/decomp/scripts/semantic_filter_sasc_unknown2a_stub0.awk "${OUT_DIR}/unknown2a_stub0.sasc.norm.s" >"${OUT_DIR}/unknown2a_stub0.sasc.semantic.txt"
-diff -u "${OUT_DIR}/unknown2a_stub0.original.semantic.txt" "${OUT_DIR}/unknown2a_stub0.sasc.semantic.txt" >"${OUT_DIR}/unknown2a_stub0.semantic.diff" || true
+awk -f src/decomp/scripts/semantic_filter_sasc_unknown2a_stub0.awk "${OUT_DIR}/${BASE}.original.norm.s" >"${OUT_DIR}/${BASE}.original.semantic.txt"
+awk -f src/decomp/scripts/semantic_filter_sasc_unknown2a_stub0.awk "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.sasc.semantic.txt"
+diff -u "${OUT_DIR}/${BASE}.original.semantic.txt" "${OUT_DIR}/${BASE}.sasc.semantic.txt" >"${OUT_DIR}/${BASE}.semantic.diff" || true
 
-echo "wrote: ${OUT_DIR}/unknown2a_stub0.diff"
-echo "wrote: ${OUT_DIR}/unknown2a_stub0.semantic.diff"
+echo "wrote: ${OUT_DIR}/${BASE}.diff"
+echo "wrote: ${OUT_DIR}/${BASE}.semantic.diff"

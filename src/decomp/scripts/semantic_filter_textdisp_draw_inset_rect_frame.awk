@@ -23,12 +23,12 @@ function trim(s, t) {
     uline = toupper(line)
 
     if (uline ~ /^TEXTDISP_DRAWINSETRECTFRAME:/) has_label = 1
-    if (uline ~ /LINK.W A5,#-8/) has_link = 1
-    if (uline ~ /MOVEM.L D2-D7\/A3,-\(A7\)/) has_save = 1
+    if (uline ~ /LINK.W A5,#-8/ || uline ~ /SUBQ.W #\$4,A7/) has_link = 1
+    if (uline ~ /MOVEM.L D2-D7\/A3,-\(A7\)/ || uline ~ /MOVEM.L D4\/D5\/D6\/D7\/A3\/A5,-\(A7\)/) has_save = 1
     if (uline ~ /CMP.W D1,D7/ && uline ~ /\.CHECK_MODE_3/) has_mode2 = 1
-    if (uline ~ /\.CHECK_MODE_3:/ || uline ~ /MOVEQ #3,D1/) has_mode3 = 1
+    if (uline ~ /\.CHECK_MODE_3:/ || uline ~ /MOVEQ #3,D1/ || uline ~ /SUBQ.W #\$3,D1/) has_mode3 = 1
     if (uline ~ /TLIBA1_DRAWFORMATTEDTEXTBLOCK/) has_draw_call = 1
-    if (uline ~ /MOVEM.L \(A7\)\+,D2-D7\/A3/) has_restore = 1
+    if (uline ~ /MOVEM.L \(A7\)\+,D2-D7\/A3/ || uline ~ /MOVEM.L \(A7\)\+,D4\/D5\/D6\/D7\/A3\/A5/) has_restore = 1
 }
 
 END {

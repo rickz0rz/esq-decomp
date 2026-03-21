@@ -10,26 +10,26 @@ SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown8.s"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="format_u32_to_decimal_string"
+ENTRY="FORMAT_U32ToDecimalString"
 
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_${BASE}.log" 2>&1
 
-awk '
-  $0 ~ /^FORMAT_U32ToDecimalString:$/ {in_func=1}
+awk -v entry="^${ENTRY}:$" '
+  $0 ~ entry {in_func=1}
   in_func {
     if ($0 ~ /^;!======/) exit
     print
   }
 ' "$ORIG_ASM" >"${OUT_DIR}/${BASE}.original.s"
 
-awk '
-  $0 ~ /^FORMAT_U32ToDecimalString:$/ ||
-  $0 ~ /^FORMAT_U32ToDecimalString[A-Za-z0-9_]*:$/ {in_func=1}
+awk -v entry="^${ENTRY}:$" -v entry_re="^${ENTRY}[A-Za-z0-9_]*:$" '
+  $0 ~ entry || $0 ~ entry_re {in_func=1}
   in_func {
     if (($0 ~ /^[A-Z0-9_]+:$/ || $0 ~ /^_?[A-Z0-9_]+:$/) &&
-        $0 !~ /^FORMAT_U32ToDecimalString:$/ &&
-        $0 !~ /^FORMAT_U32ToDecimalString[A-Za-z0-9_]*:$/) exit
+        $0 !~ entry &&
+        $0 !~ entry_re) exit
     if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/) exit
     print
   }

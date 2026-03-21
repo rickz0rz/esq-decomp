@@ -10,13 +10,14 @@ SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown10.s"
 OUT_DIR="build/decomp/sasc_trial"
 OUT_BASE="${OUT_DIR}/printf_putc_to_buffer"
+ENTRY="UNKNOWN10_PrintfPutcToBuffer"
 
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_printf_putc_to_buffer.log" 2>&1
 
-awk '$0 ~ /^UNKNOWN10_PrintfPutcToBuffer:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_BASE}.original.s"
-awk '$0 ~ /^UNKNOWN10_PrintfPutcToBuffer:$/ {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_BASE}.sasc.dis.s"
+awk -v e="^${ENTRY}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_BASE}.original.s"
+awk -v e="^${ENTRY}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_BASE}.sasc.dis.s"
 
 normalize() {
   sed -E \

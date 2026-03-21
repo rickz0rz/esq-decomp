@@ -11,6 +11,7 @@ ORIG_ASM="src/modules/submodules/unknown21.s"
 OUT_DIR="build/decomp/sasc_trial"
 ENTRY_ORIG="DOS_OpenNewFileIfMissing"
 NEXT_ENTRY_SASC="DOS_DeleteAndRecreateFile"
+TARGET="DOS_OpenNewFileIfMissing"
 
 mkdir -p "$OUT_DIR"
 

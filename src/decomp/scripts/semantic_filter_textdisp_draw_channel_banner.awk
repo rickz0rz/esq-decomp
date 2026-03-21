@@ -25,14 +25,14 @@ function trim(s, t) {
     uline = toupper(line)
 
     if (uline ~ /^TEXTDISP_DRAWCHANNELBANNER:/) has_label = 1
-    if (uline ~ /LINK.W A5,#-8/) has_link = 1
-    if (uline ~ /GETENTRYPOINTERBYMODE\(PC\)/) has_entry = 1
+    if (uline ~ /LINK.W A5,#-8/ || uline ~ /SUBQ.W #\$8,A7/) has_link = 1
+    if (uline ~ /GETENTRYPOINTERBYMODE\(PC\)/ || uline ~ /BSR.W TLIBA1_JMPTBL_ESQDISP_GETENTRYPO/) has_entry = 1
     if (uline ~ /BSR.W TEXTDISP_BUILDENTRYSHORTNAME/) has_short = 1
     if (uline ~ /BSR.W TEXTDISP_BUILDCHANNELLABEL/) has_label_build = 1
     if (uline ~ /_LVOSETDRMD/) has_setdrmd = 1
     if (uline ~ /BSR.W TEXTDISP_TRIMTEXTTOPIXELWIDTH/) has_trim = 1
     if (uline ~ /BSR.W TEXTDISP_DRAWINSETRECTFRAME/) has_draw_inset = 1
-    if (uline ~ /MOVEM.L \(A7\)\+,D5-D7/) has_restore = 1
+    if (uline ~ /MOVEM.L \(A7\)\+,D5-D7/ || uline ~ /MOVEM.L \(A7\)\+,D2\/D5\/D6\/D7\/A2\/A3\/A5/) has_restore = 1
 }
 
 END {

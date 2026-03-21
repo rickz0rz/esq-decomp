@@ -9,13 +9,14 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown21.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY="IOSTDREQ_CleanupSignalAndMsgport"
 
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_iostdreq_cleanup_signal_and_msgport.log" 2>&1
 
-awk '$0 ~ /^IOSTDREQ_CleanupSignalAndMsgport:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/iostdreq_cleanup_signal_and_msgport.original.s"
-awk '$0 ~ /^IOSTDREQ_CleanupSignalAndMsgport:$/ {in_func=1} in_func { if ($0 ~ /^DOS_OpenNewFileIfMissing:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/iostdreq_cleanup_signal_and_msgport.sasc.dis.s"
+awk -v e="^${ENTRY}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/iostdreq_cleanup_signal_and_msgport.original.s"
+awk -v e="^${ENTRY}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ /^DOS_OpenNewFileIfMissing:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/iostdreq_cleanup_signal_and_msgport.sasc.dis.s"
 
 normalize() {
   sed -E \

@@ -23,12 +23,12 @@ function trim(s, t) {
     uline = toupper(line)
 
     if (uline ~ /^TEXTDISP_BUILDENTRYSHORTNAME:/) has_label = 1
-    if (uline ~ /LINK.W A5,#-12/) has_link = 1
+    if (uline ~ /LINK.W A5,#-12/ || uline ~ /SUBQ.W #\$8,A7/) has_link = 1
     if (uline ~ /BSR.W TEXTDISP_FINDALIASINDEXBYNAME/) has_alias_call = 1
-    if (uline ~ /^\.COPY_ALIAS:/) has_alias_copy = 1
-    if (uline ~ /^\.FALLBACK_ENTRY_NAME:/) has_fallback = 1
-    if (uline ~ /JSR STRING_APPENDATNULL\(PC\)/) has_append = 1
-    if (uline ~ /MOVEM.L \(A7\)\+,D6-D7\/A2-A3/) has_restore = 1
+    if (uline ~ /^\.COPY_ALIAS:/ || uline ~ /TEXTDISP_ALIASPTRTABLE\(A4\)/) has_alias_copy = 1
+    if (uline ~ /^\.FALLBACK_ENTRY_NAME:/ || uline ~ /LEA \$13\(A2\),A0/) has_fallback = 1
+    if (uline ~ /JSR STRING_APPENDATNULL\(PC\)/ || uline ~ /BSR.W STRING_APPENDATNULL/) has_append = 1
+    if (uline ~ /MOVEM.L \(A7\)\+,D6-D7\/A2-A3/ || uline ~ /MOVEM.L \(A7\)\+,D6\/D7\/A2\/A3\/A5/) has_restore = 1
 }
 
 END {

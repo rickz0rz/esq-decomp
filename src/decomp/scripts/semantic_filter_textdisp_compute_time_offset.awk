@@ -24,13 +24,13 @@ function trim(s, t) {
     uline = toupper(line)
 
     if (uline ~ /^TEXTDISP_COMPUTETIMEOFFSET:/) has_label = 1
-    if (uline ~ /LINK.W A5,#-36/) has_link = 1
-    if (uline ~ /COMPUTESCHEDULEOFFSETFORROW\(PC\)/) has_sched = 1
-    if (uline ~ /TLIBA2_COMPUTEBROADCASTTIMEWINDOW\(PC\)/) has_window = 1
+    if (uline ~ /LINK.W A5,#-36/ || uline ~ /SUB.W #\$28,A7/) has_link = 1
+    if (uline ~ /COMPUTESCHEDULEOFFSETFORROW\(PC\)/ || uline ~ /BSR.W TLIBA1_JMPTBL_ESQDISP_COMPUTESCH/) has_sched = 1
+    if (uline ~ /TLIBA2_COMPUTEBROADCASTTIMEWINDOW\(PC\)/ || uline ~ /BSR.W TLIBA2_COMPUTEBROADCASTTIMEWINDO/) has_window = 1
     if (uline ~ /GLOBAL_WORD_CURRENT_HOUR/ && uline ~ /GLOBAL_WORD_CURRENT_MINUTE/) has_now = 1
     if (uline ~ /CLOCK_CURRENTAMPMFLAG/ && uline ~ /\.USE_ZERO_BIAS:/) has_ampm = 1
-    if (uline ~ /MOVE.L #\$5A0,D1/) has_daymul = 1
-    if (uline ~ /MOVEM.L \(A7\)\+,D2-D7\/A3/) has_return = 1
+    if (uline ~ /MOVE.L #\$5A0,D1/ || uline ~ /PEA \(\$5A0\)\.W/) has_daymul = 1
+    if (uline ~ /MOVEM.L \(A7\)\+,D2-D7\/A3/ || uline ~ /MOVEM.L \(A7\)\+,D5\/D6\/D7\/A3\/A5/) has_return = 1
 }
 
 END {

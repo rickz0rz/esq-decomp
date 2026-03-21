@@ -1,9 +1,10 @@
 #include <exec/types.h>
 
 extern void *Global_REF_UTILITY_LIBRARY;
-extern LONG _LVODate2Amiga(void *utilityBase, void *clockData);
+#pragma libcall Global_REF_UTILITY_LIBRARY Date2Amiga 7e 801
+extern LONG Date2Amiga(void *clockData);
 
 LONG CLOCK_SecondsFromEpoch(void *clockData)
 {
-    return _LVODate2Amiga(Global_REF_UTILITY_LIBRARY, clockData);
+    return Date2Amiga(clockData);
 }

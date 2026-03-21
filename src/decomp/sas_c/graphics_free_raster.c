@@ -1,10 +1,11 @@
 #include <exec/types.h>
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void _LVOFreeRaster(void *graphicsBase, void *raster, ULONG width, LONG height);
+#pragma libcall Global_REF_GRAPHICS_LIBRARY FreeRaster 1f2 10803
+extern void FreeRaster(void *raster, ULONG width, ULONG height);
 
 LONG GRAPHICS_FreeRaster(void *raster, LONG width, LONG height)
 {
-    _LVOFreeRaster(Global_REF_GRAPHICS_LIBRARY, raster, (ULONG)width, height);
+    FreeRaster(raster, (ULONG)width, (ULONG)height);
     return 0;
 }

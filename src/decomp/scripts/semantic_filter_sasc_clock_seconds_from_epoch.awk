@@ -23,12 +23,12 @@ function trim(s,    t) {
     u = toupper(line)
 
     if (u ~ /^CLOCK_SECONDSFROMEPOCH:$/) has_entry = 1
-    if (u ~ /^MOVE\.L A6,-\(A7\)$/ || u ~ /^MOVE\.L A5,-\(A7\)$/ || u ~ /^MOVEM\.L A6,-\(A7\)$/ || u ~ /^MOVEM\.L A5,-\(A7\)$/) has_save_a6 = 1
+    if (u ~ /^MOVE\.L A6,-\(A7\)$/ || u ~ /^MOVE\.L A5,-\(A7\)$/ || u ~ /^MOVEM\.L A6,-\(A7\)$/ || u ~ /^MOVEM\.L A5,-\(A7\)$/ || u ~ /^MOVEM\.L [A-Z0-9\/]*A6[A-Z0-9\/]*,-\(A7\)$/ || u ~ /^MOVEM\.L [A-Z0-9\/]*A5[A-Z0-9\/]*,-\(A7\)$/) has_save_a6 = 1
     if (u ~ /GLOBAL_REF_UTILITY_LIBRARY/ && (u ~ /^MOVEA?\.L / || u ~ /^MOVE\.L /)) has_load_lib = 1
     if (u ~ /^MOVEA?\.L .*A0$/ && (u ~ /A7/ || u ~ /A5/)) has_load_arg = 1
     if (u ~ /^MOVE\.L [0-9]+\((A7|A5)\),A5$/ || u ~ /^MOVE\.L \$[0-9A-F]+\((A7|A5)\),A5$/) has_load_arg = 1
-    if (u ~ /_LVODATE2AMIGA/) has_date2amiga_call = 1
-    if (u ~ /^MOVEA?\.L \(A7\)\+,A6$/ || u ~ /^MOVEA?\.L \(A7\)\+,A5$/ || u ~ /^MOVEM\.L \(A7\)\+,A6$/ || u ~ /^MOVEM\.L \(A7\)\+,A5$/ || u ~ /^MOVE\.L \(A7\)\+,A5$/) has_restore_a6 = 1
+    if (u ~ /_LVODATE2AMIGA/ || u ~ /^JSR .*\(A6\)$/) has_date2amiga_call = 1
+    if (u ~ /^MOVEA?\.L \(A7\)\+,A6$/ || u ~ /^MOVEA?\.L \(A7\)\+,A5$/ || u ~ /^MOVEM\.L \(A7\)\+,A6$/ || u ~ /^MOVEM\.L \(A7\)\+,A5$/ || u ~ /^MOVE\.L \(A7\)\+,A5$/ || u ~ /^MOVEM\.L \(A7\)\+,[A-Z0-9\/]*A6[A-Z0-9\/]*$/ || u ~ /^MOVEM\.L \(A7\)\+,[A-Z0-9\/]*A5[A-Z0-9\/]*$/) has_restore_a6 = 1
     if (u ~ /^RTS$/) has_rts = 1
 }
 

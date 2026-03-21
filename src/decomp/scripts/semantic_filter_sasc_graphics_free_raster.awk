@@ -29,7 +29,7 @@ function trim(s,    t) {
     if (u ~ /MOVE\.L .*D[0-7],D0/ || u ~ /MOVE\.L .*\(A7\),D0/ || u ~ /MOVE\.L .*\(SP\),D0/ || u ~ /^MOVE\.L \([0-9]+,(A7|SP)\),-\((A7|SP)\)$/ || u ~ /^MOVE\.L D[0-7],-\((A7|SP)\)$/ || u ~ /^MOVE\.L \$[0-9A-F]+\(A7\),D[0-7]$/) has_width_arg = 1
     if (u ~ /MOVE\.L .*D[0-7],D1/ || u ~ /MOVE\.L .*\(A7\),D1/ || u ~ /MOVE\.L .*\(SP\),D1/ || u ~ /^MOVE\.L \([0-9]+,(A7|SP)\),-\((A7|SP)\)$/ || u ~ /^MOVE\.L D[0-7],-\((A7|SP)\)$/ || u ~ /^MOVE\.L \$[0-9A-F]+\(A7\),D[0-7]$/) has_height_arg = 1
     if (u ~ /GLOBAL_REF_GRAPHICS_LIBRARY/ || u ~ /GRAPHICS_LVO_FREE_RASTER/) has_graphics_ref = 1
-    if (u ~ /JSR .*LVOFREERASTER/ || u ~ /BSR\.[BWL]? .*LVOFREERASTER/ || u ~ /JSR .*GRAPHICS_LVO_FREE_RASTER/ || u ~ /JSR \(A[0-7]\)/ || u ~ /BSR\.[BWL]? _LVOFREERASTER/) has_free_call = 1
+    if (u ~ /JSR .*LVOFREERASTER/ || u ~ /BSR\.[BWL]? .*LVOFREERASTER/ || u ~ /JSR .*GRAPHICS_LVO_FREE_RASTER/ || u ~ /JSR \(A[0-7]\)/ || u ~ /BSR\.[BWL]? _LVOFREERASTER/ || u ~ /^JSR .*\(A6\)$/) has_free_call = 1
     if (has_free_call) has_graphics_ref = 1
     if (u == "RTS") has_rts = 1
 }

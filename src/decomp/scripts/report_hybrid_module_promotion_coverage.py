@@ -23,6 +23,8 @@ RE_COMPARE_FALLBACK = re.compile(r"compare_[A-Za-z0-9_]+\.sh")
 RE_ORIG_ASM = re.compile(r'^ORIG_ASM="src/(?P<path>[^"]+\.s)"', re.MULTILINE)
 RE_ENTRY = re.compile(r'^ENTRY="(?P<entry>[^"]+)"', re.MULTILINE)
 RE_ENTRY_ORIG = re.compile(r'^ENTRY_ORIG="(?P<entry>[^"]+)"', re.MULTILINE)
+RE_ENTRY_LABEL = re.compile(r'^ENTRY_LABEL="(?P<entry>[^"]+)"', re.MULTILINE)
+RE_ENTRY_CANONICAL = re.compile(r'^ENTRY_CANONICAL="(?P<entry>[^"]+)"', re.MULTILINE)
 RE_TARGET = re.compile(r'^TARGET="(?P<entry>[^"]+)"', re.MULTILINE)
 
 
@@ -92,20 +94,26 @@ def normalize_module_path(path: str) -> str:
     return path
 
 
-def extract_effective_entry_name(content: str) -> str | None:
+def extract_effective_entry_names(content: str) -> list[str]:
+    entries: list[str] = []
     target_match = RE_TARGET.search(content)
     if target_match is not None:
-        return target_match.group("entry")
+        entries.append(target_match.group("entry"))
+    else:
+        entry_match = RE_ENTRY.search(content)
+        if entry_match is not None:
+            entries.append(entry_match.group("entry"))
+        else:
+            entry_orig_match = RE_ENTRY_ORIG.search(content)
+            if entry_orig_match is not None:
+                entries.append(entry_orig_match.group("entry"))
 
-    entry_match = RE_ENTRY.search(content)
-    if entry_match is not None:
-        return entry_match.group("entry")
+    entry_canonical_match = RE_ENTRY_CANONICAL.search(content)
+    if entry_canonical_match is not None:
+        entries.append(entry_canonical_match.group("entry"))
 
-    entry_orig_match = RE_ENTRY_ORIG.search(content)
-    if entry_orig_match is not None:
-        return entry_orig_match.group("entry")
-
-    return None
+    entries.extend(match.group("entry") for match in RE_ENTRY_LABEL.finditer(content))
+    return list(dict.fromkeys(entries))
 
 
 def build_compare_module_index(scripts_dir: Path) -> dict[str, str]:
@@ -173,17 +181,18 @@ def collect_module_stats(repo_root: Path) -> tuple[dict[str, ModuleStats], int]:
     for compare_path in scripts_dir.glob("compare_sasc*_trial.sh"):
         content = compare_path.read_text()
         asm_match = RE_ORIG_ASM.search(content)
-        entry_name = extract_effective_entry_name(content)
-        if asm_match is None or entry_name is None:
+        entry_names = extract_effective_entry_names(content)
+        if asm_match is None or not entry_names:
             continue
 
         module_path = asm_match.group("path")
         module_path = normalize_module_path(module_path)
         stats = modules[module_path]
         stats.sasc_compare_scripts.add(compare_path.name)
-        stats.sasc_entry_names.add(entry_name)
-        if "jmptbl" not in entry_name.lower():
-            stats.sasc_non_jmptbl_entries.add(entry_name)
+        for entry_name in entry_names:
+            stats.sasc_entry_names.add(entry_name)
+            if "jmptbl" not in entry_name.lower():
+                stats.sasc_non_jmptbl_entries.add(entry_name)
 
     return modules, unresolved_promotes
 

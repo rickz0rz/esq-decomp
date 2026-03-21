@@ -2,11 +2,56 @@
 ; DECOMP TARGETS unknown8 decimal formatter helper module boundary
 ; SOURCE: modules/submodules/unknown8.s
 ; PURPOSE:
-;   Seed a hybrid replacement boundary for UNKNOWN8 now that the restored
-;   SAS/C lane covers FORMAT_U32ToDecimalString in the current checkout.
-;   The hybrid build still delegates to the canonical asm module for now;
-;   future passes can replace this helper here without touching the
-;   root include graph again.
+;   Object-level hybrid replacement for UNKNOWN8 now that the restored SAS/C
+;   lane covers FORMAT_U32ToDecimalString. This replacement now carries the
+;   module body directly instead of delegating back to the canonical asm
+;   include.
 ;------------------------------------------------------------------------------
 
-    include "modules/submodules/unknown8.s"
+    XDEF    FORMAT_U32ToDecimalString
+
+;------------------------------------------------------------------------------
+; FUNC: FORMAT_U32ToDecimalString   (Format an unsigned value as decimal ASCII.)
+; ARGS:
+;   stack +4: A0 = destination buffer
+;   stack +8: D0 = value
+; RET:
+;   D0: length of output string (bytes, excluding NUL)
+; CLOBBERS:
+;   D0-D1/A0-A1
+; CALLS:
+;   MATH_DivU32 (div/mod helper; returns quotient in D0, remainder in D1)
+; DESC:
+;   Emits decimal digits into a temp stack buffer, then reverses into A0.
+;------------------------------------------------------------------------------
+FORMAT_U32ToDecimalString:
+    MOVE.L  8(A7),D0
+    MOVEA.L 4(A7),A0
+    LINK.W  A5,#-12
+    MOVEA.L A7,A1
+
+.digit_loop:
+    MOVEQ   #10,D1
+    JSR     MATH_DivU32(PC)
+
+    ADDI.W  #$30,D1
+    MOVE.B  D1,(A1)+
+    TST.L   D0
+    BNE.S   .digit_loop
+
+    MOVE.L  A1,D0
+
+.emit_loop:
+    MOVE.B  -(A1),(A0)+
+    CMPA.L  A1,A7
+    BNE.S   .emit_loop
+
+    CLR.B   (A0)
+    SUB.L   A7,D0
+    UNLK    A5
+    RTS
+
+;!======
+
+    ; Alignment
+    ALIGN_WORD

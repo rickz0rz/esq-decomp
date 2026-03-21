@@ -20,6 +20,8 @@ from pathlib import Path
 RE_ORIG_ASM = re.compile(r'^ORIG_ASM="src/(?P<path>[^"]+\.s)"', re.MULTILINE)
 RE_ENTRY = re.compile(r'^ENTRY="(?P<entry>[^"]+)"', re.MULTILINE)
 RE_ENTRY_ORIG = re.compile(r'^ENTRY_ORIG="(?P<entry>[^"]+)"', re.MULTILINE)
+RE_ENTRY_LABEL = re.compile(r'^ENTRY_LABEL="(?P<entry>[^"]+)"', re.MULTILINE)
+RE_ENTRY_CANONICAL = re.compile(r'^ENTRY_CANONICAL="(?P<entry>[^"]+)"', re.MULTILINE)
 RE_TARGET = re.compile(r'^TARGET="(?P<entry>[^"]+)"', re.MULTILINE)
 RE_SASC_SRC = re.compile(r'^SASC_SRC="(?P<src>[^"]+\.c)"', re.MULTILINE)
 RE_XDEF = re.compile(r"^\s*XDEF\s+(?P<sym>[A-Za-z0-9_]+)", re.MULTILINE)
@@ -83,20 +85,26 @@ def normalize_module_path(path: str) -> str:
     return path
 
 
-def extract_effective_entry_name(content: str) -> str | None:
+def extract_effective_entry_names(content: str) -> list[str]:
+    entries: list[str] = []
     target_match = RE_TARGET.search(content)
     if target_match is not None:
-        return target_match.group("entry")
+        entries.append(target_match.group("entry"))
+    else:
+        entry_match = RE_ENTRY.search(content)
+        if entry_match is not None:
+            entries.append(entry_match.group("entry"))
+        else:
+            entry_orig_match = RE_ENTRY_ORIG.search(content)
+            if entry_orig_match is not None:
+                entries.append(entry_orig_match.group("entry"))
 
-    entry_match = RE_ENTRY.search(content)
-    if entry_match is not None:
-        return entry_match.group("entry")
+    entry_canonical_match = RE_ENTRY_CANONICAL.search(content)
+    if entry_canonical_match is not None:
+        entries.append(entry_canonical_match.group("entry"))
 
-    entry_orig_match = RE_ENTRY_ORIG.search(content)
-    if entry_orig_match is not None:
-        return entry_orig_match.group("entry")
-
-    return None
+    entries.extend(match.group("entry") for match in RE_ENTRY_LABEL.finditer(content))
+    return list(dict.fromkeys(entries))
 
 
 def load_mapped_modules(repo_root: Path) -> list[str]:
@@ -135,9 +143,9 @@ def collect_sasc_compare_stats(repo_root: Path) -> dict[str, ModuleStats]:
     for compare_path in scripts_dir.glob("compare_sasc*_trial.sh"):
         content = compare_path.read_text()
         asm_match = RE_ORIG_ASM.search(content)
-        entry_name = extract_effective_entry_name(content)
+        entry_names = extract_effective_entry_names(content)
         src_match = RE_SASC_SRC.search(content)
-        if asm_match is None or entry_name is None or src_match is None:
+        if asm_match is None or not entry_names or src_match is None:
             continue
 
         module_path = normalize_module_path(asm_match.group("path"))
@@ -145,12 +153,13 @@ def collect_sasc_compare_stats(repo_root: Path) -> dict[str, ModuleStats]:
 
         stats = stats_by_module[module_path]
         stats.sasc_compare_scripts.add(compare_path.name)
-        if "jmptbl" in entry_name.lower():
-            continue
+        for entry_name in entry_names:
+            if "jmptbl" in entry_name.lower():
+                continue
 
-        stats.sasc_direct_entries.add(entry_name)
-        stats.direct_sasc_sources.add(sasc_src)
-        stats.entry_sources[entry_name].add(sasc_src)
+            stats.sasc_direct_entries.add(entry_name)
+            stats.direct_sasc_sources.add(sasc_src)
+            stats.entry_sources[entry_name].add(sasc_src)
 
     return stats_by_module
 

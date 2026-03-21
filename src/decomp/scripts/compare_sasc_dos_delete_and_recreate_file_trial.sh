@@ -10,6 +10,7 @@ SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown21.s"
 OUT_DIR="build/decomp/sasc_trial"
 ENTRY_ORIG="DOS_DeleteAndRecreateFile"
+TARGET="DOS_DeleteAndRecreateFile"
 
 mkdir -p "$OUT_DIR"
 

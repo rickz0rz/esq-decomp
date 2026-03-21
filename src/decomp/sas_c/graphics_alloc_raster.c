@@ -1,9 +1,10 @@
 #include <exec/types.h>
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void *_LVOAllocRaster(void *graphicsBase, ULONG width, LONG height);
+#pragma libcall Global_REF_GRAPHICS_LIBRARY AllocRaster 1ec 1002
+extern void *AllocRaster(ULONG width, ULONG height);
 
 void *GRAPHICS_AllocRaster(LONG width, LONG height)
 {
-    return _LVOAllocRaster(Global_REF_GRAPHICS_LIBRARY, (ULONG)width, height);
+    return AllocRaster((ULONG)width, (ULONG)height);
 }
