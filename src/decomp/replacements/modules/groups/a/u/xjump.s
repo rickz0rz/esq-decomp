@@ -1,12 +1,50 @@
 ;------------------------------------------------------------------------------
-; DECOMP TARGET passthrough hybrid module boundary
+; DECOMP TARGET direct hybrid replacement
 ; SOURCE: modules/groups/a/u/xjump.s
 ; PURPOSE:
-;   Seed a hybrid replacement boundary for this module now that the current
-;   checkout's restored compare lanes are green enough for boundary mapping.
-;   The hybrid build still delegates to the canonical asm module for now;
-;   future promotion passes can replace routines here without another root
-;   include-graph edit.
+;   Carry the GROUP_AU wrapper module body directly now that the maintained
+;   SAS/C compare lanes for its two wrapper exports are green in this checkout.
 ;------------------------------------------------------------------------------
 
-    include "modules/groups/a/u/xjump.s"
+    XDEF    GROUP_AU_JMPTBL_BRUSH_AppendBrushNode
+    XDEF    GROUP_AU_JMPTBL_BRUSH_PopulateBrushList
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AU_JMPTBL_BRUSH_AppendBrushNode   (JumpStub_BRUSH_AppendBrushNode)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   BRUSH_AppendBrushNode
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to BRUSH_AppendBrushNode.
+;------------------------------------------------------------------------------
+GROUP_AU_JMPTBL_BRUSH_AppendBrushNode:
+    JMP     BRUSH_AppendBrushNode
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AU_JMPTBL_BRUSH_PopulateBrushList   (JumpStub_BRUSH_PopulateBrushList)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   BRUSH_PopulateBrushList
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to BRUSH_PopulateBrushList.
+;------------------------------------------------------------------------------
+GROUP_AU_JMPTBL_BRUSH_PopulateBrushList:
+    JMP     BRUSH_PopulateBrushList

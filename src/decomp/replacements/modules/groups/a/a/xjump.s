@@ -1,12 +1,103 @@
 ;------------------------------------------------------------------------------
-; DECOMP TARGET passthrough hybrid module boundary
+; DECOMP TARGETS a/a xjump wrapper module boundary
 ; SOURCE: modules/groups/a/a/xjump.s
 ; PURPOSE:
-;   Seed a hybrid replacement boundary for this module now that the current
-;   checkout's restored compare lanes are green enough for boundary mapping.
-;   The hybrid build still delegates to the canonical asm module for now;
-;   future promotion passes can replace routines here without another root
-;   include-graph edit.
+;   Object-level hybrid replacement for the GROUP_AA xjump wrapper module now
+;   that the restored SAS/C lane covers its four direct wrapper exports with
+;   zero-byte semantic diffs in the current checkout. This replacement now
+;   carries the module body directly instead of delegating back to the
+;   canonical asm include.
 ;------------------------------------------------------------------------------
 
-    include "modules/groups/a/a/xjump.s"
+    XDEF    GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator
+    XDEF    GROUP_AA_JMPTBL_STRING_CompareN
+    XDEF    GROUP_AA_JMPTBL_STRING_CompareNoCase
+    XDEF    GROUP_AA_JMPTBL_GRAPHICS_AllocRaster
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AA_JMPTBL_STRING_CompareNoCase   (Routine at GROUP_AA_JMPTBL_STRING_CompareNoCase)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   STRING_CompareNoCase
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AA_JMPTBL_STRING_CompareNoCase:
+    JMP     STRING_CompareNoCase
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AA_JMPTBL_STRING_CompareN   (Routine at GROUP_AA_JMPTBL_STRING_CompareN)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   STRING_CompareN
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AA_JMPTBL_STRING_CompareN:
+    JMP     STRING_CompareN
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator   (Routine at GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   GCOMMAND_FindPathSeparator
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
+    JMP     GCOMMAND_FindPathSeparator
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AA_JMPTBL_GRAPHICS_AllocRaster   (Routine at GROUP_AA_JMPTBL_GRAPHICS_AllocRaster)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   GRAPHICS_AllocRaster
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AA_JMPTBL_GRAPHICS_AllocRaster:
+    JMP     GRAPHICS_AllocRaster

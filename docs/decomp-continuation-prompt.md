@@ -1,4 +1,4 @@
-You are continuing work in `/Users/rj/Downloads/esq-asm`.
+You are continuing work in `/Users/rj/Downloads/Git/github.com/rickz0rz/esq-decomp`.
 
 ## Objective
 
@@ -27,6 +27,7 @@ Treat those files as the live source of project status. Do not rely on older che
 - Treat `*JMPTBL*` exports as probable compiler artifacts unless there is evidence they need separate handling.
 - Prefer direct calls to the real target over recreating jump-table wrappers unless a wrapper is required for build glue or an existing validation lane.
 - Preserve behavior. Do not clean up, optimize, or reorganize code unless equivalence requires it.
+- Do not finish the run with your work left as uncommitted local changes. If you changed files, commit them before handing off unless the user explicitly told you not to or a concrete blocker makes committing unsafe.
 
 ## Roadmap
 
@@ -53,7 +54,8 @@ Work toward the full C application in this order:
 6. Re-run the relevant target compare script or sweep.
 7. Reconfirm the maintained baseline after the change.
 8. Update docs if the workflow, validation expectations, or project state materially changed.
-9. At the end of the run, make a git commit with a meaningful commit message that explains the changes made.
+9. At the end of the run, stage the changed files (`git add <paths>` or `git add .` when appropriate), review `git status`, and make a git commit with a meaningful commit message that explains the changes made.
+10. Do not hand off with “changes made but not committed” as the default outcome. If a real blocker prevents committing, explain the blocker explicitly in the final summary and leave the worktree in the clearest possible state.
 
 ## How To Choose Work
 

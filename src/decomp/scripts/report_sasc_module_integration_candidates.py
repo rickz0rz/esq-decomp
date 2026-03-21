@@ -29,7 +29,7 @@ RE_XDEF = re.compile(r"^\s*XDEF\s+(?P<sym>[A-Za-z0-9_]+)", re.MULTILINE)
 
 @dataclass
 class ModuleStats:
-    asm_direct_exports: set[str] = field(default_factory=set)
+    asm_tracked_exports: set[str] = field(default_factory=set)
     sasc_compare_scripts: set[str] = field(default_factory=set)
     sasc_direct_entries: set[str] = field(default_factory=set)
     direct_sasc_sources: set[str] = field(default_factory=set)
@@ -37,19 +37,19 @@ class ModuleStats:
 
     @property
     def missing_exports(self) -> set[str]:
-        return self.asm_direct_exports - self.sasc_direct_entries
+        return self.asm_tracked_exports - self.sasc_direct_entries
 
     @property
     def direct_export_count(self) -> int:
-        return len(self.asm_direct_exports)
+        return len(self.asm_tracked_exports)
 
     @property
     def covered_export_count(self) -> int:
-        return len(self.asm_direct_exports & self.sasc_direct_entries)
+        return len(self.asm_tracked_exports & self.sasc_direct_entries)
 
     @property
     def is_complete(self) -> bool:
-        return bool(self.asm_direct_exports) and not self.missing_exports
+        return bool(self.asm_tracked_exports) and not self.missing_exports
 
 
 def parse_args() -> argparse.Namespace:
@@ -90,14 +90,14 @@ def extract_effective_entry_names(content: str) -> list[str]:
     target_match = RE_TARGET.search(content)
     if target_match is not None:
         entries.append(target_match.group("entry"))
-    else:
-        entry_match = RE_ENTRY.search(content)
-        if entry_match is not None:
-            entries.append(entry_match.group("entry"))
-        else:
-            entry_orig_match = RE_ENTRY_ORIG.search(content)
-            if entry_orig_match is not None:
-                entries.append(entry_orig_match.group("entry"))
+
+    entry_match = RE_ENTRY.search(content)
+    if entry_match is not None:
+        entries.append(entry_match.group("entry"))
+
+    entry_orig_match = RE_ENTRY_ORIG.search(content)
+    if entry_orig_match is not None:
+        entries.append(entry_orig_match.group("entry"))
 
     entry_canonical_match = RE_ENTRY_CANONICAL.search(content)
     if entry_canonical_match is not None:
@@ -122,18 +122,23 @@ def load_mapped_modules(repo_root: Path) -> list[str]:
     return mapped
 
 
-def load_asm_direct_exports(repo_root: Path, module_path: str) -> set[str]:
+def load_asm_tracked_exports(repo_root: Path, module_path: str) -> set[str]:
     asm_path = repo_root / "src" / module_path
     if not asm_path.exists():
         return set()
 
-    exports: set[str] = set()
+    all_exports: set[str] = set()
+    direct_exports: set[str] = set()
     for match in RE_XDEF.finditer(asm_path.read_text()):
         symbol = match.group("sym")
+        all_exports.add(symbol)
         if "jmptbl" in symbol.lower():
             continue
-        exports.add(symbol)
-    return exports
+        direct_exports.add(symbol)
+
+    if direct_exports:
+        return direct_exports
+    return all_exports
 
 
 def collect_sasc_compare_stats(repo_root: Path) -> dict[str, ModuleStats]:
@@ -154,9 +159,6 @@ def collect_sasc_compare_stats(repo_root: Path) -> dict[str, ModuleStats]:
         stats = stats_by_module[module_path]
         stats.sasc_compare_scripts.add(compare_path.name)
         for entry_name in entry_names:
-            if "jmptbl" in entry_name.lower():
-                continue
-
             stats.sasc_direct_entries.add(entry_name)
             stats.direct_sasc_sources.add(sasc_src)
             stats.entry_sources[entry_name].add(sasc_src)
@@ -191,7 +193,7 @@ def main() -> int:
             continue
 
         stats = stats_by_module[module_path]
-        stats.asm_direct_exports = load_asm_direct_exports(repo_root, module_path)
+        stats.asm_tracked_exports = load_asm_tracked_exports(repo_root, module_path)
 
         if stats.is_complete:
             complete_count += 1
@@ -219,12 +221,12 @@ def main() -> int:
         total_considered += 1
 
     print(f"mapped modules considered: {total_considered}")
-    print(f"complete direct-export candidates: {complete_count}")
+    print(f"complete covered modules: {complete_count}")
     print()
 
     header = (
         f"{'status':8}  {'coverage':8}  {'sasc_srcs':9}  "
-        f"{'direct_xdefs':12}  {'module':48}  {'sample sas_c files'}"
+        f"{'tracked_xdefs':12}  {'module':48}  {'sample sas_c files'}"
     )
     print(header)
     print("-" * len(header))

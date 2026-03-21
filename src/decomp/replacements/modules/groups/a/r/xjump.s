@@ -1,12 +1,54 @@
 ;------------------------------------------------------------------------------
-; DECOMP TARGET passthrough hybrid module boundary
+; DECOMP TARGET direct hybrid replacement
 ; SOURCE: modules/groups/a/r/xjump.s
 ; PURPOSE:
-;   Seed a hybrid replacement boundary for this module now that the current
-;   checkout's restored compare lanes are green enough for boundary mapping.
-;   The hybrid build still delegates to the canonical asm module for now;
-;   future promotion passes can replace routines here without another root
-;   include-graph edit.
+;   Carry the Group AR wrapper module body directly now that the maintained
+;   SAS/C compare lanes for its two wrapper exports are green in this checkout.
 ;------------------------------------------------------------------------------
 
-    include "modules/groups/a/r/xjump.s"
+    XDEF    GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry
+    XDEF    GROUP_AR_JMPTBL_STRING_AppendAtNull
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry   (Routine at GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   PARSEINI_WriteErrorLogEntry
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry:
+    JMP     PARSEINI_WriteErrorLogEntry
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AR_JMPTBL_STRING_AppendAtNull   (Routine at GROUP_AR_JMPTBL_STRING_AppendAtNull)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   STRING_AppendAtNull
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AR_JMPTBL_STRING_AppendAtNull:
+    JMP     STRING_AppendAtNull

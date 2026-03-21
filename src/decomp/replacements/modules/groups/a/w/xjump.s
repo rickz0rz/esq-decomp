@@ -1,12 +1,221 @@
 ;------------------------------------------------------------------------------
-; DECOMP TARGET passthrough hybrid module boundary
+; DECOMP TARGET direct hybrid replacement
 ; SOURCE: modules/groups/a/w/xjump.s
 ; PURPOSE:
-;   Seed a hybrid replacement boundary for this module now that the current
-;   checkout's restored compare lanes are green enough for boundary mapping.
-;   The hybrid build still delegates to the canonical asm module for now;
-;   future promotion passes can replace routines here without another root
-;   include-graph edit.
+;   Carry the GROUP_AW jump-wrapper module body directly in the hybrid build
+;   now that the maintained SAS/C compare lanes for the wrapper set are green.
 ;------------------------------------------------------------------------------
 
-    include "modules/groups/a/w/xjump.s"
+    XDEF    GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding
+    XDEF    GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition
+    XDEF    GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition
+    XDEF    GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition
+    XDEF    GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight
+    XDEF    GROUP_AW_JMPTBL_MEM_Move
+    XDEF    GROUP_AW_JMPTBL_STRING_CopyPadNul
+    XDEF    GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode
+    XDEF    GROUP_AW_JMPTBL_WDISP_SPrintf
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (Routine at GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   TLIBA3_BuildDisplayContextForViewMode
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
+    JMP     TLIBA3_BuildDisplayContextForViewMode
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding   (Routine at GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DISPLIB_ApplyInlineAlignmentPadding
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding:
+    JMP     DISPLIB_ApplyInlineAlignmentPadding
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition   (Routine at GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQIFF_RunCopperRiseTransition
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition:
+    JMP     ESQIFF_RunCopperRiseTransition
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition   (Routine at GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQIFF_RunCopperDropTransition
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition:
+    JMP     ESQIFF_RunCopperDropTransition
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition   (Routine at GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DISPLIB_DisplayTextAtPosition
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition:
+    JMP     DISPLIB_DisplayTextAtPosition
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AW_JMPTBL_MEM_Move   (Routine at GROUP_AW_JMPTBL_MEM_Move)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MEM_Move
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AW_JMPTBL_MEM_Move:
+    JMP     MEM_Move
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AW_JMPTBL_WDISP_SPrintf   (Routine at GROUP_AW_JMPTBL_WDISP_SPrintf)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   WDISP_SPrintf
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AW_JMPTBL_WDISP_SPrintf:
+    JMP     WDISP_SPrintf
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight   (Routine at GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0
+; CALLS:
+;   ESQ_SetCopperEffect_OffDisableHighlight
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight:
+    JMP     ESQ_SetCopperEffect_OffDisableHighlight
+
+;!======
+
+    ; Alignment
+    ORI.B   #0,D0
+    DC.W    $0000
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AW_JMPTBL_STRING_CopyPadNul   (Routine at GROUP_AW_JMPTBL_STRING_CopyPadNul)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   STRING_CopyPadNul
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AW_JMPTBL_STRING_CopyPadNul:
+    JMP     STRING_CopyPadNul

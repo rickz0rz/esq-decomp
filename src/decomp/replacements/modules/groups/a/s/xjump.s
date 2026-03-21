@@ -1,12 +1,50 @@
 ;------------------------------------------------------------------------------
-; DECOMP TARGET passthrough hybrid module boundary
+; DECOMP TARGET direct hybrid replacement
 ; SOURCE: modules/groups/a/s/xjump.s
 ; PURPOSE:
-;   Seed a hybrid replacement boundary for this module now that the current
-;   checkout's restored compare lanes are green enough for boundary mapping.
-;   The hybrid build still delegates to the canonical asm module for now;
-;   future promotion passes can replace routines here without another root
-;   include-graph edit.
+;   Carry the GROUP_AS wrapper module body directly now that the maintained
+;   SAS/C compare lanes for its two wrapper exports are green in this checkout.
 ;------------------------------------------------------------------------------
 
-    include "modules/groups/a/s/xjump.s"
+    XDEF    GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold
+    XDEF    GROUP_AS_JMPTBL_STR_FindCharPtr
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AS_JMPTBL_STR_FindCharPtr   (JumpStub_STR_FindCharPtr)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   STR_FindCharPtr
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to STR_FindCharPtr.
+;------------------------------------------------------------------------------
+GROUP_AS_JMPTBL_STR_FindCharPtr:
+    JMP     STR_FindCharPtr
+
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold   (JumpStub_ESQ_FindSubstringCaseFold)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   ESQ_FindSubstringCaseFold
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to ESQ_FindSubstringCaseFold.
+;------------------------------------------------------------------------------
+GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold:
+    JMP     ESQ_FindSubstringCaseFold
