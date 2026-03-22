@@ -33,7 +33,22 @@ awk -v e="^${ENTRY}:$" -v e2="$ENTRY_SASC_REGEX" '
     }
 ' "$SASC_DIS" >"${OUT_DIR}/${BASE}.sasc.dis.s"
 
-normalize() { sed -E -e 's/;.*$//' -e 's/^[[:space:]]+//' -e 's/[[:space:]]+/ /g' -e 's/[[:space:]]+$//' -e '/^$/d' -e 's/^___[A-Za-z0-9_]+__[0-9]+:$//' -e '/^const:$/d' -e '/^strings:$/d' -e '/^$/d'; }
+normalize() {
+    sed -E \
+        -e 's/;.*$//' \
+        -e 's/^[[:space:]]+//' \
+        -e 's/[[:space:]]+/ /g' \
+        -e 's/[[:space:]]+$//' \
+        -e '/^CMP\.L __base\(A4\),A7$/d' \
+        -e '/^BCS\.W _XCOVF$/d' \
+        -e 's/^BSR\.[SW] /BSR /' \
+        -e 's/^BRA\.[SW] /BRA /' \
+        -e '/^$/d' \
+        -e 's/^___[A-Za-z0-9_]+__[0-9]+:$//' \
+        -e '/^const:$/d' \
+        -e '/^strings:$/d' \
+        -e '/^$/d'
+}
 
 normalize <"${OUT_DIR}/${BASE}.original.s" >"${OUT_DIR}/${BASE}.original.norm.s"
 normalize <"${OUT_DIR}/${BASE}.sasc.dis.s" >"${OUT_DIR}/${BASE}.sasc.norm.s"

@@ -51,6 +51,10 @@ class ModuleStats:
     def is_complete(self) -> bool:
         return bool(self.asm_tracked_exports) and not self.missing_exports
 
+    @property
+    def is_exportless(self) -> bool:
+        return not self.asm_tracked_exports
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -187,6 +191,7 @@ def main() -> int:
 
     rows: list[tuple[int, int, int, str, ModuleStats]] = []
     complete_count = 0
+    exportless_count = 0
 
     for module_path in mapped_modules:
         if args.module_filter and args.module_filter not in module_path:
@@ -195,7 +200,9 @@ def main() -> int:
         stats = stats_by_module[module_path]
         stats.asm_tracked_exports = load_asm_tracked_exports(repo_root, module_path)
 
-        if stats.is_complete:
+        if stats.is_exportless:
+            exportless_count += 1
+        elif stats.is_complete:
             complete_count += 1
         if not args.all and not stats.is_complete:
             continue
@@ -222,6 +229,8 @@ def main() -> int:
 
     print(f"mapped modules considered: {total_considered}")
     print(f"complete covered modules: {complete_count}")
+    if exportless_count:
+        print(f"mapped modules with no callable exports: {exportless_count}")
     print()
 
     header = (
@@ -232,7 +241,10 @@ def main() -> int:
     print("-" * len(header))
 
     for _, _, _, module_path, stats in rows:
-        status = "complete" if stats.is_complete else "partial"
+        if stats.is_exportless:
+            status = "n/a"
+        else:
+            status = "complete" if stats.is_complete else "partial"
         print(
             f"{status:8}  "
             f"{format_ratio(stats.covered_export_count, stats.direct_export_count):8}  "

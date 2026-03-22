@@ -75,6 +75,18 @@ BEGIN {
     has_ravesc_highlight_restore = 0
     has_main_loop_gate = 0
     has_rts = 0
+    preflight_stage = 0
+    hardware_stage = 0
+    display_stage = 0
+    startup_stage = 0
+    runtime_stage = 0
+    loop_stage = 0
+    has_preflight_order = 0
+    has_hardware_order = 0
+    has_display_order = 0
+    has_startup_order = 0
+    has_runtime_order = 0
+    has_loop_order = 0
 }
 
 function trim(s, t) {
@@ -85,6 +97,13 @@ function trim(s, t) {
     return t
 }
 
+function advance_stage(stage, target) {
+    if (stage == target - 1) {
+        return target
+    }
+    return stage
+}
+
 {
     line = trim($0)
     if (line == "") {
@@ -93,7 +112,6 @@ function trim(s, t) {
 
     gsub(/[ \t]+/, " ", line)
     u = toupper(line)
-
     if (u ~ /^ESQ_MAININITANDRUN[A-Z0-9_]*:/) has_label = 1
     if (u ~ /ESQ_SELECTCODEBUFFER/) has_select_buffer = 1
     if (u ~ /GLOBAL_STR_RAVESC/) has_ravesc = 1
@@ -173,12 +191,56 @@ function trim(s, t) {
     if (u ~ /GLOBAL_WORD_SELECT_CODE_IS_RAVES/ && u ~ /ESQ_SETCOPPEREFFECT_ONENABLEHIGH/) has_ravesc_highlight_restore = 1
     if (u ~ /MONITORCLOCKCHANGE/ || u ~ /ESQ_SHUTDOWNREQUESTEDFLAG/ || u ~ /CONSUMERBFBYTEANDDISPATCHCOMMAND/) has_main_loop_gate = 1
     if (u == "RTS") has_rts = 1
+
+    if (u ~ /_LVOEXECUTE/) preflight_stage = advance_stage(preflight_stage, 1)
+    if (u ~ /_LVOOPENLIBRARY/) preflight_stage = advance_stage(preflight_stage, 2)
+    if (u ~ /OVERRIDE_INTUITION_FUNCS/) preflight_stage = advance_stage(preflight_stage, 3)
+    if (u ~ /_LVOOPENFONT/ || u ~ /_LVOOPENDISKFONT/) preflight_stage = advance_stage(preflight_stage, 4)
+
+    if (u ~ /FORMATDISKERRORMESSAGE/ || u ~ /FORMATDISKERRORMES/) hardware_stage = advance_stage(hardware_stage, 1)
+    if (u ~ /CHECKAVAILABLEFASTMEMORY/ || u ~ /CHECKAVAILABLEFASTM/) hardware_stage = advance_stage(hardware_stage, 2)
+    if (u ~ /UPDATECLOCKFROMRTC/ || u ~ /UPDATECLOCKFROMR/) hardware_stage = advance_stage(hardware_stage, 3)
+    if (u ~ /CREATEMSGPORTWITHSIGNAL/ || u ~ /CREATEMSGPORTWITHSIG/) hardware_stage = advance_stage(hardware_stage, 4)
+    if (u ~ /_LVOOPENDEVICE/) hardware_stage = advance_stage(hardware_stage, 5)
+    if (u ~ /_LVODOIO/) hardware_stage = advance_stage(hardware_stage, 6)
+    if (u ~ /SETUP_INTERRUPT_INTB_RBF/) hardware_stage = advance_stage(hardware_stage, 7)
+    if (u ~ /INITIALIZEINPUTDEVICES/ || u ~ /INITIALIZEINPUTDEVI/) hardware_stage = advance_stage(hardware_stage, 8)
+    if (u ~ /ALLOCATELINETEXTBUFFERS/ || u ~ /ALLOCATELINETEXTBUF/) hardware_stage = advance_stage(hardware_stage, 9)
+
+    if (u ~ /UPDATEREFRESHMODESTATE/ || u ~ /UPDATEREFRESHMODES/) display_stage = advance_stage(display_stage, 1)
+    if (u ~ /INITIALIZEBANNERCOPPERSYSTEM/ || u ~ /INITIALIZEBANNERCOP/) display_stage = advance_stage(display_stage, 2)
+    if (u ~ /INTB_VERTB/) display_stage = advance_stage(display_stage, 3)
+
+    if (u ~ /PROBEDRIVESANDASSIGNPATHS/ || u ~ /PROBEDRIVESANDASSI/) startup_stage = advance_stage(startup_stage, 1)
+    if (u ~ /WDISP_SPRINTF/ || u ~ /RAWDOFMT/ || u ~ /SPRINTF/) startup_stage = advance_stage(startup_stage, 2)
+    if (u ~ /PRIMEBANNERTRANSITIONFROMHEXCODE/ || u ~ /PRIMEBANNERTRANSI/) startup_stage = advance_stage(startup_stage, 3)
+    if (u ~ /INITPRESETDEFAULTS/ || u ~ /INITPRESETDEFAUL/) startup_stage = advance_stage(startup_stage, 4)
+    if (u ~ /PARSEINIBUFFERANDDISPATCH/ || u ~ /PARSEINIBUFFERANDD/) startup_stage = advance_stage(startup_stage, 5)
+    if (u ~ /RESETBANNERFADESTATE/ || u ~ /RESETBANNERFADEST/) startup_stage = advance_stage(startup_stage, 6)
+
+    if (u ~ /LOADSOURCECONFIG/ || u ~ /LOADSOURCECONF/) runtime_stage = advance_stage(runtime_stage, 1)
+    if (u ~ /POPULATEBRUSHLIST/ || u ~ /POPULATEBRUSHLIS/) runtime_stage = advance_stage(runtime_stage, 2)
+    if (u ~ /SELECTBRUSHBYLABEL/ || u ~ /SELECTBRUSHBYLAB/) runtime_stage = advance_stage(runtime_stage, 3)
+    if (u ~ /FINDTYPE3BRUSH/ || u ~ /FINDTYPE3BRUS/) runtime_stage = advance_stage(runtime_stage, 4)
+    if (u ~ /UPDATESTATUSMASKANDREFRESH/ || u ~ /UPDATESTATUSMASKA/) runtime_stage = advance_stage(runtime_stage, 5)
+    if (u ~ /RESETLISTSANDLOADPROMOIDS/ || u ~ /RESETLISTSANDLOAD/) runtime_stage = advance_stage(runtime_stage, 6)
+    if (u ~ /RESETFILTERSTATESTRUCT/ || u ~ /RESETFILTERSTATEST/) runtime_stage = advance_stage(runtime_stage, 7)
+
+    if (u ~ /MONITORCLOCKCHANGE/ || u ~ /MONITORCLOCKCHAN/) loop_stage = advance_stage(loop_stage, 1)
+    if (u ~ /CONSUMERBFBYTEANDDISPATCHCOMMAND/ || u ~ /CONSUMERBFBYTEANDDISPATC/) loop_stage = advance_stage(loop_stage, 2)
+    if (u == "RTS") loop_stage = advance_stage(loop_stage, 3)
 }
 
 END {
     has_baud_validation = (has_baud_parse && has_baud_2400 && has_baud_4800 && has_baud_9600) ? 1 : 0
     has_serial_setup = (serial_setup_hits >= 3) ? 1 : 0
     has_dual_rise_transition = (rise_transition_count >= 2) ? 1 : 0
+    has_preflight_order = (preflight_stage >= 4) ? 1 : 0
+    has_hardware_order = (hardware_stage >= 9) ? 1 : 0
+    has_display_order = (display_stage >= 3) ? 1 : 0
+    has_startup_order = (startup_stage >= 6) ? 1 : 0
+    has_runtime_order = (runtime_stage >= 7) ? 1 : 0
+    has_loop_order = (loop_stage >= 3) ? 1 : 0
     print "HAS_LABEL=" has_label
     print "HAS_SELECT_BUFFER=" has_select_buffer
     print "HAS_RAVESC=" has_ravesc
@@ -255,4 +317,10 @@ END {
     print "HAS_RAVESC_HIGHLIGHT_RESTORE=" has_ravesc_highlight_restore
     print "HAS_MAIN_LOOP_GATE=" has_main_loop_gate
     print "HAS_RTS=" has_rts
+    print "HAS_PREFLIGHT_ORDER=" has_preflight_order
+    print "HAS_HARDWARE_ORDER=" has_hardware_order
+    print "HAS_DISPLAY_ORDER=" has_display_order
+    print "HAS_STARTUP_ORDER=" has_startup_order
+    print "HAS_RUNTIME_ORDER=" has_runtime_order
+    print "HAS_LOOP_ORDER=" has_loop_order
 }

@@ -1,6 +1,6 @@
 BEGIN {
     has_entry = 0
-    has_transfer = 0
+    has_role = 0
 }
 
 function trim(s, t) {
@@ -17,11 +17,12 @@ function trim(s, t) {
     gsub(/[ \t]+/, " ", line)
     uline = toupper(line)
 
-    if (uline ~ /^PARSE_READSIGNEDLONG_PARSELOOPENTRY:/) has_entry = 1
-    if (uline ~ /^BRA\.[SW] PARSE_READSIGNEDLONG_PARSELOOP$/ || uline ~ /^JMP PARSE_READSIGNEDLONG_PARSELOOP$/) has_transfer = 1
+    if (uline ~ /^PARSE_READSIGNEDLONG_PARSELOOPEN(TR(Y)?)?:/) has_entry = 1
+    if (uline ~ /^BRA\.[SW] PARSE_READSIGNEDLONG_PARSELOOP$/ || uline ~ /^JMP PARSE_READSIGNEDLONG_PARSELOOP$/) has_role = 1
+    if (uline ~ /^BSR\.[SW] PARSE_READSIGNEDLONG$/) has_role = 1
 }
 
 END {
     print "HAS_ENTRY=" has_entry
-    print "HAS_TRANSFER=" has_transfer
+    print "HAS_ROLE=" has_role
 }

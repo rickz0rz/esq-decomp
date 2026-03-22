@@ -13,7 +13,15 @@ mkdir -p "$OUT_DIR"
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_${BASE}.log" 2>&1
 awk -v e="^${ENTRY}:$" '$0 ~ e {print; exit}' "$ORIG_ASM" >"${OUT_DIR}/${BASE}.original.s"
 awk -v e="^${ENTRY}:$" -v e2="$ENTRY_SASC_REGEX" '$0 ~ e || $0 ~ e2 {print; exit}' "$SASC_DIS" >"${OUT_DIR}/${BASE}.sasc.dis.s"
-normalize(){ sed -E -e 's/;.*$//' -e 's/^[[:space:]]+//' -e 's/[[:space:]]+/ /g' -e 's/[[:space:]]+$//' -e '/^$/d'; }
+normalize(){
+    sed -E \
+        -e 's/;.*$//' \
+        -e 's/^[[:space:]]+//' \
+        -e 's/[[:space:]]+/ /g' \
+        -e 's/[[:space:]]+$//' \
+        -e 's/^COI_RenderClockFormatEntryVarian:$/COI_RenderClockFormatEntryVariant:/' \
+        -e '/^$/d'
+}
 normalize <"${OUT_DIR}/${BASE}.original.s" >"${OUT_DIR}/${BASE}.original.norm.s"
 normalize <"${OUT_DIR}/${BASE}.sasc.dis.s" >"${OUT_DIR}/${BASE}.sasc.norm.s"
 diff -u "${OUT_DIR}/${BASE}.original.norm.s" "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.diff" || true

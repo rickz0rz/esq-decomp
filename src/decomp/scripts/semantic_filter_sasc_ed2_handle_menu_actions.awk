@@ -9,6 +9,8 @@ BEGIN {
     has_banner_transition=0
     has_display_rebuild=0
     has_clockcmd_read=0
+    has_aux_actions=0
+    has_debug_dump=0
     has_restore_state=0
     has_rts=0
 }
@@ -31,15 +33,17 @@ function trim(s, t) {
 
     if (u ~ /^ED2_HANDLEMENUACTIONS:/ || u ~ /^ED2_HANDLEMENUACTION[A-Z0-9_]*:/) has_entry=1
     if (n ~ /STATERINGINDEX/ && n ~ /STATERINGTABLE/ || n ~ /LASTKEYCODE/) has_state_ring_key=1
-    if (n ~ /SUBQW/ || n ~ /SUBQL/ || n ~ /BEQW/) has_dispatch=1
+    if (n ~ /SUBQW/ || n ~ /SUBQL/ || n ~ /BEQW/ || n ~ /SWITCHED2HANDLEMENUACTIONS/) has_dispatch=1
     if (n ~ /DRAWSTATUSLINE1/ || n ~ /DRAWSTATUSLINE2/ || n ~ /STATEINDEX/) has_status_line_actions=1
     if (n ~ /DRAWENTRYSUMMARYPANEL/ || n ~ /DRAWENTRYDETAILSPANEL/ || n ~ /SELECTEDFLAGBYTEOFFSET/ || n ~ /SELECTEDENTRYINDEX/) has_summary_detail_actions=1
     if (n ~ /WEATHERSTATUSCOUNTDOWN/ || n ~ /WEATHERSTATUSDIGITCHAR/ || n ~ /WEATHERSTATUSBRUSHINDEX/) has_weather_reset=1
     if (n ~ /REFRESHINTERVALMINUTES/ || n ~ /REFRESHINTERVALSECONDS/) has_refresh_toggle=1
     if (n ~ /BEGINBANNER/ || n ~ /GETBANNERCHAR/ || n ~ /GETBANN/) has_banner_transition=1
-    if (n ~ /BUILDDISPLAYCONTEXTFORVIEWMODE/ || n ~ /INITRASTPORT2PENS/ || n ~ /STATUSREFRESHHOLDFLAG/) has_display_rebuild=1
+    if (n ~ /BUILDDISPLAYCONTEXTFORVIEWMODE/ || n ~ /INITRASTPORT2PENS/ || n ~ /STATUSREFRESHHOLDFLAG/ || n ~ /DRAWVIEWMODEGUIDES/) has_display_rebuild=1
     if (n ~ /OPENFILEWITHMODE/ || n ~ /LVOREAD/ || n ~ /LVOCLOSE/ || n ~ /APPLYRTCBYTESANDPERSIST/) has_clockcmd_read=1
-    if (n ~ /DRAWESCMENUHELPTEXT/ || n ~ /DRAWESCMENUBOTTOMHELP/ || n ~ /RESTOREDISPLAYSTATE/) has_restore_state=1
+    if (n ~ /RELOADDATAFILESANDREBUILDINDEX/ || n ~ /PARSEINIBUFFERANDDISPATCH/ || n ~ /SCANLOGODIRECTORY/ || n ~ /RENDERALIGNEDSTATUSSCREEN/ || n ~ /WAITFORFLAGANDCLEARBIT/ || n ~ /COPYGFXTOWORKIFAVAILABLE/ || n ~ /SETCOPPEREFFECTCUSTOM/ || n ~ /MOVECOPPERENTRYTOWARDEND/ || n ~ /SHUTDOWNREQUESTEDFLAG/) has_aux_actions=1
+    if (n ~ /RAWDOFMTWITHSCRATCHBUFFER/ || n ~ /DUMPPROGRAMSOURCERECORDVERBOSE/ || n ~ /FORMATBANNERDATETIME/ || n ~ /BANNERROWFALLBACKONFIRSTROWFLAG/) has_debug_dump=1
+    if (n ~ /SETAPEN/ || n ~ /SETDRMD/ || n ~ /SETBPEN/ || n ~ /GLOBALREF696400BITMAP/) has_restore_state=1
     if (u == "RTS") has_rts=1
 }
 
@@ -54,6 +58,8 @@ END {
     print "HAS_BANNER_TRANSITION=" has_banner_transition
     print "HAS_DISPLAY_REBUILD=" has_display_rebuild
     print "HAS_CLOCKCMD_READ=" has_clockcmd_read
+    print "HAS_AUX_ACTIONS=" has_aux_actions
+    print "HAS_DEBUG_DUMP=" has_debug_dump
     print "HAS_RESTORE_STATE=" has_restore_state
     print "HAS_RTS=" has_rts
 }

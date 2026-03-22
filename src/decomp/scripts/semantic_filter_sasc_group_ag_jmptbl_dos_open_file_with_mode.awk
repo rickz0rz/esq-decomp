@@ -1,6 +1,7 @@
 BEGIN {
-    has_target_dispatch = 0
-    has_rts_or_jmp = 0
+    has_entry_label = 0
+    target_dispatch_count = 0
+    has_wrapper_exit = 0
 }
 
 function trim(s,    t) {
@@ -17,11 +18,13 @@ function trim(s,    t) {
     gsub(/[ \t]+/, " ", line)
     u = toupper(line)
 
-    if (u ~ /DOS_OPENFILEWITHMODE/) has_target_dispatch = 1
-    if (u ~ /^JMP / || u ~ /^RTS$/ || u ~ /^JSR / || u ~ /^BSR / || u ~ /^BSR\.W /) has_rts_or_jmp = 1
+    if (u ~ /^GROUP_AG_JMPTBL_DOS_OPENFILEWITH/) has_entry_label = 1
+    if (u ~ /^(JMP|JSR|BSR|BSR\.[A-Z]) DOS_OPENFILEWITHMODE$/) target_dispatch_count += 1
+    if (u == "RTS" || u ~ /^JMP DOS_OPENFILEWITHMODE$/) has_wrapper_exit = 1
 }
 
 END {
-    print "HAS_TARGET_DISPATCH=" has_target_dispatch
-    print "HAS_RTS_OR_JMP=" has_rts_or_jmp
+    print "HAS_ENTRY_LABEL=" has_entry_label
+    print "TARGET_DISPATCH_COUNT=" target_dispatch_count
+    print "HAS_WRAPPER_EXIT=" has_wrapper_exit
 }

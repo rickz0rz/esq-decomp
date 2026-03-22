@@ -7,12 +7,15 @@ BEGIN {
     has_wildcard_guard = 0
     has_copy_pad_nul = 0
     has_parse_size = 0
+    has_oversize_overlay = 0
     has_checksum_verify = 0
     has_open_file = 0
     has_alloc_buffer = 0
     has_receive_blocks = 0
+    has_delete_marker = 0
     has_close_and_free = 0
     has_delete_file = 0
+    has_copy_execute = 0
     has_diag_queries = 0
 }
 
@@ -40,12 +43,15 @@ function trim(s, t) {
     if (line ~ /WILDCARDMATCH/ || line ~ /CTASKS_EXT_GRF/) has_wildcard_guard = 1
     if (line ~ /STRING_COPYPADNUL/ || line ~ /COPYPADNUL/ || line ~ /COPYPADNU/) has_copy_pad_nul = 1
     if (line ~ /PARSE_READSIGNEDLONGSKIPCLASS3/ || line ~ /READSIGNEDLONGSKIPCLASS3/ || line ~ /PARSE_READSIGNED/) has_parse_size = 1
+    if (line ~ /SHOWATTENTIONOVERLAY/ || line ~ /BRUSH_SNAPSHOTHEADER/) has_oversize_overlay = 1
     if (line ~ /ESQIFF_RECORDCHECKSUMBYTE/ || line ~ /TRANSFERXORCHECKSUMBYTE/) has_checksum_verify = 1
     if (line ~ /DOS_OPENFILEWITHMODE/ || line ~ /OPENFILEWITHMODE/ || line ~ /DOS_OPENFILEWITH/) has_open_file = 1
     if (line ~ /MEMORY_ALLOCATEMEMORY/ || line ~ /TRANSFERBLOCKBUFFERPTR/) has_alloc_buffer = 1
     if (line ~ /RECEIVETRANSFERBLOCKSTOFILE/ || line ~ /RECEIVETRANSFERBLOCKSTOF/) has_receive_blocks = 1
+    if (line ~ /CMPI\.B #\$BB/ || line ~ /CMPI\.B #\$FF/ || line ~ /MOVEQ #68,D0/ || line ~ /MOVEQ\.L #\$4,D0/) has_delete_marker = 1
     if (line ~ /LVOCLOSE/ || line ~ /MEMORY_DEALLOCATEMEMORY/) has_close_and_free = 1
     if (line ~ /LVODELETEFILE/) has_delete_file = 1
+    if (line ~ /LVOEXECUTE/ || line ~ /STRING_APPENDATNULL/ || line ~ /GLOBAL_STR_COPY_NIL/) has_copy_execute = 1
     if (line ~ /QUERYDISKUSAGEPERCENT/ || line ~ /QUERYVOLUMESOFTERRORCOUNT/ || line ~ /WDISP_SPRINTF/) has_diag_queries = 1
 }
 
@@ -58,11 +64,14 @@ END {
     print "HAS_WILDCARD_GUARD=" has_wildcard_guard
     print "HAS_COPY_PAD_NUL=" has_copy_pad_nul
     print "HAS_PARSE_SIZE=" has_parse_size
+    print "HAS_OVERSIZE_OVERLAY=" has_oversize_overlay
     print "HAS_CHECKSUM_VERIFY=" has_checksum_verify
     print "HAS_OPEN_FILE=" has_open_file
     print "HAS_ALLOC_BUFFER=" has_alloc_buffer
     print "HAS_RECEIVE_BLOCKS=" has_receive_blocks
+    print "HAS_DELETE_MARKER=" has_delete_marker
     print "HAS_CLOSE_AND_FREE=" has_close_and_free
     print "HAS_DELETE_FILE=" has_delete_file
+    print "HAS_COPY_EXECUTE=" has_copy_execute
     print "HAS_DIAG_QUERIES=" has_diag_queries
 }

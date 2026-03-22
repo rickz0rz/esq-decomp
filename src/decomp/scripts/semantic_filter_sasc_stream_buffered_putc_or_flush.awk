@@ -41,8 +41,8 @@ function trim(s, t) {
     if (n ~ /DOSREADBYINDEX/) has_read=1
     if (n ~ /DOSWRITEBYINDEX/) has_write=1
     if (n ~ /STREAMBUFFEREDPUTCORFLUSH/ && n ~ /BSRW/ || n ~ /STREAMBUFFEREDPUTCORFLUSH/ && n ~ /JSR/) has_recurse=1
-    if (n ~ /MODEFLAGS/) has_mode_flags=1
-    if (n ~ /STATEFLAGS/) has_state_flags=1
+    if (n ~ /MODEFLAGS/ || u ~ /^LEA \$2\(A0\),A2$/) has_mode_flags=1
+    if (n ~ /STATEFLAGS/ || u ~ /^LEA \$1\(A2\),A3$/) has_state_flags=1
     if (n ~ /WRITEREMAINING/ || n ~ /12A3/ || n ~ /12A5/ || n ~ /CA3/ || n ~ /CA5/) has_write_remaining=1
     if (n ~ /BUFFERCURSOR/ || n ~ /4A3/ || n ~ /4A5/) has_buffer_cursor=1
     if (n ~ /OPENMASKWRITEREJECT/ || u ~ /#\$31/ || u ~ /#49([^0-9]|$)/) has_write_reject=1

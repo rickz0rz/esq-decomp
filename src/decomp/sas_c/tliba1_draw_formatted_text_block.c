@@ -25,36 +25,25 @@ struct TLIBA1_DrawFormattedTextRecord {
     WORD addExtraSpacing;
 };
 
-static LONG TLIBA1_StrLen(const char *s)
-{
-    LONG n;
-    const char *p;
-
-    n = 0;
-    p = s;
-    while (*p++ != 0) {
-        ++n;
-    }
-    return n;
-}
-
 void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, LONG left, LONG top, LONG right, LONG bottom)
 {
     struct RastPort *rp;
     struct TextFont *savedFont;
     struct TLIBA1_DrawFormattedTextRecord *records;
+    struct TLIBA1_DrawFormattedTextRecord *record;
     ULONG allocSize;
-    LONG boxWidth;
-    LONG boxHeight;
-    LONG recordCount;
-    LONG recordIndex;
-    LONG lineDivisor;
-    LONG lineIndex;
-    LONG totalHeight;
-    LONG currentYOffset;
-    LONG lineWidth;
-    LONG isMarkerRunActive;
-    LONG isUsingPrevueFont;
+    WORD boxWidth;
+    WORD boxHeight;
+    WORD recordCount;
+    WORD recordIndex;
+    WORD lineDivisor;
+    WORD lineIndex;
+    WORD totalHeight;
+    WORD currentYOffset;
+    WORD lineWidth;
+    WORD isMarkerRunActive;
+    WORD isUsingPrevueFont;
+    WORD isDone;
     char *cursor;
     BYTE savedPen;
 
@@ -101,26 +90,28 @@ void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, LONG left, LONG t
     currentYOffset = 0;
     isMarkerRunActive = 0;
     isUsingPrevueFont = 0;
+    isDone = 0;
 
-    while (currentYOffset == 0) {
+    while (isDone == 0) {
         WORD c;
 
         c = (WORD)(UBYTE)*cursor;
         if (c == 0) {
             ++lineDivisor;
-            currentYOffset = 1;
+            isDone = 1;
         } else if (c == 6) {
             if (isMarkerRunActive != 0) {
                 --recordIndex;
             }
 
-            records[recordIndex].usePrevueFont = 1;
-            records[recordIndex].pen = 1;
-            records[recordIndex].textOffset = (WORD)(lineIndex + 1);
+            record = &records[recordIndex];
+            record->usePrevueFont = 1;
+            record->pen = 1;
+            record->textOffset = (WORD)(lineIndex + 1);
             if (isUsingPrevueFont != 0) {
-                records[recordIndex].addExtraSpacing = 0;
+                record->addExtraSpacing = 0;
             } else {
-                records[recordIndex].addExtraSpacing = 1;
+                record->addExtraSpacing = 1;
                 ++lineDivisor;
             }
 
@@ -136,14 +127,16 @@ void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, LONG left, LONG t
         } else if (c == 24) {
             if (isMarkerRunActive != 0) {
                 --recordIndex;
-                records[recordIndex].pen = 1;
-                records[recordIndex].textOffset = (WORD)(lineIndex + 1);
+                record = &records[recordIndex];
+                record->pen = 1;
+                record->textOffset = (WORD)(lineIndex + 1);
                 ++recordIndex;
             } else {
-                records[recordIndex].usePrevueFont = 0;
-                records[recordIndex].pen = 1;
-                records[recordIndex].textOffset = (WORD)(lineIndex + 1);
-                records[recordIndex].addExtraSpacing = 1;
+                record = &records[recordIndex];
+                record->usePrevueFont = 0;
+                record->pen = 1;
+                record->textOffset = (WORD)(lineIndex + 1);
+                record->addExtraSpacing = 1;
                 ++recordIndex;
                 *cursor = 0;
                 totalHeight += savedFont->tf_YSize + 1;
@@ -154,14 +147,16 @@ void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, LONG left, LONG t
         } else if (c == 25) {
             if (isMarkerRunActive != 0) {
                 --recordIndex;
-                records[recordIndex].pen = 3;
-                records[recordIndex].textOffset = (WORD)(lineIndex + 1);
+                record = &records[recordIndex];
+                record->pen = 3;
+                record->textOffset = (WORD)(lineIndex + 1);
                 ++recordIndex;
             } else {
-                records[recordIndex].usePrevueFont = 0;
-                records[recordIndex].pen = 3;
-                records[recordIndex].textOffset = (WORD)(lineIndex + 1);
-                records[recordIndex].addExtraSpacing = 1;
+                record = &records[recordIndex];
+                record->usePrevueFont = 0;
+                record->pen = 3;
+                record->textOffset = (WORD)(lineIndex + 1);
+                record->addExtraSpacing = 1;
                 ++recordIndex;
                 *cursor = 0;
                 totalHeight += savedFont->tf_YSize + 1;
@@ -182,21 +177,30 @@ void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, LONG left, LONG t
 
     for (lineIndex = 0; lineIndex < recordCount; ++lineIndex) {
         char *lineText;
+        char *lineTextEnd;
         LONG drawX;
         LONG drawY;
+        LONG lineLength;
+
+        record = &records[lineIndex];
 
         if (TEXTDISP_LinePenOverrideEnabledFlag != 0) {
-            _LVOSetAPen(rastPort, (LONG)records[lineIndex].pen);
+            _LVOSetAPen(rastPort, (LONG)record->pen);
         }
 
-        if (records[lineIndex].usePrevueFont != 0) {
+        if (record->usePrevueFont != 0) {
             _LVOSetFont(rastPort, Global_HANDLE_PREVUE_FONT);
         } else {
             _LVOSetFont(rastPort, savedFont);
         }
 
-        lineText = text + records[lineIndex].textOffset;
-        lineWidth = _LVOTextLength(rastPort, lineText, TLIBA1_StrLen(lineText));
+        lineText = text + record->textOffset;
+        lineTextEnd = lineText;
+        while (*lineTextEnd != 0) {
+            ++lineTextEnd;
+        }
+        lineLength = (LONG)(lineTextEnd - lineText);
+        lineWidth = (WORD)_LVOTextLength(rastPort, lineText, lineLength);
         if (CLOCK_AlignedInsetRenderGateFlag != 0 && CLEANUP_AlignedInsetNibblePrimary != 0xFF) {
             lineWidth += 8;
         }
@@ -204,7 +208,7 @@ void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, LONG left, LONG t
             lineWidth = boxWidth;
         }
 
-        if (records[lineIndex].addExtraSpacing != 0) {
+        if (record->addExtraSpacing != 0) {
             totalHeight += currentYOffset + 1;
         }
         totalHeight += rp->TxBaseline;

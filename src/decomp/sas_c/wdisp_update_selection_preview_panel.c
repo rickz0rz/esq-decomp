@@ -1,15 +1,11 @@
 #include <exec/types.h>
-
-typedef struct WDISP_RastPortOverlay {
-    UBYTE pad0[4];
-    void *bitMap;
-} WDISP_RastPortOverlay;
+#include <graphics/rastport.h>
 
 typedef struct WDISP_PreviewPanel {
     UBYTE pad0[32];
     LONG dirtyFlag32;
     UBYTE pad24[24];
-    WDISP_RastPortOverlay rastPort60;
+    struct RastPort rastPort60;
 } WDISP_PreviewPanel;
 
 typedef struct WDISP_BrushNode {
@@ -18,7 +14,7 @@ typedef struct WDISP_BrushNode {
 } WDISP_BrushNode;
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern WDISP_RastPortOverlay *Global_REF_RASTPORT_1;
+extern struct RastPort *Global_REF_RASTPORT_1;
 
 extern void *WDISP_WeatherStatusBrushListHead;
 extern LONG P_TYPE_WeatherBrushRefreshPendingFlag;
@@ -28,7 +24,7 @@ extern UBYTE WDISP_WeatherStatusCountdown;
 extern UWORD WDISP_WeatherStatusDigitChar;
 extern UWORD WDISP_WeatherCycleOffsetCount;
 
-extern void _LVOSetRast(void *gfxBase, WDISP_RastPortOverlay *rastPort, LONG pen);
+extern void _LVOSetRast(void *gfxBase, struct RastPort *rastPort, LONG pen);
 extern LONG WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice(
     WDISP_PreviewPanel *panel,
     void *brushListHead
@@ -40,10 +36,10 @@ extern void WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad(LONG mode);
 
 LONG WDISP_UpdateSelectionPreviewPanel(void *entryBrushRastPort, WDISP_PreviewPanel *previewPanel)
 {
-    WDISP_RastPortOverlay *entryRastPort;
-    void *savedBitMap;
+    struct RastPort *entryRastPort;
+    struct BitMap *savedBitMap;
 
-    entryRastPort = (WDISP_RastPortOverlay *)entryBrushRastPort;
+    entryRastPort = (struct RastPort *)entryBrushRastPort;
 
     if (TLIBA1_PreviewSlotRefreshState == 8) {
         TLIBA1_PreviewSlotRefreshState = 0;
@@ -57,8 +53,8 @@ LONG WDISP_UpdateSelectionPreviewPanel(void *entryBrushRastPort, WDISP_PreviewPa
         7
     );
 
-    savedBitMap = Global_REF_RASTPORT_1->bitMap;
-    Global_REF_RASTPORT_1->bitMap = entryRastPort->bitMap;
+    savedBitMap = Global_REF_RASTPORT_1->BitMap;
+    Global_REF_RASTPORT_1->BitMap = entryRastPort->BitMap;
 
     if (TLIBA1_PreviewSlotRefreshState == 0) {
         TLIBA1_PreviewSlotRenderResult =
@@ -100,7 +96,7 @@ LONG WDISP_UpdateSelectionPreviewPanel(void *entryBrushRastPort, WDISP_PreviewPa
         TLIBA1_PreviewSlotRenderResult = -1;
     }
 
-    Global_REF_RASTPORT_1->bitMap = savedBitMap;
+    Global_REF_RASTPORT_1->BitMap = savedBitMap;
 
     if (TLIBA1_PreviewSlotRenderResult != 0) {
         return -1;

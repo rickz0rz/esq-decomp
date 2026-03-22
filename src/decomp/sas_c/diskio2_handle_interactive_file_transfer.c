@@ -16,6 +16,7 @@ extern LONG DISKIO_QueryDiskUsagePercentAndSetBufferSize(char *out);
 extern LONG DISKIO_QueryVolumeSoftErrorCount(char *out);
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
+extern void ESQIFF2_ShowAttentionOverlay(LONG code);
 extern LONG _LVOLock(void *dosBase, STRPTR name, LONG mode);
 extern LONG _LVOUnLock(void *dosBase, LONG lock);
 extern LONG _LVODeleteFile(void *dosBase, STRPTR name);
@@ -141,6 +142,7 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
                 *d++ = (UBYTE)*s;
             } while (*s++ != 0);
 
+            ESQIFF2_ShowAttentionOverlay(2);
             ESQDISP_UpdateStatusMaskAndRefresh(4, 0);
             DISKIO2_InteractiveTransferArmedFlag = 0;
             return -2;

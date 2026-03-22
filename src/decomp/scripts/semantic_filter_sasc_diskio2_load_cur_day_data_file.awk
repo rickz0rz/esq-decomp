@@ -1,10 +1,12 @@
 BEGIN {
     has_entry = 0
     has_load = 0
+    has_countdown_clear = 0
     has_status_packet = 0
     has_consume = 0
     has_rev_match = 0
-    has_weather_replace = 0
+    has_weather_ptr = 0
+    has_weather_replace_call = 0
     has_parse_long = 0
     has_alloc = 0
     has_init_defaults = 0
@@ -34,10 +36,14 @@ function trim(s, t) {
     if (line ~ /DISKIO2_LOADCURDAYDATAFILE/) has_entry = 1
 
     if (line ~ /DISKIO_LOADFILETOWORKBUFFER/) has_load = 1
+    if ((line ~ /DST_PRIMARYCOUNTDOWN/ && line ~ /CLR\./) ||
+        (line ~ /DST_PRIMARYCOUNTDOWN/ && line ~ /MOVE\.W #?0/) ||
+        line ~ /CLR\.W __MERGEDBSS\+\$8\(A4\)/) has_countdown_clear = 1
     if (line ~ /APPLYINCOMINGSTATUSPACKET/ || line ~ /ESQIFF2_APPLYINC/) has_status_packet = 1
     if (line ~ /DISKIO_CONSUMECSTRINGFROMWORKBUFFER/ || line ~ /CONSUMECSTRINGFROMWORKBUFFER/ || line ~ /CONSUMECSTRINGFROMWORKBUF/) has_consume = 1
     if (line ~ /WILDCARDMATCH/ || line ~ /DISKIO2_STR_DREV_/) has_rev_match = 1
-    if (line ~ /WEATHERSTATUSTEXTPTR/ && line ~ /REPLACEOWNEDSTRING/) has_weather_replace = 1
+    if (line ~ /WEATHERSTATUSTEXTPTR/) has_weather_ptr = 1
+    if (line ~ /ESQPARS_REPLACEOWNEDSTRING/ || line ~ /ESQPARS_REPL/) has_weather_replace_call = 1
     if (line ~ /DISKIO_PARSELONGFROMWORKBUFFER/ || line ~ /PARSELONGFROMWORKBUFFER/) has_parse_long = 1
     if (line ~ /MEMORY_ALLOCATEMEMORY/ || line ~ /MEMORY_ALLOCAT/) has_alloc = 1
     if (line ~ /ESQSHARED_INITENTRYDEFAULTS/ || line ~ /ESQSHARED_INITEN/) has_init_defaults = 1
@@ -52,10 +58,12 @@ function trim(s, t) {
 END {
     print "HAS_ENTRY=" has_entry
     print "HAS_LOAD=" has_load
+    print "HAS_COUNTDOWN_CLEAR=" has_countdown_clear
     print "HAS_STATUS_PACKET=" has_status_packet
     print "HAS_CONSUME=" has_consume
     print "HAS_REV_MATCH=" has_rev_match
-    print "HAS_WEATHER_REPLACE=" has_weather_replace
+    print "HAS_WEATHER_PTR=" has_weather_ptr
+    print "HAS_WEATHER_REPLACE_CALL=" has_weather_replace_call
     print "HAS_PARSE_LONG=" has_parse_long
     print "HAS_ALLOC=" has_alloc
     print "HAS_INIT_DEFAULTS=" has_init_defaults

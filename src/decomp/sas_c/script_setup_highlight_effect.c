@@ -1,6 +1,6 @@
 #include <exec/types.h>
 
-extern void *WDISP_DisplayContextBase;
+extern LONG WDISP_DisplayContextBase;
 extern WORD WDISP_AccumulatorCaptureActive;
 extern WORD WDISP_AccumulatorFlushPending;
 extern UBYTE CLOCK_AlignedInsetRenderGateFlag;
@@ -24,10 +24,10 @@ extern void _LVOMove(char *rastport, LONG x, LONG y);
 extern void _LVOText(char *rastport, const char *text, LONG len);
 
 typedef struct SCRIPT_DisplayContext {
-    unsigned short flags0;
-    unsigned short rastWord2;
-    unsigned short width4;
-    UBYTE rastPortTail[1];
+    UWORD flags0;
+    UWORD left2;
+    UWORD height4;
+    UBYTE rastPort[1];
 } SCRIPT_DisplayContext;
 
 static LONG len_local(const char *s)
@@ -39,36 +39,41 @@ static LONG len_local(const char *s)
     return n;
 }
 
-void SCRIPT_SetupHighlightEffect(const char *text)
+void SCRIPT_SetupHighlightEffect(char *text)
 {
     SCRIPT_DisplayContext *context;
-    LONG widthSlot;
+    char *rastPort;
+    LONG left;
+    LONG height;
     LONG div;
     char prefix[128];
     LONG prefixLen = 0;
-    char *rp;
     const char *cursor;
     const char *chunkStart;
     LONG chunkLen;
+    LONG textWidth;
+    LONG x;
+    LONG y;
 
     TLIBA3_ClearViewModeRastPort(4, 0);
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 3);
     ESQ_SetCopperEffect_OnEnableHighlight();
 
     context = (SCRIPT_DisplayContext *)WDISP_DisplayContextBase;
-    widthSlot = (LONG)context->width4;
+    left = (LONG)context->left2;
+    height = (LONG)context->height4;
     ESQIFF_RunCopperDropTransition();
     ESQIFF_RestoreBasePaletteTriples();
 
-    div = MATH_DivS32(widthSlot, ((context->flags0 & (1 << 2)) != 0) ? 2 : 1);
-    SCRIPT_BeginBannerCharTransition((WORD)(div + 22), 500);
+    div = MATH_DivS32(height, ((context->flags0 & 4U) != 0) ? 2 : 1);
+    SCRIPT_BeginBannerCharTransition(div + 22, 500);
 
     if (text == 0 || *text == '\0') {
         ESQIFF_RunCopperRiseTransition();
         return;
     }
 
-    rp = (char *)&context->rastWord2;
+    rastPort = (char *)context->rastPort;
     WDISP_AccumulatorCaptureActive = 1;
     WDISP_AccumulatorFlushPending = 0;
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 0);
@@ -80,16 +85,33 @@ void SCRIPT_SetupHighlightEffect(const char *text)
         }
         prefixLen++;
     }
+
+    if (text[prefixLen] != '\0') {
+        text[prefixLen] = '\0';
+    }
+
     if (prefixLen > 0) {
         prefix[prefixLen] = '\0';
     } else {
         prefix[0] = '\0';
     }
 
-    (void)_LVOTextLength(rp, prefix, len_local(prefix));
-    _LVOSetDrMd(rp, 0);
-    _LVOSetAPen(rp, 1);
-    _LVOMove(rp, 0, widthSlot - 26);
+    textWidth = _LVOTextLength(rastPort, prefix, prefixLen);
+    if (CLOCK_AlignedInsetRenderGateFlag != 0 &&
+        CLEANUP_AlignedInsetNibblePrimary != 0xFF) {
+        textWidth += 8;
+    }
+
+    x = left - textWidth;
+    if (x < 0) {
+        x++;
+    }
+    x >>= 1;
+    y = height - 26;
+
+    _LVOSetDrMd(rastPort, 0);
+    _LVOSetAPen(rastPort, 1);
+    _LVOMove(rastPort, x, y);
 
     cursor = text;
     chunkStart = cursor;
@@ -98,10 +120,10 @@ void SCRIPT_SetupHighlightEffect(const char *text)
         UBYTE c = (UBYTE)*cursor;
         if (c == 19 || c == 20 || c == 24 || c == 25) {
             if (chunkLen > 0) {
-                _LVOText(rp, chunkStart, chunkLen);
+                _LVOText(rastPort, chunkStart, chunkLen);
             }
             if (c == 24 || c == 25) {
-                _LVOSetAPen(rp, (c == 24) ? 1 : 3);
+                _LVOSetAPen(rastPort, (c == 24) ? 1 : 3);
                 cursor++;
                 chunkStart = cursor;
                 chunkLen = 0;
@@ -110,7 +132,11 @@ void SCRIPT_SetupHighlightEffect(const char *text)
             if (c == 20) {
                 STRING_CopyPadNul(prefix, chunkStart, chunkLen);
                 prefix[chunkLen] = '\0';
-                SCRIPT_DrawInsetTextWithFrame(rp, (BYTE)CLEANUP_AlignedInsetNibblePrimary, (BYTE)CLEANUP_AlignedInsetNibbleSecondary, prefix);
+                SCRIPT_DrawInsetTextWithFrame(
+                    rastPort,
+                    (BYTE)CLEANUP_AlignedInsetNibblePrimary,
+                    (BYTE)CLEANUP_AlignedInsetNibbleSecondary,
+                    prefix);
                 CLOCK_AlignedInsetRenderGateFlag = 0;
             }
             cursor++;
@@ -124,7 +150,7 @@ void SCRIPT_SetupHighlightEffect(const char *text)
         cursor++;
     }
     if (chunkLen > 0) {
-        _LVOText(rp, chunkStart, chunkLen);
+        _LVOText(rastPort, chunkStart, chunkLen);
     }
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 3);

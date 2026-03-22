@@ -11,7 +11,7 @@ ENTRY="NEWGRID_InitSelectionWindow"
 ENTRY_SASC_REGEX="^NEWGRID_InitSelectionWindow[A-Za-z0-9_]*:$"
 mkdir -p "$OUT_DIR"
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_${BASE}.log" 2>&1
-awk -v start="^${ENTRY}:$" -v next_label="^NEWGRID_ClearMarkersIfSelectable:$" '$0 ~ start {in_func=1} in_func {if ($0 ~ next_label) exit; print}' "$ORIG_ASM" >"${OUT_DIR}/${BASE}.original.s"
+awk -v e="^${ENTRY}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/${BASE}.original.s"
 awk -v e="^${ENTRY}:$" -v e2="$ENTRY_SASC_REGEX" '$0 ~ e || $0 ~ e2 {in_func=1} in_func {if (($0 ~ /^NEWGRID_[A-Za-z0-9_]+:$/ || $0 ~ /^_?NEWGRID_[A-Za-z0-9_]+:$/) && $0 !~ e && $0 !~ e2) exit; if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/ || $0 ~ /^__const:$/) exit; print}' "$SASC_DIS" >"${OUT_DIR}/${BASE}.sasc.dis.s"
 normalize(){ sed -E -e 's/;.*$//' -e 's/^[[:space:]]+//' -e 's/[[:space:]]+/ /g' -e 's/[[:space:]]+$//' -e '/^$/d' -e 's/^___[A-Za-z0-9_]+__[0-9]+:$//' -e '/^const:$/d' -e '/^strings:$/d' -e '/^$/d'; }
 normalize <"${OUT_DIR}/${BASE}.original.s" >"${OUT_DIR}/${BASE}.original.norm.s"

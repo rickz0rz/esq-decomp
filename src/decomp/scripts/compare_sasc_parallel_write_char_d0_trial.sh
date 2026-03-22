@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
+ORIG_ASM="src/modules/submodules/unknown42.s"
+ENTRY="PARALLEL_WriteCharD0"
+
 bash src/decomp/scripts/compare_sasc_parallel_writechard0_trial.sh "$@"
 
 OUT_DIR="build/decomp/sasc_trial"

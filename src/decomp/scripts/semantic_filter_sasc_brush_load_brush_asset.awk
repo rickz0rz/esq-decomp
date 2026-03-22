@@ -14,7 +14,11 @@ BEGIN {
     has_divs = 0
     has_alert = 0
     has_cleanup_c16 = 0
+    has_restore_planes = 0
+    has_clone_alloc = 0
     has_rts = 0
+    snapshot_refs = 0
+    zero_368_refs = 0
     saw_string_compare = 0
     saw_form_token = 0
 }
@@ -50,7 +54,11 @@ function trim(s,    t) {
     if (u ~ /GRAPHICS_FREERASTER/ || u ~ /GROUP_AB_JMPTBL_GRAPHICS_FREERAS/) has_free_raster = 1
     if (u ~ /MATH_DIVS32/ || u ~ /GROUP_AG_JMPTBL_MATH_DIVS32/) has_divs = 1
     if (u ~ /BRUSH_PENDINGALERTCODE|BRUSH_SNAPSHOT/) has_alert = 1
+    if (u ~ /BRUSH_SNAPSHOTHEADER/) snapshot_refs++
     if (u ~ /GLOBAL_STR_BRUSH_C_16/) has_cleanup_c16 = 1
+    if (u ~ /GLOBAL_STR_BRUSH_C_15/) has_clone_alloc = 1
+    if (u ~ /-42\(A5/ || u ~ /\$24\(A7,D0\.L\)/) has_restore_planes = 1
+    if (u ~ /368\(A0\)|368\(A1\)|\$170\(A0\)|\$170\(A1\)/) zero_368_refs++
     if (u == "RTS") has_rts = 1
 }
 
@@ -70,6 +78,10 @@ END {
     print "HAS_FREE_RASTER=" has_free_raster
     print "HAS_DIVS32=" has_divs
     print "HAS_ALERT_PATH=" has_alert
+    print "HAS_ALERT_SNAPSHOT_RECOPY=" (snapshot_refs >= 2)
+    print "HAS_RESTORE_PLANES=" has_restore_planes
+    print "HAS_CLONE_ALLOC=" has_clone_alloc
+    print "HAS_CLONE_ZERO368=" (zero_368_refs >= 2)
     print "HAS_DECODE_BUFFER_FREE=" has_cleanup_c16
     print "HAS_RTS=" has_rts
 }

@@ -9,6 +9,15 @@
 #define BRUSH_NODE_WIDTH_OFFSET 176
 #define BRUSH_NODE_HEIGHT_OFFSET 178
 #define BRUSH_NODE_DEPTH_OFFSET 184
+#define BRUSH_NODE_TYPE_OFFSET 32
+#define BRUSH_NODE_LABEL_OFFSET 33
+#define BRUSH_NODE_ROW_LIMIT_WIDTH_OFFSET 348
+#define BRUSH_NODE_ROW_LIMIT_HEIGHT_OFFSET 352
+#define BRUSH_NODE_ROW_OFFSET_TABLE_OFFSET 200
+#define BRUSH_NODE_FIELD_328_OFFSET 328
+#define BRUSH_NODE_FIELD_356_OFFSET 356
+#define BRUSH_NODE_FIELD_360_OFFSET 360
+#define BRUSH_NODE_FIELD_364_OFFSET 364
 #define BRUSH_NODE_PLANE_TABLE_OFFSET 0x90
 #define BRUSH_NODE_BITMAP_OFFSET 136
 #define BRUSH_NODE_RASTPORT_OFFSET 36
@@ -18,13 +27,24 @@
 #define BRUSH_SRC_DECODE_AUX_OFFSET 152
 #define BRUSH_SRC_MODE_FLAGS_OFFSET 150
 #define BRUSH_SRC_TYPE_OFFSET 190
+#define BRUSH_SRC_LABEL_OFFSET 191
 #define BRUSH_SRC_WIDTH_OFFSET 128
 #define BRUSH_SRC_HEIGHT_OFFSET 130
 #define BRUSH_SRC_DEPTH_OFFSET 136
+#define BRUSH_SRC_ROW_OFFSET_TABLE_OFFSET 152
+#define BRUSH_SRC_FIELD_148_OFFSET 148
+#define BRUSH_SRC_FIELD_194_OFFSET 194
+#define BRUSH_SRC_FIELD_214_OFFSET 214
+#define BRUSH_SRC_FIELD_218_OFFSET 218
+#define BRUSH_SRC_FIELD_222_OFFSET 222
+#define BRUSH_SRC_FIELD_226_OFFSET 226
+#define BRUSH_SRC_FIELD_230_OFFSET 230
 #define BRUSH_ROWWORD_ALIGN_ADDEND 15
 #define BRUSH_ROWWORD_ALIGN_DIVISOR 16
 #define BRUSH_ROWWORD_BYTES_PER_WORD 2
 #define BRUSH_RASTPORT_STATE_COPY_BYTES 96
+#define BRUSH_ROW_OFFSET_COPY_COUNT 4
+#define BRUSH_DIM_COPY_LONG_COUNT 5
 #define BRUSH_MAX_PLANES 5
 #define BRUSH_ALERT_ALLOC_FAIL 1
 #define BRUSH_ALERT_DEPTH_EXCEEDED 2
@@ -88,6 +108,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     UBYTE *decode_buf;
     UBYTE *decodeCursor;
     UBYTE *node;
+    void *planePtrs[BRUSH_MAX_PLANES];
     LONG i;
     LONG row_words;
 
@@ -100,6 +121,9 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     decode_buf = (UBYTE *)BRUSH_NULL;
     decodeCursor = (UBYTE *)BRUSH_NULL;
     node = (UBYTE *)BRUSH_NULL;
+    for (i = BRUSH_NULL; i < BRUSH_MAX_PLANES; i++) {
+        planePtrs[i] = (void *)BRUSH_NULL;
+    }
 
     fh = DOS_OpenFileWithMode(src, BRUSH_FILE_OPEN_MODE_READ);
     if (fh != BRUSH_NULL) {
@@ -163,12 +187,66 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             do {
                 *d++ = *s;
             } while (*s++ != BRUSH_NULL);
+            {
+                ULONG *dstLong = (ULONG *)(node + BRUSH_NODE_WIDTH_OFFSET);
+                const ULONG *srcLong = (const ULONG *)(src + BRUSH_SRC_WIDTH_OFFSET);
+                for (i = BRUSH_NULL; i < BRUSH_DIM_COPY_LONG_COUNT; i++) {
+                    *dstLong++ = *srcLong++;
+                }
+            }
+            *(ULONG *)(node + (BRUSH_NODE_ROW_OFFSET_TABLE_OFFSET - 4)) =
+                *(const ULONG *)(src + BRUSH_SRC_FIELD_148_OFFSET);
+            *(ULONG *)(node + 368) = 0;
 
             _LVOInitBitMap(
                 node + BRUSH_NODE_BITMAP_OFFSET,
                 (UBYTE)node[BRUSH_NODE_DEPTH_OFFSET],
                 (UWORD)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET),
                 (UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET));
+            node[BRUSH_NODE_TYPE_OFFSET] = src[BRUSH_SRC_TYPE_OFFSET];
+            *(ULONG *)(node + BRUSH_NODE_FIELD_328_OFFSET) =
+                *(const ULONG *)(src + BRUSH_SRC_FIELD_194_OFFSET);
+            *(ULONG *)(node + BRUSH_NODE_FIELD_328_OFFSET + 4) =
+                *(const ULONG *)(src + BRUSH_SRC_FIELD_194_OFFSET + 4);
+            *(ULONG *)(node + BRUSH_NODE_FIELD_328_OFFSET + 8) =
+                *(const ULONG *)(src + BRUSH_SRC_FIELD_194_OFFSET + 8);
+            *(ULONG *)(node + BRUSH_NODE_FIELD_328_OFFSET + 12) =
+                *(const ULONG *)(src + BRUSH_SRC_FIELD_194_OFFSET + 12);
+            *(ULONG *)(node + BRUSH_NODE_FIELD_328_OFFSET + 16) =
+                *(const ULONG *)(src + BRUSH_SRC_FIELD_194_OFFSET + 16);
+            *(ULONG *)(node + BRUSH_NODE_FIELD_356_OFFSET) =
+                *(const ULONG *)(src + BRUSH_SRC_FIELD_222_OFFSET);
+            *(ULONG *)(node + BRUSH_NODE_FIELD_360_OFFSET) =
+                *(const ULONG *)(src + BRUSH_SRC_FIELD_226_OFFSET);
+            for (i = BRUSH_NULL; i < BRUSH_ROW_OFFSET_COPY_COUNT; i++) {
+                ((ULONG *)(node + BRUSH_NODE_ROW_OFFSET_TABLE_OFFSET))[i * 2] =
+                    ((const ULONG *)(src + BRUSH_SRC_ROW_OFFSET_TABLE_OFFSET))[i * 2];
+                ((ULONG *)(node + BRUSH_NODE_ROW_OFFSET_TABLE_OFFSET))[i * 2 + 1] =
+                    ((const ULONG *)(src + BRUSH_SRC_ROW_OFFSET_TABLE_OFFSET))[i * 2 + 1];
+            }
+            {
+                UBYTE *labelDst = node + BRUSH_NODE_LABEL_OFFSET;
+                const UBYTE *labelSrc = src + BRUSH_SRC_LABEL_OFFSET;
+                do {
+                    *labelDst++ = *labelSrc;
+                } while (*labelSrc++ != BRUSH_NULL);
+            }
+            *(ULONG *)(node + BRUSH_NODE_FIELD_364_OFFSET) =
+                *(const ULONG *)(src + BRUSH_SRC_FIELD_230_OFFSET);
+            if (*(const ULONG *)(src + BRUSH_SRC_FIELD_214_OFFSET) != 0) {
+                *(ULONG *)(node + BRUSH_NODE_ROW_LIMIT_WIDTH_OFFSET) =
+                    *(const ULONG *)(src + BRUSH_SRC_FIELD_214_OFFSET);
+            } else {
+                *(ULONG *)(node + BRUSH_NODE_ROW_LIMIT_WIDTH_OFFSET) =
+                    (UWORD)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET);
+            }
+            if (*(const ULONG *)(src + BRUSH_SRC_FIELD_218_OFFSET) != 0) {
+                *(ULONG *)(node + BRUSH_NODE_ROW_LIMIT_HEIGHT_OFFSET) =
+                    *(const ULONG *)(src + BRUSH_SRC_FIELD_218_OFFSET);
+            } else {
+                *(ULONG *)(node + BRUSH_NODE_ROW_LIMIT_HEIGHT_OFFSET) =
+                    (UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET);
+            }
             for (i = BRUSH_NULL; i < (LONG)(UBYTE)node[BRUSH_NODE_DEPTH_OFFSET] && i < BRUSH_MAX_PLANES; i++) {
                 void *plane = GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(
                     Global_STR_BRUSH_C_12,
@@ -176,11 +254,19 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                     i << BRUSH_PLANE_PTR_SHIFT,
                     (UWORD)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET),
                     (UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET));
+                planePtrs[i] = plane;
                 *(void **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (i << BRUSH_PLANE_PTR_SHIFT)) = plane;
                 if (plane == (void *)BRUSH_NULL) {
                     _LVOForbid();
                     if (BRUSH_PendingAlertCode == BRUSH_NULL) {
                         BRUSH_PendingAlertCode = BRUSH_ALERT_ALLOC_FAIL;
+                        {
+                            UBYTE *snapDst = BRUSH_SnapshotHeader;
+                            const UBYTE *snapSrc = node;
+                            do {
+                                *snapDst++ = *snapSrc;
+                            } while (*snapSrc++ != BRUSH_NULL);
+                        }
                     }
                     _LVOPermit();
                     break;
@@ -217,11 +303,19 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 for (i = BRUSH_NULL; i < (LONG)(UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET); i++) {
                     LONG p;
                     for (p = BRUSH_NULL; p < (LONG)(UBYTE)src[BRUSH_SRC_DEPTH_OFFSET]; p++) {
+                        UBYTE *plane =
+                            *(UBYTE **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (p << BRUSH_PLANE_PTR_SHIFT));
                         decodeCursor = ESQ_PackBitsDecode(
                             decodeCursor,
-                            *(UBYTE **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (p << BRUSH_PLANE_PTR_SHIFT)),
+                            plane,
                             row_words);
+                        *(UBYTE **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (p << BRUSH_PLANE_PTR_SHIFT)) =
+                            plane + row_words;
                     }
+                }
+                for (i = BRUSH_NULL; i < (LONG)(UBYTE)node[BRUSH_NODE_DEPTH_OFFSET] && i < BRUSH_MAX_PLANES; i++) {
+                    *(void **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (i << BRUSH_PLANE_PTR_SHIFT)) =
+                        planePtrs[i];
                 }
             }
         }
@@ -233,8 +327,24 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
             1220,
             BRUSH_NODE_SIZE,
             MEMF_PUBLIC_CLEAR);
+        node = alt;
         if (alt != (UBYTE *)BRUSH_NULL) {
-            node = alt;
+            UBYTE *d = alt;
+            const UBYTE *s = src;
+            do {
+                *d++ = *s;
+            } while (*s++ != BRUSH_NULL);
+            alt[BRUSH_NODE_TYPE_OFFSET] = src[BRUSH_SRC_TYPE_OFFSET];
+            {
+                ULONG *dstLong = (ULONG *)(alt + BRUSH_NODE_WIDTH_OFFSET);
+                const ULONG *srcLong = (const ULONG *)(src + BRUSH_SRC_WIDTH_OFFSET);
+                for (i = BRUSH_NULL; i < BRUSH_DIM_COPY_LONG_COUNT; i++) {
+                    *dstLong++ = *srcLong++;
+                }
+            }
+            *(ULONG *)(alt + (BRUSH_NODE_ROW_OFFSET_TABLE_OFFSET - 4)) =
+                *(const ULONG *)(src + BRUSH_SRC_FIELD_148_OFFSET);
+            *(ULONG *)(alt + 368) = 0;
         }
     }
 

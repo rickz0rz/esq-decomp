@@ -6,7 +6,7 @@ cd "$ROOT_DIR"
 
 ENTRY="PARALLEL_CheckReadyStub"
 
-SASC_SRC="parallel_ready.c"
+SASC_SRC="parallel_check_ready_stub.c"
 SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown42.s"
@@ -17,7 +17,7 @@ mkdir -p "$OUT_DIR"
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_parallel_checkready_stub.log" 2>&1
 
 awk '$0 ~ /^PARALLEL_CheckReadyStub:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/parallel_checkready_stub.original.s"
-awk '$0 ~ /^PARALLEL_CheckReadyStub:$/ {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/parallel_checkready_stub.sasc.dis.s"
+awk '$0 ~ /^PARALLEL_CheckReadyStub:$/ {in_func=1} in_func { print }' "$SASC_DIS" >"${OUT_DIR}/parallel_checkready_stub.sasc.dis.s"
 
 normalize() {
   sed -E \

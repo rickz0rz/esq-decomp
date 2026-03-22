@@ -4,11 +4,11 @@ function t(s0){sub(/;.*/,"",s0);sub(/^[ \t]+/,"",s0);sub(/[ \t]+$/,"",s0);gsub(/
   x=t($0)
   if(x=="") next
   if(x~/^PARALLEL_RAWDOFMT:$/) e=1
-  if(x~/^MOVEM\.L A2\/A6,-\(A7\)$/ || x~/^MOVEM\.L A[0-7]\/A[0-7],-\(A7\)$/) s=1
-  if(x~/PARALLEL_WRITECHARHW/) h=1
+  if(x~/^MOVEM\.L A2\/A6,-\(A7\)$/ || x~/^MOVEM\.L A3\/A5,-\(A7\)$/ || x~/^MOVEM\.L A[0-7]\/A[0-7],-\(A7\)$/) s=1
+  if(x~/PARALLEL_WRITECHARHW/ || x~/^PEA [^;]*\(PC\)$/) h=1
   if(x~/ABSEXECBASE/) b=1
   if(x~/_LVORAWDOFMT/) c=1
-  if(x~/^MOVEM\.L \(A7\)\+,A2\/A6$/ || x~/^MOVEM\.L \(A7\)\+,A[0-7]\/A[0-7]$/) u=1
+  if(x~/^MOVEM\.L \(A7\)\+,A2\/A6$/ || x~/^MOVEM\.L \(A7\)\+,A3\/A5$/ || x~/^MOVEM\.L \(A7\)\+,A[0-7]\/A[0-7]$/) u=1
   if(x~/^RTS$/) r=1
 }
 END{

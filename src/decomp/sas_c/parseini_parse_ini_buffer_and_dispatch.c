@@ -43,9 +43,6 @@ extern const char PARSEINI_DelimSpaceTab_Section6[];
 extern const char PARSEINI_DelimSpaceTab_Section7[];
 extern const char PARSEINI_DelimSpaceTab_Section8[];
 
-extern const char PARSEINI_MODE_RB[];
-extern const char PARSEINI_TAG_FILENAME[];
-extern const char PARSEINI_TAG_BRUSH[];
 extern const char Global_STR_PARSEINI_C_1[];
 extern const char Global_STR_PARSEINI_C_2[];
 extern const char Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE[];
@@ -65,10 +62,6 @@ extern char *STR_FindAnyCharPtr(const char *s, const char *delim);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
 extern void GCOMMAND_InitPresetTableFromPalette(UWORD *table);
 extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
-extern char *GCOMMAND_FindPathSeparator(const char *path);
-extern void *HANDLE_OpenWithMode(const char *path, const char *modeStr, char *unused);
-extern void ESQIFF_QueueIffBrushLoad(short mode);
-extern void ESQIFF_HandleBrushIniReloadHotkey(LONG hotkey);
 extern void *MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
 extern void MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);
 
@@ -279,19 +272,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
             if (valuePtr == (char *)0) {
                 continue;
             }
-
-            if (section == PARSEINI_SECTION_BRUSH) {
-                if (STRING_CompareNoCase(linePtr, PARSEINI_TAG_FILENAME) == 0 ||
-                    STRING_CompareNoCase(linePtr, PARSEINI_TAG_BRUSH) == 0) {
-                    valuePtr = GCOMMAND_FindPathSeparator(valuePtr);
-                    if (HANDLE_OpenWithMode(valuePtr, PARSEINI_MODE_RB, (char *)0) != 0) {
-                        ESQIFF_QueueIffBrushLoad(0);
-                        ESQIFF_HandleBrushIniReloadHotkey('a');
-                    }
-                }
-            } else {
-                PARSEINI_ParseColorTable(linePtr, valuePtr, section);
-            }
+            PARSEINI_ParseColorTable(linePtr, valuePtr, section);
             continue;
         }
 

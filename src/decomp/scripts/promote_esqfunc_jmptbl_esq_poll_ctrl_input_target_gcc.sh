@@ -6,9 +6,9 @@ cd "$ROOT_DIR"
 
 OUT_DIR="build/decomp/c_trial_gcc"
 LOG_DIR="${OUT_DIR}/promotion_logs"
-COMPARE_SCRIPT="src/decomp/scripts/compare_esqfunc_jmptbl_esq_poll_ctrl_input_trial_gcc.sh"
-ORIG_SEM="${OUT_DIR}/esqfunc_jmptbl_esq_poll_ctrl_input.original_slice.semantic.txt"
-GEN_SEM="${OUT_DIR}/esqfunc_jmptbl_esq_poll_ctrl_input.generated_slice.semantic.txt"
+COMPARE_SCRIPT="src/decomp/scripts/compare_esqfunc_jmptbl_esq_pollctrlinput_trial_gcc.sh"
+ORIG_SEM="${OUT_DIR}/esqfunc_jmptbl_esq_pollctrlinput.original_slice.semantic.txt"
+GEN_SEM="${OUT_DIR}/esqfunc_jmptbl_esq_pollctrlinput.generated_slice.semantic.txt"
 
 mkdir -p "$LOG_DIR"
 
@@ -19,8 +19,8 @@ echo "promotion gate: gcc esqfunc_jmptbl_esq_poll_ctrl_input target"
 echo "compiler: ${CROSS_CC_BIN}"
 echo "gcc flags: ${GCC_CFLAGS_VALUE}"
 
-CROSS_CC="$CROSS_CC_BIN" GCC_CFLAGS="$GCC_CFLAGS_VALUE" bash "$COMPARE_SCRIPT" >"${LOG_DIR}/esqfunc_jmptbl_esq_poll_ctrl_input.compare.log" 2>&1
-echo "compare ok: esqfunc_jmptbl_esq_poll_ctrl_input (log: ${LOG_DIR}/esqfunc_jmptbl_esq_poll_ctrl_input.compare.log)"
+CROSS_CC="$CROSS_CC_BIN" GCC_CFLAGS="$GCC_CFLAGS_VALUE" bash "$COMPARE_SCRIPT" >"${LOG_DIR}/esqfunc_jmptbl_esq_pollctrlinput.compare.log" 2>&1
+echo "compare ok: esqfunc_jmptbl_esq_poll_ctrl_input (log: ${LOG_DIR}/esqfunc_jmptbl_esq_pollctrlinput.compare.log)"
 
 if ! cmp -s "$ORIG_SEM" "$GEN_SEM"; then
     echo "semantic mismatch: esqfunc_jmptbl_esq_poll_ctrl_input" >&2
@@ -30,11 +30,11 @@ fi
 echo "semantic ok: esqfunc_jmptbl_esq_poll_ctrl_input"
 
 echo "running hybrid build gate"
-bash ./decomp-build.sh >"${LOG_DIR}/decomp-build_esqfunc_jmptbl_esq_poll_ctrl_input.log" 2>&1
-echo "decomp-build ok (log: ${LOG_DIR}/decomp-build_esqfunc_jmptbl_esq_poll_ctrl_input.log)"
+bash ./decomp-build.sh >"${LOG_DIR}/decomp-build_esqfunc_jmptbl_esq_pollctrlinput.log" 2>&1
+echo "decomp-build ok (log: ${LOG_DIR}/decomp-build_esqfunc_jmptbl_esq_pollctrlinput.log)"
 
 echo "running canonical hash gate"
-bash ./test-hash.sh >"${LOG_DIR}/test-hash_esqfunc_jmptbl_esq_poll_ctrl_input.log" 2>&1
-echo "test-hash ok (log: ${LOG_DIR}/test-hash_esqfunc_jmptbl_esq_poll_ctrl_input.log)"
+bash ./test-hash.sh >"${LOG_DIR}/test-hash_esqfunc_jmptbl_esq_pollctrlinput.log" 2>&1
+echo "test-hash ok (log: ${LOG_DIR}/test-hash_esqfunc_jmptbl_esq_pollctrlinput.log)"
 
 echo "promotion gate passed"

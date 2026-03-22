@@ -1,17 +1,10 @@
+#include <exec/io.h>
 #include <exec/types.h>
-
-struct TrackdiskIoReqApprox {
-    UBYTE pad0[28];
-    UWORD io_Command;
-    UBYTE io_Error;
-    UBYTE pad1;
-    LONG io_Actual;
-};
 
 extern void *AbsExecBase;
 extern void *Global_REF_DOS_LIBRARY_2;
 extern void *DISKIO_TrackdiskMsgPortPtr;
-extern struct TrackdiskIoReqApprox *DISKIO_TrackdiskIoReqPtr;
+extern struct IOStdReq *DISKIO_TrackdiskIoReqPtr;
 
 extern LONG DISKIO_Drive0WriteProtectedCode;
 extern LONG DISKIO_DriveWriteProtectStatusCodeDrive1;
@@ -51,7 +44,7 @@ void DISKIO_ProbeDrivesAndAssignPaths(void)
     LONG unit;
 
     DISKIO_TrackdiskMsgPortPtr = (void *)GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal(0, 0);
-    DISKIO_TrackdiskIoReqPtr = (struct TrackdiskIoReqApprox *)GROUP_AG_JMPTBL_STRUCT_AllocWithOwner(
+    DISKIO_TrackdiskIoReqPtr = (struct IOStdReq *)GROUP_AG_JMPTBL_STRUCT_AllocWithOwner(
         DISKIO_TrackdiskMsgPortPtr, 56);
 
     for (unit = 0; unit < 4; unit++) {

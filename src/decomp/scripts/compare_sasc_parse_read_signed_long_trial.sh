@@ -4,12 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-ENTRY="PARSE_ReadSignedLong"
-ENTRY_LABEL="PARSE_ReadSignedLong_NegateValue"
-ENTRY_LABEL="PARSE_ReadSignedLong_ParseDone"
-ENTRY_LABEL="PARSE_ReadSignedLong_ParseLoop"
-ENTRY_LABEL="PARSE_ReadSignedLong_ParseLoopEntry"
-ENTRY_LABEL="PARSE_ReadSignedLong_StoreResult"
+ENTRY_ORIG="PARSE_ReadSignedLong"
 
 SASC_SRC="unknown10_parse_read_signed_long.c"
 SASC_DIR="src/decomp/sas_c"

@@ -1,7 +1,6 @@
 #include <exec/memory.h>
+#include <exec/lists.h>
 #include <exec/types.h>
-
-typedef struct MinList MinList;
 
 #ifndef MODE_OLDFILE
 #define MODE_OLDFILE 1005
@@ -28,15 +27,15 @@ extern const char Global_STR_ESQIFF_C_4[];
 extern const char Global_STR_ESQIFF_C_5[];
 extern const char Global_STR_ESQIFF_C_6[];
 extern void *Global_REF_DOS_LIBRARY_2;
-extern MinList ESQIFF_GAdsBrushListHead;
-extern MinList ESQIFF_LogoBrushListHead;
+extern struct MinList ESQIFF_GAdsBrushListHead;
+extern struct MinList ESQIFF_LogoBrushListHead;
 
 extern void _LVOForbid(void);
 extern void _LVOPermit(void);
 extern LONG _LVORead(void *dosBase, LONG fileHandle, void *buffer, LONG length);
 extern LONG _LVOClose(void *dosBase, LONG fileHandle);
 
-extern void ESQIFF_JMPTBL_BRUSH_FreeBrushList(MinList *head, LONG freePayload);
+extern void ESQIFF_JMPTBL_BRUSH_FreeBrushList(struct MinList *head, LONG freePayload);
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, LONG size);
 extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG line, ULONG bytes, ULONG flags);
 extern LONG DOS_OpenFileWithMode(const char *name, LONG mode);

@@ -23,31 +23,57 @@ extern UBYTE WDISP_AccumulatorRow3_CopperIndexEnd;
 extern void ESQ_MoveCopperEntryTowardEnd(LONG start, LONG end);
 extern void ESQ_MoveCopperEntryTowardStart(LONG start, LONG end);
 
-static void service_row(WORD *saturate, WORD *moveFlags, UBYTE *indexStart, UBYTE *indexEnd)
-{
-    if (*saturate != 1) {
-        return;
-    }
-    if (*moveFlags == 0) {
-        return;
-    }
-
-    *saturate = 0;
-    if ((*moveFlags & 2) != 0) {
-        ESQ_MoveCopperEntryTowardEnd((LONG)*indexStart, (LONG)*indexEnd);
-    } else {
-        ESQ_MoveCopperEntryTowardStart((LONG)*indexStart, (LONG)*indexEnd);
-    }
-}
-
 void ESQIFF_ServicePendingCopperPaletteMoves(void)
 {
-    service_row(&ACCUMULATOR_Row0_SaturateFlag, &WDISP_AccumulatorRow0_MoveFlags,
-                &WDISP_AccumulatorRow0_CopperIndexStart, &WDISP_AccumulatorRow0_CopperIndexEnd);
-    service_row(&ACCUMULATOR_Row1_SaturateFlag, &WDISP_AccumulatorRow1_MoveFlags,
-                &WDISP_AccumulatorRow1_CopperIndexStart, &WDISP_AccumulatorRow1_CopperIndexEnd);
-    service_row(&ACCUMULATOR_Row2_SaturateFlag, &WDISP_AccumulatorRow2_MoveFlags,
-                &WDISP_AccumulatorRow2_CopperIndexStart, &WDISP_AccumulatorRow2_CopperIndexEnd);
-    service_row(&ACCUMULATOR_Row3_SaturateFlag, &WDISP_AccumulatorRow3_MoveFlags,
-                &WDISP_AccumulatorRow3_CopperIndexStart, &WDISP_AccumulatorRow3_CopperIndexEnd);
+    if (ACCUMULATOR_Row0_SaturateFlag == 1) {
+        if (WDISP_AccumulatorRow0_MoveFlags != 0) {
+            ACCUMULATOR_Row0_SaturateFlag = 0;
+            if ((WDISP_AccumulatorRow0_MoveFlags & 2) != 0) {
+                ESQ_MoveCopperEntryTowardEnd((LONG)WDISP_AccumulatorRow0_CopperIndexStart,
+                                             (LONG)WDISP_AccumulatorRow0_CopperIndexEnd);
+            } else {
+                ESQ_MoveCopperEntryTowardStart((LONG)WDISP_AccumulatorRow0_CopperIndexStart,
+                                               (LONG)WDISP_AccumulatorRow0_CopperIndexEnd);
+            }
+        }
+    }
+
+    if (ACCUMULATOR_Row1_SaturateFlag == 1) {
+        if (WDISP_AccumulatorRow1_MoveFlags != 0) {
+            ACCUMULATOR_Row1_SaturateFlag = 0;
+            if ((WDISP_AccumulatorRow1_MoveFlags & 2) != 0) {
+                ESQ_MoveCopperEntryTowardEnd((LONG)WDISP_AccumulatorRow1_CopperIndexStart,
+                                             (LONG)WDISP_AccumulatorRow1_CopperIndexEnd);
+            } else {
+                ESQ_MoveCopperEntryTowardStart((LONG)WDISP_AccumulatorRow1_CopperIndexStart,
+                                               (LONG)WDISP_AccumulatorRow1_CopperIndexEnd);
+            }
+        }
+    }
+
+    if (ACCUMULATOR_Row2_SaturateFlag == 1) {
+        if (WDISP_AccumulatorRow2_MoveFlags != 0) {
+            ACCUMULATOR_Row2_SaturateFlag = 0;
+            if ((WDISP_AccumulatorRow2_MoveFlags & 2) != 0) {
+                ESQ_MoveCopperEntryTowardEnd((LONG)WDISP_AccumulatorRow2_CopperIndexStart,
+                                             (LONG)WDISP_AccumulatorRow2_CopperIndexEnd);
+            } else {
+                ESQ_MoveCopperEntryTowardStart((LONG)WDISP_AccumulatorRow2_CopperIndexStart,
+                                               (LONG)WDISP_AccumulatorRow2_CopperIndexEnd);
+            }
+        }
+    }
+
+    if (ACCUMULATOR_Row3_SaturateFlag == 1) {
+        if (WDISP_AccumulatorRow3_MoveFlags != 0) {
+            ACCUMULATOR_Row3_SaturateFlag = 0;
+            if ((WDISP_AccumulatorRow3_MoveFlags & 2) != 0) {
+                ESQ_MoveCopperEntryTowardEnd((LONG)WDISP_AccumulatorRow3_CopperIndexStart,
+                                             (LONG)WDISP_AccumulatorRow3_CopperIndexEnd);
+            } else {
+                ESQ_MoveCopperEntryTowardStart((LONG)WDISP_AccumulatorRow3_CopperIndexStart,
+                                               (LONG)WDISP_AccumulatorRow3_CopperIndexEnd);
+            }
+        }
+    }
 }

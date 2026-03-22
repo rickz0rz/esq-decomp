@@ -27,7 +27,7 @@ awk -v start="^${ENTRY}:$" -v next_label="^;------------------------------------
 awk -v e="^${ENTRY}:$" -v e2="$ENTRY_SASC_REGEX" '
   $0 ~ e || $0 ~ e2 { in_func=1 }
   in_func {
-    if (($0 ~ /^[A-Z0-9_]+:$/ || $0 ~ /^_?[A-Z0-9_]+:$/) && $0 !~ e && $0 !~ e2) exit
+    if (($0 ~ /^_?[A-Za-z0-9_]+:$/) && $0 !~ /^___/ && $0 !~ e && $0 !~ e2) exit
     if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/ || $0 ~ /^__const:$/) exit
     print
   }

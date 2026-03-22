@@ -1,4 +1,4 @@
-BEGIN{h_entry=0;h_state=0;h_header=0;h_halfhour=0;h_wild=0;h_select_pen=0;h_frame=0;h_modeptr=0;h_state_code=0;h_test_state=0;h_prev=0;h_layout=0;h_draw_row=0;h_markers=0;h_draw_cell=0;h_visible=0;h_placeholder=0;h_state45=0;h_const3=0;h_rts=0}
+BEGIN{h_entry=0;h_state=0;h_header=0;h_halfhour=0;h_wild=0;h_select_pen=0;h_frame=0;h_modeptr=0;h_state_code=0;h_test_state=0;h_prev=0;h_layout=0;h_draw_row=0;h_markers=0;h_draw_cell=0;h_visible=0;h_placeholder=0;h_state45=0;h_const3=0;h_pair=0;h_bit7=0;h_first=0;h_rts=0}
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
 {
     l=t($0)
@@ -22,6 +22,9 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /CONFIG_NEWGRIDPLACEHOLDERBEVELFLAG/ || l ~ /#\$59/ || l ~ /PLACEHOLDERBEVEL/)h_placeholder=1
     if(l ~ /GRIDENTRIESWORKFLOWSTATE/ && (l ~ /#4([^0-9]|$)/ || l ~ /#5([^0-9]|$)/ || l ~ /MOVE\.L D[0-7],NEWGRID_GRIDENTRIESWORKFLOWSTATE/))h_state45=1
     if(l ~ /#3([^0-9]|$)/ || l ~ /CMP\.L D[0-7],D[0-7]/ || l ~ /ROWSPAN == 3/)h_const3=1
+    if(l ~ /BTST #7/ || l ~ /BTST #\$7/ || l ~ /#\$80/ || l ~ /ROWFLAGS\[1\]/)h_bit7=1
+    if(l ~ /TESTENTRYSTATE/ && l ~ /ADDQ\.(W|L) #1/ || l ~ /RIGHTSTATE = 2/ || l ~ /RIGHTSTATE = 1/)h_pair=1
+    if(l ~ /FIRSTENTRY/ || l ~ /MOVE\.L A0,-8\(A5\)/ || l ~ /MOVE\.L -8\(A5\),-\(A7\)/ || l ~ /MOVE\.L A2,-\(A7\)/)h_first=1
     if(l=="RTS")h_rts=1
 }
 END{
@@ -44,5 +47,8 @@ END{
     print "HAS_PLACEHOLDER_FLAG="h_placeholder
     print "HAS_STATE_4_5="h_state45
     print "HAS_CONST_3="h_const3
+    print "HAS_TRAILING_PAIR_LOGIC="h_pair
+    print "HAS_BIT7_EDGE_CASE="h_bit7
+    print "HAS_FIRST_ENTRY_CAPTURE="h_first
     print "HAS_RTS="h_rts
 }

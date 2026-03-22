@@ -19,8 +19,11 @@ BEGIN {
     has_accum_active = 0
     has_accum_flush = 0
     has_gate = 0
+    has_gate_pad = 0
     has_nib_primary = 0
     has_nib_secondary = 0
+    has_center_offset = 0
+    has_center_shift = 0
     has_return = 0
 }
 
@@ -60,8 +63,11 @@ function trim(s, t) {
     if (n ~ /WDISPACCUMULATORCAPTUREACTIVE/ || n ~ /WDISPACCUMULATORCAPTUREACT/) has_accum_active = 1
     if (n ~ /WDISPACCUMULATORFLUSHPENDING/ || n ~ /WDISPACCUMULATORFLUSHPENDIN/) has_accum_flush = 1
     if (n ~ /CLOCKALIGNEDINSETRENDERGATEFLAG/ || n ~ /CLOCKALIGNEDINSETRENDERGATEFL/) has_gate = 1
+    if (n ~ /MOVEQ8/ || n ~ /ADDQL8/ || n ~ /ADDIW8/ || n ~ /ADDIL8/) has_gate_pad = 1
     if (n ~ /CLEANUPALIGNEDINSETNIBBLEPRIMARY/ || n ~ /CLEANUPALIGNEDINSETNIBBLEPRIM/) has_nib_primary = 1
     if (n ~ /CLEANUPALIGNEDINSETNIBBLESECONDARY/ || n ~ /CLEANUPALIGNEDINSETNIBBLESECO/) has_nib_secondary = 1
+    if (n ~ /SUBLD0D1/ || n ~ /SUBLD1D0/ || n ~ /SUBL/) has_center_offset = 1
+    if (n ~ /ASRL1D1/ || n ~ /ASRL1D0/ || n ~ /ASRW1D1/ || n ~ /ASRW1D0/) has_center_shift = 1
     if (u == "RTS") has_return = 1
 }
 
@@ -86,7 +92,10 @@ END {
     print "HAS_ACCUM_ACTIVE=" has_accum_active
     print "HAS_ACCUM_FLUSH=" has_accum_flush
     print "HAS_GATE=" has_gate
+    print "HAS_GATE_PAD=" has_gate_pad
     print "HAS_NIB_PRIMARY=" has_nib_primary
     print "HAS_NIB_SECONDARY=" has_nib_secondary
+    print "HAS_CENTER_OFFSET=" has_center_offset
+    print "HAS_CENTER_SHIFT=" has_center_shift
     print "HAS_RETURN=" has_return
 }

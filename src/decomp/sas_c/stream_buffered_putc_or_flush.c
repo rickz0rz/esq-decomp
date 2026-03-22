@@ -33,9 +33,7 @@ extern LONG BUFFER_EnsureAllocated(PreallocHandleNode *node);
 extern LONG DOS_SeekByIndex(LONG handleIndex, LONG offset, LONG mode);
 extern LONG DOS_ReadByIndex(LONG handleIndex, void *buffer, LONG length);
 extern LONG DOS_WriteByIndex(LONG handleIndex, void *buffer, LONG length);
-
-static UBYTE *mode_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->mode_state_flags) + 2; }
-static UBYTE *state_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->mode_state_flags) + 3; }
+extern LONG DOS_MovepWordReadCallback(void);
 
 LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
 {
@@ -46,8 +44,8 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
     UBYTE *state;
     UBYTE *mode;
 
-    mode = mode_flags_ptr(node);
-    state = state_flags_ptr(node);
+    mode = ((UBYTE *)&node->mode_state_flags) + 2;
+    state = mode + 1;
     isTextMode = ((*mode & (1u << MODE_TEXT_TRANSLATE_BIT)) != 0) ? 1 : 0;
 
     if ((node->mode_state_flags & OPEN_MASK_WRITE_REJECT) != 0) {
@@ -80,10 +78,11 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
 
         singleByte = (UBYTE)ch;
         if (isTextMode != 0 && ch == CHAR_LF) {
-            UBYTE crlf[2];
-            crlf[0] = CHAR_CR;
-            crlf[1] = CHAR_LF;
-            bytesWritten = DOS_WriteByIndex(node->handle_index, crlf, 2);
+            bytesWritten = DOS_WriteByIndex(
+                node->handle_index,
+                (void *)&DOS_MovepWordReadCallback,
+                2
+            );
         } else {
             bytesWritten = DOS_WriteByIndex(node->handle_index, &singleByte, 1);
         }

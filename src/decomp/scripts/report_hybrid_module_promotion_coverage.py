@@ -35,8 +35,8 @@ class ModuleStats:
     gcc_target_names: set[str] = field(default_factory=set)
     gcc_non_jmptbl_targets: set[str] = field(default_factory=set)
     sasc_compare_scripts: set[str] = field(default_factory=set)
-    sasc_entry_names: set[str] = field(default_factory=set)
-    sasc_non_jmptbl_entries: set[str] = field(default_factory=set)
+    sasc_target_names: set[str] = field(default_factory=set)
+    sasc_non_jmptbl_targets: set[str] = field(default_factory=set)
 
 
 def parse_args() -> argparse.Namespace:
@@ -151,6 +151,32 @@ def target_name_from_compare_script(compare_name: str) -> str:
     return name
 
 
+def canonicalize_symbol_name(name: str) -> str:
+    name = re.sub(r"^_+", "", name)
+    name = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", name)
+    name = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1_\2", name)
+    name = re.sub(r"_+", "_", name)
+    return name.lower()
+
+
+def target_name_from_sasc_compare_script(compare_name: str, entry_names: list[str]) -> str:
+    for entry_name in entry_names:
+        if "jmptbl" in entry_name.lower():
+            continue
+        return canonicalize_symbol_name(entry_name)
+
+    name = compare_name
+    if name.startswith("compare_sasc_"):
+        name = name[len("compare_sasc_") :]
+    elif name.startswith("compare_"):
+        name = name[len("compare_") :]
+    if name.endswith("_trial.sh"):
+        name = name[: -len("_trial.sh")]
+    elif name.endswith(".sh"):
+        name = name[:-3]
+    return name
+
+
 def collect_module_stats(repo_root: Path) -> tuple[dict[str, ModuleStats], int]:
     scripts_dir = repo_root / "src/decomp/scripts"
     compare_index = build_compare_module_index(scripts_dir)
@@ -189,10 +215,10 @@ def collect_module_stats(repo_root: Path) -> tuple[dict[str, ModuleStats], int]:
         module_path = normalize_module_path(module_path)
         stats = modules[module_path]
         stats.sasc_compare_scripts.add(compare_path.name)
-        for entry_name in entry_names:
-            stats.sasc_entry_names.add(entry_name)
-            if "jmptbl" not in entry_name.lower():
-                stats.sasc_non_jmptbl_entries.add(entry_name)
+        target_name = target_name_from_sasc_compare_script(compare_path.name, entry_names)
+        stats.sasc_target_names.add(target_name)
+        if "jmptbl" not in target_name.lower():
+            stats.sasc_non_jmptbl_targets.add(target_name)
 
     return modules, unresolved_promotes
 
@@ -249,7 +275,7 @@ def main() -> int:
             (
                 0 if module not in mapped_modules else 1,
                 -len(stats.gcc_non_jmptbl_targets),
-                -len(stats.sasc_non_jmptbl_entries),
+                -len(stats.sasc_non_jmptbl_targets),
                 -len(stats.gcc_target_names),
                 module,
                 stats,
@@ -270,10 +296,10 @@ def main() -> int:
         status = "mapped" if module in mapped_modules else "unmapped"
         print(
             f"{status:7}  {len(stats.gcc_non_jmptbl_targets):13d}  "
-            f"{len(stats.sasc_non_jmptbl_entries):14d}  "
-            f"{len(stats.gcc_target_names):9d}  {len(stats.sasc_entry_names):10d}  "
+            f"{len(stats.sasc_non_jmptbl_targets):14d}  "
+            f"{len(stats.gcc_target_names):9d}  {len(stats.sasc_target_names):10d}  "
             f"{module:48}  "
-            f"{format_samples(stats.gcc_non_jmptbl_targets or stats.sasc_non_jmptbl_entries or stats.gcc_target_names)}"
+            f"{format_samples(stats.gcc_non_jmptbl_targets or stats.sasc_non_jmptbl_targets or stats.gcc_target_names)}"
         )
 
     return 0

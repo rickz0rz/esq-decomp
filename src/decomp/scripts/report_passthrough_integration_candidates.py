@@ -51,6 +51,10 @@ class ModuleStats:
     def is_complete(self) -> bool:
         return bool(self.asm_tracked_exports) and not self.missing_exports
 
+    @property
+    def is_exportless(self) -> bool:
+        return not self.asm_tracked_exports
+
 
 @dataclass
 class CompareVerification:
@@ -310,6 +314,10 @@ def main() -> int:
 
     rows = []
     complete_passthrough = 0
+    partial_passthrough = 0
+    complete_custom = 0
+    partial_custom = 0
+    exportless_modules = 0
 
     for module_path, replacement_path in sorted(mapped_modules.items()):
         if args.module_filter and args.module_filter not in module_path:
@@ -319,8 +327,16 @@ def main() -> int:
         stats.asm_tracked_exports = load_asm_tracked_exports(repo_root, module_path)
         passthrough = replacement_is_passthrough(repo_root, module_path, replacement_path)
 
-        if passthrough and stats.is_complete:
+        if stats.is_exportless:
+            exportless_modules += 1
+        elif passthrough and stats.is_complete:
             complete_passthrough += 1
+        elif passthrough:
+            partial_passthrough += 1
+        elif stats.is_complete:
+            complete_custom += 1
+        else:
+            partial_custom += 1
 
         if not args.all and not (passthrough and stats.is_complete):
             continue
@@ -353,6 +369,20 @@ def main() -> int:
 
     print(f"mapped modules considered: {len(mapped_modules)}")
     print(f"complete passthrough candidates: {complete_passthrough}")
+    print(f"partial passthrough modules: {partial_passthrough}")
+    print(f"complete direct/custom replacements: {complete_custom}")
+    print(f"partial direct/custom replacements: {partial_custom}")
+    if exportless_modules:
+        print(f"mapped modules with no callable exports: {exportless_modules}")
+    if complete_passthrough == 0 and not args.all:
+        if partial_passthrough:
+            print("next step: no fully covered passthrough modules remain; remaining passthrough rows still need SAS/C coverage before object-level promotion.")
+        elif partial_custom:
+            print("next step: no passthrough queue remains; continue tightening partially covered direct/custom replacement modules.")
+        elif exportless_modules:
+            print("next step: passthrough integration queue is exhausted; remaining non-code mapped rows do not need SAS/C compare coverage.")
+        else:
+            print("next step: passthrough integration queue is exhausted in this checkout; use the broader coverage reports to look for new mapping or out-of-band mismatch work.")
     print()
 
     header = (
@@ -366,7 +396,9 @@ def main() -> int:
     print("-" * len(header))
 
     for _, _, _, module_path, replacement_path, passthrough, stats, verification in rows:
-        if passthrough and stats.is_complete:
+        if stats.is_exportless:
+            status = "n/a"
+        elif passthrough and stats.is_complete:
             status = "ready"
         elif passthrough:
             status = "partial"

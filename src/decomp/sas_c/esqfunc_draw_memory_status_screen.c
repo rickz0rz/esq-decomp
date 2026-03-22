@@ -92,7 +92,7 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
         WDISP_SPrintf(
             lineBuffer,
             Global_STR_DATA_CMDS_CERRS_LERRS,
-            (LONG)ESQIFF_ParseAttemptCount,
+            (LONG)(UWORD)ESQIFF_ParseAttemptCount,
             (LONG)DATACErrs,
             (LONG)ESQIFF_LineErrorCount
         );
@@ -101,7 +101,7 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
         WDISP_SPrintf(
             lineBuffer,
             Global_STR_CTRL_CMDS_CERRS_LERRS,
-            (LONG)SCRIPT_CtrlCmdCount,
+            (LONG)(UWORD)SCRIPT_CtrlCmdCount,
             (LONG)SCRIPT_CtrlCmdChecksumErrorCount,
             (LONG)SCRIPT_CtrlCmdLengthErrorCount
         );
@@ -135,7 +135,7 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
         WDISP_SPrintf(
             lineBuffer,
             Global_STR_DATA_OVERRUNS_FORMATTED,
-            (LONG)ESQ_SerialRbfErrorCount
+            (LONG)(UWORD)ESQ_SerialRbfErrorCount
         );
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 202, lineBuffer);
 
@@ -143,10 +143,10 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
         WDISP_SPrintf(
             lineBuffer,
             Global_STR_DATA_H_T_C_MAX_FORMATTED,
-            (LONG)Global_WORD_H_VALUE,
-            (LONG)Global_WORD_T_VALUE,
+            (LONG)(UWORD)Global_WORD_H_VALUE,
+            (LONG)(UWORD)Global_WORD_T_VALUE,
             currentMaxValue,
-            (LONG)Global_WORD_MAX_VALUE
+            (LONG)(UWORD)Global_WORD_MAX_VALUE
         );
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 232, lineBuffer);
 
@@ -154,10 +154,10 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
         WDISP_SPrintf(
             lineBuffer,
             Global_STR_CTRL_H_T_C_MAX_FORMATTED,
-            (LONG)CTRL_H,
-            (LONG)CTRL_HPreviousSample,
+            (LONG)(UWORD)CTRL_H,
+            (LONG)(UWORD)CTRL_HPreviousSample,
             currentMaxValue,
-            (LONG)CTRL_HDeltaMax
+            (LONG)(UWORD)CTRL_HDeltaMax
         );
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 262, lineBuffer);
     }
@@ -221,7 +221,7 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
             Global_STR_C_HOUR_B_HOUR_CS_FORMATTED,
             (LONG)CLOCK_CacheHour,
             (LONG)Global_WORD_CURRENT_HOUR,
-            (LONG)CLOCK_HalfHourSlotIndex
+            (LONG)(UWORD)CLOCK_HalfHourSlotIndex
         );
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 292, lineBuffer);
     }

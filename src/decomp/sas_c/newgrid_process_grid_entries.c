@@ -1,8 +1,11 @@
 #include <exec/types.h>
 
 typedef struct LayoutCtx {
-    UWORD currentHalfHeight;
+    UBYTE pad0[32];
     LONG currentVisibleLines;
+    UBYTE pad1[16];
+    UWORD currentHalfHeight;
+    UBYTE pad2[6];
     char scratch[60];
 } LayoutCtx;
 
@@ -58,6 +61,7 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
     LONG keepMarkers = 1;
     UWORD row = 0;
     UWORD rowSpan = 0;
+    const NEWGRID_Entry *firstEntry = 0;
 
     if (!ctx) {
         NEWGRID_GridEntriesWorkflowState = 4;
@@ -95,51 +99,141 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
         LONG state = 0;
         LONG leftState = 0;
         LONG rightState = 0;
-        UWORD nextSpan = 1;
+        UWORD nextSpan = 0;
         LONG rowIdx = (LONG)startRow + (LONG)row;
-        LONG mode = (rowIdx > 48 || startRow == 1 || (ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) ? 2 : 1;
-        LONG modeIdx = (mode == 2 && rowIdx > 48) ? (rowIdx - 48) : rowIdx;
+        LONG displayRowIdx = 0;
+        LONG testRowIdx = 0;
 
-        entry = (const NEWGRID_Entry *)ESQDISP_GetEntryPointerByMode((mode == 2) ? wildcardIdx : titleIdx, mode);
-        aux = (const NEWGRID_AuxData *)ESQDISP_GetEntryAuxPointerByMode((mode == 2) ? wildcardIdx : titleIdx, mode);
+        NEWGRID_SelectionMarkerPenState = -1;
+        NEWGRID_RowLayoutCommitPenId = -1;
+
+        if (rowIdx > 48 || startRow == 1 || (ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) {
+            entry = (const NEWGRID_Entry *)ESQDISP_GetEntryPointerByMode(wildcardIdx, 2);
+            aux = (const NEWGRID_AuxData *)ESQDISP_GetEntryAuxPointerByMode(wildcardIdx, 2);
+            displayRowIdx = rowIdx;
+            if (displayRowIdx > 48) {
+                displayRowIdx -= 48;
+            }
+            testRowIdx = displayRowIdx + 48;
+        } else {
+            entry = (const NEWGRID_Entry *)ESQDISP_GetEntryPointerByMode(titleIdx, 1);
+            aux = (const NEWGRID_AuxData *)ESQDISP_GetEntryAuxPointerByMode(titleIdx, 1);
+            displayRowIdx = rowIdx;
+            testRowIdx = rowIdx;
+        }
 
         if (entry && aux) {
-            const char *entryText = (const char *)entry;
-            const char *auxText = (const char *)aux;
-            state = NEWGRID_GetEntryStateCode(entry, aux, modeIdx);
+            LONG prevRowIdx = displayRowIdx;
+
+            if (row == 0) {
+                firstEntry = entry;
+            }
+
+            state = NEWGRID_GetEntryStateCode(entry, aux, (UWORD)displayRowIdx);
             nextSpan = 1;
             while ((LONG)row + (LONG)nextSpan < 3) {
-                if (!NEWGRID_TestEntryState(state, titleIdx, wildcardIdx, modeIdx + nextSpan)) break;
+                if (NEWGRID_TestEntryState(state, titleIdx, wildcardIdx, testRowIdx + nextSpan) == 0) {
+                    break;
+                }
                 nextSpan++;
             }
 
             if (state == 3) {
-                LONG prev = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entryText, auxText, modeIdx);
-                state = (prev == 0) ? 1 : 2;
+                prevRowIdx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(
+                    (const char *)entry,
+                    (const char *)aux,
+                    displayRowIdx);
+                state = (prevRowIdx != 0) ? 2 : 1;
             }
 
-            leftState = (state == 2) ? 2 : 0;
-            rightState = ((LONG)row + (LONG)nextSpan == 3) ? 1 : 0;
+            if (state == 2) {
+                if (row == 0) {
+                    LONG stateDelta = displayRowIdx - prevRowIdx;
 
-            NEWGRID_RowLayoutCommitPenId = NEWGRID_OverridePenIndex;
-            NEWGRID_SelectionMarkerPenState = (aux->rowFlags[modeIdx] & 0x04) ? 5 : -1;
+                    if (stateDelta > 1) {
+                        leftState = 2;
+                    } else if ((stateDelta - 1) == 0) {
+                        leftState = 1;
+                    } else if (displayRowIdx == 1 && (aux->rowFlags[1] & 0x80) != 0) {
+                        LONG wrapState = NEWGRID_GetEntryStateCode(
+                            TEXTDISP_PrimaryEntryPtrTable[titleIdx],
+                            TEXTDISP_PrimaryTitlePtrTable[titleIdx],
+                            48);
+                        leftState = (wrapState == 2) ? 1 : 2;
+                    } else if (displayRowIdx == 2 && prevRowIdx == 1) {
+                        leftState = ((aux->rowFlags[1] & 0x80) != 0) ? 2 : 1;
+                    }
+                }
 
-            if (nextSpan == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y') {
-                NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams((NEWGRID_ColumnWidthPx * nextSpan) - 12, 20, NEWGRID_RowLayoutCommitPenId);
+                if ((LONG)row + (LONG)nextSpan == 3) {
+                    if (NEWGRID_TestEntryState(state, titleIdx, wildcardIdx, testRowIdx + nextSpan) != 0) {
+                        if (NEWGRID_TestEntryState(state, titleIdx, wildcardIdx, testRowIdx + nextSpan + 1) != 0) {
+                            rightState = 2;
+                        } else {
+                            rightState = 1;
+                        }
+                    }
+                }
+
+                NEWGRID_RowLayoutCommitPenId = NEWGRID_OverridePenIndex;
+                NEWGRID_SelectionMarkerPenState = (aux->rowFlags[prevRowIdx] & 0x04) ? 5 : -1;
+
+                if (nextSpan == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y') {
+                    NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(
+                        (NEWGRID_ColumnWidthPx * nextSpan) - 12,
+                        20,
+                        NEWGRID_RowLayoutCommitPenId);
+                } else {
+                    NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(
+                        (NEWGRID_ColumnWidthPx * nextSpan) - 12,
+                        2,
+                        NEWGRID_RowLayoutCommitPenId);
+                }
+
+                ((LONG (*)(char *, LONG, LONG))NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths)(
+                    ctxView->scratch,
+                    leftState,
+                    rightState);
+                NEWGRID_DrawEntryRowOrPlaceholder(
+                    ctxView->scratch,
+                    (char *)entry,
+                    (LONG)aux,
+                    prevRowIdx,
+                    nextSpan,
+                    state);
             } else {
-                NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams((NEWGRID_ColumnWidthPx * nextSpan) - 12, 2, NEWGRID_RowLayoutCommitPenId);
+                if (nextSpan < 3) {
+                    NEWGRID_SelectionMarkerPenState = -1;
+                    NEWGRID_RowLayoutCommitPenId = 1;
+                    NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(
+                        (NEWGRID_ColumnWidthPx * nextSpan) - 12,
+                        2,
+                        1);
+                    NEWGRID_DrawEntryRowOrPlaceholder(
+                        ctxView->scratch,
+                        (char *)entry,
+                        (LONG)aux,
+                        prevRowIdx,
+                        nextSpan,
+                        state);
+                } else {
+                    keepMarkers = 0;
+                }
             }
-
-            ((LONG (*)(char *, LONG, LONG))NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths)(
-                ctxView->scratch, leftState, rightState);
-            NEWGRID_DrawEntryRowOrPlaceholder(ctxView->scratch, (char *)entry, (LONG)aux, modeIdx, nextSpan, state);
         } else {
             nextSpan = (UWORD)(3 - row);
             if (nextSpan < 3) {
                 NEWGRID_SelectionMarkerPenState = -1;
                 NEWGRID_RowLayoutCommitPenId = 1;
                 NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams((NEWGRID_ColumnWidthPx * nextSpan) - 12, 2, 1);
-                NEWGRID_DrawEntryRowOrPlaceholder(ctxView->scratch, (char *)entry, (LONG)aux, modeIdx, nextSpan, 1);
+                state = 1;
+                NEWGRID_DrawEntryRowOrPlaceholder(
+                    ctxView->scratch,
+                    (char *)entry,
+                    (LONG)aux,
+                    displayRowIdx,
+                    nextSpan,
+                    state);
             } else {
                 keepMarkers = 0;
             }
@@ -154,13 +248,13 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
 
     if (keepMarkers) {
         if (rowSpan == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y' && NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
-            NEWGRID_DrawGridCell(ctxView->scratch, (char *)NEWGRID_SelectedGridEntryPtr, 0);
+            NEWGRID_DrawGridCell(ctxView->scratch, firstEntry, 0);
             NEWGRID_GridEntriesWorkflowState = 5;
             if (NEWGRID_SelectionMarkerPenState == -1) {
                 NEWGRID_SelectionMarkerPenState = NEWGRID_SelectedGridEntryPtr;
             }
         } else {
-            NEWGRID_DrawGridCell(ctxView->scratch, (char *)NEWGRID_SelectedGridEntryPtr, 1);
+            NEWGRID_DrawGridCell(ctxView->scratch, firstEntry, 1);
             NEWGRID_GridEntriesWorkflowState = 4;
         }
 
