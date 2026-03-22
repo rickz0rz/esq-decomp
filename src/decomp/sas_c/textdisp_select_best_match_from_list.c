@@ -144,7 +144,7 @@ LONG TEXTDISP_SelectBestMatchFromList(char *titles, UWORD candidateCount, UWORD 
 
         usageCount = TEXTDISP_GetUsageCount(titlePtr, (WORD)candidateSlot);
 
-        if (timeOffset > 0 && usageCount > (UWORD)previousUsageCount) {
+        if (timeOffset > 0 && usageCount < (UWORD)previousUsageCount) {
             TEXTDISP_BannerSelectedValidFlag = 1;
             TEXTDISP_BannerCharSelected = (UBYTE)candidateSlot;
             TEXTDISP_BannerSelectedEntryIndex = (UBYTE)TEXTDISP_CurrentMatchIndex;
@@ -160,7 +160,7 @@ LONG TEXTDISP_SelectBestMatchFromList(char *titles, UWORD candidateCount, UWORD 
         } else if (TEXTDISP_BannerSelectedValidFlag == 0 &&
                    timeOffset <= 0 &&
                    timeOffset > (LONG)bestNegativeDelta &&
-                   usageCount > (UWORD)previousUsageCount) {
+                   usageCount < (UWORD)previousUsageCount) {
             TEXTDISP_BannerCharSelected = (UBYTE)candidateSlot;
             TEXTDISP_BannerSelectedEntryIndex = (UBYTE)TEXTDISP_CurrentMatchIndex;
             TEXTDISP_BannerSelectedIsSpecialFlag = (UBYTE)specialFlag;

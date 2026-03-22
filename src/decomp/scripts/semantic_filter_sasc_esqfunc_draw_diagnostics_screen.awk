@@ -13,6 +13,27 @@ BEGIN {
     has_update_ctrl_h = 0
     has_diag_row = 0
     has_true_false = 0
+    has_clock_ampm = 0
+    has_runtime_mode = 0
+    has_row_92 = 0
+    has_row_110 = 0
+    has_row_128 = 0
+    has_row_146 = 0
+    has_row_164 = 0
+    has_row_182 = 0
+    has_row_200 = 0
+    has_row_218 = 0
+    draw_stage = 0
+    pending_topaz_font = 0
+    pending_prevuec_font = 0
+    pending_row_92 = 0
+    pending_row_110 = 0
+    pending_row_128 = 0
+    pending_row_146 = 0
+    pending_row_164 = 0
+    pending_row_182 = 0
+    pending_row_200 = 0
+    pending_row_218 = 0
     has_rts = 0
 }
 
@@ -33,19 +54,77 @@ function trim(s,    t) {
     gsub(/[^A-Z0-9]/, "", n)
 
     if (u ~ /^ESQFUNC_DRAWDIAGNOSTICSSCREEN:/) has_entry = 1
-    if (n ~ /LVOSETFONT/ && n ~ /GLOBALHANDLETOPAZFONT/) has_set_font_topaz = 1
-    if (n ~ /LVOSETFONT/ && n ~ /GLOBALHANDLEPREVUECFONT/) has_set_font_prevuec = 1
+    if (n ~ /GLOBALHANDLETOPAZFONT/) pending_topaz_font = 1
+    if (n ~ /GLOBALHANDLEPREVUECFONT/) pending_prevuec_font = 1
+    if (n ~ /LVOSETFONT/) {
+        if (pending_topaz_font != 0) has_set_font_topaz = 1
+        if (pending_prevuec_font != 0) has_set_font_prevuec = 1
+        pending_topaz_font = 0
+        pending_prevuec_font = 0
+    }
     if (n ~ /ESQCOPPERSTATUSDIGITSA/ || n ~ /ESQCOPPERSTATUSDIGITSBCOLORREGISTERSA/ || n ~ /TAILCOLORWORD/) has_copper_init = 1
     if (n ~ /READCIABBIT5MASK/ || n ~ /SCRIPTREADHANDSHAKEBIT5MASK/ || n ~ /READCIABBI/) has_bit5 = 1
     if (n ~ /SCRIPTGETCTRLLINEFLAG/) has_ctrl_line = 1
     if (n ~ /READCIABBIT3FLAG/ || n ~ /SCRIPTREADHANDSHAKEBIT3FLAG/ || n ~ /READCIABBI/) has_bit3 = 1
     if (n ~ /WDISPSPRINTF/) has_sprintf = 1
-    if (n ~ /DRAWCENTEREDWRAPPEDTEXTLINES/ || n ~ /DRAWCENTEREDWRAPPEDTEXTLI/) has_draw_centered = 1
+    if (u ~ /92\.W/ || u ~ /\(\$5C\)\.W/) pending_row_92 = 1
+    if (u ~ /110\.W/ || u ~ /\(\$6E\)\.W/) pending_row_110 = 1
+    if (u ~ /128\.W/ || u ~ /\(\$80\)\.W/) pending_row_128 = 1
+    if (u ~ /146\.W/ || u ~ /\(\$92\)\.W/) pending_row_146 = 1
+    if (u ~ /164\.W/ || u ~ /\(\$A4\)\.W/) pending_row_164 = 1
+    if (u ~ /182\.W/ || u ~ /\(\$B6\)\.W/) pending_row_182 = 1
+    if (u ~ /200\.W/ || u ~ /\(\$C8\)\.W/) pending_row_200 = 1
+    if (u ~ /218\.W/ || u ~ /\(\$DA\)\.W/) pending_row_218 = 1
+    if (n ~ /DRAWCENTEREDWRAPPEDTEXTLINES/ || n ~ /DRAWCENTEREDWRAPPEDTEXTLI/) {
+        has_draw_centered = 1
+        if (pending_row_92 != 0) {
+            has_row_92 = 1
+            if (draw_stage == 0) draw_stage = 1
+            pending_row_92 = 0
+        }
+        if (pending_row_110 != 0) {
+            has_row_110 = 1
+            if (draw_stage == 1) draw_stage = 2
+            pending_row_110 = 0
+        }
+        if (pending_row_128 != 0) {
+            has_row_128 = 1
+            if (draw_stage == 2) draw_stage = 3
+            pending_row_128 = 0
+        }
+        if (pending_row_146 != 0) {
+            has_row_146 = 1
+            if (draw_stage == 3) draw_stage = 4
+            pending_row_146 = 0
+        }
+        if (pending_row_164 != 0) {
+            has_row_164 = 1
+            if (draw_stage == 4) draw_stage = 5
+            pending_row_164 = 0
+        }
+        if (pending_row_182 != 0) {
+            has_row_182 = 1
+            if (draw_stage == 5) draw_stage = 6
+            pending_row_182 = 0
+        }
+        if (pending_row_200 != 0) {
+            has_row_200 = 1
+            if (draw_stage == 6) draw_stage = 7
+            pending_row_200 = 0
+        }
+        if (pending_row_218 != 0) {
+            has_row_218 = 1
+            if (draw_stage == 7) draw_stage = 8
+            pending_row_218 = 0
+        }
+    }
     if (n ~ /LVOAVAILMEM/) has_availmem = 1
     if (n ~ /PARSEINICOMPUTEHTCMAXVALUES/) has_compute_htc = 1
     if (n ~ /PARSEINIUPDATECTRLHDELTAMAX/) has_update_ctrl_h = 1
     if (n ~ /ESQFUNCDIAGROWCOUNTER/) has_diag_row = 1
     if (n ~ /GLOBALSTRTRUE2/ || n ~ /GLOBALSTRFALSE2/) has_true_false = 1
+    if (n ~ /ESQFUNCSTRPM/ || n ~ /ESQFUNCSTRAM/) has_clock_ampm = 1
+    if (n ~ /ESQFUNCSTRONAIR/ || n ~ /ESQFUNCSTROFFAIR/ || n ~ /ESQFUNCSTRNODETECT/) has_runtime_mode = 1
     if (u ~ /^RTS$/) has_rts = 1
 }
 
@@ -64,5 +143,16 @@ END {
     print "HAS_UPDATE_CTRL_H=" has_update_ctrl_h
     print "HAS_DIAG_ROW=" has_diag_row
     print "HAS_TRUE_FALSE=" has_true_false
+    print "HAS_CLOCK_AMPM=" has_clock_ampm
+    print "HAS_RUNTIME_MODE=" has_runtime_mode
+    print "HAS_ROW_92=" has_row_92
+    print "HAS_ROW_110=" has_row_110
+    print "HAS_ROW_128=" has_row_128
+    print "HAS_ROW_146=" has_row_146
+    print "HAS_ROW_164=" has_row_164
+    print "HAS_ROW_182=" has_row_182
+    print "HAS_ROW_200=" has_row_200
+    print "HAS_ROW_218=" has_row_218
+    print "HAS_DRAW_ROW_ORDER=" (draw_stage == 8 ? 1 : 0)
     print "HAS_RTS=" has_rts
 }

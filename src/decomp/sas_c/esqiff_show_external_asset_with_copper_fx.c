@@ -1,4 +1,5 @@
 #include <exec/types.h>
+#include "wdisp_accumulator_rows.h"
 #define ESQIFF_BRUSH_HEIGHT_OFFSET 178
 #define ESQIFF_BRUSH_PLANE_DEPTH_OFFSET 184
 #define ESQIFF_BRUSH_FLAGS196_OFFSET 196
@@ -44,20 +45,7 @@ extern void *ESQIFF_LogoBrushListHead;
 extern WORD SCRIPT_BannerTransitionActive;
 extern WORD WDISP_AccumulatorCaptureActive;
 extern WORD WDISP_AccumulatorFlushPending;
-extern UBYTE WDISP_AccumulatorRowTable[];
 extern UBYTE WDISP_PaletteTriplesRBase[];
-extern UBYTE WDISP_AccumulatorRow0_CopperIndexStart;
-extern UBYTE WDISP_AccumulatorRow0_CopperIndexEnd;
-extern WORD WDISP_AccumulatorRow0_Value;
-extern UBYTE WDISP_AccumulatorRow1_CopperIndexStart;
-extern UBYTE WDISP_AccumulatorRow1_CopperIndexEnd;
-extern WORD WDISP_AccumulatorRow1_Value;
-extern UBYTE WDISP_AccumulatorRow2_CopperIndexStart;
-extern UBYTE WDISP_AccumulatorRow2_CopperIndexEnd;
-extern WORD WDISP_AccumulatorRow2_Value;
-extern UBYTE WDISP_AccumulatorRow3_CopperIndexStart;
-extern UBYTE WDISP_AccumulatorRow3_CopperIndexEnd;
-extern WORD WDISP_AccumulatorRow3_Value;
 extern WORD ACCUMULATOR_Row0_CaptureValue;
 extern WORD ACCUMULATOR_Row1_CaptureValue;
 extern WORD ACCUMULATOR_Row2_CaptureValue;
@@ -164,7 +152,7 @@ void ESQIFF_ShowExternalAssetWithCopperFx(WORD refreshMode)
         _LVOCopyMem(
             (void *)AbsExecBase,
             brush + ESQIFF_BRUSH_ACCUMULATOR_ROWS_OFFSET + rowOffset,
-            WDISP_AccumulatorRowTable + rowOffset,
+            &WDISP_AccumulatorRowTable[rowIndex],
             ESQIFF_ACCUMULATOR_ROW_SIZE);
         rowIndex++;
     }
@@ -221,21 +209,21 @@ void ESQIFF_ShowExternalAssetWithCopperFx(WORD refreshMode)
     }
 
     ACCUMULATOR_Row0_CaptureValue = ESQIFF_CaptureAccumulatorValue(
-        WDISP_AccumulatorRow0_CopperIndexStart,
-        WDISP_AccumulatorRow0_CopperIndexEnd,
-        WDISP_AccumulatorRow0_Value);
+        WDISP_AccumulatorRowTable[0].copperIndexStart,
+        WDISP_AccumulatorRowTable[0].copperIndexEnd,
+        WDISP_AccumulatorRowTable[0].value);
     ACCUMULATOR_Row1_CaptureValue = ESQIFF_CaptureAccumulatorValue(
-        WDISP_AccumulatorRow1_CopperIndexStart,
-        WDISP_AccumulatorRow1_CopperIndexEnd,
-        WDISP_AccumulatorRow1_Value);
+        WDISP_AccumulatorRowTable[1].copperIndexStart,
+        WDISP_AccumulatorRowTable[1].copperIndexEnd,
+        WDISP_AccumulatorRowTable[1].value);
     ACCUMULATOR_Row2_CaptureValue = ESQIFF_CaptureAccumulatorValue(
-        WDISP_AccumulatorRow2_CopperIndexStart,
-        WDISP_AccumulatorRow2_CopperIndexEnd,
-        WDISP_AccumulatorRow2_Value);
+        WDISP_AccumulatorRowTable[2].copperIndexStart,
+        WDISP_AccumulatorRowTable[2].copperIndexEnd,
+        WDISP_AccumulatorRowTable[2].value);
     capture3 = ESQIFF_CaptureAccumulatorValue(
-        WDISP_AccumulatorRow3_CopperIndexStart,
-        WDISP_AccumulatorRow3_CopperIndexEnd,
-        WDISP_AccumulatorRow3_Value);
+        WDISP_AccumulatorRowTable[3].copperIndexStart,
+        WDISP_AccumulatorRowTable[3].copperIndexEnd,
+        WDISP_AccumulatorRowTable[3].value);
     ACCUMULATOR_Row3_CaptureValue = capture3;
 
     if (ACCUMULATOR_Row0_CaptureValue != 0 ||

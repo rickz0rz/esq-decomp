@@ -139,7 +139,8 @@ void ED_HandleEditorInput(void)
         break;
     case 2:
         d0 = GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble((LONG)ED_CurrentChar);
-        d0 = GROUP_AG_JMPTBL_MATH_DivS32(d0 + 1, 8);
+        (void)GROUP_AG_JMPTBL_MATH_DivS32(d0 + 1, 8);
+        d0 = (d0 + 1) % 8;
         ED_CurrentChar = (UBYTE)ED1_JMPTBL_LADFUNC_PackNibblesToByte(d0, (LONG)ED_CurrentChar);
         if (Global_REF_BOOL_IS_TEXT_OR_CURSOR == 1) {
             ED_EditBufferLive[ED_EditCursorOffset] = ED_CurrentChar;
@@ -151,7 +152,8 @@ void ED_HandleEditorInput(void)
         break;
     case 6:
         d0 = GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble((LONG)ED_CurrentChar);
-        d0 = GROUP_AG_JMPTBL_MATH_DivS32(d0 + 1, 8);
+        (void)GROUP_AG_JMPTBL_MATH_DivS32(d0 + 1, 8);
+        d0 = (d0 + 1) % 8;
         ED_CurrentChar = (UBYTE)ED1_JMPTBL_LADFUNC_MergeHighLowNibbles(d0, (LONG)ED_CurrentChar);
         if (Global_REF_BOOL_IS_TEXT_OR_CURSOR == 1) {
             ED_EditBufferLive[ED_EditCursorOffset] = ED_CurrentChar;

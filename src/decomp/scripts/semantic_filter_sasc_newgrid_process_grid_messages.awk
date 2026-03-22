@@ -25,11 +25,18 @@ BEGIN {
     has_dispatch_5 = 0
     has_dispatch_6 = 0
     has_dispatch_7 = 0
+    header_redraw_set_count = 0
+    has_header_redraw_clear = 0
+    has_stateword_compare = 0
+    has_stateword_loop_branch = 0
     has_update_cache = 0
     has_putmsg = 0
     has_top_bars = 0
     has_top_border = 0
     has_rts = 0
+    prev = ""
+    pending_dispatch_id = ""
+    stateword_base_loaded = 0
 }
 
 function t(s, x) {
@@ -47,7 +54,7 @@ function t(s, x) {
 
     if (l ~ /^NEWGRID_PROCESSGRIDMESSAG[A-Z0-9_]*:/) has_entry = 1
     if (l ~ /GLOBAL_UIBUSYFLAG/) has_ui_busy = 1
-    if (l ~ /ESQPARS2_READMODEFLAGS/ && l ~ /#\$?101/) has_read_mode_101 = 1
+    if ((l ~ /ESQPARS2_READMODEFLAGS/ && l ~ /#\$?101/) || (prev ~ /ESQPARS2_READMODEFLAGS/ && l ~ /CMPI\.W[ \t]+#\$?101/)) has_read_mode_101 = 1
     if (l ~ /CLR\.W ESQPARS2_READMODEFLAGS/) has_read_mode_clear = 1
     if (l ~ /NEWGRID_REFRESHSTATEFLAG/) has_refresh_check = 1
     if (l ~ /(JSR|BSR).*NEWGRID_INITGRIDRESOURCE/) has_init_resources = 1
@@ -64,18 +71,35 @@ function t(s, x) {
     if (l ~ /(JSR|BSR).*NEWGRID_DRAWCLOCKFORMATHEADER/) has_header = 1
     if (l ~ /(JSR|BSR).*NEWGRID_DRAWDATEBANNER/) has_date_banner = 1
     if (l ~ /(JSR|BSR).*NEWGRID_DRAWAWAITINGLISTINGSMESS/) has_awaiting = 1
-    if (l ~ /#\$?1([^0-9]|$).*NEWGRID2_DISPATCHGRIDOPERATION/ || (l ~ /NEWGRID2_DISPATCHGRIDOPERATION/ && l ~ /#\$?1([^0-9]|$)/)) has_dispatch_1 = 1
-    if (l ~ /#\$?2([^0-9]|$).*NEWGRID2_DISPATCHGRIDOPERATION/ || (l ~ /NEWGRID2_DISPATCHGRIDOPERATION/ && l ~ /#\$?2([^0-9]|$)/)) has_dispatch_2 = 1
-    if (l ~ /#\$?3([^0-9]|$).*NEWGRID2_DISPATCHGRIDOPERATION/ || (l ~ /NEWGRID2_DISPATCHGRIDOPERATION/ && l ~ /#\$?3([^0-9]|$)/)) has_dispatch_3 = 1
-    if (l ~ /#\$?4([^0-9]|$).*NEWGRID2_DISPATCHGRIDOPERATION/ || (l ~ /NEWGRID2_DISPATCHGRIDOPERATION/ && l ~ /#\$?4([^0-9]|$)/)) has_dispatch_4 = 1
-    if (l ~ /#\$?5([^0-9]|$).*NEWGRID2_DISPATCHGRIDOPERATION/ || (l ~ /NEWGRID2_DISPATCHGRIDOPERATION/ && l ~ /#\$?5([^0-9]|$)/)) has_dispatch_5 = 1
-    if (l ~ /#\$?6([^0-9]|$).*NEWGRID2_DISPATCHGRIDOPERATION/ || (l ~ /NEWGRID2_DISPATCHGRIDOPERATION/ && l ~ /#\$?6([^0-9]|$)/)) has_dispatch_6 = 1
-    if (l ~ /#\$?7([^0-9]|$).*NEWGRID2_DISPATCHGRIDOPERATION/ || (l ~ /NEWGRID2_DISPATCHGRIDOPERATION/ && l ~ /#\$?7([^0-9]|$)/)) has_dispatch_7 = 1
+    if (l ~ /PEA[ \t]+(\(\$?1\)|1)\.W/) pending_dispatch_id = "1"
+    else if (l ~ /PEA[ \t]+(\(\$?2\)|2)\.W/) pending_dispatch_id = "2"
+    else if (l ~ /PEA[ \t]+(\(\$?3\)|3)\.W/) pending_dispatch_id = "3"
+    else if (l ~ /PEA[ \t]+(\(\$?4\)|4)\.W/) pending_dispatch_id = "4"
+    else if (l ~ /PEA[ \t]+(\(\$?5\)|5)\.W/) pending_dispatch_id = "5"
+    else if (l ~ /PEA[ \t]+(\(\$?6\)|6)\.W/) pending_dispatch_id = "6"
+    else if (l ~ /PEA[ \t]+(\(\$?7\)|7)\.W/) pending_dispatch_id = "7"
+    if (l ~ /NEWGRID2_DISPATCHGRIDOPERATION/) {
+        if (pending_dispatch_id == "1") has_dispatch_1 = 1
+        else if (pending_dispatch_id == "2") has_dispatch_2 = 1
+        else if (pending_dispatch_id == "3") has_dispatch_3 = 1
+        else if (pending_dispatch_id == "4") has_dispatch_4 = 1
+        else if (pending_dispatch_id == "5") has_dispatch_5 = 1
+        else if (pending_dispatch_id == "6") has_dispatch_6 = 1
+        else if (pending_dispatch_id == "7") has_dispatch_7 = 1
+        pending_dispatch_id = ""
+    }
+    if (l ~ /MOVE\.W[ \t]+#\$?1,[ \t]*NEWGRID_HEADERREDRAWPENDING/) header_redraw_set_count++
+    if (l ~ /CLR\.W[ \t]+NEWGRID_HEADERREDRAWPENDING/) has_header_redraw_clear = 1
+    if (l ~ /(LEA[ \t]+\$34\(A[05]\),A0|MOVEA?\.L[ \t]+.*A0.*\$34)/ || l ~ /ADDA?\.W[ \t]+#\$?34,A0/) stateword_base_loaded = 1
+    if (l ~ /CMPI?\.W[ \t]+#\$?0,52\(A0\)/) has_stateword_compare = 1
+    if (stateword_base_loaded && l ~ /CMPI?\.W[ \t]+#\$?0,\(A0\)/) has_stateword_compare = 1
+    if (has_stateword_compare && l ~ /BLS(\.W|\.S)?/) has_stateword_loop_branch = 1
     if (l ~ /(JSR|BSR).*GCOMMAND_UPDATEPRESETENTRYCACHE/) has_update_cache = 1
     if (l ~ /(JSR|BSR).*_LVOPUTMSG/) has_putmsg = 1
     if (l ~ /(JSR|BSR).*NEWGRID_DRAWGRIDTOPBAR/) has_top_bars = 1
     if (l ~ /(JSR|BSR).*NEWGRID_DRAWTOPBORDERLINE/) has_top_border = 1
     if (l == "RTS") has_rts = 1
+    prev = l
 }
 
 END {
@@ -99,6 +123,9 @@ END {
     print "HAS_DATE_BANNER=" has_date_banner
     print "HAS_AWAITING=" has_awaiting
     print "HAS_DISPATCH_1_TO_7=" (has_dispatch_1 && has_dispatch_2 && has_dispatch_3 && has_dispatch_4 && has_dispatch_5 && has_dispatch_6 && has_dispatch_7 ? 1 : 0)
+    print "HAS_HEADER_REDRAW_SET_CLUSTER=" (header_redraw_set_count >= 5 ? 1 : 0)
+    print "HAS_HEADER_REDRAW_CLEAR=" has_header_redraw_clear
+    print "HAS_STATEWORD_REPLY_LOOP=" (has_stateword_compare && has_stateword_loop_branch ? 1 : 0)
     print "HAS_UPDATE_CACHE=" has_update_cache
     print "HAS_PUTMSG=" has_putmsg
     print "HAS_TOP_BARS=" has_top_bars

@@ -6,6 +6,7 @@ BEGIN {
     has_filename_loop = 0
     has_wildcard_guard = 0
     has_copy_pad_nul = 0
+    has_short_name_nul = 0
     has_parse_size = 0
     has_oversize_overlay = 0
     has_checksum_verify = 0
@@ -42,6 +43,7 @@ function trim(s, t) {
     if (line ~ /TRANSFERFILENAMEBUFFER/) has_filename_loop = 1
     if (line ~ /WILDCARDMATCH/ || line ~ /CTASKS_EXT_GRF/) has_wildcard_guard = 1
     if (line ~ /STRING_COPYPADNUL/ || line ~ /COPYPADNUL/ || line ~ /COPYPADNU/) has_copy_pad_nul = 1
+    if (line ~ /MOVE\.B D0,-64\(A5\)/ || line ~ /CLR\.B \$C8\(A7\)/) has_short_name_nul = 1
     if (line ~ /PARSE_READSIGNEDLONGSKIPCLASS3/ || line ~ /READSIGNEDLONGSKIPCLASS3/ || line ~ /PARSE_READSIGNED/) has_parse_size = 1
     if (line ~ /SHOWATTENTIONOVERLAY/ || line ~ /BRUSH_SNAPSHOTHEADER/) has_oversize_overlay = 1
     if (line ~ /ESQIFF_RECORDCHECKSUMBYTE/ || line ~ /TRANSFERXORCHECKSUMBYTE/) has_checksum_verify = 1
@@ -63,6 +65,7 @@ END {
     print "HAS_FILENAME_LOOP=" has_filename_loop
     print "HAS_WILDCARD_GUARD=" has_wildcard_guard
     print "HAS_COPY_PAD_NUL=" has_copy_pad_nul
+    print "HAS_SHORT_NAME_NUL=" has_short_name_nul
     print "HAS_PARSE_SIZE=" has_parse_size
     print "HAS_OVERSIZE_OVERLAY=" has_oversize_overlay
     print "HAS_CHECKSUM_VERIFY=" has_checksum_verify

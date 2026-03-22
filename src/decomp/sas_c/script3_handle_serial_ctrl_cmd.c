@@ -63,8 +63,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
         return;
     }
 
-    Global_RefreshTickCounter = (WORD)(Global_RefreshTickCounter + 1);
-    if (Global_RefreshTickCounter != 0) {
+    if ((WORD)(Global_RefreshTickCounter + 1) != 0) {
         Global_RefreshTickCounter = 0;
     }
 

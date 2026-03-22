@@ -106,6 +106,7 @@ LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode)
     }
 
     STRING_CopyPadNul(shortName, DISKIO2_TransferFilenameBuffer, 4);
+    shortName[4] = '\0';
 
     if (crc32Mode != 0U) {
         UBYTE tokenLen = 0;

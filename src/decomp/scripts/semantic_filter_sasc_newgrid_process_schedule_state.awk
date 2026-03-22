@@ -2,6 +2,8 @@ BEGIN{
     h_entry=0
     h_switch=0
     h_state_guard=0
+    h_nullctx_clear=0
+    h_stepped_flag=0
     h_mode_b=0
     h_mode_f=0
     h_mode_l=0
@@ -23,6 +25,11 @@ BEGIN{
     validate_calls=0
     grid_mode_calls=0
     column_calls=0
+    editor_reenter_checks=0
+    alt_selector_writes=0
+    editor_gate_writes=0
+    saw_nullctx_state_clear=0
+    saw_nullctx_selection_clear=0
     h_state_globals=0
     h_rts=0
 }
@@ -45,6 +52,7 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /#\$7/ || l ~ /#7([^0-9]|$)/)h_state7=1
     if(l ~ /SCHEDULEROWOFFSET/)h_row_offset=1
     if(l ~ /SCHEDULESELECTIONCODECAC/ || l ~ /SCHEDULESELECTIONCODECACHE/)h_selection_cache=1
+    if(l ~ /MOVEQ(\.L)? #\$?1,D5/ || l ~ /MOVEQ(\.L)? #1,D5/)h_stepped_flag=1
     if(l ~ /(JSR|BSR).*HANDLEGRIDEDITORSTATE/)editor_calls++
     if(l ~ /(JSR|BSR).*SHOULDOPENEDITOR/)should_open_calls++
     if(l ~ /(JSR|BSR).*UPDATEGRIDSTATE/)update_calls++
@@ -54,6 +62,16 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /(JSR|BSR).*VALIDATESELECTIONCODE/)validate_calls++
     if(l ~ /(JSR|BSR).*GETGRIDMODEINDEX/)grid_mode_calls++
     if(l ~ /(JSR|BSR).*COMPUTECOLUMNINDEX/)column_calls++
+    if(l ~ /MOVE\.L D0,NEWGRID_SCHEDULEWORKFLOWSTATE/)saw_nullctx_state_clear=1
+    if(l ~ /MOVE\.L D0,NEWGRID_SELECTEDPRIMARYENTRYIND/)saw_nullctx_selection_clear=1
+    if(saw_nullctx_state_clear && saw_nullctx_selection_clear)h_nullctx_clear=1
+    if(l ~ /SUBQ\.L #\$?5,D0/ || l ~ /CMPI\.L #\$?5,NEWGRID_SCHEDULEWORKFLOWSTATE/ || (l ~ /MOVEQ(\.L)? #\$?5,D0/ && l ~ /CMP\.L NEWGRID_SCHEDULEWORKFLOWSTATE/))editor_reenter_checks++
+    if(l ~ /NEWGRID_SCHEDULEALTSELECTORFLAG/) {
+        if(l ~ /CLR\.L NEWGRID_SCHEDULEALTSELECTORFLAG/ || l ~ /MOVE\.L .*NEWGRID_SCHEDULEALTSELECTORFLAG/)alt_selector_writes++
+    }
+    if(l ~ /NEWGRID_SCHEDULEEDITORGATEFLAG/) {
+        if(l ~ /CLR\.L NEWGRID_SCHEDULEEDITORGATEFLAG/ || l ~ /MOVE\.L .*NEWGRID_SCHEDULEEDITORGATEFLAG/)editor_gate_writes++
+    }
     if(l ~ /SCHEDULEWORKFLOWSTATE/ || l ~ /SCHEDULEALTSELECTORFLAG/ || l ~ /SCHEDULEEDITORGATEFLAG/ || l ~ /SELECTEDPRIMARYENTRYINDEX/)h_state_globals=1
     if(l=="RTS")h_rts=1
 }
@@ -61,6 +79,8 @@ END{
     print "HAS_ENTRY="h_entry
     print "HAS_STATE_SWITCH="h_switch
     print "HAS_STATE_GUARD="h_state_guard
+    print "HAS_NULLCTX_CLEAR="h_nullctx_clear
+    print "HAS_STEPPED_FLAG="h_stepped_flag
     print "HAS_MODE_B="h_mode_b
     print "HAS_MODE_F="h_mode_f
     print "HAS_MODE_L="h_mode_l
@@ -82,6 +102,9 @@ END{
     print "VALIDATE_CALLS="validate_calls
     print "GRID_MODE_CALLS="grid_mode_calls
     print "COLUMN_CALLS="column_calls
+    print "EDITOR_REENTER_CHECKS="editor_reenter_checks
+    print "ALT_SELECTOR_WRITES="alt_selector_writes
+    print "EDITOR_GATE_WRITES="editor_gate_writes
     print "HAS_STATE_GLOBALS="h_state_globals
     print "HAS_RTS="h_rts
 }

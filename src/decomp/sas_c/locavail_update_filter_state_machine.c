@@ -25,6 +25,8 @@ typedef struct LOCAVAIL_NodeRecord {
     UBYTE *payload;
 } LOCAVAIL_NodeRecord;
 
+#define LOCAVAIL_NODE_RECORD_SIZE 10
+
 typedef struct LOCAVAIL_FilterState {
     UBYTE groupCode;
     UBYTE pad1;
@@ -72,7 +74,8 @@ void LOCAVAIL_UpdateFilterStateMachine(void *ctxPtr, void *statePtr)
         }
 
         if (indexA >= 0 && indexA < state->nodeCount) {
-            node = &state->nodeTable[NEWGRID_JMPTBL_MATH_Mulu32(indexA, 1)];
+            node = (LOCAVAIL_NodeRecord *)((UBYTE *)state->nodeTable +
+                                           NEWGRID_JMPTBL_MATH_Mulu32(indexA, LOCAVAIL_NODE_RECORD_SIZE));
         }
 
         if (node == (LOCAVAIL_NodeRecord *)0) {
@@ -121,7 +124,8 @@ void LOCAVAIL_UpdateFilterStateMachine(void *ctxPtr, void *statePtr)
 
         if (indexA != -1 && indexB != -1) {
             if (indexA >= 0 && indexA < state->nodeCount) {
-                node = &state->nodeTable[NEWGRID_JMPTBL_MATH_Mulu32(indexA, 1)];
+                node = (LOCAVAIL_NodeRecord *)((UBYTE *)state->nodeTable +
+                                               NEWGRID_JMPTBL_MATH_Mulu32(indexA, LOCAVAIL_NODE_RECORD_SIZE));
             }
 
             if (node != (LOCAVAIL_NodeRecord *)0 &&

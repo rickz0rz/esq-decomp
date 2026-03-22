@@ -180,7 +180,7 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
             weatherBlock = (PARSEINI_WeatherBlock *)PARSEINI_CurrentWeatherBlockPtr;
             if (weatherBlock->sourceList == (PARSEINI_WeatherSourceNode *)0) {
                 weatherBlock->sourceList = (PARSEINI_WeatherSourceNode *)newAllocNode;
-            } else if (prevSourceNode != (void *)0) {
+            } else {
                 ((PARSEINI_WeatherSourceNode *)prevSourceNode)->next = (PARSEINI_WeatherSourceNode *)newAllocNode;
             }
         }

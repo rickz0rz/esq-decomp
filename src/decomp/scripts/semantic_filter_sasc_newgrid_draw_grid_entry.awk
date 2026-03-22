@@ -1,4 +1,23 @@
-BEGIN{h_entry=0;h_guard=0;h_prefix=0;h_24h=0;h_render_variant=0;h_layout_append=0;h_find_char=0;h_find_any=0;h_skip=0;h_layout_lines=0;h_missing=0;h_empty=0;h_rts=0}
+BEGIN{
+    h_entry=0
+    h_guard=0
+    h_prefix=0
+    h_24h=0
+    h_render_variant=0
+    h_layout_append=0
+    h_find_char=0
+    h_find_any=0
+    h_skip=0
+    h_layout_lines=0
+    h_missing=0
+    h_empty=0
+    h_secondary_paren=0
+    h_secondary_close=0
+    h_secondary_lines=0
+    h_subtitle_alt=0
+    h_subtitle_alt_lines=0
+    h_rts=0
+}
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
 {
     l=t($0)
@@ -13,6 +32,11 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /(JSR|BSR).*STR_FINDANYCHARPTR/ || l ~ /FINDANYCHARPTR/ || l ~ /FINDANYCHARP/)h_find_any=1
     if(l ~ /(JSR|BSR).*STR_SKIPCLASS3CHARS/ || l ~ /SKIPCLASS3CH/)h_skip=1
     if(l ~ /(JSR|BSR).*LAYOUTSOURCETOLINES/ || l ~ /LAYOUTSOURCETOLIN/ || l ~ /DISPTEXT_LAYOUTS/ || l ~ /LAYOUTS/)h_layout_lines=1
+    if(l ~ /PEA 40\.W/ || l ~ /PEA \(\$28\)\.W/)h_secondary_paren=1
+    if(l ~ /CMP\.B 5\(A0\),D1/ || l ~ /CMP\.B \$5\(A0\),D1/)h_secondary_close=1
+    if(l ~ /LEA 6\(A0\),A1/ || l ~ /LEA \$6\(A0\),A1/)h_secondary_lines=1
+    if(l ~ /MOVE\.B #\$2E,\(A0\)/ || l ~ /MOVE\.B #46,\(A0\)/)h_subtitle_alt=1
+    if(l ~ /MOVE\.B #\$2E,\(A0\)/ || l ~ /MOVE\.B #46,\(A0\)/)h_subtitle_alt_lines=1
     if(l ~ /SCRIPT_PTRNODATAPLACEHOLDER/)h_missing=1
     if(l ~ /DRAW_EMPTY_ENTRY/ || l ~ /ENTRYTEXTSCRATCHPTR/)h_empty=1
     if(l=="RTS")h_rts=1
@@ -30,5 +54,10 @@ END{
     print "HAS_LAYOUT_TO_LINES="h_layout_lines
     print "HAS_MISSING_FALLBACK="h_missing
     print "HAS_EMPTY_FALLBACK="h_empty
+    print "HAS_SECONDARY_PAREN_SEARCH="h_secondary_paren
+    print "HAS_SECONDARY_CLOSE_CHECK="h_secondary_close
+    print "HAS_SECONDARY_SPLIT_ADVANCE="h_secondary_lines
+    print "HAS_SUBTITLE_ALT_REWRITE="h_subtitle_alt
+    print "HAS_SUBTITLE_ALT_LAYOUT="h_subtitle_alt_lines
     print "HAS_RTS="h_rts
 }

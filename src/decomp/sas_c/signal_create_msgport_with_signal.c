@@ -1,4 +1,7 @@
 #include <exec/ports.h>
+#include <exec/memory.h>
+
+#define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 extern void *AbsExecBase;
 extern LONG _LVOAllocSignal(void *execBase, LONG signalNum);
@@ -17,7 +20,7 @@ struct MsgPort *SIGNAL_CreateMsgPortWithSignal(char *name, LONG pri)
         return (struct MsgPort *)0;
     }
 
-    port = (struct MsgPort *)_LVOAllocMem(AbsExecBase, 34UL, 0x10001UL);
+    port = (struct MsgPort *)_LVOAllocMem(AbsExecBase, sizeof(struct MsgPort), MEMF_PUBLIC_CLEAR);
     if (!port) {
         _LVOFreeSignal(AbsExecBase, (UBYTE)sigNum);
         return (struct MsgPort *)0;
@@ -25,7 +28,7 @@ struct MsgPort *SIGNAL_CreateMsgPortWithSignal(char *name, LONG pri)
 
     port->mp_Node.ln_Name = name;
     port->mp_Node.ln_Pri = (BYTE)pri;
-    port->mp_Node.ln_Type = 4;
+    port->mp_Node.ln_Type = NT_MSGPORT;
     port->mp_Flags = 0;
     port->mp_SigBit = (UBYTE)sigNum;
     port->mp_SigTask = _LVOFindTask(AbsExecBase, (void *)0);
@@ -36,7 +39,7 @@ struct MsgPort *SIGNAL_CreateMsgPortWithSignal(char *name, LONG pri)
         port->mp_MsgList.lh_Head = (struct Node *)&port->mp_MsgList.lh_Tail;
         port->mp_MsgList.lh_Tail = (struct Node *)0;
         port->mp_MsgList.lh_TailPred = (struct Node *)&port->mp_MsgList.lh_Head;
-        port->mp_MsgList.lh_Type = 2;
+        port->mp_MsgList.lh_Type = NT_MESSAGE;
     }
 
     return port;

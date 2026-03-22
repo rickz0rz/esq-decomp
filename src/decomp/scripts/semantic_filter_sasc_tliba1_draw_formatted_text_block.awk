@@ -26,6 +26,10 @@ BEGIN {
     has_font_height=0
     has_const2115=0
     has_const2385=0
+    has_drawy_running_load=0
+    has_drawy_baseline_load=0
+    has_drawy_storeback=0
+    in_draw_y_window=0
     has_return=0
 }
 
@@ -64,6 +68,11 @@ function trim(s, t) {
     if (u ~ /TST\.W -38\(A5\)/ || u ~ /TST\.L \$40\(A7\)/ || u ~ /TST\.W \$36\(A7\)/) has_prevue_font_gate=1
     if ((u ~ /NOT\.B D[12]/) || (u ~ /CLEANUP_ALIGNEDINSETNIBBLE/ && u ~ /CMP\.L D[01],D[01]/)) has_inset_guard=1
     if (u ~ /TST\.W 8\(A0,D[0-7]\.L\)/ || u ~ /TST\.W \$8\(A0,D[0-7]\.L\)/ || u ~ /TST\.W \$8\(A0\)/ || u ~ /TST\.W \$8\(A6\)/) has_extra_spacing_flag=1
+    if (u ~ /TST\.W 8\(A0,D[0-7]\.L\)/ || u ~ /TST\.W \$8\(A0,D[0-7]\.L\)/ || u ~ /TST\.W \$8\(A0\)/ || u ~ /TST\.W \$8\(A6\)/) in_draw_y_window=1
+    if (in_draw_y_window && (u ~ /MOVE\.W -30\(A5\),D[0-7]/ || u ~ /MOVE\.W \$3C\(A7\),D[0-7]/)) has_drawy_running_load=1
+    if (in_draw_y_window && (u ~ /MOVE\.W 58\(A3\),D[0-7]/ || u ~ /MOVE\.W \$3E\(A2\),D[0-7]/)) has_drawy_baseline_load=1
+    if (in_draw_y_window && (u ~ /ADD\.W D[0-7],-30\(A5\)/ || u ~ /ADD\.W D[0-7],\$3C\(A7\)/ || u ~ /MOVE\.W D[0-7],\$3C\(A7\)/ || u ~ /MOVEM\.W D[0-7],\$3C\(A7\)/)) has_drawy_storeback=1
+    if (in_draw_y_window && n ~ /TLIBA1DRAWINLINESTYLEDTEXT/) in_draw_y_window=0
     if (u ~ /ADDQ\.L #1,D1/ || u ~ /ADDQ\.L #\$1,\$30\(A7\)/ || u ~ /ADDQ\.L #\$1,\$50\(A7\)/) saw_center_addq=1
     if (u ~ /ASR\.L #1,D1/ || u ~ /ASR\.L #\$1,D0/ || u ~ /ASR\.L #\$1,D0/) saw_center_asr=1
     if (saw_center_addq && saw_center_asr) has_center_round_fix=1
@@ -101,5 +110,8 @@ END {
     print "HAS_FONT_HEIGHT="has_font_height
     print "HAS_CONST_2115="has_const2115
     print "HAS_CONST_2385="has_const2385
+    print "HAS_DRAWY_RUNNING_LOAD="has_drawy_running_load
+    print "HAS_DRAWY_BASELINE_LOAD="has_drawy_baseline_load
+    print "HAS_DRAWY_STOREBACK="has_drawy_storeback
     print "HAS_RETURN="has_return
 }

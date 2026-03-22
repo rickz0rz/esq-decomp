@@ -138,19 +138,22 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
     workBuffer = Global_PTR_WORK_BUFFER;
 
     for (;;) {
-        char *headerEnd;
-
         linePtr = DISKIO_ConsumeLineFromWorkBuffer();
         if ((LONG)linePtr == -1) {
             break;
         }
 
-        linePtr = PARSEINI_SkipClass3Chars(linePtr);
+        while ((*linePtr != 0) && ((WDISP_CharClassTable[(UBYTE)*linePtr] & 8) != 0)) {
+            ++linePtr;
+        }
+
         if (*linePtr == 0) {
             continue;
         }
 
         if (*linePtr == '[') {
+            char *headerEnd;
+
             headerEnd = STR_FindCharPtr(linePtr + 1, 93);
             if (headerEnd == (char *)0) {
                 continue;
@@ -188,13 +191,13 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
             if (STRING_CompareNoCase(linePtr, P_TYPE_STR_DEFAULT_TEXT) == 0) {
                 section = PARSEINI_SECTION_DEFAULT_TEXT;
                 P_TYPE_WeatherCurrentMsgPtr = ESQPARS_ReplaceOwnedString(
-                    (char *)Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,
+                    Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,
                     P_TYPE_WeatherCurrentMsgPtr);
                 P_TYPE_WeatherForecastMsgPtr = ESQPARS_ReplaceOwnedString(
-                    (char *)SCRIPT_PtrNoForecastWeatherData,
+                    SCRIPT_PtrNoForecastWeatherData,
                     P_TYPE_WeatherForecastMsgPtr);
                 P_TYPE_WeatherBottomLineMsgPtr = ESQPARS_ReplaceOwnedString(
-                    (char *)SCRIPT_PtrWeatherDataAvailabilityDisclaimer,
+                    SCRIPT_PtrWeatherDataAvailabilityDisclaimer,
                     P_TYPE_WeatherBottomLineMsgPtr);
                 continue;
             }
@@ -208,16 +211,37 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
             continue;
         }
 
-        if (section == PARSEINI_SECTION_QTABLE) {
+        switch (section) {
+        case PARSEINI_SECTION_QTABLE:
+        {
             AliasPair *alias;
             char *valuePtr;
-            char *quoteStart;
-            char *quoteEnd;
+            char *cutPtr;
+            char *endPtr;
+            char *quotePtr;
 
-            valuePtr = PARSEINI_SplitKeyValueLine(linePtr, PARSEINI_DelimSpaceTab_Section1);
+            valuePtr = STR_FindCharPtr(linePtr, 61);
             if (valuePtr == (char *)0) {
                 TEXTDISP_AliasCount = 0;
                 continue;
+            }
+
+            *valuePtr++ = 0;
+            while ((*valuePtr != 0) && ((WDISP_CharClassTable[(UBYTE)*valuePtr] & 8) != 0)) {
+                ++valuePtr;
+            }
+
+            cutPtr = STR_FindAnyCharPtr(linePtr, PARSEINI_DelimSpaceTab_Section1);
+            if (cutPtr != (char *)0) {
+                *cutPtr = 0;
+            }
+
+            endPtr = valuePtr;
+            while (*endPtr != 0) {
+                ++endPtr;
+            }
+            while ((endPtr > valuePtr) && ((WDISP_CharClassTable[(UBYTE)endPtr[-1]] & 8) != 0)) {
+                *--endPtr = 0;
             }
 
             ++aliasIndex;
@@ -227,82 +251,203 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
                 QTABLE_ALLOC_SIZE,
                 MEMF_PUBLIC_CLEAR);
             alias = TEXTDISP_AliasPtrTable[aliasIndex];
-            if (alias == (AliasPair *)0) {
-                continue;
-            }
-
             alias->key = (char *)0;
             alias->value = (char *)0;
             alias->key = ESQPARS_ReplaceOwnedString(linePtr, alias->key);
 
-            quoteStart = STR_FindCharPtr(valuePtr, 34);
-            if (quoteStart == (char *)0) {
+            quotePtr = STR_FindCharPtr(valuePtr, 34);
+            if (quotePtr == (char *)0) {
                 TEXTDISP_AliasCount = 0;
                 return 0;
             }
 
-            ++quoteStart;
-            quoteEnd = STR_FindCharPtr(quoteStart, 34);
-            if (quoteEnd == (char *)0) {
+            valuePtr = quotePtr + 1;
+            quotePtr = STR_FindCharPtr(valuePtr, 34);
+            if (quotePtr == (char *)0) {
                 TEXTDISP_AliasCount = 0;
                 return 0;
             }
 
-            *quoteEnd = 0;
-            alias->value = ESQPARS_ReplaceOwnedString(quoteStart, alias->value);
+            *quotePtr = 0;
+            alias->value = ESQPARS_ReplaceOwnedString(valuePtr, alias->value);
             TEXTDISP_AliasCount = (UWORD)(aliasIndex + 1);
             continue;
         }
 
-        if (section == PARSEINI_SECTION_BACKDROP) {
-            char *valuePtr = PARSEINI_SplitKeyValueLine(linePtr, PARSEINI_DelimSpaceTab_Section2);
-            if (valuePtr != (char *)0) {
-                PARSEINI_ProcessWeatherBlocks(linePtr, valuePtr);
-            }
-            continue;
-        }
+        case PARSEINI_SECTION_BACKDROP:
+        {
+            char *valuePtr;
+            char *cutPtr;
+            char *endPtr;
 
-        if (section == PARSEINI_SECTION_GRADIENT) {
-            PARSEINI_ParseRangeKeyValue(linePtr, (short *)GCOMMAND_GradientPresetTable);
-            continue;
-        }
-
-        if (section == PARSEINI_SECTION_TEXTADS || section == PARSEINI_SECTION_BRUSH) {
-            char *valuePtr = PARSEINI_SplitKeyValueLine(linePtr, PARSEINI_DelimSpaceTab_Section4_5);
+            valuePtr = STR_FindCharPtr(linePtr, 61);
             if (valuePtr == (char *)0) {
                 continue;
             }
+
+            *valuePtr++ = 0;
+            while ((*valuePtr != 0) && ((WDISP_CharClassTable[(UBYTE)*valuePtr] & 8) != 0)) {
+                ++valuePtr;
+            }
+
+            cutPtr = STR_FindAnyCharPtr(linePtr, PARSEINI_DelimSpaceTab_Section2);
+            if (cutPtr != (char *)0) {
+                *cutPtr = 0;
+            }
+
+            endPtr = valuePtr;
+            while (*endPtr != 0) {
+                ++endPtr;
+            }
+            while ((endPtr > valuePtr) && ((WDISP_CharClassTable[(UBYTE)endPtr[-1]] & 8) != 0)) {
+                *--endPtr = 0;
+            }
+
+            PARSEINI_ProcessWeatherBlocks(linePtr, valuePtr);
+            continue;
+        }
+
+        case PARSEINI_SECTION_GRADIENT:
+            PARSEINI_ParseRangeKeyValue(linePtr, (short *)GCOMMAND_GradientPresetTable);
+            continue;
+
+        case PARSEINI_SECTION_TEXTADS:
+        case PARSEINI_SECTION_BRUSH:
+        {
+            char *valuePtr;
+            char *cutPtr;
+            char *endPtr;
+
+            valuePtr = STR_FindCharPtr(linePtr, 61);
+            if (valuePtr == (char *)0) {
+                continue;
+            }
+
+            *valuePtr++ = 0;
+            while ((*valuePtr != 0) && ((WDISP_CharClassTable[(UBYTE)*valuePtr] & 8) != 0)) {
+                ++valuePtr;
+            }
+
+            cutPtr = STR_FindAnyCharPtr(linePtr, PARSEINI_DelimSpaceTab_Section4_5);
+            if (cutPtr != (char *)0) {
+                *cutPtr = 0;
+            }
+
+            endPtr = valuePtr;
+            while (*endPtr != 0) {
+                ++endPtr;
+            }
+            while ((endPtr > valuePtr) && ((WDISP_CharClassTable[(UBYTE)endPtr[-1]] & 8) != 0)) {
+                *--endPtr = 0;
+            }
+
             PARSEINI_ParseColorTable(linePtr, valuePtr, section);
             continue;
         }
 
-        if (section == PARSEINI_SECTION_BANNER) {
-            char *valuePtr = PARSEINI_SplitKeyValueLine(linePtr, PARSEINI_DelimSpaceTab_Section6);
-            if (valuePtr != (char *)0) {
-                PARSEINI_LoadWeatherStrings(linePtr, valuePtr);
+        case PARSEINI_SECTION_BANNER:
+        {
+            char *valuePtr;
+            char *cutPtr;
+            char *endPtr;
+
+            valuePtr = STR_FindCharPtr(linePtr, 61);
+            if (valuePtr == (char *)0) {
+                continue;
             }
+
+            *valuePtr++ = 0;
+            while ((*valuePtr != 0) && ((WDISP_CharClassTable[(UBYTE)*valuePtr] & 8) != 0)) {
+                ++valuePtr;
+            }
+
+            cutPtr = STR_FindAnyCharPtr(linePtr, PARSEINI_DelimSpaceTab_Section6);
+            if (cutPtr != (char *)0) {
+                *cutPtr = 0;
+            }
+
+            endPtr = valuePtr;
+            while (*endPtr != 0) {
+                ++endPtr;
+            }
+            while ((endPtr > valuePtr) && ((WDISP_CharClassTable[(UBYTE)endPtr[-1]] & 8) != 0)) {
+                *--endPtr = 0;
+            }
+
+            PARSEINI_LoadWeatherStrings(linePtr, valuePtr);
             continue;
         }
 
-        if (section == PARSEINI_SECTION_DEFAULT_TEXT) {
-            char *valuePtr = PARSEINI_SplitKeyValueLine(linePtr, PARSEINI_DelimSpaceTab_Section7);
-            if (valuePtr != (char *)0) {
-                PARSEINI_LoadWeatherMessageStrings(linePtr, valuePtr);
+        case PARSEINI_SECTION_DEFAULT_TEXT:
+        {
+            char *valuePtr;
+            char *cutPtr;
+            char *endPtr;
+
+            valuePtr = STR_FindCharPtr(linePtr, 61);
+            if (valuePtr == (char *)0) {
+                continue;
             }
+
+            *valuePtr++ = 0;
+            while ((*valuePtr != 0) && ((WDISP_CharClassTable[(UBYTE)*valuePtr] & 8) != 0)) {
+                ++valuePtr;
+            }
+
+            cutPtr = STR_FindAnyCharPtr(linePtr, PARSEINI_DelimSpaceTab_Section7);
+            if (cutPtr != (char *)0) {
+                *cutPtr = 0;
+            }
+
+            endPtr = valuePtr;
+            while (*endPtr != 0) {
+                ++endPtr;
+            }
+            while ((endPtr > valuePtr) && ((WDISP_CharClassTable[(UBYTE)endPtr[-1]] & 8) != 0)) {
+                *--endPtr = 0;
+            }
+
+            PARSEINI_LoadWeatherMessageStrings(linePtr, valuePtr);
             continue;
         }
 
-        if (section == PARSEINI_SECTION_SOURCE_CONFIG) {
-            char *valuePtr = PARSEINI_SplitKeyValueLine(linePtr, PARSEINI_DelimSpaceTab_Section8);
-            if (valuePtr != (char *)0) {
-                TEXTDISP_AddSourceConfigEntry(linePtr, valuePtr);
+        case PARSEINI_SECTION_SOURCE_CONFIG:
+        {
+            char *valuePtr;
+            char *cutPtr;
+            char *endPtr;
+
+            valuePtr = STR_FindCharPtr(linePtr, 61);
+            if (valuePtr == (char *)0) {
+                continue;
             }
+
+            *valuePtr++ = 0;
+            while ((*valuePtr != 0) && ((WDISP_CharClassTable[(UBYTE)*valuePtr] & 8) != 0)) {
+                ++valuePtr;
+            }
+
+            cutPtr = STR_FindAnyCharPtr(linePtr, PARSEINI_DelimSpaceTab_Section8);
+            if (cutPtr != (char *)0) {
+                *cutPtr = 0;
+            }
+
+            endPtr = valuePtr;
+            while (*endPtr != 0) {
+                ++endPtr;
+            }
+            while ((endPtr > valuePtr) && ((WDISP_CharClassTable[(UBYTE)endPtr[-1]] & 8) != 0)) {
+                *--endPtr = 0;
+            }
+
+            TEXTDISP_AddSourceConfigEntry(linePtr, valuePtr);
             continue;
+        }
         }
     }
 
     MEMORY_DeallocateMemory(
-        (char *)Global_STR_PARSEINI_C_2,
+        Global_STR_PARSEINI_C_2,
         FREE_WORKBUF_LINE,
         workBuffer,
         workBufferSize + 1);

@@ -2,11 +2,21 @@ BEGIN {
     has_entry = 0
     has_setapen = 0
     has_setdrmd = 0
-    has_availmem = 0
-    has_sprintf = 0
-    has_display = 0
+    availmem_calls = 0
+    sprintf_calls = 0
+    display_calls = 0
+    has_mode0_gate = 0
+    has_mode1_gate = 0
+    has_memmask_all = 0
+    has_memmask_chip = 0
+    has_memmask_fast = 0
+    has_memmask_max = 0
+    has_memmask_disabled = 0
+    has_mode0_formats = 0
+    has_mode1_formats = 0
     has_compute_htc = 0
     has_update_ctrl_h = 0
+    has_bitmap_swap_in = 0
     has_restore_bitmap = 0
     has_unlk = 0
     has_rts = 0
@@ -29,11 +39,36 @@ function trim(s, t) {
     if (uline ~ /^ESQFUNC_DRAWMEMORYSTATUSSCREEN:/) has_entry = 1
     if (uline ~ /LVOSETAPEN/) has_setapen = 1
     if (uline ~ /LVOSETDRMD/) has_setdrmd = 1
-    if (uline ~ /LVOAVAILMEM/) has_availmem = 1
-    if (uline ~ /GROUP_AM_JMPTBL_WDISP_SPRINTF/ || uline ~ /WDISP_SPRINTF/) has_sprintf = 1
-    if (uline ~ /ESQPARS_JMPTBL_DISPLIB_DISPLAYTE/ || uline ~ /DISPLIB_DISPLAYTEXTATPOSITION/) has_display = 1
+    if (uline ~ /LVOAVAILMEM/) availmem_calls++
+    if (uline ~ /GROUP_AM_JMPTBL_WDISP_SPRINTF/ || uline ~ /WDISP_SPRINTF/) sprintf_calls++
+    if (uline ~ /ESQPARS_JMPTBL_DISPLIB_DISPLAYTE/ || uline ~ /DISPLIB_DISPLAYTEXTATPOSITION/) display_calls++
+    if (uline ~ /MOVE\.W ED_DIAGNOSTICSVIEWMODE\(A4\),D0/ || uline ~ /SUBQ\.W #\$1,D0/) has_mode1_gate = 1
+    if (uline ~ /MOVE\.W ED_DIAGNOSTICSVIEWMODE\(A4\),D0/ || uline ~ /BNE\.W ___ESQFUNC_DRAWMEMORYSTATUSSCREEN__16/) has_mode0_gate = 1
+    if (uline ~ /ED_DIAGAVAILMEMMASK\(A4\)/ && (uline ~ /MOVEQ\.L #\$7,D0/ || uline ~ /SUBQ\.L #\$7,D0/)) has_memmask_all = 1
+    if (uline ~ /ED_DIAGAVAILMEMMASK\(A4\)/ && (uline ~ /MOVEQ\.L #\$1,D0/ || uline ~ /SUBQ\.L #\$1,D0/)) has_memmask_chip = 1
+    if (uline ~ /ED_DIAGAVAILMEMMASK\(A4\)/ && (uline ~ /MOVEQ\.L #\$2,D0/ || uline ~ /SUBQ\.L #\$2,D0/)) has_memmask_fast = 1
+    if (uline ~ /ED_DIAGAVAILMEMMASK\(A4\)/ && (uline ~ /MOVEQ\.L #\$4,D0/ || uline ~ /SUBQ\.L #\$4,D0/)) has_memmask_max = 1
+    if (uline ~ /GLOBAL_STR_MEMORY_TYPES_DISABLED/) has_memmask_disabled = 1
+    if (uline ~ /GLOBAL_STR_DATA_CMDS_CERRS_LERRS/ ||
+        uline ~ /GLOBAL_STR_CTRL_CMDS_CERRS_LERRS/ ||
+        uline ~ /GLOBAL_STR_L_CHIP_FAST_MAX/ ||
+        uline ~ /GLOBAL_STR_CHIP_PLACEHOLDER/ ||
+        uline ~ /GLOBAL_STR_FAST_PLACEHOLDER/ ||
+        uline ~ /GLOBAL_STR_MAX_PLACEHOLDER/ ||
+        uline ~ /GLOBAL_STR_MEMORY_TYPES_DISABLED/ ||
+        uline ~ /GLOBAL_STR_DATA_OVERRUNS_FORMATT/ ||
+        uline ~ /GLOBAL_STR_DATA_H_T_C_MAX_FORMAT/ ||
+        uline ~ /GLOBAL_STR_CTRL_H_T_C_MAX_FORMAT/) has_mode0_formats = 1
+    if (uline ~ /GLOBAL_STR_JULIAN_DAY_NEXT_FORMA/ ||
+        uline ~ /GLOBAL_STR_JDAY1_JDAY2_FORMATTED/ ||
+        uline ~ /GLOBAL_STR_CURCLU_NXTCLU_FORMATT/ ||
+        uline ~ /GLOBAL_STR_C_DATE_C_MONTH_LP_YR_/ ||
+        uline ~ /GLOBAL_STR_B_DATE_B_MONTH_LP_YR_/ ||
+        uline ~ /GLOBAL_STR_C_DST_B_DST_PSHIFT_FO/ ||
+        uline ~ /GLOBAL_STR_C_HOUR_B_HOUR_CS_FORM/) has_mode1_formats = 1
     if (uline ~ /ESQFUNC_JMPTBL_PARSEINI_COMPUTEH/ || uline ~ /PARSEINI_COMPUTEHTCMAXVALUES/) has_compute_htc = 1
     if (uline ~ /ESQFUNC_JMPTBL_PARSEINI_UPDATECT/ || uline ~ /PARSEINI_UPDATECTRLHDELTAMAX/) has_update_ctrl_h = 1
+    if (uline ~ /^MOVE\.L GLOBAL_REF_696_400_BITMAP\(A4\),\$4\(A0\)$/) has_bitmap_swap_in = 1
     if (uline ~ /^MOVE\.L A5,\$4\(A0\)$/ || uline ~ /^MOVE\.L -76\(A5\),4\(A0\)$/) has_restore_bitmap = 1
     if (uline ~ /^ADD\.W #\$4C,A7$/ || uline ~ /^UNLK A5$/) has_unlk = 1
     if (uline ~ /^RTS$/) has_rts = 1
@@ -43,11 +78,21 @@ END {
     print "HAS_ENTRY=" has_entry
     print "HAS_SETAPEN=" has_setapen
     print "HAS_SETDRMD=" has_setdrmd
-    print "HAS_AVAILMEM=" has_availmem
-    print "HAS_SPRINTF=" has_sprintf
-    print "HAS_DISPLAY=" has_display
+    print "HAS_MODE0_GATE=" has_mode0_gate
+    print "HAS_MODE1_GATE=" has_mode1_gate
+    print "HAS_MEMMASK_ALL=" has_memmask_all
+    print "HAS_MEMMASK_CHIP=" has_memmask_chip
+    print "HAS_MEMMASK_FAST=" has_memmask_fast
+    print "HAS_MEMMASK_MAX=" has_memmask_max
+    print "HAS_MEMMASK_DISABLED=" has_memmask_disabled
+    print "HAS_MODE0_FORMATS=" has_mode0_formats
+    print "HAS_MODE1_FORMATS=" has_mode1_formats
+    print "HAS_AVAILMEM_CALLS_GE_6=" (availmem_calls >= 6)
+    print "HAS_SPRINTF_CALLS_GE_13=" (sprintf_calls >= 13)
+    print "HAS_DISPLAY_CALLS_GE_13=" (display_calls >= 13)
     print "HAS_COMPUTE_HTC=" has_compute_htc
     print "HAS_UPDATE_CTRL_H=" has_update_ctrl_h
+    print "HAS_BITMAP_SWAP_IN=" has_bitmap_swap_in
     print "HAS_RESTORE_BITMAP=" has_restore_bitmap
     print "HAS_UNLK=" has_unlk
     print "HAS_RTS=" has_rts

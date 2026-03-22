@@ -75,6 +75,10 @@ BEGIN {
     has_ravesc_highlight_restore = 0
     has_main_loop_gate = 0
     has_rts = 0
+    saw_find_type3_call = 0
+    saw_schedule_limit = 0
+    saw_schedule_table_ref = 0
+    saw_ravesc_select_test = 0
     preflight_stage = 0
     hardware_stage = 0
     display_stage = 0
@@ -151,9 +155,10 @@ function advance_stage(stage, target) {
     if (u ~ /CREATEMSGPORTWITHSIGNAL/ || u ~ /CREATEMSGPORTWITHSIG/) has_signal_create = 1
     if (u ~ /_LVOOPENDEVICE/) has_open_device = 1
     if (u ~ /_LVODOIO/) has_doio = 1
-    if (u ~ /WDISP_SERIALIOREQUESTPTR/ && u ~ /#16/) serial_setup_hits++
-    if (u ~ /WDISP_SERIALIOREQUESTPTR/ && u ~ /GLOBAL_REF_BAUD_RATE/) serial_setup_hits++
-    if (u ~ /WDISP_SERIALIOREQUESTPTR/ && (u ~ /#11/ || u ~ /#\$B/)) serial_setup_hits++
+    if (u ~ /#16,79\(A0\)/ || u ~ /#\$10,\$4F\(A0\)/) serial_setup_hits++
+    if ((u ~ /GLOBAL_REF_BAUD_RATE/ && (u ~ /60\(A0\)/ || u ~ /\$3C\(A0\)/)) ||
+        (u ~ /MOVE\.L GLOBAL_REF_BAUD_RATE/ && u ~ /A0/)) serial_setup_hits++
+    if (u ~ /#11,28\(A0\)/ || u ~ /#\$B,\$1C\(A0\)/) serial_setup_hits++
     if (u ~ /SETUP_INTERRUPT_INTB_RBF/) has_int_rbf = 1
     if (u ~ /SETUP_INTERRUPT_INTB_AUD1/) has_int_aud1 = 1
     if (u ~ /SETUP_INTERRUPT_INTB_VERTB/) has_int_vertb = 1
@@ -184,11 +189,28 @@ function advance_stage(stage, target) {
     if (u ~ /RESETFILTERSTATESTRUCT/ || u ~ /RESETFILTERSTATEST/) has_reset_filter = 1
     if (u ~ /UPDATESTATUSMASKANDREFRESH/ || u ~ /UPDATESTATUSMASKA/) has_status_refresh = 1
     if (u ~ /ESQ_STR_DT/ && u ~ /SELECTBRUSHBYLABEL/) has_brush_dt = 1
-    if (u ~ /ESQ_STR_DITHER/ && u ~ /FINDBRUSHBYPREDICATE/) has_brush_dither_fallback = 1
-    if (u ~ /FINDTYPE3BRUSH/ && u ~ /FALLBACKTYPE3BRUSH/) has_brush_type3_fallback = 1
+    if (u ~ /ESQ_STR_DITHER/ || u ~ /BRUSH_FINDBRUSHBYPREDICATE/ || u ~ /FINDBRUSHBYPREDIC/) {
+        if (u ~ /ESQ_STR_DITHER/) has_brush_dither_fallback = 1
+        if ((u ~ /BRUSH_SELECTEDNODE/ || u ~ /BRUSH_SELECTEDNO/) &&
+            (u ~ /MOVE\.L D0/ || u ~ /MOVE\.L[ ]+D0,/)) has_brush_dither_fallback = 1
+    }
+    if (u ~ /FINDTYPE3BRUSH/ || u ~ /FINDTYPE3BRUS/) {
+        has_find_type3 = 1
+        saw_find_type3_call = 1
+    }
+    if (saw_find_type3_call &&
+        (u ~ /ESQFUNC_FALLBACKTYPE3BRUSHNODE/ || u ~ /ESQFUNC_FALLBACKTYPE3BRUSHN/) &&
+        (u ~ /MOVE\.L D0/ || u ~ /MOVE\.L[ ]+D0,/)) has_brush_type3_fallback = 1
     if (u ~ /ESQ_TAG_GRANADA/) has_display_active_scan = 1
-    if (u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLET/ && (u ~ /#\$12E/ || u ~ /#302/)) has_schedule_clear = 1
-    if (u ~ /GLOBAL_WORD_SELECT_CODE_IS_RAVES/ && u ~ /ESQ_SETCOPPEREFFECT_ONENABLEHIGH/) has_ravesc_highlight_restore = 1
+    if (u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLET/ || u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLETA/) saw_schedule_table_ref = 1
+    if ((u ~ /#\$12E/ || u ~ /#302/) &&
+        (u ~ /CMPI\.[WL]/ || u ~ /BGE\./ || u ~ /CMP\./ || u ~ /CMPI\./)) saw_schedule_limit = 1
+    if (saw_schedule_table_ref && saw_schedule_limit) has_schedule_clear = 1
+    if (u ~ /GLOBAL_WORD_SELECT_CODE_IS_RAVES/ && (u ~ /TST\.W/ || u ~ /MOVE\.W/)) saw_ravesc_select_test = 1
+    if (saw_ravesc_select_test &&
+        (u ~ /SETCOPPEREFFECT_ONENABLEHIGHLIGHT/ || u ~ /SETCOPPEREFFECT_ONENABLEHIGH/ || u ~ /SETCOPPEREFFECT_ONENABLEHIG/)) has_ravesc_highlight_restore = 1
+    if (has_ravesc_highlight_restore &&
+        (u ~ /TEXTDISP_SETRASTFORMODE/ || u ~ /TEXTDISP_SETRASTFORMOD/)) has_ravesc_highlight_restore = 1
     if (u ~ /MONITORCLOCKCHANGE/ || u ~ /ESQ_SHUTDOWNREQUESTEDFLAG/ || u ~ /CONSUMERBFBYTEANDDISPATCHCOMMAND/) has_main_loop_gate = 1
     if (u == "RTS") has_rts = 1
 

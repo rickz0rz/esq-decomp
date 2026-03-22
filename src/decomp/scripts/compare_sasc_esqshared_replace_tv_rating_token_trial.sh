@@ -19,6 +19,9 @@ mkdir -p "$OUT_DIR"
 awk -v e="^${ENTRY_ORIG}:$" '
   $0 ~ e {in_func=1}
   in_func {
+    if (($0 ~ /^[A-Za-z0-9_]+:$/ || $0 ~ /^_?[A-Za-z0-9_]+:$/) &&
+        $0 !~ /^[a-z.]/ &&
+        $0 !~ e) exit
     if ($0 ~ /^;!======/) exit
     print
   }

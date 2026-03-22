@@ -24,12 +24,12 @@ extern void *AbsExecBase;
 
 extern UBYTE ESQ_SelectCodeBuffer[];
 extern UWORD Global_WORD_SELECT_CODE_IS_RAVESC;
-extern void *Global_REF_DOS_LIBRARY_2;
-extern void *Global_REF_DOS_LIBRARY;
-extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void *Global_REF_DISKFONT_LIBRARY;
-extern void *Global_REF_INTUITION_LIBRARY;
-extern void *Global_REF_UTILITY_LIBRARY;
+extern struct Library *Global_REF_DOS_LIBRARY_2;
+extern struct Library *Global_REF_DOS_LIBRARY;
+extern struct Library *Global_REF_GRAPHICS_LIBRARY;
+extern struct Library *Global_REF_DISKFONT_LIBRARY;
+extern struct Library *Global_REF_INTUITION_LIBRARY;
+extern struct Library *Global_REF_UTILITY_LIBRARY;
 extern void *Global_REF_BATTCLOCK_RESOURCE;
 extern void *Global_HANDLE_TOPAZ_FONT;
 extern void *Global_HANDLE_PREVUEC_FONT;
@@ -205,7 +205,7 @@ extern void *ESQIFF_BrushIniListHead;
 
 extern LONG _LVOExecute(void *dosBase, const char *command, LONG input, LONG output);
 extern void * _LVOFindTask(void *execBase, void *taskName);
-extern void * _LVOOpenLibrary(void *execBase, const char *name, LONG version);
+extern struct Library * _LVOOpenLibrary(void *execBase, const char *name, LONG version);
 extern void * _LVOOpenResource(void *execBase, const char *name);
 extern void * _LVOOpenFont(void *graphicsBase, void *textAttr);
 extern void * _LVOOpenDiskFont(void *diskfontBase, void *textAttr);
@@ -361,7 +361,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         return BUFFER_FlushAllAndCloseWithCode(0);
     }
 
-    if ((LONG)((struct Library *)Global_REF_GRAPHICS_LIBRARY)->lib_Version >= 37) {
+    if ((LONG)Global_REF_GRAPHICS_LIBRARY->lib_Version >= 37) {
         Global_REF_UTILITY_LIBRARY = _LVOOpenLibrary(AbsExecBase, Global_STR_UTILITY_LIBRARY, 37);
         if (Global_REF_UTILITY_LIBRARY != (void *)0) {
             Global_REF_BATTCLOCK_RESOURCE = _LVOOpenResource(AbsExecBase, Global_STR_BATTCLOCK_RESOURCE);
@@ -454,7 +454,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 
     ESQ_SetCopperEffect_OffDisableHighlight();
     WDISP_HighlightBufferMode = 0;
-    if ((LONG)((struct Library *)Global_REF_GRAPHICS_LIBRARY)->lib_Version >= 34) {
+    if ((LONG)Global_REF_GRAPHICS_LIBRARY->lib_Version >= 34) {
         WDISP_HighlightBufferMode = 1;
     }
 

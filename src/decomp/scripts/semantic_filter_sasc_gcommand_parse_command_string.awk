@@ -1,13 +1,13 @@
 BEGIN {
     has_entry = 0
     has_defaults = 0
-    has_copy_pad = 0
-    has_parse_long = 0
-    has_charclass_ref = 0
-    has_parse_hex = 0
+    copy_pad_count = 0
+    parse_long_count = 0
+    digit_guard_count = 0
+    parse_hex_count = 0
     has_find_char = 0
     has_find_substring = 0
-    has_replace_owned = 0
+    replace_owned_count = 0
     has_load_mplex_file = 0
     has_workflow_ref = 0
     has_detail_flag_ref = 0
@@ -34,16 +34,20 @@ function trim(s, t) {
     if (u ~ /^GCOMMAND_PARSECOMMANDSTRING[A-Z0-9_]*:/) has_entry = 1
 
     if (index(u, "FLIB2_LOADDIGITALMPLEXDEFAULTS") > 0) has_defaults = 1
-    if (index(u, "GROUP_AW_JMPTBL_STRING_COPYPADNUL") > 0 || index(u, "GROUP_AW_JMPTBL_STRING_COPYPAD") > 0 || index(u, "STRING_COPYPADNUL") > 0 || index(u, "STRING_COPYPAD") > 0) has_copy_pad = 1
-    if (index(u, "ESQPARS_JMPTBL_PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 || index(u, "ESQPARS_JMPTBL_PARSE_READSIGNE") > 0 || index(u, "PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 || index(u, "PARSE_READSIGNEDLONGSKIPCL") > 0) has_parse_long = 1
+    if (index(u, "GROUP_AW_JMPTBL_STRING_COPYPADNUL") > 0 || index(u, "GROUP_AW_JMPTBL_STRING_COPYPAD") > 0 || index(u, "STRING_COPYPADNUL") > 0 || index(u, "STRING_COPYPAD") > 0) copy_pad_count++
+    if (index(u, "ESQPARS_JMPTBL_PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 ||
+        index(u, "ESQPARS_JMPTBL_PARSE_READSIGNE") > 0 ||
+        index(u, "PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 ||
+        index(u, "PARSE_READSIGNEDLONGSKIPCLASS3_A") > 0 ||
+        index(u, "PARSE_READSIGNEDLONGSKIPCL") > 0) parse_long_count++
 
-    if (index(u, "WDISP_CHARCLASSTABLE") > 0) has_charclass_ref = 1
-    if (index(u, "LADFUNC_PARSEHEXDIGIT") > 0) has_parse_hex = 1
+    if (index(u, "WDISP_CHARCLASSTABLE") > 0 || index(u, "IS_DECIMAL_DIGIT_CLASS") > 0) digit_guard_count++
+    if (index(u, "LADFUNC_PARSEHEXDIGIT") > 0) parse_hex_count++
 
     if (index(u, "GROUP_AS_JMPTBL_STR_FINDCHARPTR") > 0 || index(u, "GROUP_AS_JMPTBL_STR_FINDCHARP") > 0 || index(u, "STR_FINDCHARPTR") > 0 || index(u, "STR_FINDCHARP") > 0) has_find_char = 1
     if (index(u, "GROUP_AS_JMPTBL_ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "GROUP_AS_JMPTBL_ESQ_FINDSUBSTRI") > 0 || index(u, "ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "ESQ_FINDSUBSTRI") > 0) has_find_substring = 1
 
-    if (index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRI") > 0) has_replace_owned = 1
+    if (index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRI") > 0) replace_owned_count++
     if (index(u, "GCOMMAND_LOADMPLEXFILE") > 0) has_load_mplex_file = 1
 
     if (index(u, "GCOMMAND_MPLEXWORKFLOWMODE") > 0) has_workflow_ref = 1
@@ -59,13 +63,13 @@ function trim(s, t) {
 END {
     print "HAS_ENTRY=" has_entry
     print "HAS_DEFAULTS=" has_defaults
-    print "HAS_COPY_PAD=" has_copy_pad
-    print "HAS_PARSE_LONG=" has_parse_long
-    print "HAS_CHARCLASS_REF=" has_charclass_ref
-    print "HAS_PARSE_HEX=" has_parse_hex
+    print "HAS_COPY_PAD=" (copy_pad_count >= 1)
+    print "HAS_PARSE_LONG=" (parse_long_count >= 3)
+    print "HAS_DIGIT_CLASS_GUARDS=" (digit_guard_count >= 8)
+    print "HAS_PARSE_HEX=" (parse_hex_count >= 3)
     print "HAS_FIND_CHAR=" has_find_char
     print "HAS_FIND_SUBSTRING=" has_find_substring
-    print "HAS_REPLACE_OWNED=" has_replace_owned
+    print "HAS_REPLACE_OWNED=" (replace_owned_count >= 1)
     print "HAS_LOAD_MPLEX_FILE=" has_load_mplex_file
     print "HAS_WORKFLOW_REF=" has_workflow_ref
     print "HAS_DETAIL_FLAG_REF=" has_detail_flag_ref

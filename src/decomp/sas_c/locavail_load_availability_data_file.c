@@ -52,9 +52,16 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
     LOCAVAIL_FilterState *primaryState;
     LOCAVAIL_FilterState *secondaryState;
     LOCAVAIL_FilterState scratchState;
+    LOCAVAIL_NodeRecord *node;
     char *section;
+    char *encoded;
+    UBYTE *payload;
     LONG success;
     LONG fileLen;
+    LONG nodeCount;
+    LONG nodeIndex;
+    LONG payloadIndex;
+    LONG payloadLen;
     char *fileBuf;
 
     primaryState = (LOCAVAIL_FilterState *)primaryStatePtr;
@@ -90,15 +97,12 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
     while (success != 0 &&
            section != (char *)0 &&
            GROUP_AY_JMPTBL_STRING_CompareNoCaseN(section, LOCAVAIL_STR_LA_VER, 6) == 0) {
-        LONG nodeCount;
-        LONG nodeIndex;
-
         LOCAVAIL_ResetFilterStateStruct(&scratchState);
         scratchState.mode0 = (UBYTE)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
-        nodeCount = GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
-        scratchState.nodeCount2 = nodeCount;
+        scratchState.nodeCount2 = GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
         section = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
         scratchState.modeChar6 = *section;
+        nodeCount = scratchState.nodeCount2;
 
         if (LOCAVAIL_AllocNodeArraysForState(&scratchState) == 0) {
             if (nodeCount != 0) {
@@ -107,73 +111,62 @@ LONG LOCAVAIL_LoadAvailabilityDataFile(void *primaryStatePtr, void *secondarySta
         } else {
             nodeIndex = 0;
             while (success != 0 && nodeIndex < nodeCount) {
-                LOCAVAIL_NodeRecord *node;
-                LONG payloadLen;
-                char *encoded;
-                LONG payloadIndex;
-
-                node = scratchState.nodeTable20 + nodeIndex;
+                node = (LOCAVAIL_NodeRecord *)((UBYTE *)scratchState.nodeTable20 +
+                                               NEWGRID_JMPTBL_MATH_Mulu32(nodeIndex, 10));
 
                 node->tokenIndex0 = (UBYTE)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
                 if (node->tokenIndex0 == 0 || node->tokenIndex0 >= 100) {
                     success = 0;
-                    break;
-                }
-
-                node->duration2 = (UWORD)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
-                if ((WORD)node->duration2 <= 0 || node->duration2 >= 0x0E11U) {
-                    success = 0;
-                    break;
-                }
-
-                node->payloadSize4 = (UWORD)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
-                payloadLen = (LONG)node->payloadSize4;
-                if ((WORD)node->payloadSize4 <= 0 || payloadLen >= 100) {
-                    success = 0;
-                    break;
-                }
-
-                node->payload6 = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
-                    Global_STR_LOCAVAIL_C_7, 786, payloadLen, MEMF_PUBLIC_CLEAR);
-                if (node->payload6 == (UBYTE *)0) {
-                    success = 0;
-                    break;
-                }
-
-                encoded = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
-                if (encoded == WORKBUF_ERROR) {
-                    success = 0;
-                    break;
-                }
-
-                payloadIndex = 0;
-                while (success != 0 && payloadIndex < payloadLen) {
-                    UBYTE *payload;
-
-                    payload = node->payload6 + payloadIndex;
-                    switch ((UBYTE)*encoded++) {
-                    case 'G':
-                        *payload = 2;
-                        break;
-                    case 'I':
-                        *payload = 4;
-                        break;
-                    case 'T':
-                        *payload = 3;
-                        break;
-                    case 'U':
-                        *payload = 0;
-                        break;
-                    case 'V':
-                        *payload = 1;
-                        break;
-                    default:
-                        *payload = 0;
+                } else {
+                    node->duration2 = (UWORD)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
+                    if ((WORD)node->duration2 <= 0 || node->duration2 >= 0x0E11U) {
                         success = 0;
-                        break;
-                    }
+                    } else {
+                        node->payloadSize4 = (UWORD)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
+                        payloadLen = (LONG)(WORD)node->payloadSize4;
+                        if ((WORD)node->payloadSize4 <= 0 || payloadLen >= 100) {
+                            success = 0;
+                        } else {
+                            node->payload6 = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+                                Global_STR_LOCAVAIL_C_7, 786, payloadLen, MEMF_PUBLIC_CLEAR);
+                            if (node->payload6 == (UBYTE *)0) {
+                                success = 0;
+                            } else {
+                                encoded = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
+                                if (encoded == WORKBUF_ERROR) {
+                                    success = 0;
+                                } else {
+                                    payloadIndex = 0;
+                                    while (success != 0 && payloadIndex < payloadLen) {
+                                        payload = node->payload6 + payloadIndex;
+                                        switch ((UBYTE)*encoded++) {
+                                        case 'G':
+                                            *payload = 2;
+                                            break;
+                                        case 'I':
+                                            *payload = 4;
+                                            break;
+                                        case 'T':
+                                            *payload = 3;
+                                            break;
+                                        case 'U':
+                                            *payload = 0;
+                                            break;
+                                        case 'V':
+                                            *payload = 1;
+                                            break;
+                                        default:
+                                            *payload = 0;
+                                            success = 0;
+                                            break;
+                                        }
 
-                    ++payloadIndex;
+                                        ++payloadIndex;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 ++nodeIndex;

@@ -48,6 +48,11 @@ static UBYTE fold_upper_if_alpha(UBYTE c)
     return c;
 }
 
+static int is_decimal_digit_class(UBYTE c)
+{
+    return (WDISP_CharClassTable[c] & 0x04U) != 0;
+}
+
 LONG GCOMMAND_ParseCommandString(char *cmd)
 {
     char scratch[4];
@@ -102,7 +107,9 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
         scratch[1] = cmd[idx + 1];
         scratch[2] = 0;
         v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
-        if (v >= 0 && v <= 99) {
+        if (v >= 0 && v <= 99 &&
+            is_decimal_digit_class((UBYTE)scratch[0]) &&
+            is_decimal_digit_class((UBYTE)scratch[1])) {
             GCOMMAND_MplexSearchRowLimit = v;
         }
         idx += 2;
@@ -113,7 +120,9 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
         scratch[1] = cmd[idx + 1];
         scratch[2] = 0;
         v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
-        if (v >= 0 && v <= 29) {
+        if (v >= 0 && v <= 29 &&
+            is_decimal_digit_class((UBYTE)scratch[0]) &&
+            is_decimal_digit_class((UBYTE)scratch[1])) {
             GCOMMAND_MplexClockOffsetMinutes = v;
         }
         idx += 2;

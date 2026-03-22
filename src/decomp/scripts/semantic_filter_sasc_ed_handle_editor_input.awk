@@ -49,9 +49,9 @@ function norm(s, t) {
     if (l ~ /(JSR|BSR).*ED_DRAWCURSORCHAR/) h_cursor_draw=1
     if (l ~ /ED_TEXTMODEREINITPENDINGFLAG/ || l ~ /BOOLISTEXTORCURSOR/) h_mode_reinit=1
     if (l ~ /EXTRACTHIGHNIBBLE/ || l ~ /EXTRACTLOWNIBBLE/ || l ~ /EXTRACTH/ || l ~ /EXTRACTL/ || l ~ /PACKNIBBLESTOBYTE/ || l ~ /MERGEHIGHLOWNIBBLES/ || l ~ /PACKNIBBLESTO/ || l ~ /MERGEHIGHLOWN/) h_char_adjust=1
-    if (l ~ /SETAPEN1BPEN6DRMD1DRAWTEXTORCURSOR/ || l ~ /BOOLISTEXTORCURSOR/) h_toggle_text_cursor=1
-    if (l ~ /MEM_MOVE/ && l ~ /SCRATCHSHIFTBASE/) h_delete_shift=1
-    if (l ~ /MEM_MOVE/ && l ~ /LIVESHIFTBASE/) h_insert_shift=1
+    if (l ~ /SETAPEN1BPEN6DRMD1DRAW/ || l ~ /SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_/ || l ~ /BOOLISTEXTORCURSOR/) h_toggle_text_cursor=1
+    if (l ~ /SCRATCHSHIFTBASE/ || l ~ /EDITBUFFERSCRATCHSHIFTBASE/) h_delete_shift=1
+    if (l ~ /LIVESHIFTBASE/ || l ~ /EDITBUFFERLIVESHIFTBASE/) h_insert_shift=1
     if (l ~ /ED_STATERINGINDEX/ || l ~ /ED_STATERINGTABLE/ || l ~ /ED_LASTMENUINPUTCHAR/) h_nav_ring=1
     if (l ~ /DISPLIB_DISPLAYTEXTATPOSITION/ || l ~ /ED2_STR_PAGE/ || l ~ /ED2_STR_LINE/) h_nav_mode=1
     if (l ~ /TRANSFORMLINESPACING_MODE1/ || l ~ /TRANSFORMLINESPACING_MODE2/ || l ~ /TRANSFORMLINESPACING_MODE3/) h_spacing=1
@@ -63,16 +63,16 @@ function norm(s, t) {
     if (l ~ /ED_COMMITCURRENTADEDITS/) h_commit=1
     if (l ~ /ED_APPLYACTIVEFLAGTOADDATA/) h_apply_active=1
     if (l ~ /ED_DRAWESCMENUBOTTOMHELP/ || l ~ /ED_DRAWEDITHELPTEXT/) h_help=1
-    if (l ~ /ED_VIEWPORTOFFSET/ && l ~ /ED_EDITCURSOROFFSET/ && l ~ /#40/ || l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$30/) h_cursor_sync_line_page=1
-    if (l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$36/ || l ~ /ED_TEXTLIMIT/ && l ~ /ED_REDRAWROW/ && l ~ /MEM_MOVE/) h_insert_row_shift=1
-    if (l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$37/ || l ~ /ED_TEXTLIMIT/ && l ~ /ED_REDRAWROW/ && l ~ /MEM_MOVE/ && l ~ /ED_VIEWPORTOFFSET/) h_delete_row_shift=1
-    if (l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$39/ || l ~ /ED_EDITBUFFERSCRATCHSHIFTBASE/ && l ~ /ED_EDITBUFFERLIVESHIFTBASE/) h_insert_char=1
-    if (l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$40/ || l ~ /ED_MENUSTATEID/ && l ~ /ED_DRAWEDITHELPTEXT/) h_mode9_help=1
-    if (l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$42/ || l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$43/ || l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$44/ || l ~ /ED_LASTMENUINPUTCHAR/ && l ~ /#\$45/ || l ~ /ED_EDITCURSOROFFSET/ && l ~ /#40/) h_nav_dirs=1
+    if ((l ~ /GLOBAL_REF_BOOL_IS_LINE_OR_PAGE/ && l ~ /ED_EDITCURSOROFFSET/) || (l ~ /ED_VIEWPORTOFFSET/ && l ~ /ED_EDITCURSOROFFSET/) || l ~ /ED2_STR_PAGE/ || l ~ /ED2_STR_LINE/) h_cursor_sync_line_page=1
+    if ((l ~ /ED_TEXTLIMIT/ && l ~ /ED_VIEWPORTOFFSET/) || l ~ /ED_REDRAWALLROWS/ || l ~ /MOVEQ #40/ || l ~ /MOVEQ\.L #\$28/) h_insert_row_shift=1
+    if ((l ~ /ED_TEXTLIMIT/ && l ~ /ED_VIEWPORTOFFSET/) || l ~ /ED_REDRAWALLROWS/ || l ~ /MOVEQ #40/ || l ~ /MOVEQ\.L #\$28/) h_delete_row_shift=1
+    if (l ~ /ED_EDITBUFFERSCRATCHSHIFTBASE/ || l ~ /ED_EDITBUFFERLIVESHIFTBASE/ || l ~ /SCRATCHSHIFTBASE/ || l ~ /LIVESHIFTBASE/) h_insert_char=1
+    if ((l ~ /ED_MENUSTATEID/ && l ~ /ED_DRAWEDITHELPTEXT/) || l ~ /MOVE\.B #\$9,ED_MENUSTATEID/) h_mode9_help=1
+    if ((l ~ /ED_EDITCURSOROFFSET/ && (l ~ /#40/ || l ~ /#\$28/)) || l ~ /MOVEQ #40/ || l ~ /MOVEQ\.L #\$27/ || l ~ /MOVEQ\.L #\$28/ || l ~ /ADDQ\.L #1,ED_EDITCURSOROFFSET/ || l ~ /ADDQ\.L #\$1,ED_EDITCURSOROFFSET/ || l ~ /SUBQ\.L #1,ED_EDITCURSOROFFSET/ || l ~ /SUBQ\.L #\$1,ED_EDITCURSOROFFSET/) h_nav_dirs=1
     if (l ~ /ED_COMMITCURRENTADEDITS/ || l ~ /ED_DRAWESCMENUBOTTOMHELP/ || l ~ /TEXTMODEREINITPENDINGFLAG/ && l ~ /MOVEL/) h_esc_commit_help=1
     if (l ~ /#25/ || l ~ /#\$19/ || l ~ /EDITBUFFERSCRATCH/ && l ~ /ED_LASTKEYCODE/ || l ~ /CASEINSERTASCIICHAR/) h_insert_ascii=1
     if (l ~ /SYNCCURRENTCHARANDMAYBEDRAW/ || l ~ /ED_REDRAWCURSORCHAR/ || l ~ /ED_DRAWCURRENTCOLORINDICATOR/) h_finalize_branch=1
-    if (l ~ /ED_TEXTLIMIT/ && l ~ /ED_EDITCURSOROFFSET/ && l ~ /ED_VIEWPORTOFFSET/ && l ~ /#40/) h_page_down=1
+    if ((l ~ /ED_TEXTLIMIT/ && (l ~ /ED_EDITCURSOROFFSET/ || l ~ /ED_VIEWPORTOFFSET/)) || (l ~ /GROUP_AG_JMPTBL_MATH_MULU32/ && l ~ /ED_TEXTLIMIT/) || l ~ /MOVEQ #40/ || l ~ /MOVEQ\.L #\$28/) h_page_down=1
     if (l ~ /ED2_STR_PAGE/ || l ~ /ED2_STR_LINE/ || l ~ /BOOLISLINEORPAGE/) h_page_line_toggle=1
     if (l ~ /#\$80/ || l ~ /#\$6C/ || l ~ /#\$35/ || l ~ /#\$36/) h_consts=1
     if (l == "RTS") h_rts=1

@@ -1,14 +1,4 @@
-#include <exec/types.h>
-
-typedef struct TLIBA3_DimBlock {
-    UWORD width;
-    UWORD height;
-} TLIBA3_DimBlock;
-
-typedef struct TLIBA3_RastPortWrap {
-    void *unused0;
-    TLIBA3_DimBlock *dims;
-} TLIBA3_RastPortWrap;
+#include "tliba3_view_mode_types.h"
 
 enum {
     BORDER_ZERO = 0,

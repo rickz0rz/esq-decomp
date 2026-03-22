@@ -9,6 +9,13 @@ BEGIN {
     has_write_bytes = 0
     has_close = 0
     has_free = 0
+    has_entry_ptr_null_guard = 0
+    has_title_ptr_null_guard = 0
+    has_slot_text_null_guard = 0
+
+    saw_entry_ptr_test = 0
+    saw_title_ptr_test = 0
+    saw_slot_text_test = 0
 }
 
 function trim(s, t) {
@@ -24,6 +31,14 @@ function trim(s, t) {
     line = trim($0)
     if (line == "") next
 
+    if (saw_entry_ptr_test && line ~ /^BEQ\./) has_entry_ptr_null_guard = 1
+    if (saw_title_ptr_test && line ~ /^BEQ\./) has_title_ptr_null_guard = 1
+    if (saw_slot_text_test && line ~ /^BEQ\./) has_slot_text_null_guard = 1
+
+    saw_entry_ptr_test = 0
+    saw_title_ptr_test = 0
+    saw_slot_text_test = 0
+
     if (ENTRY_PREFIX != "" && index(line, ENTRY_PREFIX) == 1) has_entry = 1
     if (ENTRY_ALT_PREFIX != "" && index(line, ENTRY_ALT_PREFIX) == 1) has_entry = 1
 
@@ -36,6 +51,10 @@ function trim(s, t) {
     if (line ~ /DISKIO_WRITEBUFFEREDBYTES/) has_write_bytes = 1
     if (line ~ /DISKIO_CLOSEBUFFEREDFILEANDFLUSH/) has_close = 1
     if (line ~ /MEMORY_DEALLOCATEMEMORY/ || line ~ /GROUP_AG_JMPTBL_MEMORY_DEALLOCATEMEMORY/ || line ~ /GROUP_AG_JMPTBL_MEMORY_DEALLOCAT/) has_free = 1
+
+    if (line ~ /^MOVE\.L A3,D0$/) saw_entry_ptr_test = 1
+    if (line ~ /^MOVE\.L A2,D0$/) saw_title_ptr_test = 1
+    if (line ~ /^MOVE\.L \$24\(A7\),D0$/) saw_slot_text_test = 1
 }
 
 END {
@@ -49,4 +68,7 @@ END {
     print "HAS_WRITE_BYTES=" has_write_bytes
     print "HAS_CLOSE=" has_close
     print "HAS_FREE=" has_free
+    print "HAS_ENTRY_PTR_NULL_GUARD=" has_entry_ptr_null_guard
+    print "HAS_TITLE_PTR_NULL_GUARD=" has_title_ptr_null_guard
+    print "HAS_SLOT_TEXT_NULL_GUARD=" has_slot_text_null_guard
 }

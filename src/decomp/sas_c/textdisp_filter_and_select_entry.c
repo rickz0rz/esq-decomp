@@ -49,25 +49,24 @@ extern void TEXTDISP_SetSelectionFields(TEXTDISP_SelectionEntry *entry, LONG mod
 extern void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entry);
 extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
 
+#define TEXTDISP_FILTER_MODE_NONE      0
+#define TEXTDISP_FILTER_MODE_FILTER    'F'
+#define TEXTDISP_FILTER_MODE_EXACT     'X'
+#define TEXTDISP_FILTER_PRIMARY        1
+#define TEXTDISP_FILTER_SECONDARY      2
+#define TEXTDISP_FILTER_DONE           3
+#define TEXTDISP_FILTER_SLOT_FIRST     1
+#define TEXTDISP_FILTER_SLOT_LAST      48
+#define TEXTDISP_FILTER_SLOT_SENTINEL  49
+#define TEXTDISP_FILTER_DAY_MINUTES    1440
+#define TEXTDISP_FLAG_HIDDEN_BIT       3
+#define TEXTDISP_FLAG_PPV_SBE_BIT      4
+
 LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE modeChar)
 {
-    const UBYTE CH_NUL = 0;
-    const UBYTE CH_MODE_FILTER = 'F';
-    const UBYTE CH_MODE_EXACT = 'X';
-    const LONG MODE_FILTER_PRIMARY = 1;
-    const LONG MODE_FILTER_SECONDARY = 2;
-    const LONG MODE_FILTER_DONE = 3;
-    const LONG SLOT_FIRST = 1;
-    const LONG SLOT_MAX = 49;
-    const LONG SLOT_LAST_VALID = 48;
-    const LONG MINUTES_PER_DAY = 1440;
-    const LONG BIT_SHIFT_HIDDEN = 3;
-    const LONG BIT_SHIFT_PPV_SBE = 4;
-    const LONG MATCH_FOUND_FLAG = -1;
     TEXTDISP_SelectionEntry *entry;
     const char *nameShort;
     const char *nameLong;
-    const char *candidateName;
     const char *candidateTitle;
     const TEXTDISP_AuxData *aux;
     const TEXTDISP_CandidateEntry *candidate;
@@ -84,7 +83,7 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
     found = 0;
     entry = entryPtr;
     if (entry == 0) {
-        modeChar = CH_NUL;
+        modeChar = TEXTDISP_FILTER_MODE_NONE;
     }
 
     nameShort = 0;
@@ -92,14 +91,14 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
     if (entry != 0) {
         nameShort = entry->shortName;
         nameLong = entry->longName;
-        if (nameShort[0] == CH_NUL || nameLong[0] == CH_NUL) {
-            modeChar = CH_NUL;
+        if (nameShort[0] == 0 || nameLong[0] == 0) {
+            modeChar = TEXTDISP_FILTER_MODE_NONE;
         }
     }
 
-    if (modeChar == CH_MODE_FILTER) {
+    if (modeChar == TEXTDISP_FILTER_MODE_FILTER) {
         TEXTDISP_FilterChannelSlotIndex = 0;
-        TEXTDISP_FilterModeId = MODE_FILTER_PRIMARY;
+        TEXTDISP_FilterModeId = TEXTDISP_FILTER_PRIMARY;
 
         ppvSbe = 1;
         if (ESQ_WildcardMatch(SCRIPT_FilterTag_PPV, nameShort) != 0 &&
@@ -110,11 +109,11 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
         TEXTDISP_FilterSportsMatchFlag = (ESQ_WildcardMatch(SCRIPT_FilterTag_SPORTS, nameShort) == 0) ? 1 : 0;
     }
 
-    if (modeChar != CH_MODE_FILTER && modeChar != CH_MODE_EXACT) {
-        TEXTDISP_FilterModeId = MODE_FILTER_DONE;
+    if (modeChar != TEXTDISP_FILTER_MODE_FILTER && modeChar != TEXTDISP_FILTER_MODE_EXACT) {
+        TEXTDISP_FilterModeId = TEXTDISP_FILTER_DONE;
     }
 
-    while (found == 0 && TEXTDISP_FilterModeId != MODE_FILTER_DONE) {
+    while (found == 0 && TEXTDISP_FilterModeId != TEXTDISP_FILTER_DONE) {
         if (TEXTDISP_FilterChannelSlotIndex == 0) {
             mode = (LONG)TEXTDISP_FilterModeId;
             count = TEXTDISP_GetGroupEntryCount(mode);
@@ -125,11 +124,11 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
                 if (candidate == 0) {
                     continue;
                 }
-                if ((candidate->flags27 & (1u << BIT_SHIFT_HIDDEN)) != 0) {
+                if ((candidate->flags27 & (1u << TEXTDISP_FLAG_HIDDEN_BIT)) != 0) {
                     continue;
                 }
                 if (TEXTDISP_FilterPpvSbeMatchFlag != 0 &&
-                    ((candidate->flags27 & (1u << BIT_SHIFT_PPV_SBE)) != 0)) {
+                    ((candidate->flags27 & (1u << TEXTDISP_FLAG_PPV_SBE_BIT)) != 0)) {
                     TEXTDISP_CandidateIndexList[TEXTDISP_FilterMatchCount++] = (UBYTE)idx;
                     continue;
                 }
@@ -146,13 +145,13 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
             if (TEXTDISP_FilterMatchCount > 0) {
                 TEXTDISP_FilterCandidateCursor = 0;
                 TEXTDISP_FilterChannelSlotIndex =
-                    (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY) ? CLOCK_HalfHourSlotIndex : SLOT_FIRST;
+                    (TEXTDISP_FilterModeId == TEXTDISP_FILTER_PRIMARY) ? CLOCK_HalfHourSlotIndex : TEXTDISP_FILTER_SLOT_FIRST;
             } else {
-                TEXTDISP_FilterChannelSlotIndex = SLOT_MAX;
+                TEXTDISP_FilterChannelSlotIndex = TEXTDISP_FILTER_SLOT_SENTINEL;
             }
         }
 
-        while (found == 0 && TEXTDISP_FilterChannelSlotIndex < SLOT_MAX) {
+        while (found == 0 && TEXTDISP_FilterChannelSlotIndex < TEXTDISP_FILTER_SLOT_SENTINEL) {
             if (TEXTDISP_FilterCandidateCursor >= TEXTDISP_FilterMatchCount) {
                 break;
             }
@@ -169,19 +168,19 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
             titleSlot = slot;
             candidateTitle = aux->titleTable[titleSlot];
 
-            if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY &&
+            if (TEXTDISP_FilterModeId == TEXTDISP_FILTER_PRIMARY &&
                 slot == (LONG)CLOCK_HalfHourSlotIndex) {
                 while (titleSlot > 0 && candidateTitle == 0) {
-                    candidateTitle = aux->titleTable[titleSlot];
                     titleSlot--;
+                    candidateTitle = aux->titleTable[titleSlot];
                 }
             }
 
-            if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY && candidateTitle != 0) {
+            if (TEXTDISP_FilterModeId == TEXTDISP_FILTER_PRIMARY && candidateTitle != 0) {
                 candidate = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
                 if (candidate == 0 ||
                     TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
-                        candidate, aux, titleSlot, MINUTES_PER_DAY, CONFIG_TimeWindowMinutes) == 0) {
+                        candidate, aux, titleSlot, TEXTDISP_FILTER_DAY_MINUTES, CONFIG_TimeWindowMinutes) == 0) {
                     candidateTitle = 0;
                 }
             }
@@ -200,17 +199,15 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
                 continue;
             }
 
-            candidateName = nameLong;
-            nameEnd = candidateName;
-            while (*nameEnd != CH_NUL) {
+            nameEnd = nameLong;
+            while (*nameEnd != 0) {
                 nameEnd++;
             }
-            nameLen = (LONG)(nameEnd - candidateName);
-            if (STRING_CompareNoCaseN(candidateName, candidateTitle, nameLen) == 0) {
+            nameLen = (LONG)(nameEnd - nameLong);
+            if (STRING_CompareNoCaseN(nameLong, candidateTitle, nameLen) == 0) {
                 candidate = (const TEXTDISP_CandidateEntry *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(idx, mode);
                 if (candidate != 0 &&
-                    ESQ_TestBit1Based(candidate->selectionBits, titleSlot) ==
-                        MATCH_FOUND_FLAG) {
+                    ESQ_TestBit1Based(candidate->selectionBits, titleSlot) == -1) {
                     found = 1;
                     TEXTDISP_SetSelectionFields(entry, mode, idx, titleSlot);
                     TEXTDISP_BuildEntryDetailLine(entry);
@@ -221,15 +218,15 @@ LONG TEXTDISP_FilterAndSelectEntry(TEXTDISP_SelectionEntry *entryPtr, UBYTE mode
         }
 
         if (found == 0) {
-            if (TEXTDISP_FilterChannelSlotIndex <= SLOT_LAST_VALID) {
+            if (TEXTDISP_FilterChannelSlotIndex <= TEXTDISP_FILTER_SLOT_LAST) {
                 TEXTDISP_FilterChannelSlotIndex++;
                 TEXTDISP_FilterCandidateCursor = 0;
             } else {
                 TEXTDISP_FilterChannelSlotIndex = 0;
-                if (TEXTDISP_FilterModeId == MODE_FILTER_PRIMARY) {
-                    TEXTDISP_FilterModeId = MODE_FILTER_SECONDARY;
+                if (TEXTDISP_FilterModeId == TEXTDISP_FILTER_PRIMARY) {
+                    TEXTDISP_FilterModeId = TEXTDISP_FILTER_SECONDARY;
                 } else {
-                    TEXTDISP_FilterModeId = MODE_FILTER_DONE;
+                    TEXTDISP_FilterModeId = TEXTDISP_FILTER_DONE;
                 }
             }
         }

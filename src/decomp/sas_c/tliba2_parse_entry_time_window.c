@@ -44,7 +44,7 @@ LONG TLIBA2_ParseEntryTimeWindow(TLIBA2_EntryAux *entryContext, LONG entryIndex,
     }
 
     quote = STR_FindCharPtr(entryText, 34);
-    if (quote != 0 && closeParen <= quote) {
+    if (quote != 0 && closeParen >= quote) {
         return ok;
     }
 

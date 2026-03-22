@@ -138,6 +138,7 @@ void TEXTDISP_BuildNowShowingStatusLine(UWORD modeFlag, UWORD groupIndex, UWORD 
                 STRING_AppendAtNull(line, SCRIPT_AlignedPrefixEmptyB);
                 STRING_AppendAtNull(line, SCRIPT_StrChannelLabel_TuesdaysFridays[(LONG)TEXTDISP_PrimaryChannelCode]);
                 timeToken = TEXTDISP_FindControlToken(TEXTDISP_PrimarySearchText);
+                bannerKind = TEXTDISP_NULL;
             }
         }
 

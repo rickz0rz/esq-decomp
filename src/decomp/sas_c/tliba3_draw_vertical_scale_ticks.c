@@ -1,14 +1,4 @@
-#include <exec/types.h>
-
-typedef struct TLIBA3_DimBlock {
-    UWORD width;
-    UWORD height;
-} TLIBA3_DimBlock;
-
-typedef struct TLIBA3_RastPortWrap {
-    void *unused0;
-    TLIBA3_DimBlock *dims;
-} TLIBA3_RastPortWrap;
+#include "tliba3_view_mode_types.h"
 
 #define TICK_ZERO 0
 #define LABEL_X_OFFSET 25

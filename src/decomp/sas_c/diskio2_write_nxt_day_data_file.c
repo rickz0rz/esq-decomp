@@ -81,10 +81,6 @@ long DISKIO2_WriteNxtDayDataFile(void)
         DISKIO2_TitleData *title = (DISKIO2_TitleData *)TEXTDISP_SecondaryTitlePtrTable[entryIndex];
         UWORD slot;
 
-        if (entry == 0 || title == 0) {
-            continue;
-        }
-
         DISKIO_WriteBufferedBytes(DISKIO2_NxtDayFileHandle, entry, 48);
         {
             const char *titleStr = (const char *)title;
@@ -117,9 +113,6 @@ long DISKIO2_WriteNxtDayDataFile(void)
                 slotText = DISKIO2_CopyAndSanitizeSlotString((char *)scratch, (const UBYTE *)entry, (const UBYTE *)title, slot);
             } else {
                 slotText = title->slotTextTable[slot];
-            }
-            if (slotText == 0) {
-                continue;
             }
 
             {

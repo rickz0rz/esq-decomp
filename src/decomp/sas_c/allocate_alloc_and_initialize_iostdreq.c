@@ -1,13 +1,14 @@
 #include <exec/io.h>
 #include <exec/memory.h>
 #include <exec/nodes.h>
+#include <exec/ports.h>
 
 #define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
 
 extern void *AbsExecBase;
 extern void *_LVOAllocMem(void *execBase, ULONG size, ULONG flags);
 
-struct IOStdReq *ALLOCATE_AllocAndInitializeIOStdReq(void *replyPort)
+struct IOStdReq *ALLOCATE_AllocAndInitializeIOStdReq(struct MsgPort *replyPort)
 {
     struct IOStdReq *req;
 

@@ -10,7 +10,10 @@ BEGIN {
     has_append = 0
     has_build_aligned = 0
     has_highlight = 0
+    has_primary_search_banner_reset = 0
     has_return = 0
+    track_primary_search_reset = 0
+    saw_zero_before_program_title_gate = 0
 }
 
 function trim(s, t) {
@@ -38,6 +41,20 @@ function trim(s, t) {
     if (index(u, "STRING_APPENDATNULL") > 0) has_append = 1
     if (index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALIGNEDSTATUSLINE") > 0 || index(u, "TEXTDISP_JMPTBL_CLEANUP_BUILDALI") > 0 || index(u, "CLEANUP_BUILDALIGNEDSTATUSLINE") > 0) has_build_aligned = 1
     if (index(u, "SCRIPT_SETUPHIGHLIGHTEFFECT") > 0 || index(u, "SCRIPT_SETUPHIGHLIGHTEF") > 0) has_highlight = 1
+    if (index(u, "TEXTDISP_PRIMARYSEARCHTEXT") > 0) {
+        track_primary_search_reset = 1
+        saw_zero_before_program_title_gate = 0
+    }
+    if (track_primary_search_reset &&
+        (u ~ /^MOVEQ(\.L)? #0([,[:space:]]|$)/ ||
+         u ~ /^MOVEQ(\.L)? #\$0([,[:space:]]|$)/ ||
+         u ~ /^CLR\.L([[:space:]]|$)/)) {
+        saw_zero_before_program_title_gate = 1
+    }
+    if (track_primary_search_reset && u ~ /^TST\.L /) {
+        has_primary_search_banner_reset = saw_zero_before_program_title_gate
+        track_primary_search_reset = 0
+    }
     if (u == "RTS") has_return = 1
 }
 
@@ -53,5 +70,6 @@ END {
     print "HAS_APPEND=" has_append
     print "HAS_BUILD_ALIGNED=" has_build_aligned
     print "HAS_HIGHLIGHT=" has_highlight
+    print "HAS_PRIMARY_SEARCH_BANNER_RESET=" has_primary_search_banner_reset
     print "HAS_RETURN=" has_return
 }

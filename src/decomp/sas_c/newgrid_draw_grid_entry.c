@@ -107,13 +107,12 @@ void NEWGRID_DrawGridEntry(char *layout, char *rowMeta, CoiSet *coi, UWORD row, 
         const char *p = STR_FindCharPtr(split, 40);
         if (p && p[5] == ')') {
             split = (char *)(p + 6);
-        }
-
-        split = advance_until_space(split);
-        if (*split) {
-            *split++ = 0;
-            if (DISPTEXT_LayoutSourceToLines(layout, p) != 0) {
-                DISPTEXT_LayoutAndAppendToBuffer(layout, p);
+            split = advance_until_space(split);
+            if (*split) {
+                *split++ = 0;
+                if (DISPTEXT_LayoutSourceToLines(layout, p) != 0) {
+                    DISPTEXT_LayoutAndAppendToBuffer(layout, p);
+                }
             }
         }
 

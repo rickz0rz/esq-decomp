@@ -25,6 +25,14 @@ BEGIN {
     has_line_errors=0
     has_filter_state=0
     has_banner_dispatch=0
+    has_status_packet_apply=0
+    has_clock_packet_apply=0
+    has_group_record_parse=0
+    has_version_overlay=0
+    has_aligned_listing=0
+    has_binary_transfer=0
+    has_reset_overlay=0
+    has_boxoff_commit=0
     has_type_record=0
     has_cmd_options=0
     has_cmd_string=0
@@ -89,6 +97,16 @@ function trim(s, t) {
     if (n ~ /LINEERRORCOUNT/) has_line_errors=1
     if (n ~ /PARSEFILTERSTATEFROMBUFFER/ || n ~ /PRIMARYFILTERSTATE/ || n ~ /SECONDARYFILTERSTATE/) has_filter_state=1
     if (n ~ /HANDLEBANNERCOMMAND3233/ || n ~ /READSERIALSIZEDTEXTRECORD/ || n ~ /BANNERSUBCOMMANDSET/) has_banner_dispatch=1
+    if (n ~ /APPLYINCOMINGSTATUSPACKET/ || n ~ /APPLYINCOMINGSTATUSPACK/) has_status_packet_apply=1
+    if (n ~ /APPLYRTCBYTESANDPERSIST/ || n ~ /CTASKSSTR1/ && n ~ /50/) has_clock_packet_apply=1
+    if (n ~ /PARSEGROUPRECORDANDREFRESH/ || n ~ /STATUSPACKETREADYFLAG/) has_group_record_parse=1
+    if (n ~ /SHOWVERSIONMISMATCHOVERLAY/ || n ~ /SHOWVERSIONMISMATCHOVERL/) has_version_overlay=1
+    if (n ~ /PARSEALIGNEDLISTINGBLOCK/) has_aligned_listing=1
+    if (n ~ /HANDLEINTERACTIVEFILETRANSFER/ || n ~ /HANDLEINTERACTIVEFILETRA/) has_binary_transfer=1
+    if (n ~ /GLOBALTICKCOUNTER/ || n ~ /RESETCOMMANDRECEIVED/ || n ~ /DISPLAYTEXTATPOSITION/) has_reset_overlay=1
+    if (n ~ /PERSISTSTATEDATAAFTERCOMMAND/ || n ~ /PERSISTSTATEDATAAFTERCOM/ ||
+        n ~ /STATUSMODECLEAR/ && n ~ /UPDATESTATUSMASKANDREFRESH/ ||
+        n ~ /UPDATESTATUSMASKANDREFRE/) has_boxoff_commit=1
     if (n ~ /PARSEANDSTORETYPERECORD/ || n ~ /PTYPEPARSEANDSTORE/) has_type_record=1
     if (n ~ /PARSECOMMANDOPTIONS/) has_cmd_options=1
     if (n ~ /PARSECOMMANDSTRING/) has_cmd_string=1
@@ -138,6 +156,14 @@ END {
     print "HAS_LINE_ERRORS=" has_line_errors
     print "HAS_FILTER_STATE_PARSE=" has_filter_state
     print "HAS_BANNER_DISPATCH=" has_banner_dispatch
+    print "HAS_STATUS_PACKET_APPLY=" has_status_packet_apply
+    print "HAS_CLOCK_PACKET_APPLY=" has_clock_packet_apply
+    print "HAS_GROUP_RECORD_PARSE=" has_group_record_parse
+    print "HAS_VERSION_OVERLAY=" has_version_overlay
+    print "HAS_ALIGNED_LISTING=" has_aligned_listing
+    print "HAS_BINARY_TRANSFER=" has_binary_transfer
+    print "HAS_RESET_OVERLAY=" has_reset_overlay
+    print "HAS_BOXOFF_COMMIT=" has_boxoff_commit
     print "HAS_TYPE_RECORD_PARSE=" has_type_record
     print "HAS_COMMAND_OPTIONS_PARSE=" has_cmd_options
     print "HAS_COMMAND_STRING_PARSE=" has_cmd_string

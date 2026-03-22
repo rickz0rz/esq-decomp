@@ -1,21 +1,9 @@
 #include <exec/types.h>
+#include "wdisp_accumulator_rows.h"
 
 extern void *WDISP_DisplayContextBase;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_HANDLE_PREVUEC_FONT;
-
-extern UBYTE WDISP_AccumulatorRow0_CopperIndexStart;
-extern UBYTE WDISP_AccumulatorRow0_CopperIndexEnd;
-extern WORD WDISP_AccumulatorRow0_Value;
-extern UBYTE WDISP_AccumulatorRow1_CopperIndexStart;
-extern UBYTE WDISP_AccumulatorRow1_CopperIndexEnd;
-extern WORD WDISP_AccumulatorRow1_Value;
-extern UBYTE WDISP_AccumulatorRow2_CopperIndexStart;
-extern UBYTE WDISP_AccumulatorRow2_CopperIndexEnd;
-extern WORD WDISP_AccumulatorRow2_Value;
-extern UBYTE WDISP_AccumulatorRow3_CopperIndexStart;
-extern UBYTE WDISP_AccumulatorRow3_CopperIndexEnd;
-extern WORD WDISP_AccumulatorRow3_Value;
 
 extern WORD ACCUMULATOR_Row0_CaptureValue;
 extern WORD ACCUMULATOR_Row1_CaptureValue;
@@ -92,34 +80,34 @@ void WDISP_HandleWeatherStatusCommand(LONG command)
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 4);
 
-    if (WDISP_AccumulatorRow0_CopperIndexStart < 32 &&
-        WDISP_AccumulatorRow0_CopperIndexEnd < 32 &&
-        WDISP_AccumulatorRow0_Value < 0x4000) {
-        ACCUMULATOR_Row0_CaptureValue = WDISP_AccumulatorRow0_Value;
+    if (WDISP_AccumulatorRowTable[0].copperIndexStart < 32 &&
+        WDISP_AccumulatorRowTable[0].copperIndexEnd < 32 &&
+        WDISP_AccumulatorRowTable[0].value < 0x4000) {
+        ACCUMULATOR_Row0_CaptureValue = WDISP_AccumulatorRowTable[0].value;
     } else {
         ACCUMULATOR_Row0_CaptureValue = 0;
     }
 
-    if (WDISP_AccumulatorRow1_CopperIndexStart < 32 &&
-        WDISP_AccumulatorRow1_CopperIndexEnd < 32 &&
-        WDISP_AccumulatorRow1_Value < 0x4000) {
-        ACCUMULATOR_Row1_CaptureValue = WDISP_AccumulatorRow1_Value;
+    if (WDISP_AccumulatorRowTable[1].copperIndexStart < 32 &&
+        WDISP_AccumulatorRowTable[1].copperIndexEnd < 32 &&
+        WDISP_AccumulatorRowTable[1].value < 0x4000) {
+        ACCUMULATOR_Row1_CaptureValue = WDISP_AccumulatorRowTable[1].value;
     } else {
         ACCUMULATOR_Row1_CaptureValue = 0;
     }
 
-    if (WDISP_AccumulatorRow2_CopperIndexStart < 32 &&
-        WDISP_AccumulatorRow2_CopperIndexEnd < 32 &&
-        WDISP_AccumulatorRow2_Value < 0x4000) {
-        ACCUMULATOR_Row2_CaptureValue = WDISP_AccumulatorRow2_Value;
+    if (WDISP_AccumulatorRowTable[2].copperIndexStart < 32 &&
+        WDISP_AccumulatorRowTable[2].copperIndexEnd < 32 &&
+        WDISP_AccumulatorRowTable[2].value < 0x4000) {
+        ACCUMULATOR_Row2_CaptureValue = WDISP_AccumulatorRowTable[2].value;
     } else {
         ACCUMULATOR_Row2_CaptureValue = 0;
     }
 
-    if (WDISP_AccumulatorRow3_CopperIndexStart < 32 &&
-        WDISP_AccumulatorRow3_CopperIndexEnd < 32 &&
-        WDISP_AccumulatorRow3_Value < 0x4000) {
-        capture3 = WDISP_AccumulatorRow3_Value;
+    if (WDISP_AccumulatorRowTable[3].copperIndexStart < 32 &&
+        WDISP_AccumulatorRowTable[3].copperIndexEnd < 32 &&
+        WDISP_AccumulatorRowTable[3].value < 0x4000) {
+        capture3 = WDISP_AccumulatorRowTable[3].value;
         ACCUMULATOR_Row3_CaptureValue = capture3;
     } else {
         capture3 = 0;

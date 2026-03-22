@@ -1,12 +1,8 @@
-#include <exec/types.h>
-#include <graphics/rastport.h>
-#include <graphics/gfx.h>
+#include "tliba3_view_mode_types.h"
 
 enum {
     VM_PATTERN_WORD_COUNT = 38,
-    VM_PLANE_PTR_PAIR_COUNT = 5,
-    VM_PATTERN_STRIDE = 76,
-    VM_RUNTIME_STRIDE = 154
+    VM_PLANE_PTR_PAIR_COUNT = 5
 };
 
 enum {
@@ -15,23 +11,6 @@ enum {
     VM_BPLCON0_WORD = 13,
     VM_PLANE_PTR_BASE_WORD = 19
 };
-
-typedef struct TLIBA3_ViewModeRuntimeEntry {
-    UWORD flags0;
-    UWORD width2;
-    UWORD height4;
-    WORD x6;
-    UWORD y8;
-    struct RastPort rastPort10;
-    struct BitMap bitMap110;
-    ULONG planePtr118;
-    ULONG planePtr122;
-    ULONG planePtr126;
-    ULONG planePtr130;
-    ULONG planePtr134;
-    UWORD reserved150;
-    UWORD reserved152;
-} TLIBA3_ViewModeRuntimeEntry;
 
 extern UBYTE TLIBA3_VmArrayPatternTable[];
 extern UBYTE TLIBA3_VmArrayRuntimeTable[];
@@ -84,12 +63,12 @@ LONG TLIBA3_BuildDisplayContextForViewMode(LONG viewMode, LONG unusedArg1, LONG 
         TLIBA3_InitPatternTable();
     }
 
-    patternOffset = MATH_Mulu32(viewMode, VM_PATTERN_STRIDE);
+    patternOffset = MATH_Mulu32(viewMode, TLIBA3_VM_PATTERN_STRIDE);
     for (i = 0; i < VM_PATTERN_WORD_COUNT; ++i) {
         basePattern[i] = ((UWORD *)(TLIBA3_VmArrayPatternTable + patternOffset))[i];
     }
 
-    runtimeOffset = MATH_Mulu32(viewMode, VM_RUNTIME_STRIDE);
+    runtimeOffset = MATH_Mulu32(viewMode, TLIBA3_VM_RUNTIME_STRIDE);
     runtime = (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + runtimeOffset);
 
     if ((runtime->flags0 & 0x8004U) == 0x8004U) {

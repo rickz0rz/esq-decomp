@@ -17,7 +17,14 @@ BEGIN {
     has_channel_update = 0
     has_readsigned = 0
     has_parsehex = 0
+    has_mulu = 0
     has_consts_14_15 = 0
+    has_brush_selection = 0
+    has_brush_list_scan = 0
+    has_wildcard_lookup = 0
+    has_pending_cmd_fields = 0
+    has_highlight_custom = 0
+    has_handshake_bit5 = 0
     has_return = 0
 }
 
@@ -55,7 +62,14 @@ function trim(s, t) {
     if (n ~ /TEXTDISPUPDATECHANNELRANGEFLAGS/ || n ~ /CHANNELRANGEARMEDFLAG/ || n ~ /CHANNELRANGEDIGITCHAR/) has_channel_update = 1
     if (n ~ /PARSEREADSIGNEDLONGSKIPCLASS3ALT/ || n ~ /READSIGNEDLONGSKIPCLASS3ALT/ || n ~ /PARSEREADSIGNEDLONGSKIPCLASS3A/ || n ~ /READSIGNEDLONGSKIPCLASS3A/) has_readsigned = 1
     if (n ~ /LADFUNCPARSEHEXDIGIT/ || n ~ /PARSEHEXDIGIT/) has_parsehex = 1
+    if (n ~ /MATHMULU32/) has_mulu = 1
     if (u ~ /#14([^0-9]|$)/ || u ~ /#15([^0-9]|$)/ || u ~ /#\$E/ || u ~ /#\$0E/ || u ~ /#\$F/ || u ~ /#\$0F/) has_consts_14_15 = 1
+    if (n ~ /BRUSHSCRIPTPRIMARYSELECTION/ || n ~ /BRUSHSCRIPTSECONDARYSELECTION/ || n ~ /BRUSHSELECTEDNODE/) has_brush_selection = 1
+    if (n ~ /ESQIFFBRUSHINILISTHEAD/) has_brush_list_scan = 1
+    if (n ~ /TEXTDISPFINDENTRYINDEXBYWILDCARD/ || n ~ /TEXTDISPFINDENTRYINDEXBYWILDCAR/) has_wildcard_lookup = 1
+    if (n ~ /SCRIPTPENDINGTEXTDISPCMDARG/ || n ~ /SCRIPTPENDINGWEATHERCOMMANDCHAR/) has_pending_cmd_fields = 1
+    if (n ~ /HIGHLIGHTCUSTOMVALUE/) has_highlight_custom = 1
+    if (n ~ /SCRIPTREADHANDSHAKEBIT5MASK/) has_handshake_bit5 = 1
     if (u == "RTS") has_return = 1
 }
 
@@ -78,6 +92,13 @@ END {
     print "HAS_CHANNEL_UPDATE=" has_channel_update
     print "HAS_READSIGNED=" has_readsigned
     print "HAS_PARSE_HEX=" has_parsehex
+    print "HAS_MULU32=" has_mulu
     print "HAS_CONSTS_14_15=" has_consts_14_15
+    print "HAS_BRUSH_SELECTION=" has_brush_selection
+    print "HAS_BRUSH_LIST_SCAN=" has_brush_list_scan
+    print "HAS_WILDCARD_LOOKUP=" has_wildcard_lookup
+    print "HAS_PENDING_CMD_FIELDS=" has_pending_cmd_fields
+    print "HAS_HIGHLIGHT_CUSTOM=" has_highlight_custom
+    print "HAS_HANDSHAKE_BIT5=" has_handshake_bit5
     print "HAS_RETURN=" has_return
 }

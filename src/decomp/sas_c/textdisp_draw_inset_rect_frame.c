@@ -3,7 +3,7 @@
 extern LONG WDISP_DisplayContextBase;
 extern char *Global_REF_RASTPORT_2;
 
-extern void TLIBA1_DrawFormattedTextBlock(char *rastPort, const char *text, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, WORD x1, WORD y1, WORD x2, WORD y2);
 
 typedef struct TEXTDISP_DisplayContext {
     UBYTE pad0[2];

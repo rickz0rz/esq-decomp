@@ -11,6 +11,15 @@ BEGIN {
     has_clockcmd_read=0
     has_aux_actions=0
     has_debug_dump=0
+    has_banner_fallback_toggle=0
+    has_banner_datetime_dump=0
+    has_diag_overlay_toggle=0
+    has_shutdown_request=0
+    has_menu_state_18=0
+    has_set_apen_rectfill=0
+    has_clock_sync_scan=0
+    render_call_count=0
+    has_render_short_arg=0
     has_restore_state=0
     has_rts=0
 }
@@ -43,6 +52,15 @@ function trim(s, t) {
     if (n ~ /OPENFILEWITHMODE/ || n ~ /LVOREAD/ || n ~ /LVOCLOSE/ || n ~ /APPLYRTCBYTESANDPERSIST/) has_clockcmd_read=1
     if (n ~ /RELOADDATAFILESANDREBUILDINDEX/ || n ~ /PARSEINIBUFFERANDDISPATCH/ || n ~ /SCANLOGODIRECTORY/ || n ~ /RENDERALIGNEDSTATUSSCREEN/ || n ~ /WAITFORFLAGANDCLEARBIT/ || n ~ /COPYGFXTOWORKIFAVAILABLE/ || n ~ /SETCOPPEREFFECTCUSTOM/ || n ~ /MOVECOPPERENTRYTOWARDEND/ || n ~ /SHUTDOWNREQUESTEDFLAG/) has_aux_actions=1
     if (n ~ /RAWDOFMTWITHSCRATCHBUFFER/ || n ~ /DUMPPROGRAMSOURCERECORDVERBOSE/ || n ~ /FORMATBANNERDATETIME/ || n ~ /BANNERROWFALLBACKONFIRSTROWFLAG/) has_debug_dump=1
+    if (n ~ /BANNERROWFALLBACKONFIRSTROWFLAG/ || n ~ /BANNERROWFALLBACKONFIRS/) has_banner_fallback_toggle=1
+    if (n ~ /DSTFORMATBANNERDATETIME/ || n ~ /CLOCKDAYSLOTINDEX/ || n ~ /CLOCKCURRENTDAYOFWEEKINDEX/) has_banner_datetime_dump=1
+    if (n ~ /DIAGOVERLAYAUTOREFRESHFLAG/ || n ~ /DIAGOVERLAYAUTOREFRESHFL/) has_diag_overlay_toggle=1
+    if (n ~ /SHUTDOWNREQUESTEDFLAG/) has_shutdown_request=1
+    if (n ~ /MENUSTATEID/ && (u ~ /#\\$18/ || u ~ /#24/)) has_menu_state_18=1
+    if (n ~ /SETAPEN/ || n ~ /RECTFILL/) has_set_apen_rectfill=1
+    if (u ~ /#\\$AA/ || u ~ /#170/ || u ~ /#85/ || u ~ /#75/ || n ~ /APPLYRTCBYTESANDPERSIST/) has_clock_sync_scan=1
+    if (n ~ /RENDERALIGNEDSTATUSSCREEN/ || n ~ /RENDERALIGNEDSTATUSSCREE/) render_call_count++
+    if (u ~ /PEA \\(\\$1\\)\\.W/ || u ~ /PEA \\(1\\)\\.W/ || u ~ /PEA \\(\\$1\\)/) has_render_short_arg=1
     if (n ~ /SETAPEN/ || n ~ /SETDRMD/ || n ~ /SETBPEN/ || n ~ /GLOBALREF696400BITMAP/) has_restore_state=1
     if (u == "RTS") has_rts=1
 }
@@ -60,6 +78,15 @@ END {
     print "HAS_CLOCKCMD_READ=" has_clockcmd_read
     print "HAS_AUX_ACTIONS=" has_aux_actions
     print "HAS_DEBUG_DUMP=" has_debug_dump
+    print "HAS_BANNER_FALLBACK_TOGGLE=" has_banner_fallback_toggle
+    print "HAS_BANNER_DATETIME_DUMP=" has_banner_datetime_dump
+    print "HAS_DIAG_OVERLAY_TOGGLE=" has_diag_overlay_toggle
+    print "HAS_SHUTDOWN_REQUEST=" has_shutdown_request
+    print "HAS_MENU_STATE_18=" has_menu_state_18
+    print "HAS_COLOR_BARS=" has_set_apen_rectfill
+    print "HAS_CLOCK_SYNC_SCAN=" has_clock_sync_scan
+    print "HAS_RENDER_SHORT=" (render_call_count >= 2 && has_render_short_arg)
+    print "HAS_RENDER_FULL=" (render_call_count >= 2)
     print "HAS_RESTORE_STATE=" has_restore_state
     print "HAS_RTS=" has_rts
 }

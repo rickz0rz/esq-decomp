@@ -23,7 +23,7 @@ extern void COI_FreeEntryResources(void *entry);
 extern LONG DST_UpdateBannerQueue(void *pair);
 extern char *ESQPROTO_ParseDigitLabelAndDisplay(const char *in);
 extern void DISKIO_ParseConfigBuffer(char *buffer, ULONG size);
-extern LONG CLEANUP_ParseAlignedListingBlock(char *record, char *listing);
+extern LONG CLEANUP_ParseAlignedListingBlock(char *record);
 extern long SCRIPT_ReadNextRbfByte(void);
 extern LONG ESQ_GenerateXorChecksumByte(UBYTE seed, const UBYTE *src, LONG length);
 extern void DST_RefreshBannerBuffer(void);
@@ -52,7 +52,7 @@ void ESQPARS_JMPTBL_COI_FreeEntryResources(void *entry){COI_FreeEntryResources(e
 LONG ESQPARS_JMPTBL_DST_UpdateBannerQueue(void *pair){return DST_UpdateBannerQueue(pair);}
 char *ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay(const char *in){return ESQPROTO_ParseDigitLabelAndDisplay(in);}
 void ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer(char *buffer, ULONG size){DISKIO_ParseConfigBuffer(buffer, size);}
-LONG ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock(char *record, char *listing){return CLEANUP_ParseAlignedListingBlock(record, listing);}
+LONG ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock(char *record){return CLEANUP_ParseAlignedListingBlock(record);}
 unsigned char ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void){return (unsigned char)SCRIPT_ReadNextRbfByte();}
 LONG ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(UBYTE seed, const UBYTE *buffer, LONG len){return ESQ_GenerateXorChecksumByte(seed, buffer, len);}
 void ESQPARS_JMPTBL_DST_RefreshBannerBuffer(void){DST_RefreshBannerBuffer();}

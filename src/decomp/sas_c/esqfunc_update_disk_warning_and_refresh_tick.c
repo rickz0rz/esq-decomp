@@ -1,15 +1,13 @@
 #include <exec/types.h>
-#include <exec/types.h>
 
-typedef struct ESQFUNC_RastPortHolder {
-    UBYTE pad0[2];
-    UBYTE rastPort[1];
-} ESQFUNC_RastPortHolder;
+enum {
+    ESQFUNC_DISPLAY_RASTPORT2_OFFSET = 10
+};
 
 extern LONG DISKIO_Drive0WriteProtectedCode;
 extern LONG DISKIO_DriveMediaStatusCodeTable;
+extern LONG WDISP_DisplayContextBase;
 extern WORD Global_RefreshTickCounter;
-extern ESQFUNC_RastPortHolder Global_REF_RASTPORT_2;
 extern const char Global_STR_DISK_0_IS_WRITE_PROTECTED[];
 extern const char Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0[];
 
@@ -18,12 +16,15 @@ extern void TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text
 
 void ESQFUNC_UpdateDiskWarningAndRefreshTick(void)
 {
+    char *displayRastPort;
+
     DISKIO_ProbeDrivesAndAssignPaths();
+    displayRastPort = (char *)(WDISP_DisplayContextBase + ESQFUNC_DISPLAY_RASTPORT2_OFFSET);
 
     if (DISKIO_Drive0WriteProtectedCode != 0) {
         Global_RefreshTickCounter = -1;
         TLIBA3_DrawCenteredWrappedTextLines(
-            (char *)Global_REF_RASTPORT_2.rastPort,
+            displayRastPort,
             Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0,
             90);
         return;
@@ -32,7 +33,7 @@ void ESQFUNC_UpdateDiskWarningAndRefreshTick(void)
     if (DISKIO_DriveMediaStatusCodeTable != 0) {
         Global_RefreshTickCounter = -1;
         TLIBA3_DrawCenteredWrappedTextLines(
-            (char *)Global_REF_RASTPORT_2.rastPort,
+            displayRastPort,
             Global_STR_DISK_0_IS_WRITE_PROTECTED,
             90);
         return;

@@ -3,7 +3,8 @@
 typedef struct NewgridCtx {
     char *coi;
     char *entries;
-    LONG preset;
+    LONG keyIndex;
+    UBYTE pad0[8];
     UWORD row;
 } NewgridCtx;
 
@@ -15,6 +16,7 @@ typedef struct NEWGRID_Entry {
 typedef struct NEWGRID_AuxData {
     UBYTE pad0[7];
     UBYTE rowFlags[49];
+    const char *titlePtrs[1];
 } NEWGRID_AuxData;
 
 extern const char Global_STR_SHOWTIMES_AND_SINGLE_SPACE[];
@@ -45,6 +47,14 @@ static int str_eq_nullable(const char *a, const char *b)
         b++;
     }
     return 0;
+}
+
+static const char *skip_time_prefix(const char *s)
+{
+    if (s != 0 && s[0] == '(' && s[3] == ':') {
+        return s + 8;
+    }
+    return s;
 }
 
 void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
@@ -83,13 +93,13 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
         row = (UWORD)(row - 48);
     }
 
-    title0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 1);
-    f1_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 2);
-    f2_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 6);
-    f3_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 7);
+    title0 = skip_time_prefix(auxCur->titlePtrs[row]);
     if (!title0 || title0[0] == 0) {
         return;
     }
+    f1_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 2);
+    f2_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 6);
+    f3_0 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 7);
 
     mode0 = 0;
     if (modeFlag == 1 && ESQDISP_TestEntryGridEligibility((const UBYTE *)auxCur, row) != 0) {
@@ -106,7 +116,7 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
 
     for (row = (UWORD)(ctx->row + 1); row < rowEnd; row++) {
         if (row == 49) {
-            NEWGRID_UpdatePresetEntry((char **)&entryCur, (char **)&auxCur, (LONG)row, ctx->preset);
+            NEWGRID_UpdatePresetEntry((char **)&entryCur, (char **)&auxCur, (LONG)row, ctx->keyIndex);
         }
 
         srcIdx = (row > 48) ? (LONG)(row - 48) : (LONG)row;
@@ -122,7 +132,14 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
             continue;
         }
 
-        titleN = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 1);
+        if (auxCur->titlePtrs[srcIdx] == 0) {
+            continue;
+        }
+        if (auxCur->rowFlags[srcIdx] & 0x80) {
+            continue;
+        }
+
+        titleN = skip_time_prefix(auxCur->titlePtrs[srcIdx]);
         f1_n = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 2);
         f2_n = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 6);
         f3_n = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 7);
@@ -136,11 +153,15 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
             continue;
         }
 
-        if (!str_eq_nullable(title0, titleN) ||
-            !str_eq_nullable(f1_0, f1_n) ||
+        if (!str_eq_nullable(title0, titleN)) {
+            continue;
+        }
+        if (mode0 != modeN) {
+            continue;
+        }
+        if (!str_eq_nullable(f1_0, f1_n) ||
             !str_eq_nullable(f2_0, f2_n) ||
-            !str_eq_nullable(f3_0, f3_n) ||
-            mode0 != modeN) {
+            !str_eq_nullable(f3_0, f3_n)) {
             continue;
         }
 

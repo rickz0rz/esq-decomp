@@ -12,15 +12,13 @@ extern LONG UNKNOWN_ParseRecordAndUpdateDisplay(const char *buf);
 
 LONG ESQPROTO_VerifyChecksumAndParseRecord(UBYTE seed)
 {
-    LONG checksum;
-
     ESQIFF_ParseAttemptCount = (UWORD)(ESQIFF_ParseAttemptCount + 1u);
     ESQIFF_RecordLength =
         (UWORD)ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 0, 0);
 
-    checksum = ESQ_GenerateXorChecksumByte(
-        seed, ESQIFF_RecordBufferPtr, (LONG)ESQIFF_RecordLength);
-    if (checksum != (LONG)ESQIFF_RecordChecksumByte) {
+    if (ESQ_GenerateXorChecksumByte(
+            seed, ESQIFF_RecordBufferPtr, (LONG)ESQIFF_RecordLength) !=
+        (LONG)ESQIFF_RecordChecksumByte) {
         DATACErrs = (UWORD)(DATACErrs + 1u);
         return 0;
     }

@@ -76,6 +76,7 @@ long DISKIO2_LoadCurDayDataFile(void)
     long result = 0;
     ULONG fileLen;
     volatile char *workBuf;
+    ULONG entryCopySize;
     UBYTE headerCode;
     UWORD loadedCount = 0;
     UWORD parsedCount = 0;
@@ -99,6 +100,20 @@ long DISKIO2_LoadCurDayDataFile(void)
 
     fileLen = Global_REF_LONG_FILE_SCRATCH;
     workBuf = Global_PTR_WORK_BUFFER;
+    {
+        UWORD i = 0;
+        volatile char *src = Global_PTR_WORK_BUFFER;
+        ULONG remaining = Global_REF_LONG_FILE_SCRATCH;
+
+        while (remaining > 0 && i < 21) {
+            statusText[i] = *src++;
+            remaining--;
+            i++;
+        }
+
+        Global_PTR_WORK_BUFFER = src;
+        Global_REF_LONG_FILE_SCRATCH = remaining;
+    }
 
     DST_PrimaryCountdown = (WORD)DISKIO_ParseLongFromWorkBuffer();
     ESQIFF2_ApplyIncomingStatusPacket((UBYTE *)statusText);
@@ -118,14 +133,19 @@ long DISKIO2_LoadCurDayDataFile(void)
 
     if (ESQ_WildcardMatch(DISKIO2_STR_DREV_1, (char *)DISKIO_ErrorMessageScratch) != 0) {
         DISKIO_CurrentDriveRevisionIndex = 1;
+        entryCopySize = 40;
     } else if (ESQ_WildcardMatch(DISKIO2_STR_DREV_2, (char *)DISKIO_ErrorMessageScratch) != 0) {
         DISKIO_CurrentDriveRevisionIndex = 2;
+        entryCopySize = 41;
     } else if (ESQ_WildcardMatch(DISKIO2_STR_DREV_3, (char *)DISKIO_ErrorMessageScratch) != 0) {
         DISKIO_CurrentDriveRevisionIndex = 3;
+        entryCopySize = 46;
     } else if (ESQ_WildcardMatch(DISKIO2_STR_DREV_4, (char *)DISKIO_ErrorMessageScratch) != 0) {
         DISKIO_CurrentDriveRevisionIndex = 4;
+        entryCopySize = 48;
     } else if (ESQ_WildcardMatch(DISKIO2_STR_DREV_5, (char *)DISKIO_ErrorMessageScratch) != 0) {
         DISKIO_CurrentDriveRevisionIndex = 5;
+        entryCopySize = 48;
     } else {
         MEMORY_DeallocateMemory(
             Global_STR_DISKIO2_C_5, 561, (char *)workBuf, fileLen + 1);
@@ -191,11 +211,11 @@ long DISKIO2_LoadCurDayDataFile(void)
                 UWORD i;
                 UBYTE *dst = (UBYTE *)entry;
                 volatile char *src = Global_PTR_WORK_BUFFER;
-                for (i = 0; i < 48; i++) {
+                for (i = 0; i < entryCopySize; i++) {
                     *dst++ = (UBYTE)*src++;
                 }
                 Global_PTR_WORK_BUFFER = src;
-                Global_REF_LONG_FILE_SCRATCH -= 48;
+                Global_REF_LONG_FILE_SCRATCH -= entryCopySize;
             }
 
             entry->flags40 = (UBYTE)(entry->flags40 & 0x7F);

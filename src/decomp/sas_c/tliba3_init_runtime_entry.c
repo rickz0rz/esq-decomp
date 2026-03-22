@@ -1,8 +1,7 @@
-#include <exec/types.h>
+#include "tliba3_view_mode_types.h"
 
 enum {
     VM_ZERO = 0,
-    VM_RUNTIME_STRIDE = 154,
     VM_PLANE_PTR_COUNT = 6,
     VM_RPORT_COPY_LAST_INDEX = 24,
     VM_OFFSET_REG_BASE = 0,
@@ -38,7 +37,7 @@ void TLIBA3_InitRuntimeEntry(
     UBYTE *vm;
     LONG i;
 
-    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(idx, VM_RUNTIME_STRIDE);
+    vm = TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(idx, TLIBA3_VM_RUNTIME_STRIDE);
 
     *(UWORD *)(vm + VM_OFFSET_REG_BASE) = (UWORD)regBase;
     *(UWORD *)(vm + VM_OFFSET_WIDTH) = (UWORD)width;

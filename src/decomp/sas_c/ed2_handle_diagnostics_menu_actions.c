@@ -84,6 +84,10 @@ void ED2_HandleDiagnosticsMenuActions(void)
         GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides(Global_REF_RASTPORT_1);
         break;
     case 13:
+        ED_DiagAvailMemMask &= ~7;
+        ED_DiagAvailMemPresetBits |= (1 << 2);
+        break;
+    case 18:
         Global_WORD_MAX_VALUE = 0;
         CTRL_HDeltaMax = 0;
         ESQIFF_LineErrorCount = 0;
@@ -93,57 +97,61 @@ void ED2_HandleDiagnosticsMenuActions(void)
         SCRIPT_CtrlCmdChecksumErrorCount = 0;
         SCRIPT_CtrlCmdCount = 0;
         break;
-    case 28:
+    case 33:
         ED_DiagTextModeChar = ED_FindNextCharInTable((LONG)ED_DiagTextModeChar, ED2_TAG_NRLS);
         ED_DrawDiagnosticModeText();
         break;
-    case 30:
-        ED_DiagVinModeChar = ED_FindNextCharInTable((LONG)ED_DiagVinModeChar, ED2_STR_NYYLLZ);
-        ED_DrawDiagnosticModeText();
-        break;
-    case 31:
-        ED_DiagGraphModeChar = ED_FindNextCharInTable((LONG)ED_DiagGraphModeChar, ED2_TAG_NYLRS);
-        ED_DrawDiagnosticModeText();
-        break;
-    case 26:
+    case 35:
         ED_DiagScrollSpeedChar = (ED_DiagScrollSpeedChar <= '3') ? '6' : (UBYTE)(ED_DiagScrollSpeedChar - 1);
         ED_TextLimit = (LONG)(ED_DiagScrollSpeedChar - '0');
         ED_BlockOffset = ESQIFF_JMPTBL_MATH_Mulu32(ED_TextLimit, 40);
         ED_DrawDiagnosticModeText();
         break;
+    case 36:
+        ED_DiagGraphModeChar = ED_FindNextCharInTable((LONG)ED_DiagGraphModeChar, ED2_TAG_NYLRS);
+        ED_DrawDiagnosticModeText();
+        break;
     case 40:
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 270, ED2_STR_START_TAPE_VIDEO);
+        GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow();
+        break;
+    case 41:
+        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 270, ED2_STR_STOP);
+        GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow();
+        break;
+    case 49:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175, 360, ED2_STR_SILENCE);
         GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(0);
         break;
-    case 41:
+    case 50:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175, 360, ED2_STR_LEFT);
         GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(1);
         break;
-    case 42:
+    case 51:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175, 360, ED2_STR_RIGHT);
         GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(2);
         break;
-    case 43:
+    case 52:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175, 360, ED2_STR_BACKGROUND);
         GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(3);
         break;
-    case 50:
+    case 53:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 390, ED2_STR_EXT_DOT_VIDEO_ONLY);
         GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn();
         break;
-    case 51:
+    case 54:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 390, ED2_STR_COMPUTER_ONLY);
         GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight();
         break;
-    case 52:
+    case 55:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 390, ED2_STR_OVERLAY_EXT_DOT_VIDEO);
         GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
         break;
-    case 53:
+    case 56:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 390, ED2_STR_NEGATIVE_VIDEO);
         GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default();
         break;
-    case 54:
+    case 57:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 270, ED2_STR_VIDEO_SWITCH);
         if (SCRIPT_ReadHandshakeBit5Mask() == 0) {
             DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 235, 270, ED2_STR_OPEN);
@@ -151,18 +159,14 @@ void ED2_HandleDiagnosticsMenuActions(void)
             DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 235, 270, ED2_STR_CLOSED);
         }
         break;
-    case 55:
-        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 270, ED2_STR_START_TAPE_VIDEO);
-        GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow();
+    case 64:
+        ED_DiagVinModeChar = ED_FindNextCharInTable((LONG)ED_DiagVinModeChar, ED2_STR_NYYLLZ);
+        ED_DrawDiagnosticModeText();
         break;
-    case 56:
-        DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 270, ED2_STR_STOP);
-        GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow();
-        break;
-    case 90:
+    case 67:
         ED_DiagnosticsViewMode += 1;
         break;
-    case 122:
+    case 99:
         ED_DiagnosticsViewMode = (ED_DiagnosticsViewMode == 1) ? 0 : 1;
         break;
     default:

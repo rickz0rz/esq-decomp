@@ -33,7 +33,7 @@ extern void ESQIFF_RunCopperDropTransition(void);
 extern void ESQIFF_RestoreBasePaletteTriples(void);
 extern short SCRIPT_BeginBannerCharTransition(LONG bannerChar, LONG duration);
 extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG drawMode);
-extern void TLIBA1_DrawFormattedTextBlock(char *rastPort, const char *text, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, WORD x1, WORD y1, WORD x2, WORD y2);
 extern void ESQIFF_RunCopperRiseTransition(void);
 extern void TEXTDISP_ResetSelectionState(TEXTDISP_SelectionEntry *entry);
 

@@ -1,4 +1,4 @@
-#include <exec/types.h>
+#include "tliba3_view_mode_types.h"
 
 typedef struct TLIBA3_PatternWordPair {
     UWORD reg;
@@ -9,24 +9,8 @@ typedef struct TLIBA3_PatternEntry {
     TLIBA3_PatternWordPair pair[19];
 } TLIBA3_PatternEntry;
 
-typedef struct TLIBA3_ViewModeRuntimeEntry {
-    UWORD flags0;
-    UWORD width2;
-    UWORD height4;
-    WORD x6;
-    UWORD y8;
-    UBYTE pad10[108];
-    ULONG planePtr118;
-    ULONG planePtr122;
-    ULONG planePtr126;
-    ULONG planePtr130;
-    ULONG planePtr134;
-} TLIBA3_ViewModeRuntimeEntry;
-
 enum {
     VM_PATTERN_COUNT = 10,
-    VM_PATTERN_STRIDE = 76,
-    VM_RUNTIME_STRIDE = 154,
     VM_BASE_DDF = 40
 };
 
@@ -67,8 +51,8 @@ void TLIBA3_InitPatternTable(void)
         ULONG planeValue;
         LONG i;
 
-        pattern = (TLIBA3_PatternEntry *)(TLIBA3_VmArrayPatternTable + MATH_Mulu32(viewModeIndex, VM_PATTERN_STRIDE));
-        runtime = (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewModeIndex, VM_RUNTIME_STRIDE));
+        pattern = (TLIBA3_PatternEntry *)(TLIBA3_VmArrayPatternTable + MATH_Mulu32(viewModeIndex, TLIBA3_VM_PATTERN_STRIDE));
+        runtime = (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(viewModeIndex, TLIBA3_VM_RUNTIME_STRIDE));
 
         for (i = 0; i < 19; ++i) {
             pattern->pair[i].reg = regWords[i];

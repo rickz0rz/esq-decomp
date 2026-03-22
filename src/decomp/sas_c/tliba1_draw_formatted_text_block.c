@@ -25,7 +25,7 @@ struct TLIBA1_DrawFormattedTextRecord {
     WORD addExtraSpacing;
 };
 
-void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, LONG left, LONG top, LONG right, LONG bottom)
+void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, WORD left, WORD top, WORD right, WORD bottom)
 {
     struct RastPort *rp;
     struct TextFont *savedFont;

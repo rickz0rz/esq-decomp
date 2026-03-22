@@ -152,7 +152,7 @@ extern void ESQPARS_PersistStateDataAfterCommand(void);
 extern LONG DISKIO2_HandleInteractiveFileTransfer(UBYTE crc32Mode);
 extern void DISKIO_ParseConfigBuffer(char *buffer, ULONG size);
 extern LONG DISKIO_SaveConfigToFileHandle(void);
-extern LONG CLEANUP_ParseAlignedListingBlock(char *record, char *listing);
+extern LONG CLEANUP_ParseAlignedListingBlock(char *record);
 extern LONG LOCAVAIL_ParseFilterStateFromBuffer(const UBYTE *buffer, void *statePtr);
 extern LONG P_TYPE_ParseAndStoreTypeRecord(const char *src);
 extern LONG GCOMMAND_ParseCommandOptions(char *cmd);
@@ -889,8 +889,7 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         }
         if (ESQPARS_VerifyExistingRecord(cmdByte, MAX_PROGRAM_INFO_RECORD) != FLAG_FALSE &&
             ESQIFF_RecordBufferPtr[1] == '1') {
-            CLEANUP_ParseAlignedListingBlock((char *)ESQIFF_RecordBufferPtr,
-                                             (char *)ESQIFF_RecordBufferPtr);
+            CLEANUP_ParseAlignedListingBlock((char *)ESQIFF_RecordBufferPtr);
         }
         ESQPARS_ResetArmedFlag = 0;
         break;

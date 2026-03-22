@@ -1,14 +1,7 @@
-#include <exec/types.h>
-
-typedef struct TLIBA3_ViewModeRuntimeEntry {
-    UBYTE pad0[10];
-    UBYTE rastPort10[1];
-} TLIBA3_ViewModeRuntimeEntry;
+#include "tliba3_view_mode_types.h"
 
 enum {
-    VM_ZERO = 0,
-    VM_RUNTIME_COUNT = 10,
-    VM_RUNTIME_STRIDE = 154
+    VM_ZERO = 0
 };
 
 extern UBYTE TLIBA3_VmArrayRuntimeTable[];
@@ -21,9 +14,9 @@ void TLIBA3_SetFontForAllViewModes(void *font)
 {
     LONG i;
 
-    for (i = VM_ZERO; i < VM_RUNTIME_COUNT; ++i) {
-        TLIBA3_ViewModeRuntimeEntry *vm =
-            (TLIBA3_ViewModeRuntimeEntry *)(TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(i, VM_RUNTIME_STRIDE));
+    for (i = VM_ZERO; i < TLIBA3_VM_RUNTIME_COUNT; ++i) {
+        TLIBA3_ViewModeRuntimeRasterEntry *vm =
+            (TLIBA3_ViewModeRuntimeRasterEntry *)(TLIBA3_VmArrayRuntimeTable + MATH_Mulu32(i, TLIBA3_VM_RUNTIME_STRIDE));
         _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, (char *)vm->rastPort10, font);
     }
 }

@@ -4,6 +4,12 @@ BEGIN {
     has_ensure_alloc=0
     has_dos_read=0
     has_recurse=0
+    has_unbuffered_inline_byte_path=0
+    has_write_pending_gate=0
+    has_read_refill_issued=0
+    has_io_error_set=0
+    has_eof_short_set=0
+    has_negate_text_read_count=0
     has_ctrl_z=0
     has_cr=0
     has_flush_reject=0
@@ -40,8 +46,14 @@ function trim(s, t) {
     if (n ~ /BUFFERENSUREALLOCATED/) has_ensure_alloc=1
     if (n ~ /DOSREADBYINDEX/) has_dos_read=1
     if (n ~ /BSRWSTREAMBUFFEREDGETC/ || n ~ /JSRSTREAMBUFFEREDGETC/ || n ~ /BRAWSTREAMBUFFEREDGETC/) has_recurse=1
+    if (n ~ /INLINEBYTE/ || u ~ /^LEA \$20\(A[35]\),A0$/) has_unbuffered_inline_byte_path=1
+    if (n ~ /WRITEPENDING/ || u ~ /^BTST #\$1,\(A3\)$/) has_write_pending_gate=1
+    if (n ~ /READREFILLISSUED/ || u ~ /^BSET #\$0,\(A3\)$/) has_read_refill_issued=1
+    if (n ~ /IOERROR/ || u ~ /^BSET #\$5,\(A3\)$/) has_io_error_set=1
+    if (n ~ /EOFORSHORT/ || u ~ /^BSET #\$4,\(A3\)$/) has_eof_short_set=1
+    if (u ~ /^NEG\.L D0$/) has_negate_text_read_count=1
     if (u ~ /#\$1A/ || u ~ /#26([^0-9]|$)/ || u ~ /#\$001A/) has_ctrl_z=1
-    if (u ~ /#\$0D/ || u ~ /#13([^0-9]|$)/ || u ~ /#\$000D/) has_cr=1
+    if (u ~ /#\$0?D([^0-9A-F]|$)/ || u ~ /#13([^0-9]|$)/ || u ~ /#\$000D/) has_cr=1
     if (n ~ /OPENMASKFLUSHREJECT/ || u ~ /#\$30/ || u ~ /#48([^0-9]|$)/) has_flush_reject=1
     if (n ~ /OPENMASKREADREJECT/ || u ~ /#\$32/ || u ~ /#50([^0-9]|$)/) has_read_reject=1
     if (n ~ /MODEFLAGS/) has_mode_flags=1
@@ -49,7 +61,7 @@ function trim(s, t) {
     if (n ~ /READREMAINING/ || n ~ /8A5/ || n ~ /8A3/) has_read_remaining=1
     if (n ~ /BUFFERCURSOR/ || n ~ /4A5/ || n ~ /4A3/) has_buffer_cursor=1
     if (u ~ /#\$1A/ || u ~ /#26([^0-9]|$)/ || u ~ /\(\$1A\)/) has_const1a=1
-    if (u ~ /#\$0D/ || u ~ /#13([^0-9]|$)/ || u ~ /\(\$D\)/) has_const0d=1
+    if (u ~ /#\$0?D([^0-9A-F]|$)/ || u ~ /#13([^0-9]|$)/ || u ~ /\(\$D\)/) has_const0d=1
     if (u ~ /#\$30/ || u ~ /#48([^0-9]|$)/ || n ~ /OPENMASKFLUSHREJECT/) has_const30=1
     if (u ~ /#\$32/ || u ~ /#50([^0-9]|$)/ || n ~ /OPENMASKREADREJECT/) has_const32=1
     if (u == "RTS") has_rts=1
@@ -61,6 +73,12 @@ END {
     print "HAS_ENSURE_ALLOCATED_CALL="has_ensure_alloc
     print "HAS_DOS_READ_CALL="has_dos_read
     print "HAS_RECURSE_PATTERN="has_recurse
+    print "HAS_UNBUFFERED_INLINE_BYTE_PATH="has_unbuffered_inline_byte_path
+    print "HAS_WRITE_PENDING_GATE="has_write_pending_gate
+    print "HAS_READ_REFILL_ISSUED_BIT_SET="has_read_refill_issued
+    print "HAS_IO_ERROR_BIT_SET="has_io_error_set
+    print "HAS_EOF_OR_SHORT_BIT_SET="has_eof_short_set
+    print "HAS_NEGATE_TEXT_READ_COUNT="has_negate_text_read_count
     print "HAS_CTRL_Z_CHECK="has_ctrl_z
     print "HAS_CR_CHECK="has_cr
     print "HAS_FLUSH_REJECT_MASK="has_flush_reject
