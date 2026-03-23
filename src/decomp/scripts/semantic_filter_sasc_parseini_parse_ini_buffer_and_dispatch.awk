@@ -4,6 +4,7 @@ BEGIN {
     has_consume = 0
     has_skip_ws = 0
     has_findchar = 0
+    has_findany = 0
     has_compare = 0
     has_section_qtable = 0
     has_section_backdrop = 0
@@ -18,11 +19,22 @@ BEGIN {
     has_default_text_current = 0
     has_default_text_forecast = 0
     has_default_text_bottom = 0
+    has_source_config_clear = 0
+    has_qtable_delim = 0
     has_qtable_alloc = 0
+    has_qtable_store = 0
     has_qtable_reset = 0
-    has_brush_reload = 0
-    has_weather = 0
-    has_source_config = 0
+    has_backdrop_delim = 0
+    has_backdrop_dispatch = 0
+    has_gradient_dispatch = 0
+    has_textads_brush_delim = 0
+    has_textads_brush_dispatch = 0
+    has_banner_delim = 0
+    has_banner_dispatch = 0
+    has_default_text_delim = 0
+    has_default_text_dispatch = 0
+    has_source_config_delim = 0
+    has_source_config_dispatch = 0
     has_cleanup = 0
     has_return = 0
 }
@@ -48,6 +60,7 @@ function trim(s, t) {
     if (n ~ /PARSEINIJMPTBLDISKIOCONSUMELINEFROMWORKBUFFER/ || n ~ /DISKIOCONSUMELINEFROMWORKBUFFER/) has_consume = 1
     if (n ~ /PARSEINISKIPCLASS3CHARS/ || n ~ /WDISPCHARCLASSTABLE/) has_skip_ws = 1
     if (n ~ /PARSEINIJMPTBLSTRFINDCHARPTR/ || n ~ /STRFINDCHARPTR/) has_findchar = 1
+    if (n ~ /PARSEINIJMPTBLSTRFINDANYCHARPTR/ || n ~ /STRFINDANYCHARPTR/) has_findany = 1
     if (n ~ /PARSEINIJMPTBLSTRINGCOMPARENOCASE/ || n ~ /STRINGCOMPARENOCASE/) has_compare = 1
 
     if (n ~ /PTYPESTRQTABLE/) has_section_qtable = 1
@@ -64,18 +77,30 @@ function trim(s, t) {
     if (n ~ /GLOBALSTRPTRNOCURRENTWEATHERDATAAVIALABLE/ || n ~ /PTYPEWEATHERCURRENTMSGPTR/) has_default_text_current = 1
     if (n ~ /SCRIPTPTRNOFORECASTWEATHERDATA/ || n ~ /PTYPEWEATHERFORECASTMSGPTR/) has_default_text_forecast = 1
     if (n ~ /SCRIPTPTRWEATHERDATAAVAILABILITYDISCLAIMER/ || n ~ /PTYPEWEATHERBOTTOMLINEMSGPTR/) has_default_text_bottom = 1
+    if (n ~ /TEXTDISPCLEARSOURCECONFIG/) has_source_config_clear = 1
 
+    if (n ~ /PARSEINIDELIMSPACETABSECTION1/) has_qtable_delim = 1
     if (n ~ /TEXTDISPALIASPTRTABLE/ || n ~ /MEMORYALLOCATEMEMORY/) has_qtable_alloc = 1
+    if (n ~ /ESQPARSREPLACEOWNEDSTRING/) has_qtable_store = 1
     if (n ~ /TEXTDISPALIASCOUNT/) has_qtable_reset = 1
 
-    if (n ~ /PARSEINITAGFILENAME/ || n ~ /PARSEINITAGBRUSH/ ||
-        n ~ /GCOMMANDFINDPATHSEPARATOR/ || n ~ /HANDLEOPENWITHMODE/ ||
-        n ~ /ESQIFFQUEUEIFFBRUSHLOAD/ || n ~ /ESQIFFHANDLEBRUSHINIRELOADHOTKEY/) has_brush_reload = 1
+    if (n ~ /PARSEINIDELIMSPACETABSECTION2/) has_backdrop_delim = 1
+    if (n ~ /PARSEINIPROCESSWEATHERBLOCKS/) has_backdrop_dispatch = 1
 
-    if (n ~ /PARSEINIPROCESSWEATHERBLOCKS/ || n ~ /PARSEINIPARSECOLORTABLE/ ||
-        n ~ /PARSEINILOADWEATHERSTRINGS/ || n ~ /PARSEINILOADWEATHERMESSAGESTRINGS/) has_weather = 1
+    if (n ~ /PARSEINIPARSERANGEKEYVALUE/) has_gradient_dispatch = 1
 
-    if (n ~ /TEXTDISPCLEARSOURCECONFIG/ || n ~ /TEXTDISPADDSOURCECONFIGENTRY/) has_source_config = 1
+    if (n ~ /PARSEINIDELIMSPACETABSECTION4/ || n ~ /PARSEINIDELIMSPACETABSECTION45/) has_textads_brush_delim = 1
+    if (n ~ /PARSEINIPARSECOLORTABLE/) has_textads_brush_dispatch = 1
+
+    if (n ~ /PARSEINIDELIMSPACETABSECTION6/) has_banner_delim = 1
+    if (n ~ /PARSEINILOADWEATHERSTRINGS/) has_banner_dispatch = 1
+
+    if (n ~ /PARSEINIDELIMSPACETABSECTION7/) has_default_text_delim = 1
+    if (n ~ /PARSEINILOADWEATHERMESSAGESTRINGS/ || n ~ /PARSEINILOADWEATHERMESSAGESTRIN/) has_default_text_dispatch = 1
+
+    if (n ~ /PARSEINIDELIMSPACETABSECTION8/) has_source_config_delim = 1
+    if (n ~ /TEXTDISPADDSOURCECONFIGENTRY/) has_source_config_dispatch = 1
+
     if (n ~ /MEMORYDEALLOCATEMEMORY/ || n ~ /GLOBALSTRPARSEINIC2/) has_cleanup = 1
     if (u ~ /^RTS$/) has_return = 1
 }
@@ -86,6 +111,7 @@ END {
     print "HAS_CONSUME=" has_consume
     print "HAS_SKIP_WS=" has_skip_ws
     print "HAS_FINDCHAR=" has_findchar
+    print "HAS_FINDANY=" has_findany
     print "HAS_COMPARE=" has_compare
     print "HAS_SECTION_QTABLE=" has_section_qtable
     print "HAS_SECTION_BACKDROP=" has_section_backdrop
@@ -98,11 +124,15 @@ END {
     print "HAS_GRADIENT_INIT=" has_gradient_init
     print "HAS_BANNER_REFRESH_RESET=" has_banner_refresh_reset
     print "HAS_DEFAULT_TEXT_RESET=" (has_default_text_current && has_default_text_forecast && has_default_text_bottom ? 1 : 0)
-    print "HAS_QTABLE_ALLOC=" has_qtable_alloc
+    print "HAS_SOURCE_CONFIG_CLEAR=" has_source_config_clear
+    print "HAS_QTABLE_PARSE=" (has_qtable_delim && has_qtable_alloc && has_qtable_store ? 1 : 0)
     print "HAS_QTABLE_RESET=" has_qtable_reset
-    print "HAS_BRUSH_RELOAD=" has_brush_reload
-    print "HAS_WEATHER=" has_weather
-    print "HAS_SOURCE_CONFIG=" has_source_config
+    print "HAS_BACKDROP_PARSE=" (has_backdrop_delim && has_backdrop_dispatch ? 1 : 0)
+    print "HAS_GRADIENT_PARSE=" has_gradient_dispatch
+    print "HAS_TEXTADS_BRUSH_PARSE=" (has_textads_brush_delim && has_textads_brush_dispatch ? 1 : 0)
+    print "HAS_BANNER_PARSE=" (has_banner_delim && has_banner_dispatch ? 1 : 0)
+    print "HAS_DEFAULT_TEXT_PARSE=" (has_default_text_delim && has_default_text_dispatch ? 1 : 0)
+    print "HAS_SOURCE_CONFIG_PARSE=" (has_source_config_delim && has_source_config_dispatch ? 1 : 0)
     print "HAS_CLEANUP=" has_cleanup
     print "HAS_RETURN=" has_return
 }

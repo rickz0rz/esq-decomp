@@ -3,6 +3,8 @@ BEGIN {
     has_status_refresh = 0
     has_wait = 0
     has_read_serial = 0
+    wait_call_count = 0
+    read_serial_call_count = 0
     has_filename_loop = 0
     has_wildcard_guard = 0
     has_copy_pad_nul = 0
@@ -18,6 +20,13 @@ BEGIN {
     has_delete_file = 0
     has_copy_execute = 0
     has_diag_queries = 0
+    append_at_null_call_count = 0
+    display_call_count = 0
+    delete_file_call_count = 0
+    save_read_mode_count = 0
+    restore_read_mode_count = 0
+    has_success_cleanup = 0
+    has_success_stored_text = 0
 }
 
 function trim(s, t) {
@@ -32,6 +41,7 @@ function trim(s, t) {
 {
     line = trim($0)
     if (line == "") next
+    if (line ~ /^XREF /) next
 
     if (ENTRY_PREFIX != "" && index(line, ENTRY_PREFIX) == 1) has_entry = 1
     if (ENTRY_ALT_PREFIX != "" && index(line, ENTRY_ALT_PREFIX) == 1) has_entry = 1
@@ -39,7 +49,9 @@ function trim(s, t) {
 
     if (line ~ /UPDATESTATUSMASKANDREFRESH/ || line ~ /ESQDISP_UPDATEST/) has_status_refresh = 1
     if (line ~ /WAITFORCLOCKCHANGEANDSERVICEUI/ || line ~ /WAITFORC/) has_wait = 1
+    if (line ~ /^(JSR|BSR\.W) .*WAITFORCLOCKCHANGEANDSERVICEUI/ || line ~ /^(JSR|BSR\.W) ESQFUNC_WAITFORCLOCKCHANGEANDSER/) wait_call_count++
     if (line ~ /READSERIALRBFBYTE/ || line ~ /SCRIPT_READNEXTRBFBYTE/ || line ~ /READSERIA/) has_read_serial = 1
+    if (line ~ /^(JSR|BSR\.W) .*READSERIALRBFBYTE/ || line ~ /^(JSR|BSR\.W) SCRIPT_READNEXTRBFBYTE/) read_serial_call_count++
     if (line ~ /TRANSFERFILENAMEBUFFER/) has_filename_loop = 1
     if (line ~ /WILDCARDMATCH/ || line ~ /CTASKS_EXT_GRF/) has_wildcard_guard = 1
     if (line ~ /STRING_COPYPADNUL/ || line ~ /COPYPADNUL/ || line ~ /COPYPADNU/) has_copy_pad_nul = 1
@@ -55,6 +67,13 @@ function trim(s, t) {
     if (line ~ /LVODELETEFILE/) has_delete_file = 1
     if (line ~ /LVOEXECUTE/ || line ~ /STRING_APPENDATNULL/ || line ~ /GLOBAL_STR_COPY_NIL/) has_copy_execute = 1
     if (line ~ /QUERYDISKUSAGEPERCENT/ || line ~ /QUERYVOLUMESOFTERRORCOUNT/ || line ~ /WDISP_SPRINTF/) has_diag_queries = 1
+    if (line ~ /^(JSR|BSR\.W) .*STRING_APPENDATNULL/ || line ~ /^(JSR|BSR\.W) STRING_APPENDATNULL/) append_at_null_call_count++
+    if (line ~ /^(JSR|BSR\.W) DISPLIB_DISPLAYTEXTATPOSITION/) display_call_count++
+    if (line ~ /^(JSR|BSR\.W) _LVODELETEFILE/) delete_file_call_count++
+    if (line ~ /^MOVE\.W ESQPARS2_READMODEFLAGS.*DISKIO_SAVEDREADMODEFLAGS/) save_read_mode_count++
+    if (line ~ /^MOVE\.W DISKIO_SAVEDREADMODEFLAGS.*ESQPARS2_READMODEFLAGS/) restore_read_mode_count++
+    if (line ~ /DISKIO_FORCEUIREFRESHIFIDLE/ || line ~ /DISKIO_RESETCTRLINPUTSTATEIFIDLE/) has_success_cleanup = 1
+    if (line ~ /GLOBAL_STR_STORED/ || line ~ /__MERGED\(A4\)/) has_success_stored_text = 1
 }
 
 END {
@@ -62,6 +81,8 @@ END {
     print "HAS_STATUS_REFRESH=" has_status_refresh
     print "HAS_WAIT=" has_wait
     print "HAS_READ_SERIAL=" has_read_serial
+    print "WAIT_CALL_COUNT=" wait_call_count
+    print "READ_SERIAL_CALL_COUNT=" read_serial_call_count
     print "HAS_FILENAME_LOOP=" has_filename_loop
     print "HAS_WILDCARD_GUARD=" has_wildcard_guard
     print "HAS_COPY_PAD_NUL=" has_copy_pad_nul
@@ -77,4 +98,11 @@ END {
     print "HAS_DELETE_FILE=" has_delete_file
     print "HAS_COPY_EXECUTE=" has_copy_execute
     print "HAS_DIAG_QUERIES=" has_diag_queries
+    print "APPEND_AT_NULL_CALL_COUNT=" append_at_null_call_count
+    print "DISPLAY_CALL_COUNT=" display_call_count
+    print "DELETE_FILE_CALL_COUNT=" delete_file_call_count
+    print "SAVE_READ_MODE_COUNT=" save_read_mode_count
+    print "RESTORE_READ_MODE_COUNT=" restore_read_mode_count
+    print "HAS_SUCCESS_CLEANUP=" has_success_cleanup
+    print "HAS_SUCCESS_STORED_TEXT=" has_success_stored_text
 }

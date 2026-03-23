@@ -6,8 +6,12 @@ BEGIN {
     has_flush_close = 0
     has_execute_call = 0
     has_findtask_call = 0
+    has_process_window_backup = 0
+    has_process_window_hide = 0
     has_openlibrary_call = 0
     has_openresource_call = 0
+    has_utility_gate = 0
+    has_battclock_resource = 0
     has_override_intuition = 0
     has_openfont_call = 0
     has_opendiskfont_call = 0
@@ -16,6 +20,7 @@ BEGIN {
     has_setfont_call = 0
     has_divs32_call = 0
     has_highlight_bitmap_call = 0
+    has_highlight_bitmap_table = 0
     has_initbitmap_call = 0
     has_allocraster_call = 0
     has_bltclear_call = 0
@@ -24,6 +29,7 @@ BEGIN {
     has_msgport_alloc = 0
     has_list_init = 0
     has_queue_highlight = 0
+    has_queue_highlight_pair = 0
     has_copper_off = 0
     has_disk_error_guard = 0
     has_fastmem_check = 0
@@ -58,6 +64,7 @@ BEGIN {
     has_prime_banner = 0
     has_preset_defaults = 0
     has_parse_ini = 0
+    parse_ini_count = 0
     has_reset_banner_fade = 0
     has_reload_data = 0
     has_load_source_config = 0
@@ -66,6 +73,8 @@ BEGIN {
     has_find_type3 = 0
     has_reset_lists = 0
     has_reset_filter = 0
+    reset_filter_count = 0
+    has_status_refresh_fff = 0
     has_status_refresh = 0
     has_brush_dt = 0
     has_brush_dither_fallback = 0
@@ -76,9 +85,18 @@ BEGIN {
     has_main_loop_gate = 0
     has_rts = 0
     saw_find_type3_call = 0
+    saw_dt_label = 0
+    saw_queue_slot_table = 0
+    saw_queue_bitmap_table = 0
+    saw_status_refresh_mask_fff = 0
     saw_schedule_limit = 0
     saw_schedule_table_ref = 0
     saw_ravesc_select_test = 0
+    saw_process_ptr = 0
+    saw_process_backup = 0
+    saw_graphics_version_check = 0
+    saw_utility_open = 0
+    saw_window_hide_value = 0
     preflight_stage = 0
     hardware_stage = 0
     display_stage = 0
@@ -123,8 +141,26 @@ function advance_stage(stage, target) {
     if (u ~ /BUFFER_FLUSHALLANDCLOSEWITHCODE/ || u ~ /FLUSHALLANDCLOSEWITHCODE/) has_flush_close = 1
     if (u ~ /_LVOEXECUTE/) has_execute_call = 1
     if (u ~ /_LVOFINDTASK/) has_findtask_call = 1
+    if (u ~ /WDISP_EXECBASEHOOKPTR/ || u ~ /PROCESS \*PROCESS/ || u ~ /PROCESS = \(PROCESS \*\)_LVOFINDTASK/) saw_process_ptr = 1
+    if ((u ~ /ESQ_PROCESSWINDOWPTRBACKUP/ || u ~ /PR_WINDOWPTR/) &&
+        (u ~ /MOVE\.L 184\(A0\)/ || u ~ /MOVE\.L \$B8\(A3\)/ ||
+         u ~ /PROCESS->PR_WINDOWPTR/ || u ~ /= PROCESS->PR_WINDOWPTR/)) {
+        has_process_window_backup = 1
+        saw_process_backup = 1
+    }
+    if (u ~ /MOVEQ(\.L)? #-1,D0/ || u ~ /MOVEQ(\.L)? #\$FF,D0/) saw_window_hide_value = 1
+    if (saw_process_ptr && saw_process_backup &&
+        ((u ~ /MOVE\.L D0,184\(A0\)/ && u ~ /MOVEQ #-1,D0/) ||
+         (u ~ /MOVE\.L D0,\$B8\(A3\)/ && u ~ /MOVEQ(\.L)? #\$FF,D0/) ||
+         (saw_window_hide_value && (u ~ /MOVE\.L D0,184\(A0\)/ || u ~ /MOVE\.L D0,\$B8\(A3\)/)) ||
+         u ~ /PROCESS->PR_WINDOWPTR = -1/)) has_process_window_hide = 1
     if (u ~ /_LVOOPENLIBRARY/) has_openlibrary_call = 1
     if (u ~ /_LVOOPENRESOURCE/) has_openresource_call = 1
+    if ((u ~ /LIB_VERSION/ || u ~ /20\(A0\)/ || u ~ /\$14\(A0\)/ || u ~ /CMP\.W D1,D0/) &&
+        (u ~ /#37/ || u ~ /#\$25/ || u ~ /CMP\.W D1,D0/ || u ~ />= 37/)) saw_graphics_version_check = 1
+    if (u ~ /GLOBAL_STR_UTILITY_LIBRARY/ || u ~ /GLOBAL_REF_UTILITY_LIBRARY/ || u ~ /PEA \(\$25\)\.W/) saw_utility_open = 1
+    if (saw_graphics_version_check && saw_utility_open) has_utility_gate = 1
+    if (u ~ /GLOBAL_STR_BATTCLOCK_RESOURCE/ || u ~ /GLOBAL_REF_BATTCLOCK_RESOURCE/) has_battclock_resource = 1
     if (u ~ /OVERRIDE_INTUITION_FUNCS/) has_override_intuition = 1
     if (u ~ /_LVOOPENFONT/) has_openfont_call = 1
     if (u ~ /_LVOOPENDISKFONT/) has_opendiskfont_call = 1
@@ -132,7 +168,13 @@ function advance_stage(stage, target) {
     if (u ~ /_LVOINITRASTPORT/) has_initrastport_call = 1
     if (u ~ /_LVOSETFONT/) has_setfont_call = 1
     if (u ~ /MATH_DIVS32/) has_divs32_call = 1
-    if (u ~ /ALLOCATEHIGHLIGHTBITMAPS/ || u ~ /ALLOCATEHIGHLIGHTBITMA/) has_highlight_bitmap_call = 1
+    if (u ~ /ALLOCATEHIGHLIGHTBITMAPS/ || u ~ /ALLOCATEHIGHLIGHTBITMA/) {
+        has_highlight_bitmap_call = 1
+        if (has_highlight_bitmap_table) {
+            has_highlight_bitmap_table = 1
+        }
+    }
+    if (u ~ /ESQDISP_HIGHLIGHTBITMAPTABLE/ || u ~ /ESQDISP_HIGHLIGHTBITMAPTABL/) has_highlight_bitmap_table = 1
     if (u ~ /_LVOINITBITMAP/) has_initbitmap_call = 1
     if (u ~ /GRAPHICS_ALLOCRASTER/ || u ~ /GRAPHICS_ALLOC/) has_allocraster_call = 1
     if (u ~ /_LVOBLTCLEAR/) has_bltclear_call = 1
@@ -140,7 +182,10 @@ function advance_stage(stage, target) {
     if (u ~ /12_HR/) has_clockfmt_12 = 1
     if (u ~ /HIGHLIGHTMSGPORT/ || u ~ /HIGHLIGHTREPLYPORT/ || u ~ /34\.W/) has_msgport_alloc = 1
     if (u ~ /LIST_INITHEADER/ || u ~ /LIST_INITH/) has_list_init = 1
-    if (u ~ /QUEUEHIGHLIGHTDRAWMESSAGE/ || u ~ /QUEUEHIGHLIGHTDRAWMES/) has_queue_highlight = 1
+    if (u ~ /QUEUEHIGHLIGHTDRAWMESSAGE/ || u ~ /QUEUEHIGHLIGHTDRAWMES/) {
+        has_queue_highlight = 1
+        if (saw_queue_slot_table && saw_queue_bitmap_table) has_queue_highlight_pair = 1
+    }
     if (u ~ /SETCOPPEREFFECT_OFFDISABLEHIGHLIGHT/ || u ~ /SETCOPPEREFFECT_OFFD/) has_copper_off = 1
     if (u ~ /FORMATDISKERRORMESSAGE/ || u ~ /FORMATDISKERRORMES/) has_disk_error_guard = 1
     if (u ~ /CHECKAVAILABLEFASTMEMORY/ || u ~ /CHECKAVAILABLEFASTM/) has_fastmem_check = 1
@@ -178,7 +223,10 @@ function advance_stage(stage, target) {
     if (u ~ /WDISP_SPRINTF/ || u ~ /RAWDOFMT/ || u ~ /SPRINTF/) has_printf = 1
     if (u ~ /PRIMEBANNERTRANSITIONFROMHEXCODE/ || u ~ /PRIMEBANNERTRANSI/) has_prime_banner = 1
     if (u ~ /INITPRESETDEFAULTS/ || u ~ /INITPRESETDEFAUL/) has_preset_defaults = 1
-    if (u ~ /PARSEINIBUFFERANDDISPATCH/ || u ~ /PARSEINIBUFFERANDD/) has_parse_ini = 1
+    if (u ~ /PARSEINIBUFFERANDDISPATCH/ || u ~ /PARSEINIBUFFERANDD/ || u ~ /PARSEINIBUFFERANDDISPAT/) {
+        has_parse_ini = 1
+        parse_ini_count++
+    }
     if (u ~ /RESETBANNERFADESTATE/ || u ~ /RESETBANNERFADEST/) has_reset_banner_fade = 1
     if (u ~ /RELOADDATAFILESANDREBUILDINDEX/ || u ~ /RELOADDATAFILESAND/) has_reload_data = 1
     if (u ~ /LOADSOURCECONFIG/ || u ~ /LOADSOURCECONF/) has_load_source_config = 1
@@ -186,9 +234,19 @@ function advance_stage(stage, target) {
     if (u ~ /SELECTBRUSHBYLABEL/ || u ~ /SELECTBRUSHBYLAB/) has_select_brush = 1
     if (u ~ /FINDTYPE3BRUSH/ || u ~ /FINDTYPE3BRUS/) has_find_type3 = 1
     if (u ~ /RESETLISTSANDLOADPROMOIDS/ || u ~ /RESETLISTSANDLOAD/) has_reset_lists = 1
-    if (u ~ /RESETFILTERSTATESTRUCT/ || u ~ /RESETFILTERSTATEST/) has_reset_filter = 1
-    if (u ~ /UPDATESTATUSMASKANDREFRESH/ || u ~ /UPDATESTATUSMASKA/) has_status_refresh = 1
-    if (u ~ /ESQ_STR_DT/ && u ~ /SELECTBRUSHBYLABEL/) has_brush_dt = 1
+    if (u ~ /RESETFILTERSTATESTRUCT/ || u ~ /RESETFILTERSTATEST/) {
+        has_reset_filter = 1
+        reset_filter_count++
+    }
+    if (u ~ /#\$FFF/ || u ~ /#4095/ || u ~ /PEA \(\$FFF\)\.W/ || u ~ /PEA 4095\.W/) saw_status_refresh_mask_fff = 1
+    if (u ~ /UPDATESTATUSMASKANDREFRESH/ || u ~ /UPDATESTATUSMASKA/ || u ~ /UPDATESTATUSMASKANDREFRE/) {
+        has_status_refresh = 1
+        if (saw_status_refresh_mask_fff) has_status_refresh_fff = 1
+    }
+    if (u ~ /ESQ_STR_DT/) saw_dt_label = 1
+    if (saw_dt_label && (u ~ /SELECTBRUSHBYLABEL/ || u ~ /SELECTBRUSHBYLAB/)) has_brush_dt = 1
+    if (u ~ /GCOMMAND_HIGHLIGHTMESSAGESLOTTAB/ || u ~ /GCOMMAND_HIGHLIGHTMESSAGESLOTTA/) saw_queue_slot_table = 1
+    if (u ~ /ESQDISP_HIGHLIGHTBITMAPTABLE/ || u ~ /ESQDISP_HIGHLIGHTBITMAPTABL/) saw_queue_bitmap_table = 1
     if (u ~ /ESQ_STR_DITHER/ || u ~ /BRUSH_FINDBRUSHBYPREDICATE/ || u ~ /FINDBRUSHBYPREDIC/) {
         if (u ~ /ESQ_STR_DITHER/) has_brush_dither_fallback = 1
         if ((u ~ /BRUSH_SELECTEDNODE/ || u ~ /BRUSH_SELECTEDNO/) &&
@@ -257,6 +315,8 @@ END {
     has_baud_validation = (has_baud_parse && has_baud_2400 && has_baud_4800 && has_baud_9600) ? 1 : 0
     has_serial_setup = (serial_setup_hits >= 3) ? 1 : 0
     has_dual_rise_transition = (rise_transition_count >= 2) ? 1 : 0
+    has_parse_ini_count = (parse_ini_count == 4) ? 1 : 0
+    has_dual_filter_reset = (reset_filter_count == 2) ? 1 : 0
     has_preflight_order = (preflight_stage >= 4) ? 1 : 0
     has_hardware_order = (hardware_stage >= 9) ? 1 : 0
     has_display_order = (display_stage >= 3) ? 1 : 0
@@ -270,8 +330,12 @@ END {
     print "HAS_FLUSH_CLOSE=" has_flush_close
     print "HAS_EXECUTE_CALL=" has_execute_call
     print "HAS_FINDTASK_CALL=" has_findtask_call
+    print "HAS_PROCESS_WINDOW_BACKUP=" has_process_window_backup
+    print "HAS_PROCESS_WINDOW_HIDE=" has_process_window_hide
     print "HAS_OPENLIBRARY_CALL=" has_openlibrary_call
     print "HAS_OPENRESOURCE_CALL=" has_openresource_call
+    print "HAS_UTILITY_GATE=" has_utility_gate
+    print "HAS_BATTCLOCK_RESOURCE=" has_battclock_resource
     print "HAS_OVERRIDE_INTUITION=" has_override_intuition
     print "HAS_OPENFONT_CALL=" has_openfont_call
     print "HAS_OPENDISKFONT_CALL=" has_opendiskfont_call
@@ -280,6 +344,7 @@ END {
     print "HAS_SETFONT_CALL=" has_setfont_call
     print "HAS_DIVS32_CALL=" has_divs32_call
     print "HAS_HIGHLIGHT_BITMAP_CALL=" has_highlight_bitmap_call
+    print "HAS_HIGHLIGHT_BITMAP_TABLE=" has_highlight_bitmap_table
     print "HAS_INITBITMAP_CALL=" has_initbitmap_call
     print "HAS_ALLOCRASTER_CALL=" has_allocraster_call
     print "HAS_BLTCLEAR_CALL=" has_bltclear_call
@@ -288,6 +353,7 @@ END {
     print "HAS_MSGPORT_ALLOC=" has_msgport_alloc
     print "HAS_LIST_INIT=" has_list_init
     print "HAS_QUEUE_HIGHLIGHT=" has_queue_highlight
+    print "HAS_QUEUE_HIGHLIGHT_PAIR=" has_queue_highlight_pair
     print "HAS_COPPER_OFF=" has_copper_off
     print "HAS_DISK_ERROR_GUARD=" has_disk_error_guard
     print "HAS_FASTMEM_CHECK=" has_fastmem_check
@@ -322,6 +388,7 @@ END {
     print "HAS_PRIME_BANNER=" has_prime_banner
     print "HAS_PRESET_DEFAULTS=" has_preset_defaults
     print "HAS_PARSE_INI=" has_parse_ini
+    print "HAS_PARSE_INI_COUNT=" has_parse_ini_count
     print "HAS_RESET_BANNER_FADE=" has_reset_banner_fade
     print "HAS_LOAD_SOURCE_CONFIG=" has_load_source_config
     print "HAS_POPULATE_BRUSHES=" has_populate_brushes
@@ -329,8 +396,10 @@ END {
     print "HAS_FIND_TYPE3=" has_find_type3
     print "HAS_RESET_LISTS=" has_reset_lists
     print "HAS_RESET_FILTER=" has_reset_filter
+    print "HAS_DUAL_FILTER_RESET=" has_dual_filter_reset
     print "HAS_RELOAD_DATA=" has_reload_data
     print "HAS_STATUS_REFRESH=" has_status_refresh
+    print "HAS_STATUS_REFRESH_FFF=" has_status_refresh_fff
     print "HAS_BRUSH_DT=" has_brush_dt
     print "HAS_BRUSH_DITHER_FALLBACK=" has_brush_dither_fallback
     print "HAS_BRUSH_TYPE3_FALLBACK=" has_brush_type3_fallback

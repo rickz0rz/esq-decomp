@@ -16,7 +16,8 @@ mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_${BASE}.log" 2>&1
 
-awk -v start="^${ENTRY_ORIG}:$" -v next_label="^ESQIFF_RunCopperDropTransition:$" '$0 ~ start {in_func=1} in_func {if ($0 ~ next_label) exit; print}' "$ORIG_ASM" >"${OUT_DIR}/${BASE}.original.s"
+awk -v e="^${ENTRY_ORIG}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' \
+    "$ORIG_ASM" >"${OUT_DIR}/${BASE}.original.s"
 awk -v e="^${ENTRY_ORIG}:$" -v e2="$ENTRY_SASC_REGEX" '
     $0 ~ e || $0 ~ e2 {in_func=1}
     in_func {

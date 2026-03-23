@@ -17,12 +17,16 @@ typedef struct NEWGRID_CoiHeader {
 
 typedef struct NEWGRID_Entry {
     UBYTE pad0[28];
-    UBYTE selectionBits[1];
+    UBYTE selectionBits[12];
+    UBYTE flags40;
+    UBYTE pad1[5];
+    UWORD markerFlags46;
 } NEWGRID_Entry;
 
 typedef struct NEWGRID_AuxData {
     UBYTE pad0[7];
     UBYTE rowFlags[49];
+    const char *titlePtrs[1];
 } NEWGRID_AuxData;
 
 extern UBYTE TEXTDISP_PrimaryGroupPresentFlag;
@@ -61,15 +65,25 @@ static int str_eq_nullable(const char *a, const char *b)
     return 0;
 }
 
+static const char *skip_time_prefix(const char *s)
+{
+    if (s != 0 && s[0] == '(' && s[3] == ':') {
+        return s + 8;
+    }
+    return s;
+}
+
 void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
 {
     NewgridCtx *ctx;
+    NEWGRID_AuxData *baseAux;
     char baseTime[50];
     char tempTime[50];
     const char *baseTitle;
     const char *baseF1;
     const char *baseF2;
     const char *baseF3;
+    const char *baseF4;
     LONG widthBudget;
     LONG commaWidth;
     UWORD row;
@@ -80,14 +94,16 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
     if (!TEXTDISP_PrimaryGroupPresentFlag) return;
 
     out[0] = 0;
+    baseAux = (NEWGRID_AuxData *)ctx->entries;
 
     row = ctx->focusRow;
     if (row > 48) row = (UWORD)(row - 48);
 
-    baseTitle = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 1);
-    baseF1 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 2);
-    baseF2 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 6);
-    baseF3 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 7);
+    baseTitle = skip_time_prefix(baseAux->titlePtrs[(LONG)row]);
+    baseF1 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 1);
+    baseF2 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 2);
+    baseF3 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 6);
+    baseF4 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, row, 7);
     TEXTDISP_FormatEntryTimeForIndex(baseTime, row, ctx->entries);
 
     if (!baseTitle || !baseTitle[0]) return;
@@ -113,22 +129,41 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
         if (rowEnd > 97) rowEnd = 97;
 
         for (row = ctx->startRow; row < rowEnd; row++) {
-                LONG col = ctx->startCol;
-                while (col < ctx->endCol) {
+            LONG col;
+
+            if (widthBudget < 0 && row >= ctx->focusRow) {
+                break;
+            }
+
+            col = ctx->startCol;
+            while (col < ctx->endCol) {
                 NEWGRID_Entry *entryMut = 0;
                 NEWGRID_AuxData *coiMut = 0;
                 const NEWGRID_Entry *entry = 0;
                 const NEWGRID_AuxData *coi = 0;
                 LONG idx;
-                const char *t;
+                const char *title;
                 const char *f1;
                 const char *f2;
                 const char *f3;
+                const char *f4;
+
+                if (widthBudget < 0 && row >= ctx->focusRow) {
+                    break;
+                }
 
                 idx = NEWGRID_UpdatePresetEntry((char **)&entryMut, (char **)&coiMut, row, col);
                 entry = entryMut;
                 coi = coiMut;
                 if (!entry || !coi) {
+                    col++;
+                    continue;
+                }
+                if ((entry->markerFlags46 & (UWORD)0x0010) == 0) {
+                    col++;
+                    continue;
+                }
+                if ((entry->flags40 & 0x80) == 0) {
                     col++;
                     continue;
                 }
@@ -144,25 +179,45 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
                     }
                 }
 
+                if (coi->titlePtrs[idx] == 0) {
+                    col++;
+                    continue;
+                }
+                if ((coi->rowFlags[idx] & 0xA0) != 0) {
+                    col++;
+                    continue;
+                }
                 if (ESQ_TestBit1Based(entry->selectionBits, idx) != -1) {
                     col++;
                     continue;
                 }
 
-                t = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 1);
-                f1 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 2);
-                f2 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 6);
-                f3 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 7);
+                title = skip_time_prefix(coi->titlePtrs[idx]);
+                f1 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 1);
+                f2 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 2);
+                f3 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 6);
+                f4 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, idx, 7);
 
-                if (!str_eq_nullable(baseTitle, t) ||
+                if (!title || title == baseTitle) {
+                    col++;
+                    continue;
+                }
+
+                if (!str_eq_nullable(baseTitle, title) ||
                     !str_eq_nullable(baseF1, f1) ||
                     !str_eq_nullable(baseF2, f2) ||
-                    !str_eq_nullable(baseF3, f3)) {
+                    !str_eq_nullable(baseF3, f3) ||
+                    !str_eq_nullable(baseF4, f4)) {
                     col++;
                     continue;
                 }
 
                 coiMut->rowFlags[idx] |= 0x20;
+
+                if (widthBudget <= 0) {
+                    col++;
+                    continue;
+                }
 
                 if (out[0] == 0) {
                     PARSEINI_JMPTBL_STRING_AppendAtNull(out, Global_STR_SHOWTIMES_AND_SINGLE_SPACE);
@@ -179,10 +234,6 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
                 }
 
                 col++;
-            }
-
-            if (widthBudget < 0 && row >= ctx->focusRow) {
-                break;
             }
         }
     }

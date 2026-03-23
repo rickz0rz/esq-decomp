@@ -4,11 +4,14 @@ BEGIN{
  h_time=0;h_special=0;h_special_split=0;h_special_gate=0;h_mode3_requery=0;h_mode2_fallback_mark=0
  h_fallback=0;h_selected=0;h_usage=0;h_usage_bump=0;h_group=0
  h_usage_fetch=0;h_usage_cmp=0;h_usage_prefers_lower=0;h_pos_selected_valid=0;h_best_pos_store=0;h_best_neg_store=0;h_prev_usage_store=0;h_final_usage_bump=0
- h_findmode_return=0;h_last_match_store=0;h_finalize=0;h_finalize_sentinel=0;h_channel_default68=0;h_return_error=0;h_return_ok=0;h_return_found=0;h_rts=0
+ h_findmode_return=0;h_last_match_store=0;h_finalize=0;h_finalize_sentinel=0;h_channel_default68=0;h_finalize_digit_window=0;h_finalize_mid_window=0;h_finalize_high_window=0
+ h_finalize_reload_selected=0;h_finalize_usage_slot=0;h_return_error=0;h_return_ok=0;h_return_found=0;h_rts=0
  saw_prev_usage_load=0; saw_usage_increment=0; saw_halfhour_cmp=0; saw_positive_time_test=0
  prev=""
  prev2=""
  prev3=""
+ prev4=""
+ prev5=""
 }
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
 {
@@ -82,11 +85,33 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
  if(l ~ /CMPI\.W #\$31/ || l ~ /CMP\.W D0,D1/ || l ~ /CMP\.W D0,D6/ || l ~ /NORMALIZE_CHANNEL_CODE/ || l ~ /SET_DEFAULT_CHANNEL/)h_finalize=1
  if((l ~ /CMPI\.W #\$3D/ || l ~ /CMP\.W #\$3D/ || l ~ /CMPI\.W #61/) &&
     (l ~ /BANNERCHARSELECTED/ || prev ~ /BANNERCHARSELECTED/ || prev2 ~ /BANNERCHARSELECTED/))h_finalize_sentinel=1
+ if((l ~ /(BLT|BCS)\.[BSWL]?/ || l ~ /(BLT|BCS) /) &&
+    prev ~ /CMP\.W D0,D6/ &&
+    (prev2 ~ /MOVEQ\.L #\$3A,D0/ || prev2 ~ /MOVEQ #58,D0/) &&
+    (prev5 ~ /MOVEQ\.L #\$30,D0/ || prev5 ~ /MOVEQ #48,D0/))h_finalize_digit_window=1
+ if((l ~ /(BLT|BCS)\.[BSWL]?/ || l ~ /(BLT|BCS) /) &&
+    prev ~ /CMP\.W D0,D6/ &&
+    (prev2 ~ /MOVEQ\.L #\$44,D0/ || prev2 ~ /MOVEQ #68,D0/) &&
+    (prev5 ~ /MOVEQ\.L #\$3E,D0/ || prev5 ~ /MOVEQ #62,D0/))h_finalize_mid_window=1
+ if((l ~ /(BGE|BCC)\.[BSWL]?/ || l ~ /(BGE|BCC) /) &&
+    prev ~ /CMP\.W D0,D6/ &&
+    (prev2 ~ /MOVEQ\.L #\$4E,D0/ || prev2 ~ /MOVEQ #78,D0/) &&
+    (prev5 ~ /MOVEQ\.L #\$47,D0/ || prev5 ~ /MOVEQ #71,D0/))h_finalize_high_window=1
+ if((l ~ /BANNERSELECTEDENTRYINDEX/ || l ~ /BANNERSELECTEDENTRYINDE/ || prev ~ /BANNERSELECTEDENTRYINDEX/ || prev ~ /BANNERSELECTEDENTRYINDE/) &&
+    (l ~ /PRIMARYTITLEPTRTABLE/ || l ~ /SECONDARYTITLEPTRTABLE/ || l ~ /TEXTDISP_GETACTIVETITLEPTR/ ||
+     prev ~ /PRIMARYTITLEPTRTABLE/ || prev ~ /SECONDARYTITLEPTRTABLE/ || prev ~ /TEXTDISP_GETACTIVETITLEPTR/))h_finalize_reload_selected=1
+ if(((l ~ /#\$190/ || l ~ /\+400/ || prev ~ /#\$190/ || prev ~ /\+400/) &&
+     (l ~ /BANNERCHARSELECTED/ || prev ~ /BANNERCHARSELECTED/ || prev2 ~ /BANNERCHARSELECTED/) &&
+     (l ~ /ADDQ\.W #1,D[0-7]/ || l ~ /ADDQ\.W #\$1,D[0-7]/ || prev ~ /ADDQ\.W #1,D[0-7]/ || prev ~ /ADDQ\.W #\$1,D[0-7]/) &&
+     (l ~ /MOVE\.W D[0-7],0\(A0,D[0-7]\.L\)/ || prev ~ /MOVE\.W D[0-7],0\(A0,D[0-7]\.L\)/)) ||
+    (l ~ /TEXTDISP_GETUSAGECOUNT/ && (prev ~ /BANNERCHARSELECTED/ || prev2 ~ /BANNERCHARSELECTED/ || prev3 ~ /BANNERCHARSELECTED/)))h_finalize_usage_slot=1
  if(l ~ /MOVEQ\.L #\$44,D6/ || l ~ /MOVEQ #68,D6/ || l ~ /CHANNELCODE = 68/)h_channel_default68=1
  if(l ~ /RETURN_ERROR:/ || (!h_loop && (l ~ /MOVEQ\.L #\$1,D0/ || l ~ /MOVEQ #1,D0/)))h_return_error=1
  if(l ~ /MOVEQ\.L #\$0,D0/ || l ~ /MOVEQ #0,D0/)h_return_ok=1
  if((l ~ /MOVEQ\.L #\$2,D0/ || l ~ /MOVEQ #2,D0/) && prev !~ /FINDMODEACTIVEFLAG/)h_return_found=1
  if(l=="RTS")h_rts=1
+ prev5=prev4
+ prev4=prev3
  prev3=prev2
  prev2=prev
  prev=l
@@ -126,6 +151,11 @@ END{
  print "HAS_FINALIZE_BRANCHES="h_finalize
  print "HAS_FINALIZE_SENTINEL_RESET="h_finalize_sentinel
  print "HAS_CHANNEL_DEFAULT68_RETURN="h_channel_default68
+ print "HAS_FINALIZE_DIGIT_WINDOW="h_finalize_digit_window
+ print "HAS_FINALIZE_MID_WINDOW="h_finalize_mid_window
+ print "HAS_FINALIZE_HIGH_WINDOW="h_finalize_high_window
+ print "HAS_FINALIZE_SELECTED_ENTRY_RELOAD="h_finalize_reload_selected
+ print "HAS_FINALIZE_USAGE_SLOT_INCREMENT="h_finalize_usage_slot
  print "HAS_RETURN_ERROR="h_return_error
  print "HAS_RETURN_OK="h_return_ok
  print "HAS_RETURN_FOUND="h_return_found

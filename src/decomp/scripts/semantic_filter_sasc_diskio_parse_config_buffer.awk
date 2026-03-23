@@ -2,15 +2,26 @@ BEGIN {
     has_entry = 0
     has_parse = 0
     has_brush_select = 0
+    has_line_mode_store = 0
     has_time_window_store = 0
     has_gate_duration_store = 0
     has_selection16_store = 0
+    has_clock_mode_store = 0
+    has_clock_format_12hr = 0
+    has_clock_format_24hr = 0
     has_clock_format_store = 0
+    has_logo_scan_store = 0
+    has_banner_force_128 = 0
+    has_banner_default_8e = 0
+    has_banner_bounds_check = 0
+    has_palette_force_8 = 0
     has_diag_find = 0
     has_pc1_call = 0
     has_lrbn_find = 0
     has_banner_transition = 0
+    has_lrbn_reset = 0
     has_msn_find = 0
+    has_ctasks1_store = 0
     has_refresh_update = 0
     has_mulu = 0
     has_store_minutes = 0
@@ -45,10 +56,53 @@ function is_call(line) {
     }
 
     if (is_call(l) && index(l, "BRUSH_SELECTBRUSHBYLABEL") > 0) has_brush_select = 1
+    if (index(l, "CTASKS_STR_L") > 0 && l ~ /^MOVE\.B /) has_line_mode_store = 1
     if (index(l, "CONFIG_TIMEWINDOWMINUTES") > 0 && l ~ /^MOVE\.L /) has_time_window_store = 1
     if (index(l, "CONFIG_MODECYCLEGATEDURATION") > 0 && l ~ /^MOVE\.L /) has_gate_duration_store = 1
     if (index(l, "CONFIG_NEWGRIDSELECTIONCODE16") > 0 && l ~ /^MOVE\.B /) has_selection16_store = 1
+    if (index(l, "GLOBAL_REF_STR_USE_24_HR_CLOCK") > 0 && l ~ /^MOVE\.B /) has_clock_mode_store = 1
+    if (index(l, "GLOBAL_JMPTBL_HALF_HOURS_12_HR_FMT") > 0 ||
+        index(l, "GLOBAL_JMPTBL_HALF_HOURS_12_HR_F") > 0) has_clock_format_12hr = 1
+    if (index(l, "GLOBAL_JMPTBL_HALF_HOURS_24_HR_FMT") > 0 ||
+        index(l, "GLOBAL_JMPTBL_HALF_HOURS_24_HR_F") > 0) has_clock_format_24hr = 1
     if (index(l, "GLOBAL_REF_STR_CLOCK_FORMAT") > 0 && l ~ /^MOVE\.L /) has_clock_format_store = 1
+    if ((index(l, "CONFIG_PARSEINILOGOSCANENABLEDFLAG") > 0 ||
+         index(l, "CONFIG_PARSEINILOGOSCANENABLEDFL") > 0) &&
+        l ~ /^MOVE\.B /) has_logo_scan_store = 1
+    if ((index(l, "CONFIG_BANNERCOPPERHEADBYTE") > 0 &&
+         (index(l, "#128") > 0 || index(l, "#$80") > 0)) ||
+        (index(l, "CONFIG_BANNERCOPPERHEADBYTE") > 0 &&
+         (index(prev, "#128") > 0 || index(prev, "#$80") > 0 ||
+          index(prev2, "#128") > 0 || index(prev2, "#$80") > 0))) {
+        has_banner_force_128 = 1
+    }
+    if (index(l, "CONFIG_BANNERCOPPERHEADBYTE") > 0 &&
+        (index(l, "#$8E") > 0 || index(l, "#142") > 0)) has_banner_default_8e = 1
+    if (((index(l, "CONFIG_BANNERCOPPERHEADBYTE") > 0 &&
+          (index(l, "#220") > 0 || index(l, "#128") > 0 ||
+           index(l, "#$DC") > 0 || index(l, "#$80") > 0)) ||
+         ((index(prev, "CONFIG_BANNERCOPPERHEADBYTE") > 0 ||
+           index(prev2, "CONFIG_BANNERCOPPERHEADBYTE") > 0) &&
+          (index(l, "#220") > 0 || index(l, "#128") > 0 ||
+           index(l, "#$DC") > 0 || index(l, "#$80") > 0))) &&
+        (l ~ /^CMPI?\.W / || l ~ /^CMP\.W /)) has_banner_bounds_check = 1
+    if (((index(l, "GLOBAL_REF_BYTE_NUMBER_OF_COLOR_PALETTES") > 0 ||
+          index(l, "GLOBAL_REF_BYTE_NUMBER_OF_COLOR_") > 0) &&
+         (index(l, "#8") > 0 || index(l, "#$8") > 0)) ||
+        ((index(l, "GLOBAL_REF_BYTE_NUMBER_OF_COLOR_PALETTES") > 0 ||
+          index(l, "GLOBAL_REF_BYTE_NUMBER_OF_COLOR_") > 0) &&
+         (index(prev, "#8") > 0 || index(prev, "#$8") > 0 ||
+          index(prev2, "#8") > 0 || index(prev2, "#$8") > 0 ||
+          index(prev3, "#8") > 0 || index(prev3, "#$8") > 0)) ||
+        ((index(l, "#8") > 0 || index(l, "#$8") > 0) &&
+         (index(prev, "GLOBAL_REF_BYTE_NUMBER_OF_COLOR_PALETTES") > 0 ||
+          index(prev, "GLOBAL_REF_BYTE_NUMBER_OF_COLOR_") > 0 ||
+          index(prev2, "GLOBAL_REF_BYTE_NUMBER_OF_COLOR_PALETTES") > 0 ||
+          index(prev2, "GLOBAL_REF_BYTE_NUMBER_OF_COLOR_") > 0 ||
+          index(prev3, "GLOBAL_REF_BYTE_NUMBER_OF_COLOR_PALETTES") > 0 ||
+          index(prev3, "GLOBAL_REF_BYTE_NUMBER_OF_COLOR_") > 0))) {
+        has_palette_force_8 = 1
+    }
 
     if (is_call(l) && index(l, "GROUP_AI_JMPTBL_STR_FINDCHARPTR") > 0) {
         if (index(prev, "DISKIO_TAG_NRLS") > 0 || index(prev2, "DISKIO_TAG_NRLS") > 0) has_diag_find = 1
@@ -67,6 +121,11 @@ function is_call(line) {
          index(l, "GROUP_AG_JMPTBL_SCRIPT_BEGINBANN") > 0)) {
         has_banner_transition = 1
     }
+    if (index(l, "CONFIG_LRBN_FLAGCHAR") > 0 &&
+        (index(l, "#'N'") > 0 || index(l, "#78") > 0 || index(l, "#$4E") > 0)) {
+        has_lrbn_reset = 1
+    }
+    if (index(l, "CTASKS_STR_1") > 0 && l ~ /^MOVE\.B /) has_ctasks1_store = 1
 
     if (is_call(l) &&
         (index(l, "ESQFUNC_UPDATEREFRESHMODESTATE") > 0 ||
@@ -79,6 +138,7 @@ function is_call(line) {
     if (index(l, "CONFIG_REFRESHINTERVALSECONDS") > 0 && l ~ /^MOVE\.L /) has_store_seconds = 1
     if (l ~ /^RTS$/) has_rts = 1
 
+    prev3 = prev2
     prev2 = prev
     prev = l
 }
@@ -87,15 +147,26 @@ END {
     print "HAS_ENTRY=" has_entry
     print "HAS_PARSE=" has_parse
     print "HAS_BRUSH_SELECT=" has_brush_select
+    print "HAS_LINE_MODE_STORE=" has_line_mode_store
     print "HAS_TIME_WINDOW_STORE=" has_time_window_store
     print "HAS_GATE_DURATION_STORE=" has_gate_duration_store
     print "HAS_SELECTION16_STORE=" has_selection16_store
+    print "HAS_CLOCK_MODE_STORE=" has_clock_mode_store
+    print "HAS_CLOCK_FORMAT_12HR=" has_clock_format_12hr
+    print "HAS_CLOCK_FORMAT_24HR=" has_clock_format_24hr
     print "HAS_CLOCK_FORMAT_STORE=" has_clock_format_store
+    print "HAS_LOGO_SCAN_STORE=" has_logo_scan_store
+    print "HAS_BANNER_FORCE_128=" has_banner_force_128
+    print "HAS_BANNER_DEFAULT_8E=" has_banner_default_8e
+    print "HAS_BANNER_BOUNDS_CHECK=" has_banner_bounds_check
+    print "HAS_PALETTE_FORCE_8=" has_palette_force_8
     print "HAS_DIAG_FIND=" has_diag_find
     print "HAS_PC1_CALL=" has_pc1_call
     print "HAS_LRBN_FIND=" has_lrbn_find
     print "HAS_BANNER_TRANSITION=" has_banner_transition
+    print "HAS_LRBN_RESET=" has_lrbn_reset
     print "HAS_MSN_FIND=" has_msn_find
+    print "HAS_CTASKS1_STORE=" has_ctasks1_store
     print "HAS_REFRESH_UPDATE=" has_refresh_update
     print "HAS_MULU=" has_mulu
     print "HAS_STORE_MINUTES=" has_store_minutes

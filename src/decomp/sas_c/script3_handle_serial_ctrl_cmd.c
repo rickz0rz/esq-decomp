@@ -59,7 +59,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
     }
 
     hasCtrl = PARSEINI_CheckCtrlHChange();
-    if (Global_UIBusyFlag != 0 || hasCtrl == 0) {
+    if (Global_UIBusyFlag != 0 || (WORD)hasCtrl == 0) {
         return;
     }
 

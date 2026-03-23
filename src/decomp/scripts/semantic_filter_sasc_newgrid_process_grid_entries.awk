@@ -3,7 +3,8 @@ BEGIN{
     h_state_code=0;h_test_state=0;h_prev=0;h_layout=0;h_draw_row=0;h_markers=0;h_draw_cell=0
     h_visible=0;h_placeholder=0;h_state45=0;h_const3=0;h_pair=0;h_bit7=0;h_first=0;h_rts=0
     h_marker_gate=0;h_restore_selected=0;h_halfheight_store=0;h_halfheight_clear=0;h_visible_mode2=0
-    prev="";pending_visible_mode2=0
+    h_marker_flag=0;h_keepmarkers_clear=0;h_second_pair_probe=0
+    prev="";pending_visible_mode2=0;pending_second_pair_probe=0
 }
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
 {
@@ -14,6 +15,12 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
         pending_visible_mode2=0
     } else if(pending_visible_mode2 > 0){
         pending_visible_mode2--
+    }
+    if(pending_second_pair_probe > 0 && l ~ /(JSR|BSR).*TESTENTRYSTATE/){
+        h_second_pair_probe=1
+        pending_second_pair_probe=0
+    } else if(pending_second_pair_probe > 0){
+        pending_second_pair_probe--
     }
     if(l ~ /^NEWGRID_PROCESSGRIDENTRIES:/ || l ~ /^NEWGRID_PROCESSGRIDENTRIES[A-Z0-9_]*:/)h_entry=1
     if(l ~ /GRIDENTRIESWORKFLOWSTATE/)h_state=1
@@ -38,11 +45,16 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /TESTENTRYSTATE/ && l ~ /ADDQ\.(W|L) #1/ || l ~ /RIGHTSTATE = 2/ || l ~ /RIGHTSTATE = 1/)h_pair=1
     if(l ~ /FIRSTENTRY/ || l ~ /MOVE\.L A0,-8\(A5\)/ || l ~ /MOVE\.L -8\(A5\),-\(A7\)/ || l ~ /MOVE\.L A2,-\(A7\)/)h_first=1
     if(l ~ /TST\.L (-46\(A5\)|\$54\(A7\))/)h_marker_gate=1
+    if(l ~ /BTST #2/ || l ~ /BTST #\$2/ || l ~ /ROWFLAGS\[PREVROWIDX\] & 0X04/)h_marker_flag=1
+    if(l ~ /CLR\.L (-46\(A5\)|\$54\(A7\))/ || l ~ /KEEPMARKERS = 0/)h_keepmarkers_clear=1
     if(l ~ /NEWGRID_SELECTEDGRIDENTRYPTR/ && l ~ /NEWGRID_SELECTIONMARKERPENSTATE/)h_restore_selected=1
     if(l ~ /LSR\.W #1/ || l ~ /LSR\.W #\$1/ || l ~ /MOVE\.W D0,(52\(A3\)|\$34\(A3\))/)h_halfheight_store=1
     if(l ~ /CLR\.W (52\(A3\)|\$34\(A3\))/)h_halfheight_clear=1
     if(prev ~ /PEA (\(\$2\)|2)\.W/ && l ~ /(JSR|BSR).*DISPTEXT_COMPUTE/){
         pending_visible_mode2=3
+    }
+    if(l ~ /ADDQ\.(W|L) #(\$)?1,D[0-7]/){
+        pending_second_pair_probe=16
     }
     if(l=="RTS")h_rts=1
     prev=l
@@ -71,6 +83,9 @@ END{
     print "HAS_BIT7_EDGE_CASE="h_bit7
     print "HAS_FIRST_ENTRY_CAPTURE="h_first
     print "HAS_MARKER_GATE="h_marker_gate
+    print "HAS_MARKER_FLAG_BIT2="h_marker_flag
+    print "HAS_KEEPMARKERS_CLEAR="h_keepmarkers_clear
+    print "HAS_SECOND_PAIR_PROBE="h_second_pair_probe
     print "HAS_RESTORE_SELECTED_PEN="h_restore_selected
     print "HAS_HALFHEIGHT_STORE="h_halfheight_store
     print "HAS_HALFHEIGHT_CLEAR="h_halfheight_clear

@@ -1,5 +1,7 @@
 BEGIN {
     h_entry=0
+    h_nav_menu_dispatch=0
+    h_nav_menu_range_gate=0
     h_cursor_draw=0
     h_mode_reinit=0
     h_char_adjust=0
@@ -46,6 +48,8 @@ function norm(s, t) {
     if (l=="") next
 
     if (l ~ /^ED_HANDLEEDITORINPUT:/ || l ~ /^ED_HANDLEEDITORINPUT[A-Z0-9_]*:/) h_entry=1
+    if ((l ~ /ED_STATERINGTABLE/ && l ~ /ED_LASTMENUINPUTCHAR/) || l ~ /__SWITCH_ED_HANDLEEDITORINPUT_/ || l ~ /JMP .*PC,D1\.W/ || l ~ /\.CASE_NAV_KEY:/) h_nav_menu_dispatch=1
+    if (l ~ /SUBI\.W #\$20,D1/ || l ~ /MOVEQ\.L #\$20,D0/ || l ~ /SUB\.L D0,D1/ || l ~ /CMPI\.L #\$26,D1/ || l ~ /SUBI\.W #\$1C,D0/ || l ~ /ADD\.W D1,D1/) h_nav_menu_range_gate=1
     if (l ~ /(JSR|BSR).*ED_DRAWCURSORCHAR/) h_cursor_draw=1
     if (l ~ /ED_TEXTMODEREINITPENDINGFLAG/ || l ~ /BOOLISTEXTORCURSOR/) h_mode_reinit=1
     if (l ~ /EXTRACTHIGHNIBBLE/ || l ~ /EXTRACTLOWNIBBLE/ || l ~ /EXTRACTH/ || l ~ /EXTRACTL/ || l ~ /PACKNIBBLESTOBYTE/ || l ~ /MERGEHIGHLOWNIBBLES/ || l ~ /PACKNIBBLESTO/ || l ~ /MERGEHIGHLOWN/) h_char_adjust=1
@@ -74,12 +78,14 @@ function norm(s, t) {
     if (l ~ /SYNCCURRENTCHARANDMAYBEDRAW/ || l ~ /ED_REDRAWCURSORCHAR/ || l ~ /ED_DRAWCURRENTCOLORINDICATOR/) h_finalize_branch=1
     if ((l ~ /ED_TEXTLIMIT/ && (l ~ /ED_EDITCURSOROFFSET/ || l ~ /ED_VIEWPORTOFFSET/)) || (l ~ /GROUP_AG_JMPTBL_MATH_MULU32/ && l ~ /ED_TEXTLIMIT/) || l ~ /MOVEQ #40/ || l ~ /MOVEQ\.L #\$28/) h_page_down=1
     if (l ~ /ED2_STR_PAGE/ || l ~ /ED2_STR_LINE/ || l ~ /BOOLISLINEORPAGE/) h_page_line_toggle=1
-    if (l ~ /#\$80/ || l ~ /#\$6C/ || l ~ /#\$35/ || l ~ /#\$36/) h_consts=1
+    if (l ~ /#\$80/ || l ~ /#128/ || l ~ /#\$6C/ || l ~ /#108/ || l ~ /#\$35/ || l ~ /#53/ || l ~ /#\$36/ || l ~ /#54/ || l ~ /#\$20/ || l ~ /#32/ || l ~ /#\$26/ || l ~ /#38/) h_consts=1
     if (l == "RTS") h_rts=1
 }
 
 END {
     print "HAS_ENTRY=" h_entry
+    print "HAS_NAV_MENU_DISPATCH=" h_nav_menu_dispatch
+    print "HAS_NAV_MENU_RANGE_GATE=" h_nav_menu_range_gate
     print "HAS_CURSOR_DRAW=" h_cursor_draw
     print "HAS_MODE_REINIT=" h_mode_reinit
     print "HAS_CHAR_ADJUST=" h_char_adjust

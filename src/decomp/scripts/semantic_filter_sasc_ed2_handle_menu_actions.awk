@@ -18,8 +18,25 @@ BEGIN {
     has_menu_state_18=0
     has_set_apen_rectfill=0
     has_clock_sync_scan=0
+    has_readmode_0200=0
+    has_readmode_0100=0
+    has_readmode_clear=0
+    has_runtimemode_clear=0
+    has_viewmode_cycle=0
+    has_transition_class2=0
+    has_transition_class3=0
+    has_status_overlay_dump=0
+    has_debug_dump_loop=0
+    has_banner_datetime_pair=0
+    has_clock_file_read=0
+    has_clock_file_close=0
+    has_clock_scan_u=0
+    has_clock_scan_aa=0
+    has_clock_scan_k=0
+    has_clock_apply=0
     render_call_count=0
     has_render_short_arg=0
+    has_render_zero_arg=0
     has_restore_state=0
     has_rts=0
 }
@@ -56,11 +73,29 @@ function trim(s, t) {
     if (n ~ /DSTFORMATBANNERDATETIME/ || n ~ /CLOCKDAYSLOTINDEX/ || n ~ /CLOCKCURRENTDAYOFWEEKINDEX/) has_banner_datetime_dump=1
     if (n ~ /DIAGOVERLAYAUTOREFRESHFLAG/ || n ~ /DIAGOVERLAYAUTOREFRESHFL/) has_diag_overlay_toggle=1
     if (n ~ /SHUTDOWNREQUESTEDFLAG/) has_shutdown_request=1
-    if (n ~ /MENUSTATEID/ && (u ~ /#\\$18/ || u ~ /#24/)) has_menu_state_18=1
+    if (n ~ /MENUSTATEID/ && (u ~ /#\$18/ || u ~ /#24/ || u ~ /MOVEB #\$18/ || u ~ /MOVEB #24/)) has_menu_state_18=1
     if (n ~ /SETAPEN/ || n ~ /RECTFILL/) has_set_apen_rectfill=1
-    if (u ~ /#\\$AA/ || u ~ /#170/ || u ~ /#85/ || u ~ /#75/ || n ~ /APPLYRTCBYTESANDPERSIST/) has_clock_sync_scan=1
+    if (u ~ /#\$AA/ || u ~ /#170/ || u ~ /#\$55/ || u ~ /#85/ || u ~ /#\$4B/ || u ~ /#75/ || n ~ /APPLYRTCBYTESANDPERSIST/) has_clock_sync_scan=1
+    if (n ~ /READMODEFLAGS/ && (u ~ /#\$200/ || u ~ /#512/)) has_readmode_0200=1
+    if (n ~ /READMODEFLAGS/ && (u ~ /#\$100/ || u ~ /#256/)) has_readmode_0100=1
+    if (n ~ /READMODEFLAGS/ && (u ~ /^CLR(W|L)? / || u ~ /CLR.W ESQPARS2_READMODEFLAGS/ || u ~ /CLR.L ESQPARS2_READMODEFLAGS/)) has_readmode_clear=1
+    if (n ~ /SCRIPTRUNTIMEMODE/ && (u ~ /^CLR(W|L)? / || u ~ /CLR.W SCRIPTRUNTIMEMODE/ || u ~ /CLR.L SCRIPTRUNTIMEMODE/)) has_runtimemode_clear=1
+    if (n ~ /SELECTNEXTVIEWMODE/) has_viewmode_cycle=1
+    if (n ~ /LOCAVAILFILTERPREVCLASSID/ && (u ~ /#2/ || u ~ /MOVEQ #2/)) has_transition_class2=1
+    if (n ~ /LOCAVAILFILTERPREVCLASSID/ && (u ~ /#3/ || u ~ /MOVEQ #3/)) has_transition_class3=1
+    if (n ~ /WDISPSPRINTF/ && n ~ /DISPLAYTEXTATPOSITION/ || n ~ /BITPLANE1PCT8LX/ && n ~ /BANNERROWSCRATCHRASTERBASE0/) has_status_overlay_dump=1
+    if (n ~ /DUMPPROGRAMSOURCERECORDVERBOSE/ && n ~ /SERVICEUITICKIFRUNNING/ || n ~ /PRIMARYGROUPENTRYCOUNT/ && n ~ /PRIMARYGROUPENTRYPTRTABLE/ && n ~ /PRIMARYTITLEPTRTABLE/) has_debug_dump_loop=1
+    if (n ~ /DSTFORMATBANNERDATETIME/ && n ~ /ED2STRCTIME/ && n ~ /ED2STRBTIME/ && n ~ /CLOCKDAYSLOTINDEX/ && n ~ /CLOCKCURRENTDAYOFWEEKINDEX/) has_banner_datetime_pair=1
+    if (n ~ /OPENFILEWITHMODE/) has_clock_file_read=1
+    if (n ~ /LVOREAD/) has_clock_file_read=1
+    if (n ~ /LVOCLOSE/) has_clock_file_close=1
+    if (u ~ /#\$55/ || u ~ /#85/ || n ~ /STATEWAITU/) has_clock_scan_u=1
+    if (u ~ /#\$AA/ || u ~ /#170/ || n ~ /STATEWAITAA/ || u ~ /ADD.L D2,D2/) has_clock_scan_aa=1
+    if (u ~ /#\$4B/ || u ~ /#75/ || n ~ /STATEWAITK/) has_clock_scan_k=1
+    if (n ~ /APPLYRTCBYTESANDPERSIST/ || n ~ /STATEPROCESSMATCH/) has_clock_apply=1
     if (n ~ /RENDERALIGNEDSTATUSSCREEN/ || n ~ /RENDERALIGNEDSTATUSSCREE/) render_call_count++
-    if (u ~ /PEA \\(\\$1\\)\\.W/ || u ~ /PEA \\(1\\)\\.W/ || u ~ /PEA \\(\\$1\\)/) has_render_short_arg=1
+    if (u ~ /PEA \(\$1\)\.W/ || u ~ /PEA \(1\)\.W/ || u ~ /PEA \(\$1\)/ || u ~ /PEA \$1\.W/ || u ~ /PEA 1\.W/) has_render_short_arg=1
+    if (u ~ /^CLR\.L -\(A7\)$/ || u ~ /^MOVEQ(\.L)? #\$?0,D0$/ || u ~ /^CLR\.L \(A7\)$/ || u ~ /^MOVE\.L D0,-\(A7\)$/) has_render_zero_arg=1
     if (n ~ /SETAPEN/ || n ~ /SETDRMD/ || n ~ /SETBPEN/ || n ~ /GLOBALREF696400BITMAP/) has_restore_state=1
     if (u == "RTS") has_rts=1
 }
@@ -85,8 +120,24 @@ END {
     print "HAS_MENU_STATE_18=" has_menu_state_18
     print "HAS_COLOR_BARS=" has_set_apen_rectfill
     print "HAS_CLOCK_SYNC_SCAN=" has_clock_sync_scan
+    print "HAS_READMODE_0200=" has_readmode_0200
+    print "HAS_READMODE_0100=" has_readmode_0100
+    print "HAS_READMODE_CLEAR=" has_readmode_clear
+    print "HAS_RUNTIME_MODE_CLEAR=" has_runtimemode_clear
+    print "HAS_VIEWMODE_CYCLE=" has_viewmode_cycle
+    print "HAS_TRANSITION_CLASS2=" has_transition_class2
+    print "HAS_TRANSITION_CLASS3=" has_transition_class3
+    print "HAS_STATUS_OVERLAY_DUMP=" has_status_overlay_dump
+    print "HAS_DEBUG_DUMP_LOOP=" has_debug_dump_loop
+    print "HAS_BANNER_DATETIME_PAIR=" has_banner_datetime_pair
+    print "HAS_CLOCK_FILE_READ=" has_clock_file_read
+    print "HAS_CLOCK_FILE_CLOSE=" has_clock_file_close
+    print "HAS_CLOCK_SCAN_U=" has_clock_scan_u
+    print "HAS_CLOCK_SCAN_AA=" has_clock_scan_aa
+    print "HAS_CLOCK_SCAN_K=" has_clock_scan_k
+    print "HAS_CLOCK_APPLY=" has_clock_apply
     print "HAS_RENDER_SHORT=" (render_call_count >= 2 && has_render_short_arg)
-    print "HAS_RENDER_FULL=" (render_call_count >= 2)
+    print "HAS_RENDER_FULL=" (render_call_count >= 2 && has_render_zero_arg)
     print "HAS_RESTORE_STATE=" has_restore_state
     print "HAS_RTS=" has_rts
 }

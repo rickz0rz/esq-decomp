@@ -38,6 +38,16 @@ BEGIN {
     saw_state_copy_len = 0
     saw_state_copy_src = 0
     saw_state_copy_dst = 0
+    saw_decode_cursor_update = 0
+    saw_row_words_calc = 0
+    saw_partial_node_clear = 0
+    saw_clone_type11_test = 0
+    saw_clone_node_assign = 0
+    saw_clone_dims_src = 0
+    saw_clone_dims_dst = 0
+    saw_clone_field148 = 0
+    saw_row_words_addend = 0
+    saw_row_words_double = 0
 }
 
 function trim(s,    t) {
@@ -94,6 +104,15 @@ function trim(s,    t) {
     if (u ~ /MOVEQ #96,D0|MOVEQ\.L #\$60,D1/) saw_state_copy_len = 1
     if (u ~ /32\(A3,D6\.L\)|\$20\(A5,D0\.L\)/) saw_state_copy_src = 1
     if (u ~ /#\$E8|ADDI\.L #\$E8|ADD\.L #\$E8/) saw_state_copy_dst = 1
+    if (u ~ /MOVE\.L D0,-46\(A5\)|MOVE\.L D0,A2/) saw_decode_cursor_update = 1
+    if (u ~ /MOVEQ #15,D1|MOVEQ\.L #\$F,D1|PEA \(\$10\)\.W/) saw_row_words_addend = 1
+    if (u ~ /ADD\.L D0,D0|ADD\.L D1,D1/) saw_row_words_double = 1
+    if (u ~ /CLR\.L -16\(A5\)|SUB\.L A0,A0/ || u ~ /MOVE\.L A0,\$5C\(A7\)/) saw_partial_node_clear = 1
+    if ((u ~ /MOVEQ #11,D0|MOVEQ\.L #\$B,D0/) && (u ~ /190\(A3\)|\$BE\(A5\)/)) saw_clone_type11_test = 1
+    if (u ~ /MOVE\.L D0,-16\(A5\)|MOVE\.L D0,\$5C\(A7\)/) saw_clone_node_assign = 1
+    if (u ~ /LEA 176\(A0\),A1|LEA \$B0\(A0\),A1/) saw_clone_dims_dst = 1
+    if (u ~ /LEA 128\(A3\),A2|LEA \$80\(A5\),A0/) saw_clone_dims_src = 1
+    if (u ~ /ADDA\.W #196,A0|ADD\.W #\$C4,A1/) saw_clone_field148 = 1
     if (u == "RTS") has_rts = 1
 }
 
@@ -122,13 +141,18 @@ END {
     print "HAS_FREE_RASTER=" has_free_raster
     has_state_copy = (saw_state_copy_len && saw_state_copy_src && saw_state_copy_dst)
     print "HAS_STATE_COPY=" has_state_copy
+    saw_row_words_calc = (saw_row_words_addend && has_divs && saw_row_words_double)
+    print "HAS_ROW_WORD_SPAN_CALC=" saw_row_words_calc
+    print "HAS_DECODE_CURSOR_UPDATE=" saw_decode_cursor_update
     print "HAS_DIVS32=" has_divs
     print "HAS_ALERT_PATH=" has_alert
     print "HAS_ALERT_SNAPSHOT_RECOPY=" (snapshot_refs >= 2)
     print "HAS_RESTORE_PLANES=" has_restore_planes
     print "HAS_CLONE_ALLOC=" has_clone_alloc
     print "HAS_CLONE_ZERO368=" (zero_368_refs >= 2)
+    print "HAS_CLONE_PATH=" (has_clone_alloc && zero_368_refs >= 2)
     print "HAS_NODE_FREE=" has_node_free
+    print "HAS_PARTIAL_ALLOC_CLEANUP=" (has_free_raster && has_node_free && saw_partial_node_clear)
     print "HAS_DECODE_BUFFER_FREE=" has_cleanup_c16
     print "HAS_RTS=" has_rts
 }

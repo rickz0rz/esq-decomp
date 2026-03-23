@@ -9,12 +9,12 @@ BEGIN {
     has_find_substring = 0
     replace_owned_count = 0
     has_load_mplex_file = 0
-    has_workflow_ref = 0
-    has_detail_flag_ref = 0
-    has_at_template_ref = 0
-    has_listings_template_ref = 0
     has_suffix_s = 0
     has_return = 0
+    has_delim_12 = 0
+    has_truncate_127 = 0
+    has_percent_t_ref = 0
+    pending_replace_owned = 0
 }
 
 function trim(s, t) {
@@ -30,6 +30,7 @@ function trim(s, t) {
     if (line == "") next
     gsub(/[ \t]+/, " ", line)
     u = toupper(line)
+    if (u ~ /^(XREF|XDEF) / || u == "END") next
 
     if (u ~ /^GCOMMAND_PARSECOMMANDSTRING[A-Z0-9_]*:/) has_entry = 1
 
@@ -47,15 +48,42 @@ function trim(s, t) {
     if (index(u, "GROUP_AS_JMPTBL_STR_FINDCHARPTR") > 0 || index(u, "GROUP_AS_JMPTBL_STR_FINDCHARP") > 0 || index(u, "STR_FINDCHARPTR") > 0 || index(u, "STR_FINDCHARP") > 0) has_find_char = 1
     if (index(u, "GROUP_AS_JMPTBL_ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "GROUP_AS_JMPTBL_ESQ_FINDSUBSTRI") > 0 || index(u, "ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "ESQ_FINDSUBSTRI") > 0) has_find_substring = 1
 
-    if (index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRI") > 0) replace_owned_count++
+    if (index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRI") > 0) {
+        replace_owned_count++
+        pending_replace_owned = 1
+    }
     if (index(u, "GCOMMAND_LOADMPLEXFILE") > 0) has_load_mplex_file = 1
-
-    if (index(u, "GCOMMAND_MPLEXWORKFLOWMODE") > 0) has_workflow_ref = 1
-    if (index(u, "GCOMMAND_MPLEXDETAILLAYOUTFLAG") > 0) has_detail_flag_ref = 1
-    if (index(u, "GCOMMAND_MPLEXATTEMPLATEPTR") > 0 || index(u, "GCOMMAND_MPLEXATTEMPL") > 0) has_at_template_ref = 1
-    if (index(u, "GCOMMAND_MPLEXLISTINGSTEMPLATEPTR") > 0 || index(u, "GCOMMAND_MPLEXLISTINGSTEMPL") > 0) has_listings_template_ref = 1
+    if (index(u, "GCOMMAND_FMT_PCT_T_MPLEXTEMPLATE") > 0) has_percent_t_ref = 1
+    if (index(u, "#$12") > 0 || index(u, "($12).W") > 0 || index(u, "#18") > 0) has_delim_12 = 1
+    if (index(u, "#$7F") > 0 || index(u, "#127") > 0 || index(u, "$7F(") > 0 || index(u, "127(") > 0) has_truncate_127 = 1
 
     if (u ~ /^MOVE\.B #\$73,\(A[0-7]\)$/ || u ~ /^MOVE\.B #115,\(A[0-7]\)$/ || u ~ /^MOVE\.B #\$73,1\(A[0-7]\)$/ || u ~ /^MOVE\.B #\$73,\$1\(A[0-7]\)$/ || u ~ /^MOVE\.B #115,1\(A[0-7]\)$/) has_suffix_s = 1
+
+    if (index(u, "GCOMMAND_DIGITALMPLEXENABLEDFLAG") > 0) print "STORE_ENABLE_FLAG"
+    if (index(u, "GCOMMAND_MPLEXMODECYCLECOUNT") > 0) print "STORE_MODE_CYCLE_COUNT"
+    if (index(u, "GCOMMAND_MPLEXSEARCHROWLIMIT") > 0) print "STORE_SEARCH_ROW_LIMIT"
+    if (index(u, "GCOMMAND_MPLEXCLOCKOFFSETMINUTES") > 0) print "STORE_CLOCK_OFFSET"
+    if (index(u, "GCOMMAND_MPLEXMESSAGETEXTPEN") > 0) print "STORE_MESSAGE_TEXT_PEN"
+    if (index(u, "GCOMMAND_MPLEXMESSAGEFRAMEPEN") > 0) print "STORE_MESSAGE_FRAME_PEN"
+    if (index(u, "GCOMMAND_MPLEXEDITORLAYOUTPEN") > 0) print "STORE_EDITOR_LAYOUT_PEN"
+    if (index(u, "GCOMMAND_MPLEXEDITORROWPEN") > 0) print "STORE_EDITOR_ROW_PEN"
+    if (index(u, "GCOMMAND_MPLEXDETAILLAYOUTPEN") > 0) print "STORE_DETAIL_LAYOUT_PEN"
+    if (index(u, "GCOMMAND_MPLEXDETAILINITIALLINEI") > 0) print "STORE_DETAIL_INITIAL_LINE"
+    if (index(u, "GCOMMAND_MPLEXDETAILROWPEN") > 0) print "STORE_DETAIL_ROW_PEN"
+    if (index(u, "GCOMMAND_MPLEXWORKFLOWMODE") > 0) print "STORE_WORKFLOW_MODE"
+    if (index(u, "GCOMMAND_MPLEXDETAILLAYOUTFLAG") > 0) print "STORE_DETAIL_LAYOUT_FLAG"
+    if (index(u, "STR_FINDCHARPTR") > 0 || index(u, "STR_FINDCHARP") > 0) print "FIND_TEMPLATE_SPLIT"
+    if (pending_replace_owned) {
+        if (index(u, "GCOMMAND_MPLEXLISTINGSTEMPLATEPT") > 0 || index(u, "GCOMMAND_MPLEXLISTINGSTEMPLATEPTR") > 0) {
+            print "STORE_LISTINGS_TEMPLATE"
+            pending_replace_owned = 0
+        } else if (index(u, "GCOMMAND_MPLEXATTEMPLATEPT") > 0 || index(u, "GCOMMAND_MPLEXATTEMPLATEPTR") > 0) {
+            print "STORE_AT_TEMPLATE"
+            pending_replace_owned = 0
+        }
+    }
+    if (index(u, "ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "ESQ_FINDSUBSTRI") > 0) print "FIND_PERCENT_T_TOKEN"
+    if (u ~ /^MOVE\.B #\$73,\(A[0-7]\)$/ || u ~ /^MOVE\.B #115,\(A[0-7]\)$/ || u ~ /^MOVE\.B #\$73,1\(A[0-7]\)$/ || u ~ /^MOVE\.B #\$73,\$1\(A[0-7]\)$/ || u ~ /^MOVE\.B #115,1\(A[0-7]\)$/) print "REWRITE_PERCENT_T_TO_S"
 
     if (u == "RTS") has_return = 1
 }
@@ -65,16 +93,15 @@ END {
     print "HAS_DEFAULTS=" has_defaults
     print "HAS_COPY_PAD=" (copy_pad_count >= 1)
     print "HAS_PARSE_LONG=" (parse_long_count >= 3)
-    print "HAS_DIGIT_CLASS_GUARDS=" (digit_guard_count >= 8)
+    print "HAS_DIGIT_CLASS_GUARDS=" (digit_guard_count >= 4)
     print "HAS_PARSE_HEX=" (parse_hex_count >= 3)
     print "HAS_FIND_CHAR=" has_find_char
     print "HAS_FIND_SUBSTRING=" has_find_substring
-    print "HAS_REPLACE_OWNED=" (replace_owned_count >= 1)
+    print "HAS_REPLACE_OWNED=" (replace_owned_count >= 3)
     print "HAS_LOAD_MPLEX_FILE=" has_load_mplex_file
-    print "HAS_WORKFLOW_REF=" has_workflow_ref
-    print "HAS_DETAIL_FLAG_REF=" has_detail_flag_ref
-    print "HAS_AT_TEMPLATE_REF=" has_at_template_ref
-    print "HAS_LISTINGS_TEMPLATE_REF=" has_listings_template_ref
+    print "HAS_DELIM_12=" has_delim_12
+    print "HAS_TRUNCATE_127=" has_truncate_127
+    print "HAS_PERCENT_T_REF=" has_percent_t_ref
     print "HAS_SUFFIX_S=" has_suffix_s
     print "HAS_RETURN=" has_return
 }
