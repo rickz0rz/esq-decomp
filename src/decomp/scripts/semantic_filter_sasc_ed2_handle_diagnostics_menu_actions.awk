@@ -37,9 +37,18 @@ BEGIN {
     pending_graph_mode=0
     saw_refresh_rastport=0
     saw_toggle_mem_mask_ref=0
+    saw_toggle_mask_and=0
+    saw_toggle_mask_or=0
     saw_ctrl_line_string=0
     saw_assert_call=0
     saw_deassert_call=0
+    saw_view_mode_load=0
+    saw_view_mode_add=0
+    pending_serial_shadow_value=-1
+    saw_serial_transition[0]=0
+    saw_serial_transition[1]=0
+    saw_serial_transition[2]=0
+    saw_serial_transition[3]=0
 }
 
 function trim(s, t) {
@@ -67,7 +76,9 @@ function trim(s, t) {
     if (dispatch_sub_count >= 20 && dispatch_branch_count >= 20) has_dispatch_chain=1
 
     if (n ~ /DIAGAVAILMEMMASK/) saw_toggle_mem_mask_ref=1
-    if (saw_toggle_mem_mask_ref && (n ~ /ANDL/ || n ~ /ORL/) && (n ~ /7/ || n ~ /F8/)) has_toggle_mem_mask=1
+    if (saw_toggle_mem_mask_ref && n ~ /ANDL/ && n ~ /DIAGAVAILMEMMASK/) saw_toggle_mask_and=1
+    if (saw_toggle_mem_mask_ref && n ~ /ORL/ && n ~ /DIAGAVAILMEMMASK/) saw_toggle_mask_or=1
+    if (saw_toggle_mask_and && saw_toggle_mask_or) has_toggle_mem_mask=1
     if (n ~ /DIAGAVAILMEMPRESETBITS/ && n ~ /BSET0/) has_preset_bit0=1
     if (n ~ /DIAGAVAILMEMPRESETBITS/ && n ~ /BSET1/) has_preset_bit1=1
     if (n ~ /RASTPORT1/) saw_refresh_rastport=1
@@ -86,12 +97,24 @@ function trim(s, t) {
 
     if ((n ~ /DIAGSCROLLSPEEDCHAR/ && n ~ /33/) || (n ~ /DIAGSCROLLSPEEDCHAR/ && n ~ /36/) || n ~ /TEXTLIMIT/ || n ~ /BLOCKOFFSET/ || n ~ /MATHMULU32/) has_scroll_speed_path=1
 
-    if (n ~ /DIAGNOSTICSVIEWMODE/ && n ~ /ADDQW1/) has_view_mode_increment=1
+    if ((n ~ /DIAGNOSTICSVIEWMODE/ && n ~ /D0/) && (n ~ /MOVEW/ || n ~ /MOVEL/)) saw_view_mode_load=1
+    if (saw_view_mode_load && (n ~ /ADDQW1D0/ || n ~ /ADDQL1D0/ || n ~ /ADDQW1/ || n ~ /ADDQL1/)) saw_view_mode_add=1
+    if (saw_view_mode_add && n ~ /DIAGNOSTICSVIEWMODE/ && n ~ /D0/ && (n ~ /MOVEW/ || n ~ /MOVEL/)) has_view_mode_increment=1
     if ((n ~ /DIAGNOSTICSVIEWMODE/ && (n ~ /CLRW/ || n ~ /MOVEW1/ || n ~ /SUBQW1/)) || n ~ /^SCCD0/ || n ~ /DIAGNOSTICSVIEWMODE.*D1/) has_view_mode_toggle=1
 
     if (n ~ /STRSILENCE/ || n ~ /STRLEFT/ || n ~ /STRRIGHT/ || n ~ /STRBACKGROUND/) serial_string_count++
+    if (n ~ /^CLRL[A0-7]*$/ || n ~ /^CLRL\(A7\)$/) pending_serial_shadow_value=0
+    if (n ~ /PEA1W/ || n ~ /MOVEQ1D[0-7]/ || n ~ /MOVEQ1L?D[0-7]/) pending_serial_shadow_value=1
+    if (n ~ /PEA2W/ || n ~ /MOVEQ2D[0-7]/ || n ~ /MOVEQ2L?D[0-7]/) pending_serial_shadow_value=2
+    if (n ~ /PEA3W/ || n ~ /MOVEQ3D[0-7]/ || n ~ /MOVEQ3L?D[0-7]/) pending_serial_shadow_value=3
     if (n ~ /UPDATESERIALSHADOWFROMCTRLBYTE/ || n ~ /UPDATESER/) {
-        if (n ~ /CLR/ || n ~ /1/ || n ~ /2/ || n ~ /3/) serial_update_count++
+        if (pending_serial_shadow_value >= 0) {
+            if (!saw_serial_transition[pending_serial_shadow_value]) {
+                saw_serial_transition[pending_serial_shadow_value]=1
+                serial_update_count++
+            }
+            pending_serial_shadow_value=-1
+        }
     }
     if (serial_string_count >= 4 && serial_update_count >= 4) has_serial_shadow_path=1
 

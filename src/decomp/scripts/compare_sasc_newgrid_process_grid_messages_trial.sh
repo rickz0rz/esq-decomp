@@ -40,7 +40,6 @@ normalize() {
     -e 's/[[:space:]]+/ /g' \
     -e 's/[[:space:]]+$//' \
     -e '/^$/d' \
-    -e 's/^___[A-Za-z0-9_]+__[0-9]+:$//' \
     -e '/^__const:$/d' \
     -e '/^__strings:$/d' \
     -e '/^const:$/d' \

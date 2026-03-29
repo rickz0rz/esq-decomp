@@ -1,8 +1,10 @@
 BEGIN {
     has_label = 0
     has_div_call = 0
+    has_div_remainder_store = 0
     has_load_call = 0
     sprintf_call_count = 0
+    has_path_index_arg = 0
     has_header_tab_scan = 0
     has_seen_flag_clear_loop = 0
     secondary_group_code_refs = 0
@@ -23,6 +25,7 @@ BEGIN {
     wildcard_call_count = 0
     dealloc_call_count = 0
     has_return = 0
+    path_arg_pending = 0
 }
 
 function trim(s,t) {
@@ -44,8 +47,17 @@ function trim(s,t) {
 
     if (u ~ /^COI_LOADOIDATAFILE[A-Z0-9_]*:/) has_label = 1
     if (u ~ /GROUP_AG_JMPTBL_MATH_DIVS32/) has_div_call = 1
+    if (has_div_call && u ~ /^MOVE\.W D1,/) has_div_remainder_store = 1
     if (u ~ /DISKIO_LOADFILETOWORKBUFFER/ || u ~ /DISKIO_LOADFILETOWORKBUFF/) has_load_call = 1
     if (u ~ /GROUP_AE_JMPTBL_WDISP_SPRINTF/ || u ~ /WDISP_SPRINTF\(/ || u ~ /BSR\.W WDISP_SPRINTF/) sprintf_call_count++
+    if (u ~ /^MOVE\.L D1,-\(A7\)$/) path_arg_pending = 3
+    if (path_arg_pending > 0 &&
+        (u ~ /GLOBAL_STR_DF0_OI_PERCENT_2_LX_D/ ||
+         u ~ /GROUP_AE_JMPTBL_WDISP_SPRINTF/ ||
+         u ~ /WDISP_SPRINTF\(/ || u ~ /BSR\.W WDISP_SPRINTF/)) {
+        has_path_index_arg = 1
+    }
+    if (path_arg_pending > 0) path_arg_pending--
     if (u ~ /PEA 9\.W/ || u ~ /\(\$9\)\.W/) has_header_tab_scan = 1
     if (u ~ /MOVE\.W #\$12D,D0/ || u ~ /MOVE\.W #\$12D,\$[0-9A-F]+\([A-Z][0-9]\)/) has_seen_flag_clear_loop = 1
     if (u ~ /TEXTDISP_SECONDARYGROUPCODE/) secondary_group_code_refs++
@@ -71,8 +83,10 @@ function trim(s,t) {
 END {
     print "HAS_LABEL=" has_label
     print "HAS_DIV_CALL=" has_div_call
+    print "HAS_DIV_REMAINDER_STORE=" has_div_remainder_store
     print "HAS_LOAD_CALL=" has_load_call
     print "SPRINTF_CALL_COUNT=" sprintf_call_count
+    print "HAS_PATH_INDEX_ARG=" has_path_index_arg
     print "HAS_HEADER_TAB_SCAN=" has_header_tab_scan
     print "HAS_SEEN_FLAG_CLEAR_LOOP=" has_seen_flag_clear_loop
     print "SECONDARY_GROUP_CODE_REFS=" secondary_group_code_refs

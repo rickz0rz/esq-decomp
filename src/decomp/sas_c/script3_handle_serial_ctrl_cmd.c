@@ -133,8 +133,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
                     SCRIPT_HandleBrushCommand((char *)SCRIPT_CTRL_CONTEXT, SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
                     SCRIPT_ProcessCtrlContextPlaybackTick((char *)SCRIPT_CTRL_CONTEXT);
                 } else {
-                    TEXTDISP_DeferredActionCountdown = (WORD)(TEXTDISP_DeferredActionCountdown - 1);
-                    if (TEXTDISP_DeferredActionCountdown == 0) {
+                    if ((WORD)(TEXTDISP_DeferredActionCountdown - 1) == 0) {
                         SCRIPT_HandleBrushCommand((char *)SCRIPT_CTRL_CONTEXT, SCRIPT_CTRL_CMD_BUFFER, (LONG)SCRIPT_CTRL_READ_INDEX);
                         SCRIPT_ProcessCtrlContextPlaybackTick((char *)SCRIPT_CTRL_CONTEXT);
                     } else {

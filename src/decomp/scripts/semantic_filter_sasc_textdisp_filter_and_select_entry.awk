@@ -1,5 +1,8 @@
 BEGIN {
     has_entry = 0
+    has_mode_f = 0
+    has_mode_x = 0
+    has_mode1 = 0
     has_filter_slot = 0
     has_filter_mode = 0
     has_filter_ppv = 0
@@ -12,10 +15,14 @@ BEGIN {
     has_get_entry = 0
     has_get_aux = 0
     has_window = 0
+    has_hidden_bit = 0
+    has_ppv_bit = 0
     has_should_open_editor = 0
     has_skip_codes = 0
     has_grid = 0
     has_half_hour = 0
+    has_half_hour_backtrack = 0
+    has_sentinel = 0
     has_time_window = 0
     has_cmp = 0
     has_testbit = 0
@@ -43,6 +50,9 @@ function trim(s, t) {
     u = toupper(line)
 
     if (u ~ /^TEXTDISP_FILTERANDSELECTENTRY:/ || u ~ /^TEXTDISP_FILTERANDSELECTENT[A-Z0-9_]*:/) has_entry = 1
+    if (index(u, "#$46") > 0) has_mode_f = 1
+    if (index(u, "#$58") > 0 || index(u, "SUBI.W #18,D0") > 0) has_mode_x = 1
+    if (index(u, "MOVE.B #$1,TEXTDISP_FILTERMODEID") > 0) has_mode1 = 1
     if (index(u, "TEXTDISP_FILTERCHANNELSLOTINDEX") > 0) has_filter_slot = 1
     if (index(u, "TEXTDISP_FILTERMODEID") > 0) has_filter_mode = 1
     if (index(u, "TEXTDISP_FILTERPPVSBEMATCHFLAG") > 0 || index(u, "TEXTDISP_FILTERPPVSBEMATCHFLAG") > 0) has_filter_ppv = 1
@@ -56,12 +66,17 @@ function trim(s, t) {
     if (index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYPOINTERBYMODE") > 0 || index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYPO") > 0) has_get_entry = 1
     if (index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYAUXPOINTERBYMODE") > 0 || index(u, "TLIBA1_JMPTBL_ESQDISP_GETENTRYAU") > 0) has_get_aux = 1
     if (index(u, "TLIBA1_JMPTBL_COI_TESTENTRYWITHINTIMEWINDOW") > 0 || index(u, "TLIBA1_JMPTBL_COI_TESTENTRYWITHI") > 0) has_window = 1
+    if (index(u, "BTST #3,27(A0)") > 0 || index(u, "BTST #$3,$1B(A0)") > 0) has_hidden_bit = 1
+    if (index(u, "BTST #4,27(A0)") > 0 || index(u, "BTST #$4,$1B(A0)") > 0) has_ppv_bit = 1
     if (index(u, "TEXTDISP_SHOULDOPENEDITORFORENTR") > 0 || index(u, "TEXTDISP_SHOULDOPENEDITORFORENTRY") > 0) has_should_open_editor = 1
     if (index(u, "TEXTDISP_SKIPCONTROLCODES") > 0 || index(u, "TEXTDISP_SKIPCONTROLC") > 0) has_skip_codes = 1
     if (index(u, "TEXTDISP_JMPTBL_ESQDISP_TESTENTRYGRIDELIGIBILITY") > 0 || index(u, "TEXTDISP_JMPTBL_ESQDISP_TESTENTRYGR") > 0 ||
         index(u, "TEXTDISP_JMPTBL_ESQDISP_TESTENTR") > 0 || index(u, "ESQDISP_TESTENTRYGRIDELIGIBILITY") > 0 ||
         index(u, "ESQDISP_TESTENTRYGRIDELIGIB") > 0) has_grid = 1
     if (index(u, "CLOCK_HALFHOURSLOTINDEX") > 0) has_half_hour = 1
+    if (index(u, "SUBQ.W #1,-22(A5)") > 0 || index(u, "SUBQ.L #$1,$28(A7)") > 0) has_half_hour_backtrack = 1
+    if (index(u, "MOVE.W #$31,TEXTDISP_FILTERCHANNELSLOTINDEX") > 0 || index(u, "CMPI.W #$31,TEXTDISP_FILTERCHANNELSLOTINDEX") > 0 ||
+        index(u, "MOVEQ.L #$31,D1") > 0) has_sentinel = 1
     if (index(u, "CONFIG_TIMEWINDOWMINUTES") > 0 || index(u, "1440.W") > 0 || index(u, "#$5A0") > 0) has_time_window = 1
     if (index(u, "STRING_COMPARENOCASEN") > 0 || index(u, "STRING_COMPARENOCASE") > 0) has_cmp = 1
     if (index(u, "TLIBA2_JMPTBL_ESQ_TESTBIT1BASED") > 0 || index(u, "TLIBA2_JMPTBL_ESQ_TESTBIT1B") > 0 ||
@@ -77,6 +92,9 @@ function trim(s, t) {
 
 END {
     print "HAS_ENTRY=" has_entry
+    print "HAS_MODE_F=" has_mode_f
+    print "HAS_MODE_X=" has_mode_x
+    print "HAS_MODE1=" has_mode1
     print "HAS_FILTER_SLOT=" has_filter_slot
     print "HAS_FILTER_MODE=" has_filter_mode
     print "HAS_FILTER_PPV=" has_filter_ppv
@@ -89,10 +107,14 @@ END {
     print "HAS_GET_ENTRY=" has_get_entry
     print "HAS_GET_AUX=" has_get_aux
     print "HAS_WINDOW=" has_window
+    print "HAS_HIDDEN_BIT=" has_hidden_bit
+    print "HAS_PPV_BIT=" has_ppv_bit
     print "HAS_SHOULD_OPEN_EDITOR=" has_should_open_editor
     print "HAS_SKIP_CODES=" has_skip_codes
     print "HAS_GRID=" has_grid
     print "HAS_HALF_HOUR=" has_half_hour
+    print "HAS_HALF_HOUR_BACKTRACK=" has_half_hour_backtrack
+    print "HAS_SENTINEL=" has_sentinel
     print "HAS_TIME_WINDOW=" has_time_window
     print "HAS_CMP=" has_cmp
     print "HAS_TESTBIT=" has_testbit

@@ -31,6 +31,10 @@ BEGIN{
     saw_nullctx_state_clear=0
     saw_nullctx_selection_clear=0
     h_state_globals=0
+    h_digital_seed_sequence=0
+    h_digital_column_adjust=0
+    digital_stage=0
+    column_adjust_stage=0
     h_rts=0
 }
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
@@ -62,6 +66,29 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /(JSR|BSR).*VALIDATESELECTIONCODE/)validate_calls++
     if(l ~ /(JSR|BSR).*GETGRIDMODEINDEX/)grid_mode_calls++
     if(l ~ /(JSR|BSR).*COMPUTECOLUMNINDEX/)column_calls++
+    if(l ~ /MOVE\.B GCOMMAND_DIGITALMPLEXENABLEDFLAG/) {
+        if (digital_stage < 1) digital_stage = 1
+        if (column_adjust_stage < 1) column_adjust_stage = 1
+    }
+    if(digital_stage == 1 && (l ~ /MOVEQ(\.L)? #\$59,D1/ || l ~ /MOVEQ(\.L)? #89,D1/))digital_stage = 2
+    if(digital_stage == 2 && l ~ /CMP\.B D1,D0/)digital_stage = 3
+    if(digital_stage == 3 && l ~ /TST\.L D5/)digital_stage = 4
+    if(digital_stage == 4 && l ~ /CMPI\.L #\$?1,NEWGRID_SCHEDULESELECTIONCODECAC/)digital_stage = 5
+    if(digital_stage == 5 && l ~ /MOVE\.B GCOMMAND_MPLEXDETAILLAYOUTFLAG/)digital_stage = 6
+    if(digital_stage == 6 && (l ~ /MOVEQ(\.L)? #\$4E,D1/ || l ~ /MOVEQ(\.L)? #78,D1/))digital_stage = 7
+    if(digital_stage == 7 && l ~ /CMP\.B D1,D0/)digital_stage = 8
+    if(digital_stage == 8 && (l ~ /MOVEQ(\.L)? #\$24,D0/ || l ~ /MOVEQ(\.L)? #36,D0/ || l ~ /MOVEQ(\.L)? #\$34,D0/ || l ~ /MOVEQ(\.L)? #52,D0/))digital_stage = 9
+    if(digital_stage >= 8 && l ~ /(JSR|BSR).*VALIDATESELECTIONCODE/)digital_stage = 10
+    if(digital_stage >= 10 && l ~ /(JSR|BSR).*GETGRIDMODEINDEX/)digital_stage = 11
+    if(digital_stage >= 11 && l ~ /MOVE\.L D0,NEWGRID_SCHEDULESELECTIONCODECAC/) {
+        digital_stage = 12
+        h_digital_seed_sequence = 1
+    }
+    if(column_adjust_stage >= 1 && l ~ /(JSR|BSR).*COMPUTECOLUMNINDEX/)column_adjust_stage = 2
+    if(column_adjust_stage >= 2 && l ~ /SUB\.L D0,NEWGRID_SCHEDULESELECTIONCODECAC/) {
+        column_adjust_stage = 3
+        h_digital_column_adjust = 1
+    }
     if(l ~ /MOVE\.L D0,NEWGRID_SCHEDULEWORKFLOWSTATE/)saw_nullctx_state_clear=1
     if(l ~ /MOVE\.L D0,NEWGRID_SELECTEDPRIMARYENTRYIND/)saw_nullctx_selection_clear=1
     if(saw_nullctx_state_clear && saw_nullctx_selection_clear)h_nullctx_clear=1
@@ -102,6 +129,8 @@ END{
     print "VALIDATE_CALLS="validate_calls
     print "GRID_MODE_CALLS="grid_mode_calls
     print "COLUMN_CALLS="column_calls
+    print "HAS_DIGITAL_SEED_SEQUENCE="h_digital_seed_sequence
+    print "HAS_DIGITAL_COLUMN_ADJUST="h_digital_column_adjust
     print "EDITOR_REENTER_CHECKS="editor_reenter_checks
     print "ALT_SELECTOR_WRITES="alt_selector_writes
     print "EDITOR_GATE_WRITES="editor_gate_writes

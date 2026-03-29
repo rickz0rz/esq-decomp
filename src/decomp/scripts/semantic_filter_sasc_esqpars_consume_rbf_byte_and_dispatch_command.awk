@@ -41,6 +41,8 @@ BEGIN {
     has_banner_entry=0
     has_boxoff=0
     has_diagnostics=0
+    has_config_parse=0
+    has_config_save=0
     has_bang_path=0
     has_bang_y_normalize=0
     has_bang_slot_flag_write=0
@@ -53,6 +55,7 @@ BEGIN {
     has_sparse_payload_count=0
     has_replace_owned_string=0
     has_rts=0
+    diag_len_pending=0
 }
 
 function trim(s, t) {
@@ -70,6 +73,9 @@ function trim(s, t) {
     u=toupper(line)
     n=u
     gsub(/[^A-Z0-9]/, "", n)
+
+    if (diag_len_pending > 0) diag_len_pending--
+    if (u ~ /#\$100/ || u ~ /\(\$100\)/ || u ~ /#256([^0-9]|$)/) diag_len_pending=2
 
     if (u ~ /^ESQPARS_CONSUMERBFBYTEANDDISPATCHCOMMAND:/ || u ~ /^ESQPARS_CONSUMERBFBYTEANDDISPATCHCOMMAN[A-Z0-9_]*:/ || u ~ /^ESQPARS_CONSUMERBFBYTEANDDISPATC[A-Z0-9_]*:/) has_entry=1
     if (n ~ /READSERIALRBFBYTE/ || n ~ /READSERIAL/) has_read_serial=1
@@ -111,10 +117,13 @@ function trim(s, t) {
     if (n ~ /PARSECOMMANDOPTIONS/) has_cmd_options=1
     if (n ~ /PARSECOMMANDSTRING/) has_cmd_string=1
     if (n ~ /PARSEPPVCOMMAND/) has_ppv_command=1
+    if (n ~ /PARSECONFIGBUFFER/ || n ~ /DISKIOPARSECONFIGBUFFER/) has_config_parse=1
+    if (n ~ /SAVECONFIGTOFILEHANDLE/ || n ~ /DISKIOSAVECONFIGTOFILEHANDLE/) has_config_save=1
     if (n ~ /SELECTIONSUFFIXBUFFER/) has_copy_suffix=1
     if (n ~ /PARSEBANNERENTRYDATA/ || n ~ /130/ && n ~ /RECORD/) has_banner_entry=1
     if (n ~ /PERSISTONNEXTBOXOFFFLAG/ || n ~ /NOTB/ && n ~ /44/ || n ~ /UPDATESTATUSMASKANDREFRESH/ && n ~ /MODECLEAR/) has_boxoff=1
-    if (n ~ /256/ && n ~ /GENERATEXORCHECKSUMBYTE/ || n ~ /DIAGNOSTICSPACKETBYTES/) has_diagnostics=1
+    if (((n ~ /READRBFBYTESTOBUFFER/ || n ~ /GENERATEXORCHECKSUMBYTE/) && diag_len_pending > 0) ||
+        n ~ /DIAGNOSTICSPACKETBYTES/) has_diagnostics=1
     if (n ~ /REPLACEOWNEDSTRING/ || n ~ /89/ && n ~ /30/ || n ~ /59/ && n ~ /30/) has_bang_path=1
     if (n ~ /89/ || n ~ /59/ || n ~ /Y/) has_bang_y_normalize=1
     if (n ~ /SLOTFLAGS/ || n ~ /MOVEB1.*7A0/ || n ~ /MOVEBD2.*7A3/ || n ~ /7A0D0W/ || n ~ /7A3D1L/) has_bang_slot_flag_write=1
@@ -168,6 +177,8 @@ END {
     print "HAS_COMMAND_OPTIONS_PARSE=" has_cmd_options
     print "HAS_COMMAND_STRING_PARSE=" has_cmd_string
     print "HAS_PPV_COMMAND_PARSE=" has_ppv_command
+    print "HAS_CONFIG_PARSE=" has_config_parse
+    print "HAS_CONFIG_SAVE=" has_config_save
     print "HAS_COPY_SELECTION_SUFFIX=" has_copy_suffix
     print "HAS_BANNER_ENTRY_PARSE=" has_banner_entry
     print "HAS_BOXOFF_PATH=" has_boxoff

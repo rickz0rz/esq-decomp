@@ -23,9 +23,13 @@ function norm(s, t) {
     if (line ~ /ESQIFF_GADSBRUSHLISTCOUNT/) has_brush_guard = 1
     if (line ~ /WDISP_HIGHLIGHTACTIVE/) has_highlight_guard = 1
 
+    if (line ~ /MOVEQ(\.L)? #\$?1,D[01]/) saw_one_const = 1
+    if (line ~ /MOVEQ(\.L)? #\$?2,D[01]/) saw_two_const = 1
+    if (line ~ /MOVEQ(\.L)? #\$?FF,D[0-7]/ || line ~ /MOVEQ(\.L)? #-1,D[0-7]/) saw_neg1_const = 1
+
     if (line ~ /MOVE\.L .*LOCAVAIL_FILTERCLASSID/ || line ~ /MOVE\.L D5,LOCAVAIL_FILTERCLASSID/) has_stage0_class_store = 1
-    if (line ~ /MOVE\.L .*LOCAVAIL_FILTERSTEP/ && line ~ /#\$?1|#1/) has_stage0_step1 = 1
-    if (line ~ /MOVE\.L .*LOCAVAIL_FILTERPREVCLASSID/ && line ~ /#\$?FF|#-1/) has_prev_class_reset = 1
+    if (line ~ /MOVE\.L D[01],LOCAVAIL_FILTERSTEP(\(A4\))?$/ && saw_one_const) has_stage0_step1 = 1
+    if (line ~ /MOVE\.L D[0-7],LOCAVAIL_FILTERPREVCLASSID(\(A4\))?$/ && saw_neg1_const) has_prev_class_reset = 1
 
     if (line ~ /MOVEQ(\.L)? #\$?A,D0/ || line ~ /MOVEQ #10,D0/) saw_ctx10_const = 1
     if (saw_ctx10_const && (line ~ /MOVE\.L D0,20\(A3\)/ || line ~ /MOVE\.L D0,\$14\(A2\)/)) has_case1_ctx10 = 1
@@ -34,18 +38,17 @@ function norm(s, t) {
 
     if (line ~ /MOVE\.W D1,LOCAVAIL_FILTERCOOLDOWNTICKS/ || line ~ /MOVE\.W .*LOCAVAIL_FILTERCOOLDOWNTICKS/) has_cooldown_store = 1
     if (line ~ /MOVE\.W .*LOCAVAIL_FILTERWINDOWHALFSPAN/) has_window_store = 1
-    if (line ~ /MOVE\.L .*8\(A[02]\)/ && line ~ /#\$?FF|#-1/) clear_sel_node = 1
-    if (line ~ /MOVE\.L .*12\(A2\)/ && line ~ /#\$?FF|#-1/) clear_sel_payload = 1
-    if (line ~ /MOVE\.L .*\\$C\(A0\)/ && line ~ /#\$?FF|#-1/) clear_sel_payload = 1
-    if ((line ~ /MOVE\.L .*LOCAVAIL_FILTERSTEP/ && line ~ /#\$?2|#2/)) has_stage1_step2 = 1
+    if (line ~ /MOVE\.L D[0-7],(8\(A2\)|\$8\(A0\))$/ && saw_neg1_const) clear_sel_node = 1
+    if (line ~ /MOVE\.L D[0-7],(12\(A2\)|\$C\(A0\))$/ && saw_neg1_const) clear_sel_payload = 1
+    if (line ~ /MOVE\.L D[01],LOCAVAIL_FILTERSTEP(\(A4\))?$/ && saw_two_const) has_stage1_step2 = 1
     if (line ~ /MOVEQ(\.L)? #\$?4,D0/ || line ~ /MOVEQ #4,D0/) saw_ctx4_const = 1
     if (saw_ctx4_const && (line ~ /MOVE\.L D0,20\(A3\)/ || line ~ /MOVE\.L D0,\$14\(A2\)/)) has_mode4_store = 1
-    if (line ~ /^CLR\.L 20\(A3\)$/ || line ~ /^CLR\.L \$14\(A2\)$/ || line ~ /^MOVEQ(\.L)? #\$?0,D[045]$/) has_ctx_clear = 1
+    if (line ~ /^CLR\.L 20\(A3\)$/ || line ~ /^CLR\.L \$14\(A2\)$/ || line ~ /^MOVE\.L D[45],\$14\(A2\)$/) has_ctx_clear = 1
 
     if ((line ~ /MOVE\.W #\$?3,24\(A3\)/ || line ~ /MOVE\.W #\$?3,\$18\(A2\)/) && has_class_global) has_value24_store = 1
-    if ((line ~ /MOVE\.L .*LOCAVAIL_FILTERCLASSID/ && line ~ /#\$?FF|#-1/)) has_final_class_reset = 1
-    if (line ~ /^CLR\.L LOCAVAIL_FILTERSTEP/) has_final_step_clear = 1
-    if (line ~ /MOVE\.W #\$?FFFFFFFF,LOCAVAIL_FILTERWINDOWHALFSPAN/ || line ~ /MOVE\.W #\(-1\),LOCAVAIL_FILTERWINDOWHALFSPAN/) has_final_window_reset = 1
+    if (line ~ /MOVE\.L D[0-7],LOCAVAIL_FILTERCLASSID(\(A4\))?$/ && saw_neg1_const) has_final_class_reset = 1
+    if (line ~ /^CLR\.L LOCAVAIL_FILTERSTEP(\(A4\))?$/) has_final_step_clear = 1
+    if (line ~ /MOVE\.W #\$?FFFFFFFF,LOCAVAIL_FILTERWINDOWHALFSPAN(\(A4\))?/ || line ~ /MOVE\.W #\(-1\),LOCAVAIL_FILTERWINDOWHALFSPAN(\(A4\))?/) has_final_window_reset = 1
 
     if (line ~ /LOCAVAIL_RESETFILTERCURSORSTATE/) reset_call_count++
     if (line == "RTS") has_return = 1

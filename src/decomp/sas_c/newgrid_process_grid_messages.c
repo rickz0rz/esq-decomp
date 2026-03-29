@@ -120,12 +120,6 @@ dispatch_main_mode:
             NEWGRID_MapSelectionToMode(NEWGRID_MainModeState, (WORD)NEWGRID_SelectedDaySlot);
         goto finalize_and_reply_message;
 
-    case 9:
-        NEWGRID_DrawAwaitingListingsMessage((char *)msg);
-        NEWGRID_MainModeState =
-            NEWGRID_MapSelectionToMode(NEWGRID_MainModeState, (WORD)NEWGRID_SelectedDaySlot);
-        goto finalize_and_reply_message;
-
     case 3:
         dispatchResult = NEWGRID2_DispatchGridOperation(
             1,
@@ -212,7 +206,7 @@ dispatch_main_mode:
             NEWGRID_MapSelectionToMode(NEWGRID_MainModeState, (WORD)NEWGRID_SelectedDaySlot);
         goto finalize_and_reply_message;
 
-    case 10:
+    case 9:
         NEWGRID_SelectedDaySlot =
             (UWORD)NEWGRID_ComputeDaySlotFromClock(&CLOCK_DaySlotIndex);
         NEWGRID_RenderDaySlot =
@@ -226,6 +220,12 @@ dispatch_main_mode:
             NEWGRID_HeaderRedrawPending = 1;
             goto finalize_and_reply_message;
         }
+        NEWGRID_MainModeState =
+            NEWGRID_MapSelectionToMode(NEWGRID_MainModeState, (WORD)NEWGRID_SelectedDaySlot);
+        goto finalize_and_reply_message;
+
+    case 10:
+        NEWGRID_DrawAwaitingListingsMessage((char *)msg);
         NEWGRID_MainModeState =
             NEWGRID_MapSelectionToMode(NEWGRID_MainModeState, (WORD)NEWGRID_SelectedDaySlot);
         goto finalize_and_reply_message;

@@ -37,6 +37,8 @@ BEGIN {
     has_topaz_guard = 0
     has_update_clock = 0
     has_dst_refresh = 0
+    has_ctrl_arg_scan = 0
+    has_display_active_scan = 0
     has_baud_parse = 0
     has_baud_validation = 0
     has_baud_2400 = 0
@@ -61,6 +63,15 @@ BEGIN {
     rise_transition_count = 0
     has_drive_probe = 0
     has_printf = 0
+    has_df1_warning = 0
+    has_startup_select_code_draw = 0
+    has_startup_version_draw = 0
+    has_startup_system_draw = 0
+    has_startup_standby_draw = 0
+    has_startup_text_bundle = 0
+    has_attention_warning = 0
+    has_fastmem_warning = 0
+    has_video_warning = 0
     has_prime_banner = 0
     has_preset_defaults = 0
     has_parse_ini = 0
@@ -79,7 +90,6 @@ BEGIN {
     has_brush_dt = 0
     has_brush_dither_fallback = 0
     has_brush_type3_fallback = 0
-    has_display_active_scan = 0
     has_schedule_clear = 0
     has_ravesc_highlight_restore = 0
     has_main_loop_gate = 0
@@ -89,6 +99,15 @@ BEGIN {
     saw_queue_slot_table = 0
     saw_queue_bitmap_table = 0
     saw_status_refresh_mask_fff = 0
+    saw_df1_status = 0
+    saw_df1_code = 0
+    saw_startup_select_code = 0
+    saw_startup_version = 0
+    saw_startup_system = 0
+    saw_startup_standby = 0
+    saw_attention_label = 0
+    saw_fastmem_label = 0
+    saw_video_label = 0
     saw_schedule_limit = 0
     saw_schedule_table_ref = 0
     saw_ravesc_select_test = 0
@@ -193,6 +212,10 @@ function advance_stage(stage, target) {
     if (u ~ /CHECKTOPAZFONTGUARD/ || u ~ /CHECKTOPAZFONTGUA/) has_topaz_guard = 1
     if (u ~ /UPDATECLOCKFROMRTC/ || u ~ /UPDATECLOCKFROMR/) has_update_clock = 1
     if (u ~ /DST_REFRESHBANNERBUFFER/ || u ~ /REFRESHBANNERBUFFER/) has_dst_refresh = 1
+    if ((u ~ /ESQ_TAG_GRANADA/ || u ~ /SCRIPT_CTRLINTERFACEENABLEDFLAG/ || u ~ /SCRIPT_CTRLINTERFACEENABLED/) &&
+        (u ~ /MOVE\.W #1/ || u ~ /= 1/ || u ~ /SCRIPT_CTRLINTERFACEENABLEDFLAG/)) has_ctrl_arg_scan = 1
+    if ((u ~ /ESQ_TAG_GRANADA/ || u ~ /ESQDISP_DISPLAYACTIVEFLAG/ || u ~ /ESQDISP_DISPLAYACTIVEF/) &&
+        (u ~ /MOVE\.L D0/ || u ~ /MOVE\.L #1/ || u ~ /= 1/ || u ~ /ESQDISP_DISPLAYACTIVEFLAG/)) has_display_active_scan = 1
     if (u ~ /PARSE_READSIGNEDLONGSKIPCLASS3_A/ || u ~ /PARSE_READSIGNEDLONGSKIPCLASS3_ALT/) has_baud_parse = 1
     if (u ~ /(^|[^0-9])2400([^0-9]|$)|\$960/) has_baud_2400 = 1
     if (u ~ /(^|[^0-9])4800([^0-9]|$)|\$12C0/) has_baud_4800 = 1
@@ -221,6 +244,30 @@ function advance_stage(stage, target) {
     }
     if (u ~ /PROBEDRIVESANDASSIGNPATHS/ || u ~ /PROBEDRIVESANDASSI/) has_drive_probe = 1
     if (u ~ /WDISP_SPRINTF/ || u ~ /RAWDOFMT/ || u ~ /SPRINTF/) has_printf = 1
+    if (u ~ /DISKIO_DRIVEWRITEPROTECTSTATUSCODEDRIVE1/ ||
+        u ~ /DISKIO_DRIVEWRITEPROTECTSTATUSCODED/ ||
+        u ~ /DISKIO_DRIVEWRITEPROTECTSTATUSCO/) saw_df1_status = 1
+    if (u ~ /#218/ || u ~ /#\$DA/ || u ~ /MOVEQ(\.L)? #109,D0/ || u ~ /MOVEQ(\.L)? #\$6D,D0/) saw_df1_code = 1
+    if (u ~ /ESQ_STR_NO_DF1_PRESENT/) saw_df1_status = 1
+    if (saw_df1_status && saw_df1_code && (u ~ /ESQ_STR_NO_DF1_PRESENT/ || u ~ /NO_DF1_PRESENT/)) has_df1_warning = 1
+    if (u ~ /ESQ_SELECTCODEBUFFER/) saw_startup_select_code = 1
+    if (u ~ /ESQ_STARTUPVERSIONBANNERBUFFER/ || u ~ /ESQ_STARTUPVERSIONBANNERBUFF/) saw_startup_version = 1
+    if (u ~ /ESQ_STR_SYSTEMINITIALIZING/) saw_startup_system = 1
+    if (u ~ /ESQ_STR_PLEASESTANDBYELLIPSIS/ || u ~ /ESQ_STR_PLEASESTANDBYELLIPSI/) saw_startup_standby = 1
+    if (u ~ /ESQ_STR_ATTENTIONSYSTEMENGINEER/ || u ~ /ESQ_STR_ATTENTIONSYSTEMENGINE/) saw_attention_label = 1
+    if (u ~ /ESQ_STR_REPORTERRORCODEER011/ || u ~ /ESQ_STR_REPORTERRORCODEER011TOTV/) saw_fastmem_label = 1
+    if (u ~ /ESQ_STR_REPORTERRORCODEER012/ || u ~ /ESQ_STR_REPORTERRORCODEER012TOTV/) saw_video_label = 1
+    if (u ~ /DRAWCENTEREDWRAPPEDTEXTLINES/ ||
+        u ~ /DRAWCENTEREDWRAPPEDTEXTLINE/ ||
+        u ~ /DRAWCENTEREDWRAPPEDTEXTLI/) {
+        if (saw_startup_select_code) has_startup_select_code_draw = 1
+        if (saw_startup_version) has_startup_version_draw = 1
+        if (saw_startup_system) has_startup_system_draw = 1
+        if (saw_startup_standby) has_startup_standby_draw = 1
+        if (saw_attention_label) has_attention_warning = 1
+        if (saw_fastmem_label) has_fastmem_warning = 1
+        if (saw_video_label) has_video_warning = 1
+    }
     if (u ~ /PRIMEBANNERTRANSITIONFROMHEXCODE/ || u ~ /PRIMEBANNERTRANSI/) has_prime_banner = 1
     if (u ~ /INITPRESETDEFAULTS/ || u ~ /INITPRESETDEFAUL/) has_preset_defaults = 1
     if (u ~ /PARSEINIBUFFERANDDISPATCH/ || u ~ /PARSEINIBUFFERANDD/ || u ~ /PARSEINIBUFFERANDDISPAT/) {
@@ -315,6 +362,10 @@ END {
     has_baud_validation = (has_baud_parse && has_baud_2400 && has_baud_4800 && has_baud_9600) ? 1 : 0
     has_serial_setup = (serial_setup_hits >= 3) ? 1 : 0
     has_dual_rise_transition = (rise_transition_count >= 2) ? 1 : 0
+    has_startup_text_bundle = (has_startup_select_code_draw &&
+        has_startup_version_draw &&
+        has_startup_system_draw &&
+        has_startup_standby_draw) ? 1 : 0
     has_parse_ini_count = (parse_ini_count == 4) ? 1 : 0
     has_dual_filter_reset = (reset_filter_count == 2) ? 1 : 0
     has_preflight_order = (preflight_stage >= 4) ? 1 : 0
@@ -361,6 +412,8 @@ END {
     print "HAS_TOPAZ_GUARD=" has_topaz_guard
     print "HAS_UPDATE_CLOCK=" has_update_clock
     print "HAS_DST_REFRESH=" has_dst_refresh
+    print "HAS_CTRL_ARG_SCAN=" has_ctrl_arg_scan
+    print "HAS_DISPLAY_ACTIVE_SCAN=" has_display_active_scan
     print "HAS_BAUD_PARSE=" has_baud_parse
     print "HAS_BAUD_VALIDATION=" has_baud_validation
     print "HAS_BAUD_2400=" has_baud_2400
@@ -385,6 +438,15 @@ END {
     print "HAS_DUAL_RISE_TRANSITION=" has_dual_rise_transition
     print "HAS_DRIVE_PROBE=" has_drive_probe
     print "HAS_PRINTF=" has_printf
+    print "HAS_DF1_WARNING=" has_df1_warning
+    print "HAS_STARTUP_SELECT_CODE_DRAW=" has_startup_select_code_draw
+    print "HAS_STARTUP_VERSION_DRAW=" has_startup_version_draw
+    print "HAS_STARTUP_SYSTEM_DRAW=" has_startup_system_draw
+    print "HAS_STARTUP_STANDBY_DRAW=" has_startup_standby_draw
+    print "HAS_STARTUP_TEXT_BUNDLE=" has_startup_text_bundle
+    print "HAS_ATTENTION_WARNING=" has_attention_warning
+    print "HAS_FASTMEM_WARNING=" has_fastmem_warning
+    print "HAS_VIDEO_WARNING=" has_video_warning
     print "HAS_PRIME_BANNER=" has_prime_banner
     print "HAS_PRESET_DEFAULTS=" has_preset_defaults
     print "HAS_PARSE_INI=" has_parse_ini
@@ -403,7 +465,6 @@ END {
     print "HAS_BRUSH_DT=" has_brush_dt
     print "HAS_BRUSH_DITHER_FALLBACK=" has_brush_dither_fallback
     print "HAS_BRUSH_TYPE3_FALLBACK=" has_brush_type3_fallback
-    print "HAS_DISPLAY_ACTIVE_SCAN=" has_display_active_scan
     print "HAS_SCHEDULE_CLEAR=" has_schedule_clear
     print "HAS_RAVESC_HIGHLIGHT_RESTORE=" has_ravesc_highlight_restore
     print "HAS_MAIN_LOOP_GATE=" has_main_loop_gate

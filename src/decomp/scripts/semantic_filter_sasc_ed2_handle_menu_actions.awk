@@ -34,6 +34,37 @@ BEGIN {
     has_clock_scan_aa=0
     has_clock_scan_k=0
     has_clock_apply=0
+    ctrl_shadow_transition_call_count=0
+    has_ctrl_shadow_transition_arg3=0
+    has_ctrl_shadow_enable_arg1=0
+    has_external_asset_frame_one=0
+    has_disk_sync_zero=0
+    has_move_copper_zero_31=0
+    has_banner_transition_next=0
+    has_banner_transition_prev=0
+    has_banner_transition_config=0
+    saw_arg_one=0
+    saw_arg_three=0
+    saw_arg_thirtyone=0
+    saw_zero_push=0
+    saw_banner_config_load=0
+    saw_banner_next_step=0
+    saw_banner_prev_step=0
+    saw_transition_const_2=0
+    saw_transition_const_3=0
+    saw_status_overlay_format=0
+    saw_status_overlay_sprintf=0
+    saw_status_overlay_display=0
+    saw_debug_dump_entry_count=0
+    saw_debug_dump_reset_tick=0
+    saw_debug_dump_entry_ptr=0
+    saw_debug_dump_dump_call=0
+    saw_debug_dump_tick_call=0
+    saw_banner_datetime_ctime=0
+    saw_banner_datetime_btime=0
+    saw_banner_datetime_day_slot=0
+    saw_banner_datetime_day_of_week=0
+    saw_banner_datetime_formatter=0
     render_call_count=0
     has_render_short_arg=0
     has_render_zero_arg=0
@@ -93,6 +124,47 @@ function trim(s, t) {
     if (u ~ /#\$AA/ || u ~ /#170/ || n ~ /STATEWAITAA/ || u ~ /ADD.L D2,D2/) has_clock_scan_aa=1
     if (u ~ /#\$4B/ || u ~ /#75/ || n ~ /STATEWAITK/) has_clock_scan_k=1
     if (n ~ /APPLYRTCBYTESANDPERSIST/ || n ~ /STATEPROCESSMATCH/) has_clock_apply=1
+    if (u ~ /PEA \(\$1\)\.W/ || u ~ /PEA \(1\)\.W/ || u ~ /PEA 1\.W/) saw_arg_one=1
+    if (u ~ /PEA \(\$3\)\.W/ || u ~ /PEA \(3\)\.W/ || u ~ /PEA 3\.W/ || u ~ /MOVEQ(\.L)? #\$?3,D[0-7]$/) saw_arg_three=1
+    if (u ~ /PEA \(\$1F\)\.W/ || u ~ /PEA \(31\)\.W/ || u ~ /PEA 31\.W/ || u ~ /PEA \(\$1f\)\.W/) saw_arg_thirtyone=1
+    if (u ~ /^CLR\.L -\(A7\)$/ || u ~ /^MOVEQ(\.L)? #\$?0,D0$/ || u ~ /^MOVE\.L D0,-\(A7\)$/) saw_zero_push=1
+    if (n ~ /CONFIGBANNERCOPPERHEADBYTE/) saw_banner_config_load=1
+    if (u ~ /ADDQ\.(W|L)? #\$?1,D0$/ || u ~ /ADDQ\.(W|L)? #1,D0$/) saw_banner_next_step=1
+    if (u ~ /SUBQ\.(W|L)? #\$?1,D0$/ || u ~ /SUBQ\.(W|L)? #1,D0$/) saw_banner_prev_step=1
+    if (n ~ /SCRIPTUPDATESERIALSHADOWFROMCTRLBYTE/ || n ~ /SCRIPTUPDATESERIALSHADOWFROMCTR/) {
+        if (saw_arg_three || saw_zero_push) {
+            ctrl_shadow_transition_call_count++
+            has_ctrl_shadow_transition_arg3=1
+        }
+        if (saw_arg_one) has_ctrl_shadow_enable_arg1=1
+    }
+    if ((n ~ /ESQIFFPLAYNEXTEXTERNALASSETFRAME/ || n ~ /PLAYNEXTEXTERNALASSETFRAM/) && saw_arg_one) has_external_asset_frame_one=1
+    if (n ~ /DISKIO2RUNDISKSYNCWORKFLOW/ && saw_zero_push) has_disk_sync_zero=1
+    if (n ~ /ESQMOVECOPPERENTRYTOWARDEND/ && saw_arg_thirtyone && saw_zero_push) has_move_copper_zero_31=1
+    if (n ~ /SCRIPTBEGINBANNERCHARTRANSITION/ && saw_banner_next_step) has_banner_transition_next=1
+    if (n ~ /SCRIPTBEGINBANNERCHARTRANSITION/ && saw_banner_prev_step) has_banner_transition_prev=1
+    if (n ~ /SCRIPTBEGINBANNERCHARTRANSITION/ && saw_banner_config_load) has_banner_transition_config=1
+    if (u ~ /MOVEQ(\.L)? #\$?2,D[0-7]$/ || u ~ /PEA \(\$2\)\.W/ || u ~ /PEA \(2\)\.W/ || u ~ /PEA 2\.W/) saw_transition_const_2=1
+    if (u ~ /MOVEQ(\.L)? #\$?3,D[0-7]$/ || u ~ /PEA \(\$3\)\.W/ || u ~ /PEA \(3\)\.W/ || u ~ /PEA 3\.W/) saw_transition_const_3=1
+    if (n ~ /LOCAVAILFILTERPREVCLASSID/ && saw_transition_const_2) has_transition_class2=1
+    if (n ~ /LOCAVAILFILTERPREVCLASSID/ && saw_transition_const_3) has_transition_class3=1
+    if (n ~ /SCRIPTRUNTIMEMODE/ && (u ~ /^CLR\.W / || u ~ /^CLR\.L / || u ~ /^CLR.W / || u ~ /^CLR.L /)) has_runtimemode_clear=1
+    if (n ~ /ED2FMTBITPLANE1PCT8LX/ || n ~ /ESQSHAREDBANNERROWSCRATCHRASTER/) saw_status_overlay_format=1
+    if (n ~ /WDISPSPRINTF/) saw_status_overlay_sprintf=1
+    if (n ~ /DISPLAYTEXTATPOSITION/) saw_status_overlay_display=1
+    if (saw_status_overlay_format && saw_status_overlay_sprintf && saw_status_overlay_display) has_status_overlay_dump=1
+    if (n ~ /TEXTDISPPRIMARYGROUPENTRYCOUNT/ || n ~ /ED2FMTCLUPOS1PCTLDCURCLUPCTSJDCLU1/) saw_debug_dump_entry_count=1
+    if (n ~ /ESQGLOBALTICKCOUNTER/) saw_debug_dump_reset_tick=1
+    if (n ~ /TEXTDISPPRIMARYENTRYPTRTABLE/) saw_debug_dump_entry_ptr=1
+    if (n ~ /DUMPPROGRAMSOURCERECORDV/) saw_debug_dump_dump_call=1
+    if (n ~ /SERVICEUITICKIFRUNNING/) saw_debug_dump_tick_call=1
+    if (saw_debug_dump_entry_count && saw_debug_dump_reset_tick && saw_debug_dump_entry_ptr && saw_debug_dump_dump_call && saw_debug_dump_tick_call) has_debug_dump_loop=1
+    if (n ~ /ED2STRCTIME/) saw_banner_datetime_ctime=1
+    if (n ~ /ED2STRBTIME/) saw_banner_datetime_btime=1
+    if (n ~ /CLOCKDAYSLOTINDEX/) saw_banner_datetime_day_slot=1
+    if (n ~ /CLOCKCURRENTDAYOFWEEKINDEX/) saw_banner_datetime_day_of_week=1
+    if (n ~ /DSTFORMATBANNERDATETIME/) saw_banner_datetime_formatter++
+    if (saw_banner_datetime_ctime && saw_banner_datetime_btime && saw_banner_datetime_day_slot && saw_banner_datetime_day_of_week && saw_banner_datetime_formatter >= 2) has_banner_datetime_pair=1
     if (n ~ /RENDERALIGNEDSTATUSSCREEN/ || n ~ /RENDERALIGNEDSTATUSSCREE/) render_call_count++
     if (u ~ /PEA \(\$1\)\.W/ || u ~ /PEA \(1\)\.W/ || u ~ /PEA \(\$1\)/ || u ~ /PEA \$1\.W/ || u ~ /PEA 1\.W/) has_render_short_arg=1
     if (u ~ /^CLR\.L -\(A7\)$/ || u ~ /^MOVEQ(\.L)? #\$?0,D0$/ || u ~ /^CLR\.L \(A7\)$/ || u ~ /^MOVE\.L D0,-\(A7\)$/) has_render_zero_arg=1
@@ -136,6 +208,14 @@ END {
     print "HAS_CLOCK_SCAN_AA=" has_clock_scan_aa
     print "HAS_CLOCK_SCAN_K=" has_clock_scan_k
     print "HAS_CLOCK_APPLY=" has_clock_apply
+    print "HAS_CTRL_SHADOW_TRANSITION_ARG3=" (has_ctrl_shadow_transition_arg3 && ctrl_shadow_transition_call_count >= 2)
+    print "HAS_CTRL_SHADOW_ENABLE_ARG1=" has_ctrl_shadow_enable_arg1
+    print "HAS_EXTERNAL_ASSET_FRAME_ONE=" has_external_asset_frame_one
+    print "HAS_DISK_SYNC_ZERO=" has_disk_sync_zero
+    print "HAS_MOVE_COPPER_ZERO_31=" has_move_copper_zero_31
+    print "HAS_BANNER_TRANSITION_NEXT=" has_banner_transition_next
+    print "HAS_BANNER_TRANSITION_PREV=" has_banner_transition_prev
+    print "HAS_BANNER_TRANSITION_CONFIG=" has_banner_transition_config
     print "HAS_RENDER_SHORT=" (render_call_count >= 2 && has_render_short_arg)
     print "HAS_RENDER_FULL=" (render_call_count >= 2 && has_render_zero_arg)
     print "HAS_RESTORE_STATE=" has_restore_state

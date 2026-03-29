@@ -37,6 +37,7 @@ extern LONG DOS_MovepWordReadCallback(void);
 
 LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
 {
+    LONG originalCh;
     LONG isTextMode;
     LONG bytesWritten;
     LONG pendingByteCount;
@@ -44,6 +45,7 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
     UBYTE *state;
     UBYTE *mode;
 
+    originalCh = ch;
     mode = ((UBYTE *)&node->mode_state_flags) + 2;
     state = mode + 1;
     isTextMode = ((*mode & (1u << MODE_TEXT_TRANSLATE_BIT)) != 0) ? 1 : 0;
@@ -152,5 +154,5 @@ LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node)
     if ((node->mode_state_flags & OPEN_MASK_FLUSH_REJECT) != 0) {
         return -1;
     }
-    return (ch == CH_FLUSH) ? 0 : (LONG)(UBYTE)ch;
+    return (originalCh == CH_FLUSH) ? 0 : (LONG)(UBYTE)originalCh;
 }

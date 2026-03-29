@@ -34,6 +34,7 @@ extern WORD CLOCK_DaySlotIndex;
 extern WORD CLOCK_CurrentDayOfWeekIndex;
 extern void *DST_BannerWindowPrimary;
 extern LONG Global_REF_RASTPORT_1;
+extern void *Global_REF_GRAPHICS_LIBRARY;
 
 LONG ESQ_TickClockAndFlagEvents(void *clock_ref);
 void ESQFUNC_DrawDiagnosticsScreen(void);
@@ -46,7 +47,7 @@ void ESQDISP_DrawStatusBanner(WORD code);
 void PARSEINI_UpdateClockFromRtc(void);
 void DST_RefreshBannerBuffer(void);
 LONG DISPLIB_NormalizeValueByStep(LONG value, LONG step, LONG modulo);
-void _LVOSetAPen(void);
+void _LVOSetAPen(void *gfxBase, void *rastPort, LONG pen);
 void CLEANUP_DrawGridTimeBanner(void);
 void CLEANUP_DrawClockBanner(void);
 LONG MATH_DivS32(LONG value, LONG divisor);
@@ -159,7 +160,7 @@ void CLEANUP_ProcessAlerts(void)
             CLEANUP_BANNER_WRAP_MODULO);
     }
 
-    _LVOSetAPen();
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, (void *)Global_REF_RASTPORT_1, 1);
     if (Global_UIBusyFlag != 0) {
         CLEANUP_DrawGridTimeBanner();
     } else {

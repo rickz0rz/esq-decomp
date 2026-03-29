@@ -27,6 +27,9 @@ BEGIN {
     has_buffer_cursor_reset=0
     has_flush_zero_return=0
     has_byte_return=0
+    has_saved_input_char=0
+    has_saved_input_compare=0
+    has_saved_input_return=0
     has_rts=0
     saw_reset_base_to_a0=0
 }
@@ -79,6 +82,10 @@ function trim(s, t) {
         u ~ /^MOVE\.L A0,STRUCT_PREALLOCHANDLENODE__BUFFERCURSOR\(A3\)$/) has_buffer_cursor_reset=1
     if (u ~ /^MOVEQ\.L #\$0,D0$/ || u ~ /^MOVEQ #0,D0$/) has_flush_zero_return=1
     if (u ~ /^MOVE\.B D0,D1$/ || u ~ /^MOVE\.L D1,D0$/ || u ~ /^MOVE\.L D4,D0$/) has_byte_return=1
+    if (u ~ /^MOVE\.L D7,D4$/ || u ~ /^MOVE\.L D7,D6$/) has_saved_input_char=1
+    if (u ~ /^CMP\.L D0,D4$/ || u ~ /^CMP\.L D4,D0$/ ||
+        u ~ /^CMP\.L D0,D6$/ || u ~ /^CMP\.L D6,D0$/) has_saved_input_compare=1
+    if (u ~ /^MOVE\.L D4,D0$/ || u ~ /^MOVE\.L D6,D0$/) has_saved_input_return=1
     if (u == "RTS") has_rts=1
 
     prev_u=u
@@ -114,5 +121,8 @@ END {
     print "HAS_BUFFER_CURSOR_RESET="has_buffer_cursor_reset
     print "HAS_FLUSH_ZERO_RETURN="has_flush_zero_return
     print "HAS_BYTE_RETURN="has_byte_return
+    print "HAS_SAVED_INPUT_CHAR="has_saved_input_char
+    print "HAS_SAVED_INPUT_COMPARE="has_saved_input_compare
+    print "HAS_SAVED_INPUT_RETURN="has_saved_input_return
     print "HAS_RTS="has_rts
 }

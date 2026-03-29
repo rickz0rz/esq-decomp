@@ -108,7 +108,8 @@ function trim(s,    t) {
     if (u ~ /MOVEQ #15,D1|MOVEQ\.L #\$F,D1|PEA \(\$10\)\.W/) saw_row_words_addend = 1
     if (u ~ /ADD\.L D0,D0|ADD\.L D1,D1/) saw_row_words_double = 1
     if (u ~ /CLR\.L -16\(A5\)|SUB\.L A0,A0/ || u ~ /MOVE\.L A0,\$5C\(A7\)/) saw_partial_node_clear = 1
-    if ((u ~ /MOVEQ #11,D0|MOVEQ\.L #\$B,D0/) && (u ~ /190\(A3\)|\$BE\(A5\)/)) saw_clone_type11_test = 1
+    if (((u ~ /MOVEQ #11,D0|MOVEQ\.L #\$B,D0/) && (u ~ /190\(A3\)|\$BE\(A5\)/)) ||
+        (u ~ /CMP\.B 190\(A3\),D0|CMP\.B \$BE\(A5\),D0/)) saw_clone_type11_test = 1
     if (u ~ /MOVE\.L D0,-16\(A5\)|MOVE\.L D0,\$5C\(A7\)/) saw_clone_node_assign = 1
     if (u ~ /LEA 176\(A0\),A1|LEA \$B0\(A0\),A1/) saw_clone_dims_dst = 1
     if (u ~ /LEA 128\(A3\),A2|LEA \$80\(A5\),A0/) saw_clone_dims_src = 1
@@ -149,8 +150,11 @@ END {
     print "HAS_ALERT_SNAPSHOT_RECOPY=" (snapshot_refs >= 2)
     print "HAS_RESTORE_PLANES=" has_restore_planes
     print "HAS_CLONE_ALLOC=" has_clone_alloc
+    print "HAS_CLONE_TYPE11_TEST=" saw_clone_type11_test
     print "HAS_CLONE_ZERO368=" (zero_368_refs >= 2)
-    print "HAS_CLONE_PATH=" (has_clone_alloc && zero_368_refs >= 2)
+    print "HAS_CLONE_DIMS_COPY=" (saw_clone_dims_src && saw_clone_dims_dst)
+    print "HAS_CLONE_FIELD148_COPY=" saw_clone_field148
+    print "HAS_CLONE_PATH=" (has_clone_alloc && saw_clone_type11_test && (saw_clone_dims_src && saw_clone_dims_dst) && saw_clone_field148 && zero_368_refs >= 2)
     print "HAS_NODE_FREE=" has_node_free
     print "HAS_PARTIAL_ALLOC_CLEANUP=" (has_free_raster && has_node_free && saw_partial_node_clear)
     print "HAS_DECODE_BUFFER_FREE=" has_cleanup_c16

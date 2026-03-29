@@ -116,6 +116,11 @@ static UBYTE normalize_case_if_lower(UBYTE ch)
     return ch;
 }
 
+static BOOL has_guarded_config_byte(ULONG index, ULONG size)
+{
+    return ((LONG)index < ((LONG)size - 1));
+}
+
 void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
 {
     ULONG index;
@@ -134,13 +139,13 @@ void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
     index += 2;
     CTASKS_STR_G = (UBYTE)buffer[index++];
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_SerializedFlagSlot08_DefaultN = (UBYTE)buffer[index++];
     } else {
         CONFIG_SerializedFlagSlot08_DefaultN = 'N';
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CTASKS_STR_A = (UBYTE)buffer[index++];
     } else {
         CTASKS_STR_A = 'A';
@@ -148,116 +153,116 @@ void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
 
     CTASKS_STR_E = (UBYTE)buffer[index++];
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_SerializedNumericSlot10 =
             normalize_digit_0_to_9_or_zero((UBYTE)buffer[index++]);
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_NicheModeCycleBudget_Custom =
             normalize_digit_0_to_9_or_zero((UBYTE)buffer[index++]);
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_NewgridSelectionCode34PrimaryEnabledFlag =
             normalize_yes_no((UBYTE)buffer[index++], 'Y');
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_NewgridSelectionCode35EnabledFlag =
             normalize_yes_no((UBYTE)buffer[index++], 'Y');
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_SerializedFlagSlot15_DefaultN =
             normalize_yes_no((UBYTE)buffer[index++], 'N');
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_NewgridSelectionCode34AltEnabledFlag =
             normalize_yes_no((UBYTE)buffer[index++], 'N');
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_NewgridSelectionCode32EnabledFlag =
             normalize_yes_no((UBYTE)buffer[index++], 'Y');
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_RuntimeMode12BannerJumpEnabledFlag =
             normalize_yes_no((UBYTE)buffer[index++], 'N');
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CTASKS_STR_L = (UBYTE)buffer[index++];
         if (CTASKS_STR_L != 'L' && CTASKS_STR_L != 'S' && CTASKS_STR_L != 'V') {
             CTASKS_STR_L = 'L';
         }
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_SerializedNumericSlot19 = (UBYTE)parse_two_digits(buffer, index);
         index += 2;
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_SerializedNumericSlot20 = (UBYTE)parse_two_digits(buffer, index);
         index += 2;
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_ModeCycleEnabledFlag =
             normalize_yes_no((UBYTE)buffer[index++], 'Y');
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_NewgridPlaceholderBevelFlag =
             normalize_yes_no((UBYTE)buffer[index++], 'Y');
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_NewgridSelectionCode48_49EnabledFlag =
             normalize_yes_no((UBYTE)buffer[index++], 'N');
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_SerializedNumericSlot25 = (UBYTE)parse_two_digits(buffer, index);
         index += 2;
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_SerializedNumericSlot26 = (UBYTE)parse_two_digits(buffer, index);
         index += 2;
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_NewgridWindowSpanHalfHoursAlt = (UBYTE)parse_two_digits(buffer, index);
         index += 2;
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_TimeWindowMinutes = parse_three_digits(buffer, index);
         index += 3;
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_ModeCycleGateDuration = (LONG)parse_ascii_digit((UBYTE)buffer[index++]);
         if (CONFIG_ModeCycleGateDuration < 1 || CONFIG_ModeCycleGateDuration > 9) {
             CONFIG_ModeCycleGateDuration = 1;
         }
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         BRUSH_SelectBrushByLabel(&buffer[index]);
         index += 2;
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_NewgridSelectionCode16EnabledFlag =
             normalize_yes_no((UBYTE)buffer[index++], 'Y');
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         Global_REF_STR_USE_24_HR_CLOCK =
             normalize_yes_no((UBYTE)buffer[index++], 'N');
 
@@ -268,12 +273,12 @@ void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
         }
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_ParseiniLogoScanEnabledFlag =
             normalize_yes_no((UBYTE)buffer[index++], 'Y');
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         value = normalize_case_if_lower((UBYTE)buffer[index++]);
 
         if (value == 'F') {
@@ -291,7 +296,7 @@ void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
         }
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES =
             parse_ascii_digit((UBYTE)buffer[index++]);
         if (Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES != 8) {
@@ -299,7 +304,7 @@ void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
         }
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         value = normalize_case_if_lower((UBYTE)buffer[index++]);
         ED_DiagTextModeChar = value;
         if (GROUP_AI_JMPTBL_STR_FindCharPtr(DISKIO_TAG_NRLS, (LONG)value) == 0 ||
@@ -308,7 +313,7 @@ void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
         }
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         CONFIG_EnsurePc1GfxAssignedFlag =
             normalize_yes_no((UBYTE)buffer[index++], 'N');
     }
@@ -317,7 +322,7 @@ void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
         DISKIO_EnsurePc1MountedAndGfxAssigned();
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         value = (UBYTE)buffer[index++];
         CONFIG_MsnRuntimeModeSelectorChar_LRBN = value;
         if (GROUP_AI_JMPTBL_STR_FindCharPtr(DISKIO_TAG_LRBN, (LONG)value) == 0 ||
@@ -326,7 +331,7 @@ void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
         }
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         value = normalize_yes_no((UBYTE)buffer[index++], 'Y');
         CONFIG_LRBN_FlagChar = value;
         if (CONFIG_LRBN_FlagChar != 'Y') {
@@ -338,7 +343,7 @@ void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
         }
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         value = (UBYTE)buffer[index++];
         CONFIG_MSN_FlagChar = value;
         if (GROUP_AI_JMPTBL_STR_FindCharPtr(DISKIO_TAG_MSN, (LONG)value) == 0) {
@@ -346,7 +351,7 @@ void DISKIO_ParseConfigBuffer(char *buffer, ULONG size)
         }
     }
 
-    if (index < size - 1) {
+    if (has_guarded_config_byte(index, size)) {
         nextValue = (UBYTE)buffer[index++];
         CTASKS_STR_1 = nextValue;
         if (nextValue != '1' && nextValue != '2') {

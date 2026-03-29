@@ -1,5 +1,7 @@
 #include <exec/types.h>
 
+#define NEWGRID_PENSTATE_UNSET 0xFFL
+
 typedef struct LayoutCtx {
     UBYTE pad0[32];
     LONG currentVisibleLines;
@@ -104,8 +106,8 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
         LONG displayRowIdx = 0;
         LONG testRowIdx = 0;
 
-        NEWGRID_SelectionMarkerPenState = -1;
-        NEWGRID_RowLayoutCommitPenId = -1;
+        NEWGRID_SelectionMarkerPenState = NEWGRID_PENSTATE_UNSET;
+        NEWGRID_RowLayoutCommitPenId = NEWGRID_PENSTATE_UNSET;
 
         if (rowIdx > 48 || startRow == 1 || (ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) - 1) == 0) {
             entry = (const NEWGRID_Entry *)ESQDISP_GetEntryPointerByMode(wildcardIdx, 2);
@@ -176,7 +178,8 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
                 }
 
                 NEWGRID_RowLayoutCommitPenId = NEWGRID_OverridePenIndex;
-                NEWGRID_SelectionMarkerPenState = (aux->rowFlags[prevRowIdx] & 0x04) ? 5 : -1;
+                NEWGRID_SelectionMarkerPenState =
+                    (aux->rowFlags[prevRowIdx] & 0x04) ? 5 : NEWGRID_PENSTATE_UNSET;
 
                 if (nextSpan == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y') {
                     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(
@@ -203,7 +206,7 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
                     state);
             } else {
                 if (nextSpan < 3) {
-                    NEWGRID_SelectionMarkerPenState = -1;
+                    NEWGRID_SelectionMarkerPenState = NEWGRID_PENSTATE_UNSET;
                     NEWGRID_RowLayoutCommitPenId = 1;
                     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(
                         (NEWGRID_ColumnWidthPx * nextSpan) - 12,
@@ -223,7 +226,7 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
         } else {
             nextSpan = (UWORD)(3 - row);
             if (nextSpan < 3) {
-                NEWGRID_SelectionMarkerPenState = -1;
+                NEWGRID_SelectionMarkerPenState = NEWGRID_PENSTATE_UNSET;
                 NEWGRID_RowLayoutCommitPenId = 1;
                 NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams((NEWGRID_ColumnWidthPx * nextSpan) - 12, 2, 1);
                 state = 1;
@@ -250,7 +253,7 @@ LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
         if (rowSpan == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y' && NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
             NEWGRID_DrawGridCell(ctxView->scratch, firstEntry, 0);
             NEWGRID_GridEntriesWorkflowState = 5;
-            if (NEWGRID_SelectionMarkerPenState == -1) {
+            if (NEWGRID_SelectionMarkerPenState == NEWGRID_PENSTATE_UNSET) {
                 NEWGRID_SelectionMarkerPenState = NEWGRID_SelectedGridEntryPtr;
             }
         } else {

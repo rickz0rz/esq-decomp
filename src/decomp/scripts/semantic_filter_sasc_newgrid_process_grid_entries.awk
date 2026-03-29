@@ -4,7 +4,7 @@ BEGIN{
     h_visible=0;h_placeholder=0;h_state45=0;h_const3=0;h_pair=0;h_bit7=0;h_first=0;h_rts=0
     h_marker_gate=0;h_restore_selected=0;h_halfheight_store=0;h_halfheight_clear=0;h_visible_mode2=0
     h_marker_flag=0;h_keepmarkers_clear=0;h_second_pair_probe=0
-    prev="";pending_visible_mode2=0;pending_second_pair_probe=0
+    prev="";pending_visible_mode2=0;pending_second_pair_probe=0;pending_pair_store=0;pair_const=0
 }
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
 {
@@ -19,8 +19,26 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(pending_second_pair_probe > 0 && l ~ /(JSR|BSR).*TESTENTRYSTATE/){
         h_second_pair_probe=1
         pending_second_pair_probe=0
+        pending_pair_store=12
     } else if(pending_second_pair_probe > 0){
         pending_second_pair_probe--
+    }
+    if(pending_pair_store > 0 && l ~ /MOVEQ(\.L)? #(\$)?2,D[0-7]/){
+        pair_const=2
+    } else if(pending_pair_store > 0 && l ~ /MOVEQ(\.L)? #(\$)?1,D[0-7]/){
+        pair_const=1
+    }
+    if(pending_pair_store > 0 && pair_const > 0 &&
+       (l ~ /MOVE\.L D[0-7],(-38\(A5\)|\$40\(A7\))/ ||
+        l ~ /RIGHTSTATE = [12]/)){
+        h_pair=1
+        pending_pair_store=0
+        pair_const=0
+    } else if(pending_pair_store > 0){
+        pending_pair_store--
+        if(pending_pair_store == 0){
+            pair_const=0
+        }
     }
     if(l ~ /^NEWGRID_PROCESSGRIDENTRIES:/ || l ~ /^NEWGRID_PROCESSGRIDENTRIES[A-Z0-9_]*:/)h_entry=1
     if(l ~ /GRIDENTRIESWORKFLOWSTATE/)h_state=1
@@ -42,7 +60,6 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /GRIDENTRIESWORKFLOWSTATE/ && (l ~ /#4([^0-9]|$)/ || l ~ /#5([^0-9]|$)/ || l ~ /MOVE\.L D[0-7],NEWGRID_GRIDENTRIESWORKFLOWSTATE/))h_state45=1
     if(l ~ /#3([^0-9]|$)/ || l ~ /CMP\.L D[0-7],D[0-7]/ || l ~ /ROWSPAN == 3/)h_const3=1
     if(l ~ /BTST #7/ || l ~ /BTST #\$7/ || l ~ /#\$80/ || l ~ /ROWFLAGS\[1\]/)h_bit7=1
-    if(l ~ /TESTENTRYSTATE/ && l ~ /ADDQ\.(W|L) #1/ || l ~ /RIGHTSTATE = 2/ || l ~ /RIGHTSTATE = 1/)h_pair=1
     if(l ~ /FIRSTENTRY/ || l ~ /MOVE\.L A0,-8\(A5\)/ || l ~ /MOVE\.L -8\(A5\),-\(A7\)/ || l ~ /MOVE\.L A2,-\(A7\)/)h_first=1
     if(l ~ /TST\.L (-46\(A5\)|\$54\(A7\))/)h_marker_gate=1
     if(l ~ /BTST #2/ || l ~ /BTST #\$2/ || l ~ /ROWFLAGS\[PREVROWIDX\] & 0X04/)h_marker_flag=1

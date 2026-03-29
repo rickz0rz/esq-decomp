@@ -129,6 +129,7 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
     LONG file_offset;
     LONG line_advance;
     LONG header_format;
+    WORD disk_path_index;
     WORD entry_count;
     WORD record_index;
     char *original_buffer;
@@ -136,9 +137,10 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
     COI_InitTokenTables(record_token_table, subentry_token_table);
 
     (void)GROUP_AG_JMPTBL_MATH_DivS32((LONG)disk_id, COI_DISK_SPLIT_DIVISOR);
+    disk_path_index = (WORD)((LONG)disk_id % COI_DISK_SPLIT_DIVISOR);
     GROUP_AE_JMPTBL_WDISP_SPrintf(path_buf,
                                   Global_STR_DF0_OI_PERCENT_2_LX_DAT_2,
-                                  0,
+                                  (LONG)disk_path_index,
                                   0,
                                   0);
 

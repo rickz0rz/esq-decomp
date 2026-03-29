@@ -18,6 +18,8 @@ BEGIN {
     has_header = 0
     has_date_banner = 0
     has_awaiting = 0
+    has_mode9_dispatch7 = 0
+    has_mode10_awaiting = 0
     has_dispatch_1 = 0
     has_dispatch_2 = 0
     has_dispatch_3 = 0
@@ -29,14 +31,24 @@ BEGIN {
     has_header_redraw_clear = 0
     has_stateword_compare = 0
     has_stateword_loop_branch = 0
+    has_stateword_clear = 0
+    has_param_clear = 0
+    has_preview_rast_offset = 0
+    has_validate_zero_arg = 0
     has_update_cache = 0
     has_putmsg = 0
     has_top_bars = 0
     has_top_border = 0
     has_rts = 0
+    map_selection_call_count = 0
+    dispatch_grid_call_count = 0
+    pending_stateword_ptr = 0
+    pending_param_ptr = 0
     prev = ""
     pending_dispatch_id = ""
     stateword_base_loaded = 0
+    jumptable_index = 0
+    current_case_index = -1
 }
 
 function t(s, x) {
@@ -70,7 +82,29 @@ function t(s, x) {
     if (l ~ /(JSR|BSR).*NEWGRID_COMPUTEDAYSLOTFROMCLOCKW/) has_clock_slot_offset = 1
     if (l ~ /(JSR|BSR).*NEWGRID_DRAWCLOCKFORMATHEADER/) has_header = 1
     if (l ~ /(JSR|BSR).*NEWGRID_DRAWDATEBANNER/) has_date_banner = 1
-    if (l ~ /(JSR|BSR).*NEWGRID_DRAWAWAITINGLISTINGSMESS/) has_awaiting = 1
+    if (l ~ /(JSR|BSR).*NEWGRID_DRAWAWAITINGLISTINGSMESS/) {
+        has_awaiting = 1
+        if (current_case_index == 10) has_mode10_awaiting = 1
+    }
+    if (l ~ /^DC\.W[ \t]+/ && jumptable_index < 12) {
+        target = l
+        sub(/^DC\.W[ \t]+/, "", target)
+        sub(/-.*/, "", target)
+        if (target != "") {
+            jumptable_target[jumptable_index] = target
+            jumptable_index++
+        }
+    } else if (l ~ /^[_\.A-Z0-9]+:$/) {
+        current_case_index = -1
+        for (i = 0; i < 12; i++) {
+            if (jumptable_target[i] != "" && l == jumptable_target[i] ":") {
+                current_case_index = i
+                break
+            }
+        }
+    }
+    if (l ~ /(LEA[ \t]+\$3C\(A[05]\),A0|ADDA?\.W[ \t]+#\$?3C,A0)/) has_preview_rast_offset = 1
+    if (l ~ /CLR\.L[ \t]+-\(A7\)/ && prev ~ /CLR\.W[ \t]+(52\(A0\)|\(A0\))/) has_validate_zero_arg = 1
     if (l ~ /PEA[ \t]+(\(\$?1\)|1)\.W/) pending_dispatch_id = "1"
     else if (l ~ /PEA[ \t]+(\(\$?2\)|2)\.W/) pending_dispatch_id = "2"
     else if (l ~ /PEA[ \t]+(\(\$?3\)|3)\.W/) pending_dispatch_id = "3"
@@ -85,11 +119,36 @@ function t(s, x) {
         else if (pending_dispatch_id == "4") has_dispatch_4 = 1
         else if (pending_dispatch_id == "5") has_dispatch_5 = 1
         else if (pending_dispatch_id == "6") has_dispatch_6 = 1
-        else if (pending_dispatch_id == "7") has_dispatch_7 = 1
+        else if (pending_dispatch_id == "7") {
+            has_dispatch_7 = 1
+            if (current_case_index == 9) has_mode9_dispatch7 = 1
+        }
         pending_dispatch_id = ""
     }
     if (l ~ /MOVE\.W[ \t]+#\$?1,[ \t]*NEWGRID_HEADERREDRAWPENDING/) header_redraw_set_count++
     if (l ~ /CLR\.W[ \t]+NEWGRID_HEADERREDRAWPENDING/) has_header_redraw_clear = 1
+    if (l ~ /(JSR|BSR).*NEWGRID_MAPSELECTIONTOMODE/) map_selection_call_count++
+    if (l ~ /(JSR|BSR).*NEWGRID2_DISPATCHGRIDOPERATION/) dispatch_grid_call_count++
+    if (pending_stateword_ptr && l ~ /CLR\.W[ \t]+\((A0|A1)\)/) {
+        has_stateword_clear = 1
+        pending_stateword_ptr = 0
+    } else if (l ~ /CLR\.W[ \t]+52\(A0\)/) {
+        has_stateword_clear = 1
+        pending_stateword_ptr = 0
+    } else if (pending_stateword_ptr && l !~ /^(MOVE|LEA|ADDA?)/) {
+        pending_stateword_ptr = 0
+    }
+    if (pending_param_ptr && l ~ /CLR\.L[ \t]+\((A0|A1)\)/) {
+        has_param_clear = 1
+        pending_param_ptr = 0
+    } else if (l ~ /CLR\.L[ \t]+32\(A0\)/) {
+        has_param_clear = 1
+        pending_param_ptr = 0
+    } else if (pending_param_ptr && l !~ /^(MOVE|LEA|ADDA?)/) {
+        pending_param_ptr = 0
+    }
+    if (l ~ /(LEA[ \t]+\$34\(A[05]\),A0|ADDA?\.W[ \t]+#\$?34,A0)/) pending_stateword_ptr = 1
+    if (l ~ /(LEA[ \t]+\$20\(A[05]\),A0|ADDA?\.W[ \t]+#\$?20,A0)/) pending_param_ptr = 1
     if (l ~ /(LEA[ \t]+\$34\(A[05]\),A0|MOVEA?\.L[ \t]+.*A0.*\$34)/ || l ~ /ADDA?\.W[ \t]+#\$?34,A0/) stateword_base_loaded = 1
     if (l ~ /CMPI?\.W[ \t]+#\$?0,52\(A0\)/) has_stateword_compare = 1
     if (stateword_base_loaded && l ~ /CMPI?\.W[ \t]+#\$?0,\(A0\)/) has_stateword_compare = 1
@@ -117,15 +176,24 @@ END {
     print "HAS_GETMSG=" has_getmsg
     print "HAS_VALIDATE=" has_validate
     print "HAS_PREVIEW=" has_preview
+    print "HAS_PREVIEW_RAST_OFFSET=" has_preview_rast_offset
     print "HAS_CLOCK_SLOT=" has_clock_slot
     print "HAS_CLOCK_SLOT_OFFSET=" has_clock_slot_offset
     print "HAS_HEADER=" has_header
     print "HAS_DATE_BANNER=" has_date_banner
     print "HAS_AWAITING=" has_awaiting
     print "HAS_DISPATCH_1_TO_7=" (has_dispatch_1 && has_dispatch_2 && has_dispatch_3 && has_dispatch_4 && has_dispatch_5 && has_dispatch_6 && has_dispatch_7 ? 1 : 0)
-    print "HAS_HEADER_REDRAW_SET_CLUSTER=" (header_redraw_set_count >= 5 ? 1 : 0)
+    print "HAS_MODE9_DISPATCH7=" has_mode9_dispatch7
+    print "HAS_MODE10_AWAITING=" has_mode10_awaiting
+    print "HAS_VALIDATE_ZERO_ARG=" has_validate_zero_arg
+    print "HAS_STATEWORD_CLEAR=" has_stateword_clear
+    print "HAS_PARAM_CLEAR=" has_param_clear
+    print "HAS_HEADER_REDRAW_SET_CLUSTER=" (header_redraw_set_count == 5 ? 1 : 0)
+    print "HEADER_REDRAW_SET_COUNT=" header_redraw_set_count
     print "HAS_HEADER_REDRAW_CLEAR=" has_header_redraw_clear
     print "HAS_STATEWORD_REPLY_LOOP=" (has_stateword_compare && has_stateword_loop_branch ? 1 : 0)
+    print "MAP_SELECTION_CALL_COUNT=" map_selection_call_count
+    print "DISPATCH_GRID_CALL_COUNT=" dispatch_grid_call_count
     print "HAS_UPDATE_CACHE=" has_update_cache
     print "HAS_PUTMSG=" has_putmsg
     print "HAS_TOP_BARS=" has_top_bars

@@ -161,9 +161,6 @@ void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG xSpan, LONG ySpan)
     ownedOverlayText = ESQPARS_ReplaceOwnedString(
         WDISP_WeatherStatusOverlayTextPtr,
         (char *)0);
-    if (ownedOverlayText == (char *)0) {
-        return;
-    }
 
     linePtr = ownedOverlayText;
     scan = ownedOverlayText;

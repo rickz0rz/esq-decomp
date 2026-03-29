@@ -28,6 +28,7 @@ BEGIN {
     has_ctrl_buffer = 0
     has_ctrl_cmd_count = 0
     has_deferred_action = 0
+    deferred_action_writes = 0
     has_defer_counter = 0
     has_checksum_error = 0
     has_length_error = 0
@@ -83,6 +84,16 @@ function trim(s, t) {
     if (n ~ /SCRIPTCTRLCMDBUFFER/ || n ~ /SCRIPTCTRLCMDBUFFE/) has_ctrl_buffer = 1
     if (n ~ /SCRIPTCTRLCMDCOUNT/) has_ctrl_cmd_count = 1
     if (n ~ /TEXTDISPDEFERREDACTIONCOUNTDOWN/ || n ~ /TEXTDISPDEFERREDACTIONCOUNTDOW/) has_deferred_action = 1
+    if (u ~ /^MOVE\.[BWL][[:space:]]+D[0-7],[[:space:]]*TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
+        u ~ /^MOVE\.[BWL][[:space:]]+D[0-7],[[:space:]]*_?TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
+        u ~ /^MOVE\.[BWL][[:space:]]+[A-Z0-9_()$.-]+,[[:space:]]*TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
+        u ~ /^MOVE\.[BWL][[:space:]]+[A-Z0-9_()$.-]+,[[:space:]]*_?TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
+        u ~ /^ADDQ\.[BWL][[:space:]]+#-?[0-9]+,[[:space:]]*TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
+        u ~ /^ADDQ\.[BWL][[:space:]]+#-?[0-9]+,[[:space:]]*_?TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
+        u ~ /^SUBQ\.[BWL][[:space:]]+#-?[0-9]+,[[:space:]]*TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
+        u ~ /^SUBQ\.[BWL][[:space:]]+#-?[0-9]+,[[:space:]]*_?TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
+        u ~ /^CLR\.[BWL][[:space:]]+TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
+        u ~ /^CLR\.[BWL][[:space:]]+_?TEXTDISP_DEFERREDACTIONCOUNTDOWN$/) deferred_action_writes++
     if (n ~ /SCRIPTCTRLCMDDEFERCOUNTER/ || n ~ /SCRIPTCTRLCMDDEFERCOUNT/) has_defer_counter = 1
     if (n ~ /SCRIPTCTRLCMDCHECKSUMERRORCOUNT/ || n ~ /SCRIPTCTRLCMDCHECKSUMERRORCOUN/) has_checksum_error = 1
     if (n ~ /SCRIPTCTRLCMDLENGTHERRORCOUNT/ || n ~ /SCRIPTCTRLCMDLENGTHERRORCOUN/) has_length_error = 1
@@ -125,6 +136,7 @@ END {
     print "HAS_CTRL_BUFFER=" has_ctrl_buffer
     print "HAS_CTRL_CMD_COUNT=" has_ctrl_cmd_count
     print "HAS_DEFERRED_ACTION=" has_deferred_action
+    print "DEFERRED_ACTION_WRITES=" deferred_action_writes
     print "HAS_DEFER_COUNTER=" has_defer_counter
     print "HAS_CHECKSUM_ERROR=" has_checksum_error
     print "HAS_LENGTH_ERROR=" has_length_error

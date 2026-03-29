@@ -17,6 +17,10 @@ from pathlib import Path
 RE_BASE = re.compile(r'^BASE="(?P<base>[^"]+)"', re.MULTILINE)
 RE_ORIG_ASM = re.compile(r'^ORIG_ASM="src/(?P<path>[^"]+\.s)"', re.MULTILINE)
 RE_SASC_SRC = re.compile(r'^SASC_SRC="(?P<src>[^"]+\.c)"', re.MULTILINE)
+RE_SEMANTIC_FILTER = re.compile(
+    r'awk -f (?P<path>src/decomp/scripts/semantic_filter[^ \t"\']+\.awk)',
+    re.MULTILINE,
+)
 
 
 @dataclass
@@ -93,7 +97,14 @@ def collect_compare_metadata(repo_root: Path) -> dict[str, CompareMeta]:
 
         module_match = RE_ORIG_ASM.search(content)
         sasc_match = RE_SASC_SRC.search(content)
-        semantic_filter_path = scripts_dir / f"semantic_filter_sasc_{base}.awk"
+        semantic_filter_match = RE_SEMANTIC_FILTER.search(content)
+        semantic_filter_path = None
+        if semantic_filter_match:
+            semantic_filter_path = repo_root / semantic_filter_match.group("path")
+        else:
+            fallback_path = scripts_dir / f"semantic_filter_sasc_{base}.awk"
+            if fallback_path.exists():
+                semantic_filter_path = fallback_path
 
         metadata[base] = CompareMeta(
             compare_script=script_path.name,
@@ -102,7 +113,7 @@ def collect_compare_metadata(repo_root: Path) -> dict[str, CompareMeta]:
             sasc_src=sasc_match.group("src") if sasc_match else None,
             semantic_filter=(
                 semantic_filter_path.relative_to(repo_root).as_posix()
-                if semantic_filter_path.exists()
+                if semantic_filter_path and semantic_filter_path.exists()
                 else None
             ),
         )

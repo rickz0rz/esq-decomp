@@ -41,10 +41,20 @@ BEGIN {
     has_source_list=0
     has_source_link=0
     has_source_tail=0
+    has_source_len_scan=0
+    has_source_len_guard=0
+    has_source_alloc_flags=0
+    has_source_alloc_size=0
+    has_source_alloc_line=0
+    has_source_next_clear=0
+    has_source_copy_loop=0
     align_h_store_count=0
     align_v_store_count=0
+    has_id_copy_len=0
     has_id_terminator=0
     has_return=0
+    saw_source_len_tst=0
+    saw_source_copy_move=0
 }
 function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
 {
@@ -54,6 +64,27 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     u=toupper(line)
     n=u
     gsub(/[^A-Z0-9]/,"",n)
+
+    if (n ~ /TSTLD0|TSTLD6/) {
+        saw_source_len_tst=1
+    } else if (saw_source_len_tst && n ~ /^BLEW/) {
+        has_source_len_guard=1
+        saw_source_len_tst=0
+    } else if (n !~ /^B/) {
+        saw_source_len_tst=0
+    }
+
+    if (n ~ /MOVEBA0A1/ || n ~ /MOVEBA0PLUSA1PLUS/) {
+        saw_source_copy_move=1
+    } else if (saw_source_copy_move && n ~ /^BNES/) {
+        has_source_copy_loop=1
+        saw_source_copy_move=0
+    } else if (saw_source_copy_move && (n ~ /TSTBFFFFFFFFA0/ || n ~ /TSTBFFFFFFFFA1/)) {
+        has_source_copy_loop=1
+        saw_source_copy_move=0
+    } else if (saw_source_copy_move && n !~ /^MOVE/ && n !~ /^TST/) {
+        saw_source_copy_move=0
+    }
 
     if (u ~ /^PARSEINI_PROCESSWEATHERBLOCKS:/ || u ~ /^PARSEINI_PROCESSWEATHERBLOC[A-Z0-9_]*:/) has_entry=1
     if ((n ~ /CLRLPARSEINICURRENTWEATHERBLOCKTEMP/ || n ~ /CLRLPARSEINICURRENTWEATHERBLOCKPTR/) ||
@@ -104,10 +135,17 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     if (n ~ /TSTLE6A0|TSTL230A0/) has_source_list=1
     if (n ~ /MOVELA1E6A0|MOVELA1230A0/) has_source_link=1
     if (n ~ /MOVEL24A78A2|MOVELPARSEINICURRENTWEATHERBLOCKTEMP(PTR)?8A1/) has_source_tail=1
+    if ((n ~ /TSTBA0|TSTBA0PLUS/) ||
+        (n ~ /MOVEBA0PLUSA1PLUS/ && has_source_next_clear == 0)) has_source_len_scan=1
+    if (n ~ /MOVELMEMFPUBLICMEMFCLEARA7/ || n ~ /MOVEL10001A7/) has_source_alloc_flags=1
+    if (n ~ /PEA12W/ || n ~ /PEACW/) has_source_alloc_size=1
+    if (n ~ /PEA670W/ || n ~ /PEA29EW/) has_source_alloc_line=1
+    if (n ~ /CLRLB8A0|CLRL8A0/) has_source_next_clear=1
 
     if (n ~ /CLRLDEA0|CLRL222A0|MOVELD0DEA0|MOVELD0222A0/) align_h_store_count++
     if (n ~ /CLRLE2A0|CLRL226A0|MOVELD0E2A0|MOVELD0226A0/) align_v_store_count++
 
+    if (n ~ /PEA2W/) has_id_copy_len=1
     if (n ~ /CLRBC1A0|CLRB193A0/) has_id_terminator=1
     if (u=="RTS") has_return=1
 }
@@ -154,8 +192,16 @@ END {
     print "HAS_SOURCE_LIST="has_source_list
     print "HAS_SOURCE_LINK="has_source_link
     print "HAS_SOURCE_TAIL="has_source_tail
+    print "HAS_SOURCE_LEN_SCAN="has_source_len_scan
+    print "HAS_SOURCE_LEN_GUARD="has_source_len_guard
+    print "HAS_SOURCE_ALLOC_FLAGS="has_source_alloc_flags
+    print "HAS_SOURCE_ALLOC_SIZE="has_source_alloc_size
+    print "HAS_SOURCE_ALLOC_LINE="has_source_alloc_line
+    print "HAS_SOURCE_NEXT_CLEAR="has_source_next_clear
+    print "HAS_SOURCE_COPY_LOOP="has_source_copy_loop
     print "ALIGN_H_STORE_COUNT="align_h_store_count
     print "ALIGN_V_STORE_COUNT="align_v_store_count
+    print "HAS_ID_COPY_LEN="has_id_copy_len
     print "HAS_ID_TERMINATOR="has_id_terminator
     print "HAS_RETURN="has_return
 }

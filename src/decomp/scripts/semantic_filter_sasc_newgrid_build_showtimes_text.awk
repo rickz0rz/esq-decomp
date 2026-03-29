@@ -3,6 +3,7 @@ BEGIN{
     h_group_guard=0
     h_out_clear=0
     h_row_wrap=0
+    h_base_time_guard=0
     h_field_select=0
     h_timefmt=0
     textlen_count=0
@@ -14,6 +15,7 @@ BEGIN{
     h_update=0
     h_marker_flags=0
     h_flags40=0
+    h_first_row_gate=0
     h_prev=0
     h_sel=0
     h_title_probe=0
@@ -25,6 +27,7 @@ BEGIN{
     h_row_mark=0
     h_width_gate=0
     h_bucket_add=0
+    bucket_add_count=0
     h_bucket_append=0
     h_append=0
     h_prefix=0
@@ -40,6 +43,7 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /TEXTDISP_PRIMARYGROUPPRESENTFLAG/ || l ~ /BTST #\$4,\$2F\(A[0-7]\)/ || l ~ /BTST #4,47\(A[0-7]\)/)h_group_guard=1
     if(l ~ /^CLR\.B \([A0-7]\)$/)h_out_clear=1
     if(l ~ /^SUBI\.W #\$30,D[0-7]$/ || l ~ /^SUBI\.W #48,D[0-7]$/)h_row_wrap=1
+    if(l ~ /TST\.L -54\(A5\)/ || l ~ /TST\.L \$D0\(A7\)/)h_base_time_guard=1
     if(l ~ /(JSR|BSR).*COI_SELECTANIMFIELDPOINTER/ || l ~ /COI_SELECTANIMFI/)h_field_select=1
     if(l ~ /(JSR|BSR).*TEXTDISP_FORMATENTRYTIMEFORINDEX/ || l ~ /FORMATENTRYTIMEFORINDEX/)h_timefmt=1
     if(l ~ /(JSR|BSR).*LVOTEXTLENGTH/ || l ~ /_LVOTEXTLENGTH/)textlen_count++
@@ -51,6 +55,7 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /(JSR|BSR).*NEWGRID_UPDATEPRESETENTRY/ || l ~ /UPDATEPRESETENTRY/)h_update=1
     if(l ~ /BTST #\$?4,\$?2F\(A[0-7]\)/ || l ~ /BTST #\$?4,47\(A[0-7]\)/ || l ~ /BTST #\$?4,D[0-7]/)h_marker_flags=1
     if(l ~ /BTST #\$?7,\$?28\(A[0-7]\)/ || l ~ /BTST #\$?7,40\(A[0-7]\)/ || l ~ /BTST #\$?7,D[0-7]/)h_flags40=1
+    if(l ~ /CMP\.W 22\(A2\),D[0-7]/ || l ~ /CMP\.W \$10\(A[0-7]\),D[0-7]/)h_first_row_gate=1
     if(l ~ /(JSR|BSR).*FINDPREVIOUSVALIDENTRYINDEX/ || l ~ /FINDPREVIOUSVALIDENTRY/ || l ~ /FINDPREV/)h_prev=1
     if(l ~ /(JSR|BSR).*PROCESSENTRYSELECTIONSTATE/ || l ~ /PROCESSENTRYSELECTION/ || l ~ /PROCESSENTRY/)h_sel=1
     if(l ~ /TST\.L \$38\(A[0-7],D[0-7]\.L\)/ || l ~ /TST\.L 56\(A[0-7],D[0-7]\.L\)/ || l ~ /TST\.L 56\(A[0-7]\)/)h_title_probe=1
@@ -62,6 +67,7 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /^BSET #5,7\(A[0-7]\)$/ || l ~ /^MOVEQ(\.L)? #\$20,D[0-7]$/ || l ~ /^MOVEQ(\.L)? #32,D[0-7]$/ || l ~ /^OR\.B \$7\(A[0-7]\),D[0-7]$/)h_row_mark=1
     if(l ~ /BLE\./ || l ~ /WIDTHBUDGET <= 0/ || l ~ /TST\.L D[0-7]/)h_width_gate=1
     if(l ~ /(JSR|BSR).*NEWGRID_ADDSHOWTIMEBUCKETENTRY/ || l ~ /ADDSHOWTIMEBUCKETENTRY/)h_bucket_add=1
+    if(l ~ /(JSR|BSR).*NEWGRID_ADDSHOWTIMEBUCKETENTRY/ || l ~ /ADDSHOWTIMEBUCKETENTRY/)bucket_add_count++
     if(l ~ /(JSR|BSR).*NEWGRID_APPENDSHOWTIMEBUCKETS/ || l ~ /APPENDSHOWTIMEBUCKETS/)h_bucket_append=1
     if(l ~ /(JSR|BSR).*STRING_APPENDATNULL/ || l ~ /APPENDATN/)h_append=1
     if(l ~ /SHOWTIMES_AND_SINGLE/ || l ~ /SHOWING_AT_AND_SINGLE/)h_prefix=1
@@ -74,6 +80,7 @@ END{
     print "HAS_GROUP_GUARD="h_group_guard
     print "HAS_OUT_CLEAR="h_out_clear
     print "HAS_ROW_WRAP="h_row_wrap
+    print "HAS_BASE_TIME_GUARD="h_base_time_guard
     print "HAS_FIELD_SELECT="h_field_select
     print "HAS_TIME_FORMAT="h_timefmt
     print "HAS_TEXT_MEASURE="(textlen_count >= 4)
@@ -85,6 +92,7 @@ END{
     print "HAS_UPDATE_PRESET="h_update
     print "HAS_MARKER_FLAGS="h_marker_flags
     print "HAS_FLAGS40_GUARD="h_flags40
+    print "HAS_FIRST_ROW_SELECTION_GATE="h_first_row_gate
     print "HAS_FIND_PREVIOUS="h_prev
     print "HAS_SELECTION_STATE="h_sel
     print "HAS_TITLE_POINTER_PROBE="h_title_probe
@@ -96,6 +104,7 @@ END{
     print "HAS_ROW_MARK="h_row_mark
     print "HAS_WIDTH_GATE="h_width_gate
     print "HAS_BUCKET_ADD="h_bucket_add
+    print "HAS_BUCKET_ADD_CHAIN="(bucket_add_count >= 2)
     print "HAS_BUCKET_APPEND="h_bucket_append
     print "HAS_APPEND_AT_NULL="h_append
     print "HAS_PREFIXES="h_prefix

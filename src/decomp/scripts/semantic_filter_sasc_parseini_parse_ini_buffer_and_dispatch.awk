@@ -1,6 +1,7 @@
 BEGIN {
     has_entry = 0
     has_load = 0
+    has_load_fail_return = 0
     has_consume = 0
     has_skip_ws = 0
     has_findchar = 0
@@ -35,7 +36,12 @@ BEGIN {
     has_default_text_dispatch = 0
     has_source_config_delim = 0
     has_source_config_dispatch = 0
+    has_unknown_section_reset = 0
+    has_dispatch_switch = 0
+    has_qtable_quote_fail_return = 0
+    has_qtable_alias_increment = 0
     has_cleanup = 0
+    has_cleanup_size_plus_one = 0
     has_return = 0
 }
 
@@ -57,6 +63,7 @@ function trim(s, t) {
 
     if (u ~ /^PARSEINI_PARSEINIBUFFERANDDISPATCH:/ || u ~ /^PARSEINI_PARSEINIBUFFERANDDISPAT[A-Z0-9_]*:/) has_entry = 1
     if (n ~ /PARSEINIJMPTBLDISKIOLOADFILETOWORKBUFFER/ || n ~ /DISKIOLOADFILETOWORKBUFFER/) has_load = 1
+    if (n ~ /MOVEQFFD0/ || n ~ /MOVEQLFFD0/ || n ~ /MOVEQ1D0/ || n ~ /MOVEQLFFD0BRA/) has_load_fail_return = 1
     if (n ~ /PARSEINIJMPTBLDISKIOCONSUMELINEFROMWORKBUFFER/ || n ~ /DISKIOCONSUMELINEFROMWORKBUFFER/) has_consume = 1
     if (n ~ /PARSEINISKIPCLASS3CHARS/ || n ~ /WDISPCHARCLASSTABLE/) has_skip_ws = 1
     if (n ~ /PARSEINIJMPTBLSTRFINDCHARPTR/ || n ~ /STRFINDCHARPTR/) has_findchar = 1
@@ -100,14 +107,20 @@ function trim(s, t) {
 
     if (n ~ /PARSEINIDELIMSPACETABSECTION8/) has_source_config_delim = 1
     if (n ~ /TEXTDISPADDSOURCECONFIGENTRY/) has_source_config_dispatch = 1
+    if (n ~ /MOVEQ0D7/ || n ~ /MOVEQL0D0/ || n ~ /MOVEQ0D0MOVELD038A7/ || n ~ /MOVEQL0D0MOVELD038A7/) has_unknown_section_reset = 1
+    if (n ~ /DISPATCHTABLE/ || n ~ /SWITCHPARSEINIPARSEINIBUFFERANDDISPAT/) has_dispatch_switch = 1
 
     if (n ~ /MEMORYDEALLOCATEMEMORY/ || n ~ /GLOBALSTRPARSEINIC2/) has_cleanup = 1
+    if (n ~ /CLRWTEXTDISPALIASCOUNT/ || n ~ /PEA22W/) has_qtable_quote_fail_return = 1
+    if (n ~ /ADDQL1D0MOVEWD0TEXTDISPALIASCOUNT/ || n ~ /MOVEWD0TEXTDISPALIASCOUNT/) has_qtable_alias_increment = 1
+    if (n ~ /ADDQL1D0/ || n ~ /MOVEW403W/ || n ~ /PEA403W/) has_cleanup_size_plus_one = 1
     if (u ~ /^RTS$/) has_return = 1
 }
 
 END {
     print "HAS_ENTRY=" has_entry
     print "HAS_LOAD=" has_load
+    print "HAS_LOAD_FAIL_RETURN=" has_load_fail_return
     print "HAS_CONSUME=" has_consume
     print "HAS_SKIP_WS=" has_skip_ws
     print "HAS_FINDCHAR=" has_findchar
@@ -127,12 +140,17 @@ END {
     print "HAS_SOURCE_CONFIG_CLEAR=" has_source_config_clear
     print "HAS_QTABLE_PARSE=" (has_qtable_delim && has_qtable_alloc && has_qtable_store ? 1 : 0)
     print "HAS_QTABLE_RESET=" has_qtable_reset
+    print "HAS_QTABLE_QUOTE_FAIL_RETURN=" has_qtable_quote_fail_return
+    print "HAS_QTABLE_ALIAS_INCREMENT=" has_qtable_alias_increment
     print "HAS_BACKDROP_PARSE=" (has_backdrop_delim && has_backdrop_dispatch ? 1 : 0)
     print "HAS_GRADIENT_PARSE=" has_gradient_dispatch
     print "HAS_TEXTADS_BRUSH_PARSE=" (has_textads_brush_delim && has_textads_brush_dispatch ? 1 : 0)
     print "HAS_BANNER_PARSE=" (has_banner_delim && has_banner_dispatch ? 1 : 0)
     print "HAS_DEFAULT_TEXT_PARSE=" (has_default_text_delim && has_default_text_dispatch ? 1 : 0)
     print "HAS_SOURCE_CONFIG_PARSE=" (has_source_config_delim && has_source_config_dispatch ? 1 : 0)
+    print "HAS_UNKNOWN_SECTION_RESET=" has_unknown_section_reset
+    print "HAS_DISPATCH_SWITCH=" has_dispatch_switch
     print "HAS_CLEANUP=" has_cleanup
+    print "HAS_CLEANUP_SIZE_PLUS_ONE=" has_cleanup_size_plus_one
     print "HAS_RETURN=" has_return
 }

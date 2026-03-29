@@ -7,6 +7,9 @@ BEGIN {
     parse_hex_count = 0
     has_find_char = 0
     has_find_substring = 0
+    has_empty_cmd_guard = 0
+    has_split_nul = 0
+    has_tail_clamp_write = 0
     replace_owned_count = 0
     has_load_mplex_file = 0
     has_suffix_s = 0
@@ -35,6 +38,7 @@ function trim(s, t) {
     if (u ~ /^GCOMMAND_PARSECOMMANDSTRING[A-Z0-9_]*:/) has_entry = 1
 
     if (index(u, "FLIB2_LOADDIGITALMPLEXDEFAULTS") > 0) has_defaults = 1
+    if (index(u, "GCOMMAND_LOADMPLEXFILE") > 0) has_load_mplex_file = 1
     if (index(u, "GROUP_AW_JMPTBL_STRING_COPYPADNUL") > 0 || index(u, "GROUP_AW_JMPTBL_STRING_COPYPAD") > 0 || index(u, "STRING_COPYPADNUL") > 0 || index(u, "STRING_COPYPAD") > 0) copy_pad_count++
     if (index(u, "ESQPARS_JMPTBL_PARSE_READSIGNEDLONGSKIPCLASS3_ALT") > 0 ||
         index(u, "ESQPARS_JMPTBL_PARSE_READSIGNE") > 0 ||
@@ -52,10 +56,12 @@ function trim(s, t) {
         replace_owned_count++
         pending_replace_owned = 1
     }
-    if (index(u, "GCOMMAND_LOADMPLEXFILE") > 0) has_load_mplex_file = 1
     if (index(u, "GCOMMAND_FMT_PCT_T_MPLEXTEMPLATE") > 0) has_percent_t_ref = 1
     if (index(u, "#$12") > 0 || index(u, "($12).W") > 0 || index(u, "#18") > 0) has_delim_12 = 1
     if (index(u, "#$7F") > 0 || index(u, "#127") > 0 || index(u, "$7F(") > 0 || index(u, "127(") > 0) has_truncate_127 = 1
+    if (copy_pad_count == 0 && (u ~ /^TST\.B \(A[35]\)$/ || u ~ /^TST\.B \(A0\)$/)) has_empty_cmd_guard = 1
+    if (u ~ /^CLR\.B \([AA][0-7]\)\+$/ || u ~ /^CLR\.B \(A[0-7]\)\+$/) has_split_nul = 1
+    if (u ~ /^CLR\.B (\$7F|127)\(A[0-7](,D[0-7]\.L)?\)$/) has_tail_clamp_write = 1
 
     if (u ~ /^MOVE\.B #\$73,\(A[0-7]\)$/ || u ~ /^MOVE\.B #115,\(A[0-7]\)$/ || u ~ /^MOVE\.B #\$73,1\(A[0-7]\)$/ || u ~ /^MOVE\.B #\$73,\$1\(A[0-7]\)$/ || u ~ /^MOVE\.B #115,1\(A[0-7]\)$/) has_suffix_s = 1
 
@@ -97,6 +103,9 @@ END {
     print "HAS_PARSE_HEX=" (parse_hex_count >= 3)
     print "HAS_FIND_CHAR=" has_find_char
     print "HAS_FIND_SUBSTRING=" has_find_substring
+    print "HAS_EMPTY_CMD_GUARD=" has_empty_cmd_guard
+    print "HAS_SPLIT_NUL=" has_split_nul
+    print "HAS_TAIL_CLAMP_WRITE=" has_tail_clamp_write
     print "HAS_REPLACE_OWNED=" (replace_owned_count >= 3)
     print "HAS_LOAD_MPLEX_FILE=" has_load_mplex_file
     print "HAS_DELIM_12=" has_delim_12

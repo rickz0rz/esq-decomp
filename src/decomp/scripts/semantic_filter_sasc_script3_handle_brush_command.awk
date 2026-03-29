@@ -23,19 +23,35 @@ BEGIN {
     has_brush_list_scan = 0
     has_brush_tag_defaults = 0
     has_wildcard_lookup = 0
+    has_toggle_primary_search = 0
+    has_channel_code_update = 0
     has_channel_range_flow = 0
     has_rtc_validation = 0
     has_banner_speed_flow = 0
     has_pending_cmd_fields = 0
     has_pending_textdisp_reset = 0
+    has_deferred_textdisp_dispatch = 0
+    has_default_no_flag_branch = 0
+    has_highlight_clamp_flow = 0
+    has_filter_mode_set_clear = 0
+    has_runtime_mode_restore = 0
+    has_read_enable_disable_cursors = 0
     has_highlight_custom = 0
     has_handshake_bit5 = 0
     has_runtime_branch = 0
+    has_cursor4_clear_arm = 0
+    has_channel_range_cleanup_fallback = 0
+    has_textdisp_banner_command_flow = 0
     has_return = 0
 
     saw_channel_range_digit = 0
     saw_channel_range_match = 0
     saw_channel_range_update = 0
+    saw_toggle_primary_l = 0
+    saw_toggle_primary_r = 0
+    saw_toggle_primary_flag = 0
+    saw_primary_channel_code = 0
+    saw_secondary_channel_code = 0
     saw_rtc_copy = 0
     saw_rtc_year = 0
     saw_rtc_bounds = 0
@@ -45,11 +61,36 @@ BEGIN {
     saw_banner_speed_wildcard = 0
     saw_textdisp_cmd = 0
     saw_pending_minus2 = 0
+    saw_deferred_dispatch_call = 0
+    saw_deferred_dispatch_minus1 = 0
+    saw_deferred_dispatch_playback = 0
+    saw_default_no_flag = 0
+    saw_default_branch_match_reset = 0
+    saw_default_branch_cursor1 = 0
+    saw_default_branch_cursor2 = 0
+    saw_highlight_parse = 0
+    saw_highlight_value = 0
+    saw_highlight_limit63 = 0
+    saw_highlight_cursor13 = 0
+    saw_filter_set_mode1 = 0
+    saw_filter_set_mode0 = 0
+    saw_filter_mode_flag = 0
+    runtime_mode_write_count = 0
+    saw_runtime_save = 0
+    saw_runtime_restore = 0
+    saw_cursor14 = 0
+    saw_cursor15 = 0
     saw_runtime_filter = 0
     saw_runtime_diag = 0
     saw_runtime_symbol = 0
     saw_runtime_constant = 0
     saw_runtime_result = 0
+    saw_cursor4 = 0
+    saw_clear_channel_range_arm = 0
+    saw_cleanup_match_load = 0
+    saw_cleanup_match_store = 0
+    saw_cursor5 = 0
+    saw_cursor9 = 0
 }
 
 function trim(s, t) {
@@ -93,6 +134,13 @@ function trim(s, t) {
     if (n ~ /SCRIPTBRUSHTAGDEFAULT00PRIMARY/ || n ~ /SCRIPTBRUSHTAGDEFAULT00SECONDARY/ ||
         n ~ /SCRIPTBRUSHTAGCLEAR11PRIMARY/ || n ~ /SCRIPTBRUSHTAGCLEAR11SECONDARY/) has_brush_tag_defaults = 1
     if (n ~ /TEXTDISPFINDENTRYINDEXBYWILDCARD/ || n ~ /TEXTDISPFINDENTRYINDEXBYWILDCAR/) has_wildcard_lookup = 1
+    if (u ~ /#76([^0-9]|$)/ || u ~ /#\$4C/ || u ~ /'L'/) saw_toggle_primary_l = 1
+    if (u ~ /#82([^0-9]|$)/ || u ~ /#\$52/ || u ~ /'R'/) saw_toggle_primary_r = 1
+    if (n ~ /SCRIPTPRIMARYSEARCHFIRSTFLAG/) saw_toggle_primary_flag = 1
+    if (saw_toggle_primary_l && saw_toggle_primary_r && saw_toggle_primary_flag) has_toggle_primary_search = 1
+    if (n ~ /TEXTDISPPRIMARYCHANNELCODE/) saw_primary_channel_code = 1
+    if (n ~ /TEXTDISPSECONDARYCHANNELCODE/) saw_secondary_channel_code = 1
+    if (saw_primary_channel_code && saw_secondary_channel_code) has_channel_code_update = 1
     if (n ~ /SCRIPTCHANNELRANGEDIGITCHAR/ || n ~ /SCRIPTCHANNELRANGEARMEDFLAG/) saw_channel_range_digit = 1
     if (n ~ /CLEANUPALIGNEDSTATUSMATCHINDEX/ || n ~ /TEXTDISPCURRENTMATCHINDEX/) saw_channel_range_match = 1
     if (n ~ /TEXTDISPUPDATECHANNELRANGEFLAGS/) saw_channel_range_update = 1
@@ -112,6 +160,37 @@ function trim(s, t) {
     if (n ~ /SCRIPTPENDINGBANNERTARGETCHAR/) saw_pending_minus2 = 1
     if (u ~ /#-2([^0-9]|$)/ || u ~ /#\$FFFE/ || u ~ /#\$FFFFFFFE/) saw_pending_minus2 = 1
     if (saw_textdisp_cmd && saw_pending_minus2) has_pending_textdisp_reset = 1
+    if (u ~ /#9([^0-9]|$)/ || u ~ /#\$9([^0-9A-F]|$)/ || u ~ /#\$09/) saw_cursor9 = 1
+    if (saw_cursor9 && has_pending_cmd_fields && has_replace_owned && has_pending_textdisp_reset) {
+        has_textdisp_banner_command_flow = 1
+    }
+    if (n ~ /SCRIPTPLAYBACKCURSOR/) saw_deferred_dispatch_playback = 1
+    if (u ~ /NOT\.B D0/ || u ~ /#-1([^0-9]|$)/ || u ~ /#\$FF([^0-9A-F]|$)/ || u ~ /#\$FFFFFFFF/) saw_deferred_dispatch_minus1 = 1
+    if (n ~ /TEXTDISPHANDLESCRIPTCOMMAND/ || n ~ /TEXTDISPHANDLESCRIPTCOM/) saw_deferred_dispatch_call = 1
+    if (saw_deferred_dispatch_playback && saw_deferred_dispatch_minus1 && saw_deferred_dispatch_call) has_deferred_textdisp_dispatch = 1
+    if (n ~ /ESQDEFAULTNOFLAGCHAR/) saw_default_no_flag = 1
+    if (n ~ /TEXTDISPCURRENTMATCHINDEX/) saw_default_branch_match_reset = 1
+    if (u ~ /#1([^0-9]|$)/ || u ~ /#\$1([^0-9A-F]|$)/) saw_default_branch_cursor1 = 1
+    if (u ~ /#2([^0-9]|$)/ || u ~ /#\$2([^0-9A-F]|$)/) saw_default_branch_cursor2 = 1
+    if (saw_default_no_flag && saw_default_branch_match_reset && saw_default_branch_cursor1 && saw_default_branch_cursor2) has_default_no_flag_branch = 1
+    if (n ~ /PARSEREADSIGNEDLONGSKIPCLASS3ALT/ || n ~ /READSIGNEDLONGSKIPCLASS3ALT/ || n ~ /PARSEREADSIGNEDLONGSKIPCLASS3A/ || n ~ /READSIGNEDLONGSKIPCLASS3A/) saw_highlight_parse = 1
+    if (n ~ /HIGHLIGHTCUSTOMVALUE/) saw_highlight_value = 1
+    if (u ~ /#63([^0-9]|$)/ || u ~ /#\$3F/) saw_highlight_limit63 = 1
+    if (u ~ /#13([^0-9]|$)/ || u ~ /#\$D([^0-9A-F]|$)/ || u ~ /#\$0D/) saw_highlight_cursor13 = 1
+    if (saw_highlight_parse && saw_highlight_value && saw_highlight_limit63 && saw_highlight_cursor13) has_highlight_clamp_flow = 1
+    if ((n ~ /LOCAVAILSETFILTERMODEANDRESETSTATE/ && (u ~ /#1([^0-9]|$)/ || u ~ /#\$1([^0-9A-F]|$)/)) ||
+        u ~ /#57([^0-9]|$)/ || u ~ /#\$39/) saw_filter_set_mode1 = 1
+    if ((n ~ /LOCAVAILSETFILTERMODEANDRESETSTATE/ && (u ~ /CLR\.L/ || u ~ /#0([^0-9]|$)/ || u ~ /#\$0([^0-9A-F]|$)/ || u ~ /#\$00([^0-9A-F]|$)/)) ||
+        u ~ /#56([^0-9]|$)/ || u ~ /#\$38/) saw_filter_set_mode0 = 1
+    if (n ~ /LOCAVAILFILTERMODEFLAG/) saw_filter_mode_flag = 1
+    if (saw_filter_set_mode1 && saw_filter_set_mode0 && saw_filter_mode_flag) has_filter_mode_set_clear = 1
+    if (n ~ /SCRIPTRUNTIMEMODE/ && u !~ /,SCRIPTRUNTIMEMODE/) saw_runtime_save = 1
+    if (u ~ /,SCRIPT_RUNTIMEMODE/) runtime_mode_write_count += 1
+    if (runtime_mode_write_count >= 2) saw_runtime_restore = 1
+    if (saw_runtime_save && saw_runtime_restore) has_runtime_mode_restore = 1
+    if (u ~ /#14([^0-9]|$)/ || u ~ /#\$E([^0-9A-F]|$)/ || u ~ /#\$0E/) saw_cursor14 = 1
+    if (u ~ /#15([^0-9]|$)/ || u ~ /#\$F([^0-9A-F]|$)/ || u ~ /#\$0F/) saw_cursor15 = 1
+    if (saw_cursor14 && saw_cursor15) has_read_enable_disable_cursors = 1
     if (n ~ /HIGHLIGHTCUSTOMVALUE/) has_highlight_custom = 1
     if (n ~ /SCRIPTREADHANDSHAKEBIT5MASK/) has_handshake_bit5 = 1
     if (n ~ /LOCAVAILSETFILTERMODEANDRESETSTATE/ || n ~ /LOCAVAILFILTERMODEFLAG/ || n ~ /LOCAVAILFILTERSTEP/) saw_runtime_filter = 1
@@ -120,6 +199,15 @@ function trim(s, t) {
     if (u ~ /#3([^0-9]|$)/ || u ~ /#10([^0-9]|$)/ || u ~ /#\$A/ || u ~ /#\$4/) saw_runtime_constant = 1
     if (saw_runtime_symbol && saw_runtime_constant) saw_runtime_result = 1
     if (saw_runtime_filter && saw_runtime_diag && saw_runtime_result) has_runtime_branch = 1
+    if (u ~ /#4([^0-9]|$)/ || u ~ /#\$4([^0-9A-F]|$)/) saw_cursor4 = 1
+    if (n ~ /SCRIPTCHANNELRANGEARMEDFLAG/ && (u ~ /^CLR\./ || u ~ /#0([^0-9]|$)/ || u ~ /#\$0([^0-9A-F]|$)/ || u ~ /#\$00([^0-9A-F]|$)/)) {
+        saw_clear_channel_range_arm = 1
+    }
+    if (saw_cursor4 && saw_clear_channel_range_arm) has_cursor4_clear_arm = 1
+    if (n ~ /CLEANUPALIGNEDSTATUSMATCHINDEX/ && n !~ /TEXTDISPCURRENTMATCHINDEX/) saw_cleanup_match_load = 1
+    if (n ~ /CLEANUPALIGNEDSTATUSMATCHINDEX/ && n ~ /TEXTDISPCURRENTMATCHINDEX/) saw_cleanup_match_store = 1
+    if (u ~ /#5([^0-9]|$)/ || u ~ /#\$5([^0-9A-F]|$)/) saw_cursor5 = 1
+    if (saw_cleanup_match_load && saw_cleanup_match_store && saw_cursor5) has_channel_range_cleanup_fallback = 1
     if (u == "RTS") has_return = 1
 }
 
@@ -148,13 +236,24 @@ END {
     print "HAS_BRUSH_LIST_SCAN=" has_brush_list_scan
     print "HAS_BRUSH_TAG_DEFAULTS=" has_brush_tag_defaults
     print "HAS_WILDCARD_LOOKUP=" has_wildcard_lookup
+    print "HAS_TOGGLE_PRIMARY_SEARCH=" has_toggle_primary_search
+    print "HAS_CHANNEL_CODE_UPDATE=" has_channel_code_update
     print "HAS_CHANNEL_RANGE_FLOW=" has_channel_range_flow
     print "HAS_RTC_VALIDATION=" has_rtc_validation
     print "HAS_BANNER_SPEED_FLOW=" has_banner_speed_flow
     print "HAS_PENDING_CMD_FIELDS=" has_pending_cmd_fields
     print "HAS_PENDING_TEXTDISP_RESET=" has_pending_textdisp_reset
+    print "HAS_DEFERRED_TEXTDISP_DISPATCH=" has_deferred_textdisp_dispatch
+    print "HAS_DEFAULT_NO_FLAG_BRANCH=" has_default_no_flag_branch
+    print "HAS_HIGHLIGHT_CLAMP_FLOW=" has_highlight_clamp_flow
+    print "HAS_FILTER_MODE_SET_CLEAR=" has_filter_mode_set_clear
+    print "HAS_RUNTIME_MODE_RESTORE=" has_runtime_mode_restore
+    print "HAS_READ_ENABLE_DISABLE_CURSORS=" has_read_enable_disable_cursors
     print "HAS_HIGHLIGHT_CUSTOM=" has_highlight_custom
     print "HAS_HANDSHAKE_BIT5=" has_handshake_bit5
     print "HAS_RUNTIME_BRANCH=" has_runtime_branch
+    print "HAS_CURSOR4_CLEAR_ARM=" has_cursor4_clear_arm
+    print "HAS_CHANNEL_RANGE_CLEANUP_FALLBACK=" has_channel_range_cleanup_fallback
+    print "HAS_TEXTDISP_BANNER_COMMAND_FLOW=" has_textdisp_banner_command_flow
     print "HAS_RETURN=" has_return
 }

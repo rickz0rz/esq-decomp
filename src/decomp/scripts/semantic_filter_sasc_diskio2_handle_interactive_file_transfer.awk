@@ -3,6 +3,10 @@ BEGIN {
     has_status_refresh = 0
     has_wait = 0
     has_read_serial = 0
+    has_checksum_seed_default = 0
+    has_checksum_seed_crc32 = 0
+    has_filename_len_cap = 0
+    has_size_token_len_cap = 0
     wait_call_count = 0
     read_serial_call_count = 0
     has_filename_loop = 0
@@ -20,13 +24,20 @@ BEGIN {
     has_delete_file = 0
     has_copy_execute = 0
     has_diag_queries = 0
+    has_sync_marker_55 = 0
+    has_sync_marker_aa = 0
+    has_data_marker_h = 0
+    has_data_marker_crc32 = 0
     append_at_null_call_count = 0
     display_call_count = 0
     delete_file_call_count = 0
+    receive_blocks_call_count = 0
     save_read_mode_count = 0
     restore_read_mode_count = 0
     has_success_cleanup = 0
     has_success_stored_text = 0
+    has_diag_clear_y210 = 0
+    has_diag_clear_y240 = 0
 }
 
 function trim(s, t) {
@@ -49,6 +60,10 @@ function trim(s, t) {
 
     if (line ~ /UPDATESTATUSMASKANDREFRESH/ || line ~ /ESQDISP_UPDATEST/) has_status_refresh = 1
     if (line ~ /WAITFORCLOCKCHANGEANDSERVICEUI/ || line ~ /WAITFORC/) has_wait = 1
+    if (line ~ /#\$B7/ || line ~ /#183/ || line ~ /NOT\.B D0/) has_checksum_seed_default = 1
+    if (line ~ /#\$C2/ || line ~ /#194/ || line ~ /MOVEQ #\$61,D0/ || line ~ /MOVEQ\.L #\$61,D0/) has_checksum_seed_crc32 = 1
+    if (line ~ /CMPI\.B #\$1F/ || line ~ /MOVEQ #\$1F,D0/ || line ~ /MOVEQ\.L #\$1F,D0/) has_filename_len_cap = 1
+    if (line ~ /CMPI\.B #\$8/ || line ~ /MOVEQ #\$8,D0/ || line ~ /MOVEQ\.L #\$8,D0/) has_size_token_len_cap = 1
     if (line ~ /^(JSR|BSR\.W) .*WAITFORCLOCKCHANGEANDSERVICEUI/ || line ~ /^(JSR|BSR\.W) ESQFUNC_WAITFORCLOCKCHANGEANDSER/) wait_call_count++
     if (line ~ /READSERIALRBFBYTE/ || line ~ /SCRIPT_READNEXTRBFBYTE/ || line ~ /READSERIA/) has_read_serial = 1
     if (line ~ /^(JSR|BSR\.W) .*READSERIALRBFBYTE/ || line ~ /^(JSR|BSR\.W) SCRIPT_READNEXTRBFBYTE/) read_serial_call_count++
@@ -62,6 +77,10 @@ function trim(s, t) {
     if (line ~ /DOS_OPENFILEWITHMODE/ || line ~ /OPENFILEWITHMODE/ || line ~ /DOS_OPENFILEWITH/) has_open_file = 1
     if (line ~ /MEMORY_ALLOCATEMEMORY/ || line ~ /TRANSFERBLOCKBUFFERPTR/) has_alloc_buffer = 1
     if (line ~ /RECEIVETRANSFERBLOCKSTOFILE/ || line ~ /RECEIVETRANSFERBLOCKSTOF/) has_receive_blocks = 1
+    if (line ~ /#\$55/ || line ~ /MOVEQ #85,D0/ || line ~ /MOVEQ\.L #\$55,D0/) has_sync_marker_55 = 1
+    if (line ~ /#\$AA/ || line ~ /CMPI\.B #\$AA/ || line ~ /ADD\.L D0,D0/) has_sync_marker_aa = 1
+    if (line ~ /#\$48/ || line ~ /MOVEQ #72,D1/ || line ~ /MOVEQ\.L #\$48,D0/) has_data_marker_h = 1
+    if (line ~ /#\$3D/ || line ~ /MOVEQ #61,D1/ || line ~ /MOVEQ\.L #\$3D,D0/) has_data_marker_crc32 = 1
     if (line ~ /CMPI\.B #\$BB/ || line ~ /CMPI\.B #\$FF/ || line ~ /MOVEQ #68,D0/ || line ~ /MOVEQ\.L #\$4,D0/) has_delete_marker = 1
     if (line ~ /LVOCLOSE/ || line ~ /MEMORY_DEALLOCATEMEMORY/) has_close_and_free = 1
     if (line ~ /LVODELETEFILE/) has_delete_file = 1
@@ -70,10 +89,13 @@ function trim(s, t) {
     if (line ~ /^(JSR|BSR\.W) .*STRING_APPENDATNULL/ || line ~ /^(JSR|BSR\.W) STRING_APPENDATNULL/) append_at_null_call_count++
     if (line ~ /^(JSR|BSR\.W) DISPLIB_DISPLAYTEXTATPOSITION/) display_call_count++
     if (line ~ /^(JSR|BSR\.W) _LVODELETEFILE/) delete_file_call_count++
+    if (line ~ /^(JSR|BSR\.W) DISKIO2_RECEIVETRANSFERBLOCKSTOF/) receive_blocks_call_count++
     if (line ~ /^MOVE\.W ESQPARS2_READMODEFLAGS.*DISKIO_SAVEDREADMODEFLAGS/) save_read_mode_count++
     if (line ~ /^MOVE\.W DISKIO_SAVEDREADMODEFLAGS.*ESQPARS2_READMODEFLAGS/) restore_read_mode_count++
     if (line ~ /DISKIO_FORCEUIREFRESHIFIDLE/ || line ~ /DISKIO_RESETCTRLINPUTSTATEIFIDLE/) has_success_cleanup = 1
     if (line ~ /GLOBAL_STR_STORED/ || line ~ /__MERGED\(A4\)/) has_success_stored_text = 1
+    if (line ~ /PEA \(\$D2\)\.W/ || line ~ /PEA 210\.W/) has_diag_clear_y210 = 1
+    if (line ~ /PEA \(\$F0\)\.W/ || line ~ /PEA 240\.W/) has_diag_clear_y240 = 1
 }
 
 END {
@@ -81,6 +103,10 @@ END {
     print "HAS_STATUS_REFRESH=" has_status_refresh
     print "HAS_WAIT=" has_wait
     print "HAS_READ_SERIAL=" has_read_serial
+    print "HAS_CHECKSUM_SEED_DEFAULT=" has_checksum_seed_default
+    print "HAS_CHECKSUM_SEED_CRC32=" has_checksum_seed_crc32
+    print "HAS_FILENAME_LEN_CAP=" has_filename_len_cap
+    print "HAS_SIZE_TOKEN_LEN_CAP=" has_size_token_len_cap
     print "WAIT_CALL_COUNT=" wait_call_count
     print "READ_SERIAL_CALL_COUNT=" read_serial_call_count
     print "HAS_FILENAME_LOOP=" has_filename_loop
@@ -93,6 +119,10 @@ END {
     print "HAS_OPEN_FILE=" has_open_file
     print "HAS_ALLOC_BUFFER=" has_alloc_buffer
     print "HAS_RECEIVE_BLOCKS=" has_receive_blocks
+    print "HAS_SYNC_MARKER_55=" has_sync_marker_55
+    print "HAS_SYNC_MARKER_AA=" has_sync_marker_aa
+    print "HAS_DATA_MARKER_H=" has_data_marker_h
+    print "HAS_DATA_MARKER_CRC32=" has_data_marker_crc32
     print "HAS_DELETE_MARKER=" has_delete_marker
     print "HAS_CLOSE_AND_FREE=" has_close_and_free
     print "HAS_DELETE_FILE=" has_delete_file
@@ -101,8 +131,10 @@ END {
     print "APPEND_AT_NULL_CALL_COUNT=" append_at_null_call_count
     print "DISPLAY_CALL_COUNT=" display_call_count
     print "DELETE_FILE_CALL_COUNT=" delete_file_call_count
+    print "RECEIVE_BLOCKS_CALL_COUNT=" receive_blocks_call_count
     print "SAVE_READ_MODE_COUNT=" save_read_mode_count
     print "RESTORE_READ_MODE_COUNT=" restore_read_mode_count
     print "HAS_SUCCESS_CLEANUP=" has_success_cleanup
     print "HAS_SUCCESS_STORED_TEXT=" has_success_stored_text
+    print "HAS_DIAG_CLEAR_LINES=" (has_diag_clear_y210 && has_diag_clear_y240)
 }

@@ -4,12 +4,21 @@ BEGIN {
     count_escape_calls = 0
     token_map_calls = 0
     wildcard_calls = 0
+    select_entry_ops = 0
+    pending_secondary_ops = 0
+    pending_primary_ops = 0
     clear_anim_calls = 0
     free_subentries_calls = 0
     replace_owned_calls = 0
     format_tokens_calls = 0
     parse_signed_calls = 0
     alloc_sub_calls = 0
+    missing_title_fallback = 0
+    copy_anim_calls = 0
+    write_oi_calls = 0
+    return_code_0 = 0
+    return_code_1 = 0
+    return_code_2 = 0
     has_return = 0
 }
 function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
@@ -24,12 +33,21 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     if (u ~ /COI_COUNTESCAPE14BEFORENULL/) count_escape_calls += 1
     if (u ~ /GROUP_AE_JMPTBL_SCRIPT_BUILDTOKENINDEXMAP/ || u ~ /GROUP_AE_JMPTBL_SCRIPT_BUILDTOKE/ || u ~ /SCRIPT_BUILDTOKENINDEXMAP/ || u ~ /SCRIPT_BUILDTOKENIND/) token_map_calls += 1
     if (u ~ /ESQ_WILDCARDMATCH/ || u ~ /ESQ_WILDCARDMATC/) wildcard_calls += 1
+    if (u ~ /CLEANUP_SELECTENTRY/ || u ~ /TEXTDISP_SECONDARYENTRYPTRTABLE/ || u ~ /TEXTDISP_PRIMARYENTRYPTRTABLE/) select_entry_ops += 1
+    if (u ~ /CTASKS_PENDINGSECONDARYOIDISKID/ || u ~ /CTASKS_SECONDARYOIWRITEPENDINGFL/) pending_secondary_ops += 1
+    if (u ~ /CTASKS_PENDINGPRIMARYOIDISKID/ || u ~ /CTASKS_PRIMARYOIWRITEPENDINGFLAG/) pending_primary_ops += 1
     if (u ~ /COI_CLEARANIMOBJECTSTRINGS/) clear_anim_calls += 1
     if (u ~ /COI_FREESUBENTRYTABLEENTRIES/ || u ~ /COI_FREESUBENTRYTABLENTRIES/) free_subentries_calls += 1
     if (u ~ /GROUP_AE_JMPTBL_ESQPARS_REPLACEOWNEDSTRING/ || u ~ /GROUP_AE_JMPTBL_ESQPARS_REPLACEO/ || u ~ /ESQPARS_REPLACEOWNEDSTRING/ || u ~ /ESQPARS_REPLACEOWNEDST/) replace_owned_calls += 1
     if (u ~ /CLEANUP_FORMATENTRYSTRINGTOKENS/) format_tokens_calls += 1
     if (u ~ /GROUP_AG_JMPTBL_PARSE_READSIGNEDLONGSKIPCLASS3_ALT/ || u ~ /GROUP_AG_JMPTBL_PARSE_READSIGNEDLONGSKIPCLAS/ || u ~ /GROUP_AG_JMPTBL_PARSE_READSIGNED/ || u ~ /PARSE_READSIGNEDLONGSKIPCLASS3_ALT/ || u ~ /PARSE_READSIGNEDLONGSKIPCLASS3_A/ || u ~ /PARSE_READSIGNEDLONGSKIPCL/) parse_signed_calls += 1
     if (u ~ /COI_ALLOCSUBENTRYTABLE/) alloc_sub_calls += 1
+    if (u ~ /CLOCK_STR_MISSING_TITLE_TEMPLATE/) missing_title_fallback = 1
+    if (u ~ /CLEANUP_COPYANIMOBJECT/ || u ~ /MOVE\.B \(A0\),\(A1\)/) copy_anim_calls += 1
+    if (u ~ /COI_WRITEOIDATAFILE/) write_oi_calls += 1
+    if (u ~ /MOVEQ(\.L)? #\$?0,D0/ || u ~ /MOVEQ #0,D0/) return_code_0 = 1
+    if (u ~ /MOVEQ(\.L)? #\$?1,D0/ || u ~ /MOVEQ #1,D0/) return_code_1 = 1
+    if (u ~ /MOVEQ(\.L)? #\$?2,D0/ || u ~ /MOVEQ #2,D0/) return_code_2 = 1
     if (u == "RTS") has_return = 1
 }
 END {
@@ -38,11 +56,20 @@ END {
     print "COUNT_ESCAPE_CALLS_GE1=" (count_escape_calls >= 1)
     print "TOKEN_MAP_CALLS_GE2=" (token_map_calls >= 2)
     print "WILDCARD_CALLS_GE1=" (wildcard_calls >= 1)
+    print "SELECT_ENTRY_OPS_GE3=" (select_entry_ops >= 3)
+    print "PENDING_SECONDARY_OPS_GE1=" (pending_secondary_ops >= 1)
+    print "PENDING_PRIMARY_OPS_GE1=" (pending_primary_ops >= 1)
     print "CLEAR_ANIM_CALLS_GE1=" (clear_anim_calls >= 1)
     print "FREE_SUBENTRIES_CALLS_GE1=" (free_subentries_calls >= 1)
     print "REPLACE_OWNED_CALLS_GE6=" (replace_owned_calls >= 6)
     print "FORMAT_TOKENS_CALLS_GE1=" (format_tokens_calls >= 1)
     print "PARSE_SIGNED_CALLS_GE1=" (parse_signed_calls >= 1)
     print "ALLOC_SUB_CALLS_GE1=" (alloc_sub_calls >= 1)
+    print "MISSING_TITLE_FALLBACK=" missing_title_fallback
+    print "COPY_ANIM_CALLS_GE1=" (copy_anim_calls >= 1)
+    print "WRITE_OI_CALLS_EQ0=" (write_oi_calls == 0)
+    print "RETURN_CODE_0_PRESENT=" return_code_0
+    print "RETURN_CODE_1_PRESENT=" return_code_1
+    print "RETURN_CODE_2_PRESENT=" return_code_2
     print "HAS_RETURN=" has_return
 }

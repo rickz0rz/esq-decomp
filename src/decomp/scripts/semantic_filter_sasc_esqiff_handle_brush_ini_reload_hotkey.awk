@@ -6,7 +6,10 @@ BEGIN {
     has_parse_ini = 0
     has_populate = 0
     has_select_dt = 0
+    has_selected_node_test = 0
+    has_selected_node_skip_branch = 0
     has_find_pred = 0
+    has_find_pred_store = 0
     has_find_type3 = 0
     has_store_selected = 0
     has_store_fallback = 0
@@ -35,7 +38,12 @@ function trim(s, t) {
     if (uline ~ /PARSEINI_PARSEINIBUFFERANDDISPAT/ || uline ~ /GROUP_AK_JMPTBL_PARSEINI_PARSEINIBUFFERANDDISPATCH/) has_parse_ini = 1
     if (uline ~ /BRUSH_POPULATEBRUSHLIST/ || uline ~ /GROUP_AU_JMPTBL_BRUSH_POPULATEBRUSHLIST/) has_populate = 1
     if (uline ~ /BRUSH_SELECTBRUSHBYLABEL/ || uline ~ /ESQIFF_JMPTBL_BRUSH_SELECTBRUSHBYLABEL/) has_select_dt = 1
+    if (uline ~ /^TST\.L BRUSH_SELECTEDNODE/ || uline ~ /^TST\.L BRUSH_SELECTEDNODE\(A4\)$/) has_selected_node_test = 1
+    if ((uline ~ /^BNE(\.[A-Z]+)? / || uline ~ /^BNE$/) &&
+        has_selected_node_test) has_selected_node_skip_branch = 1
     if (uline ~ /BRUSH_FINDBRUSHBYPREDICATE/ || uline ~ /ESQIFF_JMPTBL_BRUSH_FINDBRUSHBYPREDICATE/) has_find_pred = 1
+    if ((uline ~ /MOVE\.L D0,BRUSH_SELECTEDNODE/ || uline ~ /MOVE\.L D0,BRUSH_SELECTEDNODE\(A4\)/) &&
+        has_find_pred) has_find_pred_store = 1
     if (uline ~ /BRUSH_FINDTYPE3BRUSH/ || uline ~ /ESQIFF_JMPTBL_BRUSH_FINDTYPE3BRUSH/) has_find_type3 = 1
     if (uline ~ /BRUSH_SELECTEDNODE/) has_store_selected = 1
     if (uline ~ /ESQFUNC_FALLBACKTYPE3BRUSHNODE/) has_store_fallback = 1
@@ -51,7 +59,10 @@ END {
     print "HAS_PARSE_INI=" has_parse_ini
     print "HAS_POPULATE=" has_populate
     print "HAS_SELECT_DT=" has_select_dt
+    print "HAS_SELECTED_NODE_TEST=" has_selected_node_test
+    print "HAS_SELECTED_NODE_SKIP_BRANCH=" has_selected_node_skip_branch
     print "HAS_FIND_PRED=" has_find_pred
+    print "HAS_FIND_PRED_STORE=" has_find_pred_store
     print "HAS_FIND_TYPE3=" has_find_type3
     print "HAS_STORE_SELECTED=" has_store_selected
     print "HAS_STORE_FALLBACK=" has_store_fallback

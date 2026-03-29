@@ -52,48 +52,60 @@ void ESQFUNC_ProcessUiFrameTick(void)
         SCRIPT_HandleSerialCtrlCmd();
     }
 
-    if (CLEANUP_PendingAlertFlag != 0) {
-        CLEANUP_ProcessAlerts();
+    if (CLEANUP_PendingAlertFlag == 0) {
+        goto tick_display_state;
+    }
 
-        if (ESQDISP_SecondaryPersistRequestFlag != 0) {
-            ESQDISP_SecondaryPersistRequestFlag = 0;
-            ESQFUNC_CommitSecondaryStateAndPersist();
+    CLEANUP_ProcessAlerts();
+
+    if (ESQDISP_SecondaryPersistRequestFlag != 0) {
+        ESQDISP_SecondaryPersistRequestFlag = 0;
+        ESQFUNC_CommitSecondaryStateAndPersist();
+    }
+
+    if (CTASKS_IffTaskDoneFlag == 0) {
+        goto tick_display_state;
+    }
+
+    if ((ESQFUNC_IffTaskGateFlags & 0x02) != 0) {
+        if (Global_UIBusyFlag == 0) {
+            ESQFUNC_IffTaskGateFlags &= (UBYTE)0xFD;
+            TEXTDISP_ResetSelectionAndRefresh();
         }
-
-        if (CTASKS_IffTaskDoneFlag != 0) {
-            if ((ESQFUNC_IffTaskGateFlags & (1u << 1)) != 0 && Global_UIBusyFlag == 0) {
-                ESQFUNC_IffTaskGateFlags &= (UBYTE)~(1u << 1);
-                TEXTDISP_ResetSelectionAndRefresh();
-            } else if ((ESQFUNC_IffTaskGateFlags & (1u << 0)) != 0 && Global_UIBusyFlag == 0) {
-                ESQFUNC_IffTaskGateFlags &= (UBYTE)~(1u << 0);
-                ESQIFF_PlayNextExternalAssetFrame(1);
-            }
-
-            if (Global_REF_LONG_DF0_LOGO_LST_DATA == 0 && Global_UIBusyFlag == 0) {
-                ESQIFF_ExternalAssetFlags &= (UWORD)0xFFFD;
-            }
-
-            if (ED_DiagGraphModeChar != 'N' &&
-                Global_REF_LONG_GFX_G_ADS_DATA == 0 &&
-                Global_UIBusyFlag == 0) {
-                ESQIFF_ExternalAssetFlags &= (UWORD)0xFFFE;
-            }
-
-            if (WDISP_WeatherStatusBrushListHead == 0 &&
-                PARSEINI_BannerBrushResourceHead != 0) {
-                ESQIFF_QueueIffBrushLoad(0);
-            }
-
-            if (ESQIFF_LogoBrushListCount < 1) {
-                ESQIFF_ServiceExternalAssetSourceState(0);
-            } else if (ED_DiagGraphModeChar != 'N' &&
-                       ESQIFF_GAdsBrushListCount < 2 &&
-                       Global_UIBusyFlag == 0) {
-                ESQIFF_ServiceExternalAssetSourceState(1);
-            }
+    } else if ((ESQFUNC_IffTaskGateFlags & 0x01) != 0) {
+        if (Global_UIBusyFlag == 0) {
+            ESQFUNC_IffTaskGateFlags &= (UBYTE)0xFE;
+            ESQIFF_PlayNextExternalAssetFrame(1);
         }
     }
 
+    if (Global_REF_LONG_DF0_LOGO_LST_DATA == 0 && Global_UIBusyFlag == 0) {
+        ESQIFF_ExternalAssetFlags &= (UWORD)0xFFFD;
+    }
+
+    if (ED_DiagGraphModeChar != 'N' &&
+        Global_REF_LONG_GFX_G_ADS_DATA == 0 &&
+        Global_UIBusyFlag == 0) {
+        ESQIFF_ExternalAssetFlags &= (UWORD)0xFFFE;
+    }
+
+    if (WDISP_WeatherStatusBrushListHead == 0 &&
+        PARSEINI_BannerBrushResourceHead != 0) {
+        ESQIFF_QueueIffBrushLoad(0);
+    }
+
+    if (ESQIFF_LogoBrushListCount < 1) {
+        ESQIFF_ServiceExternalAssetSourceState(0);
+        goto tick_display_state;
+    }
+
+    if (ED_DiagGraphModeChar != 'N' &&
+        ESQIFF_GAdsBrushListCount < 2 &&
+        Global_UIBusyFlag == 0) {
+        ESQIFF_ServiceExternalAssetSourceState(1);
+    }
+
+tick_display_state:
     TEXTDISP_TickDisplayState();
 
     if (ESQDISP_StatusRefreshPendingFlag != 0 &&

@@ -8,6 +8,11 @@ typedef struct ED2_DisplayContextHeader {
     UWORD height;
 } ED2_DisplayContextHeader;
 
+typedef struct ED2_DisplayContextRastPort {
+    UBYTE pad0[2];
+    struct RastPort rastPort;
+} ED2_DisplayContextRastPort;
+
 typedef struct DST_BannerTimeInfo DST_BannerTimeInfo;
 
 extern void *Global_REF_DOS_LIBRARY_2;
@@ -187,7 +192,7 @@ void ED2_HandleMenuActions(void)
         break;
 
     case 7:
-        TLIBA3_DrawViewModeGuides(Global_REF_RASTPORT_2);
+        TLIBA3_DrawViewModeGuides(&((ED2_DisplayContextRastPort *)WDISP_DisplayContextBase)->rastPort);
         Global_REF_RASTPORT_1->BitMap = &Global_REF_696_400_BITMAP;
         TLIBA3_DrawViewModeGuides(Global_REF_RASTPORT_1);
         break;

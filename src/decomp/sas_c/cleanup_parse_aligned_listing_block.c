@@ -65,7 +65,6 @@ char *ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
 void CLEANUP_FormatEntryStringTokens(void **a, void **b, char *in);
 LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
 void COI_AllocSubEntryTable(void *entry);
-LONG COI_WriteOiDataFile(UBYTE disk_id);
 
 static void CLEANUP_InitRecordTokenTable(char *tokenTable)
 {
@@ -357,5 +356,6 @@ LONG CLEANUP_ParseAlignedListingBlock(char *record)
     }
 
     (void)tokenCount;
-    return COI_WriteOiDataFile(diskId);
+    (void)diskId;
+    return 0;
 }
