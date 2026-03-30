@@ -6,6 +6,7 @@ BEGIN {
     has_sprintf_detail=0
     has_append_flag8=0
     has_append_flag16=0
+    has_set_rast=0
     has_draw_lines=0
     has_rts=0
 }
@@ -33,6 +34,7 @@ function trim(s, t) {
     if (n ~ /GLOBALSTRCHANSOURCECALLLTRS/ || n ~ /WDISPSPRINTF/) has_sprintf_detail=1
     if (n ~ /ED2STRHILITESRC/ || n ~ /ED2STRSTEREO/ || n ~ /ED2STRSUMBYSRC/ || n ~ /ED2STRNONE/) has_append_flag8=1
     if (n ~ /ED2STRGRID/ || n ~ /ED2STRDMPLEX/ || n ~ /ED2STRCF2DPPV/ || n ~ /ED2STRDNICHE/) has_append_flag16=1
+    if (n ~ /LVOSETRAST/ || n ~ /SETRAST/) has_set_rast=1
     if (n ~ /DRAWCENTEREDWRAPPEDTEXTLINES/ || n ~ /TLIBA3DRAWCENTER/) has_draw_lines=1
     if (u == "RTS") has_rts=1
 }
@@ -45,6 +47,7 @@ END {
     print "HAS_SPRINTF_DETAIL=" has_sprintf_detail
     print "HAS_APPEND_FLAG8=" has_append_flag8
     print "HAS_APPEND_FLAG16=" has_append_flag16
+    print "HAS_SET_RAST=" has_set_rast
     print "HAS_DRAW_LINES=" has_draw_lines
     print "HAS_RTS=" has_rts
 }

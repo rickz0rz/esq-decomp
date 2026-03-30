@@ -266,11 +266,11 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
                 continue;
             }
 
-            if (seen_flags[(LONG)entry_index] == 0) {
-                anim = entry->anim;
-                source_entry = entry;
-                source_anim = anim;
+            source_entry = entry;
+            anim = entry->anim;
+            source_anim = anim;
 
+            if (seen_flags[(LONG)entry_index] == 0) {
                 anim->field4 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
                     record_base + record_tokens[2],
                     anim->field4);
@@ -319,87 +319,88 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
                     0,
                     0);
                 anim->subEntryCount = (WORD)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(line_buf);
-                COI_AllocSubEntryTable(entry);
+            }
 
-                {
-                    WORD subentry_index;
+            COI_AllocSubEntryTable(entry);
 
-                    subentry_index = 0;
-                    while (subentry_index < anim->subEntryCount) {
-                        COI_SubEntry *subentry;
-                        char *subentry_base;
+            {
+                WORD subentry_index;
 
-                        subentry = anim->subEntryTable[(LONG)subentry_index];
-                        file_offset += line_advance;
-                        subentry_base = Global_PTR_WORK_BUFFER + file_offset;
+                subentry_index = 0;
+                while (subentry_index < anim->subEntryCount) {
+                    COI_SubEntry *subentry;
+                    char *subentry_base;
 
-                        if (header_format == COI_HEADER_FORMAT_EXTENDED) {
-                            (void)GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
-                                subentry_base,
-                                subentry_tokens,
-                                COI_SUBENTRY_TOKEN_COUNT,
-                                subentry_token_table,
-                                (WORD)file_size,
-                                COI_STR_LINEFEED_CR_2[0],
-                                COI_TOKEN_STOP_ON_EMPTY);
-                        } else {
-                            COI_ClearWordArray(subentry_tokens, COI_SUBENTRY_TOKEN_COUNT);
-                            (void)GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
-                                subentry_base,
-                                subentry_tokens,
-                                COI_SUBENTRY_TOKEN_COUNT,
-                                subentry_token_table + 2,
-                                (WORD)file_size,
-                                COI_STR_LINEFEED_CR_2[0],
-                                COI_TOKEN_STOP_ON_EMPTY);
-                        }
+                    subentry = anim->subEntryTable[(LONG)subentry_index];
+                    file_offset += line_advance;
+                    subentry_base = Global_PTR_WORK_BUFFER + file_offset;
 
-                        line_advance = (LONG)subentry_tokens[COI_SUBENTRY_TOKEN_COUNT - 1];
-
-                        if (seen_flags[(LONG)entry_index] == 0) {
-                            subentry->key0 = (WORD)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(subentry_base);
-                            subentry->field6 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
-                                subentry_base + subentry_tokens[2],
-                                subentry->field6);
-                            subentry->field10 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
-                                subentry_base + subentry_tokens[3],
-                                subentry->field10);
-                            subentry->field14 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
-                                subentry_base + subentry_tokens[4],
-                                subentry->field14);
-                            subentry->field2 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
-                                subentry_base + subentry_tokens[5],
-                                subentry->field2);
-
-                            if (subentry_tokens[0] > 0) {
-                                COI_ReplaceFormattedPair(
-                                    &subentry->field18,
-                                    &subentry->field22,
-                                    subentry_base + subentry_tokens[0]);
-                            } else {
-                                subentry->field18 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
-                                    anim->field24,
-                                    subentry->field18);
-                                subentry->field22 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
-                                    anim->field28,
-                                    subentry->field22);
-                            }
-
-                            if (subentry_tokens[1] > 0) {
-                                subentry->field26 = GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(
-                                    subentry_base + subentry_tokens[1]);
-                            } else {
-                                subentry->field26 = anim->field32;
-                            }
-                        }
-
-                        subentry_index += 1;
+                    if (header_format == COI_HEADER_FORMAT_EXTENDED) {
+                        (void)GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
+                            subentry_base,
+                            subentry_tokens,
+                            COI_SUBENTRY_TOKEN_COUNT,
+                            subentry_token_table,
+                            (WORD)file_size,
+                            COI_STR_LINEFEED_CR_2[0],
+                            COI_TOKEN_STOP_ON_EMPTY);
+                    } else {
+                        COI_ClearWordArray(subentry_tokens, COI_SUBENTRY_TOKEN_COUNT);
+                        (void)GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
+                            subentry_base,
+                            subentry_tokens,
+                            COI_SUBENTRY_TOKEN_COUNT,
+                            subentry_token_table + 2,
+                            (WORD)file_size,
+                            COI_STR_LINEFEED_CR_2[0],
+                            COI_TOKEN_STOP_ON_EMPTY);
                     }
-                }
 
-                if (seen_flags[(LONG)entry_index] == 0) {
-                    seen_flags[(LONG)entry_index] = 1;
+                    line_advance = (LONG)subentry_tokens[COI_SUBENTRY_TOKEN_COUNT - 1];
+
+                    if (seen_flags[(LONG)entry_index] == 0) {
+                        subentry->key0 = (WORD)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(subentry_base);
+                        subentry->field6 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                            subentry_base + subentry_tokens[2],
+                            subentry->field6);
+                        subentry->field10 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                            subentry_base + subentry_tokens[3],
+                            subentry->field10);
+                        subentry->field14 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                            subentry_base + subentry_tokens[4],
+                            subentry->field14);
+                        subentry->field2 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                            subentry_base + subentry_tokens[5],
+                            subentry->field2);
+
+                        if (subentry_tokens[0] > 0) {
+                            COI_ReplaceFormattedPair(
+                                &subentry->field18,
+                                &subentry->field22,
+                                subentry_base + subentry_tokens[0]);
+                        } else {
+                            subentry->field18 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                                anim->field24,
+                                subentry->field18);
+                            subentry->field22 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                                anim->field28,
+                                subentry->field22);
+                        }
+
+                        if (subentry_tokens[1] > 0) {
+                            subentry->field26 = GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(
+                                subentry_base + subentry_tokens[1]);
+                        } else {
+                            subentry->field26 = anim->field32;
+                        }
+                    }
+
+                    subentry_index += 1;
                 }
+            }
+
+            if (seen_flags[(LONG)entry_index] == 0) {
+                seen_flags[(LONG)entry_index] = 1;
             }
 
             entry_index += 1;

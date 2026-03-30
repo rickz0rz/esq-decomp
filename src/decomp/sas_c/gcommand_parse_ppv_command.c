@@ -204,7 +204,10 @@ LONG GCOMMAND_ParsePPVCommand(char *cmd)
     if ((idx + 1) < tailIndex) {
         STRING_CopyPadNul(scratch, cmd + idx, 2);
         scratch[2] = 0;
-        GCOMMAND_PpvShowtimesRowSpan = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+        parsed = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+        if (parsed <= 96) {
+            GCOMMAND_PpvShowtimesRowSpan = parsed;
+        }
         idx += 2;
     }
 

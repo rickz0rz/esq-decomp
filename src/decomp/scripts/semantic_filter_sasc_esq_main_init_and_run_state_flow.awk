@@ -22,12 +22,18 @@ BEGIN {
     has_seed_secondary_group = 0
     has_seed_phase = 0
     has_seed_half_hour = 0
+    has_seed_startup_long = 0
+    has_seed_ctrl_read_index = 0
+    has_seed_ctrl_gate = 0
     has_seed_ctrl_checksum = 0
     has_seed_banner_index = 0
 
     status_stage = 0
     status_reset_count = 0
     has_status_chain = 0
+
+    post_status_stage = 0
+    has_post_status_clear = 0
 
     library_stage = 0
     has_library_chain = 0
@@ -111,6 +117,11 @@ function advance_stage(stage, target) {
     if (u ~ /TEXTDISP_SECONDARYGROUPCODE/ && (u ~ /#1/ || u ~ /#\$1/)) has_seed_secondary_group = 1
     if (u ~ /ESQ_STARTUPPHASESEED225E/ && (u ~ /#7/ || u ~ /#\$7/)) has_seed_phase = 1
     if (u ~ /CLOCK_HALFHOURSLOTINDEX/ && (u ~ /#2/ || u ~ /#\$2/)) has_seed_half_hour = 1
+    if (u ~ /ESQ_STARTUPWRITEONLYLONG2272/ && (u ~ /#1/ || u ~ /#\$1/)) has_seed_startup_long = 1
+    if (u ~ /SCRIPT_CTRL_READ_INDEX/ &&
+        (u ~ /#0/ || u ~ /CLR\./ || u ~ /= 0/ || u ~ /MOVE\.W D0/)) has_seed_ctrl_read_index = 1
+    if (u ~ /PARSEINI_CTRLHCHANGEGATEFLAG/ &&
+        (u ~ /#0/ || u ~ /CLR\./ || u ~ /= 0/ || u ~ /MOVE\.W D0/)) has_seed_ctrl_gate = 1
     if (u ~ /SCRIPT_CTRL_CHECKSUM/ && (u ~ /#\$FF/ || u ~ /#255/)) has_seed_ctrl_checksum = 1
     if (u ~ /WDISP_BANNERCHARRANGESTART/ && u ~ /WDISP_BANNERCHARINDEX/) has_seed_banner_index = 1
 
@@ -257,6 +268,29 @@ function advance_stage(stage, target) {
         }
     }
 
+    if (u ~ /ESQ_STARTUPWRITEONLYLONG2272/ && (u ~ /#1/ || u ~ /#\$1/)) {
+        post_status_stage = advance_stage(post_status_stage, 1)
+    }
+    if (u ~ /ESQDISP_UPDATESTATUSMASKANDREFRESH|UPDATESTATUSMASKANDREFRESH|UPDATESTATUSMASKANDREFRE/) {
+        if (post_status_stage >= 1) {
+            post_status_stage = advance_stage(post_status_stage, 2)
+        }
+    }
+    if (u ~ /INTENA/ && (u ~ /#\$8100/ || u ~ /#33024/)) {
+        if (post_status_stage >= 2) {
+            post_status_stage = advance_stage(post_status_stage, 3)
+        }
+    }
+    if (u ~ /ESQIFF_EXTERNALASSETFLAGS/ && (u ~ /#0/ || u ~ /CLR\./ || u ~ /= 0/)) {
+        if (post_status_stage >= 3) {
+            post_status_stage = advance_stage(post_status_stage, 4)
+        }
+    }
+    if ((u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLETABLE/ || u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLET/) &&
+        post_status_stage >= 4) {
+        has_post_status_clear = 1
+    }
+
     if (u ~ /ESQDISP_UPDATESTATUSMASKANDREFRESH/ ||
         u ~ /UPDATESTATUSMASKANDREFRESH/ ||
         u ~ /UPDATESTATUSMASKANDREFRE/) {
@@ -346,6 +380,8 @@ END {
     has_seed_bundle = (has_seed_secondary_group &&
         has_seed_phase &&
         has_seed_half_hour &&
+        has_seed_ctrl_read_index &&
+        has_seed_ctrl_gate &&
         has_seed_ctrl_checksum &&
         has_seed_banner_index) ? 1 : 0
 
@@ -359,6 +395,7 @@ END {
     print "HAS_STARTUP_BANNER_SEQUENCE=" has_startup_banner_sequence
     print "HAS_POST_BANNER_LOAD_SEQUENCE=" has_post_banner_load_sequence
     print "HAS_AVAILABILITY_BOOTSTRAP=" has_availability_bootstrap
+    print "HAS_POST_STATUS_CLEAR=" has_post_status_clear
     print "HAS_DISABLE_RESET=" has_disable_reset
     print "HAS_RAVESC_RESTORE=" has_ravesc_restore
     print "HAS_LOOP_FLOW=" has_loop_flow

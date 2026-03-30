@@ -9,9 +9,14 @@ BEGIN {
     has_sprintf = 0
     has_find_sub = 0
     has_find_char = 0
+    has_truncate_paren = 0
+    has_backtrack_trim = 0
     has_format_time = 0
     has_trim = 0
     has_return = 0
+    after_find_char = 0
+    post_find_char_clr = 0
+    post_find_char_btst = 0
 }
 
 function trim(s, t) {
@@ -37,7 +42,23 @@ function trim(s, t) {
     if (index(u, "STRING_APPENDATNULL") > 0) has_append = 1
     if (index(u, "WDISP_SPRINTF") > 0 || index(u, "WDISP_SPRI") > 0) has_sprintf = 1
     if (index(u, "TLIBA1_JMPTBL_ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "TLIBA1_JMPTBL_ESQ_FINDSUB") > 0 || index(u, "ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "ESQ_FINDSUBSTRINGCASEF") > 0) has_find_sub = 1
-    if (index(u, "STR_FINDCHARPTR") > 0 || index(u, "STR_FINDCHARP") > 0) has_find_char = 1
+    if (index(u, "STR_FINDCHARPTR") > 0 || index(u, "STR_FINDCHARP") > 0) {
+        has_find_char = 1
+        after_find_char = 1
+        post_find_char_clr = 0
+        post_find_char_btst = 0
+    }
+    if (after_find_char && u ~ /^CLR\.B /) {
+        post_find_char_clr++
+        if (post_find_char_clr >= 1) has_truncate_paren = 1
+    }
+    if (after_find_char && (index(u, "BTST #3") > 0 || index(u, "BTST #$3") > 0)) {
+        post_find_char_btst++
+        has_backtrack_trim = 1
+    }
+    if (after_find_char && index(u, "STRING_APPENDATNULL") > 0) {
+        after_find_char = 0
+    }
     if (index(u, "TEXTDISP_FORMATENTRYTIMEFORINDEX") > 0 || index(u, "TEXTDISP_FORMATENTRYTIMEF") > 0) has_format_time = 1
     if (index(u, "TEXTDISP_TRIMTEXTTOPIXELWIDTH") > 0 || index(u, "TEXTDISP_TRIMTEXTTOPIXE") > 0) has_trim = 1
     if (u == "RTS") has_return = 1
@@ -54,6 +75,8 @@ END {
     print "HAS_SPRINTF=" has_sprintf
     print "HAS_FIND_SUB=" has_find_sub
     print "HAS_FIND_CHAR=" has_find_char
+    print "HAS_TRUNCATE_PAREN=" has_truncate_paren
+    print "HAS_BACKTRACK_TRIM=" has_backtrack_trim
     print "HAS_FORMAT_TIME=" has_format_time
     print "HAS_TRIM=" has_trim
     print "HAS_RETURN=" has_return

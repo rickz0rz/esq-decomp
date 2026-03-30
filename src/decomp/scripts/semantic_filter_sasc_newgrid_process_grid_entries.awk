@@ -3,13 +3,52 @@ BEGIN{
     h_state_code=0;h_test_state=0;h_prev=0;h_layout=0;h_draw_row=0;h_markers=0;h_draw_cell=0
     h_visible=0;h_placeholder=0;h_state45=0;h_const3=0;h_pair=0;h_bit7=0;h_first=0;h_rts=0
     h_marker_gate=0;h_restore_selected=0;h_halfheight_store=0;h_halfheight_clear=0;h_visible_mode2=0
-    h_marker_flag=0;h_keepmarkers_clear=0;h_second_pair_probe=0
+    h_marker_flag=0;h_keepmarkers_clear=0;h_second_pair_probe=0;h_entry_guard=0;h_aux_guard=0
+    h_gridcell_style0=0;h_gridcell_style1=0;h_null_ctx_state4=0;h_state5_visible_reset=0
+    h_force_state4=0;h_second_key_wrap=0;h_state3_remap=0;h_missing_entry_span=0
     prev="";pending_visible_mode2=0;pending_second_pair_probe=0;pending_pair_store=0;pair_const=0
+    pending_gridcell_style0=0;pending_gridcell_style1=0;pending_state3_remap=0
+    pending_null_ctx_state4=0;pending_state5_visible_reset=0
 }
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
 {
     l=t($0)
     if(l=="")next
+    if(pending_gridcell_style0 > 0 && l ~ /(JSR|BSR).*DRAWGRIDCELL/){
+        h_gridcell_style0=1
+        pending_gridcell_style0=0
+    } else if(pending_gridcell_style0 > 0){
+        pending_gridcell_style0--
+    }
+    if(pending_gridcell_style1 > 0 && l ~ /(JSR|BSR).*DRAWGRIDCELL/){
+        h_gridcell_style1=1
+        pending_gridcell_style1=0
+    } else if(pending_gridcell_style1 > 0){
+        pending_gridcell_style1--
+    }
+    if(pending_state3_remap > 0 &&
+       (l ~ /MOVEQ(\.L)? #(\$)?1,D[0-7]/ ||
+        l ~ /MOVEQ(\.L)? #(\$)?2,D[0-7]/ ||
+        l ~ /SCC D[0-7],#\$600/ ||
+        l ~ /SUB\.B D[0-7],D[0-7]/ ||
+        l ~ /MOVE\.L D[0-7],(-30\(A5\)|\$48\(A7\)|-20\(A5\)|\$30\(A7\))/)){
+        h_state3_remap=1
+    }
+    if(pending_state3_remap > 0){
+        pending_state3_remap--
+    }
+    if(pending_null_ctx_state4 > 0 && l ~ /MOVE\.L D[0-7],NEWGRID_GRIDENTRIESWORKFLOWSTATE/){
+        h_null_ctx_state4=1
+        pending_null_ctx_state4=0
+    } else if(pending_null_ctx_state4 > 0){
+        pending_null_ctx_state4--
+    }
+    if(pending_state5_visible_reset > 0 && l ~ /MOVE\.L D[0-7],(32\(A3\)|\$20\(A3\))/){
+        h_state5_visible_reset=1
+        pending_state5_visible_reset=0
+    } else if(pending_state5_visible_reset > 0){
+        pending_state5_visible_reset--
+    }
     if(pending_visible_mode2 > 0 && l ~ /MOVE\.L D0,(32\(A3\)|\$20\(A3\))/){
         h_visible_mode2=1
         pending_visible_mode2=0
@@ -64,14 +103,35 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /TST\.L (-46\(A5\)|\$54\(A7\))/)h_marker_gate=1
     if(l ~ /BTST #2/ || l ~ /BTST #\$2/ || l ~ /ROWFLAGS\[PREVROWIDX\] & 0X04/)h_marker_flag=1
     if(l ~ /CLR\.L (-46\(A5\)|\$54\(A7\))/ || l ~ /KEEPMARKERS = 0/)h_keepmarkers_clear=1
+    if(l ~ /TST\.L (-4\(A5\)|\$50\(A7\))/ ||
+       l ~ /MOVE\.L \$50\(A7\),D0/ ||
+       l ~ /IF \(ENTRY && AUX\)/)h_entry_guard=1
+    if(l ~ /TST\.L (-12\(A5\)|\$4C\(A7\))/ || l ~ /IF \(ENTRY && AUX\)/)h_aux_guard=1
     if(l ~ /NEWGRID_SELECTEDGRIDENTRYPTR/ && l ~ /NEWGRID_SELECTIONMARKERPENSTATE/)h_restore_selected=1
     if(l ~ /LSR\.W #1/ || l ~ /LSR\.W #\$1/ || l ~ /MOVE\.W D0,(52\(A3\)|\$34\(A3\))/)h_halfheight_store=1
     if(l ~ /CLR\.W (52\(A3\)|\$34\(A3\))/)h_halfheight_clear=1
+    if(prev ~ /MOVE\.L A[35],D0/ && l ~ /BNE\./)pending_null_ctx_state4=3
+    if(l ~ /MOVEQ(\.L)? #(-1|\$FF),D[0-7]/)pending_state5_visible_reset=2
+    if(l ~ /SUBQ\.L #(\$)?1,D[0-7]/)h_force_state4=1
+    if((l ~ /CMP\.L NEWGRID_GRIDENTRIESWORKFLOWSTATE,D[0-7]/ ||
+        l ~ /CMP\.L NEWGRID_GRIDENTRIESWORKFLOWSTATE\(A4\),D[0-7]/) &&
+       prev ~ /MOVEQ(\.L)? #(\$)?4,D[0-7]/)h_force_state4=1
+    if(l ~ /SUB\.L D[0-7],(-24\(A5\)|\$38\(A7\))/ ||
+       l ~ /ADDI?\.W #\$30,D[0-7]/ ||
+       l ~ /MOVEQ(\.L)? #\$30,D[0-7]/)h_second_key_wrap=1
+    if(l ~ /(JSR|BSR).*FINDPREVIOUSVALIDENTRYINDEX/ || l ~ /FINDPREVIOUSVALIDENTR/ || l ~ /FINDPREV/)pending_state3_remap=12
+    if(l ~ /SUB\.W (-18\(A5\)|\$26\(A7\)),D[0-7]/ || l ~ /MOVEM\.W D[0-7],(-22\(A5\)|\$3C\(A7\))/)h_missing_entry_span=1
     if(prev ~ /PEA (\(\$2\)|2)\.W/ && l ~ /(JSR|BSR).*DISPTEXT_COMPUTE/){
         pending_visible_mode2=3
     }
     if(l ~ /ADDQ\.(W|L) #(\$)?1,D[0-7]/){
         pending_second_pair_probe=16
+    }
+    if(l ~ /CLR\.L -\(A7\)/){
+        pending_gridcell_style0=3
+    }
+    if(l ~ /PEA (\(\$1\)|1)\.W/){
+        pending_gridcell_style1=3
     }
     if(l=="RTS")h_rts=1
     prev=l
@@ -103,6 +163,16 @@ END{
     print "HAS_MARKER_FLAG_BIT2="h_marker_flag
     print "HAS_KEEPMARKERS_CLEAR="h_keepmarkers_clear
     print "HAS_SECOND_PAIR_PROBE="h_second_pair_probe
+    print "HAS_ENTRY_GUARD="h_entry_guard
+    print "HAS_AUX_GUARD="h_aux_guard
+    print "HAS_GRIDCELL_STYLE0="h_gridcell_style0
+    print "HAS_GRIDCELL_STYLE1="h_gridcell_style1
+    print "HAS_NULL_CTX_STATE4="h_null_ctx_state4
+    print "HAS_STATE5_VISIBLE_RESET="h_state5_visible_reset
+    print "HAS_FORCE_STATE4_PATH="h_force_state4
+    print "HAS_SECOND_KEY_WRAP="h_second_key_wrap
+    print "HAS_STATE3_REMAP="h_state3_remap
+    print "HAS_MISSING_ENTRY_SPAN="h_missing_entry_span
     print "HAS_RESTORE_SELECTED_PEN="h_restore_selected
     print "HAS_HALFHEIGHT_STORE="h_halfheight_store
     print "HAS_HALFHEIGHT_CLEAR="h_halfheight_clear

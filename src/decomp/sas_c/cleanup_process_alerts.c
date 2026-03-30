@@ -168,7 +168,9 @@ void CLEANUP_ProcessAlerts(void)
     }
 
     if (tickCode == CLEANUP_TICK_CODE_2) {
-        if ((MATH_DivS32((LONG)CLOCK_HalfHourSlotIndex, CLEANUP_TICK_CODE_2) - CLEANUP_BANNER_WRAP_STEP) ==
+        /* The asm tests D1 after DivS32 here, so the branch depends on the remainder. */
+        (void)MATH_DivS32((LONG)(UWORD)CLOCK_HalfHourSlotIndex, CLEANUP_TICK_CODE_2);
+        if ((((LONG)(UWORD)CLOCK_HalfHourSlotIndex % CLEANUP_TICK_CODE_2) - CLEANUP_BANNER_WRAP_STEP) ==
             CLEANUP_FLAG_CLEAR) {
             BRUSH_PendingAlertCode = CLEANUP_FLAG_CLEAR;
         }

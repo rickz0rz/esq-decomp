@@ -391,7 +391,7 @@ LONG SCRIPT_HandleBrushCommand(char *ctx, char *cmd, LONG cmdLen)
             }
 
             if (LOCAVAIL_FilterModeFlag != 1) {
-                if ((ED_DiagGraphModeChar == ASCII_N && ESQIFF_GAdsBrushListCount == 0) ||
+                if ((ED_DiagGraphModeChar != ASCII_N && ESQIFF_GAdsBrushListCount != 0) ||
                     WDISP_HighlightActive != 0) {
                     SCRIPT_PlaybackCursor = 4;
                     SCRIPT_ChannelRangeArmedFlag = 0;

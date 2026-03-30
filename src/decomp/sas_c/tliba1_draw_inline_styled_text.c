@@ -30,6 +30,8 @@ void TLIBA1_DrawInlineStyledText(char *rastPort, LONG x, LONG y, char *text)
     LONG insetTotal;
     LONG plainTotal;
     LONG styleLow;
+    LONG gateTextPen;
+    LONG gateFramePen;
     BYTE styleHigh;
     char *p;
 
@@ -37,10 +39,14 @@ void TLIBA1_DrawInlineStyledText(char *rastPort, LONG x, LONG y, char *text)
     plainTotal = 0;
     styleLow = 0;
     styleHigh = 0;
+    gateTextPen = 0;
+    gateFramePen = 0;
 
     if (CLOCK_AlignedInsetRenderGateFlag != 0) {
         if (STR_FindCharPtr(text, 19) != (char *)0 && STR_FindCharPtr(text, 20) != (char *)0) {
-            TLIBA1_DrawTextWithInsetSegments(rastPort, x, y, (LONG)CLEANUP_AlignedInsetNibblePrimary, (LONG)CLEANUP_AlignedInsetNibbleSecondary, text);
+            gateTextPen = (LONG)CLEANUP_AlignedInsetNibbleSecondary;
+            gateFramePen = (LONG)CLEANUP_AlignedInsetNibblePrimary;
+            TLIBA1_DrawTextWithInsetSegments(rastPort, x, y, gateTextPen, gateFramePen, text);
             CLOCK_AlignedInsetRenderGateFlag = 0;
             return;
         }

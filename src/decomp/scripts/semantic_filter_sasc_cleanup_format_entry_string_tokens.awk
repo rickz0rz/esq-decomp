@@ -42,7 +42,8 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
         u ~ /COPY_PREFIX_LOOP/) has_prefix_scan_limit = 1
     if (u ~ /MOVE\.L D0,\(A5\)/ || u ~ /MOVE\.L D0,\(A3\)/) has_field_a_commit = 1
     if (u ~ /CLOCK_STR_TOKEN_OUTPUT_TEMPLATE/) has_output_template_copy = 1
-    if (u ~ /ADDQ\.L #1,-26\(A5\)/ || u ~ /ADDQ\.L #\$1,\$34\(A7\)/) has_separator_refind = 1
+    if (u ~ /ADDQ\.L #1,-26\(A5\)/ ||
+        u ~ /ADDQ\.L #\$?1,\$(30|34)\(A7\)/) has_separator_refind = 1
     if (u ~ /MOVEQ(\.L)? #\$?A,D0/ || u ~ /TOKEN_LOOP/) has_token_loop_limit = 1
     if (u ~ /CLOCK_STR_BOOL_CHARS_YYNN/) has_bool_gate = 1
     if (u ~ /BTST #1,\(A1\)/ || u ~ /BTST #1,\(A6\)/ || u ~ /BTST #\$1,\$0\(A0,D0\.W\)/) has_bool_alpha_upper = 1

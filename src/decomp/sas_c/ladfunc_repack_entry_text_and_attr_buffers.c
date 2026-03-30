@@ -2,6 +2,8 @@
 #include <exec/types.h>
 
 #define MEMF_PUBLIC_CLEAR (MEMF_PUBLIC | MEMF_CLEAR)
+#define LADFUNC_ROW_COLS 40
+#define LADFUNC_CENTER_LIMIT 20
 
 extern LONG ED_TextLimit;
 
@@ -18,23 +20,15 @@ extern const char Global_STR_LADFUNC_C_27[];
 
 void LADFUNC_RepackEntryTextAndAttrBuffers(char *textBuf, UBYTE *attrBuf)
 {
-    const LONG ROW_COLS = 40;
-    const LONG ROW_TEXT_BUF_LEN = 41;
-    const LONG ROW_LAST_COL = 39;
-    const LONG CENTER_PAD_LIMIT = 20;
-    const UBYTE SPACE_CHAR = ' ';
     LONG srcLen;
     char *textCopy;
     UBYTE *attrCopy;
     LONG outPos;
     LONG row;
 
-    {
-        const char *p = textBuf;
-        while (*p != 0) {
-            ++p;
-        }
-        srcLen = (LONG)(p - textBuf);
+    srcLen = 0;
+    while (textBuf[srcLen] != 0) {
+        ++srcLen;
     }
 
     textCopy = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
@@ -43,7 +37,6 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *textBuf, UBYTE *attrBuf)
         srcLen + 1,
         MEMF_PUBLIC_CLEAR
     );
-
     attrCopy = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
         Global_STR_LADFUNC_C_25,
         1215,
@@ -53,8 +46,6 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *textBuf, UBYTE *attrBuf)
 
     if (textCopy != (char *)0 && attrCopy != (UBYTE *)0) {
         LONG i;
-        char lineText[41];
-        UBYTE lineAttr[40];
 
         for (i = 0;; ++i) {
             textCopy[i] = textBuf[i];
@@ -62,88 +53,110 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *textBuf, UBYTE *attrBuf)
                 break;
             }
         }
+
         for (i = 0; i < srcLen; ++i) {
             attrCopy[i] = attrBuf[i];
         }
 
         outPos = 0;
         for (row = 0; row < ED_TextLimit; ++row) {
-            LONG rowOffset = NEWGRID_JMPTBL_MATH_Mulu32(row, ROW_COLS);
+            LONG rowOffset;
+            char lineText[LADFUNC_ROW_COLS + 1];
+            UBYTE lineAttr[LADFUNC_ROW_COLS];
             LONG lineLen;
-            LONG k;
-            char alignCode;
-            UBYTE alignAttr;
+            UBYTE mode;
+            UBYTE modeAttr;
 
-            GROUP_AW_JMPTBL_STRING_CopyPadNul(lineText, textCopy + rowOffset, ROW_COLS);
+            rowOffset = NEWGRID_JMPTBL_MATH_Mulu32(row, LADFUNC_ROW_COLS);
+            GROUP_AW_JMPTBL_STRING_CopyPadNul(lineText, textCopy + rowOffset, LADFUNC_ROW_COLS);
 
             lineLen = 0;
             while (lineText[lineLen] != 0) {
                 ++lineLen;
             }
 
-            for (k = 0; k < lineLen; ++k) {
-                lineAttr[k] = attrCopy[rowOffset + k];
+            for (i = 0; i < lineLen; ++i) {
+                lineAttr[i] = attrCopy[rowOffset + i];
             }
 
-            if (lineLen < ROW_COLS) {
-                UBYTE fillAttr = lineAttr[lineLen];
-                for (k = lineLen; k < ROW_COLS; ++k) {
-                    lineText[k] = SPACE_CHAR;
-                    lineAttr[k] = fillAttr;
+            if (lineLen < LADFUNC_ROW_COLS) {
+                UBYTE fillAttr = 0;
+
+                if (lineLen > 0) {
+                    fillAttr = lineAttr[lineLen - 1];
+                }
+
+                for (i = lineLen; i < LADFUNC_ROW_COLS; ++i) {
+                    lineText[i] = ' ';
+                    lineAttr[i] = fillAttr;
                 }
             }
 
-            if (lineText[0] == SPACE_CHAR) {
-                alignCode = (lineText[ROW_LAST_COL] == SPACE_CHAR) ? 24 : 26;
+            if (lineText[0] == ' ') {
+                if (lineText[LADFUNC_ROW_COLS - 1] == ' ') {
+                    mode = 24;
+                } else {
+                    mode = 26;
+                }
             } else {
-                alignCode = 25;
+                mode = 25;
             }
 
-            alignAttr = 0;
-            if (alignCode == 24) {
+            if (mode == 24) {
                 LONG pad = 0;
-                alignAttr = lineAttr[0];
-                while (pad < CENTER_PAD_LIMIT && lineText[pad] == SPACE_CHAR && lineText[ROW_LAST_COL - pad] == SPACE_CHAR &&
-                       lineAttr[pad] == alignAttr && lineAttr[ROW_LAST_COL - pad] == alignAttr) {
+
+                modeAttr = lineAttr[0];
+                while (pad < LADFUNC_CENTER_LIMIT &&
+                       lineText[pad] == ' ' &&
+                       lineText[(LADFUNC_ROW_COLS - 1) - pad] == ' ' &&
+                       lineAttr[pad] == modeAttr &&
+                       lineAttr[(LADFUNC_ROW_COLS - 1) - pad] == modeAttr) {
                     ++pad;
                 }
 
                 if (pad > 0) {
-                    LONG keep = ROW_COLS - pad;
+                    LONG keep = LADFUNC_ROW_COLS - pad;
+
                     lineText[keep] = 0;
-                    GROUP_AW_JMPTBL_MEM_Move(lineText + pad, lineText, (ROW_TEXT_BUF_LEN - (pad * 2)));
-                    GROUP_AW_JMPTBL_MEM_Move(lineAttr + pad, lineAttr, (ROW_COLS - (pad * 2)));
+                    GROUP_AW_JMPTBL_MEM_Move(lineText, lineText + pad, (LADFUNC_ROW_COLS - (pad * 2)) + 1);
+                    GROUP_AW_JMPTBL_MEM_Move(lineAttr, lineAttr + pad, LADFUNC_ROW_COLS - (pad * 2));
                 }
-            } else if (alignCode == 25) {
+            } else if (mode == 25) {
                 LONG pad = 0;
-                alignAttr = lineAttr[ROW_LAST_COL];
-                while (pad < ROW_COLS && lineText[ROW_LAST_COL - pad] == SPACE_CHAR && lineAttr[ROW_LAST_COL - pad] == alignAttr) {
+
+                modeAttr = lineAttr[LADFUNC_ROW_COLS - 1];
+                while (pad < LADFUNC_ROW_COLS &&
+                       lineText[(LADFUNC_ROW_COLS - 1) - pad] == ' ' &&
+                       lineAttr[(LADFUNC_ROW_COLS - 1) - pad] == modeAttr) {
                     ++pad;
                 }
 
                 if (pad > 0) {
-                    lineText[ROW_COLS - pad] = 0;
+                    lineText[LADFUNC_ROW_COLS - pad] = 0;
                 }
-            } else if (alignCode == 26) {
+            } else {
                 LONG pad = 0;
-                alignAttr = lineAttr[0];
-                while (pad < ROW_COLS && lineText[pad] == SPACE_CHAR && lineAttr[pad] == alignAttr) {
+
+                modeAttr = lineAttr[0];
+                while (pad < LADFUNC_ROW_COLS &&
+                       lineText[pad] == ' ' &&
+                       lineAttr[pad] == modeAttr) {
                     ++pad;
                 }
 
                 if (pad > 0) {
-                    GROUP_AW_JMPTBL_MEM_Move(lineText + pad, lineText, (ROW_COLS - pad + 1));
-                    GROUP_AW_JMPTBL_MEM_Move(lineAttr + pad, lineAttr, (ROW_COLS - pad));
+                    GROUP_AW_JMPTBL_MEM_Move(lineText, lineText + pad, (LADFUNC_ROW_COLS - pad) + 1);
+                    GROUP_AW_JMPTBL_MEM_Move(lineAttr, lineAttr + pad, LADFUNC_ROW_COLS - pad);
                 }
             }
 
-            textBuf[outPos] = alignCode;
+            textBuf[outPos] = (char)mode;
+            attrBuf[outPos] = modeAttr;
             ++outPos;
-            attrBuf[outPos - 1] = alignAttr;
 
-            for (k = 0; lineText[k] != 0; ++k) {
-                textBuf[outPos] = lineText[k];
-                attrBuf[outPos] = lineAttr[k];
+            for (i = 0; lineText[i] != 0; ++i) {
+                textBuf[outPos] = lineText[i];
+                attrBuf[outPos] = lineAttr[i];
                 ++outPos;
             }
         }

@@ -1,6 +1,10 @@
 BEGIN {
     has_entry=0
     has_init_reset=0
+    has_filename_temp_reset=0
+    has_current_block_store=0
+    has_list_head_seed=0
+    has_current_block_guard=0
     compare_calls=0
     has_alloc_brush=0
     read_long_calls=0
@@ -41,6 +45,7 @@ BEGIN {
     has_source_list=0
     has_source_link=0
     has_source_tail=0
+    has_source_temp_store=0
     has_source_len_scan=0
     has_source_len_guard=0
     has_source_alloc_flags=0
@@ -55,6 +60,7 @@ BEGIN {
     has_return=0
     saw_source_len_tst=0
     saw_source_copy_move=0
+    saw_current_block_guard_tst=0
 }
 function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
 {
@@ -86,9 +92,21 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
         saw_source_copy_move=0
     }
 
+    if (n ~ /TSTLPARSEINICURRENTWEATHERBLOCKPTR/) {
+        saw_current_block_guard_tst=1
+    } else if (saw_current_block_guard_tst && n ~ /^BEQ(W|S|B)/) {
+        has_current_block_guard=1
+        saw_current_block_guard_tst=0
+    } else if (saw_current_block_guard_tst && n !~ /^B/) {
+        saw_current_block_guard_tst=0
+    }
+
     if (u ~ /^PARSEINI_PROCESSWEATHERBLOCKS:/ || u ~ /^PARSEINI_PROCESSWEATHERBLOC[A-Z0-9_]*:/) has_entry=1
     if ((n ~ /CLRLPARSEINICURRENTWEATHERBLOCKTEMP/ || n ~ /CLRLPARSEINICURRENTWEATHERBLOCKPTR/) ||
         (n ~ /MOVELA0PARSEINICURRENTWEATHERBLOCKTEMP/ || n ~ /MOVELA0PARSEINICURRENTWEATHERBLOCKPTR/)) has_init_reset=1
+    if (n ~ /CLRLPARSEINICURRENTWEATHERBLOCKTEMP/) has_filename_temp_reset=1
+    if (n ~ /MOVELD0PARSEINICURRENTWEATHERBLOCKPTR/) has_current_block_store=1
+    if (n ~ /MOVELD0PARSEINIPARSEDDESCRIPTORLISTHEA/) has_list_head_seed=1
 
     if (n ~ /STRINGCOMPARENOCASE/) compare_calls++
     if (n ~ /PARSEINITAGFILENAMEWEATHERBLO/) has_filename=1
@@ -135,6 +153,7 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     if (n ~ /TSTLE6A0|TSTL230A0/) has_source_list=1
     if (n ~ /MOVELA1E6A0|MOVELA1230A0/) has_source_link=1
     if (n ~ /MOVEL24A78A2|MOVELPARSEINICURRENTWEATHERBLOCKTEMP(PTR)?8A1/) has_source_tail=1
+    if (n ~ /MOVELD0PARSEINICURRENTWEATHERBLOCKTEMP/) has_source_temp_store=1
     if ((n ~ /TSTBA0|TSTBA0PLUS/) ||
         (n ~ /MOVEBA0PLUSA1PLUS/ && has_source_next_clear == 0)) has_source_len_scan=1
     if (n ~ /MOVELMEMFPUBLICMEMFCLEARA7/ || n ~ /MOVEL10001A7/) has_source_alloc_flags=1
@@ -152,6 +171,10 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
 END {
     print "HAS_ENTRY="has_entry
     print "HAS_INIT_RESET="has_init_reset
+    print "HAS_FILENAME_TEMP_RESET="has_filename_temp_reset
+    print "HAS_CURRENT_BLOCK_STORE="has_current_block_store
+    print "HAS_LIST_HEAD_SEED="has_list_head_seed
+    print "HAS_CURRENT_BLOCK_GUARD="has_current_block_guard
     print "COMPARE_CALLS="compare_calls
     print "HAS_ALLOC_BRUSH="has_alloc_brush
     print "READ_LONG_CALLS="read_long_calls
@@ -192,6 +215,7 @@ END {
     print "HAS_SOURCE_LIST="has_source_list
     print "HAS_SOURCE_LINK="has_source_link
     print "HAS_SOURCE_TAIL="has_source_tail
+    print "HAS_SOURCE_TEMP_STORE="has_source_temp_store
     print "HAS_SOURCE_LEN_SCAN="has_source_len_scan
     print "HAS_SOURCE_LEN_GUARD="has_source_len_guard
     print "HAS_SOURCE_ALLOC_FLAGS="has_source_alloc_flags

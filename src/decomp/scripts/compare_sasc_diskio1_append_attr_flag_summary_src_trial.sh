@@ -14,6 +14,8 @@ ENTRY_SASC_REGEX="^DISKIO1_AppendAttrFlagSummarySrc[A-Za-z0-9_]*:$"
 ENTRY_SEM="DISKIO1_APPENDATTRFLAGSUMMARYSRC:"
 ENTRY_ALT_SEM="DISKIO1_APPENDATTRFLAGSUMMARYSRC:"
 TARGET_SEM="DISKIO1_APPENDATTRFLAGVIDEOTAGDI"
+EXPECTED_BIT="2"
+FORMAT_LABEL_PREFIX="DISKIO_STR_SUM_SRC_CompactSource"
 
 mkdir -p "$OUT_DIR"
 
@@ -54,8 +56,8 @@ normalize <"${OUT_DIR}/${BASE}.sasc.dis.s" >"${OUT_DIR}/${BASE}.sasc.norm.s"
 
 diff -u "${OUT_DIR}/${BASE}.original.norm.s" "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.diff" || true
 
-awk -v ENTRY_PREFIX="$ENTRY_SEM" -v ENTRY_ALT_PREFIX="$ENTRY_ALT_SEM" -v TARGET_PREFIX="$TARGET_SEM" -f src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk "${OUT_DIR}/${BASE}.original.norm.s" >"${OUT_DIR}/${BASE}.original.semantic.txt"
-awk -v ENTRY_PREFIX="$ENTRY_SEM" -v ENTRY_ALT_PREFIX="$ENTRY_ALT_SEM" -v TARGET_PREFIX="$TARGET_SEM" -f src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.sasc.semantic.txt"
+awk -v ENTRY_PREFIX="$ENTRY_SEM" -v ENTRY_ALT_PREFIX="$ENTRY_ALT_SEM" -v TARGET_PREFIX="$TARGET_SEM" -v EXPECTED_BIT="$EXPECTED_BIT" -v FORMAT_LABEL_PREFIX="$FORMAT_LABEL_PREFIX" -f src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk "${OUT_DIR}/${BASE}.original.norm.s" >"${OUT_DIR}/${BASE}.original.semantic.txt"
+awk -v ENTRY_PREFIX="$ENTRY_SEM" -v ENTRY_ALT_PREFIX="$ENTRY_ALT_SEM" -v TARGET_PREFIX="$TARGET_SEM" -v EXPECTED_BIT="$EXPECTED_BIT" -v FORMAT_LABEL_PREFIX="$FORMAT_LABEL_PREFIX" -f src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.sasc.semantic.txt"
 diff -u "${OUT_DIR}/${BASE}.original.semantic.txt" "${OUT_DIR}/${BASE}.sasc.semantic.txt" >"${OUT_DIR}/${BASE}.semantic.diff" || true
 
 echo "wrote: ${OUT_DIR}/${BASE}.diff"

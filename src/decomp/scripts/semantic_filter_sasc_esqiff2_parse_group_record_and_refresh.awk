@@ -12,6 +12,8 @@ BEGIN {
     remove_group_count = 0
     refresh_flag_write_count = 0
     tail_clear_count = 0
+    reset_parse_buffer_count = 0
+    has_field0_to_field3_copy = 0
     pad_call_count = 0
     apply_config_count = 0
     rebuild_count = 0
@@ -44,6 +46,8 @@ function trim(s, t) {
     if (index(u, "REMOVEGROUPENTRYANDRELEASESTRINGS") > 0 || index(u, "REMOVEGROUPENTRYANDRELEA") > 0) remove_group_count++
     if (index(u, "NEWGRID_REFRESHSTATEFLAG") > 0) refresh_flag_write_count++
     if (index(u, "ESQIFF_PARSEFIELD0TAILBUFFER") > 0 || index(u, "ESQIFF_PARSEFIELD1TAILBYTE") > 0 || index(u, "ESQIFF_PARSEFIELD3TAILBUFFER") > 0) tail_clear_count++
+    if (index(u, "PARSEGROUP_RESETPARSEBUFFERS") > 0 || u ~ /^MOVE\.B D[0-7],ESQIFF_PARSEFIELD0BUFFER$/) reset_parse_buffer_count++
+    if ((index(u, "ESQIFF_PARSEFIELD0BUFFER") > 0 && index(u, "ESQIFF_PARSEFIELD3BUFFER") > 0) || index(u, "MOVE.B (A0)+,(A1)+") > 0 || index(u, "MOVE.B (A3),(A2)+") > 0) has_field0_to_field3_copy = 1
     if (index(u, "ESQIFF2_PADENTRIESTOMAXTITLEWIDTH") > 0 || index(u, "PADENTRIESTOMAXTITLEWIDTH") > 0 || index(u, "PADENTRIESTOMAXTITLEWIDT") > 0) pad_call_count++
     if (index(u, "TEXTDISP_APPLYSOURCECONFIGALLENTRIES") > 0 || index(u, "APPLYSOURCECONFIGALLENTRIES") > 0 || index(u, "APPLYSOURCECONFIGALLEN") > 0 || index(u, "APPLYSOU") > 0) apply_config_count++
     if (index(u, "NEWGRID_REBUILDINDEXCACHE") > 0 || index(u, "REBUILDINDEXCACHE") > 0 || index(u, "REBUILDINDEXCAC") > 0 || index(u, "REBUILDIN") > 0) rebuild_count++
@@ -63,6 +67,8 @@ END {
     print "REMOVE_GROUP_COUNT=" remove_group_count
     print "REFRESH_FLAG_WRITE_COUNT=" refresh_flag_write_count
     print "TAIL_CLEAR_COUNT=" tail_clear_count
+    print "RESET_PARSE_BUFFER_COUNT=" reset_parse_buffer_count
+    print "HAS_FIELD0_TO_FIELD3_COPY=" has_field0_to_field3_copy
     print "PAD_CALL_COUNT=" pad_call_count
     print "APPLY_CONFIG_COUNT=" apply_config_count
     print "REBUILD_COUNT=" rebuild_count

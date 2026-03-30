@@ -56,7 +56,7 @@ extern LONG NEWGRID_DrawSelectionMarkers(char *ctx, LONG row, LONG span, LONG pe
 extern void NEWGRID_DrawGridCell(char *scratch, const void *entry, LONG style);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(LONG layoutMode);
 
-LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, UWORD startRow)
+LONG NEWGRID_ProcessGridEntries(char *ctx, LONG titleIdx, WORD startRow)
 {
     LayoutCtx *ctxView;
     LONG wildcardIdx = -1;

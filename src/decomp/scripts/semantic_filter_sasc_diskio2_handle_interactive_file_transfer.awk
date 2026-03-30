@@ -1,6 +1,7 @@
 BEGIN {
     has_entry = 0
     has_status_refresh = 0
+    status_update_count = 0
     has_wait = 0
     has_read_serial = 0
     has_checksum_seed_default = 0
@@ -38,6 +39,11 @@ BEGIN {
     has_success_stored_text = 0
     has_diag_clear_y210 = 0
     has_diag_clear_y240 = 0
+    checksum_gate_count = 0
+    delete_bb_count = 0
+    delete_ff_count = 0
+    finalize_stage = 0
+    has_finalize_diag = 0
 }
 
 function trim(s, t) {
@@ -58,7 +64,10 @@ function trim(s, t) {
     if (ENTRY_ALT_PREFIX != "" && index(line, ENTRY_ALT_PREFIX) == 1) has_entry = 1
     if (line ~ /DISKIO2_HANDLEINTERACTIVEFILETRA/) has_entry = 1
 
-    if (line ~ /UPDATESTATUSMASKANDREFRESH/ || line ~ /ESQDISP_UPDATEST/) has_status_refresh = 1
+    if (line ~ /UPDATESTATUSMASKANDREFRESH/ || line ~ /ESQDISP_UPDATEST/) {
+        has_status_refresh = 1
+        status_update_count++
+    }
     if (line ~ /WAITFORCLOCKCHANGEANDSERVICEUI/ || line ~ /WAITFORC/) has_wait = 1
     if (line ~ /#\$B7/ || line ~ /#183/ || line ~ /NOT\.B D0/) has_checksum_seed_default = 1
     if (line ~ /#\$C2/ || line ~ /#194/ || line ~ /MOVEQ #\$61,D0/ || line ~ /MOVEQ\.L #\$61,D0/) has_checksum_seed_crc32 = 1
@@ -73,7 +82,10 @@ function trim(s, t) {
     if (line ~ /MOVE\.B D0,-64\(A5\)/ || line ~ /CLR\.B \$C8\(A7\)/) has_short_name_nul = 1
     if (line ~ /PARSE_READSIGNEDLONGSKIPCLASS3/ || line ~ /READSIGNEDLONGSKIPCLASS3/ || line ~ /PARSE_READSIGNED/) has_parse_size = 1
     if (line ~ /SHOWATTENTIONOVERLAY/ || line ~ /BRUSH_SNAPSHOTHEADER/) has_oversize_overlay = 1
-    if (line ~ /ESQIFF_RECORDCHECKSUMBYTE/ || line ~ /TRANSFERXORCHECKSUMBYTE/) has_checksum_verify = 1
+    if (line ~ /ESQIFF_RECORDCHECKSUMBYTE/ || line ~ /TRANSFERXORCHECKSUMBYTE/) {
+        has_checksum_verify = 1
+        checksum_gate_count++
+    }
     if (line ~ /DOS_OPENFILEWITHMODE/ || line ~ /OPENFILEWITHMODE/ || line ~ /DOS_OPENFILEWITH/) has_open_file = 1
     if (line ~ /MEMORY_ALLOCATEMEMORY/ || line ~ /TRANSFERBLOCKBUFFERPTR/) has_alloc_buffer = 1
     if (line ~ /RECEIVETRANSFERBLOCKSTOFILE/ || line ~ /RECEIVETRANSFERBLOCKSTOF/) has_receive_blocks = 1
@@ -81,7 +93,14 @@ function trim(s, t) {
     if (line ~ /#\$AA/ || line ~ /CMPI\.B #\$AA/ || line ~ /ADD\.L D0,D0/) has_sync_marker_aa = 1
     if (line ~ /#\$48/ || line ~ /MOVEQ #72,D1/ || line ~ /MOVEQ\.L #\$48,D0/) has_data_marker_h = 1
     if (line ~ /#\$3D/ || line ~ /MOVEQ #61,D1/ || line ~ /MOVEQ\.L #\$3D,D0/) has_data_marker_crc32 = 1
-    if (line ~ /CMPI\.B #\$BB/ || line ~ /CMPI\.B #\$FF/ || line ~ /MOVEQ #68,D0/ || line ~ /MOVEQ\.L #\$4,D0/) has_delete_marker = 1
+    if (line ~ /CMPI\.B #\$BB/ || line ~ /MOVEQ #68,D0/ || line ~ /MOVEQ\.L #\$4,D0/) {
+        has_delete_marker = 1
+        delete_bb_count++
+    }
+    if (line ~ /CMPI\.B #\$FF/ || line ~ /MOVEQ #68,D0/ || line ~ /MOVEQ\.L #\$4,D0/) {
+        has_delete_marker = 1
+        delete_ff_count++
+    }
     if (line ~ /LVOCLOSE/ || line ~ /MEMORY_DEALLOCATEMEMORY/) has_close_and_free = 1
     if (line ~ /LVODELETEFILE/) has_delete_file = 1
     if (line ~ /LVOEXECUTE/ || line ~ /STRING_APPENDATNULL/ || line ~ /GLOBAL_STR_COPY_NIL/) has_copy_execute = 1
@@ -96,11 +115,34 @@ function trim(s, t) {
     if (line ~ /GLOBAL_STR_STORED/ || line ~ /__MERGED\(A4\)/) has_success_stored_text = 1
     if (line ~ /PEA \(\$D2\)\.W/ || line ~ /PEA 210\.W/) has_diag_clear_y210 = 1
     if (line ~ /PEA \(\$F0\)\.W/ || line ~ /PEA 240\.W/) has_diag_clear_y240 = 1
+
+    if (line ~ /INTERACTIVETRANSFERARMED/) {
+        if (finalize_stage == 0) finalize_stage = 1
+    }
+    if ((line ~ /UPDATESTATUSMASKANDREFRESH/ || line ~ /ESQDISP_UPDATEST/) && finalize_stage >= 1) {
+        if (finalize_stage == 1) finalize_stage = 2
+    }
+    if ((line ~ /QUERYDISKUSAGEPERCENT/ || line ~ /QUERYDISKUSAGEPERCENTANDSETBUFFERSIZE/) &&
+        finalize_stage >= 2) {
+        if (finalize_stage == 2) finalize_stage = 3
+    }
+    if (line ~ /QUERYVOLUMESOFTERRORCOUNT/ && finalize_stage >= 3) {
+        if (finalize_stage == 3) finalize_stage = 4
+    }
+    if ((line ~ /WDISP_SPRINTF/ || line ~ /SPRINTF/) && finalize_stage >= 4) {
+        if (finalize_stage == 4) finalize_stage = 5
+    }
+    if (line ~ /DISPLIB_DISPLAYTEXTATPOSITION/ &&
+        (line ~ /#\$5A/ || line ~ /#90/) &&
+        finalize_stage >= 5) {
+        has_finalize_diag = 1
+    }
 }
 
 END {
     print "HAS_ENTRY=" has_entry
     print "HAS_STATUS_REFRESH=" has_status_refresh
+    print "HAS_STATUS_BUSY_TOGGLE=" (status_update_count >= 2)
     print "HAS_WAIT=" has_wait
     print "HAS_READ_SERIAL=" has_read_serial
     print "HAS_CHECKSUM_SEED_DEFAULT=" has_checksum_seed_default
@@ -116,6 +158,7 @@ END {
     print "HAS_PARSE_SIZE=" has_parse_size
     print "HAS_OVERSIZE_OVERLAY=" has_oversize_overlay
     print "HAS_CHECKSUM_VERIFY=" has_checksum_verify
+    print "HAS_CHECKSUM_GATE=" (checksum_gate_count >= 3)
     print "HAS_OPEN_FILE=" has_open_file
     print "HAS_ALLOC_BUFFER=" has_alloc_buffer
     print "HAS_RECEIVE_BLOCKS=" has_receive_blocks
@@ -124,6 +167,7 @@ END {
     print "HAS_DATA_MARKER_H=" has_data_marker_h
     print "HAS_DATA_MARKER_CRC32=" has_data_marker_crc32
     print "HAS_DELETE_MARKER=" has_delete_marker
+    print "HAS_DELETE_MARKER_FLOW=" (delete_bb_count >= 2 && delete_ff_count >= 1)
     print "HAS_CLOSE_AND_FREE=" has_close_and_free
     print "HAS_DELETE_FILE=" has_delete_file
     print "HAS_COPY_EXECUTE=" has_copy_execute
@@ -137,4 +181,5 @@ END {
     print "HAS_SUCCESS_CLEANUP=" has_success_cleanup
     print "HAS_SUCCESS_STORED_TEXT=" has_success_stored_text
     print "HAS_DIAG_CLEAR_LINES=" (has_diag_clear_y210 && has_diag_clear_y240)
+    print "HAS_FINALIZE_DIAG=" has_finalize_diag
 }

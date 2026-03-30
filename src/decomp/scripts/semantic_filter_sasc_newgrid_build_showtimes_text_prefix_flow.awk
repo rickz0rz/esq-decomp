@@ -1,8 +1,10 @@
 BEGIN {
     has_entry = 0
+    has_out_ptr_guard = 0
     has_out_clear = 0
     has_row_wrap = 0
     has_skip_time_prefix = 0
+    has_base_title_nonempty = 0
     has_suffix_budget = 0
     has_reset_buckets = 0
     has_index_clamp = 0
@@ -46,7 +48,11 @@ function norm(s, t) {
         has_entry = 1
     }
 
-    if (l ~ /^CLR\.B \([A0-7]\)$/ || l ~ /OUT\[0\] = 0/) {
+    if (l ~ /^TST\.L 16\(A5\)$/ || l ~ /^MOVE\.L A2,D0$/) {
+        has_out_ptr_guard = 1
+    }
+
+    if (l ~ /^CLR\.B \(A[0-7]\)$/ || l ~ /OUT\[0\] = 0/) {
         has_out_clear = 1
     }
 
@@ -58,6 +64,10 @@ function norm(s, t) {
         l ~ /^MOVEQ(\.L)? #\$?3A,D[0-7]$/ || l ~ /^MOVEQ(\.L)? #58,D[0-7]$/ ||
         l ~ /SKIP_TIME_PREFIX/ || l ~ /S \+ 8/ || l ~ /ADD\.L D[0-7],-54\(A5\)/) {
         has_skip_time_prefix = 1
+    }
+
+    if (l ~ /^TST\.B \(A[0-7]\)$/) {
+        has_base_title_nonempty = 1
     }
 
     if (l ~ /GLOBAL_STR_SINGLE_SPACE_3/ || l ~ /__MERGED\(A4\)/ || l ~ /__MERGED\+\$2\(A4\)/ ||
@@ -148,9 +158,11 @@ function norm(s, t) {
 
 END {
     print "HAS_ENTRY=" has_entry
+    print "HAS_OUT_PTR_GUARD=" has_out_ptr_guard
     print "HAS_OUT_CLEAR=" has_out_clear
     print "HAS_ROW_WRAP=" has_row_wrap
     print "HAS_SKIP_TIME_PREFIX=" has_skip_time_prefix
+    print "HAS_BASE_TITLE_NONEMPTY=" has_base_title_nonempty
     print "HAS_SUFFIX_BUDGET=" has_suffix_budget
     print "HAS_RESET_BUCKETS=" has_reset_buckets
     print "HAS_INDEX_CLAMP=" has_index_clamp

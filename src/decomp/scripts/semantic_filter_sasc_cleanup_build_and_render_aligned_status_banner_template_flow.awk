@@ -23,6 +23,9 @@ BEGIN {
 
     saw_normalize_step = 0
     saw_cycle_table = 0
+    saw_cycle_store = 0
+    saw_cycle_entry_ptr = 0
+    saw_cycle_copy = 0
     saw_head_ptr = 0
     saw_tail_ptr = 0
     saw_clock_buffer = 0
@@ -76,9 +79,19 @@ function trim(s, t) {
     if (u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLET/ || u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLETABLE/) saw_cycle_table = 1
     if (saw_normalize_step && saw_cycle_table) has_retry_loop = 1
     if (u ~ /#60/ || u ~ /#\$3C/ || u ~ /PEA \(\$3C\)\.W/) has_retry_cap = 1
-    if (u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLET/ || u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLETABLE/) {
-        if (u ~ /MOVE\\.W D0,/ || u ~ /MOVE\\.W .*\\(A1\\)/ || u ~ /MOVE\\.W .*\\(A0\\)/) has_cycle_store = 1
+    if (((u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLET/ || u ~ /CLEANUP_ALIGNEDSTATUSENTRYCYCLETABLE/) &&
+         u ~ /MOVE\.W /) ||
+        u ~ /MOVE\.W D[0-7],\$0\(A0,D[0-7]\.L\)/ ||
+        u ~ /MOVE\.W D[0-7],\(A1\)/) {
+        saw_cycle_store = 1
     }
+    if (u ~ /LEA \$38\(A0\),A1/ || u ~ /MOVEA?\.L 56\(A0,D[0-7]\.L\),A0/ || u ~ /MOVE\.L \(A1\),-\(A7\)/) {
+        saw_cycle_entry_ptr = 1
+    }
+    if (u ~ /CLEANUP3_COPYSTRING/ || u ~ /MOVE\.B \(A0\)\+,\(A1\)\+/) {
+        saw_cycle_copy = 1
+    }
+    if (saw_cycle_store && saw_cycle_entry_ptr && saw_cycle_copy) has_cycle_store = 1
 
     if (u ~ /#53/ || u ~ /#\$35/ || u ~ /PEA \(\$35\)\.W/) saw_mode53 = 1
     if (u ~ /ESQ_SETCOPPEREFFECT_OFFDISABLEHIGH/ || u ~ /ESQ_SETCOPPEREFFECT_OFFDISABLEHI/) saw_disable = 1

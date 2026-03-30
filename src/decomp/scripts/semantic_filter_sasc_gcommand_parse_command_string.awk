@@ -18,6 +18,12 @@ BEGIN {
     has_truncate_127 = 0
     has_percent_t_ref = 0
     pending_replace_owned = 0
+    pending_split_search = 0
+    split_branch_active = 0
+    split_branch_seen = 0
+    split_at_store_count = 0
+    split_listings_store_count = 0
+    fallback_at_store_count = 0
 }
 
 function trim(s, t) {
@@ -49,7 +55,10 @@ function trim(s, t) {
     if (index(u, "WDISP_CHARCLASSTABLE") > 0 || index(u, "IS_DECIMAL_DIGIT_CLASS") > 0) digit_guard_count++
     if (index(u, "LADFUNC_PARSEHEXDIGIT") > 0) parse_hex_count++
 
-    if (index(u, "GROUP_AS_JMPTBL_STR_FINDCHARPTR") > 0 || index(u, "GROUP_AS_JMPTBL_STR_FINDCHARP") > 0 || index(u, "STR_FINDCHARPTR") > 0 || index(u, "STR_FINDCHARP") > 0) has_find_char = 1
+    if (index(u, "GROUP_AS_JMPTBL_STR_FINDCHARPTR") > 0 || index(u, "GROUP_AS_JMPTBL_STR_FINDCHARP") > 0 || index(u, "STR_FINDCHARPTR") > 0 || index(u, "STR_FINDCHARP") > 0) {
+        has_find_char = 1
+        pending_split_search = 1
+    }
     if (index(u, "GROUP_AS_JMPTBL_ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "GROUP_AS_JMPTBL_ESQ_FINDSUBSTRI") > 0 || index(u, "ESQ_FINDSUBSTRINGCASEFOLD") > 0 || index(u, "ESQ_FINDSUBSTRI") > 0) has_find_substring = 1
 
     if (index(u, "ESQPARS_REPLACEOWNEDSTRING") > 0 || index(u, "ESQPARS_REPLACEOWNEDSTRI") > 0) {
@@ -60,7 +69,15 @@ function trim(s, t) {
     if (index(u, "#$12") > 0 || index(u, "($12).W") > 0 || index(u, "#18") > 0) has_delim_12 = 1
     if (index(u, "#$7F") > 0 || index(u, "#127") > 0 || index(u, "$7F(") > 0 || index(u, "127(") > 0) has_truncate_127 = 1
     if (copy_pad_count == 0 && (u ~ /^TST\.B \(A[35]\)$/ || u ~ /^TST\.B \(A0\)$/)) has_empty_cmd_guard = 1
-    if (u ~ /^CLR\.B \([AA][0-7]\)\+$/ || u ~ /^CLR\.B \(A[0-7]\)\+$/) has_split_nul = 1
+    if (u ~ /^CLR\.B \([AA][0-7]\)\+$/ || u ~ /^CLR\.B \(A[0-7]\)\+$/) {
+        has_split_nul = 1
+        if (pending_split_search) {
+            print "SPLIT_BRANCH_NULL_TERM"
+            split_branch_active = 1
+            split_branch_seen = 1
+            pending_split_search = 0
+        }
+    }
     if (u ~ /^CLR\.B (\$7F|127)\(A[0-7](,D[0-7]\.L)?\)$/) has_tail_clamp_write = 1
 
     if (u ~ /^MOVE\.B #\$73,\(A[0-7]\)$/ || u ~ /^MOVE\.B #115,\(A[0-7]\)$/ || u ~ /^MOVE\.B #\$73,1\(A[0-7]\)$/ || u ~ /^MOVE\.B #\$73,\$1\(A[0-7]\)$/ || u ~ /^MOVE\.B #115,1\(A[0-7]\)$/) has_suffix_s = 1
@@ -82,9 +99,21 @@ function trim(s, t) {
     if (pending_replace_owned) {
         if (index(u, "GCOMMAND_MPLEXLISTINGSTEMPLATEPT") > 0 || index(u, "GCOMMAND_MPLEXLISTINGSTEMPLATEPTR") > 0) {
             print "STORE_LISTINGS_TEMPLATE"
+            if (split_branch_active) {
+                print "STORE_LISTINGS_TEMPLATE_SPLIT"
+                split_listings_store_count++
+                split_branch_active = 0
+            }
             pending_replace_owned = 0
         } else if (index(u, "GCOMMAND_MPLEXATTEMPLATEPT") > 0 || index(u, "GCOMMAND_MPLEXATTEMPLATEPTR") > 0) {
             print "STORE_AT_TEMPLATE"
+            if (split_branch_active) {
+                print "STORE_AT_TEMPLATE_SPLIT"
+                split_at_store_count++
+            } else {
+                print "STORE_AT_TEMPLATE_FALLBACK"
+                fallback_at_store_count++
+            }
             pending_replace_owned = 0
         }
     }
@@ -112,5 +141,9 @@ END {
     print "HAS_TRUNCATE_127=" has_truncate_127
     print "HAS_PERCENT_T_REF=" has_percent_t_ref
     print "HAS_SUFFIX_S=" has_suffix_s
+    print "HAS_SPLIT_BRANCH=" split_branch_seen
+    print "HAS_SPLIT_AT_TEMPLATE=" (split_at_store_count >= 1)
+    print "HAS_SPLIT_LISTINGS_TEMPLATE=" (split_listings_store_count >= 1)
+    print "HAS_FALLBACK_AT_TEMPLATE=" (fallback_at_store_count >= 1)
     print "HAS_RETURN=" has_return
 }

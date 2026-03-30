@@ -219,10 +219,11 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
         } else {
             headNode = (const ESQIFF_PendingBrushNode *)ESQIFF_GAdsBrushListHead;
         }
-        headPath = (headNode != 0) ? headNode->pathText : 0;
-
         duplicateHeadPath = 0;
-        if (headPath != 0 && ESQIFF_StringEquals(candidate, headPath)) {
+        headPath = (headNode != 0) ? headNode->pathText : 0;
+        if (headPath != 0 &&
+            headNode == (const ESQIFF_PendingBrushNode *)ESQIFF_LogoBrushListHead &&
+            ESQIFF_StringEquals(candidate, headPath)) {
             duplicateHeadPath = 1;
         }
 

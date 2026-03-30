@@ -201,8 +201,9 @@ LONG TEXTDISP_SelectBestMatchFromList(char *titles, UWORD candidateCount, UWORD 
 
             (void)groupCode;
             ++((UWORD *)titlePtr)[200 + TEXTDISP_BannerCharSelected];
-            return 2;
         }
+
+        return 2;
     }
 
     if ((channelCode > 48 && channelCode < 58) ||

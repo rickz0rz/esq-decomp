@@ -318,3 +318,4 @@ When decomp workflow assumptions change, update `README.md`, `src/decomp/README.
 - [ ] Continue tightening unresolved `src/data/wdisp.s` state semantics outside completed option-state ranges (`220F` cluster complete; `226D`/`226E` overflow provenance now documented inline + in checkpoint notes).
 - [ ] Continue NEWGRID documentation passes using `CHECKPOINT_doc_coverage_matrix.md` scope gates (`newgrid2.s` and `newgrid1.s` complete for current scope; remaining `newgrid.s` non-message-loop functions still open).
 - [x] Resolve `Struct_PreallocHandleNode` overlay flag-bit semantics for stock image and document producer/clearer paths from `STREAM_BufferedPutcOrFlush`/`STREAM_BufferedGetc` traces (`OpenFlags` low bits `3/6` now documented as reserved/dead unless externally patched).
+- [x] Add a dedicated SAS/C state-flow audit lane for `LADFUNC_ParseBannerEntryData` so its large raw diff is now backed by control-flow verification without changing the restored C body.

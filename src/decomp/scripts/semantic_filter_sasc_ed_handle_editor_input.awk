@@ -30,11 +30,13 @@ BEGIN {
     h_toggle_line_page_mode=0
     h_nav_dirs=0
     h_esc_commit_help=0
+    h_esc_early_exit=0
     h_insert_ascii=0
     h_finalize_branch=0
     h_page_down=0
     h_consts=0
     h_rts=0
+    esc_help_window=0
 }
 
 function norm(s, t) {
@@ -49,6 +51,11 @@ function norm(s, t) {
 {
     l=norm($0)
     if (l=="") next
+
+    if (esc_help_window > 0) {
+        if (l ~ /^BRA(\.[A-Z])? / || l == "RTS") h_esc_early_exit=1
+        esc_help_window--
+    }
 
     if (l ~ /^ED_HANDLEEDITORINPUT:/ || l ~ /^ED_HANDLEEDITORINPUT[A-Z0-9_]*:/) h_entry=1
     if ((l ~ /ED_STATERINGTABLE/ && l ~ /ED_LASTMENUINPUTCHAR/) || l ~ /__SWITCH_ED_HANDLEEDITORINPUT_/ || l ~ /JMP .*PC,D1\.W/ || l ~ /\.CASE_NAV_KEY:/) h_nav_menu_dispatch=1
@@ -80,6 +87,7 @@ function norm(s, t) {
     if ((l ~ /SETAPEN/ || l ~ /_LVOSETAPEN/) && (l ~ /SETBPEN/ || l ~ /_LVOSETBPEN/) || (l ~ /ED2_STR_PAGE/ && l ~ /ED2_STR_LINE/) || (l ~ /BOOLISLINEORPAGE/ && l ~ /MATH_DIVS32/)) h_toggle_line_page_mode=1
     if ((l ~ /ED_EDITCURSOROFFSET/ && (l ~ /#40/ || l ~ /#\$28/)) || l ~ /MOVEQ #40/ || l ~ /MOVEQ\.L #\$27/ || l ~ /MOVEQ\.L #\$28/ || l ~ /ADDQ\.L #1,ED_EDITCURSOROFFSET/ || l ~ /ADDQ\.L #\$1,ED_EDITCURSOROFFSET/ || l ~ /SUBQ\.L #1,ED_EDITCURSOROFFSET/ || l ~ /SUBQ\.L #\$1,ED_EDITCURSOROFFSET/) h_nav_dirs=1
     if (l ~ /ED_COMMITCURRENTADEDITS/ || l ~ /ED_DRAWESCMENUBOTTOMHELP/ || l ~ /TEXTMODEREINITPENDINGFLAG/ && l ~ /MOVEL/) h_esc_commit_help=1
+    if (l ~ /ED_DRAWESCMENUBOTTOMHELP/) esc_help_window=2
     if (l ~ /#25/ || l ~ /#\$19/ || l ~ /EDITBUFFERSCRATCH/ && l ~ /ED_LASTKEYCODE/ || l ~ /CASEINSERTASCIICHAR/) h_insert_ascii=1
     if (l ~ /SYNCCURRENTCHARANDMAYBEDRAW/ || l ~ /ED_REDRAWCURSORCHAR/ || l ~ /ED_DRAWCURRENTCOLORINDICATOR/) h_finalize_branch=1
     if ((l ~ /ED_TEXTLIMIT/ && (l ~ /ED_EDITCURSOROFFSET/ || l ~ /ED_VIEWPORTOFFSET/)) || (l ~ /GROUP_AG_JMPTBL_MATH_MULU32/ && l ~ /ED_TEXTLIMIT/) || l ~ /MOVEQ #40/ || l ~ /MOVEQ\.L #\$28/) h_page_down=1
@@ -119,6 +127,7 @@ END {
     print "HAS_TOGGLE_LINE_PAGE_MODE=" h_toggle_line_page_mode
     print "HAS_NAV_DIRS=" h_nav_dirs
     print "HAS_ESC_COMMIT_HELP=" h_esc_commit_help
+    print "HAS_ESC_EARLY_EXIT=" h_esc_early_exit
     print "HAS_INSERT_ASCII_PATH=" h_insert_ascii
     print "HAS_FINALIZE_BRANCH=" h_finalize_branch
     print "HAS_PAGE_DOWN=" h_page_down

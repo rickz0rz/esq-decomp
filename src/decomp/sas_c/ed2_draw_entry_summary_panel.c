@@ -22,6 +22,7 @@ extern UBYTE *ED2_SelectedEntryTitlePtr;
 extern UWORD ED2_SelectedFlagByteOffset;
 extern ED2_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 extern LONG WDISP_DisplayContextBase;
+extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern const char Global_STR_CLU_CLU_POS1[];
 extern const char Global_STR_CHAN_SOURCE_CALLLTRS_2[];
@@ -39,6 +40,7 @@ extern const char ED2_STR_DNICHE[];
 extern const char ED2_STR_DMPLEX[];
 extern const char ED2_STR_CF2_DPPV[];
 
+extern void _LVOSetRast(void *gfxBase, char *rastPort, LONG pen);
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rastPort, const char *text, LONG y);
 extern char *GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
@@ -75,6 +77,7 @@ void ED2_DrawEntrySummaryPanel(void)
 
     context = (ED2_DisplayContext *)WDISP_DisplayContextBase;
     rastPort = (char *)context->rastPort;
+    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, rastPort, 2);
 
     GROUP_AM_JMPTBL_WDISP_SPrintf(panelTextBuffer, Global_STR_CLU_CLU_POS1,
                                   (LONG)ED2_SelectedEntryIndex,

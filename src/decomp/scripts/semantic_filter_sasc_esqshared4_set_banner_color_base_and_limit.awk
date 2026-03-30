@@ -23,7 +23,7 @@ function trim(s, t) {
     gsub(/[ \t]+/, " ", line)
     uline = toupper(line)
 
-    if (uline ~ /^ESQSHARED4_SETBANNERCOLORBASEANDLIMIT:/ || uline ~ /^ESQSHARED4_SETBANNERCOLORBASEANDL[A-Z0-9_]*:/ || uline ~ /^ESQSHARED4_SETBANNERCOLORBASEAND[A-Z0-9_]*:/) has_entry = 1
+    if (uline ~ /^@?ESQSHARED4_SETBANNERCOLORBASEANDLIMIT:/ || uline ~ /^@?ESQSHARED4_SETBANNERCOLORBASEANDL[A-Z0-9_]*:/ || uline ~ /^@?ESQSHARED4_SETBANNERCOLORBASEAND[A-Z0-9_]*:/) has_entry = 1
     if (index(uline, "ESQPARS2_BANNERCOLORBASEVALUE") > 0 || index(uline, "ESQPARS2_BANNERCOLORBASEVAL") > 0) has_base_write = 1
     if (index(uline, "ESQ_BANNERCOLORCLAMPVALUEA") > 0 || index(uline, "ESQ_BANNERCOLORCLAMPVALUE") > 0) has_clamp_a = 1
     if (index(uline, "ESQ_BANNERCOLORCLAMPVALUEB") > 0 || index(uline, "ESQ_BANNERCOLORCLAMPVALUE") > 0) has_clamp_b = 1

@@ -32,68 +32,66 @@ extern const char Global_STR_ASTERISK_3[];
 extern LONG ESQ_WildcardMatch(const char *a, const char *b);
 extern LONG TEXTDISP_ShouldOpenEditorForEntry(const TEXTDISP_CandidateEntry *entry);
 
+#define TEXTDISP_GROUP_PRIMARY 1
+#define TEXTDISP_MATCH_FALSE 0
+#define TEXTDISP_MATCH_TRUE 1
+#define TEXTDISP_SPORTS_MATCH_TRUE -1
+#define TEXTDISP_BIT_SHIFT_HIDDEN 3
+#define TEXTDISP_BIT_SHIFT_PPV_SBE 4
+#define TEXTDISP_BIT_SHIFT_EDITABLE 7
+#define TEXTDISP_CMD_EDIT 69
+
 LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar)
 {
-    const LONG GROUP_PRIMARY = 1;
-    const LONG MATCH_FALSE = 0;
-    const LONG MATCH_TRUE = 1;
-    const LONG SPORTS_MATCH_TRUE = -1;
-    const LONG BIT_SHIFT_HIDDEN = 3;
-    const LONG BIT_SHIFT_PPV_SBE = 4;
-    const LONG BIT_SHIFT_EDITABLE = 7;
-    const UWORD CMD_EDIT = 69;
     LONG matchCount;
     LONG idx;
     LONG entryCount;
     LONG ppvOrSbeFlag;
     LONG sportsFilterFlag;
-    const char *patternText;
     const char *title;
     TEXTDISP_CandidateEntry *entry;
+    const char *findPtr;
+    const char *scanPtr;
 
     matchCount = 0;
     if (patternPtr == 0) {
-        return MATCH_FALSE;
+        return TEXTDISP_MATCH_FALSE;
     }
-    patternText = patternPtr;
 
-    if (ESQ_WildcardMatch(patternText, TEXTDISP_Tag_PPV) == 0) {
-        ppvOrSbeFlag = MATCH_TRUE;
-    } else if (ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SBE) == 0) {
-        TEXTDISP_SbeFilterActiveFlag = MATCH_TRUE;
-        ppvOrSbeFlag = MATCH_TRUE;
+    if (ESQ_WildcardMatch(patternPtr, TEXTDISP_Tag_PPV) == 0) {
+        ppvOrSbeFlag = TEXTDISP_MATCH_TRUE;
+    } else if (ESQ_WildcardMatch(patternPtr, TEXTDISP_Tag_SBE) == 0) {
+        TEXTDISP_SbeFilterActiveFlag = TEXTDISP_MATCH_TRUE;
+        ppvOrSbeFlag = TEXTDISP_MATCH_TRUE;
     } else {
-        ppvOrSbeFlag = MATCH_FALSE;
+        ppvOrSbeFlag = TEXTDISP_MATCH_FALSE;
     }
 
     sportsFilterFlag =
-        (ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SPORTS) == 0)
-            ? SPORTS_MATCH_TRUE
-            : MATCH_FALSE;
-    if (ESQ_WildcardMatch(patternText, TEXTDISP_Tag_SPT_Filter) == 0) {
-        patternText = Global_STR_ASTERISK_2;
+        (ESQ_WildcardMatch(patternPtr, TEXTDISP_Tag_SPORTS) == 0)
+            ? TEXTDISP_SPORTS_MATCH_TRUE
+            : TEXTDISP_MATCH_FALSE;
+    if (ESQ_WildcardMatch(patternPtr, TEXTDISP_Tag_SPT_Filter) == 0) {
+        patternPtr = Global_STR_ASTERISK_2;
     }
 
-    {
-        const char *prefix = TEXTDISP_Tag_FIND1;
-        const char *scan = patternText;
-
-        while (*prefix == *scan) {
-            if (*prefix == 0) {
-                TEXTDISP_FindModeActiveFlag = MATCH_TRUE;
-                patternText = Global_STR_ASTERISK_3;
-                break;
-            }
-            ++prefix;
-            ++scan;
+    findPtr = TEXTDISP_Tag_FIND1;
+    scanPtr = patternPtr;
+    while (*findPtr == *scanPtr) {
+        if (*findPtr == 0) {
+            TEXTDISP_FindModeActiveFlag = TEXTDISP_MATCH_TRUE;
+            patternPtr = Global_STR_ASTERISK_3;
+            break;
         }
 
-        if (*prefix != *scan) {
-            TEXTDISP_FindModeActiveFlag = MATCH_FALSE;
-        }
+        ++findPtr;
+        ++scanPtr;
+    }
+    if (*findPtr != *scanPtr) {
+        TEXTDISP_FindModeActiveFlag = TEXTDISP_MATCH_FALSE;
     }
 
-    if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
+    if (TEXTDISP_ActiveGroupId == TEXTDISP_GROUP_PRIMARY) {
         entryCount = (LONG)TEXTDISP_PrimaryGroupEntryCount;
     } else {
         entryCount = (LONG)TEXTDISP_SecondaryGroupEntryCount;
@@ -101,7 +99,7 @@ LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar)
 
     idx = 0;
     while (idx < entryCount) {
-        if (TEXTDISP_ActiveGroupId == GROUP_PRIMARY) {
+        if (TEXTDISP_ActiveGroupId == TEXTDISP_GROUP_PRIMARY) {
             title = TEXTDISP_PrimaryTitlePtrTable[idx];
             entry = TEXTDISP_PrimaryEntryPtrTable[idx];
         } else {
@@ -109,16 +107,18 @@ LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar)
             entry = TEXTDISP_SecondaryEntryPtrTable[idx];
         }
 
-        if ((entry->flags27 & (1u << BIT_SHIFT_HIDDEN)) != 0) {
+        if ((entry->flags27 & (1u << TEXTDISP_BIT_SHIFT_HIDDEN)) != 0) {
             idx += 1;
             continue;
         }
-        if (cmdChar == CMD_EDIT && (entry->editFlags40 & (1u << BIT_SHIFT_EDITABLE)) == 0) {
+        if (cmdChar == TEXTDISP_CMD_EDIT &&
+            (entry->editFlags40 & (1u << TEXTDISP_BIT_SHIFT_EDITABLE)) == 0) {
             idx += 1;
             continue;
         }
 
-        if (ppvOrSbeFlag != 0 && (entry->flags27 & (1u << BIT_SHIFT_PPV_SBE)) != 0) {
+        if (ppvOrSbeFlag != 0 &&
+            (entry->flags27 & (1u << TEXTDISP_BIT_SHIFT_PPV_SBE)) != 0) {
             TEXTDISP_CandidateIndexList[matchCount++] = (UBYTE)idx;
             idx += 1;
             continue;
@@ -132,7 +132,7 @@ LONG TEXTDISP_BuildMatchIndexList(const char *patternPtr, UWORD cmdChar)
             continue;
         }
 
-        if (ESQ_WildcardMatch(patternText, title) == 0) {
+        if (ESQ_WildcardMatch(patternPtr, title) == 0) {
             TEXTDISP_CandidateIndexList[matchCount++] = (UBYTE)idx;
         }
         idx += 1;

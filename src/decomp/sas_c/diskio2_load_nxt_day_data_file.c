@@ -59,9 +59,18 @@ long DISKIO2_LoadNxtDayDataFile(void)
     ULONG fileLen;
     volatile char *workBuf;
     UBYTE headerCode;
+    DISKIO2_Entry *entry;
+    DISKIO2_TitleData *title;
+    char *name;
+    char *d;
+    char *slotText;
+    UBYTE *dst;
+    volatile char *src;
     UWORD loadedCount = 0;
     UWORD parsedCount = 0;
-    WORD skipUntil = -1;
+    UWORD i;
+    UWORD slot;
+    WORD skipUntil;
 
     if (DISKIO_LoadFileToWorkBuffer(Global_STR_DF0_NXTDAY_DAT) == -1) {
         return -1;
@@ -79,16 +88,16 @@ long DISKIO2_LoadNxtDayDataFile(void)
         TEXTDISP_SecondaryGroupPresentFlag = 1;
 
         for (entryIndex = 0; entryIndex < parsedCount; entryIndex++) {
-            DISKIO2_Entry *entry = (DISKIO2_Entry *)MEMORY_AllocateMemory(
+            entry = (DISKIO2_Entry *)MEMORY_AllocateMemory(
                 Global_STR_DISKIO2_C_17, 948, 52, 0x10001UL);
-            DISKIO2_TitleData *title = (DISKIO2_TitleData *)MEMORY_AllocateMemory(
-                Global_STR_DISKIO2_C_18, 954, 500, 0x10001UL);
-            UWORD slot;
 
             if (entry == 0) {
                 result = -1;
                 break;
             }
+
+            title = (DISKIO2_TitleData *)MEMORY_AllocateMemory(
+                Global_STR_DISKIO2_C_18, 954, 500, 0x10001UL);
             if (title == 0) {
                 result = -1;
                 MEMORY_DeallocateMemory(
@@ -99,29 +108,26 @@ long DISKIO2_LoadNxtDayDataFile(void)
             ESQSHARED_InitEntryDefaults((UBYTE *)entry);
             COI_EnsureAnimObjectAllocated((void *)entry);
 
-            {
-                UWORD i;
-                UBYTE *dst = (UBYTE *)entry;
-                volatile char *src = Global_PTR_WORK_BUFFER;
-                for (i = 0; i < 48; i++) {
-                    *dst++ = (UBYTE)*src++;
-                }
-                Global_PTR_WORK_BUFFER = src;
-                Global_REF_LONG_FILE_SCRATCH -= 48;
+            dst = (UBYTE *)entry;
+            src = Global_PTR_WORK_BUFFER;
+            for (i = 0; i < 48; i++) {
+                *dst++ = (UBYTE)*src++;
             }
+            Global_PTR_WORK_BUFFER = src;
+            Global_REF_LONG_FILE_SCRATCH -= 48;
 
             entry->flags40 = (UBYTE)(entry->flags40 & 0x7f);
-            {
-                char *name = DISKIO_ConsumeCStringFromWorkBuffer();
-                if (name == (char *)-1) {
-                    result = -1;
-                } else {
-                    char *d = (char *)title;
-                    while ((*d++ = *name++) != 0) {
-                    }
+            name = DISKIO_ConsumeCStringFromWorkBuffer();
+            if (name == (char *)-1) {
+                result = -1;
+                goto finalize_load;
+            } else {
+                d = (char *)title;
+                while ((*d++ = *name++) != 0) {
                 }
             }
 
+            skipUntil = -1;
             for (slot = 0; slot < 49 && result != -1; slot++) {
                 title->slotFlags[slot] = 1;
                 title->slotTextTable[slot] = 0;
@@ -141,20 +147,18 @@ long DISKIO2_LoadNxtDayDataFile(void)
                 title->slotAttr301[slot] = (UBYTE)DISKIO_ParseLongFromWorkBuffer();
                 title->slotAttr350[slot] = (UBYTE)DISKIO_ParseLongFromWorkBuffer();
 
-                {
-                    char *slotText = DISKIO_ConsumeCStringFromWorkBuffer();
-                    if (slotText == (char *)-1) {
-                        result = -1;
-                        break;
-                    }
-                    slotText = ESQSHARED_ApplyProgramTitleTextFilters(
-                        slotText,
-                        (ULONG)entry->flags27);
-                    title->slotTextTable[slot] =
-                        ESQPARS_ReplaceOwnedString(slotText, title->slotTextTable[slot]);
-                    if (title->slotTextTable[slot] != 0) {
-                        entry->flags40 = (UBYTE)(entry->flags40 | 0x80);
-                    }
+                slotText = DISKIO_ConsumeCStringFromWorkBuffer();
+                if (slotText == (char *)-1) {
+                    result = -1;
+                    break;
+                }
+                slotText = ESQSHARED_ApplyProgramTitleTextFilters(
+                    slotText,
+                    (ULONG)entry->flags27);
+                title->slotTextTable[slot] =
+                    ESQPARS_ReplaceOwnedString(slotText, title->slotTextTable[slot]);
+                if (title->slotTextTable[slot] != 0) {
+                    entry->flags40 = (UBYTE)(entry->flags40 | 0x80);
                 }
             }
 
@@ -179,6 +183,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
     TEXTDISP_SecondaryGroupHeaderCode = headerCode;
     TEXTDISP_SecondaryGroupEntryCount = loadedCount;
 
+finalize_load:
     MEMORY_DeallocateMemory(
         Global_STR_DISKIO2_C_22,
         1041,

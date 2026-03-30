@@ -15,7 +15,7 @@ extern const NEWGRID_Entry *TEXTDISP_PrimaryEntryPtrTable[];
 
 extern LONG NEWGRID_ShouldOpenEditor(const NEWGRID_Entry *entry);
 extern LONG NEWGRID_UpdateGridState(char *ctx, LONG keyIndex, WORD rowIndex);
-extern LONG NEWGRID_ProcessGridEntries(char *ctx, LONG keyIndex, UWORD rowIndex);
+extern LONG NEWGRID_ProcessGridEntries(char *ctx, LONG keyIndex, WORD rowIndex);
 extern LONG NEWGRID_FindNextFlaggedEntry(LONG mode, LONG startIndex);
 extern void NEWGRID_ValidateSelectionCode(char *ctx, LONG code);
 extern LONG NEWGRID_GetGridModeIndex(void);

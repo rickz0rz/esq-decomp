@@ -1,4 +1,4 @@
-BEGIN{h_draw_cursor=0;h_redraw_cursor=0;h_draw_edit=0;h_load_buffers=0;h_draw_help_panels=0;h_update_adnum=0;h_display=0;h_setapen=0;h_setdrmd=0;h_state4=0;h_state5=0;h_save_flag=0;h_ring=0;h_rts=0}
+BEGIN{h_draw_cursor=0;h_redraw_cursor=0;h_draw_edit=0;h_load_buffers=0;h_draw_help_panels=0;h_update_adnum=0;h_display=0;h_setapen=0;h_setdrmd=0;h_state4=0;h_state5=0;h_save_flag=0;h_ring=0;h_digit_store=0;h_digit_advance=0;h_rts=0}
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
 {
     l=t($0)
@@ -16,6 +16,8 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l~/MOVE\.B #\$?5,ED_MENUSTATEID/)h_state5=1
     if(l~/MOVE\.L #\$?1,ED_SAVETEXTADSONEXITFLAG/ || l~/MOVE\.L D[0-7],ED_SAVETEXTADSONEXITFLAG/)h_save_flag=1
     if(l~/ED_STATERINGINDEX/ || l~/ED_STATERINGTABLE/ || l~/ED_LASTMENUINPUTCHAR/)h_ring=1
+    if((l~/MOVE\.B .*ED_EDITBUFFERSCRATCH/ || l~/MOVE\.B .*\(A0\)/ || l~/MOVE\.B .*\(A1,D[0-7]\.L\)/ || l~/MOVE\.B .*\$0\(A1,D[0-7]\.L\)/) && l!~/ED_LASTKEYCODE/)h_digit_store++
+    if(l~/ADDQ\.L #\$?1,ED_EDITCURSOROFFSET/ || l~/SUBQ\.L #\$?1,ED_EDITCURSOROFFSET/)h_digit_advance=1
     if(l=="RTS")h_rts=1
 }
 END{
@@ -32,5 +34,7 @@ END{
     print "HAS_STATE5="h_state5
     print "HAS_SAVE_FLAG="h_save_flag
     print "HAS_RING_NAV="h_ring
+    print "HAS_MULTI_SCRATCH_WRITES="(h_digit_store >= 2 ? 1 : 0)
+    print "HAS_CURSOR_OFFSET_STEP="h_digit_advance
     print "HAS_RTS="h_rts
 }

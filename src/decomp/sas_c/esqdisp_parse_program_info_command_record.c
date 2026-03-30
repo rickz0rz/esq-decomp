@@ -187,8 +187,17 @@ void ESQDISP_ParseProgramInfoCommandRecord(char *record)
                             ESQDISP_ParseYesNoFlag((UBYTE)attrPtr[1], 0x04));
             }
 
-            field41 = ESQDISP_ParseBoundedHexDigit((UBYTE)attrPtr[2], 15, 0);
-            field42 = ESQDISP_ParseBoundedHexDigit((UBYTE)attrPtr[3], 3, 1);
+            if (fieldLength > 2) {
+                field41 = ESQDISP_ParseBoundedHexDigit((UBYTE)attrPtr[2], 15, 0);
+            } else {
+                field41 = 0xff;
+            }
+
+            if (fieldLength > 3) {
+                field42 = ESQDISP_ParseBoundedHexDigit((UBYTE)attrPtr[3], 3, 1);
+            } else {
+                field42 = 0xff;
+            }
 
             if (fieldLength > 5) {
                 ESQFUNC_JMPTBL_STRING_CopyPadNul(attrText, &attrPtr[4], 2);

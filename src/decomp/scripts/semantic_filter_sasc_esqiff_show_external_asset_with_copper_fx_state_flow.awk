@@ -44,12 +44,23 @@ BEGIN {
 
     has_palette_refresh = 0
     saw_palette_mode = 0
+    saw_palette_mode_zero = 0
+    saw_palette_mode_one = 0
+    palette_mode_branch_window = 0
     plane_mask_calls = 0
     saw_palette_triples = 0
 
     has_capture_sequence = 0
     capture_calls = 0
     capture_value_hits = 0
+
+    has_capture_activation_decision = 0
+    saw_capture_gate_row0 = 0
+    saw_capture_gate_row1 = 0
+    saw_capture_gate_row2 = 0
+    saw_capture_gate_row3 = 0
+    saw_capture_gate_set = 0
+    saw_capture_gate_clear = 0
 
     has_capture_enable_gate = 0
     capture_enable_refs = 0
@@ -214,13 +225,37 @@ function trim(s, t) {
     if (u ~ /\$148\(A5\)/ || u ~ /328\(A0\)/ || u ~ /ESQIFF_BRUSH_PALETTEMODEOFFSET/) {
         saw_palette_mode = 1
     }
+    if (u ~ /LEA \$148\(A5\),A0/ || u ~ /MOVE\.L \(A0\),D0/ ||
+        u ~ /MOVE\.L ESQIFF_BRUSH_PALETTEMODEOFFSET/) {
+        palette_mode_branch_window = 4
+    }
+    if (u ~ /TST\.L 328\(A0\)/ || u ~ /TST\.L ESQIFF_BRUSH_PALETTEMODEOFFSET/ ||
+        u ~ /CMP\.L #0,/ || u ~ /CMPI\.L #0,/) {
+        saw_palette_mode_zero = 1
+    }
+    if (palette_mode_branch_window > 0 &&
+        (u ~ /^BEQ\./ || u ~ /^BEQ /)) {
+        saw_palette_mode_zero = 1
+    }
+    if (u ~ /MOVEQ\.L #\$1,D0/ || u ~ /MOVEQ\.L #1,D0/ ||
+        u ~ /MOVEQ #\$1,D0/ || u ~ /MOVEQ #1,D0/ ||
+        u ~ /CMP\.L 328\(A0\),D0/ || u ~ /CMP\.L ESQIFF_BRUSH_PALETTEMODEOFFSET,D0/ ||
+        u ~ /CMP\.L D0,328\(A0\)/ || u ~ /CMP\.L D0,ESQIFF_BRUSH_PALETTEMODEOFFSET/ ||
+        u ~ /CMPI\.L #\$1,/ || u ~ /CMPI\.L #1,/) {
+        saw_palette_mode_one = 1
+    }
+    if (palette_mode_branch_window > 0 &&
+        (u ~ /SUBQ\.L #\$1,D0/ || u ~ /SUBQ\.L #1,D0/)) {
+        saw_palette_mode_one = 1
+    }
     if (u ~ /BRUSH_PLANEMASKFORINDEX/) {
         plane_mask_calls++
     }
     if (u ~ /WDISP_PALETTETRIPLESRBASE/) {
         saw_palette_triples = 1
     }
-    if (saw_palette_mode && plane_mask_calls >= 2 && saw_palette_triples) {
+    if (saw_palette_mode && saw_palette_mode_zero && saw_palette_mode_one &&
+        plane_mask_calls >= 2 && saw_palette_triples) {
         has_palette_refresh = 1
     }
 
@@ -233,6 +268,34 @@ function trim(s, t) {
     if ((capture_calls >= 4 && capture_value_hits >= 4) ||
         capture_value_hits >= 8) {
         has_capture_sequence = 1
+    }
+
+    if (u ~ /ACCUMULATOR_ROW0_CAPTUREVALUE/ && u ~ /(TST\.W|MOVE\.W)/) {
+        saw_capture_gate_row0 = 1
+    }
+    if (u ~ /ACCUMULATOR_ROW1_CAPTUREVALUE/ && u ~ /(TST\.W|MOVE\.W)/) {
+        saw_capture_gate_row1 = 1
+    }
+    if (u ~ /ACCUMULATOR_ROW2_CAPTUREVALUE/ && u ~ /(TST\.W|MOVE\.W)/) {
+        saw_capture_gate_row2 = 1
+    }
+    if ((u ~ /ACCUMULATOR_ROW3_CAPTUREVALUE/ && u ~ /(TST\.W|MOVE\.W)/) ||
+        (u ~ /TST\.W D1/ || u ~ /MOVE\.W D0,ACCUMULATOR_ROW3_CAPTUREVALUE/)) {
+        saw_capture_gate_row3 = 1
+    }
+    if (u ~ /WDISP_ACCUMULATORCAPTUREACTIVE/ &&
+        (u ~ /MOVE\.W #\$1/ || u ~ /MOVE\.W #1/ || u ~ /CLR\.W/)) {
+        if (u ~ /MOVE\.W #\$1/ || u ~ /MOVE\.W #1/) {
+            saw_capture_gate_set = 1
+        }
+        if (u ~ /CLR\.W/) {
+            saw_capture_gate_clear = 1
+        }
+    }
+    if (saw_capture_gate_row0 && saw_capture_gate_row1 &&
+        saw_capture_gate_row2 && saw_capture_gate_row3 &&
+        saw_capture_gate_set && saw_capture_gate_clear) {
+        has_capture_activation_decision = 1
     }
 
     if (capture_enable_refs >= 2) {
@@ -250,6 +313,10 @@ function trim(s, t) {
     if (u ~ /ESQIFF_RUNCOPPERRISETRANSITION/) {
         has_rise_transition = 1
     }
+
+    if (palette_mode_branch_window > 0) {
+        palette_mode_branch_window--
+    }
 }
 
 END {
@@ -262,6 +329,7 @@ END {
     print "HAS_DRAW_SEQUENCE=" has_draw_sequence
     print "HAS_PALETTE_REFRESH=" has_palette_refresh
     print "HAS_CAPTURE_SEQUENCE=" has_capture_sequence
+    print "HAS_CAPTURE_ACTIVATION_DECISION=" has_capture_activation_decision
     print "HAS_CAPTURE_ENABLE_GATE=" has_capture_enable_gate
     print "HAS_ACCUMULATOR_RESETS=" has_accumulator_resets
     print "HAS_RISE_TRANSITION=" has_rise_transition

@@ -1,8 +1,14 @@
 BEGIN{
     h_entry=0
     h_guard=0
+    h_row_guard_low=0
+    h_row_guard_high=0
+    h_title_table_deref=0
     h_prefix=0
+    h_scratch_copy=0
     h_24h=0
+    h_entry_flag_gate=0
+    h_custom_render_gate=0
     h_render_variant=0
     c_render_variant=0
     h_layout_append=0
@@ -41,8 +47,14 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l=="")next
     if(l ~ /^NEWGRID_DRAWGRIDENTRY:/ || l ~ /^NEWGRID_DRAWGRIDENTRY[A-Z0-9_]*:/)h_entry=1
     if(l ~ /SCRIPT_PTRNODATAPLACEHOLDER/ || l ~ /DRAW_MISSING_ENTRY/ || l ~ /BLE\.W .*DRAW_MISSING_ENTRY/)h_guard=1
+    if(l ~ /TST\.W D7/ || l ~ /CMP\.W D0,D7/ || l ~ /BLS\.B .*DRAWGRIDENTRY__6/)h_row_guard_low=1
+    if(l ~ /MOVEQ #49,D0/ || l ~ /MOVEQ\.L #\$31,D0/ || l ~ /CMP\.W D0,D7/)h_row_guard_high=1
+    if(l ~ /56\(A0,D0\.L\)/ || l ~ /\$38\(A0\)/ || l ~ /ASL\.L #2,D0/)h_title_table_deref=1
     if(l ~ /#\$28/ || l ~ /#\$3A/ || l ~ /ADD\.L D0,-16\(A5\)/)h_prefix=1
+    if(l ~ /MOVE\.B \(A0\)\+,\(A1\)\+/ || l ~ /MOVE\.B D0,\(A0\)/ || l ~ /TST\.B D0/)h_scratch_copy=1
     if(l ~ /(JSR|BSR).*NEWGRID_APPLY24HOURFORMATTING/ || l ~ /APPLY24HOURFORMATTING/)h_24h=1
+    if(l ~ /BTST #1,7\(A0,D7\.W\)/ || l ~ /BTST #\$1,\$7\(A2,D0\.L\)/ || l ~ /BTST #4,27\(A2\)/ || l ~ /BTST #\$4,\$1B\(A0\)/)h_entry_flag_gate=1
+    if(l ~ /TST\.L D5/ || l ~ /CMP\.W D0,D6/ || l ~ /SUBQ\.W #\$3,D0/)h_custom_render_gate=1
     if(l ~ /(JSR|BSR).*RENDERCLOCKFORMATENTRYVARIANT/ || l ~ /RENDERCLOCKFORMATENTRYVAR/ || l ~ /RENDERCLOCKF/)h_render_variant=1
     if(l ~ /^(JSR|BSR)(\.[WL])? .*RENDERCLOCKFORMATENTRYVARIANT/ || l ~ /^(JSR|BSR)(\.[WL])? .*RENDERCLOCKFORMATENTRYVAR/ || l ~ /^(JSR|BSR)(\.[WL])? .*RENDERCLOCKF/)c_render_variant++
     if(l ~ /(JSR|BSR).*LAYOUTANDAPPENDTOBUFFER/ || l ~ /LAYOUTANDAPPENDTOBUF/ || l ~ /DISPTEXT_LAYOUTA/ || l ~ /LAYOUTA/)h_layout_append=1
@@ -77,8 +89,14 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
 END{
     print "HAS_ENTRY="h_entry
     print "HAS_GUARD_CHAIN="h_guard
+    print "HAS_ROW_GUARD_LOW="h_row_guard_low
+    print "HAS_ROW_GUARD_HIGH="h_row_guard_high
+    print "HAS_TITLE_TABLE_DEREF="h_title_table_deref
     print "HAS_TIME_PREFIX_SKIP="h_prefix
+    print "HAS_SCRATCH_COPY_LOOP="h_scratch_copy
     print "HAS_24H_FORMAT="h_24h
+    print "HAS_ENTRY_FLAG_GATE="h_entry_flag_gate
+    print "HAS_CUSTOM_RENDER_GATE="h_custom_render_gate
     print "HAS_CLOCK_RENDER_VARIANT="h_render_variant
     print "COUNT_CLOCK_RENDER_VARIANT="c_render_variant
     print "HAS_LAYOUT_APPEND="h_layout_append

@@ -6,7 +6,9 @@ BEGIN {
     entry_scan_pos = 0
     entry_retry_cap_pos = 0
     override_state_pos = 0
-    reset_indices_pos = 0
+    reset_seed_pos = 0
+    reset_match_write_pos = 0
+    reset_clock_write_pos = 0
     disable_highlight_pos = 0
     copper_drop_pos = 0
     build_ctx_count = 0
@@ -104,10 +106,20 @@ function trim(s, t) {
         (u ~ /MOVE.W #\$2,\$42\(A7\)/ || u ~ /MOVE.W #2,-40\(A5\)/)) {
         override_state_pos = NR
     }
-    if (reset_indices_pos == 0 &&
-        u ~ /CLEANUP_ALIGNEDSTATUSMATCHINDEX/ && u ~ /CLEANUP_ALIGNEDSTATUSCLOCKENTRYI/ &&
-        (u ~ /#\\$FFFFFFFF/ || u ~ /#-1/)) {
-        reset_indices_pos = NR
+    if (reset_seed_pos == 0 &&
+        (u ~ /MOVEQ(\.L)? #\$FF/ || u ~ /MOVEQ #-1/ ||
+         u ~ /#\$FFFFFFFF/ || u ~ /#\(-1\)/ || u ~ /#-1/)) {
+        reset_seed_pos = NR
+    }
+    if (reset_match_write_pos == 0 &&
+        u ~ /CLEANUP_ALIGNEDSTATUSMATCHINDEX/ &&
+        (reset_seed_pos > 0 || u ~ /#\$FFFFFFFF/ || u ~ /#\(-1\)/ || u ~ /#-1/)) {
+        reset_match_write_pos = NR
+    }
+    if (reset_clock_write_pos == 0 &&
+        u ~ /CLEANUP_ALIGNEDSTATUSCLOCKENTRYI/ &&
+        (reset_seed_pos > 0 || u ~ /#\$FFFFFFFF/ || u ~ /#\(-1\)/ || u ~ /#-1/)) {
+        reset_clock_write_pos = NR
     }
     if (disable_highlight_pos == 0 &&
         (u ~ /ESQ_SETCOPPEREFFECT_OFFDISABLEHI/ ||
@@ -220,7 +232,7 @@ function trim(s, t) {
         build_status_line_pos = NR
     }
     if (banner_reset_pos == 0 &&
-        u ~ /TEXTDISP_BANNERCHARSELECTED/ && (u ~ /#\\$64/ || u ~ /#100/)) {
+        u ~ /TEXTDISP_BANNERCHARSELECTED/ && (u ~ /#\$64/ || u ~ /#100/)) {
         banner_reset_pos = NR
     }
     if (pen_reset_pos == 0 &&
@@ -269,7 +281,10 @@ END {
     print "HAS_TEMPLATE_AND_CHANNEL_SETUP=" (template_source_pos > 0 && channel_code_pos > template_source_pos)
     print "HAS_CLOCK_BUFFER_PREP_AFTER_TEMPLATE=" (prepare_clock_pos > channel_code_pos)
     print "HAS_ENTRY_SCAN_WITH_RETRY_CAP=" (entry_scan_pos > prepare_clock_pos && entry_retry_cap_pos > entry_scan_pos)
-    print "HAS_TEMPLATE_OVERRIDE_AND_RESET_FLOW=" (override_state_pos > entry_scan_pos && reset_indices_pos > override_state_pos)
+    print "HAS_TEMPLATE_OVERRIDE_AND_RESET_FLOW=" (override_state_pos > entry_scan_pos &&
+        reset_seed_pos > override_state_pos &&
+        reset_match_write_pos >= reset_seed_pos &&
+        reset_clock_write_pos >= reset_match_write_pos)
     print "HAS_PRE_DROP_DISPLAY_PHASE=" (copper_drop_pos > 0 && (disable_highlight_pos == 0 || disable_highlight_pos < copper_drop_pos))
     print "HAS_DUAL_CONTEXT_SETUP=" (build_ctx_count >= 2 && first_build_ctx_pos > copper_drop_pos && second_build_ctx_pos > first_build_ctx_pos)
     print "HAS_BRUSH_SERIAL_AND_CLEAR_PHASE=" (brush_select_pos > first_build_ctx_pos && serial_shadow_pos > second_build_ctx_pos &&

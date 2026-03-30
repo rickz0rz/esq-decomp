@@ -6,6 +6,9 @@ cd "$ROOT_DIR"
 
 SASC_SRC="esqfunc_draw_diagnostics_screen.c"
 SASC_DIS="src/decomp/sas_c/${SASC_SRC}.dis"
+if [ ! -f "$SASC_DIS" ] && [ -f "src/decomp/sas_c/${SASC_SRC}.c.dis" ]; then
+  SASC_DIS="src/decomp/sas_c/${SASC_SRC}.c.dis"
+fi
 ORIG_ASM="src/modules/groups/a/n/esqfunc.s"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="esqfunc_draw_diagnostics_screen"

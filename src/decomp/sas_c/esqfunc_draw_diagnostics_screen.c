@@ -5,6 +5,12 @@ typedef struct ESQFUNC_DisplayContext {
     UBYTE rastPort[1];
 } ESQFUNC_DisplayContext;
 
+typedef struct ESQFUNC_LocavailFilterState {
+    LONG pad00[2];
+    LONG field08;
+    LONG field0C;
+} ESQFUNC_LocavailFilterState;
+
 extern LONG WDISP_DisplayContextBase;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *Global_HANDLE_TOPAZ_FONT;
@@ -28,8 +34,7 @@ extern WORD DATACErrs;
 extern WORD TEXTDISP_DeferredActionCountdown;
 extern WORD TEXTDISP_DeferredActionArmed;
 
-extern LONG LOCAVAIL_PrimaryFilterState_Field08;
-extern LONG LOCAVAIL_PrimaryFilterState_Field0C;
+extern ESQFUNC_LocavailFilterState LOCAVAIL_PrimaryFilterState;
 extern LONG LOCAVAIL_FilterModeFlag;
 extern LONG LOCAVAIL_FilterStep;
 extern LONG LOCAVAIL_FilterClassId;
@@ -51,14 +56,8 @@ extern WORD Global_WORD_H_VALUE;
 extern WORD Global_WORD_T_VALUE;
 extern WORD Global_WORD_MAX_VALUE;
 
-extern WORD ESQ_CopperStatusDigitsA;
-extern WORD ESQ_CopperStatusDigitsB;
-extern WORD ESQ_CopperStatusDigitsA_ColorRegistersA;
-extern WORD ESQ_CopperStatusDigitsA_ColorRegistersB;
-extern WORD ESQ_CopperStatusDigitsA_ColorRegistersC;
-extern WORD ESQ_CopperStatusDigitsA_TailColorWord;
-extern WORD ESQ_CopperStatusDigitsB_ColorRegistersA;
-extern WORD ESQ_CopperStatusDigitsB_TailColorWord;
+extern UWORD ESQ_CopperStatusDigitsA[];
+extern UWORD ESQ_CopperStatusDigitsB[];
 
 extern const char *ESQFUNC_VideoInsertionStateStrings[];
 extern const char ESQFUNC_FMT_CARTSW_COLON_PCT_S_CARTREL_COLON_PCT[];
@@ -93,6 +92,13 @@ extern LONG SCRIPT_ReadHandshakeBit3Flag(void);
 extern LONG PARSEINI_ComputeHTCMaxValues(void);
 extern LONG PARSEINI_UpdateCtrlHDeltaMax(void);
 
+#define ESQFUNC_COPPER_A_COLOR_REG_A_INDEX 2
+#define ESQFUNC_COPPER_A_COLOR_REG_B_INDEX 14
+#define ESQFUNC_COPPER_A_COLOR_REG_C_INDEX 30
+#define ESQFUNC_COPPER_A_TAIL_INDEX 62
+#define ESQFUNC_COPPER_B_COLOR_REG_A_INDEX 2
+#define ESQFUNC_COPPER_B_TAIL_INDEX 14
+
 void ESQFUNC_DrawDiagnosticsScreen(void)
 {
     char lineBuffer[132];
@@ -114,14 +120,14 @@ void ESQFUNC_DrawDiagnosticsScreen(void)
     videoInsertionStateStrings[2] = ESQFUNC_VideoInsertionStateStrings[2];
     videoInsertionStateStrings[3] = ESQFUNC_VideoInsertionStateStrings[3];
 
-    ESQ_CopperStatusDigitsA_ColorRegistersA = 0x0fff;
-    ESQ_CopperStatusDigitsB_ColorRegistersA = 0x0fff;
-    ESQ_CopperStatusDigitsA = 0;
-    ESQ_CopperStatusDigitsB = 0;
-    ESQ_CopperStatusDigitsA_ColorRegistersB = 0;
-    ESQ_CopperStatusDigitsB_TailColorWord = 0;
-    ESQ_CopperStatusDigitsA_ColorRegistersC = 0;
-    ESQ_CopperStatusDigitsA_TailColorWord = 0;
+    ESQ_CopperStatusDigitsA[ESQFUNC_COPPER_A_COLOR_REG_A_INDEX] = 0x0fff;
+    ESQ_CopperStatusDigitsB[ESQFUNC_COPPER_B_COLOR_REG_A_INDEX] = 0x0fff;
+    ESQ_CopperStatusDigitsA[0] = 0;
+    ESQ_CopperStatusDigitsB[0] = 0;
+    ESQ_CopperStatusDigitsA[ESQFUNC_COPPER_A_COLOR_REG_B_INDEX] = 0;
+    ESQ_CopperStatusDigitsB[ESQFUNC_COPPER_B_TAIL_INDEX] = 0;
+    ESQ_CopperStatusDigitsA[ESQFUNC_COPPER_A_COLOR_REG_C_INDEX] = 0;
+    ESQ_CopperStatusDigitsA[ESQFUNC_COPPER_A_TAIL_INDEX] = 0;
 
     displayContext = (ESQFUNC_DisplayContext *)WDISP_DisplayContextBase;
     rastPort = (char *)displayContext->rastPort;
@@ -179,8 +185,8 @@ void ESQFUNC_DrawDiagnosticsScreen(void)
         LOCAVAIL_FilterModeFlag,
         LOCAVAIL_FilterStep,
         LOCAVAIL_FilterClassId,
-        LOCAVAIL_PrimaryFilterState_Field08,
-        LOCAVAIL_PrimaryFilterState_Field0C
+        LOCAVAIL_PrimaryFilterState.field08,
+        LOCAVAIL_PrimaryFilterState.field0C
     );
     TLIBA3_DrawCenteredWrappedTextLines(rastPort, lineBuffer, 128);
 

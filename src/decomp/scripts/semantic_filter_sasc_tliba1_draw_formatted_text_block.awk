@@ -11,7 +11,10 @@ BEGIN {
     has_const24=0
     has_const25=0
     has_const6=0
+    has_marker_run_count=0
+    has_record_index_rewind=0
     has_space_rewrite=0
+    has_space_rewrite_gate=0
     has_const3=0
     has_const10=0
     has_const8=0
@@ -36,6 +39,11 @@ BEGIN {
     has_drawy_running_load=0
     has_drawy_baseline_load=0
     has_drawy_storeback=0
+    has_line_divisor_bump=0
+    saw_box_width_load=0
+    saw_line_width_load=0
+    has_box_width_clamp=0
+    box_width_clamp_pending=0
     in_draw_y_window=0
     has_return=0
 }
@@ -68,6 +76,8 @@ function trim(s, t) {
     if (u ~ /#24/ || u ~ /#\$18/) has_const24=1
     if (u ~ /#25/ || u ~ /#\$19/) has_const25=1
     if (u ~ /#6([^0-9]|$)/ || u ~ /#\$06/ || u ~ /#\$6([^0-9A-F]|$)/) has_const6=1
+    if (u ~ /ADDQ\.W #1,-18\(A5\)/ || u ~ /ADDQ\.W #\$1,\$44\(A7\)/) has_marker_run_count=1
+    if (u ~ /SUBQ\.W #1,-28\(A5\)/ || u ~ /SUBQ\.W #\$1,\$42\(A7\)/) has_record_index_rewind=1
     if (u ~ /#3([^0-9]|$)/ || u ~ /#\$03/ || u ~ /#\$3([^0-9A-F]|$)/) has_const3=1
     if (u ~ /#10/ || u ~ /#\$0A/ || u ~ /#\$A([^0-9A-F]|$)/ || u ~ /\(\$A\)/) has_const10=1
     if (u ~ /#8([^0-9]|$)/ || u ~ /#\$08/ || u ~ /#\$8([^0-9A-F]|$)/) has_const8=1
@@ -79,9 +89,18 @@ function trim(s, t) {
     if (u ~ /CLR\.W 8\(A0,D[0-7]\.L\)/ || u ~ /CLR\.W \$8\(A[016]\)/ || u ~ /MOVE\.W D1,8\(A0,D0\.L\)/) has_record_extra_spacing_clear=1
     if (u ~ /CLR\.B \(A0\)/) has_segment_terminator_write=1
     if (u ~ /#32([^0-9]|$)/ || u ~ /#\$20/) has_space_rewrite=1
+    if (u ~ /TST\.W -38\(A5\)/ || u ~ /TST\.W \$34\(A7\)/) has_space_rewrite_gate=1
     if (u ~ /TST\.W -38\(A5\)/ || u ~ /TST\.L \$40\(A7\)/ || u ~ /TST\.W \$36\(A7\)/) has_prevue_font_gate=1
     if ((u ~ /NOT\.B D[12]/) || (u ~ /CLEANUP_ALIGNEDINSETNIBBLE/ && u ~ /CMP\.L D[01],D[01]/)) has_inset_guard=1
     if (u ~ /TST\.W 8\(A0,D[0-7]\.L\)/ || u ~ /TST\.W \$8\(A0,D[0-7]\.L\)/ || u ~ /TST\.W \$8\(A0\)/ || u ~ /TST\.W \$8\(A6\)/) has_extra_spacing_flag=1
+    if (u ~ /ADDQ\.W #1,-32\(A5\)/ || u ~ /ADDQ\.W #\$1,\$40\(A7\)/) has_line_divisor_bump=1
+    if (u ~ /MOVE\.W -14\(A5\),D[01]/ || u ~ /MOVE\.W \$60\(A7\),D[01]/) saw_box_width_load=1
+    if (u ~ /MOVE\.W -20\(A5\),D[01]/ || u ~ /MOVE\.W \$38\(A7\),D[01]/) saw_line_width_load=1
+    if ((saw_box_width_load || saw_line_width_load) && u ~ /CMP\.W D[01],D[01]/) box_width_clamp_pending=1
+    if (box_width_clamp_pending && (u ~ /MOVE\.W D[01],-20\(A5\)/ || u ~ /MOVE\.W D[01],\$38\(A7\)/)) {
+        has_box_width_clamp=1
+        box_width_clamp_pending=0
+    }
     if (u ~ /TST\.W 8\(A0,D[0-7]\.L\)/ || u ~ /TST\.W \$8\(A0,D[0-7]\.L\)/ || u ~ /TST\.W \$8\(A0\)/ || u ~ /TST\.W \$8\(A6\)/) in_draw_y_window=1
     if (in_draw_y_window && (u ~ /MOVE\.W -30\(A5\),D[0-7]/ || u ~ /MOVE\.W \$3C\(A7\),D[0-7]/)) has_drawy_running_load=1
     if (in_draw_y_window && (u ~ /MOVE\.W 58\(A3\),D[0-7]/ || u ~ /MOVE\.W \$3E\(A2\),D[0-7]/)) has_drawy_baseline_load=1
@@ -111,7 +130,10 @@ END {
     print "HAS_CONST_24="has_const24
     print "HAS_CONST_25="has_const25
     print "HAS_CONST_6="has_const6
+    print "HAS_MARKER_RUN_COUNT="has_marker_run_count
+    print "HAS_RECORD_INDEX_REWIND="has_record_index_rewind
     print "HAS_SPACE_REWRITE="has_space_rewrite
+    print "HAS_SPACE_REWRITE_GATE="has_space_rewrite_gate
     print "HAS_CONST_3="has_const3
     print "HAS_CONST_10="has_const10
     print "HAS_CONST_8="has_const8
@@ -125,6 +147,8 @@ END {
     print "HAS_PREVUE_FONT_GATE="has_prevue_font_gate
     print "HAS_INSET_GUARD="has_inset_guard
     print "HAS_EXTRA_SPACING_FLAG="has_extra_spacing_flag
+    print "HAS_LINE_DIVISOR_BUMP="has_line_divisor_bump
+    print "HAS_BOX_WIDTH_CLAMP="has_box_width_clamp
     print "HAS_CENTER_ROUND_FIX="has_center_round_fix
     print "HAS_SAVED_PEN_RESTORE="has_saved_pen_restore
     print "HAS_TX_BASELINE="has_txbaseline

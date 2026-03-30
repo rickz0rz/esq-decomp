@@ -30,8 +30,25 @@ BEGIN {
     has_saved_input_char=0
     has_saved_input_compare=0
     has_saved_input_return=0
+    has_early_flush_before_alloc=0
+    has_cr_recursive_flush=0
+    has_ctrl_z_scan_loop=0
+    has_ctrl_z_ioerr_guard=0
+    has_ctrl_z_compare=0
+    has_final_flush_check=0
+    has_flush_vs_original_return=0
     has_rts=0
     saw_reset_base_to_a0=0
+    saw_write_remaining_clear=0
+    saw_flush_compare_before_alloc=0
+    saw_cr_store=0
+    saw_recursive_flush_zero_push=0
+    saw_seek_scan=0
+    saw_read_scan=0
+    saw_ioerr_test=0
+    saw_ctrl_z_compare=0
+    saw_flush_reject_mask=0
+    saw_original_input_compare=0
 }
 
 function trim(s, t) {
@@ -86,6 +103,68 @@ function trim(s, t) {
     if (u ~ /^CMP\.L D0,D4$/ || u ~ /^CMP\.L D4,D0$/ ||
         u ~ /^CMP\.L D0,D6$/ || u ~ /^CMP\.L D6,D0$/) has_saved_input_compare=1
     if (u ~ /^MOVE\.L D4,D0$/ || u ~ /^MOVE\.L D6,D0$/) has_saved_input_return=1
+    if (u ~ /^CLR\.L \$C\(A5\)$/ || u ~ /^MOVE\.L D0,STRUCT_PREALLOCHANDLENODE__WRITEREMAINING\(A3\)$/) {
+        saw_write_remaining_clear=1
+    }
+    if (u ~ /^ADDQ\.L #\$1,D0$/ || u ~ /^ADDQ\.L #1,D0$/) {
+        saw_flush_compare_before_alloc=1
+    }
+    if (saw_write_remaining_clear &&
+        (u ~ /^CMP\.L D1,D7$/ || u ~ /^CMP\.L D0,D7$/ || u ~ /^CMP\.L D7,D1$/ || u ~ /^CMP\.L D7,D0$/)) {
+        saw_flush_compare_before_alloc=1
+    }
+    if ((u ~ /^MOVEQ(\.L)? #\$FF,D0$/ || u ~ /^MOVEQ(\.L)? #-1,D0$/ || u ~ /^MOVEQ(\.L)? #-1,D1$/) &&
+        (prev_u ~ /^CMP\.L D0,D7$/ || prev_u ~ /^CMP\.L D1,D7$/ ||
+         prev_u ~ /^MOVEQ(\.L)? #\$FF,D0$/ || prev_u ~ /^MOVEQ(\.L)? #-1,D0$/ ||
+         prev_u ~ /^MOVEQ(\.L)? #-1,D1$/ || prev_u ~ /^ADDQ\.L #\$1,D0$/ ||
+         prev_u ~ /^ADDQ\.L #1,D0$/)) {
+        saw_flush_compare_before_alloc=1
+    }
+    if (has_cr_store && (u ~ /^CLR\.L -\(A7\)$/ || u ~ /^MOVE\.L D0,-\(A7\)$/)) {
+        saw_recursive_flush_zero_push=1
+    }
+    if (saw_recursive_flush_zero_push &&
+        (n ~ /BSRWSTREAMBUFFEREDPUTCORFLUSH/ || n ~ /JSRSTREAMBUFFEREDPUTCORFLUSH/)) {
+        has_cr_recursive_flush=1
+    }
+    if (u ~ /^PEA \(\$2\)\.W$/ || u ~ /^PEA 2\.W$/) {
+        saw_seek_scan=1
+    }
+    if (saw_seek_scan && (n ~ /DOSSEEKBYINDEX/)) {
+        saw_seek_scan=2
+    }
+    if (u ~ /^PEA \(\$1\)\.W$/ || u ~ /^PEA 1\.W$/) {
+        saw_read_scan=1
+    }
+    if (saw_read_scan && (n ~ /DOSREADBYINDEX/)) {
+        saw_read_scan=2
+    }
+    if (n ~ /GLOBALDOSIOERR/ || u ~ /^TST\.L GLOBAL_DOSIOERR\(A4\)$/) {
+        saw_ioerr_test=1
+        has_ctrl_z_ioerr_guard=1
+    }
+    if ((u ~ /^MOVEQ(\.L)? #\$1A,D[01]$/ || u ~ /^MOVEQ(\.L)? #26,D[01]$/) &&
+        (saw_ioerr_test || saw_read_scan == 2)) {
+        saw_ctrl_z_compare=1
+    }
+    if ((u ~ /^CMP\.B D1,D0$/ || u ~ /^CMP\.B D0,D1$/) &&
+        (saw_ioerr_test || saw_ctrl_z_compare || saw_read_scan == 2)) {
+        saw_ctrl_z_compare=1
+    }
+    if (saw_ctrl_z_compare && has_const1a) has_ctrl_z_compare=1
+    if (saw_seek_scan == 2 && saw_read_scan == 2 && saw_ctrl_z_compare) has_ctrl_z_scan_loop=1
+    if (u ~ /^MOVEQ(\.L)? #\$30,D0$/ || u ~ /^MOVEQ(\.L)? #48,D0$/ ||
+        n ~ /OPENMASKFLUSHREJECT/) {
+        saw_flush_reject_mask=1
+    }
+    if (saw_flush_reject_mask && has_flush_reject && (u ~ /^CMP\.L D0,D4$/ || u ~ /^CMP\.L D0,D6$/)) {
+        saw_original_input_compare=1
+    }
+    if (saw_original_input_compare && (u ~ /^MOVEQ(\.L)? #\$0,D0$/ || u ~ /^MOVEQ #0,D0$/)) {
+        has_flush_vs_original_return=1
+    }
+    if (saw_flush_reject_mask && has_flush_reject && has_saved_input_compare) has_final_flush_check=1
+    if (saw_write_remaining_clear && saw_flush_compare_before_alloc) has_early_flush_before_alloc=1
     if (u == "RTS") has_rts=1
 
     prev_u=u
@@ -124,5 +203,12 @@ END {
     print "HAS_SAVED_INPUT_CHAR="has_saved_input_char
     print "HAS_SAVED_INPUT_COMPARE="has_saved_input_compare
     print "HAS_SAVED_INPUT_RETURN="has_saved_input_return
+    print "HAS_EARLY_FLUSH_BEFORE_ALLOC="has_early_flush_before_alloc
+    print "HAS_CR_RECURSIVE_FLUSH="has_cr_recursive_flush
+    print "HAS_CTRL_Z_SCAN_LOOP="has_ctrl_z_scan_loop
+    print "HAS_CTRL_Z_IOERR_GUARD="has_ctrl_z_ioerr_guard
+    print "HAS_CTRL_Z_COMPARE="has_ctrl_z_compare
+    print "HAS_FINAL_FLUSH_CHECK="has_final_flush_check
+    print "HAS_FLUSH_VS_ORIGINAL_RETURN="has_flush_vs_original_return
     print "HAS_RTS="has_rts
 }

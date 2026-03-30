@@ -5,6 +5,7 @@ BEGIN {
     has_consume = 0
     has_skip_ws = 0
     has_findchar = 0
+    has_findchar_eq = 0
     has_findany = 0
     has_compare = 0
     has_section_qtable = 0
@@ -40,7 +41,9 @@ BEGIN {
     has_dispatch_switch = 0
     has_qtable_quote_fail_return = 0
     has_qtable_alias_increment = 0
+    qtable_quote_find_count = 0
     has_cleanup = 0
+    has_cleanup_tag = 0
     has_cleanup_size_plus_one = 0
     has_return = 0
 }
@@ -67,6 +70,7 @@ function trim(s, t) {
     if (n ~ /PARSEINIJMPTBLDISKIOCONSUMELINEFROMWORKBUFFER/ || n ~ /DISKIOCONSUMELINEFROMWORKBUFFER/) has_consume = 1
     if (n ~ /PARSEINISKIPCLASS3CHARS/ || n ~ /WDISPCHARCLASSTABLE/) has_skip_ws = 1
     if (n ~ /PARSEINIJMPTBLSTRFINDCHARPTR/ || n ~ /STRFINDCHARPTR/) has_findchar = 1
+    if ((n ~ /PEA34W/ || n ~ /PEA22W/ || n ~ /PEA61W/ || n ~ /PEA3DW/ || n ~ /MOVEQ61D0/ || n ~ /MOVEQ3DD0/) && has_findchar) has_findchar_eq = 1
     if (n ~ /PARSEINIJMPTBLSTRFINDANYCHARPTR/ || n ~ /STRFINDANYCHARPTR/) has_findany = 1
     if (n ~ /PARSEINIJMPTBLSTRINGCOMPARENOCASE/ || n ~ /STRINGCOMPARENOCASE/) has_compare = 1
 
@@ -87,7 +91,8 @@ function trim(s, t) {
     if (n ~ /TEXTDISPCLEARSOURCECONFIG/) has_source_config_clear = 1
 
     if (n ~ /PARSEINIDELIMSPACETABSECTION1/) has_qtable_delim = 1
-    if (n ~ /TEXTDISPALIASPTRTABLE/ || n ~ /MEMORYALLOCATEMEMORY/) has_qtable_alloc = 1
+    if (n ~ /TEXTDISPALIASPTRTABLE/) has_qtable_alloc = 1
+    if (n ~ /MEMORYALLOCATEMEMORY/) has_qtable_alloc = 1
     if (n ~ /ESQPARSREPLACEOWNEDSTRING/) has_qtable_store = 1
     if (n ~ /TEXTDISPALIASCOUNT/) has_qtable_reset = 1
 
@@ -110,8 +115,10 @@ function trim(s, t) {
     if (n ~ /MOVEQ0D7/ || n ~ /MOVEQL0D0/ || n ~ /MOVEQ0D0MOVELD038A7/ || n ~ /MOVEQL0D0MOVELD038A7/) has_unknown_section_reset = 1
     if (n ~ /DISPATCHTABLE/ || n ~ /SWITCHPARSEINIPARSEINIBUFFERANDDISPAT/) has_dispatch_switch = 1
 
-    if (n ~ /MEMORYDEALLOCATEMEMORY/ || n ~ /GLOBALSTRPARSEINIC2/) has_cleanup = 1
-    if (n ~ /CLRWTEXTDISPALIASCOUNT/ || n ~ /PEA22W/) has_qtable_quote_fail_return = 1
+    if (n ~ /PEA34W/ || n ~ /PEA22W/) qtable_quote_find_count++
+    if (n ~ /CLRWTEXTDISPALIASCOUNT/ && qtable_quote_find_count >= 1) has_qtable_quote_fail_return = 1
+    if (n ~ /MEMORYDEALLOCATEMEMORY/) has_cleanup = 1
+    if (n ~ /GLOBALSTRPARSEINIC2/) has_cleanup_tag = 1
     if (n ~ /ADDQL1D0MOVEWD0TEXTDISPALIASCOUNT/ || n ~ /MOVEWD0TEXTDISPALIASCOUNT/) has_qtable_alias_increment = 1
     if (n ~ /ADDQL1D0/ || n ~ /MOVEW403W/ || n ~ /PEA403W/) has_cleanup_size_plus_one = 1
     if (u ~ /^RTS$/) has_return = 1
@@ -123,7 +130,7 @@ END {
     print "HAS_LOAD_FAIL_RETURN=" has_load_fail_return
     print "HAS_CONSUME=" has_consume
     print "HAS_SKIP_WS=" has_skip_ws
-    print "HAS_FINDCHAR=" has_findchar
+    print "HAS_FINDCHAR=" (has_findchar && has_findchar_eq ? 1 : 0)
     print "HAS_FINDANY=" has_findany
     print "HAS_COMPARE=" has_compare
     print "HAS_SECTION_QTABLE=" has_section_qtable
@@ -150,7 +157,7 @@ END {
     print "HAS_SOURCE_CONFIG_PARSE=" (has_source_config_delim && has_source_config_dispatch ? 1 : 0)
     print "HAS_UNKNOWN_SECTION_RESET=" has_unknown_section_reset
     print "HAS_DISPATCH_SWITCH=" has_dispatch_switch
-    print "HAS_CLEANUP=" has_cleanup
+    print "HAS_CLEANUP=" (has_cleanup && has_cleanup_tag ? 1 : 0)
     print "HAS_CLEANUP_SIZE_PLUS_ONE=" has_cleanup_size_plus_one
     print "HAS_RETURN=" has_return
 }

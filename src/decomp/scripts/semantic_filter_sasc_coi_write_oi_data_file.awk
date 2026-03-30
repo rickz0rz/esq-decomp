@@ -27,8 +27,29 @@ BEGIN {
     count_fmt_long_pad2 = 0
     count_fmt_dec_a = 0
     count_fmt_dec_b = 0
+    count_string_writes = 0
+    count_dynamic_write_ptr_mismatches = 0
+
+    write_sequence = ""
+    pending_symbolic_write = 0
+    last_length_base = ""
+    push1 = ""
+    push2 = ""
+    push3 = ""
 }
 function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
+function append_token(tok) {
+    if (write_sequence != "") {
+        write_sequence = write_sequence " "
+    }
+    write_sequence = write_sequence tok
+    pending_symbolic_write = 1
+}
+function note_push(op) {
+    push1 = push2
+    push2 = push3
+    push3 = op
+}
 {
     line = trim($0)
     if (line == "") next
@@ -52,6 +73,63 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     if (u ~ /CLOCK_FILEEOFMARKERCTRLZ/ || u ~ /CLOCK_FILEEOFMARKERCTR/) has_eof_marker = 1
     if (u == "RTS") has_return = 1
 
+    if (u ~ /^SUBA?\.L [^,]+,[AD][0-7]$/) {
+        last_length_base = u
+        sub(/^SUBA?\.L /, "", last_length_base)
+        sub(/,[AD][0-7]$/, "", last_length_base)
+    }
+    if (u ~ /^(MOVE\.L|MOVEA\.L) [^,]+,-\(A7\)$/) {
+        push_operand = u
+        sub(/^(MOVE\.L|MOVEA\.L) /, "", push_operand)
+        sub(/,-\(A7\)$/, "", push_operand)
+        note_push(push_operand)
+    } else if (u ~ /^PEA .+$/) {
+        push_operand = u
+        sub(/^PEA /, "", push_operand)
+        note_push(push_operand)
+    }
+
+    if (u ~ /COI_FMT_LONG_DEC_A/) {
+        count_fmt_long_a++
+        append_token("FMT_LONG_A")
+    }
+    if (u ~ /COI_FMT_LONG_DEC_B/) {
+        count_fmt_long_b++
+        append_token("FMT_LONG_B")
+    }
+    if (u ~ /COI_FMT_LONG_DEC_C/) {
+        count_fmt_long_c++
+        append_token("FMT_LONG_C")
+    }
+    if (u ~ /COI_FMT_LONG_DEC_PAD2/) {
+        count_fmt_long_pad2++
+        append_token("FMT_LONG_PAD2")
+    }
+    if (u ~ /COI_FMT_DEC_A/) {
+        count_fmt_dec_a++
+        append_token("FMT_DEC_A")
+    }
+    if (u ~ /COI_FMT_DEC_B/) {
+        count_fmt_dec_b++
+        append_token("FMT_DEC_B")
+    }
+    if (u ~ /COI_FIELDDELIMITERTAB/) {
+        count_tab_delims++
+        append_token("TAB")
+    }
+    if (u ~ /COI_RECORDTERMINATORCRLF/) {
+        count_record_terminators++
+        append_token("CRLF")
+    }
+    if (u ~ /COI_STR_COLON_A/) {
+        count_colon_a++
+        append_token("COLON_A")
+    }
+    if (u ~ /COI_STR_COLON_B/) {
+        count_colon_b++
+        append_token("COLON_B")
+    }
+
     if (u ~ /GROUP_AE_JMPTBL_WDISP_SPRINTF/ || u ~ /GROUP_AE_JMPTBL_WDISP_SPRIN/ ||
         u ~ /COI_WRITEFORMATTEDLONG/) {
         count_format_ops++
@@ -60,16 +138,33 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
         u ~ /COI_WRITEFORMATTEDLONG/ || u ~ /COI_WRITECSTRINGIFPRESENT/) {
         count_output_ops++
     }
-    if (u ~ /COI_FIELDDELIMITERTAB/) count_tab_delims++
-    if (u ~ /COI_RECORDTERMINATORCRLF/) count_record_terminators++
-    if (u ~ /COI_STR_COLON_A/) count_colon_a++
-    if (u ~ /COI_STR_COLON_B/) count_colon_b++
-    if (u ~ /COI_FMT_LONG_DEC_A/) count_fmt_long_a++
-    if (u ~ /COI_FMT_LONG_DEC_B/) count_fmt_long_b++
-    if (u ~ /COI_FMT_LONG_DEC_C/) count_fmt_long_c++
-    if (u ~ /COI_FMT_LONG_DEC_PAD2/) count_fmt_long_pad2++
-    if (u ~ /COI_FMT_DEC_A/) count_fmt_dec_a++
-    if (u ~ /COI_FMT_DEC_B/) count_fmt_dec_b++
+    if (u ~ /COI_WRITECSTRINGIFPRESENT/) {
+        count_string_writes++
+        if (write_sequence != "") {
+            write_sequence = write_sequence " "
+        }
+        write_sequence = write_sequence "STR"
+        pending_symbolic_write = 0
+    } else if (u ~ /DISKIO_WRITEBUFFEREDBYTES/ || u ~ /DISKIO_WRITEBUFFEREDBYT/) {
+        if (last_length_base != "") {
+            if (push2 != last_length_base) {
+                count_dynamic_write_ptr_mismatches++
+            }
+        }
+        last_length_base = ""
+        push1 = ""
+        push2 = ""
+        push3 = ""
+        if (pending_symbolic_write != 0) {
+            pending_symbolic_write = 0
+        } else {
+            count_string_writes++
+            if (write_sequence != "") {
+                write_sequence = write_sequence " "
+            }
+            write_sequence = write_sequence "STR"
+        }
+    }
 }
 END {
     print "HAS_LABEL=" has_label
@@ -98,5 +193,8 @@ END {
     print "COUNT_FMT_LONG_PAD2=" count_fmt_long_pad2
     print "COUNT_FMT_DEC_A=" count_fmt_dec_a
     print "COUNT_FMT_DEC_B=" count_fmt_dec_b
+    print "COUNT_STRING_WRITES=" count_string_writes
+    print "COUNT_DYNAMIC_WRITE_PTR_MISMATCHES=" count_dynamic_write_ptr_mismatches
+    print "WRITE_SEQUENCE=" write_sequence
     print "HAS_RETURN=" has_return
 }

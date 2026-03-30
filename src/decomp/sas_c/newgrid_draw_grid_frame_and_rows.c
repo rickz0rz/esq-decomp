@@ -44,9 +44,11 @@ LONG NEWGRID_DrawGridFrameAndRows(char *ctx, LONG rowColorIndex)
     LONG rowHeight;
     LONG isLast;
     LONG hasMultiple;
+    LONG initialIsLast;
 
-    if (DISPTEXT_IsCurrentLineLast() != 0) {
-        return 0;
+    initialIsLast = DISPTEXT_IsCurrentLineLast();
+    if (initialIsLast != 0) {
+        return initialIsLast;
     }
 
     ctxView = (NEWGRID_Context *)ctx;

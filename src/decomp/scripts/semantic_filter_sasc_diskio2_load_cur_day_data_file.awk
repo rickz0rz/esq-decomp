@@ -23,8 +23,11 @@ BEGIN {
     has_load_oi = 0
     has_pending_flags = 0
     has_group_state = 0
+    has_header_code_mask_compare = 0
     has_slot_init = 0
     has_slot_attr_triplet = 0
+    has_entry_flag40_bit7_flow = 0
+    has_sparse_slot_skip_flow = 0
     has_title_slot_replace = 0
     has_title_cleanup = 0
     has_table_store = 0
@@ -37,11 +40,21 @@ BEGIN {
     saw_group_present = 0
     saw_group_mutation = 0
     saw_max_title_reset = 0
+    saw_header_code_notb = 0
+    saw_header_code_and = 0
+    saw_header_code_compare = 0
     saw_slot_flag_init = 0
     saw_slot_text_clear = 0
     saw_slot_attr_fc = 0
     saw_slot_attr_12d = 0
     saw_slot_attr_15e = 0
+    saw_entry_flag40_bit7_clear = 0
+    saw_entry_flag40_bit7_set = 0
+    saw_sparse_slot_sentinel_init = 0
+    saw_sparse_slot_revision_gate = 0
+    saw_sparse_slot_revision_gate_moveq4 = 0
+    saw_sparse_slot_revision_gate_cmp = 0
+    saw_sparse_slot_postloop_refill = 0
     saw_title_replace_store = 0
     saw_entry_table_store = 0
     saw_title_table_store = 0
@@ -106,6 +119,15 @@ function trim(s, t) {
         line ~ /CLR\.W __MERGEDBSS\+\$DC\(A4\)/) saw_max_title_reset = 1
     if (saw_group_present && saw_group_mutation && saw_max_title_reset) has_group_state = 1
 
+    if (line ~ /NOT\.B D0/ || line ~ /NOT\.B D1/) saw_header_code_notb = 1
+    if (line ~ /AND\.L D0,D1/ || line ~ /AND\.L D1,D0/) saw_header_code_and = 1
+    if ((line ~ /TEXTDISP_PRIMARYGROUPCODE/ && line ~ /CMP\.B/) ||
+        line ~ /CMP\.B D0,D1/ ||
+        line ~ /CMP\.B D1,D0/) saw_header_code_compare = 1
+    if (saw_header_code_notb && saw_header_code_and && saw_header_code_compare) {
+        has_header_code_mask_compare = 1
+    }
+
     if (line ~ /MOVE\.B #?\$?1,7\(A2,D5\.W\)/ ||
         line ~ /MOVE\.B #?\$?1,\$7\(A0,D1\.L\)/) saw_slot_flag_init = 1
     if (line ~ /CLR\.L 56\(A2,D0\.L\)/ ||
@@ -116,6 +138,30 @@ function trim(s, t) {
     if (line ~ /#\$12D,D1/ || line ~ /ADDI\.W #\$12D,D1/ || line ~ /ADD\.L #\$12D,D1/) saw_slot_attr_12d = 1
     if (line ~ /#\$15E,D1/ || line ~ /ADDI\.W #\$15E,D1/ || line ~ /ADD\.L #\$15E,D1/) saw_slot_attr_15e = 1
     if (saw_slot_attr_fc && saw_slot_attr_12d && saw_slot_attr_15e) has_slot_attr_triplet = 1
+
+    if (line ~ /ANDI\.W #\$FF7F,D0/ ||
+        line ~ /BCLR #\$?7,\$28\(A0\)/ ||
+        line ~ /BCLR #\$?7,40\(A3\)/) saw_entry_flag40_bit7_clear = 1
+    if (line ~ /ORI\.W #\$80,D0/ ||
+        line ~ /BSET #\$?7,\$28\(A0\)/ ||
+        line ~ /BSET #\$?7,40\(A3\)/) saw_entry_flag40_bit7_set = 1
+    if (saw_entry_flag40_bit7_clear && saw_entry_flag40_bit7_set) has_entry_flag40_bit7_flow = 1
+
+    if (line ~ /MOVE\.W #\(?-1\)?,-28\(A5\)/ ||
+        line ~ /MOVE\.W #\$FFFF,\$4C\(A7\)/ ||
+        line ~ /MOVE\.W #\$FFFFFFFF,\$4C\(A7\)/) saw_sparse_slot_sentinel_init = 1
+    if (line ~ /CMPI?\.W #\$?4,DISKIO_CURRENTDRIVEREVISIONINDEX/ || line ~ /CMPI?\.W #\$?4,__MERGEDBSS\+\$A\(A4\)/) {
+        saw_sparse_slot_revision_gate = 1
+    }
+    if (line ~ /MOVEQ(\.L)? #\$4,D1/) saw_sparse_slot_revision_gate_moveq4 = 1
+    if (line ~ /CMP\.W D1,D0/) saw_sparse_slot_revision_gate_cmp = 1
+    if (saw_sparse_slot_revision_gate_moveq4 && saw_sparse_slot_revision_gate_cmp) {
+        saw_sparse_slot_revision_gate = 1
+    }
+    if ((line ~ /CMP\.W -28\(A5\),D0/ || line ~ /CMP\.W \$4C\(A7\),D0/) &&
+        saw_sparse_slot_revision_gate) saw_sparse_slot_postloop_refill = 1
+    if (saw_sparse_slot_sentinel_init && saw_sparse_slot_revision_gate &&
+        saw_sparse_slot_postloop_refill) has_sparse_slot_skip_flow = 1
 
     if ((line ~ /MOVE\.L D0,56\(A2,D1\.L\)/ || line ~ /MOVE\.L D0,\$38\(A0,D1\.L\)/) &&
         (has_filter || has_replace)) saw_title_replace_store = 1
@@ -164,8 +210,11 @@ END {
     print "HAS_INIT_DEFAULTS=" has_init_defaults
     print "HAS_ENSURE_ANIM=" has_ensure_anim
     print "HAS_GROUP_STATE=" has_group_state
+    print "HAS_HEADER_CODE_MASK_COMPARE=" has_header_code_mask_compare
     print "HAS_SLOT_INIT=" has_slot_init
     print "HAS_SLOT_ATTR_TRIPLET=" has_slot_attr_triplet
+    print "HAS_ENTRY_FLAG40_BIT7_FLOW=" has_entry_flag40_bit7_flow
+    print "HAS_SPARSE_SLOT_SKIP_FLOW=" has_sparse_slot_skip_flow
     print "HAS_FILTER=" has_filter
     print "HAS_REPLACE=" has_replace
     print "HAS_TITLE_SLOT_REPLACE=" has_title_slot_replace

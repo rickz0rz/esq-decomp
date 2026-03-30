@@ -21,6 +21,8 @@ BEGIN {
     has_special_flag_path = 0
     has_min_index_path = 0
     has_mode2_fallback_mark = 0
+    has_mode2_fallback_carry = 0
+    has_mode3_requery = 0
     has_usage_fetch = 0
     has_positive_selected = 0
     has_positive_fallback = 0
@@ -33,6 +35,7 @@ BEGIN {
     has_finalize_gate = 0
     has_finalize_sentinel = 0
     has_finalize_usage_reload = 0
+    has_finalize_helper_reload = 0
     has_finalize_usage_bump = 0
     has_normalize_channel = 0
     has_default68_return = 0
@@ -45,12 +48,17 @@ BEGIN {
     saw_weekday_index = 0
     saw_weekday_mask = 0
     saw_spt_prefix = 0
+    saw_candidate_table = 0
+    saw_candidate_load = 0
     saw_mode2_pea = 0
     saw_mode3_pea = 0
     saw_mode0_push = 0
     saw_selected_compare = 0
     saw_fallback_compare = 0
     saw_finalize_selected = 0
+    saw_special_activegroup = 0
+    saw_special_halfhour = 0
+    saw_special_store = 0
 
     prev1 = ""
     prev2 = ""
@@ -137,10 +145,15 @@ function trim(s, t) {
     if (u ~ /CANDIDATE_LOOP/ || u ~ /ADDQ\.[WL] #1,D5/ || u ~ /ADDQ\.[WL] #\$1,D5/) {
         has_candidate_loop = 1
     }
-    if (u ~ /TEXTDISP_CANDIDATEINDEXLIST/ || prev1 ~ /TEXTDISP_CANDIDATEINDEXLIST/) {
-        if (u ~ /MOVE\.W D0,TEXTDISP_CURRENTMATCHINDEX/ || u ~ /MOVE\.B .*TEXTDISP_CURRENTMATCHINDEX/) {
-            has_candidate_index_store = 1
-        }
+    if (u ~ /TEXTDISP_CANDIDATEINDEXLIST/) {
+        saw_candidate_table = 1
+    }
+    if (saw_candidate_table && u ~ /MOVE\.B .*D0/) {
+        saw_candidate_load = 1
+    }
+    if (saw_candidate_load &&
+        (u ~ /MOVE\.W D0,TEXTDISP_CURRENTMATCHINDEX/ || u ~ /MOVE\.B .*TEXTDISP_CURRENTMATCHINDEX/)) {
+        has_candidate_index_store = 1
     }
 
     if (u ~ /PEA 2\.W/ || u ~ /PEA \(\$2\)\.W/) {
@@ -179,10 +192,22 @@ function trim(s, t) {
         time_offset_calls++
     }
 
-    if ((u ~ /CLOCK_HALFHOURSLOTINDEX/ || prev1 ~ /CLOCK_HALFHOURSLOTINDEX/ || prev2 ~ /CLOCK_HALFHOURSLOTINDEX/) &&
-        (u ~ /TST\.[WL] D0/ || u ~ /TST\.L D[0-7]/ || prev1 ~ /TST\.[WL] D0/ || prev1 ~ /TST\.L D[0-7]/) &&
-        (u ~ /MOVE\.B D[0-7],-23\(A5\)/ || u ~ /MOVE\.L D[0-7],\$38\(A7\)/ || u ~ /MOVE\.B D[0-7],TEXTDISP_BANNERSELECTEDISSPECIAL/ || u ~ /MOVE\.B D[0-7],TEXTDISP_BANNERFALLBACKISSPECIAL/ ||
-         prev1 ~ /MOVE\.B D[0-7],-23\(A5\)/ || prev1 ~ /MOVE\.L D[0-7],\$38\(A7\)/)) {
+    if (u ~ /ACTIVEGROUPID/) {
+        saw_special_activegroup = 1
+    }
+    if (u ~ /CLOCK_HALFHOURSLOTINDEX/) {
+        saw_special_halfhour = 1
+    }
+    if (u ~ /MOVE\.B D[0-7],-23\(A5\)/ || u ~ /MOVE\.L D[0-7],\$38\(A7\)/ ||
+        u ~ /MOVE\.B D[0-7],TEXTDISP_BANNERSELECTEDISSPECIAL/ || u ~ /MOVE\.B D[0-7],TEXTDISP_BANNERFALLBACKISSPECIAL/ ||
+        u ~ /MOVE\.B -23\(A5\),TEXTDISP_BANNERSELECTEDISSPECIAL/ || u ~ /MOVE\.B -23\(A5\),TEXTDISP_BANNERFALLBACKISSPECIAL/) {
+        saw_special_store = 1
+    }
+    if ((saw_special_activegroup && saw_special_halfhour && saw_special_store) ||
+        ((u ~ /CLOCK_HALFHOURSLOTINDEX/ || prev1 ~ /CLOCK_HALFHOURSLOTINDEX/ || prev2 ~ /CLOCK_HALFHOURSLOTINDEX/) &&
+         (u ~ /TST\.[WL] D0/ || u ~ /TST\.L D[0-7]/ || prev1 ~ /TST\.[WL] D0/ || prev1 ~ /TST\.L D[0-7]/) &&
+         (u ~ /MOVE\.B D[0-7],-23\(A5\)/ || u ~ /MOVE\.L D[0-7],\$38\(A7\)/ || u ~ /MOVE\.B D[0-7],TEXTDISP_BANNERSELECTEDISSPECIAL/ || u ~ /MOVE\.B D[0-7],TEXTDISP_BANNERFALLBACKISSPECIAL/ ||
+          prev1 ~ /MOVE\.B D[0-7],-23\(A5\)/ || prev1 ~ /MOVE\.L D[0-7],\$38\(A7\)/))) {
         has_special_flag_path = 1
     }
 
@@ -196,6 +221,19 @@ function trim(s, t) {
     if ((u ~ /MOVE\.B #\$1,TEXTDISP_BANNERFALLBACKVALIDFLAG/ || u ~ /MOVE\.B #1,TEXTDISP_BANNERFALLBACKVALIDFLAG/) &&
         (prev1 ~ /CMP\.[WL] D1,D0/ || prev1 ~ /CMP\.[WL] D1,D[0-7]/ || prev2 ~ /PEA 2\.W/ || prev2 ~ /PEA \(\$2\)\.W/ || find_mode2_calls > 0)) {
         has_mode2_fallback_mark = 1
+    }
+    if ((u ~ /MOVE\.W -4\(A5\),-16\(A5\)/ ||
+         u ~ /MOVE\.W -4\(A5\),D0/ || u ~ /MOVE\.W D0,-16\(A5\)/ ||
+         u ~ /MOVE\.L \$4C\(A7\),D0/ || u ~ /MOVE\.L D0,\$44\(A7\)/ || u ~ /MOVE\.L D1,\$44\(A7\)/) &&
+        (find_mode2_calls > 0 || saw_mode2_pea || prev1 ~ /CMP\.L D1,D0/ || prev1 ~ /CMP\.W D1,D0/ ||
+         prev2 ~ /CMP\.L D1,D0/ || prev2 ~ /CMP\.W D1,D0/)) {
+        has_mode2_fallback_carry = 1
+    }
+    if ((u ~ /MOVE\.W D0,-4\(A5\)/ || u ~ /MOVE\.L D0,\$4C\(A7\)/) &&
+        (find_mode3_calls > 0 || saw_mode3_pea || prev1 ~ /PEA 3\.W/ || prev1 ~ /PEA \(\$3\)\.W/ ||
+         prev2 ~ /PEA 3\.W/ || prev2 ~ /PEA \(\$3\)\.W/ ||
+         prev1 ~ /TEXTDISP_FINDENTRYMATCHINDEX/ || prev2 ~ /TEXTDISP_FINDENTRYMATCHINDEX/)) {
+        has_mode3_requery = 1
     }
 
     if (u ~ /(JSR|BSR).*TEXTDISP_GETUSAGECOUNT/ || u ~ /TEXTDISP_GETUSAGECOUNT/ ||
@@ -263,6 +301,11 @@ function trim(s, t) {
         (u ~ /TEXTDISP_GETACTIVETITLEPTR/ || u ~ /TEXTDISP_PRIMARYTITLEPTRTABLE/ || u ~ /TEXTDISP_SECONDARYTITLEPTRTABLE/)) {
         has_finalize_usage_reload = 1
     }
+    if (saw_finalize_selected &&
+        (u ~ /(JSR|BSR).*TEXTDISP_GETACTIVETITLEPTR/ || u ~ /TEXTDISP_GETACTIVETITLEPTR/ ||
+         u ~ /TEXTDISP_PRIMARYTITLEPTRTABLE/ || u ~ /TEXTDISP_SECONDARYTITLEPTRTABLE/)) {
+        has_finalize_helper_reload = 1
+    }
     if ((u ~ /ADDQ\.W #1,0\(A0,D1\.L\)/ || u ~ /MOVE\.W D1,\$0\(A0,D3\.L\)/ || u ~ /MOVE\.W D1,0\(A0,D3\.L\)/) &&
         (prev1 ~ /ADD\.L #\$190,D[13]/ || prev2 ~ /ADD\.L #\$190,D[13]/ || prev1 ~ /ADDI?\.L #400,D1/ || prev2 ~ /ADDI?\.L #400,D1/)) {
         has_finalize_usage_bump = 1
@@ -322,6 +365,8 @@ END {
     print "HAS_SPECIAL_FLAG_PATH=" has_special_flag_path
     print "HAS_MIN_INDEX_PATH=" has_min_index_path
     print "HAS_MODE2_FALLBACK_MARK=" has_mode2_fallback_mark
+    print "HAS_MODE2_FALLBACK_CARRY=" has_mode2_fallback_carry
+    print "HAS_MODE3_REQUERY=" has_mode3_requery
     print "HAS_USAGE_FETCH=" has_usage_fetch
     print "HAS_POSITIVE_SELECTED_UPDATE=" has_positive_selected
     print "HAS_POSITIVE_FALLBACK_UPDATE=" has_positive_fallback
@@ -334,6 +379,7 @@ END {
     print "HAS_FINALIZE_GATE=" has_finalize_gate
     print "HAS_FINALIZE_SENTINEL_RESET=" has_finalize_sentinel
     print "HAS_FINALIZE_USAGE_RELOAD=" has_finalize_usage_reload
+    print "HAS_FINALIZE_HELPER_RELOAD=" has_finalize_helper_reload
     print "HAS_FINALIZE_USAGE_BUMP=" has_finalize_usage_bump
     print "HAS_NORMALIZE_CHANNEL_PATH=" has_normalize_channel
     print "HAS_DEFAULT68_RETURN=" has_default68_return

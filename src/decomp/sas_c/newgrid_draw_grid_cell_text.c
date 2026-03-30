@@ -84,9 +84,9 @@ void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *s
         w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rp, primary, n);
         w = (w + 1) >> 1;
         if (CTASKS_STR_C == 'S') {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, primaryY, baselineX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, baselineX - w, primaryY);
         } else {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, secondaryY, baselineX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, baselineX - w, secondaryY);
         }
         _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rp, primary, n);
     }
@@ -99,9 +99,9 @@ void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *s
         w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rp, secondary, n);
         w = (w + 1) >> 1;
         if (CTASKS_STR_C == 'S') {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, secondaryY, baselineX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, baselineX - w, secondaryY);
         } else {
-            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, primaryY, baselineX - w);
+            _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, baselineX - w, primaryY);
         }
         _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rp, secondary, n);
     }

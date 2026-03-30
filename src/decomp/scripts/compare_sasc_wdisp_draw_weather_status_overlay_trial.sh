@@ -22,7 +22,7 @@ awk -v e="^${ENTRY_ORIG}:$" -v e2="$ENTRY_SASC_REGEX" '
     $0 ~ e || $0 ~ e2 {in_func=1}
     in_func {
         if (($0 ~ /^[A-Z0-9_]+:$/ || $0 ~ /^_?[A-Z0-9_]+:$/) && $0 !~ e && $0 !~ e2 && $0 !~ /^___/) exit
-        if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/ || $0 ~ /^__const:$/) exit
+        if ($0 ~ /^[[:space:]]*XREF / || $0 ~ /^[[:space:]]*XDEF / || $0 ~ /^[[:space:]]*END$/ || $0 ~ /^[[:space:]]*__const:$/) exit
         print
     }
 ' "$SASC_DIS" >"${OUT_DIR}/${BASE}.sasc.dis.s"

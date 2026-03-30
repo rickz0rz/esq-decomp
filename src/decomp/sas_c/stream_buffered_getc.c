@@ -1,16 +1,4 @@
-#include <exec/types.h>
-
-typedef struct PreallocHandleNode {
-    ULONG owner_or_link;     /* +0  */
-    UBYTE *buffer_cursor;    /* +4  */
-    LONG read_remaining;     /* +8  */
-    LONG write_remaining;    /* +12 */
-    UBYTE *buffer_base;      /* +16 */
-    LONG buffer_capacity;    /* +20 */
-    ULONG mode_state_flags;  /* +24 (mode/state bytes at +26/+27) */
-    LONG handle_index;       /* +28 */
-    UBYTE inline_byte;       /* +32 */
-} PreallocHandleNode;
+#include "prealloc_handle_node.h"
 
 enum {
     CH_EOF = -1,
@@ -32,8 +20,8 @@ extern LONG STREAM_BufferedPutcOrFlush(LONG ch, PreallocHandleNode *node);
 extern LONG BUFFER_EnsureAllocated(PreallocHandleNode *node);
 extern LONG DOS_ReadByIndex(LONG handleIndex, void *buffer, LONG length);
 
-static UBYTE *mode_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->mode_state_flags) + 2; }
-static UBYTE *state_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->mode_state_flags) + 3; }
+static UBYTE *mode_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->OpenFlags) + 2; }
+static UBYTE *state_flags_ptr(PreallocHandleNode *n) { return ((UBYTE *)&n->OpenFlags) + 3; }
 
 LONG STREAM_BufferedGetc(PreallocHandleNode *node)
 {
@@ -47,8 +35,8 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
     state = state_flags_ptr(node);
     isTextMode = ((*mode & (1u << MODE_TEXT_TRANSLATE_BIT)) != 0) ? 1 : 0;
 
-    if ((node->mode_state_flags & OPEN_MASK_FLUSH_REJECT) != 0) {
-        node->read_remaining = 0;
+    if ((node->OpenFlags & OPEN_MASK_FLUSH_REJECT) != 0) {
+        node->ReadRemaining = 0;
         return CH_EOF;
     }
 
@@ -57,11 +45,11 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
         (void)STREAM_BufferedPutcOrFlush(-1, node);
     }
 
-    if (node->buffer_capacity == 0) {
-        node->read_remaining = 0;
+    if (node->BufferCapacity == 0) {
+        node->ReadRemaining = 0;
         if ((*state & (1u << STATE_UNBUFFERED_BIT)) != 0) {
-            node->buffer_capacity = 1;
-            node->buffer_base = &node->inline_byte;
+            node->BufferCapacity = 1;
+            node->BufferBase = &node->InlineByte;
         } else {
             if (BUFFER_EnsureAllocated(node) != 0) {
                 *state |= (1u << STATE_IO_ERROR_BIT);
@@ -69,21 +57,21 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
             }
         }
     } else if (isTextMode != 0) {
-        node->read_remaining += 2;
-        if (node->read_remaining <= 0) {
-            node->buffer_cursor += 1;
-            ch = (LONG)(unsigned char)node->buffer_cursor[-1];
+        node->ReadRemaining += 2;
+        if (node->ReadRemaining <= 0) {
+            node->BufferCursor += 1;
+            ch = (LONG)(unsigned char)node->BufferCursor[-1];
             if (ch == CHAR_CTRL_Z) {
                 *state |= (1u << STATE_EOF_OR_SHORT_BIT);
                 return CH_EOF;
             }
             if (ch == CHAR_CR) {
-                node->read_remaining -= 1;
-                if (node->read_remaining < 0) {
+                node->ReadRemaining -= 1;
+                if (node->ReadRemaining < 0) {
                     return STREAM_BufferedGetc(node);
                 }
-                node->buffer_cursor += 1;
-                return (LONG)(unsigned char)node->buffer_cursor[-1];
+                node->BufferCursor += 1;
+                return (LONG)(unsigned char)node->BufferCursor[-1];
             }
             return ch;
         }
@@ -91,7 +79,7 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
 
     if ((*state & (1u << STATE_WRITE_PENDING_BIT)) == 0) {
         *state |= (1u << STATE_READ_REFILL_ISSUED_BIT);
-        bytesRead = DOS_ReadByIndex(node->handle_index, node->buffer_base, node->buffer_capacity);
+        bytesRead = DOS_ReadByIndex(node->HandleIndex, node->BufferBase, node->BufferCapacity);
         if (bytesRead < 0) {
             *state |= (1u << STATE_IO_ERROR_BIT);
         }
@@ -99,21 +87,21 @@ LONG STREAM_BufferedGetc(PreallocHandleNode *node)
             *state |= (1u << STATE_EOF_OR_SHORT_BIT);
         }
         if (bytesRead > 0) {
-            node->read_remaining = (isTextMode != 0) ? -bytesRead : bytesRead;
-            node->buffer_cursor = node->buffer_base;
+            node->ReadRemaining = (isTextMode != 0) ? -bytesRead : bytesRead;
+            node->BufferCursor = node->BufferBase;
         }
     }
 
-    if ((node->mode_state_flags & OPEN_MASK_READ_REJECT) != 0) {
-        node->read_remaining = (isTextMode != 0) ? -1 : 0;
+    if ((node->OpenFlags & OPEN_MASK_READ_REJECT) != 0) {
+        node->ReadRemaining = (isTextMode != 0) ? -1 : 0;
         return CH_EOF;
     }
 
-    node->read_remaining -= 1;
-    if (node->read_remaining < 0) {
+    node->ReadRemaining -= 1;
+    if (node->ReadRemaining < 0) {
         return STREAM_BufferedGetc(node);
     }
 
-    node->buffer_cursor += 1;
-    return (LONG)(unsigned char)node->buffer_cursor[-1];
+    node->BufferCursor += 1;
+    return (LONG)(unsigned char)node->BufferCursor[-1];
 }

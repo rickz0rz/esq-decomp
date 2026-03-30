@@ -10,6 +10,7 @@ ORIG_ASM="src/modules/groups/a/g/diskio1.s"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="diskio1_format_blackout_mask_flags"
 ENTRY="DISKIO1_FormatBlackoutMaskFlags"
+NEXT_ENTRY="DISKIO1_AccumulateBlackoutMaskSum"
 ENTRY_SASC_REGEX="^DISKIO1_FormatBlackoutMaskF[A-Za-z0-9_]*:$"
 ENTRY_SEM="DISKIO1_FORMATBLACKOUTMASKFLAGS:"
 ENTRY_ALT_SEM="DISKIO1_FORMATBLACKOUTMASKF"
@@ -20,9 +21,10 @@ mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_${BASE}.log" 2>&1
 
-awk -v e="^${ENTRY}:$" '
+awk -v e="^${ENTRY}:$" -v next_e="^${NEXT_ENTRY}:$" '
   $0 ~ e {in_func=1}
   in_func {
+    if ($0 ~ next_e) exit
     if ($0 ~ /^;!======/) exit
     print
   }
@@ -31,7 +33,7 @@ awk -v e="^${ENTRY}:$" '
 awk -v e="^${ENTRY}:$" -v e2="$ENTRY_SASC_REGEX" '
   $0 ~ e || $0 ~ e2 {in_func=1}
   in_func {
-    if (($0 ~ /^[A-Z0-9_]+:$/ || $0 ~ /^_?[A-Z0-9_]+:$/) && $0 !~ e && $0 !~ e2) exit
+    if ($0 ~ /^_?[A-Za-z][A-Za-z0-9_]*:$/ && $0 !~ e && $0 !~ e2) exit
     if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/) exit
     print
   }

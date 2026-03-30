@@ -42,12 +42,14 @@ extern void NEWGRID_ClearEntryMarkerBits(LONG row);
 LONG NEWGRID_ProcessShowtimesWorkflow(char *ctx, UWORD rowBase, UWORD selector)
 {
     LONG steppedFrom34 = 0;
+    LONG workflowState;
     (void)selector;
 
+    workflowState = NEWGRID_ShowtimesWorkflowState;
     if (!ctx) {
-        if (NEWGRID_ShowtimesWorkflowState == 2 || NEWGRID_ShowtimesWorkflowState == 7) {
+        if (workflowState == 2) {
             NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleGridEditorState(ctx, 0, 0, 0);
-        } else if (NEWGRID_ShowtimesWorkflowState == 5) {
+        } else if (workflowState == 5) {
             const NEWGRID_Entry *selectedEntry = (const NEWGRID_Entry *)NEWGRID_ShowtimesSelectionContextPtr.entry;
             if (NEWGRID_ShouldOpenEditor(selectedEntry) != 0) {
                 NEWGRID_ShowtimesWorkflowState = NEWGRID_UpdateGridState(ctx, 0, 0);

@@ -11,6 +11,8 @@ BEGIN {
     has_validate=0
     has_mode_index=0
     has_column_index=0
+    has_signed_row_update=0
+    has_signed_row_process=0
     has_niche_mode=0
     has_niche_enabled=0
     has_flag48=0
@@ -22,6 +24,7 @@ BEGIN {
     has_const89=0
     has_const_minus1=0
     has_rts=0
+    ext_d0_window=0
 }
 
 function trim(s, t) {
@@ -39,6 +42,16 @@ function trim(s, t) {
     u=toupper(line)
     n=u
     gsub(/[^A-Z0-9]/, "", n)
+
+    if (ext_d0_window > 0) {
+        ext_d0_window--
+    }
+
+    if (u == "EXT.L D0") {
+        ext_d0_window=4
+    }
+    if (n ~ /NEWGRIDUPDATEGRIDSTATE/ && ext_d0_window > 0) has_signed_row_update=1
+    if (n ~ /NEWGRIDPROCESSGRIDENTRIES/ && ext_d0_window > 0) has_signed_row_process=1
 
     if (u ~ /^NEWGRID_PROCESSSECONDARYSTATE:/ || u ~ /^NEWGRID_PROCESSSECONDARYSTAT[A-Z0-9_]*:/) has_entry=1
     if (n ~ /NEWGRIDSECONDARYWORKFLOWSTATE/) has_workflow=1
@@ -78,6 +91,8 @@ END {
     print "HAS_VALIDATE_CALL="has_validate
     print "HAS_MODE_INDEX_CALL="has_mode_index
     print "HAS_COLUMN_INDEX_CALL="has_column_index
+    print "HAS_SIGNED_ROW_UPDATE_CALL="has_signed_row_update
+    print "HAS_SIGNED_ROW_PROCESS_CALL="has_signed_row_process
     print "HAS_NICHE_MODE_GLOBAL="has_niche_mode
     print "HAS_NICHE_ENABLED_GLOBAL="has_niche_enabled
     print "HAS_FLAG48_49_GLOBAL="has_flag48

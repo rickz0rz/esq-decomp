@@ -31,9 +31,13 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input
     LONG i;
     char *separatorPtr;
     const char *scan;
-    const char *inputScan;
 
-    if (input == (char *)0 || input[0] == 0 || STR_FindCharPtr(input, TOKEN_SEPARATOR) == (char *)0) {
+    separatorPtr = (char *)0;
+    if (input != (char *)0 && input[0] != 0) {
+        separatorPtr = STR_FindCharPtr(input, TOKEN_SEPARATOR);
+    }
+
+    if (separatorPtr == (char *)0) {
         *field_a = (void *)ESQPARS_ReplaceOwnedString((const char *)0, (char *)*field_a);
         *field_b = (void *)ESQPARS_ReplaceOwnedString(CLOCK_STR_EMPTY_TOKEN_TEMPLATE, *field_b);
         return;
@@ -53,9 +57,9 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input
     formattedTokenText[i] = 0;
 
     i = 0;
-    inputScan = input;
-    while (i < TOKEN_PREFIX_MAX_LEN && *inputScan != TOKEN_SEPARATOR && *inputScan != 0) {
-        formattedTokenText[i] = *inputScan++;
+    scan = input;
+    while (i < TOKEN_PREFIX_MAX_LEN && *scan != TOKEN_SEPARATOR && *scan != 0) {
+        formattedTokenText[i] = *scan++;
         i += 1;
     }
     formattedTokenText[i] = 0;
@@ -70,13 +74,10 @@ void CLEANUP_FormatEntryStringTokens(void **field_a, void **field_b, char *input
     }
     formattedTokenText[i] = 0;
 
-    separatorPtr = STR_FindCharPtr(input, TOKEN_SEPARATOR);
-    if (separatorPtr != (char *)0) {
-        separatorPtr += 1;
-    }
+    separatorPtr += 1;
 
     i = 0;
-    while (i < TOKEN_MAX_LEN && separatorPtr != (char *)0 && separatorPtr[i] != 0) {
+    while (i < TOKEN_MAX_LEN && separatorPtr[i] != 0) {
         UBYTE c = separatorPtr[i];
 
         if (i <= TOKEN_FIELD_BOOL_MAX_INDEX) {

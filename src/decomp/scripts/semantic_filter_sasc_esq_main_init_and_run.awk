@@ -9,17 +9,20 @@ BEGIN {
     has_process_window_backup = 0
     has_process_window_hide = 0
     has_openlibrary_call = 0
+    openlibrary_count = 0
     has_openresource_call = 0
     has_utility_gate = 0
     has_battclock_resource = 0
     has_override_intuition = 0
     has_openfont_call = 0
     has_opendiskfont_call = 0
+    openfont_count = 0
     has_allocmem_call = 0
     has_initrastport_call = 0
     has_setfont_call = 0
     has_divs32_call = 0
     has_highlight_bitmap_call = 0
+    highlight_bitmap_count = 0
     has_highlight_bitmap_table = 0
     has_initbitmap_call = 0
     has_allocraster_call = 0
@@ -29,6 +32,7 @@ BEGIN {
     has_msgport_alloc = 0
     has_list_init = 0
     has_queue_highlight = 0
+    queue_highlight_count = 0
     has_queue_highlight_pair = 0
     has_copper_off = 0
     has_disk_error_guard = 0
@@ -63,6 +67,10 @@ BEGIN {
     rise_transition_count = 0
     has_drive_probe = 0
     has_printf = 0
+    has_disable_call = 0
+    has_enable_call = 0
+    disable_enable_stage = 0
+    has_disable_enable_window = 0
     has_df1_warning = 0
     has_startup_select_code_draw = 0
     has_startup_version_draw = 0
@@ -92,6 +100,8 @@ BEGIN {
     has_brush_type3_fallback = 0
     has_schedule_clear = 0
     has_ravesc_highlight_restore = 0
+    has_ui_tick_call = 0
+    has_shutdown_call = 0
     has_main_loop_gate = 0
     has_rts = 0
     saw_find_type3_call = 0
@@ -173,7 +183,10 @@ function advance_stage(stage, target) {
          (u ~ /MOVE\.L D0,\$B8\(A3\)/ && u ~ /MOVEQ(\.L)? #\$FF,D0/) ||
          (saw_window_hide_value && (u ~ /MOVE\.L D0,184\(A0\)/ || u ~ /MOVE\.L D0,\$B8\(A3\)/)) ||
          u ~ /PROCESS->PR_WINDOWPTR = -1/)) has_process_window_hide = 1
-    if (u ~ /_LVOOPENLIBRARY/) has_openlibrary_call = 1
+    if (u ~ /_LVOOPENLIBRARY/) {
+        has_openlibrary_call = 1
+        openlibrary_count++
+    }
     if (u ~ /_LVOOPENRESOURCE/) has_openresource_call = 1
     if ((u ~ /LIB_VERSION/ || u ~ /20\(A0\)/ || u ~ /\$14\(A0\)/ || u ~ /CMP\.W D1,D0/) &&
         (u ~ /#37/ || u ~ /#\$25/ || u ~ /CMP\.W D1,D0/ || u ~ />= 37/)) saw_graphics_version_check = 1
@@ -181,14 +194,21 @@ function advance_stage(stage, target) {
     if (saw_graphics_version_check && saw_utility_open) has_utility_gate = 1
     if (u ~ /GLOBAL_STR_BATTCLOCK_RESOURCE/ || u ~ /GLOBAL_REF_BATTCLOCK_RESOURCE/) has_battclock_resource = 1
     if (u ~ /OVERRIDE_INTUITION_FUNCS/) has_override_intuition = 1
-    if (u ~ /_LVOOPENFONT/) has_openfont_call = 1
-    if (u ~ /_LVOOPENDISKFONT/) has_opendiskfont_call = 1
+    if (u ~ /_LVOOPENFONT/) {
+        has_openfont_call = 1
+        openfont_count++
+    }
+    if (u ~ /_LVOOPENDISKFONT/) {
+        has_opendiskfont_call = 1
+        openfont_count++
+    }
     if (u ~ /MEMORY_ALLOCATEMEMORY/ || u ~ /MEMORY_ALLOCAT/) has_allocmem_call = 1
     if (u ~ /_LVOINITRASTPORT/) has_initrastport_call = 1
     if (u ~ /_LVOSETFONT/) has_setfont_call = 1
     if (u ~ /MATH_DIVS32/) has_divs32_call = 1
     if (u ~ /ALLOCATEHIGHLIGHTBITMAPS/ || u ~ /ALLOCATEHIGHLIGHTBITMA/) {
         has_highlight_bitmap_call = 1
+        highlight_bitmap_count++
         if (has_highlight_bitmap_table) {
             has_highlight_bitmap_table = 1
         }
@@ -203,6 +223,7 @@ function advance_stage(stage, target) {
     if (u ~ /LIST_INITHEADER/ || u ~ /LIST_INITH/) has_list_init = 1
     if (u ~ /QUEUEHIGHLIGHTDRAWMESSAGE/ || u ~ /QUEUEHIGHLIGHTDRAWMES/) {
         has_queue_highlight = 1
+        queue_highlight_count++
         if (saw_queue_slot_table && saw_queue_bitmap_table) has_queue_highlight_pair = 1
     }
     if (u ~ /SETCOPPEREFFECT_OFFDISABLEHIGHLIGHT/ || u ~ /SETCOPPEREFFECT_OFFD/) has_copper_off = 1
@@ -244,6 +265,14 @@ function advance_stage(stage, target) {
     }
     if (u ~ /PROBEDRIVESANDASSIGNPATHS/ || u ~ /PROBEDRIVESANDASSI/) has_drive_probe = 1
     if (u ~ /WDISP_SPRINTF/ || u ~ /RAWDOFMT/ || u ~ /SPRINTF/) has_printf = 1
+    if (u ~ /_LVODISABLE/) {
+        has_disable_call = 1
+        disable_enable_stage = advance_stage(disable_enable_stage, 1)
+    }
+    if (u ~ /_LVOENABLE/) {
+        has_enable_call = 1
+        disable_enable_stage = advance_stage(disable_enable_stage, 2)
+    }
     if (u ~ /DISKIO_DRIVEWRITEPROTECTSTATUSCODEDRIVE1/ ||
         u ~ /DISKIO_DRIVEWRITEPROTECTSTATUSCODED/ ||
         u ~ /DISKIO_DRIVEWRITEPROTECTSTATUSCO/) saw_df1_status = 1
@@ -316,6 +345,8 @@ function advance_stage(stage, target) {
         (u ~ /SETCOPPEREFFECT_ONENABLEHIGHLIGHT/ || u ~ /SETCOPPEREFFECT_ONENABLEHIGH/ || u ~ /SETCOPPEREFFECT_ONENABLEHIG/)) has_ravesc_highlight_restore = 1
     if (has_ravesc_highlight_restore &&
         (u ~ /TEXTDISP_SETRASTFORMODE/ || u ~ /TEXTDISP_SETRASTFORMOD/)) has_ravesc_highlight_restore = 1
+    if (u ~ /SERVICEUITICKIFRUNNING/ || u ~ /SERVICEUITICKIFRUNN/) has_ui_tick_call = 1
+    if (u ~ /CLEANUP_SHUTDOWNSYSTEM/ || u ~ /JMPTBL_CLEANUP_SHUTDOWNSYSTEM/ || u ~ /SHUTDOWNSYSTEM/) has_shutdown_call = 1
     if (u ~ /MONITORCLOCKCHANGE/ || u ~ /ESQ_SHUTDOWNREQUESTEDFLAG/ || u ~ /CONSUMERBFBYTEANDDISPATCHCOMMAND/) has_main_loop_gate = 1
     if (u == "RTS") has_rts = 1
 
@@ -353,12 +384,18 @@ function advance_stage(stage, target) {
     if (u ~ /RESETLISTSANDLOADPROMOIDS/ || u ~ /RESETLISTSANDLOAD/) runtime_stage = advance_stage(runtime_stage, 6)
     if (u ~ /RESETFILTERSTATESTRUCT/ || u ~ /RESETFILTERSTATEST/) runtime_stage = advance_stage(runtime_stage, 7)
 
-    if (u ~ /MONITORCLOCKCHANGE/ || u ~ /MONITORCLOCKCHAN/) loop_stage = advance_stage(loop_stage, 1)
-    if (u ~ /CONSUMERBFBYTEANDDISPATCHCOMMAND/ || u ~ /CONSUMERBFBYTEANDDISPATC/) loop_stage = advance_stage(loop_stage, 2)
-    if (u == "RTS") loop_stage = advance_stage(loop_stage, 3)
+    if (u ~ /SERVICEUITICKIFRUNNING/ || u ~ /SERVICEUITICKIFRUNN/) loop_stage = advance_stage(loop_stage, 1)
+    if (u ~ /MONITORCLOCKCHANGE/ || u ~ /MONITORCLOCKCHAN/) loop_stage = advance_stage(loop_stage, 2)
+    if (u ~ /CONSUMERBFBYTEANDDISPATCHCOMMAND/ || u ~ /CONSUMERBFBYTEANDDISPATC/) loop_stage = advance_stage(loop_stage, 3)
+    if (u ~ /CLEANUP_SHUTDOWNSYSTEM/ || u ~ /JMPTBL_CLEANUP_SHUTDOWNSYSTEM/ || u ~ /SHUTDOWNSYSTEM/) loop_stage = advance_stage(loop_stage, 4)
+    if (u == "RTS") loop_stage = advance_stage(loop_stage, 5)
 }
 
 END {
+    has_openlibrary_count = (openlibrary_count == 5) ? 1 : 0
+    has_openfont_count = (openfont_count == 4) ? 1 : 0
+    has_highlight_bitmap_count = (highlight_bitmap_count == 1) ? 1 : 0
+    has_queue_highlight_count = (queue_highlight_count == 1) ? 1 : 0
     has_baud_validation = (has_baud_parse && has_baud_2400 && has_baud_4800 && has_baud_9600) ? 1 : 0
     has_serial_setup = (serial_setup_hits >= 3) ? 1 : 0
     has_dual_rise_transition = (rise_transition_count >= 2) ? 1 : 0
@@ -368,12 +405,13 @@ END {
         has_startup_standby_draw) ? 1 : 0
     has_parse_ini_count = (parse_ini_count == 4) ? 1 : 0
     has_dual_filter_reset = (reset_filter_count == 2) ? 1 : 0
+    has_disable_enable_window = (disable_enable_stage >= 2) ? 1 : 0
     has_preflight_order = (preflight_stage >= 4) ? 1 : 0
     has_hardware_order = (hardware_stage >= 9) ? 1 : 0
     has_display_order = (display_stage >= 3) ? 1 : 0
     has_startup_order = (startup_stage >= 6) ? 1 : 0
     has_runtime_order = (runtime_stage >= 7) ? 1 : 0
-    has_loop_order = (loop_stage >= 3) ? 1 : 0
+    has_loop_order = (loop_stage >= 5) ? 1 : 0
     print "HAS_LABEL=" has_label
     print "HAS_SELECT_BUFFER=" has_select_buffer
     print "HAS_RAVESC=" has_ravesc
@@ -384,17 +422,20 @@ END {
     print "HAS_PROCESS_WINDOW_BACKUP=" has_process_window_backup
     print "HAS_PROCESS_WINDOW_HIDE=" has_process_window_hide
     print "HAS_OPENLIBRARY_CALL=" has_openlibrary_call
+    print "HAS_OPENLIBRARY_COUNT=" has_openlibrary_count
     print "HAS_OPENRESOURCE_CALL=" has_openresource_call
     print "HAS_UTILITY_GATE=" has_utility_gate
     print "HAS_BATTCLOCK_RESOURCE=" has_battclock_resource
     print "HAS_OVERRIDE_INTUITION=" has_override_intuition
     print "HAS_OPENFONT_CALL=" has_openfont_call
     print "HAS_OPENDISKFONT_CALL=" has_opendiskfont_call
+    print "HAS_OPENFONT_COUNT=" has_openfont_count
     print "HAS_ALLOCMEM_CALL=" has_allocmem_call
     print "HAS_INITRASTPORT_CALL=" has_initrastport_call
     print "HAS_SETFONT_CALL=" has_setfont_call
     print "HAS_DIVS32_CALL=" has_divs32_call
     print "HAS_HIGHLIGHT_BITMAP_CALL=" has_highlight_bitmap_call
+    print "HAS_HIGHLIGHT_BITMAP_COUNT=" has_highlight_bitmap_count
     print "HAS_HIGHLIGHT_BITMAP_TABLE=" has_highlight_bitmap_table
     print "HAS_INITBITMAP_CALL=" has_initbitmap_call
     print "HAS_ALLOCRASTER_CALL=" has_allocraster_call
@@ -404,6 +445,7 @@ END {
     print "HAS_MSGPORT_ALLOC=" has_msgport_alloc
     print "HAS_LIST_INIT=" has_list_init
     print "HAS_QUEUE_HIGHLIGHT=" has_queue_highlight
+    print "HAS_QUEUE_HIGHLIGHT_COUNT=" has_queue_highlight_count
     print "HAS_QUEUE_HIGHLIGHT_PAIR=" has_queue_highlight_pair
     print "HAS_COPPER_OFF=" has_copper_off
     print "HAS_DISK_ERROR_GUARD=" has_disk_error_guard
@@ -438,6 +480,9 @@ END {
     print "HAS_DUAL_RISE_TRANSITION=" has_dual_rise_transition
     print "HAS_DRIVE_PROBE=" has_drive_probe
     print "HAS_PRINTF=" has_printf
+    print "HAS_DISABLE_CALL=" has_disable_call
+    print "HAS_ENABLE_CALL=" has_enable_call
+    print "HAS_DISABLE_ENABLE_WINDOW=" has_disable_enable_window
     print "HAS_DF1_WARNING=" has_df1_warning
     print "HAS_STARTUP_SELECT_CODE_DRAW=" has_startup_select_code_draw
     print "HAS_STARTUP_VERSION_DRAW=" has_startup_version_draw
@@ -467,6 +512,8 @@ END {
     print "HAS_BRUSH_TYPE3_FALLBACK=" has_brush_type3_fallback
     print "HAS_SCHEDULE_CLEAR=" has_schedule_clear
     print "HAS_RAVESC_HIGHLIGHT_RESTORE=" has_ravesc_highlight_restore
+    print "HAS_UI_TICK_CALL=" has_ui_tick_call
+    print "HAS_SHUTDOWN_CALL=" has_shutdown_call
     print "HAS_MAIN_LOOP_GATE=" has_main_loop_gate
     print "HAS_RTS=" has_rts
     print "HAS_PREFLIGHT_ORDER=" has_preflight_order

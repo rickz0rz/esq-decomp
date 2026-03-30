@@ -18,6 +18,7 @@ BEGIN {
     has_menu_state_18=0
     has_set_apen_rectfill=0
     has_clock_sync_scan=0
+    has_clock_read_minlen=0
     has_readmode_0200=0
     has_readmode_0100=0
     has_readmode_clear=0
@@ -28,6 +29,13 @@ BEGIN {
     has_status_overlay_dump=0
     has_debug_dump_loop=0
     has_banner_datetime_pair=0
+    has_refresh_save_byte=0
+    has_refresh_mul_60=0
+    has_disk_warning_gate_update=0
+    has_accumulator_clear=0
+    has_diag_overlay_not=0
+    has_runtime_weather_dump=0
+    has_debug_dump_bookends=0
     has_clock_file_read=0
     has_clock_file_close=0
     has_clock_scan_u=0
@@ -55,11 +63,22 @@ BEGIN {
     saw_status_overlay_format=0
     saw_status_overlay_sprintf=0
     saw_status_overlay_display=0
+    weather_runtime_dump_count=0
+    saw_refresh_mul_60_arg=0
+    saw_clock_minlen_const=0
+    saw_clock_minlen_cmp=0
     saw_debug_dump_entry_count=0
     saw_debug_dump_reset_tick=0
     saw_debug_dump_entry_ptr=0
     saw_debug_dump_dump_call=0
     saw_debug_dump_tick_call=0
+    saw_debug_dump_start=0
+    saw_debug_dump_end=0
+    saw_disk_warning_tick=0
+    saw_gate_flag_ref=0
+    saw_gate_booleanize=0
+    saw_diag_overlay_flag=0
+    saw_not_byte=0
     saw_banner_datetime_ctime=0
     saw_banner_datetime_btime=0
     saw_banner_datetime_day_slot=0
@@ -107,6 +126,9 @@ function trim(s, t) {
     if (n ~ /MENUSTATEID/ && (u ~ /#\$18/ || u ~ /#24/ || u ~ /MOVEB #\$18/ || u ~ /MOVEB #24/)) has_menu_state_18=1
     if (n ~ /SETAPEN/ || n ~ /RECTFILL/) has_set_apen_rectfill=1
     if (u ~ /#\$AA/ || u ~ /#170/ || u ~ /#\$55/ || u ~ /#85/ || u ~ /#\$4B/ || u ~ /#75/ || n ~ /APPLYRTCBYTESANDPERSIST/) has_clock_sync_scan=1
+    if (u ~ /#\$0?B/ || u ~ /#11/) saw_clock_minlen_const=1
+    if (u ~ /^CMP\.L / || u ~ /^BLT/ || n ~ /READMINIMUMBYTES/) saw_clock_minlen_cmp=1
+    if (saw_clock_minlen_const && saw_clock_minlen_cmp) has_clock_read_minlen=1
     if (n ~ /READMODEFLAGS/ && (u ~ /#\$200/ || u ~ /#512/)) has_readmode_0200=1
     if (n ~ /READMODEFLAGS/ && (u ~ /#\$100/ || u ~ /#256/)) has_readmode_0100=1
     if (n ~ /READMODEFLAGS/ && (u ~ /^CLR(W|L)? / || u ~ /CLR.W ESQPARS2_READMODEFLAGS/ || u ~ /CLR.L ESQPARS2_READMODEFLAGS/)) has_readmode_clear=1
@@ -168,6 +190,22 @@ function trim(s, t) {
     if (n ~ /RENDERALIGNEDSTATUSSCREEN/ || n ~ /RENDERALIGNEDSTATUSSCREE/) render_call_count++
     if (u ~ /PEA \(\$1\)\.W/ || u ~ /PEA \(1\)\.W/ || u ~ /PEA \(\$1\)/ || u ~ /PEA \$1\.W/ || u ~ /PEA 1\.W/) has_render_short_arg=1
     if (u ~ /^CLR\.L -\(A7\)$/ || u ~ /^MOVEQ(\.L)? #\$?0,D0$/ || u ~ /^CLR\.L \(A7\)$/ || u ~ /^MOVE\.L D0,-\(A7\)$/) has_render_zero_arg=1
+    if (n ~ /EDSAVEDCTASKSINTERVALBYTE/) has_refresh_save_byte=1
+    if (u ~ /#\$3C/ || u ~ /#60/) saw_refresh_mul_60_arg=1
+    if (saw_refresh_mul_60_arg && n ~ /MULU32/) has_refresh_mul_60=1
+    if (n ~ /ESQFUNCUPDATEDISKWARNINGANDREFR/) saw_disk_warning_tick=1
+    if (n ~ /PARSEINICTRLHCHANGEGATEFLAG/) saw_gate_flag_ref=1
+    if (n ~ /TESTWORDISZEROBOOLEANIZE/) saw_gate_booleanize=1
+    if (saw_disk_warning_tick && saw_gate_flag_ref && saw_gate_booleanize) has_disk_warning_gate_update=1
+    if (n ~ /ACCUMULATORCAPTUREACTIVE/) has_accumulator_clear=1
+    if (n ~ /DIAGOVERLAYAUTOREFRESHFL/) saw_diag_overlay_flag=1
+    if (n ~ /NOTB/ || u ~ /^NOT\.B /) saw_not_byte=1
+    if (saw_diag_overlay_flag && saw_not_byte) has_diag_overlay_not=1
+    if (n ~ /FMTWICONPCTLD/ || n ~ /FMTWMINPCTLDMINUTES/ || n ~ /FMTWDCNTEVERYPCTLDTIMESPCTLD/ || n ~ /FMTCWCNTPCTLDTIMESFROMNOWPCTLD/ || n ~ /FMTWDATAPCT08LX/ || n ~ /FMTWCITYPCTS/ || n ~ /FMTWEATHERIDPCTS/ || n ~ /FMTCWCOLORPCTLD/ || n ~ /FMTBANNERFORWEATHERPCTD/) weather_runtime_dump_count++
+    if (weather_runtime_dump_count >= 9) has_runtime_weather_dump=1
+    if (n ~ /EDDOTCCOLONSHORTDUM/) saw_debug_dump_start=1
+    if (n ~ /EDDOTCCOLONENDOFDU/) saw_debug_dump_end=1
+    if (saw_debug_dump_start && saw_debug_dump_end) has_debug_dump_bookends=1
     if (n ~ /SETAPEN/ || n ~ /SETDRMD/ || n ~ /SETBPEN/ || n ~ /GLOBALREF696400BITMAP/) has_restore_state=1
     if (u == "RTS") has_rts=1
 }
@@ -192,6 +230,7 @@ END {
     print "HAS_MENU_STATE_18=" has_menu_state_18
     print "HAS_COLOR_BARS=" has_set_apen_rectfill
     print "HAS_CLOCK_SYNC_SCAN=" has_clock_sync_scan
+    print "HAS_CLOCK_READ_MINLEN=" has_clock_read_minlen
     print "HAS_READMODE_0200=" has_readmode_0200
     print "HAS_READMODE_0100=" has_readmode_0100
     print "HAS_READMODE_CLEAR=" has_readmode_clear
@@ -202,6 +241,13 @@ END {
     print "HAS_STATUS_OVERLAY_DUMP=" has_status_overlay_dump
     print "HAS_DEBUG_DUMP_LOOP=" has_debug_dump_loop
     print "HAS_BANNER_DATETIME_PAIR=" has_banner_datetime_pair
+    print "HAS_REFRESH_SAVE_BYTE=" has_refresh_save_byte
+    print "HAS_REFRESH_MUL_60=" has_refresh_mul_60
+    print "HAS_DISK_WARNING_GATE_UPDATE=" has_disk_warning_gate_update
+    print "HAS_ACCUMULATOR_CLEAR=" has_accumulator_clear
+    print "HAS_DIAG_OVERLAY_NOT=" has_diag_overlay_not
+    print "HAS_RUNTIME_WEATHER_DUMP=" has_runtime_weather_dump
+    print "HAS_DEBUG_DUMP_BOOKENDS=" has_debug_dump_bookends
     print "HAS_CLOCK_FILE_READ=" has_clock_file_read
     print "HAS_CLOCK_FILE_CLOSE=" has_clock_file_close
     print "HAS_CLOCK_SCAN_U=" has_clock_scan_u

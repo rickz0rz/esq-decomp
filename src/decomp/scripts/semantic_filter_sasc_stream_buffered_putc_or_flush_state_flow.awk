@@ -1,45 +1,16 @@
 BEGIN {
-    has_entry = 0
-
-    write_reject_stage = 0
-    has_write_reject_flow = 0
-
-    has_text_translate_bool = 0
-    has_ensure_alloc_call = 0
-    has_ensure_alloc_error = 0
-    has_pending_write_set = 0
-    has_negative_write_budget = 0
-    has_positive_write_budget = 0
-
-    recurse_calls = 0
-    write_calls = 0
-    seek_calls = 0
-    read_calls = 0
-
-    direct_stage = 0
-    has_direct_lf_callback_flow = 0
-
-    buffered_cr_stage = 0
-    has_buffered_cr_flush_flow = 0
-
-    scan_stage = 0
-    has_ctrl_z_scan_flow = 0
-
-    has_pending_count_calc = 0
-    has_status_io_error = 0
-    has_status_short_write = 0
-
-    has_reset_write_remaining = 0
-    has_reset_buffer_cursor = 0
-    has_retry_after_reset = 0
-
-    flush_reject_stage = 0
-    has_flush_reject_flow = 0
-    has_flush_zero_return = 0
-    has_byte_return = 0
-    has_rts = 0
-
-    saw_reset_base_to_a0 = 0
+    btst2_count = 0
+    bset1_count = 0
+    bset5_count = 0
+    recurse_count = 0
+    seek_count = 0
+    write_reject_armed = 0
+    write_with_callback_armed = 0
+    write_single_armed = 0
+    ctrlz_loop_armed = 0
+    flush_reject_armed = 0
+    split("ENTRY WRITE_REJECT_GATE ALLOC_UNBUFFERED_GUARD ENSURE_ALLOCATED ALLOC_FAIL_IO_ERROR ALLOC_PENDING_SET NEGATIVE_CAPACITY_PATH ALLOC_STORE_OR_STAGE_BYTE ALLOC_RETRY_RECURSE DIRECT_UNBUFFERED_GATE DIRECT_FLUSH_RETURNS_ZERO DIRECT_LF_MOVEP_WRITE DIRECT_SINGLE_BYTE_WRITE DIRECT_PATH_FORCES_FLUSH BUFFERED_PENDING_SET TEXTMODE_BUFFER_EXPAND TEXTMODE_INSERT_CR CR_FLUSH_RECURSE PENDING_COUNT_COMPUTE PREWRITE_SCAN_GATE SEEK_TO_END SEEK_BACKWARD_SCAN READ_BACKWARD_SCAN_BYTE CHECK_DOS_IO_ERROR CHECK_CTRL_Z CTRLZ_SCAN_LOOP BUFFER_FLUSH_WRITE WRITE_FAIL_IO_ERROR SHORT_WRITE_FLAG RESET_NEGATIVE_COUNT RESET_UNBUFFERED_GATE RESET_BUFFER_CURSOR FINAL_STORE_BYTE FINAL_RETRY_RECURSE FLUSH_REJECT_GATE RETURN_ZERO_ON_FLUSH RETURN_INPUT_BYTE RTS", order, " ")
+    order_count = 38
 }
 
 function trim(s, t) {
@@ -48,6 +19,10 @@ function trim(s, t) {
     sub(/^[ \t]+/, "", t)
     sub(/[ \t]+$/, "", t)
     return t
+}
+
+function mark(tag) {
+    seen[tag] = 1
 }
 
 {
@@ -61,198 +36,214 @@ function trim(s, t) {
     n = u
     gsub(/[^A-Z0-9]/, "", n)
 
-    if (u ~ /^STREAM_BUFFEREDPUTCORFLUSH[A-Z0-9_]*:/) {
-        has_entry = 1
+    if (u ~ /^STREAM_BUFFEREDPUTCORFLUSH:/) {
+        mark("ENTRY")
     }
 
-    if (n ~ /DOSWRITEBYINDEX/) {
-        write_calls += 1
-    }
-    if (n ~ /DOSSEEKBYINDEX/) {
-        seek_calls += 1
-    }
-    if (n ~ /DOSREADBYINDEX/) {
-        read_calls += 1
-    }
-    if (n ~ /BSRWSTREAMBUFFEREDPUTCORFLUSH/ || n ~ /JSRSTREAMBUFFEREDPUTCORFLUSH/) {
-        recurse_calls += 1
+    if (n ~ /OPENMASKWRITEREJECT/ || u ~ /^MOVEQ(\.L)? #\$31,D0$/ || u ~ /^MOVEQ #49,D0$/) {
+        write_reject_armed = 1
     }
 
-    if (u ~ /^MOVEQ(\.L)? #STRUCT_PREALLOCHANDLENODE_OPENMASK_WRITEREJECT,D0$/ ||
-        u ~ /^MOVEQ(\.L)? #\$31,D0$/ ||
-        u ~ /^MOVEQ(\.L)? #49,D0$/) {
-        write_reject_stage = 1
-    } else if (write_reject_stage == 1 &&
-               (u ~ /^AND\.L STRUCT_PREALLOCHANDLENODE__OPENFLAGS\(A3\),D0$/ ||
-                u ~ /^AND\.L \$18\(A5\),D0$/)) {
-        write_reject_stage = 2
-    } else if (write_reject_stage == 2 &&
-               (u ~ /^MOVEQ(\.L)? #\-1,D0$/ ||
-                u ~ /^MOVEQ(\.L)? #\$FF,D0$/)) {
-        has_write_reject_flow = 1
+    if (((n ~ /OPENMASKWRITEREJECT/ && n ~ /ANDL/) ||
+         (write_reject_armed && u ~ /^AND\.L /)) &&
+        !("WRITE_REJECT_GATE" in seen)) {
+        mark("WRITE_REJECT_GATE")
+        write_reject_armed = 0
     }
 
-    if ((u ~ /^BTST #STRUCT_PREALLOCHANDLENODE_MODEFLAG_TEXTTRANSLATE_BIT,STRUCT_PREALLOCHANDLENODE__MODEFLAGS\(A3\)$/ ||
-         u ~ /^BTST #\$7,\(A2\)$/) &&
-        has_text_translate_bool == 0) {
-        has_text_translate_bool = 1
-    }
-    if (n ~ /BUFFERENSUREALLOCATED/) {
-        has_ensure_alloc_call = 1
-    }
-    if ((u ~ /^BSET #STRUCT_PREALLOCHANDLENODE_OPENFLAGSLOWBIT5_IOERROR_BIT,STRUCT_PREALLOCHANDLENODE__STATEFLAGS\(A3\)$/ ||
-         u ~ /^BSET #\$5,\(A3\)$/) &&
-        has_ensure_alloc_call) {
-        has_ensure_alloc_error = 1
-    }
-    if (u ~ /^BSET #STRUCT_PREALLOCHANDLENODE_OPENFLAGSLOWBIT1_WRITEPENDING_BIT,STRUCT_PREALLOCHANDLENODE__STATEFLAGS\(A3\)$/ ||
-        u ~ /^BSET #\$1,\(A3\)$/ ||
-        u ~ /^BSET #1,\(A3\)$/) {
-        has_pending_write_set = 1
-    }
-    if (u ~ /^NEG\.L D1$/ || u ~ /^NEG\.L D2$/) {
-        has_negative_write_budget = 1
-    }
-    if (u ~ /^MOVE\.L STRUCT_PREALLOCHANDLENODE__BUFFERCAPACITY\(A3\),STRUCT_PREALLOCHANDLENODE__WRITEREMAINING\(A3\)$/ ||
-        u ~ /^MOVE\.L \$14\(A5\),\$C\(A5\)$/) {
-        has_positive_write_budget = 1
+    if ((n ~ /OPENFLAGSLOWBIT2UNBUFFERED/ || (u ~ /^BTST / && u ~ /#\$?2/ && u ~ /\(A3\)$/))) {
+        btst2_count += 1
+        if (btst2_count == 1) {
+            mark("ALLOC_UNBUFFERED_GUARD")
+        } else if (btst2_count == 2) {
+            mark("DIRECT_UNBUFFERED_GATE")
+        } else if (btst2_count == 3) {
+            mark("RESET_UNBUFFERED_GATE")
+        }
     }
 
-    if (u ~ /^MOVE\.B D0,\-1\(A5\)$/ || u ~ /^MOVE\.B D0,\$23\(A7\)$/) {
-        direct_stage = 1
-    } else if (direct_stage == 1 &&
-               (u ~ /^MOVEQ(\.L)? #10,D1$/ || u ~ /^MOVEQ(\.L)? #\$A,D1$/)) {
-        direct_stage = 2
-    } else if (direct_stage == 2 &&
-               (u ~ /^MOVEQ(\.L)? #2,D1$/ || u ~ /^PEA \(\$2\)\.W$/)) {
-        direct_stage = 3
-    } else if (direct_stage >= 2 && n ~ /DOSMOVEPWORDREADCALLBACK/) {
-        direct_stage = 4
-    } else if (direct_stage >= 3 && n ~ /DOSWRITEBYINDEX/) {
-        has_direct_lf_callback_flow = 1
+    if (n ~ /BUFFERENSUREALLOCATED/ && (u ~ /^BSR/ || u ~ /^JSR /)) {
+        mark("ENSURE_ALLOCATED")
     }
 
-    if (u ~ /^ADDQ\.L #2,STRUCT_PREALLOCHANDLENODE__WRITEREMAINING\(A3\)$/ ||
-        u ~ /^ADDQ\.L #\$2,\$C\(A5\)$/ ||
-        u ~ /^ADDQ\.L #2,\$C\(A5\)$/) {
-        buffered_cr_stage = 1
-    } else if (buffered_cr_stage == 1 &&
-               (u ~ /^MOVE\.B #\$D,\(A0\)$/ || u ~ /^MOVE\.B #\$0D,\(A0\)$/)) {
-        buffered_cr_stage = 2
-    } else if (buffered_cr_stage == 2 &&
-               (u ~ /^MOVE\.L A3,\-\(A7\)$/ || u ~ /^MOVE\.L A5,\-\(A7\)$/)) {
-        buffered_cr_stage = 3
-    } else if (buffered_cr_stage == 3 &&
-               (u ~ /^MOVE\.L D0,\-\(A7\)$/ || u ~ /^CLR\.L \-\(A7\)$/)) {
-        buffered_cr_stage = 4
-    } else if (buffered_cr_stage == 4 &&
-               (n ~ /BSRWSTREAMBUFFEREDPUTCORFLUSH/ || n ~ /JSRSTREAMBUFFEREDPUTCORFLUSH/)) {
-        has_buffered_cr_flush_flow = 1
+    if ((n ~ /OPENFLAGSLOWBIT5IOERROR/ || (u ~ /^BSET / && u ~ /#\$?5/ && u ~ /\(A3\)$/))) {
+        bset5_count += 1
+        if (bset5_count == 1) {
+            mark("ALLOC_FAIL_IO_ERROR")
+        } else if (bset5_count == 2) {
+            mark("WRITE_FAIL_IO_ERROR")
+        }
     }
 
-    if (u ~ /^MOVE\.L STRUCT_PREALLOCHANDLENODE__BUFFERCURSOR\(A3\),D0$/ ||
-        u ~ /^MOVE\.L \$4\(A5\),D0$/) {
-        scan_stage = 1
-    } else if (scan_stage == 1 &&
-               (u ~ /^SUB\.L STRUCT_PREALLOCHANDLENODE__BUFFERBASE\(A3\),D0$/ ||
-                u ~ /^SUB\.L \$10\(A5\),D0$/)) {
-        has_pending_count_calc = 1
-        scan_stage = 2
-    } else if (scan_stage >= 2 &&
-               (u ~ /^BTST #STRUCT_PREALLOCHANDLENODE_MODEFLAG_PREWRITESCAN_BIT,STRUCT_PREALLOCHANDLENODE__MODEFLAGS\(A3\)$/ ||
-                u ~ /^BTST #\$6,\(A2\)$/)) {
-        scan_stage = 3
-    } else if (scan_stage >= 3 && seek_calls >= 1 && read_calls >= 1 &&
-               u ~ /^TST\.L GLOBAL_DOSIOERR\(A4\)$/) {
-        scan_stage = 4
-    } else if (scan_stage == 4 &&
-               (u ~ /^MOVEQ(\.L)? #26,D1$/ || u ~ /^MOVEQ(\.L)? #\$1A,D1$/)) {
-        scan_stage = 5
-    } else if (scan_stage == 5 &&
-               u ~ /^CMP\.B D1,D0$/) {
-        has_ctrl_z_scan_flow = 1
+    if ((n ~ /OPENFLAGSLOWBIT1WRITEPENDING/ || (u ~ /^BSET / && u ~ /#\$?1/ && u ~ /\(A3\)$/))) {
+        bset1_count += 1
+        if (bset1_count == 1) {
+            mark("ALLOC_PENDING_SET")
+        } else if (bset1_count == 2) {
+            mark("BUFFERED_PENDING_SET")
+        }
     }
 
-    if (u ~ /^BSET #STRUCT_PREALLOCHANDLENODE_OPENFLAGSLOWBIT5_IOERROR_BIT,STRUCT_PREALLOCHANDLENODE__STATEFLAGS\(A3\)$/ ||
-        u ~ /^BSET #\$5,\(A3\)$/) {
-        has_status_io_error = 1
-    }
-    if (u ~ /^BSET #STRUCT_PREALLOCHANDLENODE_OPENFLAGSLOWBIT4_EOFORSHORT_BIT,STRUCT_PREALLOCHANDLENODE__STATEFLAGS\(A3\)$/ ||
-        u ~ /^BSET #\$4,\(A3\)$/) {
-        has_status_short_write = 1
+    if ((u ~ /^NEG\.L D1$/ || u ~ /^NEG\.L D2$/) && !("NEGATIVE_CAPACITY_PATH" in seen)) {
+        mark("NEGATIVE_CAPACITY_PATH")
     }
 
-    if (u ~ /^MOVE\.L STRUCT_PREALLOCHANDLENODE__BUFFERCAPACITY\(A3\),D1$/ ||
-        u ~ /^MOVE\.L \$14\(A5\),D1$/ ||
-        u ~ /^MOVEQ(\.L)? #0,D1$/ ||
-        u ~ /^MOVEQ(\.L)? #0,D0$/ ||
-        u ~ /^CLR\.L \$C\(A5\)$/) {
-        has_reset_write_remaining = 1
+    if ((n ~ /BSRWSTREAMBUFFEREDPUTCORFLUSH/ || n ~ /JSRSTREAMBUFFEREDPUTCORFLUSH/)) {
+        recurse_count += 1
+        if (recurse_count == 1) {
+            mark("ALLOC_RETRY_RECURSE")
+        } else if (recurse_count == 2) {
+            mark("CR_FLUSH_RECURSE")
+        } else if (recurse_count == 3) {
+            mark("FINAL_RETRY_RECURSE")
+        }
     }
-    if (u ~ /^MOVEA\.L STRUCT_PREALLOCHANDLENODE__BUFFERBASE\(A3\),A0$/) {
-        saw_reset_base_to_a0 = 1
+
+    if ((u ~ /^MOVE\.B D0,\(A0\)$/ || u ~ /^MOVE\.B D0,\$1F\(A7\)$/) &&
+        !("ALLOC_STORE_OR_STAGE_BYTE" in seen)) {
+        mark("ALLOC_STORE_OR_STAGE_BYTE")
     }
-    if (u ~ /^MOVE\.L A0,STRUCT_PREALLOCHANDLENODE__BUFFERCURSOR\(A3\)$/ ||
+
+    if ((u ~ /^MOVEQ(\.L)? #\$0,D0$/ || u ~ /^MOVEQ #0,D0$/) &&
+        ("DIRECT_UNBUFFERED_GATE" in seen) &&
+        !("DIRECT_FLUSH_RETURNS_ZERO" in seen)) {
+        mark("DIRECT_FLUSH_RETURNS_ZERO")
+    }
+
+    if (n ~ /DOSMOVEPWORDREADCALLBACK/) {
+        write_with_callback_armed = 1
+    }
+
+    if ((u ~ /^PEA -1\(A5\)$/ || u ~ /^PEA \$[0-9A-F]+\((A7|A[0-7])\)$/) &&
+        !write_with_callback_armed) {
+        write_single_armed = 1
+    }
+
+    if (n ~ /DOSWRITEBYINDEX/ && (u ~ /^BSR/ || u ~ /^JSR /)) {
+        if (write_with_callback_armed && !("DIRECT_LF_MOVEP_WRITE" in seen)) {
+            mark("DIRECT_LF_MOVEP_WRITE")
+            write_with_callback_armed = 0
+            write_single_armed = 0
+        } else if (write_single_armed && !("DIRECT_SINGLE_BYTE_WRITE" in seen)) {
+            mark("DIRECT_SINGLE_BYTE_WRITE")
+            write_single_armed = 0
+        } else {
+            mark("BUFFER_FLUSH_WRITE")
+        }
+    }
+
+    if ((u ~ /^MOVEQ(\.L)? #\$FF,D7$/ || u ~ /^MOVEQ #-1,D7$/) &&
+        !("DIRECT_PATH_FORCES_FLUSH" in seen)) {
+        mark("DIRECT_PATH_FORCES_FLUSH")
+    }
+
+    if ((u ~ /^ADDQ\.L #\$2,\$C\(A5\)$/ || n ~ /ADDQL2STRUCTPREALLOCHANDLENODEWRITEREMAINING/) &&
+        !("TEXTMODE_BUFFER_EXPAND" in seen)) {
+        mark("TEXTMODE_BUFFER_EXPAND")
+    }
+
+    if ((u ~ /^MOVE\.B #\$D,\(A0\)$/ || u ~ /^MOVE\.B #\$0D,\(A0\)$/) &&
+        !("TEXTMODE_INSERT_CR" in seen)) {
+        mark("TEXTMODE_INSERT_CR")
+    }
+
+    if ((u ~ /^SUB\.L \$10\(A5\),D0$/ ||
+         u ~ /^MOVE\.L D0,\$24\(A7\)$/ ||
+         n ~ /SUBLSTRUCTPREALLOCHANDLENODEBUFFERBASE/ ||
+         n ~ /MOVELD016A5/) &&
+        !("PENDING_COUNT_COMPUTE" in seen)) {
+        mark("PENDING_COUNT_COMPUTE")
+    }
+
+    if ((n ~ /MODEFLAGPREWRITESCAN/ || (u ~ /^BTST / && u ~ /#\$?6/ && u ~ /\(A2\)$/)) &&
+        !("PREWRITE_SCAN_GATE" in seen)) {
+        mark("PREWRITE_SCAN_GATE")
+    }
+
+    if (n ~ /DOSSEEKBYINDEX/ && (u ~ /^BSR/ || u ~ /^JSR /)) {
+        seek_count += 1
+        if (seek_count == 1) {
+            mark("SEEK_TO_END")
+        } else if (seek_count == 2) {
+            mark("SEEK_BACKWARD_SCAN")
+            ctrlz_loop_armed = 1
+        }
+    }
+
+    if (n ~ /DOSREADBYINDEX/ && ctrlz_loop_armed) {
+        mark("READ_BACKWARD_SCAN_BYTE")
+    }
+
+    if ((n ~ /GLOBALDOSIOERR/ || u ~ /^TST\.L GLOBAL_DOSIOERR/) && ctrlz_loop_armed) {
+        mark("CHECK_DOS_IO_ERROR")
+    }
+
+    if ((u ~ /#\$1A/ || u ~ /#26([^0-9]|$)/) && ctrlz_loop_armed) {
+        mark("CHECK_CTRL_Z")
+    }
+
+    if (ctrlz_loop_armed && (u ~ /^BRA\.B / || u ~ /^BEQ\.S / || u ~ /^BEQ\.B /)) {
+        mark("CTRLZ_SCAN_LOOP")
+        ctrlz_loop_armed = 0
+    }
+
+    if ((n ~ /OPENFLAGSLOWBIT4EOFORSHORT/ || (u ~ /^BSET / && u ~ /#\$?4/ && u ~ /\(A3\)$/)) &&
+        !("SHORT_WRITE_FLAG" in seen)) {
+        mark("SHORT_WRITE_FLAG")
+    }
+
+    if ((u ~ /^MOVE\.L D2,\$C\(A5\)$/ || n ~ /WRITEREMAINING/ && u ~ /^MOVE\.L D2,/) &&
+        !("RESET_NEGATIVE_COUNT" in seen)) {
+        mark("RESET_NEGATIVE_COUNT")
+    }
+
+    if ((n ~ /BUFFERBASE/ && n ~ /BUFFERCURSOR/) ||
         u ~ /^MOVE\.L \$10\(A5\),\$4\(A5\)$/ ||
-        (saw_reset_base_to_a0 && u ~ /^MOVE\.L A0,STRUCT_PREALLOCHANDLENODE__BUFFERCURSOR\(A3\)$/)) {
-        has_reset_buffer_cursor = 1
-    }
-    if ((u ~ /^SUBQ\.L #1,STRUCT_PREALLOCHANDLENODE__WRITEREMAINING\(A3\)$/ ||
-         u ~ /^SUBQ\.L #\$1,\$C\(A5\)$/ ||
-         u ~ /^SUBQ\.L #1,\$C\(A5\)$/) &&
-        has_reset_buffer_cursor) {
-        has_retry_after_reset = 1
+        u ~ /^MOVE\.L A0,STRUCT_PREALLOCHANDLENODE__BUFFERCURSOR/) {
+        mark("RESET_BUFFER_CURSOR")
     }
 
-    if (u ~ /^MOVEQ(\.L)? #STRUCT_PREALLOCHANDLENODE_OPENMASK_FLUSHREJECT,D0$/ ||
-        u ~ /^MOVEQ(\.L)? #\$30,D0$/ ||
-        u ~ /^MOVEQ(\.L)? #48,D0$/) {
-        flush_reject_stage = 1
-    } else if (flush_reject_stage == 1 &&
-               (u ~ /^AND\.L STRUCT_PREALLOCHANDLENODE__OPENFLAGS\(A3\),D0$/ ||
-                u ~ /^AND\.L \$18\(A5\),D0$/)) {
-        flush_reject_stage = 2
-    } else if (flush_reject_stage == 2 &&
-               (u ~ /^MOVEQ(\.L)? #\-1,D0$/ ||
-                u ~ /^MOVEQ(\.L)? #\$FF,D0$/)) {
-        has_flush_reject_flow = 1
+    if ((u ~ /^MOVE\.B D0,\(A0\)$/ || u ~ /^MOVE\.L D7,D0$/) &&
+        ("RESET_BUFFER_CURSOR" in seen) &&
+        !("FINAL_STORE_BYTE" in seen) &&
+        recurse_count >= 2) {
+        mark("FINAL_STORE_BYTE")
     }
 
-    if (u ~ /^MOVEQ(\.L)? #0,D0$/ || u ~ /^MOVEQ(\.L)? #\$0,D0$/ || u ~ /^MOVEQ #0,D0$/) {
-        has_flush_zero_return = 1
+    if (n ~ /OPENMASKFLUSHREJECT/ || u ~ /^MOVEQ(\.L)? #\$30,D0$/ || u ~ /^MOVEQ #48,D0$/) {
+        flush_reject_armed = 1
     }
-    if (u ~ /^MOVE\.L D4,D0$/ || u ~ /^MOVE\.L D7,D0$/ || u ~ /^MOVE\.L D1,D0$/) {
-        has_byte_return = 1
+
+    if (((n ~ /OPENMASKFLUSHREJECT/ && n ~ /ANDL/) ||
+         (flush_reject_armed && u ~ /^AND\.L /)) &&
+        !("FLUSH_REJECT_GATE" in seen)) {
+        mark("FLUSH_REJECT_GATE")
+        flush_reject_armed = 1
     }
+
+    if (flush_reject_armed && (u ~ /^MOVEQ(\.L)? #\$0,D0$/ || u ~ /^MOVEQ #0,D0$/) &&
+        !("RETURN_ZERO_ON_FLUSH" in seen)) {
+        mark("RETURN_ZERO_ON_FLUSH")
+    }
+
+    if ((u ~ /^MOVE\.L D4,D0$/ || u ~ /^MOVE\.L D6,D0$/ || u ~ /^MOVE\.B D0,D1$/) &&
+        ("FLUSH_REJECT_GATE" in seen) &&
+        !("RETURN_INPUT_BYTE" in seen)) {
+        mark("RETURN_INPUT_BYTE")
+    }
+
     if (u == "RTS") {
-        has_rts = 1
+        mark("RTS")
     }
 }
 
 END {
-    print "HAS_ENTRY=" has_entry
-    print "HAS_WRITE_REJECT_FLOW=" has_write_reject_flow
-    print "HAS_TEXT_TRANSLATE_BOOL=" has_text_translate_bool
-    print "HAS_ENSURE_ALLOC_CALL=" has_ensure_alloc_call
-    print "HAS_ENSURE_ALLOC_ERROR=" has_ensure_alloc_error
-    print "HAS_PENDING_WRITE_SET=" has_pending_write_set
-    print "HAS_NEGATIVE_WRITE_BUDGET=" has_negative_write_budget
-    print "HAS_POSITIVE_WRITE_BUDGET=" has_positive_write_budget
-    print "COUNT_RECURSE_CALLS=" recurse_calls
-    print "COUNT_DOS_WRITE_CALLS=" write_calls
-    print "COUNT_DOS_SEEK_CALLS=" seek_calls
-    print "COUNT_DOS_READ_CALLS=" read_calls
-    print "HAS_DIRECT_LF_CALLBACK_FLOW=" has_direct_lf_callback_flow
-    print "HAS_BUFFERED_CR_FLUSH_FLOW=" has_buffered_cr_flush_flow
-    print "HAS_PENDING_COUNT_CALC=" has_pending_count_calc
-    print "HAS_CTRL_Z_SCAN_FLOW=" has_ctrl_z_scan_flow
-    print "HAS_STATUS_IO_ERROR=" has_status_io_error
-    print "HAS_STATUS_SHORT_WRITE=" has_status_short_write
-    print "HAS_RESET_WRITE_REMAINING=" has_reset_write_remaining
-    print "HAS_RESET_BUFFER_CURSOR=" has_reset_buffer_cursor
-    print "HAS_RETRY_AFTER_RESET=" has_retry_after_reset
-    print "HAS_FLUSH_REJECT_FLOW=" has_flush_reject_flow
-    print "HAS_FLUSH_ZERO_RETURN=" has_flush_zero_return
-    print "HAS_BYTE_RETURN=" has_byte_return
-    print "HAS_RTS=" has_rts
+    step = 0
+    for (i = 1; i <= order_count; i++) {
+        tag = order[i]
+        if (seen[tag]) {
+            step += 1
+            print step ":" tag
+        }
+    }
 }

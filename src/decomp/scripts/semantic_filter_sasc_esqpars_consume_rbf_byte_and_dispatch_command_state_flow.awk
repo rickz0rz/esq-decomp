@@ -48,6 +48,10 @@ BEGIN {
     saw_aligned_listing = 0
     saw_banner_entry = 0
     saw_diagnostics = 0
+    saw_boxoff_persist_flag = 0
+    saw_boxoff_persist_call = 0
+    saw_boxoff_selection_clear = 0
+    saw_boxoff_status_clear = 0
     has_tail_flow = 0
 
     has_wait_for_clock = 0
@@ -225,11 +229,27 @@ function advance_stage(stage, target) {
     if (n ~ /PARSEBANNERENTRYDATA/) {
         saw_banner_entry = 1
     }
-    if (n ~ /DIAGNOSTICS/ || n ~ /DIAGNOSTICSPACKETBYTES/) {
+    if ((n ~ /READRBFBYTESTOBUFFER/ || n ~ /READRBFBYTESTOBUFF/) &&
+        (u ~ /#\$100/ || u ~ /\(\$100\)/ || u ~ /#256([^0-9]|$)/ ||
+         u ~ /PEA 256\.W/ || n ~ /256W/)) {
         saw_diagnostics = 1
     }
+    if (n ~ /PERSISTONNEXTBOXOFFFLAG/) {
+        saw_boxoff_persist_flag = 1
+    }
+    if (n ~ /PERSISTSTATEDATAAFTERCOM/) {
+        saw_boxoff_persist_call = 1
+    }
+    if (n ~ /SELECTIONMATCHCODE/ && (n ~ /CLRW/ || n ~ /MOVEW0/)) {
+        saw_boxoff_selection_clear = 1
+    }
+    if (n ~ /UPDATESTATUSMASKANDREFRE/) {
+        saw_boxoff_status_clear = 1
+    }
     if (saw_transfer_handler && saw_persist_state && saw_reset_overlay &&
-        saw_aligned_listing && saw_banner_entry && saw_diagnostics) {
+        saw_aligned_listing && saw_banner_entry && saw_diagnostics &&
+        saw_boxoff_persist_flag && saw_boxoff_persist_call &&
+        saw_boxoff_selection_clear && saw_boxoff_status_clear) {
         has_tail_flow = 1
     }
 }

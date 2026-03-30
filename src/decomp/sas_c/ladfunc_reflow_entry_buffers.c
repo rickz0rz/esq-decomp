@@ -61,11 +61,16 @@ void LADFUNC_ReflowEntryBuffers(char *outText, UBYTE *outAttr)
                     ++srcPos;
                     continue;
                 }
-                if (ctrl == 0 && (ch == 24 || ch == 25 || ch == 26)) {
-                    ctrl = ch;
+                if (ctrl == 0) {
+                    if (ch == 24 || ch == 25 || ch == 26) {
+                        ctrl = ch;
+                        pen = tmpAttr[srcPos];
+                        ++srcPos;
+                        continue;
+                    }
+
+                    ctrl = 25;
                     pen = tmpAttr[srcPos];
-                    ++srcPos;
-                    continue;
                 }
                 if (ctrl != 0 && (ch == 24 || ch == 25 || ch == 26)) {
                     break;

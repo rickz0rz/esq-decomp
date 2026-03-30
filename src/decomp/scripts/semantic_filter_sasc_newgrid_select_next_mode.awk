@@ -24,6 +24,11 @@ BEGIN {
     has_const89=0
     has_const1=0
     has_const0=0
+    has_cycle_start_capture=0
+    has_cycle_start_compare=0
+    has_countdown_reset_write=0
+    has_candidate_wrap_clear=0
+    has_candidate_advance_write=0
     has_return=0
     jump_table_dispatch_refs=0
     mode_candidate_refs=0
@@ -49,6 +54,8 @@ BEGIN {
     budget_global_write_refs=0
     budget_mplex_write_refs=0
     budget_ppv_write_refs=0
+    pending_cycle_start_load=0
+    recent_candidate_load=0
 }
 
 function trim(s, t) {
@@ -123,6 +130,37 @@ function trim(s, t) {
     if (u ~ /^(MOVE|SUB|SUBQ|CLR)/ && (n ~ /NEWGRIDNICHEMODECYCLEBUDGETGLO/ || n ~ /NEWGRIDNICHEMODECYCLEBUDGETGLOBAL/)) budget_global_write_refs++
     if (u ~ /^(MOVE|SUB|SUBQ|CLR)/ && n ~ /NEWGRIDMPLEXMODECYCLEBUDGET/) budget_mplex_write_refs++
     if (u ~ /^(MOVE|SUB|SUBQ|CLR)/ && n ~ /NEWGRIDPPVMODECYCLEBUDGET/) budget_ppv_write_refs++
+
+    if (u ~ /MOVE\.L NEWGRID_MODECANDIDATEINDEX/ || u ~ /MOVE\.L NEWGRIDMODECANDIDATEINDEX/ ||
+        u ~ /MOVE\.L NEWGRID_MODECANDIDATEIN/ || u ~ /MOVE\.L NEWGRIDMODECANDIDATEIN/) {
+        recent_candidate_load=1
+        if (pending_cycle_start_load == 0) {
+            pending_cycle_start_load=1
+        }
+    }
+    if (u ~ /MOVE\.L [D0-7]+,NEWGRID_MODECYCLECOUNTDOWN/ || u ~ /MOVE\.L [D0-7]+,NEWGRIDMODECYCLECOUNTDOWN/ || u ~ /MOVE\.L [D0-7]+,NEWGRID_MODECYCLECOUNTDO/ || u ~ /MOVE\.L [D0-7]+,NEWGRIDMODECYCLECOUNTDO/) {
+        has_countdown_reset_write=1
+    }
+    if ((u ~ /CLR\.L NEWGRID_MODECANDIDATEINDEX/ || u ~ /CLR\.L NEWGRIDMODECANDIDATEINDEX/) ||
+        (u ~ /MOVE\.L [D0-7]+,NEWGRID_MODECANDIDATEINDEX/ || u ~ /MOVE\.L [D0-7]+,NEWGRIDMODECANDIDATEINDEX/) &&
+        (u ~ /#0/ || u ~ /#\$00/ || u ~ /MOVE\.L D0,NEWGRID_/)) {
+        has_candidate_wrap_clear=1
+    }
+    if ((u ~ /ADDQ\.L #1,NEWGRID_MODECANDIDATEINDEX/ || u ~ /ADDQ\.L #\$1,NEWGRID_MODECANDIDATEINDEX/ ||
+         u ~ /ADDQ\.L #1,NEWGRIDMODECANDIDATEINDEX/ || u ~ /ADDQ\.L #\$1,NEWGRIDMODECANDIDATEINDEX/) ||
+        ((u ~ /MOVE\.L [D0-7]+,NEWGRID_MODECANDIDATEINDEX/ || u ~ /MOVE\.L [D0-7]+,NEWGRIDMODECANDIDATEINDEX/) &&
+         recent_candidate_load != 0)) {
+        has_candidate_advance_write=1
+    }
+    if (pending_cycle_start_load != 0 &&
+        (u ~ /MOVE\.L [D0-7]+,NEWGRID_MODECYCLECOUNTDOWN/ || u ~ /MOVE\.L [D0-7]+,NEWGRIDMODECYCLECOUNTDOWN/ ||
+         u ~ /MOVE\.L [D0-7]+,NEWGRID_MODECYCLECOUNTDO/ || u ~ /MOVE\.L [D0-7]+,NEWGRIDMODECYCLECOUNTDO/)) {
+        has_cycle_start_capture=1
+    }
+    if (recent_candidate_load != 0 && pending_cycle_start_load != 0 &&
+        u ~ /CMP\.L D[0-7],D[0-7]/) {
+        has_cycle_start_compare=1
+    }
 }
 
 END {
@@ -151,6 +189,11 @@ END {
     print "HAS_CONST_89="has_const89
     print "HAS_CONST_1="has_const1
     print "HAS_CONST_0="has_const0
+    print "HAS_CYCLE_START_CAPTURE="has_cycle_start_capture
+    print "HAS_CYCLE_START_COMPARE="has_cycle_start_compare
+    print "HAS_COUNTDOWN_RESET_WRITE="has_countdown_reset_write
+    print "HAS_CANDIDATE_WRAP_CLEAR="has_candidate_wrap_clear
+    print "HAS_CANDIDATE_ADVANCE_WRITE="has_candidate_advance_write
     print "HAS_JUMPTBL_DISPATCH2="(jump_table_dispatch_refs >= 2)
     print "HAS_CFG_ENABLED_REF2="(cfg_enabled_refs >= 2)
     print "HAS_CYCLE_GATE_SOURCE_REF1="(cycle_gate_source_refs >= 1)

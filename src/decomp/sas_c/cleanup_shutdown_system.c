@@ -1,4 +1,6 @@
 #include <exec/types.h>
+#include <graphics/gfxbase.h>
+#include <hardware/custom.h>
 #define CLEANUP_NULL 0
 #define CLEANUP_LINEHEAD_MODE_PRIMARY 1
 #define CLEANUP_LINEHEAD_MODE_SECONDARY 2
@@ -36,6 +38,8 @@ extern LONG Global_REF_BACKED_UP_INTUITION_DISPLAYALERT;
 extern LONG Global_REF_INTUITION_LIBRARY;
 extern LONG ESQ_ProcessWindowPtrBackup;
 extern LONG WDISP_ExecBaseHookPtr;
+extern struct GfxBase *Global_REF_GRAPHICS_LIBRARY;
+extern struct Custom custom;
 
 void _LVOForbid(void);
 void GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(void *state);
@@ -92,6 +96,7 @@ void CLEANUP_ShutdownSystem(void)
     GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(CLEANUP_REMOVE_GROUP_SECONDARY);
     GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(CLEANUP_REMOVE_GROUP_PRIMARY);
     GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers();
+    custom.cop1lc = (ULONG)Global_REF_GRAPHICS_LIBRARY->copinit;
     NEWGRID_ShutdownGridResources();
 
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(

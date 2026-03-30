@@ -15,7 +15,9 @@ BEGIN {
     h_time_call_ge_2 = 0
     h_special_gate = 0
     h_mode2_fallback_mark = 0
+    h_mode2_fallback_carry = 0
     h_mode0_fallback_entry_store = 0
+    h_mode3_requery = 0
     h_positive_selected = 0
     h_positive_fallback = 0
     h_negative_selected = 0
@@ -24,6 +26,7 @@ BEGIN {
     h_last_match_store = 0
     h_findmode_early_return = 0
     h_finalize_3d_guard = 0
+    h_finalize_helper_reload = 0
     h_finalize_usage_bump = 0
     h_channel68_return = 0
     h_return_error = 0
@@ -104,10 +107,21 @@ function toupper_line(s, x) {
     if (saw_mode2_call &&
         (l ~ /BANNERFALLBACKVALIDFLAG/ || prev ~ /BANNERFALLBACKVALIDFLAG/) &&
         (l ~ /#\$1/ || l ~ /#1/ || prev ~ /#\$1/ || prev ~ /#1/)) h_mode2_fallback_mark = 1
+    if ((l ~ /MOVE\.W -4\(A5\),-16\(A5\)/ ||
+         l ~ /MOVE\.W -4\(A5\),D0/ || l ~ /MOVE\.W D0,-16\(A5\)/ ||
+         l ~ /MOVE\.L \$4C\(A7\),D0/ || l ~ /MOVE\.L D0,\$44\(A7\)/ || l ~ /MOVE\.L D1,\$44\(A7\)/) &&
+        (saw_mode2_call || prev ~ /PEA 2\.W/ || prev ~ /PEA \(\$2\)\.W/ ||
+         prev2 ~ /PEA 2\.W/ || prev2 ~ /PEA \(\$2\)\.W/ ||
+         prev ~ /CMP\.L D1,D0/ || prev ~ /CMP\.W D1,D0/ ||
+         prev2 ~ /CMP\.L D1,D0/ || prev2 ~ /CMP\.W D1,D0/)) h_mode2_fallback_carry = 1
 
     if (saw_mode0_gate &&
         (l ~ /BANNERFALLBACKENTRYIND/ || prev ~ /BANNERFALLBACKENTRYIND/ || prev2 ~ /BANNERFALLBACKENTRYIND/) &&
         (l ~ /CURRENTMATCHINDEX/ || prev ~ /CURRENTMATCHINDEX/ || prev2 ~ /CURRENTMATCHINDEX/ || prev3 ~ /CURRENTMATCHINDEX/)) h_mode0_fallback_entry_store = 1
+    if ((l ~ /MOVE\.W D0,-4\(A5\)/ || l ~ /MOVE\.L D0,\$4C\(A7\)/) &&
+        (saw_mode3_call || prev ~ /PEA 3\.W/ || prev ~ /PEA \(\$3\)\.W/ ||
+         prev2 ~ /PEA 3\.W/ || prev2 ~ /PEA \(\$3\)\.W/ ||
+         prev ~ /FINDENTRYMATCHINDEX/ || prev2 ~ /FINDENTRYMATCHINDEX/)) h_mode3_requery = 1
 
     if (l ~ /PRIMARYTITLEPTRTABLE/) h_group_primary = 1
     if (l ~ /SECONDARYTITLEPTRTABLE/) h_group_secondary = 1
@@ -146,6 +160,11 @@ function toupper_line(s, x) {
         (l ~ /PRIMARYTITLEPTRTABLE/ || l ~ /SECONDARYTITLEPTRTABLE/ || l ~ /TEXTDISP_GETACTIVETITLEPTR/ ||
          prev ~ /PRIMARYTITLEPTRTABLE/ || prev ~ /SECONDARYTITLEPTRTABLE/ || prev ~ /TEXTDISP_GETACTIVETITLEPTR/ ||
          prev2 ~ /PRIMARYTITLEPTRTABLE/ || prev2 ~ /SECONDARYTITLEPTRTABLE/ || prev2 ~ /TEXTDISP_GETACTIVETITLEPTR/)) saw_finalize_reload_selected = 1
+    if (saw_finalize_selected_entry &&
+        (l ~ /(JSR|BSR).*TEXTDISP_GETACTIVETITLEPTR/ || l ~ /TEXTDISP_GETACTIVETITLEPTR/ ||
+         l ~ /PRIMARYTITLEPTRTABLE/ || l ~ /SECONDARYTITLEPTRTABLE/ ||
+         prev ~ /PRIMARYTITLEPTRTABLE/ || prev ~ /SECONDARYTITLEPTRTABLE/ ||
+         prev2 ~ /PRIMARYTITLEPTRTABLE/ || prev2 ~ /SECONDARYTITLEPTRTABLE/)) h_finalize_helper_reload = 1
     if (l ~ /MOVE\.B TEXTDISP_BANNERCHARSELECTED/ || l ~ /BANNERCHARSELECTED/) saw_finalize_selected_char = 1
     if (saw_finalize_reload_selected && saw_finalize_selected_char &&
         (l ~ /ADDQ\.W #1,0\(A0,D1\.L\)/ || l ~ /ADDQ\.W #1,0\(A0,D0\.L\)/ ||
@@ -183,7 +202,9 @@ END {
     print "TIME_OFFSET_CALL_COUNT_GE_2=" h_time_call_ge_2
     print "HAS_SPECIAL_GATE=" h_special_gate
     print "HAS_MODE2_FALLBACK_MARK=" h_mode2_fallback_mark
+    print "HAS_MODE2_FALLBACK_CARRY=" h_mode2_fallback_carry
     print "HAS_MODE0_FALLBACK_ENTRY_STORE=" h_mode0_fallback_entry_store
+    print "HAS_MODE3_REQUERY=" h_mode3_requery
     print "HAS_POSITIVE_SELECTED_PATH=" h_positive_selected
     print "HAS_POSITIVE_FALLBACK_PATH=" h_positive_fallback
     print "HAS_NEGATIVE_SELECTED_PATH=" h_negative_selected
@@ -192,6 +213,7 @@ END {
     print "HAS_LAST_MATCH_STORE=" h_last_match_store
     print "HAS_FINDMODE_EARLY_RETURN=" h_findmode_early_return
     print "HAS_FINALIZE_3D_GUARD=" h_finalize_3d_guard
+    print "HAS_FINALIZE_HELPER_RELOAD=" h_finalize_helper_reload
     print "HAS_FINALIZE_USAGE_BUMP=" h_finalize_usage_bump
     print "HAS_CHANNEL68_RETURN_PATH=" h_channel68_return
     print "HAS_RETURN_ERROR=" h_return_error

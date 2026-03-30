@@ -10,6 +10,7 @@ BEGIN {
     filename_waits = 0
     filename_reads = 0
     filename_xor = 0
+    filename_eor_seen = 0
     filename_loop_flow = 0
 
     ngad_stage = 0
@@ -18,6 +19,9 @@ BEGIN {
     target_stage = 0
     target_copy_count = 0
     filename_display_calls = 0
+    saw_target_copy_loop = 0
+    saw_ram_prefix_copy = 0
+    saw_short_name_copy = 0
     has_target_setup = 0
 
     size_stage = 0
@@ -57,6 +61,7 @@ BEGIN {
     has_error_cleanup = 0
 
     finalize_stage = 0
+    finalize_display_calls = 0
     has_finalize_diag = 0
 }
 
@@ -108,10 +113,13 @@ function advance_stage(stage, target) {
     if (u ~ /SCRIPT_READSERIALRBFBYTE|SCRIPT_READNEXTRBFBYTE|READSERIALRBFBYTE/) {
         filename_reads++
     }
-    if (u ~ /TRANSFERXORCHECKSUMBYTE/ && u ~ /EOR\.B/) {
+    if (u ~ /EOR\.B/) {
+        filename_eor_seen = 1
+    }
+    if (u ~ /TRANSFERXORCHECKSUMBYTE/ && filename_eor_seen) {
         filename_xor = 1
     }
-    if (filename_cap && filename_waits >= 2 && filename_reads >= 2 && filename_xor) {
+    if (filename_cap && filename_waits >= 2 && filename_reads >= 1 && filename_xor) {
         filename_loop_flow = 1
     }
 
@@ -129,23 +137,38 @@ function advance_stage(stage, target) {
         }
     }
 
-    if ((u ~ /STRING_COPYPADNUL|COPYPADNUL/) &&
-        (u ~ /TRANSFERFILENAMEBUFFER|GLOBAL_STR_RAM/)) {
-        target_copy_count++
-        if (target_copy_count >= 2) {
-            target_stage = advance_stage(target_stage, 1)
+    if (u ~ /LEA DISKIO2_TRANSFERFILENAMEBUFFER|PEA DISKIO2_TRANSFERFILENAMEBUFFER/) {
+        target_stage = advance_stage(target_stage, 1)
+    }
+    if (u ~ /MOVE\.B \(A0\)\+,\(A1\)\+|MOVE\.B D0,\$0\(A0,D1\.W\)/) {
+        if (target_stage >= 1) {
+            saw_target_copy_loop = 1
         }
     }
-    if (u ~ /GLOBAL_STR_FILENAME/ && target_stage >= 1) {
+    if (u ~ /STRING_COPYPADNUL|COPYPADNUL/) {
+        target_copy_count++
+    }
+    if (u ~ /GLOBAL_STR_RAM/) {
+        saw_ram_prefix_copy = 1
+    }
+    if ((u ~ /DISKIO2_TRANSFERFILENAMEBUFFER/ || u ~ /\$CC\(A7\)|-68\(A5\)/) &&
+        target_copy_count >= 2) {
+        saw_short_name_copy = 1
+    }
+    if ((saw_target_copy_loop || target_copy_count >= 1) && saw_ram_prefix_copy) {
         target_stage = advance_stage(target_stage, 2)
+    }
+    if (u ~ /GLOBAL_STR_FILENAME/ && target_stage >= 2) {
+        target_stage = advance_stage(target_stage, 3)
     }
     if (u ~ /DISPLIB_DISPLAYTEXTATPOSITION/) {
         filename_display_calls++
     }
-    if ((u ~ /MOVE\.B D0,-64\(A5\)|CLR\.B \$C8\(A7\)/) && target_stage >= 2) {
-        target_stage = advance_stage(target_stage, 3)
+    if ((u ~ /MOVE\.B D0,-64\(A5\)|CLR\.B \$C8\(A7\)/) && target_stage >= 3) {
+        target_stage = advance_stage(target_stage, 4)
     }
-    if (target_stage >= 3 && filename_display_calls >= 2) {
+    if (target_stage >= 4 && filename_display_calls >= 2 &&
+        saw_ram_prefix_copy && saw_short_name_copy) {
         has_target_setup = 1
     }
 
@@ -328,7 +351,15 @@ function advance_stage(stage, target) {
     if (u ~ /WDISP_SPRINTF|SPRINTF/ && finalize_stage >= 4) {
         finalize_stage = advance_stage(finalize_stage, 5)
     }
-    if (u ~ /DISPLIB_DISPLAYTEXTATPOSITION/ && u ~ /#\$5A|#90/ && finalize_stage >= 5) {
+    if (u ~ /#\$5A|#90|PEA 90\.W|PEA \(\$5A\)\.W/) {
+        if (finalize_stage >= 5) {
+            finalize_stage = advance_stage(finalize_stage, 6)
+        }
+    }
+    if (u ~ /DISPLIB_DISPLAYTEXTATPOSITION/ && finalize_stage >= 6) {
+        finalize_display_calls++
+    }
+    if (finalize_stage >= 6 && finalize_display_calls >= 1) {
         has_finalize_diag = 1
     }
 }

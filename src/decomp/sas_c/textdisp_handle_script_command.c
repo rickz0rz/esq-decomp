@@ -121,10 +121,8 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, char *arg)
                 }
             }
 
-            if (TEXTDISP_CommandBufferPtr != 0) {
-                TEXTDISP_DrawHighlightFrame(TEXTDISP_CommandBufferPtr);
-                TEXTDISP_FilterAndSelectEntry(TEXTDISP_CommandBufferPtr, MODE_EXACT);
-            }
+            TEXTDISP_DrawHighlightFrame(TEXTDISP_CommandBufferPtr);
+            TEXTDISP_FilterAndSelectEntry(TEXTDISP_CommandBufferPtr, MODE_EXACT);
 
             doCleanup = FLAG_FALSE;
         }

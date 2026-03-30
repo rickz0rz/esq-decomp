@@ -17,8 +17,15 @@ BEGIN {
     has_const42=0
     has_const29=0
     has_const36=0
+    has_const3=0
     has_const89=0
     has_const695=0
+    text_length_count=0
+    render_line_count=0
+    is_last_count=0
+    is_last_selected_count=0
+    move_count=0
+    text_count=0
     has_rts=0
 }
 
@@ -33,20 +40,40 @@ function trim(s, t) {
 {
     line=trim($0)
     if (line=="") next
+    if (line ~ /^(XREF|XDEF|END)$/) next
     gsub(/[ \t]+/, " ", line)
     u=toupper(line)
     n=u
     gsub(/[^A-Z0-9]/, "", n)
+    is_call=(u ~ /^(JSR|BSR)(\.W)? /)
 
     if (u ~ /^NEWGRID_DRAWSELECTIONMARKERS:/ || u ~ /^NEWGRID_DRAWSELECTIONMARKERS[A-Z0-9_]*:/) has_entry=1
     if (n ~ /NEWGRIDDRAWGRIDCELLBACKGROUND/) has_draw_bg=1
     if (n ~ /NEWGRIDSETSELECTIONMARKERS/) has_set_markers=1
-    if (n ~ /LVOTEXTLENGTH/) has_text_length=1
-    if (n ~ /NEWGRID2JMPTBLDISPTEXTRENDERCURRENTLINE/ || n ~ /NEWGRID2JMPTBLDISPTEXTRENDERCURRENT/ || n ~ /NEWGRID2JMPTBLDISPTEXTRENDERC/) has_render_line=1
-    if (n ~ /NEWGRID2JMPTBLDISPTEXTISCURRENTLINELAST/ || n ~ /NEWGRID2JMPTBLDISPTEXTISCURRENTLINE/ || n ~ /NEWGRID2JMPTBLDISPTEXTISCURRE/) has_is_last=1
-    if (n ~ /NEWGRID2JMPTBLDISPTEXTISLASTLINESELECTED/ || n ~ /NEWGRID2JMPTBLDISPTEXTISLASTLINE/ || n ~ /NEWGRID2JMPTBLDISPTEXTISLASTL/) has_is_last_selected=1
-    if (n ~ /LVOMOVE/) has_move=1
-    if (n ~ /LVOTEXT/) has_text=1
+    if (n ~ /LVOTEXTLENGTH/) {
+        has_text_length=1
+        if (is_call) text_length_count++
+    }
+    if (n ~ /NEWGRID2JMPTBLDISPTEXTRENDERCURRENTLINE/ || n ~ /NEWGRID2JMPTBLDISPTEXTRENDERCURRENT/ || n ~ /NEWGRID2JMPTBLDISPTEXTRENDERC/) {
+        has_render_line=1
+        if (is_call) render_line_count++
+    }
+    if (n ~ /NEWGRID2JMPTBLDISPTEXTISCURRENTLINELAST/ || n ~ /NEWGRID2JMPTBLDISPTEXTISCURRENTLINE/ || n ~ /NEWGRID2JMPTBLDISPTEXTISCURRE/) {
+        has_is_last=1
+        if (is_call) is_last_count++
+    }
+    if (n ~ /NEWGRID2JMPTBLDISPTEXTISLASTLINESELECTED/ || n ~ /NEWGRID2JMPTBLDISPTEXTISLASTLINE/ || n ~ /NEWGRID2JMPTBLDISPTEXTISLASTL/) {
+        has_is_last_selected=1
+        if (is_call) is_last_selected_count++
+    }
+    if (n ~ /LVOMOVE/) {
+        has_move=1
+        if (is_call) move_count++
+    }
+    if (n ~ /LVOTEXT/ && n !~ /LVOTEXTLENGTH/) {
+        has_text=1
+        if (is_call) text_count++
+    }
     if (n ~ /NEWGRID2JMPTBLBEVELDRAWHORIZONTALBEVEL/ || n ~ /NEWGRID2JMPTBLBEVELDRAWHORIZO/) has_horizontal_bevel=1
     if (n ~ /NEWGRIDROWHEIGHTPX/) has_row_height=1
     if (n ~ /NEWGRIDCOLUMNSTARTXPX/) has_col_start=1
@@ -56,6 +83,7 @@ function trim(s, t) {
     if (u ~ /#42([^0-9]|$)/ || u ~ /#\$2A/ || u ~ /\(\$2A\)/) has_const42=1
     if (u ~ /#29([^0-9]|$)/ || u ~ /#\$1D/ || u ~ /\(\$1D\)/) has_const29=1
     if (u ~ /#36([^0-9]|$)/ || u ~ /#\$24/ || u ~ /\(\$24\)/) has_const36=1
+    if (u ~ /#3([^0-9]|$)/ || u ~ /#\$3([^0-9A-F]|$)/ || u ~ /\(\$3\)/) has_const3=1
     if (u ~ /#89([^0-9]|$)/ || u ~ /#\$59/ || u ~ /\(\$59\)/) has_const89=1
     if (u ~ /#695([^0-9]|$)/ || u ~ /#\$2B7/ || u ~ /\(\$2B7\)/ || u ~ /695\.[Ww]/) has_const695=1
     if (u == "RTS") has_rts=1
@@ -71,6 +99,12 @@ END {
     print "HAS_IS_LAST_LINE_SELECTED_CALL="has_is_last_selected
     print "HAS_MOVE_CALL="has_move
     print "HAS_TEXT_CALL="has_text
+    print "HAS_TWO_TEXT_LENGTH_CALLS="(text_length_count >= 2)
+    print "HAS_TWO_OR_MORE_RENDER_CURRENT_LINE_CALLS="(render_line_count >= 2)
+    print "HAS_TWO_IS_CURRENT_LINE_LAST_CALLS="(is_last_count >= 2)
+    print "HAS_IS_LAST_LINE_SELECTED_GATE="(is_last_selected_count >= 1)
+    print "HAS_FOUR_MOVE_CALLS="(move_count >= 4)
+    print "HAS_FOUR_TEXT_CALLS="(text_count >= 4)
     print "HAS_HORIZONTAL_BEVEL_CALL="has_horizontal_bevel
     print "HAS_ROW_HEIGHT_GLOBAL="has_row_height
     print "HAS_COLUMN_START_GLOBAL="has_col_start
@@ -80,6 +114,7 @@ END {
     print "HAS_CONST_42="has_const42
     print "HAS_CONST_29="has_const29
     print "HAS_CONST_36="has_const36
+    print "HAS_CONST_3="has_const3
     print "HAS_CONST_89="has_const89
     print "HAS_CONST_695="has_const695
     print "HAS_RTS="has_rts

@@ -246,6 +246,7 @@ function advance_stage(stage, target) {
     }
     if (u ~ /MOVE\.L \$24\(A7,D0\.L\),\(A1\)/ ||
         u ~ /MOVE\.L -42\(A5,D0\.L\),0\(A0,D0\.L\)/ ||
+        u ~ /MOVE\.L -42\(A5,D0\.L\),0\(A0,D1\.L\)/ ||
         u ~ /MOVE\.L -42\(A5,D0\.L\),\(A1\)/ ||
         u ~ /MOVE\.L \$24\(A7,D0\.L\),0\(A0,D0\.L\)/ ||
         u ~ /LEA \$90\(A0\),A1/) {
@@ -298,9 +299,14 @@ function advance_stage(stage, target) {
 
 END {
     has_mode_clamp = (saw_mode_btst && saw_alt_depth_assign && saw_alt_width_assign) ? 1 : 0
-    has_decode_restore_flow = (decode_stage >= 1 && saw_state_copy && saw_row_words_calc && saw_packbits) ? 1 : 0
+    has_decode_restore_flow = (decode_stage >= 4 &&
+        saw_state_copy &&
+        saw_row_words_calc &&
+        saw_packbits &&
+        saw_plane_restore) ? 1 : 0
     has_type11_clone_flow = (saw_type11_cmp &&
         saw_clone_alloc &&
+        saw_clone_type_store &&
         saw_clone_dims_copy &&
         saw_clone_field148 &&
         saw_clone_zero368) ? 1 : 0

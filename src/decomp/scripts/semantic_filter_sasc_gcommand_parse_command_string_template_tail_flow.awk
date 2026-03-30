@@ -120,8 +120,10 @@ function norm(s, t) {
         h_suffix_search = 1
     }
 
-    if (l ~ /MOVE\.B #\$73,1\(A0\)/ || l ~ /FMTSLOT\[1\] = '\''S'\''/ ||
-        l ~ /FMTSLOT\[1\] = 'S'/) {
+    if (l ~ /MOVE\.B #\$73,\(A0\)/ || l ~ /MOVE\.B #115,\(A0\)/ ||
+        l ~ /MOVE\.B #\$73,1\(A0\)/ || l ~ /MOVE\.B #115,1\(A0\)/ ||
+        l ~ /MOVE\.B #\$73,\$1\(A0\)/ || l ~ /MOVE\.B #115,\$1\(A0\)/ ||
+        l ~ /FMTSLOT\[1\] = '\''S'\''/ || l ~ /FMTSLOT\[1\] = 'S'/) {
         h_suffix_patch = 1
     }
 

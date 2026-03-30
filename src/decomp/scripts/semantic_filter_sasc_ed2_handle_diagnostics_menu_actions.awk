@@ -12,6 +12,7 @@ BEGIN {
     has_vin_mode_update=0
     has_graph_mode_update=0
     has_scroll_speed_path=0
+    has_mode_text_redraws=0
     has_view_mode_increment=0
     has_view_mode_toggle=0
     has_serial_shadow_path=0
@@ -35,10 +36,18 @@ BEGIN {
     pending_text_mode=0
     pending_vin_mode=0
     pending_graph_mode=0
+    draw_diag_mode_count=0
     saw_refresh_rastport=0
     saw_toggle_mem_mask_ref=0
     saw_toggle_mask_and=0
     saw_toggle_mask_or=0
+    saw_scroll_speed_char=0
+    saw_scroll_decrement=0
+    saw_scroll_wrap_compare=0
+    saw_scroll_wrap_reset=0
+    saw_scroll_text_limit=0
+    saw_scroll_mul40=0
+    saw_scroll_block_offset=0
     saw_ctrl_line_string=0
     saw_assert_call=0
     saw_deassert_call=0
@@ -94,8 +103,21 @@ function trim(s, t) {
     if (pending_vin_mode && n ~ /FINDNEXTCHARINTABLE/) has_vin_mode_update=1
     if (n ~ /DIAGGRAPHMODECHAR/) pending_graph_mode=1
     if (pending_graph_mode && n ~ /FINDNEXTCHARINTABLE/) has_graph_mode_update=1
+    if (n ~ /DRAWDIAGNOSTICMODETEXT/) draw_diag_mode_count++
+    if (draw_diag_mode_count >= 4) has_mode_text_redraws=1
 
-    if ((n ~ /DIAGSCROLLSPEEDCHAR/ && n ~ /33/) || (n ~ /DIAGSCROLLSPEEDCHAR/ && n ~ /36/) || n ~ /TEXTLIMIT/ || n ~ /BLOCKOFFSET/ || n ~ /MATHMULU32/) has_scroll_speed_path=1
+    if (n ~ /DIAGSCROLLSPEEDCHAR/) saw_scroll_speed_char=1
+    if (saw_scroll_speed_char && n ~ /SUBQB1D[01]/) saw_scroll_decrement=1
+    if (n ~ /DIAGSCROLLSPEEDCHAR/ && n ~ /33/) saw_scroll_wrap_compare=1
+    if (n ~ /DIAGSCROLLSPEEDCHAR/ && n ~ /36/) saw_scroll_wrap_reset=1
+    if (n ~ /TEXTLIMIT/) saw_scroll_text_limit=1
+    if ((n ~ /MATHMULU32/ && n ~ /28/) || (n ~ /MATHMULU32/ && n ~ /40/)) saw_scroll_mul40=1
+    if (n ~ /BLOCKOFFSET/) saw_scroll_block_offset=1
+    if (saw_scroll_decrement && saw_scroll_wrap_compare && saw_scroll_wrap_reset &&
+        saw_scroll_text_limit && saw_scroll_mul40 && saw_scroll_block_offset &&
+        draw_diag_mode_count >= 4) {
+        has_scroll_speed_path=1
+    }
 
     if ((n ~ /DIAGNOSTICSVIEWMODE/ && n ~ /D0/) && (n ~ /MOVEW/ || n ~ /MOVEL/)) saw_view_mode_load=1
     if (saw_view_mode_load && (n ~ /ADDQW1D0/ || n ~ /ADDQL1D0/ || n ~ /ADDQW1/ || n ~ /ADDQL1/)) saw_view_mode_add=1
@@ -151,6 +173,7 @@ END {
     print "HAS_VIN_MODE_UPDATE=" has_vin_mode_update
     print "HAS_GRAPH_MODE_UPDATE=" has_graph_mode_update
     print "HAS_SCROLL_SPEED_PATH=" has_scroll_speed_path
+    print "HAS_MODE_TEXT_REDRAWS=" has_mode_text_redraws
     print "HAS_VIEW_MODE_INCREMENT=" has_view_mode_increment
     print "HAS_VIEW_MODE_TOGGLE=" has_view_mode_toggle
     print "HAS_SERIAL_SHADOW_PATH=" has_serial_shadow_path

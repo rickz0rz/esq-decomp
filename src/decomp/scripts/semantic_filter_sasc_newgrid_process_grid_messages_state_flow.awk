@@ -6,9 +6,19 @@ BEGIN {
     has_validate_zero_arg = 0
     has_param_clear = 0
     has_switch = 0
+    has_mode0_preview = 0
+    has_mode1_slot_header = 0
+    has_mode2_date_banner = 0
+    has_mode3_dispatch1 = 0
+    has_mode4_dispatch5 = 0
+    has_mode5_dispatch2 = 0
+    has_mode6_dispatch3 = 0
+    has_mode7_dispatch4 = 0
+    has_mode8_offset_dispatch6 = 0
     has_mode9_dispatch7 = 0
     has_mode10_awaiting = 0
     has_mode11_header_redraw = 0
+    has_header_redraw_on_dispatch_fail = 0
     has_reply_loop = 0
     has_update_cache = 0
     has_putmsg = 0
@@ -70,13 +80,62 @@ function norm(s, t) {
         }
     }
 
-    if (l ~ /PEA (\(\$7\)\.W|7\.W)/) pending_dispatch_id = "7"
-    else if (l ~ /PEA (\(\$[0-6]\)\.W|[0-6]\.W)/) pending_dispatch_id = "other"
-    if (pending_dispatch_id == "7" && l ~ /(NEWGRID2_DISPATCHGRIDOPERATION)/) {
-        if (current_case_index == 9) has_mode9_dispatch7 = 1
+    if (current_case_index == 0 && l ~ /WDISP_UPDATESELECTIONPREVIEWPANE/) {
+        has_mode0_preview = 1
+    }
+
+    if (current_case_index == 1 && l ~ /NEWGRID_COMPUTEDAYSLOTFROMCLOCK/) {
+        seen_mode1_compute = 1
+    }
+    if (current_case_index == 1 && l ~ /NEWGRID_ADJUSTCLOCKSTRINGBYSLOT/ &&
+        l !~ /WITHOFFSET/) {
+        seen_mode1_adjust = 1
+    }
+    if (current_case_index == 1 && l ~ /NEWGRID_DRAWCLOCKFORMATHEADER/) {
+        seen_mode1_header = 1
+    }
+    if (seen_mode1_compute && seen_mode1_adjust && seen_mode1_header) {
+        has_mode1_slot_header = 1
+    }
+
+    if (current_case_index == 2 && l ~ /NEWGRID_DRAWDATEBANNER/) {
+        has_mode2_date_banner = 1
+    }
+
+    if (current_case_index == 8 && l ~ /NEWGRID_COMPUTEDAYSLOTFROMCLOCKW/) {
+        seen_mode8_compute = 1
+    }
+    if (current_case_index == 8 && l ~ /NEWGRID_ADJUSTCLOCKSTRINGBYSLOTW/) {
+        seen_mode8_adjust = 1
+    }
+
+    if (l ~ /PEA (\(\$1\)\.W|1\.W)/) pending_dispatch_id = "1"
+    else if (l ~ /PEA (\(\$2\)\.W|2\.W)/) pending_dispatch_id = "2"
+    else if (l ~ /PEA (\(\$3\)\.W|3\.W)/) pending_dispatch_id = "3"
+    else if (l ~ /PEA (\(\$4\)\.W|4\.W)/) pending_dispatch_id = "4"
+    else if (l ~ /PEA (\(\$5\)\.W|5\.W)/) pending_dispatch_id = "5"
+    else if (l ~ /PEA (\(\$6\)\.W|6\.W)/) pending_dispatch_id = "6"
+    else if (l ~ /PEA (\(\$7\)\.W|7\.W)/) pending_dispatch_id = "7"
+    if (l ~ /NEWGRID2_DISPATCHGRIDOPERATION/) {
+        if (current_case_index == 3 && pending_dispatch_id == "1") has_mode3_dispatch1 = 1
+        if (current_case_index == 4 && pending_dispatch_id == "5") has_mode4_dispatch5 = 1
+        if (current_case_index == 5 && pending_dispatch_id == "2") has_mode5_dispatch2 = 1
+        if (current_case_index == 6 && pending_dispatch_id == "3") has_mode6_dispatch3 = 1
+        if (current_case_index == 7 && pending_dispatch_id == "4") has_mode7_dispatch4 = 1
+        if (current_case_index == 8 && pending_dispatch_id == "6" &&
+            seen_mode8_compute && seen_mode8_adjust) {
+            has_mode8_offset_dispatch6 = 1
+        }
+        if (current_case_index == 9 && pending_dispatch_id == "7") has_mode9_dispatch7 = 1
         pending_dispatch_id = ""
     } else if (pending_dispatch_id != "" && l !~ /^(PEA|MOVE|EXT|LEA|BSR|JSR)/) {
         pending_dispatch_id = ""
+    }
+
+    if (current_case_index >= 5 && current_case_index <= 9 &&
+        l ~ /NEWGRID_HEADERREDRAWPENDING/ &&
+        prev ~ /TST\.(L|W) D[06]/) {
+        has_header_redraw_on_dispatch_fail = 1
     }
 
     if (l ~ /NEWGRID_DRAWAWAITINGLISTINGSMESS/ && current_case_index == 10) {
@@ -104,9 +163,19 @@ END {
     print "HAS_VALIDATE_ZERO_ARG=" has_validate_zero_arg
     print "HAS_PARAM_CLEAR=" has_param_clear
     print "HAS_SWITCH=" has_switch
+    print "HAS_MODE0_PREVIEW=" has_mode0_preview
+    print "HAS_MODE1_SLOT_HEADER=" has_mode1_slot_header
+    print "HAS_MODE2_DATE_BANNER=" has_mode2_date_banner
+    print "HAS_MODE3_DISPATCH1=" has_mode3_dispatch1
+    print "HAS_MODE4_DISPATCH5=" has_mode4_dispatch5
+    print "HAS_MODE5_DISPATCH2=" has_mode5_dispatch2
+    print "HAS_MODE6_DISPATCH3=" has_mode6_dispatch3
+    print "HAS_MODE7_DISPATCH4=" has_mode7_dispatch4
+    print "HAS_MODE8_OFFSET_DISPATCH6=" has_mode8_offset_dispatch6
     print "HAS_MODE9_DISPATCH7=" has_mode9_dispatch7
     print "HAS_MODE10_AWAITING=" has_mode10_awaiting
     print "HAS_MODE11_HEADER_REDRAW=" has_mode11_header_redraw
+    print "HAS_HEADER_REDRAW_ON_DISPATCH_FAIL=" has_header_redraw_on_dispatch_fail
     print "HAS_REPLY_LOOP=" has_reply_loop
     print "HAS_UPDATE_CACHE=" has_update_cache
     print "HAS_PUTMSG=" has_putmsg

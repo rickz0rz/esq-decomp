@@ -32,6 +32,7 @@ extern const char Global_STR_LADFUNC_C_19[];
 extern LadfuncEntry *LADFUNC_EntryPtrTable[];
 
 extern LONG GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(LONG a, LONG b, LONG c);
+extern void GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(void);
 extern void _LVOSetFont(void *graphicsBase, char *rastPort, void *font);
 extern LONG _LVOTextLength(void *graphicsBase, char *rastPort, const char *text, LONG length);
 extern LONG NEWGRID_JMPTBL_MATH_DivS32(LONG n, LONG d);
@@ -42,7 +43,7 @@ extern void _LVOSetRast(void *graphicsBase, char *rastPort, LONG pen);
 extern void GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern void GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 extern LONG LADFUNC_GetPackedPenHighNibble(UBYTE packed);
-extern void LADFUNC_DrawEntryLineWithAttrs(char *rastPort, LONG row, UBYTE *attrBuf, char *textBuf);
+extern void LADFUNC_DrawEntryLineWithAttrs(char *rastPort, LONG row, char *textBuf, UBYTE *attrBuf);
 
 void LADFUNC_DrawEntryPreview(LONG entryIndex)
 {
@@ -51,11 +52,15 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
     const LONG VIEW_MODE_KIND = 3;
     const LONG RASTPORT_OFFSET = 2;
     const LONG PREVIEW_PIXEL_WIDTH = 624;
-    const LONG PREVIEW_CHARS_PER_ROW = 40;
     const LONG PALETTE_TRIPLE_COPY_BYTES = 24;
     const LONG PALETTE_TRIPLE_STRIDE = 3;
     const LONG DRAW_MODE_JAM1 = 1;
     const LONG LINEBUF_ALLOC_FLAGS = 0x10001;
+    const UBYTE CH_LINE_FEED = 10;
+    const UBYTE CH_CARRIAGE_RETURN = 13;
+    const UBYTE CTRL_CENTER = 24;
+    const UBYTE CTRL_KEEP = 25;
+    const UBYTE CTRL_RIGHT = 26;
     LadfuncEntry *entry;
     char *lineText = (char *)0;
     UBYTE *lineAttr = (UBYTE *)0;
@@ -63,7 +68,10 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
     LONG maxCols;
     LONG row;
     LONG textLen = 0;
+    LONG textPos;
+    LONG linePos;
     UBYTE packed;
+    UBYTE ch;
     LONG pen;
     LONG i;
     char *rastPort;
@@ -88,6 +96,7 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
 
     entry = LADFUNC_EntryPtrTable[entryIndex];
     WDISP_AccumulatorFlushPending = 0;
+    GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight();
 
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, DRAW_MODE_JAM1);
     GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition();
@@ -107,17 +116,45 @@ void LADFUNC_DrawEntryPreview(LONG entryIndex)
     WDISP_PaletteTriplesBBase = KYBD_CustomPaletteTriplesBBase[pen * PALETTE_TRIPLE_STRIDE];
     _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, rastPort, pen);
 
+    textPos = 0;
     for (row = 0; row < ED_TextLimit; ++row) {
-        LONG col = 0;
-        LONG src = row * PREVIEW_CHARS_PER_ROW;
-        while (col < maxCols && src < textLen && entry->textPtr[src] != 0) {
-            lineText[col] = entry->textPtr[src];
-            lineAttr[col] = entry->attrPtr[src];
-            ++col;
-            ++src;
+        linePos = 0;
+
+        while (textPos < textLen && linePos < maxCols) {
+            ch = (UBYTE)entry->textPtr[textPos];
+            if (ch == 0) {
+                break;
+            }
+
+            if (ch == CH_LINE_FEED || ch == CH_CARRIAGE_RETURN) {
+                textPos++;
+                continue;
+            }
+
+            if (linePos == 0 &&
+                ch != CTRL_CENTER &&
+                ch != CTRL_KEEP &&
+                ch != CTRL_RIGHT) {
+                /* The asm prefixes plain lines with a CR sentinel before copying text. */
+                lineText[linePos] = (char)CH_CARRIAGE_RETURN;
+                lineAttr[linePos] = entry->attrPtr[textPos];
+                linePos++;
+                continue;
+            }
+
+            if (linePos > 0 &&
+                (ch == CTRL_CENTER || ch == CTRL_KEEP || ch == CTRL_RIGHT)) {
+                break;
+            }
+
+            lineAttr[linePos] = entry->attrPtr[textPos];
+            lineText[linePos] = (char)ch;
+            linePos++;
+            textPos++;
         }
-        lineText[col] = 0;
-        LADFUNC_DrawEntryLineWithAttrs(rastPort, row, lineAttr, lineText);
+
+        lineText[linePos] = 0;
+        LADFUNC_DrawEntryLineWithAttrs(rastPort, row, lineText, lineAttr);
     }
 
     GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition();

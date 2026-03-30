@@ -152,6 +152,17 @@ void TEXTDISP_BuildEntryDetailLine(TEXTDISP_SelectionEntry *entryPtr)
         hit = STR_FindCharPtr(tmp, CHAR_LPAREN);
         if (hit != 0) {
             hit[TEXTDISP_NULL] = TEXTDISP_NULL;
+
+            while (hit != tmp) {
+                UBYTE cls;
+
+                hit--;
+                cls = WDISP_CharClassTable[(UBYTE)hit[TEXTDISP_NULL]];
+                if ((cls & CLASS_SKIP_MASK) == TEXTDISP_NULL) {
+                    break;
+                }
+                hit[TEXTDISP_NULL] = TEXTDISP_NULL;
+            }
         }
 
         STRING_AppendAtNull(detail, tmp);

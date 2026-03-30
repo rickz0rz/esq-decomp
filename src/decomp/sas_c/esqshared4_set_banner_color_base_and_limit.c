@@ -6,7 +6,7 @@ extern UBYTE ESQ_BannerColorClampValueB;
 extern UBYTE ESQ_BannerColorClampWaitRowA;
 extern UBYTE ESQ_BannerColorClampWaitRowB;
 
-void ESQSHARED4_SetBannerColorBaseAndLimit(UWORD value)
+void __regargs ESQSHARED4_SetBannerColorBaseAndLimit(UWORD value)
 {
     ESQPARS2_BannerColorBaseValue = value;
     ESQ_BannerColorClampValueA = (UBYTE)value;

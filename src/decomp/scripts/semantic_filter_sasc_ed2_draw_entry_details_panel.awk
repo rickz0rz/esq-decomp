@@ -2,6 +2,7 @@ BEGIN {
     has_entry=0
     has_index_guard=0
     has_alloc=0
+    has_set_rast=0
     has_title_ptr_select=0
     has_summary_sprintf=0
     has_detail_sprintf=0
@@ -32,6 +33,7 @@ function trim(s, t) {
     if (u ~ /^ED2_DRAWENTRYDETAILSPANEL:/ || u ~ /^ED2_DRAWENTRYDETAILSPANE[A-Z0-9_]*:/) has_entry=1
     if (n ~ /SELECTEDENTRYINDEX/ && n ~ /PRIMARYGROUPENTRYCOUNT/ || n ~ /CMPWD1D0/ || n ~ /MOVEWD1ED2SELECTEDENTRYINDEX/ || n ~ /RESETINDEX/) has_index_guard=1
     if (n ~ /ALLOCATEMEMORY/ || n ~ /ALLOCATEMEM/) has_alloc=1
+    if (n ~ /SETRAST/) has_set_rast=1
     if (n ~ /PRIMARYTITLEPTRTABLE/ || n ~ /SELECTEDENTRYTITLEPTR/) has_title_ptr_select=1
     if (n ~ /PICLUPOS1/ || n ~ /WDISPSPRINTF/) has_summary_sprintf=1
     if (n ~ /CHANSOURCECALLLTRS1/ || n ~ /WDISPSPRINTF/) has_detail_sprintf=1
@@ -47,6 +49,7 @@ END {
     print "HAS_ENTRY=" has_entry
     print "HAS_INDEX_GUARD=" has_index_guard
     print "HAS_ALLOC=" has_alloc
+    print "HAS_SET_RAST=" has_set_rast
     print "HAS_TITLE_PTR_SELECT=" has_title_ptr_select
     print "HAS_SUMMARY_SPRINTF=" has_summary_sprintf
     print "HAS_DETAIL_SPRINTF=" has_detail_sprintf

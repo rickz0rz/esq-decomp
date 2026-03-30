@@ -1,9 +1,11 @@
 BEGIN{
     h_entry=0
     h_group_guard=0
+    h_out_ptr_guard=0
     h_out_clear=0
     h_row_wrap=0
     h_base_time_guard=0
+    h_base_title_nonempty=0
     h_field_select=0
     h_timefmt=0
     textlen_count=0
@@ -41,9 +43,11 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l=="")next
     if(l ~ /^NEWGRID_BUILDSHOWTIMESTEXT:/ || l ~ /^NEWGRID_BUILDSHOWTIMESTEXT[A-Z0-9_]*:/)h_entry=1
     if(l ~ /TEXTDISP_PRIMARYGROUPPRESENTFLAG/ || l ~ /BTST #\$4,\$2F\(A[0-7]\)/ || l ~ /BTST #4,47\(A[0-7]\)/)h_group_guard=1
-    if(l ~ /^CLR\.B \([A0-7]\)$/)h_out_clear=1
+    if(l ~ /^TST\.L 16\(A5\)$/ || l ~ /^MOVE\.L A2,D0$/)h_out_ptr_guard=1
+    if(l ~ /^CLR\.B \(A[0-7]\)$/)h_out_clear=1
     if(l ~ /^SUBI\.W #\$30,D[0-7]$/ || l ~ /^SUBI\.W #48,D[0-7]$/)h_row_wrap=1
     if(l ~ /TST\.L -54\(A5\)/ || l ~ /TST\.L \$D0\(A7\)/)h_base_time_guard=1
+    if(l ~ /^TST\.B \(A[0-7]\)$/)h_base_title_nonempty=1
     if(l ~ /(JSR|BSR).*COI_SELECTANIMFIELDPOINTER/ || l ~ /COI_SELECTANIMFI/)h_field_select=1
     if(l ~ /(JSR|BSR).*TEXTDISP_FORMATENTRYTIMEFORINDEX/ || l ~ /FORMATENTRYTIMEFORINDEX/)h_timefmt=1
     if(l ~ /(JSR|BSR).*LVOTEXTLENGTH/ || l ~ /_LVOTEXTLENGTH/)textlen_count++
@@ -78,9 +82,11 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
 END{
     print "HAS_ENTRY="h_entry
     print "HAS_GROUP_GUARD="h_group_guard
+    print "HAS_OUT_PTR_GUARD="h_out_ptr_guard
     print "HAS_OUT_CLEAR="h_out_clear
     print "HAS_ROW_WRAP="h_row_wrap
     print "HAS_BASE_TIME_GUARD="h_base_time_guard
+    print "HAS_BASE_TITLE_NONEMPTY="h_base_title_nonempty
     print "HAS_FIELD_SELECT="h_field_select
     print "HAS_TIME_FORMAT="h_timefmt
     print "HAS_TEXT_MEASURE="(textlen_count >= 4)

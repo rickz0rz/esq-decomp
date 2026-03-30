@@ -1,6 +1,7 @@
 BEGIN {
     has_entry = 0
     has_return = 0
+    jmptbl_cases = 0
 
     has_select_code_gate = 0
     has_config_msn_gate = 0
@@ -35,9 +36,17 @@ BEGIN {
     has_runtime_mode = 0
 
     has_state_set_3 = 0
+    has_state_set_2 = 0
     has_state_clear = 0
     has_refresh_call_32 = 0
     has_refresh_call_32_1 = 0
+    has_body_cr_gate = 0
+    has_checksum_xor = 0
+    has_checksum_compare = 0
+    has_length_limit_198 = 0
+    reset_triads = 0
+    prev_n = ""
+    prev2_n = ""
 }
 
 function trim(s, t) {
@@ -57,6 +66,7 @@ function trim(s, t) {
     gsub(/[^A-Z0-9]/, "", n)
 
     if (u ~ /^SCRIPT_HANDLESERIALCTRLCMD:/ || u ~ /^SCRIPT_HANDLESERIALCTRLC[A-Z0-9_]*:/) has_entry = 1
+    if (u ~ /^DC\.W /) jmptbl_cases++
 
     if (n ~ /GLOBALWORDSELECTCODEISRAVES/) has_select_code_gate = 1
     if (n ~ /CONFIGMSNFLAGCHAR/) has_config_msn_gate = 1
@@ -100,15 +110,46 @@ function trim(s, t) {
     if (n ~ /SCRIPTRUNTIMEMODE/) has_runtime_mode = 1
 
     if (n ~ /MOVEW3SCRIPTCTRLSTATE/ || n ~ /MOVEW3SCRIPTCTRLSTAT/) has_state_set_3 = 1
-    if (n ~ /CLRWCRIPTCTRLSTATE/ || n ~ /CLRSCRIPTCTRLSTATE/ || n ~ /CLRWCRIPTCTRLSTAT/ || n ~ /CLRSCRIPTCTRLSTAT/) has_state_clear = 1
+    if (n ~ /MOVEW2SCRIPTCTRLSTATE/ || n ~ /MOVEW2SCRIPTCTRLSTAT/ ||
+        ((n ~ /MOVEWD[0-7]SCRIPTCTRLSTATE/ || n ~ /MOVEWD[0-7]SCRIPTCTRLSTAT/) &&
+         (prev_n ~ /MOVEQ2D[0-7]/ || prev_n ~ /MOVEQL2D[0-7]/ || prev_n ~ /MOVEQ\$2D[0-7]/ || prev_n ~ /MOVEQL\$2D[0-7]/))) {
+        has_state_set_2 = 1
+    }
+    if (n ~ /CLRWSCRIPTCTRLSTATE/ || n ~ /CLRSCRIPTCTRLSTATE/ || n ~ /CLRWSCRIPTCTRLSTAT/ || n ~ /CLRSCRIPTCTRLSTAT/) has_state_clear = 1
     if (u ~ /PEA[[:space:]]+\(\$20\)\.W/ || u ~ /PEA[[:space:]]+32\.W/) has_refresh_call_32 = 1
     if (u ~ /PEA[[:space:]]+\(\$1\)\.W/ || u ~ /PEA[[:space:]]+1\.W/) has_refresh_call_32_1 = 1
+    if (u ~ /^MOVEQ(\.L)?[[:space:]]+#\$?D,[[:space:]]*D[0-7]$/ || u ~ /^MOVEQ(\.L)?[[:space:]]+#13,[[:space:]]*D[0-7]$/ || u ~ /^CMP(\.[BWL])?[[:space:]]+D[0-7],[[:space:]]*D[0-7]$/) {
+        if (n ~ /MOVEQD/ || n ~ /MOVEQ13/ || n ~ /CMPBD1D0/ || n ~ /CMPBD0D6/) has_body_cr_gate = 1
+    }
+    if (n ~ /EORLD1D0/ || n ~ /EORWD0D3/ || n ~ /EORWD1D0/) has_checksum_xor = 1
+    if (n ~ /CMPLD1D0/ || n ~ /CMPWD1D0/) has_checksum_compare = 1
+    if (u ~ /CMPI\.W[[:space:]]+#\$?198,[[:space:]]*D[0-7]/ || u ~ /CMPI\.W[[:space:]]+#198,[[:space:]]*D[0-7]/ ||
+        u ~ /CMPI\.W[[:space:]]+#\$?C6,[[:space:]]*D[0-7]/ ||
+        ((u ~ /^CMP\.W[[:space:]]+D[0-7],[[:space:]]*D[0-7]$/) &&
+         (prev_n ~ /MOVEQ\$C6D[0-7]/ || prev_n ~ /MOVEQL\$C6D[0-7]/ || prev_n ~ /MOVEQ198D[0-7]/ || prev_n ~ /MOVEQL198D[0-7]/))) {
+        has_length_limit_198 = 1
+    }
+    if ((prev2_n ~ /SCRIPTCTRLCHECKSUM/ || prev2_n ~ /SCRIPTCTRLCHECKSU/ ||
+         prev_n ~ /SCRIPTCTRLCHECKSUM/ || prev_n ~ /SCRIPTCTRLCHECKSU/ ||
+         n ~ /SCRIPTCTRLCHECKSUM/ || n ~ /SCRIPTCTRLCHECKSU/) &&
+        (prev2_n ~ /SCRIPTCTRLREADINDEX/ || prev2_n ~ /SCRIPTCTRLREADINDE/ ||
+         prev_n ~ /SCRIPTCTRLREADINDEX/ || prev_n ~ /SCRIPTCTRLREADINDE/ ||
+         n ~ /SCRIPTCTRLREADINDEX/ || n ~ /SCRIPTCTRLREADINDE/) &&
+        (prev2_n ~ /SCRIPTCTRLSTATE/ || prev2_n ~ /SCRIPTCTRLSTAT/ ||
+         prev_n ~ /SCRIPTCTRLSTATE/ || prev_n ~ /SCRIPTCTRLSTAT/ ||
+         n ~ /SCRIPTCTRLSTATE/ || n ~ /SCRIPTCTRLSTAT/)) {
+        reset_triads++
+    }
     if (u == "RTS") has_return = 1
+
+    prev2_n = prev_n
+    prev_n = n
 }
 
 END {
     print "HAS_ENTRY=" has_entry
     print "HAS_RETURN=" has_return
+    print "JMPTABLE_CASES=" jmptbl_cases
 
     print "HAS_SELECT_CODE_GATE=" has_select_code_gate
     print "HAS_CONFIG_MSN_GATE=" has_config_msn_gate
@@ -142,8 +183,14 @@ END {
     print "HAS_LENGTH_ERROR=" has_length_error
     print "HAS_RUNTIME_MODE=" has_runtime_mode
 
+    print "HAS_STATE_SET_2=" has_state_set_2
     print "HAS_STATE_SET_3=" has_state_set_3
     print "HAS_STATE_CLEAR=" has_state_clear
     print "HAS_REFRESH_CALL_32=" has_refresh_call_32
     print "HAS_REFRESH_CALL_32_1=" has_refresh_call_32_1
+    print "HAS_BODY_CR_GATE=" has_body_cr_gate
+    print "HAS_CHECKSUM_XOR=" has_checksum_xor
+    print "HAS_CHECKSUM_COMPARE=" has_checksum_compare
+    print "HAS_LENGTH_LIMIT_198=" has_length_limit_198
+    print "RESET_TRIADS=" reset_triads
 }

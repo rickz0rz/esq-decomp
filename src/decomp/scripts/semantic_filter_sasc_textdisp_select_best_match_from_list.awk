@@ -6,11 +6,13 @@ BEGIN{
  h_usage_fetch=0;h_usage_cmp=0;h_usage_prefers_lower=0;h_pos_selected_valid=0;h_best_pos_store=0;h_best_neg_store=0;h_prev_usage_store=0;h_final_usage_bump=0
  h_findmode_return=0;h_last_match_store=0;h_finalize=0;h_finalize_sentinel=0;h_channel_default68=0;h_finalize_digit_window=0;h_finalize_mid_window=0;h_finalize_high_window=0
  h_finalize_reload_selected=0;h_finalize_usage_slot=0;h_return_error=0;h_return_ok=0;h_return_found=0;h_rts=0
+ h_finalize_return_found=0
  h_init_best_pos=0;h_init_best_neg=0;h_init_prev_usage=0;h_init_last_match=0
  h_helper_call=0;h_finalize_helper_call=0;h_mode0_fallback_entry_store=0
  saw_prev_usage_load=0; saw_usage_increment=0; saw_halfhour_cmp=0; saw_positive_time_test=0
  saw_finalize_selected_entry=0; saw_finalize_selected_char=0
  saw_mode0_gate=0; saw_mode2_call=0; saw_mode3_call=0; saw_finalize_3d_cmp=0
+ saw_finalize_tail=0; saw_finalize_char_cmp100=0
  saw_special_activegroup=0; saw_special_halfhour=0; saw_special_store=0
  saw_usage_reload_selected=0; saw_usage_table_increment=0
  saw_weekday_table=0; saw_weekday_index=0; saw_weekday_mask=0; saw_weekday_branch=0
@@ -145,6 +147,7 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     (l ~ /MOVE\.B #\$1,TEXTDISP_BANNERFALLBACKVALIDFLAG/ || l ~ /MOVE\.B D[0-7],TEXTDISP_BANNERFALLBACKVALIDFLAG/ ||
      l ~ /BANNERFALLBACKVALIDFLAG/ && (prev ~ /MOVEQ(\.L)? #\$1,D[0-7]/ || prev ~ /MOVEQ(\.L)? #1,D[0-7]/)))h_mode2_fallback_mark=1
  if(l ~ /MOVE\.W D0,-6\(A5\)/ || l ~ /MOVE\.W D1,\$48\(A7\)/ || l ~ /MOVE\.W D[01],\$48\(A7\)/)h_last_match_store=1
+ if(l ~ /CMPI?\.W #\$31/ || l ~ /CMP\.W #\$31/ || l ~ /CMP\.W D0,D1/)saw_finalize_tail=1
  if(l ~ /CMPI\.W #\$31/ || l ~ /CMP\.W D0,D1/ || l ~ /CMP\.W D0,D6/ || l ~ /NORMALIZE_CHANNEL_CODE/ || l ~ /SET_DEFAULT_CHANNEL/)h_finalize=1
  if(l ~ /CMPI\.W #\$3D/ || l ~ /CMP\.W #\$3D/ || l ~ /CMPI\.W #61/ || l ~ /CMP\.W #61/)saw_finalize_3d_cmp=1
  if(saw_finalize_3d_cmp &&
@@ -177,6 +180,13 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
  if(saw_finalize_selected_entry && (l ~ /PRIMARYTITLEPTRTABLE/ || l ~ /SECONDARYTITLEPTRTABLE/ || l ~ /TEXTDISP_GETACTIVETITLEPTR/))h_finalize_reload_selected=1
  if(h_finalize_reload_selected || h_finalize_helper_call)saw_usage_reload_selected=1
  if(l ~ /MOVE\.B TEXTDISP_BANNERCHARSELECTED/)saw_finalize_selected_char=1
+ if(saw_finalize_tail &&
+    (l ~ /CMP\.B D[0-7],D[0-7]/ || l ~ /CMP\.B D[0-7],TEXTDISP_BANNERCHARSELECTED/ || l ~ /CMP\.B TEXTDISP_BANNERCHARSELECTED,D[0-7]/) &&
+    (prev ~ /MOVEQ\.L #\$64,D[0-7]/ || prev ~ /MOVEQ #\$64,D[0-7]/ || prev ~ /MOVEQ\.L #100,D[0-7]/ || prev ~ /MOVEQ #100,D[0-7]/ ||
+     prev2 ~ /MOVEQ\.L #\$64,D[0-7]/ || prev2 ~ /MOVEQ #\$64,D[0-7]/ || prev2 ~ /MOVEQ\.L #100,D[0-7]/ || prev2 ~ /MOVEQ #100,D[0-7]/) &&
+    (l ~ /BANNERCHARSELECTED/ || prev ~ /BANNERCHARSELECTED/ || prev2 ~ /BANNERCHARSELECTED/))saw_finalize_char_cmp100=1
+ if(saw_finalize_char_cmp100 && !h_channel_default68 &&
+    (l ~ /MOVEQ\.L #\$2,D0/ || l ~ /MOVEQ #2,D0/))h_finalize_return_found=1
  if(((l ~ /#\$190/ || l ~ /\+400/ || prev ~ /#\$190/ || prev ~ /\+400/ || prev2 ~ /#\$190/ || prev2 ~ /\+400/) &&
      (l ~ /BANNERCHARSELECTED/ || prev ~ /BANNERCHARSELECTED/ || prev2 ~ /BANNERCHARSELECTED/) &&
      (l ~ /ADDQ\.W #1,D[0-7]/ || l ~ /ADDQ\.W #\$1,D[0-7]/ || prev ~ /ADDQ\.W #1,D[0-7]/ || prev ~ /ADDQ\.W #\$1,D[0-7]/) &&
@@ -248,6 +258,7 @@ END{
  print "HAS_FINALIZE_SELECTED_ENTRY_RELOAD="h_finalize_reload_selected
  print "HAS_FINALIZE_ACTIVE_TITLE_RESOLUTION="(h_finalize_helper_call || h_finalize_reload_selected)
  print "HAS_FINALIZE_USAGE_SLOT_INCREMENT="h_finalize_usage_slot
+ print "HAS_FINALIZE_DIRECT_FOUND_RETURN="h_finalize_return_found
  print "HAS_RETURN_ERROR="h_return_error
  print "HAS_RETURN_OK="h_return_ok
  print "HAS_RETURN_FOUND="h_return_found

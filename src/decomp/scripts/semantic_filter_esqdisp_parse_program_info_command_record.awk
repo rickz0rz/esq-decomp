@@ -21,8 +21,10 @@ BEGIN {
     has_flag40_bit1 = 0
     has_flag40_bit2 = 0
     has_field41_hex_parse = 0
+    has_field41_length_guard = 0
     has_field41_bounds = 0
     has_field42_hex_parse = 0
+    has_field42_length_guard = 0
     has_field42_bounds = 0
     has_copy_padnul = 0
     has_zero_tag_fallback = 0
@@ -78,14 +80,16 @@ function trim(s, t) {
     if (uline ~ /^\.LAB_08F0:/ || uline ~ /CMP\.B \(A0\)\+,D0/ || uline ~ /CMP\.B \(A1\)\+,D0/ || nline ~ /ESQDISPTITLEMATCHES/) has_title_match = 1
     if (uline ~ /BSET #1,-28\(A5\)/ || uline ~ /PEA \(\$2\)\.W/) has_flag40_bit1 = 1
     if (uline ~ /BSET #2,-28\(A5\)/ || uline ~ /PEA \(\$4\)\.W/) has_flag40_bit2 = 1
-    if (uline ~ /MOVE\.B #\$FF,-29\(A5\)/ || uline ~ /MOVEQ #15,D0/ || uline ~ /PEA \(\$F\)\.W/ || nline ~ /ESQDISPPARSEBOUNDEDHEXDIGIT/) has_field41_hex_parse = 1
-    if (uline ~ /MOVEQ #15,D0/ || uline ~ /PEA \(\$F\)\.W/) saw_field41_max = 1
-    if (uline ~ /MOVEQ #0,D0/ || uline ~ /CLR\.L -\(A7\)/) saw_field41_min = 1
-    if (uline ~ /MOVE\.B D1,-29\(A5\)/ || uline ~ /MOVE\.B #\$FF,-29\(A5\)/ || uline ~ /MOVE\.B D0,\$3D\(A7\)/) saw_field41_store = 1
-    if (uline ~ /MOVE\.B #\$FF,-30\(A5\)/ || uline ~ /MOVEQ #3,D0/ || uline ~ /PEA \(\$3\)\.W/ || nline ~ /ESQDISPPARSEBOUNDEDHEXDIGIT/) has_field42_hex_parse = 1
-    if (uline ~ /MOVEQ #3,D0/ || uline ~ /PEA \(\$3\)\.W/) saw_field42_max = 1
-    if (uline ~ /MOVEQ #1,D0/ || uline ~ /PEA \(\$1\)\.W/) saw_field42_min = 1
-    if (uline ~ /MOVE\.B D1,-30\(A5\)/ || uline ~ /MOVE\.B #\$FF,-30\(A5\)/ || uline ~ /MOVE\.B D0,\$24\(A7\)/) saw_field42_store = 1
+    if (uline ~ /MOVE\.B #\$FF,-29\(A5\)/ || uline ~ /SCC \$25\(A7\)/ || uline ~ /MOVEQ(\.L)? #\$?15,D0/ || uline ~ /PEA \(\$F\)\.W/ || nline ~ /ESQDISPPARSEBOUNDEDHEXDIGIT/) has_field41_hex_parse = 1
+    if (uline ~ /MOVEQ(\.L)? #\$?2,D0/ || uline ~ /BLE\.S \.LAB_08F9/ || uline ~ /BLE\.B ___ESQDISP_PARSEPROGRAMINFOCOMMANDRECORD__35/) has_field41_length_guard = 1
+    if (uline ~ /MOVEQ(\.L)? #\$?15,D0/ || uline ~ /PEA \(\$F\)\.W/) saw_field41_max = 1
+    if (uline ~ /MOVEQ(\.L)? #\$?0,D0/ || uline ~ /CLR\.L -\(A7\)/) saw_field41_min = 1
+    if (uline ~ /MOVE\.B D1,-29\(A5\)/ || uline ~ /MOVE\.B #\$FF,-29\(A5\)/ || uline ~ /MOVE\.B D0,\$25\(A7\)/ || uline ~ /SCC \$25\(A7\)/) saw_field41_store = 1
+    if (uline ~ /MOVE\.B #\$FF,-30\(A5\)/ || uline ~ /SCC \$24\(A7\)/ || uline ~ /MOVEQ(\.L)? #\$?3,D0/ || uline ~ /PEA \(\$3\)\.W/ || nline ~ /ESQDISPPARSEBOUNDEDHEXDIGIT/) has_field42_hex_parse = 1
+    if (uline ~ /MOVEQ(\.L)? #\$?3,D0/ || uline ~ /BLE\.S \.LAB_08FD/ || uline ~ /BLE\.B ___ESQDISP_PARSEPROGRAMINFOCOMMANDRECORD__39/) has_field42_length_guard = 1
+    if (uline ~ /MOVEQ(\.L)? #\$?3,D0/ || uline ~ /PEA \(\$3\)\.W/) saw_field42_max = 1
+    if (uline ~ /MOVEQ(\.L)? #\$?1,D0/ || uline ~ /PEA \(\$1\)\.W/) saw_field42_min = 1
+    if (uline ~ /MOVE\.B D1,-30\(A5\)/ || uline ~ /MOVE\.B #\$FF,-30\(A5\)/ || uline ~ /MOVE\.B D0,\$24\(A7\)/ || uline ~ /SCC \$24\(A7\)/) saw_field42_store = 1
     if (nline ~ /STRINGCOPYPADNUL/) has_copy_padnul = 1
     if (uline ~ /ESQDISP_PROGRAMINFOZEROTAG/ || (uline ~ /MOVE\.B ESQDISP_PROGRAMINFOZEROTAG/ && uline ~ /\$27\(A7\)|\$28\(A7\)/)) has_zero_tag_fallback = 1
     if (uline ~ /BSET #0,-31\(A5\)/ || uline ~ /ANDI\.L #\$FFFE,D0/ || (nline ~ /ESQDISPPARSEYESNOFLAG/ && uline ~ /PEA \(\$1\)\.W/)) has_field46_bit0 = 1
@@ -100,8 +104,8 @@ function trim(s, t) {
 END {
     has_decimal_digit_parse = (saw_decimal_digit_test && saw_charclass_table) ? 1 : 0
     has_length_guard = ((saw_entrycount_guard || saw_len_ret) && saw_len_cmp && saw_len_ret) ? 1 : 0
-    has_field41_bounds = (saw_field41_min && saw_field41_max && saw_field41_store) ? 1 : 0
-    has_field42_bounds = (saw_field42_min && saw_field42_max && saw_field42_store) ? 1 : 0
+    has_field41_bounds = (has_field41_length_guard && saw_field41_min && saw_field41_max && saw_field41_store) ? 1 : 0
+    has_field42_bounds = (has_field42_length_guard && saw_field42_min && saw_field42_max && saw_field42_store) ? 1 : 0
     if (has_return != 0 && has_entry != 0) has_return_entry = 1
 
     print "HAS_ENTRY=" has_entry

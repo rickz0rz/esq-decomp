@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -41,6 +42,30 @@ class AuditRow:
     module: str | None
     sasc_src: str | None
     semantic_filter: str | None
+    compare_script_path: str | None
+
+
+def collect_dirty_paths(repo_root: Path) -> set[str]:
+    try:
+        result = subprocess.run(
+            ["git", "status", "--short"],
+            cwd=repo_root,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return set()
+
+    dirty_paths: set[str] = set()
+    for line in result.stdout.splitlines():
+        if not line.strip():
+            continue
+        path = line[3:]
+        if " -> " in path:
+            path = path.split(" -> ", 1)[1]
+        dirty_paths.add(path)
+    return dirty_paths
 
 
 def parse_args() -> argparse.Namespace:
@@ -72,6 +97,14 @@ def parse_args() -> argparse.Namespace:
         "--base-filter",
         metavar="SUBSTR",
         help="Only report lanes whose diff base name contains SUBSTR.",
+    )
+    parser.add_argument(
+        "--exclude-dirty",
+        action="store_true",
+        help=(
+            "Skip lanes whose SAS/C source, compare script, or semantic filter "
+            "already has local worktree edits."
+        ),
     )
     return parser.parse_args()
 
@@ -124,6 +157,7 @@ def collect_compare_metadata(repo_root: Path) -> dict[str, CompareMeta]:
 def collect_audit_rows(repo_root: Path, args: argparse.Namespace) -> list[AuditRow]:
     trial_dir = repo_root / "build/decomp/sasc_trial"
     metadata = collect_compare_metadata(repo_root)
+    dirty_paths = collect_dirty_paths(repo_root) if args.exclude_dirty else set()
     rows: list[AuditRow] = []
 
     for raw_diff_path in trial_dir.glob("*.diff"):
@@ -144,6 +178,24 @@ def collect_audit_rows(repo_root: Path, args: argparse.Namespace) -> list[AuditR
             continue
 
         meta = metadata.get(base)
+        compare_script_path = (
+            f"src/decomp/scripts/{meta.compare_script}"
+            if meta and meta.compare_script
+            else None
+        )
+        if dirty_paths:
+            lane_paths = {
+                path
+                for path in (
+                    compare_script_path,
+                    meta.semantic_filter if meta else None,
+                    f"src/decomp/sas_c/{meta.sasc_src}" if meta and meta.sasc_src else None,
+                )
+                if path
+            }
+            if lane_paths & dirty_paths:
+                continue
+
         rows.append(
             AuditRow(
                 base=base,
@@ -153,6 +205,7 @@ def collect_audit_rows(repo_root: Path, args: argparse.Namespace) -> list[AuditR
                 module=meta.module if meta else None,
                 sasc_src=meta.sasc_src if meta else None,
                 semantic_filter=meta.semantic_filter if meta else None,
+                compare_script_path=compare_script_path,
             )
         )
 

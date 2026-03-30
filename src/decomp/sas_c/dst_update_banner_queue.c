@@ -1,4 +1,4 @@
-#include <exec/types.h>
+#include "dst_banner_types.h"
 
 extern UBYTE ESQ_SecondarySlotModeFlagChar;
 extern WORD DST_PrimaryCountdown;
@@ -10,16 +10,6 @@ extern void DST_AddTimeOffset(void *clock_state, LONG a, LONG b);
 extern void *DST_AllocateBannerStruct(void *banner);
 extern void DST_RefreshBannerBuffer(void);
 extern void DST_WriteRtcFromGlobals(void);
-
-typedef struct DST_BannerStruct {
-    UBYTE pad0[16];
-    WORD countdown16;
-} DST_BannerStruct;
-
-typedef struct DST_BannerPair {
-    DST_BannerStruct *primaryBanner;
-    DST_BannerStruct *secondaryBanner;
-} DST_BannerPair;
 
 LONG DST_UpdateBannerQueue(void *pair)
 {

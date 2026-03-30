@@ -46,8 +46,10 @@ void SCRIPT_SetupHighlightEffect(char *text)
     LONG left;
     LONG height;
     LONG div;
-    char prefix[128];
+    char prefix[129];
     LONG prefixLen = 0;
+    const char *prefixCursor;
+    char sourceTerminator;
     const char *cursor;
     const char *chunkStart;
     LONG chunkLen;
@@ -78,23 +80,28 @@ void SCRIPT_SetupHighlightEffect(char *text)
     WDISP_AccumulatorFlushPending = 0;
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 0);
 
-    while (text[prefixLen] != '\0' && prefixLen < 128) {
-        UBYTE c = (UBYTE)text[prefixLen];
+    prefixCursor = text;
+    while (*prefixCursor != '\0') {
+        UBYTE c;
+
+        if (prefixLen >= 128) {
+            break;
+        }
+
+        c = (UBYTE)*prefixCursor;
         if (c >= 32) {
             prefix[prefixLen] = (char)c;
+            prefixLen++;
         }
-        prefixLen++;
+        prefixCursor++;
     }
 
-    if (text[prefixLen] != '\0') {
-        text[prefixLen] = '\0';
+    if (*prefixCursor != '\0') {
+        sourceTerminator = '\0';
+        *(char *)prefixCursor = sourceTerminator;
     }
 
-    if (prefixLen > 0) {
-        prefix[prefixLen] = '\0';
-    } else {
-        prefix[0] = '\0';
-    }
+    prefix[prefixLen] = '\0';
 
     textWidth = _LVOTextLength(rastPort, prefix, prefixLen);
     if (CLOCK_AlignedInsetRenderGateFlag != 0 &&
@@ -119,7 +126,7 @@ void SCRIPT_SetupHighlightEffect(char *text)
     while (*cursor != '\0') {
         UBYTE c = (UBYTE)*cursor;
         if (c == 19 || c == 20 || c == 24 || c == 25) {
-            if (chunkLen > 0) {
+            if (chunkLen > 0 && c != 20) {
                 _LVOText(rastPort, chunkStart, chunkLen);
             }
             if (c == 24 || c == 25) {

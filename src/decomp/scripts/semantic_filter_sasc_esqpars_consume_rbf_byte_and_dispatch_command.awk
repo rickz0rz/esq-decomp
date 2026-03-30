@@ -46,6 +46,9 @@ BEGIN {
     has_bang_path=0
     has_bang_y_normalize=0
     has_bang_slot_flag_write=0
+    has_diag_read=0
+    has_diag_checksum=0
+    has_diag_reset=0
     has_title_table_walk=0
     has_reverse_bits=0
     has_test_bit=0
@@ -55,7 +58,9 @@ BEGIN {
     has_sparse_payload_count=0
     has_replace_owned_string=0
     has_rts=0
-    diag_len_pending=0
+    diag_window_active=0
+    prev=""
+    prev2=""
 }
 
 function trim(s, t) {
@@ -74,8 +79,8 @@ function trim(s, t) {
     n=u
     gsub(/[^A-Z0-9]/, "", n)
 
-    if (diag_len_pending > 0) diag_len_pending--
-    if (u ~ /#\$100/ || u ~ /\(\$100\)/ || u ~ /#256([^0-9]|$)/) diag_len_pending=2
+    if (u ~ /#\$100/ || u ~ /\(\$100\)/ || u ~ /#256([^0-9]|$)/ ||
+        u ~ /PEA 256\.W/ || n ~ /256W/) diag_window_active=1
 
     if (u ~ /^ESQPARS_CONSUMERBFBYTEANDDISPATCHCOMMAND:/ || u ~ /^ESQPARS_CONSUMERBFBYTEANDDISPATCHCOMMAN[A-Z0-9_]*:/ || u ~ /^ESQPARS_CONSUMERBFBYTEANDDISPATC[A-Z0-9_]*:/) has_entry=1
     if (n ~ /READSERIALRBFBYTE/ || n ~ /READSERIAL/) has_read_serial=1
@@ -90,7 +95,10 @@ function trim(s, t) {
     if (n ~ /DATACERRS/) has_dataerrs=1
     if (n ~ /SELECTIONMATCHCODE/ || n ~ /MATCHSELECTIONCODEWITHOPTIONALSUFFIX/) has_selection_match=1
     if (u ~ /#16([^0-9]|$)/ || u ~ /#\$10/ || u ~ /\(\$10\)/ || u ~ /\$10\.[Ww]/) has_const16=1
-    if (n ~ /CLEARFLAGS/ || n ~ /PREAMBLE55SEENFLAG/ && n ~ /MOVEW0/) has_clear_flags=1
+    if (n ~ /CLEARFLAGS/ ||
+        ((n ~ /PREAMBLE55SEENFLAG/ || n ~ /COMMANDPREAMBLEARMEDFLAG/) &&
+         (n ~ /MOVEW0/ || n ~ /MOVEWD0/ || n ~ /MOVEWD1/ || n ~ /CLRW/ ||
+          prev ~ /MOVEQ #0/ || prev2 ~ /MOVEQ #0/))) has_clear_flags=1
     if (n ~ /UPDATESTATUSMASKANDREFRESH/ || n ~ /RESETARMEDFLAG/ || n ~ /INTERACTIVETRANSFERARMEDFLAG/) has_status_refresh=1
     if (n ~ /READRBFBYTESWITHXOR/ || n ~ /READRBFBYTESWITHXO/) has_read_rbf_xor=1
     if (n ~ /PARSECOMPACTENTRYRECORD/ || n ~ /PARSECOMPACTENTRYREC/ || n ~ /PARSECOMPACTENTRY/) has_parse_compact=1
@@ -122,8 +130,15 @@ function trim(s, t) {
     if (n ~ /SELECTIONSUFFIXBUFFER/) has_copy_suffix=1
     if (n ~ /PARSEBANNERENTRYDATA/ || n ~ /130/ && n ~ /RECORD/) has_banner_entry=1
     if (n ~ /PERSISTONNEXTBOXOFFFLAG/ || n ~ /NOTB/ && n ~ /44/ || n ~ /UPDATESTATUSMASKANDREFRESH/ && n ~ /MODECLEAR/) has_boxoff=1
-    if (((n ~ /READRBFBYTESTOBUFFER/ || n ~ /GENERATEXORCHECKSUMBYTE/) && diag_len_pending > 0) ||
-        n ~ /DIAGNOSTICSPACKETBYTES/) has_diagnostics=1
+    if ((n ~ /READRBFBYTESTOBUFFER/ || n ~ /READRBFBYTESTOBUFF/) && diag_window_active) {
+        has_diag_read=1
+    }
+    if (n ~ /GENERATEXORCHECKSUMBYTE/ && diag_window_active) {
+        has_diag_checksum=1
+    }
+    if (n ~ /RESETARMEDFLAG/ && (n ~ /CLRW/ || n ~ /MOVEW0/)) {
+        has_diag_reset=1
+    }
     if (n ~ /REPLACEOWNEDSTRING/ || n ~ /89/ && n ~ /30/ || n ~ /59/ && n ~ /30/) has_bang_path=1
     if (n ~ /89/ || n ~ /59/ || n ~ /Y/) has_bang_y_normalize=1
     if (n ~ /SLOTFLAGS/ || n ~ /MOVEB1.*7A0/ || n ~ /MOVEBD2.*7A3/ || n ~ /7A0D0W/ || n ~ /7A3D1L/) has_bang_slot_flag_write=1
@@ -136,9 +151,13 @@ function trim(s, t) {
     if (n ~ /MATHMULU32/ || n ~ /44A7/ || n ~ /COUNTMARKEDROWS/) has_sparse_payload_count=1
     if (n ~ /REPLACEOWNEDSTRING/) has_replace_owned_string=1
     if (u == "RTS") has_rts=1
+
+    prev2 = prev
+    prev = u
 }
 
 END {
+    has_diagnostics = (has_diag_read && has_diag_checksum && has_diag_reset)
     print "HAS_ENTRY=" has_entry
     print "HAS_READ_SERIAL=" has_read_serial
     print "HAS_PREAMBLE55_WRITE=" has_preamble55_write

@@ -42,6 +42,7 @@ void CLEANUP_ReleaseDisplayResources(void)
     const LONG RASTER_H_509 = 509;
     const LONG RASTER_H_15 = 15;
     const LONG RASTER_H_240 = 240;
+    const LONG RASTER_H_241 = 241;
     const LONG FREE96_LINE = 148;
     const LONG FREE_RP_LINE = 152;
     const LONG FREE_LIVE_LINE = 160;
@@ -86,7 +87,7 @@ void CLEANUP_ReleaseDisplayResources(void)
             FREE_CTX_LINE,
             *(void **)(WDISP_DisplayContextPlanePointer0 + (i << PTR_STRIDE_SHIFT)),
             RASTER_WIDE,
-            RASTER_H_240);
+            RASTER_H_241);
     }
     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
         Global_STR_CLEANUP_C_12, FREE_WORK_LINE, (void *)WDISP_BannerWorkRasterPtr, RASTER_WIDE, RASTER_H_15);

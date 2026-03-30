@@ -15,6 +15,8 @@ BEGIN {
     has_true_false = 0
     has_clock_ampm = 0
     has_runtime_mode = 0
+    has_locavail_state_08 = 0
+    has_locavail_state_0c = 0
     has_row_92 = 0
     has_row_110 = 0
     has_row_128 = 0
@@ -125,6 +127,8 @@ function trim(s,    t) {
     if (n ~ /GLOBALSTRTRUE2/ || n ~ /GLOBALSTRFALSE2/) has_true_false = 1
     if (n ~ /ESQFUNCSTRPM/ || n ~ /ESQFUNCSTRAM/) has_clock_ampm = 1
     if (n ~ /ESQFUNCSTRONAIR/ || n ~ /ESQFUNCSTROFFAIR/ || n ~ /ESQFUNCSTRNODETECT/) has_runtime_mode = 1
+    if (n ~ /LOCAVAILPRIMARYFILTERSTATEFIELD08/ || u ~ /LOCAVAIL_PRIMARYFILTERSTATE\+\$8/) has_locavail_state_08 = 1
+    if (n ~ /LOCAVAILPRIMARYFILTERSTATEFIELD0C/ || u ~ /LOCAVAIL_PRIMARYFILTERSTATE\+\$C/) has_locavail_state_0c = 1
     if (u ~ /^RTS$/) has_rts = 1
 }
 
@@ -145,6 +149,8 @@ END {
     print "HAS_TRUE_FALSE=" has_true_false
     print "HAS_CLOCK_AMPM=" has_clock_ampm
     print "HAS_RUNTIME_MODE=" has_runtime_mode
+    print "HAS_LOCAVAIL_STATE_08=" has_locavail_state_08
+    print "HAS_LOCAVAIL_STATE_0C=" has_locavail_state_0c
     print "HAS_ROW_92=" has_row_92
     print "HAS_ROW_110=" has_row_110
     print "HAS_ROW_128=" has_row_128

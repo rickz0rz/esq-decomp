@@ -33,8 +33,17 @@ BEGIN{
     h_state_globals=0
     h_digital_seed_sequence=0
     h_digital_column_adjust=0
+    h_state0_gate_alt_setup=0
+    h_state1_transition=0
+    h_state2_gate_flow=0
+    h_state7_alt_teardown=0
     digital_stage=0
     column_adjust_stage=0
+    state0_setup_stage=0
+    state1_stage=0
+    state2_clear_seen=0
+    state2_store3_seen=0
+    state7_stage=0
     h_rts=0
 }
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
@@ -66,6 +75,35 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /(JSR|BSR).*VALIDATESELECTIONCODE/)validate_calls++
     if(l ~ /(JSR|BSR).*GETGRIDMODEINDEX/)grid_mode_calls++
     if(l ~ /(JSR|BSR).*COMPUTECOLUMNINDEX/)column_calls++
+    if(l ~ /MOVE\.L D[02],NEWGRID_SCHEDULEEDITORGATEFLAG/) {
+        if (state0_setup_stage < 1) state0_setup_stage = 1
+    }
+    if(state0_setup_stage >= 1 && l ~ /MOVE\.L D[02],NEWGRID_SCHEDULEALTSELECTORFLAG/) {
+        state0_setup_stage = 2
+    }
+    if(state0_setup_stage >= 2 && l ~ /(JSR|BSR).*FINDNEXTENTRYWITHALTMARKERS/ || state0_setup_stage >= 2 && l ~ /(JSR|BSR).*FINDNEXTENTRYWITHALTMAR/) {
+        state0_setup_stage = 3
+    }
+    if(state0_setup_stage >= 3 && l ~ /CLR\.W NEWGRID_SCHEDULEROWOFFSET/) {
+        state0_setup_stage = 4
+        h_state0_gate_alt_setup = 1
+    }
+    if((l ~ /(JSR|BSR).*DRAWSTATUSMESSAGE/) && state1_stage < 1)state1_stage = 1
+    if(state1_stage >= 1 && l ~ /CLR\.L NEWGRID_SCHEDULESELECTIONCODECAC/)state1_stage = 2
+    if(state1_stage >= 2 && (l ~ /TST\.L NEWGRID_SCHEDULEEDITORGATEFLAG/ || l ~ /MOVE\.L NEWGRID_SCHEDULEEDITORGATEFLAG,D0/))state1_stage = 3
+    if(state1_stage >= 3 && (l ~ /MOVEQ(\.L)? #\$?2,D0/ || l ~ /MOVEQ(\.L)? #2,D0/))state1_stage = 4
+    if(state1_stage >= 3 && (l ~ /MOVEQ(\.L)? #\$?3,D0/ || l ~ /MOVEQ(\.L)? #3,D0/))state1_stage = 5
+    if(state1_stage >= 4 && l ~ /MOVE\.L D0,NEWGRID_SCHEDULEWORKFLOWSTATE/)h_state1_transition = 1
+    if(l ~ /CLR\.L NEWGRID_SCHEDULEEDITORGATEFLAG/)state2_clear_seen = 1
+    if(state2_clear_seen && (l ~ /MOVEQ(\.L)? #\$?3,D0/ || l ~ /MOVEQ(\.L)? #3,D0/))state2_store3_seen = 1
+    if(state2_store3_seen && l ~ /MOVE\.L D0,NEWGRID_SCHEDULEWORKFLOWSTATE/)h_state2_gate_flow = 1
+    if(l ~ /TST\.L NEWGRID_SCHEDULEALTSELECTORFLAG/ && state7_stage < 1)state7_stage = 1
+    if(state7_stage >= 1 && (l ~ /(JSR|BSR).*HANDLEGRIDEDITORSTATE/))state7_stage = 2
+    if(state7_stage >= 1 && (l ~ /CLR\.L NEWGRID_SCHEDULEWORKFLOWSTATE/ || l ~ /MOVE\.L D0,NEWGRID_SCHEDULEWORKFLOWSTATE/))state7_stage = 5
+    if(state7_stage >= 5 && (l ~ /CLR\.L NEWGRID_SCHEDULEALTSELECTORFLAG/ || l ~ /MOVE\.L D0,NEWGRID_SCHEDULEALTSELECTORFLAG/)) {
+        state7_stage = 6
+        h_state7_alt_teardown = 1
+    }
     if(l ~ /MOVE\.B GCOMMAND_DIGITALMPLEXENABLEDFLAG/) {
         if (digital_stage < 1) digital_stage = 1
         if (column_adjust_stage < 1) column_adjust_stage = 1
@@ -135,5 +173,9 @@ END{
     print "ALT_SELECTOR_WRITES="alt_selector_writes
     print "EDITOR_GATE_WRITES="editor_gate_writes
     print "HAS_STATE_GLOBALS="h_state_globals
+    print "HAS_STATE0_GATE_ALT_SETUP="h_state0_gate_alt_setup
+    print "HAS_STATE1_TRANSITION="h_state1_transition
+    print "HAS_STATE2_GATE_FLOW="h_state2_gate_flow
+    print "HAS_STATE7_ALT_TEARDOWN="h_state7_alt_teardown
     print "HAS_RTS="h_rts
 }

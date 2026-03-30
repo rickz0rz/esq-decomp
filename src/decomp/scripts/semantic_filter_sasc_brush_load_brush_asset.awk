@@ -4,6 +4,7 @@ BEGIN {
     has_read = 0
     has_seek = 0
     has_close = 0
+    has_read_len_check = 0
     has_form_cmp = 0
     has_alloc_130k = 0
     has_ilbm = 0
@@ -28,6 +29,7 @@ BEGIN {
     snapshot_refs = 0
     zero_368_refs = 0
     saw_string_compare = 0
+    saw_alert_pending_guard = 0
     saw_form_token = 0
     saw_width_default = 0
     saw_width_limit_src = 0
@@ -69,6 +71,7 @@ function trim(s,    t) {
 
     if (u ~ /DOS_OPENFILEWITHMODE/ || u ~ /GROUP_AG_JMPTBL_DOS_OPENFILEWITHMO/ || u ~ /GROUP_AG_JMPTBL_DOS_OPENFILEWITH/) has_open = 1
     if (u ~ /LVOREAD/ || u ~ /_LVOREAD/) has_read = 1
+    if (u ~ /SUBQ\.L #6,D0|SUBQ\.L #\$6,D0/) has_read_len_check = 1
     if (u ~ /LVOSEEK/ || u ~ /_LVOSEEK/) has_seek = 1
     if (u ~ /LVOCLOSE/ || u ~ /_LVOCLOSE/) has_close = 1
     if (u ~ /STRING_COMPAREN/ || u ~ /GROUP_AA_JMPTBL_STRING_COMPAR/) saw_string_compare = 1
@@ -87,6 +90,7 @@ function trim(s,    t) {
     if (u ~ /LVOINITBITMAP/ || u ~ /_LVOINITBITMAP/) has_init_bitmap = 1
     if (u ~ /LVOINITRASTPORT/ || u ~ /_LVOINITRASTPORT/) has_init_rastport = 1
     if (u ~ /BRUSH_PENDINGALERTCODE|BRUSH_SNAPSHOT/) has_alert = 1
+    if (u ~ /TST\.L BRUSH_PENDINGALERTCODE/) saw_alert_pending_guard = 1
     if (u ~ /BRUSH_SNAPSHOTHEADER/) snapshot_refs++
     if (u ~ /GLOBAL_STR_BRUSH_C_16/) has_cleanup_c16 = 1
     if (u ~ /GLOBAL_STR_BRUSH_C_14|1205|#1205|#\$4B5/) has_node_free = 1
@@ -121,6 +125,7 @@ END {
     if (ENTRY != "") print "HAS_ENTRY=" has_entry
     print "HAS_OPEN=" has_open
     print "HAS_READ=" has_read
+    print "HAS_READ_LEN_CHECK=" has_read_len_check
     print "HAS_SEEK=" has_seek
     print "HAS_CLOSE=" has_close
     has_form_cmp = (saw_string_compare && saw_form_token)
@@ -151,12 +156,14 @@ END {
     print "HAS_RESTORE_PLANES=" has_restore_planes
     print "HAS_CLONE_ALLOC=" has_clone_alloc
     print "HAS_CLONE_TYPE11_TEST=" saw_clone_type11_test
+    print "HAS_CLONE_NODE_OVERWRITE=" saw_clone_node_assign
     print "HAS_CLONE_ZERO368=" (zero_368_refs >= 2)
     print "HAS_CLONE_DIMS_COPY=" (saw_clone_dims_src && saw_clone_dims_dst)
     print "HAS_CLONE_FIELD148_COPY=" saw_clone_field148
     print "HAS_CLONE_PATH=" (has_clone_alloc && saw_clone_type11_test && (saw_clone_dims_src && saw_clone_dims_dst) && saw_clone_field148 && zero_368_refs >= 2)
     print "HAS_NODE_FREE=" has_node_free
     print "HAS_PARTIAL_ALLOC_CLEANUP=" (has_free_raster && has_node_free && saw_partial_node_clear)
+    print "HAS_ALLOC_FAIL_GUARD=" saw_alert_pending_guard
     print "HAS_DECODE_BUFFER_FREE=" has_cleanup_c16
     print "HAS_RTS=" has_rts
 }

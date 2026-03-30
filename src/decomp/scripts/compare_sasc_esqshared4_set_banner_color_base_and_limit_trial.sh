@@ -10,7 +10,7 @@ ORIG_ASM="src/modules/groups/a/q/esqshared4.s"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="esqshared4_set_banner_color_base_and_limit"
 ENTRY="ESQSHARED4_SetBannerColorBaseAndLimit"
-ENTRY_SASC_REGEX="^ESQSHARED4_SetBannerColorBaseAnd[A-Za-z0-9_]*:$"
+ENTRY_SASC_REGEX="^@?ESQSHARED4_SetBannerColorBaseAnd[A-Za-z0-9_]*:$"
 
 mkdir -p "$OUT_DIR"
 
@@ -19,7 +19,7 @@ mkdir -p "$OUT_DIR"
 awk -v e="^${ENTRY}:$" '$0 ~ e {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' \
     "$ORIG_ASM" >"${OUT_DIR}/${BASE}.original.s"
 
-awk -v e="^${ENTRY}:$" -v e2="$ENTRY_SASC_REGEX" '$0 ~ e || $0 ~ e2 {in_func=1} in_func { if (($0 ~ /^ESQSHARED4_[A-Za-z0-9_]+:$/ || $0 ~ /^_?ESQSHARED4_[A-Za-z0-9_]+:$/) && $0 !~ e && $0 !~ e2) exit; if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/ || $0 ~ /^__const:$/) exit; print }' \
+awk -v e="^${ENTRY}:$" -v e2="$ENTRY_SASC_REGEX" '$0 ~ e || $0 ~ e2 {in_func=1} in_func { if (($0 ~ /^@?ESQSHARED4_[A-Za-z0-9_]+:$/ || $0 ~ /^_?@?ESQSHARED4_[A-Za-z0-9_]+:$/) && $0 !~ e && $0 !~ e2) exit; if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/ || $0 ~ /^__const:$/) exit; print }' \
     "$SASC_DIS" >"${OUT_DIR}/${BASE}.sasc.dis.s"
 
 normalize() {

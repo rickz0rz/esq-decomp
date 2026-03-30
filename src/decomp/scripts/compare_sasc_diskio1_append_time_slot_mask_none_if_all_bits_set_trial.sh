@@ -11,10 +11,6 @@ OUT_DIR="build/decomp/sasc_trial"
 BASE="diskio1_append_time_slot_mask_none_if_all_bits_set"
 ENTRY="DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet"
 ENTRY_SASC_REGEX="^DISKIO1_AppendTimeSlotMaskNoneIf[A-Za-z0-9_]*:$"
-ENTRY_SEM="DISKIO1_APPENDTIMESLOTMASKNONEIFALLBITSSET:"
-ENTRY_ALT_SEM="DISKIO1_APPENDTIMESLOTMASKNONEIF"
-TARGET_SEM="DISKIO1_APPENDTIMESLOTMASKOFFAIR"
-
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_${BASE}.log" 2>&1
@@ -54,8 +50,8 @@ normalize <"${OUT_DIR}/${BASE}.sasc.dis.s" >"${OUT_DIR}/${BASE}.sasc.norm.s"
 
 diff -u "${OUT_DIR}/${BASE}.original.norm.s" "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.diff" || true
 
-awk -v ENTRY_PREFIX="$ENTRY_SEM" -v ENTRY_ALT_PREFIX="$ENTRY_ALT_SEM" -v TARGET_PREFIX="$TARGET_SEM" -f src/decomp/scripts/semantic_filter_sasc_diskio1_mask_decision_helper.awk "${OUT_DIR}/${BASE}.original.norm.s" >"${OUT_DIR}/${BASE}.original.semantic.txt"
-awk -v ENTRY_PREFIX="$ENTRY_SEM" -v ENTRY_ALT_PREFIX="$ENTRY_ALT_SEM" -v TARGET_PREFIX="$TARGET_SEM" -f src/decomp/scripts/semantic_filter_sasc_diskio1_mask_decision_helper.awk "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.sasc.semantic.txt"
+awk -f src/decomp/scripts/semantic_filter_sasc_diskio1_append_time_slot_mask_none_if_all_bits_set.awk "${OUT_DIR}/${BASE}.original.norm.s" >"${OUT_DIR}/${BASE}.original.semantic.txt"
+awk -f src/decomp/scripts/semantic_filter_sasc_diskio1_append_time_slot_mask_none_if_all_bits_set.awk "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.sasc.semantic.txt"
 diff -u "${OUT_DIR}/${BASE}.original.semantic.txt" "${OUT_DIR}/${BASE}.sasc.semantic.txt" >"${OUT_DIR}/${BASE}.semantic.diff" || true
 
 echo "wrote: ${OUT_DIR}/${BASE}.diff"

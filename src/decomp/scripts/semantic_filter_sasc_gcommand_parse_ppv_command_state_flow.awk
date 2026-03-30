@@ -41,6 +41,26 @@ BEGIN {
     saw_find_delim = 0
     saw_find_call = 0
     saw_fallback_period_base = 0
+    phase_enable_flag = 0
+    phase_mode_cycle = 0
+    phase_window_minutes = 0
+    phase_tolerance_minutes = 0
+    phase_message_text_pen = 0
+    phase_message_frame_pen = 0
+    phase_editor_layout_pen = 0
+    phase_editor_row_pen = 0
+    phase_showtimes_layout_pen = 0
+    phase_showtimes_initial_line = 0
+    phase_showtimes_row_pen = 0
+    phase_workflow_mode = 0
+    phase_detail_flag = 0
+    phase_rowspan = 0
+    phase_tail_find = 0
+    phase_tail_split_nul = 0
+    phase_tail_clamp = 0
+    phase_period_replace = 0
+    phase_listings_replace = 0
+    phase_tail_fallback = 0
     prev = ""
     prev2 = ""
     prev3 = ""
@@ -125,45 +145,101 @@ function norm(s, t) {
 
     if (l ~ /GCOMMAND_DIGITALPPVENABLEDFLAG/ || l ~ /GCOMMAND_DIGITALPPVENABL/) {
         h_enable_flag = 1
+        if (!phase_enable_flag) {
+            print "PHASE_ENABLE_FLAG_STORE"
+            phase_enable_flag = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVMODECYCLECOUNT/ || l ~ /GCOMMAND_PPVMODECYCLEC/) {
         h_mode_cycle = 1
+        if (!phase_mode_cycle) {
+            print "PHASE_MODE_CYCLE_STORE"
+            phase_mode_cycle = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVSELECTIONWINDOWMINUTES/ || l ~ /GCOMMAND_PPVSELECTIONWINDOWMINUT/) {
         h_window_minutes = 1
+        if (!phase_window_minutes) {
+            print "PHASE_SELECTION_WINDOW_STORE"
+            phase_window_minutes = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVSELECTIONTOLERANCEMINUTES/ || l ~ /GCOMMAND_PPVSELECTIONTOLERANCEMI/) {
         h_tolerance_minutes = 1
+        if (!phase_tolerance_minutes) {
+            print "PHASE_SELECTION_TOLERANCE_STORE"
+            phase_tolerance_minutes = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVMESSAGETEXTPEN/ || l ~ /GCOMMAND_PPVMESSAGETEXTP/) {
         h_message_text_pen = 1
+        if (!phase_message_text_pen) {
+            print "PHASE_MESSAGE_TEXT_PEN_STORE"
+            phase_message_text_pen = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVMESSAGEFRAMEPEN/ || l ~ /GCOMMAND_PPVMESSAGEFRAMEP/) {
         h_message_frame_pen = 1
+        if (!phase_message_frame_pen) {
+            print "PHASE_MESSAGE_FRAME_PEN_STORE"
+            phase_message_frame_pen = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVEDITORLAYOUTPEN/ || l ~ /GCOMMAND_PPVEDITORLAYOUTP/) {
         h_editor_layout_pen = 1
+        if (!phase_editor_layout_pen) {
+            print "PHASE_EDITOR_LAYOUT_PEN_STORE"
+            phase_editor_layout_pen = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVEDITORROWPEN/ || l ~ /GCOMMAND_PPVEDITORROWP/) {
         h_editor_row_pen = 1
+        if (!phase_editor_row_pen) {
+            print "PHASE_EDITOR_ROW_PEN_STORE"
+            phase_editor_row_pen = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVSHOWTIMESLAYOUTPEN/ || l ~ /GCOMMAND_PPVSHOWTIMESLAYOUTP/) {
         h_showtimes_layout_pen = 1
+        if (!phase_showtimes_layout_pen) {
+            print "PHASE_SHOWTIMES_LAYOUT_PEN_STORE"
+            phase_showtimes_layout_pen = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVSHOWTIMESINITIALLINEINDEX/ || l ~ /GCOMMAND_PPVSHOWTIMESINITIALLINE/) {
         h_showtimes_initial_line = 1
+        if (!phase_showtimes_initial_line) {
+            print "PHASE_SHOWTIMES_INITIAL_LINE_STORE"
+            phase_showtimes_initial_line = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVSHOWTIMESROWPEN/ || l ~ /GCOMMAND_PPVSHOWTIMESROWP/) {
         h_showtimes_row_pen = 1
+        if (!phase_showtimes_row_pen) {
+            print "PHASE_SHOWTIMES_ROW_PEN_STORE"
+            phase_showtimes_row_pen = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVSHOWTIMESWORKFLOWMODE/ || l ~ /GCOMMAND_PPVSHOWTIMESWORKFLOWMOD/) {
         h_workflow_mode = 1
+        if (!phase_workflow_mode) {
+            print "PHASE_WORKFLOW_MODE_STORE"
+            phase_workflow_mode = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVDETAILLAYOUTFLAG/ || l ~ /GCOMMAND_PPVDETAILLAYOUTF/) {
         h_detail_flag = 1
+        if (!phase_detail_flag) {
+            print "PHASE_DETAIL_FLAG_STORE"
+            phase_detail_flag = 1
+        }
     }
     if (l ~ /GCOMMAND_PPVSHOWTIMESROWSPAN/ || l ~ /GCOMMAND_PPVSHOWTIMESROWSPAN/) {
         h_rowspan_parse = 1
+        if (!phase_rowspan) {
+            print "PHASE_ROWSPAN_STORE"
+            phase_rowspan = 1
+        }
     }
 
     if (l ~ /#\$12/ || l ~ /#18/ || l ~ /\(\$12\)\.W/ || l ~ /\(18\)\.W/ ||
@@ -175,15 +251,27 @@ function norm(s, t) {
     }
     if (saw_find_delim && saw_find_call) {
         h_tail_find = 1
+        if (!phase_tail_find) {
+            print "PHASE_TAIL_FIND_SPLIT"
+            phase_tail_find = 1
+        }
     }
     if (l ~ /^CLR\.B \(A[0-7]\)\+$/ || l ~ /^CLR\.B \(A2\)\+$/) {
         h_tail_split_nul = 1
+        if (!phase_tail_split_nul) {
+            print "PHASE_TAIL_SPLIT_NUL"
+            phase_tail_split_nul = 1
+        }
     }
     if (l ~ /CLR\.B 127\(A3,D7\.L\)/ || l ~ /CLR\.B \$7F\(A3,D7\.L\)/ ||
         l ~ /CLR\.B \$7F\(A3\)/ || l ~ /TAIL\[127\] = 0/ || l ~ /#\$7F/ || l ~ /#127/) {
         if (prev ~ /CMP\.L D[0-7],D[0-7]/ || prev2 ~ /CMP\.L D[0-7],D[0-7]/ ||
             l ~ /CLR\.B \$7F\(A3\)/ || l ~ /CLR\.B 127\(A3,D7\.L\)/) {
             h_tail_clamp = 1
+            if (!phase_tail_clamp) {
+                print "PHASE_TAIL_CLAMP_127"
+                phase_tail_clamp = 1
+            }
         }
     }
 
@@ -204,11 +292,23 @@ function norm(s, t) {
         h_period_replace = 1
         if (saw_fallback_period_base) {
             h_tail_fallback_replace = 1
+            if (!phase_tail_fallback) {
+                print "PHASE_TAIL_FALLBACK_PERIOD_REPLACE"
+                phase_tail_fallback = 1
+            }
+        }
+        if (!phase_period_replace) {
+            print "PHASE_PERIOD_TEMPLATE_REPLACE"
+            phase_period_replace = 1
         }
         replace_seen = 0
         saw_fallback_period_base = 0
     } else if (replace_seen && (l ~ /GCOMMAND_PPVLISTINGSTEMPLATEPTR/ || l ~ /GCOMMAND_PPVLISTINGSTEMPL/)) {
         h_listings_replace = 1
+        if (!phase_listings_replace) {
+            print "PHASE_LISTINGS_TEMPLATE_REPLACE"
+            phase_listings_replace = 1
+        }
         replace_seen = 0
     }
 

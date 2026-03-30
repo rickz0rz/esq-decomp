@@ -1,120 +1,297 @@
 BEGIN {
-    has_entry=0
-    has_init_reset=0
-    compare_calls=0
-    read_long_calls=0
-    has_filename_alloc=0
-    has_filename_type_init=0
-    has_head_seed=0
-    has_current_block_guard=0
-    loadcolor_tag_count=0
-    has_loadcolor_store=0
-    numeric_store_count=0
-    has_source_scan=0
-    has_source_guard=0
-    has_source_ppv=0
-    has_source_alloc=0
-    has_source_copy_loop=0
-    has_source_link_init=0
-    has_source_link_append=0
-    horiz_tag_count=0
-    has_horiz_default=0
-    vert_tag_count=0
-    has_vert_default=0
-    has_id_copy=0
-    has_id_terminator=0
-    has_return=0
-    saw_source_copy=0
+    has_entry = 0
+    init_stage = 0
+    has_filename_compare = 0
+    has_filename_alloc = 0
+    has_filename_type_init = 0
+    has_filename_head_store = 0
+    has_current_block_guard = 0
+
+    loadcolor_stage = 0
+    loadcolor_store_count = 0
+
+    numeric_key_stage = 0
+    numeric_store_count = 0
+    saw_parse_call = 0
+
+    type_stage = 0
+
+    source_stage = 0
+    saw_source_scan_test = 0
+    saw_source_scan_bne = 0
+    saw_source_copy_move = 0
+    has_source_len_calc = 0
+    has_source_alloc = 0
+    has_source_next_clear = 0
+    has_source_copy_loop = 0
+    has_source_attach_head = 0
+    has_source_attach_tail = 0
+
+    horiz_stage = 0
+    vert_stage = 0
+    has_id_flow = 0
+    has_return = 0
 }
 
 function trim(s, t) {
-    t=s
+    t = s
     sub(/;.*/, "", t)
     sub(/^[ \t]+/, "", t)
     sub(/[ \t]+$/, "", t)
     return t
 }
 
+function advance_stage(stage, target) {
+    if (stage == target - 1) {
+        return target
+    }
+    return stage
+}
+
 {
-    line=trim($0)
-    if (line == "") next
-    gsub(/[ \t]+/, " ", line)
-    u=toupper(line)
-    n=u
-    gsub(/[^A-Z0-9]/, "", n)
-
-    if (u ~ /^PARSEINI_PROCESSWEATHERBLOCKS:/ || u ~ /^PARSEINI_PROCESSWEATHERBLOC[A-Z0-9_]*:/) has_entry=1
-
-    if (n ~ /CLRLPARSEINICURRENTWEATHERBLOCKTEMP/ || n ~ /CLRLPARSEINICURRENTWEATHERBLOCKPTR/) has_init_reset=1
-    if (n ~ /STRINGCOMPARENOCASE/) compare_calls++
-    if (n ~ /PARSEREADSIGNEDLONGSKIPCLASS3A/) read_long_calls++
-
-    if (n ~ /BRUSHALLOCBRUSHNODE/) has_filename_alloc=1
-    if (n ~ /MOVEB1BEA0/ || n ~ /MOVEB1190A0/) has_filename_type_init=1
-    if (n ~ /PARSEINIPARSEDDESCRIPTORLISTHEA/ && n ~ /MOVELD0/) has_head_seed=1
-    if (n ~ /TSTLPARSEINICURRENTWEATHERBLOCKPTR/ || n ~ /BEQWRETURN/ || n ~ /BEQWPARSEINIPROCESSWEATHERBLOCKS63/) has_current_block_guard=1
-
-    if (n ~ /PARSEINISTRLOADCOLOR/ || n ~ /PARSEINITAGALL/ || n ~ /PARSEINITAGNONE/ || n ~ /PARSEINITAGTEXT/) loadcolor_tag_count++
-    if (n ~ /CLRLC2A0/ || n ~ /CLRL194A0/ || n ~ /MOVELD0C2A0/ || n ~ /MOVELD0194A0/) has_loadcolor_store=1
-
-    if (n ~ /MOVELD7C6A0/ || n ~ /MOVELD7198A0/ ||
-        n ~ /MOVELD7CAA0/ || n ~ /MOVELD7202A0/ ||
-        n ~ /MOVELD7CEA0/ || n ~ /MOVELD7206A0/ ||
-        n ~ /MOVELD7D2A0/ || n ~ /MOVELD7210A0/ ||
-        n ~ /MOVELD7D6A0/ || n ~ /MOVELD7214A0/ ||
-        n ~ /MOVELD7DAA0/ || n ~ /MOVELD7218A0/) numeric_store_count++
-
-    if (n ~ /PARSEINITAGSOURCE/ || n ~ /TSTBA0PLUS/ || n ~ /SUBQL1A0/ || n ~ /SUBLD1D0/) has_source_scan=1
-    if (n ~ /^BLEW/ || n ~ /^BLEB/ || n ~ /^BLES/) has_source_guard=1
-    if (n ~ /PARSEINITAGPPV/ || n ~ /MOVEB3BEA0/ || n ~ /MOVEB3190A0/) has_source_ppv=1
-    if (n ~ /MEMORYALLOCATEMEMORY/ || n ~ /MOVELMEMFPUBLICMEMFCLEARA7/ || n ~ /MOVEL10001A7/ || n ~ /PEA12W/ || n ~ /PEACW/ || n ~ /PEA670W/ || n ~ /PEA29EW/) has_source_alloc=1
-
-    if (n ~ /MOVEBA0PLUSA1PLUS/ || n ~ /MOVEBA0A1/) {
-        saw_source_copy=1
-    } else if (saw_source_copy && (n ~ /BNES/ || n ~ /BNEB/ || n ~ /TSTBFFFFFFFFA1/ || n ~ /TSTBFFFFFFFFA0/)) {
-        has_source_copy_loop=1
-        saw_source_copy=0
-    } else if (saw_source_copy && n !~ /^MOVE/ && n !~ /^TST/ && n !~ /^BNE/) {
-        saw_source_copy=0
+    line = trim($0)
+    if (line == "") {
+        next
     }
 
-    if (n ~ /TSTLE6A0/ || n ~ /TSTL230A0/ || n ~ /MOVELA1E6A0/ || n ~ /MOVELA1230A0/) has_source_link_init=1
-    if (n ~ /MOVELPARSEINICURRENTWEATHERBLOCKTEMPPTR8A1/ || n ~ /MOVEL24A78A2/ || n ~ /MOVEL248A78A2/) has_source_link_append=1
+    gsub(/[ \t]+/, " ", line)
+    u = toupper(line)
+    n = u
+    gsub(/[^A-Z0-9]/, "", n)
 
-    if (n ~ /PARSEINISTRHORIZONTAL/ || n ~ /PARSEINITAGRIGHT/ || n ~ /PARSEINITAGCENTERHORIZONTALA/) horiz_tag_count++
-    if (n ~ /CLRLDEA0/ || n ~ /CLRL222A0/) has_horiz_default=1
-    if (n ~ /PARSEINITAGVERTICAL/ || n ~ /PARSEINITAGBOTTOM/ || n ~ /PARSEINITAGCENTERVERTICALA/) vert_tag_count++
-    if (n ~ /CLRLE2A0/ || n ~ /CLRL226A0/) has_vert_default=1
+    if (u ~ /^PARSEINI_PROCESSWEATHERBLOCKS:/ || u ~ /^PARSEINI_PROCESSWEATHERBLOC[A-Z0-9_]*:/) {
+        has_entry = 1
+    }
 
-    if (n ~ /STRINGCOPYPADNUL/ || n ~ /PEA2W/) has_id_copy=1
-    if (n ~ /CLRBC1A0/ || n ~ /CLRB193A0/) has_id_terminator=1
-    if (u == "RTS") has_return=1
+    if (n ~ /TSTLPARSEINIPARSEDDESCRIPTORLISTHEA/) {
+        init_stage = advance_stage(init_stage, 1)
+    }
+    if (init_stage >= 1 && (n ~ /CLRLPARSEINICURRENTWEATHERBLOCKTEMP/ || n ~ /MOVELA0PARSEINICURRENTWEATHERBLOCKTEMP/)) {
+        init_stage = advance_stage(init_stage, 2)
+    }
+    if (init_stage >= 2 && (n ~ /CLRLPARSEINICURRENTWEATHERBLOCKPTR/ || n ~ /MOVELA0PARSEINICURRENTWEATHERBLOCKPTR/)) {
+        init_stage = advance_stage(init_stage, 3)
+    }
+
+    if (n ~ /PARSEINITAGFILENAMEWEATHERBLO/) {
+        has_filename_compare = 1
+    }
+    if (n ~ /BRUSHALLOCBRUSHNODE/) {
+        has_filename_alloc = 1
+    }
+    if (n ~ /MOVEB1BEA0/ || n ~ /MOVEB1190A0/) {
+        has_filename_type_init = 1
+    }
+    if (n ~ /MOVELD0PARSEINIPARSEDDESCRIPTORLISTHEA/) {
+        has_filename_head_store = 1
+    }
+    if (n ~ /TSTLPARSEINICURRENTWEATHERBLOCKPTR/ && n !~ /PARSEINIPARSEDDESCRIPTORLISTHEAD/) {
+        has_current_block_guard = 1
+    }
+
+    if (n ~ /PARSEINISTRLOADCOLOR/) {
+        loadcolor_stage = advance_stage(loadcolor_stage, 1)
+    }
+    if (loadcolor_stage >= 1 && n ~ /PARSEINITAGALL/) {
+        loadcolor_stage = advance_stage(loadcolor_stage, 2)
+    }
+    if (loadcolor_stage >= 2 && (n ~ /CLRLC2A0/ || n ~ /CLRL194A0/)) {
+        loadcolor_store_count++
+        loadcolor_stage = advance_stage(loadcolor_stage, 3)
+    }
+    if (loadcolor_stage >= 3 && n ~ /PARSEINITAGNONE/) {
+        loadcolor_stage = advance_stage(loadcolor_stage, 4)
+    }
+    if (loadcolor_stage >= 4 && (n ~ /MOVEQL2D0/ || n ~ /MOVEQ2D0/)) {
+        loadcolor_stage = advance_stage(loadcolor_stage, 5)
+    }
+    if (loadcolor_stage >= 5 && (n ~ /MOVELD0C2A0/ || n ~ /MOVELD0194A0/)) {
+        loadcolor_store_count++
+        loadcolor_stage = advance_stage(loadcolor_stage, 6)
+    }
+    if (loadcolor_stage >= 6 && n ~ /PARSEINITAGTEXT/) {
+        loadcolor_stage = advance_stage(loadcolor_stage, 7)
+    }
+    if (loadcolor_stage >= 7 && (n ~ /MOVEQL3D0/ || n ~ /MOVEQ3D0/)) {
+        loadcolor_stage = advance_stage(loadcolor_stage, 8)
+    }
+    if (loadcolor_stage >= 8 && (n ~ /MOVELD0C2A0/ || n ~ /MOVELD0194A0/)) {
+        loadcolor_store_count++
+        loadcolor_stage = advance_stage(loadcolor_stage, 9)
+    }
+    if (loadcolor_stage >= 9 && (n ~ /MOVEQL1D0/ || n ~ /MOVEQ1D0/)) {
+        loadcolor_stage = advance_stage(loadcolor_stage, 10)
+    }
+    if (loadcolor_stage >= 10 && (n ~ /MOVELD0C2A0/ || n ~ /MOVELD0194A0/)) {
+        loadcolor_store_count++
+        loadcolor_stage = advance_stage(loadcolor_stage, 11)
+    }
+
+    if (n ~ /PARSEREADSIGNEDLONGSKIPCLASS3A/) {
+        saw_parse_call = 1
+    } else if (saw_parse_call && (n ~ /MOVELD7C6A0/ || n ~ /MOVELD7198A0/)) {
+        numeric_store_count++
+        numeric_key_stage = advance_stage(numeric_key_stage, 2)
+        saw_parse_call = 0
+    } else if (saw_parse_call && (n ~ /MOVELD7CAA0/ || n ~ /MOVELD7202A0/)) {
+        numeric_store_count++
+        numeric_key_stage = advance_stage(numeric_key_stage, 4)
+        saw_parse_call = 0
+    } else if (saw_parse_call && (n ~ /MOVELD7CEA0/ || n ~ /MOVELD7206A0/)) {
+        numeric_store_count++
+        numeric_key_stage = advance_stage(numeric_key_stage, 6)
+        saw_parse_call = 0
+    } else if (saw_parse_call && (n ~ /MOVELD7D2A0/ || n ~ /MOVELD7210A0/)) {
+        numeric_store_count++
+        numeric_key_stage = advance_stage(numeric_key_stage, 8)
+        saw_parse_call = 0
+    } else if (saw_parse_call && (n ~ /MOVELD7D6A0/ || n ~ /MOVELD7214A0/)) {
+        numeric_store_count++
+        numeric_key_stage = advance_stage(numeric_key_stage, 10)
+        saw_parse_call = 0
+    } else if (saw_parse_call && (n ~ /MOVELD7DAA0/ || n ~ /MOVELD7218A0/)) {
+        numeric_store_count++
+        numeric_key_stage = advance_stage(numeric_key_stage, 12)
+        saw_parse_call = 0
+    } else if (saw_parse_call && n !~ /^MOVE/ && n !~ /^ADDQW4A7/) {
+        saw_parse_call = 0
+    }
+
+    if (numeric_key_stage == 0 && n ~ /PARSEINITAGXPOS/) numeric_key_stage = 1
+    if (numeric_key_stage == 2 && n ~ /PARSEINITAGYPOS/) numeric_key_stage = 3
+    if (numeric_key_stage == 4 && n ~ /PARSEINITAGXSOURCE/) numeric_key_stage = 5
+    if (numeric_key_stage == 6 && n ~ /PARSEINITAGYSOURCE/) numeric_key_stage = 7
+    if (numeric_key_stage == 8 && n ~ /PARSEINITAGSIZEX/) numeric_key_stage = 9
+    if (numeric_key_stage == 10 && n ~ /PARSEINITAGSIZEY/) numeric_key_stage = 11
+
+    if (n ~ /PARSEINITAGTYPE/) {
+        type_stage = advance_stage(type_stage, 1)
+    }
+    if (type_stage >= 1 && n ~ /PARSEINITAGDITHER/) {
+        type_stage = advance_stage(type_stage, 2)
+    }
+    if (type_stage >= 2 && (n ~ /MOVEB2BEA0/ || n ~ /MOVEB2190A0/)) {
+        type_stage = advance_stage(type_stage, 3)
+    }
+
+    if (n ~ /PARSEINITAGSOURCE/ && source_stage == 0) {
+        source_stage = 1
+    }
+    if (source_stage >= 1 && (n ~ /TSTBA0PLUS/ || n ~ /TSTBA0/)) {
+        saw_source_scan_test = 1
+    }
+    if (saw_source_scan_test && n ~ /^BNES/) {
+        saw_source_scan_bne = 1
+    }
+    if (source_stage >= 1 && saw_source_scan_test &&
+        (n ~ /SUBQL1A0/ || n ~ /SUBALA2A0/ || n ~ /SUBLD1D0/ || n ~ /MOVELA0D1/)) {
+        has_source_len_calc = 1
+        source_stage = advance_stage(source_stage, 2)
+    }
+    if (source_stage >= 2 && n ~ /PARSEINITAGPPV/) {
+        source_stage = advance_stage(source_stage, 3)
+    }
+    if (source_stage >= 3 && (n ~ /MOVEB3BEA0/ || n ~ /MOVEB3190A0/)) {
+        source_stage = advance_stage(source_stage, 4)
+    }
+    if (source_stage >= 2 && n ~ /MEMORYALLOCATEMEMORY/) {
+        has_source_alloc = 1
+        source_stage = advance_stage(source_stage, 5)
+    }
+    if (source_stage >= 5 && (n ~ /CLRLB8A0/ || n ~ /CLRL8A0/)) {
+        has_source_next_clear = 1
+        source_stage = advance_stage(source_stage, 6)
+    }
+    if (source_stage >= 6 && (n ~ /MOVEBA0PLUSA1PLUS/ || n ~ /MOVEBA0A1/)) {
+        saw_source_copy_move = 1
+    } else if (saw_source_copy_move && (n ~ /^BNES/ || n ~ /TSTBFFFFFFFFA0/ || n ~ /TSTBFFFFFFFFA1/)) {
+        has_source_copy_loop = 1
+        source_stage = advance_stage(source_stage, 7)
+        saw_source_copy_move = 0
+    } else if (saw_source_copy_move && n !~ /^MOVE/ && n !~ /^TST/) {
+        saw_source_copy_move = 0
+    }
+    if (source_stage >= 7 && (n ~ /MOVELA1E6A0/ || n ~ /MOVELA1230A0/ || n ~ /MOVEALPARSEINICURRENTWEATHERBLOCKTEMP(A|PTR)A1/)) {
+        has_source_attach_head = 1
+        source_stage = advance_stage(source_stage, 8)
+    }
+    if (source_stage >= 7 && (n ~ /MOVEL24A78A2/ || n ~ /MOVEL24A18A2/ || n ~ /MOVELPARSEINICURRENTWEATHERBLOCKTEMP8A2/ || n ~ /MOVELPARSEINICURRENTWEATHERBLOCKTEMP8A1/ || n ~ /MOVEAL8A5A1/)) {
+        has_source_attach_tail = 1
+        source_stage = advance_stage(source_stage, 9)
+    }
+
+    if (n ~ /PARSEINISTRHORIZONTAL/) {
+        horiz_stage = advance_stage(horiz_stage, 1)
+    }
+    if (horiz_stage >= 1 && n ~ /PARSEINITAGRIGHT/) {
+        horiz_stage = advance_stage(horiz_stage, 2)
+    }
+    if (horiz_stage >= 2 && (n ~ /MOVEQL2D0/ || n ~ /MOVEQ2D0/)) {
+        horiz_stage = advance_stage(horiz_stage, 3)
+    }
+    if (horiz_stage >= 3 && (n ~ /MOVELD0DEA0/ || n ~ /MOVELD0222A0/)) {
+        horiz_stage = advance_stage(horiz_stage, 4)
+    }
+    if (horiz_stage >= 4 && n ~ /PARSEINITAGCENTERHORIZONTALA/) {
+        horiz_stage = advance_stage(horiz_stage, 5)
+    }
+    if (horiz_stage >= 5 && (n ~ /MOVEQL1D0/ || n ~ /MOVEQ1D0/)) {
+        horiz_stage = advance_stage(horiz_stage, 6)
+    }
+    if (horiz_stage >= 6 && (n ~ /MOVELD0DEA0/ || n ~ /MOVELD0222A0/)) {
+        horiz_stage = advance_stage(horiz_stage, 7)
+    }
+    if (horiz_stage >= 7 && (n ~ /CLRLDEA0/ || n ~ /CLRL222A0/)) {
+        horiz_stage = advance_stage(horiz_stage, 8)
+    }
+
+    if (n ~ /PARSEINITAGVERTICAL/) {
+        vert_stage = advance_stage(vert_stage, 1)
+    }
+    if (vert_stage >= 1 && n ~ /PARSEINITAGBOTTOM/) {
+        vert_stage = advance_stage(vert_stage, 2)
+    }
+    if (vert_stage >= 2 && (n ~ /MOVEQL2D0/ || n ~ /MOVEQ2D0/)) {
+        vert_stage = advance_stage(vert_stage, 3)
+    }
+    if (vert_stage >= 3 && (n ~ /MOVELD0E2A0/ || n ~ /MOVELD0226A0/)) {
+        vert_stage = advance_stage(vert_stage, 4)
+    }
+    if (vert_stage >= 4 && n ~ /PARSEINITAGCENTERVERTICALA/) {
+        vert_stage = advance_stage(vert_stage, 5)
+    }
+    if (vert_stage >= 5 && (n ~ /MOVEQL1D0/ || n ~ /MOVEQ1D0/)) {
+        vert_stage = advance_stage(vert_stage, 6)
+    }
+    if (vert_stage >= 6 && (n ~ /MOVELD0E2A0/ || n ~ /MOVELD0226A0/)) {
+        vert_stage = advance_stage(vert_stage, 7)
+    }
+    if (vert_stage >= 7 && (n ~ /CLRLE2A0/ || n ~ /CLRL226A0/)) {
+        vert_stage = advance_stage(vert_stage, 8)
+    }
+
+    if (n ~ /PARSEINITAGID/ && n !~ /PARSEINITAGDITHER/) {
+        has_id_flow = 1
+    }
+    if (u ~ /^RTS$/) {
+        has_return = 1
+    }
 }
 
 END {
     print "HAS_ENTRY=" has_entry
-    print "HAS_INIT_RESET=" has_init_reset
-    print "COMPARE_CALLS=" compare_calls
-    print "READ_LONG_CALLS=" read_long_calls
-    print "HAS_FILENAME_ALLOC=" has_filename_alloc
-    print "HAS_FILENAME_TYPE_INIT=" has_filename_type_init
-    print "HAS_HEAD_SEED=" has_head_seed
+    print "HAS_INIT_RESET_FLOW=" (init_stage >= 3 ? 1 : 0)
+    print "HAS_FILENAME_ALLOC_FLOW=" (has_filename_compare && has_filename_alloc && has_filename_type_init ? 1 : 0)
+    print "HAS_FILENAME_HEAD_STORE=" has_filename_head_store
     print "HAS_CURRENT_BLOCK_GUARD=" has_current_block_guard
-    print "LOADCOLOR_TAG_COUNT=" loadcolor_tag_count
-    print "HAS_LOADCOLOR_STORE=" has_loadcolor_store
-    print "NUMERIC_STORE_COUNT=" numeric_store_count
-    print "HAS_SOURCE_SCAN=" has_source_scan
-    print "HAS_SOURCE_GUARD=" has_source_guard
-    print "HAS_SOURCE_PPV=" has_source_ppv
-    print "HAS_SOURCE_ALLOC=" has_source_alloc
-    print "HAS_SOURCE_COPY_LOOP=" has_source_copy_loop
-    print "HAS_SOURCE_LINK_INIT=" has_source_link_init
-    print "HAS_SOURCE_LINK_APPEND=" has_source_link_append
-    print "HORIZ_TAG_COUNT=" horiz_tag_count
-    print "HAS_HORIZ_DEFAULT=" has_horiz_default
-    print "VERT_TAG_COUNT=" vert_tag_count
-    print "HAS_VERT_DEFAULT=" has_vert_default
-    print "HAS_ID_COPY=" has_id_copy
-    print "HAS_ID_TERMINATOR=" has_id_terminator
+    print "HAS_LOADCOLOR_FLOW=" (loadcolor_stage >= 11 && loadcolor_store_count >= 4 ? 1 : 0)
+    print "HAS_NUMERIC_FIELD_FLOW=" (numeric_key_stage >= 12 && numeric_store_count >= 6 ? 1 : 0)
+    print "HAS_TYPE_DITHER_FLOW=" (type_stage >= 3 ? 1 : 0)
+    print "HAS_SOURCE_SCAN_AND_ALLOC_FLOW=" (source_stage >= 7 && has_source_len_calc && has_source_alloc && has_source_next_clear && has_source_copy_loop ? 1 : 0)
+    print "HAS_SOURCE_ATTACH_HEAD=" has_source_attach_head
+    print "HAS_SOURCE_ATTACH_TAIL=" has_source_attach_tail
+    print "HAS_HORIZONTAL_ALIGN_FLOW=" (horiz_stage >= 8 ? 1 : 0)
+    print "HAS_VERTICAL_ALIGN_FLOW=" (vert_stage >= 8 ? 1 : 0)
+    print "HAS_ID_FLOW=" has_id_flow
     print "HAS_RETURN=" has_return
 }

@@ -30,6 +30,14 @@ BEGIN {
     has_current_date_fmt = 0
     has_dst_fmt = 0
     has_hour_fmt = 0
+    has_mask_all_branch = 0
+    has_mask_chip_branch = 0
+    has_mask_fast_branch = 0
+    has_mask_max_branch = 0
+    has_availmem_largest_chip = 0
+    has_availmem_fast = 0
+    has_availmem_chip = 0
+    has_availmem_largest = 0
 }
 
 function trim(s, t) {
@@ -71,6 +79,14 @@ function trim(s, t) {
     if (uline ~ /GLOBAL_STR_B_DATE_B_MONTH_LP_YR_FORMATTED/) has_current_date_fmt = 1
     if (uline ~ /GLOBAL_STR_C_DST_B_DST_PSHIFT_FORMATTED/) has_dst_fmt = 1
     if (uline ~ /GLOBAL_STR_C_HOUR_B_HOUR_CS_FORMATTED/) has_hour_fmt = 1
+    if (uline ~ /SUBQ\.L #7,D0/) has_mask_all_branch = 1
+    if (uline ~ /SUBQ\.L #1,D0/) has_mask_chip_branch = 1
+    if (uline ~ /SUBQ\.L #2,D0/) has_mask_fast_branch = 1
+    if (uline ~ /SUBQ\.L #4,D0/) has_mask_max_branch = 1
+    if (uline ~ /MOVE\.L #\$20002,D1/) has_availmem_largest_chip = 1
+    if (uline ~ /MOVEQ #4,D1/) has_availmem_fast = 1
+    if (uline ~ /MOVEQ #2,D1/) has_availmem_chip = 1
+    if (uline ~ /^SWAP D1$/) has_availmem_largest = 1
     if (uline ~ /ESQFUNC_JMPTBL_PARSEINI_COMPUTEHTCMAXVALUES/) has_compute_htc = 1
     if (uline ~ /ESQFUNC_JMPTBL_PARSEINI_UPDATECTRLHDELTAMAX/) has_update_ctrl_h = 1
     if (uline ~ /^MOVE\.L #GLOBAL_REF_696_400_BITMAP,4\(A0\)$/) has_bitmap_swap_in = 1
@@ -102,6 +118,14 @@ END {
     print "HAS_CURRENT_DATE_FMT=" has_current_date_fmt
     print "HAS_DST_FMT=" has_dst_fmt
     print "HAS_HOUR_FMT=" has_hour_fmt
+    print "HAS_MASK_ALL_BRANCH=" has_mask_all_branch
+    print "HAS_MASK_CHIP_BRANCH=" has_mask_chip_branch
+    print "HAS_MASK_FAST_BRANCH=" has_mask_fast_branch
+    print "HAS_MASK_MAX_BRANCH=" has_mask_max_branch
+    print "HAS_AVAILMEM_LARGEST_CHIP=" has_availmem_largest_chip
+    print "HAS_AVAILMEM_FAST=" has_availmem_fast
+    print "HAS_AVAILMEM_CHIP=" has_availmem_chip
+    print "HAS_AVAILMEM_LARGEST=" has_availmem_largest
     print "HAS_AVAILMEM_CALLS_EQ_6=" (availmem_calls == 6)
     print "HAS_SPRINTF_CALLS_EQ_17=" (sprintf_calls == 17)
     print "HAS_DISPLAY_CALLS_EQ_13=" (display_calls == 13)

@@ -38,6 +38,7 @@ void ESQIFF_PlayNextExternalAssetFrame(WORD refreshMode)
 {
     LONG brushHead;
     WORD savedAccumulatorFlag;
+    WORD serviceMode;
     char *rastPort;
 
     ESQIFF_RunCopperDropTransition();
@@ -122,5 +123,9 @@ run_rise_transition_and_service_source:
     ESQIFF_RunCopperRiseTransition();
     WDISP_AccumulatorCaptureActive = savedAccumulatorFlag;
 
-    ESQIFF_ServiceExternalAssetSourceState(refreshMode);
+    serviceMode = 0;
+    if (refreshMode != 0) {
+        serviceMode = 1;
+    }
+    ESQIFF_ServiceExternalAssetSourceState(serviceMode);
 }

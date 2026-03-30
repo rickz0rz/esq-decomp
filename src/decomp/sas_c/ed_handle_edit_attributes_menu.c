@@ -128,8 +128,8 @@ void ED_HandleEditAttributesMenu(void)
 
         if (ED_EditCursorOffset < 13) {
             ED_DrawCursorChar();
-            ++ED_EditCursorOffset;
             ED_EditBufferScratch[ED_EditCursorOffset] = key;
+            ++ED_EditCursorOffset;
         }
     }
 

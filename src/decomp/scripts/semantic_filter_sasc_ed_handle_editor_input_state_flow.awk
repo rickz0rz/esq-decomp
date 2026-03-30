@@ -3,6 +3,7 @@ BEGIN {
     h_pending_reinit = 0
     h_initial_cursor_draw = 0
     h_force_text_mode_commit = 0
+    h_esc_early_exit = 0
     h_page_down_clamp = 0
     h_menu_dispatch = 0
     h_menu_range_gate = 0
@@ -11,6 +12,7 @@ BEGIN {
     h_insert_ascii = 0
     h_finalize_sync = 0
     h_rts = 0
+    esc_help_window = 0
 }
 
 function norm(s, t) {
@@ -28,6 +30,13 @@ function norm(s, t) {
         next
     }
 
+    if (esc_help_window > 0) {
+        if (l ~ /^BRA(\.[A-Z])? / || l == "RTS") {
+            h_esc_early_exit = 1
+        }
+        esc_help_window--
+    }
+
     if (l ~ /^ED_HANDLEEDITORINPUT:/ || l ~ /^ED_HANDLEEDITORINPUT[A-Z0-9_]*:/) {
         h_entry = 1
     }
@@ -42,6 +51,9 @@ function norm(s, t) {
 
     if (l ~ /ED_COMMITCURRENTADEDITS/ || l ~ /ED_DRAWESCMENUBOTTOMHELP/) {
         h_force_text_mode_commit = 1
+    }
+    if (l ~ /ED_DRAWESCMENUBOTTOMHELP/) {
+        esc_help_window = 2
     }
 
     if (l ~ /ED_TEXTLIMIT/ || l ~ /ED_VIEWPORTOFFSET/ && l ~ /GROUP_AG_JMPTBL_MATH_MULU32/ ||
@@ -101,6 +113,7 @@ END {
     print "HAS_PENDING_REINIT=" h_pending_reinit
     print "HAS_INITIAL_CURSOR_DRAW=" h_initial_cursor_draw
     print "HAS_FORCE_TEXT_MODE_COMMIT=" h_force_text_mode_commit
+    print "HAS_ESC_EARLY_EXIT=" h_esc_early_exit
     print "HAS_PAGE_DOWN_CLAMP=" h_page_down_clamp
     print "HAS_MENU_DISPATCH=" h_menu_dispatch
     print "HAS_MENU_RANGE_GATE=" h_menu_range_gate

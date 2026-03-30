@@ -1,5 +1,7 @@
 BEGIN {
     has_any_label = 0
+    has_source_mode_store = 0
+    has_accumulator_reset = 0
     has_primary_template = 0
     has_secondary_template = 0
     has_find_char = 0
@@ -39,8 +41,11 @@ BEGIN {
     has_get_rast_port = 0
     get_height_count = 0
     build_context_count = 0
+    has_mode53_gate = 0
     has_select_brush = 0
+    has_slot0_gate = 0
     has_update_serial_shadow = 0
+    has_slot1_gate = 0
     has_rect_fill = 0
     has_build_status_line = 0
     has_blit = 0
@@ -69,6 +74,8 @@ function trim(s, t) {
     u = toupper(line)
 
     if (u ~ /^CLEANUP_BUILDANDRENDERALIGNEDSTA[A-Z0-9_]*:/ || u ~ /^CLEANUP_RENDERALIGNEDSTATUSSCRE[A-Z0-9_]*:/) has_any_label = 1
+    if (u ~ /TEXTDISP_CHANNELSOURCEMODE/) has_source_mode_store = 1
+    if (u ~ /WDISP_ACCUMULATORFLUSHPENDING/ && (u ~ /^CLR\./ || u ~ /MOVEQ #0/ || u ~ /CLR\.W/)) has_accumulator_reset = 1
     if (u ~ /TEXTDISP_PRIMARYSEARCHTEXT/) has_primary_template = 1
     if (u ~ /TEXTDISP_SECONDARYSEARCHTEXT/) has_secondary_template = 1
     if (u ~ /GROUP_AI_JMPTBL_STR_FINDCHARPTR/ || u ~ /GROUP_AI_JMPTBL_STR_FINDCHARP/ || u ~ /STR_FINDCHARPTR/) has_find_char = 1
@@ -108,8 +115,11 @@ function trim(s, t) {
     if (u ~ /TLIBA3_GETVIEWMODERASTPORT/) has_get_rast_port = 1
     if (u ~ /TLIBA3_GETVIEWMODEHEIGHT/) get_height_count++
     if (u ~ /TLIBA3_BUILDDISPLAYCONTEXTFORVIEWMODE/ || u ~ /TLIBA3_BUILDDISPLAYCONTEXTFORVIE/ || u ~ /GROUP_AD_JMPTBL_TLIBA3_BUILDDISPLAYCONTEXTFORVIEWMODE/ || u ~ /GROUP_AD_JMPTBL_TLIBA3_BUILDDISPLAYCONTEXTFORVIE/) build_context_count++
+    if (u ~ /#53/ || u ~ /#\\$35/ || u ~ /PEA \\(\\$35\\)\\.W/) has_mode53_gate = 1
     if (u ~ /ESQFUNC_SELECTANDAPPLYBRUSHFORCU/ || u ~ /GROUP_AD_JMPTBL_ESQFUNC_SELECTANDAPPLYBRUSHFORCURRENTENTRY/ || u ~ /GROUP_AD_JMPTBL_ESQFUNC_SELECTANDAPPLYBRUSHFORCU/) has_select_brush = 1
+    if (u ~ /TST\\.W D5/ || u ~ /MOVE\\.L D5,D0/ || u ~ /MOVE\\.W D5,D0/) has_slot0_gate = 1
     if (u ~ /SCRIPT_UPDATESERIALSHADOWFROMCTR/ || u ~ /GROUP_AD_JMPTBL_SCRIPT_UPDATESERIALSHADOWFROMCTRLBYTE/) has_update_serial_shadow = 1
+    if (u ~ /SUBQ\\.W #\\$1,D0/ || u ~ /SUBQ\\.W #1,D0/) has_slot1_gate = 1
     if (u ~ /_LVORECTFILL/) has_rect_fill = 1
     if (u ~ /CLEANUP_BUILDALIGNEDSTATUSLINE/) has_build_status_line = 1
     if (u ~ /GROUP_AD_JMPTBL_GRAPHICS_BLTBITMAPRASTPORT/ || u ~ /GROUP_AD_JMPTBL_GRAPHICS_BLTBITMAPRASTP/ || u ~ /GROUP_AD_JMPTBL_GRAPHICS_BLTBITM/) has_blit = 1
@@ -127,6 +137,7 @@ function trim(s, t) {
 
 END {
     print "HAS_ANY_LABEL=" has_any_label
+    print "HAS_SOURCEMODE_AND_FLUSH_RESET=" (has_source_mode_store && has_accumulator_reset)
     print "HAS_TEMPLATE_SOURCE_SELECTION=" (has_primary_template && has_secondary_template)
     print "HAS_PREPARE_CLOCK_BUFFERS=" (has_find_char && has_build_clock_entry && has_alt_time_buffer)
     print "HAS_ENTRY_CYCLE_SCAN=" (has_normalize_cycle && has_entry_cycle_table)
@@ -135,7 +146,10 @@ END {
     print "HAS_STATUS_STATE_GLOBALS=" (has_status_suffix && has_current_match_saved && has_current_match_save_store)
     print "HAS_CONTEXT_CLEAR_AND_DROP=" (has_context_base && has_set_rast && has_copper_drop)
     print "HAS_CONTEXT_SWITCHES=" (build_context_count >= 2)
+    print "HAS_MODE53_HIGHLIGHT_DISABLE_GATE=" (has_mode53_gate && has_disable_highlight)
+    print "HAS_SLOT0_BRUSH_SELECT_GATE=" (has_slot0_gate && has_select_brush)
     print "HAS_BRUSH_AND_SERIAL_SETUP=" (has_select_brush && has_update_serial_shadow)
+    print "HAS_SLOT1_RAST_CLEAR_GATE=" (has_slot1_gate && has_set_rast)
     print "HAS_EMPTY_BANNER_FASTPATH=" (has_draw_channel_banner && has_enable_highlight && has_status_suffix)
     print "HAS_SELECTION_AND_SHORTNAME_PATH=" (has_short_name && has_get_entry && has_left_align)
     print "HAS_SPECIAL_SUFFIX_PATH=" (has_format_entry_time && has_now_showing && has_next_showing)

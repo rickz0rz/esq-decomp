@@ -1,12 +1,7 @@
-#include <exec/types.h>
+#include "dst_banner_types.h"
 
 extern void DST_FreeBannerPair(void *pair);
 extern void *DST_AllocateBannerStruct(void *banner);
-
-typedef struct DST_BannerPair {
-    void *primaryBanner;
-    void *secondaryBanner;
-} DST_BannerPair;
 
 LONG DST_RebuildBannerPair(void *pair)
 {

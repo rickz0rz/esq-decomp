@@ -40,6 +40,7 @@ BEGIN {
     has_handshake_bit5 = 0
     has_runtime_branch = 0
     has_cursor4_clear_arm = 0
+    has_playback_mode_highlight_gate = 0
     has_channel_range_cleanup_fallback = 0
     has_textdisp_banner_command_flow = 0
     has_return = 0
@@ -85,6 +86,7 @@ BEGIN {
     saw_runtime_symbol = 0
     saw_runtime_constant = 0
     saw_runtime_result = 0
+    playback_mode_gate_stage = 0
     saw_cursor4 = 0
     saw_clear_channel_range_arm = 0
     saw_cleanup_match_load = 0
@@ -199,6 +201,16 @@ function trim(s, t) {
     if (u ~ /#3([^0-9]|$)/ || u ~ /#10([^0-9]|$)/ || u ~ /#\$A/ || u ~ /#\$4/) saw_runtime_constant = 1
     if (saw_runtime_symbol && saw_runtime_constant) saw_runtime_result = 1
     if (saw_runtime_filter && saw_runtime_diag && saw_runtime_result) has_runtime_branch = 1
+    if (n ~ /EDDIAGGRAPHMODECHAR/) playback_mode_gate_stage = 1
+    else if (playback_mode_gate_stage == 1 && (u ~ /#78([^0-9]|$)/ || u ~ /#\$4E/ || u ~ /'N'/)) playback_mode_gate_stage = 2
+    else if (playback_mode_gate_stage == 2 && u ~ /^CMP\./) playback_mode_gate_stage = 3
+    else if (playback_mode_gate_stage == 3 && u ~ /^BEQ\./) playback_mode_gate_stage = 4
+    else if (playback_mode_gate_stage == 4 && n ~ /ESQIFFGADSBRUSHLISTCOUNT/) playback_mode_gate_stage = 5
+    else if (playback_mode_gate_stage == 5 && u ~ /^BNE\./) playback_mode_gate_stage = 6
+    else if (playback_mode_gate_stage == 6 && n ~ /WDISPHIGHLIGHTACTIVE/) {
+        has_playback_mode_highlight_gate = 1
+        playback_mode_gate_stage = 7
+    }
     if (u ~ /#4([^0-9]|$)/ || u ~ /#\$4([^0-9A-F]|$)/) saw_cursor4 = 1
     if (n ~ /SCRIPTCHANNELRANGEARMEDFLAG/ && (u ~ /^CLR\./ || u ~ /#0([^0-9]|$)/ || u ~ /#\$0([^0-9A-F]|$)/ || u ~ /#\$00([^0-9A-F]|$)/)) {
         saw_clear_channel_range_arm = 1
@@ -253,6 +265,7 @@ END {
     print "HAS_HANDSHAKE_BIT5=" has_handshake_bit5
     print "HAS_RUNTIME_BRANCH=" has_runtime_branch
     print "HAS_CURSOR4_CLEAR_ARM=" has_cursor4_clear_arm
+    print "HAS_PLAYBACK_MODE_HIGHLIGHT_GATE=" has_playback_mode_highlight_gate
     print "HAS_CHANNEL_RANGE_CLEANUP_FALLBACK=" has_channel_range_cleanup_fallback
     print "HAS_TEXTDISP_BANNER_COMMAND_FLOW=" has_textdisp_banner_command_flow
     print "HAS_RETURN=" has_return

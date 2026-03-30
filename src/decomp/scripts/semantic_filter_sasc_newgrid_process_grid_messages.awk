@@ -27,8 +27,15 @@ BEGIN {
     has_dispatch_5 = 0
     has_dispatch_6 = 0
     has_dispatch_7 = 0
+    has_mode3_dispatch1 = 0
+    has_mode4_dispatch5 = 0
+    has_mode5_dispatch2 = 0
+    has_mode6_dispatch3 = 0
+    has_mode7_dispatch4 = 0
+    has_mode8_dispatch6 = 0
     header_redraw_set_count = 0
     has_header_redraw_clear = 0
+    has_mode11_header = 0
     has_stateword_compare = 0
     has_stateword_loop_branch = 0
     has_stateword_clear = 0
@@ -86,6 +93,7 @@ function t(s, x) {
         has_awaiting = 1
         if (current_case_index == 10) has_mode10_awaiting = 1
     }
+    if (l ~ /(JSR|BSR).*NEWGRID_DRAWCLOCKFORMATHEADER/ && current_case_index == 11) has_mode11_header = 1
     if (l ~ /^DC\.W[ \t]+/ && jumptable_index < 12) {
         target = l
         sub(/^DC\.W[ \t]+/, "", target)
@@ -95,7 +103,6 @@ function t(s, x) {
             jumptable_index++
         }
     } else if (l ~ /^[_\.A-Z0-9]+:$/) {
-        current_case_index = -1
         for (i = 0; i < 12; i++) {
             if (jumptable_target[i] != "" && l == jumptable_target[i] ":") {
                 current_case_index = i
@@ -113,13 +120,25 @@ function t(s, x) {
     else if (l ~ /PEA[ \t]+(\(\$?6\)|6)\.W/) pending_dispatch_id = "6"
     else if (l ~ /PEA[ \t]+(\(\$?7\)|7)\.W/) pending_dispatch_id = "7"
     if (l ~ /NEWGRID2_DISPATCHGRIDOPERATION/) {
-        if (pending_dispatch_id == "1") has_dispatch_1 = 1
-        else if (pending_dispatch_id == "2") has_dispatch_2 = 1
-        else if (pending_dispatch_id == "3") has_dispatch_3 = 1
-        else if (pending_dispatch_id == "4") has_dispatch_4 = 1
-        else if (pending_dispatch_id == "5") has_dispatch_5 = 1
-        else if (pending_dispatch_id == "6") has_dispatch_6 = 1
-        else if (pending_dispatch_id == "7") {
+        if (pending_dispatch_id == "1") {
+            has_dispatch_1 = 1
+            if (current_case_index == 3) has_mode3_dispatch1 = 1
+        } else if (pending_dispatch_id == "2") {
+            has_dispatch_2 = 1
+            if (current_case_index == 5) has_mode5_dispatch2 = 1
+        } else if (pending_dispatch_id == "3") {
+            has_dispatch_3 = 1
+            if (current_case_index == 6) has_mode6_dispatch3 = 1
+        } else if (pending_dispatch_id == "4") {
+            has_dispatch_4 = 1
+            if (current_case_index == 7) has_mode7_dispatch4 = 1
+        } else if (pending_dispatch_id == "5") {
+            has_dispatch_5 = 1
+            if (current_case_index == 4) has_mode4_dispatch5 = 1
+        } else if (pending_dispatch_id == "6") {
+            has_dispatch_6 = 1
+            if (current_case_index == 8) has_mode8_dispatch6 = 1
+        } else if (pending_dispatch_id == "7") {
             has_dispatch_7 = 1
             if (current_case_index == 9) has_mode9_dispatch7 = 1
         }
@@ -183,6 +202,12 @@ END {
     print "HAS_DATE_BANNER=" has_date_banner
     print "HAS_AWAITING=" has_awaiting
     print "HAS_DISPATCH_1_TO_7=" (has_dispatch_1 && has_dispatch_2 && has_dispatch_3 && has_dispatch_4 && has_dispatch_5 && has_dispatch_6 && has_dispatch_7 ? 1 : 0)
+    print "HAS_MODE3_DISPATCH1=" has_mode3_dispatch1
+    print "HAS_MODE4_DISPATCH5=" has_mode4_dispatch5
+    print "HAS_MODE5_DISPATCH2=" has_mode5_dispatch2
+    print "HAS_MODE6_DISPATCH3=" has_mode6_dispatch3
+    print "HAS_MODE7_DISPATCH4=" has_mode7_dispatch4
+    print "HAS_MODE8_DISPATCH6=" has_mode8_dispatch6
     print "HAS_MODE9_DISPATCH7=" has_mode9_dispatch7
     print "HAS_MODE10_AWAITING=" has_mode10_awaiting
     print "HAS_VALIDATE_ZERO_ARG=" has_validate_zero_arg
@@ -190,7 +215,9 @@ END {
     print "HAS_PARAM_CLEAR=" has_param_clear
     print "HAS_HEADER_REDRAW_SET_CLUSTER=" (header_redraw_set_count == 5 ? 1 : 0)
     print "HEADER_REDRAW_SET_COUNT=" header_redraw_set_count
+    print "HAS_MODE11_HEADER=" has_mode11_header
     print "HAS_HEADER_REDRAW_CLEAR=" has_header_redraw_clear
+    print "HAS_MODE11_HEADER_REDRAW=" (has_mode11_header && has_header_redraw_clear ? 1 : 0)
     print "HAS_STATEWORD_REPLY_LOOP=" (has_stateword_compare && has_stateword_loop_branch ? 1 : 0)
     print "MAP_SELECTION_CALL_COUNT=" map_selection_call_count
     print "DISPATCH_GRID_CALL_COUNT=" dispatch_grid_call_count

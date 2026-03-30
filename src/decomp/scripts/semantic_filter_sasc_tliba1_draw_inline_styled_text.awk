@@ -12,6 +12,8 @@ BEGIN {
     has_const19=0
     has_const20=0
     has_return=0
+    first_primary=0
+    first_secondary=0
 }
 
 function trim(s, t) {
@@ -38,6 +40,8 @@ function trim(s, t) {
     if (n ~ /MEMMOVE/) has_move=1
     if (n ~ /LVOTEXTLENGTH/ || n ~ /TEXTLENGTH/) has_textlen=1
     if (n ~ /UNKNOWNJMPTBLDISPLIBDISPLAYTEXTATPOSITION/ || n ~ /DISPLIBDISPLAYTEXTATPOSITION/ || n ~ /UNKNOWNJMPTBLDISPLIBDISPLAYTE/ || n ~ /DISPLIBDISPLAYTE/) has_fallback_draw=1
+    if (first_primary==0 && n ~ /CLEANUPALIGNEDINSETNIBBLEPRIMAR/) first_primary=NR
+    if (first_secondary==0 && n ~ /CLEANUPALIGNEDINSETNIBBLESECOND/) first_secondary=NR
     if (u ~ /#30([^0-9]|$)/ || u ~ /#\$1E/) has_const30=1
     if (u ~ /#23([^0-9]|$)/ || u ~ /#\$17/) has_const23=1
     if (u ~ /#19([^0-9]|$)/ || u ~ /#\$13/) has_const19=1
@@ -58,5 +62,6 @@ END {
     print "HAS_CONST_23="has_const23
     print "HAS_CONST_19="has_const19
     print "HAS_CONST_20="has_const20
+    print "HAS_GATE_SECONDARY_BEFORE_PRIMARY="((first_secondary > 0 && first_primary > 0 && first_secondary < first_primary) ? 1 : 0)
     print "HAS_RETURN="has_return
 }
