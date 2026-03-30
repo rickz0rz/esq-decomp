@@ -14,6 +14,10 @@ BEGIN {
     has_secondary_table = 0
     has_primary_table = 0
     has_eof_marker = 0
+    count_secondary_group_code_refs = 0
+    count_secondary_present_flag_refs = 0
+    count_secondary_table_refs = 0
+    count_primary_table_refs = 0
 
     count_output_ops = 0
     count_format_ops = 0
@@ -64,12 +68,20 @@ function note_push(op) {
     if (u ~ /ESQ_WILDCARDMATCH/ || u ~ /ESQ_WILDCARDMATC/) has_wildcard_call = 1
     if (u ~ /DISKIO_CLOSEBUFFEREDFILEANDFLUSH/ || u ~ /DISKIO_CLOSEBUFFEREDFILEAND/) has_close_call = 1
     if (u ~ /MOVEQ(\.L)? #(-3|\$FD),D0/) has_open_error_status = 1
+    if (u ~ /TEXTDISP_SECONDARYGROUPCODE/) count_secondary_group_code_refs++
+    if (u ~ /TEXTDISP_SECONDARYGROUPPRESENTFLAG/ || u ~ /TEXTDISP_SECONDARYGROUPPRESENTFL/) count_secondary_present_flag_refs++
     if (u ~ /CTASKS_SECONDARYOIWRITEPENDING/) has_secondary_pending_flag = 1
     if (u ~ /CTASKS_PENDINGSECONDARYOIDISKID/) has_secondary_pending_id = 1
     if (u ~ /CTASKS_PRIMARYOIWRITEPENDING/) has_primary_pending_flag = 1
     if (u ~ /CTASKS_PENDINGPRIMARYOIDISKID/) has_primary_pending_id = 1
-    if (u ~ /TEXTDISP_SECONDARYENTRYPTRTABLE/ || u ~ /TEXTDISP_SECONDARYENTRYPTRTABL/) has_secondary_table = 1
-    if (u ~ /TEXTDISP_PRIMARYENTRYPTRTABLE/ || u ~ /TEXTDISP_PRIMARYENTRYPTRTABLE/) has_primary_table = 1
+    if (u ~ /TEXTDISP_SECONDARYENTRYPTRTABLE/ || u ~ /TEXTDISP_SECONDARYENTRYPTRTABL/) {
+        has_secondary_table = 1
+        count_secondary_table_refs++
+    }
+    if (u ~ /TEXTDISP_PRIMARYENTRYPTRTABLE/) {
+        has_primary_table = 1
+        count_primary_table_refs++
+    }
     if (u ~ /CLOCK_FILEEOFMARKERCTRLZ/ || u ~ /CLOCK_FILEEOFMARKERCTR/) has_eof_marker = 1
     if (u == "RTS") has_return = 1
 
@@ -181,6 +193,10 @@ END {
     print "HAS_SECONDARY_TABLE=" has_secondary_table
     print "HAS_PRIMARY_TABLE=" has_primary_table
     print "HAS_EOF_MARKER=" has_eof_marker
+    print "HAS_REPEATED_SECONDARY_SELECTION_CHECKS=" (count_secondary_group_code_refs >= 3)
+    print "HAS_REPEATED_SECONDARY_PRESENT_CHECKS=" (count_secondary_present_flag_refs >= 3)
+    print "HAS_REPEATED_SECONDARY_TABLE_SELECTIONS=" (count_secondary_table_refs >= 2)
+    print "HAS_REPEATED_PRIMARY_TABLE_SELECTIONS=" (count_primary_table_refs >= 2)
     print "COUNT_OUTPUT_OPS=" count_output_ops
     print "COUNT_FORMAT_OPS=" count_format_ops
     print "COUNT_TAB_DELIMS=" count_tab_delims

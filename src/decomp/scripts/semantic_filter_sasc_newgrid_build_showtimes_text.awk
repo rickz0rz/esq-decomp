@@ -45,8 +45,9 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /TEXTDISP_PRIMARYGROUPPRESENTFLAG/ || l ~ /BTST #\$4,\$2F\(A[0-7]\)/ || l ~ /BTST #4,47\(A[0-7]\)/)h_group_guard=1
     if(l ~ /^TST\.L 16\(A5\)$/ || l ~ /^MOVE\.L A2,D0$/)h_out_ptr_guard=1
     if(l ~ /^CLR\.B \(A[0-7]\)$/)h_out_clear=1
-    if(l ~ /^SUBI\.W #\$30,D[0-7]$/ || l ~ /^SUBI\.W #48,D[0-7]$/)h_row_wrap=1
-    if(l ~ /TST\.L -54\(A5\)/ || l ~ /TST\.L \$D0\(A7\)/)h_base_time_guard=1
+    if(l ~ /^SUBI\.W #\$30,D[0-7]$/ || l ~ /^SUBI\.W #48,D[0-7]$/ ||
+       l ~ /^MOVEQ(\.L)? #\$?30,D[0-7]$/ || l ~ /^SUB\.W D[0-7],\$[0-9A-F]+\((A7|SP)\)$/)h_row_wrap=1
+    if(l ~ /TST\.L -54\(A5\)/ || l ~ /TST\.L \$D0\(A7\)/ || l ~ /TST\.L \$DC\(A7\)/)h_base_time_guard=1
     if(l ~ /^TST\.B \(A[0-7]\)$/)h_base_title_nonempty=1
     if(l ~ /(JSR|BSR).*COI_SELECTANIMFIELDPOINTER/ || l ~ /COI_SELECTANIMFI/)h_field_select=1
     if(l ~ /(JSR|BSR).*TEXTDISP_FORMATENTRYTIMEFORINDEX/ || l ~ /FORMATENTRYTIMEFORINDEX/)h_timefmt=1

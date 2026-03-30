@@ -102,7 +102,8 @@ function trim(s, t) {
         chunk_tag_call_count++
     }
 
-    if (u ~ /MOVEQ #20,D1/ || u ~ /MOVEQ\.L #\$14,D0/ || u ~ /CMP\.L \$2C\(A7\),D0/) {
+    if (u ~ /MOVEQ #20,D1/ || u ~ /MOVEQ\.L #\$14,D0/ ||
+        u ~ /CMP\.L \$2C\(A7\),D0/ || u ~ /CMP\.L D0,\$2C\(A7\)/) {
         saw_bmhd_size = 1
     }
     if (u ~ /ADDA\.W #\$0080,A0/ || u ~ /ADD\.W #\$80,A0/ || u ~ /LEA \$80\(A0\),A6/) {
@@ -120,7 +121,8 @@ function trim(s, t) {
         saw_bmhd_type_gate = 1
     }
     if (u ~ /MOVE\.L D0,148\(A0\)/ || u ~ /CLR\.L 148\(A0\)/ ||
-        u ~ /MOVE\.L D0,\(A1\)/ && u ~ /\$94\(A0\)/) {
+        u ~ /ADD\.W #\$94,A1/ || u ~ /LEA \$94\(A0\),A1/ ||
+        u ~ /MOVE\.L D0,\(A1\)/) {
         saw_camg_zero = 1
     }
     if (n ~ /BSET15D0/ || n ~ /ORIW8000D1/) {
@@ -129,10 +131,12 @@ function trim(s, t) {
     if (n ~ /BSET2151A0/ || n ~ /ORIW4D0/) {
         saw_height_flag = 1
     }
-    if (n ~ /MOVEW00DCD2130A0/ || n ~ /MOVEWDCA1/) {
+    if (u ~ /MOVE\.W #\$00DC,D[0-7]/ || u ~ /MOVE\.W #\$DC,D[0-7]/ ||
+        n ~ /MOVEWDCA1/) {
         saw_clamp_220 = 1
     }
-    if (n ~ /MOVEQ110D1/ || n ~ /MOVEW6EA1/) {
+    if (u ~ /MOVEQ #110,D[0-7]/ || u ~ /MOVEQ\.L #110,D[0-7]/ ||
+        n ~ /MOVEW6EA1/) {
         saw_clamp_110 = 1
     }
     if (saw_bmhd_size && saw_bmhd_read && saw_bmhd_width_cmp && saw_bmhd_height_cmp &&
@@ -158,25 +162,32 @@ function trim(s, t) {
         saw_body_status = 1
         saw_body_status_store = 1
     }
-    if (n ~ /MOVEQ1D5/ || n ~ /MOVEQL1D0MOVELD038A7/) {
+    if (n ~ /MOVEQ1D5/ || u ~ /MOVE\.L D0,\$38\(A7\)/ || u ~ /MOVE\.L D1,\$38\(A7\)/) {
         saw_body_done = 1
     }
     if (saw_body_call && saw_body_status && saw_body_done) {
         has_body_path = 1
     }
 
-    if (u ~ /CMP\.L -8\(A5\),D3/ || u ~ /MOVEQ\.L #\$4,D0/ && u ~ /CMP\.L \$2C\(A7\),D0/) {
+    if (u ~ /CMP\.L -8\(A5\),D3/ || u ~ /MOVEQ\.L #\$4,D0/ ||
+        u ~ /CMP\.L \$2C\(A7\),D0/ || u ~ /CMP\.L D0,\$2C\(A7\)/) {
         saw_camg_size = 1
     }
-    if (u ~ /LEA 148\(A0\),A1/ || u ~ /ADD\.W #\$94,A0/ && u ~ /BSR\.W _LVOREAD/) {
+    if (u ~ /LEA 148\(A0\),A1/ || u ~ /LEA \$94\(A0\),A1/ ||
+        u ~ /ADD\.W #\$94,A0/ || u ~ /ADD\.W #\$94,A1/) {
         saw_camg_read = 1
     }
-    if (u ~ /CLR\.L 148\(A0\)/ || u ~ /ADD\.W #\$94,A0/ && u ~ /CLR\.L \(A0\)/) {
+    if (u ~ /CLR\.L 148\(A0\)/ || u ~ /ADD\.W #\$94,A0/ ||
+        u ~ /ADD\.W #\$94,A1/ || u ~ /LEA \$94\(A0\),A1/ ||
+        u ~ /CLR\.L \(A0\)/ || u ~ /MOVE\.L D0,\(A1\)/) {
         saw_camg_reset = 1
     }
-    if (u ~ /MOVEQ #1,D5/ && u ~ /MOVEQ #0,D0/ ||
-        u ~ /MOVEQ\.L #\$1,D0/ && u ~ /MOVE\.L D0,\$38\(A7\)/) {
+    if (u ~ /MOVEQ #1,D5/ || u ~ /MOVEQ\.L #\$1,D5/ ||
+        u ~ /MOVE\.L D[01],\$38\(A7\)/) {
         saw_camg_fail_done = 1
+    }
+    if (u ~ /MOVEQ #0,D0/ || u ~ /MOVEQ\.L #\$0,D0/ ||
+        u ~ /CLR\.L 148\(A0\)/ || u ~ /MOVE\.L D0,\(A1\)/) {
         saw_camg_fallback_zero = 1
     }
     if (u ~ /\.POST_CAMG_FALLBACK_FLAGS:/ || n ~ /ORIW8000D1/) {
@@ -190,7 +201,8 @@ function trim(s, t) {
         has_camg_fallback_path = 1
     }
 
-    if (u ~ /MOVE\.W 184\(A0\),D0/ || u ~ /ADD\.W #\$B8,A1/ && u ~ /MOVE\.W \(A1\),D0/) {
+    if (u ~ /MOVE\.W 184\(A0\),D0/ || u ~ /ADD\.W #\$B8,A1/ ||
+        u ~ /LEA \$B8\(A0\),A1/ || u ~ /MOVE\.W \(A1\),D0/) {
         saw_crng_limit = 1
         saw_crng_counter_ref = 1
     }
@@ -206,11 +218,13 @@ function trim(s, t) {
     if (u ~ /CMPI\.B #\$1F,\$7\(A0\)/ || u ~ /CMPI\.B #\$1F,0\(A0,D1\.L\)/) {
         saw_crng_high_clamp = 1
     }
-    if (u ~ /\.DISABLE_CRNG_ENTRY:/ || u ~ /CLR\.W 0\(A0,D1\.L\)/ || u ~ /MOVE\.W D1,\(A6\)/) {
+    if (u ~ /\.DISABLE_CRNG_ENTRY:/ || u ~ /CLR\.W 0\(A0,D1\.L\)/ ||
+        u ~ /MOVE\.W D1,\(A6\)/ || u ~ /MOVE\.W D1,\(A[01]\)/) {
         saw_crng_disable = 1
     }
-    if (u ~ /ADDQ\.W #1,184\(A0\)/ || u ~ /ADDQ\.W #\$1,D0/ && u ~ /MOVE\.W D0,\(A0\)/ ||
-        u ~ /ADDQ\.W #1,D0/ && u ~ /MOVE\.W D0,\(A0\)/) {
+    if (u ~ /ADDQ\.W #1,184\(A0\)/ || u ~ /ADDQ\.W #\$1,D0/ ||
+        u ~ /ADDQ\.W #1,D0/ || u ~ /MOVE\.W D0,\(A0\)/ ||
+        u ~ /MOVE\.W D0,\(A1\)/) {
         saw_crng_increment = 1
     }
     if (saw_crng_counter_ref && saw_crng_limit && saw_crng_size && saw_crng_read && saw_crng_low_clamp &&
@@ -239,6 +253,11 @@ END {
     print "HAS_DONE_INIT=" has_done_init
     print "HAS_LOOP_GUARD=" has_loop_guard
     print "HAS_TAG_DISPATCH=" has_tag_dispatch
+    print "HAS_BMHD_PATH=" has_bmhd_path
+    print "HAS_CMAP_PATH=" has_cmap_path
+    print "HAS_BODY_PATH=" has_body_path
+    print "HAS_CAMG_FALLBACK_PATH=" has_camg_fallback_path
+    print "HAS_CRNG_PATH=" has_crng_path
     print "HAS_SEEK_SKIP_PATH=" has_seek_skip_path
     print "HAS_RETURN_STATUS=" has_return_status
 }

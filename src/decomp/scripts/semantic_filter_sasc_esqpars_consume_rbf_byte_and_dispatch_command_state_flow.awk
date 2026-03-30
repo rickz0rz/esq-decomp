@@ -17,6 +17,7 @@ BEGIN {
     has_select_flow = 0
 
     saw_replace_owned = 0
+    saw_program_info_parse = 0
     saw_reverse_bits = 0
     saw_test_bit = 0
     saw_parse_digit = 0
@@ -36,6 +37,7 @@ BEGIN {
     saw_save_config = 0
     saw_filter_state = 0
     saw_banner_command = 0
+    saw_banner_sized_text = 0
     saw_type_record = 0
     saw_cmd_options = 0
     saw_cmd_string = 0
@@ -141,6 +143,9 @@ function advance_stage(stage, target) {
     if (n ~ /REPLACEOWNEDSTRING/) {
         saw_replace_owned = 1
     }
+    if (n ~ /PARSEPROGRAMINFOCOMMANDRECORD/ || n ~ /PARSEPROGRAMINFOCOMM/) {
+        saw_program_info_parse = 1
+    }
     if (n ~ /REVERSEBITSIN6BYTES/) {
         saw_reverse_bits = 1
     }
@@ -156,7 +161,7 @@ function advance_stage(stage, target) {
     if (n ~ /PARSELINEHEADTAILRECORD/) {
         saw_line_head_tail = 1
     }
-    if (saw_replace_owned && saw_reverse_bits && saw_test_bit &&
+    if (saw_replace_owned && saw_program_info_parse && saw_reverse_bits && saw_test_bit &&
         saw_parse_digit && saw_copy_label && saw_line_head_tail) {
         has_dispatch_family = 1
     }
@@ -195,6 +200,9 @@ function advance_stage(stage, target) {
     if (n ~ /HANDLEBANNERCOMMAND3233/) {
         saw_banner_command = 1
     }
+    if (n ~ /READSERIALSIZEDTEXTRECORD/ || n ~ /READSERIALSIZEDTEXTREC/) {
+        saw_banner_sized_text = 1
+    }
     if (n ~ /PARSEANDSTORETYPERECORD/) {
         saw_type_record = 1
     }
@@ -209,7 +217,8 @@ function advance_stage(stage, target) {
     }
     if (saw_font_command && saw_group_record && saw_version_overlay &&
         saw_parse_config && saw_save_config && saw_filter_state &&
-        saw_banner_command && saw_type_record && saw_cmd_options &&
+        saw_banner_command && saw_banner_sized_text &&
+        saw_type_record && saw_cmd_options &&
         saw_cmd_string && saw_ppv_command) {
         has_config_flow = 1
     }

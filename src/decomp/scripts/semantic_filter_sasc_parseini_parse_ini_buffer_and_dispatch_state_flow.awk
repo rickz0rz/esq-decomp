@@ -19,6 +19,8 @@ BEGIN {
     has_dispatch_jump = 0
 
     qtable_stage = 0
+    pending_qtable_split_search = 0
+    pending_qtable_quote_search = 0
     has_qtable_split = 0
     has_qtable_delim = 0
     has_qtable_store = 0
@@ -102,10 +104,16 @@ function advance_stage(stage, target) {
     if (n ~ /MOVEQ0D7/ || n ~ /MOVEQ0D0/ || n ~ /MOVEQL0D0/) has_unknown_section_reset = 1
 
     if (n ~ /DISPATCHTABLE/ || n ~ /SWITCHPARSEINIPARSEINIBUFFERANDDISPAT/) has_dispatch_table = 1
-    if ((u ~ /^JMP / || u ~ /^DC\.W / || n ~ /JMP/) && has_dispatch_table) has_dispatch_jump = 1
+    if (u ~ /^JMP / || n ~ /JMP/) has_dispatch_jump = 1
 
-    if (n ~ /PEA61W/ || n ~ /PEA3DW/) has_qtable_split = 1
-    if (n ~ /STRFINDCHARPTR/ && (n ~ /61/ || n ~ /3D/)) qtable_stage = advance_stage(qtable_stage, 1)
+    if (n ~ /PEA61W/ || n ~ /PEA3DW/ || n ~ /MOVEQ61D0/ || n ~ /MOVEQ3DD0/) {
+        has_qtable_split = 1
+        pending_qtable_split_search = 1
+    }
+    if (pending_qtable_split_search && n ~ /STRFINDCHARPTR/) {
+        qtable_stage = advance_stage(qtable_stage, 1)
+        pending_qtable_split_search = 0
+    }
     if (qtable_stage >= 1 && n ~ /PARSEINIDELIMSPACETABSECTION1/) {
         has_qtable_delim = 1
         qtable_stage = advance_stage(qtable_stage, 2)
@@ -117,7 +125,11 @@ function advance_stage(stage, target) {
         has_qtable_store = 1
         qtable_stage = advance_stage(qtable_stage, 4)
     }
-    if (qtable_stage >= 4 && ((n ~ /PEA34W/) || (n ~ /PEA22W/) || (n ~ /3522W/) || (n ~ /34/ && n ~ /STRFINDCHARPTR/) || (n ~ /22/ && n ~ /STRFINDCHARPTR/))) qtable_quote_checks++
+    if (qtable_stage >= 4 && (n ~ /PEA34W/ || n ~ /PEA22W/ || n ~ /MOVEQ34D0/ || n ~ /MOVEQ22D0/)) pending_qtable_quote_search = 1
+    if (qtable_stage >= 4 && pending_qtable_quote_search && n ~ /STRFINDCHARPTR/) {
+        qtable_quote_checks++
+        pending_qtable_quote_search = 0
+    }
     if (qtable_stage >= 4 && n ~ /TEXTDISPALIASCOUNT/ && (n ~ /MOVEW/ || n ~ /ADDQ/)) has_qtable_success = 1
     if (n ~ /TEXTDISPALIASCOUNT/ && (n ~ /CLRW/ || n ~ /MOVEQ0D0/)) has_qtable_reset = 1
 
@@ -155,7 +167,7 @@ END {
     print "HAS_DEFAULT_TEXT_RESET_TRIPLE=" (default_text_reset_count >= 3 ? 1 : 0)
     print "HAS_SOURCE_CONFIG_CLEAR=" has_source_config_clear
     print "HAS_UNKNOWN_SECTION_RESET=" (header_stage >= 8 ? 1 : has_unknown_section_reset)
-    print "HAS_DISPATCH_SWITCH=" has_dispatch_table
+    print "HAS_DISPATCH_SWITCH=" (has_dispatch_table && has_dispatch_jump ? 1 : 0)
     print "HAS_QTABLE_FLOW=" (has_qtable_split && has_qtable_delim && has_qtable_alloc_table && has_qtable_alloc_call && has_qtable_store && qtable_quote_checks >= 2 && has_qtable_success ? 1 : 0)
     print "HAS_QTABLE_RESET=" has_qtable_reset
     print "HAS_BACKDROP_FLOW=" (has_backdrop_delim && has_backdrop_dispatch ? 1 : 0)

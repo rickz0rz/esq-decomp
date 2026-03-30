@@ -10,8 +10,11 @@ BEGIN {
     has_restore_palette=0
     has_high_temp_format=0
     has_low_temp_format=0
+    has_wrapped_probe=0
     has_wrapped_draw=0
     has_rts=0
+    wrap_zero_window=0
+    wrap_one_window=0
 }
 
 function trim(s, t) {
@@ -30,6 +33,9 @@ function trim(s, t) {
     n=u
     gsub(/[^A-Z0-9]/, "", n)
 
+    if (wrap_zero_window > 0) wrap_zero_window--
+    if (wrap_one_window > 0) wrap_one_window--
+
     if (u ~ /^WDISP_DRAWWEATHERSTATUSDAYENTRY:/ || u ~ /^WDISP_DRAWWEATHERSTATUSDAYENTR[A-Z0-9_]*:/) has_entry=1
     if (n ~ /CMPL4D7/ || n ~ /BMI/ || n ~ /BGE/ || n ~ /DAYINDEX/) has_day_guard=1
     if (n ~ /MATHDIVS32/ || n ~ /PEA3W/ || n ~ /MOVEQ3D1/) has_panel_div=1
@@ -41,7 +47,12 @@ function trim(s, t) {
     if (n ~ /RESTOREBASEPALETTETRIPLES/ || n ~ /RESTOREBASEP/) has_restore_palette=1
     if (n ~ /PERCENTDSLASH/ || n ~ /UNKNOWNNUMWITHSLASH/ || n ~ /SPRINTF/) has_high_temp_format=1
     if (n ~ /PERCENTD/ || n ~ /UNKNOWNNUM/ || n ~ /SPRINTF/) has_low_temp_format=1
-    if (n ~ /DRAWWRAPPEDTEXT/ || n ~ /WRAPPED/) has_wrapped_draw=1
+    if (u ~ /^CLR\.L -?\(A7\)$/) wrap_zero_window=8
+    if (u ~ /^PEA .*1.*\.W$/) wrap_one_window=8
+    if (n ~ /DRAWWRAPPEDTEXT/ || n ~ /DRAWWRAPPED/) {
+        if (wrap_zero_window > 0) has_wrapped_probe=1
+        if (wrap_one_window > 0) has_wrapped_draw=1
+    }
     if (u == "RTS") has_rts=1
 
     prev2=prev
@@ -60,6 +71,7 @@ END {
     print "HAS_RESTORE_PALETTE=" has_restore_palette
     print "HAS_HIGH_TEMP_FORMAT=" has_high_temp_format
     print "HAS_LOW_TEMP_FORMAT=" has_low_temp_format
+    print "HAS_WRAPPED_PROBE=" has_wrapped_probe
     print "HAS_WRAPPED_DRAW=" has_wrapped_draw
     print "HAS_RTS=" has_rts
 }

@@ -113,20 +113,15 @@ LONG COI_WriteOiDataFile(UBYTE disk_id)
     WORD entry_count;
     WORD entry_index;
     WORD disk_path_index;
-    LONG use_secondary_table;
-    COI_EntryTableEntry **entry_table;
-
     if (TEXTDISP_PrimaryGroupEntryCount > COI_MAX_PRIMARY_ENTRIES) {
         return COI_INVALID_DISK_ID;
     }
 
-    use_secondary_table = 0;
     if (disk_id == TEXTDISP_SecondaryGroupCode &&
         (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - COI_GROUP_PRESENT_BASE) == 0) {
         CTASKS_SecondaryOiWritePendingFlag = COI_FLAG_SET;
         CTASKS_PendingSecondaryOiDiskId = disk_id;
         entry_count = (WORD)TEXTDISP_SecondaryGroupEntryCount;
-        use_secondary_table = -1;
     } else if (disk_id == TEXTDISP_PrimaryGroupCode) {
         CTASKS_PrimaryOiWritePendingFlag = COI_FLAG_SET;
         CTASKS_PendingPrimaryOiDiskId = disk_id;
@@ -154,26 +149,30 @@ LONG COI_WriteOiDataFile(UBYTE disk_id)
     COI_WriteFormattedLong(fh, tmp, COI_FMT_DEC_A, COI_DISK_SPLIT_DIVISOR);
     DISKIO_WriteBufferedBytes(fh, COI_RecordTerminatorCrLf, COI_WRITE_TWO);
 
-    if (use_secondary_table != 0) {
-        entry_table = TEXTDISP_SecondaryEntryPtrTable;
-    } else {
-        entry_table = TEXTDISP_PrimaryEntryPtrTable;
-    }
-
     entry_index = 0;
     while (entry_index < entry_count) {
         COI_EntryTableEntry *entry;
         WORD compare_index;
         LONG duplicate_found;
 
-        entry = entry_table[entry_index];
+        if (disk_id == TEXTDISP_SecondaryGroupCode &&
+            (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - COI_GROUP_PRESENT_BASE) == 0) {
+            entry = TEXTDISP_SecondaryEntryPtrTable[entry_index];
+        } else {
+            entry = TEXTDISP_PrimaryEntryPtrTable[entry_index];
+        }
         compare_index = 0;
         duplicate_found = 0;
 
         while (compare_index < entry_index && duplicate_found == 0) {
             COI_EntryTableEntry *compare_entry;
 
-            compare_entry = entry_table[compare_index];
+            if (disk_id == TEXTDISP_SecondaryGroupCode &&
+                (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - COI_GROUP_PRESENT_BASE) == 0) {
+                compare_entry = TEXTDISP_SecondaryEntryPtrTable[compare_index];
+            } else {
+                compare_entry = TEXTDISP_PrimaryEntryPtrTable[compare_index];
+            }
             duplicate_found = (LONG)(WORD)-(ESQ_WildcardMatch(entry->name, compare_entry->name) == 0);
             compare_index++;
         }

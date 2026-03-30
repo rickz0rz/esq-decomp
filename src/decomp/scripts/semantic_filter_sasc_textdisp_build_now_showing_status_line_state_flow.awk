@@ -9,16 +9,20 @@ BEGIN {
     has_now_showing_branch = 0
     has_format_time_branch = 0
     has_primary_prefix_append = 0
+    has_aux_title_token = 0
     has_channel_fallback_branch = 0
     has_primary_search_token = 0
+    has_program_title_loop = 0
     has_program_title_compact = 0
     has_channel_abbrev_append = 0
     has_time_token_suffix = 0
     has_aligned_line_build = 0
+    has_aligned_zero_tail_args = 0
     has_external_weather_fallback = 0
     has_highlight_effect = 0
     has_return = 0
 
+    find_token_count = 0
     saw_primary_channel_store = 0
     saw_primary_channel_default_const = 0
     primary_channel_ref_count = 0
@@ -35,11 +39,14 @@ BEGIN {
     saw_prefix_b = 0
     saw_prefix_c = 0
     saw_primary_search_ref = 0
+    saw_program_scan = 0
     saw_space_compare = 0
     saw_program_copy = 0
     saw_spacer_b = 0
     saw_format_char = 0
     saw_weather_ptr = 0
+    saw_zero_tail_seed = 0
+    aligned_zero_push_count = 0
 }
 
 function norm(s, t) {
@@ -116,8 +123,16 @@ function norm(s, t) {
         has_channel_fallback_branch = saw_prefix_b ? 1 : has_channel_fallback_branch
     }
     if (index(line, "TEXTDISP_PRIMARYSEARCHTEXT") > 0) saw_primary_search_ref = 1
-    if (saw_primary_search_ref && index(line, "TEXTDISP_FINDCONTROLTOKEN") > 0) has_primary_search_token = 1
+    if (index(line, "TEXTDISP_FINDCONTROLTOKEN") > 0) {
+        find_token_count++
+        if (saw_primary_search_ref) {
+            has_primary_search_token = 1
+        } else {
+            has_aux_title_token = 1
+        }
+    }
 
+    if (line ~ /^TST\.B .*\(A[0-7],D0\.L\)$/) saw_program_scan = 1
     if (line ~ /#\$20|#32/) saw_space_compare = 1
     if (saw_space_compare && line ~ /^MOVE\.B .*D0\.L\),(\(A[0-7]\)|\$[0-9A-F]+\([A-Z0-7]\))$/) {
         saw_program_copy = 1
@@ -128,6 +143,7 @@ function norm(s, t) {
     if (saw_space_compare && line ~ /^MOVE\.B .*D0\.L\),\$[0-9A-F]+\([A-Z0-7]\)$/) {
         saw_program_copy = 1
     }
+    if (saw_program_scan && saw_space_compare && saw_program_copy) has_program_title_loop = 1
     if (saw_space_compare && saw_program_copy) has_program_title_compact = 1
 
     if (index(line, "SCRIPT_ALIGNEDCHANNELABBREVPREFIX") > 0 ||
@@ -139,7 +155,16 @@ function norm(s, t) {
     if (index(line, "SCRIPT_ALIGNEDCHARFORMAT") > 0) saw_format_char = 1
     if ((saw_spacer_b || saw_format_char) && index(line, "WDISP_SPRINTF") > 0) has_time_token_suffix = 1
 
+    if (line ~ /^MOVEQ(\.L)? #0,D3$/ || line ~ /^MOVEQ(\.L)? #\$0,D3$/ || line == "CLR.L D3") {
+        saw_zero_tail_seed = 1
+        aligned_zero_push_count = 0
+    } else if (saw_zero_tail_seed && line == "MOVE.L D3,-(A7)") {
+        aligned_zero_push_count++
+    }
     if (index(line, "CLEANUP_BUILDALIGNEDSTATUSLINE") > 0) has_aligned_line_build = 1
+    if (index(line, "CLEANUP_BUILDALIGNEDSTATUSLINE") > 0 && aligned_zero_push_count >= 2) {
+        has_aligned_zero_tail_args = 1
+    }
 
     if (index(line, "P_TYPE_WEATHERBOTTOMLINEMSGPTR") > 0) saw_weather_ptr = 1
     if (index(line, "SCRIPT_ALIGNEDPREFIXEMPTYC") > 0) saw_prefix_c = 1
@@ -163,12 +188,15 @@ END {
     print "HAS_NOW_SHOWING_BRANCH=" has_now_showing_branch
     print "HAS_FORMAT_TIME_BRANCH=" has_format_time_branch
     print "HAS_PRIMARY_PREFIX_APPEND=" has_primary_prefix_append
+    print "HAS_AUX_TITLE_TOKEN=" has_aux_title_token
     print "HAS_CHANNEL_FALLBACK_BRANCH=" has_channel_fallback_branch
     print "HAS_PRIMARY_SEARCH_TOKEN=" has_primary_search_token
+    print "HAS_PROGRAM_TITLE_LOOP=" has_program_title_loop
     print "HAS_PROGRAM_TITLE_COMPACT=" has_program_title_compact
     print "HAS_CHANNEL_ABBREV_APPEND=" has_channel_abbrev_append
     print "HAS_TIME_TOKEN_SUFFIX=" has_time_token_suffix
     print "HAS_ALIGNED_LINE_BUILD=" has_aligned_line_build
+    print "HAS_ALIGNED_ZERO_TAIL_ARGS=" has_aligned_zero_tail_args
     print "HAS_EXTERNAL_WEATHER_FALLBACK=" has_external_weather_fallback
     print "HAS_HIGHLIGHT_EFFECT=" has_highlight_effect
     print "HAS_RETURN=" has_return

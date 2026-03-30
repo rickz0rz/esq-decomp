@@ -5,9 +5,13 @@ BEGIN {
     has_retry_cap = 0
     has_cycle_store = 0
     has_mode53_disable = 0
+    has_drop_transition = 0
     has_slot0_brush = 0
     has_slot1_clear = 0
     has_empty_banner_path = 0
+    has_selected_index_path = 0
+    has_short_name_build = 0
+    has_template_append = 0
     has_selected_special_suffix = 0
     has_selected_time_suffix = 0
     has_centered_schedule_suffix = 0
@@ -19,6 +23,7 @@ BEGIN {
     has_trim_draw = 0
     has_mid_fill = 0
     has_blit_rise = 0
+    has_render_state_reset = 0
     has_return = 0
 
     saw_normalize_step = 0
@@ -44,10 +49,18 @@ BEGIN {
     saw_build_status_line = 0
     saw_mode53 = 0
     saw_disable = 0
+    saw_drop = 0
     saw_slot0_brush = 0
     saw_slot1_clear = 0
     saw_empty_banner = 0
     saw_highlight_enable = 0
+    saw_banner_selected = 0
+    saw_banner_fallback = 0
+    saw_clock_index = 0
+    saw_short_name_entry = 0
+    saw_short_name_build = 0
+    saw_left_align = 0
+    saw_label_append = 0
     saw_trim = 0
     saw_frame = 0
     saw_get_rast = 0
@@ -55,6 +68,10 @@ BEGIN {
     saw_rect_fill = 0
     saw_blit = 0
     saw_rise = 0
+    saw_reset_selected = 0
+    saw_reset_fallback = 0
+    saw_reset_pen_state = 0
+    saw_reset_pen_enable = 0
 }
 
 function trim(s, t) {
@@ -96,6 +113,8 @@ function trim(s, t) {
     if (u ~ /#53/ || u ~ /#\$35/ || u ~ /PEA \(\$35\)\.W/) saw_mode53 = 1
     if (u ~ /ESQ_SETCOPPEREFFECT_OFFDISABLEHIGH/ || u ~ /ESQ_SETCOPPEREFFECT_OFFDISABLEHI/) saw_disable = 1
     if (saw_mode53 && saw_disable) has_mode53_disable = 1
+    if (u ~ /ESQIFF_RUNCOPPERDROPTRANS/ || u ~ /ESQIFF_RUNCOPPERDROPTRA/) saw_drop = 1
+    if (saw_drop) has_drop_transition = 1
 
     if (u ~ /ESQFUNC_SELECTANDAPPLYBRUSHFORCU/) saw_slot0_brush = 1
     if (u ~ /_LVOSETRAST/) saw_slot1_clear = 1
@@ -105,6 +124,11 @@ function trim(s, t) {
     if (u ~ /TEXTDISP_DRAWCHANNELBANNER/) saw_empty_banner = 1
     if (u ~ /ESQ_SETCOPPEREFFECT_ONENABLEHIGH/) saw_highlight_enable = 1
     if (saw_empty_banner && saw_highlight_enable) has_empty_banner_path = 1
+
+    if (u ~ /TEXTDISP_BANNERCHARSELECTED/) saw_banner_selected = 1
+    if (u ~ /TEXTDISP_BANNERCHARFALLBACK/) saw_banner_fallback = 1
+    if (u ~ /CLEANUP_ALIGNEDSTATUSCLOCKENTRYI/) saw_clock_index = 1
+    if (saw_banner_selected && saw_banner_fallback && saw_clock_index) has_selected_index_path = 1
 
     if (u ~ /ESQIFF_PRIMARYLINEHEADPTR/) saw_head_ptr = 1
     if (u ~ /ESQIFF_PRIMARYLINETAILPTR/) saw_tail_ptr = 1
@@ -133,6 +157,14 @@ function trim(s, t) {
     if (u ~ /SCRIPT_STRCHANNELLABEL_TUESDAYSF/ || u ~ /SCRIPT_STRCHANNELLABEL_TUESDAYSFRIDAYS/) saw_schedule_table = 1
     if (saw_center_token && saw_schedule_table) has_centered_schedule_suffix = 1
 
+    if (u ~ /ESQDISP_GETENTRYPOINTERBYMODE/) saw_short_name_entry = 1
+    if (u ~ /TEXTDISP_BUILDENTRYSHORTNAME/) saw_short_name_build = 1
+    if (saw_short_name_entry && saw_short_name_build) has_short_name_build = 1
+
+    if (u ~ /TEXTDISP_LEFTALIGNTOKEN/) saw_left_align = 1
+    if (u ~ /STRING_APPENDATNULL/) saw_label_append = 1
+    if (saw_left_align && saw_label_append) has_template_append = 1
+
     if (u ~ /TEXTDISP_BUILDCHANNELLABEL/) saw_build_channel_label = 1
     if (u ~ /CLEANUP_BUILDALIGNEDSTATUSLINE/) saw_build_status_line = 1
     if (saw_build_channel_label && saw_build_status_line) has_line_build = 1
@@ -150,6 +182,16 @@ function trim(s, t) {
     if (u ~ /ESQIFF_RUNCOPPERRISETRANS/ || u ~ /ESQIFF_RUNCOPPERRISETRA/) saw_rise = 1
     if (saw_blit && saw_rise) has_blit_rise = 1
 
+    if ((u ~ /TEXTDISP_BANNERCHARSELECTED/ && (u ~ /#100/ || u ~ /#\$64/)) ||
+        u ~ /MOVE\.B #\$64,TEXTDISP_BANNERCHARSELECTED/) saw_reset_selected = 1
+    if ((u ~ /TEXTDISP_BANNERCHARFALLBACK/ && (u ~ /#49/ || u ~ /#\$31/)) ||
+        u ~ /MOVE\.B #\$31,TEXTDISP_BANNERCHARFALLBACK/) saw_reset_fallback = 1
+    if (u ~ /TEXTDISP_LINEPENOVERRIDESTATEW/) saw_reset_pen_state = 1
+    if (u ~ /TEXTDISP_LINEPENOVERRIDEENABLE/) saw_reset_pen_enable = 1
+    if (saw_reset_selected && saw_reset_fallback && saw_reset_pen_state && saw_reset_pen_enable) {
+        has_render_state_reset = 1
+    }
+
     if (u == "RTS") has_return = 1
 }
 
@@ -160,13 +202,17 @@ END {
     print "HAS_RETRY_CAP=" has_retry_cap
     print "HAS_CYCLE_STORE=" has_cycle_store
     print "HAS_MODE53_DISABLE=" has_mode53_disable
+    print "HAS_DROP_TRANSITION=" has_drop_transition
     print "HAS_SLOT0_BRUSH=" has_slot0_brush
     print "HAS_SLOT1_CLEAR=" has_slot1_clear
     print "HAS_EMPTY_BANNER_PATH=" has_empty_banner_path
+    print "HAS_SELECTED_INDEX_PATH=" has_selected_index_path
     print "HAS_CODE_F_HEAD_PATH=" has_code_f_head_path
     print "HAS_CODE_G_TAIL_PATH=" has_code_g_tail_path
     print "HAS_CODE_N_CLOCK_PATH=" has_code_n_clock_path
     print "HAS_CODE_O_ALT_PATH=" has_code_o_alt_path
+    print "HAS_SHORT_NAME_BUILD=" has_short_name_build
+    print "HAS_TEMPLATE_APPEND=" has_template_append
     print "HAS_SELECTED_SPECIAL_SUFFIX=" has_selected_special_suffix
     print "HAS_SELECTED_TIME_SUFFIX=" has_selected_time_suffix
     print "HAS_CENTERED_SCHEDULE_SUFFIX=" has_centered_schedule_suffix
@@ -174,5 +220,6 @@ END {
     print "HAS_TRIM_DRAW=" has_trim_draw
     print "HAS_MID_FILL=" has_mid_fill
     print "HAS_BLIT_RISE=" has_blit_rise
+    print "HAS_RENDER_STATE_RESET=" has_render_state_reset
     print "HAS_RETURN=" has_return
 }

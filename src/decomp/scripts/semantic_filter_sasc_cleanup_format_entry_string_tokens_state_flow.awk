@@ -125,7 +125,8 @@ function norm(s, t) {
     }
 
     if ((line ~ /^ADDQ\.L #1,-26\(A5\)$/ || line ~ /^ADDQ\.L #\$1,-26\(A5\)$/ ||
-         line ~ /^ADDQ\.L #1,\$[0-9A-F]+\([A-Z0-7]\)$/ ||
+         line ~ /^ADDQ\.L #1,\$[0-9A-F]+\([AD][0-7]\)$/ ||
+         line ~ /^ADDQ\.L #\$1,\$[0-9A-F]+\([AD][0-7]\)$/ ||
          line ~ /^MOVE\.L D0,\$34\(A7\)$/) && saw_find_char) {
         has_separator_advance = 1
     }

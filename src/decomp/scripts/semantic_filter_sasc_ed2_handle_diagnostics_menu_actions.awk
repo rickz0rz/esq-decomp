@@ -42,11 +42,13 @@ BEGIN {
     saw_toggle_mask_and=0
     saw_toggle_mask_or=0
     saw_scroll_speed_char=0
+    pending_scroll_speed=0
     saw_scroll_decrement=0
     saw_scroll_wrap_compare=0
     saw_scroll_wrap_reset=0
     saw_scroll_text_limit=0
     saw_scroll_mul40=0
+    pending_scroll_mul40=0
     saw_scroll_block_offset=0
     saw_ctrl_line_string=0
     saw_assert_call=0
@@ -106,19 +108,17 @@ function trim(s, t) {
     if (n ~ /DRAWDIAGNOSTICMODETEXT/) draw_diag_mode_count++
     if (draw_diag_mode_count >= 4) has_mode_text_redraws=1
 
-    if (n ~ /DIAGSCROLLSPEEDCHAR/) saw_scroll_speed_char=1
-    if (saw_scroll_speed_char && n ~ /SUBQB1D[01]/) saw_scroll_decrement=1
-    if (n ~ /DIAGSCROLLSPEEDCHAR/ && n ~ /33/) saw_scroll_wrap_compare=1
-    if (n ~ /DIAGSCROLLSPEEDCHAR/ && n ~ /36/) saw_scroll_wrap_reset=1
-    if (n ~ /TEXTLIMIT/) saw_scroll_text_limit=1
-    if ((n ~ /MATHMULU32/ && n ~ /28/) || (n ~ /MATHMULU32/ && n ~ /40/)) saw_scroll_mul40=1
-    if (n ~ /BLOCKOFFSET/) saw_scroll_block_offset=1
-    if (saw_scroll_decrement && saw_scroll_wrap_compare && saw_scroll_wrap_reset &&
-        saw_scroll_text_limit && saw_scroll_mul40 && saw_scroll_block_offset &&
-        draw_diag_mode_count >= 4) {
-        has_scroll_speed_path=1
+    if (n ~ /DIAGSCROLLSPEEDCHAR/) {
+        saw_scroll_speed_char=1
+        pending_scroll_speed=8
     }
-
+    if (saw_scroll_speed_char && n ~ /SUBQB1D[01]/) saw_scroll_decrement=1
+    if ((n ~ /CMPB/ || n ~ /CMP/ || n ~ /MOVEQ/) && (n ~ /33/ || n ~ /51/) && pending_scroll_speed > 0) saw_scroll_wrap_compare=1
+    if ((n ~ /MOVEQ/ || n ~ /MOVEB/ || n ~ /MOVE/) && (n ~ /36/ || n ~ /54/) && pending_scroll_speed > 0) saw_scroll_wrap_reset=1
+    if (n ~ /TEXTLIMIT/) saw_scroll_text_limit=1
+    if ((n ~ /MOVEQ/ || n ~ /PEA/ || n ~ /MOVE/) && (n ~ /28/ || n ~ /40/) && pending_scroll_speed > 0) pending_scroll_mul40=4
+    if (pending_scroll_mul40 > 0 && n ~ /MATHMULU32/) saw_scroll_mul40=1
+    if (n ~ /BLOCKOFFSET/) saw_scroll_block_offset=1
     if ((n ~ /DIAGNOSTICSVIEWMODE/ && n ~ /D0/) && (n ~ /MOVEW/ || n ~ /MOVEL/)) saw_view_mode_load=1
     if (saw_view_mode_load && (n ~ /ADDQW1D0/ || n ~ /ADDQL1D0/ || n ~ /ADDQW1/ || n ~ /ADDQL1/)) saw_view_mode_add=1
     if (saw_view_mode_add && n ~ /DIAGNOSTICSVIEWMODE/ && n ~ /D0/ && (n ~ /MOVEW/ || n ~ /MOVEL/)) has_view_mode_increment=1
@@ -157,9 +157,18 @@ function trim(s, t) {
     if ((n ~ /DRAWESCMENUBOTTOMHELP/ || n ~ /DRAWESCMENUBOTTOMHEL/) && n !~ /RETURN/) has_default_help=1
     if (n ~ /DIAGNOSTICSSCREENACTIVE/ && n ~ /CLRW/) has_default_help=1
     if (u == "RTS") has_rts=1
+
+    if (pending_scroll_speed > 0) pending_scroll_speed--
+    if (pending_scroll_mul40 > 0) pending_scroll_mul40--
 }
 
 END {
+    if (saw_scroll_decrement && saw_scroll_wrap_compare && saw_scroll_wrap_reset &&
+        saw_scroll_text_limit && saw_scroll_mul40 && saw_scroll_block_offset &&
+        draw_diag_mode_count >= 4) {
+        has_scroll_speed_path=1
+    }
+
     print "HAS_ENTRY=" has_entry
     print "HAS_STATE_RING_KEY=" has_state_ring_key
     print "HAS_DISPATCH_CHAIN=" has_dispatch_chain

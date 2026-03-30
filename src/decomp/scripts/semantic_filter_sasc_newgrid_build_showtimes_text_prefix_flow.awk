@@ -56,7 +56,9 @@ function norm(s, t) {
         has_out_clear = 1
     }
 
-    if (l ~ /^SUBI\.W #\$30,D[0-7]$/ || l ~ /^SUBI\.W #48,D[0-7]$/ || l ~ /ROW > 48/ || l ~ /ROW - 48/) {
+    if (l ~ /^SUBI\.W #\$30,D[0-7]$/ || l ~ /^SUBI\.W #48,D[0-7]$/ ||
+        l ~ /^MOVEQ(\.L)? #\$?30,D[0-7]$/ || l ~ /^SUB\.W D[0-7],\$[0-9A-F]+\((A7|SP)\)$/ ||
+        l ~ /ROW > 48/ || l ~ /ROW - 48/) {
         has_row_wrap = 1
     }
 

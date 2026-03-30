@@ -1,10 +1,19 @@
 BEGIN {
     has_entry = 0
+    has_active_guard = 0
     has_setapen = 0
     has_setdrmd = 0
     availmem_calls = 0
     sprintf_calls = 0
     display_calls = 0
+    x40_count = 0
+    y112_count = 0
+    y142_count = 0
+    y172_count = 0
+    y202_count = 0
+    y232_count = 0
+    y262_count = 0
+    y292_count = 0
     has_mode0_gate = 0
     has_mode1_gate = 0
     has_compute_htc = 0
@@ -55,11 +64,20 @@ function trim(s, t) {
     uline = toupper(line)
 
     if (uline ~ /^ESQFUNC_DRAWMEMORYSTATUSSCREEN:/) has_entry = 1
+    if (uline ~ /MOVE\.W ED_DIAGNOSTICSSCREENACTIVE\(A4\),D0/ || uline ~ /BEQ\.W ___ESQFUNC_DRAWMEMORYSTATUSSCREEN__21/) has_active_guard = 1
     if (uline ~ /LVOSETAPEN/) has_setapen = 1
     if (uline ~ /LVOSETDRMD/) has_setdrmd = 1
     if (uline ~ /LVOAVAILMEM/) availmem_calls++
     if (uline ~ /GROUP_AM_JMPTBL_WDISP_SPRINTF/ || uline ~ /WDISP_SPRINTF/) sprintf_calls++
     if (uline ~ /ESQPARS_JMPTBL_DISPLIB_DISPLAYTE/ || uline ~ /DISPLIB_DISPLAYTEXTATPOSITION/) display_calls++
+    if (uline ~ /^PEA \(\$28\)\.W$/) x40_count++
+    if (uline ~ /^PEA \(\$70\)\.W$/) y112_count++
+    if (uline ~ /^PEA \(\$8E\)\.W$/) y142_count++
+    if (uline ~ /^PEA \(\$AC\)\.W$/) y172_count++
+    if (uline ~ /^PEA \(\$CA\)\.W$/) y202_count++
+    if (uline ~ /^PEA \(\$E8\)\.W$/) y232_count++
+    if (uline ~ /^PEA \(\$106\)\.W$/) y262_count++
+    if (uline ~ /^PEA \(\$124\)\.W$/) y292_count++
     if (uline ~ /MOVE\.W ED_DIAGNOSTICSVIEWMODE\(A4\),D0/ || uline ~ /BNE\.W ___ESQFUNC_DRAWMEMORYSTATUSSCREEN__16/) has_mode0_gate = 1
     if (uline ~ /SUBQ\.W #\$1,D0/) has_mode1_gate = 1
     if (uline ~ /GLOBAL_STR_DATA_CMDS_CERRS_LERRS/) has_data_cmds = 1
@@ -97,6 +115,7 @@ function trim(s, t) {
 
 END {
     print "HAS_ENTRY=" has_entry
+    print "HAS_ACTIVE_GUARD=" has_active_guard
     print "HAS_SETAPEN=" has_setapen
     print "HAS_SETDRMD=" has_setdrmd
     print "HAS_MODE0_GATE=" has_mode0_gate
@@ -129,6 +148,14 @@ END {
     print "HAS_AVAILMEM_CALLS_EQ_6=" (availmem_calls == 6)
     print "HAS_SPRINTF_CALLS_EQ_17=" (sprintf_calls == 17)
     print "HAS_DISPLAY_CALLS_EQ_13=" (display_calls == 13)
+    print "HAS_X40_COUNT_EQ_13=" (x40_count == 13)
+    print "HAS_Y112_COUNT_EQ_2=" (y112_count == 2)
+    print "HAS_Y142_COUNT_EQ_2=" (y142_count == 2)
+    print "HAS_Y172_COUNT_EQ_2=" (y172_count == 2)
+    print "HAS_Y202_COUNT_EQ_2=" (y202_count == 2)
+    print "HAS_Y232_COUNT_EQ_2=" (y232_count == 2)
+    print "HAS_Y262_COUNT_EQ_2=" (y262_count == 2)
+    print "HAS_Y292_COUNT_EQ_1=" (y292_count == 1)
     print "HAS_COMPUTE_HTC=" has_compute_htc
     print "HAS_UPDATE_CTRL_H=" has_update_ctrl_h
     print "HAS_BITMAP_SWAP_IN=" has_bitmap_swap_in

@@ -37,6 +37,12 @@ BEGIN {
     h_consts=0
     h_rts=0
     esc_help_window=0
+    toggle_line_page_window=0
+    toggle_line_page_have_apen=0
+    toggle_line_page_have_bpen=0
+    toggle_line_page_have_div=0
+    toggle_line_page_have_label=0
+    toggle_line_page_have_draw=0
 }
 
 function norm(s, t) {
@@ -51,6 +57,20 @@ function norm(s, t) {
 {
     l=norm($0)
     if (l=="") next
+
+    if (toggle_line_page_window > 0) {
+        toggle_line_page_window--
+        if (l ~ /SETAPEN/ || l ~ /_LVOSETAPEN/) toggle_line_page_have_apen=1
+        if (l ~ /SETBPEN/ || l ~ /_LVOSETBPEN/) toggle_line_page_have_bpen=1
+        if (l ~ /MATH_DIVS32/ || l ~ /GROUP_AG_JMPTBL_MATH_DIVS32/) toggle_line_page_have_div=1
+        if (l ~ /ED2_STR_PAGE/ || l ~ /ED2_STR_LINE/) toggle_line_page_have_label=1
+        if (l ~ /DISPLIB_DISPLAYTEXTATPOSITION/) toggle_line_page_have_draw=1
+        if (toggle_line_page_have_apen && toggle_line_page_have_bpen &&
+            toggle_line_page_have_div && toggle_line_page_have_label &&
+            toggle_line_page_have_draw) {
+            h_toggle_line_page_mode=1
+        }
+    }
 
     if (esc_help_window > 0) {
         if (l ~ /^BRA(\.[A-Z])? / || l == "RTS") h_esc_early_exit=1
@@ -84,6 +104,14 @@ function norm(s, t) {
     if ((l ~ /EDITBUFFERLIVEINDEXBASEMINUS1/ && l ~ /ED_TEMPCOPYOFFSET/) || (l ~ /EDITBUFFERSCRATCHINDEXBASEMINUS1/ && l ~ /ED_BLOCKOFFSET/) || l ~ /ED_DRAWCURSORCHAR/) h_delete_page_refresh=1
     if (l ~ /ED_EDITBUFFERSCRATCHSHIFTBASE/ || l ~ /ED_EDITBUFFERLIVESHIFTBASE/ || l ~ /SCRATCHSHIFTBASE/ || l ~ /LIVESHIFTBASE/) h_insert_char=1
     if ((l ~ /ED_MENUSTATEID/ && l ~ /ED_DRAWEDITHELPTEXT/) || l ~ /MOVE\.B #\$9,ED_MENUSTATEID/ || l ~ /MOVE\.B #\$9,ED_MENUSTATEID\(A4\)/) h_mode9_help=1
+    if (l ~ /SETAPEN/ || l ~ /_LVOSETAPEN/) {
+        toggle_line_page_window=24
+        toggle_line_page_have_apen=1
+        toggle_line_page_have_bpen=0
+        toggle_line_page_have_div=0
+        toggle_line_page_have_label=0
+        toggle_line_page_have_draw=0
+    }
     if ((l ~ /SETAPEN/ || l ~ /_LVOSETAPEN/) && (l ~ /SETBPEN/ || l ~ /_LVOSETBPEN/) || (l ~ /ED2_STR_PAGE/ && l ~ /ED2_STR_LINE/) || (l ~ /BOOLISLINEORPAGE/ && l ~ /MATH_DIVS32/)) h_toggle_line_page_mode=1
     if ((l ~ /ED_EDITCURSOROFFSET/ && (l ~ /#40/ || l ~ /#\$28/)) || l ~ /MOVEQ #40/ || l ~ /MOVEQ\.L #\$27/ || l ~ /MOVEQ\.L #\$28/ || l ~ /ADDQ\.L #1,ED_EDITCURSOROFFSET/ || l ~ /ADDQ\.L #\$1,ED_EDITCURSOROFFSET/ || l ~ /SUBQ\.L #1,ED_EDITCURSOROFFSET/ || l ~ /SUBQ\.L #\$1,ED_EDITCURSOROFFSET/) h_nav_dirs=1
     if (l ~ /ED_COMMITCURRENTADEDITS/ || l ~ /ED_DRAWESCMENUBOTTOMHELP/ || l ~ /TEXTMODEREINITPENDINGFLAG/ && l ~ /MOVEL/) h_esc_commit_help=1

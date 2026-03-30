@@ -14,6 +14,8 @@ BEGIN {
     has_load_ppv_template = 0
     has_delim_12 = 0
     has_truncate_127 = 0
+    has_rowspan_max_96 = 0
+    has_tail_len_choose = 0
     pending_replace_owned = 0
     has_return = 0
 }
@@ -65,6 +67,12 @@ function trim(s, t) {
     if (index(u, "GCOMMAND_LOADPPVTEMPLATE") > 0) has_load_ppv_template = 1
     if (index(u, "#$12") > 0 || index(u, "($12).W") > 0 || index(u, "#18") > 0) has_delim_12 = 1
     if (index(u, "#$7F") > 0 || index(u, "#127") > 0 || index(u, "$7F(") > 0 || index(u, "127(") > 0) has_truncate_127 = 1
+    if (index(u, "#$60") > 0 || index(u, "#96") > 0) has_rowspan_max_96 = 1
+    if (u ~ /^CMP\.L D[0-7],D[0-7]$/ ||
+        (index(u, "MOVE.L D6,D0") > 0 && index(prev_u, "BLE.") > 0) ||
+        (index(u, "MOVE.L D7,D0") > 0 && index(prev_u, "CMP.L D7,D6") > 0)) {
+        has_tail_len_choose = 1
+    }
     if (copy_pad_count == 0 && (u ~ /^TST\.B \(A[035]\)$/ || u ~ /^TST\.B \(A0\)$/)) has_empty_cmd_guard = 1
     if (u ~ /^CLR\.B \(A[0-7]\)\+$/) has_split_nul = 1
     if (u ~ /^CLR\.B (\$7F|127)\(A[0-7](,D[0-7]\.L)?\)$/) has_tail_clamp_write = 1
@@ -94,6 +102,7 @@ function trim(s, t) {
     }
 
     if (u == "RTS") has_return = 1
+    prev_u = u
 }
 
 END {
@@ -112,5 +121,7 @@ END {
     print "HAS_LOAD_PPV_TEMPLATE=" has_load_ppv_template
     print "HAS_DELIM_12=" has_delim_12
     print "HAS_TRUNCATE_127=" has_truncate_127
+    print "HAS_ROWSPAN_MAX_96=" has_rowspan_max_96
+    print "HAS_TAIL_LEN_CHOOSE=" has_tail_len_choose
     print "HAS_RETURN=" has_return
 }

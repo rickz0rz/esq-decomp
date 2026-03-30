@@ -114,21 +114,21 @@ function advance_stage(stage, target) {
         entry_stage = advance_stage(entry_stage, 2)
     }
     if (entry_stage >= 2 &&
-        u ~ /ADDQ\.W #1,-26\(A5\)|ADDQ\.W #\$1,\$34\(A7\)/) {
+        u ~ /ADDQ\.W #1,-26\(A5\)|ADDQ\.W #\$1,\$[0-9A-F]+\((A7|A5)\)/) {
         has_entry_loop = 1
     }
     if (u ~ /ESQ_WILDCARDMATCH/ || u ~ /ESQ_WILDCARDMATC/) duplicate_stage = advance_stage(duplicate_stage, 1)
     if (duplicate_stage >= 1 && u ~ /(SEQ|SCC) D1/) duplicate_stage = advance_stage(duplicate_stage, 2)
     if (duplicate_stage >= 2 && u ~ /NEG\.B D1/) duplicate_stage = advance_stage(duplicate_stage, 3)
     if (duplicate_stage >= 3 && u ~ /MOVE\.L D1,D6|MOVE\.L D1,\$[0-9A-F]+\((A7|A5)\)/) has_duplicate_flow = 1
-    if (u ~ /CMP\.W -26\(A5\),D0|CMP\.W \$34\(A7\),D0/) {
+    if (u ~ /CMP\.W -26\(A5\),D0|CMP\.W \$[0-9A-F]+\((A7|A5)\),D0/) {
         compare_loop_stage = advance_stage(compare_loop_stage, 1)
     }
     if ((u ~ /ESQ_WILDCARDMATCH/ || u ~ /ESQ_WILDCARDMATC/) && compare_loop_stage >= 1) {
         compare_loop_stage = advance_stage(compare_loop_stage, 2)
     }
     if (compare_loop_stage >= 2 &&
-        u ~ /ADDQ\.W #1,-28\(A5\)|ADDQ\.W #\$1,\$30\(A7\)/) {
+        u ~ /ADDQ\.W #1,-28\(A5\)|ADDQ\.W #\$1,\$[0-9A-F]+\((A7|A5)\)/) {
         has_compare_loop = 1
     }
 
@@ -145,7 +145,7 @@ function advance_stage(stage, target) {
     if (u ~ /COI_FMT_DEC_B/ && subentry_stage >= 2) subentry_stage = advance_stage(subentry_stage, 3)
     if (u ~ /COI_RECORDTERMINATORCRLF/ && subentry_stage >= 3) has_subentry_bundle = 1
     if (subentry_stage >= 3 &&
-        u ~ /ADDQ\.W #1,-28\(A5\)|ADDQ\.W #\$1,\$28\(A7\)/) {
+        u ~ /ADDQ\.W #1,-28\(A5\)|ADDQ\.W #\$1,\$[0-9A-F]+\((A7|A5)\)/) {
         has_subentry_loop = 1
     }
 

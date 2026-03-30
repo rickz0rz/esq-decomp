@@ -87,7 +87,7 @@ function mark(tag) {
     }
 
     if (u ~ /DISPTEXT_LAYOUTANDAPPENDTOBUFFER/ &&
-        prev ~ /MOVE\.L NEWGRID_ENTRYTEXTSCRATCHPTR/) {
+        seen["PRIMARY_SPLIT"] && !seen["DRAW_PRIMARY"]) {
         mark("DRAW_PRIMARY")
     }
 
@@ -100,12 +100,12 @@ function mark(tag) {
     }
 
     if (u ~ /DISPTEXT_LAYOUTSOURCETOLINES/ &&
-        prev ~ /MOVE\.L \$24\(A7\),-\(A7\)/) {
+        seen["SECONDARY_CLOSE"] && !seen["SECONDARY_LAYOUT"]) {
         mark("SECONDARY_LAYOUT")
     }
 
     if (u ~ /DISPTEXT_LAYOUTANDAPPENDTOBUFFER/ &&
-        prev ~ /MOVE\.L \$24\(A7\),-\(A7\)/) {
+        seen["SECONDARY_LAYOUT"] && !seen["SECONDARY_APPEND"]) {
         mark("SECONDARY_APPEND")
     }
 
@@ -126,8 +126,13 @@ function mark(tag) {
     }
 
     if (u ~ /DISPTEXT_LAYOUTSOURCETOLINES/ &&
-        prev ~ /MOVE\.L \$28\(A7\),-\(A7\)/) {
+        seen["SUBTITLE_PERIOD"] && !seen["SUBTITLE_LAYOUT"]) {
         mark("SUBTITLE_LAYOUT")
+    }
+
+    if (u ~ /DISPTEXT_LAYOUTANDAPPENDTOBUFFER/ &&
+        seen["SUBTITLE_LAYOUT"] && !seen["SUBTITLE_APPEND"]) {
+        mark("SUBTITLE_APPEND")
     }
 
     if (u ~ /^CLR\.B \$1\(A0\)$/ || u ~ /^CLR\.B 1\(A0\)$/) {
@@ -139,8 +144,24 @@ function mark(tag) {
     }
 
     if (u ~ /DISPTEXT_LAYOUTSOURCETOLINES/ &&
-        prev ~ /MOVE\.L \$18\(A7\),-\(A7\)/) {
+        seen["SUBTITLE_FALLBACK_SKIP"] &&
+        !seen["SUBTITLE_FALLBACK_LAYOUT"]) {
+        mark("SUBTITLE_FALLBACK_LAYOUT")
+    }
+
+    if (u ~ /DISPTEXT_LAYOUTANDAPPENDTOBUFFER/ &&
+        seen["SUBTITLE_FALLBACK_LAYOUT"] && !seen["SUBTITLE_FALLBACK_APPEND"]) {
+        mark("SUBTITLE_FALLBACK_APPEND")
+    }
+
+    if (u ~ /DISPTEXT_LAYOUTSOURCETOLINES/ &&
+        seen["SUBTITLE_FALLBACK_LAYOUT"] && !seen["SUBTITLE_ALT_LAYOUT"]) {
         mark("SUBTITLE_ALT_LAYOUT")
+    }
+
+    if (u ~ /DISPTEXT_LAYOUTANDAPPENDTOBUFFER/ &&
+        seen["SUBTITLE_ALT_LAYOUT"] && !seen["SUBTITLE_ALT_APPEND"]) {
+        mark("SUBTITLE_ALT_APPEND")
     }
 
     if ((u ~ /PEA \$38\(A7\)/ || u ~ /PEA -19\(A5\)/) && !seen["TAIL_DELIM_SCAN"]) {
@@ -152,7 +173,7 @@ function mark(tag) {
     }
 
     if (u ~ /DISPTEXT_LAYOUTANDAPPENDTOBUFFER/ &&
-        prev ~ /MOVE\.L \$24\(A7\),-\(A7\)/) {
+        seen["TAIL_DELIM_LOOP"] && !seen["TAIL_APPEND"]) {
         mark("TAIL_APPEND")
     }
 

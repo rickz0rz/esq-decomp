@@ -8,9 +8,11 @@ BEGIN {
     has_candidate_wrap = 0
     has_group1_dispatch = 0
     has_group1_sources = 0
+    has_group1_source_set = 0
     has_cycle_gate_fallback = 0
     has_group2_dispatch = 0
     has_group2_budget_workflow = 0
+    has_group2_source_set = 0
     has_group2_case7 = 0
     has_return = 0
 
@@ -22,6 +24,20 @@ BEGIN {
     group2_jump_hits = 0
     budget_dec_hits = 0
     budget_reset_hits = 0
+    group1_source_hits = 0
+    group2_source_hits = 0
+    has_group1_src_niche = 0
+    has_group1_src_cfg_y = 0
+    has_group1_src_cfg_static = 0
+    has_group1_src_cfg_custom = 0
+    has_group1_src_mplex = 0
+    has_group1_src_ppv = 0
+    has_group2_src_global = 0
+    has_group2_src_y = 0
+    has_group2_src_static = 0
+    has_group2_src_custom = 0
+    has_group2_src_mplex = 0
+    has_group2_src_ppv = 0
     prev = ""
     prev2 = ""
 }
@@ -114,16 +130,41 @@ function norm(s, t) {
         has_group2_dispatch = 1
     }
 
-    if (line ~ /GCOMMAND_NICHEMODECYCLECOUNT/ ||
-        line ~ /GCOMMAND_MPLEXMODECYCLECOUNT/ ||
-        line ~ /GCOMMAND_PPVMODECYCLECOUNT/ ||
-        line ~ /CONFIG_NICHEMODECYCLEBUDGET_Y/ ||
-        line ~ /CONFIG_NICHEMODECYCLEBUDGET_STATIC/ ||
-        line ~ /CONFIG_NICHEMODECYCLEBUDGET_CUSTOM/ ||
-        line ~ /CONFIGNICHEMODECYCLEBUDGETY/ ||
-        line ~ /CONFIGNICHEMODECYCLEBUDGETSTATIC/ ||
-        line ~ /CONFIGNICHEMODECYCLEBUDGETCUSTOM/) {
+    if (!has_group1_src_niche &&
+        (line ~ /GCOMMAND_NICHEMODECYCLECOUNT/ || line ~ /GCOMMANDNICHEMODECYCLECOUNT/)) {
+        has_group1_src_niche = 1
+        group1_source_hits++
+    }
+    if (!has_group1_src_cfg_y &&
+        (line ~ /CONFIG_NICHEMODECYCLEBUDGET_Y/ || line ~ /CONFIGNICHEMODECYCLEBUDGETY/)) {
+        has_group1_src_cfg_y = 1
+        group1_source_hits++
+    }
+    if (!has_group1_src_cfg_static &&
+        (line ~ /CONFIG_NICHEMODECYCLEBUDGET_STA/ || line ~ /CONFIGNICHEMODECYCLEBUDGETSTA/ ||
+         line ~ /CONFIG_NICHEMODECYCLEBUDGET_STATIC/ || line ~ /CONFIGNICHEMODECYCLEBUDGETSTATIC/)) {
+        has_group1_src_cfg_static = 1
+        group1_source_hits++
+    }
+    if (!has_group1_src_cfg_custom &&
+        (line ~ /CONFIG_NICHEMODECYCLEBUDGET_CUS/ || line ~ /CONFIGNICHEMODECYCLEBUDGETCUS/ ||
+         line ~ /CONFIG_NICHEMODECYCLEBUDGET_CUSTOM/ || line ~ /CONFIGNICHEMODECYCLEBUDGETCUSTOM/)) {
+        has_group1_src_cfg_custom = 1
+        group1_source_hits++
+    }
+    if (!has_group1_src_mplex &&
+        (line ~ /GCOMMAND_MPLEXMODECYCLECOUNT/ || line ~ /GCOMMANDMPLEXMODECYCLECOUNT/)) {
+        has_group1_src_mplex = 1
+        group1_source_hits++
+    }
+    if (!has_group1_src_ppv &&
+        (line ~ /GCOMMAND_PPVMODECYCLECOUNT/ || line ~ /GCOMMANDPPVMODECYCLECOUNT/)) {
+        has_group1_src_ppv = 1
+        group1_source_hits++
+    }
+    if (group1_source_hits >= 6) {
         has_group1_sources = 1
+        has_group1_source_set = 1
     }
 
     if ((line ~ /CMP\.L D7,D0/ || line ~ /CMP\.L D0,D7/ ||
@@ -141,7 +182,42 @@ function norm(s, t) {
     if (line ~ /MOVE\.B D0,NEWGRID_.*MODECYCLEBUDGET/) {
         budget_reset_hits++
     }
-    if (budget_dec_hits >= 4 && budget_reset_hits >= 4) {
+    if (!has_group2_src_global &&
+        (line ~ /NEWGRID_NICHEMODECYCLEBUDGET_GLO/ || line ~ /NEWGRIDNICHEMODECYCLEBUDGETGLO/)) {
+        has_group2_src_global = 1
+        group2_source_hits++
+    }
+    if (!has_group2_src_y &&
+        (line ~ /NEWGRID_NICHEMODECYCLEBUDGET_Y/ || line ~ /NEWGRIDNICHEMODECYCLEBUDGETY/)) {
+        has_group2_src_y = 1
+        group2_source_hits++
+    }
+    if (!has_group2_src_static &&
+        (line ~ /NEWGRID_NICHEMODECYCLEBUDGET_STA/ || line ~ /NEWGRIDNICHEMODECYCLEBUDGETSTA/ ||
+         line ~ /NEWGRID_NICHEMODECYCLEBUDGET_STATIC/ || line ~ /NEWGRIDNICHEMODECYCLEBUDGETSTATIC/)) {
+        has_group2_src_static = 1
+        group2_source_hits++
+    }
+    if (!has_group2_src_custom &&
+        (line ~ /NEWGRID_NICHEMODECYCLEBUDGET_CUS/ || line ~ /NEWGRIDNICHEMODECYCLEBUDGETCUS/ ||
+         line ~ /NEWGRID_NICHEMODECYCLEBUDGET_CUSTOM/ || line ~ /NEWGRIDNICHEMODECYCLEBUDGETCUSTOM/)) {
+        has_group2_src_custom = 1
+        group2_source_hits++
+    }
+    if (!has_group2_src_mplex &&
+        (line ~ /NEWGRID_MPLEXMODECYCLEBUDGET/ || line ~ /NEWGRIDMPLEXMODECYCLEBUDGET/)) {
+        has_group2_src_mplex = 1
+        group2_source_hits++
+    }
+    if (!has_group2_src_ppv &&
+        (line ~ /NEWGRID_PPVMODECYCLEBUDGET/ || line ~ /NEWGRIDPPVMODECYCLEBUDGET/)) {
+        has_group2_src_ppv = 1
+        group2_source_hits++
+    }
+    if (group2_source_hits >= 6) {
+        has_group2_source_set = 1
+    }
+    if (budget_dec_hits >= 6 && budget_reset_hits >= 6 && has_group2_source_set) {
         has_group2_budget_workflow = 1
     }
 
@@ -169,9 +245,11 @@ END {
     print "HAS_CANDIDATE_WRAP=" has_candidate_wrap
     print "HAS_GROUP1_DISPATCH=" has_group1_dispatch
     print "HAS_GROUP1_SOURCES=" has_group1_sources
+    print "HAS_GROUP1_SOURCE_SET=" has_group1_source_set
     print "HAS_CYCLE_GATE_FALLBACK=" has_cycle_gate_fallback
     print "HAS_GROUP2_DISPATCH=" has_group2_dispatch
     print "HAS_GROUP2_BUDGET_WORKFLOW=" has_group2_budget_workflow
+    print "HAS_GROUP2_SOURCE_SET=" has_group2_source_set
     print "HAS_GROUP2_CASE7=" has_group2_case7
     print "HAS_RETURN=" has_return
 }

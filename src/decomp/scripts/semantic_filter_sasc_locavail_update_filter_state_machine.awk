@@ -49,6 +49,10 @@ function norm(s, t) {
     if (line ~ /MOVEQ(\.L)? #\$?4,D0/ || line ~ /MOVEQ #4,D0/) saw_ctx4_const = 1
     if (saw_ctx4_const && (line ~ /MOVE\.L D0,20\(A3\)/ || line ~ /MOVE\.L D0,\$14\(A2\)/)) has_mode4_store = 1
     if (line ~ /^CLR\.L 20\(A3\)$/ || line ~ /^CLR\.L \$14\(A2\)$/ || line ~ /^MOVE\.L D[45],\$14\(A2\)$/) has_ctx_clear = 1
+    if (line ~ /^MOVE\.L D[0-7],20\(A3\)$/ ||
+        line ~ /^MOVE\.L D[0-7],\$14\(A2\)$/ ||
+        line ~ /^CLR\.L 20\(A3\)$/ ||
+        line ~ /^CLR\.L \$14\(A2\)$/) ctx_mode_store_count++
 
     if (line ~ /MOVE\.L LOCAVAIL_FILTERSTEP(\(A4\))?,D[01]/ && saw_two_const) has_stage2_entry = 1
     if (line ~ /MOVE\.L LOCAVAIL_FILTERCLASSID(\(A4\))?,D[12]/ && saw_neg1_const) has_stage2_class_check = 1
@@ -92,6 +96,7 @@ END {
     print "HAS_STAGE1_STEP2=" has_stage1_step2
     print "HAS_MODE4_STORE=" has_mode4_store
     print "HAS_CTX_CLEAR=" has_ctx_clear
+    print "CTX_MODE_STORE_COUNT=" ctx_mode_store_count
     print "HAS_STAGE2_ENTRY=" has_stage2_entry
     print "HAS_STAGE2_CLASS_CHECK=" has_stage2_class_check
     print "HAS_STAGE2_INDEX_CLEAR_CHECK=" has_stage2_index_clear_check

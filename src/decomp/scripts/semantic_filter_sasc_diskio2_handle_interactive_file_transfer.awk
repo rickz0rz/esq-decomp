@@ -132,9 +132,11 @@ function trim(s, t) {
     if ((line ~ /WDISP_SPRINTF/ || line ~ /SPRINTF/) && finalize_stage >= 4) {
         if (finalize_stage == 4) finalize_stage = 5
     }
-    if (line ~ /DISPLIB_DISPLAYTEXTATPOSITION/ &&
-        (line ~ /#\$5A/ || line ~ /#90/) &&
+    if ((line ~ /PEA 90\.W/ || line ~ /PEA \(\$5A\)\.W/ || line ~ /#\$5A/ || line ~ /#90/) &&
         finalize_stage >= 5) {
+        if (finalize_stage == 5) finalize_stage = 6
+    }
+    if (line ~ /DISPLIB_DISPLAYTEXTATPOSITION/ && finalize_stage >= 6) {
         has_finalize_diag = 1
     }
 }

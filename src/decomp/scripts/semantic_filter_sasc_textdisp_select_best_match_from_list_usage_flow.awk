@@ -47,6 +47,11 @@ BEGIN {
     saw_finalize_selected_entry = 0
     saw_finalize_selected_char = 0
     saw_finalize_reload_selected = 0
+    saw_spt_prefix = 0
+    saw_selected_compare = 0
+    saw_special_activegroup = 0
+    saw_special_halfhour = 0
+    saw_special_store = 0
     prev = ""
     prev2 = ""
     prev3 = ""
@@ -70,8 +75,12 @@ function toupper_line(s, x) {
     if (l ~ /^TEXTDISP_SELECTBESTMATCHFROMLIST:/ || l ~ /^TEXTDISP_SELECTBESTMATCHFROMLIST[A-Z0-9_]*:/) h_entry = 1
     if (l ~ /BANNERCHARSELECTED/ && (l ~ /#\$64/ || l ~ /#100/)) h_init_selected_sentinel = 1
 
-    if ((l ~ /TEXTDISP_TAG_SPT_SELECT/ || prev ~ /TEXTDISP_TAG_SPT_SELECT/) &&
-        (l ~ /CMP\.B/ || prev ~ /CMP\.B/ || l ~ /MOVE\.B #\$8/ || prev ~ /MOVE\.B #\$8/)) h_tag_compare = 1
+    if (l ~ /TEXTDISP_TAG_SPT_SELECT/ || l ~ /CMP\.B \(A1\)\+,D1/ || l ~ /CMP\.B D0,D1/) {
+        saw_spt_prefix = 1
+    }
+    if (saw_spt_prefix &&
+        (l ~ /TST\.B D0/ || l ~ /TST\.B D1/ || l ~ /MOVE\.B \(A0\)\+,D1/ || l ~ /MOVE\.B \(A2\),D0/ ||
+         l ~ /MOVE\.B #\$8/ || prev ~ /MOVE\.B #\$8/)) h_tag_compare = 1
 
     if (l ~ /GLOBAL_STR_TEXTDISP_C_3/) saw_weekday_table = 1
     if (l ~ /CLOCK_CURRENTDAYOFWEEKINDEX/) saw_weekday_index = 1
@@ -129,17 +138,32 @@ function toupper_line(s, x) {
     if (l ~ /(JSR|BSR).*COMPUTETIMEOFFSET/ || l ~ /COMPUTETIMEOFFSET/) time_calls++
     if (time_calls >= 2) h_time_call_ge_2 = 1
 
-    if ((l ~ /ACTIVEGROUPID/ || prev ~ /ACTIVEGROUPID/ || prev2 ~ /ACTIVEGROUPID/) &&
-        (l ~ /CLOCK_HALFHOURSLOTINDEX/ || prev ~ /CLOCK_HALFHOURSLOTINDEX/ || prev2 ~ /CLOCK_HALFHOURSLOTINDEX/) &&
-        (l ~ /MOVE\.B D[0-7],-23\(A5\)/ || l ~ /MOVE\.B D[0-7],\$38\(A7\)/ || l ~ /MOVE\.L D[0-7],\$38\(A7\)/ ||
-         l ~ /BANNERSELECTEDISSPECIAL/ || l ~ /BANNERFALLBACKISSPECIAL/ ||
-         prev ~ /MOVE\.B D[0-7],-23\(A5\)/ || prev ~ /MOVE\.B D[0-7],\$38\(A7\)/ || prev ~ /MOVE\.L D[0-7],\$38\(A7\)/ ||
-         prev ~ /BANNERSELECTEDISSPECIAL/ || prev ~ /BANNERFALLBACKISSPECIAL/)) h_special_gate = 1
+    if (l ~ /ACTIVEGROUPID/) saw_special_activegroup = 1
+    if (l ~ /CLOCK_HALFHOURSLOTINDEX/) saw_special_halfhour = 1
+    if (l ~ /MOVE\.B D[0-7],-23\(A5\)/ || l ~ /MOVE\.B D[0-7],\$38\(A7\)/ || l ~ /MOVE\.L D[0-7],\$38\(A7\)/ ||
+        l ~ /MOVE\.B D[0-7],TEXTDISP_BANNERSELECTEDISSPECIAL/ || l ~ /MOVE\.B D[0-7],TEXTDISP_BANNERFALLBACKISSPECIAL/ ||
+        l ~ /MOVE\.B -23\(A5\),TEXTDISP_BANNERSELECTEDISSPECIAL/ || l ~ /MOVE\.B -23\(A5\),TEXTDISP_BANNERFALLBACKISSPECIAL/) {
+        saw_special_store = 1
+    }
+    if ((saw_special_activegroup && saw_special_halfhour && saw_special_store) ||
+        ((l ~ /CLOCK_HALFHOURSLOTINDEX/ || prev ~ /CLOCK_HALFHOURSLOTINDEX/ || prev2 ~ /CLOCK_HALFHOURSLOTINDEX/) &&
+         (l ~ /TST\.[WL] D0/ || l ~ /TST\.L D[0-7]/ || prev ~ /TST\.[WL] D0/ || prev ~ /TST\.L D[0-7]/) &&
+         (l ~ /MOVE\.B D[0-7],-23\(A5\)/ || l ~ /MOVE\.B D[0-7],\$38\(A7\)/ || l ~ /MOVE\.L D[0-7],\$38\(A7\)/ ||
+          l ~ /MOVE\.B D[0-7],TEXTDISP_BANNERSELECTEDISSPECIAL/ || l ~ /MOVE\.B D[0-7],TEXTDISP_BANNERFALLBACKISSPECIAL/ ||
+          prev ~ /MOVE\.B D[0-7],-23\(A5\)/ || prev ~ /MOVE\.B D[0-7],\$38\(A7\)/ || prev ~ /MOVE\.L D[0-7],\$38\(A7\)/))) {
+        h_special_gate = 1
+    }
 
     if (l ~ /BANNERSELECTEDVALIDFLAG/) h_positive_selected = 1
     if (l ~ /MOVE\.W D0,-20\(A5\)/ || l ~ /MOVE\.W D0,\$30\(A7\)/) h_positive_fallback = 1
-    if ((l ~ /BANNERSELECTEDENTRYIND/ || l ~ /BANNERCHARSELECTED/) &&
-        (prev ~ /CMP\.W/ || prev ~ /CMP\.L/ || prev2 ~ /CMP\.W/ || prev2 ~ /CMP\.L/)) h_negative_selected = 1
+    if (l ~ /TST\.B TEXTDISP_BANNERSELECTEDVALIDFLAG/ || l ~ /MOVE\.B TEXTDISP_BANNERSELECTEDVALIDFLAG/) {
+        saw_selected_compare = 1
+    }
+    if (saw_selected_compare &&
+        (l ~ /TEXTDISP_BANNERSELECTEDENTRYINDE/ || l ~ /TEXTDISP_BANNERSELECTEDISSPECIAL/ || l ~ /TEXTDISP_BANNERCHARSELECTED/)) {
+        h_negative_selected = 1
+        saw_selected_compare = 0
+    }
     if (l ~ /MOVE\.W D0,-22\(A5\)/ || l ~ /MOVE\.W D0,\$2E\(A7\)/) h_negative_fallback = 1
 
     if (l ~ /MOVE\.W 0\(A0,D1\.L\),-12\(A5\)/ || l ~ /MOVE\.W D0,\$2C\(A7\)/) h_previous_usage_store = 1

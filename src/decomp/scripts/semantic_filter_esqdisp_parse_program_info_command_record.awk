@@ -16,8 +16,11 @@ BEGIN {
     has_scan_limit = 0
     has_attr_text_nul_init = 0
     has_missing_attr_restart = 0
+    has_attr_payload_skip = 0
     has_entry_loop = 0
+    has_entry_table_lookup = 0
     has_title_match = 0
+    has_header_field_snapshot = 0
     has_flag40_bit1 = 0
     has_flag40_bit2 = 0
     has_field41_hex_parse = 0
@@ -76,8 +79,13 @@ function trim(s, t) {
     if (uline ~ /CLR\.B -25\(A5\)/ || uline ~ /CLR\.B \$29\(A7\)/) has_attr_text_nul_init = 1
     if (uline ~ /TST\.L -24\(A5\)/ || uline ~ /MOVE\.L A2,D0/) has_missing_attr_restart = 1
     if (uline ~ /BEQ\.S \.LAB_08EB/ || uline ~ /BEQ\.B ___ESQDISP_PARSEPROGRAMINFOCOMMANDRECORD__12/) has_missing_attr_restart = 1
+    if (uline ~ /ADDA\.L D5,A3/ || uline ~ /ADD\.L D6,A5/) has_attr_payload_skip = 1
     if (uline ~ /^\.BRANCH:/ || uline ~ /CMP\.L D6,D7/ || uline ~ /CMP\.L D7,D0/) has_entry_loop = 1
+    if (uline ~ /ASL\.L #2,D0/ || uline ~ /ASL\.L #\$2,D1/) has_entry_table_lookup = 1
+    if (uline ~ /MOVEA?\.L 0\(A0,D0\.L\),A0/ || uline ~ /MOVE\.L \$0\(A0,D1\.L\),\$2C\(A7\)/) has_entry_table_lookup = 1
     if (uline ~ /^\.LAB_08F0:/ || uline ~ /CMP\.B \(A0\)\+,D0/ || uline ~ /CMP\.B \(A1\)\+,D0/ || nline ~ /ESQDISPTITLEMATCHES/) has_title_match = 1
+    if (uline ~ /MOVE\.B 40\(A0\),D0/ || uline ~ /MOVE\.B \$28\(A0\),D0/) has_header_field_snapshot = 1
+    if (uline ~ /MOVE\.W 46\(A0\),-32\(A5\)/ || uline ~ /MOVE\.W \$2E\(A0\),\$2A\(A7\)/) has_header_field_snapshot = 1
     if (uline ~ /BSET #1,-28\(A5\)/ || uline ~ /PEA \(\$2\)\.W/) has_flag40_bit1 = 1
     if (uline ~ /BSET #2,-28\(A5\)/ || uline ~ /PEA \(\$4\)\.W/) has_flag40_bit2 = 1
     if (uline ~ /MOVE\.B #\$FF,-29\(A5\)/ || uline ~ /SCC \$25\(A7\)/ || uline ~ /MOVEQ(\.L)? #\$?15,D0/ || uline ~ /PEA \(\$F\)\.W/ || nline ~ /ESQDISPPARSEBOUNDEDHEXDIGIT/) has_field41_hex_parse = 1
@@ -120,8 +128,11 @@ END {
     print "HAS_SCAN_LIMIT=" has_scan_limit
     print "HAS_ATTR_TEXT_NUL_INIT=" has_attr_text_nul_init
     print "HAS_MISSING_ATTR_RESTART=" has_missing_attr_restart
+    print "HAS_ATTR_PAYLOAD_SKIP=" has_attr_payload_skip
     print "HAS_ENTRY_LOOP=" has_entry_loop
+    print "HAS_ENTRY_TABLE_LOOKUP=" has_entry_table_lookup
     print "HAS_TITLE_MATCH=" has_title_match
+    print "HAS_HEADER_FIELD_SNAPSHOT=" has_header_field_snapshot
     print "HAS_FLAG40_BIT1=" has_flag40_bit1
     print "HAS_FLAG40_BIT2=" has_flag40_bit2
     print "HAS_FIELD41_HEX_PARSE=" has_field41_hex_parse

@@ -61,8 +61,15 @@ BEGIN {
     saw_source_len_tst=0
     saw_source_copy_move=0
     saw_current_block_guard_tst=0
+    event_count=0
 }
 function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
+function emit_once(name) {
+    if (!(name in seen_event)) {
+        seen_event[name]=1
+        events[++event_count]=name
+    }
+}
 {
     line=trim($0)
     if(line=="") next
@@ -101,74 +108,243 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
         saw_current_block_guard_tst=0
     }
 
-    if (u ~ /^PARSEINI_PROCESSWEATHERBLOCKS:/ || u ~ /^PARSEINI_PROCESSWEATHERBLOC[A-Z0-9_]*:/) has_entry=1
+    if (u ~ /^PARSEINI_PROCESSWEATHERBLOCKS:/ || u ~ /^PARSEINI_PROCESSWEATHERBLOC[A-Z0-9_]*:/) {
+        has_entry=1
+        emit_once("ENTRY")
+    }
     if ((n ~ /CLRLPARSEINICURRENTWEATHERBLOCKTEMP/ || n ~ /CLRLPARSEINICURRENTWEATHERBLOCKPTR/) ||
-        (n ~ /MOVELA0PARSEINICURRENTWEATHERBLOCKTEMP/ || n ~ /MOVELA0PARSEINICURRENTWEATHERBLOCKPTR/)) has_init_reset=1
-    if (n ~ /CLRLPARSEINICURRENTWEATHERBLOCKTEMP/) has_filename_temp_reset=1
-    if (n ~ /MOVELD0PARSEINICURRENTWEATHERBLOCKPTR/) has_current_block_store=1
-    if (n ~ /MOVELD0PARSEINIPARSEDDESCRIPTORLISTHEA/) has_list_head_seed=1
+        (n ~ /MOVELA0PARSEINICURRENTWEATHERBLOCKTEMP/ || n ~ /MOVELA0PARSEINICURRENTWEATHERBLOCKPTR/)) {
+        has_init_reset=1
+        emit_once("INIT_RESET")
+    }
+    if (n ~ /CLRLPARSEINICURRENTWEATHERBLOCKTEMP/ ||
+        n ~ /MOVELA0PARSEINICURRENTWEATHERBLOCKTEMP/) {
+        has_filename_temp_reset=1
+        emit_once("FILENAME_TEMP_RESET")
+    }
+    if (n ~ /MOVELD0PARSEINICURRENTWEATHERBLOCKPTR/) {
+        has_current_block_store=1
+        emit_once("CURRENT_BLOCK_STORE")
+    }
+    if (n ~ /MOVELD0PARSEINIPARSEDDESCRIPTORLISTHEA/) {
+        has_list_head_seed=1
+        emit_once("LIST_HEAD_SEED")
+    }
 
     if (n ~ /STRINGCOMPARENOCASE/) compare_calls++
-    if (n ~ /PARSEINITAGFILENAMEWEATHERBLO/) has_filename=1
-    if (n ~ /PARSEINISTRLOADCOLOR/) has_loadcolor=1
-    if (n ~ /PARSEINITAGALL/) has_all=1
-    if (n ~ /PARSEINITAGNONE/) has_none=1
-    if (n ~ /PARSEINITAGTEXT/) has_text=1
-    if (n ~ /PARSEINITAGXPOS/) has_xpos=1
-    if (n ~ /PARSEINITAGTYPE/) has_type=1
-    if (n ~ /PARSEINITAGDITHER/) has_dither=1
-    if (n ~ /PARSEINITAGYPOS/) has_ypos=1
-    if (n ~ /PARSEINITAGXSOURCE/) has_xsource=1
-    if (n ~ /PARSEINITAGYSOURCE/) has_ysource=1
-    if (n ~ /PARSEINITAGSIZEX/) has_sizex=1
-    if (n ~ /PARSEINITAGSIZEY/) has_sizey=1
-    if (n ~ /PARSEINITAGSOURCE/) has_source=1
-    if (n ~ /PARSEINITAGPPV/) has_ppv=1
-    if (n ~ /PARSEINISTRHORIZONTAL/) has_horizontal=1
-    if (n ~ /PARSEINITAGRIGHT/) has_right=1
-    if (n ~ /PARSEINITAGCENTERHORIZONTALA/) has_center_h=1
-    if (n ~ /PARSEINITAGVERTICAL/) has_vertical=1
-    if (n ~ /PARSEINITAGBOTTOM/) has_bottom=1
-    if (n ~ /PARSEINITAGCENTERVERTICALA/) has_center_v=1
-    if (n ~ /PARSEINITAGID/) has_id=1
+    if (n ~ /PARSEINITAGFILENAMEWEATHERBLO/) {
+        has_filename=1
+        emit_once("KEY_FILENAME")
+    }
+    if (n ~ /PARSEINISTRLOADCOLOR/) {
+        has_loadcolor=1
+        emit_once("KEY_LOADCOLOR")
+    }
+    if (n ~ /PARSEINITAGALL/) {
+        has_all=1
+        emit_once("LOADCOLOR_ALL")
+    }
+    if (n ~ /PARSEINITAGNONE/) {
+        has_none=1
+        emit_once("LOADCOLOR_NONE")
+    }
+    if (n ~ /PARSEINITAGTEXT/) {
+        has_text=1
+        emit_once("LOADCOLOR_TEXT")
+    }
+    if (n ~ /PARSEINITAGXPOS/) {
+        has_xpos=1
+        emit_once("KEY_XPOS")
+    }
+    if (n ~ /PARSEINITAGTYPE/) {
+        has_type=1
+        emit_once("KEY_TYPE")
+    }
+    if (n ~ /PARSEINITAGDITHER/) {
+        has_dither=1
+        emit_once("TYPE_DITHER_TAG")
+    }
+    if (n ~ /PARSEINITAGYPOS/) {
+        has_ypos=1
+        emit_once("KEY_YPOS")
+    }
+    if (n ~ /PARSEINITAGXSOURCE/) {
+        has_xsource=1
+        emit_once("KEY_XSOURCE")
+    }
+    if (n ~ /PARSEINITAGYSOURCE/) {
+        has_ysource=1
+        emit_once("KEY_YSOURCE")
+    }
+    if (n ~ /PARSEINITAGSIZEX/) {
+        has_sizex=1
+        emit_once("KEY_SIZEX")
+    }
+    if (n ~ /PARSEINITAGSIZEY/) {
+        has_sizey=1
+        emit_once("KEY_SIZEY")
+    }
+    if (n ~ /PARSEINITAGSOURCE/) {
+        has_source=1
+        emit_once("KEY_SOURCE")
+    }
+    if (n ~ /PARSEINITAGPPV/) {
+        has_ppv=1
+        emit_once("SOURCE_PPV_TAG")
+    }
+    if (n ~ /PARSEINISTRHORIZONTAL/) {
+        has_horizontal=1
+        emit_once("KEY_HORIZONTAL")
+    }
+    if (n ~ /PARSEINITAGRIGHT/) {
+        has_right=1
+        emit_once("H_ALIGN_RIGHT")
+    }
+    if (n ~ /PARSEINITAGCENTERHORIZONTALA/) {
+        has_center_h=1
+        emit_once("H_ALIGN_CENTER")
+    }
+    if (n ~ /PARSEINITAGVERTICAL/) {
+        has_vertical=1
+        emit_once("KEY_VERTICAL")
+    }
+    if (n ~ /PARSEINITAGBOTTOM/) {
+        has_bottom=1
+        emit_once("V_ALIGN_BOTTOM")
+    }
+    if (n ~ /PARSEINITAGCENTERVERTICALA/) {
+        has_center_v=1
+        emit_once("V_ALIGN_CENTER")
+    }
+    if (n ~ /PARSEINITAGID/) {
+        has_id=1
+        emit_once("KEY_ID")
+    }
 
-    if (n ~ /BRUSHALLOCBRUSHNODE/) has_alloc_brush=1
-    if (n ~ /PARSEREADSIGNEDLONGSKIPCLASS3A/) read_long_calls++
-    if (n ~ /MEMORYALLOCATEMEMORY/) has_alloc_mem=1
-    if (n ~ /STRINGCOPYPADNUL/) has_copy_id=1
+    if (n ~ /BRUSHALLOCBRUSHNODE/) {
+        has_alloc_brush=1
+        emit_once("ALLOC_BRUSH_NODE")
+    }
+    if (n ~ /PARSEREADSIGNEDLONGSKIPCLASS3A/) {
+        read_long_calls++
+        emit_once("READ_SIGNED_LONG")
+    }
+    if (n ~ /MEMORYALLOCATEMEMORY/) {
+        has_alloc_mem=1
+        emit_once("ALLOC_SOURCE_NODE")
+    }
+    if (n ~ /STRINGCOPYPADNUL/) {
+        has_copy_id=1
+        emit_once("COPY_ID")
+    }
 
-    if ((n ~ /MOVEB1BEA0/ || n ~ /MOVEB1190A0/)) has_type_init=1
-    if ((n ~ /MOVEB2BEA0/ || n ~ /MOVEB2190A0/)) has_type_dither=1
-    if ((n ~ /MOVEB3BEA0/ || n ~ /MOVEB3190A0/)) has_type_ppv=1
+    if ((n ~ /MOVEB1BEA0/ || n ~ /MOVEB1190A0/)) {
+        has_type_init=1
+        emit_once("SET_TYPE_DEFAULT")
+    }
+    if ((n ~ /MOVEB2BEA0/ || n ~ /MOVEB2190A0/)) {
+        has_type_dither=1
+        emit_once("SET_TYPE_DITHER")
+    }
+    if ((n ~ /MOVEB3BEA0/ || n ~ /MOVEB3190A0/)) {
+        has_type_ppv=1
+        emit_once("SET_TYPE_PPV")
+    }
 
-    if (n ~ /CLRLC2A0|CLRL194A0|MOVELD0C2A0|MOVELD0194A0/) loadcolor_store_count++
+    if (n ~ /CLRLC2A0|CLRL194A0|MOVELD0C2A0|MOVELD0194A0/) {
+        loadcolor_store_count++
+        emit_once("LOADCOLOR_STORE")
+    }
 
-    if (n ~ /MOVELD7C6A0|MOVELD7198A0/) has_xpos_store=1
-    if (n ~ /MOVELD7CAA0|MOVELD7202A0/) has_ypos_store=1
-    if (n ~ /MOVELD7CEA0|MOVELD7206A0/) has_xsource_store=1
-    if (n ~ /MOVELD7D2A0|MOVELD7210A0/) has_ysource_store=1
-    if (n ~ /MOVELD7D6A0|MOVELD7214A0/) has_sizex_store=1
-    if (n ~ /MOVELD7DAA0|MOVELD7218A0/) has_sizey_store=1
+    if (n ~ /MOVELD7C6A0|MOVELD7198A0/) {
+        has_xpos_store=1
+        emit_once("STORE_XPOS")
+    }
+    if (n ~ /MOVELD7CAA0|MOVELD7202A0/) {
+        has_ypos_store=1
+        emit_once("STORE_YPOS")
+    }
+    if (n ~ /MOVELD7CEA0|MOVELD7206A0/) {
+        has_xsource_store=1
+        emit_once("STORE_XSOURCE")
+    }
+    if (n ~ /MOVELD7D2A0|MOVELD7210A0/) {
+        has_ysource_store=1
+        emit_once("STORE_YSOURCE")
+    }
+    if (n ~ /MOVELD7D6A0|MOVELD7214A0/) {
+        has_sizex_store=1
+        emit_once("STORE_SIZEX")
+    }
+    if (n ~ /MOVELD7DAA0|MOVELD7218A0/) {
+        has_sizey_store=1
+        emit_once("STORE_SIZEY")
+    }
 
-    if (n ~ /TSTLE6A0|TSTL230A0/) has_source_list=1
-    if (n ~ /MOVELA1E6A0|MOVELA1230A0/) has_source_link=1
-    if (n ~ /MOVEL24A78A2|MOVELPARSEINICURRENTWEATHERBLOCKTEMP(PTR)?8A1/) has_source_tail=1
-    if (n ~ /MOVELD0PARSEINICURRENTWEATHERBLOCKTEMP/) has_source_temp_store=1
+    if (n ~ /TSTLE6A0|TSTL230A0/) {
+        has_source_list=1
+        emit_once("SOURCE_LIST_TEST")
+    }
+    if (n ~ /MOVELA1E6A0|MOVELA1230A0/) {
+        has_source_link=1
+        emit_once("SOURCE_HEAD_STORE")
+    }
+    if (n ~ /MOVEL24A78A2|MOVELPARSEINICURRENTWEATHERBLOCKTEMP(PTR)?8A1/) {
+        has_source_tail=1
+        emit_once("SOURCE_TAIL_LINK")
+    }
+    if (n ~ /MOVELD0PARSEINICURRENTWEATHERBLOCKTEMP/) {
+        has_source_temp_store=1
+        emit_once("SOURCE_TEMP_STORE")
+    }
     if ((n ~ /TSTBA0|TSTBA0PLUS/) ||
-        (n ~ /MOVEBA0PLUSA1PLUS/ && has_source_next_clear == 0)) has_source_len_scan=1
-    if (n ~ /MOVELMEMFPUBLICMEMFCLEARA7/ || n ~ /MOVEL10001A7/) has_source_alloc_flags=1
-    if (n ~ /PEA12W/ || n ~ /PEACW/) has_source_alloc_size=1
-    if (n ~ /PEA670W/ || n ~ /PEA29EW/) has_source_alloc_line=1
-    if (n ~ /CLRLB8A0|CLRL8A0/) has_source_next_clear=1
+        (n ~ /MOVEBA0PLUSA1PLUS/ && has_source_next_clear == 0)) {
+        has_source_len_scan=1
+        emit_once("SOURCE_LEN_SCAN")
+    }
+    if (n ~ /MOVELMEMFPUBLICMEMFCLEARA7/ || n ~ /MOVEL10001A7/) {
+        has_source_alloc_flags=1
+        emit_once("SOURCE_ALLOC_FLAGS")
+    }
+    if (n ~ /PEA12W/ || n ~ /PEACW/) {
+        has_source_alloc_size=1
+        emit_once("SOURCE_ALLOC_SIZE")
+    }
+    if (n ~ /PEA670W/ || n ~ /PEA29EW/) {
+        has_source_alloc_line=1
+        emit_once("SOURCE_ALLOC_LINE")
+    }
+    if (n ~ /CLRLB8A0|CLRL8A0/) {
+        has_source_next_clear=1
+        emit_once("SOURCE_NEXT_CLEAR")
+    }
 
-    if (n ~ /CLRLDEA0|CLRL222A0|MOVELD0DEA0|MOVELD0222A0/) align_h_store_count++
-    if (n ~ /CLRLE2A0|CLRL226A0|MOVELD0E2A0|MOVELD0226A0/) align_v_store_count++
+    if (n ~ /CLRLDEA0|CLRL222A0|MOVELD0DEA0|MOVELD0222A0/) {
+        align_h_store_count++
+        emit_once("STORE_H_ALIGN")
+    }
+    if (n ~ /CLRLE2A0|CLRL226A0|MOVELD0E2A0|MOVELD0226A0/) {
+        align_v_store_count++
+        emit_once("STORE_V_ALIGN")
+    }
 
-    if (n ~ /PEA2W/) has_id_copy_len=1
-    if (n ~ /CLRBC1A0|CLRB193A0/) has_id_terminator=1
-    if (u=="RTS") has_return=1
+    if (n ~ /PEA2W/) {
+        has_id_copy_len=1
+        emit_once("ID_COPY_LEN")
+    }
+    if (n ~ /CLRBC1A0|CLRB193A0/) {
+        has_id_terminator=1
+        emit_once("ID_TERMINATOR")
+    }
+    if (u=="RTS") {
+        has_return=1
+        emit_once("RETURN")
+    }
 }
 END {
+    for (i = 1; i <= event_count; ++i) {
+        print "EVENT_" i "=" events[i]
+    }
     print "HAS_ENTRY="has_entry
     print "HAS_INIT_RESET="has_init_reset
     print "HAS_FILENAME_TEMP_RESET="has_filename_temp_reset

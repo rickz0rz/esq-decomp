@@ -40,6 +40,9 @@ BEGIN {
     saw_char3 = 0
     saw_charclass_lowercase = 0
     saw_ascii_sub32 = 0
+    saw_result_zero_d6 = 0
+    saw_filter_active_reject = 0
+    filter_active_reject_stage = 0
 }
 
 function trim(s, t) {
@@ -114,6 +117,19 @@ function trim(s, t) {
     if (index(u, "#$31") || index(u, "#49") || index(u, "'1'")) saw_char1 = 1
     if (index(u, "#$32") || index(u, "#50") || index(u, "'2'")) saw_char2 = 1
     if (index(u, "#$33") || index(u, "#51") || index(u, "'3'")) saw_char3 = 1
+
+    if (u ~ /^MOVEQ(\.L)? #0,D6$/ || u ~ /^MOVEQ(\.L)? #\$0,D6$/ || u ~ /^CLR\.[BWL]? D6$/) saw_result_zero_d6 = 1
+
+    if (n ~ /LOCAVAILFILTERMODEFLAG/) {
+        filter_active_reject_stage = 1
+    } else if (filter_active_reject_stage == 1 &&
+               (n ~ /LOCAVAILSETFILTERMODEANDRESETSTATE/ || n ~ /LOCAVAILSETFILTERMODEANDRESETST/)) {
+        filter_active_reject_stage = 0
+    } else if (filter_active_reject_stage == 1 &&
+               (u ~ /^MOVEQ(\.L)? #0,D6$/ || u ~ /^MOVEQ(\.L)? #\$0,D6$/ || u ~ /^CLR\.[BWL]? D6$/)) {
+        saw_filter_active_reject = 1
+        filter_active_reject_stage = 0
+    }
 }
 
 END {
@@ -126,12 +142,25 @@ END {
         saw_primary_filter_state && saw_char9 && saw_char8) ? 1 : 0
     has_filter_mode_clear_path = (saw_set_filter_mode && saw_filter_mode_flag &&
         saw_char8 && saw_char9) ? 1 : 0
+    has_filter_mode_active_reject = (saw_filter_mode_flag && saw_filter_active_reject && saw_result_zero_d6) ? 1 : 0
     has_runtime_mode3_path = (saw_diag_vin && saw_runtime_mode && saw_runtime_mode_store &&
         saw_charY && saw_charL && saw_char0 && saw_char2 && saw_const3 &&
         (saw_to_upper || (saw_charclass_lowercase && saw_ascii_sub32))) ? 1 : 0
     has_runtime_cursor10_path = (saw_diag_vin && saw_handshake_bit5 && saw_playback_cursor &&
         saw_playback_cursor_store && saw_charY && saw_charL && saw_char1 && saw_char3 &&
         saw_const10 && (saw_to_upper || (saw_charclass_lowercase && saw_ascii_sub32))) ? 1 : 0
+    has_runtime_mode3_y0_path = (saw_diag_vin && saw_runtime_mode && saw_runtime_mode_store &&
+        saw_charY && saw_char0 && saw_const3 &&
+        (saw_to_upper || (saw_charclass_lowercase && saw_ascii_sub32))) ? 1 : 0
+    has_runtime_mode3_l2_path = (saw_diag_vin && saw_runtime_mode && saw_runtime_mode_store &&
+        saw_charL && saw_char2 && saw_const3 &&
+        (saw_to_upper || (saw_charclass_lowercase && saw_ascii_sub32))) ? 1 : 0
+    has_runtime_cursor10_y1_path = (saw_diag_vin && saw_handshake_bit5 && saw_playback_cursor &&
+        saw_playback_cursor_store && saw_charY && saw_char1 && saw_const10 &&
+        (saw_to_upper || (saw_charclass_lowercase && saw_ascii_sub32))) ? 1 : 0
+    has_runtime_cursor10_l3_path = (saw_diag_vin && saw_handshake_bit5 && saw_playback_cursor &&
+        saw_playback_cursor_store && saw_charL && saw_char3 && saw_const10 &&
+        (saw_to_upper || (saw_charclass_lowercase && saw_ascii_sub32))) ? 1 : 0
 
     print "HAS_LABEL=" has_label
     print "HAS_FILTERSTEP_MATCH_RESET=" has_filterstep_match_reset
@@ -139,6 +168,11 @@ END {
     print "HAS_TYPE20_FALLBACK=" has_type20_fallback
     print "HAS_FILTER_MODE_SET_PATH=" has_filter_mode_set_path
     print "HAS_FILTER_MODE_CLEAR_PATH=" has_filter_mode_clear_path
+    print "HAS_FILTER_MODE_ACTIVE_REJECT=" has_filter_mode_active_reject
     print "HAS_RUNTIME_MODE3_PATH=" has_runtime_mode3_path
     print "HAS_RUNTIME_CURSOR10_PATH=" has_runtime_cursor10_path
+    print "HAS_RUNTIME_MODE3_Y0_PATH=" has_runtime_mode3_y0_path
+    print "HAS_RUNTIME_MODE3_L2_PATH=" has_runtime_mode3_l2_path
+    print "HAS_RUNTIME_CURSOR10_Y1_PATH=" has_runtime_cursor10_y1_path
+    print "HAS_RUNTIME_CURSOR10_L3_PATH=" has_runtime_cursor10_l3_path
 }

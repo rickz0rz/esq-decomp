@@ -22,6 +22,8 @@ BEGIN {
     has_brush_selection = 0
     has_brush_list_scan = 0
     has_brush_tag_defaults = 0
+    has_brush_default_clear_flow = 0
+    has_brush_scan_fallback_flow = 0
     has_wildcard_lookup = 0
     has_toggle_primary_search = 0
     has_channel_code_update = 0
@@ -43,8 +45,24 @@ BEGIN {
     has_playback_mode_highlight_gate = 0
     has_channel_range_cleanup_fallback = 0
     has_textdisp_banner_command_flow = 0
+    has_cmd_len_terminator = 0
+    has_switch_case_guard = 0
+    has_deferred_dispatch_gate = 0
+    has_type20_cache_update = 0
+    has_weather_command_flow = 0
+    has_runtime_mode3_flow = 0
+    has_runtime_cursor10_flow = 0
+    has_type20_consume_gates = 0
+    has_playback_mode_subcommand_flow = 0
     has_return = 0
 
+    saw_primary_selected_assign = 0
+    saw_secondary_selected_assign = 0
+    saw_primary_clear_assign = 0
+    saw_secondary_clear_assign = 0
+    saw_brush_list_head = 0
+    saw_primary_list_assign = 0
+    saw_secondary_list_assign = 0
     saw_channel_range_digit = 0
     saw_channel_range_match = 0
     saw_channel_range_update = 0
@@ -93,6 +111,30 @@ BEGIN {
     saw_cleanup_match_store = 0
     saw_cursor5 = 0
     saw_cursor9 = 0
+    saw_cmd_len_terminator = 0
+    saw_case_guard_sub1 = 0
+    saw_case_guard_limit = 0
+    saw_case_guard_jump = 0
+    after_save_ctx = 0
+    saw_postsave_flag_test = 0
+    saw_postsave_playback_test = 0
+    saw_postsave_call = 0
+    saw_postsave_neg1 = 0
+    saw_type20_getsubtype = 0
+    saw_type20_store = 0
+    saw_weather_cursor8 = 0
+    saw_weather_pending_char = 0
+    saw_runtime_mode_write3 = 0
+    saw_runtime_diag_y = 0
+    saw_runtime_diag_l = 0
+    saw_runtime_subcode0 = 0
+    saw_runtime_subcode2 = 0
+    saw_runtime_subcode1 = 0
+    saw_runtime_subcode3 = 0
+    saw_cursor10 = 0
+    type20_consume_count = 0
+    select_cursor_count = 0
+    current_match_reset_count = 0
 }
 
 function trim(s, t) {
@@ -135,6 +177,27 @@ function trim(s, t) {
     if (n ~ /ESQIFFBRUSHINILISTHEAD/) has_brush_list_scan = 1
     if (n ~ /SCRIPTBRUSHTAGDEFAULT00PRIMARY/ || n ~ /SCRIPTBRUSHTAGDEFAULT00SECONDARY/ ||
         n ~ /SCRIPTBRUSHTAGCLEAR11PRIMARY/ || n ~ /SCRIPTBRUSHTAGCLEAR11SECONDARY/) has_brush_tag_defaults = 1
+    if (n ~ /BRUSHSELECTEDNODE/ && n ~ /BRUSHSCRIPTPRIMARYSELECTION/) saw_primary_selected_assign = 1
+    if (n ~ /BRUSHSELECTEDNODE/ && n ~ /BRUSHSCRIPTSECONDARYSELECTION/) saw_secondary_selected_assign = 1
+    if (n ~ /BRUSHSCRIPTPRIMARYSELECTION/ && u ~ /^CLR\./) saw_primary_clear_assign = 1
+    if (n ~ /BRUSHSCRIPTSECONDARYSELECTION/ && u ~ /^CLR\./) saw_secondary_clear_assign = 1
+    if (n ~ /ESQIFFBRUSHINILISTHEAD/) saw_brush_list_head = 1
+    if (n ~ /BRUSHSCRIPTPRIMARYSELECTION/ &&
+        (u ~ /^MOVE\.L A[0-6],BRUSH_SCRIPTPRIMARYSELECTION/ || n ~ /^MOVEL12A5BRUSHSCRIPTPRIMARYSELECTION/)) {
+        saw_primary_list_assign = 1
+    }
+    if (n ~ /BRUSHSCRIPTSECONDARYSELECTION/ &&
+        (u ~ /^MOVE\.L A[0-6],BRUSH_SCRIPTSECONDARYSELECTION/ || n ~ /^MOVEL12A5BRUSHSCRIPTSECONDARYSELECTION/)) {
+        saw_secondary_list_assign = 1
+    }
+    if (has_compare_n && has_brush_tag_defaults && saw_primary_selected_assign && saw_secondary_selected_assign &&
+        saw_primary_clear_assign && saw_secondary_clear_assign) {
+        has_brush_default_clear_flow = 1
+    }
+    if (has_compare_n && saw_brush_list_head && saw_primary_list_assign && saw_secondary_list_assign &&
+        saw_primary_selected_assign && saw_secondary_selected_assign) {
+        has_brush_scan_fallback_flow = 1
+    }
     if (n ~ /TEXTDISPFINDENTRYINDEXBYWILDCARD/ || n ~ /TEXTDISPFINDENTRYINDEXBYWILDCAR/) has_wildcard_lookup = 1
     if (u ~ /#76([^0-9]|$)/ || u ~ /#\$4C/ || u ~ /'L'/) saw_toggle_primary_l = 1
     if (u ~ /#82([^0-9]|$)/ || u ~ /#\$52/ || u ~ /'R'/) saw_toggle_primary_r = 1
@@ -220,7 +283,77 @@ function trim(s, t) {
     if (n ~ /CLEANUPALIGNEDSTATUSMATCHINDEX/ && n ~ /TEXTDISPCURRENTMATCHINDEX/) saw_cleanup_match_store = 1
     if (u ~ /#5([^0-9]|$)/ || u ~ /#\$5([^0-9A-F]|$)/) saw_cursor5 = 1
     if (saw_cleanup_match_load && saw_cleanup_match_store && saw_cursor5) has_channel_range_cleanup_fallback = 1
+    if (u ~ /^CLR\.B (\$0|0)\(A[23],D7\.L\)$/) {
+        saw_cmd_len_terminator = 1
+        has_cmd_len_terminator = 1
+    }
+    if (u ~ /^SUBQ\.[WL] #1,D[01]$/ || u ~ /^SUBQ\.L #\$1,D[01]$/) saw_case_guard_sub1 = 1
+    if (u ~ /#22([^0-9]|$)/ || u ~ /#\$16([^0-9A-F]|$)/) saw_case_guard_limit = 1
+    if ((n ~ /^MOVEW.*PCD[01]W/ || u ~ /^JMP .*PC,D[01]\.W\)$/ || u ~ /^JMP \$4\(PC,D1\.W\)$/) &&
+        saw_case_guard_sub1 && saw_case_guard_limit) {
+        saw_case_guard_jump = 1
+        has_switch_case_guard = 1
+    }
     if (u == "RTS") has_return = 1
+    if (n ~ /PTYPEGETSUBTYPEIFTYPE20/) saw_type20_getsubtype = 1
+    if (n ~ /SCRIPTTYPE20SUBTYPECACHE/ && (u ~ /^MOVE\.B D0,/ || u ~ /^MOVE\.B D1,/)) saw_type20_store = 1
+    if (saw_type20_getsubtype && saw_type20_store) has_type20_cache_update = 1
+    if (u ~ /#8([^0-9]|$)/ || u ~ /#\$8([^0-9A-F]|$)/ || u ~ /^MOVEQ\.L #\$8,D0$/) saw_weather_cursor8 = 1
+    if (n ~ /SCRIPTPENDINGWEATHERCOMMANDCHAR/) saw_weather_pending_char = 1
+    if (saw_weather_cursor8 && saw_weather_pending_char) has_weather_command_flow = 1
+    if (u ~ /#3([^0-9]|$)/ || u ~ /#\$3([^0-9A-F]|$)/ || u ~ /^MOVE\.W #\$3,SCRIPT_RUNTIMEMODE/ || u ~ /^MOVE\.W #3,SCRIPT_RUNTIMEMODE/) {
+        saw_runtime_mode_write3 = 1
+    }
+    if (u ~ /#89([^0-9]|$)/ || u ~ /#\$59/ || u ~ /'Y'/) saw_runtime_diag_y = 1
+    if (u ~ /#76([^0-9]|$)/ || u ~ /#\$4C/ || u ~ /'L'/) saw_runtime_diag_l = 1
+    if (u ~ /#48([^0-9]|$)/ || u ~ /#\$30/ || u ~ /'0'/) saw_runtime_subcode0 = 1
+    if (u ~ /#50([^0-9]|$)/ || u ~ /#\$32/ || u ~ /'2'/) saw_runtime_subcode2 = 1
+    if (u ~ /#49([^0-9]|$)/ || u ~ /#\$31/ || u ~ /'1'/) saw_runtime_subcode1 = 1
+    if (u ~ /#51([^0-9]|$)/ || u ~ /#\$33/ || u ~ /'3'/) saw_runtime_subcode3 = 1
+    if (saw_runtime_mode_write3 && saw_runtime_diag_y && saw_runtime_diag_l &&
+        saw_runtime_subcode0 && saw_runtime_subcode2) {
+        has_runtime_mode3_flow = 1
+    }
+    if (u ~ /#10([^0-9]|$)/ || u ~ /#\$A([^0-9A-F]|$)/ || u ~ /^MOVEQ\.L #\$A,D0$/) saw_cursor10 = 1
+    if (saw_cursor10 && has_handshake_bit5 && saw_runtime_diag_y && saw_runtime_diag_l &&
+        saw_runtime_subcode1 && saw_runtime_subcode3) {
+        has_runtime_cursor10_flow = 1
+    }
+    if (n ~ /SCRIPTSELECTPLAYBACKCURSORFROMSEARCHTEXT/ || n ~ /SCRIPTSELECTPLAYBACKCURSORFR/) {
+        select_cursor_count += 1
+    }
+    if (n ~ /TEXTDISPCURRENTMATCHINDEX/ &&
+        (u ~ /#\$FFFFFFFF/ || u ~ /#\$FFFF/ || u ~ /#-1([^0-9]|$)/ || u ~ /#\(-1\)/)) {
+        current_match_reset_count += 1
+    }
+    if (n ~ /PTYPECONSUMEPRIMARYTYPEIFPRESENT/ || n ~ /PTYPECONSUMEPRIMARYTYPEIFPRESE/) {
+        type20_consume_count += 1
+    }
+    if (type20_consume_count >= 2) has_type20_consume_gates = 1
+    if (select_cursor_count >= 3 && current_match_reset_count >= 5) {
+        has_playback_mode_subcommand_flow = 1
+    }
+
+    if (n ~ /SCRIPTSAVECTRLCONTEXTSNAPSHOT/ || n ~ /SCRIPTSAVECTRLCONTEXTSNAP/) {
+        after_save_ctx = 1
+    } else if (after_save_ctx != 0) {
+        if (u ~ /^TST\.L / && n !~ /SCRIPTPLAYBACKCURSOR/ && saw_postsave_flag_test == 0) {
+            saw_postsave_flag_test = 1
+        }
+        if (n ~ /SCRIPTPLAYBACKCURSOR/ && u ~ /^TST\.L /) {
+            saw_postsave_playback_test = 1
+        }
+        if (u ~ /NOT\.B D0/ || u ~ /MOVEQ\.L #\$0,D0/ || u ~ /MOVEQ #0,D0/) {
+            saw_postsave_neg1 = 1
+        }
+        if (n ~ /TEXTDISPHANDLESCRIPTCOMMAND/ || n ~ /TEXTDISPHANDLESCRIPTCOM/) {
+            saw_postsave_call = 1
+            after_save_ctx = 0
+        }
+    }
+    if (saw_postsave_flag_test && saw_postsave_playback_test && saw_postsave_neg1 && saw_postsave_call) {
+        has_deferred_dispatch_gate = 1
+    }
 }
 
 END {
@@ -247,6 +380,8 @@ END {
     print "HAS_BRUSH_SELECTION=" has_brush_selection
     print "HAS_BRUSH_LIST_SCAN=" has_brush_list_scan
     print "HAS_BRUSH_TAG_DEFAULTS=" has_brush_tag_defaults
+    print "HAS_BRUSH_DEFAULT_CLEAR_FLOW=" has_brush_default_clear_flow
+    print "HAS_BRUSH_SCAN_FALLBACK_FLOW=" has_brush_scan_fallback_flow
     print "HAS_WILDCARD_LOOKUP=" has_wildcard_lookup
     print "HAS_TOGGLE_PRIMARY_SEARCH=" has_toggle_primary_search
     print "HAS_CHANNEL_CODE_UPDATE=" has_channel_code_update
@@ -268,5 +403,14 @@ END {
     print "HAS_PLAYBACK_MODE_HIGHLIGHT_GATE=" has_playback_mode_highlight_gate
     print "HAS_CHANNEL_RANGE_CLEANUP_FALLBACK=" has_channel_range_cleanup_fallback
     print "HAS_TEXTDISP_BANNER_COMMAND_FLOW=" has_textdisp_banner_command_flow
+    print "HAS_CMD_LEN_TERMINATOR=" has_cmd_len_terminator
+    print "HAS_SWITCH_CASE_GUARD=" has_switch_case_guard
+    print "HAS_DEFERRED_DISPATCH_GATE=" has_deferred_dispatch_gate
+    print "HAS_TYPE20_CACHE_UPDATE=" has_type20_cache_update
+    print "HAS_WEATHER_COMMAND_FLOW=" has_weather_command_flow
+    print "HAS_RUNTIME_MODE3_FLOW=" has_runtime_mode3_flow
+    print "HAS_RUNTIME_CURSOR10_FLOW=" has_runtime_cursor10_flow
+    print "HAS_TYPE20_CONSUME_GATES=" has_type20_consume_gates
+    print "HAS_PLAYBACK_MODE_SUBCOMMAND_FLOW=" has_playback_mode_subcommand_flow
     print "HAS_RETURN=" has_return
 }

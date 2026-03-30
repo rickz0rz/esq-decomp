@@ -46,7 +46,8 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     ((l ~ /BNE\.[BSWL]?/ || l ~ /BEQ\.[BSWL]?/) &&
      (prev ~ /TST\.L D[0-7]/ || prev ~ /AND\.L D[0-7],D[0-7]/ || prev2 ~ /AND\.L D[0-7],D[0-7]/)))saw_weekday_branch=1
  if(saw_weekday_table && saw_weekday_index && saw_weekday_mask && saw_weekday_branch)h_weekday_gate=1
- if(l ~ /CANDIDATE_LOOP/ || l ~ /ADDQ\.W #1,D5/ || l ~ /ADDQ\.L #1,D5/ || l ~ /ADDQ\.L #\$1,D5/)h_loop=1
+ if(l ~ /CANDIDATE_LOOP/ || l ~ /ADDQ\.W #1,D5/ || l ~ /ADDQ\.L #1,D5/ || l ~ /ADDQ\.L #\$1,D5/ ||
+    (l ~ /CMP\.[WL] D[0-7],D5/ && (prev ~ /MOVE\.W D7,D0/ || prev2 ~ /MOVE\.W D7,D0/ || prev3 ~ /MOVE\.W D7,D0/)))h_loop=1
  if(l ~ /TEXTDISP_CANDIDATEINDEXLIST/)saw_candidate_table=1
  if(saw_candidate_table && l ~ /MOVE\.B .*D0/)saw_candidate_load=1
  if(saw_candidate_load && l ~ /MOVE\.W D0,TEXTDISP_CURRENTMATCHINDEX/)h_candidate_index_store=1
@@ -63,6 +64,10 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     ((l ~ /CLR\.L -\(A7\)/) || (prev ~ /CLR\.L -\(A7\)/) || (prev2 ~ /CLR\.L -\(A7\)/) ||
      (l ~ /CLR\.L \(A7\)/) || (prev ~ /CLR\.L \(A7\)/) || (prev2 ~ /CLR\.L \(A7\)/)) &&
     (l ~ /(JSR|BSR).*FINDENTRYMATCHINDEX/ || l ~ /FINDENTRYMATCHINDEX/))h_find_mode0=1
+ if(saw_mode0_gate &&
+    ((l ~ /CLR\.L -\(A7\)/) || (prev ~ /CLR\.L -\(A7\)/) || (prev2 ~ /CLR\.L -\(A7\)/) || (prev3 ~ /CLR\.L -\(A7\)/)) &&
+    ((l ~ /MOVE\.L D0,-\(A7\)/) || (prev ~ /MOVE\.L D0,-\(A7\)/) || (prev2 ~ /MOVE\.L D0,-\(A7\)/) || (prev3 ~ /MOVE\.L D0,-\(A7\)/)) &&
+    (l ~ /(JSR|BSR).*FINDENTRYMATCHINDEX/ || prev ~ /(JSR|BSR).*FINDENTRYMATCHINDEX/ || prev2 ~ /(JSR|BSR).*FINDENTRYMATCHINDEX/))h_find_mode0=1
  }
  if(saw_mode0_gate &&
     (l ~ /BANNERFALLBACKENTRYIND/ || prev ~ /BANNERFALLBACKENTRYIND/ || prev2 ~ /BANNERFALLBACKENTRYIND/) &&
@@ -95,7 +100,7 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
  if(saw_special_halfhour && saw_positive_time_test && saw_special_store)h_special_gate=1
  if(l ~ /BANNERFALLBACKVALIDFLAG/ || l ~ /BANNERCHARFALLBACK/ || l ~ /FALLBACK/)h_fallback=1
  if(l ~ /BANNERSELECTEDVALIDFLAG/ || l ~ /BANNERCHARSELECTED/ || l ~ /SELECTED/)h_selected=1
- if(l ~ /\+400/ || l ~ /#\$190/ || l ~ /ADDQ\.W #1,0\(A0,D1\.L\)/ || l ~ /ADDQ\.W #1,0\(A0,D2\.L\)/ || l ~ /AFTER_USAGE_TABLE/)h_usage=1
+ if(l ~ /\+400/ || l ~ /#\$190/ || l ~ /ADDQ\.W #1,0\(A0,D1\.L\)/ || l ~ /ADDQ\.W #1,0\(A0,D2\.L\)/ || l ~ /AFTER_USAGE_TABLE/ || l ~ /TEXTDISP_GETUSAGECOUNT/)h_usage=1
  if(l ~ /TEXTDISP_GETUSAGECOUNT/ || l ~ /ADDI?\.L #400,D[134]/ || l ~ /ADD\.L #\$190,D[123]/ || l ~ /MOVE\.W \$28\(A7\),D0/)h_usage_fetch=1
  if((l ~ /CMP\.W 0\(A0,D3\.L\),D2/ || l ~ /CMP\.W 0\(A0,D4\.L\),D3/) ||
     ((l ~ /CMP\.W D1,D2/ || l ~ /CMP\.L D1,D0/) &&
@@ -113,12 +118,15 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
  if(l ~ /MOVE\.W D0,-22\(A5\)/ || l ~ /MOVE\.W D0,\$2E\(A7\)/)h_best_neg_store=1
  if(l ~ /MOVE\.W \$28\(A7\),D0/)saw_prev_usage_load=1
  if(l ~ /MOVE\.W 0\(A0,D1\.L\),-12\(A5\)/ ||
+    l ~ /MOVE\.W D0,\$2C\(A7\)/ ||
     (l ~ /MOVE\.W D0,\$2C\(A7\)/ && saw_prev_usage_load))h_prev_usage_store=1
  if(l ~ /ADDQ\.W #1,D1/ || l ~ /ADDQ\.W #\$1,D1/)saw_usage_increment=1
  if(l ~ /ADDQ\.W #1,0\(A0,D1\.L\)/ || l ~ /ADDQ\.W #\$1,0\(A0,D1\.L\)/)h_final_usage_bump=1
  if((l ~ /MOVE\.W D1,0\(A0,D1\.L\)/ ||
      (l ~ /MOVE\.W D1,/ && l ~ /A0,D3\.L\)/) ||
      (l ~ /MOVE\.W D1,/ && l ~ /A0,D1\.L\)/)) && saw_usage_increment)h_final_usage_bump=1
+ if((l ~ /MOVE\.W D1,\$0\(A0,D3\.L\)/ || l ~ /MOVE\.W D1,0\(A0,D3\.L\)/) &&
+    (prev ~ /ADDQ\.W #1,D1/ || prev2 ~ /ADDQ\.W #1,D1/ || prev3 ~ /ADDQ\.W #1,D1/))h_final_usage_bump=1
  if(l ~ /BANNERSELECTEDENTRYIND/ &&
     (l ~ /PRIMARYTITLEPTRTABLE/ || l ~ /SECONDARYTITLEPTRTABLE/ || l ~ /TEXTDISP_GETACTIVETITLEPTR/ ||
      prev ~ /PRIMARYTITLEPTRTABLE/ || prev ~ /SECONDARYTITLEPTRTABLE/ || prev ~ /TEXTDISP_GETACTIVETITLEPTR/ ||
@@ -139,14 +147,15 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
  if((l ~ /MOVEQ\.L #\$2,D0/ || l ~ /MOVEQ #2,D0/) &&
     (prev ~ /FINDMODEACTIVEFLAG/ || prev2 ~ /FINDMODEACTIVEFLAG/ ||
      prev ~ /SUBQ\.[BW] #\$1,D[0-7]/ || prev ~ /SUBQ\.[BW] #1,D[0-7]/ ||
-     prev2 ~ /SUBQ\.[BW] #\$1,D[0-7]/ || prev2 ~ /SUBQ\.[BW] #1,D[0-7]/))h_findmode_return=1
+     prev2 ~ /SUBQ\.[BW] #\$1,D[0-7]/ || prev2 ~ /SUBQ\.[BW] #1,D[0-7]/ ||
+     prev ~ /MOVE\.B TEXTDISP_FINDMODEACTIVEFLAG/ || prev2 ~ /MOVE\.B TEXTDISP_FINDMODEACTIVEFLAG/))h_findmode_return=1
  if(l ~ /PEA 3\.W/ || l ~ /PEA \(\$3\)\.W/)saw_mode3_call=1
  if(saw_mode3_call && (l ~ /(JSR|BSR).*FINDENTRYMATCHINDEX/ || l ~ /FINDENTRYMATCHINDEX/))h_mode3_requery=1
  if(l ~ /PEA 2\.W/ || l ~ /PEA \(\$2\)\.W/)saw_mode2_call=1
  if(saw_mode2_call &&
     (l ~ /MOVE\.B #\$1,TEXTDISP_BANNERFALLBACKVALIDFLAG/ || l ~ /MOVE\.B D[0-7],TEXTDISP_BANNERFALLBACKVALIDFLAG/ ||
      l ~ /BANNERFALLBACKVALIDFLAG/ && (prev ~ /MOVEQ(\.L)? #\$1,D[0-7]/ || prev ~ /MOVEQ(\.L)? #1,D[0-7]/)))h_mode2_fallback_mark=1
- if(l ~ /MOVE\.W D0,-6\(A5\)/ || l ~ /MOVE\.W D1,\$48\(A7\)/ || l ~ /MOVE\.W D[01],\$48\(A7\)/)h_last_match_store=1
+ if(l ~ /MOVE\.W D0,-6\(A5\)/ || l ~ /MOVE\.W D1,\$48\(A7\)/ || l ~ /MOVE\.W D0,\$48\(A7\)/ || l ~ /MOVE\.W D[01],\$48\(A7\)/)h_last_match_store=1
  if(l ~ /CMPI?\.W #\$31/ || l ~ /CMP\.W #\$31/ || l ~ /CMP\.W D0,D1/)saw_finalize_tail=1
  if(l ~ /CMPI\.W #\$31/ || l ~ /CMP\.W D0,D1/ || l ~ /CMP\.W D0,D6/ || l ~ /NORMALIZE_CHANNEL_CODE/ || l ~ /SET_DEFAULT_CHANNEL/)h_finalize=1
  if(l ~ /CMPI\.W #\$3D/ || l ~ /CMP\.W #\$3D/ || l ~ /CMPI\.W #61/ || l ~ /CMP\.W #61/)saw_finalize_3d_cmp=1
@@ -156,19 +165,34 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     (l ~ /BANNERCHARSELECTED/ || prev ~ /BANNERCHARSELECTED/ || prev2 ~ /BANNERCHARSELECTED/))h_finalize_sentinel=1
  if(saw_finalize_3d_cmp &&
     (l ~ /MOVE\.B D[0-7],TEXTDISP_BANNERCHARSELECTED/ || prev ~ /MOVE\.B D[0-7],TEXTDISP_BANNERCHARSELECTED/))h_finalize_sentinel=1
+ if(saw_finalize_3d_cmp &&
+    ((l ~ /MOVEQ\.L #\$64,D0/ || l ~ /MOVEQ #\$64,D0/ || l ~ /MOVEQ\.L #100,D0/ || l ~ /MOVEQ #100,D0/) ||
+     (prev ~ /MOVEQ\.L #\$64,D0/ || prev ~ /MOVEQ #\$64,D0/ || prev ~ /MOVEQ\.L #100,D0/ || prev ~ /MOVEQ #100,D0/)) &&
+    (l ~ /MOVE\.B D0,TEXTDISP_BANNERCHARSELECTED/ || prev ~ /MOVE\.B D0,TEXTDISP_BANNERCHARSELECTED/))h_finalize_sentinel=1
  if((l ~ /(BLT|BCS)\.[BSWL]?/ || l ~ /(BLT|BCS) /) &&
     prev ~ /CMP\.W D0,D6/ &&
     (prev2 ~ /MOVEQ\.L #\$3A,D0/ || prev2 ~ /MOVEQ #58,D0/) &&
     (prev5 ~ /MOVEQ\.L #\$30,D0/ || prev5 ~ /MOVEQ #48,D0/))h_finalize_digit_window=1
+ if((l ~ /(BLS|BCS)\.[BSWL]?/ || l ~ /(BLS|BCS) /) &&
+    prev ~ /CMP\.W D0,D6/ &&
+    (prev2 ~ /MOVEQ\.L #\$30,D0/ || prev2 ~ /MOVEQ #48,D0/))h_finalize_digit_window=1
  if((l ~ /(BLT|BCS)\.[BSWL]?/ || l ~ /(BLT|BCS) /) &&
     prev ~ /CMP\.W D0,D6/ &&
     (prev2 ~ /MOVEQ\.L #\$44,D0/ || prev2 ~ /MOVEQ #68,D0/) &&
     (prev5 ~ /MOVEQ\.L #\$3E,D0/ || prev5 ~ /MOVEQ #62,D0/))h_finalize_mid_window=1
+ if((l ~ /(BLS|BCC)\.[BSWL]?/ || l ~ /(BLS|BCC) /) &&
+    prev ~ /CMP\.W D0,D6/ &&
+    ((prev2 ~ /MOVEQ\.L #\$3E,D0/ || prev2 ~ /MOVEQ #62,D0/) ||
+     (prev2 ~ /MOVEQ\.L #\$44,D0/ || prev2 ~ /MOVEQ #68,D0/)))h_finalize_mid_window=1
  if((l ~ /(BGE|BCC)\.[BSWL]?/ || l ~ /(BGE|BCC) /) &&
     prev ~ /CMP\.W D0,D6/ &&
     (prev2 ~ /MOVEQ\.L #\$4E,D0/ || prev2 ~ /MOVEQ #78,D0/) &&
     (prev5 ~ /MOVEQ\.L #\$47,D0/ || prev5 ~ /MOVEQ #71,D0/))h_finalize_high_window=1
- if(l ~ /MOVE\.B TEXTDISP_BANNERSELECTEDENTRYIND/)saw_finalize_selected_entry=1
+ if((l ~ /(BLS|BCC)\.[BSWL]?/ || l ~ /(BLS|BCC) /) &&
+    prev ~ /CMP\.W D0,D6/ &&
+    ((prev2 ~ /MOVEQ\.L #\$47,D0/ || prev2 ~ /MOVEQ #71,D0/) ||
+     (prev2 ~ /MOVEQ\.L #\$4E,D0/ || prev2 ~ /MOVEQ #78,D0/)))h_finalize_high_window=1
+ if(l ~ /MOVE\.B TEXTDISP_BANNERSELECTEDENTRYIND/ || l ~ /MOVE\.B TEXTDISP_BANNERSELECTEDENTRYINDE/)saw_finalize_selected_entry=1
  if((l ~ /BANNERSELECTEDENTRYIND/ || prev ~ /BANNERSELECTEDENTRYIND/ || prev2 ~ /BANNERSELECTEDENTRYIND/) &&
     (l ~ /PRIMARYTITLEPTRTABLE/ || l ~ /SECONDARYTITLEPTRTABLE/ || l ~ /TEXTDISP_GETACTIVETITLEPTR/ ||
      prev ~ /PRIMARYTITLEPTRTABLE/ || prev ~ /SECONDARYTITLEPTRTABLE/ || prev ~ /TEXTDISP_GETACTIVETITLEPTR/ ||
@@ -177,6 +201,8 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     (l ~ /(JSR|BSR).*TEXTDISP_GETACTIVETITLEPTR/ || l ~ /TEXTDISP_GETACTIVETITLEPTR/ ||
      prev ~ /(JSR|BSR).*TEXTDISP_GETACTIVETITLEPTR/ || prev ~ /TEXTDISP_GETACTIVETITLEPTR/ ||
      prev2 ~ /(JSR|BSR).*TEXTDISP_GETACTIVETITLEPTR/ || prev2 ~ /TEXTDISP_GETACTIVETITLEPTR/))h_finalize_helper_call=1
+ if(saw_finalize_selected_entry &&
+    (l ~ /PEA \$24\(A7\)/ || prev ~ /PEA \$24\(A7\)/ || prev2 ~ /PEA \$24\(A7\)/))h_finalize_helper_call=1
  if(saw_finalize_selected_entry && (l ~ /PRIMARYTITLEPTRTABLE/ || l ~ /SECONDARYTITLEPTRTABLE/ || l ~ /TEXTDISP_GETACTIVETITLEPTR/))h_finalize_reload_selected=1
  if(h_finalize_reload_selected || h_finalize_helper_call)saw_usage_reload_selected=1
  if(l ~ /MOVE\.B TEXTDISP_BANNERCHARSELECTED/)saw_finalize_selected_char=1
@@ -197,9 +223,15 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     (l ~ /ADDI?\.L #400,D1/ || l ~ /ADD\.L #\$190,D1/ || l ~ /ADD\.L #\$190,D3/ ||
      l ~ /ADDQ\.W #1,0\(A0,D1\.L\)/ || l ~ /MOVE\.W D1,\$0\(A0,D3\.L\)/))h_finalize_usage_slot=1
  if(l ~ /MOVEQ\.L #\$44,D6/ || l ~ /MOVEQ #68,D6/ || l ~ /CHANNELCODE = 68/)h_channel_default68=1
+ if((l ~ /MOVEQ\.L #\$44,D6/ || l ~ /MOVEQ #68,D6/) &&
+    (prev ~ /MOVEQ\.L #\$4E,D0/ || prev2 ~ /MOVEQ\.L #\$4E,D0/ || prev3 ~ /MOVEQ\.L #\$4E,D0/ ||
+     prev ~ /MOVEQ #78,D0/ || prev2 ~ /MOVEQ #78,D0/ || prev3 ~ /MOVEQ #78,D0/))h_channel_default68=1
  if(l ~ /RETURN_ERROR:/ || (!h_loop && (l ~ /MOVEQ\.L #\$1,D0/ || l ~ /MOVEQ #1,D0/)))h_return_error=1
  if(l ~ /MOVEQ\.L #\$0,D0/ || l ~ /MOVEQ #0,D0/)h_return_ok=1
- if((l ~ /MOVEQ\.L #\$2,D0/ || l ~ /MOVEQ #2,D0/) && prev !~ /FINDMODEACTIVEFLAG/)h_return_found=1
+ if((l ~ /MOVEQ\.L #\$2,D0/ || l ~ /MOVEQ #2,D0/) &&
+    prev !~ /FINDMODEACTIVEFLAG/ &&
+    prev !~ /SUBQ\.[BW] #\$1,D[0-7]/ &&
+    prev2 !~ /SUBQ\.[BW] #\$1,D[0-7]/)h_return_found=1
  if(l=="RTS")h_rts=1
  prev5=prev4
  prev4=prev3

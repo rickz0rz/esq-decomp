@@ -34,12 +34,21 @@ BEGIN {
     has_token12_pending_gate = 0
     has_token12_split_gate = 0
     has_token12_copy_loop = 0
+    saw_first_entry_init = 0
+    saw_first_entry_clear = 0
+    has_first_entry_flag_flow = 0
+    saw_split_mark = 0
+    saw_split_clear = 0
+    has_split_flag_flow = 0
     saw_tail_clear = 0
     saw_create_entry = 0
     has_token12_create_flow = 0
     has_display_mode_load = 0
 
     has_token11_flow = 0
+    saw_token14_field2_ref = 0
+    saw_token14_loop_bound6 = 0
+    saw_token14_data_copy = 0
     has_token14_copy6 = 0
     has_token01_split_mark = 0
     saw_length_inc = 0
@@ -171,6 +180,24 @@ function trim(s, t) {
         n ~ /MOVEBA3A2/ || n ~ /BRANCH2/ || n ~ /FIELD0TOFIELD3/) {
         has_token12_copy_loop = 1
     }
+    if (n ~ /MOVELD08A5/ || n ~ /MOVELD02CA7/ || n ~ /FIRSTENTRYPENDING/) {
+        saw_first_entry_init = 1
+    }
+    if (n ~ /CLRL8A5/ || n ~ /CLRL2CA7/) {
+        saw_first_entry_clear = 1
+    }
+    if (saw_first_entry_init && saw_first_entry_clear) {
+        has_first_entry_flag_flow = 1
+    }
+    if (n ~ /MOVEW114A5/ || n ~ /MOVEW126A7/ || n ~ /SPLITFLAG/) {
+        saw_split_mark = 1
+    }
+    if (n ~ /MOVEWD014A5/ || n ~ /CLRW26A7/) {
+        saw_split_clear = 1
+    }
+    if (saw_split_mark && saw_split_clear) {
+        has_split_flag_flow = 1
+    }
     if (n ~ /ESQIFFPARSEFIELD0TAILBUFFER/ || n ~ /ESQIFFPARSEFIELD1TAILBYTE/ ||
         n ~ /ESQIFFPARSEFIELD3TAILBUFFER/) {
         saw_tail_clear = 1
@@ -190,8 +217,17 @@ function trim(s, t) {
         (n ~ /MOVEQ1D4/ || n ~ /MOVEQL1D6/ || n ~ /MOVEQD40/ || n ~ /FIELDINDEX1/)) {
         has_token11_flow = 1
     }
-    if (saw_token14 && n ~ /ESQIFFPARSEFIELD2BUFFER/ &&
-        (u ~ /#\$6/ || u ~ /#6([^0-9]|$)/ || n ~ /CMPWD1D0/ || n ~ /MOVEQ6D1/)) {
+    if (saw_token14 && n ~ /ESQIFFPARSEFIELD2BUFFER/) {
+        saw_token14_field2_ref = 1
+    }
+    if (saw_token14 && (u ~ /#\$6/ || u ~ /#6([^0-9]|$)/ || n ~ /MOVEQ6D0/ || n ~ /MOVEQ6D1/)) {
+        saw_token14_loop_bound6 = 1
+    }
+    if (saw_token14 &&
+        (n ~ /MOVEBA3A0/ || n ~ /MOVEBA50A0D1L/ || n ~ /MOVEBA5A0/ || n ~ /FIELD2BUFFER/)) {
+        saw_token14_data_copy = 1
+    }
+    if (saw_token14_field2_ref && saw_token14_loop_bound6 && saw_token14_data_copy) {
         has_token14_copy6 = 1
     }
     if (saw_token01 &&
@@ -243,6 +279,8 @@ END {
     print "HAS_TOKEN12_PENDING_GATE=" has_token12_pending_gate
     print "HAS_TOKEN12_SPLIT_GATE=" has_token12_split_gate
     print "HAS_TOKEN12_COPY_LOOP=" has_token12_copy_loop
+    print "HAS_FIRST_ENTRY_FLAG_FLOW=" has_first_entry_flag_flow
+    print "HAS_SPLIT_FLAG_FLOW=" has_split_flag_flow
     print "HAS_TOKEN12_CREATE_FLOW=" has_token12_create_flow
     print "HAS_DISPLAY_MODE_LOAD=" has_display_mode_load
     print "HAS_TOKEN11_FLOW=" has_token11_flow

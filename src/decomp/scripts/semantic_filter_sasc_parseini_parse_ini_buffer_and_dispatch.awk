@@ -40,10 +40,16 @@ BEGIN {
     has_unknown_section_reset = 0
     has_dispatch_switch = 0
     has_qtable_quote_fail_return = 0
+    has_qtable_first_quote_search = 0
+    has_qtable_second_quote_search = 0
     has_qtable_alias_increment = 0
+    has_textads_brush_section_arg = 0
+    eq_search_count = 0
     qtable_quote_find_count = 0
     has_cleanup = 0
     has_cleanup_tag = 0
+    has_cleanup_line = 0
+    has_cleanup_work_buffer = 0
     has_cleanup_size_plus_one = 0
     has_return = 0
 }
@@ -71,6 +77,7 @@ function trim(s, t) {
     if (n ~ /PARSEINISKIPCLASS3CHARS/ || n ~ /WDISPCHARCLASSTABLE/) has_skip_ws = 1
     if (n ~ /PARSEINIJMPTBLSTRFINDCHARPTR/ || n ~ /STRFINDCHARPTR/) has_findchar = 1
     if ((n ~ /PEA34W/ || n ~ /PEA22W/ || n ~ /PEA61W/ || n ~ /PEA3DW/ || n ~ /MOVEQ61D0/ || n ~ /MOVEQ3DD0/) && has_findchar) has_findchar_eq = 1
+    if (n ~ /PEA61W/ || n ~ /PEA3DW/ || n ~ /MOVEQ61D0/ || n ~ /MOVEQ3DD0/) eq_search_count++
     if (n ~ /PARSEINIJMPTBLSTRFINDANYCHARPTR/ || n ~ /STRFINDANYCHARPTR/) has_findany = 1
     if (n ~ /PARSEINIJMPTBLSTRINGCOMPARENOCASE/ || n ~ /STRINGCOMPARENOCASE/) has_compare = 1
 
@@ -103,6 +110,7 @@ function trim(s, t) {
 
     if (n ~ /PARSEINIDELIMSPACETABSECTION4/ || n ~ /PARSEINIDELIMSPACETABSECTION45/) has_textads_brush_delim = 1
     if (n ~ /PARSEINIPARSECOLORTABLE/) has_textads_brush_dispatch = 1
+    if (n ~ /PARSEINIPARSECOLORTABLE/ && (n ~ /MOVED7A7/ || n ~ /MOVE38A7A7/ || n ~ /MOVE38A7D0/)) has_textads_brush_section_arg = 1
 
     if (n ~ /PARSEINIDELIMSPACETABSECTION6/) has_banner_delim = 1
     if (n ~ /PARSEINILOADWEATHERSTRINGS/) has_banner_dispatch = 1
@@ -115,10 +123,16 @@ function trim(s, t) {
     if (n ~ /MOVEQ0D7/ || n ~ /MOVEQL0D0/ || n ~ /MOVEQ0D0MOVELD038A7/ || n ~ /MOVEQL0D0MOVELD038A7/) has_unknown_section_reset = 1
     if (n ~ /DISPATCHTABLE/ || n ~ /SWITCHPARSEINIPARSEINIBUFFERANDDISPAT/) has_dispatch_switch = 1
 
-    if (n ~ /PEA34W/ || n ~ /PEA22W/) qtable_quote_find_count++
-    if (n ~ /CLRWTEXTDISPALIASCOUNT/ && qtable_quote_find_count >= 1) has_qtable_quote_fail_return = 1
+    if (n ~ /PEA34W/ || n ~ /PEA22W/) {
+        qtable_quote_find_count++
+        if (qtable_quote_find_count >= 1) has_qtable_first_quote_search = 1
+        if (qtable_quote_find_count >= 2) has_qtable_second_quote_search = 1
+    }
+    if (n ~ /CLRWTEXTDISPALIASCOUNT/ && qtable_quote_find_count >= 2) has_qtable_quote_fail_return = 1
     if (n ~ /MEMORYDEALLOCATEMEMORY/) has_cleanup = 1
     if (n ~ /GLOBALSTRPARSEINIC2/) has_cleanup_tag = 1
+    if (n ~ /PEA403W/ || n ~ /MOVE193D5/ || n ~ /MOVEL193D5/ || n ~ /MOVED5A7/) has_cleanup_line = 1
+    if (n ~ /GLOBALPTRWORKBUFFER/ || n ~ /MOVEL16A5A7/ || n ~ /MOVELA3A7/) has_cleanup_work_buffer = 1
     if (n ~ /ADDQL1D0MOVEWD0TEXTDISPALIASCOUNT/ || n ~ /MOVEWD0TEXTDISPALIASCOUNT/) has_qtable_alias_increment = 1
     if (n ~ /ADDQL1D0/ || n ~ /MOVEW403W/ || n ~ /PEA403W/) has_cleanup_size_plus_one = 1
     if (u ~ /^RTS$/) has_return = 1
@@ -145,19 +159,23 @@ END {
     print "HAS_BANNER_REFRESH_RESET=" has_banner_refresh_reset
     print "HAS_DEFAULT_TEXT_RESET=" (has_default_text_current && has_default_text_forecast && has_default_text_bottom ? 1 : 0)
     print "HAS_SOURCE_CONFIG_CLEAR=" has_source_config_clear
+    print "HAS_EQ_SEARCH_FANOUT=" (eq_search_count >= 6)
     print "HAS_QTABLE_PARSE=" (has_qtable_delim && has_qtable_alloc && has_qtable_store ? 1 : 0)
     print "HAS_QTABLE_RESET=" has_qtable_reset
+    print "HAS_QTABLE_DOUBLE_QUOTE_SEARCH=" (has_qtable_first_quote_search && has_qtable_second_quote_search ? 1 : 0)
     print "HAS_QTABLE_QUOTE_FAIL_RETURN=" has_qtable_quote_fail_return
     print "HAS_QTABLE_ALIAS_INCREMENT=" has_qtable_alias_increment
     print "HAS_BACKDROP_PARSE=" (has_backdrop_delim && has_backdrop_dispatch ? 1 : 0)
     print "HAS_GRADIENT_PARSE=" has_gradient_dispatch
     print "HAS_TEXTADS_BRUSH_PARSE=" (has_textads_brush_delim && has_textads_brush_dispatch ? 1 : 0)
+    print "HAS_TEXTADS_BRUSH_SECTION_ARG=" has_textads_brush_section_arg
     print "HAS_BANNER_PARSE=" (has_banner_delim && has_banner_dispatch ? 1 : 0)
     print "HAS_DEFAULT_TEXT_PARSE=" (has_default_text_delim && has_default_text_dispatch ? 1 : 0)
     print "HAS_SOURCE_CONFIG_PARSE=" (has_source_config_delim && has_source_config_dispatch ? 1 : 0)
     print "HAS_UNKNOWN_SECTION_RESET=" has_unknown_section_reset
     print "HAS_DISPATCH_SWITCH=" has_dispatch_switch
     print "HAS_CLEANUP=" (has_cleanup && has_cleanup_tag ? 1 : 0)
+    print "HAS_CLEANUP_LINE_AND_BUFFER=" (has_cleanup_line && has_cleanup_work_buffer ? 1 : 0)
     print "HAS_CLEANUP_SIZE_PLUS_ONE=" has_cleanup_size_plus_one
     print "HAS_RETURN=" has_return
 }

@@ -13,6 +13,16 @@ BEGIN {
     h_finalize_sync = 0
     h_rts = 0
     esc_help_window = 0
+    pending_has_flag_test = 0
+    pending_has_text_mode_set = 0
+    pending_has_current_char_load = 0
+    pending_has_clear = 0
+    range_has_base_sub = 0
+    range_has_followup = 0
+    toggle_has_pen_setup = 0
+    toggle_has_div = 0
+    toggle_has_state_write = 0
+    toggle_has_label = 0
 }
 
 function norm(s, t) {
@@ -41,8 +51,17 @@ function norm(s, t) {
         h_entry = 1
     }
 
-    if (l ~ /ED_TEXTMODEREINITPENDINGFLAG/ && l ~ /ED_CURRENTCHAR/) {
-        h_pending_reinit = 1
+    if (l ~ /ED_TEXTMODEREINITPENDINGFLAG/) {
+        pending_has_flag_test = 1
+    }
+    if (l ~ /GLOBAL_REF_BOOL_IS_TEXT_OR_CURSO/) {
+        pending_has_text_mode_set = 1
+    }
+    if (l ~ /ED_EDITBUFFERLIVE/ || l ~ /ED_CURRENTCHAR/) {
+        pending_has_current_char_load = 1
+    }
+    if (l ~ /CLR\.L ED_TEXTMODEREINITPENDINGFLAG/ || l ~ /ED_TEXTMODEREINITPENDINGFLAG/ && l ~ /CLR\.L/) {
+        pending_has_clear = 1
     }
 
     if (l ~ /(JSR|BSR).*ED_DRAWCURSORCHAR/) {
@@ -68,19 +87,29 @@ function norm(s, t) {
         h_menu_dispatch = 1
     }
 
-    if (l ~ /#\\$20/ || l ~ /#\\$26/ ||
-        l ~ /SUBI\\.W #\\$20,D1/ ||
-        l ~ /MOVEQ\\.L #\\$20,D0/ ||
-        l ~ /CMPI\\.L #\\$26,D1/) {
-        h_menu_range_gate = 1
+    if (l ~ /SUBI\.W #\$20,D1/ ||
+        l ~ /MOVEQ\.L #\$20,D0/ ||
+        l ~ /SUB\.L D0,D1/) {
+        range_has_base_sub = 1
+    }
+    if (l ~ /SUBI\.W #16,D1/ ||
+        l ~ /SUBQ\.W #16,D1/ ||
+        l ~ /CMPI\.L #\$26,D1/ ||
+        l ~ /BGE\.W .*HANDLEEDITORINPUT__126/) {
+        range_has_followup = 1
     }
 
-    if ((l ~ /SETAPEN/ || l ~ /_LVOSETAPEN/) &&
-        (l ~ /SETBPEN/ || l ~ /_LVOSETBPEN/ || l ~ /ED2_STR_PAGE/ || l ~ /ED2_STR_LINE/ || l ~ /DISPLIB_DISPLAYTEXTATPOSITION/)) {
-        h_line_page_toggle = 1
+    if (l ~ /SETAPEN/ || l ~ /_LVOSETAPEN/ || l ~ /SETBPEN/ || l ~ /_LVOSETBPEN/) {
+        toggle_has_pen_setup = 1
     }
     if (l ~ /ED2_STR_PAGE/ || l ~ /ED2_STR_LINE/) {
-        h_line_page_toggle = 1
+        toggle_has_label = 1
+    }
+    if (l ~ /MATH_DIVS32/ || l ~ /_CXD33/) {
+        toggle_has_div = 1
+    }
+    if (l ~ /GLOBAL_REF_BOOL_IS_LINE_OR_PAGE/ || l ~ /BOOLISLINEORPAGE/) {
+        toggle_has_state_write = 1
     }
 
     if ((l ~ /ED_MENUSTATEID/ && l ~ /#\\$9/) ||
@@ -109,6 +138,12 @@ function norm(s, t) {
 }
 
 END {
+    h_pending_reinit = pending_has_flag_test && pending_has_text_mode_set &&
+        pending_has_current_char_load && pending_has_clear
+    h_menu_range_gate = range_has_base_sub && range_has_followup
+    h_line_page_toggle = toggle_has_pen_setup && toggle_has_div &&
+        toggle_has_state_write && toggle_has_label
+
     print "HAS_ENTRY=" h_entry
     print "HAS_PENDING_REINIT=" h_pending_reinit
     print "HAS_INITIAL_CURSOR_DRAW=" h_initial_cursor_draw

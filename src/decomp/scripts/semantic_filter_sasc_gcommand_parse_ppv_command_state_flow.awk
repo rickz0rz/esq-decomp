@@ -21,6 +21,8 @@ BEGIN {
     h_workflow_mode = 0
     h_detail_flag = 0
     h_rowspan_parse = 0
+    h_rowspan_max_96 = 0
+    h_tail_len_choose = 0
     h_tail_find = 0
     h_tail_split_nul = 0
     h_tail_clamp = 0
@@ -55,6 +57,7 @@ BEGIN {
     phase_workflow_mode = 0
     phase_detail_flag = 0
     phase_rowspan = 0
+    phase_tail_len_choose = 0
     phase_tail_find = 0
     phase_tail_split_nul = 0
     phase_tail_clamp = 0
@@ -241,6 +244,22 @@ function norm(s, t) {
             phase_rowspan = 1
         }
     }
+    if (l ~ /#\$60/ || l ~ /#96/) {
+        h_rowspan_max_96 = 1
+    }
+    if ((l ~ /^CMP\.L D[0-7],D[0-7]$/) &&
+        (prev ~ /^ADDQ\.L #\$?2,D[0-7]$/ || prev ~ /^ADDQ\.L #2,D[0-7]$/ ||
+         prev2 ~ /^ADDQ\.L #\$?2,D[0-7]$/ || prev2 ~ /^ADDQ\.L #2,D[0-7]$/)) {
+        h_tail_len_choose = 1
+    }
+    if ((l ~ /^MOVE\.L D[0-7],D[0-7]$/) &&
+        ((prev ~ /^BLE\./ || prev2 ~ /^BLE\./) ||
+         (prev ~ /^BRA\./ || prev2 ~ /^BRA\./ || prev3 ~ /^BLE\./))) {
+        if (!phase_tail_len_choose) {
+            print "PHASE_TAIL_LEN_CHOOSE"
+            phase_tail_len_choose = 1
+        }
+    }
 
     if (l ~ /#\$12/ || l ~ /#18/ || l ~ /\(\$12\)\.W/ || l ~ /\(18\)\.W/ ||
         l ~ /MOVE\.B #\$12,-19\(A5\)/) {
@@ -349,6 +368,8 @@ END {
     print "HAS_WORKFLOW_MODE_STORE=" h_workflow_mode
     print "HAS_DETAIL_FLAG_STORE=" h_detail_flag
     print "HAS_ROWSPAN_STORE=" h_rowspan_parse
+    print "HAS_ROWSPAN_MAX_96=" h_rowspan_max_96
+    print "HAS_TAIL_LEN_CHOOSE=" h_tail_len_choose
     print "HAS_TAIL_FIND=" h_tail_find
     print "HAS_TAIL_SPLIT_NUL=" h_tail_split_nul
     print "HAS_TAIL_CLAMP=" h_tail_clamp

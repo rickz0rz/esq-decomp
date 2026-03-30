@@ -28,15 +28,19 @@ BEGIN {
     has_size_guard_flow = 0
     attention_clear_count = 0
     has_oversize_exit = 0
+    has_short_name_setup = 0
 
     checksum_gate_count = 0
     has_checksum_gate = 0
 
     open_fail_stage = 0
     has_open_fail = 0
+    has_open_fail_refresh = 0
 
     transfer_setup_stage = 0
     transfer_setup_done = 0
+    readmode_restore_stage = 0
+    has_readmode_restore = 0
 
     sync_stage = 0
     receive_call_count = 0
@@ -56,6 +60,8 @@ BEGIN {
     delete_file_count = 0
     append_count = 0
     has_success_copy_flow = 0
+    has_success_copy_prefix = 0
+    has_success_copy_separator = 0
 
     error_draw_count = 0
     has_error_cleanup = 0
@@ -151,6 +157,11 @@ function advance_stage(stage, target) {
     if (u ~ /GLOBAL_STR_RAM/) {
         saw_ram_prefix_copy = 1
     }
+    if (u ~ /STRING_COPYPADNUL|COPYPADNUL/) {
+        if (u ~ /DISKIO2_TRANSFERFILENAMEBUFFER/ && u ~ /\$CC\(A7\)|-68\(A5\)/) {
+            saw_short_name_copy = 1
+        }
+    }
     if ((u ~ /DISKIO2_TRANSFERFILENAMEBUFFER/ || u ~ /\$CC\(A7\)|-68\(A5\)/) &&
         target_copy_count >= 2) {
         saw_short_name_copy = 1
@@ -166,6 +177,9 @@ function advance_stage(stage, target) {
     }
     if ((u ~ /MOVE\.B D0,-64\(A5\)|CLR\.B \$C8\(A7\)/) && target_stage >= 3) {
         target_stage = advance_stage(target_stage, 4)
+    }
+    if ((u ~ /MOVE\.B D0,-64\(A5\)|CLR\.B \$C8\(A7\)/) && target_copy_count >= 2) {
+        has_short_name_setup = 1
     }
     if (target_stage >= 4 && filename_display_calls >= 2 &&
         saw_ram_prefix_copy && saw_short_name_copy) {
@@ -222,6 +236,11 @@ function advance_stage(stage, target) {
         open_fail_stage >= 1) {
         open_fail_stage = advance_stage(open_fail_stage, 2)
     }
+    if (u ~ /UPDATESTATUSMASKANDREFRESH|UPDATESTATUSMASKANDREFRE/) {
+        if (open_fail_stage >= 2) {
+            has_open_fail_refresh = 1
+        }
+    }
     if (open_fail_stage >= 2 &&
         (u ~ /MOVEQ(\.L)? #(-1|\$FF),D0/ || u ~ /MOVEQ #\$FF,D0/)) {
         has_open_fail = 1
@@ -247,6 +266,28 @@ function advance_stage(stage, target) {
     }
     if (u ~ /TRANSFERBUFFEREDBYTECOUNT|TRANSFERBUFFEREDBYTECOUN/ && transfer_setup_stage >= 4) {
         transfer_setup_done = 1
+    }
+    if (u ~ /SAVEDREADMODEFLAGS/ && u ~ /ESQPARS2_READMODEFLAGS/) {
+        readmode_restore_stage = advance_stage(readmode_restore_stage, 1)
+    }
+    if (u ~ /TRANSFERBUFFEREDBYTECOUNT|TRANSFERBUFFEREDBYTECOUN/ &&
+        readmode_restore_stage >= 1) {
+        readmode_restore_stage = advance_stage(readmode_restore_stage, 2)
+    }
+    if (u ~ /LVOCLOSE|_LVOCLOSE/) {
+        if (readmode_restore_stage >= 2) {
+            readmode_restore_stage = advance_stage(readmode_restore_stage, 3)
+        }
+    }
+    if (u ~ /MEMORY_DEALLOCATEMEMORY|MEMORY_DEALLOCAT/) {
+        if (readmode_restore_stage >= 3) {
+            readmode_restore_stage = advance_stage(readmode_restore_stage, 4)
+        }
+    }
+    if (u ~ /SAVEDREADMODEFLAGS/ && u ~ /ESQPARS2_READMODEFLAGS/) {
+        if (readmode_restore_stage >= 4) {
+            has_readmode_restore = 1
+        }
     }
 
     if (u ~ /#\$55|#85/) {
@@ -310,11 +351,17 @@ function advance_stage(stage, target) {
     if (u ~ /FORCEUIREFRESHIFIDLE/ && success_stage >= 1) {
         success_stage = advance_stage(success_stage, 2)
     }
+    if (u ~ /GLOBAL_STR_COPY_NIL|COPY_NIL/ && success_stage >= 2) {
+        has_success_copy_prefix = 1
+    }
     if (u ~ /STRING_APPENDATNULL|APPENDATNULL/) {
         append_count++
     }
     if (append_count >= 3 && success_stage >= 2) {
         success_stage = advance_stage(success_stage, 3)
+    }
+    if (u ~ /SHELLCOMMANDARGSEPARATOR|SHELLCOMMANDARGSEPAR/ && success_stage >= 2) {
+        has_success_copy_separator = 1
     }
     if (u ~ /LVOEXECUTE|_LVOEXECUTE/ && success_stage >= 3) {
         success_stage = advance_stage(success_stage, 4)
@@ -371,15 +418,20 @@ END {
     print "HAS_FILENAME_LOOP_FLOW=" filename_loop_flow
     print "HAS_NGAD_GUARD=" has_ngad_guard
     print "HAS_TARGET_SETUP=" has_target_setup
+    print "HAS_SHORT_NAME_SETUP=" has_short_name_setup
     print "HAS_SIZE_GUARD_FLOW=" has_size_guard_flow
     print "HAS_OVERSIZE_EXIT=" has_oversize_exit
     print "HAS_CHECKSUM_GATE=" has_checksum_gate
     print "HAS_OPEN_FAIL=" has_open_fail
+    print "HAS_OPEN_FAIL_REFRESH=" has_open_fail_refresh
     print "HAS_TRANSFER_SETUP=" transfer_setup_done
+    print "HAS_READMODE_RESTORE=" has_readmode_restore
     print "HAS_RECEIVE_DISPATCH=" (sync_stage >= 4 && receive_call_count >= 1 && has_receive_dispatch)
     print "HAS_DELETE_MARKER_FLOW=" has_delete_marker_flow
     print "HAS_TEARDOWN_FLOW=" has_teardown_flow
     print "HAS_SUCCESS_COPY_FLOW=" has_success_copy_flow
+    print "HAS_SUCCESS_COPY_PREFIX=" has_success_copy_prefix
+    print "HAS_SUCCESS_COPY_SEPARATOR=" has_success_copy_separator
     print "HAS_ERROR_CLEANUP=" has_error_cleanup
     print "HAS_FINALIZE_DIAG=" has_finalize_diag
 }

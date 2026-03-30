@@ -22,6 +22,7 @@ BEGIN {
     has_status_text_ref = 0
     has_status_pen3 = 0
     has_layout_math = 0
+    has_status_copy_loop = 0
     brush_find_count = 0
     brush_select_count = 0
     math_div_count = 0
@@ -53,6 +54,9 @@ BEGIN {
     saw_pool_301 = 0
     saw_pool_tag = 0
     saw_pen3_imm = 0
+    saw_status_copy_store = 0
+    saw_status_copy_load = 0
+    saw_status_copy_combined = 0
 }
 
 function trim(s, t) {
@@ -136,6 +140,10 @@ function trim(s, t) {
     if (n ~ /LVOMOVE/) move_count++
     if (n ~ /LVOTEXT/ && n !~ /LVOTEXTLENGTH/) text_count++
 
+    if (u ~ /^MOVE\.B \(A0\),\(A1\)\+$/) saw_status_copy_store = 1
+    if (u ~ /^MOVE\.B \(A0\)\+,D0$/) saw_status_copy_load = 1
+    if (u ~ /^MOVE\.B \(A0\)\+,\(A1\)\+$/) saw_status_copy_combined = 1
+
     if (n ~ /DEALLOCATEMEMORY/) {
         has_cleanup_dealloc = 1
         dealloc_count++
@@ -150,6 +158,7 @@ END {
     has_default_brush_size = (saw_default_width && saw_default_height)
     has_overlay_split_and_clamp = (saw_delimiter_24 && saw_line_clamp_10)
     has_layout_math = (saw_math_div && saw_math_mul)
+    has_status_copy_loop = (saw_status_copy_combined || (saw_status_copy_store && saw_status_copy_load))
     has_text_pool_release = (saw_pool_301 && saw_pool_tag)
     has_status_pen3 = saw_pen3_imm
 
@@ -176,6 +185,7 @@ END {
     print "HAS_SELECT_BRUSH=" has_select_brush
     print "HAS_SELECT_BRUSH_CALL=" (brush_select_count == 1)
     print "HAS_STATUS_TEXT_REF=" has_status_text_ref
+    print "HAS_STATUS_COPY_LOOP=" has_status_copy_loop
     print "HAS_STATUS_PEN3=" has_status_pen3
     print "HAS_LAYOUT_MATH=" has_layout_math
     print "HAS_LAYOUT_DIV_CALL=" (math_div_count == 1)

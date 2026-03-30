@@ -22,7 +22,6 @@ BEGIN {
     dispatch_branch_count = 0
     preset_bit_count = 0
     clear_counter_count = 0
-    scroll_speed_signal_count = 0
     serial_value_count = 0
     copper_call_count = 0
 
@@ -38,6 +37,15 @@ BEGIN {
     pending_text_mode = 0
     pending_graph_mode = 0
     pending_vin_mode = 0
+    saw_scroll_speed_char = 0
+    pending_scroll_speed = 0
+    saw_scroll_wrap_compare = 0
+    saw_scroll_wrap_reset = 0
+    saw_scroll_decrement = 0
+    saw_scroll_text_limit = 0
+    saw_scroll_mul40 = 0
+    pending_scroll_mul40 = 0
+    saw_scroll_block_offset = 0
     saw_ctrl_string_start = 0
     saw_ctrl_string_stop = 0
     saw_ctrl_assert = 0
@@ -182,17 +190,34 @@ function norm(line, t) {
         has_vin_mode_update = 1
     }
 
-    if (alnum ~ /EDDIAGSCROLLSPEEDCHAR/ ||
-        alnum ~ /EDTEXTLIMIT/ ||
-        alnum ~ /EDBLOCKOFFSET/ ||
-        alnum ~ /ESQIFFJMPTBLMATHMULU32/ ||
-        alnum ~ /2830/) {
-        scroll_speed_signal_count++
+    if (alnum ~ /EDDIAGSCROLLSPEEDCHAR/) {
+        saw_scroll_speed_char = 1
+        pending_scroll_speed = 8
     }
-    if (scroll_speed_signal_count >= 4 && saw_draw_mode_text) {
-        has_scroll_speed_update = 1
+    if (pending_scroll_speed > 0 && (alnum ~ /CMPB/ || alnum ~ /CMP/ || alnum ~ /MOVEQ/) &&
+        (alnum ~ /33/ || alnum ~ /51/)) {
+        saw_scroll_wrap_compare = 1
     }
-
+    if (pending_scroll_speed > 0 && (alnum ~ /MOVEQ/ || alnum ~ /MOVEB/ || alnum ~ /MOVE/) &&
+        (alnum ~ /36/ || alnum ~ /54/)) {
+        saw_scroll_wrap_reset = 1
+    }
+    if (saw_scroll_speed_char && (alnum ~ /SUBQB1D0/ || alnum ~ /SUBQB1D1/)) {
+        saw_scroll_decrement = 1
+    }
+    if (alnum ~ /EDTEXTLIMIT/) {
+        saw_scroll_text_limit = 1
+    }
+    if (pending_scroll_speed > 0 && (alnum ~ /MOVEQ/ || alnum ~ /PEA/ || alnum ~ /MOVE/) &&
+        (alnum ~ /28/ || alnum ~ /40/)) {
+        pending_scroll_mul40 = 4
+    }
+    if (pending_scroll_mul40 > 0 && (alnum ~ /ESQIFFJMPTBLMATHMULU32/ || alnum ~ /MATHMULU32/)) {
+        saw_scroll_mul40 = 1
+    }
+    if (alnum ~ /EDBLOCKOFFSET/) {
+        saw_scroll_block_offset = 1
+    }
     if (alnum ~ /ED2STRSTARTTAPEVIDEO/) {
         saw_ctrl_string_start = 1
     }
@@ -318,6 +343,12 @@ function norm(line, t) {
     if (pending_vin_mode > 0) {
         pending_vin_mode--
     }
+    if (pending_scroll_speed > 0) {
+        pending_scroll_speed--
+    }
+    if (pending_scroll_mul40 > 0) {
+        pending_scroll_mul40--
+    }
     if (pending_copper_all_on > 0) {
         pending_copper_all_on--
     }
@@ -333,6 +364,12 @@ function norm(line, t) {
 }
 
 END {
+    if (saw_scroll_speed_char && saw_scroll_wrap_compare && saw_scroll_wrap_reset &&
+        saw_scroll_decrement && saw_scroll_text_limit && saw_scroll_mul40 &&
+        saw_scroll_block_offset && saw_draw_mode_text) {
+        has_scroll_speed_update = 1
+    }
+
     print "HAS_ENTRY=" has_entry
     print "HAS_KEY_FETCH=" has_key_fetch
     print "HAS_DISPATCH_CHAIN=" has_dispatch_chain

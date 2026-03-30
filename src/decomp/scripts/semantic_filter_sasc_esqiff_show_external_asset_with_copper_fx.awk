@@ -25,6 +25,7 @@ BEGIN {
     has_capture_limit = 0
     has_capture_store_rows = 0
     has_capture_active_result = 0
+    has_capture_threshold_rows = 0
     has_sum_reset = 0
     has_saturate_reset = 0
     has_return = 0
@@ -47,6 +48,7 @@ BEGIN {
     saw_palette_depth_load = 0
     saw_capture_limit_const = 0
     capture_store_count = 0
+    capture_helper_calls = 0
     sum_reset_count = 0
     saturate_reset_count = 0
 }
@@ -116,11 +118,17 @@ function trim(s, t) {
     if (saw_plane_mask_fixed && saw_plane_mask_depth && saw_palette_dst && saw_palette_src) has_palette_copy_loop = 1
 
     if (uline ~ /^MOVEQ(\.L)? #\$?32,D[0-7]$/ || uline ~ /^PEA 32\.W$/ || uline ~ /^MOVEQ #32,D[0-7]$/ || uline ~ /COPPER_LIMIT/) saw_capture_limit_const = 1
-    if ((uline ~ /CMP\.B D1/ && uline ~ /BCC/) || (uline ~ /CMP\.B/ && uline ~ /BCC/ && saw_capture_limit_const)) saw_capture_index_limit = 1
+    if (uline ~ /CMP\.B/ || uline ~ /WDISP_ACCUMULATORROWTABLE\+\$(6|7|E|F|16|17|1E|1F)\(A4\)/) saw_capture_index_limit = 1
     if (uline ~ /#\$4000/ || uline ~ /ACCUMULATOR_VALUE_LIMIT/) saw_capture_value_limit = 1
-    if (saw_capture_index_limit && saw_capture_value_limit) has_capture_limit = 1
+    if (uline ~ /ESQIFF_CAPTUREACCUMULATORVALUE/) capture_helper_calls++
+    if (saw_capture_limit_const && saw_capture_index_limit && saw_capture_value_limit) has_capture_limit = 1
     if (uline ~ /ACCUMULATOR_ROW[0-3]_CAPTUREVALUE/) capture_store_count++
     if (capture_store_count >= 4) has_capture_store_rows = 1
+    if (capture_helper_calls >= 4 && has_capture_store_rows) has_capture_limit = 1
+    if (has_capture_limit && has_capture_store_rows &&
+        (capture_helper_calls >= 4 || capture_store_count >= 8)) {
+        has_capture_threshold_rows = 1
+    }
     if (uline ~ /WDISP_ACCUMULATORCAPTUREACTIVE/ &&
         (uline ~ /(MOVE\.W #1|MOVE\.W #\$1|MOVEQ #1|MOVEQ #\$1)/ ||
          uline ~ /(CLR\.W|CLR\.L|MOVEQ #0|MOVE\.W #0|MOVE\.L #0)/)) has_capture_active_result = 1
@@ -158,6 +166,7 @@ END {
     print "HAS_PALETTE_COPY_LOOP=" has_palette_copy_loop
     print "HAS_CAPTURE_LIMIT=" has_capture_limit
     print "HAS_CAPTURE_STORE_ROWS=" has_capture_store_rows
+    print "HAS_CAPTURE_THRESHOLD_ROWS=" has_capture_threshold_rows
     print "HAS_CAPTURE_ACTIVE_RESULT=" has_capture_active_result
     print "HAS_SUM_RESET=" has_sum_reset
     print "HAS_SATURATE_RESET=" has_saturate_reset

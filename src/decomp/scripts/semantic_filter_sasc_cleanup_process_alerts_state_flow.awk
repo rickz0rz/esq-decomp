@@ -37,6 +37,9 @@ BEGIN {
     saw_draw_clock = 0
     saw_free_extra_titles = 0
     saw_update_ctrl = 0
+    type2_div_line = 0
+    type2_clear_line = 0
+    type2_free_line = 0
 }
 
 function trim(s, t) {
@@ -281,12 +284,19 @@ function advance_stage(stage, target) {
 
     if (n ~ /MATHDIVS32/ || n ~ /GROUPAGJMPTBLMATHDIVS32/) {
         saw_div_call = 1
+        if (type2_div_line == 0) {
+            type2_div_line = NR
+        }
     }
-    if (n ~ /ESQFUNCFREEEXTRATITLETEXTPOINTERS/ || n ~ /GROUPACJMPTBLESQFUNCFREEEXTRATITLET/) {
+    if (n ~ /ESQFUNCFREEEXTRATITLETEXTPOINT/ || n ~ /GROUPACJMPTBLESQFUNCFREEEXTRATITLET/) {
         saw_free_extra_titles = 1
+        if (type2_free_line == 0) {
+            type2_free_line = NR
+        }
     }
-    if (n ~ /CLRLBRUSHPENDINGALERTCODE/ && saw_free_extra_titles) {
-        has_type2_remainder_clear = 1
+    if ((n ~ /CLRLBRUSHPENDINGALERTCODE/ || n ~ /CLRLBRUSHPENDINGALERTCODEA4/) &&
+        type2_clear_line == 0) {
+        type2_clear_line = NR
     }
 
     if (n ~ /SCRIPTUPDATECTRLSTATEMACHINE/ || n ~ /GROUPACJMPTBLSCRIPTUPDATECTR/) {
@@ -310,6 +320,9 @@ function advance_stage(stage, target) {
 }
 
 END {
+    if (type2_div_line > 0 && type2_clear_line > type2_div_line && type2_free_line > type2_clear_line) {
+        has_type2_remainder_clear = 1
+    }
     print "HAS_ENTRY=" has_entry
     print "GATE_STAGE=" gate_stage
     print "DIAG_STAGE=" diag_stage

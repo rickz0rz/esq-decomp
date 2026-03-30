@@ -80,9 +80,7 @@ LONG PARSEINI_ScanLogoDirectory(void)
         lineStart = GCOMMAND_FindPathSeparator(lineBuf);
         len = PARSEINI_StrLen(lineStart) + 1;
         primaryEntries[i] = (char *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_PARSEINI_C_4, 1263, len, 65537);
-        if (primaryEntries[i] != (char *)0) {
-            PARSEINI_CopyString(primaryEntries[i], lineStart);
-        }
+        PARSEINI_CopyString(primaryEntries[i], lineStart);
         ++i;
     }
 
@@ -96,9 +94,7 @@ LONG PARSEINI_ScanLogoDirectory(void)
         }
         len = PARSEINI_StrLen(lineBuf) + 1;
         secondaryEntries[i] = (char *)SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_PARSEINI_C_5, 1287, len, 65537);
-        if (secondaryEntries[i] != (char *)0) {
-            PARSEINI_CopyString(secondaryEntries[i], lineBuf);
-        }
+        PARSEINI_CopyString(secondaryEntries[i], lineBuf);
         ++i;
     }
 

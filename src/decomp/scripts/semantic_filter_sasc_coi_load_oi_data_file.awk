@@ -24,6 +24,10 @@ BEGIN {
     alloc_call_count = 0
     wildcard_call_count = 0
     dealloc_call_count = 0
+    header_fail_dealloc_tag_ref = 0
+    cleanup_dealloc_tag_ref = 0
+    header_fail_dealloc_line_ref = 0
+    cleanup_dealloc_line_ref = 0
     has_return = 0
     path_arg_pending = 0
 }
@@ -77,6 +81,10 @@ function trim(s,t) {
     if (u ~ /COI_ALLOCSUBENTRYTABLE/) alloc_call_count++
     if (u ~ /ESQ_WILDCARDMATCH/ || u ~ /ESQ_WILDCARDMATC/) wildcard_call_count++
     if (u ~ /GROUP_AG_JMPTBL_MEMORY_DEALLOCATEMEMORY/ || u ~ /GROUP_AG_JMPTBL_MEMORY_DEALLOCAT/) dealloc_call_count++
+    if (u ~ /GLOBAL_STR_COI_C_6/) header_fail_dealloc_tag_ref++
+    if (u ~ /GLOBAL_STR_COI_C_1/) cleanup_dealloc_tag_ref++
+    if (u ~ /PEA 1198\.W/ || u ~ /PEA \(\$4AE\)\.W/) header_fail_dealloc_line_ref++
+    if (u ~ /PEA 1443\.W/ || u ~ /PEA \(\$5A3\)\.W/) cleanup_dealloc_line_ref++
     if (u == "RTS") has_return = 1
 }
 
@@ -106,5 +114,9 @@ END {
     print "ALLOC_CALL_COUNT=" alloc_call_count
     print "WILDCARD_CALL_COUNT=" wildcard_call_count
     print "DEALLOC_CALL_COUNT=" dealloc_call_count
+    print "HEADER_FAIL_DEALLOC_TAG_REF=" header_fail_dealloc_tag_ref
+    print "CLEANUP_DEALLOC_TAG_REF=" cleanup_dealloc_tag_ref
+    print "HEADER_FAIL_DEALLOC_LINE_REF=" header_fail_dealloc_line_ref
+    print "CLEANUP_DEALLOC_LINE_REF=" cleanup_dealloc_line_ref
     print "HAS_RETURN=" has_return
 }

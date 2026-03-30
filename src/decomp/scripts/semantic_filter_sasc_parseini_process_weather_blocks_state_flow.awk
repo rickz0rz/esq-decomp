@@ -22,6 +22,8 @@ BEGIN {
     saw_source_copy_move = 0
     has_source_len_calc = 0
     has_source_alloc = 0
+    has_source_temp_store = 0
+    has_source_alloc_guard = 0
     has_source_next_clear = 0
     has_source_copy_loop = 0
     has_source_attach_head = 0
@@ -198,6 +200,15 @@ function advance_stage(stage, target) {
         has_source_alloc = 1
         source_stage = advance_stage(source_stage, 5)
     }
+    if (source_stage >= 5 && (n ~ /MOVELD0PARSEINICURRENTWEATHERBLOCKTEMP/ || n ~ /MOVELD0PARSEINICURRENTWEATHERBLOCKTEMPPTR/)) {
+        has_source_temp_store = 1
+    }
+    if (source_stage >= 5 && n ~ /^TSTLD0$/) {
+        has_source_alloc_guard = 0
+    }
+    if (source_stage >= 5 && n ~ /^BEQ(W|S|B)/) {
+        has_source_alloc_guard = 1
+    }
     if (source_stage >= 5 && (n ~ /CLRLB8A0/ || n ~ /CLRL8A0/)) {
         has_source_next_clear = 1
         source_stage = advance_stage(source_stage, 6)
@@ -287,7 +298,9 @@ END {
     print "HAS_LOADCOLOR_FLOW=" (loadcolor_stage >= 11 && loadcolor_store_count >= 4 ? 1 : 0)
     print "HAS_NUMERIC_FIELD_FLOW=" (numeric_key_stage >= 12 && numeric_store_count >= 6 ? 1 : 0)
     print "HAS_TYPE_DITHER_FLOW=" (type_stage >= 3 ? 1 : 0)
-    print "HAS_SOURCE_SCAN_AND_ALLOC_FLOW=" (source_stage >= 7 && has_source_len_calc && has_source_alloc && has_source_next_clear && has_source_copy_loop ? 1 : 0)
+    print "HAS_SOURCE_SCAN_AND_ALLOC_FLOW=" (source_stage >= 7 && has_source_len_calc && has_source_alloc && has_source_temp_store && has_source_alloc_guard && has_source_next_clear && has_source_copy_loop ? 1 : 0)
+    print "HAS_SOURCE_TEMP_STORE=" has_source_temp_store
+    print "HAS_SOURCE_ALLOC_GUARD=" has_source_alloc_guard
     print "HAS_SOURCE_ATTACH_HEAD=" has_source_attach_head
     print "HAS_SOURCE_ATTACH_TAIL=" has_source_attach_tail
     print "HAS_HORIZONTAL_ALIGN_FLOW=" (horiz_stage >= 8 ? 1 : 0)

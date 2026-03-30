@@ -189,14 +189,16 @@ long DISKIO2_LoadCurDayDataFile(void)
         for (entryIndex = 0; entryIndex < parsedCount; entryIndex++) {
             DISKIO2_Entry *entry = (DISKIO2_Entry *)MEMORY_AllocateMemory(
                 Global_STR_DISKIO2_C_8, 634, 52, 0x10001UL);
-            DISKIO2_TitleData *title = (DISKIO2_TitleData *)MEMORY_AllocateMemory(
-                Global_STR_DISKIO2_C_9, 640, 500, 0x10001UL);
+            DISKIO2_TitleData *title;
             UWORD slot;
 
             if (entry == 0) {
                 result = -1;
                 break;
             }
+
+            title = (DISKIO2_TitleData *)MEMORY_AllocateMemory(
+                Global_STR_DISKIO2_C_9, 640, 500, 0x10001UL);
             if (title == 0) {
                 result = -1;
                 MEMORY_DeallocateMemory(

@@ -86,6 +86,7 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
     const char *baseF4;
     LONG widthBudget;
     LONG commaWidth;
+    UWORD baseBucketRow;
     UWORD row;
 
     ctx = (NewgridCtx *)entryState;
@@ -96,7 +97,8 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
     out[0] = 0;
     baseAux = (NEWGRID_AuxData *)ctx->entries;
 
-    row = ctx->focusRow;
+    baseBucketRow = ctx->focusRow;
+    row = baseBucketRow;
     if (row > 48) row = (UWORD)(row - 48);
 
     baseTitle = skip_time_prefix(baseAux->titlePtrs[(LONG)row]);
@@ -147,6 +149,8 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
                 const char *f2;
                 const char *f3;
                 const char *f4;
+                LONG bucketRow;
+                LONG w;
 
                 if (widthBudget < 0 && row >= ctx->focusRow) {
                     break;
@@ -221,15 +225,19 @@ void NEWGRID_BuildShowtimesText(char *gridCtx, char *entryState, char *out)
 
                 if (out[0] == 0) {
                     PARSEINI_JMPTBL_STRING_AppendAtNull(out, Global_STR_SHOWTIMES_AND_SINGLE_SPACE);
-                    NEWGRID_AddShowtimeBucketEntry(NEWGRID2_JMPTBL_STR_SkipClass3Chars(baseTime), row);
+                    NEWGRID_AddShowtimeBucketEntry(NEWGRID2_JMPTBL_STR_SkipClass3Chars(baseTime), baseBucketRow);
                     widthBudget -= _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, gridCtx,
                                                   Global_STR_SHOWTIMES_AND_SINGLE_SPACE, 0x7fffffff);
                 }
 
                 TEXTDISP_FormatEntryTimeForIndex(tempTime, idx, (char *)coiMut);
-                if (NEWGRID_AddShowtimeBucketEntry(NEWGRID2_JMPTBL_STR_SkipClass3Chars(tempTime), idx) == 0) {
-                    LONG w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, gridCtx,
-                                            NEWGRID2_JMPTBL_STR_SkipClass3Chars(tempTime), 0x7fffffff);
+                bucketRow = idx;
+                if (row > 48) {
+                    bucketRow += 48;
+                }
+                if (NEWGRID_AddShowtimeBucketEntry(NEWGRID2_JMPTBL_STR_SkipClass3Chars(tempTime), bucketRow) == 0) {
+                    w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, gridCtx,
+                                       NEWGRID2_JMPTBL_STR_SkipClass3Chars(tempTime), 0x7fffffff);
                     widthBudget -= (commaWidth + w);
                 }
 

@@ -54,6 +54,9 @@ BEGIN {
     post_banner_ini_count = 0
     has_post_banner_load_sequence = 0
 
+    raster_stage = 0
+    has_raster_bootstrap = 0
+
     availability_stage = 0
     availability_reset_count = 0
     has_availability_bootstrap = 0
@@ -214,6 +217,29 @@ function advance_stage(stage, target) {
         has_startup_banner_sequence = 1
     }
 
+    if (u ~ /TLIBA3_BUILDDISPLAYCONTEXTFORVIEWMODE|BUILDDISPLAYCONTEXTFORVIE|BUILDDISPLAYCONTEXTFORVIEWMODE/) {
+        raster_stage = advance_stage(raster_stage, 1)
+    }
+    if ((u ~ /WDISP_DISPLAYCONTEXTBASE/ || u ~ /DISPLAYCONTEXTBASE/) && raster_stage >= 1) {
+        raster_stage = advance_stage(raster_stage, 2)
+    }
+    if (u ~ /WDISP_BANNERGRIDBITMAPSTRUCT|BANNERGRIDBITMAPSTRUCT/) {
+        raster_stage = advance_stage(raster_stage, 3)
+    }
+    if (u ~ /WDISP_LIVEPLANERASTERTABLE|LIVEPLANERASTERTABLE/) {
+        if (raster_stage >= 3) {
+            raster_stage = advance_stage(raster_stage, 4)
+        }
+    }
+    if ((u ~ /WDISP_BANNERWORKRASTERPTR/ || u ~ /BANNERWORKRASTER/) && raster_stage >= 4) {
+        raster_stage = advance_stage(raster_stage, 5)
+    }
+    if (u ~ /DISKIO_LOADCONFIGFROMDISK|LOADCONFIGFROMDISK/) {
+        if (raster_stage >= 5) {
+            has_raster_bootstrap = 1
+        }
+    }
+
     if (u ~ /RUNCOPPERRISETRANSITION/) {
         post_banner_stage = advance_stage(post_banner_stage, 1)
     }
@@ -350,7 +376,7 @@ function advance_stage(stage, target) {
         loop_stage = advance_stage(loop_stage, 4)
     }
     if (u ~ /CLEANUP_SHUTDOWNSYSTEM/ || u ~ /SHUTDOWNSYSTEM/) {
-        if (loop_stage >= 3 && shutdown_flag_refs >= 2) {
+        if (loop_stage >= 4 && shutdown_flag_refs >= 2) {
             has_loop_flow = 1
         }
     }
@@ -380,6 +406,7 @@ END {
     has_seed_bundle = (has_seed_secondary_group &&
         has_seed_phase &&
         has_seed_half_hour &&
+        has_seed_startup_long &&
         has_seed_ctrl_read_index &&
         has_seed_ctrl_gate &&
         has_seed_ctrl_checksum &&
@@ -393,6 +420,7 @@ END {
     print "HAS_FONT_FALLBACK_CHAIN=" has_font_fallback_chain
     print "HAS_SERIAL_BOOTSTRAP=" has_serial_bootstrap
     print "HAS_STARTUP_BANNER_SEQUENCE=" has_startup_banner_sequence
+    print "HAS_RASTER_BOOTSTRAP=" has_raster_bootstrap
     print "HAS_POST_BANNER_LOAD_SEQUENCE=" has_post_banner_load_sequence
     print "HAS_AVAILABILITY_BOOTSTRAP=" has_availability_bootstrap
     print "HAS_POST_STATUS_CLEAR=" has_post_status_clear

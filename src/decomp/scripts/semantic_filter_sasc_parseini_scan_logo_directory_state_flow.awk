@@ -12,10 +12,12 @@ BEGIN {
     has_primary_comma = 0
     has_find_separator = 0
     has_primary_alloc = 0
+    has_primary_alloc_guard = 0
     has_primary_copy = 0
     has_secondary_newline = 0
     has_secondary_carriage = 0
     has_secondary_alloc = 0
+    has_secondary_alloc_guard = 0
     has_secondary_copy = 0
     has_compare = 0
     has_delete_prefix = 0
@@ -26,6 +28,8 @@ BEGIN {
     has_finalize_primary = 0
     has_finalize_secondary = 0
     has_return = 0
+    alloc_phase = 0
+    alloc_guard_window = 0
 }
 
 function trim(s, t) {
@@ -91,15 +95,37 @@ function trim(s, t) {
     if (n ~ /GLOBALSTRPARSEINIC4/ || n ~ /PEA1263W/ || n ~ /PEA4EFW/) {
         has_primary_alloc = 1
     }
-    if (has_find_separator && (n ~ /MOVEBA1PLUSA2PLUS/ || n ~ /MOVEBA2PLUSA3PLUS/ || n ~ /TSTBFFFFFFFFA2/ || n ~ /TSTBFFFFFFFFA3/)) {
+    if (n ~ /SCRIPTJMPTBLMEMORYALLOCATEMEMORY/ && has_secondary_alloc == 0) {
+        alloc_phase = 1
+        alloc_guard_window = 10
+    }
+    if (alloc_phase == 1 && alloc_guard_window > 0 &&
+        (n ~ /TSTL[A0-7()$0-9]+/ || n ~ /CMPL#0/ || n ~ /BEQ/)) {
+        has_primary_alloc_guard = 1
+    }
+    if (has_primary_alloc &&
+        has_secondary_alloc == 0 &&
+        (n ~ /PARSEINICOPYSTRING/ || u ~ /^MOVE\.B \(A1\)\+,\(A2\)\+$/ || u ~ /^MOVE\.B \(A2\)\+,\(A3\)\+$/ || n ~ /TSTBFFFFFFFFA2/ || n ~ /TSTBFFFFFFFFA3/)) {
         has_primary_copy = 1
     }
 
     if (n ~ /GLOBALSTRPARSEINIC5/ || n ~ /PEA1287W/ || n ~ /PEA507W/) {
         has_secondary_alloc = 1
     }
-    if (has_secondary_alloc && (n ~ /MOVEBA1PLUSA2PLUS/ || n ~ /MOVEBA2PLUSA3PLUS/ || n ~ /TSTBFFFFFFFFA2/ || n ~ /TSTBFFFFFFFFA3/)) {
+    if (n ~ /SCRIPTJMPTBLMEMORYALLOCATEMEMORY/ && has_secondary_alloc == 1 && has_secondary_copy == 0 && has_primary_copy == 1) {
+        alloc_phase = 2
+        alloc_guard_window = 10
+    }
+    if (alloc_phase == 2 && alloc_guard_window > 0 &&
+        (n ~ /TSTL[A0-7()$0-9]+/ || n ~ /CMPL#0/ || n ~ /BEQ/)) {
+        has_secondary_alloc_guard = 1
+    }
+    if (has_secondary_alloc &&
+        (n ~ /PARSEINICOPYSTRING/ || u ~ /^MOVE\.B \(A1\)\+,\(A2\)\+$/ || u ~ /^MOVE\.B \(A2\)\+,\(A3\)\+$/ || n ~ /TSTBFFFFFFFFA2/ || n ~ /TSTBFFFFFFFFA3/)) {
         has_secondary_copy = 1
+    }
+    if (alloc_guard_window > 0) {
+        alloc_guard_window--
     }
 
     if (n ~ /STRINGCOMPARENOCASE/) {
@@ -153,10 +179,12 @@ END {
     print "HAS_PRIMARY_COMMA=" has_primary_comma
     print "HAS_FIND_SEPARATOR=" has_find_separator
     print "HAS_PRIMARY_ALLOC=" has_primary_alloc
+    print "HAS_PRIMARY_ALLOC_GUARD=" has_primary_alloc_guard
     print "HAS_PRIMARY_COPY=" has_primary_copy
     print "HAS_SECONDARY_NEWLINE=" has_secondary_newline
     print "HAS_SECONDARY_CARRIAGE=" has_secondary_carriage
     print "HAS_SECONDARY_ALLOC=" has_secondary_alloc
+    print "HAS_SECONDARY_ALLOC_GUARD=" has_secondary_alloc_guard
     print "HAS_SECONDARY_COPY=" has_secondary_copy
     print "HAS_COMPARE=" has_compare
     print "HAS_DELETE_PREFIX=" has_delete_prefix

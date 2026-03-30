@@ -4,6 +4,8 @@ BEGIN {
 
     saw_topaz_font = 0
     saw_prevuec_font = 0
+    pending_topaz_font = 0
+    pending_prevuec_font = 0
     saw_bit5 = 0
     saw_ctrl_line = 0
     saw_bit3 = 0
@@ -28,6 +30,8 @@ BEGIN {
     saw_update_ctrl_h = 0
     saw_diag_counter = 0
     saw_true_false = 0
+    pending_true_false_branch = 0
+    pending_true_literal = 0
 }
 
 function trim(s,    t) {
@@ -77,8 +81,14 @@ function note_row(row) {
     if (u ~ /^ESQFUNC_DRAWDIAGNOSTICSSCREEN:/) has_entry = 1
     if (u ~ /^RTS$/) has_return = 1
 
-    if (n ~ /GLOBALHANDLETOPAZFONT/ && n ~ /LVOSETFONT/) saw_topaz_font = 1
-    if (n ~ /GLOBALHANDLEPREVUECFONT/ && n ~ /LVOSETFONT/) saw_prevuec_font = 1
+    if (n ~ /GLOBALHANDLETOPAZFONT/) pending_topaz_font = 1
+    if (n ~ /GLOBALHANDLEPREVUECFONT/) pending_prevuec_font = 1
+    if (n ~ /LVOSETFONT/) {
+        if (pending_topaz_font != 0) saw_topaz_font = 1
+        if (pending_prevuec_font != 0) saw_prevuec_font = 1
+        pending_topaz_font = 0
+        pending_prevuec_font = 0
+    }
 
     if (n ~ /READCIABBIT5MASK/ || n ~ /SCRIPTREADHANDSHAKEBIT5MASK/) saw_bit5 = 1
     if (n ~ /SCRIPTGETCTRLLINEFLAG/) saw_ctrl_line = 1
@@ -108,7 +118,11 @@ function note_row(row) {
     if (n ~ /PARSEINICOMPUTEHTCMAXVALUES/) saw_compute_htc = 1
     if (n ~ /PARSEINIUPDATECTRLHDELTAMAX/) saw_update_ctrl_h = 1
     if (n ~ /ESQFUNCDIAGROWCOUNTER/ && (u ~ /ADDQ\.L #1/ || u ~ /ADDQ\.L #\$1/)) saw_diag_counter = 1
-    if (n ~ /GLOBALSTRTRUE2/ && n ~ /GLOBALSTRFALSE2/) saw_true_false = 1
+    if (n ~ /ESQDISPPRIMARYSECONDARYMIRRORFL/) pending_true_false_branch = 1
+    if (pending_true_false_branch != 0 && n ~ /GLOBALSTRTRUE2/) pending_true_literal = 1
+    if (pending_true_literal != 0 && n ~ /GLOBALSTRFALSE2/) {
+        saw_true_false = 1
+    }
 }
 
 END {

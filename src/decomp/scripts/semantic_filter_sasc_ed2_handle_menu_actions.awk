@@ -29,6 +29,13 @@ BEGIN {
     has_status_overlay_dump=0
     has_debug_dump_loop=0
     has_banner_datetime_pair=0
+    has_summary_prev=0
+    has_summary_next=0
+    has_detail_prev=0
+    has_detail_next=0
+    has_color_bar_geometry=0
+    has_enable_highlight_sync=0
+    has_debug_dump_header_codes=0
     has_refresh_save_byte=0
     has_refresh_mul_60=0
     has_disk_warning_gate_update=0
@@ -63,6 +70,21 @@ BEGIN {
     saw_status_overlay_format=0
     saw_status_overlay_sprintf=0
     saw_status_overlay_display=0
+    saw_summary_add=0
+    saw_summary_sub=0
+    saw_summary_index=0
+    saw_summary_call=0
+    saw_detail_add=0
+    saw_detail_sub=0
+    saw_detail_index=0
+    saw_detail_call=0
+    saw_color_loop_15=0
+    saw_color_loop_32=0
+    saw_color_loop_mul=0
+    saw_enable_highlight_call=0
+    saw_set_rast_mode=0
+    saw_debug_dump_header_code=0
+    saw_debug_dump_group_code=0
     weather_runtime_dump_count=0
     saw_refresh_mul_60_arg=0
     saw_clock_minlen_const=0
@@ -139,6 +161,18 @@ function trim(s, t) {
     if (n ~ /WDISPSPRINTF/ && n ~ /DISPLAYTEXTATPOSITION/ || n ~ /BITPLANE1PCT8LX/ && n ~ /BANNERROWSCRATCHRASTERBASE0/) has_status_overlay_dump=1
     if (n ~ /DUMPPROGRAMSOURCERECORDVERBOSE/ && n ~ /SERVICEUITICKIFRUNNING/ || n ~ /PRIMARYGROUPENTRYCOUNT/ && n ~ /PRIMARYGROUPENTRYPTRTABLE/ && n ~ /PRIMARYTITLEPTRTABLE/) has_debug_dump_loop=1
     if (n ~ /DSTFORMATBANNERDATETIME/ && n ~ /ED2STRCTIME/ && n ~ /ED2STRBTIME/ && n ~ /CLOCKDAYSLOTINDEX/ && n ~ /CLOCKCURRENTDAYOFWEEKINDEX/) has_banner_datetime_pair=1
+    if (n ~ /ED2SELECTEDENTRYINDEX/ && n ~ /D0/) saw_summary_index=1
+    if (u ~ /ADDQ\.(W|L)? #\$?1,D0$/ || u ~ /ADDQ\.(W|L)? #1,D0$/) saw_summary_add=1
+    if (u ~ /SUBQ\.(W|L)? #\$?1,D0$/ || u ~ /SUBQ\.(W|L)? #1,D0$/) saw_summary_sub=1
+    if (n ~ /DRAWENTRYSUMMARYPANEL/) saw_summary_call=1
+    if (saw_summary_index && saw_summary_sub && saw_summary_call) has_summary_prev=1
+    if (saw_summary_index && saw_summary_add && saw_summary_call) has_summary_next=1
+    if (n ~ /ED2SELECTEDFLAGBYTEOFFSET/ && n ~ /D0/) saw_detail_index=1
+    if (u ~ /ADDQ\.(W|L)? #\$?1,D0$/ || u ~ /ADDQ\.(W|L)? #1,D0$/) saw_detail_add=1
+    if (u ~ /SUBQ\.(W|L)? #\$?1,D0$/ || u ~ /SUBQ\.(W|L)? #1,D0$/) saw_detail_sub=1
+    if (n ~ /DRAWENTRYDETAILSPANEL/) saw_detail_call=1
+    if (saw_detail_index && saw_detail_sub && saw_detail_call) has_detail_prev=1
+    if (saw_detail_index && saw_detail_add && saw_detail_call) has_detail_next=1
     if (n ~ /OPENFILEWITHMODE/) has_clock_file_read=1
     if (n ~ /LVOREAD/) has_clock_file_read=1
     if (n ~ /LVOCLOSE/) has_clock_file_close=1
@@ -207,6 +241,16 @@ function trim(s, t) {
     if (n ~ /EDDOTCCOLONENDOFDU/) saw_debug_dump_end=1
     if (saw_debug_dump_start && saw_debug_dump_end) has_debug_dump_bookends=1
     if (n ~ /SETAPEN/ || n ~ /SETDRMD/ || n ~ /SETBPEN/ || n ~ /GLOBALREF696400BITMAP/) has_restore_state=1
+    if (u ~ /#\$0?F/ || u ~ /#15/) saw_color_loop_15=1
+    if (u ~ /#\$20/ || u ~ /#32/) saw_color_loop_32=1
+    if (n ~ /MULS/ || n ~ /MULU/ || u ~ /LSL\.(W|L)? #/) saw_color_loop_mul=1
+    if (n ~ /ENABLEHIGH/) saw_enable_highlight_call=1
+    if (n ~ /TEXTDISPSETRASTFORMODE/) saw_set_rast_mode=1
+    if (saw_enable_highlight_call && saw_set_rast_mode && has_ctrl_shadow_enable_arg1) has_enable_highlight_sync=1
+    if (n ~ /TEXTDISPPRIMARYGROUPHEADERCODE/) saw_debug_dump_header_code=1
+    if (n ~ /TEXTDISPPRIMARYGROUPCODE/) saw_debug_dump_group_code=1
+    if (saw_debug_dump_header_code && saw_debug_dump_group_code) has_debug_dump_header_codes=1
+    if (saw_color_loop_15 && saw_color_loop_32 && saw_color_loop_mul) has_color_bar_geometry=1
     if (u == "RTS") has_rts=1
 }
 
@@ -241,6 +285,13 @@ END {
     print "HAS_STATUS_OVERLAY_DUMP=" has_status_overlay_dump
     print "HAS_DEBUG_DUMP_LOOP=" has_debug_dump_loop
     print "HAS_BANNER_DATETIME_PAIR=" has_banner_datetime_pair
+    print "HAS_SUMMARY_PREV=" has_summary_prev
+    print "HAS_SUMMARY_NEXT=" has_summary_next
+    print "HAS_DETAIL_PREV=" has_detail_prev
+    print "HAS_DETAIL_NEXT=" has_detail_next
+    print "HAS_COLOR_BAR_GEOMETRY=" has_color_bar_geometry
+    print "HAS_ENABLE_HIGHLIGHT_SYNC=" has_enable_highlight_sync
+    print "HAS_DEBUG_DUMP_HEADER_CODES=" has_debug_dump_header_codes
     print "HAS_REFRESH_SAVE_BYTE=" has_refresh_save_byte
     print "HAS_REFRESH_MUL_60=" has_refresh_mul_60
     print "HAS_DISK_WARNING_GATE_UPDATE=" has_disk_warning_gate_update

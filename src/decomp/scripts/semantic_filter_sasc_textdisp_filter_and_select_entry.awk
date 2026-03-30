@@ -4,6 +4,7 @@ BEGIN {
     has_mode_x = 0
     has_mode1 = 0
     has_mode_default_done = 0
+    has_done_guard = 0
     has_filter_slot = 0
     has_filter_mode = 0
     has_filter_ppv = 0
@@ -30,10 +31,12 @@ BEGIN {
     has_default_slot_seed = 0
     has_half_hour_backtrack = 0
     has_sentinel = 0
+    has_slot_last_guard = 0
     has_time_window = 0
     has_name_scan = 0
     has_cmp = 0
     has_testbit = 0
+    has_selection_bit_accept = 0
     has_found_flag = 0
     has_set_selection = 0
     has_build_detail = 0
@@ -42,6 +45,7 @@ BEGIN {
     has_slot_reset = 0
     has_mode2 = 0
     has_mode3 = 0
+    has_title_backtrack_loop = 0
     has_return = 0
 }
 
@@ -64,6 +68,7 @@ function trim(s, t) {
     if (index(u, "#$58") > 0 || index(u, "SUBI.W #18,D0") > 0) has_mode_x = 1
     if (index(u, "MOVE.B #$1,TEXTDISP_FILTERMODEID") > 0) has_mode1 = 1
     if (index(u, "MOVE.B #$3,TEXTDISP_FILTERMODEID") > 0) has_mode_default_done = 1
+    if (index(u, "MOVEQ #3,D1") > 0 || index(u, "SUBQ.B #$3,D0") > 0) has_done_guard = 1
     if (index(u, "TEXTDISP_FILTERCHANNELSLOTINDEX") > 0) has_filter_slot = 1
     if (index(u, "TEXTDISP_FILTERMODEID") > 0) has_filter_mode = 1
     if (index(u, "TEXTDISP_FILTERPPVSBEMATCHFLAG") > 0 || index(u, "TEXTDISP_FILTERPPVSBEMATCHFLAG") > 0) has_filter_ppv = 1
@@ -94,13 +99,17 @@ function trim(s, t) {
         index(u, "MOVE.W CLOCK_HALFHOURSLOTINDEX,D1") > 0 || index(u, "MOVE.W CLOCK_HALFHOURSLOTINDEX(A4),D1") > 0) has_primary_slot_seed = 1
     if (index(u, "MOVEQ #1,D0") > 0 || index(u, "MOVEQ.L #$1,D0") > 0) has_default_slot_seed = 1
     if (index(u, "SUBQ.W #1,-22(A5)") > 0 || index(u, "SUBQ.L #$1,$28(A7)") > 0) has_half_hour_backtrack = 1
+    if (((prev_u == "TST.L -26(A5)") && index(u, "BNE.S .ENSURE_CHANNEL_ENTRY") > 0) ||
+        ((prev_u == "TST.L $40(A7)") && index(u, "BNE.B ___TEXTDISP_FILTERANDSELECTENTRY__50") > 0)) has_title_backtrack_loop = 1
     if (index(u, "MOVE.W #$31,TEXTDISP_FILTERCHANNELSLOTINDEX") > 0 || index(u, "CMPI.W #$31,TEXTDISP_FILTERCHANNELSLOTINDEX") > 0 ||
         index(u, "MOVEQ.L #$31,D1") > 0) has_sentinel = 1
+    if (index(u, "CMPI.W #$30,TEXTDISP_FILTERCHANNELSLOTINDEX") > 0 || index(u, "MOVEQ.L #$30,D1") > 0) has_slot_last_guard = 1
     if (index(u, "CONFIG_TIMEWINDOWMINUTES") > 0 || index(u, "1440.W") > 0 || index(u, "#$5A0") > 0) has_time_window = 1
     if (index(u, "TST.B (A0)+") > 0 || index(u, "ADDQ.L #$1,$1C(A7)") > 0) has_name_scan = 1
     if (index(u, "STRING_COMPARENOCASEN") > 0 || index(u, "STRING_COMPARENOCASE") > 0) has_cmp = 1
     if (index(u, "TLIBA2_JMPTBL_ESQ_TESTBIT1BASED") > 0 || index(u, "TLIBA2_JMPTBL_ESQ_TESTBIT1B") > 0 ||
         index(u, "ESQ_TESTBIT1BASED") > 0 || index(u, "ESQ_TESTBIT1BASE") > 0) has_testbit = 1
+    if (index(u, "ADDQ.L #1,D0") > 0 || index(u, "ADDQ.L #$1,D0") > 0) has_selection_bit_accept = 1
     if (index(u, "MOVE.L D0,-20(A5)") > 0 || index(u, "MOVEQ.L #$1,D6") > 0) has_found_flag = 1
     if (index(u, "TEXTDISP_SETSELECTIONFIELDS") > 0 || index(u, "TEXTDISP_SETSELECTIONF") > 0) has_set_selection = 1
     if (index(u, "TEXTDISP_BUILDENTRYDETAILLINE") > 0 || index(u, "TEXTDISP_BUILDENTRYDETAI") > 0) has_build_detail = 1
@@ -110,6 +119,7 @@ function trim(s, t) {
     if (index(u, "MOVE.B #$2,TEXTDISP_FILTERMODEID") > 0 || index(u, "MOVE.B D0,TEXTDISP_FILTERMODEID") > 0) has_mode2 = 1
     if (index(u, "MOVE.B #$3,TEXTDISP_FILTERMODEID") > 0 || index(u, "MOVE.B D0,TEXTDISP_FILTERMODEID") > 0) has_mode3 = 1
     if (u == "RTS") has_return = 1
+    prev_u = u
 }
 
 END {
@@ -118,6 +128,7 @@ END {
     print "HAS_MODE_X=" has_mode_x
     print "HAS_MODE1=" has_mode1
     print "HAS_MODE_DEFAULT_DONE=" has_mode_default_done
+    print "HAS_DONE_GUARD=" has_done_guard
     print "HAS_FILTER_SLOT=" has_filter_slot
     print "HAS_FILTER_MODE=" has_filter_mode
     print "HAS_FILTER_PPV=" has_filter_ppv
@@ -143,11 +154,14 @@ END {
     print "HAS_PRIMARY_SLOT_SEED=" has_primary_slot_seed
     print "HAS_DEFAULT_SLOT_SEED=" has_default_slot_seed
     print "HAS_HALF_HOUR_BACKTRACK=" has_half_hour_backtrack
+    print "HAS_TITLE_BACKTRACK_LOOP=" has_title_backtrack_loop
     print "HAS_SENTINEL=" has_sentinel
+    print "HAS_SLOT_LAST_GUARD=" has_slot_last_guard
     print "HAS_TIME_WINDOW=" has_time_window
     print "HAS_NAME_SCAN=" has_name_scan
     print "HAS_CMP=" has_cmp
     print "HAS_TESTBIT=" has_testbit
+    print "HAS_SELECTION_BIT_ACCEPT=" has_selection_bit_accept
     print "HAS_FOUND_FLAG=" has_found_flag
     print "HAS_SET_SELECTION=" has_set_selection
     print "HAS_BUILD_DETAIL=" has_build_detail

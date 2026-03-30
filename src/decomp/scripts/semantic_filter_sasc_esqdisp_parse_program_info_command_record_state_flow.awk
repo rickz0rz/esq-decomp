@@ -27,12 +27,14 @@ BEGIN {
     saw_attr_capture = 0
     saw_attr_skip = 0
     saw_missing_attr_retry = 0
+    saw_attr_text_nul_init = 0
     has_attr_scan_flow = 0
 
     saw_entry_index_init = 0
     saw_entry_bound = 0
     saw_entry_load = 0
     saw_title_match = 0
+    saw_title_match_call = 0
     saw_match_continue = 0
     has_entry_match_flow = 0
 
@@ -53,7 +55,12 @@ BEGIN {
     has_zero_tag_fallback = 0
     has_attr_text_flow = 0
 
-    field46_mask_count = 0
+    field46_guard_count = 0
+    field46_guards["6"] = 0
+    field46_guards["7"] = 0
+    field46_guards["8"] = 0
+    field46_guards["9"] = 0
+    field46_guards["10"] = 0
     field46_yesno_masks["1"] = 0
     field46_yesno_masks["2"] = 0
     field46_yesno_masks["4"] = 0
@@ -62,6 +69,7 @@ BEGIN {
     has_field46_flow = 0
 
     saw_fill_header = 0
+    saw_fill_header_arg_pack = 0
     saw_index_increment = 0
     saw_loop_back = 0
     has_finalize_flow = 0
@@ -119,11 +127,13 @@ function trim(s, t) {
     if (u ~ /CLR\.L \$2C\(A7\)|CLR\.L -24\(A5\)|MOVE\.L A3,-20\(A5\)|MOVE\.L A5,A3/) saw_attr_reset = 1
     if (u ~ /CLR\.B \(A[35]\)\+|MOVE\.L A[25],-24\(A5\)|MOVE\.L A[25],A2/) saw_attr_capture = 1
     if (u ~ /ADDA\.L D5,A3|ADD\.L D6,A5/) saw_attr_skip = 1
+    if (u ~ /CLR\.B -25\(A5\)|CLR\.B \$29\(A7\)/) saw_attr_text_nul_init = 1
     if ((u ~ /TST\.L -24\(A5\)|MOVE\.L A2,D0/) ||
         (u ~ /BEQ\.S \.LAB_08EB/ || u ~ /BEQ\.B ___ESQDISP_PARSEPROGRAMINFOCOMMANDRECORD__/)) {
         saw_missing_attr_retry = 1
     }
     if (saw_record_marker && saw_attr_marker && saw_scan_limit && saw_attr_reset &&
+        saw_attr_text_nul_init &&
         saw_attr_capture && saw_attr_skip && saw_missing_attr_retry) {
         has_attr_scan_flow = 1
     }
@@ -134,10 +144,12 @@ function trim(s, t) {
         saw_entry_load = 1
     }
     if (u ~ /ESQDISP_TITLEMATCHES|CMP\.B \(A0\)\+,D0|CMP\.B \(A1\)\+,D0/) saw_title_match = 1
+    if (u ~ /BSR\.W ESQDISP_TITLEMATCHES|TST\.L D0|TST\.B D0/) saw_title_match_call = 1
     if (u ~ /BEQ\.W \.LAB_0918|BEQ\.W ___ESQDISP_PARSEPROGRAMINFOCOMMANDRECORD__|BNE\.W \.LAB_0918|TST\.L D0/) {
         saw_match_continue = 1
     }
-    if (saw_entry_index_init && saw_entry_bound && saw_entry_load && saw_title_match && saw_match_continue) {
+    if (saw_entry_index_init && saw_entry_bound && saw_entry_load &&
+        saw_title_match && saw_title_match_call && saw_match_continue) {
         has_entry_match_flow = 1
     }
 
@@ -182,26 +194,35 @@ function trim(s, t) {
         has_attr_text_flow = 1
     }
 
-    if (u ~ /ANDI\.L #\$FFFE,D0|ANDI\.L #\$FFFD,D0|ANDI\.L #\$FFFB,D0|ANDI\.L #\$FFF7,D0|ANDI\.L #\$FFEF,D0/) {
-        field46_mask_count++
-    }
+    if (u ~ /MOVEQ #6,D0|MOVEQ\.L #\$6,D0|CMPI?\.L #\$6,/) field46_guards["6"] = 1
+    if (u ~ /MOVEQ #7,D0|MOVEQ\.L #\$7,D0|CMPI?\.L #\$7,/) field46_guards["7"] = 1
+    if (u ~ /MOVEQ #8,D0|MOVEQ\.L #\$8,D0|CMPI?\.L #\$8,/) field46_guards["8"] = 1
+    if (u ~ /MOVEQ #9,D0|MOVEQ\.L #\$9,D0|CMPI?\.L #\$9,/) field46_guards["9"] = 1
+    if (u ~ /MOVEQ #10,D0|MOVEQ\.L #\$A,D0|CMPI?\.L #\$A,/) field46_guards["10"] = 1
     if (u ~ /BSET #0,-31\(A5\)|BCLR #0,-31\(A5\)|PEA \(\$1\)\.W/) field46_yesno_masks["1"] = 1
     if (u ~ /BSET #1,-31\(A5\)|BCLR #1,-31\(A5\)|PEA \(\$2\)\.W/) field46_yesno_masks["2"] = 1
     if (u ~ /BSET #2,-31\(A5\)|BCLR #2,-31\(A5\)|PEA \(\$4\)\.W/) field46_yesno_masks["4"] = 1
     if (u ~ /BSET #3,-31\(A5\)|BCLR #3,-31\(A5\)|PEA \(\$8\)\.W/) field46_yesno_masks["8"] = 1
     if (u ~ /BSET #4,-31\(A5\)|BCLR #4,-31\(A5\)|PEA \(\$10\)\.W/) field46_yesno_masks["10"] = 1
-    if (field46_yesno_masks["1"] && field46_yesno_masks["2"] && field46_yesno_masks["4"] &&
-        field46_yesno_masks["8"] && field46_yesno_masks["10"]) {
-        field46_mask_count = 5
+    if (field46_guards["6"] && field46_guards["7"] && field46_guards["8"] &&
+        field46_guards["9"] && field46_guards["10"]) {
+        field46_guard_count = 5
     }
-    if (field46_mask_count >= 5) {
+    if (field46_guard_count >= 5 &&
+        field46_yesno_masks["1"] && field46_yesno_masks["2"] &&
+        field46_yesno_masks["4"] && field46_yesno_masks["8"] &&
+        field46_yesno_masks["10"]) {
         has_field46_flow = 1
     }
 
     if (u ~ /ESQDISP_FILLPROGRAMINFOHEADERFIE|ESQDISP_FILLPROGRAMINFOHEADERFIELDS/) saw_fill_header = 1
+    if (u ~ /PEA -27\(A5\)|PEA \$27\(A7\)/) saw_fill_header_arg_pack = 1
+    if (u ~ /MOVE\.L D3,-\(A7\)|MOVE\.L D2,-\(A7\)|MOVE\.L D1,-\(A7\)|MOVE\.L D0,-\(A7\)/) {
+        saw_fill_header_arg_pack = 1
+    }
     if (u ~ /ADDQ\.L #\$1,D7|ADDQ\.L #1,D7|ADDQ\.L #\$1,\$30\(A7\)/) saw_index_increment = 1
     if (u ~ /BRA\.W \.BRANCH|BRA\.W ___ESQDISP_PARSEPROGRAMINFOCOMMANDRECORD__/) saw_loop_back = 1
-    if (saw_fill_header && saw_index_increment && saw_loop_back) {
+    if (saw_fill_header && saw_fill_header_arg_pack && saw_index_increment && saw_loop_back) {
         has_finalize_flow = 1
     }
 }

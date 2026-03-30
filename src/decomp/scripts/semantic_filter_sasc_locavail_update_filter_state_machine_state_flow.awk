@@ -57,6 +57,10 @@ BEGIN {
     saw_duration = 0
     saw_class_cmp_2 = 0
     saw_class_cmp_3 = 0
+    case1_window = 0
+    case2_window = 0
+    case3_window = 0
+    pending_case1_reset = 0
     prev1 = ""
     prev2 = ""
     prev3 = ""
@@ -147,35 +151,38 @@ function trim(s, t) {
 
     if (u ~ /GROUP_AS_JMPTBL_STR_FINDCHARPTR/ || u ~ /STR_FINDCHARPTR/) {
         has_case1_find_char = 1
+        case1_window = 16
+        pending_case1_reset = 1
     }
     if (u ~ /SCRIPT_READHANDSHAKEBIT5MASK/ || u ~ /READCIABBIT5MASK/) {
         has_case1_handshake = 1
+        case1_window = 16
+        pending_case1_reset = 1
     }
     if ((u ~ /MOVE\.L D[0-7],20\(A[23]\)/ || u ~ /MOVE\.L D[0-7],\$14\(A[23]\)/) && saw_mode10) {
         has_case1_ctx10 = 1
-    }
-    if ((u ~ /LOCAVAIL_RESETFILTERCURSORSTATE/ || prev1 ~ /LOCAVAIL_RESETFILTERCURSORSTATE/) &&
-        (has_case1_find_char || has_case1_handshake || has_case1_ctx10)) {
-        has_case1_reset = 1
+        case1_window = 0
     }
 
     if (u ~ /ED_DIAGGRAPHMODECHAR/) {
         has_case2_graph_guard = 1
+        case1_window = 0
+        case2_window = 6
+        pending_case1_reset = 0
     }
     if (u ~ /ESQIFF_GADSBRUSHLISTCOUNT/) {
         has_case2_brush_guard = 1
-    }
-    if ((u ~ /LOCAVAIL_RESETFILTERCURSORSTATE/ || prev1 ~ /LOCAVAIL_RESETFILTERCURSORSTATE/) &&
-        (has_case2_graph_guard || has_case2_brush_guard)) {
-        has_case2_reset = 1
+        case1_window = 0
+        case2_window = 6
+        pending_case1_reset = 0
     }
 
     if (u ~ /WDISP_HIGHLIGHTACTIVE/) {
         has_case3_highlight_guard = 1
-    }
-    if ((u ~ /LOCAVAIL_RESETFILTERCURSORSTATE/ || prev1 ~ /LOCAVAIL_RESETFILTERCURSORSTATE/) &&
-        has_case3_highlight_guard) {
-        has_case3_reset = 1
+        case1_window = 0
+        case2_window = 0
+        case3_window = 4
+        pending_case1_reset = 0
     }
 
     if (u ~ /CMPI?\.L #\$?10,D[0-7]/ || u ~ /CMPI?\.L #16,D[0-7]/ ||
@@ -249,16 +256,29 @@ function trim(s, t) {
     }
 
     if (u ~ /LOCAVAIL_RESETFILTERCURSORSTATE/) {
+        if (pending_case1_reset) {
+            has_case1_reset = 1
+        } else if (case2_window > 0) {
+            has_case2_reset = 1
+        } else if (case3_window > 0) {
+            has_case3_reset = 1
+        } else {
+            has_default_reset = 1
+        }
         reset_call_count++
-    }
-    if ((u ~ /LOCAVAIL_RESETFILTERCURSORSTATE/ || prev1 ~ /LOCAVAIL_RESETFILTERCURSORSTATE/) &&
-        !(has_case1_find_char || has_case2_graph_guard || has_case3_highlight_guard)) {
-        has_default_reset = 1
+        case1_window = 0
+        case2_window = 0
+        case3_window = 0
+        pending_case1_reset = 0
     }
 
     if (u == "RTS") {
         has_return = 1
     }
+
+    if (case1_window > 0) case1_window--
+    if (case2_window > 0) case2_window--
+    if (case3_window > 0) case3_window--
 
     prev3 = prev2
     prev2 = prev1
@@ -303,6 +323,20 @@ END {
     print "HAS_STAGE34_STEP_RESET=" has_stage34_step_reset
     print "HAS_STAGE34_WINDOW_RESET=" has_stage34_window_reset
     print "HAS_STAGE34_CASE4_CLEAR=" has_stage34_case4_clear
+    print "FLOW_STAGE0_READY=" (has_filter_mode_guard && has_stage0_gate && has_stage0_node_lookup &&
+        has_stage0_class_store && has_stage0_step1_store && has_stage0_prev_reset)
+    print "FLOW_CASE1_BRANCHES=" (has_case1_find_char && has_case1_handshake &&
+        has_case1_ctx10 && has_case1_reset)
+    print "FLOW_CASE2_RESET=" (has_case2_graph_guard && has_case2_brush_guard && has_case2_reset)
+    print "FLOW_CASE3_RESET=" (has_case3_highlight_guard && has_case3_reset)
+    print "FLOW_DEFAULT_RESET=" has_default_reset
+    print "FLOW_STAGE1_TRANSITION=" (has_stage1_gate && has_stage1_mode_limit && has_stage1_dispatch &&
+        has_stage1_duration_load && has_stage1_window_store && has_stage1_cooldown_store &&
+        has_stage1_clear_sel_node && has_stage1_clear_sel_payload && has_stage1_step2_store)
+    print "FLOW_STAGE34_RESET=" (has_stage34_gate && has_stage34_mode_limit && has_stage34_dispatch &&
+        has_stage34_class1_value24 && has_stage34_class_reset && has_stage34_step_reset &&
+        has_stage34_window_reset)
+    print "FLOW_RESET_CALLS_OK=" (reset_call_count == 5)
     print "RESET_CALL_COUNT=" reset_call_count
     print "HAS_RETURN=" has_return
 }

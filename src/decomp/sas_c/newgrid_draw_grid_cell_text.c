@@ -20,6 +20,7 @@ void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *s
 {
     struct RastPort *rp;
     char mergedSecondary[26];
+    char *mergedWrite;
     LONG baselineX;
     LONG rowHalfY;
     LONG primaryY;
@@ -32,13 +33,13 @@ void NEWGRID_DrawGridCellText(char *rastPort, const char *primary, const char *s
     rp = (struct RastPort *)rastPort;
 
     if (Global_WORD_SELECT_CODE_IS_RAVESC) {
-        n = 0;
-        while (secondary[n] != 0 && n < 23) {
-            mergedSecondary[n] = secondary[n];
-            n++;
-        }
-        mergedSecondary[n++] = '-';
-        mergedSecondary[n] = 0;
+        mergedWrite = mergedSecondary;
+        scan = secondary;
+        do {
+            *mergedWrite++ = *scan++;
+        } while (mergedWrite[-1] != 0);
+        mergedSecondary[2] = '-';
+        mergedSecondary[3] = 0;
         PARSEINI_JMPTBL_STRING_AppendAtNull(mergedSecondary, secondary + 2);
         secondary = mergedSecondary;
     }

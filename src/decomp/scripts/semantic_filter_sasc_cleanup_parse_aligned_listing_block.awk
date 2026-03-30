@@ -21,11 +21,13 @@ BEGIN {
     subentry_text_fallback_b = 0
     subentry_numeric_fallback = 0
     copy_anim_calls = 0
+    merge_index_one_present = 0
     write_oi_calls = 0
     return_code_0 = 0
     return_code_1 = 0
     return_code_2 = 0
     has_return = 0
+    prev_u = ""
 }
 function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
 {
@@ -56,11 +58,16 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     if (u ~ /\$1C\(A2\)/ || u ~ /28\(A1\)/) subentry_text_fallback_b = 1
     if (u ~ /MOVE\.L \$20\(A2\),\$1A\(A0\)/ || u ~ /MOVE\.L 32\(A0\),26\(A1\)/) subentry_numeric_fallback = 1
     if (u ~ /CLEANUP_COPYANIMOBJECT/ || u ~ /MOVE\.B \(A0\),\(A1\)/) copy_anim_calls += 1
+    if (u ~ /MOVE\.W #\$?1,-32\(A5\)/ ||
+        (prev_u ~ /MOVEQ(\.L)? #\$?1,D0/ && u ~ /MOVE\.L D0,\$60\(A7\)/)) {
+        merge_index_one_present = 1
+    }
     if (u ~ /COI_WRITEOIDATAFILE/) write_oi_calls += 1
     if (u ~ /MOVEQ(\.L)? #\$?0,D0/ || u ~ /MOVEQ #0,D0/) return_code_0 = 1
     if (u ~ /MOVEQ(\.L)? #\$?1,D0/ || u ~ /MOVEQ #1,D0/) return_code_1 = 1
     if (u ~ /MOVEQ(\.L)? #\$?2,D0/ || u ~ /MOVEQ #2,D0/) return_code_2 = 1
     if (u == "RTS") has_return = 1
+    prev_u = u
 }
 END {
     print "HAS_LABEL=" has_label
@@ -84,6 +91,7 @@ END {
     print "SUBENTRY_TEXT_FALLBACK_PRESENT=" (subentry_text_fallback_a && subentry_text_fallback_b)
     print "SUBENTRY_NUMERIC_FALLBACK_PRESENT=" subentry_numeric_fallback
     print "COPY_ANIM_CALLS_GE1=" (copy_anim_calls >= 1)
+    print "MERGE_STARTS_AT_INDEX1=" merge_index_one_present
     print "WRITE_OI_CALLS_EQ0=" (write_oi_calls == 0)
     print "RETURN_CODE_0_PRESENT=" return_code_0
     print "RETURN_CODE_1_PRESENT=" return_code_1

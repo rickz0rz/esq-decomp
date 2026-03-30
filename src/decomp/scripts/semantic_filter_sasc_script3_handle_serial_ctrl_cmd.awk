@@ -18,6 +18,11 @@ BEGIN {
     has_handle_brush = 0
     has_apply_pending = 0
     has_tick_context = 0
+    handle_brush_calls = 0
+    tick_context_calls = 0
+    has_deferred_action_gate = 0
+    has_deferred_minus_one_gate = 0
+    saw_deferred_action_ref = 0
     status_refresh_calls = 0
     has_set_copper = 0
     has_set_rast = 0
@@ -80,9 +85,15 @@ function trim(s, t) {
 
     if (n ~ /PARSEINICHECKCTRLHCHANGE/) has_parse_change = 1
     if (n ~ /SCRIPTESQCAPTURECTRLBIT4STREAMBUFFERBYTE/ || n ~ /SCRIPTESQCAPTURECTRLBIT4STREAMBUFF/ || n ~ /SCRIPTESQCAPTURECTRLBIT4STREAM/ || n ~ /ESQCAPTURECTRLBIT4STREAMBUFFERBYTE/ || n ~ /ESQCAPTURECTRLBIT4STREAMBUFF/ || n ~ /ESQCAPTURECTRLBIT4STREAM/) has_capture_byte = 1
-    if (n ~ /SCRIPTHANDLEBRUSHCOMMAND/ || n ~ /SCRIPTHANDLEBRUSHCOMMAN/) has_handle_brush = 1
+    if (n ~ /SCRIPTHANDLEBRUSHCOMMAND/ || n ~ /SCRIPTHANDLEBRUSHCOMMAN/) {
+        handle_brush_calls++
+        has_handle_brush = 1
+    }
     if (n ~ /SCRIPTAPPLYPENDINGBANNERTARGET/ || n ~ /SCRIPTAPPLYPENDINGBANNERTAR/) has_apply_pending = 1
-    if (n ~ /SCRIPTPROCESSCTRLCONTEXTPLAYBACKTICK/ || n ~ /SCRIPTPROCESSCTRLCONTEXTPLAYBAC/) has_tick_context = 1
+    if (n ~ /SCRIPTPROCESSCTRLCONTEXTPLAYBACKTICK/ || n ~ /SCRIPTPROCESSCTRLCONTEXTPLAYBAC/) {
+        tick_context_calls++
+        has_tick_context = 1
+    }
     if (n ~ /SCRIPT3JMPTBLESQDISPUPDATESTATUSMASKANDREFRESH/ || n ~ /SCRIPT3JMPTBLESQDISPUPDATESTATUSMAS/ || n ~ /SCRIPT3JMPTBLESQDISPUPDATESTA/ || n ~ /ESQDISPUPDATESTATUSMASKANDREFRESH/ || n ~ /ESQDISPUPDATESTATUSMASKANDREFR/ || n ~ /ESQDISPUPDATESTATUSMASKANDREFRE/) status_refresh_calls++
     if (n ~ /WDISPJMPTBLESQSETCOPPEREFFECTONENABLEHIGHLIGHT/ || n ~ /WDISPJMPTBLESQSETCOPPEREFF/ || n ~ /ESQSETCOPPEREFFECTONENABLEHIGHLIGHT/ || n ~ /ESQSETCOPPEREFFECTONENABLEHIGHL/ || n ~ /ESQSETCOPPEREFFECTONENABLEHIGH/) has_set_copper = 1
     if (n ~ /TEXTDISPSETRASTFORMODE/ || n ~ /TEXTDISPSETRASTFORMOD/) has_set_rast = 1
@@ -93,7 +104,10 @@ function trim(s, t) {
     if (n ~ /SCRIPTCTRLCHECKSUM/ || n ~ /SCRIPTCTRLCHECKSU/) has_ctrl_checksum = 1
     if (n ~ /SCRIPTCTRLCMDBUFFER/ || n ~ /SCRIPTCTRLCMDBUFFE/) has_ctrl_buffer = 1
     if (n ~ /SCRIPTCTRLCMDCOUNT/) has_ctrl_cmd_count = 1
-    if (n ~ /TEXTDISPDEFERREDACTIONCOUNTDOWN/ || n ~ /TEXTDISPDEFERREDACTIONCOUNTDOW/) has_deferred_action = 1
+    if (n ~ /TEXTDISPDEFERREDACTIONCOUNTDOWN/ || n ~ /TEXTDISPDEFERREDACTIONCOUNTDOW/) {
+        has_deferred_action = 1
+        saw_deferred_action_ref = 1
+    }
     if (u ~ /^MOVE\.[BWL][[:space:]]+D[0-7],[[:space:]]*TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
         u ~ /^MOVE\.[BWL][[:space:]]+D[0-7],[[:space:]]*_?TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
         u ~ /^MOVE\.[BWL][[:space:]]+[A-Z0-9_()$.-]+,[[:space:]]*TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
@@ -104,6 +118,12 @@ function trim(s, t) {
         u ~ /^SUBQ\.[BWL][[:space:]]+#-?[0-9]+,[[:space:]]*_?TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
         u ~ /^CLR\.[BWL][[:space:]]+TEXTDISP_DEFERREDACTIONCOUNTDOWN$/ || \
         u ~ /^CLR\.[BWL][[:space:]]+_?TEXTDISP_DEFERREDACTIONCOUNTDOWN$/) deferred_action_writes++
+    if (saw_deferred_action_ref && (u ~ /^BEQ\./ || u ~ /^BNE\./)) has_deferred_action_gate = 1
+    if (saw_deferred_action_ref && (u ~ /^SUBQ\.[BWL][[:space:]]+#\$?1,[[:space:]]*D[0-7]$/ || \
+                                    u ~ /^SUBQ\.[BWL][[:space:]]+#1,[[:space:]]*D[0-7]$/)) {
+        has_deferred_minus_one_gate = 1
+        saw_deferred_action_ref = 0
+    }
     if (n ~ /SCRIPTCTRLCMDDEFERCOUNTER/ || n ~ /SCRIPTCTRLCMDDEFERCOUNT/) has_defer_counter = 1
     if (n ~ /SCRIPTCTRLCMDCHECKSUMERRORCOUNT/ || n ~ /SCRIPTCTRLCMDCHECKSUMERRORCOUN/) has_checksum_error = 1
     if (n ~ /SCRIPTCTRLCMDLENGTHERRORCOUNT/ || n ~ /SCRIPTCTRLCMDLENGTHERRORCOUN/) has_length_error = 1
@@ -178,6 +198,8 @@ END {
     print "HAS_CTRL_CMD_COUNT=" has_ctrl_cmd_count
     print "HAS_DEFERRED_ACTION=" has_deferred_action
     print "DEFERRED_ACTION_WRITES=" deferred_action_writes
+    print "HAS_DEFERRED_ACTION_GATE=" has_deferred_action_gate
+    print "HAS_DEFERRED_MINUS_ONE_GATE=" has_deferred_minus_one_gate
     print "HAS_DEFER_COUNTER=" has_defer_counter
     print "HAS_CHECKSUM_ERROR=" has_checksum_error
     print "HAS_LENGTH_ERROR=" has_length_error

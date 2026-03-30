@@ -2,6 +2,9 @@ BEGIN {
     step_count = 0
     prev = ""
     prev2 = ""
+    prev3 = ""
+    prev4 = ""
+    prev5 = ""
     parse_hits = 0
 }
 
@@ -18,6 +21,11 @@ function mark(tag) {
         seen[tag] = 1
         steps[++step_count] = tag
     }
+}
+
+function recent_has(pattern) {
+    return (prev ~ pattern || prev2 ~ pattern || prev3 ~ pattern ||
+            prev4 ~ pattern || prev5 ~ pattern)
 }
 
 {
@@ -41,9 +49,64 @@ function mark(tag) {
         mark("PARSE_FAMILY")
     }
 
+    if (u ~ /CONFIG_SERIALIZEDFLAGSLOT08/ &&
+        ((u ~ /#78/ || u ~ /#\$4E/ || u ~ /#'N'/) ||
+         recent_has("#78|#\\$4E|#'N'"))) {
+        mark("SLOT08_DEFAULT_N")
+    }
+
+    if (u ~ /CTASKS_STR_A/ &&
+        ((u ~ /#65/ || u ~ /#\$41/ || u ~ /#'A'/) ||
+         recent_has("#65|#\\$41|#'A'"))) {
+        mark("SLOT_A_DEFAULT")
+    }
+
+    if ((u ~ /CONFIG_SERIALIZEDNUMERICSLOT10/ || u ~ /CONFIG_SERIALIZEDNUMERICSLOT1/) &&
+        (recent_has("NORMALIZE_DIGIT_0_TO_9_OR_ZERO") ||
+         recent_has("#9|#\\$9|#0|#\\$0"))) {
+        mark("SLOT10_DIGIT_CLAMP")
+    }
+
+    if ((u ~ /CONFIG_NICHEMODECYCLEBUDGET_CUSTOM/ || u ~ /CONFIG_NICHEMODECYCLEBUDGET_CUST/) &&
+        (recent_has("NORMALIZE_DIGIT_0_TO_9_OR_ZERO") ||
+         recent_has("#9|#\\$9|#0|#\\$0"))) {
+        mark("CUSTOM_BUDGET_DIGIT_CLAMP")
+    }
+
+    if (u ~ /CONFIG_NEWGRIDSELECTIONCODE34PRIMARYENABLED|CONFIG_NEWGRIDSELECTIONCODE34PRI/ &&
+        (u ~ /^MOVE\.B / || recent_has("NORMALIZE_YES_NO"))) {
+        mark("SEL34_PRIMARY_STORE")
+    }
+
+    if (u ~ /CONFIG_NEWGRIDSELECTIONCODE35ENABLED|CONFIG_NEWGRIDSELECTIONCODE35ENA/ &&
+        (u ~ /^MOVE\.B / || recent_has("NORMALIZE_YES_NO"))) {
+        mark("SEL35_STORE")
+    }
+
+    if (u ~ /CONFIG_SERIALIZEDFLAGSLOT15/ &&
+        (u ~ /^MOVE\.B / || recent_has("NORMALIZE_YES_NO"))) {
+        mark("SLOT15_STORE")
+    }
+
+    if (u ~ /CONFIG_NEWGRIDSELECTIONCODE34ALT/ &&
+        (u ~ /^MOVE\.B / || recent_has("NORMALIZE_YES_NO"))) {
+        mark("SEL34_ALT_STORE")
+    }
+
+    if (u ~ /CONFIG_NEWGRIDSELECTIONCODE32ENABLED|CONFIG_NEWGRIDSELECTIONCODE32ENA/ &&
+        (u ~ /^MOVE\.B / || recent_has("NORMALIZE_YES_NO"))) {
+        mark("SEL32_STORE")
+    }
+
+    if (u ~ /CONFIG_RUNTIMEMODE12BANNERJUMPENABLED|CONFIG_RUNTIMEMODE12BANNERJUMPEN/ &&
+        (u ~ /^MOVE\.B / || recent_has("NORMALIZE_YES_NO"))) {
+        mark("BANNERJUMP_STORE")
+    }
+
     if (u ~ /CTASKS_STR_L/ && (u ~ /#76/ || u ~ /#\$4C/ || u ~ /#83/ ||
         u ~ /#\$53/ || u ~ /#86/ || u ~ /#\$56/ || u ~ /#'L'/ || u ~ /#'S'/ ||
-        u ~ /#'V'/)) {
+        u ~ /#'V'/ ||
+        recent_has("#76|#\\$4C|#83|#\\$53|#86|#\\$56|#'L'|#'S'|#'V'"))) {
         mark("LINE_MODE_VALIDATE")
     }
 
@@ -71,6 +134,41 @@ function mark(tag) {
     if (u ~ /CONFIG_BANNERCOPPERHEADBYTE/ &&
         (u ~ /#\$80/ || u ~ /#128/ || u ~ /#\$8E/ || u ~ /#142/ || u ~ /#\$DC/ || u ~ /#220/)) {
         mark("BANNER_COPPER_PARSE")
+    }
+
+    if (u ~ /CONFIG_MODECYCLEENABLEDFLAG/ &&
+        (u ~ /^MOVE\.B / || recent_has("NORMALIZE_YES_NO"))) {
+        mark("MODECYCLE_ENABLE_STORE")
+    }
+
+    if ((u ~ /CONFIG_MODECYCLEENABLEDFLAG/ &&
+         ((u ~ /#89/ || u ~ /#\$59/ || u ~ /#'Y'/) ||
+          recent_has("#89|#\\$59|#'Y'"))) ||
+        (u ~ /CONFIG_NEWGRIDPLACEHOLDERBEVELFLAG|CONFIG_NEWGRIDPLACEHOLDERBEVELFL/ &&
+         ((u ~ /#89/ || u ~ /#\$59/ || u ~ /#'Y'/) ||
+          recent_has("#89|#\\$59|#'Y'"))) ||
+        (u ~ /CONFIG_NEWGRIDSELECTIONCODE16ENABLED|CONFIG_NEWGRIDSELECTIONCODE16ENA/ &&
+         ((u ~ /#89/ || u ~ /#\$59/ || u ~ /#'Y'/) ||
+          recent_has("#89|#\\$59|#'Y'"))) ||
+        (u ~ /CONFIG_PARSEINILOGOSCANENABLEDFLAG|CONFIG_PARSEINILOGOSCANENABLEDFL/ &&
+         ((u ~ /#89/ || u ~ /#\$59/ || u ~ /#'Y'/) ||
+          recent_has("#89|#\\$59|#'Y'")))) {
+        mark("YESNO_DEFAULT_Y_FAMILY")
+    }
+
+    if (u ~ /CONFIG_NEWGRIDPLACEHOLDERBEVELFLAG|CONFIG_NEWGRIDPLACEHOLDERBEVELFL/ &&
+        (u ~ /^MOVE\.B / || recent_has("NORMALIZE_YES_NO"))) {
+        mark("PLACEHOLDER_BEVEL_STORE")
+    }
+
+    if (u ~ /CONFIG_NEWGRIDSELECTIONCODE48_49ENABLED|CONFIG_NEWGRIDSELECTIONCODE48_49/ &&
+        (u ~ /^MOVE\.B / || recent_has("NORMALIZE_YES_NO"))) {
+        mark("SEL48_49_STORE")
+    }
+
+    if (u ~ /CONFIG_NEWGRIDSELECTIONCODE16ENABLED|CONFIG_NEWGRIDSELECTIONCODE16ENA/ &&
+        (u ~ /^MOVE\.B / || recent_has("NORMALIZE_YES_NO"))) {
+        mark("SEL16_STORE")
     }
 
     if ((u ~ /GLOBAL_REF_BYTE_NUMBER_OF_COLOR_/ &&
@@ -139,8 +237,14 @@ function mark(tag) {
         mark("TASKMODE_STORE")
     }
 
-    if (u ~ /CTASKS_STR_1/ && (u ~ /#49/ || u ~ /#\$31/ || u ~ /#50/ || u ~ /#\$32/ || u ~ /#'1'/ || u ~ /#'2'/)) {
+    if (u ~ /CTASKS_STR_1/ && (u ~ /#49/ || u ~ /#\$31/ || u ~ /#50/ || u ~ /#\$32/ || u ~ /#'1'/ || u ~ /#'2'/ ||
+        recent_has("#49|#\\$31|#50|#\\$32|#'1'|#'2'"))) {
         mark("TASKMODE_VALIDATE")
+    }
+
+    if (u ~ /CONFIG_PARSEINILOGOSCANENABLEDFLAG|CONFIG_PARSEINILOGOSCANENABLEDFL/ &&
+        (u ~ /^MOVE\.B / || recent_has("NORMALIZE_YES_NO"))) {
+        mark("LOGO_SCAN_STORE")
     }
 
     if (u ~ /ESQFUNC_UPDATEREFRESHMODESTATE/ ||
@@ -160,6 +264,9 @@ function mark(tag) {
         mark("RTS")
     }
 
+    prev5 = prev4
+    prev4 = prev3
+    prev3 = prev2
     prev2 = prev
     prev = u
 }

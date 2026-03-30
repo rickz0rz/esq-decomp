@@ -7,6 +7,7 @@ BEGIN {
     primary_pending_pos = 0
     escape_pos = 0
     wildcard_pos = 0
+    return1_pos = 0
     return2_pos = 0
     clear_first_pos = 0
     clear_second_pos = 0
@@ -23,6 +24,8 @@ BEGIN {
     alloc_second_pos = 0
     subentry_text_fallback_pos = 0
     subentry_numeric_fallback_pos = 0
+    merge_index_init_pos = 0
+    merge_copy_pos = 0
     return0_pos = 0
     rts_pos = 0
     token_seed_count = 0
@@ -35,6 +38,7 @@ BEGIN {
     replace_call_count = 0
     record_token_first_pos = 0
     record_token_second_pos = 0
+    prev_u = ""
 }
 
 function mark_first(v) {
@@ -106,6 +110,9 @@ function trim(s, t) {
     if (wildcard_pos == 0 && u ~ /(JSR|BSR).*ESQ_WILDCARDMATCH/) {
         wildcard_pos = NR
     }
+    if (return1_pos == 0 && (u ~ /MOVEQ(\.L)? #\$?1,D0/ || u ~ /MOVEQ #1,D0/)) {
+        return1_pos = NR
+    }
     if (return2_pos == 0 && (u ~ /MOVEQ(\.L)? #\$?2,D0/ || u ~ /MOVEQ #2,D0/)) {
         return2_pos = NR
     }
@@ -156,6 +163,10 @@ function trim(s, t) {
             alloc_second_pos = NR
         }
     }
+    if (merge_copy_pos == 0 &&
+        (u ~ /(JSR|BSR).*CLEANUP_COPYANIMOBJECT/ || u ~ /MOVE\.B \(A0\),\(A1\)/)) {
+        merge_copy_pos = NR
+    }
     if (entry_length_pos == 0 &&
         (u ~ /(JSR|BSR).*CLEANUP_STRINGLENGTH/ || u ~ /COUNT_ENTRY_TEXT_LOOP/ || u ~ /SUBA\.L 16\(A1\),A0/)) {
         entry_length_pos = NR
@@ -167,12 +178,18 @@ function trim(s, t) {
         (u ~ /MOVE\.L \$20\(A2\),\$1A\(A0\)/ || u ~ /MOVE\.L 32\(A0\),26\(A1\)/)) {
         subentry_numeric_fallback_pos = NR
     }
+    if (merge_index_init_pos == 0 &&
+        (u ~ /MOVE\.W #\$?1,-32\(A5\)/ ||
+         (prev_u ~ /MOVEQ(\.L)? #\$?1,D0/ && u ~ /MOVE\.L D0,\$60\(A7\)/))) {
+        merge_index_init_pos = NR
+    }
     if (u ~ /MOVEQ(\.L)? #\$?0,D0/ || u ~ /MOVEQ #0,D0/) {
         return0_pos = NR
     }
     if (u == "RTS") {
         rts_pos = NR
     }
+    prev_u = u
 }
 
 END {
@@ -183,10 +200,13 @@ END {
          (token_seed_count >= 7 && slot_init_pos > label_pos)))
     print "DISK_DISPATCH_PHASE=" (secondary_pending_pos > 0 &&
         primary_pending_pos > secondary_pending_pos &&
-        escape_pos > primary_pending_pos)
+        return1_pos > primary_pending_pos &&
+        escape_pos > return1_pos)
     print "HEADER_PARSE_PHASE=" (escape_pos > 0 &&
         record_token_first_pos > escape_pos &&
         wildcard_pos > record_token_first_pos)
+    print "INVALID_DISK_RETURN_PRESENT=" (return1_pos > primary_pending_pos &&
+        (return2_pos == 0 || return1_pos < return2_pos))
     print "NO_MATCH_RETURN_PRESENT=" (return2_pos > wildcard_pos)
     print "PRIMARY_ENTRY_PHASE=" (clear_first_pos > return2_pos &&
         free_first_pos > clear_first_pos &&
@@ -205,11 +225,13 @@ END {
         parse_call_count >= 2)
     print "SUBENTRY_FALLBACK_PHASE_PRESENT=" (subentry_text_fallback_pos > alloc_first_pos &&
         subentry_numeric_fallback_pos > subentry_text_fallback_pos)
+    print "MERGE_STARTS_AT_INDEX1=" (merge_index_init_pos > subentry_numeric_fallback_pos)
     print "MERGE_PHASE_PRESENT=" (alloc_call_count >= 1 &&
         clear_call_count >= 2 &&
         free_call_count >= 2 &&
-        clear_second_pos > alloc_first_pos &&
-        free_second_pos > clear_second_pos)
+        clear_second_pos > merge_index_init_pos &&
+        free_second_pos > clear_second_pos &&
+        merge_copy_pos > free_second_pos)
     print "REPLACE_CALLS_GE12=" (replace_call_count >= 12)
     print "RETURN_PHASE_PRESENT=" (return0_pos > 0 && rts_pos > return0_pos)
 }

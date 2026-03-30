@@ -14,12 +14,17 @@ BEGIN {
     has_free_raster = 0
     has_divs = 0
     has_alert = 0
+    has_alert_dim_snapshots = 0
+    has_pending_alert_writes = 0
     has_cleanup_c16 = 0
+    has_decode_pass = 0
+    has_decode_buffer_free = 0
     has_restore_planes = 0
     has_clone_alloc = 0
     has_mode_clamp = 0
     has_init_bitmap = 0
     has_init_rastport = 0
+    has_rastport_bitmap_bind = 0
     has_row_offsets = 0
     has_width_limit = 0
     has_height_limit = 0
@@ -30,6 +35,9 @@ BEGIN {
     zero_368_refs = 0
     saw_string_compare = 0
     saw_alert_pending_guard = 0
+    saw_alert_width_snapshot = 0
+    saw_alert_depth_snapshot = 0
+    pending_alert_store_count = 0
     saw_form_token = 0
     saw_width_default = 0
     saw_width_limit_src = 0
@@ -50,6 +58,8 @@ BEGIN {
     saw_clone_field148 = 0
     saw_row_words_addend = 0
     saw_row_words_double = 0
+    saw_rastport_bitmap_src = 0
+    saw_rastport_bitmap_store = 0
 }
 
 function trim(s,    t) {
@@ -90,12 +100,17 @@ function trim(s,    t) {
     if (u ~ /LVOINITBITMAP/ || u ~ /_LVOINITBITMAP/) has_init_bitmap = 1
     if (u ~ /LVOINITRASTPORT/ || u ~ /_LVOINITRASTPORT/) has_init_rastport = 1
     if (u ~ /BRUSH_PENDINGALERTCODE|BRUSH_SNAPSHOT/) has_alert = 1
+    if (u ~ /MOVE\.L .*BRUSH_PENDINGALERTCODE/) pending_alert_store_count++
     if (u ~ /TST\.L BRUSH_PENDINGALERTCODE/) saw_alert_pending_guard = 1
+    if (u ~ /BRUSH_SNAPSHOTWIDTH/) saw_alert_width_snapshot = 1
+    if (u ~ /BRUSH_SNAPSHOTDEPTH/) saw_alert_depth_snapshot = 1
     if (u ~ /BRUSH_SNAPSHOTHEADER/) snapshot_refs++
     if (u ~ /GLOBAL_STR_BRUSH_C_16/) has_cleanup_c16 = 1
     if (u ~ /GLOBAL_STR_BRUSH_C_14|1205|#1205|#\$4B5/) has_node_free = 1
     if (u ~ /GLOBAL_STR_BRUSH_C_15/) has_clone_alloc = 1
     if (u ~ /-42\(A5/ || u ~ /\$24\(A7,D0\.L\)/) has_restore_planes = 1
+    if (u ~ /LEA \$88\(A0\),A6|ADDA\.W #\$88,A0/) saw_rastport_bitmap_src = 1
+    if (u ~ /MOVE\.L A0,40\(A1\)|MOVE\.L A6,\(A1\)/) saw_rastport_bitmap_store = 1
     if (u ~ /368\(A0\)|368\(A1\)|\$170\(A0\)|\$170\(A1\)/) zero_368_refs++
     if (u ~ /LEA 200\(A0\),A2|LEA \$C8\(A0\),A1|ADD\.W #\$C8,A0|ADD\.W #200,A0/) saw_row_offset_dst = 1
     if (u ~ /LEA 152\(A1\)|LEA 152\(A3\)|LEA \$98\(A5\)/) saw_row_offset_src = 1
@@ -137,6 +152,8 @@ END {
     print "HAS_NODE_ALLOC=" has_node_alloc
     print "HAS_INIT_BITMAP=" has_init_bitmap
     print "HAS_INIT_RASTPORT=" has_init_rastport
+    has_rastport_bitmap_bind = (saw_rastport_bitmap_src && saw_rastport_bitmap_store)
+    print "HAS_RASTPORT_BITMAP_BIND=" has_rastport_bitmap_bind
     has_row_offsets = (saw_row_offset_src && saw_row_offset_dst)
     print "HAS_ROW_OFFSET_COPY=" has_row_offsets
     has_width_limit = (saw_width_limit_src && saw_width_default)
@@ -152,6 +169,10 @@ END {
     print "HAS_DECODE_CURSOR_UPDATE=" saw_decode_cursor_update
     print "HAS_DIVS32=" has_divs
     print "HAS_ALERT_PATH=" has_alert
+    has_alert_dim_snapshots = (saw_alert_width_snapshot && saw_alert_depth_snapshot)
+    print "HAS_ALERT_DIM_SNAPSHOTS=" has_alert_dim_snapshots
+    has_pending_alert_writes = (pending_alert_store_count >= 2)
+    print "HAS_PENDING_ALERT_WRITES=" has_pending_alert_writes
     print "HAS_ALERT_SNAPSHOT_RECOPY=" (snapshot_refs >= 2)
     print "HAS_RESTORE_PLANES=" has_restore_planes
     print "HAS_CLONE_ALLOC=" has_clone_alloc
@@ -164,6 +185,9 @@ END {
     print "HAS_NODE_FREE=" has_node_free
     print "HAS_PARTIAL_ALLOC_CLEANUP=" (has_free_raster && has_node_free && saw_partial_node_clear)
     print "HAS_ALLOC_FAIL_GUARD=" saw_alert_pending_guard
-    print "HAS_DECODE_BUFFER_FREE=" has_cleanup_c16
+    has_decode_pass = (has_packbits && saw_decode_cursor_update && saw_row_words_calc && has_restore_planes)
+    print "HAS_DECODE_PASS=" has_decode_pass
+    has_decode_buffer_free = (has_cleanup_c16 && has_alloc_130k)
+    print "HAS_DECODE_BUFFER_FREE=" has_decode_buffer_free
     print "HAS_RTS=" has_rts
 }

@@ -13,7 +13,7 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(l ~ /^(JSR|BSR)(\.[A-Z])? .*LVOMOVE/)h_move=1
     if(l ~ /^(JSR|BSR)(\.[A-Z])? .*LVOMOVE/){
         if(prev1=="MOVE.L 36(A7),D1" && prev2=="MOVE.L D1,D0")move_xy_count++
-        if(prev4 ~ /^MOVE\.L \$[45][0C]\(A7\),-\(A7\)$/ && prev3=="MOVE.L D1,-(A7)" && prev2 ~ /^MOVE\.L \$5C\(A7\),-\(A7\)$/ && prev1=="MOVE.L GLOBAL_REF_GRAPHICS_LIBRARY(A4),-(A7)")move_xy_count++
+        if(prev4 ~ /^MOVE\.L \$[45][0C]\(A7\),-\(A7\)$/ && prev3=="MOVE.L D1,-(A7)" && prev2 ~ /^MOVE\.L \$[56][0-9A-F]\(A7\),-\(A7\)$/ && prev1=="MOVE.L GLOBAL_REF_GRAPHICS_LIBRARY(A4),-(A7)")move_xy_count++
     }
     if(l ~ /(JSR|BSR).*LVOTEXT/ || l ~ /_LVOTEXT/)h_text=1
     if(l ~ /CTASKS_STR_C/ || l ~ /#\$53/)h_modecheck=1

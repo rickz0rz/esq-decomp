@@ -37,6 +37,10 @@ BEGIN{
     h_state1_transition=0
     h_state2_gate_flow=0
     h_state7_alt_teardown=0
+    h_nullctx_editor_reset_route=0
+    h_nullctx_state5_route=0
+    h_state2_editor_reenter=0
+    h_state7_editor_reenter=0
     digital_stage=0
     column_adjust_stage=0
     state0_setup_stage=0
@@ -44,6 +48,10 @@ BEGIN{
     state2_clear_seen=0
     state2_store3_seen=0
     state7_stage=0
+    nullctx_stage=0
+    nullctx_state5_stage=0
+    state2_reenter_stage=0
+    state7_reenter_stage=0
     h_rts=0
 }
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
@@ -103,6 +111,47 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     if(state7_stage >= 5 && (l ~ /CLR\.L NEWGRID_SCHEDULEALTSELECTORFLAG/ || l ~ /MOVE\.L D0,NEWGRID_SCHEDULEALTSELECTORFLAG/)) {
         state7_stage = 6
         h_state7_alt_teardown = 1
+    }
+    if((l ~ /SUBQ\.L #\$?2,D0/ || l ~ /MOVEQ(\.L)? #\$?2,D1/ || l ~ /CMP\.L D1,D0/) && nullctx_stage < 1) {
+        if(l !~ /STATE2_STORE3/) {
+            nullctx_stage = 1
+        }
+    }
+    if(nullctx_stage >= 1 && (l ~ /SUBQ\.L #\$?7,D0/ || l ~ /SUBQ\.L #\$?3,D0/ || l ~ /SUBQ\.L #\$?5,D0/))nullctx_stage = 2
+    if(nullctx_stage >= 1 && l ~ /(JSR|BSR).*HANDLEGRIDEDITORSTATE/)nullctx_stage = 3
+    if(nullctx_stage >= 3 && (l ~ /CLR\.L NEWGRID_SCHEDULEWORKFLOWSTATE/ || l ~ /MOVE\.L D0,NEWGRID_SCHEDULEWORKFLOWSTATE/)) {
+        nullctx_stage = 4
+    }
+    if(nullctx_stage >= 4 && (l ~ /CLR\.L NEWGRID_SELECTEDPRIMARYENTRYIND/ || l ~ /MOVE\.L D0,NEWGRID_SELECTEDPRIMARYENTRYIND/)) {
+        nullctx_stage = 5
+        h_nullctx_editor_reset_route = 1
+    }
+    if((l ~ /SUBQ\.L #\$?3,D0/ || l ~ /MOVEQ(\.L)? #\$?5,D0/ || l ~ /CMP\.L NEWGRID_SCHEDULEWORKFLOWSTATE/) && nullctx_state5_stage < 1) {
+        nullctx_state5_stage = 1
+    }
+    if(nullctx_state5_stage >= 1 && l ~ /(JSR|BSR).*SHOULDOPENEDITOR/)nullctx_state5_stage = 2
+    if(nullctx_state5_stage >= 2 && ((l ~ /(JSR|BSR).*UPDATEGRIDSTATE/) || (l ~ /(JSR|BSR).*HANDLEDETAILGRIDSTATE/)))nullctx_state5_stage = 3
+    if(nullctx_state5_stage >= 3 && (l ~ /CLR\.L NEWGRID_SCHEDULEWORKFLOWSTATE/ || l ~ /MOVE\.L D0,NEWGRID_SCHEDULEWORKFLOWSTATE/)) {
+        nullctx_state5_stage = 4
+    }
+    if(nullctx_state5_stage >= 4 && (l ~ /CLR\.L NEWGRID_SELECTEDPRIMARYENTRYIND/ || l ~ /MOVE\.L D0,NEWGRID_SELECTEDPRIMARYENTRYIND/)) {
+        nullctx_state5_stage = 5
+        h_nullctx_state5_route = 1
+    }
+    if(l ~ /(JSR|BSR).*HANDLEGRIDEDITORSTATE/ && state2_reenter_stage < 1)state2_reenter_stage = 1
+    if(state2_reenter_stage >= 1 && (l ~ /SUBQ\.L #\$?5,D0/ || l ~ /MOVEQ(\.L)? #\$?5,D0/ || l ~ /CMPI\.L #\$?5,NEWGRID_SCHEDULEWORKFLOWSTATE/))state2_reenter_stage = 2
+    if(state2_reenter_stage >= 2 && (l ~ /MOVEQ(\.L)? #\$?2,D0/ || l ~ /MOVEQ(\.L)? #2,D0/))state2_reenter_stage = 3
+    if(state2_reenter_stage >= 3 && l ~ /MOVE\.L D0,NEWGRID_SCHEDULEWORKFLOWSTATE/) {
+        state2_reenter_stage = 4
+        h_state2_editor_reenter = 1
+    }
+    if(l ~ /TST\.L NEWGRID_SCHEDULEALTSELECTORFLAG/ && state7_reenter_stage < 1)state7_reenter_stage = 1
+    if(state7_reenter_stage >= 1 && (l ~ /(JSR|BSR).*HANDLEGRIDEDITORSTATE/))state7_reenter_stage = 2
+    if(state7_reenter_stage >= 2 && (l ~ /SUBQ\.L #\$?5,D0/ || l ~ /MOVEQ(\.L)? #\$?5,D0/ || l ~ /CMPI\.L #\$?5,NEWGRID_SCHEDULEWORKFLOWSTATE/))state7_reenter_stage = 3
+    if(state7_reenter_stage >= 3 && (l ~ /MOVEQ(\.L)? #\$?7,D0/ || l ~ /MOVEQ(\.L)? #7,D0/))state7_reenter_stage = 4
+    if(state7_reenter_stage >= 4 && l ~ /MOVE\.L D0,NEWGRID_SCHEDULEWORKFLOWSTATE/) {
+        state7_reenter_stage = 5
+        h_state7_editor_reenter = 1
     }
     if(l ~ /MOVE\.B GCOMMAND_DIGITALMPLEXENABLEDFLAG/) {
         if (digital_stage < 1) digital_stage = 1
@@ -176,6 +225,10 @@ END{
     print "HAS_STATE0_GATE_ALT_SETUP="h_state0_gate_alt_setup
     print "HAS_STATE1_TRANSITION="h_state1_transition
     print "HAS_STATE2_GATE_FLOW="h_state2_gate_flow
+    print "HAS_NULLCTX_EDITOR_RESET_ROUTE="h_nullctx_editor_reset_route
+    print "HAS_NULLCTX_STATE5_ROUTE="h_nullctx_state5_route
+    print "HAS_STATE2_EDITOR_REENTER="h_state2_editor_reenter
+    print "HAS_STATE7_EDITOR_REENTER="h_state7_editor_reenter
     print "HAS_STATE7_ALT_TEARDOWN="h_state7_alt_teardown
     print "HAS_RTS="h_rts
 }

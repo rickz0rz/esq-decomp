@@ -27,9 +27,8 @@ awk -v start="^${ENTRY}:$" -v next_label="^NEWGRID_MapSelectionToMode:$" '
 awk -v e="^${ENTRY}:$" -v e2="$ENTRY_SASC_REGEX" '
     $0 ~ e || $0 ~ e2 {in_func=1}
     in_func {
-        if (($0 ~ /^NEWGRID_[A-Za-z0-9_]+:$/ || $0 ~ /^_?NEWGRID_[A-Za-z0-9_]+:$/) &&
-            $0 !~ e && $0 !~ e2) exit
-        if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/ || $0 ~ /^__const:$/) exit
+        if ($0 ~ /^__const:$/) exit
+        if ($0 ~ /^XREF / || $0 ~ /^XDEF / || $0 ~ /^ END$/ || $0 ~ /^END$/) exit
         print
     }
 ' "$SASC_DIS" >"${OUT_DIR}/${BASE}.sasc.dis.s"

@@ -219,7 +219,9 @@ END {
     print "HAS_HEADER_REDRAW_CLEAR=" has_header_redraw_clear
     print "HAS_MODE11_HEADER_REDRAW=" (has_mode11_header && has_header_redraw_clear ? 1 : 0)
     print "HAS_STATEWORD_REPLY_LOOP=" (has_stateword_compare && has_stateword_loop_branch ? 1 : 0)
+    print "HAS_MAP_SELECTION_CALL_COUNT_13=" (map_selection_call_count == 13 ? 1 : 0)
     print "MAP_SELECTION_CALL_COUNT=" map_selection_call_count
+    print "HAS_DISPATCH_GRID_CALL_COUNT_7=" (dispatch_grid_call_count == 7 ? 1 : 0)
     print "DISPATCH_GRID_CALL_COUNT=" dispatch_grid_call_count
     print "HAS_UPDATE_CACHE=" has_update_cache
     print "HAS_PUTMSG=" has_putmsg

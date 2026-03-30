@@ -28,11 +28,15 @@ BEGIN {
     has_special_now_next_path = 0
     has_time_phrase_path = 0
     has_centered_schedule_suffix = 0
+    has_selection_index_path = 0
+    has_left_align_append = 0
+    has_missing_label_flag = 0
     set_rast_count = 0
     set_drmode_count = 0
     viewmode_build_count = 0
     viewmode_height_count = 0
     format_entry_time_count = 0
+    append_count = 0
     saw_trim = 0
     saw_frame = 0
     saw_draw_banner = 0
@@ -46,6 +50,13 @@ BEGIN {
     saw_tomorrow = 0
     saw_center_align = 0
     saw_schedule_table = 0
+    saw_selected_char = 0
+    saw_fallback_char = 0
+    saw_match_index_write = 0
+    saw_clock_index_write = 0
+    saw_left_align = 0
+    saw_append = 0
+    saw_channel_label_ready = 0
 }
 function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
 {
@@ -100,6 +111,21 @@ function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t
     if (u ~ /TEXTDISP_CENTERALIGNTOKEN/) saw_center_align = 1
     if (u ~ /SCRIPT_STRCHANNELLABEL_TUESDAYSFRIDAYS/ || u ~ /SCRIPT_STRCHANNELLABEL_TUESDAYSF/) saw_schedule_table = 1
     if (saw_center_align && saw_schedule_table) has_centered_schedule_suffix = 1
+    if (u ~ /TEXTDISP_BANNERCHARSELECTED/) saw_selected_char = 1
+    if (u ~ /TEXTDISP_BANNERCHARFALLBACK/) saw_fallback_char = 1
+    if (u ~ /CLEANUP_ALIGNEDSTATUSMATCHINDEX/ &&
+        (u ~ /MOVE\.W/ || u ~ /CLR\.W/ || u ~ /TST\.W/ || u ~ /MOVE\.L/)) saw_match_index_write = 1
+    if (u ~ /CLEANUP_ALIGNEDSTATUSCLOCKENTRYI/ &&
+        (u ~ /MOVE\.W/ || u ~ /CLR\.W/ || u ~ /TST\.W/ || u ~ /MOVE\.L/)) saw_clock_index_write = 1
+    if (saw_selected_char && saw_fallback_char && saw_match_index_write && saw_clock_index_write) has_selection_index_path = 1
+    if (u ~ /TEXTDISP_LEFTALIGNTOKEN/) saw_left_align = 1
+    if (u ~ /STRING_APPENDATNULL/ || u ~ /GROUP_AI_JMPTBL_STRING_APPENDATNULL/) {
+        saw_append = 1
+        append_count++
+    }
+    if (saw_left_align && saw_append) has_left_align_append = 1
+    if (u ~ /TEXTDISP_CHANNELLABELREADYFLAG/) saw_channel_label_ready = 1
+    if (saw_channel_label_ready && has_build_status_line) has_missing_label_flag = 1
     if (u ~ /^(JSR|BSR).*_LVOSETRAST/) set_rast_count++
     if (u ~ /^(JSR|BSR).*_LVOSETDRMD/) set_drmode_count++
     if (u ~ /^(JSR|BSR).*TLIBA3_GETVIEWMODEHEIGHT/) viewmode_height_count++
@@ -135,6 +161,10 @@ END {
     print "HAS_SPECIAL_NOW_NEXT_PATH=" has_special_now_next_path
     print "HAS_TIME_PHRASE_PATH=" has_time_phrase_path
     print "HAS_CENTERED_SCHEDULE_SUFFIX=" has_centered_schedule_suffix
+    print "HAS_SELECTION_INDEX_PATH=" has_selection_index_path
+    print "HAS_LEFT_ALIGN_APPEND=" has_left_align_append
+    print "HAS_MISSING_LABEL_FLAG=" has_missing_label_flag
+    print "HAS_EXPECTED_APPEND_VOLUME=" (append_count >= 9)
     print "SET_RAST_COUNT=" set_rast_count
     print "SET_DRMD_COUNT=" set_drmode_count
     print "VIEWMODE_HEIGHT_COUNT=" viewmode_height_count

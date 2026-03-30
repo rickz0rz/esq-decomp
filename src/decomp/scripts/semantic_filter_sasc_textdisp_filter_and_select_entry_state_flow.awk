@@ -108,11 +108,20 @@ function norm(s, t) {
 
     if (line ~ /MOVE\.B #\$3,TEXTDISP_FILTERMODEID/ || line ~ /MOVE\.B #3,TEXTDISP_FILTERMODEID/) {
         has_default_mode3 = 1
-        if ((prev1 ~ /SUBQ\.W #1,D0/ || prev2 ~ /SUBQ\.W #1,D0/ ||
-             prev3 ~ /SUBQ\.W #1,D0/ || prev1 ~ /CMPI\.W #\$30,TEXTDISP_FILTERCHANNELSLOTINDEX/ ||
+        if ((prev1 ~ /CLR\.W TEXTDISP_FILTERCHANNELSLOTINDEX/ || prev2 ~ /CLR\.W TEXTDISP_FILTERCHANNELSLOTINDEX/ ||
+             prev3 ~ /CLR\.W TEXTDISP_FILTERCHANNELSLOTINDEX/ || prev4 ~ /CLR\.W TEXTDISP_FILTERCHANNELSLOTINDEX/) &&
+            (prev1 ~ /MOVE\.B TEXTDISP_FILTERMODEID/ || prev2 ~ /MOVE\.B TEXTDISP_FILTERMODEID/ ||
+             prev3 ~ /MOVE\.B TEXTDISP_FILTERMODEID/ || prev4 ~ /MOVE\.B TEXTDISP_FILTERMODEID/ ||
+             prev1 ~ /SUBQ\.[BW] #\$?1,D0/ || prev2 ~ /SUBQ\.[BW] #\$?1,D0/ ||
+             prev3 ~ /SUBQ\.[BW] #\$?1,D0/ || prev4 ~ /SUBQ\.[BW] #\$?1,D0/ ||
+             prev1 ~ /CMPI\.W #\$30,TEXTDISP_FILTERCHANNELSLOTINDEX/ ||
              prev2 ~ /CMPI\.W #\$30,TEXTDISP_FILTERCHANNELSLOTINDEX/ ||
+             prev3 ~ /CMPI\.W #\$30,TEXTDISP_FILTERCHANNELSLOTINDEX/ ||
+             prev4 ~ /CMPI\.W #\$30,TEXTDISP_FILTERCHANNELSLOTINDEX/ ||
              prev1 ~ /CMPI\.W #48,TEXTDISP_FILTERCHANNELSLOTINDEX/ ||
-             prev2 ~ /CMPI\.W #48,TEXTDISP_FILTERCHANNELSLOTINDEX/)) {
+             prev2 ~ /CMPI\.W #48,TEXTDISP_FILTERCHANNELSLOTINDEX/ ||
+             prev3 ~ /CMPI\.W #48,TEXTDISP_FILTERCHANNELSLOTINDEX/ ||
+             prev4 ~ /CMPI\.W #48,TEXTDISP_FILTERCHANNELSLOTINDEX/)) {
             has_mode3_transition = 1
             if (!phase_mode3_transition) {
                 print "PHASE_MODE3_TRANSITION"
@@ -152,11 +161,11 @@ function norm(s, t) {
     }
     if ((line ~ /ESQ_WILDCARDMATCH/ || line ~ /UNKNOWN_JMPTBL_ESQ_WILDCARDMATCH/ ||
          line ~ /UNKNOWN_JMPTBL_ESQ_WILDCAR/) &&
-        (prev1 ~ /ADDA\.W #12,A0/ || prev2 ~ /ADDA\.W #12,A0/ ||
-         prev1 ~ /ADDA\.L #12,A0/ || prev2 ~ /ADDA\.L #12,A0/ ||
-         prev1 ~ /ADD\.W #\$C,A0/ || prev2 ~ /ADD\.W #\$C,A0/ ||
-         prev1 ~ /ADD\.W #12,A0/ || prev2 ~ /ADD\.W #12,A0/ ||
-         prev1 ~ /TAGTEXT/ || prev2 ~ /TAGTEXT/)) {
+        (prev1 ~ /ADDA\.W #12,A0/ || prev2 ~ /ADDA\.W #12,A0/ || prev3 ~ /ADDA\.W #12,A0/ || prev4 ~ /ADDA\.W #12,A0/ ||
+         prev1 ~ /ADDA\.L #12,A0/ || prev2 ~ /ADDA\.L #12,A0/ || prev3 ~ /ADDA\.L #12,A0/ || prev4 ~ /ADDA\.L #12,A0/ ||
+         prev1 ~ /ADD\.W #\$C,A0/ || prev2 ~ /ADD\.W #\$C,A0/ || prev3 ~ /ADD\.W #\$C,A0/ || prev4 ~ /ADD\.W #\$C,A0/ ||
+         prev1 ~ /ADD\.W #12,A0/ || prev2 ~ /ADD\.W #12,A0/ || prev3 ~ /ADD\.W #12,A0/ || prev4 ~ /ADD\.W #12,A0/ ||
+         prev1 ~ /TAGTEXT/ || prev2 ~ /TAGTEXT/ || prev3 ~ /TAGTEXT/ || prev4 ~ /TAGTEXT/)) {
         has_name_filter_gate = 1
     }
 

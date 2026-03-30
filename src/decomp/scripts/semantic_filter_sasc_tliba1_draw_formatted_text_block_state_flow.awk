@@ -16,6 +16,7 @@ BEGIN {
     saw_line_divisor_bump = 0
     parse_space_rewrite = 0
     parse_finish_seen = 0
+    parse_finish_pending = 0
     has_parse_flow = 0
 
     has_alloc_mul10 = 0
@@ -25,6 +26,7 @@ BEGIN {
     render_pen_override_gate = 0
     render_font_switch_count = 0
     render_text_length_loop = 0
+    render_text_length_test_seen = 0
     render_inset_guard = 0
     render_width_clamp = 0
     render_spacing_adjust = 0
@@ -35,6 +37,9 @@ BEGIN {
 
     cleanup_pen_restore = 0
     cleanup_font_restore = 0
+    cleanup_dealloc_line = 0
+    cleanup_dealloc_const = 0
+    cleanup_dealloc_owner = 0
     cleanup_dealloc = 0
     has_cleanup_restore = 0
 }
@@ -109,27 +114,32 @@ function trim(s, t) {
     }
     if (u ~ /ADDQ\.W #1,-32\(A5\)/ || u ~ /ADDQ\.W #\$1,\$40\(A7\)/) {
         saw_line_divisor_bump = 1
+        parse_finish_pending = 1
     }
     if (u ~ /MOVE\.B #\$20,\(A0\)/ || u ~ /MOVE\.B #32,\(A0\)/) {
         parse_space_rewrite = 1
     }
-    if ((u ~ /ADDQ\.W #1,-32\(A5\)/ || u ~ /ADDQ\.W #\$1,\$40\(A7\)/) &&
+    if (parse_finish_pending &&
         (u ~ /MOVE\.W D0,-10\(A5\)/ || u ~ /MOVE\.W D0,\$32\(A7\)/ || u ~ /MOVE\.W #1,\$32\(A7\)/)) {
         parse_finish_seen = 1
+        parse_finish_pending = 0
     }
     if (saw_ctrl6_branch && saw_ctrl24_branch && saw_ctrl25_branch &&
         saw_segment_terminator && parse_space_rewrite) {
         has_parse_flow = 1
     }
 
-    if (u ~ /TEXTDISP_LINEPENOVERRIDEENABLEDFLAG/) {
+    if (u ~ /TEXTDISP_LINEPENOVERRIDEENABLEDFLAG/ || u ~ /TEXTDISP_LINEPENOVERRIDEENABLEDF/) {
         render_pen_override_gate = 1
     }
     if (n ~ /LVOSETFONT/) {
         render_font_switch_count++
     }
-    if ((u ~ /TST\.B \(A1\)\+/ || u ~ /TST\.B \(A0\)\+/) &&
-        (u ~ /BNE\.S \.IF_NE_17A0/ || u ~ /BNE\.B ___TLIBA1_DRAWFORMATTEDTEXTBLOCK__/)) {
+    if (u ~ /TST\.B \(A1\)\+/ || u ~ /TST\.B \(A0\)\+/ || u ~ /TST\.B \(A0\)/) {
+        render_text_length_test_seen = 1
+    }
+    if ((render_text_length_test_seen && (u ~ /BNE\.S \.IF_NE_17A0/ || u ~ /BNE\.B ___TLIBA1_DRAWFORMATTEDTEXTBLOCK__/)) ||
+        (render_text_length_test_seen && u ~ /ADDQ\.L #\$1,\$54\(A7\)/)) {
         render_text_length_loop = 1
     }
     if (u ~ /CLOCK_ALIGNEDINSETRENDERGATEFLAG/ || u ~ /CLEANUP_ALIGNEDINSETNIBBLEPRIMARY/) {
@@ -161,10 +171,19 @@ function trim(s, t) {
     if (u ~ /MOVEA?\.L -26\(A5\),A0/ || u ~ /MOVE\.L \$78\(A7\),\(A7\)/ || u ~ /MOVE\.L \$70\(A7\),A0/) {
         cleanup_font_restore = 1
     }
-    if (n ~ /MEMORYDEALLOCATEMEMORY/ && (u ~ /2385/ || u ~ /#\$951/ || u ~ /\$951/)) {
+    if (u ~ /2385/ || u ~ /#\$951/ || u ~ /\$951/) {
+        cleanup_dealloc_const = 1
+    }
+    if (u ~ /TLIBA1_STR_TLIBA1_DOT_C/ || u ~ /PEA TLIBA1_STR_TLIBA1_DOT_C\(A4\)/) {
+        cleanup_dealloc_owner = 1
+    }
+    if (n ~ /MEMORYDEALLOCATEMEMORY/) {
+        cleanup_dealloc_line = 1
+    }
+    if (cleanup_dealloc_line && cleanup_dealloc_const && cleanup_dealloc_owner) {
         cleanup_dealloc = 1
     }
-    if (cleanup_pen_restore && cleanup_dealloc) {
+    if (cleanup_pen_restore && cleanup_font_restore && cleanup_dealloc) {
         has_cleanup_restore = 1
     }
 }
@@ -178,6 +197,16 @@ END {
     print "HAS_ALLOC_CALL=" has_alloc_call
     print "HAS_ALLOC_FAIL_RETURN=" has_alloc_fail_return
     print "HAS_PARSE_FLOW=" has_parse_flow
+    print "HAS_PARSE_FINISH_SEEN=" parse_finish_seen
     print "HAS_RENDER_FLOW=" has_render_flow
+    print "HAS_RENDER_PEN_OVERRIDE_GATE=" render_pen_override_gate
+    print "HAS_RENDER_FONT_SWITCH_PAIR=" (render_font_switch_count >= 2)
+    print "HAS_RENDER_TEXT_LENGTH_LOOP=" render_text_length_loop
+    print "HAS_RENDER_WIDTH_CLAMP=" render_width_clamp
+    print "HAS_RENDER_BASELINE_ADD=" render_baseline_add
+    print "HAS_RENDER_CENTER_ROUND_FIX=" render_center_round_fix
+    print "HAS_CLEANUP_PEN_RESTORE=" cleanup_pen_restore
+    print "HAS_CLEANUP_FONT_RESTORE=" cleanup_font_restore
+    print "HAS_CLEANUP_DEALLOC=" cleanup_dealloc
     print "HAS_CLEANUP_RESTORE=" has_cleanup_restore
 }

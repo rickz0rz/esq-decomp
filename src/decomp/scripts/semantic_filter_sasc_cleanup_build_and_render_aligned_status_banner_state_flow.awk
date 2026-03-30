@@ -5,6 +5,11 @@ BEGIN {
     prepare_clock_pos = 0
     entry_scan_pos = 0
     entry_retry_cap_pos = 0
+    code_e_pos = 0
+    code_f_pos = 0
+    code_g_pos = 0
+    code_n_pos = 0
+    code_o_pos = 0
     override_state_pos = 0
     reset_seed_pos = 0
     reset_match_write_pos = 0
@@ -36,6 +41,8 @@ BEGIN {
     tomorrow_pos = 0
     today_pos = 0
     tonight_pos = 0
+    hour17_pos = 0
+    minute30_pos = 0
     format_time_count = 0
     center_align_pos = 0
     build_channel_label_pos = 0
@@ -101,6 +108,21 @@ function trim(s, t) {
     if (entry_retry_cap_pos == 0 &&
         (u ~ /#60/ || u ~ /#\$3C/ || u ~ /\(\$3C\)\.W/)) {
         entry_retry_cap_pos = NR
+    }
+    if (code_e_pos == 0 && (u ~ /#69/ || u ~ /#\$45/)) {
+        code_e_pos = NR
+    }
+    if (code_f_pos == 0 && (u ~ /#70/ || u ~ /#\$46/)) {
+        code_f_pos = NR
+    }
+    if (code_g_pos == 0 && (u ~ /#71/ || u ~ /#\$47/)) {
+        code_g_pos = NR
+    }
+    if (code_n_pos == 0 && (u ~ /#78/ || u ~ /#\$4E/)) {
+        code_n_pos = NR
+    }
+    if (code_o_pos == 0 && (u ~ /#79/ || u ~ /#\$4F/)) {
+        code_o_pos = NR
     }
     if (override_state_pos == 0 &&
         (u ~ /MOVE.W #\$2,\$42\(A7\)/ || u ~ /MOVE.W #2,-40\(A5\)/)) {
@@ -216,6 +238,12 @@ function trim(s, t) {
     if (tonight_pos == 0 && u ~ /GLOBAL_STR_ALIGNED_TONIGHT_AT/) {
         tonight_pos = NR
     }
+    if (hour17_pos == 0 && (u ~ /#17/ || u ~ /#\$11/)) {
+        hour17_pos = NR
+    }
+    if (minute30_pos == 0 && (u ~ /#30/ || u ~ /#\$1E/)) {
+        minute30_pos = NR
+    }
     if (u ~ /TEXTDISP_FORMATENTRYTIME/ ||
         u ~ /GROUP_AD_JMPTBL_TEXTDISP_FORMATENTRYTIME/) {
         format_time_count++
@@ -280,7 +308,9 @@ END {
     print "HAS_LABEL=" has_label
     print "HAS_TEMPLATE_AND_CHANNEL_SETUP=" (template_source_pos > 0 && channel_code_pos > template_source_pos)
     print "HAS_CLOCK_BUFFER_PREP_AFTER_TEMPLATE=" (prepare_clock_pos > channel_code_pos)
-    print "HAS_ENTRY_SCAN_WITH_RETRY_CAP=" (entry_scan_pos > prepare_clock_pos && entry_retry_cap_pos > entry_scan_pos)
+    print "HAS_TEMPLATE_DISPATCH_CODES=" (code_e_pos > prepare_clock_pos && code_f_pos > 0 &&
+        code_g_pos > 0 && code_n_pos > 0 && code_o_pos > 0)
+    print "HAS_ENTRY_SCAN_WITH_RETRY_CAP=" (entry_scan_pos > code_e_pos && entry_retry_cap_pos > entry_scan_pos)
     print "HAS_TEMPLATE_OVERRIDE_AND_RESET_FLOW=" (override_state_pos > entry_scan_pos &&
         reset_seed_pos > override_state_pos &&
         reset_match_write_pos >= reset_seed_pos &&
@@ -294,9 +324,12 @@ END {
         selected_match_write_pos > fallback_char_pos && selected_clock_write_pos >= selected_match_write_pos)
     print "HAS_SHORTNAME_PREFIX_APPEND_FLOW=" (short_name_pos > selected_clock_write_pos && left_align_pos > short_name_pos && append_count >= 6)
     print "HAS_SPECIAL_NOW_NEXT_SUFFIX_FLOW=" (now_showing_pos > left_align_pos && next_showing_pos > now_showing_pos && format_time_count >= 2)
-    print "HAS_DAY_SUFFIX_FLOW=" (tomorrow_pos > now_showing_pos && today_pos > tomorrow_pos && tonight_pos > today_pos)
+    print "HAS_DAY_SUFFIX_FLOW=" (tomorrow_pos > now_showing_pos && today_pos > tomorrow_pos &&
+        tonight_pos > today_pos && hour17_pos > tomorrow_pos && minute30_pos > hour17_pos)
     print "HAS_CENTER_SUFFIX_FLOW=" (center_align_pos > left_align_pos)
-    print "HAS_STATUS_LINE_REBUILD_PHASE=" (build_channel_label_pos > center_align_pos && build_status_line_pos > build_channel_label_pos)
+    print "HAS_STATUS_LINE_REBUILD_PHASE=" (build_channel_label_pos > center_align_pos &&
+        build_status_line_pos > build_channel_label_pos && code_f_pos > 0 && code_g_pos > 0 &&
+        code_n_pos > 0 && code_o_pos > 0)
     print "HAS_FINAL_DRAW_RESET_PHASE=" (banner_reset_pos > build_status_line_pos && pen_reset_pos >= banner_reset_pos &&
         trim_pos > pen_reset_pos && inset_pos > trim_pos)
     print "HAS_MODE2_FILL_AND_PRESENT=" (get_rast_pos > inset_pos && get_height_count >= 2 && rect_fill_pos > get_rast_pos &&

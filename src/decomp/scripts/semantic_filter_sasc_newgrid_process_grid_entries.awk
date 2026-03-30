@@ -6,9 +6,11 @@ BEGIN{
     h_marker_flag=0;h_keepmarkers_clear=0;h_second_pair_probe=0;h_entry_guard=0;h_aux_guard=0
     h_gridcell_style0=0;h_gridcell_style1=0;h_null_ctx_state4=0;h_state5_visible_reset=0
     h_force_state4=0;h_second_key_wrap=0;h_state3_remap=0;h_missing_entry_span=0
+    h_missing_entry_state1=0;h_no_rows_reset=0
     prev="";pending_visible_mode2=0;pending_second_pair_probe=0;pending_pair_store=0;pair_const=0
     pending_gridcell_style0=0;pending_gridcell_style1=0;pending_state3_remap=0
     pending_null_ctx_state4=0;pending_state5_visible_reset=0
+    pending_missing_entry_state1=0;pending_no_rows_reset=0
 }
 function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
 {
@@ -54,6 +56,20 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
         pending_visible_mode2=0
     } else if(pending_visible_mode2 > 0){
         pending_visible_mode2--
+    }
+    if(pending_missing_entry_state1 > 0 &&
+       (l ~ /MOVE\.L D[0-7],(-30\(A5\)|\$68\(A7\)|\(A7\))/ ||
+        l ~ /STATE = 1/)){
+        h_missing_entry_state1=1
+        pending_missing_entry_state1=0
+    } else if(pending_missing_entry_state1 > 0){
+        pending_missing_entry_state1--
+    }
+    if(pending_no_rows_reset > 0 && l ~ /MOVE\.L D[0-7],NEWGRID_GRIDENTRIESWORKFLOWSTATE/){
+        h_no_rows_reset=1
+        pending_no_rows_reset=0
+    } else if(pending_no_rows_reset > 0){
+        pending_no_rows_reset--
     }
     if(pending_second_pair_probe > 0 && l ~ /(JSR|BSR).*TESTENTRYSTATE/){
         h_second_pair_probe=1
@@ -121,6 +137,9 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
        l ~ /MOVEQ(\.L)? #\$30,D[0-7]/)h_second_key_wrap=1
     if(l ~ /(JSR|BSR).*FINDPREVIOUSVALIDENTRYINDEX/ || l ~ /FINDPREVIOUSVALIDENTR/ || l ~ /FINDPREV/)pending_state3_remap=12
     if(l ~ /SUB\.W (-18\(A5\)|\$26\(A7\)),D[0-7]/ || l ~ /MOVEM\.W D[0-7],(-22\(A5\)|\$3C\(A7\))/)h_missing_entry_span=1
+    if(l ~ /MOVE\.L D[0-7],NEWGRID_ROWLAYOUTCOMMITPENID/){
+        pending_missing_entry_state1=16
+    }
     if(prev ~ /PEA (\(\$2\)|2)\.W/ && l ~ /(JSR|BSR).*DISPTEXT_COMPUTE/){
         pending_visible_mode2=3
     }
@@ -132,6 +151,9 @@ function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsu
     }
     if(l ~ /PEA (\(\$1\)|1)\.W/){
         pending_gridcell_style1=3
+    }
+    if(l ~ /CLR\.W (52\(A3\)|\$34\(A3\))/){
+        pending_no_rows_reset=4
     }
     if(l=="RTS")h_rts=1
     prev=l
@@ -173,6 +195,8 @@ END{
     print "HAS_SECOND_KEY_WRAP="h_second_key_wrap
     print "HAS_STATE3_REMAP="h_state3_remap
     print "HAS_MISSING_ENTRY_SPAN="h_missing_entry_span
+    print "HAS_MISSING_ENTRY_STATE1="h_missing_entry_state1
+    print "HAS_NO_ROWS_RESET="h_no_rows_reset
     print "HAS_RESTORE_SELECTED_PEN="h_restore_selected
     print "HAS_HALFHEIGHT_STORE="h_halfheight_store
     print "HAS_HALFHEIGHT_CLEAR="h_halfheight_clear

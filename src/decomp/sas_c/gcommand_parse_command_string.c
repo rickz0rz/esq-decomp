@@ -29,30 +29,6 @@ extern char *ESQ_FindSubstringCaseFold(const char *text, const char *needle);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern LONG GCOMMAND_LoadMplexFile(void);
 
-static LONG parse_pen_1_to_3(UBYTE c)
-{
-    LONG v;
-
-    v = (LONG)c - (LONG)'0';
-    if (v < 1 || v > 3) {
-        return -1;
-    }
-    return v;
-}
-
-static UBYTE fold_upper_if_alpha(UBYTE c)
-{
-    if ((WDISP_CharClassTable[c] & 0x02U) != 0) {
-        return (UBYTE)(c - 32);
-    }
-    return c;
-}
-
-static int is_decimal_digit_class(UBYTE c)
-{
-    return (WDISP_CharClassTable[c] & 0x04U) != 0;
-}
-
 LONG GCOMMAND_ParseCommandString(char *cmd)
 {
     char scratch[4];
@@ -87,7 +63,10 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
     idx = 2;
 
     if (idx < tailIndex) {
-        uc = fold_upper_if_alpha((UBYTE)cmd[idx]);
+        uc = (UBYTE)cmd[idx];
+        if ((WDISP_CharClassTable[uc] & 0x02U) != 0) {
+            uc = (UBYTE)(uc - 32);
+        }
         if (uc == 'Y' || uc == 'N') {
             GCOMMAND_DigitalMplexEnabledFlag[0] = uc;
         }
@@ -108,8 +87,8 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
         scratch[2] = 0;
         v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
         if (v >= 0 && v <= 99 &&
-            is_decimal_digit_class((UBYTE)scratch[0]) &&
-            is_decimal_digit_class((UBYTE)scratch[1])) {
+            (WDISP_CharClassTable[(UBYTE)scratch[0]] & 0x04U) != 0 &&
+            (WDISP_CharClassTable[(UBYTE)scratch[1]] & 0x04U) != 0) {
             GCOMMAND_MplexSearchRowLimit = v;
         }
         idx += 2;
@@ -121,17 +100,19 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
         scratch[2] = 0;
         v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
         if (v >= 0 && v <= 29 &&
-            is_decimal_digit_class((UBYTE)scratch[0]) &&
-            is_decimal_digit_class((UBYTE)scratch[1])) {
+            (WDISP_CharClassTable[(UBYTE)scratch[0]] & 0x04U) != 0 &&
+            (WDISP_CharClassTable[(UBYTE)scratch[1]] & 0x04U) != 0) {
             GCOMMAND_MplexClockOffsetMinutes = v;
         }
         idx += 2;
     }
 
     if (idx < tailIndex) {
-        v = parse_pen_1_to_3((UBYTE)cmd[idx]);
+        v = (LONG)(UBYTE)cmd[idx] - (LONG)'0';
         if (v >= 0) {
-            GCOMMAND_MplexMessageTextPen = v;
+            if (v >= 1 && v <= 3) {
+                GCOMMAND_MplexMessageTextPen = v;
+            }
         }
         idx++;
     }
@@ -145,9 +126,11 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
     }
 
     if (idx < tailIndex) {
-        v = parse_pen_1_to_3((UBYTE)cmd[idx]);
+        v = (LONG)(UBYTE)cmd[idx] - (LONG)'0';
         if (v >= 0) {
-            GCOMMAND_MplexEditorLayoutPen = v;
+            if (v >= 1 && v <= 3) {
+                GCOMMAND_MplexEditorLayoutPen = v;
+            }
         }
         idx++;
     }
@@ -161,17 +144,21 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
     }
 
     if (idx < tailIndex) {
-        v = parse_pen_1_to_3((UBYTE)cmd[idx]);
+        v = (LONG)(UBYTE)cmd[idx] - (LONG)'0';
         if (v >= 0) {
-            GCOMMAND_MplexDetailLayoutPen = v;
+            if (v >= 1 && v <= 3) {
+                GCOMMAND_MplexDetailLayoutPen = v;
+            }
         }
         idx++;
     }
 
     if (idx < tailIndex) {
-        v = parse_pen_1_to_3((UBYTE)cmd[idx]);
+        v = (LONG)(UBYTE)cmd[idx] - (LONG)'0';
         if (v >= 0) {
-            GCOMMAND_MplexDetailInitialLineIndex = v;
+            if (v >= 1 && v <= 3) {
+                GCOMMAND_MplexDetailInitialLineIndex = v;
+            }
         }
         idx++;
     }
@@ -185,7 +172,10 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
     }
 
     if (idx < tailIndex) {
-        uc = fold_upper_if_alpha((UBYTE)cmd[idx]);
+        uc = (UBYTE)cmd[idx];
+        if ((WDISP_CharClassTable[uc] & 0x02U) != 0) {
+            uc = (UBYTE)(uc - 32);
+        }
         if (uc == 'F' || uc == 'B' || uc == 'L' || uc == 'N') {
             GCOMMAND_MplexWorkflowMode = uc;
         }
@@ -193,7 +183,10 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
     }
 
     if (idx < tailIndex) {
-        uc = fold_upper_if_alpha((UBYTE)cmd[idx]);
+        uc = (UBYTE)cmd[idx];
+        if ((WDISP_CharClassTable[uc] & 0x02U) != 0) {
+            uc = (UBYTE)(uc - 32);
+        }
         if (uc == 'Y' || uc == 'N') {
             GCOMMAND_MplexDetailLayoutFlag = uc;
         }
@@ -241,7 +234,8 @@ LONG GCOMMAND_ParseCommandString(char *cmd)
     }
     fmtSlot = (char *)fmtSearch;
     if (fmtSlot != 0 && *fmtSlot != 0) {
-        fmtSlot[1] = 's';
+        tailIndex = (LONG)(fmtSlot - GCOMMAND_MplexAtTemplatePtr);
+        GCOMMAND_MplexAtTemplatePtr[tailIndex + 1] = 's';
     }
 
     return GCOMMAND_LoadMplexFile();

@@ -29,6 +29,8 @@ BEGIN {
 
     prev1 = ""
     prev2 = ""
+    wrap_zero_window = 0
+    wrap_one_window = 0
 }
 
 function trim(s, t) {
@@ -49,6 +51,13 @@ function trim(s, t) {
     u = toupper(line)
     n = u
     gsub(/[^A-Z0-9]/, "", n)
+
+    if (wrap_zero_window > 0) {
+        wrap_zero_window--
+    }
+    if (wrap_one_window > 0) {
+        wrap_one_window--
+    }
 
     if (u ~ /^WDISP_DRAWWEATHERSTATUSDAYENTRY:/ || u ~ /^WDISP_DRAWWEATHERSTATUSDAYENTR[A-Z0-9_]*:/) {
         has_entry = 1
@@ -118,13 +127,19 @@ function trim(s, t) {
     if (n ~ /WDISPCHARCLASSTABLE/ || n ~ /BTST#3/ || n ~ /8U/) {
         has_forecast_skip_class3 = 1
     }
-    if ((n ~ /WDISPJMPTBLNEWGRIDDRAWWRAPPED/ || n ~ /DRAWWRAPPEDTEXT/) &&
-        (u ~ /,0\)/ || u ~ /PEA 0\.W/ || prev1 ~ /CLR\.L -\(A7\)/ || prev2 ~ /CLR\.L -\(A7\)/)) {
-        has_wrapped_probe = 1
+    if (u ~ /^CLR\.L -?\(A7\)$/) {
+        wrap_zero_window = 8
     }
-    if ((n ~ /WDISPJMPTBLNEWGRIDDRAWWRAPPED/ || n ~ /DRAWWRAPPEDTEXT/) &&
-        (u ~ /,1\)/ || u ~ /PEA 1\.W/)) {
-        has_wrapped_draw = 1
+    if (u ~ /^PEA .*1.*\.W$/) {
+        wrap_one_window = 8
+    }
+    if (n ~ /WDISPJMPTBLNEWGRIDDRAWWRAPPED/ || n ~ /DRAWWRAPPEDTEXT/ || n ~ /DRAWWRAPPED/) {
+        if (wrap_zero_window > 0) {
+            has_wrapped_probe = 1
+        }
+        if (wrap_one_window > 0) {
+            has_wrapped_draw = 1
+        }
     }
     if (n ~ /CLOCKCURRENTDAYOFWEEKINDEX/ || (n ~ /MATHDIVS32/ && prev1 ~ /MOVEQ(\.L)? #\$7,D1/)) {
         has_weekday_mod = 1

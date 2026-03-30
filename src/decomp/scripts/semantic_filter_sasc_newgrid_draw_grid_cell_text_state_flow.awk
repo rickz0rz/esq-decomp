@@ -71,7 +71,7 @@ function trim(s, t) {
         has_secondary_append=1
         phase="layout"
     }
-    if (u ~ /ADDQ\.L #2,A0/ || u ~ /LEA \$2\(A2\),A1/) has_secondary_plus2=1
+    if (u ~ /ADDQ\.L #2,A0/ || u ~ /LEA \$2\(A2\),A0/ || u ~ /LEA \$2\(A2\),A1/) has_secondary_plus2=1
 
     if (n ~ /NEWGRIDSAMPLETIMETEXTWIDTHPX/ && u ~ /^MOVE\.W/) has_layout_half_sample_width=1
     if (u ~ /#42([^0-9]|$)/ || u ~ /#\$2A/) has_layout_const42=1

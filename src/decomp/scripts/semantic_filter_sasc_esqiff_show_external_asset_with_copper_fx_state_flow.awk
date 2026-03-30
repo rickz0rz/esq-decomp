@@ -53,6 +53,8 @@ BEGIN {
     has_capture_sequence = 0
     capture_calls = 0
     capture_value_hits = 0
+    saw_capture_limit_32 = 0
+    saw_capture_limit_value = 0
 
     has_capture_activation_decision = 0
     saw_capture_gate_row0 = 0
@@ -262,10 +264,18 @@ function trim(s, t) {
     if (u ~ /ESQIFF_CAPTUREACCUMULATORVALUE/) {
         capture_calls++
     }
+    if (u ~ /MOVEQ(\.L)? #\$?32,D[0-7]/ || u ~ /PEA 32\.W/ || u ~ /COPPER_LIMIT/) {
+        saw_capture_limit_32 = 1
+    }
+    if (u ~ /#\$4000/ || u ~ /ACCUMULATOR_VALUE_LIMIT/) {
+        saw_capture_limit_value = 1
+    }
     if (u ~ /ACCUMULATOR_ROW[0-3]_CAPTUREVALUE/) {
         capture_value_hits++
     }
     if ((capture_calls >= 4 && capture_value_hits >= 4) ||
+        (saw_capture_limit_32 && saw_capture_limit_value &&
+         capture_calls >= 4 && capture_value_hits >= 4) ||
         capture_value_hits >= 8) {
         has_capture_sequence = 1
     }

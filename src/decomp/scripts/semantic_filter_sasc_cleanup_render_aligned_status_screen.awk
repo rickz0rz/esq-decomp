@@ -19,6 +19,8 @@ BEGIN {
     has_current_match_save_store = 0
     has_context_base = 0
     has_set_rast = 0
+    has_bitmap_depth_load = 0
+    has_bitmap_clear_mask = 0
     has_set_apen = 0
     has_set_drmd = 0
     has_left_align = 0
@@ -43,8 +45,10 @@ BEGIN {
     build_context_count = 0
     has_mode53_gate = 0
     has_select_brush = 0
+    has_plain_viewcfg = 0
     has_slot0_gate = 0
     has_update_serial_shadow = 0
+    has_hilite_viewcfg = 0
     has_slot1_gate = 0
     has_rect_fill = 0
     has_build_status_line = 0
@@ -93,6 +97,9 @@ function trim(s, t) {
     if (u ~ /TEXTDISP_CURRENTMATCHINDEXSAVED/ && u ~ /TEXTDISP_CURRENTMATCHINDEX/) has_current_match_save_store = 1
     if (u ~ /WDISP_DISPLAYCONTEXTBASE/) has_context_base = 1
     if (u ~ /_LVOSETRAST/) has_set_rast = 1
+    if (u ~ /MOVE\.B 5\(A1\),D0/ || u ~ /MOVE\.B \$5\(A0\),D0/ || u ~ /MOVE\.B \$5\(A1\),D0/) has_bitmap_depth_load = 1
+    if (u ~ /ASL\.L D0,D2/ || u ~ /BSET D0,D1/) has_bitmap_clear_mask = 1
+    if (u ~ /SUBQ\.L #\$1,D2/ || u ~ /SUBQ\.L #1,D2/ || u ~ /SUBQ\.L #\$1,D1/ || u ~ /SUBQ\.L #1,D1/) has_bitmap_clear_mask = 1
     if (u ~ /_LVOSETAPEN/) has_set_apen = 1
     if (u ~ /_LVOSETDRMD/) has_set_drmd = 1
     if (u ~ /TEXTDISP_LEFTALIGNTOKEN/) has_left_align = 1
@@ -115,10 +122,16 @@ function trim(s, t) {
     if (u ~ /TLIBA3_GETVIEWMODERASTPORT/) has_get_rast_port = 1
     if (u ~ /TLIBA3_GETVIEWMODEHEIGHT/) get_height_count++
     if (u ~ /TLIBA3_BUILDDISPLAYCONTEXTFORVIEWMODE/ || u ~ /TLIBA3_BUILDDISPLAYCONTEXTFORVIE/ || u ~ /GROUP_AD_JMPTBL_TLIBA3_BUILDDISPLAYCONTEXTFORVIEWMODE/ || u ~ /GROUP_AD_JMPTBL_TLIBA3_BUILDDISPLAYCONTEXTFORVIE/) build_context_count++
+    if ((u ~ /PEA \(\$1\)\.W/ || u ~ /PEA 1\.W/ || u ~ /CLEANUP3_VIEWCFG_PLAIN/) &&
+        (u ~ /TLIBA3_BUILDDISPLAYCONTEXTFORVIEWMODE/ || u ~ /TLIBA3_BUILDDISPLAYCONTEXTFORVIE/ ||
+         u ~ /GROUP_AD_JMPTBL_TLIBA3_BUILDDISPLAYCONTEXTFORVIEWMODE/ || u ~ /GROUP_AD_JMPTBL_TLIBA3_BUILDDISPLAYCONTEXTFORVIE/)) has_plain_viewcfg = 1
     if (u ~ /#53/ || u ~ /#\\$35/ || u ~ /PEA \\(\\$35\\)\\.W/) has_mode53_gate = 1
     if (u ~ /ESQFUNC_SELECTANDAPPLYBRUSHFORCU/ || u ~ /GROUP_AD_JMPTBL_ESQFUNC_SELECTANDAPPLYBRUSHFORCURRENTENTRY/ || u ~ /GROUP_AD_JMPTBL_ESQFUNC_SELECTANDAPPLYBRUSHFORCU/) has_select_brush = 1
     if (u ~ /TST\\.W D5/ || u ~ /MOVE\\.L D5,D0/ || u ~ /MOVE\\.W D5,D0/) has_slot0_gate = 1
     if (u ~ /SCRIPT_UPDATESERIALSHADOWFROMCTR/ || u ~ /GROUP_AD_JMPTBL_SCRIPT_UPDATESERIALSHADOWFROMCTRLBYTE/) has_update_serial_shadow = 1
+    if ((u ~ /PEA \(\$4\)\.W/ || u ~ /PEA 4\.W/ || u ~ /CLEANUP3_VIEWCFG_HILITE/) &&
+        (u ~ /TLIBA3_BUILDDISPLAYCONTEXTFORVIEWMODE/ || u ~ /TLIBA3_BUILDDISPLAYCONTEXTFORVIE/ ||
+         u ~ /GROUP_AD_JMPTBL_TLIBA3_BUILDDISPLAYCONTEXTFORVIEWMODE/ || u ~ /GROUP_AD_JMPTBL_TLIBA3_BUILDDISPLAYCONTEXTFORVIE/)) has_hilite_viewcfg = 1
     if (u ~ /SUBQ\\.W #\\$1,D0/ || u ~ /SUBQ\\.W #1,D0/) has_slot1_gate = 1
     if (u ~ /_LVORECTFILL/) has_rect_fill = 1
     if (u ~ /CLEANUP_BUILDALIGNEDSTATUSLINE/) has_build_status_line = 1
@@ -144,8 +157,8 @@ END {
     print "HAS_ENTRY_SCAN_RETRY_CAP=" has_retry_cap_60
     print "HAS_FGNO_TEMPLATE_PATHS=" (has_primary_line_head && has_primary_line_tail && has_match_index && has_clock_entry_index)
     print "HAS_STATUS_STATE_GLOBALS=" (has_status_suffix && has_current_match_saved && has_current_match_save_store)
-    print "HAS_CONTEXT_CLEAR_AND_DROP=" (has_context_base && has_set_rast && has_copper_drop)
-    print "HAS_CONTEXT_SWITCHES=" (build_context_count >= 2)
+    print "HAS_CONTEXT_CLEAR_AND_DROP=" (has_context_base && has_set_rast && has_bitmap_depth_load && has_bitmap_clear_mask && has_copper_drop)
+    print "HAS_CONTEXT_SWITCHES=" (build_context_count >= 2 && has_plain_viewcfg && has_hilite_viewcfg)
     print "HAS_MODE53_HIGHLIGHT_DISABLE_GATE=" (has_mode53_gate && has_disable_highlight)
     print "HAS_SLOT0_BRUSH_SELECT_GATE=" (has_slot0_gate && has_select_brush)
     print "HAS_BRUSH_AND_SERIAL_SETUP=" (has_select_brush && has_update_serial_shadow)

@@ -17,6 +17,7 @@ BEGIN {
     has_read_rbf_xor=0
     has_parse_compact=0
     has_program_info=0
+    has_program_info_command=0
     has_parse_digit_label=0
     has_copy_label=0
     has_clear_primary_flags=0
@@ -25,6 +26,7 @@ BEGIN {
     has_line_errors=0
     has_filter_state=0
     has_banner_dispatch=0
+    has_banner_text_record=0
     has_status_packet_apply=0
     has_clock_packet_apply=0
     has_group_record_parse=0
@@ -43,6 +45,7 @@ BEGIN {
     has_diagnostics=0
     has_config_parse=0
     has_config_save=0
+    has_interactive_transfer=0
     has_bang_path=0
     has_bang_y_normalize=0
     has_bang_slot_flag_write=0
@@ -103,6 +106,7 @@ function trim(s, t) {
     if (n ~ /READRBFBYTESWITHXOR/ || n ~ /READRBFBYTESWITHXO/) has_read_rbf_xor=1
     if (n ~ /PARSECOMPACTENTRYRECORD/ || n ~ /PARSECOMPACTENTRYREC/ || n ~ /PARSECOMPACTENTRY/) has_parse_compact=1
     if (n ~ /PARSEPROGRAMINFOCOMMANDRECORD/ || n ~ /PARSEPROGRAMINFOCOMM/ || n ~ /PROGRAMINFOCOMMANDREC/) has_program_info=1
+    if (n ~ /ESQDISPPARSEPROGRAMINFOCOMMANDRECORD/ || n ~ /PARSEPROGRAMINFOCOMMANDRECORD/ || n ~ /PARSEPROGRAMINFOCOMM/) has_program_info_command=1
     if (n ~ /PARSEDIGITLABELANDDISPLAY/ || n ~ /PARSEDIGITLABELANDDISP/ || n ~ /PARSEDIGITLABEL/) has_parse_digit_label=1
     if (n ~ /COPYLABELTOGLOBAL/ || n ~ /COPYLABELTOGLOB/) has_copy_label=1
     if (n ~ /CLEARPRIMARYENTRYFLAGS34TO39/ || n ~ /CLEARPRIMARYENTRYFLAGS34TO/ || n ~ /CLEARPRIMARYENTRYFLAGS/) has_clear_primary_flags=1
@@ -111,6 +115,7 @@ function trim(s, t) {
     if (n ~ /LINEERRORCOUNT/) has_line_errors=1
     if (n ~ /PARSEFILTERSTATEFROMBUFFER/ || n ~ /PRIMARYFILTERSTATE/ || n ~ /SECONDARYFILTERSTATE/) has_filter_state=1
     if (n ~ /HANDLEBANNERCOMMAND3233/ || n ~ /READSERIALSIZEDTEXTRECORD/ || n ~ /BANNERSUBCOMMANDSET/) has_banner_dispatch=1
+    if (n ~ /READSERIALSIZEDTEXTRECORD/ || n ~ /READSERIALSIZEDTEXTREC/) has_banner_text_record=1
     if (n ~ /APPLYINCOMINGSTATUSPACKET/ || n ~ /APPLYINCOMINGSTATUSPACK/) has_status_packet_apply=1
     if (n ~ /APPLYRTCBYTESANDPERSIST/ || n ~ /CTASKSSTR1/ && n ~ /50/) has_clock_packet_apply=1
     if (n ~ /PARSEGROUPRECORDANDREFRESH/ || n ~ /STATUSPACKETREADYFLAG/) has_group_record_parse=1
@@ -127,6 +132,7 @@ function trim(s, t) {
     if (n ~ /PARSEPPVCOMMAND/) has_ppv_command=1
     if (n ~ /PARSECONFIGBUFFER/ || n ~ /DISKIOPARSECONFIGBUFFER/) has_config_parse=1
     if (n ~ /SAVECONFIGTOFILEHANDLE/ || n ~ /DISKIOSAVECONFIGTOFILEHANDLE/) has_config_save=1
+    if (n ~ /HANDLEINTERACTIVEFILETRANSFER/ || n ~ /HANDLEINTERACTIVEFILETRA/) has_interactive_transfer=1
     if (n ~ /SELECTIONSUFFIXBUFFER/) has_copy_suffix=1
     if (n ~ /PARSEBANNERENTRYDATA/ || n ~ /130/ && n ~ /RECORD/) has_banner_entry=1
     if (n ~ /PERSISTONNEXTBOXOFFFLAG/ || n ~ /NOTB/ && n ~ /44/ || n ~ /UPDATESTATUSMASKANDREFRESH/ && n ~ /MODECLEAR/) has_boxoff=1
@@ -176,6 +182,7 @@ END {
     print "HAS_READ_RBF_XOR=" has_read_rbf_xor
     print "HAS_PARSE_COMPACT_ENTRY=" has_parse_compact
     print "HAS_PROGRAM_INFO_PARSE=" has_program_info
+    print "HAS_PROGRAM_INFO_COMMAND_PARSE=" has_program_info_command
     print "HAS_PARSE_DIGIT_LABEL=" has_parse_digit_label
     print "HAS_COPY_LABEL=" has_copy_label
     print "HAS_CLEAR_PRIMARY_FLAGS=" has_clear_primary_flags
@@ -184,6 +191,7 @@ END {
     print "HAS_LINE_ERRORS=" has_line_errors
     print "HAS_FILTER_STATE_PARSE=" has_filter_state
     print "HAS_BANNER_DISPATCH=" has_banner_dispatch
+    print "HAS_BANNER_TEXT_RECORD=" has_banner_text_record
     print "HAS_STATUS_PACKET_APPLY=" has_status_packet_apply
     print "HAS_CLOCK_PACKET_APPLY=" has_clock_packet_apply
     print "HAS_GROUP_RECORD_PARSE=" has_group_record_parse
@@ -198,6 +206,7 @@ END {
     print "HAS_PPV_COMMAND_PARSE=" has_ppv_command
     print "HAS_CONFIG_PARSE=" has_config_parse
     print "HAS_CONFIG_SAVE=" has_config_save
+    print "HAS_INTERACTIVE_TRANSFER=" has_interactive_transfer
     print "HAS_COPY_SELECTION_SUFFIX=" has_copy_suffix
     print "HAS_BANNER_ENTRY_PARSE=" has_banner_entry
     print "HAS_BOXOFF_PATH=" has_boxoff

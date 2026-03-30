@@ -23,6 +23,8 @@ BEGIN {
     has_divs32_call = 0
     has_highlight_bitmap_call = 0
     highlight_bitmap_count = 0
+    highlight_bitmap_loop_state = 0
+    has_highlight_bitmap_loop_bound = 0
     has_highlight_bitmap_table = 0
     has_initbitmap_call = 0
     has_allocraster_call = 0
@@ -33,6 +35,8 @@ BEGIN {
     has_list_init = 0
     has_queue_highlight = 0
     queue_highlight_count = 0
+    queue_highlight_loop_state = 0
+    has_queue_highlight_loop_bound = 0
     has_queue_highlight_pair = 0
     has_copper_off = 0
     has_disk_error_guard = 0
@@ -209,8 +213,8 @@ function advance_stage(stage, target) {
     if (u ~ /ALLOCATEHIGHLIGHTBITMAPS/ || u ~ /ALLOCATEHIGHLIGHTBITMA/) {
         has_highlight_bitmap_call = 1
         highlight_bitmap_count++
-        if (has_highlight_bitmap_table) {
-            has_highlight_bitmap_table = 1
+        if (highlight_bitmap_loop_state == 2) {
+            has_highlight_bitmap_loop_bound = 1
         }
     }
     if (u ~ /ESQDISP_HIGHLIGHTBITMAPTABLE/ || u ~ /ESQDISP_HIGHLIGHTBITMAPTABL/) has_highlight_bitmap_table = 1
@@ -224,6 +228,9 @@ function advance_stage(stage, target) {
     if (u ~ /QUEUEHIGHLIGHTDRAWMESSAGE/ || u ~ /QUEUEHIGHLIGHTDRAWMES/) {
         has_queue_highlight = 1
         queue_highlight_count++
+        if (queue_highlight_loop_state == 3) {
+            has_queue_highlight_loop_bound = 1
+        }
         if (saw_queue_slot_table && saw_queue_bitmap_table) has_queue_highlight_pair = 1
     }
     if (u ~ /SETCOPPEREFFECT_OFFDISABLEHIGHLIGHT/ || u ~ /SETCOPPEREFFECT_OFFD/) has_copper_off = 1
@@ -323,6 +330,24 @@ function advance_stage(stage, target) {
     if (saw_dt_label && (u ~ /SELECTBRUSHBYLABEL/ || u ~ /SELECTBRUSHBYLAB/)) has_brush_dt = 1
     if (u ~ /GCOMMAND_HIGHLIGHTMESSAGESLOTTAB/ || u ~ /GCOMMAND_HIGHLIGHTMESSAGESLOTTA/) saw_queue_slot_table = 1
     if (u ~ /ESQDISP_HIGHLIGHTBITMAPTABLE/ || u ~ /ESQDISP_HIGHLIGHTBITMAPTABL/) saw_queue_bitmap_table = 1
+    if (u ~ /MOVEQ(\.L)? #4,D0/ || u ~ /MOVEQ(\.L)? #\$4,D0/) {
+        if (highlight_bitmap_loop_state == 0) {
+            highlight_bitmap_loop_state = 1
+        } else if (queue_highlight_loop_state == 0) {
+            queue_highlight_loop_state = 1
+        }
+    }
+    if ((u ~ /CMP\.[WL] D0,D5/ || u ~ /CMP\.[WL] D0,D6/ || u ~ /CMP\.L D0,D6/) &&
+        highlight_bitmap_loop_state == 1) {
+        highlight_bitmap_loop_state = 2
+    } else if ((u ~ /CMP\.[WL] D0,D5/ || u ~ /CMP\.[WL] D0,D6/ || u ~ /CMP\.L D0,D6/) &&
+               queue_highlight_loop_state == 1) {
+        queue_highlight_loop_state = 2
+    }
+    if ((u ~ /ESQDISP_HIGHLIGHTBITMAPTABLE/ || u ~ /ESQDISP_HIGHLIGHTBITMAPTABL/) &&
+        queue_highlight_loop_state == 2 && saw_queue_slot_table) {
+        queue_highlight_loop_state = 3
+    }
     if (u ~ /ESQ_STR_DITHER/ || u ~ /BRUSH_FINDBRUSHBYPREDICATE/ || u ~ /FINDBRUSHBYPREDIC/) {
         if (u ~ /ESQ_STR_DITHER/) has_brush_dither_fallback = 1
         if ((u ~ /BRUSH_SELECTEDNODE/ || u ~ /BRUSH_SELECTEDNO/) &&
@@ -394,8 +419,8 @@ function advance_stage(stage, target) {
 END {
     has_openlibrary_count = (openlibrary_count == 5) ? 1 : 0
     has_openfont_count = (openfont_count == 4) ? 1 : 0
-    has_highlight_bitmap_count = (highlight_bitmap_count == 1) ? 1 : 0
-    has_queue_highlight_count = (queue_highlight_count == 1) ? 1 : 0
+    has_highlight_bitmap_count = (highlight_bitmap_count == 1 && has_highlight_bitmap_loop_bound) ? 1 : 0
+    has_queue_highlight_count = (queue_highlight_count == 1 && has_queue_highlight_loop_bound) ? 1 : 0
     has_baud_validation = (has_baud_parse && has_baud_2400 && has_baud_4800 && has_baud_9600) ? 1 : 0
     has_serial_setup = (serial_setup_hits >= 3) ? 1 : 0
     has_dual_rise_transition = (rise_transition_count >= 2) ? 1 : 0

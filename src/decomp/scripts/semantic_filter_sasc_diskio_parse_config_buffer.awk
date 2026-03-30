@@ -40,17 +40,23 @@ BEGIN {
     has_diag_default_n = 0
     has_pc1_call = 0
     has_pc1_flag_store = 0
+    has_pc1_y_guard = 0
     has_lrbn_find = 0
     has_lrbn_selector_store = 0
+    has_lrbn_selector_default_n = 0
     has_banner_transition = 0
     has_lrbn_flag_store = 0
+    lrbn_flag_store_count = 0
+    has_lrbn_force_y = 0
     has_lrbn_reset = 0
     has_msn_find = 0
     has_msn_flag_store = 0
+    has_msn_default_n = 0
     has_ctasks1_store = 0
     has_ctasks1_fallback = 0
     has_refresh_update = 0
     has_mulu = 0
+    has_mulu_60 = 0
     has_store_minutes = 0
     has_store_seconds = 0
     has_rts = 0
@@ -228,6 +234,16 @@ function is_call(line) {
         has_pc1_call = 1
     }
     if (index(l, "CONFIG_ENSUREPC1GFXASSIGNEDFLAG") > 0 && l ~ /^MOVE\.B /) has_pc1_flag_store = 1
+    if ((index(l, "CONFIG_ENSUREPC1GFXASSIGNEDFLAG") > 0 &&
+         (index(l, "#89") > 0 || index(l, "#$59") > 0 || index(l, "#'Y'") > 0)) ||
+        ((l ~ /^CMP\.B / || l ~ /^CMPI?\.B /) &&
+         ((index(prev, "#89") > 0 || index(prev, "#$59") > 0 || index(prev, "#'Y'") > 0) ||
+          (index(prev2, "#89") > 0 || index(prev2, "#$59") > 0 || index(prev2, "#'Y'") > 0)) &&
+         (index(prev, "CONFIG_ENSUREPC1GFXASSIGNEDFLAG") > 0 ||
+          index(prev2, "CONFIG_ENSUREPC1GFXASSIGNEDFLAG") > 0 ||
+          index(prev3, "CONFIG_ENSUREPC1GFXASSIGNEDFLAG") > 0))) {
+        has_pc1_y_guard = 1
+    }
 
     if (is_call(l) &&
         (index(l, "GROUP_AG_JMPTBL_SCRIPT_BEGINBANNERCHARTRANSITION") > 0 ||
@@ -237,13 +253,35 @@ function is_call(line) {
     if (index(l, "CONFIG_MSNRUNTIMEMODESELECTORCHAR_LRBN") > 0 ||
         index(l, "CONFIG_MSNRUNTIMEMODESELECTORCHA") > 0) {
         if (l ~ /^MOVE\.B /) has_lrbn_selector_store = 1
+        if ((index(l, "#78") > 0 || index(l, "#$4E") > 0 || index(l, "#'N'") > 0) ||
+            ((index(prev, "#78") > 0 || index(prev, "#$4E") > 0 || index(prev, "#'N'") > 0) &&
+             l ~ /^MOVE\.B /)) {
+            has_lrbn_selector_default_n = 1
+        }
     }
-    if (index(l, "CONFIG_LRBN_FLAGCHAR") > 0 && l ~ /^MOVE\.B /) has_lrbn_flag_store = 1
+    if (index(l, "CONFIG_LRBN_FLAGCHAR") > 0 && l ~ /^MOVE\.B /) {
+        has_lrbn_flag_store = 1
+        lrbn_flag_store_count++
+    }
+    if ((index(l, "CONFIG_LRBN_FLAGCHAR") > 0 &&
+         (index(l, "#89") > 0 || index(l, "#$59") > 0 || index(l, "#'Y'") > 0)) ||
+        (index(l, "CONFIG_LRBN_FLAGCHAR") > 0 && l ~ /^MOVE\.B / &&
+         ((index(prev, "#89") > 0 || index(prev, "#$59") > 0 || index(prev, "#'Y'") > 0) ||
+          (index(prev2, "#89") > 0 || index(prev2, "#$59") > 0 || index(prev2, "#'Y'") > 0) ||
+          (index(prev3, "#89") > 0 || index(prev3, "#$59") > 0 || index(prev3, "#'Y'") > 0) ||
+          (index(prev4, "#89") > 0 || index(prev4, "#$59") > 0 || index(prev4, "#'Y'") > 0)))) {
+        has_lrbn_force_y = 1
+    }
+    if (lrbn_flag_store_count >= 3) has_lrbn_force_y = 1
     if (index(l, "CONFIG_LRBN_FLAGCHAR") > 0 &&
         (index(l, "#'N'") > 0 || index(l, "#78") > 0 || index(l, "#$4E") > 0)) {
         has_lrbn_reset = 1
     }
     if (index(l, "CONFIG_MSN_FLAGCHAR") > 0 && l ~ /^MOVE\.B /) has_msn_flag_store = 1
+    if (index(l, "CONFIG_MSN_FLAGCHAR") > 0 &&
+        (index(l, "#78") > 0 || index(l, "#$4E") > 0 || index(l, "#'N'") > 0)) {
+        has_msn_default_n = 1
+    }
     if (index(l, "CTASKS_STR_1") > 0 && l ~ /^MOVE\.B /) has_ctasks1_store = 1
     if (index(l, "CTASKS_STR_1") > 0 &&
         ((index(l, "#49") > 0 || index(l, "#$31") > 0 || index(l, "#'1'") > 0) ||
@@ -252,7 +290,9 @@ function is_call(line) {
         ((index(prev, "#49") > 0 || index(prev, "#$31") > 0 || index(prev, "#'1'") > 0 ||
           index(prev, "#50") > 0 || index(prev, "#$32") > 0 || index(prev, "#'2'") > 0) ||
          (index(prev2, "#49") > 0 || index(prev2, "#$31") > 0 || index(prev2, "#'1'") > 0 ||
-          index(prev2, "#50") > 0 || index(prev2, "#$32") > 0 || index(prev2, "#'2'") > 0))) has_ctasks1_fallback = 1
+          index(prev2, "#50") > 0 || index(prev2, "#$32") > 0 || index(prev2, "#'2'") > 0) ||
+         (index(prev3, "#49") > 0 || index(prev3, "#$31") > 0 || index(prev3, "#'1'") > 0 ||
+          index(prev3, "#50") > 0 || index(prev3, "#$32") > 0 || index(prev3, "#'2'") > 0))) has_ctasks1_fallback = 1
 
     if (is_call(l) &&
         (index(l, "ESQFUNC_UPDATEREFRESHMODESTATE") > 0 ||
@@ -261,6 +301,9 @@ function is_call(line) {
     }
 
     if (is_call(l) && index(l, "MATH_MULU32") > 0) has_mulu = 1
+    if (index(l, "#60") > 0 || index(l, "#$3C") > 0 || index(l, "($3C)") > 0) {
+        has_mulu_60 = 1
+    }
     if (index(l, "CONFIG_REFRESHINTERVALMINUTES") > 0 && l ~ /^MOVE\.B /) has_store_minutes = 1
     if (index(l, "CONFIG_REFRESHINTERVALSECONDS") > 0 && l ~ /^MOVE\.L /) has_store_seconds = 1
     if (l ~ /^RTS$/) has_rts = 1
@@ -309,17 +352,22 @@ END {
     print "HAS_DIAG_DEFAULT_N=" has_diag_default_n
     print "HAS_PC1_CALL=" has_pc1_call
     print "HAS_PC1_FLAG_STORE=" has_pc1_flag_store
+    print "HAS_PC1_Y_GUARD=" has_pc1_y_guard
     print "HAS_LRBN_FIND=" has_lrbn_find
     print "HAS_LRBN_SELECTOR_STORE=" has_lrbn_selector_store
+    print "HAS_LRBN_SELECTOR_DEFAULT_N=" has_lrbn_selector_default_n
     print "HAS_BANNER_TRANSITION=" has_banner_transition
     print "HAS_LRBN_FLAG_STORE=" has_lrbn_flag_store
+    print "HAS_LRBN_FORCE_Y=" has_lrbn_force_y
     print "HAS_LRBN_RESET=" has_lrbn_reset
     print "HAS_MSN_FIND=" has_msn_find
     print "HAS_MSN_FLAG_STORE=" has_msn_flag_store
+    print "HAS_MSN_DEFAULT_N=" has_msn_default_n
     print "HAS_CTASKS1_STORE=" has_ctasks1_store
     print "HAS_CTASKS1_FALLBACK=" has_ctasks1_fallback
     print "HAS_REFRESH_UPDATE=" has_refresh_update
     print "HAS_MULU=" has_mulu
+    print "HAS_MULU_60=" has_mulu_60
     print "HAS_STORE_MINUTES=" has_store_minutes
     print "HAS_STORE_SECONDS=" has_store_seconds
     print "HAS_RTS=" has_rts

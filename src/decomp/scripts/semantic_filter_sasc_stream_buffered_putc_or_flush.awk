@@ -37,6 +37,7 @@ BEGIN {
     has_ctrl_z_compare=0
     has_final_flush_check=0
     has_flush_vs_original_return=0
+    has_no_pending_write_zero_result=0
     has_rts=0
     saw_reset_base_to_a0=0
     saw_write_remaining_clear=0
@@ -153,6 +154,9 @@ function trim(s, t) {
     }
     if (saw_ctrl_z_compare && has_const1a) has_ctrl_z_compare=1
     if (saw_seek_scan == 2 && saw_read_scan == 2 && saw_ctrl_z_compare) has_ctrl_z_scan_loop=1
+    if (u ~ /^MOVEQ(\.L)? #\$0,D5$/ || u ~ /^MOVEQ #0,D5$/ || u ~ /^CLR\.L \$28\(A7\)$/) {
+        has_no_pending_write_zero_result=1
+    }
     if (u ~ /^MOVEQ(\.L)? #\$30,D0$/ || u ~ /^MOVEQ(\.L)? #48,D0$/ ||
         n ~ /OPENMASKFLUSHREJECT/) {
         saw_flush_reject_mask=1
@@ -210,5 +214,6 @@ END {
     print "HAS_CTRL_Z_COMPARE="has_ctrl_z_compare
     print "HAS_FINAL_FLUSH_CHECK="has_final_flush_check
     print "HAS_FLUSH_VS_ORIGINAL_RETURN="has_flush_vs_original_return
+    print "HAS_NO_PENDING_WRITE_ZERO_RESULT="has_no_pending_write_zero_result
     print "HAS_RTS="has_rts
 }
