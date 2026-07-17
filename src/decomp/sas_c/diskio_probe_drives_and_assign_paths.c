@@ -34,10 +34,11 @@ extern void GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField(void *ptr);
 extern void GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(void *msgPort);
 extern WORD GROUP_AG_JMPTBL_SCRIPT_CheckPathExists(const char *path);
 
-extern LONG _LVOOpenDevice(void *execBase, const char *name, LONG unit, LONG flags, void *ioReq);
+extern LONG _LVOOpenDevice(void *execBase, const char *name, LONG unit, void *ioReq, LONG flags);
 extern LONG _LVODoIO(void *execBase, void *ioReq);
 extern LONG _LVOCloseDevice(void *execBase, void *ioReq);
 extern LONG _LVOExecute(void *dosBase, const char *command, LONG in, LONG out);
+
 
 void DISKIO_ProbeDrivesAndAssignPaths(void)
 {
@@ -53,7 +54,7 @@ void DISKIO_ProbeDrivesAndAssignPaths(void)
         ((LONG *)&DISKIO_Drive0WriteProtectedCode)[unit] = 0;
         DISKIO_DriveMediaStatusCodeTable[unit] = 0;
 
-        openDeviceResult = _LVOOpenDevice(AbsExecBase, DISKIO_STR_TRACKDISK_DEVICE, unit, 0, DISKIO_TrackdiskIoReqPtr);
+        openDeviceResult = _LVOOpenDevice(AbsExecBase, DISKIO_STR_TRACKDISK_DEVICE, unit, DISKIO_TrackdiskIoReqPtr, 0);
         if (openDeviceResult != 0) {
             ((LONG *)&DISKIO_Drive0WriteProtectedCode)[unit] = 218;
             DISKIO_DriveMediaStatusCodeTable[unit] = 223;

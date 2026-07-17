@@ -29,9 +29,9 @@ extern void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG x, LONG y);
 extern void WDISP_DrawWeatherStatusSummary(char *rastPort, LONG x, LONG y);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
 
-extern void _LVOSetDrMd(char *rastPort, LONG mode);
-extern void _LVOSetAPen(char *rastPort, LONG pen);
-extern void _LVOSetFont(char *rastPort, void *font);
+extern void _LVOSetDrMd(void *base, char *rastPort, LONG mode);
+extern void _LVOSetAPen(void *base, char *rastPort, LONG pen);
+extern void _LVOSetFont(void *base, char *rastPort, void *font);
 
 typedef struct WDISP_DisplayContext {
     UBYTE pad0[2];
@@ -68,9 +68,9 @@ void WDISP_HandleWeatherStatusCommand(LONG command)
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 0);
 
     (void)Global_REF_GRAPHICS_LIBRARY;
-    _LVOSetDrMd(localRastPort, 0);
-    _LVOSetAPen(localRastPort, 1);
-    _LVOSetFont(localRastPort, Global_HANDLE_PREVUEC_FONT);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, localRastPort, 0);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, localRastPort, 1);
+    _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, localRastPort, Global_HANDLE_PREVUEC_FONT);
 
     if (command == 48) {
         WDISP_DrawWeatherStatusOverlay(localRastPort, left, width);

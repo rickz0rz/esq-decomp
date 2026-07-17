@@ -14,8 +14,8 @@ extern const char Global_STR_BRUSH_C_8[];
 extern LONG BRUSH_LoadInProgressFlag;
 extern void *PARSEINI_ParsedDescriptorListHead;
 
-void _LVOForbid(void);
-void _LVOPermit(void);
+void _LVOForbid(void *base);
+void _LVOPermit(void *base);
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, LONG bytes);
 void *BRUSH_LoadBrushAsset(void *descriptor);
 void BRUSH_NormalizeBrushNames(void **head_ptr);
@@ -36,9 +36,9 @@ void BRUSH_PopulateBrushList(void *descriptorList, void **outHeadPtr)
     BRUSH_Node *listTail;
 
     (void)AbsExecBase;
-    _LVOForbid();
+    _LVOForbid(AbsExecBase);
     BRUSH_LoadInProgressFlag = BRUSH_TRUE;
-    _LVOPermit();
+    _LVOPermit(AbsExecBase);
 
     *outHeadPtr = (void *)0;
     listTail = (BRUSH_Node *)0;
@@ -72,7 +72,7 @@ void BRUSH_PopulateBrushList(void *descriptorList, void **outHeadPtr)
     PARSEINI_ParsedDescriptorListHead = (void *)0;
     BRUSH_NormalizeBrushNames(outHeadPtr);
 
-    _LVOForbid();
+    _LVOForbid(AbsExecBase);
     BRUSH_LoadInProgressFlag = BRUSH_FALSE;
-    _LVOPermit();
+    _LVOPermit(AbsExecBase);
 }

@@ -13,7 +13,11 @@ static void copy_row_chunk(UBYTE *dst, UBYTE *src)
     dst += 2;
     src += 2;
 
-    for (i = 0; i < 18; i++) {
+    /* Original ASM: MOVE.W + 17x MOVE.L = 70 bytes/row. The restored C had 18
+       (74 bytes) -- a 4-byte-per-row overrun that, run every VERTB into the
+       AllocRaster'd banner scratch raster, trashed the exec free pool
+       (AN_MemCorrupt 0x81000005). Must be 17. */
+    for (i = 0; i < 17; i++) {
         *((ULONG *)dst) = *((ULONG *)src);
         dst += 4;
         src += 4;

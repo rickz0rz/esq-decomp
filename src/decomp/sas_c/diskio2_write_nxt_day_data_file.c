@@ -32,13 +32,13 @@ extern const char Global_STR_DISKIO2_C_16[];
 extern const char Global_STR_DF0_NXTDAY_DAT[];
 extern long MODE_NEWFILE;
 
-volatile UWORD TEXTDISP_SecondaryGroupEntryCount;
-volatile UBYTE TEXTDISP_SecondaryGroupCode;
-volatile UBYTE TEXTDISP_SecondaryGroupRecordChecksum;
-volatile UWORD TEXTDISP_SecondaryGroupRecordLength;
-volatile DISKIO2_Entry *TEXTDISP_SecondaryEntryPtrTable[200];
-volatile DISKIO2_TitleData *TEXTDISP_SecondaryTitlePtrTable[200];
-volatile long DISKIO_SaveOperationReadyFlag;
+extern volatile UWORD TEXTDISP_SecondaryGroupEntryCount;
+extern volatile UBYTE TEXTDISP_SecondaryGroupCode;
+extern volatile UBYTE TEXTDISP_SecondaryGroupRecordChecksum;
+extern volatile UWORD TEXTDISP_SecondaryGroupRecordLength;
+extern volatile DISKIO2_Entry *TEXTDISP_SecondaryEntryPtrTable[200];
+extern volatile DISKIO2_TitleData *TEXTDISP_SecondaryTitlePtrTable[200];
+extern volatile long DISKIO_SaveOperationReadyFlag;
 volatile long DISKIO2_NxtDayFileHandle;
 
 long DISKIO2_WriteNxtDayDataFile(void)

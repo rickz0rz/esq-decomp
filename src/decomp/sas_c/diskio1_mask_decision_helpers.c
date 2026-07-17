@@ -18,7 +18,7 @@ extern const char Global_STR_OFF_AIR_2[];
 extern const char DISKIO_STR_NONE_BlackoutMaskEmpty[];
 extern const char DISKIO_STR_BLACKED_OUT[];
 
-volatile ULONG gDiskio1MaskDecisionSum;
+extern volatile ULONG gDiskio1MaskDecisionSum;
 
 void DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet(void)
 {

@@ -1,3 +1,4 @@
+extern void *Global_REF_DOS_LIBRARY;
 #include <exec/memory.h>
 #include <exec/types.h>
 
@@ -90,13 +91,13 @@ void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const char *tag, LONG line, void *r, LO
 LONG GROUP_AG_JMPTBL_MATH_DivS32(LONG n, LONG d);
 LONG BITMAP_ProcessIlbmImage(LONG first, ...);
 UBYTE *ESQ_PackBitsDecode(UBYTE *first, ...);
-LONG _LVORead(LONG fh, void *buf, LONG len);
-LONG _LVOSeek(LONG fh, LONG pos, LONG mode);
-LONG _LVOClose(LONG fh);
-void _LVOForbid(void);
-void _LVOPermit(void);
-void _LVOInitBitMap(void *bm, LONG depth, LONG w, LONG h);
-void _LVOInitRastPort(void *rp);
+LONG _LVORead(void *base, LONG fh, void *buf, LONG len);
+LONG _LVOSeek(void *base, LONG fh, LONG pos, LONG mode);
+LONG _LVOClose(void *base, LONG fh);
+void _LVOForbid(void *base);
+void _LVOPermit(void *base);
+void _LVOInitBitMap(void *base, void *bm, LONG depth, LONG w, LONG h);
+void _LVOInitRastPort(void *base, void *rp);
 
 void *BRUSH_LoadBrushAsset(UBYTE *src)
 {
@@ -127,9 +128,9 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
 
     fh = DOS_OpenFileWithMode(src, BRUSH_FILE_OPEN_MODE_READ);
     if (fh != BRUSH_NULL) {
-        if (_LVORead(fh, hdr, BRUSH_IFF_HEADER_SIZE) - BRUSH_IFF_HEADER_SIZE == BRUSH_NULL &&
+        if (_LVORead(Global_REF_DOS_LIBRARY, fh, hdr, BRUSH_IFF_HEADER_SIZE) - BRUSH_IFF_HEADER_SIZE == BRUSH_NULL &&
             GROUP_AA_JMPTBL_STRING_CompareN(hdr, BRUSH_STR_IFF_FORM, BRUSH_IFF_FORM_TAG_LEN) == BRUSH_NULL) {
-            _LVOSeek(fh, BRUSH_SEEK_OFFSET_START, BRUSH_SEEK_MODE_BEGIN);
+            _LVOSeek(Global_REF_DOS_LIBRARY, fh, BRUSH_SEEK_OFFSET_START, BRUSH_SEEK_MODE_BEGIN);
             decode_buf = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
                 Global_STR_BRUSH_C_10,
                 977,
@@ -149,7 +150,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 }
             }
         }
-        _LVOClose(fh);
+        _LVOClose(Global_REF_DOS_LIBRARY, fh);
     }
 
     if ((src[BRUSH_SRC_MODE_FLAGS_OFFSET] & BRUSH_ALT_MODE_FLAG_MASK) != BRUSH_NULL) {
@@ -158,7 +159,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
     }
     if ((LONG)(UBYTE)src[BRUSH_SRC_DEPTH_OFFSET] > max_depth ||
         (LONG)(UWORD)*(UWORD *)(src + BRUSH_SRC_WIDTH_OFFSET) > max_width) {
-        _LVOForbid();
+        _LVOForbid(AbsExecBase);
         BRUSH_PendingAlertCode = ((LONG)(UBYTE)src[BRUSH_SRC_DEPTH_OFFSET] > max_depth)
                                      ? BRUSH_ALERT_DEPTH_EXCEEDED
                                      : BRUSH_ALERT_WIDTH_EXCEEDED;
@@ -171,7 +172,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 *d++ = *s;
             } while (*s++ != BRUSH_NULL);
         }
-        _LVOPermit();
+        _LVOPermit(AbsExecBase);
         status_fail = BRUSH_STATUS_FAIL;
     }
 
@@ -198,11 +199,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 *(const ULONG *)(src + BRUSH_SRC_FIELD_148_OFFSET);
             *(ULONG *)(node + 368) = 0;
 
-            _LVOInitBitMap(
-                node + BRUSH_NODE_BITMAP_OFFSET,
-                (UBYTE)node[BRUSH_NODE_DEPTH_OFFSET],
-                (UWORD)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET),
-                (UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET));
+            _LVOInitBitMap(Global_REF_GRAPHICS_LIBRARY, node + BRUSH_NODE_BITMAP_OFFSET, (UBYTE)node[BRUSH_NODE_DEPTH_OFFSET], (UWORD)*(UWORD *)(node + BRUSH_NODE_WIDTH_OFFSET), (UWORD)*(UWORD *)(node + BRUSH_NODE_HEIGHT_OFFSET));
             node[BRUSH_NODE_TYPE_OFFSET] = src[BRUSH_SRC_TYPE_OFFSET];
             *(ULONG *)(node + BRUSH_NODE_FIELD_328_OFFSET) =
                 *(const ULONG *)(src + BRUSH_SRC_FIELD_194_OFFSET);
@@ -257,7 +254,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 planePtrs[i] = plane;
                 *(void **)(node + BRUSH_NODE_PLANE_TABLE_OFFSET + (i << BRUSH_PLANE_PTR_SHIFT)) = plane;
                 if (plane == (void *)BRUSH_NULL) {
-                    _LVOForbid();
+                    _LVOForbid(AbsExecBase);
                     if (BRUSH_PendingAlertCode == BRUSH_NULL) {
                         BRUSH_PendingAlertCode = BRUSH_ALERT_ALLOC_FAIL;
                         {
@@ -268,7 +265,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                             } while (*snapSrc++ != BRUSH_NULL);
                         }
                     }
-                    _LVOPermit();
+                    _LVOPermit(AbsExecBase);
                     break;
                 }
             }
@@ -290,7 +287,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
                 GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_14, 1205, node, BRUSH_NODE_SIZE);
                 node = (UBYTE *)BRUSH_NULL;
             } else {
-                _LVOInitRastPort(node + BRUSH_NODE_RASTPORT_OFFSET);
+                _LVOInitRastPort(Global_REF_GRAPHICS_LIBRARY, node + BRUSH_NODE_RASTPORT_OFFSET);
                 *(void **)(node + BRUSH_NODE_RASTPORT_BITMAPPTR_OFFSET) = node + BRUSH_NODE_BITMAP_OFFSET;
                 for (i = BRUSH_NULL; i < BRUSH_RASTPORT_STATE_COPY_BYTES; i++) {
                     node[BRUSH_NODE_STATE_COPY_DST_OFFSET + i] = src[BRUSH_SRC_STATE_BLOCK_OFFSET + i];

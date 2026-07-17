@@ -8,7 +8,10 @@
 #define ESQIFF_BRUSH_ACCUMULATOR_ROWS_OFFSET 200
 #define ESQIFF_BRUSH_PALETTE_BYTES_OFFSET 0xE8
 #define ESQIFF_BRUSH_PALETTE_MODE_OFFSET 328
-#define ESQIFF_DISPLAY_RASTPORT_OFFSET (-458)
+/* asm: DisplayContextBase + ((Global_REF_RASTPORT_2 - WDISP_DisplayContextBase)+2).
+   The prior -458 was wrong; the real delta is the symbol-layout difference (+10). */
+extern LONG Global_REF_RASTPORT_2;   /* address-only anchor */
+#define ESQIFF_DISPLAY_RASTPORT_OFFSET ((LONG)&Global_REF_RASTPORT_2 - (LONG)&WDISP_DisplayContextBase + 2)
 #define ESQIFF_ACCUMULATOR_ROW_SIZE 8
 #define ESQIFF_ACCUMULATOR_ROW_COUNT 4
 #define ESQIFF_ACCUMULATOR_COPPER_LIMIT 32

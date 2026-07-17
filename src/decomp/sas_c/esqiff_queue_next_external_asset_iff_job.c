@@ -1,3 +1,4 @@
+extern void *AbsExecBase;
 #include <exec/types.h>
 
 typedef struct ESQIFF_PendingBrushNode {
@@ -32,8 +33,8 @@ extern LONG Global_REF_LONG_GFX_G_ADS_DATA;
 extern const char ESQIFF_PATH_DF0_COLON[];
 extern const char ESQIFF_PATH_RAM_COLON_LOGOS_SLASH[];
 
-extern void _LVOForbid(void);
-extern void _LVOPermit(void);
+extern void _LVOForbid(void *base);
+extern void _LVOPermit(void *base);
 
 extern void ESQDISP_ProcessGridMessagesIfIdle(void);
 extern LONG ESQIFF_ReadNextExternalAssetPathEntry(BYTE *out);
@@ -105,27 +106,27 @@ WORD ESQIFF_QueueNextExternalAssetIffJob(void)
 
     duplicateHeadPath = 0;
 
-    _LVOForbid();
+    _LVOForbid(AbsExecBase);
     if (CTASKS_IffTaskDoneFlag == 0) {
-        _LVOPermit();
+        _LVOPermit(AbsExecBase);
         return 0;
     }
 
     if (ESQIFF_AssetSourceSelect != 0) {
         if (ESQIFF_LogoBrushListCount >= LOGO_LIST_MAX_COUNT) {
-            _LVOPermit();
+            _LVOPermit(AbsExecBase);
             return RESULT_REJECTED;
         }
     }
 
     if (ESQIFF_AssetSourceSelect == SOURCE_SELECT_GADS) {
         if (ESQIFF_GAdsBrushListCount >= GADS_LIST_MAX_COUNT) {
-            _LVOPermit();
+            _LVOPermit(AbsExecBase);
             return RESULT_REJECTED;
         }
     }
 
-    _LVOPermit();
+    _LVOPermit(AbsExecBase);
 
     candidate[0] = 0;
     initialLineIndex = ESQIFF_LogoListLineIndex;

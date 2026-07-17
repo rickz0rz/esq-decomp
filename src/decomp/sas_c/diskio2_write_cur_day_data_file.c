@@ -34,16 +34,16 @@ extern const char ESQ_STR_B[];
 extern const char Global_STR_DREV_5_1[];
 extern long MODE_NEWFILE;
 
-volatile WORD DST_PrimaryCountdown;
-volatile UBYTE WDISP_WeatherStatusLabelBuffer[128];
-volatile char *WDISP_WeatherStatusTextPtr;
-volatile UWORD TEXTDISP_PrimaryGroupEntryCount;
-volatile UBYTE TEXTDISP_PrimaryGroupCode;
-volatile UBYTE TEXTDISP_PrimaryGroupRecordChecksum;
-volatile UWORD TEXTDISP_PrimaryGroupRecordLength;
-volatile DISKIO2_Entry *TEXTDISP_PrimaryEntryPtrTable[200];
-volatile DISKIO2_TitleData *TEXTDISP_PrimaryTitlePtrTable[200];
-volatile long DISKIO_SaveOperationReadyFlag;
+extern volatile WORD DST_PrimaryCountdown;
+extern volatile UBYTE WDISP_WeatherStatusLabelBuffer[128];
+extern volatile char *WDISP_WeatherStatusTextPtr;
+extern volatile UWORD TEXTDISP_PrimaryGroupEntryCount;
+extern volatile UBYTE TEXTDISP_PrimaryGroupCode;
+extern volatile UBYTE TEXTDISP_PrimaryGroupRecordChecksum;
+extern volatile UWORD TEXTDISP_PrimaryGroupRecordLength;
+extern volatile DISKIO2_Entry *TEXTDISP_PrimaryEntryPtrTable[200];
+extern volatile DISKIO2_TitleData *TEXTDISP_PrimaryTitlePtrTable[200];
+extern volatile long DISKIO_SaveOperationReadyFlag;
 volatile long DISKIO2_OutputFileHandle;
 
 long DISKIO2_WriteCurDayDataFile(void)

@@ -9,8 +9,9 @@ extern LONG AbsExecBase;
 extern const char Global_STR_CTASKS_C_3[];
 
 LONG GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
-void _LVOClose(void);
-void _LVOForbid(void);
+/* base-first _LVO ABI. Close(dosBase; D1=fileHandle). */
+void _LVOClose(void *dosBase, LONG fileHandle);
+void _LVOForbid(void *base);
 
 void CTASKS_CloseTaskTeardown(void)
 {
@@ -19,11 +20,11 @@ void CTASKS_CloseTaskTeardown(void)
     const UWORD TASK_DONE = 1;
 
     if (CTASKS_CloseTaskFileHandle != 0) {
-        _LVOClose();
+        _LVOClose(Global_REF_DOS_LIBRARY_2, CTASKS_CloseTaskFileHandle);
         CTASKS_CloseTaskFileHandle = 0;
     }
 
-    _LVOForbid();
+    _LVOForbid(AbsExecBase);
 
     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
         Global_STR_CTASKS_C_3,

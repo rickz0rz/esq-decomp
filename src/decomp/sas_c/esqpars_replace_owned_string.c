@@ -8,7 +8,7 @@
 #define STR_TERM_BYTES 1
 
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, ULONG size);
-extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG line, ULONG flags, ULONG size);
+extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG line, ULONG size, ULONG flags);
 extern ULONG AvailMem(ULONG requirements);
 
 extern const char Global_STR_ESQPARS_C_5[];
@@ -49,8 +49,8 @@ char *ESQPARS_ReplaceOwnedString(const char *new_src, char *old_owned)
         dst = (char *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(
             Global_STR_ESQPARS_C_6,
             ESQPARS_ALLOC_LINE,
-            MEMF_PUBLIC,
-            new_len);
+            new_len,
+            MEMF_PUBLIC);
     }
 
     if (dst != (char *)0) {

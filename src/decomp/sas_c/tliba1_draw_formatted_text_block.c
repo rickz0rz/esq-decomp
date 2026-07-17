@@ -1,3 +1,4 @@
+extern void *Global_REF_GRAPHICS_LIBRARY;
 #include <graphics/rastport.h>
 #include <graphics/text.h>
 
@@ -10,11 +11,11 @@ extern const char TLIBA1_STR_TLIBA1_DOT_C[];
 
 extern ULONG MATH_Mulu32(ULONG a, ULONG b);
 extern LONG MATH_DivS32(LONG dividend, LONG divisor);
-extern void *MEMORY_AllocateMemory(const char *owner, LONG line, LONG bytes, ULONG flags);
-extern void MEMORY_DeallocateMemory(const char *owner, LONG line, void *ptr, ULONG bytes);
-extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
-extern void _LVOSetAPen(char *rastPort, LONG pen);
-extern void _LVOSetFont(char *rastPort, void *font);
+extern void *MEMORY_AllocateMemory(unsigned long byteSize, long flags);
+extern void MEMORY_DeallocateMemory(void *ptr, long bytes);
+extern LONG _LVOTextLength(void *base, char *rastPort, const char *text, LONG len);
+extern void _LVOSetAPen(void *base, char *rastPort, LONG pen);
+extern void _LVOSetFont(void *base, char *rastPort, void *font);
 extern void TLIBA1_DrawInlineStyledText(char *rastPort, LONG x, LONG y, char *text);
 
 struct TLIBA1_DrawFormattedTextRecord {
@@ -77,7 +78,7 @@ void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, WORD left, WORD t
 
     allocSize = MATH_Mulu32((ULONG)recordCount, 10UL);
     records = (struct TLIBA1_DrawFormattedTextRecord *)
-        MEMORY_AllocateMemory(Global_STR_TLIBA1_C_3, 2115, (LONG)allocSize, 0x10001UL);
+        MEMORY_AllocateMemory((LONG)allocSize, 0x10001UL);
     if (records == (struct TLIBA1_DrawFormattedTextRecord *)0) {
         return;
     }
@@ -185,13 +186,13 @@ void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, WORD left, WORD t
         record = &records[lineIndex];
 
         if (TEXTDISP_LinePenOverrideEnabledFlag != 0) {
-            _LVOSetAPen(rastPort, (LONG)record->pen);
+            _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rastPort, (LONG)record->pen);
         }
 
         if (record->usePrevueFont != 0) {
-            _LVOSetFont(rastPort, Global_HANDLE_PREVUE_FONT);
+            _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_HANDLE_PREVUE_FONT);
         } else {
-            _LVOSetFont(rastPort, savedFont);
+            _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, rastPort, savedFont);
         }
 
         lineText = text + record->textOffset;
@@ -200,7 +201,7 @@ void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, WORD left, WORD t
             ++lineTextEnd;
         }
         lineLength = (LONG)(lineTextEnd - lineText);
-        lineWidth = (WORD)_LVOTextLength(rastPort, lineText, lineLength);
+        lineWidth = (WORD)_LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, lineText, lineLength);
         if (CLOCK_AlignedInsetRenderGateFlag != 0 && CLEANUP_AlignedInsetNibblePrimary != 0xFF) {
             lineWidth += 8;
         }
@@ -223,8 +224,8 @@ void TLIBA1_DrawFormattedTextBlock(char *rastPort, char *text, WORD left, WORD t
         TLIBA1_DrawInlineStyledText(rastPort, drawX, drawY, lineText);
     }
 
-    _LVOSetAPen(rastPort, (LONG)savedPen);
-    _LVOSetFont(rastPort, savedFont);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rastPort, (LONG)savedPen);
+    _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, rastPort, savedFont);
 
-    MEMORY_DeallocateMemory(TLIBA1_STR_TLIBA1_DOT_C, 2385, records, allocSize);
+    MEMORY_DeallocateMemory(records, allocSize);
 }

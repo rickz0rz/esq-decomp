@@ -7,9 +7,9 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(const char *src, char *dst, LONG limit, const char *delims);
-extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
-extern void _LVOMove(char *rastport, LONG x, LONG y);
-extern void _LVOText(char *rastport, const char *text, LONG len);
+extern LONG _LVOTextLength(void *base, char *rastport, const char *text, LONG len);
+extern void _LVOMove(void *base, char *rastport, LONG x, LONG y);
+extern void _LVOText(void *base, char *rastport, const char *text, LONG len);
 
 char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, const char *text, LONG draw_enable)
 {
@@ -30,8 +30,8 @@ char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, co
     }
 
     word_start = next;
-    space_w = _LVOTextLength(rastport, Global_STR_SINGLE_SPACE, 1);
-    _LVOMove(rastport, x, y);
+    space_w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastport, Global_STR_SINGLE_SPACE, 1);
+    _LVOMove(Global_REF_GRAPHICS_LIBRARY, rastport, x, y);
 
     while (next != 0) {
         LONG word_len;
@@ -51,7 +51,7 @@ char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, co
             ++scan;
         }
         word_len = (LONG)(scan - word_buf);
-        word_w = _LVOTextLength(rastport, word_buf, word_len);
+        word_w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastport, word_buf, word_len);
         rem_w = max_width - drawn_width;
 
         if (word_w > rem_w) {
@@ -61,7 +61,7 @@ char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, co
 
             trim_len = word_len - 1;
             while (trim_len > 0) {
-                LONG trim_w = _LVOTextLength(rastport, word_buf, trim_len);
+                LONG trim_w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastport, word_buf, trim_len);
                 if (trim_w <= rem_w) {
                     break;
                 }
@@ -69,14 +69,14 @@ char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, co
             }
 
             if (trim_len > 0 && draw_enable != 0) {
-                _LVOText(rastport, word_buf, trim_len);
+                _LVOText(Global_REF_GRAPHICS_LIBRARY, rastport, word_buf, trim_len);
             }
 
             return word_start + trim_len;
         }
 
         if (draw_enable != 0) {
-            _LVOText(rastport, word_buf, word_len);
+            _LVOText(Global_REF_GRAPHICS_LIBRARY, rastport, word_buf, word_len);
         }
 
         drawn_width += word_w;
@@ -91,7 +91,7 @@ char *NEWGRID_DrawWrappedText(char *rastport, LONG x, LONG y, LONG max_width, co
         }
 
         if (draw_enable != 0) {
-            _LVOText(rastport, NEWGRID_WrapReturnSpacer, 1);
+            _LVOText(Global_REF_GRAPHICS_LIBRARY, rastport, NEWGRID_WrapReturnSpacer, 1);
         }
 
         drawn_width += space_w;

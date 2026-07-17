@@ -1,8 +1,9 @@
+extern void *Global_REF_GRAPHICS_LIBRARY;
 #include <exec/types.h>
 
 extern LONG WDISP_DisplayContextBase;
 
-extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
+extern LONG _LVOTextLength(void *base, char *rastPort, const char *text, LONG len);
 
 typedef struct TEXTDISP_DisplayContext {
     UBYTE pad0[2];
@@ -33,7 +34,7 @@ void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth)
     while (*scan++ != 0) {
         ++len;
     }
-    totalWidth = _LVOTextLength(rastPort, text, len);
+    totalWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, text, len);
 
     while (totalWidth > maxWidth) {
         if (*current == 0) {
@@ -47,13 +48,13 @@ void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth)
             while (*scan++ != 0) {
                 ++len;
             }
-            totalWidth = _LVOTextLength(rastPort, current, len);
+            totalWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, current, len);
             currentWidth = 0;
             lastSpace = 0;
             continue;
         }
 
-        currentWidth += _LVOTextLength(rastPort, current, 1);
+        currentWidth += _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, current, 1);
         if (currentWidth > maxWidth) {
             if (lastSpace == 0) {
                 return;
@@ -67,7 +68,7 @@ void TEXTDISP_TrimTextToPixelWidth(char *text, LONG maxWidth)
             while (*scan++ != 0) {
                 ++len;
             }
-            totalWidth = _LVOTextLength(rastPort, current, len);
+            totalWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, current, len);
             currentWidth = 0;
             lastSpace = 0;
             continue;

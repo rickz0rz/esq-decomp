@@ -1,3 +1,4 @@
+extern void *Global_REF_GRAPHICS_LIBRARY;
 #include <exec/types.h>
 
 extern UBYTE CLOCK_AlignedInsetRenderGateFlag;
@@ -5,7 +6,7 @@ extern UBYTE CLEANUP_AlignedInsetNibbleSecondary;
 extern UBYTE CLEANUP_AlignedInsetNibblePrimary;
 
 extern char *STR_FindCharPtr(const char *s, LONG ch);
-extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
+extern LONG _LVOTextLength(void *base, char *rastPort, const char *text, LONG len);
 extern LONG MEM_Move(UBYTE *src, UBYTE *dst, LONG len);
 extern LONG TLIBA1_ParseStyleCodeChar(UBYTE c);
 extern LONG TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble(LONG v);
@@ -65,7 +66,7 @@ void TLIBA1_DrawInlineStyledText(char *rastPort, LONG x, LONG y, char *text)
                 ++segLen;
             }
 
-            plainTotal += _LVOTextLength(rastPort, p, segLen);
+            plainTotal += _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, p, segLen);
 
             if (segLen > 2) {
                 styleHigh = (BYTE)TLIBA1_ParseStyleCodeChar((UBYTE)p[1]);
@@ -98,7 +99,7 @@ void TLIBA1_DrawInlineStyledText(char *rastPort, LONG x, LONG y, char *text)
                     MEM_Move((UBYTE *)q, (UBYTE *)insEnd, n);
                 }
 
-                insetTotal += _LVOTextLength(rastPort, p + 1, bodyLen);
+                insetTotal += _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, p + 1, bodyLen);
                 if (styleHigh != -1) {
                     insetTotal += 8;
                 }
@@ -129,7 +130,7 @@ void TLIBA1_DrawInlineStyledText(char *rastPort, LONG x, LONG y, char *text)
 
         {
             LONG w;
-            w = _LVOTextLength(rastPort, p, 1);
+            w = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, p, 1);
             if (w < 0) {
                 w += 1;
             }

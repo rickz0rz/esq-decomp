@@ -3,7 +3,7 @@
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern const UBYTE WDISP_CharClassTable[];
 
-extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
+extern LONG _LVOTextLength(void *base, char *rastport, const char *text, LONG len);
 
 LONG ESQFUNC_TrimTextToPixelWidthWordBoundary(char *rastport, LONG max_width, char *text)
 {
@@ -22,7 +22,7 @@ LONG ESQFUNC_TrimTextToPixelWidthWordBoundary(char *rastport, LONG max_width, ch
             return len;
         }
 
-        if (_LVOTextLength(rastport, text, len) <= max_width) {
+        if (_LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastport, text, len) <= max_width) {
             return len;
         }
 

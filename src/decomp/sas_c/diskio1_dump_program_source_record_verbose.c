@@ -39,7 +39,7 @@ struct DiskioProgramSourceRecord {
 
 extern void FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
 
-extern const char *Global_REF_STR_CLOCK_FORMAT[];
+extern const char **Global_REF_STR_CLOCK_FORMAT; /* pointer to runtime-set clock-format string table (orig derefs it) */
 extern const char DISKIO_FMT_CHANNEL_LINE_UP_PCT_D[];
 extern const char DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT[];
 extern const char DISKIO_STR_ATTR[];

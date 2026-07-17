@@ -1,10 +1,11 @@
+extern void *Global_REF_GRAPHICS_LIBRARY;
 #include <graphics/rastport.h>
 #include <graphics/text.h>
 
 typedef struct NEWGRID_Context {
     UBYTE pad0[32];
     LONG selectedState;
-    UBYTE pad1[18];
+    UBYTE pad1[16]; /* rastPort@60, selectionCode@52 per ASM */
     UWORD selectionCode;
     UBYTE pad2[6];
     struct RastPort rastPort;
@@ -18,11 +19,11 @@ extern UWORD NEWGRID_ColumnWidthPx;
 
 extern void NEWGRID_DrawGridFrame(char *rastPort, LONG style, LONG penA, LONG penB, LONG rowHeight);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
-extern void _LVOSetAPen(char *rastPort, LONG pen);
-extern void _LVOSetDrMd(char *rastPort, LONG mode);
-extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
-extern void _LVOMove(char *rastPort, LONG x, LONG y);
-extern void _LVOText(char *rastPort, const char *text, LONG len);
+extern void _LVOSetAPen(void *base, char *rastPort, LONG pen);
+extern void _LVOSetDrMd(void *base, char *rastPort, LONG mode);
+extern LONG _LVOTextLength(void *base, char *rastPort, const char *text, LONG len);
+extern void _LVOMove(void *base, char *rastPort, LONG x, LONG y);
+extern void _LVOText(void *base, char *rastPort, const char *text, LONG len);
 extern void NEWGRID_ValidateSelectionCode(char *rastPort, LONG code);
 
 void NEWGRID_DrawGridMessageAlt(char *gridCtx)
@@ -49,8 +50,8 @@ void NEWGRID_DrawGridMessageAlt(char *gridCtx)
         (char *)rastPort, 0, 695, (LONG)(UWORD)NEWGRID_ColumnStartXPx + 36, 33
     );
 
-    _LVOSetAPen((char *)rastPort, GCOMMAND_PpvMessageTextPen);
-    _LVOSetDrMd((char *)rastPort, 0);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, (char *)rastPort, GCOMMAND_PpvMessageTextPen);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, (char *)rastPort, 0);
 
     msg = GCOMMAND_PPVPeriodTemplatePtr;
     scan = msg;
@@ -60,14 +61,14 @@ void NEWGRID_DrawGridMessageAlt(char *gridCtx)
     }
 
     while (len > 0) {
-        width = _LVOTextLength((char *)rastPort, msg, len);
+        width = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rastPort, msg, len);
         if (width <= ((LONG)(UWORD)NEWGRID_ColumnWidthPx * 3) - 12) {
             break;
         }
         --len;
     }
 
-    width = _LVOTextLength((char *)rastPort, msg, len);
+    width = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rastPort, msg, len);
     x = ((LONG)(UWORD)NEWGRID_ColumnWidthPx * 3) - width;
     if (x < 0) {
         ++x;
@@ -81,8 +82,8 @@ void NEWGRID_DrawGridMessageAlt(char *gridCtx)
     }
     y = (y >> 1) + fh - 1;
 
-    _LVOMove((char *)rastPort, x, y);
-    _LVOText((char *)rastPort, msg, len);
+    _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rastPort, x, y);
+    _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rastPort, msg, len);
 
     ctx->selectionCode = 17;
     ctx->selectedState = 17;

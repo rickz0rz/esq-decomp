@@ -16,8 +16,8 @@ extern const char DISPLIB_STR_InlineAlignPadCharRight[];
 
 extern long _LVOTextLength(void *graphicsBase, char *rastPort, const char *text, long len);
 extern long MATH_DivS32(long numer, long denom);
-extern void *MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
-extern void MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
+extern void *MEMORY_AllocateMemory(unsigned long byteSize, long flags);
+extern void MEMORY_DeallocateMemory(void *ptr, long bytes);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 
 void DISPLIB_ApplyInlineAlignmentPadding(char *text, UBYTE alignCode)
@@ -56,8 +56,7 @@ void DISPLIB_ApplyInlineAlignmentPadding(char *text, UBYTE alignCode)
         return;
     }
 
-    scratch = (char *)MEMORY_AllocateMemory(
-        Global_STR_DISPLIB_C_1, 194, (ULONG)(textLen + 1), MEMF_PUBLIC);
+    scratch = (char *)MEMORY_AllocateMemory((ULONG)(textLen + 1), MEMF_PUBLIC);
     if (scratch == 0) {
         return;
     }
@@ -74,6 +73,5 @@ void DISPLIB_ApplyInlineAlignmentPadding(char *text, UBYTE alignCode)
     }
 
     STRING_AppendAtNull(text, scratch);
-    MEMORY_DeallocateMemory(
-        Global_STR_DISPLIB_C_2, 204, scratch, (ULONG)(textLen + 1));
+    MEMORY_DeallocateMemory(scratch, (ULONG)(textLen + 1));
 }

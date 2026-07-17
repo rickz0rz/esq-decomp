@@ -3,26 +3,27 @@
 
 typedef struct NEWGRID_Context {
     UBYTE pad0[32];
-    LONG selectedState;
-    UBYTE pad1[18];
-    UWORD selectionCode;
+    LONG selectedState;   /* offset 32 */
+    UBYTE pad1[16];
+    UWORD selectionCode;  /* offset 52 (orig MOVE.W #17,52(A3)) */
     UBYTE pad2[6];
-    struct RastPort rastPort;
+    struct RastPort rastPort; /* offset 60 (orig LEA 60(A3),A0) */
 } NEWGRID_Context;
+
 
 extern UWORD NEWGRID_ColumnStartXPx;
 extern UWORD NEWGRID_ColumnWidthPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void GENERATE_GRID_DATE_STRING(char *outText);
-extern void _LVOSetDrMd(char *rastPort, LONG mode);
+extern void _LVOSetDrMd(void *base, char *rastPort, LONG mode);
 extern LONG NEWGRID_SetRowColor(char *gridCtx, LONG mode, LONG pen);
-extern void _LVOSetAPen(char *rastPort, LONG pen);
-extern void _LVORectFill(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void _LVOSetAPen(void *base, char *rastPort, LONG pen);
+extern void _LVORectFill(void *base, char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
-extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
-extern void _LVOMove(char *rastPort, LONG x, LONG y);
-extern void _LVOText(char *rastPort, const char *text, LONG len);
+extern LONG _LVOTextLength(void *base, char *rastPort, const char *text, LONG len);
+extern void _LVOMove(void *base, char *rastPort, LONG x, LONG y);
+extern void _LVOText(void *base, char *rastPort, const char *text, LONG len);
 
 void NEWGRID_DrawDateBanner(char *gridCtx)
 {
@@ -42,16 +43,16 @@ void NEWGRID_DrawDateBanner(char *gridCtx)
     rast = &ctx->rastPort;
     GENERATE_GRID_DATE_STRING(dateText);
 
-    _LVOSetDrMd((char *)rast, 0);
-    _LVOSetAPen((char *)rast, NEWGRID_SetRowColor(gridCtx, 0, 7));
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, (char *)rast, 0);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, (char *)rast, NEWGRID_SetRowColor(gridCtx, 0, 7));
 
-    _LVORectFill((char *)rast, 0, 0, 695, 33);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, (char *)rast, 0, 0, 695, 33);
 
     xBase = (LONG)(UWORD)NEWGRID_ColumnStartXPx;
     BEVEL_DrawBevelFrameWithTopRight((char *)rast, 0, 0, xBase + 35, 33);
     BEVEL_DrawBevelFrameWithTopRight((char *)rast, xBase + 36, 0, 695, 33);
 
-    _LVOSetAPen((char *)rast, 3);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, (char *)rast, 3);
 
     p = dateText;
     while (*p != 0) {
@@ -59,7 +60,7 @@ void NEWGRID_DrawDateBanner(char *gridCtx)
     }
     dateLen = (LONG)(p - dateText);
 
-    x = ((LONG)(UWORD)NEWGRID_ColumnWidthPx * 3) - _LVOTextLength((char *)rast, dateText, dateLen);
+    x = ((LONG)(UWORD)NEWGRID_ColumnWidthPx * 3) - _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rast, dateText, dateLen);
     if (x < 0) {
         x += 1;
     }
@@ -72,8 +73,8 @@ void NEWGRID_DrawDateBanner(char *gridCtx)
     }
     y = (y >> 1) + (LONG)fontH - 1;
 
-    _LVOMove((char *)rast, x, y);
-    _LVOText((char *)rast, dateText, dateLen);
+    _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rast, x, y);
+    _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rast, dateText, dateLen);
 
     ctx->selectionCode = 17;
     ctx->selectedState = 17;

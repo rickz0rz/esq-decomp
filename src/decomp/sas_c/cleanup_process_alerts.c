@@ -56,6 +56,7 @@ void SCRIPT_UpdateCtrlStateMachine(void);
 void ESQFUNC_DrawEscMenuVersion(void);
 void ESQFUNC_DrawMemoryStatusScreen(void);
 
+
 void CLEANUP_ProcessAlerts(void)
 {
     LONG tickCode;

@@ -86,7 +86,10 @@ extern UWORD CLEANUP_AlignedStatusEntryCycleTable[];
 extern LONG WDISP_DisplayContextBase;
 extern WORD WDISP_AccumulatorFlushPending;
 extern char *Global_REF_RASTPORT_2;
-extern void *Global_REF_320_240_BITMAP;
+/* Global_REF_320_240_BITMAP is the BitMap STRUCT (wdisp.s, InitBitMap'd in-place);
+   BltBitMapRastPort needs its ADDRESS. Declaring it void* + passing by value gave the
+   blitter a garbage source bitmap -> wild blit. Array decays to the address. */
+extern char Global_REF_320_240_BITMAP[];
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern char *ESQIFF_PrimaryLineHeadPtr;

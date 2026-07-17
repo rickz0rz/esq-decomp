@@ -80,7 +80,9 @@ void *DATETIME_SecondsToStruct(LONG seconds, void *dt)
     W(dt, 16) = (short)dayOfYear;
 
     isLeap = DATETIME_IsLeapYear((LONG)W(dt, 6));
-    W(dt, 20) = (short)(isLeap != 0 ? -1 : 0);
+    /* Original: MOVE.W D0,20(A3) stores IsLeapYear's raw return (0 or +1)
+     * directly -- not a re-booleanized -1. */
+    W(dt, 20) = (short)isLeap;
 
     if (isLeap != 0) {
         if (dayOfYear > DATETIME_LEAP_DAY_OF_YEAR) {

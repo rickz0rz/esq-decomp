@@ -1,3 +1,4 @@
+extern void *AbsExecBase;
 #include <exec/types.h>
 #include <graphics/gfxbase.h>
 #include <hardware/custom.h>
@@ -41,7 +42,7 @@ extern LONG WDISP_ExecBaseHookPtr;
 extern struct GfxBase *Global_REF_GRAPHICS_LIBRARY;
 extern struct Custom custom;
 
-void _LVOForbid(void);
+void _LVOForbid(void *base);
 void GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(void *state);
 void BRUSH_FreeBrushList(void *head, LONG arg0);
 void CLEANUP_ClearVertbInterruptServer(void);
@@ -60,16 +61,20 @@ void NEWGRID_ShutdownGridResources(void);
 LONG GROUP_AG_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 LONG GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(const void *file, LONG line, void *rast, LONG width, LONG height);
 char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(const char *new_ptr, char *old_ptr);
-void _LVOSetFunction(void);
-void _LVOVBeamPos(void);
+/* base-first _LVO ABI. SetFunction(execBase; A1=libraryBase, A0=funcOffset,
+   D0=newFunc). Teardown restores the originals saved by OVERRIDE_INTUITION_FUNCS. */
+extern LONG _LVOAutoRequest;
+extern LONG _LVODisplayAlert;
+extern LONG _LVOSetFunction(void *execBase, void *libraryBase, void *offset, LONG newFunc);
+void _LVOVBeamPos(void *base);
 void GROUP_AB_JMPTBL_UNKNOWN2A_Stub0(void);
-void _LVOPermit(void);
+void _LVOPermit(void *base);
 
 void CLEANUP_ShutdownSystem(void)
 {
     LONG rowIndex, colIndex;
 
-    _LVOForbid();
+    _LVOForbid(AbsExecBase);
 
     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain((void *)&LOCAVAIL_PrimaryFilterState);
     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain((void *)&LOCAVAIL_SecondaryFilterState);
@@ -121,14 +126,16 @@ void CLEANUP_ShutdownSystem(void)
     WDISP_WeatherStatusTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)CLEANUP_NULL, WDISP_WeatherStatusTextPtr);
     WDISP_WeatherStatusOverlayTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString((const char *)CLEANUP_NULL, WDISP_WeatherStatusOverlayTextPtr);
 
-    _LVOSetFunction();
-    _LVOSetFunction();
-    _LVOVBeamPos();
+    _LVOSetFunction(AbsExecBase, (void *)Global_REF_INTUITION_LIBRARY,
+                    (void *)(LONG)_LVOAutoRequest, Global_REF_BACKED_UP_INTUITION_AUTOREQUEST);
+    _LVOSetFunction(AbsExecBase, (void *)Global_REF_INTUITION_LIBRARY,
+                    (void *)(LONG)_LVODisplayAlert, Global_REF_BACKED_UP_INTUITION_DISPLAYALERT);
+    _LVOVBeamPos(Global_REF_INTUITION_LIBRARY);
 
     if (ESQ_ProcessWindowPtrBackup != CLEANUP_NULL) {
         *(LONG *)(WDISP_ExecBaseHookPtr + CLEANUP_EXEC_HOOK_WINDOW_OFFSET) = ESQ_ProcessWindowPtrBackup;
     }
 
     GROUP_AB_JMPTBL_UNKNOWN2A_Stub0();
-    _LVOPermit();
+    _LVOPermit(AbsExecBase);
 }

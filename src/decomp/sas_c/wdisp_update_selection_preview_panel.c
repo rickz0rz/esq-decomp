@@ -98,8 +98,9 @@ LONG WDISP_UpdateSelectionPreviewPanel(void *entryBrushRastPort, WDISP_PreviewPa
 
     Global_REF_RASTPORT_1->BitMap = savedBitMap;
 
+    /* Original: TST.L result; SNE D0; NEG.B D0; EXT -> returns +1, not -1. */
     if (TLIBA1_PreviewSlotRenderResult != 0) {
-        return -1;
+        return 1;
     }
 
     return 0;

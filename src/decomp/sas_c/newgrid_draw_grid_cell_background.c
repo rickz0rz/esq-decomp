@@ -12,8 +12,8 @@ extern UBYTE CONFIG_NewgridPlaceholderBevelFlag;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern LONG NEWGRID_SetRowColor(char *gridCtx, LONG row, LONG colorSel);
-extern void _LVOSetAPen(char *rastPort, LONG pen);
-extern void _LVORectFill(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void _LVOSetAPen(void *base, char *rastPort, LONG pen);
+extern void _LVORectFill(void *base, char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
@@ -51,8 +51,8 @@ void NEWGRID_DrawGridCellBackground(char *gridCtx, WORD row, WORD col, LONG colo
 
     if (colorSel != COLOR_NONE) {
         NEWGRID_SetRowColor(gridCtx, (LONG)row, colorSel);
-        _LVOSetAPen((char *)ctxView->rastPort, colorSel);
-        _LVORectFill((char *)ctxView->rastPort, x1, y1, x2, y2);
+        _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, (char *)ctxView->rastPort, colorSel);
+        _LVORectFill(Global_REF_GRAPHICS_LIBRARY, (char *)ctxView->rastPort, x1, y1, x2, y2);
     }
 
     if (col == COL_BEVEL && CONFIG_NewgridPlaceholderBevelFlag == BEVEL_ENABLED_CHAR) {

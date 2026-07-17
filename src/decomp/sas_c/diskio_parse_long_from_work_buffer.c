@@ -1,6 +1,6 @@
 #include <exec/types.h>
 #define DISKIO_PARSE_RESULT_FAIL      0xFFFF
-#define DISKIO_WORKBUF_SENTINEL_ERROR 0xFFFF
+#define DISKIO_WORKBUF_SENTINEL_ERROR (-1)   /* ConsumeCString returns (char*)-1 */
 
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *text);

@@ -7,7 +7,7 @@ extern WORD ED_DiagnosticsScreenActive;
 extern WORD ESQPARS2_ReadModeFlags;
 
 extern struct RastPort *Global_REF_RASTPORT_1;
-extern void *Global_REF_696_400_BITMAP;
+extern struct BitMap Global_REF_696_400_BITMAP;  /* a STRUCT, not a pointer (wdisp.s) */
 
 extern const char Global_STR_MAJOR_MINOR_VERSION_1[];
 extern const char ESQIFF_FMT_PCT_S_DOT_PCT_LD[];
@@ -20,13 +20,16 @@ extern const char Global_STR_APOSTROPHE[];
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern UBYTE ESQ_WildcardMatch(const char *pattern, const char *text);
 extern void GCOMMAND_SeedBannerFromPrefs(void);
-extern void DISPLIB_DisplayTextAtPosition(char *rp, WORD x, WORD y, const char *text);
+/* DISPLIB_DisplayTextAtPosition takes LONG x,y (WORD here truncated the pushed args). */
+extern void DISPLIB_DisplayTextAtPosition(char *rp, LONG x, LONG y, const char *text);
 extern char *STRING_AppendAtNull(char *dst, const char *src);
 
 extern void Disable(void);
 extern void Enable(void);
-extern void SetAPen(struct RastPort *rp, LONG pen);
-extern void RectFill(struct RastPort *rp, LONG x1, LONG y1, LONG x2, LONG y2);
+/* base-explicit graphics (bare SetAPen/RectFill use amiga.lib's uninitialized _GfxBase). */
+extern void *Global_REF_GRAPHICS_LIBRARY;
+extern void _LVOSetAPen(void *graphicsBase, void *rastPort, LONG pen);
+extern void _LVORectFill(void *graphicsBase, void *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
 
 void ESQIFF2_ShowVersionMismatchOverlay(void)
 {
@@ -50,12 +53,12 @@ void ESQIFF2_ShowVersionMismatchOverlay(void)
     GCOMMAND_SeedBannerFromPrefs();
     Enable();
 
-    Global_REF_RASTPORT_1->BitMap = Global_REF_696_400_BITMAP;
+    Global_REF_RASTPORT_1->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
     ED_DiagnosticsScreenActive = 0;
 
-    SetAPen(Global_REF_RASTPORT_1, 2);
-    RectFill(Global_REF_RASTPORT_1, 0, 60, 679, (UBYTE)(~100));
-    SetAPen(Global_REF_RASTPORT_1, 3);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 2);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0, 60, 679, (UBYTE)(~100));
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 3);
 
     DISPLIB_DisplayTextAtPosition((char *)Global_REF_RASTPORT_1, 30, 90, ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA);
 

@@ -16,7 +16,7 @@ extern const char DISKIO_STR_TimeSlotListCloseParenNewline[];
 extern const char DISKIO_STR_BlackoutListOpenParen[];
 extern const char DISKIO_STR_BlackoutListCloseParenNewline[];
 
-volatile UBYTE gDiskio1MaskValueBitIndex;
+extern volatile UBYTE gDiskio1MaskValueBitIndex;
 
 void DISKIO1_AppendTimeSlotMaskValueHeader(void)
 {

@@ -135,7 +135,6 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
     char *original_buffer;
 
     COI_InitTokenTables(record_token_table, subentry_token_table);
-
     (void)GROUP_AG_JMPTBL_MATH_DivS32((LONG)disk_id, COI_DISK_SPLIT_DIVISOR);
     disk_path_index = (WORD)((LONG)disk_id % COI_DISK_SPLIT_DIVISOR);
     GROUP_AE_JMPTBL_WDISP_SPrintf(path_buf,
@@ -143,11 +142,9 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
                                   (LONG)disk_path_index,
                                   0,
                                   0);
-
     if (DISKIO_LoadFileToWorkBuffer(path_buf) == COI_LOAD_FAIL) {
         return COI_LOAD_FAIL;
     }
-
     file_size = Global_REF_LONG_FILE_SCRATCH;
     original_buffer = Global_PTR_WORK_BUFFER;
 
@@ -168,7 +165,6 @@ LONG COI_LoadOiDataFile(UBYTE disk_id)
     file_offset = 0;
     line_advance = 0;
     header_format = 0;
-
     while (Global_PTR_WORK_BUFFER != (char *)0 && file_offset < file_size) {
         char *cursor;
         char *tab_ptr;

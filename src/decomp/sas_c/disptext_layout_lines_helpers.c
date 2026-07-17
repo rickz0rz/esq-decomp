@@ -21,12 +21,12 @@ LONG DISPTEXT_LayoutSourceToLines(char *rp, const char *src)
     UWORD current;
 
     if (DISPTEXT_LineTableLockFlag != 0) {
-        return (src == 0) ? -1 : 0;
+        return (src == 0) ? 1 : 0;   /* orig: SEQ D0; NEG.B D0 -> +1, not -1 */
     }
 
     current = (UWORD)DISPTEXT_CurrentLineIndex;
     if (current >= (UWORD)DISPTEXT_TargetLineIndex) {
-        return (src == 0) ? -1 : 0;
+        return (src == 0) ? 1 : 0;   /* orig: SEQ D0; NEG.B D0 -> +1, not -1 */
     }
 
     if (DISPTEXT_LineLengthTable[current] != 0) {
@@ -82,5 +82,5 @@ LONG DISPTEXT_LayoutSourceToLines(char *rp, const char *src)
         }
     }
 
-    return (src == 0) ? -1 : 0;
+    return (src == 0) ? 1 : 0;   /* orig: SEQ D0; NEG.B D0 -> +1, not -1 */
 }

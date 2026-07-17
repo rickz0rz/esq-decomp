@@ -7,10 +7,11 @@ enum {
 };
 
 extern UBYTE CLOCK_FormatVariantCode;
-extern const char *Global_REF_STR_CLOCK_FORMAT[];
+extern const char **Global_REF_STR_CLOCK_FORMAT; /* pointer to runtime-set clock-format string table (orig derefs it) */
 
 LONG MATH_DivS32(LONG a, LONG b);
 LONG MATH_Mulu32(LONG a, LONG b);
+
 
 void CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out)
 {

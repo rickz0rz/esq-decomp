@@ -1,0 +1,27 @@
+leaf-scalar differential audit  (Mon Jul 13 16:17:20 EDT 2026)
+================================================================
+PASS        COI_CountEscape14BeforeNull   (identical on all vectors)
+PASS        DATETIME_ClassifyValueInRange   (identical on all vectors)
+DIVERGE     DATETIME_NormalizeMonthRange   (18 vectors differ)
+                ASM[7dbcf40e -> 03710002]  C[7dbcf40e -> 00000002]
+                ASM[1d3f0fb6 -> 03860007]  C[1d3f0fb6 -> 00000007]
+                ASM[bcc12b5e -> 039c0000]  C[bcc12b5e -> 00000000]
+                ASM[44c73dfa -> 03b10005]  C[44c73dfa -> 00000005]
+                ASM[e44959a2 -> 03c6000a]  C[e44959a2 -> 0000000a]
+                ASM[93d79a82 -> 04070001]  C[93d79a82 -> 00000001]
+PASS        ESQ_TestBit1Based   (identical on all vectors)
+PASS        ESQDISP_TestEntryBits0And2_Core   (identical on all vectors)
+PASS        ESQDISP_TestEntryBits0And2   (identical on all vectors)
+DIVERGE     ESQSHARED4_DecodeRgbNibbleTriplet   (18 vectors differ)
+                ASM[799369c0 -> 00000000]  C[799369c0 -> 0000016b]
+                ASM[818be267 -> 00000a00]  C[818be267 -> 0000027c]
+                ASM[89845b0e -> 00000a00]  C[89845b0e -> 0000038d]
+                ASM[917cd3b5 -> 00000a00]  C[917cd3b5 -> 0000049e]
+                ASM[99754c5c -> 00000a00]  C[99754c5c -> 000005af]
+                ASM[b15eb651 -> 00000a00]  C[b15eb651 -> 000008d2]
+PASS        FORMAT_U32ToOctalString   (identical on all vectors)
+RUN-FAIL    LOCAVAIL_GetNodeDurationByIndex
+PASS        NEWGRID_SetRowColor   (identical on all vectors)
+PASS        P_TYPE_GetSubtypeIfType20   (identical on all vectors)
+================================================================
+SUMMARY: pass=8  diverge=2  failed=1

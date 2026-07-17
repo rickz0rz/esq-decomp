@@ -33,7 +33,9 @@ char *DISKIO_ConsumeLineFromWorkBuffer(void)
     *Global_PTR_WORK_BUFFER++ = DISKIO_CH_NUL;
 
     if (Global_REF_LONG_FILE_SCRATCH < DISKIO_COUNT_ZERO) {
-        return (char *)DISKIO_WORKBUF_SENTINEL_ERROR;
+        /* Original: MOVEA.W #-1,A0 sign-extends the word -1 to the full 32-bit
+           address 0xFFFFFFFF (callers test against (char *)-1, not 0x0000FFFF). */
+        return (char *)-1;
     }
 
     while (1) {

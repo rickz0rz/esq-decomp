@@ -1,3 +1,4 @@
+extern void *Global_REF_DOS_LIBRARY;
 #include <exec/types.h>
 
 extern LONG Global_REF_DOS_LIBRARY_2;
@@ -13,7 +14,7 @@ extern const char Global_STR_PARSEINI_C_5[];
 extern const char Global_STR_PARSEINI_C_6[];
 extern const char Global_STR_PARSEINI_C_7[];
 
-extern LONG _LVOExecute(const char *cmd, LONG input, LONG output);
+extern LONG _LVOExecute(void *base, const char *cmd, LONG input, LONG output);
 extern void *HANDLE_OpenWithMode(const char *path, const char *modeStr, char *unused);
 extern char *STREAM_ReadLineWithLimit(char *dst, LONG maxLen, void *handle);
 extern char *GCOMMAND_FindPathSeparator(const char *path);
@@ -61,7 +62,7 @@ LONG PARSEINI_ScanLogoDirectory(void)
         secondaryEntries[i] = (char *)0;
     }
 
-    _LVOExecute(Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, 0, 0);
+    _LVOExecute(Global_REF_DOS_LIBRARY, Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, 0, 0);
 
     primaryHandle = (LONG)HANDLE_OpenWithMode(PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST, PARSEINI_STR_RB_LogoListPrimary, (char *)0);
     readPrimaryActive = (primaryHandle != 0);
@@ -113,7 +114,7 @@ LONG PARSEINI_ScanLogoDirectory(void)
         if (foundMatch == 0) {
             PARSEINI_CopyString(deleteCmd, Global_STR_DELETE_NIL_DH2_LOGOS);
             STRING_AppendAtNull(deleteCmd, secondaryEntries[i]);
-            _LVOExecute(deleteCmd, 0, 0);
+            _LVOExecute(Global_REF_DOS_LIBRARY, deleteCmd, 0, 0);
         }
 
         SCRIPT_JMPTBL_MEMORY_DeallocateMemory(

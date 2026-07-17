@@ -1,3 +1,4 @@
+extern void *AbsExecBase;
 #include <exec/types.h>
 
 extern void *Global_REF_INTUITION_LIBRARY;
@@ -12,13 +13,13 @@ extern LONG MATH_Mulu32(LONG a, LONG b);
 extern void STREAM_BufferedWriteString(const char *text);
 extern LONG BUFFER_FlushAllAndCloseWithCode(LONG code);
 
-extern void _LVOSetAPen(char *rastPort, LONG pen);
-extern void _LVORectFill(char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
-extern void _LVOMove(char *rastPort, LONG x, LONG y);
-extern void _LVOText(char *rastPort, const char *text, LONG length);
-extern void _LVOSizeWindow(void *window, LONG deltaX, LONG deltaY);
-extern void _LVORemakeDisplay(void);
-extern void _LVOFreeMem(void *memory, LONG byteSize);
+extern void _LVOSetAPen(void *base, char *rastPort, LONG pen);
+extern void _LVORectFill(void *base, char *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
+extern void _LVOMove(void *base, char *rastPort, LONG x, LONG y);
+extern void _LVOText(void *base, char *rastPort, const char *text, LONG length);
+extern void _LVOSizeWindow(void *base, void *window, LONG deltaX, LONG deltaY);
+extern void _LVORemakeDisplay(void *base);
+extern void _LVOFreeMem(void *base, void *memory, LONG byteSize);
 
 typedef struct ESQ_SecondaryLine {
     UBYTE pad0[2];
@@ -79,25 +80,25 @@ void ESQ_CheckTopazFontGuard(void)
         DOS_Delay(250);
 
         rastPort = topazFont->rastPort54;
-        _LVOSetAPen(rastPort, 2);
-        _LVORectFill(rastPort, 0, 0, 639, 255);
-        _LVOSetAPen(rastPort, 1);
+        _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rastPort, 2);
+        _LVORectFill(Global_REF_GRAPHICS_LIBRARY, rastPort, 0, 0, 639, 255);
+        _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rastPort, 1);
 
-        _LVOMove(rastPort, 20, 100);
-        _LVOText(rastPort, Global_STR_PLEASE_STANDBY_1, 25);
+        _LVOMove(Global_REF_GRAPHICS_LIBRARY, rastPort, 20, 100);
+        _LVOText(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_STR_PLEASE_STANDBY_1, 25);
 
-        _LVOMove(rastPort, 20, 113);
-        _LVOText(rastPort, Global_STR_ATTENTION_SYSTEM_ENGINEER_1, 26);
+        _LVOMove(Global_REF_GRAPHICS_LIBRARY, rastPort, 20, 113);
+        _LVOText(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_STR_ATTENTION_SYSTEM_ENGINEER_1, 26);
 
-        _LVOMove(rastPort, 20, 126);
-        _LVOText(rastPort, Global_STR_REPORT_CODE_ER003, 47);
+        _LVOMove(Global_REF_GRAPHICS_LIBRARY, rastPort, 20, 126);
+        _LVOText(Global_REF_GRAPHICS_LIBRARY, rastPort, Global_STR_REPORT_CODE_ER003, 47);
 
         for (;;) {
         }
     }
 
     deltaY = 50 - (LONG)(WORD)(window->height10);
-    _LVOSizeWindow(window, 0, deltaY);
+    _LVOSizeWindow(Global_REF_INTUITION_LIBRARY, window, 0, deltaY);
 
     DOS_Delay(100);
 
@@ -113,7 +114,7 @@ void ESQ_CheckTopazFontGuard(void)
 
     secondaryLine->freeEnd12 = 0;
 
-    _LVORemakeDisplay();
+    _LVORemakeDisplay(Global_REF_INTUITION_LIBRARY);
     freeSize = freeEnd - freeStart;
-    _LVOFreeMem((void *)freeStart, freeSize);
+    _LVOFreeMem(AbsExecBase, (void *)freeStart, freeSize);
 }

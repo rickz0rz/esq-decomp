@@ -21,8 +21,8 @@ typedef struct DISKIO2_TitleData {
 extern long DISKIO_LoadFileToWorkBuffer(const char *path);
 extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern void *MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
-extern void MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
+extern void *MEMORY_AllocateMemory(unsigned long byteSize, long flags);
+extern void MEMORY_DeallocateMemory(void *ptr, long bytes);
 extern void ESQSHARED_InitEntryDefaults(UBYTE *entry);
 extern void COI_EnsureAnimObjectAllocated(void *entry);
 extern char *ESQSHARED_ApplyProgramTitleTextFilters(const char *text, ULONG flags);
@@ -37,21 +37,21 @@ extern const char Global_STR_DISKIO2_C_20[];
 extern const char Global_STR_DISKIO2_C_21[];
 extern const char Global_STR_DISKIO2_C_22[];
 
-volatile ULONG Global_REF_LONG_FILE_SCRATCH;
-volatile char *Global_PTR_WORK_BUFFER;
-volatile UWORD DISKIO_CurrentDriveRevisionIndex;
+extern volatile ULONG Global_REF_LONG_FILE_SCRATCH;
+extern volatile char *Global_PTR_WORK_BUFFER;
+extern volatile UWORD DISKIO_CurrentDriveRevisionIndex;
 
-volatile UBYTE TEXTDISP_SecondaryGroupCode;
+extern volatile UBYTE TEXTDISP_SecondaryGroupCode;
 volatile UBYTE TEXTDISP_SecondaryGroupHeaderCode;
-volatile UWORD TEXTDISP_SecondaryGroupEntryCount;
-volatile UBYTE TEXTDISP_SecondaryGroupRecordChecksum;
-volatile UWORD TEXTDISP_SecondaryGroupRecordLength;
+extern volatile UWORD TEXTDISP_SecondaryGroupEntryCount;
+extern volatile UBYTE TEXTDISP_SecondaryGroupRecordChecksum;
+extern volatile UWORD TEXTDISP_SecondaryGroupRecordLength;
 volatile UBYTE TEXTDISP_SecondaryGroupPresentFlag;
-volatile DISKIO2_Entry *TEXTDISP_SecondaryEntryPtrTable[200];
-volatile DISKIO2_TitleData *TEXTDISP_SecondaryTitlePtrTable[200];
+extern volatile DISKIO2_Entry *TEXTDISP_SecondaryEntryPtrTable[200];
+extern volatile DISKIO2_TitleData *TEXTDISP_SecondaryTitlePtrTable[200];
 
-volatile UBYTE CTASKS_SecondaryOiWritePendingFlag;
-volatile UBYTE CTASKS_PendingSecondaryOiDiskId;
+extern volatile UBYTE CTASKS_SecondaryOiWritePendingFlag;
+extern volatile UBYTE CTASKS_PendingSecondaryOiDiskId;
 
 long DISKIO2_LoadNxtDayDataFile(void)
 {
@@ -79,7 +79,6 @@ long DISKIO2_LoadNxtDayDataFile(void)
     fileLen = Global_REF_LONG_FILE_SCRATCH;
     workBuf = Global_PTR_WORK_BUFFER;
     headerCode = (UBYTE)(DISKIO_ParseLongFromWorkBuffer() & 0xffL);
-
     if (headerCode == TEXTDISP_SecondaryGroupCode) {
         UWORD entryIndex;
         parsedCount = (UWORD)DISKIO_ParseLongFromWorkBuffer();
@@ -88,20 +87,17 @@ long DISKIO2_LoadNxtDayDataFile(void)
         TEXTDISP_SecondaryGroupPresentFlag = 1;
 
         for (entryIndex = 0; entryIndex < parsedCount; entryIndex++) {
-            entry = (DISKIO2_Entry *)MEMORY_AllocateMemory(
-                Global_STR_DISKIO2_C_17, 948, 52, 0x10001UL);
+            entry = (DISKIO2_Entry *)MEMORY_AllocateMemory(52, 0x10001UL);
 
             if (entry == 0) {
                 result = -1;
                 break;
             }
 
-            title = (DISKIO2_TitleData *)MEMORY_AllocateMemory(
-                Global_STR_DISKIO2_C_18, 954, 500, 0x10001UL);
+            title = (DISKIO2_TitleData *)MEMORY_AllocateMemory(500, 0x10001UL);
             if (title == 0) {
                 result = -1;
-                MEMORY_DeallocateMemory(
-                    Global_STR_DISKIO2_C_19, 958, entry, 52);
+                MEMORY_DeallocateMemory(entry, 52);
                 break;
             }
 
@@ -167,10 +163,8 @@ long DISKIO2_LoadNxtDayDataFile(void)
             }
 
             if (result == -1) {
-                MEMORY_DeallocateMemory(
-                    Global_STR_DISKIO2_C_20, 1027, entry, 52);
-                MEMORY_DeallocateMemory(
-                    Global_STR_DISKIO2_C_21, 1028, title, 500);
+                MEMORY_DeallocateMemory(entry, 52);
+                MEMORY_DeallocateMemory(title, 500);
                 break;
             }
 
@@ -184,12 +178,8 @@ long DISKIO2_LoadNxtDayDataFile(void)
     TEXTDISP_SecondaryGroupEntryCount = loadedCount;
 
 finalize_load:
-    MEMORY_DeallocateMemory(
-        Global_STR_DISKIO2_C_22,
-        1041,
-        (char *)workBuf,
+    MEMORY_DeallocateMemory((char *)workBuf,
         fileLen + 1);
-
     if (COI_LoadOiDataFile((long)headerCode) != -1) {
         CTASKS_SecondaryOiWritePendingFlag = 1;
         CTASKS_PendingSecondaryOiDiskId = headerCode;

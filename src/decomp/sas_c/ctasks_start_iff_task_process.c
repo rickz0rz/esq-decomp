@@ -1,3 +1,4 @@
+extern void *AbsExecBase;
 #include <exec/memory.h>
 #include <exec/types.h>
 
@@ -22,16 +23,19 @@ extern UWORD ESQIFF_AssetSourceSelect;
 extern LONG Global_REF_LIST_IFF_TASK_PROC;
 extern LONG CTASKS_IffTaskSegListBPTR;
 extern LONG CTASKS_IffTaskProcPtr;
+extern LONG Global_REF_DOS_LIBRARY_2;
 extern const char Global_STR_IFF_TASK_1[];
 extern const char Global_STR_IFF_TASK_2[];
 extern const char Global_STR_CTASKS_C_2[];
 
 void CTASKS_IFFTaskCleanup(void);
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
-LONG _LVOFindTask(void);
-void _LVOForbid(void);
-void _LVOPermit(void);
-LONG _LVOCreateProc(void);
+/* base-first _LVO ABI. FindTask(execBase; A1=name). CreateProc(dosBase; D1=name,
+   D2=pri, D3=segListBPTR, D4=stackSize). */
+LONG _LVOFindTask(void *execBase, const char *name);
+void _LVOForbid(void *base);
+void _LVOPermit(void *base);
+LONG _LVOCreateProc(void *dosBase, const char *name, LONG pri, LONG segListBPTR, LONG stackSize);
 
 void CTASKS_StartIffTaskProcess(void)
 {
@@ -40,9 +44,9 @@ void CTASKS_StartIffTaskProcess(void)
     LONG seg_bptr;
 
     do {
-        _LVOForbid();
-        task = _LVOFindTask();
-        _LVOPermit();
+        _LVOForbid(AbsExecBase);
+        task = _LVOFindTask(AbsExecBase, Global_STR_IFF_TASK_1);
+        _LVOPermit(AbsExecBase);
     } while (task != CTASKS_FLAG_FALSE);
 
     CTASKS_IffTaskDoneFlag = CTASKS_FLAG_FALSE;
@@ -68,5 +72,6 @@ void CTASKS_StartIffTaskProcess(void)
     seg_bptr = (list_ptr + CTASKS_TASKLIST_SEG_BPTR_ADD) >> CTASKS_TASKLIST_SEG_BPTR_SHIFT;
     CTASKS_IffTaskSegListBPTR = seg_bptr;
 
-    CTASKS_IffTaskProcPtr = _LVOCreateProc();
+    CTASKS_IffTaskProcPtr = _LVOCreateProc(
+        Global_REF_DOS_LIBRARY_2, Global_STR_IFF_TASK_2, 0, CTASKS_IffTaskSegListBPTR, 8192);
 }

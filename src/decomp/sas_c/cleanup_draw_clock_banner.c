@@ -20,6 +20,7 @@ extern const char Global_STR_EXTRA_TIME_FORMAT[];
 extern const char Global_STR_GRID_TIME_FORMAT[];
 extern LONG NEWGRID_MainRastPortPtr;
 extern UWORD NEWGRID_ColumnStartXPx;
+extern void *Global_REF_GRAPHICS_LIBRARY;
 
 LONG PARSEINI_AdjustHoursTo24HrFormat(WORD hour, WORD amPmFlag);
 LONG WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b, LONG c);
@@ -35,10 +36,13 @@ LONG GRAPHICS_BltBitMapRastPort(
     LONG height,
     LONG minterm
 );
-void _LVOSetAPen(void);
-void _LVORectFill(void);
-void _LVOMove(void);
-void _LVOText(void);
+/* base-first _LVO ABI (gfxBase). SetAPen(A1=rp, D0=pen);
+   RectFill(A1=rp, D0=xMin, D1=yMin, D2=xMax, D3=yMax); Move(A1=rp, D0=x, D1=y);
+   Text(A1=rp, A0=string, D0=count). */
+void _LVOSetAPen(void *gfxBase, struct RastPort *rp, LONG pen);
+void _LVORectFill(void *gfxBase, struct RastPort *rp, LONG xMin, LONG yMin, LONG xMax, LONG yMax);
+void _LVOMove(void *gfxBase, struct RastPort *rp, LONG x, LONG y);
+void _LVOText(void *gfxBase, struct RastPort *rp, const char *string, LONG count);
 
 void CLEANUP_DrawClockBanner(void)
 {
@@ -72,37 +76,45 @@ void CLEANUP_DrawClockBanner(void)
         );
     }
 
-    _LVOSetAPen();
-    _LVORectFill();
-    _LVOSetAPen();
-    _LVORectFill();
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, 7);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, rp, 0, 0, CLOCK_BANNER_FRAME_WIDTH, CLOCK_BANNER_FRAME_HEIGHT);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, 7);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, rp,
+                 CLOCK_BANNER_INNER_X_OFFSET, 0,
+                 (LONG)NEWGRID_ColumnStartXPx + CLOCK_BANNER_FRAME_WIDTH, CLOCK_BANNER_FRAME_HEIGHT);
 
     BEVEL_DrawBevelFrameWithTopRight(
         (char *)rp,
-        (LONG)NEWGRID_ColumnStartXPx + 35,
         0,
-        CLOCK_BANNER_FRAME_WIDTH,
+        0,
+        (LONG)NEWGRID_ColumnStartXPx + CLOCK_BANNER_FRAME_WIDTH,
         CLOCK_BANNER_FRAME_HEIGHT
     );
 
     fontHeight = (LONG)rp->Font->tf_YSize;
-    y = (((34 - fontHeight) + 1) >> 1) + fontHeight - 1;
-    (void)y;
+    y = ((CLOCK_BANNER_BLIT_SIZE - fontHeight) / 2) + fontHeight - 1;
 
-    _LVOMove();
-    _LVOSetAPen();
-    _LVOText();
+    {
+        const char *tc = timeText;
+        while (*tc != 0) {
+            tc++;
+        }
+        _LVOMove(Global_REF_GRAPHICS_LIBRARY, rp, 44, y);
+        _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, 1);
+        _LVOText(Global_REF_GRAPHICS_LIBRARY, rp, timeText, (LONG)(tc - timeText));
+    }
 
+    /* ASM push order: src=(rp->BitMap,0,0), dst_rp=rp, dst_x=0, dst_y=34,
+       width=ColumnStartXPx+36, height=34, minterm=192. */
     GRAPHICS_BltBitMapRastPort(
         rp->BitMap,
         0,
         0,
         (char *)rp,
+        0,
+        CLOCK_BANNER_BLIT_SIZE,
         (LONG)NEWGRID_ColumnStartXPx + CLOCK_BANNER_INNER_X_OFFSET,
         CLOCK_BANNER_BLIT_SIZE,
-        CLOCK_BANNER_BLIT_SIZE,
-        CLOCK_BANNER_BLIT_SIZE,
-        192,
-        -1
+        192
     );
 }

@@ -1,3 +1,4 @@
+extern void *AbsExecBase;
 #include <exec/memory.h>
 #include <exec/lists.h>
 #include <exec/types.h>
@@ -30,8 +31,8 @@ extern void *Global_REF_DOS_LIBRARY_2;
 extern struct MinList ESQIFF_GAdsBrushListHead;
 extern struct MinList ESQIFF_LogoBrushListHead;
 
-extern void _LVOForbid(void);
-extern void _LVOPermit(void);
+extern void _LVOForbid(void *base);
+extern void _LVOPermit(void *base);
 extern LONG _LVORead(void *dosBase, LONG fileHandle, void *buffer, LONG length);
 extern LONG _LVOClose(void *dosBase, LONG fileHandle);
 
@@ -52,11 +53,11 @@ void ESQIFF_ReloadExternalAssetCatalogBuffers(LONG mode)
     }
 
     if (mode == 1 && ED_DiagGraphModeChar != 'N' && DISKIO_DriveWriteProtectStatusCodeDrive1 == 0) {
-        _LVOForbid();
+        _LVOForbid(AbsExecBase);
         ESQIFF_JMPTBL_BRUSH_FreeBrushList(&ESQIFF_GAdsBrushListHead, 0);
         ESQIFF_GAdsBrushListCount = 0;
         ESQIFF_GAdsListLineIndex = 0;
-        _LVOPermit();
+        _LVOPermit(AbsExecBase);
 
         if (Global_REF_LONG_GFX_G_ADS_DATA != 0 && Global_REF_LONG_GFX_G_ADS_FILESIZE != 0) {
             ESQIFF_JMPTBL_MEMORY_DeallocateMemory(
@@ -100,11 +101,11 @@ void ESQIFF_ReloadExternalAssetCatalogBuffers(LONG mode)
         return;
     }
 
-    _LVOForbid();
+    _LVOForbid(AbsExecBase);
     ESQIFF_JMPTBL_BRUSH_FreeBrushList(&ESQIFF_LogoBrushListHead, 0);
     ESQIFF_LogoBrushListCount = 0;
     ESQIFF_LogoListLineIndex = 0;
-    _LVOPermit();
+    _LVOPermit(AbsExecBase);
 
     if (Global_REF_LONG_DF0_LOGO_LST_DATA != 0 && Global_REF_LONG_DF0_LOGO_LST_FILESIZE != 0) {
         ESQIFF_JMPTBL_MEMORY_DeallocateMemory(

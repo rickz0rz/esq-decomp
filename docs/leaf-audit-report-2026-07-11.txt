@@ -1,0 +1,16 @@
+leaf-scalar differential audit  (Sat Jul 11 14:47:53 EDT 2026)
+================================================================
+PASS        BRUSH_PlaneMaskForIndex   (identical on all vectors)
+DIVERGE     DISPLIB_NormalizeValueByStep   (1 vectors differ)
+                ASM[0000002f 0000007f 0000ffff -> 00008000]  C[0000002f 0000007f 0000ffff -> ffff8000]
+PASS        ESQDISP_TestWordIsZeroBooleanize   (identical on all vectors)
+PASS        ESQIFF2_ValidateAsciiNumericByte   (identical on all vectors)
+PASS        ESQIFF2_ValidateFieldIndexAndLength   (identical on all vectors)
+PASS        LADFUNC_ComposePackedPenByte   (identical on all vectors)
+PASS        LADFUNC_GetPackedPenHighNibble   (identical on all vectors)
+PASS        LADFUNC_SetPackedPenHighNibble   (identical on all vectors)
+PASS        LADFUNC_SetPackedPenLowNibble   (identical on all vectors)
+PASS        PARSEINI_AdjustHoursTo24HrFormat   (identical on all vectors)
+PASS        TLIBA1_ParseStyleCodeChar   (identical on all vectors)
+================================================================
+SUMMARY: pass=10  diverge=1  failed=0

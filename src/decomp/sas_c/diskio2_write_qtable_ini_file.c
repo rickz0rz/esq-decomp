@@ -19,7 +19,7 @@ extern const char DISKIO2_STR_QTableValueQuoteClose[];
 extern const char DISKIO2_STR_QTableLineBreakAfterEntry[];
 
 volatile UWORD TEXTDISP_AliasCount;
-volatile struct AliasPair *TEXTDISP_AliasPtrTable[256];
+extern volatile struct AliasPair *TEXTDISP_AliasPtrTable[256];
 volatile long DISKIO2_QTableIniFileHandle;
 
 long DISKIO2_WriteQTableIniFile(void)

@@ -4,7 +4,7 @@
 typedef struct NEWGRID_Context {
     UBYTE pad0[32];
     LONG selectedState;
-    UBYTE pad1[18];
+    UBYTE pad1[16];   /* rastPort@60 (was pad1[18] => @62, wrong) */
     UWORD selectionCode;
     UBYTE pad2[6];
     struct RastPort rastPort;
@@ -15,8 +15,8 @@ extern const char *Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void NEWGRID_DrawGridFrame(char *gridCtx, LONG mode, LONG firstPen, LONG secondPen, LONG yMax);
-extern void _LVOSetAPen(char *rastPort, LONG pen);
-extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
+extern void _LVOSetAPen(void *base, char *rastPort, LONG pen);
+extern LONG _LVOTextLength(void *base, char *rastPort, const char *text, LONG len);
 extern char *NEWGRID_DrawWrappedText(char *rastPort, LONG x, LONG y, LONG width, const char *text, LONG centered);
 extern void BEVEL_DrawBevelFrameWithTopRight(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
@@ -46,14 +46,14 @@ LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx)
     msgLen = 0;
 
     NEWGRID_DrawGridFrame(gridCtx, 7, 4, 4, yMax);
-    _LVOSetAPen((char *)rast, 1);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, (char *)rast, 1);
 
     while (*p != 0) {
         ++p;
     }
     msgLen = (LONG)(p - msg);
 
-    textW = _LVOTextLength((char *)rast, msg, msgLen);
+    textW = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rast, msg, msgLen);
     x = 624 - textW;
     if (x < 0) {
         x += 1;

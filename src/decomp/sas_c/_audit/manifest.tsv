@@ -1,0 +1,11 @@
+COI_CountEscape14BeforeNull
+DATETIME_ClassifyValueInRange
+DATETIME_NormalizeMonthRange
+ESQ_TestBit1Based
+ESQDISP_TestEntryBits0And2_Core
+ESQDISP_TestEntryBits0And2
+ESQSHARED4_DecodeRgbNibbleTriplet
+FORMAT_U32ToOctalString
+LOCAVAIL_GetNodeDurationByIndex
+NEWGRID_SetRowColor
+P_TYPE_GetSubtypeIfType20

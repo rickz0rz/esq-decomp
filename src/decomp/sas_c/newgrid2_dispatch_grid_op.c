@@ -62,5 +62,7 @@ LONG NEWGRID2_DispatchGridOperation(LONG operationId, char *gridCtx, WORD rowInd
         }
     }
 
-    return (NEWGRID2_LastDispatchResult != 0) ? -1 : 0;
+    /* Original: TST.L result; SNE D0; NEG.B D0; EXT -> returns +1, not -1
+     * (the module's "booleanize to 0/-1" comment is wrong; NEG.B $FF = $01). */
+    return (NEWGRID2_LastDispatchResult != 0) ? 1 : 0;
 }

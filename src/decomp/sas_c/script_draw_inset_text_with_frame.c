@@ -2,9 +2,9 @@
 
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
-extern void _LVOText(char *rastport, const char *text, LONG len);
-extern void _LVOSetAPen(char *rastport, LONG pen);
+extern LONG _LVOTextLength(void *base, char *rastport, const char *text, LONG len);
+extern void _LVOText(void *base, char *rastport, const char *text, LONG len);
+extern void _LVOSetAPen(void *base, char *rastport, LONG pen);
 extern void CLEANUP_DrawInsetRectFrame(char *rastport, LONG framePen, LONG width, LONG depth);
 
 static LONG cstrlen_local(const char *s)
@@ -41,20 +41,20 @@ void SCRIPT_DrawInsetTextWithFrame(char *rastport, BYTE textPenOverride, BYTE fr
         CLEANUP_DrawInsetRectFrame(
             rastport,
             (LONG)framePen,
-            _LVOTextLength(rastport, text, textLen),
+            _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastport, text, textLen),
             (LONG)*(unsigned short *)(rp + RP_FONT_HEIGHT_OFFSET));
     }
 
     if ((LONG)textPenOverride != PEN_NONE) {
         savedPen = (LONG)rp[RP_APEN_OFFSET];
-        _LVOSetAPen(rastport, (LONG)textPenOverride);
+        _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rastport, (LONG)textPenOverride);
     }
 
     textLen = cstrlen_local(text);
-    _LVOText(rastport, text, textLen);
+    _LVOText(Global_REF_GRAPHICS_LIBRARY, rastport, text, textLen);
 
     if ((LONG)textPenOverride != PEN_NONE) {
-        _LVOSetAPen(rastport, savedPen);
+        _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rastport, savedPen);
     }
 
     if ((LONG)framePen != PEN_NONE) {

@@ -11,7 +11,7 @@ extern UBYTE TEXTDISP_SourceConfigFlagMask;
 
 extern const char Global_STR_TEXTDISP_C_3[];
 extern char *ESQPARS_ReplaceOwnedString(const char *newStr, char *oldStr);
-extern void MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
+extern void MEMORY_DeallocateMemory(void *ptr, long bytes);
 
 void TEXTDISP_ClearSourceConfig(void)
 {
@@ -23,7 +23,7 @@ void TEXTDISP_ClearSourceConfig(void)
         TEXTDISP_SourceConfigEntry *entry = TEXTDISP_SourceConfigEntryTable[i];
         if (entry != 0) {
             entry->ownedName = ESQPARS_ReplaceOwnedString(0, entry->ownedName);
-            MEMORY_DeallocateMemory(Global_STR_TEXTDISP_C_3, SOURCECFG_FREE_LINE, entry, SOURCECFG_ENTRY_SIZE);
+            MEMORY_DeallocateMemory(entry, SOURCECFG_ENTRY_SIZE);
             TEXTDISP_SourceConfigEntryTable[i] = 0;
         }
     }

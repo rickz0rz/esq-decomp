@@ -33,8 +33,8 @@ void ESQSHARED4_ProgramDisplayWindowAndCopper(void)
 
     DIWSTRT = 0x1761;
     DIWSTOP = 0xFFC5;
-    DDFSTRT = 0x0038;
-    DDFSTOP = 0x00D0;
+    DDFSTRT = 0x0030;   /* DDFSTRT_WIDE (src/hardware-addresses.s) -- was wrongly 0x38 (std lores) */
+    DDFSTOP = 0x00D8;   /* DDFSTOP_WIDE -- was wrongly 0xD0 (std lores); wide overscan for the 696px display */
     BPL1MOD = 0x0058;
     BPL2MOD = 0x0058;
 

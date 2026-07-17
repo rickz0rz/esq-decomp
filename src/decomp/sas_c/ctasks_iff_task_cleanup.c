@@ -1,3 +1,4 @@
+extern void *AbsExecBase;
 #include <exec/types.h>
 
 extern UWORD CTASKS_IffTaskState;
@@ -11,7 +12,7 @@ extern const char Global_STR_CTASKS_C_1[];
 
 void GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult(void *desc);
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const void *tag, LONG line, void *ptr, LONG bytes);
-void _LVOForbid(void);
+void _LVOForbid(void *base);
 
 void CTASKS_IFFTaskCleanup(void)
 {
@@ -48,7 +49,7 @@ void CTASKS_IFFTaskCleanup(void)
         CTASKS_PendingIffBrushDescriptor = PENDING_NONE;
     }
 
-    _LVOForbid();
+    _LVOForbid(AbsExecBase);
 
     CTASKS_IffTaskDoneFlag = FLAG_DONE;
     CTASKS_IffTaskState = FLAG_CLEAR;

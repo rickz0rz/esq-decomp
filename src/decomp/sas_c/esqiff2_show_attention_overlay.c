@@ -5,10 +5,18 @@ extern WORD ED_DiagnosticsScreenActive;
 extern WORD ESQPARS2_ReadModeFlags;
 
 extern struct RastPort *Global_REF_RASTPORT_1;
-extern void *Global_REF_696_400_BITMAP;
+/* Global_REF_696_400_BITMAP is the BitMap STRUCT (defined in wdisp.s); the asm does
+   MOVE.L #Global_REF_696_400_BITMAP -> rp->BitMap gets its ADDRESS. The prior
+   `void *` + value assignment set rp->BitMap to the struct's first 4 bytes (garbage),
+   so RectFill/DrawText wrote through wild plane pointers -> AN_MemCorrupt. */
+extern struct BitMap Global_REF_696_400_BITMAP;
 extern ULONG BRUSH_SnapshotDepth;
 extern ULONG BRUSH_SnapshotWidth;
-extern const char *BRUSH_SnapshotHeader;
+/* BRUSH_SnapshotHeader is a char BUFFER (wdisp.s: DS.B 1 + DS.L 8), not a pointer.
+   The asm passes its ADDRESS (PEA BRUSH_SnapshotHeader) as the %s arg. The prior
+   `const char *` + by-value use passed the buffer's first 4 bytes as a pointer ->
+   %s read from a garbage address, overrunning textbuf -> AN_MemCorrupt. */
+extern char BRUSH_SnapshotHeader[];
 extern WORD COI_AttentionOverlayBusyFlag;
 
 extern const char Global_STR_PLEASE_STANDBY_2[];
@@ -21,18 +29,28 @@ extern const char Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL[];
 extern void Disable(void);
 extern void Enable(void);
 extern void GCOMMAND_SeedBannerFromPrefs(void);
-extern void SetAPen(struct RastPort *rp, LONG pen);
-extern void RectFill(struct RastPort *rp, LONG x1, LONG y1, LONG x2, LONG y2);
-extern void SetDrMd(struct RastPort *rp, LONG mode);
-extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rp, WORD x, WORD y, const char *text);
+/* The asm calls graphics via A6 = Global_REF_GRAPHICS_LIBRARY. The prior bare
+   SetAPen/RectFill/SetDrMd resolved to amiga.lib stubs that use an UNINITIALIZED
+   _GfxBase (this program keeps its base in Global_REF_GRAPHICS_LIBRARY, not the
+   amiga.lib global) -> wild call -> crash. Use the base-explicit _LVO forms. */
+extern void *Global_REF_GRAPHICS_LIBRARY;
+extern void _LVOSetAPen(void *graphicsBase, void *rastPort, LONG pen);
+extern void _LVORectFill(void *graphicsBase, void *rastPort, LONG minX, LONG minY, LONG maxX, LONG maxY);
+extern void _LVOSetDrMd(void *graphicsBase, void *rastPort, LONG mode);
+/* DISPLIB_DisplayTextAtPosition takes LONG x, LONG y (the asm pushes them via
+   PEA nn.W = 32-bit). Declaring x/y as WORD here made SAS/C push them 16-bit,
+   misaligning y and the text pointer -> DisplayText drew a garbage string at a
+   wild x offset, writing past the raster -> heap corruption. */
+extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rp, LONG x, LONG y, const char *text);
 extern LONG GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, ...);
 extern LONG BRUSH_PlaneMaskForIndex(ULONG depth);
+
 
 void ESQIFF2_ShowAttentionOverlay(BYTE code)
 {
     LONG d5 = -1;
     struct RastPort *rp;
-    void *old_bitmap;
+    struct BitMap *old_bitmap;
     UBYTE old_drmd;
     char textbuf[128];
 
@@ -60,15 +78,15 @@ void ESQIFF2_ShowAttentionOverlay(BYTE code)
 
     rp = Global_REF_RASTPORT_1;
     old_bitmap = rp->BitMap;
-    rp->BitMap = Global_REF_696_400_BITMAP;
+    rp->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
     ED_DiagnosticsScreenActive = 0;
 
-    SetAPen(rp, 2);
-    RectFill(rp, 0, 65, 0x2ac, (UBYTE)(~40));
-    SetAPen(rp, 3);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, 2);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, rp, 0, 65, 0x2ac, (UBYTE)(~40));
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, 3);
 
     old_drmd = rp->DrawMode;
-    SetDrMd(rp, 0);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rp, 0);
 
     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)rp, 35, 90, Global_STR_PLEASE_STANDBY_2);
     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)rp, 35, 120, Global_STR_ATTENTION_SYSTEM_ENGINEER_2);
@@ -87,6 +105,6 @@ void ESQIFF2_ShowAttentionOverlay(BYTE code)
     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)rp, 35, 180, textbuf);
     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition((char *)rp, 35, 210, Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL);
 
-    SetDrMd(rp, (LONG)old_drmd);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rp, (LONG)old_drmd);
     rp->BitMap = old_bitmap;
 }

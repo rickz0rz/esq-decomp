@@ -1,3 +1,4 @@
+extern void *Global_REF_DOS_LIBRARY;
 #include <exec/memory.h>
 #include <exec/types.h>
 
@@ -9,7 +10,7 @@ extern const char Global_STR_BRUSH_C_4[];
 
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG line, LONG bytes, ULONG flags);
 void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(const char *tag, LONG line, void *ptr, LONG bytes);
-LONG _LVORead(LONG fh, void *buf, LONG len);
+LONG _LVORead(void *base, LONG fh, void *buf, LONG len);
 
 #define BRUSH_NULL 0
 #define BRUSH_NIBBLE_SHIFT 4
@@ -47,7 +48,7 @@ LONG BRUSH_LoadColorTextFont(LONG fileHandle, LONG byteCount, UBYTE *outBuf)
         return BRUSH_COLOR_FONT_STATUS_ERROR;
     }
 
-    if (_LVORead(fileHandle, (void *)tmp, byteCount) != byteCount) {
+    if (_LVORead(Global_REF_DOS_LIBRARY, fileHandle, (void *)tmp, byteCount) != byteCount) {
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
             Global_STR_BRUSH_C_3, BRUSH_FREE_READ_FAIL_LINE, (void *)tmp, COLOR_TEXT_FONT_SIZE);
         return BRUSH_COLOR_FONT_STATUS_ERROR;

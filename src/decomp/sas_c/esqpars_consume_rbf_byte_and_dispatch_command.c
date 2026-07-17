@@ -116,7 +116,7 @@ extern ESQPARS_TitleRecord *TEXTDISP_SecondaryTitlePtrTable[];
 
 extern UWORD DATACErrs;
 extern struct RastPort *Global_REF_RASTPORT_1;
-extern struct BitMap *Global_REF_696_400_BITMAP;
+extern struct BitMap Global_REF_696_400_BITMAP;  /* a STRUCT, not a pointer (wdisp.s) */
 extern char *Global_STR_RESET_COMMAND_RECEIVED;
 
 extern LONG SCRIPT_ReadNextRbfByte(void);
@@ -859,7 +859,7 @@ LONG ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         if ((UBYTE)SCRIPT_ReadNextRbfByte() == (UBYTE)0xAD) {
             if (ESQPARS_ResetArmedFlag == 1) {
                 ESQ_GlobalTickCounter = 21000;
-                Global_REF_RASTPORT_1->BitMap = Global_REF_696_400_BITMAP;
+                Global_REF_RASTPORT_1->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
 
                 for (;;) {
                     DISPLIB_DisplayTextAtPosition(

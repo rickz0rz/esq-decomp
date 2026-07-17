@@ -5,7 +5,10 @@ extern volatile UBYTE CIAA_DDRB;
 extern volatile UBYTE CIAA_PRB;
 
 extern void *AbsExecBase;
-extern void _LVORawDoFmt(void *execBase, char *fmt, void *args, void (*putc)(LONG));
+/* base-first _LVO ABI. RawDoFmt(execBase; A0=fmt, A1=dataStream, A2=putChProc,
+   A3=putChData). PARALLEL_WriteCharHw ignores PutChData, so it is passed NULL
+   (the original leaves A3 undefined; the callback never reads it). */
+extern void _LVORawDoFmt(void *execBase, char *fmt, void *args, void (*putc)(LONG), void *putChData);
 
 void PARALLEL_WriteCharHw(LONG ch)
 {
@@ -34,5 +37,5 @@ void PARALLEL_WriteCharHw(LONG ch)
 
 void PARALLEL_RawDoFmt(char *fmt, void *args)
 {
-    _LVORawDoFmt(AbsExecBase, fmt, args, PARALLEL_WriteCharHw);
+    _LVORawDoFmt(AbsExecBase, fmt, args, PARALLEL_WriteCharHw, 0);
 }

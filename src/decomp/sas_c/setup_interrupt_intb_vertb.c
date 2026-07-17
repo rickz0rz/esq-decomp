@@ -8,7 +8,7 @@ extern const char Global_STR_VERTICAL_BLANK_INT[];
 extern void ESQ_VerticalBlankInterruptUserData(void);
 
 extern struct Interrupt *MEMORY_AllocateMemory(ULONG bytes, ULONG flags);
-extern void ESQ_TickGlobalCounters(void);
+extern long ESQ_TickGlobalCounters(void);
 
 #ifndef INTB_VERTB
 #define INTB_VERTB 5
@@ -25,6 +25,11 @@ void SETUP_INTERRUPT_INTB_VERTB(void)
     intr->is_Node.ln_Pri = 0;
     intr->is_Node.ln_Name = (char *)Global_STR_VERTICAL_BLANK_INT;
     intr->is_Data = (APTR)ESQ_VerticalBlankInterruptUserData;
+    /* Original installs ESQFUNC_JMPTBL_ESQ_TickGlobalCounters (a JMP to the handler);
+       calling the handler directly is equivalent. The deep-C-tree/SSP-overflow theory
+       (and the _vertbstk.s private-stack wrapper) was a mis-diagnosis -- the real VERTB
+       crash was the ESQIFF2_ShowAttentionOverlay bitmap-pointer bug reached via the
+       alert path. See memory: vertb-is-anmemcorrupt-corruptor. */
     intr->is_Code = (VOID (*)())ESQ_TickGlobalCounters;
 
     AddIntVector(INTB_VERTB, intr);

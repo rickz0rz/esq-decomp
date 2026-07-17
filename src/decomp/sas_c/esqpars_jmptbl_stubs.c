@@ -7,7 +7,7 @@ extern LONG ESQPROTO_VerifyChecksumAndParseList(UBYTE seed);
 extern LONG P_TYPE_ParseAndStoreTypeRecord(const char *src);
 extern void ESQPROTO_CopyLabelToGlobal(const char *src);
 extern void DST_HandleBannerCommand32_33(UBYTE cmd, const char *text);
-extern void ESQ_SeedMinuteEventThresholds(void);
+extern void ESQ_SeedMinuteEventThresholds(long base_minute, long base_offset);
 extern void PARSEINI_HandleFontCommand(const char *command);
 extern void TEXTDISP_ApplySourceConfigAllEntries(void);
 extern unsigned long BRUSH_PlaneMaskForIndex(long planeIndex);
@@ -36,7 +36,7 @@ LONG ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList(LONG cmdChar){return ESQ
 LONG ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord(const char *src){return P_TYPE_ParseAndStoreTypeRecord(src);}
 void ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal(const char *src){ESQPROTO_CopyLabelToGlobal(src);}
 void ESQPARS_JMPTBL_DST_HandleBannerCommand32_33(UBYTE cmd, const char *text){DST_HandleBannerCommand32_33(cmd, text);}
-void ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds(void){ESQ_SeedMinuteEventThresholds();}
+void ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds(long base_minute, long base_offset){ESQ_SeedMinuteEventThresholds(base_minute, base_offset);}
 void ESQPARS_JMPTBL_PARSEINI_HandleFontCommand(const char *command){PARSEINI_HandleFontCommand(command);}
 void ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries(void){TEXTDISP_ApplySourceConfigAllEntries();}
 unsigned long ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(long planeIndex){return BRUSH_PlaneMaskForIndex(planeIndex);}

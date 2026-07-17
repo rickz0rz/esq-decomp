@@ -25,7 +25,8 @@ extern const char Global_STR_CLOSE_TASK[];
 
 void CTASKS_CloseTaskTeardown(void);
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const void *tag, LONG line, LONG bytes, ULONG flags);
-LONG _LVOCreateProc(void);
+/* base-first _LVO ABI. CreateProc(dosBase; D1=name, D2=pri, D3=segListBPTR, D4=stackSize). */
+LONG _LVOCreateProc(void *dosBase, const char *name, LONG pri, LONG segListBPTR, LONG stackSize);
 
 void CTASKS_StartCloseTaskProcess(LONG file_handle)
 {
@@ -49,5 +50,6 @@ void CTASKS_StartCloseTaskProcess(LONG file_handle)
     seg_bptr = (list_ptr + CTASKS_BPTRLIST_OFFSET) >> CTASKS_BPTRLIST_SHIFT;
     CTASKS_CloseTaskSegListBPTR = seg_bptr;
 
-    CTASKS_CloseTaskProcPtr = _LVOCreateProc();
+    CTASKS_CloseTaskProcPtr = _LVOCreateProc(
+        Global_REF_DOS_LIBRARY_2, Global_STR_CLOSE_TASK, 0, CTASKS_CloseTaskSegListBPTR, 8192);
 }

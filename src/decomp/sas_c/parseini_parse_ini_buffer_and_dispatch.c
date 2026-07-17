@@ -62,8 +62,8 @@ extern char *STR_FindAnyCharPtr(const char *s, const char *delim);
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
 extern void GCOMMAND_InitPresetTableFromPalette(UWORD *table);
 extern char *ESQPARS_ReplaceOwnedString(const char *newValue, char *oldValue);
-extern void *MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
-extern void MEMORY_DeallocateMemory(const char *tagName, LONG line, void *ptr, LONG bytes);
+extern void *MEMORY_AllocateMemory(unsigned long byteSize, long flags);
+extern void MEMORY_DeallocateMemory(void *ptr, long bytes);
 
 extern void TEXTDISP_ClearSourceConfig(void);
 extern void TEXTDISP_AddSourceConfigEntry(char *name, const char *tag);
@@ -133,7 +133,6 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
     if (DISKIO_LoadFileToWorkBuffer(path) == -1) {
         return -1;
     }
-
     workBufferSize = Global_REF_LONG_FILE_SCRATCH;
     workBuffer = Global_PTR_WORK_BUFFER;
 
@@ -245,16 +244,12 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
             }
 
             ++aliasIndex;
-            TEXTDISP_AliasPtrTable[aliasIndex] = (AliasPair *)MEMORY_AllocateMemory(
-                Global_STR_PARSEINI_C_1,
-                QTABLE_ALLOC_LINE,
-                QTABLE_ALLOC_SIZE,
+            TEXTDISP_AliasPtrTable[aliasIndex] = (AliasPair *)MEMORY_AllocateMemory(QTABLE_ALLOC_SIZE,
                 MEMF_PUBLIC_CLEAR);
             alias = TEXTDISP_AliasPtrTable[aliasIndex];
             alias->key = (char *)0;
             alias->value = (char *)0;
             alias->key = ESQPARS_ReplaceOwnedString(linePtr, alias->key);
-
             quotePtr = STR_FindCharPtr(valuePtr, 34);
             if (quotePtr == (char *)0) {
                 TEXTDISP_AliasCount = 0;
@@ -446,10 +441,7 @@ LONG PARSEINI_ParseIniBufferAndDispatch(const char *path)
         }
     }
 
-    MEMORY_DeallocateMemory(
-        Global_STR_PARSEINI_C_2,
-        FREE_WORKBUF_LINE,
-        workBuffer,
+    MEMORY_DeallocateMemory(workBuffer,
         workBufferSize + 1);
     return 0;
 }

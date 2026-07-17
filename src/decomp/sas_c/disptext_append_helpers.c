@@ -63,8 +63,10 @@ LONG DISPTEXT_AppendToBuffer(const char *src)
         DISPTEXT_TextBufferPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(src, DISPTEXT_TextBufferPtr);
     }
 
+    /* Original: TST.L DISPTEXT_TextBufferPtr; SNE D0; NEG.B D0; EXT.W; EXT.L ->
+     * returns +1 (not -1) when the pointer is non-null. */
     if (DISPTEXT_TextBufferPtr != (char *)0) {
-        return -1L;
+        return 1L;
     }
     return 0L;
 }

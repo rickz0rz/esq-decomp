@@ -40,11 +40,12 @@ extern void NEWGRID_DrawDateBanner(char *gridCtx);
 extern LONG NEWGRID_DrawAwaitingListingsMessage(char *gridCtx);
 extern LONG NEWGRID2_DispatchGridOperation(LONG operationId, char *gridCtx, WORD rowIndex, WORD selector);
 extern void GCOMMAND_UpdatePresetEntryCache(void *msg);
-extern void _LVOPutMsg(void *port, void *msg);
+extern void _LVOPutMsg(void *base, void *port, void *msg);
 extern void NEWGRID_DrawGridTopBars(void);
 extern void NEWGRID_DrawTopBorderLine(void);
 extern LONG NEWGRID_ComputeDaySlotFromClockWithOffset(void *clockPtr);
 extern LONG NEWGRID_AdjustClockStringBySlotWithOffset(void *clockPtr);
+
 
 void NEWGRID_ProcessGridMessages(void)
 {
@@ -69,8 +70,8 @@ void NEWGRID_ProcessGridMessages(void)
         NEWGRID_InitGridResources();
         NEWGRID_ClearHighlightArea();
         CLEANUP_DrawClockBanner();
-        CLEANUP_DrawClockFormatList(
-            NEWGRID_AdjustClockStringBySlot(&CLOCK_CurrentDayOfWeekIndex));
+        { LONG _slot = NEWGRID_AdjustClockStringBySlot(&CLOCK_CurrentDayOfWeekIndex);
+        CLEANUP_DrawClockFormatList(_slot); }
         CLEANUP_DrawClockFormatFrame();
         ESQPARS2_ReadModeFlags = 0;
         NEWGRID_RefreshStateFlag = 2;
@@ -246,7 +247,7 @@ finalize_and_reply_message:
     }
 
     GCOMMAND_UpdatePresetEntryCache(msg);
-    _LVOPutMsg(ESQ_HighlightMsgPort, msg);
+    _LVOPutMsg(AbsExecBase, ESQ_HighlightMsgPort, msg);
 
     if (NEWGRID_HeaderRedrawPending != 0) {
         NEWGRID_DrawGridTopBars();

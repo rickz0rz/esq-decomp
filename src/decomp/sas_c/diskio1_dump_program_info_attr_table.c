@@ -22,7 +22,7 @@ extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ..
 extern char *GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, const char *src, ULONG maxLen);
 extern void GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch(const char *text);
 
-extern const char *Global_REF_STR_CLOCK_FORMAT[];
+extern const char **Global_REF_STR_CLOCK_FORMAT; /* pointer to runtime-set clock-format string table (orig derefs it) */
 extern const char DISKIO_FMT_PROGRAM_INFO_PCT_D[];
 extern const char DISKIO_STR_NewlineOnly_C[];
 extern const char DISKIO_FMT_PROG_SRCE_PCT_S_ProgramInfoAttrTable[];

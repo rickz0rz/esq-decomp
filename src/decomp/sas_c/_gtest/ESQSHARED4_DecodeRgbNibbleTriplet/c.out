@@ -1,0 +1,6 @@
+in=000000 ret=00000000
+in=1a2b3c ret=00000abc
+in=ffffff ret=00000fff
+in=0f000f ret=00000f0f
+in=123456 ret=00000246
+in=a55ac3 ret=000005a3

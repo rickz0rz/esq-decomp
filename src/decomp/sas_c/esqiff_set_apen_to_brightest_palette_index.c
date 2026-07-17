@@ -6,7 +6,9 @@ extern UBYTE WDISP_PaletteTriplesGBase[];
 extern UBYTE WDISP_PaletteTriplesBBase[];
 extern char *Global_REF_RASTPORT_2;
 
-extern void SetAPen(char *rastPort, LONG pen);
+/* base-explicit graphics: bare SetAPen resolves to amiga.lib's uninitialized _GfxBase. */
+extern void *Global_REF_GRAPHICS_LIBRARY;
+extern void _LVOSetAPen(void *graphicsBase, char *rastPort, LONG pen);
 
 void ESQIFF_SetApenToBrightestPaletteIndex(void)
 {
@@ -28,5 +30,5 @@ void ESQIFF_SetApenToBrightestPaletteIndex(void)
         }
     }
 
-    SetAPen(Global_REF_RASTPORT_2, bestIndex);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, bestIndex);
 }

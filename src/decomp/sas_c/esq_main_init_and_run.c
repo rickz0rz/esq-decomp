@@ -21,6 +21,7 @@ enum {
 };
 
 extern void *AbsExecBase;
+extern short ESQ_GlobalTickCounter;
 
 extern UBYTE ESQ_SelectCodeBuffer[];
 extern UWORD Global_WORD_SELECT_CODE_IS_RAVESC;
@@ -291,12 +292,15 @@ extern void ESQPARS_ConsumeRbfByteAndDispatchCommand(void);
 extern LONG CLEANUP_ShutdownSystem(void);
 extern void DISKIO2_ReloadDataFilesAndRebuildIndex(void);
 
+
 extern LONG DISKIO_DriveWriteProtectStatusCodeDrive1;
 extern void *LOCAVAIL_PrimaryFilterState;
 extern void *LOCAVAIL_SecondaryFilterState;
 extern void *DST_BannerWindowPrimary;
 extern void *DST_BannerWindowSecondary;
 extern volatile UWORD INTENA;
+extern void INSTALL_ADDR_ERR_HANDLER(void);   /* DIAG: traps vec 2/3/4/11, emits P<pc>... over serial */
+
 
 LONG ESQ_MainInitAndRun(LONG argc, char **argv)
 {
@@ -307,7 +311,7 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQ_RastPortOverlay *rastPortOverlay;
     IOExtSer *serialIoRequest;
     char *displayRastPort;
-
+    INSTALL_ADDR_ERR_HANDLER();   /* DIAG */
     if (argc >= 2) {
         char *src = argv[1];
         UBYTE *dst = ESQ_SelectCodeBuffer;
@@ -368,25 +372,26 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         }
         Global_LONG_ROM_VERSION_CHECK = 2;
     }
-
     OVERRIDE_INTUITION_FUNCS();
 
-    Global_HANDLE_TOPAZ_FONT = _LVOOpenFont(Global_REF_GRAPHICS_LIBRARY, Global_STRUCT_TEXTATTR_TOPAZ_FONT);
+    /* These Global_STRUCT_TEXTATTR_* are TextAttr STRUCTS, not pointers; OpenFont
+       wants the struct's ADDRESS. The externs are typed void*, so pass &. */
+    Global_HANDLE_TOPAZ_FONT = _LVOOpenFont(Global_REF_GRAPHICS_LIBRARY, &Global_STRUCT_TEXTATTR_TOPAZ_FONT);
     if (Global_HANDLE_TOPAZ_FONT == (void *)0) {
         return 0;
     }
 
-    Global_HANDLE_PREVUEC_FONT = _LVOOpenDiskFont(Global_REF_DISKFONT_LIBRARY, Global_STRUCT_TEXTATTR_PREVUEC_FONT);
+    Global_HANDLE_PREVUEC_FONT = _LVOOpenDiskFont(Global_REF_DISKFONT_LIBRARY, &Global_STRUCT_TEXTATTR_PREVUEC_FONT);
     if (Global_HANDLE_PREVUEC_FONT == (void *)0) {
         Global_HANDLE_PREVUEC_FONT = Global_HANDLE_TOPAZ_FONT;
     }
 
-    Global_HANDLE_H26F_FONT = _LVOOpenDiskFont(Global_REF_DISKFONT_LIBRARY, Global_STRUCT_TEXTATTR_H26F_FONT);
+    Global_HANDLE_H26F_FONT = _LVOOpenDiskFont(Global_REF_DISKFONT_LIBRARY, &Global_STRUCT_TEXTATTR_H26F_FONT);
     if (Global_HANDLE_H26F_FONT == (void *)0) {
         Global_HANDLE_H26F_FONT = Global_HANDLE_TOPAZ_FONT;
     }
 
-    Global_HANDLE_PREVUE_FONT = _LVOOpenDiskFont(Global_REF_DISKFONT_LIBRARY, Global_STRUCT_TEXTATTR_PREVUE_FONT);
+    Global_HANDLE_PREVUE_FONT = _LVOOpenDiskFont(Global_REF_DISKFONT_LIBRARY, &Global_STRUCT_TEXTATTR_PREVUE_FONT);
     if (Global_HANDLE_PREVUE_FONT == (void *)0) {
         Global_HANDLE_PREVUE_FONT = Global_HANDLE_TOPAZ_FONT;
     }
@@ -410,7 +415,6 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     for (i = 0; i < 4; ++i) {
         ESQDISP_AllocateHighlightBitmaps(ESQDISP_HighlightBitmapTable + (i * 40));
     }
-
     _LVOInitBitMap(Global_REF_GRAPHICS_LIBRARY, &Global_REF_320_240_BITMAP, 4, 352, 240);
     for (i = 0; i < 4; ++i) {
         WDISP_352x240RasterPtrTable[i] = GRAPHICS_AllocRaster(352, 240);
@@ -431,8 +435,11 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     }
     ESQ_HighlightMsgPort->mp_SigTask = (void *)0;
     ESQ_HighlightMsgPort->mp_SigBit = 0;
-    ESQ_HighlightMsgPort->mp_Flags = 4;
-    ESQ_HighlightMsgPort->mp_Node.ln_Type = 2;
+    /* Original: ln_Type=4 (NT_MSGPORT) at +8, mp_Flags=2 (PA_IGNORE) at +14.
+       These were swapped (mp_Flags=4 => PA_SIGNAL) which made ReplyMsg call
+       Signal(mp_SigTask=NULL) and corrupt the stack. */
+    ESQ_HighlightMsgPort->mp_Flags = 2;
+    ESQ_HighlightMsgPort->mp_Node.ln_Type = 4;
     LIST_InitHeader((struct MinList *)&ESQ_HighlightMsgPort->mp_MsgList);
 
     ESQ_HighlightReplyPort = (struct MsgPort *)MEMORY_AllocateMemory(34, (MEMF_PUBLIC | MEMF_CLEAR));
@@ -441,8 +448,8 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     }
     ESQ_HighlightReplyPort->mp_SigTask = (void *)0;
     ESQ_HighlightReplyPort->mp_SigBit = 0;
-    ESQ_HighlightReplyPort->mp_Flags = 4;
-    ESQ_HighlightReplyPort->mp_Node.ln_Type = 2;
+    ESQ_HighlightReplyPort->mp_Flags = 2;      /* PA_IGNORE (was 4 => PA_SIGNAL) */
+    ESQ_HighlightReplyPort->mp_Node.ln_Type = 4; /* NT_MSGPORT (was 2) */
     LIST_InitHeader((struct MinList *)&ESQ_HighlightReplyPort->mp_MsgList);
 
     for (i = 0; i < 4; ++i) {
@@ -451,7 +458,6 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
             ESQDISP_HighlightBitmapTable + (i * 0x28)
         );
     }
-
     ESQ_SetCopperEffect_OffDisableHighlight();
     WDISP_HighlightBufferMode = 0;
     if ((LONG)Global_REF_GRAPHICS_LIBRARY->lib_Version >= 34) {
@@ -465,7 +471,6 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     if (ESQ_FormatDiskErrorMessage() != 0) {
         return 0;
     }
-
     ESQ_CheckAvailableFastMemory();
     ESQ_CheckCompatibleVideoChip();
     ESQ_CheckTopazFontGuard();
@@ -499,7 +504,6 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         baudRate = 2400;
     }
     Global_REF_BAUD_RATE = baudRate;
-
     ESQIFF_RecordBufferPtr = MEMORY_AllocateMemory(9000, (MEMF_PUBLIC | MEMF_CLEAR));
     WDISP_SerialMessagePortPtr = SIGNAL_CreateMsgPortWithSignal(Global_STR_SERIAL_READ, 0);
     if (WDISP_SerialMessagePortPtr == (void *)0) {
@@ -521,7 +525,6 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     serialIoRequest->io_Baud = Global_REF_BAUD_RATE;
     serialIoRequest->IOSer.io_Command = (UWORD)11;
     _LVODoIO(AbsExecBase, WDISP_SerialIoRequestPtr);
-
     SETUP_INTERRUPT_INTB_RBF();
     SETUP_INTERRUPT_INTB_AUD1();
     ESQ_InitAudio1Dma();
@@ -530,7 +533,6 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQFUNC_AllocateLineTextBuffers();
 
     Global_REF_96_BYTES_ALLOCATED = MEMORY_AllocateMemory(96, MEMF_PUBLIC);
-
     _LVOInitBitMap(Global_REF_GRAPHICS_LIBRARY, &Global_REF_696_400_BITMAP, 3, 696, 400);
     _LVOInitBitMap(Global_REF_GRAPHICS_LIBRARY, &Global_REF_696_241_BITMAP, 4, 696, 241);
 
@@ -558,7 +560,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQSHARED_DisplayContextPlaneBase3 = WDISP_DisplayContextPlanePointer3;
     ESQSHARED_DisplayContextPlaneBase4 = WDISP_DisplayContextPlanePointer4;
 
-    rastPortOverlay = (ESQ_RastPortOverlay *)Global_REF_RASTPORT_1;
+    /* Original: MOVE.L 52(A0),..; the flag writes target RASTPORT_1->Font (the
+       TextFont), NOT the RastPort itself (offsets 53/55 within the font). */
+    rastPortOverlay = (ESQ_RastPortOverlay *)Global_REF_RASTPORT_1->Font;
     rastPortOverlay->flag55 = 1;
     rastPortOverlay->flags53 = (UBYTE)(rastPortOverlay->flags53 | 1);
 
@@ -578,11 +582,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     WDISP_AccumulatorFlushPending = 0;
     NEWGRID_RefreshStateFlag = 0;
     NEWGRID_MessagePumpSuspendFlag = -1;
-
     if (DISKIO_LoadConfigFromDisk() == -1) {
         ESQFUNC_UpdateRefreshModeState(0, 0);
     }
-
     ESQSHARED4_InitializeBannerCopperSystem();
     TLIBA3_InitPatternTable();
     SETUP_INTERRUPT_INTB_VERTB();
@@ -631,23 +633,24 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     SCRIPT_CTRL_READ_INDEX = 0;
     PARSEINI_CtrlHChangeGateFlag = 0;
     SCRIPT_CTRL_CHECKSUM = 0xff;
-
     ESQIFF_RestoreBasePaletteTriples();
     ESQIFF_RunCopperDropTransition();
 
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 7);
     _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0, 0, 695, 399);
-
     Global_REF_RASTPORT_1->BitMap = (struct BitMap *)&Global_REF_696_241_BITMAP;
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 7);
     _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0, 0, 0, 240);
     Global_REF_RASTPORT_1->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
-
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
     _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 2);
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
-
-    displayRastPort = (char *)(WDISP_DisplayContextBase + DISPLAY_RASTPORT2_DELTA);
+    /* Original: MOVEA.L WDISP_DisplayContextBase,A0 ; ADDA.W #((Global_REF_RASTPORT_2
+       - WDISP_DisplayContextBase)+2),A0 -- the displacement is the assembly-constant
+       difference of the two storage-label addresses (+2), added to the runtime base.
+       (The old -458 constant was wrong; the real delta is +10 for this layout.) */
+    displayRastPort = (char *)(WDISP_DisplayContextBase
+        + ((LONG)&Global_REF_RASTPORT_2 - (LONG)&WDISP_DisplayContextBase + 2));
     TLIBA3_DrawCenteredWrappedTextLines(displayRastPort, DISKIO_ErrorMessageScratch, 150);
     DISKIO_ProbeDrivesAndAssignPaths();
 
@@ -667,7 +670,6 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     for (i = 0; i < 40; i += 4) {
         *(LONG *)(DISKIO_ErrorMessageScratch + i) = *(const LONG *)(ESQ_STR_38_Spaces + i);
     }
-
     SCRIPT_PrimeBannerTransitionFromHexCode();
     GCOMMAND_InitPresetDefaults();
     PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_GRADIENT_INI_2);
@@ -694,7 +696,6 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         for (;;) {
         }
     }
-
     ESQIFF_RunCopperRiseTransition();
     LADFUNC_AllocBannerRectEntries();
     LADFUNC_ClearBannerRectEntries();
@@ -706,10 +707,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     BRUSH_PopulateBrushList(PARSEINI_ParsedDescriptorListHead, &ESQIFF_BrushIniListHead);
     BRUSH_SelectBrushByLabel(ESQ_STR_DT);
     if (BRUSH_SelectedNode == (void *)0) {
-        BRUSH_SelectedNode = BRUSH_FindBrushByPredicate(ESQ_STR_DITHER, ESQIFF_BrushIniListHead);
+        BRUSH_SelectedNode = BRUSH_FindBrushByPredicate(ESQ_STR_DITHER, &ESQIFF_BrushIniListHead);
     }
-
-    ESQFUNC_FallbackType3BrushNode = BRUSH_FindType3Brush(ESQIFF_BrushIniListHead);
+    ESQFUNC_FallbackType3BrushNode = BRUSH_FindType3Brush(&ESQIFF_BrushIniListHead);
     ESQFUNC_RebuildPwBrushListFromTagTable();
     PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BANNER_INI_1);
     FLIB2_ResetAndLoadListingTemplates();
@@ -721,10 +721,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQDISP_UpdateStatusMaskAndRefresh(4095, 0);
     INTENA = 0x8100;
     P_TYPE_ResetListsAndLoadPromoIds();
-    LOCAVAIL_ResetFilterStateStruct(LOCAVAIL_PrimaryFilterState);
-    LOCAVAIL_ResetFilterStateStruct(LOCAVAIL_SecondaryFilterState);
-    LOCAVAIL_LoadAvailabilityDataFile(LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState);
-
+    LOCAVAIL_ResetFilterStateStruct(&LOCAVAIL_PrimaryFilterState);
+    LOCAVAIL_ResetFilterStateStruct(&LOCAVAIL_SecondaryFilterState);
+    LOCAVAIL_LoadAvailabilityDataFile(&LOCAVAIL_PrimaryFilterState, &LOCAVAIL_SecondaryFilterState);
     DST_BannerWindowPrimary = (void *)0;
     DST_BannerWindowSecondary = (void *)0;
     DST_LoadBannerPairFromFiles(&DST_BannerWindowPrimary);
@@ -755,7 +754,6 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
     ESQIFF_ExternalAssetFlags = 0;
     TEXTDISP_SetRastForMode(0);
     ESQ_SetCopperEffect_OffDisableHighlight();
-
     for (i = 0; i < 0x12e; ++i) {
         CLEANUP_AlignedStatusEntryCycleTable[i] = 0;
     }
@@ -764,9 +762,9 @@ LONG ESQ_MainInitAndRun(LONG argc, char **argv)
         ESQ_SetCopperEffect_OnEnableHighlight();
         TEXTDISP_SetRastForMode(0);
     }
-
     ESQ_MainLoopUiTickEnabledFlag = 1;
     for (;;) {
+        INSTALL_ADDR_ERR_HANDLER();   /* DIAG re-arm */
         ESQFUNC_ServiceUiTickIfRunning();
         d0 = PARSEINI_MonitorClockChange();
         if (d0 != 0 && ESQ_ShutdownRequestedFlag == 0) {

@@ -32,6 +32,7 @@ extern void ESQIFF_ServiceExternalAssetSourceState(WORD mode);
 extern void TEXTDISP_TickDisplayState(void);
 extern void ESQDISP_RefreshStatusIndicatorsFromCurrentMask(void);
 
+
 void ESQFUNC_ProcessUiFrameTick(void)
 {
     if (GCOMMAND_DriveProbeRequestedFlag != 0) {
@@ -45,7 +46,6 @@ void ESQFUNC_ProcessUiFrameTick(void)
     if (Global_UIBusyFlag == 0) {
         ESQDISP_ProcessGridMessagesIfIdle();
     }
-
     ED_DispatchEscMenuState();
 
     if (Global_UIBusyFlag == 0) {
@@ -55,7 +55,6 @@ void ESQFUNC_ProcessUiFrameTick(void)
     if (CLEANUP_PendingAlertFlag == 0) {
         goto tick_display_state;
     }
-
     CLEANUP_ProcessAlerts();
 
     if (ESQDISP_SecondaryPersistRequestFlag != 0) {

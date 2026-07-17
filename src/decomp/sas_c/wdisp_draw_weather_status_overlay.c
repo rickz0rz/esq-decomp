@@ -69,7 +69,7 @@ extern LONG ESQFUNC_TrimTextToPixelWidthWordBoundary(
     char *text);
 extern LONG MATH_DivS32(LONG dividend, LONG divisor);
 extern LONG MATH_Mulu32(LONG multiplicand, LONG multiplier);
-extern void MEMORY_DeallocateMemory(const char *tag, LONG pool, void *ptr, LONG size);
+extern void MEMORY_DeallocateMemory(void *ptr, long bytes);
 extern void _LVOCopyMem(void *execBase, const void *src, void *dst, LONG size);
 extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG drawMode);
@@ -354,9 +354,6 @@ void WDISP_DrawWeatherStatusOverlay(char *rastPort, LONG xSpan, LONG ySpan)
         }
     }
 
-    MEMORY_DeallocateMemory(
-        Global_STR_WDISP_C,
-        WDISP_TEXT_POOL_ID,
-        ownedOverlayText,
+    MEMORY_DeallocateMemory(ownedOverlayText,
         ownedTextSize);
 }

@@ -1,3 +1,4 @@
+extern void *Global_REF_GRAPHICS_LIBRARY;
 #include <graphics/rastport.h>
 #include <graphics/text.h>
 
@@ -14,12 +15,12 @@ extern LONG DISPTEXT_ControlMarkerXOffsetPx;
 
 extern void NEWGRID_DrawGridCellBackground(char *gridCtx, WORD row, WORD col, LONG colorSel);
 extern void NEWGRID_SetSelectionMarkers(LONG primarySel, LONG secondarySel, char *m3, char *m2, char *m1, char *m0);
-extern LONG _LVOTextLength(char *rp, const char *s, LONG len);
+extern LONG _LVOTextLength(void *base, char *rp, const char *s, LONG len);
 extern void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(char *rp, LONG x, LONG y);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
 extern LONG NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(void);
-extern void _LVOMove(char *rp, LONG x, LONG y);
-extern void _LVOText(char *rp, const char *s, LONG len);
+extern void _LVOMove(void *base, char *rp, LONG x, LONG y);
+extern void _LVOText(void *base, char *rp, const char *s, LONG len);
 extern void NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(char *rp, LONG x1, LONG y1, LONG x2, LONG y2);
 
 static LONG asr1_round_toward_zero(LONG v)
@@ -60,13 +61,13 @@ LONG NEWGRID_DrawSelectionMarkers(
     NEWGRID_SetSelectionMarkers(primarySel, secondarySel, &m3, &m2, &m1, &m0);
 
     if (m0 != 0) {
-        w0 = _LVOTextLength((char *)rp, &m0, 1);
+        w0 = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rp, &m0, 1);
     } else {
         w0 = 0;
     }
 
     if (m2 != 0) {
-        w2 = _LVOTextLength((char *)rp, &m2, 1);
+        w2 = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)rp, &m2, 1);
     } else {
         w2 = 0;
     }
@@ -90,18 +91,18 @@ LONG NEWGRID_DrawSelectionMarkers(
 
     if (m0 != 0) {
         x -= w0;
-        _LVOMove((char *)rp, x, yTop);
-        _LVOText((char *)rp, &m0, 1);
-        _LVOMove((char *)rp, x, yAlt);
-        _LVOText((char *)rp, &m1, 1);
+        _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, yTop);
+        _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rp, &m0, 1);
+        _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, yAlt);
+        _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rp, &m1, 1);
     }
 
     if (m2 != 0) {
         x = (LONG)(UWORD)NEWGRID_ColumnStartXPx + ((LONG)(UWORD)NEWGRID_ColumnWidthPx * 3) - w2 + 29;
-        _LVOMove((char *)rp, x, yTop);
-        _LVOText((char *)rp, &m2, 1);
-        _LVOMove((char *)rp, x, yAlt);
-        _LVOText((char *)rp, &m3, 1);
+        _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, yTop);
+        _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rp, &m2, 1);
+        _LVOMove(Global_REF_GRAPHICS_LIBRARY, (char *)rp, x, yAlt);
+        _LVOText(Global_REF_GRAPHICS_LIBRARY, (char *)rp, &m3, 1);
     }
 
     isLast = NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast();

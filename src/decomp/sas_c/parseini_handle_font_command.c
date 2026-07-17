@@ -1,3 +1,4 @@
+extern void *Global_REF_DOS_LIBRARY;
 #include <exec/types.h>
 
 extern UBYTE CONFIG_ParseiniLogoScanEnabledFlag;
@@ -32,7 +33,7 @@ extern void *Global_STRUCT_TEXTATTR_PREVUEC_FONT;
 extern void *Global_STRUCT_TEXTATTR_PREVUE_FONT;
 
 extern LONG PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
-extern LONG _LVOExecute(const char *command, LONG input, LONG output);
+extern LONG _LVOExecute(void *base, const char *command, LONG input, LONG output);
 extern void _LVOSetFont(void *graphicsBase, char *rastPort, void *font);
 extern LONG SCRIPT3_JMPTBL_MATH_Mulu32(LONG a, LONG b);
 extern void TLIBA3_SetFontForAllViewModes(void *font);
@@ -73,7 +74,7 @@ void PARSEINI_HandleFontCommand(const char *command)
     c1 = (UBYTE)*command++;
     if (c1 == (UBYTE)'2') {
         PARSEINI_JMPTBL_WDISP_SPrintf(cmdBuf, Global_STR_PERCENT_S_2, command);
-        _LVOExecute(cmdBuf, 0, 0);
+        _LVOExecute(Global_REF_DOS_LIBRARY, cmdBuf, 0, 0);
         return;
     }
 

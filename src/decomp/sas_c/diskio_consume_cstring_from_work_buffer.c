@@ -29,7 +29,7 @@ char *DISKIO_ConsumeCStringFromWorkBuffer(void)
     }
 
     if (Global_REF_LONG_FILE_SCRATCH < DISKIO_COUNT_ZERO) {
-        cstringStart = (char *)DISKIO_WORKBUF_SENTINEL_ERROR;
+        cstringStart = (char *)-1;   /* orig MOVEA.W #$ffff,A0 sign-extends to 0xFFFFFFFF */
     }
 
     return cstringStart;

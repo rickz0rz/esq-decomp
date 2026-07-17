@@ -1,7 +1,7 @@
 #include <graphics/rastport.h>
 
 extern struct RastPort *Global_REF_RASTPORT_1;
-extern void *Global_REF_696_400_BITMAP;
+extern struct BitMap Global_REF_696_400_BITMAP;  /* a STRUCT, not a pointer (wdisp.s) */
 extern void *Global_REF_GRAPHICS_LIBRARY;
 extern void *AbsExecBase;
 
@@ -79,7 +79,7 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
     LONG currentMaxValue;
 
     savedBitmap = Global_REF_RASTPORT_1->BitMap;
-    Global_REF_RASTPORT_1->BitMap = Global_REF_696_400_BITMAP;
+    Global_REF_RASTPORT_1->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
 
     if (ED_DiagnosticsScreenActive == 0) {
         goto restore_bitmap;

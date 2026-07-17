@@ -69,6 +69,12 @@ LONG ESQ_StartupEntry(UBYTE *startupCmdString, LONG startupCmdLength)
         return ESQ_ShutdownAndReturn(100);
     }
 
+    {
+        /* Memory-layout dump (all reads/address-of, no writes) to find overlap. */
+        LONG stackVar;
+        extern LONG Global_REF_LONG_FILE_SCRATCH;    /* near-data base */
+    }
+
     currentTask = *(UBYTE **)((UBYTE *)AbsExecBase + EXECBASE_THIS_TASK_OFFSET);
     Global_SavedDirLock = *(LONG *)(currentTask + TASK_SAVED_DIRLOCK_OFFSET);
 

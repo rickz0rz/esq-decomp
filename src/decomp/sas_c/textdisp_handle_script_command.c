@@ -28,8 +28,8 @@ extern const char Global_STR_TEXTDISP_C_1[];
 extern const char Global_STR_TEXTDISP_C_2[];
 extern const char TEXTDISP_CommandPrefixFormat[];
 
-extern TEXTDISP_SelectionEntry *MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
-extern void MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
+extern TEXTDISP_SelectionEntry *MEMORY_AllocateMemory(unsigned long byteSize, long flags);
+extern void MEMORY_DeallocateMemory(void *ptr, long bytes);
 extern LONG WDISP_SPrintf(char *dst, const char *fmt, const char *arg);
 extern LONG TEXTDISP_SelectGroupAndEntry(const char *cmd, char *primarySearch, LONG channelCode);
 extern UBYTE SCRIPT_GetBannerCharOrFallback(void);
@@ -101,10 +101,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, char *arg)
         } else {
             if (scriptType == SCRIPT_FILTER) {
                 if (TEXTDISP_CommandBufferPtr == 0) {
-                    TEXTDISP_CommandBufferPtr = MEMORY_AllocateMemory(
-                        Global_STR_TEXTDISP_C_1,
-                        BUFFER_ALLOC_LINE,
-                        BUFFER_SIZE,
+                    TEXTDISP_CommandBufferPtr = MEMORY_AllocateMemory(BUFFER_SIZE,
                         MEMF_PUBLIC_CLEAR
                     );
                 }
@@ -136,7 +133,7 @@ LONG TEXTDISP_HandleScriptCommand(UBYTE scriptType, UBYTE command, char *arg)
     if (doCleanup != 0) {
         TEXTDISP_FilterAndSelectEntry(0, 0);
         if (TEXTDISP_CommandBufferPtr != 0) {
-            MEMORY_DeallocateMemory(Global_STR_TEXTDISP_C_2, BUFFER_FREE_LINE, TEXTDISP_CommandBufferPtr, BUFFER_SIZE);
+            MEMORY_DeallocateMemory(TEXTDISP_CommandBufferPtr, BUFFER_SIZE);
             TEXTDISP_CommandBufferPtr = 0;
         }
     }

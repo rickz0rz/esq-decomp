@@ -12,7 +12,7 @@ extern WORD TEXTDISP_CurrentMatchIndex;
 extern UBYTE CLOCK_FormatVariantCode;
 extern const char *TEXTDISP_PrimaryTitlePtrTable[];
 extern const char *TEXTDISP_SecondaryTitlePtrTable[];
-extern const char *Global_REF_STR_CLOCK_FORMAT[];
+extern const char **Global_REF_STR_CLOCK_FORMAT; /* pointer to runtime-set clock-format string table (orig derefs it) */
 
 extern LONG ESQDISP_ComputeScheduleOffsetForRow(LONG row, LONG slot);
 extern void CLEANUP_FormatClockFormatEntry(LONG slotIndex, char *out);

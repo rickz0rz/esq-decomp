@@ -54,7 +54,7 @@ extern UWORD ESQ_BannerSweepSrcPlane2PtrReset_LoWord;
 extern UWORD ESQ_BannerSweepSrcPlane2PtrReset_HiWord;
 
 extern UWORD ESQPARS2_BannerColorThreshold;
-extern void __regargs ESQSHARED4_SetBannerColorBaseAndLimit(UWORD value);
+extern void ESQSHARED4_SetBannerColorBaseAndLimit(UWORD value);
 
 void ESQSHARED4_SetupBannerPlanePointerWords(void)
 {

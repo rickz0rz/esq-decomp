@@ -22,7 +22,7 @@ extern LONG GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(const char *path, LONG mod
 extern void GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(LONG fileHandle, LONG value);
 extern LONG GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(LONG fileHandle, const void *data, LONG size);
 extern LONG GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LONG fileHandle);
-extern LONG GROUP_AW_JMPTBL_WDISP_SPrintf(char *out, const char *fmt, LONG argCount, LONG value);
+extern LONG WDISP_SPrintf(char *out, const char *fmt, LONG argCount, LONG value);
 
 #ifndef MODE_NEWFILE
 #define MODE_NEWFILE 1006
@@ -69,7 +69,7 @@ LONG LADFUNC_SaveTextAdsToFile(void)
                     char fmtBuf[32];
                     LONG fmtLen = 0;
 
-                    GROUP_AW_JMPTBL_WDISP_SPrintf(fmtBuf, LADFUNC_FMT_AttrEscapePrefixCharHex, 3, (LONG)currentAttr);
+                    WDISP_SPrintf(fmtBuf, LADFUNC_FMT_AttrEscapePrefixCharHex, 3, (LONG)currentAttr);
                     while (fmtBuf[fmtLen] != 0) {
                         ++fmtLen;
                     }

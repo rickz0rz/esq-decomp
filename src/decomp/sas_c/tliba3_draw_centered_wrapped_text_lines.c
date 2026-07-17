@@ -30,7 +30,6 @@ void TLIBA3_DrawCenteredWrappedTextLines(struct RastPort *rastPort, const char *
     savedBgPen = rastPort->BgPen;
     savedMask = rastPort->Mask;
     savedDepth = rastPort->BitMap->Depth;
-
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, 1);
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rastPort, 1);
     _LVOSetBPen(Global_REF_GRAPHICS_LIBRARY, rastPort, 7);

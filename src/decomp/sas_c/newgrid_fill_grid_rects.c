@@ -3,8 +3,8 @@
 extern WORD NEWGRID_ColumnStartXPx;
 extern void *Global_REF_GRAPHICS_LIBRARY;
 
-extern void _LVOSetAPen(char *rastPort, LONG pen);
-extern void _LVORectFill(char *rastPort, LONG xMin, LONG yMin, LONG xMax, LONG yMax);
+extern void _LVOSetAPen(void *base, char *rastPort, LONG pen);
+extern void _LVORectFill(void *base, char *rastPort, LONG xMin, LONG yMin, LONG xMax, LONG yMax);
 
 void NEWGRID_FillGridRects(char *rastPort, LONG firstPen, LONG secondPen, LONG yMax)
 {
@@ -12,13 +12,13 @@ void NEWGRID_FillGridRects(char *rastPort, LONG firstPen, LONG secondPen, LONG y
 
     (void)Global_REF_GRAPHICS_LIBRARY;
 
-    _LVOSetAPen(rastPort, firstPen);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rastPort, firstPen);
 
     xSplit = (LONG)NEWGRID_ColumnStartXPx + 35;
-    _LVORectFill(rastPort, 0, 0, xSplit, yMax);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, rastPort, 0, 0, xSplit, yMax);
 
-    _LVOSetAPen(rastPort, secondPen);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rastPort, secondPen);
 
     xSplit = (LONG)NEWGRID_ColumnStartXPx + 36;
-    _LVORectFill(rastPort, xSplit, 0, 695, yMax);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, rastPort, xSplit, 0, 695, yMax);
 }

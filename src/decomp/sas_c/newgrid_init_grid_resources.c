@@ -23,10 +23,10 @@ extern void NEWGRID_InitShowtimeBuckets(void);
 extern void *MEMORY_AllocateMemory(LONG size, LONG flags);
 extern LONG MATH_DivS32(LONG a, LONG b);
 extern void NEWGRID_DrawTopBorderLine(void);
-extern void _LVOInitRastPort(char *rastPort);
-extern void _LVOSetDrMd(char *rastPort, LONG mode);
-extern void _LVOSetFont(char *rastPort, void *font);
-extern LONG _LVOTextLength(char *rastPort, const char *text, LONG len);
+extern void _LVOInitRastPort(void *base, char *rastPort);
+extern void _LVOSetDrMd(void *base, char *rastPort, LONG mode);
+extern void _LVOSetFont(void *base, char *rastPort, void *font);
+extern LONG _LVOTextLength(void *base, char *rastPort, const char *text, LONG len);
 
 void NEWGRID_InitGridResources(void)
 {
@@ -48,24 +48,24 @@ void NEWGRID_InitGridResources(void)
         return;
     }
 
-    _LVOInitRastPort((char *)NEWGRID_MainRastPortPtr);
+    _LVOInitRastPort(Global_REF_GRAPHICS_LIBRARY, (char *)NEWGRID_MainRastPortPtr);
     NEWGRID_MainRastPortPtr->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
-    _LVOSetDrMd((char *)NEWGRID_MainRastPortPtr, 0);
-    _LVOSetFont((char *)NEWGRID_MainRastPortPtr, Global_HANDLE_PREVUEC_FONT);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, (char *)NEWGRID_MainRastPortPtr, 0);
+    _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, (char *)NEWGRID_MainRastPortPtr, Global_HANDLE_PREVUEC_FONT);
 
     NEWGRID_HeaderRastPortPtr = MEMORY_AllocateMemory(100, 0x10001);
     if (NEWGRID_HeaderRastPortPtr == 0) {
         return;
     }
 
-    _LVOInitRastPort((char *)NEWGRID_HeaderRastPortPtr);
+    _LVOInitRastPort(Global_REF_GRAPHICS_LIBRARY, (char *)NEWGRID_HeaderRastPortPtr);
     NEWGRID_HeaderRastPortPtr->BitMap = (struct BitMap *)&WDISP_BannerGridBitmapStruct;
-    _LVOSetDrMd((char *)NEWGRID_HeaderRastPortPtr, 0);
-    _LVOSetFont((char *)NEWGRID_HeaderRastPortPtr, Global_HANDLE_PREVUEC_FONT);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, (char *)NEWGRID_HeaderRastPortPtr, 0);
+    _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, (char *)NEWGRID_HeaderRastPortPtr, Global_HANDLE_PREVUEC_FONT);
 
     NEWGRID_DrawTopBorderLine();
 
-    d0 = _LVOTextLength((char *)NEWGRID_MainRastPortPtr, Global_STR_44_44_44, 8);
+    d0 = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, (char *)NEWGRID_MainRastPortPtr, Global_STR_44_44_44, 8);
     NEWGRID_SampleTimeTextWidthPx = (UWORD)d0;
     d0 += 12;
     NEWGRID_ColumnStartXPx = (UWORD)d0;

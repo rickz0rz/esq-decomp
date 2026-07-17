@@ -26,11 +26,11 @@ LONG DISPTEXT_LayoutAndAppendToBuffer(char *rp, const char *src)
     char lineScratch[268];
 
     if (DISPTEXT_LineTableLockFlag != 0) {
-        return (src == 0) ? -1 : 0;
+        return (src == 0) ? 1 : 0;   /* orig: SEQ D0; NEG.B D0 -> +1, not -1 */
     }
 
     if ((UWORD)DISPTEXT_CurrentLineIndex >= (UWORD)DISPTEXT_TargetLineIndex) {
-        return (src == 0) ? -1 : 0;
+        return (src == 0) ? 1 : 0;   /* orig: SEQ D0; NEG.B D0 -> +1, not -1 */
     }
 
     if (DISPTEXT_LineLengthTable[(UWORD)DISPTEXT_CurrentLineIndex] != 0) {
@@ -112,5 +112,5 @@ LONG DISPTEXT_LayoutAndAppendToBuffer(char *rp, const char *src)
         DISPTEXT_BuildLinePointerTable(0);
     }
 
-    return (src == 0) ? -1 : 0;
+    return (src == 0) ? 1 : 0;   /* orig: SEQ D0; NEG.B D0 -> +1, not -1 */
 }

@@ -12,8 +12,8 @@ extern WORD Global_RefreshTickCounter;
 extern WORD ESQPARS2_ReadModeFlags;
 
 extern void *AbsExecBase;
-extern void _LVODisable(void);
-extern void _LVOEnable(void);
+extern void _LVODisable(void *base);
+extern void _LVOEnable(void *base);
 
 void DISKIO_ResetCtrlInputStateIfIdle(void)
 {
@@ -23,11 +23,11 @@ void DISKIO_ResetCtrlInputStateIfIdle(void)
 
     (void)AbsExecBase;
 
-    _LVODisable();
+    _LVODisable(AbsExecBase);
     CTRL_BufferedByteCount = DISKIO_STATE_CLEAR;
     CTRL_HPreviousSample = DISKIO_STATE_CLEAR;
     CTRL_H = DISKIO_STATE_CLEAR;
-    _LVOEnable();
+    _LVOEnable(AbsExecBase);
 
     Global_RefreshTickCounter = DISKIO_STATE_CLEAR;
     ESQPARS2_ReadModeFlags = DISKIO_STATE_CLEAR;

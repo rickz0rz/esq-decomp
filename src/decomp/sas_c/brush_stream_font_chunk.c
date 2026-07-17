@@ -1,3 +1,4 @@
+extern void *Global_REF_DOS_LIBRARY;
 #include <exec/types.h>
 
 enum {
@@ -8,7 +9,7 @@ enum {
 };
 
 extern void *Global_REF_DOS_LIBRARY_2;
-LONG _LVORead(LONG fh, void *buf, LONG len);
+LONG _LVORead(void *base, LONG fh, void *buf, LONG len);
 
 LONG BRUSH_StreamFontChunk(LONG fileHandle, LONG byteCount, LONG maxBytes, UBYTE *dstBuffer, void *state)
 {
@@ -23,14 +24,14 @@ LONG BRUSH_StreamFontChunk(LONG fileHandle, LONG byteCount, LONG maxBytes, UBYTE
     bytesRemaining = byteCount;
 
     while (bytesRemaining > BRUSH_STREAM_CHUNK_SIZE) {
-        if (_LVORead(fileHandle, dstBuffer, BRUSH_STREAM_CHUNK_SIZE) != BRUSH_STREAM_CHUNK_SIZE) {
+        if (_LVORead(Global_REF_DOS_LIBRARY, fileHandle, dstBuffer, BRUSH_STREAM_CHUNK_SIZE) != BRUSH_STREAM_CHUNK_SIZE) {
             return BRUSH_STREAM_STATUS_ERROR;
         }
         dstBuffer += BRUSH_STREAM_CHUNK_SIZE;
         bytesRemaining -= BRUSH_STREAM_CHUNK_SIZE;
     }
 
-    if (_LVORead(fileHandle, dstBuffer, bytesRemaining) != bytesRemaining) {
+    if (_LVORead(Global_REF_DOS_LIBRARY, fileHandle, dstBuffer, bytesRemaining) != bytesRemaining) {
         return BRUSH_STREAM_STATUS_ERROR;
     }
 

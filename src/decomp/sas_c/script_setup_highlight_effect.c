@@ -1,3 +1,4 @@
+extern void *Global_REF_GRAPHICS_LIBRARY;
 #include <exec/types.h>
 
 extern LONG WDISP_DisplayContextBase;
@@ -17,11 +18,11 @@ extern LONG MATH_DivS32(LONG a, LONG b);
 extern WORD SCRIPT_BeginBannerCharTransition(LONG x, LONG y);
 extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 extern void SCRIPT_DrawInsetTextWithFrame(char *rastport, BYTE textPenOverride, BYTE framePen, const char *text);
-extern LONG _LVOTextLength(char *rastport, const char *text, LONG len);
-extern void _LVOSetDrMd(char *rastport, LONG mode);
-extern void _LVOSetAPen(char *rastport, LONG pen);
-extern void _LVOMove(char *rastport, LONG x, LONG y);
-extern void _LVOText(char *rastport, const char *text, LONG len);
+extern LONG _LVOTextLength(void *base, char *rastport, const char *text, LONG len);
+extern void _LVOSetDrMd(void *base, char *rastport, LONG mode);
+extern void _LVOSetAPen(void *base, char *rastport, LONG pen);
+extern void _LVOMove(void *base, char *rastport, LONG x, LONG y);
+extern void _LVOText(void *base, char *rastport, const char *text, LONG len);
 
 typedef struct SCRIPT_DisplayContext {
     UWORD flags0;
@@ -103,7 +104,7 @@ void SCRIPT_SetupHighlightEffect(char *text)
 
     prefix[prefixLen] = '\0';
 
-    textWidth = _LVOTextLength(rastPort, prefix, prefixLen);
+    textWidth = _LVOTextLength(Global_REF_GRAPHICS_LIBRARY, rastPort, prefix, prefixLen);
     if (CLOCK_AlignedInsetRenderGateFlag != 0 &&
         CLEANUP_AlignedInsetNibblePrimary != 0xFF) {
         textWidth += 8;
@@ -116,9 +117,9 @@ void SCRIPT_SetupHighlightEffect(char *text)
     x >>= 1;
     y = height - 26;
 
-    _LVOSetDrMd(rastPort, 0);
-    _LVOSetAPen(rastPort, 1);
-    _LVOMove(rastPort, x, y);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rastPort, 0);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rastPort, 1);
+    _LVOMove(Global_REF_GRAPHICS_LIBRARY, rastPort, x, y);
 
     cursor = text;
     chunkStart = cursor;
@@ -127,10 +128,10 @@ void SCRIPT_SetupHighlightEffect(char *text)
         UBYTE c = (UBYTE)*cursor;
         if (c == 19 || c == 20 || c == 24 || c == 25) {
             if (chunkLen > 0 && c != 20) {
-                _LVOText(rastPort, chunkStart, chunkLen);
+                _LVOText(Global_REF_GRAPHICS_LIBRARY, rastPort, chunkStart, chunkLen);
             }
             if (c == 24 || c == 25) {
-                _LVOSetAPen(rastPort, (c == 24) ? 1 : 3);
+                _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rastPort, (c == 24) ? 1 : 3);
                 cursor++;
                 chunkStart = cursor;
                 chunkLen = 0;
@@ -157,7 +158,7 @@ void SCRIPT_SetupHighlightEffect(char *text)
         cursor++;
     }
     if (chunkLen > 0) {
-        _LVOText(rastPort, chunkStart, chunkLen);
+        _LVOText(Global_REF_GRAPHICS_LIBRARY, rastPort, chunkStart, chunkLen);
     }
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 3);

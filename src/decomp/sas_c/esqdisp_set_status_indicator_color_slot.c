@@ -4,7 +4,7 @@ extern UBYTE ESQDISP_StatusIndicatorDeferredApplyFlag;
 extern LONG ESQDISP_StatusIndicatorColorCache[];
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern void *Global_REF_GRAPHICS_LIBRARY;
-extern void *Global_REF_696_400_BITMAP;
+extern struct BitMap Global_REF_696_400_BITMAP;  /* a STRUCT, not a pointer (wdisp.s) */
 
 extern LONG _LVOReadPixel(void);
 extern void _LVOSetAPen(void);
@@ -45,15 +45,15 @@ void ESQDISP_SetStatusIndicatorColorSlot(LONG color, LONG slot)
     rp = Global_REF_RASTPORT_1;
     savedPen = rp->FgPen;
     savedBitMap = rp->BitMap;
-    rp->BitMap = Global_REF_696_400_BITMAP;
+    rp->BitMap = (struct BitMap *)&Global_REF_696_400_BITMAP;
 
     if (color == 7 || color == 6) {
-        color = _LVOReadPixel(rp, 655, 55);
+        color = _LVOReadPixel(Global_REF_GRAPHICS_LIBRARY, rp, 655, 55);
     }
 
-    _LVOSetAPen(rp, color);
-    _LVORectFill(rp, 0x28F, y, 0x295, y + 4);
-    _LVOSetAPen(rp, (LONG)savedPen);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, color);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, rp, 0x28F, y, 0x295, y + 4);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, rp, (LONG)savedPen);
 
     rp->BitMap = savedBitMap;
 }

@@ -12,13 +12,13 @@ extern void FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
 extern void DISKIO1_AppendTimeSlotMaskValueTerminator(void);
 extern void DISKIO1_AppendBlackoutMaskValueTerminator(void);
 
-extern const char *Global_REF_STR_CLOCK_FORMAT[];
+extern const char **Global_REF_STR_CLOCK_FORMAT; /* pointer to runtime-set clock-format string table (orig derefs it) */
 extern const char DISKIO_FMT_PCT_S_TimeSlotMaskEntry[];
 extern const char DISKIO_FMT_PCT_S_BlackoutMaskEntry[];
 
-volatile UBYTE gDiskio1MaskValueBitIndex;
-volatile UBYTE gDiskio1TimeSlotMaskBytes[DISKIO1_MASK_BYTE_COUNT];
-volatile UBYTE gDiskio1BlackoutMaskBytes[DISKIO1_MASK_BYTE_COUNT];
+extern volatile UBYTE gDiskio1MaskValueBitIndex;
+extern volatile UBYTE gDiskio1TimeSlotMaskBytes[DISKIO1_MASK_BYTE_COUNT];
+extern volatile UBYTE gDiskio1BlackoutMaskBytes[DISKIO1_MASK_BYTE_COUNT];
 
 void DISKIO1_AppendTimeSlotMaskSelectedTimes(void)
 {

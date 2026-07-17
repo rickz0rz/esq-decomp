@@ -15,6 +15,7 @@ typedef struct GCOMMAND_BannerRowColors {
     UWORD color2;
     UWORD pad10;
     UWORD color3;
+    UBYTE pad14[18];   /* array stride is 32 in the original (ASL #5 = d4*32) */
 } GCOMMAND_BannerRowColors;
 
 typedef struct GCOMMAND_PresetRow {
@@ -74,7 +75,6 @@ void GCOMMAND_BuildBannerRow(UBYTE *bitmapPtr, UBYTE *tablePtr, LONG rowIndex, L
 
     bitmapView = (GCOMMAND_Bitmap *)bitmapPtr;
     tableView = (GCOMMAND_BannerTable *)tablePtr;
-
     addr = (ULONG)(tablePtr + rowOff + 744);
     tableView->rowPtrHi = (UWORD)((addr >> 16) & 0xFFFF);
     tableView->rowPtrLo = (UWORD)(addr & 0xFFFF);

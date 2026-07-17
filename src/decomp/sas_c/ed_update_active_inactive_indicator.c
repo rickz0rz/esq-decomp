@@ -8,7 +8,7 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
-extern void _LVORectFill(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void _LVORectFill(void *base, char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 extern void DISPLIB_DisplayTextAtPosition(char *rastPort, LONG y, LONG x, const char *text);
 
 extern const char Global_STR_ACTIVE_INACTIVE[];
@@ -47,10 +47,10 @@ void ED_UpdateActiveInactiveIndicator(void)
         }
 
         _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_BG_DARK);
-        _LVORectFill(Global_REF_RASTPORT_1, x1a, Y_TOP, x2a, Y_BOTTOM);
+        _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, x1a, Y_TOP, x2a, Y_BOTTOM);
 
         _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_BG_LIGHT);
-        _LVORectFill(Global_REF_RASTPORT_1, x1b, Y_TOP, x2b, Y_BOTTOM);
+        _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, x1b, Y_TOP, x2b, Y_BOTTOM);
 
         _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM1);
         _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_TEXT);

@@ -44,7 +44,7 @@ static void ESQ_AccumulateRow(short value, short *sum, short *saturateFlag)
     *sum = next;
 }
 
-void ESQ_TickGlobalCounters(void)
+long ESQ_TickGlobalCounters(void)
 {
     short tick;
 
@@ -92,4 +92,6 @@ void ESQ_TickGlobalCounters(void)
     if (WDISP_AccumulatorFlushPending != 0) {
         ESQIFF_ServicePendingCopperPaletteMoves();
     }
+
+    return 0; /* VERTB server: D0=0 continues the interrupt server chain */
 }

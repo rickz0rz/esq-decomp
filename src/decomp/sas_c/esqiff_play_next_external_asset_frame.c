@@ -3,6 +3,10 @@
 extern LONG AbsExecBase;
 extern LONG Global_REF_GRAPHICS_LIBRARY;
 extern LONG WDISP_DisplayContextBase;
+extern LONG Global_REF_RASTPORT_2;   /* address-only: layout anchor for the display rastport */
+/* asm: MOVEA.L WDISP_DisplayContextBase,A0 ; ADDA.W #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0.
+   The prior `- 458` constant was wrong; the real delta is the symbol-layout difference (+10). */
+#define ESQIFF_DISPLAY_RASTPORT ((char *)(WDISP_DisplayContextBase + ((LONG)&Global_REF_RASTPORT_2 - (LONG)&WDISP_DisplayContextBase + 2)))
 extern LONG ESQIFF_GAdsBrushListHead;
 extern LONG ESQIFF_LogoBrushListHead;
 extern LONG ESQIFF_GAdsBrushListCount;
@@ -69,7 +73,7 @@ void ESQIFF_PlayNextExternalAssetFrame(WORD refreshMode)
     ESQ_SetCopperEffect_OffDisableHighlight();
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 1);
-    rastPort = (char *)(WDISP_DisplayContextBase - 458);
+    rastPort = ESQIFF_DISPLAY_RASTPORT;
     _LVOSetRast((void *)Global_REF_GRAPHICS_LIBRARY, rastPort, 2);
 
     ESQDISP_ProcessGridMessagesIfIdle();
@@ -91,18 +95,18 @@ void ESQIFF_PlayNextExternalAssetFrame(WORD refreshMode)
     ESQIFF_ShowExternalAssetWithCopperFx(refreshMode);
 
     if (refreshMode == 0 && ESQIFF_ExternalAssetPathCommaFlag == 0) {
-        rastPort = (char *)(WDISP_DisplayContextBase - 458);
+        rastPort = ESQIFF_DISPLAY_RASTPORT;
         _LVOSetDrMd((void *)Global_REF_GRAPHICS_LIBRARY, rastPort, 0);
         ESQIFF_SetApenToBrightestPaletteIndex();
 
         TEXTDISP_CurrentMatchIndex = ESQIFF_ExternalAssetStateTable;
         TEXTDISP_DrawChannelBanner(1, 2);
 
-        rastPort = (char *)(WDISP_DisplayContextBase - 458);
+        rastPort = ESQIFF_DISPLAY_RASTPORT;
         _LVOSetDrMd((void *)Global_REF_GRAPHICS_LIBRARY, rastPort, 1);
     }
 
-    rastPort = (char *)(WDISP_DisplayContextBase - 458);
+    rastPort = ESQIFF_DISPLAY_RASTPORT;
     _LVOSetAPen((void *)Global_REF_GRAPHICS_LIBRARY, rastPort, 1);
 
     _LVOForbid((void *)AbsExecBase);

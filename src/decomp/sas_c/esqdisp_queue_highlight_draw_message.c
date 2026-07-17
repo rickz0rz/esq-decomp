@@ -43,10 +43,10 @@ extern void *AbsExecBase;
 
 extern void ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(HighlightMsg *msg, LONG code);
 extern void ESQDISP_InitHighlightMessagePattern(HighlightMsg *msg);
-extern void _LVOInitRastPort(struct RastPort *rp);
-extern void _LVOSetFont(struct RastPort *rp, void *font);
-extern void _LVOSetDrMd(struct RastPort *rp, LONG mode);
-extern void _LVOPutMsg(void *port, HighlightMsg *msg);
+extern void _LVOInitRastPort(void *base, struct RastPort *rp);
+extern void _LVOSetFont(void *base, struct RastPort *rp, void *font);
+extern void _LVOSetDrMd(void *base, struct RastPort *rp, LONG mode);
+extern void _LVOPutMsg(void *base, void *port, HighlightMsg *msg);
 
 void ESQDISP_QueueHighlightDrawMessage(HighlightMsg *msg, SelectionParams *params)
 {
@@ -68,15 +68,15 @@ void ESQDISP_QueueHighlightDrawMessage(HighlightMsg *msg, SelectionParams *param
     ESQDISP_InitHighlightMessagePattern(msg);
 
     rp = (struct RastPort *)(msg + HIGHLIGHTMSG_RastPort60);
-    _LVOInitRastPort(rp);
+    _LVOInitRastPort(Global_REF_GRAPHICS_LIBRARY, rp);
 
     *(SelectionParams **)(msg + HIGHLIGHTMSG_SelectionParams64) = params;
-    _LVOSetFont(rp, Global_HANDLE_PREVUEC_FONT);
-    _LVOSetDrMd(rp, 0);
+    _LVOSetFont(Global_REF_GRAPHICS_LIBRARY, rp, Global_HANDLE_PREVUEC_FONT);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, rp, 0);
 
     node = *(HighlightNodeFlags **)(msg + HIGHLIGHTMSG_NodePtr112);
     node->flags55 = 1;
     node->flags53 |= 1;
 
-    _LVOPutMsg(ESQ_HighlightMsgPort, msg);
+    _LVOPutMsg(AbsExecBase, ESQ_HighlightMsgPort, msg);
 }

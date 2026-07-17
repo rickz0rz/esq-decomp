@@ -9,7 +9,7 @@ extern void *MEMORY_AllocateMemory(ULONG byteSize, ULONG attributes);
 extern void DISPTEXT_InitBuffers(void);
 extern LONG DATETIME_NormalizeStructToSeconds(void *dt);
 extern char *STR_CopyUntilAnyDelimN(const char *src, char *dst, LONG maxLen, const char *delims);
-extern void WDISP_UpdateSelectionPreviewPanel(void);
+extern long WDISP_UpdateSelectionPreviewPanel(void *rp, void *panel);
 extern LONG MATH_Mulu32(LONG a, LONG b);
 
 LONG NEWGRID_JMPTBL_MATH_DivS32(LONG a, LONG b){return MATH_DivS32(a, b);}
@@ -21,5 +21,5 @@ void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *tagName, LONG line, LONG 
 void NEWGRID_JMPTBL_DISPTEXT_InitBuffers(void){DISPTEXT_InitBuffers();}
 LONG NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(void *dt){return DATETIME_NormalizeStructToSeconds(dt);}
 char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(const char *src, char *dst, LONG maxLen, const char *delims){return STR_CopyUntilAnyDelimN(src, dst, maxLen, delims);}
-void NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel(void){WDISP_UpdateSelectionPreviewPanel();}
+void NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel(void *rp, void *panel){WDISP_UpdateSelectionPreviewPanel(rp, panel);}
 LONG NEWGRID_JMPTBL_MATH_Mulu32(LONG a, LONG b){return MATH_Mulu32(a, b);}

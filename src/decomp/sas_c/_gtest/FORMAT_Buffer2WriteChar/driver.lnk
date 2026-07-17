@@ -1,0 +1,4 @@
+FROM LIB:c.o "driver.o"+"slice.o"+"globals.o"
+TO "driver"
+LIB LIB:sc.lib LIB:amiga.lib
+

@@ -6,7 +6,7 @@ extern const char LADFUNC_FMT_ReplacementCommaChar[];
 extern const char LADFUNC_FMT_HexEscapeByte[];
 extern const char LADFUNC_FMT_LiteralChar[];
 
-extern void GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
+extern void FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
 
 void LADFUNC2_EmitEscapedCharToScratch(LONG ch)
 {
@@ -15,7 +15,7 @@ void LADFUNC2_EmitEscapedCharToScratch(LONG ch)
     c = (UBYTE)ch;
 
     if (c < 32) {
-        GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_ControlCharCaretEscape,
             (LONG)c + 64);
         return;
@@ -23,7 +23,7 @@ void LADFUNC2_EmitEscapedCharToScratch(LONG ch)
 
     if (c == 168) {
         c = 34;
-        GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_ReplacementQuoteChar,
             (LONG)c);
         return;
@@ -31,20 +31,20 @@ void LADFUNC2_EmitEscapedCharToScratch(LONG ch)
 
     if (c == (UBYTE)~86) {
         c = 44;
-        GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_ReplacementCommaChar,
             (LONG)c);
         return;
     }
 
     if (c > 126) {
-        GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_HexEscapeByte,
             (LONG)c);
         return;
     }
 
-    GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         LADFUNC_FMT_LiteralChar,
         (LONG)c);
 }

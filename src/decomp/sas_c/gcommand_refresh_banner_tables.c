@@ -29,8 +29,12 @@ void GCOMMAND_RefreshBannerTables(void)
     LONG row = GCOMMAND_BannerRowByteOffsetCurrent;
     LONG phase = GCOMMAND_BannerPhaseIndexCurrent;
 
-    GCOMMAND_BuildBannerRow(Global_REF_696_400_BITMAP, ESQ_CopperListBannerA, row, 98, phase);
-    GCOMMAND_BuildBannerRow(Global_REF_696_400_BITMAP, ESQ_CopperListBannerB, row + 88, 98, phase);
+    /* Original ASM push order: rowIndex = phase index (0..97), baseOffset = the
+       banner row BYTE offset (large). These were previously swapped, which made
+       d4 = byteOffset-1 (~5983) index rowColors[] far out of bounds into the
+       stack. rowIndex selects the color row; baseOffset shifts the plane ptrs. */
+    GCOMMAND_BuildBannerRow(Global_REF_696_400_BITMAP, ESQ_CopperListBannerA, phase, 98, row);
+    GCOMMAND_BuildBannerRow(Global_REF_696_400_BITMAP, ESQ_CopperListBannerB, phase, 98, row + 88);
 
     {
         LONG prev = GCOMMAND_BannerRowByteOffsetPrevious;

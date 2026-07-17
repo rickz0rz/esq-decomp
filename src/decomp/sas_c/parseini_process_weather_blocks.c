@@ -55,7 +55,7 @@ extern const char PARSEINI_TAG_ID[];
 extern LONG STRING_CompareNoCase(const char *a, const char *b);
 extern void *BRUSH_AllocBrushNode(const char *entryText, void *existingNode);
 extern LONG PARSE_ReadSignedLongSkipClass3_Alt(const char *s);
-extern void *MEMORY_AllocateMemory(const char *fileName, LONG lineNumber, LONG byteSize, LONG flags);
+extern void *MEMORY_AllocateMemory(unsigned long byteSize, long flags);
 extern char *STRING_CopyPadNul(char *dst, const char *src, ULONG n);
 
 void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
@@ -164,7 +164,7 @@ void PARSEINI_ProcessWeatherBlocks(const char *entryKey, char *entryValue)
             }
 
             prevSourceNode = PARSEINI_CurrentWeatherBlockTempPtr;
-            newAllocNode = MEMORY_AllocateMemory(Global_STR_PARSEINI_C_3, 670, 12, MEMF_PUBLIC_CLEAR);
+            newAllocNode = MEMORY_AllocateMemory(12, MEMF_PUBLIC_CLEAR);
             PARSEINI_CurrentWeatherBlockTempPtr = newAllocNode;
             if (newAllocNode == (void *)0) {
                 return;

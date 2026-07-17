@@ -58,10 +58,10 @@ extern UBYTE BRUSH_SnapshotHeader[];
 
 void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(const char *tag, LONG line, LONG bytes, ULONG flags);
 void *GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(const char *tag, LONG line, LONG plane_off, LONG width, LONG height);
-void _LVOInitBitMap(void *bitmap, LONG depth, LONG width, LONG height);
-void _LVOInitRastPort(void *rp);
-void _LVOForbid(void);
-void _LVOPermit(void);
+void _LVOInitBitMap(void *base, void *bitmap, LONG depth, LONG width, LONG height);
+void _LVOInitRastPort(void *base, void *rp);
+void _LVOForbid(void *base);
+void _LVOPermit(void *base);
 
 void *BRUSH_CloneBrushRecord(void *srcRec)
 {
@@ -95,11 +95,7 @@ void *BRUSH_CloneBrushRecord(void *srcRec)
     *(ULONG *)(dst + BRUSH_META_COPY_DST_OFFSET) = *(ULONG *)(src + BRUSH_META_COPY_SRC_OFFSET);
     *(ULONG *)(dst + BRUSH_NEXT_PTR_OFFSET) = BRUSH_NULL;
 
-    _LVOInitBitMap(
-        dst + BRUSH_NODE_BITMAP_OFFSET,
-        (UBYTE)dst[BRUSH_NODE_DEPTH_OFFSET],
-        (UWORD)*(UWORD *)(dst + BRUSH_NODE_WIDTH_OFFSET),
-        (UWORD)*(UWORD *)(dst + BRUSH_NODE_HEIGHT_OFFSET));
+    _LVOInitBitMap(Global_REF_GRAPHICS_LIBRARY, dst + BRUSH_NODE_BITMAP_OFFSET, (UBYTE)dst[BRUSH_NODE_DEPTH_OFFSET], (UWORD)*(UWORD *)(dst + BRUSH_NODE_WIDTH_OFFSET), (UWORD)*(UWORD *)(dst + BRUSH_NODE_HEIGHT_OFFSET));
 
     dst[BRUSH_SRC_STATE_COPY_SRC_OFFSET] = src[BRUSH_SRC_TYPE_OFFSET];
     for (i = BRUSH_NULL; i < BRUSH_BLOCK_COPY_COUNT; i++) {
@@ -149,7 +145,7 @@ void *BRUSH_CloneBrushRecord(void *srcRec)
             (UWORD)*(UWORD *)(dst + BRUSH_NODE_HEIGHT_OFFSET));
         *(void **)(dst + BRUSH_NODE_PLANE_TABLE_OFFSET + plane_off) = planeRaster;
         if (planeRaster == (void *)BRUSH_NULL) {
-            _LVOForbid();
+            _LVOForbid(AbsExecBase);
             if (BRUSH_PendingAlertCode == BRUSH_NULL) {
                 const UBYTE *snap_s = dst;
                 UBYTE *snap_d = BRUSH_SnapshotHeader;
@@ -158,13 +154,13 @@ void *BRUSH_CloneBrushRecord(void *srcRec)
                     *snap_d++ = *snap_s;
                 } while (*snap_s++ != BRUSH_NULL);
             }
-            _LVOPermit();
+            _LVOPermit(AbsExecBase);
             break;
         }
     }
 
     if (i == (LONG)(UBYTE)dst[BRUSH_NODE_DEPTH_OFFSET]) {
-        _LVOInitRastPort(dst + BRUSH_NODE_RASTPORT_OFFSET);
+        _LVOInitRastPort(Global_REF_GRAPHICS_LIBRARY, dst + BRUSH_NODE_RASTPORT_OFFSET);
         *(void **)(dst + BRUSH_NODE_RASTPORT_BITMAPPTR_OFFSET) = dst + BRUSH_NODE_BITMAP_OFFSET;
         for (i = BRUSH_NULL; i < BRUSH_RASTPORT_COPY_BYTES; i++) {
             dst[BRUSH_NODE_STATE_COPY_DST_OFFSET + i] = src[BRUSH_SRC_STATE_COPY_SRC_OFFSET + i];

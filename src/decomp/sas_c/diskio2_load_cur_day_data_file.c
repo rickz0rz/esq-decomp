@@ -23,8 +23,8 @@ extern long DISKIO_ParseLongFromWorkBuffer(void);
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
 extern char *ESQPARS_ReplaceOwnedString(const char *newText, char *oldText);
 extern long ESQ_WildcardMatch(const char *pattern, const char *text);
-extern void *MEMORY_AllocateMemory(const char *file, ULONG line, ULONG size, ULONG flags);
-extern void MEMORY_DeallocateMemory(const char *file, ULONG line, void *ptr, ULONG size);
+extern void *MEMORY_AllocateMemory(unsigned long byteSize, long flags);
+extern void MEMORY_DeallocateMemory(void *ptr, long bytes);
 extern void ESQSHARED_InitEntryDefaults(UBYTE *entry);
 extern void COI_EnsureAnimObjectAllocated(void *entry);
 extern char *ESQSHARED_ApplyProgramTitleTextFilters(const char *text, ULONG flags);
@@ -49,27 +49,27 @@ extern const char Global_STR_DISKIO2_C_11[];
 extern const char Global_STR_DISKIO2_C_12[];
 extern const char Global_STR_DISKIO2_C_13[];
 
-volatile ULONG Global_REF_LONG_FILE_SCRATCH;
-volatile char *Global_PTR_WORK_BUFFER;
-volatile WORD DST_PrimaryCountdown;
-volatile UWORD DISKIO_CurrentDriveRevisionIndex;
+extern volatile ULONG Global_REF_LONG_FILE_SCRATCH;
+extern volatile char *Global_PTR_WORK_BUFFER;
+extern volatile WORD DST_PrimaryCountdown;
+extern volatile UWORD DISKIO_CurrentDriveRevisionIndex;
 volatile UBYTE DISKIO_ErrorMessageScratch[64];
-volatile UBYTE WDISP_WeatherStatusLabelBuffer[128];
-volatile char *WDISP_WeatherStatusTextPtr;
+extern volatile UBYTE WDISP_WeatherStatusLabelBuffer[128];
+extern volatile char *WDISP_WeatherStatusTextPtr;
 
-volatile UBYTE TEXTDISP_PrimaryGroupCode;
+extern volatile UBYTE TEXTDISP_PrimaryGroupCode;
 volatile UBYTE TEXTDISP_PrimaryGroupHeaderCode;
-volatile UWORD TEXTDISP_PrimaryGroupEntryCount;
-volatile UBYTE TEXTDISP_PrimaryGroupRecordChecksum;
-volatile UWORD TEXTDISP_PrimaryGroupRecordLength;
+extern volatile UWORD TEXTDISP_PrimaryGroupEntryCount;
+extern volatile UBYTE TEXTDISP_PrimaryGroupRecordChecksum;
+extern volatile UWORD TEXTDISP_PrimaryGroupRecordLength;
 volatile UBYTE TEXTDISP_PrimaryGroupPresentFlag;
 volatile UWORD TEXTDISP_GroupMutationState;
 volatile UWORD TEXTDISP_MaxEntryTitleLength;
-volatile DISKIO2_Entry *TEXTDISP_PrimaryEntryPtrTable[200];
-volatile DISKIO2_TitleData *TEXTDISP_PrimaryTitlePtrTable[200];
+extern volatile DISKIO2_Entry *TEXTDISP_PrimaryEntryPtrTable[200];
+extern volatile DISKIO2_TitleData *TEXTDISP_PrimaryTitlePtrTable[200];
 
-volatile UBYTE CTASKS_PrimaryOiWritePendingFlag;
-volatile UBYTE CTASKS_PendingPrimaryOiDiskId;
+extern volatile UBYTE CTASKS_PrimaryOiWritePendingFlag;
+extern volatile UBYTE CTASKS_PendingPrimaryOiDiskId;
 
 long DISKIO2_LoadCurDayDataFile(void)
 {
@@ -120,8 +120,7 @@ long DISKIO2_LoadCurDayDataFile(void)
 
     str = DISKIO_ConsumeCStringFromWorkBuffer();
     if (str == (char *)-1) {
-        MEMORY_DeallocateMemory(
-            Global_STR_DISKIO2_C_4, 520, (char *)workBuf, fileLen + 1);
+        MEMORY_DeallocateMemory((char *)workBuf, fileLen + 1);
         return -1;
     }
 
@@ -147,15 +146,13 @@ long DISKIO2_LoadCurDayDataFile(void)
         DISKIO_CurrentDriveRevisionIndex = 5;
         entryCopySize = 48;
     } else {
-        MEMORY_DeallocateMemory(
-            Global_STR_DISKIO2_C_5, 561, (char *)workBuf, fileLen + 1);
+        MEMORY_DeallocateMemory((char *)workBuf, fileLen + 1);
         return -1;
     }
 
     str = DISKIO_ConsumeCStringFromWorkBuffer();
     if (str == (char *)-1) {
-        MEMORY_DeallocateMemory(
-            Global_STR_DISKIO2_C_6, 570, (char *)workBuf, fileLen + 1);
+        MEMORY_DeallocateMemory((char *)workBuf, fileLen + 1);
         return -1;
     }
     {
@@ -167,8 +164,7 @@ long DISKIO2_LoadCurDayDataFile(void)
     if (DISKIO_CurrentDriveRevisionIndex > 0) {
         str = DISKIO_ConsumeCStringFromWorkBuffer();
         if (str == (char *)-1) {
-            MEMORY_DeallocateMemory(
-                Global_STR_DISKIO2_C_7, 588, (char *)workBuf, fileLen + 1);
+            MEMORY_DeallocateMemory((char *)workBuf, fileLen + 1);
             return -1;
         }
         WDISP_WeatherStatusTextPtr = ESQPARS_ReplaceOwnedString(
@@ -187,8 +183,7 @@ long DISKIO2_LoadCurDayDataFile(void)
         TEXTDISP_MaxEntryTitleLength = 0;
 
         for (entryIndex = 0; entryIndex < parsedCount; entryIndex++) {
-            DISKIO2_Entry *entry = (DISKIO2_Entry *)MEMORY_AllocateMemory(
-                Global_STR_DISKIO2_C_8, 634, 52, 0x10001UL);
+            DISKIO2_Entry *entry = (DISKIO2_Entry *)MEMORY_AllocateMemory(52, 0x10001UL);
             DISKIO2_TitleData *title;
             UWORD slot;
 
@@ -197,12 +192,10 @@ long DISKIO2_LoadCurDayDataFile(void)
                 break;
             }
 
-            title = (DISKIO2_TitleData *)MEMORY_AllocateMemory(
-                Global_STR_DISKIO2_C_9, 640, 500, 0x10001UL);
+            title = (DISKIO2_TitleData *)MEMORY_AllocateMemory(500, 0x10001UL);
             if (title == 0) {
                 result = -1;
-                MEMORY_DeallocateMemory(
-                    Global_STR_DISKIO2_C_10, 644, entry, 52);
+                MEMORY_DeallocateMemory(entry, 52);
                 break;
             }
 
@@ -280,10 +273,8 @@ long DISKIO2_LoadCurDayDataFile(void)
             }
 
             if (result == -1) {
-                MEMORY_DeallocateMemory(
-                    Global_STR_DISKIO2_C_11, 736, entry, 52);
-                MEMORY_DeallocateMemory(
-                    Global_STR_DISKIO2_C_12, 737, title, 500);
+                MEMORY_DeallocateMemory(entry, 52);
+                MEMORY_DeallocateMemory(title, 500);
                 break;
             }
 
@@ -298,10 +289,7 @@ long DISKIO2_LoadCurDayDataFile(void)
     TEXTDISP_PrimaryGroupHeaderCode = headerCode;
     TEXTDISP_PrimaryGroupEntryCount = loadedCount;
 
-    MEMORY_DeallocateMemory(
-        Global_STR_DISKIO2_C_13,
-        764,
-        (char *)workBuf,
+    MEMORY_DeallocateMemory((char *)workBuf,
         fileLen + 1);
 
     if (COI_LoadOiDataFile((long)headerCode) != -1) {

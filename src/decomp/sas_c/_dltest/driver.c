@@ -1,0 +1,8 @@
+#include <exec/types.h>
+#include <stdio.h>
+extern LONG __stdargs TESTFN(BYTE ch);
+int main(void){
+    static ULONG t[]={0x30,0x31,0x39,0x40,0x41,0x46,0x47,0x60,0x61,0x66,0x67,0x7a,0x80,0xff,0x00,0x2f};
+    int i; for(i=0;i<16;i++) printf("%02lx -> %08lx\n",(ULONG)t[i],(ULONG)TESTFN((BYTE)t[i]));
+    return 0;
+}

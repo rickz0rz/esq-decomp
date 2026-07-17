@@ -4,7 +4,7 @@
 typedef struct NEWGRID_Context {
     UBYTE pad0[32];
     LONG selectedState;
-    UBYTE pad1[18];
+    UBYTE pad1[16]; /* rastPort@60, selectionCode@52 per ASM */
     WORD selectionCode;
     UBYTE pad2[6];
     struct RastPort rastPort;

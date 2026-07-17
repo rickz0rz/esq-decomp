@@ -9,9 +9,9 @@ extern const char CTASKS_PATH_OINFO_DAT[];
 extern long MODE_NEWFILE;
 
 volatile long DISKIO2_OinfoFileHandle;
-volatile UBYTE TEXTDISP_PrimaryGroupCode;
-volatile char *ESQIFF_PrimaryLineHeadPtr;
-volatile char *ESQIFF_PrimaryLineTailPtr;
+extern volatile UBYTE TEXTDISP_PrimaryGroupCode;
+extern volatile char *ESQIFF_PrimaryLineHeadPtr;
+extern volatile char *ESQIFF_PrimaryLineTailPtr;
 
 long DISKIO2_WriteOinfoDataFile(void)
 {

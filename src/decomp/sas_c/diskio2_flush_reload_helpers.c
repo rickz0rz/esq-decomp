@@ -11,11 +11,11 @@ extern void DISKIO2_LoadOinfoDataFile(void);
 extern void NEWGRID_RebuildIndexCache(void);
 
 volatile UWORD DISKIO2_FlushDataFilesGuardFlag;
-volatile UWORD TEXTDISP_PrimaryGroupEntryCount;
-volatile UBYTE CTASKS_PrimaryOiWritePendingFlag;
-volatile UBYTE CTASKS_PendingPrimaryOiDiskId;
-volatile UBYTE CTASKS_SecondaryOiWritePendingFlag;
-volatile UBYTE CTASKS_PendingSecondaryOiDiskId;
+extern volatile UWORD TEXTDISP_PrimaryGroupEntryCount;
+extern volatile UBYTE CTASKS_PrimaryOiWritePendingFlag;
+extern volatile UBYTE CTASKS_PendingPrimaryOiDiskId;
+extern volatile UBYTE CTASKS_SecondaryOiWritePendingFlag;
+extern volatile UBYTE CTASKS_PendingSecondaryOiDiskId;
 
 #define DISKIO2_FLAG_CLEAR 0
 #define DISKIO2_FLAG_SET 1
@@ -42,6 +42,7 @@ void DISKIO2_FlushDataFilesIfNeeded(void)
     }
     DISKIO2_FlushDataFilesGuardFlag = DISKIO2_FLAG_CLEAR;
 }
+
 
 void DISKIO2_ReloadDataFilesAndRebuildIndex(void)
 {

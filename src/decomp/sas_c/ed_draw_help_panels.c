@@ -5,7 +5,7 @@ extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void _LVOSetAPen(void *gfxBase, char *rastPort, LONG pen);
 extern void _LVOSetDrMd(void *gfxBase, char *rastPort, LONG mode);
-extern void _LVORectFill(char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
+extern void _LVORectFill(void *base, char *rastPort, LONG x1, LONG y1, LONG x2, LONG y2);
 
 void ED_DrawHelpPanels(LONG penIndex)
 {
@@ -19,10 +19,10 @@ void ED_DrawHelpPanels(LONG penIndex)
     const LONG DRAWMODE_JAM1 = 0;
 
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_DARK_BACKGROUND);
-    _LVORectFill(Global_REF_RASTPORT_1, RECT_MIN_X, TOP_MIN_Y, RECT_MAX_X, TOP_MAX_Y);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, RECT_MIN_X, TOP_MIN_Y, RECT_MAX_X, TOP_MAX_Y);
 
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, penIndex);
-    _LVORectFill(Global_REF_RASTPORT_1, RECT_MIN_X, BOTTOM_MIN_Y, RECT_MAX_X, BOTTOM_MAX_Y);
+    _LVORectFill(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, RECT_MIN_X, BOTTOM_MIN_Y, RECT_MAX_X, BOTTOM_MAX_Y);
 
     _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM1);
     _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
