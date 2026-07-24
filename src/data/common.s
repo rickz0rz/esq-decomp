@@ -1,7 +1,66 @@
+    XDEF    Global_STR_PLEASE_STANDBY_1
+    XDEF    Global_STR_ATTENTION_SYSTEM_ENGINEER_1
+    XDEF    Global_STR_REPORT_CODE_ER003
+    XDEF    Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
+    XDEF    COMMON_QueryDiskSoftErrorCountScratch
+    XDEF    Global_STR_DISK_ERRORS_FORMATTED
+    XDEF    COMMON_QueryDiskUsagePercentScratch
+    XDEF    Global_STR_DISK_IS_FULL_FORMATTED
+    XDEF    CTRL_Bit4CaptureDelayCounter
+    XDEF    CTRL_Bit3CaptureDelayCounter
+    XDEF    CTRL_Bit4CapturePhase
+    XDEF    CTRL_Bit4SampleSlotIndex
+    XDEF    CTRL_Bit3CapturePhase
+    XDEF    CTRL_Bit3SampleSlotIndex
+    XDEF    CTRL_Bit4SampleScratch
+    XDEF    CTRL_Bit3SampleScratch
+    XDEF    HIGHLIGHT_CopperEffectSeed
+    XDEF    HIGHLIGHT_CopperEffectParamA
+    XDEF    HIGHLIGHT_CopperEffectParamB
+    XDEF    CTRL_SampleEntryCount
+    XDEF    CTRL_SampleEntryScratch
+    XDEF    HIGHLIGHT_CustomValue
+    XDEF    CLOCK_DaySlotIndexPtr
+    XDEF    CLOCK_CurrentDayOfWeekIndexPtr
+    XDEF    BANNER_ResetPendingFlag
+    XDEF    CLOCK_MinuteTrigger30MinusBase
+    XDEF    CLOCK_MinuteTrigger60MinusBase
+    XDEF    CLOCK_MinuteTriggerBaseOffsetPlus30
+    XDEF    CLOCK_MinuteTriggerBaseOffset
+    XDEF    ACCUMULATOR_Row0_CaptureValue
+    XDEF    ACCUMULATOR_Row1_CaptureValue
+    XDEF    ACCUMULATOR_Row2_CaptureValue
+    XDEF    ACCUMULATOR_Row3_CaptureValue
+    XDEF    ACCUMULATOR_Row0_Sum
+    XDEF    ACCUMULATOR_Row1_Sum
+    XDEF    ACCUMULATOR_Row2_Sum
+    XDEF    ACCUMULATOR_Row3_Sum
+    XDEF    ACCUMULATOR_Row0_SaturateFlag
+    XDEF    ACCUMULATOR_Row1_SaturateFlag
+    XDEF    ACCUMULATOR_Row2_SaturateFlag
+    XDEF    ACCUMULATOR_Row3_SaturateFlag
+    XDEF    COPPER_AnimationLane0_Countdown
+    XDEF    COPPER_AnimationLane1_Countdown
+    XDEF    COPPER_AnimationLane2_Countdown
+    XDEF    COPPER_AnimationLane3_Countdown
+    XDEF    CLOCK_MonthLengths
+    XDEF    CLOCK_HalfHourSlotLookup
+    XDEF    PARSEINI_ParsedDescriptorListHead
+    XDEF    CTASKS_PendingLogoBrushDescriptor
+    XDEF    CTASKS_PendingGAdsBrushDescriptor
+    XDEF    ESQFUNC_PwBrushDescriptorHead
+    XDEF    PARSEINI_BannerBrushResourceHead
+    XDEF    CTASKS_PendingIffBrushDescriptor
+    XDEF    WDISP_WeatherStatusBrushListHead
+    XDEF    BRUSH_SelectedNode
+    XDEF    ESQIFF_GAdsBrushListCount
+    XDEF    ESQIFF_LogoBrushListCount
+    XDEF    BRUSH_LoadInProgressFlag
+    XDEF    BRUSH_PendingAlertCode
 
 Global_STR_PLEASE_STANDBY_1:
     NStr    "Please Standby..."
-Global_STR_PLEASE_STANDBY_1_Length = Global_STR_ATTENTION_SYSTEM_ENGINEER_1-Global_STR_PLEASE_STANDBY_1
+    assert Global_STR_PLEASE_STANDBY_1_Length==Global_STR_ATTENTION_SYSTEM_ENGINEER_1-Global_STR_PLEASE_STANDBY_1,"Global_STR_PLEASE_STANDBY_1_Length in data-lengths.s is out of sync with the data layout"
 Global_STR_ATTENTION_SYSTEM_ENGINEER_1:
     NStr    "ATTENTION! SYSTEM ENGINEER"
 Global_STR_REPORT_CODE_ER003:

@@ -1,3 +1,31 @@
+    XDEF    Global_STR_P_TYPE_C_1
+    XDEF    Global_STR_P_TYPE_C_2
+    XDEF    Global_STR_P_TYPE_C_3
+    XDEF    Global_STR_P_TYPE_C_4
+    XDEF    Global_STR_P_TYPE_C_5
+    XDEF    P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write
+    XDEF    P_TYPE_STR_CURDAY_COLON_WriteSection
+    XDEF    P_TYPE_FMT_PCT_03D_PCT_02D
+    XDEF    P_TYPE_STR_NO_DATA
+    XDEF    P_TYPE_STR_NXTDAY_COLON_WriteSection
+    XDEF    P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load
+    XDEF    P_TYPE_STR_CURDAY_COLON_LoadSection
+    XDEF    P_TYPE_STR_TYPES_COLON
+    XDEF    P_TYPE_STR_NXTDAY_COLON_LoadSection
+    XDEF    Global_STR_P_TYPE_C_6
+    XDEF    P_TYPE_WeatherBrushRefreshPendingFlag
+    XDEF    P_TYPE_WeatherCurrentMsgPtr
+    XDEF    P_TYPE_WeatherForecastMsgPtr
+    XDEF    P_TYPE_WeatherBottomLineMsgPtr
+    XDEF    P_TYPE_STR_QTABLE
+    XDEF    P_TYPE_TAG_BACKDROP
+    XDEF    P_TYPE_TAG_GRADIENT
+    XDEF    P_TYPE_TAG_TEXTADS
+    XDEF    P_TYPE_TAG_BRUSH
+    XDEF    P_TYPE_TAG_BANNER
+    XDEF    P_TYPE_STR_DEFAULT_TEXT
+    XDEF    P_TYPE_STR_SOURCE_CONFIG
+    XDEF    PARSEINI_DelimSpaceTab_Section1
 ; ========== P_TYPE.c ==========
 
 Global_STR_P_TYPE_C_1:

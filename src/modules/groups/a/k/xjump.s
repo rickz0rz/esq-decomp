@@ -117,7 +117,7 @@ GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist:
-    JMP     ESQPARS_ApplyRtcBytesAndPersist
+    BRA.W   ESQPARS_ApplyRtcBytesAndPersist
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry   (JumpStub_PARSEINI_WriteErrorLogEntry)

@@ -75,7 +75,7 @@ ED2_DrawEntryDetailsPanel:
 
     LEA     16(A7),A7
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVE.L  D0,-144(A5)
     MOVEA.L A0,A1
     MOVEQ   #2,D0
@@ -112,7 +112,7 @@ ED2_DrawEntryDetailsPanel:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     90.W
     PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
@@ -167,7 +167,7 @@ ED2_DrawEntryDetailsPanel:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     120.W
     PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
@@ -179,7 +179,7 @@ ED2_DrawEntryDetailsPanel:
     MOVE.L  ED2_SelectedEntryTitlePtr,-(A7)
     MOVE.L  ED2_SelectedEntryDataPtr,-(A7)
     MOVE.L  -144(A5),-(A7)
-    JSR     DISKIO2_CopyAndSanitizeSlotString
+    BSR.W   DISKIO2_CopyAndSanitizeSlotString
 
     LEA     44(A7),A7
     MOVE.L  D0,-148(A5)
@@ -224,7 +224,7 @@ ED2_DrawEntryDetailsPanel:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     150.W
     PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
@@ -329,7 +329,7 @@ ED2_DrawEntryDetailsPanel:
 
 .after_flag7:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     210.W
     PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
@@ -417,7 +417,7 @@ ED2_DrawEntrySummaryPanel:
     BEQ.W   .return
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #2,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -434,7 +434,7 @@ ED2_DrawEntrySummaryPanel:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     120.W
     PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
@@ -458,7 +458,7 @@ ED2_DrawEntrySummaryPanel:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     150.W
     PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
@@ -563,7 +563,7 @@ ED2_DrawEntrySummaryPanel:
 
 .after_flag7:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     180.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
@@ -632,7 +632,7 @@ ED2_DrawEntrySummaryPanel:
 
 .after_word_flag4:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     210.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
@@ -1041,7 +1041,7 @@ ED2_HandleMenuActions:
 
 .case_refresh_rastports:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVE.L  A0,-(A7)
     JSR     GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides(PC)
 

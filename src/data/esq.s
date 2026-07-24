@@ -1,3 +1,198 @@
+    XDEF    Global_REF_GRAPHICS_LIBRARY
+    XDEF    Global_REF_INTUITION_LIBRARY
+    XDEF    Global_REF_UTILITY_LIBRARY
+    XDEF    Global_REF_BATTCLOCK_RESOURCE
+    XDEF    Global_STRUCT_TEXTATTR_PREVUEC_FONT
+    XDEF    Global_STRUCT_TEXTATTR_H26F_FONT
+    XDEF    Global_STRUCT_TEXTATTR_TOPAZ_FONT
+    XDEF    Global_STRUCT_TEXTATTR_PREVUE_FONT
+    XDEF    Global_HANDLE_PREVUE_FONT
+    XDEF    Global_REF_DISKFONT_LIBRARY
+    XDEF    Global_REF_DOS_LIBRARY
+    XDEF    ESQ_HighlightMsgPort
+    XDEF    ESQ_HighlightReplyPort
+    XDEF    ESQ_ProcessWindowPtrBackup
+    XDEF    ESQ_STR_B
+    XDEF    ESQ_STR_E
+    XDEF    ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED
+    XDEF    ESQ_TAG_36
+    XDEF    ED_DiagScrollSpeedChar
+    XDEF    ESQ_DefaultNoFlagChar
+    XDEF    CLOCK_MinuteEventBaseMinute
+    XDEF    CLOCK_MinuteEventBaseOffset
+    XDEF    ESQ_STR_6
+    XDEF    ESQ_SecondarySlotModeFlagChar
+    XDEF    ESQ_STR_Y
+    XDEF    ESQ_AlertType4ModeFlagChar
+    XDEF    ESQ_AlertType235ModeFlagChar
+    XDEF    ED_DiagGraphModeChar
+    XDEF    ED_DiagVinModeChar
+    XDEF    CLOCK_FormatVariantCode
+    XDEF    WDISP_WeatherStatusTextPtr
+    XDEF    TEXTDISP_AliasCount
+    XDEF    ESQIFF_PrimaryLineHeadPtr
+    XDEF    ESQIFF_PrimaryLineTailPtr
+    XDEF    Global_REF_STR_CLOCK_FORMAT
+    XDEF    TEXTDISP_DeferredActionCountdown
+    XDEF    TEXTDISP_DeferredActionArmed
+    XDEF    GCOMMAND_PresetFallbackValue0
+    XDEF    GCOMMAND_PresetFallbackValue1
+    XDEF    GCOMMAND_PresetFallbackValue2
+    XDEF    GCOMMAND_PresetFallbackValue3
+    XDEF    ESQ_ShutdownRequestedFlag
+    XDEF    ESQ_MainLoopUiTickEnabledFlag
+    XDEF    Global_HANDLE_PREVUEC_FONT
+    XDEF    Global_HANDLE_H26F_FONT
+    XDEF    Global_HANDLE_TOPAZ_FONT
+    XDEF    ESQIFF_SecondaryLineHeadPtr
+    XDEF    ESQIFF_SecondaryLineTailPtr
+    XDEF    ESQ_STR_A
+    XDEF    WDISP_WeatherStatusOverlayTextPtr
+    XDEF    Global_LONG_ROM_VERSION_CHECK
+    XDEF    ESQDISP_StatusIndicatorDeferredApplyFlag
+    XDEF    CLEANUP_DiagOverlayAutoRefreshFlag
+    XDEF    ED_DiagAvailMemMask
+    XDEF    ED_DiagAvailMemPresetBits
+    XDEF    ESQDISP_GridMessagePumpBlockFlag
+    XDEF    SCRIPT_StatusRefreshHoldFlag
+    XDEF    TEXTDISP_TickSuspendFlag
+    XDEF    Global_WORD_SELECT_CODE_IS_RAVESC
+    XDEF    ESQPARS_PersistOnNextBoxOffFlag
+    XDEF    HAS_REQUESTED_FAST_MEMORY
+    XDEF    IS_COMPATIBLE_VIDEO_CHIP
+    XDEF    Global_STR_RAVESC
+    XDEF    Global_STR_COPY_NIL_ASSIGN_RAM
+    XDEF    Global_STR_GRAPHICS_LIBRARY
+    XDEF    Global_STR_DISKFONT_LIBRARY
+    XDEF    Global_STR_DOS_LIBRARY
+    XDEF    Global_STR_INTUITION_LIBRARY
+    XDEF    Global_STR_UTILITY_LIBRARY
+    XDEF    Global_STR_BATTCLOCK_RESOURCE
+    XDEF    Global_STR_ESQ_C_1
+    XDEF    Global_STR_ESQ_C_2
+    XDEF    Global_STR_ESQ_C_3
+    XDEF    Global_STR_ESQ_C_4
+    XDEF    Global_STR_ESQ_C_5
+    XDEF    Global_STR_CART
+    XDEF    Global_STR_ESQ_C_6
+    XDEF    Global_STR_SERIAL_READ
+    XDEF    Global_STR_SERIAL_DEVICE
+    XDEF    Global_STR_ESQ_C_7
+    XDEF    Global_STR_ESQ_C_8
+    XDEF    Global_STR_ESQ_C_9
+    XDEF    Global_STR_ESQ_C_10
+    XDEF    Global_STR_ESQ_C_11
+    XDEF    ESQ_STR_NO_DF1_PRESENT
+    XDEF    Global_STR_GUIDE_START_VERSION_AND_BUILD
+    XDEF    Global_STR_MAJOR_MINOR_VERSION
+    XDEF    ESQ_STR_38_Spaces
+    XDEF    Global_STR_DF0_GRADIENT_INI_2
+    XDEF    ESQ_STR_SystemInitializing
+    XDEF    ESQ_STR_PleaseStandByEllipsis
+    XDEF    ESQ_STR_AttentionSystemEngineer
+    XDEF    ESQ_STR_ReportErrorCodeEr011ToTVGuide
+    XDEF    ESQ_STR_ReportErrorCodeER012ToTVGuide
+    XDEF    Global_STR_DF0_DEFAULT_INI_1
+    XDEF    Global_STR_DF0_BRUSH_INI_1
+    XDEF    ESQ_STR_DT
+    XDEF    ESQ_STR_DITHER
+    XDEF    Global_STR_DF0_BANNER_INI_1
+    XDEF    ESQ_TAG_GRANADA
+    XDEF    Global_LONG_BUILD_NUMBER
+    XDEF    Global_PTR_STR_BUILD_ID
+    XDEF    ESQ_CopperEffectListA
+    XDEF    ESQ_CopperEffectListB_PtrHiWord
+    XDEF    ESQ_CopperEffectListB_PtrLoWord
+    XDEF    ESQ_CopperEffectTemplateRowsSet0
+    XDEF    ESQ_CopperStatusDigitsA
+    XDEF    ESQ_CopperStatusDigitsA_ColorRegistersA
+    XDEF    ESQ_CopperStatusDigitsA_ColorRegistersB
+    XDEF    ESQ_CopperStatusDigitsA_ColorRegistersC
+    XDEF    ESQ_CopperStatusDigitsA_TailColorWord
+    XDEF    ESQ_CopperListBannerA
+    XDEF    ESQ_BannerWorkRasterPtrA_HiWord
+    XDEF    ESQ_BannerWorkRasterPtrA_LoWord
+    XDEF    ESQ_BannerPaletteWordsA
+    XDEF    ESQ_BannerSweepWaitRowA
+    XDEF    ESQ_BannerPlane0SnapshotScratchPtrHiWord
+    XDEF    ESQ_BannerPlane0SnapshotScratchPtrLoWord
+    XDEF    ESQ_BannerPlane1SnapshotScratchPtrHiWord
+    XDEF    ESQ_BannerPlane1SnapshotScratchPtrLoWord
+    XDEF    ESQ_BannerPlane2SnapshotScratchPtrHiWord
+    XDEF    ESQ_BannerPlane2SnapshotScratchPtrLoWord
+    XDEF    ESQ_BannerColorSweepProgramA
+    XDEF    ESQ_BannerSweepWaitStartProgramA
+    XDEF    ESQ_BannerWorkRasterPtrMirrorA_HiWord
+    XDEF    ESQ_BannerWorkRasterPtrMirrorA_LoWord
+    XDEF    ESQ_BannerSweepWaitEndProgramA
+    XDEF    ESQ_BannerSnapshotPlane0DstPtrHiWord
+    XDEF    ESQ_BannerSnapshotPlane0DstPtrLoWord
+    XDEF    ESQ_BannerSnapshotPlane1DstPtrHiWord
+    XDEF    ESQ_BannerSnapshotPlane1DstPtrLoWord
+    XDEF    ESQ_BannerSnapshotPlane2DstPtrHiWord
+    XDEF    ESQ_BannerSnapshotPlane2DstPtrLoWord
+    XDEF    ESQ_CopperEffectJumpTargetA_HiWord
+    XDEF    ESQ_CopperEffectJumpTargetA_LoWord
+    XDEF    ESQ_BannerColorSweepProgramA_AnchorColorWord
+    XDEF    ESQ_BannerColorSweepProgramA_TailColorWord
+    XDEF    ESQ_BannerColorClampValueA
+    XDEF    ESQ_BannerColorClampWaitRowA
+    XDEF    ESQ_BannerPlane0DstPtrReset_HiWord
+    XDEF    ESQ_BannerPlane0DstPtrReset_LoWord
+    XDEF    ESQ_BannerPlane1DstPtrReset_HiWord
+    XDEF    ESQ_BannerPlane1DstPtrReset_LoWord
+    XDEF    ESQ_BannerPlane2DstPtrReset_HiWord
+    XDEF    ESQ_BannerPlane2DstPtrReset_LoWord
+    XDEF    ESQ_CopperEffectSwitchWaitWordA
+    XDEF    ESQ_CopperBannerTailListA
+    XDEF    ESQ_BannerWorkRasterPtrTailA_HiWord
+    XDEF    ESQ_CopperBannerRasterPointerListA
+    XDEF    ESQ_CopperEffectListB
+    XDEF    ESQ_CopperEffectListA_PtrHiWord
+    XDEF    ESQ_CopperEffectListA_PtrLoWord
+    XDEF    ESQ_CopperEffectTemplateRowsSet1
+    XDEF    ESQ_CopperStatusDigitsB
+    XDEF    ESQ_CopperStatusDigitsB_ColorRegistersA
+    XDEF    ESQ_CopperStatusDigitsB_TailColorWord
+    XDEF    ESQ_CopperListBannerB
+    XDEF    ESQ_BannerWorkRasterPtrB_HiWord
+    XDEF    ESQ_BannerWorkRasterPtrB_LoWord
+    XDEF    ESQ_BannerPaletteWordsB
+    XDEF    ESQ_BannerSweepWaitRowB
+    XDEF    ESQ_BannerPlane0ScratchPtrAlt_HiWord
+    XDEF    ESQ_BannerPlane0ScratchPtrAlt_LoWord
+    XDEF    ESQ_BannerPlane1ScratchPtrAlt_HiWord
+    XDEF    ESQ_BannerPlane1ScratchPtrAlt_LoWord
+    XDEF    ESQ_BannerPlane2ScratchPtrAlt_HiWord
+    XDEF    ESQ_BannerPlane2ScratchPtrAlt_LoWord
+    XDEF    ESQ_BannerColorSweepProgramB
+    XDEF    ESQ_BannerSweepWaitStartProgramB
+    XDEF    ESQ_BannerWorkRasterPtrMirrorB_HiWord
+    XDEF    ESQ_BannerWorkRasterPtrMirrorB_LoWord
+    XDEF    ESQ_BannerSweepWaitEndProgramB
+    XDEF    ESQ_BannerSweepSrcPlane0Ptr_HiWord
+    XDEF    ESQ_BannerSweepSrcPlane0Ptr_LoWord
+    XDEF    ESQ_BannerSweepSrcPlane1Ptr_HiWord
+    XDEF    ESQ_BannerSweepSrcPlane1Ptr_LoWord
+    XDEF    ESQ_BannerSweepSrcPlane2Ptr_HiWord
+    XDEF    ESQ_BannerSweepSrcPlane2Ptr_LoWord
+    XDEF    ESQ_CopperEffectJumpTargetB_HiWord
+    XDEF    ESQ_CopperEffectJumpTargetB_LoWord
+    XDEF    ESQ_BannerColorSweepProgramB_AnchorColorWord
+    XDEF    ESQ_BannerColorSweepProgramB_TailColorWord
+    XDEF    ESQ_BannerColorClampValueB
+    XDEF    ESQ_BannerColorClampWaitRowB
+    XDEF    ESQ_BannerSweepSrcPlane0PtrReset_HiWord
+    XDEF    ESQ_BannerSweepSrcPlane0PtrReset_LoWord
+    XDEF    ESQ_BannerSweepSrcPlane1PtrReset_HiWord
+    XDEF    ESQ_BannerSweepSrcPlane1PtrReset_LoWord
+    XDEF    ESQ_BannerSweepSrcPlane2PtrReset_HiWord
+    XDEF    ESQ_BannerSweepSrcPlane2PtrReset_LoWord
+    XDEF    ESQ_CopperEffectSwitchWaitWordB
+    XDEF    ESQ_CopperBannerTailListB
+    XDEF    ESQ_BannerWorkRasterPtrTailB_HiWord
+    XDEF    ESQ_CopperBannerRasterPointerListB
+    XDEF    Global_PTR_AUD1_DMA
 ; ========== ESQ.c ==========
 
 Global_REF_GRAPHICS_LIBRARY:
@@ -67,23 +262,23 @@ ESQ_HighlightReplyPort:
 ;------------------------------------------------------------------------------
 ESQ_ProcessWindowPtrBackup:
     DC.L    0
-ED_DiagVinModeChar_Length = 1
+; ED_DiagVinModeChar_Length moved to src/data-lengths.s (plain constant, value 1)
 
 ESQ_STR_B:
     DC.B    "B"
-ESQ_STR_B_Length = ESQ_STR_E-ESQ_STR_B
+    assert ESQ_STR_B_Length==ESQ_STR_E-ESQ_STR_B,"ESQ_STR_B_Length in data-lengths.s is out of sync with the data layout"
 
 ESQ_STR_E:
     DC.B    "E"
-ESQ_STR_E_Length = ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED-ESQ_STR_E
+    assert ESQ_STR_E_Length==ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED-ESQ_STR_E,"ESQ_STR_E_Length in data-lengths.s is out of sync with the data layout"
 
 ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED:
     DC.B    "3"
-ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length = ESQ_TAG_36-ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED
+    assert ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length==ESQ_TAG_36-ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED,"ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length in data-lengths.s is out of sync with the data layout"
 
 ESQ_TAG_36:
     DC.B    "36"
-ESQ_TAG_36_Length = ED_DiagScrollSpeedChar-ESQ_TAG_36
+    assert ESQ_TAG_36_Length==ED_DiagScrollSpeedChar-ESQ_TAG_36,"ESQ_TAG_36_Length in data-lengths.s is out of sync with the data layout"
 
 ;------------------------------------------------------------------------------
 ; SYM: ED_DiagScrollSpeedChar   (diagnostic SSPD selector char)
@@ -94,7 +289,7 @@ ESQ_TAG_36_Length = ED_DiagScrollSpeedChar-ESQ_TAG_36
 ;------------------------------------------------------------------------------
 ED_DiagScrollSpeedChar:
     DC.B    "6"
-ED_DiagScrollSpeedChar_Length = ESQ_DefaultNoFlagChar-ED_DiagScrollSpeedChar
+    assert ED_DiagScrollSpeedChar_Length==ESQ_DefaultNoFlagChar-ED_DiagScrollSpeedChar,"ED_DiagScrollSpeedChar_Length in data-lengths.s is out of sync with the data layout"
 
 ESQ_DefaultNoFlagChar:
     DC.B    "N"
@@ -111,15 +306,15 @@ CLOCK_MinuteEventBaseOffset:
     DC.B    1
 ESQ_STR_6:
     DC.B    "6"
-ESQ_STR_6_Length = ESQ_SecondarySlotModeFlagChar-ESQ_STR_6
+    assert ESQ_STR_6_Length==ESQ_SecondarySlotModeFlagChar-ESQ_STR_6,"ESQ_STR_6_Length in data-lengths.s is out of sync with the data layout"
 
 ESQ_SecondarySlotModeFlagChar:
     DC.B    "N"
-ESQ_SecondarySlotModeFlagChar_Length = ESQ_STR_Y-ESQ_SecondarySlotModeFlagChar
+    assert ESQ_SecondarySlotModeFlagChar_Length==ESQ_STR_Y-ESQ_SecondarySlotModeFlagChar,"ESQ_SecondarySlotModeFlagChar_Length in data-lengths.s is out of sync with the data layout"
 
 ESQ_STR_Y:
     DC.B    "Y"
-ESQ_STR_Y_Length = ESQ_ReservedFlagChar0-ESQ_STR_Y
+    assert ESQ_STR_Y_Length==ESQ_ReservedFlagChar0-ESQ_STR_Y,"ESQ_STR_Y_Length in data-lengths.s is out of sync with the data layout"
 ESQ_ReservedFlagChar0:
     DC.B    "N"
 ESQ_AlertType4ModeFlagChar:
@@ -136,7 +331,7 @@ ESQ_AlertType235ModeFlagChar:
 ;------------------------------------------------------------------------------
 ED_DiagGraphModeChar:
     DC.B    "N"
-ED_DiagGraphModeChar_Length = ED_DiagVinModeChar-ED_DiagGraphModeChar
+    assert ED_DiagGraphModeChar_Length==ED_DiagVinModeChar-ED_DiagGraphModeChar,"ED_DiagGraphModeChar_Length in data-lengths.s is out of sync with the data layout"
 ED_DiagVinModeChar:
     DC.B    "N"
 ;------------------------------------------------------------------------------

@@ -292,7 +292,7 @@ SCRIPT_SetupHighlightEffect:
     BEQ.W   .return
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
     CLR.W   WDISP_AccumulatorFlushPending
     MOVEQ   #0,D0

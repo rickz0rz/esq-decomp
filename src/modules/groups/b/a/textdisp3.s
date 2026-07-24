@@ -1119,7 +1119,7 @@ TEXTDISP_DrawChannelBanner:
 
 .select_rast:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -1167,7 +1167,7 @@ TEXTDISP_DrawChannelBanner:
 
 .set_drawmode_normal:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -2704,7 +2704,7 @@ TEXTDISP_TrimTextToPixelWidth:
     CLR.L   -8(A5)
     MOVEQ   #0,D6
     MOVEA.L WDISP_DisplayContextBase,A1
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A1
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A1
     MOVEA.L A0,A2
 
 .measure_text_len:
@@ -2741,7 +2741,7 @@ TEXTDISP_TrimTextToPixelWidth:
     MOVE.L  D0,D4
     ADDQ.L  #1,-4(A5)
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L -4(A5),A1
 
 .measure_after_control:
@@ -2764,7 +2764,7 @@ TEXTDISP_TrimTextToPixelWidth:
 
 .measure_char:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEA.L -4(A5),A0
     MOVEQ   #1,D0
@@ -2782,7 +2782,7 @@ TEXTDISP_TrimTextToPixelWidth:
     MOVE.B  D4,(A0)
     LEA     1(A0),A1
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A1,A2
 
 .measure_after_insert:

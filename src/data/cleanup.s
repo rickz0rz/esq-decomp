@@ -1,3 +1,22 @@
+    XDEF    Global_STR_CLEANUP_C_1
+    XDEF    Global_STR_CLEANUP_C_2
+    XDEF    Global_STR_CLEANUP_C_3
+    XDEF    Global_STR_CLEANUP_C_4
+    XDEF    Global_STR_CLEANUP_C_5
+    XDEF    Global_STR_CLEANUP_C_6
+    XDEF    Global_STR_CLEANUP_C_7
+    XDEF    Global_STR_CLEANUP_C_8
+    XDEF    Global_STR_CLEANUP_C_9
+    XDEF    Global_STR_CLEANUP_C_10
+    XDEF    Global_STR_CLEANUP_C_11
+    XDEF    Global_STR_CLEANUP_C_12
+    XDEF    Global_STR_CLEANUP_C_13
+    XDEF    Global_STR_CLEANUP_C_14
+    XDEF    Global_STR_CLEANUP_C_15
+    XDEF    Global_STR_CLEANUP_C_16
+    XDEF    CLEANUP_AlertCooldownTicks
+    XDEF    CLEANUP_AlertProcessingFlag
+    XDEF    CLEANUP_BannerTickCounter
 ; ========== CLEANUP.c ==========
 
 Global_STR_CLEANUP_C_1:

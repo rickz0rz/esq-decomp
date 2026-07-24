@@ -104,7 +104,7 @@ TEXTDISP_SetRastForMode:
     ADDA.L  D0,A0
     MOVE.B  (A0),WDISP_PaletteTriplesBBase
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVE.L  D7,D0
     EXT.L   D0
     MOVEA.L A0,A1

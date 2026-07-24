@@ -1,3 +1,4 @@
+    XDEF    CLEANUP_RenderAlignedStatusScreen
     XDEF    CLEANUP_BuildAndRenderAlignedStatusBanner
 
 ;------------------------------------------------------------------------------
@@ -374,7 +375,7 @@ CLEANUP_RenderAlignedStatusScreen:
     JSR     GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L WDISP_DisplayContextBase,A2
     MOVEA.L 14(A2),A1
     MOVEQ   #0,D0
@@ -947,7 +948,7 @@ CLEANUP_RenderAlignedStatusScreen:
     JSR     ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEQ   #0,D0
     MOVEA.L WDISP_DisplayContextBase,A1
     MOVE.W  2(A1),D0

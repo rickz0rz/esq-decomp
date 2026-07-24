@@ -1,3 +1,66 @@
+    XDEF    Global_STR_CTASKS_C_1
+    XDEF    Global_STR_IFF_TASK_1
+    XDEF    Global_STR_CTASKS_C_2
+    XDEF    Global_STR_IFF_TASK_2
+    XDEF    CTASKS_CloseTaskCompletionFlag
+    XDEF    CTASKS_CloseTaskFileHandle
+    XDEF    Global_STR_CTASKS_C_3
+    XDEF    Global_STR_CTASKS_C_4
+    XDEF    Global_STR_CLOSE_TASK
+    XDEF    CTASKS_PrimaryOiWritePendingFlag
+    XDEF    CTASKS_SecondaryOiWritePendingFlag
+    XDEF    CTASKS_PendingPrimaryOiDiskId
+    XDEF    CTASKS_PendingSecondaryOiDiskId
+    XDEF    CTASKS_TerminationReasonPtrTable
+    XDEF    CTASKS_EXT_GRF
+    XDEF    CTASKS_PATH_CURDAY_DAT
+    XDEF    CTASKS_PATH_QTABLE_INI
+    XDEF    CTASKS_PATH_OINFO_DAT
+    XDEF    Global_STR_DF0_NXTDAY_DAT
+    XDEF    DISKIO_SaveOperationReadyFlag
+    XDEF    DISKIO_BufferControl
+    XDEF    CONFIG_RefreshIntervalMinutes
+    XDEF    CTASKS_STR_C
+    XDEF    CONFIG_NicheModeCycleBudget_Y
+    XDEF    CONFIG_NicheModeCycleBudget_Static
+    XDEF    CONFIG_SerializedNumericSlot05
+    XDEF    CONFIG_NewgridWindowSpanHalfHoursPrimary
+    XDEF    CTASKS_STR_G
+    XDEF    CONFIG_SerializedFlagSlot08_DefaultN
+    XDEF    CTASKS_STR_A
+    XDEF    CTASKS_STR_E
+    XDEF    CONFIG_SerializedNumericSlot10
+    XDEF    CONFIG_NicheModeCycleBudget_Custom
+    XDEF    CONFIG_NewgridSelectionCode34PrimaryEnabledFlag
+    XDEF    CONFIG_NewgridSelectionCode35EnabledFlag
+    XDEF    CONFIG_SerializedFlagSlot15_DefaultN
+    XDEF    CONFIG_NewgridSelectionCode34AltEnabledFlag
+    XDEF    CONFIG_NewgridSelectionCode32EnabledFlag
+    XDEF    CONFIG_RuntimeMode12BannerJumpEnabledFlag
+    XDEF    CTASKS_STR_L
+    XDEF    CONFIG_SerializedNumericSlot19
+    XDEF    CONFIG_SerializedNumericSlot20
+    XDEF    CONFIG_ModeCycleEnabledFlag
+    XDEF    CONFIG_NewgridPlaceholderBevelFlag
+    XDEF    CONFIG_NewgridSelectionCode48_49EnabledFlag
+    XDEF    CONFIG_SerializedNumericSlot25
+    XDEF    CONFIG_SerializedNumericSlot26
+    XDEF    CONFIG_NewgridWindowSpanHalfHoursAlt
+    XDEF    CONFIG_TimeWindowMinutes
+    XDEF    CONFIG_ModeCycleGateDuration
+    XDEF    CONFIG_NewgridSelectionCode16EnabledFlag
+    XDEF    Global_REF_STR_USE_24_HR_CLOCK
+    XDEF    CONFIG_ParseiniLogoScanEnabledFlag
+    XDEF    CONFIG_BannerCopperHeadByte
+    XDEF    Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES
+    XDEF    ED_DiagTextModeChar
+    XDEF    CONFIG_EnsurePc1GfxAssignedFlag
+    XDEF    CONFIG_MsnRuntimeModeSelectorChar_LRBN
+    XDEF    CONFIG_LRBN_FlagChar
+    XDEF    CONFIG_MSN_FlagChar
+    XDEF    CTASKS_STR_1
+    XDEF    CONFIG_RefreshIntervalSeconds
+    XDEF    DISKIO_OpenCount
 ; ========== CTASKS.c ==========
 
 Global_STR_CTASKS_C_1:
@@ -205,7 +268,7 @@ Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES:
 ;------------------------------------------------------------------------------
 ED_DiagTextModeChar:
     DC.B    "N"
-ED_DiagTextModeChar_Length = CONFIG_EnsurePc1GfxAssignedFlag-ED_DiagTextModeChar
+    assert ED_DiagTextModeChar_Length==CONFIG_EnsurePc1GfxAssignedFlag-ED_DiagTextModeChar,"ED_DiagTextModeChar_Length in data-lengths.s is out of sync with the data layout"
 CONFIG_EnsurePc1GfxAssignedFlag:
     DC.B    "N"
 CONFIG_MsnRuntimeModeSelectorChar_LRBN:

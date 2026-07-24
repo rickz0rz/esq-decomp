@@ -1,3 +1,27 @@
+    XDEF    Global_STR_BRUSH_C_1
+    XDEF    Global_STR_BRUSH_C_2
+    XDEF    Global_STR_BRUSH_C_3
+    XDEF    Global_STR_BRUSH_C_4
+    XDEF    Global_STR_BRUSH_C_5
+    XDEF    Global_STR_BRUSH_C_6
+    XDEF    Global_STR_BRUSH_C_7
+    XDEF    Global_STR_BRUSH_C_8
+    XDEF    Global_STR_BRUSH_C_9
+    XDEF    BRUSH_STR_IFF_FORM
+    XDEF    Global_STR_BRUSH_C_10
+    XDEF    Global_STR_BRUSH_C_11
+    XDEF    Global_STR_BRUSH_C_12
+    XDEF    Global_STR_BRUSH_C_13
+    XDEF    Global_STR_BRUSH_C_14
+    XDEF    Global_STR_BRUSH_C_15
+    XDEF    Global_STR_BRUSH_C_16
+    XDEF    Global_STR_BRUSH_C_17
+    XDEF    Global_STR_BRUSH_C_18
+    XDEF    Global_STR_BRUSH_C_19
+    XDEF    BRUSH_STR_ALIAS_CODE_00
+    XDEF    BRUSH_STR_ALIAS_CODE_11
+    XDEF    BRUSH_STR_ALIAS_CODE_DT
+    XDEF    BRUSH_STR_FALLBACK_DITHER
 ; ========== BRUSH.c ==========
 
 Global_STR_BRUSH_C_1:

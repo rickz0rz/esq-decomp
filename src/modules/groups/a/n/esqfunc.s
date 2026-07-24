@@ -379,7 +379,7 @@ ESQFUNC_UpdateDiskWarningAndRefreshTick:
 .lab_096A:
     MOVE.W  #(-1),Global_RefreshTickCounter
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     90.W
     PEA     Global_STR_DISK_0_IS_WRITE_PROTECTED
     MOVE.L  A0,-(A7)
@@ -391,7 +391,7 @@ ESQFUNC_UpdateDiskWarningAndRefreshTick:
 .lab_096B:
     MOVE.W  #(-1),Global_RefreshTickCounter
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     90.W
     PEA     Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0
     MOVE.L  A0,-(A7)
@@ -850,7 +850,7 @@ ESQFUNC_UpdateRefreshModeState:
     MOVE.L  D0,NEWGRID_MessagePumpSuspendFlag
     MOVE.W  #$90,ESQPARS2_BannerRowWidthBytes
     MOVE.W  #$230,ESQPARS2_BannerCopyBlockSpanBytes
-    JSR     ESQSHARED4_ComputeBannerRowBlitGeometry
+    BSR.W   ESQSHARED4_ComputeBannerRowBlitGeometry
 
 .apply_mode_selector_state:
     TST.L   D7
@@ -1436,7 +1436,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.W  D0,ESQ_CopperStatusDigitsA_TailColorWord
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEA.L Global_HANDLE_TOPAZ_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -1512,7 +1512,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     92.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
@@ -1535,7 +1535,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     110.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
@@ -1564,7 +1564,7 @@ ESQFUNC_DrawDiagnosticsScreen:
 
     LEA     92(A7),A7
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     128.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
@@ -1615,7 +1615,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     146.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
@@ -1644,7 +1644,7 @@ ESQFUNC_DrawDiagnosticsScreen:
 
     LEA     68(A7),A7
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     164.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
@@ -1672,7 +1672,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     182.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
@@ -1704,7 +1704,7 @@ ESQFUNC_DrawDiagnosticsScreen:
 
     LEA     72(A7),A7
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     200.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
@@ -1745,14 +1745,14 @@ ESQFUNC_DrawDiagnosticsScreen:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     218.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -2561,7 +2561,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     JSR     _LVOSetRast(A6)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #31,D0
     JSR     _LVOSetRast(A6)

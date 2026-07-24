@@ -12,3 +12,6 @@ bin/
 # Build output
 *.o
 *.dis
+
+__pycache__/
+*.pyc

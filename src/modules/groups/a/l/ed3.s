@@ -241,7 +241,7 @@ ED_DrawESCMenuBottomHelp:
 ED_InitRastport2Pens:
     LINK.W  A5,#-4
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVE.L  A0,-4(A5)
     MOVEA.L A0,A1
     MOVEQ   #0,D0

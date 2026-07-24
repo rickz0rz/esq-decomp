@@ -109,7 +109,7 @@ ESQ_StoreCtrlSampleEntry:
 ESQ_SetCopperEffect_Default:
     MOVE.B  #0,D0
     MOVE.B  #$3f,D1
-    JSR     ESQ_SetCopperEffectParams
+    BSR.W   ESQ_SetCopperEffectParams
 
     RTS
 
@@ -143,7 +143,7 @@ ESQ_SetCopperEffect_Custom:
     MOVE.B  D1,(A1)
     MOVE.B  #$3f,D0
     MOVE.B  HIGHLIGHT_CustomValue,D1
-    JSR     ESQ_SetCopperEffectParams
+    BSR.S   ESQ_SetCopperEffectParams
 
     RTS
 
@@ -177,7 +177,7 @@ ESQ_SetCopperEffect_AllOn:
     MOVE.B  D1,(A1)
     MOVE.B  #$3f,D0
     MOVE.B  #$3f,D1
-    JSR     ESQ_SetCopperEffectParams
+    BSR.S   ESQ_SetCopperEffectParams
 
     RTS
 
@@ -211,7 +211,7 @@ ESQ_SetCopperEffect_OffDisableHighlight:
     MOVE.B  D1,(A1)
     MOVE.B  #0,D0
     MOVE.B  #0,D1
-    JSR     ESQ_SetCopperEffectParams
+    BSR.S   ESQ_SetCopperEffectParams
 
     JSR     GCOMMAND_DisableHighlight
 
@@ -247,7 +247,7 @@ ESQ_SetCopperEffect_OnEnableHighlight:
     MOVE.B  D1,(A1)
     MOVE.B  #$3f,D0
     MOVE.B  #0,D1
-    JSR     ESQ_SetCopperEffectParams
+    BSR.S   ESQ_SetCopperEffectParams
 
     JSR     GCOMMAND_EnableHighlight
 
@@ -278,7 +278,7 @@ ESQ_SetCopperEffectParams:
     MOVE.B  D0,HIGHLIGHT_CopperEffectParamA
     MOVE.B  D1,HIGHLIGHT_CopperEffectParamB
     MOVE.W  #5,HIGHLIGHT_CopperEffectSeed
-    JSR     ESQ_UpdateCopperListsFromParams
+    BSR.S   ESQ_UpdateCopperListsFromParams
 
     RTS
 
@@ -569,7 +569,7 @@ ESQ_DecCopperListsPrimary:
 
 .update_dual_loop:
     MOVE.W  0(A2,D5.W),D0
-    JSR     ESQ_DecColorStep
+    BSR.S   ESQ_DecColorStep
 
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
@@ -579,7 +579,7 @@ ESQ_DecCopperListsPrimary:
 
 .update_primary_loop:
     MOVE.W  0(A2,D5.W),D0
-    JSR     ESQ_DecColorStep
+    BSR.S   ESQ_DecColorStep
 
     MOVE.W  D0,0(A2,D5.W)
     ADDQ.W  #4,D5
@@ -642,7 +642,7 @@ ESQ_NoOp_006A:
     BEQ.W   .skip_index4
 
     MOVE.W  0(A2,D5.W),D0
-    JSR     ESQ_DecColorStep
+    BSR.S   ESQ_DecColorStep
 
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
@@ -733,7 +733,7 @@ ESQ_IncCopperListsTowardsTargets:
 
 .update_dual_loop:
     MOVE.W  0(A2,D5.W),D0
-    JSR     ESQ_BumpColorTowardTargets
+    BSR.S   ESQ_BumpColorTowardTargets
 
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
@@ -743,7 +743,7 @@ ESQ_IncCopperListsTowardsTargets:
 
 .update_primary_loop:
     MOVE.W  0(A2,D5.W),D0
-    JSR     ESQ_BumpColorTowardTargets
+    BSR.S   ESQ_BumpColorTowardTargets
 
     MOVE.W  D0,0(A2,D5.W)
     ADDQ.W  #4,D5
@@ -807,7 +807,7 @@ ESQ_NoOp_0074:
     BEQ.W   .skip_index4
 
     MOVE.W  0(A2,D5.W),D0
-    JSR     ESQ_BumpColorTowardTargets
+    BSR.S   ESQ_BumpColorTowardTargets
 
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
@@ -1013,7 +1013,7 @@ ESQ_TickClockAndFlagEvents:
     MOVE.W  D1,20(A0)
 
 .update_month_day:
-    JSR     ESQ_UpdateMonthDayFromDayOfYear
+    BSR.S   ESQ_UpdateMonthDayFromDayOfYear
 
 .return:
     MOVE.W  D4,D0
@@ -2057,7 +2057,7 @@ ESQ_TickGlobalCounters:
     CMPI.W  #$5460,D0
     BNE.S   .after_reboot_check
 
-    JSR     ESQ_ColdReboot
+    BSR.W   ESQ_ColdReboot
 
 .after_reboot_check:
     MOVE.W  D0,ESQ_GlobalTickCounter

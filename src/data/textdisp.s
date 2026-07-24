@@ -1,3 +1,21 @@
+    XDEF    Global_STR_TEXTDISP_C_1
+    XDEF    TEXTDISP_DefaultSpacePad
+    XDEF    Global_STR_TEXTDISP_C_2
+    XDEF    Global_STR_DF0_SOURCECFG_INI_2
+    XDEF    Global_STR_TEXTDISP_C_3
+    XDEF    Global_STR_TEXTDISP_C_4
+    XDEF    TEXTDISP_ActiveGroupId
+    XDEF    TEXTDISP_FormatEntryFallbackTable
+    XDEF    TEXTDISP_CenterAlignToken
+    XDEF    TEXTDISP_LeftAlignToken
+    XDEF    TEXTDISP_Tag_PPV
+    XDEF    TEXTDISP_Tag_SBE
+    XDEF    TEXTDISP_Tag_SPORTS
+    XDEF    TEXTDISP_Tag_SPT_Filter
+    XDEF    Global_STR_ASTERISK_2
+    XDEF    TEXTDISP_Tag_FIND1
+    XDEF    Global_STR_ASTERISK_3
+    XDEF    TEXTDISP_Tag_SPT_Select
 ; ========== TEXTDISP.c ==========
 
 Global_STR_TEXTDISP_C_1:

@@ -128,16 +128,16 @@ ESQ_CheckTopazFontGuard:
 
 ;LAB_0018:  ; unreferenced
     MOVEA.L Global_REF_INTUITION_LIBRARY,A0
-    MOVE.L  (Global_STR_TOPAZ_FONT-Global_REF_INTUITION_LIBRARY)+4(A0),.strTopazFont1(A5)
+    MOVE.L  Offset_TopazFontName_FromIntuitionLibraryRef+4(A0),.strTopazFont1(A5)
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(ESQIFF_SecondaryLineHeadPtr_HiWord-Global_STR_TOPAZ_FONT),A0
+    ADDA.W  #Offset_SecondaryLineHeadHiWord_FromTopazFont,A0
     MOVE.L  A0,.lab1DE9(A5)
     MOVEQ   #2,D0
     CMP.B   5(A0),D0
     BNE.W   .show_rerun_error
 
     MOVEA.L Global_REF_INTUITION_LIBRARY,A0
-    MOVE.L  (Global_STR_TOPAZ_FONT-Global_REF_INTUITION_LIBRARY)(A0),.strTopazFont2(A5)
+    MOVE.L  Offset_TopazFontName_FromIntuitionLibraryRef(A0),.strTopazFont2(A5)
     MOVE.W  20(A0),D0                   ; 20 = Library__lib_Version
     MOVEQ   #33,D1
     CMP.W   D1,D0                       ; Sub 33 from the obtained version
@@ -151,7 +151,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(ESQ_TopazGuardRastPortAnchor-Global_STR_TOPAZ_FONT),A0
+    ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
     ; Set the primary pen to 2
     MOVEA.L A0,A1
@@ -161,7 +161,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(ESQ_TopazGuardRastPortAnchor-Global_STR_TOPAZ_FONT),A0
+    ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
     ; Draw a filled rect from 0,0 to 639,56
     MOVEA.L A0,A1
@@ -174,7 +174,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(ESQ_TopazGuardRastPortAnchor-Global_STR_TOPAZ_FONT),A0
+    ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
     ; Set the primary pen to 1
     MOVEA.L A0,A1
@@ -183,7 +183,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(ESQ_TopazGuardRastPortAnchor-Global_STR_TOPAZ_FONT),A0
+    ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
     ; Move the pen to 20,100
     MOVEA.L A0,A1
@@ -193,7 +193,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(ESQ_TopazGuardRastPortAnchor-Global_STR_TOPAZ_FONT),A0
+    ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
     ; Draw "Please Standby..." text
     MOVEA.L A0,A1
@@ -204,7 +204,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(ESQ_TopazGuardRastPortAnchor-Global_STR_TOPAZ_FONT),A0
+    ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
     ; Move the pen to 20,113
     MOVEA.L A0,A1
@@ -214,7 +214,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(ESQ_TopazGuardRastPortAnchor-Global_STR_TOPAZ_FONT),A0
+    ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
     ; Draw "ATTENTION! SYSTEM ENGINEER" text
     MOVEA.L A0,A1
@@ -224,7 +224,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(ESQ_TopazGuardRastPortAnchor-Global_STR_TOPAZ_FONT),A0
+    ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
     ; Move the pen to 20,126
     MOVEA.L A0,A1
@@ -234,7 +234,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(ESQ_TopazGuardRastPortAnchor-Global_STR_TOPAZ_FONT),A0
+    ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
     ; Draw "Report Code ER003 to TV Guide Technical Services." text
     ; Fun fact: that string is 49 characters so it gets truncated...
     MOVEA.L A0,A1

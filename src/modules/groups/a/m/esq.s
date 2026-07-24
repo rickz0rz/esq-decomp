@@ -968,7 +968,7 @@ ESQ_MainInitAndRun:
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     150.W
     PEA     DISKIO_ErrorMessageScratch
     MOVE.L  A0,-(A7)
@@ -983,7 +983,7 @@ ESQ_MainInitAndRun:
     BNE.S   .format_version_banner
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     150.W
     PEA     ESQ_STR_NO_DF1_PRESENT
     MOVE.L  A0,-(A7)
@@ -1031,7 +1031,7 @@ ESQ_MainInitAndRun:
     JSR     GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     60.W
     ; Also displays select-code text copied from argv[1] earlier.
     PEA     ESQ_SelectCodeBuffer
@@ -1039,21 +1039,21 @@ ESQ_MainInitAndRun:
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     90.W
     PEA     ESQ_StartupVersionBannerBuffer
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     120.W
     PEA     ESQ_STR_SystemInitializing
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     150.W
     PEA     ESQ_STR_PleaseStandByEllipsis
     MOVE.L  A0,-(A7)
@@ -1068,7 +1068,7 @@ ESQ_MainInitAndRun:
 
 .check_memory_and_video_caps:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     180.W
     PEA     ESQ_STR_AttentionSystemEngineer
     MOVE.L  A0,-(A7)
@@ -1079,7 +1079,7 @@ ESQ_MainInitAndRun:
     BEQ.S   .maybe_show_compat_note
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     210.W
     PEA     ESQ_STR_ReportErrorCodeEr011ToTVGuide
     MOVE.L  A0,-(A7)
@@ -1092,7 +1092,7 @@ ESQ_MainInitAndRun:
     BEQ.S   .init_compat_wait
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     TST.W   HAS_REQUESTED_FAST_MEMORY
     BEQ.S   .select_compat_note_y_no_fastmem
 

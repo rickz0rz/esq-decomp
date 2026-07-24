@@ -1,3 +1,20 @@
+    XDEF    Global_STR_ESQDISP_C
+    XDEF    ESQDISP_StatusIndicatorColorCache
+    XDEF    ESQDISP_StatusIndicatorMask
+    XDEF    Global_REF_INTB_AUD1_INTERRUPT
+    XDEF    Global_REF_INTB_RBF_INTERRUPT
+    XDEF    ESQDISP_DisplayActiveFlag
+    XDEF    ESQDISP_StatusBannerClampGateFlag
+    XDEF    ESQDISP_PendingGridReinitFlag
+    XDEF    ESQDISP_PrimarySecondaryMirrorFlag
+    XDEF    ESQDISP_SecondaryPersistRequestFlag
+    XDEF    ESQDISP_StatusRefreshPendingFlag
+    XDEF    ESQDISP_ProgramInfoZeroTag
+    XDEF    ESQDISP_LatchedInputModeBit
+    XDEF    ESQDISP_InputModeDebounceCount
+    XDEF    ESQDISP_LastPrimaryCountdownValue
+    XDEF    ESQDISP_SecondaryPersistArmGateFlag
+    XDEF    ESQDISP_SecondaryPropagationDoneFlag
 ; ========== ESQDISP.c ==========
 
 Global_STR_ESQDISP_C:

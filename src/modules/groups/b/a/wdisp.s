@@ -1410,7 +1410,7 @@ WDISP_HandleWeatherStatusCommand:
     JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEQ   #0,D6
     MOVEA.L WDISP_DisplayContextBase,A1
     MOVE.W  4(A1),D6

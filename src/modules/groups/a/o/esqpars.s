@@ -3387,7 +3387,7 @@ ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
-    JMP     LOCAVAIL_SaveAvailabilityDataFile
+    BRA.W   LOCAVAIL_SaveAvailabilityDataFile
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition   (Jump-table forwarder)
@@ -3431,7 +3431,7 @@ ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile:
-    JMP     LADFUNC_SaveTextAdsToFile
+    BRA.W   LADFUNC_SaveTextAdsToFile
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Jump-table forwarder)

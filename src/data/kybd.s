@@ -1,3 +1,9 @@
+    XDEF    Global_STR_KYBD_C
+    XDEF    KYBD_PATH_DF0_LOCAL_ADS
+    XDEF    KYBD_CustomPaletteCaptureScratchBase
+    XDEF    KYBD_CustomPaletteTriplesRBase
+    XDEF    KYBD_CustomPaletteTriplesGBase
+    XDEF    KYBD_CustomPaletteTriplesBBase
 ; ========== KYBD.c ==========
 
 Global_STR_KYBD_C:

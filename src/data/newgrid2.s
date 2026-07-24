@@ -1,3 +1,15 @@
+    XDEF    Global_STR_NEWGRID2_C_1
+    XDEF    Global_STR_NEWGRID2_C_2
+    XDEF    NEWGRID2_CachedModeIndex
+    XDEF    NEWGRID2_DispatchStateIndex
+    XDEF    NEWGRID2_PendingOperationId
+    XDEF    NEWGRID2_LastDispatchResult
+    XDEF    NEWGRID2_BufferAllocationFlag
+    XDEF    Global_STR_NEWGRID2_C_3
+    XDEF    Global_STR_NEWGRID2_C_4
+    XDEF    Global_STR_NEWGRID2_C_5
+    XDEF    Global_STR_NEWGRID2_C_6
+    XDEF    NEWGRID2_ErrorLogEntryPtr
 ; ========== NEWGRID2.c ==========
 
 Global_STR_NEWGRID2_C_1:

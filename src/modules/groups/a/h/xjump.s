@@ -103,7 +103,7 @@ GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh:
-    JMP     ESQDISP_UpdateStatusMaskAndRefresh
+    BRA.W   ESQDISP_UpdateStatusMaskAndRefresh
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults   (Routine at GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults)

@@ -1,3 +1,44 @@
+    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable
+    XDEF    Global_STR_GCOMMAND_C_1
+    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile
+    XDEF    GCOMMAND_NicheParseScratchSeedWord
+    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateLoad
+    XDEF    Global_STR_GCOMMAND_C_2
+    XDEF    GCOMMAND_FMT_PCT_T_MplexTemplateLoad
+    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateSave
+    XDEF    GCOMMAND_MplexTemplateFieldSeparatorByteStorage
+    XDEF    GCOMMAND_MplexParseScratchSeedWord
+    XDEF    GCOMMAND_FMT_PCT_T_MplexTemplateParse
+    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad
+    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad
+    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete
+    XDEF    Global_STR_GCOMMAND_C_3
+    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplateSave
+    XDEF    GCOMMAND_PpvTemplateFieldSeparatorByteStorage
+    XDEF    GCOMMAND_PpvParseScratchSeedLong
+    XDEF    GCOMMAND_PATH_GFX_COLON
+    XDEF    GCOMMAND_STR_WORK_COLON
+    XDEF    GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_LOGO_DOT_LS
+    XDEF    GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_WORK_COLON_
+    XDEF    GCOMMAND_PresetSeedPackedWordTable
+    XDEF    GCOMMAND_PresetWorkResetPendingFlag
+    XDEF    GCOMMAND_BannerRebuildPendingFlag
+    XDEF    GCOMMAND_BannerRowFallbackOnFirstRowFlag
+    XDEF    GCOMMAND_ActiveHighlightMsgPtr
+    XDEF    GCOMMAND_BannerRowByteOffsetResetValue
+    XDEF    GCOMMAND_BannerPhaseIndexCurrent
+    XDEF    GCOMMAND_HighlightHoldoffTickCount
+    XDEF    GCOMMAND_FMT_PCT_S_COLON
+    XDEF    GCOMMAND_STR_GRADIENT
+    XDEF    GCOMMAND_FMT_COLOR_PCT_D_PCT_D
+    XDEF    GCOMMAND_FMT_PCT_D_PCT_03X
+    XDEF    GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE
+    XDEF    GCOMMAND_BannerFadeResetPendingFlag
+    XDEF    GCOMMAND_DriveProbeRequestedFlag
+    XDEF    Global_STR_INPUTDEVICE
+    XDEF    Global_STR_CONSOLEDEVICE
+    XDEF    Global_STR_INPUT_DEVICE
+    XDEF    Global_STR_CONSOLE_DEVICE
 ; ========== GCOMMAND.c ==========
 
 GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable:
@@ -333,7 +374,7 @@ GCOMMAND_ActiveHighlightMsgPtr:
 ;   Value is $00001760 (5984 decimal), loaded whenever the 98-step banner ring wraps.
 ;   Not a table; this is a single longword constant.
 ;------------------------------------------------------------------------------
-GCOMMAND_BannerRowByteOffsetResetValueDefault = 5984
+; GCOMMAND_BannerRowByteOffsetResetValueDefault moved to src/data-lengths.s (plain constant, value 5984)
 GCOMMAND_BannerRowByteOffsetResetValue:
     DC.L    GCOMMAND_BannerRowByteOffsetResetValueDefault
 ;------------------------------------------------------------------------------

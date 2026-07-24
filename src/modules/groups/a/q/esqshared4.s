@@ -25,14 +25,14 @@
     ; Dead code
     MOVEM.L D0-D1/A0-A4,-(A7)
     MOVE.W  ESQSHARED_BannerColorModeWord,D0
-    JSR     ESQSHARED4_ResetBannerColorSweepState
+    BSR.S   ESQSHARED4_ResetBannerColorSweepState
 
     MOVE.W  #$62,ESQPARS2_BannerColorStepCounter
     MOVE.W  #0,ESQPARS2_BannerSweepEntryGuardCounter
     MOVE.W  #0,ESQPARS2_BannerSweepDelayCounter
     LEA     ESQ_CopperListBannerA,A4
     MOVE.W  CONFIG_BannerCopperHeadByte,D0
-    JSR     ESQSHARED4_ApplyBannerColorStep
+    BSR.W   ESQSHARED4_ApplyBannerColorStep
 
     MOVEM.L (A7)+,D0-D1/A0-A4
     RTS
@@ -42,11 +42,11 @@
     ; Dead code.
     MOVEM.L D0-D1/A0-A4,-(A7)
     MOVE.W  ESQSHARED_BannerColorModeWord,D0
-    JSR     ESQSHARED4_ResetBannerColorSweepState
+    BSR.S   ESQSHARED4_ResetBannerColorSweepState
 
     MOVE.W  #$62,ESQPARS2_BannerColorStepCounter
     MOVE.W  #1,ESQPARS2_BannerSweepEntryGuardCounter
-    JSR     ESQSHARED4_ResetBannerColorToStart
+    BSR.W   ESQSHARED4_ResetBannerColorToStart
 
     MOVEM.L (A7)+,D0-D1/A0-A4
     RTS
@@ -82,7 +82,7 @@ ESQSHARED4_ResetBannerColorSweepState:
     MOVE.W  D0,ESQPARS2_BannerTailBiasValue
     MOVE.W  #$62,ESQPARS2_BannerColorStepCounter
     MOVE.W  #1,ESQPARS2_BannerSweepEntryGuardCounter
-    JSR     ESQSHARED4_ResetBannerColorToStart
+    BSR.W   ESQSHARED4_ResetBannerColorToStart
 
     RTS
 
@@ -117,11 +117,11 @@ ESQSHARED4_InitializeBannerCopperSystem:
     MOVE.W  #5,ESQPARS2_ReadModeFlags
     MOVE.W  #2,ESQPARS2_StateIndex
     MOVE.W  #10,ESQPARS2_HighlightTickCountdown
-    JSR     ESQSHARED4_SnapshotDisplayBufferBases
+    BSR.W   ESQSHARED4_SnapshotDisplayBufferBases
 
     JSR     ESQSHARED4_ResetBannerColorSweepState(PC)
 
-    JSR     ESQSHARED4_SetupBannerPlanePointerWords
+    BSR.S   ESQSHARED4_SetupBannerPlanePointerWords
 
     MOVEA.L #CIAB_PRA,A1
     MOVE.B  (A1),D1
@@ -344,7 +344,7 @@ ESQSHARED4_BindAndClearBannerWorkRaster:
     MOVE.W  D0,ESQ_BannerWorkRasterPtrB_HiWord
     MOVE.W  D0,ESQ_BannerWorkRasterPtrMirrorB_HiWord
     MOVE.W  D0,ESQ_BannerWorkRasterPtrTailB_HiWord
-    JSR     ESQSHARED4_ClearBannerWorkRasterWithOnes
+    BSR.S   ESQSHARED4_ClearBannerWorkRasterWithOnes
 
     MOVEM.L (A7)+,D0/A0-A1
     RTS
@@ -416,7 +416,7 @@ ESQSHARED4_ProgramDisplayWindowAndCopper:
     ; how is this calculated?
     MOVE.W  #$58,(BPL1MOD-BLTDDAT)(A0)
     MOVE.W  #$58,(BPL2MOD-BLTDDAT)(A0)
-    JSR     ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
+    BSR.W   ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
 
     LEA     ESQ_CopperEffectListB,A2
     MOVE.L  A2,D0
@@ -542,14 +542,14 @@ ESQSHARED4_TickCopperAndBannerTransitions:
     TST.W   ED2_HighlightTickEnabledFlag
     BEQ.S   .lab_0C8B
 
-    JSR     GCOMMAND_TickHighlightState
+    BSR.W   GCOMMAND_TickHighlightState
 
     BRA.S   .lab_0C8B
 
 .lab_0C8A:
     SUBQ.B  #1,GCOMMAND_HighlightHoldoffTickCount
     SUBQ.W  #1,ESQPARS2_HighlightTickCountdown
-    JSR     ESQSHARED4_BlitBannerRowsForActiveField
+    BSR.W   ESQSHARED4_BlitBannerRowsForActiveField
 
 .lab_0C8B:
     MOVEM.L (A7)+,D0-D3/A0-A6
@@ -1369,7 +1369,7 @@ ESQSHARED4_LoadCopperColorWordsFromNibbleTable:
     MOVEQ   #7,D4
 
 .lab_0CA2:
-    JSR     ESQSHARED4_DecodeRgbNibbleTriplet
+    BSR.S   ESQSHARED4_DecodeRgbNibbleTriplet
 
     CMPI.W  #4,D3
     BEQ.W   .lab_0CA3

@@ -1,3 +1,4 @@
+    XDEF    ESQDISP_DrawStatusBanner
     XDEF    ESQDISP_AllocateHighlightBitmaps
     XDEF    ESQDISP_ApplyStatusMaskToIndicators
     XDEF    ESQDISP_ComputeScheduleOffsetForRow

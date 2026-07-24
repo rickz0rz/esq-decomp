@@ -118,7 +118,7 @@ CLOCK_SecondsFromEpoch:
 ;   Converts LF to CR+LF behavior before output.
 ;------------------------------------------------------------------------------
 PARALLEL_WriteCharD0:
-    JSR     PARALLEL_WriteCharHw
+    BSR.S   PARALLEL_WriteCharHw
 
     RTS
 
@@ -226,7 +226,7 @@ PARALLEL_WaitReady:
 ;   Calls PARALLEL_CheckReadyStub which returns -1.
 ;------------------------------------------------------------------------------
 PARALLEL_CheckReady:
-    JSR     PARALLEL_CheckReadyStub
+    BSR.W   PARALLEL_CheckReadyStub
 
     RTS
 
@@ -308,7 +308,7 @@ PARALLEL_RawDoFmtCommon:
     RTS
 
 .lab_JMPTBL_PARALLEL_RawDoFmt:
-    JSR     PARALLEL_RawDoFmt
+    BSR.S   PARALLEL_RawDoFmt
 
     RTS
 

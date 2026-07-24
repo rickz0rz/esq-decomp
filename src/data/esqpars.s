@@ -1,3 +1,12 @@
+    XDEF    Global_STR_ESQPARS_C_1
+    XDEF    Global_STR_ESQPARS_C_2
+    XDEF    Global_STR_ESQPARS_C_3
+    XDEF    Global_STR_ESQPARS_C_4
+    XDEF    Global_STR_ESQPARS_C_5
+    XDEF    Global_STR_ESQPARS_C_6
+    XDEF    Global_STR_RESET_COMMAND_RECEIVED
+    XDEF    ESQPARS_BannerSubcommandSet
+    XDEF    ESQPARS_DefaultEntryCodeString
 ; ========== ESQPARS.c ==========
 
 Global_STR_ESQPARS_C_1:

@@ -1867,7 +1867,7 @@ TEXTDISP_DrawHighlightFrame:
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
     CLR.W   WDISP_AccumulatorFlushPending
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVE.L  D0,-18(A5)
     MOVE.L  D1,-22(A5)
     MOVE.L  A0,-4(A5)

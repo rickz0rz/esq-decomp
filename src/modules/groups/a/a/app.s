@@ -196,7 +196,7 @@ ESQ_CaptureCtrlBit3Stream:
     TST.W   CTRL_Bit3CapturePhase
     BNE.S   .advance_state
 
-    JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
+    BSR.W   GET_BIT_3_OF_CIAB_PRA_INTO_D1
 
     TST.B   D1
     BPL.W   .return
@@ -218,7 +218,7 @@ ESQ_CaptureCtrlBit3Stream:
     CMP.W   D1,D0
     BGT.W   .collect_samples
 
-    JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
+    BSR.W   GET_BIT_3_OF_CIAB_PRA_INTO_D1
 
     TST.B   D1
     BPL.S   .reset_state
@@ -245,7 +245,7 @@ ESQ_CaptureCtrlBit3Stream:
     CMP.W   D1,D0
     BGE.S   .assemble_and_store
 
-    JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
+    BSR.W   GET_BIT_3_OF_CIAB_PRA_INTO_D1
 
     LEA     CTRL_Bit3SampleScratch,A5
     ADDA.W  CTRL_Bit3SampleSlotIndex,A5
@@ -255,7 +255,7 @@ ESQ_CaptureCtrlBit3Stream:
     RTS
 
 .assemble_and_store:
-    JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
+    BSR.S   GET_BIT_3_OF_CIAB_PRA_INTO_D1
 
     TST.B   D1
     BMI.S   .reset_state_and_exit
@@ -291,7 +291,7 @@ ESQ_CaptureCtrlBit3Stream:
     MOVE.B  #0,(A1)
 
 .flush_on_zero:
-    JSR     ESQ_StoreCtrlSampleEntry
+    BSR.W   ESQ_StoreCtrlSampleEntry
 
     MOVEQ   #0,D1
 
@@ -386,7 +386,7 @@ ESQ_PollCtrlInput:
     MOVE.L  A5,-(A7)
     MOVE.L  A4,-(A7)
 
-    JSR     ESQ_CaptureCtrlBit4Stream
+    BSR.S   ESQ_CaptureCtrlBit4Stream
 
     LEA     ESQ_STR_B,A4
     MOVE.B  ESQ_StatusPacket__Bit3CaptureGateChar(A4),D1 ; A4+18 = status byte gate for CTRL bit-3 capture

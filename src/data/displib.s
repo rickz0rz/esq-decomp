@@ -1,3 +1,6 @@
+    XDEF    Global_STR_DISPLIB_C_1
+    XDEF    Global_STR_DISPLIB_C_2
+    XDEF    DISPTEXT_ControlMarkerXOffsetPx
 ; ========== DISPLIB.c ==========
 
 Global_STR_DISPLIB_C_1:

@@ -816,7 +816,7 @@ NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount:
 ;   Jump table entry that forwards to TLIBA_FindFirstWildcardMatchIndex.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
-    JMP     TLIBA_FindFirstWildcardMatchIndex
+    BRA.W   TLIBA_FindFirstWildcardMatchIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource   (Jump stub)

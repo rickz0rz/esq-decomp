@@ -2060,14 +2060,14 @@ LADFUNC_DrawEntryPreview:
 
     MOVE.L  D0,WDISP_DisplayContextBase
     MOVEA.L D0,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEA.L Global_HANDLE_H26F_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     LEA     Global_STR_SINGLE_SPACE_2,A0
     MOVEQ   #1,D0
@@ -2116,7 +2116,7 @@ LADFUNC_DrawEntryPreview:
     JSR     GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -2171,7 +2171,7 @@ LADFUNC_DrawEntryPreview:
     ADDA.L  D0,A0
     MOVE.B  (A0),WDISP_PaletteTriplesBBase
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVE.L  D4,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -2268,7 +2268,7 @@ LADFUNC_DrawEntryPreview:
     MOVE.L  -36(A5),D0
     CLR.B   0(A0,D0.L)
     MOVEA.L WDISP_DisplayContextBase,A1
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A1
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A1
     MOVE.L  -16(A5),-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D4,-(A7)
@@ -2285,7 +2285,7 @@ LADFUNC_DrawEntryPreview:
 
 .cleanup:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6

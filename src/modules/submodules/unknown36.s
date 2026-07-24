@@ -1,3 +1,6 @@
+    XDEF    DEBUG_STR_UserAbortRequested
+    XDEF    DEBUG_STR_Continue
+    XDEF    DEBUG_STR_Abort
     XDEF    UNKNOWN36_FinalizeRequest
     XDEF    UNKNOWN36_ShowAbortRequester
 

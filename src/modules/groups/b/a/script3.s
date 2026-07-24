@@ -3133,7 +3133,7 @@ SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 SCRIPT3_JMPTBL_MATH_DivS32:
-    JMP     MATH_DivS32
+    BRA.W   MATH_DivS32
 
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters   (JumpStub)
@@ -3177,7 +3177,7 @@ SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 SCRIPT3_JMPTBL_STRING_CompareN:
-    JMP     STRING_CompareN
+    BRA.W   STRING_CompareN
 
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh   (JumpStub)
@@ -3281,7 +3281,7 @@ SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist:
 ;   Jump stub to PARSE_ReadSignedLongSkipClass3_Alt.
 ;------------------------------------------------------------------------------
 SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
-    JMP     PARSE_ReadSignedLongSkipClass3_Alt
+    BRA.W   PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset   (JumpStub_GCOMMAND_AdjustBannerCopperOffset)
@@ -3385,7 +3385,7 @@ SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 SCRIPT3_JMPTBL_MATH_Mulu32:
-    JMP     MATH_Mulu32
+    BRA.W   MATH_Mulu32
 
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState   (JumpStub)
@@ -3427,4 +3427,4 @@ SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState:
 ;   Jump stub to STRING_CopyPadNul.
 ;------------------------------------------------------------------------------
 SCRIPT3_JMPTBL_STRING_CopyPadNul:
-    JMP     STRING_CopyPadNul
+    BRA.W   STRING_CopyPadNul

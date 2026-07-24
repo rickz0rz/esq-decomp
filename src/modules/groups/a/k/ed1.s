@@ -1046,7 +1046,7 @@ ED1_DrawStatusLine1:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     210.W
     PEA     .statusLine(A5)
     MOVE.L  A0,-(A7)
@@ -1084,7 +1084,7 @@ ED1_DrawStatusLine2:
     LINK.W  A5,#-52
     MOVE.L  D2,-(A7)
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #2,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -1107,7 +1107,7 @@ ED1_DrawStatusLine2:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     120.W
     PEA     .statusLine(A5)
     MOVE.L  A0,-(A7)
@@ -1124,7 +1124,7 @@ ED1_DrawStatusLine2:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     150.W
     PEA     .statusLine(A5)
     MOVE.L  A0,-(A7)
@@ -1140,7 +1140,7 @@ ED1_DrawStatusLine2:
 
     LEA     68(A7),A7
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     180.W
     PEA     .statusLine(A5)
     MOVE.L  A0,-(A7)

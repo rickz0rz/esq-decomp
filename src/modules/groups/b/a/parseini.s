@@ -2111,7 +2111,7 @@ PARSEINI_HandleFontCommand:
     BEQ.W   .return
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
 
     MOVEA.L A0,A1
     MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
@@ -2158,7 +2158,7 @@ PARSEINI_HandleFontCommand:
 
 .after_prevuec_font_loop:
     MOVE.L  Global_HANDLE_PREVUEC_FONT,-(A7)
-    JSR     TLIBA3_SetFontForAllViewModes
+    BSR.W   TLIBA3_SetFontForAllViewModes
 
     ADDQ.W  #4,A7
     BRA.W   .return
