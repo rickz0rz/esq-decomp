@@ -3,3 +3,4 @@
 #     C_REPLACEMENTS=src/c/replacements.txt ./build-split.sh
 # The default build stays pure assembly so the byte-exact gates remain valid.
 modules/submodules/unknown6.s    c/string_append_at_null.c
+modules/groups/b/a/newgrid1_getgridmodeindex.s    c/newgrid_get_grid_mode_index.c

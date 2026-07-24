@@ -829,7 +829,7 @@ ESQFUNC_FreeExtraTitleTextPointers:
 ; READS:
 ;   NEWGRID_MessagePumpSuspendFlag, NEWGRID_LastRefreshRequest
 ; WRITES:
-;   ESQFUNC_WeatherSliceWidthInitGate, ESQPARS2_BannerRowWidthBytes, ESQPARS2_BannerCopyBlockSpanBytes, NEWGRID_RefreshStateFlag, NEWGRID_MessagePumpSuspendFlag, NEWGRID_ModeSelectorState, NEWGRID_LastRefreshRequest
+;   ESQFUNC_WeatherSliceWidthInitGate, ESQPARS2_BannerRowWidthBytes, ESQPARS2_BannerCopyBlockSpanBytes, NEWGRID_RefreshStateFlag, NEWGRID_MessagePumpSuspendFlag, _NEWGRID_ModeSelectorState, NEWGRID_LastRefreshRequest
 ; DESC:
 ;   Updates NEWGRID refresh/mode selector state from the incoming request flag
 ;   and recomputes banner blit geometry when message-pump suspension is cleared.
@@ -857,12 +857,12 @@ ESQFUNC_UpdateRefreshModeState:
     BNE.S   .set_mode_selector_two
 
     MOVEQ   #0,D0
-    MOVE.L  D0,NEWGRID_ModeSelectorState
+    MOVE.L  D0,_NEWGRID_ModeSelectorState
     BRA.S   .store_last_refresh_request
 
 .set_mode_selector_two:
     MOVEQ   #2,D0
-    MOVE.L  D0,NEWGRID_ModeSelectorState
+    MOVE.L  D0,_NEWGRID_ModeSelectorState
     TST.L   NEWGRID_LastRefreshRequest
     BNE.S   .store_last_refresh_request
 

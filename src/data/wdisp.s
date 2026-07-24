@@ -189,7 +189,7 @@
     XDEF    ESQ_StartupPhaseSeed225E
     XDEF    NEWGRID_RefreshStateFlag
     XDEF    NEWGRID_MessagePumpSuspendFlag
-    XDEF    NEWGRID_ModeSelectorState
+    XDEF    _NEWGRID_ModeSelectorState
     XDEF    NEWGRID_LastRefreshRequest
     XDEF    Global_UIBusyFlag
     XDEF    CLEANUP_PendingAlertFlag
@@ -1898,17 +1898,17 @@ ESQ_StartupPhaseSeed225E:
 NEWGRID_RefreshStateFlag:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_MessagePumpSuspendFlag/NEWGRID_ModeSelectorState/NEWGRID_LastRefreshRequest
+; SYM: NEWGRID_MessagePumpSuspendFlag/_NEWGRID_ModeSelectorState/NEWGRID_LastRefreshRequest
 ; TYPE: u32/u32/u32
 ; PURPOSE: Companion refresh-state globals used to gate NEWGRID message processing and mode transitions.
-; USED BY: ESQFUNC_UpdateRefreshModeState, ESQDISP_ProcessGridMessagesIfIdle, NEWGRID_GetGridModeIndex, ED1_ExitEscMenu
+; USED BY: ESQFUNC_UpdateRefreshModeState, ESQDISP_ProcessGridMessagesIfIdle, _NEWGRID_GetGridModeIndex, ED1_ExitEscMenu
 ; NOTES: `NEWGRID_MessagePumpSuspendFlag` blocks grid message pumping while set.
-;   `NEWGRID_ModeSelectorState` is written as 0 or 2 by current paths.
+;   `_NEWGRID_ModeSelectorState` is written as 0 or 2 by current paths.
 ;   `NEWGRID_LastRefreshRequest` caches the last refresh-mode request argument.
 ;------------------------------------------------------------------------------
 NEWGRID_MessagePumpSuspendFlag:
     DS.L    1
-NEWGRID_ModeSelectorState:
+_NEWGRID_ModeSelectorState:
     DS.L    1
 NEWGRID_LastRefreshRequest:
     DS.L    1

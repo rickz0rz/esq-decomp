@@ -389,7 +389,7 @@ NEWGRID2_HandleGridState:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_ValidateSelectionCode
 
-    BSR.W   NEWGRID_GetGridModeIndex
+    BSR.W   _NEWGRID_GetGridModeIndex
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID2_CachedModeIndex

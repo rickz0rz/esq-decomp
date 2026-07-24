@@ -15,7 +15,7 @@ cd "$ROOT"
 VASM_BIN="${VASM_BIN:-$HOME/Downloads/vasm/vasmm68k_mot}"
 VLINK_BIN="${VLINK_BIN:-$HOME/Downloads/vbcc_installer/vlink/vlink}"
 VAMOS_ACTIVATE="${VAMOS_ACTIVATE:-$HOME/Downloads/vamos/bin/activate}"
-SCOPTS="${SCOPTS:-NOSTKCHK CODENAME=S_0 DATANAME=S_1}"   # options MUST precede the filename;
+SCOPTS="${SCOPTS:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1}"   # options MUST precede the filename;
                                                           # CODENAME/DATANAME make sc emit into the
                                                           # same sections as the asm, so PC-relative
                                                           # calls into C resolve at link time. See AGENTS.md

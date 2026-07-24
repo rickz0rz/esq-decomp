@@ -234,6 +234,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
 
     include "modules/groups/b/a/newgrid.s"
     include "modules/groups/b/a/newgrid1.s"
+    include "modules/groups/b/a/newgrid1_getgridmodeindex.s"
+    include "modules/groups/b/a/newgrid1b.s"
     include "modules/groups/b/a/newgrid2.s"
     include "modules/groups/b/a/p_type.s"
     include "modules/groups/b/a/parseini.s"

@@ -183,6 +183,18 @@ Two things must line up or the link fails:
   which amigahunk executables cannot represent ("Unsupported relocation type
   R_PC"). Always compile with `CODENAME=S_0 DATANAME=S_1`.
 
+## Extracting one function into its own module
+
+Replacement is per-module, so a function inside a multi-function `.s` must be
+split out first. `NEWGRID_GetGridModeIndex` is the worked example: the module
+becomes three files (before / the function / after), `src/Prevue.asm` gains two
+extra includes at the same position, and the hash is unchanged because content
+and order are identical.
+
+When splitting, **distribute the top-of-file `XDEF` block** so each part exports
+only what it defines — an `XDEF` for a symbol that ended up in another file is
+an error. Verify with `test-hash.sh` before going near C.
+
 ## Library code is not application code
 
 `src/modules/submodules/unknown*.s` is largely SAS/C runtime library code, not
