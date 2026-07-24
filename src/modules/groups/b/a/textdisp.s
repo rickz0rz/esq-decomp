@@ -35,7 +35,7 @@
 ;   D0-D3/A0-A1
 ; CALLS:
 ;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow,
-;   TEXTDISP_FormatEntryTimeForIndex, STR_SkipClass3Chars, STRING_AppendAtNull, TEXTDISP_FindControlToken,
+;   TEXTDISP_FormatEntryTimeForIndex, STR_SkipClass3Chars, _STRING_AppendAtNull, TEXTDISP_FindControlToken,
 ;   TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
 ;   TEXTDISP_PrimaryChannelCode, CLOCK_CurrentDayOfWeekIndex, TEXTDISP_BannerFallbackIsSpecialFlag/TEXTDISP_BannerCharSelected/TEXTDISP_BannerSelectedIsSpecialFlag, P_TYPE_WeatherBottomLineMsgPtr
@@ -219,7 +219,7 @@ TEXTDISP_BuildNowShowingStatusLine:
 
     MOVE.L  -192(A5),-(A7)
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -270,7 +270,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     ADDA.L  D1,A0
     MOVE.L  (A0),-(A7)
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     PEA     TEXTDISP_PrimarySearchText
     JSR     TEXTDISP_FindControlToken(PC)
@@ -322,18 +322,18 @@ TEXTDISP_BuildNowShowingStatusLine:
 
     PEA     SCRIPT_SpacerTripleA
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 .append_channel_label:
     PEA     SCRIPT_AlignedChannelAbbrevPrefix
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     PEA     -188(A5)
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     LEA     16(A7),A7
 
@@ -347,7 +347,7 @@ TEXTDISP_BuildNowShowingStatusLine:
 
     PEA     SCRIPT_SpacerTripleB
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -363,7 +363,7 @@ TEXTDISP_BuildNowShowingStatusLine:
 
     PEA     -188(A5)
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     LEA     20(A7),A7
 
@@ -403,7 +403,7 @@ TEXTDISP_BuildNowShowingStatusLine:
 
     MOVE.L  P_TYPE_WeatherBottomLineMsgPtr,-(A7)
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .render_output
@@ -433,7 +433,7 @@ TEXTDISP_BuildNowShowingStatusLine:
 ;   D0-D3/A0-A1
 ; CALLS:
 ;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow,
-;   TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode, STRING_AppendAtNull,
+;   TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode, _STRING_AppendAtNull,
 ;   TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
 ;   SCRIPT_AlignedPrefixEmptyD/SCRIPT_SpacerTripleC/SCRIPT_AlignedPrefixEmptyE
@@ -544,7 +544,7 @@ TEXTDISP_BuildEntryPairStatusLine:
 
     MOVE.L  -142(A5),-(A7)
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .append_second_part
@@ -563,18 +563,18 @@ TEXTDISP_BuildEntryPairStatusLine:
 
     PEA     SCRIPT_SpacerTripleC
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 .append_separator:
     PEA     SCRIPT_AlignedPrefixEmptyE
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     MOVE.L  -146(A5),(A7)
     PEA     -137(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     LEA     12(A7),A7
 
@@ -994,7 +994,7 @@ TEXTDISP_SkipControlCodes:
 ;   D0-D7/A0-A2
 ; CALLS:
 ;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TEXTDISP_BuildEntryShortName, TEXTDISP_FormatEntryTimeForIndex,
-;   STRING_AppendAtNull, WDISP_SPrintf, TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold,
+;   _STRING_AppendAtNull, WDISP_SPrintf, TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold,
 ;   STR_FindCharPtr, TEXTDISP_SkipControlCodes, TEXTDISP_TrimTextToPixelWidth
 ; READS:
 ;   entry+210/214/218, WDISP_CharClassTable
@@ -1091,7 +1091,7 @@ TEXTDISP_BuildEntryDetailLine:
 
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -1230,7 +1230,7 @@ TEXTDISP_BuildEntryDetailLine:
 .append_title_suffix:
     PEA     -524(A5)
     MOVE.L  -8(A5),-(A7)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -1265,11 +1265,11 @@ TEXTDISP_BuildEntryDetailLine:
 
     PEA     SCRIPT_AlignedPrefixEmptyG
     MOVE.L  -8(A5),-(A7)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     MOVE.L  -12(A5),(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     LEA     12(A7),A7
 
@@ -1306,11 +1306,11 @@ TEXTDISP_BuildEntryDetailLine:
 
     PEA     Global_STR_ALIGNED_CHANNEL_2
     MOVE.L  -8(A5),-(A7)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     PEA     -524(A5)
     MOVE.L  -8(A5),-(A7)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     LEA     16(A7),A7
 

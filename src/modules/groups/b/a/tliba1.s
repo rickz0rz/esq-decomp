@@ -1336,7 +1336,7 @@ TLIBA1_BuildClockFormatEntryIfVisible:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   FORMAT_RawDoFmtWithScratchBuffer, STRING_AppendAtNull, WDISP_SPrintf
+;   FORMAT_RawDoFmtWithScratchBuffer, _STRING_AppendAtNull, WDISP_SPrintf
 ; READS:
 ;   TEXTDISP_FormatEntryFallbackTable, TLIBA1_FormatFallbackBuffer, TLIBA1_FormatFallbackFieldPtr0, TLIBA1_FormatFallbackFieldPtr1, TLIBA1_FormatFallbackFieldPtr2, TLIBA1_FormatFallbackFieldPtr3, TLIBA1_FMT_PCT_C_PCT_S, TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X, TLIBA1_STR_TLFormatStructOpenBraceLine, TLIBA1_FMT_TLF_COLOR_PCT_D, TLIBA1_FMT_TLF_OFFSET_PCT_D, TLIBA1_FMT_TLF_FONTSEL_PCT_D, TLIBA1_FMT_TLF_ALIGN_PCT_D, TLIBA1_FMT_TLF_PREGAP_PCT_D, TLIBA1_STR_TLFormatStructCloseBraceLine, WDISP_CharClassTable, copy_loop
 ; WRITES:
@@ -1531,7 +1531,7 @@ TLIBA1_FormatClockFormatEntry:
 
     PEA     -532(A5)
     MOVE.L  A3,-(A7)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     LEA     24(A7),A7
 

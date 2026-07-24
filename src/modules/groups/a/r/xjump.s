@@ -32,7 +32,7 @@ GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_AppendAtNull
+;   _STRING_AppendAtNull
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -43,4 +43,4 @@ GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AR_JMPTBL_STRING_AppendAtNull:
-    JMP     STRING_AppendAtNull
+    JMP     _STRING_AppendAtNull

@@ -156,6 +156,48 @@ broken:
 Note `sc5` is the same 6.51 driver in v5-compatibility mode, not a second
 compiler version.
 
+## Swapping a function to C
+
+```sh
+./build-split.sh                                             # pure asm, byte-exact gate
+C_REPLACEMENTS=src/c/replacements.txt ./build-split.sh       # with C replacements
+```
+
+`src/c/replacements.txt` maps a module path to a C file. `gen_units.py` drops
+that module from the assembly units and links the compiled object **at exactly
+the position the module occupied**, so link order and layout are preserved. The
+default build ignores the manifest entirely, which is what keeps the byte-exact
+gates meaningful.
+
+Two things must line up or the link fails:
+
+- **Symbol names.** `sc` emits `_foo` for `foo`; `NOUSCORE`/`NOUNDERSCORE` are
+  accepted but inert. So assembly must refer to a C-restored function by its
+  real SAS/C name — rename the label *and* its references to `_foo`. This is
+  byte-neutral (labels do not affect encoding), so `test-hash.sh` stays green.
+  Use a word-boundary match: `\bfoo\b` will not touch `SOME_JMPTBL_foo`, since
+  `_` is a word character.
+- **Section names.** `sc` emits into `text`/`data` by default, which vlink keeps
+  as separate output sections from `S_0`/`S_1`. The program's 3072 explicit
+  `(sym,PC)` operands then become cross-section 16-bit PC-relative relocations,
+  which amigahunk executables cannot represent ("Unsupported relocation type
+  R_PC"). Always compile with `CODENAME=S_0 DATANAME=S_1`.
+
+## Library code is not application code
+
+`src/modules/submodules/unknown*.s` is largely SAS/C runtime library code, not
+application code. Confirmed: every relocation-free routine there appears
+verbatim in SAS/C 6.51's `sc.lib` — `STRING_AppendAtNull` (`strcat`),
+`MATH_DivS32`, `MATH_Mulu32`, `STRING_CompareNoCase`, `STRING_CopyPadNul`,
+`FORMAT_U32ToOctalString`. (Routines with A4-relative fixups cannot be compared
+this way, since those are resolved at link time and absent from the reloc
+table — the 5% verbatim-match figure is a floor, not a ceiling.)
+
+**Do not hand-decompile these.** No C fed to `sc` reproduces them, because they
+were built from SAS's own library sources. The faithful route is to link
+`sc.lib`. Treat a stubborn mismatch in a `submodules/` function as a signal that
+it is library code.
+
 ## The C phase
 
 Replace assembly with C **one leaf subroutine at a time**, compiled by SAS/C

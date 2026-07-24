@@ -14,6 +14,11 @@ cd "$ROOT"
 
 VASM_BIN="${VASM_BIN:-$HOME/Downloads/vasm/vasmm68k_mot}"
 VLINK_BIN="${VLINK_BIN:-$HOME/Downloads/vbcc_installer/vlink/vlink}"
+VAMOS_ACTIVATE="${VAMOS_ACTIVATE:-$HOME/Downloads/vamos/bin/activate}"
+SCOPTS="${SCOPTS:-NOSTKCHK CODENAME=S_0 DATANAME=S_1}"   # options MUST precede the filename;
+                                                          # CODENAME/DATANAME make sc emit into the
+                                                          # same sections as the asm, so PC-relative
+                                                          # calls into C resolve at link time. See AGENTS.md
 BUILD=build
 UNITS=$BUILD/units
 OBJ=$BUILD/obj
@@ -33,17 +38,42 @@ python3 tools/gen_units.py
 
 echo "==> assembling units"
 fail=0
+cnum=0
+: > "$BUILD/objlist"
 while read -r u; do
-    if ! "$VASM_BIN" -I src -I "$UNITS" -Fhunk -nosym \
-            -o "$OBJ/$u.o" "$UNITS/$u.asm" >"$OBJ/$u.log" 2>&1; then
-        fail=$((fail + 1)); echo "  FAILED: $u"; sed -n '1,4p' "$OBJ/$u.log"
-    fi
+    case "$u" in
+    C:*)
+        # a C replacement: compile with SAS/C 6.51 under vamos.
+        # NOSTKCHK matches the stock build, which has no __XCOVF prologue.
+        cfile="src/${u#C:}"
+        cnum=$((cnum + 1))
+        cobj="$OBJ/c_repl_$cnum.o"
+        cwork="$BUILD/cwork_$cnum"
+        rm -rf "$cwork"; mkdir -p "$cwork"; cp "$cfile" "$cwork/u.c"
+        ( . "$VAMOS_ACTIVATE" 2>/dev/null
+          vamos --volume work:"$PWD/$cwork" sc:c/sc $SCOPTS \
+                OBJNAME=work:u.o work:u.c ) >"$cwork/log" 2>&1
+        if [ ! -f "$cwork/u.o" ]; then
+            fail=$((fail + 1)); echo "  FAILED (cc): $cfile"
+            grep -iE '^(error)|Invalid' "$cwork/log" | head -3
+        else
+            cp "$cwork/u.o" "$cobj"
+            echo "  cc $cfile -> $(python3 tools/objbytes.py "$cobj" | sed -n 's/^code: //p')"
+            echo "$cobj" >> "$BUILD/objlist"
+        fi
+        ;;
+    *)
+        if ! "$VASM_BIN" -I src -I "$UNITS" -Fhunk -nosym \
+                -o "$OBJ/$u.o" "$UNITS/$u.asm" >"$OBJ/$u.log" 2>&1; then
+            fail=$((fail + 1)); echo "  FAILED: $u"; sed -n '1,4p' "$OBJ/$u.log"
+        fi
+        echo "$OBJ/$u.o" >> "$BUILD/objlist"
+        ;;
+    esac
 done < "$UNITS/ORDER"
-[ "$fail" -eq 0 ] || { echo "error: $fail unit(s) failed to assemble" >&2; exit 1; }
+[ "$fail" -eq 0 ] || { echo "error: $fail unit(s) failed to build" >&2; exit 1; }
 
 echo "==> linking"
-: > "$BUILD/objlist"
-while read -r u; do echo "$OBJ/$u.o" >> "$BUILD/objlist"; done < "$UNITS/ORDER"
 # -Rstd: emit a plain relocation table. -s: no symbol hunk.
 < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s -o "$BUILD/ESQ"
 

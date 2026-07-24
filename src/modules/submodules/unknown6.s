@@ -1,7 +1,7 @@
-    XDEF    STRING_AppendAtNull
+    XDEF    _STRING_AppendAtNull
 
 ;------------------------------------------------------------------------------
-; FUNC: STRING_AppendAtNull   (Append a NUL-terminated string to another.)
+; FUNC: _STRING_AppendAtNull   (Append a NUL-terminated string to another.)
 ; ARGS:
 ;   stack +4: A0 = destination buffer (NUL-terminated)
 ;   stack +8: A1 = source buffer (NUL-terminated)
@@ -12,7 +12,7 @@
 ; DESC:
 ;   Walks A0 to its terminating NUL, then copies bytes from A1 through NUL.
 ;------------------------------------------------------------------------------
-STRING_AppendAtNull:
+_STRING_AppendAtNull:
     MOVEA.L 8(A7),A1
     MOVEA.L 4(A7),A0
     MOVE.L  A0,D0

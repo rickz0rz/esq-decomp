@@ -3036,14 +3036,14 @@ PARSEINI_JMPTBL_STRING_CompareNoCaseN:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_AppendAtNull
+;   _STRING_AppendAtNull
 ; DESC:
-;   Jump stub to STRING_AppendAtNull.
+;   Jump stub to _STRING_AppendAtNull.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI_JMPTBL_STRING_AppendAtNull:
-    JMP     STRING_AppendAtNull
+    JMP     _STRING_AppendAtNull
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer   (JumpStub)

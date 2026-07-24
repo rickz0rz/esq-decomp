@@ -76,10 +76,39 @@ def measure(incs):
     return sizes, ncode
 
 
-def coalesce(pairs):
-    """Group consecutive modules until each group is a whole number of longwords."""
+def replacements():
+    """Optional map of {module path: C file} from $C_REPLACEMENTS.
+
+    Left unset for the default build, which stays pure assembly so the
+    byte-exact gates remain meaningful.
+    """
+    manifest = os.environ.get('C_REPLACEMENTS')
+    if not manifest:
+        return {}
+    out = {}
+    for line in open(os.path.join(ROOT, manifest)):
+        line = line.split('#')[0].split()
+        if len(line) == 2:
+            out[line[0]] = line[1]
+    return out
+
+
+def coalesce(pairs, repl):
+    """Group consecutive modules until each group is a whole number of longwords.
+
+    A replaced module becomes its own entry ('C', <cfile>) at exactly the
+    position its assembly occupied, so link order -- and therefore layout -- is
+    preserved. The unit is closed before and after it regardless of alignment;
+    a C object is independently longword-sized, and any 2-byte pad lands
+    between functions where it is never executed.
+    """
     units, cur, acc = [], [], 0
     for path, size in pairs:
+        if path in repl:
+            if cur:
+                units.append(cur); cur, acc = [], 0
+            units.append(('C', repl[path]))
+            continue
         cur.append(path); acc += size
         if acc % 4 == 0:
             units.append(cur); cur, acc = [], 0
@@ -94,11 +123,15 @@ def main():
     open(os.path.join(OUT, 'prelude.i'), 'w').write('\n'.join(prelude) + '\n')
     sizes, ncode = measure(incs)
 
-    groups = [('c', coalesce(list(zip(incs[:ncode], sizes[:ncode]))), CODE_SEC),
-              ('d', coalesce(list(zip(incs[ncode:], sizes[ncode:]))), DATA_SEC)]
+    repl = replacements()
+    groups = [('c', coalesce(list(zip(incs[:ncode], sizes[:ncode])), repl), CODE_SEC),
+              ('d', coalesce(list(zip(incs[ncode:], sizes[ncode:])), repl), DATA_SEC)]
     order = []
     for tag, units, section in groups:
         for u in units:
+            if isinstance(u, tuple) and u[0] == 'C':
+                order.append('C:' + u[1])          # compiled, not assembled
+                continue
             name = tag + '_' + u[0].replace('/', '_')[:-2]
             if len(u) > 1:
                 name += f'__plus{len(u) - 1}'
@@ -108,9 +141,11 @@ def main():
             order.append(name)
     open(os.path.join(OUT, 'ORDER'), 'w').write('\n'.join(order) + '\n')
 
-    ncu = len(groups[0][1]); ndu = len(groups[1][1])
-    print(f'{len(incs)} source modules -> {len(order)} link units '
-          f'({ncu} code, {ndu} data); {sum(1 for t,us,_ in groups for u in us if len(u)==1)} are single-module')
+    asm = sum(1 for o in order if not o.startswith('C:'))
+    print(f'{len(incs)} source modules -> {len(order)} link units ({asm} assembled)'
+          + (f', {len(repl)} replaced by C' if repl else ''))
+    for m, c in repl.items():
+        print(f'    C: {c}  replaces  {m}')
 
 
 if __name__ == '__main__':

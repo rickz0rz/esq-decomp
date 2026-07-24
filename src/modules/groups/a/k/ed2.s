@@ -25,7 +25,7 @@
 ; NOTES:
 ;   Builds a temporary 1000-byte text buffer and frees it before returning.
 ;   Local panel-text buffer at -120(A5) has 120 bytes; it is shared by
-;   WDISP_SPrintf and STRING_AppendAtNull calls.
+;   WDISP_SPrintf and _STRING_AppendAtNull calls.
 ;   `%s` arguments come from mixed sources (entry struct fields, title pointer
 ;   tables, and sanitized slot text), so this is one of the higher-risk format
 ;   paths when string content/lengths are modified.

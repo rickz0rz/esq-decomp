@@ -845,7 +845,7 @@ TEXTDISP_DrawInsetRectFrame:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   TEXTDISP_FindAliasIndexByName, STRING_AppendAtNull
+;   TEXTDISP_FindAliasIndexByName, _STRING_AppendAtNull
 ; READS:
 ;   TEXTDISP_AliasPtrTable, TEXTDISP_CenterAlignToken
 ; DESC:
@@ -915,7 +915,7 @@ TEXTDISP_BuildEntryShortName:
     LEA     19(A3),A0
     MOVE.L  A0,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -935,7 +935,7 @@ TEXTDISP_BuildEntryShortName:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, STRING_AppendAtNull
+;   TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, _STRING_AppendAtNull
 ; READS:
 ;   TEXTDISP_CurrentMatchIndex, TEXTDISP_ActiveGroupId
 ; WRITES:
@@ -1009,19 +1009,19 @@ TEXTDISP_BuildChannelLabel:
 
     PEA     Global_STR_ALIGNED_ON
     PEA     TEXTDISP_ChannelLabelBuffer
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 .append_channel_prefix:
     PEA     Global_STR_ALIGNED_CHANNEL_1
     PEA     TEXTDISP_ChannelLabelBuffer
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     LEA     1(A3),A0
     MOVE.L  A0,(A7)
     PEA     TEXTDISP_ChannelLabelBuffer
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     LEA     12(A7),A7
     LEA     TEXTDISP_ChannelLabelBuffer,A0

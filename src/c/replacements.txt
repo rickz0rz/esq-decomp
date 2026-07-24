@@ -1,0 +1,5 @@
+# <module path as it appears in Prevue.asm>    <C file, relative to src/>
+# Used only when build-split.sh is run with C_REPLACEMENTS set:
+#     C_REPLACEMENTS=src/c/replacements.txt ./build-split.sh
+# The default build stays pure assembly so the byte-exact gates remain valid.
+modules/submodules/unknown6.s    c/string_append_at_null.c

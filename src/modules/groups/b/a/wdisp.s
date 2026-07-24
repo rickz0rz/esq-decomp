@@ -673,7 +673,7 @@ WDISP_DrawWeatherStatusOverlay:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   MATH_DivS32, MATH_Mulu32, STRING_AppendAtNull, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, WDISP_JMPTBL_NEWGRID_DrawWrappedText, WDISP_SPrintf, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOText, _LVOTextLength
+;   MATH_DivS32, MATH_Mulu32, _STRING_AppendAtNull, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, WDISP_JMPTBL_NEWGRID_DrawWrappedText, WDISP_SPrintf, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOText, _LVOTextLength
 ; READS:
 ;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_JMPTBL_DAYS_OF_WEEK, Global_REF_GRAPHICS_LIBRARY, Global_STR_PERCENT_D, Global_STR_PERCENT_D_SLASH, ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, P_TYPE_WeatherForecastMsgPtr, WDISP_StatusDayEntry0, WDISP_STR_UNKNOWN_NUM_WITH_SLASH, WDISP_STR_UNKNOWN_NUM, WDISP_CharClassTable, CLOCK_CurrentDayOfWeekIndex, WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable
 ; WRITES:
@@ -952,7 +952,7 @@ WDISP_DrawWeatherStatusDayEntry:
 .dayentry_draw_temperature_line:
     PEA     -26(A5)
     PEA     -46(A5)
-    JSR     STRING_AppendAtNull(PC)
+    JSR     _STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L A3,A1

@@ -126,18 +126,18 @@ GROUP_AI_JMPTBL_STR_SkipClass3Chars:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_AppendAtNull
+;   _STRING_AppendAtNull
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to STRING_AppendAtNull.
+;   Jump stub to _STRING_AppendAtNull.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AI_JMPTBL_STRING_AppendAtNull:
-    JMP     STRING_AppendAtNull
+    JMP     _STRING_AppendAtNull
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN   (JumpStub_STR_CopyUntilAnyDelimN)
