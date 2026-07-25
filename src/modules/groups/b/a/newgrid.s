@@ -43,7 +43,7 @@
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A6
 ; CALLS:
-;   NEWGRID2_EnsureBuffersAllocated, NEWGRID_JMPTBL_DISPTEXT_InitBuffers, NEWGRID_InitShowtimeBuckets, NEWGRID_JMPTBL_MEMORY_AllocateMemory, _LVOInitRastPort,
+;   NEWGRID2_EnsureBuffersAllocated, NEWGRID_JMPTBL_DISPTEXT_InitBuffers, _NEWGRID_InitShowtimeBuckets, NEWGRID_JMPTBL_MEMORY_AllocateMemory, _LVOInitRastPort,
 ;   _LVOSetDrMd, _LVOSetFont, NEWGRID_DrawTopBorderLine,
 ;   _LVOTextLength, NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
@@ -65,7 +65,7 @@ NEWGRID_InitGridResources:
 
     JSR     NEWGRID_JMPTBL_DISPTEXT_InitBuffers(PC)
 
-    JSR     NEWGRID_InitShowtimeBuckets(PC)
+    JSR     _NEWGRID_InitShowtimeBuckets(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     100.W

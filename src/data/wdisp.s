@@ -402,9 +402,9 @@
     XDEF    NEWGRID_SelectedGridEntryPtr
     XDEF    NEWGRID_OverridePenIndex
     XDEF    NEWGRID_EntryTextScratchPtr
-    XDEF    NEWGRID_ShowtimeBucketEntryTable
+    XDEF    _NEWGRID_ShowtimeBucketEntryTable
     XDEF    NEWGRID_ShowtimeBucketEntryTablePadLong
-    XDEF    NEWGRID_ShowtimeBucketPtrTable
+    XDEF    _NEWGRID_ShowtimeBucketPtrTable
     XDEF    NEWGRID_ShowtimeBucketCount
     XDEF    FLIB_LogEntryByteCount
     XDEF    P_TYPE_PrimaryGroupListPtr
@@ -3024,17 +3024,17 @@ NEWGRID_OverridePenIndex:
 NEWGRID_EntryTextScratchPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_ShowtimeBucketEntryTable/NEWGRID_ShowtimeBucketEntryTablePadLong/NEWGRID_ShowtimeBucketPtrTable   (showtime bucket storage)
+; SYM: _NEWGRID_ShowtimeBucketEntryTable/NEWGRID_ShowtimeBucketEntryTablePadLong/_NEWGRID_ShowtimeBucketPtrTable   (showtime bucket storage)
 ; TYPE: struct[10]/pointer[10]
 ; PURPOSE: Stores normalized showtime bucket records and a sortable pointer index table.
 ; USED BY: NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry, NEWGRID_AppendShowtimeBuckets
 ; NOTES: Entry records contain a packed key plus text pointer; pointer table supports insertion-sorted ordering.
 ;------------------------------------------------------------------------------
-NEWGRID_ShowtimeBucketEntryTable:
+_NEWGRID_ShowtimeBucketEntryTable:
     DS.L    19
 NEWGRID_ShowtimeBucketEntryTablePadLong:
     DS.L    1
-NEWGRID_ShowtimeBucketPtrTable:
+_NEWGRID_ShowtimeBucketPtrTable:
     DS.L    10
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_ShowtimeBucketCount   (showtime bucket count)
