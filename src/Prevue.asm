@@ -135,6 +135,7 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
 
 
 
+    include "hardware-exports.s"
     include "modules/groups/_main/a/a.s"
     include "modules/groups/_main/a/xjump.s"
     include "modules/groups/_main/b/b.s"

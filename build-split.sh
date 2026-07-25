@@ -45,20 +45,21 @@ while read -r u; do
     C:*)
         # a C replacement: compile with SAS/C 6.51 under vamos.
         # NOSTKCHK matches the stock build, which has no __XCOVF prologue.
-        cfile="src/${u#C:}"
+        spec="${u#C:}"; cfile="src/${spec%%|*}"
+        extra=""; [ "$spec" != "${spec#*|}" ] && extra="${spec#*|}"
         cnum=$((cnum + 1))
         cobj="$OBJ/c_repl_$cnum.o"
         cwork="$BUILD/cwork_$cnum"
         rm -rf "$cwork"; mkdir -p "$cwork"; cp "$cfile" "$cwork/u.c"
         ( . "$VAMOS_ACTIVATE" 2>/dev/null
-          vamos --volume work:"$PWD/$cwork" sc:c/sc $SCOPTS \
+          vamos --volume work:"$PWD/$cwork" sc:c/sc $SCOPTS $extra \
                 OBJNAME=work:u.o work:u.c ) >"$cwork/log" 2>&1
         if [ ! -f "$cwork/u.o" ]; then
             fail=$((fail + 1)); echo "  FAILED (cc): $cfile"
             grep -iE '^(error)|Invalid' "$cwork/log" | head -3
         else
             cp "$cwork/u.o" "$cobj"
-            echo "  cc $cfile -> $(python3 tools/objbytes.py "$cobj" | sed -n 's/^code: //p')"
+            echo "  cc $cfile${extra:+ [+$extra]} -> $(python3 tools/objbytes.py "$cobj" | sed -n 's/^code: //p')"
             echo "$cobj" >> "$BUILD/objlist"
         fi
         ;;

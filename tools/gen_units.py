@@ -87,9 +87,13 @@ def replacements():
         return {}
     out = {}
     for line in open(os.path.join(ROOT, manifest)):
-        line = line.split('#')[0].split()
-        if len(line) == 2:
-            out[line[0]] = line[1]
+        parts = line.split('#')[0].split()
+        if len(parts) >= 2:
+            # module -> (cfile, extra sc options). Options are per-file because
+            # SAS/C reads a per-directory SCOPTIONS, so the original translation
+            # units did not necessarily share settings -- e.g. SHORTINT is
+            # required by ED_IsConfirmKey but breaks LADFUNC_GetPackedPenHighNibble.
+            out[parts[0]] = (parts[1], ' '.join(parts[2:]))
     return out
 
 
@@ -107,7 +111,7 @@ def coalesce(pairs, repl):
         if path in repl:
             if cur:
                 units.append(cur); cur, acc = [], 0
-            units.append(('C', repl[path]))
+            units.append(('C',) + repl[path])
             continue
         cur.append(path); acc += size
         if acc % 4 == 0:
@@ -130,7 +134,7 @@ def main():
     for tag, units, section in groups:
         for u in units:
             if isinstance(u, tuple) and u[0] == 'C':
-                order.append('C:' + u[1])          # compiled, not assembled
+                order.append('C:' + u[1] + ('|' + u[2] if u[2] else ''))
                 continue
             name = tag + '_' + u[0].replace('/', '_')[:-2]
             if len(u) > 1:
@@ -144,8 +148,8 @@ def main():
     asm = sum(1 for o in order if not o.startswith('C:'))
     print(f'{len(incs)} source modules -> {len(order)} link units ({asm} assembled)'
           + (f', {len(repl)} replaced by C' if repl else ''))
-    for m, c in repl.items():
-        print(f'    C: {c}  replaces  {m}')
+    for m, (c, o) in repl.items():
+        print(f'    C: {c}  replaces  {m}' + (f'   [+{o}]' if o else ''))
 
 
 if __name__ == '__main__':

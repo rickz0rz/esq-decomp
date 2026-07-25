@@ -16,6 +16,7 @@ Each file in src/c/ carries a header block:
     RESTORES: <asm label the C replaces>
     MODULE:   <module path it substitutes for, or a note>
     STATUS:   exact | behavioural | library
+    OPTIONS:  extra sc options this file needs (optional, e.g. SHORTINT)
 
 and zero or more:
 
@@ -74,15 +75,17 @@ def parse(path):
     return {'file': os.path.relpath(path, ROOT),
             'restores': field('RESTORES'), 'module': field('MODULE'),
             'status': (field('STATUS') or 'unknown').lower(),
+            'options': field('OPTIONS') or '',
             'mismatches': mismatches}
 
 
 def recheck(e):
     if not e['restores']:
         return 'NO-LABEL'
-    r = subprocess.run([os.path.join(ROOT, 'tools', 'cmatch.sh'),
-                        os.path.join(ROOT, e['file']), e['restores']],
-                       capture_output=True, text=True, cwd=ROOT)
+    cmd = [os.path.join(ROOT, 'tools', 'cmatch.sh'),
+           os.path.join(ROOT, e['file']), e['restores']]
+    cmd += e['options'].split()          # per-file sc options, e.g. SHORTINT
+    r = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
     first = (r.stdout or r.stderr).strip().split('\n')[0]
     return 'MATCH' if r.returncode == 0 else ('FAIL' if r.returncode == 2 else 'DIFFER') , first
 

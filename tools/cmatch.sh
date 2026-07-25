@@ -33,22 +33,43 @@ if [ ! -f "$WORK/u.o" ]; then
     exit 2
 fi
 
-GOT="$(python3 "$ROOT/tools/objbytes.py" "$WORK/u.o" | sed -n 's/^bytes: //p')"
-GOT="${GOT%4e71}"                     # drop longword-alignment NOP if present
 REF="$(python3 "$ROOT/tools/refbytes.py" "$LABEL" | sed -n 's/^bytes: //p')"
 
-if [ "$GOT" = "$REF" ]; then
-    echo "MATCH  $LABEL  (${#REF} nibbles)  [$SCOPTS]"
-    exit 0
-fi
-echo "DIFFER $LABEL  [$SCOPTS]"
-echo "  ref $REF"
-echo "  got $GOT"
-python3 - "$REF" "$GOT" <<'PY'
-import sys
-ref, got = sys.argv[1], sys.argv[2]
-n = min(len(ref), len(got)); i = 0
-while i < n and ref[i] == got[i]: i += 1
-print(f'  first divergence at byte {i//2} ({len(ref)//2} vs {len(got)//2} bytes total)')
+# Compare with relocated fields masked. A compiled object holds 00000000 where
+# the linker will later patch an address, while the reference holds the real
+# linked address, so those longwords can only be compared positionally.
+python3 - "$WORK/u.o" "$REF" "$LABEL" "$SCOPTS" "$ROOT" <<'PY'
+import sys, os
+objf, ref, label, opts, root = sys.argv[1:6]
+sys.path.insert(0, os.path.join(root, 'tools'))
+from objbytes import parse
+
+code, relocs, xdefs, xrefs = parse(objf)
+got = code.hex()
+if got.endswith('4e71'):                      # longword-alignment NOP, not code
+    got = got[:-4]
+
+sites = sorted(set(relocs) | {o for v in xrefs.values() for o in v})
+def mask(hexstr):
+    b = bytearray.fromhex(hexstr)
+    for o in sites:
+        if o + 4 <= len(b):
+            b[o:o+4] = b'\xee' * 4
+    return b.hex()
+
+mgot, mref = mask(got), (mask(ref) if len(ref) == len(got) else ref)
+if mgot == mref:
+    note = f'  ({len(sites)} relocated field(s) compared positionally)' if sites else ''
+    print(f'MATCH  {label}  ({len(got)//2} bytes){note}  [{opts}]')
+    sys.exit(0)
+
+print(f'DIFFER {label}  [{opts}]')
+print(f'  ref {ref}')
+print(f'  got {got}')
+n = min(len(mref), len(mgot)); i = 0
+while i < n and mref[i] == mgot[i]: i += 1
+print(f'  first divergence at byte {i//2} ({len(ref)//2} ref vs {len(got)//2} got bytes)')
+if sites:
+    print(f'  relocated at: {[hex(s) for s in sites]}')
+sys.exit(1)
 PY
-exit 1

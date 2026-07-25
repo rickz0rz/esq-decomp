@@ -28,6 +28,35 @@ executable's relocation table), so the verbatim-match count is a floor.
 
 This is the strongest single piece of evidence for 6.51.
 
+## Further settings established (10-function batch)
+
+| setting | evidence |
+|---|---|
+| `SHORTINT` is **per-file** | `ED_IsConfirmKey` compares with `SUBI.W`, which only happens with 16-bit `int`; but `LADFUNC_GetPackedPenHighNibble` matches only *without* it. SAS/C reads a per-directory `SCOPTIONS`, so the original translation units need not have shared settings. `src/c/replacements.txt` carries a per-file options column. |
+| hardware registers as externs | writing `*(volatile UWORD *)0xDFF004` yields `MOVEA.L #imm,An` + `MOVE.W (An),Dn`; the stock binary uses absolute `MOVE.W (xxx).L,Dn`. Exporting the equates from `src/hardware-exports.s` and declaring them `extern` reproduces it exactly. |
+
+Source-shape rules that turned out to be load-bearing, all verified by byte match:
+
+- **Chained assignment.** The original loads zero into a register once and
+  stores it twice; four separate `= 0` statements make `sc` emit `CLR`.
+  `SCRIPT_ClearSearchTextsAndChannels` needs `a = b = 0`.
+- **Assignment order within a chain.** `LOCAVAIL_FreeNodeRecord` stores `first`
+  before `second`, so it must be written `second = first = 0`.
+- **No redundant local.** `LADFUNC_GetPackedPenHighNibble` computes straight
+  into D0; introducing a named local for the widened value costs a register.
+
+## A third divergence: register allocation order
+
+Across every function with a pointer local, SAS/C 6.51 allocates **A5** where
+the original uses **A3**, and **D6 before D7** where the original uses D7 first.
+`TEXTDISP_ResetSelectionState` is the cleanest case: 36 bytes both ways, every
+single other byte identical, only A3 vs A5.
+
+Not the data model (reproduces with and without `DATA=FAR`, and these functions
+touch no globals) and not an option (`NOAUTOREG`, `OPTIMIZE`, `SHORTINT` all
+leave it). This blocks 4 of the 10 functions in the batch and is the
+highest-value thing for a different compiler version to fix.
+
 ## Evidence the code generator is *not* quite 6.51
 
 Two independent application functions where 6.51 makes a different — equally
