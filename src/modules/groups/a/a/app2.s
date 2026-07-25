@@ -715,17 +715,17 @@ ESQ_DecColorStep:
 ; CALLS:
 ;   ESQ_BumpColorTowardTargets
 ; READS:
-;   WDISP_PaletteTriplesRBase, ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
+;   _WDISP_PaletteTriplesRBase, ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
 ; WRITES:
 ;   ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
 ; DESC:
 ;   Adjusts copper list colors based on a per-entry target table.
 ; NOTES:
-;   Uses WDISP_PaletteTriplesRBase as a 3-byte-per-entry target stream.
+;   Uses _WDISP_PaletteTriplesRBase as a 3-byte-per-entry target stream.
 ;------------------------------------------------------------------------------
 ESQ_IncCopperListsTowardsTargets:
     MOVEM.L D2-D6/A2-A3,-(A7)
-    LEA     WDISP_PaletteTriplesRBase,A1
+    LEA     _WDISP_PaletteTriplesRBase,A1
     LEA     ESQ_CopperStatusDigitsA,A2
     LEA     ESQ_CopperStatusDigitsB,A3
     MOVE.W  #0,D5

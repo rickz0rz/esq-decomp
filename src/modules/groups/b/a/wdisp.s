@@ -55,7 +55,7 @@
 ; CALLS:
 ;   MATH_DivS32, MATH_Mulu32, MEMORY_DeallocateMemory, ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE, Global_STR_WDISP_C, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, ESQFUNC_WeatherBrushPredicateNames, P_TYPE_WeatherCurrentMsgPtr, WDISP_WeatherStatusCountdown, WDISP_PaletteTriplesRBase, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRowTable
+;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE, Global_STR_WDISP_C, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, ESQFUNC_WeatherBrushPredicateNames, P_TYPE_WeatherCurrentMsgPtr, WDISP_WeatherStatusCountdown, _WDISP_PaletteTriplesRBase, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRowTable
 ; WRITES:
 ;   WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; DESC:
@@ -245,7 +245,7 @@ WDISP_DrawWeatherStatusOverlay:
     CMP.L   -184(A5),D0
     BGE.S   .overlay_after_palette_copy
 
-    LEA     WDISP_PaletteTriplesRBase,A0
+    LEA     _WDISP_PaletteTriplesRBase,A0
     ADDA.L  D0,A0
     MOVEA.L -4(A5),A1
     MOVE.L  D0,D0
@@ -675,7 +675,7 @@ WDISP_DrawWeatherStatusOverlay:
 ; CALLS:
 ;   MATH_DivS32, MATH_Mulu32, _STRING_AppendAtNull, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, WDISP_JMPTBL_NEWGRID_DrawWrappedText, WDISP_SPrintf, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOText, _LVOTextLength
 ; READS:
-;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_JMPTBL_DAYS_OF_WEEK, Global_REF_GRAPHICS_LIBRARY, Global_STR_PERCENT_D, Global_STR_PERCENT_D_SLASH, ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, P_TYPE_WeatherForecastMsgPtr, WDISP_StatusDayEntry0, WDISP_STR_UNKNOWN_NUM_WITH_SLASH, WDISP_STR_UNKNOWN_NUM, WDISP_CharClassTable, CLOCK_CurrentDayOfWeekIndex, WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable
+;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_JMPTBL_DAYS_OF_WEEK, Global_REF_GRAPHICS_LIBRARY, Global_STR_PERCENT_D, Global_STR_PERCENT_D_SLASH, ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, P_TYPE_WeatherForecastMsgPtr, WDISP_StatusDayEntry0, WDISP_STR_UNKNOWN_NUM_WITH_SLASH, WDISP_STR_UNKNOWN_NUM, WDISP_CharClassTable, CLOCK_CurrentDayOfWeekIndex, _WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable
 ; WRITES:
 ;   WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; DESC:
@@ -814,7 +814,7 @@ WDISP_DrawWeatherStatusDayEntry:
     CMP.L   -76(A5),D0
     BGE.S   .dayentry_after_palette_copy
 
-    LEA     WDISP_PaletteTriplesRBase,A0
+    LEA     _WDISP_PaletteTriplesRBase,A0
     ADDA.L  D0,A0
     MOVEA.L -104(A5),A1
     MOVE.L  D0,D0
@@ -1836,7 +1836,7 @@ WDISP_UpdateSelectionPreviewPanel:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQIFF_RestoreBasePaletteTriples
+;   _ESQIFF_RestoreBasePaletteTriples
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1847,7 +1847,7 @@ WDISP_UpdateSelectionPreviewPanel:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples:
-    JMP     ESQIFF_RestoreBasePaletteTriples
+    JMP     _ESQIFF_RestoreBasePaletteTriples
 
 ;------------------------------------------------------------------------------
 ; FUNC: WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary   (Routine at WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary)

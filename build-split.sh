@@ -28,6 +28,10 @@ for bin in "$VASM_BIN" "$VLINK_BIN"; do
 done
 
 mkdir -p "$OBJ"
+# Drop C-replacement objects from any previous run. Their count varies with the
+# manifest, so a build with fewer replacements would otherwise leave higher-
+# numbered objects behind for tooling to pick up and misreport.
+rm -f "$OBJ"/c_repl_*.o
 
 echo "==> reference (monolithic)"
 "$VASM_BIN" -I src -Fhunkexe -nosym -o "$BUILD/ESQ_reference" src/Prevue.asm >/dev/null
@@ -81,7 +85,7 @@ echo "==> linking"
 # supplied as a synthesised EXT_ABS object. src/modules/c-exports.s asserts these
 # values still match hardware-addresses.s. Appended last: it defines symbols only
 # and contributes no bytes, so it cannot affect layout.
-python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000
+python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000 _SERDAT=0xDFF030
 echo "$OBJ/absdefs.o" >> "$BUILD/objlist"
 < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s -o "$BUILD/ESQ"
 

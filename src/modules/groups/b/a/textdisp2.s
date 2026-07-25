@@ -52,9 +52,9 @@ TEXTDISP_ResetSelectionAndRefresh:
 ; CALLS:
 ;   WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, TLIBA3_BuildDisplayContextForViewMode, _LVOSetRast
 ; READS:
-;   WDISP_PaletteTriplesRBase-2297, Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY
+;   _WDISP_PaletteTriplesRBase-2297, Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
-;   WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase-2297, WDISP_AccumulatorFlushPending
+;   WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase-2297, WDISP_AccumulatorFlushPending
 ; DESC:
 ;   Allocates/sets the working rastport and updates palette bytes based on mode.
 ; NOTES:
@@ -90,9 +90,9 @@ TEXTDISP_SetRastForMode:
     MOVE.L  D7,D1
     MOVEQ   #3,D2
     MULS    D2,D1
-    LEA     WDISP_PaletteTriplesRBase,A0
+    LEA     _WDISP_PaletteTriplesRBase,A0
     ADDA.L  D1,A0
-    MOVE.B  (A0),WDISP_PaletteTriplesRBase
+    MOVE.B  (A0),_WDISP_PaletteTriplesRBase
     MOVE.L  D7,D0
     MULS    D2,D0
     LEA     WDISP_PaletteTriplesGBase,A0

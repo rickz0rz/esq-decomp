@@ -2042,7 +2042,7 @@ LADFUNC_DrawEntryLineWithAttrs:
 ;   LADFUNC_EntryPtrTable, KYBD_CustomPaletteTriplesRBase..KYBD_CustomPaletteTriplesBBase, ED_TextLimit, Global_HANDLE_H26F_FONT,
 ;   Global_HANDLE_PREVUEC_FONT
 ; WRITES:
-;   WDISP_PaletteTriplesRBase..WDISP_PaletteTriplesBBase, WDISP_AccumulatorFlushPending, WDISP_DisplayContextBase
+;   _WDISP_PaletteTriplesRBase..WDISP_PaletteTriplesBBase, WDISP_AccumulatorFlushPending, WDISP_DisplayContextBase
 ; DESC:
 ;   Builds line buffers and renders a preview for the selected entry.
 ; NOTES:
@@ -2130,7 +2130,7 @@ LADFUNC_DrawEntryPreview:
     CMP.L   D0,D4
     BGE.S   .palette_ready
 
-    LEA     WDISP_PaletteTriplesRBase,A0
+    LEA     _WDISP_PaletteTriplesRBase,A0
     ADDA.L  D4,A0
     LEA     KYBD_CustomPaletteTriplesRBase,A1
     ADDA.L  D4,A1
@@ -2162,7 +2162,7 @@ LADFUNC_DrawEntryPreview:
     SUB.L   D4,D0
     LEA     KYBD_CustomPaletteTriplesRBase,A0
     ADDA.L  D0,A0
-    MOVE.B  (A0),WDISP_PaletteTriplesRBase
+    MOVE.B  (A0),_WDISP_PaletteTriplesRBase
     LEA     KYBD_CustomPaletteTriplesGBase,A0
     ADDA.L  D0,A0
     MOVE.B  (A0),WDISP_PaletteTriplesGBase

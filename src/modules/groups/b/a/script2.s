@@ -11,9 +11,7 @@
     XDEF    SCRIPT_ReadNextRbfByte
     XDEF    SCRIPT_PollHandshakeAndApplyTimeout
     XDEF    SCRIPT_UpdateSerialShadowFromCtrlByte
-    XDEF    SCRIPT_WriteCtrlShadowToSerdat
-    XDEF    SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte
-    XDEF    SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte
+
 
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT_ReadNextRbfByte   (ReadNextRbfByte)
@@ -76,11 +74,11 @@ SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte:
 ; CLOBBERS:
 ;   A7/D0/D1/D7
 ; CALLS:
-;   SCRIPT_WriteCtrlShadowToSerdat
+;   _SCRIPT_WriteCtrlShadowToSerdat
 ; READS:
-;   SCRIPT_SerialShadowWord
+;   _SCRIPT_SerialShadowWord
 ; WRITES:
-;   SCRIPT_SerialShadowWord, SCRIPT_SerialInputLatch
+;   _SCRIPT_SerialShadowWord, SCRIPT_SerialInputLatch
 ; DESC:
 ;   Stores ctrlByte in SCRIPT_SerialInputLatch, merges low 2 bits into the
 ;   serial shadow word, then writes the updated word to serial hardware.
@@ -96,18 +94,18 @@ SCRIPT_UpdateSerialShadowFromCtrlByte:
     MOVE.W  D0,SCRIPT_SerialInputLatch
     ANDI.B  #$3,D7
     MOVEQ   #0,D0
-    MOVE.W  SCRIPT_SerialShadowWord,D0
+    MOVE.W  _SCRIPT_SerialShadowWord,D0
     MOVEQ   #126,D1
     ADD.L   D1,D1
     AND.L   D1,D0
     OR.B    D0,D7
     MOVEQ   #0,D0
     MOVE.B  D7,D0
-    MOVE.W  D0,SCRIPT_SerialShadowWord
+    MOVE.W  D0,_SCRIPT_SerialShadowWord
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,-(A7)
-    BSR.W   SCRIPT_WriteCtrlShadowToSerdat
+    BSR.W   _SCRIPT_WriteCtrlShadowToSerdat
 
     ADDQ.W  #4,A7
 
@@ -125,11 +123,11 @@ SCRIPT_UpdateSerialShadowFromCtrlByte:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_WriteCtrlShadowToSerdat
+;   _SCRIPT_WriteCtrlShadowToSerdat
 ; READS:
-;   SCRIPT_SerialShadowWord
+;   _SCRIPT_SerialShadowWord
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord, SERDAT
+;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Sets the CTRL/serial output bit in the shadow register and pushes it to
 ;   the serial data register.
@@ -140,14 +138,14 @@ SCRIPT_UpdateSerialShadowFromCtrlByte:
 ;------------------------------------------------------------------------------
 SCRIPT_AssertCtrlLine:
     MOVE.W  #1,SCRIPT_CtrlLineAssertedFlag
-    MOVE.W  SCRIPT_SerialShadowWord,D0
+    MOVE.W  _SCRIPT_SerialShadowWord,D0
     MOVE.L  D0,D1
     ORI.W   #32,D1
-    MOVE.W  D1,SCRIPT_SerialShadowWord
+    MOVE.W  D1,_SCRIPT_SerialShadowWord
     MOVEQ   #0,D0
     MOVE.W  D1,D0
     MOVE.L  D0,-(A7)
-    BSR.W   SCRIPT_WriteCtrlShadowToSerdat
+    BSR.W   _SCRIPT_WriteCtrlShadowToSerdat
 
     ADDQ.W  #4,A7
     RTS
@@ -167,7 +165,7 @@ SCRIPT_AssertCtrlLine:
 ; READS:
 ;   SCRIPT_CtrlInterfaceEnabledFlag
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord, SERDAT
+;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Asserts the CTRL/serial output bit when the control interface is enabled.
 ; NOTES:
@@ -193,11 +191,11 @@ SCRIPT_AssertCtrlLineIfEnabled:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_WriteCtrlShadowToSerdat
+;   _SCRIPT_WriteCtrlShadowToSerdat
 ; READS:
-;   SCRIPT_SerialShadowWord
+;   _SCRIPT_SerialShadowWord
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord, SERDAT
+;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Clears the CTRL/serial output bit in the shadow register and pushes it to
 ;   the serial data register.
@@ -206,14 +204,14 @@ SCRIPT_AssertCtrlLineIfEnabled:
 ;------------------------------------------------------------------------------
 SCRIPT_DeassertCtrlLine:
     CLR.W   SCRIPT_CtrlLineAssertedFlag
-    MOVE.W  SCRIPT_SerialShadowWord,D0
+    MOVE.W  _SCRIPT_SerialShadowWord,D0
     MOVE.L  D0,D1
     ANDI.W  #$ffdf,D1
-    MOVE.W  D1,SCRIPT_SerialShadowWord
+    MOVE.W  D1,_SCRIPT_SerialShadowWord
     MOVEQ   #0,D0
     MOVE.W  D1,D0
     MOVE.L  D0,-(A7)
-    BSR.W   SCRIPT_WriteCtrlShadowToSerdat
+    BSR.W   _SCRIPT_WriteCtrlShadowToSerdat
 
     ADDQ.W  #4,A7
     RTS
@@ -233,11 +231,11 @@ SCRIPT_DeassertCtrlLine:
 ; READS:
 ;   SCRIPT_CtrlInterfaceEnabledFlag
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord (via SCRIPT_DeassertCtrlLine)
+;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord (via SCRIPT_DeassertCtrlLine)
 ; DESC:
 ;   Clears the CTRL/serial output bit when the control interface is enabled.
 ; NOTES:
-;   SCRIPT_DeassertCtrlLine updates SCRIPT_SerialShadowWord and sends SERDAT.
+;   SCRIPT_DeassertCtrlLine updates _SCRIPT_SerialShadowWord and sends SERDAT.
 ;------------------------------------------------------------------------------
 SCRIPT_ClearCtrlLineIfEnabled:
     TST.W   SCRIPT_CtrlInterfaceEnabledFlag
@@ -261,9 +259,9 @@ SCRIPT_ClearCtrlLineIfEnabled:
 ; CALLS:
 ;   SCRIPT_AssertCtrlLine
 ; READS:
-;   SCRIPT_SerialShadowWord
+;   _SCRIPT_SerialShadowWord
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord, SERDAT
+;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Unconditionally asserts the CTRL/serial output bit.
 ;------------------------------------------------------------------------------
@@ -285,9 +283,9 @@ SCRIPT_AssertCtrlLineNow:
 ; CALLS:
 ;   SCRIPT_DeassertCtrlLine
 ; READS:
-;   SCRIPT_SerialShadowWord
+;   _SCRIPT_SerialShadowWord
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord, SERDAT
+;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Unconditionally deasserts the CTRL/serial output bit.
 ;------------------------------------------------------------------------------
@@ -451,78 +449,3 @@ SCRIPT_GetCtrlLineFlag:
     RTS
 
 ;!======
-
-;------------------------------------------------------------------------------
-; FUNC: SCRIPT_WriteCtrlShadowToSerdat   (WriteCtrlShadowToSerdat)
-; ARGS:
-;   stack +10: dataWord (low byte used)
-; RET:
-;   D0: none
-; CLOBBERS:
-;   D7
-; CALLS:
-;   (none)
-; READS:
-;   (none)
-; WRITES:
-;   SERDAT, SCRIPT_SerialShadowWord
-; DESC:
-;   Writes a byte to SERDAT with bit8 set and mirrors it into SCRIPT_SerialShadowWord.
-; NOTES:
-;   Uses only the low byte of the provided word.
-;------------------------------------------------------------------------------
-SCRIPT_WriteCtrlShadowToSerdat:
-    MOVE.L  D7,-(A7)
-    MOVE.W  10(A7),D7
-    ANDI.W  #$ff,D7
-    BSET    #8,D7
-    MOVE.W  D7,SERDAT
-    MOVE.W  D7,SCRIPT_SerialShadowWord
-    MOVE.L  (A7)+,D7
-    RTS
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte   (Routine at SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   ESQ_CaptureCtrlBit4StreamBufferByte
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
-; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
-;------------------------------------------------------------------------------
-SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte:
-    JMP     ESQ_CaptureCtrlBit4StreamBufferByte
-
-;------------------------------------------------------------------------------
-; FUNC: SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte   (Routine at SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   ESQ_ReadSerialRbfByte
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
-; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
-;------------------------------------------------------------------------------
-SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte:
-    JMP     ESQ_ReadSerialRbfByte

@@ -262,11 +262,11 @@ ED1_UpdateEscMenuSelection:
 ;   ESQ_TAG_36, ED_DiagScrollSpeedChar, KYBD_CustomPaletteTriplesRBase, ED_DiagGraphModeChar, ED_SaveTextAdsOnExitFlag
 ; WRITES:
 ;   Global_UIBusyFlag, ED_SavedDiagGraphModeChar, ED_SaveTextAdsOnExitFlag, ED_MaxAdNumber, ED_TextLimit, ED_BlockOffset,
-;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, WDISP_PaletteTriplesRBase
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _WDISP_PaletteTriplesRBase
 ; DESC:
 ;   Prepares the ESC menu UI, computes layout values, and draws the version row.
 ; NOTES:
-;   Copies 24 bytes from KYBD_CustomPaletteTriplesRBase into WDISP_PaletteTriplesRBase.
+;   Copies 24 bytes from KYBD_CustomPaletteTriplesRBase into _WDISP_PaletteTriplesRBase.
 ;   Local version buffer is 41 bytes (-41(A5)..-1(A5)); WDISP_SPrintf has no
 ;   destination-length parameter, so format/string edits must keep headroom.
 ;------------------------------------------------------------------------------
@@ -311,7 +311,7 @@ ED1_EnterEscMenu:
     CMP.L   D0,D7
     BGE.S   .after_copy_template
 
-    LEA     WDISP_PaletteTriplesRBase,A0
+    LEA     _WDISP_PaletteTriplesRBase,A0
     ADDA.L  D7,A0
     LEA     KYBD_CustomPaletteTriplesRBase,A1
     ADDA.L  D7,A1

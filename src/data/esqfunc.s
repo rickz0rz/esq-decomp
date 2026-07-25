@@ -54,7 +54,7 @@
     XDEF    ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS
     XDEF    Global_STR_TRUE_2
     XDEF    Global_STR_FALSE_2
-    XDEF    ESQFUNC_BasePaletteRgbTriples
+    XDEF    _ESQFUNC_BasePaletteRgbTriples
     XDEF    ESQFUNC_WeatherSliceWidthInitGate
     XDEF    Global_PTR_STR_DF0_LOGO_LST
     XDEF    ESQFUNC_FallbackType3BrushNode
@@ -205,7 +205,7 @@ Global_STR_TRUE_2:
     NStr    "TRUE"
 Global_STR_FALSE_2:
     NStr    "FALSE"
-ESQFUNC_BasePaletteRgbTriples:
+_ESQFUNC_BasePaletteRgbTriples:
     DC.B    0,0,3       ; Dark Blue
     DC.B    12,12,12    ; Light Gray
     DC.B    0,0,0       ; Black

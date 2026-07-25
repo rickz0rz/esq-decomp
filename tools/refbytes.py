@@ -18,8 +18,25 @@ VASM = os.environ.get('VASM_BIN', os.path.expanduser('~/Downloads/vasm/vasmm68k_
 LST  = os.path.join(ROOT, 'build', 'Prevue.lst')
 
 
-def listing():
+def stale():
+    """True if the cached listing is missing or older than any source file.
+
+    Without this the cache silently answers from a pre-edit view of the program:
+    after a function is extracted or a symbol renamed, lookups fail or return the
+    wrong bytes, and a byte-exact restoration gets reported as a regression.
+    """
     if not os.path.exists(LST):
+        return True
+    lst = os.path.getmtime(LST)
+    for dirpath, _, files in os.walk(SRC):
+        for fn in files:
+            if fn.endswith(('.s', '.asm', '.i')) and os.path.getmtime(os.path.join(dirpath, fn)) > lst:
+                return True
+    return False
+
+
+def listing():
+    if stale():
         os.makedirs(os.path.dirname(LST), exist_ok=True)
         subprocess.run([VASM, '-I', SRC, '-Fhunkexe', '-nosym', '-L', LST,
                         '-o', os.devnull, os.path.join(SRC, 'Prevue.asm')],

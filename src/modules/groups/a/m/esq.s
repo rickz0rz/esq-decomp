@@ -20,7 +20,7 @@
 ;   ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal, GROUP_AM_JMPTBL_STRUCT_AllocWithOwner, _LVOOpenDevice,
 ;   _LVODoIO, SETUP_INTERRUPT_INTB_RBF, SETUP_INTERRUPT_INTB_AUD1,
 ;   GROUP_AM_JMPTBL_ESQ_InitAudio1Dma, GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext, GROUP_AM_JMPTBL_KYBD_InitializeInputDevices, ESQFUNC_AllocateLineTextBuffers, GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk, ESQFUNC_UpdateRefreshModeState, ESQSHARED4_InitializeBannerCopperSystem,
-;   GROUP_AM_JMPTBL_TLIBA3_InitPatternTable, SETUP_INTERRUPT_INTB_VERTB, ESQIFF_RestoreBasePaletteTriples, ESQIFF_RunCopperDropTransition, _LVOSetAPen,
+;   GROUP_AM_JMPTBL_TLIBA3_InitPatternTable, SETUP_INTERRUPT_INTB_VERTB, _ESQIFF_RestoreBasePaletteTriples, ESQIFF_RunCopperDropTransition, _LVOSetAPen,
 ;   _LVORectFill, _LVOSetBPen, _LVOSetDrMd, ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines, ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths,
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode, GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults, GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch, GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState
 ; READS:
@@ -918,7 +918,7 @@ ESQ_MainInitAndRun:
     MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
     MOVE.W  D0,PARSEINI_CtrlHChangeGateFlag
     MOVE.W  #$ff,SCRIPT_CTRL_CHECKSUM
-    JSR     ESQIFF_RestoreBasePaletteTriples(PC)
+    JSR     _ESQIFF_RestoreBasePaletteTriples(PC)
 
     JSR     ESQIFF_RunCopperDropTransition(PC)
 

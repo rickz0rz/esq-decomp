@@ -45,6 +45,25 @@ Source-shape rules that turned out to be load-bearing, all verified by byte matc
 - **No redundant local.** `LADFUNC_GetPackedPenHighNibble` computes straight
   into D0; introducing a named local for the widened value costs a register.
 
+## Second batch: more load-bearing source shapes
+
+Verified by byte match:
+
+- **Work in place on a parameter.** `SCRIPT_WriteCtrlShadowToSerdat` keeps the
+  value in D7 and uses `BSET #8`; introducing a temporary routes it through D0
+  and emits `ORI.W #$100`, costing 4 bytes. Two separate statements
+  (`value &= 0xFF; value |= 0x100;`) are needed, not one combined expression.
+- **`short` loop counters.** `ESQIFF_RestoreBasePaletteTriples` compares with
+  `CMP.W` and indexes with `ADDA.W`; a `long` counter widens both.
+
+Two divergences that may not be expressible in C at all: both
+`SCRIPT_GetCtrlLineFlag` and `ESQIFF2_ValidateAsciiNumericByte` load a value
+with `MOVE.B`/`MOVE.W` into a register and then return the **full 32-bit
+register**, so the upper bits carry whatever the caller left there. Callers
+evidently use only the low part. No C construct produces an unextended return,
+and forcing one would be a distortion -- these two are candidates for staying in
+assembly permanently.
+
 ## A third divergence: register allocation order
 
 Across every function with a pointer local, SAS/C 6.51 allocates **A5** where

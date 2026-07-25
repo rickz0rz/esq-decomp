@@ -2378,9 +2378,9 @@ ESQFUNC_JMPTBL_STRING_CopyPadNul:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_STRING_CompareN, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQSHARED_JMPTBL_ESQ_WildcardMatch, ESQIFF_RestoreBasePaletteTriples, _LVOSetRast
+;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_STRING_CompareN, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQSHARED_JMPTBL_ESQ_WildcardMatch, _ESQIFF_RestoreBasePaletteTriples, _LVOSetRast
 ; READS:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ESQFUNC_BasePaletteRgbTriples, ESQFUNC_FallbackType3BrushNode, ESQIFF_BrushIniListHead, ESQFUNC_TAG_00, ESQFUNC_TAG_11, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, WDISP_PaletteTriplesRBase, _TEXTDISP_CurrentMatchIndex, e8
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, _ESQFUNC_BasePaletteRgbTriples, ESQFUNC_FallbackType3BrushNode, ESQIFF_BrushIniListHead, ESQFUNC_TAG_00, ESQFUNC_TAG_11, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, _WDISP_PaletteTriplesRBase, _TEXTDISP_CurrentMatchIndex, e8
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2639,7 +2639,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     CMP.L   D4,D6
     BGE.S   .apply_brush_palette_mode_postprocess
 
-    LEA     WDISP_PaletteTriplesRBase,A0
+    LEA     _WDISP_PaletteTriplesRBase,A0
     ADDA.L  D6,A0
     MOVEA.L -4(A5),A1
     MOVE.L  D6,D0
@@ -2654,7 +2654,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     CMP.L   328(A0),D0
     BNE.S   .check_palette_mode_three
 
-    BSR.W   ESQIFF_RestoreBasePaletteTriples
+    BSR.W   _ESQIFF_RestoreBasePaletteTriples
 
     BRA.S   .return
 
@@ -2670,16 +2670,16 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     CMP.L   D0,D6
     BGE.S   .return
 
-    LEA     WDISP_PaletteTriplesRBase,A0
+    LEA     _WDISP_PaletteTriplesRBase,A0
     ADDA.L  D6,A0
-    LEA     ESQFUNC_BasePaletteRgbTriples,A1
+    LEA     _ESQFUNC_BasePaletteRgbTriples,A1
     ADDA.L  D6,A1
     MOVE.B  (A1),(A0)
     ADDQ.L  #1,D6
     BRA.S   .loop_restore_first_12_palette_bytes
 
 .restore_base_palette_when_no_brush:
-    BSR.W   ESQIFF_RestoreBasePaletteTriples
+    BSR.W   _ESQIFF_RestoreBasePaletteTriples
 
 .return:
     MOVEQ   #1,D0

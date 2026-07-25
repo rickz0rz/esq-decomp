@@ -103,7 +103,7 @@ SCRIPT_SerialReadModeOverflowCount:
 ; TYPE: u16 (stored in s32 slot)
 ; PURPOSE: Mirrors asserted/deasserted CTRL-line state for serial control helpers.
 ; USED BY: SCRIPT_AssertCtrlLine*, SCRIPT_DeassertCtrlLine*, SCRIPT_ClearCtrlLineIfEnabled
-; NOTES: Written as 0/1 while SCRIPT_SerialShadowWord is updated and sent to SERDAT.
+; NOTES: Written as 0/1 while _SCRIPT_SerialShadowWord is updated and sent to SERDAT.
 ;------------------------------------------------------------------------------
 SCRIPT_CtrlLineAssertedFlag:
     DS.L    1

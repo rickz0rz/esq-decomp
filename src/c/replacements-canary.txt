@@ -15,3 +15,5 @@ modules/groups/a/l/ed3_edisconfirmkey.s                          c/ed_is_confirm
 modules/groups/_main/b/b_esqcheckcompatiblevideochip.s           c/esq_check_compatible_video_chip.c
 modules/submodules/unknown6.s                                    c/string_append_at_null.c
 modules/groups/b/a/newgrid1_getgridmodeindex.s                   c/newgrid_get_grid_mode_index.c
+modules/groups/b/a/script2_scriptwritectrlshadowtoserdat.s     c/script_write_ctrl_shadow_to_serdat.c
+modules/groups/a/n/esqiff_esqiffrestorebasepalettetriples.s    c/esqiff_restore_base_palette_triples.c

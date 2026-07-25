@@ -16,3 +16,5 @@ modules/groups/b/a/script3_scriptclearsearchtextsandchannels.s   c/script_clear_
 modules/groups/a/w/ladfunc_ladfuncgetpackedpenhighnibble.s       c/ladfunc_get_packed_pen_high_nibble.c
 modules/groups/a/l/ed3_edisconfirmkey.s                          c/ed_is_confirm_key.c                     SHORTINT
 modules/groups/_main/b/b_esqcheckcompatiblevideochip.s           c/esq_check_compatible_video_chip.c
+modules/groups/b/a/script2_scriptwritectrlshadowtoserdat.s     c/script_write_ctrl_shadow_to_serdat.c
+modules/groups/a/n/esqiff_esqiffrestorebasepalettetriples.s    c/esqiff_restore_base_palette_triples.c

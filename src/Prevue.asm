@@ -200,6 +200,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/a/n/esqdisp.s"
     include "modules/groups/a/n/esqfunc.s"
     include "modules/groups/a/n/esqiff.s"
+    include "modules/groups/a/n/esqiff_esqiffrestorebasepalettetriples.s"
+    include "modules/groups/a/n/esqiffb.s"
 
     include "modules/groups/a/o/esqiff2.s"
     include "modules/groups/a/o/esqpars.s"
@@ -250,6 +252,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/b/a/parseini3.s"
     include "modules/groups/b/a/script.s"
     include "modules/groups/b/a/script2.s"
+    include "modules/groups/b/a/script2_scriptwritectrlshadowtoserdat.s"
+    include "modules/groups/b/a/script2b.s"
     include "modules/groups/b/a/script3.s"
     include "modules/groups/b/a/script3_scriptclearsearchtextsandchannels.s"
     include "modules/groups/b/a/script3b.s"

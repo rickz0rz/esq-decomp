@@ -241,7 +241,7 @@
     XDEF    LADFUNC_HighlightCycleCountdownReload
     XDEF    LADFUNC_ParsedEntryCount
     XDEF    SCRIPT_CtrlInterfaceEnabledFlag
-    XDEF    WDISP_PaletteTriplesRBase
+    XDEF    _WDISP_PaletteTriplesRBase
     XDEF    WDISP_PaletteTriplesGBase
     XDEF    WDISP_PaletteTriplesBBase
     XDEF    ESQPARS_SelectionSuffixBuffer
@@ -413,7 +413,7 @@
     XDEF    PARSEINI_WeatherBrushNodePtr
     XDEF    GCOMMAND_GradientPresetTable
     XDEF    CTRL_BUFFER
-    XDEF    SCRIPT_SerialShadowWord
+    XDEF    _SCRIPT_SerialShadowWord
     XDEF    SCRIPT_SerialInputLatch
     XDEF    SCRIPT_CtrlLineAssertedTicks
     XDEF    Global_WORD_CLOCK_SECONDS
@@ -2226,13 +2226,13 @@ LADFUNC_ParsedEntryCount:
 SCRIPT_CtrlInterfaceEnabledFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_PaletteTriplesRBase/WDISP_PaletteTriplesGBase/WDISP_PaletteTriplesBBase   (palette RGB triplet stream)
+; SYM: _WDISP_PaletteTriplesRBase/WDISP_PaletteTriplesGBase/WDISP_PaletteTriplesBBase   (palette RGB triplet stream)
 ; TYPE: u8 stream
 ; PURPOSE: Packed RGB triplets used by highlight/weather palette-selection routines.
 ; USED BY: WDISP_*, ESQIFF_*, ESQFUNC_*, LADFUNC_*, ED1_*, APP2_*, TEXTDISP2_*
 ; NOTES: Callers iterate with a step of 3 bytes (R/G/B) across contiguous entries.
 ;------------------------------------------------------------------------------
-WDISP_PaletteTriplesRBase:
+_WDISP_PaletteTriplesRBase:
     DS.B    1
 WDISP_PaletteTriplesGBase:
     DS.B    1
@@ -3092,13 +3092,13 @@ GCOMMAND_GradientPresetTable:
 CTRL_BUFFER:
     DS.L    125
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_SerialShadowWord/SCRIPT_SerialInputLatch   (serial control shadow)
+; SYM: _SCRIPT_SerialShadowWord/SCRIPT_SerialInputLatch   (serial control shadow)
 ; TYPE: u16/u16
 ; PURPOSE: Shadow copy of serial control word plus most recent latched input bits.
-; USED BY: SCRIPT_AssertCtrlLine*, SCRIPT_DeassertCtrlLine*, SCRIPT_WriteCtrlShadowToSerdat
-; NOTES: CTRL-line assert/deassert toggles bit 5 in SCRIPT_SerialShadowWord before writing SERDAT.
+; USED BY: SCRIPT_AssertCtrlLine*, SCRIPT_DeassertCtrlLine*, _SCRIPT_WriteCtrlShadowToSerdat
+; NOTES: CTRL-line assert/deassert toggles bit 5 in _SCRIPT_SerialShadowWord before writing SERDAT.
 ;------------------------------------------------------------------------------
-SCRIPT_SerialShadowWord:
+_SCRIPT_SerialShadowWord:
     DS.W    1
 SCRIPT_SerialInputLatch:
     DS.W    1
