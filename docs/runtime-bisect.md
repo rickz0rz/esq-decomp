@@ -1,53 +1,55 @@
-# Runtime bisect: c5 hang and canary3 missing diagnostics
+# Runtime bisect (resolved)
 
-## What the binaries are
+## Outcome
 
-| file | contents |
-|---|---|
-| `ESQ_asmonly` | pure assembly. **Control — test this first.** |
-| `ESQ_only_videochip` | + `ESQ_CheckCompatibleVideoChip` (startup path) |
-| `ESQ_only_four` | + the other four exact restorations (no startup involvement) |
-| `ESQ_only_strcat` | + `STRING_AppendAtNull` only |
-| `ESQ_c5` | all five exact restorations |
-| `ESQ_canary3` | those five + `strcat` + `NEWGRID_GetGridModeIndex` |
+Both `ESQ_c5` (five byte-exact C restorations) and `ESQ_canary3` (those five
+plus two behavioural ones) **run correctly**. `ESQ_only_strcat` runs correctly.
 
-## What the static evidence says
+The earlier reports -- `canary3` showing no diagnostics, `c5` appearing to hang
+-- were **stale binaries, not code defects**.
 
-`ESQ_c5` was diffed against `ESQ_asmonly` instruction by instruction, with
-relocation fields masked on both sides. The complete set of differences:
+## Cause
 
-- **8 inserted `4e71` NOPs** — object longword padding, between functions
-- **515 PC-relative displacement fixups** — consequences of the shift
-- **nothing else at all**
+`ESQ_canary3` was staged with:
 
-No instruction differs, no relocation site moved incorrectly, and the DATA hunk
-differs only in three bytes belonging to relocated code pointers. The five
-restored functions were each located in the linked CODE hunk and are
-byte-identical to the originals. `VPOSR` resolves to `3e39 00dff004` with no
-spurious relocation.
+```sh
+C_REPLACEMENTS=... ./build-split.sh >/dev/null 2>&1 && cp build/ESQ .../ESQ_canary3
+```
 
-**So `ESQ_c5` and `ESQ_asmonly` are semantically the same program.** If `c5`
-hangs at the diagnostic screen, `ESQ_asmonly` must hang there too — which is
-why the control matters before anything else is investigated.
+`build-split.sh` deliberately exits nonzero when the result is not
+content-identical to the reference, which is *expected* for any variant
+containing a behavioural restoration. So the `&&` suppressed the copy, and a
+later unconditional `cp build/ESQ ...` picked up whatever happened to be in
+`build/` at that moment.
 
-Two readings are consistent with the report, and the control separates them:
+The static analysis was right and worth trusting: `ESQ_c5` differs from
+`ESQ_asmonly` only by 8 inserted `4e71` NOPs and 515 PC-relative displacement
+fixups, with identical relocation counts (8791 code / 261 data) and an identical
+DATA hunk. It could not have behaved differently, and it does not.
 
-1. **The hang predates the C work.** Then it is a pre-existing problem (or the
-   split build in general) and the restorations are exonerated.
-2. **"Please Stand By..." is not a hang.** That screen is what the program shows
-   while waiting for its satellite data feed. With no feed attached, sitting
-   there indefinitely may be correct behaviour, and reaching it may be the
-   furthest the program has ever got.
+## Prevention
 
-## `canary3` showing no diagnostics is a separate, real regression
+`./stage-builds.sh` rebuilds every variant and copies each one immediately after
+its own build, removes `build/ESQ` afterwards so nothing can be inherited by the
+next stage, and records SHA-256s to `STAGED.txt` in the destination. Before
+trusting a runtime result, confirm the binary:
 
-`canary3` differs from `c5` only by `strcat` and `NEWGRID_GetGridModeIndex`,
-both *behavioural* (not byte-exact). Diagnostics vanishing points at `strcat`,
-since those strings are assembled with it. `ESQ_only_strcat` isolates it.
+```sh
+shasum -a 256 ~/Downloads/Prevue/ESQ_c5
+grep ESQ_c5 ~/Downloads/Prevue/STAGED.txt
+```
 
-Static review of the compiled `strcat` found no defect: it handles an empty
-`dst`, returns `dst`, and preserves every callee-saved register it touches
-(A2/A3/A5) while clobbering only A0/D0 — strictly more conservative than the
-original, which clobbers A0/A1/D0. If `ESQ_only_strcat` misbehaves, the bug is
-somewhere that review did not reach and the C should be replaced by linking the
-routine from `sc.lib`, which is the correct fix for library code anyway.
+**Never chain staging off `build-split.sh`'s exit status.** A nonzero exit means
+"not content-identical", which for a C variant is the expected outcome, not a
+failure.
+
+## Current state
+
+| binary | contents | runtime |
+|---|---|---|
+| `ESQ_asmonly` | pure assembly, content-identical to reference | control |
+| `ESQ_c5` | five byte-exact C restorations | runs correctly |
+| `ESQ_canary3` | those five + strcat + NEWGRID_GetGridModeIndex | runs correctly |
+| `ESQ_only_strcat` | strcat alone | runs correctly |
+| `ESQ_only_videochip` | startup restoration alone | untested |
+| `ESQ_only_newgrid` | grid mode index alone | untested |
