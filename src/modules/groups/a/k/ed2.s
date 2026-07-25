@@ -669,7 +669,7 @@ ED2_DrawEntrySummaryPanel:
 ;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_PrimaryGroupPresentFlag, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusColorCode, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar,
 ;   WDISP_WeatherCycleOffsetCount, WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusTextPtr, P_TYPE_WeatherBrushRefreshPendingFlag
 ; WRITES:
-;   ED_LastKeyCode, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, GCOMMAND_BannerRowFallbackOnFirstRowFlag, ED_MenuStateId, ESQ_ShutdownRequestedFlag, CLEANUP_DiagOverlayAutoRefreshFlag,
+;   _ED_LastKeyCode, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, GCOMMAND_BannerRowFallbackOnFirstRowFlag, ED_MenuStateId, ESQ_ShutdownRequestedFlag, CLEANUP_DiagOverlayAutoRefreshFlag,
 ;   HIGHLIGHT_CustomValue, ESQPARS2_ReadModeFlags, LOCAVAIL_FilterPrevClassId, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, WDISP_AccumulatorCaptureActive, SCRIPT_RuntimeMode,
 ;   PARSEINI_CtrlHChangeGateFlag
 ; DESC:
@@ -691,7 +691,7 @@ ED2_HandleMenuActions:
     LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     MOVE.B  (A0),D0
-    MOVE.B  D0,ED_LastKeyCode
+    MOVE.B  D0,_ED_LastKeyCode
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     SUBQ.W  #2,D1
@@ -1561,7 +1561,7 @@ ED2_HandleMenuActions:
 ; READS:
 ;   Global_REF_RASTPORT_1, ED_DiagTextModeChar, ED2_TAG_NRLS, ED2_STR_NYYLLZ, ED2_TAG_NYLRS, ED2_STR_SILENCE, ED2_STR_LEFT, ED2_STR_RIGHT, ED2_STR_BACKGROUND, ED2_STR_EXT_DOT_VIDEO_ONLY, ED2_STR_COMPUTER_ONLY, ED2_STR_OVERLAY_EXT_DOT_VIDEO, ED2_STR_NEGATIVE_VIDEO, ED2_STR_VIDEO_SWITCH, ED2_STR_OPEN, ED2_STR_CLOSED, ED2_STR_START_TAPE_VIDEO, ED2_STR_STOP, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, ED_DiagnosticsViewMode, ED_StateRingIndex, ED_StateRingTable, case_adjust_1bc4, case_adjust_1dd6, case_adjust_1dd7, case_assert_ctrl_line, case_clear_error_counters, case_copper_all_off, case_copper_all_on, case_copper_default, case_copper_on_highlight, case_cycle_1dcd_digit, case_deassert_ctrl_line, case_default_help, case_increment_226a, case_refresh_rastport_1, case_set_1df1_bit0, case_set_1df1_bit1, case_set_1df1_bit2, case_show_ciab_bit5, case_toggle_1df0_low3, case_toggle_226a, case_transition_0, case_transition_1, case_transition_2, case_transition_3, return
 ; WRITES:
-;   DATACErrs, Global_WORD_MAX_VALUE, ED_DiagTextModeChar, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, ED_DiagAvailMemPresetBits, ED_BlockOffset, ED_LastKeyCode, ED_TextLimit, ED_DiagnosticsScreenActive, ED_DiagnosticsViewMode, CTRL_HDeltaMax, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, SCRIPT_CtrlCmdCount, SCRIPT_CtrlCmdChecksumErrorCount, SCRIPT_CtrlCmdLengthErrorCount
+;   DATACErrs, Global_WORD_MAX_VALUE, ED_DiagTextModeChar, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, ED_DiagAvailMemPresetBits, ED_BlockOffset, _ED_LastKeyCode, ED_TextLimit, ED_DiagnosticsScreenActive, ED_DiagnosticsViewMode, CTRL_HDeltaMax, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, SCRIPT_CtrlCmdCount, SCRIPT_CtrlCmdChecksumErrorCount, SCRIPT_CtrlCmdLengthErrorCount
 ; DESC:
 ;   Handles diagnostic/special menu selections, toggling flags, counters, and
 ;   invoking test patterns or copper effects.
@@ -1575,7 +1575,7 @@ ED2_HandleDiagnosticsMenuActions:
     LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     MOVE.B  (A0),D0
-    MOVE.B  D0,ED_LastKeyCode
+    MOVE.B  D0,_ED_LastKeyCode
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     SUBQ.W  #1,D1
@@ -1962,9 +1962,9 @@ ED2_HandleDiagnosticsMenuActions:
 ; CALLS:
 ;   ED_DrawESCMenuBottomHelp, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText
 ; READS:
-;   ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED, ED_EditCursorOffset, ED_LastKeyCode, ED_LastMenuInputChar, ED_StateRingIndex, ED_StateRingTable, case_adjust_selection_default, return
+;   ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED, ED_EditCursorOffset, _ED_LastKeyCode, ED_LastMenuInputChar, ED_StateRingIndex, ED_StateRingTable, case_adjust_selection_default, return
 ; WRITES:
-;   ED_LastKeyCode, ED_LastMenuInputChar, ED_SavedScrollSpeedIndex, ESQPARS2_StateIndex, ED_EditCursorOffset
+;   _ED_LastKeyCode, ED_LastMenuInputChar, ED_SavedScrollSpeedIndex, ESQPARS2_StateIndex, ED_EditCursorOffset
 ; DESC:
 ;   Updates scroll speed/selection state based on menu codes and redraws help.
 ; NOTES:
@@ -1978,11 +1978,11 @@ ED2_HandleScrollSpeedSelection:
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.B  (A1),D1
-    MOVE.B  D1,ED_LastKeyCode
+    MOVE.B  D1,_ED_LastKeyCode
     ADDA.L  D0,A0
     MOVE.B  1(A0),ED_LastMenuInputChar
     MOVEQ   #0,D0
-    MOVE.B  ED_LastKeyCode,D0
+    MOVE.B  _ED_LastKeyCode,D0
     SUBI.W  #13,D0
     BEQ.S   .case_sync_scroll_speed
 

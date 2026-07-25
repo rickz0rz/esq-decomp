@@ -135,10 +135,12 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
 
 
 
-    include "hardware-exports.s"
+    include "modules/c-exports.s"
     include "modules/groups/_main/a/a.s"
     include "modules/groups/_main/a/xjump.s"
     include "modules/groups/_main/b/b.s"
+    include "modules/groups/_main/b/b_esqcheckcompatiblevideochip.s"
+    include "modules/groups/_main/b/bb.s"
     include "modules/groups/_main/b/xjump.s"
 
     include "modules/groups/a/a/app.s"
@@ -188,6 +190,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/a/k/xjump2.s"
 
     include "modules/groups/a/l/ed3.s"
+    include "modules/groups/a/l/ed3_edisconfirmkey.s"
+    include "modules/groups/a/l/ed3b.s"
     include "modules/groups/a/l/xjump.s"
 
     include "modules/groups/a/m/esq.s"
@@ -222,6 +226,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/a/v/xjump.s"
 
     include "modules/groups/a/w/ladfunc.s"
+    include "modules/groups/a/w/ladfunc_ladfuncgetpackedpenhighnibble.s"
+    include "modules/groups/a/w/ladfuncb.s"
     include "modules/groups/a/w/xjump.s"
 
     include "modules/groups/a/x/ladfunc2.s"
@@ -245,7 +251,10 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/b/a/script.s"
     include "modules/groups/b/a/script2.s"
     include "modules/groups/b/a/script3.s"
-    include "modules/groups/b/a/script4.s"
+    include "modules/groups/b/a/script3_scriptclearsearchtextsandchannels.s"
+    include "modules/groups/b/a/script3b.s"
+    include "modules/groups/b/a/script4_scriptresetbannerchardefaults.s"
+    include "modules/groups/b/a/script4b.s"
     include "modules/groups/b/a/textdisp.s"
     include "modules/groups/b/a/textdisp2.s"
     include "modules/groups/b/a/textdisp3.s"

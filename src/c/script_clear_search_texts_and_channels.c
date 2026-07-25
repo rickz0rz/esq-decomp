@@ -1,4 +1,4 @@
-/* RESTORES: SCRIPT_ClearSearchTextsAndChannels
+/* RESTORES: _SCRIPT_ClearSearchTextsAndChannels
  * MODULE:   modules/groups/b/a/script3.s
  * STATUS:   exact
  *

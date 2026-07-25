@@ -1788,16 +1788,16 @@ TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LADFUNC_GetPackedPenHighNibble
+;   _LADFUNC_GetPackedPenHighNibble
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LADFUNC_GetPackedPenHighNibble.
+;   Jump stub to _LADFUNC_GetPackedPenHighNibble.
 ;------------------------------------------------------------------------------
 TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble:
-    JMP     LADFUNC_GetPackedPenHighNibble
+    JMP     _LADFUNC_GetPackedPenHighNibble
 
 ;!======
 

@@ -1,6 +1,18 @@
-# <module path as it appears in Prevue.asm>    <C file, relative to src/>
-# Used only when build-split.sh is run with C_REPLACEMENTS set:
-#     C_REPLACEMENTS=src/c/replacements.txt ./build-split.sh
-# The default build stays pure assembly so the byte-exact gates remain valid.
-modules/submodules/unknown6.s    c/string_append_at_null.c
-modules/groups/b/a/newgrid1_getgridmodeindex.s    c/newgrid_get_grid_mode_index.c
+# Faithful C replacements: every entry here is byte-exact, so a build using this
+# manifest must still be CONTENT-IDENTICAL to the reference. If build-split.sh
+# reports a difference, a restoration regressed -- treat it as a failure.
+#
+#   C_REPLACEMENTS=src/c/replacements.txt ./build-split.sh
+#
+# columns: <module path as in Prevue.asm>   <C file, relative to src/>   [extra sc options]
+#
+# Options are per-file: SAS/C reads a per-directory SCOPTIONS, so the original
+# translation units need not have shared settings. ED_IsConfirmKey needs
+# SHORTINT (it compares with SUBI.W); LADFUNC_GetPackedPenHighNibble breaks
+# under it.
+
+modules/groups/b/a/script4_scriptresetbannerchardefaults.s       c/script_reset_banner_char_defaults.c
+modules/groups/b/a/script3_scriptclearsearchtextsandchannels.s   c/script_clear_search_texts_and_channels.c
+modules/groups/a/w/ladfunc_ladfuncgetpackedpenhighnibble.s       c/ladfunc_get_packed_pen_high_nibble.c
+modules/groups/a/l/ed3_edisconfirmkey.s                          c/ed_is_confirm_key.c                     SHORTINT
+modules/groups/_main/b/b_esqcheckcompatiblevideochip.s           c/esq_check_compatible_video_chip.c

@@ -125,15 +125,15 @@ GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LADFUNC_GetPackedPenHighNibble
+;   _LADFUNC_GetPackedPenHighNibble
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to LADFUNC_GetPackedPenHighNibble.
+;   Jump stub to _LADFUNC_GetPackedPenHighNibble.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble:
-    JMP     LADFUNC_GetPackedPenHighNibble
+    JMP     _LADFUNC_GetPackedPenHighNibble

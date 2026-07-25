@@ -38,9 +38,9 @@
 ;   TEXTDISP_FormatEntryTimeForIndex, STR_SkipClass3Chars, _STRING_AppendAtNull, TEXTDISP_FindControlToken,
 ;   TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
-;   TEXTDISP_PrimaryChannelCode, CLOCK_CurrentDayOfWeekIndex, TEXTDISP_BannerFallbackIsSpecialFlag/TEXTDISP_BannerCharSelected/TEXTDISP_BannerSelectedIsSpecialFlag, P_TYPE_WeatherBottomLineMsgPtr
+;   _TEXTDISP_PrimaryChannelCode, CLOCK_CurrentDayOfWeekIndex, TEXTDISP_BannerFallbackIsSpecialFlag/_TEXTDISP_BannerCharSelected/TEXTDISP_BannerSelectedIsSpecialFlag, P_TYPE_WeatherBottomLineMsgPtr
 ; WRITES:
-;   TEXTDISP_PrimaryChannelCode
+;   _TEXTDISP_PrimaryChannelCode
 ; DESC:
 ;   Builds an aligned status string for the current channel/entry (\"Now Showing\"),
 ;   then hands it to the aligned status line renderer; falls back to external text.
@@ -96,15 +96,15 @@ TEXTDISP_BuildNowShowingStatusLine:
     TST.L   -4(A5)
     BEQ.W   .append_external_line
 
-    MOVE.W  TEXTDISP_PrimaryChannelCode,D1
+    MOVE.W  _TEXTDISP_PrimaryChannelCode,D1
     BNE.S   .ensure_default_channel
 
     MOVEQ   #48,D2
-    MOVE.W  D2,TEXTDISP_PrimaryChannelCode
+    MOVE.W  D2,_TEXTDISP_PrimaryChannelCode
 
 .ensure_default_channel:
     CLR.B   -137(A5)
-    MOVE.W  TEXTDISP_PrimaryChannelCode,D1
+    MOVE.W  _TEXTDISP_PrimaryChannelCode,D1
     MOVEQ   #48,D2
     CMP.W   D2,D1
     BLT.S   .check_channel_range_alt
@@ -166,7 +166,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     TST.L   D0
     BEQ.W   .fallback_channel_line
 
-    MOVE.B  TEXTDISP_BannerCharSelected,D0
+    MOVE.B  _TEXTDISP_BannerCharSelected,D0
     MOVEQ   #100,D1
     CMP.B   D1,D0
     BEQ.S   .use_channel_digit
@@ -234,7 +234,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     BRA.S   .build_program_title
 
 .fallback_channel_line:
-    MOVE.W  TEXTDISP_PrimaryChannelCode,D0
+    MOVE.W  _TEXTDISP_PrimaryChannelCode,D0
     MOVEQ   #48,D1
     CMP.W   D1,D0
     BLE.S   .check_channel_range_primary
@@ -260,7 +260,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_channel_prefix
 
-    MOVE.W  TEXTDISP_PrimaryChannelCode,D0
+    MOVE.W  _TEXTDISP_PrimaryChannelCode,D0
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
@@ -272,7 +272,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     PEA     -137(A5)
     JSR     _STRING_AppendAtNull(PC)
 
-    PEA     TEXTDISP_PrimarySearchText
+    PEA     _TEXTDISP_PrimarySearchText
     JSR     TEXTDISP_FindControlToken(PC)
 
     LEA     12(A7),A7
@@ -2038,10 +2038,10 @@ TEXTDISP_HandleScriptCommand:
     PEA     .commandScratchBuffer(A5)
     JSR     WDISP_SPrintf(PC)
 
-    MOVE.W  TEXTDISP_PrimaryChannelCode,D0
+    MOVE.W  _TEXTDISP_PrimaryChannelCode,D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     TEXTDISP_PrimarySearchText
+    PEA     _TEXTDISP_PrimarySearchText
     MOVE.L  A3,-(A7)
     JSR     TEXTDISP_SelectGroupAndEntry(PC)
 
@@ -2050,7 +2050,7 @@ TEXTDISP_HandleScriptCommand:
     BNE.S   .handle_cmd_C_success
 
     MOVE.W  TEXTDISP_ActiveGroupId,TEXTDISP_StatusGroupId
-    MOVE.W  TEXTDISP_CurrentMatchIndex,TEXTDISP_LastDispatchMatchIndex
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,TEXTDISP_LastDispatchMatchIndex
     BSR.W   SCRIPT_GetBannerCharOrFallback
 
     MOVEQ   #0,D1
@@ -2098,7 +2098,7 @@ TEXTDISP_HandleScriptCommand:
     MOVE.L  D0,-(A7)
     BSR.W   TEXTDISP_BuildNowShowingStatusLine
 
-    BSR.W   SCRIPT_ResetBannerCharDefaults
+    BSR.W   _SCRIPT_ResetBannerCharDefaults
 
     LEA     12(A7),A7
     MOVEQ   #0,D5
@@ -2138,7 +2138,7 @@ TEXTDISP_HandleScriptCommand:
     MOVE.L  D0,TEXTDISP_CommandBufferPtr
 
 .init_source_cfg:
-    PEA     TEXTDISP_PrimarySearchText
+    PEA     _TEXTDISP_PrimarySearchText
     MOVE.L  A3,-(A7)
     MOVE.L  TEXTDISP_CommandBufferPtr,-(A7)
     BSR.W   TEXTDISP_SetEntryTextFields

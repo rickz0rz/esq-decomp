@@ -1,4 +1,4 @@
-/* RESTORES: SCRIPT_ResetBannerCharDefaults
+/* RESTORES: _SCRIPT_ResetBannerCharDefaults
  * MODULE:   modules/groups/b/a/script4.s
  * STATUS:   exact
  *

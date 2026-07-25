@@ -261,16 +261,16 @@ GROUP_AM_JMPTBL_KYBD_InitializeInputDevices:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ESQ_CheckCompatibleVideoChip
+;   _ESQ_CheckCompatibleVideoChip
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ESQ_CheckCompatibleVideoChip.
+;   Jump stub to _ESQ_CheckCompatibleVideoChip.
 ;------------------------------------------------------------------------------
 GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip:
-    JMP     ESQ_CheckCompatibleVideoChip
+    JMP     _ESQ_CheckCompatibleVideoChip
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory   (JumpStub_ESQ_CheckAvailableFastMemory)

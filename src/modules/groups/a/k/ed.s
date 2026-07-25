@@ -31,7 +31,7 @@
 ; READS:
 ;   ED_StateRingIndex, ED_StateRingWriteIndex, ED_MenuDispatchReentryGuard, ED_MenuStateId, Global_UIBusyFlag
 ; WRITES:
-;   ED_MenuDispatchReentryGuard, ED_LastKeyCode, ED_StateRingIndex
+;   ED_MenuDispatchReentryGuard, _ED_LastKeyCode, ED_StateRingIndex
 ; DESC:
 ;   Dispatches ESC-menu state handlers based on ED_MenuStateId using a jumptable.
 ; NOTES:
@@ -51,7 +51,7 @@ ED_DispatchEscMenuState:
     ADD.L   ED_StateRingIndex,D0
     LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
-    MOVE.B  (A0),ED_LastKeyCode
+    MOVE.B  (A0),_ED_LastKeyCode
     TST.W   Global_UIBusyFlag
     BEQ.S   .after_pen_setup
 
@@ -217,7 +217,7 @@ ED_DispatchEscMenuState:
 ;   GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_MATH_DivS32,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
-;   ED_LastKeyCode, ED_LastMenuInputChar, ED_CurrentChar, ED_EditCursorOffset, ED_ViewportOffset, ED_BlockOffset, ED_TextLimit,
+;   _ED_LastKeyCode, ED_LastMenuInputChar, ED_CurrentChar, ED_EditCursorOffset, ED_ViewportOffset, ED_BlockOffset, ED_TextLimit,
 ;   ED_TextModeReinitPendingFlag, Global_REF_BOOL_IS_TEXT_OR_CURSOR, Global_REF_BOOL_IS_LINE_OR_PAGE
 ; WRITES:
 ;   ED_TextModeReinitPendingFlag, ED_CurrentChar, ED_EditCursorOffset, ED_ViewportOffset, ED_AdActiveFlag, ED_TempCopyOffset,
@@ -226,7 +226,7 @@ ED_DispatchEscMenuState:
 ;   Handles editor input commands: character changes, cursor movement, and
 ;   line/page operations.
 ; NOTES:
-;   Switch-like chain on ED_LastKeyCode and a secondary branch on ED_LastMenuInputChar.
+;   Switch-like chain on _ED_LastKeyCode and a secondary branch on ED_LastMenuInputChar.
 ;------------------------------------------------------------------------------
 ED_HandleEditorInput:
     LINK.W  A5,#-4
@@ -245,7 +245,7 @@ ED_HandleEditorInput:
     JSR     ED_DrawCursorChar(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  ED_LastKeyCode,D0
+    MOVE.B  _ED_LastKeyCode,D0
     SUBQ.W  #1,D0
     BEQ.W   .case_enable_insert_mode
 
@@ -646,7 +646,7 @@ ED_HandleEditorInput:
     LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     MOVE.B  2(A0),D0
-    MOVE.B  D0,ED_LastKeyCode
+    MOVE.B  D0,_ED_LastKeyCode
     MOVEQ   #64,D1
     CMP.B   D1,D0
     BNE.S   .after_alt_code
@@ -654,7 +654,7 @@ ED_HandleEditorInput:
     JSR     ED_NextAdNumber(PC)
 
 .after_alt_code:
-    MOVE.B  ED_LastKeyCode,D0
+    MOVE.B  _ED_LastKeyCode,D0
     MOVEQ   #65,D1
     CMP.B   D1,D0
     BNE.W   .finalize_update
@@ -1220,7 +1220,7 @@ ED_HandleEditorInput:
     BRA.S   .finalize_update
 
 .case_insert_ascii_char:
-    MOVE.B  ED_LastKeyCode,D0
+    MOVE.B  _ED_LastKeyCode,D0
     MOVEQ   #25,D1
     CMP.B   D1,D0
     BLS.S   .finalize_update
@@ -1360,7 +1360,7 @@ ED_CaptureKeySequence:
     LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     MOVE.B  (A0),D0
-    MOVE.B  D0,ED_LastKeyCode
+    MOVE.B  D0,_ED_LastKeyCode
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     LEA     WDISP_CharClassTable,A0
@@ -1520,7 +1520,7 @@ ED_FindNextCharInTable:
 ; CALLS:
 ;   ED_DrawESCMenuBottomHelp, ED1_JMPTBL_ESQSHARED4_LoadDefaultPaletteToCopper_NoOp, ED_DrawDiagnosticRegisterValues
 ; READS:
-;   ED_LastKeyCode, ED_TempCopyOffset, ED_StateRingIndex, ED_StateRingTable
+;   _ED_LastKeyCode, ED_TempCopyOffset, ED_StateRingIndex, ED_StateRingTable
 ; WRITES:
 ;   ED_TempCopyOffset, ED_LastMenuInputChar, GCOMMAND_PresetFallbackValue0, GCOMMAND_PresetFallbackValue1, GCOMMAND_PresetFallbackValue2
 ; DESC:
@@ -1531,7 +1531,7 @@ ED_FindNextCharInTable:
 ED_HandleDiagnosticNibbleEdit:
     MOVE.L  D2,-(A7)
     MOVEQ   #0,D0
-    MOVE.B  ED_LastKeyCode,D0
+    MOVE.B  _ED_LastKeyCode,D0
     SUBI.W  #13,D0
     BEQ.S   .case_show_help
 
@@ -1962,7 +1962,7 @@ ED_HandleSpecialFunctionsMenu:
 ; CLOBBERS:
 ;   A7/D7
 ; CALLS:
-;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, DISKIO2_RunDiskSyncWorkflow,
+;   _ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, DISKIO2_RunDiskSyncWorkflow,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   Global_REF_RASTPORT_1
@@ -1971,12 +1971,12 @@ ED_HandleSpecialFunctionsMenu:
 ; DESC:
 ;   Displays "Saving EVERYTHING to disk" and triggers a save operation.
 ; NOTES:
-;   Skips display/trigger if ED_IsConfirmKey reports busy (D0 nonzero).
+;   Skips display/trigger if _ED_IsConfirmKey reports busy (D0 nonzero).
 ;------------------------------------------------------------------------------
 ED_SaveEverythingToDisk:
 ; Print 'Saving "EVERYTHING" to disk'
     MOVE.L  D7,-(A7)
-    JSR     ED_IsConfirmKey(PC)
+    JSR     _ED_IsConfirmKey(PC)
 
     MOVE.L  D0,D7
     TST.B   D7
@@ -2010,7 +2010,7 @@ ED_SaveEverythingToDisk:
 ; CLOBBERS:
 ;   A7/D7
 ; CALLS:
-;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, DISKIO2_WriteCurDayDataFile,
+;   _ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, DISKIO2_WriteCurDayDataFile,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   Global_REF_RASTPORT_1
@@ -2019,11 +2019,11 @@ ED_SaveEverythingToDisk:
 ; DESC:
 ;   Displays "Saving Prevue data to disk" and triggers the save routine.
 ; NOTES:
-;   Skips display/trigger if ED_IsConfirmKey reports busy (D0 nonzero).
+;   Skips display/trigger if _ED_IsConfirmKey reports busy (D0 nonzero).
 ;------------------------------------------------------------------------------
 ED_SavePrevueDataToDisk:
     MOVE.L  D7,-(A7)
-    JSR     ED_IsConfirmKey(PC)
+    JSR     _ED_IsConfirmKey(PC)
 
     MOVE.L  D0,D7
     TST.B   D7
@@ -2056,7 +2056,7 @@ ED_SavePrevueDataToDisk:
 ; CLOBBERS:
 ;   A7/D7
 ; CALLS:
-;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile,
+;   _ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   Global_REF_RASTPORT_1
@@ -2065,12 +2065,12 @@ ED_SavePrevueDataToDisk:
 ; DESC:
 ;   Displays a loading message and invokes the text-ads load routine.
 ; NOTES:
-;   Skips display/trigger if ED_IsConfirmKey reports busy (D0 nonzero).
+;   Skips display/trigger if _ED_IsConfirmKey reports busy (D0 nonzero).
 ;------------------------------------------------------------------------------
 ED_LoadTextAdsFromDh2:
     MOVE.L  D7,-(A7)
 
-    JSR     ED_IsConfirmKey(PC)
+    JSR     _ED_IsConfirmKey(PC)
 
     MOVE.L  D0,D7
     TST.B   D7
@@ -2103,7 +2103,7 @@ ED_LoadTextAdsFromDh2:
 ; CLOBBERS:
 ;   A7/D6/D7
 ; CALLS:
-;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, ED1_JMPTBL_ESQ_ColdReboot,
+;   _ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, ED1_JMPTBL_ESQ_ColdReboot,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   Global_REF_RASTPORT_1
@@ -2112,13 +2112,13 @@ ED_LoadTextAdsFromDh2:
 ; DESC:
 ;   Displays a reboot message, delays briefly, and triggers a cold reboot.
 ; NOTES:
-;   Skips display/reboot if ED_IsConfirmKey reports busy (D0 nonzero).
+;   Skips display/reboot if _ED_IsConfirmKey reports busy (D0 nonzero).
 ;------------------------------------------------------------------------------
 ED_RebootComputer:
 ; display 'rebooting computer' while requesting a reboot through supervisor?
     MOVEM.L D6-D7,-(A7)
 
-    JSR     ED_IsConfirmKey(PC)
+    JSR     _ED_IsConfirmKey(PC)
 
     MOVE.L  D0,D7
     TST.B   D7
@@ -2166,7 +2166,7 @@ ED_RebootComputer:
 ;   GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_MATH_DivS32,
 ;   _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   ED_LastKeyCode, ED_EditCursorOffset, ED_AdNumberInputDigitTens, ED_AdNumberInputDigitOnes, ED_MaxAdNumber, ED_MenuStateId
+;   _ED_LastKeyCode, ED_EditCursorOffset, ED_AdNumberInputDigitTens, ED_AdNumberInputDigitOnes, ED_MaxAdNumber, ED_MenuStateId
 ; WRITES:
 ;   ED_EditCursorOffset, ED_EditBufferScratch, ED_MenuStateId, ED_SaveTextAdsOnExitFlag, Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; DESC:
@@ -2180,7 +2180,7 @@ ED_HandleEditAttributesMenu:
     JSR     ED_DrawCursorChar(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  ED_LastKeyCode,D0
+    MOVE.B  _ED_LastKeyCode,D0
     SUBQ.W  #8,D0
     BEQ.S   .case_backspace
 
@@ -2386,7 +2386,7 @@ ED_HandleEditAttributesMenu:
     BRA.S   .return
 
 .case_digit_input:
-    MOVE.B  ED_LastKeyCode,D0
+    MOVE.B  _ED_LastKeyCode,D0
     MOVEQ   #48,D1
     CMP.B   D1,D0
     BCS.S   .refresh_attribute_display
@@ -2400,7 +2400,7 @@ ED_HandleEditAttributesMenu:
     LEA     ED_EditBufferScratch,A0
     MOVE.L  ED_EditCursorOffset,D0
     ADDA.L  D0,A0
-    MOVE.B  ED_LastKeyCode,(A0)
+    MOVE.B  _ED_LastKeyCode,(A0)
     CMPI.L  #$d,ED_EditCursorOffset
     BGE.S   .refresh_attribute_display
 
@@ -2409,7 +2409,7 @@ ED_HandleEditAttributesMenu:
     LEA     ED_EditBufferScratch,A0
     ADDA.L  ED_EditCursorOffset,A0
     ADDQ.L  #1,ED_EditCursorOffset
-    MOVE.B  ED_LastKeyCode,(A0)
+    MOVE.B  _ED_LastKeyCode,(A0)
 
 .refresh_attribute_display:
     JSR     ED_RedrawCursorChar(PC)
@@ -2432,7 +2432,7 @@ ED_HandleEditAttributesMenu:
 ;   ED_DrawESCMenuBottomHelp, ED_IncrementAdNumber, ED_DecrementAdNumber, ESQDISP_TestWordIsZeroBooleanize, ED_ApplyActiveFlagToAdData,
 ;   ED_UpdateActiveInactiveIndicator
 ; READS:
-;   ED_LastKeyCode, ED_AdActiveFlag, ED_StateRingIndex, ED_StateRingTable
+;   _ED_LastKeyCode, ED_AdActiveFlag, ED_StateRingIndex, ED_StateRingTable
 ; WRITES:
 ;   ED_AdActiveFlag, ED_SaveTextAdsOnExitFlag, ED_AdDisplayResetFlag
 ; DESC:
@@ -2442,7 +2442,7 @@ ED_HandleEditAttributesMenu:
 ;------------------------------------------------------------------------------
 ED_HandleEditAttributesInput:
     MOVEQ   #0,D0
-    MOVE.B  ED_LastKeyCode,D0
+    MOVE.B  _ED_LastKeyCode,D0
     SUBI.W  #13,D0
     BEQ.S   .case_show_help
 

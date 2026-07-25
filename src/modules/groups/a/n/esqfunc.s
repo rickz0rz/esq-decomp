@@ -2380,7 +2380,7 @@ ESQFUNC_JMPTBL_STRING_CopyPadNul:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_STRING_CompareN, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQSHARED_JMPTBL_ESQ_WildcardMatch, ESQIFF_RestoreBasePaletteTriples, _LVOSetRast
 ; READS:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ESQFUNC_BasePaletteRgbTriples, ESQFUNC_FallbackType3BrushNode, ESQIFF_BrushIniListHead, ESQFUNC_TAG_00, ESQFUNC_TAG_11, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, WDISP_PaletteTriplesRBase, TEXTDISP_CurrentMatchIndex, e8
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ESQFUNC_BasePaletteRgbTriples, ESQFUNC_FallbackType3BrushNode, ESQIFF_BrushIniListHead, ESQFUNC_TAG_00, ESQFUNC_TAG_11, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, WDISP_PaletteTriplesRBase, _TEXTDISP_CurrentMatchIndex, e8
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2413,7 +2413,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     SUBQ.W  #1,D0
     BNE.S   .load_secondary_current_entry_ptr
 
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     TEXTDISP_PrimaryEntryPtrTable,A0
@@ -2422,7 +2422,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     BRA.S   .compare_entry_tag_00
 
 .load_secondary_current_entry_ptr:
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     TEXTDISP_SecondaryEntryPtrTable,A0

@@ -1,4 +1,4 @@
-/* RESTORES: ESQ_CheckCompatibleVideoChip
+/* RESTORES: _ESQ_CheckCompatibleVideoChip
  * MODULE:   modules/groups/_main/b/b.s
  * STATUS:   exact
  *

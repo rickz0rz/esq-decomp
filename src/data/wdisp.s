@@ -73,7 +73,7 @@
     XDEF    ED_AdActiveFlag
     XDEF    ED_BlockOffset
     XDEF    Global_REF_BOOL_IS_LINE_OR_PAGE
-    XDEF    ED_LastKeyCode
+    XDEF    _ED_LastKeyCode
     XDEF    ED_TempCopyOffset
     XDEF    ED_EditBufferScratchIndexBaseMinus1
     XDEF    ED_EditBufferScratch
@@ -423,10 +423,10 @@
     XDEF    SCRIPT_CtrlCmdChecksumErrorCount
     XDEF    SCRIPT_CtrlCmdLengthErrorCount
     XDEF    Global_RefreshTickCounter
-    XDEF    TEXTDISP_PrimarySearchText
-    XDEF    TEXTDISP_SecondarySearchText
-    XDEF    TEXTDISP_PrimaryChannelCode
-    XDEF    TEXTDISP_SecondaryChannelCode
+    XDEF    _TEXTDISP_PrimarySearchText
+    XDEF    _TEXTDISP_SecondarySearchText
+    XDEF    _TEXTDISP_PrimaryChannelCode
+    XDEF    _TEXTDISP_SecondaryChannelCode
     XDEF    SCRIPT_ChannelRangeDigitChar
     XDEF    SCRIPT_SearchMatchCountOrIndex
     XDEF    SCRIPT_PlaybackCursor
@@ -448,7 +448,7 @@
     XDEF    TEXTDISP_SecondaryFirstMatchIndex
     XDEF    TEXTDISP_EntryTextBaseWidthPx
     XDEF    ESQ_GlobalTickCounter
-    XDEF    TEXTDISP_CurrentMatchIndex
+    XDEF    _TEXTDISP_CurrentMatchIndex
     XDEF    TEXTDISP_ChannelSourceMode
     XDEF    CLEANUP_AlignedStatusSuffixBuffer
     XDEF    CLEANUP_AlignedStatusClockEntryBuffer
@@ -463,11 +463,11 @@
     XDEF    TEXTDISP_FindModeActiveFlag
     XDEF    TEXTDISP_CandidateIndexList
     XDEF    TEXTDISP_BannerFallbackEntryIndex
-    XDEF    TEXTDISP_BannerCharFallback
+    XDEF    _TEXTDISP_BannerCharFallback
     XDEF    TEXTDISP_BannerFallbackIsSpecialFlag
     XDEF    TEXTDISP_BannerFallbackValidFlag
     XDEF    TEXTDISP_BannerSelectedEntryIndex
-    XDEF    TEXTDISP_BannerCharSelected
+    XDEF    _TEXTDISP_BannerCharSelected
     XDEF    TEXTDISP_BannerSelectedIsSpecialFlag
     XDEF    TEXTDISP_BannerSelectedValidFlag
     XDEF    TEXTDISP_ChannelLabelReadyFlag
@@ -1095,13 +1095,13 @@ ED_BlockOffset:
 Global_REF_BOOL_IS_LINE_OR_PAGE:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_LastKeyCode   (last editor key code)
+; SYM: _ED_LastKeyCode   (last editor key code)
 ; TYPE: u16
 ; PURPOSE: Stores the most recently processed editor key/input code.
 ; USED BY: ED_*, ED2_*, ED3_* key dispatch logic
 ; NOTES: Compared against control codes to choose edit actions.
 ;------------------------------------------------------------------------------
-ED_LastKeyCode:
+_ED_LastKeyCode:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: ED_TempCopyOffset   (temporary copy/shift offset)
@@ -2475,7 +2475,7 @@ ESQIFF_GAdsSourceEnabled:
 ; TYPE: u32[21]
 ; PURPOSE: Scratch/state table for external asset (logo/g_ads) handling.
 ; USED BY: ESQIFF_QueueNextExternalAssetIffJob, ESQIFF_PlayNextExternalAssetFrame
-; NOTES: Low word is used as a TEXTDISP_CurrentMatchIndex snapshot.
+; NOTES: Low word is used as a _TEXTDISP_CurrentMatchIndex snapshot.
 ;------------------------------------------------------------------------------
 ESQIFF_ExternalAssetStateTable:
     DS.L    21
@@ -3147,26 +3147,26 @@ SCRIPT_CtrlCmdLengthErrorCount:
 Global_RefreshTickCounter:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_PrimarySearchText/TEXTDISP_SecondarySearchText   (search text buffers)
+; SYM: _TEXTDISP_PrimarySearchText/_TEXTDISP_SecondarySearchText   (search text buffers)
 ; TYPE: char[200]/char[200]
 ; PURPOSE: Stores primary and secondary search text used by text display filtering.
 ; USED BY: TEXTDISP_*, SCRIPT3_*, CLEANUP3_*
 ; NOTES: Declared as 50 longs each (200 bytes); treated as C-style byte strings.
 ;------------------------------------------------------------------------------
-TEXTDISP_PrimarySearchText:
+_TEXTDISP_PrimarySearchText:
     DS.L    50
-TEXTDISP_SecondarySearchText:
+_TEXTDISP_SecondarySearchText:
     DS.L    50
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_PrimaryChannelCode/TEXTDISP_SecondaryChannelCode   (active channel-code pair)
+; SYM: _TEXTDISP_PrimaryChannelCode/_TEXTDISP_SecondaryChannelCode   (active channel-code pair)
 ; TYPE: u16/u16
 ; PURPOSE: Stores active primary/secondary channel code values used by text/display script flows.
 ; USED BY: TEXTDISP_*, SCRIPT3_*, CLEANUP3_*
 ; NOTES: Defaults and clamping are applied in TEXTDISP dispatch code before channel-table lookups.
 ;------------------------------------------------------------------------------
-TEXTDISP_PrimaryChannelCode:
+_TEXTDISP_PrimaryChannelCode:
     DS.W    1
-TEXTDISP_SecondaryChannelCode:
+_TEXTDISP_SecondaryChannelCode:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: SCRIPT_ChannelRangeDigitChar   (channel-range digit char)
@@ -3302,13 +3302,13 @@ TEXTDISP_EntryTextBaseWidthPx:
 ESQ_GlobalTickCounter:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_CurrentMatchIndex   (current selected/matched entry index)
+; SYM: _TEXTDISP_CurrentMatchIndex   (current selected/matched entry index)
 ; TYPE: u16
 ; PURPOSE: Tracks the active entry index for text search/highlight operations.
 ; USED BY: TEXTDISP_FindEntryIndexByWildcard and related draw/selection flows
 ; NOTES: Preserved/restored around searches via companion state words.
 ;------------------------------------------------------------------------------
-TEXTDISP_CurrentMatchIndex:
+_TEXTDISP_CurrentMatchIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_ChannelSourceMode   (channel source mode selector)
@@ -3324,7 +3324,7 @@ TEXTDISP_ChannelSourceMode:
 ; TYPE: char[]/s16
 ; PURPOSE: Scratch suffix text and associated match index used by aligned status rendering.
 ; USED BY: CLEANUP_RenderAlignedStatusScreen, SCRIPT_HandleSerialCtrlCmd
-; NOTES: Match index stores the fallback/current entry when TEXTDISP_CurrentMatchIndex is temporarily invalid.
+; NOTES: Match index stores the fallback/current entry when _TEXTDISP_CurrentMatchIndex is temporarily invalid.
 ;------------------------------------------------------------------------------
 CLEANUP_AlignedStatusSuffixBuffer:
     DS.L    20
@@ -3355,7 +3355,7 @@ CLEANUP_AlignedStatusClockEntryIndex:
 ; TYPE: u16[302]
 ; PURPOSE: Stores per-entry rolling index state used by template-code `E` scan/rotation logic.
 ; USED BY: CLEANUP_RenderAlignedStatusScreen, ESQ startup init/reset
-; NOTES: Indexed by `TEXTDISP_CurrentMatchIndex * 2`; initialized to zero during startup.
+; NOTES: Indexed by `_TEXTDISP_CurrentMatchIndex * 2`; initialized to zero during startup.
 ;------------------------------------------------------------------------------
 CLEANUP_AlignedStatusEntryCycleTable:
     DS.L    151
@@ -3384,9 +3384,9 @@ TEXTDISP_LinePenOverrideStateWord:
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_CurrentMatchIndexSaved   (saved current match index)
 ; TYPE: u16
-; PURPOSE: Snapshot of TEXTDISP_CurrentMatchIndex used while scripts/cleanup temporarily override selection.
+; PURPOSE: Snapshot of _TEXTDISP_CurrentMatchIndex used while scripts/cleanup temporarily override selection.
 ; USED BY: TEXTDISP3 startup reset, SCRIPT3 save/restore flows, CLEANUP3 restore path
-; NOTES: Script command paths copy TEXTDISP_CurrentMatchIndex into/out of this slot.
+; NOTES: Script command paths copy _TEXTDISP_CurrentMatchIndex into/out of this slot.
 ;------------------------------------------------------------------------------
 TEXTDISP_CurrentMatchIndexSaved:
     DS.W    1
@@ -3425,13 +3425,13 @@ TEXTDISP_CandidateIndexList:
 TEXTDISP_BannerFallbackEntryIndex:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_BannerCharFallback/TEXTDISP_BannerCharSelected   (status banner chars)
+; SYM: _TEXTDISP_BannerCharFallback/_TEXTDISP_BannerCharSelected   (status banner chars)
 ; TYPE: u8/u8
 ; PURPOSE: Character pair used when composing text display "now showing" status banners.
 ; USED BY: TEXTDISP_BuildNowShowingStatusLine, SCRIPT4_*
 ; NOTES: Selected char falls back to fallback char when selected value is sentinel 100.
 ;------------------------------------------------------------------------------
-TEXTDISP_BannerCharFallback:
+_TEXTDISP_BannerCharFallback:
     DS.B    1
 TEXTDISP_BannerFallbackIsSpecialFlag:
     DS.B    1
@@ -3439,7 +3439,7 @@ TEXTDISP_BannerFallbackValidFlag:
     DS.B    1
 TEXTDISP_BannerSelectedEntryIndex:
     DS.B    1
-TEXTDISP_BannerCharSelected:
+_TEXTDISP_BannerCharSelected:
     DS.B    1
 TEXTDISP_BannerSelectedIsSpecialFlag:
     DS.B    1

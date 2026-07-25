@@ -31,8 +31,8 @@
 ;   GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel, CLEANUP_BuildAlignedStatusLine, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth, GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame, GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort, GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight,
 ;   _LVORectFill, GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort, GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition
 ; READS:
-;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, TEXTDISP_CurrentMatchIndex-TEXTDISP_CurrentMatchIndexSaved,
-;   CLEANUP_AlignedStatusClockEntryBuffer, CLEANUP_AlignedStatusMatchIndex, CLEANUP_AlignedStatusClockEntryIndex, TEXTDISP_BannerCharFallback-TEXTDISP_BannerSelectedValidFlag, TEXTDISP_ChannelLabelReadyFlag,
+;   _TEXTDISP_PrimarySearchText, _TEXTDISP_SecondarySearchText, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, _TEXTDISP_CurrentMatchIndex-TEXTDISP_CurrentMatchIndexSaved,
+;   CLEANUP_AlignedStatusClockEntryBuffer, CLEANUP_AlignedStatusMatchIndex, CLEANUP_AlignedStatusClockEntryIndex, _TEXTDISP_BannerCharFallback-TEXTDISP_BannerSelectedValidFlag, TEXTDISP_ChannelLabelReadyFlag,
 ;   TEXTDISP_PrimaryTitlePtrTable, CLEANUP_AlignedStatusEntryCycleTable, SCRIPT_StrChannelLabel_TuesdaysFridays, TEXTDISP_ActiveGroupId, TEXTDISP_CenterAlignToken, TEXTDISP_LeftAlignToken,
 ;   TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, CLOCK_CurrentDayOfYear, ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr,
 ;   Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY,
@@ -41,13 +41,13 @@
 ;   Global_STR_ALIGNED_TOMORROW_AT
 ; WRITES:
 ;   TEXTDISP_ChannelLabelBuffer, TEXTDISP_ChannelSourceMode, CLEANUP_AlignedStatusSuffixBuffer, CLEANUP_AlignedStatusClockEntryBuffer, CLEANUP_AlignedStatusMatchIndex, CLEANUP_AlignedStatusClockEntryIndex,
-;   TEXTDISP_LinePenOverrideEnabledFlag, TEXTDISP_LinePenOverrideStateWord, TEXTDISP_CurrentMatchIndexSaved, TEXTDISP_BannerCharFallback, TEXTDISP_BannerCharSelected
+;   TEXTDISP_LinePenOverrideEnabledFlag, TEXTDISP_LinePenOverrideStateWord, TEXTDISP_CurrentMatchIndexSaved, _TEXTDISP_BannerCharFallback, _TEXTDISP_BannerCharSelected
 ; DESC:
 ;   Builds and renders the aligned status banner text (now/next and time
 ;   phrases), updates alignment globals, and draws into rastport 2.
 ; NOTES:
 ;   - Uses several template buffers and tables to choose which status line
-;     to render based on a code derived from TEXTDISP_PrimaryChannelCode/E.
+;     to render based on a code derived from _TEXTDISP_PrimaryChannelCode/E.
 ;------------------------------------------------------------------------------
 CLEANUP_BuildAndRenderAlignedStatusBanner:
 CLEANUP_RenderAlignedStatusScreen:
@@ -66,25 +66,25 @@ CLEANUP_RenderAlignedStatusScreen:
     CMP.W   D0,D7
     BNE.S   .use_secondary_template
 
-    LEA     TEXTDISP_PrimarySearchText,A0
+    LEA     _TEXTDISP_PrimarySearchText,A0
     LEA     -554(A5),A1
 
 .copy_template_primary_loop:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_template_primary_loop
 
-    MOVE.W  TEXTDISP_PrimaryChannelCode,-38(A5)
+    MOVE.W  _TEXTDISP_PrimaryChannelCode,-38(A5)
     BRA.S   .backup_template_text
 
 .use_secondary_template:
-    LEA     TEXTDISP_SecondarySearchText,A0
+    LEA     _TEXTDISP_SecondarySearchText,A0
     LEA     -554(A5),A1
 
 .copy_template_secondary_loop:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_template_secondary_loop
 
-    MOVE.W  TEXTDISP_SecondaryChannelCode,-38(A5)
+    MOVE.W  _TEXTDISP_SecondaryChannelCode,-38(A5)
 
 .backup_template_text:
     LEA     -554(A5),A0
@@ -148,13 +148,13 @@ CLEANUP_RenderAlignedStatusScreen:
     CMP.W   -38(A5),D0
     BNE.W   .check_code_F
 
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ADD.L   D0,D0
     LEA     CLEANUP_AlignedStatusEntryCycleTable,A0
@@ -172,7 +172,7 @@ CLEANUP_RenderAlignedStatusScreen:
     JSR     DISPLIB_NormalizeValueByStep(PC)
 
     LEA     12(A7),A7
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D1
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D1
     EXT.L   D1
     ADD.L   D1,D1
     LEA     CLEANUP_AlignedStatusEntryCycleTable,A0
@@ -197,7 +197,7 @@ CLEANUP_RenderAlignedStatusScreen:
     BRA.S   .scan_entry_loop
 
 .apply_entry_selection:
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ADD.L   D0,D0
     LEA     CLEANUP_AlignedStatusEntryCycleTable,A0
@@ -209,12 +209,12 @@ CLEANUP_RenderAlignedStatusScreen:
     BNE.S   .store_entry_selection
 
     MOVE.W  TEXTDISP_CurrentMatchIndexSaved,D1
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D2
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D2
     CMP.W   D2,D1
     BEQ.W   .done
 
 .store_entry_selection:
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D1
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D1
     EXT.L   D1
     ADD.L   D1,D1
     MOVEA.L A0,A1
@@ -470,7 +470,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVE.W  TEXTDISP_CurrentMatchIndex,TEXTDISP_CurrentMatchIndexSaved
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,TEXTDISP_CurrentMatchIndexSaved
     MOVEQ   #48,D0
     CMP.W   -38(A5),D0
     BNE.S   .handle_empty_template
@@ -489,14 +489,14 @@ CLEANUP_RenderAlignedStatusScreen:
 
     MOVEQ   #0,D0
     MOVE.B  D0,CLEANUP_AlignedStatusSuffixBuffer
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D1
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D1
     MOVE.W  D1,CLEANUP_AlignedStatusMatchIndex
     MOVEQ   #-1,D1
     MOVE.W  D1,CLEANUP_AlignedStatusClockEntryIndex
     BRA.W   .done
 
 .handle_empty_template:
-    MOVE.B  TEXTDISP_BannerCharSelected,D0
+    MOVE.B  _TEXTDISP_BannerCharSelected,D0
     MOVEQ   #100,D1
     CMP.B   D1,D0
     BEQ.S   .select_aligned_index
@@ -508,7 +508,7 @@ CLEANUP_RenderAlignedStatusScreen:
 
 .select_aligned_index:
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_BannerCharFallback,D0
+    MOVE.B  _TEXTDISP_BannerCharFallback,D0
     MOVE.W  D0,-36(A5)
 
 .check_aligned_index_valid:
@@ -522,7 +522,7 @@ CLEANUP_RenderAlignedStatusScreen:
     BEQ.S   .reset_alignment_state
 
     MOVEQ   #1,D1
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D2
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D2
     MOVE.W  D2,CLEANUP_AlignedStatusMatchIndex
     MOVE.W  D0,CLEANUP_AlignedStatusClockEntryIndex
     MOVE.W  D1,-40(A5)
@@ -535,7 +535,7 @@ CLEANUP_RenderAlignedStatusScreen:
     BEQ.S   .prepare_channel_line
 
     CLR.B   CLEANUP_AlignedStatusSuffixBuffer
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D2
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D2
     MOVE.W  D2,CLEANUP_AlignedStatusMatchIndex
     MOVE.W  #(-1),CLEANUP_AlignedStatusClockEntryIndex
 
@@ -544,7 +544,7 @@ CLEANUP_RenderAlignedStatusScreen:
     CMP.W   -40(A5),D0
     BEQ.S   .clear_channel_string
 
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     TST.W   TEXTDISP_ActiveGroupId
     BEQ.S   .select_channel_format
@@ -600,7 +600,7 @@ CLEANUP_RenderAlignedStatusScreen:
     CMP.W   -40(A5),D0
     BNE.W   .maybe_append_centered_schedule_label
 
-    MOVE.B  TEXTDISP_BannerCharSelected,D0
+    MOVE.B  _TEXTDISP_BannerCharSelected,D0
     MOVEQ   #100,D1
     CMP.B   D1,D0
     BNE.S   .select_now_showing_index
@@ -624,7 +624,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_now_showing_label_loop
 
-    MOVE.B  TEXTDISP_BannerCharSelected,D0
+    MOVE.B  _TEXTDISP_BannerCharSelected,D0
     CMP.B   D1,D0
     BNE.S   .select_next_showing_index
 
@@ -881,8 +881,8 @@ CLEANUP_RenderAlignedStatusScreen:
     ADDQ.W  #8,A7
 
 .render_output_text:
-    MOVE.B  #$64,TEXTDISP_BannerCharSelected
-    MOVE.B  #$31,TEXTDISP_BannerCharFallback
+    MOVE.B  #$64,_TEXTDISP_BannerCharSelected
+    MOVE.B  #$31,_TEXTDISP_BannerCharFallback
     CLR.W   TEXTDISP_LinePenOverrideStateWord
 
     MOVEA.L Global_REF_RASTPORT_2,A1

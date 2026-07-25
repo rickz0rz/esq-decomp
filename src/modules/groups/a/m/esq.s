@@ -1060,7 +1060,7 @@ ESQ_MainInitAndRun:
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     LEA     76(A7),A7
-    TST.W   IS_COMPATIBLE_VIDEO_CHIP
+    TST.W   _IS_COMPATIBLE_VIDEO_CHIP
     BNE.S   .check_memory_and_video_caps
 
     TST.W   HAS_REQUESTED_FAST_MEMORY
@@ -1088,7 +1088,7 @@ ESQ_MainInitAndRun:
     LEA     12(A7),A7
 
 .maybe_show_compat_note:
-    TST.W   IS_COMPATIBLE_VIDEO_CHIP
+    TST.W   _IS_COMPATIBLE_VIDEO_CHIP
     BEQ.S   .init_compat_wait
 
     MOVEA.L WDISP_DisplayContextBase,A0

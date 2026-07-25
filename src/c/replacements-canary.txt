@@ -1,0 +1,17 @@
+# Canary build: the five exact replacements PLUS behavioural ones that are
+# deliberately not byte-exact. Use this to check that C restorations actually
+# run, not that they are faithful -- this build will NOT be content-identical.
+#
+#   C_REPLACEMENTS=src/c/replacements-canary.txt ./build-split.sh
+#
+# STRING_AppendAtNull is the highest-signal canary in the program: 111 call
+# sites across disptext/textdisp/wdisp/newgrid/displib, so if it misbehaves,
+# on-screen text garbles immediately.
+
+modules/groups/b/a/script4_scriptresetbannerchardefaults.s       c/script_reset_banner_char_defaults.c
+modules/groups/b/a/script3_scriptclearsearchtextsandchannels.s   c/script_clear_search_texts_and_channels.c
+modules/groups/a/w/ladfunc_ladfuncgetpackedpenhighnibble.s       c/ladfunc_get_packed_pen_high_nibble.c
+modules/groups/a/l/ed3_edisconfirmkey.s                          c/ed_is_confirm_key.c                     SHORTINT
+modules/groups/_main/b/b_esqcheckcompatiblevideochip.s           c/esq_check_compatible_video_chip.c
+modules/submodules/unknown6.s                                    c/string_append_at_null.c
+modules/groups/b/a/newgrid1_getgridmodeindex.s                   c/newgrid_get_grid_mode_index.c

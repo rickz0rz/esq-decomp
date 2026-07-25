@@ -7,8 +7,6 @@
     XDEF    LADFUNC_DrawEntryLineWithAttrs
     XDEF    LADFUNC_DrawEntryPreview
     XDEF    LADFUNC_FreeBannerRectEntries
-    XDEF    LADFUNC_GetPackedPenHighNibble
-    XDEF    LADFUNC_GetPackedPenLowNibble
     XDEF    LADFUNC_LoadTextAdsFromFile
     XDEF    LADFUNC_ParseBannerEntryData
     XDEF    LADFUNC_ParseHexDigit
@@ -22,6 +20,7 @@
     XDEF    LADFUNC_UpdateHighlightState
     XDEF    LADFUNC_RepackEntryTextAndAttrBuffers_Return
     XDEF    LADFUNC_UpdateEntryFromTextAndAttrBuffers_Return
+
 
 ;------------------------------------------------------------------------------
 ; FUNC: LADFUNC_UpdateHighlightState   (UpdateHighlightState)
@@ -1619,7 +1618,7 @@ LADFUNC_LoadTextAdsFromFile:
 ; CLOBBERS:
 ;   A1/A2/A3/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   LADFUNC_GetPackedPenLowNibble, LADFUNC_GetPackedPenHighNibble, _LVOSetAPen, _LVOSetBPen, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition
+;   LADFUNC_GetPackedPenLowNibble, _LADFUNC_GetPackedPenHighNibble, _LVOSetAPen, _LVOSetBPen, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
@@ -1651,7 +1650,7 @@ LADFUNC_DisplayTextPackedPens:
     MOVEQ   #0,D0
     MOVE.B  D5,D0
     MOVE.L  D0,(A7)
-    BSR.W   LADFUNC_GetPackedPenHighNibble
+    BSR.W   _LADFUNC_GetPackedPenHighNibble
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -2038,7 +2037,7 @@ LADFUNC_DrawEntryLineWithAttrs:
 ;   NEWGRID_JMPTBL_MATH_DivS32, NEWGRID_JMPTBL_MEMORY_AllocateMemory,
 ;   NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOSetDrMd, _LVOSetRast,
 ;   GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition, GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition,
-;   LADFUNC_GetPackedPenHighNibble, LADFUNC_DrawEntryLineWithAttrs
+;   _LADFUNC_GetPackedPenHighNibble, LADFUNC_DrawEntryLineWithAttrs
 ; READS:
 ;   LADFUNC_EntryPtrTable, KYBD_CustomPaletteTriplesRBase..KYBD_CustomPaletteTriplesBBase, ED_TextLimit, Global_HANDLE_H26F_FONT,
 ;   Global_HANDLE_PREVUEC_FONT
@@ -2153,7 +2152,7 @@ LADFUNC_DrawEntryPreview:
     MOVEA.L -12(A5),A0
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
-    BSR.W   LADFUNC_GetPackedPenHighNibble
+    BSR.W   _LADFUNC_GetPackedPenHighNibble
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D4
@@ -3529,68 +3528,3 @@ LADFUNC_SetPackedPenLowNibble:
     RTS
 
 ;!======
-
-;------------------------------------------------------------------------------
-; FUNC: LADFUNC_GetPackedPenHighNibble   (Routine at LADFUNC_GetPackedPenHighNibble)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: result/status
-; CLOBBERS:
-;   A7/D0/D1/D7
-; CALLS:
-;   (none)
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
-; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
-;------------------------------------------------------------------------------
-LADFUNC_GetPackedPenHighNibble:
-    MOVE.L  D7,-(A7)
-    MOVE.B  11(A7),D7
-    MOVEQ   #0,D0
-    MOVE.B  D7,D0
-    ASR.L   #4,D0
-    MOVEQ   #15,D1
-    AND.L   D1,D0
-    MOVE.L  (A7)+,D7
-    RTS
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: LADFUNC_GetPackedPenLowNibble   (Routine at LADFUNC_GetPackedPenLowNibble)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: result/status
-; CLOBBERS:
-;   A7/D0/D7
-; CALLS:
-;   (none)
-; READS:
-;   f
-; WRITES:
-;   (none observed)
-; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
-; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
-;------------------------------------------------------------------------------
-LADFUNC_GetPackedPenLowNibble:
-    MOVE.L  D7,-(A7)
-    MOVE.B  11(A7),D7
-    MOVE.L  D7,D0
-    ANDI.B  #$f,D0
-    MOVE.L  (A7)+,D7
-    RTS
-
-;!======
-
-    ; Alignment
-    ORI.B   #0,D0
-    DC.W    $0000

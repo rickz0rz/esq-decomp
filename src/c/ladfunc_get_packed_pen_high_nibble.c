@@ -1,4 +1,4 @@
-/* RESTORES: LADFUNC_GetPackedPenHighNibble
+/* RESTORES: _LADFUNC_GetPackedPenHighNibble
  * MODULE:   modules/groups/a/w/ladfunc.s
  * STATUS:   exact
  *

@@ -1001,14 +1001,14 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, ESQIFF_JMPTBL_STRING_CompareNoCaseN, ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard, GCOMMAND_FindPathSeparator, ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_ReadNextExternalAssetPathEntry, _LVOForbid, _LVOPermit
 ; READS:
-;   AbsExecBase, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, CTASKS_IffTaskDoneFlag, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, ESQIFF_PATH_DF0_COLON, ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, ESQIFF_LogoListLineIndex, ESQIFF_AssetSourceSelect, ESQIFF_ExternalAssetPathCommaFlag, TEXTDISP_CurrentMatchIndex, fa00
+;   AbsExecBase, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, CTASKS_IffTaskDoneFlag, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, ESQIFF_PATH_DF0_COLON, ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, ESQIFF_LogoListLineIndex, ESQIFF_AssetSourceSelect, ESQIFF_ExternalAssetPathCommaFlag, _TEXTDISP_CurrentMatchIndex, fa00
 ; WRITES:
-;   CTASKS_PendingLogoBrushDescriptor, CTASKS_PendingGAdsBrushDescriptor, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_PendingExternalBrushNode, ESQIFF_ExternalAssetStateTable, TEXTDISP_CurrentMatchIndex
+;   CTASKS_PendingLogoBrushDescriptor, CTASKS_PendingGAdsBrushDescriptor, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_PendingExternalBrushNode, ESQIFF_ExternalAssetStateTable, _TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Chooses the next external asset path from active catalog data, filters/skips
 ;   disallowed entries, allocates a descriptor, and starts IFF decode task when needed.
 ; NOTES:
-;   Uses `TEXTDISP_CurrentMatchIndex` snapshot/restore while probing wildcard matches.
+;   Uses `_TEXTDISP_CurrentMatchIndex` snapshot/restore while probing wildcard matches.
 ;------------------------------------------------------------------------------
 ESQIFF_QueueNextExternalAssetIffJob:
     LINK.W  A5,#-144
@@ -1073,7 +1073,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
 
 .scan_candidate_paths:
     MOVE.B  D0,-41(A5)
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D5
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D5
 
 .loop_read_candidate_path:
     PEA     -40(A5)
@@ -1139,7 +1139,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
     BNE.S   .yield_grid_while_scanning
 
     MOVE.W  #1,-128(A5)
-    MOVE.W  TEXTDISP_CurrentMatchIndex,ESQIFF_ExternalAssetStateTable
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,ESQIFF_ExternalAssetStateTable
     BRA.S   .finalize_candidate_filter
 
 .validate_source0_path_prefixes:
@@ -1175,7 +1175,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
     BNE.W   .loop_read_candidate_path
 
 .finalize_candidate_filter:
-    MOVE.W  D5,TEXTDISP_CurrentMatchIndex
+    MOVE.W  D5,_TEXTDISP_CurrentMatchIndex
     TST.W   -128(A5)
     BEQ.W   .finalize_no_candidate
 
@@ -2330,7 +2330,7 @@ ESQIFF_ServiceExternalAssetSourceState:
 ; READS:
 ;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, TEXTDISP_DeferredActionCountdown, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, ESQIFF_ExternalAssetStateTable, ESQIFF_ExternalAssetPathCommaFlag
 ; WRITES:
-;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, TEXTDISP_CurrentMatchIndex
+;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, _TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Chooses source brush head, renders one frame with copper/display setup, pops the
 ;   consumed brush node from the active list, then services source-state queueing.
@@ -2447,7 +2447,7 @@ ESQIFF_PlayNextExternalAssetFrame:
 
     BSR.W   ESQIFF_SetApenToBrightestPaletteIndex
 
-    MOVE.W  ESQIFF_ExternalAssetStateTable,TEXTDISP_CurrentMatchIndex
+    MOVE.W  ESQIFF_ExternalAssetStateTable,_TEXTDISP_CurrentMatchIndex
     PEA     2.W
     PEA     1.W
     JSR     ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner(PC)

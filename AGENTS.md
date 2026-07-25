@@ -210,6 +210,47 @@ were built from SAS's own library sources. The faithful route is to link
 `sc.lib`. Treat a stubborn mismatch in a `submodules/` function as a signal that
 it is library code.
 
+## Alignment limits which functions can be byte-exact end to end
+
+A hunk object is longword-sized, so a C replacement whose function is not a
+multiple of 4 bytes gains padding the original never had. Of the five exact
+restorations, `LADFUNC_GetPackedPenHighNibble` (20) and
+`ESQ_CheckCompatibleVideoChip` (48) are 4-aligned and cost nothing; the other
+three (26, 30, 34) each add 2 bytes. Splitting a function into its own module
+also closes the surrounding assembly units at non-aligned boundaries, adding a
+little more.
+
+So `C_REPLACEMENTS=src/c/replacements.txt ./build-split.sh` currently reports
+DIFFERS with CODE 16 bytes larger, even though **every restored function is
+byte-identical** — verified by locating each one in the linked CODE hunk. The
+padding is inert: it sits between functions and is never executed.
+
+The gate still means something. Growth must equal the sum of per-object
+rounding; anything else is a real regression. A restoration whose function is
+4-aligned costs nothing at all, so prefer those when the whole-binary match
+matters.
+
+Note `build-split.sh` exits nonzero whenever the result is not content-identical.
+That is correct for `replacements.txt` (a regression) but expected for
+`replacements-canary.txt`.
+
+## Defining symbols C needs but assembly cannot export
+
+Hardware registers must be reached as externs, not pointer casts. But vasm
+silently drops `XDEF` of an absolute equate — verified against `EQU`, `=` and
+`PUBLIC`, all three producing an object with no external-definition hunk — and
+`vlink -D` only takes effect inside a linker script, which would replace the
+default layout.
+
+`tools/mkabsdefs.py` therefore synthesises a tiny object exporting them as
+`EXT_ABS`, which the linker resolves by value with no relocation, matching the
+stock binary. `src/modules/c-exports.s` asserts the addresses still agree with
+`hardware-addresses.s` so the two cannot drift.
+
+Also: `sc` truncates external symbols to 33 characters by default, which
+silently produced `_SCRIPT_ClearSearchTextsAndChanne` and an undefined-symbol
+link error. `IDLEN=128` is now passed always.
+
 ## Recording codegen divergences
 
 When SAS/C makes a different-but-equivalent choice than the original, **record

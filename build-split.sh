@@ -15,7 +15,7 @@ cd "$ROOT"
 VASM_BIN="${VASM_BIN:-$HOME/Downloads/vasm/vasmm68k_mot}"
 VLINK_BIN="${VLINK_BIN:-$HOME/Downloads/vbcc_installer/vlink/vlink}"
 VAMOS_ACTIVATE="${VAMOS_ACTIVATE:-$HOME/Downloads/vamos/bin/activate}"
-SCOPTS="${SCOPTS:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1}"   # options MUST precede the filename;
+SCOPTS="${SCOPTS:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128}"   # options MUST precede the filename;
                                                           # CODENAME/DATANAME make sc emit into the
                                                           # same sections as the asm, so PC-relative
                                                           # calls into C resolve at link time. See AGENTS.md
@@ -76,6 +76,13 @@ done < "$UNITS/ORDER"
 
 echo "==> linking"
 # -Rstd: emit a plain relocation table. -s: no symbol hunk.
+# Absolute hardware symbols for C restorations. vasm cannot export absolute
+# equates and vlink -D only works inside a linker script, so the definitions are
+# supplied as a synthesised EXT_ABS object. src/modules/c-exports.s asserts these
+# values still match hardware-addresses.s. Appended last: it defines symbols only
+# and contributes no bytes, so it cannot affect layout.
+python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000
+echo "$OBJ/absdefs.o" >> "$BUILD/objlist"
 < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s -o "$BUILD/ESQ"
 
 echo "==> verifying split build against reference"

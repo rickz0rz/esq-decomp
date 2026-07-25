@@ -1,4 +1,4 @@
-/* RESTORES: ED_IsConfirmKey
+/* RESTORES: _ED_IsConfirmKey
  * MODULE:   modules/groups/a/l/ed3.s
  * STATUS:   exact
  * OPTIONS:  SHORTINT

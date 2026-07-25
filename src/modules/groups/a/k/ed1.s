@@ -216,7 +216,7 @@ ED1_HandleEscMenuInput:
 ; READS:
 ;   ED_StateRingIndex, ED_StateRingTable
 ; WRITES:
-;   ED_LastKeyCode, ED_DiagnosticsScreenActive
+;   _ED_LastKeyCode, ED_DiagnosticsScreenActive
 ; DESC:
 ;   Loads a menu selection value from table and refreshes bottom help.
 ; NOTES:
@@ -229,7 +229,7 @@ ED1_UpdateEscMenuSelection:
     LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     MOVE.B  (A0),D0
-    MOVE.B  D0,ED_LastKeyCode
+    MOVE.B  D0,_ED_LastKeyCode
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     SUBI.W  #$31,D1

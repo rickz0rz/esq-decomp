@@ -27,18 +27,18 @@
 ; CALLS:
 ;   UNKNOWN_JMPTBL_ESQ_WildcardMatch
 ; READS:
-;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_CurrentMatchIndex
+;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_CurrentMatchIndex
 ; WRITES:
-;   TEXTDISP_CurrentMatchIndex
+;   _TEXTDISP_CurrentMatchIndex
 ; DESC:
-;   Scans entries and updates TEXTDISP_CurrentMatchIndex with the first match index.
+;   Scans entries and updates _TEXTDISP_CurrentMatchIndex with the first match index.
 ; NOTES:
 ;   Skips entries with flag bit 3 set.
 ;------------------------------------------------------------------------------
 TEXTDISP_FindEntryIndexByWildcard:
     LINK.W  A5,#-12
     MOVEM.L D7/A2-A3,-(A7)
-    MOVE.W  TEXTDISP_CurrentMatchIndex,TEXTDISP_CurrentMatchIndexSaved
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,TEXTDISP_CurrentMatchIndexSaved
     MOVEQ   #0,D7
 
 .loop_entries:
@@ -66,7 +66,7 @@ TEXTDISP_FindEntryIndexByWildcard:
     TST.B   D0
     BNE.S   .next_entry
 
-    MOVE.W  D7,TEXTDISP_CurrentMatchIndex
+    MOVE.W  D7,_TEXTDISP_CurrentMatchIndex
     MOVEQ   #1,D0
     BRA.S   .return
 
@@ -394,7 +394,7 @@ TEXTDISP_FindQuotedSpan:
 ;   TLIBA2_JMPTBL_ESQ_TestBit1Based, STRING_CompareNoCase,
 ;   TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold
 ; READS:
-;   TEXTDISP_ActiveGroupId, TEXTDISP_CurrentMatchIndex, TEXTDISP_PrimaryEntryPtrTable/2235/2236/2237, WDISP_CharClassTable
+;   TEXTDISP_ActiveGroupId, _TEXTDISP_CurrentMatchIndex, TEXTDISP_PrimaryEntryPtrTable/2235/2236/2237, WDISP_CharClassTable
 ; DESC:
 ;   Scans entries for a name match using optional control tokens and
 ;   case-insensitive comparisons. Supports forward/backward modes.
@@ -437,14 +437,14 @@ TEXTDISP_FindEntryMatchIndex:
     SUBQ.W  #1,D0
     BNE.S   .load_group2_tables
 
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     PEA     1.W
     MOVE.L  D0,-(A7)
     JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     MOVEA.L D0,A3
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     PEA     1.W
     MOVE.L  D0,-(A7)
@@ -455,14 +455,14 @@ TEXTDISP_FindEntryMatchIndex:
     BRA.S   .dispatch_mode
 
 .load_group2_tables:
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     PEA     2.W
     MOVE.L  D0,-(A7)
     JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     MOVEA.L D0,A3
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     PEA     2.W
     MOVE.L  D0,-(A7)
@@ -937,7 +937,7 @@ TEXTDISP_BuildEntryShortName:
 ; CALLS:
 ;   TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, _STRING_AppendAtNull
 ; READS:
-;   TEXTDISP_CurrentMatchIndex, TEXTDISP_ActiveGroupId
+;   _TEXTDISP_CurrentMatchIndex, TEXTDISP_ActiveGroupId
 ; WRITES:
 ;   TEXTDISP_ChannelLabelBufferTerminatorByte, TEXTDISP_ChannelLabelBuffer, TEXTDISP_ChannelLabelReadyFlag
 ; DESC:
@@ -949,7 +949,7 @@ TEXTDISP_BuildChannelLabel:
     LINK.W  A5,#-20
     MOVEM.L D6-D7/A3,-(A7)
     MOVE.W  10(A5),D7
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     TST.W   TEXTDISP_ActiveGroupId
     BEQ.S   .select_group
@@ -1060,7 +1060,7 @@ TEXTDISP_BuildChannelLabel:
 ;   TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TEXTDISP_BuildEntryShortName,
 ;   TEXTDISP_BuildChannelLabel, _LVOSetDrMd, TLIBA1_DrawFormattedTextBlock, TEXTDISP_DrawInsetRectFrame
 ; READS:
-;   TEXTDISP_CurrentMatchIndex, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase
+;   _TEXTDISP_CurrentMatchIndex, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase
 ; WRITES:
 ;   TEXTDISP_EntryShortNameScratch, TEXTDISP_LinePenOverrideEnabledFlag, TEXTDISP_LinePenOverrideStateWord
 ; DESC:
@@ -1073,7 +1073,7 @@ TEXTDISP_DrawChannelBanner:
     MOVEM.L D5-D7,-(A7)
     MOVE.W  10(A5),D7
     MOVE.W  14(A5),D6
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     TST.W   TEXTDISP_ActiveGroupId
     BEQ.S   .select_group2
@@ -1192,7 +1192,7 @@ TEXTDISP_DrawChannelBanner:
 ; CALLS:
 ;   TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow, MATH_DivS32, MATH_Mulu32, TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry
 ; READS:
-;   TEXTDISP_PrimaryTitlePtrTable/2237, TEXTDISP_CurrentMatchIndex, CLOCK_FormatVariantCode, Global_REF_STR_CLOCK_FORMAT
+;   TEXTDISP_PrimaryTitlePtrTable/2237, _TEXTDISP_CurrentMatchIndex, CLOCK_FormatVariantCode, Global_REF_STR_CLOCK_FORMAT
 ; DESC:
 ;   Formats a time string for the current entry index into outPtr.
 ; NOTES:
@@ -1206,7 +1206,7 @@ TEXTDISP_FormatEntryTime:
     TST.W   TEXTDISP_ActiveGroupId
     BEQ.S   .select_group2
 
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     TEXTDISP_PrimaryTitlePtrTable,A0
@@ -1224,7 +1224,7 @@ TEXTDISP_FormatEntryTime:
     BRA.S   .have_entry
 
 .select_group2:
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     TEXTDISP_SecondaryTitlePtrTable,A0
@@ -1694,7 +1694,7 @@ TEXTDISP_ComputeTimeOffset:
 ; READS:
 ;   TEXTDISP_SecondaryGroupRecordLength, TEXTDISP_CandidateIndexList/2376/2377/2372
 ; WRITES:
-;   TEXTDISP_PrimaryFirstMatchIndex, TEXTDISP_SecondaryFirstMatchIndex, TEXTDISP_CurrentMatchIndex, TEXTDISP_SbeFilterActiveFlag, TEXTDISP_ActiveGroupId
+;   TEXTDISP_PrimaryFirstMatchIndex, TEXTDISP_SecondaryFirstMatchIndex, _TEXTDISP_CurrentMatchIndex, TEXTDISP_SbeFilterActiveFlag, TEXTDISP_ActiveGroupId
 ; DESC:
 ;   Attempts to resolve a filter across groups and updates selection globals.
 ; NOTES:
@@ -1796,7 +1796,7 @@ TEXTDISP_SelectGroupAndEntry:
     CMP.W   D0,D5
     BNE.S   .use_primary_index
 
-    MOVE.B  TEXTDISP_BannerCharSelected,D0
+    MOVE.B  _TEXTDISP_BannerCharSelected,D0
     MOVEQ   #100,D1
     CMP.B   D1,D0
     BNE.S   .use_alt_index
@@ -1810,13 +1810,13 @@ TEXTDISP_SelectGroupAndEntry:
     MOVE.B  TEXTDISP_BannerSelectedEntryIndex,D0
 
 .store_selected_index:
-    MOVE.W  D0,TEXTDISP_CurrentMatchIndex
+    MOVE.W  D0,_TEXTDISP_CurrentMatchIndex
     BRA.S   .return_success
 
 .use_primary_index:
     MOVEQ   #0,D0
     MOVE.B  TEXTDISP_CandidateIndexList,D0
-    MOVE.W  D0,TEXTDISP_CurrentMatchIndex
+    MOVE.W  D0,_TEXTDISP_CurrentMatchIndex
 
 .return_success:
     MOVEQ   #1,D0
@@ -2050,9 +2050,9 @@ TEXTDISP_BuildMatchIndexList:
 ; CALLS:
 ;   TEXTDISP_FindEntryMatchIndex, TEXTDISP_ComputeTimeOffset
 ; READS:
-;   TEXTDISP_ActiveGroupId, TEXTDISP_PrimaryTitlePtrTable/2237, TEXTDISP_PrimaryGroupCode/222D, CLOCK_HalfHourSlotIndex, TEXTDISP_CurrentMatchIndex, TEXTDISP_CandidateIndexList
+;   TEXTDISP_ActiveGroupId, TEXTDISP_PrimaryTitlePtrTable/2237, TEXTDISP_PrimaryGroupCode/222D, CLOCK_HalfHourSlotIndex, _TEXTDISP_CurrentMatchIndex, TEXTDISP_CandidateIndexList
 ; WRITES:
-;   TEXTDISP_BannerFallbackEntryIndex-2379, TEXTDISP_BannerCharFallback, TEXTDISP_BannerFallbackValidFlag, TEXTDISP_BannerCharSelected
+;   TEXTDISP_BannerFallbackEntryIndex-2379, _TEXTDISP_BannerCharFallback, TEXTDISP_BannerFallbackValidFlag, _TEXTDISP_BannerCharSelected
 ; DESC:
 ;   Walks candidate indices, evaluates timing/channel constraints, and updates
 ;   global selection state for text display.
@@ -2072,7 +2072,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVEQ   #0,D0
     MOVE.B  D0,TEXTDISP_BannerFallbackValidFlag
     MOVE.B  D0,TEXTDISP_BannerSelectedValidFlag
-    MOVE.B  #$64,TEXTDISP_BannerCharSelected
+    MOVE.B  #$64,_TEXTDISP_BannerCharSelected
     LEA     TEXTDISP_Tag_SPT_Select,A0
     MOVEA.L A2,A1
     MOVE.B  D0,-23(A5)
@@ -2096,7 +2096,7 @@ TEXTDISP_SelectBestMatchFromList:
 .init_channel_range:
     MOVE.W  #$31,-6(A5)
     MOVE.W  -6(A5),D0
-    MOVE.B  D0,TEXTDISP_BannerCharFallback
+    MOVE.B  D0,_TEXTDISP_BannerCharFallback
     TST.W   D6
     BNE.S   .ensure_channel_default
 
@@ -2145,7 +2145,7 @@ TEXTDISP_SelectBestMatchFromList:
     ADDA.W  D5,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
-    MOVE.W  D0,TEXTDISP_CurrentMatchIndex
+    MOVE.W  D0,_TEXTDISP_CurrentMatchIndex
     MOVEQ   #0,D0
     MOVE.B  -13(A5),D0
     MOVE.L  D0,-(A7)
@@ -2165,7 +2165,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVEQ   #0,D1
     MOVE.B  TEXTDISP_PrimaryGroupCode,D1
     EXT.L   D1
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D2
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D2
     EXT.L   D2
     ASL.L   #2,D2
     LEA     TEXTDISP_PrimaryTitlePtrTable,A0
@@ -2184,7 +2184,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVEQ   #0,D0
     MOVE.B  TEXTDISP_SecondaryGroupCode,D0
     EXT.L   D0
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D1
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D1
     EXT.L   D1
     ASL.L   #2,D1
     LEA     TEXTDISP_SecondaryTitlePtrTable,A0
@@ -2277,7 +2277,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVEQ   #0,D1
     MOVE.B  TEXTDISP_PrimaryGroupCode,D1
     EXT.L   D1
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D2
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D2
     EXT.L   D2
     ASL.L   #2,D2
     LEA     TEXTDISP_PrimaryTitlePtrTable,A0
@@ -2296,7 +2296,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVEQ   #0,D0
     MOVE.B  TEXTDISP_SecondaryGroupCode,D0
     EXT.L   D0
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D1
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D1
     EXT.L   D1
     ASL.L   #2,D1
     LEA     TEXTDISP_SecondaryTitlePtrTable,A0
@@ -2337,7 +2337,7 @@ TEXTDISP_SelectBestMatchFromList:
     TST.W   TEXTDISP_ActiveGroupId
     BEQ.S   .select_group2_table
 
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     TEXTDISP_PrimaryTitlePtrTable,A0
@@ -2346,7 +2346,7 @@ TEXTDISP_SelectBestMatchFromList:
     BRA.S   .after_entry_table
 
 .select_group2_table:
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     TEXTDISP_SecondaryTitlePtrTable,A0
@@ -2371,8 +2371,8 @@ TEXTDISP_SelectBestMatchFromList:
     MOVEQ   #1,D1
     MOVE.B  D1,TEXTDISP_BannerSelectedValidFlag
     MOVE.W  -16(A5),D3
-    MOVE.B  D3,TEXTDISP_BannerCharSelected
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D4
+    MOVE.B  D3,_TEXTDISP_BannerCharSelected
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D4
     MOVE.B  D4,TEXTDISP_BannerSelectedEntryIndex
     MOVE.B  -23(A5),D2
     MOVE.B  D2,TEXTDISP_BannerSelectedIsSpecialFlag
@@ -2387,8 +2387,8 @@ TEXTDISP_SelectBestMatchFromList:
     MOVEQ   #1,D1
     MOVE.B  D1,TEXTDISP_BannerFallbackValidFlag
     MOVE.W  -16(A5),D1
-    MOVE.B  D1,TEXTDISP_BannerCharFallback
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D2
+    MOVE.B  D1,_TEXTDISP_BannerCharFallback
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D2
     MOVE.B  D2,TEXTDISP_BannerFallbackEntryIndex
     MOVE.B  -23(A5),D3
     MOVE.B  D3,TEXTDISP_BannerFallbackIsSpecialFlag
@@ -2417,8 +2417,8 @@ TEXTDISP_SelectBestMatchFromList:
     BLS.S   .check_fallback_match
 
     MOVE.W  -16(A5),D2
-    MOVE.B  D2,TEXTDISP_BannerCharSelected
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D3
+    MOVE.B  D2,_TEXTDISP_BannerCharSelected
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D3
     MOVE.B  D3,TEXTDISP_BannerSelectedEntryIndex
     MOVE.B  -23(A5),D4
     MOVE.B  D4,TEXTDISP_BannerSelectedIsSpecialFlag
@@ -2434,8 +2434,8 @@ TEXTDISP_SelectBestMatchFromList:
     BLE.S   .update_last_seen
 
     MOVE.W  -16(A5),D1
-    MOVE.B  D1,TEXTDISP_BannerCharFallback
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D2
+    MOVE.B  D1,_TEXTDISP_BannerCharFallback
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D2
     MOVE.B  D2,TEXTDISP_BannerFallbackEntryIndex
     MOVE.B  -23(A5),TEXTDISP_BannerFallbackIsSpecialFlag
     MOVE.W  D0,-22(A5)
@@ -2473,7 +2473,7 @@ TEXTDISP_SelectBestMatchFromList:
     BSR.W   TEXTDISP_FindEntryMatchIndex
 
     LEA     12(A7),A7
-    MOVE.W  TEXTDISP_CurrentMatchIndex,D1
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,D1
     MOVE.B  D1,TEXTDISP_BannerFallbackEntryIndex
     MOVE.W  D0,-6(A5)
 
@@ -2489,10 +2489,10 @@ TEXTDISP_SelectBestMatchFromList:
     BGE.S   .bump_usage_count
 
     MOVEQ   #100,D0
-    MOVE.B  D0,TEXTDISP_BannerCharSelected
+    MOVE.B  D0,_TEXTDISP_BannerCharSelected
 
 .bump_usage_count:
-    MOVE.B  TEXTDISP_BannerCharSelected,D0
+    MOVE.B  _TEXTDISP_BannerCharSelected,D0
     MOVEQ   #100,D1
     CMP.B   D1,D0
     BEQ.S   .return_ok
@@ -2592,9 +2592,9 @@ TEXTDISP_SelectBestMatchFromList:
 ; CALLS:
 ;   TEXTDISP_FindEntryMatchIndex
 ; READS:
-;   TEXTDISP_ChannelSourceMode, TEXTDISP_PrimaryChannelCode/234E, CLOCK_CurrentDayOfWeekIndex
+;   TEXTDISP_ChannelSourceMode, _TEXTDISP_PrimaryChannelCode/234E, CLOCK_CurrentDayOfWeekIndex
 ; WRITES:
-;   TEXTDISP_BannerCharFallback, TEXTDISP_BannerCharSelected
+;   _TEXTDISP_BannerCharFallback, _TEXTDISP_BannerCharSelected
 ; DESC:
 ;   Validates current channel and updates flags used by text display.
 ; NOTES:
@@ -2607,13 +2607,13 @@ TEXTDISP_UpdateChannelRangeFlags:
     SUBQ.W  #1,D0
     BNE.S   .use_alt_channel_source
 
-    MOVE.L  #TEXTDISP_PrimarySearchText,-4(A5)
-    MOVE.W  TEXTDISP_PrimaryChannelCode,D7
+    MOVE.L  #_TEXTDISP_PrimarySearchText,-4(A5)
+    MOVE.W  _TEXTDISP_PrimaryChannelCode,D7
     BRA.S   .ensure_channel_default
 
 .use_alt_channel_source:
-    LEA     TEXTDISP_SecondarySearchText,A0
-    MOVE.W  TEXTDISP_SecondaryChannelCode,D7
+    LEA     _TEXTDISP_SecondarySearchText,A0
+    MOVE.W  _TEXTDISP_SecondaryChannelCode,D7
     MOVE.L  A0,-4(A5)
 
 .ensure_channel_default:
@@ -2662,12 +2662,12 @@ TEXTDISP_UpdateChannelRangeFlags:
     BSR.W   TEXTDISP_FindEntryMatchIndex
 
     LEA     12(A7),A7
-    MOVE.B  D0,TEXTDISP_BannerCharFallback
+    MOVE.B  D0,_TEXTDISP_BannerCharFallback
     BRA.S   .return
 
 .fallback_defaults:
-    MOVE.B  #$64,TEXTDISP_BannerCharSelected
-    MOVE.B  #$31,TEXTDISP_BannerCharFallback
+    MOVE.B  #$64,_TEXTDISP_BannerCharSelected
+    MOVE.B  #$31,_TEXTDISP_BannerCharFallback
 
 .return:
     MOVEM.L (A7)+,D2/D7

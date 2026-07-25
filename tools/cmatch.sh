@@ -16,7 +16,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CFILE="${1:?usage: cmatch.sh <file.c> <FunctionLabel> [sc options]}"
 LABEL="${2:?usage: cmatch.sh <file.c> <FunctionLabel> [sc options]}"
 shift 2
-SCOPTS="${SCOPTS_BASE:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1} $*"
+SCOPTS="${SCOPTS_BASE:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128} $*"
 
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/cmatch.XXXXXX")"
 trap 'rm -rf "$WORK"' EXIT

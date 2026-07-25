@@ -21,18 +21,18 @@
 ; READS:
 ;   (none)
 ; WRITES:
-;   TEXTDISP_CurrentMatchIndex
+;   _TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Resets selection state and triggers a refresh helper.
 ; NOTES:
 ;   Uses helper SCRIPT_UpdateSerialShadowFromCtrlByte with constant 3 and clears
-;   TEXTDISP_CurrentMatchIndex.
+;   _TEXTDISP_CurrentMatchIndex.
 ;------------------------------------------------------------------------------
 TEXTDISP_ResetSelectionAndRefresh:
     PEA     3.W
     JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
-    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
+    MOVE.W  #(-1),_TEXTDISP_CurrentMatchIndex
     CLR.L   (A7)
     JSR     TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(PC)
 
