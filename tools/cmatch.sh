@@ -7,15 +7,16 @@
 # Exit 0 only on an exact byte match. Trailing NOP padding emitted to round the
 # object up to a longword is ignored -- the linker's own padding, not code.
 #
-# NOSTKCHK is always passed: the stock build has no __XCOVF stack-check
-# prologue, so leaving it on guarantees a mismatch on every function.
+# Defaults match build-split.sh: NOSTKCHK (the stock build has no __XCOVF
+# prologue) and DATA=FAR (application globals are absolute, not A4-relative).
+# Override the base with SCOPTS_BASE to test a different compiler or model.
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CFILE="${1:?usage: cmatch.sh <file.c> <FunctionLabel> [sc options]}"
 LABEL="${2:?usage: cmatch.sh <file.c> <FunctionLabel> [sc options]}"
 shift 2
-SCOPTS="NOSTKCHK $*"
+SCOPTS="${SCOPTS_BASE:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1} $*"
 
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/cmatch.XXXXXX")"
 trap 'rm -rf "$WORK"' EXIT

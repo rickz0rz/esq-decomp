@@ -210,6 +210,48 @@ were built from SAS's own library sources. The faithful route is to link
 `sc.lib`. Treat a stubborn mismatch in a `submodules/` function as a signal that
 it is library code.
 
+## Recording codegen divergences
+
+When SAS/C makes a different-but-equivalent choice than the original, **record
+it in the C file rather than distorting the source to force a match.** Every
+file in `src/c/` carries a header:
+
+```c
+/* RESTORES: <asm label this C replaces>
+ * MODULE:   <module path it substitutes for, or a note>
+ * STATUS:   exact | behavioural | library
+ *
+ * SASC-MISMATCH: <short-slug>
+ *   ref:     <original bytes>            <disassembly>
+ *   got:     <what sc emits>             <disassembly>
+ *   summary: what differs and why it is equivalent
+ *   tried:   option sets and source forms already ruled out
+ *   scope:   how many sites program-wide, and how to find them
+ *   retest:  what a different compiler would have to do to match
+ */
+```
+
+`STATUS` is the contract: `exact` is byte-identical and safe for a faithful
+build; `behavioural` is same-semantics but different bytes; `library` means the
+original is SAS/C library code that should be linked from `sc.lib` rather than
+decompiled.
+
+```sh
+python3 tools/mismatches.py             # inventory of restorations + divergences
+python3 tools/mismatches.py --recheck   # recompile each and report the truth
+```
+
+**On obtaining a different SAS/C version, point the toolchain at it and run
+`--recheck`.** Anything that flips `DIFFER` -> `MATCH` is a divergence that
+version does not have: it both fixes the restoration and helps pin the compiler.
+The tool also exits nonzero if something recorded as `exact` stops matching, so
+it is safe to wire into a check.
+
+`tools/cmatch.sh` and the recheck both default to
+`NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1`; override with `SCOPTS_BASE`.
+
+Known divergences so far are written up in `docs/compiler-version.md`.
+
 ## The C phase
 
 Replace assembly with C **one leaf subroutine at a time**, compiled by SAS/C
