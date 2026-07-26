@@ -193,17 +193,24 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
 
     include "modules/groups/a/l/ed3.s"
     include "modules/groups/a/l/ed3_edisconfirmkey.s"
-    include "modules/groups/a/l/ed3b.s"
+    include "modules/groups/a/l/ed3b_eddrawescmenubottomhelp.s"
+    include "modules/groups/a/l/ed3bb.s"
+    include "modules/groups/a/l/ed3bb_edincrementadnumber.s"
+    include "modules/groups/a/l/ed3bbb.s"
     include "modules/groups/a/l/xjump.s"
 
     include "modules/groups/a/m/esq.s"
     include "modules/groups/a/m/xjump.s"
 
     include "modules/groups/a/n/esqdisp.s"
+    include "modules/groups/a/n/esqdisp_esqdisprefreshstatusindicatorsfromcurrentmask.s"
+    include "modules/groups/a/n/esqdispb.s"
     include "modules/groups/a/n/esqfunc.s"
     include "modules/groups/a/n/esqiff.s"
     include "modules/groups/a/n/esqiff_esqiffrestorebasepalettetriples.s"
-    include "modules/groups/a/n/esqiffb.s"
+    include "modules/groups/a/n/esqiffb_esqiffruncopperrisetransition.s"
+    include "modules/groups/a/n/esqiffb_esqiffruncopperdroptransition.s"
+    include "modules/groups/a/n/esqiffbb.s"
 
     include "modules/groups/a/o/esqiff2.s"
     include "modules/groups/a/o/esqpars.s"
@@ -222,6 +229,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/a/t/xjump.s"
 
     include "modules/groups/a/u/gcommand3.s"
+    include "modules/groups/a/u/gcommand3_gcommandenablehighlight.s"
+    include "modules/groups/a/u/gcommand3b.s"
     include "modules/groups/a/u/gcommand4.s"
     include "modules/groups/a/u/xjump.s"
 
@@ -251,6 +260,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/b/a/newgrid1bb.s"
     include "modules/groups/b/a/newgrid2.s"
     include "modules/groups/b/a/p_type.s"
+    include "modules/groups/b/a/p_type_ptyperesetlistsandloadpromoids.s"
+    include "modules/groups/b/a/p_typeb.s"
     include "modules/groups/b/a/parseini.s"
     include "modules/groups/b/a/parseini2.s"
     include "modules/groups/b/a/parseini3.s"
@@ -259,6 +270,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/b/a/script2_scriptwritectrlshadowtoserdat.s"
     include "modules/groups/b/a/script2b.s"
     include "modules/groups/b/a/script3.s"
+    include "modules/groups/b/a/script3_scriptinitctrlcontext.s"
+    include "modules/groups/b/a/script3b2.s"
     include "modules/groups/b/a/script3_scriptclearsearchtextsandchannels.s"
     include "modules/groups/b/a/script3b.s"
     include "modules/groups/b/a/script4_scriptresetbannerchardefaults.s"

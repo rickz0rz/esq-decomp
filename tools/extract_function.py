@@ -80,16 +80,30 @@ def main():
 
     slug = re.sub(r'[^a-z0-9]+', '', label.lower().lstrip('_'))
     base = rel[:-2]
-    names = {'a': rel, 'm': f'{base}_{slug}.s', 'b': f'{base}b.s'}
+    # The remainder file must not collide with one produced by an earlier split
+    # of the same module: overwriting it silently loses that module's tail and
+    # leaves Prevue.asm including the same path twice.
+    tail = f'{base}b.s'
+    n = 2
+    while os.path.exists(os.path.join(ROOT, 'src', tail)) and tail != rel:
+        tail = f'{base}b{n}.s'
+        n += 1
+    names = {'a': rel, 'm': f'{base}_{slug}.s', 'b': tail}
 
     written = []
     for tag, chunk in parts:
         while chunk and not chunk[-1].strip():
             chunk.pop()
+        path = os.path.join(ROOT, 'src', names[tag])
         if not chunk and tag != 'm':
+            # An empty part contributes nothing. Delete any file sitting at that
+            # path instead of leaving it: a stale orphan is still on disk, still
+            # defines the labels it used to, and the next extraction's
+            # find_module() will happily pick it over the live module.
+            if tag == 'a' and os.path.exists(path):
+                os.remove(path)
             continue
         xd = [x for x in xdefs if x.split()[1] in dmap[tag]]
-        path = os.path.join(ROOT, 'src', names[tag])
         open(path, 'w').write('\n'.join(xd + [''] + chunk) + '\n')
         written.append((names[tag], len(xd), len(chunk)))
 
@@ -105,13 +119,32 @@ def main():
         print(f'  {n:58s} {nx:3d} XDEF, {nl:5d} lines')
     print(f'  extracted {label} -> src/{names["m"]}')
 
+    # orphan guard: a module file that Prevue.asm does not include is invisible
+    # to the build but still visible to find_module(), which is exactly how a
+    # partially-applied extraction corrupts the next one.
+    root_txt = open(p).read()
+    orphans = []
+    for dirpath, _, fs in os.walk(os.path.join(ROOT, 'src', 'modules')):
+        for fn in fs:
+            if not fn.endswith('.s'):
+                continue
+            rp = os.path.relpath(os.path.join(dirpath, fn), os.path.join(ROOT, 'src'))
+            if f'include "{rp}"' not in root_txt:
+                orphans.append(rp)
+    if orphans:
+        print('  *** ORPHANED MODULE FILES (not included by Prevue.asm) ***')
+        for o in orphans:
+            print(f'      {o}')
+        sys.exit(1)
+
     if '--no-verify' not in sys.argv:
         r = subprocess.run([os.path.join(ROOT, 'test-hash.sh')],
                            capture_output=True, text=True, cwd=ROOT)
-        ok = '6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2' in r.stdout
-        print('  hash unchanged' if ok else '  *** HASH CHANGED -- extraction altered bytes ***')
-        if not ok:
-            print(r.stdout[-400:]); sys.exit(1)
+        if r.returncode == 0:
+            print('  hash unchanged')
+        else:
+            print('  *** BUILD BROKEN OR HASH CHANGED ***')
+            print(r.stdout[-600:]); sys.exit(1)
 
 
 if __name__ == '__main__':

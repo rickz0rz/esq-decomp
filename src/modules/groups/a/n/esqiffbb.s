@@ -1,9 +1,7 @@
     XDEF    ESQIFF_DeallocateAdsAndLogoLstData
     XDEF    ESQIFF_HandleBrushIniReloadHotkey
     XDEF    ESQIFF_PlayNextExternalAssetFrame
-    XDEF    ESQIFF_RunCopperDropTransition
-    XDEF    ESQIFF_RunCopperRiseTransition
-    XDEF    ESQIFF_RunPendingCopperAnimations
+    XDEF    _ESQIFF_RunPendingCopperAnimations
     XDEF    ESQIFF_ServiceExternalAssetSourceState
     XDEF    ESQIFF_ServicePendingCopperPaletteMoves
     XDEF    ESQIFF_SetApenToBrightestPaletteIndex
@@ -44,62 +42,6 @@
     XDEF    ESQIFF_JMPTBL_DOS_OpenFileWithMode
     XDEF    ESQIFF_PlayNextExternalAssetFrame_Return
     XDEF    ESQIFF_ShowExternalAssetWithCopperFx_Return
-
-;------------------------------------------------------------------------------
-; FUNC: ESQIFF_RunCopperRiseTransition   (RunCopperRiseTransition)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   ESQIFF_RunPendingCopperAnimations
-; READS:
-;   (none observed)
-; WRITES:
-;   COPPER_AnimationLane3_Countdown
-; DESC:
-;   Arms copper rise-transition countdown state and runs pending copper animation
-;   servicing immediately.
-; NOTES:
-;   Writes COPPER_AnimationLane3_Countdown = 15 before invoking ESQIFF_RunPendingCopperAnimations.
-;------------------------------------------------------------------------------
-ESQIFF_RunCopperRiseTransition:
-    MOVE.W  #15,COPPER_AnimationLane3_Countdown
-    BSR.W   ESQIFF_RunPendingCopperAnimations
-
-    RTS
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: ESQIFF_RunCopperDropTransition   (RunCopperDropTransition)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   ESQIFF_RunPendingCopperAnimations
-; READS:
-;   (none observed)
-; WRITES:
-;   COPPER_AnimationLane2_Countdown
-; DESC:
-;   Arms copper drop-transition countdown state and runs pending copper animation
-;   servicing immediately.
-; NOTES:
-;   Writes COPPER_AnimationLane2_Countdown = 15 before invoking ESQIFF_RunPendingCopperAnimations.
-;------------------------------------------------------------------------------
-ESQIFF_RunCopperDropTransition:
-    MOVE.W  #15,COPPER_AnimationLane2_Countdown
-    BSR.W   ESQIFF_RunPendingCopperAnimations
-
-    RTS
-
-;!======
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQIFF_ServicePendingCopperPaletteMoves   (Service pending copper index moves for four accumulator rows)
@@ -375,7 +317,7 @@ ESQIFF_SetApenToBrightestPaletteIndex:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQIFF_RunCopperRiseTransition, ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
+;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
 ; READS:
 ;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, SCRIPT_BannerTransitionActive, WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable, WDISP_AccumulatorRow0_Value, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd, e8
 ; WRITES:
@@ -407,7 +349,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     TST.L   -22(A5)
     BEQ.W   .set_missing_asset_pending_flags
 
-    BSR.W   ESQIFF_RunCopperDropTransition
+    BSR.W   _ESQIFF_RunCopperDropTransition
 
     MOVEQ   #20,D6
     MOVEA.L -22(A5),A0
@@ -735,7 +677,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.W  D0,ACCUMULATOR_Row2_SaturateFlag
     MOVE.W  D0,ACCUMULATOR_Row3_Sum
     MOVE.W  D0,ACCUMULATOR_Row3_SaturateFlag
-    BSR.W   ESQIFF_RunCopperRiseTransition
+    BSR.W   _ESQIFF_RunCopperRiseTransition
 
     BRA.S   ESQIFF_ShowExternalAssetWithCopperFx_Return
 
@@ -870,7 +812,7 @@ ESQIFF_ServiceExternalAssetSourceState:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_RestoreBasePaletteTriples, ESQIFF_RunCopperRiseTransition, ESQIFF_RunCopperDropTransition, ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
+;   ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
 ; READS:
 ;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, TEXTDISP_DeferredActionCountdown, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, ESQIFF_ExternalAssetStateTable, ESQIFF_ExternalAssetPathCommaFlag
 ; WRITES:
@@ -885,7 +827,7 @@ ESQIFF_PlayNextExternalAssetFrame:
     LINK.W  A5,#-8
     MOVEM.L D6-D7,-(A7)
     MOVE.W  10(A5),D7
-    BSR.W   ESQIFF_RunCopperDropTransition
+    BSR.W   _ESQIFF_RunCopperDropTransition
 
     TST.W   D7
     BEQ.S   .check_logo_head_fallback
@@ -1053,7 +995,7 @@ ESQIFF_PlayNextExternalAssetFrame:
 .run_rise_transition_and_service_source:
     MOVE.W  WDISP_AccumulatorCaptureActive,D6
     CLR.W   WDISP_AccumulatorCaptureActive
-    BSR.W   ESQIFF_RunCopperRiseTransition
+    BSR.W   _ESQIFF_RunCopperRiseTransition
 
     MOVE.W  D6,WDISP_AccumulatorCaptureActive
     TST.W   D7
@@ -1161,7 +1103,7 @@ ESQIFF_DeallocateAdsAndLogoLstData:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_RunPendingCopperAnimations   (Service all active copper animation countdown lanes)
+; FUNC: _ESQIFF_RunPendingCopperAnimations   (Service all active copper animation countdown lanes)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1171,16 +1113,16 @@ ESQIFF_DeallocateAdsAndLogoLstData:
 ; CALLS:
 ;   ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary, ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets, ESQIFF_JMPTBL_ESQ_NoOp_006A, ESQIFF_JMPTBL_ESQ_NoOp_0074
 ; READS:
-;   COPPER_AnimationLane0_Countdown, COPPER_AnimationLane1_Countdown, COPPER_AnimationLane2_Countdown, COPPER_AnimationLane3_Countdown
+;   COPPER_AnimationLane0_Countdown, COPPER_AnimationLane1_Countdown, _COPPER_AnimationLane2_Countdown, _COPPER_AnimationLane3_Countdown
 ; WRITES:
-;   COPPER_AnimationLane0_Countdown, COPPER_AnimationLane1_Countdown, COPPER_AnimationLane2_Countdown, COPPER_AnimationLane3_Countdown
+;   COPPER_AnimationLane0_Countdown, COPPER_AnimationLane1_Countdown, _COPPER_AnimationLane2_Countdown, _COPPER_AnimationLane3_Countdown
 ; DESC:
 ;   Services four countdown lanes in sequence, invoking the corresponding copper
 ;   helper while each lane is non-zero and decrementing per step.
 ; NOTES:
 ;   Loops until all lanes (`1B19..1B1C`) reach zero.
 ;------------------------------------------------------------------------------
-ESQIFF_RunPendingCopperAnimations:
+_ESQIFF_RunPendingCopperAnimations:
     MOVE.W  COPPER_AnimationLane0_Countdown,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
@@ -1191,7 +1133,7 @@ ESQIFF_RunPendingCopperAnimations:
     MOVE.W  COPPER_AnimationLane0_Countdown,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,COPPER_AnimationLane0_Countdown
-    BRA.S   ESQIFF_RunPendingCopperAnimations
+    BRA.S   _ESQIFF_RunPendingCopperAnimations
 
 .service_lane_1b1a:
     MOVE.W  COPPER_AnimationLane1_Countdown,D0
@@ -1207,29 +1149,29 @@ ESQIFF_RunPendingCopperAnimations:
     BRA.S   .service_lane_1b1a
 
 .service_lane_1b1b:
-    MOVE.W  COPPER_AnimationLane2_Countdown,D0
+    MOVE.W  _COPPER_AnimationLane2_Countdown,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.S   .service_lane_1b1c
 
     JSR     ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary(PC)
 
-    MOVE.W  COPPER_AnimationLane2_Countdown,D0
+    MOVE.W  _COPPER_AnimationLane2_Countdown,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,COPPER_AnimationLane2_Countdown
+    MOVE.W  D0,_COPPER_AnimationLane2_Countdown
     BRA.S   .service_lane_1b1b
 
 .service_lane_1b1c:
-    MOVE.W  COPPER_AnimationLane3_Countdown,D0
+    MOVE.W  _COPPER_AnimationLane3_Countdown,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.S   .return_run_pending_copper_animations
 
     JSR     ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets(PC)
 
-    MOVE.W  COPPER_AnimationLane3_Countdown,D0
+    MOVE.W  _COPPER_AnimationLane3_Countdown,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,COPPER_AnimationLane3_Countdown
+    MOVE.W  D0,_COPPER_AnimationLane3_Countdown
     BRA.S   .service_lane_1b1c
 
 .return_run_pending_copper_animations:

@@ -126,16 +126,16 @@ GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ESQIFF_RunCopperRiseTransition
+;   _ESQIFF_RunCopperRiseTransition
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ESQIFF_RunCopperRiseTransition.
+;   Jump stub to _ESQIFF_RunCopperRiseTransition.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition:
-    JMP     ESQIFF_RunCopperRiseTransition
+    JMP     _ESQIFF_RunCopperRiseTransition
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName   (JumpStub_TEXTDISP_BuildEntryShortName)
@@ -186,16 +186,16 @@ GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ESQIFF_RunCopperDropTransition
+;   _ESQIFF_RunCopperDropTransition
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ESQIFF_RunCopperDropTransition.
+;   Jump stub to _ESQIFF_RunCopperDropTransition.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition:
-    JMP     ESQIFF_RunCopperDropTransition
+    JMP     _ESQIFF_RunCopperDropTransition
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible   (JumpStub)

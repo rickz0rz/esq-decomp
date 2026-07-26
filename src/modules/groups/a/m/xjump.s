@@ -101,16 +101,16 @@ GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   SCRIPT_InitCtrlContext
+;   _SCRIPT_InitCtrlContext
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to SCRIPT_InitCtrlContext.
+;   Jump stub to _SCRIPT_InitCtrlContext.
 ;------------------------------------------------------------------------------
 GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext:
-    JMP     SCRIPT_InitCtrlContext
+    JMP     _SCRIPT_InitCtrlContext
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk   (JumpStub)
@@ -161,16 +161,16 @@ GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   P_TYPE_ResetListsAndLoadPromoIds
+;   _P_TYPE_ResetListsAndLoadPromoIds
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to P_TYPE_ResetListsAndLoadPromoIds.
+;   Jump stub to _P_TYPE_ResetListsAndLoadPromoIds.
 ;------------------------------------------------------------------------------
 GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds:
-    JMP     P_TYPE_ResetListsAndLoadPromoIds
+    JMP     _P_TYPE_ResetListsAndLoadPromoIds
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile   (JumpStub_LADFUNC_LoadTextAdsFromFile)

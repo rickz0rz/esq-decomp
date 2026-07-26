@@ -41,8 +41,8 @@
     XDEF    ACCUMULATOR_Row3_SaturateFlag
     XDEF    COPPER_AnimationLane0_Countdown
     XDEF    COPPER_AnimationLane1_Countdown
-    XDEF    COPPER_AnimationLane2_Countdown
-    XDEF    COPPER_AnimationLane3_Countdown
+    XDEF    _COPPER_AnimationLane2_Countdown
+    XDEF    _COPPER_AnimationLane3_Countdown
     XDEF    CLOCK_MonthLengths
     XDEF    CLOCK_HalfHourSlotLookup
     XDEF    PARSEINI_ParsedDescriptorListHead
@@ -148,9 +148,9 @@ COPPER_AnimationLane0_Countdown:
     DC.W    0
 COPPER_AnimationLane1_Countdown:
     DC.W    0
-COPPER_AnimationLane2_Countdown:
+_COPPER_AnimationLane2_Countdown:
     DC.W    0
-COPPER_AnimationLane3_Countdown:
+_COPPER_AnimationLane3_Countdown:
     DC.W    0
 CLOCK_MonthLengths:
     DC.L    $001f001c,$001f001e,$001f001e,$001f001f

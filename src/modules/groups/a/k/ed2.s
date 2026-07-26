@@ -669,7 +669,7 @@ ED2_DrawEntrySummaryPanel:
 ;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_PrimaryGroupPresentFlag, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusColorCode, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar,
 ;   WDISP_WeatherCycleOffsetCount, WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusTextPtr, P_TYPE_WeatherBrushRefreshPendingFlag
 ; WRITES:
-;   _ED_LastKeyCode, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, GCOMMAND_BannerRowFallbackOnFirstRowFlag, ED_MenuStateId, ESQ_ShutdownRequestedFlag, CLEANUP_DiagOverlayAutoRefreshFlag,
+;   _ED_LastKeyCode, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, GCOMMAND_BannerRowFallbackOnFirstRowFlag, _ED_MenuStateId, ESQ_ShutdownRequestedFlag, CLEANUP_DiagOverlayAutoRefreshFlag,
 ;   HIGHLIGHT_CustomValue, ESQPARS2_ReadModeFlags, LOCAVAIL_FilterPrevClassId, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, WDISP_AccumulatorCaptureActive, SCRIPT_RuntimeMode,
 ;   PARSEINI_CtrlHChangeGateFlag
 ; DESC:
@@ -1009,7 +1009,7 @@ ED2_HandleMenuActions:
     BRA.W   .restore_display_state
 
 .case_set_mode_18:
-    MOVE.B  #$18,ED_MenuStateId
+    MOVE.B  #$18,_ED_MenuStateId
 
     BRA.W   .restore_display_state
 
@@ -1557,7 +1557,7 @@ ED2_HandleMenuActions:
 ;   ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask,
 ;   GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow,
 ;   GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow,
-;   ED_DrawESCMenuBottomHelp
+;   _ED_DrawESCMenuBottomHelp
 ; READS:
 ;   Global_REF_RASTPORT_1, ED_DiagTextModeChar, ED2_TAG_NRLS, ED2_STR_NYYLLZ, ED2_TAG_NYLRS, ED2_STR_SILENCE, ED2_STR_LEFT, ED2_STR_RIGHT, ED2_STR_BACKGROUND, ED2_STR_EXT_DOT_VIDEO_ONLY, ED2_STR_COMPUTER_ONLY, ED2_STR_OVERLAY_EXT_DOT_VIDEO, ED2_STR_NEGATIVE_VIDEO, ED2_STR_VIDEO_SWITCH, ED2_STR_OPEN, ED2_STR_CLOSED, ED2_STR_START_TAPE_VIDEO, ED2_STR_STOP, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, ED_DiagnosticsViewMode, ED_StateRingIndex, ED_StateRingTable, case_adjust_1bc4, case_adjust_1dd6, case_adjust_1dd7, case_assert_ctrl_line, case_clear_error_counters, case_copper_all_off, case_copper_all_on, case_copper_default, case_copper_on_highlight, case_cycle_1dcd_digit, case_deassert_ctrl_line, case_default_help, case_increment_226a, case_refresh_rastport_1, case_set_1df1_bit0, case_set_1df1_bit1, case_set_1df1_bit2, case_show_ciab_bit5, case_toggle_1df0_low3, case_toggle_226a, case_transition_0, case_transition_1, case_transition_2, case_transition_3, return
 ; WRITES:
@@ -1942,7 +1942,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.S   .return
 
 .case_default_help:
-    JSR     ED_DrawESCMenuBottomHelp(PC)
+    JSR     _ED_DrawESCMenuBottomHelp(PC)
 
     CLR.W   ED_DiagnosticsScreenActive
 
@@ -1960,7 +1960,7 @@ ED2_HandleDiagnosticsMenuActions:
 ; CLOBBERS:
 ;   A0/A1/A7/D0/D1
 ; CALLS:
-;   ED_DrawESCMenuBottomHelp, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText
+;   _ED_DrawESCMenuBottomHelp, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText
 ; READS:
 ;   ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED, ED_EditCursorOffset, _ED_LastKeyCode, ED_LastMenuInputChar, ED_StateRingIndex, ED_StateRingTable, case_adjust_selection_default, return
 ; WRITES:
@@ -2013,7 +2013,7 @@ ED2_HandleScrollSpeedSelection:
     MOVE.W  D0,ESQPARS2_StateIndex
 
 .after_sync_scroll_speed:
-    JSR     ED_DrawESCMenuBottomHelp(PC)
+    JSR     _ED_DrawESCMenuBottomHelp(PC)
 
     BRA.W   .return
 

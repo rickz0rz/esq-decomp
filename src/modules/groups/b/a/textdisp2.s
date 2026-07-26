@@ -446,20 +446,20 @@ TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview:
 ;------------------------------------------------------------------------------
 ; FUNC: TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations   (JumpStub)
 ; ARGS:
-;   see ESQIFF_RunPendingCopperAnimations)
+;   see _ESQIFF_RunPendingCopperAnimations)
 ; RET:
-;   see ESQIFF_RunPendingCopperAnimations)
+;   see _ESQIFF_RunPendingCopperAnimations)
 ; CLOBBERS:
-;   see ESQIFF_RunPendingCopperAnimations)
+;   see _ESQIFF_RunPendingCopperAnimations)
 ; CALLS:
-;   ESQIFF_RunPendingCopperAnimations
+;   _ESQIFF_RunPendingCopperAnimations
 ; DESC:
-;   Jump stub to ESQIFF_RunPendingCopperAnimations.
+;   Jump stub to _ESQIFF_RunPendingCopperAnimations.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations:
-    JMP     ESQIFF_RunPendingCopperAnimations
+    JMP     _ESQIFF_RunPendingCopperAnimations
 
 ;------------------------------------------------------------------------------
 ; FUNC: TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame   (JumpStub)

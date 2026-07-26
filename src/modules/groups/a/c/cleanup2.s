@@ -31,7 +31,7 @@
 ;   CLEANUP_PendingAlertFlag, CLEANUP_AlertProcessingFlag, CLEANUP_DiagOverlayAutoRefreshFlag, Global_UIBusyFlag,
 ;   CLEANUP_AlertCooldownTicks, LOCAVAIL_FilterStep, LOCAVAIL_FilterCooldownTicks, CLOCK_DaySlotIndex, CLOCK_CurrentDayOfWeekIndex,
 ;   TEXTDISP_DeferredActionDelayTicks, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown, CLEANUP_BannerTickCounter,
-;   TLIBA1_DayEntryModeCounter, DST_BannerWindowPrimary, ESQ_AlertType235ModeFlagChar, ESQ_AlertType4ModeFlagChar, ED_MenuStateId, CLOCK_HalfHourSlotIndex,
+;   TLIBA1_DayEntryModeCounter, DST_BannerWindowPrimary, ESQ_AlertType235ModeFlagChar, ESQ_AlertType4ModeFlagChar, _ED_MenuStateId, CLOCK_HalfHourSlotIndex,
 ;   Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   CLEANUP_AlertProcessingFlag, CLEANUP_AlertCooldownTicks, LOCAVAIL_FilterStep,
@@ -353,7 +353,7 @@ CLEANUP_ProcessAlerts:
 .update_grid_flash:
     JSR     GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine(PC)
 
-    MOVE.B  ED_MenuStateId,D0
+    MOVE.B  _ED_MenuStateId,D0
     SUBQ.B  #8,D0
     BNE.S   .check_grid_flash_alt
 
@@ -362,7 +362,7 @@ CLEANUP_ProcessAlerts:
     BRA.S   .finish
 
 .check_grid_flash_alt:
-    MOVE.B  ED_MenuStateId,D0
+    MOVE.B  _ED_MenuStateId,D0
     SUBQ.B  #7,D0
     BNE.S   .finish
 

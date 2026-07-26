@@ -4,7 +4,7 @@
     XDEF    SCRIPT_ResetCtrlContext
     XDEF    SCRIPT_ResetCtrlContextAndClearStatusLine
     XDEF    SCRIPT_SaveCtrlContextSnapshot
-    XDEF    SCRIPT_SetCtrlContextMode
+    XDEF    _SCRIPT_SetCtrlContextMode
     XDEF    SCRIPT_SplitAndNormalizeSearchBuffer
     XDEF    SCRIPT_UpdateCtrlStateMachine
     XDEF    SCRIPT_UpdateRuntimeModeForPlaybackCursor
@@ -685,7 +685,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_SetCtrlContextMode   (Set ctrl context mode + reset snapshot)
+; FUNC: _SCRIPT_SetCtrlContextMode   (Set ctrl context mode + reset snapshot)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -703,7 +703,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
 ; NOTES:
 ;   Calls SCRIPT_ResetCtrlContext to clear and reset the rest of the structure.
 ;------------------------------------------------------------------------------
-SCRIPT_SetCtrlContextMode:
+_SCRIPT_SetCtrlContextMode:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVE.W  18(A7),D7
@@ -986,12 +986,12 @@ SCRIPT_SaveCtrlContextSnapshot:
 ; CALLS:
 ;   SCRIPT_ResetCtrlContext, TEXTDISP_HandleScriptCommand
 ; READS:
-;   SCRIPT_CTRL_CONTEXT
+;   _SCRIPT_CTRL_CONTEXT
 ; WRITES:
-;   SCRIPT_CTRL_CONTEXT (via SCRIPT_ResetCtrlContext)
+;   _SCRIPT_CTRL_CONTEXT (via SCRIPT_ResetCtrlContext)
 ; DESC:
 ;   Clears the status line via TEXTDISP_HandleScriptCommand and reinitializes
-;   SCRIPT_CTRL_CONTEXT.
+;   _SCRIPT_CTRL_CONTEXT.
 ;------------------------------------------------------------------------------
 SCRIPT_ResetCtrlContextAndClearStatusLine:
     CLR.L   -(A7)
@@ -1001,7 +1001,7 @@ SCRIPT_ResetCtrlContextAndClearStatusLine:
     MOVE.L  D0,-(A7)
     JSR     TEXTDISP_HandleScriptCommand(PC)
 
-    PEA     SCRIPT_CTRL_CONTEXT
+    PEA     _SCRIPT_CTRL_CONTEXT
     BSR.W   SCRIPT_ResetCtrlContext
 
     LEA     16(A7),A7

@@ -1924,7 +1924,7 @@ WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQIFF_RunCopperDropTransition
+;   _ESQIFF_RunCopperDropTransition
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1935,7 +1935,7 @@ WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 WDISP_JMPTBL_ESQIFF_RunCopperDropTransition:
-    JMP     ESQIFF_RunCopperDropTransition
+    JMP     _ESQIFF_RunCopperDropTransition
 
 ;------------------------------------------------------------------------------
 ; FUNC: WDISP_JMPTBL_BRUSH_FindBrushByPredicate   (Routine at WDISP_JMPTBL_BRUSH_FindBrushByPredicate)

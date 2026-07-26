@@ -20,3 +20,11 @@ modules/groups/b/a/script2_scriptwritectrlshadowtoserdat.s     c/script_write_ct
 modules/groups/a/n/esqiff_esqiffrestorebasepalettetriples.s    c/esqiff_restore_base_palette_triples.c
 modules/groups/b/a/newgrid1b_newgridinitshowtimebuckets.s      c/newgrid_init_showtime_buckets.c
 modules/groups/a/i/displib_displibresetlinetables.s              c/displib_reset_line_tables.c
+modules/groups/a/l/ed3b_eddrawescmenubottomhelp.s              c/ed_draw_esc_menu_bottom_help.c
+modules/groups/a/l/ed3bb_edincrementadnumber.s                 c/ed_increment_ad_number.c
+modules/groups/a/n/esqdisp_esqdisprefreshstatusindicatorsfromcurrentmask.s c/esqdisp_refresh_status_indicators.c
+modules/groups/a/n/esqiffb_esqiffruncopperdroptransition.s     c/esqiff_run_copper_drop_transition.c
+modules/groups/a/n/esqiffb_esqiffruncopperrisetransition.s     c/esqiff_run_copper_rise_transition.c
+modules/groups/a/u/gcommand3_gcommandenablehighlight.s         c/gcommand_enable_highlight.c
+modules/groups/b/a/p_type_ptyperesetlistsandloadpromoids.s     c/p_type_reset_lists_and_load_promo_ids.c
+modules/groups/b/a/script3_scriptinitctrlcontext.s             c/script_init_ctrl_context.c

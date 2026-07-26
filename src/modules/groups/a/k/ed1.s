@@ -31,13 +31,13 @@
 ; CLOBBERS:
 ;   A1/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   ED_GetEscMenuActionCode, ED_DrawAdNumberPrompt, ED_DrawDiagnosticModeHelpText, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText, ED_DrawBottomHelpBarBackground, ED_DrawEscMainMenuText,
+;   ED_GetEscMenuActionCode, ED_DrawAdNumberPrompt, ED_DrawDiagnosticModeHelpText, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText, _ED_DrawBottomHelpBarBackground, ED_DrawEscMainMenuText,
 ;   ED1_DrawDiagnosticsScreen, ED_DrawSpecialFunctionsMenu,
 ;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen
 ; READS:
 ;   ED_DiagTextModeChar, ED_SavedScrollSpeedIndex, ED_EditCursorOffset
 ; WRITES:
-;   ED_MenuStateId, ED_EditCursorOffset, ESQ_ShutdownRequestedFlag
+;   _ED_MenuStateId, ED_EditCursorOffset, ESQ_ShutdownRequestedFlag
 ; DESC:
 ;   Dispatches ESC-menu commands, updates selection state, and shows errors.
 ; NOTES:
@@ -83,7 +83,7 @@ ED1_HandleEscMenuInput:
 
     JSR     ED_DrawAdNumberPrompt(PC)
 
-    MOVE.B  #$2,ED_MenuStateId
+    MOVE.B  #$2,_ED_MenuStateId
     BRA.W   .done
 
 .case_mode_2_unavailable:
@@ -98,7 +98,7 @@ ED1_HandleEscMenuInput:
 
     JSR     ED_DrawAdNumberPrompt(PC)
 
-    MOVE.B  #$3,ED_MenuStateId
+    MOVE.B  #$3,_ED_MenuStateId
     BRA.W   .done
 
 .case_mode_3_unavailable:
@@ -106,7 +106,7 @@ ED1_HandleEscMenuInput:
     BRA.W   .done
 
 .case_mode_6:
-    MOVE.B  #$6,ED_MenuStateId
+    MOVE.B  #$6,_ED_MenuStateId
     JSR     ED_DrawDiagnosticModeHelpText(PC)
 
     MOVE.L  ED_SavedScrollSpeedIndex,ED_EditCursorOffset
@@ -125,7 +125,7 @@ ED1_HandleEscMenuInput:
     BRA.S   .done
 
 .case_special_functions:
-    MOVE.B  #$a,ED_MenuStateId
+    MOVE.B  #$a,_ED_MenuStateId
     JSR     ED_DrawDiagnosticModeHelpText(PC)
 
     CLR.L   ED_EditCursorOffset
@@ -139,8 +139,8 @@ ED1_HandleEscMenuInput:
     BRA.S   .done
 
 .case_mode_8:
-    MOVE.B  #$8,ED_MenuStateId
-    JSR     ED_DrawBottomHelpBarBackground(PC)
+    MOVE.B  #$8,_ED_MenuStateId
+    JSR     _ED_DrawBottomHelpBarBackground(PC)
 
     BRA.S   .done
 
@@ -212,7 +212,7 @@ ED1_HandleEscMenuInput:
 ; CLOBBERS:
 ;   A0/D0/D1
 ; CALLS:
-;   ED_DrawESCMenuBottomHelp
+;   _ED_DrawESCMenuBottomHelp
 ; READS:
 ;   ED_StateRingIndex, ED_StateRingTable
 ; WRITES:
@@ -235,7 +235,7 @@ ED1_UpdateEscMenuSelection:
     SUBI.W  #$31,D1
     BEQ.S   .return
 
-    JSR     ED_DrawESCMenuBottomHelp(PC)
+    JSR     _ED_DrawESCMenuBottomHelp(PC)
 
     CLR.W   ED_DiagnosticsScreenActive
 
@@ -255,14 +255,14 @@ ED1_UpdateEscMenuSelection:
 ; CALLS:
 ;   _LVOSetFont, _LVOInitBitMap, _LVOSetRast, _LVOSetDrMd, _LVODisable, _LVOEnable,
 ;   GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte, GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight,
-;   ED1_JMPTBL_GCOMMAND_SeedBannerDefaults, ED_DrawESCMenuBottomHelp,
+;   ED1_JMPTBL_GCOMMAND_SeedBannerDefaults, _ED_DrawESCMenuBottomHelp,
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, ED1_JMPTBL_CLEANUP_DrawDateTimeBannerRow,
-;   DISPLIB_DisplayTextAtPosition, ESQIFF_RunCopperDropTransition, ESQIFF_RunCopperRiseTransition
+;   DISPLIB_DisplayTextAtPosition, _ESQIFF_RunCopperDropTransition, _ESQIFF_RunCopperRiseTransition
 ; READS:
 ;   ESQ_TAG_36, ED_DiagScrollSpeedChar, KYBD_CustomPaletteTriplesRBase, ED_DiagGraphModeChar, ED_SaveTextAdsOnExitFlag
 ; WRITES:
-;   Global_UIBusyFlag, ED_SavedDiagGraphModeChar, ED_SaveTextAdsOnExitFlag, ED_MaxAdNumber, ED_TextLimit, ED_BlockOffset,
-;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _WDISP_PaletteTriplesRBase
+;   Global_UIBusyFlag, ED_SavedDiagGraphModeChar, ED_SaveTextAdsOnExitFlag, _ED_MaxAdNumber, ED_TextLimit, ED_BlockOffset,
+;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _WDISP_PaletteTriplesRBase
 ; DESC:
 ;   Prepares the ESC menu UI, computes layout values, and draws the version row.
 ; NOTES:
@@ -302,7 +302,7 @@ ED1_EnterEscMenu:
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
-    JSR     ESQIFF_RunCopperDropTransition(PC)
+    JSR     _ESQIFF_RunCopperDropTransition(PC)
 
     MOVEQ   #0,D7
 
@@ -349,7 +349,7 @@ ED1_EnterEscMenu:
     ADD.L   D1,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
-    MOVE.L  D0,ED_MaxAdNumber
+    MOVE.L  D0,_ED_MaxAdNumber
     MOVEQ   #0,D0
     MOVE.B  ED_DiagScrollSpeedChar,D0
     SUB.L   D1,D0
@@ -368,8 +368,8 @@ ED1_EnterEscMenu:
 
     MOVE.L  D0,ED_BlockOffset
     MOVEQ   #1,D0
-    MOVE.L  D0,Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    JSR     ED_DrawESCMenuBottomHelp(PC)
+    MOVE.L  D0,_Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    JSR     _ED_DrawESCMenuBottomHelp(PC)
 
     ; 41-byte local buffer, reused for centered version row text.
     MOVE.L  Global_LONG_PATCH_VERSION_NUMBER,-(A7)
@@ -422,7 +422,7 @@ ED1_EnterEscMenu:
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
-    JSR     ESQIFF_RunCopperRiseTransition(PC)
+    JSR     _ESQIFF_RunCopperRiseTransition(PC)
 
 ;------------------------------------------------------------------------------
 ; FUNC: ED1_EnterEscMenu_AfterVersionText   (Routine at ED1_EnterEscMenu_AfterVersionText)
@@ -466,7 +466,7 @@ ED1_EnterEscMenu_AfterVersionText:
 ;   GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode, ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, ESQFUNC_UpdateDiskWarningAndRefreshTick, ED1_ClearEscMenuMode, ESQFUNC_UpdateRefreshModeState,
 ;   ED1_JMPTBL_NEWGRID_DrawTopBorderLine, ED1_JMPTBL_LADFUNC_SaveTextAdsToFile,
 ;   ED1_WaitForFlagAndClearBit0, ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs,
-;   ED_DrawBottomHelpBarBackground, ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_RunCopperRiseTransition
+;   _ED_DrawBottomHelpBarBackground, ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, _ESQIFF_RunCopperRiseTransition
 ; READS:
 ;   ED_SaveTextAdsOnExitFlag, ED_SavedDiagGraphModeChar, ED_DiagGraphModeChar, SCRIPT_RuntimeMode
 ; WRITES:
@@ -570,12 +570,12 @@ ED1_ExitEscMenu:
     MOVE.W  D0,Global_UIBusyFlag
     JSR     ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs(PC)
 
-    JSR     ED_DrawBottomHelpBarBackground(PC)
+    JSR     _ED_DrawBottomHelpBarBackground(PC)
 
     PEA     1.W
     JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
 
-    JSR     ESQIFF_RunCopperRiseTransition(PC)
+    JSR     _ESQIFF_RunCopperRiseTransition(PC)
 
     ADDQ.W  #4,A7
     CLR.W   ESQPARS2_ReadModeFlags
@@ -594,12 +594,12 @@ ED1_ExitEscMenu:
 ; CLOBBERS:
 ;   A1/A6/A7/D0
 ; CALLS:
-;   ED_DrawBottomHelpBarBackground, DISPLIB_DisplayTextAtPosition, GROUP_AM_JMPTBL_WDISP_SPrintf,
+;   _ED_DrawBottomHelpBarBackground, DISPLIB_DisplayTextAtPosition, GROUP_AM_JMPTBL_WDISP_SPrintf,
 ;   DISKIO_QueryDiskUsagePercentAndSetBufferSize, DISKIO_QueryVolumeSoftErrorCount, ED_DrawDiagnosticModeText, _LVOSetAPen
 ; READS:
 ;   Global_REF_BAUD_RATE, ED2_DiagnosticDiskUsagePercent, ED2_DiagnosticDiskSoftErrorCount, WDISP_WeatherStatusLabelBuffer
 ; WRITES:
-;   ED_MenuStateId, ED_DiagnosticsScreenActive
+;   _ED_MenuStateId, ED_DiagnosticsScreenActive
 ; DESC:
 ;   Draws diagnostic-mode text blocks and prompts on the ESC menu screen.
 ; NOTES:
@@ -612,10 +612,10 @@ ED1_DrawDiagnosticsScreen:
 
     LINK.W  A5,#-48
 
-    MOVE.B  #$7,ED_MenuStateId
+    MOVE.B  #$7,_ED_MenuStateId
     MOVE.W  #1,ED_DiagnosticsScreenActive
 
-    JSR     ED_DrawBottomHelpBarBackground(PC)
+    JSR     _ED_DrawBottomHelpBarBackground(PC)
 
     PEA     ESQ_SelectCodeBuffer
     PEA     360.W
@@ -696,14 +696,14 @@ ED1_DrawDiagnosticsScreen:
 ; READS:
 ;   (none)
 ; WRITES:
-;   ED_MenuStateId
+;   _ED_MenuStateId
 ; DESC:
 ;   Clears the current ESC menu mode/state byte.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 ED1_ClearEscMenuMode:
-    CLR.B   ED_MenuStateId
+    CLR.B   _ED_MenuStateId
     RTS
 
 ;!======

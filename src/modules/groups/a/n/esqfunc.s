@@ -507,7 +507,7 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 ; CLOBBERS:
 ;   A7/D0/D1
 ; CALLS:
-;   ED_DispatchEscMenuState, ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, ESQDISP_ProcessGridMessagesIfIdle, ESQDISP_RefreshStatusIndicatorsFromCurrentMask, ESQDISP_PollInputModeAndRefreshSelection, ESQFUNC_CommitSecondaryStateAndPersist, ESQIFF_QueueIffBrushLoad, ESQIFF_ServiceExternalAssetSourceState, ESQIFF_PlayNextExternalAssetFrame
+;   ED_DispatchEscMenuState, ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, ESQDISP_ProcessGridMessagesIfIdle, _ESQDISP_RefreshStatusIndicatorsFromCurrentMask, ESQDISP_PollInputModeAndRefreshSelection, ESQFUNC_CommitSecondaryStateAndPersist, ESQIFF_QueueIffBrushLoad, ESQIFF_ServiceExternalAssetSourceState, ESQIFF_PlayNextExternalAssetFrame
 ; READS:
 ;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, LAB_097C, PARSEINI_BannerBrushResourceHead, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, ESQDISP_DisplayActiveFlag, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_StatusRefreshPendingFlag, ESQFUNC_IffTaskGateFlags, GCOMMAND_HighlightHoldoffTickCount, GCOMMAND_DriveProbeRequestedFlag, Global_UIBusyFlag, CLEANUP_PendingAlertFlag, ESQIFF_ExternalAssetFlags, fffd, fffe
 ; WRITES:
@@ -663,7 +663,7 @@ ESQFUNC_ProcessUiFrameTick:
     BNE.S   .return
 
     CLR.B   ESQDISP_StatusRefreshPendingFlag
-    JSR     ESQDISP_RefreshStatusIndicatorsFromCurrentMask(PC)
+    JSR     _ESQDISP_RefreshStatusIndicatorsFromCurrentMask(PC)
 
 .return:
     RTS
@@ -1729,7 +1729,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.W  SCRIPT_PlaybackFallbackCounter,D1
     EXT.L   D1
     ; ED finite-state id (byte enum set across ED menu handlers).
-    MOVE.B  ED_MenuStateId,D2
+    MOVE.B  _ED_MenuStateId,D2
     EXT.W   D2
     EXT.L   D2
     MOVE.L  D2,-(A7)

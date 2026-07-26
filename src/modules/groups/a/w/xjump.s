@@ -61,7 +61,7 @@ GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQIFF_RunCopperRiseTransition
+;   _ESQIFF_RunCopperRiseTransition
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -72,7 +72,7 @@ GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition:
-    JMP     ESQIFF_RunCopperRiseTransition
+    JMP     _ESQIFF_RunCopperRiseTransition
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition   (Routine at GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition)
@@ -83,7 +83,7 @@ GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQIFF_RunCopperDropTransition
+;   _ESQIFF_RunCopperDropTransition
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -94,7 +94,7 @@ GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition:
-    JMP     ESQIFF_RunCopperDropTransition
+    JMP     _ESQIFF_RunCopperDropTransition
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition   (Routine at GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition)

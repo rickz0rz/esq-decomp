@@ -88,8 +88,8 @@
     XDEF    ED_LineTransformTailScratchBuffer
     XDEF    ED_LastMenuInputChar
     XDEF    ED_TextLimit
-    XDEF    Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    XDEF    ED_MaxAdNumber
+    XDEF    _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    XDEF    _ED_MaxAdNumber
     XDEF    ED_AdDisplayResetFlag
     XDEF    ED_AdDisplayStateLatchA
     XDEF    ED_CursorColumnIndex
@@ -346,7 +346,7 @@
     XDEF    GCOMMAND_PresetWorkEntry2_ValueIndex
     XDEF    GCOMMAND_PresetWorkEntry3
     XDEF    GCOMMAND_PresetWorkEntry3_ValueIndex
-    XDEF    GCOMMAND_HighlightFlag
+    XDEF    _GCOMMAND_HighlightFlag
     XDEF    GCOMMAND_BannerBoundLeft
     XDEF    GCOMMAND_BannerBoundTop
     XDEF    GCOMMAND_BannerBoundRight
@@ -407,8 +407,8 @@
     XDEF    _NEWGRID_ShowtimeBucketPtrTable
     XDEF    NEWGRID_ShowtimeBucketCount
     XDEF    FLIB_LogEntryByteCount
-    XDEF    P_TYPE_PrimaryGroupListPtr
-    XDEF    P_TYPE_SecondaryGroupListPtr
+    XDEF    _P_TYPE_PrimaryGroupListPtr
+    XDEF    _P_TYPE_SecondaryGroupListPtr
     XDEF    PARSEINI_CurrentWeatherBlockPtr
     XDEF    PARSEINI_WeatherBrushNodePtr
     XDEF    GCOMMAND_GradientPresetTable
@@ -433,7 +433,7 @@
     XDEF    SCRIPT_BannerTransitionTargetChar
     XDEF    SCRIPT_BannerTransitionStepDelta
     XDEF    SCRIPT_BannerTransitionStepSign
-    XDEF    SCRIPT_CTRL_CONTEXT
+    XDEF    _SCRIPT_CTRL_CONTEXT
     XDEF    SCRIPT_PrimarySearchFirstFlag
     XDEF    SCRIPT_ChannelRangeArmedFlag
     XDEF    TEXTDISP_FilterCandidateCursor
@@ -1078,7 +1078,7 @@ ED_ViewportOffset:
 ; SYM: ED_AdActiveFlag   (editor active/inactive toggle)
 ; TYPE: u32
 ; PURPOSE: Tracks whether the currently edited ad is marked active.
-; USED BY: ED_HandleEditorInput, ED_HandleEditAttributesInput, ED_UpdateAdNumberDisplay, ED_ApplyActiveFlagToAdData, ED_UpdateActiveInactiveIndicator
+; USED BY: ED_HandleEditorInput, ED_HandleEditAttributesInput, _ED_UpdateAdNumberDisplay, _ED_ApplyActiveFlagToAdData, ED_UpdateActiveInactiveIndicator
 ; NOTES: Treated as boolean; when set, ad record gets word0=1 and word2=$30.
 ;------------------------------------------------------------------------------
 ED_AdActiveFlag:
@@ -1238,22 +1238,22 @@ ED_LastMenuInputChar:
 ;------------------------------------------------------------------------------
 ED_TextLimit:
     DS.L    16
-Global_REF_LONG_CURRENT_EDITING_AD_NUMBER:
+_Global_REF_LONG_CURRENT_EDITING_AD_NUMBER:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_MaxAdNumber   (maximum selectable ad number)
+; SYM: _ED_MaxAdNumber   (maximum selectable ad number)
 ; TYPE: s32
 ; PURPOSE: Upper bound for ad-number selection validation.
 ; USED BY: ED_DrawAdNumberPrompt, ED_HandleEditAttributesMenu, ED3_* ad-index sync paths
 ; NOTES: Parsed from startup tag bytes in ED1 init flow.
 ;------------------------------------------------------------------------------
-ED_MaxAdNumber:
+_ED_MaxAdNumber:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: ED_AdDisplayResetFlag   (ED reset/refresh block ??)
 ; TYPE: u32[16]
 ; PURPOSE: Editor state block touched during ad-load/ad-toggle transitions.
-; USED BY: ED_HandleEscMenuActions, ED_UpdateAdNumberDisplay, ED_LoadCurrentAdIntoBuffers
+; USED BY: ED_HandleEscMenuActions, _ED_UpdateAdNumberDisplay, ED_LoadCurrentAdIntoBuffers
 ; NOTES:
 ;   Observed symbolic writes target slot 0 (`MOVE.L #1,...`) as a one-shot reset marker.
 ;   Remaining slots are not yet traced to named readers/writers.
@@ -1264,7 +1264,7 @@ ED_AdDisplayResetFlag:
 ; SYM: ED_AdDisplayStateLatchA   (ED state latch ??)
 ; TYPE: s32
 ; PURPOSE: Editor transition latch reset during ad-number display init.
-; USED BY: ED_UpdateAdNumberDisplay
+; USED BY: _ED_UpdateAdNumberDisplay
 ; NOTES: Currently observed write is `-1`; no confirmed symbolic reader yet.
 ;------------------------------------------------------------------------------
 ED_AdDisplayStateLatchA:
@@ -1282,7 +1282,7 @@ ED_CursorColumnIndex:
 ; SYM: ED_ActiveIndicatorCachedState   (cached active/inactive draw state)
 ; TYPE: s32
 ; PURPOSE: Memoized copy of ED_AdActiveFlag used to skip redundant indicator redraws.
-; USED BY: ED_UpdateAdNumberDisplay, ED_UpdateActiveInactiveIndicator
+; USED BY: _ED_UpdateAdNumberDisplay, ED_UpdateActiveInactiveIndicator
 ; NOTES: Initialized to -1 when ad context changes to force first redraw.
 ;------------------------------------------------------------------------------
 ED_ActiveIndicatorCachedState:
@@ -1291,7 +1291,7 @@ ED_ActiveIndicatorCachedState:
 ; SYM: ED_AdDisplayStateLatchBlockB   (ED state latch pair ??)
 ; TYPE: s32[2] (+ trailing u16)
 ; PURPOSE: Adjacent editor transition latches reset when ad context changes.
-; USED BY: ED_UpdateAdNumberDisplay
+; USED BY: _ED_UpdateAdNumberDisplay
 ; NOTES:
 ;   First long is set to `-1` on ad switch; second long/trailing word unresolved.
 ;   Likely companion state for indicator/cursor redraw gating.
@@ -1758,7 +1758,7 @@ TEXTDISP_AliasPtrTable:
 ; SYM: ED_AdRecordPtrTable   (ad record pointer table base)
 ; TYPE: pointer[]
 ; PURPOSE: Base pointer table used by ED ad-edit routines to access per-ad records.
-; USED BY: ED_UpdateAdNumberDisplay, ED_ApplyActiveFlagToAdData
+; USED BY: _ED_UpdateAdNumberDisplay, _ED_ApplyActiveFlagToAdData
 ; NOTES: Indexed by current ad number (`index*4`); declared as layout anchor to preserve offsets.
 ;------------------------------------------------------------------------------
 ED_AdRecordPtrTable:
@@ -2745,7 +2745,7 @@ GCOMMAND_PresetWorkEntry3:
 GCOMMAND_PresetWorkEntry3_ValueIndex:
     DS.L    4
 ; Tracks whether the digital banner highlight is enabled (0/1).
-GCOMMAND_HighlightFlag:
+_GCOMMAND_HighlightFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: GCOMMAND_BannerBoundLeft/GCOMMAND_BannerBoundTop/GCOMMAND_BannerBoundRight/GCOMMAND_BannerBoundBottom   (cached banner bounds)
@@ -3048,15 +3048,15 @@ NEWGRID_ShowtimeBucketCount:
 FLIB_LogEntryByteCount:
     DS.L    2
 ;------------------------------------------------------------------------------
-; SYM: P_TYPE_PrimaryGroupListPtr/P_TYPE_SecondaryGroupListPtr   (p_type group list pointers)
+; SYM: _P_TYPE_PrimaryGroupListPtr/_P_TYPE_SecondaryGroupListPtr   (p_type group list pointers)
 ; TYPE: pointer/pointer
 ; PURPOSE: Holds parsed P_TYPE list objects for the primary and secondary group codes.
 ; USED BY: P_TYPE_*
 ; NOTES: Secondary may be staged then promoted into primary during list rollover.
 ;------------------------------------------------------------------------------
-P_TYPE_PrimaryGroupListPtr:
+_P_TYPE_PrimaryGroupListPtr:
     DS.L    1
-P_TYPE_SecondaryGroupListPtr:
+_P_TYPE_SecondaryGroupListPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: PARSEINI_CurrentWeatherBlockPtr   (current weather block struct pointer)
@@ -3209,13 +3209,13 @@ SCRIPT_BannerTransitionStepDelta:
 SCRIPT_BannerTransitionStepSign:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_CTRL_CONTEXT   (CtrlContextStruct_uncertain)
+; SYM: _SCRIPT_CTRL_CONTEXT   (CtrlContextStruct_uncertain)
 ; TYPE: struct
 ; PURPOSE: Control/script context storage used by script control handlers.
-; USED BY: SCRIPT_InitCtrlContext, SCRIPT_SetCtrlContextMode, SCRIPT_ResetCtrlContext
+; USED BY: _SCRIPT_InitCtrlContext, _SCRIPT_SetCtrlContextMode, SCRIPT_ResetCtrlContext
 ; NOTES: Size = 112 longs (448 bytes). Field meanings largely unknown.
 ;------------------------------------------------------------------------------
-SCRIPT_CTRL_CONTEXT:
+_SCRIPT_CTRL_CONTEXT:
     DS.L    112
 ;------------------------------------------------------------------------------
 ; SYM: SCRIPT_PrimarySearchFirstFlag   (script search-order flag)

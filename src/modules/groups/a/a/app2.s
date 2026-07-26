@@ -228,7 +228,7 @@ ESQ_SetCopperEffect_OffDisableHighlight:
 ; CLOBBERS:
 ;   D0-D1, A1
 ; CALLS:
-;   ESQ_SetCopperEffectParams, GCOMMAND_EnableHighlight
+;   ESQ_SetCopperEffectParams, _GCOMMAND_EnableHighlight
 ; READS:
 ;   CIAB_PRA
 ; WRITES:
@@ -249,7 +249,7 @@ ESQ_SetCopperEffect_OnEnableHighlight:
     MOVE.B  #0,D1
     BSR.S   ESQ_SetCopperEffectParams
 
-    JSR     GCOMMAND_EnableHighlight
+    JSR     _GCOMMAND_EnableHighlight
 
     RTS
 

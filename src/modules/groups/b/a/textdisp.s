@@ -2587,14 +2587,14 @@ TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility:
 ;------------------------------------------------------------------------------
 ; FUNC: TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition   (JumpStub)
 ; ARGS:
-;   see ESQIFF_RunCopperRiseTransition
+;   see _ESQIFF_RunCopperRiseTransition
 ; RET:
-;   see ESQIFF_RunCopperRiseTransition
+;   see _ESQIFF_RunCopperRiseTransition
 ; DESC:
-;   Jump stub to ESQIFF_RunCopperRiseTransition.
+;   Jump stub to _ESQIFF_RunCopperRiseTransition.
 ;------------------------------------------------------------------------------
 TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition:
-    JMP     ESQIFF_RunCopperRiseTransition
+    JMP     _ESQIFF_RunCopperRiseTransition
 
 ;------------------------------------------------------------------------------
 ; FUNC: TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine   (Routine at TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine)

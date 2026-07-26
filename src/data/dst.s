@@ -26,7 +26,7 @@
     XDEF    DST_TAG_STD
     XDEF    DST_STR_LEAP_YEAR
     XDEF    DST_STR_NORM_YEAR
-    XDEF    ED_MenuStateId
+    XDEF    _ED_MenuStateId
     XDEF    ED_MenuDispatchReentryGuard
     XDEF    ED_TextModeReinitPendingFlag
 ; ========== DST.c ==========
@@ -90,13 +90,13 @@ DST_STR_NORM_YEAR:
     NStr    "Norm Year"
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ED_MenuStateId   (editor menu state id)
+; SYM: _ED_MenuStateId   (editor menu state id)
 ; TYPE: u16
 ; PURPOSE: Tracks active editor/menu substate for ED/ED1/ED2/ED3 dispatch.
 ; USED BY: ED_*, ED1_*, ED2_*, ED3_*, CLEANUP2_*, ESQFUNC_*
 ; NOTES: Used as a jump-dispatch selector in ED handlers.
 ;------------------------------------------------------------------------------
-ED_MenuStateId:
+_ED_MenuStateId:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: ED_MenuDispatchReentryGuard   (ED dispatch reentry gate)

@@ -2472,7 +2472,7 @@ TLIBA3_SetFontForAllViewModes:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   GCOMMAND_ApplyHighlightFlag
+;   _GCOMMAND_ApplyHighlightFlag
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -2483,7 +2483,7 @@ TLIBA3_SetFontForAllViewModes:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag:
-    JMP     GCOMMAND_ApplyHighlightFlag
+    JMP     _GCOMMAND_ApplyHighlightFlag
 
 ;!======
 
