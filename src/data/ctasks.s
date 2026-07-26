@@ -122,7 +122,7 @@ CTASKS_TerminationReasonPtrTable:
 ; SYM: CTASKS_EXT_GRF   (file extension and task data paths)
 ; TYPE: cstring
 ; PURPOSE: Disk filename constants used by disk I/O save/load routines.
-; USED BY: LAB_04D8, LAB_04EC, DISKIO2_WriteOinfoDataFile, DISKIO2_LoadOinfoDataFile
+; USED BY: LAB_04D8, LAB_04EC, DISKIO2_WriteOinfoDataFile, _DISKIO2_LoadOinfoDataFile
 ; NOTES: Stored as DC.B to preserve original packing/alignment.
 ;------------------------------------------------------------------------------
 CTASKS_EXT_GRF:

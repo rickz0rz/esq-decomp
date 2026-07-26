@@ -1407,7 +1407,7 @@ ED2_HandleMenuActions:
     BRA.W   .restore_display_state
 
 .case_call_0539:
-    JSR     DISKIO2_ReloadDataFilesAndRebuildIndex(PC)
+    JSR     _DISKIO2_ReloadDataFilesAndRebuildIndex(PC)
 
     BRA.W   .restore_display_state
 

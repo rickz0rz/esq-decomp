@@ -760,7 +760,7 @@ DISKIO2_QTableIniFileHandle:
 ; SYM: DISKIO2_OinfoFileHandle   (OINFO.DAT read/write handle)
 ; TYPE: pointer/handle
 ; PURPOSE: File handle used while serializing and parsing CTASKS_PATH_OINFO_DAT.
-; USED BY: DISKIO2 writer/reader DISKIO2_WriteOinfoDataFile and DISKIO2_LoadOinfoDataFile
+; USED BY: DISKIO2 writer/reader DISKIO2_WriteOinfoDataFile and _DISKIO2_LoadOinfoDataFile
 ; NOTES: Carries the single-byte header plus two optional NUL-terminated strings.
 ;------------------------------------------------------------------------------
 DISKIO2_OinfoFileHandle:

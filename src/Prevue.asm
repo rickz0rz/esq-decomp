@@ -172,6 +172,7 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/a/g/xjump.s"
 
     include "modules/groups/a/h/diskio2.s"
+    include "modules/groups/a/h/diskio2_diskio2reloaddatafilesandrebuildindex.s"
     include "modules/groups/a/h/xjump.s"
 
     include "modules/groups/a/i/displib.s"

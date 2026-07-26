@@ -1125,7 +1125,7 @@ ESQ_MainInitAndRun:
 
     JSR     GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries(PC)
 
-    JSR     DISKIO2_ReloadDataFilesAndRebuildIndex(PC)
+    JSR     _DISKIO2_ReloadDataFilesAndRebuildIndex(PC)
 
     JSR     GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk(PC)
 

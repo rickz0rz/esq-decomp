@@ -49,12 +49,14 @@ got = code.hex()
 if got.endswith('4e71'):                      # longword-alignment NOP, not code
     got = got[:-4]
 
-sites = sorted(set(relocs) | {o for v in xrefs.values() for o in v})
+# (offset, width) -- width matters: masking 4 bytes at a 2-byte PC-relative
+# reference would also blank the next opcode and hide a real difference.
+sites = [(o, 4) for o in relocs] + [(o, w) for v in xrefs.values() for o, w in v]
 def mask(hexstr):
     b = bytearray.fromhex(hexstr)
-    for o in sites:
-        if o + 4 <= len(b):
-            b[o:o+4] = b'\xee' * 4
+    for o, w in sites:
+        if o + w <= len(b):
+            b[o:o+w] = b'\xee' * w
     return b.hex()
 
 mgot, mref = mask(got), (mask(ref) if len(ref) == len(got) else ref)

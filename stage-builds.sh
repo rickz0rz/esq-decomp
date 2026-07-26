@@ -55,6 +55,8 @@ stage() {           # stage <name> [manifest]
 
 : > "$DEST/STAGED.txt"
 echo "staging into $DEST"
+# ESQ is the deliverable: the faithful build, exact restorations only.
+stage ESQ                   src/c/replacements.txt
 stage ESQ_asmonly
 stage ESQ_c5                src/c/replacements.txt
 stage ESQ_canary3           src/c/replacements-canary.txt

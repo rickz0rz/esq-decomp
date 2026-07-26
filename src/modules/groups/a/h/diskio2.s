@@ -2,17 +2,17 @@
     XDEF    DISKIO2_DisplayStatusLine
     XDEF    DISKIO2_FlushDataFilesIfNeeded
     XDEF    DISKIO2_HandleInteractiveFileTransfer
-    XDEF    DISKIO2_LoadCurDayDataFile
-    XDEF    DISKIO2_LoadNxtDayDataFile
-    XDEF    DISKIO2_LoadOinfoDataFile
+    XDEF    _DISKIO2_LoadCurDayDataFile
+    XDEF    _DISKIO2_LoadNxtDayDataFile
+    XDEF    _DISKIO2_LoadOinfoDataFile
     XDEF    DISKIO2_ParseIniFileFromDisk
     XDEF    DISKIO2_ReceiveTransferBlocksToFile
-    XDEF    DISKIO2_ReloadDataFilesAndRebuildIndex
     XDEF    DISKIO2_RunDiskSyncWorkflow
     XDEF    DISKIO2_WriteCurDayDataFile
     XDEF    DISKIO2_WriteNxtDayDataFile
     XDEF    DISKIO2_WriteOinfoDataFile
     XDEF    DISKIO2_WriteQTableIniFile
+
 
 ;!======
 
@@ -635,7 +635,7 @@ DISKIO2_RunDiskSyncWorkflow:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DISKIO2_LoadCurDayDataFile   (Load disk data file and populate entry tables.)
+; FUNC: _DISKIO2_LoadCurDayDataFile   (Load disk data file and populate entry tables.)
 ; ARGS:
 ;   stack +8: arg_1 (via 12(A5))
 ;   stack +12: arg_2 (via 16(A5))
@@ -666,7 +666,7 @@ DISKIO2_RunDiskSyncWorkflow:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DISKIO2_LoadCurDayDataFile:
+_DISKIO2_LoadCurDayDataFile:
     LINK.W  A5,#-76
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVE.W  #(-1),-28(A5)
@@ -1519,7 +1519,7 @@ DISKIO2_WriteNxtDayDataFile:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DISKIO2_LoadNxtDayDataFile   (Load NXTDAY.DAT and populate entry tables.)
+; FUNC: _DISKIO2_LoadNxtDayDataFile   (Load NXTDAY.DAT and populate entry tables.)
 ; ARGS:
 ;   stack +8: arg_1 (via 12(A5))
 ;   stack +12: arg_2 (via 16(A5))
@@ -1545,7 +1545,7 @@ DISKIO2_WriteNxtDayDataFile:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DISKIO2_LoadNxtDayDataFile:
+_DISKIO2_LoadNxtDayDataFile:
     LINK.W  A5,#-48
     MOVEM.L D5-D7/A2-A3,-(A7)
 
@@ -2150,7 +2150,7 @@ DISKIO2_WriteOinfoDataFile:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DISKIO2_LoadOinfoDataFile   (Read config file CTASKS_PATH_OINFO_DAT.)
+; FUNC: _DISKIO2_LoadOinfoDataFile   (Read config file CTASKS_PATH_OINFO_DAT.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -2170,7 +2170,7 @@ DISKIO2_WriteOinfoDataFile:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DISKIO2_LoadOinfoDataFile:
+_DISKIO2_LoadOinfoDataFile:
     LINK.W  A5,#-20
     MOVEM.L D6-D7/A2,-(A7)
     SUBA.L  A0,A0
@@ -3276,33 +3276,3 @@ DISKIO2_FlushDataFilesIfNeeded:
     RTS
 
 ;!======
-
-;------------------------------------------------------------------------------
-; FUNC: DISKIO2_ReloadDataFilesAndRebuildIndex   (Load disk data files and refresh state.)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   DISKIO2_LoadCurDayDataFile, DISKIO2_LoadNxtDayDataFile, DISKIO2_LoadOinfoDataFile, GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Wrapper that reloads multiple disk data files and applies updates.
-; NOTES:
-;   Requires deeper reverse-engineering.
-;------------------------------------------------------------------------------
-DISKIO2_ReloadDataFilesAndRebuildIndex:
-    BSR.W   DISKIO2_LoadCurDayDataFile
-
-    BSR.W   DISKIO2_LoadNxtDayDataFile
-
-    BSR.W   DISKIO2_LoadOinfoDataFile
-
-    JSR     GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache(PC)
-
-    RTS

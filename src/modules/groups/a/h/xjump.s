@@ -11,7 +11,7 @@
     XDEF    GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile
     XDEF    GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate
     XDEF    GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile
-    XDEF    GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache
+    XDEF    _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache
     XDEF    GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3
     XDEF    GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile
     XDEF    GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte
@@ -40,7 +40,7 @@ GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket:
     JMP     ESQIFF2_ApplyIncomingStatusPacket
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache   (Routine at GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache)
+; FUNC: _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache   (Routine at _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -58,7 +58,7 @@ GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache:
+_GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache:
     JMP     NEWGRID_RebuildIndexCache
 
 ;------------------------------------------------------------------------------

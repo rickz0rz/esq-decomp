@@ -41,16 +41,21 @@ def parse(fn):
                 typ = x >> 24; nl = (x & 0xFFFFFF) * 4
                 name = d[p:p+nl].rstrip(b'\0').decode('latin1'); p += nl
                 # 1/2/3 = definition (abs/rel/common); 129=REF32, 130=COMMON,
-                # 131=REF16, 132=REF8, 133=DREF32, 134=DREF16, 135=DREF8
+                # 131=REF16, 132=REF8, 133=DREF32, 134=DREF16, 135=DREF8.
+                # The WIDTH matters: a 16-bit PC-relative reference occupies two
+                # bytes, and masking four would also blank the following opcode,
+                # hiding a real difference there.
+                WIDTH = {129: 4, 130: 4, 131: 2, 132: 1, 133: 4, 134: 2, 135: 1}
                 if typ in (1, 2, 3):
                     xdefs[name] = u32()
                 elif typ == 130:                           # common: size then refs
                     u32()
                     c = u32()
-                    for _ in range(c): xrefs.setdefault(name, []).append(u32())
+                    for _ in range(c): xrefs.setdefault(name, []).append((u32(), 4))
                 else:
+                    w = WIDTH.get(typ, 4)
                     c = u32()
-                    for _ in range(c): xrefs.setdefault(name, []).append(u32())
+                    for _ in range(c): xrefs.setdefault(name, []).append((u32(), w))
         elif t == 0x3F0:                                   # HUNK_SYMBOL
             while True:
                 nl = u32()
@@ -71,7 +76,7 @@ if __name__ == '__main__':
     if xdefs:
         print('xdef: ' + ', '.join(f'{k}@0x{v:x}' for k, v in sorted(xdefs.items(), key=lambda kv: kv[1])))
     if xrefs:
-        print('xref: ' + ', '.join(f'{k}@{[hex(o) for o in v]}' for k, v in sorted(xrefs.items())))
+        print('xref: ' + ', '.join(f'{k}@{[(hex(o), w) for o, w in v]}' for k, v in sorted(xrefs.items())))
     if relocs:
         print(f'relocs at: {[hex(r) for r in relocs]}')
     print(f'bytes: {code.hex()}')
