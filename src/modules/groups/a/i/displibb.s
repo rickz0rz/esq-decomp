@@ -1,4 +1,4 @@
-    XDEF    DISPLIB_CommitCurrentLinePenAndAdvance
+    XDEF    _DISPLIB_CommitCurrentLinePenAndAdvance
     XDEF    DISPLIB_ResetTextBufferAndLineTables
 
 ;------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ DISPLIB_ResetTextBufferAndLineTables:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DISPLIB_CommitCurrentLinePenAndAdvance   (Routine at DISPLIB_CommitCurrentLinePenAndAdvance)
+; FUNC: _DISPLIB_CommitCurrentLinePenAndAdvance   (Routine at _DISPLIB_CommitCurrentLinePenAndAdvance)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -52,7 +52,7 @@ DISPLIB_ResetTextBufferAndLineTables:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-DISPLIB_CommitCurrentLinePenAndAdvance:
+_DISPLIB_CommitCurrentLinePenAndAdvance:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
     MOVEQ   #0,D0

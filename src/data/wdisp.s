@@ -2661,7 +2661,7 @@ GCOMMAND_PpvEditorRowPen:       ; 22EB
 ; TYPE: s32/s32/s32
 ; PURPOSE: Controls showtimes layout/render setup in NEWGRID showtimes flows.
 ; USED BY: GCOMMAND_ParsePPVCommand, FLIB2_LoadDigitalPpvDefaults, NEWGRID_HandleShowtimesState, NEWGRID_DrawGridFrameVariant3
-; NOTES: InitialLineIndex is passed to DISPTEXT_SetCurrentLineIndex; row pen also participates in grid-operation pen fallback.
+; NOTES: InitialLineIndex is passed to _DISPTEXT_SetCurrentLineIndex; row pen also participates in grid-operation pen fallback.
 ;------------------------------------------------------------------------------
 GCOMMAND_PpvShowtimesLayoutPen:         ; 22EC
     DS.L    1

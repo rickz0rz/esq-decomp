@@ -755,12 +755,12 @@ NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   DISPTEXT_SetCurrentLineIndex
+;   _DISPTEXT_SetCurrentLineIndex
 ; DESC:
-;   Jump table entry that forwards to DISPTEXT_SetCurrentLineIndex.
+;   Jump table entry that forwards to _DISPTEXT_SetCurrentLineIndex.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex:
-    JMP     DISPTEXT_SetCurrentLineIndex
+    JMP     _DISPTEXT_SetCurrentLineIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer   (Jump stub)
