@@ -199,7 +199,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/a/l/ed3b_eddrawescmenubottomhelp.s"
     include "modules/groups/a/l/ed3bb.s"
     include "modules/groups/a/l/ed3bb_edincrementadnumber.s"
-    include "modules/groups/a/l/ed3bbb.s"
+    include "modules/groups/a/l/ed3bbb_eddecrementadnumber.s"
+    include "modules/groups/a/l/ed3bbbb.s"
     include "modules/groups/a/l/xjump.s"
 
     include "modules/groups/a/m/esq.s"
@@ -265,6 +266,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/b/a/p_type.s"
     include "modules/groups/b/a/p_type_ptyperesetlistsandloadpromoids.s"
     include "modules/groups/b/a/p_typeb.s"
+    include "modules/groups/b/a/p_typeb_ptypepromotesecondarylist.s"
+    include "modules/groups/b/a/p_typebb.s"
     include "modules/groups/b/a/parseini.s"
     include "modules/groups/b/a/parseini2.s"
     include "modules/groups/b/a/parseini3.s"

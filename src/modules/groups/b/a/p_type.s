@@ -1,5 +1,5 @@
     XDEF    P_TYPE_AllocateEntry
-    XDEF    P_TYPE_FreeEntry
+    XDEF    _P_TYPE_FreeEntry
 
 
 ;------------------------------------------------------------------------------
@@ -115,7 +115,7 @@ P_TYPE_AllocateEntry:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: P_TYPE_FreeEntry   (Free entry struct and optional payload buffer)
+; FUNC: _P_TYPE_FreeEntry   (Free entry struct and optional payload buffer)
 ; ARGS:
 ;   stack +8: entryPtr (struct PTypeEntry *)
 ; RET:
@@ -133,7 +133,7 @@ P_TYPE_AllocateEntry:
 ; NOTES:
 ;   Safe to call with null entry pointer.
 ;------------------------------------------------------------------------------
-P_TYPE_FreeEntry:
+_P_TYPE_FreeEntry:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  A3,D0

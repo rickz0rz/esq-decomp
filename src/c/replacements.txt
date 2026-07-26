@@ -29,3 +29,5 @@ modules/groups/a/u/gcommand3_gcommandenablehighlight.s         c/gcommand_enable
 modules/groups/b/a/p_type_ptyperesetlistsandloadpromoids.s     c/p_type_reset_lists_and_load_promo_ids.c
 modules/groups/b/a/script3_scriptinitctrlcontext.s             c/script_init_ctrl_context.c
 modules/groups/a/i/disptext_disptextsetcurrentlineindex.s      c/disptext_set_current_line_index.c
+modules/groups/a/l/ed3bbb_eddecrementadnumber.s               c/ed_decrement_ad_number.c
+modules/groups/b/a/p_typeb_ptypepromotesecondarylist.s        c/p_type_promote_secondary_list.c

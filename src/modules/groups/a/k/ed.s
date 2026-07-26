@@ -2429,7 +2429,7 @@ ED_HandleEditAttributesMenu:
 ; CLOBBERS:
 ;   A0/A1/A7/D0/D1
 ; CALLS:
-;   _ED_DrawESCMenuBottomHelp, _ED_IncrementAdNumber, ED_DecrementAdNumber, ESQDISP_TestWordIsZeroBooleanize, _ED_ApplyActiveFlagToAdData,
+;   _ED_DrawESCMenuBottomHelp, _ED_IncrementAdNumber, _ED_DecrementAdNumber, ESQDISP_TestWordIsZeroBooleanize, _ED_ApplyActiveFlagToAdData,
 ;   ED_UpdateActiveInactiveIndicator
 ; READS:
 ;   _ED_LastKeyCode, ED_AdActiveFlag, ED_StateRingIndex, ED_StateRingTable
@@ -2438,7 +2438,7 @@ ED_HandleEditAttributesMenu:
 ; DESC:
 ;   Processes edit-attribute key codes and commits changes to state variables.
 ; NOTES:
-;   Recognizes key code $80 with modifier bytes to trigger _ED_IncrementAdNumber/ED_DecrementAdNumber.
+;   Recognizes key code $80 with modifier bytes to trigger _ED_IncrementAdNumber/_ED_DecrementAdNumber.
 ;------------------------------------------------------------------------------
 ED_HandleEditAttributesInput:
     MOVEQ   #0,D0
@@ -2481,7 +2481,7 @@ ED_HandleEditAttributesInput:
     CMP.B   2(A0),D0
     BNE.S   .return
 
-    JSR     ED_DecrementAdNumber(PC)
+    JSR     _ED_DecrementAdNumber(PC)
 
     BRA.S   .return
 

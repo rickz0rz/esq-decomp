@@ -1795,7 +1795,7 @@ ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   P_TYPE_PromoteSecondaryList
+;   _P_TYPE_PromoteSecondaryList
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1806,7 +1806,7 @@ ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList:
-    JMP     P_TYPE_PromoteSecondaryList
+    JMP     _P_TYPE_PromoteSecondaryList
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths   (Jump-table forwarder)

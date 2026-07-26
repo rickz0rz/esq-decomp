@@ -12,6 +12,10 @@ invocation, so asking it for fifty functions one at a time is fifty rebuilds.
 """
 import os, re, subprocess, sys
 
+sys_path_added = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, sys_path_added)
+import refbytes
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC  = os.path.join(ROOT, 'src')
 VASM = os.environ.get('VASM_BIN', os.path.expanduser('~/Downloads/vasm/vasmm68k_mot'))
@@ -40,10 +44,12 @@ def parse_listing():
         if m:
             cur, label = m.group(1), None
             continue
-        m = re.match(r'^(?:(\d+):([0-9A-F]{8})\s+([0-9A-F]*))?\s*\t\s*(\d+): ?(.*)', line)
-        if not m or cur is None:
+        # Shared with refbytes.py so the candidate list and the reference bytes
+        # can never disagree about which lines carry code. See parse_line().
+        p = refbytes.parse_line(line)
+        if not p or cur is None:
             continue
-        sec, enc, text = m.group(1), m.group(3) or '', m.group(5)
+        sec, addr, enc, text = p
         code = text.split(';')[0]
         lm = re.match(r'^([A-Za-z_][A-Za-z0-9_]*):', code)
         if lm:
