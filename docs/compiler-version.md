@@ -119,6 +119,24 @@ are *not* disproportionately harder to get semantically right. They are
 disproportionately unlikely to be byte-exact, because every divergence class in
 the program gets more chances to appear in 318 bytes than in 30.
 
+## A one-line acceptance test for a candidate compiler
+
+When another SAS/C turns up, this settles the biggest question in seconds:
+
+```sh
+tools/cmatch.sh src/c/textdisp_reset_selection_state.c TEXTDISP_ResetSelectionState
+```
+
+`TEXTDISP_ResetSelectionState` is 36 bytes in both builds and differs in
+**nothing but the address register**. The first two bytes of the output tell you
+everything:
+
+- `2f0b` = `MOVE.L A3,-(A7)` -> matches the original; the register-allocation
+  divergence is gone and dozens of recorded restorations should flip to exact.
+- `2f0d` = `MOVE.L A5,-(A7)` -> same divergence as 6.51.
+
+Then run `python3 tools/mismatches.py --recheck` for the full picture.
+
 ## A third divergence: register allocation order
 
 Across every function with a pointer local, SAS/C 6.51 allocates **A5** where
@@ -126,9 +144,17 @@ the original uses **A3**, and **D6 before D7** where the original uses D7 first.
 `TEXTDISP_ResetSelectionState` is the cleanest case: 36 bytes both ways, every
 single other byte identical, only A3 vs A5.
 
-Not the data model (reproduces with and without `DATA=FAR`, and these functions
-touch no globals) and not an option (`NOAUTOREG`, `OPTIMIZE`, `SHORTINT` all
-leave it). This blocks 4 of the 10 functions in the batch and is the
+Not the data model and not an option. Exhaustively probed on
+`TEXTDISP_ResetSelectionState`, all of which still emit `2f0d` (A5):
+`NOAUTOREG`, `OPTIMIZE`, `SHORTINT`, `DATA=FAR`, `DATA=NEAR`, `CODE=FAR`,
+`PARAMETERS=REGISTERS`, `NOOPTIMIZERSCHEDULER`, `OPTIMIZERALIAS`, and every
+`DEBUG=` level (`LINE`, `SYMBOL`, `FULL`, `FULLFLUSH`, `SYMBOLFLUSH`) -- the
+DEBUG idea being that a debug frame pointer would reserve A5, which it does not.
+
+The allocation *order* is the tell: the original picks A3 first and A2 second
+(descending from A3, never touching A4/A5/A6), so its free set excluded A5.
+SAS/C 6.51's free set includes A5 and it picks that first. Nothing in the option
+set changes the free set. This blocks 4 of the 10 functions in the batch and is the
 highest-value thing for a different compiler version to fix.
 
 ## Evidence the code generator is *not* quite 6.51
