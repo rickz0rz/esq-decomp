@@ -228,12 +228,79 @@ if/else, initialiser, `register` qualifier, inverted condition, two-return.
 The two-return form under `OPTIMIZE` produces the original's exact core
 (`7001 b0b9 <abs> 6702 7006 4e75`) but drops the `D7` round-trip entirely.
 
+## SAS/C 6.00 tested — the target is bracketed between 6.00 and 6.51
+
+SAS/C 6.00 (`~/Downloads/SAS-C-6-hdd`, config `~/Downloads/sas-c-6-vamos`) was
+run against all 195 restorations. It is **not** the compiler either, but unlike
+Lattice it fails in the opposite direction from 6.51, which brackets the target.
+
+|  | 6.00 | 6.51 | both | union |
+|---|---:|---:|---:|---:|
+| restorations matched | 10 | 18 | 5 | 23 |
+
+Neither version reaches 23, so the original is neither. Three independent
+codegen classes separate them, and on **all three** the original sits strictly
+between:
+
+| class | SAS/C 6.00 | ORIGINAL | SAS/C 6.51 |
+|---|---|---|---|
+| `1 << n` | `MOVEQ #1` + `ASL.L` | **same as 6.00** | `BSET` |
+| call to an extern | `4eba` `JSR (d16,PC)` | **same as 6.51** | `6100` `BSR.W` |
+| redundant `MOVE.L Dn,Dn` | emitted | **removed** | removed |
+
+The first says the original predates the `BSET` shift idiom; the second and
+third say it postdates 6.00's calling encoding and gained the self-move peephole.
+Consistent reading: **6.00 < original < 6.51**, i.e. one of 6.1/6.2/6.3.
+
+The five that only 6.00 matches are `BRUSH_PlaneMaskForIndex`,
+`DISKIO2_ParseIniFileFromDisk`, `ED_CommitCurrentAdEdits`,
+`ESQPARS_PersistStateDataAfterCommand`, `TEXTDISP_ResetSelectionAndRefresh` —
+all instances of the shift idiom recorded as `shift-of-one-via-bset`. Confirming
+that slug's `retest:` prediction exactly.
+
+**Do not mix compilers to harvest the union.** The original was built by one
+compiler; picking whichever of two produces the nicer bytes per file would be
+matching an artifact of our tooling, not reconstructing the program. 6.51 stays
+the single toolchain (`AGENTS.md`), and 6.00 is a probe only.
+
+### The register-allocation divergence is not an option
+
+`A3` (original) vs `A5` (both 6.00 and 6.51) survives every plausible switch —
+swept against the acceptance test on both compilers:
+
+```
+option        6.51    6.00    first 2 bytes
+<none>        DIFFER  DIFFER  2f0d   MOVE.L A5,-(A7)
+OPTIMIZE      DIFFER  DIFFER  2f0d
+OPTSIZE       DIFFER    -     2f0d
+OPTTIME       DIFFER    -     2f0d
+AUTOREG       DIFFER    -     2f0d
+OPTGLOBAL     DIFFER    -     2f0d
+NOOPTPEEP     DIFFER    -     2f0d
+NOAUTOREG     DIFFER  DIFFER  4aaf   no register variable at all
+```
+
+`NOAUTOREG` only removes the register variable; nothing selects *which* register.
+So the allocator's preference order is compiled into the code generator, and a
+candidate version either has it or does not — which makes the acceptance test a
+sound one-line filter.
+
 ## What would settle it
 
-Obtain SAS/C 6.55/6.56/6.57/6.58 and re-run both cases. If either idiom flips,
-the version is pinned. Until then, treat 6.51 as the working toolchain and
-expect a minority of functions not to reach byte-exactness — leave those in
-assembly rather than distorting the C to force a match.
+Obtain SAS/C **6.1, 6.2 or 6.3** and run the acceptance test; `2f0b` in the first
+two bytes pins the version on the spot. 6.55–6.58 remain worth testing but are
+now the less likely direction, since the shift idiom has to get *less* optimised
+than 6.51, not more. Until then, treat 6.51 as the working toolchain and expect a
+minority of functions not to reach byte-exactness — leave those in assembly
+rather than distorting the C to force a match.
+
+### Note on alignment padding
+
+A function of odd word length gets two bytes of padding to round the object to a
+longword, and the filler is compiler-specific: 6.51 emits `4e71` (NOP), 6.00
+emits zeros. `tools/cmatch.sh` strips either, but only when doing so makes the
+lengths agree. Before that fix, 6.00's zero pad made genuine matches read as
+mismatches — the first pass over 6.00 undercounted its matches by six.
 
 ## Reproducing
 

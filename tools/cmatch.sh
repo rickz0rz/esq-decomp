@@ -23,8 +23,13 @@ trap 'rm -rf "$WORK"' EXIT
 cp "$CFILE" "$WORK/u.c"
 
 # shellcheck disable=SC2086
+# VAMOS_CFG selects an alternate toolchain (a different SAS/C install with its
+# own vamos config). Unset means the 6.51 baseline.
+CFGARG=""
+[ -n "${VAMOS_CFG:-}" ] && CFGARG="-c $VAMOS_CFG"
+# shellcheck disable=SC2086
 ( . /Users/rj/Downloads/vamos/bin/activate 2>/dev/null
-  vamos --volume work:"$WORK" sc:c/sc $SCOPTS OBJNAME=work:u.o work:u.c ) \
+  vamos $CFGARG --volume work:"$WORK" sc:c/sc $SCOPTS OBJNAME=work:u.o work:u.c ) \
   >"$WORK/log" 2>&1
 
 if [ ! -f "$WORK/u.o" ]; then
@@ -46,7 +51,11 @@ from objbytes import parse
 
 code, relocs, xdefs, xrefs = parse(objf)
 got = code.hex()
-if got.endswith('4e71'):                      # longword-alignment NOP, not code
+# Objects are longword-sized, so a function of odd word length gets two bytes of
+# alignment padding that are not code. Which filler is used is compiler-specific:
+# SAS/C 6.51 emits a NOP (4e71), 6.00 emits zeros. Strip either, but only when
+# doing so makes the lengths agree -- never trim real code.
+if len(got) == len(ref) + 4 and got[-4:] in ('4e71', '0000'):
     got = got[:-4]
 
 # (offset, width) -- width matters: masking 4 bytes at a 2-byte PC-relative
