@@ -23,9 +23,17 @@ def parse(fn):
     while p < len(d):
         t = u32() & 0x3FFFFFFF
         if t in (0x3E7, 0x3E8):
+            # HUNK_NAME is optional: SAS/C emits one, Lattice C does not.
             n = u32(); p += n * 4
         elif t in (0x3E9, 0x3EA):
-            n = u32() * 4; code = d[p:p+n]; p += n
+            # Keep the FIRST code/data hunk only. Lattice C appends a second
+            # hunk (HUNK_NAME "__MERGED" + an empty HUNK_DATA); taking the last
+            # one silently replaced the real code with an empty slice. SAS/C
+            # objects have a single hunk, so this never showed up before.
+            n = u32() * 4
+            if not code:
+                code = d[p:p+n]
+            p += n
         elif t == 0x3EB:
             u32()
         elif t == 0x3EC:

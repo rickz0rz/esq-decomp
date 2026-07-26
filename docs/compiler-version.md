@@ -119,6 +119,42 @@ are *not* disproportionately harder to get semantically right. They are
 disproportionately unlikely to be byte-exact, because every divergence class in
 the program gets more chances to appear in 318 bytes than in 30.
 
+## Lattice C 5.10 tested and ruled out -- but it narrows the target
+
+Lattice C 5.10 (`~/Downloads/LATTICE-C-hdd`, driver 5.10, phases lc1/lc2 V4.01)
+was run against the acceptance test. It does **not** match, but the way it fails
+is informative. Three distinct behaviours for the same function:
+
+| compiler | prologue | pointer local | size |
+|---|---|---|---:|
+| Lattice C 5.10 | `LINK A5` frame, saves nothing | **A0** | 40 |
+| **ORIGINAL ESQ** | no frame, `MOVE.L A3,-(A7)` | **A3** | 36 |
+| SAS/C 6.51 | no frame, `MOVE.L A5,-(A7)` | **A5** | 36 |
+
+Lattice keeps a frame pointer in A5 and does not use address register variables
+at all -- it addresses the parameter through the frame and borrows A0. The
+original has no frame and *does* use a register variable, like 6.51, but picks
+A3 because A5 is unavailable to it.
+
+**So the original sits between the two**: it has 6.51's register-variable
+allocation while still reserving A5 the way the frame-pointer-era compiler does.
+That points at **SAS/C 5.x, or an early 6.x (6.0-6.3)** -- the versions where
+the allocator had been added but A5 was still reserved by convention. Those are
+the versions worth hunting for; Lattice 4.x/5.x and 6.51 are both excluded.
+
+### Driving Lattice C under vamos
+
+Worth recording since it took some doing:
+
+- Use the separate config: `vamos -c ~/Downloads/lattice-c-vamos -- lc ...`.
+  The `--` is required, since Lattice's `-` options otherwise get eaten by vamos.
+- The `lc` driver **crashes vamos** (`FreeMem: Unknown memory to free`) when it
+  spawns its phases. Run the phases directly instead:
+  `lc1 -oquad:x.q work:x.c` then `lc2 -v -owork:x.o quad:x.q`.
+- The V4.01 front end is **K&R only** -- ANSI prototypes are rejected with
+  "invalid argument type specifier".
+- `-v` (no stack check) is a **phase-2** option; lc1 rejects it.
+
 ## A one-line acceptance test for a candidate compiler
 
 When another SAS/C turns up, this settles the biggest question in seconds:
