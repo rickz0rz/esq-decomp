@@ -64,6 +64,31 @@ evidently use only the low part. No C construct produces an unextended return,
 and forcing one would be a distortion -- these two are candidates for staying in
 assembly permanently.
 
+## OS library calls: mechanism solved, one divergence left
+
+SAS/C ships the pragma headers (`include:pragmas/*_pragmas.h`), and
+`#include <proto/graphics.h>` reproduces the original's call sequence exactly:
+
+```
+2c79 <base>   MOVEA.L GfxBase,A6
+4eae feaa     JSR     _LVOSetAPen(A6)
+```
+
+Same base load, same LVO offsets, same encoding. Use the proto headers for any
+OS-calling restoration -- a plain `extern` declaration produces an ordinary
+external call and cannot match.
+
+What remains is A6 handling. SAS/C treats A6 as callee-saved and adds it to the
+`MOVEM` masks (`48e73002` / `4cdf400c`); the original treats it as scratch and
+does not save it (`48e73000` / `4cdf000c`). It also loads the base before
+setting up arguments where the original does it after. Neither `CONSTLIBBASE`,
+`NOCONSTLIBBASE`, `SAVEDS` nor `NOSAVEDS` changes this.
+
+That single difference now blocks every OS-calling function, which is a large
+share of the display and disk paths -- making it, alongside the A3/A5
+allocation order, the highest-value thing for a different compiler version to
+fix.
+
 ## A third divergence: register allocation order
 
 Across every function with a pointer local, SAS/C 6.51 allocates **A5** where
