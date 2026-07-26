@@ -11,6 +11,15 @@ pins the compiler.
 
     SCOPTS_BASE="NOSTKCHK DATA=FAR" python3 tools/mismatches.py --recheck
 
+A full recheck of all 90 restorations takes about 16 seconds, so it is cheap to
+run often. --only exact|behavioural|library restricts the run; `--only exact` is
+the regression gate.
+
+Recheck runs SERIALLY on purpose. Concurrent vamos instances fail immediately
+(every worker reported a compile failure at --jobs 8 while the same files pass
+one at a time), and the run is fast enough that there is nothing to gain. --jobs
+exists only to make that explicit; leave it at 1.
+
 Each file in src/c/ carries a header block:
 
     RESTORES: <asm label the C replaces>
@@ -30,6 +39,7 @@ STATUS meanings:
                 of decompiling. Never expected to match.
 """
 import os, re, subprocess, sys
+from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CDIR = os.path.join(ROOT, 'src', 'c')
@@ -90,22 +100,45 @@ def recheck(e):
     return 'MATCH' if r.returncode == 0 else ('FAIL' if r.returncode == 2 else 'DIFFER') , first
 
 
+def prewarm():
+    """Build the listing once, single-threaded.
+
+    refbytes.py regenerates build/Prevue.lst when sources are newer. Letting
+    parallel workers discover that simultaneously would have them all shell out
+    to vasm at once and race on the same output file.
+    """
+    subprocess.run(['python3', os.path.join(ROOT, 'tools', 'refbytes.py'), '__prewarm__'],
+                   capture_output=True, text=True, cwd=ROOT)
+
+
 def main():
     do = '--recheck' in sys.argv
+    jobs = int(sys.argv[sys.argv.index('--jobs') + 1]) if '--jobs' in sys.argv else 1
+    only = sys.argv[sys.argv.index('--only') + 1] if '--only' in sys.argv else None
     files = sorted(f for f in os.listdir(CDIR) if f.endswith('.c')) if os.path.isdir(CDIR) else []
     if not files:
         sys.exit('no C restorations in src/c/')
     entries = [parse(os.path.join(CDIR, f)) for f in files]
+    if only:
+        entries = [e for e in entries if e['status'] == only]
 
-    print(f'{len(entries)} C restoration(s) in src/c/\n')
+    print(f'{len(entries)} C restoration(s)' + (f' with status {only}' if only else ' in src/c/') + '\n')
     exit_bad = 0
+    results = {}
+    if do:
+        prewarm()
+        with ThreadPoolExecutor(max_workers=jobs) as pool:
+            for e, r in zip(entries, pool.map(recheck, entries)):
+                results[e['file']] = r
+    flips = []
     for e in entries:
         line = f"  {e['file']:44s} {e['status']:12s} restores {e['restores']}"
         if do:
-            verdict, detail = recheck(e)
+            verdict, detail = results[e['file']]
             flip = ''
             if verdict == 'MATCH' and e['status'] != 'exact':
                 flip = '   <-- NOW MATCHES: update STATUS to `exact`'
+                flips.append(e)
             if verdict == 'DIFFER' and e['status'] == 'exact':
                 flip = '   <-- REGRESSED: was recorded as exact'
                 exit_bad = 1
@@ -128,6 +161,14 @@ def main():
         counts[e['status']] = counts.get(e['status'], 0) + 1
     print('\nby status: ' + ', '.join(f'{k}={v}' for k, v in sorted(counts.items())))
     print(f'recorded divergences: {sum(len(e["mismatches"]) for e in entries)}')
+    if do and flips:
+        print(f'\n*** {len(flips)} restoration(s) NEWLY MATCH under this compiler ***')
+        for e in flips:
+            print(f'    {e["file"]}   {e["restores"]}')
+        print('    -> set STATUS: exact, extract the function, and wire it into'
+              '\n       src/c/replacements.txt so it reaches the binary.')
+    elif do:
+        print('\nno status changes')
     if not do:
         print('\nrun with --recheck to recompile and verify these against the current compiler')
     sys.exit(exit_bad)
