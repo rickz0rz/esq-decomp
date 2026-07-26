@@ -81,6 +81,8 @@ n = min(len(mref), len(mgot)); i = 0
 while i < n and mref[i] == mgot[i]: i += 1
 print(f'  first divergence at byte {i//2} ({len(ref)//2} ref vs {len(got)//2} got bytes)')
 if sites:
-    print(f'  relocated at: {[hex(s) for s in sites]}')
+    # sites are (offset, width) pairs -- hex() of the tuple raised TypeError and
+    # buried the diff under a traceback every time a comparison failed.
+    print('  relocated at: ' + ', '.join(f'0x{o:x}/{w}' for o, w in sorted(sites)))
 sys.exit(1)
 PY

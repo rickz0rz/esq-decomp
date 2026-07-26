@@ -285,6 +285,63 @@ So the allocator's preference order is compiled into the code generator, and a
 candidate version either has it or does not — which makes the acceptance test a
 sound one-line filter.
 
+## The A3/A5 divergence has a single root cause: A5 is a reserved frame pointer
+
+Counting prologue idioms across the whole original program settles what the
+acceptance test was only sampling:
+
+| idiom | count in the original |
+|---|---:|
+| `LINK.W A5` (frame pointer) | 364 |
+| `MOVE.L A5,-(A7)` (A5 as a register variable) | **1** |
+| `MOVE.L A3,-(A7)` | 381 |
+| `MOVE.L A2,-(A7)` | 119 |
+| `MOVEM` mask including A5 | **0** |
+| `MOVEM` mask including A3 | 674 |
+
+The original's code generator **never** allocates A5 as a register variable. It
+reserves A5 as the frame pointer, so the first available address register for a
+register variable is A3 (A4 is the small-data base, A2 comes next in 119 cases).
+
+SAS/C 6.00 and 6.51 both free A5 when a function needs no frame and hand it out
+as the first address register variable — hence `2f0d` where the original has
+`2f0b`. The same property explains `ED1_DrawStatusLine1`: given a local array the
+original emits `LINK.W A5,#-44` and addresses the buffer at `-41(A5)`, while 6.51
+adjusts A7 directly (`SUBA.W #44,A7`) and addresses it at `11(A7)`.
+
+So two divergence classes that looked independent — register allocation and
+frame construction — are one property, and it is not option-selectable:
+`DEBUG=FULL`, `DEBUG=LINE`, `DEBUG=SYMBOL`, `STKEXT`, `PROFILE` and `OPTIMIZE`
+all leave 6.51 emitting `2f0d`. A candidate compiler that passes the `2f0b`
+acceptance test will fix both at once.
+
+## Call encoding depends on the callee's translation unit
+
+`ED_SaveEverythingToDisk` is byte-for-byte identical to 6.51's output except that
+every call is `4EBA` (`JSR (d16,PC)`) in the original and `6100` (`BSR.W`) from
+6.51. Both are 4 bytes with a 16-bit PC-relative displacement.
+
+The original uses **both** forms, and the split is not random:
+
+| form | displacements observed |
+|---|---|
+| `6100` BSR.W | 0x0092, 0x00ae, 0x0330, 0x0886, 0x123c, 0xff12, 0xfebe, 0xf776 |
+| `4EBA` JSR (d16,PC) | 0x2034, 0x3e36, 0x5f52, 0xb4ec, 0xcfc0 |
+
+BSR.W is used for near targets and JSR (d16,PC) for far ones, which is what
+"callee in the same translation unit" looks like after linking — both forms have
+the same ±32767 range, so this is not a range decision.
+
+That has a consequence for this project specifically: **a one-function-per-file
+restoration emits only cross-unit calls**, so it can never reproduce a BSR.W the
+original got from an intra-unit call, nor vice versa. Some functions therefore
+match only by accident of which form we happen to emit. Reproducing the rest
+would mean reconstructing the original's grouping of functions into `.c` files,
+which is a separate and much larger problem than picking the right compiler.
+
+6.00 emits `4EBA` for every call and 6.51 emits `6100` for every call; neither
+picks per-callee, which is further evidence both are the wrong version.
+
 ## What would settle it
 
 Obtain SAS/C **6.1, 6.2 or 6.3** and run the acceptance test; `2f0b` in the first
