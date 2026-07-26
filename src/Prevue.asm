@@ -175,6 +175,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/a/h/xjump.s"
 
     include "modules/groups/a/i/displib.s"
+    include "modules/groups/a/i/displib_displibresetlinetables.s"
+    include "modules/groups/a/i/displibb.s"
     include "modules/groups/a/i/disptext.s"
     include "modules/groups/a/i/xjump.s"
 

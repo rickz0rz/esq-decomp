@@ -19,3 +19,4 @@ modules/groups/_main/b/b_esqcheckcompatiblevideochip.s           c/esq_check_com
 modules/groups/b/a/script2_scriptwritectrlshadowtoserdat.s     c/script_write_ctrl_shadow_to_serdat.c
 modules/groups/a/n/esqiff_esqiffrestorebasepalettetriples.s    c/esqiff_restore_base_palette_triples.c
 modules/groups/b/a/newgrid1b_newgridinitshowtimebuckets.s      c/newgrid_init_showtime_buckets.c
+modules/groups/a/i/displib_displibresetlinetables.s              c/displib_reset_line_tables.c

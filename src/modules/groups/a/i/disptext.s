@@ -140,9 +140,9 @@ DISPTEXT_AppendToBuffer:
 ; CALLS:
 ;   _LVOTextLength, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AI_JMPTBL_STR_SkipClass3Chars, GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN
 ; READS:
-;   DISPTEXT_STR_SINGLE_SPACE_MEASURE..DISPTEXT_STR_SINGLE_SPACE_DELIM, DISPTEXT_CurrentLineIndex/21D9/21DA/21DC
+;   DISPTEXT_STR_SINGLE_SPACE_MEASURE..DISPTEXT_STR_SINGLE_SPACE_DELIM, _DISPTEXT_CurrentLineIndex/21D9/21DA/21DC
 ; WRITES:
-;   output buffer, DISPTEXT_ControlMarkersEnabledFlag
+;   output buffer, _DISPTEXT_ControlMarkersEnabledFlag
 ; DESC:
 ;   Builds a line from the source string, inserting separators and trimming to fit.
 ; NOTES:
@@ -227,19 +227,19 @@ DISPTEXT_BuildLineWithWidth:
     CMP.L   D7,D5
     BLE.S   .append_word
 
-    MOVE.W  DISPTEXT_CurrentLineIndex,D2
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D2
     MOVEQ   #2,D3
     CMP.W   D3,D2
     BCC.S   .set_separator_width
 
-    MOVE.L  DISPTEXT_ControlMarkerWidthPx,D2
+    MOVE.L  _DISPTEXT_ControlMarkerWidthPx,D2
     BRA.S   .compute_remaining_width
 
 .set_separator_width:
     MOVEQ   #0,D2
 
 .compute_remaining_width:
-    MOVE.L  DISPTEXT_LineWidthPx,D3
+    MOVE.L  _DISPTEXT_LineWidthPx,D3
     SUB.L   D2,D3
     MOVE.L  D3,D4
     CMP.L   D4,D5
@@ -303,10 +303,10 @@ DISPTEXT_BuildLineWithWidth:
     NEG.B   D0
     EXT.W   D0
     EXT.L   D0
-    MOVE.W  DISPTEXT_ControlMarkersEnabledFlag,D1
+    MOVE.W  _DISPTEXT_ControlMarkersEnabledFlag,D1
     EXT.L   D1
     OR.L    D0,D1
-    MOVE.W  D1,DISPTEXT_ControlMarkersEnabledFlag
+    MOVE.W  D1,_DISPTEXT_ControlMarkersEnabledFlag
     BRA.W   .line_loop
 
 .done:
@@ -335,7 +335,7 @@ DISPTEXT_BuildLineWithWidth:
 ; READS:
 ;   DISPTEXT_TextBufferPtr/21D4/21D6/21D7/21DB
 ; WRITES:
-;   DISPTEXT_LinePtrTable, DISPTEXT_LineTableLockFlag
+;   _DISPTEXT_LinePtrTable, _DISPTEXT_LineTableLockFlag
 ; DESC:
 ;   Builds per-line pointer table based on offsets when not locked.
 ; NOTES:
@@ -344,14 +344,14 @@ DISPTEXT_BuildLineWithWidth:
 DISPTEXT_BuildLinePointerTable:
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVE.L  24(A7),D7
-    TST.L   DISPTEXT_LineTableLockFlag
+    TST.L   _DISPTEXT_LineTableLockFlag
     BNE.S   .return
 
-    MOVE.L  DISPTEXT_TextBufferPtr,DISPTEXT_LinePtrTable
+    MOVE.L  DISPTEXT_TextBufferPtr,_DISPTEXT_LinePtrTable
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     ADD.L   D0,D0
-    LEA     DISPTEXT_LineLengthTable,A0
+    LEA     _DISPTEXT_LineLengthTable,A0
     ADDA.L  D0,A0
     TST.W   (A0)
     BEQ.S   .has_header_line
@@ -364,7 +364,7 @@ DISPTEXT_BuildLinePointerTable:
 
 .init_line_count:
     MOVEQ   #0,D1
-    MOVE.W  DISPTEXT_CurrentLineIndex,D1
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D1
     ADD.L   D0,D1
     MOVE.L  D1,D5
     MOVEQ   #1,D6
@@ -375,7 +375,7 @@ DISPTEXT_BuildLinePointerTable:
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
-    LEA     DISPTEXT_LinePtrTable,A0
+    LEA     _DISPTEXT_LinePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  D6,D0
     ASL.L   #2,D0
@@ -383,7 +383,7 @@ DISPTEXT_BuildLinePointerTable:
     ADDA.L  D0,A1
     MOVE.L  D6,D0
     ADD.L   D0,D0
-    LEA     DISPTEXT_CurrentLineIndex,A2
+    LEA     _DISPTEXT_CurrentLineIndex,A2
     ADDA.L  D0,A2
     MOVEA.L (A1),A3
     MOVEQ   #0,D0
@@ -394,7 +394,7 @@ DISPTEXT_BuildLinePointerTable:
     BRA.S   .build_ptrs_loop
 
 .set_locked:
-    MOVE.L  D7,DISPTEXT_LineTableLockFlag
+    MOVE.L  D7,_DISPTEXT_LineTableLockFlag
 
 .return:
     MOVEM.L (A7)+,D5-D7/A2-A3
@@ -412,37 +412,37 @@ DISPTEXT_BuildLinePointerTable:
 ; CALLS:
 ;   DISPTEXT_BuildLinePointerTable
 ; READS:
-;   DISPTEXT_LineTableLockFlag, DISPTEXT_CurrentLineIndex, DISPTEXT_LineLengthTable
+;   _DISPTEXT_LineTableLockFlag, _DISPTEXT_CurrentLineIndex, _DISPTEXT_LineLengthTable
 ; WRITES:
-;   DISPTEXT_TargetLineIndex, DISPTEXT_CurrentLineIndex
+;   _DISPTEXT_TargetLineIndex, _DISPTEXT_CurrentLineIndex
 ; DESC:
-;   Ensures line table state is current and clears DISPTEXT_CurrentLineIndex when needed.
+;   Ensures line table state is current and clears _DISPTEXT_CurrentLineIndex when needed.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DISPTEXT_FinalizeLineTable:
-    TST.L   DISPTEXT_LineTableLockFlag
+    TST.L   _DISPTEXT_LineTableLockFlag
     BNE.S   .return
 
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
-    MOVE.W  D0,DISPTEXT_TargetLineIndex
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  D0,_DISPTEXT_TargetLineIndex
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     ADD.L   D1,D1
-    LEA     DISPTEXT_LineLengthTable,A0
+    LEA     _DISPTEXT_LineLengthTable,A0
     ADDA.L  D1,A0
     TST.W   (A0)
     BEQ.S   .check_extra_line
 
     ADDQ.W  #1,D0
-    MOVE.W  D0,DISPTEXT_TargetLineIndex
+    MOVE.W  D0,_DISPTEXT_TargetLineIndex
 
 .check_extra_line:
     PEA     1.W
     BSR.W   DISPTEXT_BuildLinePointerTable
 
     ADDQ.W  #4,A7
-    CLR.W   DISPTEXT_CurrentLineIndex
+    CLR.W   _DISPTEXT_CurrentLineIndex
 
 .return:
     RTS
@@ -457,7 +457,7 @@ DISPTEXT_FinalizeLineTable:
 ; CLOBBERS:
 ;   A7
 ; CALLS:
-;   DISPLIB_ResetLineTables, GROUP_AG_JMPTBL_MEMORY_AllocateMemory
+;   _DISPLIB_ResetLineTables, GROUP_AG_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   DISPTEXT_InitBuffersPending
 ; WRITES:
@@ -472,7 +472,7 @@ DISPTEXT_InitBuffers:
     BEQ.S   .return
 
     CLR.L   DISPTEXT_TextBufferPtr
-    BSR.W   DISPLIB_ResetLineTables
+    BSR.W   _DISPLIB_ResetLineTables
 
     CLR.L   DISPTEXT_InitBuffersPending
 
@@ -558,9 +558,9 @@ DISPTEXT_FreeBuffers:
 ; CALLS:
 ;   DISPLIB_ResetTextBufferAndLineTables, DISPLIB_CommitCurrentLinePenAndAdvance
 ; READS:
-;   DISPTEXT_LineWidthPx, DISPTEXT_TargetLineIndex
+;   _DISPTEXT_LineWidthPx, _DISPTEXT_TargetLineIndex
 ; WRITES:
-;   DISPTEXT_LineWidthPx, DISPTEXT_TargetLineIndex
+;   _DISPTEXT_LineWidthPx, _DISPTEXT_TargetLineIndex
 ; DESC:
 ;   Updates layout parameters and returns whether the requested values matched.
 ; NOTES:
@@ -579,7 +579,7 @@ DISPTEXT_SetLayoutParams:
     CMPI.L  #624,D7
     BGT.S   .clamp_width
 
-    MOVE.L  D7,DISPTEXT_LineWidthPx
+    MOVE.L  D7,_DISPTEXT_LineWidthPx
 
 .clamp_width:
     TST.L   D6
@@ -590,19 +590,19 @@ DISPTEXT_SetLayoutParams:
     BGT.S   .clamp_lines
 
     MOVE.L  D6,D0
-    MOVE.W  D0,DISPTEXT_TargetLineIndex
+    MOVE.W  D0,_DISPTEXT_TargetLineIndex
 
 .clamp_lines:
     MOVE.L  D5,-(A7)
     BSR.W   DISPLIB_CommitCurrentLinePenAndAdvance
 
     ADDQ.W  #4,A7
-    MOVE.L  DISPTEXT_LineWidthPx,D0
+    MOVE.L  _DISPTEXT_LineWidthPx,D0
     CMP.L   D7,D0
     BNE.S   .mismatch
 
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_TargetLineIndex,D0
+    MOVE.W  _DISPTEXT_TargetLineIndex,D0
     CMP.L   D6,D0
     BNE.S   .mismatch
 
@@ -630,11 +630,11 @@ DISPTEXT_SetLayoutParams:
 ; CALLS:
 ;   GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers, _LVOTextLength
 ; READS:
-;   DISPTEXT_ControlMarkerWidthPx
+;   _DISPTEXT_ControlMarkerWidthPx
 ; WRITES:
-;   DISPTEXT_ControlMarkerWidthPx
+;   _DISPTEXT_ControlMarkerWidthPx
 ; DESC:
-;   Computes combined text lengths for two optional markers and stores in DISPTEXT_ControlMarkerWidthPx.
+;   Computes combined text lengths for two optional markers and stores in _DISPTEXT_ControlMarkerWidthPx.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
@@ -687,7 +687,7 @@ DISPTEXT_ComputeMarkerWidths:
     MOVE.L  D0,D4
     MOVE.L  D5,D0
     ADD.L   D4,D0
-    MOVE.L  D0,DISPTEXT_ControlMarkerWidthPx
+    MOVE.L  D0,_DISPTEXT_ControlMarkerWidthPx
     MOVEM.L (A7)+,D4-D7/A3
     UNLK    A5
     RTS
@@ -708,11 +708,11 @@ DISPTEXT_ComputeMarkerWidths:
 ; READS:
 ;   DISPTEXT_TextBufferPtr/21D4/21D5/21D6/21D7/21D9/21DA/21DB
 ; WRITES:
-;   DISPTEXT_CurrentLineIndex
+;   _DISPTEXT_CurrentLineIndex
 ; DESC:
 ;   Iterates over lines, measuring and formatting text into the line buffer.
 ; NOTES:
-;   Uses line offset tables DISPTEXT_LinePtrTable/DISPTEXT_LineLengthTable.
+;   Uses line offset tables _DISPTEXT_LinePtrTable/_DISPTEXT_LineLengthTable.
 ;------------------------------------------------------------------------------
 DISPTEXT_LayoutSourceToLines:
     LINK.W  A5,#-276
@@ -720,18 +720,18 @@ DISPTEXT_LayoutSourceToLines:
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVEQ   #0,D7
-    TST.L   DISPTEXT_LineTableLockFlag
+    TST.L   _DISPTEXT_LineTableLockFlag
     BNE.W   .return_status
 
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
-    MOVE.W  DISPTEXT_TargetLineIndex,D1
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_TargetLineIndex,D1
     CMP.W   D1,D0
     BCC.W   .return_status
 
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     ADD.L   D1,D1
-    LEA     DISPTEXT_LineLengthTable,A0
+    LEA     _DISPTEXT_LineLengthTable,A0
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     TST.W   (A1)
@@ -740,7 +740,7 @@ DISPTEXT_LayoutSourceToLines:
     MOVEQ   #0,D2
     MOVE.W  D0,D2
     ASL.L   #2,D2
-    LEA     DISPTEXT_LinePtrTable,A1
+    LEA     _DISPTEXT_LinePtrTable,A1
     ADDA.L  D2,A1
     ADDA.L  D1,A0
     MOVEQ   #0,D0
@@ -752,28 +752,28 @@ DISPTEXT_LayoutSourceToLines:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
-    MOVE.L  DISPTEXT_LineWidthPx,D1
+    MOVE.L  _DISPTEXT_LineWidthPx,D1
     MOVE.L  D1,D2
     SUB.L   D0,D2
     MOVE.L  D2,D6
     BRA.S   .adjust_for_prefix
 
 .no_prefix_line:
-    MOVE.L  DISPTEXT_LineWidthPx,D6
+    MOVE.L  _DISPTEXT_LineWidthPx,D6
 
 .adjust_for_prefix:
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     MOVEQ   #2,D1
     CMP.W   D1,D0
     BCC.S   .maybe_subtract_markers
 
-    SUB.L   DISPTEXT_ControlMarkerWidthPx,D6
+    SUB.L   _DISPTEXT_ControlMarkerWidthPx,D6
 
 .maybe_subtract_markers:
     MOVEQ   #0,D2
     MOVE.W  D0,D2
     ADD.L   D2,D2
-    LEA     DISPTEXT_LineLengthTable,A0
+    LEA     _DISPTEXT_LineLengthTable,A0
     ADDA.L  D2,A0
     TST.W   (A0)
     BEQ.S   .try_build_line
@@ -794,14 +794,14 @@ DISPTEXT_LayoutSourceToLines:
 .reset_width_for_next:
     ADDQ.L  #1,D7
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     ADD.L   D7,D0
     MOVEQ   #0,D1
-    MOVE.W  DISPTEXT_TargetLineIndex,D1
+    MOVE.W  _DISPTEXT_TargetLineIndex,D1
     CMP.L   D1,D0
     BGE.S   .try_build_line
 
-    MOVE.L  DISPTEXT_LineWidthPx,D6
+    MOVE.L  _DISPTEXT_LineWidthPx,D6
 
 .try_build_line:
     MOVE.L  A2,D0
@@ -811,10 +811,10 @@ DISPTEXT_LayoutSourceToLines:
     BEQ.S   .return_status
 
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     ADD.L   D7,D0
     MOVEQ   #0,D1
-    MOVE.W  DISPTEXT_TargetLineIndex,D1
+    MOVE.W  _DISPTEXT_TargetLineIndex,D1
     CMP.L   D1,D0
     BGE.S   .return_status
 
@@ -826,13 +826,13 @@ DISPTEXT_LayoutSourceToLines:
 
     LEA     16(A7),A7
     MOVEA.L D0,A2
-    MOVE.L  DISPTEXT_LineWidthPx,D6
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.L  _DISPTEXT_LineWidthPx,D6
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     MOVEQ   #2,D1
     CMP.W   D1,D0
     BCC.S   .after_build_line
 
-    SUB.L   DISPTEXT_ControlMarkerWidthPx,D6
+    SUB.L   _DISPTEXT_ControlMarkerWidthPx,D6
 
 .after_build_line:
     MOVE.L  A2,D0
@@ -867,7 +867,7 @@ DISPTEXT_LayoutSourceToLines:
 ; READS:
 ;   DISPTEXT_TextBufferPtr/21D4/21D5/21D6/21D7/21D8/21D9/21DA/21DB
 ; WRITES:
-;   DISPTEXT_CurrentLineIndex, DISPTEXT_LineLengthTable, Global_REF_1000_BYTES_ALLOCATED_2
+;   _DISPTEXT_CurrentLineIndex, _DISPTEXT_LineLengthTable, Global_REF_1000_BYTES_ALLOCATED_2
 ; DESC:
 ;   Builds line segments into the scratch buffer and appends to global text.
 ; NOTES:
@@ -878,18 +878,18 @@ DISPTEXT_LayoutAndAppendToBuffer:
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
-    TST.L   DISPTEXT_LineTableLockFlag
+    TST.L   _DISPTEXT_LineTableLockFlag
     BNE.W   .return_status
 
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
-    MOVE.W  DISPTEXT_TargetLineIndex,D1
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_TargetLineIndex,D1
     CMP.W   D1,D0
     BCC.W   .return_status
 
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     ADD.L   D1,D1
-    LEA     DISPTEXT_LineLengthTable,A0
+    LEA     _DISPTEXT_LineLengthTable,A0
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     TST.W   (A1)
@@ -898,7 +898,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     MOVEQ   #0,D2
     MOVE.W  D0,D2
     ASL.L   #2,D2
-    LEA     DISPTEXT_LinePtrTable,A1
+    LEA     _DISPTEXT_LinePtrTable,A1
     ADDA.L  D2,A1
     ADDA.L  D1,A0
     MOVEQ   #0,D0
@@ -910,30 +910,30 @@ DISPTEXT_LayoutAndAppendToBuffer:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
-    MOVE.L  DISPTEXT_LineWidthPx,D1
+    MOVE.L  _DISPTEXT_LineWidthPx,D1
     MOVE.L  D1,D2
     SUB.L   D0,D2
     MOVE.L  D2,D7
     BRA.S   .adjust_for_prefix
 
 .no_prefix_line:
-    MOVE.L  DISPTEXT_LineWidthPx,D7
+    MOVE.L  _DISPTEXT_LineWidthPx,D7
 
 .adjust_for_prefix:
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     MOVEQ   #2,D1
     CMP.W   D1,D0
     BCC.S   .init_scratch
 
-    SUB.L   DISPTEXT_ControlMarkerWidthPx,D7
+    SUB.L   _DISPTEXT_ControlMarkerWidthPx,D7
 
 .init_scratch:
     MOVEA.L Global_REF_1000_BYTES_ALLOCATED_2,A0
     CLR.B   (A0)
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     ADD.L   D0,D0
-    LEA     DISPTEXT_LineLengthTable,A1
+    LEA     _DISPTEXT_LineLengthTable,A1
     ADDA.L  D0,A1
     TST.W   (A1)
     BEQ.S   .line_loop
@@ -957,29 +957,29 @@ DISPTEXT_LayoutAndAppendToBuffer:
 
     SUB.L   D6,D7
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     ADD.L   D0,D0
-    LEA     DISPTEXT_LineLengthTable,A0
+    LEA     _DISPTEXT_LineLengthTable,A0
     ADDA.L  D0,A0
     ADDQ.W  #1,(A0)
     BRA.S   .line_loop
 
 .fallback_layout:
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     ASL.L   #2,D0
-    LEA     DISPTEXT_LinePenTable,A0
+    LEA     _DISPTEXT_LinePenTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     BSR.W   DISPLIB_CommitCurrentLinePenAndAdvance
 
     ADDQ.W  #4,A7
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
-    MOVE.W  DISPTEXT_TargetLineIndex,D1
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_TargetLineIndex,D1
     CMP.W   D1,D0
     BCC.S   .line_loop
 
-    MOVE.L  DISPTEXT_LineWidthPx,D7
+    MOVE.L  _DISPTEXT_LineWidthPx,D7
 
 .line_loop:
     ; Guard source pointer before probing bytes.
@@ -990,8 +990,8 @@ DISPTEXT_LayoutAndAppendToBuffer:
     TST.B   (A2)
     BEQ.W   .flush_remaining
 
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
-    MOVE.W  DISPTEXT_TargetLineIndex,D1
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_TargetLineIndex,D1
     CMP.W   D1,D0
     BCC.W   .flush_remaining
 
@@ -1018,22 +1018,22 @@ DISPTEXT_LayoutAndAppendToBuffer:
 
     LEA     20(A7),A7
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     ADD.L   D0,D0
-    LEA     DISPTEXT_LineLengthTable,A0
+    LEA     _DISPTEXT_LineLengthTable,A0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
     MOVE.W  (A0),D0
     MOVE.L  D0,D1
     ADD.L   D5,D1
     MOVE.W  D1,(A0)
-    MOVE.L  DISPTEXT_LineWidthPx,D7
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.L  _DISPTEXT_LineWidthPx,D7
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     MOVEQ   #2,D1
     CMP.W   D1,D0
     BCC.S   .after_append
 
-    SUB.L   DISPTEXT_ControlMarkerWidthPx,D7
+    SUB.L   _DISPTEXT_ControlMarkerWidthPx,D7
 
 .after_append:
     MOVE.L  A2,D1
@@ -1042,7 +1042,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     ASL.L   #2,D1
-    LEA     DISPTEXT_LinePenTable,A0
+    LEA     _DISPTEXT_LinePenTable,A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-(A7)
     BSR.W   DISPLIB_CommitCurrentLinePenAndAdvance
@@ -1087,7 +1087,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
 ; CALLS:
 ;   GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2, DISPTEXT_LayoutAndAppendToBuffer
 ; READS:
-;   DISPTEXT_LineTableLockFlag, Global_REF_1000_BYTES_ALLOCATED_1
+;   _DISPTEXT_LineTableLockFlag, Global_REF_1000_BYTES_ALLOCATED_1
 ; WRITES:
 ;   Global_REF_1000_BYTES_ALLOCATED_1 (via GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2)
 ; DESC:
@@ -1100,7 +1100,7 @@ DISPTEXT_BuildLayoutForSource:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D7
-    TST.L   DISPTEXT_LineTableLockFlag
+    TST.L   _DISPTEXT_LineTableLockFlag
     BNE.S   .return_status
 
     LEA     16(A5),A0
@@ -1135,7 +1135,7 @@ DISPTEXT_BuildLayoutForSource:
 ; CALLS:
 ;   DISPLIB_CommitCurrentLinePenAndAdvance
 ; READS:
-;   DISPTEXT_LineTableLockFlag
+;   _DISPTEXT_LineTableLockFlag
 ; WRITES:
 ;   (via DISPLIB_CommitCurrentLinePenAndAdvance)
 ; DESC:
@@ -1146,7 +1146,7 @@ DISPTEXT_BuildLayoutForSource:
 DISPTEXT_SetCurrentLineIndex:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
-    TST.L   DISPTEXT_LineTableLockFlag
+    TST.L   _DISPTEXT_LineTableLockFlag
     BNE.S   .return
 
     MOVEQ   #1,D0
@@ -1179,13 +1179,13 @@ DISPTEXT_SetCurrentLineIndex:
 ; CALLS:
 ;   DISPTEXT_FinalizeLineTable, GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AI_JMPTBL_STR_FindCharPtr
 ; READS:
-;   DISPTEXT_TargetLineIndex/21D6/21DC/21D3, NEWGRID_RowHeightPx
+;   _DISPTEXT_TargetLineIndex/21D6/21DC/21D3, NEWGRID_RowHeightPx
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Computes a derived line count with optional prefix adjustments.
 ; NOTES:
-;   Uses booleanize pattern on DISPTEXT_ControlMarkersEnabledFlag.
+;   Uses booleanize pattern on _DISPTEXT_ControlMarkersEnabledFlag.
 ;------------------------------------------------------------------------------
 DISPTEXT_ComputeVisibleLineCount:
     LINK.W  A5,#-12
@@ -1194,7 +1194,7 @@ DISPTEXT_ComputeVisibleLineCount:
     BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_TargetLineIndex,D0
+    MOVE.W  _DISPTEXT_TargetLineIndex,D0
     CMP.L   D7,D0
     BGE.S   .line_index_ok
 
@@ -1232,10 +1232,10 @@ DISPTEXT_ComputeVisibleLineCount:
 
 .apply_leading:
     ADD.L   D0,D5
-    TST.W   DISPTEXT_ControlMarkersEnabledFlag
+    TST.W   _DISPTEXT_ControlMarkersEnabledFlag
     BEQ.S   .return
 
-    MOVE.W  DISPTEXT_TargetLineIndex,D0
+    MOVE.W  _DISPTEXT_TargetLineIndex,D0
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     ASL.L   #2,D1
@@ -1275,13 +1275,13 @@ DISPTEXT_ComputeVisibleLineCount:
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: DISPTEXT_TargetLineIndex
+;   D0: _DISPTEXT_TargetLineIndex
 ; CLOBBERS:
 ;   D0
 ; CALLS:
 ;   DISPTEXT_FinalizeLineTable
 ; READS:
-;   DISPTEXT_TargetLineIndex
+;   _DISPTEXT_TargetLineIndex
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1293,7 +1293,7 @@ DISPTEXT_GetTotalLineCount:
     BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_TargetLineIndex,D0
+    MOVE.W  _DISPTEXT_TargetLineIndex,D0
     RTS
 
 ;!======
@@ -1308,7 +1308,7 @@ DISPTEXT_GetTotalLineCount:
 ; CALLS:
 ;   DISPTEXT_FinalizeLineTable
 ; READS:
-;   DISPTEXT_TargetLineIndex/21D6
+;   _DISPTEXT_TargetLineIndex/21D6
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1319,10 +1319,10 @@ DISPTEXT_GetTotalLineCount:
 DISPTEXT_HasMultipleLines:
     BSR.W   DISPTEXT_FinalizeLineTable
 
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     BNE.S   .return_false
 
-    MOVE.W  DISPTEXT_TargetLineIndex,D0
+    MOVE.W  _DISPTEXT_TargetLineIndex,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.S   .return_false
@@ -1348,7 +1348,7 @@ DISPTEXT_HasMultipleLines:
 ; CALLS:
 ;   DISPTEXT_FinalizeLineTable
 ; READS:
-;   DISPTEXT_TargetLineIndex/21D6
+;   _DISPTEXT_TargetLineIndex/21D6
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1361,10 +1361,10 @@ DISPTEXT_IsLastLineSelected:
     BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_TargetLineIndex,D0
+    MOVE.W  _DISPTEXT_TargetLineIndex,D0
     SUBQ.L  #1,D0
     MOVEQ   #0,D1
-    MOVE.W  DISPTEXT_CurrentLineIndex,D1
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D1
     CMP.L   D0,D1
     SEQ     D2
     NEG.B   D2
@@ -1386,11 +1386,11 @@ DISPTEXT_IsLastLineSelected:
 ; CALLS:
 ;   DISPTEXT_FinalizeLineTable
 ; READS:
-;   DISPTEXT_TargetLineIndex/21D6
+;   _DISPTEXT_TargetLineIndex/21D6
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Returns true if DISPTEXT_CurrentLineIndex equals DISPTEXT_TargetLineIndex.
+;   Returns true if _DISPTEXT_CurrentLineIndex equals _DISPTEXT_TargetLineIndex.
 ; NOTES:
 ;   Booleanize pattern: SEQ/NEG/EXT.
 ;------------------------------------------------------------------------------
@@ -1398,8 +1398,8 @@ DISPTEXT_IsCurrentLineLast:
     MOVE.L  D2,-(A7)
     BSR.W   DISPTEXT_FinalizeLineTable
 
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
-    MOVE.W  DISPTEXT_TargetLineIndex,D1
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_TargetLineIndex,D1
     CMP.W   D1,D0
     SEQ     D2
     NEG.B   D2
@@ -1421,7 +1421,7 @@ DISPTEXT_IsCurrentLineLast:
 ; CALLS:
 ;   DISPTEXT_FinalizeLineTable, _LVOTextLength
 ; READS:
-;   DISPTEXT_LinePtrTable/21D6/21D7
+;   _DISPTEXT_LinePtrTable/21D6/21D7
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1435,14 +1435,14 @@ DISPTEXT_MeasureCurrentLineLength:
     BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     ASL.L   #2,D0
-    LEA     DISPTEXT_LinePtrTable,A0
+    LEA     _DISPTEXT_LinePtrTable,A0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     ADD.L   D0,D0
-    LEA     DISPTEXT_LineLengthTable,A1
+    LEA     _DISPTEXT_LineLengthTable,A1
     ADDA.L  D0,A1
     MOVEQ   #0,D0
     MOVE.W  (A1),D0
@@ -1468,13 +1468,13 @@ DISPTEXT_MeasureCurrentLineLength:
 ; CALLS:
 ;   DISPTEXT_FinalizeLineTable, _LVOSetAPen, _LVOSetDrMd, _LVOMove, _LVOText, GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments
 ; READS:
-;   DISPTEXT_LinePtrTable/21D6/21D7/21D9/21DC/21B1/21B2/21D8
+;   _DISPTEXT_LinePtrTable/21D6/21D7/21D9/21DC/21B1/21B2/21D8
 ; WRITES:
-;   DISPTEXT_CurrentLineIndex, DISPTEXT_ControlMarkerXOffsetPx
+;   _DISPTEXT_CurrentLineIndex, DISPTEXT_ControlMarkerXOffsetPx
 ; DESC:
 ;   Draws the current line at the given position, honoring highlight markers.
 ; NOTES:
-;   Uses 0x13/0x14 control markers when DISPTEXT_ControlMarkersEnabledFlag set.
+;   Uses 0x13/0x14 control markers when _DISPTEXT_ControlMarkersEnabledFlag set.
 ;------------------------------------------------------------------------------
 DISPTEXT_RenderCurrentLine:
     LINK.W  A5,#-12
@@ -1486,19 +1486,19 @@ DISPTEXT_RenderCurrentLine:
 
     MOVEQ   #0,D0
     MOVE.L  D0,DISPTEXT_ControlMarkerXOffsetPx
-    MOVE.L  DISPTEXT_LineWidthPx,D1
+    MOVE.L  _DISPTEXT_LineWidthPx,D1
     TST.L   D1
     BLE.W   .return
 
-    MOVE.W  DISPTEXT_CurrentLineIndex,D1
-    MOVE.W  DISPTEXT_TargetLineIndex,D2
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D1
+    MOVE.W  _DISPTEXT_TargetLineIndex,D2
     CMP.W   D2,D1
     BCC.W   .return
 
     MOVEQ   #0,D2
     MOVE.W  D1,D2
     ASL.L   #2,D2
-    LEA     DISPTEXT_LinePtrTable,A0
+    LEA     _DISPTEXT_LinePtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D2,A1
     TST.L   (A1)
@@ -1512,14 +1512,14 @@ DISPTEXT_RenderCurrentLine:
     MOVEQ   #0,D3
     MOVE.W  D1,D3
     ADD.L   D3,D3
-    LEA     DISPTEXT_LineLengthTable,A0
+    LEA     _DISPTEXT_LineLengthTable,A0
     ADDA.L  D3,A0
     MOVEQ   #0,D4
     MOVE.W  (A0),D4
     TST.L   D4
     BLE.W   .return
 
-    LEA     DISPTEXT_LinePenTable,A0
+    LEA     _DISPTEXT_LinePenTable,A0
     ADDA.L  D2,A0
     MOVEA.L A3,A1
     MOVE.L  (A0),D0
@@ -1533,7 +1533,7 @@ DISPTEXT_RenderCurrentLine:
     MOVEA.L -6(A5),A0
     MOVE.B  0(A0,D4.L),D5
     CLR.B   0(A0,D4.L)
-    TST.W   DISPTEXT_ControlMarkersEnabledFlag
+    TST.W   _DISPTEXT_ControlMarkersEnabledFlag
     BEQ.S   .draw_plain
 
     PEA     19.W
@@ -1584,9 +1584,9 @@ DISPTEXT_RenderCurrentLine:
 .restore_char:
     MOVEA.L -6(A5),A0
     MOVE.B  D5,0(A0,D4.L)
-    MOVE.W  DISPTEXT_CurrentLineIndex,D0
+    MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DISPTEXT_CurrentLineIndex
+    MOVE.W  D0,_DISPTEXT_CurrentLineIndex
 
 .return:
     MOVEM.L (A7)+,D2-D7/A3

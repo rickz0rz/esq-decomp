@@ -48,15 +48,15 @@
     XDEF    DISKIO_TrackdiskIoReqPtr
     XDEF    DISKIO_BufferState
     XDEF    DISPTEXT_TextBufferPtr
-    XDEF    DISPTEXT_LinePtrTable
-    XDEF    DISPTEXT_TargetLineIndex
-    XDEF    DISPTEXT_CurrentLineIndex
-    XDEF    DISPTEXT_LineLengthTable
-    XDEF    DISPTEXT_LinePenTable
-    XDEF    DISPTEXT_LineWidthPx
-    XDEF    DISPTEXT_ControlMarkerWidthPx
-    XDEF    DISPTEXT_LineTableLockFlag
-    XDEF    DISPTEXT_ControlMarkersEnabledFlag
+    XDEF    _DISPTEXT_LinePtrTable
+    XDEF    _DISPTEXT_TargetLineIndex
+    XDEF    _DISPTEXT_CurrentLineIndex
+    XDEF    _DISPTEXT_LineLengthTable
+    XDEF    _DISPTEXT_LinePenTable
+    XDEF    _DISPTEXT_LineWidthPx
+    XDEF    _DISPTEXT_ControlMarkerWidthPx
+    XDEF    _DISPTEXT_LineTableLockFlag
+    XDEF    _DISPTEXT_ControlMarkersEnabledFlag
     XDEF    Global_REF_1000_BYTES_ALLOCATED_1
     XDEF    Global_REF_1000_BYTES_ALLOCATED_2
     XDEF    DST_BannerWindowPrimary
@@ -918,71 +918,71 @@ DISKIO_BufferState:
 DISPTEXT_TextBufferPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISPTEXT_LinePtrTable/DISPTEXT_LineLengthTable/DISPTEXT_LinePenTable   (disptext line metadata)
+; SYM: _DISPTEXT_LinePtrTable/_DISPTEXT_LineLengthTable/_DISPTEXT_LinePenTable   (disptext line metadata)
 ; TYPE: pointer[20]/u16[20]/u32[20]
 ; PURPOSE: Per-line pointer, measured length, and render-pen metadata used during DISPTEXT layout/render.
 ; USED BY: DISPTEXT_*, DISPLIB_*
-; NOTES: Initialized/reset by DISPLIB_ResetLineTables; length table is accessed as words.
+; NOTES: Initialized/reset by _DISPLIB_ResetLineTables; length table is accessed as words.
 ;------------------------------------------------------------------------------
-DISPTEXT_LinePtrTable:
+_DISPTEXT_LinePtrTable:
     DS.L    20
 ;------------------------------------------------------------------------------
-; SYM: DISPTEXT_TargetLineIndex   (disptext target line index)
+; SYM: _DISPTEXT_TargetLineIndex   (disptext target line index)
 ; TYPE: u16
 ; PURPOSE: Requested/target line index for scroll/selection movement.
 ; USED BY: DISPTEXT_*, DISPLIB_*
-; NOTES: Compared with DISPTEXT_CurrentLineIndex to detect pending movement.
+; NOTES: Compared with _DISPTEXT_CurrentLineIndex to detect pending movement.
 ;------------------------------------------------------------------------------
-DISPTEXT_TargetLineIndex:
+_DISPTEXT_TargetLineIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DISPTEXT_CurrentLineIndex   (disptext current line index)
+; SYM: _DISPTEXT_CurrentLineIndex   (disptext current line index)
 ; TYPE: u16
 ; PURPOSE: Current line index within disptext buffer/window.
 ; USED BY: DISPTEXT_*, DISPLIB_*
 ; NOTES: Adjusted during scroll and cursor advance operations.
 ;------------------------------------------------------------------------------
-DISPTEXT_CurrentLineIndex:
+_DISPTEXT_CurrentLineIndex:
     DS.W    1
-DISPTEXT_LineLengthTable:
+_DISPTEXT_LineLengthTable:
     DS.L    10
-DISPTEXT_LinePenTable:
+_DISPTEXT_LinePenTable:
     DS.L    20
 ;------------------------------------------------------------------------------
-; SYM: DISPTEXT_LineWidthPx   (disptext layout width in pixels)
+; SYM: _DISPTEXT_LineWidthPx   (disptext layout width in pixels)
 ; TYPE: s32
 ; PURPOSE: Maximum line width used by DISPTEXT layout/build functions.
 ; USED BY: DISPTEXT_SetLayoutParams, DISPTEXT_LayoutSourceToLines, DISPTEXT_LayoutAndAppendToBuffer
 ; NOTES: Clamped to 0..624 by DISPTEXT_SetLayoutParams.
 ;------------------------------------------------------------------------------
-DISPTEXT_LineWidthPx:
+_DISPTEXT_LineWidthPx:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISPTEXT_ControlMarkerWidthPx   (combined control-marker width)
+; SYM: _DISPTEXT_ControlMarkerWidthPx   (combined control-marker width)
 ; TYPE: s32
 ; PURPOSE: Stores combined pixel width of optional control markers/prefixes.
 ; USED BY: DISPTEXT_ComputeMarkerWidths, DISPTEXT_LayoutSourceToLines
 ; NOTES: Subtracted from available line width during layout passes.
 ;------------------------------------------------------------------------------
-DISPTEXT_ControlMarkerWidthPx:
+_DISPTEXT_ControlMarkerWidthPx:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISPTEXT_LineTableLockFlag   (disptext line-table lock flag)
+; SYM: _DISPTEXT_LineTableLockFlag   (disptext line-table lock flag)
 ; TYPE: s32
 ; PURPOSE: Gates line-table rebuild/layout calls while table updates are in progress.
 ; USED BY: DISPTEXT_BuildLinePointerTable, DISPTEXT_FinalizeLineTable, DISPTEXT_LayoutSourceToLines
 ; NOTES: Nonzero suppresses rebuild/selection mutation operations.
 ;------------------------------------------------------------------------------
-DISPTEXT_LineTableLockFlag:
+_DISPTEXT_LineTableLockFlag:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISPTEXT_ControlMarkersEnabledFlag   (control marker enable flag)
+; SYM: _DISPTEXT_ControlMarkersEnabledFlag   (control marker enable flag)
 ; TYPE: u16
 ; PURPOSE: Enables rendering/measurement of 0x13/0x14 control marker sequences.
-; USED BY: DISPLIB_ResetLineTables, DISPTEXT_*, TLIBA1_DrawTextWithInsetSegments
+; USED BY: _DISPLIB_ResetLineTables, DISPTEXT_*, TLIBA1_DrawTextWithInsetSegments
 ; NOTES: When set, inline inset markers are parsed and add padding.
 ;------------------------------------------------------------------------------
-DISPTEXT_ControlMarkersEnabledFlag:
+_DISPTEXT_ControlMarkersEnabledFlag:
     DS.W    1
 Global_REF_1000_BYTES_ALLOCATED_1:
     DS.L    1
