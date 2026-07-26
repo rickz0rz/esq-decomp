@@ -89,6 +89,36 @@ share of the display and disk paths -- making it, alongside the A3/A5
 allocation order, the highest-value thing for a different compiler version to
 fix.
 
+## What a large function costs (318-byte trial)
+
+`NEWGRID_SelectEntryPen` was attempted as a deliberate scale test: 318 bytes,
+zero calls, two PC-relative jump-table switches, three BTST flag tests, struct
+fields and two clamp ranges.
+
+Result after three source shapes, in about twenty minutes:
+
+| attempt | bytes | note |
+|---|---:|---|
+| two-variable sentinel | 292 | switches based at case 2 |
+| explicit `~0 & 0xFF` | 340 | expressions cost code |
+| single variable, switch based at case 1, `OPTIMIZE` | **318** | exact size |
+
+At 318/318, **79% of instruction words are identical in sequence** -- both jump
+tables, all three flag tests, the pen constants, both clamps, the epilogue. Of
+the 30 differing words, 8 differ only in a register field (`BTST #1,27(A3)` vs
+`27(A0)`), the familiar allocation divergence.
+
+So a function of this size is reachable *semantically* on the first sitting, and
+lands within a few percent structurally -- but exact is out of reach while the
+register-allocation divergence stands, and the residual also includes source
+shapes that no obvious C reproduces (the original opens with a duplicated
+`MOVEQ #0,D7` before `NOT.B`).
+
+Practical read: large functions are worth restoring for the analysis, and they
+are *not* disproportionately harder to get semantically right. They are
+disproportionately unlikely to be byte-exact, because every divergence class in
+the program gets more chances to appear in 318 bytes than in 30.
+
 ## A third divergence: register allocation order
 
 Across every function with a pointer local, SAS/C 6.51 allocates **A5** where
