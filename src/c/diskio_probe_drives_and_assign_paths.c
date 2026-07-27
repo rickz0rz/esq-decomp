@@ -53,8 +53,8 @@
  *   summary: 4EBA against 6100 for the five cross-unit calls.
  */
 #include <exec/io.h>
-#include <proto/exec.h>
-#include <proto/dos.h>
+#include "esq-exec.h"
+#include "esq-dos.h"
 
 extern void *GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal(long a, long b);
 extern void *GROUP_AG_JMPTBL_STRUCT_AllocWithOwner(void *port, long size);

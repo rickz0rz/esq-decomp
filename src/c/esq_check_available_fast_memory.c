@@ -9,7 +9,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
  */
-#include <proto/exec.h>
+#include "esq-exec.h"
 extern short HAS_REQUESTED_FAST_MEMORY;
 void ESQ_CheckAvailableFastMemory(void)
 {

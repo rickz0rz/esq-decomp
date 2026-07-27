@@ -51,7 +51,7 @@
  *            the original has A3. -2.
  */
 #include <graphics/gfx.h>
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern char *ESQDISP_JMPTBL_GRAPHICS_AllocRaster(char *who, long line, long width,
                                                  long height);

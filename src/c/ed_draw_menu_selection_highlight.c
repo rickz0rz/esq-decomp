@@ -39,7 +39,7 @@
  *            a known-unknown rather than guessed -- see the accounting rule in
  *            AGENTS.md. Re-derive before promoting this file.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern long ED_EditCursorOffset;

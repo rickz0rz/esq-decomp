@@ -17,7 +17,7 @@
  * while the assembly calls the same pointer Global_REF_DOS_LIBRARY_2. That only
  * matters for linking, and this file is behavioural so it is not linked.
  */
-#include <proto/dos.h>
+#include "esq-dos.h"
 long DISKIO_GetFilesizeFromHandle(BPTR fh)
 {
     register long size;

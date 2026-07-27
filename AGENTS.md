@@ -528,10 +528,48 @@ Three properties of this setup are not guessable and cost real time to learn:
   the probe — what got probed was the previous build. `build-split.sh` now
   deletes it first and exits nonzero, but the habit is worth keeping.
 
-Synthetic keyboard input is not available (macOS refuses it without an
-Accessibility grant; symptom is `osascript ... keystroke` error 1002), so
-anything behind a keypress — the ED editor, the ESC menu, the diagnostics
-screens — is covered by byte comparison only.
+`tools/keydrive_esq.sh` reaches what the soak cannot: it focuses the emulator
+and sends ESC / arrow / Return, the vocabulary `ED_GetEscMenuActionCode` actually
+switches on (3, 13, 27, 155). It needs an **Accessibility** grant for the
+terminal, separately from the Screen Recording grant the capture needs, and it
+checks for that grant rather than assuming it — without it every keystroke fails
+silently with error 1002 and the run is a no-op that looks like a pass.
+
+### OPEN: the maximum-C build does not survive the ESC menu
+
+Found 2026-07-27, the first time keyboard input was available. **The build boots
+and soaks for five minutes indistinguishably from the reference, and then dies on
+the first keypress.**
+
+```
+                            reference    max-C (289)
+  kickstart-boot illegals       1             2        <- 2 = the machine reset
+```
+
+The alert is `8100000F` = **`AN_BadFreeAddr`**, freeing memory at a bad address,
+and the screen blanks on the ESC itself.
+
+What is known, and what was ruled out by measurement rather than argument:
+
+- **At least TWO independent faults**, both in manifest entries 145-289. Entries
+  1-147 pass; adding #148 fails; removing #148 from the full manifest *still*
+  fails. So #148 is a fault in that context and something else is too.
+- **Not the stale-A6 class.** All 46 remaining `<proto/*.h>` users were converted
+  to the volatile headers and the crash is unchanged. `a6_audit.py` is clean at
+  0 of 289 either way.
+- **Not the obvious suspects.** Everything that frees memory or closes libraries
+  on the shutdown path — `cleanup_release_display_resources`,
+  `ctasks_*_teardown`, `cleanup_clear_*` — sits at positions 6-22, inside the
+  range that passes.
+
+Worth testing next: whether the fault is a *restoration* at all. The max-C image
+is 284716 bytes against the reference's 279804, so anything assuming a size, a
+layout or a stack budget would break without any single file being wrong.
+
+**Do not bisect this with an empty baseline.** With several faults present a
+bisect names an arbitrary boundary, and the solo-confirmation step is worthless
+when the baseline is empty — a single replacement is not reached the way it is in
+a full build. Confirm by REMOVING a candidate from the full manifest instead.
 
 ## Verifying a C build
 

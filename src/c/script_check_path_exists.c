@@ -9,7 +9,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
  */
-#include <proto/dos.h>
+#include "esq-dos.h"
 long SCRIPT_CheckPathExists(char *path)
 {
     BPTR lk;

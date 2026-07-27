@@ -21,7 +21,7 @@
  *            section of docs/compiler-version.md.
  *   scope:   every OS-calling function in the program.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 extern struct RastPort *Global_REF_RASTPORT_1;
 void ED_DrawBottomHelpBarBackground(void)
 {

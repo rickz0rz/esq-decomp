@@ -39,7 +39,7 @@
  *            PC-relative displacement; the original used JSR (d16,PC) for a callee
  *            in another translation unit. See docs/compiler-version.md.
  */
-#include <proto/exec.h>
+#include "esq-exec.h"
 
 extern void ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(long start, long end);
 extern void ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(long start, long end);

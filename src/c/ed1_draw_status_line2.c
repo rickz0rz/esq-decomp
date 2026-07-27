@@ -28,7 +28,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the six cross-unit calls.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern void GROUP_AM_JMPTBL_WDISP_SPrintf();
 extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void *rp, char *s, long y);

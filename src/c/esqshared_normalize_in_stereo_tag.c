@@ -31,7 +31,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the two cross-unit calls.
  */
-#include <proto/exec.h>
+#include "esq-exec.h"
 #include <string.h>
 
 extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(char *hay, char *needle);

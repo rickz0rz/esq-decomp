@@ -9,7 +9,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 extern struct RastPort *NEWGRID_HeaderRastPortPtr;
 void NEWGRID_DrawTopBorderLine(void)
 {

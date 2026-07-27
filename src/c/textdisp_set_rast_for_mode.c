@@ -22,7 +22,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the three cross-unit calls; most of the +12.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern void  WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern void *TLIBA3_BuildDisplayContextForViewMode(long a, long b, long c);

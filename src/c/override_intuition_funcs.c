@@ -27,7 +27,7 @@
  *            expression. Same family as the argument-pop ordering recorded in
  *            esqiff_handle_brush_ini_reload_hotkey.c.
  */
-#include <proto/exec.h>
+#include "esq-exec.h"
 
 extern void LOCAVAIL2_AutoRequestNoOp();
 extern void LOCAVAIL2_DisplayAlertDelayAndReboot();

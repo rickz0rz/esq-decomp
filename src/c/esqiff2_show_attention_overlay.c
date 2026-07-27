@@ -31,8 +31,8 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the eight cross-unit calls.
  */
-#include <proto/exec.h>
-#include <proto/graphics.h>
+#include "esq-exec.h"
+#include "esq-graphics.h"
 
 extern void GCOMMAND_SeedBannerFromPrefs(void);
 extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);

@@ -9,7 +9,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
  */
-#include <proto/exec.h>
+#include "esq-exec.h"
 extern struct Interrupt *Global_REF_INTERRUPT_STRUCT_INTB_VERTB;
 extern char Global_STR_CLEANUP_C_1[];
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);

@@ -39,7 +39,7 @@
  *   summary: SAS/C adds A6 to the MOVEM masks; the original treats it as scratch
  *            across the graphics.library calls.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern long ED_GetEscMenuActionCode(void);
 extern void ED_DrawESCMenuBottomHelp(void);

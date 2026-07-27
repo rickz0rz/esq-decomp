@@ -46,7 +46,7 @@
  */
 #include <exec/interrupts.h>
 #include <exec/memory.h>
-#include <proto/exec.h>
+#include "esq-exec.h"
 
 extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
                                                  long flags);

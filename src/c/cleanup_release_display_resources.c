@@ -26,8 +26,8 @@
  *   summary: 4EBA against 6100 for the seven jump-table calls, all cross-unit in
  *            the original.
  */
-#include <proto/exec.h>
-#include <proto/graphics.h>
+#include "esq-exec.h"
+#include "esq-graphics.h"
 
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 extern void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(char *who, long line, void *p, long w, long h);

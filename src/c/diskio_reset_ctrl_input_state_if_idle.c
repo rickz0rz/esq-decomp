@@ -9,7 +9,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
  */
-#include <proto/exec.h>
+#include "esq-exec.h"
 extern short Global_UIBusyFlag;
 extern short CTRL_BufferedByteCount, CTRL_HPreviousSample, CTRL_H;
 extern short Global_RefreshTickCounter, ESQPARS2_ReadModeFlags;

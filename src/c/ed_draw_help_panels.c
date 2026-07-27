@@ -41,7 +41,7 @@
  *            as a diff in any OS-calling function, so it is recorded rather than
  *            passed over.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern struct RastPort *Global_REF_RASTPORT_1;
 

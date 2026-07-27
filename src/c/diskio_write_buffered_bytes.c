@@ -37,7 +37,7 @@
  *            ways this file does not account for. Recorded as a known-unknown;
  *            do not promote without closing it.
  */
-#include <proto/dos.h>
+#include "esq-dos.h"
 
 struct DiskIoBufferControl { void *BufferBase; long ErrorFlag; };
 struct DiskIoBufferState   { char *BufferPtr; long BufferSize; long Remaining; short SavedF45; };

@@ -32,7 +32,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the cross-unit frame call.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 #include <string.h>
 
 extern void TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(void *rp, long flag,

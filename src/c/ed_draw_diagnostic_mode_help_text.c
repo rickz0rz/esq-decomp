@@ -22,7 +22,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the two cross-unit text calls.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
 extern struct RastPort *Global_REF_RASTPORT_1;

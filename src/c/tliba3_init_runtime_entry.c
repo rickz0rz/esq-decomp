@@ -42,7 +42,7 @@
  *   ref:     4e55fffc                 LINK.W A5,#-4
  *   got:     594f                     SUBQ.W #4,A7
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 #include <string.h>
 
 struct RtEntry {

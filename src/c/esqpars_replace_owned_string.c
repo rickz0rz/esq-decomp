@@ -32,7 +32,7 @@
  *            regions are register allocation around the two inlined strlens.
  */
 #include <exec/memory.h>
-#include <proto/exec.h>
+#include "esq-exec.h"
 #include <string.h>
 
 extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);

@@ -25,7 +25,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the four cross-unit calls.
  */
-#include <proto/dos.h>
+#include "esq-dos.h"
 
 extern long GROUP_AT_JMPTBL_DOS_SystemTagList(char *cmd, void *tags);
 extern void GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0(void);

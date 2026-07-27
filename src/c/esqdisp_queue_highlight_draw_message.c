@@ -38,8 +38,8 @@
  *   summary: 4EBA against 6100 for the cross-unit calls, plus the BSR.S noted
  *            above which is a different problem entirely.
  */
-#include <proto/exec.h>
-#include <proto/graphics.h>
+#include "esq-exec.h"
+#include "esq-graphics.h"
 
 extern void ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(void *msg, long code);
 extern void ESQDISP_InitHighlightMessagePattern(void *msg);

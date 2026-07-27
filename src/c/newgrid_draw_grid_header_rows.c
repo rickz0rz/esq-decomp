@@ -23,7 +23,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the nine cross-unit calls.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern void NEWGRID_DrawGridFrame(unsigned char *ctx, long pen, long a, long b, long h);
 extern long NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);

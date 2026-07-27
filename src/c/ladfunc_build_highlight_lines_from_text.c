@@ -26,7 +26,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the cross-unit calls.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 #include <string.h>
 
 extern void GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(char *seg, long align);

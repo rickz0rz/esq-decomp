@@ -34,7 +34,7 @@
  *   summary: 4EBA against 6100 for the ten cross-unit calls -- unusually many for
  *            a function this size, which is most of the 9 regions.
  */
-#include <proto/dos.h>
+#include "esq-dos.h"
 
 struct DiskIoBufferControl { void *BufferBase; long ErrorFlag; };
 struct DiskIoBufferState   { char *BufferPtr; long BufferSize; long Remaining; short SavedF45; };

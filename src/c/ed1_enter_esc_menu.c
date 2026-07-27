@@ -37,8 +37,8 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the nine cross-unit calls.
  */
-#include <proto/exec.h>
-#include <proto/graphics.h>
+#include "esq-exec.h"
+#include "esq-graphics.h"
 
 extern void ESQIFF_RunCopperDropTransition(void);
 extern void ESQIFF_RunCopperRiseTransition(void);

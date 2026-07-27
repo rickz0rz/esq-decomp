@@ -26,7 +26,7 @@
  *   summary: 4EBA against 6100 for all eleven calls, all cross-unit in the
  *            original. Pre-positioned to match on the right compiler.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
 extern void GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(char *buf, long value, long width);

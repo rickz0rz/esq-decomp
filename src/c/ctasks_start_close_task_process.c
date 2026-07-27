@@ -57,8 +57,8 @@
  *   retest:  a compiler that materialises 8192 as a plain long immediate.
  */
 #include <exec/memory.h>
-#include <proto/exec.h>
-#include <proto/dos.h>
+#include "esq-exec.h"
+#include "esq-dos.h"
 
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);
 extern void  CTASKS_CloseTaskTeardown(void);

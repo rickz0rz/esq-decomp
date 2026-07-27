@@ -35,7 +35,7 @@
  *   ref:     4e55fffc                   LINK.W A5,#-4
  *   got:     48e7000e                   MOVEM only
  */
-#include <proto/exec.h>
+#include "esq-exec.h"
 
 extern void GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult(void *desc);
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);

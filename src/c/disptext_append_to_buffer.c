@@ -30,7 +30,7 @@
  *   summary: 4EBA against 6100 for the four cross-unit calls.
  */
 #include <exec/memory.h>
-#include <proto/exec.h>
+#include "esq-exec.h"
 #include <string.h>
 
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);

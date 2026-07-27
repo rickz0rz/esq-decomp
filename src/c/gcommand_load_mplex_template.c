@@ -26,7 +26,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the six cross-unit calls.
  */
-#include <proto/exec.h>
+#include "esq-exec.h"
 
 extern long  GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(char *path);
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long ch);

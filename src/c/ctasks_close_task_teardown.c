@@ -34,8 +34,8 @@
  *            and asserts no rule. Worth resolving eventually, since it is two
  *            bytes at every zero store in the program.
  */
-#include <proto/dos.h>
-#include <proto/exec.h>
+#include "esq-dos.h"
+#include "esq-exec.h"
 
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p,
                                                     long size);

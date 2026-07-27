@@ -32,7 +32,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the cross-unit calls.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 #include <string.h>
 
 extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);

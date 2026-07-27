@@ -21,7 +21,7 @@
  * own __CXD33) but it is the only correct form: the remainder cannot be reached
  * through a C return value at all.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 extern char TLIBA3_VmArrayRuntimeTable[];
 void TLIBA3_ClearViewModeRastPort(long mode, long pen)
 {

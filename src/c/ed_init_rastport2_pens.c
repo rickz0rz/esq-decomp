@@ -9,7 +9,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 extern char *WDISP_DisplayContextBase;
 extern long  ED_Rastport2PenModeSelector;
 #define RP2OFF 10          /* Offset_RastPort2_FromDisplayContextBase + 2 */
