@@ -423,9 +423,11 @@ column.
 **SAS/C never emits `-(An)` for a store.** A function that fills a buffer
 back-to-front (`*--p = c`) costs two extra bytes per write -- SAS/C decrements
 with a separate `SUBQ` then stores through plain indirect. This is unreachable
-from C, not merely different. A restoration overshooting badly with no structural
-disagreement is a hint the original was hand-written assembly, not compiled C --
-see `esq_format_time_stamp.c`, 142 bytes against 212.
+from C, not merely different. Screened by `tools/coverage.py`; it finds exactly
+**one** such function program-wide, so this is a real but narrow blocker, not a
+broad one. The wider lesson is the diagnostic: a restoration overshooting badly
+with no structural disagreement is a hint the original was hand-written assembly,
+not compiled C -- see `esq_format_time_stamp.c`, 142 bytes against 212.
 
 ## Not every label is a function
 

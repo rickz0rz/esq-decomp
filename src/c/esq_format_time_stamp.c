@@ -16,9 +16,12 @@
  *            bytes per write, and this function performs eleven of them.
  *   tried:   `*--p = c`, `*(--p) = c`, pre-decrementing on a separate line, and
  *            a register-qualified pointer. All produce the SUBQ form.
- *   scope:   every function that fills a buffer back-to-front. This is a NEW
- *            blocker class alongside A5-frame and cross-unit-call, and it is
- *            unreachable from C rather than merely different.
+ *   scope:   MEASURED, not estimated: exactly ONE function in the whole program
+ *            uses this idiom three or more times -- this one. tools/coverage.py
+ *            now screens for it and finds nothing else. So it is genuinely
+ *            unreachable from C, but it is NOT a broad blocker the way A5-frame
+ *            (304 functions) or cross-unit-call are, and an earlier commit
+ *            message overstated it by listing it alongside them.
  *   retest:  a compiler that emits -(An) for a predecrement store closes ~22 of
  *            the 70 bytes here immediately.
  *

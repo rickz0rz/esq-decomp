@@ -71,6 +71,17 @@ def survey():
         # BSR.S counts too: a two-byte branch can only reach a nearby callee, so
         # it is just as much an intra-unit call as BSR.W. Matching only BSR.W
         # mis-filed ESQDISP_QueueHighlightDrawMessage as cross-unit.
+        # A predecrement store (`MOVE.x src,-(An)`) is how the original fills a
+        # buffer back-to-front. SAS/C never emits -(An) for a store, so any
+        # function doing this repeatedly cannot be matched -- see
+        # esq_format_time_stamp.c. Excludes stack pushes onto A7, which are
+        # ordinary argument passing and reproduce fine.
+        pre = len(re.findall(r',-\(A[0-6]\)', body))
+        if pre >= 3:
+            fns.append({'name': name, 'src': srcf, 'size': len(blob),
+                        'kind': 'predecrement', 'status': done.get(done_key),
+                        'blockers': ['predecrement-store']})
+            continue
         if re.search(r'\bBSR\.[WS]\b', body):
             kind = 'intra-unit'
         elif b'\x4e\xba' in blob:
@@ -94,7 +105,7 @@ def main():
     print(f'  of those, exact         {len(ex):5d}   {sum(f["size"] for f in ex):7d} bytes')
     print()
     print('  remaining, by call encoding in the original:')
-    for kind in ('cross-unit', 'intra-unit', 'no-calls', 'interior'):
+    for kind in ('cross-unit', 'intra-unit', 'no-calls', 'interior', 'predecrement'):
         g = [f for f in fns if f['kind'] == kind and not f['status']]
         print(f'    {kind:12s} {len(g):5d}   {sum(f["size"] for f in g):7d} bytes')
 
