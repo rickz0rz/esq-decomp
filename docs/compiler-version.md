@@ -388,18 +388,29 @@ Established across ed_draw_diagnostic_mode_text.c, cleanup_draw_grid_time_banner
 and ed_draw_bottom_help_bar_background.c. The original reaches a large constant in
 four bytes two ways, and otherwise falls back to a six-byte `MOVE.L`:
 
-| form | example | bytes |
+| form | sightings | bytes |
 |---|---|---:|
-| `MOVEQ #n` + `ADD.L Dn,Dn` (x2) | 190 = 95x2, 150 = 75x2, 240 = 120x2, 216 = 108x2 | 4 |
-| `MOVEQ #n` + `NOT.B Dn` (~n) | 215 = ~40, 199 = ~56 | 4 |
-| `MOVE.L #n` | 280, 300, 345, 385, 450, 475, 555, 595, 639 | 6 |
+| `MOVEQ #n` + `ADD.L Dn,Dn` (2n) | 190=95x2, 150=75x2, 240=120x2, 216=108x2, 130=65x2, 154=77x2 | 4 |
+| `MOVEQ #n` + `NOT.B Dn` (~n) | 215=~40 (twice), 255=~0, 145=~110 | 4 |
+| `MOVE.L #n` | 280, 300, 345, 385, 450, 475, 555, 595, 639, 265, 396 | 6 |
+
+Both short forms are confirmed across multiple independent functions and, for the
+`NOT.B` form, across three different constant values -- so neither is an artifact
+of one call site. The original reaches for a four-byte form whenever the target is
+`2n` or `~n` for some `n` in MOVEQ range, and spends six bytes otherwise.
 
 SAS/C 6.00 and 6.51 both generalise to `MOVEQ #n` + `ASL.L #k` for any power of
 two, so they reduce 300 as 75<<2, 328 as 82<<2 and 696 as 87<<3 where the
 original would not. **The original never shifts by more than one.**
 
-That is a cheap, high-signal test for a candidate compiler: compile something
-containing the constant 300 and look for `223c0000012c` rather than `724be589`.
+That gives a two-sided test for a candidate compiler, which is stronger than
+checking one form -- a compiler implementing only the doubling rule would pass a
+single-form check and still be wrong:
+
+- compile something containing **300** and look for `223c0000012c` (`MOVE.L`),
+  not `724be589` (`MOVEQ`+`ASL`);
+- compile something containing **145** and look for `7e6e 4607`
+  (`MOVEQ #110`+`NOT.B`), not a `MOVE.L` or a shift.
 
 ## Arithmetic: three more classes, and a caution
 
