@@ -489,6 +489,50 @@ Four rules that keep the record trustworthy:
    none, because the whole value of a `SASC-MISMATCH` block is that it can be
    trusted on recheck.
 
+## Running it: the only oracle for a maximum-C build
+
+Neither gate can judge `replacements-all.txt` — behavioural restorations differ
+from the original by construction — so the binary has to be RUN. Three harnesses
+do that unattended:
+
+```sh
+tools/probe_esq.sh <binary> <label> [secs]        # boots? PASS/FAIL from the log
+tools/soak_esq.sh  <binary> <label> [total] [gap] # minutes, screenshots, freeze check
+tools/bisect_added.sh <baseline-list> <added-list> [tag]   # which new entry broke it
+```
+
+`probe_esq.sh` looks for ESQ's own serial setup (`baud=2400`) in the FS-UAE log.
+`soak_esq.sh` runs for minutes and captures the emulator window; ESQ is a
+broadcast program and cycles its own displays, so it exercises the grid, the
+banners and the IFF brush loads with no input. Its freeze check is the point:
+ESQ redraws a clock every second, so **identical consecutive frames mean the
+display stopped updating** — a hang the boot probe cannot see, because the
+machine is still nominally up.
+
+`~/Downloads/Prevue/ESQ.known-good-36cf56ed` is the pristine byte-exact build.
+**Probe it first whenever a FAIL looks surprising**, since every harness copies
+the candidate over `~/Downloads/Prevue/ESQ`.
+
+Three properties of this setup are not guessable and cost real time to learn:
+
+- **FS-UAE buffers its log and only flushes on exit.** Measured: the file sits at
+  exactly 45056 bytes for the whole run. You cannot poll for the marker; the run
+  has to be given time and then killed.
+- **A PASS is trustworthy, a FAIL is not.** With a 45s budget the probe reported
+  FAIL for a binary that then passed five times running, because the run had not
+  reached serial init yet on a host busy compiling. That one false FAIL sent an
+  entire bisect after an innocent restoration. `probe_esq.sh` now retries before
+  believing a failure.
+- **Check the binary is FRESH.** `vlink` leaves the previous `build/ESQ` in place
+  on an undefined-symbol error, so a manifest that failed to link once "passed"
+  the probe — what got probed was the previous build. `build-split.sh` now
+  deletes it first and exits nonzero, but the habit is worth keeping.
+
+Synthetic keyboard input is not available (macOS refuses it without an
+Accessibility grant; symptom is `osascript ... keystroke` error 1002), so
+anything behind a keypress — the ED editor, the ESC menu, the diagnostics
+screens — is covered by byte comparison only.
+
 ## Verifying a C build
 
 `build-split.sh` reports DIFFERS for any C build and that is expected -- objects
@@ -596,7 +640,7 @@ always includes its own epilogue, so the raw delta overstates by the epilogue
 size. Add it back before judging, and say you did in the header.
 `esqdisp_allocate_highlight_bitmaps.c` is +18 raw and +8 real.
 
-## Five shapes that are hand-written assembly, and how the tool knows
+## Six shapes a C replacement cannot express, and how the tool knows
 
 `coverage.py` screens these out so they stop appearing as reachable targets. Each
 was established by working the function, not by looking at it — the first four
@@ -609,13 +653,41 @@ cost real time before they were encoded.
 | `rotate-instruction` | `ROL`/`ROR`/`ROXL`/`ROXR` | C has no rotate operator; SAS/C emits none |
 | `tail-jump` | last instruction is `JMP` | SAS/C emits `JSR` then `RTS` — different instruction, different stack |
 | `predecrement-store` | `MOVE.x src,-(An)` | SAS/C never emits `-(An)` for a store |
+| `falls-through` | no `RTS`/`RTE`/`RTR` **anywhere** in the body | it is not a function; it falls into the next one, and C would add a prologue and a return the original has not |
 
 Two of these are narrow enough to quote: exactly **two** functions program-wide
 contain a rotate (the other is `MATH_DivU32`, SAS/C library code), and exactly
 **one** ends in a tail `JMP`. They are not blunt filters.
 
-Between them they emptied the `no-calls` unblocked bucket: it went from 9
-candidates to 0, with 4 restored and 5 proven unreachable.
+`falls-through` is the widest of them: **26 blocks** were sitting in the target
+list looking small and easy, `DISKIO1_AppendTimeSlotMaskValueTerminator` among
+them — it ends `ADDQ.W #4,A7`. Test the WHOLE body rather than the last line, or
+five real functions get screened out by mistake: an extract can run past the RTS
+into inter-function padding, and one whose epilogue is branched to from inside
+stops early at its `_Return` label.
+
+**Do not trust `--targets` as the work list.** It prints the **25 largest
+cross-unit** functions and nothing else, which hides both the small end and the
+whole `no-calls` bucket. Every restoration in the 2026-07-27 batch came from the
+small end of the full list. Enumerate `coverage.survey()` directly:
+
+```py
+import sys; sys.path.insert(0, 'tools'); import coverage
+BLOCK = {'register-args', 'live-register-on-entry', 'interior-label',
+         'rotate-instruction', 'tail-jump', 'predecrement-store', 'falls-through'}
+c = [f for f in coverage.survey()
+     if f['kind'] == 'no-calls' and f['status'] is None      # status None = not yet restored
+     and not (set(f['blockers']) & BLOCK)]
+```
+
+Without the `status` filter that returns 132, not 31 — it counts everything
+already done.
+
+As of 2026-07-27 that leaves **31 unblocked `no-calls` candidates, 6302 bytes** —
+an earlier version of this file claimed the bucket was empty, which was wrong.
+They matter out of proportion to their size: with no cross-unit call in them,
+nothing structural stops one being **exact**, and every other bucket is capped at
+`behavioural` until the compiler question is settled.
 
 ## Not every label is a function
 
