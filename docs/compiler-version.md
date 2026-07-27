@@ -447,6 +447,31 @@ original reaches by two *different* four-byte tricks:
 A compiler emitting both has the whole repertoire; one emitting `MOVE.L` or a
 shift for either does not.
 
+## A clean probe for the call-encoding class
+
+`src/c/esqiff_handle_brush_ini_reload_hotkey.c` isolates the cross-unit call
+class completely, which none of the other probes do. It restores
+`ESQIFF_HandleBrushIniReloadHotkey` at **128 bytes against 128**, in nine
+differing regions, of which **eight are the call encoding and nothing else**:
+
+```
+ref  4eba00ae 4eba00ba 4eba9bd6 4eba73b2 4eba00fc 4eba0074 4eba006e 4eba00d0
+got  61000000  x8
+```
+
+The ninth is the original popping its argument frame before storing the result
+where 6.51 pops after -- same instructions, same bytes, different order.
+
+There is no `LINK` here, no address-register variable, no constant to
+materialise, no library call and so no A6 question. That makes it the sharpest
+single test available for the one property that blocks the largest number of
+otherwise-perfect restorations: **does the candidate emit `JSR (d16,PC)` for a
+call to an extern, or `BSR.W`?** A compiler that emits the former should take
+this function byte-exact on the first compile, with no source changes.
+
+Worth running first on any newly-obtained version, before the two constant
+probes above -- it is a single yes/no with no interpretation required.
+
 ## Arithmetic: three more classes, and a caution
 
 | operation | original | SAS/C 6.51 |
