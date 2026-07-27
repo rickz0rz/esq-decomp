@@ -56,6 +56,7 @@ while read -r u; do
         cobj="$OBJ/c_repl_$cnum.o"
         cwork="$BUILD/cwork_$cnum"
         rm -rf "$cwork"; mkdir -p "$cwork"; cp "$cfile" "$cwork/u.c"
+        cp src/c/*.h "$cwork/" 2>/dev/null || true   # see cmatch.sh
         ( . "$VAMOS_ACTIVATE" 2>/dev/null
           vamos --volume work:"$PWD/$cwork" sc:c/sc $SCOPTS $extra \
                 OBJNAME=work:u.o work:u.c ) >"$cwork/log" 2>&1
@@ -86,7 +87,7 @@ echo "==> linking"
 # supplied as a synthesised EXT_ABS object. src/modules/c-exports.s asserts these
 # values still match hardware-addresses.s. Appended last: it defines symbols only
 # and contributes no bytes, so it cannot affect layout.
-python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000 _SERDAT=0xDFF030 _INTENA=0xDFF09A
+python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000 _SERDAT=0xDFF030 _INTENA=0xDFF09A _SysBase=0x4
 echo "$OBJ/absdefs.o" >> "$BUILD/objlist"
 # SCLIB pulls in SAS/C's runtime helpers (__CXD33 and friends -- the 32-bit
 # divide routines the compiler calls for `/` and `%`). Only a maximum-C build

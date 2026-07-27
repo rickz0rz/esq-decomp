@@ -23,8 +23,8 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the one cross-unit call.
  */
-#include <proto/exec.h>
-#include <proto/graphics.h>
+#include "esq-exec.h"
+#include "esq-graphics.h"
 
 extern void GCOMMAND_ResetHighlightMessages(void);
 

@@ -2,7 +2,16 @@
  * MODULE:   modules/groups/a/g/diskio.s
  * STATUS:   behavioural
  *
- * 168 bytes in the original, 160 emitted, 5 differing regions.
+ * 168 bytes in the original, 176 emitted (2 of them alignment padding), and
+ * casm.py itemises the whole +8.
+ *
+ * THIS FUNCTION RESET THE AMIGA and was found by bisecting the maximum-C build.
+ * It is the worked example for the stale-A6 class: SAS/C cached DOSBase in A6
+ * across the MEMORY_AllocateMemory call, which returns with A6 = ExecBase, so
+ * `JSR _LVOInfo(A6)` entered exec at the dos offset. Including "esq-dos.h"
+ * instead of <proto/dos.h> makes the base volatile and forces the reload -- the
+ * emitted code now has the original's three `MOVEA.L <DOSBase>,A6`, one per
+ * library call, matching exactly. See esq-libbase.md.
  *
  * Reproduces: the shared Lock, the zero-percent early return when it fails, the
  * MEMF_CLEAR InfoData allocation, the guarded Info() call, the usage percentage
@@ -17,27 +26,40 @@
  * diskio_write_buffered_bytes.c, is the preferable option whenever a system
  * header defines the layout.
  *
- * SASC-MISMATCH: multiply-strength-reduction
- *   ref:     7264 4eba18dc              MOVEQ #100,D1 / JSR MATH_Mulu32
- *   got:     e581 9280 e781 d280 e581   inline shift/subtract chain for x100
- *   summary: 32-bit multiply, so the original calls the helper -- consistent with
- *            the width rule established in coi_compute_entry_time_delta_minutes.c.
- *            This is where most of the -8 comes from.
+ * SASC-MISMATCH: cross-unit-call-width
+ *   ref:     4eba18f4                   JSR (d16,PC)
+ *   got:     4eb900000000               JSR abs.L
+ *   summary: CODE=FAR, mandatory for the maximum-C link. 4 sites x +2 = +8,
+ *            which is the entire delta. The usual cross-unit class.
+ *   scope:   every extern call in every restoration built with CODE=FAR.
  *
  * SASC-MISMATCH: no-frame-for-locals
- *   ref:     4e55fff4                   LINK.W A5,#-12
- *   got:     (none)                     MOVEM only
+ *   ref:     4e55fff4 ... 4e5d          LINK.W A5,#-12 / UNLK A5
+ *   got:     (none)                     A5/A6 added to the MOVEM mask instead
+ *   summary: the original spills `info` to -8(A5); SAS/C keeps it in A3 and so
+ *            builds no frame. Nets -6 across prologue and epilogue.
+ *
+ * SASC-MISMATCH: early-return-block-ordering
+ *   ref:     677c                       BEQ.S to the shared epilogue
+ *   got:     6606 2006 60000086         BNE.S over an inline `return pct`
+ *   summary: the original folds the failed-Lock return into the common exit;
+ *            SAS/C emits the return inline and branches past it. +6.
+ *
+ * The register-argument helpers are declared with __asm register parameters,
+ * which is what lets pure C call them at all: MATH_Mulu32/MATH_DivS32 take D0/D1
+ * and return D0, and `*`/`/` would instead route through SAS/C's own __CXM33 /
+ * __CXD33. That reproduces the original's `MOVEQ #100,D1` / JSR pair verbatim.
  */
 #include <exec/memory.h>
 #include <dos/dos.h>
-#include <proto/dos.h>
+#include "esq-dos.h"
 
 struct DiskIoBufferState { char *BufferPtr; long BufferSize; long Remaining; short SavedF45; };
 
 extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);
 extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
-extern long  GROUP_AG_JMPTBL_MATH_Mulu32(long a, long b);
-extern long  GROUP_AG_JMPTBL_MATH_DivS32(long a, long b);
+extern long __asm GROUP_AG_JMPTBL_MATH_Mulu32(register __d0 long a, register __d1 long b);
+extern long __asm GROUP_AG_JMPTBL_MATH_DivS32(register __d0 long a, register __d1 long b);
 extern struct DiskIoBufferState DISKIO_BufferState;
 extern char Global_STR_DISKIO_C_5[];
 extern char Global_STR_DISKIO_C_6[];
@@ -59,7 +81,9 @@ long DISKIO_QueryDiskUsagePercentAndSetBufferSize(char *path)
                                                  MEMF_CLEAR);
     if (info) {
         if (Info((BPTR)lock, info)) {
-            pct = info->id_NumBlocksUsed * 100 / info->id_NumBlocks;
+            pct = GROUP_AG_JMPTBL_MATH_DivS32(
+                  GROUP_AG_JMPTBL_MATH_Mulu32((long)info->id_NumBlocksUsed, 100L),
+                  (long)info->id_NumBlocks);
             DISKIO_BufferState.BufferSize = info->id_BytesPerBlock * 2;
         }
         GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO_C_6, 574, info,

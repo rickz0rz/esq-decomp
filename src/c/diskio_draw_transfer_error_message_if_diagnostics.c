@@ -26,7 +26,7 @@
  *   got:     folded into the epilogue
  *   summary: -4 then +6. No net cost.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
 

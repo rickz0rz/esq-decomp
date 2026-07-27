@@ -37,7 +37,7 @@
 #include <exec/io.h>
 #include <exec/memory.h>
 #include <exec/interrupts.h>
-#include <proto/exec.h>
+#include "esq-exec.h"
 
 extern void GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(void);
 extern void *GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal(char *name, long sig);

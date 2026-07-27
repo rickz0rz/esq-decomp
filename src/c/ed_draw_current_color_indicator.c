@@ -23,7 +23,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the four cross-unit calls.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern char GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(long v);
 extern char GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(long v);

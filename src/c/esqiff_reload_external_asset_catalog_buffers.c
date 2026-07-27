@@ -47,8 +47,8 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the ten cross-unit calls.
  */
-#include <proto/dos.h>
-#include <proto/exec.h>
+#include "esq-dos.h"
+#include "esq-exec.h"
 
 extern void ESQIFF_JMPTBL_BRUSH_FreeBrushList(void *head, long flags);
 extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p,

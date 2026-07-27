@@ -23,7 +23,7 @@
  *   summary: 4EBA against 6100 for the four cross-unit text calls, all of which
  *            were cross-unit in the original.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
 extern struct RastPort *Global_REF_RASTPORT_1;

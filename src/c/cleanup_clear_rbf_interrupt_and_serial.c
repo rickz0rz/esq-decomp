@@ -56,7 +56,7 @@ extern char Global_STR_CLEANUP_C_4[];
 
 #include <exec/interrupts.h>
 #include <exec/io.h>
-#include <proto/exec.h>
+#include "esq-exec.h"
 
 void CLEANUP_ClearRbfInterruptAndSerial(void)
 {

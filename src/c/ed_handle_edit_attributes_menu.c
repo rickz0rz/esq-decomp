@@ -48,7 +48,7 @@
  *   summary: SAS/C saves A6 across the graphics.library calls and allocates D7
  *            where the original used D4.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern void ED_DrawCursorChar(void);
 extern void ED_RedrawCursorChar(void);

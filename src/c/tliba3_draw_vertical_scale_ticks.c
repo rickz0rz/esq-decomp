@@ -24,7 +24,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the three cross-unit calls.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 #include <string.h>
 
 extern void WDISP_SPrintf(char *buf, char *fmt, long v);

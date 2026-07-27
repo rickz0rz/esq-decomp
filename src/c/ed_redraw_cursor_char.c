@@ -9,7 +9,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern void ED_DrawCursorChar(void);
 void ED_RedrawCursorChar(void)

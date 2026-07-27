@@ -38,7 +38,7 @@
  *            Note ed_draw_help_panels.c does NOT show it -- there the original
  *            loads the base once too, so this is not a blanket habit.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern void GROUP_AM_JMPTBL_WDISP_SPrintf();   /* variadic: arg count differs per call */
 extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rp, long x, long y,

@@ -25,6 +25,9 @@ SCOPTS="${SCOPTS_BASE:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128} DE
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/cmatch.XXXXXX")"
 trap 'rm -rf "$WORK"' EXIT
 cp "$CFILE" "$WORK/u.c"
+# project headers (esq-dos.h &c) must sit beside the source: sc compiles a copy
+# in the work: volume, so a quoted include only resolves if they are copied too.
+cp "$ROOT"/src/c/*.h "$WORK/" 2>/dev/null || true
 
 # shellcheck disable=SC2086
 # VAMOS_CFG selects an alternate toolchain (a different SAS/C install with its

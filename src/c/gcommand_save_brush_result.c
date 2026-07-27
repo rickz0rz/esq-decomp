@@ -32,7 +32,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the three cross-unit calls.
  */
-#include <proto/exec.h>
+#include "esq-exec.h"
 
 extern void  GROUP_AU_JMPTBL_BRUSH_PopulateBrushList(unsigned char *desc, void **out);
 extern void *GROUP_AU_JMPTBL_BRUSH_AppendBrushNode(void *head, void *node);

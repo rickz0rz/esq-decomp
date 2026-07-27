@@ -195,6 +195,30 @@ When splitting, **distribute the top-of-file `XDEF` block** so each part exports
 only what it defines — an `XDEF` for a symbol that ended up in another file is
 an error. Verify with `test-hash.sh` before going near C.
 
+## Never include `<proto/*.h>`
+
+Use `src/c/esq-dos.h`, `esq-exec.h`, `esq-graphics.h` instead. They are the stock
+headers with the library base declared **`volatile`**.
+
+SAS/C assumes A6 survives a call, so having loaded a library base for one call it
+reuses the register for the next. ESQ's assembly does not honour that —
+`MEMORY_AllocateMemory` loads `AbsExecBase` into A6 and returns without restoring
+it — so the following `JSR _LVOInfo(A6)` enters **exec** at the dos offset and
+resets the machine. `volatile` forces the reload, which is what the original does
+anyway (three separate `MOVEA.L Global_REF_DOS_LIBRARY_2,A6` in one function).
+
+The `reload-vs-cache` divergence recorded in several files was never cosmetic; it
+was this bug. Full write-up and the exec-specific wrinkle: `src/c/esq-libbase.md`.
+
+```sh
+/tmp/.capvenv/bin/python tools/a6_audit.py     # run after any C build
+```
+
+Flags every `JSR d16(A6)` reached with a call in between and no reload; exits
+nonzero if any remain. It found 14 of 232 restorations broken. **No byte gate can
+see this** — all 14 compiled clean and compared sanely, because a byte comparison
+checks a function's body, not the convention its callees use.
+
 ## Library code is not application code
 
 `src/modules/submodules/unknown*.s` is largely SAS/C runtime library code, not
@@ -221,7 +245,7 @@ also closes the surrounding assembly units at non-aligned boundaries, adding a
 little more.
 
 So `C_REPLACEMENTS=src/c/replacements.txt ./build-split.sh` currently reports
-DIFFERS with CODE 16 bytes larger, even though **every restored function is
+DIFFERS with CODE 48 bytes larger, even though **every restored function is
 byte-identical** — verified by locating each one in the linked CODE hunk. The
 padding is inert: it sits between functions and is never executed.
 
@@ -462,6 +486,7 @@ shifts everything after it. The real acceptance test is:
 ```sh
 C_REPLACEMENTS=src/c/replacements.txt ./build-split.sh
 python3 tools/verify_restorations.py
+/tmp/.capvenv/bin/python tools/a6_audit.py     # stale-A6 library calls
 ```
 
 which locates each compiled replacement inside the linked CODE hunk and checks

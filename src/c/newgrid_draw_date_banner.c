@@ -44,7 +44,7 @@
  *   summary: 4EBA against 6100 for the three cross-unit calls.
  */
 #include <string.h>
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern void NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING(char *out);
 extern long NEWGRID_SetRowColor(void *ctx, long row, long which);
