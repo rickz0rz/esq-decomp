@@ -435,6 +435,18 @@ single-form check and still be wrong:
 - compile something containing **145** and look for `7e6e 4607`
   (`MOVEQ #110`+`NOT.B`), not a `MOVE.L` or a shift.
 
+**Better single probe:** `src/c/ladfunc2_emit_escaped_char_to_scratch.c` tests both
+forms in one compile. It contains the adjacent constants 168 and 169, which the
+original reaches by two *different* four-byte tricks:
+
+```
+168 -> 7254 d281      MOVEQ #84,D1 / ADD.L D1,D1     (2n)
+169 -> 7256 4601      MOVEQ #86,D1 / NOT.B D1        (~n)
+```
+
+A compiler emitting both has the whole repertoire; one emitting `MOVE.L` or a
+shift for either does not.
+
 ## Arithmetic: three more classes, and a caution
 
 | operation | original | SAS/C 6.51 |
