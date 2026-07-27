@@ -23,6 +23,13 @@
  * with the answer. There is no C that produces a dead comparison here, and
  * writing one deliberately would be worse than the six-byte difference.
  *
+ * NOTE the struct layout was corrected after the fact. It originally omitted the
+ * leading BufferPtr field, putting every subsequent offset four bytes low. The
+ * emitted bytes did not change -- see the caveat in
+ * diskio_write_buffered_bytes.c: DATA=FAR plus relocation masking makes struct
+ * layout invisible to the diff. Offsets here are now taken from the listing:
+ * BufferPtr +0 (0x8068), BufferSize +4, Remaining +8, SavedF45 +12.
+ *
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the ten cross-unit calls -- unusually many for
  *            a function this size, which is most of the 9 regions.
@@ -30,7 +37,7 @@
 #include <proto/dos.h>
 
 struct DiskIoBufferControl { void *BufferBase; long ErrorFlag; };
-struct DiskIoBufferState   { long BufferSize; long Remaining; short SavedF45; };
+struct DiskIoBufferState   { char *BufferPtr; long BufferSize; long Remaining; short SavedF45; };
 
 extern void GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(void);
 extern void CTASKS_StartCloseTaskProcess(long fh);
