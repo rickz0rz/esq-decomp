@@ -190,6 +190,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
 
     include "modules/groups/a/k/ed.s"
     include "modules/groups/a/k/ed1.s"
+    include "modules/groups/a/k/ed1_ed1clearescmenumode.s"
+    include "modules/groups/a/k/ed1b.s"
     include "modules/groups/a/k/ed2.s"
     include "modules/groups/a/k/xjump.s"
     include "modules/groups/a/k/xjump2.s"

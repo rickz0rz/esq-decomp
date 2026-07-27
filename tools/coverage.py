@@ -82,6 +82,13 @@ def survey():
                         'kind': 'predecrement', 'status': done.get(done_key),
                         'blockers': ['predecrement-store']})
             continue
+        # ...but ONE predecrement store is already enough to stop a byte-exact
+        # match, so it has to be a blocker even below the threshold that says
+        # "this whole function was hand-written". Without this, functions with one
+        # or two of them appear on the unblocked list and get picked up as
+        # reachable targets -- ESQ_AdjustBracketedHourInString (two) cost real
+        # time that way. Kind stays the call encoding; blockers say what stops it.
+        extra = ['predecrement-store'] if pre else []
         if re.search(r'\bBSR\.[WS]\b', body):
             kind = 'intra-unit'
         elif b'\x4e\xba' in blob:
@@ -89,7 +96,7 @@ def survey():
         else:
             kind = 'no-calls'
         fns.append({'name': name, 'src': srcf, 'size': len(blob), 'kind': kind,
-                    'status': done.get(done_key), 'blockers': blockers(hexb)})
+                    'status': done.get(done_key), 'blockers': blockers(hexb) + extra})
     return fns
 
 
