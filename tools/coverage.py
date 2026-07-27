@@ -52,6 +52,17 @@ def survey():
             continue
         name = label.lstrip('_')
         blob = bytes.fromhex(hexb)
+        # An "interior label": reached by branch or fall-through from inside a
+        # larger routine, so it uses the ENCLOSING function's A5 frame and has no
+        # prologue of its own. DISKIO1_DumpDefaultCoiInfoBlock is the worked
+        # example -- it opens with MOVEQ and then reads -14(A5). These are not
+        # functions and cannot be restored as C; a C function would build its own
+        # frame and the A5 references would address nothing.
+        if '(A5)' in body and 'LINK.W  A5' not in body:
+            fns.append({'name': name, 'src': srcf, 'size': len(blob),
+                        'kind': 'interior', 'status': done.get(name),
+                        'blockers': ['interior-label']})
+            continue
         if re.search(r'\bBSR\.W\b', body):
             kind = 'intra-unit'
         elif b'\x4e\xba' in blob:
@@ -75,7 +86,7 @@ def main():
     print(f'  of those, exact         {len(ex):5d}   {sum(f["size"] for f in ex):7d} bytes')
     print()
     print('  remaining, by call encoding in the original:')
-    for kind in ('cross-unit', 'intra-unit', 'no-calls'):
+    for kind in ('cross-unit', 'intra-unit', 'no-calls', 'interior'):
         g = [f for f in fns if f['kind'] == kind and not f['status']]
         print(f'    {kind:12s} {len(g):5d}   {sum(f["size"] for f in g):7d} bytes')
 
