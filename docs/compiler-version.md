@@ -315,6 +315,29 @@ frame construction — are one property, and it is not option-selectable:
 all leave 6.51 emitting `2f0d`. A candidate compiler that passes the `2f0b`
 acceptance test will fix both at once.
 
+### What finding the compiler is actually worth
+
+`SCRIPT_SaveCtrlContextSnapshot` is the cleanest evidence in the project, because
+it is a restoration where the register allocation is the **only** divergence.
+234 bytes in the original, 234 emitted, and all 22 differing regions are the same
+two-bit difference:
+
+```
+ref:  1779 xxxxxxxx 01b4     MOVE.B (abs).L,436(A3)
+got:  1b79 xxxxxxxx 01b4     MOVE.B (abs).L,436(A5)
+```
+
+Same instruction, same offset, same operand, same length. The original holds the
+struct pointer in A3; SAS/C holds it in A5. Nothing else about the function is
+wrong -- the control bytes, both inlined `strcpy` loops, all thirteen scalar
+copies and the index loop reproduce exactly.
+
+So on a compiler that reserves A5, this function goes byte-exact with **no source
+change at all**. Every other restoration has the A3/A5 issue tangled up with
+frame layout, call encoding or constant forms, which makes it hard to say what a
+compiler find would buy. Here it is isolated, and the answer is: this whole
+function, for free.
+
 ## Call encoding depends on the callee's translation unit
 
 `ED_SaveEverythingToDisk` is byte-for-byte identical to 6.51's output except that
