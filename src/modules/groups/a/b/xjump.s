@@ -40,7 +40,7 @@ GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_FreeLineTextBuffers
+;   _ESQFUNC_FreeLineTextBuffers
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -51,7 +51,7 @@ GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers:
-    JMP     ESQFUNC_FreeLineTextBuffers
+    JMP     _ESQFUNC_FreeLineTextBuffers
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData   (Routine at GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData)
@@ -84,7 +84,7 @@ GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LADFUNC_FreeBannerRectEntries
+;   _LADFUNC_FreeBannerRectEntries
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -95,7 +95,7 @@ GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries:
-    JMP     LADFUNC_FreeBannerRectEntries
+    JMP     _LADFUNC_FreeBannerRectEntries
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AB_JMPTBL_UNKNOWN2A_Stub0   (Routine at GROUP_AB_JMPTBL_UNKNOWN2A_Stub0)
@@ -128,7 +128,7 @@ GROUP_AB_JMPTBL_UNKNOWN2A_Stub0:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   NEWGRID_ShutdownGridResources
+;   _NEWGRID_ShutdownGridResources
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -139,7 +139,7 @@ GROUP_AB_JMPTBL_UNKNOWN2A_Stub0:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources:
-    JMP     NEWGRID_ShutdownGridResources
+    JMP     _NEWGRID_ShutdownGridResources
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain   (Routine at GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain)

@@ -79,16 +79,29 @@ def split(module, labels):
     if missing:
         sys.exit(f'{module}: label(s) not found as a chunk start: {missing}')
 
+    # Two requested labels can land in the SAME chunk -- the module separates them
+    # by comment only, not by `;!======`. Emitting that chunk once per label wrote
+    # the same piece twice and included it twice, which the assembler reports as a
+    # redefined label. Deduplicate, and report the shared chunk: a C replacement
+    # substitutes a whole module, so such a piece can only be replaced once EVERY
+    # function in it is restored.
     base = module[:-2]                       # strip .s
     pieces = []                              # (relpath, lines)
-    cut = sorted(want.values())
+    shared = {}
+    for l, ci in want.items():
+        shared.setdefault(ci, []).append(l)
+    for ci, ls in sorted(shared.items()):
+        if len(ls) > 1:
+            print(f'  note: {module}: {sorted(ls)} share one chunk; '
+                  f'emitting as a single module')
+    cut = sorted(shared)
     prev, part = 0, 0
     for ci in cut:
         if ci > prev:
             name = f'{base}.s' if prev == 0 else f'{base}_p{part}.s'
             part += 1
             pieces.append((name, [x for c in chunks[prev:ci] for x in c]))
-        lbl = next(l for l, v in want.items() if v == ci)
+        lbl = sorted(shared[ci])[0]
         pieces.append((f'{base}_{lbl.lstrip("_").lower()}.s', chunks[ci]))
         prev = ci + 1
     if prev < len(chunks):
@@ -107,9 +120,12 @@ def split(module, labels):
         assigned.update(x.split()[1] for x in mine)
         is_fn = any(name.endswith(f'_{l.lstrip("_").lower()}.s') for l in labels)
         if is_fn:
-            lbl = next(l for l in labels
-                       if name.endswith(f'_{l.lstrip("_").lower()}.s'))
-            mine = [f'    XDEF    _{lbl.lstrip("_")}']
+            here = sorted(l for l in labels if l in defined)
+            mine = [f'    XDEF    _{l.lstrip("_")}' for l in here]
+            mine += [x for x in xdefs if x.split()[1] in defined
+                     and x.split()[1] not in here
+                     and x.split()[1].lstrip('_') not in
+                         {l.lstrip('_') for l in here}]
         out.append((name, mine, plines))
     orphan = [x.split()[1] for x in xdefs if x.split()[1] not in assigned]
     if orphan:

@@ -59,7 +59,7 @@ CLOCK_AlignedInsetRenderGateFlag:
 ; SYM: _CLOCK_FileEofMarkerCtrlZ   (file EOF marker byte)
 ; TYPE: u8
 ; PURPOSE: Control-Z marker appended to serialized/log output files.
-; USED BY: PARSEINI_WriteErrorLogEntry, COI export writer
+; USED BY: _PARSEINI_WriteErrorLogEntry, COI export writer
 ; NOTES: Value is $1A.
 ;------------------------------------------------------------------------------
 _CLOCK_FileEofMarkerCtrlZ:

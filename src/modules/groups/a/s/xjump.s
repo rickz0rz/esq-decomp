@@ -30,13 +30,13 @@ _GROUP_AS_JMPTBL_STR_FindCharPtr:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ESQ_FindSubstringCaseFold
+;   _ESQ_FindSubstringCaseFold
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ESQ_FindSubstringCaseFold.
+;   Jump stub to _ESQ_FindSubstringCaseFold.
 ;------------------------------------------------------------------------------
 _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold:
-    JMP     ESQ_FindSubstringCaseFold
+    JMP     _ESQ_FindSubstringCaseFold

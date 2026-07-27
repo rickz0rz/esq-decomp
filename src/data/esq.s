@@ -296,7 +296,7 @@ ESQ_DefaultNoFlagChar:
 ;------------------------------------------------------------------------------
 ; SYM: CLOCK_MinuteEventBaseMinute/CLOCK_MinuteEventBaseOffset   (minute trigger seeds)
 ; TYPE: u8/u8
-; PURPOSE: Base values passed into ESQ_SeedMinuteEventThresholds.
+; PURPOSE: Base values passed into _ESQ_SeedMinuteEventThresholds.
 ; USED BY: ESQIFF2_ApplyIncomingStatusPacket
 ; NOTES: Clamped to the 1..9 range before use.
 ;------------------------------------------------------------------------------
@@ -358,7 +358,7 @@ WDISP_WeatherStatusTextPtr:
 ; SYM: _TEXTDISP_AliasCount   (alias table entry count)
 ; TYPE: u16
 ; PURPOSE: Number of active alias-table entries.
-; USED BY: TEXTDISP_FindAliasIndexByName, PARSEINI_*, DISKIO2_*, ESQPARS_*
+; USED BY: _TEXTDISP_FindAliasIndexByName, PARSEINI_*, DISKIO2_*, ESQPARS_*
 ; NOTES: Used as loop bound for alias-pointer table scans.
 ;------------------------------------------------------------------------------
 _TEXTDISP_AliasCount:
@@ -476,7 +476,7 @@ _Global_LONG_ROM_VERSION_CHECK:
 ; SYM: _ESQDISP_StatusIndicatorDeferredApplyFlag   (status-indicator deferred paint gate)
 ; TYPE: u8
 ; PURPOSE: Defers indicator repaint and caches color while attention countdown is active.
-; USED BY: GCOMMAND_ConsumeBannerQueueEntry, ESQDISP_SetStatusIndicatorColorSlot
+; USED BY: _GCOMMAND_ConsumeBannerQueueEntry, ESQDISP_SetStatusIndicatorColorSlot
 ; NOTES: Set on queue control byte `0xFF`, cleared when countdown expires.
 ;------------------------------------------------------------------------------
 _ESQDISP_StatusIndicatorDeferredApplyFlag:
@@ -494,7 +494,7 @@ CLEANUP_DiagOverlayAutoRefreshFlag:
 ; SYM: _ED_DiagAvailMemMask   (diagnostics available-memory mask)
 ; TYPE: u32 (stored in word slot + alignment)
 ; PURPOSE: Selects which memory classes (chip/fast/max/largest) are displayed on diagnostics screen.
-; USED BY: ED2_HandleDiagnosticsMenuActions, ESQFUNC_DrawMemoryStatusScreen
+; USED BY: _ED2_HandleDiagnosticsMenuActions, ESQFUNC_DrawMemoryStatusScreen
 ; NOTES: Low three bits are toggled by diagnostics actions.
 ;------------------------------------------------------------------------------
 _ED_DiagAvailMemMask:
@@ -513,7 +513,7 @@ ED_DiagAvailMemPresetBits:
 ; SYM: _ESQDISP_GridMessagePumpBlockFlag/SCRIPT_StatusRefreshHoldFlag/TEXTDISP_TickSuspendFlag/ESQPARS_PersistOnNextBoxOffFlag
 ; TYPE: u16/u16/u16/u16
 ; PURPOSE: Misc runtime gates for grid message pump, script refresh hold, text tick suspend, and deferred boxoff persist.
-; USED BY: ESQDISP_ProcessGridMessagesIfIdle, SCRIPT_UpdateCtrlStateMachine, TEXTDISP_TickDisplayState, ESQPARS command parser
+; USED BY: _ESQDISP_ProcessGridMessagesIfIdle, SCRIPT_UpdateCtrlStateMachine, TEXTDISP_TickDisplayState, ESQPARS command parser
 ; NOTES: `ESQPARS_PersistOnNextBoxOffFlag` is set by `%` command and consumed by boxoff path.
 ;------------------------------------------------------------------------------
 _ESQDISP_GridMessagePumpBlockFlag:
@@ -800,7 +800,7 @@ ESQ_CopperEffectSwitchWaitWordA:
 ; SYM: ESQ_CopperBannerTailListA/_ESQ_CopperBannerTailListB   (banner copper tail lists)
 ; TYPE: u32[]/u32[]
 ; PURPOSE: Short tail command lists appended into each banner copper program.
-; USED BY: ESQSHARED4_ResetBannerColorSweepState
+; USED BY: _ESQSHARED4_ResetBannerColorSweepState
 ; NOTES:
 ;   First byte is patched at runtime to retarget the leading wait row during
 ;   banner color-sweep reset.

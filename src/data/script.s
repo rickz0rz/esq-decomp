@@ -93,7 +93,7 @@ _Global_STR_SCRIPT_C_2:
 ; SYM: _SCRIPT_SerialReadModeOverflowCount   (serial read-mode overflow counter)
 ; TYPE: u32
 ; PURPOSE: Counts serial read-mode overflow/threshold events seen by APP interrupt path.
-; USED BY: ESQ_HandleSerialRbfInterrupt
+; USED BY: _ESQ_HandleSerialRbfInterrupt
 ; NOTES: Incremented when ESQPARS2 read-mode flags hit overflow handling branch.
 ;------------------------------------------------------------------------------
 _SCRIPT_SerialReadModeOverflowCount:
@@ -102,7 +102,7 @@ _SCRIPT_SerialReadModeOverflowCount:
 ; SYM: _SCRIPT_CtrlLineAssertedFlag   (CTRL-line asserted mirror)
 ; TYPE: u16 (stored in s32 slot)
 ; PURPOSE: Mirrors asserted/deasserted CTRL-line state for serial control helpers.
-; USED BY: _SCRIPT_AssertCtrlLine*, _SCRIPT_DeassertCtrlLine*, SCRIPT_ClearCtrlLineIfEnabled
+; USED BY: _SCRIPT_AssertCtrlLine*, _SCRIPT_DeassertCtrlLine*, _SCRIPT_ClearCtrlLineIfEnabled
 ; NOTES: Written as 0/1 while _SCRIPT_SerialShadowWord is updated and sent to SERDAT.
 ;------------------------------------------------------------------------------
 _SCRIPT_CtrlLineAssertedFlag:
@@ -509,7 +509,7 @@ SCRIPT_Tag_YL:
 ; SYM: _TEXTDISP_SourceConfigFlagMask   (source-config aggregate flag mask)
 ; TYPE: u16
 ; PURPOSE: Accumulates SourceCfg feature flags while loading/applying source config entries.
-; USED BY: TEXTDISP_LoadSourceConfig, TEXTDISP_ClearSourceConfig, TEXTDISP_ApplySourceConfigToEntry, TEXTDISP_AddSourceConfigEntry
+; USED BY: TEXTDISP_LoadSourceConfig, TEXTDISP_ClearSourceConfig, TEXTDISP_ApplySourceConfigToEntry, _TEXTDISP_AddSourceConfigEntry
 ; NOTES: Updated by OR-ing per-entry flags.
 ;------------------------------------------------------------------------------
 _TEXTDISP_SourceConfigFlagMask:

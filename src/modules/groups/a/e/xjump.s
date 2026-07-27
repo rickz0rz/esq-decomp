@@ -106,7 +106,7 @@ GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LADFUNC_ParseHexDigit
+;   _LADFUNC_ParseHexDigit
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -117,7 +117,7 @@ GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit:
-    JMP     LADFUNC_ParseHexDigit
+    JMP     _LADFUNC_ParseHexDigit
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray   (Routine at _GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray)
@@ -128,7 +128,7 @@ GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_DeallocateBufferArray
+;   _SCRIPT_DeallocateBufferArray
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -139,7 +139,7 @@ GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray:
-    JMP     SCRIPT_DeallocateBufferArray
+    JMP     _SCRIPT_DeallocateBufferArray
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AE_JMPTBL_WDISP_SPrintf   (Routine at _GROUP_AE_JMPTBL_WDISP_SPrintf)

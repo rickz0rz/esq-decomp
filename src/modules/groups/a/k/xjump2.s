@@ -78,7 +78,7 @@ _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   GCOMMAND_CopyGfxToWorkIfAvailable
+;   _GCOMMAND_CopyGfxToWorkIfAvailable
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -89,7 +89,7 @@ _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable:
-    JMP     GCOMMAND_CopyGfxToWorkIfAvailable
+    JMP     _GCOMMAND_CopyGfxToWorkIfAvailable
 
     MOVEQ   #97,D0
     RTS

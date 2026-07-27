@@ -445,7 +445,7 @@ DISKIO1_AppendTimeSlotMaskValueHeader:
 ; CLOBBERS:
 ;   A0/A7/D0/D1/D4
 ; CALLS:
-;   ESQ_TestBit1Based, _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
+;   _ESQ_TestBit1Based, _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
 ;   _Global_REF_STR_CLOCK_FORMAT, DISKIO_FMT_PCT_S_TimeSlotMaskEntry
 ; WRITES:
@@ -465,7 +465,7 @@ DISKIO1_AppendTimeSlotMaskSelectedTimes:
     MOVE.B  D4,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQ_TestBit1Based(PC)
+    JSR     _ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -702,7 +702,7 @@ DISKIO1_AppendBlackoutMaskValueHeader:
 ; CLOBBERS:
 ;   A0/A7/D0/D1/D4
 ; CALLS:
-;   ESQ_TestBit1Based, _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
+;   _ESQ_TestBit1Based, _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
 ;   _Global_REF_STR_CLOCK_FORMAT, DISKIO_FMT_PCT_S_BlackoutMaskEntry
 ; WRITES:
@@ -722,7 +722,7 @@ DISKIO1_AppendBlackoutMaskSelectedTimes:
     MOVE.B  D4,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQ_TestBit1Based(PC)
+    JSR     _ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0

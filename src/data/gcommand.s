@@ -392,7 +392,7 @@ GCOMMAND_BannerPhaseIndexCurrent:
 ; SYM: _GCOMMAND_HighlightHoldoffTickCount   (highlight holdoff countdown)
 ; TYPE: u16 scalar (byte access in hot paths)
 ; PURPOSE: Short countdown that delays status/read-mode transitions during highlight updates.
-; USED BY: GCOMMAND_ConsumeBannerQueueEntry, ESQSHARED4_TickCopperAndBannerTransitions, _ESQFUNC_ProcessUiFrameTick
+; USED BY: _GCOMMAND_ConsumeBannerQueueEntry, ESQSHARED4_TickCopperAndBannerTransitions, _ESQFUNC_ProcessUiFrameTick
 ; NOTES:
 ;   Seeded to 2 when a banner queue control step is consumed, then decremented once per frame.
 ;   Non-zero blocks ESQDISP status-indicator refresh and keeps the banner blit path in holdoff mode.
@@ -423,9 +423,9 @@ GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE:
 ; SYM: _GCOMMAND_BannerFadeResetPendingFlag   (banner fade reset pending)
 ; TYPE: u16 gate (stored in long slot)
 ; PURPOSE: One-shot startup/runtime gate that triggers GCOMMAND banner fade-state rebuild.
-; USED BY: GCOMMAND_ResetBannerFadeState
+; USED BY: _GCOMMAND_ResetBannerFadeState
 ; NOTES:
-;   Tested and immediately cleared by GCOMMAND_ResetBannerFadeState.
+;   Tested and immediately cleared by _GCOMMAND_ResetBannerFadeState.
 ;   Initialized with low word = 1 so first reset path runs once after startup.
 ;------------------------------------------------------------------------------
 _GCOMMAND_BannerFadeResetPendingFlag:
@@ -434,10 +434,10 @@ _GCOMMAND_BannerFadeResetPendingFlag:
 ; SYM: _GCOMMAND_DriveProbeRequestedFlag   (drive probe request latch)
 ; TYPE: u16 (boolean)
 ; PURPOSE: Requests a disk-drive probe/assignment refresh on the next UI frame tick.
-; USED BY: _GCOMMAND_ProcessCtrlCommand, _ESQFUNC_ProcessUiFrameTick, DISKIO_ProbeDrivesAndAssignPaths
+; USED BY: _GCOMMAND_ProcessCtrlCommand, _ESQFUNC_ProcessUiFrameTick, _DISKIO_ProbeDrivesAndAssignPaths
 ; NOTES:
 ;   Set when ctrl command type 15 or 16 is received.
-;   Cleared inside DISKIO_ProbeDrivesAndAssignPaths after probe cycle setup.
+;   Cleared inside _DISKIO_ProbeDrivesAndAssignPaths after probe cycle setup.
 ;------------------------------------------------------------------------------
 _GCOMMAND_DriveProbeRequestedFlag:
     DC.W    $0001

@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   PARSEINI_WriteErrorLogEntry
+;   _PARSEINI_WriteErrorLogEntry
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -21,7 +21,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry:
-    JMP     PARSEINI_WriteErrorLogEntry
+    JMP     _PARSEINI_WriteErrorLogEntry
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AR_JMPTBL_STRING_AppendAtNull   (Routine at _GROUP_AR_JMPTBL_STRING_AppendAtNull)

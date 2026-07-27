@@ -111,14 +111,14 @@ GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_PollHandshakeAndApplyTimeout
+;   _SCRIPT_PollHandshakeAndApplyTimeout
 ; DESC:
-;   Jump stub to SCRIPT_PollHandshakeAndApplyTimeout.
+;   Jump stub to _SCRIPT_PollHandshakeAndApplyTimeout.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout:
-    JMP     SCRIPT_PollHandshakeAndApplyTimeout
+    JMP     _SCRIPT_PollHandshakeAndApplyTimeout
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled   (JumpStub_SCRIPT_ClearCtrlLineIfEnabled)
@@ -129,14 +129,14 @@ GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_ClearCtrlLineIfEnabled
+;   _SCRIPT_ClearCtrlLineIfEnabled
 ; DESC:
-;   Jump stub to SCRIPT_ClearCtrlLineIfEnabled.
+;   Jump stub to _SCRIPT_ClearCtrlLineIfEnabled.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled:
-    JMP     SCRIPT_ClearCtrlLineIfEnabled
+    JMP     _SCRIPT_ClearCtrlLineIfEnabled
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers   (JumpStub_ESQFUNC_FreeExtraTitleTextPointers)
@@ -147,14 +147,14 @@ GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_FreeExtraTitleTextPointers
+;   _ESQFUNC_FreeExtraTitleTextPointers
 ; DESC:
-;   Jump stub to ESQFUNC_FreeExtraTitleTextPointers.
+;   Jump stub to _ESQFUNC_FreeExtraTitleTextPointers.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers:
-    JMP     ESQFUNC_FreeExtraTitleTextPointers
+    JMP     _ESQFUNC_FreeExtraTitleTextPointers
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner   (JumpStub_ESQDISP_DrawStatusBanner)
@@ -201,14 +201,14 @@ GROUP_AC_JMPTBL_DST_UpdateBannerQueue:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DST_RefreshBannerBuffer
+;   _DST_RefreshBannerBuffer
 ; DESC:
-;   Jump stub to DST_RefreshBannerBuffer.
+;   Jump stub to _DST_RefreshBannerBuffer.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AC_JMPTBL_DST_RefreshBannerBuffer:
-    JMP     DST_RefreshBannerBuffer
+    JMP     _DST_RefreshBannerBuffer
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion   (JumpStub_ESQFUNC_DrawEscMenuVersion)
@@ -219,14 +219,14 @@ GROUP_AC_JMPTBL_DST_RefreshBannerBuffer:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_DrawEscMenuVersion
+;   _ESQFUNC_DrawEscMenuVersion
 ; DESC:
-;   Jump stub to ESQFUNC_DrawEscMenuVersion.
+;   Jump stub to _ESQFUNC_DrawEscMenuVersion.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion:
-    JMP     ESQFUNC_DrawEscMenuVersion
+    JMP     _ESQFUNC_DrawEscMenuVersion
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat   (JumpStub_PARSEINI_AdjustHoursTo24HrFormat)
@@ -237,14 +237,14 @@ GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   PARSEINI_AdjustHoursTo24HrFormat
+;   _PARSEINI_AdjustHoursTo24HrFormat
 ; DESC:
-;   Jump stub to PARSEINI_AdjustHoursTo24HrFormat.
+;   Jump stub to _PARSEINI_AdjustHoursTo24HrFormat.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat:
-    JMP     PARSEINI_AdjustHoursTo24HrFormat
+    JMP     _PARSEINI_AdjustHoursTo24HrFormat
 
 ;!======
 

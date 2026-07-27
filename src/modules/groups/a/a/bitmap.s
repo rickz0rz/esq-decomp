@@ -13,7 +13,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   dos.library Read, BRUSH_LoadColorTextFont
+;   dos.library Read, _BRUSH_LoadColorTextFont
 ; READS:
 ;   A0+128/130/148/151/184/190 uncertain
 ; WRITES:
@@ -182,7 +182,7 @@ BITMAP_ProcessIlbmImage:
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D7,-(A7)
-    BSR.W   BRUSH_LoadColorTextFont
+    BSR.W   _BRUSH_LoadColorTextFont
 
     LEA     16(A7),A7
     SUBQ.L  #1,D0

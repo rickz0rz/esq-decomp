@@ -167,8 +167,8 @@ ED2_STR_LINE:
 ;------------------------------------------------------------------------------
 ; SYM: _ED_CustomPaletteCapturePhaseMod4   (custom palette capture phase)
 ; TYPE: u32
-; PURPOSE: Tracks capture phase modulo 4 for ED_CaptureKeySequence.
-; USED BY: ED_CaptureKeySequence
+; PURPOSE: Tracks capture phase modulo 4 for _ED_CaptureKeySequence.
+; USED BY: _ED_CaptureKeySequence
 ; NOTES: Updated via DivS32 remainder path; sequence runs every 4 input steps.
 ;------------------------------------------------------------------------------
 _ED_CustomPaletteCapturePhaseMod4:
@@ -177,7 +177,7 @@ _ED_CustomPaletteCapturePhaseMod4:
 ; SYM: _ED_CustomPaletteCaptureIndexOrSentinel   (custom palette capture state/index)
 ; TYPE: s32
 ; PURPOSE: Holds parsed nibble/index state and negative sentinel for fallback copy path.
-; USED BY: ED_CaptureKeySequence
+; USED BY: _ED_CaptureKeySequence
 ; NOTES: Values observed include 0..7, -1 sentinel, and 0..23 during template copy loop.
 ;------------------------------------------------------------------------------
 _ED_CustomPaletteCaptureIndexOrSentinel:
@@ -186,7 +186,7 @@ _ED_CustomPaletteCaptureIndexOrSentinel:
 ; SYM: _ED_CustomPaletteTriplesDefaultTemplate24B   (default palette triples template)
 ; TYPE: u8[24]
 ; PURPOSE: Default 24-byte template copied into custom palette triples output when capture flow falls back.
-; USED BY: ED_CaptureKeySequence
+; USED BY: _ED_CaptureKeySequence
 ; NOTES: Stored as six longwords; copied byte-wise from stack local into _KYBD_CustomPaletteTriplesRBase.
 ;------------------------------------------------------------------------------
 _ED_CustomPaletteTriplesDefaultTemplate24B:
@@ -257,7 +257,7 @@ _Global_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS:
 ; SYM: _ED2_DiagnosticDiskUsagePercent   (diagnostic disk usage scratch/result)
 ; TYPE: u16
 ; PURPOSE: Holds or reserves output storage for disk-usage percent query in diagnostics UI.
-; USED BY: ED1_DrawDiagnosticsScreen
+; USED BY: _ED1_DrawDiagnosticsScreen
 ; NOTES: Passed by address to _DISKIO_QueryDiskUsagePercentAndSetBufferSize.
 ;------------------------------------------------------------------------------
 _ED2_DiagnosticDiskUsagePercent:
@@ -266,7 +266,7 @@ _ED2_DiagnosticDiskUsagePercent:
 ; SYM: _ED2_DiagnosticDiskSoftErrorCount   (diagnostic soft-error scratch/result)
 ; TYPE: u16
 ; PURPOSE: Holds or reserves output storage for soft-error count query in diagnostics UI.
-; USED BY: ED1_DrawDiagnosticsScreen
+; USED BY: _ED1_DrawDiagnosticsScreen
 ; NOTES: Passed by address to _DISKIO_QueryVolumeSoftErrorCount.
 ;------------------------------------------------------------------------------
 _ED2_DiagnosticDiskSoftErrorCount:

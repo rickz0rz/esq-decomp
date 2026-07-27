@@ -1,42 +1,13 @@
     XDEF    ESQPARS_ApplyRtcBytesAndPersist
     XDEF    ESQPARS_ClearAliasStringPointers
-    XDEF    ESQPARS_PersistStateDataAfterCommand
     XDEF    ESQPARS_ConsumeRbfByteAndDispatchCommand
     XDEF    ESQPARS_ReadLengthWordWithChecksumXor
     XDEF    _ESQPARS_RemoveGroupEntryAndReleaseStrings
     XDEF    _ESQPARS_ReplaceOwnedString
-    XDEF    _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex
-    XDEF    ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock
-    XDEF    ESQPARS_JMPTBL_COI_FreeEntryResources
-    XDEF    _ESQPARS_JMPTBL_DATETIME_SavePairToFile
-    XDEF    _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded
-    XDEF    ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer
-    XDEF    ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer
-    XDEF    ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle
-    XDEF    _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition
-    XDEF    ESQPARS_JMPTBL_DST_HandleBannerCommand32_33
-    XDEF    ESQPARS_JMPTBL_DST_RefreshBannerBuffer
-    XDEF    ESQPARS_JMPTBL_DST_UpdateBannerQueue
-    XDEF    ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte
-    XDEF    ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds
-    XDEF    ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile
-    XDEF    ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile
-    XDEF    _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache
-    XDEF    ESQPARS_JMPTBL_PARSEINI_HandleFontCommand
-    XDEF    ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals
-    XDEF    _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
-    XDEF    ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord
-    XDEF    _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile
-    XDEF    _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte
-    XDEF    ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine
-    XDEF    ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries
-    XDEF    ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal
-    XDEF    ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay
-    XDEF    ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList
-    XDEF    ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord
     XDEF    ESQPARS_ReadLengthWordWithChecksumXor_Return
     XDEF    ESQPARS_RemoveGroupEntryAndReleaseStrings_Return
     XDEF    ESQPARS_ReplaceOwnedString_Return
+
 
 ;!======
 
@@ -547,7 +518,7 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ;      command-byte dispatch.
 ; 5) Payload readers:
 ;      ESQIFF2_ReadRbfBytesToBuffer / ESQIFF2_ReadRbfBytesWithXor /
-;      ESQIFF2_ReadSerialRecordIntoBuffer read payload blocks from the same byte
+;      _ESQIFF2_ReadSerialRecordIntoBuffer read payload blocks from the same byte
 ;      stream and feed command handlers.
 ; 6) Custom-build hook guidance:
 ;      To reuse the standard 2400 protocol decode path, keep steps 4/5 intact and
@@ -590,7 +561,7 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal, ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, _GROUP_AM_JMPTBL_WDISP_SPrintf, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, _ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadRbfBytesToBuffer, ESQIFF2_ReadRbfBytesWithXor, ESQIFF2_ReadSerialRecordIntoBuffer, ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, _ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
+;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal, ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, _ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, _GROUP_AM_JMPTBL_WDISP_SPrintf, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, _ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadRbfBytesToBuffer, ESQIFF2_ReadRbfBytesWithXor, _ESQIFF2_ReadSerialRecordIntoBuffer, _ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, _ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, _ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
 ; READS:
 ;   _CTRL_BUFFER, _CTRL_H, _DATACErrs, _Global_REF_696_400_BITMAP, _Global_REF_RASTPORT_1, ESQPARS_BannerSubcommandSet, Global_STR_RESET_COMMAND_RECEIVED, _CTASKS_STR_1, ESQPARS_PersistOnNextBoxOffFlag, DISKIO2_InteractiveTransferArmedFlag, _ESQPARS_SelectionSuffixBuffer, ESQIFF_StatusPacketReadyFlag, ESQPARS_SelectionMatchCode, _ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, _ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, _ESQIFF_ParseAttemptCount, _ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
@@ -664,7 +635,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -1130,7 +1101,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CLR.L   -(A7)
     PEA     2.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -1620,7 +1591,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -1701,7 +1672,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     TST.W   ESQPARS_PersistOnNextBoxOffFlag
     BEQ.S   .cmd_boxoff_apply
 
-    BSR.W   ESQPARS_PersistStateDataAfterCommand
+    BSR.W   _ESQPARS_PersistStateDataAfterCommand
 
     MOVEQ   #0,D0
     MOVE.W  D0,ESQPARS_PersistOnNextBoxOffFlag
@@ -1731,7 +1702,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     PEA     6.W
     PEA     1.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     LEA     12(A7),A7
     MOVE.W  D0,ESQIFF_RecordLength
@@ -1779,7 +1750,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CLR.L   -(A7)
     PEA     1.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     LEA     12(A7),A7
     MOVE.W  D0,ESQIFF_RecordLength
@@ -1824,7 +1795,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CLR.L   -(A7)
     PEA     1.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     LEA     12(A7),A7
     MOVE.W  D0,ESQIFF_RecordLength
@@ -1875,7 +1846,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -1917,7 +1888,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,_ESQIFF_ParseAttemptCount
-    JSR     ESQ_PollCtrlInput
+    JSR     _ESQ_PollCtrlInput
 
     MOVEQ   #0,D0
     LEA     76(A7),A7
@@ -2096,7 +2067,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CLR.L   -(A7)
     PEA     2.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -2147,7 +2118,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -2199,7 +2170,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -2464,7 +2435,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -2513,7 +2484,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -2655,7 +2626,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A1,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     LEA     12(A7),A7
     ADDQ.W  #1,D0
@@ -2725,7 +2696,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     PEA     2.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialSizedTextRecord
+    BSR.W   _ESQIFF2_ReadSerialSizedTextRecord
 
     ADDQ.W  #8,A7
     MOVE.W  D0,ESQIFF_RecordLength
@@ -2784,7 +2755,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -2828,7 +2799,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -2872,7 +2843,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -2916,7 +2887,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
+    BSR.W   _ESQIFF2_ReadSerialRecordIntoBuffer
 
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
@@ -3033,706 +3004,3 @@ ESQPARS_ReadLengthWordWithChecksumXor_Return:
     RTS
 
 ;!======
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_PersistStateDataAfterCommand   (Flush and persist runtime state files)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   A7
-; CALLS:
-;   _ESQPARS_JMPTBL_DATETIME_SavePairToFile, _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, _LOCAVAIL_SaveAvailabilityDataFile, _LADFUNC_SaveTextAdsToFile
-; READS:
-;   _DST_BannerWindowPrimary, _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
-; WRITES:
-;   (none observed)
-; DESC:
-;   Flushes pending data and persists text ads, banner pair, availability state,
-;   and promo-id data after control commands that mutate persistent state.
-; NOTES:
-;   Writes both primary/secondary availability states in one call.
-;------------------------------------------------------------------------------
-ESQPARS_PersistStateDataAfterCommand:
-    JSR     _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(PC)
-
-    JSR     _LADFUNC_SaveTextAdsToFile(PC)
-
-    PEA     _DST_BannerWindowPrimary
-    JSR     _ESQPARS_JMPTBL_DATETIME_SavePairToFile(PC)
-
-    PEA     LOCAVAIL_SecondaryFilterState
-    PEA     _LOCAVAIL_PrimaryFilterState
-    JSR     _LOCAVAIL_SaveAvailabilityDataFile(PC)
-
-    JSR     _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(PC)
-
-    LEA     12(A7),A7
-    RTS
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   DISKIO2_FlushDataFilesIfNeeded
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-_ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded:
-    JMP     DISKIO2_FlushDataFilesIfNeeded
-
-;------------------------------------------------------------------------------
-; FUNC: _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   NEWGRID_RebuildIndexCache
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-_ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache:
-    JMP     NEWGRID_RebuildIndexCache
-
-;------------------------------------------------------------------------------
-; FUNC: _ESQPARS_JMPTBL_DATETIME_SavePairToFile   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   DATETIME_SavePairToFile
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-_ESQPARS_JMPTBL_DATETIME_SavePairToFile:
-    JMP     DATETIME_SavePairToFile
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   ESQPROTO_VerifyChecksumAndParseList
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList:
-    JMP     ESQPROTO_VerifyChecksumAndParseList
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   P_TYPE_ParseAndStoreTypeRecord
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord:
-    JMP     P_TYPE_ParseAndStoreTypeRecord
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   ESQPROTO_CopyLabelToGlobal
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal:
-    JMP     ESQPROTO_CopyLabelToGlobal
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DST_HandleBannerCommand32_33   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   DST_HandleBannerCommand32_33
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_DST_HandleBannerCommand32_33:
-    JMP     DST_HandleBannerCommand32_33
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   ESQ_SeedMinuteEventThresholds
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds:
-    JMP     ESQ_SeedMinuteEventThresholds
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_PARSEINI_HandleFontCommand   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   PARSEINI_HandleFontCommand
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_PARSEINI_HandleFontCommand:
-    JMP     PARSEINI_HandleFontCommand
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: result/status
-; CLOBBERS:
-;   D0
-; CALLS:
-;   TEXTDISP_ApplySourceConfigAllEntries
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries:
-    JMP     TEXTDISP_ApplySourceConfigAllEntries
-
-;!======
-
-    ; Alignment
-    ORI.B   #0,D0
-    DC.W    $0000
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   BRUSH_PlaneMaskForIndex
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-_ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex:
-    JMP     BRUSH_PlaneMaskForIndex
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   SCRIPT_ResetCtrlContextAndClearStatusLine
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine:
-    JMP     SCRIPT_ResetCtrlContextAndClearStatusLine
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   PARSEINI_WriteRtcFromGlobals
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals:
-    JMP     PARSEINI_WriteRtcFromGlobals
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   _LOCAVAIL_SaveAvailabilityDataFile
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
-    BRA.W   _LOCAVAIL_SaveAvailabilityDataFile
-
-;------------------------------------------------------------------------------
-; FUNC: _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   _DISPLIB_DisplayTextAtPosition
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-_ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition:
-    JMP     _DISPLIB_DisplayTextAtPosition
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   _LADFUNC_SaveTextAdsToFile
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile:
-    BRA.W   _LADFUNC_SaveTextAdsToFile
-
-;------------------------------------------------------------------------------
-; FUNC: _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   _PARSE_ReadSignedLongSkipClass3_Alt
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-_ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
-    JMP     _PARSE_ReadSignedLongSkipClass3_Alt
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: result/status
-; CLOBBERS:
-;   D0
-; CALLS:
-;   DISKIO2_HandleInteractiveFileTransfer
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer:
-    JMP     DISKIO2_HandleInteractiveFileTransfer
-
-;!======
-
-    ; Alignment
-    ORI.B   #0,D0
-    DC.W    $0000
-
-;!======
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   P_TYPE_WritePromoIdDataFile
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-_ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile:
-    JMP     P_TYPE_WritePromoIdDataFile
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_COI_FreeEntryResources   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   COI_FreeEntryResources
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_COI_FreeEntryResources:
-    JMP     COI_FreeEntryResources
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DST_UpdateBannerQueue   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   DST_UpdateBannerQueue
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_DST_UpdateBannerQueue:
-    JMP     DST_UpdateBannerQueue
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   ESQPROTO_VerifyChecksumAndParseRecord
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord:
-    JMP     ESQPROTO_VerifyChecksumAndParseRecord
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   ESQPROTO_ParseDigitLabelAndDisplay
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay:
-    JMP     ESQPROTO_ParseDigitLabelAndDisplay
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   DISKIO_ParseConfigBuffer
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer:
-    JMP     DISKIO_ParseConfigBuffer
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   CLEANUP_ParseAlignedListingBlock
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
-    JMP     CLEANUP_ParseAlignedListingBlock
-
-;------------------------------------------------------------------------------
-; FUNC: _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   SCRIPT_ReadNextRbfByte
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-_ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte:
-    JMP     SCRIPT_ReadNextRbfByte
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: result/status
-; CLOBBERS:
-;   D0
-; CALLS:
-;   ESQ_GenerateXorChecksumByte
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte:
-    JMP     ESQ_GenerateXorChecksumByte
-
-;!======
-
-    ; Alignment
-    ORI.B   #0,D0
-    DC.W    $0000
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DST_RefreshBannerBuffer   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   DST_RefreshBannerBuffer
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_DST_RefreshBannerBuffer:
-    JMP     DST_RefreshBannerBuffer
-
-;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle   (Jump-table forwarder)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   none observed
-; CALLS:
-;   DISKIO_SaveConfigToFileHandle
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
-; NOTES:
-;   No local logic; argument/return behavior matches forwarded routine.
-;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle:
-    JMP     DISKIO_SaveConfigToFileHandle

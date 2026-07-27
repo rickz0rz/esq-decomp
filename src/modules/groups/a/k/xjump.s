@@ -38,14 +38,14 @@ _GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   TLIBA3_SelectNextViewMode
+;   _TLIBA3_SelectNextViewMode
 ; DESC:
-;   Jump stub to TLIBA3_SelectNextViewMode.
+;   Jump stub to _TLIBA3_SelectNextViewMode.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode:
-    JMP     TLIBA3_SelectNextViewMode
+    JMP     _TLIBA3_SelectNextViewMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch   (JumpStub_PARSEINI_ParseIniBufferAndDispatch)
@@ -128,14 +128,14 @@ GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   PARSEINI_WriteErrorLogEntry
+;   _PARSEINI_WriteErrorLogEntry
 ; DESC:
-;   Jump stub to PARSEINI_WriteErrorLogEntry.
+;   Jump stub to _PARSEINI_WriteErrorLogEntry.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry:
-    JMP     PARSEINI_WriteErrorLogEntry
+    JMP     _PARSEINI_WriteErrorLogEntry
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory   (JumpStub)
@@ -182,14 +182,14 @@ _GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_SetCopperEffect_Default
+;   _ESQ_SetCopperEffect_Default
 ; DESC:
-;   Jump stub to ESQ_SetCopperEffect_Default.
+;   Jump stub to _ESQ_SetCopperEffect_Default.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default:
-    JMP     ESQ_SetCopperEffect_Default
+    JMP     _ESQ_SetCopperEffect_Default
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom   (JumpStub_ESQ_SetCopperEffect_Custom)
@@ -200,14 +200,14 @@ _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_SetCopperEffect_Custom
+;   _ESQ_SetCopperEffect_Custom
 ; DESC:
-;   Jump stub to ESQ_SetCopperEffect_Custom.
+;   Jump stub to _ESQ_SetCopperEffect_Custom.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom:
-    JMP     ESQ_SetCopperEffect_Custom
+    JMP     _ESQ_SetCopperEffect_Custom
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen   (JumpStub_CLEANUP_RenderAlignedStatusScreen)

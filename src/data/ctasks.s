@@ -93,7 +93,7 @@ _CTASKS_PendingSecondaryOiDiskId:
 ; SYM: CTASKS_STR_TERM_MISSED_RECORD   (termination status text)
 ; TYPE: cstring
 ; PURPOSE: User-facing close-task termination reason strings.
-; USED BY: DISKIO_DrawTransferErrorMessageIfDiagnostics
+; USED BY: _DISKIO_DrawTransferErrorMessageIfDiagnostics
 ; NOTES: CTASKS_STR_TERM_DL_TOO_LARGE_HEAD + _CTASKS_TerminationReasonPtrTable intentionally split "Too Large" text and pointer base.
 ;------------------------------------------------------------------------------
 CTASKS_STR_TERM_MISSED_RECORD:
@@ -122,7 +122,7 @@ _CTASKS_TerminationReasonPtrTable:
 ; SYM: CTASKS_EXT_GRF   (file extension and task data paths)
 ; TYPE: cstring
 ; PURPOSE: Disk filename constants used by disk I/O save/load routines.
-; USED BY: LAB_04D8, LAB_04EC, DISKIO2_WriteOinfoDataFile, _DISKIO2_LoadOinfoDataFile
+; USED BY: LAB_04D8, LAB_04EC, _DISKIO2_WriteOinfoDataFile, _DISKIO2_LoadOinfoDataFile
 ; NOTES: Stored as DC.B to preserve original packing/alignment.
 ;------------------------------------------------------------------------------
 CTASKS_EXT_GRF:
@@ -291,7 +291,7 @@ _CTASKS_STR_1:
 ; SYM: _CONFIG_RefreshIntervalSeconds   (banner queue preset token ??)
 ; TYPE: s32
 ; PURPOSE: Shared preset value injected into banner queue mapping paths.
-; USED BY: GCOMMAND_MapKeycodeToPreset, DISKIO config parse/save, ED2 diagnostics
+; USED BY: _GCOMMAND_MapKeycodeToPreset, DISKIO config parse/save, ED2 diagnostics
 ; NOTES: Default value is 120; exact user-facing meaning is still unresolved.
 ;------------------------------------------------------------------------------
 _CONFIG_RefreshIntervalSeconds:

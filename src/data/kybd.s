@@ -15,7 +15,7 @@ KYBD_PATH_DF0_LOCAL_ADS:
 ; SYM: _KYBD_CustomPaletteCaptureScratchBase   (ED palette-capture scratch base)
 ; TYPE: u8 (head of scratch region)
 ; PURPOSE: Start of ED capture scratch region before palette-table commit.
-; USED BY: ED_CaptureKeySequence
+; USED BY: _ED_CaptureKeySequence
 ; NOTES:
 ;   ED writes nibble-capture bytes via indexed stores from this base.
 ;   Downstream read path is not directly confirmed yet; keep conservative.
@@ -26,7 +26,7 @@ _KYBD_CustomPaletteCaptureScratchBase:
 ; SYM: _KYBD_CustomPaletteTriplesRBase/KYBD_CustomPaletteTriplesGBase/KYBD_CustomPaletteTriplesBBase   (custom palette RGB triples)
 ; TYPE: u8[24] (interleaved RGB triplets for 8 pens)
 ; PURPOSE: Custom palette buffer used by ESC/ADS workflows and color parsing.
-; USED BY: ED1_EnterEscMenu, LADFUNC_DrawTextAdsPreview, PARSEINI_ParseColorTable
+; USED BY: _ED1_EnterEscMenu, LADFUNC_DrawTextAdsPreview, _PARSEINI_ParseColorTable
 ; NOTES:
 ;   Layout is contiguous and interleaved:
 ;     R(i) = _KYBD_CustomPaletteTriplesRBase + i*3

@@ -1,0 +1,642 @@
+    XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop
+    XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
+    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame
+    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
+    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel
+    XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair
+    XDEF    _NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry
+    XDEF    _NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1
+    XDEF    _NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes
+    XDEF    NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState
+    XDEF    NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant
+    XDEF    _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer
+    XDEF    NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
+    XDEF    _NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
+    XDEF    _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
+    XDEF    _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode
+    XDEF    NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2
+    XDEF    _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
+    XDEF    NEWGRID2_JMPTBL_ESQ_TestBit1Based
+    XDEF    NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+    XDEF    NEWGRID2_JMPTBL_STRING_AppendN
+    XDEF    _NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex
+    XDEF    _NEWGRID2_JMPTBL_STR_SkipClass3Chars
+
+
+; Jump-stub block:
+; These entries preserve legacy call-table layout and tail-call target helpers.
+; Arguments/return values pass through unchanged unless noted in each header.
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   COI_SelectAnimFieldPointer
+; DESC:
+;   Jump table entry that forwards to COI_SelectAnimFieldPointer.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer:
+    JMP     COI_SelectAnimFieldPointer
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   _DISPTEXT_SetCurrentLineIndex
+; DESC:
+;   Jump table entry that forwards to _DISPTEXT_SetCurrentLineIndex.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex:
+    JMP     _DISPTEXT_SetCurrentLineIndex
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   _DISPTEXT_LayoutAndAppendToBuffer
+; DESC:
+;   Jump table entry that forwards to _DISPTEXT_LayoutAndAppendToBuffer.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer:
+    JMP     _DISPTEXT_LayoutAndAppendToBuffer
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0
+; CALLS:
+;   DISPTEXT_GetTotalLineCount
+; DESC:
+;   Jump table entry that forwards to DISPTEXT_GetTotalLineCount.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount:
+    JMP     DISPTEXT_GetTotalLineCount
+
+;!======
+
+    ; Alignment
+    ORI.B   #0,D0
+    DC.W    $0000
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   TLIBA_FindFirstWildcardMatchIndex
+; DESC:
+;   Jump table entry that forwards to TLIBA_FindFirstWildcardMatchIndex.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
+    BRA.W   TLIBA_FindFirstWildcardMatchIndex
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0
+; CALLS:
+;   _DISPTEXT_BuildLayoutForSource
+; DESC:
+;   Jump table entry that forwards to _DISPTEXT_BuildLayoutForSource.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource:
+    JMP     _DISPTEXT_BuildLayoutForSource
+
+;!======
+
+    ; Alignment
+    ORI.B   #0,D0
+    DC.W    $0000
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   _BEVEL_DrawBevelFrameWithTopRight
+; DESC:
+;   Jump table entry that forwards to _BEVEL_DrawBevelFrameWithTopRight.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight:
+    JMP     _BEVEL_DrawBevelFrameWithTopRight
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   ESQDISP_GetEntryAuxPointerByMode
+; DESC:
+;   Jump table entry that forwards to ESQDISP_GetEntryAuxPointerByMode.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
+    JMP     ESQDISP_GetEntryAuxPointerByMode
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   BEVEL_DrawVerticalBevel
+; DESC:
+;   Jump table entry that forwards to BEVEL_DrawVerticalBevel.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel:
+    JMP     BEVEL_DrawVerticalBevel
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   DISPTEXT_LayoutSourceToLines
+; DESC:
+;   Jump table entry that forwards to DISPTEXT_LayoutSourceToLines.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines:
+    JMP     DISPTEXT_LayoutSourceToLines
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   CLEANUP_UpdateEntryFlagBytes
+; DESC:
+;   Jump table entry that forwards to CLEANUP_UpdateEntryFlagBytes.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes:
+    JMP     CLEANUP_UpdateEntryFlagBytes
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   COI_RenderClockFormatEntryVariant
+; DESC:
+;   Jump table entry that forwards to COI_RenderClockFormatEntryVariant.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant:
+    JMP     COI_RenderClockFormatEntryVariant
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   ESQDISP_TestEntryBits0And2
+; DESC:
+;   Jump table entry that forwards to ESQDISP_TestEntryBits0And2.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2:
+    JMP     ESQDISP_TestEntryBits0And2
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   DISPTEXT_ComputeVisibleLineCount
+; DESC:
+;   Jump table entry that forwards to DISPTEXT_ComputeVisibleLineCount.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount:
+    JMP     DISPTEXT_ComputeVisibleLineCount
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   ESQDISP_GetEntryPointerByMode
+; DESC:
+;   Jump table entry that forwards to ESQDISP_GetEntryPointerByMode.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode:
+    JMP     ESQDISP_GetEntryPointerByMode
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   DISPTEXT_RenderCurrentLine
+; DESC:
+;   Jump table entry that forwards to DISPTEXT_RenderCurrentLine.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine:
+    JMP     DISPTEXT_RenderCurrentLine
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   COI_ProcessEntrySelectionState
+; DESC:
+;   Jump table entry that forwards to COI_ProcessEntrySelectionState.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState:
+    JMP     COI_ProcessEntrySelectionState
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   CLEANUP_FormatClockFormatEntry
+; DESC:
+;   Jump table entry that forwards to CLEANUP_FormatClockFormatEntry.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry:
+    JMP     CLEANUP_FormatClockFormatEntry
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   _BEVEL_DrawBevelFrameWithTop
+; DESC:
+;   Jump table entry that forwards to _BEVEL_DrawBevelFrameWithTop.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop:
+    JMP     _BEVEL_DrawBevelFrameWithTop
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   _ESQ_GetHalfHourSlotIndex
+; DESC:
+;   Jump table entry that forwards to _ESQ_GetHalfHourSlotIndex.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex:
+    JMP     _ESQ_GetHalfHourSlotIndex
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_STR_SkipClass3Chars   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   STR_SkipClass3Chars
+; DESC:
+;   Jump table entry that forwards to STR_SkipClass3Chars.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_STR_SkipClass3Chars:
+    JMP     STR_SkipClass3Chars
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_STRING_AppendN   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   STRING_AppendN
+; DESC:
+;   Jump table entry that forwards to STRING_AppendN.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_STRING_AppendN:
+    JMP     STRING_AppendN
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   _ESQDISP_ComputeScheduleOffsetForRow
+; DESC:
+;   Jump table entry that forwards to _ESQDISP_ComputeScheduleOffsetForRow.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow:
+    JMP     _ESQDISP_ComputeScheduleOffsetForRow
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   _PARSE_ReadSignedLongSkipClass3_Alt
+; DESC:
+;   Jump table entry that forwards to _PARSE_ReadSignedLongSkipClass3_Alt.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
+    JMP     _PARSE_ReadSignedLongSkipClass3_Alt
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   CLEANUP_TestEntryFlagYAndBit1
+; DESC:
+;   Jump table entry that forwards to CLEANUP_TestEntryFlagYAndBit1.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1:
+    JMP     CLEANUP_TestEntryFlagYAndBit1
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   DISPTEXT_IsCurrentLineLast
+; DESC:
+;   Jump table entry that forwards to DISPTEXT_IsCurrentLineLast.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast:
+    JMP     DISPTEXT_IsCurrentLineLast
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   DISPTEXT_IsLastLineSelected
+; DESC:
+;   Jump table entry that forwards to DISPTEXT_IsLastLineSelected.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected:
+    JMP     DISPTEXT_IsLastLineSelected
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   BEVEL_DrawBeveledFrame
+; DESC:
+;   Jump table entry that forwards to BEVEL_DrawBeveledFrame.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame:
+    JMP     BEVEL_DrawBeveledFrame
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   DISPLIB_FindPreviousValidEntryIndex
+; DESC:
+;   Jump table entry that forwards to DISPLIB_FindPreviousValidEntryIndex.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
+    JMP     DISPLIB_FindPreviousValidEntryIndex
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   DISPTEXT_ComputeMarkerWidths
+; DESC:
+;   Jump table entry that forwards to DISPTEXT_ComputeMarkerWidths.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths:
+    JMP     DISPTEXT_ComputeMarkerWidths
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_ESQ_TestBit1Based   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   _ESQ_TestBit1Based
+; DESC:
+;   Jump table entry that forwards to _ESQ_TestBit1Based.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_ESQ_TestBit1Based:
+    JMP     _ESQ_TestBit1Based
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   _BEVEL_DrawVerticalBevelPair
+; DESC:
+;   Jump table entry that forwards to _BEVEL_DrawVerticalBevelPair.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair:
+    JMP     _BEVEL_DrawVerticalBevelPair
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   DISPTEXT_MeasureCurrentLineLength
+; DESC:
+;   Jump table entry that forwards to DISPTEXT_MeasureCurrentLineLength.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength:
+    JMP     DISPTEXT_MeasureCurrentLineLength
+
+;------------------------------------------------------------------------------
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   _DISPTEXT_SetLayoutParams
+; DESC:
+;   Jump table entry that forwards to _DISPTEXT_SetLayoutParams.
+;------------------------------------------------------------------------------
+_NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams:
+    JMP     _DISPTEXT_SetLayoutParams
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   DISPTEXT_HasMultipleLines
+; DESC:
+;   Jump table entry that forwards to DISPTEXT_HasMultipleLines.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines:
+    JMP     DISPTEXT_HasMultipleLines
+
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel   (Jump stub)
+; ARGS:
+;   Forwarded unchanged to target routine.
+; RET:
+;   D0: passthrough from target routine
+; CLOBBERS:
+;   As per target routine
+; CALLS:
+;   _BEVEL_DrawHorizontalBevel
+; DESC:
+;   Jump table entry that forwards to _BEVEL_DrawHorizontalBevel.
+;------------------------------------------------------------------------------
+NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel:
+    JMP     _BEVEL_DrawHorizontalBevel
+
+;!======
+
+    RTS
+
+;!======
+
+    ; Alignment
+    ALIGN_WORD

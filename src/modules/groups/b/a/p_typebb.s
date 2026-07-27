@@ -120,7 +120,7 @@ P_TYPE_ConsumePrimaryTypeIfPresent:
 ; CLOBBERS:
 ;   A0/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   _P_TYPE_FreeEntry, P_TYPE_AllocateEntry, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CopyPadNul
+;   _P_TYPE_FreeEntry, _P_TYPE_AllocateEntry, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CopyPadNul
 ; READS:
 ;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _P_TYPE_PrimaryGroupListPtr
 ; WRITES:
@@ -206,7 +206,7 @@ P_TYPE_ParseAndStoreTypeRecord:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,32(A7)
-    BSR.W   P_TYPE_AllocateEntry
+    BSR.W   _P_TYPE_AllocateEntry
 
     LEA     12(A7),A7
     MOVEA.L 20(A7),A0
@@ -412,7 +412,7 @@ P_TYPE_WritePromoIdDataFile:
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   _P_TYPE_FreeEntry, PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, P_TYPE_AllocateEntry, P_TYPE_JMPTBL_STRING_FindSubstring, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _SCRIPT_JMPTBL_MEMORY_DeallocateMemory
+;   _P_TYPE_FreeEntry, PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, _P_TYPE_AllocateEntry, P_TYPE_JMPTBL_STRING_FindSubstring, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _SCRIPT_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   _Global_REF_LONG_FILE_SCRATCH, Global_STR_P_TYPE_C_6, P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load, P_TYPE_STR_CURDAY_COLON_LoadSection, P_TYPE_STR_TYPES_COLON, P_TYPE_STR_NXTDAY_COLON_LoadSection, _WDISP_CharClassTable, _Global_PTR_WORK_BUFFER, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _P_TYPE_PrimaryGroupListPtr, if_eq_1394, if_eq_1398, if_eq_1399, loop_1389
 ; WRITES:
@@ -565,7 +565,7 @@ _P_TYPE_LoadPromoIdDataFile:
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D1,-(A7)
-    BSR.W   P_TYPE_AllocateEntry
+    BSR.W   _P_TYPE_AllocateEntry
 
     LEA     12(A7),A7
     MOVEA.L -8(A5),A0

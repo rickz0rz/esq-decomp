@@ -16,7 +16,7 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GCOMMAND_LoadMplexFile, _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, FLIB2_LoadDigitalMplexDefaults, LADFUNC_ParseHexDigit
+;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GCOMMAND_LoadMplexFile, _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, _FLIB2_LoadDigitalMplexDefaults, _LADFUNC_ParseHexDigit
 ; READS:
 ;   GCOMMAND_MplexParseScratchSeedWord, GCOMMAND_FMT_PCT_T_MplexTemplateParse, _WDISP_CharClassTable, _GCOMMAND_MplexListingsTemplatePtr, _GCOMMAND_MplexAtTemplatePtr, after_tail_append, return
 ; WRITES:
@@ -44,7 +44,7 @@ GCOMMAND_ParseCommandString:
     SUBA.L  A0,A0
     MOVE.L  A0,-28(A5)
     MOVE.L  A0,-24(A5)
-    BSR.W   FLIB2_LoadDigitalMplexDefaults
+    BSR.W   _FLIB2_LoadDigitalMplexDefaults
 
     MOVE.L  A3,D0
     BEQ.W   .return
@@ -236,7 +236,7 @@ GCOMMAND_ParseCommandString:
     ADDQ.L  #1,D6
 
 .opt6_start:
-    ; Opt5: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_MplexMessageFramePen.
+    ; Opt5: numeric char via _LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_MplexMessageFramePen.
     CMP.L   D7,D6
     BGE.S   .opt7_start
 
@@ -253,7 +253,7 @@ GCOMMAND_ParseCommandString:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LADFUNC_ParseHexDigit(PC)
+    JSR     _LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -288,7 +288,7 @@ GCOMMAND_ParseCommandString:
     ADDQ.L  #1,D6
 
 .opt8_start:
-    ; Opt7: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_MplexEditorRowPen.
+    ; Opt7: numeric char via _LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_MplexEditorRowPen.
     CMP.L   D7,D6
     BGE.S   .opt9_start
 
@@ -305,7 +305,7 @@ GCOMMAND_ParseCommandString:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LADFUNC_ParseHexDigit(PC)
+    JSR     _LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -364,7 +364,7 @@ GCOMMAND_ParseCommandString:
     ADDQ.L  #1,D6
 
 .opt11_start:
-    ; Opt10: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_MplexDetailRowPen.
+    ; Opt10: numeric char via _LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_MplexDetailRowPen.
     CMP.L   D7,D6
     BGE.S   .opt12_start
 
@@ -381,7 +381,7 @@ GCOMMAND_ParseCommandString:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LADFUNC_ParseHexDigit(PC)
+    JSR     _LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1

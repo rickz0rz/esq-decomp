@@ -13,7 +13,7 @@
 ;   D0-D7/A0-A1
 ; CALLS:
 ;   SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, PARSEINI_CheckCtrlHChange, SCRIPT_HandleBrushCommand, SCRIPT_ApplyPendingBannerTarget,
-;   WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, TEXTDISP_SetRastForMode, SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, TEXTDISP_ResetSelectionAndRefresh
+;   WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, TEXTDISP_SetRastForMode, SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, _TEXTDISP_ResetSelectionAndRefresh
 ; READS:
 ;   Global_WORD_SELECT_CODE_IS_RAVESC, CONFIG_MSN_FlagChar, SCRIPT_StatusRefreshHoldFlag, ESQDISP_DisplayActiveFlag, SCRIPT_StatusMaskRefreshPending
 ;   _Global_REF_CLOCKDATA_STRUCT, Global_WORD_CLOCK_SECONDS
@@ -302,7 +302,7 @@ SCRIPT_HandleSerialCtrlCmd:
     TST.W   D1
     BNE.S   .return
 
-    JSR     TEXTDISP_ResetSelectionAndRefresh(PC)
+    JSR     _TEXTDISP_ResetSelectionAndRefresh(PC)
 
 .return:
     MOVEM.L (A7)+,D6-D7

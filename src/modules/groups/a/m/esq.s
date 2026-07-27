@@ -15,12 +15,12 @@
 ;   _LVOOpenFont, _LVOOpenDiskFont, _ESQIFF_JMPTBL_MEMORY_AllocateMemory,
 ;   _LVOInitRastPort, _LVOSetFont, ESQIFF_JMPTBL_MATH_DivS32, _ESQDISP_JMPTBL_GRAPHICS_AllocRaster,
 ;   _LVOBltClear, _LVOInitBitMap, GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory,
-;   GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip, ESQDISP_AllocateHighlightBitmaps, GROUP_AM_JMPTBL_LIST_InitHeader, ESQDISP_QueueHighlightDrawMessage,
-;   _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage, GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard, GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc, DST_RefreshBannerBuffer,
+;   GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip, _ESQDISP_AllocateHighlightBitmaps, GROUP_AM_JMPTBL_LIST_InitHeader, _ESQDISP_QueueHighlightDrawMessage,
+;   _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage, GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard, GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc, _DST_RefreshBannerBuffer,
 ;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal, GROUP_AM_JMPTBL_STRUCT_AllocWithOwner, _LVOOpenDevice,
-;   _LVODoIO, SETUP_INTERRUPT_INTB_RBF, SETUP_INTERRUPT_INTB_AUD1,
-;   GROUP_AM_JMPTBL_ESQ_InitAudio1Dma, GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext, GROUP_AM_JMPTBL_KYBD_InitializeInputDevices, ESQFUNC_AllocateLineTextBuffers, GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk, ESQFUNC_UpdateRefreshModeState, ESQSHARED4_InitializeBannerCopperSystem,
-;   GROUP_AM_JMPTBL_TLIBA3_InitPatternTable, SETUP_INTERRUPT_INTB_VERTB, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperDropTransition, _LVOSetAPen,
+;   _LVODoIO, _SETUP_INTERRUPT_INTB_RBF, _SETUP_INTERRUPT_INTB_AUD1,
+;   GROUP_AM_JMPTBL_ESQ_InitAudio1Dma, GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext, GROUP_AM_JMPTBL_KYBD_InitializeInputDevices, _ESQFUNC_AllocateLineTextBuffers, GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk, ESQFUNC_UpdateRefreshModeState, ESQSHARED4_InitializeBannerCopperSystem,
+;   GROUP_AM_JMPTBL_TLIBA3_InitPatternTable, _SETUP_INTERRUPT_INTB_VERTB, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperDropTransition, _LVOSetAPen,
 ;   _LVORectFill, _LVOSetBPen, _LVOSetDrMd, _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines, _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths,
 ;   _GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode, GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults, _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch, GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState
 ; READS:
@@ -337,7 +337,7 @@ ESQ_MainInitAndRun:
     LEA     ESQDISP_HighlightBitmapTable,A0
     ADDA.L  D0,A0
     MOVE.L  A0,-(A7)
-    JSR     ESQDISP_AllocateHighlightBitmaps(PC)
+    JSR     _ESQDISP_AllocateHighlightBitmaps(PC)
 
     ADDQ.W  #4,A7
     ADDQ.W  #1,D5
@@ -471,7 +471,7 @@ ESQ_MainInitAndRun:
     ADDA.L  D0,A1
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQDISP_QueueHighlightDrawMessage(PC)
+    JSR     _ESQDISP_QueueHighlightDrawMessage(PC)
 
     ADDQ.W  #8,A7
     ADDQ.W  #1,D5
@@ -518,7 +518,7 @@ ESQ_MainInitAndRun:
     MOVE.W  D0,_DST_SecondaryCountdown
     JSR     GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc(PC)
 
-    JSR     DST_RefreshBannerBuffer(PC)
+    JSR     _DST_RefreshBannerBuffer(PC)
 
     CLR.W   _SCRIPT_CtrlInterfaceEnabledFlag
     MOVEQ   #1,D5
@@ -632,9 +632,9 @@ ESQ_MainInitAndRun:
     MOVEA.L _WDISP_SerialIoRequestPtr,A1
     JSR     _LVODoIO(A6)
 
-    JSR     SETUP_INTERRUPT_INTB_RBF(PC)
+    JSR     _SETUP_INTERRUPT_INTB_RBF(PC)
 
-    JSR     SETUP_INTERRUPT_INTB_AUD1(PC)
+    JSR     _SETUP_INTERRUPT_INTB_AUD1(PC)
 
     JSR     GROUP_AM_JMPTBL_ESQ_InitAudio1Dma(PC)
 
@@ -642,7 +642,7 @@ ESQ_MainInitAndRun:
 
     JSR     GROUP_AM_JMPTBL_KYBD_InitializeInputDevices(PC)
 
-    JSR     ESQFUNC_AllocateLineTextBuffers(PC)
+    JSR     _ESQFUNC_AllocateLineTextBuffers(PC)
 
     PEA     (MEMF_PUBLIC).W                 ; Memory Type
     PEA     96.W                            ; Bytes to Allocate
@@ -868,7 +868,7 @@ ESQ_MainInitAndRun:
 
     JSR     GROUP_AM_JMPTBL_TLIBA3_InitPatternTable(PC)
 
-    JSR     SETUP_INTERRUPT_INTB_VERTB(PC)
+    JSR     _SETUP_INTERRUPT_INTB_VERTB(PC)
 
     ; This is just clearing out a BUNCH of variables to zero or whatever
     ; default value it uses.
@@ -1160,7 +1160,7 @@ ESQ_MainInitAndRun:
     JSR     _ESQIFF_JMPTBL_BRUSH_FindType3Brush(PC)
 
     MOVE.L  D0,_ESQFUNC_FallbackType3BrushNode
-    JSR     ESQFUNC_RebuildPwBrushListFromTagTable(PC)
+    JSR     _ESQFUNC_RebuildPwBrushListFromTagTable(PC)
 
     PEA     Global_STR_DF0_BANNER_INI_1
     JSR     _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
@@ -1197,7 +1197,7 @@ ESQ_MainInitAndRun:
     JSR     DST_LoadBannerPairFromFiles(PC)
 
     CLR.W   _Global_RefreshTickCounter
-    JSR     ESQFUNC_UpdateDiskWarningAndRefreshTick(PC)
+    JSR     _ESQFUNC_UpdateDiskWarningAndRefreshTick(PC)
 
     LEA     32(A7),A7
     CLR.L   ESQDISP_DisplayActiveFlag

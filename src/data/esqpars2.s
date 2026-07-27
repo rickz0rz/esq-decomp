@@ -165,7 +165,7 @@ _Global_LONG_PATCH_VERSION_NUMBER:
 ; SYM: _ESQPARS2_BannerSnapshotPlane0DstPtr..ESQPARS2_BannerSnapshotPlane2DstPtrLo
 ; TYPE: pointer array storage (3 x u32 split into hi/lo words)
 ; PURPOSE: Destination pointers for banner-plane snapshot copy routines.
-; USED BY: ESQSHARED4_SetupBannerPlanePointerWords, ESQSHARED4_CopyPlanesFromContextToSnapshot, ESQSHARED4_CopyLivePlanesToSnapshot, GCOMMAND_RefreshBannerTables
+; USED BY: ESQSHARED4_SetupBannerPlanePointerWords, _ESQSHARED4_CopyPlanesFromContextToSnapshot, ESQSHARED4_CopyLivePlanesToSnapshot, GCOMMAND_RefreshBannerTables
 ; NOTES:
 ;   Layout is contiguous longwords:
 ;     plane0 ptr = _ESQPARS2_BannerSnapshotPlane0DstPtr/ESQPARS2_BannerSnapshotPlane0DstPtrLo

@@ -66,16 +66,16 @@ GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   DATETIME_NormalizeMonthRange
+;   _DATETIME_NormalizeMonthRange
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to DATETIME_NormalizeMonthRange.
+;   Jump stub to _DATETIME_NormalizeMonthRange.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange:
-    JMP     DATETIME_NormalizeMonthRange
+    JMP     _DATETIME_NormalizeMonthRange
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner   (JumpStub_TEXTDISP_DrawChannelBanner)
@@ -286,16 +286,16 @@ GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   TLIBA3_GetViewModeRastPort
+;   _TLIBA3_GetViewModeRastPort
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to TLIBA3_GetViewModeRastPort.
+;   Jump stub to _TLIBA3_GetViewModeRastPort.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort:
-    JMP     TLIBA3_GetViewModeRastPort
+    JMP     _TLIBA3_GetViewModeRastPort
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry   (JumpStub)
@@ -326,16 +326,16 @@ GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   DATETIME_AdjustMonthIndex
+;   _DATETIME_AdjustMonthIndex
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to DATETIME_AdjustMonthIndex.
+;   Jump stub to _DATETIME_AdjustMonthIndex.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex:
-    JMP     DATETIME_AdjustMonthIndex
+    JMP     _DATETIME_AdjustMonthIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_DST_ComputeBannerIndex   (JumpStub_DST_ComputeBannerIndex)
@@ -366,13 +366,13 @@ GROUP_AD_JMPTBL_DST_ComputeBannerIndex:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   TLIBA3_GetViewModeHeight
+;   _TLIBA3_GetViewModeHeight
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to TLIBA3_GetViewModeHeight.
+;   Jump stub to _TLIBA3_GetViewModeHeight.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight:
-    JMP     TLIBA3_GetViewModeHeight
+    JMP     _TLIBA3_GetViewModeHeight

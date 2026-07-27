@@ -25,8 +25,8 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A2/A6
 ; CALLS:
-;   _GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible, _DISPLIB_NormalizeValueByStep, ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetRast,
-;   GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth , GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte, _LVOSetAPen, GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner, ESQ_SetCopperEffect_OnEnableHighlight,
+;   _GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible, _DISPLIB_NormalizeValueByStep, _ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetRast,
+;   GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth , GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte, _LVOSetAPen, GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner, _ESQ_SetCopperEffect_OnEnableHighlight,
 ;   GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode, GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName, _GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange, GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime,
 ;   GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel, CLEANUP_BuildAlignedStatusLine, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth, GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame, GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort, GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight,
 ;   _LVORectFill, _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort, GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition
@@ -369,7 +369,7 @@ CLEANUP_RenderAlignedStatusScreen:
     CMP.W   D0,D6
     BNE.S   .maybe_refresh_display
 
-    JSR     ESQ_SetCopperEffect_OffDisableHighlight(PC)
+    JSR     _ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
 .maybe_refresh_display:
     JSR     GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
@@ -463,7 +463,7 @@ CLEANUP_RenderAlignedStatusScreen:
     JSR     _LVOSetRast(A6)
 
 .maybe_clear_rastport_secondary:
-    JSR     ESQ_NoOp(PC)
+    JSR     _ESQ_NoOp(PC)
 
     MOVEA.L Global_REF_RASTPORT_2,A1
     MOVEQ   #1,D0
@@ -485,7 +485,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.L  D0,-(A7)
     JSR     GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner(PC)
 
-    JSR     ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     _ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEQ   #0,D0
     MOVE.B  D0,CLEANUP_AlignedStatusSuffixBuffer
@@ -945,7 +945,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVORectFill(A6)
 
-    JSR     ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     _ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0

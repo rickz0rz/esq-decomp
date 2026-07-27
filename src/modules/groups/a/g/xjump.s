@@ -115,7 +115,7 @@ _GROUP_AG_JMPTBL_STRUCT_AllocWithOwner:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   TEXTDISP_ResetSelectionAndRefresh
+;   _TEXTDISP_ResetSelectionAndRefresh
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -126,7 +126,7 @@ _GROUP_AG_JMPTBL_STRUCT_AllocWithOwner:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
-    JMP     TEXTDISP_ResetSelectionAndRefresh
+    JMP     _TEXTDISP_ResetSelectionAndRefresh
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport   (Routine at _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport)
@@ -247,7 +247,7 @@ GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LADFUNC2_EmitEscapedStringToScratch
+;   _LADFUNC2_EmitEscapedStringToScratch
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -258,7 +258,7 @@ GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch:
-    JMP     LADFUNC2_EmitEscapedStringToScratch
+    JMP     _LADFUNC2_EmitEscapedStringToScratch
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AG_JMPTBL_MEMORY_AllocateMemory   (Routine at _GROUP_AG_JMPTBL_MEMORY_AllocateMemory)
@@ -313,7 +313,7 @@ GROUP_AG_JMPTBL_DOS_OpenFileWithMode:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_CheckPathExists
+;   _SCRIPT_CheckPathExists
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -324,7 +324,7 @@ GROUP_AG_JMPTBL_DOS_OpenFileWithMode:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AG_JMPTBL_SCRIPT_CheckPathExists:
-    JMP     SCRIPT_CheckPathExists
+    JMP     _SCRIPT_CheckPathExists
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AG_JMPTBL_MATH_Mulu32   (Routine at _GROUP_AG_JMPTBL_MATH_Mulu32)

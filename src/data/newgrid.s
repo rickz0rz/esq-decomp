@@ -169,7 +169,7 @@ _NEWGRID_SecondaryIndexCachePtr:
 ; SYM: _NEWGRID_GridOperationId   (active grid operation id)
 ; TYPE: s32
 ; PURPOSE: Stores the current operation index dispatched by NEWGRID2.
-; USED BY: _NEWGRID2_DispatchGridOperation, NEWGRID_ProcessGridEntries, NEWGRID_SelectEntryPen
+; USED BY: _NEWGRID2_DispatchGridOperation, NEWGRID_ProcessGridEntries, _NEWGRID_SelectEntryPen
 ; NOTES: Valid range is 1..7; cleared to 0 when dispatch receives an out-of-range operation.
 ;------------------------------------------------------------------------------
 _NEWGRID_GridOperationId:

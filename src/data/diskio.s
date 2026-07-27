@@ -144,7 +144,7 @@ _DISKIO_Drive1GfxAssignDoneFlag:
 ; SYM: _DISKIO_STR_TRACKDISK_DEVICE   (trackdisk.device)
 ; TYPE: cstring
 ; PURPOSE: Device name used when probing floppy units via OpenDevice.
-; USED BY: DISKIO_ProbeDrivesAndAssignPaths
+; USED BY: _DISKIO_ProbeDrivesAndAssignPaths
 ; NOTES: Companion assign/mount command strings follow in this block.
 ;------------------------------------------------------------------------------
 _DISKIO_STR_TRACKDISK_DEVICE:

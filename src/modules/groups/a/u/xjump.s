@@ -10,16 +10,16 @@
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   BRUSH_AppendBrushNode
+;   _BRUSH_AppendBrushNode
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to BRUSH_AppendBrushNode.
+;   Jump stub to _BRUSH_AppendBrushNode.
 ;------------------------------------------------------------------------------
 _GROUP_AU_JMPTBL_BRUSH_AppendBrushNode:
-    JMP     BRUSH_AppendBrushNode
+    JMP     _BRUSH_AppendBrushNode
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AU_JMPTBL_BRUSH_PopulateBrushList   (JumpStub_BRUSH_PopulateBrushList)

@@ -57,7 +57,7 @@ _GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DISKIO_ProbeDrivesAndAssignPaths
+;   _DISKIO_ProbeDrivesAndAssignPaths
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -68,7 +68,7 @@ _GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths:
-    JMP     DISKIO_ProbeDrivesAndAssignPaths
+    JMP     _DISKIO_ProbeDrivesAndAssignPaths
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit   (Routine at _GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit)

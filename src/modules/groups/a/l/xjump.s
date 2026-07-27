@@ -15,18 +15,18 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LADFUNC_ComposePackedPenByte
+;   _LADFUNC_ComposePackedPenByte
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to LADFUNC_ComposePackedPenByte.
+;   Jump stub to _LADFUNC_ComposePackedPenByte.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte:
-    JMP     LADFUNC_ComposePackedPenByte
+    JMP     _LADFUNC_ComposePackedPenByte
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble   (Jump stub)
@@ -81,18 +81,18 @@ _GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_WriteDecFixedWidth
+;   _ESQ_WriteDecFixedWidth
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to ESQ_WriteDecFixedWidth.
+;   Jump stub to _ESQ_WriteDecFixedWidth.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth:
-    JMP     ESQ_WriteDecFixedWidth
+    JMP     _ESQ_WriteDecFixedWidth
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault   (Jump stub)

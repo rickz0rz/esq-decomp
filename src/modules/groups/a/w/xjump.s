@@ -171,7 +171,7 @@ GROUP_AW_JMPTBL_WDISP_SPrintf:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   ESQ_SetCopperEffect_OffDisableHighlight
+;   _ESQ_SetCopperEffect_OffDisableHighlight
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -182,7 +182,7 @@ GROUP_AW_JMPTBL_WDISP_SPrintf:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight:
-    JMP     ESQ_SetCopperEffect_OffDisableHighlight
+    JMP     _ESQ_SetCopperEffect_OffDisableHighlight
 
 ;!======
 

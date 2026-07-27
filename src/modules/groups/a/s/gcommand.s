@@ -152,7 +152,7 @@ GCOMMAND_LoadCommandFile:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadCommandFile, GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, FLIB2_LoadDigitalNicheDefaults, LADFUNC_ParseHexDigit
+;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadCommandFile, GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, _FLIB2_LoadDigitalNicheDefaults, _LADFUNC_ParseHexDigit
 ; READS:
 ;   GCOMMAND_NicheParseScratchSeedWord, _WDISP_CharClassTable, _GCOMMAND_DigitalNicheListingsTemplatePtr, return
 ; WRITES:
@@ -176,7 +176,7 @@ GCOMMAND_ParseCommandOptions:
     MOVE.B  (A0)+,(A1)+
     MOVEQ   #0,D5
     MOVEQ   #0,D4
-    BSR.W   FLIB2_LoadDigitalNicheDefaults
+    BSR.W   _FLIB2_LoadDigitalNicheDefaults
 
     MOVE.L  A3,D0
     BEQ.W   .return
@@ -264,7 +264,7 @@ GCOMMAND_ParseCommandOptions:
     ADDQ.L  #1,D6
 
 .opt3_start:
-    ; Opt2: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_NicheFramePen.
+    ; Opt2: numeric char via _LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_NicheFramePen.
     CMP.L   D7,D6
     BGE.S   .opt4_start
 
@@ -281,7 +281,7 @@ GCOMMAND_ParseCommandOptions:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LADFUNC_ParseHexDigit(PC)
+    JSR     _LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -316,7 +316,7 @@ GCOMMAND_ParseCommandOptions:
     ADDQ.L  #1,D6
 
 .opt5_start:
-    ; Opt4: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_NicheEditorRowPen.
+    ; Opt4: numeric char via _LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_NicheEditorRowPen.
     CMP.L   D7,D6
     BGE.S   .opt6_start
 
@@ -333,7 +333,7 @@ GCOMMAND_ParseCommandOptions:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LADFUNC_ParseHexDigit(PC)
+    JSR     _LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1

@@ -1,5 +1,5 @@
     XDEF    _P_TYPE_CloneEntry
-    XDEF    P_TYPE_EnsureSecondaryList
+
 
 
 ;------------------------------------------------------------------------------
@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   A0/A2/A3/A7/D0/D7
 ; CALLS:
-;   _P_TYPE_FreeEntry, P_TYPE_AllocateEntry
+;   _P_TYPE_FreeEntry, _P_TYPE_AllocateEntry
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -56,7 +56,7 @@ _P_TYPE_CloneEntry:
     PEA     -100(A5)
     MOVE.L  2(A2),-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   P_TYPE_AllocateEntry
+    BSR.W   _P_TYPE_AllocateEntry
 
     LEA     12(A7),A7
     MOVEA.L D0,A3
@@ -65,47 +65,6 @@ _P_TYPE_CloneEntry:
     MOVE.L  A3,D0
     MOVEM.L (A7)+,D7/A2-A3
     UNLK    A5
-    RTS
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: P_TYPE_EnsureSecondaryList   (Clone primary list into secondary list if missing)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   A0/A7
-; CALLS:
-;   _P_TYPE_CloneEntry
-; READS:
-;   _TEXTDISP_SecondaryGroupCode, _P_TYPE_PrimaryGroupListPtr, _P_TYPE_SecondaryGroupListPtr
-; WRITES:
-;   _P_TYPE_SecondaryGroupListPtr
-; DESC:
-;   If primary list exists and secondary list is null, clones primary into
-;   secondary and updates the cloned type byte to SecondaryGroupCode.
-; NOTES:
-;   No-op when primary is null or secondary already exists.
-;------------------------------------------------------------------------------
-P_TYPE_EnsureSecondaryList:
-    TST.L   _P_TYPE_PrimaryGroupListPtr
-    BEQ.S   .return_136B
-
-    TST.L   _P_TYPE_SecondaryGroupListPtr
-    BNE.S   .return_136B
-
-    MOVE.L  _P_TYPE_PrimaryGroupListPtr,-(A7)
-    MOVE.L  _P_TYPE_SecondaryGroupListPtr,-(A7)
-    BSR.S   _P_TYPE_CloneEntry
-
-    ADDQ.W  #8,A7
-    MOVE.L  D0,_P_TYPE_SecondaryGroupListPtr
-    MOVEA.L D0,A0
-    MOVE.B  _TEXTDISP_SecondaryGroupCode,(A0)
-
-.return_136B:
     RTS
 
 ;!======

@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_CaptureCtrlBit4StreamBufferByte
+;   _ESQ_CaptureCtrlBit4StreamBufferByte
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -21,7 +21,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte:
-    JMP     ESQ_CaptureCtrlBit4StreamBufferByte
+    JMP     _ESQ_CaptureCtrlBit4StreamBufferByte
 
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte   (Routine at SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte)
@@ -32,7 +32,7 @@ SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_ReadSerialRbfByte
+;   _ESQ_ReadSerialRbfByte
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -43,4 +43,4 @@ SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte:
-    JMP     ESQ_ReadSerialRbfByte
+    JMP     _ESQ_ReadSerialRbfByte

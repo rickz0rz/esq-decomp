@@ -15,7 +15,7 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GCOMMAND_LoadPPVTemplate, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, FLIB2_LoadDigitalPpvDefaults, LADFUNC_ParseHexDigit
+;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GCOMMAND_LoadPPVTemplate, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, _FLIB2_LoadDigitalPpvDefaults, _LADFUNC_ParseHexDigit
 ; READS:
 ;   GCOMMAND_PpvParseScratchSeedLong, _WDISP_CharClassTable, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PPVPeriodTemplatePtr, return
 ; WRITES:
@@ -41,7 +41,7 @@ GCOMMAND_ParsePPVCommand:
     MOVEQ   #0,D4
     MOVE.B  #$12,-19(A5)
     CLR.L   -24(A5)
-    BSR.W   FLIB2_LoadDigitalPpvDefaults
+    BSR.W   _FLIB2_LoadDigitalPpvDefaults
 
     MOVE.L  A3,D0
     BEQ.W   .return
@@ -249,7 +249,7 @@ GCOMMAND_ParsePPVCommand:
     ADDQ.L  #1,D6
 
 .opt6_start:
-    ; Opt5: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_PpvMessageFramePen.
+    ; Opt5: numeric char via _LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_PpvMessageFramePen.
     CMP.L   D7,D6
     BGE.S   .opt7_start
 
@@ -266,7 +266,7 @@ GCOMMAND_ParsePPVCommand:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LADFUNC_ParseHexDigit(PC)
+    JSR     _LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -301,7 +301,7 @@ GCOMMAND_ParsePPVCommand:
     ADDQ.L  #1,D6
 
 .opt8_start:
-    ; Opt7: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_PpvEditorRowPen.
+    ; Opt7: numeric char via _LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_PpvEditorRowPen.
     CMP.L   D7,D6
     BGE.S   .opt9_start
 
@@ -318,7 +318,7 @@ GCOMMAND_ParsePPVCommand:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LADFUNC_ParseHexDigit(PC)
+    JSR     _LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -377,7 +377,7 @@ GCOMMAND_ParsePPVCommand:
     ADDQ.L  #1,D6
 
 .opt11_start:
-    ; Opt10: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_PpvShowtimesRowPen.
+    ; Opt10: numeric char via _LADFUNC_ParseHexDigit if valid (table bit #7) -> _GCOMMAND_PpvShowtimesRowPen.
     CMP.L   D7,D6
     BGE.S   .opt12_start
 
@@ -394,7 +394,7 @@ GCOMMAND_ParsePPVCommand:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LADFUNC_ParseHexDigit(PC)
+    JSR     _LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1

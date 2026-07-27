@@ -105,7 +105,7 @@ ESQDISP_SecondaryPersistRequestFlag:
 ; SYM: _ESQDISP_StatusRefreshPendingFlag   (status refresh pending)
 ; TYPE: u16 flag
 ; PURPOSE: Defers status refresh until highlight holdoff countdown completes.
-; USED BY: GCOMMAND_ConsumeBannerQueueEntry, _ESQFUNC_ProcessUiFrameTick
+; USED BY: _GCOMMAND_ConsumeBannerQueueEntry, _ESQFUNC_ProcessUiFrameTick
 ; NOTES: Written with byte ops by producers/consumers.
 ;------------------------------------------------------------------------------
 _ESQDISP_StatusRefreshPendingFlag:

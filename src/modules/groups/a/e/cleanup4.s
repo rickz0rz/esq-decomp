@@ -917,8 +917,8 @@ CLEANUP_FormatEntryStringTokens:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   COI_CountEscape14BeforeNull, GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap, ESQ_WildcardMatch, _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString,
-;   CLEANUP_FormatEntryStringTokens, COI_AllocSubEntryTable, COI_ClearAnimObjectStrings, COI_FreeSubEntryTableEntries
+;   _COI_CountEscape14BeforeNull, GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap, _ESQ_WildcardMatch, _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString,
+;   CLEANUP_FormatEntryStringTokens, _COI_AllocSubEntryTable, _COI_ClearAnimObjectStrings, _COI_FreeSubEntryTableEntries
 ; READS:
 ;   _TEXTDISP_SecondaryGroupCode-_TEXTDISP_SecondaryEntryPtrTable, ESQIFF_RecordLength, _CTASKS_PrimaryOiWritePendingFlag-_CTASKS_PendingSecondaryOiDiskId,
 ;   _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, SCRIPT_StrChannelLabel_TuesdaysFridays
@@ -928,7 +928,7 @@ CLEANUP_FormatEntryStringTokens:
 ;   Parses an aligned listing block from dataPtr, selecting candidate entries,
 ;   building entry structs, and allocating subentry tables.
 ; NOTES:
-;   - Uses COI_CountEscape14BeforeNull to locate delimiter fields.
+;   - Uses _COI_CountEscape14BeforeNull to locate delimiter fields.
 ;------------------------------------------------------------------------------
 CLEANUP_ParseAlignedListingBlock:
     LINK.W  A5,#-128
@@ -1030,7 +1030,7 @@ CLEANUP_ParseAlignedListingBlock:
     SUB.L   D0,D1
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   COI_CountEscape14BeforeNull
+    BSR.W   _COI_CountEscape14BeforeNull
 
     EXT.L   D0
     MOVEA.L A3,A0
@@ -1095,7 +1095,7 @@ CLEANUP_ParseAlignedListingBlock:
     ADDA.L  -66(A5),A1
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQ_WildcardMatch(PC)
+    JSR     _ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1147,10 +1147,10 @@ CLEANUP_ParseAlignedListingBlock:
 
 .populate_entry_fields:
     MOVE.L  -4(A5),-(A7)
-    BSR.W   COI_ClearAnimObjectStrings
+    BSR.W   _COI_ClearAnimObjectStrings
 
     MOVE.L  -4(A5),(A7)
-    BSR.W   COI_FreeSubEntryTableEntries
+    BSR.W   _COI_FreeSubEntryTableEntries
 
     MOVEA.L -4(A5),A0
     MOVE.L  48(A0),-12(A5)
@@ -1282,7 +1282,7 @@ CLEANUP_ParseAlignedListingBlock:
 .alloc_subentry_table:
     ADDQ.L  #1,-66(A5)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   COI_AllocSubEntryTable
+    BSR.W   _COI_AllocSubEntryTable
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D6
@@ -1528,10 +1528,10 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.L  48(A0),-16(A5)
     ADDQ.W  #1,-32(A5)
     MOVE.L  A0,-(A7)
-    BSR.W   COI_ClearAnimObjectStrings
+    BSR.W   _COI_ClearAnimObjectStrings
 
     MOVE.L  -8(A5),(A7)
-    BSR.W   COI_FreeSubEntryTableEntries
+    BSR.W   _COI_FreeSubEntryTableEntries
 
     MOVEA.L -16(A5),A0
     MOVE.L  4(A0),(A7)
@@ -1594,7 +1594,7 @@ CLEANUP_ParseAlignedListingBlock:
     MOVEA.L -16(A5),A1
     MOVE.L  32(A0),32(A1)
     MOVE.L  -8(A5),(A7)
-    BSR.W   COI_AllocSubEntryTable
+    BSR.W   _COI_AllocSubEntryTable
 
     LEA     32(A7),A7
     MOVEQ   #0,D7

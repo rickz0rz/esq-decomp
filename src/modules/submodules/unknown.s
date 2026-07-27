@@ -681,18 +681,18 @@ ESQPROTO_CopyLabelToGlobal:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQIFF2_ReadSerialRecordIntoBuffer
+;   _ESQIFF2_ReadSerialRecordIntoBuffer
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to ESQIFF2_ReadSerialRecordIntoBuffer.
+;   Jump stub to _ESQIFF2_ReadSerialRecordIntoBuffer.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer:
-    JMP     ESQIFF2_ReadSerialRecordIntoBuffer
+    JMP     _ESQIFF2_ReadSerialRecordIntoBuffer
 
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition   (JumpStub_DISPLIB_DisplayTextAtPosition)
@@ -725,18 +725,18 @@ UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_WildcardMatch
+;   _ESQ_WildcardMatch
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to ESQ_WildcardMatch.
+;   Jump stub to _ESQ_WildcardMatch.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _UNKNOWN_JMPTBL_ESQ_WildcardMatch:
-    JMP     ESQ_WildcardMatch
+    JMP     _ESQ_WildcardMatch
 
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN_JMPTBL_DST_NormalizeDayOfYear   (JumpStub)
@@ -747,18 +747,18 @@ _UNKNOWN_JMPTBL_ESQ_WildcardMatch:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DST_NormalizeDayOfYear
+;   _DST_NormalizeDayOfYear
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to DST_NormalizeDayOfYear.
+;   Jump stub to _DST_NormalizeDayOfYear.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 UNKNOWN_JMPTBL_DST_NormalizeDayOfYear:
-    JMP     DST_NormalizeDayOfYear
+    JMP     _DST_NormalizeDayOfYear
 
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte   (JumpStub_ESQ_GenerateXorChecksumByte)
@@ -769,18 +769,18 @@ UNKNOWN_JMPTBL_DST_NormalizeDayOfYear:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_GenerateXorChecksumByte
+;   _ESQ_GenerateXorChecksumByte
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to ESQ_GenerateXorChecksumByte.
+;   Jump stub to _ESQ_GenerateXorChecksumByte.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte:
-    JMP     ESQ_GenerateXorChecksumByte
+    JMP     _ESQ_GenerateXorChecksumByte
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString   (JumpStub)

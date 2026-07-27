@@ -58,7 +58,7 @@ LOCAVAIL_STR_YYLLZ_FilterStateUpdate:
 ; SYM: _NEWGRID_MainRastPortPtr/_NEWGRID_HeaderRastPortPtr   (grid rastport pointers)
 ; TYPE: pointer/pointer (RastPort)
 ; PURPOSE: Primary NEWGRID body rastport and secondary header/top-bar rastport.
-; USED BY: NEWGRID_InitGridResources, NEWGRID_DrawTopBorderLine, CLEANUP_DrawGridTimeBanner, PARSEINI command font updates
+; USED BY: NEWGRID_InitGridResources, _NEWGRID_DrawTopBorderLine, CLEANUP_DrawGridTimeBanner, PARSEINI command font updates
 ; NOTES:
 ;   `_NEWGRID_MainRastPortPtr` binds to `_Global_REF_696_400_BITMAP`.
 ;   `_NEWGRID_HeaderRastPortPtr` binds to `WDISP_BannerGridBitmapStruct`.
@@ -71,7 +71,7 @@ _NEWGRID_HeaderRastPortPtr:
 ; SYM: _NEWGRID_GridResourcesInitializedFlag   (grid resource init guard)
 ; TYPE: u16
 ; PURPOSE: Guards NEWGRID resource allocation so init runs once per active session.
-; USED BY: NEWGRID_InitGridResources, NEWGRID_ShutdownGridResources
+; USED BY: NEWGRID_InitGridResources, _NEWGRID_ShutdownGridResources
 ; NOTES: Set to 1 after successful init path, cleared during grid shutdown.
 ;------------------------------------------------------------------------------
 _NEWGRID_GridResourcesInitializedFlag:

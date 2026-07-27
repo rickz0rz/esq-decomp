@@ -97,14 +97,14 @@ ED1_WaitForFlagAndClearBit0:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   NEWGRID_DrawTopBorderLine
+;   _NEWGRID_DrawTopBorderLine
 ; DESC:
-;   Jump stub to NEWGRID_DrawTopBorderLine.
+;   Jump stub to _NEWGRID_DrawTopBorderLine.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 ED1_JMPTBL_NEWGRID_DrawTopBorderLine:
-    JMP     NEWGRID_DrawTopBorderLine
+    JMP     _NEWGRID_DrawTopBorderLine
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ED1_JMPTBL_LOCAVAIL_ResetFilterCursorState   (Jump stub)
@@ -163,14 +163,14 @@ ED1_JMPTBL_GCOMMAND_ResetHighlightMessages:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LADFUNC_SetPackedPenLowNibble
+;   _LADFUNC_SetPackedPenLowNibble
 ; DESC:
-;   Jump stub to LADFUNC_SetPackedPenLowNibble.
+;   Jump stub to _LADFUNC_SetPackedPenLowNibble.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 ED1_JMPTBL_LADFUNC_MergeHighLowNibbles:
-    JMP     LADFUNC_SetPackedPenLowNibble
+    JMP     _LADFUNC_SetPackedPenLowNibble
 
 ;------------------------------------------------------------------------------
 ; FUNC: ED1_JMPTBL_LADFUNC_SaveTextAdsToFile   (Jump stub)
@@ -217,14 +217,14 @@ _ED1_JMPTBL_ESQ_ColdReboot:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
+;   _ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
 ; DESC:
-;   Jump stub to ESQSHARED4_LoadDefaultPaletteToCopper_NoOp.
+;   Jump stub to _ESQSHARED4_LoadDefaultPaletteToCopper_NoOp.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _ED1_JMPTBL_ESQSHARED4_LoadDefaultPaletteToCopper_NoOp:
-    JMP     ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
+    JMP     _ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ED1_JMPTBL_GCOMMAND_SeedBannerDefaults   (Jump stub)
@@ -307,14 +307,14 @@ _ED1_JMPTBL_CLEANUP_DrawDateTimeBannerRow:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LADFUNC_SetPackedPenHighNibble
+;   _LADFUNC_SetPackedPenHighNibble
 ; DESC:
-;   Jump stub to LADFUNC_SetPackedPenHighNibble.
+;   Jump stub to _LADFUNC_SetPackedPenHighNibble.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 ED1_JMPTBL_LADFUNC_PackNibblesToByte:
-    JMP     LADFUNC_SetPackedPenHighNibble
+    JMP     _LADFUNC_SetPackedPenHighNibble
 
 ;!======
 ; The below content should belong in another file... need to determine what it is.

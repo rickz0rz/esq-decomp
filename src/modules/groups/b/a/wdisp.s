@@ -1369,7 +1369,7 @@ WDISP_DrawWeatherStatusSummary:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   TEXTDISP_ResetSelectionAndRefresh, TLIBA3_ClearViewModeRastPort, _TLIBA3_BuildDisplayContextForViewMode, WDISP_DrawWeatherStatusOverlay, WDISP_DrawWeatherStatusSummary, _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
+;   _TEXTDISP_ResetSelectionAndRefresh, _TLIBA3_ClearViewModeRastPort, _TLIBA3_BuildDisplayContextForViewMode, WDISP_DrawWeatherStatusOverlay, WDISP_DrawWeatherStatusSummary, _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
 ; READS:
 ;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, _ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, _WDISP_DisplayContextBase, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRow0_Value, _WDISP_AccumulatorRow0_CopperIndexStart, _WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, _WDISP_AccumulatorRow1_CopperIndexStart, _WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, _WDISP_AccumulatorRow2_CopperIndexStart, _WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, _WDISP_AccumulatorRow3_CopperIndexStart, _WDISP_AccumulatorRow3_CopperIndexEnd, WDISP_WeatherCycleOffsetCount
 ; WRITES:
@@ -1378,7 +1378,7 @@ WDISP_DrawWeatherStatusSummary:
 ;   Dispatches weather-status commands (notably 48 and 51), renders status
 ;   content, and updates accumulator capture flags.
 ; NOTES:
-;   Command values other than 48/51 fall back to TEXTDISP_ResetSelectionAndRefresh.
+;   Command values other than 48/51 fall back to _TEXTDISP_ResetSelectionAndRefresh.
 ;------------------------------------------------------------------------------
 WDISP_HandleWeatherStatusCommand:
     LINK.W  A5,#-12
@@ -1398,7 +1398,7 @@ WDISP_HandleWeatherStatusCommand:
 .handle_status_cmd_render_panel:
     CLR.L   -(A7)
     PEA     4.W
-    JSR     TLIBA3_ClearViewModeRastPort(PC)
+    JSR     _TLIBA3_ClearViewModeRastPort(PC)
 
     MOVEQ   #4,D0
     MOVE.L  D0,(A7)
@@ -1592,7 +1592,7 @@ WDISP_HandleWeatherStatusCommand:
     BRA.S   .handle_status_cmd_return
 
 .handle_status_cmd_fallback_refresh:
-    JSR     TEXTDISP_ResetSelectionAndRefresh(PC)
+    JSR     _TEXTDISP_ResetSelectionAndRefresh(PC)
 
 .handle_status_cmd_return:
     MOVEM.L (A7)+,D2/D5-D7
@@ -1946,7 +1946,7 @@ _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   BRUSH_FindBrushByPredicate
+;   _BRUSH_FindBrushByPredicate
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1957,7 +1957,7 @@ _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 WDISP_JMPTBL_BRUSH_FindBrushByPredicate:
-    JMP     BRUSH_FindBrushByPredicate
+    JMP     _BRUSH_FindBrushByPredicate
 
 ;------------------------------------------------------------------------------
 ; FUNC: WDISP_JMPTBL_BRUSH_FreeBrushList   (Routine at WDISP_JMPTBL_BRUSH_FreeBrushList)
@@ -2012,7 +2012,7 @@ WDISP_JMPTBL_BRUSH_PlaneMaskForIndex:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_SetCopperEffect_OnEnableHighlight
+;   _ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -2023,7 +2023,7 @@ WDISP_JMPTBL_BRUSH_PlaneMaskForIndex:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight:
-    JMP     ESQ_SetCopperEffect_OnEnableHighlight
+    JMP     _ESQ_SetCopperEffect_OnEnableHighlight
 
 ;------------------------------------------------------------------------------
 ; FUNC: WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice   (Routine at WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice)
@@ -2100,7 +2100,7 @@ WDISP_JMPTBL_NEWGRID_DrawWrappedText:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   NEWGRID_ResetRowTable
+;   _NEWGRID_ResetRowTable
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -2111,7 +2111,7 @@ WDISP_JMPTBL_NEWGRID_DrawWrappedText:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 WDISP_JMPTBL_NEWGRID_ResetRowTable:
-    JMP     NEWGRID_ResetRowTable
+    JMP     _NEWGRID_ResetRowTable
 
 ;!======
 

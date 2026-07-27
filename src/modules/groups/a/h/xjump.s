@@ -70,7 +70,7 @@ _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQSHARED_ApplyProgramTitleTextFilters
+;   _ESQSHARED_ApplyProgramTitleTextFilters
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -81,7 +81,7 @@ _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
-    JMP     ESQSHARED_ApplyProgramTitleTextFilters
+    JMP     _ESQSHARED_ApplyProgramTitleTextFilters
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh   (Routine at GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh)
@@ -114,7 +114,7 @@ GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQSHARED_InitEntryDefaults
+;   _ESQSHARED_InitEntryDefaults
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -125,7 +125,7 @@ GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults:
-    JMP     ESQSHARED_InitEntryDefaults
+    JMP     _ESQSHARED_InitEntryDefaults
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate   (Routine at GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate)
@@ -202,7 +202,7 @@ GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_WildcardMatch
+;   _ESQ_WildcardMatch
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -213,7 +213,7 @@ GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AH_JMPTBL_ESQ_WildcardMatch:
-    JMP     ESQ_WildcardMatch
+    JMP     _ESQ_WildcardMatch
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile   (Routine at GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile)
@@ -268,7 +268,7 @@ GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_TestBit1Based
+;   _ESQ_TestBit1Based
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -279,7 +279,7 @@ GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AH_JMPTBL_ESQ_TestBit1Based:
-    JMP     ESQ_TestBit1Based
+    JMP     _ESQ_TestBit1Based
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay   (Routine at GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay)
@@ -290,7 +290,7 @@ GROUP_AH_JMPTBL_ESQ_TestBit1Based:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQIFF2_ShowAttentionOverlay
+;   _ESQIFF2_ShowAttentionOverlay
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -301,7 +301,7 @@ GROUP_AH_JMPTBL_ESQ_TestBit1Based:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay:
-    JMP     ESQIFF2_ShowAttentionOverlay
+    JMP     _ESQIFF2_ShowAttentionOverlay
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AH_JMPTBL_STR_FindAnyCharPtr   (Routine at _GROUP_AH_JMPTBL_STR_FindAnyCharPtr)
