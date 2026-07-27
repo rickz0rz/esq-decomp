@@ -40,6 +40,21 @@ extern void NEWGRID_ValidateSelectionCode(unsigned char *ctx, long code);
 extern short NEWGRID_ColumnStartXPx;
 extern short NEWGRID_ColumnWidthPx;
 
+/* Same display-context layout as esqdisp_queue_highlight_draw_message.c and
+ * newgrid_draw_grid_header_rows.c: a RastPort embedded at +60, with the two
+ * application fields at +32 and +52 that this function touches. Written as a
+ * struct so SAS/C folds the offsets into (d16,An) displacements rather than
+ * recomputing each address -- the reference uses 377c00110034 / 302b0034 /
+ * 27400020 here, all displacement forms. See AGENTS.md. */
+struct DispCtx {
+    char             pad0[32];
+    long             f32;           /* +32 */
+    char             pad36[16];     /* +36 .. +51 */
+    unsigned short   f52;           /* +52 */
+    char             pad54[6];      /* +54 .. +59 */
+    struct RastPort  rp;            /* +60 */
+};
+
 void NEWGRID_DrawClockFormatHeader(unsigned char *ctx, long startSlot)
 {
     char label[97];
@@ -52,7 +67,7 @@ void NEWGRID_DrawClockFormatHeader(unsigned char *ctx, long startSlot)
     long y;
     struct TextFont *font;
 
-    rp = (struct RastPort *)(ctx + 60);
+    rp = &((struct DispCtx *)ctx)->rp;
     SetDrMd(rp, 0L);
     SetAPen(rp, NEWGRID_SetRowColor(ctx, 0, 0));
     RectFill(rp, 0L, 0L, 695L, 33L);
@@ -82,7 +97,7 @@ void NEWGRID_DrawClockFormatHeader(unsigned char *ctx, long startSlot)
         Text(rp, label, (long)strlen(label));
     }
 
-    *(unsigned short *)(ctx + 52) = 17;
+    ((struct DispCtx *)ctx)->f52 = 17;
     NEWGRID_ValidateSelectionCode(ctx, 64);
-    *(long *)(ctx + 32) = *(unsigned short *)(ctx + 52);
+    ((struct DispCtx *)ctx)->f32 = ((struct DispCtx *)ctx)->f52;
 }
