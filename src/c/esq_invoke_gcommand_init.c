@@ -8,6 +8,14 @@
  *   summary: The original takes its arguments in REGISTERS rather than on the stack, so it is callable only from assembly. No C function can express that convention; this restoration documents the logic but cannot be linked in.
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
+ *
+ * DO NOT LINK. This restoration is valid as ANALYSIS and its byte comparison
+ * stands, but it must never be substituted into a build: takes its arguments in registers AND preserves them.
+ * A C function with an ordinary prologue is not a different encoding of that,
+ * it is wrong. tools/gen_all_manifest.py excludes it automatically; this note
+ * is here so the reason survives if the tooling changes.
+ *
+ * This class is what hung the machine on the first whole-program C run.
  */
 /* Register-argument wrapper: it pushes A0 and A1 as the callee's two arguments,
  * taking them from whatever the caller left in those registers. No C function

@@ -8,6 +8,14 @@
  *   summary: The original takes its arguments in REGISTERS rather than on the stack, so it is callable only from assembly. No C function can express that convention; this restoration documents the logic but cannot be linked in.
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
+ *
+ * DO NOT LINK. This restoration is valid as ANALYSIS and its byte comparison
+ * stands, but it must never be substituted into a build: installed as the RBF interrupt vector: entered with is_Data in A1, nothing on the stack.
+ * A C function with an ordinary prologue is not a different encoding of that,
+ * it is wrong. tools/gen_all_manifest.py excludes it automatically; this note
+ * is here so the reason survives if the tooling changes.
+ *
+ * This class is what hung the machine on the first whole-program C run.
  */
 /* Register-argument function: the custom-chip base arrives in A0 and the ring
  * buffer pointer in A1; it is a serial RBF interrupt handler. Documented only. */
