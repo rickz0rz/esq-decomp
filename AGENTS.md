@@ -293,6 +293,68 @@ it is safe to wire into a check.
 
 Known divergences so far are written up in `docs/compiler-version.md`.
 
+## Progress is measured in BYTES, not function count
+
+Function count flatters: the easy targets are small, so a high count can sit on a
+tiny fraction of the program. 202 restorations once read as 28% of the program
+and was 5.2% of it by byte.
+
+```sh
+python3 tools/coverage.py             # progress by byte and by count
+python3 tools/coverage.py --targets   # next targets, ranked
+```
+
+Targets are ranked by how likely they are to become byte-exact once the compiler
+is identified, which depends on how the original encoded their calls:
+
+- **cross-unit** — every call is `4EBA` (`JSR (d16,PC)`), the encoding the
+  original used for a callee in another translation unit. Our restorations are
+  one function per file, so every call we emit is cross-unit too. **These are the
+  high-value targets**: they are pre-positioned to match.
+- **intra-unit** — contains a `BSR.W` to a nearby callee, so that callee shared a
+  `.c` file with it. Matching those means reconstructing the original's source
+  grouping, which is a separate and much larger problem.
+
+## Reading a large restoration
+
+```sh
+tools/cdiff.sh <file.c> <Label> [sc options]   # size delta + differing regions
+```
+
+`cmatch.sh` prints both byte strings in full, which is unreadable past a hundred
+bytes. `cdiff.sh` prints one line per differing region with relocated fields
+excluded. **Region count is the number to watch**: a handful means a few idiom
+substitutions; dozens means the code generator laid the function out differently.
+
+Two rules that keep the record trustworthy:
+
+1. **Equal size is not evidence of fidelity.** Two restorations so far emitted
+   exactly the original's byte count while differing in 19 and 29 regions. Both
+   say so in their headers. Always report the region count alongside the size.
+2. **Account for the delta, or say you did not.** The strongest results explain
+   every byte (`ED_HandleSpecialFunctionsMenu`: 640 vs 656, being 8 x 2 from one
+   constant idiom). Where the bytes are not itemised, record it as a
+   known-unknown -- `CLEANUP_ReleaseDisplayResources` carries an
+   `unattributed-tail-delta` entry saying so. A guessed attribution is worse than
+   none, because the whole value of a `SASC-MISMATCH` block is that it can be
+   trusted on recheck.
+
+## Verifying a C build
+
+`build-split.sh` reports DIFFERS for any C build and that is expected -- objects
+are longword-sized, so a restored function of odd word length gains padding and
+shifts everything after it. The real acceptance test is:
+
+```sh
+C_REPLACEMENTS=src/c/replacements.txt ./build-split.sh
+python3 tools/verify_restorations.py
+```
+
+which locates each compiled replacement inside the linked CODE hunk and checks
+every byte, compares relocated fields positionally, confirms the size growth
+equals the sum of per-object rounding, and confirms every differing DATA byte
+sits inside a relocated longword.
+
 ## The C phase
 
 Replace assembly with C **one leaf subroutine at a time**, compiled by SAS/C
