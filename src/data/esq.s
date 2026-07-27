@@ -1,64 +1,64 @@
     XDEF    Global_REF_GRAPHICS_LIBRARY
-    XDEF    Global_REF_INTUITION_LIBRARY
-    XDEF    Global_REF_UTILITY_LIBRARY
+    XDEF    _Global_REF_INTUITION_LIBRARY
+    XDEF    _Global_REF_UTILITY_LIBRARY
     XDEF    Global_REF_BATTCLOCK_RESOURCE
     XDEF    Global_STRUCT_TEXTATTR_PREVUEC_FONT
     XDEF    Global_STRUCT_TEXTATTR_H26F_FONT
     XDEF    Global_STRUCT_TEXTATTR_TOPAZ_FONT
     XDEF    Global_STRUCT_TEXTATTR_PREVUE_FONT
-    XDEF    Global_HANDLE_PREVUE_FONT
-    XDEF    Global_REF_DISKFONT_LIBRARY
-    XDEF    Global_REF_DOS_LIBRARY
-    XDEF    ESQ_HighlightMsgPort
-    XDEF    ESQ_HighlightReplyPort
+    XDEF    _Global_HANDLE_PREVUE_FONT
+    XDEF    _Global_REF_DISKFONT_LIBRARY
+    XDEF    _Global_REF_DOS_LIBRARY
+    XDEF    _ESQ_HighlightMsgPort
+    XDEF    _ESQ_HighlightReplyPort
     XDEF    ESQ_ProcessWindowPtrBackup
-    XDEF    ESQ_STR_B
-    XDEF    ESQ_STR_E
-    XDEF    ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED
-    XDEF    ESQ_TAG_36
-    XDEF    ED_DiagScrollSpeedChar
+    XDEF    _ESQ_STR_B
+    XDEF    _ESQ_STR_E
+    XDEF    _ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED
+    XDEF    _ESQ_TAG_36
+    XDEF    _ED_DiagScrollSpeedChar
     XDEF    ESQ_DefaultNoFlagChar
     XDEF    CLOCK_MinuteEventBaseMinute
     XDEF    CLOCK_MinuteEventBaseOffset
-    XDEF    ESQ_STR_6
-    XDEF    ESQ_SecondarySlotModeFlagChar
-    XDEF    ESQ_STR_Y
+    XDEF    _ESQ_STR_6
+    XDEF    _ESQ_SecondarySlotModeFlagChar
+    XDEF    _ESQ_STR_Y
     XDEF    ESQ_AlertType4ModeFlagChar
     XDEF    ESQ_AlertType235ModeFlagChar
-    XDEF    ED_DiagGraphModeChar
-    XDEF    ED_DiagVinModeChar
-    XDEF    CLOCK_FormatVariantCode
+    XDEF    _ED_DiagGraphModeChar
+    XDEF    _ED_DiagVinModeChar
+    XDEF    _CLOCK_FormatVariantCode
     XDEF    WDISP_WeatherStatusTextPtr
-    XDEF    TEXTDISP_AliasCount
-    XDEF    ESQIFF_PrimaryLineHeadPtr
-    XDEF    ESQIFF_PrimaryLineTailPtr
-    XDEF    Global_REF_STR_CLOCK_FORMAT
+    XDEF    _TEXTDISP_AliasCount
+    XDEF    _ESQIFF_PrimaryLineHeadPtr
+    XDEF    _ESQIFF_PrimaryLineTailPtr
+    XDEF    _Global_REF_STR_CLOCK_FORMAT
     XDEF    TEXTDISP_DeferredActionCountdown
     XDEF    TEXTDISP_DeferredActionArmed
-    XDEF    GCOMMAND_PresetFallbackValue0
-    XDEF    GCOMMAND_PresetFallbackValue1
-    XDEF    GCOMMAND_PresetFallbackValue2
+    XDEF    _GCOMMAND_PresetFallbackValue0
+    XDEF    _GCOMMAND_PresetFallbackValue1
+    XDEF    _GCOMMAND_PresetFallbackValue2
     XDEF    GCOMMAND_PresetFallbackValue3
     XDEF    ESQ_ShutdownRequestedFlag
-    XDEF    ESQ_MainLoopUiTickEnabledFlag
-    XDEF    Global_HANDLE_PREVUEC_FONT
-    XDEF    Global_HANDLE_H26F_FONT
-    XDEF    Global_HANDLE_TOPAZ_FONT
+    XDEF    _ESQ_MainLoopUiTickEnabledFlag
+    XDEF    _Global_HANDLE_PREVUEC_FONT
+    XDEF    _Global_HANDLE_H26F_FONT
+    XDEF    _Global_HANDLE_TOPAZ_FONT
     XDEF    ESQIFF_SecondaryLineHeadPtr
-    XDEF    ESQIFF_SecondaryLineTailPtr
-    XDEF    ESQ_STR_A
+    XDEF    _ESQIFF_SecondaryLineTailPtr
+    XDEF    _ESQ_STR_A
     XDEF    WDISP_WeatherStatusOverlayTextPtr
-    XDEF    Global_LONG_ROM_VERSION_CHECK
-    XDEF    ESQDISP_StatusIndicatorDeferredApplyFlag
+    XDEF    _Global_LONG_ROM_VERSION_CHECK
+    XDEF    _ESQDISP_StatusIndicatorDeferredApplyFlag
     XDEF    CLEANUP_DiagOverlayAutoRefreshFlag
-    XDEF    ED_DiagAvailMemMask
+    XDEF    _ED_DiagAvailMemMask
     XDEF    ED_DiagAvailMemPresetBits
-    XDEF    ESQDISP_GridMessagePumpBlockFlag
+    XDEF    _ESQDISP_GridMessagePumpBlockFlag
     XDEF    SCRIPT_StatusRefreshHoldFlag
     XDEF    TEXTDISP_TickSuspendFlag
     XDEF    Global_WORD_SELECT_CODE_IS_RAVESC
     XDEF    ESQPARS_PersistOnNextBoxOffFlag
-    XDEF    HAS_REQUESTED_FAST_MEMORY
+    XDEF    _HAS_REQUESTED_FAST_MEMORY
     XDEF    _IS_COMPATIBLE_VIDEO_CHIP
     XDEF    Global_STR_RAVESC
     XDEF    Global_STR_COPY_NIL_ASSIGN_RAM
@@ -98,18 +98,18 @@
     XDEF    ESQ_STR_DITHER
     XDEF    Global_STR_DF0_BANNER_INI_1
     XDEF    ESQ_TAG_GRANADA
-    XDEF    Global_LONG_BUILD_NUMBER
-    XDEF    Global_PTR_STR_BUILD_ID
+    XDEF    _Global_LONG_BUILD_NUMBER
+    XDEF    _Global_PTR_STR_BUILD_ID
     XDEF    ESQ_CopperEffectListA
     XDEF    ESQ_CopperEffectListB_PtrHiWord
     XDEF    ESQ_CopperEffectListB_PtrLoWord
     XDEF    ESQ_CopperEffectTemplateRowsSet0
-    XDEF    ESQ_CopperStatusDigitsA
+    XDEF    _ESQ_CopperStatusDigitsA
     XDEF    ESQ_CopperStatusDigitsA_ColorRegistersA
     XDEF    ESQ_CopperStatusDigitsA_ColorRegistersB
     XDEF    ESQ_CopperStatusDigitsA_ColorRegistersC
     XDEF    ESQ_CopperStatusDigitsA_TailColorWord
-    XDEF    ESQ_CopperListBannerA
+    XDEF    _ESQ_CopperListBannerA
     XDEF    ESQ_BannerWorkRasterPtrA_HiWord
     XDEF    ESQ_BannerWorkRasterPtrA_LoWord
     XDEF    ESQ_BannerPaletteWordsA
@@ -154,7 +154,7 @@
     XDEF    ESQ_CopperStatusDigitsB
     XDEF    ESQ_CopperStatusDigitsB_ColorRegistersA
     XDEF    ESQ_CopperStatusDigitsB_TailColorWord
-    XDEF    ESQ_CopperListBannerB
+    XDEF    _ESQ_CopperListBannerB
     XDEF    ESQ_BannerWorkRasterPtrB_HiWord
     XDEF    ESQ_BannerWorkRasterPtrB_LoWord
     XDEF    ESQ_BannerPaletteWordsB
@@ -180,8 +180,8 @@
     XDEF    ESQ_CopperEffectJumpTargetB_LoWord
     XDEF    ESQ_BannerColorSweepProgramB_AnchorColorWord
     XDEF    ESQ_BannerColorSweepProgramB_TailColorWord
-    XDEF    ESQ_BannerColorClampValueB
-    XDEF    ESQ_BannerColorClampWaitRowB
+    XDEF    _ESQ_BannerColorClampValueB
+    XDEF    _ESQ_BannerColorClampWaitRowB
     XDEF    ESQ_BannerSweepSrcPlane0PtrReset_HiWord
     XDEF    ESQ_BannerSweepSrcPlane0PtrReset_LoWord
     XDEF    ESQ_BannerSweepSrcPlane1PtrReset_HiWord
@@ -189,17 +189,17 @@
     XDEF    ESQ_BannerSweepSrcPlane2PtrReset_HiWord
     XDEF    ESQ_BannerSweepSrcPlane2PtrReset_LoWord
     XDEF    ESQ_CopperEffectSwitchWaitWordB
-    XDEF    ESQ_CopperBannerTailListB
+    XDEF    _ESQ_CopperBannerTailListB
     XDEF    ESQ_BannerWorkRasterPtrTailB_HiWord
     XDEF    ESQ_CopperBannerRasterPointerListB
-    XDEF    Global_PTR_AUD1_DMA
+    XDEF    _Global_PTR_AUD1_DMA
 ; ========== ESQ.c ==========
 
 Global_REF_GRAPHICS_LIBRARY:
     DC.L    0
-Global_REF_INTUITION_LIBRARY:
+_Global_REF_INTUITION_LIBRARY:
     DC.L    0
-Global_REF_UTILITY_LIBRARY:
+_Global_REF_UTILITY_LIBRARY:
     DC.L    0
 Global_REF_BATTCLOCK_RESOURCE:
     DC.L    0
@@ -236,22 +236,22 @@ Global_STRUCT_TEXTATTR_PREVUE_FONT:
     DC.B    $40     ; Style
     DC.B    $20     ; Flags
 
-Global_HANDLE_PREVUE_FONT:
+_Global_HANDLE_PREVUE_FONT:
     DC.L    0
-Global_REF_DISKFONT_LIBRARY:
+_Global_REF_DISKFONT_LIBRARY:
     DC.L    0
-Global_REF_DOS_LIBRARY:
+_Global_REF_DOS_LIBRARY:
     DC.L    0
 ;------------------------------------------------------------------------------
-; SYM: ESQ_HighlightMsgPort/ESQ_HighlightReplyPort   (highlight message ports)
+; SYM: _ESQ_HighlightMsgPort/_ESQ_HighlightReplyPort   (highlight message ports)
 ; TYPE: pointer/pointer (Exec MsgPort)
 ; PURPOSE: Main message port for highlight work messages and paired reply port.
 ; USED BY: ESQ init/cleanup, ESQDISP message submit, GCOMMAND message service, NEWGRID polling
 ; NOTES: Allocated as MsgPort-sized blocks during ESQ startup.
 ;------------------------------------------------------------------------------
-ESQ_HighlightMsgPort:
+_ESQ_HighlightMsgPort:
     DC.L    0
-ESQ_HighlightReplyPort:
+_ESQ_HighlightReplyPort:
     DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_ProcessWindowPtrBackup   (startup/restored process window pointer)
@@ -264,32 +264,32 @@ ESQ_ProcessWindowPtrBackup:
     DC.L    0
 ; ED_DiagVinModeChar_Length moved to src/data-lengths.s (plain constant, value 1)
 
-ESQ_STR_B:
+_ESQ_STR_B:
     DC.B    "B"
-    assert ESQ_STR_B_Length==ESQ_STR_E-ESQ_STR_B,"ESQ_STR_B_Length in data-lengths.s is out of sync with the data layout"
+    assert ESQ_STR_B_Length==_ESQ_STR_E-_ESQ_STR_B,"ESQ_STR_B_Length in data-lengths.s is out of sync with the data layout"
 
-ESQ_STR_E:
+_ESQ_STR_E:
     DC.B    "E"
-    assert ESQ_STR_E_Length==ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED-ESQ_STR_E,"ESQ_STR_E_Length in data-lengths.s is out of sync with the data layout"
+    assert ESQ_STR_E_Length==_ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED-_ESQ_STR_E,"ESQ_STR_E_Length in data-lengths.s is out of sync with the data layout"
 
-ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED:
+_ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED:
     DC.B    "3"
-    assert ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length==ESQ_TAG_36-ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED,"ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length in data-lengths.s is out of sync with the data layout"
+    assert ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length==_ESQ_TAG_36-_ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED,"ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length in data-lengths.s is out of sync with the data layout"
 
-ESQ_TAG_36:
+_ESQ_TAG_36:
     DC.B    "36"
-    assert ESQ_TAG_36_Length==ED_DiagScrollSpeedChar-ESQ_TAG_36,"ESQ_TAG_36_Length in data-lengths.s is out of sync with the data layout"
+    assert ESQ_TAG_36_Length==_ED_DiagScrollSpeedChar-_ESQ_TAG_36,"ESQ_TAG_36_Length in data-lengths.s is out of sync with the data layout"
 
 ;------------------------------------------------------------------------------
-; SYM: ED_DiagScrollSpeedChar   (diagnostic SSPD selector char)
+; SYM: _ED_DiagScrollSpeedChar   (diagnostic SSPD selector char)
 ; TYPE: u8 (ASCII digit)
 ; PURPOSE: Single-character diagnostic scroll-speed selector shown in ED diagnostics.
-; USED BY: ED_DrawDiagnosticModeText, ED2 diagnostic menu speed cycling, ESQIFF2 diagnostics
+; USED BY: _ED_DrawDiagnosticModeText, ED2 diagnostic menu speed cycling, ESQIFF2 diagnostics
 ; NOTES: Default is `'6'`; ED2 cycles this value and mirrors it into related counters.
 ;------------------------------------------------------------------------------
-ED_DiagScrollSpeedChar:
+_ED_DiagScrollSpeedChar:
     DC.B    "6"
-    assert ED_DiagScrollSpeedChar_Length==ESQ_DefaultNoFlagChar-ED_DiagScrollSpeedChar,"ED_DiagScrollSpeedChar_Length in data-lengths.s is out of sync with the data layout"
+    assert ED_DiagScrollSpeedChar_Length==ESQ_DefaultNoFlagChar-_ED_DiagScrollSpeedChar,"ED_DiagScrollSpeedChar_Length in data-lengths.s is out of sync with the data layout"
 
 ESQ_DefaultNoFlagChar:
     DC.B    "N"
@@ -304,17 +304,17 @@ CLOCK_MinuteEventBaseMinute:
     DC.B    1
 CLOCK_MinuteEventBaseOffset:
     DC.B    1
-ESQ_STR_6:
+_ESQ_STR_6:
     DC.B    "6"
-    assert ESQ_STR_6_Length==ESQ_SecondarySlotModeFlagChar-ESQ_STR_6,"ESQ_STR_6_Length in data-lengths.s is out of sync with the data layout"
+    assert ESQ_STR_6_Length==_ESQ_SecondarySlotModeFlagChar-_ESQ_STR_6,"ESQ_STR_6_Length in data-lengths.s is out of sync with the data layout"
 
-ESQ_SecondarySlotModeFlagChar:
+_ESQ_SecondarySlotModeFlagChar:
     DC.B    "N"
-    assert ESQ_SecondarySlotModeFlagChar_Length==ESQ_STR_Y-ESQ_SecondarySlotModeFlagChar,"ESQ_SecondarySlotModeFlagChar_Length in data-lengths.s is out of sync with the data layout"
+    assert ESQ_SecondarySlotModeFlagChar_Length==_ESQ_STR_Y-_ESQ_SecondarySlotModeFlagChar,"ESQ_SecondarySlotModeFlagChar_Length in data-lengths.s is out of sync with the data layout"
 
-ESQ_STR_Y:
+_ESQ_STR_Y:
     DC.B    "Y"
-    assert ESQ_STR_Y_Length==ESQ_ReservedFlagChar0-ESQ_STR_Y,"ESQ_STR_Y_Length in data-lengths.s is out of sync with the data layout"
+    assert ESQ_STR_Y_Length==ESQ_ReservedFlagChar0-_ESQ_STR_Y,"ESQ_STR_Y_Length in data-lengths.s is out of sync with the data layout"
 ESQ_ReservedFlagChar0:
     DC.B    "N"
 ESQ_AlertType4ModeFlagChar:
@@ -323,25 +323,25 @@ ESQ_AlertType235ModeFlagChar:
     DC.B    "N"
     DC.B    "YA"
 ;------------------------------------------------------------------------------
-; SYM: ED_DiagGraphModeChar/ED_DiagVinModeChar   (diagnostic GRPH/VIN selector chars)
+; SYM: _ED_DiagGraphModeChar/_ED_DiagVinModeChar   (diagnostic GRPH/VIN selector chars)
 ; TYPE: u8/u8 (ASCII)
 ; PURPOSE: Current single-char selectors shown in ED diagnostics for GRPH and VIN columns.
-; USED BY: ED_DrawDiagnosticModeText, ED2 diagnostic menu action cycling, SCRIPT3_/ESQIFF2_/ESQFUNC_ flows
+; USED BY: _ED_DrawDiagnosticModeText, ED2 diagnostic menu action cycling, SCRIPT3_/ESQIFF2_/ESQFUNC_ flows
 ; NOTES: Values are cycled through fixed option tables by ED diagnostics handlers.
 ;------------------------------------------------------------------------------
-ED_DiagGraphModeChar:
+_ED_DiagGraphModeChar:
     DC.B    "N"
-    assert ED_DiagGraphModeChar_Length==ED_DiagVinModeChar-ED_DiagGraphModeChar,"ED_DiagGraphModeChar_Length in data-lengths.s is out of sync with the data layout"
-ED_DiagVinModeChar:
+    assert ED_DiagGraphModeChar_Length==_ED_DiagVinModeChar-_ED_DiagGraphModeChar,"ED_DiagGraphModeChar_Length in data-lengths.s is out of sync with the data layout"
+_ED_DiagVinModeChar:
     DC.B    "N"
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_FormatVariantCode   (clock format variant code)
+; SYM: _CLOCK_FormatVariantCode   (clock format variant code)
 ; TYPE: u8
 ; PURPOSE: Selects variant for clock/time text formatting.
 ; USED BY: TEXTDISP3_*, NEWGRID_*, CLEANUP2_*, DST2_*
 ; NOTES: Consumed by routines that format hour/minute display variants.
 ;------------------------------------------------------------------------------
-CLOCK_FormatVariantCode:
+_CLOCK_FormatVariantCode:
     DC.B    0
 ESQ_TopazGuardRastPortAnchor:
     DC.W    0
@@ -355,33 +355,33 @@ ESQ_TopazGuardRastPortAnchor:
 WDISP_WeatherStatusTextPtr:
     DC.L    0
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_AliasCount   (alias table entry count)
+; SYM: _TEXTDISP_AliasCount   (alias table entry count)
 ; TYPE: u16
 ; PURPOSE: Number of active alias-table entries.
 ; USED BY: TEXTDISP_FindAliasIndexByName, PARSEINI_*, DISKIO2_*, ESQPARS_*
 ; NOTES: Used as loop bound for alias-pointer table scans.
 ;------------------------------------------------------------------------------
-TEXTDISP_AliasCount:
+_TEXTDISP_AliasCount:
     DC.W    0
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_PrimaryLineHeadPtr   (primary line head text pointer)
+; SYM: _ESQIFF_PrimaryLineHeadPtr   (primary line head text pointer)
 ; TYPE: pointer
 ; PURPOSE: First segment pointer for primary ESQIFF line text.
 ; USED BY: ESQIFF2_*, DISKIO2_*, CLEANUP3_*, ESQDISP_*
-; NOTES: Paired with ESQIFF_PrimaryLineTailPtr.
+; NOTES: Paired with _ESQIFF_PrimaryLineTailPtr.
 ;------------------------------------------------------------------------------
-ESQIFF_PrimaryLineHeadPtr:
+_ESQIFF_PrimaryLineHeadPtr:
     DC.L    0
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_PrimaryLineTailPtr   (primary line tail text pointer)
+; SYM: _ESQIFF_PrimaryLineTailPtr   (primary line tail text pointer)
 ; TYPE: pointer
 ; PURPOSE: Second segment pointer for primary ESQIFF line text.
 ; USED BY: ESQIFF2_*, DISKIO2_*, CLEANUP3_*, ESQDISP_*
-; NOTES: Paired with ESQIFF_PrimaryLineHeadPtr.
+; NOTES: Paired with _ESQIFF_PrimaryLineHeadPtr.
 ;------------------------------------------------------------------------------
-ESQIFF_PrimaryLineTailPtr:
+_ESQIFF_PrimaryLineTailPtr:
     DC.L    0
-Global_REF_STR_CLOCK_FORMAT:
+_Global_REF_STR_CLOCK_FORMAT:
     DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_DeferredActionCountdown   (deferred action countdown)
@@ -402,17 +402,17 @@ TEXTDISP_DeferredActionCountdown:
 TEXTDISP_DeferredActionArmed:
     DC.W    0
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3   (banner preset fallback nibble values)
+; SYM: _GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3   (banner preset fallback nibble values)
 ; TYPE: u8/u8/u8/u8
 ; PURPOSE: Per-lane fallback values used when preset work entries are negative.
 ; USED BY: GCOMMAND_RebuildBannerTablesFromBounds, ED diagnostic nibble editor/drawer
 ; NOTES: Followed by packed template bytes consumed by nearby table-style logic.
 ;------------------------------------------------------------------------------
-GCOMMAND_PresetFallbackValue0:
+_GCOMMAND_PresetFallbackValue0:
     DC.B    0
-GCOMMAND_PresetFallbackValue1:
+_GCOMMAND_PresetFallbackValue1:
     DC.B    0
-GCOMMAND_PresetFallbackValue2:
+_GCOMMAND_PresetFallbackValue2:
     DC.B    $03
 GCOMMAND_PresetFallbackValue3:
     ; First byte doubles as fallback value #3 for banner rebuild.
@@ -422,21 +422,21 @@ GCOMMAND_PresetFallbackTemplateTable:
     DC.L    $05000003,$00080007,$00070007,$07000c00
     DC.L    $0c000c00,$0c0c0c00,$0000000c
 ;------------------------------------------------------------------------------
-; SYM: ESQ_ShutdownRequestedFlag/ESQ_MainLoopUiTickEnabledFlag   (main-loop runtime gates)
+; SYM: ESQ_ShutdownRequestedFlag/_ESQ_MainLoopUiTickEnabledFlag   (main-loop runtime gates)
 ; TYPE: u16/u16
 ; PURPOSE: Shutdown request latch and UI-tick enable gate for the main loop.
-; USED BY: ESQ_MainInitAndRun, ESQFUNC_ServiceUiTickIfRunning, ED menu handlers
+; USED BY: ESQ_MainInitAndRun, _ESQFUNC_ServiceUiTickIfRunning, ED menu handlers
 ; NOTES: Shutdown flag exits the main idle loop when non-zero.
 ;------------------------------------------------------------------------------
 ESQ_ShutdownRequestedFlag:
     DC.W    0
-ESQ_MainLoopUiTickEnabledFlag:
+_ESQ_MainLoopUiTickEnabledFlag:
     DC.W    0
-Global_HANDLE_PREVUEC_FONT:
+_Global_HANDLE_PREVUEC_FONT:
     DC.L    0
-Global_HANDLE_H26F_FONT:
+_Global_HANDLE_H26F_FONT:
     DC.L    0
-Global_HANDLE_TOPAZ_FONT:
+_Global_HANDLE_TOPAZ_FONT:
     DC.L    0,0,0
     DC.W    0
 ;------------------------------------------------------------------------------
@@ -451,35 +451,35 @@ ESQIFF_SecondaryLineHeadPtr:
 ESQIFF_SecondaryLineHeadPtr_HiWord:
     DC.W    0
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_SecondaryLineTailPtr   (secondary line tail text pointer)
+; SYM: _ESQIFF_SecondaryLineTailPtr   (secondary line tail text pointer)
 ; TYPE: pointer
 ; PURPOSE: Second segment pointer for secondary ESQIFF line text.
 ; USED BY: ESQIFF2_*, ESQDISP_*
 ; NOTES: Paired with ESQIFF_SecondaryLineHeadPtr.
 ;------------------------------------------------------------------------------
-ESQIFF_SecondaryLineTailPtr:
+_ESQIFF_SecondaryLineTailPtr:
     DC.L    0
-ESQ_STR_A:
+_ESQ_STR_A:
     NStr    "A"
 ;------------------------------------------------------------------------------
 ; SYM: WDISP_WeatherStatusOverlayTextPtr   (weather overlay text pointer)
 ; TYPE: pointer
 ; PURPOSE: Dynamic text pointer used by weather/status overlay formatting paths.
 ; USED BY: UNKNOWN_ParseRecordAndUpdateDisplay, WDISP weather draw paths, ESQIFF helpers
-; NOTES: Updated through ESQPARS_ReplaceOwnedString-style realloc/copy helper flows.
+; NOTES: Updated through _ESQPARS_ReplaceOwnedString-style realloc/copy helper flows.
 ;------------------------------------------------------------------------------
 WDISP_WeatherStatusOverlayTextPtr:
     DC.L    0
-Global_LONG_ROM_VERSION_CHECK:
+_Global_LONG_ROM_VERSION_CHECK:
     DC.L    1
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_StatusIndicatorDeferredApplyFlag   (status-indicator deferred paint gate)
+; SYM: _ESQDISP_StatusIndicatorDeferredApplyFlag   (status-indicator deferred paint gate)
 ; TYPE: u8
 ; PURPOSE: Defers indicator repaint and caches color while attention countdown is active.
 ; USED BY: GCOMMAND_ConsumeBannerQueueEntry, ESQDISP_SetStatusIndicatorColorSlot
 ; NOTES: Set on queue control byte `0xFF`, cleared when countdown expires.
 ;------------------------------------------------------------------------------
-ESQDISP_StatusIndicatorDeferredApplyFlag:
+_ESQDISP_StatusIndicatorDeferredApplyFlag:
     DC.B    0
 ;------------------------------------------------------------------------------
 ; SYM: CLEANUP_DiagOverlayAutoRefreshFlag   (diagnostic overlay auto-refresh enable)
@@ -491,13 +491,13 @@ ESQDISP_StatusIndicatorDeferredApplyFlag:
 CLEANUP_DiagOverlayAutoRefreshFlag:
     DC.B    0
 ;------------------------------------------------------------------------------
-; SYM: ED_DiagAvailMemMask   (diagnostics available-memory mask)
+; SYM: _ED_DiagAvailMemMask   (diagnostics available-memory mask)
 ; TYPE: u32 (stored in word slot + alignment)
 ; PURPOSE: Selects which memory classes (chip/fast/max/largest) are displayed on diagnostics screen.
 ; USED BY: ED2_HandleDiagnosticsMenuActions, ESQFUNC_DrawMemoryStatusScreen
 ; NOTES: Low three bits are toggled by diagnostics actions.
 ;------------------------------------------------------------------------------
-ED_DiagAvailMemMask:
+_ED_DiagAvailMemMask:
     DC.W    0
     DC.B    0
 ;------------------------------------------------------------------------------
@@ -510,13 +510,13 @@ ED_DiagAvailMemMask:
 ED_DiagAvailMemPresetBits:
     DC.B    0
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_GridMessagePumpBlockFlag/SCRIPT_StatusRefreshHoldFlag/TEXTDISP_TickSuspendFlag/ESQPARS_PersistOnNextBoxOffFlag
+; SYM: _ESQDISP_GridMessagePumpBlockFlag/SCRIPT_StatusRefreshHoldFlag/TEXTDISP_TickSuspendFlag/ESQPARS_PersistOnNextBoxOffFlag
 ; TYPE: u16/u16/u16/u16
 ; PURPOSE: Misc runtime gates for grid message pump, script refresh hold, text tick suspend, and deferred boxoff persist.
 ; USED BY: ESQDISP_ProcessGridMessagesIfIdle, SCRIPT_UpdateCtrlStateMachine, TEXTDISP_TickDisplayState, ESQPARS command parser
 ; NOTES: `ESQPARS_PersistOnNextBoxOffFlag` is set by `%` command and consumed by boxoff path.
 ;------------------------------------------------------------------------------
-ESQDISP_GridMessagePumpBlockFlag:
+_ESQDISP_GridMessagePumpBlockFlag:
     DC.W    0
 SCRIPT_StatusRefreshHoldFlag:
     DC.W    0
@@ -526,7 +526,7 @@ Global_WORD_SELECT_CODE_IS_RAVESC:
     DC.W    0
 ESQPARS_PersistOnNextBoxOffFlag:
     DC.W    0
-HAS_REQUESTED_FAST_MEMORY:
+_HAS_REQUESTED_FAST_MEMORY:
     DC.W    0
 _IS_COMPATIBLE_VIDEO_CHIP:
     DC.L    1
@@ -606,19 +606,19 @@ Global_STR_DF0_BANNER_INI_1:
     NStr    "df0:banner.ini"
 ESQ_TAG_GRANADA:
     NStr    "GRANADA"
-Global_LONG_BUILD_NUMBER:
+_Global_LONG_BUILD_NUMBER:
     DC.L    21
 Global_STR_BUILD_ID:
     NStr    "JGT"   ; build id string
-Global_PTR_STR_BUILD_ID:
+_Global_PTR_STR_BUILD_ID:
     DC.L    Global_STR_BUILD_ID
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_CopperEffectListA/ESQ_CopperEffectListB   (paired copper effect lists)
 ; TYPE: u32[]/u32[]
 ; PURPOSE: Paired copperlists used for effect/status-band rendering and selected by VPOSR field state.
-; USED BY: ESQ_UpdateCopperListsFromParams, ESQSHARED4_ProgramDisplayWindowAndCopper, ESQSHARED4_TickCopperAndBannerTransitions
+; USED BY: _ESQ_UpdateCopperListsFromParams, ESQSHARED4_ProgramDisplayWindowAndCopper, ESQSHARED4_TickCopperAndBannerTransitions
 ; NOTES:
-;   ESQ_UpdateCopperListsFromParams writes synchronized effect words into both lists.
+;   _ESQ_UpdateCopperListsFromParams writes synchronized effect words into both lists.
 ;   Selector polarity differs across some call paths; keep neutral A/B naming.
 ;------------------------------------------------------------------------------
 ESQ_CopperEffectListA:
@@ -658,13 +658,13 @@ ESQ_CopperEffectTemplateRowsSet0:
     DS.L    19
     DC.W    $0180
 ;------------------------------------------------------------------------------
-; SYM: ESQ_CopperStatusDigitsA   (copper status digit list A)
+; SYM: _ESQ_CopperStatusDigitsA   (copper status digit list A)
 ; TYPE: u32[]
 ; PURPOSE: Base copperlist words for status-digit rendering set A.
 ; USED BY: APP2_*, ESQFUNC_*, ESQSHARED4_*
 ; NOTES: Paired with ESQ_CopperStatusDigitsB.
 ;------------------------------------------------------------------------------
-ESQ_CopperStatusDigitsA:
+_ESQ_CopperStatusDigitsA:
     DC.L    $00030182
 ESQ_CopperStatusDigitsA_ColorRegistersA:
     DC.L    $0aaa0184,$03330186,$05550188,$0512018a
@@ -680,13 +680,13 @@ ESQ_CopperStatusDigitsA_ColorRegistersC:
 ESQ_CopperStatusDigitsA_TailColorWord:
     DC.W    $0003
 ;------------------------------------------------------------------------------
-; SYM: ESQ_CopperListBannerA   (banner copper list A)
+; SYM: _ESQ_CopperListBannerA   (banner copper list A)
 ; TYPE: u32[]
 ; PURPOSE: Copper command template for banner/digital overlay variant A.
 ; USED BY: GCOMMAND3_*, APP2_*, ESQSHARED4_*
 ; NOTES: Contains register/value words plus wait terminator.
 ;------------------------------------------------------------------------------
-ESQ_CopperListBannerA:
+_ESQ_CopperListBannerA:
     DC.L    $00d9fffe,$00920030,$009400d8,$008e1769
     DC.L    $0090ffc5,$01080058,$010a0058,$01009306
     DC.L    $01020000,$01820003
@@ -797,7 +797,7 @@ ESQ_BannerPlane2DstPtrReset_LoWord:
 ESQ_CopperEffectSwitchWaitWordA:
     DC.L    $009c8010
 ;------------------------------------------------------------------------------
-; SYM: ESQ_CopperBannerTailListA/ESQ_CopperBannerTailListB   (banner copper tail lists)
+; SYM: ESQ_CopperBannerTailListA/_ESQ_CopperBannerTailListB   (banner copper tail lists)
 ; TYPE: u32[]/u32[]
 ; PURPOSE: Short tail command lists appended into each banner copper program.
 ; USED BY: ESQSHARED4_ResetBannerColorSweepState
@@ -1118,7 +1118,7 @@ ESQ_CopperEffectTemplateRowsSet1:
 ; TYPE: u32[]
 ; PURPOSE: Alternate status-digit copperlist template.
 ; USED BY: APP2_*, ESQFUNC_*, ESQSHARED4_*
-; NOTES: Mirrors ESQ_CopperStatusDigitsA structure with companion data set.
+; NOTES: Mirrors _ESQ_CopperStatusDigitsA structure with companion data set.
 ;------------------------------------------------------------------------------
 ESQ_CopperStatusDigitsB:
     DC.L    $00030182
@@ -1128,13 +1128,13 @@ ESQ_CopperStatusDigitsB_ColorRegistersA:
 ESQ_CopperStatusDigitsB_TailColorWord:
     DC.W    $0003
 ;------------------------------------------------------------------------------
-; SYM: ESQ_CopperListBannerB   (banner copper list B)
+; SYM: _ESQ_CopperListBannerB   (banner copper list B)
 ; TYPE: u32[]
 ; PURPOSE: Copper command template for banner/digital overlay variant B.
 ; USED BY: GCOMMAND3_*, APP2_*, ESQSHARED4_*
-; NOTES: Companion to ESQ_CopperListBannerA.
+; NOTES: Companion to _ESQ_CopperListBannerA.
 ;------------------------------------------------------------------------------
-ESQ_CopperListBannerB:
+_ESQ_CopperListBannerB:
     DC.L    $00d9fffe,$00920030,$009400d8,$008e1769
     DC.L    $0090ffc5,$01080058,$010a0058,$01009306
     DC.L    $01020000,$01820003
@@ -1224,9 +1224,9 @@ ESQ_BannerColorSweepProgramB_AnchorColorWord:
     DC.L    $0aaa018e
 ESQ_BannerColorSweepProgramB_TailColorWord:
     DC.W    $0003
-ESQ_BannerColorClampValueB:
+_ESQ_BannerColorClampValueB:
     DC.B    0
-ESQ_BannerColorClampWaitRowB:
+_ESQ_BannerColorClampWaitRowB:
     DC.B    $d9
     DC.L    $fffe0180,$00f000e0
 ESQ_BannerSweepSrcPlane0PtrReset_HiWord:
@@ -1243,7 +1243,7 @@ ESQ_BannerSweepSrcPlane2PtrReset_LoWord:
     DC.W    0
 ESQ_CopperEffectSwitchWaitWordB:
     DC.L    $009c8010
-ESQ_CopperBannerTailListB:
+_ESQ_CopperBannerTailListB:
     DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W    $00e0
 ESQ_BannerWorkRasterPtrTailB_HiWord:
@@ -1507,5 +1507,5 @@ ESQ_CopperBannerRasterPointerListB:
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff
     DC.W    $fffe
-Global_PTR_AUD1_DMA:
+_Global_PTR_AUD1_DMA:
     DC.L    76

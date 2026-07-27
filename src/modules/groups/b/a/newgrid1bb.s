@@ -8,14 +8,14 @@
     XDEF    NEWGRID_HandleShowtimesState
     XDEF    NEWGRID_InitSelectionWindowAlt
     XDEF    NEWGRID_ProcessShowtimesWorkflow
-    XDEF    NEWGRID_ResetShowtimeBuckets
+    XDEF    _NEWGRID_ResetShowtimeBuckets
     XDEF    NEWGRID_TestEntrySelectable
     XDEF    NEWGRID_TestModeFlagActive
     XDEF    NEWGRID_TestPrimeTimeWindow
     XDEF    NEWGRID_UpdateSelectionFromInputAlt
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_ResetShowtimeBuckets   (Reset showtime buckets)
+; FUNC: _NEWGRID_ResetShowtimeBuckets   (Reset showtime buckets)
 ; ARGS:
 ;   none
 ; RET:
@@ -31,7 +31,7 @@
 ; DESC:
 ;   Clears bucket count and reinitializes bucket records.
 ;------------------------------------------------------------------------------
-NEWGRID_ResetShowtimeBuckets:
+_NEWGRID_ResetShowtimeBuckets:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D0
@@ -81,7 +81,7 @@ NEWGRID_ResetShowtimeBuckets:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   PARSEINI_JMPTBL_STR_FindCharPtr, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
+;   _PARSEINI_JMPTBL_STR_FindCharPtr, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   _NEWGRID_ShowtimeBucketEntryTable, _NEWGRID_ShowtimeBucketPtrTable, NEWGRID_ShowtimeBucketCount
 ; WRITES:
@@ -99,7 +99,7 @@ NEWGRID_AddShowtimeBucketEntry:
     CLR.L   -20(A5)
     PEA     58.W
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     MOVEA.L D0,A0
     LEA     1(A0),A1
@@ -270,11 +270,11 @@ NEWGRID_AppendShowtimeBuckets:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState, NEWGRID2_JMPTBL_STR_SkipClass3Chars,
-;   NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry,
+;   _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState, _NEWGRID2_JMPTBL_STR_SkipClass3Chars,
+;   _NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry,
 ;   NEWGRID_AppendShowtimeBuckets, PARSEINI_JMPTBL_STRING_AppendAtNull
 ; READS:
-;   TEXTDISP_PrimaryGroupPresentFlag, TEXTDISP_PrimaryGroupEntryCount, GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvShowtimesRowSpan, _NEWGRID_ShowtimeBucketEntryTable..2339
+;   _TEXTDISP_PrimaryGroupPresentFlag, _TEXTDISP_PrimaryGroupEntryCount, _GCOMMAND_PpvSelectionWindowMinutes, _GCOMMAND_PpvShowtimesRowSpan, _NEWGRID_ShowtimeBucketEntryTable..2339
 ; WRITES:
 ;   output buffer contents, NEWGRID_ShowtimeBucketCount
 ; DESC:
@@ -297,7 +297,7 @@ NEWGRID_BuildShowtimesText:
     BTST    #4,47(A0)
     BEQ.W   .return
 
-    TST.B   TEXTDISP_PrimaryGroupPresentFlag
+    TST.B   _TEXTDISP_PrimaryGroupPresentFlag
     BEQ.W   .return
 
     TST.L   16(A5)
@@ -355,7 +355,7 @@ NEWGRID_BuildShowtimesText:
     PEA     1.W
     MOVE.L  D0,-(A7)
     MOVE.L  (A2),-(A7)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -363,7 +363,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D1,-(A7)
     MOVE.L  (A2),-(A7)
     MOVE.L  D0,-58(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -371,7 +371,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D1,-(A7)
     MOVE.L  (A2),-(A7)
     MOVE.L  D0,-62(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -379,7 +379,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D1,-(A7)
     MOVE.L  (A2),-(A7)
     MOVE.L  D0,-66(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -434,10 +434,10 @@ NEWGRID_BuildShowtimesText:
     TST.L   -54(A5)
     BEQ.W   .return
 
-    BSR.W   NEWGRID_ResetShowtimeBuckets
+    BSR.W   _NEWGRID_ResetShowtimeBuckets
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.L  12(A2),D1
     CMP.L   D0,D1
     BGT.S   .clamp_start_index
@@ -452,7 +452,7 @@ NEWGRID_BuildShowtimesText:
 
 .clamp_start_done:
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.L  16(A2),D1
     CMP.L   D0,D1
     BGT.S   .clamp_end_index
@@ -468,7 +468,7 @@ NEWGRID_BuildShowtimesText:
 .clamp_end_done:
     MOVE.W  22(A2),D0
     EXT.L   D0
-    ADD.L   GCOMMAND_PpvShowtimesRowSpan,D0
+    ADD.L   _GCOMMAND_PpvShowtimesRowSpan,D0
     ADDQ.L  #1,D0
     MOVE.W  D0,-8(A5)
     MOVEQ   #97,D1
@@ -545,8 +545,8 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D0,D7
     MOVE.L  D7,D0
     EXT.L   D0
-    MOVE.L  GCOMMAND_PpvSelectionToleranceMinutes,(A7)
-    MOVE.L  GCOMMAND_PpvSelectionWindowMinutes,-(A7)
+    MOVE.L  _GCOMMAND_PpvSelectionToleranceMinutes,(A7)
+    MOVE.L  _GCOMMAND_PpvSelectionWindowMinutes,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  -98(A5),-(A7)
     MOVE.L  -94(A5),-(A7)
@@ -625,7 +625,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D0,-(A7)
     MOVE.L  -94(A5),-(A7)
     MOVE.L  A0,-74(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D7,D1
     EXT.L   D1
@@ -633,7 +633,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D1,-(A7)
     MOVE.L  -94(A5),-(A7)
     MOVE.L  D0,-78(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D7,D1
     EXT.L   D1
@@ -641,7 +641,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D1,-(A7)
     MOVE.L  -94(A5),-(A7)
     MOVE.L  D0,-82(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D7,D1
     EXT.L   D1
@@ -649,7 +649,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D1,-(A7)
     MOVE.L  -94(A5),-(A7)
     MOVE.L  D0,-86(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     LEA     48(A7),A7
     MOVE.L  D0,-90(A5)
@@ -778,7 +778,7 @@ NEWGRID_BuildShowtimesText:
     BNE.S   .copy_showtimes_prefix
 
     PEA     -49(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -831,7 +831,7 @@ NEWGRID_BuildShowtimesText:
     JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -49(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     LEA     16(A7),A7
     LEA     60(A3),A0
@@ -923,7 +923,7 @@ NEWGRID_BuildShowtimesText:
     BNE.S   .copy_showing_at_prefix
 
     PEA     -49(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  16(A5),-(A7)
@@ -974,10 +974,10 @@ NEWGRID_BuildShowtimesText:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_DrawGridEntry, NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, NEWGRID_BuildShowtimesText, NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer,
-;   NEWGRID_DrawGridFrameVariant3, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount, NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
+;   NEWGRID_DrawGridEntry, NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, NEWGRID_BuildShowtimesText, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer,
+;   NEWGRID_DrawGridFrameVariant3, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount, _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
 ; READS:
-;   NEWGRID_ShowtimesWorkflowStateLatch, GCOMMAND_PpvShowtimesLayoutPen, GCOMMAND_PpvShowtimesInitialLineIndex, GCOMMAND_PpvDetailLayoutFlag
+;   NEWGRID_ShowtimesWorkflowStateLatch, _GCOMMAND_PpvShowtimesLayoutPen, _GCOMMAND_PpvShowtimesInitialLineIndex, _GCOMMAND_PpvDetailLayoutFlag
 ; WRITES:
 ;   NEWGRID_ShowtimesWorkflowStateLatch, 32(A3)
 ; DESC:
@@ -1012,10 +1012,10 @@ NEWGRID_HandleShowtimesState:
     TST.L   4(A2)
     BEQ.W   .return_state
 
-    MOVE.L  GCOMMAND_PpvShowtimesLayoutPen,-(A7)
+    MOVE.L  _GCOMMAND_PpvShowtimesLayoutPen,-(A7)
     PEA     20.W
     PEA     612.W
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     12(A7),A7
     MOVE.W  20(A2),D7
@@ -1026,7 +1026,7 @@ NEWGRID_HandleShowtimesState:
     SUBI.W  #$30,D7
 
 .adjust_row:
-    MOVE.B  GCOMMAND_PpvDetailLayoutFlag,D0
+    MOVE.B  _GCOMMAND_PpvDetailLayoutFlag,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
     BNE.S   .draw_entry_mode2
@@ -1062,7 +1062,7 @@ NEWGRID_HandleShowtimesState:
     LEA     28(A7),A7
 
 .after_draw:
-    MOVE.L  GCOMMAND_PpvShowtimesInitialLineIndex,-(A7)
+    MOVE.L  _GCOMMAND_PpvShowtimesInitialLineIndex,-(A7)
     JSR     NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(PC)
 
     PEA     -130(A5)
@@ -1073,7 +1073,7 @@ NEWGRID_HandleShowtimesState:
     LEA     60(A3),A0
     PEA     -130(A5)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     MOVE.L  A3,(A7)
     BSR.W   NEWGRID_DrawGridFrameVariant3
@@ -1142,10 +1142,10 @@ NEWGRID_HandleShowtimesState:
 ;   NEWGRID_HandleGridEditorState, NEWGRID_UpdateGridState,
 ;   NEWGRID_HandleShowtimesState, NEWGRID_InitSelectionWindow,
 ;   NEWGRID_UpdateSelectionFromInput, NEWGRID_DrawGridMessageAlt,
-;   NEWGRID_ClearEntryMarkerBits, NEWGRID_ValidateSelectionCode,
+;   NEWGRID_ClearEntryMarkerBits, _NEWGRID_ValidateSelectionCode,
 ;   _NEWGRID_GetGridModeIndex, NEWGRID_ComputeColumnIndex
 ; READS:
-;   NEWGRID_ShowtimesWorkflowState/2038, NEWGRID_ShowtimesSelectionContextPtr, GCOMMAND_DigitalPpvEnabledFlag, GCOMMAND_PpvShowtimesWorkflowMode, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen
+;   NEWGRID_ShowtimesWorkflowState/2038, NEWGRID_ShowtimesSelectionContextPtr, _GCOMMAND_DigitalPpvEnabledFlag, _GCOMMAND_PpvShowtimesWorkflowMode, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PpvEditorLayoutPen, _GCOMMAND_PpvEditorRowPen
 ; WRITES:
 ;   NEWGRID_ShowtimesWorkflowState/2038
 ; DESC:
@@ -1269,7 +1269,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     BRA.W   .return_state
 
 .case_state2:
-    MOVE.B  GCOMMAND_PpvShowtimesWorkflowMode,D0
+    MOVE.B  _GCOMMAND_PpvShowtimesWorkflowMode,D0
     MOVEQ   #66,D1
     CMP.B   D1,D0
     BEQ.S   .case2_handle
@@ -1279,9 +1279,9 @@ NEWGRID_ProcessShowtimesWorkflow:
     BNE.S   .case2_force_state3
 
 .case2_handle:
-    MOVE.L  GCOMMAND_PPVListingsTemplatePtr,-(A7)
-    MOVE.L  GCOMMAND_PpvEditorRowPen,-(A7)
-    MOVE.L  GCOMMAND_PpvEditorLayoutPen,-(A7)
+    MOVE.L  _GCOMMAND_PPVListingsTemplatePtr,-(A7)
+    MOVE.L  _GCOMMAND_PpvEditorRowPen,-(A7)
+    MOVE.L  _GCOMMAND_PpvEditorLayoutPen,-(A7)
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_HandleGridEditorState
 
@@ -1342,7 +1342,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
 
 .case5_post:
-    MOVE.B  GCOMMAND_DigitalPpvEnabledFlag,D0
+    MOVE.B  _GCOMMAND_DigitalPpvEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .return_state
@@ -1355,7 +1355,7 @@ NEWGRID_ProcessShowtimesWorkflow:
 
     PEA     53.W
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_ValidateSelectionCode
+    BSR.W   _NEWGRID_ValidateSelectionCode
 
     BSR.W   _NEWGRID_GetGridModeIndex
 
@@ -1375,7 +1375,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
 
 .case_state6:
-    MOVE.B  GCOMMAND_PpvShowtimesWorkflowMode,D0
+    MOVE.B  _GCOMMAND_PpvShowtimesWorkflowMode,D0
     MOVEQ   #66,D1
     CMP.B   D1,D0
     BEQ.S   .case6_handle
@@ -1385,9 +1385,9 @@ NEWGRID_ProcessShowtimesWorkflow:
     BNE.S   .case6_clear_state
 
 .case6_handle:
-    MOVE.L  GCOMMAND_PPVListingsTemplatePtr,-(A7)
-    MOVE.L  GCOMMAND_PpvEditorRowPen,-(A7)
-    MOVE.L  GCOMMAND_PpvEditorLayoutPen,-(A7)
+    MOVE.L  _GCOMMAND_PPVListingsTemplatePtr,-(A7)
+    MOVE.L  _GCOMMAND_PpvEditorRowPen,-(A7)
+    MOVE.L  _GCOMMAND_PpvEditorLayoutPen,-(A7)
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_HandleGridEditorState
 
@@ -1442,7 +1442,7 @@ NEWGRID_ProcessShowtimesWorkflow:
 ; CALLS:
 ;   none
 ; READS:
-;   CONFIG_NewgridSelectionCode34PrimaryEnabledFlag, CONFIG_NewgridSelectionCode34AltEnabledFlag
+;   _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag, _CONFIG_NewgridSelectionCode34AltEnabledFlag
 ; DESC:
 ;   Returns whether the corresponding global flag is set for the mode.
 ;------------------------------------------------------------------------------
@@ -1452,7 +1452,7 @@ NEWGRID_TestModeFlagActive:
     TST.L   D7
     BNE.S   .check_mode1
 
-    MOVE.B  CONFIG_NewgridSelectionCode34PrimaryEnabledFlag,D0
+    MOVE.B  _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BEQ.S   .return_true
@@ -1462,7 +1462,7 @@ NEWGRID_TestModeFlagActive:
     CMP.L   D0,D7
     BNE.S   .return_false
 
-    MOVE.B  CONFIG_NewgridSelectionCode34AltEnabledFlag,D0
+    MOVE.B  _CONFIG_NewgridSelectionCode34AltEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BEQ.S   .return_true
@@ -1564,9 +1564,9 @@ NEWGRID_TestEntrySelectable:
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode, NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, NEWGRID_TestEntrySelectable
+;   _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode, _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, NEWGRID_TestEntrySelectable
 ; READS:
-;   TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupPresentFlag, TEXTDISP_SecondaryGroupPresentFlag
+;   _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupPresentFlag, _TEXTDISP_SecondaryGroupPresentFlag
 ; WRITES:
 ;   entry flag bytes (bit #5 cleared)
 ; DESC:
@@ -1585,21 +1585,21 @@ NEWGRID_ClearMarkersIfSelectable:
 
 .list1_loop:
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     CMP.L   D0,D5
     BGE.S   .list1_done
 
-    TST.B   TEXTDISP_PrimaryGroupPresentFlag
+    TST.B   _TEXTDISP_PrimaryGroupPresentFlag
     BEQ.S   .list1_done
 
     PEA     1.W
     MOVE.L  D5,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
 
     PEA     1.W
     MOVE.L  D5,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     MOVE.L  D7,(A7)
     MOVE.L  D0,-(A7)
@@ -1632,21 +1632,21 @@ NEWGRID_ClearMarkersIfSelectable:
 
 .list2_loop:
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     CMP.L   D0,D5
     BGE.S   .return
 
-    TST.B   TEXTDISP_SecondaryGroupPresentFlag
+    TST.B   _TEXTDISP_SecondaryGroupPresentFlag
     BEQ.S   .return
 
     PEA     2.W
     MOVE.L  D5,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
 
     PEA     2.W
     MOVE.L  D5,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     MOVE.L  D7,(A7)
     MOVE.L  D0,-(A7)
@@ -1690,9 +1690,9 @@ NEWGRID_ClearMarkersIfSelectable:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
+;   _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
 ; READS:
-;   CLOCK_DaySlotIndex, CONFIG_NewgridWindowSpanHalfHoursPrimary, CONFIG_NewgridWindowSpanHalfHoursAlt
+;   _CLOCK_DaySlotIndex, CONFIG_NewgridWindowSpanHalfHoursPrimary, CONFIG_NewgridWindowSpanHalfHoursAlt
 ; WRITES:
 ;   0(A3)..24(A3)
 ; DESC:
@@ -1719,8 +1719,8 @@ NEWGRID_InitSelectionWindowAlt:
     CMP.W   D0,D7
     BEQ.S   .adjust_row
 
-    PEA     CLOCK_DaySlotIndex
-    JSR     NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
+    PEA     _CLOCK_DaySlotIndex
+    JSR     _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
@@ -1781,7 +1781,7 @@ NEWGRID_InitSelectionWindowAlt:
 ;   NEWGRID_ClearMarkersIfSelectable, NEWGRID_TestEntrySelectable,
 ;   NEWGRID_UpdatePresetEntry, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState, TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility
 ; READS:
-;   NEWGRID_AltSelectionRowCursor/203A, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupPresentFlag
+;   NEWGRID_AltSelectionRowCursor/203A, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryGroupPresentFlag
 ; WRITES:
 ;   NEWGRID_AltSelectionRowCursor/203A, selection state fields
 ; DESC:
@@ -1850,12 +1850,12 @@ NEWGRID_UpdateSelectionFromInputAlt:
     BNE.W   .finalize_selection
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.L  NEWGRID_AltSelectionRowCursor,D1
     CMP.L   D0,D1
     BGE.W   .finalize_selection
 
-    TST.B   TEXTDISP_PrimaryGroupPresentFlag
+    TST.B   _TEXTDISP_PrimaryGroupPresentFlag
     BEQ.W   .finalize_selection
 
     MOVEQ   #5,D0
@@ -1970,7 +1970,7 @@ NEWGRID_UpdateSelectionFromInputAlt:
 
     MOVE.L  D4,D0
     EXT.L   D0
-    MOVE.L  CONFIG_TimeWindowMinutes,-(A7)
+    MOVE.L  _CONFIG_TimeWindowMinutes,-(A7)
     PEA     1440.W
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
@@ -2088,10 +2088,10 @@ NEWGRID_UpdateSelectionFromInputAlt:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID_UpdatePresetEntry, NEWGRID2_JMPTBL_STR_SkipClass3Chars,
+;   _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID_UpdatePresetEntry, _NEWGRID2_JMPTBL_STR_SkipClass3Chars,
 ;   PARSEINI_JMPTBL_STRING_AppendAtNull
 ; READS:
-;   CONFIG_TimeWindowMinutes, NEWGRID_ShowtimeListSeparator
+;   _CONFIG_TimeWindowMinutes, NEWGRID_ShowtimeListSeparator
 ; WRITES:
 ;   output buffer contents
 ; DESC:
@@ -2165,7 +2165,7 @@ NEWGRID_AppendShowtimesForRow:
     PEA     1.W
     MOVE.L  D0,-(A7)
     MOVE.L  (A3),-(A7)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -2173,7 +2173,7 @@ NEWGRID_AppendShowtimesForRow:
     MOVE.L  D1,-(A7)
     MOVE.L  (A3),-(A7)
     MOVE.L  D0,-40(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -2181,7 +2181,7 @@ NEWGRID_AppendShowtimesForRow:
     MOVE.L  D1,-(A7)
     MOVE.L  (A3),-(A7)
     MOVE.L  D0,-44(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -2189,7 +2189,7 @@ NEWGRID_AppendShowtimesForRow:
     MOVE.L  D1,-(A7)
     MOVE.L  (A3),-(A7)
     MOVE.L  D0,-48(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     LEA     48(A7),A7
     MOVE.L  D0,-52(A5)
@@ -2347,7 +2347,7 @@ NEWGRID_AppendShowtimesForRow:
     PEA     1.W
     MOVE.L  D0,-(A7)
     MOVE.L  -80(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -2355,7 +2355,7 @@ NEWGRID_AppendShowtimesForRow:
     MOVE.L  D1,-(A7)
     MOVE.L  -80(A5),-(A7)
     MOVE.L  D0,-62(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -2363,7 +2363,7 @@ NEWGRID_AppendShowtimesForRow:
     MOVE.L  D1,-(A7)
     MOVE.L  -80(A5),-(A7)
     MOVE.L  D0,-66(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -2371,7 +2371,7 @@ NEWGRID_AppendShowtimesForRow:
     MOVE.L  D1,-(A7)
     MOVE.L  -80(A5),-(A7)
     MOVE.L  D0,-70(A5)
-    JSR     NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(PC)
 
     LEA     48(A7),A7
     MOVE.L  D0,-74(A5)
@@ -2518,7 +2518,7 @@ NEWGRID_AppendShowtimesForRow:
     BNE.S   .copy_showtimes_prefix
 
     PEA     -31(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  A2,-(A7)
@@ -2536,7 +2536,7 @@ NEWGRID_AppendShowtimesForRow:
     JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -31(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     PEA     NEWGRID_ShowtimeListSeparator
     MOVE.L  A2,-(A7)
@@ -2568,7 +2568,7 @@ NEWGRID_AppendShowtimesForRow:
     BNE.S   .copy_showing_at_prefix
 
     PEA     -31(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  A2,-(A7)
@@ -2595,11 +2595,11 @@ NEWGRID_AppendShowtimesForRow:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID2_JMPTBL_STR_SkipClass3Chars, NEWGRID2_JMPTBL_STRING_AppendN, PARSEINI_JMPTBL_STRING_AppendAtNull,
-;   NEWGRID_DrawGridFrame, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOSetAPen, _LVOSetDrMd,
-;   _LVOTextLength, _LVOMove, _LVOText, NEWGRID_ValidateSelectionCode
+;   _NEWGRID2_JMPTBL_STR_SkipClass3Chars, NEWGRID2_JMPTBL_STRING_AppendN, PARSEINI_JMPTBL_STRING_AppendAtNull,
+;   _NEWGRID_DrawGridFrame, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOSetAPen, _LVOSetDrMd,
+;   _LVOTextLength, _LVOMove, _LVOText, _NEWGRID_ValidateSelectionCode
 ; READS:
-;   SCRIPT_PtrSportsOnPrefix, SCRIPT_PtrSummaryOfPrefix, SCRIPT_PtrChannelSuffix, NEWGRID_RowHeightPx, NEWGRID_ColumnStartXPx, NEWGRID_ColumnWidthPx
+;   SCRIPT_PtrSportsOnPrefix, SCRIPT_PtrSummaryOfPrefix, SCRIPT_PtrChannelSuffix, _NEWGRID_RowHeightPx, _NEWGRID_ColumnStartXPx, _NEWGRID_ColumnWidthPx
 ; WRITES:
 ;   output buffer contents, 32(A3), 52(A3)
 ; DESC:
@@ -2617,13 +2617,13 @@ NEWGRID_DrawShowtimesPrompt:
     LEA     19(A2),A0
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     LEA     1(A2),A0
     MOVE.L  A0,(A7)
     MOVE.L  D0,-4(A5)
     MOVE.L  A0,-8(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
@@ -2717,7 +2717,7 @@ NEWGRID_DrawShowtimesPrompt:
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     ADDQ.L  #3,D0
     MOVE.L  D0,-(A7)
     MOVEQ   #6,D1
@@ -2725,11 +2725,11 @@ NEWGRID_DrawShowtimesPrompt:
     MOVE.L  D1,-(A7)
     PEA     7.W
     MOVE.L  A3,-(A7)
-    JSR     NEWGRID_DrawGridFrame(PC)
+    JSR     _NEWGRID_DrawGridFrame(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
     MOVEQ   #35,D1
     ADD.L   D1,D0
     PEA     33.W
@@ -2738,11 +2738,11 @@ NEWGRID_DrawShowtimesPrompt:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
+    JSR     _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
     MOVEQ   #36,D1
     ADD.L   D1,D0
     PEA     33.W
@@ -2750,7 +2750,7 @@ NEWGRID_DrawShowtimesPrompt:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
+    JSR     _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     60(A3),A0
     MOVEA.L A0,A1
@@ -2765,8 +2765,8 @@ NEWGRID_DrawShowtimesPrompt:
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
-    MOVE.W  NEWGRID_ColumnWidthPx,D1
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnWidthPx,D1
     MULU    #3,D1
     LEA     60(A3),A1
     LEA     -136(A5),A6
@@ -2843,7 +2843,7 @@ NEWGRID_DrawShowtimesPrompt:
     MOVE.L  D1,32(A3)
     PEA     67.W
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_ValidateSelectionCode
+    BSR.W   _NEWGRID_ValidateSelectionCode
 
     LEA     68(A7),A7
 
@@ -2863,10 +2863,10 @@ NEWGRID_DrawShowtimesPrompt:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast, NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines,
-;   NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel, NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected, NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine, NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
+;   _NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast, NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines,
+;   NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel, _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected, _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine, NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
 ; READS:
-;   NEWGRID_RowHeightPx, DISPTEXT_ControlMarkerXOffsetPx
+;   _NEWGRID_RowHeightPx, _DISPTEXT_ControlMarkerXOffsetPx
 ; WRITES:
 ;   52(A3)
 ; DESC:
@@ -2883,7 +2883,7 @@ NEWGRID_DrawGridFrameVariant4:
     CLR.L   -(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A0,-20(A5)
-    BSR.W   NEWGRID_SetRowColor
+    BSR.W   _NEWGRID_SetRowColor
 
     LEA     12(A7),A7
     MOVEA.L -20(A5),A1
@@ -2891,7 +2891,7 @@ NEWGRID_DrawGridFrameVariant4:
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     ADDQ.L  #3,D0
     MOVE.L  D0,D3
     MOVEA.L -20(A5),A1
@@ -2909,7 +2909,7 @@ NEWGRID_DrawGridFrameVariant4:
     CMP.L   D0,D7
     BGE.W   .after_rows
 
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BNE.W   .after_rows
@@ -2921,7 +2921,7 @@ NEWGRID_DrawGridFrameVariant4:
     BEQ.S   .alt_path
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     SUBQ.L  #1,D0
     MOVE.L  D0,-(A7)
     PEA     695.W
@@ -2933,7 +2933,7 @@ NEWGRID_DrawGridFrameVariant4:
 
     LEA     20(A7),A7
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     TST.L   D0
     BPL.S   .half_width_round
 
@@ -2961,13 +2961,13 @@ NEWGRID_DrawGridFrameVariant4:
     BRA.S   .draw_row
 
 .alt_path:
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(PC)
 
     TST.L   D0
     BEQ.S   .default_path
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     MOVE.L  D0,D1
     TST.L   D1
     BPL.S   .alt_half_width_round
@@ -2997,7 +2997,7 @@ NEWGRID_DrawGridFrameVariant4:
 
 .default_path:
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     TST.L   D0
     BPL.S   .default_half_width_round
 
@@ -3026,12 +3026,12 @@ NEWGRID_DrawGridFrameVariant4:
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D7
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     TST.L   D0
     BPL.S   .advance_row
 
@@ -3039,12 +3039,12 @@ NEWGRID_DrawGridFrameVariant4:
 
 .advance_row:
     ASR.L   #1,D0
-    ADD.L   DISPTEXT_ControlMarkerXOffsetPx,D0
+    ADD.L   _DISPTEXT_ControlMarkerXOffsetPx,D0
     ADD.L   D0,D4
     BRA.W   .row_loop
 
 .after_rows:
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BEQ.S   .draw_bottom_bevel
@@ -3071,7 +3071,7 @@ NEWGRID_DrawGridFrameVariant4:
 .return:
     ASR.L   #1,D0
     MOVE.W  D0,52(A3)
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     MOVEM.L (A7)+,D2-D7/A3
     UNLK    A5

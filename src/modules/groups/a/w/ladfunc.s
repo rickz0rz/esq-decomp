@@ -13,7 +13,7 @@
     XDEF    LADFUNC_ReflowEntryBuffers
     XDEF    LADFUNC_RepackEntryTextAndAttrBuffers
     XDEF    LADFUNC_ResetEntryTextBuffers
-    XDEF    LADFUNC_SaveTextAdsToFile
+    XDEF    _LADFUNC_SaveTextAdsToFile
     XDEF    LADFUNC_SetPackedPenHighNibble
     XDEF    LADFUNC_SetPackedPenLowNibble
     XDEF    LADFUNC_UpdateEntryFromTextAndAttrBuffers
@@ -33,9 +33,9 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   ED_DiagTextModeChar, LADFUNC_EntryPtrTable, CLOCK_HalfHourSlotIndex
+;   _ED_DiagTextModeChar, _LADFUNC_EntryPtrTable, _CLOCK_HalfHourSlotIndex
 ; WRITES:
-;   WDISP_HighlightActive, WDISP_HighlightIndex, [A3] fields
+;   WDISP_HighlightActive, _WDISP_HighlightIndex, [A3] fields
 ; DESC:
 ;   Clears highlight state and walks banner rectangles to mark the active one.
 ; NOTES:
@@ -46,8 +46,8 @@ LADFUNC_UpdateHighlightState:
     MOVEM.L D7/A3,-(A7)
     MOVEQ   #0,D0
     MOVE.W  D0,WDISP_HighlightActive
-    MOVE.W  D0,WDISP_HighlightIndex
-    MOVE.B  ED_DiagTextModeChar,D0
+    MOVE.W  D0,_WDISP_HighlightIndex
+    MOVE.B  _ED_DiagTextModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
     BEQ.S   .done
@@ -61,11 +61,11 @@ LADFUNC_UpdateHighlightState:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A3
     CLR.W   4(A3)
-    MOVE.W  CLOCK_HalfHourSlotIndex,D0
+    MOVE.W  _CLOCK_HalfHourSlotIndex,D0
     MOVE.W  (A3),D1
     CMP.W   D0,D1
     BGT.S   .next_rect
@@ -100,11 +100,11 @@ LADFUNC_UpdateHighlightState:
 ; CLOBBERS:
 ;   A0/A7/D0/D7
 ; CALLS:
-;   NEWGRID_JMPTBL_MEMORY_AllocateMemory
+;   _NEWGRID_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   LADFUNC_EntryPtrTable, Global_STR_LADFUNC_C_1
+;   _LADFUNC_EntryPtrTable, _Global_STR_LADFUNC_C_1
 ; WRITES:
-;   LADFUNC_EntryPtrTable (entry pointers)
+;   _LADFUNC_EntryPtrTable (entry pointers)
 ; DESC:
 ;   Allocates 14-byte structs for each banner rectangle slot.
 ; NOTES:
@@ -122,14 +122,14 @@ LADFUNC_AllocBannerRectEntries:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     14.W
     PEA     116.W
-    PEA     Global_STR_LADFUNC_C_1
+    PEA     _Global_STR_LADFUNC_C_1
     MOVE.L  A0,20(A7)
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 4(A7),A0
@@ -153,11 +153,11 @@ LADFUNC_AllocBannerRectEntries:
 ; CLOBBERS:
 ;   A0/A1/A2/A7/D0/D6/D7
 ; CALLS:
-;   ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
+;   _ESQPARS_ReplaceOwnedString, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   LADFUNC_EntryPtrTable, Global_STR_LADFUNC_C_2, Global_STR_LADFUNC_C_3
+;   _LADFUNC_EntryPtrTable, _Global_STR_LADFUNC_C_2, _Global_STR_LADFUNC_C_3
 ; WRITES:
-;   LADFUNC_EntryPtrTable (entry pointers)
+;   _LADFUNC_EntryPtrTable (entry pointers)
 ; DESC:
 ;   Frees per-entry buffers (if present) and the entry structs themselves.
 ; NOTES:
@@ -174,7 +174,7 @@ LADFUNC_FreeBannerRectEntries:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   (A1)
@@ -199,12 +199,12 @@ LADFUNC_FreeBannerRectEntries:
     MOVE.L  A0,D6
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  6(A1),-(A7)
     CLR.L   -(A7)
-    JSR     ESQPARS_ReplaceOwnedString(PC)
+    JSR     _ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .after_len
@@ -218,7 +218,7 @@ LADFUNC_FreeBannerRectEntries:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
@@ -232,26 +232,26 @@ LADFUNC_FreeBannerRectEntries:
     MOVE.L  D6,-(A7)
     MOVE.L  10(A1),-(A7)
     PEA     147.W
-    PEA     Global_STR_LADFUNC_C_2
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_LADFUNC_C_2
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
 .after_free_text:
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     PEA     14.W
     MOVE.L  (A0),-(A7)
     PEA     150.W
-    PEA     Global_STR_LADFUNC_C_3
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_LADFUNC_C_3
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     CLR.L   (A0)
 
@@ -276,10 +276,10 @@ LADFUNC_FreeBannerRectEntries:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LADFUNC_EntryPtrTable, ED_DiagScrollSpeedChar
+;   _LADFUNC_EntryPtrTable, _ED_DiagScrollSpeedChar
 ; WRITES:
-;   LADFUNC_EntryPtrTable entry fields, ED_TextLimit, LADFUNC_HighlightCycleCountdown, LADFUNC_EntryCount, LADFUNC_ParsedEntryCount,
-;   WDISP_HighlightActive, WDISP_HighlightIndex
+;   _LADFUNC_EntryPtrTable entry fields, _ED_TextLimit, LADFUNC_HighlightCycleCountdown, _LADFUNC_EntryCount, _LADFUNC_ParsedEntryCount,
+;   WDISP_HighlightActive, _WDISP_HighlightIndex
 ; DESC:
 ;   Clears entry fields and resets highlight/row-count globals.
 ; NOTES:
@@ -297,7 +297,7 @@ LADFUNC_ClearBannerRectEntries:
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A3
     MOVEQ   #0,D0
@@ -313,15 +313,15 @@ LADFUNC_ClearBannerRectEntries:
 .after_loop:
     MOVEQ   #0,D0
     MOVE.W  D0,LADFUNC_HighlightCycleCountdown
-    MOVE.W  D0,LADFUNC_EntryCount
-    MOVE.W  D0,LADFUNC_ParsedEntryCount
+    MOVE.W  D0,_LADFUNC_EntryCount
+    MOVE.W  D0,_LADFUNC_ParsedEntryCount
     MOVE.W  D0,WDISP_HighlightActive
-    MOVE.W  D0,WDISP_HighlightIndex
+    MOVE.W  D0,_WDISP_HighlightIndex
     MOVEQ   #0,D0
-    MOVE.B  ED_DiagScrollSpeedChar,D0
+    MOVE.B  _ED_DiagScrollSpeedChar,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
-    MOVE.L  D0,ED_TextLimit
+    MOVE.L  D0,_ED_TextLimit
     MOVEM.L (A7)+,D7/A3
     RTS
 
@@ -336,11 +336,11 @@ LADFUNC_ClearBannerRectEntries:
 ; CLOBBERS:
 ;   A0/A1/A2/A7/D0/D6/D7
 ; CALLS:
-;   ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
+;   _ESQPARS_ReplaceOwnedString, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   LADFUNC_EntryPtrTable, Global_STR_LADFUNC_C_4
+;   _LADFUNC_EntryPtrTable, Global_STR_LADFUNC_C_4
 ; WRITES:
-;   entry buffers via LADFUNC_EntryPtrTable
+;   entry buffers via _LADFUNC_EntryPtrTable
 ; DESC:
 ;   Recomputes per-entry text buffers for banner rectangles.
 ; NOTES:
@@ -359,7 +359,7 @@ LADFUNC_ResetEntryTextBuffers:
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   (A1)
@@ -388,7 +388,7 @@ LADFUNC_ResetEntryTextBuffers:
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
@@ -404,7 +404,7 @@ LADFUNC_ResetEntryTextBuffers:
     MOVE.L  10(A1),-(A7)
     PEA     212.W
     PEA     Global_STR_LADFUNC_C_4
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -412,7 +412,7 @@ LADFUNC_ResetEntryTextBuffers:
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
@@ -421,7 +421,7 @@ LADFUNC_ResetEntryTextBuffers:
     MOVE.L  6(A1),-(A7)
     CLR.L   -(A7)
     MOVE.L  A2,24(A7)
-    JSR     ESQPARS_ReplaceOwnedString(PC)
+    JSR     _ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L 16(A7),A0
@@ -451,9 +451,9 @@ LADFUNC_ResetEntryTextBuffers:
 ; CALLS:
 ;   NEWGRID_JMPTBL_MATH_DivS32, LADFUNC_BuildHighlightLinesFromText
 ; READS:
-;   WDISP_HighlightActive, LADFUNC_HighlightCycleCountdown, LADFUNC_HighlightCycleCountdownReload, LADFUNC_EntryCount, LADFUNC_EntryPtrTable
+;   WDISP_HighlightActive, LADFUNC_HighlightCycleCountdown, LADFUNC_HighlightCycleCountdownReload, _LADFUNC_EntryCount, _LADFUNC_EntryPtrTable
 ; WRITES:
-;   LADFUNC_EntryCount, LADFUNC_HighlightCycleCountdown
+;   _LADFUNC_EntryCount, LADFUNC_HighlightCycleCountdown
 ; DESC:
 ;   Advances the highlighted entry when active and refreshes the display.
 ; NOTES:
@@ -467,27 +467,27 @@ LADFUNC_ResetEntryTextBuffers:
     BLE.S   .maybe_reset
 
 .find_next_highlight:
-    MOVE.W  LADFUNC_EntryCount,D0
+    MOVE.W  _LADFUNC_EntryCount,D0
     EXT.L   D0
     ADDQ.L  #1,D0
     MOVEQ   #46,D1
     JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.W  D1,LADFUNC_EntryCount
-    MOVE.W  LADFUNC_EntryCount,D0
+    MOVE.W  D1,_LADFUNC_EntryCount
+    MOVE.W  _LADFUNC_EntryCount,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVEQ   #1,D0
     CMP.W   4(A1),D0
     BNE.S   .find_next_highlight
 
-    MOVE.W  LADFUNC_EntryCount,D0
+    MOVE.W  _LADFUNC_EntryCount,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  6(A1),-(A7)
@@ -526,11 +526,11 @@ LADFUNC_ResetEntryTextBuffers:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding, _LVOTextLength
+;   _GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding, _LVOTextLength
 ; READS:
-;   LADFUNC_LineSlotWriteIndex, LADFUNC_LineTextBufferPtrs, LADFUNC_LineControlCodeTable, Global_REF_RASTPORT_1
+;   _LADFUNC_LineSlotWriteIndex, _LADFUNC_LineTextBufferPtrs, _LADFUNC_LineControlCodeTable, _Global_REF_RASTPORT_1
 ; WRITES:
-;   LADFUNC_LineSlotWriteIndex, LADFUNC_LineTextBufferPtrs, LADFUNC_LineControlCodeTable, stack buffer (-89)
+;   _LADFUNC_LineSlotWriteIndex, _LADFUNC_LineTextBufferPtrs, _LADFUNC_LineControlCodeTable, stack buffer (-89)
 ; DESC:
 ;   Splits a text string into displayable segments and populates line buffers.
 ; NOTES:
@@ -541,21 +541,21 @@ LADFUNC_BuildHighlightLinesFromText:
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D0
-    MOVE.W  LADFUNC_LineSlotWriteIndex,D0
+    MOVE.W  _LADFUNC_LineSlotWriteIndex,D0
     ADD.L   D0,D0
-    LEA     LADFUNC_LineControlCodeTable,A0
+    LEA     _LADFUNC_LineControlCodeTable,A0
     ADDA.L  D0,A0
     MOVE.W  #4,(A0)
-    MOVE.W  LADFUNC_LineSlotWriteIndex,D0
+    MOVE.W  _LADFUNC_LineSlotWriteIndex,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,LADFUNC_LineSlotWriteIndex
+    MOVE.W  D1,_LADFUNC_LineSlotWriteIndex
     MOVEQ   #20,D0
     CMP.W   D0,D1
     BCS.S   .init_parse
 
     MOVEQ   #0,D0
-    MOVE.W  D0,LADFUNC_LineSlotWriteIndex
+    MOVE.W  D0,_LADFUNC_LineSlotWriteIndex
 
 .init_parse:
     MOVEQ   #0,D6
@@ -616,13 +616,13 @@ LADFUNC_BuildHighlightLinesFromText:
     MOVE.B  D5,D0
     MOVE.L  D0,-(A7)
     PEA     -89(A5)
-    JSR     GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(PC)
+    JSR     _GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
-    MOVE.W  LADFUNC_LineSlotWriteIndex,D0
+    MOVE.W  _LADFUNC_LineSlotWriteIndex,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_LineTextBufferPtrs,A0
+    LEA     _LADFUNC_LineTextBufferPtrs,A0
     ADDA.L  D0,A0
     LEA     -89(A5),A1
     MOVEA.L (A0),A2
@@ -632,21 +632,21 @@ LADFUNC_BuildHighlightLinesFromText:
     BNE.S   .copy_segment
 
     MOVEQ   #0,D0
-    MOVE.W  LADFUNC_LineSlotWriteIndex,D0
+    MOVE.W  _LADFUNC_LineSlotWriteIndex,D0
     ADD.L   D0,D0
-    LEA     LADFUNC_LineControlCodeTable,A0
+    LEA     _LADFUNC_LineControlCodeTable,A0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
     MOVE.W  D0,(A0)
-    MOVE.W  LADFUNC_LineSlotWriteIndex,D1
+    MOVE.W  _LADFUNC_LineSlotWriteIndex,D1
     MOVE.L  D1,D2
     ADDQ.W  #1,D2
-    MOVE.W  D2,LADFUNC_LineSlotWriteIndex
+    MOVE.W  D2,_LADFUNC_LineSlotWriteIndex
     MOVEQ   #20,D1
     CMP.W   D1,D2
     BCS.S   .segment_done
 
-    MOVE.W  D0,LADFUNC_LineSlotWriteIndex
+    MOVE.W  D0,_LADFUNC_LineSlotWriteIndex
 
 .segment_done:
     MOVE.L  D0,D6
@@ -660,7 +660,7 @@ LADFUNC_BuildHighlightLinesFromText:
     MOVEQ   #0,D2
     MOVE.W  D1,D2
     MOVE.B  D0,-89(A5,D2.L)
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     LEA     -7(A5),A0
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -677,13 +677,13 @@ LADFUNC_BuildHighlightLinesFromText:
     MOVE.B  D5,D0
     MOVE.L  D0,-(A7)
     PEA     -89(A5)
-    JSR     GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(PC)
+    JSR     _GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
-    MOVE.W  LADFUNC_LineSlotWriteIndex,D0
+    MOVE.W  _LADFUNC_LineSlotWriteIndex,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_LineTextBufferPtrs,A0
+    LEA     _LADFUNC_LineTextBufferPtrs,A0
     ADDA.L  D0,A0
     LEA     -89(A5),A1
     MOVEA.L (A0),A2
@@ -693,37 +693,37 @@ LADFUNC_BuildHighlightLinesFromText:
     BNE.S   .copy_final
 
     MOVEQ   #0,D0
-    MOVE.W  LADFUNC_LineSlotWriteIndex,D0
+    MOVE.W  _LADFUNC_LineSlotWriteIndex,D0
     ADD.L   D0,D0
-    LEA     LADFUNC_LineControlCodeTable,A0
+    LEA     _LADFUNC_LineControlCodeTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #0,D0
     MOVE.W  D0,(A1)
-    MOVE.W  LADFUNC_LineSlotWriteIndex,D1
+    MOVE.W  _LADFUNC_LineSlotWriteIndex,D1
     MOVE.L  D1,D2
     ADDQ.W  #1,D2
-    MOVE.W  D2,LADFUNC_LineSlotWriteIndex
+    MOVE.W  D2,_LADFUNC_LineSlotWriteIndex
     MOVEQ   #20,D1
     CMP.W   D1,D2
     BCS.S   .advance_slot
 
-    MOVE.W  D0,LADFUNC_LineSlotWriteIndex
+    MOVE.W  D0,_LADFUNC_LineSlotWriteIndex
 
 .advance_slot:
     MOVEQ   #0,D2
-    MOVE.W  LADFUNC_LineSlotWriteIndex,D2
+    MOVE.W  _LADFUNC_LineSlotWriteIndex,D2
     ADD.L   D2,D2
     ADDA.L  D2,A0
     MOVE.W  #4,(A0)
-    MOVE.W  LADFUNC_LineSlotWriteIndex,D2
+    MOVE.W  _LADFUNC_LineSlotWriteIndex,D2
     MOVE.L  D2,D3
     ADDQ.W  #1,D3
-    MOVE.W  D3,LADFUNC_LineSlotWriteIndex
+    MOVE.W  D3,_LADFUNC_LineSlotWriteIndex
     CMP.W   D1,D3
     BCS.S   .return
 
-    MOVE.W  D0,LADFUNC_LineSlotWriteIndex
+    MOVE.W  D0,_LADFUNC_LineSlotWriteIndex
 
 .return:
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
@@ -743,13 +743,13 @@ LADFUNC_BuildHighlightLinesFromText:
 ; CALLS:
 ;   (none)
 ; READS:
-;   WDISP_CharClassTable
+;   _WDISP_CharClassTable
 ; WRITES:
 ;   (none)
 ; DESC:
 ;   Converts an ASCII hex digit into a numeric value.
 ; NOTES:
-;   Uses WDISP_CharClassTable flags to classify digits/letters.
+;   Uses _WDISP_CharClassTable flags to classify digits/letters.
 ;------------------------------------------------------------------------------
 LADFUNC_ParseHexDigit:
     MOVE.L  D7,-(A7)
@@ -757,7 +757,7 @@ LADFUNC_ParseHexDigit:
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #2,(A1)
@@ -825,13 +825,13 @@ LADFUNC_ParseHexDigit:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   LADFUNC_ParseHexDigit, LADFUNC_ComposePackedPenByte, LADFUNC_SetPackedPenHighNibble, LADFUNC_SetPackedPenLowNibble, ESQIFF2_ValidateAsciiNumericByte, ESQPARS_ReplaceOwnedString,
-;   NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory,
-;   GROUP_AS_JMPTBL_STR_FindCharPtr, LADFUNC_UpdateHighlightState
+;   LADFUNC_ParseHexDigit, LADFUNC_ComposePackedPenByte, LADFUNC_SetPackedPenHighNibble, LADFUNC_SetPackedPenLowNibble, ESQIFF2_ValidateAsciiNumericByte, _ESQPARS_ReplaceOwnedString,
+;   _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory,
+;   _GROUP_AS_JMPTBL_STR_FindCharPtr, LADFUNC_UpdateHighlightState
 ; READS:
-;   ED_DiagTextModeChar, LADFUNC_TAG_RS_ResetTriggerSet, LADFUNC_TAG_RS_ParseAllowedSet, LADFUNC_EntryPtrTable, LADFUNC_ParsedEntryCount, ESQIFF_StatusPacketReadyFlag
+;   _ED_DiagTextModeChar, LADFUNC_TAG_RS_ResetTriggerSet, LADFUNC_TAG_RS_ParseAllowedSet, _LADFUNC_EntryPtrTable, _LADFUNC_ParsedEntryCount, ESQIFF_StatusPacketReadyFlag
 ; WRITES:
-;   LADFUNC_ParsedEntryCount, LADFUNC_EntryPtrTable entry buffers, WDISP_HighlightActive
+;   _LADFUNC_ParsedEntryCount, _LADFUNC_EntryPtrTable entry buffers, WDISP_HighlightActive
 ; DESC:
 ;   Parses an encoded entry record and updates entry buffers and metadata.
 ; NOTES:
@@ -869,12 +869,12 @@ LADFUNC_ParseBannerEntryData:
     SUBQ.W  #1,D0
     BNE.S   .return_zero
 
-    MOVE.B  ED_DiagTextModeChar,D0
+    MOVE.B  _ED_DiagTextModeChar,D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LADFUNC_TAG_RS_ResetTriggerSet
-    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -896,12 +896,12 @@ LADFUNC_ParseBannerEntryData:
     BNE.S   .return_zero_local2
 
 .check_allowed_entry:
-    MOVE.B  ED_DiagTextModeChar,D0
+    MOVE.B  _ED_DiagTextModeChar,D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LADFUNC_TAG_RS_ParseAllowedSet
-    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -911,10 +911,10 @@ LADFUNC_ParseBannerEntryData:
     CMP.B   D0,D5
     BCC.S   .return_zero_local
 
-    MOVE.W  LADFUNC_ParsedEntryCount,D0
+    MOVE.W  _LADFUNC_ParsedEntryCount,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,LADFUNC_ParsedEntryCount
+    MOVE.W  D1,_LADFUNC_ParsedEntryCount
     MOVEQ   #46,D0
     CMP.W   D0,D1
     BLT.S   .setup_entry
@@ -930,7 +930,7 @@ LADFUNC_ParseBannerEntryData:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A2
     BRA.S   .init_entry_buffers
@@ -947,7 +947,7 @@ LADFUNC_ParseBannerEntryData:
     PEA     304.W
     PEA     367.W
     PEA     Global_STR_LADFUNC_C_5
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-412(A5)
@@ -1070,7 +1070,7 @@ LADFUNC_ParseBannerEntryData:
     CLR.B   (A1)
     MOVE.L  6(A2),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQPARS_ReplaceOwnedString(PC)
+    JSR     _ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,6(A2)
@@ -1081,7 +1081,7 @@ LADFUNC_ParseBannerEntryData:
     MOVE.L  10(A2),-(A7)
     PEA     412.W
     PEA     Global_STR_LADFUNC_C_6
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -1092,7 +1092,7 @@ LADFUNC_ParseBannerEntryData:
     MOVE.L  D0,-(A7)
     PEA     413.W
     PEA     Global_STR_LADFUNC_C_7
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,10(A2)
@@ -1117,7 +1117,7 @@ LADFUNC_ParseBannerEntryData:
     MOVE.L  -412(A5),-(A7)
     PEA     416.W
     PEA     Global_STR_LADFUNC_C_8
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     BSR.W   LADFUNC_UpdateHighlightState
 
@@ -1139,7 +1139,7 @@ LADFUNC_ParseBannerEntryData:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LADFUNC_SaveTextAdsToFile   (Save text ads to fileuncertain)
+; FUNC: _LADFUNC_SaveTextAdsToFile   (Save text ads to fileuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1150,7 +1150,7 @@ LADFUNC_ParseBannerEntryData:
 ;   LADFUNC_ComposePackedPenByte, GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer,
 ;   GROUP_AY_JMPTBL_DISKIO_WriteDecimalField, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AW_JMPTBL_WDISP_SPrintf
 ; READS:
-;   DISKIO_SaveOperationReadyFlag, KYBD_PATH_DF0_LOCAL_ADS, LADFUNC_FMT_AttrEscapePrefixCharHex, LADFUNC_TextAdLineBreakBuffer, LADFUNC_EntryPtrTable, LADFUNC_SaveAdsFileHandle
+;   DISKIO_SaveOperationReadyFlag, KYBD_PATH_DF0_LOCAL_ADS, LADFUNC_FMT_AttrEscapePrefixCharHex, LADFUNC_TextAdLineBreakBuffer, _LADFUNC_EntryPtrTable, LADFUNC_SaveAdsFileHandle
 ; WRITES:
 ;   DISKIO_SaveOperationReadyFlag, LADFUNC_SaveAdsFileHandle
 ; DESC:
@@ -1158,7 +1158,7 @@ LADFUNC_ParseBannerEntryData:
 ; NOTES:
 ;   Emits attribute changes using LADFUNC_FMT_AttrEscapePrefixCharHex and terminates entries with LADFUNC_TextAdLineBreakBuffer.
 ;------------------------------------------------------------------------------
-LADFUNC_SaveTextAdsToFile:
+_LADFUNC_SaveTextAdsToFile:
     LINK.W  A5,#-36
     MOVEM.L D4-D7,-(A7)
     PEA     1.W
@@ -1201,7 +1201,7 @@ LADFUNC_SaveTextAdsToFile:
     MOVE.L  D6,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
     MOVEA.L -4(A5),A0
@@ -1343,11 +1343,11 @@ LADFUNC_SaveTextAdsToFile:
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   LADFUNC_ComposePackedPenByte, GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer, LADFUNC_ParseHexDigit,
-;   LADFUNC_SetPackedPenHighNibble, LADFUNC_SetPackedPenLowNibble, NEWGRID_JMPTBL_MEMORY_AllocateMemory,
-;   NEWGRID_JMPTBL_MEMORY_DeallocateMemory, LADFUNC_ResetEntryTextBuffers
+;   LADFUNC_ComposePackedPenByte, _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer, LADFUNC_ParseHexDigit,
+;   LADFUNC_SetPackedPenHighNibble, LADFUNC_SetPackedPenLowNibble, _NEWGRID_JMPTBL_MEMORY_AllocateMemory,
+;   _NEWGRID_JMPTBL_MEMORY_DeallocateMemory, LADFUNC_ResetEntryTextBuffers
 ; READS:
-;   Global_REF_LONG_FILE_SCRATCH, Global_PTR_WORK_BUFFER, LADFUNC_EntryPtrTable
+;   _Global_REF_LONG_FILE_SCRATCH, _Global_PTR_WORK_BUFFER, _LADFUNC_EntryPtrTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1365,7 +1365,7 @@ LADFUNC_LoadTextAdsFromFile:
 
     PEA     KYBD_PATH_DF0_LOCAL_ADS
     MOVE.B  D0,-29(A5)
-    JSR     GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D0
@@ -1375,8 +1375,8 @@ LADFUNC_LoadTextAdsFromFile:
     BRA.W   .return
 
 .file_opened:
-    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D6
-    MOVE.L  Global_PTR_WORK_BUFFER,-12(A5)
+    MOVE.L  _Global_REF_LONG_FILE_SCRATCH,D6
+    MOVE.L  _Global_PTR_WORK_BUFFER,-12(A5)
     BSR.W   LADFUNC_ResetEntryTextBuffers
 
     MOVEQ   #0,D7
@@ -1388,7 +1388,7 @@ LADFUNC_LoadTextAdsFromFile:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
     JSR     GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(PC)
@@ -1442,7 +1442,7 @@ LADFUNC_LoadTextAdsFromFile:
     MOVE.L  D0,-(A7)
     PEA     591.W
     PEA     Global_STR_LADFUNC_C_9
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L -4(A5),A0
@@ -1458,7 +1458,7 @@ LADFUNC_LoadTextAdsFromFile:
     MOVE.L  D4,-(A7)
     PEA     600.W
     PEA     Global_STR_LADFUNC_C_10
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L -4(A5),A0
@@ -1567,7 +1567,7 @@ LADFUNC_LoadTextAdsFromFile:
     MOVE.L  6(A1),-(A7)
     PEA     638.W
     PEA     Global_STR_LADFUNC_C_11
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     SUBA.L  A0,A0
@@ -1580,7 +1580,7 @@ LADFUNC_LoadTextAdsFromFile:
     MOVE.L  10(A1),-(A7)
     PEA     642.W
     PEA     Global_STR_LADFUNC_C_12
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L -4(A5),A0
@@ -1597,7 +1597,7 @@ LADFUNC_LoadTextAdsFromFile:
     MOVE.L  -12(A5),-(A7)
     PEA     653.W
     PEA     Global_STR_LADFUNC_C_13
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
 
@@ -1691,11 +1691,11 @@ LADFUNC_DisplayTextPackedPens:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   _LVOTextLength, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MATH_DivS32,
-;   NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory,
+;   _LVOTextLength, _NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MATH_DivS32,
+;   _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory,
 ;   LADFUNC_DisplayTextPackedPens
 ; READS:
-;   Global_STR_SINGLE_SPACE_1, ED_TextLimit
+;   Global_STR_SINGLE_SPACE_1, _ED_TextLimit
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -1735,7 +1735,7 @@ LADFUNC_DrawEntryLineWithAttrs:
     MOVE.L  D0,-(A7)
     PEA     712.W
     PEA     Global_STR_LADFUNC_C_14
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
@@ -1797,7 +1797,7 @@ LADFUNC_DrawEntryLineWithAttrs:
     MOVE.W  (A0),D2
     ASL.L   #3,D2
     MOVE.L  -26(A5),D0
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D2
     TST.L   D2
@@ -1810,8 +1810,8 @@ LADFUNC_DrawEntryLineWithAttrs:
     MOVEA.L 52(A3),A1
     MOVEQ   #0,D0
     MOVE.W  20(A1),D0
-    MOVE.L  ED_TextLimit,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    MOVE.L  _ED_TextLimit,D1
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #0,D1
     MOVE.W  2(A0),D1
@@ -1829,7 +1829,7 @@ LADFUNC_DrawEntryLineWithAttrs:
     MOVE.W  20(A1),D4
     MOVE.L  D1,-38(A5)
     MOVE.L  D4,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D0,-38(A5)
     MOVE.L  D2,-34(A5)
@@ -1912,7 +1912,7 @@ LADFUNC_DrawEntryLineWithAttrs:
 
     MOVE.L  -26(A5),D1
     MOVE.L  D0,32(A7)
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D0,-34(A5)
     MOVE.L  32(A7),D0
@@ -1965,7 +1965,7 @@ LADFUNC_DrawEntryLineWithAttrs:
     LEA     20(A7),A7
     MOVE.L  -26(A5),D0
     MOVE.L  -18(A5),D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D0,-34(A5)
     MOVE.L  -18(A5),D0
@@ -2009,7 +2009,7 @@ LADFUNC_DrawEntryLineWithAttrs:
     MOVE.L  -4(A5),-(A7)
     PEA     824.W
     PEA     Global_STR_LADFUNC_C_15
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -2034,15 +2034,15 @@ LADFUNC_DrawEntryLineWithAttrs:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
 ;   GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, _LVOSetFont, _LVOTextLength,
-;   NEWGRID_JMPTBL_MATH_DivS32, NEWGRID_JMPTBL_MEMORY_AllocateMemory,
-;   NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOSetDrMd, _LVOSetRast,
+;   NEWGRID_JMPTBL_MATH_DivS32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory,
+;   _NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOSetDrMd, _LVOSetRast,
 ;   GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition, GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition,
 ;   _LADFUNC_GetPackedPenHighNibble, LADFUNC_DrawEntryLineWithAttrs
 ; READS:
-;   LADFUNC_EntryPtrTable, KYBD_CustomPaletteTriplesRBase..KYBD_CustomPaletteTriplesBBase, ED_TextLimit, Global_HANDLE_H26F_FONT,
-;   Global_HANDLE_PREVUEC_FONT
+;   _LADFUNC_EntryPtrTable, _KYBD_CustomPaletteTriplesRBase..KYBD_CustomPaletteTriplesBBase, _ED_TextLimit, _Global_HANDLE_H26F_FONT,
+;   _Global_HANDLE_PREVUEC_FONT
 ; WRITES:
-;   _WDISP_PaletteTriplesRBase..WDISP_PaletteTriplesBBase, WDISP_AccumulatorFlushPending, WDISP_DisplayContextBase
+;   _WDISP_PaletteTriplesRBase.._WDISP_PaletteTriplesBBase, _WDISP_AccumulatorFlushPending, _WDISP_DisplayContextBase
 ; DESC:
 ;   Builds line buffers and renders a preview for the selected entry.
 ; NOTES:
@@ -2057,15 +2057,15 @@ LADFUNC_DrawEntryPreview:
     PEA     4.W
     JSR     GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     MOVEA.L D0,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
-    MOVEA.L Global_HANDLE_H26F_FONT,A0
+    MOVEA.L _Global_HANDLE_H26F_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     LEA     Global_STR_SINGLE_SPACE_2,A0
@@ -2084,14 +2084,14 @@ LADFUNC_DrawEntryPreview:
     MOVE.L  D0,-(A7)
     PEA     857.W
     PEA     Global_STR_LADFUNC_C_16
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     MOVE.L  D6,-(A7)
     PEA     858.W
     PEA     Global_STR_LADFUNC_C_17
     MOVE.L  D0,-4(A5)
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     36(A7),A7
     MOVE.L  D0,-16(A5)
@@ -2103,7 +2103,7 @@ LADFUNC_DrawEntryPreview:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
@@ -2111,10 +2111,10 @@ LADFUNC_DrawEntryPreview:
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  10(A1),-12(A5)
-    CLR.W   WDISP_AccumulatorFlushPending
+    CLR.W   _WDISP_AccumulatorFlushPending
     JSR     GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
@@ -2132,7 +2132,7 @@ LADFUNC_DrawEntryPreview:
 
     LEA     _WDISP_PaletteTriplesRBase,A0
     ADDA.L  D4,A0
-    LEA     KYBD_CustomPaletteTriplesRBase,A1
+    LEA     _KYBD_CustomPaletteTriplesRBase,A1
     ADDA.L  D4,A1
     MOVE.B  (A1),(A0)
     ADDQ.L  #1,D4
@@ -2160,16 +2160,16 @@ LADFUNC_DrawEntryPreview:
     MOVE.L  D4,D0
     LSL.L   #2,D0
     SUB.L   D4,D0
-    LEA     KYBD_CustomPaletteTriplesRBase,A0
+    LEA     _KYBD_CustomPaletteTriplesRBase,A0
     ADDA.L  D0,A0
     MOVE.B  (A0),_WDISP_PaletteTriplesRBase
     LEA     KYBD_CustomPaletteTriplesGBase,A0
     ADDA.L  D0,A0
-    MOVE.B  (A0),WDISP_PaletteTriplesGBase
+    MOVE.B  (A0),_WDISP_PaletteTriplesGBase
     LEA     KYBD_CustomPaletteTriplesBBase,A0
     ADDA.L  D0,A0
-    MOVE.B  (A0),WDISP_PaletteTriplesBBase
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVE.B  (A0),_WDISP_PaletteTriplesBBase
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVE.L  D4,D0
@@ -2182,7 +2182,7 @@ LADFUNC_DrawEntryPreview:
     MOVE.L  D0,-36(A5)
 
 .row_loop:
-    CMP.L   ED_TextLimit,D4
+    CMP.L   _ED_TextLimit,D4
     BGE.W   .after_rows
 
 .row_char_loop:
@@ -2266,7 +2266,7 @@ LADFUNC_DrawEntryPreview:
     MOVEA.L -4(A5),A0
     MOVE.L  -36(A5),D0
     CLR.B   0(A0,D0.L)
-    MOVEA.L WDISP_DisplayContextBase,A1
+    MOVEA.L _WDISP_DisplayContextBase,A1
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A1
     MOVE.L  -16(A5),-(A7)
     MOVE.L  A0,-(A7)
@@ -2283,10 +2283,10 @@ LADFUNC_DrawEntryPreview:
     JSR     GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
 
 .cleanup:
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
@@ -2299,7 +2299,7 @@ LADFUNC_DrawEntryPreview:
     MOVE.L  -4(A5),-(A7)
     PEA     926.W
     PEA     Global_STR_LADFUNC_C_18
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -2311,7 +2311,7 @@ LADFUNC_DrawEntryPreview:
     MOVE.L  -16(A5),-(A7)
     PEA     928.W
     PEA     Global_STR_LADFUNC_C_19
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -2340,10 +2340,10 @@ LADFUNC_DrawEntryPreview:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory,
+;   _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory,
 ;   NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   ED_TextLimit
+;   _ED_TextLimit
 ; WRITES:
 ;   outText/outAttr buffers
 ; DESC:
@@ -2371,14 +2371,14 @@ LADFUNC_ReflowEntryBuffers:
     MOVE.L  D0,-(A7)
     PEA     1025.W
     PEA     Global_STR_LADFUNC_C_20
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     MOVE.L  -116(A5),-(A7)
     PEA     1026.W
     PEA     Global_STR_LADFUNC_C_21
     MOVE.L  D0,-6(A5)
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,-10(A5)
@@ -2417,7 +2417,7 @@ LADFUNC_ReflowEntryBuffers:
     MOVE.L  D0,-112(A5)
 
 .row_loop:
-    CMP.L   ED_TextLimit,D5
+    CMP.L   _ED_TextLimit,D5
     BGE.W   .finish_all
 
 .scan_row:
@@ -2622,7 +2622,7 @@ LADFUNC_ReflowEntryBuffers:
     MOVE.L  -6(A5),-(A7)
     PEA     1146.W
     PEA     Global_STR_LADFUNC_C_22
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -2634,7 +2634,7 @@ LADFUNC_ReflowEntryBuffers:
     MOVE.L  -10(A5),-(A7)
     PEA     1148.W
     PEA     Global_STR_LADFUNC_C_23
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -2654,9 +2654,9 @@ LADFUNC_ReflowEntryBuffers:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   NEWGRID_JMPTBL_MATH_Mulu32, LADFUNC_ComposePackedPenByte, LADFUNC_ReflowEntryBuffers
+;   _NEWGRID_JMPTBL_MATH_Mulu32, LADFUNC_ComposePackedPenByte, LADFUNC_ReflowEntryBuffers
 ; READS:
-;   LADFUNC_EntryPtrTable, ED_TextLimit
+;   _LADFUNC_EntryPtrTable, _ED_TextLimit
 ; WRITES:
 ;   outText/outAttr buffers
 ; DESC:
@@ -2672,15 +2672,15 @@ LADFUNC_BuildEntryBuffersOrDefault:
     MOVEA.L 40(A7),A2
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     TST.L   6(A1)
     BNE.S   .copy_existing_buffers
 
-    MOVE.L  ED_TextLimit,D0
+    MOVE.L  _ED_TextLimit,D0
     MOVEQ   #40,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #32,D1
     MOVEA.L A3,A0
@@ -2693,9 +2693,9 @@ LADFUNC_BuildEntryBuffersOrDefault:
     SUBQ.L  #1,D0
     BCC.S   .fill_text_loop
 
-    MOVE.L  ED_TextLimit,D0
+    MOVE.L  _ED_TextLimit,D0
     MOVEQ   #40,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     CLR.B   0(A3,D0.L)
     PEA     1.W
@@ -2705,10 +2705,10 @@ LADFUNC_BuildEntryBuffersOrDefault:
     ADDQ.W  #8,A7
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    MOVE.L  ED_TextLimit,D0
+    MOVE.L  _ED_TextLimit,D0
     MOVE.L  D1,20(A7)
     MOVEQ   #40,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  20(A7),D1
     MOVEA.L A2,A0
@@ -2726,7 +2726,7 @@ LADFUNC_BuildEntryBuffersOrDefault:
 .copy_existing_buffers:
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVEA.L 6(A1),A0
@@ -2747,7 +2747,7 @@ LADFUNC_BuildEntryBuffersOrDefault:
     MOVE.L  A0,D6
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  D6,D0
@@ -2793,9 +2793,9 @@ LADFUNC_BuildEntryBuffersOrDefault:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   GROUP_AW_JMPTBL_MEM_Move, GROUP_AW_JMPTBL_STRING_CopyPadNul, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
+;   GROUP_AW_JMPTBL_MEM_Move, GROUP_AW_JMPTBL_STRING_CopyPadNul, _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_STR_LADFUNC_C_24, Global_STR_LADFUNC_C_25, Global_STR_LADFUNC_C_26, Global_STR_LADFUNC_C_27, ED_TextLimit, MEMF_CLEAR, MEMF_PUBLIC, branch, lab_0ECE, lab_0ED1, lab_0ED4, lab_0ED7, lab_0ED8
+;   Global_STR_LADFUNC_C_24, Global_STR_LADFUNC_C_25, Global_STR_LADFUNC_C_26, Global_STR_LADFUNC_C_27, _ED_TextLimit, MEMF_CLEAR, MEMF_PUBLIC, branch, lab_0ECE, lab_0ED1, lab_0ED4, lab_0ED7, lab_0ED8
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2823,14 +2823,14 @@ LADFUNC_RepackEntryTextAndAttrBuffers:
     MOVE.L  D0,-(A7)
     PEA     1214.W
     PEA     Global_STR_LADFUNC_C_24
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     MOVE.L  -108(A5),-(A7)
     PEA     1215.W
     PEA     Global_STR_LADFUNC_C_25
     MOVE.L  D0,-6(A5)
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,-10(A5)
@@ -2864,12 +2864,12 @@ LADFUNC_RepackEntryTextAndAttrBuffers:
     MOVE.L  D0,-104(A5)
 
 .branch:
-    CMP.L   ED_TextLimit,D5
+    CMP.L   _ED_TextLimit,D5
     BGE.W   .lab_0ED7
 
     MOVE.L  D5,D0
     MOVEQ   #40,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -6(A5),A0
     ADDA.L  D0,A0
@@ -2891,7 +2891,7 @@ LADFUNC_RepackEntryTextAndAttrBuffers:
     SUBA.L  A0,A1
     MOVE.L  D5,D0
     MOVEQ   #40,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -10(A5),A0
     ADDA.L  D0,A0
@@ -3158,7 +3158,7 @@ LADFUNC_RepackEntryTextAndAttrBuffers:
     MOVE.L  -6(A5),-(A7)
     PEA     1322.W
     PEA     Global_STR_LADFUNC_C_26
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -3170,7 +3170,7 @@ LADFUNC_RepackEntryTextAndAttrBuffers:
     MOVE.L  -10(A5),-(A7)
     PEA     1324.W
     PEA     Global_STR_LADFUNC_C_27
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -3209,9 +3209,9 @@ LADFUNC_RepackEntryTextAndAttrBuffers_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   ESQPARS_ReplaceOwnedString, LADFUNC_RepackEntryTextAndAttrBuffers, NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
+;   _ESQPARS_ReplaceOwnedString, LADFUNC_RepackEntryTextAndAttrBuffers, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_STR_LADFUNC_C_28, Global_STR_LADFUNC_C_29, Global_STR_LADFUNC_C_30, LADFUNC_UpdateEntryFromTextAndAttrBuffers_Return, LADFUNC_EntryPtrTable, MEMF_CLEAR, MEMF_PUBLIC
+;   Global_STR_LADFUNC_C_28, Global_STR_LADFUNC_C_29, Global_STR_LADFUNC_C_30, LADFUNC_UpdateEntryFromTextAndAttrBuffers_Return, _LADFUNC_EntryPtrTable, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -3232,7 +3232,7 @@ LADFUNC_UpdateEntryFromTextAndAttrBuffers:
     ADDQ.W  #8,A7
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   (A1)
@@ -3244,14 +3244,14 @@ LADFUNC_UpdateEntryFromTextAndAttrBuffers:
     PEA     1362.W
     PEA     Global_STR_LADFUNC_C_28
     MOVE.L  A0,36(A7)
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 20(A7),A0
     MOVE.L  D0,(A0)
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   (A1)
@@ -3300,7 +3300,7 @@ LADFUNC_UpdateEntryFromTextAndAttrBuffers:
 .lab_0EDF:
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A6
@@ -3309,7 +3309,7 @@ LADFUNC_UpdateEntryFromTextAndAttrBuffers:
     MOVE.L  6(A1),-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A6,32(A7)
-    JSR     ESQPARS_ReplaceOwnedString(PC)
+    JSR     _ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L 24(A7),A0
@@ -3319,7 +3319,7 @@ LADFUNC_UpdateEntryFromTextAndAttrBuffers:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A6
@@ -3334,14 +3334,14 @@ LADFUNC_UpdateEntryFromTextAndAttrBuffers:
     MOVE.L  10(A1),-(A7)
     PEA     1386.W
     PEA     Global_STR_LADFUNC_C_29
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
 .lab_0EE0:
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVEA.L 6(A1),A0
@@ -3355,7 +3355,7 @@ LADFUNC_UpdateEntryFromTextAndAttrBuffers:
     MOVE.L  A0,D6
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
@@ -3363,14 +3363,14 @@ LADFUNC_UpdateEntryFromTextAndAttrBuffers:
     PEA     1389.W
     PEA     Global_STR_LADFUNC_C_30
     MOVE.L  A1,36(A7)
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 20(A7),A0
     MOVE.L  D0,10(A0)
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A6

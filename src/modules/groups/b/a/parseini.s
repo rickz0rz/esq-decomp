@@ -8,7 +8,7 @@
     XDEF    PARSEINI_ProcessWeatherBlocks
     XDEF    PARSEINI_ScanLogoDirectory
     XDEF    PARSEINI_TestMemoryAndOpenTopazFont
-    XDEF    PARSEINI_JMPTBL_BRUSH_AllocBrushNode
+    XDEF    _PARSEINI_JMPTBL_BRUSH_AllocBrushNode
     XDEF    PARSEINI_JMPTBL_BRUSH_FreeBrushList
     XDEF    PARSEINI_JMPTBL_BRUSH_FreeBrushResources
     XDEF    PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk
@@ -30,12 +30,12 @@
     XDEF    PARSEINI_JMPTBL_HANDLE_OpenWithMode
     XDEF    PARSEINI_JMPTBL_STREAM_ReadLineWithLimit
     XDEF    PARSEINI_JMPTBL_STRING_AppendAtNull
-    XDEF    PARSEINI_JMPTBL_STRING_CompareNoCase
+    XDEF    _PARSEINI_JMPTBL_STRING_CompareNoCase
     XDEF    PARSEINI_JMPTBL_STRING_CompareNoCaseN
     XDEF    PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest
     XDEF    PARSEINI_JMPTBL_STR_FindAnyCharPtr
-    XDEF    PARSEINI_JMPTBL_STR_FindCharPtr
-    XDEF    PARSEINI_JMPTBL_WDISP_SPrintf
+    XDEF    _PARSEINI_JMPTBL_STR_FindCharPtr
+    XDEF    _PARSEINI_JMPTBL_WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_ParseIniBufferAndDispatch   (Parse INI-like buffer; dispatch by sectionuncertain)
@@ -46,12 +46,12 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer, PARSEINI_JMPTBL_STR_FindCharPtr, PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette, PARSEINI_JMPTBL_STRING_CompareNoCase, TEXTDISP_ClearSourceConfig, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString,
+;   PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer, _PARSEINI_JMPTBL_STR_FindCharPtr, PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette, _PARSEINI_JMPTBL_STRING_CompareNoCase, TEXTDISP_ClearSourceConfig, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString,
 ;   PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator, PARSEINI_JMPTBL_HANDLE_OpenWithMode, PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad, PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey, PARSEINI_ProcessWeatherBlocks/PARSEINI_LoadWeatherStrings/PARSEINI_LoadWeatherMessageStrings/PARSEINI_ParseColorTable helpers
 ; READS:
-;   Global_PTR_WORK_BUFFER, WDISP_CharClassTable (char class table), many LAB_205* globals, PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockPtr
+;   _Global_PTR_WORK_BUFFER, _WDISP_CharClassTable (char class table), many LAB_205* globals, _PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockPtr
 ; WRITES:
-;   P_TYPE_WeatherBrushRefreshPendingFlag-2064/206A..., TEXTDISP_AliasCount, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr, PARSEINI_CurrentRangeTableIndex, P_TYPE_WeatherCurrentMsgPtr-C, etc.
+;   _P_TYPE_WeatherBrushRefreshPendingFlag-2064/206A..., _TEXTDISP_AliasCount, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr, PARSEINI_CurrentRangeTableIndex, P_TYPE_WeatherCurrentMsgPtr-C, etc.
 ; DESC:
 ;   Top-level INI parser: scans the buffer, skips whitespace/comment chars, detects
 ;   section headers and key/value pairs, and dispatches to per-section handlers.
@@ -77,8 +77,8 @@ PARSEINI_ParseIniBufferAndDispatch:
     BRA.W   .return
 
 .init_parser_state:
-    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D6
-    MOVE.L  Global_PTR_WORK_BUFFER,-16(A5)
+    MOVE.L  _Global_REF_LONG_FILE_SCRATCH,D6
+    MOVE.L  _Global_PTR_WORK_BUFFER,-16(A5)
 
 .next_line:
     JSR     PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer(PC)
@@ -92,7 +92,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
     MOVE.B  (A0),D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .check_section_header
@@ -109,7 +109,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     LEA     1(A0),A1
     PEA     93.W
     MOVE.L  A1,-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-28(A5)
@@ -122,7 +122,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     ADDQ.L  #1,A0
     PEA     P_TYPE_STR_QTABLE
     MOVE.L  A0,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -136,7 +136,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     ADDQ.L  #1,A0
     PEA     P_TYPE_TAG_BACKDROP
     MOVE.L  A0,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -150,7 +150,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     ADDQ.L  #1,A0
     PEA     P_TYPE_TAG_GRADIENT
     MOVE.L  A0,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -170,7 +170,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     ADDQ.L  #1,A0
     PEA     P_TYPE_TAG_TEXTADS
     MOVE.L  A0,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -184,7 +184,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     ADDQ.L  #1,A0
     PEA     P_TYPE_TAG_BRUSH
     MOVE.L  A0,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -198,14 +198,14 @@ PARSEINI_ParseIniBufferAndDispatch:
     ADDQ.L  #1,A0
     PEA     P_TYPE_TAG_BANNER
     MOVE.L  A0,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_section_7
 
     MOVEQ   #6,D7
-    CLR.L   P_TYPE_WeatherBrushRefreshPendingFlag
+    CLR.L   _P_TYPE_WeatherBrushRefreshPendingFlag
     BRA.W   .next_line
 
 .check_section_7:
@@ -213,7 +213,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     ADDQ.L  #1,A0
     PEA     P_TYPE_STR_DEFAULT_TEXT
     MOVE.L  A0,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -243,7 +243,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     ADDQ.L  #1,A0
     PEA     P_TYPE_STR_SOURCE_CONFIG
     MOVE.L  A0,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -284,7 +284,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section1_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -299,7 +299,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section1_cut_marker
@@ -343,7 +343,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section1_alloc_entry
@@ -356,20 +356,20 @@ PARSEINI_ParseIniBufferAndDispatch:
     ADDQ.L  #1,D5
     MOVE.L  D5,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_AliasPtrTable,A0
+    LEA     _TEXTDISP_AliasPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     8.W
     PEA     219.W
     PEA     Global_STR_PARSEINI_C_1
     MOVE.L  A0,36(A7)
-    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVEA.L 36(A7),A0
     MOVE.L  D0,(A0)
     MOVE.L  D5,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_AliasPtrTable,A0
+    LEA     _TEXTDISP_AliasPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
     SUBA.L  A0,A0
@@ -382,14 +382,14 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.L  D0,(A2)
     PEA     34.W
     MOVE.L  -32(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,-40(A5)
     TST.L   D0
     BNE.S   .section1_after_first_quote
 
-    CLR.W   TEXTDISP_AliasCount
+    CLR.W   _TEXTDISP_AliasCount
     MOVEQ   #0,D0
     BRA.W   .return
 
@@ -399,14 +399,14 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.L  A0,-32(A5)
     PEA     34.W
     MOVE.L  -32(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-40(A5)
     TST.L   D0
     BNE.S   .section1_store_second_string
 
-    CLR.W   TEXTDISP_AliasCount
+    CLR.W   _TEXTDISP_AliasCount
 
     MOVEQ   #0,D0
     BRA.W   .return
@@ -422,17 +422,17 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.L  D0,4(A2)
     MOVE.L  D5,D0
     ADDQ.L  #1,D0
-    MOVE.W  D0,TEXTDISP_AliasCount
+    MOVE.W  D0,_TEXTDISP_AliasCount
     BRA.W   .next_line
 
 .section1_reset_count:
-    CLR.W   TEXTDISP_AliasCount
+    CLR.W   _TEXTDISP_AliasCount
     BRA.W   .next_line
 
 .section2_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -447,7 +447,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section2_cut_marker
@@ -491,7 +491,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section2_dispatch_keyvalue
@@ -520,7 +520,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section4_5_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -535,7 +535,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section4_5_cut_marker
@@ -581,7 +581,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section4_5_dispatch
@@ -602,7 +602,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section6_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -617,7 +617,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section6_cut_marker
@@ -661,7 +661,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section6_dispatch
@@ -681,7 +681,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section7_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -696,7 +696,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section7_cut_marker
@@ -740,7 +740,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section7_dispatch
@@ -760,7 +760,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section8_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -775,7 +775,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section8_cut_marker
@@ -819,7 +819,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section8_dispatch
@@ -843,7 +843,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.L  -16(A5),-(A7)
     PEA     403.W
     PEA     Global_STR_PARSEINI_C_2
-    JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
 .return:
     MOVEM.L -64(A5),D5-D7/A2-A3
@@ -861,9 +861,9 @@ PARSEINI_ParseIniBufferAndDispatch:
 ; CLOBBERS:
 ;   D0-D1/D7/A0/A3
 ; CALLS:
-;   SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit
+;   _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit
 ; READS:
-;   WDISP_CharClassTable (char class table)
+;   _WDISP_CharClassTable (char class table)
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -882,7 +882,7 @@ PARSEINI_ParseHexValueFromString:
 
     MOVEQ   #0,D0
     MOVE.B  (A3),D0
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #7,(A0)
     BEQ.S   .return_13D6
@@ -891,7 +891,7 @@ PARSEINI_ParseHexValueFromString:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -917,7 +917,7 @@ PARSEINI_ParseHexValueFromString:
 ; CLOBBERS:
 ;   A0/A2/A3/A5/A7/D0/D1/D6/D7
 ; CALLS:
-;   NEWGRID2_JMPTBL_STR_SkipClass3Chars, PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable, PARSEINI_JMPTBL_STRING_CompareNoCaseN, PARSEINI_JMPTBL_STR_FindAnyCharPtr, PARSEINI_JMPTBL_STR_FindCharPtr, PARSEINI_ParseHexValueFromString, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+;   _NEWGRID2_JMPTBL_STR_SkipClass3Chars, PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable, PARSEINI_JMPTBL_STRING_CompareNoCaseN, PARSEINI_JMPTBL_STR_FindAnyCharPtr, _PARSEINI_JMPTBL_STR_FindCharPtr, PARSEINI_ParseHexValueFromString, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
 ; READS:
 ;   PARSEINI_CurrentRangeTableIndex, PARSEINI_DelimSpaceTab_RangeKey, PARSEINI_DelimSpaceSemicolonTab_RangeValue, PARSEINI_TAG_TABLE, PARSEINI_TAG_DONE, PARSEINI_TAG_COLOR, handle_range_assign, return
 ; WRITES:
@@ -938,7 +938,7 @@ PARSEINI_ParseRangeKeyValue:
 
     PEA     61.W
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
@@ -956,7 +956,7 @@ PARSEINI_ParseRangeKeyValue:
     BEQ.S   .term_value_token
 
     MOVE.L  -4(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     PEA     PARSEINI_DelimSpaceTab_RangeKey
     MOVE.L  D0,-(A7)
@@ -976,7 +976,7 @@ PARSEINI_ParseRangeKeyValue:
     CLR.B   (A0)+
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-8(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     PEA     PARSEINI_DelimSpaceSemicolonTab_RangeValue
     MOVE.L  D0,-(A7)
@@ -1170,11 +1170,11 @@ PARSEINI_ParseRangeKeyValue:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D7
 ; CALLS:
-;   PARSEINI_JMPTBL_BRUSH_AllocBrushNode, PARSEINI_JMPTBL_STRING_CompareNoCase, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CopyPadNul, SCRIPT_JMPTBL_MEMORY_AllocateMemory
+;   _PARSEINI_JMPTBL_BRUSH_AllocBrushNode, _PARSEINI_JMPTBL_STRING_CompareNoCase, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CopyPadNul, _SCRIPT_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   Global_STR_PARSEINI_C_3, PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_TAG_FILENAME_WeatherBlock, PARSEINI_STR_LOADCOLOR, PARSEINI_TAG_ALL, PARSEINI_TAG_NONE, PARSEINI_TAG_TEXT, PARSEINI_TAG_XPOS, PARSEINI_TAG_TYPE, PARSEINI_TAG_DITHER, PARSEINI_TAG_YPOS, PARSEINI_TAG_XSOURCE, PARSEINI_TAG_YSOURCE, PARSEINI_TAG_SIZEX, PARSEINI_TAG_SIZEY, PARSEINI_TAG_SOURCE, PARSEINI_TAG_PPV, PARSEINI_STR_HORIZONTAL, PARSEINI_TAG_RIGHT, PARSEINI_TAG_CENTER_HorizontalAlign, PARSEINI_TAG_VERTICAL, PARSEINI_TAG_BOTTOM, PARSEINI_TAG_CENTER_VerticalAlign, PARSEINI_TAG_ID, PARSEINI_CurrentWeatherBlockPtr, MEMF_CLEAR, MEMF_PUBLIC, check_key_2084, return
+;   Global_STR_PARSEINI_C_3, _PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_TAG_FILENAME_WeatherBlock, PARSEINI_STR_LOADCOLOR, PARSEINI_TAG_ALL, PARSEINI_TAG_NONE, PARSEINI_TAG_TEXT, PARSEINI_TAG_XPOS, PARSEINI_TAG_TYPE, PARSEINI_TAG_DITHER, PARSEINI_TAG_YPOS, PARSEINI_TAG_XSOURCE, PARSEINI_TAG_YSOURCE, PARSEINI_TAG_SIZEX, PARSEINI_TAG_SIZEY, PARSEINI_TAG_SOURCE, PARSEINI_TAG_PPV, PARSEINI_STR_HORIZONTAL, PARSEINI_TAG_RIGHT, PARSEINI_TAG_CENTER_HorizontalAlign, PARSEINI_TAG_VERTICAL, PARSEINI_TAG_BOTTOM, PARSEINI_TAG_CENTER_VerticalAlign, PARSEINI_TAG_ID, PARSEINI_CurrentWeatherBlockPtr, MEMF_CLEAR, MEMF_PUBLIC, check_key_2084, return
 ; WRITES:
-;   PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr
+;   _PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1187,7 +1187,7 @@ PARSEINI_ProcessWeatherBlocks:
     MOVEA.L 12(A5),A2
     SUBA.L  A0,A0
     MOVE.L  A0,-8(A5)
-    TST.L   PARSEINI_ParsedDescriptorListHead
+    TST.L   _PARSEINI_ParsedDescriptorListHead
     BNE.S   .after_init_state
 
     MOVE.L  A0,PARSEINI_CurrentWeatherBlockTempPtr
@@ -1196,7 +1196,7 @@ PARSEINI_ProcessWeatherBlocks:
 .after_init_state:
     PEA     PARSEINI_TAG_FILENAME_WeatherBlock
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1205,16 +1205,16 @@ PARSEINI_ProcessWeatherBlocks:
     CLR.L   PARSEINI_CurrentWeatherBlockTempPtr
     MOVE.L  PARSEINI_CurrentWeatherBlockPtr,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
+    JSR     _PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
     MOVE.B  #$1,190(A0)
     MOVE.L  D0,PARSEINI_CurrentWeatherBlockPtr
-    TST.L   PARSEINI_ParsedDescriptorListHead
+    TST.L   _PARSEINI_ParsedDescriptorListHead
     BNE.S   .check_key_2075
 
-    MOVE.L  D0,PARSEINI_ParsedDescriptorListHead
+    MOVE.L  D0,_PARSEINI_ParsedDescriptorListHead
 
 .check_key_2075:
     TST.L   PARSEINI_CurrentWeatherBlockPtr
@@ -1222,7 +1222,7 @@ PARSEINI_ProcessWeatherBlocks:
 
     PEA     PARSEINI_STR_LOADCOLOR
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1230,7 +1230,7 @@ PARSEINI_ProcessWeatherBlocks:
 
     PEA     PARSEINI_TAG_ALL
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1243,7 +1243,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_mode_2077:
     PEA     PARSEINI_TAG_NONE
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1257,7 +1257,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_mode_2078:
     PEA     PARSEINI_TAG_TEXT
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1277,7 +1277,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_key_2079:
     PEA     PARSEINI_TAG_XPOS
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1295,7 +1295,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_key_207A:
     PEA     PARSEINI_TAG_TYPE
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1303,7 +1303,7 @@ PARSEINI_ProcessWeatherBlocks:
 
     PEA     PARSEINI_TAG_DITHER
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1316,7 +1316,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_key_207C:
     PEA     PARSEINI_TAG_YPOS
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1334,7 +1334,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_key_207D:
     PEA     PARSEINI_TAG_XSOURCE
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1352,7 +1352,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_key_207E:
     PEA     PARSEINI_TAG_YSOURCE
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1370,7 +1370,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_key_207F:
     PEA     PARSEINI_TAG_SIZEX
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1388,7 +1388,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_key_2080:
     PEA     PARSEINI_TAG_SIZEY
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1406,7 +1406,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_key_2081:
     PEA     PARSEINI_TAG_SOURCE
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1426,7 +1426,7 @@ PARSEINI_ProcessWeatherBlocks:
 
     PEA     PARSEINI_TAG_PPV
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1442,7 +1442,7 @@ PARSEINI_ProcessWeatherBlocks:
     PEA     12.W
     PEA     670.W
     PEA     Global_STR_PARSEINI_C_3
-    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,PARSEINI_CurrentWeatherBlockTempPtr
@@ -1474,7 +1474,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_key_2084:
     PEA     PARSEINI_STR_HORIZONTAL
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1482,7 +1482,7 @@ PARSEINI_ProcessWeatherBlocks:
 
     PEA     PARSEINI_TAG_RIGHT
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1496,7 +1496,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_mode_2086:
     PEA     PARSEINI_TAG_CENTER_HorizontalAlign
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1515,7 +1515,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_key_2087:
     PEA     PARSEINI_TAG_VERTICAL
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1523,7 +1523,7 @@ PARSEINI_ProcessWeatherBlocks:
 
     PEA     PARSEINI_TAG_BOTTOM
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1537,7 +1537,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_mode_2089:
     PEA     PARSEINI_TAG_CENTER_VerticalAlign
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1556,7 +1556,7 @@ PARSEINI_ProcessWeatherBlocks:
 .check_key_208A:
     PEA     PARSEINI_TAG_ID
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1589,11 +1589,11 @@ PARSEINI_ProcessWeatherBlocks:
 ; CLOBBERS:
 ;   A0/A2/A3/A7/D0
 ; CALLS:
-;   PARSEINI_JMPTBL_BRUSH_AllocBrushNode, PARSEINI_JMPTBL_STRING_CompareNoCase
+;   _PARSEINI_JMPTBL_BRUSH_AllocBrushNode, _PARSEINI_JMPTBL_STRING_CompareNoCase
 ; READS:
-;   PARSEINI_BannerBrushResourceHead, PARSEINI_TAG_FILENAME_WeatherString, PARSEINI_TAG_WEATHER, PARSEINI_WeatherBrushNodePtr, a
+;   _PARSEINI_BannerBrushResourceHead, _PARSEINI_TAG_FILENAME_WeatherString, _PARSEINI_TAG_WEATHER, _PARSEINI_WeatherBrushNodePtr, a
 ; WRITES:
-;   PARSEINI_BannerBrushResourceHead, P_TYPE_WeatherBrushRefreshPendingFlag, PARSEINI_WeatherBrushNodePtr
+;   _PARSEINI_BannerBrushResourceHead, _P_TYPE_WeatherBrushRefreshPendingFlag, _PARSEINI_WeatherBrushNodePtr
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1603,32 +1603,32 @@ PARSEINI_LoadWeatherStrings:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEA.L 16(A7),A2
-    TST.L   PARSEINI_BannerBrushResourceHead
+    TST.L   _PARSEINI_BannerBrushResourceHead
     BNE.S   .if_ne_1401
 
-    CLR.L   PARSEINI_WeatherBrushNodePtr
+    CLR.L   _PARSEINI_WeatherBrushNodePtr
 
 .if_ne_1401:
-    PEA     PARSEINI_TAG_FILENAME_WeatherString
+    PEA     _PARSEINI_TAG_FILENAME_WeatherString
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .if_ne_1402
 
-    MOVE.L  PARSEINI_WeatherBrushNodePtr,-(A7)
+    MOVE.L  _PARSEINI_WeatherBrushNodePtr,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
+    JSR     _PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
     MOVE.B  #$a,190(A0)
-    MOVE.L  D0,PARSEINI_WeatherBrushNodePtr
-    TST.L   PARSEINI_BannerBrushResourceHead
+    MOVE.L  D0,_PARSEINI_WeatherBrushNodePtr
+    TST.L   _PARSEINI_BannerBrushResourceHead
     BNE.S   .return_1403
 
-    MOVE.L  D0,PARSEINI_BannerBrushResourceHead
+    MOVE.L  D0,_PARSEINI_BannerBrushResourceHead
     BRA.S   .return_1403
 
 .if_ne_1402:
@@ -1636,28 +1636,28 @@ PARSEINI_LoadWeatherStrings:
     TST.L   D0
     BEQ.S   .return_1403
 
-    PEA     PARSEINI_TAG_WEATHER
+    PEA     _PARSEINI_TAG_WEATHER
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .return_1403
 
     MOVEQ   #1,D0
-    MOVE.L  D0,P_TYPE_WeatherBrushRefreshPendingFlag
-    MOVE.L  PARSEINI_WeatherBrushNodePtr,-(A7)
+    MOVE.L  D0,_P_TYPE_WeatherBrushRefreshPendingFlag
+    MOVE.L  _PARSEINI_WeatherBrushNodePtr,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
+    JSR     _PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
     MOVE.B  #10,190(A0)
-    MOVE.L  D0,PARSEINI_WeatherBrushNodePtr
-    TST.L   PARSEINI_BannerBrushResourceHead
+    MOVE.L  D0,_PARSEINI_WeatherBrushNodePtr
+    TST.L   _PARSEINI_BannerBrushResourceHead
     BNE.S   .return_1403
 
-    MOVE.L  D0,PARSEINI_BannerBrushResourceHead
+    MOVE.L  D0,_PARSEINI_BannerBrushResourceHead
 
 .return_1403:
     MOVEM.L (A7)+,A2-A3
@@ -1674,7 +1674,7 @@ PARSEINI_LoadWeatherStrings:
 ; CLOBBERS:
 ;   A2/A3/A7
 ; CALLS:
-;   PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString, PARSEINI_JMPTBL_STRING_CompareNoCase
+;   PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString, _PARSEINI_JMPTBL_STRING_CompareNoCase
 ; READS:
 ;   P_TYPE_WeatherCurrentMsgPtr, P_TYPE_WeatherForecastMsgPtr, P_TYPE_WeatherBottomLineMsgPtr, PARSEINI_STR_WEATHERCURRENT, PARSEINI_STR_WEATHERFORECAST, PARSEINI_STR_BOTTOMLINETAG
 ; WRITES:
@@ -1690,7 +1690,7 @@ PARSEINI_LoadWeatherMessageStrings:
     MOVEA.L 16(A7),A2
     PEA     PARSEINI_STR_WEATHERCURRENT
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1707,7 +1707,7 @@ PARSEINI_LoadWeatherMessageStrings:
 .if_ne_1405:
     PEA     PARSEINI_STR_WEATHERFORECAST
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1724,7 +1724,7 @@ PARSEINI_LoadWeatherMessageStrings:
 .if_ne_1406:
     PEA     PARSEINI_STR_BOTTOMLINETAG
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1756,9 +1756,9 @@ PARSEINI_LoadWeatherMessageStrings:
 ; CLOBBERS:
 ;   A0/A2/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   PARSEINI_JMPTBL_STRING_CompareNoCase, PARSEINI_JMPTBL_WDISP_SPrintf, SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition
+;   _PARSEINI_JMPTBL_STRING_CompareNoCase, _PARSEINI_JMPTBL_WDISP_SPrintf, _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition
 ; READS:
-;   Global_STR_COLOR_PERCENT_D, _ESQFUNC_BasePaletteRgbTriples, KYBD_CustomPaletteTriplesRBase
+;   _Global_STR_COLOR_PERCENT_D, __ESQFUNC_BasePaletteRgbTriples, _KYBD_CustomPaletteTriplesRBase
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1784,12 +1784,12 @@ PARSEINI_ParseColorTable:
     BRA.S   .init_color_index
 
 .mode4_select_table:
-    MOVE.L  #KYBD_CustomPaletteTriplesRBase,-116(A5)
+    MOVE.L  #_KYBD_CustomPaletteTriplesRBase,-116(A5)
     MOVEQ   #8,D4
     BRA.S   .init_color_index
 
 .mode5_select_table:
-    MOVE.L  #_ESQFUNC_BasePaletteRgbTriples,-116(A5)
+    MOVE.L  #__ESQFUNC_BasePaletteRgbTriples,-116(A5)
     MOVEQ   #8,D4
 
 .init_color_index:
@@ -1800,13 +1800,13 @@ PARSEINI_ParseColorTable:
     BGE.S   .maybe_finalize
 
     MOVE.L  D6,-(A7)
-    PEA     Global_STR_COLOR_PERCENT_D
+    PEA     _Global_STR_COLOR_PERCENT_D
     PEA     -112(A5)
-    JSR     PARSEINI_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _PARSEINI_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -112(A5)
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -1828,7 +1828,7 @@ PARSEINI_ParseColorTable:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  D1,28(A7)
-    JSR     SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -116(A5),A0
@@ -1846,7 +1846,7 @@ PARSEINI_ParseColorTable:
     CMP.L   D0,D7
     BNE.S   .return
 
-    JSR     TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
+    JSR     _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
 
 .return:
     MOVEM.L (A7)+,D4-D7/A2-A3
@@ -1867,7 +1867,7 @@ PARSEINI_ParseColorTable:
 ; CALLS:
 ;   _LVOCloseFont, _LVOForbid/_LVOPermit, _LVOAllocMem/_LVOFreeMem, _LVOOpenDiskFont
 ; READS:
-;   Global_HANDLE_TOPAZ_FONT
+;   _Global_HANDLE_TOPAZ_FONT
 ; WRITES:
 ;   (A3) font handle
 ; DESC:
@@ -1889,7 +1889,7 @@ PARSEINI_ParseColorTable:
 ; CALLS:
 ;   _LVOAllocMem, _LVOCloseFont, _LVOForbid, _LVOFreeMem, _LVOOpenDiskFont, _LVOPermit
 ; READS:
-;   AbsExecBase, DesiredMemoryAvailability, Global_HANDLE_TOPAZ_FONT, Global_REF_DISKFONT_LIBRARY, Global_REF_GRAPHICS_LIBRARY
+;   AbsExecBase, DesiredMemoryAvailability, _Global_HANDLE_TOPAZ_FONT, _Global_REF_DISKFONT_LIBRARY, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1909,7 +1909,7 @@ PARSEINI_TestMemoryAndOpenTopazFont:
     BEQ.S   .return
 
     MOVEA.L (A3),A0
-    MOVEA.L Global_HANDLE_TOPAZ_FONT,A1
+    MOVEA.L _Global_HANDLE_TOPAZ_FONT,A1
     CMPA.L  A0,A1
     BEQ.S   .testDesiredMemoryAvailability
 
@@ -1936,13 +1936,13 @@ PARSEINI_TestMemoryAndOpenTopazFont:
     JSR     _LVOPermit(A6)
 
     MOVEA.L A2,A0
-    MOVEA.L Global_REF_DISKFONT_LIBRARY,A6
+    MOVEA.L _Global_REF_DISKFONT_LIBRARY,A6
     JSR     _LVOOpenDiskFont(A6)
 
     MOVE.L  D0,(A3)
     BNE.S   .couldNotLoadTopazFont
 
-    MOVE.L  Global_HANDLE_TOPAZ_FONT,(A3)
+    MOVE.L  _Global_HANDLE_TOPAZ_FONT,(A3)
     BRA.S   .return
 
 .couldNotLoadTopazFont:
@@ -1966,9 +1966,9 @@ PARSEINI_TestMemoryAndOpenTopazFont:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   PARSEINI_JMPTBL_WDISP_SPrintf, _LVOExecute, TEST_MEMORY_AND_OPEN_TOPAZ_FONT, LAB_1429
+;   _PARSEINI_JMPTBL_WDISP_SPrintf, _LVOExecute, TEST_MEMORY_AND_OPEN_TOPAZ_FONT, LAB_1429
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, Global_HANDLE_TOPAZ_FONT
+;   Global_REF_DOS_LIBRARY_2, _Global_HANDLE_TOPAZ_FONT
 ; WRITES:
 ;   (font handles via TEST_MEMORY_AND_OPEN_TOPAZ_FONT)
 ; DESC:
@@ -2005,7 +2005,7 @@ PARSEINI_HandleFontCommand:
     MOVE.L  A3,-(A7)
     PEA     Global_STR_PERCENT_S_2
     PEA     -80(A5)
-    JSR     PARSEINI_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _PARSEINI_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     LEA     -80(A5),A0
@@ -2084,18 +2084,18 @@ PARSEINI_HandleFontCommand:
 
 .cmd_set_h26f_font:
     PEA     Global_STRUCT_TEXTATTR_H26F_FONT
-    PEA     Global_HANDLE_H26F_FONT
+    PEA     _Global_HANDLE_H26F_FONT
     BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
 
     ADDQ.W  #8,A7
     TST.W   D0
     BEQ.W   .return
 
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BEQ.W   .return
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
-    MOVEA.L Global_HANDLE_H26F_FONT,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_HANDLE_H26F_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
@@ -2103,35 +2103,35 @@ PARSEINI_HandleFontCommand:
 
 .cmd_set_prevuec_font:
     PEA     Global_STRUCT_TEXTATTR_PREVUEC_FONT
-    PEA     Global_HANDLE_PREVUEC_FONT
+    PEA     _Global_HANDLE_PREVUEC_FONT
     BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
 
     ADDQ.W  #8,A7
     TST.W   D0
     BEQ.W   .return
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
 
     MOVEA.L A0,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
     MOVEA.L Global_REF_RASTPORT_2,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
-    MOVEA.L NEWGRID_MainRastPortPtr,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _NEWGRID_MainRastPortPtr,A1
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
-    MOVEA.L NEWGRID_HeaderRastPortPtr,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _NEWGRID_HeaderRastPortPtr,A1
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
     MOVEQ   #0,D6
@@ -2146,10 +2146,10 @@ PARSEINI_HandleFontCommand:
     ADD.L   D1,D1
     JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     GCOMMAND_HighlightMessageSlotTable,A0
+    LEA     _GCOMMAND_HighlightMessageSlotTable,A0
     ADDA.L  D0,A0
     LEA     60(A0),A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
@@ -2157,7 +2157,7 @@ PARSEINI_HandleFontCommand:
     BRA.S   .prevec_font_rastport_loop
 
 .after_prevuec_font_loop:
-    MOVE.L  Global_HANDLE_PREVUEC_FONT,-(A7)
+    MOVE.L  _Global_HANDLE_PREVUEC_FONT,-(A7)
     BSR.W   TLIBA3_SetFontForAllViewModes
 
     ADDQ.W  #4,A7
@@ -2165,7 +2165,7 @@ PARSEINI_HandleFontCommand:
 
 .cmd_set_prevue_font:
     PEA     Global_STRUCT_TEXTATTR_PREVUE_FONT
-    PEA     Global_HANDLE_PREVUE_FONT
+    PEA     _Global_HANDLE_PREVUE_FONT
     BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
 
     ADDQ.W  #8,A7
@@ -2202,14 +2202,14 @@ PARSEINI_HandleFontCommand:
     BEQ.W   .return
 
 .wait_banner_ready:
-    TST.W   CTASKS_IffTaskDoneFlag
+    TST.W   _CTASKS_IffTaskDoneFlag
     BEQ.S   .wait_banner_ready
 
     CLR.L   -(A7)
-    PEA     WDISP_WeatherStatusBrushListHead
+    PEA     _WDISP_WeatherStatusBrushListHead
     JSR     PARSEINI_JMPTBL_BRUSH_FreeBrushList(PC)
 
-    PEA     PARSEINI_BannerBrushResourceHead
+    PEA     _PARSEINI_BannerBrushResourceHead
     JSR     PARSEINI_JMPTBL_BRUSH_FreeBrushResources(PC)
 
     PEA     Global_STR_DF0_BANNER_INI_3
@@ -2289,7 +2289,7 @@ PARSEINI_HandleFontCommand:
 ; CLOBBERS:
 ;   D0-D7/A0-A2
 ; CALLS:
-;   _LVOExecute, PARSEINI_JMPTBL_HANDLE_OpenWithMode, PARSEINI_JMPTBL_STREAM_ReadLineWithLimit, PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator, SCRIPT_JMPTBL_MEMORY_AllocateMemory
+;   _LVOExecute, PARSEINI_JMPTBL_HANDLE_OpenWithMode, PARSEINI_JMPTBL_STREAM_ReadLineWithLimit, PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator, _SCRIPT_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST/2099/209A/209B strings
 ; WRITES:
@@ -2432,7 +2432,7 @@ PARSEINI_ScanLogoDirectory:
     PEA     Global_STR_PARSEINI_C_4
     MOVE.L  D0,-92(A5)
     MOVE.L  A0,40(A7)
-    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 24(A7),A0
@@ -2521,7 +2521,7 @@ PARSEINI_ScanLogoDirectory:
     PEA     1287.W
     PEA     Global_STR_PARSEINI_C_5
     MOVE.L  A0,40(A7)
-    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 24(A7),A0
@@ -2572,7 +2572,7 @@ PARSEINI_ScanLogoDirectory:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  (A1),-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -2635,7 +2635,7 @@ PARSEINI_ScanLogoDirectory:
     MOVE.L  (A1),-(A7)
     PEA     1323.W
     PEA     Global_STR_PARSEINI_C_6
-    JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     ADDQ.L  #1,D6
@@ -2672,7 +2672,7 @@ PARSEINI_ScanLogoDirectory:
     MOVE.L  (A1),-(A7)
     PEA     1329.W
     PEA     Global_STR_PARSEINI_C_7
-    JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     ADDQ.L  #1,D5
@@ -2704,7 +2704,7 @@ PARSEINI_ScanLogoDirectory:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_STRING_CompareNoCase   (JumpStub_STRING_CompareNoCase)
+; FUNC: _PARSEINI_JMPTBL_STRING_CompareNoCase   (JumpStub_STRING_CompareNoCase)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2712,14 +2712,14 @@ PARSEINI_ScanLogoDirectory:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_CompareNoCase
+;   _STRING_CompareNoCase
 ; DESC:
-;   Jump stub to STRING_CompareNoCase (string compare/parse helper).
+;   Jump stub to _STRING_CompareNoCase (string compare/parse helper).
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_STRING_CompareNoCase:
-    JMP     STRING_CompareNoCase
+_PARSEINI_JMPTBL_STRING_CompareNoCase:
+    JMP     _STRING_CompareNoCase
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
@@ -2758,7 +2758,7 @@ PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk:
     JMP     DISKIO2_ParseIniFileFromDisk
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_STR_FindCharPtr   (JumpStub_STR_FindCharPtr)
+; FUNC: _PARSEINI_JMPTBL_STR_FindCharPtr   (JumpStub_STR_FindCharPtr)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2766,14 +2766,14 @@ PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STR_FindCharPtr
+;   _STR_FindCharPtr
 ; DESC:
-;   Jump stub to STR_FindCharPtr.
+;   Jump stub to _STR_FindCharPtr.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_STR_FindCharPtr:
-    JMP     STR_FindCharPtr
+_PARSEINI_JMPTBL_STR_FindCharPtr:
+    JMP     _STR_FindCharPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_HANDLE_OpenWithMode   (JumpStub_HANDLE_OpenWithMode)
@@ -2928,14 +2928,14 @@ PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   BRUSH_FreeBrushList
+;   _BRUSH_FreeBrushList
 ; DESC:
-;   Jump stub to BRUSH_FreeBrushList.
+;   Jump stub to _BRUSH_FreeBrushList.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI_JMPTBL_BRUSH_FreeBrushList:
-    JMP     BRUSH_FreeBrushList
+    JMP     _BRUSH_FreeBrushList
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable   (JumpStub_GCOMMAND_ValidatePresetTable)
@@ -2956,7 +2956,7 @@ PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable:
     JMP     GCOMMAND_ValidatePresetTable
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_BRUSH_AllocBrushNode   (JumpStub_BRUSH_AllocBrushNode)
+; FUNC: _PARSEINI_JMPTBL_BRUSH_AllocBrushNode   (JumpStub_BRUSH_AllocBrushNode)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2970,7 +2970,7 @@ PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_BRUSH_AllocBrushNode:
+_PARSEINI_JMPTBL_BRUSH_AllocBrushNode:
     JMP     BRUSH_AllocBrushNode
 
 ;------------------------------------------------------------------------------
@@ -3000,14 +3000,14 @@ PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   GCOMMAND_InitPresetTableFromPalette
+;   _GCOMMAND_InitPresetTableFromPalette
 ; DESC:
-;   Jump stub to GCOMMAND_InitPresetTableFromPalette.
+;   Jump stub to _GCOMMAND_InitPresetTableFromPalette.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette:
-    JMP     GCOMMAND_InitPresetTableFromPalette
+    JMP     _GCOMMAND_InitPresetTableFromPalette
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_STRING_CompareNoCaseN   (JumpStub_STRING_CompareNoCaseN)
@@ -3018,14 +3018,14 @@ PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_CompareNoCaseN
+;   _STRING_CompareNoCaseN
 ; DESC:
-;   Jump stub to STRING_CompareNoCaseN.
+;   Jump stub to _STRING_CompareNoCaseN.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI_JMPTBL_STRING_CompareNoCaseN:
-    JMP     STRING_CompareNoCaseN
+    JMP     _STRING_CompareNoCaseN
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_STRING_AppendAtNull   (JumpStub_STRING_AppendAtNull)
@@ -3054,14 +3054,14 @@ PARSEINI_JMPTBL_STRING_AppendAtNull:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DISKIO_LoadFileToWorkBuffer
+;   _DISKIO_LoadFileToWorkBuffer
 ; DESC:
-;   Jump stub to DISKIO_LoadFileToWorkBuffer.
+;   Jump stub to _DISKIO_LoadFileToWorkBuffer.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer:
-    JMP     DISKIO_LoadFileToWorkBuffer
+    JMP     _DISKIO_LoadFileToWorkBuffer
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)
@@ -3082,7 +3082,7 @@ PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1:
     JMP     ED1_WaitForFlagAndClearBit1
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_WDISP_SPrintf   (JumpStub_WDISP_SPrintf)
+; FUNC: _PARSEINI_JMPTBL_WDISP_SPrintf   (JumpStub_WDISP_SPrintf)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3090,14 +3090,14 @@ PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   WDISP_SPrintf
+;   _WDISP_SPrintf
 ; DESC:
-;   Jump stub to WDISP_SPrintf.
+;   Jump stub to _WDISP_SPrintf.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_WDISP_SPrintf:
-    JMP     WDISP_SPrintf
+_PARSEINI_JMPTBL_WDISP_SPrintf:
+    JMP     _WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_STREAM_ReadLineWithLimit   (JumpStub_STREAM_ReadLineWithLimit)
@@ -3162,14 +3162,14 @@ PARSEINI_JMPTBL_ED1_ExitEscMenu:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQPARS_ReplaceOwnedString
+;   _ESQPARS_ReplaceOwnedString
 ; DESC:
-;   Jump stub to ESQPARS_ReplaceOwnedString.
+;   Jump stub to _ESQPARS_ReplaceOwnedString.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString:
-    JMP     ESQPARS_ReplaceOwnedString
+    JMP     _ESQPARS_ReplaceOwnedString
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_ED1_EnterEscMenu   (JumpStub_ED1_EnterEscMenu)

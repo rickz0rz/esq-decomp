@@ -1,12 +1,12 @@
     XDEF    DISPTEXT_AppendToBuffer
     XDEF    DISPTEXT_BuildLayoutForSource
-    XDEF    DISPTEXT_BuildLinePointerTable
+    XDEF    _DISPTEXT_BuildLinePointerTable
     XDEF    DISPTEXT_BuildLineWithWidth
     XDEF    DISPTEXT_ComputeMarkerWidths
-    XDEF    DISPTEXT_FinalizeLineTable
+    XDEF    _DISPTEXT_FinalizeLineTable
     XDEF    DISPTEXT_FreeBuffers
     XDEF    DISPTEXT_InitBuffers
-    XDEF    DISPTEXT_LayoutAndAppendToBuffer
+    XDEF    _DISPTEXT_LayoutAndAppendToBuffer
     XDEF    DISPTEXT_LayoutSourceToLines
     XDEF    DISPTEXT_SetLayoutParams
 
@@ -20,11 +20,11 @@
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A6/A7/D0/D1/D7
 ; CALLS:
-;   _LVOAvailMem, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
+;   _LVOAvailMem, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AI_JMPTBL_STRING_AppendAtNull, _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   DISPTEXT_TextBufferPtr
+;   _DISPTEXT_TextBufferPtr
 ; WRITES:
-;   DISPTEXT_TextBufferPtr
+;   _DISPTEXT_TextBufferPtr
 ; DESC:
 ;   Appends a string to the global display-text buffer, reallocating if needed.
 ; NOTES:
@@ -35,17 +35,17 @@ DISPTEXT_AppendToBuffer:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     CLR.L   -8(A5)
-    TST.L   DISPTEXT_TextBufferPtr
+    TST.L   _DISPTEXT_TextBufferPtr
     BEQ.W   .alloc_new_buffer
 
-    MOVEA.L DISPTEXT_TextBufferPtr,A0
+    MOVEA.L _DISPTEXT_TextBufferPtr,A0
 
 .find_end_dst:
     TST.B   (A0)+
     BNE.S   .find_end_dst
 
     SUBQ.L  #1,A0
-    SUBA.L  DISPTEXT_TextBufferPtr,A0
+    SUBA.L  _DISPTEXT_TextBufferPtr,A0
     MOVEA.L A3,A1
 
 .find_end_src:
@@ -69,8 +69,8 @@ DISPTEXT_AppendToBuffer:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D7,-(A7)
     PEA     127.W
-    PEA     Global_STR_DISPTEXT_C_1
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    PEA     _Global_STR_DISPTEXT_C_1
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -79,7 +79,7 @@ DISPTEXT_AppendToBuffer:
     TST.L   -8(A5)
     BEQ.S   .return_status
 
-    MOVEA.L DISPTEXT_TextBufferPtr,A0
+    MOVEA.L _DISPTEXT_TextBufferPtr,A0
     MOVEA.L -8(A5),A1
 
 .copy_old_buffer:
@@ -88,27 +88,27 @@ DISPTEXT_AppendToBuffer:
 
     MOVE.L  A3,-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
-    MOVE.L  DISPTEXT_TextBufferPtr,(A7)
+    MOVE.L  _DISPTEXT_TextBufferPtr,(A7)
     CLR.L   -(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
     MOVEA.L -8(A5),A0
-    MOVE.L  A0,DISPTEXT_TextBufferPtr
+    MOVE.L  A0,_DISPTEXT_TextBufferPtr
     BRA.S   .return_status
 
 .alloc_new_buffer:
-    MOVE.L  DISPTEXT_TextBufferPtr,-(A7)
+    MOVE.L  _DISPTEXT_TextBufferPtr,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DISPTEXT_TextBufferPtr
+    MOVE.L  D0,_DISPTEXT_TextBufferPtr
 
 .return_status:
-    TST.L   DISPTEXT_TextBufferPtr
+    TST.L   _DISPTEXT_TextBufferPtr
     SNE     D0
     NEG.B   D0
     EXT.W   D0
@@ -131,7 +131,7 @@ DISPTEXT_AppendToBuffer:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   _LVOTextLength, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AI_JMPTBL_STR_SkipClass3Chars, GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN
+;   _LVOTextLength, _GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AI_JMPTBL_STR_SkipClass3Chars, GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN
 ; READS:
 ;   DISPTEXT_STR_SINGLE_SPACE_MEASURE..DISPTEXT_STR_SINGLE_SPACE_DELIM, _DISPTEXT_CurrentLineIndex/21D9/21DA/21DC
 ; WRITES:
@@ -173,7 +173,7 @@ DISPTEXT_BuildLineWithWidth:
 
     PEA     DISPTEXT_STR_SINGLE_SPACE_APPEND
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     SUB.L   -16(A5),D7
@@ -265,7 +265,7 @@ DISPTEXT_BuildLineWithWidth:
     CLR.B   -73(A5,D6.L)
     PEA     -73(A5)
     MOVE.L  16(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -285,7 +285,7 @@ DISPTEXT_BuildLineWithWidth:
 .append_word:
     PEA     -73(A5)
     MOVE.L  16(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     SUB.L   D5,D7
@@ -316,7 +316,7 @@ DISPTEXT_BuildLineWithWidth:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: DISPTEXT_BuildLinePointerTable   (Build display line pointer tableuncertain)
+; FUNC: _DISPTEXT_BuildLinePointerTable   (Build display line pointer tableuncertain)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -326,7 +326,7 @@ DISPTEXT_BuildLineWithWidth:
 ; CALLS:
 ;   none
 ; READS:
-;   DISPTEXT_TextBufferPtr/21D4/21D6/21D7/21DB
+;   _DISPTEXT_TextBufferPtr/21D4/21D6/21D7/21DB
 ; WRITES:
 ;   _DISPTEXT_LinePtrTable, _DISPTEXT_LineTableLockFlag
 ; DESC:
@@ -334,13 +334,13 @@ DISPTEXT_BuildLineWithWidth:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DISPTEXT_BuildLinePointerTable:
+_DISPTEXT_BuildLinePointerTable:
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVE.L  24(A7),D7
     TST.L   _DISPTEXT_LineTableLockFlag
     BNE.S   .return
 
-    MOVE.L  DISPTEXT_TextBufferPtr,_DISPTEXT_LinePtrTable
+    MOVE.L  _DISPTEXT_TextBufferPtr,_DISPTEXT_LinePtrTable
     MOVEQ   #0,D0
     MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     ADD.L   D0,D0
@@ -372,7 +372,7 @@ DISPTEXT_BuildLinePointerTable:
     ADDA.L  D0,A0
     MOVE.L  D6,D0
     ASL.L   #2,D0
-    LEA     DISPTEXT_TextBufferPtr,A1
+    LEA     _DISPTEXT_TextBufferPtr,A1
     ADDA.L  D0,A1
     MOVE.L  D6,D0
     ADD.L   D0,D0
@@ -395,7 +395,7 @@ DISPTEXT_BuildLinePointerTable:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: DISPTEXT_FinalizeLineTable   (Finalize pending line tableuncertain)
+; FUNC: _DISPTEXT_FinalizeLineTable   (Finalize pending line tableuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -403,7 +403,7 @@ DISPTEXT_BuildLinePointerTable:
 ; CLOBBERS:
 ;   A0/A7/D0/D1
 ; CALLS:
-;   DISPTEXT_BuildLinePointerTable
+;   _DISPTEXT_BuildLinePointerTable
 ; READS:
 ;   _DISPTEXT_LineTableLockFlag, _DISPTEXT_CurrentLineIndex, _DISPTEXT_LineLengthTable
 ; WRITES:
@@ -413,7 +413,7 @@ DISPTEXT_BuildLinePointerTable:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DISPTEXT_FinalizeLineTable:
+_DISPTEXT_FinalizeLineTable:
     TST.L   _DISPTEXT_LineTableLockFlag
     BNE.S   .return
 
@@ -432,7 +432,7 @@ DISPTEXT_FinalizeLineTable:
 
 .check_extra_line:
     PEA     1.W
-    BSR.W   DISPTEXT_BuildLinePointerTable
+    BSR.W   _DISPTEXT_BuildLinePointerTable
 
     ADDQ.W  #4,A7
     CLR.W   _DISPTEXT_CurrentLineIndex
@@ -450,11 +450,11 @@ DISPTEXT_FinalizeLineTable:
 ; CLOBBERS:
 ;   A7
 ; CALLS:
-;   _DISPLIB_ResetLineTables, GROUP_AG_JMPTBL_MEMORY_AllocateMemory
+;   _DISPLIB_ResetLineTables, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   DISPTEXT_InitBuffersPending
 ; WRITES:
-;   DISPTEXT_TextBufferPtr, DISPTEXT_InitBuffersPending, Global_REF_1000_BYTES_ALLOCATED_1/2
+;   _DISPTEXT_TextBufferPtr, DISPTEXT_InitBuffersPending, _Global_REF_1000_BYTES_ALLOCATED_1/2
 ; DESC:
 ;   Allocates working buffers for display text if initialization flag set.
 ; NOTES:
@@ -464,7 +464,7 @@ DISPTEXT_InitBuffers:
     TST.L   DISPTEXT_InitBuffersPending
     BEQ.S   .return
 
-    CLR.L   DISPTEXT_TextBufferPtr
+    CLR.L   _DISPTEXT_TextBufferPtr
     BSR.W   _DISPLIB_ResetLineTables
 
     CLR.L   DISPTEXT_InitBuffersPending
@@ -473,14 +473,14 @@ DISPTEXT_InitBuffers:
     PEA     1000.W
     PEA     320.W
     PEA     Global_STR_DISPTEXT_C_2
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     1000.W
     PEA     321.W
     PEA     Global_STR_DISPTEXT_C_3
-    MOVE.L  D0,Global_REF_1000_BYTES_ALLOCATED_1
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    MOVE.L  D0,_Global_REF_1000_BYTES_ALLOCATED_1
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,Global_REF_1000_BYTES_ALLOCATED_2
@@ -498,30 +498,30 @@ DISPTEXT_InitBuffers:
 ; CLOBBERS:
 ;   A7
 ; CALLS:
-;   DISPLIB_ResetTextBufferAndLineTables, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+;   _DISPLIB_ResetTextBufferAndLineTables, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_REF_1000_BYTES_ALLOCATED_1/2
+;   _Global_REF_1000_BYTES_ALLOCATED_1/2
 ; WRITES:
-;   Global_REF_1000_BYTES_ALLOCATED_1/2
+;   _Global_REF_1000_BYTES_ALLOCATED_1/2
 ; DESC:
 ;   Releases the 1000-byte buffers used by display text.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DISPTEXT_FreeBuffers:
-    BSR.W   DISPLIB_ResetTextBufferAndLineTables
+    BSR.W   _DISPLIB_ResetTextBufferAndLineTables
 
-    TST.L   Global_REF_1000_BYTES_ALLOCATED_1
+    TST.L   _Global_REF_1000_BYTES_ALLOCATED_1
     BEQ.S   .freeSecondBlock
 
     PEA     1000.W
-    MOVE.L  Global_REF_1000_BYTES_ALLOCATED_1,-(A7)
+    MOVE.L  _Global_REF_1000_BYTES_ALLOCATED_1,-(A7)
     PEA     338.W
     PEA     Global_STR_DISPTEXT_C_4
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
-    CLR.L   Global_REF_1000_BYTES_ALLOCATED_1
+    CLR.L   _Global_REF_1000_BYTES_ALLOCATED_1
 
 .freeSecondBlock:
     TST.L   Global_REF_1000_BYTES_ALLOCATED_2
@@ -531,7 +531,7 @@ DISPTEXT_FreeBuffers:
     MOVE.L  Global_REF_1000_BYTES_ALLOCATED_2,-(A7)
     PEA     343.W
     PEA     Global_STR_DISPTEXT_C_5
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     CLR.L   Global_REF_1000_BYTES_ALLOCATED_2
@@ -549,7 +549,7 @@ DISPTEXT_FreeBuffers:
 ; CLOBBERS:
 ;   A7/D0/D5/D6/D7
 ; CALLS:
-;   DISPLIB_ResetTextBufferAndLineTables, _DISPLIB_CommitCurrentLinePenAndAdvance
+;   _DISPLIB_ResetTextBufferAndLineTables, _DISPLIB_CommitCurrentLinePenAndAdvance
 ; READS:
 ;   _DISPTEXT_LineWidthPx, _DISPTEXT_TargetLineIndex
 ; WRITES:
@@ -564,7 +564,7 @@ DISPTEXT_SetLayoutParams:
     MOVE.L  16(A7),D7
     MOVE.L  20(A7),D6
     MOVE.L  24(A7),D5
-    BSR.W   DISPLIB_ResetTextBufferAndLineTables
+    BSR.W   _DISPLIB_ResetTextBufferAndLineTables
 
     TST.L   D7
     BMI.S   .clamp_width
@@ -699,7 +699,7 @@ DISPTEXT_ComputeMarkerWidths:
 ; CALLS:
 ;   DISPTEXT_BuildLineWithWidth, _LVOTextLength
 ; READS:
-;   DISPTEXT_TextBufferPtr/21D4/21D5/21D6/21D7/21D9/21DA/21DB
+;   _DISPTEXT_TextBufferPtr/21D4/21D5/21D6/21D7/21D9/21DA/21DB
 ; WRITES:
 ;   _DISPTEXT_CurrentLineIndex
 ; DESC:
@@ -846,7 +846,7 @@ DISPTEXT_LayoutSourceToLines:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: DISPTEXT_LayoutAndAppendToBuffer   (Layout and append into output buffer)
+; FUNC: _DISPTEXT_LayoutAndAppendToBuffer   (Layout and append into output buffer)
 ; ARGS:
 ;   stack +4: A3 = target RastPort/context pointer
 ;   stack +8: A2 = source text pointer
@@ -856,9 +856,9 @@ DISPTEXT_LayoutSourceToLines:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A6/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   DISPTEXT_BuildLineWithWidth, _DISPLIB_CommitCurrentLinePenAndAdvance, GROUP_AI_JMPTBL_STRING_AppendAtNull, _LVOTextLength
+;   DISPTEXT_BuildLineWithWidth, _DISPLIB_CommitCurrentLinePenAndAdvance, _GROUP_AI_JMPTBL_STRING_AppendAtNull, _LVOTextLength
 ; READS:
-;   DISPTEXT_TextBufferPtr/21D4/21D5/21D6/21D7/21D8/21D9/21DA/21DB
+;   _DISPTEXT_TextBufferPtr/21D4/21D5/21D6/21D7/21D8/21D9/21DA/21DB
 ; WRITES:
 ;   _DISPTEXT_CurrentLineIndex, _DISPTEXT_LineLengthTable, Global_REF_1000_BYTES_ALLOCATED_2
 ; DESC:
@@ -866,7 +866,7 @@ DISPTEXT_LayoutSourceToLines:
 ; NOTES:
 ;   Returns early if source text pointer is NULL or points at an empty string.
 ;------------------------------------------------------------------------------
-DISPTEXT_LayoutAndAppendToBuffer:
+_DISPTEXT_LayoutAndAppendToBuffer:
     LINK.W  A5,#-276
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1007,7 +1007,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     MOVE.L  A1,D5
     MOVE.L  A0,(A7)
     MOVE.L  Global_REF_1000_BYTES_ALLOCATED_2,-(A7)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D0
@@ -1052,7 +1052,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     BSR.W   DISPTEXT_AppendToBuffer
 
     CLR.L   (A7)
-    BSR.W   DISPTEXT_BuildLinePointerTable
+    BSR.W   _DISPTEXT_BuildLinePointerTable
 
     ADDQ.W  #4,A7
 
@@ -1078,11 +1078,11 @@ DISPTEXT_LayoutAndAppendToBuffer:
 ; CLOBBERS:
 ;   A0/A3/A5/A7/D0/D7
 ; CALLS:
-;   GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2, DISPTEXT_LayoutAndAppendToBuffer
+;   _GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2, _DISPTEXT_LayoutAndAppendToBuffer
 ; READS:
-;   _DISPTEXT_LineTableLockFlag, Global_REF_1000_BYTES_ALLOCATED_1
+;   _DISPTEXT_LineTableLockFlag, _Global_REF_1000_BYTES_ALLOCATED_1
 ; WRITES:
-;   Global_REF_1000_BYTES_ALLOCATED_1 (via GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2)
+;   _Global_REF_1000_BYTES_ALLOCATED_1 (via _GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2)
 ; DESC:
 ;   Prepares output buffer and runs layout; returns success flag.
 ; NOTES:
@@ -1099,13 +1099,13 @@ DISPTEXT_BuildLayoutForSource:
     LEA     16(A5),A0
     MOVE.L  A0,-(A7)
     MOVE.L  12(A5),-(A7)
-    MOVE.L  Global_REF_1000_BYTES_ALLOCATED_1,-(A7)
+    MOVE.L  _Global_REF_1000_BYTES_ALLOCATED_1,-(A7)
     MOVE.L  A0,-8(A5)
-    JSR     GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2(PC)
+    JSR     _GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2(PC)
 
-    MOVE.L  Global_REF_1000_BYTES_ALLOCATED_1,(A7)
+    MOVE.L  _Global_REF_1000_BYTES_ALLOCATED_1,(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   DISPTEXT_LayoutAndAppendToBuffer
+    BSR.W   _DISPTEXT_LayoutAndAppendToBuffer
 
     LEA     16(A7),A7
     MOVE.L  D0,D7

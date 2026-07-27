@@ -1,4 +1,4 @@
-    XDEF    TLIBA3_BuildDisplayContextForViewMode
+    XDEF    _TLIBA3_BuildDisplayContextForViewMode
     XDEF    TLIBA3_ClearViewModeRastPort
     XDEF    TLIBA3_DrawCenteredWrappedTextLines
     XDEF    TLIBA3_DrawHorizontalScaleTicks
@@ -6,7 +6,7 @@
     XDEF    TLIBA3_DrawOuterFrameBorder
     XDEF    TLIBA3_DrawVerticalScaleTicks
     XDEF    TLIBA3_DrawViewModeGuides
-    XDEF    TLIBA3_DrawViewModeOverlay
+    XDEF    _TLIBA3_DrawViewModeOverlay
     XDEF    TLIBA3_FormatPatternRegisterDump
     XDEF    TLIBA3_GetViewModeHeight
     XDEF    TLIBA3_GetViewModeRastPort
@@ -26,7 +26,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A1/A3
 ; CALLS:
-;   MATH_Mulu32, TLIBA3_InitRuntimeEntries
+;   _MATH_Mulu32, TLIBA3_InitRuntimeEntries
 ; READS:
 ;   (none)
 ; WRITES:
@@ -51,7 +51,7 @@ TLIBA3_InitPatternTable:
 
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     LEA     TLIBA3_VmArrayPatternTable,A0
     MOVEA.L A0,A1
@@ -114,9 +114,9 @@ TLIBA3_InitPatternTable:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A1
+    LEA     _TLIBA3_VmArrayRuntimeTable,A1
     MOVEA.L A1,A2
     ADDA.L  D0,A2
     MOVE.W  6(A2),D0
@@ -132,7 +132,7 @@ TLIBA3_InitPatternTable:
     EXT.L   D0
     MOVE.W  D1,-12(A5)
     MOVEQ   #16,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     ASL.L   #2,D0
     MOVE.W  -16(A5),D1
@@ -173,7 +173,7 @@ TLIBA3_InitPatternTable:
     MOVE.L  D7,D0
     MOVE.W  D1,-20(A5)
     MOVEQ   #76,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -184,7 +184,7 @@ TLIBA3_InitPatternTable:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A1,A2
     ADDA.L  D0,A2
@@ -201,7 +201,7 @@ TLIBA3_InitPatternTable:
     MOVE.L  D0,D4
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -212,7 +212,7 @@ TLIBA3_InitPatternTable:
     MOVE.W  D1,40(A7)
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A1,A3
     ADDA.L  D0,A3
@@ -256,7 +256,7 @@ TLIBA3_InitPatternTable:
     MOVE.L  D0,D4
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -269,7 +269,7 @@ TLIBA3_InitPatternTable:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A1,A3
     ADDA.L  D0,A3
@@ -280,7 +280,7 @@ TLIBA3_InitPatternTable:
     MOVE.L  D0,40(A7)
     MOVE.L  D1,D0
     MOVE.L  D3,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     MOVE.L  36(A7),D1
     ADD.L   D0,D1
@@ -318,7 +318,7 @@ TLIBA3_InitPatternTable:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A1,A2
     ADDA.L  D0,A2
@@ -336,7 +336,7 @@ TLIBA3_InitPatternTable:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A1,A2
     ADDA.L  D0,A2
@@ -350,7 +350,7 @@ TLIBA3_InitPatternTable:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A1,A2
     ADDA.L  D0,A2
@@ -366,7 +366,7 @@ TLIBA3_InitPatternTable:
 .skip_181C:
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -381,7 +381,7 @@ TLIBA3_InitPatternTable:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A1,A3
     ADDA.L  D0,A3
@@ -659,9 +659,9 @@ TLIBA3_DrawCenteredWrappedTextLines:
 ; CLOBBERS:
 ;   A0/A1/A3/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   MATH_DivS32, WDISP_SPrintf, _LVODraw, _LVOMove, _LVOText
+;   _MATH_DivS32, _WDISP_SPrintf, _LVODraw, _LVOMove, _LVOText
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, LAB_1828, TLIBA1_FMT_PCT_03LD_VerticalScaleTick, return
+;   Global_REF_GRAPHICS_LIBRARY, LAB_1828, _TLIBA1_FMT_PCT_03LD_VerticalScaleTick, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -706,7 +706,7 @@ TLIBA3_DrawVerticalScaleTicks:
 
     MOVE.L  D6,D0
     MOVEQ   #10,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     TST.L   D1
     BNE.S   .lab_182A
@@ -733,9 +733,9 @@ TLIBA3_DrawVerticalScaleTicks:
     JSR     _LVOMove(A6)
 
     MOVE.L  D6,-(A7)
-    PEA     TLIBA1_FMT_PCT_03LD_VerticalScaleTick
+    PEA     _TLIBA1_FMT_PCT_03LD_VerticalScaleTick
     PEA     -84(A5)
-    JSR     WDISP_SPrintf(PC)
+    JSR     _WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     LEA     -84(A5),A0
@@ -758,7 +758,7 @@ TLIBA3_DrawVerticalScaleTicks:
 .lab_182A:
     MOVE.L  D6,D0
     MOVEQ   #5,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     TST.L   D1
     BNE.S   .lab_182B
@@ -798,7 +798,7 @@ TLIBA3_DrawVerticalScaleTicks:
 ; CLOBBERS:
 ;   A0/A1/A3/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   MATH_DivS32, MATH_Mulu32, WDISP_SPrintf, _LVODraw, _LVOMove, _LVOText, _LVOTextLength
+;   _MATH_DivS32, _MATH_Mulu32, _WDISP_SPrintf, _LVODraw, _LVOMove, _LVOText, _LVOTextLength
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY, LAB_182E, LAB_1832, TLIBA1_FMT_PCT_03LD_HorizontalScaleTick, return
 ; WRITES:
@@ -845,7 +845,7 @@ TLIBA3_DrawHorizontalScaleTicks:
 
     MOVE.L  D6,D0
     MOVEQ   #25,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     TST.L   D1
     BNE.W   .lab_1832
@@ -871,7 +871,7 @@ TLIBA3_DrawHorizontalScaleTicks:
     MOVE.L  D6,-(A7)
     PEA     TLIBA1_FMT_PCT_03LD_HorizontalScaleTick
     PEA     -84(A5)
-    JSR     WDISP_SPrintf(PC)
+    JSR     _WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     LEA     -84(A5),A0
@@ -901,10 +901,10 @@ TLIBA3_DrawHorizontalScaleTicks:
     MOVE.L  D6,D0
     MOVE.L  D1,16(A7)
     MOVEQ   #2,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     MOVEQ   #10,D0
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVE.L  D5,D1
     ADD.L   D0,D1
@@ -931,7 +931,7 @@ TLIBA3_DrawHorizontalScaleTicks:
 .lab_1832:
     MOVE.L  D6,D0
     MOVEQ   #5,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     TST.L   D1
     BNE.S   .lab_1833
@@ -1105,7 +1105,7 @@ TLIBA3_DrawInnerFrameBorder:
 ; CALLS:
 ;   TLIBA3_DrawVerticalScaleTicks, TLIBA3_DrawHorizontalScaleTicks, TLIBA3_DrawOuterFrameBorder, TLIBA3_DrawInnerFrameBorder, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
 ; READS:
-;   Global_HANDLE_PREVUEC_FONT, Global_HANDLE_TOPAZ_FONT, Global_REF_GRAPHICS_LIBRARY
+;   _Global_HANDLE_PREVUEC_FONT, _Global_HANDLE_TOPAZ_FONT, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1117,7 +1117,7 @@ TLIBA3_DrawViewModeGuides:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVEA.L A3,A1
-    MOVEA.L Global_HANDLE_TOPAZ_FONT,A0
+    MOVEA.L _Global_HANDLE_TOPAZ_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
@@ -1166,7 +1166,7 @@ TLIBA3_DrawViewModeGuides:
 
     LEA     12(A7),A7
     MOVEA.L A3,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
@@ -1176,7 +1176,7 @@ TLIBA3_DrawViewModeGuides:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA3_DrawViewModeOverlay   (TLIBA3_DrawViewModeOverlay)
+; FUNC: _TLIBA3_DrawViewModeOverlay   (_TLIBA3_DrawViewModeOverlay)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +84: arg_2 (via 88(A5))
@@ -1186,9 +1186,9 @@ TLIBA3_DrawViewModeGuides:
 ; CLOBBERS:
 ;   A0/A1/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   TLIBA3_DrawCenteredWrappedTextLines, TLIBA3_DrawViewModeGuides, MATH_Mulu32, WDISP_SPrintf, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast
+;   TLIBA3_DrawCenteredWrappedTextLines, TLIBA3_DrawViewModeGuides, _MATH_Mulu32, _WDISP_SPrintf, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast
 ; READS:
-;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, TLIBA1_FMT_VIEWMODE_PCT_LD, TLIBA3_VmArrayRuntimeTable
+;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, TLIBA1_FMT_VIEWMODE_PCT_LD, _TLIBA3_VmArrayRuntimeTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1196,7 +1196,7 @@ TLIBA3_DrawViewModeGuides:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-TLIBA3_DrawViewModeOverlay:
+_TLIBA3_DrawViewModeOverlay:
     LINK.W  A5,#-88
     MOVEM.L D5-D7,-(A7)
     MOVE.L  8(A5),D7
@@ -1204,9 +1204,9 @@ TLIBA3_DrawViewModeOverlay:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #0,D6
@@ -1217,16 +1217,16 @@ TLIBA3_DrawViewModeOverlay:
     MOVE.W  4(A1),D5
     ADDA.L  D0,A0
     LEA     10(A0),A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEQ   #0,D0
@@ -1235,9 +1235,9 @@ TLIBA3_DrawViewModeOverlay:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEQ   #1,D0
@@ -1246,9 +1246,9 @@ TLIBA3_DrawViewModeOverlay:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEQ   #1,D0
@@ -1257,9 +1257,9 @@ TLIBA3_DrawViewModeOverlay:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEQ   #0,D0
@@ -1268,9 +1268,9 @@ TLIBA3_DrawViewModeOverlay:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVE.L  A1,-(A7)
@@ -1279,14 +1279,14 @@ TLIBA3_DrawViewModeOverlay:
     MOVE.L  D7,(A7)
     PEA     TLIBA1_FMT_VIEWMODE_PCT_LD
     PEA     -88(A5)
-    JSR     WDISP_SPrintf(PC)
+    JSR     _WDISP_SPrintf(PC)
 
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     PEA     90.W
@@ -1309,9 +1309,9 @@ TLIBA3_DrawViewModeOverlay:
 ; CLOBBERS:
 ;   A0/A7/D0/D1/D7
 ; CALLS:
-;   MATH_Mulu32
+;   _MATH_Mulu32
 ; READS:
-;   TLIBA3_VmArrayRuntimeTable
+;   _TLIBA3_VmArrayRuntimeTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1326,9 +1326,9 @@ TLIBA3_GetViewModeHeight:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     MOVE.W  4(A0),D0
 
@@ -1343,9 +1343,9 @@ TLIBA3_GetViewModeHeight:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     MOVE.W  2(A0),D0
     MOVE.L  (A7)+,D7
@@ -1362,9 +1362,9 @@ TLIBA3_GetViewModeHeight:
 ; CLOBBERS:
 ;   A0/A1/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   MATH_Mulu32, _LVOSetRast
+;   _MATH_Mulu32, _LVOSetRast
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, TLIBA3_VmArrayRuntimeTable
+;   Global_REF_GRAPHICS_LIBRARY, _TLIBA3_VmArrayRuntimeTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1380,9 +1380,9 @@ TLIBA3_ClearViewModeRastPort:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVE.L  D6,D0
@@ -1403,9 +1403,9 @@ TLIBA3_ClearViewModeRastPort:
 ; CLOBBERS:
 ;   A0/A1/A7/D0/D1/D7
 ; CALLS:
-;   MATH_Mulu32
+;   _MATH_Mulu32
 ; READS:
-;   TLIBA3_VmArrayRuntimeTable
+;   _TLIBA3_VmArrayRuntimeTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1420,9 +1420,9 @@ TLIBA3_GetViewModeRastPort:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVE.L  A1,D0
@@ -1433,7 +1433,7 @@ TLIBA3_GetViewModeRastPort:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA3_BuildDisplayContextForViewMode   (TLIBA3_BuildDisplayContextForViewMode)
+; FUNC: _TLIBA3_BuildDisplayContextForViewMode   (_TLIBA3_BuildDisplayContextForViewMode)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +14: arg_2 (via 18(A5))
@@ -1454,23 +1454,23 @@ TLIBA3_GetViewModeRastPort:
 ; CLOBBERS:
 ;   A0/A1/A2/A5/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   TLIBA3_BuildDisplayContextForViewMode, MATH_Mulu32, TLIBA3_InitPatternTable, TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag
+;   _TLIBA3_BuildDisplayContextForViewMode, _MATH_Mulu32, TLIBA3_InitPatternTable, TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag
 ; READS:
-;   LAB_1840, LAB_1847, LAB_1848, LAB_184D, LAB_184E, ESQ_CopperEffectTemplateRowsSet0, ESQ_CopperEffectTemplateRowsSet1, TLIBA1_PatternTableInitGuard, TLIBA1_CurrentViewModeIndex, TLIBA3_VmArrayRuntimeTable, TLIBA3_VmArrayPatternTable, fffe, ffff
+;   LAB_1840, LAB_1847, LAB_1848, LAB_184D, LAB_184E, ESQ_CopperEffectTemplateRowsSet0, ESQ_CopperEffectTemplateRowsSet1, TLIBA1_PatternTableInitGuard, _TLIBA1_CurrentViewModeIndex, _TLIBA3_VmArrayRuntimeTable, TLIBA3_VmArrayPatternTable, fffe, ffff
 ; WRITES:
-;   TLIBA1_CurrentViewModeIndex, WDISP_DisplayContextBase
+;   _TLIBA1_CurrentViewModeIndex, _WDISP_DisplayContextBase
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-TLIBA3_BuildDisplayContextForViewMode:
+_TLIBA3_BuildDisplayContextForViewMode:
     LINK.W  A5,#-256
     MOVEM.L D2-D3/D5-D7/A2,-(A7)
     MOVE.L  8(A5),D7
     MOVE.W  18(A5),D6
 
-    MOVE.L  D7,TLIBA1_CurrentViewModeIndex
+    MOVE.L  D7,_TLIBA1_CurrentViewModeIndex
     TST.W   TLIBA1_PatternTableInitGuard
     BNE.S   .lab_183F
 
@@ -1481,7 +1481,7 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVE.L  #ESQ_CopperEffectTemplateRowsSet1,-8(A5)
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     LEA     TLIBA3_VmArrayPatternTable,A0
     ADDA.L  D0,A0
@@ -1495,9 +1495,9 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     MOVEA.L A0,A2
     ADDA.L  D0,A2
     MOVEQ   #0,D1
@@ -1526,7 +1526,7 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -1542,7 +1542,7 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -1577,7 +1577,7 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -1603,7 +1603,7 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     ADDA.L  D0,A0
     MOVEQ   #0,D0
@@ -1709,9 +1709,9 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     MOVE.L  A0,D0
     MOVEM.L (A7)+,D2-D3/D5-D7/A2
@@ -1727,11 +1727,11 @@ TLIBA3_BuildDisplayContextForViewMode:
     EXT.L   D0
     PEA     -1.W
     MOVE.L  D0,-(A7)
-    MOVE.L  TLIBA1_CurrentViewModeIndex,-(A7)
-    BSR.W   TLIBA3_BuildDisplayContextForViewMode
+    MOVE.L  _TLIBA1_CurrentViewModeIndex,-(A7)
+    BSR.W   _TLIBA3_BuildDisplayContextForViewMode
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     MOVE.L  (A7)+,D7
     RTS
 
@@ -1746,31 +1746,31 @@ TLIBA3_BuildDisplayContextForViewMode:
 ; CLOBBERS:
 ;   A7/D0/D1
 ; CALLS:
-;   TLIBA3_DrawViewModeOverlay, TLIBA3_BuildDisplayContextForViewMode, MATH_DivS32
+;   _TLIBA3_DrawViewModeOverlay, _TLIBA3_BuildDisplayContextForViewMode, _MATH_DivS32
 ; READS:
-;   TLIBA1_CurrentViewModeIndex
+;   _TLIBA1_CurrentViewModeIndex
 ; WRITES:
-;   TLIBA1_CurrentViewModeIndex, WDISP_DisplayContextBase
+;   _TLIBA1_CurrentViewModeIndex, _WDISP_DisplayContextBase
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 TLIBA3_SelectNextViewMode:
-    MOVE.L  TLIBA1_CurrentViewModeIndex,D0
+    MOVE.L  _TLIBA1_CurrentViewModeIndex,D0
     ADDQ.L  #1,D0
     MOVEQ   #9,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
-    MOVE.L  D1,TLIBA1_CurrentViewModeIndex
+    MOVE.L  D1,_TLIBA1_CurrentViewModeIndex
     PEA     -1.W
     CLR.L   -(A7)
     MOVE.L  D1,-(A7)
-    BSR.W   TLIBA3_BuildDisplayContextForViewMode
+    BSR.W   _TLIBA3_BuildDisplayContextForViewMode
 
-    MOVE.L  D0,WDISP_DisplayContextBase
-    MOVE.L  TLIBA1_CurrentViewModeIndex,(A7)
-    BSR.W   TLIBA3_DrawViewModeOverlay
+    MOVE.L  D0,_WDISP_DisplayContextBase
+    MOVE.L  _TLIBA1_CurrentViewModeIndex,(A7)
+    BSR.W   _TLIBA3_DrawViewModeOverlay
 
     LEA     12(A7),A7
     RTS
@@ -1787,9 +1787,9 @@ TLIBA3_SelectNextViewMode:
 ; CLOBBERS:
 ;   A0/A2/A3/A7/D0/D1/D2/D3/D7
 ; CALLS:
-;   FORMAT_RawDoFmtWithScratchBuffer, TLIBA3_FormatPatternRegisterDump, MATH_Mulu32, WDISP_SPrintf
+;   FORMAT_RawDoFmtWithScratchBuffer, TLIBA3_FormatPatternRegisterDump, _MATH_Mulu32, _WDISP_SPrintf
 ; READS:
-;   Global_STR_VM_ARRAY_1, Global_STR_VM_ARRAY_2, TLIBA1_CurrentViewModeIndex, TLIBA1_DiagDiwOffset, TLIBA1_DiagDdfOffset, TLIBA1_DiagBplcon1Value, TLIBA1_FMT_PCT_S_COLON_DIWOFFSET_PCT_04LX_DDFOF, TLIBA1_FMT_DIWSTRT_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_DIWSTOP_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_DDFSTRT_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_DDFSTOP_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL1MOD_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL2MOD_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPLCON0_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPLCON1_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPLCON2_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL1PTH_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL1PTL_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL2PTH_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL2PTL_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL3PTH_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL3PTL_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL4PTH_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL4PTL_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL5PTH_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL5PTL_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_STR_PatternDumpSeparatorNewline, TLIBA1_STR_PatternDumpLoopNewline, TLIBA3_VmArrayPatternTable
+;   Global_STR_VM_ARRAY_1, Global_STR_VM_ARRAY_2, _TLIBA1_CurrentViewModeIndex, TLIBA1_DiagDiwOffset, TLIBA1_DiagDdfOffset, TLIBA1_DiagBplcon1Value, TLIBA1_FMT_PCT_S_COLON_DIWOFFSET_PCT_04LX_DDFOF, TLIBA1_FMT_DIWSTRT_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_DIWSTOP_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_DDFSTRT_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_DDFSTOP_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL1MOD_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL2MOD_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPLCON0_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPLCON1_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPLCON2_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL1PTH_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL1PTL_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL2PTH_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL2PTL_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL3PTH_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL3PTL_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL4PTH_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL4PTL_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL5PTH_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_FMT_BPL5PTL_COLON_0X_PCT_04LX_0X_PCT_04L, TLIBA1_STR_PatternDumpSeparatorNewline, TLIBA1_STR_PatternDumpLoopNewline, TLIBA3_VmArrayPatternTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2067,14 +2067,14 @@ TLIBA3_FormatPatternRegisterDump:
 
     LINK.W  A5,#-80
 
-    MOVE.L  TLIBA1_CurrentViewModeIndex,-(A7)
+    MOVE.L  _TLIBA1_CurrentViewModeIndex,-(A7)
     PEA     Global_STR_VM_ARRAY_1
     PEA     -80(A5)
-    JSR     WDISP_SPrintf(PC)
+    JSR     _WDISP_SPrintf(PC)
 
-    MOVE.L  TLIBA1_CurrentViewModeIndex,D0
+    MOVE.L  _TLIBA1_CurrentViewModeIndex,D0
     MOVEQ   #76,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     LEA     TLIBA3_VmArrayPatternTable,A0
     ADDA.L  D0,A0
@@ -2100,11 +2100,11 @@ TLIBA3_FormatPatternRegisterDump:
     MOVE.L  D7,-(A7)
     PEA     Global_STR_VM_ARRAY_2
     PEA     -84(A5)
-    JSR     WDISP_SPrintf(PC)
+    JSR     _WDISP_SPrintf(PC)
 
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     LEA     TLIBA3_VmArrayPatternTable,A0
     ADDA.L  D0,A0
@@ -2141,9 +2141,9 @@ TLIBA3_FormatPatternRegisterDump:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   MATH_Mulu32, _LVOInitBitMap
+;   _MATH_Mulu32, _LVOInitBitMap
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, LAB_1854, WDISP_DisplayContextPlanePointer0, TLIBA3_VmArrayRuntimeTable
+;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, LAB_1854, _WDISP_DisplayContextPlanePointer0, _TLIBA3_VmArrayRuntimeTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2161,9 +2161,9 @@ TLIBA3_InitRuntimeEntry:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.W  D6,(A1)
@@ -2182,7 +2182,7 @@ TLIBA3_InitRuntimeEntry:
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     LEA     10(A1),A2
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #24,D1
 
 .lab_1854:
@@ -2217,14 +2217,14 @@ TLIBA3_InitRuntimeEntry:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     MOVE.L  -4(A5),D0
     ASL.L   #2,D0
     ADDA.L  D0,A0
-    LEA     WDISP_DisplayContextPlanePointer0,A1
+    LEA     _WDISP_DisplayContextPlanePointer0,A1
     ADDA.L  D0,A1
     MOVE.L  (A1),118(A0)
     ADDQ.L  #1,-4(A5)
@@ -2234,9 +2234,9 @@ TLIBA3_InitRuntimeEntry:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #0,D1
@@ -2422,9 +2422,9 @@ TLIBA3_InitRuntimeEntries:
 ; CLOBBERS:
 ;   A0/A1/A3/A6/A7/D0/D1/D7
 ; CALLS:
-;   MATH_Mulu32, _LVOSetFont
+;   _MATH_Mulu32, _LVOSetFont
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, TLIBA3_VmArrayRuntimeTable
+;   Global_REF_GRAPHICS_LIBRARY, _TLIBA3_VmArrayRuntimeTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2445,9 +2445,9 @@ TLIBA3_SetFontForAllViewModes:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayRuntimeTable,A0
+    LEA     _TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEA.L A3,A0

@@ -2,12 +2,12 @@
     XDEF    GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode
     XDEF    GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData
     XDEF    GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings
-    XDEF    GROUP_AB_JMPTBL_IOSTDREQ_Free
+    XDEF    _GROUP_AB_JMPTBL_IOSTDREQ_Free
     XDEF    GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries
     XDEF    GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain
     XDEF    GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources
     XDEF    GROUP_AB_JMPTBL_UNKNOWN2A_Stub0
-    XDEF    GROUP_AB_JMPTBL_GRAPHICS_FreeRaster
+    XDEF    _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings   (Routine at GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings)
@@ -18,7 +18,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQPARS_RemoveGroupEntryAndReleaseStrings
+;   _ESQPARS_RemoveGroupEntryAndReleaseStrings
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -29,7 +29,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings:
-    JMP     ESQPARS_RemoveGroupEntryAndReleaseStrings
+    JMP     _ESQPARS_RemoveGroupEntryAndReleaseStrings
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers   (Routine at GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers)
@@ -150,7 +150,7 @@ GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LOCAVAIL_FreeResourceChain
+;   _LOCAVAIL_FreeResourceChain
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -161,10 +161,10 @@ GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain:
-    JMP     LOCAVAIL_FreeResourceChain
+    JMP     _LOCAVAIL_FreeResourceChain
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AB_JMPTBL_GRAPHICS_FreeRaster   (Routine at GROUP_AB_JMPTBL_GRAPHICS_FreeRaster)
+; FUNC: _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster   (Routine at _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -182,11 +182,11 @@ GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AB_JMPTBL_GRAPHICS_FreeRaster:
+_GROUP_AB_JMPTBL_GRAPHICS_FreeRaster:
     JMP     GRAPHICS_FreeRaster
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AB_JMPTBL_IOSTDREQ_Free   (Routine at GROUP_AB_JMPTBL_IOSTDREQ_Free)
+; FUNC: _GROUP_AB_JMPTBL_IOSTDREQ_Free   (Routine at _GROUP_AB_JMPTBL_IOSTDREQ_Free)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -204,7 +204,7 @@ GROUP_AB_JMPTBL_GRAPHICS_FreeRaster:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AB_JMPTBL_IOSTDREQ_Free:
+_GROUP_AB_JMPTBL_IOSTDREQ_Free:
     JMP     IOSTDREQ_Free
 
 ;------------------------------------------------------------------------------
@@ -216,7 +216,7 @@ GROUP_AB_JMPTBL_IOSTDREQ_Free:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   ESQIFF2_ClearLineHeadTailByMode
+;   _ESQIFF2_ClearLineHeadTailByMode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -227,7 +227,7 @@ GROUP_AB_JMPTBL_IOSTDREQ_Free:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode:
-    JMP     ESQIFF2_ClearLineHeadTailByMode
+    JMP     _ESQIFF2_ClearLineHeadTailByMode
 
 ;!======
 

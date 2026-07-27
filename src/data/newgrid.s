@@ -1,7 +1,7 @@
     XDEF    Global_STR_NEWGRID_C_1
     XDEF    Global_STR_NEWGRID_C_2
     XDEF    Global_STR_44_44_44
-    XDEF    Global_STR_NEWGRID_C_3
+    XDEF    _Global_STR_NEWGRID_C_3
     XDEF    NEWGRID_ModeCycleCountdown
     XDEF    NEWGRID_NicheModeCycleBudget_Static
     XDEF    NEWGRID_NicheModeCycleBudget_Y
@@ -11,21 +11,21 @@
     XDEF    NEWGRID_PpvModeCycleBudget
     XDEF    NEWGRID_ModeCandidateIndex
     XDEF    NEWGRID_ModeSelectionTable
-    XDEF    Global_STR_SINGLE_SPACE
-    XDEF    NEWGRID_WrapWordSpacer
-    XDEF    NEWGRID_WrapReturnSpacer
+    XDEF    _Global_STR_SINGLE_SPACE
+    XDEF    _NEWGRID_WrapWordSpacer
+    XDEF    _NEWGRID_WrapReturnSpacer
     XDEF    NEWGRID_MainModeState
     XDEF    NEWGRID_SelectedDaySlot
     XDEF    NEWGRID_RenderDaySlot
     XDEF    NEWGRID_HeaderRedrawPending
-    XDEF    NEWGRID_SecondaryIndexCachePtr
-    XDEF    NEWGRID_GridOperationId
+    XDEF    _NEWGRID_SecondaryIndexCachePtr
+    XDEF    _NEWGRID_GridOperationId
     XDEF    NEWGRID_EntryPlaceholderModeFlag
     XDEF    NEWGRID_PrimeTimeLayoutEnable
     XDEF    NEWGRID_ShowtimeEntryVariantFlag
-    XDEF    NEWGRID_EntrySplitDelimiterMask
+    XDEF    _NEWGRID_EntrySplitDelimiterMask
     XDEF    NEWGRID_GridEntryDelimiterBar
-    XDEF    NEWGRID_EntryDetailFmtStr
+    XDEF    _NEWGRID_EntryDetailFmtStr
     XDEF    NEWGRID_GridStateFrameLatch
     XDEF    NEWGRID_GridEntriesWorkflowState
     XDEF    NEWGRID_GridSelectionColumnAdjust
@@ -70,7 +70,7 @@ Global_STR_NEWGRID_C_2:
 Global_STR_44_44_44:
     NStr    "44:44:44"
     NStr    "44:44:44"
-Global_STR_NEWGRID_C_3:
+_Global_STR_NEWGRID_C_3:
     NStr    "NEWGRID.c"
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_ModeCycleCountdown/NEWGRID_NicheModeCycleBudget_*/NEWGRID_ModeCandidateIndex   (mode-cycle budget cluster)
@@ -107,18 +107,18 @@ NEWGRID_ModeCandidateIndex:
 NEWGRID_ModeSelectionTable:
     DC.L    $00000005,$00000006,$00000007,$00000008
     DC.L    $00000009,$0000000a,$0000000c
-Global_STR_SINGLE_SPACE:
+_Global_STR_SINGLE_SPACE:
     NStr    " "
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_WrapWordSpacer/NEWGRID_WrapReturnSpacer   (word-wrap spacers)
+; SYM: _NEWGRID_WrapWordSpacer/_NEWGRID_WrapReturnSpacer   (word-wrap spacers)
 ; TYPE: cstring/cstring
 ; PURPOSE: Single-space tokens appended during wrapped text reconstruction.
 ; USED BY: NEWGRID_DrawWrappedText
 ; NOTES: Separate symbols are retained to preserve original callsite intent.
 ;------------------------------------------------------------------------------
-NEWGRID_WrapWordSpacer:
+_NEWGRID_WrapWordSpacer:
     NStr    " "
-NEWGRID_WrapReturnSpacer:
+_NEWGRID_WrapReturnSpacer:
     NStr    " "
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_MainModeState   (main NEWGRID mode/state id)
@@ -157,22 +157,22 @@ NEWGRID_RenderDaySlot:
 NEWGRID_HeaderRedrawPending:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_SecondaryIndexCachePtr   (secondary index cache pointer)
+; SYM: _NEWGRID_SecondaryIndexCachePtr   (secondary index cache pointer)
 ; TYPE: pointer
 ; PURPOSE: Points to cache table used while rebuilding/filtering secondary entries.
 ; USED BY: NEWGRID1_* cache populate/filter routines, NEWGRID2_*
 ; NOTES: Cleared when cache is released.
 ;------------------------------------------------------------------------------
-NEWGRID_SecondaryIndexCachePtr:
+_NEWGRID_SecondaryIndexCachePtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_GridOperationId   (active grid operation id)
+; SYM: _NEWGRID_GridOperationId   (active grid operation id)
 ; TYPE: s32
 ; PURPOSE: Stores the current operation index dispatched by NEWGRID2.
-; USED BY: NEWGRID2_DispatchGridOperation, NEWGRID_ProcessGridEntries, NEWGRID_SelectEntryPen
+; USED BY: _NEWGRID2_DispatchGridOperation, NEWGRID_ProcessGridEntries, NEWGRID_SelectEntryPen
 ; NOTES: Valid range is 1..7; cleared to 0 when dispatch receives an out-of-range operation.
 ;------------------------------------------------------------------------------
-NEWGRID_GridOperationId:
+_NEWGRID_GridOperationId:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_EntryPlaceholderModeFlag/NEWGRID_PrimeTimeLayoutEnable/NEWGRID_ShowtimeEntryVariantFlag   (entry layout gate flags)
@@ -188,26 +188,26 @@ NEWGRID_PrimeTimeLayoutEnable:
 NEWGRID_ShowtimeEntryVariantFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_EntrySplitDelimiterMask   (entry split delimiter mask??)
+; SYM: _NEWGRID_EntrySplitDelimiterMask   (entry split delimiter mask??)
 ; TYPE: packed bytes/words ??
 ; PURPOSE: Delimiter-class mask blob consumed by parse/split helper calls.
 ; USED BY: NEWGRID1 split/token parsing paths
 ; NOTES: Field-level meaning of packed constants is still unresolved.
 ;------------------------------------------------------------------------------
-NEWGRID_EntrySplitDelimiterMask:
+_NEWGRID_EntrySplitDelimiterMask:
     DC.L    $90939b99,$a3a39a84,$86858c87
     DC.W    $8d8f
     DS.B    1
 NEWGRID_GridEntryDelimiterBar:
     NStr2   145,"|"
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_EntryDetailFmtStr   (entry detail format)
+; SYM: _NEWGRID_EntryDetailFmtStr   (entry detail format)
 ; TYPE: cstring format
 ; PURPOSE: Formats detail lines with marker chars and text payload segments.
 ; USED BY: NEWGRID1 detail-line builders
 ; NOTES: Format currently `%c%s%c %s`.
 ;------------------------------------------------------------------------------
-NEWGRID_EntryDetailFmtStr:
+_NEWGRID_EntryDetailFmtStr:
     NStr    "%c%s%c %s"
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_GridStateFrameLatch   (grid state frame latch)

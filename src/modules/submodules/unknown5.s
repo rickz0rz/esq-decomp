@@ -1,11 +1,11 @@
     XDEF    STRING_AppendN
     XDEF    STRING_CompareN
-    XDEF    STRING_CompareNoCase
-    XDEF    STRING_CompareNoCaseN
-    XDEF    STRING_CopyPadNul
+    XDEF    _STRING_CompareNoCase
+    XDEF    _STRING_CompareNoCaseN
+    XDEF    _STRING_CopyPadNul
 
 ;------------------------------------------------------------------------------
-; FUNC: STRING_CompareNoCaseN   (Case-insensitive compare up to length.)
+; FUNC: _STRING_CompareNoCaseN   (Case-insensitive compare up to length.)
 ; ARGS:
 ;   stack +28: A3 = string A
 ;   stack +32: A2 = string B
@@ -19,7 +19,7 @@
 ; DESC:
 ;   Compares strings case-insensitively up to D7 bytes or NUL.
 ;------------------------------------------------------------------------------
-STRING_CompareNoCaseN:
+_STRING_CompareNoCaseN:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A2-A3,-(A7)
 
@@ -91,7 +91,7 @@ STRING_CompareNoCaseN:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: STRING_CopyPadNul   (Copy string with NUL padding up to length.)
+; FUNC: _STRING_CopyPadNul   (Copy string with NUL padding up to length.)
 ; ARGS:
 ;   stack +4: A0 = destination
 ;   stack +8: A1 = source
@@ -103,7 +103,7 @@ STRING_CompareNoCaseN:
 ; DESC:
 ;   Copies bytes until NUL or length, then pads remaining with NULs.
 ;------------------------------------------------------------------------------
-STRING_CopyPadNul:
+_STRING_CopyPadNul:
     MOVEA.L 8(A7),A1
     MOVEA.L 4(A7),A0
     MOVE.L  12(A7),D0
@@ -280,7 +280,7 @@ STRING_AppendN:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: STRING_CompareNoCase   (Case-insensitive compare.)
+; FUNC: _STRING_CompareNoCase   (Case-insensitive compare.)
 ; ARGS:
 ;   stack +4: A0 = string A
 ;   stack +8: A1 = string B
@@ -291,7 +291,7 @@ STRING_AppendN:
 ; DESC:
 ;   Compares strings case-insensitively until NUL or mismatch.
 ;------------------------------------------------------------------------------
-STRING_CompareNoCase:
+_STRING_CompareNoCase:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     MOVEQ   #0,D0

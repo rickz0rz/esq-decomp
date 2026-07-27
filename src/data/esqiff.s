@@ -5,17 +5,17 @@
     XDEF    ESQIFF_WeatherSliceRemainingWidth
     XDEF    ESQIFF_WeatherSliceSourceOffset
     XDEF    ESQIFF_WeatherSliceValidateGateFlag
-    XDEF    Global_STR_ESQIFF_C_3
-    XDEF    Global_STR_ESQIFF_C_4
-    XDEF    Global_STR_ESQIFF_C_5
-    XDEF    Global_STR_ESQIFF_C_6
+    XDEF    _Global_STR_ESQIFF_C_3
+    XDEF    _Global_STR_ESQIFF_C_4
+    XDEF    _Global_STR_ESQIFF_C_5
+    XDEF    _Global_STR_ESQIFF_C_6
     XDEF    ESQIFF_PATH_DF0_COLON
     XDEF    ESQIFF_PATH_RAM_COLON_LOGOS_SLASH
-    XDEF    Global_STR_ESQIFF_C_7
-    XDEF    Global_STR_ESQIFF_C_8
-    XDEF    Global_STR_DF0_BRUSH_INI_2
-    XDEF    ESQIFF_TAG_DT
-    XDEF    ESQIFF_TAG_DITHER
+    XDEF    _Global_STR_ESQIFF_C_7
+    XDEF    _Global_STR_ESQIFF_C_8
+    XDEF    _Global_STR_DF0_BRUSH_INI_2
+    XDEF    _ESQIFF_TAG_DT
+    XDEF    _ESQIFF_TAG_DITHER
     XDEF    ESQIFF_FMT_PCT_S_DOT_PCT_LD
     XDEF    Global_STR_MAJOR_MINOR_VERSION_1
     XDEF    ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA
@@ -23,12 +23,12 @@
     XDEF    Global_STR_MAJOR_MINOR_VERSION_2
     XDEF    ESQIFF_STR_CORRECT_VERSION_IS
     XDEF    Global_STR_APOSTROPHE
-    XDEF    Global_STR_PLEASE_STANDBY_2
-    XDEF    Global_STR_ATTENTION_SYSTEM_ENGINEER_2
-    XDEF    Global_STR_REPORT_ERROR_CODE_FORMATTED
-    XDEF    Global_STR_FILE_WIDTH_COLORS_FORMATTED
-    XDEF    Global_STR_FILE_PERCENT_S
-    XDEF    Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL
+    XDEF    _Global_STR_PLEASE_STANDBY_2
+    XDEF    _Global_STR_ATTENTION_SYSTEM_ENGINEER_2
+    XDEF    _Global_STR_REPORT_ERROR_CODE_FORMATTED
+    XDEF    _Global_STR_FILE_WIDTH_COLORS_FORMATTED
+    XDEF    _Global_STR_FILE_PERCENT_S
+    XDEF    _Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL
 ; ========== ESQIFF.c ==========
 
 Global_STR_ESQIFF_C_1:
@@ -39,7 +39,7 @@ Global_STR_ESQIFF_C_1:
 ; PURPOSE: Tracks current node while queuing/weather-rendering banner brush work.
 ; USED BY: ESQIFF_QueueIffBrushLoad
 ; NOTES:
-;   Seeded from PARSEINI_BannerBrushResourceHead and advanced via node +234
+;   Seeded from _PARSEINI_BannerBrushResourceHead and advanced via node +234
 ;   next-link field when mode does not request cursor hold.
 ;------------------------------------------------------------------------------
 ESQIFF_BannerBrushResourceCursor:
@@ -71,20 +71,20 @@ ESQIFF_WeatherSliceSourceOffset:
 ;------------------------------------------------------------------------------
 ; SYM: ESQIFF_WeatherSliceValidateGateFlag   (weather-slice one-shot validation gate)
 ; TYPE: u8 flag in word storage
-; PURPOSE: One-shot guard for NEWGRID_ValidateSelectionCode trigger in mode 11.
+; PURPOSE: One-shot guard for _NEWGRID_ValidateSelectionCode trigger in mode 11.
 ; USED BY: ESQIFF_RenderWeatherStatusBrushSlice
 ; NOTES:
 ;   Accessed with byte operations (set to 1, tested, then cleared once fired).
 ;------------------------------------------------------------------------------
 ESQIFF_WeatherSliceValidateGateFlag:
     DC.W    $0100
-Global_STR_ESQIFF_C_3:
+_Global_STR_ESQIFF_C_3:
     NStr    "ESQIFF.c"
-Global_STR_ESQIFF_C_4:
+_Global_STR_ESQIFF_C_4:
     NStr    "ESQIFF.c"
-Global_STR_ESQIFF_C_5:
+_Global_STR_ESQIFF_C_5:
     NStr    "ESQIFF.c"
-Global_STR_ESQIFF_C_6:
+_Global_STR_ESQIFF_C_6:
     NStr    "ESQIFF.c"
 ESQIFF_PATH_DF0_COLON:
     NStr    "df0:"
@@ -92,15 +92,15 @@ ESQIFF_PATH_DF0_COLON:
 ESQIFF_PATH_RAM_COLON_LOGOS_SLASH:
     NStr    "ram:logos/ "
     NStr    "ram:logos/ "
-Global_STR_ESQIFF_C_7:
+_Global_STR_ESQIFF_C_7:
     NStr    "ESQIFF.c"
-Global_STR_ESQIFF_C_8:
+_Global_STR_ESQIFF_C_8:
     NStr    "ESQIFF.c"
-Global_STR_DF0_BRUSH_INI_2:
+_Global_STR_DF0_BRUSH_INI_2:
     NStr    "df0:brush.ini"
-ESQIFF_TAG_DT:
+_ESQIFF_TAG_DT:
     NStr    "DT"
-ESQIFF_TAG_DITHER:
+_ESQIFF_TAG_DITHER:
     NStr    "DITHER"
 ESQIFF_FMT_PCT_S_DOT_PCT_LD:
     NStr    "%s.%ld"
@@ -116,15 +116,15 @@ ESQIFF_STR_CORRECT_VERSION_IS:
     NStr    "Correct version is '"
 Global_STR_APOSTROPHE:
     NStr    "'"
-Global_STR_PLEASE_STANDBY_2:
+_Global_STR_PLEASE_STANDBY_2:
     NStr    "Please Standby..."
-Global_STR_ATTENTION_SYSTEM_ENGINEER_2:
+_Global_STR_ATTENTION_SYSTEM_ENGINEER_2:
     NStr    "ATTENTION SYSTEM ENGINEER!"
-Global_STR_REPORT_ERROR_CODE_FORMATTED:
+_Global_STR_REPORT_ERROR_CODE_FORMATTED:
     NStr    "Report Error Code ER%03d to TV Guide Technical Services."
-Global_STR_FILE_WIDTH_COLORS_FORMATTED:
+_Global_STR_FILE_WIDTH_COLORS_FORMATTED:
     NStr    "File='%s'  Width=%d  Colors=%d"
-Global_STR_FILE_PERCENT_S:
+_Global_STR_FILE_PERCENT_S:
     NStr    "File '%s'"
-Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL:
+_Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL:
     NStr    "Press ESC key twice to resume scroll"

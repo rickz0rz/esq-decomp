@@ -6,31 +6,31 @@
     XDEF    ESQIFF_ServicePendingCopperPaletteMoves
     XDEF    ESQIFF_SetApenToBrightestPaletteIndex
     XDEF    ESQIFF_ShowExternalAssetWithCopperFx
-    XDEF    ESQIFF_JMPTBL_BRUSH_AllocBrushNode
+    XDEF    _ESQIFF_JMPTBL_BRUSH_AllocBrushNode
     XDEF    ESQIFF_JMPTBL_BRUSH_CloneBrushRecord
-    XDEF    ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate
-    XDEF    ESQIFF_JMPTBL_BRUSH_FindType3Brush
-    XDEF    ESQIFF_JMPTBL_BRUSH_FreeBrushList
+    XDEF    _ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate
+    XDEF    _ESQIFF_JMPTBL_BRUSH_FindType3Brush
+    XDEF    _ESQIFF_JMPTBL_BRUSH_FreeBrushList
     XDEF    ESQIFF_JMPTBL_BRUSH_PopBrushHead
-    XDEF    ESQIFF_JMPTBL_BRUSH_PopulateBrushList
-    XDEF    ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel
+    XDEF    _ESQIFF_JMPTBL_BRUSH_PopulateBrushList
+    XDEF    _ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel
     XDEF    ESQIFF_JMPTBL_BRUSH_SelectBrushSlot
     XDEF    ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess
-    XDEF    ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle
-    XDEF    ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle
-    XDEF    ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle
-    XDEF    ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary
-    XDEF    ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets
-    XDEF    ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd
-    XDEF    ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart
+    XDEF    _ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle
+    XDEF    _ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle
+    XDEF    _ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle
+    XDEF    _ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary
+    XDEF    _ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets
+    XDEF    _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd
+    XDEF    _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart
     XDEF    ESQIFF_JMPTBL_ESQ_NoOp
-    XDEF    ESQIFF_JMPTBL_ESQ_NoOp_006A
-    XDEF    ESQIFF_JMPTBL_ESQ_NoOp_0074
+    XDEF    _ESQIFF_JMPTBL_ESQ_NoOp_006A
+    XDEF    _ESQIFF_JMPTBL_ESQ_NoOp_0074
     XDEF    ESQIFF_JMPTBL_MATH_DivS32
     XDEF    ESQIFF_JMPTBL_MATH_Mulu32
-    XDEF    ESQIFF_JMPTBL_MEMORY_AllocateMemory
-    XDEF    ESQIFF_JMPTBL_MEMORY_DeallocateMemory
-    XDEF    ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode
+    XDEF    _ESQIFF_JMPTBL_MEMORY_AllocateMemory
+    XDEF    _ESQIFF_JMPTBL_MEMORY_DeallocateMemory
+    XDEF    _ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode
     XDEF    ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled
     XDEF    ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition
     XDEF    ESQIFF_JMPTBL_STRING_CompareN
@@ -39,7 +39,7 @@
     XDEF    ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner
     XDEF    ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard
     XDEF    ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode
-    XDEF    ESQIFF_JMPTBL_DOS_OpenFileWithMode
+    XDEF    _ESQIFF_JMPTBL_DOS_OpenFileWithMode
     XDEF    ESQIFF_PlayNextExternalAssetFrame_Return
     XDEF    ESQIFF_ShowExternalAssetWithCopperFx_Return
 
@@ -52,11 +52,11 @@
 ; CLOBBERS:
 ;   A4/A7/D0/D1
 ; CALLS:
-;   ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd, ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart
+;   _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd, _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart
 ; READS:
-;   Global_REF_LONG_FILE_SCRATCH, ACCUMULATOR_Row0_SaturateFlag, ACCUMULATOR_Row1_SaturateFlag, ACCUMULATOR_Row2_SaturateFlag, ACCUMULATOR_Row3_SaturateFlag, WDISP_AccumulatorRow0_MoveFlags, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_MoveFlags, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_MoveFlags, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_MoveFlags, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd
+;   _Global_REF_LONG_FILE_SCRATCH, _ACCUMULATOR_Row0_SaturateFlag, _ACCUMULATOR_Row1_SaturateFlag, _ACCUMULATOR_Row2_SaturateFlag, _ACCUMULATOR_Row3_SaturateFlag, _WDISP_AccumulatorRow0_MoveFlags, _WDISP_AccumulatorRow0_CopperIndexStart, _WDISP_AccumulatorRow0_CopperIndexEnd, _WDISP_AccumulatorRow1_MoveFlags, _WDISP_AccumulatorRow1_CopperIndexStart, _WDISP_AccumulatorRow1_CopperIndexEnd, _WDISP_AccumulatorRow2_MoveFlags, _WDISP_AccumulatorRow2_CopperIndexStart, _WDISP_AccumulatorRow2_CopperIndexEnd, _WDISP_AccumulatorRow3_MoveFlags, _WDISP_AccumulatorRow3_CopperIndexStart, _WDISP_AccumulatorRow3_CopperIndexEnd
 ; WRITES:
-;   ACCUMULATOR_Row0_SaturateFlag, ACCUMULATOR_Row1_SaturateFlag, ACCUMULATOR_Row2_SaturateFlag, ACCUMULATOR_Row3_SaturateFlag
+;   _ACCUMULATOR_Row0_SaturateFlag, _ACCUMULATOR_Row1_SaturateFlag, _ACCUMULATOR_Row2_SaturateFlag, _ACCUMULATOR_Row3_SaturateFlag
 ; DESC:
 ;   Checks per-row move countdown words and, when armed, steps the configured
 ;   copper index range toward start or end for rows 0..3.
@@ -65,143 +65,143 @@
 ;------------------------------------------------------------------------------
 ESQIFF_ServicePendingCopperPaletteMoves:
     MOVE.L  A4,-(A7)
-    LEA     Global_REF_LONG_FILE_SCRATCH,A4
-    MOVE.W  ACCUMULATOR_Row0_SaturateFlag,D0
+    LEA     _Global_REF_LONG_FILE_SCRATCH,A4
+    MOVE.W  _ACCUMULATOR_Row0_SaturateFlag,D0
     SUBQ.W  #1,D0
     BNE.S   .service_row1_pending_move
 
-    TST.W   WDISP_AccumulatorRow0_MoveFlags
+    TST.W   _WDISP_AccumulatorRow0_MoveFlags
     BEQ.S   .service_row1_pending_move
 
-    CLR.W   ACCUMULATOR_Row0_SaturateFlag
-    MOVE.W  WDISP_AccumulatorRow0_MoveFlags,D0
+    CLR.W   _ACCUMULATOR_Row0_SaturateFlag
+    MOVE.W  _WDISP_AccumulatorRow0_MoveFlags,D0
     BTST    #1,D0
     BEQ.S   .move_row0_toward_start
 
     MOVEQ   #0,D0
-    MOVE.B  WDISP_AccumulatorRow0_CopperIndexStart,D0
+    MOVE.B  _WDISP_AccumulatorRow0_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  WDISP_AccumulatorRow0_CopperIndexEnd,D1
+    MOVE.B  _WDISP_AccumulatorRow0_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .service_row1_pending_move
 
 .move_row0_toward_start:
     MOVEQ   #0,D0
-    MOVE.B  WDISP_AccumulatorRow0_CopperIndexStart,D0
+    MOVE.B  _WDISP_AccumulatorRow0_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  WDISP_AccumulatorRow0_CopperIndexEnd,D1
+    MOVE.B  _WDISP_AccumulatorRow0_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
 
     ADDQ.W  #8,A7
 
 .service_row1_pending_move:
-    MOVE.W  ACCUMULATOR_Row1_SaturateFlag,D0
+    MOVE.W  _ACCUMULATOR_Row1_SaturateFlag,D0
     SUBQ.W  #1,D0
     BNE.S   .service_row2_pending_move
 
-    TST.W   WDISP_AccumulatorRow1_MoveFlags
+    TST.W   _WDISP_AccumulatorRow1_MoveFlags
     BEQ.S   .service_row2_pending_move
 
-    CLR.W   ACCUMULATOR_Row1_SaturateFlag
-    MOVE.W  WDISP_AccumulatorRow1_MoveFlags,D0
+    CLR.W   _ACCUMULATOR_Row1_SaturateFlag
+    MOVE.W  _WDISP_AccumulatorRow1_MoveFlags,D0
     BTST    #1,D0
     BEQ.S   .move_row1_toward_start
 
     MOVEQ   #0,D0
-    MOVE.B  WDISP_AccumulatorRow1_CopperIndexStart,D0
+    MOVE.B  _WDISP_AccumulatorRow1_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  WDISP_AccumulatorRow1_CopperIndexEnd,D1
+    MOVE.B  _WDISP_AccumulatorRow1_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .service_row2_pending_move
 
 .move_row1_toward_start:
     MOVEQ   #0,D0
-    MOVE.B  WDISP_AccumulatorRow1_CopperIndexStart,D0
+    MOVE.B  _WDISP_AccumulatorRow1_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  WDISP_AccumulatorRow1_CopperIndexEnd,D1
+    MOVE.B  _WDISP_AccumulatorRow1_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
 
     ADDQ.W  #8,A7
 
 .service_row2_pending_move:
-    MOVE.W  ACCUMULATOR_Row2_SaturateFlag,D0
+    MOVE.W  _ACCUMULATOR_Row2_SaturateFlag,D0
     SUBQ.W  #1,D0
     BNE.S   .service_row3_pending_move
 
-    TST.W   WDISP_AccumulatorRow2_MoveFlags
+    TST.W   _WDISP_AccumulatorRow2_MoveFlags
     BEQ.S   .service_row3_pending_move
 
-    CLR.W   ACCUMULATOR_Row2_SaturateFlag
-    MOVE.W  WDISP_AccumulatorRow2_MoveFlags,D0
+    CLR.W   _ACCUMULATOR_Row2_SaturateFlag
+    MOVE.W  _WDISP_AccumulatorRow2_MoveFlags,D0
     BTST    #1,D0
     BEQ.S   .move_row2_toward_start
 
     MOVEQ   #0,D0
-    MOVE.B  WDISP_AccumulatorRow2_CopperIndexStart,D0
+    MOVE.B  _WDISP_AccumulatorRow2_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  WDISP_AccumulatorRow2_CopperIndexEnd,D1
+    MOVE.B  _WDISP_AccumulatorRow2_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .service_row3_pending_move
 
 .move_row2_toward_start:
     MOVEQ   #0,D0
-    MOVE.B  WDISP_AccumulatorRow2_CopperIndexStart,D0
+    MOVE.B  _WDISP_AccumulatorRow2_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  WDISP_AccumulatorRow2_CopperIndexEnd,D1
+    MOVE.B  _WDISP_AccumulatorRow2_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
 
     ADDQ.W  #8,A7
 
 .service_row3_pending_move:
-    MOVE.W  ACCUMULATOR_Row3_SaturateFlag,D0
+    MOVE.W  _ACCUMULATOR_Row3_SaturateFlag,D0
     SUBQ.W  #1,D0
     BNE.S   .return_service_pending_copper_moves
 
-    TST.W   WDISP_AccumulatorRow3_MoveFlags
+    TST.W   _WDISP_AccumulatorRow3_MoveFlags
     BEQ.S   .return_service_pending_copper_moves
 
-    CLR.W   ACCUMULATOR_Row3_SaturateFlag
-    MOVE.W  WDISP_AccumulatorRow3_MoveFlags,D0
+    CLR.W   _ACCUMULATOR_Row3_SaturateFlag
+    MOVE.W  _WDISP_AccumulatorRow3_MoveFlags,D0
     BTST    #1,D0
     BEQ.S   .move_row3_toward_start
 
     MOVEQ   #0,D0
-    MOVE.B  WDISP_AccumulatorRow3_CopperIndexStart,D0
+    MOVE.B  _WDISP_AccumulatorRow3_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  WDISP_AccumulatorRow3_CopperIndexEnd,D1
+    MOVE.B  _WDISP_AccumulatorRow3_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .return_service_pending_copper_moves
 
 .move_row3_toward_start:
     MOVEQ   #0,D0
-    MOVE.B  WDISP_AccumulatorRow3_CopperIndexStart,D0
+    MOVE.B  _WDISP_AccumulatorRow3_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  WDISP_AccumulatorRow3_CopperIndexEnd,D1
+    MOVE.B  _WDISP_AccumulatorRow3_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
 
     ADDQ.W  #8,A7
 
@@ -222,7 +222,7 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 ; CALLS:
 ;   _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, WDISP_PaletteTriplesGBase, WDISP_PaletteTriplesBBase, WDISP_PaletteDepthLog2
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, _WDISP_PaletteTriplesGBase, _WDISP_PaletteTriplesBBase, WDISP_PaletteDepthLog2
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -242,10 +242,10 @@ ESQIFF_SetApenToBrightestPaletteIndex:
     MOVEQ   #0,D0
     MOVE.B  _WDISP_PaletteTriplesRBase,D0
     MOVEQ   #0,D1
-    MOVE.B  WDISP_PaletteTriplesGBase,D1
+    MOVE.B  _WDISP_PaletteTriplesGBase,D1
     ADD.L   D1,D0
     MOVEQ   #0,D1
-    MOVE.B  WDISP_PaletteTriplesBBase,D1
+    MOVE.B  _WDISP_PaletteTriplesBBase,D1
     ADD.L   D1,D0
     MOVE.L  D0,D6
     CLR.L   -14(A5)
@@ -264,7 +264,7 @@ ESQIFF_SetApenToBrightestPaletteIndex:
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     MULS    D1,D0
-    LEA     WDISP_PaletteTriplesGBase,A1
+    LEA     _WDISP_PaletteTriplesGBase,A1
     ADDA.L  D0,A1
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
@@ -273,7 +273,7 @@ ESQIFF_SetApenToBrightestPaletteIndex:
     ADD.L   D2,D0
     MOVE.L  D7,D2
     MULS    D1,D2
-    LEA     WDISP_PaletteTriplesBBase,A0
+    LEA     _WDISP_PaletteTriplesBBase,A0
     ADDA.L  D2,A0
     MOVEQ   #0,D1
     MOVE.B  (A0),D1
@@ -292,7 +292,7 @@ ESQIFF_SetApenToBrightestPaletteIndex:
     BRA.S   .loop_palette_entries
 
 .apply_best_palette_index:
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVE.L  -14(A5),D0
@@ -317,11 +317,11 @@ ESQIFF_SetApenToBrightestPaletteIndex:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
+;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
 ; READS:
-;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, SCRIPT_BannerTransitionActive, WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable, WDISP_AccumulatorRow0_Value, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd, e8
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _SCRIPT_BannerTransitionActive, _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable, WDISP_AccumulatorRow0_Value, _WDISP_AccumulatorRow0_CopperIndexStart, _WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, _WDISP_AccumulatorRow1_CopperIndexStart, _WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, _WDISP_AccumulatorRow2_CopperIndexStart, _WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, _WDISP_AccumulatorRow3_CopperIndexStart, _WDISP_AccumulatorRow3_CopperIndexEnd, e8
 ; WRITES:
-;   ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, ACCUMULATOR_Row3_CaptureValue, ACCUMULATOR_Row0_Sum, ACCUMULATOR_Row1_Sum, ACCUMULATOR_Row2_Sum, ACCUMULATOR_Row3_Sum, ACCUMULATOR_Row0_SaturateFlag, ACCUMULATOR_Row1_SaturateFlag, ACCUMULATOR_Row2_SaturateFlag, ACCUMULATOR_Row3_SaturateFlag, ESQFUNC_MissingAssetRetryMask, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
+;   ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, ACCUMULATOR_Row3_CaptureValue, ACCUMULATOR_Row0_Sum, ACCUMULATOR_Row1_Sum, ACCUMULATOR_Row2_Sum, ACCUMULATOR_Row3_Sum, _ACCUMULATOR_Row0_SaturateFlag, _ACCUMULATOR_Row1_SaturateFlag, _ACCUMULATOR_Row2_SaturateFlag, _ACCUMULATOR_Row3_SaturateFlag, ESQFUNC_MissingAssetRetryMask, _WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
 ; DESC:
 ;   Selects source brush list by mode, performs drop/rise copper transitions, builds
 ;   a display context, blits the external asset, and captures accumulator thresholds
@@ -336,13 +336,13 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     TST.W   D7
     BEQ.S   .select_primary_or_secondary_brush_head
 
-    MOVE.L  ESQIFF_GAdsBrushListHead,-22(A5)
+    MOVE.L  _ESQIFF_GAdsBrushListHead,-22(A5)
 
 .select_primary_or_secondary_brush_head:
     TST.W   D7
     BNE.S   .ensure_brush_head_available
 
-    MOVEA.L ESQIFF_LogoBrushListHead,A0
+    MOVEA.L _ESQIFF_LogoBrushListHead,A0
     MOVE.L  A0,-22(A5)
 
 .ensure_brush_head_available:
@@ -389,11 +389,11 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     ADDQ.W  #8,A7
 
 .wait_banner_transition_idle:
-    TST.W   SCRIPT_BannerTransitionActive
+    TST.W   _SCRIPT_BannerTransitionActive
     BNE.S   .wait_banner_transition_idle
 
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
-    CLR.W   WDISP_AccumulatorFlushPending
+    CLR.W   _WDISP_AccumulatorFlushPending
     MOVEQ   #0,D5
 
 .loop_copy_accumulator_rows:
@@ -420,7 +420,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
 
 .select_display_context_mode:
     CLR.W   WDISP_AccumulatorCaptureActive
-    MOVE.W  #1,WDISP_AccumulatorFlushPending
+    MOVE.W  #1,_WDISP_AccumulatorFlushPending
     MOVE.L  #$8004,D0
     MOVEA.L -22(A5),A0
     AND.L   196(A0),D0
@@ -436,7 +436,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     MOVEQ   #20,D4
     BRA.S   .clear_rast_and_blit_asset
 
@@ -453,7 +453,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     MOVEQ   #10,D4
     BRA.S   .clear_rast_and_blit_asset
 
@@ -470,7 +470,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     MOVEQ   #20,D4
     BRA.S   .clear_rast_and_blit_asset
 
@@ -484,7 +484,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     MOVEQ   #10,D4
 
 .clear_rast_and_blit_asset:
@@ -495,14 +495,14 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #7,D0
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     MOVE.W  2(A0),D0
     SUBQ.L  #1,D0
     MOVEQ   #0,D1
@@ -530,7 +530,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
 
 .refresh_palette_triples_from_asset:
     PEA     5.W
-    JSR     ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
+    JSR     _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
     MOVE.L  D0,D1
     LSL.L   #2,D1
@@ -540,7 +540,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.B  184(A0),D0
     MOVE.L  D0,(A7)
     MOVE.L  D1,-14(A5)
-    JSR     ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
+    JSR     _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D1
@@ -566,12 +566,12 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     BRA.S   .branch
 
 .capture_accumulator_thresholds:
-    MOVE.B  WDISP_AccumulatorRow0_CopperIndexStart,D0
+    MOVE.B  _WDISP_AccumulatorRow0_CopperIndexStart,D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
     BCC.S   .branch_1
 
-    MOVE.B  WDISP_AccumulatorRow0_CopperIndexEnd,D0
+    MOVE.B  _WDISP_AccumulatorRow0_CopperIndexEnd,D0
     CMP.B   D1,D0
     BCC.S   .branch_1
 
@@ -587,11 +587,11 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.W  D0,ACCUMULATOR_Row0_CaptureValue
 
 .branch_2:
-    MOVE.B  WDISP_AccumulatorRow1_CopperIndexStart,D2
+    MOVE.B  _WDISP_AccumulatorRow1_CopperIndexStart,D2
     CMP.B   D1,D2
     BCC.S   .branch_3
 
-    MOVE.B  WDISP_AccumulatorRow1_CopperIndexEnd,D2
+    MOVE.B  _WDISP_AccumulatorRow1_CopperIndexEnd,D2
     CMP.B   D1,D2
     BCC.S   .branch_3
 
@@ -607,11 +607,11 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.W  D2,ACCUMULATOR_Row1_CaptureValue
 
 .branch_4:
-    MOVE.B  WDISP_AccumulatorRow2_CopperIndexStart,D0
+    MOVE.B  _WDISP_AccumulatorRow2_CopperIndexStart,D0
     CMP.B   D1,D0
     BCC.S   .branch_5
 
-    MOVE.B  WDISP_AccumulatorRow2_CopperIndexEnd,D0
+    MOVE.B  _WDISP_AccumulatorRow2_CopperIndexEnd,D0
     CMP.B   D1,D0
     BCC.S   .branch_5
 
@@ -627,11 +627,11 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.W  D0,ACCUMULATOR_Row2_CaptureValue
 
 .branch_6:
-    MOVE.B  WDISP_AccumulatorRow3_CopperIndexStart,D2
+    MOVE.B  _WDISP_AccumulatorRow3_CopperIndexStart,D2
     CMP.B   D1,D2
     BCC.S   .branch_7
 
-    MOVE.B  WDISP_AccumulatorRow3_CopperIndexEnd,D2
+    MOVE.B  _WDISP_AccumulatorRow3_CopperIndexEnd,D2
     CMP.B   D1,D2
     BCC.S   .branch_7
 
@@ -670,13 +670,13 @@ ESQIFF_ShowExternalAssetWithCopperFx:
 .branch_11:
     MOVEQ   #0,D0
     MOVE.W  D0,ACCUMULATOR_Row0_Sum
-    MOVE.W  D0,ACCUMULATOR_Row0_SaturateFlag
+    MOVE.W  D0,_ACCUMULATOR_Row0_SaturateFlag
     MOVE.W  D0,ACCUMULATOR_Row1_Sum
-    MOVE.W  D0,ACCUMULATOR_Row1_SaturateFlag
+    MOVE.W  D0,_ACCUMULATOR_Row1_SaturateFlag
     MOVE.W  D0,ACCUMULATOR_Row2_Sum
-    MOVE.W  D0,ACCUMULATOR_Row2_SaturateFlag
+    MOVE.W  D0,_ACCUMULATOR_Row2_SaturateFlag
     MOVE.W  D0,ACCUMULATOR_Row3_Sum
-    MOVE.W  D0,ACCUMULATOR_Row3_SaturateFlag
+    MOVE.W  D0,_ACCUMULATOR_Row3_SaturateFlag
     BSR.W   _ESQIFF_RunCopperRiseTransition
 
     BRA.S   ESQIFF_ShowExternalAssetWithCopperFx_Return
@@ -729,11 +729,11 @@ ESQIFF_ShowExternalAssetWithCopperFx_Return:
 ; CLOBBERS:
 ;   A7/D0/D1/D7
 ; CALLS:
-;   ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_ReloadExternalAssetCatalogBuffers, ESQIFF_QueueNextExternalAssetIffJob
+;   ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_ReloadExternalAssetCatalogBuffers, ESQIFF_QueueNextExternalAssetIffJob
 ; READS:
-;   Global_WORD_SELECT_CODE_IS_RAVESC, COI_AttentionOverlayBusyFlag, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DISKIO_DriveWriteProtectStatusCodeDrive1
+;   Global_WORD_SELECT_CODE_IS_RAVESC, _COI_AttentionOverlayBusyFlag, _ESQIFF_ExternalAssetFlags, _DISKIO_Drive0WriteProtectedCode, _DISKIO_DriveWriteProtectStatusCodeDrive1
 ; WRITES:
-;   ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled
+;   _ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled
 ; DESC:
 ;   Sets source-selection flags by mode, conditionally reloads external catalogs,
 ;   then queues the next external asset IFF job.
@@ -748,47 +748,47 @@ ESQIFF_ServiceExternalAssetSourceState:
 
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
-    TST.W   COI_AttentionOverlayBusyFlag
+    TST.W   _COI_AttentionOverlayBusyFlag
     BNE.S   .return
 
     TST.W   D7
     BEQ.S   .configure_source_for_secondary_mode
 
     MOVEQ   #0,D0
-    MOVE.W  D0,ESQIFF_AssetSourceSelect
+    MOVE.W  D0,_ESQIFF_AssetSourceSelect
     MOVEQ   #-1,D1
     MOVE.W  D1,ESQIFF_GAdsSourceEnabled
     BRA.S   .reload_logo_catalog_if_needed
 
 .configure_source_for_secondary_mode:
     CLR.W   ESQIFF_GAdsSourceEnabled
-    MOVE.W  #(-1),ESQIFF_AssetSourceSelect
+    MOVE.W  #(-1),_ESQIFF_AssetSourceSelect
 
 .reload_logo_catalog_if_needed:
-    TST.L   DISKIO_Drive0WriteProtectedCode
+    TST.L   _DISKIO_Drive0WriteProtectedCode
     BNE.S   .reload_gads_catalog_if_needed
 
-    MOVE.W  ESQIFF_ExternalAssetFlags,D0
+    MOVE.W  _ESQIFF_ExternalAssetFlags,D0
     ANDI.W  #2,D0
     SUBQ.W  #2,D0
     BEQ.S   .reload_gads_catalog_if_needed
 
     CLR.L   -(A7)
-    BSR.W   ESQIFF_ReloadExternalAssetCatalogBuffers
+    BSR.W   _ESQIFF_ReloadExternalAssetCatalogBuffers
 
     ADDQ.W  #4,A7
 
 .reload_gads_catalog_if_needed:
-    TST.L   DISKIO_DriveWriteProtectStatusCodeDrive1
+    TST.L   _DISKIO_DriveWriteProtectStatusCodeDrive1
     BNE.S   .queue_next_asset_after_reload_checks
 
-    MOVE.W  ESQIFF_ExternalAssetFlags,D0
+    MOVE.W  _ESQIFF_ExternalAssetFlags,D0
     ANDI.W  #1,D0
     SUBQ.W  #1,D0
     BEQ.S   .queue_next_asset_after_reload_checks
 
     PEA     1.W
-    BSR.W   ESQIFF_ReloadExternalAssetCatalogBuffers
+    BSR.W   _ESQIFF_ReloadExternalAssetCatalogBuffers
 
     ADDQ.W  #4,A7
 
@@ -812,11 +812,11 @@ ESQIFF_ServiceExternalAssetSourceState:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
+;   ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
 ; READS:
-;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, TEXTDISP_DeferredActionCountdown, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, ESQIFF_ExternalAssetStateTable, ESQIFF_ExternalAssetPathCommaFlag
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, TEXTDISP_DeferredActionCountdown, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, ESQIFF_ExternalAssetStateTable, ESQIFF_ExternalAssetPathCommaFlag
 ; WRITES:
-;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, _TEXTDISP_CurrentMatchIndex
+;   _ESQIFF_GAdsBrushListCount, _ESQIFF_LogoBrushListCount, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, _TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Chooses source brush head, renders one frame with copper/display setup, pops the
 ;   consumed brush node from the active list, then services source-state queueing.
@@ -832,18 +832,18 @@ ESQIFF_PlayNextExternalAssetFrame:
     TST.W   D7
     BEQ.S   .check_logo_head_fallback
 
-    TST.L   ESQIFF_GAdsBrushListHead
+    TST.L   _ESQIFF_GAdsBrushListHead
     BNE.S   .validate_asset_list_and_match_index
 
 .check_logo_head_fallback:
     TST.W   D7
     BNE.W   .fallback_restore_base_palette
 
-    TST.L   ESQIFF_LogoBrushListHead
+    TST.L   _ESQIFF_LogoBrushListHead
     BEQ.W   .fallback_restore_base_palette
 
 .validate_asset_list_and_match_index:
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.W  ESQIFF_ExternalAssetStateTable,D1
     CMP.W   D1,D0
     BCC.S   .prepare_display_context_for_asset_blit
@@ -856,7 +856,7 @@ ESQIFF_PlayNextExternalAssetFrame:
 
     BSR.W   _ESQIFF_RestoreBasePaletteTriples
 
-    JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
+    JSR     _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     2.W
     JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
@@ -865,14 +865,14 @@ ESQIFF_PlayNextExternalAssetFrame:
     BRA.W   .run_rise_transition_and_service_source
 
 .prepare_display_context_for_asset_blit:
-    JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
+    JSR     _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     1.W
     CLR.L   -(A7)
     PEA     4.W
     JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     MOVEA.L D0,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
@@ -886,11 +886,11 @@ ESQIFF_PlayNextExternalAssetFrame:
     TST.W   D7
     BEQ.S   .select_logo_head_for_blit
 
-    MOVEA.L ESQIFF_GAdsBrushListHead,A0
+    MOVEA.L _ESQIFF_GAdsBrushListHead,A0
     BRA.S   .run_asset_frame_side_effects
 
 .select_logo_head_for_blit:
-    MOVEA.L ESQIFF_LogoBrushListHead,A0
+    MOVEA.L _ESQIFF_LogoBrushListHead,A0
 
 .run_asset_frame_side_effects:
     MOVE.L  A0,-6(A5)
@@ -924,7 +924,7 @@ ESQIFF_PlayNextExternalAssetFrame:
     TST.W   ESQIFF_ExternalAssetPathCommaFlag
     BNE.S   .pop_rendered_asset_head
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D0
@@ -939,7 +939,7 @@ ESQIFF_PlayNextExternalAssetFrame:
     JSR     ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner(PC)
 
     ADDQ.W  #8,A7
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
@@ -947,7 +947,7 @@ ESQIFF_PlayNextExternalAssetFrame:
     JSR     _LVOSetDrMd(A6)
 
 .pop_rendered_asset_head:
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
@@ -960,21 +960,21 @@ ESQIFF_PlayNextExternalAssetFrame:
     TST.W   D7
     BEQ.S   .pop_logo_brush_head
 
-    SUBQ.L  #1,ESQIFF_GAdsBrushListCount
-    MOVE.L  ESQIFF_GAdsBrushListHead,-(A7)
+    SUBQ.L  #1,_ESQIFF_GAdsBrushListCount
+    MOVE.L  _ESQIFF_GAdsBrushListHead,-(A7)
     JSR     ESQIFF_JMPTBL_BRUSH_PopBrushHead(PC)
 
     ADDQ.W  #4,A7
-    MOVE.L  D0,ESQIFF_GAdsBrushListHead
+    MOVE.L  D0,_ESQIFF_GAdsBrushListHead
     BRA.S   .permit_after_pop
 
 .pop_logo_brush_head:
-    SUBQ.L  #1,ESQIFF_LogoBrushListCount
-    MOVE.L  ESQIFF_LogoBrushListHead,-(A7)
+    SUBQ.L  #1,_ESQIFF_LogoBrushListCount
+    MOVE.L  _ESQIFF_LogoBrushListHead,-(A7)
     JSR     ESQIFF_JMPTBL_BRUSH_PopBrushHead(PC)
 
     ADDQ.W  #4,A7
-    MOVE.L  D0,ESQIFF_LogoBrushListHead
+    MOVE.L  D0,_ESQIFF_LogoBrushListHead
 
 .permit_after_pop:
     MOVEA.L AbsExecBase,A6
@@ -985,7 +985,7 @@ ESQIFF_PlayNextExternalAssetFrame:
 .fallback_restore_base_palette:
     BSR.W   _ESQIFF_RestoreBasePaletteTriples
 
-    JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
+    JSR     _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     2.W
     JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
@@ -1048,11 +1048,11 @@ ESQIFF_PlayNextExternalAssetFrame_Return:
 ; CLOBBERS:
 ;   A7/D0
 ; CALLS:
-;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory
+;   _ESQIFF_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, Global_STR_ESQIFF_C_7, Global_STR_ESQIFF_C_8
+;   _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_DF0_LOGO_LST_FILESIZE, _Global_REF_LONG_GFX_G_ADS_DATA, _Global_REF_LONG_GFX_G_ADS_FILESIZE, _Global_STR_ESQIFF_C_7, _Global_STR_ESQIFF_C_8
 ; WRITES:
-;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE
+;   _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_DF0_LOGO_LST_FILESIZE, _Global_REF_LONG_GFX_G_ADS_DATA, _Global_REF_LONG_GFX_G_ADS_FILESIZE
 ; DESC:
 ;   Frees loaded `gfx/g_ads.data` and `df0:logo.lst` memory buffers when both
 ;   pointer and filesize are non-zero, then clears their globals.
@@ -1060,42 +1060,42 @@ ESQIFF_PlayNextExternalAssetFrame_Return:
 ;   Passes `(size+1)` to deallocator, matching allocation strategy.
 ;------------------------------------------------------------------------------
 ESQIFF_DeallocateAdsAndLogoLstData:
-    TST.L   Global_REF_LONG_GFX_G_ADS_DATA
+    TST.L   _Global_REF_LONG_GFX_G_ADS_DATA
     BEQ.S   .deallocLogoLstData
 
-    TST.L   Global_REF_LONG_GFX_G_ADS_FILESIZE
+    TST.L   _Global_REF_LONG_GFX_G_ADS_FILESIZE
     BEQ.S   .deallocLogoLstData
 
-    MOVE.L  Global_REF_LONG_GFX_G_ADS_FILESIZE,D0
+    MOVE.L  _Global_REF_LONG_GFX_G_ADS_FILESIZE,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
-    MOVE.L  Global_REF_LONG_GFX_G_ADS_DATA,-(A7)
+    MOVE.L  _Global_REF_LONG_GFX_G_ADS_DATA,-(A7)
     PEA     1988.W
-    PEA     Global_STR_ESQIFF_C_7
-    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_ESQIFF_C_7
+    JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
-    CLR.L   Global_REF_LONG_GFX_G_ADS_DATA
-    CLR.L   Global_REF_LONG_GFX_G_ADS_FILESIZE
+    CLR.L   _Global_REF_LONG_GFX_G_ADS_DATA
+    CLR.L   _Global_REF_LONG_GFX_G_ADS_FILESIZE
 
 .deallocLogoLstData:
-    TST.L   Global_REF_LONG_DF0_LOGO_LST_DATA
+    TST.L   _Global_REF_LONG_DF0_LOGO_LST_DATA
     BEQ.S   .return
 
-    TST.L   Global_REF_LONG_DF0_LOGO_LST_FILESIZE
+    TST.L   _Global_REF_LONG_DF0_LOGO_LST_FILESIZE
     BEQ.S   .return
 
-    MOVE.L  Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
+    MOVE.L  _Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
-    MOVE.L  Global_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
+    MOVE.L  _Global_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
     PEA     1994.W
-    PEA     Global_STR_ESQIFF_C_8
-    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_ESQIFF_C_8
+    JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
-    CLR.L   Global_REF_LONG_DF0_LOGO_LST_DATA
-    CLR.L   Global_REF_LONG_DF0_LOGO_LST_FILESIZE
+    CLR.L   _Global_REF_LONG_DF0_LOGO_LST_DATA
+    CLR.L   _Global_REF_LONG_DF0_LOGO_LST_FILESIZE
 
 .return:
     RTS
@@ -1111,11 +1111,11 @@ ESQIFF_DeallocateAdsAndLogoLstData:
 ; CLOBBERS:
 ;   D0/D1
 ; CALLS:
-;   ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary, ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets, ESQIFF_JMPTBL_ESQ_NoOp_006A, ESQIFF_JMPTBL_ESQ_NoOp_0074
+;   _ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary, _ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets, _ESQIFF_JMPTBL_ESQ_NoOp_006A, _ESQIFF_JMPTBL_ESQ_NoOp_0074
 ; READS:
-;   COPPER_AnimationLane0_Countdown, COPPER_AnimationLane1_Countdown, _COPPER_AnimationLane2_Countdown, _COPPER_AnimationLane3_Countdown
+;   _COPPER_AnimationLane0_Countdown, _COPPER_AnimationLane1_Countdown, _COPPER_AnimationLane2_Countdown, _COPPER_AnimationLane3_Countdown
 ; WRITES:
-;   COPPER_AnimationLane0_Countdown, COPPER_AnimationLane1_Countdown, _COPPER_AnimationLane2_Countdown, _COPPER_AnimationLane3_Countdown
+;   _COPPER_AnimationLane0_Countdown, _COPPER_AnimationLane1_Countdown, _COPPER_AnimationLane2_Countdown, _COPPER_AnimationLane3_Countdown
 ; DESC:
 ;   Services four countdown lanes in sequence, invoking the corresponding copper
 ;   helper while each lane is non-zero and decrementing per step.
@@ -1123,29 +1123,29 @@ ESQIFF_DeallocateAdsAndLogoLstData:
 ;   Loops until all lanes (`1B19..1B1C`) reach zero.
 ;------------------------------------------------------------------------------
 _ESQIFF_RunPendingCopperAnimations:
-    MOVE.W  COPPER_AnimationLane0_Countdown,D0
+    MOVE.W  _COPPER_AnimationLane0_Countdown,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.S   .service_lane_1b1a
 
-    JSR     ESQIFF_JMPTBL_ESQ_NoOp_006A(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_NoOp_006A(PC)
 
-    MOVE.W  COPPER_AnimationLane0_Countdown,D0
+    MOVE.W  _COPPER_AnimationLane0_Countdown,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,COPPER_AnimationLane0_Countdown
+    MOVE.W  D0,_COPPER_AnimationLane0_Countdown
     BRA.S   _ESQIFF_RunPendingCopperAnimations
 
 .service_lane_1b1a:
-    MOVE.W  COPPER_AnimationLane1_Countdown,D0
+    MOVE.W  _COPPER_AnimationLane1_Countdown,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.S   .service_lane_1b1b
 
-    JSR     ESQIFF_JMPTBL_ESQ_NoOp_0074(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_NoOp_0074(PC)
 
-    MOVE.W  COPPER_AnimationLane1_Countdown,D0
+    MOVE.W  _COPPER_AnimationLane1_Countdown,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,COPPER_AnimationLane1_Countdown
+    MOVE.W  D0,_COPPER_AnimationLane1_Countdown
     BRA.S   .service_lane_1b1a
 
 .service_lane_1b1b:
@@ -1154,7 +1154,7 @@ _ESQIFF_RunPendingCopperAnimations:
     CMP.W   D1,D0
     BLS.S   .service_lane_1b1c
 
-    JSR     ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary(PC)
 
     MOVE.W  _COPPER_AnimationLane2_Countdown,D0
     SUBQ.W  #1,D0
@@ -1167,7 +1167,7 @@ _ESQIFF_RunPendingCopperAnimations:
     CMP.W   D1,D0
     BLS.S   .return_run_pending_copper_animations
 
-    JSR     ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets(PC)
+    JSR     _ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets(PC)
 
     MOVE.W  _COPPER_AnimationLane3_Countdown,D0
     SUBQ.W  #1,D0
@@ -1188,11 +1188,11 @@ _ESQIFF_RunPendingCopperAnimations:
 ; CLOBBERS:
 ;   A7/D0/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate, ESQIFF_JMPTBL_BRUSH_FindType3Brush, ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel, ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle, ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle, GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch, GROUP_AU_JMPTBL_BRUSH_PopulateBrushList
+;   _ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate, _ESQIFF_JMPTBL_BRUSH_FindType3Brush, _ESQIFF_JMPTBL_BRUSH_FreeBrushList, _ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel, _ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle, _ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle, _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch, _GROUP_AU_JMPTBL_BRUSH_PopulateBrushList
 ; READS:
-;   BRUSH_SelectedNode, Global_STR_DF0_BRUSH_INI_2, PARSEINI_ParsedDescriptorListHead, ESQIFF_BrushIniListHead, ESQIFF_TAG_DT, ESQIFF_TAG_DITHER
+;   _BRUSH_SelectedNode, _Global_STR_DF0_BRUSH_INI_2, _PARSEINI_ParsedDescriptorListHead, _ESQIFF_BrushIniListHead, _ESQIFF_TAG_DT, _ESQIFF_TAG_DITHER
 ; WRITES:
-;   BRUSH_SelectedNode, ESQFUNC_FallbackType3BrushNode
+;   _BRUSH_SelectedNode, _ESQFUNC_FallbackType3BrushNode
 ; DESC:
 ;   On hotkey `'a'`, refreshes brush.ini data, rebuilds brush lists, selects
 ;   preferred brush tags, and updates cached type-3 brush pointer.
@@ -1207,39 +1207,39 @@ ESQIFF_HandleBrushIniReloadHotkey:
     CMP.B   D0,D7
     BNE.S   .return
 
-    JSR     ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle(PC)
+    JSR     _ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle(PC)
 
     CLR.L   -(A7)
-    PEA     ESQIFF_BrushIniListHead
-    JSR     ESQIFF_JMPTBL_BRUSH_FreeBrushList(PC)
+    PEA     _ESQIFF_BrushIniListHead
+    JSR     _ESQIFF_JMPTBL_BRUSH_FreeBrushList(PC)
 
-    PEA     Global_STR_DF0_BRUSH_INI_2
-    JSR     GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
+    PEA     _Global_STR_DF0_BRUSH_INI_2
+    JSR     _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
 
-    PEA     ESQIFF_BrushIniListHead
-    MOVE.L  PARSEINI_ParsedDescriptorListHead,-(A7)
-    JSR     GROUP_AU_JMPTBL_BRUSH_PopulateBrushList(PC)
+    PEA     _ESQIFF_BrushIniListHead
+    MOVE.L  _PARSEINI_ParsedDescriptorListHead,-(A7)
+    JSR     _GROUP_AU_JMPTBL_BRUSH_PopulateBrushList(PC)
 
-    PEA     ESQIFF_TAG_DT
-    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel(PC)
+    PEA     _ESQIFF_TAG_DT
+    JSR     _ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel(PC)
 
     LEA     24(A7),A7
-    TST.L   BRUSH_SelectedNode
+    TST.L   _BRUSH_SelectedNode
     BNE.S   .ensure_type3_brush_cache
 
-    PEA     ESQIFF_BrushIniListHead
-    PEA     ESQIFF_TAG_DITHER
-    JSR     ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(PC)
+    PEA     _ESQIFF_BrushIniListHead
+    PEA     _ESQIFF_TAG_DITHER
+    JSR     _ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,BRUSH_SelectedNode
+    MOVE.L  D0,_BRUSH_SelectedNode
 
 .ensure_type3_brush_cache:
-    PEA     ESQIFF_BrushIniListHead
-    JSR     ESQIFF_JMPTBL_BRUSH_FindType3Brush(PC)
+    PEA     _ESQIFF_BrushIniListHead
+    JSR     _ESQIFF_JMPTBL_BRUSH_FindType3Brush(PC)
 
-    MOVE.L  D0,ESQFUNC_FallbackType3BrushNode
-    JSR     ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle(PC)
+    MOVE.L  D0,_ESQFUNC_FallbackType3BrushNode
+    JSR     _ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle(PC)
 
     ADDQ.W  #4,A7
 
@@ -1263,7 +1263,7 @@ ESQIFF_HandleBrushIniReloadHotkey:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_CompareNoCase
+;   _STRING_CompareNoCase
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1274,7 +1274,7 @@ ESQIFF_HandleBrushIniReloadHotkey:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_STRING_CompareNoCase:
-    JMP     STRING_CompareNoCase
+    JMP     _STRING_CompareNoCase
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (Jump-table forwarder)
@@ -1285,7 +1285,7 @@ ESQIFF_JMPTBL_STRING_CompareNoCase:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   TLIBA3_BuildDisplayContextForViewMode
+;   _TLIBA3_BuildDisplayContextForViewMode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1296,10 +1296,10 @@ ESQIFF_JMPTBL_STRING_CompareNoCase:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
-    JMP     TLIBA3_BuildDisplayContextForViewMode
+    JMP     _TLIBA3_BuildDisplayContextForViewMode
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1317,7 +1317,7 @@ ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle:
+_ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle:
     JMP     DISKIO_GetFilesizeFromHandle
 
 ;------------------------------------------------------------------------------
@@ -1329,7 +1329,7 @@ ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MATH_DivS32
+;   _MATH_DivS32
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1340,7 +1340,7 @@ ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_MATH_DivS32:
-    JMP     MATH_DivS32
+    JMP     _MATH_DivS32
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard   (Jump-table forwarder)
@@ -1431,7 +1431,7 @@ ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner:
     JMP     TEXTDISP_DrawChannelBanner
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1449,11 +1449,11 @@ ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart:
+_ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart:
     JMP     ESQ_MoveCopperEntryTowardStart
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_MEMORY_DeallocateMemory   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_MEMORY_DeallocateMemory   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1471,11 +1471,11 @@ ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_MEMORY_DeallocateMemory:
+_ESQIFF_JMPTBL_MEMORY_DeallocateMemory:
     JMP     MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1493,7 +1493,7 @@ ESQIFF_JMPTBL_MEMORY_DeallocateMemory:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle:
+_ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle:
     JMP     DISKIO_ForceUiRefreshIfIdle
 
 ;------------------------------------------------------------------------------
@@ -1519,7 +1519,7 @@ ESQIFF_JMPTBL_BRUSH_CloneBrushRecord:
     JMP     BRUSH_CloneBrushRecord
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1537,11 +1537,11 @@ ESQIFF_JMPTBL_BRUSH_CloneBrushRecord:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd:
+_ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd:
     JMP     ESQ_MoveCopperEntryTowardEnd
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1559,11 +1559,11 @@ ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate:
+_ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate:
     JMP     BRUSH_FindBrushByPredicate
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_FreeBrushList   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_BRUSH_FreeBrushList   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1571,7 +1571,7 @@ ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   BRUSH_FreeBrushList
+;   _BRUSH_FreeBrushList
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1581,11 +1581,11 @@ ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_BRUSH_FreeBrushList:
-    JMP     BRUSH_FreeBrushList
+_ESQIFF_JMPTBL_BRUSH_FreeBrushList:
+    JMP     _BRUSH_FreeBrushList
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_FindType3Brush   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_BRUSH_FindType3Brush   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1603,7 +1603,7 @@ ESQIFF_JMPTBL_BRUSH_FreeBrushList:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_BRUSH_FindType3Brush:
+_ESQIFF_JMPTBL_BRUSH_FindType3Brush:
     JMP     BRUSH_FindType3Brush
 
 ;------------------------------------------------------------------------------
@@ -1629,7 +1629,7 @@ ESQIFF_JMPTBL_BRUSH_PopBrushHead:
     JMP     BRUSH_PopBrushHead
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_AllocBrushNode   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_BRUSH_AllocBrushNode   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1647,11 +1647,11 @@ ESQIFF_JMPTBL_BRUSH_PopBrushHead:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_BRUSH_AllocBrushNode:
+_ESQIFF_JMPTBL_BRUSH_AllocBrushNode:
     JMP     BRUSH_AllocBrushNode
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_NoOp_006A   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_ESQ_NoOp_006A   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1669,11 +1669,11 @@ ESQIFF_JMPTBL_BRUSH_AllocBrushNode:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_ESQ_NoOp_006A:
+_ESQIFF_JMPTBL_ESQ_NoOp_006A:
     JMP     ESQ_NoOp_006A
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1681,7 +1681,7 @@ ESQIFF_JMPTBL_ESQ_NoOp_006A:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   NEWGRID_ValidateSelectionCode
+;   _NEWGRID_ValidateSelectionCode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1691,11 +1691,11 @@ ESQIFF_JMPTBL_ESQ_NoOp_006A:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode:
-    JMP     NEWGRID_ValidateSelectionCode
+_ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode:
+    JMP     _NEWGRID_ValidateSelectionCode
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_PopulateBrushList   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_BRUSH_PopulateBrushList   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1713,11 +1713,11 @@ ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_BRUSH_PopulateBrushList:
+_ESQIFF_JMPTBL_BRUSH_PopulateBrushList:
     JMP     BRUSH_PopulateBrushList
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_NoOp_0074   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_ESQ_NoOp_0074   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1735,7 +1735,7 @@ ESQIFF_JMPTBL_BRUSH_PopulateBrushList:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_ESQ_NoOp_0074:
+_ESQIFF_JMPTBL_ESQ_NoOp_0074:
     JMP     ESQ_NoOp_0074
 
 ;------------------------------------------------------------------------------
@@ -1747,7 +1747,7 @@ ESQIFF_JMPTBL_ESQ_NoOp_0074:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_CompareNoCaseN
+;   _STRING_CompareNoCaseN
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1758,7 +1758,7 @@ ESQIFF_JMPTBL_ESQ_NoOp_0074:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_STRING_CompareNoCaseN:
-    JMP     STRING_CompareNoCaseN
+    JMP     _STRING_CompareNoCaseN
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled   (Jump-table forwarder)
@@ -1805,7 +1805,7 @@ ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition:
     JMP     SCRIPT_BeginBannerCharTransition
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_MEMORY_AllocateMemory   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_MEMORY_AllocateMemory   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1813,7 +1813,7 @@ ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MEMORY_AllocateMemory
+;   _MEMORY_AllocateMemory
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1823,8 +1823,8 @@ ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_MEMORY_AllocateMemory:
-    JMP     MEMORY_AllocateMemory
+_ESQIFF_JMPTBL_MEMORY_AllocateMemory:
+    JMP     _MEMORY_AllocateMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess   (Jump-table forwarder)
@@ -1849,7 +1849,7 @@ ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
     JMP     CTASKS_StartIffTaskProcess
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_DOS_OpenFileWithMode   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_DOS_OpenFileWithMode   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1867,11 +1867,11 @@ ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_DOS_OpenFileWithMode:
+_ESQIFF_JMPTBL_DOS_OpenFileWithMode:
     JMP     DOS_OpenFileWithMode
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1889,11 +1889,11 @@ ESQIFF_JMPTBL_DOS_OpenFileWithMode:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets:
+_ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets:
     JMP     ESQ_IncCopperListsTowardsTargets
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1911,7 +1911,7 @@ ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary:
+_ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary:
     JMP     ESQ_DecCopperListsPrimary
 
 ;------------------------------------------------------------------------------
@@ -1937,7 +1937,7 @@ ESQIFF_JMPTBL_BRUSH_SelectBrushSlot:
     JMP     BRUSH_SelectBrushSlot
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1955,7 +1955,7 @@ ESQIFF_JMPTBL_BRUSH_SelectBrushSlot:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel:
+_ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel:
     JMP     BRUSH_SelectBrushByLabel
 
 ;------------------------------------------------------------------------------
@@ -1967,7 +1967,7 @@ ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MATH_Mulu32
+;   _MATH_Mulu32
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1978,10 +1978,10 @@ ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_MATH_Mulu32:
-    JMP     MATH_Mulu32
+    JMP     _MATH_Mulu32
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1999,5 +1999,5 @@ ESQIFF_JMPTBL_MATH_Mulu32:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle:
+_ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle:
     JMP     DISKIO_ResetCtrlInputStateIfIdle

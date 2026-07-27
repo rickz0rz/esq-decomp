@@ -5,31 +5,31 @@
     XDEF    ESQFUNC_DrawMemoryStatusScreen
     XDEF    ESQFUNC_FreeExtraTitleTextPointers
     XDEF    ESQFUNC_FreeLineTextBuffers
-    XDEF    ESQFUNC_ProcessUiFrameTick
+    XDEF    _ESQFUNC_ProcessUiFrameTick
     XDEF    ESQFUNC_RebuildPwBrushListFromTagTable
     XDEF    ESQFUNC_SelectAndApplyBrushForCurrentEntry
-    XDEF    ESQFUNC_ServiceUiTickIfRunning
+    XDEF    _ESQFUNC_ServiceUiTickIfRunning
     XDEF    ESQFUNC_TrimTextToPixelWidthWordBoundary
     XDEF    ESQFUNC_UpdateDiskWarningAndRefreshTick
     XDEF    ESQFUNC_UpdateRefreshModeState
-    XDEF    ESQFUNC_WaitForClockChangeAndServiceUi
+    XDEF    _ESQFUNC_WaitForClockChangeAndServiceUi
     XDEF    SETUP_INTERRUPT_INTB_AUD1
     XDEF    SETUP_INTERRUPT_INTB_RBF
     XDEF    SETUP_INTERRUPT_INTB_VERTB
     XDEF    ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner
     XDEF    ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts
-    XDEF    ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths
+    XDEF    _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths
     XDEF    ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange
     XDEF    ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex
-    XDEF    ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt
-    XDEF    ESQFUNC_JMPTBL_ESQ_PollCtrlInput
-    XDEF    ESQFUNC_JMPTBL_ESQ_TickGlobalCounters
-    XDEF    ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit
+    XDEF    _ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt
+    XDEF    _ESQFUNC_JMPTBL_ESQ_PollCtrlInput
+    XDEF    _ESQFUNC_JMPTBL_ESQ_TickGlobalCounters
+    XDEF    _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit
     XDEF    ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState
     XDEF    ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup
     XDEF    ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup
     XDEF    ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues
-    XDEF    ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange
+    XDEF    _ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange
     XDEF    ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData
     XDEF    ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
     XDEF    ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList
@@ -37,12 +37,12 @@
     XDEF    ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag
     XDEF    ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd
     XDEF    ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag
-    XDEF    ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask
+    XDEF    _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask
     XDEF    ESQFUNC_JMPTBL_STRING_CopyPadNul
     XDEF    ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
     XDEF    ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode
     XDEF    ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState
-    XDEF    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines
+    XDEF    _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines
     XDEF    ESQFUNC_TrimTextToPixelWidthWordBoundary_Return
 
 ;!======
@@ -56,42 +56,42 @@
 ; CLOBBERS:
 ;   A0/A1/A6/A7/D0
 ; CALLS:
-;   ESQIFF_JMPTBL_MEMORY_AllocateMemory, _LVOAddIntVector
+;   _ESQIFF_JMPTBL_MEMORY_AllocateMemory, _LVOAddIntVector
 ; READS:
-;   AbsExecBase, ESQFUNC_JMPTBL_ESQ_TickGlobalCounters, Global_REF_INTERRUPT_STRUCT_INTB_VERTB, Global_STR_ESQFUNC_C_1, Global_STR_VERTICAL_BLANK_INT, INTB_VERTB, ESQ_VerticalBlankInterruptUserData, MEMF_PUBLIC
+;   AbsExecBase, _ESQFUNC_JMPTBL_ESQ_TickGlobalCounters, _Global_REF_INTERRUPT_STRUCT_INTB_VERTB, _Global_STR_ESQFUNC_C_1, _Global_STR_VERTICAL_BLANK_INT, INTB_VERTB, _ESQ_VerticalBlankInterruptUserData, MEMF_PUBLIC
 ; WRITES:
-;   Global_REF_INTERRUPT_STRUCT_INTB_VERTB
+;   _Global_REF_INTERRUPT_STRUCT_INTB_VERTB
 ; DESC:
 ;   Allocates and initializes an Interrupt struct for VBLANK and installs it on
-;   INTB_VERTB, targeting ESQFUNC_JMPTBL_ESQ_TickGlobalCounters.
+;   INTB_VERTB, targeting _ESQFUNC_JMPTBL_ESQ_TickGlobalCounters.
 ; NOTES:
-;   Stores the allocated Interrupt pointer in Global_REF_INTERRUPT_STRUCT_INTB_VERTB.
+;   Stores the allocated Interrupt pointer in _Global_REF_INTERRUPT_STRUCT_INTB_VERTB.
 ;------------------------------------------------------------------------------
 SETUP_INTERRUPT_INTB_VERTB:
     ; Allocate 22 bytes to memory for interrupt struct
     PEA     (MEMF_PUBLIC).W                 ; Memory Type
     PEA     22.W                            ; Bytes to Allocate
     PEA     1159.W                          ; Line Number
-    PEA     Global_STR_ESQFUNC_C_1            ; Calling File
-    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
+    PEA     _Global_STR_ESQFUNC_C_1            ; Calling File
+    JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
-    MOVE.L  D0,Global_REF_INTERRUPT_STRUCT_INTB_VERTB
+    MOVE.L  D0,_Global_REF_INTERRUPT_STRUCT_INTB_VERTB
     MOVEA.L D0,A0
     MOVE.B  #$2,8(A0)
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A0
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A0
     CLR.B   9(A0)
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A0
-    MOVE.L  #Global_STR_VERTICAL_BLANK_INT,10(A0)
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A0
+    MOVE.L  #_Global_STR_VERTICAL_BLANK_INT,10(A0)
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A0
-    MOVE.L  #ESQ_VerticalBlankInterruptUserData,14(A0)
-    LEA     ESQFUNC_JMPTBL_ESQ_TickGlobalCounters(PC),A0
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A0
+    MOVE.L  #_ESQ_VerticalBlankInterruptUserData,14(A0)
+    LEA     _ESQFUNC_JMPTBL_ESQ_TickGlobalCounters(PC),A0
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A1
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A1
     MOVE.L  A0,18(A1)
     MOVEQ   #INTB_VERTB,D0
     MOVEA.L AbsExecBase,A6
@@ -110,48 +110,48 @@ SETUP_INTERRUPT_INTB_VERTB:
 ; CLOBBERS:
 ;   A0/A1/A6/A7/D0
 ; CALLS:
-;   ESQIFF_JMPTBL_MEMORY_AllocateMemory, _LVOSetIntVector
+;   _ESQIFF_JMPTBL_MEMORY_AllocateMemory, _LVOSetIntVector
 ; READS:
-;   AbsExecBase, ESQFUNC_JMPTBL_ESQ_PollCtrlInput, Global_REF_INTERRUPT_STRUCT_INTB_AUD1, Global_STR_ESQFUNC_C_2, Global_STR_JOYSTICK_INT, INTB_AUD1, CTRL_SampleEntryScratch, MEMF_CHIP
+;   AbsExecBase, _ESQFUNC_JMPTBL_ESQ_PollCtrlInput, _Global_REF_INTERRUPT_STRUCT_INTB_AUD1, _Global_STR_ESQFUNC_C_2, _Global_STR_JOYSTICK_INT, INTB_AUD1, _CTRL_SampleEntryScratch, MEMF_CHIP
 ; WRITES:
-;   Global_REF_INTB_AUD1_INTERRUPT, Global_REF_INTERRUPT_STRUCT_INTB_AUD1
+;   _Global_REF_INTB_AUD1_INTERRUPT, _Global_REF_INTERRUPT_STRUCT_INTB_AUD1
 ; DESC:
 ;   Allocates and initializes an Interrupt struct for AUD1 and installs it on
-;   INTB_AUD1, targeting ESQFUNC_JMPTBL_ESQ_PollCtrlInput.
+;   INTB_AUD1, targeting _ESQFUNC_JMPTBL_ESQ_PollCtrlInput.
 ; NOTES:
-;   Saves the previous vector returned by SetIntVector in Global_REF_INTB_AUD1_INTERRUPT.
+;   Saves the previous vector returned by SetIntVector in _Global_REF_INTB_AUD1_INTERRUPT.
 ;------------------------------------------------------------------------------
 SETUP_INTERRUPT_INTB_AUD1:
     ; Allocate 22 bytes to memory for interrupt struct
     PEA     (MEMF_CHIP).W                   ; Memory Type
     PEA     22.W                            ; Bytes to Allocate
     PEA     1172.W                          ; Line Number
-    PEA     Global_STR_ESQFUNC_C_2            ; Calling File
-    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
+    PEA     _Global_STR_ESQFUNC_C_2            ; Calling File
+    JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
-    MOVE.L  D0,Global_REF_INTERRUPT_STRUCT_INTB_AUD1
+    MOVE.L  D0,_Global_REF_INTERRUPT_STRUCT_INTB_AUD1
     MOVEA.L D0,A0
     MOVE.B  #$2,8(A0)
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_AUD1,A0
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_AUD1,A0
     CLR.B   9(A0)
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_AUD1,A0
-    MOVE.L  #Global_STR_JOYSTICK_INT,10(A0)
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_AUD1,A0
+    MOVE.L  #_Global_STR_JOYSTICK_INT,10(A0)
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_AUD1,A0
-    MOVE.L  #CTRL_SampleEntryScratch,14(A0)
-    LEA     ESQFUNC_JMPTBL_ESQ_PollCtrlInput(PC),A0
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_AUD1,A0
+    MOVE.L  #_CTRL_SampleEntryScratch,14(A0)
+    LEA     _ESQFUNC_JMPTBL_ESQ_PollCtrlInput(PC),A0
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_AUD1,A1
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_AUD1,A1
     MOVE.L  A0,18(A1)
     MOVEQ   #INTB_AUD1,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOSetIntVector(A6)
 
-    MOVE.L  D0,Global_REF_INTB_AUD1_INTERRUPT
+    MOVE.L  D0,_Global_REF_INTB_AUD1_INTERRUPT
     RTS
 
 ;!======
@@ -165,52 +165,52 @@ SETUP_INTERRUPT_INTB_AUD1:
 ; CLOBBERS:
 ;   A0/A1/A6/A7/D0
 ; CALLS:
-;   ESQIFF_JMPTBL_MEMORY_AllocateMemory, _LVOSetIntVector
+;   _ESQIFF_JMPTBL_MEMORY_AllocateMemory, _LVOSetIntVector
 ; READS:
-;   AbsExecBase, ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt, Global_REF_INTB_RBF_64K_BUFFER, Global_REF_INTERRUPT_STRUCT_INTB_RBF, Global_STR_ESQFUNC_C_3, Global_STR_ESQFUNC_C_4, Global_STR_RS232_RECEIVE_HANDLER, INTB_RBF, MEMF_CLEAR, MEMF_PUBLIC
+;   AbsExecBase, _ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt, _Global_REF_INTB_RBF_64K_BUFFER, _Global_REF_INTERRUPT_STRUCT_INTB_RBF, _Global_STR_ESQFUNC_C_3, _Global_STR_ESQFUNC_C_4, _Global_STR_RS232_RECEIVE_HANDLER, INTB_RBF, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
-;   Global_REF_INTB_RBF_64K_BUFFER, Global_REF_INTB_RBF_INTERRUPT, Global_REF_INTERRUPT_STRUCT_INTB_RBF
+;   _Global_REF_INTB_RBF_64K_BUFFER, _Global_REF_INTB_RBF_INTERRUPT, _Global_REF_INTERRUPT_STRUCT_INTB_RBF
 ; DESC:
 ;   Allocates an Interrupt struct plus a 64k receive buffer and installs the
 ;   serial receive-full handler vector on INTB_RBF.
 ; NOTES:
-;   Vector target is ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt.
+;   Vector target is _ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt.
 ;------------------------------------------------------------------------------
 SETUP_INTERRUPT_INTB_RBF:
     ; Allocate 22 bytes to memory for interrupt struct
     PEA     (MEMF_PUBLIC).W                 ; Memory Type
     PEA     22.W                            ; Bytes to Allocate
     PEA     1195.W                          ; Line Number
-    PEA     Global_STR_ESQFUNC_C_3            ; Calling File
-    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
+    PEA     _Global_STR_ESQFUNC_C_3            ; Calling File
+    JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
-    MOVE.L  D0,Global_REF_INTERRUPT_STRUCT_INTB_RBF
+    MOVE.L  D0,_Global_REF_INTERRUPT_STRUCT_INTB_RBF
 
     ; Allocate 64,000 bytes to memory
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)  ; Memory Type
     MOVE.L  #64000,-(A7)                    ; Bytes to Allocate
     PEA     1197.W                          ; Line Number
-    PEA     Global_STR_ESQFUNC_C_4            ; Calling File
-    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
+    PEA     _Global_STR_ESQFUNC_C_4            ; Calling File
+    JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
 
-    MOVE.L  D0,Global_REF_INTB_RBF_64K_BUFFER
+    MOVE.L  D0,_Global_REF_INTB_RBF_64K_BUFFER
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_RBF,A0
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_RBF,A0
     MOVE.B  #2,8(A0)
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_RBF,A0
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_RBF,A0
     CLR.B   9(A0)
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_RBF,A0
-    MOVE.L  #Global_STR_RS232_RECEIVE_HANDLER,10(A0)
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_RBF,A0
+    MOVE.L  #_Global_STR_RS232_RECEIVE_HANDLER,10(A0)
 
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_RBF,A0
-    MOVE.L  Global_REF_INTB_RBF_64K_BUFFER,14(A0)
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_RBF,A0
+    MOVE.L  _Global_REF_INTB_RBF_64K_BUFFER,14(A0)
 
-    LEA     ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt(PC),A0
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_RBF,A1
+    LEA     _ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt(PC),A0
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_RBF,A1
 
     ; Setup IntVector on INTB_RBF (interrupt 11 aka "serial port recieve buffer full") pointing to 18(A1)
     MOVE.L  A0,18(A1)
@@ -218,7 +218,7 @@ SETUP_INTERRUPT_INTB_RBF:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOSetIntVector(A6)
 
-    MOVE.L  D0,Global_REF_INTB_RBF_INTERRUPT
+    MOVE.L  D0,_Global_REF_INTB_RBF_INTERRUPT
     RTS
 
 ;!======
@@ -232,14 +232,14 @@ SETUP_INTERRUPT_INTB_RBF:
 ; CLOBBERS:
 ;   A0/A7/D0/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MEMORY_AllocateMemory
+;   _ESQIFF_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   Global_STR_ESQFUNC_C_5, LADFUNC_LineTextBufferPtrs, MEMF_CLEAR, MEMF_PUBLIC
+;   _Global_STR_ESQFUNC_C_5, _LADFUNC_LineTextBufferPtrs, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
-;   LADFUNC_LineSlotWriteIndex, LADFUNC_LineSlotSecondaryIndex
+;   _LADFUNC_LineSlotWriteIndex, _LADFUNC_LineSlotSecondaryIndex
 ; DESC:
 ;   Allocates 20 line text buffers (60 bytes each), stores pointers in
-;   LADFUNC_LineTextBufferPtrs, and resets line-slot indices.
+;   _LADFUNC_LineTextBufferPtrs, and resets line-slot indices.
 ; NOTES:
 ;   Companion free path is ESQFUNC_FreeLineTextBuffers.
 ;------------------------------------------------------------------------------
@@ -256,15 +256,15 @@ ESQFUNC_AllocateLineTextBuffers:
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LADFUNC_LineTextBufferPtrs,A0
+    LEA     _LADFUNC_LineTextBufferPtrs,A0
     ADDA.L  D0,A0
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)     ; Memory Type
     PEA     60.W                                ; Bytes to Allocate
     PEA     1222.W                              ; Line Number
-    PEA     Global_STR_ESQFUNC_C_5                ; Calling File
+    PEA     _Global_STR_ESQFUNC_C_5                ; Calling File
     MOVE.L  A0,20(A7)
-    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 4(A7),A0
@@ -274,8 +274,8 @@ ESQFUNC_AllocateLineTextBuffers:
 
 .return:
     MOVEQ   #0,D0
-    MOVE.W  D0,LADFUNC_LineSlotWriteIndex
-    MOVE.W  D0,LADFUNC_LineSlotSecondaryIndex
+    MOVE.W  D0,_LADFUNC_LineSlotWriteIndex
+    MOVE.W  D0,_LADFUNC_LineSlotSecondaryIndex
     MOVE.L  (A7)+,D7
     UNLK    A5
     RTS
@@ -291,16 +291,16 @@ ESQFUNC_AllocateLineTextBuffers:
 ; CLOBBERS:
 ;   A0/A7/D0/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory
+;   _ESQIFF_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_STR_ESQFUNC_C_6, LADFUNC_LineTextBufferPtrs
+;   _Global_STR_ESQFUNC_C_6, _LADFUNC_LineTextBufferPtrs
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Iterates 20 line-text buffer pointers, deallocates each 60-byte buffer, and
 ;   clears the pointer slot.
 ; NOTES:
-;   Uses Global_STR_ESQFUNC_C_6 as deallocation callsite tag.
+;   Uses _Global_STR_ESQFUNC_C_6 as deallocation callsite tag.
 ;------------------------------------------------------------------------------
 ESQFUNC_FreeLineTextBuffers:
     MOVE.L  D7,-(A7)
@@ -314,21 +314,21 @@ ESQFUNC_FreeLineTextBuffers:
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LADFUNC_LineTextBufferPtrs,A0
+    LEA     _LADFUNC_LineTextBufferPtrs,A0
     ADDA.L  D0,A0
 
     ; Deallocate 60 bytes from A0
     PEA     60.W
     MOVE.L  (A0),-(A7)
     PEA     1235.W
-    PEA     Global_STR_ESQFUNC_C_6
-    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_ESQFUNC_C_6
+    JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LADFUNC_LineTextBufferPtrs,A0
+    LEA     _LADFUNC_LineTextBufferPtrs,A0
     ADDA.L  D0,A0
     CLR.L   (A0)
     ADDQ.W  #1,D7
@@ -349,53 +349,53 @@ ESQFUNC_FreeLineTextBuffers:
 ; CLOBBERS:
 ;   A0/A7/D0
 ; CALLS:
-;   ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines
+;   _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines
 ; READS:
-;   Global_REF_RASTPORT_2, Global_STR_DISK_0_IS_WRITE_PROTECTED, Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0, WDISP_DisplayContextBase, DISKIO_Drive0WriteProtectedCode, DISKIO_DriveMediaStatusCodeTable, Global_RefreshTickCounter
+;   Global_REF_RASTPORT_2, _Global_STR_DISK_0_IS_WRITE_PROTECTED, _Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0, _WDISP_DisplayContextBase, _DISKIO_Drive0WriteProtectedCode, _DISKIO_DriveMediaStatusCodeTable, _Global_RefreshTickCounter
 ; WRITES:
-;   Global_RefreshTickCounter
+;   _Global_RefreshTickCounter
 ; DESC:
 ;   Re-probes drive assignment state and updates the startup warning text path
-;   plus Global_RefreshTickCounter based on disk write-protect conditions.
+;   plus _Global_RefreshTickCounter based on disk write-protect conditions.
 ; NOTES:
 ;   Draws one of two centered warning strings when protected/reinsert states are active.
 ;------------------------------------------------------------------------------
 ESQFUNC_UpdateDiskWarningAndRefreshTick:
-    JSR     ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(PC)
+    JSR     _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(PC)
 
-    TST.L   DISKIO_Drive0WriteProtectedCode
+    TST.L   _DISKIO_Drive0WriteProtectedCode
     BNE.S   .lab_096B
 
-    TST.L   DISKIO_DriveMediaStatusCodeTable
+    TST.L   _DISKIO_DriveMediaStatusCodeTable
     BNE.S   .lab_096A
 
-    MOVE.W  Global_RefreshTickCounter,D0
+    MOVE.W  _Global_RefreshTickCounter,D0
     ADDQ.W  #1,D0
     BNE.S   .lab_096C
 
-    CLR.W   Global_RefreshTickCounter
+    CLR.W   _Global_RefreshTickCounter
     BRA.S   .lab_096C
 
 .lab_096A:
-    MOVE.W  #(-1),Global_RefreshTickCounter
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVE.W  #(-1),_Global_RefreshTickCounter
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     90.W
-    PEA     Global_STR_DISK_0_IS_WRITE_PROTECTED
+    PEA     _Global_STR_DISK_0_IS_WRITE_PROTECTED
     MOVE.L  A0,-(A7)
-    JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
+    JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     LEA     12(A7),A7
     BRA.S   .lab_096C
 
 .lab_096B:
-    MOVE.W  #(-1),Global_RefreshTickCounter
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVE.W  #(-1),_Global_RefreshTickCounter
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     90.W
-    PEA     Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0
+    PEA     _Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0
     MOVE.L  A0,-(A7)
-    JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
+    JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     LEA     12(A7),A7
 
@@ -405,7 +405,7 @@ ESQFUNC_UpdateDiskWarningAndRefreshTick:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_WaitForClockChangeAndServiceUi   (Poll clock change while servicing UI tick)
+; FUNC: _ESQFUNC_WaitForClockChangeAndServiceUi   (Poll clock change while servicing UI tick)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -413,7 +413,7 @@ ESQFUNC_UpdateDiskWarningAndRefreshTick:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange, ESQFUNC_ServiceUiTickIfRunning
+;   _ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange, _ESQFUNC_ServiceUiTickIfRunning
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -422,17 +422,17 @@ ESQFUNC_UpdateDiskWarningAndRefreshTick:
 ;   Repeatedly polls clock-change monitor and services one UI tick until a
 ;   clock-change event is reported.
 ; NOTES:
-;   Blocks caller until ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange returns non-zero.
+;   Blocks caller until _ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange returns non-zero.
 ;------------------------------------------------------------------------------
-ESQFUNC_WaitForClockChangeAndServiceUi:
-    JSR     ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange(PC)
+_ESQFUNC_WaitForClockChangeAndServiceUi:
+    JSR     _ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange(PC)
 
     TST.W   D0
     BNE.S   .return
 
-    BSR.W   ESQFUNC_ServiceUiTickIfRunning
+    BSR.W   _ESQFUNC_ServiceUiTickIfRunning
 
-    BRA.S   ESQFUNC_WaitForClockChangeAndServiceUi
+    BRA.S   _ESQFUNC_WaitForClockChangeAndServiceUi
 
 .return:
     RTS
@@ -448,11 +448,11 @@ ESQFUNC_WaitForClockChangeAndServiceUi:
 ; CLOBBERS:
 ;   A7/D7
 ; CALLS:
-;   DATETIME_SavePairToFile, ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList, ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile, ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile, ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, ESQDISP_PromoteSecondaryGroupToPrimary, ESQDISP_PromoteSecondaryLineHeadTailIfMarked, ESQFUNC_UpdateDiskWarningAndRefreshTick
+;   DATETIME_SavePairToFile, ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList, _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile, _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile, ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, ESQDISP_PromoteSecondaryGroupToPrimary, ESQDISP_PromoteSecondaryLineHeadTailIfMarked, ESQFUNC_UpdateDiskWarningAndRefreshTick
 ; READS:
-;   ESQPARS2_ReadModeFlags, DST_BannerWindowPrimary, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
+;   _ESQPARS2_ReadModeFlags, _DST_BannerWindowPrimary, _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
 ; WRITES:
-;   ESQDISP_PendingGridReinitFlag, ESQPARS2_ReadModeFlags
+;   ESQDISP_PendingGridReinitFlag, _ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Temporarily switches parser read mode, promotes/normalizes secondary state into
 ;   primary structures, persists dependent files, then restores previous read flags.
@@ -461,8 +461,8 @@ ESQFUNC_WaitForClockChangeAndServiceUi:
 ;------------------------------------------------------------------------------
 ESQFUNC_CommitSecondaryStateAndPersist:
     MOVE.L  D7,-(A7)
-    MOVE.W  ESQPARS2_ReadModeFlags,D7
-    MOVE.W  #$100,ESQPARS2_ReadModeFlags
+    MOVE.W  _ESQPARS2_ReadModeFlags,D7
+    MOVE.W  #$100,_ESQPARS2_ReadModeFlags
     MOVE.W  #1,ESQDISP_PendingGridReinitFlag
     BSR.W   ESQDISP_PropagatePrimaryTitleMetadataToSecondary
 
@@ -474,32 +474,32 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 
     BSR.W   ESQDISP_PromoteSecondaryLineHeadTailIfMarked
 
-    JSR     ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(PC)
+    JSR     _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(PC)
 
     JSR     ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile(PC)
 
     PEA     LOCAVAIL_SecondaryFilterState
-    PEA     LOCAVAIL_PrimaryFilterState
+    PEA     _LOCAVAIL_PrimaryFilterState
     JSR     ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(PC)
 
-    PEA     DST_BannerWindowPrimary
+    PEA     _DST_BannerWindowPrimary
     JSR     DATETIME_SavePairToFile(PC)
 
     JSR     ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList(PC)
 
-    JSR     ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(PC)
+    JSR     _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(PC)
 
     BSR.W   ESQFUNC_UpdateDiskWarningAndRefreshTick
 
     LEA     12(A7),A7
-    MOVE.W  D7,ESQPARS2_ReadModeFlags
+    MOVE.W  D7,_ESQPARS2_ReadModeFlags
     MOVE.L  (A7)+,D7
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_ProcessUiFrameTick   (Process one UI frame tick)
+; FUNC: _ESQFUNC_ProcessUiFrameTick   (Process one UI frame tick)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -507,11 +507,11 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 ; CLOBBERS:
 ;   A7/D0/D1
 ; CALLS:
-;   ED_DispatchEscMenuState, ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, ESQDISP_ProcessGridMessagesIfIdle, _ESQDISP_RefreshStatusIndicatorsFromCurrentMask, ESQDISP_PollInputModeAndRefreshSelection, ESQFUNC_CommitSecondaryStateAndPersist, ESQIFF_QueueIffBrushLoad, ESQIFF_ServiceExternalAssetSourceState, ESQIFF_PlayNextExternalAssetFrame
+;   ED_DispatchEscMenuState, ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, ESQDISP_ProcessGridMessagesIfIdle, _ESQDISP_RefreshStatusIndicatorsFromCurrentMask, ESQDISP_PollInputModeAndRefreshSelection, ESQFUNC_CommitSecondaryStateAndPersist, ESQIFF_QueueIffBrushLoad, ESQIFF_ServiceExternalAssetSourceState, ESQIFF_PlayNextExternalAssetFrame
 ; READS:
-;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, LAB_097C, PARSEINI_BannerBrushResourceHead, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, ESQDISP_DisplayActiveFlag, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_StatusRefreshPendingFlag, ESQFUNC_IffTaskGateFlags, GCOMMAND_HighlightHoldoffTickCount, GCOMMAND_DriveProbeRequestedFlag, Global_UIBusyFlag, CLEANUP_PendingAlertFlag, ESQIFF_ExternalAssetFlags, fffd, fffe
+;   _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_GFX_G_ADS_DATA, LAB_097C, _PARSEINI_BannerBrushResourceHead, _WDISP_WeatherStatusBrushListHead, _CTASKS_IffTaskDoneFlag, _ED_DiagGraphModeChar, ESQDISP_DisplayActiveFlag, ESQDISP_SecondaryPersistRequestFlag, _ESQDISP_StatusRefreshPendingFlag, ESQFUNC_IffTaskGateFlags, _GCOMMAND_HighlightHoldoffTickCount, _GCOMMAND_DriveProbeRequestedFlag, _Global_UIBusyFlag, CLEANUP_PendingAlertFlag, _ESQIFF_ExternalAssetFlags, fffd, fffe
 ; WRITES:
-;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_StatusRefreshPendingFlag, ESQFUNC_IffTaskGateFlags, ESQIFF_ExternalAssetFlags
+;   _ESQIFF_GAdsBrushListCount, _ESQIFF_LogoBrushListCount, ESQDISP_SecondaryPersistRequestFlag, _ESQDISP_StatusRefreshPendingFlag, ESQFUNC_IffTaskGateFlags, _ESQIFF_ExternalAssetFlags
 ; DESC:
 ;   Runs one UI service slice: optional drive probe, input-mode polling,
 ;   grid/message pumping, alert processing, serial ctrl handling, brush/source
@@ -519,11 +519,11 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 ; NOTES:
 ;   Includes multiple gating checks on UI busy flags and pending-alert/task flags.
 ;------------------------------------------------------------------------------
-ESQFUNC_ProcessUiFrameTick:
-    TST.W   GCOMMAND_DriveProbeRequestedFlag
+_ESQFUNC_ProcessUiFrameTick:
+    TST.W   _GCOMMAND_DriveProbeRequestedFlag
     BEQ.S   .lab_0971
 
-    JSR     ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(PC)
+    JSR     _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(PC)
 
 .lab_0971:
     MOVEQ   #1,D0
@@ -533,7 +533,7 @@ ESQFUNC_ProcessUiFrameTick:
     BSR.W   ESQDISP_PollInputModeAndRefreshSelection
 
 .lab_0972:
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BNE.S   .lab_0973
 
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
@@ -541,7 +541,7 @@ ESQFUNC_ProcessUiFrameTick:
 .lab_0973:
     JSR     ED_DispatchEscMenuState(PC)
 
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BNE.S   .lab_0974
 
     JSR     ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd(PC)
@@ -559,13 +559,13 @@ ESQFUNC_ProcessUiFrameTick:
     BSR.W   ESQFUNC_CommitSecondaryStateAndPersist
 
 .lab_0975:
-    TST.W   CTASKS_IffTaskDoneFlag
+    TST.W   _CTASKS_IffTaskDoneFlag
     BEQ.W   .lab_097C
 
     BTST    #1,ESQFUNC_IffTaskGateFlags
     BEQ.S   .lab_0976
 
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BNE.S   .lab_0976
 
     BCLR    #1,ESQFUNC_IffTaskGateFlags
@@ -577,7 +577,7 @@ ESQFUNC_ProcessUiFrameTick:
     BTST    #0,ESQFUNC_IffTaskGateFlags
     BEQ.S   .lab_0977
 
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BNE.S   .lab_0977
 
     BCLR    #0,ESQFUNC_IffTaskGateFlags
@@ -587,38 +587,38 @@ ESQFUNC_ProcessUiFrameTick:
     ADDQ.W  #4,A7
 
 .lab_0977:
-    TST.L   Global_REF_LONG_DF0_LOGO_LST_DATA
+    TST.L   _Global_REF_LONG_DF0_LOGO_LST_DATA
     BNE.S   .lab_0978
 
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BNE.S   .lab_0978
 
-    MOVE.W  ESQIFF_ExternalAssetFlags,D0
+    MOVE.W  _ESQIFF_ExternalAssetFlags,D0
     MOVE.L  D0,D1
     ANDI.W  #$fffd,D1
-    MOVE.W  D1,ESQIFF_ExternalAssetFlags
+    MOVE.W  D1,_ESQIFF_ExternalAssetFlags
 
 .lab_0978:
-    MOVE.B  ED_DiagGraphModeChar,D0
+    MOVE.B  _ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
     BEQ.S   .lab_0979
 
-    TST.L   Global_REF_LONG_GFX_G_ADS_DATA
+    TST.L   _Global_REF_LONG_GFX_G_ADS_DATA
     BNE.S   .lab_0979
 
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BNE.S   .lab_0979
 
-    MOVE.W  ESQIFF_ExternalAssetFlags,D0
+    MOVE.W  _ESQIFF_ExternalAssetFlags,D0
     ANDI.W  #$fffe,D0
-    MOVE.W  D0,ESQIFF_ExternalAssetFlags
+    MOVE.W  D0,_ESQIFF_ExternalAssetFlags
 
 .lab_0979:
-    TST.L   WDISP_WeatherStatusBrushListHead
+    TST.L   _WDISP_WeatherStatusBrushListHead
     BNE.S   .lab_097A
 
-    TST.L   PARSEINI_BannerBrushResourceHead
+    TST.L   _PARSEINI_BannerBrushResourceHead
     BEQ.S   .lab_097A
 
     CLR.L   -(A7)
@@ -627,7 +627,7 @@ ESQFUNC_ProcessUiFrameTick:
     ADDQ.W  #4,A7
 
 .lab_097A:
-    CMPI.L  #$1,ESQIFF_LogoBrushListCount
+    CMPI.L  #$1,_ESQIFF_LogoBrushListCount
     BGE.S   .lab_097B
 
     CLR.L   -(A7)
@@ -637,15 +637,15 @@ ESQFUNC_ProcessUiFrameTick:
     BRA.S   .lab_097C
 
 .lab_097B:
-    MOVE.B  ED_DiagGraphModeChar,D0
+    MOVE.B  _ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
     BEQ.S   .lab_097C
 
-    CMPI.L  #$2,ESQIFF_GAdsBrushListCount
+    CMPI.L  #$2,_ESQIFF_GAdsBrushListCount
     BGE.S   .lab_097C
 
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BNE.S   .lab_097C
 
     PEA     1.W
@@ -656,13 +656,13 @@ ESQFUNC_ProcessUiFrameTick:
 .lab_097C:
     JSR     ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState(PC)
 
-    TST.B   ESQDISP_StatusRefreshPendingFlag
+    TST.B   _ESQDISP_StatusRefreshPendingFlag
     BEQ.S   .return
 
-    TST.B   GCOMMAND_HighlightHoldoffTickCount
+    TST.B   _GCOMMAND_HighlightHoldoffTickCount
     BNE.S   .return
 
-    CLR.B   ESQDISP_StatusRefreshPendingFlag
+    CLR.B   _ESQDISP_StatusRefreshPendingFlag
     JSR     _ESQDISP_RefreshStatusIndicatorsFromCurrentMask(PC)
 
 .return:
@@ -671,7 +671,7 @@ ESQFUNC_ProcessUiFrameTick:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_ServiceUiTickIfRunning   (Gate UI frame service by run flag)
+; FUNC: _ESQFUNC_ServiceUiTickIfRunning   (Gate UI frame service by run flag)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -679,21 +679,21 @@ ESQFUNC_ProcessUiFrameTick:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, ESQDISP_ProcessGridMessagesIfIdle, ESQFUNC_ProcessUiFrameTick
+;   ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, ESQDISP_ProcessGridMessagesIfIdle, _ESQFUNC_ProcessUiFrameTick
 ; READS:
-;   ESQ_MainLoopUiTickEnabledFlag, CLEANUP_PendingAlertFlag
+;   _ESQ_MainLoopUiTickEnabledFlag, CLEANUP_PendingAlertFlag
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Calls ESQFUNC_ProcessUiFrameTick only while the main run flag is enabled.
+;   Calls _ESQFUNC_ProcessUiFrameTick only while the main run flag is enabled.
 ; NOTES:
 ;   This is the main idle-loop UI tick gate used by ESQ_MainInitAndRun.
 ;------------------------------------------------------------------------------
-ESQFUNC_ServiceUiTickIfRunning:
-    TST.W   ESQ_MainLoopUiTickEnabledFlag
+_ESQFUNC_ServiceUiTickIfRunning:
+    TST.W   _ESQ_MainLoopUiTickEnabledFlag
     BEQ.S   .return
 
-    BSR.W   ESQFUNC_ProcessUiFrameTick
+    BSR.W   _ESQFUNC_ProcessUiFrameTick
 
 .return:
     RTS
@@ -723,11 +723,11 @@ ESQFUNC_ServiceUiTickIfRunning:
 ; CLOBBERS:
 ;   D0/D4-D7/A0-A1
 ; CALLS:
-;   ESQPARS_ReplaceOwnedString (deallocate)
+;   _ESQPARS_ReplaceOwnedString (deallocate)
 ; READS:
-;   TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable
+;   _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable
 ; WRITES:
-;   TEXTDISP_PrimaryTitlePtrTable[entry].field56[] (pointer array cleared)
+;   _TEXTDISP_PrimaryTitlePtrTable[entry].field56[] (pointer array cleared)
 ; DESC:
 ;   Walks the entry tables and frees extra non-null text pointers up to the
 ;   given index, leaving the first non-null pointer intact.
@@ -742,17 +742,17 @@ ESQFUNC_FreeExtraTitleTextPointers:
     MOVEQ   #0,D4
 
 .entry_loop:
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     CMP.W   D0,D4
     BGE.S   .return_status
 
     MOVE.L  D4,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
     MOVEQ   #0,D6
@@ -788,7 +788,7 @@ ESQFUNC_FreeExtraTitleTextPointers:
 
     MOVE.L  A0,-(A7)
     CLR.L   -(A7)
-    JSR     ESQPARS_ReplaceOwnedString(PC)
+    JSR     _ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D5,D0
@@ -827,9 +827,9 @@ ESQFUNC_FreeExtraTitleTextPointers:
 ; CALLS:
 ;   ESQSHARED4_ComputeBannerRowBlitGeometry
 ; READS:
-;   NEWGRID_MessagePumpSuspendFlag, NEWGRID_LastRefreshRequest
+;   _NEWGRID_MessagePumpSuspendFlag, NEWGRID_LastRefreshRequest
 ; WRITES:
-;   ESQFUNC_WeatherSliceWidthInitGate, ESQPARS2_BannerRowWidthBytes, ESQPARS2_BannerCopyBlockSpanBytes, NEWGRID_RefreshStateFlag, NEWGRID_MessagePumpSuspendFlag, _NEWGRID_ModeSelectorState, NEWGRID_LastRefreshRequest
+;   ESQFUNC_WeatherSliceWidthInitGate, _ESQPARS2_BannerRowWidthBytes, ESQPARS2_BannerCopyBlockSpanBytes, _NEWGRID_RefreshStateFlag, _NEWGRID_MessagePumpSuspendFlag, _NEWGRID_ModeSelectorState, NEWGRID_LastRefreshRequest
 ; DESC:
 ;   Updates NEWGRID refresh/mode selector state from the incoming request flag
 ;   and recomputes banner blit geometry when message-pump suspension is cleared.
@@ -842,13 +842,13 @@ ESQFUNC_UpdateRefreshModeState:
     MOVE.L  D7,-(A7)
     MOVE.L  12(A5),D7
     MOVE.W  #1,ESQFUNC_WeatherSliceWidthInitGate
-    TST.L   NEWGRID_MessagePumpSuspendFlag
+    TST.L   _NEWGRID_MessagePumpSuspendFlag
     BEQ.S   .apply_mode_selector_state
 
     MOVEQ   #0,D0
-    MOVE.L  D0,NEWGRID_RefreshStateFlag
-    MOVE.L  D0,NEWGRID_MessagePumpSuspendFlag
-    MOVE.W  #$90,ESQPARS2_BannerRowWidthBytes
+    MOVE.L  D0,_NEWGRID_RefreshStateFlag
+    MOVE.L  D0,_NEWGRID_MessagePumpSuspendFlag
+    MOVE.W  #$90,_ESQPARS2_BannerRowWidthBytes
     MOVE.W  #$230,ESQPARS2_BannerCopyBlockSpanBytes
     BSR.W   ESQSHARED4_ComputeBannerRowBlitGeometry
 
@@ -866,7 +866,7 @@ ESQFUNC_UpdateRefreshModeState:
     TST.L   NEWGRID_LastRefreshRequest
     BNE.S   .store_last_refresh_request
 
-    CLR.L   NEWGRID_RefreshStateFlag
+    CLR.L   _NEWGRID_RefreshStateFlag
 
 .store_last_refresh_request:
     MOVE.L  D7,NEWGRID_LastRefreshRequest
@@ -887,17 +887,17 @@ ESQFUNC_UpdateRefreshModeState:
 ; CLOBBERS:
 ;   A0/A1/A6/A7/D0
 ; CALLS:
-;   ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, GROUP_AM_JMPTBL_WDISP_SPrintf, _LVOSetAPen, _LVOSetDrMd
+;   _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, _GROUP_AM_JMPTBL_WDISP_SPrintf, _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   Global_LONG_BUILD_NUMBER, Global_LONG_ROM_VERSION_CHECK, Global_PTR_STR_BUILD_ID, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_BUILD_NUMBER_FORMATTED, Global_STR_PUSH_ANY_KEY_TO_CONTINUE_1, Global_STR_ROM_VERSION_1_3, Global_STR_ROM_VERSION_2_04, Global_STR_ROM_VERSION_FORMATTED
+;   _Global_LONG_BUILD_NUMBER, _Global_LONG_ROM_VERSION_CHECK, _Global_PTR_STR_BUILD_ID, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _Global_STR_BUILD_NUMBER_FORMATTED, _Global_STR_PUSH_ANY_KEY_TO_CONTINUE_1, _Global_STR_ROM_VERSION_1_3, _Global_STR_ROM_VERSION_2_04, _Global_STR_ROM_VERSION_FORMATTED
 ; WRITES:
-;   ED_DiagnosticsScreenActive
+;   _ED_DiagnosticsScreenActive
 ; DESC:
 ;   Renders build-number and ROM-version lines using sprintf scratch text, then
 ;   draws the “push any key” prompt and restores normal APen state.
 ; NOTES:
 ;   Uses a shared 81-byte local printf buffer at -81(A5) for both lines.
-;   WDISP_SPrintf has no destination-length parameter.
+;   _WDISP_SPrintf has no destination-length parameter.
 ;------------------------------------------------------------------------------
 ESQFUNC_DrawEscMenuVersion:
 
@@ -905,69 +905,69 @@ ESQFUNC_DrawEscMenuVersion:
 
     LINK.W  A5,#-84
 
-    CLR.W   ED_DiagnosticsScreenActive
+    CLR.W   _ED_DiagnosticsScreenActive
 
-    ; Global_REF_RASTPORT_1 seems to be a rastport that's used a lot in here.
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    ; _Global_REF_RASTPORT_1 seems to be a rastport that's used a lot in here.
+    MOVEA.L _Global_REF_RASTPORT_1,A1
 
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
     ; Build "Build Number: '%ld%s'" string
-    MOVE.L  Global_PTR_STR_BUILD_ID,-(A7)     ; parameter 2
-    MOVE.L  Global_LONG_BUILD_NUMBER,-(A7)    ; parameter 1
-    PEA     Global_STR_BUILD_NUMBER_FORMATTED ; format string
+    MOVE.L  _Global_PTR_STR_BUILD_ID,-(A7)     ; parameter 2
+    MOVE.L  _Global_LONG_BUILD_NUMBER,-(A7)    ; parameter 1
+    PEA     _Global_STR_BUILD_NUMBER_FORMATTED ; format string
     PEA     .versionLineBuffer(A5)          ; result string pointer
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)            ; call printf
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)            ; call printf
 
     ; Display string at position
     PEA     .versionLineBuffer(A5)          ; string
     PEA     330.W                           ; y
     PEA     175.W                           ; x
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)                  ; rastport
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)                  ; rastport
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
 
     MOVEQ   #1,D0                           ; Set D0 to 1
-    CMP.L   Global_LONG_ROM_VERSION_CHECK,D0  ; And compare Global_LONG_ROM_VERSION_CHECK with it.
+    CMP.L   _Global_LONG_ROM_VERSION_CHECK,D0  ; And compare _Global_LONG_ROM_VERSION_CHECK with it.
     BNE.S   .setRomVersion2_04              ; If it's not equal, jump to LAB_098F
 
-    LEA     Global_STR_ROM_VERSION_1_3,A0     ; Load the effective address of the 1.3 string to A0
+    LEA     _Global_STR_ROM_VERSION_1_3,A0     ; Load the effective address of the 1.3 string to A0
     BRA.S   .format_rom_version_line
 
 .setRomVersion2_04:
-    LEA     Global_STR_ROM_VERSION_2_04,A0    ; Load the effective address of the 2.04 string to A0
+    LEA     _Global_STR_ROM_VERSION_2_04,A0    ; Load the effective address of the 2.04 string to A0
 
 .format_rom_version_line:
     MOVE.L  A0,-(A7)                        ; parameter 1
-    PEA     Global_STR_ROM_VERSION_FORMATTED  ; format string
+    PEA     _Global_STR_ROM_VERSION_FORMATTED  ; format string
     PEA     .versionLineBuffer(A5)          ; result string pointer
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)            ; call printf
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)            ; call printf
 
     PEA     .versionLineBuffer(A5)          ; string
     PEA     360.W                           ; y
     PEA     175.W                           ; x
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)                  ; rastport
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)                  ; rastport
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #3,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    PEA     Global_STR_PUSH_ANY_KEY_TO_CONTINUE_1 ; string
+    PEA     _Global_STR_PUSH_ANY_KEY_TO_CONTINUE_1 ; string
     PEA     390.W                           ; y
     PEA     175.W                           ; x
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)                  ; rastport
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)                  ; rastport
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
@@ -986,23 +986,23 @@ ESQFUNC_DrawEscMenuVersion:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   _LVOSetAPen, _LVOSetDrMd, _LVOAvailMem, GROUP_AM_JMPTBL_WDISP_SPrintf,
-;   ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues,
+;   _LVOSetAPen, _LVOSetDrMd, _LVOAvailMem, _GROUP_AM_JMPTBL_WDISP_SPrintf,
+;   _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues,
 ;   ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
 ; READS:
-;   ED_DiagnosticsScreenActive, ED_DiagnosticsViewMode, ED_DiagAvailMemMask, ESQIFF_ParseAttemptCount, DATACErrs, ESQIFF_LineErrorCount,
-;   SCRIPT_CtrlCmdCount/2348/2349, ESQ_SerialRbfErrorCount, Global_WORD_H_VALUE, Global_WORD_T_VALUE,
-;   Global_WORD_MAX_VALUE, CTRL_H, CTRL_HPreviousSample, CTRL_HDeltaMax, TEXTDISP_PrimaryGroupCode/TEXTDISP_SecondaryGroupCode,
-;   TEXTDISP_PrimaryGroupHeaderCode/TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_PrimaryGroupPresentFlag/TEXTDISP_SecondaryGroupPresentFlag, CLOCK_CacheDayIndex0/223B/2244/223D,
-;   CLOCK_CurrentDayOfMonth/2275/227E/2277, DST_PrimaryCountdown/227B/225C, CLOCK_CacheHour,
-;   Global_WORD_CURRENT_HOUR, CLOCK_HalfHourSlotIndex
+;   _ED_DiagnosticsScreenActive, _ED_DiagnosticsViewMode, _ED_DiagAvailMemMask, _ESQIFF_ParseAttemptCount, _DATACErrs, _ESQIFF_LineErrorCount,
+;   _SCRIPT_CtrlCmdCount/2348/2349, ESQ_SerialRbfErrorCount, _Global_WORD_H_VALUE, _Global_WORD_T_VALUE,
+;   _Global_WORD_MAX_VALUE, _CTRL_H, _CTRL_HPreviousSample, _CTRL_HDeltaMax, _TEXTDISP_PrimaryGroupCode/_TEXTDISP_SecondaryGroupCode,
+;   _TEXTDISP_PrimaryGroupHeaderCode/_TEXTDISP_SecondaryGroupHeaderCode, _TEXTDISP_PrimaryGroupPresentFlag/_TEXTDISP_SecondaryGroupPresentFlag, CLOCK_CacheDayIndex0/223B/2244/223D,
+;   _CLOCK_CurrentDayOfMonth/2275/227E/2277, _DST_PrimaryCountdown/227B/225C, CLOCK_CacheHour,
+;   _Global_WORD_CURRENT_HOUR, _CLOCK_HalfHourSlotIndex
 ; WRITES:
-;   ED_DiagnosticsScreenActive (early return gate), temporary text buffer on stack
+;   _ED_DiagnosticsScreenActive (early return gate), temporary text buffer on stack
 ; DESC:
 ;   Draws the ESC diagnostics memory/status screen with data/CTRL counts,
 ;   available memory totals, and various clock/calendar diagnostics.
 ; NOTES:
-;   Uses ED_DiagAvailMemMask bitmask to select which memory types to show.
+;   Uses _ED_DiagAvailMemMask bitmask to select which memory types to show.
 ;   Reuses a 72-byte local printf buffer at -72(A5) for all text lines.
 ;------------------------------------------------------------------------------
 ; draw the screen showing available memory
@@ -1010,29 +1010,29 @@ ESQFUNC_DrawMemoryStatusScreen:
     LINK.W  A5,#-80
     MOVEM.L D2-D7,-(A7)
 
-    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-76(A5)
-    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
-    TST.W   ED_DiagnosticsScreenActive
+    MOVE.L  #_Global_REF_696_400_BITMAP,4(A0)
+    TST.W   _ED_DiagnosticsScreenActive
     BEQ.W   .return
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
-    MOVE.W  ED_DiagnosticsViewMode,D0
+    MOVE.W  _ED_DiagnosticsViewMode,D0
     BNE.W   .draw_calendar_section
 
     MOVEQ   #0,D0
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
-    MOVE.W  DATACErrs,D1
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _DATACErrs,D1
     EXT.L   D1
-    MOVE.W  ESQIFF_LineErrorCount,D2
+    MOVE.W  _ESQIFF_LineErrorCount,D2
     EXT.L   D2
 
     MOVE.L  D2,-(A7)
@@ -1041,19 +1041,19 @@ ESQFUNC_DrawMemoryStatusScreen:
     PEA     Global_STR_DATA_CMDS_CERRS_LERRS
     ; Shared 72-byte line buffer for all diagnostics rows in this function.
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     112.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  SCRIPT_CtrlCmdCount,D0
-    MOVE.W  SCRIPT_CtrlCmdChecksumErrorCount,D1
+    MOVE.W  _SCRIPT_CtrlCmdCount,D0
+    MOVE.W  _SCRIPT_CtrlCmdChecksumErrorCount,D1
     EXT.L   D1
-    MOVE.W  SCRIPT_CtrlCmdLengthErrorCount,D2
+    MOVE.W  _SCRIPT_CtrlCmdLengthErrorCount,D2
     EXT.L   D2
 
     MOVE.L  D2,(A7)
@@ -1061,17 +1061,17 @@ ESQFUNC_DrawMemoryStatusScreen:
     MOVE.L  D0,-(A7)
     PEA     Global_STR_CTRL_CMDS_CERRS_LERRS
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     142.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     68(A7),A7
     MOVEQ   #7,D0
-    AND.L   ED_DiagAvailMemMask,D0
+    AND.L   _ED_DiagAvailMemMask,D0
     SUBQ.L  #7,D0
     BNE.S   .check_chip_only
 
@@ -1097,14 +1097,14 @@ ESQFUNC_DrawMemoryStatusScreen:
     MOVE.L  D7,-(A7)
     PEA     Global_STR_L_CHIP_FAST_MAX
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     20(A7),A7
     BRA.W   .draw_memory_section
 
 .check_chip_only:
     MOVEQ   #1,D0
-    AND.L   ED_DiagAvailMemMask,D0
+    AND.L   _ED_DiagAvailMemMask,D0
     SUBQ.L  #1,D0
     BNE.S   .check_fast_only
 
@@ -1116,14 +1116,14 @@ ESQFUNC_DrawMemoryStatusScreen:
     MOVE.L  D7,-(A7)
     PEA     Global_STR_CHIP_PLACEHOLDER
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     BRA.S   .draw_memory_section
 
 .check_fast_only:
     MOVEQ   #2,D0
-    AND.L   ED_DiagAvailMemMask,D0
+    AND.L   _ED_DiagAvailMemMask,D0
     SUBQ.L  #2,D0
     BNE.S   .check_max_only
 
@@ -1135,14 +1135,14 @@ ESQFUNC_DrawMemoryStatusScreen:
     MOVE.L  D6,-(A7)
     PEA     Global_STR_FAST_PLACEHOLDER
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     BRA.S   .draw_memory_section
 
 .check_max_only:
     MOVEQ   #4,D0
-    AND.L   ED_DiagAvailMemMask,D0
+    AND.L   _ED_DiagAvailMemMask,D0
     SUBQ.L  #4,D0
     BNE.S   .show_disabled
 
@@ -1155,7 +1155,7 @@ ESQFUNC_DrawMemoryStatusScreen:
     MOVE.L  D5,-(A7)
     PEA     Global_STR_MAX_PLACEHOLDER
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     BRA.S   .draw_memory_section
@@ -1163,7 +1163,7 @@ ESQFUNC_DrawMemoryStatusScreen:
 .show_disabled:
     PEA     Global_STR_MEMORY_TYPES_DISABLED
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     ADDQ.W  #8,A7
 
@@ -1171,124 +1171,124 @@ ESQFUNC_DrawMemoryStatusScreen:
     PEA     -72(A5)
     PEA     172.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     MOVEQ   #0,D0
     MOVE.W  ESQ_SerialRbfErrorCount,D0
     MOVE.L  D0,(A7)
     PEA     Global_STR_DATA_OVERRUNS_FORMATTED
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     202.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues(PC)
 
     MOVE.L  D0,D4
     MOVEQ   #0,D0
-    MOVE.W  Global_WORD_H_VALUE,D0
+    MOVE.W  _Global_WORD_H_VALUE,D0
     MOVEQ   #0,D1
-    MOVE.W  Global_WORD_T_VALUE,D1
+    MOVE.W  _Global_WORD_T_VALUE,D1
     MOVEQ   #0,D2
-    MOVE.W  Global_WORD_MAX_VALUE,D2
+    MOVE.W  _Global_WORD_MAX_VALUE,D2
     MOVE.L  D2,(A7)
     MOVE.L  D4,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     Global_STR_DATA_H_T_C_MAX_FORMATTED
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     232.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     76(A7),A7
     JSR     ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax(PC)
 
     MOVE.L  D0,D4
     MOVEQ   #0,D0
-    MOVE.W  CTRL_H,D0
+    MOVE.W  _CTRL_H,D0
     MOVEQ   #0,D1
-    MOVE.W  CTRL_HPreviousSample,D1
+    MOVE.W  _CTRL_HPreviousSample,D1
     MOVEQ   #0,D2
-    MOVE.W  CTRL_HDeltaMax,D2
+    MOVE.W  _CTRL_HDeltaMax,D2
     MOVE.L  D2,-(A7)
     MOVE.L  D4,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     Global_STR_CTRL_H_T_C_MAX_FORMATTED
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     262.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     40(A7),A7
 
 .draw_calendar_section:
-    MOVE.W  ED_DiagnosticsViewMode,D0
+    MOVE.W  _ED_DiagnosticsViewMode,D0
     SUBQ.W  #1,D0
     BNE.W   .return
 
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     MOVEQ   #0,D1
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     Global_STR_JULIAN_DAY_NEXT_FORMATTED
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)                                 ; Text address to display
     PEA     112.W                                   ; X position
     PEA     40.W                                    ; Y position
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)               ; Rastport
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)               ; Rastport
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_PrimaryGroupHeaderCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupHeaderCode,D0
     MOVEQ   #0,D1
-    MOVE.B  TEXTDISP_SecondaryGroupHeaderCode,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupHeaderCode,D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
     PEA     Global_STR_JDAY1_JDAY2_FORMATTED
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     142.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_PrimaryGroupPresentFlag,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupPresentFlag,D0
     MOVEQ   #0,D1
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
     PEA     Global_STR_CURCLU_NXTCLU_FORMATTED
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     72(A7),A7
     PEA     -72(A5)
     PEA     172.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     MOVE.W  CLOCK_CacheDayIndex0,D0
     EXT.L   D0
@@ -1304,21 +1304,21 @@ ESQFUNC_DrawMemoryStatusScreen:
     MOVE.L  D0,-(A7)
     PEA     Global_STR_C_DATE_C_MONTH_LP_YR_FORMATTED
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     202.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVE.W  CLOCK_CurrentDayOfMonth,D0
+    MOVE.W  _CLOCK_CurrentDayOfMonth,D0
     EXT.L   D0
-    MOVE.W  CLOCK_CurrentMonthIndex,D1
+    MOVE.W  _CLOCK_CurrentMonthIndex,D1
     EXT.L   D1
     MOVE.W  CLOCK_CurrentLeapYearFlag,D2
     EXT.L   D2
-    MOVE.W  CLOCK_CurrentYearValue,D3
+    MOVE.W  _CLOCK_CurrentYearValue,D3
     EXT.L   D3
     MOVE.L  D3,(A7)
     MOVE.L  D2,-(A7)
@@ -1326,57 +1326,57 @@ ESQFUNC_DrawMemoryStatusScreen:
     MOVE.L  D0,-(A7)
     PEA     Global_STR_B_DATE_B_MONTH_LP_YR_FORMATTED
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     72(A7),A7
     PEA     -72(A5)
     PEA     232.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVE.W  DST_PrimaryCountdown,D0
+    MOVE.W  _DST_PrimaryCountdown,D0
     EXT.L   D0
-    MOVE.W  DST_SecondaryCountdown,D1
+    MOVE.W  _DST_SecondaryCountdown,D1
     EXT.L   D1
-    MOVE.W  WDISP_BannerCharPhaseShift,D2
+    MOVE.W  _WDISP_BannerCharPhaseShift,D2
     EXT.L   D2
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     Global_STR_C_DST_B_DST_PSHIFT_FORMATTED
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     262.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     MOVE.W  CLOCK_CacheHour,D0
     EXT.L   D0
-    MOVE.W  Global_WORD_CURRENT_HOUR,D1
+    MOVE.W  _Global_WORD_CURRENT_HOUR,D1
     EXT.L   D1
     MOVEQ   #0,D2
-    MOVE.W  CLOCK_HalfHourSlotIndex,D2
+    MOVE.W  _CLOCK_HalfHourSlotIndex,D2
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     Global_STR_C_HOUR_B_HOUR_CS_FORMATTED
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     292.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     80(A7),A7
 
 .return:
-    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  -76(A5),4(A0)
 
     MOVEM.L (A7)+,D2-D7
@@ -1394,16 +1394,16 @@ ESQFUNC_DrawMemoryStatusScreen:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   _LVOSetFont, ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask,
+;   _LVOSetFont, _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask,
 ;   ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag, ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag,
-;   GROUP_AM_JMPTBL_WDISP_SPrintf, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition,
+;   _GROUP_AM_JMPTBL_WDISP_SPrintf, _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition,
 ;   ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
 ; READS:
 ;   ESQFUNC_VideoInsertionStateStrings, SCRIPT_CtrlHandshakeStage, ESQFUNC_STR_CLOSED_ENABLED/1EB9, ESQFUNC_TAG_CLOSED/1EBB, ESQFUNC_STR_CLOSED_ON_AIR/1EBD,
-;   Global_HANDLE_TOPAZ_FONT, Global_REF_GRAPHICS_LIBRARY, WDISP_DisplayContextBase
+;   _Global_HANDLE_TOPAZ_FONT, Global_REF_GRAPHICS_LIBRARY, _WDISP_DisplayContextBase
 ; WRITES:
-;   ESQ_CopperStatusDigitsA/1E27/1E28/1E29/1E2A, ESQ_CopperStatusDigitsB/1E56/1E57 (status fields),
-;   ESQ_CopperStatusDigitsA/1E27/1E28/1E29/1E2A (cleared/initialized), stack buffers
+;   _ESQ_CopperStatusDigitsA/1E27/1E28/1E29/1E2A, ESQ_CopperStatusDigitsB/1E56/1E57 (status fields),
+;   _ESQ_CopperStatusDigitsA/1E27/1E28/1E29/1E2A (cleared/initialized), stack buffers
 ; DESC:
 ;   Builds and renders the ESC diagnostics screen, selecting status strings
 ;   based on multiple subsystem checks and a mode selector.
@@ -1428,21 +1428,21 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.W  D0,ESQ_CopperStatusDigitsA_ColorRegistersA
     MOVE.W  D0,ESQ_CopperStatusDigitsB_ColorRegistersA
     MOVEQ   #0,D0
-    MOVE.W  D0,ESQ_CopperStatusDigitsA
+    MOVE.W  D0,_ESQ_CopperStatusDigitsA
     MOVE.W  D0,ESQ_CopperStatusDigitsB
     MOVE.W  D0,ESQ_CopperStatusDigitsA_ColorRegistersB
     MOVE.W  D0,ESQ_CopperStatusDigitsB_TailColorWord
     MOVE.W  D0,ESQ_CopperStatusDigitsA_ColorRegistersC
     MOVE.W  D0,ESQ_CopperStatusDigitsA_TailColorWord
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
-    MOVEA.L Global_HANDLE_TOPAZ_FONT,A0
+    MOVEA.L _Global_HANDLE_TOPAZ_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
-    JSR     ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask(PC)
+    JSR     _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask(PC)
 
     TST.B   D0
     BEQ.S   .status_a_false
@@ -1509,21 +1509,21 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  36(A7),-(A7)
     PEA     ESQFUNC_FMT_CARTSW_COLON_PCT_S_CARTREL_COLON_PCT
     PEA     -132(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     92.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
-    JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
+    JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
-    MOVE.W  SCRIPT_RuntimeMode,D0
+    MOVE.W  _SCRIPT_RuntimeMode,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     -148(A5),A0
     ADDA.L  D0,A0
-    MOVE.W  ESQPARS2_ReadModeFlags,D0
+    MOVE.W  _ESQPARS2_ReadModeFlags,D0
     EXT.L   D0
     ; Entry-string source is from ESQFUNC_VideoInsertionStateStrings (4 static labels).
     ; Budget note for -132(A5): conservative max is 62 bytes incl NUL
@@ -1532,14 +1532,14 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  (A0),-(A7)
     PEA     ESQFUNC_FMT_INSERTIME_PCT_S_WINIT_0X_PCT_04X
     PEA     -132(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     110.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
-    JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
+    JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEQ   #0,D0
     ; Deferred action countdown/armed are populated in SCRIPT3/ED2 and then
@@ -1547,28 +1547,28 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     MOVEQ   #0,D1
     MOVE.W  TEXTDISP_DeferredActionArmed,D1
-    ; Layout-coupled LOCAVAIL_PrimaryFilterState longs (+12 then +8).
+    ; Layout-coupled _LOCAVAIL_PrimaryFilterState longs (+12 then +8).
     MOVE.L  LOCAVAIL_PrimaryFilterState_Field0C,(A7)
     MOVE.L  LOCAVAIL_PrimaryFilterState_Field08,-(A7)
     ; Filter class/step/mode are state-machine outputs from LOCAVAIL_UpdateFilterStateMachine.
-    MOVE.L  LOCAVAIL_FilterClassId,-(A7)
-    MOVE.L  LOCAVAIL_FilterStep,-(A7)
-    MOVE.L  LOCAVAIL_FilterModeFlag,-(A7)
+    MOVE.L  _LOCAVAIL_FilterClassId,-(A7)
+    MOVE.L  _LOCAVAIL_FilterStep,-(A7)
+    MOVE.L  _LOCAVAIL_FilterModeFlag,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     ; Budget note for -132(A5): full signed-32 worst-case is 156 bytes incl NUL
     ; (%ld/%d treated as up to 11 chars each), so this row is top guard priority.
     PEA     ESQFUNC_FMT_LOCAL_MODE_PCT_LD_LOCAL_UPDATE_PCT_L
     PEA     -132(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     92(A7),A7
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     128.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
-    JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
+    JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     LEA     12(A7),A7
     ; Clock globals are normalized by PARSEINI_NormalizeClockData.
@@ -1584,7 +1584,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.W  CLOCK_CacheMinuteOrSecond,D4
     EXT.L   D4
     ; Seconds snapshot used by PARSEINI/SCRIPT clock-change detection paths.
-    MOVE.W  Global_REF_CLOCKDATA_STRUCT,D5
+    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,D5
     EXT.L   D5
     ; AM/PM selector: 0 = AM, non-zero (typically -1) = PM.
     TST.W   CLOCK_CacheAmPmFlag
@@ -1612,14 +1612,14 @@ ESQFUNC_DrawDiagnosticsScreen:
     ; Budget note for -132(A5): full signed-32 worst-case is 146 bytes incl NUL.
     PEA     ESQFUNC_FMT_CTIME_PCT_02D_SLASH_PCT_02D_SLASH_PC
     PEA     -132(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     146.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
-    JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
+    JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVE.L  #$20002,D1
     MOVEA.L AbsExecBase,A6
@@ -1640,27 +1640,27 @@ ESQFUNC_DrawDiagnosticsScreen:
     ; Budget note for -132(A5): conservative max is 56 bytes incl NUL.
     PEA     ESQFUNC_FMT_L_CHIP_COLON_PCT_07LD_FAST_COLON_PCT
     PEA     -132(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     68(A7),A7
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     164.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
-    JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
+    JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     JSR     ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #0,D0
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
-    MOVE.W  DATACErrs,D1
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _DATACErrs,D1
     EXT.L   D1
-    MOVE.W  ESQIFF_LineErrorCount,D2
+    MOVE.W  _ESQIFF_LineErrorCount,D2
     EXT.L   D2
     MOVEQ   #0,D3
-    MOVE.W  Global_WORD_MAX_VALUE,D3
+    MOVE.W  _Global_WORD_MAX_VALUE,D3
     MOVE.L  D7,(A7)
     MOVE.L  D3,-(A7)
     MOVE.L  D2,-(A7)
@@ -1669,23 +1669,23 @@ ESQFUNC_DrawDiagnosticsScreen:
     ; Budget note for -132(A5): full signed-32 worst-case is 109 bytes incl NUL.
     PEA     ESQFUNC_FMT_DATA_COLON_CMD_CNT_COLON_PCT_08LD_CR
     PEA     -132(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     182.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
-    JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
+    JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  SCRIPT_CtrlCmdCount,D0
-    MOVE.W  SCRIPT_CtrlCmdChecksumErrorCount,D1
+    MOVE.W  _SCRIPT_CtrlCmdCount,D0
+    MOVE.W  _SCRIPT_CtrlCmdChecksumErrorCount,D1
     EXT.L   D1
-    MOVE.W  SCRIPT_CtrlCmdLengthErrorCount,D2
+    MOVE.W  _SCRIPT_CtrlCmdLengthErrorCount,D2
     EXT.L   D2
     MOVEQ   #0,D3
-    MOVE.W  CTRL_HDeltaMax,D3
+    MOVE.W  _CTRL_HDeltaMax,D3
     MOVE.L  D0,72(A7)
     MOVE.L  D1,76(A7)
     MOVE.L  D2,80(A7)
@@ -1700,20 +1700,20 @@ ESQFUNC_DrawDiagnosticsScreen:
     ; Budget note for -132(A5): full signed-32 worst-case is 110 bytes incl NUL.
     PEA     ESQFUNC_FMT_CTRL_COLON_CMD_CNT_COLON_PCT_08LD_CR
     PEA     -132(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     72(A7),A7
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     200.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
-    JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
+    JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     LEA     12(A7),A7
     ; Monotonic diagnostics row counter (increments once per draw).
     ADDQ.L  #1,ESQFUNC_DiagRowCounter
-    MOVE.W  Global_RefreshTickCounter,D0
+    MOVE.W  _Global_RefreshTickCounter,D0
     EXT.L   D0
     TST.W   ESQDISP_PrimarySecondaryMirrorFlag
     BEQ.S   .set_false_text
@@ -1742,19 +1742,19 @@ ESQFUNC_DrawDiagnosticsScreen:
     ; driven by four numeric fields plus "%s" TRUE/FALSE token.
     PEA     ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS
     PEA     -132(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     218.W
     PEA     -132(A5)
     MOVE.L  A0,-(A7)
-    JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
+    JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
@@ -1809,7 +1809,7 @@ ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList:
     JMP     _P_TYPE_PromoteSecondaryList
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1827,7 +1827,7 @@ ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths:
+_ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths:
     JMP     DISKIO_ProbeDrivesAndAssignPaths
 
 ;------------------------------------------------------------------------------
@@ -1897,7 +1897,7 @@ ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag:
     JMP     SCRIPT_ReadHandshakeBit3Flag
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1915,7 +1915,7 @@ ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines:
+_ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines:
     JMP     TLIBA3_DrawCenteredWrappedTextLines
 
 ;------------------------------------------------------------------------------
@@ -1985,7 +1985,7 @@ ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
     JMP     TEXTDISP_ResetSelectionAndRefresh
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2003,11 +2003,11 @@ ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange:
+_ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange:
     JMP     PARSEINI_MonitorClockChange
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2025,7 +2025,7 @@ ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit:
+_ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit:
     JMP     LADFUNC_ParseHexDigit
 
 ;------------------------------------------------------------------------------
@@ -2162,7 +2162,7 @@ ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList:
     JMP     P_TYPE_EnsureSecondaryList
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2170,7 +2170,7 @@ ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_ReadHandshakeBit5Mask
+;   _SCRIPT_ReadHandshakeBit5Mask
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -2180,8 +2180,8 @@ ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
-    JMP     SCRIPT_ReadHandshakeBit5Mask
+_ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
+    JMP     _SCRIPT_ReadHandshakeBit5Mask
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData   (Jump-table forwarder)
@@ -2206,7 +2206,7 @@ ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData:
     JMP     PARSEINI_NormalizeClockData
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_ESQ_TickGlobalCounters   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_ESQ_TickGlobalCounters   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2224,7 +2224,7 @@ ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_ESQ_TickGlobalCounters:
+_ESQFUNC_JMPTBL_ESQ_TickGlobalCounters:
     JMP     ESQ_TickGlobalCounters
 
 ;------------------------------------------------------------------------------
@@ -2250,7 +2250,7 @@ ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd:
     JMP     SCRIPT_HandleSerialCtrlCmd
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2268,7 +2268,7 @@ ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt:
+_ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt:
     JMP     ESQ_HandleSerialRbfInterrupt
 
 ;------------------------------------------------------------------------------
@@ -2294,7 +2294,7 @@ ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState:
     JMP     TEXTDISP_TickDisplayState
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_ESQ_PollCtrlInput   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_ESQ_PollCtrlInput   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2312,7 +2312,7 @@ ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_ESQ_PollCtrlInput:
+_ESQFUNC_JMPTBL_ESQ_PollCtrlInput:
     JMP     ESQ_PollCtrlInput
 
 ;------------------------------------------------------------------------------
@@ -2346,7 +2346,7 @@ ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   STRING_CopyPadNul
+;   _STRING_CopyPadNul
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -2357,7 +2357,7 @@ ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_STRING_CopyPadNul:
-    JMP     STRING_CopyPadNul
+    JMP     _STRING_CopyPadNul
 
 ;!======
 
@@ -2378,9 +2378,9 @@ ESQFUNC_JMPTBL_STRING_CopyPadNul:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_STRING_CompareN, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQSHARED_JMPTBL_ESQ_WildcardMatch, _ESQIFF_RestoreBasePaletteTriples, _LVOSetRast
+;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_STRING_CompareN, _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _ESQIFF_RestoreBasePaletteTriples, _LVOSetRast
 ; READS:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, _ESQFUNC_BasePaletteRgbTriples, ESQFUNC_FallbackType3BrushNode, ESQIFF_BrushIniListHead, ESQFUNC_TAG_00, ESQFUNC_TAG_11, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, _WDISP_PaletteTriplesRBase, _TEXTDISP_CurrentMatchIndex, e8
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, _BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, __ESQFUNC_BasePaletteRgbTriples, _ESQFUNC_FallbackType3BrushNode, _ESQIFF_BrushIniListHead, ESQFUNC_TAG_00, ESQFUNC_TAG_11, _TEXTDISP_ActiveGroupId, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _WDISP_PaletteTriplesRBase, _TEXTDISP_CurrentMatchIndex, e8
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2393,7 +2393,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     LINK.W  A5,#-32
     MOVEM.L D2/D4-D7,-(A7)
     MOVE.W  10(A5),D7
-    MOVE.L  ESQIFF_BrushIniListHead,-4(A5)
+    MOVE.L  _ESQIFF_BrushIniListHead,-4(A5)
     MOVEQ   #0,D5
     TST.W   D7
     BNE.S   .load_secondary_script_selection
@@ -2409,14 +2409,14 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     TST.L   -24(A5)
     BNE.W   .use_script_selected_brush
 
-    MOVE.W  TEXTDISP_ActiveGroupId,D0
+    MOVE.W  _TEXTDISP_ActiveGroupId,D0
     SUBQ.W  #1,D0
     BNE.S   .load_secondary_current_entry_ptr
 
     MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
     BRA.S   .compare_entry_tag_00
@@ -2425,7 +2425,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
 
@@ -2441,7 +2441,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     TST.L   D0
     BNE.S   .compare_entry_tag_11
 
-    MOVE.L  BRUSH_SelectedNode,-4(A5)
+    MOVE.L  _BRUSH_SelectedNode,-4(A5)
     MOVEQ   #1,D5
     BRA.W   .ensure_fallback_selected_brush
 
@@ -2478,7 +2478,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     ADDA.W  #12,A0
     MOVE.L  -20(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
+    JSR     _ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -2507,11 +2507,11 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     BTST    #4,27(A0)
     BEQ.S   .ensure_fallback_selected_brush
 
-    TST.L   ESQFUNC_FallbackType3BrushNode
+    TST.L   _ESQFUNC_FallbackType3BrushNode
     BEQ.S   .ensure_fallback_selected_brush
 
     MOVEQ   #1,D5
-    MOVE.L  ESQFUNC_FallbackType3BrushNode,-4(A5)
+    MOVE.L  _ESQFUNC_FallbackType3BrushNode,-4(A5)
     BRA.S   .ensure_fallback_selected_brush
 
 .scan_brush_nodes_by_2char_tag:
@@ -2552,7 +2552,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     TST.L   D5
     BNE.S   .clear_rastports_before_brush_blit
 
-    MOVE.L  BRUSH_SelectedNode,-4(A5)
+    MOVE.L  _BRUSH_SelectedNode,-4(A5)
 
 .clear_rastports_before_brush_blit:
     MOVEA.L Global_REF_RASTPORT_2,A1
@@ -2560,7 +2560,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #31,D0
@@ -2569,7 +2569,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     TST.L   -4(A5)
     BEQ.S   .maybe_copy_brush_palette_segment
 
-    TST.L   BRUSH_SelectedNode
+    TST.L   _BRUSH_SelectedNode
     BNE.S   .blit_selected_brush_to_rast
 
     TST.L   D5
@@ -2577,7 +2577,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
 .blit_selected_brush_to_rast:
     MOVEQ   #0,D0
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     MOVE.W  2(A0),D0
     SUBQ.L  #1,D0
     MOVEQ   #0,D1
@@ -2613,7 +2613,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
 .prepare_plane_mask_bounds:
     PEA     5.W
-    JSR     ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
+    JSR     _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
     MOVE.L  D0,D1
     LSL.L   #2,D1
@@ -2623,7 +2623,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVEA.L -4(A5),A0
     MOVE.B  184(A0),D0
     MOVE.L  D0,(A7)
-    JSR     ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
+    JSR     _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D1
@@ -2672,7 +2672,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
     LEA     _WDISP_PaletteTriplesRBase,A0
     ADDA.L  D6,A0
-    LEA     _ESQFUNC_BasePaletteRgbTriples,A1
+    LEA     __ESQFUNC_BasePaletteRgbTriples,A1
     ADDA.L  D6,A1
     MOVE.B  (A1),(A0)
     ADDQ.L  #1,D6
@@ -2698,11 +2698,11 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 ; CLOBBERS:
 ;   A0/A5/A7/D0/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_BRUSH_PopulateBrushList
+;   _ESQIFF_JMPTBL_BRUSH_AllocBrushNode, _ESQIFF_JMPTBL_BRUSH_FreeBrushList, _ESQIFF_JMPTBL_BRUSH_PopulateBrushList
 ; READS:
-;   ESQFUNC_PwBrushDescriptorHead, ESQFUNC_PwBrushListHead, ESQFUNC_BrushDescriptorTagStrings
+;   _ESQFUNC_PwBrushDescriptorHead, _ESQFUNC_PwBrushListHead, _ESQFUNC_BrushDescriptorTagStrings
 ; WRITES:
-;   ESQFUNC_PwBrushDescriptorHead
+;   _ESQFUNC_PwBrushDescriptorHead
 ; DESC:
 ;   Frees existing PW brush list, allocates descriptor nodes from a 6-entry tag
 ;   table, assigns descriptor type bytes, and repopulates runtime brush list.
@@ -2714,8 +2714,8 @@ ESQFUNC_RebuildPwBrushListFromTagTable:
     MOVE.L  D7,-(A7)
     CLR.L   -4(A5)
     CLR.L   -(A7)
-    PEA     ESQFUNC_PwBrushListHead
-    JSR     ESQIFF_JMPTBL_BRUSH_FreeBrushList(PC)
+    PEA     _ESQFUNC_PwBrushListHead
+    JSR     _ESQIFF_JMPTBL_BRUSH_FreeBrushList(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D7
@@ -2727,11 +2727,11 @@ ESQFUNC_RebuildPwBrushListFromTagTable:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     ESQFUNC_BrushDescriptorTagStrings,A0
+    LEA     _ESQFUNC_BrushDescriptorTagStrings,A0
     ADDA.L  D0,A0
     MOVE.L  -4(A5),-(A7)
     MOVE.L  (A0),-(A7)
-    JSR     ESQIFF_JMPTBL_BRUSH_AllocBrushNode(PC)
+    JSR     _ESQIFF_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -2782,21 +2782,21 @@ ESQFUNC_RebuildPwBrushListFromTagTable:
     MOVE.B  #$9,190(A0)
 
 .link_pw_descriptor_or_advance:
-    TST.L   ESQFUNC_PwBrushDescriptorHead
+    TST.L   _ESQFUNC_PwBrushDescriptorHead
     BNE.S   .advance_pw_descriptor_index
 
-    MOVE.L  -4(A5),ESQFUNC_PwBrushDescriptorHead
+    MOVE.L  -4(A5),_ESQFUNC_PwBrushDescriptorHead
 
 .advance_pw_descriptor_index:
     ADDQ.L  #1,D7
     BRA.W   .loop_build_pw_brush_descriptors
 
 .return:
-    PEA     ESQFUNC_PwBrushListHead
-    MOVE.L  ESQFUNC_PwBrushDescriptorHead,-(A7)
-    JSR     ESQIFF_JMPTBL_BRUSH_PopulateBrushList(PC)
+    PEA     _ESQFUNC_PwBrushListHead
+    MOVE.L  _ESQFUNC_PwBrushDescriptorHead,-(A7)
+    JSR     _ESQIFF_JMPTBL_BRUSH_PopulateBrushList(PC)
 
-    CLR.L   ESQFUNC_PwBrushDescriptorHead
+    CLR.L   _ESQFUNC_PwBrushDescriptorHead
     MOVE.L  -12(A5),D7
     UNLK    A5
     RTS
@@ -2814,14 +2814,14 @@ ESQFUNC_RebuildPwBrushListFromTagTable:
 ; CALLS:
 ;   _LVOTextLength
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, WDISP_CharClassTable
+;   Global_REF_GRAPHICS_LIBRARY, _WDISP_CharClassTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Measures text width and repeatedly shrinks candidate length to a class-3
 ;   boundary until TextLength(text[0..len]) fits within max pixel width.
 ; NOTES:
-;   Uses WDISP_CharClassTable bit3 as boundary classifier.
+;   Uses _WDISP_CharClassTable bit3 as boundary classifier.
 ;------------------------------------------------------------------------------
 ESQFUNC_TrimTextToPixelWidthWordBoundary:
     MOVEM.L D6-D7/A2-A3,-(A7)
@@ -2859,7 +2859,7 @@ ESQFUNC_TrimTextToPixelWidthWordBoundary:
     MOVE.B  -1(A2,D6.L),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #3,(A0)
     BEQ.S   .scan_backward_to_word_boundary
@@ -2871,7 +2871,7 @@ ESQFUNC_TrimTextToPixelWidthWordBoundary:
     MOVE.B  -1(A2,D6.L),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #3,(A0)
     BEQ.S   .loop_fit_text_to_pixel_width

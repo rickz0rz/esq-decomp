@@ -1,11 +1,11 @@
-    XDEF    DST_AllocateBannerStruct
-    XDEF    DST_FreeBannerPair
-    XDEF    DST_FreeBannerStruct
+    XDEF    _DST_AllocateBannerStruct
+    XDEF    _DST_FreeBannerPair
+    XDEF    _DST_FreeBannerStruct
     XDEF    DST_LoadBannerPairFromFiles
     XDEF    DST_RebuildBannerPair
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_FreeBannerStruct   (Free banner struct and its two buffers)
+; FUNC: _DST_FreeBannerStruct   (Free banner struct and its two buffers)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -13,7 +13,7 @@
 ; CLOBBERS:
 ;   A3/A7/D0
 ; CALLS:
-;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+;   _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   A3+0/4 (buffer pointers)
 ; WRITES:
@@ -23,7 +23,7 @@
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DST_FreeBannerStruct:
+_DST_FreeBannerStruct:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  A3,D0
@@ -37,7 +37,7 @@ DST_FreeBannerStruct:
     MOVE.L  (A3),-(A7)
     PEA     773.W
     PEA     Global_STR_DST_C_1
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -50,7 +50,7 @@ DST_FreeBannerStruct:
     MOVE.L  4(A3),-(A7)
     PEA     777.W
     PEA     Global_STR_DST_C_2
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -60,7 +60,7 @@ DST_FreeBannerStruct:
     MOVE.L  A3,-(A7)
     PEA     779.W
     PEA     Global_STR_DST_C_3
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -71,7 +71,7 @@ DST_FreeBannerStruct:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_FreeBannerPair   (Free both banner structs referenced by the pair.)
+; FUNC: _DST_FreeBannerPair   (Free both banner structs referenced by the pair.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -79,7 +79,7 @@ DST_FreeBannerStruct:
 ; CLOBBERS:
 ;   A3/A7
 ; CALLS:
-;   DST_FreeBannerStruct
+;   _DST_FreeBannerStruct
 ; READS:
 ;   A3+0/4 (banner struct pointers)
 ; WRITES:
@@ -89,16 +89,16 @@ DST_FreeBannerStruct:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DST_FreeBannerPair:
+_DST_FreeBannerPair:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     ; Free both banner structs referenced by the pair.
     MOVE.L  (A3),-(A7)
-    BSR.S   DST_FreeBannerStruct
+    BSR.S   _DST_FreeBannerStruct
 
     CLR.L   (A3)
     MOVE.L  4(A3),(A7)
-    BSR.S   DST_FreeBannerStruct
+    BSR.S   _DST_FreeBannerStruct
 
     ADDQ.W  #4,A7
     CLR.L   4(A3)
@@ -108,7 +108,7 @@ DST_FreeBannerPair:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_AllocateBannerStruct   (Allocate banner struct and its buffers)
+; FUNC: _DST_AllocateBannerStruct   (Allocate banner struct and its buffers)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -116,7 +116,7 @@ DST_FreeBannerPair:
 ; CLOBBERS:
 ;   A3/A7/D0/D7
 ; CALLS:
-;   DST_FreeBannerStruct, GROUP_AG_JMPTBL_MEMORY_AllocateMemory
+;   _DST_FreeBannerStruct, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   Global_STR_DST_C_4, Global_STR_DST_C_5, Global_STR_DST_C_6, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
@@ -126,19 +126,19 @@ DST_FreeBannerPair:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DST_AllocateBannerStruct:
+_DST_AllocateBannerStruct:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
     ; Tear down existing buffers, then allocate fresh struct+buffers.
     MOVE.L  A3,-(A7)
-    BSR.W   DST_FreeBannerStruct
+    BSR.W   _DST_FreeBannerStruct
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     18.W                            ; What's 18 bytes big?
     PEA     798.W
     PEA     Global_STR_DST_C_4
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L D0,A3
@@ -149,7 +149,7 @@ DST_AllocateBannerStruct:
     PEA     22.W                            ; What's 22 bytes big?
     PEA     803.W
     PEA     Global_STR_DST_C_5
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,(A3)
@@ -160,7 +160,7 @@ DST_AllocateBannerStruct:
     PEA     22.W                            ; What's 22 bytes big?
     PEA     807.W
     PEA     Global_STR_DST_C_6
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,4(A3)
@@ -176,7 +176,7 @@ DST_AllocateBannerStruct:
     BNE.S   .return
 
     MOVE.L  A3,-(A7)
-    BSR.W   DST_FreeBannerStruct
+    BSR.W   _DST_FreeBannerStruct
 
     ADDQ.W  #4,A7
 
@@ -196,7 +196,7 @@ DST_AllocateBannerStruct:
 ; CLOBBERS:
 ;   A3/A7/D0/D7
 ; CALLS:
-;   DST_FreeBannerPair, DST_AllocateBannerStruct
+;   _DST_FreeBannerPair, _DST_AllocateBannerStruct
 ; READS:
 ;   A3+0/4 (banner struct pointers)
 ; WRITES:
@@ -212,10 +212,10 @@ DST_RebuildBannerPair:
     MOVEQ   #0,D7
     ; Rebuild both banner structs in-place.
     MOVE.L  A3,-(A7)
-    BSR.W   DST_FreeBannerPair
+    BSR.W   _DST_FreeBannerPair
 
     MOVE.L  (A3),(A7)
-    BSR.W   DST_AllocateBannerStruct
+    BSR.W   _DST_AllocateBannerStruct
 
     ADDQ.W  #4,A7
     MOVE.L  D0,(A3)
@@ -223,7 +223,7 @@ DST_RebuildBannerPair:
     BEQ.S   .alloc_failed
 
     MOVE.L  4(A3),-(A7)
-    BSR.W   DST_AllocateBannerStruct
+    BSR.W   _DST_AllocateBannerStruct
 
     ADDQ.W  #4,A7
     MOVE.L  D0,4(A3)
@@ -237,7 +237,7 @@ DST_RebuildBannerPair:
     BNE.S   .return
 
     MOVE.L  A3,-(A7)
-    BSR.W   DST_FreeBannerPair
+    BSR.W   _DST_FreeBannerPair
 
     ADDQ.W  #4,A7
 
@@ -262,7 +262,7 @@ DST_RebuildBannerPair:
 ; CLOBBERS:
 ;   A0/A3/A5/A7/D0/D7
 ; CALLS:
-;   DST_RebuildBannerPair, DISKIO_LoadFileToWorkBuffer, GROUP_AJ_JMPTBL_STRING_FindSubstring, DATETIME_ParseString, DATETIME_CopyPairAndRecalc, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, DST_UpdateBannerQueue
+;   DST_RebuildBannerPair, _DISKIO_LoadFileToWorkBuffer, GROUP_AJ_JMPTBL_STRING_FindSubstring, DATETIME_ParseString, DATETIME_CopyPairAndRecalc, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, DST_UpdateBannerQueue
 ; READS:
 ;   DST_DefaultDatPathPtr, Global_STR_G2, Global_STR_G3
 ; WRITES:
@@ -281,7 +281,7 @@ DST_LoadBannerPairFromFiles:
     BSR.S   DST_RebuildBannerPair
 
     MOVE.L  DST_DefaultDatPathPtr,(A7)
-    JSR     DISKIO_LoadFileToWorkBuffer(PC)
+    JSR     _DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0
@@ -291,8 +291,8 @@ DST_LoadBannerPairFromFiles:
     BRA.W   .return
 
 .init_ok:
-    MOVEA.L Global_PTR_WORK_BUFFER,A0
-    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D7
+    MOVEA.L _Global_PTR_WORK_BUFFER,A0
+    MOVE.L  _Global_REF_LONG_FILE_SCRATCH,D7
     PEA     Global_STR_G2
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-48(A5)
@@ -352,7 +352,7 @@ DST_LoadBannerPairFromFiles:
     MOVE.L  -48(A5),-(A7)
     PEA     889.W
     PEA     Global_STR_DST_C_7
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVE.L  A3,(A7)
     BSR.W   DST_UpdateBannerQueue

@@ -1,15 +1,15 @@
-    XDEF    Global_STR_CLEANUP_C_1
+    XDEF    _Global_STR_CLEANUP_C_1
     XDEF    Global_STR_CLEANUP_C_2
-    XDEF    Global_STR_CLEANUP_C_3
-    XDEF    Global_STR_CLEANUP_C_4
-    XDEF    Global_STR_CLEANUP_C_5
-    XDEF    Global_STR_CLEANUP_C_6
+    XDEF    _Global_STR_CLEANUP_C_3
+    XDEF    _Global_STR_CLEANUP_C_4
+    XDEF    _Global_STR_CLEANUP_C_5
+    XDEF    _Global_STR_CLEANUP_C_6
     XDEF    Global_STR_CLEANUP_C_7
-    XDEF    Global_STR_CLEANUP_C_8
+    XDEF    _Global_STR_CLEANUP_C_8
     XDEF    Global_STR_CLEANUP_C_9
-    XDEF    Global_STR_CLEANUP_C_10
+    XDEF    _Global_STR_CLEANUP_C_10
     XDEF    Global_STR_CLEANUP_C_11
-    XDEF    Global_STR_CLEANUP_C_12
+    XDEF    _Global_STR_CLEANUP_C_12
     XDEF    Global_STR_CLEANUP_C_13
     XDEF    Global_STR_CLEANUP_C_14
     XDEF    Global_STR_CLEANUP_C_15
@@ -19,29 +19,29 @@
     XDEF    CLEANUP_BannerTickCounter
 ; ========== CLEANUP.c ==========
 
-Global_STR_CLEANUP_C_1:
+_Global_STR_CLEANUP_C_1:
     NStr    "CLEANUP.c"
 Global_STR_CLEANUP_C_2:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_3:
+_Global_STR_CLEANUP_C_3:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_4:
+_Global_STR_CLEANUP_C_4:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_5:
+_Global_STR_CLEANUP_C_5:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_6:
+_Global_STR_CLEANUP_C_6:
     NStr    "CLEANUP.c"
 Global_STR_CLEANUP_C_7:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_8:
+_Global_STR_CLEANUP_C_8:
     NStr    "CLEANUP.c"
 Global_STR_CLEANUP_C_9:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_10:
+_Global_STR_CLEANUP_C_10:
     NStr    "CLEANUP.c"
 Global_STR_CLEANUP_C_11:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_12:
+_Global_STR_CLEANUP_C_12:
     NStr    "CLEANUP.c"
 Global_STR_CLEANUP_C_13:
     NStr    "CLEANUP.c"

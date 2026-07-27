@@ -1,9 +1,9 @@
-    XDEF    GROUP_AT_JMPTBL_DOS_SystemTagList
-    XDEF    GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0
-    XDEF    GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1
+    XDEF    _GROUP_AT_JMPTBL_DOS_SystemTagList
+    XDEF    _GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0
+    XDEF    _GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
+; FUNC: _GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -19,11 +19,11 @@
 ; DESC:
 ;   Jump stub to ED1_WaitForFlagAndClearBit0.
 ;------------------------------------------------------------------------------
-GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0:
+_GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0:
     JMP     ED1_WaitForFlagAndClearBit0
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AT_JMPTBL_DOS_SystemTagList   (JumpStub_DOS_SystemTagList)
+; FUNC: _GROUP_AT_JMPTBL_DOS_SystemTagList   (JumpStub_DOS_SystemTagList)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -39,11 +39,11 @@ GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0:
 ; DESC:
 ;   Jump stub to DOS_SystemTagList.
 ;------------------------------------------------------------------------------
-GROUP_AT_JMPTBL_DOS_SystemTagList:
+_GROUP_AT_JMPTBL_DOS_SystemTagList:
     JMP     DOS_SystemTagList
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)
+; FUNC: _GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -59,7 +59,7 @@ GROUP_AT_JMPTBL_DOS_SystemTagList:
 ; DESC:
 ;   Jump stub to ED1_WaitForFlagAndClearBit1.
 ;------------------------------------------------------------------------------
-GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1:
+_GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1:
     JMP     ED1_WaitForFlagAndClearBit1
 
 ;!======

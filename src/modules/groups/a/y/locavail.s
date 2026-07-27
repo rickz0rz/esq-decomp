@@ -1,18 +1,18 @@
     XDEF    LOCAVAIL_AllocNodeArraysForState
     XDEF    LOCAVAIL_ComputeFilterOffsetForEntry
-    XDEF    LOCAVAIL_CopyFilterStateStructRetainRefs
+    XDEF    _LOCAVAIL_CopyFilterStateStructRetainRefs
     XDEF    LOCAVAIL_FreeNodeAtPointer
-    XDEF    LOCAVAIL_FreeNodeRecord
-    XDEF    LOCAVAIL_FreeResourceChain
+    XDEF    _LOCAVAIL_FreeNodeRecord
+    XDEF    _LOCAVAIL_FreeResourceChain
     XDEF    LOCAVAIL_GetFilterWindowHalfSpan
     XDEF    LOCAVAIL_GetNodeDurationByIndex
     XDEF    LOCAVAIL_LoadAvailabilityDataFile
     XDEF    LOCAVAIL_MapFilterTokenCharToClass
     XDEF    LOCAVAIL_ParseFilterStateFromBuffer
     XDEF    LOCAVAIL_RebuildFilterStateFromCurrentGroup
-    XDEF    LOCAVAIL_ResetFilterCursorState
+    XDEF    _LOCAVAIL_ResetFilterCursorState
     XDEF    LOCAVAIL_ResetFilterStateStruct
-    XDEF    LOCAVAIL_SaveAvailabilityDataFile
+    XDEF    _LOCAVAIL_SaveAvailabilityDataFile
     XDEF    LOCAVAIL_SetFilterModeAndResetState
     XDEF    LOCAVAIL_SyncSecondaryFilterForCurrentGroup
     XDEF    LOCAVAIL_UpdateFilterStateMachine
@@ -24,7 +24,7 @@
     XDEF    LOCAVAIL_UpdateFilterStateMachine_Return
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_FreeNodeRecord   (Clear one availability-node record in place)
+; FUNC: _LOCAVAIL_FreeNodeRecord   (Clear one availability-node record in place)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -42,7 +42,7 @@
 ; NOTES:
 ;   Does not free external buffers; call `LOCAVAIL_FreeNodeAtPointer` for owned data.
 ;------------------------------------------------------------------------------
-LOCAVAIL_FreeNodeRecord:
+_LOCAVAIL_FreeNodeRecord:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     CLR.B   (A3)
@@ -64,14 +64,14 @@ LOCAVAIL_FreeNodeRecord:
 ; CLOBBERS:
 ;   A3/A7/D0
 ; CALLS:
-;   NEWGRID_JMPTBL_MEMORY_DeallocateMemory
+;   _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_STR_LOCAVAIL_C_1
+;   _Global_STR_LOCAVAIL_C_1
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Releases node-owned payload at +6 when present and length (+4) is positive,
-;   then clears the node fields via `LOCAVAIL_FreeNodeRecord`.
+;   then clears the node fields via `_LOCAVAIL_FreeNodeRecord`.
 ; NOTES:
 ;   No-op for NULL node pointers.
 ;------------------------------------------------------------------------------
@@ -92,14 +92,14 @@ LOCAVAIL_FreeNodeAtPointer:
     MOVE.L  D0,-(A7)
     MOVE.L  6(A3),-(A7)
     PEA     106.W
-    PEA     Global_STR_LOCAVAIL_C_1
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_LOCAVAIL_C_1
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
 .clear_node_record:
     MOVE.L  A3,-(A7)
-    BSR.S   LOCAVAIL_FreeNodeRecord
+    BSR.S   _LOCAVAIL_FreeNodeRecord
 
     ADDQ.W  #4,A7
 
@@ -148,7 +148,7 @@ LOCAVAIL_ResetFilterStateStruct:
 
 ; Release a LOCAVAIL structure (free node array/bitmap and associated memory).
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_FreeResourceChain   (Release shared refs, free node array/payloads, reset state)
+; FUNC: _LOCAVAIL_FreeResourceChain   (Release shared refs, free node array/payloads, reset state)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -156,7 +156,7 @@ LOCAVAIL_ResetFilterStateStruct:
 ; CLOBBERS:
 ;   A0/A3/A7/D0/D1/D7
 ; CALLS:
-;   GROUP_AY_JMPTBL_MATH_Mulu32, LOCAVAIL_FreeNodeAtPointer, LOCAVAIL_ResetFilterStateStruct, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
+;   GROUP_AY_JMPTBL_MATH_Mulu32, LOCAVAIL_FreeNodeAtPointer, LOCAVAIL_ResetFilterStateStruct, _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   Global_STR_LOCAVAIL_C_2, Global_STR_LOCAVAIL_C_3
 ; WRITES:
@@ -167,7 +167,7 @@ LOCAVAIL_ResetFilterStateStruct:
 ; NOTES:
 ;   Safe to call with NULL state pointer.
 ;------------------------------------------------------------------------------
-LOCAVAIL_FreeResourceChain:
+_LOCAVAIL_FreeResourceChain:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVE.L  A3,D0
@@ -199,7 +199,7 @@ LOCAVAIL_FreeResourceChain:
     MOVE.L  A0,-(A7)
     PEA     159.W
     PEA     Global_STR_LOCAVAIL_C_2
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEQ   #0,D7
@@ -210,7 +210,7 @@ LOCAVAIL_FreeResourceChain:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A3),A0
     ADDA.L  D0,A0
@@ -230,7 +230,7 @@ LOCAVAIL_FreeResourceChain:
     MOVE.L  20(A3),-(A7)
     PEA     164.W
     PEA     Global_STR_LOCAVAIL_C_3
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -247,7 +247,7 @@ LOCAVAIL_FreeResourceChain:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_CopyFilterStateStructRetainRefs   (Copy filter state while retaining shared refs)
+; FUNC: _LOCAVAIL_CopyFilterStateStructRetainRefs   (Copy filter state while retaining shared refs)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -266,7 +266,7 @@ LOCAVAIL_FreeResourceChain:
 ; NOTES:
 ;   Shallow copy by design for retained arrays.
 ;------------------------------------------------------------------------------
-LOCAVAIL_CopyFilterStateStructRetainRefs:
+_LOCAVAIL_CopyFilterStateStructRetainRefs:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEA.L 16(A7),A2
@@ -297,7 +297,7 @@ LOCAVAIL_CopyFilterStateStructRetainRefs:
 ; CLOBBERS:
 ;   A0/A3/A7/D0/D1/D7
 ; CALLS:
-;   GROUP_AY_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_AllocateMemory
+;   GROUP_AY_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   Global_STR_LOCAVAIL_C_4, Global_STR_LOCAVAIL_C_5, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
@@ -324,7 +324,7 @@ LOCAVAIL_AllocNodeArraysForState:
     PEA     4.W
     PEA     218.W
     PEA     Global_STR_LOCAVAIL_C_4
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,16(A3)
@@ -341,7 +341,7 @@ LOCAVAIL_AllocNodeArraysForState:
     MOVE.L  D0,-(A7)
     PEA     229.W
     PEA     Global_STR_LOCAVAIL_C_5
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,20(A3)
@@ -357,7 +357,7 @@ LOCAVAIL_AllocNodeArraysForState:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_ResetFilterCursorState   (Reset active filter cursor/class trackers)
+; FUNC: _LOCAVAIL_ResetFilterCursorState   (Reset active filter cursor/class trackers)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -369,20 +369,20 @@ LOCAVAIL_AllocNodeArraysForState:
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId
+;   _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId
 ; DESC:
 ;   Clears global filter step and sets cursor/class fields to `-1` sentinels.
 ; NOTES:
 ;   Leaves mode and allocation pointers unchanged.
 ;------------------------------------------------------------------------------
-LOCAVAIL_ResetFilterCursorState:
+_LOCAVAIL_ResetFilterCursorState:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVEQ   #-1,D0
     MOVE.L  D0,8(A3)
     MOVE.L  D0,12(A3)
-    MOVE.L  D0,LOCAVAIL_FilterClassId
-    CLR.L   LOCAVAIL_FilterStep
+    MOVE.L  D0,_LOCAVAIL_FilterClassId
+    CLR.L   _LOCAVAIL_FilterStep
     MOVEA.L (A7)+,A3
     RTS
 
@@ -399,11 +399,11 @@ LOCAVAIL_ResetFilterCursorState:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LOCAVAIL_FilterModeFlag, LOCAVAIL_PrimaryFilterState
+;   _LOCAVAIL_FilterModeFlag, _LOCAVAIL_PrimaryFilterState
 ; WRITES:
-;   LOCAVAIL_FilterModeFlag
+;   _LOCAVAIL_FilterModeFlag
 ; DESC:
-;   Updates `LOCAVAIL_FilterModeFlag` only for supported mode values (0/1) and
+;   Updates `_LOCAVAIL_FilterModeFlag` only for supported mode values (0/1) and
 ;   resets primary filter cursor state when mode actually changes.
 ; NOTES:
 ;   Ignores unsupported mode values and no-op transitions.
@@ -411,7 +411,7 @@ LOCAVAIL_ResetFilterCursorState:
 LOCAVAIL_SetFilterModeAndResetState:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
-    MOVE.L  LOCAVAIL_FilterModeFlag,D0
+    MOVE.L  _LOCAVAIL_FilterModeFlag,D0
     CMP.L   D7,D0
     BEQ.S   .return
 
@@ -423,9 +423,9 @@ LOCAVAIL_SetFilterModeAndResetState:
     BNE.S   .return
 
 .set_mode_and_reset:
-    MOVE.L  D7,LOCAVAIL_FilterModeFlag
-    PEA     LOCAVAIL_PrimaryFilterState
-    BSR.S   LOCAVAIL_ResetFilterCursorState
+    MOVE.L  D7,_LOCAVAIL_FilterModeFlag
+    PEA     _LOCAVAIL_PrimaryFilterState
+    BSR.S   _LOCAVAIL_ResetFilterCursorState
 
     ADDQ.W  #4,A7
 
@@ -450,9 +450,9 @@ LOCAVAIL_SetFilterModeAndResetState:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   GROUP_AS_JMPTBL_STR_FindCharPtr, LOCAVAIL_ResetFilterStateStruct, LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_AllocNodeArraysForState, LOCAVAIL_FreeResourceChain, NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_AllocateMemory
+;   _GROUP_AS_JMPTBL_STR_FindCharPtr, LOCAVAIL_ResetFilterStateStruct, _LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_AllocNodeArraysForState, _LOCAVAIL_FreeResourceChain, NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   Global_STR_LOCAVAIL_C_6, LOCAVAIL_TAG_FV, WDISP_CharClassTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_14, branch_15, branch_16, branch_17, branch_5, e11, lab_0F2E, lab_0F2F, lab_0F31, lab_0F32, lab_0F33
+;   Global_STR_LOCAVAIL_C_6, LOCAVAIL_TAG_FV, _WDISP_CharClassTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_14, branch_15, branch_16, branch_17, branch_5, e11, lab_0F2E, lab_0F2F, lab_0F31, lab_0F32, lab_0F33
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -477,7 +477,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
     MOVE.B  D0,-51(A5)
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #1,(A0)
     BEQ.S   .lab_0F17
@@ -500,7 +500,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LOCAVAIL_TAG_FV
-    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -550,7 +550,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -4(A5),A0
     ADDA.L  D0,A0
@@ -643,7 +643,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
     MOVE.L  D0,-(A7)
     PEA     341.W
     PEA     Global_STR_LOCAVAIL_C_6
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L -28(A5),A0
@@ -666,7 +666,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
     MOVE.B  D0,-51(A5)
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #1,(A0)
     BEQ.S   .branch_6
@@ -790,18 +790,18 @@ LOCAVAIL_ParseFilterStateFromBuffer:
     BEQ.S   .branch_18
 
     MOVE.L  A2,-(A7)
-    BSR.W   LOCAVAIL_FreeResourceChain
+    BSR.W   _LOCAVAIL_FreeResourceChain
 
     PEA     -24(A5)
     MOVE.L  A2,-(A7)
-    BSR.W   LOCAVAIL_CopyFilterStateStructRetainRefs
+    BSR.W   _LOCAVAIL_CopyFilterStateStructRetainRefs
 
     LEA     12(A7),A7
     BRA.S   LOCAVAIL_ParseFilterStateFromBuffer_Return
 
 .branch_18:
     PEA     -24(A5)
-    BSR.W   LOCAVAIL_FreeResourceChain
+    BSR.W   _LOCAVAIL_FreeResourceChain
 
     ADDQ.W  #4,A7
 
@@ -843,7 +843,7 @@ LOCAVAIL_ParseFilterStateFromBuffer_Return:
 ; CALLS:
 ;   (none)
 ; READS:
-;   WDISP_CharClassTable
+;   _WDISP_CharClassTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -858,7 +858,7 @@ LOCAVAIL_MapFilterTokenCharToClass:
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #2,(A1)
@@ -920,7 +920,7 @@ LOCAVAIL_MapFilterTokenCharToClass:
 ; CLOBBERS:
 ;   A0/A3/A7/D0/D1/D6/D7
 ; CALLS:
-;   NEWGRID_JMPTBL_MATH_Mulu32
+;   _NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -952,7 +952,7 @@ LOCAVAIL_MapFilterTokenCharToClass_Return:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A3),A0
     ADDA.L  D0,A0
@@ -997,9 +997,9 @@ LOCAVAIL_GetNodeDurationByIndex:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, LOCAVAIL_MapFilterTokenCharToClass, NEWGRID_JMPTBL_MATH_Mulu32
+;   _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, LOCAVAIL_MapFilterTokenCharToClass, _NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
-;   LOCAVAIL_ComputeFilterOffsetForEntry_Return, ESQIFF_GAdsBrushListCount, ED_DiagGraphModeChar, ED_DiagVinModeChar, LOCAVAIL_FilterStep, LOCAVAIL_FilterPrevClassId, LOCAVAIL_STR_YYLLZ_FilterGateCheck, WDISP_HighlightActive, lab_0F3E, lab_0F43, lab_0F4B
+;   LOCAVAIL_ComputeFilterOffsetForEntry_Return, _ESQIFF_GAdsBrushListCount, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _LOCAVAIL_FilterStep, LOCAVAIL_FilterPrevClassId, LOCAVAIL_STR_YYLLZ_FilterGateCheck, WDISP_HighlightActive, lab_0F3E, lab_0F43, lab_0F4B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1016,7 +1016,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry:
     MOVEQ   #-1,D0
     CLR.L   -28(A5)
     MOVE.L  D0,-20(A5)
-    TST.L   LOCAVAIL_FilterStep
+    TST.L   _LOCAVAIL_FilterStep
     BNE.W   LOCAVAIL_ComputeFilterOffsetForEntry_Return
 
     CMP.L   LOCAVAIL_FilterPrevClassId,D0
@@ -1048,7 +1048,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry:
 
     MOVE.L  D6,D0
     MOVEQ   #10,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A0
     ADDA.L  D0,A0
@@ -1113,7 +1113,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry:
 
     MOVE.L  D4,D0
     MOVEQ   #10,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A0
     ADDA.L  D0,A0
@@ -1139,10 +1139,10 @@ LOCAVAIL_ComputeFilterOffsetForEntry:
 
 .lab_0F44:
     MOVEQ   #0,D0
-    MOVE.B  ED_DiagVinModeChar,D0
+    MOVE.B  _ED_DiagVinModeChar,D0
     MOVE.L  D0,-(A7)
     PEA     LOCAVAIL_STR_YYLLZ_FilterGateCheck
-    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1160,12 +1160,12 @@ LOCAVAIL_ComputeFilterOffsetForEntry:
     BRA.S   .lab_0F4B
 
 .lab_0F46:
-    MOVE.B  ED_DiagGraphModeChar,D0
+    MOVE.B  _ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
     BEQ.S   .lab_0F47
 
-    TST.L   ESQIFF_GAdsBrushListCount
+    TST.L   _ESQIFF_GAdsBrushListCount
     BNE.S   .lab_0F4B
 
 .lab_0F47:
@@ -1225,7 +1225,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_SaveAvailabilityDataFile   (Routine at LOCAVAIL_SaveAvailabilityDataFile)
+; FUNC: _LOCAVAIL_SaveAvailabilityDataFile   (Routine at _LOCAVAIL_SaveAvailabilityDataFile)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -1237,7 +1237,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes, GROUP_AY_JMPTBL_DISKIO_WriteDecimalField, NEWGRID_JMPTBL_MATH_Mulu32
+;   GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes, GROUP_AY_JMPTBL_DISKIO_WriteDecimalField, _NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
 ;   LOCAVAIL_TAG_UVGTI, LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Save, LOCAVAIL_STR_LA_VER_1_COLON_CURDAY, LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY, MODE_NEWFILE, lab_0F4E, lab_0F4F, lab_0F52, lab_0F54, lab_0F54_0008, lab_0F5A, lab_0F5B
 ; WRITES:
@@ -1247,7 +1247,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry_Return:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LOCAVAIL_SaveAvailabilityDataFile:
+_LOCAVAIL_SaveAvailabilityDataFile:
     LINK.W  A5,#-160
     MOVEM.L D4-D7/A2-A3/A6,-(A7)
     MOVEA.L 8(A5),A3
@@ -1337,7 +1337,7 @@ LOCAVAIL_SaveAvailabilityDataFile:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -4(A5),A1
     MOVEA.L 20(A1),A0
@@ -1504,9 +1504,9 @@ LOCAVAIL_SaveAvailabilityDataFile_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer, GROUP_AY_JMPTBL_STRING_CompareNoCaseN, LOCAVAIL_ResetFilterStateStruct, LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_AllocNodeArraysForState, LOCAVAIL_FreeResourceChain, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
+;   _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer, GROUP_AY_JMPTBL_STRING_CompareNoCaseN, LOCAVAIL_ResetFilterStateStruct, _LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_AllocNodeArraysForState, _LOCAVAIL_FreeResourceChain, _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_REF_LONG_FILE_SCRATCH, Global_STR_LOCAVAIL_C_7, Global_STR_LOCAVAIL_C_8, LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load, LOCAVAIL_STR_LA_VER, Global_PTR_WORK_BUFFER, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, MEMF_CLEAR, MEMF_PUBLIC, e11, ffff, lab_0F5E, lab_0F5F, lab_0F60, lab_0F67, lab_0F68, lab_0F69, lab_0F6A, lab_0F6B, lab_0F6C, lab_0F6D, lab_0F6E, lab_0F73, lab_0F74
+;   _Global_REF_LONG_FILE_SCRATCH, Global_STR_LOCAVAIL_C_7, Global_STR_LOCAVAIL_C_8, LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load, LOCAVAIL_STR_LA_VER, _Global_PTR_WORK_BUFFER, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, MEMF_CLEAR, MEMF_PUBLIC, e11, ffff, lab_0F5E, lab_0F5F, lab_0F60, lab_0F67, lab_0F68, lab_0F69, lab_0F6A, lab_0F6B, lab_0F6C, lab_0F6D, lab_0F6E, lab_0F73, lab_0F74
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1523,22 +1523,22 @@ LOCAVAIL_LoadAvailabilityDataFile:
     CLR.L   -48(A5)
     MOVEQ   #0,D4
     PEA     LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load
-    JSR     GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0
     BEQ.W   .lab_0F74
 
     MOVE.L  A3,-(A7)
-    BSR.W   LOCAVAIL_FreeResourceChain
+    BSR.W   _LOCAVAIL_FreeResourceChain
 
-    MOVE.B  TEXTDISP_PrimaryGroupCode,(A3)
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,(A3)
     MOVE.L  A2,(A7)
-    BSR.W   LOCAVAIL_FreeResourceChain
+    BSR.W   _LOCAVAIL_FreeResourceChain
 
-    MOVE.B  TEXTDISP_SecondaryGroupCode,(A2)
-    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D4
-    MOVE.L  Global_PTR_WORK_BUFFER,-48(A5)
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,(A2)
+    MOVE.L  _Global_REF_LONG_FILE_SCRATCH,D4
+    MOVE.L  _Global_PTR_WORK_BUFFER,-48(A5)
     JSR     GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1598,7 +1598,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -4(A5),A0
     ADDA.L  D0,A0
@@ -1641,7 +1641,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     MOVE.L  D0,-(A7)
     PEA     786.W
     PEA     Global_STR_LOCAVAIL_C_7
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L -28(A5),A0
@@ -1765,39 +1765,39 @@ LOCAVAIL_LoadAvailabilityDataFile:
     BEQ.S   .lab_0F71
 
     MOVE.B  -24(A5),D0
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D1
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D1
     CMP.B   D1,D0
     BNE.S   .lab_0F6F
 
     PEA     -24(A5)
     MOVE.L  A3,-(A7)
-    BSR.W   LOCAVAIL_CopyFilterStateStructRetainRefs
+    BSR.W   _LOCAVAIL_CopyFilterStateStructRetainRefs
 
     ADDQ.W  #8,A7
     BRA.S   .lab_0F72
 
 .lab_0F6F:
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D1
     CMP.B   D1,D0
     BNE.S   .lab_0F70
 
     PEA     -24(A5)
     MOVE.L  A2,-(A7)
-    BSR.W   LOCAVAIL_CopyFilterStateStructRetainRefs
+    BSR.W   _LOCAVAIL_CopyFilterStateStructRetainRefs
 
     ADDQ.W  #8,A7
     BRA.S   .lab_0F72
 
 .lab_0F70:
     PEA     -24(A5)
-    BSR.W   LOCAVAIL_FreeResourceChain
+    BSR.W   _LOCAVAIL_FreeResourceChain
 
     ADDQ.W  #4,A7
     BRA.S   .lab_0F72
 
 .lab_0F71:
     PEA     -24(A5)
-    BSR.W   LOCAVAIL_FreeResourceChain
+    BSR.W   _LOCAVAIL_FreeResourceChain
 
     ADDQ.W  #4,A7
 
@@ -1819,34 +1819,34 @@ LOCAVAIL_LoadAvailabilityDataFile:
     MOVE.L  -48(A5),-(A7)
     PEA     897.W
     PEA     Global_STR_LOCAVAIL_C_8
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     BRA.S   LOCAVAIL_LoadAvailabilityDataFile_Return
 
 .lab_0F74:
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     MOVE.B  (A3),D1
     CMP.B   D0,D1
     BEQ.S   .branch
 
     MOVE.L  A3,-(A7)
-    BSR.W   LOCAVAIL_FreeResourceChain
+    BSR.W   _LOCAVAIL_FreeResourceChain
 
     ADDQ.W  #4,A7
-    MOVE.B  TEXTDISP_PrimaryGroupCode,(A3)
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,(A3)
 
 .branch:
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     MOVE.B  (A2),D1
     CMP.B   D0,D1
     BEQ.S   .branch_1
 
     MOVE.L  A2,-(A7)
-    BSR.W   LOCAVAIL_FreeResourceChain
+    BSR.W   _LOCAVAIL_FreeResourceChain
 
     ADDQ.W  #4,A7
-    MOVE.B  TEXTDISP_SecondaryGroupCode,(A2)
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,(A2)
 
 .branch_1:
     MOVEQ   #0,D5
@@ -1889,7 +1889,7 @@ LOCAVAIL_LoadAvailabilityDataFile_Return:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterWindowHalfSpan
+;   _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterWindowHalfSpan
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1900,10 +1900,10 @@ LOCAVAIL_LoadAvailabilityDataFile_Return:
 LOCAVAIL_GetFilterWindowHalfSpan:
     MOVE.L  D7,-(A7)
     MOVEQ   #1,D0
-    CMP.L   LOCAVAIL_FilterModeFlag,D0
+    CMP.L   _LOCAVAIL_FilterModeFlag,D0
     BNE.S   .lab_0F7B
 
-    MOVE.W  LOCAVAIL_FilterWindowHalfSpan,D0
+    MOVE.W  _LOCAVAIL_FilterWindowHalfSpan,D0
     BLE.S   .lab_0F79
 
     EXT.L   D0
@@ -1938,11 +1938,11 @@ LOCAVAIL_GetFilterWindowHalfSpan:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5
 ; CALLS:
-;   GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, LOCAVAIL_ResetFilterCursorState, NEWGRID_JMPTBL_MATH_Mulu32
+;   _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, _LOCAVAIL_ResetFilterCursorState, _NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
-;   LOCAVAIL_UpdateFilterStateMachine_Return, ESQIFF_GAdsBrushListCount, ED_DiagGraphModeChar, ED_DiagVinModeChar, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId, LOCAVAIL_STR_YYLLZ_FilterStateUpdate, WDISP_HighlightActive, lab_0F7F, lab_0F7F_0008, lab_0F7F_0040, lab_0F7F_0062, lab_0F83, lab_0F84, lab_0F86, lab_0F86_001E, lab_0F86_0066, lab_0F89, lab_0F8C, lab_0F8C_001E, lab_0F8C_0046
+;   LOCAVAIL_UpdateFilterStateMachine_Return, _ESQIFF_GAdsBrushListCount, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId, LOCAVAIL_STR_YYLLZ_FilterStateUpdate, WDISP_HighlightActive, lab_0F7F, lab_0F7F_0008, lab_0F7F_0040, lab_0F7F_0062, lab_0F83, lab_0F84, lab_0F86, lab_0F86_001E, lab_0F86_0066, lab_0F89, lab_0F8C, lab_0F8C_001E, lab_0F8C_0046
 ; WRITES:
-;   LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId, LOCAVAIL_FilterPrevClassId, LOCAVAIL_FilterWindowHalfSpan, LOCAVAIL_FilterCooldownTicks
+;   _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId, LOCAVAIL_FilterPrevClassId, _LOCAVAIL_FilterWindowHalfSpan, LOCAVAIL_FilterCooldownTicks
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1956,14 +1956,14 @@ LOCAVAIL_UpdateFilterStateMachine:
     SUBA.L  A0,A0
     MOVE.L  A0,-4(A5)
     MOVEQ   #1,D0
-    CMP.L   LOCAVAIL_FilterModeFlag,D0
+    CMP.L   _LOCAVAIL_FilterModeFlag,D0
     BNE.W   LOCAVAIL_UpdateFilterStateMachine_Return
 
-    TST.L   LOCAVAIL_FilterStep
+    TST.L   _LOCAVAIL_FilterStep
     BNE.W   .lab_0F84
 
     MOVEQ   #-1,D1
-    CMP.L   LOCAVAIL_FilterClassId,D1
+    CMP.L   _LOCAVAIL_FilterClassId,D1
     BNE.W   .lab_0F84
 
     MOVE.L  8(A2),D2
@@ -1982,7 +1982,7 @@ LOCAVAIL_UpdateFilterStateMachine:
 
     MOVE.L  D2,D0
     MOVEQ   #10,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A1
     ADDA.L  D0,A1
@@ -2006,9 +2006,9 @@ LOCAVAIL_UpdateFilterStateMachine:
     ADDA.L  D3,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
-    MOVE.L  D0,LOCAVAIL_FilterClassId
+    MOVE.L  D0,_LOCAVAIL_FilterClassId
     MOVEQ   #1,D1
-    MOVE.L  D1,LOCAVAIL_FilterStep
+    MOVE.L  D1,_LOCAVAIL_FilterStep
     MOVEQ   #-1,D1
     MOVE.L  D1,LOCAVAIL_FilterPrevClassId
     CMPI.L  #$5,D0
@@ -2028,10 +2028,10 @@ LOCAVAIL_UpdateFilterStateMachine:
 
 .lab_0F7F_0008:
     MOVEQ   #0,D0
-    MOVE.B  ED_DiagVinModeChar,D0
+    MOVE.B  _ED_DiagVinModeChar,D0
     MOVE.L  D0,-(A7)
     PEA     LOCAVAIL_STR_YYLLZ_FilterStateUpdate
-    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -2048,23 +2048,23 @@ LOCAVAIL_UpdateFilterStateMachine:
 
 .lab_0F81:
     MOVE.L  A2,-(A7)
-    BSR.W   LOCAVAIL_ResetFilterCursorState
+    BSR.W   _LOCAVAIL_ResetFilterCursorState
 
     ADDQ.W  #4,A7
     BRA.W   LOCAVAIL_UpdateFilterStateMachine_Return
 
 .lab_0F7F_0040:
-    MOVE.B  ED_DiagGraphModeChar,D0
+    MOVE.B  _ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
     BEQ.S   .lab_0F82
 
-    TST.L   ESQIFF_GAdsBrushListCount
+    TST.L   _ESQIFF_GAdsBrushListCount
     BNE.W   LOCAVAIL_UpdateFilterStateMachine_Return
 
 .lab_0F82:
     MOVE.L  A2,-(A7)
-    BSR.W   LOCAVAIL_ResetFilterCursorState
+    BSR.W   _LOCAVAIL_ResetFilterCursorState
 
     ADDQ.W  #4,A7
     BRA.W   LOCAVAIL_UpdateFilterStateMachine_Return
@@ -2074,25 +2074,25 @@ LOCAVAIL_UpdateFilterStateMachine:
     BNE.W   LOCAVAIL_UpdateFilterStateMachine_Return
 
     MOVE.L  A2,-(A7)
-    BSR.W   LOCAVAIL_ResetFilterCursorState
+    BSR.W   _LOCAVAIL_ResetFilterCursorState
 
     ADDQ.W  #4,A7
     BRA.W   LOCAVAIL_UpdateFilterStateMachine_Return
 
 .lab_0F83:
     MOVE.L  A2,-(A7)
-    BSR.W   LOCAVAIL_ResetFilterCursorState
+    BSR.W   _LOCAVAIL_ResetFilterCursorState
 
     ADDQ.W  #4,A7
     BRA.W   LOCAVAIL_UpdateFilterStateMachine_Return
 
 .lab_0F84:
     MOVEQ   #1,D0
-    CMP.L   LOCAVAIL_FilterStep,D0
+    CMP.L   _LOCAVAIL_FilterStep,D0
     BNE.W   .lab_0F89
 
     MOVEQ   #-1,D0
-    CMP.L   LOCAVAIL_FilterClassId,D0
+    CMP.L   _LOCAVAIL_FilterClassId,D0
     BEQ.W   .lab_0F89
 
     MOVE.L  8(A2),D1
@@ -2111,7 +2111,7 @@ LOCAVAIL_UpdateFilterStateMachine:
     BGE.S   .lab_0F85
 
     MOVEQ   #10,D0
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A0
     ADDA.L  D0,A0
@@ -2164,13 +2164,13 @@ LOCAVAIL_UpdateFilterStateMachine:
     MOVE.L  D0,D1
     SUBQ.W  #5,D1
     MOVE.W  D1,LOCAVAIL_FilterCooldownTicks
-    MOVE.W  2(A0),LOCAVAIL_FilterWindowHalfSpan
+    MOVE.W  2(A0),_LOCAVAIL_FilterWindowHalfSpan
     MOVEQ   #-1,D0
     MOVE.L  D0,8(A2)
     MOVE.L  D0,12(A2)
     MOVEQ   #2,D0
-    MOVE.L  D0,LOCAVAIL_FilterStep
-    MOVE.L  LOCAVAIL_FilterClassId,D0
+    MOVE.L  D0,_LOCAVAIL_FilterStep
+    MOVE.L  _LOCAVAIL_FilterClassId,D0
     MOVEQ   #2,D1
     CMP.L   D1,D0
     BEQ.S   .lab_0F88
@@ -2188,12 +2188,12 @@ LOCAVAIL_UpdateFilterStateMachine:
     BRA.W   LOCAVAIL_UpdateFilterStateMachine_Return
 
 .lab_0F89:
-    MOVE.L  LOCAVAIL_FilterStep,D0
+    MOVE.L  _LOCAVAIL_FilterStep,D0
     MOVEQ   #2,D1
     CMP.L   D1,D0
     BNE.S   .lab_0F8A
 
-    MOVE.L  LOCAVAIL_FilterClassId,D1
+    MOVE.L  _LOCAVAIL_FilterClassId,D1
     MOVEQ   #-1,D2
     CMP.L   D2,D1
     BEQ.S   .lab_0F8A
@@ -2220,7 +2220,7 @@ LOCAVAIL_UpdateFilterStateMachine:
 
 .lab_0F8B:
     MOVEQ   #-1,D0
-    CMP.L   LOCAVAIL_FilterClassId,D0
+    CMP.L   _LOCAVAIL_FilterClassId,D0
     BEQ.S   .lab_0F8F
 
     CMP.L   8(A2),D0
@@ -2258,16 +2258,16 @@ LOCAVAIL_UpdateFilterStateMachine:
 
 .lab_0F8C_001E:
     MOVEQ   #1,D0
-    CMP.L   LOCAVAIL_FilterClassId,D0
+    CMP.L   _LOCAVAIL_FilterClassId,D0
     BNE.S   .lab_0F8E
 
     MOVE.W  #3,24(A3)
 
 .lab_0F8E:
     MOVEQ   #-1,D0
-    MOVE.L  D0,LOCAVAIL_FilterClassId
-    CLR.L   LOCAVAIL_FilterStep
-    MOVE.W  #(-1),LOCAVAIL_FilterWindowHalfSpan
+    MOVE.L  D0,_LOCAVAIL_FilterClassId
+    CLR.L   _LOCAVAIL_FilterStep
+    MOVE.W  #(-1),_LOCAVAIL_FilterWindowHalfSpan
     BRA.S   LOCAVAIL_UpdateFilterStateMachine_Return
 
 .lab_0F8C_0046:
@@ -2276,7 +2276,7 @@ LOCAVAIL_UpdateFilterStateMachine:
 
 .lab_0F8F:
     MOVE.L  A2,-(A7)
-    BSR.W   LOCAVAIL_ResetFilterCursorState
+    BSR.W   _LOCAVAIL_ResetFilterCursorState
 
     ADDQ.W  #4,A7
 
@@ -2315,9 +2315,9 @@ LOCAVAIL_UpdateFilterStateMachine_Return:
 ; CLOBBERS:
 ;   A7/D0/D1
 ; CALLS:
-;   LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_FreeResourceChain
+;   _LOCAVAIL_CopyFilterStateStructRetainRefs, _LOCAVAIL_FreeResourceChain
 ; READS:
-;   TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
+;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
 ; WRITES:
 ;   LOCAVAIL_SecondaryFilterState
 ; DESC:
@@ -2327,24 +2327,24 @@ LOCAVAIL_UpdateFilterStateMachine_Return:
 ;------------------------------------------------------------------------------
 LOCAVAIL_SyncSecondaryFilterForCurrentGroup:
     MOVE.B  LOCAVAIL_SecondaryFilterState,D0
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D1
     CMP.B   D1,D0
     BEQ.S   .lab_0F92
 
-    MOVE.B  LOCAVAIL_PrimaryFilterState,D0
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D1
+    MOVE.B  _LOCAVAIL_PrimaryFilterState,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D1
     CMP.B   D1,D0
     BNE.S   .lab_0F92
 
     PEA     LOCAVAIL_SecondaryFilterState
-    BSR.W   LOCAVAIL_FreeResourceChain
+    BSR.W   _LOCAVAIL_FreeResourceChain
 
-    PEA     LOCAVAIL_PrimaryFilterState
+    PEA     _LOCAVAIL_PrimaryFilterState
     PEA     LOCAVAIL_SecondaryFilterState
-    BSR.W   LOCAVAIL_CopyFilterStateStructRetainRefs
+    BSR.W   _LOCAVAIL_CopyFilterStateStructRetainRefs
 
     LEA     12(A7),A7
-    MOVE.B  TEXTDISP_SecondaryGroupCode,LOCAVAIL_SecondaryFilterState
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,LOCAVAIL_SecondaryFilterState
 
 .lab_0F92:
     RTS
@@ -2360,9 +2360,9 @@ LOCAVAIL_SyncSecondaryFilterForCurrentGroup:
 ; CLOBBERS:
 ;   A7/D0
 ; CALLS:
-;   LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_ResetFilterCursorState, LOCAVAIL_FreeResourceChain
+;   _LOCAVAIL_CopyFilterStateStructRetainRefs, _LOCAVAIL_ResetFilterCursorState, _LOCAVAIL_FreeResourceChain
 ; READS:
-;   TEXTDISP_PrimaryGroupCode, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
+;   _TEXTDISP_PrimaryGroupCode, _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
 ; WRITES:
 ;   LOCAVAIL_SecondaryFilterState
 ; DESC:
@@ -2371,22 +2371,22 @@ LOCAVAIL_SyncSecondaryFilterForCurrentGroup:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 LOCAVAIL_RebuildFilterStateFromCurrentGroup:
-    PEA     LOCAVAIL_PrimaryFilterState
-    BSR.W   LOCAVAIL_FreeResourceChain
+    PEA     _LOCAVAIL_PrimaryFilterState
+    BSR.W   _LOCAVAIL_FreeResourceChain
 
     PEA     LOCAVAIL_SecondaryFilterState
-    PEA     LOCAVAIL_PrimaryFilterState
-    BSR.W   LOCAVAIL_CopyFilterStateStructRetainRefs
+    PEA     _LOCAVAIL_PrimaryFilterState
+    BSR.W   _LOCAVAIL_CopyFilterStateStructRetainRefs
 
     PEA     LOCAVAIL_SecondaryFilterState
-    BSR.W   LOCAVAIL_FreeResourceChain
+    BSR.W   _LOCAVAIL_FreeResourceChain
 
     LEA     16(A7),A7
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     SUBQ.B  #1,D0
     MOVE.B  D0,LOCAVAIL_SecondaryFilterState
-    PEA     LOCAVAIL_PrimaryFilterState
-    BSR.W   LOCAVAIL_ResetFilterCursorState
+    PEA     _LOCAVAIL_PrimaryFilterState
+    BSR.W   _LOCAVAIL_ResetFilterCursorState
 
     ADDQ.W  #4,A7
     RTS

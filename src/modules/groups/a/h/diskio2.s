@@ -7,8 +7,8 @@
     XDEF    _DISKIO2_LoadOinfoDataFile
     XDEF    DISKIO2_ParseIniFileFromDisk
     XDEF    DISKIO2_ReceiveTransferBlocksToFile
-    XDEF    DISKIO2_RunDiskSyncWorkflow
-    XDEF    DISKIO2_WriteCurDayDataFile
+    XDEF    _DISKIO2_RunDiskSyncWorkflow
+    XDEF    _DISKIO2_WriteCurDayDataFile
     XDEF    DISKIO2_WriteNxtDayDataFile
     XDEF    DISKIO2_WriteOinfoDataFile
     XDEF    DISKIO2_WriteQTableIniFile
@@ -17,7 +17,7 @@
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DISKIO2_WriteCurDayDataFile   (Write disk data file and table entries and metadata.)
+; FUNC: _DISKIO2_WriteCurDayDataFile   (Write disk data file and table entries and metadata.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -29,9 +29,9 @@
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D1/D6/D7
 ; CALLS:
-;   DISKIO_OpenFileWithBuffer, DISKIO_WriteBufferedBytes, DISKIO_WriteDecimalField, DISKIO_CloseBufferedFileAndFlush, DISKIO2_CopyAndSanitizeSlotString
+;   _DISKIO_OpenFileWithBuffer, _DISKIO_WriteBufferedBytes, _DISKIO_WriteDecimalField, _DISKIO_CloseBufferedFileAndFlush, DISKIO2_CopyAndSanitizeSlotString
 ; READS:
-;   TEXTDISP_PrimaryGroupCode/2231/2247/2248, TEXTDISP_PrimaryEntryPtrTable/2236 tables, WDISP_WeatherStatusTextPtr
+;   _TEXTDISP_PrimaryGroupCode/2231/2247/2248, _TEXTDISP_PrimaryEntryPtrTable/2236 tables, WDISP_WeatherStatusTextPtr
 ; WRITES:
 ;   DISKIO2_OutputFileHandle, DISKIO_SaveOperationReadyFlag
 ; DESC:
@@ -40,10 +40,10 @@
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DISKIO2_WriteCurDayDataFile:
+_DISKIO2_WriteCurDayDataFile:
     LINK.W  A5,#-24
     MOVEM.L D6-D7,-(A7)
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     CMPI.W  #$c8,D0
     BLS.S   .writecur_guard_save_ready
 
@@ -66,7 +66,7 @@ DISKIO2_WriteCurDayDataFile:
     PEA     1000.W
     PEA     152.W
     PEA     Global_STR_DISKIO2_C_1
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-22(A5)
@@ -80,7 +80,7 @@ DISKIO2_WriteCurDayDataFile:
 .writecur_open_output_file:
     PEA     MODE_NEWFILE.W
     PEA     CTASKS_PATH_CURDAY_DAT
-    JSR     DISKIO_OpenFileWithBuffer(PC)
+    JSR     _DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,DISKIO2_OutputFileHandle
@@ -91,7 +91,7 @@ DISKIO2_WriteCurDayDataFile:
     MOVE.L  -22(A5),-(A7)
     PEA     176.W
     PEA     Global_STR_DISKIO2_C_2
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #1,D0
     MOVE.L  D0,DISKIO_SaveOperationReadyFlag
@@ -100,22 +100,22 @@ DISKIO2_WriteCurDayDataFile:
 
 .writecur_write_header:
     PEA     21.W
-    PEA     ESQ_STR_B
+    PEA     _ESQ_STR_B
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
-    MOVE.W  DST_PrimaryCountdown,D0
+    MOVE.W  _DST_PrimaryCountdown,D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     PEA     7.W
     PEA     Global_STR_DREV_5_1
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
-    LEA     WDISP_WeatherStatusLabelBuffer,A0
+    LEA     _WDISP_WeatherStatusLabelBuffer,A0
     MOVEA.L A0,A1
 
     ; Compute length of header string and write it.
@@ -130,7 +130,7 @@ DISKIO2_WriteCurDayDataFile:
     MOVE.L  D0,(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     LEA     36(A7),A7
     TST.L   WDISP_WeatherStatusTextPtr
@@ -156,54 +156,54 @@ DISKIO2_WriteCurDayDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_PrimaryGroupRecordChecksum,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupRecordChecksum,D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupRecordLength,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupRecordLength,D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     LEA     28(A7),A7
     MOVEQ   #0,D7
 
     ; For each entry, write the per-record header and fields.
 .writecur_entry_loop:
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     CMP.W   D0,D7
     BGE.W   .writecur_finalize_and_free
 
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
     PEA     48.W
     MOVE.L  -4(A5),-(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     MOVEA.L -8(A5),A0
 
@@ -218,7 +218,7 @@ DISKIO2_WriteCurDayDataFile:
     MOVE.L  D0,(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D6
@@ -252,14 +252,14 @@ DISKIO2_WriteCurDayDataFile:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
     MOVE.B  7(A0,D6.W),D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
@@ -268,7 +268,7 @@ DISKIO2_WriteCurDayDataFile:
     MOVE.B  0(A0,D1.W),D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
@@ -277,7 +277,7 @@ DISKIO2_WriteCurDayDataFile:
     MOVE.B  0(A0,D1.W),D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
@@ -286,10 +286,10 @@ DISKIO2_WriteCurDayDataFile:
     MOVE.B  0(A0,D1.W),D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     LEA     24(A7),A7
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVEQ   #100,D1
     CMP.W   D1,D0
     BLS.S   .writecur_use_existing_slot_ptr
@@ -329,7 +329,7 @@ DISKIO2_WriteCurDayDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     LEA     12(A7),A7
 
@@ -342,7 +342,7 @@ DISKIO2_WriteCurDayDataFile:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     ADDQ.W  #8,A7
     ADDQ.W  #1,D7
@@ -350,7 +350,7 @@ DISKIO2_WriteCurDayDataFile:
 
 .writecur_finalize_and_free:
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
-    JSR     DISKIO_CloseBufferedFileAndFlush(PC)
+    JSR     _DISKIO_CloseBufferedFileAndFlush(PC)
 
     MOVEQ   #1,D0
     MOVE.L  D0,DISKIO_SaveOperationReadyFlag
@@ -358,7 +358,7 @@ DISKIO2_WriteCurDayDataFile:
     MOVE.L  -22(A5),-(A7)
     PEA     275.W
     PEA     Global_STR_DISKIO2_C_3
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
 
@@ -378,9 +378,9 @@ DISKIO2_WriteCurDayDataFile:
 ; CLOBBERS:
 ;   A1/A3/A6/A7/D0
 ; CALLS:
-;   DISPLIB_DisplayTextAtPosition
+;   _DISPLIB_DisplayTextAtPosition
 ; READS:
-;   Global_REF_RASTPORT_1
+;   _Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -392,26 +392,26 @@ DISKIO2_DisplayStatusLine:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
     PEA     Global_STR_38_SPACES
     PEA     120.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     MOVE.L  A3,(A7)
     PEA     120.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     28(A7),A7
     MOVEA.L (A7)+,A3
@@ -420,7 +420,7 @@ DISKIO2_DisplayStatusLine:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DISKIO2_RunDiskSyncWorkflow   (Disk I/O initialization sequence with optional UI.)
+; FUNC: _DISKIO2_RunDiskSyncWorkflow   (Disk I/O initialization sequence with optional UI.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +96: arg_2 (via 100(A5))
@@ -431,8 +431,8 @@ DISKIO2_DisplayStatusLine:
 ;   A0/A1/A7/D0/D7
 ; CALLS:
 ;   GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, DISKIO2_DisplayStatusLine, DISKIO2_FlushDataFilesIfNeeded, ED1_JMPTBL_LADFUNC_SaveTextAdsToFile, DISKIO_SaveConfigToFileHandle, GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile, DISKIO2_WriteQTableIniFile,
-;   GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry, DATETIME_SavePairToFile, GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile, GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile, GCOMMAND_LoadMplexFile,
-;   GCOMMAND_LoadPPVTemplate
+;   GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry, DATETIME_SavePairToFile, GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile, GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile, _GCOMMAND_LoadMplexFile,
+;   _GCOMMAND_LoadPPVTemplate
 ; READS:
 ;   DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT..DISKIO2_STR_SAVING_DATA_VIEW_CONFIG text tables
 ; WRITES:
@@ -442,7 +442,7 @@ DISKIO2_DisplayStatusLine:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DISKIO2_RunDiskSyncWorkflow:
+_DISKIO2_RunDiskSyncWorkflow:
     LINK.W  A5,#-100
     MOVE.L  D7,-(A7)
     MOVE.L  8(A5),D7
@@ -524,7 +524,7 @@ DISKIO2_RunDiskSyncWorkflow:
 
 .loc_048C:
     PEA     LOCAVAIL_SecondaryFilterState
-    PEA     LOCAVAIL_PrimaryFilterState
+    PEA     _LOCAVAIL_PrimaryFilterState
     JSR     GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(PC)
 
     ADDQ.W  #8,A7
@@ -580,7 +580,7 @@ DISKIO2_RunDiskSyncWorkflow:
     ADDQ.W  #4,A7
 
 .loc_0492:
-    PEA     DST_BannerWindowPrimary
+    PEA     _DST_BannerWindowPrimary
     JSR     DATETIME_SavePairToFile(PC)
 
     ADDQ.W  #4,A7
@@ -653,13 +653,13 @@ DISKIO2_RunDiskSyncWorkflow:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   DISKIO_LoadFileToWorkBuffer/03B2/03B6, GROUP_AH_JMPTBL_ESQ_WildcardMatch,
-;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory/DeallocateMemory, GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults,
-;   COI_EnsureAnimObjectAllocated, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString, GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket, GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters, ESQPARS_ReplaceOwnedString
+;   _DISKIO_LoadFileToWorkBuffer/03B2/03B6, GROUP_AH_JMPTBL_ESQ_WildcardMatch,
+;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory/DeallocateMemory, GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults,
+;   COI_EnsureAnimObjectAllocated, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString, GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket, GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters, _ESQPARS_ReplaceOwnedString
 ; READS:
-;   CTASKS_PATH_CURDAY_DAT, Global_PTR_WORK_BUFFER, DISKIO_CurrentDriveRevisionIndex, WDISP_WeatherStatusTextPtr, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryEntryPtrTable/2236
+;   CTASKS_PATH_CURDAY_DAT, _Global_PTR_WORK_BUFFER, DISKIO_CurrentDriveRevisionIndex, WDISP_WeatherStatusTextPtr, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryEntryPtrTable/2236
 ; WRITES:
-;   TEXTDISP_PrimaryGroupCode/2231/2238, TEXTDISP_PrimaryGroupRecordChecksum/2248/224A-224C, TEXTDISP_AliasPtrTable tables, WDISP_WeatherStatusTextPtr
+;   _TEXTDISP_PrimaryGroupCode/2231/2238, _TEXTDISP_PrimaryGroupRecordChecksum/2248/224A-224C, _TEXTDISP_AliasPtrTable tables, WDISP_WeatherStatusTextPtr
 ; DESC:
 ;   Parses the on-disk data file, allocates per-entry structures, and fills
 ;   the in-memory tables with parsed records.
@@ -677,7 +677,7 @@ _DISKIO2_LoadCurDayDataFile:
     CMP.W   D0,D7
     BGE.S   .loc_0499
 
-    LEA     ESQ_STR_B,A0
+    LEA     _ESQ_STR_B,A0
     ADDA.W  D7,A0
     MOVE.B  (A0),-65(A5,D7.W)
     ADDQ.W  #1,D7
@@ -685,13 +685,13 @@ _DISKIO2_LoadCurDayDataFile:
 
 .loc_0499:
     PEA     CTASKS_PATH_CURDAY_DAT
-    JSR     DISKIO_LoadFileToWorkBuffer(PC)
+    JSR     _DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0
     BNE.S   .loc_049A
 
-    CLR.W   DST_PrimaryCountdown
+    CLR.W   _DST_PrimaryCountdown
     PEA     -65(A5)
     JSR     GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket(PC)
 
@@ -699,13 +699,13 @@ _DISKIO2_LoadCurDayDataFile:
     BRA.W   .loc_04C0
 
 .loc_049A:
-    MOVE.L  Global_REF_LONG_FILE_SCRATCH,-40(A5)
-    MOVE.L  Global_PTR_WORK_BUFFER,-16(A5)
+    MOVE.L  _Global_REF_LONG_FILE_SCRATCH,-40(A5)
+    MOVE.L  _Global_PTR_WORK_BUFFER,-16(A5)
     MOVEQ   #0,D7
 
     ; Consume header bytes into a local buffer.
 .loc_049B:
-    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D0
+    MOVE.L  _Global_REF_LONG_FILE_SCRATCH,D0
     TST.L   D0
     BLE.S   .loc_049C
 
@@ -713,21 +713,21 @@ _DISKIO2_LoadCurDayDataFile:
     CMP.W   D1,D7
     BGE.S   .loc_049C
 
-    MOVEA.L Global_PTR_WORK_BUFFER,A0
+    MOVEA.L _Global_PTR_WORK_BUFFER,A0
     MOVE.B  (A0)+,-65(A5,D7.W)
-    MOVE.L  A0,Global_PTR_WORK_BUFFER
-    SUBQ.L  #1,Global_REF_LONG_FILE_SCRATCH
+    MOVE.L  A0,_Global_PTR_WORK_BUFFER
+    SUBQ.L  #1,_Global_REF_LONG_FILE_SCRATCH
     ADDQ.W  #1,D7
     BRA.S   .loc_049B
 
 .loc_049C:
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
-    MOVE.W  D0,DST_PrimaryCountdown
+    MOVE.W  D0,_DST_PrimaryCountdown
     PEA     -65(A5)
     JSR     GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket(PC)
 
-    JSR     DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     ADDQ.W  #4,A7
     MOVEA.W #$ffff,A0
@@ -741,14 +741,14 @@ _DISKIO2_LoadCurDayDataFile:
     MOVE.L  -16(A5),-(A7)
     PEA     520.W
     PEA     Global_STR_DISKIO2_C_4
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
     BRA.W   .loc_04C0
 
 .loc_049D:
     MOVEA.L D0,A0
-    LEA     DISKIO_ErrorMessageScratch,A1
+    LEA     _DISKIO_ErrorMessageScratch,A1
 
     ; Copy NUL-terminated identifier string.
 .loc_049E:
@@ -756,7 +756,7 @@ _DISKIO2_LoadCurDayDataFile:
     BNE.S   .loc_049E
 
     PEA     DISKIO2_STR_DREV_1
-    PEA     DISKIO_ErrorMessageScratch
+    PEA     _DISKIO_ErrorMessageScratch
     JSR     GROUP_AH_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -770,7 +770,7 @@ _DISKIO2_LoadCurDayDataFile:
 
 .loc_049F:
     PEA     DISKIO2_STR_DREV_2
-    PEA     DISKIO_ErrorMessageScratch
+    PEA     _DISKIO_ErrorMessageScratch
     JSR     GROUP_AH_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -784,7 +784,7 @@ _DISKIO2_LoadCurDayDataFile:
 
 .loc_04A0:
     PEA     DISKIO2_STR_DREV_3
-    PEA     DISKIO_ErrorMessageScratch
+    PEA     _DISKIO_ErrorMessageScratch
     JSR     GROUP_AH_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -798,7 +798,7 @@ _DISKIO2_LoadCurDayDataFile:
 
 .loc_04A1:
     PEA     DISKIO2_STR_DREV_4
-    PEA     DISKIO_ErrorMessageScratch
+    PEA     _DISKIO_ErrorMessageScratch
     JSR     GROUP_AH_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -812,7 +812,7 @@ _DISKIO2_LoadCurDayDataFile:
 
 .loc_04A2:
     PEA     DISKIO2_STR_DREV_5
-    PEA     DISKIO_ErrorMessageScratch
+    PEA     _DISKIO_ErrorMessageScratch
     JSR     GROUP_AH_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -831,13 +831,13 @@ _DISKIO2_LoadCurDayDataFile:
     MOVE.L  -16(A5),-(A7)
     PEA     561.W
     PEA     Global_STR_DISKIO2_C_5
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
     BRA.W   .loc_04C0
 
 .loc_04A4:
-    JSR     DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-12(A5)
@@ -850,14 +850,14 @@ _DISKIO2_LoadCurDayDataFile:
     MOVE.L  -16(A5),-(A7)
     PEA     570.W
     PEA     Global_STR_DISKIO2_C_6
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
     BRA.W   .loc_04C0
 
 .loc_04A5:
     MOVEA.L D0,A0
-    LEA     WDISP_WeatherStatusLabelBuffer,A1
+    LEA     _WDISP_WeatherStatusLabelBuffer,A1
 
 .loc_04A6:
     MOVE.B  (A0)+,(A1)+
@@ -867,7 +867,7 @@ _DISKIO2_LoadCurDayDataFile:
     TST.W   D0
     BLE.S   .loc_04A8
 
-    JSR     DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-12(A5)
@@ -880,7 +880,7 @@ _DISKIO2_LoadCurDayDataFile:
     MOVE.L  -16(A5),-(A7)
     PEA     588.W
     PEA     Global_STR_DISKIO2_C_7
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
     BRA.W   .loc_04C0
@@ -888,13 +888,13 @@ _DISKIO2_LoadCurDayDataFile:
 .loc_04A7:
     MOVE.L  WDISP_WeatherStatusTextPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,WDISP_WeatherStatusTextPtr
 
 .loc_04A8:
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -902,24 +902,24 @@ _DISKIO2_LoadCurDayDataFile:
     NOT.B   D0
     AND.L   D0,D1
     MOVEQ   #0,D7
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     MOVE.B  D1,-41(A5)
     CMP.B   D0,D1
     BNE.W   .loc_04BC
 
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.W  D0,-44(A5)
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
-    MOVE.B  D0,TEXTDISP_PrimaryGroupRecordChecksum
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    MOVE.B  D0,_TEXTDISP_PrimaryGroupRecordChecksum
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
-    MOVE.W  D0,TEXTDISP_PrimaryGroupRecordLength
-    MOVE.B  #$1,TEXTDISP_PrimaryGroupPresentFlag
-    MOVE.W  #1,TEXTDISP_GroupMutationState
+    MOVE.W  D0,_TEXTDISP_PrimaryGroupRecordLength
+    MOVE.B  #$1,_TEXTDISP_PrimaryGroupPresentFlag
+    MOVE.W  #1,_TEXTDISP_GroupMutationState
     MOVEQ   #0,D0
-    MOVE.W  D0,TEXTDISP_MaxEntryTitleLength
+    MOVE.W  D0,_TEXTDISP_MaxEntryTitleLength
     CLR.L   -36(A5)
     MOVE.L  D0,D7
 
@@ -932,7 +932,7 @@ _DISKIO2_LoadCurDayDataFile:
     PEA     52.W
     PEA     634.W
     PEA     Global_STR_DISKIO2_C_8
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L D0,A3
@@ -948,7 +948,7 @@ _DISKIO2_LoadCurDayDataFile:
     PEA     500.W
     PEA     640.W
     PEA     Global_STR_DISKIO2_C_9
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L D0,A2
@@ -961,7 +961,7 @@ _DISKIO2_LoadCurDayDataFile:
     MOVE.L  A3,-(A7)
     PEA     644.W
     PEA     Global_STR_DISKIO2_C_10
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     BRA.W   .loc_04BD
@@ -984,11 +984,11 @@ _DISKIO2_LoadCurDayDataFile:
     CMP.L   -32(A5),D0
     BGE.S   .loc_04AD
 
-    MOVEA.L Global_PTR_WORK_BUFFER,A0
+    MOVEA.L _Global_PTR_WORK_BUFFER,A0
     MOVEA.L -20(A5),A1
     MOVE.B  (A0)+,(A1)+
-    MOVE.L  A0,Global_PTR_WORK_BUFFER
-    SUBQ.L  #1,Global_REF_LONG_FILE_SCRATCH
+    MOVE.L  A0,_Global_PTR_WORK_BUFFER
+    SUBQ.L  #1,_Global_REF_LONG_FILE_SCRATCH
     MOVE.L  A1,-20(A5)
     ADDQ.W  #1,D6
     BRA.S   .loc_04AC
@@ -1008,14 +1008,14 @@ _DISKIO2_LoadCurDayDataFile:
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D5
-    MOVE.W  TEXTDISP_MaxEntryTitleLength,D0
+    MOVE.W  _TEXTDISP_MaxEntryTitleLength,D0
     CMP.W   D0,D5
     BLE.S   .loc_04AF
 
-    MOVE.W  D5,TEXTDISP_MaxEntryTitleLength
+    MOVE.W  D5,_TEXTDISP_MaxEntryTitleLength
 
 .loc_04AF:
-    JSR     DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-12(A5)
@@ -1053,7 +1053,7 @@ _DISKIO2_LoadCurDayDataFile:
     TST.W   D0
     BPL.S   .loc_04B3
 
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.W  D0,-28(A5)
 
@@ -1067,30 +1067,30 @@ _DISKIO2_LoadCurDayDataFile:
     MOVE.W  #(-1),-28(A5)
 
 .loc_04B5:
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.B  D0,7(A2,D5.W)
     CMPI.W  #1,DISKIO_CurrentDriveRevisionIndex
     BLE.S   .loc_04B6
 
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.L  D5,D1
     ADDI.W  #$fc,D1
     MOVE.B  D0,0(A2,D1.W)
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.L  D5,D1
     ADDI.W  #$12d,D1
     MOVE.B  D0,0(A2,D1.W)
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.L  D5,D1
     ADDI.W  #$15e,D1
     MOVE.B  D0,0(A2,D1.W)
 
 .loc_04B6:
-    JSR     DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-12(A5)
@@ -1113,7 +1113,7 @@ _DISKIO2_LoadCurDayDataFile:
     MOVE.L  56(A2,D0.L),(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  D0,36(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
     MOVE.L  24(A7),D1
@@ -1141,7 +1141,7 @@ _DISKIO2_LoadCurDayDataFile:
     CMP.W   -28(A5),D0
     BNE.S   .loc_04BA
 
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.W  D0,-28(A5)
 
@@ -1154,13 +1154,13 @@ _DISKIO2_LoadCurDayDataFile:
     MOVE.L  A3,-(A7)
     PEA     736.W
     PEA     Global_STR_DISKIO2_C_11
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     PEA     500.W
     MOVE.L  A2,-(A7)
     PEA     737.W
     PEA     Global_STR_DISKIO2_C_12
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7
     BRA.S   .loc_04BD
@@ -1169,10 +1169,10 @@ _DISKIO2_LoadCurDayDataFile:
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  A3,(A0)
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  A2,(A0)
     ADDQ.W  #1,D7
@@ -1183,16 +1183,16 @@ _DISKIO2_LoadCurDayDataFile:
     MOVE.L  D0,-36(A5)
 
 .loc_04BD:
-    MOVE.B  -41(A5),TEXTDISP_PrimaryGroupHeaderCode
+    MOVE.B  -41(A5),_TEXTDISP_PrimaryGroupHeaderCode
     MOVE.L  D7,D0
-    MOVE.W  D0,TEXTDISP_PrimaryGroupEntryCount
+    MOVE.W  D0,_TEXTDISP_PrimaryGroupEntryCount
     MOVE.L  -40(A5),D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     764.W
     PEA     Global_STR_DISKIO2_C_13
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
     MOVE.B  -41(A5),D0
@@ -1203,14 +1203,14 @@ _DISKIO2_LoadCurDayDataFile:
     ADDQ.L  #1,D0
     BEQ.S   .loc_04BE
 
-    MOVE.B  #$1,CTASKS_PrimaryOiWritePendingFlag
-    MOVE.B  -41(A5),CTASKS_PendingPrimaryOiDiskId
+    MOVE.B  #$1,_CTASKS_PrimaryOiWritePendingFlag
+    MOVE.B  -41(A5),_CTASKS_PendingPrimaryOiDiskId
     BRA.S   .loc_04BF
 
 .loc_04BE:
     MOVEQ   #0,D0
-    MOVE.B  D0,CTASKS_PrimaryOiWritePendingFlag
-    MOVE.B  D0,CTASKS_PendingPrimaryOiDiskId
+    MOVE.B  D0,_CTASKS_PrimaryOiWritePendingFlag
+    MOVE.B  D0,_CTASKS_PendingPrimaryOiDiskId
 
 .loc_04BF:
     MOVE.L  -36(A5),D0
@@ -1235,9 +1235,9 @@ _DISKIO2_LoadCurDayDataFile:
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D1/D6/D7
 ; CALLS:
-;   DISKIO_OpenFileWithBuffer, DISKIO_WriteBufferedBytes, DISKIO_WriteDecimalField, DISKIO_CloseBufferedFileAndFlush, DISKIO2_CopyAndSanitizeSlotString
+;   _DISKIO_OpenFileWithBuffer, _DISKIO_WriteBufferedBytes, _DISKIO_WriteDecimalField, _DISKIO_CloseBufferedFileAndFlush, DISKIO2_CopyAndSanitizeSlotString
 ; READS:
-;   TEXTDISP_SecondaryGroupCode/222F/224D/224E, TEXTDISP_SecondaryEntryPtrTable/2237 tables
+;   _TEXTDISP_SecondaryGroupCode/222F/224D/224E, _TEXTDISP_SecondaryEntryPtrTable/2237 tables
 ; WRITES:
 ;   DISKIO2_NxtDayFileHandle, DISKIO_SaveOperationReadyFlag
 ; DESC:
@@ -1252,7 +1252,7 @@ DISKIO2_WriteNxtDayDataFile:
 .offsetAllocatedMemory  = -22
 .desiredMemory          = 1000
 
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     CMPI.W  #200,D0
     BLS.S   .writenxt_guard_save_ready
 
@@ -1274,7 +1274,7 @@ DISKIO2_WriteNxtDayDataFile:
     PEA     (.desiredMemory).W
     PEA     817.W
     PEA     Global_STR_DISKIO2_C_14
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,.offsetAllocatedMemory(A5)
@@ -1288,7 +1288,7 @@ DISKIO2_WriteNxtDayDataFile:
 .writenxt_open_output_file:
     PEA     (MODE_NEWFILE).W
     PEA     Global_STR_DF0_NXTDAY_DAT
-    JSR     DISKIO_OpenFileWithBuffer(PC)
+    JSR     _DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,DISKIO2_NxtDayFileHandle
@@ -1301,58 +1301,58 @@ DISKIO2_WriteNxtDayDataFile:
     MOVE.L  .offsetAllocatedMemory(A5),-(A7)
     PEA     839.W
     PEA     Global_STR_DISKIO2_C_15
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
     BRA.W   .writenxt_return
 
 .writenxt_write_header:
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     MOVE.L  D0,-(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_SecondaryGroupRecordChecksum,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupRecordChecksum,D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupRecordLength,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupRecordLength,D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D7
 
     ; For each entry, write the per-record header and fields.
 .writenxt_entry_loop:
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     CMP.W   D0,D7
     BGE.W   .writenxt_finalize_and_free
 
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
     PEA     48.W
     MOVE.L  -4(A5),-(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     MOVEA.L -8(A5),A0
 
@@ -1367,7 +1367,7 @@ DISKIO2_WriteNxtDayDataFile:
     MOVE.L  D0,(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D6
@@ -1401,14 +1401,14 @@ DISKIO2_WriteNxtDayDataFile:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
     MOVE.B  7(A0,D6.W),D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
@@ -1417,7 +1417,7 @@ DISKIO2_WriteNxtDayDataFile:
     MOVE.B  0(A0,D1.W),D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
@@ -1426,7 +1426,7 @@ DISKIO2_WriteNxtDayDataFile:
     MOVE.B  0(A0,D1.W),D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
@@ -1435,10 +1435,10 @@ DISKIO2_WriteNxtDayDataFile:
     MOVE.B  0(A0,D1.W),D0
     MOVE.L  D0,(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     LEA     24(A7),A7
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     MOVEQ   #100,D1
     CMP.W   D1,D0
     BLS.S   .writenxt_use_existing_slot_ptr
@@ -1478,7 +1478,7 @@ DISKIO2_WriteNxtDayDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     LEA     12(A7),A7
 
@@ -1491,7 +1491,7 @@ DISKIO2_WriteNxtDayDataFile:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     ADDQ.W  #8,A7
     ADDQ.W  #1,D7
@@ -1499,7 +1499,7 @@ DISKIO2_WriteNxtDayDataFile:
 
 .writenxt_finalize_and_free:
     MOVE.L  DISKIO2_NxtDayFileHandle,-(A7)
-    JSR     DISKIO_CloseBufferedFileAndFlush(PC)
+    JSR     _DISKIO_CloseBufferedFileAndFlush(PC)
 
     MOVEQ   #1,D0
     MOVE.L  D0,DISKIO_SaveOperationReadyFlag
@@ -1507,7 +1507,7 @@ DISKIO2_WriteNxtDayDataFile:
     MOVE.L  -22(A5),-(A7)
     PEA     901.W
     PEA     Global_STR_DISKIO2_C_16
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
 
@@ -1534,12 +1534,12 @@ DISKIO2_WriteNxtDayDataFile:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   DISKIO_LoadFileToWorkBuffer/03B2/03B6, GROUP_AG_JMPTBL_MEMORY_AllocateMemory/DeallocateMemory,
-;   GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults, COI_EnsureAnimObjectAllocated, GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString, COI_LoadOiDataFile
+;   _DISKIO_LoadFileToWorkBuffer/03B2/03B6, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory/DeallocateMemory,
+;   GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults, COI_EnsureAnimObjectAllocated, GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters, _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString, COI_LoadOiDataFile
 ; READS:
-;   Global_STR_DF0_NXTDAY_DAT, Global_PTR_WORK_BUFFER, DISKIO_CurrentDriveRevisionIndex, TEXTDISP_SecondaryGroupCode
+;   Global_STR_DF0_NXTDAY_DAT, _Global_PTR_WORK_BUFFER, DISKIO_CurrentDriveRevisionIndex, _TEXTDISP_SecondaryGroupCode
 ; WRITES:
-;   TEXTDISP_SecondaryGroupCode/222F/222E, TEXTDISP_SecondaryGroupRecordChecksum/224E, TEXTDISP_SecondaryEntryPtrTable/2237, TEXTDISP_SecondaryGroupHeaderCode, CTASKS_SecondaryOiWritePendingFlag/1B92
+;   _TEXTDISP_SecondaryGroupCode/222F/222E, _TEXTDISP_SecondaryGroupRecordChecksum/224E, _TEXTDISP_SecondaryEntryPtrTable/2237, _TEXTDISP_SecondaryGroupHeaderCode, _CTASKS_SecondaryOiWritePendingFlag/1B92
 ; DESC:
 ;   Parses NXTDAY.DAT, allocates per-entry records, and fills in-memory tables.
 ; NOTES:
@@ -1550,7 +1550,7 @@ _DISKIO2_LoadNxtDayDataFile:
     MOVEM.L D5-D7/A2-A3,-(A7)
 
     PEA     Global_STR_DF0_NXTDAY_DAT
-    JSR     DISKIO_LoadFileToWorkBuffer(PC)
+    JSR     _DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0
@@ -1560,9 +1560,9 @@ _DISKIO2_LoadNxtDayDataFile:
     BRA.W   .loc_04E5
 
 .loc_04D1:
-    MOVE.L  Global_REF_LONG_FILE_SCRATCH,-36(A5)
-    MOVE.L  Global_PTR_WORK_BUFFER,-16(A5)
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    MOVE.L  _Global_REF_LONG_FILE_SCRATCH,-36(A5)
+    MOVE.L  _Global_PTR_WORK_BUFFER,-16(A5)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1570,21 +1570,21 @@ _DISKIO2_LoadNxtDayDataFile:
     NOT.B   D0
     AND.L   D0,D1
     MOVEQ   #0,D7
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     MOVE.B  D1,-37(A5)
     CMP.B   D0,D1
     BNE.W   .loc_04E2
 
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.W  D0,-40(A5)
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
-    MOVE.B  D0,TEXTDISP_SecondaryGroupRecordChecksum
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    MOVE.B  D0,_TEXTDISP_SecondaryGroupRecordChecksum
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
-    MOVE.W  D0,TEXTDISP_SecondaryGroupRecordLength
-    MOVE.B  #$1,TEXTDISP_SecondaryGroupPresentFlag
+    MOVE.W  D0,_TEXTDISP_SecondaryGroupRecordLength
+    MOVE.B  #$1,_TEXTDISP_SecondaryGroupPresentFlag
     CLR.L   -32(A5)
     MOVEQ   #0,D7
 
@@ -1597,7 +1597,7 @@ _DISKIO2_LoadNxtDayDataFile:
     PEA     52.W
     PEA     948.W
     PEA     Global_STR_DISKIO2_C_17
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L D0,A3
@@ -1613,7 +1613,7 @@ _DISKIO2_LoadNxtDayDataFile:
     PEA     500.W
     PEA     954.W
     PEA     Global_STR_DISKIO2_C_18
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L D0,A2
@@ -1626,7 +1626,7 @@ _DISKIO2_LoadNxtDayDataFile:
     MOVE.L  A3,-(A7)
     PEA     958.W
     PEA     Global_STR_DISKIO2_C_19
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     BRA.W   .loc_04E2
@@ -1650,11 +1650,11 @@ _DISKIO2_LoadNxtDayDataFile:
     CMP.L   D1,D0
     BCC.S   .loc_04D6
 
-    MOVEA.L Global_PTR_WORK_BUFFER,A0
+    MOVEA.L _Global_PTR_WORK_BUFFER,A0
     MOVEA.L -20(A5),A1
     MOVE.B  (A0)+,(A1)+
-    MOVE.L  A0,Global_PTR_WORK_BUFFER
-    SUBQ.L  #1,Global_REF_LONG_FILE_SCRATCH
+    MOVE.L  A0,_Global_PTR_WORK_BUFFER
+    SUBQ.L  #1,_Global_REF_LONG_FILE_SCRATCH
     MOVE.L  A1,-20(A5)
     ADDQ.W  #1,D6
     BRA.S   .loc_04D5
@@ -1664,7 +1664,7 @@ _DISKIO2_LoadNxtDayDataFile:
     MOVE.B  40(A3),D0
     ANDI.W  #$ff7f,D0
     MOVE.B  D0,40(A3)
-    JSR     DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-12(A5)
@@ -1703,7 +1703,7 @@ _DISKIO2_LoadNxtDayDataFile:
     TST.W   D0
     BPL.S   .loc_04DA
 
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.W  D0,-28(A5)
 
@@ -1717,25 +1717,25 @@ _DISKIO2_LoadNxtDayDataFile:
     MOVE.W  #(-1),-28(A5)
 
 .loc_04DC:
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.B  D0,7(A2,D5.W)
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.L  D5,D1
     ADDI.W  #$fc,D1
     MOVE.B  D0,0(A2,D1.W)
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.L  D5,D1
     ADDI.W  #$12d,D1
     MOVE.B  D0,0(A2,D1.W)
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.L  D5,D1
     ADDI.W  #$15e,D1
     MOVE.B  D0,0(A2,D1.W)
-    JSR     DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-12(A5)
@@ -1758,7 +1758,7 @@ _DISKIO2_LoadNxtDayDataFile:
     MOVE.L  56(A2,D0.L),(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  D0,36(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
     MOVE.L  24(A7),D1
@@ -1786,7 +1786,7 @@ _DISKIO2_LoadNxtDayDataFile:
     CMP.W   -28(A5),D0
     BNE.S   .loc_04E0
 
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.W  D0,-28(A5)
 
@@ -1799,13 +1799,13 @@ _DISKIO2_LoadNxtDayDataFile:
     MOVE.L  A3,-(A7)
     PEA     1027.W
     PEA     Global_STR_DISKIO2_C_20
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     PEA     500.W
     MOVE.L  A2,-(A7)
     PEA     1028.W
     PEA     Global_STR_DISKIO2_C_21
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7
     BRA.S   .loc_04E2
@@ -1814,26 +1814,26 @@ _DISKIO2_LoadNxtDayDataFile:
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  A3,(A0)
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  A2,(A0)
     ADDQ.W  #1,D7
     BRA.W   .loc_04D2
 
 .loc_04E2:
-    MOVE.B  -37(A5),TEXTDISP_SecondaryGroupHeaderCode
+    MOVE.B  -37(A5),_TEXTDISP_SecondaryGroupHeaderCode
     MOVE.L  D7,D0
-    MOVE.W  D0,TEXTDISP_SecondaryGroupEntryCount
+    MOVE.W  D0,_TEXTDISP_SecondaryGroupEntryCount
     MOVE.L  -36(A5),D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     1041.W
     PEA     Global_STR_DISKIO2_C_22
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
     MOVE.B  -37(A5),D0
@@ -1844,14 +1844,14 @@ _DISKIO2_LoadNxtDayDataFile:
     ADDQ.L  #1,D0
     BEQ.S   .loc_04E3
 
-    MOVE.B  #$1,CTASKS_SecondaryOiWritePendingFlag
-    MOVE.B  -37(A5),CTASKS_PendingSecondaryOiDiskId
+    MOVE.B  #$1,_CTASKS_SecondaryOiWritePendingFlag
+    MOVE.B  -37(A5),_CTASKS_PendingSecondaryOiDiskId
     BRA.S   .loc_04E4
 
 .loc_04E3:
     MOVEQ   #0,D0
-    MOVE.B  D0,CTASKS_SecondaryOiWritePendingFlag
-    MOVE.B  D0,CTASKS_PendingSecondaryOiDiskId
+    MOVE.B  D0,_CTASKS_SecondaryOiWritePendingFlag
+    MOVE.B  D0,_CTASKS_PendingSecondaryOiDiskId
 
 .loc_04E4:
     MOVE.L  -32(A5),D0
@@ -1873,21 +1873,21 @@ _DISKIO2_LoadNxtDayDataFile:
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D1/D7
 ; CALLS:
-;   DISKIO_OpenFileWithBuffer, DISKIO_WriteBufferedBytes, DISKIO_CloseBufferedFileAndFlush
+;   _DISKIO_OpenFileWithBuffer, _DISKIO_WriteBufferedBytes, _DISKIO_CloseBufferedFileAndFlush
 ; READS:
-;   TEXTDISP_AliasCount, TEXTDISP_AliasPtrTable tables
+;   _TEXTDISP_AliasCount, _TEXTDISP_AliasPtrTable tables
 ; WRITES:
-;   DISKIO2_QTableIniFileHandle
+;   _DISKIO2_QTableIniFileHandle
 ; DESC:
-;   Writes a banner list file using the current TEXTDISP_AliasPtrTable entries.
+;   Writes a banner list file using the current _TEXTDISP_AliasPtrTable entries.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DISKIO2_WriteQTableIniFile:
     LINK.W  A5,#-12
     MOVE.L  D7,-(A7)
-    MOVE.L  #DISKIO2_STR_QTABLE,-4(A5)
-    MOVE.W  TEXTDISP_AliasCount,D0
+    MOVE.L  #_DISKIO2_STR_QTABLE,-4(A5)
+    MOVE.W  _TEXTDISP_AliasCount,D0
     MOVEQ   #1,D1
     CMP.W   D1,D0
     BGE.S   .writeqtable_open_file
@@ -1897,15 +1897,15 @@ DISKIO2_WriteQTableIniFile:
 
 .writeqtable_open_file:
     PEA     MODE_NEWFILE.W
-    PEA     CTASKS_PATH_QTABLE_INI
-    JSR     DISKIO_OpenFileWithBuffer(PC)
+    PEA     _CTASKS_PATH_QTABLE_INI
+    JSR     _DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DISKIO2_QTableIniFileHandle
+    MOVE.L  D0,_DISKIO2_QTableIniFileHandle
     TST.L   D0
     BEQ.S   .writeqtable_fail
 
-    MOVE.W  TEXTDISP_AliasCount,D0
+    MOVE.W  _TEXTDISP_AliasCount,D0
     BNE.S   .writeqtable_write_header
 
 .writeqtable_fail:
@@ -1923,27 +1923,27 @@ DISKIO2_WriteQTableIniFile:
     SUBA.L  -4(A5),A0
     MOVE.L  A0,-(A7)
     MOVE.L  -4(A5),-(A7)
-    MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    MOVE.L  _DISKIO2_QTableIniFileHandle,-(A7)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     2.W
-    PEA     DISKIO2_STR_QTableLineBreakAfterHeader
-    MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    PEA     _DISKIO2_STR_QTableLineBreakAfterHeader
+    MOVE.L  _DISKIO2_QTableIniFileHandle,-(A7)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     LEA     24(A7),A7
     MOVEQ   #0,D7
 
     ; Emit each banner entry with separators.
 .writeqtable_entry_loop:
-    MOVE.W  TEXTDISP_AliasCount,D0
+    MOVE.W  _TEXTDISP_AliasCount,D0
     CMP.W   D0,D7
     BCC.W   .writeqtable_close_file
 
     MOVEQ   #0,D0
     MOVE.W  D7,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_AliasPtrTable,A0
+    LEA     _TEXTDISP_AliasPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
     MOVEA.L -8(A5),A1
@@ -1958,18 +1958,18 @@ DISKIO2_WriteQTableIniFile:
     SUBA.L  (A1),A0
     MOVE.L  A0,-(A7)
     MOVE.L  (A1),-(A7)
-    MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    MOVE.L  _DISKIO2_QTableIniFileHandle,-(A7)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     DISKIO2_STR_QTableEquals
-    MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    PEA     _DISKIO2_STR_QTableEquals
+    MOVE.L  _DISKIO2_QTableIniFileHandle,-(A7)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     DISKIO2_STR_QTableValueQuoteOpen
-    MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    PEA     _DISKIO2_STR_QTableValueQuoteOpen
+    MOVE.L  _DISKIO2_QTableIniFileHandle,-(A7)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     MOVEA.L -8(A5),A1
     MOVEA.L 4(A1),A0
@@ -1983,26 +1983,26 @@ DISKIO2_WriteQTableIniFile:
     SUBA.L  4(A1),A0
     MOVE.L  A0,(A7)
     MOVE.L  4(A1),-(A7)
-    MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    MOVE.L  _DISKIO2_QTableIniFileHandle,-(A7)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     DISKIO2_STR_QTableValueQuoteClose
-    MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    PEA     _DISKIO2_STR_QTableValueQuoteClose
+    MOVE.L  _DISKIO2_QTableIniFileHandle,-(A7)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     2.W
-    PEA     DISKIO2_STR_QTableLineBreakAfterEntry
-    MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    PEA     _DISKIO2_STR_QTableLineBreakAfterEntry
+    MOVE.L  _DISKIO2_QTableIniFileHandle,-(A7)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     LEA     68(A7),A7
     ADDQ.W  #1,D7
     BRA.W   .writeqtable_entry_loop
 
 .writeqtable_close_file:
-    MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
-    JSR     DISKIO_CloseBufferedFileAndFlush(PC)
+    MOVE.L  _DISKIO2_QTableIniFileHandle,-(A7)
+    JSR     _DISKIO_CloseBufferedFileAndFlush(PC)
 
 .writeqtable_return:
     MOVE.L  -16(A5),D7
@@ -2020,21 +2020,21 @@ DISKIO2_WriteQTableIniFile:
 ; CLOBBERS:
 ;   A7
 ; CALLS:
-;   GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers, PARSEINI_ParseIniBufferAndDispatch
+;   _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers, PARSEINI_ParseIniBufferAndDispatch
 ; READS:
-;   CTASKS_PATH_QTABLE_INI
+;   _CTASKS_PATH_QTABLE_INI
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Invokes the INI parser for the CTASKS_PATH_QTABLE_INI file.
+;   Invokes the INI parser for the _CTASKS_PATH_QTABLE_INI file.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DISKIO2_ParseIniFileFromDisk:
-    JSR     GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers(PC)
+    JSR     _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers(PC)
 
-    PEA     CTASKS_PATH_QTABLE_INI
-    JSR     GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
+    PEA     _CTASKS_PATH_QTABLE_INI
+    JSR     _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
 
     ADDQ.W  #4,A7
     RTS
@@ -2042,7 +2042,7 @@ DISKIO2_ParseIniFileFromDisk:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DISKIO2_WriteOinfoDataFile   (Write small config file CTASKS_PATH_OINFO_DAT.)
+; FUNC: DISKIO2_WriteOinfoDataFile   (Write small config file _CTASKS_PATH_OINFO_DAT.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2050,24 +2050,24 @@ DISKIO2_ParseIniFileFromDisk:
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0
 ; CALLS:
-;   DISKIO_OpenFileWithBuffer, DISKIO_WriteBufferedBytes, DISKIO_WriteDecimalField, DISKIO_CloseBufferedFileAndFlush
+;   _DISKIO_OpenFileWithBuffer, _DISKIO_WriteBufferedBytes, _DISKIO_WriteDecimalField, _DISKIO_CloseBufferedFileAndFlush
 ; READS:
-;   TEXTDISP_PrimaryGroupCode, ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr
+;   _TEXTDISP_PrimaryGroupCode, _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr
 ; WRITES:
-;   DISKIO2_OinfoFileHandle
+;   _DISKIO2_OinfoFileHandle
 ; DESC:
-;   Opens CTASKS_PATH_OINFO_DAT and writes two optional strings plus a header byte.
+;   Opens _CTASKS_PATH_OINFO_DAT and writes two optional strings plus a header byte.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DISKIO2_WriteOinfoDataFile:
     LINK.W  A5,#-8
     PEA     MODE_NEWFILE.W
-    PEA     CTASKS_PATH_OINFO_DAT
-    JSR     DISKIO_OpenFileWithBuffer(PC)
+    PEA     _CTASKS_PATH_OINFO_DAT
+    JSR     _DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DISKIO2_OinfoFileHandle
+    MOVE.L  D0,_DISKIO2_OinfoFileHandle
     TST.L   D0
     BNE.S   .loc_04F2
 
@@ -2077,20 +2077,20 @@ DISKIO2_WriteOinfoDataFile:
 .loc_04F2:
     CLR.B   -5(A5)
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     MOVE.L  D0,-(A7)
-    MOVE.L  DISKIO2_OinfoFileHandle,-(A7)
-    JSR     DISKIO_WriteDecimalField(PC)
+    MOVE.L  _DISKIO2_OinfoFileHandle,-(A7)
+    JSR     _DISKIO_WriteDecimalField(PC)
 
     ADDQ.W  #8,A7
-    TST.L   ESQIFF_PrimaryLineHeadPtr
+    TST.L   _ESQIFF_PrimaryLineHeadPtr
     BNE.S   .loc_04F3
 
     LEA     -5(A5),A0
     BRA.S   .loc_04F4
 
 .loc_04F3:
-    MOVEA.L ESQIFF_PrimaryLineHeadPtr,A0
+    MOVEA.L _ESQIFF_PrimaryLineHeadPtr,A0
 
 .loc_04F4:
     MOVEA.L A0,A1
@@ -2106,19 +2106,19 @@ DISKIO2_WriteOinfoDataFile:
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    MOVE.L  DISKIO2_OinfoFileHandle,-(A7)
+    MOVE.L  _DISKIO2_OinfoFileHandle,-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     LEA     12(A7),A7
-    TST.L   ESQIFF_PrimaryLineTailPtr
+    TST.L   _ESQIFF_PrimaryLineTailPtr
     BNE.S   .loc_04F6
 
     LEA     -5(A5),A0
     BRA.S   .loc_04F7
 
 .loc_04F6:
-    MOVEA.L ESQIFF_PrimaryLineTailPtr,A0
+    MOVEA.L _ESQIFF_PrimaryLineTailPtr,A0
 
 .loc_04F7:
     MOVEA.L A0,A1
@@ -2134,12 +2134,12 @@ DISKIO2_WriteOinfoDataFile:
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    MOVE.L  DISKIO2_OinfoFileHandle,-(A7)
+    MOVE.L  _DISKIO2_OinfoFileHandle,-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
-    MOVE.L  DISKIO2_OinfoFileHandle,(A7)
-    JSR     DISKIO_CloseBufferedFileAndFlush(PC)
+    MOVE.L  _DISKIO2_OinfoFileHandle,(A7)
+    JSR     _DISKIO_CloseBufferedFileAndFlush(PC)
 
     MOVEQ   #0,D0
 
@@ -2150,7 +2150,7 @@ DISKIO2_WriteOinfoDataFile:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: _DISKIO2_LoadOinfoDataFile   (Read config file CTASKS_PATH_OINFO_DAT.)
+; FUNC: _DISKIO2_LoadOinfoDataFile   (Read config file _CTASKS_PATH_OINFO_DAT.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -2160,13 +2160,13 @@ DISKIO2_WriteOinfoDataFile:
 ; CLOBBERS:
 ;   A0/A1/A2/A5/A7/D0/D1/D6/D7
 ; CALLS:
-;   DISKIO_LoadFileToWorkBuffer, DISKIO_ConsumeCStringFromWorkBuffer, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+;   _DISKIO_LoadFileToWorkBuffer, _DISKIO_ConsumeCStringFromWorkBuffer, _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   CTASKS_PATH_OINFO_DAT, TEXTDISP_PrimaryGroupCode
+;   _CTASKS_PATH_OINFO_DAT, _TEXTDISP_PrimaryGroupCode
 ; WRITES:
-;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr
 ; DESC:
-;   Parses two strings from CTASKS_PATH_OINFO_DAT and stores them in globals.
+;   Parses two strings from _CTASKS_PATH_OINFO_DAT and stores them in globals.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
@@ -2174,10 +2174,10 @@ _DISKIO2_LoadOinfoDataFile:
     LINK.W  A5,#-20
     MOVEM.L D6-D7/A2,-(A7)
     SUBA.L  A0,A0
-    PEA     CTASKS_PATH_OINFO_DAT
+    PEA     _CTASKS_PATH_OINFO_DAT
     MOVE.L  A0,-8(A5)
     MOVE.L  A0,-4(A5)
-    JSR     DISKIO_LoadFileToWorkBuffer(PC)
+    JSR     _DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0
@@ -2187,9 +2187,9 @@ _DISKIO2_LoadOinfoDataFile:
     BRA.W   .loc_04FE
 
 .loc_04FB:
-    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D6
-    MOVE.L  Global_PTR_WORK_BUFFER,-12(A5)
-    JSR     DISKIO_ParseLongFromWorkBuffer(PC)
+    MOVE.L  _Global_REF_LONG_FILE_SCRATCH,D6
+    MOVE.L  _Global_PTR_WORK_BUFFER,-12(A5)
+    JSR     _DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -2197,14 +2197,14 @@ _DISKIO2_LoadOinfoDataFile:
     NOT.B   D0
     AND.L   D0,D1
     MOVE.L  D1,D7
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     CMP.B   D0,D7
     BNE.S   .loc_04FC
 
-    JSR     DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     MOVE.L  D0,-4(A5)
-    JSR     DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     MOVE.L  D0,-8(A5)
 
@@ -2218,17 +2218,17 @@ _DISKIO2_LoadOinfoDataFile:
     CMPA.L  A0,A2
     BEQ.S   .loc_04FD
 
-    MOVE.L  ESQIFF_PrimaryLineHeadPtr,-(A7)
+    MOVE.L  _ESQIFF_PrimaryLineHeadPtr,-(A7)
     MOVE.L  A1,-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
-    MOVE.L  D0,ESQIFF_PrimaryLineHeadPtr
-    MOVE.L  ESQIFF_PrimaryLineTailPtr,(A7)
+    MOVE.L  D0,_ESQIFF_PrimaryLineHeadPtr
+    MOVE.L  _ESQIFF_PrimaryLineTailPtr,(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,ESQIFF_PrimaryLineTailPtr
+    MOVE.L  D0,_ESQIFF_PrimaryLineTailPtr
 
 .loc_04FD:
     MOVE.L  D6,D0
@@ -2236,8 +2236,8 @@ _DISKIO2_LoadOinfoDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     1191.W
-    PEA     Global_STR_DISKIO2_C_23
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_DISKIO2_C_23
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
 
@@ -2268,13 +2268,13 @@ _DISKIO2_LoadOinfoDataFile:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi, GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte, DISPLIB_DisplayTextAtPosition, GROUP_AG_JMPTBL_STRING_CopyPadNul,
+;   GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi, GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte, _DISPLIB_DisplayTextAtPosition, GROUP_AG_JMPTBL_STRING_CopyPadNul,
 ;   _LVOLock/_LVOUnLock/_LVOOpen/_LVOClose/_LVORead/_LVOWrite/_LVODeleteFile,
-;   GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay, GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults, GROUP_AH_JMPTBL_STR_FindAnyCharPtr, DISKIO2_ReceiveTransferBlocksToFile
+;   _GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay, GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults, _GROUP_AH_JMPTBL_STR_FindAnyCharPtr, DISKIO2_ReceiveTransferBlocksToFile
 ; READS:
-;   DISKIO2_TransferFilenameBuffer..DISKIO_SavedReadModeFlags, ED_DiagnosticsScreenActive, DISKIO2_TransferXorChecksumByte, CTASKS_EXT_GRF
+;   DISKIO2_TransferFilenameBuffer..DISKIO_SavedReadModeFlags, _ED_DiagnosticsScreenActive, DISKIO2_TransferXorChecksumByte, CTASKS_EXT_GRF
 ; WRITES:
-;   DISKIO2_TransferFilenameBuffer..DISKIO2_TransferCrcErrorCount, DISKIO2_InteractiveTransferArmedFlag/21CB, ESQPARS2_ReadModeFlags
+;   DISKIO2_TransferFilenameBuffer..DISKIO2_TransferCrcErrorCount, DISKIO2_InteractiveTransferArmedFlag/21CB, _ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Reads a filename and payload, validates/locks the target, and writes the data.
 ; NOTES:
@@ -2347,14 +2347,14 @@ DISKIO2_HandleInteractiveFileTransfer:
     BNE.S   .xfer_prepare_target_paths
 
     MOVEQ   #0,D5
-    TST.W   ED_DiagnosticsScreenActive
+    TST.W   _ED_DiagnosticsScreenActive
     BEQ.S   .xfer_prepare_target_paths
 
     PEA     Global_STR_SPECIAL_NGAD
     PEA     240.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
 
@@ -2372,20 +2372,20 @@ DISKIO2_HandleInteractiveFileTransfer:
     JSR     GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
-    TST.W   ED_DiagnosticsScreenActive
+    TST.W   _ED_DiagnosticsScreenActive
     BEQ.S   .xfer_optional_size_guard
 
     PEA     Global_STR_FILENAME
     PEA     180.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     DISKIO2_TransferFilenameBuffer
     PEA     180.W
     PEA     205.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
 
@@ -2449,7 +2449,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     PEA     Struct_InfoData_Size.W
     PEA     1312.W
     PEA     Global_STR_DISKIO2_C_24
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-72(A5)
@@ -2477,7 +2477,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     MOVE.L  D2,-(A7)
     PEA     1318.W
     PEA     Global_STR_DISKIO2_C_25
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -2496,7 +2496,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     BLE.S   .xfer_verify_name_checksum_and_open
 
     LEA     DISKIO2_TransferFilenameBuffer,A0
-    LEA     BRUSH_SnapshotHeader,A1   ; refresh saved UI header with on-disk metadata
+    LEA     _BRUSH_SnapshotHeader,A1   ; refresh saved UI header with on-disk metadata
 
 .xfer_copy_name_to_snapshot_header:
     MOVE.B  (A0)+,(A1)+
@@ -2519,7 +2519,7 @@ DISKIO2_HandleInteractiveFileTransfer:
 
     JSR     GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,ESQIFF_RecordChecksumByte
+    MOVE.B  D0,_ESQIFF_RecordChecksumByte
     MOVE.B  DISKIO2_TransferXorChecksumByte,D1
     CMP.B   D1,D0
     BNE.W   .xfer_clear_overlay_and_maybe_report_disk
@@ -2548,19 +2548,19 @@ DISKIO2_HandleInteractiveFileTransfer:
     BRA.W   .xfer_return
 
 .xfer_setup_transfer_state:
-    MOVE.W  ESQPARS2_ReadModeFlags,DISKIO_SavedReadModeFlags
-    MOVE.W  #$100,ESQPARS2_ReadModeFlags
+    MOVE.W  _ESQPARS2_ReadModeFlags,DISKIO_SavedReadModeFlags
+    MOVE.W  #$100,_ESQPARS2_ReadModeFlags
     CLR.L   DISKIO2_TransferCrcErrorCount
     CLR.B   DISKIO2_TransferBlockSequence
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     4352.W
     PEA     1389.W
     PEA     Global_STR_DISKIO2_C_26
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,DISKIO2_TransferBlockBufferPtr
-    MOVE.W  DISKIO_SavedReadModeFlags,ESQPARS2_ReadModeFlags
+    MOVE.W  DISKIO_SavedReadModeFlags,_ESQPARS2_ReadModeFlags
     CLR.W   DISKIO2_TransferBufferedByteCount
 
 .xfer_wait_for_sync_markers:
@@ -2669,8 +2669,8 @@ DISKIO2_HandleInteractiveFileTransfer:
     MOVEQ   #4,D6
 
 .xfer_teardown_transfer_state:
-    MOVE.W  ESQPARS2_ReadModeFlags,DISKIO_SavedReadModeFlags
-    MOVE.W  #$100,ESQPARS2_ReadModeFlags
+    MOVE.W  _ESQPARS2_ReadModeFlags,DISKIO_SavedReadModeFlags
+    MOVE.W  #$100,_ESQPARS2_ReadModeFlags
     MOVE.L  DISKIO_WriteFileHandle,D1
     MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
@@ -2679,23 +2679,23 @@ DISKIO2_HandleInteractiveFileTransfer:
     MOVE.L  DISKIO2_TransferBlockBufferPtr,-(A7)
     PEA     1499.W
     PEA     Global_STR_DISKIO2_C_27
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
-    TST.W   ED_DiagnosticsScreenActive
+    TST.W   _ED_DiagnosticsScreenActive
     BEQ.S   .xfer_post_transfer_status
 
     PEA     DISKIO2_STR_DiagTransferStatusClearLine210
     PEA     210.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     DISKIO2_STR_DiagTransferStatusClearLine240
     PEA     240.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
 
@@ -2719,15 +2719,15 @@ DISKIO2_HandleInteractiveFileTransfer:
     MOVE.L  (A0)+,(A1)+
     PEA     -58(A5)
     PEA     -156(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     PEA     DISKIO2_STR_ShellCommandArgSeparator
     PEA     -156(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     PEA     DISKIO2_TransferFilenameBuffer
     PEA     -156(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     -156(A5),A0
     MOVE.L  A0,D1
@@ -2743,14 +2743,14 @@ DISKIO2_HandleInteractiveFileTransfer:
     JSR     DISKIO_ResetCtrlInputStateIfIdle(PC)
 
     LEA     24(A7),A7
-    TST.W   ED_DiagnosticsScreenActive
+    TST.W   _ED_DiagnosticsScreenActive
     BEQ.S   .xfer_restore_read_mode
 
     PEA     Global_STR_STORED
     PEA     180.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
     BRA.S   .xfer_restore_read_mode
@@ -2766,7 +2766,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     JSR     _LVODeleteFile(A6)
 
 .xfer_restore_read_mode:
-    MOVE.W  DISKIO_SavedReadModeFlags,ESQPARS2_ReadModeFlags
+    MOVE.W  DISKIO_SavedReadModeFlags,_ESQPARS2_ReadModeFlags
 
 .xfer_clear_overlay_and_maybe_report_disk:
     MOVEQ   #0,D0
@@ -2776,27 +2776,27 @@ DISKIO2_HandleInteractiveFileTransfer:
     JSR     GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
-    TST.W   ED_DiagnosticsScreenActive
+    TST.W   _ED_DiagnosticsScreenActive
     BEQ.S   .xfer_return
 
     PEA     DISKIO2_DiagnosticsDiskUsagePercentBuffer
-    JSR     DISKIO_QueryDiskUsagePercentAndSetBufferSize(PC)
+    JSR     _DISKIO_QueryDiskUsagePercentAndSetBufferSize(PC)
 
     PEA     DISKIO2_DiagnosticsSoftErrorCountBuffer
     MOVE.L  D0,28(A7)
-    JSR     DISKIO_QueryVolumeSoftErrorCount(PC)
+    JSR     _DISKIO_QueryVolumeSoftErrorCount(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  28(A7),-(A7)
     PEA     Global_STR_DISK_0_IS_FULL_WITH_ERRORS_FORMATTED
     PEA     -58(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -58(A5)
     PEA     90.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     36(A7),A7
 
@@ -2824,9 +2824,9 @@ DISKIO2_HandleInteractiveFileTransfer:
 ; CALLS:
 ;   GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi, GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte, DISKIO_WriteBytesToOutputHandleGuarded, GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay, DISKIO_DrawTransferErrorMessageIfDiagnostics, _LVODeleteFile
 ; READS:
-;   DISKIO2_TransferBlockLength..DISKIO2_TransferCrcErrorCount, ESQIFF_ParseAttemptCount, DISKIO2_TransferXorChecksumByte
+;   DISKIO2_TransferBlockLength..DISKIO2_TransferCrcErrorCount, _ESQIFF_ParseAttemptCount, DISKIO2_TransferXorChecksumByte
 ; WRITES:
-;   DISKIO2_TransferBlockLength..DISKIO2_TransferCrcErrorCount, ESQIFF_ParseAttemptCount
+;   DISKIO2_TransferBlockLength..DISKIO2_TransferCrcErrorCount, _ESQIFF_ParseAttemptCount
 ; DESC:
 ;   Reads a variable-length data stream with checksum tracking and writes it out.
 ; NOTES:
@@ -2854,9 +2854,9 @@ DISKIO2_ReceiveTransferBlocksToFile:
     JSR     GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  D0,D4
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     MOVE.B  DISKIO2_TransferBlockSequence,D0
     CMP.B   D0,D4
     BNE.W   .blockrx_unexpected_sequence
@@ -2965,7 +2965,7 @@ DISKIO2_ReceiveTransferBlocksToFile:
 
     JSR     GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,ESQIFF_RecordChecksumByte
+    MOVE.B  D0,_ESQIFF_RecordChecksumByte
     MOVE.B  DISKIO2_TransferXorChecksumByte,D1
     CMP.B   D1,D0
     BNE.W   .blockrx_continue_transfer
@@ -3016,7 +3016,7 @@ DISKIO2_ReceiveTransferBlocksToFile:
 
     JSR     GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,ESQIFF_RecordChecksumByte
+    MOVE.B  D0,_ESQIFF_RecordChecksumByte
     MOVE.B  DISKIO2_TransferXorChecksumByte,D1
     CMP.B   D1,D0
     BNE.S   .blockrx_checksum_mismatch_eof
@@ -3068,7 +3068,7 @@ DISKIO2_ReceiveTransferBlocksToFile:
 
 .blockrx_show_sequence_error_dialog:
     LEA     DISKIO2_TransferFilenameBuffer,A0
-    LEA     BRUSH_SnapshotHeader,A1   ; keep error dialog text in sync with disk state
+    LEA     _BRUSH_SnapshotHeader,A1   ; keep error dialog text in sync with disk state
 
 .blockrx_copy_name_to_snapshot_loop:
     MOVE.B  (A0)+,(A1)+
@@ -3098,7 +3098,7 @@ DISKIO2_ReceiveTransferBlocksToFile:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D7
 ; CALLS:
-;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AH_JMPTBL_STR_FindAnyCharPtr
+;   _GROUP_AI_JMPTBL_STR_FindCharPtr, _GROUP_AH_JMPTBL_STR_FindAnyCharPtr
 ; READS:
 ;   7(A0,D7), 27(A2)
 ; WRITES:
@@ -3157,7 +3157,7 @@ DISKIO2_CopyAndSanitizeSlotString:
 
     PEA     34.W
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -3166,7 +3166,7 @@ DISKIO2_CopyAndSanitizeSlotString:
     ADDQ.L  #1,-4(A5)
     PEA     34.W
     MOVE.L  -4(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -3175,9 +3175,9 @@ DISKIO2_CopyAndSanitizeSlotString:
     TST.L   D0
     BEQ.S   .sanitize_set_return_ptr
 
-    PEA     NEWGRID_EntrySplitDelimiterMask
+    PEA     _NEWGRID_EntrySplitDelimiterMask
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AH_JMPTBL_STR_FindAnyCharPtr(PC)
+    JSR     _GROUP_AH_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -3223,9 +3223,9 @@ DISKIO2_CopyAndSanitizeSlotString:
 ; CLOBBERS:
 ;   A7/D0
 ; CALLS:
-;   DISKIO2_WriteCurDayDataFile, DISKIO2_WriteNxtDayDataFile, DISKIO2_WriteOinfoDataFile, COI_WriteOiDataFile
+;   _DISKIO2_WriteCurDayDataFile, DISKIO2_WriteNxtDayDataFile, DISKIO2_WriteOinfoDataFile, COI_WriteOiDataFile
 ; READS:
-;   DISKIO2_FlushDataFilesGuardFlag, TEXTDISP_PrimaryGroupEntryCount, CTASKS_PrimaryOiWritePendingFlag/1B90
+;   DISKIO2_FlushDataFilesGuardFlag, _TEXTDISP_PrimaryGroupEntryCount, _CTASKS_PrimaryOiWritePendingFlag/1B90
 ; WRITES:
 ;   DISKIO2_FlushDataFilesGuardFlag
 ; DESC:
@@ -3238,32 +3238,32 @@ DISKIO2_FlushDataFilesIfNeeded:
     BNE.S   .loc_0538
 
     MOVE.W  #1,DISKIO2_FlushDataFilesGuardFlag
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     CMPI.W  #$c9,D0
     BCC.S   .loc_0537
 
-    BSR.W   DISKIO2_WriteCurDayDataFile
+    BSR.W   _DISKIO2_WriteCurDayDataFile
 
     BSR.W   DISKIO2_WriteNxtDayDataFile
 
     BSR.W   DISKIO2_WriteOinfoDataFile
 
-    TST.B   CTASKS_PrimaryOiWritePendingFlag
+    TST.B   _CTASKS_PrimaryOiWritePendingFlag
     BEQ.S   .loc_0536
 
     MOVEQ   #0,D0
-    MOVE.B  CTASKS_PendingPrimaryOiDiskId,D0
+    MOVE.B  _CTASKS_PendingPrimaryOiDiskId,D0
     MOVE.L  D0,-(A7)
     JSR     COI_WriteOiDataFile(PC)
 
     ADDQ.W  #4,A7
 
 .loc_0536:
-    TST.B   CTASKS_SecondaryOiWritePendingFlag
+    TST.B   _CTASKS_SecondaryOiWritePendingFlag
     BEQ.S   .loc_0537
 
     MOVEQ   #0,D0
-    MOVE.B  CTASKS_PendingSecondaryOiDiskId,D0
+    MOVE.B  _CTASKS_PendingSecondaryOiDiskId,D0
     MOVE.L  D0,-(A7)
     JSR     COI_WriteOiDataFile(PC)
 

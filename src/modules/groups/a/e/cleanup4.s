@@ -87,12 +87,12 @@ CLEANUP_TestEntryFlagYAndBit1:
 ; CALLS:
 ;   COI_GetAnimFieldPointerByMode, GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
 ; READS:
-;   WDISP_CharClassTable, CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY
+;   _WDISP_CharClassTable, CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY
 ; WRITES:
 ;   DISPTEXT_InsetNibblePrimary, DISPTEXT_InsetNibbleSecondary
 ; DESC:
 ;   Loads two flag bytes from the entry data and writes derived values into
-;   DISPTEXT_InsetNibblePrimary/DISPTEXT_InsetNibbleSecondary using WDISP_CharClassTable attribute bits.
+;   DISPTEXT_InsetNibblePrimary/DISPTEXT_InsetNibbleSecondary using _WDISP_CharClassTable attribute bits.
 ; NOTES:
 ;   - Falls back to CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY when the entry record is missing.
 ;------------------------------------------------------------------------------
@@ -128,7 +128,7 @@ CLEANUP_UpdateEntryFlagBytes:
     MOVE.B  6(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #7,(A1)
     BEQ.S   .entry_flag6_not_set
@@ -154,7 +154,7 @@ CLEANUP_UpdateEntryFlagBytes:
     MOVE.B  7(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #7,(A1)
     BEQ.S   .entry_flag7_not_set
@@ -200,16 +200,16 @@ CLEANUP_UpdateEntryFlagBytes:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode, CLEANUP_TestEntryFlagYAndBit1, COI_GetAnimFieldPointerByMode,
-;   GROUP_AE_JMPTBL_WDISP_SPrintf, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
+;   _GROUP_AE_JMPTBL_WDISP_SPrintf, _GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
 ; READS:
-;   CLOCK_FMT_WRAP_CHAR_STRING_CHAR, CLOCK_STR_DOUBLE_SPACE, CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY, WDISP_CharClassTable, TEXTDISP_CenterAlignToken
+;   CLOCK_FMT_WRAP_CHAR_STRING_CHAR, CLOCK_STR_DOUBLE_SPACE, CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY, _WDISP_CharClassTable, TEXTDISP_CenterAlignToken
 ; WRITES:
 ;   CLEANUP_AlignedInsetNibblePrimary, CLEANUP_AlignedInsetNibbleSecondary, CLOCK_AlignedInsetRenderGateFlag
 ; DESC:
 ;   Builds an aligned status string into outText, optionally using entry data
 ;   and setting flag bytes for later rendering.
 ; NOTES:
-;   - Uses COI_GetAnimFieldPointerByMode to resolve entry records and WDISP_CharClassTable for attribute bits.
+;   - Uses COI_GetAnimFieldPointerByMode to resolve entry records and _WDISP_CharClassTable for attribute bits.
 ;------------------------------------------------------------------------------
 CLEANUP_BuildAlignedStatusLine:
     LINK.W  A5,#-32
@@ -266,7 +266,7 @@ CLEANUP_BuildAlignedStatusLine:
     PEA     19.W
     PEA     CLOCK_FMT_WRAP_CHAR_STRING_CHAR
     PEA     -12(A5)
-    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     20(A7),A7
     TST.L   28(A5)
@@ -274,7 +274,7 @@ CLEANUP_BuildAlignedStatusLine:
 
     PEA     TEXTDISP_CenterAlignToken
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .append_entry_text
@@ -282,14 +282,14 @@ CLEANUP_BuildAlignedStatusLine:
 .append_default_prefix:
     PEA     CLOCK_STR_DOUBLE_SPACE
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 .append_entry_text:
     PEA     -12(A5)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -318,7 +318,7 @@ CLEANUP_BuildAlignedStatusLine:
     MOVE.B  6(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #7,(A1)
     BEQ.S   .entry2_flag6_not_set
@@ -344,7 +344,7 @@ CLEANUP_BuildAlignedStatusLine:
     MOVE.B  7(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #7,(A1)
     BEQ.S   .entry2_flag7_not_set
@@ -628,9 +628,9 @@ CLEANUP_DrawInsetRectFrame:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
+;   _GROUP_AI_JMPTBL_STR_FindCharPtr, _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   CLOCK_STR_TOKEN_PAIR_DEFAULTS, CLEANUP_TokenPairScratch, CLOCK_STR_TOKEN_OUTPUT_TEMPLATE, WDISP_CharClassTable
+;   CLOCK_STR_TOKEN_PAIR_DEFAULTS, CLEANUP_TokenPairScratch, CLOCK_STR_TOKEN_OUTPUT_TEMPLATE, _WDISP_CharClassTable
 ; WRITES:
 ;   outPtr1/outPtr2 contents
 ; DESC:
@@ -653,7 +653,7 @@ CLEANUP_FormatEntryStringTokens:
 
     PEA     58.W
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-26(A5)
@@ -693,7 +693,7 @@ CLEANUP_FormatEntryStringTokens:
     CLR.B   -11(A5,D7.L)
     MOVE.L  (A3),-(A7)
     PEA     -11(A5)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,(A3)
@@ -743,7 +743,7 @@ CLEANUP_FormatEntryStringTokens:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     CLOCK_STR_BOOL_CHARS_YyNn
-    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -753,7 +753,7 @@ CLEANUP_FormatEntryStringTokens:
     MOVE.B  0(A0,D7.L),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #1,(A1)
     BEQ.S   .copy_raw_char
@@ -783,7 +783,7 @@ CLEANUP_FormatEntryStringTokens:
     MOVE.B  0(A0,D7.L),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #7,(A0)
     BEQ.S   .use_default_char_flag7
@@ -801,7 +801,7 @@ CLEANUP_FormatEntryStringTokens:
     MOVE.B  0(A0,D7.L),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     MOVEA.L A1,A6
     ADDA.L  D0,A6
     MOVEQ   #7,D0
@@ -882,7 +882,7 @@ CLEANUP_FormatEntryStringTokens:
 .commit_output:
     MOVE.L  (A2),-(A7)
     PEA     -11(A5)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,(A2)
@@ -891,12 +891,12 @@ CLEANUP_FormatEntryStringTokens:
 .empty_input:
     MOVE.L  (A3),-(A7)
     CLR.L   -(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVE.L  D0,(A3)
     MOVE.L  (A2),(A7)
     PEA     CLOCK_STR_EMPTY_TOKEN_TEMPLATE
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,(A2)
@@ -917,13 +917,13 @@ CLEANUP_FormatEntryStringTokens:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   COI_CountEscape14BeforeNull, GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap, ESQ_WildcardMatch, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString,
+;   COI_CountEscape14BeforeNull, GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap, ESQ_WildcardMatch, _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString,
 ;   CLEANUP_FormatEntryStringTokens, COI_AllocSubEntryTable, COI_ClearAnimObjectStrings, COI_FreeSubEntryTableEntries
 ; READS:
-;   TEXTDISP_SecondaryGroupCode-TEXTDISP_SecondaryEntryPtrTable, ESQIFF_RecordLength, CTASKS_PrimaryOiWritePendingFlag-CTASKS_PendingSecondaryOiDiskId,
-;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, SCRIPT_StrChannelLabel_TuesdaysFridays
+;   _TEXTDISP_SecondaryGroupCode-_TEXTDISP_SecondaryEntryPtrTable, ESQIFF_RecordLength, _CTASKS_PrimaryOiWritePendingFlag-_CTASKS_PendingSecondaryOiDiskId,
+;   _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, SCRIPT_StrChannelLabel_TuesdaysFridays
 ; WRITES:
-;   CTASKS_PrimaryOiWritePendingFlag-CTASKS_PendingSecondaryOiDiskId
+;   _CTASKS_PrimaryOiWritePendingFlag-_CTASKS_PendingSecondaryOiDiskId
 ; DESC:
 ;   Parses an aligned listing block from dataPtr, selecting candidate entries,
 ;   building entry structs, and allocating subentry tables.
@@ -984,29 +984,29 @@ CLEANUP_ParseAlignedListingBlock:
     NOT.B   D1
     AND.L   D1,D0
     ADDQ.L  #1,-66(A5)
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D1
     MOVE.B  D0,-57(A5)
     CMP.B   D0,D1
     BNE.S   .check_service_type_b
 
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D1
     SUBQ.B  #1,D1
     BNE.S   .check_service_type_b
 
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D5
-    MOVE.B  D0,CTASKS_PendingSecondaryOiDiskId
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D5
+    MOVE.B  D0,_CTASKS_PendingSecondaryOiDiskId
     MOVEQ   #1,D1
-    MOVE.B  D1,CTASKS_SecondaryOiWritePendingFlag
+    MOVE.B  D1,_CTASKS_SecondaryOiWritePendingFlag
     BRA.S   .skip_separator
 
 .check_service_type_b:
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D1
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D1
     CMP.B   D0,D1
     BNE.S   .invalid_service_type
 
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D5
-    MOVE.B  D0,CTASKS_PendingPrimaryOiDiskId
-    MOVE.B  #$1,CTASKS_PrimaryOiWritePendingFlag
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D5
+    MOVE.B  D0,_CTASKS_PendingPrimaryOiDiskId
+    MOVE.B  #$1,_CTASKS_PrimaryOiWritePendingFlag
     BRA.S   .skip_separator
 
 .invalid_service_type:
@@ -1063,19 +1063,19 @@ CLEANUP_ParseAlignedListingBlock:
     CMPI.W  #10,-32(A5)
     BGE.S   .after_candidate_scan
 
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     MOVE.B  -57(A5),D1
     CMP.B   D0,D1
     BNE.S   .use_alt_entry_table
 
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D0
     SUBQ.B  #1,D0
     BNE.S   .use_alt_entry_table
 
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
     BRA.S   .compare_candidate_entry
@@ -1084,7 +1084,7 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
 
@@ -1120,19 +1120,19 @@ CLEANUP_ParseAlignedListingBlock:
     BRA.W   .return_status
 
 .select_first_entry:
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     MOVE.B  -57(A5),D1
     CMP.B   D0,D1
     BNE.S   .select_alt_entry
 
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D0
     SUBQ.B  #1,D0
     BNE.S   .select_alt_entry
 
     MOVE.W  -52(A5),D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
     BRA.S   .populate_entry_fields
@@ -1141,7 +1141,7 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.W  -52(A5),D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
 
@@ -1160,7 +1160,7 @@ CLEANUP_ParseAlignedListingBlock:
     MOVEA.L -12(A5),A1
     MOVE.L  4(A1),(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,4(A0)
@@ -1175,7 +1175,7 @@ CLEANUP_ParseAlignedListingBlock:
     ADDA.W  -80(A5),A1
     MOVE.L  12(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,12(A0)
@@ -1184,7 +1184,7 @@ CLEANUP_ParseAlignedListingBlock:
     ADDA.W  -78(A5),A1
     MOVE.L  20(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,20(A0)
@@ -1193,7 +1193,7 @@ CLEANUP_ParseAlignedListingBlock:
     ADDA.W  -76(A5),A1
     MOVE.L  8(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,8(A0)
@@ -1202,7 +1202,7 @@ CLEANUP_ParseAlignedListingBlock:
     ADDA.W  -74(A5),A1
     MOVE.L  16(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     24(A7),A7
     MOVEA.L -12(A5),A0
@@ -1228,13 +1228,13 @@ CLEANUP_ParseAlignedListingBlock:
 .build_title_from_field:
     MOVE.L  24(A0),-(A7)
     CLR.L   -(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,24(A0)
     MOVE.L  28(A0),(A7)
     PEA     CLOCK_STR_MISSING_TITLE_TEMPLATE
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
     MOVEA.L -12(A5),A0
@@ -1248,7 +1248,7 @@ CLEANUP_ParseAlignedListingBlock:
     BEQ.S   .set_missing_extra
 
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -12(A5),A0
@@ -1341,7 +1341,7 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.L  6(A1),-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-56(A5)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L -20(A5),A0
@@ -1363,7 +1363,7 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.L  14(A0),-(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  A1,-56(A5)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L -20(A5),A0
@@ -1385,7 +1385,7 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.L  2(A0),-(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  A1,-56(A5)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L -20(A5),A0
@@ -1407,7 +1407,7 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.L  10(A0),-(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  A1,-56(A5)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L -20(A5),A0
@@ -1419,14 +1419,14 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.L  18(A0),-(A7)
     MOVEA.L -12(A5),A1
     MOVE.L  24(A1),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -20(A5),A0
     MOVE.L  D0,18(A0)
     MOVE.L  22(A0),(A7)
     MOVEA.L -12(A5),A1
     MOVE.L  28(A1),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
     MOVEA.L -20(A5),A0
@@ -1461,7 +1461,7 @@ CLEANUP_ParseAlignedListingBlock:
     ADDA.L  -66(A5),A0
     ADDA.W  -114(A5),A0
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -20(A5),A0
@@ -1490,12 +1490,12 @@ CLEANUP_ParseAlignedListingBlock:
     CMP.W   D1,D0
     BGE.W   .return_success
 
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D1
     MOVE.B  -57(A5),D2
     CMP.B   D1,D2
     BNE.S   .select_merge_table
 
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D1
     SUBQ.B  #1,D1
     BNE.S   .select_merge_table
 
@@ -1505,7 +1505,7 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.W  -52(A5,D1.L),D2
     EXT.L   D2
     ASL.L   #2,D2
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D2,A0
     MOVE.L  (A0),-8(A5)
     BRA.S   .merge_entry_copy
@@ -1517,7 +1517,7 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.W  -52(A5,D1.L),D2
     EXT.L   D2
     ASL.L   #2,D2
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D2,A0
     MOVE.L  (A0),-8(A5)
 
@@ -1537,7 +1537,7 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.L  4(A0),(A7)
     MOVEA.L -12(A5),A1
     MOVE.L  4(A1),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -16(A5),A0
     MOVE.L  D0,4(A0)
@@ -1549,28 +1549,28 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.B  3(A0),3(A1)
     MOVE.L  12(A1),(A7)
     MOVE.L  12(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -16(A5),A0
     MOVE.L  D0,12(A0)
     MOVE.L  20(A0),(A7)
     MOVEA.L -12(A5),A0
     MOVE.L  20(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -16(A5),A0
     MOVE.L  D0,20(A0)
     MOVE.L  8(A0),(A7)
     MOVEA.L -12(A5),A0
     MOVE.L  8(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -16(A5),A0
     MOVE.L  D0,8(A0)
     MOVE.L  16(A0),(A7)
     MOVEA.L -12(A5),A0
     MOVE.L  16(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -16(A5),A0
     MOVE.L  D0,16(A0)
@@ -1579,14 +1579,14 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.W  36(A0),36(A1)
     MOVE.L  24(A1),(A7)
     MOVE.L  24(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -16(A5),A0
     MOVE.L  D0,24(A0)
     MOVE.L  28(A0),(A7)
     MOVEA.L -12(A5),A0
     MOVE.L  28(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -16(A5),A0
     MOVE.L  D0,28(A0)
@@ -1620,42 +1620,42 @@ CLEANUP_ParseAlignedListingBlock:
     MOVE.W  (A0),(A1)
     MOVE.L  6(A1),-(A7)
     MOVE.L  6(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -24(A5),A0
     MOVE.L  D0,6(A0)
     MOVE.L  14(A0),(A7)
     MOVEA.L -20(A5),A0
     MOVE.L  14(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -24(A5),A0
     MOVE.L  D0,14(A0)
     MOVE.L  2(A0),(A7)
     MOVEA.L -20(A5),A0
     MOVE.L  2(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -24(A5),A0
     MOVE.L  D0,2(A0)
     MOVE.L  10(A0),(A7)
     MOVEA.L -20(A5),A0
     MOVE.L  10(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -24(A5),A0
     MOVE.L  D0,10(A0)
     MOVE.L  18(A0),(A7)
     MOVEA.L -20(A5),A0
     MOVE.L  18(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -24(A5),A0
     MOVE.L  D0,18(A0)
     MOVE.L  22(A0),(A7)
     MOVEA.L -20(A5),A0
     MOVE.L  22(A0),-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     28(A7),A7
     MOVEA.L -24(A5),A0

@@ -3,58 +3,58 @@
     XDEF    Global_ESQPARS2_C_3
     XDEF    Global_ESQPARS2_C_4
     XDEF    Global_STR_CLOSED_CAPTIONED
-    XDEF    Global_STR_IN_STEREO
-    XDEF    Global_TBL_MOVIE_RATINGS
-    XDEF    ESQPARS2_MovieRatingTokenGlyphMap
-    XDEF    Global_TBL_TV_PROGRAM_RATINGS
-    XDEF    ESQPARS2_TvRatingTokenGlyphMap
+    XDEF    _Global_STR_IN_STEREO
+    XDEF    _Global_TBL_MOVIE_RATINGS
+    XDEF    _ESQPARS2_MovieRatingTokenGlyphMap
+    XDEF    _Global_TBL_TV_PROGRAM_RATINGS
+    XDEF    _ESQPARS2_TvRatingTokenGlyphMap
     XDEF    Global_STR_ESQPARS2_C_1
     XDEF    ESQPARS2_DurationFmt_DecimalWithSpace
     XDEF    ESQPARS2_DurationFmt_OpenParenHours
     XDEF    ESQPARS2_DurationFmt_OpenParenMinutes
     XDEF    ESQPARS2_DurationFmt_CloseParen
     XDEF    Global_STR_ESQPARS2_C_2
-    XDEF    Global_LONG_PATCH_VERSION_NUMBER
-    XDEF    ESQPARS2_BannerSnapshotPlane0DstPtr
+    XDEF    _Global_LONG_PATCH_VERSION_NUMBER
+    XDEF    _ESQPARS2_BannerSnapshotPlane0DstPtr
     XDEF    ESQPARS2_BannerSnapshotPlane0DstPtrLo
     XDEF    ESQPARS2_BannerSnapshotPlane1DstPtr
     XDEF    ESQPARS2_BannerSnapshotPlane1DstPtrLo
     XDEF    ESQPARS2_BannerSnapshotPlane2DstPtr
     XDEF    ESQPARS2_BannerSnapshotPlane2DstPtrLo
-    XDEF    ESQPARS2_SnapshotLivePlane0Base
+    XDEF    _ESQPARS2_SnapshotLivePlane0Base
     XDEF    ESQPARS2_SnapshotLivePlane1Base
-    XDEF    ESQPARS2_SnapshotLivePlane2Base
+    XDEF    _ESQPARS2_SnapshotLivePlane2Base
     XDEF    ESQPARS2_BannerRowOffsetResetPtrPlane0
     XDEF    ESQPARS2_BannerRowOffsetResetPtrPlane1
     XDEF    ESQPARS2_BannerRowOffsetResetPtrPlane2Table
     XDEF    ESQPARS2_CopperProgramPendingFlag
     XDEF    ESQPARS2_EdDiagResetScratchFlag
-    XDEF    ESQPARS2_BannerSweepEntryGuardCounter
+    XDEF    _ESQPARS2_BannerSweepEntryGuardCounter
     XDEF    ESQPARS2_BannerSweepDelayCounter
     XDEF    ESQPARS2_HighlightTickCountdown
-    XDEF    ESQPARS2_StateIndex
-    XDEF    ESQPARS2_BannerQueueAttentionCountdown
-    XDEF    ESQPARS2_BannerTailBiasValue
+    XDEF    _ESQPARS2_StateIndex
+    XDEF    _ESQPARS2_BannerQueueAttentionCountdown
+    XDEF    _ESQPARS2_BannerTailBiasValue
     XDEF    ESQPARS2_BannerSweepBaseColor
     XDEF    ESQPARS2_BannerSweepOffsetColor
-    XDEF    ESQPARS2_ReadModeFlags
-    XDEF    ESQPARS2_BannerColorStepCounter
+    XDEF    _ESQPARS2_ReadModeFlags
+    XDEF    _ESQPARS2_BannerColorStepCounter
     XDEF    ESQPARS2_BannerColorClampThreshold
-    XDEF    ESQPARS2_BannerQueueBuffer
+    XDEF    _ESQPARS2_BannerQueueBuffer
     XDEF    ESQPARS2_BannerColorThreshold
-    XDEF    ESQPARS2_BannerColorBaseValue
-    XDEF    ESQPARS2_BannerRowCopyWordCount
-    XDEF    ESQPARS2_BannerRowCopySpanBytes
+    XDEF    _ESQPARS2_BannerColorBaseValue
+    XDEF    _ESQPARS2_BannerRowCopyWordCount
+    XDEF    _ESQPARS2_BannerRowCopySpanBytes
     XDEF    ESQPARS2_BannerRowCopyStrideBytes
     XDEF    ESQPARS2_BannerCopySourceOffset
     XDEF    ESQPARS2_BannerCopyTailOffset
-    XDEF    ESQSHARED_BlitAddressOffset
+    XDEF    _ESQSHARED_BlitAddressOffset
     XDEF    ESQPARS2_ActiveCopperListSelectFlag
     XDEF    ESQPARS2_BannerRowCount
-    XDEF    ESQPARS2_BannerRowWidthBytes
+    XDEF    _ESQPARS2_BannerRowWidthBytes
     XDEF    ESQPARS2_BannerCopyBlockSpanBytes
-    XDEF    ESQPARS2_BannerCopyBlockWordLimit
-    XDEF    ESQPARS2_BannerQueueAttentionDelayTicks
+    XDEF    _ESQPARS2_BannerCopyBlockWordLimit
+    XDEF    _ESQPARS2_BannerQueueAttentionDelayTicks
     XDEF    ESQPARS2_LogAppendSpinlock
     XDEF    ESQPARS2_LogTimestampFmt
     XDEF    ESQPARS2_LogTagPm
@@ -73,7 +73,7 @@ Global_ESQPARS2_C_4:
     NStr    "ESQPARS2.c"
 Global_STR_CLOSED_CAPTIONED:
     NStr    "(CC)"
-Global_STR_IN_STEREO:
+_Global_STR_IN_STEREO:
     NStr    "In Stereo"
 
 Global_STR_RATING_R:
@@ -91,7 +91,7 @@ Global_STR_RATING_G:
 Global_STR_RATING_NC_17:
     NStr    "(NC-17)"
 
-Global_TBL_MOVIE_RATINGS:
+_Global_TBL_MOVIE_RATINGS:
     DC.L    Global_STR_RATING_R
     DC.L    Global_STR_RATING_ADULT
     DC.L    Global_STR_RATING_PG
@@ -101,7 +101,7 @@ Global_TBL_MOVIE_RATINGS:
     DC.L    Global_STR_RATING_NC_17
 
 ; A table of the character codes that map to the movie ratings in the font
-ESQPARS2_MovieRatingTokenGlyphMap:
+_ESQPARS2_MovieRatingTokenGlyphMap:
     DC.B    $84
     DC.B    $86
     DC.B    $85
@@ -126,7 +126,7 @@ Global_STR_TV_MA:
 Global_STR_TV_14:
     NStr    "(TV-14)"
 
-Global_TBL_TV_PROGRAM_RATINGS:
+_Global_TBL_TV_PROGRAM_RATINGS:
     DC.L    Global_STR_TV_Y
     DC.L    Global_STR_TV_Y7
     DC.L    Global_STR_TV_PG
@@ -136,7 +136,7 @@ Global_TBL_TV_PROGRAM_RATINGS:
     DC.L    Global_STR_TV_14
 
 ; A table of the character codes that map to the TV ratings in the font
-ESQPARS2_TvRatingTokenGlyphMap:
+_ESQPARS2_TvRatingTokenGlyphMap:
     DC.B    $90
     DC.B    $93
     DC.B    $9b
@@ -159,21 +159,21 @@ ESQPARS2_DurationFmt_CloseParen:
 Global_STR_ESQPARS2_C_2:
     NStr    "ESQPARS2.c"
     DS.W    1
-Global_LONG_PATCH_VERSION_NUMBER:
+_Global_LONG_PATCH_VERSION_NUMBER:
     DC.L    $00000004 ; Patch version number
 ;------------------------------------------------------------------------------
-; SYM: ESQPARS2_BannerSnapshotPlane0DstPtr..ESQPARS2_BannerSnapshotPlane2DstPtrLo
+; SYM: _ESQPARS2_BannerSnapshotPlane0DstPtr..ESQPARS2_BannerSnapshotPlane2DstPtrLo
 ; TYPE: pointer array storage (3 x u32 split into hi/lo words)
 ; PURPOSE: Destination pointers for banner-plane snapshot copy routines.
 ; USED BY: ESQSHARED4_SetupBannerPlanePointerWords, ESQSHARED4_CopyPlanesFromContextToSnapshot, ESQSHARED4_CopyLivePlanesToSnapshot, GCOMMAND_RefreshBannerTables
 ; NOTES:
 ;   Layout is contiguous longwords:
-;     plane0 ptr = ESQPARS2_BannerSnapshotPlane0DstPtr/ESQPARS2_BannerSnapshotPlane0DstPtrLo
+;     plane0 ptr = _ESQPARS2_BannerSnapshotPlane0DstPtr/ESQPARS2_BannerSnapshotPlane0DstPtrLo
 ;     plane1 ptr = ESQPARS2_BannerSnapshotPlane1DstPtr/ESQPARS2_BannerSnapshotPlane1DstPtrLo
 ;     plane2 ptr = ESQPARS2_BannerSnapshotPlane2DstPtr/ESQPARS2_BannerSnapshotPlane2DstPtrLo
 ;   Code often accesses this block as a u32[] via post-increment addressing.
 ;------------------------------------------------------------------------------
-ESQPARS2_BannerSnapshotPlane0DstPtr:
+_ESQPARS2_BannerSnapshotPlane0DstPtr:
     DS.W    1
 ESQPARS2_BannerSnapshotPlane0DstPtrLo:
     DS.W    1
@@ -185,11 +185,11 @@ ESQPARS2_BannerSnapshotPlane2DstPtr:
     DS.W    1
 ESQPARS2_BannerSnapshotPlane2DstPtrLo:
     DS.W    1
-ESQPARS2_SnapshotLivePlane0Base:
+_ESQPARS2_SnapshotLivePlane0Base:
     DS.L    1
 ESQPARS2_SnapshotLivePlane1Base:
     DS.L    1
-ESQPARS2_SnapshotLivePlane2Base:
+_ESQPARS2_SnapshotLivePlane2Base:
     DS.L    1
 ESQPARS2_BannerRowOffsetResetPtrPlane0:
     DS.L    1
@@ -201,51 +201,51 @@ ESQPARS2_CopperProgramPendingFlag:
     DS.W    1
 ESQPARS2_EdDiagResetScratchFlag:
     DS.W    1
-ESQPARS2_BannerSweepEntryGuardCounter:
+_ESQPARS2_BannerSweepEntryGuardCounter:
     DS.W    1
 ESQPARS2_BannerSweepDelayCounter:
     DS.L    1
 ESQPARS2_HighlightTickCountdown:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQPARS2_StateIndex   (ESQPARS2 runtime state index)
+; SYM: _ESQPARS2_StateIndex   (ESQPARS2 runtime state index)
 ; TYPE: u16
 ; PURPOSE: Holds a small parser/UI state index used by ESQPARS2-linked flows.
 ; USED BY: ESQIFF2_*, ED2_*, ESQSHARED4_*
 ; NOTES: Typical values are low integers (for example 2, 4).
 ;------------------------------------------------------------------------------
-ESQPARS2_StateIndex:
+_ESQPARS2_StateIndex:
     DS.W    1
-ESQPARS2_BannerQueueAttentionCountdown:
+_ESQPARS2_BannerQueueAttentionCountdown:
     DS.W    1
-ESQPARS2_BannerTailBiasValue:
+_ESQPARS2_BannerTailBiasValue:
     DS.W    1
 ESQPARS2_BannerSweepBaseColor:
     DS.W    1
 ESQPARS2_BannerSweepOffsetColor:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQPARS2_ReadModeFlags   (input/read mode flags)
+; SYM: _ESQPARS2_ReadModeFlags   (input/read mode flags)
 ; TYPE: u16
 ; PURPOSE: Global mode word controlling stream/buffer handling behavior.
 ; USED BY: DISKIO_*, APP_*, ESQFUNC_*, NEWGRID_*, SCRIPT3_*
 ; NOTES: Observed values include 0, 5, $0100, $0101, $0102, $0200.
 ;------------------------------------------------------------------------------
-ESQPARS2_ReadModeFlags:
+_ESQPARS2_ReadModeFlags:
     DS.W    1
-ESQPARS2_BannerColorStepCounter:
+_ESQPARS2_BannerColorStepCounter:
     DS.L    1
 ESQPARS2_BannerColorClampThreshold:
     DS.W    1
-ESQPARS2_BannerQueueBuffer:
+_ESQPARS2_BannerQueueBuffer:
     DS.L    25
 ESQPARS2_BannerColorThreshold:
     DS.L    1
-ESQPARS2_BannerColorBaseValue:
+_ESQPARS2_BannerColorBaseValue:
     DS.W    1
-ESQPARS2_BannerRowCopyWordCount:
+_ESQPARS2_BannerRowCopyWordCount:
     DS.W    1
-ESQPARS2_BannerRowCopySpanBytes:
+_ESQPARS2_BannerRowCopySpanBytes:
     DS.L    1
 ESQPARS2_BannerRowCopyStrideBytes:
     DS.L    1
@@ -254,25 +254,25 @@ ESQPARS2_BannerCopySourceOffset:
 ESQPARS2_BannerCopyTailOffset:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ESQSHARED_BlitAddressOffset   (shared blit address offset)
+; SYM: _ESQSHARED_BlitAddressOffset   (shared blit address offset)
 ; TYPE: s32
 ; PURPOSE: Offset added to paired source/destination pointers before blits/copies.
 ; USED BY: ESQSHARED4_* drawing/compositing paths
 ; NOTES: Applied symmetrically to A1/A2 style pointer pairs.
 ;------------------------------------------------------------------------------
-ESQSHARED_BlitAddressOffset:
+_ESQSHARED_BlitAddressOffset:
     DS.L    1
 ESQPARS2_ActiveCopperListSelectFlag:
     DS.L    1
 ESQPARS2_BannerRowCount:
     DC.L    $00000022
-ESQPARS2_BannerRowWidthBytes:
+_ESQPARS2_BannerRowWidthBytes:
     DC.W    $0100
 ESQPARS2_BannerCopyBlockSpanBytes:
     DC.W    $00c0
-ESQPARS2_BannerCopyBlockWordLimit:
+_ESQPARS2_BannerCopyBlockWordLimit:
     DC.W    $0010
-ESQPARS2_BannerQueueAttentionDelayTicks:
+_ESQPARS2_BannerQueueAttentionDelayTicks:
     DC.L    $00110000
     DS.L    1
 ESQPARS2_LogAppendSpinlock:

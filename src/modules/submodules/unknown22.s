@@ -1,8 +1,8 @@
     XDEF    ALLOCATE_AllocAndInitializeIOStdReq
     XDEF    DOS_CloseWithSignalCheck
-    XDEF    MATH_DivS32
+    XDEF    _MATH_DivS32
     XDEF    MATH_DivU32
-    XDEF    MATH_Mulu32
+    XDEF    _MATH_Mulu32
     XDEF    SIGNAL_CreateMsgPortWithSignal
 
 ;------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ DOS_CloseWithSignalCheck:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: MATH_Mulu32   (Unsigned 32-bit multiply helper.)
+; FUNC: _MATH_Mulu32   (Unsigned 32-bit multiply helper.)
 ; ARGS:
 ;   D0 = multiplicand
 ;   D1 = multiplier
@@ -49,7 +49,7 @@ DOS_CloseWithSignalCheck:
 ; DESC:
 ;   Computes a 32-bit product using 16-bit MULU pieces.
 ;------------------------------------------------------------------------------
-MATH_Mulu32:
+_MATH_Mulu32:
     MOVEM.L D2-D3,-(A7)
 
     MOVE.L  D0,D2
@@ -70,7 +70,7 @@ MATH_Mulu32:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: MATH_DivS32   (Signed 32-bit division helper.)
+; FUNC: _MATH_DivS32   (Signed 32-bit division helper.)
 ; ARGS:
 ;   D0 = dividend
 ;   D1 = divisor
@@ -83,7 +83,7 @@ MATH_Mulu32:
 ; DESC:
 ;   Handles signed division by normalizing signs and dispatching to unsigned.
 ;------------------------------------------------------------------------------
-MATH_DivS32:
+_MATH_DivS32:
     TST.L   D0
     BPL.W   .dividend_pos
 

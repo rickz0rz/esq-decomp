@@ -7,9 +7,9 @@
     XDEF    NEWGRID2_BufferAllocationFlag
     XDEF    Global_STR_NEWGRID2_C_3
     XDEF    Global_STR_NEWGRID2_C_4
-    XDEF    Global_STR_NEWGRID2_C_5
+    XDEF    _Global_STR_NEWGRID2_C_5
     XDEF    Global_STR_NEWGRID2_C_6
-    XDEF    NEWGRID2_ErrorLogEntryPtr
+    XDEF    _NEWGRID2_ErrorLogEntryPtr
 ; ========== NEWGRID2.c ==========
 
 Global_STR_NEWGRID2_C_1:
@@ -38,7 +38,7 @@ NEWGRID2_DispatchStateIndex:
 ; SYM: NEWGRID2_PendingOperationId/NEWGRID2_LastDispatchResult   (dispatch staging/result)
 ; TYPE: s32/s32
 ; PURPOSE: Stages pending operation IDs and records most recent dispatch result.
-; USED BY: NEWGRID2_DispatchGridOperation
+; USED BY: _NEWGRID2_DispatchGridOperation
 ; NOTES:
 ;   PendingOperationId is reused when dispatch receives operation 0.
 ;   LastDispatchResult is booleanized before return.
@@ -60,16 +60,16 @@ Global_STR_NEWGRID2_C_3:
     NStr    "NEWGRID2.c"
 Global_STR_NEWGRID2_C_4:
     NStr    "NEWGRID2.c"
-Global_STR_NEWGRID2_C_5:
+_Global_STR_NEWGRID2_C_5:
     NStr    "NEWGRID2.c"
 Global_STR_NEWGRID2_C_6:
     NStr    "NEWGRID2.c"
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID2_ErrorLogEntryPtr   (error log entry pointer)
+; SYM: _NEWGRID2_ErrorLogEntryPtr   (error log entry pointer)
 ; TYPE: pointer
 ; PURPOSE: Points to active NEWGRID2/parse error-log entry text buffer.
 ; USED BY: PARSEINI3 logging helpers
 ; NOTES: Updated by logging paths that prepend NEWGRID2 source tags.
 ;------------------------------------------------------------------------------
-NEWGRID2_ErrorLogEntryPtr:
+_NEWGRID2_ErrorLogEntryPtr:
     DC.L    0

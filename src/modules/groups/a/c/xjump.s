@@ -6,7 +6,7 @@
     XDEF    GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen
     XDEF    GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers
     XDEF    GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds
-    XDEF    GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat
+    XDEF    _GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat
     XDEF    GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc
     XDEF    GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled
     XDEF    GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout
@@ -229,7 +229,7 @@ GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion:
     JMP     ESQFUNC_DrawEscMenuVersion
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat   (JumpStub_PARSEINI_AdjustHoursTo24HrFormat)
+; FUNC: _GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat   (JumpStub_PARSEINI_AdjustHoursTo24HrFormat)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -243,7 +243,7 @@ GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat:
+_GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat:
     JMP     PARSEINI_AdjustHoursTo24HrFormat
 
 ;!======

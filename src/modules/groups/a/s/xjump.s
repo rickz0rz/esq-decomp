@@ -1,8 +1,8 @@
-    XDEF    GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold
-    XDEF    GROUP_AS_JMPTBL_STR_FindCharPtr
+    XDEF    _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold
+    XDEF    _GROUP_AS_JMPTBL_STR_FindCharPtr
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AS_JMPTBL_STR_FindCharPtr   (JumpStub_STR_FindCharPtr)
+; FUNC: _GROUP_AS_JMPTBL_STR_FindCharPtr   (JumpStub_STR_FindCharPtr)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -10,19 +10,19 @@
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   STR_FindCharPtr
+;   _STR_FindCharPtr
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to STR_FindCharPtr.
+;   Jump stub to _STR_FindCharPtr.
 ;------------------------------------------------------------------------------
-GROUP_AS_JMPTBL_STR_FindCharPtr:
-    JMP     STR_FindCharPtr
+_GROUP_AS_JMPTBL_STR_FindCharPtr:
+    JMP     _STR_FindCharPtr
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold   (JumpStub_ESQ_FindSubstringCaseFold)
+; FUNC: _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold   (JumpStub_ESQ_FindSubstringCaseFold)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -38,5 +38,5 @@ GROUP_AS_JMPTBL_STR_FindCharPtr:
 ; DESC:
 ;   Jump stub to ESQ_FindSubstringCaseFold.
 ;------------------------------------------------------------------------------
-GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold:
+_GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold:
     JMP     ESQ_FindSubstringCaseFold

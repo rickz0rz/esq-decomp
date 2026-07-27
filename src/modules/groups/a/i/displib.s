@@ -1,7 +1,7 @@
     XDEF    DISPLIB_ApplyInlineAlignmentPadding
-    XDEF    DISPLIB_DisplayTextAtPosition
+    XDEF    _DISPLIB_DisplayTextAtPosition
     XDEF    DISPLIB_FindPreviousValidEntryIndex
-    XDEF    DISPLIB_NormalizeValueByStep
+    XDEF    _DISPLIB_NormalizeValueByStep
     XDEF    DISPLIB_ApplyInlineAlignmentPadding_Return
     XDEF    DISPLIB_FindPreviousValidEntryIndex_Return
 
@@ -108,9 +108,9 @@ DISPLIB_FindPreviousValidEntryIndex_Return:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A6/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AI_JMPTBL_STRING_AppendAtNull, _LVOTextLength
+;   _GROUP_AG_JMPTBL_MATH_DivS32, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _GROUP_AI_JMPTBL_STRING_AppendAtNull, _LVOTextLength
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_DISPLIB_C_1, Global_STR_DISPLIB_C_2, DISPLIB_ApplyInlineAlignmentPadding_Return, DISPLIB_STR_InlineAlignPadCharCenter, DISPLIB_STR_InlineAlignPadCharRight, MEMF_PUBLIC
+;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, Global_STR_DISPLIB_C_1, Global_STR_DISPLIB_C_2, DISPLIB_ApplyInlineAlignmentPadding_Return, DISPLIB_STR_InlineAlignPadCharCenter, DISPLIB_STR_InlineAlignPadCharRight, MEMF_PUBLIC
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -135,7 +135,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     MOVE.L  A0,D5
     MOVEA.L A3,A0
     MOVE.L  D5,D0
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
@@ -149,7 +149,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     CMP.B   D0,D7
     BNE.S   .lab_0555
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     LEA     DISPLIB_STR_InlineAlignPadCharCenter,A0
     MOVEQ   #1,D0
     JSR     _LVOTextLength(A6)
@@ -157,7 +157,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     MOVE.L  D0,20(A7)
     MOVE.L  D6,D0
     MOVE.L  20(A7),D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D0
     BPL.S   .lab_0554
@@ -174,7 +174,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     CMP.B   D0,D7
     BNE.S   .branch
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     LEA     DISPLIB_STR_InlineAlignPadCharRight,A0
     MOVEQ   #1,D0
     JSR     _LVOTextLength(A6)
@@ -182,7 +182,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     MOVE.L  D0,20(A7)
     MOVE.L  D6,D0
     MOVE.L  20(A7),D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D4
     BRA.S   .lab_0557
@@ -200,7 +200,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     MOVE.L  D0,-(A7)
     PEA     194.W
     PEA     Global_STR_DISPLIB_C_1
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
@@ -233,7 +233,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     CLR.B   (A0)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVE.L  D5,D0
     ADDQ.L  #1,D0
@@ -241,7 +241,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     MOVE.L  -4(A5),-(A7)
     PEA     204.W
     PEA     Global_STR_DISPLIB_C_2
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     20(A7),A7
 
@@ -272,7 +272,7 @@ DISPLIB_ApplyInlineAlignmentPadding_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DISPLIB_DisplayTextAtPosition   (Routine at DISPLIB_DisplayTextAtPosition)
+; FUNC: _DISPLIB_DisplayTextAtPosition   (Routine at _DISPLIB_DisplayTextAtPosition)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -290,7 +290,7 @@ DISPLIB_ApplyInlineAlignmentPadding_Return:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-DISPLIB_DisplayTextAtPosition:
+_DISPLIB_DisplayTextAtPosition:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A2-A3,-(A7)
 
@@ -337,7 +337,7 @@ DISPLIB_DisplayTextAtPosition:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DISPLIB_NormalizeValueByStep   (Routine at DISPLIB_NormalizeValueByStep)
+; FUNC: _DISPLIB_NormalizeValueByStep   (Routine at _DISPLIB_NormalizeValueByStep)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -355,7 +355,7 @@ DISPLIB_DisplayTextAtPosition:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-DISPLIB_NormalizeValueByStep:
+_DISPLIB_NormalizeValueByStep:
     MOVEM.L D5-D7,-(A7)
     MOVE.W  18(A7),D7
     MOVE.W  22(A7),D6

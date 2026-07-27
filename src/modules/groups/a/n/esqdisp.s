@@ -1,6 +1,6 @@
     XDEF    ESQDISP_AllocateHighlightBitmaps
     XDEF    _ESQDISP_ApplyStatusMaskToIndicators
-    XDEF    ESQDISP_InitHighlightMessagePattern
+    XDEF    _ESQDISP_InitHighlightMessagePattern
     XDEF    ESQDISP_ProcessGridMessagesIfIdle
     XDEF    ESQDISP_QueueHighlightDrawMessage
     XDEF    ESQDISP_SetStatusIndicatorColorSlot
@@ -19,9 +19,9 @@
 ; CLOBBERS:
 ;   A0/A1/A3/A6/A7/D0/D1/D2/D7
 ; CALLS:
-;   ESQDISP_JMPTBL_GRAPHICS_AllocRaster, _LVOBltClear, _LVOInitBitMap
+;   _ESQDISP_JMPTBL_GRAPHICS_AllocRaster, _LVOBltClear, _LVOInitBitMap
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQDISP_C, WDISP_HighlightRasterHeightPx
+;   Global_REF_GRAPHICS_LIBRARY, _Global_STR_ESQDISP_C, _WDISP_HighlightRasterHeightPx
 ; WRITES:
 ;   A3+8/A3+12/A3+16 raster plane pointers
 ; DESC:
@@ -35,7 +35,7 @@ ESQDISP_AllocateHighlightBitmaps:
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 24(A7),A3
     MOVEQ   #0,D0
-    MOVE.W  WDISP_HighlightRasterHeightPx,D0
+    MOVE.W  _WDISP_HighlightRasterHeightPx,D0
     MOVEA.L A3,A0
     MOVE.L  D0,D2
     MOVEQ   #3,D0
@@ -54,20 +54,20 @@ ESQDISP_AllocateHighlightBitmaps:
     ASL.L   #2,D0
     MOVEQ   #0,D1
 
-    MOVE.W  WDISP_HighlightRasterHeightPx,D1
+    MOVE.W  _WDISP_HighlightRasterHeightPx,D1
     MOVE.L  D1,-(A7)                    ; Height
     PEA     696.W                       ; Width
     PEA     79.W                        ; Line Number
-    PEA     Global_STR_ESQDISP_C          ; Calling File
+    PEA     _Global_STR_ESQDISP_C          ; Calling File
     MOVE.L  D0,28(A7)
-    JSR     ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
+    JSR     _ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVE.L  12(A7),D1
     MOVE.L  D0,8(A3,D1.L)
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    MOVE.W  WDISP_HighlightRasterHeightPx,D1
+    MOVE.W  _WDISP_HighlightRasterHeightPx,D1
     MULU    #$58,D1
     MOVE.L  D0,12(A7)
     MOVE.L  D1,D0
@@ -107,7 +107,7 @@ ESQDISP_AllocateHighlightBitmaps_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_InitHighlightMessagePattern   (Seed highlight message pattern bytes)
+; FUNC: _ESQDISP_InitHighlightMessagePattern   (Seed highlight message pattern bytes)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -125,7 +125,7 @@ ESQDISP_AllocateHighlightBitmaps_Return:
 ; NOTES:
 ;   Uses a fixed 4-byte loop.
 ;------------------------------------------------------------------------------
-ESQDISP_InitHighlightMessagePattern:
+_ESQDISP_InitHighlightMessagePattern:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
@@ -176,16 +176,16 @@ ESQDISP_InitHighlightMessagePattern_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0
 ; CALLS:
-;   ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode, _LVOInitRastPort, _LVOPutMsg, _LVOSetDrMd, _LVOSetFont
+;   _ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode, _LVOInitRastPort, _LVOPutMsg, _LVOSetDrMd, _LVOSetFont
 ; READS:
-;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, ESQ_HighlightMsgPort, ESQ_HighlightReplyPort
+;   AbsExecBase, _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort
 ; WRITES:
 ;   highlight message header/rastport fields at A3, message flags via A3+112 target
 ; DESC:
 ;   Populates message metadata and embedded RastPort state, validates selection
-;   parameters, then posts the message to ESQ_HighlightMsgPort.
+;   parameters, then posts the message to _ESQ_HighlightMsgPort.
 ; NOTES:
-;   Uses ESQ_HighlightReplyPort as reply target for async highlight processing.
+;   Uses _ESQ_HighlightReplyPort as reply target for async highlight processing.
 ;------------------------------------------------------------------------------
 ESQDISP_QueueHighlightDrawMessage:
     LINK.W  A5,#-4
@@ -195,18 +195,18 @@ ESQDISP_QueueHighlightDrawMessage:
 
     MOVE.B  #$5,8(A3)
     MOVE.W  #$a0,18(A3)
-    MOVE.L  ESQ_HighlightReplyPort,14(A3)
+    MOVE.L  _ESQ_HighlightReplyPort,14(A3)
     MOVE.L  8(A2),20(A3)
     MOVE.L  12(A2),24(A3)
     MOVE.L  16(A2),28(A3)
     CLR.W   52(A3)
     CLR.L   -(A7)
     MOVE.L  A3,-(A7)
-    JSR     ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(PC)
+    JSR     _ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(PC)
 
     CLR.L   32(A3)
     MOVE.L  A3,(A7)
-    BSR.S   ESQDISP_InitHighlightMessagePattern
+    BSR.S   _ESQDISP_InitHighlightMessagePattern
 
     ADDQ.W  #8,A7
     LEA     60(A3),A0
@@ -217,7 +217,7 @@ ESQDISP_QueueHighlightDrawMessage:
     MOVE.L  A2,64(A3)
     LEA     60(A3),A0
     MOVEA.L A0,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
@@ -231,7 +231,7 @@ ESQDISP_QueueHighlightDrawMessage:
     MOVE.B  #$1,55(A0)
     BSET    #0,53(A0)
     MOVEA.L A3,A1
-    MOVEA.L ESQ_HighlightMsgPort,A0
+    MOVEA.L _ESQ_HighlightMsgPort,A0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPutMsg(A6)
 
@@ -250,27 +250,27 @@ ESQDISP_QueueHighlightDrawMessage:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages
+;   _ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages
 ; READS:
-;   ESQDISP_GridMessagePumpBlockFlag, NEWGRID_MessagePumpSuspendFlag, Global_UIBusyFlag
+;   _ESQDISP_GridMessagePumpBlockFlag, _NEWGRID_MessagePumpSuspendFlag, _Global_UIBusyFlag
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Forwards to NEWGRID message processing only when no modal/input-busy gate is set.
 ; NOTES:
-;   Gated by ESQDISP_GridMessagePumpBlockFlag, Global_UIBusyFlag, and NEWGRID_MessagePumpSuspendFlag.
+;   Gated by _ESQDISP_GridMessagePumpBlockFlag, _Global_UIBusyFlag, and _NEWGRID_MessagePumpSuspendFlag.
 ;------------------------------------------------------------------------------
 ESQDISP_ProcessGridMessagesIfIdle:
-    TST.W   ESQDISP_GridMessagePumpBlockFlag
+    TST.W   _ESQDISP_GridMessagePumpBlockFlag
     BNE.S   .lab_08C3
 
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BNE.S   .lab_08C3
 
-    TST.L   NEWGRID_MessagePumpSuspendFlag
+    TST.L   _NEWGRID_MessagePumpSuspendFlag
     BNE.S   .lab_08C3
 
-    JSR     ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages(PC)
+    JSR     _ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages(PC)
 
 .lab_08C3:
     RTS
@@ -290,9 +290,9 @@ ESQDISP_ProcessGridMessagesIfIdle:
 ; CALLS:
 ;   _LVOReadPixel, _LVORectFill, _LVOSetAPen
 ; READS:
-;   Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, ESQDISP_StatusIndicatorDeferredApplyFlag, ESQDISP_StatusIndicatorColorCache
+;   _Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQDISP_StatusIndicatorDeferredApplyFlag, ESQDISP_StatusIndicatorColorCache
 ; WRITES:
-;   ESQDISP_StatusIndicatorColorCache, status-indicator rectangle in Global_REF_RASTPORT_1
+;   ESQDISP_StatusIndicatorColorCache, status-indicator rectangle in _Global_REF_RASTPORT_1
 ; DESC:
 ;   Updates cached color for indicator slot and, when UI is drawable, repaints the
 ;   slot rectangle at x=655..661 using either supplied color or sampled fallback.
@@ -314,7 +314,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
     BNE.W   .return
 
 .validate_slot_index:
-    TST.B   ESQDISP_StatusIndicatorDeferredApplyFlag
+    TST.B   _ESQDISP_StatusIndicatorDeferredApplyFlag
     BEQ.S   .resolve_cached_color_or_direct_apply
 
     MOVEQ   #-1,D0
@@ -370,12 +370,12 @@ ESQDISP_SetStatusIndicatorColorSlot:
     MOVE.L  D0,-16(A5)
 
 .setup_indicator_rastport:
-    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.B  25(A0),D5
     EXT.W   D5
     EXT.L   D5
     MOVE.L  4(A0),-4(A5)
-    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
+    MOVE.L  #_Global_REF_696_400_BITMAP,4(A0)
     MOVEQ   #7,D0
     CMP.L   D0,D7
     BEQ.S   .readPixelAt655x55
@@ -385,7 +385,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
     BNE.S   .set_pen_and_fill_indicator
 
 .readPixelAt655x55:
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVE.L  #655,D0
     MOVEQ   #55,D1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -395,7 +395,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
 
 .set_pen_and_fill_indicator:
     MOVE.L  D7,D0
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
@@ -407,15 +407,15 @@ ESQDISP_SetStatusIndicatorColorSlot:
     MOVE.L  D0,24(A7)
     MOVE.L  D4,D0
     MOVE.L  D2,D3
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVE.L  24(A7),D2
     JSR     _LVORectFill(A6)
 
     MOVE.L  D5,D0
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
 
 .return:

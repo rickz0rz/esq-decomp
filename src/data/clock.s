@@ -1,12 +1,12 @@
-    XDEF    Global_STR_EXTRA_TIME_FORMAT
-    XDEF    Global_STR_GRID_TIME_FORMAT
-    XDEF    Global_STR_GRID_TIME_FORMAT_DUPLICATE
-    XDEF    Global_STR_12_44_44_SINGLE_SPACE
-    XDEF    Global_STR_12_44_44_PM
+    XDEF    _Global_STR_EXTRA_TIME_FORMAT
+    XDEF    _Global_STR_GRID_TIME_FORMAT
+    XDEF    _Global_STR_GRID_TIME_FORMAT_DUPLICATE
+    XDEF    _Global_STR_12_44_44_SINGLE_SPACE
+    XDEF    _Global_STR_12_44_44_PM
     XDEF    Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED
     XDEF    CLOCK_STR_TEMPLATE_CODE_SET_FGN
     XDEF    CLOCK_AlignedInsetRenderGateFlag
-    XDEF    CLOCK_FileEofMarkerCtrlZ
+    XDEF    _CLOCK_FileEofMarkerCtrlZ
     XDEF    COI_FieldDelimiterTab
     XDEF    COI_RecordTerminatorCrLf
     XDEF    CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY
@@ -21,15 +21,15 @@
     XDEF    CLOCK_STR_MISSING_TITLE_TEMPLATE
 ; ========== CLOCK.c ========== probably
 
-Global_STR_EXTRA_TIME_FORMAT: ; not sure where this is used.
+_Global_STR_EXTRA_TIME_FORMAT: ; not sure where this is used.
     NStr    "%2d:%02d:%02d"
-Global_STR_GRID_TIME_FORMAT:
+_Global_STR_GRID_TIME_FORMAT:
     NStr    "%2d:%02d:%02d"
-Global_STR_GRID_TIME_FORMAT_DUPLICATE:
+_Global_STR_GRID_TIME_FORMAT_DUPLICATE:
     NStr    "%2d:%02d:%02d "
-Global_STR_12_44_44_SINGLE_SPACE:
+_Global_STR_12_44_44_SINGLE_SPACE:
     NStr    "12:44:44 "
-Global_STR_12_44_44_PM:
+_Global_STR_12_44_44_PM:
     NStr    "12:44:44 PM"
 Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED:
     NStr    "%s%s%ld  "
@@ -39,7 +39,7 @@ Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED:
 ; TYPE: cstring
 ; PURPOSE: Character set checked when selecting aligned status/time templates.
 ; USED BY: CLEANUP_RenderAlignedStatusScreen
-; NOTES: Membership test performed via STR_FindCharPtr.
+; NOTES: Membership test performed via _STR_FindCharPtr.
 ;------------------------------------------------------------------------------
 CLOCK_STR_TEMPLATE_CODE_SET_FGN:
     NStr    "FGN"
@@ -56,13 +56,13 @@ CLOCK_AlignedInsetRenderGateFlag:
     DC.W    $0004
     DC.B    $0c
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_FileEofMarkerCtrlZ   (file EOF marker byte)
+; SYM: _CLOCK_FileEofMarkerCtrlZ   (file EOF marker byte)
 ; TYPE: u8
 ; PURPOSE: Control-Z marker appended to serialized/log output files.
 ; USED BY: PARSEINI_WriteErrorLogEntry, COI export writer
 ; NOTES: Value is $1A.
 ;------------------------------------------------------------------------------
-CLOCK_FileEofMarkerCtrlZ:
+_CLOCK_FileEofMarkerCtrlZ:
     DC.B    $1a
 ;------------------------------------------------------------------------------
 ; SYM: COI_FieldDelimiterTab   (COI export field delimiter)

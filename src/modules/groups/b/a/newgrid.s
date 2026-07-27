@@ -6,11 +6,11 @@
     XDEF    NEWGRID_DrawAwaitingListingsMessage
     XDEF    NEWGRID_DrawClockFormatHeader
     XDEF    NEWGRID_DrawDateBanner
-    XDEF    NEWGRID_DrawGridFrame
+    XDEF    _NEWGRID_DrawGridFrame
     XDEF    NEWGRID_DrawGridTopBars
     XDEF    NEWGRID_DrawTopBorderLine
     XDEF    NEWGRID_DrawWrappedText
-    XDEF    NEWGRID_FillGridRects
+    XDEF    _NEWGRID_FillGridRects
     XDEF    NEWGRID_InitGridResources
     XDEF    NEWGRID_IsGridReadyForInput
     XDEF    NEWGRID_MapSelectionToMode
@@ -23,14 +23,14 @@
     XDEF    NEWGRID_JMPTBL_CLEANUP_DrawClockFormatList
     XDEF    NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds
     XDEF    NEWGRID_JMPTBL_DATETIME_SecondsToStruct
-    XDEF    NEWGRID_JMPTBL_DISPTEXT_FreeBuffers
+    XDEF    _NEWGRID_JMPTBL_DISPTEXT_FreeBuffers
     XDEF    NEWGRID_JMPTBL_DISPTEXT_InitBuffers
-    XDEF    NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING
+    XDEF    _NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING
     XDEF    NEWGRID_JMPTBL_MATH_DivS32
-    XDEF    NEWGRID_JMPTBL_MATH_Mulu32
-    XDEF    NEWGRID_JMPTBL_MEMORY_AllocateMemory
-    XDEF    NEWGRID_JMPTBL_MEMORY_DeallocateMemory
-    XDEF    NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN
+    XDEF    _NEWGRID_JMPTBL_MATH_Mulu32
+    XDEF    _NEWGRID_JMPTBL_MEMORY_AllocateMemory
+    XDEF    _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
+    XDEF    _NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN
     XDEF    NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel
 
 ;!======
@@ -43,24 +43,24 @@
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A6
 ; CALLS:
-;   NEWGRID2_EnsureBuffersAllocated, NEWGRID_JMPTBL_DISPTEXT_InitBuffers, _NEWGRID_InitShowtimeBuckets, NEWGRID_JMPTBL_MEMORY_AllocateMemory, _LVOInitRastPort,
+;   NEWGRID2_EnsureBuffersAllocated, NEWGRID_JMPTBL_DISPTEXT_InitBuffers, _NEWGRID_InitShowtimeBuckets, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _LVOInitRastPort,
 ;   _LVOSetDrMd, _LVOSetFont, NEWGRID_DrawTopBorderLine,
 ;   _LVOTextLength, NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   NEWGRID_GridResourcesInitializedFlag, Global_HANDLE_PREVUEC_FONT, Global_STR_44_44_44
+;   _NEWGRID_GridResourcesInitializedFlag, _Global_HANDLE_PREVUEC_FONT, Global_STR_44_44_44
 ; WRITES:
-;   NEWGRID_GridResourcesInitializedFlag, NEWGRID_MainRastPortPtr/2, NEWGRID_RowHeightPx-232B
+;   _NEWGRID_GridResourcesInitializedFlag, _NEWGRID_MainRastPortPtr/2, _NEWGRID_RowHeightPx-232B
 ; DESC:
 ;   Allocates two RastPorts, attaches bitmaps/fonts, and computes layout metrics
 ;   for the grid header/banner area.
 ; NOTES:
-;   Early-outs if already initialized (NEWGRID_GridResourcesInitializedFlag != 0) or allocation fails.
+;   Early-outs if already initialized (_NEWGRID_GridResourcesInitializedFlag != 0) or allocation fails.
 ;------------------------------------------------------------------------------
 NEWGRID_InitGridResources:
-    TST.W   NEWGRID_GridResourcesInitializedFlag
+    TST.W   _NEWGRID_GridResourcesInitializedFlag
     BNE.W   .return_init_status
 
-    MOVE.W  #1,NEWGRID_GridResourcesInitializedFlag
+    MOVE.W  #1,_NEWGRID_GridResourcesInitializedFlag
     JSR     NEWGRID2_EnsureBuffersAllocated(PC)
 
     JSR     NEWGRID_JMPTBL_DISPTEXT_InitBuffers(PC)
@@ -71,10 +71,10 @@ NEWGRID_InitGridResources:
     PEA     100.W
     PEA     99.W
     PEA     Global_STR_NEWGRID_C_1
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,NEWGRID_MainRastPortPtr
+    MOVE.L  D0,_NEWGRID_MainRastPortPtr
     TST.L   D0
     BEQ.W   .return_init_status
 
@@ -82,25 +82,25 @@ NEWGRID_InitGridResources:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
-    MOVEA.L NEWGRID_MainRastPortPtr,A0
-    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
-    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEA.L _NEWGRID_MainRastPortPtr,A0
+    MOVE.L  #_Global_REF_696_400_BITMAP,4(A0)
+    MOVEA.L _NEWGRID_MainRastPortPtr,A1
     MOVEQ   #0,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L NEWGRID_MainRastPortPtr,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _NEWGRID_MainRastPortPtr,A1
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     100.W
     PEA     112.W
     PEA     Global_STR_NEWGRID_C_2
-    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,NEWGRID_HeaderRastPortPtr
+    MOVE.L  D0,_NEWGRID_HeaderRastPortPtr
     TST.L   D0
     BEQ.W   .return_init_status
 
@@ -108,28 +108,28 @@ NEWGRID_InitGridResources:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
-    MOVEA.L NEWGRID_HeaderRastPortPtr,A0
+    MOVEA.L _NEWGRID_HeaderRastPortPtr,A0
     MOVE.L  #WDISP_BannerGridBitmapStruct,4(A0)
-    MOVEA.L NEWGRID_HeaderRastPortPtr,A1
+    MOVEA.L _NEWGRID_HeaderRastPortPtr,A1
     MOVEQ   #0,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L NEWGRID_HeaderRastPortPtr,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _NEWGRID_HeaderRastPortPtr,A1
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
     BSR.W   NEWGRID_DrawTopBorderLine
 
     MOVEQ   #8,D0
-    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEA.L _NEWGRID_MainRastPortPtr,A1
     LEA     Global_STR_44_44_44,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.W  D0,NEWGRID_SampleTimeTextWidthPx
     ADDI.W  #12,D0
-    MOVE.W  D0,NEWGRID_ColumnStartXPx
+    MOVE.W  D0,_NEWGRID_ColumnStartXPx
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  #624,D0
@@ -137,15 +137,15 @@ NEWGRID_InitGridResources:
     MOVEQ   #3,D1
     JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.W  D0,NEWGRID_ColumnWidthPx
-    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVE.W  D0,_NEWGRID_ColumnWidthPx
+    MOVEA.L _NEWGRID_MainRastPortPtr,A1
     MOVEA.L 52(A1),A0
     MOVEQ   #0,D0
     MOVE.W  20(A0),D0
     SUBQ.L  #1,D0
     ADD.L   D0,D0
     ADDQ.L  #8,D0
-    MOVE.W  D0,NEWGRID_RowHeightPx
+    MOVE.W  D0,_NEWGRID_RowHeightPx
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,D0
@@ -155,9 +155,9 @@ NEWGRID_InitGridResources:
     TST.L   D1
     BEQ.S   .align_even
 
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,NEWGRID_RowHeightPx
+    MOVE.W  D0,_NEWGRID_RowHeightPx
 
 .align_even:
     BSR.W   NEWGRID_DrawTopBorderLine
@@ -176,35 +176,35 @@ NEWGRID_InitGridResources:
 ; CLOBBERS:
 ;   D0/A0/A6
 ; CALLS:
-;   NEWGRID_JMPTBL_MEMORY_DeallocateMemory, NEWGRID2_FreeBuffersIfAllocated, NEWGRID_JMPTBL_DISPTEXT_FreeBuffers, NEWGRID_ResetShowtimeBuckets
+;   _NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _NEWGRID2_FreeBuffersIfAllocated, _NEWGRID_JMPTBL_DISPTEXT_FreeBuffers, _NEWGRID_ResetShowtimeBuckets
 ; READS:
-;   NEWGRID_MainRastPortPtr
+;   _NEWGRID_MainRastPortPtr
 ; WRITES:
-;   NEWGRID_MainRastPortPtr, NEWGRID_GridResourcesInitializedFlag
+;   _NEWGRID_MainRastPortPtr, _NEWGRID_GridResourcesInitializedFlag
 ; DESC:
 ;   Frees the grid rastport allocation and resets grid state flags.
 ; NOTES:
-;   Always clears NEWGRID_GridResourcesInitializedFlag and triggers dependent cleanup routines.
+;   Always clears _NEWGRID_GridResourcesInitializedFlag and triggers dependent cleanup routines.
 ;------------------------------------------------------------------------------
 NEWGRID_ShutdownGridResources:
-    TST.L   NEWGRID_MainRastPortPtr
+    TST.L   _NEWGRID_MainRastPortPtr
     BEQ.S   .skip_free
 
     PEA     100.W
-    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
+    MOVE.L  _NEWGRID_MainRastPortPtr,-(A7)
     PEA     148.W
-    PEA     Global_STR_NEWGRID_C_3
-    JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_NEWGRID_C_3
+    JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
 .skip_free:
-    JSR     NEWGRID2_FreeBuffersIfAllocated(PC)
+    JSR     _NEWGRID2_FreeBuffersIfAllocated(PC)
 
-    JSR     NEWGRID_JMPTBL_DISPTEXT_FreeBuffers(PC)
+    JSR     _NEWGRID_JMPTBL_DISPTEXT_FreeBuffers(PC)
 
-    CLR.W   NEWGRID_GridResourcesInitializedFlag
-    JSR     NEWGRID_ResetShowtimeBuckets(PC)
+    CLR.W   _NEWGRID_GridResourcesInitializedFlag
+    JSR     _NEWGRID_ResetShowtimeBuckets(PC)
 
     RTS
 
@@ -219,9 +219,9 @@ NEWGRID_ShutdownGridResources:
 ; CLOBBERS:
 ;   D0-D3/A6
 ; CALLS:
-;   _LVODisable/_LVOEnable, GCOMMAND_ResetHighlightMessages, _LVOSetAPen, _LVORectFill
+;   _LVODisable/_LVOEnable, _GCOMMAND_ResetHighlightMessages, _LVOSetAPen, _LVORectFill
 ; READS:
-;   NEWGRID_RefreshStateFlag
+;   _NEWGRID_RefreshStateFlag
 ; WRITES:
 ;   none
 ; DESC:
@@ -235,21 +235,21 @@ NEWGRID_ClearHighlightArea:
     MOVEA.L AbsExecBase,A6
     JSR     _LVODisable(A6)
 
-    JSR     GCOMMAND_ResetHighlightMessages(PC)
+    JSR     _GCOMMAND_ResetHighlightMessages(PC)
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOEnable(A6)
 
-    TST.L   NEWGRID_RefreshStateFlag
+    TST.L   _NEWGRID_RefreshStateFlag
     BNE.S   .return
 
-    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEA.L _NEWGRID_MainRastPortPtr,A1
     MOVEQ   #7,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Draw a filled rect from 0,68 to 695,267
-    MOVEA.L NEWGRID_MainRastPortPtr,A1
+    MOVEA.L _NEWGRID_MainRastPortPtr,A1
     MOVEQ   #0,D0
     MOVEQ   #68,D1
     MOVE.L  #695,D2
@@ -273,7 +273,7 @@ NEWGRID_ClearHighlightArea:
 ; CALLS:
 ;   none
 ; READS:
-;   TEXTDISP_SecondaryGroupPresentFlag/TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupPresentFlag/TEXTDISP_PrimaryGroupEntryCount
+;   _TEXTDISP_SecondaryGroupPresentFlag/_TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupPresentFlag/_TEXTDISP_PrimaryGroupEntryCount
 ; WRITES:
 ;   none
 ; DESC:
@@ -289,19 +289,19 @@ NEWGRID_IsGridReadyForInput:
     CMP.L   D0,D7
     BNE.S   .check_primary_gate
 
-    TST.B   TEXTDISP_SecondaryGroupPresentFlag
+    TST.B   _TEXTDISP_SecondaryGroupPresentFlag
     BEQ.S   .allow_input
 
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.S   .allow_input
 
 .check_primary_gate:
-    TST.B   TEXTDISP_PrimaryGroupPresentFlag
+    TST.B   _TEXTDISP_PrimaryGroupPresentFlag
     BEQ.S   .allow_input
 
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.S   .allow_input
@@ -331,8 +331,8 @@ NEWGRID_IsGridReadyForInput:
 ; CALLS:
 ;   NEWGRID_IsGridReadyForInput (NEWGRID_IsGridReadyForInput)
 ; READS:
-;   CONFIG_ModeCycleEnabledFlag, CONFIG_ModeCycleGateDuration, NEWGRID_ModeCycleCountdown-200A, CONFIG_NicheModeCycleBudget_Y/1BA5/1BAD,
-;   GCOMMAND_NicheModeCycleCount/GCOMMAND_NicheForceMode5Flag/GCOMMAND_MplexModeCycleCount, GCOMMAND_PpvModeCycleCount, TEXTDISP_PrimaryGroupPresentFlag/2231/222E/222F
+;   _CONFIG_ModeCycleEnabledFlag, _CONFIG_ModeCycleGateDuration, NEWGRID_ModeCycleCountdown-200A, _CONFIG_NicheModeCycleBudget_Y/1BA5/1BAD,
+;   _GCOMMAND_NicheModeCycleCount/_GCOMMAND_NicheForceMode5Flag/_GCOMMAND_MplexModeCycleCount, _GCOMMAND_PpvModeCycleCount, _TEXTDISP_PrimaryGroupPresentFlag/2231/222E/222F
 ; WRITES:
 ;   NEWGRID_ModeCycleCountdown-200A
 ; DESC:
@@ -352,12 +352,12 @@ NEWGRID_SelectNextMode:
 .copy_mode_table:
     MOVE.L  (A0)+,(A1)+
     DBF     D0,.copy_mode_table
-    MOVE.B  CONFIG_ModeCycleEnabledFlag,D0
+    MOVE.B  _CONFIG_ModeCycleEnabledFlag,D0
     MOVEQ   #'Y',D1
     CMP.B   D1,D0
     BNE.S   .evaluate_next_candidate
 
-    MOVE.L  CONFIG_ModeCycleGateDuration,D0
+    MOVE.L  _CONFIG_ModeCycleGateDuration,D0
     TST.L   D0
     BLE.S   .force_select_current
 
@@ -398,7 +398,7 @@ NEWGRID_SelectNextMode:
     ADDQ.L  #1,NEWGRID_ModeCandidateIndex
 
 .dispatch_mode_family:
-    MOVE.B  CONFIG_ModeCycleEnabledFlag,D0
+    MOVE.B  _CONFIG_ModeCycleEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .dispatch_non_y_mode_group2
@@ -426,7 +426,7 @@ NEWGRID_SelectNextMode:
     DC.W    .validate_cycle_gate-.switch_group1_jumptable-2
 
 .case_group1_1:
-    MOVE.B  CONFIG_NicheModeCycleBudget_Y,D0
+    MOVE.B  _CONFIG_NicheModeCycleBudget_Y,D0
     SNE     D1
     NEG.B   D1
     EXT.W   D1
@@ -435,7 +435,7 @@ NEWGRID_SelectNextMode:
     BRA.S   .validate_cycle_gate
 
 .case_group1_2:
-    MOVE.B  CONFIG_NicheModeCycleBudget_Static,D0
+    MOVE.B  _CONFIG_NicheModeCycleBudget_Static,D0
     SNE     D1
     NEG.B   D1
     EXT.W   D1
@@ -444,7 +444,7 @@ NEWGRID_SelectNextMode:
     BRA.S   .validate_cycle_gate
 
 .case_group1_3:
-    MOVE.B  CONFIG_NicheModeCycleBudget_Custom,D0
+    MOVE.B  _CONFIG_NicheModeCycleBudget_Custom,D0
     SNE     D1
     NEG.B   D1
     EXT.W   D1
@@ -453,7 +453,7 @@ NEWGRID_SelectNextMode:
     BRA.S   .validate_cycle_gate
 
 .case_group1_0:
-    TST.L   GCOMMAND_NicheModeCycleCount
+    TST.L   _GCOMMAND_NicheModeCycleCount
     SNE     D0
     NEG.B   D0
     EXT.W   D0
@@ -462,7 +462,7 @@ NEWGRID_SelectNextMode:
     BRA.S   .validate_cycle_gate
 
 .case_group1_4:
-    TST.L   GCOMMAND_MplexModeCycleCount
+    TST.L   _GCOMMAND_MplexModeCycleCount
     SNE     D0
     NEG.B   D0
     EXT.W   D0
@@ -471,7 +471,7 @@ NEWGRID_SelectNextMode:
     BRA.S   .validate_cycle_gate
 
 .case_group1_5:
-    TST.L   GCOMMAND_PpvModeCycleCount
+    TST.L   _GCOMMAND_PpvModeCycleCount
     SNE     D0
     NEG.B   D0
     EXT.W   D0
@@ -514,7 +514,7 @@ NEWGRID_SelectNextMode:
     DC.W    .case_group2_7-.switch_group2_jumptable-2
 
 .case_group2_1:
-    MOVE.B  (CONFIG_NicheModeCycleBudget_Y).L,D0
+    MOVE.B  (_CONFIG_NicheModeCycleBudget_Y).L,D0
     TST.B   D0
     BLE.S   .case_group2_1_gate_false
 
@@ -536,7 +536,7 @@ NEWGRID_SelectNextMode:
     BRA.W   .evaluate_next_candidate
 
 .case_group2_2:
-    MOVE.B  CONFIG_NicheModeCycleBudget_Static,D0
+    MOVE.B  _CONFIG_NicheModeCycleBudget_Static,D0
     TST.B   D0
     BLE.S   .case_group2_2_gate_false
 
@@ -558,7 +558,7 @@ NEWGRID_SelectNextMode:
     BRA.W   .evaluate_next_candidate
 
 .case_group2_3:
-    MOVE.B  CONFIG_NicheModeCycleBudget_Custom,D0
+    MOVE.B  _CONFIG_NicheModeCycleBudget_Custom,D0
     TST.B   D0
     BLE.S   .case_group2_3_gate_false
 
@@ -580,7 +580,7 @@ NEWGRID_SelectNextMode:
     BRA.W   .evaluate_next_candidate
 
 .case_group2_0:
-    MOVE.L  GCOMMAND_NicheModeCycleCount,D0
+    MOVE.L  _GCOMMAND_NicheModeCycleCount,D0
     TST.L   D0
     BLE.S   .case_group2_0_gate_false
 
@@ -602,7 +602,7 @@ NEWGRID_SelectNextMode:
     BRA.W   .evaluate_next_candidate
 
 .case_group2_4:
-    MOVE.L  GCOMMAND_MplexModeCycleCount,D0
+    MOVE.L  _GCOMMAND_MplexModeCycleCount,D0
     TST.L   D0
     BLE.S   .case_group2_4_gate_false
 
@@ -624,7 +624,7 @@ NEWGRID_SelectNextMode:
     BRA.W   .evaluate_next_candidate
 
 .case_group2_5:
-    MOVE.L  GCOMMAND_PpvModeCycleCount,D0
+    MOVE.L  _GCOMMAND_PpvModeCycleCount,D0
     TST.L   D0
     BLE.S   .case_group2_5_gate_false
 
@@ -669,9 +669,9 @@ NEWGRID_SelectNextMode:
 ; CALLS:
 ;   NEWGRID_IsGridReadyForInput (NEWGRID_IsGridReadyForInput), NEWGRID_SelectNextMode (NEWGRID_SelectNextMode)
 ; READS:
-;   GCOMMAND_NicheModeCycleCount/GCOMMAND_NicheForceMode5Flag
+;   _GCOMMAND_NicheModeCycleCount/_GCOMMAND_NicheForceMode5Flag
 ; WRITES:
-;   GCOMMAND_NicheModeCycleCount (cleared when case 0x3E hit)
+;   _GCOMMAND_NicheModeCycleCount (cleared when case 0x3E hit)
 ; DESC:
 ;   Uses a switch/jumptable to map selection indices to mode IDs and gates
 ;   certain modes based on flags and readiness checks.
@@ -739,11 +739,11 @@ NEWGRID_MapSelectionToMode:
     BRA.S   .return_mapped_mode
 
 .case_sel_4:
-    TST.L   GCOMMAND_NicheForceMode5Flag
+    TST.L   _GCOMMAND_NicheForceMode5Flag
     BEQ.S   .case_sel_5
 
     MOVEQ   #5,D7
-    CLR.L   GCOMMAND_NicheModeCycleCount
+    CLR.L   _GCOMMAND_NicheModeCycleCount
     BRA.S   .return_mapped_mode
 
 .case_sel_5:
@@ -776,10 +776,10 @@ NEWGRID_MapSelectionToMode:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   _LVOSetDrMd, NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry,
-;   NEWGRID_JMPTBL_MATH_Mulu32, _LVOTextLength, _LVOMove, _LVOText, NEWGRID_ValidateSelectionCode
+;   _LVOSetDrMd, _NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry,
+;   _NEWGRID_JMPTBL_MATH_Mulu32, _LVOTextLength, _LVOMove, _LVOText, _NEWGRID_ValidateSelectionCode
 ; READS:
-;   NEWGRID_ColumnStartXPx/232B, NEWGRID_RowHeightPx
+;   _NEWGRID_ColumnStartXPx/232B, _NEWGRID_RowHeightPx
 ; WRITES:
 ;   52(A3), 32(A3)
 ; DESC:
@@ -805,7 +805,7 @@ NEWGRID_DrawClockFormatHeader:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     NEWGRID_SetRowColor(PC)
+    JSR     _NEWGRID_SetRowColor(PC)
 
     MOVEA.L -102(A5),A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -819,7 +819,7 @@ NEWGRID_DrawClockFormatHeader:
     JSR     _LVORectFill(A6)
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
     MOVEQ   #35,D1
     ADD.L   D1,D0
     MOVE.L  D3,(A7)
@@ -828,7 +828,7 @@ NEWGRID_DrawClockFormatHeader:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  -102(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
+    JSR     _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     28(A7),A7
     MOVEQ   #0,D6
@@ -855,16 +855,16 @@ NEWGRID_DrawClockFormatHeader:
     MOVE.L  D0,D5
     PEA     -97(A5)
     MOVE.L  D5,-(A7)
-    JSR     NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(PC)
+    JSR     _NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
     MOVEQ   #0,D1
-    MOVE.W  NEWGRID_ColumnWidthPx,D1
+    MOVE.W  _NEWGRID_ColumnWidthPx,D1
     MOVE.L  D0,28(A7)
     MOVE.L  D6,D0
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  28(A7),D1
     ADD.L   D0,D1
@@ -880,7 +880,7 @@ NEWGRID_DrawClockFormatHeader:
 
 .compute_column_right_edge:
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnWidthPx,D0
+    MOVE.W  _NEWGRID_ColumnWidthPx,D0
     ADD.L   D4,D0
     SUBQ.L  #1,D0
 
@@ -891,7 +891,7 @@ NEWGRID_DrawClockFormatHeader:
     MOVE.L  D4,-(A7)
     MOVE.L  -102(A5),-(A7)
     MOVE.L  D0,-16(A5)
-    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
+    JSR     _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     20(A7),A7
 
@@ -914,7 +914,7 @@ NEWGRID_DrawClockFormatHeader:
     JSR     _LVOTextLength(A6)
 
     MOVEQ   #0,D1
-    MOVE.W  NEWGRID_ColumnWidthPx,D1
+    MOVE.W  _NEWGRID_ColumnWidthPx,D1
     SUB.L   D0,D1
     TST.L   D1
     BPL.S   .center_label
@@ -965,7 +965,7 @@ NEWGRID_DrawClockFormatHeader:
     MOVE.W  #17,52(A3)
     PEA     64.W
     MOVE.L  A3,-(A7)
-    JSR     NEWGRID_ValidateSelectionCode(PC)
+    JSR     _NEWGRID_ValidateSelectionCode(PC)
 
     MOVEQ   #0,D0
     MOVE.W  52(A3),D0
@@ -986,10 +986,10 @@ NEWGRID_DrawClockFormatHeader:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING, _LVOSetDrMd, NEWGRID_SetRowColor, _LVOSetAPen,
-;   _LVORectFill, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOTextLength, _LVOMove, _LVOText
+;   _NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING, _LVOSetDrMd, _NEWGRID_SetRowColor, _LVOSetAPen,
+;   _LVORectFill, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
-;   NEWGRID_ColumnStartXPx/232B
+;   _NEWGRID_ColumnStartXPx/232B
 ; WRITES:
 ;   52(A3), 32(A3)
 ; DESC:
@@ -1008,7 +1008,7 @@ NEWGRID_DrawDateBanner:
     LEA     60(A3),A0
     PEA     -100(A5)
     MOVE.L  A0,.rastport(A5)
-    JSR     NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING(PC)
+    JSR     _NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING(PC)
 
     MOVEA.L .rastport(A5),A1
     MOVEQ   #0,D0
@@ -1018,7 +1018,7 @@ NEWGRID_DrawDateBanner:
     PEA     7.W
     CLR.L   -(A7)
     MOVE.L  A3,-(A7)
-    JSR     NEWGRID_SetRowColor(PC)
+    JSR     _NEWGRID_SetRowColor(PC)
 
     MOVEA.L .rastport(A5),A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -1033,7 +1033,7 @@ NEWGRID_DrawDateBanner:
     JSR     _LVORectFill(A6)
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
     MOVEQ   #35,D1
     ADD.L   D1,D0
     MOVE.L  D3,(A7)
@@ -1042,10 +1042,10 @@ NEWGRID_DrawDateBanner:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  .rastport(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
+    JSR     _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
     MOVEQ   #36,D1
     ADD.L   D1,D0
     PEA     33.W
@@ -1053,7 +1053,7 @@ NEWGRID_DrawDateBanner:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  .rastport(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
+    JSR     _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     MOVEA.L .rastport(A5),A1
     MOVEQ   #3,D0
@@ -1061,8 +1061,8 @@ NEWGRID_DrawDateBanner:
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
-    MOVE.W  NEWGRID_ColumnWidthPx,D1
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnWidthPx,D1
     MULU    #3,D1
     LEA     -100(A5),A0
     MOVEA.L A0,A1
@@ -1147,9 +1147,9 @@ NEWGRID_DrawDateBanner:
 ; CLOBBERS:
 ;   D0-D3/A0-A3/A6
 ; CALLS:
-;   NEWGRID_DrawGridFrame, _LVOSetAPen, _LVOTextLength, _LVOMove, NEWGRID_DrawWrappedText, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
+;   _NEWGRID_DrawGridFrame, _LVOSetAPen, _LVOTextLength, _LVOMove, NEWGRID_DrawWrappedText, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
 ; READS:
-;   NEWGRID_RowHeightPx, Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
+;   _NEWGRID_RowHeightPx, Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 ; WRITES:
 ;   52(A3), 32(A3)
 ; DESC:
@@ -1162,7 +1162,7 @@ NEWGRID_DrawAwaitingListingsMessage:
     MOVEM.L D2/A2-A3,-(A7)
     MOVEA.L 24(A7),A3
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     SUBQ.L  #1,D0
     MOVE.L  D0,-(A7)
     MOVEQ   #4,D1
@@ -1170,7 +1170,7 @@ NEWGRID_DrawAwaitingListingsMessage:
     MOVE.L  D1,-(A7)
     PEA     7.W
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_DrawGridFrame
+    BSR.W   _NEWGRID_DrawGridFrame
 
     LEA     60(A3),A0
     MOVEA.L A0,A1
@@ -1208,7 +1208,7 @@ NEWGRID_DrawAwaitingListingsMessage:
     ADD.L   D0,D1                                           ; Add D0 (36) into D1
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     MOVEQ   #0,D2
     MOVE.W  26(A0),D2
     SUB.L   D2,D0
@@ -1233,7 +1233,7 @@ NEWGRID_DrawAwaitingListingsMessage:
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     SUBQ.L  #1,D0
     MOVE.L  D0,(A7)
     PEA     695.W
@@ -1241,10 +1241,10 @@ NEWGRID_DrawAwaitingListingsMessage:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
+    JSR     _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     60(A7),A7
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     LSR.W   #1,D0
 
     MOVE.W  D0,52(A3)
@@ -1267,9 +1267,9 @@ NEWGRID_DrawAwaitingListingsMessage:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
+;   _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
 ; READS:
-;   CONFIG_ModeCycleEnabledFlag, NEWGRID_ModeCycleCountdown
+;   _CONFIG_ModeCycleEnabledFlag, NEWGRID_ModeCycleCountdown
 ; WRITES:
 ;   none
 ; DESC:
@@ -1292,7 +1292,7 @@ NEWGRID_ComputeDaySlotFromClock:
 
     MOVE.W  (A0),(A1)
     PEA     -26(A5)
-    JSR     NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D7
@@ -1335,13 +1335,13 @@ NEWGRID_ComputeDaySlotFromClock:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
+;   _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
 ; READS:
-;   GCOMMAND_MplexClockOffsetMinutes
+;   _GCOMMAND_MplexClockOffsetMinutes
 ; WRITES:
 ;   none
 ; DESC:
-;   Computes a day slot index using a dynamic offset (GCOMMAND_MplexClockOffsetMinutes) and clamps it.
+;   Computes a day slot index using a dynamic offset (_GCOMMAND_MplexClockOffsetMinutes) and clamps it.
 ; NOTES:
 ;   Similar to NEWGRID_ComputeDaySlotFromClock but adjusts thresholds.
 ;------------------------------------------------------------------------------
@@ -1360,13 +1360,13 @@ NEWGRID_ComputeDaySlotFromClockWithOffset:
 
     MOVE.W  (A0),(A1)
     PEA     -26(A5)
-    JSR     NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D7
     MOVE.W  D0,D7
     MOVEQ   #60,D0
-    MOVE.L  GCOMMAND_MplexClockOffsetMinutes,D1
+    MOVE.L  _GCOMMAND_MplexClockOffsetMinutes,D1
     SUB.L   D1,D0
     MOVE.W  -16(A5),D2
     EXT.L   D2
@@ -1410,9 +1410,9 @@ NEWGRID_ComputeDaySlotFromClockWithOffset:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds, NEWGRID_JMPTBL_MATH_DivS32, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_DATETIME_SecondsToStruct, NEWGRID_ComputeDaySlotFromClock
+;   NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds, NEWGRID_JMPTBL_MATH_DivS32, _NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_DATETIME_SecondsToStruct, NEWGRID_ComputeDaySlotFromClock
 ; READS:
-;   CLOCK_FormatVariantCode
+;   _CLOCK_FormatVariantCode
 ; WRITES:
 ;   local buffer -22(A5)
 ; DESC:
@@ -1437,12 +1437,12 @@ NEWGRID_AdjustClockStringBySlot:
 
     MOVE.L  D0,D7
     MOVEQ   #0,D0
-    MOVE.B  CLOCK_FormatVariantCode,D0
+    MOVE.B  _CLOCK_FormatVariantCode,D0
     MOVEQ   #30,D1
     JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #60,D0
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D7
     PEA     -22(A5)
@@ -1467,9 +1467,9 @@ NEWGRID_AdjustClockStringBySlot:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds, NEWGRID_JMPTBL_MATH_DivS32, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_DATETIME_SecondsToStruct, NEWGRID_ComputeDaySlotFromClockWithOffset
+;   NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds, NEWGRID_JMPTBL_MATH_DivS32, _NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_DATETIME_SecondsToStruct, NEWGRID_ComputeDaySlotFromClockWithOffset
 ; READS:
-;   CLOCK_FormatVariantCode
+;   _CLOCK_FormatVariantCode
 ; WRITES:
 ;   local buffer -22(A5)
 ; DESC:
@@ -1495,12 +1495,12 @@ NEWGRID_AdjustClockStringBySlotWithOffset:
 
     MOVE.L  D0,D7
     MOVEQ   #0,D0
-    MOVE.B  CLOCK_FormatVariantCode,D0
+    MOVE.B  _CLOCK_FormatVariantCode,D0
     MOVEQ   #30,D1
     JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #60,D0
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D7
     PEA     -22(A5)
@@ -1527,7 +1527,7 @@ NEWGRID_AdjustClockStringBySlotWithOffset:
 ; CALLS:
 ;   _LVOSetAPen, _LVORectFill
 ; READS:
-;   NEWGRID_HeaderRastPortPtr
+;   _NEWGRID_HeaderRastPortPtr
 ; WRITES:
 ;   none
 ; DESC:
@@ -1538,13 +1538,13 @@ NEWGRID_AdjustClockStringBySlotWithOffset:
 NEWGRID_DrawTopBorderLine:
     MOVEM.L D2-D3,-(A7)
 
-    MOVEA.L NEWGRID_HeaderRastPortPtr,A1
+    MOVEA.L _NEWGRID_HeaderRastPortPtr,A1
     MOVEQ   #7,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Draw a filled rect from 0,0 to 695,1
-    MOVEA.L NEWGRID_HeaderRastPortPtr,A1
+    MOVEA.L _NEWGRID_HeaderRastPortPtr,A1
     MOVEQ   #0,D0               ; x.min = 0
     MOVE.L  D0,D1               ; y.min = 0
     MOVE.L  #695,D2             ; x.max = 695
@@ -1557,7 +1557,7 @@ NEWGRID_DrawTopBorderLine:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_FillGridRects   (Fill two grid rectangles)
+; FUNC: _NEWGRID_FillGridRects   (Fill two grid rectangles)
 ; ARGS:
 ;   stack +8: A3 = rastport
 ;   stack +12: D7 = pen for first rect
@@ -1570,7 +1570,7 @@ NEWGRID_DrawTopBorderLine:
 ; CALLS:
 ;   _LVOSetAPen, _LVORectFill
 ; READS:
-;   NEWGRID_ColumnStartXPx
+;   _NEWGRID_ColumnStartXPx
 ; WRITES:
 ;   none
 ; DESC:
@@ -1578,7 +1578,7 @@ NEWGRID_DrawTopBorderLine:
 ; NOTES:
 ;   Uses SetOffsetForStack macro for parameters.
 ;------------------------------------------------------------------------------
-NEWGRID_FillGridRects:
+_NEWGRID_FillGridRects:
     MOVEM.L D2-D3/D5-D7/A3,-(A7)
 
     SetOffsetForStack 6
@@ -1594,7 +1594,7 @@ NEWGRID_FillGridRects:
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
     MOVEQ   #35,D1
     ADD.L   D1,D0
     MOVEA.L A3,A1
@@ -1609,7 +1609,7 @@ NEWGRID_FillGridRects:
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
     MOVEQ   #36,D1
     ADD.L   D1,D0
     MOVEA.L A3,A1
@@ -1631,23 +1631,23 @@ NEWGRID_FillGridRects:
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   NEWGRID_FillGridRects (NEWGRID_FillGridRects)
+;   _NEWGRID_FillGridRects (_NEWGRID_FillGridRects)
 ; READS:
-;   NEWGRID_HeaderRastPortPtr
+;   _NEWGRID_HeaderRastPortPtr
 ; WRITES:
 ;   none
 ; DESC:
 ;   Draws the top bar rectangles using fixed parameters.
 ; NOTES:
-;   Wrapper around NEWGRID_FillGridRects.
+;   Wrapper around _NEWGRID_FillGridRects.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawGridTopBars:
     PEA     1.W
     MOVEQ   #6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  NEWGRID_HeaderRastPortPtr,-(A7)
-    BSR.S   NEWGRID_FillGridRects
+    MOVE.L  _NEWGRID_HeaderRastPortPtr,-(A7)
+    BSR.S   _NEWGRID_FillGridRects
 
     LEA     16(A7),A7
     RTS
@@ -1655,7 +1655,7 @@ NEWGRID_DrawGridTopBars:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_DrawGridFrame   (Draw grid frame sections)
+; FUNC: _NEWGRID_DrawGridFrame   (Draw grid frame sections)
 ; ARGS:
 ;   stack +8: A3 = grid struct/rastport
 ;   stack +16: D7 = pen for first fill
@@ -1666,17 +1666,17 @@ NEWGRID_DrawGridTopBars:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_SetRowColor, NEWGRID_FillGridRects (NEWGRID_FillGridRects)
+;   _NEWGRID_SetRowColor, _NEWGRID_FillGridRects (_NEWGRID_FillGridRects)
 ; READS:
-;   NEWGRID_ColumnStartXPx
+;   _NEWGRID_ColumnStartXPx
 ; WRITES:
 ;   none
 ; DESC:
 ;   Draws header frame segments using pens and coordinates.
 ; NOTES:
-;   Uses NEWGRID_SetRowColor to set pens before filling.
+;   Uses _NEWGRID_SetRowColor to set pens before filling.
 ;------------------------------------------------------------------------------
-NEWGRID_DrawGridFrame:
+_NEWGRID_DrawGridFrame:
     LINK.W  A5,#-8
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1689,19 +1689,19 @@ NEWGRID_DrawGridFrame:
     PEA     -1.W
     MOVE.L  A3,-(A7)
     MOVE.L  A0,28(A7)
-    JSR     NEWGRID_SetRowColor(PC)
+    JSR     _NEWGRID_SetRowColor(PC)
 
     MOVE.L  D6,(A7)
     CLR.L   -(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  D0,40(A7)
-    JSR     NEWGRID_SetRowColor(PC)
+    JSR     _NEWGRID_SetRowColor(PC)
 
     MOVE.L  D5,(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  44(A7),-(A7)
     MOVE.L  44(A7),-(A7)
-    BSR.W   NEWGRID_FillGridRects
+    BSR.W   _NEWGRID_FillGridRects
 
     MOVEM.L -24(A5),D5-D7/A3
     UNLK    A5
@@ -1718,7 +1718,7 @@ NEWGRID_DrawGridFrame:
 ; CLOBBERS:
 ;   D0/D7/A0-A3
 ; CALLS:
-;   NEWGRID2_JMPTBL_STR_SkipClass3Chars
+;   _NEWGRID2_JMPTBL_STR_SkipClass3Chars
 ; READS:
 ;   entry fields at 1(A3)/19(A3), bit 5 at 27(A3)
 ; WRITES:
@@ -1739,13 +1739,13 @@ NEWGRID_ShouldOpenEditor:
     LEA     19(A3),A0
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-12(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     LEA     1(A3),A0
     MOVE.L  A0,(A7)
     MOVE.L  D0,-12(A5)
     MOVE.L  A0,-8(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
@@ -1800,9 +1800,9 @@ NEWGRID_ShouldOpenEditor:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID2_JMPTBL_STR_SkipClass3Chars, NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN, _LVOTextLength, _LVOMove, _LVOText
+;   _NEWGRID2_JMPTBL_STR_SkipClass3Chars, _NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
-;   Global_STR_SINGLE_SPACE, NEWGRID_WrapWordSpacer, NEWGRID_WrapReturnSpacer
+;   _Global_STR_SINGLE_SPACE, _NEWGRID_WrapWordSpacer, _NEWGRID_WrapReturnSpacer
 ; WRITES:
 ;   local buffers -74(A5)
 ; DESC:
@@ -1828,7 +1828,7 @@ NEWGRID_DrawWrappedText:
     BEQ.S   .init_empty_input
 
     MOVE.L  A2,-(A7)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-20(A5)
@@ -1843,7 +1843,7 @@ NEWGRID_DrawWrappedText:
     MOVEA.L A3,A1
 
     ; Get the width of a single space
-    LEA     Global_STR_SINGLE_SPACE,A0
+    LEA     _Global_STR_SINGLE_SPACE,A0
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
@@ -1858,15 +1858,15 @@ NEWGRID_DrawWrappedText:
     TST.L   -20(A5)
     BEQ.W   .return_next_ptr_or_current
 
-    PEA     NEWGRID_WrapWordSpacer
+    PEA     _NEWGRID_WrapWordSpacer
     PEA     50.W
     PEA     -74(A5)
     MOVE.L  -20(A5),-(A7)
-    JSR     NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(PC)
+    JSR     _NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  D0,-20(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     LEA     16(A7),A7
     MOVE.B  -74(A5),D1
@@ -1996,7 +1996,7 @@ NEWGRID_DrawWrappedText:
 
     ; Draw a single space
     MOVEA.L A3,A1
-    LEA     NEWGRID_WrapReturnSpacer,A0
+    LEA     _NEWGRID_WrapReturnSpacer,A0
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
@@ -2027,13 +2027,13 @@ NEWGRID_DrawWrappedText:
 ; CALLS:
 ;   NEWGRID_InitGridResources, NEWGRID_ClearHighlightArea, CLEANUP_DrawClockBanner,
 ;   NEWGRID_AdjustClockStringBySlot, CLEANUP_DrawClockFormatList/Frame, NEWGRID2_DispatchOperationDefault,
-;   NEWGRID_MapSelectionToMode, _LVOGetMsg, NEWGRID_ValidateSelectionCode, NEWGRID_DrawClockFormatHeader,
-;   NEWGRID_DrawDateBanner, NEWGRID_DrawAwaitingListingsMessage, NEWGRID2_DispatchGridOperation, NEWGRID_MapSelectionToMode,
+;   NEWGRID_MapSelectionToMode, _LVOGetMsg, _NEWGRID_ValidateSelectionCode, NEWGRID_DrawClockFormatHeader,
+;   NEWGRID_DrawDateBanner, NEWGRID_DrawAwaitingListingsMessage, _NEWGRID2_DispatchGridOperation, NEWGRID_MapSelectionToMode,
 ;   GCOMMAND_UpdatePresetEntryCache, _LVOPutMsg, NEWGRID_DrawGridTopBars
 ; READS:
-;   Global_UIBusyFlag, ESQPARS2_ReadModeFlags, NEWGRID_RefreshStateFlag, NEWGRID_MainModeState, NEWGRID_MainModeState/2010/2011/2012, ESQ_HighlightReplyPort
+;   _Global_UIBusyFlag, _ESQPARS2_ReadModeFlags, _NEWGRID_RefreshStateFlag, NEWGRID_MainModeState, NEWGRID_MainModeState/2010/2011/2012, _ESQ_HighlightReplyPort
 ; WRITES:
-;   NEWGRID_MainModeState, NEWGRID_RefreshStateFlag, ESQPARS2_ReadModeFlags, NEWGRID_SelectedDaySlot-2012
+;   NEWGRID_MainModeState, _NEWGRID_RefreshStateFlag, _ESQPARS2_ReadModeFlags, NEWGRID_SelectedDaySlot-2012
 ; DESC:
 ;   Main event loop for grid editing: initializes UI state, pulls messages,
 ;   dispatches by mode, and updates selection and redraws.
@@ -2042,22 +2042,22 @@ NEWGRID_DrawWrappedText:
 ;------------------------------------------------------------------------------
 NEWGRID_ProcessGridMessages:
     LINK.W  A5,#-4
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BNE.W   .return_from_loop
 
-    MOVE.W  ESQPARS2_ReadModeFlags,D0
+    MOVE.W  _ESQPARS2_ReadModeFlags,D0
     CMPI.W  #$101,D0
     BNE.S   .check_reinit
 
-    CLR.W   ESQPARS2_ReadModeFlags
+    CLR.W   _ESQPARS2_ReadModeFlags
     BRA.W   .return_from_loop
 
 .check_reinit:
-    TST.L   NEWGRID_RefreshStateFlag
+    TST.L   _NEWGRID_RefreshStateFlag
     BEQ.S   .reset_selection
 
     MOVEQ   #1,D0
-    CMP.L   NEWGRID_RefreshStateFlag,D0
+    CMP.L   _NEWGRID_RefreshStateFlag,D0
     BNE.S   .maybe_init_ui
 
 .reset_selection:
@@ -2074,7 +2074,7 @@ NEWGRID_ProcessGridMessages:
 
     JSR     NEWGRID_JMPTBL_CLEANUP_DrawClockBanner(PC)
 
-    PEA     CLOCK_CurrentDayOfWeekIndex
+    PEA     _CLOCK_CurrentDayOfWeekIndex
     BSR.W   NEWGRID_AdjustClockStringBySlot
 
     MOVE.L  D0,(A7)
@@ -2082,9 +2082,9 @@ NEWGRID_ProcessGridMessages:
 
     JSR     NEWGRID_JMPTBL_CLEANUP_DrawClockFormatFrame(PC)
 
-    CLR.W   ESQPARS2_ReadModeFlags
+    CLR.W   _ESQPARS2_ReadModeFlags
     MOVEQ   #2,D0
-    MOVE.L  D0,NEWGRID_RefreshStateFlag
+    MOVE.L  D0,_NEWGRID_RefreshStateFlag
     JSR     NEWGRID2_DispatchOperationDefault(PC)
 
     CLR.L   (A7)
@@ -2095,7 +2095,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D0,NEWGRID_MainModeState
 
 .poll_highlight_message:
-    MOVEA.L ESQ_HighlightReplyPort,A0
+    MOVEA.L _ESQ_HighlightReplyPort,A0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOGetMsg(A6)
 
@@ -2107,7 +2107,7 @@ NEWGRID_ProcessGridMessages:
     CLR.W   52(A0)
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    JSR     NEWGRID_ValidateSelectionCode(PC)
+    JSR     _NEWGRID_ValidateSelectionCode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L -4(A5),A0
@@ -2162,10 +2162,10 @@ NEWGRID_ProcessGridMessages:
     BRA.W   .finalize_and_reply_message
 
 .case_mode_1:
-    PEA     CLOCK_DaySlotIndex
+    PEA     _CLOCK_DaySlotIndex
     BSR.W   NEWGRID_ComputeDaySlotFromClock
 
-    PEA     CLOCK_CurrentDayOfWeekIndex
+    PEA     _CLOCK_CurrentDayOfWeekIndex
     MOVE.W  D0,NEWGRID_SelectedDaySlot
     BSR.W   NEWGRID_AdjustClockStringBySlot
 
@@ -2222,7 +2222,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     1.W
-    JSR     NEWGRID2_DispatchGridOperation(PC)
+    JSR     _NEWGRID2_DispatchGridOperation(PC)
 
     LEA     16(A7),A7
     TST.L   D0
@@ -2247,7 +2247,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     5.W
-    JSR     NEWGRID2_DispatchGridOperation(PC)
+    JSR     _NEWGRID2_DispatchGridOperation(PC)
 
     LEA     16(A7),A7
     TST.L   D0
@@ -2272,7 +2272,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     2.W
-    JSR     NEWGRID2_DispatchGridOperation(PC)
+    JSR     _NEWGRID2_DispatchGridOperation(PC)
 
     LEA     16(A7),A7
     TST.L   D0
@@ -2301,7 +2301,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     3.W
-    JSR     NEWGRID2_DispatchGridOperation(PC)
+    JSR     _NEWGRID2_DispatchGridOperation(PC)
 
     LEA     16(A7),A7
     TST.L   D0
@@ -2330,7 +2330,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     4.W
-    JSR     NEWGRID2_DispatchGridOperation(PC)
+    JSR     _NEWGRID2_DispatchGridOperation(PC)
 
     LEA     16(A7),A7
     TST.L   D0
@@ -2351,10 +2351,10 @@ NEWGRID_ProcessGridMessages:
     BRA.W   .finalize_and_reply_message
 
 .case_mode_8:
-    PEA     CLOCK_DaySlotIndex
+    PEA     _CLOCK_DaySlotIndex
     BSR.W   NEWGRID_ComputeDaySlotFromClockWithOffset
 
-    PEA     CLOCK_CurrentDayOfWeekIndex
+    PEA     _CLOCK_CurrentDayOfWeekIndex
     MOVE.W  D0,NEWGRID_SelectedDaySlot
     BSR.W   NEWGRID_AdjustClockStringBySlotWithOffset
 
@@ -2366,7 +2366,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     6.W
-    JSR     NEWGRID2_DispatchGridOperation(PC)
+    JSR     _NEWGRID2_DispatchGridOperation(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -2387,10 +2387,10 @@ NEWGRID_ProcessGridMessages:
     BRA.W   .finalize_and_reply_message
 
 .case_mode_9:
-    PEA     CLOCK_DaySlotIndex
+    PEA     _CLOCK_DaySlotIndex
     BSR.W   NEWGRID_ComputeDaySlotFromClock
 
-    PEA     CLOCK_CurrentDayOfWeekIndex
+    PEA     _CLOCK_CurrentDayOfWeekIndex
     MOVE.W  D0,NEWGRID_SelectedDaySlot
     BSR.W   NEWGRID_AdjustClockStringBySlot
 
@@ -2402,7 +2402,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     7.W
-    JSR     NEWGRID2_DispatchGridOperation(PC)
+    JSR     _NEWGRID2_DispatchGridOperation(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -2454,7 +2454,7 @@ NEWGRID_ProcessGridMessages:
     JSR     GCOMMAND_UpdatePresetEntryCache(PC)
 
     ADDQ.W  #4,A7
-    MOVEA.L ESQ_HighlightMsgPort,A0
+    MOVEA.L _ESQ_HighlightMsgPort,A0
     MOVEA.L -4(A5),A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPutMsg(A6)
@@ -2489,12 +2489,12 @@ NEWGRID_ProcessGridMessages:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MATH_DivS32
+;   _MATH_DivS32
 ; DESC:
-;   Jump table entry that forwards to MATH_DivS32.
+;   Jump table entry that forwards to _MATH_DivS32.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_MATH_DivS32:
-    JMP     MATH_DivS32
+    JMP     _MATH_DivS32
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMPTBL_DATETIME_SecondsToStruct   (Jump stub)
@@ -2505,15 +2505,15 @@ NEWGRID_JMPTBL_MATH_DivS32:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DATETIME_SecondsToStruct
+;   _DATETIME_SecondsToStruct
 ; DESC:
-;   Jump table entry that forwards to DATETIME_SecondsToStruct.
+;   Jump table entry that forwards to _DATETIME_SecondsToStruct.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_DATETIME_SecondsToStruct:
-    JMP     DATETIME_SecondsToStruct
+    JMP     _DATETIME_SecondsToStruct
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING   (Jump stub)
+; FUNC: _NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2525,11 +2525,11 @@ NEWGRID_JMPTBL_DATETIME_SecondsToStruct:
 ; DESC:
 ;   Jump table entry that forwards to GENERATE_GRID_DATE_STRING.
 ;------------------------------------------------------------------------------
-NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING:
+_NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING:
     JMP     GENERATE_GRID_DATE_STRING
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMPTBL_MEMORY_DeallocateMemory   (Jump stub)
+; FUNC: _NEWGRID_JMPTBL_MEMORY_DeallocateMemory   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2541,7 +2541,7 @@ NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING:
 ; DESC:
 ;   Jump table entry that forwards to MEMORY_DeallocateMemory.
 ;------------------------------------------------------------------------------
-NEWGRID_JMPTBL_MEMORY_DeallocateMemory:
+_NEWGRID_JMPTBL_MEMORY_DeallocateMemory:
     JMP     MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
@@ -2561,7 +2561,7 @@ NEWGRID_JMPTBL_CLEANUP_DrawClockFormatList:
     JMP     CLEANUP_DrawClockFormatList
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMPTBL_DISPTEXT_FreeBuffers   (Jump stub)
+; FUNC: _NEWGRID_JMPTBL_DISPTEXT_FreeBuffers   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2573,7 +2573,7 @@ NEWGRID_JMPTBL_CLEANUP_DrawClockFormatList:
 ; DESC:
 ;   Jump table entry that forwards to DISPTEXT_FreeBuffers.
 ;------------------------------------------------------------------------------
-NEWGRID_JMPTBL_DISPTEXT_FreeBuffers:
+_NEWGRID_JMPTBL_DISPTEXT_FreeBuffers:
     JMP     DISPTEXT_FreeBuffers
 
 ;------------------------------------------------------------------------------
@@ -2594,7 +2594,7 @@ NEWGRID_JMPTBL_CLEANUP_DrawClockBanner:
     JMP     CLEANUP_DrawClockBanner
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMPTBL_MEMORY_AllocateMemory   (Jump stub)
+; FUNC: _NEWGRID_JMPTBL_MEMORY_AllocateMemory   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2602,12 +2602,12 @@ NEWGRID_JMPTBL_CLEANUP_DrawClockBanner:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MEMORY_AllocateMemory
+;   _MEMORY_AllocateMemory
 ; DESC:
-;   Jump table entry that forwards to MEMORY_AllocateMemory.
+;   Jump table entry that forwards to _MEMORY_AllocateMemory.
 ;------------------------------------------------------------------------------
-NEWGRID_JMPTBL_MEMORY_AllocateMemory:
-    JMP     MEMORY_AllocateMemory
+_NEWGRID_JMPTBL_MEMORY_AllocateMemory:
+    JMP     _MEMORY_AllocateMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMPTBL_DISPTEXT_InitBuffers   (Jump stub)
@@ -2650,15 +2650,15 @@ NEWGRID_JMPTBL_CLEANUP_DrawClockFormatFrame:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DATETIME_NormalizeStructToSeconds
+;   _DATETIME_NormalizeStructToSeconds
 ; DESC:
-;   Jump table entry that forwards to DATETIME_NormalizeStructToSeconds.
+;   Jump table entry that forwards to _DATETIME_NormalizeStructToSeconds.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds:
-    JMP     DATETIME_NormalizeStructToSeconds
+    JMP     _DATETIME_NormalizeStructToSeconds
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN   (Jump stub)
+; FUNC: _NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2670,7 +2670,7 @@ NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds:
 ; DESC:
 ;   Jump table entry that forwards to STR_CopyUntilAnyDelimN.
 ;------------------------------------------------------------------------------
-NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN:
+_NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN:
     JMP     STR_CopyUntilAnyDelimN
 
 ;------------------------------------------------------------------------------
@@ -2690,7 +2690,7 @@ NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel:
     JMP     WDISP_UpdateSelectionPreviewPanel
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMPTBL_MATH_Mulu32   (Jump stub)
+; FUNC: _NEWGRID_JMPTBL_MATH_Mulu32   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2698,9 +2698,9 @@ NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MATH_Mulu32
+;   _MATH_Mulu32
 ; DESC:
-;   Jump table entry that forwards to MATH_Mulu32.
+;   Jump table entry that forwards to _MATH_Mulu32.
 ;------------------------------------------------------------------------------
-NEWGRID_JMPTBL_MATH_Mulu32:
-    JMP     MATH_Mulu32
+_NEWGRID_JMPTBL_MATH_Mulu32:
+    JMP     _MATH_Mulu32

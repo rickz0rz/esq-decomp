@@ -18,9 +18,9 @@
 ; CLOBBERS:
 ;   D0-D1/A0-A1/A3
 ; CALLS:
-;   PARSEINI_JMPTBL_WDISP_SPrintf
+;   _PARSEINI_JMPTBL_WDISP_SPrintf
 ; READS:
-;   CLOCK_CurrentDayOfWeekIndex/2275/2276/2277, Global_JMPTBL_DAYS_OF_WEEK, Global_JMPTBL_MONTHS
+;   _CLOCK_CurrentDayOfWeekIndex/2275/2276/2277, Global_JMPTBL_DAYS_OF_WEEK, Global_JMPTBL_MONTHS
 ; WRITES:
 ;   outBuffer
 ; DESC:
@@ -32,19 +32,19 @@ GENERATE_GRID_DATE_STRING:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 
-    MOVE.W  CLOCK_CurrentDayOfWeekIndex,D0
+    MOVE.W  _CLOCK_CurrentDayOfWeekIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     Global_JMPTBL_DAYS_OF_WEEK,A0
     ADDA.L  D0,A0
-    MOVE.W  CLOCK_CurrentMonthIndex,D0
+    MOVE.W  _CLOCK_CurrentMonthIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     Global_JMPTBL_MONTHS,A1
     ADDA.L  D0,A1
-    MOVE.W  CLOCK_CurrentDayOfMonth,D0
+    MOVE.W  _CLOCK_CurrentDayOfMonth,D0
     EXT.L   D0
-    MOVE.W  CLOCK_CurrentYearValue,D1
+    MOVE.W  _CLOCK_CurrentYearValue,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -52,7 +52,7 @@ GENERATE_GRID_DATE_STRING:
     MOVE.L  (A0),-(A7)
     PEA     Global_STR_GRID_DATE_FORMAT_STRING
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _PARSEINI_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     24(A7),A7
     MOVEA.L (A7)+,A3
@@ -149,11 +149,11 @@ SCRIPT_CheckPathExists:
 ; CLOBBERS:
 ;   D0-D7/A4
 ; CALLS:
-;   SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset
+;   _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, _SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset
 ; READS:
-;   SCRIPT_BannerTransitionStepBudget/SCRIPT_BannerTransitionActive/SCRIPT_BannerTransitionStepCursor, SCRIPT_BannerTransitionTargetChar/2353/2354
+;   _SCRIPT_BannerTransitionStepBudget/_SCRIPT_BannerTransitionActive/_SCRIPT_BannerTransitionStepCursor, _SCRIPT_BannerTransitionTargetChar/2353/2354
 ; WRITES:
-;   SCRIPT_BannerTransitionActive/SCRIPT_BannerTransitionStepCursor, banner character (via SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset)
+;   _SCRIPT_BannerTransitionActive/_SCRIPT_BannerTransitionStepCursor, banner character (via _SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset)
 ; DESC:
 ;   Advances an in-progress banner character transition toward its target.
 ; NOTES:
@@ -162,45 +162,45 @@ SCRIPT_CheckPathExists:
 SCRIPT_UpdateBannerCharTransition:
     MOVEM.L D2-D7/A4,-(A7)
 
-    LEA     Global_REF_LONG_FILE_SCRATCH,A4
-    TST.W   SCRIPT_BannerTransitionActive
+    LEA     _Global_REF_LONG_FILE_SCRATCH,A4
+    TST.W   _SCRIPT_BannerTransitionActive
     BEQ.W   .done
 
-    JSR     SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
+    JSR     _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.L  D0,D6
     MOVEQ   #0,D0
-    MOVE.B  SCRIPT_BannerTransitionTargetChar,D0
+    MOVE.B  _SCRIPT_BannerTransitionTargetChar,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D1,D0
     BNE.S   .advance_step
 
     MOVEQ   #0,D1
-    MOVE.W  D1,SCRIPT_BannerTransitionActive
-    MOVE.W  D1,SCRIPT_BannerTransitionStepCursor
+    MOVE.W  D1,_SCRIPT_BannerTransitionActive
+    MOVE.W  D1,_SCRIPT_BannerTransitionStepCursor
     BRA.W   .done
 
 .advance_step:
-    MOVE.W  SCRIPT_BannerTransitionStepDelta,D5
-    MOVE.W  SCRIPT_BannerTransitionStepBudget,D1
+    MOVE.W  _SCRIPT_BannerTransitionStepDelta,D5
+    MOVE.W  _SCRIPT_BannerTransitionStepBudget,D1
     MOVEQ   #0,D2
     CMP.W   D2,D1
     BLS.S   .calc_candidate
 
-    ADDQ.W  #1,SCRIPT_BannerTransitionStepCursor
-    MOVE.W  SCRIPT_BannerTransitionStepCursor,D3
+    ADDQ.W  #1,_SCRIPT_BannerTransitionStepCursor
+    MOVE.W  _SCRIPT_BannerTransitionStepCursor,D3
     CMP.W   D1,D3
     BLT.S   .calc_candidate
 
-    MOVE.W  SCRIPT_BannerTransitionStepSign,D3
+    MOVE.W  _SCRIPT_BannerTransitionStepSign,D3
     ADD.W   D3,D5
-    MOVE.W  D2,SCRIPT_BannerTransitionStepCursor
+    MOVE.W  D2,_SCRIPT_BannerTransitionStepCursor
 
 .calc_candidate:
     MOVE.L  D5,D7
     ADD.W   D6,D7
-    MOVE.W  SCRIPT_BannerTransitionStepSign,D3
+    MOVE.W  _SCRIPT_BannerTransitionStepSign,D3
     TST.W   D3
     BPL.S   .check_positive_step
 
@@ -223,10 +223,10 @@ SCRIPT_UpdateBannerCharTransition:
     BGT.S   .snap_to_target
 
 .check_zero_step:
-    TST.W   SCRIPT_BannerTransitionStepDelta
+    TST.W   _SCRIPT_BannerTransitionStepDelta
     BNE.S   .apply_step
 
-    TST.W   SCRIPT_BannerTransitionStepBudget
+    TST.W   _SCRIPT_BannerTransitionStepBudget
     BNE.S   .apply_step
 
 .snap_to_target:
@@ -242,7 +242,7 @@ SCRIPT_UpdateBannerCharTransition:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset(PC)
+    JSR     _SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset(PC)
 
     ADDQ.W  #4,A7
 
@@ -263,16 +263,16 @@ SCRIPT_UpdateBannerCharTransition:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_MATH_DivS32, SCRIPT3_JMPTBL_MATH_Mulu32
+;   _GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_MATH_DivS32, SCRIPT3_JMPTBL_MATH_Mulu32
 ; READS:
-;   CONFIG_LRBN_FlagChar/CONFIG_MSN_FlagChar, Global_WORD_SELECT_CODE_IS_RAVESC, SCRIPT_BannerTransitionActive
+;   _CONFIG_LRBN_FlagChar/CONFIG_MSN_FlagChar, Global_WORD_SELECT_CODE_IS_RAVESC, _SCRIPT_BannerTransitionActive
 ; WRITES:
-;   SCRIPT_BannerTransitionTargetChar/2353/2354, SCRIPT_BannerTransitionStepBudget, SCRIPT_BannerTransitionActive, SCRIPT_PendingBannerSpeedMs
+;   _SCRIPT_BannerTransitionTargetChar/2353/2354, _SCRIPT_BannerTransitionStepBudget, _SCRIPT_BannerTransitionActive, SCRIPT_PendingBannerSpeedMs
 ; DESC:
 ;   Prepares parameters for a banner-char transition toward a target value.
 ; NOTES:
 ;   Clamps target to 130..226 and rate to 0..$1D4C. Uses current banner char
-;   from GCOMMAND_GetBannerChar; returns 0 if already at target or busy.
+;   from _GCOMMAND_GetBannerChar; returns 0 if already at target or busy.
 ;------------------------------------------------------------------------------
 SCRIPT_BeginBannerCharTransition:
     LINK.W  A5,#-12
@@ -282,7 +282,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.W  14(A5),D6
 
     MOVEQ   #0,D5
-    MOVE.B  CONFIG_LRBN_FlagChar,D0
+    MOVE.B  _CONFIG_LRBN_FlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .return
@@ -314,10 +314,10 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.W  #$1d4c,D6
 
 .begin_banner_after_rate_clamp:
-    JSR     SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
+    JSR     _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.W  D0,-12(A5)
-    TST.W   SCRIPT_BannerTransitionActive
+    TST.W   _SCRIPT_BannerTransitionActive
     BNE.W   .return
 
     CMP.W   D7,D0
@@ -329,7 +329,7 @@ SCRIPT_BeginBannerCharTransition:
     EXT.L   D0
     SUB.L   D0,D2
     MOVE.L  D2,D4
-    MOVE.B  D1,SCRIPT_BannerTransitionTargetChar
+    MOVE.B  D1,_SCRIPT_BannerTransitionTargetChar
     TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .selectCodeIsNotRAVSEC
 
@@ -361,7 +361,7 @@ SCRIPT_BeginBannerCharTransition:
     BGT.S   .begin_banner_compute_step
 
     MOVE.L  D4,D1
-    MOVE.W  D1,SCRIPT_BannerTransitionStepDelta
+    MOVE.W  D1,_SCRIPT_BannerTransitionStepDelta
     BRA.S   .begin_banner_activate
 
 .begin_banner_compute_step:
@@ -375,7 +375,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVEQ   #1,D1
 
 .begin_banner_direction_selected:
-    MOVE.W  D1,SCRIPT_BannerTransitionStepSign
+    MOVE.W  D1,_SCRIPT_BannerTransitionStepSign
     TST.L   D4
     BPL.S   .begin_banner_abs_delta_positive
 
@@ -392,7 +392,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.L  -10(A5),D1
     JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.W  D0,SCRIPT_BannerTransitionStepDelta
+    MOVE.W  D0,_SCRIPT_BannerTransitionStepDelta
     EXT.L   D0
     MOVE.L  -10(A5),D1
     JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
@@ -404,21 +404,21 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.L  D4,D1
     JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.W  D0,SCRIPT_BannerTransitionStepBudget
+    MOVE.W  D0,_SCRIPT_BannerTransitionStepBudget
     BRA.S   .begin_banner_finalize_step_sign
 
 .begin_banner_no_remainder:
-    CLR.W   SCRIPT_BannerTransitionStepBudget
+    CLR.W   _SCRIPT_BannerTransitionStepBudget
 
 .begin_banner_finalize_step_sign:
-    MOVE.W  SCRIPT_BannerTransitionStepDelta,D0
-    MULS    SCRIPT_BannerTransitionStepSign,D0
-    MOVE.W  D0,SCRIPT_BannerTransitionStepDelta
+    MOVE.W  _SCRIPT_BannerTransitionStepDelta,D0
+    MULS    _SCRIPT_BannerTransitionStepSign,D0
+    MOVE.W  D0,_SCRIPT_BannerTransitionStepDelta
 
 .begin_banner_activate:
     MOVE.L  D6,D0
     MOVEQ   #1,D5
-    MOVE.W  D5,SCRIPT_BannerTransitionActive
+    MOVE.W  D5,_SCRIPT_BannerTransitionActive
     MOVE.W  D0,SCRIPT_PendingBannerSpeedMs
 
 .return:
@@ -438,34 +438,34 @@ SCRIPT_BeginBannerCharTransition:
 ; CLOBBERS:
 ;   A7/D0/D1/D2/D3/D7
 ; CALLS:
-;   SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar
+;   _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar
 ; READS:
-;   CONFIG_BannerCopperHeadByte (target banner char)
+;   _CONFIG_BannerCopperHeadByte (target banner char)
 ; WRITES:
-;   SCRIPT_BannerTransitionStepBudget, SCRIPT_BannerTransitionActive, SCRIPT_BannerTransitionTargetChar, SCRIPT_BannerTransitionStepDelta, SCRIPT_BannerTransitionStepSign
+;   _SCRIPT_BannerTransitionStepBudget, _SCRIPT_BannerTransitionActive, _SCRIPT_BannerTransitionTargetChar, _SCRIPT_BannerTransitionStepDelta, _SCRIPT_BannerTransitionStepSign
 ; DESC:
 ;   Initializes transition-step globals to move the current banner character
-;   directly toward CONFIG_BannerCopperHeadByte.
+;   directly toward _CONFIG_BannerCopperHeadByte.
 ; NOTES:
-;   SCRIPT_BannerTransitionStepBudget is reset to 0; transition is enabled only when
+;   _SCRIPT_BannerTransitionStepBudget is reset to 0; transition is enabled only when
 ;   current and target characters differ.
 ;------------------------------------------------------------------------------
 SCRIPT_PrimeBannerTransitionFromHexCode:
     MOVEM.L D2-D3/D7,-(A7)
 
-    JSR     SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
+    JSR     _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #0,D0
-    MOVE.W  D0,SCRIPT_BannerTransitionActive
-    MOVE.W  CONFIG_BannerCopperHeadByte,D1
+    MOVE.W  D0,_SCRIPT_BannerTransitionActive
+    MOVE.W  _CONFIG_BannerCopperHeadByte,D1
     MOVEQ   #0,D2
     MOVE.B  D1,D2
     MOVE.L  D7,D3
     EXT.L   D3
     SUB.L   D3,D2
-    MOVE.B  D1,SCRIPT_BannerTransitionTargetChar
-    MOVE.W  D2,SCRIPT_BannerTransitionStepDelta
+    MOVE.B  D1,_SCRIPT_BannerTransitionTargetChar
+    MOVE.W  D2,_SCRIPT_BannerTransitionStepDelta
     BGE.S   .step_positive_or_zero
 
     MOVEQ   #-1,D1
@@ -475,16 +475,16 @@ SCRIPT_PrimeBannerTransitionFromHexCode:
     MOVEQ   #1,D1
 
 .store_step_sign:
-    MOVE.W  D0,SCRIPT_BannerTransitionStepBudget
-    MOVE.W  D1,SCRIPT_BannerTransitionStepSign
+    MOVE.W  D0,_SCRIPT_BannerTransitionStepBudget
+    MOVE.W  D1,_SCRIPT_BannerTransitionStepSign
     TST.W   D2
     BEQ.S   .set_transition_inactive
 
-    MOVE.W  #1,SCRIPT_BannerTransitionActive
+    MOVE.W  #1,_SCRIPT_BannerTransitionActive
     BRA.S   .return
 
 .set_transition_inactive:
-    MOVE.W  D0,SCRIPT_BannerTransitionActive
+    MOVE.W  D0,_SCRIPT_BannerTransitionActive
 
 .return:
     MOVEM.L (A7)+,D2-D3/D7

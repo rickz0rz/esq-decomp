@@ -1,9 +1,9 @@
     XDEF    BEVEL_DrawBevelFrameWithTop
-    XDEF    BEVEL_DrawBevelFrameWithTopRight
+    XDEF    _BEVEL_DrawBevelFrameWithTopRight
     XDEF    BEVEL_DrawBeveledFrame
-    XDEF    BEVEL_DrawHorizontalBevel
+    XDEF    _BEVEL_DrawHorizontalBevel
     XDEF    BEVEL_DrawVerticalBevel
-    XDEF    BEVEL_DrawVerticalBevelPair
+    XDEF    _BEVEL_DrawVerticalBevelPair
 
 ;------------------------------------------------------------------------------
 ; FUNC: BEVEL_DrawVerticalBevel   (DrawVerticalBeveluncertain)
@@ -125,7 +125,7 @@ BEVEL_DrawVerticalBevel:
 ; The moves and draws seem like this is making some kind of
 ; outlined box... maybe with a shadow or bevel?
 ;------------------------------------------------------------------------------
-; FUNC: BEVEL_DrawVerticalBevelPair   (DrawVerticalBevelPairuncertain)
+; FUNC: _BEVEL_DrawVerticalBevelPair   (DrawVerticalBevelPairuncertain)
 ; ARGS:
 ;   stack +4: rastPort
 ;   stack +8: leftX
@@ -147,7 +147,7 @@ BEVEL_DrawVerticalBevel:
 ; NOTES:
 ;   Offsets by +/-1..3 to thicken edges.
 ;------------------------------------------------------------------------------
-BEVEL_DrawVerticalBevelPair:
+_BEVEL_DrawVerticalBevelPair:
     MOVEM.L D4-D7/A3,-(A7)
 
     MOVEA.L 24(A7),A3
@@ -278,7 +278,7 @@ BEVEL_DrawVerticalBevelPair:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: BEVEL_DrawHorizontalBevel   (DrawHorizontalBeveluncertain)
+; FUNC: _BEVEL_DrawHorizontalBevel   (DrawHorizontalBeveluncertain)
 ; ARGS:
 ;   stack +4: rastPort
 ;   stack +8: leftX
@@ -299,7 +299,7 @@ BEVEL_DrawVerticalBevelPair:
 ; NOTES:
 ;   Repeats offset strokes to create a thicker edge.
 ;------------------------------------------------------------------------------
-BEVEL_DrawHorizontalBevel:
+_BEVEL_DrawHorizontalBevel:
     LINK.W  A5,#-4
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -410,7 +410,7 @@ BEVEL_DrawHorizontalBevel:
 ; CLOBBERS:
 ;   D0-D7, A3
 ; CALLS:
-;   BEVEL_DrawVerticalBevelPair, BEVEL_DrawVerticalBevel
+;   _BEVEL_DrawVerticalBevelPair, BEVEL_DrawVerticalBevel
 ; READS:
 ;   (none)
 ; WRITES:
@@ -418,7 +418,7 @@ BEVEL_DrawHorizontalBevel:
 ; DESC:
 ;   Draws a beveled frame with left/right edges and a corner accent.
 ; NOTES:
-;   Composes BEVEL_DrawVerticalBevelPair + BEVEL_DrawVerticalBevel helpers.
+;   Composes _BEVEL_DrawVerticalBevelPair + BEVEL_DrawVerticalBevel helpers.
 ;------------------------------------------------------------------------------
 BEVEL_DrawBeveledFrame:
     MOVEM.L D4-D7/A3,-(A7)
@@ -433,7 +433,7 @@ BEVEL_DrawBeveledFrame:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   BEVEL_DrawVerticalBevelPair
+    BSR.W   _BEVEL_DrawVerticalBevelPair
 
     MOVE.L  D4,(A7)
     MOVE.L  D5,-(A7)
@@ -479,7 +479,7 @@ BEVEL_DrawBeveledFrame:
 ; CLOBBERS:
 ;   D0-D7, A3
 ; CALLS:
-;   BEVEL_DrawVerticalBevelPair, BEVEL_DrawHorizontalBevel
+;   _BEVEL_DrawVerticalBevelPair, _BEVEL_DrawHorizontalBevel
 ; READS:
 ;   (none)
 ; WRITES:
@@ -487,7 +487,7 @@ BEVEL_DrawBeveledFrame:
 ; DESC:
 ;   Draws a beveled frame with a top horizontal edge.
 ; NOTES:
-;   Composes BEVEL_DrawVerticalBevelPair + BEVEL_DrawHorizontalBevel helpers.
+;   Composes _BEVEL_DrawVerticalBevelPair + _BEVEL_DrawHorizontalBevel helpers.
 ;------------------------------------------------------------------------------
 BEVEL_DrawBevelFrameWithTop:
     MOVEM.L D4-D7/A3,-(A7)
@@ -502,14 +502,14 @@ BEVEL_DrawBevelFrameWithTop:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   BEVEL_DrawVerticalBevelPair
+    BSR.W   _BEVEL_DrawVerticalBevelPair
 
     MOVE.L  D4,(A7)
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   BEVEL_DrawHorizontalBevel
+    BSR.W   _BEVEL_DrawHorizontalBevel
 
     LEA     36(A7),A7
 
@@ -519,7 +519,7 @@ BEVEL_DrawBevelFrameWithTop:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: BEVEL_DrawBevelFrameWithTopRight   (DrawBevelFrameWithTopRightuncertain)
+; FUNC: _BEVEL_DrawBevelFrameWithTopRight   (DrawBevelFrameWithTopRightuncertain)
 ; ARGS:
 ;   stack +4: rastPort
 ;   stack +8: leftX
@@ -531,7 +531,7 @@ BEVEL_DrawBevelFrameWithTop:
 ; CLOBBERS:
 ;   D0-D7, A3
 ; CALLS:
-;   BEVEL_DrawBeveledFrame, BEVEL_DrawHorizontalBevel
+;   BEVEL_DrawBeveledFrame, _BEVEL_DrawHorizontalBevel
 ; READS:
 ;   (none)
 ; WRITES:
@@ -539,9 +539,9 @@ BEVEL_DrawBevelFrameWithTop:
 ; DESC:
 ;   Draws a beveled frame plus a top edge and right-side accent.
 ; NOTES:
-;   Composes BEVEL_DrawBeveledFrame + BEVEL_DrawHorizontalBevel helpers.
+;   Composes BEVEL_DrawBeveledFrame + _BEVEL_DrawHorizontalBevel helpers.
 ;------------------------------------------------------------------------------
-BEVEL_DrawBevelFrameWithTopRight:
+_BEVEL_DrawBevelFrameWithTopRight:
     MOVEM.L D4-D7/A3,-(A7)
 
     MOVEA.L 24(A7),A3
@@ -561,7 +561,7 @@ BEVEL_DrawBevelFrameWithTopRight:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   BEVEL_DrawHorizontalBevel
+    BSR.W   _BEVEL_DrawHorizontalBevel
 
     LEA     36(A7),A7
 

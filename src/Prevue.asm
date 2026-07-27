@@ -131,7 +131,7 @@ Global_ArgvPtr                   = Global_ArgCount+Type_Long_Size               
 Global_ArgvStorage               = Global_ArgvPtr+Type_Long_Size                 ; 22922
 
 ; A4-based globals (WDISP/TEXTDISP/SCRIPT/ESQIFF offsets).
-A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
+A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
 
 
 
@@ -231,6 +231,10 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
 
     include "modules/groups/a/s/flib2.s"
     include "modules/groups/a/s/gcommand.s"
+    include "modules/groups/a/s/gcommand_gcommand_loadmplexfile.s"
+    include "modules/groups/a/s/gcommand_p1.s"
+    include "modules/groups/a/s/gcommand_gcommand_loadppvtemplate.s"
+    include "modules/groups/a/s/gcommand_p2.s"
     include "modules/groups/a/s/xjump.s"
 
     include "modules/groups/a/t/gcommand2.s"

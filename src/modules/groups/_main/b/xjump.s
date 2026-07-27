@@ -56,7 +56,7 @@ GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MATH_Mulu32
+;   _MATH_Mulu32
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -67,7 +67,7 @@ GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_MAIN_B_JMPTBL_MATH_Mulu32:
-    JMP     MATH_Mulu32
+    JMP     _MATH_Mulu32
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode   (Routine at GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode)

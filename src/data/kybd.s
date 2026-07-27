@@ -1,18 +1,18 @@
-    XDEF    Global_STR_KYBD_C
+    XDEF    _Global_STR_KYBD_C
     XDEF    KYBD_PATH_DF0_LOCAL_ADS
-    XDEF    KYBD_CustomPaletteCaptureScratchBase
-    XDEF    KYBD_CustomPaletteTriplesRBase
+    XDEF    _KYBD_CustomPaletteCaptureScratchBase
+    XDEF    _KYBD_CustomPaletteTriplesRBase
     XDEF    KYBD_CustomPaletteTriplesGBase
     XDEF    KYBD_CustomPaletteTriplesBBase
 ; ========== KYBD.c ==========
 
-Global_STR_KYBD_C:
+_Global_STR_KYBD_C:
     NStr    "KYBD.c"
     DS.W    1
 KYBD_PATH_DF0_LOCAL_ADS:
     DC.B    "df0:local.ads"
 ;------------------------------------------------------------------------------
-; SYM: KYBD_CustomPaletteCaptureScratchBase   (ED palette-capture scratch base)
+; SYM: _KYBD_CustomPaletteCaptureScratchBase   (ED palette-capture scratch base)
 ; TYPE: u8 (head of scratch region)
 ; PURPOSE: Start of ED capture scratch region before palette-table commit.
 ; USED BY: ED_CaptureKeySequence
@@ -20,21 +20,21 @@ KYBD_PATH_DF0_LOCAL_ADS:
 ;   ED writes nibble-capture bytes via indexed stores from this base.
 ;   Downstream read path is not directly confirmed yet; keep conservative.
 ;------------------------------------------------------------------------------
-KYBD_CustomPaletteCaptureScratchBase:
+_KYBD_CustomPaletteCaptureScratchBase:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: KYBD_CustomPaletteTriplesRBase/KYBD_CustomPaletteTriplesGBase/KYBD_CustomPaletteTriplesBBase   (custom palette RGB triples)
+; SYM: _KYBD_CustomPaletteTriplesRBase/KYBD_CustomPaletteTriplesGBase/KYBD_CustomPaletteTriplesBBase   (custom palette RGB triples)
 ; TYPE: u8[24] (interleaved RGB triplets for 8 pens)
 ; PURPOSE: Custom palette buffer used by ESC/ADS workflows and color parsing.
 ; USED BY: ED1_EnterEscMenu, LADFUNC_DrawTextAdsPreview, PARSEINI_ParseColorTable
 ; NOTES:
 ;   Layout is contiguous and interleaved:
-;     R(i) = KYBD_CustomPaletteTriplesRBase + i*3
+;     R(i) = _KYBD_CustomPaletteTriplesRBase + i*3
 ;     G(i) = KYBD_CustomPaletteTriplesGBase + i*3
 ;     B(i) = KYBD_CustomPaletteTriplesBBase + i*3
 ;   Total size is 24 bytes (8 * RGB).
 ;------------------------------------------------------------------------------
-KYBD_CustomPaletteTriplesRBase:
+_KYBD_CustomPaletteTriplesRBase:
     DC.B    0
 KYBD_CustomPaletteTriplesGBase:
     DC.B    0

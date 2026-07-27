@@ -1,16 +1,16 @@
-    XDEF    SCRIPT_AssertCtrlLine
+    XDEF    _SCRIPT_AssertCtrlLine
     XDEF    SCRIPT_AssertCtrlLineIfEnabled
     XDEF    SCRIPT_AssertCtrlLineNow
     XDEF    SCRIPT_ClearCtrlLineIfEnabled
-    XDEF    SCRIPT_DeassertCtrlLine
+    XDEF    _SCRIPT_DeassertCtrlLine
     XDEF    SCRIPT_DeassertCtrlLineNow
     XDEF    SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte
     XDEF    SCRIPT_GetCtrlLineFlag
     XDEF    SCRIPT_ReadHandshakeBit3Flag
-    XDEF    SCRIPT_ReadHandshakeBit5Mask
+    XDEF    _SCRIPT_ReadHandshakeBit5Mask
     XDEF    SCRIPT_ReadNextRbfByte
     XDEF    SCRIPT_PollHandshakeAndApplyTimeout
-    XDEF    SCRIPT_UpdateSerialShadowFromCtrlByte
+    XDEF    _SCRIPT_UpdateSerialShadowFromCtrlByte
 
 
 ;------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_UpdateSerialShadowFromCtrlByte   (Latch low control bits and write serial word)
+; FUNC: _SCRIPT_UpdateSerialShadowFromCtrlByte   (Latch low control bits and write serial word)
 ; ARGS:
 ;   stack +8: ctrlByte (u8)
 ; RET:
@@ -78,20 +78,20 @@ SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte:
 ; READS:
 ;   _SCRIPT_SerialShadowWord
 ; WRITES:
-;   _SCRIPT_SerialShadowWord, SCRIPT_SerialInputLatch
+;   _SCRIPT_SerialShadowWord, _SCRIPT_SerialInputLatch
 ; DESC:
-;   Stores ctrlByte in SCRIPT_SerialInputLatch, merges low 2 bits into the
+;   Stores ctrlByte in _SCRIPT_SerialInputLatch, merges low 2 bits into the
 ;   serial shadow word, then writes the updated word to serial hardware.
 ; NOTES:
 ;   Preserves non-control bits with mask $FC.
 ;------------------------------------------------------------------------------
-SCRIPT_UpdateSerialShadowFromCtrlByte:
+_SCRIPT_UpdateSerialShadowFromCtrlByte:
     MOVE.L  D7,-(A7)
 
     MOVE.B  11(A7),D7
     MOVEQ   #0,D0
     MOVE.B  D7,D0
-    MOVE.W  D0,SCRIPT_SerialInputLatch
+    MOVE.W  D0,_SCRIPT_SerialInputLatch
     ANDI.B  #$3,D7
     MOVEQ   #0,D0
     MOVE.W  _SCRIPT_SerialShadowWord,D0
@@ -115,7 +115,7 @@ SCRIPT_UpdateSerialShadowFromCtrlByte:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_AssertCtrlLine   (AssertCtrlLine)
+; FUNC: _SCRIPT_AssertCtrlLine   (AssertCtrlLine)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -127,17 +127,17 @@ SCRIPT_UpdateSerialShadowFromCtrlByte:
 ; READS:
 ;   _SCRIPT_SerialShadowWord
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
+;   _SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Sets the CTRL/serial output bit in the shadow register and pushes it to
 ;   the serial data register.
 ; NOTES:
-;   SCRIPT_CtrlLineAssertedFlag appears to mirror the asserted/deasserted state.
+;   _SCRIPT_CtrlLineAssertedFlag appears to mirror the asserted/deasserted state.
 ;   Bit 5 ($20) is treated as the CTRL/handshake output bit in the serial shadow word;
 ;   physical line mapping (e.g., RTS on attached hardware) is board/cable dependent ??.
 ;------------------------------------------------------------------------------
-SCRIPT_AssertCtrlLine:
-    MOVE.W  #1,SCRIPT_CtrlLineAssertedFlag
+_SCRIPT_AssertCtrlLine:
+    MOVE.W  #1,_SCRIPT_CtrlLineAssertedFlag
     MOVE.W  _SCRIPT_SerialShadowWord,D0
     MOVE.L  D0,D1
     ORI.W   #32,D1
@@ -161,21 +161,21 @@ SCRIPT_AssertCtrlLine:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_AssertCtrlLine
+;   _SCRIPT_AssertCtrlLine
 ; READS:
-;   SCRIPT_CtrlInterfaceEnabledFlag
+;   _SCRIPT_CtrlInterfaceEnabledFlag
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
+;   _SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Asserts the CTRL/serial output bit when the control interface is enabled.
 ; NOTES:
-;   SCRIPT_CtrlInterfaceEnabledFlag acts as an enable gate.
+;   _SCRIPT_CtrlInterfaceEnabledFlag acts as an enable gate.
 ;------------------------------------------------------------------------------
 SCRIPT_AssertCtrlLineIfEnabled:
-    TST.W   SCRIPT_CtrlInterfaceEnabledFlag
+    TST.W   _SCRIPT_CtrlInterfaceEnabledFlag
     BEQ.S   .return_status
 
-    BSR.S   SCRIPT_AssertCtrlLine
+    BSR.S   _SCRIPT_AssertCtrlLine
 
 .return_status:
     RTS
@@ -183,7 +183,7 @@ SCRIPT_AssertCtrlLineIfEnabled:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_DeassertCtrlLine   (DeassertCtrlLine)
+; FUNC: _SCRIPT_DeassertCtrlLine   (DeassertCtrlLine)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -195,15 +195,15 @@ SCRIPT_AssertCtrlLineIfEnabled:
 ; READS:
 ;   _SCRIPT_SerialShadowWord
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
+;   _SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Clears the CTRL/serial output bit in the shadow register and pushes it to
 ;   the serial data register.
 ; NOTES:
-;   SCRIPT_CtrlLineAssertedFlag appears to mirror the asserted/deasserted state.
+;   _SCRIPT_CtrlLineAssertedFlag appears to mirror the asserted/deasserted state.
 ;------------------------------------------------------------------------------
-SCRIPT_DeassertCtrlLine:
-    CLR.W   SCRIPT_CtrlLineAssertedFlag
+_SCRIPT_DeassertCtrlLine:
+    CLR.W   _SCRIPT_CtrlLineAssertedFlag
     MOVE.W  _SCRIPT_SerialShadowWord,D0
     MOVE.L  D0,D1
     ANDI.W  #$ffdf,D1
@@ -227,21 +227,21 @@ SCRIPT_DeassertCtrlLine:
 ; CLOBBERS:
 ;   D0/D1
 ; CALLS:
-;   SCRIPT_DeassertCtrlLine
+;   _SCRIPT_DeassertCtrlLine
 ; READS:
-;   SCRIPT_CtrlInterfaceEnabledFlag
+;   _SCRIPT_CtrlInterfaceEnabledFlag
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord (via SCRIPT_DeassertCtrlLine)
+;   _SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord (via _SCRIPT_DeassertCtrlLine)
 ; DESC:
 ;   Clears the CTRL/serial output bit when the control interface is enabled.
 ; NOTES:
-;   SCRIPT_DeassertCtrlLine updates _SCRIPT_SerialShadowWord and sends SERDAT.
+;   _SCRIPT_DeassertCtrlLine updates _SCRIPT_SerialShadowWord and sends SERDAT.
 ;------------------------------------------------------------------------------
 SCRIPT_ClearCtrlLineIfEnabled:
-    TST.W   SCRIPT_CtrlInterfaceEnabledFlag
+    TST.W   _SCRIPT_CtrlInterfaceEnabledFlag
     BEQ.S   .return_status
 
-    BSR.S   SCRIPT_DeassertCtrlLine
+    BSR.S   _SCRIPT_DeassertCtrlLine
 
 .return_status:
     RTS
@@ -257,16 +257,16 @@ SCRIPT_ClearCtrlLineIfEnabled:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_AssertCtrlLine
+;   _SCRIPT_AssertCtrlLine
 ; READS:
 ;   _SCRIPT_SerialShadowWord
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
+;   _SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Unconditionally asserts the CTRL/serial output bit.
 ;------------------------------------------------------------------------------
 SCRIPT_AssertCtrlLineNow:
-    BSR.S   SCRIPT_AssertCtrlLine
+    BSR.S   _SCRIPT_AssertCtrlLine
 
     RTS
 
@@ -281,16 +281,16 @@ SCRIPT_AssertCtrlLineNow:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_DeassertCtrlLine
+;   _SCRIPT_DeassertCtrlLine
 ; READS:
 ;   _SCRIPT_SerialShadowWord
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
+;   _SCRIPT_CtrlLineAssertedFlag, _SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Unconditionally deasserts the CTRL/serial output bit.
 ;------------------------------------------------------------------------------
 SCRIPT_DeassertCtrlLineNow:
-    BSR.S   SCRIPT_DeassertCtrlLine
+    BSR.S   _SCRIPT_DeassertCtrlLine
 
     RTS
 
@@ -305,40 +305,40 @@ SCRIPT_DeassertCtrlLineNow:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_ReadHandshakeBit5Mask
+;   _SCRIPT_ReadHandshakeBit5Mask
 ; READS:
-;   SCRIPT_CtrlInterfaceEnabledFlag, CIAB_PRA
+;   _SCRIPT_CtrlInterfaceEnabledFlag, CIAB_PRA
 ; WRITES:
-;   SCRIPT_CtrlLineAssertedTicks, ESQIFF_ExternalAssetFlags, LADFUNC_EntryCount
+;   _SCRIPT_CtrlLineAssertedTicks, _ESQIFF_ExternalAssetFlags, _LADFUNC_EntryCount
 ; DESC:
 ;   Polls the CTRL line and increments a counter while it stays asserted; once
 ;   a threshold is reached, resets related counters/flags.
 ; NOTES:
-;   Uses CIAB_PRA bitmask (via SCRIPT_ReadHandshakeBit5Mask).
+;   Uses CIAB_PRA bitmask (via _SCRIPT_ReadHandshakeBit5Mask).
 ;   This is the handshake-input poll path used by control-timeout logic, separate
 ;   from the byte-stream parser that consumes serial payload bytes.
 ;------------------------------------------------------------------------------
 SCRIPT_PollHandshakeAndApplyTimeout:
-    TST.W   SCRIPT_CtrlInterfaceEnabledFlag
+    TST.W   _SCRIPT_CtrlInterfaceEnabledFlag
     BEQ.S   .return_status
 
-    BSR.W   SCRIPT_ReadHandshakeBit5Mask
+    BSR.W   _SCRIPT_ReadHandshakeBit5Mask
 
     TST.B   D0
     BEQ.S   .return_status
 
-    MOVE.W  SCRIPT_CtrlLineAssertedTicks,D0
+    MOVE.W  _SCRIPT_CtrlLineAssertedTicks,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,SCRIPT_CtrlLineAssertedTicks
+    MOVE.W  D1,_SCRIPT_CtrlLineAssertedTicks
     MOVEQ   #20,D0
     CMP.W   D0,D1
     BCS.S   .return_status
 
     MOVEQ   #0,D0
-    MOVE.W  D0,ESQIFF_ExternalAssetFlags
-    MOVE.W  #$24,LADFUNC_EntryCount
-    MOVE.W  D0,SCRIPT_CtrlLineAssertedTicks
+    MOVE.W  D0,_ESQIFF_ExternalAssetFlags
+    MOVE.W  #$24,_LADFUNC_EntryCount
+    MOVE.W  D0,_SCRIPT_CtrlLineAssertedTicks
 
 .return_status:
     RTS
@@ -387,7 +387,7 @@ SCRIPT_ReadHandshakeBit3Flag:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ReadHandshakeBit5Mask   (ReadHandshakeBit5Mask)
+; FUNC: _SCRIPT_ReadHandshakeBit5Mask   (ReadHandshakeBit5Mask)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -407,7 +407,7 @@ SCRIPT_ReadHandshakeBit3Flag:
 ;   This mask is used by CTRL timeout/presence logic and is a practical hook point
 ;   when experimenting with alternate handshake semantics.
 ;------------------------------------------------------------------------------
-SCRIPT_ReadHandshakeBit5Mask:
+_SCRIPT_ReadHandshakeBit5Mask:
     MOVEM.L D6-D7,-(A7)
 
     MOVEQ   #0,D7
@@ -429,13 +429,13 @@ SCRIPT_ReadHandshakeBit5Mask:
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: SCRIPT_CtrlLineAssertedFlag (shadow flag)
+;   D0: _SCRIPT_CtrlLineAssertedFlag (shadow flag)
 ; CLOBBERS:
 ;   D0
 ; CALLS:
 ;   (none)
 ; READS:
-;   SCRIPT_CtrlLineAssertedFlag
+;   _SCRIPT_CtrlLineAssertedFlag
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -443,7 +443,7 @@ SCRIPT_ReadHandshakeBit5Mask:
 ;------------------------------------------------------------------------------
 SCRIPT_GetCtrlLineFlag:
     MOVE.L  D7,-(A7)
-    MOVE.W  SCRIPT_CtrlLineAssertedFlag,D7
+    MOVE.W  _SCRIPT_CtrlLineAssertedFlag,D7
     MOVE.L  D7,D0
     MOVE.L  (A7)+,D7
     RTS

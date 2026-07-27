@@ -22,8 +22,8 @@
 ;   PARSEINI_AdjustHoursTo24HrFormat, PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch,
 ;   PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch, PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; READS:
-;   CLOCK_DaySlotIndex-E, CLOCK_CacheAmPmFlag, Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE,
-;   Global_REF_CLOCKDATA_STRUCT
+;   _CLOCK_DaySlotIndex-E, CLOCK_CacheAmPmFlag, _Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE,
+;   _Global_REF_CLOCKDATA_STRUCT
 ; WRITES:
 ;   RTC chip via BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; DESC:
@@ -38,13 +38,13 @@ PARSEINI_WriteRtcFromGlobals:
 
 .clockDataStruct    = -18
 
-    TST.L   Global_REF_UTILITY_LIBRARY
+    TST.L   _Global_REF_UTILITY_LIBRARY
     BEQ.W   .return
 
     TST.L   Global_REF_BATTCLOCK_RESOURCE
     BEQ.S   .return
 
-    MOVE.W  CLOCK_DaySlotIndex,D0
+    MOVE.W  _CLOCK_DaySlotIndex,D0
     MOVE.W  D0,-6(A5)
     MOVE.W  CLOCK_CacheMonthIndex0,D0
     ADDQ.W  #1,D0
@@ -64,7 +64,7 @@ PARSEINI_WriteRtcFromGlobals:
     MOVE.W  D0,-14(A5)
     MOVE.W  CLOCK_CacheMinuteOrSecond,D0
     MOVE.W  D0,-16(A5)
-    MOVE.W  Global_REF_CLOCKDATA_STRUCT,D0
+    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  D0,.clockDataStruct(A5)
     PEA     .clockDataStruct(A5)
     JSR     PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
@@ -102,9 +102,9 @@ PARSEINI_WriteRtcFromGlobals:
 ;   PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock, PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData,
 ;   PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch, PARSEINI_NormalizeClockData
 ; READS:
-;   Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE
+;   _Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE
 ; WRITES:
-;   CLOCK_DaySlotIndex (date/time fields via PARSEINI_NormalizeClockData)
+;   _CLOCK_DaySlotIndex (date/time fields via PARSEINI_NormalizeClockData)
 ; DESC:
 ;   Reads the battery-backed clock, validates the resulting date/time fields,
 ;   and updates the global date/time structure used by the UI.
@@ -124,7 +124,7 @@ PARSEINI_UpdateClockFromRtc:
 .localMonth = -38
 .localWDay  = -40
 
-    TST.L   Global_REF_UTILITY_LIBRARY
+    TST.L   _Global_REF_UTILITY_LIBRARY
     BEQ.W   .return_status
 
     TST.L   Global_REF_BATTCLOCK_RESOURCE
@@ -169,7 +169,7 @@ PARSEINI_UpdateClockFromRtc:
     MOVE.W  (.clockData+Struct_ClockData__Sec)(A5),D6
     MOVE.W  D6,.localSec(A5)
 
-    MOVE.W  DST_PrimaryCountdown,-26(A5)
+    MOVE.W  _DST_PrimaryCountdown,-26(A5)
 
     MOVEQ   #0,D6
     CMP.W   D6,D0
@@ -222,7 +222,7 @@ PARSEINI_UpdateClockFromRtc:
 
 .invalid_date_data:
     PEA     -40(A5)
-    PEA     CLOCK_DaySlotIndex
+    PEA     _CLOCK_DaySlotIndex
     BSR.W   PARSEINI_NormalizeClockData
 
     ADDQ.W  #8,A7
@@ -230,7 +230,7 @@ PARSEINI_UpdateClockFromRtc:
 
 .fallback_default_date:
     PEA     PARSEINI_FallbackClockDataRecord
-    PEA     CLOCK_DaySlotIndex
+    PEA     _CLOCK_DaySlotIndex
     BSR.W   PARSEINI_NormalizeClockData
 
     ADDQ.W  #8,A7
@@ -307,7 +307,7 @@ PARSEINI_AdjustHoursTo24HrFormat:
 ; CLOBBERS:
 ;   D0-D2/A0-A3
 ; CALLS:
-;   PARSEINI2_JMPTBL_DATETIME_IsLeapYear (DATETIME_IsLeapYear), PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay (ESQ_CalcDayOfYearFromMonthDay)
+;   PARSEINI2_JMPTBL_DATETIME_IsLeapYear (_DATETIME_IsLeapYear), PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay (ESQ_CalcDayOfYearFromMonthDay)
 ; READS:
 ;   A2 contents
 ; WRITES:
@@ -479,14 +479,14 @@ PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DATETIME_IsLeapYear
+;   _DATETIME_IsLeapYear
 ; DESC:
-;   Jump stub to DATETIME_IsLeapYear.
+;   Jump stub to _DATETIME_IsLeapYear.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI2_JMPTBL_DATETIME_IsLeapYear:
-    JMP     DATETIME_IsLeapYear
+    JMP     _DATETIME_IsLeapYear
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock   (JumpStub_BATTCLOCK_WriteSecondsToBatteryBackedClock)

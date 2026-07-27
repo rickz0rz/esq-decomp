@@ -14,7 +14,7 @@
 ;   _LVOSizeWindow, _LVORemakeDisplay, _LVOFreeMem,
 ;   GROUP_MAIN_B_JMPTBL_MATH_Mulu32, GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString, GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode
 ; READS:
-;   Global_REF_INTUITION_LIBRARY, Global_REF_GRAPHICS_LIBRARY, Global_STR_TOPAZ_FONT,
+;   _Global_REF_INTUITION_LIBRARY, Global_REF_GRAPHICS_LIBRARY, Global_STR_TOPAZ_FONT,
 ;   ESQIFF_SecondaryLineHeadPtr_HiWord, ESQ_TopazGuardRastPortAnchor,
 ;   Global_STR_PLEASE_STANDBY_1, Global_STR_ATTENTION_SYSTEM_ENGINEER_1,
 ;   Global_STR_REPORT_CODE_ER003
@@ -38,7 +38,7 @@ ESQ_CheckTopazFontGuard:
 ; some trampolining to get to the desired end address.
 
 ;LAB_0018:  ; unreferenced
-    MOVEA.L Global_REF_INTUITION_LIBRARY,A0
+    MOVEA.L _Global_REF_INTUITION_LIBRARY,A0
     MOVE.L  Offset_TopazFontName_FromIntuitionLibraryRef+4(A0),.strTopazFont1(A5)
     MOVEA.L .strTopazFont1(A5),A0
     ADDA.W  #Offset_SecondaryLineHeadHiWord_FromTopazFont,A0
@@ -47,7 +47,7 @@ ESQ_CheckTopazFontGuard:
     CMP.B   5(A0),D0
     BNE.W   .show_rerun_error
 
-    MOVEA.L Global_REF_INTUITION_LIBRARY,A0
+    MOVEA.L _Global_REF_INTUITION_LIBRARY,A0
     MOVE.L  Offset_TopazFontName_FromIntuitionLibraryRef(A0),.strTopazFont2(A5)
     MOVE.W  20(A0),D0                   ; 20 = Library__lib_Version
     MOVEQ   #33,D1
@@ -167,7 +167,7 @@ ESQ_CheckTopazFontGuard:
     MOVEQ   #50,D1
     SUB.L   D0,D1       ; deltaY
     MOVEQ   #0,D0       ; deltaX
-    MOVEA.L Global_REF_INTUITION_LIBRARY,A6
+    MOVEA.L _Global_REF_INTUITION_LIBRARY,A6
     JSR     _LVOSizeWindow(A6)
 
     PEA     100.W
@@ -194,7 +194,7 @@ ESQ_CheckTopazFontGuard:
     ADD.L   D0,D1
     MOVE.L  D1,-32(A5)
 
-    MOVEA.L Global_REF_INTUITION_LIBRARY,A6
+    MOVEA.L _Global_REF_INTUITION_LIBRARY,A6
     JSR     _LVORemakeDisplay(A6)
 
     MOVEA.L D4,A0
@@ -232,17 +232,17 @@ ESQ_CheckTopazFontGuard:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   DISKIO_QueryVolumeSoftErrorCount, DISKIO_QueryDiskUsagePercentAndSetBufferSize, GROUP_AE_JMPTBL_WDISP_SPrintf
+;   _DISKIO_QueryVolumeSoftErrorCount, _DISKIO_QueryDiskUsagePercentAndSetBufferSize, _GROUP_AE_JMPTBL_WDISP_SPrintf
 ; READS:
-;   COMMON_QueryDiskSoftErrorCountScratch, COMMON_QueryDiskUsagePercentScratch, Global_STR_DISK_ERRORS_FORMATTED,
-;   Global_STR_DISK_IS_FULL_FORMATTED, DISKIO_ErrorMessageScratch
+;   _COMMON_QueryDiskSoftErrorCountScratch, _COMMON_QueryDiskUsagePercentScratch, _Global_STR_DISK_ERRORS_FORMATTED,
+;   _Global_STR_DISK_IS_FULL_FORMATTED, _DISKIO_ErrorMessageScratch
 ; WRITES:
-;   DISKIO_ErrorMessageScratch (formatted text buffer)
+;   _DISKIO_ErrorMessageScratch (formatted text buffer)
 ; DESC:
-;   Builds a disk error message into DISKIO_ErrorMessageScratch based on disk error counts.
+;   Builds a disk error message into _DISKIO_ErrorMessageScratch based on disk error counts.
 ; NOTES:
-;   - Uses DISKIO_QueryVolumeSoftErrorCount and DISKIO_QueryDiskUsagePercentAndSetBufferSize helpers for error count retrieval.
-;   - Destination DISKIO_ErrorMessageScratch has 41 bytes total capacity.
+;   - Uses _DISKIO_QueryVolumeSoftErrorCount and _DISKIO_QueryDiskUsagePercentAndSetBufferSize helpers for error count retrieval.
+;   - Destination _DISKIO_ErrorMessageScratch has 41 bytes total capacity.
 ;   - Current practical bounds:
 ;       "Disk Errors: %ld\\n" with 16-bit source <= 65535 => 19 chars + NUL
 ;       "Disk is %ld%% full" with percent source <= 100 => 17 chars + NUL
@@ -254,8 +254,8 @@ ESQ_FormatDiskErrorMessage:
 
     SetOffsetForStack   2
 
-    PEA     COMMON_QueryDiskSoftErrorCountScratch
-    JSR     DISKIO_QueryVolumeSoftErrorCount(PC)
+    PEA     _COMMON_QueryDiskSoftErrorCountScratch
+    JSR     _DISKIO_QueryVolumeSoftErrorCount(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D6
@@ -263,28 +263,28 @@ ESQ_FormatDiskErrorMessage:
     BLE.S   .createDiskIsFullMessage
 
     MOVE.L  D6,-(A7)
-    ; DISKIO_ErrorMessageScratch is 41 bytes:
+    ; _DISKIO_ErrorMessageScratch is 41 bytes:
     ; - practical 16-bit count path (<=65535) uses 19 chars + NUL
     ; - signed-32 worst-case uses 25 chars + NUL
-    PEA     Global_STR_DISK_ERRORS_FORMATTED
-    PEA     DISKIO_ErrorMessageScratch
-    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
+    PEA     _Global_STR_DISK_ERRORS_FORMATTED
+    PEA     _DISKIO_ErrorMessageScratch
+    JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     .stackOffsetBytes+4(A7),A7
     BRA.S   .done
 
 .createDiskIsFullMessage:
-    PEA     COMMON_QueryDiskUsagePercentScratch
-    JSR     DISKIO_QueryDiskUsagePercentAndSetBufferSize(PC)
+    PEA     _COMMON_QueryDiskUsagePercentScratch
+    JSR     _DISKIO_QueryDiskUsagePercentAndSetBufferSize(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,(A7)
-    ; DISKIO_ErrorMessageScratch is 41 bytes:
+    ; _DISKIO_ErrorMessageScratch is 41 bytes:
     ; - normal 0..100 percent path uses at most 17 chars + NUL
     ; - signed-32 worst-case uses 25 chars + NUL
-    PEA     Global_STR_DISK_IS_FULL_FORMATTED
-    PEA     DISKIO_ErrorMessageScratch
-    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
+    PEA     _Global_STR_DISK_IS_FULL_FORMATTED
+    PEA     _DISKIO_ErrorMessageScratch
+    JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     .stackOffsetBytes+4(A7),A7
 

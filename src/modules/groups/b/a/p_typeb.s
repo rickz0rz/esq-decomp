@@ -1,9 +1,9 @@
-    XDEF    P_TYPE_CloneEntry
+    XDEF    _P_TYPE_CloneEntry
     XDEF    P_TYPE_EnsureSecondaryList
 
 
 ;------------------------------------------------------------------------------
-; FUNC: P_TYPE_CloneEntry   (Deep-copy entry and payload)
+; FUNC: _P_TYPE_CloneEntry   (Deep-copy entry and payload)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Uses a fixed local scratch buffer for payload copy before reallocation.
 ;------------------------------------------------------------------------------
-P_TYPE_CloneEntry:
+_P_TYPE_CloneEntry:
     LINK.W  A5,#-104
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -78,9 +78,9 @@ P_TYPE_CloneEntry:
 ; CLOBBERS:
 ;   A0/A7
 ; CALLS:
-;   P_TYPE_CloneEntry
+;   _P_TYPE_CloneEntry
 ; READS:
-;   TEXTDISP_SecondaryGroupCode, _P_TYPE_PrimaryGroupListPtr, _P_TYPE_SecondaryGroupListPtr
+;   _TEXTDISP_SecondaryGroupCode, _P_TYPE_PrimaryGroupListPtr, _P_TYPE_SecondaryGroupListPtr
 ; WRITES:
 ;   _P_TYPE_SecondaryGroupListPtr
 ; DESC:
@@ -98,12 +98,12 @@ P_TYPE_EnsureSecondaryList:
 
     MOVE.L  _P_TYPE_PrimaryGroupListPtr,-(A7)
     MOVE.L  _P_TYPE_SecondaryGroupListPtr,-(A7)
-    BSR.S   P_TYPE_CloneEntry
+    BSR.S   _P_TYPE_CloneEntry
 
     ADDQ.W  #8,A7
     MOVE.L  D0,_P_TYPE_SecondaryGroupListPtr
     MOVEA.L D0,A0
-    MOVE.B  TEXTDISP_SecondaryGroupCode,(A0)
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,(A0)
 
 .return_136B:
     RTS

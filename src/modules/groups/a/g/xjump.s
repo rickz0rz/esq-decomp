@@ -1,25 +1,25 @@
-    XDEF    GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning
+    XDEF    _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning
     XDEF    GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState
-    XDEF    GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport
+    XDEF    _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport
     XDEF    GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch
-    XDEF    GROUP_AG_JMPTBL_MATH_DivS32
-    XDEF    GROUP_AG_JMPTBL_MATH_Mulu32
-    XDEF    GROUP_AG_JMPTBL_MEMORY_AllocateMemory
-    XDEF    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
-    XDEF    GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+    XDEF    _GROUP_AG_JMPTBL_MATH_DivS32
+    XDEF    _GROUP_AG_JMPTBL_MATH_Mulu32
+    XDEF    _GROUP_AG_JMPTBL_MEMORY_AllocateMemory
+    XDEF    _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+    XDEF    _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
     XDEF    GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition
-    XDEF    GROUP_AG_JMPTBL_SCRIPT_CheckPathExists
-    XDEF    GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal
+    XDEF    _GROUP_AG_JMPTBL_SCRIPT_CheckPathExists
+    XDEF    _GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal
     XDEF    GROUP_AG_JMPTBL_STRING_CopyPadNul
-    XDEF    GROUP_AG_JMPTBL_STRUCT_AllocWithOwner
-    XDEF    GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField
-    XDEF    GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
+    XDEF    _GROUP_AG_JMPTBL_STRUCT_AllocWithOwner
+    XDEF    _GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField
+    XDEF    _GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
     XDEF    GROUP_AG_JMPTBL_DOS_OpenFileWithMode
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal   (Routine at GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal)
+; FUNC: _GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal   (Routine at _GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -37,11 +37,11 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
+_GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
     JMP     SIGNAL_CreateMsgPortWithSignal
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_MATH_DivS32   (Routine at GROUP_AG_JMPTBL_MATH_DivS32)
+; FUNC: _GROUP_AG_JMPTBL_MATH_DivS32   (Routine at _GROUP_AG_JMPTBL_MATH_DivS32)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -49,7 +49,7 @@ GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MATH_DivS32
+;   _MATH_DivS32
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -59,11 +59,11 @@ GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_MATH_DivS32:
-    JMP     MATH_DivS32
+_GROUP_AG_JMPTBL_MATH_DivS32:
+    JMP     _MATH_DivS32
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_MEMORY_DeallocateMemory   (Routine at GROUP_AG_JMPTBL_MEMORY_DeallocateMemory)
+; FUNC: _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory   (Routine at _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -81,11 +81,11 @@ GROUP_AG_JMPTBL_MATH_DivS32:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_MEMORY_DeallocateMemory:
+_GROUP_AG_JMPTBL_MEMORY_DeallocateMemory:
     JMP     MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_STRUCT_AllocWithOwner   (Routine at GROUP_AG_JMPTBL_STRUCT_AllocWithOwner)
+; FUNC: _GROUP_AG_JMPTBL_STRUCT_AllocWithOwner   (Routine at _GROUP_AG_JMPTBL_STRUCT_AllocWithOwner)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -103,11 +103,11 @@ GROUP_AG_JMPTBL_MEMORY_DeallocateMemory:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_STRUCT_AllocWithOwner:
+_GROUP_AG_JMPTBL_STRUCT_AllocWithOwner:
     JMP     STRUCT_AllocWithOwner
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh   (Routine at GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh)
+; FUNC: _GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh   (Routine at _GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -125,11 +125,11 @@ GROUP_AG_JMPTBL_STRUCT_AllocWithOwner:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
+_GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
     JMP     TEXTDISP_ResetSelectionAndRefresh
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport   (Routine at GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport)
+; FUNC: _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport   (Routine at _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -147,11 +147,11 @@ GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport:
+_GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport:
     JMP     IOSTDREQ_CleanupSignalAndMsgport
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning   (Routine at GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning)
+; FUNC: _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning   (Routine at _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -159,7 +159,7 @@ GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_ServiceUiTickIfRunning
+;   _ESQFUNC_ServiceUiTickIfRunning
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -169,11 +169,11 @@ GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning:
-    JMP     ESQFUNC_ServiceUiTickIfRunning
+_GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning:
+    JMP     _ESQFUNC_ServiceUiTickIfRunning
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField   (Routine at GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField)
+; FUNC: _GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField   (Routine at _GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -191,11 +191,11 @@ GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField:
+_GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField:
     JMP     STRUCT_FreeWithSizeField
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Routine at GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt)
+; FUNC: _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Routine at _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -203,7 +203,7 @@ GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   PARSE_ReadSignedLongSkipClass3_Alt
+;   _PARSE_ReadSignedLongSkipClass3_Alt
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -213,8 +213,8 @@ GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
-    JMP     PARSE_ReadSignedLongSkipClass3_Alt
+_GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
+    JMP     _PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition   (Routine at GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition)
@@ -261,7 +261,7 @@ GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch:
     JMP     LADFUNC2_EmitEscapedStringToScratch
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_MEMORY_AllocateMemory   (Routine at GROUP_AG_JMPTBL_MEMORY_AllocateMemory)
+; FUNC: _GROUP_AG_JMPTBL_MEMORY_AllocateMemory   (Routine at _GROUP_AG_JMPTBL_MEMORY_AllocateMemory)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -269,7 +269,7 @@ GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MEMORY_AllocateMemory
+;   _MEMORY_AllocateMemory
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -279,8 +279,8 @@ GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_MEMORY_AllocateMemory:
-    JMP     MEMORY_AllocateMemory
+_GROUP_AG_JMPTBL_MEMORY_AllocateMemory:
+    JMP     _MEMORY_AllocateMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AG_JMPTBL_DOS_OpenFileWithMode   (Routine at GROUP_AG_JMPTBL_DOS_OpenFileWithMode)
@@ -305,7 +305,7 @@ GROUP_AG_JMPTBL_DOS_OpenFileWithMode:
     JMP     DOS_OpenFileWithMode
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_SCRIPT_CheckPathExists   (Routine at GROUP_AG_JMPTBL_SCRIPT_CheckPathExists)
+; FUNC: _GROUP_AG_JMPTBL_SCRIPT_CheckPathExists   (Routine at _GROUP_AG_JMPTBL_SCRIPT_CheckPathExists)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -323,11 +323,11 @@ GROUP_AG_JMPTBL_DOS_OpenFileWithMode:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_SCRIPT_CheckPathExists:
+_GROUP_AG_JMPTBL_SCRIPT_CheckPathExists:
     JMP     SCRIPT_CheckPathExists
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_MATH_Mulu32   (Routine at GROUP_AG_JMPTBL_MATH_Mulu32)
+; FUNC: _GROUP_AG_JMPTBL_MATH_Mulu32   (Routine at _GROUP_AG_JMPTBL_MATH_Mulu32)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -335,7 +335,7 @@ GROUP_AG_JMPTBL_SCRIPT_CheckPathExists:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MATH_Mulu32
+;   _MATH_Mulu32
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -345,8 +345,8 @@ GROUP_AG_JMPTBL_SCRIPT_CheckPathExists:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_MATH_Mulu32:
-    JMP     MATH_Mulu32
+_GROUP_AG_JMPTBL_MATH_Mulu32:
+    JMP     _MATH_Mulu32
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState   (Routine at GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState)
@@ -379,7 +379,7 @@ GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   STRING_CopyPadNul
+;   _STRING_CopyPadNul
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -390,7 +390,7 @@ GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AG_JMPTBL_STRING_CopyPadNul:
-    JMP     STRING_CopyPadNul
+    JMP     _STRING_CopyPadNul
 
 ;!======
 

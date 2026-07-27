@@ -17,11 +17,11 @@
     XDEF    TLIBA1_FMT_TLF_PREGAP_PCT_D
     XDEF    TLIBA1_STR_TLFormatStructCloseBraceLine
     XDEF    TLIBA1_PatternTableInitGuard
-    XDEF    TEXTDISP_LrbnEntryWidthPx
-    XDEF    TLIBA1_FMT_PCT_03LD_VerticalScaleTick
+    XDEF    _TEXTDISP_LrbnEntryWidthPx
+    XDEF    _TLIBA1_FMT_PCT_03LD_VerticalScaleTick
     XDEF    TLIBA1_FMT_PCT_03LD_HorizontalScaleTick
     XDEF    TLIBA1_FMT_VIEWMODE_PCT_LD
-    XDEF    TLIBA1_CurrentViewModeIndex
+    XDEF    _TLIBA1_CurrentViewModeIndex
     XDEF    TLIBA1_DiagDiwOffset
     XDEF    TLIBA1_DiagDdfOffset
     XDEF    TLIBA1_DiagBplcon1Value
@@ -98,15 +98,15 @@ TLIBA1_STR_TLFormatStructCloseBraceLine:
     NStr2   "}",TextLineFeed
 TLIBA1_PatternTableInitGuard:
     DS.W    1
-TEXTDISP_LrbnEntryWidthPx:
+_TEXTDISP_LrbnEntryWidthPx:
     DC.B    1,"("
-TLIBA1_FMT_PCT_03LD_VerticalScaleTick:
+_TLIBA1_FMT_PCT_03LD_VerticalScaleTick:
     NStr    "%03ld"
 TLIBA1_FMT_PCT_03LD_HorizontalScaleTick:
     NStr    "%03ld"
 TLIBA1_FMT_VIEWMODE_PCT_LD:
     NStr    "ViewMode = %ld"
-TLIBA1_CurrentViewModeIndex:
+_TLIBA1_CurrentViewModeIndex:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: TLIBA1_DiagDiwOffset/TLIBA1_DiagDdfOffset/TLIBA1_DiagBplcon1Value   (pattern register dump values)

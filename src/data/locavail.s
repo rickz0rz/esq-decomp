@@ -1,4 +1,4 @@
-    XDEF    Global_STR_LOCAVAIL_C_1
+    XDEF    _Global_STR_LOCAVAIL_C_1
     XDEF    Global_STR_LOCAVAIL_C_2
     XDEF    Global_STR_LOCAVAIL_C_3
     XDEF    Global_STR_LOCAVAIL_C_4
@@ -15,12 +15,12 @@
     XDEF    Global_STR_LOCAVAIL_C_7
     XDEF    Global_STR_LOCAVAIL_C_8
     XDEF    LOCAVAIL_STR_YYLLZ_FilterStateUpdate
-    XDEF    NEWGRID_MainRastPortPtr
-    XDEF    NEWGRID_HeaderRastPortPtr
-    XDEF    NEWGRID_GridResourcesInitializedFlag
+    XDEF    _NEWGRID_MainRastPortPtr
+    XDEF    _NEWGRID_HeaderRastPortPtr
+    XDEF    _NEWGRID_GridResourcesInitializedFlag
 ; ========== LOCAVAIL.c ==========
 
-Global_STR_LOCAVAIL_C_1:
+_Global_STR_LOCAVAIL_C_1:
     NStr    "LOCAVAIL.c"
 Global_STR_LOCAVAIL_C_2:
     NStr    "LOCAVAIL.c"
@@ -55,24 +55,24 @@ Global_STR_LOCAVAIL_C_8:
 LOCAVAIL_STR_YYLLZ_FilterStateUpdate:
     NStr    "YyLlZ"
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_MainRastPortPtr/NEWGRID_HeaderRastPortPtr   (grid rastport pointers)
+; SYM: _NEWGRID_MainRastPortPtr/_NEWGRID_HeaderRastPortPtr   (grid rastport pointers)
 ; TYPE: pointer/pointer (RastPort)
 ; PURPOSE: Primary NEWGRID body rastport and secondary header/top-bar rastport.
 ; USED BY: NEWGRID_InitGridResources, NEWGRID_DrawTopBorderLine, CLEANUP_DrawGridTimeBanner, PARSEINI command font updates
 ; NOTES:
-;   `NEWGRID_MainRastPortPtr` binds to `Global_REF_696_400_BITMAP`.
-;   `NEWGRID_HeaderRastPortPtr` binds to `WDISP_BannerGridBitmapStruct`.
+;   `_NEWGRID_MainRastPortPtr` binds to `_Global_REF_696_400_BITMAP`.
+;   `_NEWGRID_HeaderRastPortPtr` binds to `WDISP_BannerGridBitmapStruct`.
 ;------------------------------------------------------------------------------
-NEWGRID_MainRastPortPtr:
+_NEWGRID_MainRastPortPtr:
     DS.L    1
-NEWGRID_HeaderRastPortPtr:
+_NEWGRID_HeaderRastPortPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_GridResourcesInitializedFlag   (grid resource init guard)
+; SYM: _NEWGRID_GridResourcesInitializedFlag   (grid resource init guard)
 ; TYPE: u16
 ; PURPOSE: Guards NEWGRID resource allocation so init runs once per active session.
 ; USED BY: NEWGRID_InitGridResources, NEWGRID_ShutdownGridResources
 ; NOTES: Set to 1 after successful init path, cleared during grid shutdown.
 ;------------------------------------------------------------------------------
-NEWGRID_GridResourcesInitializedFlag:
+_NEWGRID_GridResourcesInitializedFlag:
     DS.W    1

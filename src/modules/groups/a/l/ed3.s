@@ -1,8 +1,8 @@
-    XDEF    ED_GetEscMenuActionCode
+    XDEF    _ED_GetEscMenuActionCode
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_GetEscMenuActionCode   (Get ESC menu action codeuncertain)
+; FUNC: _ED_GetEscMenuActionCode   (Get ESC menu action codeuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -12,21 +12,21 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   _ED_LastKeyCode, ED_EditCursorOffset, ED_LastMenuInputChar, ED_StateRingIndex, ED_StateRingTable
+;   _ED_LastKeyCode, _ED_EditCursorOffset, _ED_LastMenuInputChar, _ED_StateRingIndex, _ED_StateRingTable
 ; WRITES:
-;   ED_LastMenuInputChar
+;   _ED_LastMenuInputChar
 ; DESC:
 ;   Decodes the current ESC-menu key/selection into an action code.
 ; NOTES:
 ;   Uses a small switch table when _ED_LastKeyCode matches the menu-mode case.
 ;------------------------------------------------------------------------------
-ED_GetEscMenuActionCode:
-    MOVE.L  ED_StateRingIndex,D0
+_ED_GetEscMenuActionCode:
+    MOVE.L  _ED_StateRingIndex,D0
     LSL.L   #2,D0
-    ADD.L   ED_StateRingIndex,D0
-    LEA     ED_StateRingTable,A0
+    ADD.L   _ED_StateRingIndex,D0
+    LEA     _ED_StateRingTable,A0
     ADDA.L  D0,A0
-    MOVE.B  1(A0),ED_LastMenuInputChar
+    MOVE.B  1(A0),_ED_LastMenuInputChar
     MOVEQ   #0,D0
     MOVE.B  _ED_LastKeyCode,D0
     SUBQ.W  #3,D0
@@ -48,7 +48,7 @@ ED_GetEscMenuActionCode:
     BRA.S   .return
 
 .case_index_dispatch:
-    MOVE.L  ED_EditCursorOffset,D0
+    MOVE.L  _ED_EditCursorOffset,D0
     CMPI.L  #$6,D0
     BCC.S   .case_return_8
 
@@ -94,7 +94,7 @@ ED_GetEscMenuActionCode:
     BRA.S   .return
 
 .case_check_alpha:
-    MOVE.B  ED_LastMenuInputChar,D0
+    MOVE.B  _ED_LastMenuInputChar,D0
     MOVEQ   #65,D1
     CMP.B   D1,D0
     BNE.S   .case_default_10

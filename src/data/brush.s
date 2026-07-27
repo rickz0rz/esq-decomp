@@ -1,12 +1,12 @@
-    XDEF    Global_STR_BRUSH_C_1
-    XDEF    Global_STR_BRUSH_C_2
-    XDEF    Global_STR_BRUSH_C_3
-    XDEF    Global_STR_BRUSH_C_4
-    XDEF    Global_STR_BRUSH_C_5
-    XDEF    Global_STR_BRUSH_C_6
-    XDEF    Global_STR_BRUSH_C_7
+    XDEF    _Global_STR_BRUSH_C_1
+    XDEF    _Global_STR_BRUSH_C_2
+    XDEF    _Global_STR_BRUSH_C_3
+    XDEF    _Global_STR_BRUSH_C_4
+    XDEF    _Global_STR_BRUSH_C_5
+    XDEF    _Global_STR_BRUSH_C_6
+    XDEF    _Global_STR_BRUSH_C_7
     XDEF    Global_STR_BRUSH_C_8
-    XDEF    Global_STR_BRUSH_C_9
+    XDEF    _Global_STR_BRUSH_C_9
     XDEF    BRUSH_STR_IFF_FORM
     XDEF    Global_STR_BRUSH_C_10
     XDEF    Global_STR_BRUSH_C_11
@@ -24,23 +24,23 @@
     XDEF    BRUSH_STR_FALLBACK_DITHER
 ; ========== BRUSH.c ==========
 
-Global_STR_BRUSH_C_1:
+_Global_STR_BRUSH_C_1:
     NStr    "BRUSH.c"
-Global_STR_BRUSH_C_2:
+_Global_STR_BRUSH_C_2:
     NStr    "BRUSH.c"
-Global_STR_BRUSH_C_3:
+_Global_STR_BRUSH_C_3:
     NStr    "BRUSH.c"
-Global_STR_BRUSH_C_4:
+_Global_STR_BRUSH_C_4:
     NStr    "BRUSH.c"
-Global_STR_BRUSH_C_5:
+_Global_STR_BRUSH_C_5:
     NStr    "BRUSH.c"
-Global_STR_BRUSH_C_6:
+_Global_STR_BRUSH_C_6:
     NStr    "BRUSH.c"
-Global_STR_BRUSH_C_7:
+_Global_STR_BRUSH_C_7:
     NStr    "BRUSH.c"
 Global_STR_BRUSH_C_8:
     NStr    "BRUSH.c"
-Global_STR_BRUSH_C_9:
+_Global_STR_BRUSH_C_9:
     NStr    "BRUSH.c"
 ;------------------------------------------------------------------------------
 ; SYM: BRUSH_STR_IFF_FORM   (IFF FORM chunk tag)

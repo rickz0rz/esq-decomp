@@ -1,4 +1,4 @@
-    XDEF    GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding
+    XDEF    _GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding
     XDEF    GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition
     XDEF    GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition
     XDEF    GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition
@@ -17,7 +17,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   TLIBA3_BuildDisplayContextForViewMode
+;   _TLIBA3_BuildDisplayContextForViewMode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -28,10 +28,10 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
-    JMP     TLIBA3_BuildDisplayContextForViewMode
+    JMP     _TLIBA3_BuildDisplayContextForViewMode
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding   (Routine at GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding)
+; FUNC: _GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding   (Routine at _GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -49,7 +49,7 @@ GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding:
+_GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding:
     JMP     DISPLIB_ApplyInlineAlignmentPadding
 
 ;------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DISPLIB_DisplayTextAtPosition
+;   _DISPLIB_DisplayTextAtPosition
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -116,7 +116,7 @@ GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition:
-    JMP     DISPLIB_DisplayTextAtPosition
+    JMP     _DISPLIB_DisplayTextAtPosition
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AW_JMPTBL_MEM_Move   (Routine at GROUP_AW_JMPTBL_MEM_Move)
@@ -149,7 +149,7 @@ GROUP_AW_JMPTBL_MEM_Move:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   WDISP_SPrintf
+;   _WDISP_SPrintf
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -160,7 +160,7 @@ GROUP_AW_JMPTBL_MEM_Move:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AW_JMPTBL_WDISP_SPrintf:
-    JMP     WDISP_SPrintf
+    JMP     _WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight   (Routine at GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight)
@@ -199,7 +199,7 @@ GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_CopyPadNul
+;   _STRING_CopyPadNul
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -210,4 +210,4 @@ GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AW_JMPTBL_STRING_CopyPadNul:
-    JMP     STRING_CopyPadNul
+    JMP     _STRING_CopyPadNul

@@ -1,17 +1,17 @@
-    XDEF    DATETIME_BuildFromBaseDay
-    XDEF    DATETIME_BuildFromGlobals
-    XDEF    DATETIME_ClassifyValueInRange
+    XDEF    _DATETIME_BuildFromBaseDay
+    XDEF    _DATETIME_BuildFromGlobals
+    XDEF    _DATETIME_ClassifyValueInRange
     XDEF    DATETIME_CopyPairAndRecalc
     XDEF    DATETIME_FormatPairToStream
-    XDEF    DATETIME_NormalizeStructToSeconds
+    XDEF    _DATETIME_NormalizeStructToSeconds
     XDEF    DATETIME_ParseString
     XDEF    DATETIME_SavePairToFile
-    XDEF    DATETIME_SecondsToStruct
+    XDEF    _DATETIME_SecondsToStruct
     XDEF    DATETIME_UpdateSelectionField
 
 
 ;------------------------------------------------------------------------------
-; FUNC: DATETIME_SecondsToStruct   (Convert seconds to time structuncertain)
+; FUNC: _DATETIME_SecondsToStruct   (Convert seconds to time structuncertain)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -19,7 +19,7 @@
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AJ_JMPTBL_MATH_Mulu32, DATETIME_IsLeapYear, GROUP_AJ_JMPTBL_MATH_DivU32, DATETIME_NormalizeMonthRange
+;   _GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AJ_JMPTBL_MATH_Mulu32, _DATETIME_IsLeapYear, GROUP_AJ_JMPTBL_MATH_DivU32, DATETIME_NormalizeMonthRange
 ; READS:
 ;   DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES
 ; WRITES:
@@ -29,7 +29,7 @@
 ; NOTES:
 ;   Uses repeated division/modulo with 60/24 and year/day tables.
 ;------------------------------------------------------------------------------
-DATETIME_SecondsToStruct:
+_DATETIME_SecondsToStruct:
     MOVEM.L D4-D7/A3,-(A7)
     MOVE.L  24(A7),D7
     MOVEA.L 28(A7),A3
@@ -41,27 +41,27 @@ DATETIME_SecondsToStruct:
 .seconds_ok:
     MOVE.L  D7,D0
     MOVEQ   #60,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D1,12(A3)
     MOVE.L  D7,D0
     MOVEQ   #60,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,D0
     MOVEQ   #60,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D1,10(A3)
     MOVE.L  D7,D0
     MOVEQ   #60,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,D0
     MOVE.L  #$88f8,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D5
     MOVE.L  D5,D0
@@ -75,7 +75,7 @@ DATETIME_SecondsToStruct:
     MOVE.L  D0,D4
     MOVE.L  D7,D0
     MOVE.L  #$88f8,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D1,D7
 
@@ -84,7 +84,7 @@ DATETIME_SecondsToStruct:
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   DATETIME_IsLeapYear
+    BSR.W   _DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -99,7 +99,7 @@ DATETIME_SecondsToStruct:
 
     MOVE.L  D6,D0
     MOVEQ   #24,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     ADD.L   D0,D4
     ADDQ.W  #1,6(A3)
@@ -109,12 +109,12 @@ DATETIME_SecondsToStruct:
 .convert_day_hours:
     MOVE.L  D7,D0
     MOVEQ   #24,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D1,8(A3)
     MOVE.L  D7,D0
     MOVEQ   #24,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,D0
@@ -131,7 +131,7 @@ DATETIME_SecondsToStruct:
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   DATETIME_IsLeapYear
+    BSR.W   _DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -205,7 +205,7 @@ DATETIME_SecondsToStruct:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: DATETIME_NormalizeStructToSeconds   (Normalize time struct to secondsuncertain)
+; FUNC: _DATETIME_NormalizeStructToSeconds   (Normalize time struct to secondsuncertain)
 ; ARGS:
 ;   stack +8: A3 = time struct
 ; RET:
@@ -213,7 +213,7 @@ DATETIME_SecondsToStruct:
 ; CLOBBERS:
 ;   A3/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   DATETIME_AdjustMonthIndex, DATETIME_IsLeapYear, GROUP_AG_JMPTBL_MATH_Mulu32, DATETIME_NormalizeMonthRange
+;   DATETIME_AdjustMonthIndex, _DATETIME_IsLeapYear, _GROUP_AG_JMPTBL_MATH_Mulu32, DATETIME_NormalizeMonthRange
 ; READS:
 ;   A3+2/4/6/8/10/12/16
 ; WRITES:
@@ -223,7 +223,7 @@ DATETIME_SecondsToStruct:
 ; NOTES:
 ;   Uses DIVS #10 and SWAP idioms for decimal extraction.
 ;------------------------------------------------------------------------------
-DATETIME_NormalizeStructToSeconds:
+_DATETIME_NormalizeStructToSeconds:
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
     MOVE.W  6(A3),D0
@@ -285,7 +285,7 @@ DATETIME_NormalizeStructToSeconds:
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   DATETIME_IsLeapYear
+    BSR.W   _DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -314,7 +314,7 @@ DATETIME_NormalizeStructToSeconds:
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   DATETIME_IsLeapYear
+    BSR.W   _DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -345,7 +345,7 @@ DATETIME_NormalizeStructToSeconds:
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   DATETIME_IsLeapYear
+    BSR.W   _DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -358,7 +358,7 @@ DATETIME_NormalizeStructToSeconds:
     EXT.L   D0
     SUBI.L  #$7b2,D0
     MOVE.L  #$16d,D1
-    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D7,D0
     MOVE.W  16(A3),D1
@@ -368,7 +368,7 @@ DATETIME_NormalizeStructToSeconds:
     SUBQ.L  #1,D5
     MOVE.L  D5,D0
     MOVE.L  #$15180,D1
-    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.W  8(A3),D1
     MULS    #$e10,D1
@@ -401,7 +401,7 @@ DATETIME_NormalizeStructToSeconds:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: DATETIME_BuildFromBaseDay   (Build time struct from date/timeuncertain)
+; FUNC: _DATETIME_BuildFromBaseDay   (Build time struct from date/timeuncertain)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -414,7 +414,7 @@ DATETIME_NormalizeStructToSeconds:
 ; CLOBBERS:
 ;   A2/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   DATETIME_NormalizeStructToSeconds, GROUP_AG_JMPTBL_MATH_Mulu32, DATETIME_SecondsToStruct
+;   _DATETIME_NormalizeStructToSeconds, _GROUP_AG_JMPTBL_MATH_Mulu32, _DATETIME_SecondsToStruct
 ; READS:
 ;   A2
 ; WRITES:
@@ -424,7 +424,7 @@ DATETIME_NormalizeStructToSeconds:
 ; NOTES:
 ;   Uses offset of 0x36 and 0x0E10 scaling.
 ;------------------------------------------------------------------------------
-DATETIME_BuildFromBaseDay:
+_DATETIME_BuildFromBaseDay:
     LINK.W  A5,#-12
     MOVEM.L D4-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -432,7 +432,7 @@ DATETIME_BuildFromBaseDay:
     MOVE.W  18(A5),D7
     MOVE.W  22(A5),D6
     MOVE.L  A3,-(A7)
-    BSR.W   DATETIME_NormalizeStructToSeconds
+    BSR.W   _DATETIME_NormalizeStructToSeconds
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
@@ -455,13 +455,13 @@ DATETIME_BuildFromBaseDay:
     EXT.L   D1
     SUB.L   D1,D0
     MOVE.L  #$e10,D1
-    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D5,D4
     ADD.L   D0,D4
     MOVE.L  A2,-(A7)
     MOVE.L  D4,-(A7)
-    BSR.W   DATETIME_SecondsToStruct
+    BSR.W   _DATETIME_SecondsToStruct
 
     CLR.W   14(A2)
     MOVE.L  D4,D0
@@ -471,7 +471,7 @@ DATETIME_BuildFromBaseDay:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: DATETIME_BuildFromGlobals   (Populate time struct from DST_PrimaryCountdown)
+; FUNC: _DATETIME_BuildFromGlobals   (Populate time struct from _DST_PrimaryCountdown)
 ; ARGS:
 ;   stack +8: A3 = output struct
 ; RET:
@@ -479,9 +479,9 @@ DATETIME_BuildFromBaseDay:
 ; CLOBBERS:
 ;   A3/A7/D0/D7
 ; CALLS:
-;   DATETIME_BuildFromBaseDay
+;   _DATETIME_BuildFromBaseDay
 ; READS:
-;   DST_PrimaryCountdown, CLOCK_DaySlotIndex
+;   _DST_PrimaryCountdown, _CLOCK_DaySlotIndex
 ; WRITES:
 ;   output struct
 ; DESC:
@@ -489,16 +489,16 @@ DATETIME_BuildFromBaseDay:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DATETIME_BuildFromGlobals:
+_DATETIME_BuildFromGlobals:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
-    MOVE.W  DST_PrimaryCountdown,D0
+    MOVE.W  _DST_PrimaryCountdown,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     54.W
     MOVE.L  A3,-(A7)
-    PEA     CLOCK_DaySlotIndex
-    BSR.W   DATETIME_BuildFromBaseDay
+    PEA     _CLOCK_DaySlotIndex
+    BSR.W   _DATETIME_BuildFromBaseDay
 
     LEA     16(A7),A7
     MOVE.L  D0,D7
@@ -508,7 +508,7 @@ DATETIME_BuildFromGlobals:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: DATETIME_ClassifyValueInRange   (Compare value against struct bounds)
+; FUNC: _DATETIME_ClassifyValueInRange   (Compare value against struct bounds)
 ; ARGS:
 ;   stack +8: A3 = struct pointer
 ;   stack +12: D7 = value
@@ -527,7 +527,7 @@ DATETIME_BuildFromGlobals:
 ; NOTES:
 ;   Switch-like sequence on flags in -11(A5).
 ;------------------------------------------------------------------------------
-DATETIME_ClassifyValueInRange:
+_DATETIME_ClassifyValueInRange:
     LINK.W  A5,#-12
     MOVEM.L D2/D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -651,7 +651,7 @@ DATETIME_ClassifyValueInRange:
 ; CLOBBERS:
 ;   A3/A7/D0/D5/D6/D7
 ; CALLS:
-;   DATETIME_BuildFromGlobals, DATETIME_ClassifyValueInRange
+;   _DATETIME_BuildFromGlobals, _DATETIME_ClassifyValueInRange
 ; READS:
 ;   A3+16
 ; WRITES:
@@ -670,12 +670,12 @@ DATETIME_UpdateSelectionField:
     BEQ.S   .return
 
     PEA     -26(A5)
-    BSR.W   DATETIME_BuildFromGlobals
+    BSR.W   _DATETIME_BuildFromGlobals
 
     MOVE.L  D0,D7
     MOVE.L  D7,(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   DATETIME_ClassifyValueInRange
+    BSR.W   _DATETIME_ClassifyValueInRange
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D5
@@ -704,7 +704,7 @@ DATETIME_UpdateSelectionField:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A7/D0
 ; CALLS:
-;   DATETIME_NormalizeStructToSeconds
+;   _DATETIME_NormalizeStructToSeconds
 ; READS:
 ;   A2, A0
 ; WRITES:
@@ -743,11 +743,11 @@ DATETIME_CopyPairAndRecalc:
     MOVE.B  (A0)+,(A1)+
     DBF     D0,.copy_second_loop
     MOVE.L  A2,-(A7)
-    BSR.W   DATETIME_NormalizeStructToSeconds
+    BSR.W   _DATETIME_NormalizeStructToSeconds
 
     MOVE.L  D0,8(A3)
     MOVE.L  16(A5),(A7)
-    BSR.W   DATETIME_NormalizeStructToSeconds
+    BSR.W   _DATETIME_NormalizeStructToSeconds
 
     ADDQ.W  #4,A7
     MOVE.L  D0,12(A3)
@@ -769,7 +769,7 @@ DATETIME_CopyPairAndRecalc:
 ; CLOBBERS:
 ;   A0/A2/A3/A5/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AG_JMPTBL_STRING_CopyPadNul, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AG_JMPTBL_MATH_DivS32, DATETIME_IsLeapYear, DATETIME_NormalizeMonthRange, DATETIME_NormalizeStructToSeconds, DATETIME_SecondsToStruct
+;   _GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AG_JMPTBL_STRING_CopyPadNul, _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GROUP_AG_JMPTBL_MATH_DivS32, _DATETIME_IsLeapYear, DATETIME_NormalizeMonthRange, _DATETIME_NormalizeStructToSeconds, _DATETIME_SecondsToStruct
 ; READS:
 ;   CLOCK_CacheYear
 ; WRITES:
@@ -791,7 +791,7 @@ DATETIME_ParseString:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -816,18 +816,18 @@ DATETIME_ParseString:
 
     CLR.B   -1(A5)
     PEA     -8(A5)
-    JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,D6
     MOVE.L  D6,D0
     MOVE.L  #1000,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D0,6(A3)
     MOVE.L  D6,D0
     MOVE.L  #1000,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D1,16(A3)
     MOVE.W  6(A3),D0
@@ -864,7 +864,7 @@ DATETIME_ParseString:
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   DATETIME_IsLeapYear
+    BSR.W   _DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -886,7 +886,7 @@ DATETIME_ParseString:
     MOVEA.L -12(A5),A0
     ADDQ.L  #8,A0
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.W  D0,8(A3)
@@ -900,7 +900,7 @@ DATETIME_ParseString:
     MOVEA.L -12(A5),A0
     ADDA.W  #11,A0
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.W  D0,10(A3)
@@ -918,11 +918,11 @@ DATETIME_ParseString:
     BSR.W   DATETIME_NormalizeMonthRange
 
     MOVE.L  A3,(A7)
-    BSR.W   DATETIME_NormalizeStructToSeconds
+    BSR.W   _DATETIME_NormalizeStructToSeconds
 
     MOVE.L  A3,(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   DATETIME_SecondsToStruct
+    BSR.W   _DATETIME_SecondsToStruct
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D5
@@ -956,9 +956,9 @@ DATETIME_ParseString:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7/D0/D1/D6/D7
 ; CALLS:
-;   GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AG_JMPTBL_MATH_DivS32, DISKIO_WriteBufferedBytes
+;   _GROUP_AM_JMPTBL_WDISP_SPrintf, _GROUP_AI_JMPTBL_STRING_AppendAtNull, _GROUP_AG_JMPTBL_MATH_DivS32, _DISKIO_WriteBufferedBytes
 ; READS:
-;   DST_FMT_PCT_C_InTimePrefixChar..DST_STR_NO_DST_DATA
+;   _DST_FMT_PCT_C_InTimePrefixChar.._DST_STR_NO_DST_DATA
 ; WRITES:
 ;   local buffer -87(A5)
 ; DESC:
@@ -981,13 +981,13 @@ DATETIME_FormatPairToStream:
     BEQ.W   .first_missing
 
     PEA     4.W
-    PEA     DST_FMT_PCT_C_InTimePrefixChar
+    PEA     _DST_FMT_PCT_C_InTimePrefixChar
     PEA     -138(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVEA.L -4(A5),A0
     MOVE.W  6(A0),D0
@@ -996,20 +996,20 @@ DATETIME_FormatPairToStream:
     EXT.L   D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    PEA     DST_FMT_PCT_04D_PCT_03D_InTimeDateCode
+    PEA     _DST_FMT_PCT_04D_PCT_03D_InTimeDateCode
     PEA     -138(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     40(A7),A7
     MOVEA.L -4(A5),A0
     MOVE.W  8(A0),D0
     EXT.L   D0
     MOVEQ   #12,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.W   18(A0)
     BEQ.S   .no_am_pm_adjust
@@ -1029,21 +1029,21 @@ DATETIME_FormatPairToStream:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DST_FMT_PCT_02D_COLON_PCT_02D_InTimeClock
+    PEA     _DST_FMT_PCT_02D_COLON_PCT_02D_InTimeClock
     PEA     -138(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     24(A7),A7
     BRA.S   .after_first
 
 .first_missing:
-    PEA     DST_STR_NO_IN_TIME
+    PEA     _DST_STR_NO_IN_TIME
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -1054,13 +1054,13 @@ DATETIME_FormatPairToStream:
     BEQ.W   .second_missing
 
     PEA     19.W
-    PEA     DST_FMT_PCT_C_OutTimePrefixChar
+    PEA     _DST_FMT_PCT_C_OutTimePrefixChar
     PEA     -138(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVEA.L -4(A5),A0
     MOVE.W  6(A0),D0
@@ -1069,20 +1069,20 @@ DATETIME_FormatPairToStream:
     EXT.L   D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    PEA     DST_FMT_PCT_04D_PCT_03D_OutTimeDateCode
+    PEA     _DST_FMT_PCT_04D_PCT_03D_OutTimeDateCode
     PEA     -138(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     40(A7),A7
     MOVEA.L -4(A5),A0
     MOVE.W  8(A0),D0
     EXT.L   D0
     MOVEQ   #12,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.W   18(A0)
     BEQ.S   .no_am_pm_adjust_2
@@ -1102,29 +1102,29 @@ DATETIME_FormatPairToStream:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DST_FMT_PCT_02D_COLON_PCT_02D_OutTimeClock
+    PEA     _DST_FMT_PCT_02D_COLON_PCT_02D_OutTimeClock
     PEA     -138(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     24(A7),A7
     BRA.S   .emit_buffer
 
 .second_missing:
-    PEA     DST_STR_NO_OUT_TIME
+    PEA     _DST_STR_NO_OUT_TIME
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .emit_buffer
 
 .structs_missing:
-    PEA     DST_STR_NO_DST_DATA
+    PEA     _DST_STR_NO_DST_DATA
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -1141,7 +1141,7 @@ DATETIME_FormatPairToStream:
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D7,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     MOVEM.L -152(A5),D6-D7/A3
     UNLK    A5
@@ -1157,7 +1157,7 @@ DATETIME_FormatPairToStream:
 ; CLOBBERS:
 ;   A3/A7/D0/D7
 ; CALLS:
-;   DISKIO_OpenFileWithBuffer, DISKIO_WriteBufferedBytes, DATETIME_FormatPairToStream, DISKIO_CloseBufferedFileAndFlush
+;   _DISKIO_OpenFileWithBuffer, _DISKIO_WriteBufferedBytes, DATETIME_FormatPairToStream, _DISKIO_CloseBufferedFileAndFlush
 ; READS:
 ;   DST_DefaultDatPathPtr, DST_STR_G2_COLON, DST_STR_G3_COLON
 ; WRITES:
@@ -1181,7 +1181,7 @@ DATETIME_SavePairToFile:
 
     PEA     MODE_NEWFILE.W
     MOVE.L  DST_DefaultDatPathPtr,-(A7)
-    JSR     DISKIO_OpenFileWithBuffer(PC)
+    JSR     _DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -1191,7 +1191,7 @@ DATETIME_SavePairToFile:
     PEA     4.W
     PEA     DST_STR_G2_COLON
     MOVE.L  D7,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     MOVE.L  4(A3),(A7)
     MOVE.L  D7,-(A7)
@@ -1200,14 +1200,14 @@ DATETIME_SavePairToFile:
     PEA     4.W
     PEA     DST_STR_G3_COLON
     MOVE.L  D7,-(A7)
-    JSR     DISKIO_WriteBufferedBytes(PC)
+    JSR     _DISKIO_WriteBufferedBytes(PC)
 
     MOVE.L  (A3),(A7)
     MOVE.L  D7,-(A7)
     BSR.W   DATETIME_FormatPairToStream
 
     MOVE.L  D7,(A7)
-    JSR     DISKIO_CloseBufferedFileAndFlush(PC)
+    JSR     _DISKIO_CloseBufferedFileAndFlush(PC)
 
     LEA     32(A7),A7
     MOVEQ   #1,D0

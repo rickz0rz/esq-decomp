@@ -8,30 +8,30 @@
     XDEF    Global_MEM_DEALLOC_COUNT
     XDEF    Global_STR_DF1_DEBUG_LOG
     XDEF    Global_STR_A_PLUS
-    XDEF    WDISP_CharClassTable
+    XDEF    _WDISP_CharClassTable
     XDEF    BUFFER_5929_LONGWORDS
     XDEF    BRUSH_LastAllocatedNode
     XDEF    BRUSH_LabelScratch
-    XDEF    BRUSH_SnapshotHeader
-    XDEF    BRUSH_SnapshotWidth
-    XDEF    BRUSH_SnapshotDepth
+    XDEF    _BRUSH_SnapshotHeader
+    XDEF    _BRUSH_SnapshotWidth
+    XDEF    _BRUSH_SnapshotDepth
     XDEF    CLEANUP_AlignedStatusAltTimeBuffer
     XDEF    DISPTEXT_InsetNibblePrimary
     XDEF    DISPTEXT_InsetNibbleSecondary
     XDEF    CLEANUP_AlignedInsetNibblePrimary
     XDEF    CLEANUP_AlignedInsetNibbleSecondary
-    XDEF    Global_REF_LIST_IFF_TASK_PROC
-    XDEF    CTASKS_IffTaskSegListBPTR
-    XDEF    CTASKS_IffTaskProcPtr
-    XDEF    Global_REF_LIST_CLOSE_TASK_PROC
-    XDEF    CTASKS_CloseTaskSegListBPTR
-    XDEF    CTASKS_CloseTaskProcPtr
-    XDEF    Global_REF_LONG_FILE_SCRATCH
-    XDEF    Global_PTR_WORK_BUFFER
+    XDEF    _Global_REF_LIST_IFF_TASK_PROC
+    XDEF    _CTASKS_IffTaskSegListBPTR
+    XDEF    _CTASKS_IffTaskProcPtr
+    XDEF    _Global_REF_LIST_CLOSE_TASK_PROC
+    XDEF    _CTASKS_CloseTaskSegListBPTR
+    XDEF    _CTASKS_CloseTaskProcPtr
+    XDEF    _Global_REF_LONG_FILE_SCRATCH
+    XDEF    _Global_PTR_WORK_BUFFER
     XDEF    DISKIO2_InteractiveTransferArmedFlag
     XDEF    DISKIO2_OutputFileHandle
-    XDEF    DISKIO2_QTableIniFileHandle
-    XDEF    DISKIO2_OinfoFileHandle
+    XDEF    _DISKIO2_QTableIniFileHandle
+    XDEF    _DISKIO2_OinfoFileHandle
     XDEF    DISKIO2_NxtDayFileHandle
     XDEF    DISKIO2_TransferFilenameBuffer
     XDEF    DISKIO2_TransferFilenameExtPtr
@@ -44,10 +44,10 @@
     XDEF    DISKIO2_TransferBufferedByteCount
     XDEF    DISKIO_SavedReadModeFlags
     XDEF    DISKIO2_TransferCrcErrorCount
-    XDEF    DISKIO_TrackdiskMsgPortPtr
-    XDEF    DISKIO_TrackdiskIoReqPtr
-    XDEF    DISKIO_BufferState
-    XDEF    DISPTEXT_TextBufferPtr
+    XDEF    _DISKIO_TrackdiskMsgPortPtr
+    XDEF    _DISKIO_TrackdiskIoReqPtr
+    XDEF    _DISKIO_BufferState
+    XDEF    _DISPTEXT_TextBufferPtr
     XDEF    _DISPTEXT_LinePtrTable
     XDEF    _DISPTEXT_TargetLineIndex
     XDEF    _DISPTEXT_CurrentLineIndex
@@ -57,194 +57,194 @@
     XDEF    _DISPTEXT_ControlMarkerWidthPx
     XDEF    _DISPTEXT_LineTableLockFlag
     XDEF    _DISPTEXT_ControlMarkersEnabledFlag
-    XDEF    Global_REF_1000_BYTES_ALLOCATED_1
+    XDEF    _Global_REF_1000_BYTES_ALLOCATED_1
     XDEF    Global_REF_1000_BYTES_ALLOCATED_2
-    XDEF    DST_BannerWindowPrimary
+    XDEF    _DST_BannerWindowPrimary
     XDEF    DST_BannerWindowSecondary
     XDEF    ED_CurrentChar
-    XDEF    ED_SavedScrollSpeedIndex
-    XDEF    ED_SavedDiagGraphModeChar
-    XDEF    ED_SaveTextAdsOnExitFlag
+    XDEF    _ED_SavedScrollSpeedIndex
+    XDEF    _ED_SavedDiagGraphModeChar
+    XDEF    _ED_SaveTextAdsOnExitFlag
     XDEF    ED2_SelectedEntryIndex
     XDEF    ED2_SelectedFlagByteOffset
     XDEF    ED_SavedCtasksIntervalByte
-    XDEF    ED_EditCursorOffset
+    XDEF    _ED_EditCursorOffset
     XDEF    ED_ViewportOffset
-    XDEF    ED_AdActiveFlag
-    XDEF    ED_BlockOffset
+    XDEF    _ED_AdActiveFlag
+    XDEF    _ED_BlockOffset
     XDEF    Global_REF_BOOL_IS_LINE_OR_PAGE
     XDEF    _ED_LastKeyCode
-    XDEF    ED_TempCopyOffset
+    XDEF    _ED_TempCopyOffset
     XDEF    ED_EditBufferScratchIndexBaseMinus1
-    XDEF    ED_EditBufferScratch
+    XDEF    _ED_EditBufferScratch
     XDEF    ED_EditBufferScratchShiftBase
-    XDEF    ED_AdNumberInputDigitTens
-    XDEF    ED_AdNumberInputDigitOnes
+    XDEF    _ED_AdNumberInputDigitTens
+    XDEF    _ED_AdNumberInputDigitOnes
     XDEF    ED_AdNumberPromptStateBlock
     XDEF    ED_LineTransformSuffixScratchBuffer
     XDEF    ED_EditBufferLiveIndexBaseMinus1
-    XDEF    ED_EditBufferLive
+    XDEF    _ED_EditBufferLive
     XDEF    ED_EditBufferLiveShiftBase
     XDEF    ED_LineTransformTailScratchBuffer
-    XDEF    ED_LastMenuInputChar
-    XDEF    ED_TextLimit
+    XDEF    _ED_LastMenuInputChar
+    XDEF    _ED_TextLimit
     XDEF    _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
     XDEF    _ED_MaxAdNumber
-    XDEF    ED_AdDisplayResetFlag
+    XDEF    _ED_AdDisplayResetFlag
     XDEF    ED_AdDisplayStateLatchA
     XDEF    ED_CursorColumnIndex
-    XDEF    ED_ActiveIndicatorCachedState
+    XDEF    _ED_ActiveIndicatorCachedState
     XDEF    ED_AdDisplayStateLatchBlockB
     XDEF    ESQ_StartupStateWord2203
     XDEF    ESQ_StartupVersionBannerBuffer
     XDEF    ESQ_TickModulo60Counter
-    XDEF    ESQIFF_UseCachedChecksumFlag
+    XDEF    _ESQIFF_UseCachedChecksumFlag
     XDEF    ESQSHARED_LivePlaneBase0
     XDEF    ESQSHARED_LivePlaneBase1
-    XDEF    ESQSHARED_LivePlaneBase2
+    XDEF    _ESQSHARED_LivePlaneBase2
     XDEF    ESQSHARED_DisplayContextPlaneBase0
     XDEF    ESQSHARED_DisplayContextPlaneBase1
     XDEF    ESQSHARED_DisplayContextPlaneBase2
     XDEF    ESQSHARED_DisplayContextPlaneBase3
     XDEF    ESQSHARED_DisplayContextPlaneBase4
-    XDEF    Global_REF_INTERRUPT_STRUCT_INTB_VERTB
-    XDEF    Global_REF_INTERRUPT_STRUCT_INTB_AUD1
-    XDEF    WDISP_SerialIoRequestPtr
-    XDEF    WDISP_SerialMessagePortPtr
-    XDEF    Global_REF_INTB_RBF_64K_BUFFER
-    XDEF    Global_REF_INTERRUPT_STRUCT_INTB_RBF
-    XDEF    Global_REF_96_BYTES_ALLOCATED
-    XDEF    WDISP_DisplayContextBase
-    XDEF    Global_REF_RASTPORT_1
+    XDEF    _Global_REF_INTERRUPT_STRUCT_INTB_VERTB
+    XDEF    _Global_REF_INTERRUPT_STRUCT_INTB_AUD1
+    XDEF    _WDISP_SerialIoRequestPtr
+    XDEF    _WDISP_SerialMessagePortPtr
+    XDEF    _Global_REF_INTB_RBF_64K_BUFFER
+    XDEF    _Global_REF_INTERRUPT_STRUCT_INTB_RBF
+    XDEF    _Global_REF_96_BYTES_ALLOCATED
+    XDEF    _WDISP_DisplayContextBase
+    XDEF    _Global_REF_RASTPORT_1
     XDEF    Global_REF_RASTPORT_2
     XDEF    Global_REF_320_240_BITMAP
-    XDEF    WDISP_352x240RasterPtrTable
-    XDEF    Global_REF_696_400_BITMAP
-    XDEF    WDISP_BannerRowScratchRasterTable0
+    XDEF    _WDISP_352x240RasterPtrTable
+    XDEF    _Global_REF_696_400_BITMAP
+    XDEF    _WDISP_BannerRowScratchRasterTable0
     XDEF    WDISP_BannerRowScratchRasterTable1
     XDEF    WDISP_BannerRowScratchRasterTable2
     XDEF    WDISP_BannerGridBitmapStruct
-    XDEF    WDISP_LivePlaneRasterTable0
+    XDEF    _WDISP_LivePlaneRasterTable0
     XDEF    WDISP_LivePlaneRasterTable1
     XDEF    WDISP_LivePlaneRasterTable2
     XDEF    Global_REF_696_241_BITMAP
-    XDEF    WDISP_DisplayContextPlanePointer0
+    XDEF    _WDISP_DisplayContextPlanePointer0
     XDEF    WDISP_DisplayContextPlanePointer1
     XDEF    WDISP_DisplayContextPlanePointer2
     XDEF    WDISP_DisplayContextPlanePointer3
     XDEF    WDISP_DisplayContextPlanePointer4
-    XDEF    WDISP_BannerWorkRasterPtr
+    XDEF    _WDISP_BannerWorkRasterPtr
     XDEF    WDISP_HighlightBufferMode
-    XDEF    WDISP_HighlightRasterHeightPx
+    XDEF    _WDISP_HighlightRasterHeightPx
     XDEF    WDISP_ExecBaseHookPtr
-    XDEF    TEXTDISP_SecondaryGroupCode
-    XDEF    TEXTDISP_SecondaryGroupPresentFlag
-    XDEF    TEXTDISP_SecondaryGroupEntryCount
-    XDEF    TEXTDISP_PrimaryGroupCode
-    XDEF    TEXTDISP_PrimaryGroupEntryCount
+    XDEF    _TEXTDISP_SecondaryGroupCode
+    XDEF    _TEXTDISP_SecondaryGroupPresentFlag
+    XDEF    _TEXTDISP_SecondaryGroupEntryCount
+    XDEF    _TEXTDISP_PrimaryGroupCode
+    XDEF    _TEXTDISP_PrimaryGroupEntryCount
     XDEF    ESQIFF_RecordLength
-    XDEF    TEXTDISP_PrimaryEntryPtrTable
+    XDEF    _TEXTDISP_PrimaryEntryPtrTable
     XDEF    TEXTDISP_SecondaryEntryPtrTablePreSlot
-    XDEF    TEXTDISP_SecondaryEntryPtrTable
-    XDEF    TEXTDISP_PrimaryTitlePtrTable
-    XDEF    TEXTDISP_SecondaryTitlePtrTable
-    XDEF    TEXTDISP_PrimaryGroupHeaderCode
-    XDEF    TEXTDISP_SecondaryGroupHeaderCode
-    XDEF    CLOCK_DaySlotIndex
+    XDEF    _TEXTDISP_SecondaryEntryPtrTable
+    XDEF    _TEXTDISP_PrimaryTitlePtrTable
+    XDEF    _TEXTDISP_SecondaryTitlePtrTable
+    XDEF    _TEXTDISP_PrimaryGroupHeaderCode
+    XDEF    _TEXTDISP_SecondaryGroupHeaderCode
+    XDEF    _CLOCK_DaySlotIndex
     XDEF    CLOCK_CacheMonthIndex0
     XDEF    CLOCK_CacheDayIndex0
     XDEF    CLOCK_CacheYear
     XDEF    CLOCK_CacheHour
     XDEF    CLOCK_CacheMinuteOrSecond
-    XDEF    Global_REF_CLOCKDATA_STRUCT
-    XDEF    DST_PrimaryCountdown
+    XDEF    _Global_REF_CLOCKDATA_STRUCT
+    XDEF    _DST_PrimaryCountdown
     XDEF    WDISP_BannerSlotCursor
     XDEF    CLOCK_CacheAmPmFlag
     XDEF    ESQFUNC_CListLinePointer
-    XDEF    WDISP_WeatherStatusLabelBuffer
+    XDEF    _WDISP_WeatherStatusLabelBuffer
     XDEF    WDISP_StatusListMatchPattern
-    XDEF    TEXTDISP_PrimaryGroupRecordChecksum
-    XDEF    TEXTDISP_PrimaryGroupRecordLength
-    XDEF    DISKIO_ErrorMessageScratch
-    XDEF    TEXTDISP_PrimaryGroupPresentFlag
-    XDEF    TEXTDISP_GroupMutationState
-    XDEF    TEXTDISP_MaxEntryTitleLength
-    XDEF    TEXTDISP_SecondaryGroupRecordChecksum
-    XDEF    TEXTDISP_SecondaryGroupRecordLength
-    XDEF    TEXTDISP_AliasPtrTable
-    XDEF    ED_AdRecordPtrTable
-    XDEF    LADFUNC_EntryPtrTable
-    XDEF    ED_DiagnosticsScreenActive
-    XDEF    ESQIFF_RecordChecksumByte
-    XDEF    LADFUNC_LineSlotWriteIndex
+    XDEF    _TEXTDISP_PrimaryGroupRecordChecksum
+    XDEF    _TEXTDISP_PrimaryGroupRecordLength
+    XDEF    _DISKIO_ErrorMessageScratch
+    XDEF    _TEXTDISP_PrimaryGroupPresentFlag
+    XDEF    _TEXTDISP_GroupMutationState
+    XDEF    _TEXTDISP_MaxEntryTitleLength
+    XDEF    _TEXTDISP_SecondaryGroupRecordChecksum
+    XDEF    _TEXTDISP_SecondaryGroupRecordLength
+    XDEF    _TEXTDISP_AliasPtrTable
+    XDEF    _ED_AdRecordPtrTable
+    XDEF    _LADFUNC_EntryPtrTable
+    XDEF    _ED_DiagnosticsScreenActive
+    XDEF    _ESQIFF_RecordChecksumByte
+    XDEF    _LADFUNC_LineSlotWriteIndex
     XDEF    DISPLIB_PreviousSearchWrappedFlag
     XDEF    ESQ_BannerCharResetPulse
     XDEF    WDISP_BannerCharIndex
-    XDEF    TEXTDISP_ChannelLabelBufferTerminatorByte
-    XDEF    TEXTDISP_ChannelLabelBuffer
-    XDEF    LADFUNC_LineTextBufferPtrs
-    XDEF    LADFUNC_LineControlCodeTable
-    XDEF    WDISP_BannerCharPhaseShift
-    XDEF    LADFUNC_LineSlotSecondaryIndex
+    XDEF    _TEXTDISP_ChannelLabelBufferTerminatorByte
+    XDEF    _TEXTDISP_ChannelLabelBuffer
+    XDEF    _LADFUNC_LineTextBufferPtrs
+    XDEF    _LADFUNC_LineControlCodeTable
+    XDEF    _WDISP_BannerCharPhaseShift
+    XDEF    _LADFUNC_LineSlotSecondaryIndex
     XDEF    ESQ_StartupPhaseSeed225E
-    XDEF    NEWGRID_RefreshStateFlag
-    XDEF    NEWGRID_MessagePumpSuspendFlag
+    XDEF    _NEWGRID_RefreshStateFlag
+    XDEF    _NEWGRID_MessagePumpSuspendFlag
     XDEF    _NEWGRID_ModeSelectorState
     XDEF    NEWGRID_LastRefreshRequest
-    XDEF    Global_UIBusyFlag
+    XDEF    _Global_UIBusyFlag
     XDEF    CLEANUP_PendingAlertFlag
-    XDEF    LADFUNC_EntryCount
-    XDEF    PARSEINI_CtrlHChangeGateFlag
+    XDEF    _LADFUNC_EntryCount
+    XDEF    _PARSEINI_CtrlHChangeGateFlag
     XDEF    ESQSHARED_BannerRowScratchRasterBase0
     XDEF    ESQSHARED_BannerRowScratchRasterBase1
     XDEF    ESQSHARED_BannerRowScratchRasterBase2
-    XDEF    ED_DiagnosticsViewMode
-    XDEF    ESQ_SelectCodeBuffer
-    XDEF    Global_REF_BAUD_RATE
-    XDEF    ESQSHARED_BannerColorModeWord
-    XDEF    ED_Rastport2PenModeSelector
-    XDEF    WDISP_BannerCharRangeStart
-    XDEF    CLOCK_HalfHourSlotIndex
+    XDEF    _ED_DiagnosticsViewMode
+    XDEF    _ESQ_SelectCodeBuffer
+    XDEF    _Global_REF_BAUD_RATE
+    XDEF    _ESQSHARED_BannerColorModeWord
+    XDEF    _ED_Rastport2PenModeSelector
+    XDEF    _WDISP_BannerCharRangeStart
+    XDEF    _CLOCK_HalfHourSlotIndex
     XDEF    ESQ_StartupWriteOnlyWord2271
     XDEF    ESQ_StartupWriteOnlyLong2272
     XDEF    ESQ_BannerCharIndexShadow2273
-    XDEF    CLOCK_CurrentDayOfWeekIndex
-    XDEF    CLOCK_CurrentMonthIndex
-    XDEF    CLOCK_CurrentDayOfMonth
-    XDEF    CLOCK_CurrentYearValue
-    XDEF    Global_WORD_CURRENT_HOUR
-    XDEF    Global_WORD_CURRENT_MINUTE
-    XDEF    Global_WORD_CURRENT_SECOND
-    XDEF    DST_SecondaryCountdown
+    XDEF    _CLOCK_CurrentDayOfWeekIndex
+    XDEF    _CLOCK_CurrentMonthIndex
+    XDEF    _CLOCK_CurrentDayOfMonth
+    XDEF    _CLOCK_CurrentYearValue
+    XDEF    _Global_WORD_CURRENT_HOUR
+    XDEF    _Global_WORD_CURRENT_MINUTE
+    XDEF    _Global_WORD_CURRENT_SECOND
+    XDEF    _DST_SecondaryCountdown
     XDEF    CLOCK_CurrentDayOfYear
-    XDEF    CLOCK_CurrentAmPmFlag
+    XDEF    _CLOCK_CurrentAmPmFlag
     XDEF    CLOCK_CurrentLeapYearFlag
     XDEF    WDISP_WeatherStatusCountdown
-    XDEF    WDISP_BannerCharRangeEnd
-    XDEF    CTRL_H
-    XDEF    CTRL_HPreviousSample
-    XDEF    CTRL_HDeltaMax
+    XDEF    _WDISP_BannerCharRangeEnd
+    XDEF    _CTRL_H
+    XDEF    _CTRL_HPreviousSample
+    XDEF    _CTRL_HDeltaMax
     XDEF    CTRL_BufferedByteCount
-    XDEF    ESQIFF_ParseAttemptCount
-    XDEF    DATACErrs
-    XDEF    ESQIFF_LineErrorCount
-    XDEF    Global_WORD_H_VALUE
-    XDEF    Global_WORD_T_VALUE
+    XDEF    _ESQIFF_ParseAttemptCount
+    XDEF    _DATACErrs
+    XDEF    _ESQIFF_LineErrorCount
+    XDEF    _Global_WORD_H_VALUE
+    XDEF    _Global_WORD_T_VALUE
     XDEF    ESQ_SerialRbfErrorCount
-    XDEF    Global_WORD_MAX_VALUE
-    XDEF    ESQ_SerialRbfFillLevel
+    XDEF    _Global_WORD_MAX_VALUE
+    XDEF    _ESQ_SerialRbfFillLevel
     XDEF    WDISP_HighlightActive
-    XDEF    WDISP_HighlightIndex
-    XDEF    ESQDISP_SecondaryLinePromotePendingFlag
-    XDEF    ESQ_VerticalBlankInterruptUserData
+    XDEF    _WDISP_HighlightIndex
+    XDEF    _ESQDISP_SecondaryLinePromotePendingFlag
+    XDEF    _ESQ_VerticalBlankInterruptUserData
     XDEF    LADFUNC_HighlightCycleCountdown
     XDEF    LADFUNC_HighlightCycleCountdownReload
-    XDEF    LADFUNC_ParsedEntryCount
-    XDEF    SCRIPT_CtrlInterfaceEnabledFlag
+    XDEF    _LADFUNC_ParsedEntryCount
+    XDEF    _SCRIPT_CtrlInterfaceEnabledFlag
     XDEF    _WDISP_PaletteTriplesRBase
-    XDEF    WDISP_PaletteTriplesGBase
-    XDEF    WDISP_PaletteTriplesBBase
-    XDEF    ESQPARS_SelectionSuffixBuffer
+    XDEF    _WDISP_PaletteTriplesGBase
+    XDEF    _WDISP_PaletteTriplesBBase
+    XDEF    _ESQPARS_SelectionSuffixBuffer
     XDEF    ESQIFF_StatusPacketReadyFlag
     XDEF    ESQIFF_RecordBufferPtr
     XDEF    WDISP_WeatherStatusColorCode
@@ -258,33 +258,33 @@
     XDEF    SCRIPT_CTRL_READ_INDEX
     XDEF    SCRIPT_CTRL_CHECKSUM
     XDEF    TEXTDISP_DeferredActionDelayTicks
-    XDEF    GCOMMAND_HighlightMessageSlotTable
+    XDEF    _GCOMMAND_HighlightMessageSlotTable
     XDEF    ESQDISP_HighlightBitmapTable
     XDEF    ESQIFF_PendingExternalBrushNode
-    XDEF    ESQIFF_ExternalAssetFlags
+    XDEF    _ESQIFF_ExternalAssetFlags
     XDEF    WDISP_AccumulatorCaptureActive
-    XDEF    WDISP_AccumulatorFlushPending
-    XDEF    ESQIFF_LogoListLineIndex
-    XDEF    ESQIFF_GAdsListLineIndex
+    XDEF    _WDISP_AccumulatorFlushPending
+    XDEF    _ESQIFF_LogoListLineIndex
+    XDEF    _ESQIFF_GAdsListLineIndex
     XDEF    WDISP_PaletteDepthLog2
     XDEF    WDISP_AccumulatorRowTable
     XDEF    WDISP_AccumulatorRow0_Value
-    XDEF    WDISP_AccumulatorRow0_MoveFlags
-    XDEF    WDISP_AccumulatorRow0_CopperIndexStart
-    XDEF    WDISP_AccumulatorRow0_CopperIndexEnd
+    XDEF    _WDISP_AccumulatorRow0_MoveFlags
+    XDEF    _WDISP_AccumulatorRow0_CopperIndexStart
+    XDEF    _WDISP_AccumulatorRow0_CopperIndexEnd
     XDEF    WDISP_AccumulatorRow1_Value
-    XDEF    WDISP_AccumulatorRow1_MoveFlags
-    XDEF    WDISP_AccumulatorRow1_CopperIndexStart
-    XDEF    WDISP_AccumulatorRow1_CopperIndexEnd
+    XDEF    _WDISP_AccumulatorRow1_MoveFlags
+    XDEF    _WDISP_AccumulatorRow1_CopperIndexStart
+    XDEF    _WDISP_AccumulatorRow1_CopperIndexEnd
     XDEF    WDISP_AccumulatorRow2_Value
-    XDEF    WDISP_AccumulatorRow2_MoveFlags
-    XDEF    WDISP_AccumulatorRow2_CopperIndexStart
-    XDEF    WDISP_AccumulatorRow2_CopperIndexEnd
+    XDEF    _WDISP_AccumulatorRow2_MoveFlags
+    XDEF    _WDISP_AccumulatorRow2_CopperIndexStart
+    XDEF    _WDISP_AccumulatorRow2_CopperIndexEnd
     XDEF    WDISP_AccumulatorRow3_Value
-    XDEF    WDISP_AccumulatorRow3_MoveFlags
-    XDEF    WDISP_AccumulatorRow3_CopperIndexStart
-    XDEF    WDISP_AccumulatorRow3_CopperIndexEnd
-    XDEF    ESQIFF_AssetSourceSelect
+    XDEF    _WDISP_AccumulatorRow3_MoveFlags
+    XDEF    _WDISP_AccumulatorRow3_CopperIndexStart
+    XDEF    _WDISP_AccumulatorRow3_CopperIndexEnd
+    XDEF    _ESQIFF_AssetSourceSelect
     XDEF    ESQIFF_GAdsSourceEnabled
     XDEF    ESQIFF_ExternalAssetStateTable
     XDEF    ESQIFF_ExternalAssetPathCommaFlag
@@ -296,49 +296,49 @@
     XDEF    ESQIFF_ParseField3Buffer
     XDEF    ESQIFF_ParseField3TailBuffer
     XDEF    FLIB_LogEntryScratchBuffer
-    XDEF    GCOMMAND_DigitalNicheEnabledFlag
-    XDEF    GCOMMAND_NicheTextPen
-    XDEF    GCOMMAND_NicheFramePen
-    XDEF    GCOMMAND_NicheEditorLayoutPen
-    XDEF    GCOMMAND_NicheEditorRowPen
-    XDEF    GCOMMAND_NicheModeCycleCount
-    XDEF    GCOMMAND_NicheForceMode5Flag
-    XDEF    GCOMMAND_NicheWorkflowMode
-    XDEF    GCOMMAND_DigitalNicheListingsTemplatePtr
-    XDEF    GCOMMAND_DigitalMplexEnabledFlag
-    XDEF    GCOMMAND_MplexModeCycleCount
-    XDEF    GCOMMAND_MplexSearchRowLimit
-    XDEF    GCOMMAND_MplexClockOffsetMinutes
-    XDEF    GCOMMAND_MplexMessageTextPen
-    XDEF    GCOMMAND_MplexMessageFramePen
-    XDEF    GCOMMAND_MplexEditorLayoutPen
-    XDEF    GCOMMAND_MplexEditorRowPen
-    XDEF    GCOMMAND_MplexDetailLayoutPen
-    XDEF    GCOMMAND_MplexDetailInitialLineIndex
-    XDEF    GCOMMAND_MplexDetailRowPen
-    XDEF    GCOMMAND_MplexWorkflowMode
-    XDEF    GCOMMAND_MplexDetailLayoutFlag
-    XDEF    GCOMMAND_MplexListingsTemplatePtr
-    XDEF    GCOMMAND_MplexAtTemplatePtr
-    XDEF    GCOMMAND_DigitalPpvEnabledFlag
-    XDEF    GCOMMAND_PpvModeCycleCount
-    XDEF    GCOMMAND_PpvSelectionWindowMinutes
-    XDEF    GCOMMAND_PpvSelectionToleranceMinutes
-    XDEF    GCOMMAND_PpvMessageTextPen
-    XDEF    GCOMMAND_PpvMessageFramePen
-    XDEF    GCOMMAND_PpvEditorLayoutPen
-    XDEF    GCOMMAND_PpvEditorRowPen
-    XDEF    GCOMMAND_PpvShowtimesLayoutPen
-    XDEF    GCOMMAND_PpvShowtimesInitialLineIndex
-    XDEF    GCOMMAND_PpvShowtimesRowPen
-    XDEF    GCOMMAND_PpvShowtimesWorkflowMode
-    XDEF    GCOMMAND_PpvDetailLayoutFlag
-    XDEF    GCOMMAND_PPVListingsTemplatePtr
-    XDEF    GCOMMAND_PPVPeriodTemplatePtr
-    XDEF    GCOMMAND_PpvShowtimesRowSpan
-    XDEF    GCOMMAND_DefaultPresetTable
+    XDEF    _GCOMMAND_DigitalNicheEnabledFlag
+    XDEF    _GCOMMAND_NicheTextPen
+    XDEF    _GCOMMAND_NicheFramePen
+    XDEF    _GCOMMAND_NicheEditorLayoutPen
+    XDEF    _GCOMMAND_NicheEditorRowPen
+    XDEF    _GCOMMAND_NicheModeCycleCount
+    XDEF    _GCOMMAND_NicheForceMode5Flag
+    XDEF    _GCOMMAND_NicheWorkflowMode
+    XDEF    _GCOMMAND_DigitalNicheListingsTemplatePtr
+    XDEF    _GCOMMAND_DigitalMplexEnabledFlag
+    XDEF    _GCOMMAND_MplexModeCycleCount
+    XDEF    _GCOMMAND_MplexSearchRowLimit
+    XDEF    _GCOMMAND_MplexClockOffsetMinutes
+    XDEF    _GCOMMAND_MplexMessageTextPen
+    XDEF    _GCOMMAND_MplexMessageFramePen
+    XDEF    _GCOMMAND_MplexEditorLayoutPen
+    XDEF    _GCOMMAND_MplexEditorRowPen
+    XDEF    _GCOMMAND_MplexDetailLayoutPen
+    XDEF    _GCOMMAND_MplexDetailInitialLineIndex
+    XDEF    _GCOMMAND_MplexDetailRowPen
+    XDEF    _GCOMMAND_MplexWorkflowMode
+    XDEF    _GCOMMAND_MplexDetailLayoutFlag
+    XDEF    _GCOMMAND_MplexListingsTemplatePtr
+    XDEF    _GCOMMAND_MplexAtTemplatePtr
+    XDEF    _GCOMMAND_DigitalPpvEnabledFlag
+    XDEF    _GCOMMAND_PpvModeCycleCount
+    XDEF    _GCOMMAND_PpvSelectionWindowMinutes
+    XDEF    _GCOMMAND_PpvSelectionToleranceMinutes
+    XDEF    _GCOMMAND_PpvMessageTextPen
+    XDEF    _GCOMMAND_PpvMessageFramePen
+    XDEF    _GCOMMAND_PpvEditorLayoutPen
+    XDEF    _GCOMMAND_PpvEditorRowPen
+    XDEF    _GCOMMAND_PpvShowtimesLayoutPen
+    XDEF    _GCOMMAND_PpvShowtimesInitialLineIndex
+    XDEF    _GCOMMAND_PpvShowtimesRowPen
+    XDEF    _GCOMMAND_PpvShowtimesWorkflowMode
+    XDEF    _GCOMMAND_PpvDetailLayoutFlag
+    XDEF    _GCOMMAND_PPVListingsTemplatePtr
+    XDEF    _GCOMMAND_PPVPeriodTemplatePtr
+    XDEF    _GCOMMAND_PpvShowtimesRowSpan
+    XDEF    _GCOMMAND_DefaultPresetTable
     XDEF    GCOMMAND_PresetValueTable
-    XDEF    GCOMMAND_PresetWorkEntryTable
+    XDEF    _GCOMMAND_PresetWorkEntryTable
     XDEF    GCOMMAND_PresetWorkEntry0_ValueIndex
     XDEF    GCOMMAND_PresetWorkEntry1
     XDEF    GCOMMAND_PresetWorkEntry1_ValueIndex
@@ -357,41 +357,41 @@
     XDEF    GCOMMAND_BannerStepBottom
     XDEF    GCOMMAND_BannerRowByteOffsetCurrent
     XDEF    GCOMMAND_BannerRowByteOffsetPrevious
-    XDEF    GCOMMAND_BannerQueueSlotPrevious
-    XDEF    GCOMMAND_BannerQueueSlotCurrent
+    XDEF    _GCOMMAND_BannerQueueSlotPrevious
+    XDEF    _GCOMMAND_BannerQueueSlotCurrent
     XDEF    GCOMMAND_BannerRowIndexPrevious
     XDEF    GCOMMAND_BannerRowIndexCurrent
     XDEF    GCOMMAND_ActiveMsgSavedField20
     XDEF    GCOMMAND_ActiveMsgSavedField24
-    XDEF    GCOMMAND_ActiveMsgSavedField28
-    XDEF    ESQSHARED4_InterleaveCopyBaseOffset
+    XDEF    _GCOMMAND_ActiveMsgSavedField28
+    XDEF    _ESQSHARED4_InterleaveCopyBaseOffset
     XDEF    ESQSHARED4_InterleaveCopyTailOffsetCurrent
-    XDEF    ESQSHARED4_InterleaveCopyTailOffsetReset
-    XDEF    Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE
-    XDEF    Global_REF_DATA_INPUT_BUFFER
-    XDEF    Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE
-    XDEF    Global_REF_INPUTDEVICE_MSGPORT
-    XDEF    Global_REF_CONSOLEDEVICE_MSGPORT
-    XDEF    DISKIO_Drive0WriteProtectedCode
-    XDEF    DISKIO_DriveWriteProtectStatusCodeDrive1
-    XDEF    DISKIO_DriveMediaStatusCodeTable
-    XDEF    ED_StateRingWriteIndex
-    XDEF    ED_StateRingIndex
-    XDEF    ED_StateRingTable
-    XDEF    INPUTDEVICE_LibraryBaseFromConsoleIo
-    XDEF    INPUTDEVICE_HandlerUserDataLong
+    XDEF    _ESQSHARED4_InterleaveCopyTailOffsetReset
+    XDEF    _Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE
+    XDEF    _Global_REF_DATA_INPUT_BUFFER
+    XDEF    _Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE
+    XDEF    _Global_REF_INPUTDEVICE_MSGPORT
+    XDEF    _Global_REF_CONSOLEDEVICE_MSGPORT
+    XDEF    _DISKIO_Drive0WriteProtectedCode
+    XDEF    _DISKIO_DriveWriteProtectStatusCodeDrive1
+    XDEF    _DISKIO_DriveMediaStatusCodeTable
+    XDEF    _ED_StateRingWriteIndex
+    XDEF    _ED_StateRingIndex
+    XDEF    _ED_StateRingTable
+    XDEF    _INPUTDEVICE_LibraryBaseFromConsoleIo
+    XDEF    _INPUTDEVICE_HandlerUserDataLong
     XDEF    LADFUNC_SaveAdsFileHandle
-    XDEF    LOCAVAIL_PrimaryFilterState
+    XDEF    _LOCAVAIL_PrimaryFilterState
     XDEF    LOCAVAIL_PrimaryFilterState_Field08
     XDEF    LOCAVAIL_PrimaryFilterState_Field0C
     XDEF    LOCAVAIL_SecondaryFilterState
     XDEF    LOCAVAIL_FilterCooldownTicks
-    XDEF    Global_REF_BACKED_UP_INTUITION_AUTOREQUEST
-    XDEF    Global_REF_BACKED_UP_INTUITION_DISPLAYALERT
-    XDEF    NEWGRID_RowHeightPx
+    XDEF    _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST
+    XDEF    _Global_REF_BACKED_UP_INTUITION_DISPLAYALERT
+    XDEF    _NEWGRID_RowHeightPx
     XDEF    NEWGRID_SampleTimeTextWidthPx
-    XDEF    NEWGRID_ColumnStartXPx
-    XDEF    NEWGRID_ColumnWidthPx
+    XDEF    _NEWGRID_ColumnStartXPx
+    XDEF    _NEWGRID_ColumnWidthPx
     XDEF    NEWGRID_RowLayoutCommitPenId
     XDEF    NEWGRID_SelectionMarkerPenState
     XDEF    NEWGRID_HeaderFramePenId
@@ -400,56 +400,56 @@
     XDEF    NEWGRID_ShowtimesWorkflowArgWord
     XDEF    NEWGRID2_ShowtimesSelectionContextPtr
     XDEF    NEWGRID_SelectedGridEntryPtr
-    XDEF    NEWGRID_OverridePenIndex
-    XDEF    NEWGRID_EntryTextScratchPtr
+    XDEF    _NEWGRID_OverridePenIndex
+    XDEF    _NEWGRID_EntryTextScratchPtr
     XDEF    _NEWGRID_ShowtimeBucketEntryTable
     XDEF    NEWGRID_ShowtimeBucketEntryTablePadLong
     XDEF    _NEWGRID_ShowtimeBucketPtrTable
     XDEF    NEWGRID_ShowtimeBucketCount
-    XDEF    FLIB_LogEntryByteCount
+    XDEF    _FLIB_LogEntryByteCount
     XDEF    _P_TYPE_PrimaryGroupListPtr
     XDEF    _P_TYPE_SecondaryGroupListPtr
     XDEF    PARSEINI_CurrentWeatherBlockPtr
-    XDEF    PARSEINI_WeatherBrushNodePtr
+    XDEF    _PARSEINI_WeatherBrushNodePtr
     XDEF    GCOMMAND_GradientPresetTable
-    XDEF    CTRL_BUFFER
+    XDEF    _CTRL_BUFFER
     XDEF    _SCRIPT_SerialShadowWord
-    XDEF    SCRIPT_SerialInputLatch
-    XDEF    SCRIPT_CtrlLineAssertedTicks
+    XDEF    _SCRIPT_SerialInputLatch
+    XDEF    _SCRIPT_CtrlLineAssertedTicks
     XDEF    Global_WORD_CLOCK_SECONDS
     XDEF    SCRIPT_CTRL_STATE
-    XDEF    SCRIPT_RuntimeMode
-    XDEF    SCRIPT_CtrlCmdCount
-    XDEF    SCRIPT_CtrlCmdChecksumErrorCount
-    XDEF    SCRIPT_CtrlCmdLengthErrorCount
-    XDEF    Global_RefreshTickCounter
+    XDEF    _SCRIPT_RuntimeMode
+    XDEF    _SCRIPT_CtrlCmdCount
+    XDEF    _SCRIPT_CtrlCmdChecksumErrorCount
+    XDEF    _SCRIPT_CtrlCmdLengthErrorCount
+    XDEF    _Global_RefreshTickCounter
     XDEF    _TEXTDISP_PrimarySearchText
     XDEF    _TEXTDISP_SecondarySearchText
     XDEF    _TEXTDISP_PrimaryChannelCode
     XDEF    _TEXTDISP_SecondaryChannelCode
-    XDEF    SCRIPT_ChannelRangeDigitChar
-    XDEF    SCRIPT_SearchMatchCountOrIndex
-    XDEF    SCRIPT_PlaybackCursor
-    XDEF    SCRIPT_BannerTransitionTargetChar
-    XDEF    SCRIPT_BannerTransitionStepDelta
-    XDEF    SCRIPT_BannerTransitionStepSign
+    XDEF    _SCRIPT_ChannelRangeDigitChar
+    XDEF    _SCRIPT_SearchMatchCountOrIndex
+    XDEF    _SCRIPT_PlaybackCursor
+    XDEF    _SCRIPT_BannerTransitionTargetChar
+    XDEF    _SCRIPT_BannerTransitionStepDelta
+    XDEF    _SCRIPT_BannerTransitionStepSign
     XDEF    _SCRIPT_CTRL_CONTEXT
-    XDEF    SCRIPT_PrimarySearchFirstFlag
-    XDEF    SCRIPT_ChannelRangeArmedFlag
+    XDEF    _SCRIPT_PrimarySearchFirstFlag
+    XDEF    _SCRIPT_ChannelRangeArmedFlag
     XDEF    TEXTDISP_FilterCandidateCursor
     XDEF    TEXTDISP_FilterChannelSlotIndex
     XDEF    TEXTDISP_FilterMatchCount
     XDEF    TEXTDISP_FilterPpvSbeMatchFlag
     XDEF    TEXTDISP_FilterSportsMatchFlag
     XDEF    TEXTDISP_StatusGroupId
-    XDEF    TEXTDISP_SourceConfigEntryTable
-    XDEF    TEXTDISP_SourceConfigEntryCount
+    XDEF    _TEXTDISP_SourceConfigEntryTable
+    XDEF    _TEXTDISP_SourceConfigEntryCount
     XDEF    TEXTDISP_PrimaryFirstMatchIndex
     XDEF    TEXTDISP_SecondaryFirstMatchIndex
-    XDEF    TEXTDISP_EntryTextBaseWidthPx
+    XDEF    _TEXTDISP_EntryTextBaseWidthPx
     XDEF    ESQ_GlobalTickCounter
     XDEF    _TEXTDISP_CurrentMatchIndex
-    XDEF    TEXTDISP_ChannelSourceMode
+    XDEF    _TEXTDISP_ChannelSourceMode
     XDEF    CLEANUP_AlignedStatusSuffixBuffer
     XDEF    CLEANUP_AlignedStatusClockEntryBuffer
     XDEF    CLEANUP_AlignedStatusMatchIndex
@@ -459,22 +459,22 @@
     XDEF    TEXTDISP_LinePenOverrideEnabledFlag
     XDEF    TEXTDISP_LinePenOverrideStateWord
     XDEF    TEXTDISP_CurrentMatchIndexSaved
-    XDEF    TEXTDISP_SbeFilterActiveFlag
-    XDEF    TEXTDISP_FindModeActiveFlag
-    XDEF    TEXTDISP_CandidateIndexList
-    XDEF    TEXTDISP_BannerFallbackEntryIndex
+    XDEF    _TEXTDISP_SbeFilterActiveFlag
+    XDEF    _TEXTDISP_FindModeActiveFlag
+    XDEF    _TEXTDISP_CandidateIndexList
+    XDEF    _TEXTDISP_BannerFallbackEntryIndex
     XDEF    _TEXTDISP_BannerCharFallback
     XDEF    TEXTDISP_BannerFallbackIsSpecialFlag
     XDEF    TEXTDISP_BannerFallbackValidFlag
-    XDEF    TEXTDISP_BannerSelectedEntryIndex
+    XDEF    _TEXTDISP_BannerSelectedEntryIndex
     XDEF    _TEXTDISP_BannerCharSelected
     XDEF    TEXTDISP_BannerSelectedIsSpecialFlag
     XDEF    TEXTDISP_BannerSelectedValidFlag
-    XDEF    TEXTDISP_ChannelLabelReadyFlag
+    XDEF    _TEXTDISP_ChannelLabelReadyFlag
     XDEF    TLIBA2_BroadcastWindowClockSnapshotA
     XDEF    TLIBA2_BroadcastWindowClockSnapshotB
     XDEF    TLIBA2_BroadcastWindowClockSnapshotC
-    XDEF    TLIBA3_VmArrayRuntimeTable
+    XDEF    _TLIBA3_VmArrayRuntimeTable
     XDEF    TLIBA3_VmArrayPatternTable
     XDEF    WDISP_WeatherCycleOffsetCount
     XDEF    FORMAT_ScratchBuffer
@@ -565,13 +565,13 @@ PREALLOC_AllocBlockSizeSeed:
     DC.L    $00000400
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_CharClassTable   (character classification lookup table)
+; SYM: _WDISP_CharClassTable   (character classification lookup table)
 ; TYPE: u8[?]
 ; PURPOSE: Classifies input bytes for parser/tokenizer style routines.
 ; USED BY: TEXTDISP_*, PARSEINI_*, P_TYPE_* text parsing paths
 ; NOTES: Table-driven classifier (bit/flag encoding still partially unknown).
 ;------------------------------------------------------------------------------
-WDISP_CharClassTable:
+_WDISP_CharClassTable:
     DC.B    $20
     DC.L    $20202020,$20202020,$28282828,$28202020
     DC.L    $20202020,$20202020,$20202020,$20202048
@@ -624,14 +624,14 @@ BRUSH_LastAllocatedNode:
 BRUSH_LabelScratch:
     DS.W    1
     DS.B    1
-BRUSH_SnapshotHeader:
+_BRUSH_SnapshotHeader:
     DS.B    1
     DS.L    8
 ; Cached brush width captured while BRUSH_PendingAlertCode is set.
-BRUSH_SnapshotWidth:
+_BRUSH_SnapshotWidth:
     DS.L    1
-; Cached brush depth (planes) captured alongside BRUSH_SnapshotWidth.
-BRUSH_SnapshotDepth:
+; Cached brush depth (planes) captured alongside _BRUSH_SnapshotWidth.
+_BRUSH_SnapshotDepth:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: CLEANUP_AlignedStatusAltTimeBuffer   (aligned status alt time text buffer)
@@ -678,56 +678,56 @@ CLEANUP_AlignedInsetNibblePrimary:
 ;------------------------------------------------------------------------------
 CLEANUP_AlignedInsetNibbleSecondary:
     DS.B    1
-Global_REF_LIST_IFF_TASK_PROC:
+_Global_REF_LIST_IFF_TASK_PROC:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: CTASKS_IffTaskSegListBPTR   (IFF task seglist BPTR)
+; SYM: _CTASKS_IffTaskSegListBPTR   (IFF task seglist BPTR)
 ; TYPE: u32 (BPTR)
 ; PURPOSE: BPTR to segment list passed into CreateProc for the IFF task.
 ; USED BY: CTASKS_StartIffTaskProcess
-; NOTES: Derived from Global_REF_LIST_IFF_TASK_PROC + 4, then shifted right by 2.
+; NOTES: Derived from _Global_REF_LIST_IFF_TASK_PROC + 4, then shifted right by 2.
 ;------------------------------------------------------------------------------
-CTASKS_IffTaskSegListBPTR:
+_CTASKS_IffTaskSegListBPTR:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: CTASKS_IffTaskProcPtr   (IFF task process pointer)
+; SYM: _CTASKS_IffTaskProcPtr   (IFF task process pointer)
 ; TYPE: pointer
 ; PURPOSE: Holds the process/task pointer returned by CreateProc for IFF loading.
 ; USED BY: CTASKS_StartIffTaskProcess
 ; NOTES: Nonzero indicates the IFF task was successfully spawned.
 ;------------------------------------------------------------------------------
-CTASKS_IffTaskProcPtr:
+_CTASKS_IffTaskProcPtr:
     DS.L    1
-Global_REF_LIST_CLOSE_TASK_PROC:
+_Global_REF_LIST_CLOSE_TASK_PROC:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: CTASKS_CloseTaskSegListBPTR   (close-task seglist BPTR)
+; SYM: _CTASKS_CloseTaskSegListBPTR   (close-task seglist BPTR)
 ; TYPE: u32 (BPTR)
 ; PURPOSE: BPTR to segment list passed into CreateProc for the close-task process.
-; USED BY: CTASKS_StartCloseTaskProcess
-; NOTES: Derived from Global_REF_LIST_CLOSE_TASK_PROC + 4, then shifted right by 2.
+; USED BY: _CTASKS_StartCloseTaskProcess
+; NOTES: Derived from _Global_REF_LIST_CLOSE_TASK_PROC + 4, then shifted right by 2.
 ;------------------------------------------------------------------------------
-CTASKS_CloseTaskSegListBPTR:
+_CTASKS_CloseTaskSegListBPTR:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: CTASKS_CloseTaskProcPtr   (close-task process pointer)
+; SYM: _CTASKS_CloseTaskProcPtr   (close-task process pointer)
 ; TYPE: pointer
 ; PURPOSE: Holds the process/task pointer returned by CreateProc for CLOSE_TASK.
-; USED BY: CTASKS_StartCloseTaskProcess
+; USED BY: _CTASKS_StartCloseTaskProcess
 ; NOTES: Nonzero indicates the CLOSE_TASK process was successfully spawned.
 ;------------------------------------------------------------------------------
-CTASKS_CloseTaskProcPtr:
+_CTASKS_CloseTaskProcPtr:
     DS.L    1
-Global_REF_LONG_FILE_SCRATCH:
+_Global_REF_LONG_FILE_SCRATCH:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: Global_PTR_WORK_BUFFER   (shared file/work buffer cursor)
+; SYM: _Global_PTR_WORK_BUFFER   (shared file/work buffer cursor)
 ; TYPE: pointer
 ; PURPOSE: Tracks the active read/write position in the shared work buffer.
 ; USED BY: DISKIO_*, GCOMMAND_*, COI_*, PARSEINI_*, LOCAVAIL_*
 ; NOTES: Frequently incremented while parsing streamed records.
 ;------------------------------------------------------------------------------
-Global_PTR_WORK_BUFFER:
+_Global_PTR_WORK_BUFFER:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: DISKIO2_InteractiveTransferArmedFlag   (interactive transfer armed flag)
@@ -743,34 +743,34 @@ DISKIO2_InteractiveTransferArmedFlag:
 ; TYPE: pointer/handle
 ; PURPOSE: File handle used while writing the CurDay data export in DISKIO2.
 ; USED BY: DISKIO2_WriteCurdayDataFile
-; NOTES: Set from DISKIO_OpenFileWithBuffer and consumed by DISKIO_WriteBufferedBytes/DISKIO_WriteDecimalField/DISKIO_CloseBufferedFileAndFlush write helpers.
+; NOTES: Set from _DISKIO_OpenFileWithBuffer and consumed by _DISKIO_WriteBufferedBytes/_DISKIO_WriteDecimalField/_DISKIO_CloseBufferedFileAndFlush write helpers.
 ;------------------------------------------------------------------------------
 DISKIO2_OutputFileHandle:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISKIO2_QTableIniFileHandle   (QTABLE.INI output handle)
+; SYM: _DISKIO2_QTableIniFileHandle   (QTABLE.INI output handle)
 ; TYPE: pointer/handle
-; PURPOSE: File handle used while writing CTASKS_PATH_QTABLE_INI.
+; PURPOSE: File handle used while writing _CTASKS_PATH_QTABLE_INI.
 ; USED BY: DISKIO2 writer DISKIO2_WriteQTableIniFile
-; NOTES: Passed to DISKIO_WriteBufferedBytes/DISKIO_CloseBufferedFileAndFlush for sequential writes and close.
+; NOTES: Passed to _DISKIO_WriteBufferedBytes/_DISKIO_CloseBufferedFileAndFlush for sequential writes and close.
 ;------------------------------------------------------------------------------
-DISKIO2_QTableIniFileHandle:
+_DISKIO2_QTableIniFileHandle:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISKIO2_OinfoFileHandle   (OINFO.DAT read/write handle)
+; SYM: _DISKIO2_OinfoFileHandle   (OINFO.DAT read/write handle)
 ; TYPE: pointer/handle
-; PURPOSE: File handle used while serializing and parsing CTASKS_PATH_OINFO_DAT.
+; PURPOSE: File handle used while serializing and parsing _CTASKS_PATH_OINFO_DAT.
 ; USED BY: DISKIO2 writer/reader DISKIO2_WriteOinfoDataFile and _DISKIO2_LoadOinfoDataFile
 ; NOTES: Carries the single-byte header plus two optional NUL-terminated strings.
 ;------------------------------------------------------------------------------
-DISKIO2_OinfoFileHandle:
+_DISKIO2_OinfoFileHandle:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: DISKIO2_NxtDayFileHandle   (NXTDAY.DAT output handle)
 ; TYPE: pointer/handle
 ; PURPOSE: File handle used while serializing NXTDAY.DAT records.
 ; USED BY: DISKIO2_WriteNextDayDataFile
-; NOTES: Opened with MODE_NEWFILE and passed to DISKIO_WriteBufferedBytes/DISKIO_WriteDecimalField/DISKIO_CloseBufferedFileAndFlush writer helpers.
+; NOTES: Opened with MODE_NEWFILE and passed to _DISKIO_WriteBufferedBytes/_DISKIO_WriteDecimalField/_DISKIO_CloseBufferedFileAndFlush writer helpers.
 ;------------------------------------------------------------------------------
 DISKIO2_NxtDayFileHandle:
     DS.L    1
@@ -779,7 +779,7 @@ DISKIO2_NxtDayFileHandle:
 ; TYPE: u8[32]
 ; PURPOSE: Scratch buffer for incoming/outgoing filename text in DISKIO2 serial transfer paths.
 ; USED BY: DISKIO2 serial read/write handlers (DISKIO2_HandleInteractiveFileTransfer/DISKIO2_ReceiveTransferBlocksToFile)
-; NOTES: Filled byte-by-byte with running XOR checksum; copied into BRUSH_SnapshotHeader on accepted updates.
+; NOTES: Filled byte-by-byte with running XOR checksum; copied into _BRUSH_SnapshotHeader on accepted updates.
 ;------------------------------------------------------------------------------
 DISKIO2_TransferFilenameBuffer:
     DS.L    2
@@ -861,7 +861,7 @@ DISKIO2_TransferBufferedByteCount:
 ;------------------------------------------------------------------------------
 ; SYM: DISKIO_SavedReadModeFlags   (saved ESQPARS2 read mode flags)
 ; TYPE: u16
-; PURPOSE: Temporary save slot while DISKIO/DISKIO2 force ESQPARS2_ReadModeFlags to `$0100`.
+; PURPOSE: Temporary save slot while DISKIO/DISKIO2 force _ESQPARS2_ReadModeFlags to `$0100`.
 ; USED BY: DISKIO/DISKIO_WriteBytesToOutputHandleGuarded, DISKIO2 transfer setup/teardown
 ; NOTES: Restored immediately after disk I/O calls.
 ;------------------------------------------------------------------------------
@@ -877,31 +877,31 @@ DISKIO_SavedReadModeFlags:
 DISKIO2_TransferCrcErrorCount:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISKIO_TrackdiskMsgPortPtr   (trackdisk message port pointer)
+; SYM: _DISKIO_TrackdiskMsgPortPtr   (trackdisk message port pointer)
 ; TYPE: pointer
 ; PURPOSE: Message-port object allocated for trackdisk.device probing/IOSTDREQ setup.
 ; USED BY: DISKIO media probe/init path (DISKIO_ProbeDrivesAndAssignPaths)
-; NOTES: Created by GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal and released via IOSTDREQ cleanup helper.
+; NOTES: Created by _GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal and released via IOSTDREQ cleanup helper.
 ;------------------------------------------------------------------------------
-DISKIO_TrackdiskMsgPortPtr:
+_DISKIO_TrackdiskMsgPortPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISKIO_TrackdiskIoReqPtr   (trackdisk I/O request pointer)
+; SYM: _DISKIO_TrackdiskIoReqPtr   (trackdisk I/O request pointer)
 ; TYPE: pointer
 ; PURPOSE: Shared IOSTDREQ pointer used while probing trackdisk.device units.
 ; USED BY: DISKIO media probe/init path (DISKIO_ProbeDrivesAndAssignPaths)
 ; NOTES: Allocated via IOSTDREQ setup helper, reused for OpenDevice/DoIO/CloseDevice.
 ;------------------------------------------------------------------------------
-DISKIO_TrackdiskIoReqPtr:
+_DISKIO_TrackdiskIoReqPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISKIO_BufferState   (DiskIoBufferState_uncertain)
+; SYM: _DISKIO_BufferState   (DiskIoBufferState_uncertain)
 ; TYPE: struct
-; PURPOSE: Global disk I/O buffer state used by DISKIO_OpenFileWithBuffer and writers.
-; USED BY: DISKIO_OpenFileWithBuffer, DISKIO_WriteBufferedBytes, DISKIO_CloseBufferedFileAndFlush
+; PURPOSE: Global disk I/O buffer state used by _DISKIO_OpenFileWithBuffer and writers.
+; USED BY: _DISKIO_OpenFileWithBuffer, _DISKIO_WriteBufferedBytes, _DISKIO_CloseBufferedFileAndFlush
 ; NOTES: Layout matches Struct_DiskIoBufferState__* offsets.
 ;------------------------------------------------------------------------------
-DISKIO_BufferState:
+_DISKIO_BufferState:
     DS.L    1
     DS.L    1
 ; Struct_DiskIoBufferState__Remaining
@@ -909,13 +909,13 @@ DISKIO_BufferState:
 ; Struct_DiskIoBufferState__SavedF45
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISPTEXT_TextBufferPtr   (disptext text buffer pointer)
+; SYM: _DISPTEXT_TextBufferPtr   (disptext text buffer pointer)
 ; TYPE: pointer
 ; PURPOSE: Base pointer to the active text buffer consumed by DISPTEXT routines.
 ; USED BY: DISPTEXT_*, DISPLIB_*
 ; NOTES: Updated when loading/swapping text content buffers.
 ;------------------------------------------------------------------------------
-DISPTEXT_TextBufferPtr:
+_DISPTEXT_TextBufferPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: _DISPTEXT_LinePtrTable/_DISPTEXT_LineLengthTable/_DISPTEXT_LinePenTable   (disptext line metadata)
@@ -952,7 +952,7 @@ _DISPTEXT_LinePenTable:
 ; SYM: _DISPTEXT_LineWidthPx   (disptext layout width in pixels)
 ; TYPE: s32
 ; PURPOSE: Maximum line width used by DISPTEXT layout/build functions.
-; USED BY: DISPTEXT_SetLayoutParams, DISPTEXT_LayoutSourceToLines, DISPTEXT_LayoutAndAppendToBuffer
+; USED BY: DISPTEXT_SetLayoutParams, DISPTEXT_LayoutSourceToLines, _DISPTEXT_LayoutAndAppendToBuffer
 ; NOTES: Clamped to 0..624 by DISPTEXT_SetLayoutParams.
 ;------------------------------------------------------------------------------
 _DISPTEXT_LineWidthPx:
@@ -970,7 +970,7 @@ _DISPTEXT_ControlMarkerWidthPx:
 ; SYM: _DISPTEXT_LineTableLockFlag   (disptext line-table lock flag)
 ; TYPE: s32
 ; PURPOSE: Gates line-table rebuild/layout calls while table updates are in progress.
-; USED BY: DISPTEXT_BuildLinePointerTable, DISPTEXT_FinalizeLineTable, DISPTEXT_LayoutSourceToLines
+; USED BY: _DISPTEXT_BuildLinePointerTable, _DISPTEXT_FinalizeLineTable, DISPTEXT_LayoutSourceToLines
 ; NOTES: Nonzero suppresses rebuild/selection mutation operations.
 ;------------------------------------------------------------------------------
 _DISPTEXT_LineTableLockFlag:
@@ -984,19 +984,19 @@ _DISPTEXT_LineTableLockFlag:
 ;------------------------------------------------------------------------------
 _DISPTEXT_ControlMarkersEnabledFlag:
     DS.W    1
-Global_REF_1000_BYTES_ALLOCATED_1:
+_Global_REF_1000_BYTES_ALLOCATED_1:
     DS.L    1
 Global_REF_1000_BYTES_ALLOCATED_2:
     DS.L    1
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DST_BannerWindowPrimary/DST_BannerWindowSecondary   (banner time windows)
+; SYM: _DST_BannerWindowPrimary/DST_BannerWindowSecondary   (banner time windows)
 ; TYPE: struct/struct
 ; PURPOSE: Primary and secondary time-window descriptors used by DST banner scheduling logic.
 ; USED BY: DST_HandleBannerCommand32_33, DST_UpdateBannerQueue, CLEANUP_ProcessAlerts, ESQDISP_DrawStatusBanner
 ; NOTES: Command $33 updates primary; command $32 updates secondary/alternate window.
 ;------------------------------------------------------------------------------
-DST_BannerWindowPrimary:
+_DST_BannerWindowPrimary:
     DS.L    1
 DST_BannerWindowSecondary:
     DS.L    1
@@ -1010,31 +1010,31 @@ DST_BannerWindowSecondary:
 ED_CurrentChar:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ED_SavedScrollSpeedIndex   (saved scroll-speed menu index)
+; SYM: _ED_SavedScrollSpeedIndex   (saved scroll-speed menu index)
 ; TYPE: s32
 ; PURPOSE: Stores the scroll-speed selection index to restore when returning to the ESC menu.
 ; USED BY: ED1_HandleEscMenuInput, ED2_HandleScrollSpeedSelection
-; NOTES: Loaded into ED_EditCursorOffset when the scroll-speed menu is shown.
+; NOTES: Loaded into _ED_EditCursorOffset when the scroll-speed menu is shown.
 ;------------------------------------------------------------------------------
-ED_SavedScrollSpeedIndex:
+_ED_SavedScrollSpeedIndex:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_SavedDiagGraphModeChar   (saved diagnostics graph-mode char)
+; SYM: _ED_SavedDiagGraphModeChar   (saved diagnostics graph-mode char)
 ; TYPE: u8 (stored in word slot)
-; PURPOSE: Captures ED_DiagGraphModeChar on ESC menu entry for mode-change checks.
+; PURPOSE: Captures _ED_DiagGraphModeChar on ESC menu entry for mode-change checks.
 ; USED BY: ED1_EnterEscMenu, ED1_ExitEscMenu
-; NOTES: Compared against ED_DiagGraphModeChar to decide whether to wait/cleanup.
+; NOTES: Compared against _ED_DiagGraphModeChar to decide whether to wait/cleanup.
 ;------------------------------------------------------------------------------
-ED_SavedDiagGraphModeChar:
+_ED_SavedDiagGraphModeChar:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ED_SaveTextAdsOnExitFlag   (save text ads on exit flag)
+; SYM: _ED_SaveTextAdsOnExitFlag   (save text ads on exit flag)
 ; TYPE: u32[2]
 ; PURPOSE: Signals that text ads should be saved when exiting the ESC editor flows.
 ; USED BY: ED_HandleEditAttributesInput, ED ad-number paths, ED1_ExitEscMenu
 ; NOTES: Only the first long is observed in use; second long may be padding or a companion flag.
 ;------------------------------------------------------------------------------
-ED_SaveTextAdsOnExitFlag:
+_ED_SaveTextAdsOnExitFlag:
     DS.L    2
 ;------------------------------------------------------------------------------
 ; SYM: ED2_SelectedEntryIndex/ED2_SelectedFlagByteOffset   (ED2 selection indices)
@@ -1057,40 +1057,40 @@ ED2_SelectedFlagByteOffset:
 ED_SavedCtasksIntervalByte:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_EditCursorOffset   (editor cursor offset into live buffer)
+; SYM: _ED_EditCursorOffset   (editor cursor offset into live buffer)
 ; TYPE: s32
-; PURPOSE: Index of the active edit position in ED_EditBufferLive.
+; PURPOSE: Index of the active edit position in _ED_EditBufferLive.
 ; USED BY: ED_*, ED2_*, ED3_* editor movement and redraw routines
 ; NOTES: Clamped against visible ranges with ED_ViewportOffset.
 ;------------------------------------------------------------------------------
-ED_EditCursorOffset:
+_ED_EditCursorOffset:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: ED_ViewportOffset   (editor viewport offset)
 ; TYPE: s32
 ; PURPOSE: Start offset of the visible editor window.
 ; USED BY: ED_*, ED3_* viewport/clamp logic
-; NOTES: Maintained alongside ED_EditCursorOffset.
+; NOTES: Maintained alongside _ED_EditCursorOffset.
 ;------------------------------------------------------------------------------
 ED_ViewportOffset:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_AdActiveFlag   (editor active/inactive toggle)
+; SYM: _ED_AdActiveFlag   (editor active/inactive toggle)
 ; TYPE: u32
 ; PURPOSE: Tracks whether the currently edited ad is marked active.
-; USED BY: ED_HandleEditorInput, ED_HandleEditAttributesInput, _ED_UpdateAdNumberDisplay, _ED_ApplyActiveFlagToAdData, ED_UpdateActiveInactiveIndicator
+; USED BY: ED_HandleEditorInput, ED_HandleEditAttributesInput, _ED_UpdateAdNumberDisplay, _ED_ApplyActiveFlagToAdData, _ED_UpdateActiveInactiveIndicator
 ; NOTES: Treated as boolean; when set, ad record gets word0=1 and word2=$30.
 ;------------------------------------------------------------------------------
-ED_AdActiveFlag:
+_ED_AdActiveFlag:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_BlockOffset   (editor block/base offset)
+; SYM: _ED_BlockOffset   (editor block/base offset)
 ; TYPE: s32
 ; PURPOSE: Base byte offset into editor text buffers for the active block/page.
 ; USED BY: ED_*, ED1_*, ED2_*, ED3_*
-; NOTES: Commonly derived from ED_TextLimit * 40 during ESC editor setup.
+; NOTES: Commonly derived from _ED_TextLimit * 40 during ESC editor setup.
 ;------------------------------------------------------------------------------
-ED_BlockOffset:
+_ED_BlockOffset:
     DS.L    1
 Global_REF_BOOL_IS_LINE_OR_PAGE:
     DS.L    1
@@ -1104,13 +1104,13 @@ Global_REF_BOOL_IS_LINE_OR_PAGE:
 _ED_LastKeyCode:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ED_TempCopyOffset   (temporary copy/shift offset)
+; SYM: _ED_TempCopyOffset   (temporary copy/shift offset)
 ; TYPE: s32
 ; PURPOSE: Scratch offset used while shifting/copying edit buffer text.
 ; USED BY: ED_* text insert/delete paths
 ; NOTES: Acts as a transient cursor during memmove-like loops.
 ;------------------------------------------------------------------------------
-ED_TempCopyOffset:
+_ED_TempCopyOffset:
     DS.L    88
     DS.B    1
 ;------------------------------------------------------------------------------
@@ -1118,18 +1118,18 @@ ED_TempCopyOffset:
 ; TYPE: u8
 ; PURPOSE: One-byte-back base used for index-style writes near scratch-buffer EOL.
 ; USED BY: ED insert/delete EOL update paths
-; NOTES: Accessed as `base + ED_BlockOffset`; layout indicates intentional -1 bias.
+; NOTES: Accessed as `base + _ED_BlockOffset`; layout indicates intentional -1 bias.
 ;------------------------------------------------------------------------------
 ED_EditBufferScratchIndexBaseMinus1:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: ED_EditBufferScratch   (editor scratch text buffer)
+; SYM: _ED_EditBufferScratch   (editor scratch text buffer)
 ; TYPE: u8[]
 ; PURPOSE: Temporary staging buffer for text before committing to live data.
 ; USED BY: ED_*, ED3_* formatting and redraw helpers
-; NOTES: Typically paired with ED_EditBufferLive.
+; NOTES: Typically paired with _ED_EditBufferLive.
 ;------------------------------------------------------------------------------
-ED_EditBufferScratch:
+_ED_EditBufferScratch:
     DS.B    1
 ;------------------------------------------------------------------------------
 ; SYM: ED_EditBufferScratchShiftBase   (editor scratch shift-window base)
@@ -1143,22 +1143,22 @@ ED_EditBufferScratchShiftBase:
     DS.L    2
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ED_AdNumberInputDigitTens   (ad-number tens digit char)
+; SYM: _ED_AdNumberInputDigitTens   (ad-number tens digit char)
 ; TYPE: u8
 ; PURPOSE: First editable digit in the "enter ad number" prompt.
 ; USED BY: ED_HandleEditAttributesMenu
 ; NOTES: ASCII digit or space (' ').
 ;------------------------------------------------------------------------------
-ED_AdNumberInputDigitTens:
+_ED_AdNumberInputDigitTens:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: ED_AdNumberInputDigitOnes   (ad-number ones digit char)
+; SYM: _ED_AdNumberInputDigitOnes   (ad-number ones digit char)
 ; TYPE: u8
 ; PURPOSE: Second editable digit in the "enter ad number" prompt.
 ; USED BY: ED_HandleEditAttributesMenu
 ; NOTES: ASCII digit or space (' ').
 ;------------------------------------------------------------------------------
-ED_AdNumberInputDigitOnes:
+_ED_AdNumberInputDigitOnes:
     DS.B    1
 ;------------------------------------------------------------------------------
 ; SYM: ED_AdNumberPromptStateBlock   (ED transition scratch block ??)
@@ -1192,13 +1192,13 @@ ED_LineTransformSuffixScratchBuffer:
 ED_EditBufferLiveIndexBaseMinus1:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: ED_EditBufferLive   (editor live text buffer)
+; SYM: _ED_EditBufferLive   (editor live text buffer)
 ; TYPE: u8[]
 ; PURPOSE: Canonical editable text storage used by on-screen editor flows.
 ; USED BY: ED_*, ED2_*, ED3_*
-; NOTES: Indexed by ED_EditCursorOffset.
+; NOTES: Indexed by _ED_EditCursorOffset.
 ;------------------------------------------------------------------------------
-ED_EditBufferLive:
+_ED_EditBufferLive:
     DS.B    1
 ;------------------------------------------------------------------------------
 ; SYM: ED_EditBufferLiveShiftBase   (editor live-attr shift-window base)
@@ -1221,22 +1221,22 @@ ED_EditBufferLiveShiftBase:
 ED_LineTransformTailScratchBuffer:
     DS.L    80
 ;------------------------------------------------------------------------------
-; SYM: ED_LastMenuInputChar   (last secondary menu input byte)
+; SYM: _ED_LastMenuInputChar   (last secondary menu input byte)
 ; TYPE: u8 (stored in word slot)
 ; PURPOSE: Caches the second byte from the current ED state-ring entry.
-; USED BY: ED_GetEscMenuActionCode, ED2_HandleScrollSpeedSelection, ED menu/edit handlers
+; USED BY: _ED_GetEscMenuActionCode, ED2_HandleScrollSpeedSelection, ED menu/edit handlers
 ; NOTES: Compared against ASCII-like codes (e.g., 'A'/'C'/'D') in menu switch paths.
 ;------------------------------------------------------------------------------
-ED_LastMenuInputChar:
+_ED_LastMenuInputChar:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ED_TextLimit   (editor text length/limit)
+; SYM: _ED_TextLimit   (editor text length/limit)
 ; TYPE: s32
 ; PURPOSE: Upper bound/limit used by editor text navigation and copy operations.
 ; USED BY: ED_*, ED1_*, ED2_*, ED3_*, LADFUNC_*
 ; NOTES: Compared against cursor/offset values during edit operations.
 ;------------------------------------------------------------------------------
-ED_TextLimit:
+_ED_TextLimit:
     DS.L    16
 _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER:
     DS.L    1
@@ -1250,15 +1250,15 @@ _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER:
 _ED_MaxAdNumber:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_AdDisplayResetFlag   (ED reset/refresh block ??)
+; SYM: _ED_AdDisplayResetFlag   (ED reset/refresh block ??)
 ; TYPE: u32[16]
 ; PURPOSE: Editor state block touched during ad-load/ad-toggle transitions.
-; USED BY: ED_HandleEscMenuActions, _ED_UpdateAdNumberDisplay, ED_LoadCurrentAdIntoBuffers
+; USED BY: ED_HandleEscMenuActions, _ED_UpdateAdNumberDisplay, _ED_LoadCurrentAdIntoBuffers
 ; NOTES:
 ;   Observed symbolic writes target slot 0 (`MOVE.L #1,...`) as a one-shot reset marker.
 ;   Remaining slots are not yet traced to named readers/writers.
 ;------------------------------------------------------------------------------
-ED_AdDisplayResetFlag:
+_ED_AdDisplayResetFlag:
     DS.L    16
 ;------------------------------------------------------------------------------
 ; SYM: ED_AdDisplayStateLatchA   (ED state latch ??)
@@ -1273,19 +1273,19 @@ ED_AdDisplayStateLatchA:
 ; SYM: ED_CursorColumnIndex   (cursor column within current 40-char row)
 ; TYPE: s32
 ; PURPOSE: Stores row-relative cursor column derived from linear edit index.
-; USED BY: ED_UpdateCursorPosFromIndex, ED_DrawCursorChar
+; USED BY: ED_UpdateCursorPosFromIndex, _ED_DrawCursorChar
 ; NOTES: Set from DivS32 remainder with divisor 40.
 ;------------------------------------------------------------------------------
 ED_CursorColumnIndex:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_ActiveIndicatorCachedState   (cached active/inactive draw state)
+; SYM: _ED_ActiveIndicatorCachedState   (cached active/inactive draw state)
 ; TYPE: s32
-; PURPOSE: Memoized copy of ED_AdActiveFlag used to skip redundant indicator redraws.
-; USED BY: _ED_UpdateAdNumberDisplay, ED_UpdateActiveInactiveIndicator
+; PURPOSE: Memoized copy of _ED_AdActiveFlag used to skip redundant indicator redraws.
+; USED BY: _ED_UpdateAdNumberDisplay, _ED_UpdateActiveInactiveIndicator
 ; NOTES: Initialized to -1 when ad context changes to force first redraw.
 ;------------------------------------------------------------------------------
-ED_ActiveIndicatorCachedState:
+_ED_ActiveIndicatorCachedState:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: ED_AdDisplayStateLatchBlockB   (ED state latch pair ??)
@@ -1314,7 +1314,7 @@ ESQ_StartupStateWord2203:
 ; PURPOSE: Scratch output buffer for formatted version/build startup text.
 ; USED BY: ESQ_MainInitAndRun startup banner formatting/display
 ; NOTES: 80-byte backing store (`DS.L 20`).
-;   WDISP_SPrintf has no destination length parameter, so writers rely on
+;   _WDISP_SPrintf has no destination length parameter, so writers rely on
 ;   external format/input discipline.
 ;------------------------------------------------------------------------------
 ESQ_StartupVersionBannerBuffer:
@@ -1329,16 +1329,16 @@ ESQ_StartupVersionBannerBuffer:
 ESQ_TickModulo60Counter:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_UseCachedChecksumFlag   (checksum override gate)
+; SYM: _ESQIFF_UseCachedChecksumFlag   (checksum override gate)
 ; TYPE: u8 (stored in word slot)
 ; PURPOSE: When non-zero, ESQ_GenerateXorChecksumByte returns cached checksum.
 ; USED BY: ESQ_MainInitAndRun, ESQ_GenerateXorChecksumByte
 ; NOTES: Cleared during startup global-state initialization.
 ;------------------------------------------------------------------------------
-ESQIFF_UseCachedChecksumFlag:
+_ESQIFF_UseCachedChecksumFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQSHARED_LivePlaneBase0/ESQSHARED_LivePlaneBase1/ESQSHARED_LivePlaneBase2
+; SYM: ESQSHARED_LivePlaneBase0/ESQSHARED_LivePlaneBase1/_ESQSHARED_LivePlaneBase2
 ; TYPE: pointer triplet
 ; PURPOSE: Current live display plane base pointers used for snapshot/copy paths.
 ; USED BY: ESQ_MainInitAndRun, ESQSHARED4_SnapshotDisplayBufferBases, ESQSHARED4_CopyLivePlanesToSnapshot
@@ -1348,7 +1348,7 @@ ESQSHARED_LivePlaneBase0:
     DS.L    1
 ESQSHARED_LivePlaneBase1:
     DS.L    1
-ESQSHARED_LivePlaneBase2:
+_ESQSHARED_LivePlaneBase2:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQSHARED_DisplayContextPlaneBase0..4   (display-context plane base set)
@@ -1377,69 +1377,69 @@ ESQSHARED_DisplayContextPlaneBase4:
 ;------------------------------------------------------------------------------
 WDISP_UnusedPaddingLong220F:
     DS.L    1
-Global_REF_INTERRUPT_STRUCT_INTB_VERTB:
+_Global_REF_INTERRUPT_STRUCT_INTB_VERTB:
     DS.L    1
-Global_REF_INTERRUPT_STRUCT_INTB_AUD1:
+_Global_REF_INTERRUPT_STRUCT_INTB_AUD1:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_SerialIoRequestPtr/WDISP_SerialMessagePortPtr   (serial I/O request + msg port)
+; SYM: _WDISP_SerialIoRequestPtr/_WDISP_SerialMessagePortPtr   (serial I/O request + msg port)
 ; TYPE: pointer/pointer
 ; PURPOSE: Startup serial-open state used to configure and later close serial.device.
 ; USED BY: ESQ_MainInitAndRun, CLEANUP_ClearRbfInterruptAndSerial
 ; NOTES: Serial IORequest is configured via _LVOOpenDevice/_LVODoIO and freed during cleanup.
 ;------------------------------------------------------------------------------
-WDISP_SerialIoRequestPtr:
+_WDISP_SerialIoRequestPtr:
 WDISP_SerialIoRequestPtr_CompatAlias:
     DS.L    1
-WDISP_SerialMessagePortPtr:
+_WDISP_SerialMessagePortPtr:
     DS.L    1
-Global_REF_INTB_RBF_64K_BUFFER:
+_Global_REF_INTB_RBF_64K_BUFFER:
     DS.L    1
-Global_REF_INTERRUPT_STRUCT_INTB_RBF:
+_Global_REF_INTERRUPT_STRUCT_INTB_RBF:
     DS.L    1
-Global_REF_96_BYTES_ALLOCATED:
+_Global_REF_96_BYTES_ALLOCATED:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_DisplayContextBase   (display context base pointer)
+; SYM: _WDISP_DisplayContextBase   (display context base pointer)
 ; TYPE: pointer
 ; PURPOSE: Base pointer to a shared display context containing rastport refs/state.
 ; USED BY: WDISP_*, TEXTDISP_*, ESQ_*, LADFUNC_*, SCRIPT4_*
 ; NOTES: Callers derive related fields via fixed offsets from this base.
 ;------------------------------------------------------------------------------
-WDISP_DisplayContextBase:
+_WDISP_DisplayContextBase:
     DS.L    1
-Global_REF_RASTPORT_1:
+_Global_REF_RASTPORT_1:
     DS.L    1
 Global_REF_RASTPORT_2:
     DS.L    1
 Global_REF_320_240_BITMAP:
     DS.L    2
 ;------------------------------------------------------------------------------
-; SYM: WDISP_352x240RasterPtrTable   (352x240 raster pointer table)
+; SYM: _WDISP_352x240RasterPtrTable   (352x240 raster pointer table)
 ; TYPE: pointer[4]
 ; PURPOSE: Stores four 352x240 raster allocations used by display setup/teardown.
 ; USED BY: ESQ_MainInitAndRun, CLEANUP_ReleaseDisplayResources
 ; NOTES: Each entry is allocated via GRAPHICS_AllocRaster and zero-cleared.
 ;------------------------------------------------------------------------------
-WDISP_352x240RasterPtrTable:
+_WDISP_352x240RasterPtrTable:
     DS.L    8
-Global_REF_696_400_BITMAP:
+_Global_REF_696_400_BITMAP:
     DS.L    2
 ;------------------------------------------------------------------------------
-; SYM: WDISP_BannerRowScratchRasterTable0/1/2   (696x509 scratch raster bases)
+; SYM: _WDISP_BannerRowScratchRasterTable0/1/2   (696x509 scratch raster bases)
 ; TYPE: pointer/pointer/pointer
 ; PURPOSE: Primary 696x509 raster bases used to derive display-context plane pointers and banner row copies.
 ; USED BY: ESQ_MainInitAndRun, GCOMMAND_RefreshBannerTables, ESQSHARED4_*, CLEANUP_ReleaseDisplayResources
 ; NOTES: Label `WDISP_BannerRowScratchRasterTable2` spans additional contiguous longs; first long is table entry #2.
 ;------------------------------------------------------------------------------
-WDISP_BannerRowScratchRasterTable0:
+_WDISP_BannerRowScratchRasterTable0:
     DS.L    1
 WDISP_BannerRowScratchRasterTable1:
     DS.L    1
 WDISP_BannerRowScratchRasterTable2:
     DS.L    6
 ;------------------------------------------------------------------------------
-; SYM: WDISP_BannerGridBitmapStruct/WDISP_LivePlaneRasterTable0..2   (696x2 bitmap + live plane bases)
+; SYM: WDISP_BannerGridBitmapStruct/_WDISP_LivePlaneRasterTable0..2   (696x2 bitmap + live plane bases)
 ; TYPE: struct + pointer fields
 ; PURPOSE: BitMap struct and live-plane raster pointers for the 696x2 working bitmap used by ESQSHARED copy paths.
 ; USED BY: ESQ_MainInitAndRun, ESQSHARED4_*, CLEANUP_ReleaseDisplayResources
@@ -1447,7 +1447,7 @@ WDISP_BannerRowScratchRasterTable2:
 ;------------------------------------------------------------------------------
 WDISP_BannerGridBitmapStruct:
     DS.L    2
-WDISP_LivePlaneRasterTable0:
+_WDISP_LivePlaneRasterTable0:
     DS.L    1
 WDISP_LivePlaneRasterTable1:
     DS.L    1
@@ -1456,13 +1456,13 @@ WDISP_LivePlaneRasterTable2:
 Global_REF_696_241_BITMAP:
     DS.L    2
 ;------------------------------------------------------------------------------
-; SYM: WDISP_DisplayContextPlanePointer0..4   (display-context plane pointer set)
+; SYM: _WDISP_DisplayContextPlanePointer0..4   (display-context plane pointer set)
 ; TYPE: pointer array
 ; PURPOSE: Plane pointers installed into ESQSHARED display-context state during startup.
 ; USED BY: ESQ_MainInitAndRun, TLIBA3_* display-context VM paths, CLEANUP_ReleaseDisplayResources
 ; NOTES: Initial entries may be seeded from +$5C20 offsets; later entries come from 696x241 raster allocs.
 ;------------------------------------------------------------------------------
-WDISP_DisplayContextPlanePointer0:
+_WDISP_DisplayContextPlanePointer0:
     DS.L    1
 WDISP_DisplayContextPlanePointer1:
     DS.L    1
@@ -1473,64 +1473,64 @@ WDISP_DisplayContextPlanePointer3:
 WDISP_DisplayContextPlanePointer4:
     DS.L    4
 ;------------------------------------------------------------------------------
-; SYM: WDISP_BannerWorkRasterPtr   (banner work raster pointer)
+; SYM: _WDISP_BannerWorkRasterPtr   (banner work raster pointer)
 ; TYPE: pointer
 ; PURPOSE: Allocated 696x15 raster used as a shared banner/copper work surface.
 ; USED BY: ESQ init/cleanup, GCOMMAND_CopyImageDataToBitmap, ESQSHARED4 raster fill helpers
 ; NOTES: Freed during cleanup with width 696 and height 15.
 ;------------------------------------------------------------------------------
-WDISP_BannerWorkRasterPtr:
+_WDISP_BannerWorkRasterPtr:
     DS.L    1
 WDISP_HighlightBufferMode:
     DS.W    1
-WDISP_HighlightRasterHeightPx:
+_WDISP_HighlightRasterHeightPx:
     DS.W    1
 WDISP_ExecBaseHookPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_SecondaryGroupCode   (secondary group discriminator byte)
+; SYM: _TEXTDISP_SecondaryGroupCode   (secondary group discriminator byte)
 ; TYPE: u8
 ; PURPOSE: Input/group code used to route records into the secondary group.
 ; USED BY: ESQIFF2_*, TEXTDISP3_*
 ; NOTES: Compared against incoming record prefix bytes.
 ;------------------------------------------------------------------------------
-TEXTDISP_SecondaryGroupCode:
+_TEXTDISP_SecondaryGroupCode:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_SecondaryGroupPresentFlag   (secondary group present flag)
+; SYM: _TEXTDISP_SecondaryGroupPresentFlag   (secondary group present flag)
 ; TYPE: u8
 ; PURPOSE: Indicates whether secondary-group entries are currently available.
 ; USED BY: NEWGRID_*, NEWGRID1_* rendering/visibility paths
 ; NOTES: Treated as boolean (zero/non-zero).
 ;------------------------------------------------------------------------------
-TEXTDISP_SecondaryGroupPresentFlag:
+_TEXTDISP_SecondaryGroupPresentFlag:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_SecondaryGroupEntryCount   (secondary group entry count)
+; SYM: _TEXTDISP_SecondaryGroupEntryCount   (secondary group entry count)
 ; TYPE: u16
 ; PURPOSE: Number of entries in secondary text/display group.
 ; USED BY: TEXTDISP_GetGroupEntryCount, NEWGRID_* consumers
-; NOTES: Paired with TEXTDISP_PrimaryGroupEntryCount.
+; NOTES: Paired with _TEXTDISP_PrimaryGroupEntryCount.
 ;------------------------------------------------------------------------------
-TEXTDISP_SecondaryGroupEntryCount:
+_TEXTDISP_SecondaryGroupEntryCount:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_PrimaryGroupCode   (primary group discriminator byte)
+; SYM: _TEXTDISP_PrimaryGroupCode   (primary group discriminator byte)
 ; TYPE: u16 (low byte used)
 ; PURPOSE: Input/group code used to route records into the primary group.
 ; USED BY: ESQIFF2_*, TEXTDISP3_*
 ; NOTES: Compared to record prefix bytes, similar to secondary-group code.
 ;------------------------------------------------------------------------------
-TEXTDISP_PrimaryGroupCode:
+_TEXTDISP_PrimaryGroupCode:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_PrimaryGroupEntryCount   (primary group entry count)
+; SYM: _TEXTDISP_PrimaryGroupEntryCount   (primary group entry count)
 ; TYPE: u16
 ; PURPOSE: Number of entries in primary text/display group.
 ; USED BY: TEXTDISP find/filter/draw flows
 ; NOTES: Used as loop upper bound across entry-table scans.
 ;------------------------------------------------------------------------------
-TEXTDISP_PrimaryGroupEntryCount:
+_TEXTDISP_PrimaryGroupEntryCount:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQIFF_RecordLength   (current record payload length)
@@ -1542,70 +1542,70 @@ TEXTDISP_PrimaryGroupEntryCount:
 ESQIFF_RecordLength:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_PrimaryEntryPtrTable   (primary entry pointer table)
+; SYM: _TEXTDISP_PrimaryEntryPtrTable   (primary entry pointer table)
 ; TYPE: pointer[]
 ; PURPOSE: Array of pointers to primary-group entry structs.
 ; USED BY: TEXTDISP3_*, NEWGRID1_*, ESQIFF2_*
-; NOTES: Indexed by entry id; paired with TEXTDISP_PrimaryTitlePtrTable.
+; NOTES: Indexed by entry id; paired with _TEXTDISP_PrimaryTitlePtrTable.
 ;------------------------------------------------------------------------------
-TEXTDISP_PrimaryEntryPtrTable:
+_TEXTDISP_PrimaryEntryPtrTable:
     DS.L    301
 TEXTDISP_SecondaryEntryPtrTablePreSlot:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_SecondaryEntryPtrTable   (secondary entry pointer table)
+; SYM: _TEXTDISP_SecondaryEntryPtrTable   (secondary entry pointer table)
 ; TYPE: pointer[]
 ; PURPOSE: Array of pointers to secondary-group entry structs.
 ; USED BY: NEWGRID1_*, TEXTDISP3_*, ESQIFF2_*
-; NOTES: Companion table to TEXTDISP_PrimaryEntryPtrTable.
+; NOTES: Companion table to _TEXTDISP_PrimaryEntryPtrTable.
 ;------------------------------------------------------------------------------
-TEXTDISP_SecondaryEntryPtrTable:
+_TEXTDISP_SecondaryEntryPtrTable:
     DS.L    302
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_PrimaryTitlePtrTable   (primary title pointer table)
+; SYM: _TEXTDISP_PrimaryTitlePtrTable   (primary title pointer table)
 ; TYPE: pointer[]
 ; PURPOSE: Per-entry title/name pointers for primary-group entries.
 ; USED BY: TEXTDISP3_*, NEWGRID1_*
-; NOTES: Indexed in lockstep with TEXTDISP_PrimaryEntryPtrTable.
+; NOTES: Indexed in lockstep with _TEXTDISP_PrimaryEntryPtrTable.
 ;------------------------------------------------------------------------------
-TEXTDISP_PrimaryTitlePtrTable:
+_TEXTDISP_PrimaryTitlePtrTable:
     DS.L    302
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_SecondaryTitlePtrTable   (secondary title pointer table)
+; SYM: _TEXTDISP_SecondaryTitlePtrTable   (secondary title pointer table)
 ; TYPE: pointer[]
 ; PURPOSE: Per-entry title/name pointers for secondary-group entries.
 ; USED BY: TEXTDISP3_*, NEWGRID1_*
-; NOTES: Indexed in lockstep with TEXTDISP_SecondaryEntryPtrTable.
+; NOTES: Indexed in lockstep with _TEXTDISP_SecondaryEntryPtrTable.
 ;------------------------------------------------------------------------------
-TEXTDISP_SecondaryTitlePtrTable:
+_TEXTDISP_SecondaryTitlePtrTable:
     DS.L    302
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_PrimaryGroupHeaderCode/TEXTDISP_SecondaryGroupHeaderCode   (group header code mirrors)
+; SYM: _TEXTDISP_PrimaryGroupHeaderCode/_TEXTDISP_SecondaryGroupHeaderCode   (group header code mirrors)
 ; TYPE: u8/u8
 ; PURPOSE: Stores group-code bytes copied from primary/secondary payload headers.
 ; USED BY: DISKIO2 load paths, ESQSHARED entry-allocation paths, ESQFUNC diagnostics
-; NOTES: Typically mirrors TEXTDISP_PrimaryGroupCode/TEXTDISP_SecondaryGroupCode after successful loads.
+; NOTES: Typically mirrors _TEXTDISP_PrimaryGroupCode/_TEXTDISP_SecondaryGroupCode after successful loads.
 ;------------------------------------------------------------------------------
-TEXTDISP_PrimaryGroupHeaderCode:
+_TEXTDISP_PrimaryGroupHeaderCode:
     DS.B    1
-TEXTDISP_SecondaryGroupHeaderCode:
+_TEXTDISP_SecondaryGroupHeaderCode:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_DaySlotIndex   (clock-derived day slot index)
+; SYM: _CLOCK_DaySlotIndex   (clock-derived day slot index)
 ; TYPE: u16
 ; PURPOSE: Stores day-slot index computed from current clock/time state.
 ; USED BY: NEWGRID_*, NEWGRID1_*, DISPTEXT_*, DST2_*
 ; NOTES: Updated by NEWGRID_ComputeDaySlotFromClock* helpers.
 ;------------------------------------------------------------------------------
-CLOCK_DaySlotIndex:
+_CLOCK_DaySlotIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_CacheMonthIndex0/CLOCK_CacheDayIndex0/CLOCK_CacheYear/CLOCK_CacheHour/CLOCK_CacheMinuteOrSecond/Global_REF_CLOCKDATA_STRUCT/CLOCK_CacheAmPmFlag
+; SYM: CLOCK_CacheMonthIndex0/CLOCK_CacheDayIndex0/CLOCK_CacheYear/CLOCK_CacheHour/CLOCK_CacheMinuteOrSecond/_Global_REF_CLOCKDATA_STRUCT/CLOCK_CacheAmPmFlag
 ; TYPE: u16/u16/u16/u16/u16/u16/s16
 ; PURPOSE: Cached clock/date fields consumed by diagnostics, log formatters, and RTC write/read helpers.
 ; USED BY: PARSEINI_*, ESQFUNC_*, FLIB_*, ESQDISP_*, SCRIPT3_*
 ; NOTES: Month/day are stored as 0-based indexes for table lookups and normalized by PARSEINI_NormalizeClockData.
-;        Global_REF_CLOCKDATA_STRUCT is treated as a seconds/clock snapshot field in multiple call sites.
+;        _Global_REF_CLOCKDATA_STRUCT is treated as a seconds/clock snapshot field in multiple call sites.
 ;        CLOCK_CacheAmPmFlag uses 0 for AM and non-zero (typically -1) for PM.
 ;------------------------------------------------------------------------------
 CLOCK_CacheMonthIndex0:
@@ -1618,16 +1618,16 @@ CLOCK_CacheHour:
     DS.W    1
 CLOCK_CacheMinuteOrSecond:
     DS.W    1
-Global_REF_CLOCKDATA_STRUCT:
+_Global_REF_CLOCKDATA_STRUCT:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DST_PrimaryCountdown   (primary DST/banner countdown)
+; SYM: _DST_PrimaryCountdown   (primary DST/banner countdown)
 ; TYPE: u16
 ; PURPOSE: Countdown used by DST queue slot 0 when advancing/releasing the primary banner entry.
-; USED BY: DST_UpdateBannerQueue, DST_TickBannerCounters, DATETIME_BuildFromGlobals, DISKIO2_*
+; USED BY: DST_UpdateBannerQueue, _DST_TickBannerCounters, _DATETIME_BuildFromGlobals, DISKIO2_*
 ; NOTES: Copied into slot field +16 during updates; decremented when no active slot-0 entry exists.
 ;------------------------------------------------------------------------------
-DST_PrimaryCountdown:
+_DST_PrimaryCountdown:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: WDISP_BannerSlotCursor   (banner slot cursor/index)
@@ -1650,13 +1650,13 @@ CLOCK_CacheAmPmFlag:
 ESQFUNC_CListLinePointer:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_WeatherStatusLabelBuffer   (weather/status label buffer)
+; SYM: _WDISP_WeatherStatusLabelBuffer   (weather/status label buffer)
 ; TYPE: char[13]
 ; PURPOSE: Stores a short label used for wildcard match tests and serialized status text.
 ; USED BY: UNKNOWN_ParseRecordAndUpdateDisplay, ESQPROTO_ParseDigitLabelAndDisplay, DISKIO2_*
 ; NOTES: Backed by `DS.L 2` + `DS.W 1` + `DS.B 1`; copied as a NUL-terminated byte string.
 ;------------------------------------------------------------------------------
-WDISP_WeatherStatusLabelBuffer:
+_WDISP_WeatherStatusLabelBuffer:
     DS.L    2
     DS.W    1
     DS.B    1
@@ -1672,132 +1672,132 @@ WDISP_StatusListMatchPattern:
     DS.L    2
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_PrimaryGroupRecordChecksum   (primary group record checksum cache)
+; SYM: _TEXTDISP_PrimaryGroupRecordChecksum   (primary group record checksum cache)
 ; TYPE: u8 (stored in word slot)
 ; PURPOSE: Caches checksum byte from the latest primary-group payload header.
 ; USED BY: ESQIFF2 refresh checks, DISKIO2 read/write serialization, ESQDISP secondary->primary promotion
-; NOTES: Compared against ESQIFF_RecordChecksumByte to detect changed primary-group data.
+; NOTES: Compared against _ESQIFF_RecordChecksumByte to detect changed primary-group data.
 ;------------------------------------------------------------------------------
-TEXTDISP_PrimaryGroupRecordChecksum:
+_TEXTDISP_PrimaryGroupRecordChecksum:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_PrimaryGroupRecordLength   (primary group record length cache)
+; SYM: _TEXTDISP_PrimaryGroupRecordLength   (primary group record length cache)
 ; TYPE: u16
 ; PURPOSE: Caches parsed record length for the active primary-group payload.
 ; USED BY: ESQIFF2 refresh checks, DISKIO2 read/write serialization, ESQDISP secondary->primary promotion
-; NOTES: Paired with TEXTDISP_PrimaryGroupRecordChecksum.
+; NOTES: Paired with _TEXTDISP_PrimaryGroupRecordChecksum.
 ;------------------------------------------------------------------------------
-TEXTDISP_PrimaryGroupRecordLength:
+_TEXTDISP_PrimaryGroupRecordLength:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DISKIO_ErrorMessageScratch   (disk I/O error message scratch buffer)
+; SYM: _DISKIO_ErrorMessageScratch   (disk I/O error message scratch buffer)
 ; TYPE: u8[41]
 ; PURPOSE: Temporary formatted message storage for disk/load/save status text.
 ; USED BY: MAINB_* disk error display path, ESQ_*, DISKIO2_*
 ; NOTES: Backed by 10 longs plus trailing byte.
-;   Frequently written via WDISP_SPrintf (no destination length parameter).
+;   Frequently written via _WDISP_SPrintf (no destination length parameter).
 ;------------------------------------------------------------------------------
-DISKIO_ErrorMessageScratch:
+_DISKIO_ErrorMessageScratch:
     DS.L    10
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_PrimaryGroupPresentFlag   (primary group present flag)
+; SYM: _TEXTDISP_PrimaryGroupPresentFlag   (primary group present flag)
 ; TYPE: u8
 ; PURPOSE: Indicates whether primary-group entries are currently available.
 ; USED BY: NEWGRID_*, NEWGRID1_* rendering/visibility paths
 ; NOTES: Treated as boolean (zero/non-zero).
 ;------------------------------------------------------------------------------
-TEXTDISP_PrimaryGroupPresentFlag:
+_TEXTDISP_PrimaryGroupPresentFlag:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_GroupMutationState   (group mutation state id)
+; SYM: _TEXTDISP_GroupMutationState   (group mutation state id)
 ; TYPE: u16
 ; PURPOSE: Tracks which group changed while parsing/updating entry payloads.
 ; USED BY: ESQSHARED entry-insert path, ESQDISP group promotion path, DISKIO2 load path
 ; NOTES: Observed values: 0=none/reset, 1=primary touched, 2=secondary touched, 3=secondary promoted to primary.
 ;------------------------------------------------------------------------------
-TEXTDISP_GroupMutationState:
+_TEXTDISP_GroupMutationState:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_MaxEntryTitleLength   (max entry-title length cache)
+; SYM: _TEXTDISP_MaxEntryTitleLength   (max entry-title length cache)
 ; TYPE: u16
 ; PURPOSE: Tracks longest normalized entry title length across active groups.
 ; USED BY: DISKIO2 group load, ESQSHARED entry insertion, ESQIFF2 fixed-width text formatting
 ; NOTES: Reset to 0 when payload metadata changes; used to space-pad shorter titles.
 ;------------------------------------------------------------------------------
-TEXTDISP_MaxEntryTitleLength:
+_TEXTDISP_MaxEntryTitleLength:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_SecondaryGroupRecordChecksum   (secondary group record checksum cache)
+; SYM: _TEXTDISP_SecondaryGroupRecordChecksum   (secondary group record checksum cache)
 ; TYPE: u8 (stored in word slot)
 ; PURPOSE: Caches checksum byte from the latest secondary-group payload header.
 ; USED BY: ESQIFF2 refresh checks, DISKIO2 read/write serialization, ESQDISP group promotion
-; NOTES: Paired with TEXTDISP_SecondaryGroupRecordLength.
+; NOTES: Paired with _TEXTDISP_SecondaryGroupRecordLength.
 ;------------------------------------------------------------------------------
-TEXTDISP_SecondaryGroupRecordChecksum:
+_TEXTDISP_SecondaryGroupRecordChecksum:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_SecondaryGroupRecordLength   (secondary group record length cache)
+; SYM: _TEXTDISP_SecondaryGroupRecordLength   (secondary group record length cache)
 ; TYPE: u16
 ; PURPOSE: Caches the parsed record length for the active secondary group payload.
 ; USED BY: ESQIFF2 refresh checks, DISKIO2 read/write serialization, ESQDISP group promotion
-; NOTES: Works in tandem with TEXTDISP_SecondaryGroupRecordChecksum (secondary checksum byte cache).
+; NOTES: Works in tandem with _TEXTDISP_SecondaryGroupRecordChecksum (secondary checksum byte cache).
 ;------------------------------------------------------------------------------
-TEXTDISP_SecondaryGroupRecordLength:
+_TEXTDISP_SecondaryGroupRecordLength:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_AliasPtrTable   (text-display alias pointer table)
+; SYM: _TEXTDISP_AliasPtrTable   (text-display alias pointer table)
 ; TYPE: pointer[]
 ; PURPOSE: Stores alias/string pointers used by text display and list serialization paths.
 ; USED BY: ESQPARS_*, PARSEINI_*, TEXTDISP3_*, DISKIO2_*
 ; NOTES: Sized as 303 longwords to preserve original layout.
 ;------------------------------------------------------------------------------
-TEXTDISP_AliasPtrTable:
+_TEXTDISP_AliasPtrTable:
     DS.L    303
 ;------------------------------------------------------------------------------
-; SYM: ED_AdRecordPtrTable   (ad record pointer table base)
+; SYM: _ED_AdRecordPtrTable   (ad record pointer table base)
 ; TYPE: pointer[]
 ; PURPOSE: Base pointer table used by ED ad-edit routines to access per-ad records.
 ; USED BY: _ED_UpdateAdNumberDisplay, _ED_ApplyActiveFlagToAdData
 ; NOTES: Indexed by current ad number (`index*4`); declared as layout anchor to preserve offsets.
 ;------------------------------------------------------------------------------
-ED_AdRecordPtrTable:
+_ED_AdRecordPtrTable:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: LADFUNC_EntryPtrTable   (ladfunc entry pointer table)
+; SYM: _LADFUNC_EntryPtrTable   (ladfunc entry pointer table)
 ; TYPE: pointer[46]
 ; PURPOSE: Pointer table for LADFUNC-managed entries/list items.
 ; USED BY: LADFUNC_*, TEXTDISP2_*
-; NOTES: Entry count is tracked by LADFUNC_EntryCount.
+; NOTES: Entry count is tracked by _LADFUNC_EntryCount.
 ;------------------------------------------------------------------------------
-LADFUNC_EntryPtrTable:
+_LADFUNC_EntryPtrTable:
     DS.L    46
 ;------------------------------------------------------------------------------
-; SYM: ED_DiagnosticsScreenActive   (diagnostics screen active flag)
+; SYM: _ED_DiagnosticsScreenActive   (diagnostics screen active flag)
 ; TYPE: u16
 ; PURPOSE: Gates diagnostic/attention overlays and related status text draws.
 ; USED BY: ED1_*, ESQIFF2_*, ESQFUNC_*, DISKIO2_*, UNKNOWN_*
 ; NOTES: Set when diagnostics UI is shown; cleared when overlays are dismissed.
 ;------------------------------------------------------------------------------
-ED_DiagnosticsScreenActive:
+_ED_DiagnosticsScreenActive:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_RecordChecksumByte   (record checksum byte)
+; SYM: _ESQIFF_RecordChecksumByte   (record checksum byte)
 ; TYPE: u16 (low byte used)
 ; PURPOSE: Stores checksum/CRC byte associated with the current record payload.
 ; USED BY: ESQIFF2_*, UNKNOWN_* verification helpers
 ; NOTES: Compared against generated checksum values before parse dispatch.
 ;------------------------------------------------------------------------------
-ESQIFF_RecordChecksumByte:
+_ESQIFF_RecordChecksumByte:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: LADFUNC_LineSlotWriteIndex   (line-slot ring index)
+; SYM: _LADFUNC_LineSlotWriteIndex   (line-slot ring index)
 ; TYPE: u16
 ; PURPOSE: Current write index into LADFUNC line-text/control tables.
 ; USED BY: LADFUNC_BuildHighlightLinesFromText, ESQFUNC_InitLineTextBuffers
 ; NOTES: Wraps in a 20-slot ring (0..19).
 ;------------------------------------------------------------------------------
-LADFUNC_LineSlotWriteIndex:
+_LADFUNC_LineSlotWriteIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: DISPLIB_PreviousSearchWrappedFlag   (displib previous-search wrapped flag)
@@ -1824,58 +1824,58 @@ ESQ_BannerCharResetPulse:
 ; TYPE: u16
 ; PURPOSE: Holds the active 1..48 banner character index for cycling/animation logic.
 ; USED BY: ESQ_AdvanceBannerCharIndex, ESQ startup/init helpers
-; NOTES: Updated every tick and reset from `WDISP_BannerCharRangeStart` when range bounds are hit.
+; NOTES: Updated every tick and reset from `_WDISP_BannerCharRangeStart` when range bounds are hit.
 ;------------------------------------------------------------------------------
 WDISP_BannerCharIndex:
     DS.W    1
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_ChannelLabelBufferTerminatorByte   (channel-label trailing NUL slot)
+; SYM: _TEXTDISP_ChannelLabelBufferTerminatorByte   (channel-label trailing NUL slot)
 ; TYPE: u8
 ; PURPOSE: Extra trailing byte used to force NUL termination after label concatenation.
 ; USED BY: TEXTDISP_BuildChannelLabel
 ; NOTES: Cleared at `base + length` after append flow; acts as guard terminator byte.
 ;------------------------------------------------------------------------------
-TEXTDISP_ChannelLabelBufferTerminatorByte:
+_TEXTDISP_ChannelLabelBufferTerminatorByte:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_ChannelLabelBuffer   (channel label text buffer)
+; SYM: _TEXTDISP_ChannelLabelBuffer   (channel label text buffer)
 ; TYPE: char[450] (storage-backed)
 ; PURPOSE: Scratch/output buffer for labels such as "On Channel <name>" used in banner rendering.
 ; USED BY: TEXTDISP_BuildChannelLabel, TEXTDISP_DrawChannelBanner, CLEANUP3_*
 ; NOTES: Backed by 112 longs + trailing word storage; treated as a byte string buffer.
 ;------------------------------------------------------------------------------
-TEXTDISP_ChannelLabelBuffer:
+_TEXTDISP_ChannelLabelBuffer:
     DS.L    112
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: LADFUNC_LineTextBufferPtrs/LADFUNC_LineControlCodeTable   (line buffer tables)
+; SYM: _LADFUNC_LineTextBufferPtrs/_LADFUNC_LineControlCodeTable   (line buffer tables)
 ; TYPE: pointer[20]/u16[20]
 ; PURPOSE: Stores per-line text buffers and parsed control-code metadata for LADFUNC text wrapping.
 ; USED BY: LADFUNC_BuildHighlightLinesFromText, ESQFUNC_InitLineTextBuffers, ESQFUNC_FreeLineTextBuffers
 ; NOTES: Buffer pointers are individually allocated/freed in ESQFUNC (60 bytes each).
 ;------------------------------------------------------------------------------
-LADFUNC_LineTextBufferPtrs:
+_LADFUNC_LineTextBufferPtrs:
     DS.L    20
-LADFUNC_LineControlCodeTable:
+_LADFUNC_LineControlCodeTable:
     DS.L    10
 ;------------------------------------------------------------------------------
-; SYM: WDISP_BannerCharPhaseShift   (banner char phase-shift value)
+; SYM: _WDISP_BannerCharPhaseShift   (banner char phase-shift value)
 ; TYPE: s16
 ; PURPOSE: Per-tick phase/step value applied by banner-char index advance logic.
-; USED BY: DST_TickBannerCounters, ESQ_AdvanceBannerCharIndex, ESQFUNC_DrawMemoryStatusScreen
+; USED BY: _DST_TickBannerCounters, ESQ_AdvanceBannerCharIndex, ESQFUNC_DrawMemoryStatusScreen
 ; NOTES: Derived from DST counters and applied as +/- two-step adjustments in index math.
 ;------------------------------------------------------------------------------
-WDISP_BannerCharPhaseShift:
+_WDISP_BannerCharPhaseShift:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: LADFUNC_LineSlotSecondaryIndex   (line-slot secondary index)
+; SYM: _LADFUNC_LineSlotSecondaryIndex   (line-slot secondary index)
 ; TYPE: u16
-; PURPOSE: Companion line-slot index reset alongside LADFUNC_LineSlotWriteIndex.
+; PURPOSE: Companion line-slot index reset alongside _LADFUNC_LineSlotWriteIndex.
 ; USED BY: ESQFUNC_AllocateLineTextBuffers
 ; NOTES: Cleared during line-buffer allocation; no reader confirmed yet.
 ;------------------------------------------------------------------------------
-LADFUNC_LineSlotSecondaryIndex:
+_LADFUNC_LineSlotSecondaryIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_StartupPhaseSeed225E   (startup phase seed slot @225E)
@@ -1889,37 +1889,37 @@ LADFUNC_LineSlotSecondaryIndex:
 ESQ_StartupPhaseSeed225E:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_RefreshStateFlag   (newgrid refresh/init state)
+; SYM: _NEWGRID_RefreshStateFlag   (newgrid refresh/init state)
 ; TYPE: u32
 ; PURPOSE: Cross-module signal controlling NEWGRID reinitialization/refresh behavior.
 ; USED BY: NEWGRID_ProcessGridMessages, ESQDISP_*, ESQIFF2_*, ESQFUNC_*
 ; NOTES: Observed states: 0/1 trigger reinit path, 2 after NEWGRID init completes.
 ;------------------------------------------------------------------------------
-NEWGRID_RefreshStateFlag:
+_NEWGRID_RefreshStateFlag:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_MessagePumpSuspendFlag/_NEWGRID_ModeSelectorState/NEWGRID_LastRefreshRequest
+; SYM: _NEWGRID_MessagePumpSuspendFlag/_NEWGRID_ModeSelectorState/NEWGRID_LastRefreshRequest
 ; TYPE: u32/u32/u32
 ; PURPOSE: Companion refresh-state globals used to gate NEWGRID message processing and mode transitions.
 ; USED BY: ESQFUNC_UpdateRefreshModeState, ESQDISP_ProcessGridMessagesIfIdle, _NEWGRID_GetGridModeIndex, ED1_ExitEscMenu
-; NOTES: `NEWGRID_MessagePumpSuspendFlag` blocks grid message pumping while set.
+; NOTES: `_NEWGRID_MessagePumpSuspendFlag` blocks grid message pumping while set.
 ;   `_NEWGRID_ModeSelectorState` is written as 0 or 2 by current paths.
 ;   `NEWGRID_LastRefreshRequest` caches the last refresh-mode request argument.
 ;------------------------------------------------------------------------------
-NEWGRID_MessagePumpSuspendFlag:
+_NEWGRID_MessagePumpSuspendFlag:
     DS.L    1
 _NEWGRID_ModeSelectorState:
     DS.L    1
 NEWGRID_LastRefreshRequest:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: Global_UIBusyFlag   (global UI busy/modal flag)
+; SYM: _Global_UIBusyFlag   (global UI busy/modal flag)
 ; TYPE: u16
 ; PURPOSE: Indicates UI/modal sections where interactive updates are gated.
 ; USED BY: ESQ_*, ED1_*, DISKIO_*, TEXTDISP2_*, NEWGRID_*, GCOMMAND3_*
 ; NOTES: Typically checked as boolean (non-zero = busy/modal).
 ;------------------------------------------------------------------------------
-Global_UIBusyFlag:
+_Global_UIBusyFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: CLEANUP_PendingAlertFlag   (pending alert tick flag)
@@ -1931,29 +1931,29 @@ Global_UIBusyFlag:
 CLEANUP_PendingAlertFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: LADFUNC_EntryCount   (ladfunc entry count)
+; SYM: _LADFUNC_EntryCount   (ladfunc entry count)
 ; TYPE: u16
-; PURPOSE: Number of active entries in LADFUNC_EntryPtrTable.
+; PURPOSE: Number of active entries in _LADFUNC_EntryPtrTable.
 ; USED BY: LADFUNC_*, TEXTDISP2_*, SCRIPT2_*, ED1_*
 ; NOTES: Common values observed include $24 and $2E.
 ;------------------------------------------------------------------------------
-LADFUNC_EntryCount:
+_LADFUNC_EntryCount:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: PARSEINI_CtrlHChangeGateFlag   (CTRL_H change gate flag)
+; SYM: _PARSEINI_CtrlHChangeGateFlag   (_CTRL_H change gate flag)
 ; TYPE: u16
-; PURPOSE: Enables/disables CTRL_H-change processing and related status refresh actions.
+; PURPOSE: Enables/disables _CTRL_H-change processing and related status refresh actions.
 ; USED BY: PARSEINI_CheckCtrlHChange, ED2_HandleMenuActions, ESQ startup init
 ; NOTES: Toggled via ED2 menu action path; checked as boolean gate in PARSEINI.
 ;------------------------------------------------------------------------------
-PARSEINI_CtrlHChangeGateFlag:
+_PARSEINI_CtrlHChangeGateFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQSHARED_BannerRowScratchRasterBase0/1/2   (banner row scratch raster bases)
 ; TYPE: pointer/pointer/pointer
 ; PURPOSE: Cached raster bases for the three banner row scratch planes used by ESQSHARED blit helpers.
 ; USED BY: ESQ startup init, ESQSHARED4_*
-; NOTES: Seeded from `WDISP_BannerRowScratchRasterTable0..2` during startup.
+; NOTES: Seeded from `_WDISP_BannerRowScratchRasterTable0..2` during startup.
 ;------------------------------------------------------------------------------
 ESQSHARED_BannerRowScratchRasterBase0:
     DS.L    1
@@ -1962,16 +1962,16 @@ ESQSHARED_BannerRowScratchRasterBase1:
 ESQSHARED_BannerRowScratchRasterBase2:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_DiagnosticsViewMode   (diagnostics view mode)
+; SYM: _ED_DiagnosticsViewMode   (diagnostics view mode)
 ; TYPE: u16
 ; PURPOSE: Selects which diagnostics screen page is drawn/updated.
 ; USED BY: ED2_HandleDiagnosticsMenuActions, ESQFUNC_DrawMemoryStatusScreen, ESQPARS processCommand_K_Clock gate
 ; NOTES: Value 0 draws memory/status view; value 1 enables calendar-style diagnostics view.
 ;------------------------------------------------------------------------------
-ED_DiagnosticsViewMode:
+_ED_DiagnosticsViewMode:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQ_SelectCodeBuffer   (startup select-code text buffer)
+; SYM: _ESQ_SelectCodeBuffer   (startup select-code text buffer)
 ; TYPE: u8[10]
 ; PURPOSE: Stores argv[1] select-code text shown in startup/diagnostics paths.
 ; USED BY: ESQ_MainInitAndRun, ED1_DrawDiagnosticsScreen, ESQSHARED_MatchSelectionCodeWithOptionalSuffix
@@ -1979,14 +1979,14 @@ ED_DiagnosticsViewMode:
 ;   Current startup copy path writes bytewise until source NUL with no local
 ;   destination bound check.
 ;------------------------------------------------------------------------------
-ESQ_SelectCodeBuffer:
+_ESQ_SelectCodeBuffer:
 Global_PTR_STR_SELECT_CODE:
     DS.L    2
     DS.W    1
-Global_REF_BAUD_RATE:
+_Global_REF_BAUD_RATE:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ESQSHARED_BannerColorModeWord   (banner color mode word)
+; SYM: _ESQSHARED_BannerColorModeWord   (banner color mode word)
 ; TYPE: u16
 ; PURPOSE: Mode/selector word passed into legacy ESQSHARED4 banner-color setup stubs.
 ; USED BY: ED1_ExitEscMenu, ESQSHARED4 legacy/dead stubs
@@ -1995,12 +1995,12 @@ Global_REF_BAUD_RATE:
 ;   Confirmed direct writer in active code is `CLR.W` from ED1 ESC-exit path.
 ;   Current ESQSHARED4 reads are in dead/unreachable blocks in this build.
 ;   No direct non-zero writer is present in active paths; observed non-zero values
-;   are trace-backed to ESQ argv[1] overrun spill from `ESQ_SelectCodeBuffer`.
+;   are trace-backed to ESQ argv[1] overrun spill from `_ESQ_SelectCodeBuffer`.
 ;------------------------------------------------------------------------------
-ESQSHARED_BannerColorModeWord:
+_ESQSHARED_BannerColorModeWord:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ED_Rastport2PenModeSelector   (rastport2 pen-mode selector)
+; SYM: _ED_Rastport2PenModeSelector   (rastport2 pen-mode selector)
 ; TYPE: u32
 ; PURPOSE: Optional selector controlling alternate pen setup in ED_InitRastport2Pens.
 ; USED BY: ED_InitRastport2Pens
@@ -2009,27 +2009,27 @@ ESQSHARED_BannerColorModeWord:
 ;   Compared against literal `14` to enable alternate `BPen=2` setup in
 ;   ED_InitRastport2Pens.
 ;   No direct producer exists in active paths; observed non-zero producer is
-;   trace-backed indirect ESQ argv[1] overrun spill from `ESQ_SelectCodeBuffer`.
+;   trace-backed indirect ESQ argv[1] overrun spill from `_ESQ_SelectCodeBuffer`.
 ;------------------------------------------------------------------------------
-ED_Rastport2PenModeSelector:
+_ED_Rastport2PenModeSelector:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_BannerCharRangeStart   (banner char range start index)
+; SYM: _WDISP_BannerCharRangeStart   (banner char range start index)
 ; TYPE: u16
 ; PURPOSE: Start index for the active banner char window/range.
 ; USED BY: ESQ_ClampBannerCharRange, CLEANUP_ProcessAlerts, ESQ_AdvanceBannerCharIndex
-; NOTES: Paired with `WDISP_BannerCharRangeEnd` (range end) for 1..48 wrapping behavior.
+; NOTES: Paired with `_WDISP_BannerCharRangeEnd` (range end) for 1..48 wrapping behavior.
 ;------------------------------------------------------------------------------
-WDISP_BannerCharRangeStart:
+_WDISP_BannerCharRangeStart:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_HalfHourSlotIndex   (half-hour slot index)
+; SYM: _CLOCK_HalfHourSlotIndex   (half-hour slot index)
 ; TYPE: u16
 ; PURPOSE: Current half-hour slot index derived from clock/time state.
 ; USED BY: ESQDISP_*, ESQFUNC_*, TEXTDISP_*, COI_*, CLEANUP2_*
 ; NOTES: Produced by ESQ_GetHalfHourSlotIndex-style helpers.
 ;------------------------------------------------------------------------------
-CLOCK_HalfHourSlotIndex:
+_CLOCK_HalfHourSlotIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_StartupWriteOnlyWord2271/ESQ_StartupWriteOnlyLong2272/ESQ_BannerCharIndexShadow2273   (startup-reserved + banner shadow)
@@ -2049,51 +2049,51 @@ ESQ_StartupWriteOnlyLong2272:
 ESQ_BannerCharIndexShadow2273:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_CurrentDayOfWeekIndex/CLOCK_CurrentMonthIndex/CLOCK_CurrentDayOfMonth/CLOCK_CurrentYearValue   (current calendar tuple)
+; SYM: _CLOCK_CurrentDayOfWeekIndex/_CLOCK_CurrentMonthIndex/_CLOCK_CurrentDayOfMonth/_CLOCK_CurrentYearValue   (current calendar tuple)
 ; TYPE: u16/u16/u16/u16
 ; PURPOSE: Holds day-of-week, month, day-of-month, and year values used by date formatters.
 ; USED BY: GENERATE_GRID_DATE_STRING, RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY, DST_*, NEWGRID_*
 ; NOTES: Day/month values are used as direct indexes into day/month pointer tables.
 ;------------------------------------------------------------------------------
-CLOCK_CurrentDayOfWeekIndex:
+_CLOCK_CurrentDayOfWeekIndex:
     DS.W    1
-CLOCK_CurrentMonthIndex:
+_CLOCK_CurrentMonthIndex:
     DS.W    1
-CLOCK_CurrentDayOfMonth:
+_CLOCK_CurrentDayOfMonth:
     DS.W    1
-CLOCK_CurrentYearValue:
+_CLOCK_CurrentYearValue:
     DS.W    1
-Global_WORD_CURRENT_HOUR:
+_Global_WORD_CURRENT_HOUR:
     DS.W    1
-Global_WORD_CURRENT_MINUTE:
+_Global_WORD_CURRENT_MINUTE:
     DS.W    1
-Global_WORD_CURRENT_SECOND:
+_Global_WORD_CURRENT_SECOND:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DST_SecondaryCountdown   (secondary DST/banner countdown)
+; SYM: _DST_SecondaryCountdown   (secondary DST/banner countdown)
 ; TYPE: u16
 ; PURPOSE: Companion countdown for DST queue slot 1 / alternate banner window flow.
-; USED BY: DST_UpdateBannerQueue, DST_TickBannerCounters, DATETIME_BuildFromGlobals
-; NOTES: Used only when secondary-slot mode is enabled (e.g., `ESQ_SecondarySlotModeFlagChar == 'Y'` paths).
+; USED BY: DST_UpdateBannerQueue, _DST_TickBannerCounters, _DATETIME_BuildFromGlobals
+; NOTES: Used only when secondary-slot mode is enabled (e.g., `_ESQ_SecondarySlotModeFlagChar == 'Y'` paths).
 ;------------------------------------------------------------------------------
-DST_SecondaryCountdown:
+_DST_SecondaryCountdown:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_CurrentDayOfYear/CLOCK_CurrentAmPmFlag/CLOCK_CurrentLeapYearFlag   (secondary live-clock trailing fields)
+; SYM: CLOCK_CurrentDayOfYear/_CLOCK_CurrentAmPmFlag/CLOCK_CurrentLeapYearFlag   (secondary live-clock trailing fields)
 ; TYPE: u16/u16/u16
 ; PURPOSE:
-;   Trailing fields of the secondary live-clock tuple rooted at `CLOCK_CurrentDayOfWeekIndex`.
+;   Trailing fields of the secondary live-clock tuple rooted at `_CLOCK_CurrentDayOfWeekIndex`.
 ;   `CLOCK_CurrentDayOfYear` participates in status-day normalization/comparison flows.
-;   `CLOCK_CurrentAmPmFlag` is the AM/PM sign flag consumed by time-format helpers.
+;   `_CLOCK_CurrentAmPmFlag` is the AM/PM sign flag consumed by time-format helpers.
 ;   `CLOCK_CurrentLeapYearFlag` tracks leap-year state and is shown as `lp` in diagnostics.
 ; USED BY: ESQ_TickClockAndFlagEvents, UNKNOWN_ParseStatusListPattern??, CLEANUP_BuildAlignedStatusSuffix, ESQDISP_CheckStatusDayEntryWindow, ESQFUNC_DrawMemoryStatusScreen, CLEANUP_DrawClockBanner
 ; NOTES:
-;   Producer is confirmed: `ESQ_TickClockAndFlagEvents` called with `PEA CLOCK_CurrentDayOfWeekIndex`.
+;   Producer is confirmed: `ESQ_TickClockAndFlagEvents` called with `PEA _CLOCK_CurrentDayOfWeekIndex`.
 ;   Layout matches routine field writes at +16 (day-of-year), +18 (am/pm), +20 (leap-year).
 ;------------------------------------------------------------------------------
 CLOCK_CurrentDayOfYear:
     DS.W    1
-CLOCK_CurrentAmPmFlag:
+_CLOCK_CurrentAmPmFlag:
     DS.W    1
 CLOCK_CurrentLeapYearFlag:
     DS.W    1
@@ -2107,126 +2107,126 @@ CLOCK_CurrentLeapYearFlag:
 WDISP_WeatherStatusCountdown:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_BannerCharRangeEnd   (banner char range end index)
+; SYM: _WDISP_BannerCharRangeEnd   (banner char range end index)
 ; TYPE: u16
 ; PURPOSE: End index for the active banner-char wrap window.
 ; USED BY: ESQ_ClampBannerCharRange, ESQ_AdvanceBannerCharIndex, CLEANUP_ProcessAlerts
-; NOTES: Paired with `WDISP_BannerCharRangeStart` for 1..48 normalization/wrap behavior.
+; NOTES: Paired with `_WDISP_BannerCharRangeStart` for 1..48 normalization/wrap behavior.
 ;------------------------------------------------------------------------------
-WDISP_BannerCharRangeEnd:
+_WDISP_BannerCharRangeEnd:
     DS.W    1
-CTRL_H:
+_CTRL_H:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: CTRL_HPreviousSample/CTRL_HDeltaMax   (CTRL_H sampling state)
+; SYM: _CTRL_HPreviousSample/_CTRL_HDeltaMax   (_CTRL_H sampling state)
 ; TYPE: u16/u16
-; PURPOSE: Previous CTRL_H sample and the observed maximum wrapped delta.
+; PURPOSE: Previous _CTRL_H sample and the observed maximum wrapped delta.
 ; USED BY: PARSEINI_CheckCtrlHChange, PARSEINI_UpdateCtrlHDeltaMax, ESQFUNC_DrawMemoryStatusScreen, APP_*
 ; NOTES: Delta is computed modulo 500 (`+500` wrap for negative differences).
 ;------------------------------------------------------------------------------
-CTRL_HPreviousSample:
+_CTRL_HPreviousSample:
     DS.W    1
-CTRL_HDeltaMax:
+_CTRL_HDeltaMax:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: CTRL_BufferedByteCount   (CTRL buffer byte count)
 ; TYPE: u16
-; PURPOSE: Tracks the current number of bytes stored in CTRL_BUFFER.
-; USED BY: ESQ_CaptureCtrlBit4Stream, DISKIO_ResetCtrlInputStateIfIdle, ESQ init/reset
-; NOTES: Computed as wrapped delta between CTRL_H and CTRL_HPreviousSample (mod 500).
+; PURPOSE: Tracks the current number of bytes stored in _CTRL_BUFFER.
+; USED BY: _ESQ_CaptureCtrlBit4Stream, DISKIO_ResetCtrlInputStateIfIdle, ESQ init/reset
+; NOTES: Computed as wrapped delta between _CTRL_H and _CTRL_HPreviousSample (mod 500).
 ;------------------------------------------------------------------------------
 CTRL_BufferedByteCount:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_ParseAttemptCount   (record parse attempt counter)
+; SYM: _ESQIFF_ParseAttemptCount   (record parse attempt counter)
 ; TYPE: u16
 ; PURPOSE: Counts checksum/parse attempts on incoming ESQIFF records.
 ; USED BY: ESQPROTO_VerifyChecksumAndParseRecord, ESQPROTO_VerifyChecksumAndParseList
 ; NOTES: Incremented before checksum verification.
 ;------------------------------------------------------------------------------
-ESQIFF_ParseAttemptCount:
+_ESQIFF_ParseAttemptCount:
     DS.W    1
-DATACErrs:
+_DATACErrs:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_LineErrorCount   (record line/length error counter)
+; SYM: _ESQIFF_LineErrorCount   (record line/length error counter)
 ; TYPE: u16
 ; PURPOSE: Counts record-line validation failures that are not checksum mismatches.
 ; USED BY: ESQPARS_*, ESQFUNC_DrawMemoryStatusScreen, ED2 diagnostics reset path
 ; NOTES: Displayed alongside data command/checksum counters on diagnostics screens.
 ;------------------------------------------------------------------------------
-ESQIFF_LineErrorCount:
+_ESQIFF_LineErrorCount:
     DS.W    1
-Global_WORD_H_VALUE:
+_Global_WORD_H_VALUE:
     DS.W    1
-Global_WORD_T_VALUE:
+_Global_WORD_T_VALUE:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQ_SerialRbfErrorCount/ESQ_SerialRbfFillLevel   (serial RBF diagnostics counters)
+; SYM: ESQ_SerialRbfErrorCount/_ESQ_SerialRbfFillLevel   (serial RBF diagnostics counters)
 ; TYPE: u16/u16
 ; PURPOSE:
 ;   `ESQ_SerialRbfErrorCount` accumulates serial RBF error/status events.
-;   `ESQ_SerialRbfFillLevel` tracks ISR-computed `(head-tail)` serial ring-buffer occupancy.
+;   `_ESQ_SerialRbfFillLevel` tracks ISR-computed `(head-tail)` serial ring-buffer occupancy.
 ; USED BY: ESQ_HandleSerialRbfInterrupt, ESQFUNC_DrawMemoryStatusScreen, ESQ_InitializeState
 ; NOTES: Both values are displayed/reset through diagnostics paths.
 ;------------------------------------------------------------------------------
 ESQ_SerialRbfErrorCount:
     DS.W    1
-Global_WORD_MAX_VALUE:
+_Global_WORD_MAX_VALUE:
     DS.W    1
-ESQ_SerialRbfFillLevel:
+_ESQ_SerialRbfFillLevel:
     DS.W    1
 ; Flag indicating a UI banner/key highlight is active.
 WDISP_HighlightActive:
     DS.W    1
 ; Index of the highlighted entry (if used by callers).
-WDISP_HighlightIndex:
+_WDISP_HighlightIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_SecondaryLinePromotePendingFlag   (secondary line promote pending)
+; SYM: _ESQDISP_SecondaryLinePromotePendingFlag   (secondary line promote pending)
 ; TYPE: u16 (boolean)
 ; PURPOSE: Marks that secondary line head/tail content should be promoted into primary.
 ; USED BY: ESQIFF2_ParseLineHeadTailRecord, ESQDISP_PromoteSecondaryLineHeadTailIfMarked
 ; NOTES: Set when parsing secondary-group line records; cleared after promote routine runs.
 ;------------------------------------------------------------------------------
-ESQDISP_SecondaryLinePromotePendingFlag:
+_ESQDISP_SecondaryLinePromotePendingFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQ_VerticalBlankInterruptUserData   (VBLANK is_Data storage)
+; SYM: _ESQ_VerticalBlankInterruptUserData   (VBLANK is_Data storage)
 ; TYPE: u32
 ; PURPOSE: Backing storage referenced by Interrupt.is_Data for the VBLANK handler.
 ; USED BY: SETUP_INTERRUPT_INTB_VERTB
 ; NOTES: Address of this cell is written to Interrupt struct offset 14 (`is_Data`).
 ;------------------------------------------------------------------------------
-ESQ_VerticalBlankInterruptUserData:
+_ESQ_VerticalBlankInterruptUserData:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: LADFUNC_HighlightCycleCountdown/LADFUNC_HighlightCycleCountdownReload/LADFUNC_ParsedEntryCount   (ladfunc highlight/parse counters)
+; SYM: LADFUNC_HighlightCycleCountdown/LADFUNC_HighlightCycleCountdownReload/_LADFUNC_ParsedEntryCount   (ladfunc highlight/parse counters)
 ; TYPE: u16/u16/u16
 ; PURPOSE: Tracks highlight-cycle countdown state and parsed-entry count for LADFUNC banner-entry flows.
 ; USED BY: LADFUNC_ClearBannerRectEntries, LADFUNC_UpdateHighlightCycle, LADFUNC_ParseBannerEntryData
 ; NOTES:
 ;   `LADFUNC_HighlightCycleCountdown` decrements during active highlight cycling.
 ;   `LADFUNC_HighlightCycleCountdownReload` is copied into countdown on underflow.
-;   `LADFUNC_ParsedEntryCount` increments while parsing inbound LAD records.
+;   `_LADFUNC_ParsedEntryCount` increments while parsing inbound LAD records.
 ;------------------------------------------------------------------------------
 LADFUNC_HighlightCycleCountdown:
     DS.W    1
 LADFUNC_HighlightCycleCountdownReload:
     DS.W    1
-LADFUNC_ParsedEntryCount:
+_LADFUNC_ParsedEntryCount:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_CtrlInterfaceEnabledFlag   (110-baud control-line enable flag)
+; SYM: _SCRIPT_CtrlInterfaceEnabledFlag   (110-baud control-line enable flag)
 ; TYPE: u16 (boolean)
 ; PURPOSE: Enables script/serial control-line handshake paths (RTS/CTRL assert-clear flow).
 ; USED BY: SCRIPT2_110Baud control handlers, ESQIFF group-line cursor shadow update, ESQ startup mode toggles
 ; NOTES: Set/cleared by ESQ mode transitions before script transfer/control operations.
 ;------------------------------------------------------------------------------
-SCRIPT_CtrlInterfaceEnabledFlag:
+_SCRIPT_CtrlInterfaceEnabledFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: _WDISP_PaletteTriplesRBase/WDISP_PaletteTriplesGBase/WDISP_PaletteTriplesBBase   (palette RGB triplet stream)
+; SYM: _WDISP_PaletteTriplesRBase/_WDISP_PaletteTriplesGBase/_WDISP_PaletteTriplesBBase   (palette RGB triplet stream)
 ; TYPE: u8 stream
 ; PURPOSE: Packed RGB triplets used by highlight/weather palette-selection routines.
 ; USED BY: WDISP_*, ESQIFF_*, ESQFUNC_*, LADFUNC_*, ED1_*, APP2_*, TEXTDISP2_*
@@ -2234,19 +2234,19 @@ SCRIPT_CtrlInterfaceEnabledFlag:
 ;------------------------------------------------------------------------------
 _WDISP_PaletteTriplesRBase:
     DS.B    1
-WDISP_PaletteTriplesGBase:
+_WDISP_PaletteTriplesGBase:
     DS.B    1
-WDISP_PaletteTriplesBBase:
+_WDISP_PaletteTriplesBBase:
     DS.L    23
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQPARS_SelectionSuffixBuffer   (selection suffix buffer)
+; SYM: _ESQPARS_SelectionSuffixBuffer   (selection suffix buffer)
 ; TYPE: char[4]
 ; PURPOSE: Stores the optional selection suffix pattern for ESQ selection matching.
 ; USED BY: ESQPARS command 'E' handler, ESQSHARED_MatchSelectionCodeWithOptionalSuffix
 ; NOTES: NUL-terminated; size inferred from DS.L allocation.
 ;------------------------------------------------------------------------------
-ESQPARS_SelectionSuffixBuffer:
+_ESQPARS_SelectionSuffixBuffer:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQIFF_StatusPacketReadyFlag   (status packet ready flag)
@@ -2332,20 +2332,20 @@ SCRIPT_CTRL_CHECKSUM:
 TEXTDISP_DeferredActionDelayTicks:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_HighlightMessageSlotTable   (highlight message slot table)
+; SYM: _GCOMMAND_HighlightMessageSlotTable   (highlight message slot table)
 ; TYPE: struct[4]
 ; PURPOSE: Stores highlight message slot state and per-slot RastPort data.
-; USED BY: GCOMMAND_ResetHighlightMessages, PARSEINI set-font loop
+; USED BY: _GCOMMAND_ResetHighlightMessages, PARSEINI set-font loop
 ; NOTES: Slot stride is 160 bytes; RastPort for each slot is at offset +60.
 ;------------------------------------------------------------------------------
-GCOMMAND_HighlightMessageSlotTable:
+_GCOMMAND_HighlightMessageSlotTable:
     DS.L    160
 ;------------------------------------------------------------------------------
 ; SYM: ESQDISP_HighlightBitmapTable   (highlight bitmap table)
 ; TYPE: struct BitMap[4]
 ; PURPOSE: BitMap structs used for highlight row rendering and cleanup.
 ; USED BY: ESQ init, ESQDISP_AllocateHighlightBitmaps, CLEANUP_ShutdownSystem
-; NOTES: Each entry is a BitMap; height comes from WDISP_HighlightRasterHeightPx.
+; NOTES: Each entry is a BitMap; height comes from _WDISP_HighlightRasterHeightPx.
 ;------------------------------------------------------------------------------
 ESQDISP_HighlightBitmapTable:
     DS.L    65
@@ -2360,16 +2360,16 @@ ESQDISP_HighlightBitmapTable:
 ESQIFF_PendingExternalBrushNode:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_ExternalAssetFlags   (external asset availability bitmask)
+; SYM: _ESQIFF_ExternalAssetFlags   (external asset availability bitmask)
 ; TYPE: u16 (bitfield)
 ; PURPOSE: Tracks which optional external data blobs loaded successfully.
 ; USED BY: ESQIFF_*, ESQFUNC_*, ED1_*, SCRIPT2_*
 ; NOTES: bit0 = `gfx/g_ads.data` loaded, bit1 = `df0:logo.lst` loaded.
 ;------------------------------------------------------------------------------
-ESQIFF_ExternalAssetFlags:
+_ESQIFF_ExternalAssetFlags:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_AccumulatorCaptureActive/WDISP_AccumulatorFlushPending   (display accumulator state flags)
+; SYM: WDISP_AccumulatorCaptureActive/_WDISP_AccumulatorFlushPending   (display accumulator state flags)
 ; TYPE: u16/u16
 ; PURPOSE: Coordinates when accumulator buckets are updated and when the flush pass should run.
 ; USED BY: WDISP_*, APP2_*, ESQIFF_*, TEXTDISP_*, SCRIPT4_*
@@ -2377,25 +2377,25 @@ ESQIFF_ExternalAssetFlags:
 ;------------------------------------------------------------------------------
 WDISP_AccumulatorCaptureActive:
     DS.W    1
-WDISP_AccumulatorFlushPending:
+_WDISP_AccumulatorFlushPending:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_LogoListLineIndex   (logo list line index)
+; SYM: _ESQIFF_LogoListLineIndex   (logo list line index)
 ; TYPE: u16
 ; PURPOSE: Tracks the current line index within df0:logo.lst.
-; USED BY: ESQIFF_ReadNextExternalAssetPathEntry, ESQIFF_ReloadExternalAssetCatalogBuffers
+; USED BY: ESQIFF_ReadNextExternalAssetPathEntry, _ESQIFF_ReloadExternalAssetCatalogBuffers
 ; NOTES: Incremented when newline-delimited entries are consumed.
 ;------------------------------------------------------------------------------
-ESQIFF_LogoListLineIndex:
+_ESQIFF_LogoListLineIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_GAdsListLineIndex   (g_ads list line index)
+; SYM: _ESQIFF_GAdsListLineIndex   (g_ads list line index)
 ; TYPE: struct (u16 + padding/unknown)
 ; PURPOSE: Tracks the current line index within gfx/g_ads.data.
-; USED BY: ESQIFF_ReadNextExternalAssetPathEntry, ESQIFF_ReloadExternalAssetCatalogBuffers
+; USED BY: ESQIFF_ReadNextExternalAssetPathEntry, _ESQIFF_ReloadExternalAssetCatalogBuffers
 ; NOTES: Only the leading word is referenced so far.
 ;------------------------------------------------------------------------------
-ESQIFF_GAdsListLineIndex:
+_ESQIFF_GAdsListLineIndex:
     DS.L    3
     DS.W    1
 ;------------------------------------------------------------------------------
@@ -2421,52 +2421,52 @@ WDISP_AccumulatorRow0_MetadataWord:
     DS.W    1
 WDISP_AccumulatorRow0_Value:
     DS.W    1
-WDISP_AccumulatorRow0_MoveFlags:
+_WDISP_AccumulatorRow0_MoveFlags:
     DS.W    1
-WDISP_AccumulatorRow0_CopperIndexStart:
+_WDISP_AccumulatorRow0_CopperIndexStart:
     DS.B    1
-WDISP_AccumulatorRow0_CopperIndexEnd:
+_WDISP_AccumulatorRow0_CopperIndexEnd:
     DS.B    1
 WDISP_AccumulatorRow1_MetadataWord:
     DS.W    1
 WDISP_AccumulatorRow1_Value:
     DS.W    1
-WDISP_AccumulatorRow1_MoveFlags:
+_WDISP_AccumulatorRow1_MoveFlags:
     DS.W    1
-WDISP_AccumulatorRow1_CopperIndexStart:
+_WDISP_AccumulatorRow1_CopperIndexStart:
     DS.B    1
-WDISP_AccumulatorRow1_CopperIndexEnd:
+_WDISP_AccumulatorRow1_CopperIndexEnd:
     DS.B    1
 WDISP_AccumulatorRow2_MetadataWord:
     DS.W    1
 WDISP_AccumulatorRow2_Value:
     DS.W    1
-WDISP_AccumulatorRow2_MoveFlags:
+_WDISP_AccumulatorRow2_MoveFlags:
     DS.W    1
-WDISP_AccumulatorRow2_CopperIndexStart:
+_WDISP_AccumulatorRow2_CopperIndexStart:
     DS.B    1
-WDISP_AccumulatorRow2_CopperIndexEnd:
+_WDISP_AccumulatorRow2_CopperIndexEnd:
     DS.B    1
 WDISP_AccumulatorRow3_MetadataWord:
     DS.W    1
 WDISP_AccumulatorRow3_Value:
     DS.W    1
-WDISP_AccumulatorRow3_MoveFlags:
+_WDISP_AccumulatorRow3_MoveFlags:
     DS.W    1
-WDISP_AccumulatorRow3_CopperIndexStart:
+_WDISP_AccumulatorRow3_CopperIndexStart:
     DS.B    1
-WDISP_AccumulatorRow3_CopperIndexEnd:
+_WDISP_AccumulatorRow3_CopperIndexEnd:
     DS.B    1
     DS.L    20
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_AssetSourceSelect/ESQIFF_GAdsSourceEnabled   (asset source selection flags)
+; SYM: _ESQIFF_AssetSourceSelect/ESQIFF_GAdsSourceEnabled   (asset source selection flags)
 ; TYPE: s16/s16
 ; PURPOSE: Selects which external asset stream is scanned and whether the g.ads stream is enabled.
 ; USED BY: ESQIFF_*, CTASKS_StartIffTaskProcess
-; NOTES: `ESQIFF_AssetSourceSelect` steers logo-list vs g.ads handling in ESQIFF flows.
+; NOTES: `_ESQIFF_AssetSourceSelect` steers logo-list vs g.ads handling in ESQIFF flows.
 ;------------------------------------------------------------------------------
-ESQIFF_AssetSourceSelect:
+_ESQIFF_AssetSourceSelect:
     DS.W    1
 ESQIFF_GAdsSourceEnabled:
     DS.W    1
@@ -2523,191 +2523,191 @@ ESQIFF_ParseField3TailBuffer:
 FLIB_LogEntryScratchBuffer:
     DS.L    28
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_DigitalNicheEnabledFlag/GCOMMAND_DigitalNicheListingsTemplatePtr   (Digital Niche option state)
+; SYM: _GCOMMAND_DigitalNicheEnabledFlag/_GCOMMAND_DigitalNicheListingsTemplatePtr   (Digital Niche option state)
 ; TYPE: u8/pointer
 ; PURPOSE: Stores enable flag and template text pointer for the Digital Niche listings mode.
-; USED BY: GCOMMAND_ParseCommandOptions, GCOMMAND_LoadDefaultTable, FLIB2_InitDefaults, NEWGRID_ValidateSelectionCode, NEWGRID_HandleGridEditorState
-; NOTES: Enable flag is normalized to 'Y'/'N'; template pointer is built/appended via ESQPARS_ReplaceOwnedString.
+; USED BY: GCOMMAND_ParseCommandOptions, GCOMMAND_LoadDefaultTable, FLIB2_InitDefaults, _NEWGRID_ValidateSelectionCode, NEWGRID_HandleGridEditorState
+; NOTES: Enable flag is normalized to 'Y'/'N'; template pointer is built/appended via _ESQPARS_ReplaceOwnedString.
 ;------------------------------------------------------------------------------
-GCOMMAND_DigitalNicheEnabledFlag:
+_GCOMMAND_DigitalNicheEnabledFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_NicheTextPen/GCOMMAND_NicheFramePen/GCOMMAND_NicheEditorLayoutPen/GCOMMAND_NicheEditorRowPen/GCOMMAND_NicheModeCycleCount/GCOMMAND_NicheForceMode5Flag/GCOMMAND_NicheWorkflowMode   (Digital Niche rendering/workflow params)
+; SYM: _GCOMMAND_NicheTextPen/_GCOMMAND_NicheFramePen/_GCOMMAND_NicheEditorLayoutPen/_GCOMMAND_NicheEditorRowPen/_GCOMMAND_NicheModeCycleCount/_GCOMMAND_NicheForceMode5Flag/_GCOMMAND_NicheWorkflowMode   (Digital Niche rendering/workflow params)
 ; TYPE: s32/s32/s32/s32/s32/s32/u8
 ; PURPOSE: Stores Niche pen/layout and mode-selection parameters parsed from command options.
 ; USED BY: GCOMMAND_ParseCommandOptions, FLIB2_LoadDigitalNicheDefaults, NEWGRID_DrawGridCellText, NEWGRID_SelectNextMode, NEWGRID_MapSelectionToMode, NEWGRID_ProcessSecondaryState
 ; NOTES: WorkflowMode stores uppercase 'F'/'B'/'L'/'N'; ForceMode5Flag toggles one mode-selection branch.
 ;------------------------------------------------------------------------------
-GCOMMAND_NicheTextPen:
+_GCOMMAND_NicheTextPen:
     DS.L    1
-GCOMMAND_NicheFramePen:
+_GCOMMAND_NicheFramePen:
     DS.L    1
-GCOMMAND_NicheEditorLayoutPen:
+_GCOMMAND_NicheEditorLayoutPen:
     DS.L    1
-GCOMMAND_NicheEditorRowPen:
+_GCOMMAND_NicheEditorRowPen:
     DS.L    1
-GCOMMAND_NicheModeCycleCount:
+_GCOMMAND_NicheModeCycleCount:
     DS.L    1
-GCOMMAND_NicheForceMode5Flag:
+_GCOMMAND_NicheForceMode5Flag:
     DS.L    1
-GCOMMAND_NicheWorkflowMode:
+_GCOMMAND_NicheWorkflowMode:
     DS.W    1
-GCOMMAND_DigitalNicheListingsTemplatePtr:
+_GCOMMAND_DigitalNicheListingsTemplatePtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_DigitalMplexEnabledFlag   (Digital Mplex enable flag)
+; SYM: _GCOMMAND_DigitalMplexEnabledFlag   (Digital Mplex enable flag)
 ; TYPE: u8
 ; PURPOSE: Enables/disables Digital Mplex option paths in grid validation/workflows.
-; USED BY: FLIB2_InitDefaults, NEWGRID_ValidateSelectionCode, NEWGRID1_Mplex workflows
+; USED BY: FLIB2_InitDefaults, _NEWGRID_ValidateSelectionCode, NEWGRID1_Mplex workflows
 ; NOTES: Stored as uppercase 'Y'/'N'.
 ;------------------------------------------------------------------------------
-GCOMMAND_DigitalMplexEnabledFlag:
+_GCOMMAND_DigitalMplexEnabledFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_MplexModeCycleCount/GCOMMAND_MplexSearchRowLimit/GCOMMAND_MplexClockOffsetMinutes/GCOMMAND_MplexMessageTextPen/GCOMMAND_MplexMessageFramePen/GCOMMAND_MplexEditorLayoutPen/GCOMMAND_MplexEditorRowPen/GCOMMAND_MplexDetailLayoutPen/GCOMMAND_MplexDetailInitialLineIndex/GCOMMAND_MplexDetailRowPen/GCOMMAND_MplexWorkflowMode/GCOMMAND_MplexDetailLayoutFlag   (Digital Mplex rendering/workflow params)
+; SYM: _GCOMMAND_MplexModeCycleCount/_GCOMMAND_MplexSearchRowLimit/_GCOMMAND_MplexClockOffsetMinutes/_GCOMMAND_MplexMessageTextPen/_GCOMMAND_MplexMessageFramePen/_GCOMMAND_MplexEditorLayoutPen/_GCOMMAND_MplexEditorRowPen/_GCOMMAND_MplexDetailLayoutPen/_GCOMMAND_MplexDetailInitialLineIndex/_GCOMMAND_MplexDetailRowPen/_GCOMMAND_MplexWorkflowMode/_GCOMMAND_MplexDetailLayoutFlag   (Digital Mplex rendering/workflow params)
 ; TYPE: s32/s32/s32/s32/s32/s32/s32/s32/s32/s32/u8/u8
 ; PURPOSE: Stores Mplex timing, pen, and workflow controls parsed from command options.
 ; USED BY: GCOMMAND_ParseCommandString, FLIB2_LoadDigitalMplexDefaults, NEWGRID_SelectNextMode, NEWGRID_DrawStatusMessage, NEWGRID_HandleDetailGridState, NEWGRID_ProcessScheduleState
 ; NOTES: WorkflowMode stores uppercase 'F'/'B'/'L'/'N'; DetailLayoutFlag stores uppercase 'Y'/'N'.
 ;------------------------------------------------------------------------------
-GCOMMAND_MplexModeCycleCount:
+_GCOMMAND_MplexModeCycleCount:
     DS.L    1
-GCOMMAND_MplexSearchRowLimit:
+_GCOMMAND_MplexSearchRowLimit:
     DS.L    1
-GCOMMAND_MplexClockOffsetMinutes:
+_GCOMMAND_MplexClockOffsetMinutes:
     DS.L    1
-GCOMMAND_MplexMessageTextPen:
+_GCOMMAND_MplexMessageTextPen:
     DS.L    1
-GCOMMAND_MplexMessageFramePen:
+_GCOMMAND_MplexMessageFramePen:
     DS.L    1
-GCOMMAND_MplexEditorLayoutPen:
+_GCOMMAND_MplexEditorLayoutPen:
     DS.L    1
-GCOMMAND_MplexEditorRowPen:
+_GCOMMAND_MplexEditorRowPen:
     DS.L    1
-GCOMMAND_MplexDetailLayoutPen:
+_GCOMMAND_MplexDetailLayoutPen:
     DS.L    1
-GCOMMAND_MplexDetailInitialLineIndex:
+_GCOMMAND_MplexDetailInitialLineIndex:
     DS.L    1
-GCOMMAND_MplexDetailRowPen:
+_GCOMMAND_MplexDetailRowPen:
     DS.L    1
-GCOMMAND_MplexWorkflowMode:
+_GCOMMAND_MplexWorkflowMode:
     DS.B    1
-GCOMMAND_MplexDetailLayoutFlag:
+_GCOMMAND_MplexDetailLayoutFlag:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_MplexListingsTemplatePtr/GCOMMAND_MplexAtTemplatePtr   (Digital Multiplex template strings)
+; SYM: _GCOMMAND_MplexListingsTemplatePtr/_GCOMMAND_MplexAtTemplatePtr   (Digital Multiplex template strings)
 ; TYPE: pointer/pointer
 ; PURPOSE: Owns the assembled "Digital Multiplex Listings" and "Digital Multiplex at %s" template strings.
 ; USED BY: GCOMMAND_LoadMplexTemplate, GCOMMAND_ParseCommandString, FLIB2 init helpers
 ; NOTES: Both pointers are rebuilt when command templates are reloaded.
 ;------------------------------------------------------------------------------
-GCOMMAND_MplexListingsTemplatePtr:
+_GCOMMAND_MplexListingsTemplatePtr:
     DS.L    1
-GCOMMAND_MplexAtTemplatePtr:
+_GCOMMAND_MplexAtTemplatePtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_DigitalPpvEnabledFlag   (Digital PPV enable flag)
+; SYM: _GCOMMAND_DigitalPpvEnabledFlag   (Digital PPV enable flag)
 ; TYPE: u8
 ; PURPOSE: Enables/disables Digital PPV option paths in grid validation/workflows.
-; USED BY: FLIB2_InitDefaults, NEWGRID_ValidateSelectionCode, NEWGRID1_Ppv workflows
+; USED BY: FLIB2_InitDefaults, _NEWGRID_ValidateSelectionCode, NEWGRID1_Ppv workflows
 ; NOTES: Stored as uppercase 'Y'/'N'.
 ;------------------------------------------------------------------------------
-GCOMMAND_DigitalPpvEnabledFlag:
+_GCOMMAND_DigitalPpvEnabledFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PpvModeCycleCount   (PPV mode cycle count)
+; SYM: _GCOMMAND_PpvModeCycleCount   (PPV mode cycle count)
 ; TYPE: s32
 ; PURPOSE: Optional cycle/repeat interval used by NEWGRID PPV mode-selection loops.
 ; USED BY: GCOMMAND_ParsePPVCommand, FLIB2_LoadDigitalPpvDefaults, NEWGRID_SelectNextMode
 ; NOTES: Zero disables delay behavior; positive values seed per-mode countdown bytes.
 ;------------------------------------------------------------------------------
-GCOMMAND_PpvModeCycleCount:
+_GCOMMAND_PpvModeCycleCount:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PpvSelectionWindowMinutes/GCOMMAND_PpvSelectionToleranceMinutes   (PPV selection timing params)
+; SYM: _GCOMMAND_PpvSelectionWindowMinutes/_GCOMMAND_PpvSelectionToleranceMinutes   (PPV selection timing params)
 ; TYPE: s32/s32
 ; PURPOSE: Minute-based timing parameters consumed by COI/NEWGRID selection and showtimes scans.
 ; USED BY: GCOMMAND_ParsePPVCommand, FLIB2 defaults, NEWGRID_* selection workflows, COI_ProcessEntrySelectionState
 ; NOTES: Defaults to 60/30; parsed as three-digit numeric options in PPV command handler.
 ;------------------------------------------------------------------------------
-GCOMMAND_PpvSelectionWindowMinutes:
+_GCOMMAND_PpvSelectionWindowMinutes:
     DS.L    1
-GCOMMAND_PpvSelectionToleranceMinutes:
+_GCOMMAND_PpvSelectionToleranceMinutes:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PpvMessageTextPen/GCOMMAND_PpvMessageFramePen   (PPV message pen pair)
+; SYM: _GCOMMAND_PpvMessageTextPen/_GCOMMAND_PpvMessageFramePen   (PPV message pen pair)
 ; TYPE: s32/s32
 ; PURPOSE: Pen indices used by NEWGRID_DrawGridMessageAlt for text and frame colors.
 ; USED BY: GCOMMAND_ParsePPVCommand, FLIB2_LoadDigitalPpvDefaults, NEWGRID_DrawGridMessageAlt
 ; NOTES: Text pen is constrained to 1..3 by parser defaults; frame pen accepts hex-digit values.
 ;------------------------------------------------------------------------------
-GCOMMAND_PpvMessageTextPen:
+_GCOMMAND_PpvMessageTextPen:
     DS.L    1
-GCOMMAND_PpvMessageFramePen:
+_GCOMMAND_PpvMessageFramePen:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PpvEditorLayoutPen/GCOMMAND_PpvEditorRowPen   (PPV editor/detail pen pair)
+; SYM: _GCOMMAND_PpvEditorLayoutPen/_GCOMMAND_PpvEditorRowPen   (PPV editor/detail pen pair)
 ; TYPE: s32/s32
 ; PURPOSE: Pen indices forwarded to NEWGRID_HandleGridEditorState for PPV detail/editor rendering.
 ; USED BY: GCOMMAND_ParsePPVCommand, FLIB2_LoadDigitalPpvDefaults, NEWGRID_ProcessShowtimesWorkflow
 ; NOTES: Layout pen feeds DISPTEXT_SetLayoutParams commit-pen arg; row pen feeds NEWGRID_DrawGridFrameAndRows.
 ;------------------------------------------------------------------------------
-GCOMMAND_PpvEditorLayoutPen:    ; 22EA
+_GCOMMAND_PpvEditorLayoutPen:    ; 22EA
     DS.L    1
-GCOMMAND_PpvEditorRowPen:       ; 22EB
+_GCOMMAND_PpvEditorRowPen:       ; 22EB
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PpvShowtimesLayoutPen/GCOMMAND_PpvShowtimesInitialLineIndex/GCOMMAND_PpvShowtimesRowPen   (PPV showtimes layout params)
+; SYM: _GCOMMAND_PpvShowtimesLayoutPen/_GCOMMAND_PpvShowtimesInitialLineIndex/_GCOMMAND_PpvShowtimesRowPen   (PPV showtimes layout params)
 ; TYPE: s32/s32/s32
 ; PURPOSE: Controls showtimes layout/render setup in NEWGRID showtimes flows.
 ; USED BY: GCOMMAND_ParsePPVCommand, FLIB2_LoadDigitalPpvDefaults, NEWGRID_HandleShowtimesState, NEWGRID_DrawGridFrameVariant3
 ; NOTES: InitialLineIndex is passed to _DISPTEXT_SetCurrentLineIndex; row pen also participates in grid-operation pen fallback.
 ;------------------------------------------------------------------------------
-GCOMMAND_PpvShowtimesLayoutPen:         ; 22EC
+_GCOMMAND_PpvShowtimesLayoutPen:         ; 22EC
     DS.L    1
-GCOMMAND_PpvShowtimesInitialLineIndex:  ; 22ED
+_GCOMMAND_PpvShowtimesInitialLineIndex:  ; 22ED
     DS.L    1
-GCOMMAND_PpvShowtimesRowPen:            ; 22EE
+_GCOMMAND_PpvShowtimesRowPen:            ; 22EE
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PpvShowtimesWorkflowMode/GCOMMAND_PpvDetailLayoutFlag   (PPV showtimes mode flags)
+; SYM: _GCOMMAND_PpvShowtimesWorkflowMode/_GCOMMAND_PpvDetailLayoutFlag   (PPV showtimes mode flags)
 ; TYPE: u8/u8
 ; PURPOSE: Stores PPV showtimes workflow mode (`F`/`B`/`L`/`N`) and detail layout toggle (`Y`/`N`).
 ; USED BY: GCOMMAND_ParsePPVCommand, FLIB2_LoadDigitalPpvDefaults, NEWGRID showtimes state machine
 ; NOTES: Flags are case-folded to uppercase before storage.
 ;------------------------------------------------------------------------------
-GCOMMAND_PpvShowtimesWorkflowMode:
+_GCOMMAND_PpvShowtimesWorkflowMode:
     DS.B    1
-GCOMMAND_PpvDetailLayoutFlag:
+_GCOMMAND_PpvDetailLayoutFlag:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PPVListingsTemplatePtr/GCOMMAND_PPVPeriodTemplatePtr   (Digital PPV template strings)
+; SYM: _GCOMMAND_PPVListingsTemplatePtr/_GCOMMAND_PPVPeriodTemplatePtr   (Digital PPV template strings)
 ; TYPE: pointer/pointer
 ; PURPOSE: Owns the assembled PPV listings and PPV period template strings.
 ; USED BY: FLIB2 init helpers, GCOMMAND_PPV parsing/formatting paths
 ; NOTES: Reinitialized alongside other command template pointers.
 ;------------------------------------------------------------------------------
-GCOMMAND_PPVListingsTemplatePtr:
+_GCOMMAND_PPVListingsTemplatePtr:
     DS.L    1
-GCOMMAND_PPVPeriodTemplatePtr:
+_GCOMMAND_PPVPeriodTemplatePtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PpvShowtimesRowSpan   (PPV showtimes row span)
+; SYM: _GCOMMAND_PpvShowtimesRowSpan   (PPV showtimes row span)
 ; TYPE: s32
 ; PURPOSE: Additional row span added to the current row when NEWGRID builds PPV showtimes buckets.
 ; USED BY: FLIB2_LoadDigitalPpvDefaults, GCOMMAND_ParsePPVCommand, NEWGRID_BuildShowtimesText
 ; NOTES: Parsed from a 2-char numeric option and clamped to <= 96 by parser logic.
 ;------------------------------------------------------------------------------
-GCOMMAND_PpvShowtimesRowSpan:
+_GCOMMAND_PpvShowtimesRowSpan:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_DefaultPresetTable   (default preset table)
+; SYM: _GCOMMAND_DefaultPresetTable   (default preset table)
 ; TYPE: u16[16]
 ; PURPOSE: Default preset values consumed by GCOMMAND preset increment/validation paths.
 ; USED BY: GCOMMAND_InitPresetDefaults, GCOMMAND_ComputePresetIncrement, GCOMMAND_ValidatePresetTable
 ; NOTES: Copied from validated preset sources and used as fallback baseline values.
 ;------------------------------------------------------------------------------
-GCOMMAND_DefaultPresetTable:
+_GCOMMAND_DefaultPresetTable:
     DS.L    8
 ;------------------------------------------------------------------------------
 ; SYM: GCOMMAND_PresetValueTable   (preset value matrix)
@@ -2719,16 +2719,16 @@ GCOMMAND_DefaultPresetTable:
 GCOMMAND_PresetValueTable:
     DS.L    512
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PresetWorkEntryTable   (highlight preset work entries)
+; SYM: _GCOMMAND_PresetWorkEntryTable   (highlight preset work entries)
 ; TYPE: struct[4]
 ; PURPOSE: Runtime table for preset timing/accumulator state used by banner highlight updates.
 ; USED BY: GCOMMAND_ResetPresetWorkTables, GCOMMAND_LoadPresetWorkEntries, GCOMMAND_TickPresetWorkEntries
 ; NOTES: Four entries, each 24 bytes.
-;        Entry0 starts at GCOMMAND_PresetWorkEntryTable; entry1/2/3 start at
+;        Entry0 starts at _GCOMMAND_PresetWorkEntryTable; entry1/2/3 start at
 ;        GCOMMAND_PresetWorkEntry1/2/3. The *_ValueIndex aliases map to offset +8
 ;        in each entry and are read by banner rebuild/draw paths.
 ;------------------------------------------------------------------------------
-GCOMMAND_PresetWorkEntryTable:
+_GCOMMAND_PresetWorkEntryTable:
     DS.L    2
 GCOMMAND_PresetWorkEntry0_ValueIndex:
     DS.L    4
@@ -2789,21 +2789,21 @@ GCOMMAND_BannerRowByteOffsetCurrent:
 GCOMMAND_BannerRowByteOffsetPrevious:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_BannerQueueSlotPrevious/GCOMMAND_BannerQueueSlotCurrent   (banner queue slot indices)
+; SYM: _GCOMMAND_BannerQueueSlotPrevious/_GCOMMAND_BannerQueueSlotCurrent   (banner queue slot indices)
 ; TYPE: u16/u16
-; PURPOSE: Tracks previous/current byte slot indices into ESQPARS2_BannerQueueBuffer banner queue storage.
+; PURPOSE: Tracks previous/current byte slot indices into _ESQPARS2_BannerQueueBuffer banner queue storage.
 ; USED BY: GCOMMAND_MapKeycodeToPreset, GCOMMAND_ConsumeBannerQueueEntry, GCOMMAND_TickHighlightState
 ; NOTES: Decrements each tick with wrap at 97 (`$61`).
 ;------------------------------------------------------------------------------
-GCOMMAND_BannerQueueSlotPrevious:
+_GCOMMAND_BannerQueueSlotPrevious:
     DS.W    1
-GCOMMAND_BannerQueueSlotCurrent:
+_GCOMMAND_BannerQueueSlotCurrent:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: GCOMMAND_BannerRowIndexPrevious/GCOMMAND_BannerRowIndexCurrent   (banner row indices)
 ; TYPE: s32/s32
 ; PURPOSE: Tracks previous/current row indices while rotating banner copper row pointers.
-; USED BY: GCOMMAND_UpdateBannerRowPointers, GCOMMAND_UpdateBannerOffset, GCOMMAND_BuildBannerTables
+; USED BY: GCOMMAND_UpdateBannerRowPointers, GCOMMAND_UpdateBannerOffset, _GCOMMAND_BuildBannerTables
 ; NOTES: Current index wraps in range 0..97; previous snapshots prior value for pointer updates.
 ;------------------------------------------------------------------------------
 GCOMMAND_BannerRowIndexPrevious:
@@ -2811,121 +2811,121 @@ GCOMMAND_BannerRowIndexPrevious:
 GCOMMAND_BannerRowIndexCurrent:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_ActiveMsgSavedField20/GCOMMAND_ActiveMsgSavedField24/GCOMMAND_ActiveMsgSavedField28   (active highlight-message saved fields)
+; SYM: GCOMMAND_ActiveMsgSavedField20/GCOMMAND_ActiveMsgSavedField24/_GCOMMAND_ActiveMsgSavedField28   (active highlight-message saved fields)
 ; TYPE: u32/u32/u32
 ; PURPOSE: Temporarily stores active highlight-message payload longs while banner/preset processing mutates message state.
-; USED BY: GCOMMAND_ServiceHighlightMessages, GCOMMAND_ResetHighlightMessages
+; USED BY: GCOMMAND_ServiceHighlightMessages, _GCOMMAND_ResetHighlightMessages
 ; NOTES: Values are copied from message offsets +20/+24/+28 and restored before reply/reset.
 ;------------------------------------------------------------------------------
 GCOMMAND_ActiveMsgSavedField20:
     DS.L    1
 GCOMMAND_ActiveMsgSavedField24:
     DS.L    1
-GCOMMAND_ActiveMsgSavedField28:
+_GCOMMAND_ActiveMsgSavedField28:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ESQSHARED4_InterleaveCopyBaseOffset/ESQSHARED4_InterleaveCopyTailOffsetCurrent/ESQSHARED4_InterleaveCopyTailOffsetReset   (banner interleave-copy offsets)
+; SYM: _ESQSHARED4_InterleaveCopyBaseOffset/ESQSHARED4_InterleaveCopyTailOffsetCurrent/_ESQSHARED4_InterleaveCopyTailOffsetReset   (banner interleave-copy offsets)
 ; TYPE: u32/u32/u32
 ; PURPOSE:
 ;   `...BaseOffset` is the fixed start offset for interleaved row-word copy passes.
 ;   `...TailOffsetCurrent` advances each tick to select the final tail source row.
 ;   `...TailOffsetReset` seeds/reset value copied back into current on wrap/rebuild.
-; USED BY: GCOMMAND_ResetBannerFadeState, GCOMMAND_BuildBannerTables, GCOMMAND_TickHighlightState, ESQSHARED4_CopyInterleavedRowWordsFromOffset
+; USED BY: GCOMMAND_ResetBannerFadeState, _GCOMMAND_BuildBannerTables, GCOMMAND_TickHighlightState, ESQSHARED4_CopyInterleavedRowWordsFromOffset
 ; NOTES: Current known reset constants are 128 (base) and 128+0x264 (tail reset).
 ;------------------------------------------------------------------------------
-ESQSHARED4_InterleaveCopyBaseOffset:
+_ESQSHARED4_InterleaveCopyBaseOffset:
     DS.L    1
 ESQSHARED4_InterleaveCopyTailOffsetCurrent:
     DS.L    1
-ESQSHARED4_InterleaveCopyTailOffsetReset:
+_ESQSHARED4_InterleaveCopyTailOffsetReset:
     DS.L    1
     DS.W    1
-Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE:
+_Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE:
     DS.L    1
-Global_REF_DATA_INPUT_BUFFER:
+_Global_REF_DATA_INPUT_BUFFER:
     DS.L    1
-Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE:
+_Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE:
     DS.L    1
-Global_REF_INPUTDEVICE_MSGPORT:
+_Global_REF_INPUTDEVICE_MSGPORT:
     DS.L    1
-Global_REF_CONSOLEDEVICE_MSGPORT:
+_Global_REF_CONSOLEDEVICE_MSGPORT:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISKIO_Drive0WriteProtectedCode/DISKIO_DriveWriteProtectStatusCodeDrive1/DISKIO_DriveMediaStatusCodeTable   (per-drive probe status tables)
+; SYM: _DISKIO_Drive0WriteProtectedCode/_DISKIO_DriveWriteProtectStatusCodeDrive1/_DISKIO_DriveMediaStatusCodeTable   (per-drive probe status tables)
 ; TYPE: s32/s32[3]/s32[4]
 ; PURPOSE:
-;   `DISKIO_Drive0WriteProtectedCode` is drive-0 entry in a write-protect/probe-status table.
-;   `DISKIO_DriveWriteProtectStatusCodeDrive1` provides drive1..drive3 companion entries.
-;   `DISKIO_DriveMediaStatusCodeTable` stores secondary per-drive media-status probe codes.
+;   `_DISKIO_Drive0WriteProtectedCode` is drive-0 entry in a write-protect/probe-status table.
+;   `_DISKIO_DriveWriteProtectStatusCodeDrive1` provides drive1..drive3 companion entries.
+;   `_DISKIO_DriveMediaStatusCodeTable` stores secondary per-drive media-status probe codes.
 ; USED BY: DISKIO_ProbeDrivesAndAssignPaths, ESQ startup warning path, ESQIFF external-asset reload gating, ESQFUNC_UpdateDiskWarningAndRefreshTick
 ; NOTES:
 ;   Tables are indexed by drive number with `ASL #2`.
 ;   Callers often treat drive-0 entries as boolean gates, but raw probe codes are preserved.
 ;------------------------------------------------------------------------------
-DISKIO_Drive0WriteProtectedCode:
+_DISKIO_Drive0WriteProtectedCode:
     DS.L    1
-DISKIO_DriveWriteProtectStatusCodeDrive1:
+_DISKIO_DriveWriteProtectStatusCodeDrive1:
     DS.L    3
-DISKIO_DriveMediaStatusCodeTable:
+_DISKIO_DriveMediaStatusCodeTable:
     DS.L    4
 ;------------------------------------------------------------------------------
-; SYM: ED_StateRingWriteIndex   (editor state-ring write index)
+; SYM: _ED_StateRingWriteIndex   (editor state-ring write index)
 ; TYPE: s32
-; PURPOSE: Producer index into ED_StateRingTable for newly queued control/input events.
-; USED BY: GCOMMAND_ProcessCtrlCommand, APP2 input staging, ED dispatcher gate
-; NOTES: Advanced modulo $14; ED_StateRingIndex is the consumer side.
+; PURPOSE: Producer index into _ED_StateRingTable for newly queued control/input events.
+; USED BY: _GCOMMAND_ProcessCtrlCommand, APP2 input staging, ED dispatcher gate
+; NOTES: Advanced modulo $14; _ED_StateRingIndex is the consumer side.
 ;------------------------------------------------------------------------------
-ED_StateRingWriteIndex:
+_ED_StateRingWriteIndex:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_StateRingIndex   (editor state ring index)
+; SYM: _ED_StateRingIndex   (editor state ring index)
 ; TYPE: s32
-; PURPOSE: Current write/read index into ED_StateRingTable.
+; PURPOSE: Current write/read index into _ED_StateRingTable.
 ; USED BY: ED_*, ED1_*, ED2_*, ED3_*, KYBD_*
 ; NOTES: Advanced modulo $14 in editor dispatch paths.
 ;------------------------------------------------------------------------------
-ED_StateRingIndex:
+_ED_StateRingIndex:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_StateRingTable   (editor state ring table)
+; SYM: _ED_StateRingTable   (editor state ring table)
 ; TYPE: s32[]
 ; PURPOSE: Ring buffer backing store for editor state/history entries.
 ; USED BY: ED_*, ED1_*, ED2_*, ED3_*, KYBD_*
-; NOTES: Indexed via ED_StateRingIndex.
+; NOTES: Indexed via _ED_StateRingIndex.
 ;------------------------------------------------------------------------------
-ED_StateRingTable:
+_ED_StateRingTable:
     DS.L    25
 ;------------------------------------------------------------------------------
-; SYM: INPUTDEVICE_LibraryBaseFromConsoleIo/INPUTDEVICE_HandlerUserDataLong   (input-handler call context)
+; SYM: _INPUTDEVICE_LibraryBaseFromConsoleIo/_INPUTDEVICE_HandlerUserDataLong   (input-handler call context)
 ; TYPE: pointer/u32[2]
 ; PURPOSE:
-;   `INPUTDEVICE_LibraryBaseFromConsoleIo` caches the console-device library base used by EXEC_CallVector_48.
-;   `INPUTDEVICE_HandlerUserDataLong` is the handler user-data storage pointer wired into the 22-byte input-handler struct.
+;   `_INPUTDEVICE_LibraryBaseFromConsoleIo` caches the console-device library base used by EXEC_CallVector_48.
+;   `_INPUTDEVICE_HandlerUserDataLong` is the handler user-data storage pointer wired into the 22-byte input-handler struct.
 ; USED BY: KYBD_InitializeInputDevices, EXEC_CallVector_48
 ; NOTES:
-;   `INPUTDEVICE_HandlerUserDataLong` address is written to handler struct offset +14 (`is_Data`-style field).
+;   `_INPUTDEVICE_HandlerUserDataLong` address is written to handler struct offset +14 (`is_Data`-style field).
 ;------------------------------------------------------------------------------
-INPUTDEVICE_LibraryBaseFromConsoleIo:
+_INPUTDEVICE_LibraryBaseFromConsoleIo:
     DS.L    1
-INPUTDEVICE_HandlerUserDataLong:
+_INPUTDEVICE_HandlerUserDataLong:
     DS.L    2
 ;------------------------------------------------------------------------------
 ; SYM: LADFUNC_SaveAdsFileHandle   (LAD text-ads save file handle)
 ; TYPE: pointer/handle
 ; PURPOSE: File handle used while serializing LAD text ads to `df0:local.ads`.
-; USED BY: LADFUNC_SaveTextAdsToFile
-; NOTES: Opened via DISKIO_OpenFileWithBuffer and consumed by DISKIO_WriteBufferedBytes/DISKIO_WriteDecimalField/DISKIO_CloseBufferedFileAndFlush I/O helpers.
+; USED BY: _LADFUNC_SaveTextAdsToFile
+; NOTES: Opened via _DISKIO_OpenFileWithBuffer and consumed by _DISKIO_WriteBufferedBytes/_DISKIO_WriteDecimalField/_DISKIO_CloseBufferedFileAndFlush I/O helpers.
 ;------------------------------------------------------------------------------
 LADFUNC_SaveAdsFileHandle:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: LOCAVAIL_PrimaryFilterState/LOCAVAIL_SecondaryFilterState   (locavail filter state structs)
+; SYM: _LOCAVAIL_PrimaryFilterState/LOCAVAIL_SecondaryFilterState   (locavail filter state structs)
 ; TYPE: struct/struct
 ; PURPOSE: Persistent filter/scan state blocks for primary and secondary locavail group handling.
 ; USED BY: LOCAVAIL_*, ESQPARS_*, ESQFUNC_*, CLEANUP_*, ED1_*, SCRIPT3_*
 ; NOTES: Accessed via struct-style offsets (e.g. +8/+12/+20), so adjacent storage is part of the layout.
 ;------------------------------------------------------------------------------
-LOCAVAIL_PrimaryFilterState:
+_LOCAVAIL_PrimaryFilterState:
     DS.L    2
 LOCAVAIL_PrimaryFilterState_Field08:
     DS.L    1
@@ -2939,45 +2939,45 @@ LOCAVAIL_SecondaryFilterState:
     DS.L    6
 LOCAVAIL_FilterCooldownTicks:
     DS.L    1
-Global_REF_BACKED_UP_INTUITION_AUTOREQUEST:
+_Global_REF_BACKED_UP_INTUITION_AUTOREQUEST:
     DS.L    1
-Global_REF_BACKED_UP_INTUITION_DISPLAYALERT:
+_Global_REF_BACKED_UP_INTUITION_DISPLAYALERT:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_RowHeightPx   (grid row height in pixels)
+; SYM: _NEWGRID_RowHeightPx   (grid row height in pixels)
 ; TYPE: u16
 ; PURPOSE: Pixel height of one NEWGRID row cell.
 ; USED BY: NEWGRID_* layout and rendering helpers
 ; NOTES: Derived from active font metrics during grid initialization.
 ;------------------------------------------------------------------------------
-NEWGRID_RowHeightPx:
+_NEWGRID_RowHeightPx:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_SampleTimeTextWidthPx   (sample "44:44:44" text width)
 ; TYPE: u16
 ; PURPOSE: Cached width of sample time text used during grid geometry setup.
 ; USED BY: NEWGRID_InitGridResources
-; NOTES: Baseline used to compute NEWGRID_ColumnStartXPx.
+; NOTES: Baseline used to compute _NEWGRID_ColumnStartXPx.
 ;------------------------------------------------------------------------------
 NEWGRID_SampleTimeTextWidthPx:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_ColumnStartXPx   (left edge of first data column)
+; SYM: _NEWGRID_ColumnStartXPx   (left edge of first data column)
 ; TYPE: u16
 ; PURPOSE: Horizontal pixel offset where NEWGRID data columns begin.
 ; USED BY: NEWGRID_DrawClockFormatHeader, NEWGRID date/header rendering
 ; NOTES: Computed from NEWGRID_SampleTimeTextWidthPx plus padding.
 ;------------------------------------------------------------------------------
-NEWGRID_ColumnStartXPx:
+_NEWGRID_ColumnStartXPx:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_ColumnWidthPx   (per-column width in pixels)
+; SYM: _NEWGRID_ColumnWidthPx   (per-column width in pixels)
 ; TYPE: u16
 ; PURPOSE: Width of each day/time column in the NEWGRID header/body.
 ; USED BY: NEWGRID_* column layout loops
 ; NOTES: Computed from available width and number of columns.
 ;------------------------------------------------------------------------------
-NEWGRID_ColumnWidthPx:
+_NEWGRID_ColumnWidthPx:
     DS.W    1
 NEWGRID_RowLayoutCommitPenId:
     DS.L    1
@@ -3006,28 +3006,28 @@ NEWGRID2_ShowtimesSelectionContextPtr:
 NEWGRID_SelectedGridEntryPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_OverridePenIndex   (newgrid override pen index)
+; SYM: _NEWGRID_OverridePenIndex   (newgrid override pen index)
 ; TYPE: s32
 ; PURPOSE: Holds temporary color/pen override selected while drawing current grid entry.
 ; USED BY: NEWGRID_SelectEntryPen, NEWGRID_ProcessGridEntries
 ; NOTES: Clamped to 1..3 by NEWGRID_SelectEntryPen before cell drawing consumes it.
 ;------------------------------------------------------------------------------
-NEWGRID_OverridePenIndex:
+_NEWGRID_OverridePenIndex:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_EntryTextScratchPtr   (newgrid entry text scratch pointer)
+; SYM: _NEWGRID_EntryTextScratchPtr   (newgrid entry text scratch pointer)
 ; TYPE: pointer
 ; PURPOSE: Heap buffer used as staging text while NEWGRID formats/splits per-entry display lines.
-; USED BY: NEWGRID_DrawGridEntry, NEWGRID2_EnsureBuffersAllocated, NEWGRID2_FreeBuffersIfAllocated
+; USED BY: NEWGRID_DrawGridEntry, NEWGRID2_EnsureBuffersAllocated, _NEWGRID2_FreeBuffersIfAllocated
 ; NOTES: Allocated as 1000 bytes in NEWGRID2_EnsureBuffersAllocated.
 ;------------------------------------------------------------------------------
-NEWGRID_EntryTextScratchPtr:
+_NEWGRID_EntryTextScratchPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: _NEWGRID_ShowtimeBucketEntryTable/NEWGRID_ShowtimeBucketEntryTablePadLong/_NEWGRID_ShowtimeBucketPtrTable   (showtime bucket storage)
 ; TYPE: struct[10]/pointer[10]
 ; PURPOSE: Stores normalized showtime bucket records and a sortable pointer index table.
-; USED BY: NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry, NEWGRID_AppendShowtimeBuckets
+; USED BY: _NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry, NEWGRID_AppendShowtimeBuckets
 ; NOTES: Entry records contain a packed key plus text pointer; pointer table supports insertion-sorted ordering.
 ;------------------------------------------------------------------------------
 _NEWGRID_ShowtimeBucketEntryTable:
@@ -3040,12 +3040,12 @@ _NEWGRID_ShowtimeBucketPtrTable:
 ; SYM: NEWGRID_ShowtimeBucketCount   (showtime bucket count)
 ; TYPE: s32
 ; PURPOSE: Current number of active entries in NEWGRID showtime bucket arrays.
-; USED BY: NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry, NEWGRID_AppendShowtimeBuckets
+; USED BY: _NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry, NEWGRID_AppendShowtimeBuckets
 ; NOTES: Clamped to a max of 10 entries.
 ;------------------------------------------------------------------------------
 NEWGRID_ShowtimeBucketCount:
     DS.L    1
-FLIB_LogEntryByteCount:
+_FLIB_LogEntryByteCount:
     DS.L    2
 ;------------------------------------------------------------------------------
 ; SYM: _P_TYPE_PrimaryGroupListPtr/_P_TYPE_SecondaryGroupListPtr   (p_type group list pointers)
@@ -3068,19 +3068,19 @@ _P_TYPE_SecondaryGroupListPtr:
 PARSEINI_CurrentWeatherBlockPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: PARSEINI_WeatherBrushNodePtr   (weather brush node pointer)
+; SYM: _PARSEINI_WeatherBrushNodePtr   (weather brush node pointer)
 ; TYPE: pointer
 ; PURPOSE: Tracks the most recently allocated weather brush node during parsing.
 ; USED BY: PARSEINI_LoadWeatherStrings
 ; NOTES: Cleared when the banner brush resource list is empty.
 ;------------------------------------------------------------------------------
-PARSEINI_WeatherBrushNodePtr:
+_PARSEINI_WeatherBrushNodePtr:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: GCOMMAND_GradientPresetTable   (gradient preset table)
 ; TYPE: s32[520]
 ; PURPOSE: Stores gradient preset values parsed from the [gradient] INI section.
-; USED BY: PARSEINI_ParseIniBufferAndDispatch, GCOMMAND_InitPresetTableFromPalette
+; USED BY: PARSEINI_ParseIniBufferAndDispatch, _GCOMMAND_InitPresetTableFromPalette
 ; NOTES:
 ;   Table length is 520 longs (2080 bytes).
 ;   Current traced writers/readers are parse-time only (`PARSEINI_*` + initializer/
@@ -3089,62 +3089,62 @@ PARSEINI_WeatherBrushNodePtr:
 ;------------------------------------------------------------------------------
 GCOMMAND_GradientPresetTable:
     DS.L    520
-CTRL_BUFFER:
+_CTRL_BUFFER:
     DS.L    125
 ;------------------------------------------------------------------------------
-; SYM: _SCRIPT_SerialShadowWord/SCRIPT_SerialInputLatch   (serial control shadow)
+; SYM: _SCRIPT_SerialShadowWord/_SCRIPT_SerialInputLatch   (serial control shadow)
 ; TYPE: u16/u16
 ; PURPOSE: Shadow copy of serial control word plus most recent latched input bits.
-; USED BY: SCRIPT_AssertCtrlLine*, SCRIPT_DeassertCtrlLine*, _SCRIPT_WriteCtrlShadowToSerdat
+; USED BY: _SCRIPT_AssertCtrlLine*, _SCRIPT_DeassertCtrlLine*, _SCRIPT_WriteCtrlShadowToSerdat
 ; NOTES: CTRL-line assert/deassert toggles bit 5 in _SCRIPT_SerialShadowWord before writing SERDAT.
 ;------------------------------------------------------------------------------
 _SCRIPT_SerialShadowWord:
     DS.W    1
-SCRIPT_SerialInputLatch:
+_SCRIPT_SerialInputLatch:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_CtrlLineAssertedTicks   (ctrl-line asserted tick counter)
+; SYM: _SCRIPT_CtrlLineAssertedTicks   (ctrl-line asserted tick counter)
 ; TYPE: s16 (stored in long slot)
 ; PURPOSE: Counts ticks while the CTRL line remains asserted.
 ; USED BY: SCRIPT_PollHandshakeAndApplyTimeout
 ; NOTES: Reset to 0 after reaching the timeout threshold.
 ;------------------------------------------------------------------------------
-SCRIPT_CtrlLineAssertedTicks:
+_SCRIPT_CtrlLineAssertedTicks:
     DS.L    1
 Global_WORD_CLOCK_SECONDS:
     DS.W    1
 SCRIPT_CTRL_STATE:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_RuntimeMode   (script runtime mode/state)
+; SYM: _SCRIPT_RuntimeMode   (script runtime mode/state)
 ; TYPE: u16
 ; PURPOSE: Current script engine mode used by SCRIPT3/TEXTDISP2 flows.
 ; USED BY: SCRIPT3_*, TEXTDISP2_*, ED1_*, ESQFUNC_*, ESQIFF2_*
 ; NOTES: Frequently switched among small integer mode ids.
 ;------------------------------------------------------------------------------
-SCRIPT_RuntimeMode:
+_SCRIPT_RuntimeMode:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_CtrlCmdCount/SCRIPT_CtrlCmdChecksumErrorCount/SCRIPT_CtrlCmdLengthErrorCount   (CTRL command counters)
+; SYM: _SCRIPT_CtrlCmdCount/_SCRIPT_CtrlCmdChecksumErrorCount/_SCRIPT_CtrlCmdLengthErrorCount   (CTRL command counters)
 ; TYPE: u16/u16/u16
 ; PURPOSE: Tracks CTRL command totals plus checksum and length error counts.
 ; USED BY: SCRIPT_HandleSerialCtrlCmd, ESQFUNC_DrawMemoryStatusScreen, ED2_HandleDiagnosticsMenuActions
 ; NOTES: "LERRS" increments when CTRL buffer length exceeds 198 bytes.
 ;------------------------------------------------------------------------------
-SCRIPT_CtrlCmdCount:
+_SCRIPT_CtrlCmdCount:
     DS.W    1
-SCRIPT_CtrlCmdChecksumErrorCount:
+_SCRIPT_CtrlCmdChecksumErrorCount:
     DS.W    1
-SCRIPT_CtrlCmdLengthErrorCount:
+_SCRIPT_CtrlCmdLengthErrorCount:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: Global_RefreshTickCounter   (global refresh tick counter)
+; SYM: _Global_RefreshTickCounter   (global refresh tick counter)
 ; TYPE: s16
 ; PURPOSE: Tick counter for periodic refresh/redraw scheduling.
 ; USED BY: TEXTDISP2_*, SCRIPT3_*, ESQFUNC_*, DISKIO_*, APP2_*
 ; NOTES: Uses -1 sentinel in several callers.
 ;------------------------------------------------------------------------------
-Global_RefreshTickCounter:
+_Global_RefreshTickCounter:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _TEXTDISP_PrimarySearchText/_TEXTDISP_SecondarySearchText   (search text buffers)
@@ -3169,71 +3169,71 @@ _TEXTDISP_PrimaryChannelCode:
 _TEXTDISP_SecondaryChannelCode:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_ChannelRangeDigitChar   (channel-range digit char)
+; SYM: _SCRIPT_ChannelRangeDigitChar   (channel-range digit char)
 ; TYPE: u8 (stored in word slot)
 ; PURPOSE: Captures the channel-range digit parsed from script control buffers.
 ; USED BY: SCRIPT_HandleBrushCommand, playback aligned-status render paths
 ; NOTES: Stored as ASCII digit; '0' disables the channel-range path.
 ;------------------------------------------------------------------------------
-SCRIPT_ChannelRangeDigitChar:
+_SCRIPT_ChannelRangeDigitChar:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_SearchMatchCountOrIndex   (search match count/index ??)
+; SYM: _SCRIPT_SearchMatchCountOrIndex   (search match count/index ??)
 ; TYPE: s32
 ; PURPOSE: Stores the selection argument passed into SCRIPT_SelectPlaybackCursorFromSearchText.
 ; USED BY: SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot
 ; NOTES: Passed through to CLEANUP_RenderAlignedStatusScreen (usage uncertain).
 ;------------------------------------------------------------------------------
-SCRIPT_SearchMatchCountOrIndex:
+_SCRIPT_SearchMatchCountOrIndex:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_PlaybackCursor   (script playback cursor/state value)
+; SYM: _SCRIPT_PlaybackCursor   (script playback cursor/state value)
 ; TYPE: s32
 ; PURPOSE: Tracks active script playback/progression position/state.
 ; USED BY: SCRIPT3_* state handlers
 ; NOTES: Saved/restored with SCRIPT context structs.
 ;------------------------------------------------------------------------------
-SCRIPT_PlaybackCursor:
+_SCRIPT_PlaybackCursor:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_BannerTransitionTargetChar/SCRIPT_BannerTransitionStepDelta/SCRIPT_BannerTransitionStepSign   (banner transition params)
+; SYM: _SCRIPT_BannerTransitionTargetChar/_SCRIPT_BannerTransitionStepDelta/_SCRIPT_BannerTransitionStepSign   (banner transition params)
 ; TYPE: u8/s16/s16
 ; PURPOSE: Stores the target banner character plus per-tick step data.
 ; USED BY: SCRIPT_BeginBannerCharTransition, SCRIPT_UpdateBannerCharTransition, SCRIPT_PrimeBannerTransitionFromHexCode
 ; NOTES: Step delta is signed after applying the sign value.
 ;------------------------------------------------------------------------------
-SCRIPT_BannerTransitionTargetChar:
+_SCRIPT_BannerTransitionTargetChar:
     DS.W    1
-SCRIPT_BannerTransitionStepDelta:
+_SCRIPT_BannerTransitionStepDelta:
     DS.W    1
-SCRIPT_BannerTransitionStepSign:
+_SCRIPT_BannerTransitionStepSign:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _SCRIPT_CTRL_CONTEXT   (CtrlContextStruct_uncertain)
 ; TYPE: struct
 ; PURPOSE: Control/script context storage used by script control handlers.
-; USED BY: _SCRIPT_InitCtrlContext, _SCRIPT_SetCtrlContextMode, SCRIPT_ResetCtrlContext
+; USED BY: _SCRIPT_InitCtrlContext, _SCRIPT_SetCtrlContextMode, _SCRIPT_ResetCtrlContext
 ; NOTES: Size = 112 longs (448 bytes). Field meanings largely unknown.
 ;------------------------------------------------------------------------------
 _SCRIPT_CTRL_CONTEXT:
     DS.L    112
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_PrimarySearchFirstFlag   (script search-order flag)
+; SYM: _SCRIPT_PrimarySearchFirstFlag   (script search-order flag)
 ; TYPE: u16
 ; PURPOSE: Selects whether script-driven lookup checks primary search first.
-; USED BY: SCRIPT3 state/serialization handlers, TEXTDISP_SelectGroupAndEntry dispatch wrapper
+; USED BY: SCRIPT3 state/serialization handlers, _TEXTDISP_SelectGroupAndEntry dispatch wrapper
 ; NOTES: Toggled by script command bytes (`L`/`R`) and persisted in script state blobs.
 ;------------------------------------------------------------------------------
-SCRIPT_PrimarySearchFirstFlag:
+_SCRIPT_PrimarySearchFirstFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_ChannelRangeArmedFlag   (channel-range gate)
+; SYM: _SCRIPT_ChannelRangeArmedFlag   (channel-range gate)
 ; TYPE: u16 (stored in long slot)
 ; PURPOSE: Enables channel-range parsing when set by script search selection.
 ; USED BY: SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_HandleBrushCommand
 ; NOTES: Cleared when selection fails or playback cursor is forced.
 ;------------------------------------------------------------------------------
-SCRIPT_ChannelRangeArmedFlag:
+_SCRIPT_ChannelRangeArmedFlag:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_FilterCandidateCursor/TEXTDISP_FilterChannelSlotIndex/TEXTDISP_FilterMatchCount/TEXTDISP_FilterPpvSbeMatchFlag/TEXTDISP_FilterSportsMatchFlag   (filter state)
@@ -3256,41 +3256,41 @@ TEXTDISP_FilterSportsMatchFlag:
 ; SYM: TEXTDISP_StatusGroupId   (status line group id)
 ; TYPE: u16
 ; PURPOSE: Stores the group id used when building now/next status lines.
-; USED BY: TEXTDISP_HandleScriptCommand
-; NOTES: Set to TEXTDISP_ActiveGroupId or 0/1 fallback ids.
+; USED BY: _TEXTDISP_HandleScriptCommand
+; NOTES: Set to _TEXTDISP_ActiveGroupId or 0/1 fallback ids.
 ;------------------------------------------------------------------------------
 TEXTDISP_StatusGroupId:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_SourceConfigEntryTable/TEXTDISP_SourceConfigEntryCount   (SourceCfg table)
+; SYM: _TEXTDISP_SourceConfigEntryTable/_TEXTDISP_SourceConfigEntryCount   (SourceCfg table)
 ; TYPE: pointer[302]/s32
 ; PURPOSE: Stores SourceCfg entry pointers and the active entry count.
 ; USED BY: TEXTDISP_LoadSourceConfig, TEXTDISP_ClearSourceConfig, TEXTDISP_ApplySourceConfigToEntry
 ; NOTES: Each entry points to a 6-byte SourceCfg record.
 ;------------------------------------------------------------------------------
-TEXTDISP_SourceConfigEntryTable:
+_TEXTDISP_SourceConfigEntryTable:
     DS.L    302
-TEXTDISP_SourceConfigEntryCount:
+_TEXTDISP_SourceConfigEntryCount:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_PrimaryFirstMatchIndex/TEXTDISP_SecondaryFirstMatchIndex   (first match indices)
 ; TYPE: u16/u16
 ; PURPOSE: Stores the first candidate index found for primary/secondary groups.
-; USED BY: TEXTDISP_SelectGroupAndEntry
-; NOTES: Written from TEXTDISP_CandidateIndexList[0] when matches exist.
+; USED BY: _TEXTDISP_SelectGroupAndEntry
+; NOTES: Written from _TEXTDISP_CandidateIndexList[0] when matches exist.
 ;------------------------------------------------------------------------------
 TEXTDISP_PrimaryFirstMatchIndex:
     DS.W    1
 TEXTDISP_SecondaryFirstMatchIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_EntryTextBaseWidthPx   (entry text base width)
+; SYM: _TEXTDISP_EntryTextBaseWidthPx   (entry text base width)
 ; TYPE: s32
 ; PURPOSE: Base pixel width used when populating entry short/long name fields.
 ; USED BY: TEXTDISP_SetEntryTextFields
-; NOTES: Derived from CONFIG_LRBN_FlagChar and CONFIG_BannerCopperHeadByte.
+; NOTES: Derived from _CONFIG_LRBN_FlagChar and _CONFIG_BannerCopperHeadByte.
 ;------------------------------------------------------------------------------
-TEXTDISP_EntryTextBaseWidthPx:
+_TEXTDISP_EntryTextBaseWidthPx:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_GlobalTickCounter   (global tick counter)
@@ -3311,13 +3311,13 @@ ESQ_GlobalTickCounter:
 _TEXTDISP_CurrentMatchIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_ChannelSourceMode   (channel source mode selector)
+; SYM: _TEXTDISP_ChannelSourceMode   (channel source mode selector)
 ; TYPE: u16
 ; PURPOSE: Selects primary vs secondary channel/search source for text-display range checks.
 ; USED BY: TEXTDISP_UpdateChannelRangeFlags, SCRIPT3 save/restore command context, CLEANUP3 state restore
 ; NOTES: Current paths treat `1` as primary-source mode; non-1 selects secondary-source mode.
 ;------------------------------------------------------------------------------
-TEXTDISP_ChannelSourceMode:
+_TEXTDISP_ChannelSourceMode:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: CLEANUP_AlignedStatusSuffixBuffer/CLEANUP_AlignedStatusMatchIndex   (aligned status text state)
@@ -3364,7 +3364,7 @@ CLEANUP_AlignedStatusEntryCycleTable:
 ; TYPE: char[80]
 ; PURPOSE: Temporary short-name string built before channel-label composition.
 ; USED BY: TEXTDISP_DrawChannelBanner, CLEANUP3 aligned-status rebuild path
-; NOTES: Filled by TEXTDISP_BuildEntryShortName, then copied/concatenated into TEXTDISP_ChannelLabelBuffer.
+; NOTES: Filled by TEXTDISP_BuildEntryShortName, then copied/concatenated into _TEXTDISP_ChannelLabelBuffer.
 ;------------------------------------------------------------------------------
 TEXTDISP_EntryShortNameScratch:
     DS.L    20
@@ -3391,38 +3391,38 @@ TEXTDISP_LinePenOverrideStateWord:
 TEXTDISP_CurrentMatchIndexSaved:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_SbeFilterActiveFlag/TEXTDISP_FindModeActiveFlag   (search-mode flags)
+; SYM: _TEXTDISP_SbeFilterActiveFlag/_TEXTDISP_FindModeActiveFlag   (search-mode flags)
 ; TYPE: u16/u16
 ; PURPOSE: Tracks special wildcard modes while building candidate lists (`SBE` and `FIND1` flows).
-; USED BY: TEXTDISP_BuildMatchIndexList, TEXTDISP_SelectBestMatchFromList, TEXTDISP_SelectGroupAndEntry
+; USED BY: TEXTDISP_BuildMatchIndexList, TEXTDISP_SelectBestMatchFromList, _TEXTDISP_SelectGroupAndEntry
 ; NOTES:
-;   `TEXTDISP_SbeFilterActiveFlag` is set when the SBE wildcard branch is active.
-;   `TEXTDISP_FindModeActiveFlag` is set when pattern prefix matches FIND1 and alters selection return behavior.
+;   `_TEXTDISP_SbeFilterActiveFlag` is set when the SBE wildcard branch is active.
+;   `_TEXTDISP_FindModeActiveFlag` is set when pattern prefix matches FIND1 and alters selection return behavior.
 ;------------------------------------------------------------------------------
-TEXTDISP_SbeFilterActiveFlag:
+_TEXTDISP_SbeFilterActiveFlag:
     DS.W    1
-TEXTDISP_FindModeActiveFlag:
+_TEXTDISP_FindModeActiveFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_CandidateIndexList   (filtered entry index list)
+; SYM: _TEXTDISP_CandidateIndexList   (filtered entry index list)
 ; TYPE: u32[75]
 ; PURPOSE: Holds candidate entry indices produced by wildcard/filter searches.
 ; USED BY: TEXTDISP_FindEntryIndexByWildcard, TEXTDISP_BuildNowShowingStatusLine, SCRIPT3_*
 ; NOTES: Built during search passes, then consumed by status/banner rendering code.
 ;------------------------------------------------------------------------------
-TEXTDISP_CandidateIndexList:
+_TEXTDISP_CandidateIndexList:
     DS.L    75
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_BannerFallbackEntryIndex/TEXTDISP_BannerFallbackIsSpecialFlag/TEXTDISP_BannerFallbackValidFlag/TEXTDISP_BannerSelectedEntryIndex/TEXTDISP_BannerSelectedIsSpecialFlag/TEXTDISP_BannerSelectedValidFlag/TEXTDISP_ChannelLabelReadyFlag
+; SYM: _TEXTDISP_BannerFallbackEntryIndex/TEXTDISP_BannerFallbackIsSpecialFlag/TEXTDISP_BannerFallbackValidFlag/_TEXTDISP_BannerSelectedEntryIndex/TEXTDISP_BannerSelectedIsSpecialFlag/TEXTDISP_BannerSelectedValidFlag/_TEXTDISP_ChannelLabelReadyFlag
 ; TYPE: u8/u8/u8/u8/u8/u8/u32
 ; PURPOSE: Carries fallback/selected entry metadata and channel-label readiness for banner/status rendering.
-; USED BY: TEXTDISP_SelectBestMatchFromList, TEXTDISP_SelectGroupAndEntry, SCRIPT3 state save/restore, TEXTDISP/CLEANUP3 banner/status draws
+; USED BY: TEXTDISP_SelectBestMatchFromList, _TEXTDISP_SelectGroupAndEntry, SCRIPT3 state save/restore, TEXTDISP/CLEANUP3 banner/status draws
 ; NOTES:
 ;   Entry-index bytes pair with their corresponding `IsSpecialFlag` and `ValidFlag` fields.
-;   `TEXTDISP_ChannelLabelReadyFlag` is set to 1 when TEXTDISP_BuildChannelLabel constructs a usable label.
+;   `_TEXTDISP_ChannelLabelReadyFlag` is set to 1 when TEXTDISP_BuildChannelLabel constructs a usable label.
 ;------------------------------------------------------------------------------
-TEXTDISP_BannerFallbackEntryIndex:
+_TEXTDISP_BannerFallbackEntryIndex:
     DS.B    1
 ;------------------------------------------------------------------------------
 ; SYM: _TEXTDISP_BannerCharFallback/_TEXTDISP_BannerCharSelected   (status banner chars)
@@ -3437,7 +3437,7 @@ TEXTDISP_BannerFallbackIsSpecialFlag:
     DS.B    1
 TEXTDISP_BannerFallbackValidFlag:
     DS.B    1
-TEXTDISP_BannerSelectedEntryIndex:
+_TEXTDISP_BannerSelectedEntryIndex:
     DS.B    1
 _TEXTDISP_BannerCharSelected:
     DS.B    1
@@ -3445,7 +3445,7 @@ TEXTDISP_BannerSelectedIsSpecialFlag:
     DS.B    1
 TEXTDISP_BannerSelectedValidFlag:
     DS.B    1
-TEXTDISP_ChannelLabelReadyFlag:
+_TEXTDISP_ChannelLabelReadyFlag:
     DS.L    1
     DS.W    1
 TLIBA2_BroadcastWindowClockSnapshotA:
@@ -3460,17 +3460,17 @@ TLIBA2_BroadcastWindowClockSnapshotC:
 ; SYM: TLIBA2_BroadcastWindowClockSnapshotA/TLIBA2_BroadcastWindowClockSnapshotB/TLIBA2_BroadcastWindowClockSnapshotC   (broadcast-window clock snapshot)
 ; TYPE: packed clock/date tuple scratch
 ; PURPOSE: Scratch copy of current clock/date fields while TLIBA2 computes adjusted broadcast windows.
-; USED BY: TLIBA2_ComputeBroadcastTimeWindow
-; NOTES: Seeded from CLOCK_CurrentDayOfWeekIndex..Global_WORD_CURRENT_SECOND before DST offset math.
+; USED BY: _TLIBA2_ComputeBroadcastTimeWindow
+; NOTES: Seeded from _CLOCK_CurrentDayOfWeekIndex.._Global_WORD_CURRENT_SECOND before DST offset math.
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
-; SYM: TLIBA3_VmArrayRuntimeTable/TLIBA3_VmArrayPatternTable   (VM array runtime + pattern tables)
+; SYM: _TLIBA3_VmArrayRuntimeTable/TLIBA3_VmArrayPatternTable   (VM array runtime + pattern tables)
 ; TYPE: struct[9]/struct[9]
 ; PURPOSE: Backing tables for TLIBA3 VM-array setup, raster context snapshots, and pattern register layouts.
-; USED BY: TLIBA3_InitPatternTable, TLIBA3_BuildDisplayContextForViewMode, TLIBA3_InitRuntimeEntry, TLIBA3_SetFontForAllViewModes
+; USED BY: TLIBA3_InitPatternTable, _TLIBA3_BuildDisplayContextForViewMode, TLIBA3_InitRuntimeEntry, TLIBA3_SetFontForAllViewModes
 ; NOTES: Runtime table is 9 entries x 154 bytes; pattern table is 9 entries x 76 bytes.
 ;------------------------------------------------------------------------------
-TLIBA3_VmArrayRuntimeTable:
+_TLIBA3_VmArrayRuntimeTable:
     DS.L    346
     DS.W    1
 TLIBA3_VmArrayPatternTable:

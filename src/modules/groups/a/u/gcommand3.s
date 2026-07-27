@@ -15,16 +15,16 @@
 ; CLOBBERS:
 ;   A0/A7/D0/D1/D6/D7
 ; CALLS:
-;   GCOMMAND_GetBannerChar
+;   _GCOMMAND_GetBannerChar
 ; READS:
-;   CONFIG_BannerCopperHeadByte, CONFIG_RefreshIntervalSeconds, ESQPARS2_BannerQueueBuffer, GCOMMAND_BannerQueueSlotPrevious
+;   _CONFIG_BannerCopperHeadByte, _CONFIG_RefreshIntervalSeconds, _ESQPARS2_BannerQueueBuffer, _GCOMMAND_BannerQueueSlotPrevious
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Interpret a keyboard scan code and map it to a preset palette index.
 ; NOTES:
 ;   Uses bit masks `$30/$20/$40` on keycode byte and enqueues into
-;   `ESQPARS2_BannerQueueBuffer` at `GCOMMAND_BannerQueueSlotPrevious`.
+;   `_ESQPARS2_BannerQueueBuffer` at `_GCOMMAND_BannerQueueSlotPrevious`.
 ;------------------------------------------------------------------------------
 
 ; Interpret a keyboard scan code and map it to a preset palette index.
@@ -38,7 +38,7 @@ GCOMMAND_MapKeycodeToPreset:
     CMP.B   D1,D0
     BNE.S   .lab_0D67
 
-    MOVE.L  CONFIG_RefreshIntervalSeconds,D6
+    MOVE.L  _CONFIG_RefreshIntervalSeconds,D6
     BRA.S   .lab_0D69
 
 .lab_0D67:
@@ -48,13 +48,13 @@ GCOMMAND_MapKeycodeToPreset:
     CMP.B   D1,D0
     BNE.S   .branch
 
-    BSR.W   GCOMMAND_GetBannerChar
+    BSR.W   _GCOMMAND_GetBannerChar
 
-    MOVE.W  CONFIG_BannerCopperHeadByte,D1
+    MOVE.W  _CONFIG_BannerCopperHeadByte,D1
     CMP.W   D0,D1
     BNE.S   .lab_0D69
 
-    MOVE.L  CONFIG_RefreshIntervalSeconds,D6
+    MOVE.L  _CONFIG_RefreshIntervalSeconds,D6
     BRA.S   .lab_0D69
 
 .branch:
@@ -67,8 +67,8 @@ GCOMMAND_MapKeycodeToPreset:
     MOVEQ   #-1,D6
 
 .lab_0D69:
-    LEA     ESQPARS2_BannerQueueBuffer,A0
-    ADDA.W  GCOMMAND_BannerQueueSlotPrevious,A0
+    LEA     _ESQPARS2_BannerQueueBuffer,A0
+    ADDA.W  _GCOMMAND_BannerQueueSlotPrevious,A0
     MOVE.B  D6,(A0)
     MOVEM.L (A7)+,D6-D7
     RTS
@@ -85,7 +85,7 @@ GCOMMAND_MapKeycodeToPreset:
 ; CALLS:
 ;   (none)
 ; READS:
-;   _GCOMMAND_HighlightFlag, ESQ_CopperEffectTemplateRowsSet0, ESQ_CopperListBannerA, ESQ_CopperEffectTemplateRowsSet1, ESQ_CopperListBannerB
+;   _GCOMMAND_HighlightFlag, ESQ_CopperEffectTemplateRowsSet0, _ESQ_CopperListBannerA, ESQ_CopperEffectTemplateRowsSet1, _ESQ_CopperListBannerB
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -122,7 +122,7 @@ _GCOMMAND_ApplyHighlightFlag:
     AND.W   26(A0),D0
     OR.W    D7,D0
     MOVE.W  D0,26(A0)
-    MOVE.L  #ESQ_CopperListBannerA,-8(A5)
+    MOVE.L  #_ESQ_CopperListBannerA,-8(A5)
     MOVEQ   #-3,D0
     MOVEA.L -8(A5),A0
     AND.W   30(A0),D0
@@ -144,7 +144,7 @@ _GCOMMAND_ApplyHighlightFlag:
     AND.W   3922(A0),D0
     OR.W    D7,D0
     MOVE.W  D0,3922(A0)
-    MOVE.L  #ESQ_CopperListBannerB,-8(A5)
+    MOVE.L  #_ESQ_CopperListBannerB,-8(A5)
     MOVEQ   #-3,D0
     MOVEA.L -8(A5),A0
     AND.W   30(A0),D0

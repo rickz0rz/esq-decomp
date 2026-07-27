@@ -8,7 +8,7 @@
     XDEF    PARSE_ReadSignedLong_ParseLoopEntry
     XDEF    PARSE_ReadSignedLong_StoreResult
     XDEF    UNKNOWN10_PrintfPutcToBuffer
-    XDEF    WDISP_SPrintf
+    XDEF    _WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
 ; SYM: kHexDigitTable   (Hex digit lookup bytesuncertain)
@@ -324,7 +324,7 @@ UNKNOWN10_PrintfPutcToBuffer:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: WDISP_SPrintf   (SPrintfToBuffer)
+; FUNC: _WDISP_SPrintf   (SPrintfToBuffer)
 ; ARGS:
 ;   stack +4: outBuf
 ;   stack +8: formatStr
@@ -348,7 +348,7 @@ UNKNOWN10_PrintfPutcToBuffer:
 ;   No destination-capacity argument is present; callers must ensure `outBuf`
 ;   is large enough for worst-case formatted output.
 ;------------------------------------------------------------------------------
-WDISP_SPrintf:
+_WDISP_SPrintf:
     LINK.W  A5,#0
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 16(A7),A3

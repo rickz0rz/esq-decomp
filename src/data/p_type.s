@@ -1,7 +1,7 @@
-    XDEF    Global_STR_P_TYPE_C_1
-    XDEF    Global_STR_P_TYPE_C_2
-    XDEF    Global_STR_P_TYPE_C_3
-    XDEF    Global_STR_P_TYPE_C_4
+    XDEF    _Global_STR_P_TYPE_C_1
+    XDEF    _Global_STR_P_TYPE_C_2
+    XDEF    _Global_STR_P_TYPE_C_3
+    XDEF    _Global_STR_P_TYPE_C_4
     XDEF    Global_STR_P_TYPE_C_5
     XDEF    P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write
     XDEF    P_TYPE_STR_CURDAY_COLON_WriteSection
@@ -13,7 +13,7 @@
     XDEF    P_TYPE_STR_TYPES_COLON
     XDEF    P_TYPE_STR_NXTDAY_COLON_LoadSection
     XDEF    Global_STR_P_TYPE_C_6
-    XDEF    P_TYPE_WeatherBrushRefreshPendingFlag
+    XDEF    _P_TYPE_WeatherBrushRefreshPendingFlag
     XDEF    P_TYPE_WeatherCurrentMsgPtr
     XDEF    P_TYPE_WeatherForecastMsgPtr
     XDEF    P_TYPE_WeatherBottomLineMsgPtr
@@ -28,13 +28,13 @@
     XDEF    PARSEINI_DelimSpaceTab_Section1
 ; ========== P_TYPE.c ==========
 
-Global_STR_P_TYPE_C_1:
+_Global_STR_P_TYPE_C_1:
     NStr    "P_TYPE.c"
-Global_STR_P_TYPE_C_2:
+_Global_STR_P_TYPE_C_2:
     NStr    "P_TYPE.c"
-Global_STR_P_TYPE_C_3:
+_Global_STR_P_TYPE_C_3:
     NStr    "P_TYPE.c"
-Global_STR_P_TYPE_C_4:
+_Global_STR_P_TYPE_C_4:
     NStr    "P_TYPE.c"
 Global_STR_P_TYPE_C_5:
     NStr    "P_TYPE.c"
@@ -61,7 +61,7 @@ P_TYPE_STR_NXTDAY_COLON_LoadSection:
 Global_STR_P_TYPE_C_6:
     NStr    "P_TYPE.c"
     DS.W    1
-P_TYPE_WeatherBrushRefreshPendingFlag:
+_P_TYPE_WeatherBrushRefreshPendingFlag:
     DS.L    1
 P_TYPE_WeatherCurrentMsgPtr:
     DS.L    1

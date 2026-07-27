@@ -1,4 +1,4 @@
-    XDEF    Global_STR_DISPTEXT_C_1
+    XDEF    _Global_STR_DISPTEXT_C_1
     XDEF    DISPTEXT_STR_SINGLE_SPACE_MEASURE
     XDEF    DISPTEXT_STR_SINGLE_SPACE_APPEND
     XDEF    DISPTEXT_STR_SINGLE_SPACE_DELIM
@@ -13,7 +13,7 @@
     XDEF    DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES
 ; ========== DISPTEXT.c ==========
 
-Global_STR_DISPTEXT_C_1:
+_Global_STR_DISPTEXT_C_1:
     NStr    "DISPTEXT.c"
 ;------------------------------------------------------------------------------
 ; SYM: DISPTEXT_STR_SINGLE_SPACE_MEASURE   (single-space literal)
@@ -49,7 +49,7 @@ DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX:
 ; SYM: DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES   (month tables)
 ; TYPE: byte/long lookup tables
 ; PURPOSE: Month-length sequence and cumulative day offsets used by datetime conversion.
-; USED BY: DATETIME_SecondsToStruct
+; USED BY: _DATETIME_SecondsToStruct
 ; NOTES: First bytes encode month lengths; later longs appear to be cumulative
 ;        offsets from the beginning of the year for each month in days.
 ;------------------------------------------------------------------------------

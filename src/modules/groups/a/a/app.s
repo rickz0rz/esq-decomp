@@ -1,5 +1,5 @@
-    XDEF    ESQ_CaptureCtrlBit3Stream
-    XDEF    ESQ_CaptureCtrlBit4Stream
+    XDEF    _ESQ_CaptureCtrlBit3Stream
+    XDEF    _ESQ_CaptureCtrlBit4Stream
     XDEF    ESQ_CaptureCtrlBit4StreamBufferByte
     XDEF    ESQ_HandleSerialRbfInterrupt
     XDEF    ESQ_InitAudio1Dma
@@ -22,19 +22,19 @@ ESQ_StatusPacket__Bit3CaptureGateChar = 18
 ; CALLS:
 ;   (none)
 ; READS:
-;   Global_WORD_H_VALUE, Global_WORD_T_VALUE, Global_WORD_MAX_VALUE, ESQPARS2_ReadModeFlags
+;   _Global_WORD_H_VALUE, _Global_WORD_T_VALUE, _Global_WORD_MAX_VALUE, _ESQPARS2_ReadModeFlags
 ; WRITES:
-;   (A1+head), ESQ_SerialRbfErrorCount, Global_WORD_H_VALUE, ESQ_SerialRbfFillLevel, Global_WORD_MAX_VALUE,
-;   ESQPARS2_ReadModeFlags, SCRIPT_SerialReadModeOverflowCount, 156(A0)
+;   (A1+head), ESQ_SerialRbfErrorCount, _Global_WORD_H_VALUE, _ESQ_SerialRbfFillLevel, _Global_WORD_MAX_VALUE,
+;   _ESQPARS2_ReadModeFlags, _SCRIPT_SerialReadModeOverflowCount, 156(A0)
 ; DESC:
 ;   Stores a received byte into the RBF ring buffer, updates head/fill counts,
 ;   and tracks max fill and overflow threshold.
 ; NOTES:
-;   Buffer wraps at $FA00. Sets ESQPARS2_ReadModeFlags to $102 when fill reaches $DAC0.
+;   Buffer wraps at $FA00. Sets _ESQPARS2_ReadModeFlags to $102 when fill reaches $DAC0.
 ;------------------------------------------------------------------------------
 ESQ_HandleSerialRbfInterrupt:
     MOVEQ   #0,D0
-    MOVE.W  Global_WORD_H_VALUE,D0
+    MOVE.W  _Global_WORD_H_VALUE,D0
     ADDA.L  D0,A1
     MOVE.W  24(A0),D1
     MOVE.B  D1,(A1)
@@ -53,29 +53,29 @@ ESQ_HandleSerialRbfInterrupt:
     MOVEQ   #0,D0
 
 .head_update_done:
-    MOVE.W  D0,Global_WORD_H_VALUE
-    MOVE.W  Global_WORD_T_VALUE,D1
+    MOVE.W  D0,_Global_WORD_H_VALUE
+    MOVE.W  _Global_WORD_T_VALUE,D1
     SUB.W   D1,D0
     BCC.W   .fill_count_ok
 
     ADDI.W  #$fa00,D0
 
 .fill_count_ok:
-    MOVE.W  D0,ESQ_SerialRbfFillLevel
-    CMP.W   Global_WORD_MAX_VALUE,D0
+    MOVE.W  D0,_ESQ_SerialRbfFillLevel
+    CMP.W   _Global_WORD_MAX_VALUE,D0
     BCS.W   .skip_max_update
 
-    MOVE.W  D0,Global_WORD_MAX_VALUE
+    MOVE.W  D0,_Global_WORD_MAX_VALUE
 
 .skip_max_update:
     CMPI.W  #$dac0,D0
     BCS.W   .return
 
-    CMPI.W  #$102,ESQPARS2_ReadModeFlags
+    CMPI.W  #$102,_ESQPARS2_ReadModeFlags
     BEQ.W   .return
 
-    MOVE.W  #$102,ESQPARS2_ReadModeFlags
-    ADDI.L  #$1,SCRIPT_SerialReadModeOverflowCount
+    MOVE.W  #$102,_ESQPARS2_ReadModeFlags
+    ADDI.L  #$1,_SCRIPT_SerialReadModeOverflowCount
 
 .return:
     MOVE.W  #$800,156(A0)
@@ -94,19 +94,19 @@ ESQ_HandleSerialRbfInterrupt:
 ; CALLS:
 ;   (none)
 ; READS:
-;   Global_WORD_T_VALUE, Global_WORD_H_VALUE, ESQPARS2_ReadModeFlags, Global_REF_INTB_RBF_64K_BUFFER
+;   _Global_WORD_T_VALUE, _Global_WORD_H_VALUE, _ESQPARS2_ReadModeFlags, _Global_REF_INTB_RBF_64K_BUFFER
 ; WRITES:
-;   Global_WORD_T_VALUE, ESQPARS2_ReadModeFlags
+;   _Global_WORD_T_VALUE, _ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Reads one byte from the RBF ring buffer and advances the tail index.
 ; NOTES:
-;   Clears ESQPARS2_ReadModeFlags when fill drops below $BB80 (if previously set to $102).
+;   Clears _ESQPARS2_ReadModeFlags when fill drops below $BB80 (if previously set to $102).
 ;------------------------------------------------------------------------------
 ESQ_ReadSerialRbfByte:
     MOVEQ   #0,D1
     MOVE.L  D1,D0
-    MOVE.W  Global_WORD_T_VALUE,D1
-    MOVEA.L Global_REF_INTB_RBF_64K_BUFFER,A0
+    MOVE.W  _Global_WORD_T_VALUE,D1
+    MOVEA.L _Global_REF_INTB_RBF_64K_BUFFER,A0
     ADDA.L  D1,A0
     MOVE.B  (A0),D0
     ADDQ.W  #1,D1
@@ -116,22 +116,22 @@ ESQ_ReadSerialRbfByte:
     MOVEQ   #0,D1
 
 .tail_update_done:
-    MOVE.W  D1,Global_WORD_T_VALUE
+    MOVE.W  D1,_Global_WORD_T_VALUE
     MOVE.L  D0,-(A7)
-    MOVE.W  Global_WORD_H_VALUE,D0
+    MOVE.W  _Global_WORD_H_VALUE,D0
     SUB.W   D1,D0
     BCC.W   .fill_count_ok
 
     ADDI.W  #$fa00,D0
 
 .fill_count_ok:
-    CMPI.W  #$102,ESQPARS2_ReadModeFlags
+    CMPI.W  #$102,_ESQPARS2_ReadModeFlags
     BNE.W   .return
 
     CMPI.W  #$bb80,D0   ; Box off.
     BCC.W   .return
 
-    MOVE.W  #0,ESQPARS2_ReadModeFlags
+    MOVE.W  #0,_ESQPARS2_ReadModeFlags
 
 .return:
     MOVE.L  (A7)+,D0
@@ -150,16 +150,16 @@ ESQ_ReadSerialRbfByte:
 ; CALLS:
 ;   (none)
 ; READS:
-;   Global_PTR_AUD1_DMA
+;   _Global_PTR_AUD1_DMA
 ; WRITES:
-;   AUD1LCH, AUD1LEN, AUD1VOL, AUD1PER, DMACON, CTRL_Bit4CaptureDelayCounter, CTRL_Bit4CapturePhase, CTRL_SampleEntryCount
+;   AUD1LCH, AUD1LEN, AUD1VOL, AUD1PER, DMACON, CTRL_Bit4CaptureDelayCounter, CTRL_Bit4CapturePhase, _CTRL_SampleEntryCount
 ; DESC:
 ;   Initializes audio channel 1 DMA and clears related CTRL capture state.
 ;------------------------------------------------------------------------------
 ESQ_InitAudio1Dma:
     MOVEA.L #BLTDDAT,A0
-    LEA     Global_PTR_AUD1_DMA,A1
-    MOVE.L  A1,(AUD1LCH-BLTDDAT)(A0)    ; Store DMA data in Global_PTR_AUD1_DMA
+    LEA     _Global_PTR_AUD1_DMA,A1
+    MOVE.L  A1,(AUD1LCH-BLTDDAT)(A0)    ; Store DMA data in _Global_PTR_AUD1_DMA
     MOVE.W  #1,(AUD1LEN-BLTDDAT)(A0)
     MOVE.W  #0,(AUD1VOL-BLTDDAT)(A0)
     MOVE.W  #$65b,(AUD1PER-BLTDDAT)(A0)
@@ -167,13 +167,13 @@ ESQ_InitAudio1Dma:
     MOVEQ   #0,D0
     MOVE.W  D0,CTRL_Bit4CaptureDelayCounter
     MOVE.W  D0,CTRL_Bit4CapturePhase
-    MOVE.W  D0,CTRL_SampleEntryCount
+    MOVE.W  D0,_CTRL_SampleEntryCount
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_CaptureCtrlBit3Stream   (CaptureCiabPraBit3Stream)
+; FUNC: _ESQ_CaptureCtrlBit3Stream   (CaptureCiabPraBit3Stream)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -183,16 +183,16 @@ ESQ_InitAudio1Dma:
 ; CALLS:
 ;   GET_BIT_3_OF_CIAB_PRA_INTO_D1, ESQ_StoreCtrlSampleEntry
 ; READS:
-;   CTRL_Bit3CapturePhase, CTRL_Bit3CaptureDelayCounter, CTRL_Bit3SampleSlotIndex, CTRL_SampleEntryCount
+;   CTRL_Bit3CapturePhase, CTRL_Bit3CaptureDelayCounter, CTRL_Bit3SampleSlotIndex, _CTRL_SampleEntryCount
 ; WRITES:
-;   CTRL_Bit3CapturePhase, CTRL_Bit3CaptureDelayCounter, CTRL_Bit3SampleSlotIndex, CTRL_Bit3SampleScratch, CTRL_SampleEntryCount, CTRL_SampleEntryScratch
+;   CTRL_Bit3CapturePhase, CTRL_Bit3CaptureDelayCounter, CTRL_Bit3SampleSlotIndex, CTRL_Bit3SampleScratch, _CTRL_SampleEntryCount, _CTRL_SampleEntryScratch
 ; DESC:
 ;   Samples CIAB PRA bit 3 over time, builds bytes from samples, and stores
-;   them into the CTRL_SampleEntryScratch ring buffer.
+;   them into the _CTRL_SampleEntryScratch ring buffer.
 ; NOTES:
 ;   Uses CTRL_Bit3CapturePhase/1AF9/1AFD as sampling state. Sample buffer is CTRL_Bit3SampleScratch.
 ;------------------------------------------------------------------------------
-ESQ_CaptureCtrlBit3Stream:
+_ESQ_CaptureCtrlBit3Stream:
     TST.W   CTRL_Bit3CapturePhase
     BNE.S   .advance_state
 
@@ -278,8 +278,8 @@ ESQ_CaptureCtrlBit3Stream:
 
 .next_bit:
     DBF     D1,.build_byte_loop
-    LEA     CTRL_SampleEntryScratch,A1
-    MOVE.W  CTRL_SampleEntryCount,D1
+    LEA     _CTRL_SampleEntryScratch,A1
+    MOVE.W  _CTRL_SampleEntryCount,D1
     ADDA.W  D1,A1
     MOVE.B  D0,(A1)
     BEQ.S   .flush_on_zero
@@ -296,7 +296,7 @@ ESQ_CaptureCtrlBit3Stream:
     MOVEQ   #0,D1
 
 .store_index:
-    MOVE.W  D1,CTRL_SampleEntryCount
+    MOVE.W  D1,_CTRL_SampleEntryCount
 
 .reset_state_and_exit:
     MOVEQ   #0,D0
@@ -372,28 +372,28 @@ GET_BIT_4_OF_CIAB_PRA_INTO_D1:
 ; CLOBBERS:
 ;   D0-D1, A0-A1, A4-A5
 ; CALLS:
-;   ESQ_CaptureCtrlBit4Stream, ESQ_CaptureCtrlBit3Stream
+;   _ESQ_CaptureCtrlBit4Stream, _ESQ_CaptureCtrlBit3Stream
 ; READS:
-;   ESQ_STR_B
+;   _ESQ_STR_B
 ; WRITES:
 ;   INTREQ
 ; DESC:
 ;   Updates CTRL sampling state and acknowledges the audio channel 1 interrupt.
 ; NOTES:
-;   Only captures the bit-3 stream when ESQ_STR_B+ESQ_StatusPacket__Bit3CaptureGateChar holds 'N'.
+;   Only captures the bit-3 stream when _ESQ_STR_B+ESQ_StatusPacket__Bit3CaptureGateChar holds 'N'.
 ;------------------------------------------------------------------------------
 ESQ_PollCtrlInput:
     MOVE.L  A5,-(A7)
     MOVE.L  A4,-(A7)
 
-    BSR.S   ESQ_CaptureCtrlBit4Stream
+    BSR.S   _ESQ_CaptureCtrlBit4Stream
 
-    LEA     ESQ_STR_B,A4
+    LEA     _ESQ_STR_B,A4
     MOVE.B  ESQ_StatusPacket__Bit3CaptureGateChar(A4),D1 ; A4+18 = status byte gate for CTRL bit-3 capture
     CMPI.B  #"N",D1
     BNE.S   .lab_0040
 
-    JSR     ESQ_CaptureCtrlBit3Stream(PC)
+    JSR     _ESQ_CaptureCtrlBit3Stream(PC)
 
 .lab_0040:
     MOVEA.L #BLTDDAT,A0
@@ -408,7 +408,7 @@ ESQ_PollCtrlInput:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_CaptureCtrlBit4Stream   (CaptureCiabPraBit4Stream)
+; FUNC: _ESQ_CaptureCtrlBit4Stream   (CaptureCiabPraBit4Stream)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -420,15 +420,15 @@ ESQ_PollCtrlInput:
 ; READS:
 ;   CTRL_Bit4CapturePhase, CTRL_Bit4CaptureDelayCounter, CTRL_Bit4SampleSlotIndex
 ; WRITES:
-;   CTRL_Bit4CapturePhase, CTRL_Bit4CaptureDelayCounter, CTRL_Bit4SampleSlotIndex, CTRL_Bit4SampleScratch, CTRL_BUFFER, CTRL_H, CTRL_HPreviousSample,
-;   CTRL_HDeltaMax, CTRL_BufferedByteCount
+;   CTRL_Bit4CapturePhase, CTRL_Bit4CaptureDelayCounter, CTRL_Bit4SampleSlotIndex, CTRL_Bit4SampleScratch, _CTRL_BUFFER, _CTRL_H, _CTRL_HPreviousSample,
+;   _CTRL_HDeltaMax, CTRL_BufferedByteCount
 ; DESC:
 ;   Samples CIAB PRA bit 4 over time, assembles bytes, and appends them to
-;   CTRL_BUFFER.
+;   _CTRL_BUFFER.
 ; NOTES:
 ;   Uses CTRL_Bit4CapturePhase/1AF8/1AFB as sampling state. Buffer wraps at $01F4.
 ;------------------------------------------------------------------------------
-ESQ_CaptureCtrlBit4Stream:
+_ESQ_CaptureCtrlBit4Stream:
     TST.W   CTRL_Bit4CapturePhase            ; Test CTRL_Bit4CapturePhase...
     BNE.S   .advance_state       ; and if it's not equal to zero, jump to LAB_0042
 
@@ -515,8 +515,8 @@ ESQ_CaptureCtrlBit4Stream:
 
 .next_bit:
     DBF     D1,.build_byte_loop
-    LEA     CTRL_BUFFER,A1
-    MOVE.W  CTRL_H,D1
+    LEA     _CTRL_BUFFER,A1
+    MOVE.W  _CTRL_H,D1
     ADDA.W  D1,A1
     MOVE.B  D0,(A1)+
     ADDQ.W  #1,D1
@@ -526,9 +526,9 @@ ESQ_CaptureCtrlBit4Stream:
     MOVEQ   #0,D1
 
 .store_tail:
-    MOVE.W  D1,CTRL_H
+    MOVE.W  D1,_CTRL_H
     MOVE.W  D1,D0
-    MOVE.W  CTRL_HPreviousSample,D1
+    MOVE.W  _CTRL_HPreviousSample,D1
     SUB.W   D1,D0
     BCC.W   .fill_count_ok
 
@@ -536,10 +536,10 @@ ESQ_CaptureCtrlBit4Stream:
 
 .fill_count_ok:
     MOVE.W  D0,CTRL_BufferedByteCount
-    CMP.W   CTRL_HDeltaMax,D0
+    CMP.W   _CTRL_HDeltaMax,D0
     BCS.W   .reset_state_and_exit
 
-    MOVE.W  D0,CTRL_HDeltaMax
+    MOVE.W  D0,_CTRL_HDeltaMax
 
 .reset_state_and_exit:
     MOVEQ   #0,D0
@@ -557,25 +557,25 @@ ESQ_CaptureCtrlBit4Stream:
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: next byte from CTRL_BUFFER (low byte)
+;   D0: next byte from _CTRL_BUFFER (low byte)
 ; CLOBBERS:
 ;   D0-D1, A0
 ; CALLS:
 ;   (none)
 ; READS:
-;   CTRL_HPreviousSample, CTRL_BUFFER
+;   _CTRL_HPreviousSample, _CTRL_BUFFER
 ; WRITES:
-;   CTRL_HPreviousSample
+;   _CTRL_HPreviousSample
 ; DESC:
-;   Reads one byte from CTRL_BUFFER and advances the tail index.
+;   Reads one byte from _CTRL_BUFFER and advances the tail index.
 ; NOTES:
 ;   Buffer wraps at $01F4.
 ;------------------------------------------------------------------------------
 ESQ_CaptureCtrlBit4StreamBufferByte:
     MOVEQ   #0,D1
     MOVE.L  D1,D0
-    MOVE.W  CTRL_HPreviousSample,D1
-    LEA     CTRL_BUFFER,A0
+    MOVE.W  _CTRL_HPreviousSample,D1
+    LEA     _CTRL_BUFFER,A0
     ADDA.L  D1,A0
     MOVE.B  (A0),D0
     ADDQ.W  #1,D1
@@ -585,7 +585,7 @@ ESQ_CaptureCtrlBit4StreamBufferByte:
     MOVEQ   #0,D1
 
 .tail_update_done:
-    MOVE.W  D1,CTRL_HPreviousSample
+    MOVE.W  D1,_CTRL_HPreviousSample
     RTS
 
 ;!======

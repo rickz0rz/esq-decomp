@@ -1,6 +1,6 @@
-    XDEF    Global_STR_LADFUNC_C_1
-    XDEF    Global_STR_LADFUNC_C_2
-    XDEF    Global_STR_LADFUNC_C_3
+    XDEF    _Global_STR_LADFUNC_C_1
+    XDEF    _Global_STR_LADFUNC_C_2
+    XDEF    _Global_STR_LADFUNC_C_3
     XDEF    Global_STR_LADFUNC_C_4
     XDEF    LADFUNC_TAG_RS_ResetTriggerSet
     XDEF    LADFUNC_TAG_RS_ParseAllowedSet
@@ -36,23 +36,23 @@
     XDEF    Global_STR_LADFUNC_C_30
     XDEF    LADFUNC_STR_QuoteAndNewline
     XDEF    LADFUNC_STR_Quote
-    XDEF    LADFUNC_FMT_ControlCharCaretEscape
-    XDEF    LADFUNC_FMT_ReplacementQuoteChar
-    XDEF    LADFUNC_FMT_ReplacementCommaChar
-    XDEF    LADFUNC_FMT_HexEscapeByte
-    XDEF    LADFUNC_FMT_LiteralChar
-    XDEF    LOCAVAIL_FilterModeFlag
-    XDEF    LOCAVAIL_FilterStep
-    XDEF    LOCAVAIL_FilterClassId
+    XDEF    _LADFUNC_FMT_ControlCharCaretEscape
+    XDEF    _LADFUNC_FMT_ReplacementQuoteChar
+    XDEF    _LADFUNC_FMT_ReplacementCommaChar
+    XDEF    _LADFUNC_FMT_HexEscapeByte
+    XDEF    _LADFUNC_FMT_LiteralChar
+    XDEF    _LOCAVAIL_FilterModeFlag
+    XDEF    _LOCAVAIL_FilterStep
+    XDEF    _LOCAVAIL_FilterClassId
     XDEF    LOCAVAIL_FilterPrevClassId
-    XDEF    LOCAVAIL_FilterWindowHalfSpan
+    XDEF    _LOCAVAIL_FilterWindowHalfSpan
 ; ========== LADFUNC.c ==========
 
-Global_STR_LADFUNC_C_1:
+_Global_STR_LADFUNC_C_1:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_2:
+_Global_STR_LADFUNC_C_2:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_3:
+_Global_STR_LADFUNC_C_3:
     NStr    "LADFUNC.c"
 Global_STR_LADFUNC_C_4:
     NStr    "LADFUNC.c"
@@ -124,30 +124,30 @@ LADFUNC_STR_QuoteAndNewline:
     NStr2   """",TextLineFeed
 LADFUNC_STR_Quote:
     NStr    """"
-LADFUNC_FMT_ControlCharCaretEscape:
+_LADFUNC_FMT_ControlCharCaretEscape:
     NStr    "^%lc"
-LADFUNC_FMT_ReplacementQuoteChar:
+_LADFUNC_FMT_ReplacementQuoteChar:
     NStr    "%lc"
-LADFUNC_FMT_ReplacementCommaChar:
+_LADFUNC_FMT_ReplacementCommaChar:
     NStr    "%lc"
-LADFUNC_FMT_HexEscapeByte:
+_LADFUNC_FMT_HexEscapeByte:
     NStr    "$%02lx"
-LADFUNC_FMT_LiteralChar:
+_LADFUNC_FMT_LiteralChar:
     NStr    "%lc"
 ;------------------------------------------------------------------------------
-; SYM: LOCAVAIL_FilterModeFlag/LOCAVAIL_FilterStep/LOCAVAIL_FilterClassId/LOCAVAIL_FilterPrevClassId   (locavail filter state)
+; SYM: _LOCAVAIL_FilterModeFlag/_LOCAVAIL_FilterStep/_LOCAVAIL_FilterClassId/LOCAVAIL_FilterPrevClassId   (locavail filter state)
 ; TYPE: s32/s32/s32/s32
 ; PURPOSE: Stores mode and step state for locavail-style filter/selection transitions.
 ; USED BY: LOCAVAIL_*, SCRIPT3_*, TEXTDISP2_*, ED1_*, ED2_*
 ; NOTES: `-1` is a sentinel for "no class selected/previous class cleared".
 ;------------------------------------------------------------------------------
-LOCAVAIL_FilterModeFlag:
+_LOCAVAIL_FilterModeFlag:
     DS.L    1
-LOCAVAIL_FilterStep:
+_LOCAVAIL_FilterStep:
     DS.L    1
-LOCAVAIL_FilterClassId:
+_LOCAVAIL_FilterClassId:
     DC.L    $ffffffff
 LOCAVAIL_FilterPrevClassId:
     DC.L    $ffffffff
-LOCAVAIL_FilterWindowHalfSpan:
+_LOCAVAIL_FilterWindowHalfSpan:
     DC.W    $ffff

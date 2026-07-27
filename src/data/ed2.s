@@ -1,37 +1,37 @@
     XDEF    ED2_STR_PAGE
     XDEF    ED2_STR_LINE
-    XDEF    ED_CustomPaletteCapturePhaseMod4
-    XDEF    ED_CustomPaletteCaptureIndexOrSentinel
-    XDEF    ED_CustomPaletteTriplesDefaultTemplate24B
-    XDEF    ED2_STR_ALL_DATA_IS_TO_BE_SAVED_DOT
-    XDEF    ED2_STR_TV_GUIDE_DATA_IS_TO_BE_SAVED_DOT
-    XDEF    ED2_STR_TEXT_ADS_WILL_BE_LOADED_FROM_DH2_COL
-    XDEF    Global_STR_COMPUTER_WILL_RESET
-    XDEF    Global_STR_GO_OFF_AIR_FOR_1_2_MINS
-    XDEF    Global_STR_SAVING_EVERYTHING_TO_DISK
-    XDEF    Global_STR_SAVING_PREVUE_DATA_TO_DISK
-    XDEF    Global_STR_LOADING_TEXT_ADS_FROM_DH2
-    XDEF    Global_STR_REBOOTING_COMPUTER
-    XDEF    ED2_STR_NUMBER_TOO_BIG
-    XDEF    ED2_STR_NUMBER_TOO_SMALL
-    XDEF    ED2_STR_PUSH_ESC_TO_EXIT_ATTRIBUTE_EDIT_DOT
-    XDEF    ED2_STR_PUSH_RETURN_TO_ENTER_SELECTION
-    XDEF    ED2_STR_PUSH_ANY_KEY_TO_SELECT
+    XDEF    _ED_CustomPaletteCapturePhaseMod4
+    XDEF    _ED_CustomPaletteCaptureIndexOrSentinel
+    XDEF    _ED_CustomPaletteTriplesDefaultTemplate24B
+    XDEF    _ED2_STR_ALL_DATA_IS_TO_BE_SAVED_DOT
+    XDEF    _ED2_STR_TV_GUIDE_DATA_IS_TO_BE_SAVED_DOT
+    XDEF    _ED2_STR_TEXT_ADS_WILL_BE_LOADED_FROM_DH2_COL
+    XDEF    _Global_STR_COMPUTER_WILL_RESET
+    XDEF    _Global_STR_GO_OFF_AIR_FOR_1_2_MINS
+    XDEF    _Global_STR_SAVING_EVERYTHING_TO_DISK
+    XDEF    _Global_STR_SAVING_PREVUE_DATA_TO_DISK
+    XDEF    _Global_STR_LOADING_TEXT_ADS_FROM_DH2
+    XDEF    _Global_STR_REBOOTING_COMPUTER
+    XDEF    _ED2_STR_NUMBER_TOO_BIG
+    XDEF    _ED2_STR_NUMBER_TOO_SMALL
+    XDEF    _ED2_STR_PUSH_ESC_TO_EXIT_ATTRIBUTE_EDIT_DOT
+    XDEF    _ED2_STR_PUSH_RETURN_TO_ENTER_SELECTION
+    XDEF    _ED2_STR_PUSH_ANY_KEY_TO_SELECT
     XDEF    ED2_STR_LOCAL_EDIT_NOT_AVAILABLE
-    XDEF    Global_STR_VER_PERCENT_S_PERCENT_L_D
-    XDEF    Global_STR_NINE_POINT_ZERO
-    XDEF    Global_STR_BAUD_RATE_DIAGNOSTIC_MODE
-    XDEF    Global_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS
-    XDEF    ED2_DiagnosticDiskUsagePercent
-    XDEF    ED2_DiagnosticDiskSoftErrorCount
-    XDEF    Global_STR_PUSH_ANY_KEY_TO_CONTINUE_2
+    XDEF    _Global_STR_VER_PERCENT_S_PERCENT_L_D
+    XDEF    _Global_STR_NINE_POINT_ZERO
+    XDEF    _Global_STR_BAUD_RATE_DIAGNOSTIC_MODE
+    XDEF    _Global_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS
+    XDEF    _ED2_DiagnosticDiskUsagePercent
+    XDEF    _ED2_DiagnosticDiskSoftErrorCount
+    XDEF    _Global_STR_PUSH_ANY_KEY_TO_CONTINUE_2
     XDEF    ED2_HighlightTickEnabledFlag
     XDEF    ED2_SelectedEntryDataPtr
     XDEF    ED2_SelectedEntryTitlePtr
-    XDEF    ED2_FMT_SCRSPD_PCT_D
-    XDEF    ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D
-    XDEF    ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR
-    XDEF    Global_STR_CLOCKCMD_EQUALS_PCT_C
+    XDEF    _ED2_FMT_SCRSPD_PCT_D
+    XDEF    _ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D
+    XDEF    _ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR
+    XDEF    _Global_STR_CLOCKCMD_EQUALS_PCT_C
     XDEF    Global_STR_ED2_C_1
     XDEF    Global_STR_PI_CLU_POS1
     XDEF    Global_STR_CHAN_SOURCE_CALLLTRS_1
@@ -83,22 +83,22 @@
     XDEF    ED2_FMT_BANNER_FOR_WEATHER_PCT_D
     XDEF    ED2_FMT_BITPLANE1_PCT_8LX
     XDEF    Global_STR_DF0_GRADIENT_INI_1
-    XDEF    ED2_TAG_NRLS
-    XDEF    ED2_STR_NYYLLZ
-    XDEF    ED2_TAG_NYLRS
-    XDEF    ED2_STR_SILENCE
-    XDEF    ED2_STR_LEFT
-    XDEF    ED2_STR_RIGHT
-    XDEF    ED2_STR_BACKGROUND
-    XDEF    ED2_STR_EXT_DOT_VIDEO_ONLY
-    XDEF    ED2_STR_COMPUTER_ONLY
-    XDEF    ED2_STR_OVERLAY_EXT_DOT_VIDEO
-    XDEF    ED2_STR_NEGATIVE_VIDEO
-    XDEF    ED2_STR_VIDEO_SWITCH
-    XDEF    ED2_STR_OPEN
-    XDEF    ED2_STR_CLOSED
-    XDEF    ED2_STR_START_TAPE_VIDEO
-    XDEF    ED2_STR_STOP
+    XDEF    _ED2_TAG_NRLS
+    XDEF    _ED2_STR_NYYLLZ
+    XDEF    _ED2_TAG_NYLRS
+    XDEF    _ED2_STR_SILENCE
+    XDEF    _ED2_STR_LEFT
+    XDEF    _ED2_STR_RIGHT
+    XDEF    _ED2_STR_BACKGROUND
+    XDEF    _ED2_STR_EXT_DOT_VIDEO_ONLY
+    XDEF    _ED2_STR_COMPUTER_ONLY
+    XDEF    _ED2_STR_OVERLAY_EXT_DOT_VIDEO
+    XDEF    _ED2_STR_NEGATIVE_VIDEO
+    XDEF    _ED2_STR_VIDEO_SWITCH
+    XDEF    _ED2_STR_OPEN
+    XDEF    _ED2_STR_CLOSED
+    XDEF    _ED2_STR_START_TAPE_VIDEO
+    XDEF    _ED2_STR_STOP
     XDEF    Global_REF_BOOL_IS_TEXT_OR_CURSOR
     XDEF    Global_STR_EDIT_ADS
     XDEF    Global_STR_EDIT_ATTRIBUTES
@@ -109,10 +109,10 @@
     XDEF    Global_STR_PUSH_ESC_TO_RESUME
     XDEF    Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1
     XDEF    Global_STR_PUSH_ANY_KEY_TO_SELECT_1
-    XDEF    Global_STR_VIN_BCK_FWD_SSPD_AD_LINE
-    XDEF    Global_STR_TZ_DST_CONT_TXT_GRPH
-    XDEF    Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_3
-    XDEF    Global_STR_PUSH_ANY_KEY_TO_SELECT_2
+    XDEF    _Global_STR_VIN_BCK_FWD_SSPD_AD_LINE
+    XDEF    _Global_STR_TZ_DST_CONT_TXT_GRPH
+    XDEF    _Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_3
+    XDEF    _Global_STR_PUSH_ANY_KEY_TO_SELECT_2
     XDEF    ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C
     XDEF    Global_STR_SPEED_ZERO_NOT_AVAILABLE
     XDEF    Global_STR_SPEED_ONE_NOT_AVAILABLE
@@ -122,27 +122,27 @@
     XDEF    Global_STR_SCROLL_SPEED_5
     XDEF    Global_STR_SCROLL_SPEED_6
     XDEF    Global_STR_SCROLL_SPEED_7
-    XDEF    Global_STR_SAVE_ALL_TO_DISK
-    XDEF    Global_STR_SAVE_DATA_TO_DISK
-    XDEF    Global_STR_LOAD_TEXT_ADS_FROM_DISK
-    XDEF    Global_STR_REBOOT_COMPUTER
-    XDEF    Global_STR_REGISTER
-    XDEF    Global_STR_R_EQUALS
-    XDEF    Global_STR_G_EQUALS
-    XDEF    Global_STR_B_EQUALS
+    XDEF    _Global_STR_SAVE_ALL_TO_DISK
+    XDEF    _Global_STR_SAVE_DATA_TO_DISK
+    XDEF    _Global_STR_LOAD_TEXT_ADS_FROM_DISK
+    XDEF    _Global_STR_REBOOT_COMPUTER
+    XDEF    _Global_STR_REGISTER
+    XDEF    _Global_STR_R_EQUALS
+    XDEF    _Global_STR_G_EQUALS
+    XDEF    _Global_STR_B_EQUALS
     XDEF    Global_STR_ARE_YOU_SURE
     XDEF    Global_STR_ENTER_AD_NUMBER_ONE_HYPHEN
     XDEF    Global_STR_LEFT_PARENTHESIS_THEN
     XDEF    Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_2
     XDEF    Global_STR_SINGLE_SPACE_4
     XDEF    Global_STR_AD_NUMBER_QUESTIONMARK
-    XDEF    Global_STR_CURRENT_COLOR_FORMATTED
+    XDEF    _Global_STR_CURRENT_COLOR_FORMATTED
     XDEF    Global_STR_TEXT
     XDEF    Global_STR_CURSOR
     XDEF    Global_STR_LINE
     XDEF    Global_STR_PAGE
     XDEF    Global_STR_AD_NUMBER_FORMATTED
-    XDEF    Global_STR_ACTIVE_INACTIVE
+    XDEF    _Global_STR_ACTIVE_INACTIVE
     XDEF    Global_STR_PUSH_ESC_TO_MAKE_ANOTHER_SELECTION
     XDEF    Global_STR_PUSH_HELP_FOR_OTHER_EDIT_FUNCTIONS
     XDEF    Global_STR_LINE_MODE_ON_TEXT_COLOR_MODE
@@ -165,31 +165,31 @@ ED2_STR_PAGE:
 ED2_STR_LINE:
     NStr    " Line"
 ;------------------------------------------------------------------------------
-; SYM: ED_CustomPaletteCapturePhaseMod4   (custom palette capture phase)
+; SYM: _ED_CustomPaletteCapturePhaseMod4   (custom palette capture phase)
 ; TYPE: u32
 ; PURPOSE: Tracks capture phase modulo 4 for ED_CaptureKeySequence.
 ; USED BY: ED_CaptureKeySequence
 ; NOTES: Updated via DivS32 remainder path; sequence runs every 4 input steps.
 ;------------------------------------------------------------------------------
-ED_CustomPaletteCapturePhaseMod4:
+_ED_CustomPaletteCapturePhaseMod4:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_CustomPaletteCaptureIndexOrSentinel   (custom palette capture state/index)
+; SYM: _ED_CustomPaletteCaptureIndexOrSentinel   (custom palette capture state/index)
 ; TYPE: s32
 ; PURPOSE: Holds parsed nibble/index state and negative sentinel for fallback copy path.
 ; USED BY: ED_CaptureKeySequence
 ; NOTES: Values observed include 0..7, -1 sentinel, and 0..23 during template copy loop.
 ;------------------------------------------------------------------------------
-ED_CustomPaletteCaptureIndexOrSentinel:
+_ED_CustomPaletteCaptureIndexOrSentinel:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_CustomPaletteTriplesDefaultTemplate24B   (default palette triples template)
+; SYM: _ED_CustomPaletteTriplesDefaultTemplate24B   (default palette triples template)
 ; TYPE: u8[24]
 ; PURPOSE: Default 24-byte template copied into custom palette triples output when capture flow falls back.
 ; USED BY: ED_CaptureKeySequence
-; NOTES: Stored as six longwords; copied byte-wise from stack local into KYBD_CustomPaletteTriplesRBase.
+; NOTES: Stored as six longwords; copied byte-wise from stack local into _KYBD_CustomPaletteTriplesRBase.
 ;------------------------------------------------------------------------------
-ED_CustomPaletteTriplesDefaultTemplate24B:
+_ED_CustomPaletteTriplesDefaultTemplate24B:
     DC.B    0,0,3
     DC.B    12,12,12
     DC.B    0,0,0
@@ -200,84 +200,84 @@ ED_CustomPaletteTriplesDefaultTemplate24B:
     DC.B    0,0,3
 
 ; Strings for ESC -> Special Functions -> Save ALL to disk
-ED2_STR_ALL_DATA_IS_TO_BE_SAVED_DOT:
+_ED2_STR_ALL_DATA_IS_TO_BE_SAVED_DOT:
     NStr    "All data is to be saved."
 
 ; Strings for ESC -> Special Functions -> Save data to disk
-ED2_STR_TV_GUIDE_DATA_IS_TO_BE_SAVED_DOT:
+_ED2_STR_TV_GUIDE_DATA_IS_TO_BE_SAVED_DOT:
     NStr    "TV Guide data is to be saved."
 
 ; Strings for ESC -> Special Functions -> Load text ads from disk
-ED2_STR_TEXT_ADS_WILL_BE_LOADED_FROM_DH2_COL:
+_ED2_STR_TEXT_ADS_WILL_BE_LOADED_FROM_DH2_COL:
     NStr    "Text Ads will be loaded from DH2:"
 
 ; Strings for ESC -> Special Functions -> Reboot computer
-Global_STR_COMPUTER_WILL_RESET:
+_Global_STR_COMPUTER_WILL_RESET:
     NStr    "Computer will reset!"
-Global_STR_GO_OFF_AIR_FOR_1_2_MINS:
+_Global_STR_GO_OFF_AIR_FOR_1_2_MINS:
     NStr    "(go off-air for 1-2 mins)"
 
-Global_STR_SAVING_EVERYTHING_TO_DISK:
+_Global_STR_SAVING_EVERYTHING_TO_DISK:
     NStr    "Saving ""EVERYTHING"" to disk"
-Global_STR_SAVING_PREVUE_DATA_TO_DISK:
+_Global_STR_SAVING_PREVUE_DATA_TO_DISK:
     NStr    "Saving Prevue data to disk"
-Global_STR_LOADING_TEXT_ADS_FROM_DH2:
+_Global_STR_LOADING_TEXT_ADS_FROM_DH2:
     NStr    "Loading Text Ads from DH2:"
 
 ; Strings for ESC -> Special Functions -> Reboot computer
-Global_STR_REBOOTING_COMPUTER:
+_Global_STR_REBOOTING_COMPUTER:
     NStr    "Rebooting Computer........"
 
 ; Strings for ESC - Edit Attributes?
-ED2_STR_NUMBER_TOO_BIG:
+_ED2_STR_NUMBER_TOO_BIG:
     NStr    " Number too big        "
-ED2_STR_NUMBER_TOO_SMALL:
+_ED2_STR_NUMBER_TOO_SMALL:
     NStr    " Number too small      "
-ED2_STR_PUSH_ESC_TO_EXIT_ATTRIBUTE_EDIT_DOT:
+_ED2_STR_PUSH_ESC_TO_EXIT_ATTRIBUTE_EDIT_DOT:
     NStr    " Push ESC to exit Attribute Edit."
-ED2_STR_PUSH_RETURN_TO_ENTER_SELECTION:
+_ED2_STR_PUSH_RETURN_TO_ENTER_SELECTION:
     NStr    " Push RETURN to enter selection"
-ED2_STR_PUSH_ANY_KEY_TO_SELECT:
+_ED2_STR_PUSH_ANY_KEY_TO_SELECT:
     NStr    " Push any key to select"
 ED2_STR_LOCAL_EDIT_NOT_AVAILABLE:
     NStr    "Local Edit not available"
 
 ; Version strings shown at the top of the ESC menu
-Global_STR_VER_PERCENT_S_PERCENT_L_D:
+_Global_STR_VER_PERCENT_S_PERCENT_L_D:
     NStr    "Ver %s.%ld"
-Global_STR_NINE_POINT_ZERO:
+_Global_STR_NINE_POINT_ZERO:
     NStr    "9.0"   ; Major/minor version string
 
 ; Strings for ESC -> Diagnostic Mode
-Global_STR_BAUD_RATE_DIAGNOSTIC_MODE:
+_Global_STR_BAUD_RATE_DIAGNOSTIC_MODE:
     NStr    "%ld baud"
-Global_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS:
+_Global_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS:
     NStr    "Disk 0 is %2ld%% full with %2ld Errors"
 ;------------------------------------------------------------------------------
-; SYM: ED2_DiagnosticDiskUsagePercent   (diagnostic disk usage scratch/result)
+; SYM: _ED2_DiagnosticDiskUsagePercent   (diagnostic disk usage scratch/result)
 ; TYPE: u16
 ; PURPOSE: Holds or reserves output storage for disk-usage percent query in diagnostics UI.
 ; USED BY: ED1_DrawDiagnosticsScreen
-; NOTES: Passed by address to DISKIO_QueryDiskUsagePercentAndSetBufferSize.
+; NOTES: Passed by address to _DISKIO_QueryDiskUsagePercentAndSetBufferSize.
 ;------------------------------------------------------------------------------
-ED2_DiagnosticDiskUsagePercent:
+_ED2_DiagnosticDiskUsagePercent:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ED2_DiagnosticDiskSoftErrorCount   (diagnostic soft-error scratch/result)
+; SYM: _ED2_DiagnosticDiskSoftErrorCount   (diagnostic soft-error scratch/result)
 ; TYPE: u16
 ; PURPOSE: Holds or reserves output storage for soft-error count query in diagnostics UI.
 ; USED BY: ED1_DrawDiagnosticsScreen
-; NOTES: Passed by address to DISKIO_QueryVolumeSoftErrorCount.
+; NOTES: Passed by address to _DISKIO_QueryVolumeSoftErrorCount.
 ;------------------------------------------------------------------------------
-ED2_DiagnosticDiskSoftErrorCount:
+_ED2_DiagnosticDiskSoftErrorCount:
     DS.W    1
-Global_STR_PUSH_ANY_KEY_TO_CONTINUE_2:
+_Global_STR_PUSH_ANY_KEY_TO_CONTINUE_2:
     NStr    "Push any key to continue."
 ;------------------------------------------------------------------------------
 ; SYM: ED2_HighlightTickEnabledFlag   (highlight tick gate)
 ; TYPE: u16 flag
 ; PURPOSE: Gates highlight tick updates once banner tables are initialized.
-; USED BY: GCOMMAND_BuildBannerTables, ESQSHARED4_TickCopperAndBannerTransitions
+; USED BY: _GCOMMAND_BuildBannerTables, ESQSHARED4_TickCopperAndBannerTransitions
 ; NOTES: Set to 1 when banner table rebuild completes; tested before highlight tick call.
 ;------------------------------------------------------------------------------
 ED2_HighlightTickEnabledFlag:
@@ -293,13 +293,13 @@ ED2_SelectedEntryDataPtr:
     DS.L    1
 ED2_SelectedEntryTitlePtr:
     DS.L    1
-ED2_FMT_SCRSPD_PCT_D:
+_ED2_FMT_SCRSPD_PCT_D:
     NStr    "SCRSPD=%d"
-ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D:
+_ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D:
     NStr    "MR=%d SBS=%d Sport=%d"
-ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR:
+_ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR:
     NStr    "Cycle=%c CycleFreq=%d AftrOrdr=%d"
-Global_STR_CLOCKCMD_EQUALS_PCT_C:
+_Global_STR_CLOCKCMD_EQUALS_PCT_C:
     NStr    "ClockCmd=%c"
 Global_STR_ED2_C_1:
     NStr    "ED2.c"
@@ -404,37 +404,37 @@ ED2_FMT_BITPLANE1_PCT_8LX:
     NStr    "BitPlane1 =%8lx  "
 Global_STR_DF0_GRADIENT_INI_1:
     NStr    "df0:Gradient.ini"
-ED2_TAG_NRLS:
+_ED2_TAG_NRLS:
     NStr    "NRLS"
-ED2_STR_NYYLLZ:
+_ED2_STR_NYYLLZ:
     NStr    "NYyLlZ"
-ED2_TAG_NYLRS:
+_ED2_TAG_NYLRS:
     NStr    "NYLRS"
-ED2_STR_SILENCE:
+_ED2_STR_SILENCE:
     NStr    "  Silence "
-ED2_STR_LEFT:
+_ED2_STR_LEFT:
     NStr    "Left      "
-ED2_STR_RIGHT:
+_ED2_STR_RIGHT:
     NStr    "     Right"
-ED2_STR_BACKGROUND:
+_ED2_STR_BACKGROUND:
     NStr    "Background"
-ED2_STR_EXT_DOT_VIDEO_ONLY:
+_ED2_STR_EXT_DOT_VIDEO_ONLY:
     NStr    "  Ext. Video Only "
-ED2_STR_COMPUTER_ONLY:
+_ED2_STR_COMPUTER_ONLY:
     NStr    "  Computer Only   "
-ED2_STR_OVERLAY_EXT_DOT_VIDEO:
+_ED2_STR_OVERLAY_EXT_DOT_VIDEO:
     NStr    "Overlay Ext. Video"
-ED2_STR_NEGATIVE_VIDEO:
+_ED2_STR_NEGATIVE_VIDEO:
     NStr    "Negative Video"
-ED2_STR_VIDEO_SWITCH:
+_ED2_STR_VIDEO_SWITCH:
     NStr    "Video Switch "
-ED2_STR_OPEN:
+_ED2_STR_OPEN:
     NStr    "Open  "
-ED2_STR_CLOSED:
+_ED2_STR_CLOSED:
     NStr    "Closed"
-ED2_STR_START_TAPE_VIDEO:
+_ED2_STR_START_TAPE_VIDEO:
     NStr    "Start TAPE Video   "
-ED2_STR_STOP:
+_ED2_STR_STOP:
     NStr    "Stop  "
     DS.W    1
 Global_REF_BOOL_IS_TEXT_OR_CURSOR:
@@ -461,13 +461,13 @@ Global_STR_PUSH_ANY_KEY_TO_SELECT_1:
     NStr    " Push any key to select"
 
 ; Some strings for ESC -> Diagnostic Mode
-Global_STR_VIN_BCK_FWD_SSPD_AD_LINE:
+_Global_STR_VIN_BCK_FWD_SSPD_AD_LINE:
     NStr    "VIN:  BCK:  FWD:  SSPD:  #AD:   LINE:"
-Global_STR_TZ_DST_CONT_TXT_GRPH:
+_Global_STR_TZ_DST_CONT_TXT_GRPH:
     NStr    "TZ :  DST:  CONT:  TEXT:  GRPH:"
-Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_3:
+_Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_3:
     NStr    " Push RETURN to enter selection"
-Global_STR_PUSH_ANY_KEY_TO_SELECT_2:
+_Global_STR_PUSH_ANY_KEY_TO_SELECT_2:
     NStr    " Push any key to select"
 
 ; Strings for ESC -> Change Scroll Speed
@@ -491,23 +491,23 @@ Global_STR_SCROLL_SPEED_7:
     NStr    "Scroll speed = 7 (slowest)"
 
 ; Strings for ESC -> Special Functions
-Global_STR_SAVE_ALL_TO_DISK:
+_Global_STR_SAVE_ALL_TO_DISK:
     NStr    "Save ALL to disk"
-Global_STR_SAVE_DATA_TO_DISK:
+_Global_STR_SAVE_DATA_TO_DISK:
     NStr    "Save data to disk"
-Global_STR_LOAD_TEXT_ADS_FROM_DISK:
+_Global_STR_LOAD_TEXT_ADS_FROM_DISK:
     NStr    "Load text ads from disk"
-Global_STR_REBOOT_COMPUTER:
+_Global_STR_REBOOT_COMPUTER:
     NStr    "Reboot computer"
 
 ; Strings for ESC - Edit Ads?
-Global_STR_REGISTER:
+_Global_STR_REGISTER:
     NStr    "register "
-Global_STR_R_EQUALS:
+_Global_STR_R_EQUALS:
     NStr    "R= "
-Global_STR_G_EQUALS:
+_Global_STR_G_EQUALS:
     NStr    "G= "
-Global_STR_B_EQUALS:
+_Global_STR_B_EQUALS:
     NStr    "B= "
 Global_STR_ARE_YOU_SURE:
     NStr    " Are you sure? (Y/N)"
@@ -521,7 +521,7 @@ Global_STR_SINGLE_SPACE_4:
     NStr    " "
 Global_STR_AD_NUMBER_QUESTIONMARK:
     NStr    "Ad Number? "
-Global_STR_CURRENT_COLOR_FORMATTED:
+_Global_STR_CURRENT_COLOR_FORMATTED:
     NStr    " Current Color %02X "
 Global_STR_TEXT:
     NStr    "   Text"
@@ -533,7 +533,7 @@ Global_STR_PAGE:
     NStr    " Page"
 Global_STR_AD_NUMBER_FORMATTED:
     NStr    "Ad Number %2ld"
-Global_STR_ACTIVE_INACTIVE:
+_Global_STR_ACTIVE_INACTIVE:
     NStr    "Active Inactive"
 Global_STR_PUSH_ESC_TO_MAKE_ANOTHER_SELECTION:
     NStr    " Push ESC to make another selection."

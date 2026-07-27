@@ -14,9 +14,9 @@
     XDEF    ESQDISP_TestEntryBits0And2
     XDEF    ESQDISP_TestEntryBits0And2_Core
     XDEF    ESQDISP_TestEntryGridEligibility
-    XDEF    ESQDISP_TestWordIsZeroBooleanize
-    XDEF    ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages
-    XDEF    ESQDISP_JMPTBL_GRAPHICS_AllocRaster
+    XDEF    _ESQDISP_TestWordIsZeroBooleanize
+    XDEF    _ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages
+    XDEF    _ESQDISP_JMPTBL_GRAPHICS_AllocRaster
     XDEF    ESQDISP_DrawStatusBanner_Impl_Return
     XDEF    ESQDISP_FillProgramInfoHeaderFields_Return
     XDEF    ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return
@@ -52,14 +52,14 @@
 ; CLOBBERS:
 ;   A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   DST_BuildBannerTimeWord, DISPLIB_NormalizeValueByStep
+;   _DST_BuildBannerTimeWord, _DISPLIB_NormalizeValueByStep
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Builds a packed time word from (row, slot), folds it with row index, then
-;   normalizes via DISPLIB_NormalizeValueByStep(value, 1, 48).
+;   normalizes via _DISPLIB_NormalizeValueByStep(value, 1, 48).
 ; NOTES:
 ;   Returns normalized offset in D0.
 ;------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ ESQDISP_ComputeScheduleOffsetForRow:
     MOVE.B  D6,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     DST_BuildBannerTimeWord(PC)
+    JSR     _DST_BuildBannerTimeWord(PC)
 
     MOVE.L  D0,D1
     EXT.L   D1
@@ -87,7 +87,7 @@ ESQDISP_ComputeScheduleOffsetForRow:
     PEA     48.W
     PEA     1.W
     MOVE.L  D0,-(A7)
-    JSR     DISPLIB_NormalizeValueByStep(PC)
+    JSR     _DISPLIB_NormalizeValueByStep(PC)
 
     LEA     20(A7),A7
     MOVE.L  D0,D5
@@ -103,7 +103,7 @@ ESQDISP_ComputeScheduleOffsetForRow:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages   (Jump-table forwarder)
+; FUNC: _ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -121,11 +121,11 @@ ESQDISP_ComputeScheduleOffsetForRow:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages:
+_ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages:
     JMP     NEWGRID_ProcessGridMessages
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_JMPTBL_GRAPHICS_AllocRaster   (Jump-table forwarder)
+; FUNC: _ESQDISP_JMPTBL_GRAPHICS_AllocRaster   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -143,7 +143,7 @@ ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQDISP_JMPTBL_GRAPHICS_AllocRaster:
+_ESQDISP_JMPTBL_GRAPHICS_AllocRaster:
     JMP     GRAPHICS_AllocRaster
 
 ;!======
@@ -238,16 +238,16 @@ ESQDISP_FillProgramInfoHeaderFields_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit, ESQFUNC_JMPTBL_STRING_CopyPadNul, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_FillProgramInfoHeaderFields
+;   _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit, ESQFUNC_JMPTBL_STRING_CopyPadNul, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_FillProgramInfoHeaderFields
 ; READS:
-;   ESQDISP_ParseProgramInfoCommandRecord_Return, ESQDISP_ProgramInfoZeroTag, WDISP_CharClassTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, branch, ff, lab_0918
+;   ESQDISP_ParseProgramInfoCommandRecord_Return, ESQDISP_ProgramInfoZeroTag, _WDISP_CharClassTable, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, branch, ff, lab_0918
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Parses group/slot identifiers plus digit fields, resolves target entry tables,
 ;   and writes program-info header fields for matching entries.
 ; NOTES:
-;   Uses WDISP_CharClassTable digit checks before numeric accumulation.
+;   Uses _WDISP_CharClassTable digit checks before numeric accumulation.
 ;------------------------------------------------------------------------------
 ESQDISP_ParseProgramInfoCommandRecord:
     LINK.W  A5,#-40
@@ -261,35 +261,35 @@ ESQDISP_ParseProgramInfoCommandRecord:
     NOT.B   D1
     AND.L   D1,D0
     MOVEQ   #0,D1
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D1
     MOVE.L  D0,-16(A5)
     CMP.L   D0,D1
     BNE.S   .lab_08E5
 
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D1
     SUBQ.B  #1,D1
     BNE.S   .lab_08E5
 
     MOVEQ   #0,D6
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D6
-    MOVE.L  #TEXTDISP_SecondaryEntryPtrTable,-40(A5)
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D6
+    MOVE.L  #_TEXTDISP_SecondaryEntryPtrTable,-40(A5)
     BRA.S   .lab_08E6
 
 .lab_08E5:
     MOVEQ   #0,D1
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D1
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D1
     CMP.L   D1,D0
     BNE.S   .lab_08E6
 
     MOVEQ   #0,D6
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D6
-    MOVE.L  #TEXTDISP_PrimaryEntryPtrTable,-40(A5)       ; A5 is some struct, what's at -40(A5)?
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D6
+    MOVE.L  #_TEXTDISP_PrimaryEntryPtrTable,-40(A5)       ; A5 is some struct, what's at -40(A5)?
 
 .lab_08E6:
     MOVE.B  (A3),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #2,(A1)
@@ -411,7 +411,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     MOVEA.L A1,A2
     ADDA.L  D0,A2
     BTST    #1,(A2)
@@ -449,7 +449,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     MOVE.B  1(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     MOVEA.L A1,A2
     ADDA.L  D0,A2
     BTST    #1,(A2)
@@ -487,7 +487,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     MOVE.B  2(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #7,(A1)
     BEQ.S   .lab_08F9
@@ -496,7 +496,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -529,7 +529,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     MOVE.B  3(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #7,(A1)
     BEQ.S   .lab_08FD
@@ -538,7 +538,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -594,7 +594,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     MOVE.B  6(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     MOVEA.L A1,A2
     ADDA.L  D0,A2
     BTST    #1,(A2)
@@ -632,7 +632,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     MOVE.B  7(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     MOVEA.L A1,A2
     ADDA.L  D0,A2
     BTST    #1,(A2)
@@ -670,7 +670,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     MOVE.B  8(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     MOVEA.L A1,A2
     ADDA.L  D0,A2
     BTST    #1,(A2)
@@ -708,7 +708,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     MOVE.B  9(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     MOVEA.L A1,A2
     ADDA.L  D0,A2
     BTST    #1,(A2)
@@ -746,7 +746,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     MOVE.B  10(A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #1,(A1)
     BEQ.S   .branch_21
@@ -1009,7 +1009,7 @@ ESQDISP_TestEntryBits0And2_Core:
 ; CALLS:
 ;   (none)
 ; READS:
-;   TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable
+;   _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1033,13 +1033,13 @@ ESQDISP_GetEntryPointerByMode:
     BMI.S   .return
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     CMP.L   D0,D7
     BGE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
     BRA.S   .return
@@ -1053,13 +1053,13 @@ ESQDISP_GetEntryPointerByMode:
     BMI.S   .return
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     CMP.L   D0,D7
     BGE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  A1,-4(A5)
@@ -1102,7 +1102,7 @@ ESQDISP_GetEntryPointerByMode:
 ; CALLS:
 ;   (none)
 ; READS:
-;   TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable
+;   _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1126,13 +1126,13 @@ ESQDISP_GetEntryAuxPointerByMode:
     BMI.S   .return
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     CMP.L   D0,D7
     BGE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
     BRA.S   .return
@@ -1146,13 +1146,13 @@ ESQDISP_GetEntryAuxPointerByMode:
     BMI.S   .return
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     CMP.L   D0,D7
     BGE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  A1,-4(A5)
@@ -1260,7 +1260,7 @@ ESQDISP_GetEntryAuxPointerByMode:
 ; READS:
 ;   ESQDISP_LatchedInputModeBit, bfd0ee
 ; WRITES:
-;   ESQDISP_LatchedInputModeBit, ESQDISP_InputModeDebounceCount, Global_RefreshTickCounter
+;   ESQDISP_LatchedInputModeBit, ESQDISP_InputModeDebounceCount, _Global_RefreshTickCounter
 ; DESC:
 ;   Polls CIAB input mode bits with debounce; when stable change is detected,
 ;   updates mode state and either resets selection or redraws rast mode.
@@ -1270,7 +1270,7 @@ ESQDISP_GetEntryAuxPointerByMode:
 ESQDISP_PollInputModeAndRefreshSelection:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
-    MOVE.W  #(-1),Global_RefreshTickCounter
+    MOVE.W  #(-1),_Global_RefreshTickCounter
     MOVE.L  #$bfd0ee,-6(A5) ; uncertain, between PRA_CIAB and PRB_CIAB
     MOVEQ   #4,D7
     MOVEA.L -6(A5),A0
@@ -1324,7 +1324,7 @@ ESQDISP_PollInputModeAndRefreshSelection:
 ; CALLS:
 ;   DST_RefreshBannerBuffer, DST_UpdateBannerQueue, ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner, ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData, ESQDISP_DrawStatusBanner_Impl
 ; READS:
-;   Global_REF_696_400_BITMAP, Global_REF_RASTPORT_1, DST_BannerWindowPrimary, CLOCK_DaySlotIndex
+;   _Global_REF_696_400_BITMAP, _Global_REF_RASTPORT_1, _DST_BannerWindowPrimary, _CLOCK_DaySlotIndex
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1338,10 +1338,10 @@ ESQDISP_NormalizeClockAndRedrawBanner:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVE.L  A3,-(A7)
-    PEA     CLOCK_DaySlotIndex
+    PEA     _CLOCK_DaySlotIndex
     JSR     ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData(PC)
 
-    PEA     DST_BannerWindowPrimary
+    PEA     _DST_BannerWindowPrimary
     JSR     DST_UpdateBannerQueue(PC)
 
     LEA     12(A7),A7
@@ -1351,12 +1351,12 @@ ESQDISP_NormalizeClockAndRedrawBanner:
     JSR     DST_RefreshBannerBuffer(PC)
 
 .lab_0932:
-    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
-    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
+    MOVE.L  #_Global_REF_696_400_BITMAP,4(A0)
     JSR     ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner(PC)
 
-    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
     PEA     1.W
     BSR.W   ESQDISP_DrawStatusBanner_Impl
@@ -1380,9 +1380,9 @@ ESQDISP_DrawStatusBanner:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, ESQ_STR_B, ESQ_STR_E, ESQDISP_StatusBannerClampGateFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, CLOCK_DaySlotIndex, CLOCK_CacheMonthIndex0, CLOCK_CacheDayIndex0, CLOCK_CacheYear, DST_PrimaryCountdown, WDISP_BannerSlotCursor, CLOCK_HalfHourSlotIndex, CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
+;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQ_STR_B, _ESQ_STR_E, ESQDISP_StatusBannerClampGateFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, _CLOCK_DaySlotIndex, CLOCK_CacheMonthIndex0, CLOCK_CacheDayIndex0, CLOCK_CacheYear, _DST_PrimaryCountdown, WDISP_BannerSlotCursor, _CLOCK_HalfHourSlotIndex, CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
 ; WRITES:
-;   BANNER_ResetPendingFlag, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, TLIBA1_StatusBannerPropagateGuard, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, CLOCK_HalfHourSlotIndex
+;   BANNER_ResetPendingFlag, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, TLIBA1_StatusBannerPropagateGuard, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _CLOCK_HalfHourSlotIndex
 ; DESC:
 ;   Computes the current half-hour banner slot, applies optional range clamp,
 ;   updates highlight/banner state, and renders status text for active day entries.
@@ -1395,25 +1395,25 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVEM.L D2-D3/D5-D7/A2,-(A7)
     MOVE.W  38(A7),D7
     MOVEQ   #0,D5
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    PEA     CLOCK_DaySlotIndex
+    PEA     _CLOCK_DaySlotIndex
     JSR     ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  D0,CLOCK_HalfHourSlotIndex
+    MOVE.W  D0,_CLOCK_HalfHourSlotIndex
     TST.W   ESQDISP_StatusBannerClampGateFlag
     BEQ.S   .lab_0934
 
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVEQ   #0,D0
-    MOVE.B  ESQ_STR_B,D0
+    MOVE.B  _ESQ_STR_B,D0
     MOVEQ   #0,D2
-    MOVE.B  ESQ_STR_E,D2
+    MOVE.B  _ESQ_STR_E,D2
     MOVE.L  D2,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D1,-(A7)
@@ -1431,7 +1431,7 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVE.W  D0,BANNER_ResetPendingFlag
 
 .lab_0935:
-    MOVE.W  CLOCK_HalfHourSlotIndex,D0
+    MOVE.W  _CLOCK_HalfHourSlotIndex,D0
     MOVEQ   #2,D1
     CMP.W   D1,D0
     BCS.S   .lab_0937
@@ -1445,7 +1445,7 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVEQ   #0,D2
     NOT.B   D2
     AND.L   D2,D1
-    MOVE.B  D1,TEXTDISP_PrimaryGroupCode
+    MOVE.B  D1,_TEXTDISP_PrimaryGroupCode
     MOVE.W  CLOCK_CacheDayIndex0,D0
     MOVEQ   #31,D3
     CMP.W   D3,D0
@@ -1456,7 +1456,7 @@ ESQDISP_DrawStatusBanner_Impl:
     CMP.W   D3,D0
     BNE.S   .lab_0936
 
-    MOVE.B  #$1,TEXTDISP_SecondaryGroupCode
+    MOVE.B  #$1,_TEXTDISP_SecondaryGroupCode
     BRA.S   .lab_093A
 
 .lab_0936:
@@ -1464,7 +1464,7 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVE.B  D1,D0
     ADDQ.L  #1,D0
     AND.L   D2,D0
-    MOVE.B  D0,TEXTDISP_SecondaryGroupCode
+    MOVE.B  D0,_TEXTDISP_SecondaryGroupCode
     BRA.S   .lab_093A
 
 .lab_0937:
@@ -1473,7 +1473,7 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVEQ   #0,D2
     NOT.B   D2
     AND.L   D2,D1
-    MOVE.B  D1,TEXTDISP_SecondaryGroupCode
+    MOVE.B  D1,_TEXTDISP_SecondaryGroupCode
     MOVE.W  WDISP_BannerSlotCursor,D0
     SUBQ.W  #1,D0
     BNE.S   .lab_0939
@@ -1485,11 +1485,11 @@ ESQDISP_DrawStatusBanner_Impl:
     AND.L   D1,D0
     BNE.S   .lab_0938
 
-    MOVE.B  #$6e,TEXTDISP_PrimaryGroupCode
+    MOVE.B  #$6e,_TEXTDISP_PrimaryGroupCode
     BRA.S   .lab_093A
 
 .lab_0938:
-    MOVE.B  #$6d,TEXTDISP_PrimaryGroupCode
+    MOVE.B  #$6d,_TEXTDISP_PrimaryGroupCode
     BRA.S   .lab_093A
 
 .lab_0939:
@@ -1497,10 +1497,10 @@ ESQDISP_DrawStatusBanner_Impl:
     EXT.L   D0
     SUBQ.L  #1,D0
     AND.L   D2,D0
-    MOVE.B  D0,TEXTDISP_PrimaryGroupCode
+    MOVE.B  D0,_TEXTDISP_PrimaryGroupCode
 
 .lab_093A:
-    MOVE.W  DST_PrimaryCountdown,D0
+    MOVE.W  _DST_PrimaryCountdown,D0
     MOVE.W  ESQDISP_LastPrimaryCountdownValue,D1
     CMP.W   D0,D1
     BEQ.S   .lab_093C
@@ -1509,7 +1509,7 @@ ESQDISP_DrawStatusBanner_Impl:
     SUBQ.W  #1,D0
     BNE.S   .lab_093C
 
-    MOVE.W  CLOCK_HalfHourSlotIndex,D0
+    MOVE.W  _CLOCK_HalfHourSlotIndex,D0
     SUBQ.W  #3,D0
     BNE.S   .lab_093B
 
@@ -1518,7 +1518,7 @@ ESQDISP_DrawStatusBanner_Impl:
     BRA.S   .lab_093C
 
 .lab_093B:
-    MOVE.W  CLOCK_HalfHourSlotIndex,D0
+    MOVE.W  _CLOCK_HalfHourSlotIndex,D0
     MOVEQ   #46,D1
     CMP.W   D1,D0
     BNE.S   .lab_093C
@@ -1611,7 +1611,7 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVE.L  D0,TLIBA1_StatusBannerPropagateGuard
 
 .lab_0945:
-    MOVE.W  CLOCK_HalfHourSlotIndex,D0
+    MOVE.W  _CLOCK_HalfHourSlotIndex,D0
     SUBQ.W  #1,D0
     BNE.S   .lab_0946
 
@@ -1619,7 +1619,7 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVE.W  D0,ESQDISP_SecondaryPersistArmGateFlag
 
 .lab_0946:
-    MOVE.W  CLOCK_HalfHourSlotIndex,D0
+    MOVE.W  _CLOCK_HalfHourSlotIndex,D0
     MOVEQ   #2,D1
     CMP.W   D1,D0
     BCS.S   .lab_0947
@@ -1692,7 +1692,7 @@ ESQDISP_DrawStatusBanner_Impl_Return:
 ; CALLS:
 ;   ESQDISP_FillProgramInfoHeaderFields, ESQSHARED_CreateGroupEntryAndTitle
 ; READS:
-;   TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTablePreSlot, ff7f
+;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTablePreSlot, ff7f
 ; WRITES:
 ;   ESQDISP_PrimarySecondaryMirrorFlag
 ; DESC:
@@ -1705,24 +1705,24 @@ ESQDISP_DrawStatusBanner_Impl_Return:
 ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
     LINK.W  A5,#-12
     MOVEM.L D2-D3/D7/A2-A3/A6,-(A7)
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     BNE.W   .mark_no_mirror_needed
 
     MOVEQ   #0,D7
 
 .loop_primary_entries_for_mirror:
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     CMP.L   D0,D7
     BGE.W   .set_mirror_performed_flag
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     MOVEQ   #0,D1
     MOVEA.L -4(A5),A0
     MOVE.B  27(A0),D1
@@ -1738,7 +1738,7 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
     MOVE.L  D0,-(A7)
     JSR     ESQSHARED_CreateGroupEntryAndTitle(PC)
 
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     ASL.L   #2,D1
@@ -1813,9 +1813,9 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQSHARED_JMPTBL_ESQ_WildcardMatch, ESQPARS_ReplaceOwnedString
+;   ESQSHARED_JMPTBL_ESQ_TestBit1Based, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _ESQPARS_ReplaceOwnedString
 ; READS:
-;   TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable
+;   _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1828,12 +1828,12 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return:
 ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     LINK.W  A5,#-40
     MOVEM.L D2-D7/A2-A3/A6,-(A7)
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.W   ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return
 
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     CMP.W   D1,D0
     BLS.W   ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return
 
@@ -1841,19 +1841,19 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
 
 .loop_secondary_entries:
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     CMP.L   D0,D7
     BGE.W   ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     TST.L   60(A1)
     BNE.W   .next_secondary_entry
 
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     LEA     28(A1),A0
@@ -1870,7 +1870,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
 
 .loop_primary_candidates:
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     CMP.L   D0,D6
     BGE.W   .next_secondary_entry
 
@@ -1879,17 +1879,17 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  D6,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
     MOVE.L  A2,-(A7)
     MOVE.L  A1,-(A7)
-    JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
+    JSR     _ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1898,7 +1898,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     MOVEQ   #48,D5
     MOVE.L  D6,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     BTST    #5,Struct_PrimaryEntry__EditorFlagsByte(A1)
@@ -1922,7 +1922,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     LEA     Struct_PrimaryEntry__SelectionBitsetBase(A1),A0
@@ -1936,7 +1936,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
@@ -1948,7 +1948,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
 
     MOVE.L  D7,D2
     ASL.L   #2,D2
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A1
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A1
     MOVEA.L A1,A2
     ADDA.L  D2,A2
     MOVEA.L (A2),A3
@@ -1971,20 +1971,20 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     MOVE.L  Struct_TitleAuxRecord__OwnedStringPtr(A0),-(A7)      ; dst owned-string slot (secondary title record)
     MOVE.L  Struct_TitleAuxRecord__SelectorTextPtrBase(A2),-(A7) ; src selector text pointer slot (+56 + selector*4)
     MOVE.L  A3,60(A7)
-    JSR     ESQPARS_ReplaceOwnedString(PC)
+    JSR     _ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L 52(A7),A0
     MOVE.L  D0,Struct_TitleAuxRecord__OwnedStringPtr(A0)
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
     MOVE.L  D6,D1
     ASL.L   #2,D1
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A1
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A1
     MOVEA.L A1,A3
     ADDA.L  D1,A3
     MOVEA.L (A3),A6
@@ -2004,7 +2004,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     MOVEA.L (A1),A0
     ADDA.L  D5,A0
     MOVE.B  350(A0),351(A2)
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVEQ   #0,D0
@@ -2061,11 +2061,11 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A7/D0/D1/D7
 ; CALLS:
-;   ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache, ESQPARS_RemoveGroupEntryAndReleaseStrings
+;   _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache, _ESQPARS_RemoveGroupEntryAndReleaseStrings
 ; READS:
-;   CTASKS_SecondaryOiWritePendingFlag, CTASKS_PendingSecondaryOiDiskId, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_SecondaryGroupRecordChecksum, TEXTDISP_SecondaryGroupRecordLength, ff
+;   _CTASKS_SecondaryOiWritePendingFlag, _CTASKS_PendingSecondaryOiDiskId, _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryTitlePtrTable, _TEXTDISP_SecondaryGroupHeaderCode, _TEXTDISP_SecondaryGroupRecordChecksum, _TEXTDISP_SecondaryGroupRecordLength, ff
 ; WRITES:
-;   CTASKS_PrimaryOiWritePendingFlag, CTASKS_SecondaryOiWritePendingFlag, CTASKS_PendingPrimaryOiDiskId, CTASKS_PendingSecondaryOiDiskId, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupHeaderCode, TEXTDISP_PrimaryGroupRecordChecksum, TEXTDISP_PrimaryGroupRecordLength, TEXTDISP_PrimaryGroupPresentFlag, TEXTDISP_GroupMutationState, TEXTDISP_SecondaryGroupRecordChecksum, TEXTDISP_SecondaryGroupRecordLength, NEWGRID_RefreshStateFlag
+;   _CTASKS_PrimaryOiWritePendingFlag, _CTASKS_SecondaryOiWritePendingFlag, _CTASKS_PendingPrimaryOiDiskId, _CTASKS_PendingSecondaryOiDiskId, _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryGroupHeaderCode, _TEXTDISP_PrimaryGroupRecordChecksum, _TEXTDISP_PrimaryGroupRecordLength, _TEXTDISP_PrimaryGroupPresentFlag, _TEXTDISP_GroupMutationState, _TEXTDISP_SecondaryGroupRecordChecksum, _TEXTDISP_SecondaryGroupRecordLength, _NEWGRID_RefreshStateFlag
 ; DESC:
 ;   Clears existing mode-1 group via parser helper, then when a secondary group is
 ;   present moves all secondary entry/title pointers into primary tables, copies group
@@ -2076,38 +2076,38 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return:
 ESQDISP_PromoteSecondaryGroupToPrimary:
     MOVEM.L D7/A2-A3,-(A7)
     PEA     1.W
-    JSR     ESQPARS_RemoveGroupEntryAndReleaseStrings(PC)
+    JSR     _ESQPARS_RemoveGroupEntryAndReleaseStrings(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #1,D0
-    MOVE.L  D0,NEWGRID_RefreshStateFlag
+    MOVE.L  D0,_NEWGRID_RefreshStateFlag
     MOVEQ   #0,D0
-    MOVE.W  D0,TEXTDISP_GroupMutationState
-    CLR.B   TEXTDISP_PrimaryGroupRecordChecksum
-    MOVE.W  D0,TEXTDISP_PrimaryGroupRecordLength
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D1
+    MOVE.W  D0,_TEXTDISP_GroupMutationState
+    CLR.B   _TEXTDISP_PrimaryGroupRecordChecksum
+    MOVE.W  D0,_TEXTDISP_PrimaryGroupRecordLength
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D1
     SUBQ.B  #1,D1
     BNE.W   .sync_task_state_and_reindex
 
     MOVE.L  D0,D7
 
 .loop_move_secondary_slots:
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     CMP.W   D0,D7
     BGE.S   .copy_secondary_group_metadata
 
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A1
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A1
     MOVEA.L A1,A2
     ADDA.L  D0,A2
     MOVE.L  (A2),(A0)
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A2
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A2
     MOVEA.L A2,A3
     ADDA.L  D0,A3
     MOVE.L  (A3),(A0)
@@ -2120,25 +2120,25 @@ ESQDISP_PromoteSecondaryGroupToPrimary:
     BRA.S   .loop_move_secondary_slots
 
 .copy_secondary_group_metadata:
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,TEXTDISP_PrimaryGroupEntryCount
-    MOVE.B  TEXTDISP_SecondaryGroupRecordChecksum,TEXTDISP_PrimaryGroupRecordChecksum
-    MOVE.B  TEXTDISP_SecondaryGroupHeaderCode,TEXTDISP_PrimaryGroupHeaderCode
-    MOVE.W  TEXTDISP_SecondaryGroupRecordLength,TEXTDISP_PrimaryGroupRecordLength
-    MOVE.B  #$1,TEXTDISP_PrimaryGroupPresentFlag
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,_TEXTDISP_PrimaryGroupEntryCount
+    MOVE.B  _TEXTDISP_SecondaryGroupRecordChecksum,_TEXTDISP_PrimaryGroupRecordChecksum
+    MOVE.B  _TEXTDISP_SecondaryGroupHeaderCode,_TEXTDISP_PrimaryGroupHeaderCode
+    MOVE.W  _TEXTDISP_SecondaryGroupRecordLength,_TEXTDISP_PrimaryGroupRecordLength
+    MOVE.B  #$1,_TEXTDISP_PrimaryGroupPresentFlag
     MOVEQ   #0,D0
-    MOVE.W  D0,TEXTDISP_SecondaryGroupEntryCount
+    MOVE.W  D0,_TEXTDISP_SecondaryGroupEntryCount
     MOVEQ   #0,D1
-    MOVE.B  D1,TEXTDISP_SecondaryGroupRecordChecksum
-    MOVE.W  D0,TEXTDISP_SecondaryGroupRecordLength
-    MOVE.B  D1,TEXTDISP_SecondaryGroupPresentFlag
-    MOVE.W  #3,TEXTDISP_GroupMutationState
+    MOVE.B  D1,_TEXTDISP_SecondaryGroupRecordChecksum
+    MOVE.W  D0,_TEXTDISP_SecondaryGroupRecordLength
+    MOVE.B  D1,_TEXTDISP_SecondaryGroupPresentFlag
+    MOVE.W  #3,_TEXTDISP_GroupMutationState
 
 .sync_task_state_and_reindex:
-    MOVE.B  CTASKS_PendingSecondaryOiDiskId,CTASKS_PendingPrimaryOiDiskId
-    MOVE.B  CTASKS_SecondaryOiWritePendingFlag,CTASKS_PrimaryOiWritePendingFlag
-    MOVE.B  #$ff,CTASKS_PendingSecondaryOiDiskId
-    CLR.B   CTASKS_SecondaryOiWritePendingFlag
-    JSR     ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(PC)
+    MOVE.B  _CTASKS_PendingSecondaryOiDiskId,_CTASKS_PendingPrimaryOiDiskId
+    MOVE.B  _CTASKS_SecondaryOiWritePendingFlag,_CTASKS_PrimaryOiWritePendingFlag
+    MOVE.B  #$ff,_CTASKS_PendingSecondaryOiDiskId
+    CLR.B   _CTASKS_SecondaryOiWritePendingFlag
+    JSR     _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(PC)
 
     MOVEM.L (A7)+,D7/A2-A3
     RTS
@@ -2154,39 +2154,39 @@ ESQDISP_PromoteSecondaryGroupToPrimary:
 ; CLOBBERS:
 ;   A0/A7
 ; CALLS:
-;   ESQIFF2_ClearLineHeadTailByMode
+;   _ESQIFF2_ClearLineHeadTailByMode
 ; READS:
-;   ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, ESQDISP_SecondaryLinePromotePendingFlag
+;   ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _ESQDISP_SecondaryLinePromotePendingFlag
 ; WRITES:
-;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, ESQDISP_SecondaryLinePromotePendingFlag
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _ESQDISP_SecondaryLinePromotePendingFlag
 ; DESC:
 ;   If the secondary line chain is marked pending, clears primary line chain for mode 1,
 ;   moves secondary head/tail pointers into primary, then clears secondary pointers.
 ; NOTES:
-;   Always clears ESQDISP_SecondaryLinePromotePendingFlag before return.
+;   Always clears _ESQDISP_SecondaryLinePromotePendingFlag before return.
 ;------------------------------------------------------------------------------
 ESQDISP_PromoteSecondaryLineHeadTailIfMarked:
-    TST.W   ESQDISP_SecondaryLinePromotePendingFlag
+    TST.W   _ESQDISP_SecondaryLinePromotePendingFlag
     BEQ.S   .clear_pending_line_promote_flag
 
     PEA     1.W
-    JSR     ESQIFF2_ClearLineHeadTailByMode(PC)
+    JSR     _ESQIFF2_ClearLineHeadTailByMode(PC)
 
     ADDQ.W  #4,A7
-    MOVE.L  ESQIFF_SecondaryLineHeadPtr,ESQIFF_PrimaryLineHeadPtr
-    MOVE.L  ESQIFF_SecondaryLineTailPtr,ESQIFF_PrimaryLineTailPtr
+    MOVE.L  ESQIFF_SecondaryLineHeadPtr,_ESQIFF_PrimaryLineHeadPtr
+    MOVE.L  _ESQIFF_SecondaryLineTailPtr,_ESQIFF_PrimaryLineTailPtr
     SUBA.L  A0,A0
     MOVE.L  A0,ESQIFF_SecondaryLineHeadPtr
-    MOVE.L  A0,ESQIFF_SecondaryLineTailPtr
+    MOVE.L  A0,_ESQIFF_SecondaryLineTailPtr
 
 .clear_pending_line_promote_flag:
-    CLR.W   ESQDISP_SecondaryLinePromotePendingFlag
+    CLR.W   _ESQDISP_SecondaryLinePromotePendingFlag
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_TestWordIsZeroBooleanize   (Booleanize word==0 into long 0 or -1)
+; FUNC: _ESQDISP_TestWordIsZeroBooleanize   (Booleanize word==0 into long 0 or -1)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2204,7 +2204,7 @@ ESQDISP_PromoteSecondaryLineHeadTailIfMarked:
 ; NOTES:
 ;   Uses `SEQ` + `NEG` + sign-extension idiom to normalize boolean result.
 ;------------------------------------------------------------------------------
-ESQDISP_TestWordIsZeroBooleanize:
+_ESQDISP_TestWordIsZeroBooleanize:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
     TST.W   D7

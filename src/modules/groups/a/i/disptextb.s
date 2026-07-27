@@ -16,9 +16,9 @@
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   DISPTEXT_FinalizeLineTable, GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AI_JMPTBL_STR_FindCharPtr
+;   _DISPTEXT_FinalizeLineTable, _GROUP_AG_JMPTBL_MATH_Mulu32, _GROUP_AI_JMPTBL_STR_FindCharPtr
 ; READS:
-;   _DISPTEXT_TargetLineIndex/21D6/21DC/21D3, NEWGRID_RowHeightPx
+;   _DISPTEXT_TargetLineIndex/21D6/21DC/21D3, _NEWGRID_RowHeightPx
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -30,7 +30,7 @@ DISPTEXT_ComputeVisibleLineCount:
     LINK.W  A5,#-12
     MOVEM.L D5-D7,-(A7)
     MOVE.L  8(A5),D7
-    BSR.W   DISPTEXT_FinalizeLineTable
+    BSR.W   _DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
     MOVE.W  _DISPTEXT_TargetLineIndex,D0
@@ -47,9 +47,9 @@ DISPTEXT_ComputeVisibleLineCount:
 .use_max_lines:
     MOVE.L  D1,D6
     MOVEQ   #0,D1
-    MOVE.W  NEWGRID_RowHeightPx,D1
+    MOVE.W  _NEWGRID_RowHeightPx,D1
     MOVE.L  D6,D0
-    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     TST.L   D0
     BPL.S   .add_leading
@@ -78,7 +78,7 @@ DISPTEXT_ComputeVisibleLineCount:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     ASL.L   #2,D1
-    LEA     DISPTEXT_TextBufferPtr,A0
+    LEA     _DISPTEXT_TextBufferPtr,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     MOVE.L  A1,-12(A5)
@@ -86,7 +86,7 @@ DISPTEXT_ComputeVisibleLineCount:
 
     PEA     19.W
     MOVE.L  A1,-(A7)
-    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -94,7 +94,7 @@ DISPTEXT_ComputeVisibleLineCount:
 
     PEA     20.W
     MOVE.L  -12(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -118,7 +118,7 @@ DISPTEXT_ComputeVisibleLineCount:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   DISPTEXT_FinalizeLineTable
+;   _DISPTEXT_FinalizeLineTable
 ; READS:
 ;   _DISPTEXT_TargetLineIndex
 ; WRITES:
@@ -129,7 +129,7 @@ DISPTEXT_ComputeVisibleLineCount:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DISPTEXT_GetTotalLineCount:
-    BSR.W   DISPTEXT_FinalizeLineTable
+    BSR.W   _DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
     MOVE.W  _DISPTEXT_TargetLineIndex,D0
@@ -145,7 +145,7 @@ DISPTEXT_GetTotalLineCount:
 ; CLOBBERS:
 ;   D0/D1
 ; CALLS:
-;   DISPTEXT_FinalizeLineTable
+;   _DISPTEXT_FinalizeLineTable
 ; READS:
 ;   _DISPTEXT_TargetLineIndex/21D6
 ; WRITES:
@@ -156,7 +156,7 @@ DISPTEXT_GetTotalLineCount:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DISPTEXT_HasMultipleLines:
-    BSR.W   DISPTEXT_FinalizeLineTable
+    BSR.W   _DISPTEXT_FinalizeLineTable
 
     MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     BNE.S   .return_false
@@ -185,7 +185,7 @@ DISPTEXT_HasMultipleLines:
 ; CLOBBERS:
 ;   A7/D0/D1/D2
 ; CALLS:
-;   DISPTEXT_FinalizeLineTable
+;   _DISPTEXT_FinalizeLineTable
 ; READS:
 ;   _DISPTEXT_TargetLineIndex/21D6
 ; WRITES:
@@ -197,7 +197,7 @@ DISPTEXT_HasMultipleLines:
 ;------------------------------------------------------------------------------
 DISPTEXT_IsLastLineSelected:
     MOVE.L  D2,-(A7)
-    BSR.W   DISPTEXT_FinalizeLineTable
+    BSR.W   _DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
     MOVE.W  _DISPTEXT_TargetLineIndex,D0
@@ -223,7 +223,7 @@ DISPTEXT_IsLastLineSelected:
 ; CLOBBERS:
 ;   A7/D0/D1/D2
 ; CALLS:
-;   DISPTEXT_FinalizeLineTable
+;   _DISPTEXT_FinalizeLineTable
 ; READS:
 ;   _DISPTEXT_TargetLineIndex/21D6
 ; WRITES:
@@ -235,7 +235,7 @@ DISPTEXT_IsLastLineSelected:
 ;------------------------------------------------------------------------------
 DISPTEXT_IsCurrentLineLast:
     MOVE.L  D2,-(A7)
-    BSR.W   DISPTEXT_FinalizeLineTable
+    BSR.W   _DISPTEXT_FinalizeLineTable
 
     MOVE.W  _DISPTEXT_CurrentLineIndex,D0
     MOVE.W  _DISPTEXT_TargetLineIndex,D1
@@ -258,7 +258,7 @@ DISPTEXT_IsCurrentLineLast:
 ; CLOBBERS:
 ;   A0/A1/A3/A6/A7/D0
 ; CALLS:
-;   DISPTEXT_FinalizeLineTable, _LVOTextLength
+;   _DISPTEXT_FinalizeLineTable, _LVOTextLength
 ; READS:
 ;   _DISPTEXT_LinePtrTable/21D6/21D7
 ; WRITES:
@@ -271,7 +271,7 @@ DISPTEXT_IsCurrentLineLast:
 DISPTEXT_MeasureCurrentLineLength:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
-    BSR.W   DISPTEXT_FinalizeLineTable
+    BSR.W   _DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
     MOVE.W  _DISPTEXT_CurrentLineIndex,D0
@@ -305,11 +305,11 @@ DISPTEXT_MeasureCurrentLineLength:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   DISPTEXT_FinalizeLineTable, _LVOSetAPen, _LVOSetDrMd, _LVOMove, _LVOText, GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments
+;   _DISPTEXT_FinalizeLineTable, _LVOSetAPen, _LVOSetDrMd, _LVOMove, _LVOText, _GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments
 ; READS:
 ;   _DISPTEXT_LinePtrTable/21D6/21D7/21D9/21DC/21B1/21B2/21D8
 ; WRITES:
-;   _DISPTEXT_CurrentLineIndex, DISPTEXT_ControlMarkerXOffsetPx
+;   _DISPTEXT_CurrentLineIndex, _DISPTEXT_ControlMarkerXOffsetPx
 ; DESC:
 ;   Draws the current line at the given position, honoring highlight markers.
 ; NOTES:
@@ -321,10 +321,10 @@ DISPTEXT_RenderCurrentLine:
     MOVEA.L 8(A5),A3
     MOVE.L  12(A5),D7
     MOVE.L  16(A5),D6
-    BSR.W   DISPTEXT_FinalizeLineTable
+    BSR.W   _DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
-    MOVE.L  D0,DISPTEXT_ControlMarkerXOffsetPx
+    MOVE.L  D0,_DISPTEXT_ControlMarkerXOffsetPx
     MOVE.L  _DISPTEXT_LineWidthPx,D1
     TST.L   D1
     BLE.W   .return
@@ -377,7 +377,7 @@ DISPTEXT_RenderCurrentLine:
 
     PEA     19.W
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -385,7 +385,7 @@ DISPTEXT_RenderCurrentLine:
 
     PEA     20.W
     MOVE.L  -6(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -405,7 +405,7 @@ DISPTEXT_RenderCurrentLine:
 
     LEA     24(A7),A7
     MOVEQ   #4,D0
-    MOVE.L  D0,DISPTEXT_ControlMarkerXOffsetPx
+    MOVE.L  D0,_DISPTEXT_ControlMarkerXOffsetPx
     BRA.S   .restore_char
 
 .draw_plain:

@@ -1,16 +1,16 @@
     XDEF    DATETIME_AdjustMonthIndex
-    XDEF    DATETIME_IsLeapYear
+    XDEF    _DATETIME_IsLeapYear
     XDEF    DATETIME_NormalizeMonthRange
-    XDEF    DST_AddTimeOffset
+    XDEF    _DST_AddTimeOffset
     XDEF    DST_BuildBannerTimeEntry
-    XDEF    DST_BuildBannerTimeWord
+    XDEF    _DST_BuildBannerTimeWord
     XDEF    DST_WriteRtcFromGlobals
     XDEF    DST_ComputeBannerIndex
     XDEF    DST_FormatBannerDateTime
     XDEF    DST_HandleBannerCommand32_33
     XDEF    DST_NormalizeDayOfYear
     XDEF    DST_RefreshBannerBuffer
-    XDEF    DST_TickBannerCounters
+    XDEF    _DST_TickBannerCounters
     XDEF    DST_UpdateBannerQueue
 
 ;------------------------------------------------------------------------------
@@ -28,7 +28,7 @@
 ; CALLS:
 ;   DATETIME_ParseString, DATETIME_CopyPairAndRecalc, DST_UpdateBannerQueue
 ; READS:
-;   DST_BannerWindowSecondary, DST_BannerWindowPrimary
+;   DST_BannerWindowSecondary, _DST_BannerWindowPrimary
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -72,7 +72,7 @@ DST_HandleBannerCommand32_33:
     BRA.S   .return
 
 .case_cmd_33:
-    ; Parse two string segments and enqueue into DST_BannerWindowPrimary.
+    ; Parse two string segments and enqueue into _DST_BannerWindowPrimary.
     PEA     4.W
     MOVE.L  A3,-(A7)
     PEA     -22(A5)
@@ -85,13 +85,13 @@ DST_HandleBannerCommand32_33:
 
     PEA     -44(A5)
     PEA     -22(A5)
-    MOVE.L  DST_BannerWindowPrimary,-(A7)
+    MOVE.L  _DST_BannerWindowPrimary,-(A7)
     BSR.W   DATETIME_CopyPairAndRecalc
 
     LEA     36(A7),A7
 
 .return:
-    PEA     DST_BannerWindowPrimary
+    PEA     _DST_BannerWindowPrimary
     BSR.W   DST_UpdateBannerQueue
 
     MOVEM.L -52(A5),D7/A3
@@ -135,11 +135,11 @@ DST_WriteRtcFromGlobals:
 ; CLOBBERS:
 ;   A0/A3/A7/D0/D1/D6/D7
 ; CALLS:
-;   DATETIME_UpdateSelectionField, DST_AddTimeOffset, DST_AllocateBannerStruct, DST_RefreshBannerBuffer, DST_WriteRtcFromGlobals
+;   DATETIME_UpdateSelectionField, _DST_AddTimeOffset, _DST_AllocateBannerStruct, DST_RefreshBannerBuffer, DST_WriteRtcFromGlobals
 ; READS:
-;   DST_PrimaryCountdown, DST_SecondaryCountdown, ESQ_SecondarySlotModeFlagChar
+;   _DST_PrimaryCountdown, _DST_SecondaryCountdown, _ESQ_SecondarySlotModeFlagChar
 ; WRITES:
-;   DST_PrimaryCountdown, DST_SecondaryCountdown
+;   _DST_PrimaryCountdown, _DST_SecondaryCountdown
 ; DESC:
 ;   Ticks the banner queue timers and refreshes buffers when entries change.
 ; NOTES:
@@ -158,7 +158,7 @@ DST_UpdateBannerQueue:
     BEQ.S   .slot0_empty
 
     MOVEA.L (A3),A0
-    MOVE.W  DST_PrimaryCountdown,16(A0)
+    MOVE.W  _DST_PrimaryCountdown,16(A0)
     MOVE.L  (A3),-(A7)
     BSR.W   DATETIME_UpdateSelectionField
 
@@ -182,11 +182,11 @@ DST_UpdateBannerQueue:
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    PEA     CLOCK_DaySlotIndex
-    BSR.W   DST_AddTimeOffset
+    PEA     _CLOCK_DaySlotIndex
+    BSR.W   _DST_AddTimeOffset
 
     MOVEA.L (A3),A0
-    MOVE.W  16(A0),DST_PrimaryCountdown
+    MOVE.W  16(A0),_DST_PrimaryCountdown
     BSR.S   DST_WriteRtcFromGlobals
 
     LEA     12(A7),A7
@@ -194,23 +194,23 @@ DST_UpdateBannerQueue:
     BRA.S   .slot0_done
 
 .slot0_empty:
-    ; No active entry: count down DST_PrimaryCountdown and free when it hits 1.
-    MOVE.W  DST_PrimaryCountdown,D0
+    ; No active entry: count down _DST_PrimaryCountdown and free when it hits 1.
+    MOVE.W  _DST_PrimaryCountdown,D0
     SUBQ.W  #1,D0
     BNE.S   .slot0_done
 
     CLR.L   -(A7)
     PEA     -1.W
-    PEA     CLOCK_DaySlotIndex
-    BSR.W   DST_AddTimeOffset
+    PEA     _CLOCK_DaySlotIndex
+    BSR.W   _DST_AddTimeOffset
 
     LEA     12(A7),A7
-    CLR.W   DST_PrimaryCountdown
+    CLR.W   _DST_PrimaryCountdown
     MOVEQ   #1,D6
 
 .slot0_done:
-    ; Slot 1 update depends on ESQ_SecondarySlotModeFlagChar mode.
-    MOVE.B  ESQ_SecondarySlotModeFlagChar,D0
+    ; Slot 1 update depends on _ESQ_SecondarySlotModeFlagChar mode.
+    MOVE.B  _ESQ_SecondarySlotModeFlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .slot1_mode_off
@@ -219,7 +219,7 @@ DST_UpdateBannerQueue:
     BEQ.S   .slot1_empty
 
     MOVEA.L 4(A3),A0
-    MOVE.W  DST_SecondaryCountdown,16(A0)
+    MOVE.W  _DST_SecondaryCountdown,16(A0)
     MOVE.L  4(A3),-(A7)
     BSR.W   DATETIME_UpdateSelectionField
 
@@ -229,32 +229,32 @@ DST_UpdateBannerQueue:
 
     MOVEA.L 4(A3),A0
     MOVE.W  16(A0),D0
-    MOVE.W  D0,DST_SecondaryCountdown
+    MOVE.W  D0,_DST_SecondaryCountdown
     MOVEQ   #1,D6
     BRA.S   .after_slot1
 
 .slot1_empty:
-    MOVE.W  DST_SecondaryCountdown,D0
+    MOVE.W  _DST_SecondaryCountdown,D0
     SUBQ.W  #1,D0
     BNE.S   .after_slot1
 
     MOVEQ   #0,D0
-    MOVE.W  D0,DST_SecondaryCountdown
+    MOVE.W  D0,_DST_SecondaryCountdown
     MOVEQ   #1,D6
     BRA.S   .after_slot1
 
 .slot1_mode_off:
     ; Non-'Y' mode: only refresh slot 1 when timer hits 1.
-    MOVE.W  DST_SecondaryCountdown,D0
+    MOVE.W  _DST_SecondaryCountdown,D0
     SUBQ.W  #1,D0
     BNE.S   .after_slot1
 
     MOVE.L  4(A3),-(A7)
-    BSR.W   DST_AllocateBannerStruct
+    BSR.W   _DST_AllocateBannerStruct
 
     ADDQ.W  #4,A7
     MOVE.L  D0,4(A3)
-    CLR.W   DST_SecondaryCountdown
+    CLR.W   _DST_SecondaryCountdown
     MOVEQ   #1,D6
 
 .after_slot1:
@@ -280,7 +280,7 @@ DST_UpdateBannerQueue:
 ; CLOBBERS:
 ;   A7/D0/D5/D6/D7
 ; CALLS:
-;   DATETIME_IsLeapYear
+;   _DATETIME_IsLeapYear
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -297,7 +297,7 @@ DST_NormalizeDayOfYear:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   DATETIME_IsLeapYear
+    BSR.W   _DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     ; Determine days in year for the starting year.
@@ -323,7 +323,7 @@ DST_NormalizeDayOfYear:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   DATETIME_IsLeapYear
+    BSR.W   _DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -367,9 +367,9 @@ DST_NormalizeDayOfYear:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   DATETIME_IsLeapYear, DATETIME_BuildFromBaseDay, DATETIME_ClassifyValueInRange, DATETIME_SecondsToStruct, GROUP_AG_JMPTBL_MATH_Mulu32/1A07
+;   _DATETIME_IsLeapYear, _DATETIME_BuildFromBaseDay, _DATETIME_ClassifyValueInRange, _DATETIME_SecondsToStruct, _GROUP_AG_JMPTBL_MATH_Mulu32/1A07
 ; READS:
-;   CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, CLOCK_CacheYear, ESQ_SecondarySlotModeFlagChar, ESQ_STR_6, CLOCK_FormatVariantCode, DST_BannerWindowSecondary, DST_BannerWindowPrimary
+;   _CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, CLOCK_CacheYear, _ESQ_SecondarySlotModeFlagChar, _ESQ_STR_6, _CLOCK_FormatVariantCode, DST_BannerWindowSecondary, _DST_BannerWindowPrimary
 ; WRITES:
 ;   (A3), 14(A2)
 ; DESC:
@@ -384,7 +384,7 @@ DST_BuildBannerTimeEntry:
     MOVE.B  15(A5),D6
     MOVEA.L 16(A5),A3
     MOVEA.L 20(A5),A2
-    LEA     CLOCK_DaySlotIndex,A0
+    LEA     _CLOCK_DaySlotIndex,A0
     LEA     -22(A5),A1
     MOVEQ   #4,D0
 
@@ -445,7 +445,7 @@ DST_BuildBannerTimeEntry:
     MOVE.W  CLOCK_CacheYear,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   DATETIME_IsLeapYear
+    BSR.W   _DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -478,10 +478,10 @@ DST_BuildBannerTimeEntry:
     SUBQ.L  #1,D1
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #30,D0
-    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.W  D0,-12(A5)
     MOVE.L  D7,D0
@@ -496,7 +496,7 @@ DST_BuildBannerTimeEntry:
     ASR.L   #1,D0
     ADDQ.L  #5,D0
     MOVEQ   #12,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D1,-14(A5)
     BNE.S   .ensure_nonzero_divisor
@@ -516,7 +516,7 @@ DST_BuildBannerTimeEntry:
     ASR.L   #1,D0
     ADDQ.L  #5,D0
     MOVEQ   #24,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #11,D0
     CMP.L   D0,D1
@@ -537,11 +537,11 @@ DST_BuildBannerTimeEntry:
     LEA     -22(A5),A0
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   DATETIME_BuildFromBaseDay
+    BSR.W   _DATETIME_BuildFromBaseDay
 
     LEA     16(A7),A7
     MOVE.L  D0,D5
-    MOVE.B  ESQ_SecondarySlotModeFlagChar,D0
+    MOVE.B  _ESQ_SecondarySlotModeFlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .skip_alt_buffer
@@ -549,7 +549,7 @@ DST_BuildBannerTimeEntry:
     ; If in 'Y' mode, write into DST_BannerWindowSecondary buffer first.
     MOVE.L  D5,-(A7)
     MOVE.L  DST_BannerWindowSecondary,-(A7)
-    BSR.W   DATETIME_ClassifyValueInRange
+    BSR.W   _DATETIME_ClassifyValueInRange
 
     ADDQ.W  #8,A7
     EXT.L   D0
@@ -560,13 +560,13 @@ DST_BuildBannerTimeEntry:
 
 .after_alt_buffer:
     MOVE.L  D5,-(A7)
-    MOVE.L  DST_BannerWindowPrimary,-(A7)
+    MOVE.L  _DST_BannerWindowPrimary,-(A7)
     MOVE.W  D0,-32(A5)
-    BSR.W   DATETIME_ClassifyValueInRange
+    BSR.W   _DATETIME_ClassifyValueInRange
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D1
-    MOVE.B  ESQ_STR_6,D1
+    MOVE.B  _ESQ_STR_6,D1
     MOVEQ   #54,D2
     SUB.L   D2,D1
     MOVE.W  D0,-34(A5)
@@ -605,14 +605,14 @@ DST_BuildBannerTimeEntry:
     MULS    #$e10,D1
     ADD.L   D1,D5
     MOVEQ   #0,D0
-    MOVE.B  CLOCK_FormatVariantCode,D0
+    MOVE.B  _CLOCK_FormatVariantCode,D0
     MOVEQ   #60,D1
-    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D0,D5
     MOVE.L  A2,-(A7)
     MOVE.L  D5,-(A7)
-    BSR.W   DATETIME_SecondsToStruct
+    BSR.W   _DATETIME_SecondsToStruct
 
     ADDQ.W  #8,A7
     MOVE.W  -32(A5),14(A2)
@@ -625,7 +625,7 @@ DST_BuildBannerTimeEntry:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_BuildBannerTimeWord   (Wrapper: call DST_BuildBannerTimeEntry and return word.)
+; FUNC: _DST_BuildBannerTimeWord   (Wrapper: call DST_BuildBannerTimeEntry and return word.)
 ; ARGS:
 ;   stack +6: arg_1 (via 10(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -645,7 +645,7 @@ DST_BuildBannerTimeEntry:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DST_BuildBannerTimeWord:
+_DST_BuildBannerTimeWord:
     LINK.W  A5,#-4
     MOVEM.L D6-D7,-(A7)
     MOVE.W  10(A5),D7
@@ -678,7 +678,7 @@ DST_BuildBannerTimeWord:
 ; CLOBBERS:
 ;   A3/A7/D0/D1/D6/D7
 ; CALLS:
-;   DST_BuildBannerTimeEntry, GROUP_AG_JMPTBL_MATH_DivS32
+;   DST_BuildBannerTimeEntry, _GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
 ;   8(A3), 10(A3), 18(A3)
 ; WRITES:
@@ -708,7 +708,7 @@ DST_ComputeBannerIndex:
     MOVE.W  8(A3),D0
     EXT.L   D0
     MOVEQ   #12,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.W   18(A3)
     BEQ.S   .month_offset_zero
@@ -753,7 +753,7 @@ DST_ComputeBannerIndex:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_TickBannerCounters   (Tick banner counters.)
+; FUNC: _DST_TickBannerCounters   (Tick banner counters.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -763,35 +763,35 @@ DST_ComputeBannerIndex:
 ; CALLS:
 ;   (none)
 ; READS:
-;   ESQ_STR_6, DST_PrimaryCountdown, DST_SecondaryCountdown
+;   _ESQ_STR_6, _DST_PrimaryCountdown, _DST_SecondaryCountdown
 ; WRITES:
-;   WDISP_BannerCharPhaseShift
+;   _WDISP_BannerCharPhaseShift
 ; DESC:
 ;   Updates banner counters based on timers and flags.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DST_TickBannerCounters:
+_DST_TickBannerCounters:
     MOVEQ   #0,D0
-    MOVE.B  ESQ_STR_6,D0
+    MOVE.B  _ESQ_STR_6,D0
     SUBI.W  #$36,D0
-    MOVE.W  D0,WDISP_BannerCharPhaseShift
-    MOVE.W  DST_PrimaryCountdown,D1
+    MOVE.W  D0,_WDISP_BannerCharPhaseShift
+    MOVE.W  _DST_PrimaryCountdown,D1
     SUBQ.W  #1,D1
     BNE.S   .after_primary_tick
 
     MOVE.L  D0,D1
     SUBQ.W  #1,D1
-    MOVE.W  D1,WDISP_BannerCharPhaseShift
+    MOVE.W  D1,_WDISP_BannerCharPhaseShift
 
 .after_primary_tick:
-    MOVE.W  DST_SecondaryCountdown,D0
+    MOVE.W  _DST_SecondaryCountdown,D0
     SUBQ.W  #1,D0
     BNE.S   .return
 
-    MOVE.W  WDISP_BannerCharPhaseShift,D0
+    MOVE.W  _WDISP_BannerCharPhaseShift,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,WDISP_BannerCharPhaseShift
+    MOVE.W  D0,_WDISP_BannerCharPhaseShift
 
 .return:
     RTS
@@ -799,7 +799,7 @@ DST_TickBannerCounters:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_AddTimeOffset   (Add time offset and store seconds.)
+; FUNC: _DST_AddTimeOffset   (Add time offset and store seconds.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -807,23 +807,23 @@ DST_TickBannerCounters:
 ; CLOBBERS:
 ;   A3/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   DATETIME_NormalizeStructToSeconds, DATETIME_SecondsToStruct
+;   _DATETIME_NormalizeStructToSeconds, _DATETIME_SecondsToStruct
 ; READS:
 ;   e10
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Computes a seconds offset from hours/minutes and stores it via DATETIME_SecondsToStruct.
+;   Computes a seconds offset from hours/minutes and stores it via _DATETIME_SecondsToStruct.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DST_AddTimeOffset:
+_DST_AddTimeOffset:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.W  26(A7),D7
     MOVE.W  30(A7),D6
     MOVE.L  A3,-(A7)
-    BSR.W   DATETIME_NormalizeStructToSeconds
+    BSR.W   _DATETIME_NormalizeStructToSeconds
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
@@ -835,7 +835,7 @@ DST_AddTimeOffset:
     ADD.L   D0,D5
     MOVE.L  A3,-(A7)
     MOVE.L  D5,-(A7)
-    BSR.W   DATETIME_SecondsToStruct
+    BSR.W   _DATETIME_SecondsToStruct
 
     ADDQ.W  #8,A7
     MOVEM.L (A7)+,D5-D7/A3
@@ -852,9 +852,9 @@ DST_AddTimeOffset:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A6/A7/D0/D1/D2/D3/D4/D5/D6
 ; CALLS:
-;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
+;   _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   Global_JMPTBL_SHORT_DAYS_OF_WEEK, Global_JMPTBL_SHORT_MONTHS, DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_..DST_STR_NORM_YEAR
+;   _Global_JMPTBL_SHORT_DAYS_OF_WEEK, _Global_JMPTBL_SHORT_MONTHS, _DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_..DST_STR_NORM_YEAR
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -870,21 +870,21 @@ DST_FormatBannerDateTime:
 
     ; 84(A7) is copied into (A2), which itself points to the day number.
     ; This is then copied into D0 and shifted by 2 to multiply by 4 becoming
-    ; an index off of Global_JMPTBL_SHORT_DAYS_OF_WEEK and stored into A0.
+    ; an index off of _Global_JMPTBL_SHORT_DAYS_OF_WEEK and stored into A0.
     MOVEA.L 84(A7),A2
     MOVE.W  (A2),D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     Global_JMPTBL_SHORT_DAYS_OF_WEEK,A0
+    LEA     _Global_JMPTBL_SHORT_DAYS_OF_WEEK,A0
     ADDA.L  D0,A0
 
     ; 2(A2) is copied into (D0), which itself points to the month number.
     ; This is then copied into D0 and again shifted by 2 to multiply by 4 becoming
-    ; an index off of Global_JMPTBL_SHORT_MONTHS and stored into A1.
+    ; an index off of _Global_JMPTBL_SHORT_MONTHS and stored into A1.
     MOVE.W  2(A2),D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     Global_JMPTBL_SHORT_MONTHS,A1
+    LEA     _Global_JMPTBL_SHORT_MONTHS,A1
     ADDA.L  D0,A1
 
     ; Copy 4(A2) into D0 and sign extend
@@ -915,7 +915,7 @@ DST_FormatBannerDateTime:
     TST.W   18(A2)
     BEQ.S   .use_pm_string
 
-    LEA     DST_TAG_PM,A6
+    LEA     _DST_TAG_PM,A6
     BRA.S   .ampm_string_ready
 
 .use_pm_string:
@@ -923,7 +923,7 @@ DST_FormatBannerDateTime:
 
 .ampm_string_ready:
     ; Copy A6 into 64(A7), then 1 into D6. Compare 14(A2) to D6 and if it's not equal,
-    ; branch to use_day_suffix_1 -- otherwise, load the address for DST_TAG_DST
+    ; branch to use_day_suffix_1 -- otherwise, load the address for _DST_TAG_DST
     ; ("DST") into A6 and branch to .day_suffix_ready
     MOVE.L  A6,64(A7)
     MOVEQ   #1,D6
@@ -931,7 +931,7 @@ DST_FormatBannerDateTime:
     BNE.S   .use_day_suffix_1
 
     ; A6 points to "DST"
-    LEA     DST_TAG_DST,A6
+    LEA     _DST_TAG_DST,A6
     BRA.S   .day_suffix_ready
 
 .use_day_suffix_1:
@@ -944,7 +944,7 @@ DST_FormatBannerDateTime:
     BEQ.S   .use_dst_on_string
 
     ; A6 points to "Leap year"
-    LEA     DST_STR_LEAP_YEAR,A6
+    LEA     _DST_STR_LEAP_YEAR,A6
     BRA.S   .dst_string_ready
 
 .use_dst_on_string:
@@ -966,8 +966,8 @@ DST_FormatBannerDateTime:
     MOVE.L  (A1),-(A7)
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
-    PEA     DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_
-    JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
+    PEA     _DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_
+    JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEM.L -72(A5),D2-D6/A2-A3/A6
     UNLK    A5
@@ -984,11 +984,11 @@ DST_FormatBannerDateTime:
 ; CLOBBERS:
 ;   A0/A1/A7/D0/D1/D7
 ; CALLS:
-;   DST_TickBannerCounters, DST_AddTimeOffset
+;   _DST_TickBannerCounters, _DST_AddTimeOffset
 ; READS:
-;   CLOCK_DaySlotIndex, DST_SecondaryCountdown, WDISP_BannerCharPhaseShift, CLOCK_FormatVariantCode
+;   _CLOCK_DaySlotIndex, _DST_SecondaryCountdown, _WDISP_BannerCharPhaseShift, _CLOCK_FormatVariantCode
 ; WRITES:
-;   CLOCK_CurrentDayOfWeekIndex, DST_SecondaryCountdown
+;   _CLOCK_CurrentDayOfWeekIndex, _DST_SecondaryCountdown
 ; DESC:
 ;   Updates counters, copies the queue state into staging, and writes timestamps.
 ; NOTES:
@@ -997,11 +997,11 @@ DST_FormatBannerDateTime:
 ; Copy the next banner entry into the staging buffer and trigger drawing.
 DST_RefreshBannerBuffer:
     MOVE.L  D7,-(A7)
-    BSR.W   DST_TickBannerCounters
+    BSR.W   _DST_TickBannerCounters
 
-    MOVE.W  DST_SecondaryCountdown,D7
-    LEA     CLOCK_DaySlotIndex,A0
-    LEA     CLOCK_CurrentDayOfWeekIndex,A1
+    MOVE.W  _DST_SecondaryCountdown,D7
+    LEA     _CLOCK_DaySlotIndex,A0
+    LEA     _CLOCK_CurrentDayOfWeekIndex,A1
     MOVEQ   #4,D0
 
     ; Copy current queue state into staging buffer.
@@ -1009,16 +1009,16 @@ DST_RefreshBannerBuffer:
     MOVE.L  (A0)+,(A1)+
     DBF     D0,.copy_queue_state
     MOVE.W  (A0),(A1)
-    MOVE.W  D7,DST_SecondaryCountdown
-    MOVE.W  WDISP_BannerCharPhaseShift,D0
+    MOVE.W  D7,_DST_SecondaryCountdown
+    MOVE.W  _WDISP_BannerCharPhaseShift,D0
     EXT.L   D0
     MOVEQ   #0,D1
-    MOVE.B  CLOCK_FormatVariantCode,D1
+    MOVE.B  _CLOCK_FormatVariantCode,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     CLOCK_CurrentDayOfWeekIndex
-    BSR.W   DST_AddTimeOffset
+    PEA     _CLOCK_CurrentDayOfWeekIndex
+    BSR.W   _DST_AddTimeOffset
 
     LEA     12(A7),A7
     MOVE.L  (A7)+,D7
@@ -1027,7 +1027,7 @@ DST_RefreshBannerBuffer:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DATETIME_IsLeapYear   (Leap year test.)
+; FUNC: _DATETIME_IsLeapYear   (Leap year test.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1035,7 +1035,7 @@ DST_RefreshBannerBuffer:
 ; CLOBBERS:
 ;   A7/D0/D1/D6/D7
 ; CALLS:
-;   GROUP_AG_JMPTBL_MATH_DivS32
+;   _GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1045,7 +1045,7 @@ DST_RefreshBannerBuffer:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DATETIME_IsLeapYear:
+_DATETIME_IsLeapYear:
     MOVEM.L D6-D7,-(A7)
     MOVE.L  12(A7),D7
     ; Normalize and test for leap year.
@@ -1057,14 +1057,14 @@ DATETIME_IsLeapYear:
 .normalize_year_base:
     MOVE.L  D7,D0
     MOVEQ   #4,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D1
     BNE.S   .check_century
 
     MOVE.L  D7,D0
     MOVEQ   #100,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D1
     BNE.S   .set_leap_result
@@ -1072,7 +1072,7 @@ DATETIME_IsLeapYear:
 .check_century:
     MOVE.L  D7,D0
     MOVE.L  #400,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D1
     BEQ.S   .set_leap_result
@@ -1100,7 +1100,7 @@ DATETIME_IsLeapYear:
 ; CLOBBERS:
 ;   A3/A7/D0/D1
 ; CALLS:
-;   GROUP_AG_JMPTBL_MATH_DivS32
+;   _GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
 ;   8(A3), 18(A3)
 ; WRITES:
@@ -1117,7 +1117,7 @@ DATETIME_AdjustMonthIndex:
     MOVE.W  8(A3),D0
     EXT.L   D0
     MOVEQ   #12,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.W   18(A3)
     BEQ.S   .month_offset_zero

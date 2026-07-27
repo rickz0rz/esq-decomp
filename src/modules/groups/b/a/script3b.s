@@ -1,7 +1,7 @@
     XDEF    SCRIPT_ApplyPendingBannerTarget
     XDEF    SCRIPT_DispatchPlaybackCursorCommand
     XDEF    SCRIPT_LoadCtrlContextSnapshot
-    XDEF    SCRIPT_ResetCtrlContext
+    XDEF    _SCRIPT_ResetCtrlContext
     XDEF    SCRIPT_ResetCtrlContextAndClearStatusLine
     XDEF    SCRIPT_SaveCtrlContextSnapshot
     XDEF    _SCRIPT_SetCtrlContextMode
@@ -9,13 +9,13 @@
     XDEF    SCRIPT_UpdateCtrlStateMachine
     XDEF    SCRIPT_UpdateRuntimeModeForPlaybackCursor
     XDEF    SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen
-    XDEF    SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
+    XDEF    _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
     XDEF    SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist
-    XDEF    SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters
+    XDEF    _SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters
     XDEF    SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom
-    XDEF    SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset
-    XDEF    SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar
-    XDEF    SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit
+    XDEF    _SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset
+    XDEF    _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar
+    XDEF    _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit
     XDEF    SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry
     XDEF    SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState
     XDEF    SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
@@ -35,7 +35,7 @@
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D6/D7
 ; CALLS:
-;   SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters
+;   _SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters
 ; READS:
 ;   _TEXTDISP_PrimarySearchText, _TEXTDISP_SecondarySearchText, c8
 ; WRITES:
@@ -44,7 +44,7 @@
 ;   Splits raw search text around delimiter 18 and copies primary/secondary
 ;   portions into dedicated buffers.
 ; NOTES:
-;   Calls SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters with max length 128 for non-empty strings.
+;   Calls _SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters with max length 128 for non-empty strings.
 ;------------------------------------------------------------------------------
 SCRIPT_SplitAndNormalizeSearchBuffer:
     MOVEM.L D6-D7/A3,-(A7)
@@ -124,7 +124,7 @@ SCRIPT_SplitAndNormalizeSearchBuffer:
 
     PEA     128.W
     MOVE.L  A0,-(A7)
-    JSR     SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(PC)
+    JSR     _SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(PC)
 
     ADDQ.W  #8,A7
 
@@ -138,7 +138,7 @@ SCRIPT_SplitAndNormalizeSearchBuffer:
 
     PEA     128.W
     MOVE.L  A0,-(A7)
-    JSR     SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(PC)
+    JSR     _SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(PC)
 
     ADDQ.W  #8,A7
 
@@ -157,11 +157,11 @@ SCRIPT_SplitAndNormalizeSearchBuffer:
 ; CLOBBERS:
 ;   A7/D0/D1/D2/D7
 ; CALLS:
-;   SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT_BeginBannerCharTransition
+;   _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT_BeginBannerCharTransition
 ; READS:
-;   CONFIG_BannerCopperHeadByte, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, SCRIPT_ReadModeActiveLatch
+;   _CONFIG_BannerCopperHeadByte, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, SCRIPT_ReadModeActiveLatch
 ; WRITES:
-;   ESQPARS2_ReadModeFlags, SCRIPT_PendingBannerTargetChar, SCRIPT_ReadModeActiveLatch
+;   _ESQPARS2_ReadModeFlags, SCRIPT_PendingBannerTargetChar, SCRIPT_ReadModeActiveLatch
 ; DESC:
 ;   Applies any pending banner target request and kicks a transition if needed.
 ; NOTES:
@@ -169,7 +169,7 @@ SCRIPT_SplitAndNormalizeSearchBuffer:
 ;------------------------------------------------------------------------------
 SCRIPT_ApplyPendingBannerTarget:
     MOVEM.L D2/D7,-(A7)
-    JSR     SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
+    JSR     _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #-2,D0
@@ -199,7 +199,7 @@ SCRIPT_ApplyPendingBannerTarget:
     BRA.S   .maybe_clear_readmode_flags
 
 .compare_against_default_target:
-    MOVE.W  CONFIG_BannerCopperHeadByte,D0
+    MOVE.W  _CONFIG_BannerCopperHeadByte,D0
     CMP.W   D0,D7
     BEQ.S   .maybe_clear_readmode_flags
 
@@ -219,7 +219,7 @@ SCRIPT_ApplyPendingBannerTarget:
     BEQ.S   .return
 
     MOVEQ   #0,D0
-    MOVE.W  D0,ESQPARS2_ReadModeFlags
+    MOVE.W  D0,_ESQPARS2_ReadModeFlags
     MOVE.W  D0,SCRIPT_ReadModeActiveLatch
 
 .return:
@@ -237,11 +237,11 @@ SCRIPT_ApplyPendingBannerTarget:
 ; CLOBBERS:
 ;   A7/D0/D1/D7
 ; CALLS:
-;   SCRIPT_UpdateSerialShadowFromCtrlByte, _SCRIPT_ClearSearchTextsAndChannels, SCRIPT_BeginBannerCharTransition, SCRIPT_DeassertCtrlLineNow, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+;   _SCRIPT_UpdateSerialShadowFromCtrlByte, _SCRIPT_ClearSearchTextsAndChannels, SCRIPT_BeginBannerCharTransition, SCRIPT_DeassertCtrlLineNow, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   CONFIG_BannerCopperHeadByte, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, CONFIG_MSN_FlagChar, SCRIPT_RuntimeMode
+;   _CONFIG_BannerCopperHeadByte, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, CONFIG_MSN_FlagChar, _SCRIPT_RuntimeMode
 ; WRITES:
-;   SCRIPT_CtrlHandshakeRetryCount, SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeMode, _TEXTDISP_CurrentMatchIndex
+;   SCRIPT_CtrlHandshakeRetryCount, SCRIPT_RuntimeModeDispatchLatch, _SCRIPT_RuntimeMode, _TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Handles runtime-mode transitions around playback cursor commands and
 ;   updates the serial shadow byte according to current mode/flags.
@@ -251,7 +251,7 @@ SCRIPT_ApplyPendingBannerTarget:
 SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     MOVE.L  D7,-(A7)
 
-    MOVE.W  SCRIPT_RuntimeMode,D0
+    MOVE.W  _SCRIPT_RuntimeMode,D0
     SUBQ.W  #1,D0
     BNE.W   .runtime_mode_else_paths
 
@@ -260,7 +260,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     CMP.B   D1,D0
     BNE.S   .runtime_mode_enter_mode2
 
-    MOVE.W  CONFIG_BannerCopperHeadByte,D0
+    MOVE.W  _CONFIG_BannerCopperHeadByte,D0
     ADDI.W  #28,D0
     EXT.L   D0
     PEA     1000.W
@@ -272,7 +272,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 .runtime_mode_enter_mode2:
     CLR.W   SCRIPT_CtrlHandshakeRetryCount
     MOVE.W  #(-1),_TEXTDISP_CurrentMatchIndex
-    MOVE.W  #2,SCRIPT_RuntimeMode
+    MOVE.W  #2,_SCRIPT_RuntimeMode
     MOVE.W  #1,SCRIPT_RuntimeModeDispatchLatch
     JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
@@ -329,7 +329,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
-    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
+    JSR     _SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     BSR.W   _SCRIPT_ClearSearchTextsAndChannels
 
@@ -338,7 +338,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     BRA.S   .runtime_mode_return
 
 .runtime_mode_else_paths:
-    MOVE.W  SCRIPT_RuntimeMode,D0
+    MOVE.W  _SCRIPT_RuntimeMode,D0
     SUBQ.W  #3,D0
     BNE.S   .runtime_mode_clear_to_zero
 
@@ -349,7 +349,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 
 .runtime_mode_clear_to_zero:
     MOVEQ   #0,D0
-    MOVE.W  D0,SCRIPT_RuntimeMode
+    MOVE.W  D0,_SCRIPT_RuntimeMode
 
 .runtime_mode_return:
     MOVE.L  (A7)+,D7
@@ -366,21 +366,21 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_DeassertCtrlLineNow, TEXTDISP_ResetSelectionAndRefresh, STR_FindCharPtr, SCRIPT_ReadHandshakeBit3Flag
+;   SCRIPT_DeassertCtrlLineNow, TEXTDISP_ResetSelectionAndRefresh, _STR_FindCharPtr, SCRIPT_ReadHandshakeBit3Flag
 ; READS:
-;   SCRIPT_RuntimeMode, SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount, ED_DiagVinModeChar, Global_UIBusyFlag
+;   _SCRIPT_RuntimeMode, SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount, _ED_DiagVinModeChar, _Global_UIBusyFlag
 ; WRITES:
-;   SCRIPT_RuntimeMode, SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount
+;   _SCRIPT_RuntimeMode, SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount
 ; DESC:
 ;   Advances a small control state machine and triggers follow-up actions when
 ;   counters hit thresholds.
 ; NOTES:
-;   Uses ED_DiagVinModeChar via STR_FindCharPtr to probe a control flag string.
+;   Uses _ED_DiagVinModeChar via _STR_FindCharPtr to probe a control flag string.
 ;------------------------------------------------------------------------------
 SCRIPT_UpdateCtrlStateMachine:
     BSR.W   .refresh_ctrl_state
 
-    MOVE.W  SCRIPT_RuntimeMode,D0
+    MOVE.W  _SCRIPT_RuntimeMode,D0
     SUBQ.W  #2,D0
     BNE.S   .reset_state
 
@@ -397,7 +397,7 @@ SCRIPT_UpdateCtrlStateMachine:
     BLT.S   .return_status
 
     CLR.W   SCRIPT_CtrlHandshakeRetryCount
-    MOVE.W  D0,SCRIPT_RuntimeMode
+    MOVE.W  D0,_SCRIPT_RuntimeMode
     JSR     SCRIPT_DeassertCtrlLineNow(PC)
 
     JSR     TEXTDISP_ResetSelectionAndRefresh(PC)
@@ -414,10 +414,10 @@ SCRIPT_UpdateCtrlStateMachine:
     BRA.S   .return_status
 
 .check_banner_active:
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BEQ.S   .return_status
 
-    MOVE.W  #3,SCRIPT_RuntimeMode
+    MOVE.W  #3,_SCRIPT_RuntimeMode
     BRA.S   .return_status
 
 .reset_state:
@@ -430,11 +430,11 @@ SCRIPT_UpdateCtrlStateMachine:
 
 .refresh_ctrl_state:
     MOVEQ   #0,D0
-    MOVE.B  ED_DiagVinModeChar,D0
+    MOVE.B  _ED_DiagVinModeChar,D0
     MOVE.L  D0,-(A7)
     PEA     SCRIPT_Tag_YL
     ; strchr-style membership test against "YL" mode-gate chars.
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -469,11 +469,11 @@ SCRIPT_UpdateCtrlStateMachine:
 ; CLOBBERS:
 ;   A3/A7/D0/D1
 ; CALLS:
-;   SCRIPT_UpdateSerialShadowFromCtrlByte, _SCRIPT_ClearSearchTextsAndChannels, TEXTDISP_ResetSelectionAndRefresh, WDISP_HandleWeatherStatusCommand, SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen, SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom, SCRIPT_AssertCtrlLineNow, TEXTDISP_HandleScriptCommand, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+;   _SCRIPT_UpdateSerialShadowFromCtrlByte, _SCRIPT_ClearSearchTextsAndChannels, TEXTDISP_ResetSelectionAndRefresh, WDISP_HandleWeatherStatusCommand, SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen, SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom, SCRIPT_AssertCtrlLineNow, _TEXTDISP_HandleScriptCommand, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   CONFIG_BannerCopperHeadByte, CONFIG_MSN_FlagChar, TEXTDISP_DeferredActionCountdown, SCRIPT_PlaybackFallbackCounter, SCRIPT_PendingWeatherCommandChar, SCRIPT_PendingTextdispCmdChar, SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, TEXTDISP_ChannelSourceMode
+;   _CONFIG_BannerCopperHeadByte, CONFIG_MSN_FlagChar, TEXTDISP_DeferredActionCountdown, SCRIPT_PlaybackFallbackCounter, _SCRIPT_PendingWeatherCommandChar, _SCRIPT_PendingTextdispCmdChar, _SCRIPT_PendingTextdispCmdArg, _SCRIPT_CommandTextPtr, _SCRIPT_ChannelRangeDigitChar, _SCRIPT_SearchMatchCountOrIndex, _TEXTDISP_ChannelSourceMode
 ; WRITES:
-;   TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, ESQPARS2_ReadModeFlags, SCRIPT_PlaybackFallbackCounter, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, SCRIPT_ReadModeActiveLatch, SCRIPT_RuntimeMode, _TEXTDISP_CurrentMatchIndex
+;   TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, _ESQPARS2_ReadModeFlags, SCRIPT_PlaybackFallbackCounter, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, SCRIPT_ReadModeActiveLatch, _SCRIPT_RuntimeMode, _TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Dispatches command behavior from *playbackCursorPtr using a compiler
 ;   switch/jumptable and clears the command slot afterward.
@@ -514,13 +514,13 @@ SCRIPT_DispatchPlaybackCursorCommand:
 
 .playback_cmd_case_set_read_mode_on:
     MOVE.W  #1,SCRIPT_ReadModeActiveLatch
-    MOVE.W  #256,ESQPARS2_ReadModeFlags
+    MOVE.W  #256,_ESQPARS2_ReadModeFlags
     BRA.W   .return
 
 .playback_cmd_case_set_read_mode_off:
     MOVEQ   #0,D0
     MOVE.W  D0,SCRIPT_ReadModeActiveLatch
-    MOVE.W  D0,ESQPARS2_ReadModeFlags
+    MOVE.W  D0,_ESQPARS2_ReadModeFlags
     BRA.W   .return
 
 .playback_cmd_case_highlight_and_banner_plus28:
@@ -530,14 +530,14 @@ SCRIPT_DispatchPlaybackCursorCommand:
     JSR     TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  CONFIG_BannerCopperHeadByte,D0
+    MOVE.W  _CONFIG_BannerCopperHeadByte,D0
     ADDI.W  #28,D0
     MOVE.W  #1000,SCRIPT_PendingBannerSpeedMs
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .return
 
 .playback_cmd_case_banner_current:
-    MOVE.W  CONFIG_BannerCopperHeadByte,D0
+    MOVE.W  _CONFIG_BannerCopperHeadByte,D0
     MOVE.W  #1000,SCRIPT_PendingBannerSpeedMs
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .return
@@ -566,14 +566,14 @@ SCRIPT_DispatchPlaybackCursorCommand:
     BNE.S   .playback_cmd_case_shadow_fallback
 
     PEA     3.W
-    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
+    JSR     _SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .return
 
 .playback_cmd_case_shadow_fallback:
     PEA     1.W
-    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
+    JSR     _SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .return
@@ -586,7 +586,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     JSR     TEXTDISP_SetRastForMode(PC)
 
     PEA     1.W
-    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
+    JSR     _SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     ADDQ.W  #8,A7
     BRA.W   .return
@@ -597,7 +597,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     BNE.W   .return
 
     PEA     3.W
-    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
+    JSR     _SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     ADDQ.W  #4,A7
     MOVE.W  #3,TEXTDISP_DeferredActionCountdown
@@ -605,9 +605,9 @@ SCRIPT_DispatchPlaybackCursorCommand:
     BRA.W   .return
 
 .playback_cmd_case_render_aligned_current:
-    MOVE.W  TEXTDISP_ChannelSourceMode,D0
+    MOVE.W  _TEXTDISP_ChannelSourceMode,D0
     EXT.L   D0
-    MOVE.W  SCRIPT_ChannelRangeDigitChar,D1
+    MOVE.W  _SCRIPT_ChannelRangeDigitChar,D1
     EXT.L   D1
     CLR.L   -(A7)
     MOVE.L  D1,-(A7)
@@ -618,7 +618,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     BRA.W   .return
 
 .playback_cmd_case_render_aligned_primary:
-    MOVE.L  SCRIPT_SearchMatchCountOrIndex,D0
+    MOVE.L  _SCRIPT_SearchMatchCountOrIndex,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     53.W
@@ -629,7 +629,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     BRA.W   .return
 
 .playback_cmd_case_render_aligned_secondary:
-    MOVE.L  SCRIPT_SearchMatchCountOrIndex,D0
+    MOVE.L  _SCRIPT_SearchMatchCountOrIndex,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     53.W
@@ -642,7 +642,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
 .playback_cmd_case_weather_status:
     MOVE.W  #(-1),_TEXTDISP_CurrentMatchIndex
     MOVEQ   #0,D0
-    MOVE.B  SCRIPT_PendingWeatherCommandChar,D0
+    MOVE.B  _SCRIPT_PendingWeatherCommandChar,D0
     MOVE.L  D0,-(A7)
     JSR     WDISP_HandleWeatherStatusCommand(PC)
 
@@ -652,13 +652,13 @@ SCRIPT_DispatchPlaybackCursorCommand:
 .playback_cmd_case_textdisp_command:
     MOVE.W  #(-1),_TEXTDISP_CurrentMatchIndex
     MOVEQ   #0,D0
-    MOVE.B  SCRIPT_PendingTextdispCmdChar,D0
+    MOVE.B  _SCRIPT_PendingTextdispCmdChar,D0
     MOVEQ   #0,D1
-    MOVE.B  SCRIPT_PendingTextdispCmdArg,D1
-    MOVE.L  SCRIPT_CommandTextPtr,-(A7)
+    MOVE.B  _SCRIPT_PendingTextdispCmdArg,D1
+    MOVE.L  _SCRIPT_CommandTextPtr,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     TEXTDISP_HandleScriptCommand(PC)
+    JSR     _TEXTDISP_HandleScriptCommand(PC)
 
     LEA     12(A7),A7
     BRA.S   .return
@@ -666,7 +666,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
 .playback_cmd_case_assert_ctrl_mode1:
     JSR     SCRIPT_AssertCtrlLineNow(PC)
 
-    MOVE.W  #1,SCRIPT_RuntimeMode
+    MOVE.W  #1,_SCRIPT_RuntimeMode
     BRA.S   .return
 
 .playback_cmd_case_default_increment:
@@ -693,15 +693,15 @@ SCRIPT_DispatchPlaybackCursorCommand:
 ; CLOBBERS:
 ;   D0/D7/A3
 ; CALLS:
-;   SCRIPT_ResetCtrlContext
+;   _SCRIPT_ResetCtrlContext
 ; READS:
 ;   (none)
 ; WRITES:
-;   A3+0, A3+2, and full context via SCRIPT_ResetCtrlContext
+;   A3+0, A3+2, and full context via _SCRIPT_ResetCtrlContext
 ; DESC:
 ;   Stores a mode flag into the CTRL context header and reinitializes it.
 ; NOTES:
-;   Calls SCRIPT_ResetCtrlContext to clear and reset the rest of the structure.
+;   Calls _SCRIPT_ResetCtrlContext to clear and reset the rest of the structure.
 ;------------------------------------------------------------------------------
 _SCRIPT_SetCtrlContextMode:
     MOVEM.L D7/A3,-(A7)
@@ -710,7 +710,7 @@ _SCRIPT_SetCtrlContextMode:
     MOVE.W  D7,(A3)
     MOVE.W  #1,2(A3)
     MOVE.L  A3,-(A7)
-    BSR.W   SCRIPT_ResetCtrlContext
+    BSR.W   _SCRIPT_ResetCtrlContext
 
     ADDQ.W  #4,A7
     MOVEM.L (A7)+,D7/A3
@@ -719,7 +719,7 @@ _SCRIPT_SetCtrlContextMode:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ResetCtrlContext   (Reset ctrl context snapshot fields)
+; FUNC: _SCRIPT_ResetCtrlContext   (Reset ctrl context snapshot fields)
 ; ARGS:
 ;   stack +12: ctxPtr (A3)
 ; RET:
@@ -727,7 +727,7 @@ _SCRIPT_SetCtrlContextMode:
 ; CLOBBERS:
 ;   D0/D1/D7/A3
 ; CALLS:
-;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
+;   _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -738,7 +738,7 @@ _SCRIPT_SetCtrlContextMode:
 ; NOTES:
 ;   The loop runs 4 iterations (D7 = 0..3), clearing two 4-byte subranges.
 ;------------------------------------------------------------------------------
-SCRIPT_ResetCtrlContext:
+_SCRIPT_ResetCtrlContext:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D0
@@ -748,7 +748,7 @@ SCRIPT_ResetCtrlContext:
     MOVE.B  D0,439(A3)
     MOVE.L  440(A3),-(A7)
     CLR.L   -(A7)
-    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,440(A3)
@@ -798,11 +798,11 @@ SCRIPT_ResetCtrlContext:
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D1/D7
 ; CALLS:
-;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
+;   _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   SCRIPT_CommandTextPtr, SCRIPT_RuntimeMode, _TEXTDISP_PrimarySearchText, _TEXTDISP_SecondarySearchText, TEXTDISP_BannerFallbackEntryIndex, TEXTDISP_BannerSelectedEntryIndex
+;   _SCRIPT_CommandTextPtr, _SCRIPT_RuntimeMode, _TEXTDISP_PrimarySearchText, _TEXTDISP_SecondarySearchText, _TEXTDISP_BannerFallbackEntryIndex, _TEXTDISP_BannerSelectedEntryIndex
 ; WRITES:
-;   SCRIPT_Type20SubtypeCache, SCRIPT_PendingWeatherCommandChar, SCRIPT_PendingTextdispCmdChar, SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_CurrentMatchIndex, TEXTDISP_ChannelSourceMode
+;   _SCRIPT_Type20SubtypeCache, _SCRIPT_PendingWeatherCommandChar, _SCRIPT_PendingTextdispCmdChar, _SCRIPT_PendingTextdispCmdArg, _SCRIPT_CommandTextPtr, _TEXTDISP_ActiveGroupId, _SCRIPT_RuntimeMode, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, _SCRIPT_ChannelRangeDigitChar, _SCRIPT_SearchMatchCountOrIndex, _SCRIPT_PlaybackCursor, _SCRIPT_PrimarySearchFirstFlag, _SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_CurrentMatchIndex, _TEXTDISP_ChannelSourceMode
 ; DESC:
 ;   Loads saved CTRL context fields into live script/text-display globals.
 ; NOTES:
@@ -811,17 +811,17 @@ SCRIPT_ResetCtrlContext:
 SCRIPT_LoadCtrlContextSnapshot:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
-    MOVE.B  436(A3),SCRIPT_Type20SubtypeCache
-    MOVE.B  437(A3),SCRIPT_PendingWeatherCommandChar
-    MOVE.B  438(A3),SCRIPT_PendingTextdispCmdChar
-    MOVE.B  439(A3),SCRIPT_PendingTextdispCmdArg
-    MOVE.L  SCRIPT_CommandTextPtr,-(A7)
+    MOVE.B  436(A3),_SCRIPT_Type20SubtypeCache
+    MOVE.B  437(A3),_SCRIPT_PendingWeatherCommandChar
+    MOVE.B  438(A3),_SCRIPT_PendingTextdispCmdChar
+    MOVE.B  439(A3),_SCRIPT_PendingTextdispCmdArg
+    MOVE.L  _SCRIPT_CommandTextPtr,-(A7)
     MOVE.L  440(A3),-(A7)
-    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,SCRIPT_CommandTextPtr
-    MOVE.W  2(A3),SCRIPT_PrimarySearchFirstFlag
+    MOVE.L  D0,_SCRIPT_CommandTextPtr
+    MOVE.W  2(A3),_SCRIPT_PrimarySearchFirstFlag
     MOVE.W  4(A3),_TEXTDISP_PrimaryChannelCode
     MOVE.W  6(A3),_TEXTDISP_SecondaryChannelCode
     LEA     26(A3),A0
@@ -839,12 +839,12 @@ SCRIPT_LoadCtrlContextSnapshot:
     BNE.S   .ctrl_context_load_copy_secondary_search
 
     MOVE.W  8(A3),_TEXTDISP_CurrentMatchIndex
-    MOVE.W  10(A3),SCRIPT_ChannelRangeArmedFlag
-    MOVE.W  12(A3),TEXTDISP_ChannelSourceMode
-    MOVE.W  14(A3),SCRIPT_ChannelRangeDigitChar
-    MOVE.L  16(A3),SCRIPT_SearchMatchCountOrIndex
-    MOVE.L  20(A3),SCRIPT_PlaybackCursor
-    MOVE.W  SCRIPT_RuntimeMode,D0
+    MOVE.W  10(A3),_SCRIPT_ChannelRangeArmedFlag
+    MOVE.W  12(A3),_TEXTDISP_ChannelSourceMode
+    MOVE.W  14(A3),_SCRIPT_ChannelRangeDigitChar
+    MOVE.L  16(A3),_SCRIPT_SearchMatchCountOrIndex
+    MOVE.L  20(A3),_SCRIPT_PlaybackCursor
+    MOVE.W  _SCRIPT_RuntimeMode,D0
     SUBQ.W  #2,D0
     BNE.S   .ctrl_context_load_runtime_gate
 
@@ -854,7 +854,7 @@ SCRIPT_LoadCtrlContextSnapshot:
     BEQ.S   .ctrl_context_load_apply_saved_mode
 
 .ctrl_context_load_runtime_gate:
-    MOVE.W  SCRIPT_RuntimeMode,D0
+    MOVE.W  _SCRIPT_RuntimeMode,D0
     BNE.S   .ctrl_context_load_copy_active_group
 
     MOVE.W  24(A3),D0
@@ -863,10 +863,10 @@ SCRIPT_LoadCtrlContextSnapshot:
     BNE.S   .ctrl_context_load_copy_active_group
 
 .ctrl_context_load_apply_saved_mode:
-    MOVE.W  D0,SCRIPT_RuntimeMode
+    MOVE.W  D0,_SCRIPT_RuntimeMode
 
 .ctrl_context_load_copy_active_group:
-    MOVE.W  426(A3),TEXTDISP_ActiveGroupId
+    MOVE.W  426(A3),_TEXTDISP_ActiveGroupId
     MOVEQ   #0,D7
 
 .ctrl_context_load_copy_shadow_bytes_loop:
@@ -874,12 +874,12 @@ SCRIPT_LoadCtrlContextSnapshot:
     CMP.L   D0,D7
     BGE.S   .return
 
-    LEA     TEXTDISP_BannerFallbackEntryIndex,A0
+    LEA     _TEXTDISP_BannerFallbackEntryIndex,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1ac,D0
     MOVE.B  0(A3,D0.L),(A0)
-    LEA     TEXTDISP_BannerSelectedEntryIndex,A0
+    LEA     _TEXTDISP_BannerSelectedEntryIndex,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1b0,D0
@@ -902,9 +902,9 @@ SCRIPT_LoadCtrlContextSnapshot:
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D7
 ; CALLS:
-;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
+;   _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   SCRIPT_Type20SubtypeCache, SCRIPT_PendingWeatherCommandChar, SCRIPT_PendingTextdispCmdChar, SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, _TEXTDISP_PrimarySearchText, _TEXTDISP_SecondarySearchText, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_CurrentMatchIndex, TEXTDISP_ChannelSourceMode, TEXTDISP_BannerFallbackEntryIndex, TEXTDISP_BannerSelectedEntryIndex
+;   _SCRIPT_Type20SubtypeCache, _SCRIPT_PendingWeatherCommandChar, _SCRIPT_PendingTextdispCmdChar, _SCRIPT_PendingTextdispCmdArg, _SCRIPT_CommandTextPtr, _TEXTDISP_ActiveGroupId, _SCRIPT_RuntimeMode, _TEXTDISP_PrimarySearchText, _TEXTDISP_SecondarySearchText, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, _SCRIPT_ChannelRangeDigitChar, _SCRIPT_SearchMatchCountOrIndex, _SCRIPT_PlaybackCursor, _SCRIPT_PrimarySearchFirstFlag, _SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_CurrentMatchIndex, _TEXTDISP_ChannelSourceMode, _TEXTDISP_BannerFallbackEntryIndex, _TEXTDISP_BannerSelectedEntryIndex
 ; WRITES:
 ;   Context fields at A3+2/+4/+6/+8/+10/+12/+14/+16/+20/+24/+26/+226/+426/+436..+440 and A3+0x1AC..0x1B3
 ; DESC:
@@ -914,17 +914,17 @@ SCRIPT_SaveCtrlContextSnapshot:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
 
-    MOVE.B  SCRIPT_Type20SubtypeCache,436(A3)
-    MOVE.B  SCRIPT_PendingWeatherCommandChar,437(A3)
-    MOVE.B  SCRIPT_PendingTextdispCmdChar,438(A3)
-    MOVE.B  SCRIPT_PendingTextdispCmdArg,439(A3)
+    MOVE.B  _SCRIPT_Type20SubtypeCache,436(A3)
+    MOVE.B  _SCRIPT_PendingWeatherCommandChar,437(A3)
+    MOVE.B  _SCRIPT_PendingTextdispCmdChar,438(A3)
+    MOVE.B  _SCRIPT_PendingTextdispCmdArg,439(A3)
     MOVE.L  440(A3),-(A7)
-    MOVE.L  SCRIPT_CommandTextPtr,-(A7)
-    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    MOVE.L  _SCRIPT_CommandTextPtr,-(A7)
+    JSR     _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,440(A3)
-    MOVE.W  SCRIPT_PrimarySearchFirstFlag,2(A3)
+    MOVE.W  _SCRIPT_PrimarySearchFirstFlag,2(A3)
     MOVE.W  _TEXTDISP_PrimaryChannelCode,4(A3)
     MOVE.W  _TEXTDISP_SecondaryChannelCode,6(A3)
     LEA     26(A3),A0
@@ -942,13 +942,13 @@ SCRIPT_SaveCtrlContextSnapshot:
     BNE.S   .ctrl_context_save_copy_secondary_search
 
     MOVE.W  _TEXTDISP_CurrentMatchIndex,8(A3)
-    MOVE.W  SCRIPT_ChannelRangeArmedFlag,10(A3)
-    MOVE.W  TEXTDISP_ChannelSourceMode,12(A3)
-    MOVE.W  SCRIPT_ChannelRangeDigitChar,14(A3)
-    MOVE.L  SCRIPT_SearchMatchCountOrIndex,16(A3)
-    MOVE.L  SCRIPT_PlaybackCursor,20(A3)
-    MOVE.W  SCRIPT_RuntimeMode,24(A3)
-    MOVE.W  TEXTDISP_ActiveGroupId,426(A3)
+    MOVE.W  _SCRIPT_ChannelRangeArmedFlag,10(A3)
+    MOVE.W  _TEXTDISP_ChannelSourceMode,12(A3)
+    MOVE.W  _SCRIPT_ChannelRangeDigitChar,14(A3)
+    MOVE.L  _SCRIPT_SearchMatchCountOrIndex,16(A3)
+    MOVE.L  _SCRIPT_PlaybackCursor,20(A3)
+    MOVE.W  _SCRIPT_RuntimeMode,24(A3)
+    MOVE.W  _TEXTDISP_ActiveGroupId,426(A3)
     MOVEQ   #0,D7
 
 .ctrl_context_save_copy_shadow_bytes_loop:
@@ -956,12 +956,12 @@ SCRIPT_SaveCtrlContextSnapshot:
     CMP.L   D0,D7
     BGE.S   .return
 
-    LEA     TEXTDISP_BannerFallbackEntryIndex,A0
+    LEA     _TEXTDISP_BannerFallbackEntryIndex,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1ac,D0
     MOVE.B  (A0),0(A3,D0.L)
-    LEA     TEXTDISP_BannerSelectedEntryIndex,A0
+    LEA     _TEXTDISP_BannerSelectedEntryIndex,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1b0,D0
@@ -984,13 +984,13 @@ SCRIPT_SaveCtrlContextSnapshot:
 ; CLOBBERS:
 ;   A7/D0
 ; CALLS:
-;   SCRIPT_ResetCtrlContext, TEXTDISP_HandleScriptCommand
+;   _SCRIPT_ResetCtrlContext, _TEXTDISP_HandleScriptCommand
 ; READS:
 ;   _SCRIPT_CTRL_CONTEXT
 ; WRITES:
-;   _SCRIPT_CTRL_CONTEXT (via SCRIPT_ResetCtrlContext)
+;   _SCRIPT_CTRL_CONTEXT (via _SCRIPT_ResetCtrlContext)
 ; DESC:
-;   Clears the status line via TEXTDISP_HandleScriptCommand and reinitializes
+;   Clears the status line via _TEXTDISP_HandleScriptCommand and reinitializes
 ;   _SCRIPT_CTRL_CONTEXT.
 ;------------------------------------------------------------------------------
 SCRIPT_ResetCtrlContextAndClearStatusLine:
@@ -999,10 +999,10 @@ SCRIPT_ResetCtrlContextAndClearStatusLine:
     NOT.B   D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     TEXTDISP_HandleScriptCommand(PC)
+    JSR     _TEXTDISP_HandleScriptCommand(PC)
 
     PEA     _SCRIPT_CTRL_CONTEXT
-    BSR.W   SCRIPT_ResetCtrlContext
+    BSR.W   _SCRIPT_ResetCtrlContext
 
     LEA     16(A7),A7
     RTS
@@ -1040,7 +1040,7 @@ SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MATH_DivS32
+;   _MATH_DivS32
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1051,10 +1051,10 @@ SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 SCRIPT3_JMPTBL_MATH_DivS32:
-    BRA.W   MATH_DivS32
+    BRA.W   _MATH_DivS32
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters   (JumpStub)
+; FUNC: _SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1072,7 +1072,7 @@ SCRIPT3_JMPTBL_MATH_DivS32:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
+_SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
     JMP     ESQSHARED_ApplyProgramTitleTextFilters
 
 ;------------------------------------------------------------------------------
@@ -1098,7 +1098,7 @@ SCRIPT3_JMPTBL_STRING_CompareN:
     BRA.W   STRING_CompareN
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh   (JumpStub)
+; FUNC: _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1116,31 +1116,31 @@ SCRIPT3_JMPTBL_STRING_CompareN:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh:
+_SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh:
     JMP     ESQDISP_UpdateStatusMaskAndRefresh
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar   (JumpStub_GCOMMAND_GetBannerChar)
+; FUNC: _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar   (JumpStub_GCOMMAND_GetBannerChar)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: banner char (see GCOMMAND_GetBannerChar)
+;   D0: banner char (see _GCOMMAND_GetBannerChar)
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   GCOMMAND_GetBannerChar
+;   _GCOMMAND_GetBannerChar
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to GCOMMAND_GetBannerChar.
+;   Jump stub to _GCOMMAND_GetBannerChar.
 ;------------------------------------------------------------------------------
-SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar:
-    JMP     GCOMMAND_GetBannerChar
+_SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar:
+    JMP     _GCOMMAND_GetBannerChar
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit   (JumpStub_LADFUNC_ParseHexDigit)
+; FUNC: _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit   (JumpStub_LADFUNC_ParseHexDigit)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1156,7 +1156,7 @@ SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar:
 ; DESC:
 ;   Jump stub to LADFUNC_ParseHexDigit.
 ;------------------------------------------------------------------------------
-SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit:
+_SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit:
     JMP     LADFUNC_ParseHexDigit
 
 ;------------------------------------------------------------------------------
@@ -1186,23 +1186,23 @@ SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist:
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: parsed value (see PARSE_ReadSignedLongSkipClass3_Alt)
+;   D0: parsed value (see _PARSE_ReadSignedLongSkipClass3_Alt)
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   PARSE_ReadSignedLongSkipClass3_Alt
+;   _PARSE_ReadSignedLongSkipClass3_Alt
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to PARSE_ReadSignedLongSkipClass3_Alt.
+;   Jump stub to _PARSE_ReadSignedLongSkipClass3_Alt.
 ;------------------------------------------------------------------------------
 SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
-    BRA.W   PARSE_ReadSignedLongSkipClass3_Alt
+    BRA.W   _PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset   (JumpStub_GCOMMAND_AdjustBannerCopperOffset)
+; FUNC: _SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset   (JumpStub_GCOMMAND_AdjustBannerCopperOffset)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1218,7 +1218,7 @@ SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
 ; DESC:
 ;   Jump stub to GCOMMAND_AdjustBannerCopperOffset.
 ;------------------------------------------------------------------------------
-SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset:
+_SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset:
     JMP     GCOMMAND_AdjustBannerCopperOffset
 
 ;------------------------------------------------------------------------------
@@ -1292,7 +1292,7 @@ SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MATH_Mulu32
+;   _MATH_Mulu32
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1303,7 +1303,7 @@ SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 SCRIPT3_JMPTBL_MATH_Mulu32:
-    BRA.W   MATH_Mulu32
+    BRA.W   _MATH_Mulu32
 
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState   (JumpStub)
@@ -1336,13 +1336,13 @@ SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   STRING_CopyPadNul
+;   _STRING_CopyPadNul
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to STRING_CopyPadNul.
+;   Jump stub to _STRING_CopyPadNul.
 ;------------------------------------------------------------------------------
 SCRIPT3_JMPTBL_STRING_CopyPadNul:
-    BRA.W   STRING_CopyPadNul
+    BRA.W   _STRING_CopyPadNul

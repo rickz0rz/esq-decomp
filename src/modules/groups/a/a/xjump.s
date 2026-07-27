@@ -1,10 +1,10 @@
-    XDEF    GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator
+    XDEF    _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator
     XDEF    GROUP_AA_JMPTBL_STRING_CompareN
-    XDEF    GROUP_AA_JMPTBL_STRING_CompareNoCase
+    XDEF    _GROUP_AA_JMPTBL_STRING_CompareNoCase
     XDEF    GROUP_AA_JMPTBL_GRAPHICS_AllocRaster
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AA_JMPTBL_STRING_CompareNoCase   (Routine at GROUP_AA_JMPTBL_STRING_CompareNoCase)
+; FUNC: _GROUP_AA_JMPTBL_STRING_CompareNoCase   (Routine at _GROUP_AA_JMPTBL_STRING_CompareNoCase)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -12,7 +12,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_CompareNoCase
+;   _STRING_CompareNoCase
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -22,8 +22,8 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AA_JMPTBL_STRING_CompareNoCase:
-    JMP     STRING_CompareNoCase
+_GROUP_AA_JMPTBL_STRING_CompareNoCase:
+    JMP     _STRING_CompareNoCase
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AA_JMPTBL_STRING_CompareN   (Routine at GROUP_AA_JMPTBL_STRING_CompareN)
@@ -48,7 +48,7 @@ GROUP_AA_JMPTBL_STRING_CompareN:
     JMP     STRING_CompareN
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator   (Routine at GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator)
+; FUNC: _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator   (Routine at _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -66,7 +66,7 @@ GROUP_AA_JMPTBL_STRING_CompareN:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
+_GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
     JMP     GCOMMAND_FindPathSeparator
 
 ;------------------------------------------------------------------------------

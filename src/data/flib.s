@@ -2,11 +2,11 @@
     XDEF    Global_STR_FLIB_C_2
     XDEF    FLIB_EmptyLogReplacementString
     XDEF    FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02
-    XDEF    FLIB_STR_DIGITAL_NICHE_LISTINGS
-    XDEF    FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS
-    XDEF    FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S
-    XDEF    FLIB_STR_DIGITAL_PPV_LISTINGS
-    XDEF    Global_STR_DIGITAL_PPV_PERIOD
+    XDEF    _FLIB_STR_DIGITAL_NICHE_LISTINGS
+    XDEF    _FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS
+    XDEF    _FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S
+    XDEF    _FLIB_STR_DIGITAL_PPV_LISTINGS
+    XDEF    _Global_STR_DIGITAL_PPV_PERIOD
 ; ========== FLIB.c ==========
 
 Global_STR_FLIB_C_1:
@@ -17,7 +17,7 @@ Global_STR_FLIB_C_2:
 ; SYM: FLIB_EmptyLogReplacementString   (FLIB empty-log replacement string)
 ; TYPE: u16 (zero-initialized NUL string storage)
 ; PURPOSE: Static empty-string source used when resetting/replacing log text.
-; USED BY: FLIB log rollover/reset path via ESQPARS_ReplaceOwnedString
+; USED BY: FLIB log rollover/reset path via _ESQPARS_ReplaceOwnedString
 ; NOTES:
 ;   Passed by address as source text; DC.B yields two zero bytes so this
 ;   behaves as a stable "" string of two NULs without separate NStr storage.
@@ -26,13 +26,13 @@ FLIB_EmptyLogReplacementString:
     DC.B    0,0
 FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02:
     NStr    "%02ld:%02ld:%02ld:%02ld"
-FLIB_STR_DIGITAL_NICHE_LISTINGS:
+_FLIB_STR_DIGITAL_NICHE_LISTINGS:
     NStr    "Digital Niche Listings"
-FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS:
+_FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS:
     NStr    "Digital Multiplex Listings"
-FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S:
+_FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S:
     NStr    "Digital Multiplex at %s"
-FLIB_STR_DIGITAL_PPV_LISTINGS:
+_FLIB_STR_DIGITAL_PPV_LISTINGS:
     NStr    "Digital PPV Listings"
-Global_STR_DIGITAL_PPV_PERIOD:
+_Global_STR_DIGITAL_PPV_PERIOD:
     NStr    "Digital PPV."

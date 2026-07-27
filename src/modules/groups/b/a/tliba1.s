@@ -4,13 +4,13 @@
     XDEF    TLIBA1_DrawTextWithInsetSegments
     XDEF    TLIBA1_FormatClockFormatEntry
     XDEF    TLIBA1_ParseStyleCodeChar
-    XDEF    TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry
+    XDEF    _TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry
     XDEF    TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode
     XDEF    TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow
     XDEF    TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex
-    XDEF    TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
+    XDEF    _TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
     XDEF    TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
-    XDEF    TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode
+    XDEF    _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode
     XDEF    TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold
     XDEF    TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble
     XDEF    TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble
@@ -32,7 +32,7 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   MEMORY_AllocateMemory, MEMORY_DeallocateMemory, SCRIPT_DrawInsetTextWithFrame, STR_FindCharPtr, _LVOMove, _LVOText
+;   _MEMORY_AllocateMemory, MEMORY_DeallocateMemory, SCRIPT_DrawInsetTextWithFrame, _STR_FindCharPtr, _LVOMove, _LVOText
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_1, Global_STR_TLIBA1_C_2, MEMF_CLEAR, MEMF_PUBLIC, if_eq_1768, if_ne_1763, return_176B
 ; WRITES:
@@ -73,7 +73,7 @@ TLIBA1_DrawTextWithInsetSegments:
     MOVE.L  D0,-(A7)
     PEA     1842.W
     PEA     Global_STR_TLIBA1_C_1
-    JSR     MEMORY_AllocateMemory(PC)
+    JSR     _MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
@@ -92,7 +92,7 @@ TLIBA1_DrawTextWithInsetSegments:
     PEA     19.W
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-12(A5)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -110,7 +110,7 @@ TLIBA1_DrawTextWithInsetSegments:
     PEA     20.W
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -164,7 +164,7 @@ TLIBA1_DrawTextWithInsetSegments:
     LEA     16(A7),A7
     PEA     19.W
     MOVE.L  -12(A5),-(A7)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -276,7 +276,7 @@ TLIBA1_ParseStyleCodeChar:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
 ;   TLIBA1_DrawTextWithInsetSegments, TLIBA1_ParseStyleCodeChar, MEM_Move,
-;   TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble, TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble, STR_FindCharPtr,
+;   TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble, TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble, _STR_FindCharPtr,
 ;   UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOTextLength
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY, CLOCK_AlignedInsetRenderGateFlag, CLEANUP_AlignedInsetNibblePrimary, CLEANUP_AlignedInsetNibbleSecondary, ff, if_eq_1780, if_eq_1787, if_ne_1773, return_1788
@@ -303,7 +303,7 @@ TLIBA1_DrawInlineStyledText:
 
     PEA     19.W
     MOVE.L  A2,-(A7)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -311,7 +311,7 @@ TLIBA1_DrawInlineStyledText:
 
     PEA     20.W
     MOVE.L  A2,-(A7)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -336,7 +336,7 @@ TLIBA1_DrawInlineStyledText:
 .if_eq_1772:
     PEA     30.W
     MOVE.L  A2,-(A7)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -498,7 +498,7 @@ TLIBA1_DrawInlineStyledText:
 .skip_177E:
     PEA     30.W
     MOVE.L  A2,-(A7)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -533,7 +533,7 @@ TLIBA1_DrawInlineStyledText:
 .if_eq_1780:
     PEA     23.W
     MOVE.L  A2,-(A7)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -665,10 +665,10 @@ TLIBA1_DrawInlineStyledText:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   TLIBA1_DrawInlineStyledText, MATH_DivS32, MATH_Mulu32, MEMORY_AllocateMemory,
+;   TLIBA1_DrawInlineStyledText, _MATH_DivS32, _MATH_Mulu32, _MEMORY_AllocateMemory,
 ;   MEMORY_DeallocateMemory, _LVOSetAPen, _LVOSetFont, _LVOTextLength
 ; READS:
-;   Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_3, CLOCK_AlignedInsetRenderGateFlag, TLIBA1_STR_TLIBA1_DOT_C, CLEANUP_AlignedInsetNibblePrimary, TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
+;   _Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_3, CLOCK_AlignedInsetRenderGateFlag, TLIBA1_STR_TLIBA1_DOT_C, CLEANUP_AlignedInsetNibblePrimary, TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -749,13 +749,13 @@ TLIBA1_DrawFormattedTextBlock:
     MOVE.W  -18(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     2115.W
     PEA     Global_STR_TLIBA1_C_3
-    JSR     MEMORY_AllocateMemory(PC)
+    JSR     _MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
@@ -917,7 +917,7 @@ TLIBA1_DrawFormattedTextBlock:
     ADDQ.W  #1,-28(A5)
     MOVEA.L -8(A5),A0
     CLR.B   (A0)
-    MOVEA.L Global_HANDLE_PREVUE_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUE_FONT,A0
     MOVE.W  20(A0),D0
     ADD.W   D0,-30(A5)
     CLR.W   -40(A5)
@@ -954,7 +954,7 @@ TLIBA1_DrawFormattedTextBlock:
     SUB.L   D1,D0
     MOVE.W  -32(A5),D1
     EXT.L   D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     MOVE.B  25(A3),-21(A5)
     MOVE.L  52(A3),-26(A5)
@@ -987,7 +987,7 @@ TLIBA1_DrawFormattedTextBlock:
     BEQ.S   .if_eq_179E
 
     MOVEA.L A3,A1
-    MOVEA.L Global_HANDLE_PREVUE_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUE_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
@@ -1110,7 +1110,7 @@ TLIBA1_DrawFormattedTextBlock:
     MOVE.W  -18(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
@@ -1146,10 +1146,10 @@ TLIBA1_DrawFormattedTextBlock:
 ;   A3/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
 ;   TLIBA1_FormatClockFormatEntry, TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode,
-;   TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow, TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode,
+;   TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode,
 ;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
 ; READS:
-;   CONFIG_TimeWindowMinutes, TEXTDISP_ActiveGroupId
+;   _CONFIG_TimeWindowMinutes, _TEXTDISP_ActiveGroupId
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1166,7 +1166,7 @@ TLIBA1_BuildClockFormatEntryIfVisible:
     MOVEA.L 16(A5),A3
     MOVE.W  22(A5),D5
     CLR.W   -30(A5)
-    MOVE.W  TEXTDISP_ActiveGroupId,D0
+    MOVE.W  _TEXTDISP_ActiveGroupId,D0
     SUBQ.W  #1,D0
     BNE.S   .if_ne_17A9
 
@@ -1174,7 +1174,7 @@ TLIBA1_BuildClockFormatEntryIfVisible:
     EXT.L   D0
     PEA     1.W
     MOVE.L  D0,-(A7)
-    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
+    JSR     _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
 
     MOVE.L  D7,D1
     EXT.L   D1
@@ -1192,7 +1192,7 @@ TLIBA1_BuildClockFormatEntryIfVisible:
     EXT.L   D0
     PEA     2.W
     MOVE.L  D0,-(A7)
-    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
+    JSR     _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
 
     MOVE.L  D7,D1
     EXT.L   D1
@@ -1252,7 +1252,7 @@ TLIBA1_BuildClockFormatEntryIfVisible:
 
     MOVE.L  D6,D0
     EXT.L   D0
-    MOVE.L  CONFIG_TimeWindowMinutes,-(A7)
+    MOVE.L  _CONFIG_TimeWindowMinutes,-(A7)
     PEA     1440.W
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
@@ -1336,9 +1336,9 @@ TLIBA1_BuildClockFormatEntryIfVisible:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   FORMAT_RawDoFmtWithScratchBuffer, _STRING_AppendAtNull, WDISP_SPrintf
+;   FORMAT_RawDoFmtWithScratchBuffer, _STRING_AppendAtNull, _WDISP_SPrintf
 ; READS:
-;   TEXTDISP_FormatEntryFallbackTable, TLIBA1_FormatFallbackBuffer, TLIBA1_FormatFallbackFieldPtr0, TLIBA1_FormatFallbackFieldPtr1, TLIBA1_FormatFallbackFieldPtr2, TLIBA1_FormatFallbackFieldPtr3, TLIBA1_FMT_PCT_C_PCT_S, TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X, TLIBA1_STR_TLFormatStructOpenBraceLine, TLIBA1_FMT_TLF_COLOR_PCT_D, TLIBA1_FMT_TLF_OFFSET_PCT_D, TLIBA1_FMT_TLF_FONTSEL_PCT_D, TLIBA1_FMT_TLF_ALIGN_PCT_D, TLIBA1_FMT_TLF_PREGAP_PCT_D, TLIBA1_STR_TLFormatStructCloseBraceLine, WDISP_CharClassTable, copy_loop
+;   TEXTDISP_FormatEntryFallbackTable, TLIBA1_FormatFallbackBuffer, TLIBA1_FormatFallbackFieldPtr0, TLIBA1_FormatFallbackFieldPtr1, TLIBA1_FormatFallbackFieldPtr2, TLIBA1_FormatFallbackFieldPtr3, TLIBA1_FMT_PCT_C_PCT_S, TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X, TLIBA1_STR_TLFormatStructOpenBraceLine, TLIBA1_FMT_TLF_COLOR_PCT_D, TLIBA1_FMT_TLF_OFFSET_PCT_D, TLIBA1_FMT_TLF_FONTSEL_PCT_D, TLIBA1_FMT_TLF_ALIGN_PCT_D, TLIBA1_FMT_TLF_PREGAP_PCT_D, TLIBA1_STR_TLFormatStructCloseBraceLine, _WDISP_CharClassTable, copy_loop
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1373,7 +1373,7 @@ TLIBA1_FormatClockFormatEntry:
     MOVEQ   #65,D0
 
 .skip_17B4:
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #1,(A0)
     BEQ.S   .if_eq_17B7
@@ -1527,7 +1527,7 @@ TLIBA1_FormatClockFormatEntry:
     MOVE.L  D0,-(A7)
     PEA     TLIBA1_FMT_PCT_C_PCT_S
     PEA     -532(A5)
-    JSR     WDISP_SPrintf(PC)
+    JSR     _WDISP_SPrintf(PC)
 
     PEA     -532(A5)
     MOVE.L  A3,-(A7)
@@ -1660,7 +1660,7 @@ TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble:
     JMP     LADFUNC_GetPackedPenLowNibble
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode   (JumpStub)
+; FUNC: _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1676,7 +1676,7 @@ TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble:
 ; DESC:
 ;   Jump stub to ESQDISP_GetEntryPointerByMode.
 ;------------------------------------------------------------------------------
-TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode:
+_TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode:
     JMP     ESQDISP_GetEntryPointerByMode
 
 ;------------------------------------------------------------------------------
@@ -1700,7 +1700,7 @@ TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow:
     JMP     COI_TestEntryWithinTimeWindow
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry   (JumpStub_CLEANUP_FormatClockFormatEntry)
+; FUNC: _TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry   (JumpStub_CLEANUP_FormatClockFormatEntry)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1716,11 +1716,11 @@ TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow:
 ; DESC:
 ;   Jump stub to CLEANUP_FormatClockFormatEntry.
 ;------------------------------------------------------------------------------
-TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry:
+_TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry:
     JMP     CLEANUP_FormatClockFormatEntry
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow   (JumpStub)
+; FUNC: _TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1736,7 +1736,7 @@ TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry:
 ; DESC:
 ;   Jump stub to ESQDISP_ComputeScheduleOffsetForRow.
 ;------------------------------------------------------------------------------
-TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow:
+_TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow:
     JMP     ESQDISP_ComputeScheduleOffsetForRow
 
 ;------------------------------------------------------------------------------

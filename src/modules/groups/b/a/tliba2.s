@@ -1,7 +1,7 @@
-    XDEF    TLIBA2_ComputeBroadcastTimeWindow
+    XDEF    _TLIBA2_ComputeBroadcastTimeWindow
     XDEF    TLIBA2_FindLastCharInString
     XDEF    TLIBA2_ParseEntryTimeWindow
-    XDEF    TLIBA2_ResolveEntryWindowAndSlotCount
+    XDEF    _TLIBA2_ResolveEntryWindowAndSlotCount
     XDEF    TLIBA2_ResolveEntryWindowWithDefaultRange
     XDEF    TLIBA_FindFirstWildcardMatchIndex
     XDEF    TLIBA2_JMPTBL_DST_AddTimeOffset
@@ -71,7 +71,7 @@ TLIBA2_FindLastCharInString:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA2_ResolveEntryWindowAndSlotCount   (Resolve explicit time range or compute slot count fallback)
+; FUNC: _TLIBA2_ResolveEntryWindowAndSlotCount   (Resolve explicit time range or compute slot count fallback)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -87,11 +87,11 @@ TLIBA2_FindLastCharInString:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   TLIBA_FindFirstWildcardMatchIndex, MATH_DivS32, MATH_Mulu32,
-;   PARSE_ReadSignedLongSkipClass3_Alt, TLIBA2_FindLastCharInString,
+;   TLIBA_FindFirstWildcardMatchIndex, _MATH_DivS32, _MATH_Mulu32,
+;   _PARSE_ReadSignedLongSkipClass3_Alt, TLIBA2_FindLastCharInString,
 ;   TLIBA2_JMPTBL_ESQ_TestBit1Based
 ; READS:
-;   TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable, if_eq_17DB, return_17E5
+;   _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_SecondaryTitlePtrTable, if_eq_17DB, return_17E5
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -101,7 +101,7 @@ TLIBA2_FindLastCharInString:
 ; NOTES:
 ;   Uses text and bitfield gates in both primary and secondary tables.
 ;------------------------------------------------------------------------------
-TLIBA2_ResolveEntryWindowAndSlotCount:
+_TLIBA2_ResolveEntryWindowAndSlotCount:
     LINK.W  A5,#-40
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -164,7 +164,7 @@ TLIBA2_ResolveEntryWindowAndSlotCount:
 
     LEA     2(A0),A1
     MOVE.L  A1,-(A7)
-    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L 20(A5),A0
@@ -174,7 +174,7 @@ TLIBA2_ResolveEntryWindowAndSlotCount:
 .if_ne_17D9:
     LEA     1(A0),A1
     MOVE.L  A1,-(A7)
-    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L 20(A5),A0
@@ -188,7 +188,7 @@ TLIBA2_ResolveEntryWindowAndSlotCount:
     MOVEA.L -24(A5),A0
     ADDQ.L  #1,A0
     MOVE.L  A0,-(A7)
-    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     MOVEA.L 20(A5),A0
     MOVE.L  D0,4(A0)
@@ -250,10 +250,10 @@ TLIBA2_ResolveEntryWindowAndSlotCount:
 
     MOVE.L  -38(A5),D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
     MOVEQ   #1,D7
@@ -303,10 +303,10 @@ TLIBA2_ResolveEntryWindowAndSlotCount:
     MOVEA.L 20(A5),A0
     MOVE.L  D1,(A0)
     MOVEQ   #2,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     MOVEQ   #30,D0
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVE.L  D0,4(A0)
 
@@ -327,13 +327,13 @@ TLIBA2_ResolveEntryWindowAndSlotCount:
 ;   stack +12: A2 = secondary entry table pointer
 ;   stack +16: D7 = entry index
 ; RET:
-;   D0: result/status from TLIBA2_ResolveEntryWindowAndSlotCount
+;   D0: result/status from _TLIBA2_ResolveEntryWindowAndSlotCount
 ; CLOBBERS:
 ;   D0/D7/A2-A3
 ; CALLS:
-;   TLIBA2_ResolveEntryWindowAndSlotCount
+;   _TLIBA2_ResolveEntryWindowAndSlotCount
 ; DESC:
-;   Convenience wrapper that forwards to TLIBA2_ResolveEntryWindowAndSlotCount
+;   Convenience wrapper that forwards to _TLIBA2_ResolveEntryWindowAndSlotCount
 ;   with both output-range arguments set to zero.
 ;------------------------------------------------------------------------------
 TLIBA2_ResolveEntryWindowWithDefaultRange:
@@ -346,7 +346,7 @@ TLIBA2_ResolveEntryWindowWithDefaultRange:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   TLIBA2_ResolveEntryWindowAndSlotCount
+    BSR.W   _TLIBA2_ResolveEntryWindowAndSlotCount
 
     LEA     20(A7),A7
     MOVEM.L (A7)+,D7/A2-A3
@@ -363,9 +363,9 @@ TLIBA2_ResolveEntryWindowWithDefaultRange:
 ; CLOBBERS:
 ;   D0/D6/D7/A0-A1/A3
 ; CALLS:
-;   UNKNOWN_JMPTBL_ESQ_WildcardMatch
+;   _UNKNOWN_JMPTBL_ESQ_WildcardMatch
 ; READS:
-;   TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryTitlePtrTable
+;   _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -382,18 +382,18 @@ TLIBA_FindFirstWildcardMatchIndex:
 
 .loop_17E7:
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     CMP.L   D0,D7
     BGE.S   .return_17E9
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  A1,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
+    JSR     _UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -425,7 +425,7 @@ TLIBA_FindFirstWildcardMatchIndex:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D6/D7
 ; CALLS:
-;   PARSE_ReadSignedLongSkipClass3_Alt, STR_FindCharPtr
+;   _PARSE_ReadSignedLongSkipClass3_Alt, _STR_FindCharPtr
 ; READS:
 ;   branch_17F0
 ; WRITES:
@@ -460,7 +460,7 @@ TLIBA2_ParseEntryTimeWindow:
 
     PEA     40.W
     MOVE.L  A0,-(A7)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -469,7 +469,7 @@ TLIBA2_ParseEntryTimeWindow:
 
     PEA     58.W
     MOVE.L  D0,-(A7)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-16(A5)
@@ -478,7 +478,7 @@ TLIBA2_ParseEntryTimeWindow:
 
     PEA     41.W
     MOVE.L  D0,-(A7)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -487,7 +487,7 @@ TLIBA2_ParseEntryTimeWindow:
 
     PEA     34.W
     MOVE.L  -4(A5),-(A7)
-    JSR     STR_FindCharPtr(PC)
+    JSR     _STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-20(A5)
@@ -507,7 +507,7 @@ TLIBA2_ParseEntryTimeWindow:
 
     LEA     2(A0),A1
     MOVE.L  A1,-(A7)
-    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,(A2)
@@ -516,7 +516,7 @@ TLIBA2_ParseEntryTimeWindow:
 .if_ne_17EE:
     LEA     1(A0),A1
     MOVE.L  A1,-(A7)
-    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,(A2)
@@ -529,7 +529,7 @@ TLIBA2_ParseEntryTimeWindow:
     MOVEA.L -16(A5),A0
     ADDQ.L  #1,A0
     MOVE.L  A0,-(A7)
-    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,4(A2)
@@ -546,7 +546,7 @@ TLIBA2_ParseEntryTimeWindow:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA2_ComputeBroadcastTimeWindow   (Build adjusted date/time window for an entry)
+; FUNC: _TLIBA2_ComputeBroadcastTimeWindow   (Build adjusted date/time window for an entry)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -568,7 +568,7 @@ TLIBA2_ParseEntryTimeWindow:
 ; CALLS:
 ;   TLIBA2_ParseEntryTimeWindow, TLIBA2_JMPTBL_DST_AddTimeOffset
 ; READS:
-;   TEXTDISP_PrimaryGroupCode, CLOCK_CurrentDayOfWeekIndex, TLIBA2_BroadcastWindowClockSnapshotA, TLIBA2_BroadcastWindowClockSnapshotB, TLIBA2_BroadcastWindowClockSnapshotC, copy_months_loop, copy_time_fields, ffe2
+;   _TEXTDISP_PrimaryGroupCode, _CLOCK_CurrentDayOfWeekIndex, TLIBA2_BroadcastWindowClockSnapshotA, TLIBA2_BroadcastWindowClockSnapshotB, TLIBA2_BroadcastWindowClockSnapshotC, copy_months_loop, copy_time_fields, ffe2
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -577,7 +577,7 @@ TLIBA2_ParseEntryTimeWindow:
 ; NOTES:
 ;   Optionally clamps/overrides the upper bound when parsed entry times exist.
 ;------------------------------------------------------------------------------
-TLIBA2_ComputeBroadcastTimeWindow:
+_TLIBA2_ComputeBroadcastTimeWindow:
     LINK.W  A5,#-36
     MOVEM.L D2-D3/D5-D7/A2-A3/A6,-(A7)
     MOVE.W  10(A5),D7
@@ -585,7 +585,7 @@ TLIBA2_ComputeBroadcastTimeWindow:
     MOVE.L  16(A5),D6
     MOVE.L  20(A5),D5
     MOVEA.L 24(A5),A2
-    LEA     CLOCK_CurrentDayOfWeekIndex,A0
+    LEA     _CLOCK_CurrentDayOfWeekIndex,A0
     LEA     TLIBA2_BroadcastWindowClockSnapshotA,A1
     MOVEA.L A1,A6
     MOVEQ   #4,D0
@@ -712,7 +712,7 @@ TLIBA2_ComputeBroadcastTimeWindow:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVEQ   #0,D2
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D2
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D2
     CMP.L   D2,D0
     BEQ.S   .if_eq_1802
 
@@ -829,16 +829,16 @@ TLIBA2_ComputeBroadcastTimeWindow:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   DST_AddTimeOffset
+;   _DST_AddTimeOffset
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to DST_AddTimeOffset.
+;   Jump stub to _DST_AddTimeOffset.
 ;------------------------------------------------------------------------------
 TLIBA2_JMPTBL_DST_AddTimeOffset:
-    JMP     DST_AddTimeOffset
+    JMP     _DST_AddTimeOffset
 
 ;------------------------------------------------------------------------------
 ; FUNC: TLIBA2_JMPTBL_ESQ_TestBit1Based   (JumpStub_ESQ_TestBit1Based)

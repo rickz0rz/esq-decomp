@@ -1,16 +1,16 @@
-    XDEF    GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
+    XDEF    _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
     XDEF    GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode
-    XDEF    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
+    XDEF    _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
     XDEF    GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
-    XDEF    GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray
+    XDEF    _GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray
     XDEF    GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap
-    XDEF    GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray
-    XDEF    GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset
-    XDEF    GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex
-    XDEF    GROUP_AE_JMPTBL_WDISP_SPrintf
+    XDEF    _GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray
+    XDEF    _GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset
+    XDEF    _GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex
+    XDEF    _GROUP_AE_JMPTBL_WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex   (Routine at GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex)
+; FUNC: _GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex   (Routine at _GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -28,7 +28,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
+_GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
     JMP     TLIBA_FindFirstWildcardMatchIndex
 
 ;------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap:
     JMP     SCRIPT_BuildTokenIndexMap
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode   (Routine at GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode)
+; FUNC: _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode   (Routine at _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -72,7 +72,7 @@ GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
+_GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
     JMP     ESQDISP_GetEntryAuxPointerByMode
 
 ;------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit:
     JMP     LADFUNC_ParseHexDigit
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray   (Routine at GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray)
+; FUNC: _GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray   (Routine at _GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -138,11 +138,11 @@ GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray:
+_GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray:
     JMP     SCRIPT_DeallocateBufferArray
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AE_JMPTBL_WDISP_SPrintf   (Routine at GROUP_AE_JMPTBL_WDISP_SPrintf)
+; FUNC: _GROUP_AE_JMPTBL_WDISP_SPrintf   (Routine at _GROUP_AE_JMPTBL_WDISP_SPrintf)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -150,7 +150,7 @@ GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   WDISP_SPrintf
+;   _WDISP_SPrintf
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -160,11 +160,11 @@ GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AE_JMPTBL_WDISP_SPrintf:
-    JMP     WDISP_SPrintf
+_GROUP_AE_JMPTBL_WDISP_SPrintf:
+    JMP     _WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray   (Routine at GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray)
+; FUNC: _GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray   (Routine at _GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -182,11 +182,11 @@ GROUP_AE_JMPTBL_WDISP_SPrintf:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray:
+_GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray:
     JMP     SCRIPT_AllocateBufferArray
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset   (Routine at GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset)
+; FUNC: _GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset   (Routine at _GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -204,11 +204,11 @@ GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset:
+_GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset:
     JMP     TEXTDISP_ComputeTimeOffset
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString   (Routine at GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString)
+; FUNC: _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString   (Routine at _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -216,7 +216,7 @@ GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQPARS_ReplaceOwnedString
+;   _ESQPARS_ReplaceOwnedString
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -226,5 +226,5 @@ GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString:
-    JMP     ESQPARS_ReplaceOwnedString
+_GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString:
+    JMP     _ESQPARS_ReplaceOwnedString

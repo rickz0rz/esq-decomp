@@ -2,11 +2,11 @@
     XDEF    Global_STR_ESQPARS_C_2
     XDEF    Global_STR_ESQPARS_C_3
     XDEF    Global_STR_ESQPARS_C_4
-    XDEF    Global_STR_ESQPARS_C_5
-    XDEF    Global_STR_ESQPARS_C_6
+    XDEF    _Global_STR_ESQPARS_C_5
+    XDEF    _Global_STR_ESQPARS_C_6
     XDEF    Global_STR_RESET_COMMAND_RECEIVED
     XDEF    ESQPARS_BannerSubcommandSet
-    XDEF    ESQPARS_DefaultEntryCodeString
+    XDEF    _ESQPARS_DefaultEntryCodeString
 ; ========== ESQPARS.c ==========
 
 Global_STR_ESQPARS_C_1:
@@ -17,13 +17,13 @@ Global_STR_ESQPARS_C_3:
     NStr    "ESQPARS.c"
 Global_STR_ESQPARS_C_4:
     NStr    "ESQPARS.c"
-Global_STR_ESQPARS_C_5:
+_Global_STR_ESQPARS_C_5:
     NStr    "ESQPARS.c"
-Global_STR_ESQPARS_C_6:
+_Global_STR_ESQPARS_C_6:
     NStr    "ESQPARS.c"
 Global_STR_RESET_COMMAND_RECEIVED:
     NStr    "Reset command received"
 ESQPARS_BannerSubcommandSet:
     NStr    "23"
-ESQPARS_DefaultEntryCodeString:
+_ESQPARS_DefaultEntryCodeString:
     NStr    "00"

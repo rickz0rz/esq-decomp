@@ -1,11 +1,11 @@
     XDEF    SCRIPT_AllocateBufferArray
     XDEF    SCRIPT_BuildTokenIndexMap
     XDEF    SCRIPT_DeallocateBufferArray
-    XDEF    SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush
-    XDEF    SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer
-    XDEF    SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes
-    XDEF    SCRIPT_JMPTBL_MEMORY_AllocateMemory
-    XDEF    SCRIPT_JMPTBL_MEMORY_DeallocateMemory
+    XDEF    _SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush
+    XDEF    _SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer
+    XDEF    _SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes
+    XDEF    _SCRIPT_JMPTBL_MEMORY_AllocateMemory
+    XDEF    _SCRIPT_JMPTBL_MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT_AllocateBufferArray   (AllocateBufferArrayuncertain)
@@ -18,7 +18,7 @@
 ; CLOBBERS:
 ;   D0-D7, A3
 ; CALLS:
-;   SCRIPT_JMPTBL_MEMORY_AllocateMemory
+;   _SCRIPT_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   (none)
 ; WRITES:
@@ -53,7 +53,7 @@ SCRIPT_AllocateBufferArray:
     PEA     394.W
     PEA     Global_STR_SCRIPT_C_1
     MOVE.L  D0,32(A7)
-    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  16(A7),D1
@@ -79,7 +79,7 @@ SCRIPT_AllocateBufferArray:
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   SCRIPT_JMPTBL_MEMORY_DeallocateMemory
+;   _SCRIPT_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   outPtrs[0..count-1]
 ; WRITES:
@@ -109,8 +109,8 @@ SCRIPT_DeallocateBufferArray:
     MOVE.L  D1,-(A7)
     MOVE.L  0(A3,D0.L),-(A7)
     PEA     405.W
-    PEA     Global_STR_SCRIPT_C_2
-    JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_SCRIPT_C_2
+    JSR     _SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D5,D0
@@ -276,7 +276,7 @@ SCRIPT_BuildTokenIndexMap:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_MEMORY_DeallocateMemory   (Routine at SCRIPT_JMPTBL_MEMORY_DeallocateMemory)
+; FUNC: _SCRIPT_JMPTBL_MEMORY_DeallocateMemory   (Routine at _SCRIPT_JMPTBL_MEMORY_DeallocateMemory)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -294,11 +294,11 @@ SCRIPT_BuildTokenIndexMap:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_MEMORY_DeallocateMemory:
+_SCRIPT_JMPTBL_MEMORY_DeallocateMemory:
     JMP     MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes   (Routine at SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes)
+; FUNC: _SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes   (Routine at _SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -306,7 +306,7 @@ SCRIPT_JMPTBL_MEMORY_DeallocateMemory:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DISKIO_WriteBufferedBytes
+;   _DISKIO_WriteBufferedBytes
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -316,11 +316,11 @@ SCRIPT_JMPTBL_MEMORY_DeallocateMemory:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes:
-    JMP     DISKIO_WriteBufferedBytes
+_SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes:
+    JMP     _DISKIO_WriteBufferedBytes
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush   (Routine at SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush)
+; FUNC: _SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush   (Routine at _SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -328,7 +328,7 @@ SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DISKIO_CloseBufferedFileAndFlush
+;   _DISKIO_CloseBufferedFileAndFlush
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -338,11 +338,11 @@ SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush:
-    JMP     DISKIO_CloseBufferedFileAndFlush
+_SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush:
+    JMP     _DISKIO_CloseBufferedFileAndFlush
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_MEMORY_AllocateMemory   (Routine at SCRIPT_JMPTBL_MEMORY_AllocateMemory)
+; FUNC: _SCRIPT_JMPTBL_MEMORY_AllocateMemory   (Routine at _SCRIPT_JMPTBL_MEMORY_AllocateMemory)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -350,7 +350,7 @@ SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MEMORY_AllocateMemory
+;   _MEMORY_AllocateMemory
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -360,11 +360,11 @@ SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_MEMORY_AllocateMemory:
-    JMP     MEMORY_AllocateMemory
+_SCRIPT_JMPTBL_MEMORY_AllocateMemory:
+    JMP     _MEMORY_AllocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer   (Routine at SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer)
+; FUNC: _SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer   (Routine at _SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -372,7 +372,7 @@ SCRIPT_JMPTBL_MEMORY_AllocateMemory:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   DISKIO_OpenFileWithBuffer
+;   _DISKIO_OpenFileWithBuffer
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -382,8 +382,8 @@ SCRIPT_JMPTBL_MEMORY_AllocateMemory:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer:
-    JMP     DISKIO_OpenFileWithBuffer
+_SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer:
+    JMP     _DISKIO_OpenFileWithBuffer
 
 ;======
 

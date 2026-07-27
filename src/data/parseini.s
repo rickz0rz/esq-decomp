@@ -35,12 +35,12 @@
     XDEF    PARSEINI_TAG_BOTTOM
     XDEF    PARSEINI_TAG_CENTER_VerticalAlign
     XDEF    PARSEINI_TAG_ID
-    XDEF    PARSEINI_TAG_FILENAME_WeatherString
-    XDEF    PARSEINI_TAG_WEATHER
+    XDEF    _PARSEINI_TAG_FILENAME_WeatherString
+    XDEF    _PARSEINI_TAG_WEATHER
     XDEF    PARSEINI_STR_WEATHERCURRENT
     XDEF    PARSEINI_STR_WEATHERFORECAST
     XDEF    PARSEINI_STR_BOTTOMLINETAG
-    XDEF    Global_STR_COLOR_PERCENT_D
+    XDEF    _Global_STR_COLOR_PERCENT_D
     XDEF    Global_STR_PERCENT_S_2
     XDEF    Global_STR_DF0_GRADIENT_INI_3
     XDEF    Global_STR_DF0_BANNER_INI_2
@@ -58,13 +58,13 @@
     XDEF    Global_STR_PARSEINI_C_6
     XDEF    Global_STR_PARSEINI_C_7
     XDEF    PARSEINI_FallbackClockDataRecord
-    XDEF    Global_STR_DF0_ERR_LOG
+    XDEF    _Global_STR_DF0_ERR_LOG
     XDEF    PARSEINI_ClockSecondsSnapshot
     XDEF    PARSEINI_ClockChangeSampleCounter
     XDEF    PARSEINI_ClockChangeActiveFlag
-    XDEF    PARSEINI_CtrlHClockSnapshot
-    XDEF    PARSEINI_CtrlHChangeGateCounter
-    XDEF    PARSEINI_CtrlHChangePendingFlag
+    XDEF    _PARSEINI_CtrlHClockSnapshot
+    XDEF    _PARSEINI_CtrlHChangeGateCounter
+    XDEF    _PARSEINI_CtrlHChangePendingFlag
 ; ========== PARSEINI.c ==========
 
 Global_STR_PARSEINI_C_1:
@@ -148,9 +148,9 @@ PARSEINI_TAG_CENTER_VerticalAlign:
     NStr    "CENTER"
 PARSEINI_TAG_ID:
     NStr    "ID"
-PARSEINI_TAG_FILENAME_WeatherString:
+_PARSEINI_TAG_FILENAME_WeatherString:
     NStr    "FILENAME"
-PARSEINI_TAG_WEATHER:
+_PARSEINI_TAG_WEATHER:
     NStr    "WEATHER"
 PARSEINI_STR_WEATHERCURRENT:
     NStr    "WeatherCurrent"
@@ -158,7 +158,7 @@ PARSEINI_STR_WEATHERFORECAST:
     NStr    "WeatherForecast"
 PARSEINI_STR_BOTTOMLINETAG:
     NStr    "BottomLineTag"
-Global_STR_COLOR_PERCENT_D:
+_Global_STR_COLOR_PERCENT_D:
     NStr    "COLOR%d"
 Global_STR_PERCENT_S_2:
     NStr    "%s"
@@ -195,7 +195,7 @@ Global_STR_PARSEINI_C_7:
 PARSEINI_FallbackClockDataRecord:
     DC.L    262144,1986     ; 182 days (262144 / 60 / 24) into 1986?
     DC.L    0,0,0,0,0
-Global_STR_DF0_ERR_LOG:
+_Global_STR_DF0_ERR_LOG:
     NStr    "df0:err.log"
 PARSEINI_ClockSecondsSnapshot:
     DC.W    0
@@ -203,9 +203,9 @@ PARSEINI_ClockChangeSampleCounter:
     DC.W    0
 PARSEINI_ClockChangeActiveFlag:
     DC.W    0
-PARSEINI_CtrlHClockSnapshot:
+_PARSEINI_CtrlHClockSnapshot:
     DC.W    0
-PARSEINI_CtrlHChangeGateCounter:
+_PARSEINI_CtrlHChangeGateCounter:
     DC.W    0
-PARSEINI_CtrlHChangePendingFlag:
+_PARSEINI_CtrlHChangePendingFlag:
     DC.W    0

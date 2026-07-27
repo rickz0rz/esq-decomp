@@ -54,7 +54,7 @@ SCRIPT_GetBannerCharOrFallback:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _LVOTextLength, _LVOText, _LVOSetAPen, TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame
+;   _LVOTextLength, _LVOText, _LVOSetAPen, _TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame
 ; READS:
 ;   RastPort fields at 36/38/58/25 offsets
 ; WRITES:
@@ -111,7 +111,7 @@ SCRIPT_DrawInsetTextWithFrame:
     MOVE.L  D0,-(A7)
     MOVE.L  28(A7),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(PC)
+    JSR     _TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(PC)
 
     LEA     16(A7),A7
 
@@ -194,11 +194,11 @@ SCRIPT_DrawInsetTextWithFrame:
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   TLIBA3_ClearViewModeRastPort, TLIBA3_BuildDisplayContextForViewMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+;   TLIBA3_ClearViewModeRastPort, _TLIBA3_BuildDisplayContextForViewMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   WDISP_DisplayContextBase, copper/effect state
+;   _WDISP_DisplayContextBase, copper/effect state
 ; WRITES:
-;   WDISP_DisplayContextBase and effect parameters
+;   _WDISP_DisplayContextBase and effect parameters
 ; DESC:
 ;   Initializes highlight/copper effect state and kicks a banner transition.
 ; NOTES:
@@ -215,23 +215,23 @@ SCRIPT_SetupHighlightEffect:
     PEA     3.W
     CLR.L   -(A7)
     PEA     4.W
-    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEQ   #0,D5
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     MOVE.W  4(A0),D5
     MOVEQ   #0,D0
     MOVE.W  2(A0),D0
     MOVE.L  D0,-20(A5)
-    JSR     WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
+    JSR     _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
 
     JSR     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
 
     LEA     20(A7),A7
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     MOVE.W  (A0),D0
     BTST    #2,D0
     BEQ.S   .is_not_mode2
@@ -246,7 +246,7 @@ SCRIPT_SetupHighlightEffect:
     MOVE.L  D0,20(A7)
     MOVE.L  D5,D0
     MOVE.L  20(A7),D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     MOVE.W  D0,-172(A5)
     ADDI.W  #22,D0
@@ -263,19 +263,19 @@ SCRIPT_SetupHighlightEffect:
     TST.B   (A3)
     BEQ.W   .return
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
-    CLR.W   WDISP_AccumulatorFlushPending
+    CLR.W   _WDISP_AccumulatorFlushPending
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     PEA     3.W
     MOVE.L  A0,-4(A5)
-    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     CLR.L   -28(A5)
     MOVE.L  A3,-170(A5)
 
@@ -467,7 +467,7 @@ SCRIPT_SetupHighlightEffect:
     MOVE.L  -28(A5),-(A7)
     MOVE.L  -170(A5),-(A7)
     PEA     -161(A5)
-    JSR     STRING_CopyPadNul(PC)
+    JSR     _STRING_CopyPadNul(PC)
 
     LEA     -161(A5),A0
     MOVEA.L A0,A1
@@ -506,13 +506,13 @@ SCRIPT_SetupHighlightEffect:
     PEA     3.W
     CLR.L   -(A7)
     PEA     4.W
-    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
 
 .return:
-    JSR     TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
+    JSR     _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
 
     MOVEM.L (A7)+,D2/D5-D7/A3
     UNLK    A5

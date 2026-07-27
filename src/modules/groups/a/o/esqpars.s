@@ -3,17 +3,17 @@
     XDEF    ESQPARS_PersistStateDataAfterCommand
     XDEF    ESQPARS_ConsumeRbfByteAndDispatchCommand
     XDEF    ESQPARS_ReadLengthWordWithChecksumXor
-    XDEF    ESQPARS_RemoveGroupEntryAndReleaseStrings
-    XDEF    ESQPARS_ReplaceOwnedString
-    XDEF    ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex
+    XDEF    _ESQPARS_RemoveGroupEntryAndReleaseStrings
+    XDEF    _ESQPARS_ReplaceOwnedString
+    XDEF    _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex
     XDEF    ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock
     XDEF    ESQPARS_JMPTBL_COI_FreeEntryResources
-    XDEF    ESQPARS_JMPTBL_DATETIME_SavePairToFile
-    XDEF    ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded
+    XDEF    _ESQPARS_JMPTBL_DATETIME_SavePairToFile
+    XDEF    _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded
     XDEF    ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer
     XDEF    ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer
     XDEF    ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle
-    XDEF    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition
+    XDEF    _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition
     XDEF    ESQPARS_JMPTBL_DST_HandleBannerCommand32_33
     XDEF    ESQPARS_JMPTBL_DST_RefreshBannerBuffer
     XDEF    ESQPARS_JMPTBL_DST_UpdateBannerQueue
@@ -21,13 +21,13 @@
     XDEF    ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds
     XDEF    ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile
     XDEF    ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile
-    XDEF    ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache
+    XDEF    _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache
     XDEF    ESQPARS_JMPTBL_PARSEINI_HandleFontCommand
     XDEF    ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals
-    XDEF    ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+    XDEF    _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
     XDEF    ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord
-    XDEF    ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile
-    XDEF    ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte
+    XDEF    _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile
+    XDEF    _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte
     XDEF    ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine
     XDEF    ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries
     XDEF    ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal
@@ -49,16 +49,16 @@
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQPARS_ReplaceOwnedString
+;   _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, _ESQPARS_ReplaceOwnedString
 ; READS:
-;   TEXTDISP_AliasCount, TEXTDISP_AliasPtrTable, Global_STR_ESQPARS_C_1
+;   _TEXTDISP_AliasCount, _TEXTDISP_AliasPtrTable, Global_STR_ESQPARS_C_1
 ; WRITES:
-;   TEXTDISP_AliasPtrTable entries, alias record string-pointer fields
+;   _TEXTDISP_AliasPtrTable entries, alias record string-pointer fields
 ; DESC:
 ;   Walks alias pointer entries and releases both owned strings for each alias
 ;   record, then frees the alias record and nulls its table slot.
 ; NOTES:
-;   Iterates alias indices 0..(TEXTDISP_AliasCount-1).
+;   Iterates alias indices 0..(_TEXTDISP_AliasCount-1).
 ;------------------------------------------------------------------------------
 ESQPARS_ClearAliasStringPointers:
     LINK.W  A5,#-8
@@ -66,14 +66,14 @@ ESQPARS_ClearAliasStringPointers:
     MOVEQ   #0,D7
 
 .alias_loop:
-    MOVE.W  TEXTDISP_AliasCount,D0
+    MOVE.W  _TEXTDISP_AliasCount,D0
     CMP.W   D0,D7
     BGE.S   .done
 
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_AliasPtrTable,A0
+    LEA     _TEXTDISP_AliasPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  A1,-6(A5)
@@ -82,13 +82,13 @@ ESQPARS_ClearAliasStringPointers:
 
     MOVE.L  (A1),-(A7)
     CLR.L   -(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     MOVEA.L -6(A5),A0
     MOVE.L  D0,(A0)
     MOVE.L  4(A0),(A7)
     CLR.L   -(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     MOVEA.L -6(A5),A0
     MOVE.L  D0,4(A0)
@@ -96,13 +96,13 @@ ESQPARS_ClearAliasStringPointers:
     MOVE.L  A0,-(A7)
     PEA     945.W
     PEA     Global_STR_ESQPARS_C_1
-    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     28(A7),A7
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_AliasPtrTable,A0
+    LEA     _TEXTDISP_AliasPtrTable,A0
     ADDA.L  D0,A0
     CLR.L   (A0)
 
@@ -118,7 +118,7 @@ ESQPARS_ClearAliasStringPointers:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_RemoveGroupEntryAndReleaseStrings   (Release all group entry/title allocations)
+; FUNC: _ESQPARS_RemoveGroupEntryAndReleaseStrings   (Release all group entry/title allocations)
 ; ARGS:
 ;   stack +6: group selector (2 = secondary group, otherwise primary) ??
 ; RET:
@@ -126,12 +126,12 @@ ESQPARS_ClearAliasStringPointers:
 ; CLOBBERS:
 ;   A0/A1/A2/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQPARS_JMPTBL_COI_FreeEntryResources, ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine, ESQIFF2_ClearLineHeadTailByMode
+;   _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQPARS_JMPTBL_COI_FreeEntryResources, ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine, _ESQIFF2_ClearLineHeadTailByMode
 ; READS:
-;   TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable,
-;   TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, Global_STR_ESQPARS_C_2, Global_STR_ESQPARS_C_3, Global_STR_ESQPARS_C_4
+;   _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable,
+;   _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryTitlePtrTable, Global_STR_ESQPARS_C_2, Global_STR_ESQPARS_C_3, Global_STR_ESQPARS_C_4
 ; WRITES:
-;   TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupPresentFlag,
+;   _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryGroupPresentFlag,
 ;   selected entry/title pointer-table slots
 ; DESC:
 ;   Clears selected group entry slots from the end toward index 0, releasing
@@ -139,7 +139,7 @@ ESQPARS_ClearAliasStringPointers:
 ; NOTES:
 ;   Performs the same cleanup flow for both primary/secondary groups.
 ;------------------------------------------------------------------------------
-ESQPARS_RemoveGroupEntryAndReleaseStrings:
+_ESQPARS_RemoveGroupEntryAndReleaseStrings:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A2,-(A7)
     MOVE.W  10(A5),D7
@@ -148,28 +148,28 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   ESQIFF2_ClearLineHeadTailByMode
+    BSR.W   _ESQIFF2_ClearLineHeadTailByMode
 
     ADDQ.W  #4,A7
     MOVEQ   #2,D0
     CMP.W   D0,D7
     BNE.S   .use_primary_group
 
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     MOVE.L  D0,D5
     SUBQ.W  #1,D5
     MOVEQ   #0,D0
-    MOVE.W  D0,TEXTDISP_SecondaryGroupEntryCount
+    MOVE.W  D0,_TEXTDISP_SecondaryGroupEntryCount
     MOVEQ   #0,D1
-    MOVE.B  D1,TEXTDISP_SecondaryGroupPresentFlag
+    MOVE.B  D1,_TEXTDISP_SecondaryGroupPresentFlag
     BRA.S   .release_entry_loop
 
 .use_primary_group:
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.L  D0,D5
     SUBQ.W  #1,D5
-    CLR.W   TEXTDISP_PrimaryGroupEntryCount
-    CLR.B   TEXTDISP_PrimaryGroupPresentFlag
+    CLR.W   _TEXTDISP_PrimaryGroupEntryCount
+    CLR.B   _TEXTDISP_PrimaryGroupPresentFlag
 
 .release_entry_loop:
     TST.W   D5
@@ -182,14 +182,14 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  (A1),-4(A5)
     ADDA.L  D0,A0
     SUBA.L  A1,A1
     MOVE.L  A1,(A0)
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     MOVEA.L A0,A2
     ADDA.L  D0,A2
     MOVE.L  (A2),-8(A5)
@@ -201,14 +201,14 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  (A1),-4(A5)
     ADDA.L  D0,A0
     SUBA.L  A1,A1
     MOVE.L  A1,(A0)
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     MOVEA.L A0,A2
     ADDA.L  D0,A2
     MOVE.L  (A2),-8(A5)
@@ -247,7 +247,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     MOVE.L  -12(A5),-(A7)
     PEA     1025.W
     PEA     Global_STR_ESQPARS_C_2
-    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D6,D0
@@ -268,7 +268,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     MOVE.L  -8(A5),-(A7)
     PEA     1031.W
     PEA     Global_STR_ESQPARS_C_3
-    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -284,7 +284,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     MOVE.L  -4(A5),-(A7)
     PEA     1040.W
     PEA     Global_STR_ESQPARS_C_4
-    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -319,7 +319,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_ReplaceOwnedString   (Replace owned heap string)
+; FUNC: _ESQPARS_ReplaceOwnedString   (Replace owned heap string)
 ; ARGS:
 ;   stack +4: A3 source string pointer (new text, NUL-terminated)
 ;   stack +8: A2 owned string pointer (old text to release, may be NULL)
@@ -328,9 +328,9 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, _LVOAvailMem
+;   _ESQIFF_JMPTBL_MEMORY_AllocateMemory, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, _LVOAvailMem
 ; READS:
-;   AbsExecBase, Global_STR_ESQPARS_C_5, Global_STR_ESQPARS_C_6, MEMF_PUBLIC
+;   AbsExecBase, _Global_STR_ESQPARS_C_5, _Global_STR_ESQPARS_C_6, MEMF_PUBLIC
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -342,7 +342,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings_Return:
 ;   Allocation only runs when AvailMem(MEMF_PUBLIC) > $2710.
 ;   Callers must tolerate NULL on low-memory or empty-input paths.
 ;------------------------------------------------------------------------------
-ESQPARS_ReplaceOwnedString:
+_ESQPARS_ReplaceOwnedString:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVEA.L 24(A7),A2
@@ -364,8 +364,8 @@ ESQPARS_ReplaceOwnedString:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
     PEA     1081.W
-    PEA     Global_STR_ESQPARS_C_5
-    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_ESQPARS_C_5
+    JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -408,8 +408,8 @@ ESQPARS_ReplaceOwnedString:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D6,-(A7)
     PEA     1100.W
-    PEA     Global_STR_ESQPARS_C_6
-    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
+    PEA     _Global_STR_ESQPARS_C_6
+    JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L D0,A2
@@ -474,9 +474,9 @@ ESQPARS_ReplaceOwnedString_Return:
 ; CALLS:
 ;   ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals, ESQDISP_NormalizeClockAndRedrawBanner
 ; READS:
-;   ESQPARS2_ReadModeFlags
+;   _ESQPARS2_ReadModeFlags
 ; WRITES:
-;   ESQPARS2_ReadModeFlags
+;   _ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Loads RTC bytes from the incoming command payload into stack temporaries,
 ;   persists them through PARSEINI, then normalizes/redraws clock display state.
@@ -517,11 +517,11 @@ ESQPARS_ApplyRtcBytesAndPersist:
     PEA     -24(A5)
     JSR     ESQDISP_NormalizeClockAndRedrawBanner(PC)
 
-    MOVE.W  ESQPARS2_ReadModeFlags,D7
-    MOVE.W  #256,ESQPARS2_ReadModeFlags
+    MOVE.W  _ESQPARS2_ReadModeFlags,D7
+    MOVE.W  #256,_ESQPARS2_ReadModeFlags
     JSR     ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals(PC)
 
-    MOVE.W  D7,ESQPARS2_ReadModeFlags
+    MOVE.W  D7,_ESQPARS2_ReadModeFlags
 
     MOVEM.L -32(A5),D7/A3
     UNLK    A5
@@ -590,11 +590,11 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal, ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadRbfBytesToBuffer, ESQIFF2_ReadRbfBytesWithXor, ESQIFF2_ReadSerialRecordIntoBuffer, ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
+;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal, ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, _GROUP_AM_JMPTBL_WDISP_SPrintf, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, _ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadRbfBytesToBuffer, ESQIFF2_ReadRbfBytesWithXor, ESQIFF2_ReadSerialRecordIntoBuffer, ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, _ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
 ; READS:
-;   CTRL_BUFFER, CTRL_H, DATACErrs, Global_REF_696_400_BITMAP, Global_REF_RASTPORT_1, ESQPARS_BannerSubcommandSet, Global_STR_RESET_COMMAND_RECEIVED, CTASKS_STR_1, ESQPARS_PersistOnNextBoxOffFlag, DISKIO2_InteractiveTransferArmedFlag, ESQPARS_SelectionSuffixBuffer, ESQIFF_StatusPacketReadyFlag, ESQPARS_SelectionMatchCode, ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable
+;   _CTRL_BUFFER, _CTRL_H, _DATACErrs, _Global_REF_696_400_BITMAP, _Global_REF_RASTPORT_1, ESQPARS_BannerSubcommandSet, Global_STR_RESET_COMMAND_RECEIVED, _CTASKS_STR_1, ESQPARS_PersistOnNextBoxOffFlag, DISKIO2_InteractiveTransferArmedFlag, _ESQPARS_SelectionSuffixBuffer, ESQIFF_StatusPacketReadyFlag, ESQPARS_SelectionMatchCode, _ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, _ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, _ESQIFF_ParseAttemptCount, _ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
-;   DATACErrs, ESQPARS_PersistOnNextBoxOffFlag, DISKIO2_InteractiveTransferArmedFlag, ESQIFF_RecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_SelectionMatchCode, ESQPARS_ResetArmedFlag, ESQ_GlobalTickCounter
+;   _DATACErrs, ESQPARS_PersistOnNextBoxOffFlag, DISKIO2_InteractiveTransferArmedFlag, ESQIFF_RecordLength, _ESQIFF_RecordChecksumByte, _ESQIFF_ParseAttemptCount, _ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_SelectionMatchCode, ESQPARS_ResetArmedFlag, ESQ_GlobalTickCounter
 ; DESC:
 ;   Consumes one RBF byte, advances preamble state, and when armed dispatches
 ;   command handlers for listing, status, config, banner/filter, and control paths.
@@ -602,13 +602,13 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ;   Uses 0x55/0xAA preamble sync and clears preamble flags on command completion.
 ;   This is the shared command/data ingest path for serial bytes once they are in
 ;   the RBF-backed stream. Custom transports/handshakes can reuse this by feeding
-;   equivalent byte sequences to SCRIPT_ReadNextRbfByte / CTRL_BUFFER producers.
+;   equivalent byte sequences to SCRIPT_ReadNextRbfByte / _CTRL_BUFFER producers.
 ;------------------------------------------------------------------------------
 ESQPARS_ConsumeRbfByteAndDispatchCommand:
     LINK.W  A5,#-232
     MOVEM.L D2/D5-D7/A2,-(A7)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.W  ESQPARS_CommandPreambleArmedFlag,D1
     MOVE.B  D0,-5(A5)
@@ -678,7 +678,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_a_checksum_error
 
@@ -705,24 +705,24 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     ADDQ.W  #8,A7
     MOVEQ   #1,D0
     MOVE.L  D0,DISKIO2_InteractiveTransferArmedFlag
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     BRA.S   .clearValues
 
 .cmd_a_record_too_long:
-    MOVE.W  ESQIFF_LineErrorCount,D0
+    MOVE.W  _ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_LineErrorCount
+    MOVE.W  D0,_ESQIFF_LineErrorCount
     BRA.S   .clearValues
 
 ;!======
 
-; Increment the number of DATACErrs encountered
+; Increment the number of _DATACErrs encountered
 .cmd_a_checksum_error:
-    MOVE.W  DATACErrs,D0    ; Move DATACErrs to D0
+    MOVE.W  _DATACErrs,D0    ; Move _DATACErrs to D0
     ADDQ.W  #1,D0           ; Add 1 to D0
-    MOVE.W  D0,DATACErrs    ; Move D0 back to DATACErrs
+    MOVE.W  D0,_DATACErrs    ; Move D0 back to _DATACErrs
     BRA.S   .clearValues    ; Clear the values
 
 .cmd_initial_w_upper:
@@ -861,9 +861,9 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 .cmd_bang_begin:
     CLR.B   -62(A5)
     MOVE.B  #$de,-71(A5)
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     PEA     -71(A5)
     PEA     1.W
     PEA     -61(A5)
@@ -900,13 +900,13 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BCS.S   .cmd_bang_reject
 
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     MOVE.L  -14(A5),D1
     CMP.L   D1,D0
     BEQ.S   .cmd_bang_read_title_key
 
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
 
     CMP.L   D0,D1
     BEQ.S   .cmd_bang_read_title_key
@@ -1002,17 +1002,17 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
 .cmd_bang_normalize_y_group:
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     MOVE.L  -14(A5),D1
     CMP.L   D1,D0
     BNE.S   .cmd_bang_try_primary_group
 
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D0
     SUBQ.B  #1,D0
     BNE.S   .cmd_bang_try_primary_group
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     MOVEQ   #2,D2
     MOVE.L  D2,-30(A5)
     MOVE.L  D0,-18(A5)
@@ -1020,12 +1020,12 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
 .cmd_bang_try_primary_group:
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     CMP.L   D0,D1
     BNE.W   .cmdbyte_clear_preamble_and_finish
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVEQ   #1,D1
     MOVE.L  D1,-30(A5)
     MOVE.L  D0,-18(A5)
@@ -1111,7 +1111,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  56(A0,D0.L),-(A7)
     CLR.L   -(A7)
     MOVE.L  D2,28(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     ADDQ.W  #8,A7
     MOVEA.L -70(A5),A0
@@ -1124,9 +1124,9 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_bang_apply_slot_range_loop
 
 .cmd_p_compact_entry:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     CLR.L   -(A7)
     PEA     2.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
@@ -1144,7 +1144,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_p_checksum_error
 
@@ -1159,15 +1159,15 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_p_finish
 
 .cmd_p_record_too_long:
-    MOVE.W  ESQIFF_LineErrorCount,D0
+    MOVE.W  _ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_LineErrorCount
+    MOVE.W  D0,_ESQIFF_LineErrorCount
     BRA.S   .cmd_p_finish
 
 .cmd_p_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_p_finish:
     CLR.W   ESQPARS_ResetArmedFlag
@@ -1177,9 +1177,9 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CLR.B   -213(A5)
     MOVE.B  #$1,-224(A5)
     MOVE.B  #$8f,-227(A5)
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     PEA     -227(A5)
     PEA     1.W
     PEA     -62(A5)
@@ -1221,28 +1221,28 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  -18(A5),D0
     CLR.B   -36(A5,D0.L)
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     MOVE.L  -10(A5),D1
     CMP.L   D1,D0
     BNE.S   .cmd_p_lower_try_primary_group
 
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D0
     SUBQ.B  #1,D0
     BNE.S   .cmd_p_lower_try_primary_group
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     MOVE.L  D0,-14(A5)
     BRA.S   .cmd_p_lower_read_bitmap6
 
 .cmd_p_lower_try_primary_group:
     MOVEQ   #0,D0
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     CMP.L   D0,D1
     BNE.W   .cmdbyte_clear_preamble_and_finish
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.L  D0,-14(A5)
 
 .cmd_p_lower_read_bitmap6:
@@ -1283,30 +1283,30 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BGE.S   .cmd_p_lower_read_payload_width
 
     MOVEQ   #0,D1
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D1
     MOVE.L  -10(A5),D2
     CMP.L   D1,D2
     BNE.S   .cmd_p_lower_use_primary_tables
 
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D1
     SUBQ.B  #1,D1
     BNE.S   .cmd_p_lower_use_primary_tables
 
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-218(A5)
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-222(A5)
     BRA.S   .cmd_p_lower_compare_title_start
 
 .cmd_p_lower_use_primary_tables:
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-218(A5)
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-222(A5)
 
@@ -1613,9 +1613,9 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_l_or_t_banner_entry:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -1634,7 +1634,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_l_or_t_checksum_error
 
@@ -1652,38 +1652,38 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_l_or_t_finish
 
 .cmd_l_or_t_record_too_long:
-    MOVE.W  ESQIFF_LineErrorCount,D0
+    MOVE.W  _ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_LineErrorCount
+    MOVE.W  D0,_ESQIFF_LineErrorCount
     BRA.S   .cmd_l_or_t_finish
 
 .cmd_l_or_t_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_l_or_t_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .processCommand_xBB_BoxOff:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.B  D0,-5(A5)
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,ESQIFF_RecordChecksumByte
+    MOVE.B  D0,_ESQIFF_RecordChecksumByte
     MOVEQ   #0,D1
     MOVE.B  -5(A5),D1
     MOVEQ   #68,D2
@@ -1716,18 +1716,18 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_boxoff_finish
 
 .cmd_boxoff_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_boxoff_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_c_group_record:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     PEA     6.W
     PEA     1.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
@@ -1749,7 +1749,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_c_checksum_error
 
@@ -1764,18 +1764,18 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_c_finish
 
 .cmd_c_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_c_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_c_lower_program_info:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     CLR.L   -(A7)
     PEA     1.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
@@ -1798,7 +1798,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_c_lower_invalid_record
 
@@ -1809,18 +1809,18 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_c_lower_finish
 
 .cmd_c_lower_invalid_record:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_c_lower_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_v_lower_aligned_listing:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     CLR.L   -(A7)
     PEA     1.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
@@ -1842,7 +1842,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_v_lower_checksum_error
 
@@ -1859,18 +1859,18 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_v_lower_finish
 
 .cmd_v_lower_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_v_lower_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_e_copy_string:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -1889,12 +1889,12 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_e_checksum_error
 
     MOVEA.L ESQIFF_RecordBufferPtr,A0
-    LEA     ESQPARS_SelectionSuffixBuffer,A1
+    LEA     _ESQPARS_SelectionSuffixBuffer,A1
 
 .cmd_e_copy_loop:
     MOVE.B  (A0)+,(A1)+
@@ -1903,9 +1903,9 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_e_finish
 
 .cmd_e_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_e_finish:
     CLR.W   ESQPARS_ResetArmedFlag
@@ -1914,22 +1914,22 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     if includeCustomAriAssembly
 
 .cmd_e_debug_status_dump:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     JSR     ESQ_PollCtrlInput
 
     MOVEQ   #0,D0
     LEA     76(A7),A7
     MOVE.W  SCRIPT_CTRL_STATE,D4
     MOVEQ   #0,D0
-    MOVE.W  CTRL_H,D0
+    MOVE.W  _CTRL_H,D0
     MOVEQ   #0,D3
     MOVE.W  SCRIPT_CTRL_CHECKSUM,D3
     MOVEQ   #0,D1
     MOVE.W  SCRIPT_CTRL_READ_INDEX,D1
     MOVEQ   #0,D2
-    LEA     CTRL_BUFFER,A3
+    LEA     _CTRL_BUFFER,A3
     ADDA    D0,A3
     SUBA    #1,A3
     MOVEQ   #0,D2
@@ -1941,30 +1941,30 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     PEA     WDISP_FMT_CTRLH_STATUS_MAX
     PEA     -72(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
     PEA     -72(A5)
     PEA     262.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
     endif
 
 .cmd_f_status_packet:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     PEA     21.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     BSR.W   ESQIFF2_ReadRbfBytesToBuffer
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,ESQIFF_RecordChecksumByte
+    MOVE.B  D0,_ESQIFF_RecordChecksumByte
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     PEA     20.W
@@ -1974,7 +1974,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_f_invalid_packet
 
@@ -2004,35 +2004,35 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_f_finish
 
 .cmd_f_invalid_packet:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_f_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .processCommand_K_Clock:
-    MOVE.W  ED_DiagnosticsViewMode,D0
+    MOVE.W  _ED_DiagnosticsViewMode,D0
     SUBQ.W  #1,D0
     BEQ.W   .cmdbyte_clear_preamble_and_finish
 
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     PEA     8.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     BSR.W   ESQIFF2_ReadRbfBytesToBuffer
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,ESQIFF_RecordChecksumByte
+    MOVE.B  D0,_ESQIFF_RecordChecksumByte
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     PEA     8.W
@@ -2042,7 +2042,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .command_K_Increment_Data_CErrs
 
@@ -2069,7 +2069,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CMP.B   D1,D0
     BCC.S   .command_K_Increment_Data_CErrs
 
-    MOVE.B  CTASKS_STR_1,D0
+    MOVE.B  _CTASKS_STR_1,D0
     MOVEQ   #50,D1
     CMP.B   D1,D0
     BNE.S   .command_K_Increment_Data_CErrs
@@ -2081,18 +2081,18 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_k_finish
 
 .command_K_Increment_Data_CErrs:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_k_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_j_line_head_tail:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     CLR.L   -(A7)
     PEA     2.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
@@ -2110,7 +2110,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_j_checksum_error
 
@@ -2125,24 +2125,24 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_j_finish
 
 .cmd_j_record_too_long:
-    MOVE.W  ESQIFF_LineErrorCount,D0
+    MOVE.W  _ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_LineErrorCount
+    MOVE.W  D0,_ESQIFF_LineErrorCount
     BRA.S   .cmd_j_finish
 
 .cmd_j_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_j_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_i_parse_digit_label:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -2161,7 +2161,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_i_checksum_error
 
@@ -2177,24 +2177,24 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_i_finish
 
 .cmd_i_record_too_long:
-    MOVE.W  ESQIFF_LineErrorCount,D0
+    MOVE.W  _ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_LineErrorCount
+    MOVE.W  D0,_ESQIFF_LineErrorCount
     BRA.S   .cmd_i_finish
 
 .cmd_i_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_i_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_i_lower_copy_label:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -2213,7 +2213,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_i_lower_checksum_error
 
@@ -2229,33 +2229,33 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_i_lower_finish
 
 .cmd_i_lower_record_too_long:
-    MOVE.W  ESQIFF_LineErrorCount,D0
+    MOVE.W  _ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_LineErrorCount
+    MOVE.W  D0,_ESQIFF_LineErrorCount
     BRA.S   .cmd_i_lower_finish
 
 .cmd_i_lower_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_i_lower_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_percent_begin:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,ESQIFF_RecordChecksumByte
+    MOVE.B  D0,_ESQIFF_RecordChecksumByte
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #109,D0
@@ -2268,25 +2268,25 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_percent_finish
 
 .cmd_percent_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_percent_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .processCommand_R_Reset:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -2300,11 +2300,11 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BNE.S   .cmd_r_finish
 
     MOVE.W  #21000,ESQ_GlobalTickCounter
-    MOVEA.L Global_REF_RASTPORT_1,A0
-    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
+    MOVEA.L _Global_REF_RASTPORT_1,A0
+    MOVE.L  #_Global_REF_696_400_BITMAP,4(A0)
 
 .cmd_r_reset_overlay_loop:
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEA.L 52(A1),A0
     MOVEQ   #0,D0
     MOVE.W  26(A0),D0
@@ -2332,32 +2332,32 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_r_reset_overlay_loop
 
 .cmd_r_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_r_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_m_ack:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_o_clear_primary_flags:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -2371,18 +2371,18 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_o_finish
 
 .cmd_o_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_o_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmdDATABinaryDL:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.W  D0,ESQPARS_ResetArmedFlag
     MOVE.L  D0,D5
@@ -2405,18 +2405,18 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .processCommand_D_Diagnostics:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     PEA     256.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     BSR.W   ESQIFF2_ReadRbfBytesToBuffer
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,ESQIFF_RecordChecksumByte
+    MOVE.B  D0,_ESQIFF_RecordChecksumByte
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     PEA     256.W
@@ -2426,13 +2426,13 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BEQ.S   .cmd_d_finish
 
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_d_finish:
     CLR.W   ESQPARS_ResetArmedFlag
@@ -2457,9 +2457,9 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .processCommand_V_Version:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -2478,7 +2478,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_v_checksum_error
 
@@ -2491,24 +2491,24 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_v_finish
 
 .cmd_v_record_too_long:
-    MOVE.W  ESQIFF_LineErrorCount,D0
+    MOVE.W  _ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_LineErrorCount
+    MOVE.W  D0,_ESQIFF_LineErrorCount
     BRA.S   .cmd_v_finish
 
 .cmd_v_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_v_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_x_font_command:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -2527,7 +2527,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_x_invalid_record
 
@@ -2543,18 +2543,18 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_x_finish
 
 .cmd_x_invalid_record:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_x_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_f_lower_config_record:
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  D0,D6
     MOVE.B  -5(A5),D0
@@ -2572,9 +2572,9 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CMPI.W  #$2328,D1
     BCS.S   .cmd_f_lower_read_config_payload
 
-    MOVE.W  ESQIFF_LineErrorCount,D0
+    MOVE.W  _ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_LineErrorCount
+    MOVE.W  D0,_ESQIFF_LineErrorCount
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_f_lower_read_config_payload:
@@ -2587,11 +2587,11 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     BSR.W   ESQIFF2_ReadRbfBytesToBuffer
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,ESQIFF_RecordChecksumByte
+    MOVE.B  D0,_ESQIFF_RecordChecksumByte
     MOVEQ   #0,D0
     MOVE.B  -6(A5),D0
     MOVEQ   #0,D1
@@ -2603,13 +2603,13 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     16(A7),A7
     MOVE.L  D0,D7
-    MOVE.B  ESQIFF_RecordChecksumByte,D0
+    MOVE.B  _ESQIFF_RecordChecksumByte,D0
     CMP.B   D0,D7
     BNE.S   .cmd_f_lower_checksum_error
 
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.W  ESQIFF_RecordLength,D0
     MOVE.L  D0,-(A7)
@@ -2622,18 +2622,18 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_f_lower_finish
 
 .cmd_f_lower_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmd_f_lower_finish:
     CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_filter_or_banner:
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  D0,D6
     MOVE.B  -5(A5),D0
@@ -2644,9 +2644,9 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CMP.B   D0,D6
     BNE.W   .cmd_g_dispatch_banner_subcommand
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVEA.L ESQIFF_RecordBufferPtr,A0
     MOVE.B  D0,(A0)
@@ -2671,17 +2671,17 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_g_type1_checksum_error
 
     MOVEA.L ESQIFF_RecordBufferPtr,A0
     MOVE.B  (A0),D0
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D1
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D1
     CMP.B   D1,D0
     BNE.S   .cmd_g_apply_secondary_filter
 
-    PEA     LOCAVAIL_PrimaryFilterState
+    PEA     _LOCAVAIL_PrimaryFilterState
     MOVE.L  A0,-(A7)
     JSR     LOCAVAIL_ParseFilterStateFromBuffer(PC)
 
@@ -2689,7 +2689,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BRA.S   .cmd_g_filter_finish
 
 .cmd_g_apply_secondary_filter:
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D1
     CMP.B   D1,D0
     BNE.S   .cmd_g_filter_finish
 
@@ -2700,15 +2700,15 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     ADDQ.W  #8,A7
 
 .cmd_g_filter_finish:
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_type1_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_dispatch_banner_subcommand:
@@ -2717,7 +2717,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D0,-(A7)
     PEA     ESQPARS_BannerSubcommandSet
     ; strchr-style membership test: command byte must be in "23".
-    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -2744,7 +2744,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_g_banner_checksum_error
 
@@ -2756,21 +2756,21 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     JSR     ESQPARS_JMPTBL_DST_HandleBannerCommand32_33(PC)
 
     ADDQ.W  #8,A7
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_banner_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_banner_line_error:
-    MOVE.W  ESQIFF_LineErrorCount,D0
+    MOVE.W  _ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_LineErrorCount
+    MOVE.W  D0,_ESQIFF_LineErrorCount
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_maybe_type_or_options:
@@ -2778,7 +2778,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CMP.B   D0,D6
     BNE.S   .cmd_g_maybe_cmd_options
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -2798,7 +2798,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_g_type5_checksum_error
 
@@ -2806,15 +2806,15 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     JSR     ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_type5_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_maybe_cmd_options:
@@ -2822,7 +2822,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CMP.B   D0,D6
     BNE.S   .cmd_g_maybe_cmd_string
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -2842,7 +2842,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_g_type6_checksum_error
 
@@ -2850,15 +2850,15 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     JSR     GCOMMAND_ParseCommandOptions(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_type6_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_maybe_cmd_string:
@@ -2866,7 +2866,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CMP.B   D0,D6
     BNE.S   .cmd_g_maybe_ppv
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -2886,7 +2886,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_g_type7_checksum_error
 
@@ -2894,15 +2894,15 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     JSR     GCOMMAND_ParseCommandString(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_type7_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
     BRA.S   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_maybe_ppv:
@@ -2910,7 +2910,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CMP.B   D0,D6
     BNE.S   .cmdbyte_clear_preamble_and_finish
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -2930,7 +2930,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  ESQIFF_RecordChecksumByte,D1
+    MOVE.B  _ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .cmd_g_type8_checksum_error
 
@@ -2938,15 +2938,15 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     JSR     GCOMMAND_ParsePPVCommand(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  ESQIFF_ParseAttemptCount,D0
+    MOVE.W  _ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    MOVE.W  D0,_ESQIFF_ParseAttemptCount
     BRA.S   .cmdbyte_clear_preamble_and_finish
 
 .cmd_g_type8_checksum_error:
-    MOVE.W  DATACErrs,D0
+    MOVE.W  _DATACErrs,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
+    MOVE.W  D0,_DATACErrs
 
 .cmdbyte_clear_preamble_and_finish:
     MOVEQ   #0,D0
@@ -2969,7 +2969,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 ; CLOBBERS:
 ;   A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQFUNC_WaitForClockChangeAndServiceUi
+;   _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, _ESQFUNC_WaitForClockChangeAndServiceUi
 ; READS:
 ;   ESQIFF_RecordLength
 ; WRITES:
@@ -2992,9 +2992,9 @@ ESQPARS_ReadLengthWordWithChecksumXor:
     CMP.W   D0,D5
     BGE.S   ESQPARS_ReadLengthWordWithChecksumXor_Return
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  D0,D6
     EOR.B   D6,D7
@@ -3043,9 +3043,9 @@ ESQPARS_ReadLengthWordWithChecksumXor_Return:
 ; CLOBBERS:
 ;   A7
 ; CALLS:
-;   ESQPARS_JMPTBL_DATETIME_SavePairToFile, ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, LOCAVAIL_SaveAvailabilityDataFile, LADFUNC_SaveTextAdsToFile
+;   _ESQPARS_JMPTBL_DATETIME_SavePairToFile, _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, _LOCAVAIL_SaveAvailabilityDataFile, _LADFUNC_SaveTextAdsToFile
 ; READS:
-;   DST_BannerWindowPrimary, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
+;   _DST_BannerWindowPrimary, _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -3055,18 +3055,18 @@ ESQPARS_ReadLengthWordWithChecksumXor_Return:
 ;   Writes both primary/secondary availability states in one call.
 ;------------------------------------------------------------------------------
 ESQPARS_PersistStateDataAfterCommand:
-    JSR     ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(PC)
+    JSR     _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(PC)
 
-    JSR     LADFUNC_SaveTextAdsToFile(PC)
+    JSR     _LADFUNC_SaveTextAdsToFile(PC)
 
-    PEA     DST_BannerWindowPrimary
-    JSR     ESQPARS_JMPTBL_DATETIME_SavePairToFile(PC)
+    PEA     _DST_BannerWindowPrimary
+    JSR     _ESQPARS_JMPTBL_DATETIME_SavePairToFile(PC)
 
     PEA     LOCAVAIL_SecondaryFilterState
-    PEA     LOCAVAIL_PrimaryFilterState
-    JSR     LOCAVAIL_SaveAvailabilityDataFile(PC)
+    PEA     _LOCAVAIL_PrimaryFilterState
+    JSR     _LOCAVAIL_SaveAvailabilityDataFile(PC)
 
-    JSR     ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(PC)
+    JSR     _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(PC)
 
     LEA     12(A7),A7
     RTS
@@ -3074,7 +3074,7 @@ ESQPARS_PersistStateDataAfterCommand:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3092,11 +3092,11 @@ ESQPARS_PersistStateDataAfterCommand:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded:
+_ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded:
     JMP     DISKIO2_FlushDataFilesIfNeeded
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3114,11 +3114,11 @@ ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache:
+_ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache:
     JMP     NEWGRID_RebuildIndexCache
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DATETIME_SavePairToFile   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_DATETIME_SavePairToFile   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3136,7 +3136,7 @@ ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_DATETIME_SavePairToFile:
+_ESQPARS_JMPTBL_DATETIME_SavePairToFile:
     JMP     DATETIME_SavePairToFile
 
 ;------------------------------------------------------------------------------
@@ -3302,7 +3302,7 @@ ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3320,7 +3320,7 @@ ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex:
+_ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex:
     JMP     BRUSH_PlaneMaskForIndex
 
 ;------------------------------------------------------------------------------
@@ -3376,7 +3376,7 @@ ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LOCAVAIL_SaveAvailabilityDataFile
+;   _LOCAVAIL_SaveAvailabilityDataFile
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -3387,10 +3387,10 @@ ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
-    BRA.W   LOCAVAIL_SaveAvailabilityDataFile
+    BRA.W   _LOCAVAIL_SaveAvailabilityDataFile
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3398,7 +3398,7 @@ ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DISPLIB_DisplayTextAtPosition
+;   _DISPLIB_DisplayTextAtPosition
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -3408,8 +3408,8 @@ ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition:
-    JMP     DISPLIB_DisplayTextAtPosition
+_ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition:
+    JMP     _DISPLIB_DisplayTextAtPosition
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile   (Jump-table forwarder)
@@ -3420,7 +3420,7 @@ ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LADFUNC_SaveTextAdsToFile
+;   _LADFUNC_SaveTextAdsToFile
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -3431,10 +3431,10 @@ ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile:
-    BRA.W   LADFUNC_SaveTextAdsToFile
+    BRA.W   _LADFUNC_SaveTextAdsToFile
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3442,7 +3442,7 @@ ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   PARSE_ReadSignedLongSkipClass3_Alt
+;   _PARSE_ReadSignedLongSkipClass3_Alt
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -3452,8 +3452,8 @@ ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
-    JMP     PARSE_ReadSignedLongSkipClass3_Alt
+_ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
+    JMP     _PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer   (Jump-table forwarder)
@@ -3488,7 +3488,7 @@ ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3506,7 +3506,7 @@ ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile:
+_ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile:
     JMP     P_TYPE_WritePromoIdDataFile
 
 ;------------------------------------------------------------------------------
@@ -3642,7 +3642,7 @@ ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
     JMP     CLEANUP_ParseAlignedListingBlock
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3660,7 +3660,7 @@ ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte:
+_ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte:
     JMP     SCRIPT_ReadNextRbfByte
 
 ;------------------------------------------------------------------------------

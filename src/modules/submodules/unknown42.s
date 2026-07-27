@@ -21,7 +21,7 @@
 ; CALLS:
 ;   utility.library CheckDate
 ; READS:
-;   Global_REF_UTILITY_LIBRARY
+;   _Global_REF_UTILITY_LIBRARY
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -34,7 +34,7 @@ CLOCK_CheckDateOrSecondsFromEpoch:
 
     SetOffsetForStack 1
 
-    MOVEA.L Global_REF_UTILITY_LIBRARY,A6
+    MOVEA.L _Global_REF_UTILITY_LIBRARY,A6
     MOVEA.L .stackOffsetBytes+4(A7),A0
     JSR     _LVOCheckDate(A6)
 
@@ -54,7 +54,7 @@ CLOCK_CheckDateOrSecondsFromEpoch:
 ; CALLS:
 ;   utility.library Date2Amiga
 ; READS:
-;   Global_REF_UTILITY_LIBRARY
+;   _Global_REF_UTILITY_LIBRARY
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -65,7 +65,7 @@ CLOCK_CheckDateOrSecondsFromEpoch:
 CLOCK_SecondsFromEpoch:
     MOVE.L  A6,-(A7)
 
-    MOVEA.L Global_REF_UTILITY_LIBRARY,A6
+    MOVEA.L _Global_REF_UTILITY_LIBRARY,A6
     MOVEA.L 8(A7),A0
     JSR     _LVODate2Amiga(A6)
 

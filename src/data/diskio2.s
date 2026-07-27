@@ -36,13 +36,13 @@
     XDEF    Global_STR_DISKIO2_C_20
     XDEF    Global_STR_DISKIO2_C_21
     XDEF    Global_STR_DISKIO2_C_22
-    XDEF    DISKIO2_STR_QTABLE
-    XDEF    DISKIO2_STR_QTableLineBreakAfterHeader
-    XDEF    DISKIO2_STR_QTableEquals
-    XDEF    DISKIO2_STR_QTableValueQuoteOpen
-    XDEF    DISKIO2_STR_QTableValueQuoteClose
-    XDEF    DISKIO2_STR_QTableLineBreakAfterEntry
-    XDEF    Global_STR_DISKIO2_C_23
+    XDEF    _DISKIO2_STR_QTABLE
+    XDEF    _DISKIO2_STR_QTableLineBreakAfterHeader
+    XDEF    _DISKIO2_STR_QTableEquals
+    XDEF    _DISKIO2_STR_QTableValueQuoteOpen
+    XDEF    _DISKIO2_STR_QTableValueQuoteClose
+    XDEF    _DISKIO2_STR_QTableLineBreakAfterEntry
+    XDEF    _Global_STR_DISKIO2_C_23
     XDEF    Global_STR_SPECIAL_NGAD
     XDEF    Global_STR_RAM
     XDEF    Global_STR_FILENAME
@@ -61,7 +61,7 @@
     XDEF    DISKIO2_TransferCrc32Table
     XDEF    DISKIO2_FlushDataFilesGuardFlag
     XDEF    Global_JMPTBL_HALF_HOURS_12_HR_FMT
-    XDEF    Global_JMPTBL_HALF_HOURS_24_HR_FMT
+    XDEF    _Global_JMPTBL_HALF_HOURS_24_HR_FMT
     XDEF    DISPLIB_STR_InlineAlignPadCharCenter
     XDEF    DISPLIB_STR_InlineAlignPadCharRight
 ; ========== DISKIO2.c ==========
@@ -142,19 +142,19 @@ Global_STR_DISKIO2_C_21:
     NStr    "DISKIO2.c"
 Global_STR_DISKIO2_C_22:
     NStr    "DISKIO2.c"
-DISKIO2_STR_QTABLE:
+_DISKIO2_STR_QTABLE:
     NStr    "[Qtable]"
-DISKIO2_STR_QTableLineBreakAfterHeader:
+_DISKIO2_STR_QTableLineBreakAfterHeader:
     NStr2   TextCarriageReturn,TextLineFeed
-DISKIO2_STR_QTableEquals:
+_DISKIO2_STR_QTableEquals:
     NStr    "="
-DISKIO2_STR_QTableValueQuoteOpen:
+_DISKIO2_STR_QTableValueQuoteOpen:
     NStr    """" ; escaped quote
-DISKIO2_STR_QTableValueQuoteClose:
+_DISKIO2_STR_QTableValueQuoteClose:
     NStr    """" ; escaped quote
-DISKIO2_STR_QTableLineBreakAfterEntry:
+_DISKIO2_STR_QTableLineBreakAfterEntry:
     NStr2   TextCarriageReturn,TextLineFeed
-Global_STR_DISKIO2_C_23:
+_Global_STR_DISKIO2_C_23:
     NStr    "DISKIO2.c"
 Global_STR_SPECIAL_NGAD:
     NStr    "Special NGAD"
@@ -389,7 +389,7 @@ Global_JMPTBL_HALF_HOURS_12_HR_FMT:
 ; SYM: CLOCK_HalfHourLabelEmpty24Hr   (half-hour 24h table slot-0 empty label)
 ; TYPE: u16 (NUL string sentinel)
 ; PURPOSE: Empty string entry at table index 0 for 24-hour half-hour labels.
-; USED BY: Global_JMPTBL_HALF_HOURS_24_HR_FMT
+; USED BY: _Global_JMPTBL_HALF_HOURS_24_HR_FMT
 ; NOTES: Keeps 1-based half-hour index lookups from requiring a pointer adjustment.
 ;------------------------------------------------------------------------------
 CLOCK_HalfHourLabelEmpty24Hr:
@@ -490,7 +490,7 @@ DISKIO2_STR_4_COLON_00:
     NStr    " 4:00"
 DISKIO2_STR_4_COLON_30:
     NStr    " 4:30"
-Global_JMPTBL_HALF_HOURS_24_HR_FMT:
+_Global_JMPTBL_HALF_HOURS_24_HR_FMT:
     DC.L    CLOCK_HalfHourLabelEmpty24Hr
     DC.L    DISKIO2_STR_5_COLON_00
     DC.L    DISKIO2_STR_5_COLON_30

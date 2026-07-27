@@ -1,45 +1,45 @@
-    XDEF    NEWGRID2_DispatchGridOperation
+    XDEF    _NEWGRID2_DispatchGridOperation
     XDEF    NEWGRID2_DispatchOperationDefault
     XDEF    NEWGRID2_EnsureBuffersAllocated
-    XDEF    NEWGRID2_FreeBuffersIfAllocated
+    XDEF    _NEWGRID2_FreeBuffersIfAllocated
     XDEF    NEWGRID2_HandleGridState
     XDEF    NEWGRID2_ProcessGridState
-    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop
-    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
+    XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop
+    XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
     XDEF    NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame
     XDEF    NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
     XDEF    NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel
-    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair
-    XDEF    NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry
-    XDEF    NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1
-    XDEF    NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes
+    XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair
+    XDEF    _NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry
+    XDEF    _NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1
+    XDEF    _NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes
     XDEF    NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState
     XDEF    NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant
-    XDEF    NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer
+    XDEF    _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer
     XDEF    NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource
     XDEF    NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths
     XDEF    NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
     XDEF    NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount
     XDEF    NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer
     XDEF    NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines
     XDEF    NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine
     XDEF    NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
-    XDEF    NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
-    XDEF    NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
-    XDEF    NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
+    XDEF    _NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
+    XDEF    _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
+    XDEF    _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode
     XDEF    NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2
-    XDEF    NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
+    XDEF    _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
     XDEF    NEWGRID2_JMPTBL_ESQ_TestBit1Based
     XDEF    NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
     XDEF    NEWGRID2_JMPTBL_STRING_AppendN
-    XDEF    NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex
-    XDEF    NEWGRID2_JMPTBL_STR_SkipClass3Chars
+    XDEF    _NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex
+    XDEF    _NEWGRID2_JMPTBL_STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_ProcessGridState   (Process grid state machine)
@@ -52,9 +52,9 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams, NEWGRID_TestPrimeTimeWindow, NEWGRID_DrawGridEntry, SCRIPT_JMPTBL_MEMORY_AllocateMemory,
-;   NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, NEWGRID_AppendShowtimesForRow, NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer,
-;   SCRIPT_JMPTBL_MEMORY_DeallocateMemory, NEWGRID_DrawGridFrameVariant4, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
+;   _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams, NEWGRID_TestPrimeTimeWindow, NEWGRID_DrawGridEntry, _SCRIPT_JMPTBL_MEMORY_AllocateMemory,
+;   NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, NEWGRID_AppendShowtimesForRow, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer,
+;   _SCRIPT_JMPTBL_MEMORY_DeallocateMemory, NEWGRID_DrawGridFrameVariant4, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
 ; READS:
 ;   NEWGRID_RenderStateLatch, NEWGRID_PrimeTimeLayoutEnable
 ; WRITES:
@@ -102,7 +102,7 @@ NEWGRID2_ProcessGridState:
     PEA     1.W
     PEA     20.W
     PEA     612.W
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     12(A7),A7
     MOVE.W  20(A2),D6                      ; A2+20 = row/slot index
@@ -163,7 +163,7 @@ NEWGRID2_ProcessGridState:
     PEA     2000.W
     PEA     3947.W
     PEA     Global_STR_NEWGRID2_C_1
-    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-6(A5)
@@ -181,13 +181,13 @@ NEWGRID2_ProcessGridState:
     LEA     60(A3),A0
     MOVE.L  -6(A5),(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     PEA     2000.W
     MOVE.L  -6(A5),-(A7)
     PEA     3953.W
     PEA     Global_STR_NEWGRID2_C_2
-    JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     36(A7),A7
 
@@ -387,7 +387,7 @@ NEWGRID2_HandleGridState:
 
     PEA     50.W
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_ValidateSelectionCode
+    BSR.W   _NEWGRID_ValidateSelectionCode
 
     BSR.W   _NEWGRID_GetGridModeIndex
 
@@ -431,7 +431,7 @@ NEWGRID2_HandleGridState:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_DispatchGridOperation   (Dispatch grid operation)
+; FUNC: _NEWGRID2_DispatchGridOperation   (Dispatch grid operation)
 ; ARGS:
 ;   stack +4: D7 = operation id (1..7)
 ;   stack +8: A3 = grid/context pointer (optional)
@@ -446,7 +446,7 @@ NEWGRID2_HandleGridState:
 ; READS:
 ;   ESQDISP_PendingGridReinitFlag, NEWGRID2_PendingOperationId
 ; WRITES:
-;   NEWGRID_GridOperationId, NEWGRID2_PendingOperationId, NEWGRID2_LastDispatchResult
+;   _NEWGRID_GridOperationId, NEWGRID2_PendingOperationId, NEWGRID2_LastDispatchResult
 ; DESC:
 ;   Dispatches a grid operation by index using a switch/jumptable.
 ; NOTES:
@@ -456,7 +456,7 @@ NEWGRID2_HandleGridState:
 ;   `1=selection`, `2=alt-entry`, `3/4=grid-state`, `5=secondary`,
 ;   `6=schedule`, `7=showtimes`.
 ;------------------------------------------------------------------------------
-NEWGRID2_DispatchGridOperation:
+_NEWGRID2_DispatchGridOperation:
     MOVEM.L D5-D7/A3,-(A7)
     MOVE.L  20(A7),D7
     MOVEA.L 24(A7),A3
@@ -481,7 +481,7 @@ NEWGRID2_DispatchGridOperation:
     SUBA.L  A3,A3
 
 .dispatch_operation:
-    MOVE.L  D7,NEWGRID_GridOperationId      ; current operation id (1..7)
+    MOVE.L  D7,_NEWGRID_GridOperationId      ; current operation id (1..7)
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     BLT.W   .operation_out_of_range
@@ -593,7 +593,7 @@ NEWGRID2_DispatchGridOperation:
     BRA.S   .return_success_bool
 
 .operation_out_of_range:
-    CLR.L   NEWGRID_GridOperationId
+    CLR.L   _NEWGRID_GridOperationId
 
 .return_success_bool:
     TST.L   NEWGRID2_LastDispatchResult
@@ -616,7 +616,7 @@ NEWGRID2_DispatchGridOperation:
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   NEWGRID2_DispatchGridOperation
+;   _NEWGRID2_DispatchGridOperation
 ; DESC:
 ;   Dispatches the grid operation with zeroed inputs.
 ;------------------------------------------------------------------------------
@@ -626,7 +626,7 @@ NEWGRID2_DispatchOperationDefault:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   NEWGRID2_DispatchGridOperation
+    BSR.W   _NEWGRID2_DispatchGridOperation
 
     LEA     16(A7),A7
     RTS
@@ -642,11 +642,11 @@ NEWGRID2_DispatchOperationDefault:
 ; CLOBBERS:
 ;   D0-D1/A0-A1
 ; CALLS:
-;   SCRIPT_JMPTBL_MEMORY_AllocateMemory, NEWGRID_RebuildIndexCache
+;   _SCRIPT_JMPTBL_MEMORY_AllocateMemory, NEWGRID_RebuildIndexCache
 ; READS:
 ;   NEWGRID2_BufferAllocationFlag
 ; WRITES:
-;   NEWGRID_SecondaryIndexCachePtr, NEWGRID_EntryTextScratchPtr, NEWGRID2_BufferAllocationFlag
+;   _NEWGRID_SecondaryIndexCachePtr, _NEWGRID_EntryTextScratchPtr, NEWGRID2_BufferAllocationFlag
 ; DESC:
 ;   Allocates the grid backing buffers when the request flag is set.
 ; NOTES:
@@ -661,9 +661,9 @@ NEWGRID2_EnsureBuffersAllocated:
     PEA     1208.W
     PEA     4153.W
     PEA     Global_STR_NEWGRID2_C_3
-    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
-    MOVE.L  D0,NEWGRID_SecondaryIndexCachePtr
+    MOVE.L  D0,_NEWGRID_SecondaryIndexCachePtr
     ; Rebuild secondary index cache immediately after allocation.
     BSR.W   NEWGRID_RebuildIndexCache
 
@@ -671,11 +671,11 @@ NEWGRID2_EnsureBuffersAllocated:
     PEA     1000.W
     PEA     4156.W
     PEA     Global_STR_NEWGRID2_C_4
-    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     CLR.L   NEWGRID2_BufferAllocationFlag
-    MOVE.L  D0,NEWGRID_EntryTextScratchPtr
+    MOVE.L  D0,_NEWGRID_EntryTextScratchPtr
 
 .buffers_already_ready:
     RTS
@@ -683,7 +683,7 @@ NEWGRID2_EnsureBuffersAllocated:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_FreeBuffersIfAllocated   (Free grid buffers)
+; FUNC: _NEWGRID2_FreeBuffersIfAllocated   (Free grid buffers)
 ; ARGS:
 ;   none
 ; RET:
@@ -691,35 +691,35 @@ NEWGRID2_EnsureBuffersAllocated:
 ; CLOBBERS:
 ;   D0-D1/A0-A1
 ; CALLS:
-;   SCRIPT_JMPTBL_MEMORY_DeallocateMemory
+;   _SCRIPT_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   NEWGRID_EntryTextScratchPtr, NEWGRID_SecondaryIndexCachePtr
+;   _NEWGRID_EntryTextScratchPtr, _NEWGRID_SecondaryIndexCachePtr
 ; WRITES:
-;   NEWGRID_EntryTextScratchPtr, NEWGRID_SecondaryIndexCachePtr
+;   _NEWGRID_EntryTextScratchPtr, _NEWGRID_SecondaryIndexCachePtr
 ; DESC:
 ;   Frees any allocated grid buffers and clears stored pointers.
 ; NOTES:
-;   Uses NEWGRID_EntryTextScratchPtr as the gate before freeing both buffers.
+;   Uses _NEWGRID_EntryTextScratchPtr as the gate before freeing both buffers.
 ;------------------------------------------------------------------------------
-NEWGRID2_FreeBuffersIfAllocated:
-    TST.L   NEWGRID_EntryTextScratchPtr
+_NEWGRID2_FreeBuffersIfAllocated:
+    TST.L   _NEWGRID_EntryTextScratchPtr
     BEQ.S   .buffers_already_freed
 
     PEA     1000.W
-    MOVE.L  NEWGRID_EntryTextScratchPtr,-(A7)
+    MOVE.L  _NEWGRID_EntryTextScratchPtr,-(A7)
     PEA     4164.W
-    PEA     Global_STR_NEWGRID2_C_5
-    JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_NEWGRID2_C_5
+    JSR     _SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
-    CLR.L   NEWGRID_EntryTextScratchPtr
+    CLR.L   _NEWGRID_EntryTextScratchPtr
     PEA     1208.W
-    MOVE.L  NEWGRID_SecondaryIndexCachePtr,-(A7)
+    MOVE.L  _NEWGRID_SecondaryIndexCachePtr,-(A7)
     PEA     4167.W
     PEA     Global_STR_NEWGRID2_C_6
-    JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7
-    CLR.L   NEWGRID_SecondaryIndexCachePtr
+    CLR.L   _NEWGRID_SecondaryIndexCachePtr
 
 .buffers_already_freed:
     RTS
@@ -731,7 +731,7 @@ NEWGRID2_FreeBuffersIfAllocated:
 ; Arguments/return values pass through unchanged unless noted in each header.
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -743,7 +743,7 @@ NEWGRID2_FreeBuffersIfAllocated:
 ; DESC:
 ;   Jump table entry that forwards to COI_SelectAnimFieldPointer.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer:
+_NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer:
     JMP     COI_SelectAnimFieldPointer
 
 ;------------------------------------------------------------------------------
@@ -763,7 +763,7 @@ NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex:
     JMP     _DISPTEXT_SetCurrentLineIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -771,12 +771,12 @@ NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   DISPTEXT_LayoutAndAppendToBuffer
+;   _DISPTEXT_LayoutAndAppendToBuffer
 ; DESC:
-;   Jump table entry that forwards to DISPTEXT_LayoutAndAppendToBuffer.
+;   Jump table entry that forwards to _DISPTEXT_LayoutAndAppendToBuffer.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer:
-    JMP     DISPTEXT_LayoutAndAppendToBuffer
+_NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer:
+    JMP     _DISPTEXT_LayoutAndAppendToBuffer
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount   (Jump stub)
@@ -803,7 +803,7 @@ NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -815,11 +815,11 @@ NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount:
 ; DESC:
 ;   Jump table entry that forwards to TLIBA_FindFirstWildcardMatchIndex.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
+_NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
     BRA.W   TLIBA_FindFirstWildcardMatchIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -831,7 +831,7 @@ NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
 ; DESC:
 ;   Jump table entry that forwards to DISPTEXT_BuildLayoutForSource.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource:
+_NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource:
     JMP     DISPTEXT_BuildLayoutForSource
 
 ;!======
@@ -843,7 +843,7 @@ NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -851,15 +851,15 @@ NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   BEVEL_DrawBevelFrameWithTopRight
+;   _BEVEL_DrawBevelFrameWithTopRight
 ; DESC:
-;   Jump table entry that forwards to BEVEL_DrawBevelFrameWithTopRight.
+;   Jump table entry that forwards to _BEVEL_DrawBevelFrameWithTopRight.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight:
-    JMP     BEVEL_DrawBevelFrameWithTopRight
+_NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight:
+    JMP     _BEVEL_DrawBevelFrameWithTopRight
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -871,7 +871,7 @@ NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight:
 ; DESC:
 ;   Jump table entry that forwards to ESQDISP_GetEntryAuxPointerByMode.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
+_NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
     JMP     ESQDISP_GetEntryAuxPointerByMode
 
 ;------------------------------------------------------------------------------
@@ -907,7 +907,7 @@ NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines:
     JMP     DISPTEXT_LayoutSourceToLines
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -919,7 +919,7 @@ NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines:
 ; DESC:
 ;   Jump table entry that forwards to CLEANUP_UpdateEntryFlagBytes.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes:
+_NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes:
     JMP     CLEANUP_UpdateEntryFlagBytes
 
 ;------------------------------------------------------------------------------
@@ -971,7 +971,7 @@ NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount:
     JMP     DISPTEXT_ComputeVisibleLineCount
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -983,11 +983,11 @@ NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount:
 ; DESC:
 ;   Jump table entry that forwards to ESQDISP_GetEntryPointerByMode.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode:
+_NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode:
     JMP     ESQDISP_GetEntryPointerByMode
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -999,7 +999,7 @@ NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode:
 ; DESC:
 ;   Jump table entry that forwards to DISPTEXT_RenderCurrentLine.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine:
+_NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine:
     JMP     DISPTEXT_RenderCurrentLine
 
 ;------------------------------------------------------------------------------
@@ -1019,7 +1019,7 @@ NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState:
     JMP     COI_ProcessEntrySelectionState
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -1031,11 +1031,11 @@ NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState:
 ; DESC:
 ;   Jump table entry that forwards to CLEANUP_FormatClockFormatEntry.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry:
+_NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry:
     JMP     CLEANUP_FormatClockFormatEntry
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -1047,11 +1047,11 @@ NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry:
 ; DESC:
 ;   Jump table entry that forwards to BEVEL_DrawBevelFrameWithTop.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop:
+_NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop:
     JMP     BEVEL_DrawBevelFrameWithTop
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -1063,11 +1063,11 @@ NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop:
 ; DESC:
 ;   Jump table entry that forwards to ESQ_GetHalfHourSlotIndex.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex:
+_NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex:
     JMP     ESQ_GetHalfHourSlotIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_STR_SkipClass3Chars   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_STR_SkipClass3Chars   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -1079,7 +1079,7 @@ NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex:
 ; DESC:
 ;   Jump table entry that forwards to STR_SkipClass3Chars.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_STR_SkipClass3Chars:
+_NEWGRID2_JMPTBL_STR_SkipClass3Chars:
     JMP     STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
@@ -1099,7 +1099,7 @@ NEWGRID2_JMPTBL_STRING_AppendN:
     JMP     STRING_AppendN
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -1111,7 +1111,7 @@ NEWGRID2_JMPTBL_STRING_AppendN:
 ; DESC:
 ;   Jump table entry that forwards to ESQDISP_ComputeScheduleOffsetForRow.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow:
+_NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow:
     JMP     ESQDISP_ComputeScheduleOffsetForRow
 
 ;------------------------------------------------------------------------------
@@ -1123,15 +1123,15 @@ NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   PARSE_ReadSignedLongSkipClass3_Alt
+;   _PARSE_ReadSignedLongSkipClass3_Alt
 ; DESC:
-;   Jump table entry that forwards to PARSE_ReadSignedLongSkipClass3_Alt.
+;   Jump table entry that forwards to _PARSE_ReadSignedLongSkipClass3_Alt.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
-    JMP     PARSE_ReadSignedLongSkipClass3_Alt
+    JMP     _PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -1143,11 +1143,11 @@ NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
 ; DESC:
 ;   Jump table entry that forwards to CLEANUP_TestEntryFlagYAndBit1.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1:
+_NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1:
     JMP     CLEANUP_TestEntryFlagYAndBit1
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -1159,11 +1159,11 @@ NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1:
 ; DESC:
 ;   Jump table entry that forwards to DISPTEXT_IsCurrentLineLast.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast:
+_NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast:
     JMP     DISPTEXT_IsCurrentLineLast
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -1175,7 +1175,7 @@ NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast:
 ; DESC:
 ;   Jump table entry that forwards to DISPTEXT_IsLastLineSelected.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected:
+_NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected:
     JMP     DISPTEXT_IsLastLineSelected
 
 ;------------------------------------------------------------------------------
@@ -1243,7 +1243,7 @@ NEWGRID2_JMPTBL_ESQ_TestBit1Based:
     JMP     ESQ_TestBit1Based
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -1251,12 +1251,12 @@ NEWGRID2_JMPTBL_ESQ_TestBit1Based:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   BEVEL_DrawVerticalBevelPair
+;   _BEVEL_DrawVerticalBevelPair
 ; DESC:
-;   Jump table entry that forwards to BEVEL_DrawVerticalBevelPair.
+;   Jump table entry that forwards to _BEVEL_DrawVerticalBevelPair.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair:
-    JMP     BEVEL_DrawVerticalBevelPair
+_NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair:
+    JMP     _BEVEL_DrawVerticalBevelPair
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength   (Jump stub)
@@ -1275,7 +1275,7 @@ NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength:
     JMP     DISPTEXT_MeasureCurrentLineLength
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -1287,7 +1287,7 @@ NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength:
 ; DESC:
 ;   Jump table entry that forwards to DISPTEXT_SetLayoutParams.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams:
+_NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams:
     JMP     DISPTEXT_SetLayoutParams
 
 ;------------------------------------------------------------------------------
@@ -1315,12 +1315,12 @@ NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   BEVEL_DrawHorizontalBevel
+;   _BEVEL_DrawHorizontalBevel
 ; DESC:
-;   Jump table entry that forwards to BEVEL_DrawHorizontalBevel.
+;   Jump table entry that forwards to _BEVEL_DrawHorizontalBevel.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel:
-    JMP     BEVEL_DrawHorizontalBevel
+    JMP     _BEVEL_DrawHorizontalBevel
 
 ;!======
 

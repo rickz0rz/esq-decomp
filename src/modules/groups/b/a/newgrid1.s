@@ -3,8 +3,8 @@
     XDEF    NEWGRID_DrawGridCell
     XDEF    NEWGRID_DrawGridCellText
     XDEF    NEWGRID_ResetRowTable
-    XDEF    NEWGRID_SetRowColor
-    XDEF    NEWGRID_ValidateSelectionCode
+    XDEF    _NEWGRID_SetRowColor
+    XDEF    _NEWGRID_ValidateSelectionCode
 
 
 ;------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ NEWGRID_ResetRowTable:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_SetRowColor   (Set row color slot)
+; FUNC: _NEWGRID_SetRowColor   (Set row color slot)
 ; ARGS:
 ;   stack +8: A3 = grid struct
 ;   stack +12: D7 = selector (0..3)
@@ -72,7 +72,7 @@ NEWGRID_ResetRowTable:
 ; NOTES:
 ;   Out-of-range color defaults to 7.
 ;------------------------------------------------------------------------------
-NEWGRID_SetRowColor:
+_NEWGRID_SetRowColor:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.W  26(A7),D7
@@ -137,7 +137,7 @@ NEWGRID_SetRowColor:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_ValidateSelectionCode   (Validate selection code against flags)
+; FUNC: _NEWGRID_ValidateSelectionCode   (Validate selection code against flags)
 ; ARGS:
 ;   stack +8: A3 = grid struct
 ;   stack +12: D7 = selection code
@@ -148,9 +148,9 @@ NEWGRID_SetRowColor:
 ; CALLS:
 ;   none
 ; READS:
-;   CONFIG_NewgridSelectionCode16EnabledFlag, CONFIG_NewgridSelectionCode32EnabledFlag, CONFIG_NewgridSelectionCode34PrimaryEnabledFlag,
-;   CONFIG_NewgridSelectionCode34AltEnabledFlag, CONFIG_NewgridSelectionCode35EnabledFlag, CONFIG_NewgridSelectionCode48_49EnabledFlag,
-;   GCOMMAND_DigitalNicheEnabledFlag
+;   CONFIG_NewgridSelectionCode16EnabledFlag, CONFIG_NewgridSelectionCode32EnabledFlag, _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag,
+;   _CONFIG_NewgridSelectionCode34AltEnabledFlag, CONFIG_NewgridSelectionCode35EnabledFlag, CONFIG_NewgridSelectionCode48_49EnabledFlag,
+;   _GCOMMAND_DigitalNicheEnabledFlag
 ; WRITES:
 ;   54(A3)
 ; DESC:
@@ -159,7 +159,7 @@ NEWGRID_SetRowColor:
 ; NOTES:
 ;   Long chain of comparisons over coded ranges.
 ;------------------------------------------------------------------------------
-NEWGRID_ValidateSelectionCode:
+_NEWGRID_ValidateSelectionCode:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVE.L  16(A7),D7
@@ -260,7 +260,7 @@ NEWGRID_ValidateSelectionCode:
     BRA.W   .return_selection_validation
 
 .case_33:
-    MOVE.B  GCOMMAND_DigitalNicheEnabledFlag,D0
+    MOVE.B  _GCOMMAND_DigitalNicheEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .return_selection_validation
@@ -275,7 +275,7 @@ NEWGRID_ValidateSelectionCode:
     CMP.B   D1,D0
     BNE.W   .return_selection_validation
 
-    MOVE.B  GCOMMAND_DigitalNicheEnabledFlag,D0
+    MOVE.B  _GCOMMAND_DigitalNicheEnabledFlag,D0
     CMP.B   D1,D0
     BNE.S   .return_selection_validation
 
@@ -284,12 +284,12 @@ NEWGRID_ValidateSelectionCode:
     BRA.S   .return_selection_validation
 
 .case_34:
-    MOVE.B  CONFIG_NewgridSelectionCode34PrimaryEnabledFlag,D0
+    MOVE.B  _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BEQ.S   .case_34_alt
 
-    MOVE.B  CONFIG_NewgridSelectionCode34AltEnabledFlag,D0
+    MOVE.B  _CONFIG_NewgridSelectionCode34AltEnabledFlag,D0
     CMP.B   D1,D0
     BNE.S   .return_selection_validation
 
@@ -309,7 +309,7 @@ NEWGRID_ValidateSelectionCode:
     BRA.S   .return_selection_validation
 
 .case_36:
-    MOVE.B  GCOMMAND_DigitalMplexEnabledFlag,D0
+    MOVE.B  _GCOMMAND_DigitalMplexEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .return_selection_validation
@@ -319,7 +319,7 @@ NEWGRID_ValidateSelectionCode:
     BRA.S   .return_selection_validation
 
 .case_37:
-    MOVE.B  GCOMMAND_DigitalPpvEnabledFlag,D0
+    MOVE.B  _GCOMMAND_DigitalPpvEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .return_selection_validation
@@ -365,14 +365,14 @@ NEWGRID_ValidateSelectionCode:
 ;   PARSEINI_JMPTBL_STRING_AppendAtNull, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength,
 ;   _LVOMove, _LVOText
 ; READS:
-;   NEWGRID_SampleTimeTextWidthPx, NEWGRID_RowHeightPx, NEWGRID_GridOperationId,
-;   GCOMMAND_NicheTextPen, CTASKS_STR_C
+;   NEWGRID_SampleTimeTextWidthPx, _NEWGRID_RowHeightPx, _NEWGRID_GridOperationId,
+;   _GCOMMAND_NicheTextPen, CTASKS_STR_C
 ; WRITES:
 ;   local temp strings (-26(A5))
 ; DESC:
 ;   Draws up to two strings centered within a grid cell, handling RAVESC markers.
 ; NOTES:
-;   Uses NEWGRID_GridOperationId/CTASKS_STR_C to alter pen/centering behavior.
+;   Uses _NEWGRID_GridOperationId/CTASKS_STR_C to alter pen/centering behavior.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawGridCellText:
     LINK.W  A5,#-36
@@ -417,7 +417,7 @@ NEWGRID_DrawGridCellText:
     MOVEQ   #42,D1
     ADD.L   D1,D5
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     MOVE.L  D0,D1
     TST.L   D1
     BPL.S   .round_width_half
@@ -510,11 +510,11 @@ NEWGRID_DrawGridCellText:
     ADD.L   D2,D1
     MOVEM.L D1,-16(A5)
     MOVEQ   #5,D0
-    CMP.L   NEWGRID_GridOperationId,D0
+    CMP.L   _NEWGRID_GridOperationId,D0
     BNE.S   .use_alt_pen
 
     MOVEA.L A3,A1
-    MOVE.L  GCOMMAND_NicheTextPen,D0
+    MOVE.L  _GCOMMAND_NicheTextPen,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
@@ -699,9 +699,9 @@ NEWGRID_DrawGridCellText:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID2_JMPTBL_STR_SkipClass3Chars, NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, NEWGRID_DrawGridCellText
+;   _NEWGRID2_JMPTBL_STR_SkipClass3Chars, NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, NEWGRID_DrawGridCellText
 ; READS:
-;   NEWGRID_ColumnStartXPx, NEWGRID_RowHeightPx
+;   _NEWGRID_ColumnStartXPx, _NEWGRID_RowHeightPx
 ; WRITES:
 ;   none
 ; DESC:
@@ -720,11 +720,11 @@ NEWGRID_DrawGridCell:
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
     MOVE.L  A1,-8(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVE.L  -8(A5),(A7)
     MOVE.L  D0,-4(A5)
-    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
@@ -733,11 +733,11 @@ NEWGRID_DrawGridCell:
     BNE.S   .draw_alternate_frame
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
     MOVEQ   #35,D1
     ADD.L   D1,D0
     MOVEQ   #0,D1
-    MOVE.W  NEWGRID_RowHeightPx,D1
+    MOVE.W  _NEWGRID_RowHeightPx,D1
     SUBQ.L  #1,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -752,11 +752,11 @@ NEWGRID_DrawGridCell:
 
 .draw_alternate_frame:
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_ColumnStartXPx,D0
+    MOVE.W  _NEWGRID_ColumnStartXPx,D0
     MOVEQ   #35,D1
     ADD.L   D1,D0
     MOVEQ   #0,D1
-    MOVE.W  NEWGRID_RowHeightPx,D1
+    MOVE.W  _NEWGRID_RowHeightPx,D1
     SUBQ.L  #1,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -764,7 +764,7 @@ NEWGRID_DrawGridCell:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
+    JSR     _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     20(A7),A7
 
@@ -792,9 +792,9 @@ NEWGRID_DrawGridCell:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   PARSEINI_JMPTBL_STR_FindCharPtr, NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
+;   _PARSEINI_JMPTBL_STR_FindCharPtr, _NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
 ; READS:
-;   Global_REF_STR_USE_24_HR_CLOCK, Global_JMPTBL_HALF_HOURS_24_HR_FMT
+;   _Global_REF_STR_USE_24_HR_CLOCK, _Global_JMPTBL_HALF_HOURS_24_HR_FMT
 ; WRITES:
 ;   A3 string contents
 ; DESC:
@@ -808,7 +808,7 @@ NEWGRID_Apply24HourFormatting:
     MOVEA.L 8(A5),A3
     MOVE.W  14(A5),D7
     MOVE.B  19(A5),D6
-    MOVE.B  Global_REF_STR_USE_24_HR_CLOCK,D0
+    MOVE.B  _Global_REF_STR_USE_24_HR_CLOCK,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .done
@@ -818,7 +818,7 @@ NEWGRID_Apply24HourFormatting:
 
     PEA     40.W
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -836,12 +836,12 @@ NEWGRID_Apply24HourFormatting:
     MOVE.B  D6,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(PC)
 
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     Global_JMPTBL_HALF_HOURS_24_HR_FMT,A0
+    LEA     _Global_JMPTBL_HALF_HOURS_24_HR_FMT,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     MOVE.B  (A1),D0
@@ -853,13 +853,13 @@ NEWGRID_Apply24HourFormatting:
     MOVE.B  D6,D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     Global_JMPTBL_HALF_HOURS_24_HR_FMT,A0
+    LEA     _Global_JMPTBL_HALF_HOURS_24_HR_FMT,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     ADDQ.L  #1,A1
@@ -885,7 +885,7 @@ NEWGRID_Apply24HourFormatting:
 ; CALLS:
 ;   NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   NEWGRID_RowHeightPx, 52(A3), 54(A3)
+;   _NEWGRID_RowHeightPx, 52(A3), 54(A3)
 ; WRITES:
 ;   none
 ; DESC:
@@ -902,7 +902,7 @@ NEWGRID_ComputeColumnIndex:
     BCC.S   .done
 
     MOVEQ   #0,D0
-    MOVE.W  NEWGRID_RowHeightPx,D0
+    MOVE.W  _NEWGRID_RowHeightPx,D0
     TST.L   D0
     BPL.S   .center
 

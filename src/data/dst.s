@@ -1,13 +1,13 @@
     XDEF    DST_DefaultDatPathPtr
-    XDEF    DST_FMT_PCT_C_InTimePrefixChar
-    XDEF    DST_FMT_PCT_04D_PCT_03D_InTimeDateCode
-    XDEF    DST_FMT_PCT_02D_COLON_PCT_02D_InTimeClock
-    XDEF    DST_STR_NO_IN_TIME
-    XDEF    DST_FMT_PCT_C_OutTimePrefixChar
-    XDEF    DST_FMT_PCT_04D_PCT_03D_OutTimeDateCode
-    XDEF    DST_FMT_PCT_02D_COLON_PCT_02D_OutTimeClock
-    XDEF    DST_STR_NO_OUT_TIME
-    XDEF    DST_STR_NO_DST_DATA
+    XDEF    _DST_FMT_PCT_C_InTimePrefixChar
+    XDEF    _DST_FMT_PCT_04D_PCT_03D_InTimeDateCode
+    XDEF    _DST_FMT_PCT_02D_COLON_PCT_02D_InTimeClock
+    XDEF    _DST_STR_NO_IN_TIME
+    XDEF    _DST_FMT_PCT_C_OutTimePrefixChar
+    XDEF    _DST_FMT_PCT_04D_PCT_03D_OutTimeDateCode
+    XDEF    _DST_FMT_PCT_02D_COLON_PCT_02D_OutTimeClock
+    XDEF    _DST_STR_NO_OUT_TIME
+    XDEF    _DST_STR_NO_DST_DATA
     XDEF    DST_STR_G2_COLON
     XDEF    DST_STR_G3_COLON
     XDEF    Global_STR_DST_C_1
@@ -19,12 +19,12 @@
     XDEF    Global_STR_G2
     XDEF    Global_STR_G3
     XDEF    Global_STR_DST_C_7
-    XDEF    DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_
-    XDEF    DST_TAG_PM
+    XDEF    _DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_
+    XDEF    _DST_TAG_PM
     XDEF    DST_TAG_AM
-    XDEF    DST_TAG_DST
+    XDEF    _DST_TAG_DST
     XDEF    DST_TAG_STD
-    XDEF    DST_STR_LEAP_YEAR
+    XDEF    _DST_STR_LEAP_YEAR
     XDEF    DST_STR_NORM_YEAR
     XDEF    _ED_MenuStateId
     XDEF    ED_MenuDispatchReentryGuard
@@ -34,23 +34,23 @@ DST_PATH_DF0_COLON_DST_DOT_DAT:
     NStr    "df0:dst.dat"
 DST_DefaultDatPathPtr:
     DC.L    DST_PATH_DF0_COLON_DST_DOT_DAT
-DST_FMT_PCT_C_InTimePrefixChar:
+_DST_FMT_PCT_C_InTimePrefixChar:
     NStr    "%c"
-DST_FMT_PCT_04D_PCT_03D_InTimeDateCode:
+_DST_FMT_PCT_04D_PCT_03D_InTimeDateCode:
     NStr    "%04d%03d"
-DST_FMT_PCT_02D_COLON_PCT_02D_InTimeClock:
+_DST_FMT_PCT_02D_COLON_PCT_02D_InTimeClock:
     NStr    "%02d:%02d"
-DST_STR_NO_IN_TIME:
+_DST_STR_NO_IN_TIME:
     NStr    " NO IN TIME "
-DST_FMT_PCT_C_OutTimePrefixChar:
+_DST_FMT_PCT_C_OutTimePrefixChar:
     NStr    "%c"
-DST_FMT_PCT_04D_PCT_03D_OutTimeDateCode:
+_DST_FMT_PCT_04D_PCT_03D_OutTimeDateCode:
     NStr    "%04d%03d"
-DST_FMT_PCT_02D_COLON_PCT_02D_OutTimeClock:
+_DST_FMT_PCT_02D_COLON_PCT_02D_OutTimeClock:
     NStr    "%02d:%02d"
-DST_STR_NO_OUT_TIME:
+_DST_STR_NO_OUT_TIME:
     NStr    " NO OUT TIME "
-DST_STR_NO_DST_DATA:
+_DST_STR_NO_DST_DATA:
     NStr    " NO DST DATA "
 DST_STR_G2_COLON:
     NStr    " g2:"
@@ -74,17 +74,17 @@ Global_STR_G3:
     NStr    "g3"
 Global_STR_DST_C_7:
     NStr    "DST.c"
-DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_:
+_DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_:
     NStr2   "%s:  %s%s%02d, '%d (%03d) %2d:%02d:%02d %s %s %s",TextLineFeed
-DST_TAG_PM:
+_DST_TAG_PM:
     NStr    "PM"
 DST_TAG_AM:
     NStr    "AM"
-DST_TAG_DST:
+_DST_TAG_DST:
     NStr    "DST"
 DST_TAG_STD:
     NStr    "STD"
-DST_STR_LEAP_YEAR:
+_DST_STR_LEAP_YEAR:
     NStr    "Leap Year"
 DST_STR_NORM_YEAR:
     NStr    "Norm Year"

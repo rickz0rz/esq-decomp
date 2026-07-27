@@ -1,18 +1,18 @@
     XDEF    GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen
     XDEF    GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist
     XDEF    GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom
-    XDEF    GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default
+    XDEF    _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default
     XDEF    GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar
-    XDEF    GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch
+    XDEF    _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch
     XDEF    GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory
     XDEF    GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry
-    XDEF    GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow
-    XDEF    GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte
+    XDEF    _GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow
+    XDEF    _GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte
     XDEF    GROUP_AK_JMPTBL_TEXTDISP_FormatEntryTimeForIndex
     XDEF    GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte   (JumpStub)
+; FUNC: _GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte   (JumpStub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -20,14 +20,14 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_UpdateSerialShadowFromCtrlByte
+;   _SCRIPT_UpdateSerialShadowFromCtrlByte
 ; DESC:
-;   Jump stub to SCRIPT_UpdateSerialShadowFromCtrlByte.
+;   Jump stub to _SCRIPT_UpdateSerialShadowFromCtrlByte.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte:
-    JMP     SCRIPT_UpdateSerialShadowFromCtrlByte
+_GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte:
+    JMP     _SCRIPT_UpdateSerialShadowFromCtrlByte
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode   (JumpStub)
@@ -48,7 +48,7 @@ GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode:
     JMP     TLIBA3_SelectNextViewMode
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch   (JumpStub_PARSEINI_ParseIniBufferAndDispatch)
+; FUNC: _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch   (JumpStub_PARSEINI_ParseIniBufferAndDispatch)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -62,7 +62,7 @@ GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch:
+_GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch:
     JMP     PARSEINI_ParseIniBufferAndDispatch
 
 ;------------------------------------------------------------------------------
@@ -92,14 +92,14 @@ GROUP_AK_JMPTBL_TEXTDISP_FormatEntryTimeForIndex:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   GCOMMAND_GetBannerChar
+;   _GCOMMAND_GetBannerChar
 ; DESC:
-;   Jump stub to GCOMMAND_GetBannerChar.
+;   Jump stub to _GCOMMAND_GetBannerChar.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar:
-    JMP     GCOMMAND_GetBannerChar
+    JMP     _GCOMMAND_GetBannerChar
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist   (JumpStub)
@@ -156,7 +156,7 @@ GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory:
     JMP     PARSEINI_ScanLogoDirectory
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow   (JumpStub_SCRIPT_DeassertCtrlLineNow)
+; FUNC: _GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow   (JumpStub_SCRIPT_DeassertCtrlLineNow)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -170,11 +170,11 @@ GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow:
+_GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow:
     JMP     SCRIPT_DeassertCtrlLineNow
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default   (JumpStub_ESQ_SetCopperEffect_Default)
+; FUNC: _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default   (JumpStub_ESQ_SetCopperEffect_Default)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -188,7 +188,7 @@ GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default:
+_GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default:
     JMP     ESQ_SetCopperEffect_Default
 
 ;------------------------------------------------------------------------------

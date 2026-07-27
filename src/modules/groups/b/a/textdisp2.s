@@ -3,7 +3,7 @@
     XDEF    TEXTDISP_SetRastForMode
     XDEF    TEXTDISP_TickDisplayState
     XDEF    TEXTDISP_UpdateHighlightOrPreview
-    XDEF    TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame
+    XDEF    _TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame
     XDEF    TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations
     XDEF    TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview
     XDEF    TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan
@@ -17,7 +17,7 @@
 ; CLOBBERS:
 ;   D0/D1
 ; CALLS:
-;   SCRIPT_UpdateSerialShadowFromCtrlByte, TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame
+;   _SCRIPT_UpdateSerialShadowFromCtrlByte, _TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame
 ; READS:
 ;   (none)
 ; WRITES:
@@ -25,16 +25,16 @@
 ; DESC:
 ;   Resets selection state and triggers a refresh helper.
 ; NOTES:
-;   Uses helper SCRIPT_UpdateSerialShadowFromCtrlByte with constant 3 and clears
+;   Uses helper _SCRIPT_UpdateSerialShadowFromCtrlByte with constant 3 and clears
 ;   _TEXTDISP_CurrentMatchIndex.
 ;------------------------------------------------------------------------------
 TEXTDISP_ResetSelectionAndRefresh:
     PEA     3.W
-    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
+    JSR     _SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     MOVE.W  #(-1),_TEXTDISP_CurrentMatchIndex
     CLR.L   (A7)
-    JSR     TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(PC)
+    JSR     _TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(PC)
 
     ADDQ.W  #4,A7
     RTS
@@ -50,11 +50,11 @@ TEXTDISP_ResetSelectionAndRefresh:
 ; CLOBBERS:
 ;   D0-D2/D7/A0-A1/A6
 ; CALLS:
-;   WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, TLIBA3_BuildDisplayContextForViewMode, _LVOSetRast
+;   _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _TLIBA3_BuildDisplayContextForViewMode, _LVOSetRast
 ; READS:
 ;   _WDISP_PaletteTriplesRBase-2297, Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
-;   WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase-2297, WDISP_AccumulatorFlushPending
+;   _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase-2297, _WDISP_AccumulatorFlushPending
 ; DESC:
 ;   Allocates/sets the working rastport and updates palette bytes based on mode.
 ; NOTES:
@@ -63,8 +63,8 @@ TEXTDISP_ResetSelectionAndRefresh:
 TEXTDISP_SetRastForMode:
     MOVEM.L D2/D7,-(A7)
     MOVE.W  14(A7),D7
-    CLR.W   WDISP_AccumulatorFlushPending
-    JSR     WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
+    CLR.W   _WDISP_AccumulatorFlushPending
+    JSR     _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
 
     TST.W   D7
     BNE.S   .mode_nonzero
@@ -73,20 +73,20 @@ TEXTDISP_SetRastForMode:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     PEA     3.W
-    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     BRA.S   .return
 
 .mode_nonzero:
     PEA     4.W
     CLR.L   -(A7)
     PEA     7.W
-    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     MOVE.L  D7,D1
     MOVEQ   #3,D2
     MULS    D2,D1
@@ -95,15 +95,15 @@ TEXTDISP_SetRastForMode:
     MOVE.B  (A0),_WDISP_PaletteTriplesRBase
     MOVE.L  D7,D0
     MULS    D2,D0
-    LEA     WDISP_PaletteTriplesGBase,A0
+    LEA     _WDISP_PaletteTriplesGBase,A0
     ADDA.L  D0,A0
-    MOVE.B  (A0),WDISP_PaletteTriplesGBase
+    MOVE.B  (A0),_WDISP_PaletteTriplesGBase
     MOVE.L  D7,D0
     MULS    D2,D0
-    LEA     WDISP_PaletteTriplesBBase,A0
+    LEA     _WDISP_PaletteTriplesBBase,A0
     ADDA.L  D0,A0
-    MOVE.B  (A0),WDISP_PaletteTriplesBBase
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVE.B  (A0),_WDISP_PaletteTriplesBBase
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVE.L  D7,D0
     EXT.L   D0
@@ -126,11 +126,11 @@ TEXTDISP_SetRastForMode:
 ; CLOBBERS:
 ;   D0-D1/A0-A1
 ; CALLS:
-;   MATH_DivS32, TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview
+;   _MATH_DivS32, TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview
 ; READS:
-;   LADFUNC_EntryPtrTable, LADFUNC_EntryCount
+;   _LADFUNC_EntryPtrTable, _LADFUNC_EntryCount
 ; WRITES:
-;   LADFUNC_EntryCount
+;   _LADFUNC_EntryCount
 ; DESC:
 ;   Advances the entry index until a valid slot is found, then draws a preview.
 ; NOTES:
@@ -138,35 +138,35 @@ TEXTDISP_SetRastForMode:
 ;------------------------------------------------------------------------------
 TEXTDISP_DrawNextEntryPreview:
 .loop:
-    MOVE.W  LADFUNC_EntryCount,D0
+    MOVE.W  _LADFUNC_EntryCount,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LADFUNC_EntryPtrTable,A0
+    LEA     _LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVEQ   #1,D0
     CMP.W   4(A1),D0
     BEQ.S   .found_entry
 
-    MOVE.W  LADFUNC_EntryCount,D0
+    MOVE.W  _LADFUNC_EntryCount,D0
     EXT.L   D0
     ADDQ.L  #1,D0
     MOVEQ   #46,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
-    MOVE.W  D1,LADFUNC_EntryCount
+    MOVE.W  D1,_LADFUNC_EntryCount
     BRA.S   .loop
 
 .found_entry:
-    MOVE.W  LADFUNC_EntryCount,D0
+    MOVE.W  _LADFUNC_EntryCount,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     JSR     TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  LADFUNC_EntryCount,D0
+    MOVE.W  _LADFUNC_EntryCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LADFUNC_EntryCount
+    MOVE.W  D0,_LADFUNC_EntryCount
     RTS
 
 ;!======
@@ -180,23 +180,23 @@ TEXTDISP_DrawNextEntryPreview:
 ; CLOBBERS:
 ;   D0-D2/D7
 ; CALLS:
-;   TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame, TEXTDISP_DrawNextEntryPreview, TEXTDISP_ResetSelectionAndRefresh
+;   _TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame, TEXTDISP_DrawNextEntryPreview, TEXTDISP_ResetSelectionAndRefresh
 ; READS:
-;   LOCAVAIL_FilterModeFlag/1FE8/1FE9, ED_DiagGraphModeChar, WDISP_HighlightActive
+;   _LOCAVAIL_FilterModeFlag/1FE8/1FE9, _ED_DiagGraphModeChar, WDISP_HighlightActive
 ; WRITES:
 ;   (none)
 ; DESC:
 ;   Chooses between refresh/preview paths based on mode flags and highlight state.
 ; NOTES:
-;   Uses ED_DiagGraphModeChar == 'N' (78) gate.
+;   Uses _ED_DiagGraphModeChar == 'N' (78) gate.
 ;------------------------------------------------------------------------------
 TEXTDISP_UpdateHighlightOrPreview:
     MOVEM.L D2/D7,-(A7)
     MOVEQ   #1,D0
-    CMP.L   LOCAVAIL_FilterModeFlag,D0
+    CMP.L   _LOCAVAIL_FilterModeFlag,D0
     BNE.S   .mode_not_one
 
-    MOVE.L  LOCAVAIL_FilterClassId,D1
+    MOVE.L  _LOCAVAIL_FilterClassId,D1
     MOVEQ   #-1,D2
     CMP.L   D2,D1
     BNE.S   .mode_index_selected
@@ -205,7 +205,7 @@ TEXTDISP_UpdateHighlightOrPreview:
 
 .mode_index_selected:
     MOVE.L  D1,D7
-    MOVE.B  ED_DiagGraphModeChar,D1
+    MOVE.B  _ED_DiagGraphModeChar,D1
     MOVEQ   #78,D2
     CMP.B   D2,D1
     BEQ.S   .check_highlight_for_mode3
@@ -215,7 +215,7 @@ TEXTDISP_UpdateHighlightOrPreview:
     BNE.S   .check_highlight_for_mode3
 
     MOVE.L  D0,-(A7)
-    JSR     TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(PC)
+    JSR     _TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .return
@@ -239,13 +239,13 @@ TEXTDISP_UpdateHighlightOrPreview:
     BRA.S   .return
 
 .mode_not_one:
-    MOVE.B  ED_DiagGraphModeChar,D1
+    MOVE.B  _ED_DiagGraphModeChar,D1
     MOVEQ   #78,D2
     CMP.B   D2,D1
     BEQ.S   .mode_char_is_n
 
     MOVE.L  D0,-(A7)
-    JSR     TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(PC)
+    JSR     _TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .return
@@ -277,26 +277,26 @@ TEXTDISP_UpdateHighlightOrPreview:
 ; CLOBBERS:
 ;   D0-D1/A0
 ; CALLS:
-;   TLIBA3_BuildDisplayContextForViewMode, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples
+;   _TLIBA3_BuildDisplayContextForViewMode, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples
 ; READS:
 ;   (none)
 ; WRITES:
-;   WDISP_DisplayContextBase, WDISP_AccumulatorFlushPending
+;   _WDISP_DisplayContextBase, _WDISP_AccumulatorFlushPending
 ; DESC:
-;   Allocates/sets the working rastport then resets WDISP_AccumulatorFlushPending.
+;   Allocates/sets the working rastport then resets _WDISP_AccumulatorFlushPending.
 ; NOTES:
 ;   Unlabeled entry in original binary; added for documentation.
 ;------------------------------------------------------------------------------
     PEA     3.W
     CLR.L   -(A7)
     PEA     4.W
-    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     JSR     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
 
     LEA     12(A7),A7
-    CLR.W   WDISP_AccumulatorFlushPending
+    CLR.W   _WDISP_AccumulatorFlushPending
     RTS
 
 ;!======
@@ -313,13 +313,13 @@ TEXTDISP_UpdateHighlightOrPreview:
 ;   TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan, SCRIPT_AssertCtrlLineIfEnabled, TEXTDISP_UpdateHighlightOrPreview,
 ;   TEXTDISP_ResetSelectionAndRefresh, TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations
 ; READS:
-;   TEXTDISP_TickSuspendFlag, Global_UIBusyFlag, SCRIPT_RuntimeMode, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, LOCAVAIL_FilterPrevClassId, Global_RefreshTickCounter
+;   TEXTDISP_TickSuspendFlag, _Global_UIBusyFlag, _SCRIPT_RuntimeMode, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, LOCAVAIL_FilterPrevClassId, _Global_RefreshTickCounter
 ; WRITES:
-;   ESQ_GlobalTickCounter, TEXTDISP_DeferredActionDelayTicks, TEXTDISP_DeferredActionArmed, TEXTDISP_DeferredActionCountdown, Global_RefreshTickCounter
+;   ESQ_GlobalTickCounter, TEXTDISP_DeferredActionDelayTicks, TEXTDISP_DeferredActionArmed, TEXTDISP_DeferredActionCountdown, _Global_RefreshTickCounter
 ; DESC:
 ;   Updates internal display/control counters and triggers refresh/preview steps.
 ; NOTES:
-;   Uses Global_RefreshTickCounter as a timer for periodic refresh.
+;   Uses _Global_RefreshTickCounter as a timer for periodic refresh.
 ;------------------------------------------------------------------------------
 TEXTDISP_TickDisplayState:
     MOVE.L  D2,-(A7)
@@ -328,10 +328,10 @@ TEXTDISP_TickDisplayState:
     TST.W   TEXTDISP_TickSuspendFlag
     BNE.W   .return
 
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BNE.W   .tick_refresh_timer
 
-    MOVE.W  SCRIPT_RuntimeMode,D1
+    MOVE.W  _SCRIPT_RuntimeMode,D1
     SUBQ.W  #2,D1
     BEQ.S   .tick_refresh_timer
 
@@ -377,21 +377,21 @@ TEXTDISP_TickDisplayState:
     MOVE.W  D0,TEXTDISP_DeferredActionCountdown
 
 .handle_refresh_timer:
-    MOVE.W  Global_RefreshTickCounter,D0
+    MOVE.W  _Global_RefreshTickCounter,D0
     CMPI.W  #$b4,D0
     BLT.S   .dispatch_update
 
-    CLR.W   Global_RefreshTickCounter
+    CLR.W   _Global_RefreshTickCounter
     BSR.W   TEXTDISP_ResetSelectionAndRefresh
 
     BRA.S   .dispatch_update
 
 .tick_refresh_timer:
-    MOVE.W  Global_RefreshTickCounter,D0
+    MOVE.W  _Global_RefreshTickCounter,D0
     ADDQ.W  #1,D0
     BEQ.S   .dispatch_update
 
-    CLR.W   Global_RefreshTickCounter
+    CLR.W   _Global_RefreshTickCounter
 
 .dispatch_update:
     JSR     TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations(PC)
@@ -462,7 +462,7 @@ TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations:
     JMP     _ESQIFF_RunPendingCopperAnimations
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame   (JumpStub)
+; FUNC: _TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame   (JumpStub)
 ; ARGS:
 ;   see ESQIFF_PlayNextExternalAssetFrame)
 ; RET:
@@ -476,5 +476,5 @@ TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame:
+_TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame:
     JMP     ESQIFF_PlayNextExternalAssetFrame

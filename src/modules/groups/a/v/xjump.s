@@ -1,11 +1,11 @@
-    XDEF    GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq
-    XDEF    GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths
-    XDEF    GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit
-    XDEF    GROUP_AV_JMPTBL_EXEC_CallVector_48
-    XDEF    GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal
+    XDEF    _GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq
+    XDEF    _GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths
+    XDEF    _GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit
+    XDEF    _GROUP_AV_JMPTBL_EXEC_CallVector_48
+    XDEF    _GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq   (Routine at GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq)
+; FUNC: _GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq   (Routine at _GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -23,11 +23,11 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq:
+_GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq:
     JMP     ALLOCATE_AllocAndInitializeIOStdReq
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal   (Routine at GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal)
+; FUNC: _GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal   (Routine at _GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -45,11 +45,11 @@ GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
+_GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
     JMP     SIGNAL_CreateMsgPortWithSignal
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths   (Routine at GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths)
+; FUNC: _GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths   (Routine at _GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -67,11 +67,11 @@ GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths:
+_GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths:
     JMP     DISKIO_ProbeDrivesAndAssignPaths
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit   (Routine at GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit)
+; FUNC: _GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit   (Routine at _GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -89,11 +89,11 @@ GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit:
+_GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit:
     JMP     ESQ_InvokeGcommandInit
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AV_JMPTBL_EXEC_CallVector_48   (Routine at GROUP_AV_JMPTBL_EXEC_CallVector_48)
+; FUNC: _GROUP_AV_JMPTBL_EXEC_CallVector_48   (Routine at _GROUP_AV_JMPTBL_EXEC_CallVector_48)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -111,7 +111,7 @@ GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AV_JMPTBL_EXEC_CallVector_48:
+_GROUP_AV_JMPTBL_EXEC_CallVector_48:
     JMP     EXEC_CallVector_48
 
 ;!======

@@ -1,19 +1,19 @@
-    XDEF    Global_STR_ESQFUNC_C_1
-    XDEF    Global_STR_VERTICAL_BLANK_INT
-    XDEF    Global_STR_ESQFUNC_C_2
-    XDEF    Global_STR_JOYSTICK_INT
-    XDEF    Global_STR_ESQFUNC_C_3
-    XDEF    Global_STR_ESQFUNC_C_4
-    XDEF    Global_STR_RS232_RECEIVE_HANDLER
-    XDEF    Global_STR_ESQFUNC_C_5
-    XDEF    Global_STR_ESQFUNC_C_6
-    XDEF    Global_STR_DISK_0_IS_WRITE_PROTECTED
-    XDEF    Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0
-    XDEF    Global_STR_BUILD_NUMBER_FORMATTED
-    XDEF    Global_STR_ROM_VERSION_FORMATTED
-    XDEF    Global_STR_ROM_VERSION_1_3
-    XDEF    Global_STR_ROM_VERSION_2_04
-    XDEF    Global_STR_PUSH_ANY_KEY_TO_CONTINUE_1
+    XDEF    _Global_STR_ESQFUNC_C_1
+    XDEF    _Global_STR_VERTICAL_BLANK_INT
+    XDEF    _Global_STR_ESQFUNC_C_2
+    XDEF    _Global_STR_JOYSTICK_INT
+    XDEF    _Global_STR_ESQFUNC_C_3
+    XDEF    _Global_STR_ESQFUNC_C_4
+    XDEF    _Global_STR_RS232_RECEIVE_HANDLER
+    XDEF    _Global_STR_ESQFUNC_C_5
+    XDEF    _Global_STR_ESQFUNC_C_6
+    XDEF    _Global_STR_DISK_0_IS_WRITE_PROTECTED
+    XDEF    _Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0
+    XDEF    _Global_STR_BUILD_NUMBER_FORMATTED
+    XDEF    _Global_STR_ROM_VERSION_FORMATTED
+    XDEF    _Global_STR_ROM_VERSION_1_3
+    XDEF    _Global_STR_ROM_VERSION_2_04
+    XDEF    _Global_STR_PUSH_ANY_KEY_TO_CONTINUE_1
     XDEF    Global_STR_DATA_CMDS_CERRS_LERRS
     XDEF    Global_STR_CTRL_CMDS_CERRS_LERRS
     XDEF    Global_STR_L_CHIP_FAST_MAX
@@ -54,61 +54,61 @@
     XDEF    ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS
     XDEF    Global_STR_TRUE_2
     XDEF    Global_STR_FALSE_2
-    XDEF    _ESQFUNC_BasePaletteRgbTriples
+    XDEF    __ESQFUNC_BasePaletteRgbTriples
     XDEF    ESQFUNC_WeatherSliceWidthInitGate
-    XDEF    Global_PTR_STR_DF0_LOGO_LST
-    XDEF    ESQFUNC_FallbackType3BrushNode
-    XDEF    ESQIFF_BrushIniListHead
-    XDEF    ESQIFF_GAdsBrushListHead
-    XDEF    ESQIFF_LogoBrushListHead
-    XDEF    ESQFUNC_PwBrushListHead
-    XDEF    Global_PTR_STR_GFX_G_ADS
+    XDEF    _Global_PTR_STR_DF0_LOGO_LST
+    XDEF    _ESQFUNC_FallbackType3BrushNode
+    XDEF    _ESQIFF_BrushIniListHead
+    XDEF    _ESQIFF_GAdsBrushListHead
+    XDEF    _ESQIFF_LogoBrushListHead
+    XDEF    _ESQFUNC_PwBrushListHead
+    XDEF    _Global_PTR_STR_GFX_G_ADS
     XDEF    ESQFUNC_STR_I5
-    XDEF    ESQFUNC_BrushDescriptorTagStrings
+    XDEF    _ESQFUNC_BrushDescriptorTagStrings
     XDEF    ESQFUNC_WeatherBrushPredicateNames
-    XDEF    Global_REF_LONG_GFX_G_ADS_FILESIZE
-    XDEF    Global_REF_LONG_GFX_G_ADS_DATA
-    XDEF    Global_REF_LONG_DF0_LOGO_LST_FILESIZE
-    XDEF    Global_REF_LONG_DF0_LOGO_LST_DATA
+    XDEF    _Global_REF_LONG_GFX_G_ADS_FILESIZE
+    XDEF    _Global_REF_LONG_GFX_G_ADS_DATA
+    XDEF    _Global_REF_LONG_DF0_LOGO_LST_FILESIZE
+    XDEF    _Global_REF_LONG_DF0_LOGO_LST_DATA
     XDEF    ESQFUNC_MissingAssetRetryMask
     XDEF    ESQFUNC_IffTaskGateFlags
     XDEF    ESQFUNC_TAG_00
     XDEF    ESQFUNC_TAG_11
 ; ========== ESQFUNC.c ==========
 
-Global_STR_ESQFUNC_C_1:
+_Global_STR_ESQFUNC_C_1:
     NStr    "ESQFUNC.c"
-Global_STR_VERTICAL_BLANK_INT:
+_Global_STR_VERTICAL_BLANK_INT:
     NStr    "Vertical Blank Int"
-Global_STR_ESQFUNC_C_2:
+_Global_STR_ESQFUNC_C_2:
     NStr    "ESQFUNC.c"
-Global_STR_JOYSTICK_INT:
+_Global_STR_JOYSTICK_INT:
     NStr    "JoyStick Int"
-Global_STR_ESQFUNC_C_3:
+_Global_STR_ESQFUNC_C_3:
     NStr    "ESQFUNC.c"
-Global_STR_ESQFUNC_C_4:
+_Global_STR_ESQFUNC_C_4:
     NStr    "ESQFUNC.c"
-Global_STR_RS232_RECEIVE_HANDLER:
+_Global_STR_RS232_RECEIVE_HANDLER:
     NStr    "RS232 Receive Handler"
-Global_STR_ESQFUNC_C_5:
+_Global_STR_ESQFUNC_C_5:
     NStr    "ESQFUNC.c"
-Global_STR_ESQFUNC_C_6:
+_Global_STR_ESQFUNC_C_6:
     NStr    "ESQFUNC.c"
-Global_STR_DISK_0_IS_WRITE_PROTECTED:
+_Global_STR_DISK_0_IS_WRITE_PROTECTED:
     NStr    "Disk 0 is write protected"
-Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0:
+_Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0:
     NStr    "You MUST re-insert SYSTEM disk into drive 0!"
 
 ; Strings for: ESC -> Version Screen
-Global_STR_BUILD_NUMBER_FORMATTED:
+_Global_STR_BUILD_NUMBER_FORMATTED:
     NStr    "Build Number: '%ld%s'"
-Global_STR_ROM_VERSION_FORMATTED:
+_Global_STR_ROM_VERSION_FORMATTED:
     NStr    " ROM Version: '%s'"
-Global_STR_ROM_VERSION_1_3:
+_Global_STR_ROM_VERSION_1_3:
     NStr    "1.3"
-Global_STR_ROM_VERSION_2_04:
+_Global_STR_ROM_VERSION_2_04:
     NStr    "2.04"
-Global_STR_PUSH_ANY_KEY_TO_CONTINUE_1:
+_Global_STR_PUSH_ANY_KEY_TO_CONTINUE_1:
     NStr    "Push any key to continue."
 
 ; Strings for: ESC -> Diagnostic Mode
@@ -205,7 +205,7 @@ Global_STR_TRUE_2:
     NStr    "TRUE"
 Global_STR_FALSE_2:
     NStr    "FALSE"
-_ESQFUNC_BasePaletteRgbTriples:
+__ESQFUNC_BasePaletteRgbTriples:
     DC.B    0,0,3       ; Dark Blue
     DC.B    12,12,12    ; Light Gray
     DC.B    0,0,0       ; Black
@@ -218,28 +218,28 @@ ESQFUNC_WeatherSliceWidthInitGate:
     DC.W    1
 Global_STR_DF0_LOGO_LST:
     NStr    "df0:logo.lst"
-Global_PTR_STR_DF0_LOGO_LST:
+_Global_PTR_STR_DF0_LOGO_LST:
     DC.L    Global_STR_DF0_LOGO_LST
-ESQFUNC_FallbackType3BrushNode:
+_ESQFUNC_FallbackType3BrushNode:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_BrushIniListHead/ESQIFF_GAdsBrushListHead/ESQIFF_LogoBrushListHead/ESQFUNC_PwBrushListHead   (brush list heads)
+; SYM: _ESQIFF_BrushIniListHead/_ESQIFF_GAdsBrushListHead/_ESQIFF_LogoBrushListHead/_ESQFUNC_PwBrushListHead   (brush list heads)
 ; TYPE: pointer/pointer/pointer/pointer
 ; PURPOSE: Head pointers for brush-node lists sourced from brush.ini, g.ads, logo.lst, and pw* tag tables.
 ; USED BY: ESQIFF_*, ESQFUNC_*, GCOMMAND_SaveBrushResult, CLEANUP_*, WDISP_*
 ; NOTES: Lists are freed/repopulated by BRUSH_* helpers during source refresh and mode transitions.
 ;------------------------------------------------------------------------------
-ESQIFF_BrushIniListHead:
+_ESQIFF_BrushIniListHead:
     DS.L    1
-ESQIFF_GAdsBrushListHead:
+_ESQIFF_GAdsBrushListHead:
     DS.L    1
-ESQIFF_LogoBrushListHead:
+_ESQIFF_LogoBrushListHead:
     DS.L    1
-ESQFUNC_PwBrushListHead:
+_ESQFUNC_PwBrushListHead:
     DS.L    1
 Global_STR_GFX_G_ADS:
     NStr    "gfx:g.ads"
-Global_PTR_STR_GFX_G_ADS:
+_Global_PTR_STR_GFX_G_ADS:
     DC.L    Global_STR_GFX_G_ADS
 ESQFUNC_STR_PWBRUSH:
     NStr    "pwbrush"
@@ -263,7 +263,7 @@ ESQFUNC_STR_I5:
 ; NOTES: Callers normalize index with -1 before scaling by 4.
 ;------------------------------------------------------------------------------
 ESQFUNC_PwBrushNamePtrTable:
-ESQFUNC_BrushDescriptorTagStrings:
+_ESQFUNC_BrushDescriptorTagStrings:
     DC.L    ESQFUNC_STR_PWBRUSH
 ESQFUNC_WeatherBrushPredicateNames:
     DC.L    ESQFUNC_STR_PWI1
@@ -271,13 +271,13 @@ ESQFUNC_WeatherBrushPredicateNames:
     DC.L    ESQFUNC_STR_PWI3
     DC.L    ESQFUNC_STR_PWI4
     DC.L    ESQFUNC_STR_PW
-Global_REF_LONG_GFX_G_ADS_FILESIZE:
+_Global_REF_LONG_GFX_G_ADS_FILESIZE:
     DS.L    1
-Global_REF_LONG_GFX_G_ADS_DATA:
+_Global_REF_LONG_GFX_G_ADS_DATA:
     DS.L    1
-Global_REF_LONG_DF0_LOGO_LST_FILESIZE:
+_Global_REF_LONG_DF0_LOGO_LST_FILESIZE:
     DS.L    1
-Global_REF_LONG_DF0_LOGO_LST_DATA:
+_Global_REF_LONG_DF0_LOGO_LST_DATA:
     DS.L    1
 ESQFUNC_MissingAssetRetryMask:
     DS.W    1

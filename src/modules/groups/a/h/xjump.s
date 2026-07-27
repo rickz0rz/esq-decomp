@@ -2,7 +2,7 @@
     XDEF    GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi
     XDEF    GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket
     XDEF    GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay
-    XDEF    GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers
+    XDEF    _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers
     XDEF    GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters
     XDEF    GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults
     XDEF    GROUP_AH_JMPTBL_ESQ_TestBit1Based
@@ -15,7 +15,7 @@
     XDEF    GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3
     XDEF    GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile
     XDEF    GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte
-    XDEF    GROUP_AH_JMPTBL_STR_FindAnyCharPtr
+    XDEF    _GROUP_AH_JMPTBL_STR_FindAnyCharPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket   (Routine at GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket)
@@ -136,7 +136,7 @@ GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   GCOMMAND_LoadPPVTemplate
+;   _GCOMMAND_LoadPPVTemplate
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -147,7 +147,7 @@ GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate:
-    JMP     GCOMMAND_LoadPPVTemplate
+    JMP     _GCOMMAND_LoadPPVTemplate
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile   (Routine at GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile)
@@ -158,7 +158,7 @@ GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LOCAVAIL_SaveAvailabilityDataFile
+;   _LOCAVAIL_SaveAvailabilityDataFile
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -169,7 +169,7 @@ GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
-    JMP     LOCAVAIL_SaveAvailabilityDataFile
+    JMP     _LOCAVAIL_SaveAvailabilityDataFile
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile   (Routine at GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile)
@@ -246,7 +246,7 @@ GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_WaitForClockChangeAndServiceUi
+;   _ESQFUNC_WaitForClockChangeAndServiceUi
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -257,7 +257,7 @@ GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi:
-    JMP     ESQFUNC_WaitForClockChangeAndServiceUi
+    JMP     _ESQFUNC_WaitForClockChangeAndServiceUi
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_ESQ_TestBit1Based   (Routine at GROUP_AH_JMPTBL_ESQ_TestBit1Based)
@@ -304,7 +304,7 @@ GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay:
     JMP     ESQIFF2_ShowAttentionOverlay
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_STR_FindAnyCharPtr   (Routine at GROUP_AH_JMPTBL_STR_FindAnyCharPtr)
+; FUNC: _GROUP_AH_JMPTBL_STR_FindAnyCharPtr   (Routine at _GROUP_AH_JMPTBL_STR_FindAnyCharPtr)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -322,7 +322,7 @@ GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_STR_FindAnyCharPtr:
+_GROUP_AH_JMPTBL_STR_FindAnyCharPtr:
     JMP     STR_FindAnyCharPtr
 
 ;------------------------------------------------------------------------------
@@ -334,7 +334,7 @@ GROUP_AH_JMPTBL_STR_FindAnyCharPtr:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   GCOMMAND_LoadMplexFile
+;   _GCOMMAND_LoadMplexFile
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -345,7 +345,7 @@ GROUP_AH_JMPTBL_STR_FindAnyCharPtr:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile:
-    JMP     GCOMMAND_LoadMplexFile
+    JMP     _GCOMMAND_LoadMplexFile
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte   (Routine at GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte)
@@ -370,7 +370,7 @@ GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte:
     JMP     SCRIPT_ReadNextRbfByte
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers   (Routine at GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers)
+; FUNC: _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers   (Routine at _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -388,7 +388,7 @@ GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers:
+_GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers:
     JMP     ESQPARS_ClearAliasStringPointers
 
 ;------------------------------------------------------------------------------

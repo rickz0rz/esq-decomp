@@ -1,7 +1,7 @@
-    XDEF    GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult
+    XDEF    _GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult   (JumpStub_GCOMMAND_SaveBrushResult)
+; FUNC: _GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult   (JumpStub_GCOMMAND_SaveBrushResult)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -19,7 +19,7 @@
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult:
+_GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult:
     JMP     GCOMMAND_SaveBrushResult
 
 ;!======

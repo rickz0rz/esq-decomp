@@ -1,16 +1,16 @@
     XDEF    _ED_ApplyActiveFlagToAdData
-    XDEF    ED_CommitCurrentAdEdits
-    XDEF    ED_DrawAdEditingScreen
+    XDEF    _ED_CommitCurrentAdEdits
+    XDEF    _ED_DrawAdEditingScreen
     XDEF    ED_DrawEditHelpText
-    XDEF    ED_LoadCurrentAdIntoBuffers
+    XDEF    _ED_LoadCurrentAdIntoBuffers
     XDEF    ED_NextAdNumber
     XDEF    ED_PrevAdNumber
-    XDEF    ED_RedrawAllRows
+    XDEF    _ED_RedrawAllRows
     XDEF    ED_RedrawRow
     XDEF    ED_TransformLineSpacing_Mode1
     XDEF    ED_TransformLineSpacing_Mode2
     XDEF    ED_TransformLineSpacing_Mode3
-    XDEF    ED_UpdateActiveInactiveIndicator
+    XDEF    _ED_UpdateActiveInactiveIndicator
     XDEF    _ED_UpdateAdNumberDisplay
 
 ;------------------------------------------------------------------------------
@@ -22,16 +22,16 @@
 ; CLOBBERS:
 ;   A0/A1/A7/D0/D1
 ; CALLS:
-;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
-;   ED_UpdateActiveInactiveIndicator
+;   _GROUP_AM_JMPTBL_WDISP_SPrintf, _DISPLIB_DisplayTextAtPosition,
+;   _ED_UpdateActiveInactiveIndicator
 ; READS:
-;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, ED_AdRecordPtrTable
+;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _ED_AdRecordPtrTable
 ; WRITES:
-;   ED_AdActiveFlag, ED_ViewportOffset, ED_AdDisplayResetFlag, ED_AdDisplayStateLatchBlockB, ED_ActiveIndicatorCachedState, ED_AdDisplayStateLatchA
+;   _ED_AdActiveFlag, ED_ViewportOffset, _ED_AdDisplayResetFlag, ED_AdDisplayStateLatchBlockB, _ED_ActiveIndicatorCachedState, ED_AdDisplayStateLatchA
 ; DESC:
 ;   Displays the current ad number and resets editing state for the ad.
 ; NOTES:
-;   Initializes ED_AdActiveFlag based on the ad's active flag.
+;   Initializes _ED_AdActiveFlag based on the ad's active flag.
 ;   Local display buffer is 40 bytes (-40(A5)..-1(A5)).
 ;------------------------------------------------------------------------------
 _ED_UpdateAdNumberDisplay:
@@ -43,20 +43,20 @@ _ED_UpdateAdNumberDisplay:
     MOVE.L  _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,-(A7)
     PEA     Global_STR_AD_NUMBER_FORMATTED
     PEA     .adLabel(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     .adLabel(A5)
     PEA     180.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     28(A7),A7
     MOVEQ   #0,D0
-    MOVE.L  D0,ED_AdActiveFlag
+    MOVE.L  D0,_ED_AdActiveFlag
     MOVE.L  _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D1
     ASL.L   #2,D1
-    LEA     ED_AdRecordPtrTable,A0
+    LEA     _ED_AdRecordPtrTable,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     MOVE.W  (A1),D1
@@ -64,17 +64,17 @@ _ED_UpdateAdNumberDisplay:
     BLE.S   .after_active_check
 
     MOVEQ   #1,D1
-    MOVE.L  D1,ED_AdActiveFlag
+    MOVE.L  D1,_ED_AdActiveFlag
 
 .after_active_check:
     MOVEQ   #1,D1
-    MOVE.L  D1,ED_AdDisplayResetFlag
+    MOVE.L  D1,_ED_AdDisplayResetFlag
     MOVE.L  D0,ED_ViewportOffset
     MOVEQ   #-1,D0
     MOVE.L  D0,ED_AdDisplayStateLatchBlockB
-    MOVE.L  D0,ED_ActiveIndicatorCachedState
+    MOVE.L  D0,_ED_ActiveIndicatorCachedState
     MOVE.L  D0,ED_AdDisplayStateLatchA
-    BSR.W   ED_UpdateActiveInactiveIndicator
+    BSR.W   _ED_UpdateActiveInactiveIndicator
 
     UNLK    A5
     RTS
@@ -92,9 +92,9 @@ _ED_UpdateAdNumberDisplay:
 ; CALLS:
 ;   (none)
 ; READS:
-;   ED_AdActiveFlag, _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, ED_AdRecordPtrTable
+;   _ED_AdActiveFlag, _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _ED_AdRecordPtrTable
 ; WRITES:
-;   Ad data (first word / word+2) via ED_AdRecordPtrTable
+;   Ad data (first word / word+2) via _ED_AdRecordPtrTable
 ; DESC:
 ;   Writes the active/inactive flag for the current ad into its data record.
 ; NOTES:
@@ -103,13 +103,13 @@ _ED_UpdateAdNumberDisplay:
 _ED_ApplyActiveFlagToAdData:
     MOVEM.L D2/A2,-(A7)
 
-    TST.L   ED_AdActiveFlag
+    TST.L   _ED_AdActiveFlag
     BNE.S   .set_active
 
     MOVE.L  _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     MOVE.L  D0,D1
     ASL.L   #2,D1
-    LEA     ED_AdRecordPtrTable,A0
+    LEA     _ED_AdRecordPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     MOVEA.L (A1),A2
@@ -124,7 +124,7 @@ _ED_ApplyActiveFlagToAdData:
 .set_active:
     MOVE.L  _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     ASL.L   #2,D0
-    LEA     ED_AdRecordPtrTable,A0
+    LEA     _ED_AdRecordPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
@@ -140,7 +140,7 @@ _ED_ApplyActiveFlagToAdData:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_RedrawAllRows   (Redraw all rowsuncertain)
+; FUNC: _ED_RedrawAllRows   (Redraw all rowsuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -148,59 +148,59 @@ _ED_ApplyActiveFlagToAdData:
 ; CLOBBERS:
 ;   A1/A6/A7/D0/D1/D2/D3/D7
 ; CALLS:
-;   ED_DrawCursorChar, GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble, ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVORectFill
+;   _ED_DrawCursorChar, _GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble, ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVORectFill
 ; READS:
-;   ED_EditCursorOffset, ED_BlockOffset, ED_TextLimit, ED_EditBufferLive
+;   _ED_EditCursorOffset, _ED_BlockOffset, _ED_TextLimit, _ED_EditBufferLive
 ; WRITES:
-;   ED_EditCursorOffset
+;   _ED_EditCursorOffset
 ; DESC:
 ;   Redraws all rows using the current buffer contents.
 ; NOTES:
-;   Restores ED_EditCursorOffset to its original value after redraw.
+;   Restores _ED_EditCursorOffset to its original value after redraw.
 ;------------------------------------------------------------------------------
-ED_RedrawAllRows:
+_ED_RedrawAllRows:
     MOVEM.L D2-D3/D7,-(A7)
 
-    MOVE.L  ED_EditCursorOffset,D7
+    MOVE.L  _ED_EditCursorOffset,D7
     MOVEQ   #0,D0
-    MOVE.B  ED_EditBufferLive,D0
+    MOVE.B  _ED_EditBufferLive,D0
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(PC)
+    JSR     _GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,D0
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVE.L  ED_TextLimit,D0
+    MOVE.L  _ED_TextLimit,D0
     MOVEQ   #30,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #68,D1
     ADD.L   D1,D0
     MOVE.L  D0,D3
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVE.L  #640,D2
     JSR     _LVORectFill(A6)
 
-    CLR.L   ED_EditCursorOffset
+    CLR.L   _ED_EditCursorOffset
 
 .redraw_loop:
-    MOVE.L  ED_EditCursorOffset,D0
-    CMP.L   ED_BlockOffset,D0
+    MOVE.L  _ED_EditCursorOffset,D0
+    CMP.L   _ED_BlockOffset,D0
     BGE.S   .return
 
-    BSR.W   ED_DrawCursorChar
+    BSR.W   _ED_DrawCursorChar
 
-    ADDQ.L  #1,ED_EditCursorOffset
+    ADDQ.L  #1,_ED_EditCursorOffset
     BRA.S   .redraw_loop
 
 .return:
-    MOVE.L  D7,ED_EditCursorOffset
+    MOVE.L  D7,_ED_EditCursorOffset
     MOVEM.L (A7)+,D2-D3/D7
     RTS
 
@@ -215,26 +215,26 @@ ED_RedrawAllRows:
 ; CLOBBERS:
 ;   A1/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   ED_DrawCursorChar, ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen
+;   _ED_DrawCursorChar, ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen
 ; READS:
-;   ED_EditCursorOffset, ED_BlockOffset, ED_TextLimit
+;   _ED_EditCursorOffset, _ED_BlockOffset, _ED_TextLimit
 ; WRITES:
-;   ED_EditCursorOffset
+;   _ED_EditCursorOffset
 ; DESC:
 ;   Redraws a single row of text based on the given row index.
 ; NOTES:
-;   Temporarily updates ED_EditCursorOffset to walk the row range.
+;   Temporarily updates _ED_EditCursorOffset to walk the row range.
 ;------------------------------------------------------------------------------
 ED_RedrawRow:
     MOVEM.L D6-D7,-(A7)
 
     MOVE.L  12(A7),D7
-    MOVE.L  ED_EditCursorOffset,D6
+    MOVE.L  _ED_EditCursorOffset,D6
     MOVE.L  D7,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    MOVE.L  D0,ED_EditCursorOffset
+    MOVE.L  D0,_ED_EditCursorOffset
 
 .row_loop:
     MOVE.L  D7,D0
@@ -242,33 +242,33 @@ ED_RedrawRow:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    MOVE.L  ED_EditCursorOffset,D1
+    MOVE.L  _ED_EditCursorOffset,D1
     CMP.L   D0,D1
     BGE.S   .row_done
 
-    BSR.W   ED_DrawCursorChar
+    BSR.W   _ED_DrawCursorChar
 
-    ADDQ.L  #1,ED_EditCursorOffset
+    ADDQ.L  #1,_ED_EditCursorOffset
     BRA.S   .row_loop
 
 .row_done:
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     JSR     _LVOSetBPen(A6)
 
-    MOVE.L  D6,ED_EditCursorOffset
+    MOVE.L  D6,_ED_EditCursorOffset
     MOVEM.L (A7)+,D6-D7
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_UpdateActiveInactiveIndicator   (Update active/inactive indicatoruncertain)
+; FUNC: _ED_UpdateActiveInactiveIndicator   (Update active/inactive indicatoruncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -276,21 +276,21 @@ ED_RedrawRow:
 ; CLOBBERS:
 ;   A1/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   _LVOSetAPen, _LVORectFill, _LVOSetDrMd, DISPLIB_DisplayTextAtPosition
+;   _LVOSetAPen, _LVORectFill, _LVOSetDrMd, _DISPLIB_DisplayTextAtPosition
 ; READS:
-;   ED_AdActiveFlag, ED_ActiveIndicatorCachedState, Global_REF_RASTPORT_1
+;   _ED_AdActiveFlag, _ED_ActiveIndicatorCachedState, _Global_REF_RASTPORT_1
 ; WRITES:
-;   ED_ActiveIndicatorCachedState
+;   _ED_ActiveIndicatorCachedState
 ; DESC:
 ;   Updates the active/inactive indicator when the flag changes.
 ; NOTES:
 ;   Draws two rectangles and the ACTIVE/INACTIVE label.
 ;------------------------------------------------------------------------------
-ED_UpdateActiveInactiveIndicator:
+_ED_UpdateActiveInactiveIndicator:
     MOVEM.L D2-D7,-(A7)
 
-    MOVE.L  ED_AdActiveFlag,D0
-    MOVE.L  ED_ActiveIndicatorCachedState,D1
+    MOVE.L  _ED_AdActiveFlag,D0
+    MOVE.L  _ED_ActiveIndicatorCachedState,D1
     CMP.L   D0,D1
     BEQ.W   .after_indicator_update
 
@@ -314,52 +314,52 @@ ED_UpdateActiveInactiveIndicator:
     MOVE.L  #265,D4
 
 .draw_indicator:
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D7,D0
     MOVE.L  D6,D2
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #68,D1
     MOVEQ   #98,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #6,D0
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D5,D0
     MOVE.L  D4,D2
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #68,D1
     JSR     _LVORectFill(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     Global_STR_ACTIVE_INACTIVE
+    PEA     _Global_STR_ACTIVE_INACTIVE
     PEA     90.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
-    MOVE.L  ED_AdActiveFlag,ED_ActiveIndicatorCachedState
+    MOVE.L  _ED_AdActiveFlag,_ED_ActiveIndicatorCachedState
 
 .after_indicator_update:
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
@@ -370,7 +370,7 @@ ED_UpdateActiveInactiveIndicator:
 
 ; draw ad editing screen (editing ad)
 ;------------------------------------------------------------------------------
-; FUNC: ED_DrawAdEditingScreen   (Draw ad editing screenuncertain)
+; FUNC: _ED_DrawAdEditingScreen   (Draw ad editing screenuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -378,12 +378,12 @@ ED_UpdateActiveInactiveIndicator:
 ; CLOBBERS:
 ;   A1/A6/A7/D0/D1/D2/D3
 ; CALLS:
-;   ED_DrawHelpPanels, SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE,
+;   _ED_DrawHelpPanels, SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE,
 ;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
-;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
+;   _GROUP_AM_JMPTBL_WDISP_SPrintf, _DISPLIB_DisplayTextAtPosition,
 ;   ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   ED_TextLimit, _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,
+;   _ED_TextLimit, _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,
 ;   Global_REF_BOOL_IS_LINE_OR_PAGE, Global_REF_BOOL_IS_TEXT_OR_CURSOR
 ; WRITES:
 ;   (none)
@@ -392,41 +392,41 @@ ED_UpdateActiveInactiveIndicator:
 ; NOTES:
 ;   Uses a 41-byte local printf buffer (-41(A5)..-1(A5)).
 ;------------------------------------------------------------------------------
-ED_DrawAdEditingScreen:
+_ED_DrawAdEditingScreen:
     LINK.W  A5,#-44
     MOVEM.L D2-D3,-(A7)
 
 .printfResult   = -41
 
     PEA     6.W
-    BSR.W   ED_DrawHelpPanels
+    BSR.W   _ED_DrawHelpPanels
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
     PEA     Global_STR_PUSH_ESC_TO_MAKE_ANOTHER_SELECTION
     PEA     330.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     Global_STR_PUSH_HELP_FOR_OTHER_EDIT_FUNCTIONS
     PEA     360.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     Global_STR_LINE_MODE_ON_TEXT_COLOR_MODE
     PEA     390.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     MOVE.L  Global_REF_BOOL_IS_LINE_OR_PAGE,(A7)
     BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE
@@ -434,50 +434,50 @@ ED_DrawAdEditingScreen:
     MOVE.L  Global_REF_BOOL_IS_TEXT_OR_CURSOR,(A7)
     BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #8,D0
-    SUB.L   ED_TextLimit,D0
+    SUB.L   _ED_TextLimit,D0
     MOVEQ   #30,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  #302,D1
     SUB.L   D0,D1
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVE.L  #640,D2
     MOVE.L  #308,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
     JSR     _LVOSetBPen(A6)
 
     MOVE.L  _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,(A7)
     PEA     Global_STR_EDITING_AD_NUMBER_FORMATTED_1
     PEA     .printfResult(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     .printfResult(A5)
     PEA     300.W
     PEA     190.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     76(A7),A7
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     JSR     _LVOSetBPen(A6)
 
@@ -498,7 +498,7 @@ ED_DrawAdEditingScreen:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQFUNC_JMPTBL_STRING_CopyPadNul
 ; READS:
-;   ED_EditCursorOffset, ED_ViewportOffset
+;   _ED_EditCursorOffset, ED_ViewportOffset
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -514,7 +514,7 @@ ED_TransformLineSpacing_Mode1:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferScratch,A0
+    LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     PEA     40.W
     MOVE.L  A0,-(A7)
@@ -526,7 +526,7 @@ ED_TransformLineSpacing_Mode1:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferLive,A0
+    LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
     MOVEQ   #39,D0
     LEA     -90(A5),A1
@@ -546,8 +546,8 @@ ED_TransformLineSpacing_Mode1:
     CMP.B   -49(A5,D7.L),D0
     BNE.S   .after_leading_spaces
 
-    LEA     ED_EditBufferLive,A0
-    ADDA.L  ED_EditCursorOffset,A0
+    LEA     _ED_EditBufferLive,A0
+    ADDA.L  _ED_EditCursorOffset,A0
     MOVE.B  (A0),-90(A5,D7.L)
     ADDQ.L  #1,D7
     BRA.S   .scan_leading_spaces
@@ -568,8 +568,8 @@ ED_TransformLineSpacing_Mode1:
     BNE.S   .after_space_scan
 
     SUB.L   D6,D0
-    LEA     ED_EditBufferLive,A0
-    ADDA.L  ED_EditCursorOffset,A0
+    LEA     _ED_EditBufferLive,A0
+    ADDA.L  _ED_EditCursorOffset,A0
     MOVE.B  (A0),-90(A5,D0.L)
     ADDQ.L  #1,D6
     BRA.S   .scan_trailing_spaces
@@ -582,7 +582,7 @@ ED_TransformLineSpacing_Mode1:
     MOVE.L  ED_ViewportOffset,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferScratch,A0
+    LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     LEA     -49(A5),A1
     ADDA.L  D7,A1
@@ -601,7 +601,7 @@ ED_TransformLineSpacing_Mode1:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferLive,A0
+    LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
     LEA     -90(A5),A1
     ADDA.L  D7,A1
@@ -670,7 +670,7 @@ ED_TransformLineSpacing_Mode1:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQFUNC_JMPTBL_STRING_CopyPadNul
 ; READS:
-;   ED_EditCursorOffset, ED_ViewportOffset
+;   _ED_EditCursorOffset, ED_ViewportOffset
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -685,7 +685,7 @@ ED_TransformLineSpacing_Mode2:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferScratch,A0
+    LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     PEA     40.W
     MOVE.L  A0,-(A7)
@@ -697,7 +697,7 @@ ED_TransformLineSpacing_Mode2:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferLive,A0
+    LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
     MOVEQ   #39,D0
     LEA     -90(A5),A1
@@ -720,8 +720,8 @@ ED_TransformLineSpacing_Mode2:
     BNE.S   .after_right_spaces
 
     SUB.L   D7,D0
-    LEA     ED_EditBufferLive,A0
-    ADDA.L  ED_EditCursorOffset,A0
+    LEA     _ED_EditBufferLive,A0
+    ADDA.L  _ED_EditCursorOffset,A0
     MOVE.B  (A0),-90(A5,D0.L)
     ADDQ.L  #1,D7
     BRA.S   .scan_right_spaces
@@ -738,8 +738,8 @@ ED_TransformLineSpacing_Mode2:
     CMP.B   -49(A5,D6.L),D0
     BNE.S   .after_left_spaces
 
-    LEA     ED_EditBufferLive,A0
-    ADDA.L  ED_EditCursorOffset,A0
+    LEA     _ED_EditBufferLive,A0
+    ADDA.L  _ED_EditCursorOffset,A0
     MOVE.B  (A0),-90(A5,D6.L)
     ADDQ.L  #1,D6
     BRA.S   .scan_left_spaces
@@ -753,7 +753,7 @@ ED_TransformLineSpacing_Mode2:
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D7,D0
-    LEA     ED_EditBufferScratch,A0
+    LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     MOVEQ   #40,D0
     SUB.L   D7,D0
@@ -772,7 +772,7 @@ ED_TransformLineSpacing_Mode2:
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D7,D0
-    LEA     ED_EditBufferLive,A0
+    LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
     MOVEQ   #40,D0
     SUB.L   D7,D0
@@ -790,7 +790,7 @@ ED_TransformLineSpacing_Mode2:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferScratch,A0
+    LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     MOVEQ   #40,D0
     SUB.L   D7,D0
@@ -810,7 +810,7 @@ ED_TransformLineSpacing_Mode2:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferLive,A0
+    LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
     MOVEQ   #40,D0
     SUB.L   D7,D0
@@ -844,7 +844,7 @@ ED_TransformLineSpacing_Mode2:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQFUNC_JMPTBL_STRING_CopyPadNul
 ; READS:
-;   ED_EditCursorOffset, ED_ViewportOffset
+;   _ED_EditCursorOffset, ED_ViewportOffset
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -859,7 +859,7 @@ ED_TransformLineSpacing_Mode3:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferScratch,A0
+    LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     PEA     40.W
     MOVE.L  A0,-(A7)
@@ -871,7 +871,7 @@ ED_TransformLineSpacing_Mode3:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferLive,A0
+    LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
     MOVEQ   #39,D0
     LEA     -90(A5),A1
@@ -891,8 +891,8 @@ ED_TransformLineSpacing_Mode3:
     CMP.B   -49(A5,D7.L),D0
     BNE.S   .after_leading_spaces
 
-    LEA     ED_EditBufferLive,A0
-    ADDA.L  ED_EditCursorOffset,A0
+    LEA     _ED_EditBufferLive,A0
+    ADDA.L  _ED_EditCursorOffset,A0
     MOVE.B  (A0),-90(A5,D7.L)
     ADDQ.L  #1,D7
     BRA.S   .scan_leading_spaces
@@ -913,8 +913,8 @@ ED_TransformLineSpacing_Mode3:
     BNE.S   .after_trailing_spaces
 
     SUB.L   D6,D0
-    LEA     ED_EditBufferLive,A0
-    ADDA.L  ED_EditCursorOffset,A0
+    LEA     _ED_EditBufferLive,A0
+    ADDA.L  _ED_EditCursorOffset,A0
     MOVE.B  (A0),-90(A5,D0.L)
     ADDQ.L  #1,D6
     BRA.S   .scan_trailing_spaces
@@ -940,7 +940,7 @@ ED_TransformLineSpacing_Mode3:
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D7,D0
-    LEA     ED_EditBufferScratch,A0
+    LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     MOVEQ   #40,D0
     SUB.L   D7,D0
@@ -959,7 +959,7 @@ ED_TransformLineSpacing_Mode3:
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D7,D0
-    LEA     ED_EditBufferLive,A0
+    LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
     MOVEQ   #40,D0
     SUB.L   D7,D0
@@ -977,7 +977,7 @@ ED_TransformLineSpacing_Mode3:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferScratch,A0
+    LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     MOVEQ   #40,D0
     SUB.L   D7,D0
@@ -997,7 +997,7 @@ ED_TransformLineSpacing_Mode3:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferLive,A0
+    LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
     MOVEQ   #40,D0
     SUB.L   D7,D0
@@ -1034,7 +1034,7 @@ ED_TransformLineSpacing_Mode3:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferScratch,A0
+    LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     LEA     -49(A5),A1
     ADDA.L  D7,A1
@@ -1053,7 +1053,7 @@ ED_TransformLineSpacing_Mode3:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ED_EditBufferLive,A0
+    LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
     LEA     -90(A5),A1
     ADDA.L  D7,A1
@@ -1112,7 +1112,7 @@ ED_TransformLineSpacing_Mode3:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_LoadCurrentAdIntoBuffers   (Load current ad into buffersuncertain)
+; FUNC: _ED_LoadCurrentAdIntoBuffers   (Load current ad into buffersuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1120,24 +1120,24 @@ ED_TransformLineSpacing_Mode3:
 ; CLOBBERS:
 ;   A0/A1/A6/A7/D0/D1/D2/D3/D7
 ; CALLS:
-;   GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault, GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte, ED_RedrawAllRows, ED_DrawCurrentColorIndicator,
-;   ED_RedrawCursorChar,
+;   GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault, GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte, _ED_RedrawAllRows, _ED_DrawCurrentColorIndicator,
+;   _ED_RedrawCursorChar,
 ;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE,
 ;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
-;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
+;   _GROUP_AM_JMPTBL_WDISP_SPrintf, _DISPLIB_DisplayTextAtPosition,
 ;   ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVORectFill
 ; READS:
-;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, ED_BlockOffset, ED_TextLimit
+;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _ED_BlockOffset, _ED_TextLimit
 ; WRITES:
-;   ED_EditCursorOffset, ED_ViewportOffset, ED_AdDisplayResetFlag, Global_REF_BOOL_IS_LINE_OR_PAGE,
+;   _ED_EditCursorOffset, ED_ViewportOffset, _ED_AdDisplayResetFlag, Global_REF_BOOL_IS_LINE_OR_PAGE,
 ;   Global_REF_BOOL_IS_TEXT_OR_CURSOR
 ; DESC:
 ;   Loads the current ad into edit buffers and refreshes the screen.
 ; NOTES:
-;   Pads buffers to ED_BlockOffset and redraws the header/status areas.
+;   Pads buffers to _ED_BlockOffset and redraws the header/status areas.
 ;   Uses a 44-byte local printf target (-44(A5)..-1(A5)).
 ;------------------------------------------------------------------------------
-ED_LoadCurrentAdIntoBuffers:
+_ED_LoadCurrentAdIntoBuffers:
 
 .editingAdLabel = -44
 
@@ -1145,13 +1145,13 @@ ED_LoadCurrentAdIntoBuffers:
     MOVEM.L D2-D3/D7,-(A7)
     MOVE.L  _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     SUBQ.L  #1,D0
-    PEA     ED_EditBufferLive
-    PEA     ED_EditBufferScratch
+    PEA     _ED_EditBufferLive
+    PEA     _ED_EditBufferScratch
     MOVE.L  D0,-(A7)
     JSR     GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault(PC)
 
     LEA     12(A7),A7
-    LEA     ED_EditBufferScratch,A0
+    LEA     _ED_EditBufferScratch,A0
     MOVEA.L A0,A1
 
 .find_string_end:
@@ -1161,7 +1161,7 @@ ED_LoadCurrentAdIntoBuffers:
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D7
-    MOVE.L  ED_BlockOffset,D0
+    MOVE.L  _ED_BlockOffset,D0
     CMP.L   D0,D7
     BGE.S   .after_pad
 
@@ -1177,7 +1177,7 @@ ED_LoadCurrentAdIntoBuffers:
     SUBQ.L  #1,D0
     BCC.S   .pad_spaces_loop
 
-    LEA     ED_EditBufferLive,A0
+    LEA     _ED_EditBufferLive,A0
     ADDA.L  D7,A0
     PEA     1.W
     PEA     2.W
@@ -1187,7 +1187,7 @@ ED_LoadCurrentAdIntoBuffers:
     ADDQ.W  #8,A7
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    MOVE.L  ED_BlockOffset,D0
+    MOVE.L  _ED_BlockOffset,D0
     SUB.L   D7,D0
     MOVEA.L 12(A7),A0
     BRA.S   .fill_attr_check
@@ -1200,15 +1200,15 @@ ED_LoadCurrentAdIntoBuffers:
     BCC.S   .fill_attr_loop
 
 .after_pad:
-    LEA     ED_EditBufferScratch,A0
-    ADDA.L  ED_BlockOffset,A0
+    LEA     _ED_EditBufferScratch,A0
+    ADDA.L  _ED_BlockOffset,A0
     CLR.B   (A0)
     MOVEQ   #1,D0
-    MOVE.L  D0,ED_AdDisplayResetFlag
-    BSR.W   ED_RedrawAllRows
+    MOVE.L  D0,_ED_AdDisplayResetFlag
+    BSR.W   _ED_RedrawAllRows
 
     MOVEQ   #0,D0
-    MOVE.L  D0,ED_EditCursorOffset
+    MOVE.L  D0,_ED_EditCursorOffset
     MOVE.L  D0,ED_ViewportOffset
     MOVE.L  D0,Global_REF_BOOL_IS_LINE_OR_PAGE
     MOVE.L  D0,-(A7)
@@ -1219,61 +1219,61 @@ ED_LoadCurrentAdIntoBuffers:
     MOVE.L  D0,(A7)
     BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #8,D0
-    SUB.L   ED_TextLimit,D0
+    SUB.L   _ED_TextLimit,D0
     MOVEQ   #30,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  #302,D1
     SUB.L   D0,D1
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVE.L  #640,D2
     MOVE.L  #308,D3
     JSR     _LVORectFill(A6)
 
     MOVEQ   #0,D0
-    MOVE.B  ED_EditBufferLive,D0
+    MOVE.B  _ED_EditBufferLive,D0
     MOVE.L  D0,(A7)
-    BSR.W   ED_DrawCurrentColorIndicator
+    BSR.W   _ED_DrawCurrentColorIndicator
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
     JSR     _LVOSetBPen(A6)
 
     MOVE.L  _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,(A7)
     PEA     Global_STR_EDITING_AD_NUMBER_FORMATTED_2
     PEA     .editingAdLabel(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     .editingAdLabel(A5)
     PEA     300.W
     PEA     190.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     ; Set drawing mode to 1
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     ; Set B pen to 2
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     JSR     _LVOSetBPen(A6)
 
-    BSR.W   ED_RedrawCursorChar
+    BSR.W   _ED_RedrawCursorChar
 
     MOVEM.L -60(A5),D2-D3/D7
     UNLK    A5
@@ -1282,7 +1282,7 @@ ED_LoadCurrentAdIntoBuffers:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_CommitCurrentAdEdits   (Commit current ad editsuncertain)
+; FUNC: _ED_CommitCurrentAdEdits   (Commit current ad editsuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1290,7 +1290,7 @@ ED_LoadCurrentAdIntoBuffers:
 ; CLOBBERS:
 ;   A7/D0
 ; CALLS:
-;   GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex
+;   _GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex
 ; READS:
 ;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; WRITES:
@@ -1298,15 +1298,15 @@ ED_LoadCurrentAdIntoBuffers:
 ; DESC:
 ;   Commits the current ad buffers to storage.
 ; NOTES:
-;   Calls GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex with (adNumber-1).
+;   Calls _GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex with (adNumber-1).
 ;------------------------------------------------------------------------------
-ED_CommitCurrentAdEdits:
+_ED_CommitCurrentAdEdits:
     MOVE.L  _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     SUBQ.L  #1,D0
-    PEA     ED_EditBufferLive
-    PEA     ED_EditBufferScratch
+    PEA     _ED_EditBufferLive
+    PEA     _ED_EditBufferScratch
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex(PC)
+    JSR     _GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex(PC)
 
     LEA     12(A7),A7
     RTS
@@ -1322,7 +1322,7 @@ ED_CommitCurrentAdEdits:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   ED_CommitCurrentAdEdits, ED_LoadCurrentAdIntoBuffers
+;   _ED_CommitCurrentAdEdits, _ED_LoadCurrentAdIntoBuffers
 ; READS:
 ;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _ED_MaxAdNumber
 ; WRITES:
@@ -1337,10 +1337,10 @@ ED_NextAdNumber:
     CMP.L   _ED_MaxAdNumber,D0
     BGE.S   .return
 
-    BSR.S   ED_CommitCurrentAdEdits
+    BSR.S   _ED_CommitCurrentAdEdits
 
     ADDQ.L  #1,_Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    BSR.W   ED_LoadCurrentAdIntoBuffers
+    BSR.W   _ED_LoadCurrentAdIntoBuffers
 
 .return:
     RTS
@@ -1357,7 +1357,7 @@ ED_NextAdNumber:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ED_CommitCurrentAdEdits, ED_LoadCurrentAdIntoBuffers
+;   _ED_CommitCurrentAdEdits, _ED_LoadCurrentAdIntoBuffers
 ; READS:
 ;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; WRITES:
@@ -1371,10 +1371,10 @@ ED_PrevAdNumber:
     CMPI.L  #$1,_Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
     BLE.S   .return
 
-    BSR.S   ED_CommitCurrentAdEdits
+    BSR.S   _ED_CommitCurrentAdEdits
 
     SUBQ.L  #1,_Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    BSR.W   ED_LoadCurrentAdIntoBuffers
+    BSR.W   _ED_LoadCurrentAdIntoBuffers
 
 .return:
     RTS
@@ -1390,10 +1390,10 @@ ED_PrevAdNumber:
 ; CLOBBERS:
 ;   A1/A6/A7/D0/D1/D2/D3
 ; CALLS:
-;   _ED_DrawBottomHelpBarBackground, DISPLIB_DisplayTextAtPosition,
+;   _ED_DrawBottomHelpBarBackground, _DISPLIB_DisplayTextAtPosition,
 ;   _LVOSetAPen, _LVOSetDrMd, _LVORectFill
 ; READS:
-;   Global_REF_RASTPORT_1
+;   _Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -1406,100 +1406,100 @@ ED_DrawEditHelpText:
 
     BSR.W   _ED_DrawBottomHelpBarBackground
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVEQ   #68,D1
     MOVE.L  #$280,D2
     MOVE.L  #$165,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #6,D0
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVE.L  #$166,D1
     MOVE.L  #$1ad,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
     PEA     ED2_STR_PUSH_ANY_KEY_TO_CONTINUE_DOT
     PEA     390.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     ED2_STR_STAR_STAR_LINE_SLASH_PAGE_COMMANDS_S
     PEA     90.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     ED2_STR_F1_COLON_HOME_F6_COLON_CLEAR
     PEA     120.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     ED2_STR_F2_COLON_LINE_SLASH_PAGE_MODE_F7_COL
     PEA     150.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     ED2_CMD_F3_COLON_CENTER_F8_COLON_DELETE_LINE
     PEA     180.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     80(A7),A7
     PEA     ED2_STR_F4_COLON_LEFT_JUSTIFY_F9_COLON_APPLY
     PEA     210.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     ED2_STR_F5_COLON_RIGHT_JUSTIFY_F10_COLON_INS
     PEA     240.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     Global_STR_SHIFT_RIGHT_NEXT_AD_DEL_DELETE_CHAR
     PEA     270.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     Global_STR_SHIFT_LEFT_PREV_AD_CTRLC_COLOR_MODE
     PEA     300.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     Global_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND
     PEA     330.W
     PEA     40.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     80(A7),A7
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)

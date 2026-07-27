@@ -1,7 +1,7 @@
-    XDEF    GROUP_AZ_JMPTBL_ESQ_ColdReboot
+    XDEF    _GROUP_AZ_JMPTBL_ESQ_ColdReboot
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AZ_JMPTBL_ESQ_ColdReboot   (Routine at GROUP_AZ_JMPTBL_ESQ_ColdReboot)
+; FUNC: _GROUP_AZ_JMPTBL_ESQ_ColdReboot   (Routine at _GROUP_AZ_JMPTBL_ESQ_ColdReboot)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -19,7 +19,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AZ_JMPTBL_ESQ_ColdReboot:
+_GROUP_AZ_JMPTBL_ESQ_ColdReboot:
     JMP     ESQ_ColdReboot
 
 ;!======

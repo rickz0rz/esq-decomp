@@ -7,15 +7,15 @@
     XDEF    GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard
     XDEF    GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage
     XDEF    GROUP_AM_JMPTBL_ESQ_InitAudio1Dma
-    XDEF    GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight
-    XDEF    GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+    XDEF    _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight
+    XDEF    _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
     XDEF    GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates
     XDEF    GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults
     XDEF    GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState
     XDEF    GROUP_AM_JMPTBL_KYBD_InitializeInputDevices
     XDEF    GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries
     XDEF    GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries
-    XDEF    GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile
+    XDEF    _GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile
     XDEF    GROUP_AM_JMPTBL_LIST_InitHeader
     XDEF    GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile
     XDEF    GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct
@@ -28,7 +28,7 @@
     XDEF    GROUP_AM_JMPTBL_STRUCT_AllocWithOwner
     XDEF    GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig
     XDEF    GROUP_AM_JMPTBL_TLIBA3_InitPatternTable
-    XDEF    GROUP_AM_JMPTBL_WDISP_SPrintf
+    XDEF    _GROUP_AM_JMPTBL_WDISP_SPrintf
 
 ;!======
 
@@ -173,7 +173,7 @@ GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds:
     JMP     _P_TYPE_ResetListsAndLoadPromoIds
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile   (JumpStub_LADFUNC_LoadTextAdsFromFile)
+; FUNC: _GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile   (JumpStub_LADFUNC_LoadTextAdsFromFile)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -189,7 +189,7 @@ GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds:
 ; DESC:
 ;   Jump stub to LADFUNC_LoadTextAdsFromFile.
 ;------------------------------------------------------------------------------
-GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile:
+_GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile:
     JMP     LADFUNC_LoadTextAdsFromFile
 
 ;------------------------------------------------------------------------------
@@ -453,7 +453,7 @@ GROUP_AM_JMPTBL_LIST_InitHeader:
     JMP     LIST_InitHeader
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight   (JumpStub_ESQ_SetCopperEffect_OnEnableHighlight)
+; FUNC: _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight   (JumpStub_ESQ_SetCopperEffect_OnEnableHighlight)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -469,7 +469,7 @@ GROUP_AM_JMPTBL_LIST_InitHeader:
 ; DESC:
 ;   Jump stub to ESQ_SetCopperEffect_OnEnableHighlight.
 ;------------------------------------------------------------------------------
-GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight:
+_GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight:
     JMP     ESQ_SetCopperEffect_OnEnableHighlight
 
 ;!======
@@ -589,7 +589,7 @@ GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates:
     JMP     FLIB2_ResetAndLoadListingTemplates
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AM_JMPTBL_WDISP_SPrintf   (JumpStub_PRINTF)
+; FUNC: _GROUP_AM_JMPTBL_WDISP_SPrintf   (JumpStub_PRINTF)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -597,19 +597,19 @@ GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   WDISP_SPrintf
+;   _WDISP_SPrintf
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to WDISP_SPrintf.
+;   Jump stub to _WDISP_SPrintf.
 ;------------------------------------------------------------------------------
-GROUP_AM_JMPTBL_WDISP_SPrintf:
-    JMP     WDISP_SPrintf
+_GROUP_AM_JMPTBL_WDISP_SPrintf:
+    JMP     _WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight   (JumpStub_ESQ_SetCopperEffect_OffDisableHighlight)
+; FUNC: _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight   (JumpStub_ESQ_SetCopperEffect_OffDisableHighlight)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -625,7 +625,7 @@ GROUP_AM_JMPTBL_WDISP_SPrintf:
 ; DESC:
 ;   Jump stub to ESQ_SetCopperEffect_OffDisableHighlight.
 ;------------------------------------------------------------------------------
-GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight:
+_GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight:
     JMP     ESQ_SetCopperEffect_OffDisableHighlight
 
 ;------------------------------------------------------------------------------

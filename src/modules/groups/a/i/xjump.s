@@ -1,9 +1,9 @@
-    XDEF    GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2
+    XDEF    _GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2
     XDEF    GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers
-    XDEF    GROUP_AI_JMPTBL_STRING_AppendAtNull
+    XDEF    _GROUP_AI_JMPTBL_STRING_AppendAtNull
     XDEF    GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments
     XDEF    GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN
-    XDEF    GROUP_AI_JMPTBL_STR_FindCharPtr
+    XDEF    _GROUP_AI_JMPTBL_STR_FindCharPtr
     XDEF    GROUP_AI_JMPTBL_STR_SkipClass3Chars
 
 ;!======
@@ -30,7 +30,7 @@ GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers:
     JMP     NEWGRID_SetSelectionMarkers
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AI_JMPTBL_STR_FindCharPtr   (JumpStub_STR_FindCharPtr)
+; FUNC: _GROUP_AI_JMPTBL_STR_FindCharPtr   (JumpStub_STR_FindCharPtr)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -38,18 +38,18 @@ GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STR_FindCharPtr
+;   _STR_FindCharPtr
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to STR_FindCharPtr.
+;   Jump stub to _STR_FindCharPtr.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AI_JMPTBL_STR_FindCharPtr:
-    JMP     STR_FindCharPtr
+_GROUP_AI_JMPTBL_STR_FindCharPtr:
+    JMP     _STR_FindCharPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments   (JumpStub)
@@ -74,7 +74,7 @@ GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments:
     JMP     TLIBA1_DrawTextWithInsetSegments
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2   (JumpStub_FORMAT_FormatToBuffer2)
+; FUNC: _GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2   (JumpStub_FORMAT_FormatToBuffer2)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -92,7 +92,7 @@ GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2:
+_GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2:
     JMP     FORMAT_FormatToBuffer2
 
 ;------------------------------------------------------------------------------
@@ -118,7 +118,7 @@ GROUP_AI_JMPTBL_STR_SkipClass3Chars:
     JMP     STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AI_JMPTBL_STRING_AppendAtNull   (JumpStub_STRING_AppendAtNull)
+; FUNC: _GROUP_AI_JMPTBL_STRING_AppendAtNull   (JumpStub_STRING_AppendAtNull)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -136,7 +136,7 @@ GROUP_AI_JMPTBL_STR_SkipClass3Chars:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AI_JMPTBL_STRING_AppendAtNull:
+_GROUP_AI_JMPTBL_STRING_AppendAtNull:
     JMP     _STRING_AppendAtNull
 
 ;------------------------------------------------------------------------------

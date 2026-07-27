@@ -1,26 +1,26 @@
     XDEF    Global_STR_DISKIO_C_1
-    XDEF    Global_STR_DISKIO_C_2
+    XDEF    _Global_STR_DISKIO_C_2
     XDEF    Global_STR_PERCENT_LD
     XDEF    Global_STR_DISKIO_C_3
     XDEF    Global_STR_DISKIO_C_4
-    XDEF    Global_STR_DISKIO_C_5
-    XDEF    Global_STR_DISKIO_C_6
+    XDEF    _Global_STR_DISKIO_C_5
+    XDEF    _Global_STR_DISKIO_C_6
     XDEF    Global_STR_DISKIO_C_7
     XDEF    Global_STR_DISKIO_C_8
-    XDEF    DISKIO_Drive0Dh2AssignDoneFlag
-    XDEF    DISKIO_Drive1GfxAssignDoneFlag
-    XDEF    DISKIO_STR_TRACKDISK_DEVICE
-    XDEF    DISKIO_CMD_ASSIGN_FONTS_DH2
-    XDEF    DISKIO_CMD_ASSIGN_ENV_DH2
-    XDEF    DISKIO_CMD_ASSIGN_SYS_DH2
-    XDEF    DISKIO_CMD_ASSIGN_S_DH2
-    XDEF    DISKIO_CMD_ASSIGN_C_DH2
-    XDEF    DISKIO_CMD_ASSIGN_L_DH2
-    XDEF    DISKIO_CMD_ASSIGN_LIBS_DH2
-    XDEF    DISKIO_CMD_ASSIGN_DEVS_DH2
-    XDEF    DISKIO_PATH_DF1_G_ADS
-    XDEF    DISKIO_CMD_ASSIGN_GFX_DF1
-    XDEF    DISKIO_CMD_ASSIGN_GFX_PC1
+    XDEF    _DISKIO_Drive0Dh2AssignDoneFlag
+    XDEF    _DISKIO_Drive1GfxAssignDoneFlag
+    XDEF    _DISKIO_STR_TRACKDISK_DEVICE
+    XDEF    _DISKIO_CMD_ASSIGN_FONTS_DH2
+    XDEF    _DISKIO_CMD_ASSIGN_ENV_DH2
+    XDEF    _DISKIO_CMD_ASSIGN_SYS_DH2
+    XDEF    _DISKIO_CMD_ASSIGN_S_DH2
+    XDEF    _DISKIO_CMD_ASSIGN_C_DH2
+    XDEF    _DISKIO_CMD_ASSIGN_L_DH2
+    XDEF    _DISKIO_CMD_ASSIGN_LIBS_DH2
+    XDEF    _DISKIO_CMD_ASSIGN_DEVS_DH2
+    XDEF    _DISKIO_PATH_DF1_G_ADS
+    XDEF    _DISKIO_CMD_ASSIGN_GFX_DF1
+    XDEF    _DISKIO_CMD_ASSIGN_GFX_PC1
     XDEF    DISKIO_TAG_NRLS
     XDEF    DISKIO_TAG_LRBN
     XDEF    DISKIO_TAG_MSN
@@ -120,7 +120,7 @@
 
 Global_STR_DISKIO_C_1:
     NStr    "DISKIO.c"
-Global_STR_DISKIO_C_2:
+_Global_STR_DISKIO_C_2:
     NStr    "DISKIO.c"
 Global_STR_PERCENT_LD:
     NStr    "%ld"
@@ -128,48 +128,48 @@ Global_STR_DISKIO_C_3:
     NStr    "DISKIO.c"
 Global_STR_DISKIO_C_4:
     NStr    "DISKIO.c"
-Global_STR_DISKIO_C_5:
+_Global_STR_DISKIO_C_5:
     NStr    "DISKIO.c"
-Global_STR_DISKIO_C_6:
+_Global_STR_DISKIO_C_6:
     NStr    "DISKIO.c"
 Global_STR_DISKIO_C_7:
     NStr    "DISKIO.c"
 Global_STR_DISKIO_C_8:
     NStr    "DISKIO.c"
-DISKIO_Drive0Dh2AssignDoneFlag:
+_DISKIO_Drive0Dh2AssignDoneFlag:
     DC.L    1
-DISKIO_Drive1GfxAssignDoneFlag:
+_DISKIO_Drive1GfxAssignDoneFlag:
     DC.L    1
 ;------------------------------------------------------------------------------
-; SYM: DISKIO_STR_TRACKDISK_DEVICE   (trackdisk.device)
+; SYM: _DISKIO_STR_TRACKDISK_DEVICE   (trackdisk.device)
 ; TYPE: cstring
 ; PURPOSE: Device name used when probing floppy units via OpenDevice.
 ; USED BY: DISKIO_ProbeDrivesAndAssignPaths
 ; NOTES: Companion assign/mount command strings follow in this block.
 ;------------------------------------------------------------------------------
-DISKIO_STR_TRACKDISK_DEVICE:
+_DISKIO_STR_TRACKDISK_DEVICE:
     NStr    "trackdisk.device"
-DISKIO_CMD_ASSIGN_FONTS_DH2:
+_DISKIO_CMD_ASSIGN_FONTS_DH2:
     NStr    "ram:assign >nil: FONTS: DH2:FONTS"
-DISKIO_CMD_ASSIGN_ENV_DH2:
+_DISKIO_CMD_ASSIGN_ENV_DH2:
     NStr    "ram:assign >nil: ENV: DH2:"
-DISKIO_CMD_ASSIGN_SYS_DH2:
+_DISKIO_CMD_ASSIGN_SYS_DH2:
     NStr    "ram:assign >nil: SYS: DH2:"
-DISKIO_CMD_ASSIGN_S_DH2:
+_DISKIO_CMD_ASSIGN_S_DH2:
     NStr    "ram:assign >nil: S: DH2:S"
-DISKIO_CMD_ASSIGN_C_DH2:
+_DISKIO_CMD_ASSIGN_C_DH2:
     NStr    "ram:assign >nil: C: DH2:C"
-DISKIO_CMD_ASSIGN_L_DH2:
+_DISKIO_CMD_ASSIGN_L_DH2:
     NStr    "ram:assign >nil: L: DH2:L"
-DISKIO_CMD_ASSIGN_LIBS_DH2:
+_DISKIO_CMD_ASSIGN_LIBS_DH2:
     NStr    "ram:assign >nil: LIBS: DH2:LIBS"
-DISKIO_CMD_ASSIGN_DEVS_DH2:
+_DISKIO_CMD_ASSIGN_DEVS_DH2:
     NStr    "ram:assign >nil: DEVS: DH2:DEVS"
-DISKIO_PATH_DF1_G_ADS:
+_DISKIO_PATH_DF1_G_ADS:
     NStr    "df1:g.ads"
-DISKIO_CMD_ASSIGN_GFX_DF1:
+_DISKIO_CMD_ASSIGN_GFX_DF1:
     NStr    "ram:assign >nil: gfx: DF1:"
-DISKIO_CMD_ASSIGN_GFX_PC1:
+_DISKIO_CMD_ASSIGN_GFX_PC1:
     NStr    "ram:assign >nil: gfx: PC1:"
 DISKIO_TAG_NRLS:
     NStr    "NRLS"

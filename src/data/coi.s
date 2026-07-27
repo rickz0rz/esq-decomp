@@ -1,5 +1,5 @@
     XDEF    Global_STR_COI_C_3
-    XDEF    Global_STR_COI_C_4
+    XDEF    _Global_STR_COI_C_4
     XDEF    Global_STR_DF0_OI_PERCENT_2_LX_DAT_1
     XDEF    COI_FMT_LONG_DEC_A
     XDEF    COI_FMT_DEC_A
@@ -9,7 +9,7 @@
     XDEF    COI_FMT_LONG_DEC_PAD2
     XDEF    COI_STR_COLON_B
     XDEF    COI_FMT_DEC_B
-    XDEF    Global_STR_COI_C_5
+    XDEF    _Global_STR_COI_C_5
     XDEF    Global_STR_DF0_OI_PERCENT_2_LX_DAT_2
     XDEF    Global_STR_COI_C_6
     XDEF    COI_STR_LINEFEED_CR_1
@@ -17,19 +17,19 @@
     XDEF    COI_STR_DEFAULT_TOKEN_TEMPLATE_A
     XDEF    Global_STR_PERCENT_S_1
     XDEF    Global_STR_COI_C_1
-    XDEF    Global_STR_COI_C_2
-    XDEF    COI_STR_DEFAULT_TOKEN_TEMPLATE_B
+    XDEF    _Global_STR_COI_C_2
+    XDEF    _COI_STR_DEFAULT_TOKEN_TEMPLATE_B
     XDEF    COI_FMT_WRAP_CHAR_STRING_CHAR
     XDEF    COI_STR_SINGLE_SPACE
     XDEF    COI_FMT_WIDE_STR_WITH_TRAILING_SPACE
-    XDEF    CTASKS_IffTaskDoneFlag
-    XDEF    CTASKS_IffTaskState
-    XDEF    COI_AttentionOverlayBusyFlag
+    XDEF    _CTASKS_IffTaskDoneFlag
+    XDEF    _CTASKS_IffTaskState
+    XDEF    _COI_AttentionOverlayBusyFlag
 ; ========== COI.c ==========
 
 Global_STR_COI_C_3:
     NStr    "COI.c"
-Global_STR_COI_C_4:
+_Global_STR_COI_C_4:
     NStr    "COI.c"
 Global_STR_DF0_OI_PERCENT_2_LX_DAT_1:
     NStr    "df0:OI_%02lx.dat"
@@ -56,7 +56,7 @@ COI_STR_COLON_B:
     NStr    ":"
 COI_FMT_DEC_B:
     NStr    "%d"
-Global_STR_COI_C_5:
+_Global_STR_COI_C_5:
     NStr    "COI.c"
 Global_STR_DF0_OI_PERCENT_2_LX_DAT_2:
     NStr    "df0:OI_%02lx.dat"
@@ -72,9 +72,9 @@ Global_STR_PERCENT_S_1:
     NStr    "%s"
 Global_STR_COI_C_1:
     NStr    "COI.c"
-Global_STR_COI_C_2:
+_Global_STR_COI_C_2:
     NStr    "COI.c"
-COI_STR_DEFAULT_TOKEN_TEMPLATE_B:
+_COI_STR_DEFAULT_TOKEN_TEMPLATE_B:
     NStr    "NNNNNNXX00"
 COI_FMT_WRAP_CHAR_STRING_CHAR:
     NStr    "%c%s%c"
@@ -84,15 +84,15 @@ COI_FMT_WIDE_STR_WITH_TRAILING_SPACE:
     NStr    "%ls "
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: CTASKS_IffTaskDoneFlag/CTASKS_IffTaskState   (IFF task completion + state)
+; SYM: _CTASKS_IffTaskDoneFlag/_CTASKS_IffTaskState   (IFF task completion + state)
 ; TYPE: u16/u16
 ; PURPOSE: Coordinates IFF loader task lifecycle and target-state selection.
 ; USED BY: CTASKS_*, ESQIFF_*, ESQFUNC_*, PARSEINI_*, GCOMMAND_SaveBrushResult
 ; NOTES: Observed states include 0 (idle), 4/5/6 (active target classes), 11 (special case).
 ;------------------------------------------------------------------------------
-CTASKS_IffTaskDoneFlag:
+_CTASKS_IffTaskDoneFlag:
     DC.W    $0001
-CTASKS_IffTaskState:
+_CTASKS_IffTaskState:
     DC.W    $0004
-COI_AttentionOverlayBusyFlag:
+_COI_AttentionOverlayBusyFlag:
     DS.W    1

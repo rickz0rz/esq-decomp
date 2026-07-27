@@ -14,27 +14,27 @@
 ; CLOBBERS:
 ;   D0/A1/A6
 ; CALLS:
-;   _LVORemIntServer, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+;   _LVORemIntServer, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_REF_INTERRUPT_STRUCT_INTB_VERTB, AbsExecBase, Global_STR_CLEANUP_C_1
+;   _Global_REF_INTERRUPT_STRUCT_INTB_VERTB, AbsExecBase, _Global_STR_CLEANUP_C_1
 ; WRITES:
 ;   (none)
 ; DESC:
 ;   Removes the INTB_VERTB interrupt server and frees its interrupt structure.
 ; NOTES:
-;   - Deallocates the struct via GROUP_AG_JMPTBL_MEMORY_DeallocateMemory.
+;   - Deallocates the struct via _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory.
 ;------------------------------------------------------------------------------
 CLEANUP_ClearVertbInterruptServer:
     MOVEQ   #INTB_VERTB,D0
-    MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A1
+    MOVEA.L _Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVORemIntServer(A6)
 
     PEA     Struct_Interrupt_Size.W
-    MOVE.L  Global_REF_INTERRUPT_STRUCT_INTB_VERTB,-(A7)
+    MOVE.L  _Global_REF_INTERRUPT_STRUCT_INTB_VERTB,-(A7)
     PEA     57.W
-    PEA     Global_STR_CLEANUP_C_1
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_CLEANUP_C_1
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     RTS
@@ -50,9 +50,9 @@ CLEANUP_ClearVertbInterruptServer:
 ; CLOBBERS:
 ;   D0/A1/A6
 ; CALLS:
-;   _LVOSetIntVector, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+;   _LVOSetIntVector, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_REF_INTB_AUD1_INTERRUPT, Global_REF_INTERRUPT_STRUCT_INTB_AUD1,
+;   _Global_REF_INTB_AUD1_INTERRUPT, _Global_REF_INTERRUPT_STRUCT_INTB_AUD1,
 ;   AbsExecBase, Global_STR_CLEANUP_C_2
 ; WRITES:
 ;   INTENA
@@ -64,15 +64,15 @@ CLEANUP_ClearVertbInterruptServer:
 CLEANUP_ClearAud1InterruptVector:
     MOVE.W  #$100,INTENA
     MOVEQ   #INTB_AUD1,D0
-    MOVEA.L Global_REF_INTB_AUD1_INTERRUPT,A1
+    MOVEA.L _Global_REF_INTB_AUD1_INTERRUPT,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOSetIntVector(A6)
 
     PEA     22.W
-    MOVE.L  Global_REF_INTERRUPT_STRUCT_INTB_AUD1,-(A7)
+    MOVE.L  _Global_REF_INTERRUPT_STRUCT_INTB_AUD1,-(A7)
     PEA     74.W
     PEA     Global_STR_CLEANUP_C_2
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     RTS
@@ -88,12 +88,12 @@ CLEANUP_ClearAud1InterruptVector:
 ; CLOBBERS:
 ;   D0/A1/A6
 ; CALLS:
-;   _LVOCloseDevice, GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField,
-;   _LVOSetIntVector, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+;   _LVOCloseDevice, _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, _GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField,
+;   _LVOSetIntVector, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   WDISP_SerialIoRequestPtr, WDISP_SerialMessagePortPtr, Global_REF_INTB_RBF_INTERRUPT,
-;   Global_REF_INTB_RBF_64K_BUFFER, Global_REF_INTERRUPT_STRUCT_INTB_RBF,
-;   AbsExecBase, Global_STR_CLEANUP_C_3, Global_STR_CLEANUP_C_4
+;   _WDISP_SerialIoRequestPtr, _WDISP_SerialMessagePortPtr, _Global_REF_INTB_RBF_INTERRUPT,
+;   _Global_REF_INTB_RBF_64K_BUFFER, _Global_REF_INTERRUPT_STRUCT_INTB_RBF,
+;   AbsExecBase, _Global_STR_CLEANUP_C_3, _Global_STR_CLEANUP_C_4
 ; WRITES:
 ;   INTENA
 ; DESC:
@@ -104,32 +104,32 @@ CLEANUP_ClearAud1InterruptVector:
 ;------------------------------------------------------------------------------
 CLEANUP_ClearRbfInterruptAndSerial:
     MOVE.W  #$800,INTENA
-    MOVEA.L WDISP_SerialIoRequestPtr,A1
+    MOVEA.L _WDISP_SerialIoRequestPtr,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCloseDevice(A6)
 
-    MOVE.L  WDISP_SerialMessagePortPtr,-(A7)
-    JSR     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
+    MOVE.L  _WDISP_SerialMessagePortPtr,-(A7)
+    JSR     _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
 
-    MOVE.L  WDISP_SerialIoRequestPtr,(A7)
-    JSR     GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField(PC)
+    MOVE.L  _WDISP_SerialIoRequestPtr,(A7)
+    JSR     _GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField(PC)
 
     MOVEQ   #INTB_RBF,D0
-    MOVEA.L Global_REF_INTB_RBF_INTERRUPT,A1
+    MOVEA.L _Global_REF_INTB_RBF_INTERRUPT,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOSetIntVector(A6)
 
     MOVE.L  #64000,(A7)
-    MOVE.L  Global_REF_INTB_RBF_64K_BUFFER,-(A7)
+    MOVE.L  _Global_REF_INTB_RBF_64K_BUFFER,-(A7)
     PEA     113.W
-    PEA     Global_STR_CLEANUP_C_3
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_CLEANUP_C_3
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     PEA     22.W
-    MOVE.L  Global_REF_INTERRUPT_STRUCT_INTB_RBF,-(A7)
+    MOVE.L  _Global_REF_INTERRUPT_STRUCT_INTB_RBF,-(A7)
     PEA     118.W
-    PEA     Global_STR_CLEANUP_C_4
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_CLEANUP_C_4
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7
 
@@ -167,12 +167,12 @@ CLEANUP_ClearRbfInterruptAndSerial:
 ; CLOBBERS:
 ;   D0/A0-A1/A6
 ; CALLS:
-;   _LVODoIO, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOCloseDevice,
-;   GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, GROUP_AB_JMPTBL_IOSTDREQ_Free
+;   _LVODoIO, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOCloseDevice,
+;   _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, _GROUP_AB_JMPTBL_IOSTDREQ_Free
 ; READS:
-;   Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE, Global_REF_DATA_INPUT_BUFFER,
-;   Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE, Global_REF_INPUTDEVICE_MSGPORT,
-;   Global_REF_CONSOLEDEVICE_MSGPORT, AbsExecBase, Global_STR_CLEANUP_C_5
+;   _Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE, _Global_REF_DATA_INPUT_BUFFER,
+;   _Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE, _Global_REF_INPUTDEVICE_MSGPORT,
+;   _Global_REF_CONSOLEDEVICE_MSGPORT, AbsExecBase, _Global_STR_CLEANUP_C_5
 ; WRITES:
 ;   IOStdReq input fields (io_Command/io_Data)
 ; DESC:
@@ -181,41 +181,41 @@ CLEANUP_ClearRbfInterruptAndSerial:
 ;------------------------------------------------------------------------------
 ; Tears down console/input devices opened during startup, including msg ports.
 CLEANUP_ShutdownInputDevices:
-    MOVEA.L Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,A0
+    MOVEA.L _Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,A0
     MOVE.W  #10,28(A0)
 
-    MOVEA.L Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,A0
-    MOVE.L  Global_REF_DATA_INPUT_BUFFER,40(A0)
+    MOVEA.L _Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,A0
+    MOVE.L  _Global_REF_DATA_INPUT_BUFFER,40(A0)
 
-    MOVEA.L Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,A1
+    MOVEA.L _Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,A1
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVODoIO(A6)
 
     PEA     Struct_InputEvent_Size.W
-    MOVE.L  Global_REF_DATA_INPUT_BUFFER,-(A7)
+    MOVE.L  _Global_REF_DATA_INPUT_BUFFER,-(A7)
     PEA     127.W
-    PEA     Global_STR_CLEANUP_C_5
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_CLEANUP_C_5
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
-    MOVEA.L Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,A1
+    MOVEA.L _Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCloseDevice(A6)
 
-    MOVEA.L Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE,A1
+    MOVEA.L _Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE,A1
     JSR     _LVOCloseDevice(A6)
 
-    MOVE.L  Global_REF_INPUTDEVICE_MSGPORT,(A7)
-    JSR     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
+    MOVE.L  _Global_REF_INPUTDEVICE_MSGPORT,(A7)
+    JSR     _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
 
-    MOVE.L  Global_REF_CONSOLEDEVICE_MSGPORT,(A7)
-    JSR     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
+    MOVE.L  _Global_REF_CONSOLEDEVICE_MSGPORT,(A7)
+    JSR     _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
 
-    MOVE.L  Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,(A7)
-    JSR     GROUP_AB_JMPTBL_IOSTDREQ_Free(PC)
+    MOVE.L  _Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,(A7)
+    JSR     _GROUP_AB_JMPTBL_IOSTDREQ_Free(PC)
 
-    MOVE.L  Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE,(A7)
-    JSR     GROUP_AB_JMPTBL_IOSTDREQ_Free(PC)
+    MOVE.L  _Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE,(A7)
+    JSR     _GROUP_AB_JMPTBL_IOSTDREQ_Free(PC)
 
     LEA     16(A7),A7
     RTS
@@ -231,17 +231,17 @@ CLEANUP_ShutdownInputDevices:
 ; CLOBBERS:
 ;   D0-D1/D7/A0-A1/A6
 ; CALLS:
-;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AB_JMPTBL_GRAPHICS_FreeRaster,
+;   _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster,
 ;   _LVOCloseFont, _LVOCloseLibrary
 ; READS:
-;   Global_REF_96_BYTES_ALLOCATED, Global_REF_RASTPORT_1, WDISP_LivePlaneRasterTable0, WDISP_352x240RasterPtrTable,
-;   WDISP_BannerRowScratchRasterTable0, WDISP_DisplayContextPlanePointer0, WDISP_BannerWorkRasterPtr, Global_HANDLE_PREVUE_FONT,
-;   Global_HANDLE_TOPAZ_FONT, Global_HANDLE_H26F_FONT, Global_HANDLE_PREVUEC_FONT,
-;   Global_REF_UTILITY_LIBRARY, Global_REF_DISKFONT_LIBRARY,
-;   Global_REF_DOS_LIBRARY, Global_REF_INTUITION_LIBRARY, Global_REF_GRAPHICS_LIBRARY,
-;   Global_STR_CLEANUP_C_6, Global_STR_CLEANUP_C_7, Global_STR_CLEANUP_C_8,
-;   Global_STR_CLEANUP_C_9, Global_STR_CLEANUP_C_10, Global_STR_CLEANUP_C_11,
-;   Global_STR_CLEANUP_C_12
+;   _Global_REF_96_BYTES_ALLOCATED, _Global_REF_RASTPORT_1, _WDISP_LivePlaneRasterTable0, _WDISP_352x240RasterPtrTable,
+;   _WDISP_BannerRowScratchRasterTable0, _WDISP_DisplayContextPlanePointer0, _WDISP_BannerWorkRasterPtr, _Global_HANDLE_PREVUE_FONT,
+;   _Global_HANDLE_TOPAZ_FONT, _Global_HANDLE_H26F_FONT, _Global_HANDLE_PREVUEC_FONT,
+;   _Global_REF_UTILITY_LIBRARY, _Global_REF_DISKFONT_LIBRARY,
+;   _Global_REF_DOS_LIBRARY, _Global_REF_INTUITION_LIBRARY, Global_REF_GRAPHICS_LIBRARY,
+;   _Global_STR_CLEANUP_C_6, Global_STR_CLEANUP_C_7, _Global_STR_CLEANUP_C_8,
+;   Global_STR_CLEANUP_C_9, _Global_STR_CLEANUP_C_10, Global_STR_CLEANUP_C_11,
+;   _Global_STR_CLEANUP_C_12
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -253,16 +253,16 @@ CLEANUP_ReleaseDisplayResources:
     MOVE.L  D7,-(A7)
 
     PEA     96.W
-    MOVE.L  Global_REF_96_BYTES_ALLOCATED,-(A7)
+    MOVE.L  _Global_REF_96_BYTES_ALLOCATED,-(A7)
     PEA     148.W
-    PEA     Global_STR_CLEANUP_C_6
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_CLEANUP_C_6
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     PEA     100.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     PEA     152.W
     PEA     Global_STR_CLEANUP_C_7
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7
     MOVEQ   #0,D7
@@ -274,14 +274,14 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     WDISP_LivePlaneRasterTable0,A0
+    LEA     _WDISP_LivePlaneRasterTable0,A0
     ADDA.L  D0,A0
     PEA     2.W
     PEA     696.W
     MOVE.L  (A0),-(A7)
     PEA     160.W
-    PEA     Global_STR_CLEANUP_C_8
-    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
+    PEA     _Global_STR_CLEANUP_C_8
+    JSR     _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
@@ -297,14 +297,14 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D1
     ASL.L   #2,D1
-    LEA     WDISP_352x240RasterPtrTable,A0
+    LEA     _WDISP_352x240RasterPtrTable,A0
     ADDA.L  D1,A0
     PEA     240.W
     PEA     352.W
     MOVE.L  (A0),-(A7)
     PEA     169.W
     PEA     Global_STR_CLEANUP_C_9
-    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
+    JSR     _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
@@ -320,14 +320,14 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     WDISP_BannerRowScratchRasterTable0,A0
+    LEA     _WDISP_BannerRowScratchRasterTable0,A0
     ADDA.L  D0,A0
     PEA     509.W
     PEA     696.W
     MOVE.L  (A0),-(A7)
     PEA     178.W
-    PEA     Global_STR_CLEANUP_C_10
-    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
+    PEA     _Global_STR_CLEANUP_C_10
+    JSR     _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
@@ -343,14 +343,14 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     WDISP_DisplayContextPlanePointer0,A0
+    LEA     _WDISP_DisplayContextPlanePointer0,A0
     ADDA.L  D0,A0
     PEA     241.W
     PEA     696.W
     MOVE.L  (A0),-(A7)
     PEA     187.W
     PEA     Global_STR_CLEANUP_C_11
-    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
+    JSR     _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
@@ -359,61 +359,61 @@ CLEANUP_ReleaseDisplayResources:
 .after_raster_set4:
     PEA     15.W
     PEA     696.W
-    MOVE.L  WDISP_BannerWorkRasterPtr,-(A7)
+    MOVE.L  _WDISP_BannerWorkRasterPtr,-(A7)
     PEA     200.W
-    PEA     Global_STR_CLEANUP_C_12
-    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
+    PEA     _Global_STR_CLEANUP_C_12
+    JSR     _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
 
-    TST.L   Global_HANDLE_PREVUE_FONT
+    TST.L   _Global_HANDLE_PREVUE_FONT
     BEQ.S   .closeTopazFont
 
-    MOVEA.L Global_HANDLE_PREVUE_FONT,A1
+    MOVEA.L _Global_HANDLE_PREVUE_FONT,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
 
 .closeTopazFont:
-    TST.L   Global_HANDLE_TOPAZ_FONT
+    TST.L   _Global_HANDLE_TOPAZ_FONT
     BEQ.S   .closeH26fFont
 
-    MOVEA.L Global_HANDLE_TOPAZ_FONT,A1
+    MOVEA.L _Global_HANDLE_TOPAZ_FONT,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
 
 .closeH26fFont:
-    TST.L   Global_HANDLE_H26F_FONT
+    TST.L   _Global_HANDLE_H26F_FONT
     BEQ.S   .closePrevueCFont
 
-    MOVEA.L Global_HANDLE_H26F_FONT,A1
+    MOVEA.L _Global_HANDLE_H26F_FONT,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
 
 .closePrevueCFont:
-    TST.L   Global_HANDLE_PREVUEC_FONT
+    TST.L   _Global_HANDLE_PREVUEC_FONT
     BEQ.S   .closeUtilityLibrary
 
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A1
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
 
 .closeUtilityLibrary:
-    TST.L   Global_REF_UTILITY_LIBRARY
+    TST.L   _Global_REF_UTILITY_LIBRARY
     BEQ.S   .closeDiskfontLibrary
 
-    MOVEA.L Global_REF_UTILITY_LIBRARY,A1
+    MOVEA.L _Global_REF_UTILITY_LIBRARY,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCloseLibrary(A6)
 
 .closeDiskfontLibrary:
-    MOVEA.L Global_REF_DISKFONT_LIBRARY,A1
+    MOVEA.L _Global_REF_DISKFONT_LIBRARY,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCloseLibrary(A6)
 
-    MOVEA.L Global_REF_DOS_LIBRARY,A1
+    MOVEA.L _Global_REF_DOS_LIBRARY,A1
     JSR     _LVOCloseLibrary(A6)
 
-    MOVEA.L Global_REF_INTUITION_LIBRARY,A1
+    MOVEA.L _Global_REF_INTUITION_LIBRARY,A1
     JSR     _LVOCloseLibrary(A6)
 
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A1
@@ -433,17 +433,17 @@ CLEANUP_ReleaseDisplayResources:
 ; CLOBBERS:
 ;   D0-D7/A0-A1/A6
 ; CALLS:
-;   _LVOForbid, LOCAVAIL_FreeResourceChain, BRUSH_FreeBrushList,
+;   _LVOForbid, _LOCAVAIL_FreeResourceChain, _BRUSH_FreeBrushList,
 ;   CLEANUP_ClearVertbInterruptServer, CLEANUP_ClearAud1InterruptVector,
-;   CLEANUP_ClearRbfInterruptAndSerial, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
-;   CLEANUP_ShutdownInputDevices, CLEANUP_ReleaseDisplayResources, GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries, GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers,
+;   CLEANUP_ClearRbfInterruptAndSerial, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
+;   CLEANUP_ShutdownInputDevices, CLEANUP_ReleaseDisplayResources, GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries, _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers,
 ;   GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode, GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData, GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings, GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers,
 ;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_UNKNOWN2A_Stub0, _LVOPermit
 ; READS:
-;   LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, ESQFUNC_PwBrushListHead, ESQIFF_RecordBufferPtr,
-;   ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, ESQDISP_HighlightBitmapTable, WDISP_HighlightRasterHeightPx, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQ_ProcessWindowPtrBackup,
-;   WDISP_ExecBaseHookPtr, Global_REF_GRAPHICS_LIBRARY, Global_REF_INTUITION_LIBRARY,
-;   Global_REF_BACKED_UP_INTUITION_AUTOREQUEST, Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,
+;   _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _ESQFUNC_PwBrushListHead, ESQIFF_RecordBufferPtr,
+;   _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort, ESQDISP_HighlightBitmapTable, _WDISP_HighlightRasterHeightPx, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQ_ProcessWindowPtrBackup,
+;   WDISP_ExecBaseHookPtr, Global_REF_GRAPHICS_LIBRARY, _Global_REF_INTUITION_LIBRARY,
+;   _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST, _Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,
 ;   AbsExecBase, Global_STR_CLEANUP_C_13, Global_STR_CLEANUP_C_14, Global_STR_CLEANUP_C_15,
 ;   Global_STR_CLEANUP_C_16
 ; WRITES:
@@ -461,27 +461,27 @@ CLEANUP_ShutdownSystem:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
-    PEA     LOCAVAIL_PrimaryFilterState
+    PEA     _LOCAVAIL_PrimaryFilterState
     JSR     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
 
     PEA     LOCAVAIL_SecondaryFilterState
     JSR     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
 
     CLR.L   (A7)
-    PEA     ESQIFF_BrushIniListHead
-    JSR     BRUSH_FreeBrushList(PC)      ; release primary brush list
+    PEA     _ESQIFF_BrushIniListHead
+    JSR     _BRUSH_FreeBrushList(PC)      ; release primary brush list
 
     CLR.L   (A7)
-    PEA     ESQIFF_GAdsBrushListHead
-    JSR     BRUSH_FreeBrushList(PC)      ; release alternate brush buckets
+    PEA     _ESQIFF_GAdsBrushListHead
+    JSR     _BRUSH_FreeBrushList(PC)      ; release alternate brush buckets
 
     CLR.L   (A7)
-    PEA     ESQIFF_LogoBrushListHead
-    JSR     BRUSH_FreeBrushList(PC)
+    PEA     _ESQIFF_LogoBrushListHead
+    JSR     _BRUSH_FreeBrushList(PC)
 
     CLR.L   (A7)
-    PEA     ESQFUNC_PwBrushListHead
-    JSR     BRUSH_FreeBrushList(PC)
+    PEA     _ESQFUNC_PwBrushListHead
+    JSR     _BRUSH_FreeBrushList(PC)
 
     BSR.W   CLEANUP_ClearVertbInterruptServer
 
@@ -493,7 +493,7 @@ CLEANUP_ShutdownSystem:
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     PEA     260.W
     PEA     Global_STR_CLEANUP_C_13
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     BSR.W   CLEANUP_ShutdownInputDevices
 
@@ -501,7 +501,7 @@ CLEANUP_ShutdownSystem:
 
     JSR     GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries(PC)
 
-    JSR     GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers(PC)
+    JSR     _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers(PC)
 
     PEA     1.W
     JSR     GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(PC)
@@ -524,18 +524,18 @@ CLEANUP_ShutdownSystem:
     JSR     GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources(PC)
 
     PEA     34.W
-    MOVE.L  ESQ_HighlightMsgPort,-(A7)
+    MOVE.L  _ESQ_HighlightMsgPort,-(A7)
     PEA     318.W
     PEA     Global_STR_CLEANUP_C_14
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     72(A7),A7
 
     PEA     34.W
-    MOVE.L  ESQ_HighlightReplyPort,-(A7)
+    MOVE.L  _ESQ_HighlightReplyPort,-(A7)
     PEA     319.W
     PEA     Global_STR_CLEANUP_C_15
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -555,7 +555,7 @@ CLEANUP_ShutdownSystem:
 
     MOVE.L  D6,D0
     MOVEQ   #40,D1
-    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     LEA     ESQDISP_HighlightBitmapTable,A0
     ADDA.L  D0,A0
@@ -563,13 +563,13 @@ CLEANUP_ShutdownSystem:
     ASL.L   #2,D0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
-    MOVE.W  WDISP_HighlightRasterHeightPx,D0
+    MOVE.W  _WDISP_HighlightRasterHeightPx,D0
     MOVE.L  D0,-(A7)
     PEA     696.W
     MOVE.L  8(A0),-(A7)
     PEA     329.W
     PEA     Global_STR_CLEANUP_C_16
-    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
+    JSR     _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
@@ -582,12 +582,12 @@ CLEANUP_ShutdownSystem:
 .after_raster_table:
     MOVE.L  WDISP_WeatherStatusTextPtr,-(A7)
     CLR.L   -(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVE.L  D0,WDISP_WeatherStatusTextPtr
     MOVE.L  WDISP_WeatherStatusOverlayTextPtr,(A7)
     CLR.L   -(A7)
-    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,WDISP_WeatherStatusOverlayTextPtr
@@ -596,23 +596,23 @@ CLEANUP_ShutdownSystem:
     ; ...the other use of this stores D0 and this doesn't.
 
     ; Overriding the AutoRequest function in intuition.library
-    ; to point to Global_REF_BACKED_UP_INTUITION_AUTOREQUEST
-    MOVEA.L Global_REF_BACKED_UP_INTUITION_AUTOREQUEST,A0
+    ; to point to _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST
+    MOVEA.L _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST,A0
     MOVE.L  A0,D0
-    MOVEA.L Global_REF_INTUITION_LIBRARY,A1
+    MOVEA.L _Global_REF_INTUITION_LIBRARY,A1
     MOVEA.W #_LVOAutoRequest,A0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOSetFunction(A6)
 
     ; Overriding the ItemAddress function in intuition.library
-    ; to point to Global_REF_BACKED_UP_INTUITION_DISPLAYALERT
-    MOVEA.L Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,A0
+    ; to point to _Global_REF_BACKED_UP_INTUITION_DISPLAYALERT
+    MOVEA.L _Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,A0
     MOVE.L  A0,D0
-    MOVEA.L Global_REF_INTUITION_LIBRARY,A1
+    MOVEA.L _Global_REF_INTUITION_LIBRARY,A1
     MOVEA.W #_LVODisplayAlert,A0
     JSR     _LVOSetFunction(A6)
 
-    MOVEA.L Global_REF_INTUITION_LIBRARY,A6
+    MOVEA.L _Global_REF_INTUITION_LIBRARY,A6
     JSR     _LVOVBeamPos(A6)
 
     TST.L   ESQ_ProcessWindowPtrBackup

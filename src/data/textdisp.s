@@ -3,18 +3,18 @@
     XDEF    Global_STR_TEXTDISP_C_2
     XDEF    Global_STR_DF0_SOURCECFG_INI_2
     XDEF    Global_STR_TEXTDISP_C_3
-    XDEF    Global_STR_TEXTDISP_C_4
-    XDEF    TEXTDISP_ActiveGroupId
+    XDEF    _Global_STR_TEXTDISP_C_4
+    XDEF    _TEXTDISP_ActiveGroupId
     XDEF    TEXTDISP_FormatEntryFallbackTable
     XDEF    TEXTDISP_CenterAlignToken
     XDEF    TEXTDISP_LeftAlignToken
-    XDEF    TEXTDISP_Tag_PPV
-    XDEF    TEXTDISP_Tag_SBE
-    XDEF    TEXTDISP_Tag_SPORTS
-    XDEF    TEXTDISP_Tag_SPT_Filter
-    XDEF    Global_STR_ASTERISK_2
-    XDEF    TEXTDISP_Tag_FIND1
-    XDEF    Global_STR_ASTERISK_3
+    XDEF    _TEXTDISP_Tag_PPV
+    XDEF    _TEXTDISP_Tag_SBE
+    XDEF    _TEXTDISP_Tag_SPORTS
+    XDEF    _TEXTDISP_Tag_SPT_Filter
+    XDEF    _Global_STR_ASTERISK_2
+    XDEF    _TEXTDISP_Tag_FIND1
+    XDEF    _Global_STR_ASTERISK_3
     XDEF    TEXTDISP_Tag_SPT_Select
 ; ========== TEXTDISP.c ==========
 
@@ -24,7 +24,7 @@ Global_STR_TEXTDISP_C_1:
 ; SYM: TEXTDISP_DefaultSpacePad   (default source-config pad)
 ; TYPE: char[2]
 ; PURPOSE: Default single-space string copied into source-config buffer fields.
-; USED BY: TEXTDISP_HandleScriptCommand
+; USED BY: _TEXTDISP_HandleScriptCommand
 ; NOTES: NUL-terminated.
 ;------------------------------------------------------------------------------
 TEXTDISP_DefaultSpacePad:
@@ -35,17 +35,17 @@ Global_STR_DF0_SOURCECFG_INI_2:
     NStr    "df0:SourceCfg.ini"
 Global_STR_TEXTDISP_C_3:
     NStr    "TEXTDISP.c"
-Global_STR_TEXTDISP_C_4:
+_Global_STR_TEXTDISP_C_4:
     NStr    "TEXTDISP.c"
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_ActiveGroupId   (active listing group id)
+; SYM: _TEXTDISP_ActiveGroupId   (active listing group id)
 ; TYPE: u16
 ; PURPOSE: Selects which group/table (primary vs secondary) textdisp routines use.
 ; USED BY: TEXTDISP_*, TEXTDISP3_* selection/render paths
 ; NOTES: Commonly tested as 0/1 style branch state.
 ;------------------------------------------------------------------------------
-TEXTDISP_ActiveGroupId:
+_TEXTDISP_ActiveGroupId:
     DC.W    $0001
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_FormatEntryFallbackWord0   (fallback table word 0??)
@@ -97,25 +97,25 @@ TEXTDISP_CenterAlignToken:
 TEXTDISP_LeftAlignToken:
     DC.B    TextAlignLeft,0,0
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_Tag_PPV/TEXTDISP_Tag_SBE/TEXTDISP_Tag_SPORTS/TEXTDISP_Tag_SPT_Filter/TEXTDISP_Tag_FIND1/TEXTDISP_Tag_SPT_Select   (filter tags)
+; SYM: _TEXTDISP_Tag_PPV/_TEXTDISP_Tag_SBE/_TEXTDISP_Tag_SPORTS/_TEXTDISP_Tag_SPT_Filter/_TEXTDISP_Tag_FIND1/TEXTDISP_Tag_SPT_Select   (filter tags)
 ; TYPE: char[] strings
 ; PURPOSE: Pattern tokens used by TEXTDISP wildcard/filter and selection logic.
 ; USED BY: TEXTDISP_BuildMatchIndexList, TEXTDISP_SelectBestMatchFromList
 ; NOTES: Two distinct SPT tokens are retained because they are used in different phases.
 ;------------------------------------------------------------------------------
-TEXTDISP_Tag_PPV:
+_TEXTDISP_Tag_PPV:
     NStr    "PPV"
-TEXTDISP_Tag_SBE:
+_TEXTDISP_Tag_SBE:
     NStr    "SBE"
-TEXTDISP_Tag_SPORTS:
+_TEXTDISP_Tag_SPORTS:
     NStr    "SPORTS"
-TEXTDISP_Tag_SPT_Filter:
+_TEXTDISP_Tag_SPT_Filter:
     NStr    "SPT"
-Global_STR_ASTERISK_2:
+_Global_STR_ASTERISK_2:
     NStr    "*"
-TEXTDISP_Tag_FIND1:
+_TEXTDISP_Tag_FIND1:
     NStr    "FIND1"
-Global_STR_ASTERISK_3:
+_Global_STR_ASTERISK_3:
     NStr    "*"
 TEXTDISP_Tag_SPT_Select:
     NStr    "SPT"

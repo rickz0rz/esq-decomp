@@ -1,5 +1,5 @@
 /* RESTORES: GCOMMAND_LoadMplexFile
- * MODULE:   modules/groups/a/s/gcommand.s
+ * MODULE:   modules/groups/a/s/gcommand_gcommand_loadmplexfile.s
  * STATUS:   behavioural
  *
  * Serialises the Digital Mplex parameter block to DF0:Digital_Mplex.dat. The two

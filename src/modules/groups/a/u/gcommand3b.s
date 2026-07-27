@@ -2,25 +2,25 @@
     XDEF    GCOMMAND_AdjustBannerCopperOffset
     XDEF    GCOMMAND_BuildBannerBlock
     XDEF    GCOMMAND_BuildBannerRow
-    XDEF    GCOMMAND_BuildBannerTables
+    XDEF    _GCOMMAND_BuildBannerTables
     XDEF    GCOMMAND_ClearBannerQueue
     XDEF    GCOMMAND_ComputePresetIncrement
     XDEF    GCOMMAND_ConsumeBannerQueueEntry
     XDEF    GCOMMAND_CopyImageDataToBitmap
-    XDEF    GCOMMAND_DisableHighlight
+    XDEF    _GCOMMAND_DisableHighlight
     XDEF    GCOMMAND_ExpandPresetBlock
-    XDEF    GCOMMAND_GetBannerChar
+    XDEF    _GCOMMAND_GetBannerChar
     XDEF    GCOMMAND_InitPresetDefaults
-    XDEF    GCOMMAND_InitPresetTableFromPalette
-    XDEF    GCOMMAND_InitPresetWorkEntry
+    XDEF    _GCOMMAND_InitPresetTableFromPalette
+    XDEF    _GCOMMAND_InitPresetWorkEntry
     XDEF    GCOMMAND_LoadPresetWorkEntries
     XDEF    GCOMMAND_RebuildBannerTablesFromBounds
     XDEF    GCOMMAND_RefreshBannerTables
     XDEF    GCOMMAND_ResetBannerFadeState
-    XDEF    GCOMMAND_ResetHighlightMessages
+    XDEF    _GCOMMAND_ResetHighlightMessages
     XDEF    GCOMMAND_ResetPresetWorkTables
     XDEF    GCOMMAND_SeedBannerDefaults
-    XDEF    GCOMMAND_SeedBannerFromPrefs
+    XDEF    _GCOMMAND_SeedBannerFromPrefs
     XDEF    GCOMMAND_ServiceHighlightMessages
     XDEF    GCOMMAND_SetPresetEntry
     XDEF    GCOMMAND_TickHighlightState
@@ -37,7 +37,7 @@
     XDEF    GCOMMAND_ValidatePresetTable_Return
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_DisableHighlight   (Routine at GCOMMAND_DisableHighlight)
+; FUNC: _GCOMMAND_DisableHighlight   (Routine at _GCOMMAND_DisableHighlight)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -45,7 +45,7 @@
 ; CLOBBERS:
 ;   A0/A2/A3/A7/D0/D1/D6/D7
 ; CALLS:
-;   _GCOMMAND_ApplyHighlightFlag, GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
+;   _GCOMMAND_ApplyHighlightFlag, _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
 ;   GCOMMAND_FMT_PCT_S_COLON, GCOMMAND_STR_GRADIENT, GCOMMAND_FMT_COLOR_PCT_D_PCT_D, GCOMMAND_FMT_PCT_D_PCT_03X, GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE
 ; WRITES:
@@ -55,7 +55,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GCOMMAND_DisableHighlight:
+_GCOMMAND_DisableHighlight:
     CLR.W   _GCOMMAND_HighlightFlag
     BSR.W   _GCOMMAND_ApplyHighlightFlag
 
@@ -68,10 +68,10 @@ GCOMMAND_DisableHighlight:
     MOVEA.L 24(A7),A2
     MOVE.L  A3,-(A7)
     PEA     GCOMMAND_FMT_PCT_S_COLON
-    JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     PEA     GCOMMAND_STR_GRADIENT
-    JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D7
@@ -88,7 +88,7 @@ GCOMMAND_DisableHighlight:
     MOVE.L  D1,-(A7)
     MOVE.L  D7,-(A7)
     PEA     GCOMMAND_FMT_COLOR_PCT_D_PCT_D
-    JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D6
@@ -113,7 +113,7 @@ GCOMMAND_DisableHighlight:
     MOVE.L  D0,-(A7)
     MOVE.L  D6,-(A7)
     PEA     GCOMMAND_FMT_PCT_D_PCT_03X
-    JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D6
@@ -125,7 +125,7 @@ GCOMMAND_DisableHighlight:
 
 .lab_0D72:
     PEA     GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE
-    JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
     MOVEM.L (A7)+,D6-D7/A2-A3
@@ -304,9 +304,9 @@ GCOMMAND_ExpandPresetBlock_Return:
 ; CALLS:
 ;   GCOMMAND_UpdateBannerBounds, _LVODisable, _LVOEnable
 ; READS:
-;   [presetTable], GCOMMAND_DefaultPresetTable
+;   [presetTable], _GCOMMAND_DefaultPresetTable
 ; WRITES:
-;   GCOMMAND_PresetWorkResetPendingFlag, GCOMMAND_DefaultPresetTable
+;   _GCOMMAND_PresetWorkResetPendingFlag, _GCOMMAND_DefaultPresetTable
 ; DESC:
 ;   Validates preset table values and, if needed, copies defaults and resets
 ;   associated state.
@@ -395,11 +395,11 @@ GCOMMAND_ValidatePresetTable:
     JSR     _LVODisable(A6)
 
     MOVEA.L A3,A0
-    LEA     GCOMMAND_DefaultPresetTable,A1
+    LEA     _GCOMMAND_DefaultPresetTable,A1
     MOVE.L  #$820,D0
     JSR     _LVOCopyMem(A6)
 
-    MOVE.W  #1,GCOMMAND_PresetWorkResetPendingFlag
+    MOVE.W  #1,_GCOMMAND_PresetWorkResetPendingFlag
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     PEA     6.W
@@ -436,7 +436,7 @@ GCOMMAND_ValidatePresetTable_Return:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_InitPresetTableFromPalette   (InitPresetTableFromPalette)
+; FUNC: _GCOMMAND_InitPresetTableFromPalette   (InitPresetTableFromPalette)
 ; ARGS:
 ;   stack +4: presetTable (base pointer)
 ; RET:
@@ -444,7 +444,7 @@ GCOMMAND_ValidatePresetTable_Return:
 ; CLOBBERS:
 ;   D0-D7, A0-A3
 ; CALLS:
-;   NEWGRID_JMPTBL_MATH_Mulu32
+;   _NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
 ;   GCOMMAND_PresetSeedPackedWordTable
 ; WRITES:
@@ -457,10 +457,10 @@ GCOMMAND_ValidatePresetTable_Return:
 ;     presetTable + 32 + (row*128) + (col*2)     = value word
 ;   with row in 0..15 and col in 0..15 for this initializer pass.
 ;   Source lookup uses GCOMMAND_PresetSeedPackedWordTable with base index (row*62)+col.
-;   The destination table can be either GCOMMAND_DefaultPresetTable or
+;   The destination table can be either _GCOMMAND_DefaultPresetTable or
 ;   GCOMMAND_GradientPresetTable (parse-time staging path).
 ;------------------------------------------------------------------------------
-GCOMMAND_InitPresetTableFromPalette:
+_GCOMMAND_InitPresetTableFromPalette:
     LINK.W  A5,#-8
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 28(A7),A3
@@ -494,7 +494,7 @@ GCOMMAND_InitPresetTableFromPalette:
     MOVE.L  D0,16(A7)
     MOVE.L  D7,D0
     MOVEQ   #62,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     LEA     GCOMMAND_PresetSeedPackedWordTable,A1
     ADDA.L  D0,A1
@@ -542,19 +542,19 @@ GCOMMAND_InitPresetTableFromPalette_Return:
 ; CLOBBERS:
 ;   D0-D7, A0-A3
 ; CALLS:
-;   GCOMMAND_InitPresetTableFromPalette
+;   _GCOMMAND_InitPresetTableFromPalette
 ; READS:
-;   GCOMMAND_DefaultPresetTable
+;   _GCOMMAND_DefaultPresetTable
 ; WRITES:
-;   GCOMMAND_DefaultPresetTable
+;   _GCOMMAND_DefaultPresetTable
 ; DESC:
-;   Initializes the default preset table at GCOMMAND_DefaultPresetTable.
+;   Initializes the default preset table at _GCOMMAND_DefaultPresetTable.
 ; NOTES:
-;   Wrapper around GCOMMAND_InitPresetTableFromPalette.
+;   Wrapper around _GCOMMAND_InitPresetTableFromPalette.
 ;------------------------------------------------------------------------------
 GCOMMAND_InitPresetDefaults:
-    PEA     GCOMMAND_DefaultPresetTable
-    BSR.S   GCOMMAND_InitPresetTableFromPalette
+    PEA     _GCOMMAND_DefaultPresetTable
+    BSR.S   _GCOMMAND_InitPresetTableFromPalette
 
     ADDQ.W  #4,A7
     RTS
@@ -570,9 +570,9 @@ GCOMMAND_InitPresetDefaults:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MATH_DivS32
+;   _NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   GCOMMAND_DefaultPresetTable
+;   _GCOMMAND_DefaultPresetTable
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -600,7 +600,7 @@ GCOMMAND_ComputePresetIncrement:
 
     MOVE.L  D7,D1
     ADD.L   D1,D1
-    LEA     GCOMMAND_DefaultPresetTable,A0
+    LEA     _GCOMMAND_DefaultPresetTable,A0
     ADDA.L  D1,A0
     MOVE.W  (A0),D1
     EXT.L   D1
@@ -612,7 +612,7 @@ GCOMMAND_ComputePresetIncrement:
 
     MOVE.L  D5,D0
     MOVE.L  #1000,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D4,D1
     JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
@@ -722,7 +722,7 @@ GCOMMAND_UpdatePresetEntryCache_Return:
 ; READS:
 ;   (none)
 ; WRITES:
-;   GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3, GCOMMAND_PresetWorkResetPendingFlag
+;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3, _GCOMMAND_PresetWorkResetPendingFlag
 ; DESC:
 ;   Clears the preset work tables and resets the pending flag.
 ; NOTES:
@@ -732,7 +732,7 @@ GCOMMAND_ResetPresetWorkTables:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
-    MOVE.L  #GCOMMAND_PresetWorkEntryTable,-8(A5)
+    MOVE.L  #_GCOMMAND_PresetWorkEntryTable,-8(A5)
 
 .entry_loop:
     MOVEQ   #4,D0
@@ -754,14 +754,14 @@ GCOMMAND_ResetPresetWorkTables:
     BRA.S   .entry_loop
 
 .done:
-    CLR.W   GCOMMAND_PresetWorkResetPendingFlag
+    CLR.W   _GCOMMAND_PresetWorkResetPendingFlag
     MOVE.L  (A7)+,D7
     UNLK    A5
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_InitPresetWorkEntry   (Initialize one preset work-entry state block)
+; FUNC: _GCOMMAND_InitPresetWorkEntry   (Initialize one preset work-entry state block)
 ; ARGS:
 ;   stack +4: entryPtr (work entry)
 ;   stack +8: presetIndex
@@ -774,7 +774,7 @@ GCOMMAND_ResetPresetWorkTables:
 ; CALLS:
 ;   GCOMMAND_SetPresetEntry
 ; READS:
-;   GCOMMAND_DefaultPresetTable
+;   _GCOMMAND_DefaultPresetTable
 ; WRITES:
 ;   [entryPtr]
 ; DESC:
@@ -782,7 +782,7 @@ GCOMMAND_ResetPresetWorkTables:
 ; NOTES:
 ;   If index is invalid, forces entry index to 6 and updates the preset table.
 ;------------------------------------------------------------------------------
-GCOMMAND_InitPresetWorkEntry:
+_GCOMMAND_InitPresetWorkEntry:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.L  24(A7),D7
@@ -805,7 +805,7 @@ GCOMMAND_InitPresetWorkEntry:
     MOVE.L  D5,12(A3)
     MOVE.L  D7,D1
     ADD.L   D1,D1
-    LEA     GCOMMAND_DefaultPresetTable,A0
+    LEA     _GCOMMAND_DefaultPresetTable,A0
     ADDA.L  D1,A0
     MOVE.W  (A0),D1
     EXT.L   D1
@@ -856,15 +856,15 @@ GCOMMAND_InitPresetWorkEntry:
 ; CLOBBERS:
 ;   D0-D7, A0, A3
 ; CALLS:
-;   GCOMMAND_InitPresetWorkEntry
+;   _GCOMMAND_InitPresetWorkEntry
 ; READS:
 ;   32(A3), 36(A3), 55(A3)
 ; WRITES:
-;   GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3
+;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3
 ; DESC:
 ;   Seeds the preset work tables using the current preset record fields.
 ; NOTES:
-;   Writes four entries into the GCOMMAND_PresetWorkEntryTable block (stride 24 bytes).
+;   Writes four entries into the _GCOMMAND_PresetWorkEntryTable block (stride 24 bytes).
 ;------------------------------------------------------------------------------
 GCOMMAND_LoadPresetWorkEntries:
     MOVEM.L D7/A3,-(A7)
@@ -878,9 +878,9 @@ GCOMMAND_LoadPresetWorkEntries:
 
     MOVE.L  D7,D0
     MOVEQ   #24,D1
-    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     GCOMMAND_PresetWorkEntryTable,A0
+    LEA     _GCOMMAND_PresetWorkEntryTable,A0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
     MOVE.B  55(A3,D7.L),D0
@@ -890,7 +890,7 @@ GCOMMAND_LoadPresetWorkEntries:
     MOVE.L  32(A3),-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   GCOMMAND_InitPresetWorkEntry
+    BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     LEA     16(A7),A7
     ADDQ.L  #1,D7
@@ -912,9 +912,9 @@ GCOMMAND_LoadPresetWorkEntries:
 ; CALLS:
 ;   (none)
 ; READS:
-;   GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3
+;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3
 ; WRITES:
-;   GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3
+;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3
 ; DESC:
 ;   Advances preset work entry accumulators and clamps them to bounds.
 ; NOTES:
@@ -924,7 +924,7 @@ GCOMMAND_TickPresetWorkEntries:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
-    MOVE.L  #GCOMMAND_PresetWorkEntryTable,-4(A5)
+    MOVE.L  #_GCOMMAND_PresetWorkEntryTable,-4(A5)
 
 .entry_loop:
     MOVEQ   #4,D0
@@ -995,7 +995,7 @@ GCOMMAND_TickPresetWorkEntries:
 ; CALLS:
 ;   GCOMMAND_ComputePresetIncrement, _LVODisable, _LVOEnable
 ; READS:
-;   Global_UIBusyFlag
+;   _Global_UIBusyFlag
 ; WRITES:
 ;   GCOMMAND_BannerBoundLeft, GCOMMAND_BannerBoundTop, GCOMMAND_BannerBoundRight, GCOMMAND_BannerBoundBottom,
 ;   GCOMMAND_BannerStepLeft..GCOMMAND_BannerStepBottom, GCOMMAND_BannerRebuildPendingFlag
@@ -1015,7 +1015,7 @@ GCOMMAND_UpdateBannerBounds:
     MOVE.L  D6,GCOMMAND_BannerBoundTop
     MOVE.L  D5,GCOMMAND_BannerBoundRight
     MOVE.L  D4,GCOMMAND_BannerBoundBottom
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BEQ.S   .use_zero
 
     MOVEQ   #0,D0
@@ -1066,31 +1066,31 @@ GCOMMAND_UpdateBannerBounds:
 ; CLOBBERS:
 ;   D0-D7, A0-A3
 ; CALLS:
-;   GCOMMAND_InitPresetWorkEntry, GCOMMAND_TickPresetWorkEntries
+;   _GCOMMAND_InitPresetWorkEntry, GCOMMAND_TickPresetWorkEntries
 ; READS:
-;   GCOMMAND_BannerBoundLeft..GCOMMAND_BannerStepBottom, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3, Global_UIBusyFlag
+;   GCOMMAND_BannerBoundLeft..GCOMMAND_BannerStepBottom, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, _GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3, _Global_UIBusyFlag
 ; WRITES:
-;   GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3, ESQ_CopperListBannerA, ESQ_CopperListBannerB
+;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3, _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
 ; DESC:
 ;   Rebuilds banner tables from the cached bounds and preset definitions.
 ; NOTES:
-;   Uses GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3 as fallback values when preset tables are negative.
-;   Writes both ESQ_CopperListBannerA and ESQ_CopperListBannerB from +$80 onward.
+;   Uses _GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3 as fallback values when preset tables are negative.
+;   Writes both _ESQ_CopperListBannerA and _ESQ_CopperListBannerB from +$80 onward.
 ;   The row loop runs 17 iterations (D7 = 0..16), using 32-byte row stride.
 ;   Per-row gradient words land at offsets +6/+10/+14/+18 in each 32-byte entry.
 ;------------------------------------------------------------------------------
 GCOMMAND_RebuildBannerTablesFromBounds:
     LINK.W  A5,#-24
     MOVEM.L D2/D6-D7/A2-A3,-(A7)
-    MOVE.L  #ESQ_CopperListBannerA,-4(A5)
-    MOVE.L  #ESQ_CopperListBannerB,-8(A5)
+    MOVE.L  #_ESQ_CopperListBannerA,-4(A5)
+    MOVE.L  #_ESQ_CopperListBannerB,-8(A5)
     MOVEA.L -4(A5),A0
     ADDA.W  #$80,A0
     MOVEA.L -8(A5),A1
     ADDA.W  #$80,A1
     MOVE.L  A0,-12(A5)
     MOVE.L  A1,-16(A5)
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BEQ.S   .use_zero
 
     MOVEQ   #0,D0
@@ -1104,26 +1104,26 @@ GCOMMAND_RebuildBannerTablesFromBounds:
     MOVE.L  GCOMMAND_BannerStepLeft,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  GCOMMAND_BannerBoundLeft,-(A7)
-    PEA     GCOMMAND_PresetWorkEntryTable
-    BSR.W   GCOMMAND_InitPresetWorkEntry
+    PEA     _GCOMMAND_PresetWorkEntryTable
+    BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  GCOMMAND_BannerStepTop,(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  GCOMMAND_BannerBoundTop,-(A7)
     PEA     GCOMMAND_PresetWorkEntry1
-    BSR.W   GCOMMAND_InitPresetWorkEntry
+    BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  GCOMMAND_BannerStepRight,(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  GCOMMAND_BannerBoundRight,-(A7)
     PEA     GCOMMAND_PresetWorkEntry2
-    BSR.W   GCOMMAND_InitPresetWorkEntry
+    BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  GCOMMAND_BannerStepBottom,(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  GCOMMAND_BannerBoundBottom,-(A7)
     PEA     GCOMMAND_PresetWorkEntry3
-    BSR.W   GCOMMAND_InitPresetWorkEntry
+    BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     LEA     52(A7),A7
     MOVEQ   #0,D7
@@ -1140,11 +1140,11 @@ GCOMMAND_RebuildBannerTablesFromBounds:
     BPL.S   .use_preset0
 
     MOVEQ   #0,D2
-    MOVE.B  GCOMMAND_PresetFallbackValue0,D2
+    MOVE.B  _GCOMMAND_PresetFallbackValue0,D2
     BRA.S   .store_entry0
 
 .use_preset0:
-    MOVE.L  GCOMMAND_PresetWorkEntryTable,D2
+    MOVE.L  _GCOMMAND_PresetWorkEntryTable,D2
     ASL.L   #7,D2
     LEA     GCOMMAND_PresetValueTable,A0
     MOVEA.L A0,A1
@@ -1167,7 +1167,7 @@ GCOMMAND_RebuildBannerTablesFromBounds:
     BPL.S   .use_preset1
 
     MOVEQ   #0,D2
-    MOVE.B  GCOMMAND_PresetFallbackValue1,D2
+    MOVE.B  _GCOMMAND_PresetFallbackValue1,D2
     BRA.S   .store_entry1
 
 .use_preset1:
@@ -1192,7 +1192,7 @@ GCOMMAND_RebuildBannerTablesFromBounds:
     BPL.S   .use_preset2
 
     MOVEQ   #0,D2
-    MOVE.B  GCOMMAND_PresetFallbackValue2,D2
+    MOVE.B  _GCOMMAND_PresetFallbackValue2,D2
     BRA.S   .store_entry2
 
 .use_preset2:
@@ -1248,7 +1248,7 @@ GCOMMAND_RebuildBannerTablesFromBounds:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_GetBannerChar   (Return the current banner character stored at ESQ_CopperListBannerA.)
+; FUNC: _GCOMMAND_GetBannerChar   (Return the current banner character stored at _ESQ_CopperListBannerA.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1258,19 +1258,19 @@ GCOMMAND_RebuildBannerTablesFromBounds:
 ; CALLS:
 ;   (none)
 ; READS:
-;   ESQ_CopperListBannerA
+;   _ESQ_CopperListBannerA
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Return the current banner character stored at ESQ_CopperListBannerA.
+;   Return the current banner character stored at _ESQ_CopperListBannerA.
 ; NOTES:
-;   Reads byte 0 from `ESQ_CopperListBannerA` and returns it zero-extended.
+;   Reads byte 0 from `_ESQ_CopperListBannerA` and returns it zero-extended.
 ;------------------------------------------------------------------------------
 
-; Return the current banner character stored at ESQ_CopperListBannerA.
-GCOMMAND_GetBannerChar:
+; Return the current banner character stored at _ESQ_CopperListBannerA.
+_GCOMMAND_GetBannerChar:
     LINK.W  A5,#-4
-    MOVE.L  #ESQ_CopperListBannerA,-4(A5)
+    MOVE.L  #_ESQ_CopperListBannerA,-4(A5)
     MOVEQ   #0,D0
     MOVEA.L -4(A5),A0
     MOVE.B  (A0),D0
@@ -1385,7 +1385,7 @@ GCOMMAND_UpdateBannerRowPointers:
 ; CALLS:
 ;   GCOMMAND_UpdateBannerRowPointers
 ; READS:
-;   GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3_ValueIndex, GCOMMAND_BannerRowFallbackOnFirstRowFlag
+;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3_ValueIndex, GCOMMAND_BannerRowFallbackOnFirstRowFlag
 ; WRITES:
 ;   [tablePtr + offsets], GCOMMAND_BannerRowFallbackOnFirstRowFlag?
 ; DESC:
@@ -1474,7 +1474,7 @@ GCOMMAND_BuildBannerRow:
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     LEA     746(A1),A6
-    MOVE.L  GCOMMAND_PresetWorkEntryTable,D0
+    MOVE.L  _GCOMMAND_PresetWorkEntryTable,D0
     ASL.L   #7,D0
     LEA     GCOMMAND_PresetValueTable,A1
     MOVEA.L A1,A0
@@ -1556,15 +1556,15 @@ GCOMMAND_BuildBannerRow:
 ; READS:
 ;   (none)
 ; WRITES:
-;   ESQPARS2_BannerQueueAttentionCountdown, ESQPARS2_BannerQueueBuffer
+;   _ESQPARS2_BannerQueueAttentionCountdown, _ESQPARS2_BannerQueueBuffer
 ; DESC:
 ;   Clears the banner queue buffer and resets the queue state.
 ; NOTES:
-;   Zeros 98 bytes in ESQPARS2_BannerQueueBuffer and sets ESQPARS2_BannerQueueAttentionCountdown to -1.
+;   Zeros 98 bytes in _ESQPARS2_BannerQueueBuffer and sets _ESQPARS2_BannerQueueAttentionCountdown to -1.
 ;------------------------------------------------------------------------------
 GCOMMAND_ClearBannerQueue:
     MOVE.L  D7,-(A7)
-    MOVE.W  #(-1),ESQPARS2_BannerQueueAttentionCountdown
+    MOVE.W  #(-1),_ESQPARS2_BannerQueueAttentionCountdown
     MOVEQ   #0,D7
 
 .clear_loop:
@@ -1572,7 +1572,7 @@ GCOMMAND_ClearBannerQueue:
     CMP.L   D0,D7
     BGE.S   .return
 
-    LEA     ESQPARS2_BannerQueueBuffer,A0
+    LEA     _ESQPARS2_BannerQueueBuffer,A0
     ADDA.L  D7,A0
     CLR.B   (A0)
     ADDQ.L  #1,D7
@@ -1587,8 +1587,8 @@ GCOMMAND_ClearBannerQueue:
     ; Dead code.
     LINK.W  A5,#-16
     MOVEM.L D2-D3/D6-D7,-(A7)
-    MOVE.L  #ESQ_CopperListBannerA,-4(A5)
-    MOVE.L  #ESQ_CopperListBannerB,-8(A5)
+    MOVE.L  #_ESQ_CopperListBannerA,-4(A5)
+    MOVE.L  #_ESQ_CopperListBannerB,-8(A5)
     MOVEQ   #0,D7
 
 .lab_0DBF:
@@ -1691,9 +1691,9 @@ GCOMMAND_ClearBannerQueue:
 ; CALLS:
 ;   (none)
 ; READS:
-;   GCOMMAND_BannerQueueSlotCurrent, ESQPARS2_BannerQueueBuffer, ESQPARS2_BannerQueueAttentionDelayTicks
+;   _GCOMMAND_BannerQueueSlotCurrent, _ESQPARS2_BannerQueueBuffer, _ESQPARS2_BannerQueueAttentionDelayTicks
 ; WRITES:
-;   ESQPARS2_BannerQueueAttentionCountdown, ESQPARS2_ReadModeFlags, ESQDISP_StatusIndicatorDeferredApplyFlag, GCOMMAND_HighlightHoldoffTickCount, ESQDISP_StatusRefreshPendingFlag, ESQPARS2_BannerQueueBuffer
+;   _ESQPARS2_BannerQueueAttentionCountdown, _ESQPARS2_ReadModeFlags, _ESQDISP_StatusIndicatorDeferredApplyFlag, _GCOMMAND_HighlightHoldoffTickCount, _ESQDISP_StatusRefreshPendingFlag, _ESQPARS2_BannerQueueBuffer
 ; DESC:
 ;   Consumes the current banner queue entry and updates highlight flags.
 ; NOTES:
@@ -1702,8 +1702,8 @@ GCOMMAND_ClearBannerQueue:
 ;------------------------------------------------------------------------------
 GCOMMAND_ConsumeBannerQueueEntry:
     MOVE.L  D2,-(A7)
-    LEA     ESQPARS2_BannerQueueBuffer,A0
-    MOVE.W  GCOMMAND_BannerQueueSlotCurrent,D0
+    LEA     _ESQPARS2_BannerQueueBuffer,A0
+    MOVE.W  _GCOMMAND_BannerQueueSlotCurrent,D0
     MOVEA.L A0,A1
     ADDA.W  D0,A1
     TST.B   (A1)
@@ -1718,11 +1718,11 @@ GCOMMAND_ConsumeBannerQueueEntry:
     CMP.L   D2,D1
     BNE.S   .check_0xfe
 
-    MOVE.W  ESQPARS2_BannerQueueAttentionDelayTicks,D1
+    MOVE.W  _ESQPARS2_BannerQueueAttentionDelayTicks,D1
     SUBQ.W  #1,D1
-    MOVE.W  D1,ESQPARS2_BannerQueueAttentionCountdown
+    MOVE.W  D1,_ESQPARS2_BannerQueueAttentionCountdown
     MOVEQ   #1,D2
-    MOVE.B  D2,ESQDISP_StatusIndicatorDeferredApplyFlag
+    MOVE.B  D2,_ESQDISP_StatusIndicatorDeferredApplyFlag
     BRA.S   .clear_entry
 
 .check_0xfe:
@@ -1735,7 +1735,7 @@ GCOMMAND_ConsumeBannerQueueEntry:
     CMP.L   D2,D1
     BNE.S   .store_value
 
-    MOVE.W  #$101,ESQPARS2_ReadModeFlags
+    MOVE.W  #$101,_ESQPARS2_ReadModeFlags
     BRA.S   .clear_entry
 
 .store_value:
@@ -1743,24 +1743,24 @@ GCOMMAND_ConsumeBannerQueueEntry:
     ADDA.W  D0,A1
     MOVEQ   #0,D1
     MOVE.B  (A1),D1
-    MOVE.W  D1,ESQPARS2_ReadModeFlags
+    MOVE.W  D1,_ESQPARS2_ReadModeFlags
 
 .clear_entry:
     ADDA.W  D0,A0
     MOVEQ   #0,D0
     MOVE.B  D0,(A0)
-    MOVE.W  ESQPARS2_BannerQueueAttentionCountdown,D1
+    MOVE.W  _ESQPARS2_BannerQueueAttentionCountdown,D1
     BLT.S   .return
 
     MOVE.L  D1,D2
     SUBQ.W  #1,D2
-    MOVE.W  D2,ESQPARS2_BannerQueueAttentionCountdown
-    MOVE.B  #$2,GCOMMAND_HighlightHoldoffTickCount
+    MOVE.W  D2,_ESQPARS2_BannerQueueAttentionCountdown
+    MOVE.B  #$2,_GCOMMAND_HighlightHoldoffTickCount
     TST.W   D2
     BPL.S   .return
 
-    MOVE.B  D0,ESQDISP_StatusIndicatorDeferredApplyFlag
-    MOVE.B  #$1,ESQDISP_StatusRefreshPendingFlag
+    MOVE.B  D0,_ESQDISP_StatusIndicatorDeferredApplyFlag
+    MOVE.B  #$1,_ESQDISP_StatusRefreshPendingFlag
 
 .return:
     MOVE.L  (A7)+,D2
@@ -1778,9 +1778,9 @@ GCOMMAND_ConsumeBannerQueueEntry:
 ; CALLS:
 ;   GCOMMAND_BuildBannerRow
 ; READS:
-;   GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, GCOMMAND_BannerPhaseIndexCurrent, WDISP_BannerRowScratchRasterTable0..WDISP_BannerRowScratchRasterTable2, ESQ_CopperListBannerA, ESQ_CopperListBannerB
+;   GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, GCOMMAND_BannerPhaseIndexCurrent, _WDISP_BannerRowScratchRasterTable0..WDISP_BannerRowScratchRasterTable2, _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
 ; WRITES:
-;   ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerSnapshotPlane1DstPtr, ESQPARS2_BannerSnapshotPlane2DstPtr
+;   _ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerSnapshotPlane1DstPtr, ESQPARS2_BannerSnapshotPlane2DstPtr
 ; DESC:
 ;   Rebuilds banner rows for both tables and refreshes row pointer globals.
 ; NOTES:
@@ -1790,8 +1790,8 @@ GCOMMAND_RefreshBannerTables:
     MOVE.L  GCOMMAND_BannerRowByteOffsetCurrent,-(A7)
     PEA     98.W
     MOVE.L  GCOMMAND_BannerPhaseIndexCurrent,-(A7)
-    PEA     ESQ_CopperListBannerA
-    PEA     Global_REF_696_400_BITMAP
+    PEA     _ESQ_CopperListBannerA
+    PEA     _Global_REF_696_400_BITMAP
     BSR.W   GCOMMAND_BuildBannerRow
 
     MOVEQ   #88,D0
@@ -1799,15 +1799,15 @@ GCOMMAND_RefreshBannerTables:
     MOVE.L  D0,(A7)
     PEA     98.W
     MOVE.L  GCOMMAND_BannerPhaseIndexCurrent,-(A7)
-    PEA     ESQ_CopperListBannerB
-    PEA     Global_REF_696_400_BITMAP
+    PEA     _ESQ_CopperListBannerB
+    PEA     _Global_REF_696_400_BITMAP
     BSR.W   GCOMMAND_BuildBannerRow
 
     LEA     36(A7),A7
     MOVE.L  GCOMMAND_BannerRowByteOffsetPrevious,D0
-    MOVEA.L WDISP_BannerRowScratchRasterTable0,A0
+    MOVEA.L _WDISP_BannerRowScratchRasterTable0,A0
     ADDA.L  D0,A0
-    MOVE.L  A0,ESQPARS2_BannerSnapshotPlane0DstPtr
+    MOVE.L  A0,_ESQPARS2_BannerSnapshotPlane0DstPtr
     MOVEA.L WDISP_BannerRowScratchRasterTable1,A0
     ADDA.L  D0,A0
     MOVE.L  A0,ESQPARS2_BannerSnapshotPlane1DstPtr
@@ -1831,9 +1831,9 @@ GCOMMAND_RefreshBannerTables:
 ;   GCOMMAND_ResetPresetWorkTables, GCOMMAND_TickPresetWorkEntries,
 ;   ESQSHARED4_CopyPlanesFromContextToSnapshot, ESQSHARED4_CopyLivePlanesToSnapshot, GCOMMAND_MapKeycodeToPreset
 ; READS:
-;   GCOMMAND_ActiveHighlightMsgPtr, GCOMMAND_PresetWorkResetPendingFlag, ESQ_HighlightMsgPort, GCOMMAND_ActiveMsgSavedField20..GCOMMAND_ActiveMsgSavedField28
+;   _GCOMMAND_ActiveHighlightMsgPtr, _GCOMMAND_PresetWorkResetPendingFlag, _ESQ_HighlightMsgPort, GCOMMAND_ActiveMsgSavedField20.._GCOMMAND_ActiveMsgSavedField28
 ; WRITES:
-;   GCOMMAND_ActiveHighlightMsgPtr, GCOMMAND_ActiveMsgSavedField20..GCOMMAND_ActiveMsgSavedField28, message fields at 20/24/28/32/52/54(A0)
+;   _GCOMMAND_ActiveHighlightMsgPtr, GCOMMAND_ActiveMsgSavedField20.._GCOMMAND_ActiveMsgSavedField28, message fields at 20/24/28/32/52/54(A0)
 ; DESC:
 ;   Polls the highlight message port, processes active messages, and updates
 ;   banner/preset state each tick.
@@ -1843,14 +1843,14 @@ GCOMMAND_RefreshBannerTables:
 ;   +52 countdown, +54 keycode/preset trigger byte.
 ;------------------------------------------------------------------------------
 GCOMMAND_ServiceHighlightMessages:
-    TST.L   GCOMMAND_ActiveHighlightMsgPtr
+    TST.L   _GCOMMAND_ActiveHighlightMsgPtr
     BNE.S   .update_tables
 
-    MOVEA.L ESQ_HighlightMsgPort,A0
+    MOVEA.L _ESQ_HighlightMsgPort,A0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOGetMsg(A6)
 
-    MOVE.L  D0,GCOMMAND_ActiveHighlightMsgPtr
+    MOVE.L  D0,_GCOMMAND_ActiveHighlightMsgPtr
     TST.L   D0
     BEQ.S   .update_tables
 
@@ -1865,10 +1865,10 @@ GCOMMAND_ServiceHighlightMessages:
     ADDQ.W  #4,A7
 
 .maybe_store_msg:
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
     MOVE.L  20(A0),GCOMMAND_ActiveMsgSavedField20 ; A0+20 = saved field 0
     MOVE.L  24(A0),GCOMMAND_ActiveMsgSavedField24 ; A0+24 = saved field 1
-    MOVE.L  28(A0),GCOMMAND_ActiveMsgSavedField28 ; A0+28 = saved field 2
+    MOVE.L  28(A0),_GCOMMAND_ActiveMsgSavedField28 ; A0+28 = saved field 2
     MOVE.B  54(A0),D0                       ; A0+54 = keycode/preset trigger
     TST.B   D0
     BEQ.S   .update_tables
@@ -1879,7 +1879,7 @@ GCOMMAND_ServiceHighlightMessages:
     BSR.W   GCOMMAND_MapKeycodeToPreset
 
     ADDQ.W  #4,A7
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
     CLR.B   54(A0)
 
 .update_tables:
@@ -1887,10 +1887,10 @@ GCOMMAND_ServiceHighlightMessages:
 
     BSR.W   GCOMMAND_ConsumeBannerQueueEntry
 
-    TST.L   GCOMMAND_ActiveHighlightMsgPtr
+    TST.L   _GCOMMAND_ActiveHighlightMsgPtr
     BEQ.W   .no_active_msg
 
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
     MOVE.W  52(A0),D0                       ; A0+52 = countdown ticks
     MOVEQ   #0,D1
     CMP.W   D1,D0
@@ -1901,7 +1901,7 @@ GCOMMAND_ServiceHighlightMessages:
     BRA.S   .check_countdown
 
 .handle_active_msg:
-    TST.W   GCOMMAND_PresetWorkResetPendingFlag
+    TST.W   _GCOMMAND_PresetWorkResetPendingFlag
     BEQ.S   .tick_active_msg
 
     BSR.W   GCOMMAND_ResetPresetWorkTables
@@ -1909,36 +1909,36 @@ GCOMMAND_ServiceHighlightMessages:
 .tick_active_msg:
     BSR.W   GCOMMAND_TickPresetWorkEntries
 
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A1
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A1
     JSR     ESQSHARED4_CopyPlanesFromContextToSnapshot(PC)
 
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
     MOVE.W  52(A0),D0                       ; A0+52 = countdown ticks
     MOVE.L  D0,D1
     SUBQ.W  #1,D1
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
     MOVE.W  D1,52(A0)                       ; A0+52 = countdown ticks
 
 .check_countdown:
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
     MOVE.W  52(A0),D0                       ; A0+52 = countdown ticks
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BHI.S   .return
 
     MOVE.L  GCOMMAND_ActiveMsgSavedField20,20(A0)
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
     MOVE.L  GCOMMAND_ActiveMsgSavedField24,24(A0)
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
-    MOVE.L  GCOMMAND_ActiveMsgSavedField28,28(A0)
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVE.L  _GCOMMAND_ActiveMsgSavedField28,28(A0)
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
     MOVE.W  D1,52(A0)                       ; A0+52 = countdown reset to 0
     CLR.L   32(A0)                          ; A0+32 = clear preset record ptr
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A1
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOReplyMsg(A6)
 
-    CLR.L   GCOMMAND_ActiveHighlightMsgPtr
+    CLR.L   _GCOMMAND_ActiveHighlightMsgPtr
     BRA.S   .return
 
 .no_active_msg:
@@ -1959,9 +1959,9 @@ GCOMMAND_ServiceHighlightMessages:
 ; CALLS:
 ;   GCOMMAND_RebuildBannerTablesFromBounds, GCOMMAND_ServiceHighlightMessages
 ; READS:
-;   GCOMMAND_BannerRebuildPendingFlag, GCOMMAND_BannerRowByteOffsetResetValue, GCOMMAND_BannerPhaseIndexCurrent, GCOMMAND_BannerRowByteOffsetCurrent, ESQSHARED4_InterleaveCopyTailOffsetReset, GCOMMAND_BannerQueueSlotCurrent, GCOMMAND_BannerRowIndexCurrent
+;   GCOMMAND_BannerRebuildPendingFlag, GCOMMAND_BannerRowByteOffsetResetValue, GCOMMAND_BannerPhaseIndexCurrent, GCOMMAND_BannerRowByteOffsetCurrent, _ESQSHARED4_InterleaveCopyTailOffsetReset, _GCOMMAND_BannerQueueSlotCurrent, GCOMMAND_BannerRowIndexCurrent
 ; WRITES:
-;   GCOMMAND_BannerPhaseIndexCurrent, GCOMMAND_BannerRowByteOffsetCurrent, ESQSHARED4_InterleaveCopyTailOffsetCurrent, GCOMMAND_BannerQueueSlotPrevious, GCOMMAND_BannerQueueSlotCurrent, GCOMMAND_BannerRowIndexPrevious, GCOMMAND_BannerRowIndexCurrent
+;   GCOMMAND_BannerPhaseIndexCurrent, GCOMMAND_BannerRowByteOffsetCurrent, ESQSHARED4_InterleaveCopyTailOffsetCurrent, _GCOMMAND_BannerQueueSlotPrevious, _GCOMMAND_BannerQueueSlotCurrent, GCOMMAND_BannerRowIndexPrevious, GCOMMAND_BannerRowIndexCurrent
 ; DESC:
 ;   Advances highlight/cycle counters and updates related globals.
 ; NOTES:
@@ -1970,7 +1970,7 @@ GCOMMAND_ServiceHighlightMessages:
 ;------------------------------------------------------------------------------
 GCOMMAND_TickHighlightState:
     MOVEM.L D2/A4,-(A7)
-    LEA     Global_REF_LONG_FILE_SCRATCH,A4
+    LEA     _Global_REF_LONG_FILE_SCRATCH,A4
     TST.W   GCOMMAND_BannerRebuildPendingFlag
     BEQ.S   .skip_rebuild
 
@@ -1987,7 +1987,7 @@ GCOMMAND_TickHighlightState:
     MOVE.L  D1,GCOMMAND_BannerPhaseIndexCurrent
     MOVE.L  GCOMMAND_BannerRowByteOffsetResetValue,D2
     MOVE.L  D2,GCOMMAND_BannerRowByteOffsetCurrent
-    MOVE.L  ESQSHARED4_InterleaveCopyTailOffsetReset,D2
+    MOVE.L  _ESQSHARED4_InterleaveCopyTailOffsetReset,D2
     MOVE.L  D2,ESQSHARED4_InterleaveCopyTailOffsetCurrent
     BRA.S   .update_counters
 
@@ -1999,14 +1999,14 @@ GCOMMAND_TickHighlightState:
     ADD.L   D1,ESQSHARED4_InterleaveCopyTailOffsetCurrent
 
 .update_counters:
-    MOVE.W  GCOMMAND_BannerQueueSlotCurrent,D1
-    MOVE.W  D1,GCOMMAND_BannerQueueSlotPrevious
+    MOVE.W  _GCOMMAND_BannerQueueSlotCurrent,D1
+    MOVE.W  D1,_GCOMMAND_BannerQueueSlotPrevious
     MOVE.L  D1,D2
     SUBQ.W  #1,D2
-    MOVE.W  D2,GCOMMAND_BannerQueueSlotCurrent
+    MOVE.W  D2,_GCOMMAND_BannerQueueSlotCurrent
     BGE.S   .maybe_reset_slot
 
-    MOVE.W  #$61,GCOMMAND_BannerQueueSlotCurrent
+    MOVE.W  #$61,_GCOMMAND_BannerQueueSlotCurrent
 
 .maybe_reset_slot:
     MOVE.L  GCOMMAND_BannerRowIndexCurrent,D1
@@ -2025,7 +2025,7 @@ GCOMMAND_TickHighlightState:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ResetHighlightMessages   (Clear active/highlight message slots and restore saved fields)
+; FUNC: _GCOMMAND_ResetHighlightMessages   (Clear active/highlight message slots and restore saved fields)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -2035,31 +2035,31 @@ GCOMMAND_TickHighlightState:
 ; CALLS:
 ;   (none)
 ; READS:
-;   GCOMMAND_ActiveHighlightMsgPtr, GCOMMAND_ActiveMsgSavedField20, GCOMMAND_ActiveMsgSavedField24, GCOMMAND_ActiveMsgSavedField28
+;   _GCOMMAND_ActiveHighlightMsgPtr, GCOMMAND_ActiveMsgSavedField20, GCOMMAND_ActiveMsgSavedField24, _GCOMMAND_ActiveMsgSavedField28
 ; WRITES:
-;   GCOMMAND_HighlightMessageSlotTable.., GCOMMAND_ActiveHighlightMsgPtr
+;   _GCOMMAND_HighlightMessageSlotTable.., _GCOMMAND_ActiveHighlightMsgPtr
 ; DESC:
 ;   Clears pending highlight message records and resets message state.
 ; NOTES:
-;   Writes into a sequence of structs starting at GCOMMAND_HighlightMessageSlotTable.
+;   Writes into a sequence of structs starting at _GCOMMAND_HighlightMessageSlotTable.
 ;------------------------------------------------------------------------------
-GCOMMAND_ResetHighlightMessages:
+_GCOMMAND_ResetHighlightMessages:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
 
-    TST.L   GCOMMAND_ActiveHighlightMsgPtr
+    TST.L   _GCOMMAND_ActiveHighlightMsgPtr
     BEQ.S   .clear_message_slots
 
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
     MOVE.L  GCOMMAND_ActiveMsgSavedField20,20(A0)
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
     MOVE.L  GCOMMAND_ActiveMsgSavedField24,24(A0)
-    MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
-    MOVE.L  GCOMMAND_ActiveMsgSavedField28,28(A0)
+    MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A0
+    MOVE.L  _GCOMMAND_ActiveMsgSavedField28,28(A0)
 
 .clear_message_slots:
     MOVEQ   #0,D7
-    MOVE.L  #GCOMMAND_HighlightMessageSlotTable,-4(A5)
+    MOVE.L  #_GCOMMAND_HighlightMessageSlotTable,-4(A5)
 
 .slot_loop:
     MOVEQ   #4,D0
@@ -2078,7 +2078,7 @@ GCOMMAND_ResetHighlightMessages:
 .clear_queue:
     MOVEQ   #98,D0
     MOVEQ   #0,D1
-    LEA     ESQPARS2_BannerQueueBuffer,A0
+    LEA     _ESQPARS2_BannerQueueBuffer,A0
 
 .queue_loop:
     MOVE.B  D1,(A0)+
@@ -2103,16 +2103,16 @@ GCOMMAND_ResetHighlightMessages:
 ; CLOBBERS:
 ;   D0-D7, A0-A3, A6
 ; CALLS:
-;   GCOMMAND_ComputePresetIncrement, GCOMMAND_InitPresetWorkEntry,
+;   GCOMMAND_ComputePresetIncrement, _GCOMMAND_InitPresetWorkEntry,
 ;   GCOMMAND_TickPresetWorkEntries
 ; READS:
-;   Global_UIBusyFlag, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3
+;   _Global_UIBusyFlag, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, _GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3
 ; WRITES:
 ;   [outPtr] (writes 32-byte entries)
 ; DESC:
 ;   Emits a block of banner/copper entries using preset tables and source bytes.
 ; NOTES:
-;   Entry count comes from stack +8; uses Global_UIBusyFlag to optionally force count=0.
+;   Entry count comes from stack +8; uses _Global_UIBusyFlag to optionally force count=0.
 ;   Emitted entry format is 32 bytes/row (offsets from A0 row base):
 ;     +0  u8  source byte (from *srcPtr, incremented each row by argByte1)
 ;     +1  u8  argByte0
@@ -2137,7 +2137,7 @@ GCOMMAND_BuildBannerBlock:
     MOVE.W  26(A5),D5
     MOVE.B  31(A5),D4
     MOVE.L  A3,-4(A5)
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BEQ.S   .use_count
 
     MOVEQ   #0,D0
@@ -2155,8 +2155,8 @@ GCOMMAND_BuildBannerBlock:
     MOVE.L  D0,(A7)
     MOVE.L  -12(A5),-(A7)
     CLR.L   -(A7)
-    PEA     GCOMMAND_PresetWorkEntryTable
-    BSR.W   GCOMMAND_InitPresetWorkEntry
+    PEA     _GCOMMAND_PresetWorkEntryTable
+    BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  -12(A5),(A7)
     PEA     5.W
@@ -2166,7 +2166,7 @@ GCOMMAND_BuildBannerBlock:
     MOVE.L  -12(A5),-(A7)
     PEA     5.W
     PEA     GCOMMAND_PresetWorkEntry1
-    BSR.W   GCOMMAND_InitPresetWorkEntry
+    BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  -12(A5),(A7)
     PEA     6.W
@@ -2176,7 +2176,7 @@ GCOMMAND_BuildBannerBlock:
     MOVE.L  -12(A5),-(A7)
     PEA     6.W
     PEA     GCOMMAND_PresetWorkEntry2
-    BSR.W   GCOMMAND_InitPresetWorkEntry
+    BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  -12(A5),(A7)
     PEA     7.W
@@ -2186,7 +2186,7 @@ GCOMMAND_BuildBannerBlock:
     MOVE.L  -12(A5),-(A7)
     PEA     7.W
     PEA     GCOMMAND_PresetWorkEntry3
-    BSR.W   GCOMMAND_InitPresetWorkEntry
+    BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     LEA     68(A7),A7
     CLR.L   -8(A5)
@@ -2208,11 +2208,11 @@ GCOMMAND_BuildBannerBlock:
     BPL.S   .use_preset0
 
     MOVEQ   #0,D1
-    MOVE.B  GCOMMAND_PresetFallbackValue0,D1
+    MOVE.B  _GCOMMAND_PresetFallbackValue0,D1
     BRA.S   .store_preset0
 
 .use_preset0:
-    MOVE.L  GCOMMAND_PresetWorkEntryTable,D1
+    MOVE.L  _GCOMMAND_PresetWorkEntryTable,D1
     ASL.L   #7,D1
     LEA     GCOMMAND_PresetValueTable,A1
     MOVEA.L A1,A6
@@ -2231,7 +2231,7 @@ GCOMMAND_BuildBannerBlock:
     BPL.S   .use_preset1
 
     MOVEQ   #0,D1
-    MOVE.B  GCOMMAND_PresetFallbackValue1,D1
+    MOVE.B  _GCOMMAND_PresetFallbackValue1,D1
     BRA.S   .store_preset1
 
 .use_preset1:
@@ -2254,7 +2254,7 @@ GCOMMAND_BuildBannerBlock:
     BPL.S   .use_preset2
 
     MOVEQ   #0,D1
-    MOVE.B  GCOMMAND_PresetFallbackValue2,D1
+    MOVE.B  _GCOMMAND_PresetFallbackValue2,D1
     BRA.S   .store_preset2
 
 .use_preset2:
@@ -2335,7 +2335,7 @@ GCOMMAND_BuildBannerBlock:
 ; CALLS:
 ;   GCOMMAND_BuildBannerBlock
 ; READS:
-;   WDISP_BannerWorkRasterPtr, [A3+8/12/16]
+;   _WDISP_BannerWorkRasterPtr, [A3+8/12/16]
 ; WRITES:
 ;   [tablePtr] (copper list entries)
 ; DESC:
@@ -2385,14 +2385,14 @@ GCOMMAND_CopyImageDataToBitmap:
     MOVE.W  D3,38(A0)
     MOVE.W  #$e0,D1
     MOVE.W  D1,40(A0)
-    MOVE.L  WDISP_BannerWorkRasterPtr,D0
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D0
     MOVE.L  D0,D1
     CLR.W   D1
     SWAP    D1
     MOVE.W  D1,42(A0)
     MOVE.W  #$e2,D0
     MOVE.W  D0,44(A0)
-    MOVE.L  WDISP_BannerWorkRasterPtr,D1
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D1
     MOVE.L  #$ffff,D0
     AND.L   D0,D1
     MOVE.W  D1,46(A0)
@@ -2501,14 +2501,14 @@ GCOMMAND_CopyImageDataToBitmap:
     MOVE.W  #3,682(A0)
     MOVE.W  #$e0,D2
     MOVE.W  D2,684(A0)
-    MOVE.L  WDISP_BannerWorkRasterPtr,D3
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D3
     MOVE.L  D3,D0
     CLR.W   D0
     SWAP    D0
     MOVE.W  D0,686(A0)
     MOVE.W  #$e2,D0
     MOVE.W  D0,688(A0)
-    MOVE.L  WDISP_BannerWorkRasterPtr,D3
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D3
     MOVE.L  #$ffff,D1
     AND.L   D1,D3
     MOVE.W  D3,690(A0)
@@ -2602,14 +2602,14 @@ GCOMMAND_CopyImageDataToBitmap:
     MOVE.W  #3,3926(A0)
     MOVE.W  #$e0,D1
     MOVE.W  D1,3928(A0)
-    MOVE.L  WDISP_BannerWorkRasterPtr,D2
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D2
     MOVE.L  D2,D3
     CLR.W   D3
     SWAP    D3
     MOVE.W  D3,3930(A0)
     MOVE.W  #$e2,D2
     MOVE.W  D2,3932(A0)
-    MOVE.L  WDISP_BannerWorkRasterPtr,D3
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D3
     MOVE.L  #$ffff,D2
     AND.L   D2,D3
     MOVE.W  D3,3934(A0)
@@ -2679,7 +2679,7 @@ GCOMMAND_CopyImageDataToBitmap:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_BuildBannerTables   (Reset counters and rebuild both banner copper tables)
+; FUNC: _GCOMMAND_BuildBannerTables   (Reset counters and rebuild both banner copper tables)
 ; ARGS:
 ;   stack +8: arg0 (byte, low byte used)
 ;   stack +12: arg1 (word, low word used)
@@ -2692,16 +2692,16 @@ GCOMMAND_CopyImageDataToBitmap:
 ;   _LVODisable, _LVOEnable, GCOMMAND_ResetPresetWorkTables,
 ;   GCOMMAND_ClearBannerQueue, GCOMMAND_CopyImageDataToBitmap
 ; READS:
-;   GCOMMAND_BannerRowByteOffsetResetValue, ESQSHARED4_InterleaveCopyTailOffsetReset, Global_REF_696_400_BITMAP
+;   GCOMMAND_BannerRowByteOffsetResetValue, _ESQSHARED4_InterleaveCopyTailOffsetReset, _Global_REF_696_400_BITMAP
 ; WRITES:
-;   GCOMMAND_BannerPhaseIndexCurrent, GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, GCOMMAND_BannerQueueSlotPrevious..GCOMMAND_BannerRowIndexCurrent, ESQSHARED4_InterleaveCopyTailOffsetCurrent, ED2_HighlightTickEnabledFlag, ESQPARS2_ReadModeFlags
+;   GCOMMAND_BannerPhaseIndexCurrent, GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, _GCOMMAND_BannerQueueSlotPrevious..GCOMMAND_BannerRowIndexCurrent, ESQSHARED4_InterleaveCopyTailOffsetCurrent, ED2_HighlightTickEnabledFlag, _ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Resets banner-related globals and rebuilds the banner tables into the bitmap.
 ; NOTES:
 ;   Argument bytes/words are forwarded into GCOMMAND_CopyImageDataToBitmap calls.
 ;   Seeds queue slots to 97/96 and row indices to 84/85 before first tick.
 ;------------------------------------------------------------------------------
-GCOMMAND_BuildBannerTables:
+_GCOMMAND_BuildBannerTables:
     LINK.W  A5,#-4
     MOVEM.L D2/D5-D7,-(A7)
     MOVE.B  11(A5),D7
@@ -2718,11 +2718,11 @@ GCOMMAND_BuildBannerTables:
     MOVE.L  D0,GCOMMAND_BannerRowByteOffsetPrevious
     MOVE.L  GCOMMAND_BannerRowByteOffsetResetValue,D0
     MOVE.L  D0,GCOMMAND_BannerRowByteOffsetCurrent
-    MOVE.L  ESQSHARED4_InterleaveCopyTailOffsetReset,ESQSHARED4_InterleaveCopyTailOffsetCurrent
+    MOVE.L  _ESQSHARED4_InterleaveCopyTailOffsetReset,ESQSHARED4_InterleaveCopyTailOffsetCurrent
     MOVEQ   #97,D0
-    MOVE.W  D0,GCOMMAND_BannerQueueSlotPrevious
+    MOVE.W  D0,_GCOMMAND_BannerQueueSlotPrevious
     SUBQ.W  #1,D0
-    MOVE.W  D0,GCOMMAND_BannerQueueSlotCurrent
+    MOVE.W  D0,_GCOMMAND_BannerQueueSlotCurrent
     MOVEQ   #84,D0
     MOVE.L  D0,GCOMMAND_BannerRowIndexPrevious
     MOVEQ   #85,D0
@@ -2736,8 +2736,8 @@ GCOMMAND_BuildBannerTables:
     PEA     -1(A5)
     MOVE.L  GCOMMAND_BannerRowByteOffsetCurrent,-(A7)
     PEA     2992.W
-    PEA     ESQ_CopperListBannerA
-    PEA     Global_REF_696_400_BITMAP
+    PEA     _ESQ_CopperListBannerA
+    PEA     _Global_REF_696_400_BITMAP
     BSR.W   GCOMMAND_CopyImageDataToBitmap
 
     MOVE.B  D7,-1(A5)
@@ -2752,14 +2752,14 @@ GCOMMAND_BuildBannerTables:
     PEA     -1(A5)
     MOVE.L  D0,-(A7)
     PEA     3080.W
-    PEA     ESQ_CopperListBannerB
-    PEA     Global_REF_696_400_BITMAP
+    PEA     _ESQ_CopperListBannerB
+    PEA     _Global_REF_696_400_BITMAP
     BSR.W   GCOMMAND_CopyImageDataToBitmap
 
     BSR.W   GCOMMAND_ClearBannerQueue
 
     MOVE.W  #1,ED2_HighlightTickEnabledFlag
-    MOVE.W  #$100,ESQPARS2_ReadModeFlags
+    MOVE.W  #$100,_ESQPARS2_ReadModeFlags
     MOVEA.L AbsExecBase,A6
     JSR     _LVOEnable(A6)
 
@@ -2777,33 +2777,33 @@ GCOMMAND_BuildBannerTables:
 ; CLOBBERS:
 ;   D0, A7
 ; CALLS:
-;   GCOMMAND_BuildBannerTables
+;   _GCOMMAND_BuildBannerTables
 ; READS:
-;   GCOMMAND_BannerFadeResetPendingFlag
+;   _GCOMMAND_BannerFadeResetPendingFlag
 ; WRITES:
-;   GCOMMAND_BannerFadeResetPendingFlag, ESQSHARED4_InterleaveCopyBaseOffset, ESQSHARED4_InterleaveCopyTailOffsetReset
+;   _GCOMMAND_BannerFadeResetPendingFlag, _ESQSHARED4_InterleaveCopyBaseOffset, _ESQSHARED4_InterleaveCopyTailOffsetReset
 ; DESC:
 ;   Resets banner fade parameters when the pending flag is set.
 ; NOTES:
-;   Initializes ESQSHARED4_InterleaveCopyBaseOffset/ESQSHARED4_InterleaveCopyTailOffsetReset with fixed offsets after calling
-;   GCOMMAND_BuildBannerTables.
+;   Initializes _ESQSHARED4_InterleaveCopyBaseOffset/_ESQSHARED4_InterleaveCopyTailOffsetReset with fixed offsets after calling
+;   _GCOMMAND_BuildBannerTables.
 ;------------------------------------------------------------------------------
 GCOMMAND_ResetBannerFadeState:
-    TST.W   GCOMMAND_BannerFadeResetPendingFlag
+    TST.W   _GCOMMAND_BannerFadeResetPendingFlag
     BEQ.S   .lab_0DEA
 
-    CLR.W   GCOMMAND_BannerFadeResetPendingFlag
+    CLR.W   _GCOMMAND_BannerFadeResetPendingFlag
     CLR.L   -(A7)
     MOVE.L  #$80fe,-(A7)
     PEA     128.W
-    BSR.W   GCOMMAND_BuildBannerTables
+    BSR.W   _GCOMMAND_BuildBannerTables
 
     LEA     12(A7),A7
     MOVEQ   #64,D0
     ADD.L   D0,D0
-    MOVE.L  D0,ESQSHARED4_InterleaveCopyBaseOffset
+    MOVE.L  D0,_ESQSHARED4_InterleaveCopyBaseOffset
     ADDI.L  #$264,D0
-    MOVE.L  D0,ESQSHARED4_InterleaveCopyTailOffsetReset
+    MOVE.L  D0,_ESQSHARED4_InterleaveCopyTailOffsetReset
 
 .lab_0DEA:
     RTS
@@ -2851,7 +2851,7 @@ GCOMMAND_AddBannerTableByteDelta:
 ; READS:
 ;   GCOMMAND_BannerRowIndexCurrent
 ; WRITES:
-;   GCOMMAND_BannerRowIndexPrevious, GCOMMAND_BannerRowIndexCurrent, ESQ_CopperListBannerA, ESQ_CopperListBannerB
+;   GCOMMAND_BannerRowIndexPrevious, GCOMMAND_BannerRowIndexCurrent, _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
 ; DESC:
 ;   Applies a signed delta to GCOMMAND_BannerRowIndexCurrent, wrapping it into 0..97, then updates
 ;   banner tables via GCOMMAND_UpdateBannerRowPointers.
@@ -2891,10 +2891,10 @@ GCOMMAND_UpdateBannerOffset:
     BRA.S   .lab_0DEE
 
 .lab_0DEF:
-    PEA     ESQ_CopperListBannerA
+    PEA     _ESQ_CopperListBannerA
     BSR.W   GCOMMAND_UpdateBannerRowPointers
 
-    PEA     ESQ_CopperListBannerB
+    PEA     _ESQ_CopperListBannerB
     BSR.W   GCOMMAND_UpdateBannerRowPointers
 
     ADDQ.W  #8,A7
@@ -2915,9 +2915,9 @@ GCOMMAND_UpdateBannerOffset:
 ; CALLS:
 ;   GCOMMAND_AddBannerTableByteDelta, GCOMMAND_UpdateBannerOffset
 ; READS:
-;   ESQ_CopperListBannerA
+;   _ESQ_CopperListBannerA
 ; WRITES:
-;   ESQ_CopperListBannerA, ESQ_CopperListBannerB
+;   _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
 ; DESC:
 ;   Applies a signed offset to banner tables when in range.
 ; NOTES:
@@ -2928,7 +2928,7 @@ GCOMMAND_AdjustBannerCopperOffset:
     LINK.W  A5,#-4
     MOVE.L  D7,-(A7)
     MOVE.B  11(A5),D7
-    LEA     ESQ_CopperListBannerA,A0
+    LEA     _ESQ_CopperListBannerA,A0
     MOVE.L  A0,-4(A5)
     TST.B   D7
     BEQ.S   .lab_0DF2
@@ -2955,7 +2955,7 @@ GCOMMAND_AdjustBannerCopperOffset:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     ESQ_CopperListBannerB
+    PEA     _ESQ_CopperListBannerB
     BSR.W   GCOMMAND_AddBannerTableByteDelta
 
     MOVE.L  D7,D0
@@ -2981,15 +2981,15 @@ GCOMMAND_AdjustBannerCopperOffset:
 ; CLOBBERS:
 ;   D0-D3, A0
 ; CALLS:
-;   GCOMMAND_BuildBannerTables
+;   _GCOMMAND_BuildBannerTables
 ; READS:
 ;   (none)
 ; WRITES:
-;   ESQ_CopperListBannerA, ESQ_CopperListBannerB
+;   _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
 ; DESC:
 ;   Reset banner buffers to the default values embedded in the binary.
 ; NOTES:
-;   Seeds both tables with fixed sentinel bytes and invokes GCOMMAND_BuildBannerTables.
+;   Seeds both tables with fixed sentinel bytes and invokes _GCOMMAND_BuildBannerTables.
 ;------------------------------------------------------------------------------
 
 ; Reset banner buffers to the default values embedded in the binary.
@@ -2999,9 +2999,9 @@ GCOMMAND_SeedBannerDefaults:
     PEA     1.W
     MOVE.L  #$fffe,-(A7)
     PEA     32.W
-    BSR.W   GCOMMAND_BuildBannerTables
+    BSR.W   _GCOMMAND_BuildBannerTables
 
-    MOVE.L  #ESQ_CopperListBannerA,-4(A5)
+    MOVE.L  #_ESQ_CopperListBannerA,-4(A5)
     MOVEQ   #31,D0
     MOVEA.L -4(A5),A0
     MOVE.B  D0,(A0)
@@ -3013,7 +3013,7 @@ GCOMMAND_SeedBannerDefaults:
     MOVE.B  D3,3916(A0)
     MOVE.B  D1,3917(A0)
     MOVE.W  D2,3918(A0)
-    MOVE.L  #ESQ_CopperListBannerB,-4(A5)
+    MOVE.L  #_ESQ_CopperListBannerB,-4(A5)
     MOVEA.L -4(A5),A0
     MOVE.B  D0,(A0)
     MOVE.B  D1,1(A0)
@@ -3027,7 +3027,7 @@ GCOMMAND_SeedBannerDefaults:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_SeedBannerFromPrefs   (Seed banner buffers using values read from preferences.)
+; FUNC: _GCOMMAND_SeedBannerFromPrefs   (Seed banner buffers using values read from preferences.)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -3035,36 +3035,36 @@ GCOMMAND_SeedBannerDefaults:
 ; CLOBBERS:
 ;   D0-D2, A0
 ; CALLS:
-;   GCOMMAND_BuildBannerTables
+;   _GCOMMAND_BuildBannerTables
 ; READS:
-;   CONFIG_BannerCopperHeadByte
+;   _CONFIG_BannerCopperHeadByte
 ; WRITES:
-;   ESQ_CopperListBannerA, ESQ_CopperListBannerB
+;   _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
 ; DESC:
 ;   Seed banner buffers using values read from preferences.
 ; NOTES:
-;   Seeds the leading bytes from CONFIG_BannerCopperHeadByte and applies defaults.
+;   Seeds the leading bytes from _CONFIG_BannerCopperHeadByte and applies defaults.
 ;------------------------------------------------------------------------------
 
 ; Seed banner buffers using values read from preferences.
-GCOMMAND_SeedBannerFromPrefs:
+_GCOMMAND_SeedBannerFromPrefs:
     LINK.W  A5,#-4
     MOVE.L  D2,-(A7)
     CLR.L   -(A7)
     MOVE.L  #$80fe,-(A7)
     PEA     128.W
-    BSR.W   GCOMMAND_BuildBannerTables
+    BSR.W   _GCOMMAND_BuildBannerTables
 
-    MOVE.L  #ESQ_CopperListBannerA,-4(A5)
-    MOVE.W  CONFIG_BannerCopperHeadByte,D0
+    MOVE.L  #_ESQ_CopperListBannerA,-4(A5)
+    MOVE.W  _CONFIG_BannerCopperHeadByte,D0
     MOVEA.L -4(A5),A0
     MOVE.B  D0,(A0)
     MOVEQ   #-39,D0
     MOVE.B  D0,1(A0)
     MOVEQ   #-2,D1
     MOVE.W  D1,2(A0)
-    MOVE.L  #ESQ_CopperListBannerB,-4(A5)
-    MOVE.W  CONFIG_BannerCopperHeadByte,D2
+    MOVE.L  #_ESQ_CopperListBannerB,-4(A5)
+    MOVE.W  _CONFIG_BannerCopperHeadByte,D2
     MOVEA.L -4(A5),A0
     MOVE.B  D2,(A0)
     MOVE.B  D0,1(A0)

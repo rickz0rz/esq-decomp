@@ -2,10 +2,10 @@
     XDEF    Global_STR_ATTENTION_SYSTEM_ENGINEER_1
     XDEF    Global_STR_REPORT_CODE_ER003
     XDEF    Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
-    XDEF    COMMON_QueryDiskSoftErrorCountScratch
-    XDEF    Global_STR_DISK_ERRORS_FORMATTED
-    XDEF    COMMON_QueryDiskUsagePercentScratch
-    XDEF    Global_STR_DISK_IS_FULL_FORMATTED
+    XDEF    _COMMON_QueryDiskSoftErrorCountScratch
+    XDEF    _Global_STR_DISK_ERRORS_FORMATTED
+    XDEF    _COMMON_QueryDiskUsagePercentScratch
+    XDEF    _Global_STR_DISK_IS_FULL_FORMATTED
     XDEF    CTRL_Bit4CaptureDelayCounter
     XDEF    CTRL_Bit3CaptureDelayCounter
     XDEF    CTRL_Bit4CapturePhase
@@ -14,19 +14,19 @@
     XDEF    CTRL_Bit3SampleSlotIndex
     XDEF    CTRL_Bit4SampleScratch
     XDEF    CTRL_Bit3SampleScratch
-    XDEF    HIGHLIGHT_CopperEffectSeed
+    XDEF    _HIGHLIGHT_CopperEffectSeed
     XDEF    HIGHLIGHT_CopperEffectParamA
-    XDEF    HIGHLIGHT_CopperEffectParamB
-    XDEF    CTRL_SampleEntryCount
-    XDEF    CTRL_SampleEntryScratch
+    XDEF    _HIGHLIGHT_CopperEffectParamB
+    XDEF    _CTRL_SampleEntryCount
+    XDEF    _CTRL_SampleEntryScratch
     XDEF    HIGHLIGHT_CustomValue
     XDEF    CLOCK_DaySlotIndexPtr
     XDEF    CLOCK_CurrentDayOfWeekIndexPtr
     XDEF    BANNER_ResetPendingFlag
-    XDEF    CLOCK_MinuteTrigger30MinusBase
-    XDEF    CLOCK_MinuteTrigger60MinusBase
-    XDEF    CLOCK_MinuteTriggerBaseOffsetPlus30
-    XDEF    CLOCK_MinuteTriggerBaseOffset
+    XDEF    _CLOCK_MinuteTrigger30MinusBase
+    XDEF    _CLOCK_MinuteTrigger60MinusBase
+    XDEF    _CLOCK_MinuteTriggerBaseOffsetPlus30
+    XDEF    _CLOCK_MinuteTriggerBaseOffset
     XDEF    ACCUMULATOR_Row0_CaptureValue
     XDEF    ACCUMULATOR_Row1_CaptureValue
     XDEF    ACCUMULATOR_Row2_CaptureValue
@@ -35,27 +35,27 @@
     XDEF    ACCUMULATOR_Row1_Sum
     XDEF    ACCUMULATOR_Row2_Sum
     XDEF    ACCUMULATOR_Row3_Sum
-    XDEF    ACCUMULATOR_Row0_SaturateFlag
-    XDEF    ACCUMULATOR_Row1_SaturateFlag
-    XDEF    ACCUMULATOR_Row2_SaturateFlag
-    XDEF    ACCUMULATOR_Row3_SaturateFlag
-    XDEF    COPPER_AnimationLane0_Countdown
-    XDEF    COPPER_AnimationLane1_Countdown
+    XDEF    _ACCUMULATOR_Row0_SaturateFlag
+    XDEF    _ACCUMULATOR_Row1_SaturateFlag
+    XDEF    _ACCUMULATOR_Row2_SaturateFlag
+    XDEF    _ACCUMULATOR_Row3_SaturateFlag
+    XDEF    _COPPER_AnimationLane0_Countdown
+    XDEF    _COPPER_AnimationLane1_Countdown
     XDEF    _COPPER_AnimationLane2_Countdown
     XDEF    _COPPER_AnimationLane3_Countdown
-    XDEF    CLOCK_MonthLengths
-    XDEF    CLOCK_HalfHourSlotLookup
-    XDEF    PARSEINI_ParsedDescriptorListHead
-    XDEF    CTASKS_PendingLogoBrushDescriptor
-    XDEF    CTASKS_PendingGAdsBrushDescriptor
-    XDEF    ESQFUNC_PwBrushDescriptorHead
-    XDEF    PARSEINI_BannerBrushResourceHead
-    XDEF    CTASKS_PendingIffBrushDescriptor
-    XDEF    WDISP_WeatherStatusBrushListHead
-    XDEF    BRUSH_SelectedNode
-    XDEF    ESQIFF_GAdsBrushListCount
-    XDEF    ESQIFF_LogoBrushListCount
-    XDEF    BRUSH_LoadInProgressFlag
+    XDEF    _CLOCK_MonthLengths
+    XDEF    _CLOCK_HalfHourSlotLookup
+    XDEF    _PARSEINI_ParsedDescriptorListHead
+    XDEF    _CTASKS_PendingLogoBrushDescriptor
+    XDEF    _CTASKS_PendingGAdsBrushDescriptor
+    XDEF    _ESQFUNC_PwBrushDescriptorHead
+    XDEF    _PARSEINI_BannerBrushResourceHead
+    XDEF    _CTASKS_PendingIffBrushDescriptor
+    XDEF    _WDISP_WeatherStatusBrushListHead
+    XDEF    _BRUSH_SelectedNode
+    XDEF    _ESQIFF_GAdsBrushListCount
+    XDEF    _ESQIFF_LogoBrushListCount
+    XDEF    _BRUSH_LoadInProgressFlag
     XDEF    BRUSH_PendingAlertCode
 
 Global_STR_PLEASE_STANDBY_1:
@@ -67,13 +67,13 @@ Global_STR_REPORT_CODE_ER003:
     NStr    "Report Code ER003 to TV Guide Technical Services."
 Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE:
     NStr2   "YOU CANNOT RE-RUN THE SOFTWARE IN THIS MANNER.  PLEASE RE-BOOT!!",TextLineFeed
-COMMON_QueryDiskSoftErrorCountScratch:
+_COMMON_QueryDiskSoftErrorCountScratch:
     DC.W    0
-Global_STR_DISK_ERRORS_FORMATTED:
+_Global_STR_DISK_ERRORS_FORMATTED:
     NStr2   "Disk Errors: %ld",TextLineFeed
-COMMON_QueryDiskUsagePercentScratch:
+_COMMON_QueryDiskUsagePercentScratch:
     DC.W    0
-Global_STR_DISK_IS_FULL_FORMATTED:
+_Global_STR_DISK_IS_FULL_FORMATTED:
     NStr    "Disk is %ld%% full"
 CTRL_Bit4CaptureDelayCounter:
     DC.W    0
@@ -91,16 +91,16 @@ CTRL_Bit4SampleScratch:
     DC.L    0,0
 CTRL_Bit3SampleScratch:
     DC.L    0,0
-HIGHLIGHT_CopperEffectSeed:
+_HIGHLIGHT_CopperEffectSeed:
     DC.W    0
 HIGHLIGHT_CopperEffectParamA:
     DC.B    0
-HIGHLIGHT_CopperEffectParamB:
+_HIGHLIGHT_CopperEffectParamB:
     DC.B    0
     DC.W    0
-CTRL_SampleEntryCount:
+_CTRL_SampleEntryCount:
     DC.W    0
-CTRL_SampleEntryScratch:
+_CTRL_SampleEntryScratch:
     DC.L    0
     DC.W    0
 HIGHLIGHT_CustomValue:
@@ -111,13 +111,13 @@ CLOCK_CurrentDayOfWeekIndexPtr:
     DC.L    0
 BANNER_ResetPendingFlag:
     DC.L    0
-CLOCK_MinuteTrigger30MinusBase:
+_CLOCK_MinuteTrigger30MinusBase:
     DC.W    0
-CLOCK_MinuteTrigger60MinusBase:
+_CLOCK_MinuteTrigger60MinusBase:
     DC.W    0
-CLOCK_MinuteTriggerBaseOffsetPlus30:
+_CLOCK_MinuteTriggerBaseOffsetPlus30:
     DC.W    0
-CLOCK_MinuteTriggerBaseOffset:
+_CLOCK_MinuteTriggerBaseOffset:
     DC.W    0
 ACCUMULATOR_Row0_CaptureValue:
     DC.W    0
@@ -135,68 +135,68 @@ ACCUMULATOR_Row2_Sum:
     DC.W    0
 ACCUMULATOR_Row3_Sum:
     DC.W    0
-ACCUMULATOR_Row0_SaturateFlag:
+_ACCUMULATOR_Row0_SaturateFlag:
     DC.W    0
-ACCUMULATOR_Row1_SaturateFlag:
+_ACCUMULATOR_Row1_SaturateFlag:
     DC.W    0
-ACCUMULATOR_Row2_SaturateFlag:
+_ACCUMULATOR_Row2_SaturateFlag:
     DC.W    0
-ACCUMULATOR_Row3_SaturateFlag:
+_ACCUMULATOR_Row3_SaturateFlag:
     DC.L    0,0
     DC.W    0
-COPPER_AnimationLane0_Countdown:
+_COPPER_AnimationLane0_Countdown:
     DC.W    0
-COPPER_AnimationLane1_Countdown:
+_COPPER_AnimationLane1_Countdown:
     DC.W    0
 _COPPER_AnimationLane2_Countdown:
     DC.W    0
 _COPPER_AnimationLane3_Countdown:
     DC.W    0
-CLOCK_MonthLengths:
+_CLOCK_MonthLengths:
     DC.L    $001f001c,$001f001e,$001f001e,$001f001f
     DC.L    $001e001f,$001e001f,$001f001d,$001f001e
     DC.L    $001f001e,$001f001f,$001e001f,$001e001f
-CLOCK_HalfHourSlotLookup:
+_CLOCK_HalfHourSlotLookup:
     DC.L    $2728292a,$2b2c2d2e,$2f300102,$03040506
     DC.L    $0708090a,$0b0c0d0e,$0f101112,$13141516
     DC.L    $1718191a,$1b1c1d1e,$1f202122,$23242526
 ;------------------------------------------------------------------------------
-; SYM: PARSEINI_ParsedDescriptorListHead ... WDISP_WeatherStatusBrushListHead   (brush descriptor/list head pointers)
+; SYM: _PARSEINI_ParsedDescriptorListHead ... _WDISP_WeatherStatusBrushListHead   (brush descriptor/list head pointers)
 ; TYPE: pointer fields
 ; PURPOSE: Shared heads used for parsed brush descriptor chains, pending CTASKS handoff nodes, and weather-status brush lists.
-; USED BY: PARSEINI_*, ESQIFF_*, ESQFUNC_*, CTASKS_IFFTaskCleanup, WDISP_*
+; USED BY: PARSEINI_*, ESQIFF_*, ESQFUNC_*, _CTASKS_IFFTaskCleanup, WDISP_*
 ; NOTES: Most entries are transient handoff pointers consumed by BRUSH_PopulateBrushList or task cleanup.
 ;------------------------------------------------------------------------------
-PARSEINI_ParsedDescriptorListHead:
+_PARSEINI_ParsedDescriptorListHead:
     DC.L    0
-CTASKS_PendingLogoBrushDescriptor:
+_CTASKS_PendingLogoBrushDescriptor:
     DC.L    0
-CTASKS_PendingGAdsBrushDescriptor:
+_CTASKS_PendingGAdsBrushDescriptor:
     DC.L    0
-ESQFUNC_PwBrushDescriptorHead:
+_ESQFUNC_PwBrushDescriptorHead:
     DC.L    0
-PARSEINI_BannerBrushResourceHead:
+_PARSEINI_BannerBrushResourceHead:
     DC.L    0
-CTASKS_PendingIffBrushDescriptor:
+_CTASKS_PendingIffBrushDescriptor:
     DC.L    0
-WDISP_WeatherStatusBrushListHead:
+_WDISP_WeatherStatusBrushListHead:
     DC.L    0
 ; Points to the most recently loaded brush node (shared across modules).
-BRUSH_SelectedNode:
+_BRUSH_SelectedNode:
     DC.L    0
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_GAdsBrushListCount/ESQIFF_LogoBrushListCount   (brush list node counts)
+; SYM: _ESQIFF_GAdsBrushListCount/_ESQIFF_LogoBrushListCount   (brush list node counts)
 ; TYPE: u32/u32
 ; PURPOSE: Track active node counts in the G-Ads and Logo brush lists.
 ; USED BY: ESQIFF_*, ESQFUNC_*, GCOMMAND_SaveBrushResult
 ; NOTES: Counters are incremented on append and decremented on pop; selection paths gate on thresholds (G-Ads >=2, Logo >=1).
 ;------------------------------------------------------------------------------
-ESQIFF_GAdsBrushListCount:
+_ESQIFF_GAdsBrushListCount:
     DC.L    0
-ESQIFF_LogoBrushListCount:
+_ESQIFF_LogoBrushListCount:
     DC.L    0
 ; Non-zero while BRUSH_PopulateBrushList is mutating the brush list.
-BRUSH_LoadInProgressFlag:
+_BRUSH_LoadInProgressFlag:
     DC.L    0
 ; Tracks which cleanup alert message (if any) should be shown after brush loads.
 BRUSH_PendingAlertCode:

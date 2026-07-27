@@ -14,14 +14,14 @@
 ; READS:
 ;   AbsExecBase
 ; WRITES:
-;   HAS_REQUESTED_FAST_MEMORY
+;   _HAS_REQUESTED_FAST_MEMORY
 ; DESC:
-;   Checks available fast memory and sets HAS_REQUESTED_FAST_MEMORY if below
+;   Checks available fast memory and sets _HAS_REQUESTED_FAST_MEMORY if below
 ;   the desired threshold.
 ; NOTES:
 ;   - Threshold is .desiredMemory (600,000 bytes).
 ;------------------------------------------------------------------------------
-; If the system has at least 600,000 bytes of fast memory, keep HAS_REQUESTED_FAST_MEMORY set to 0.
+; If the system has at least 600,000 bytes of fast memory, keep _HAS_REQUESTED_FAST_MEMORY set to 0.
 ; Otherwise, set it to 1.
 ESQ_CheckAvailableFastMemory:
 
@@ -34,7 +34,7 @@ ESQ_CheckAvailableFastMemory:
     CMPI.L  #(.desiredMemory),D0            ; See if we have more than 600,000 bytes of available memory
     BGE.S   .done                           ; If we have equal to or more than our target, jump to .skipFastMemorySet
 
-    MOVE.W  #1,HAS_REQUESTED_FAST_MEMORY    ; Set HAS_REQUESTED_FAST_MEMORY to 0x0001 (it's 0x0000 by default)
+    MOVE.W  #1,_HAS_REQUESTED_FAST_MEMORY    ; Set _HAS_REQUESTED_FAST_MEMORY to 0x0001 (it's 0x0000 by default)
 
 .done:
     RTS

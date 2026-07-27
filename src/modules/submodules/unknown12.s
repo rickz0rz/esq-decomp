@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   MATH_DivS32 (div helper), MATH_Mulu32 (mul helper), MEMLIST_AllocTracked (alloc tracked),
+;   _MATH_DivS32 (div helper), _MATH_Mulu32 (mul helper), MEMLIST_AllocTracked (alloc tracked),
 ;   ALLOC_InsertFreeBlock (insert free block)
 ; READS:
 ;   Global_AllocListHead, Global_AllocBlockSize, Global_AllocBytesTotal
@@ -88,10 +88,10 @@ ALLOC_AllocFromFreeList:
     MOVE.L  Global_AllocBlockSize(A4),D1
     ADD.L   D1,D0
     SUBQ.L  #1,D0
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     MOVE.L  Global_AllocBlockSize(A4),D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVE.L  D0,D6
     ADDQ.L  #8,D6

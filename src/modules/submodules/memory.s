@@ -1,8 +1,8 @@
-    XDEF    MEMORY_AllocateMemory
+    XDEF    _MEMORY_AllocateMemory
     XDEF    MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: MEMORY_AllocateMemory
+; FUNC: _MEMORY_AllocateMemory
 ; ARGS:
 ;   stack +16: byteSize (loaded into D7)
 ;   stack +20: attributes (MEMF_* flags) (loaded into D6)
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Counters are incremented regardless of allocation success.
 ;------------------------------------------------------------------------------
-MEMORY_AllocateMemory:
+_MEMORY_AllocateMemory:
     LINK.W  A5,#-4
     MOVEM.L D6-D7,-(A7)
 

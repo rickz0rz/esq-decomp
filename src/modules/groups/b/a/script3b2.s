@@ -13,16 +13,16 @@
 ;   D0-D7/A0-A1
 ; CALLS:
 ;   SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, PARSEINI_CheckCtrlHChange, SCRIPT_HandleBrushCommand, SCRIPT_ApplyPendingBannerTarget,
-;   WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, TEXTDISP_SetRastForMode, SCRIPT_ProcessCtrlContextPlaybackTick, SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, TEXTDISP_ResetSelectionAndRefresh
+;   WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, TEXTDISP_SetRastForMode, SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, TEXTDISP_ResetSelectionAndRefresh
 ; READS:
 ;   Global_WORD_SELECT_CODE_IS_RAVESC, CONFIG_MSN_FlagChar, SCRIPT_StatusRefreshHoldFlag, ESQDISP_DisplayActiveFlag, SCRIPT_StatusMaskRefreshPending
-;   Global_REF_CLOCKDATA_STRUCT, Global_WORD_CLOCK_SECONDS
+;   _Global_REF_CLOCKDATA_STRUCT, Global_WORD_CLOCK_SECONDS
 ;   SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
-;   SCRIPT_RuntimeMode/2347/2348/2349/234A, SCRIPT_CTRL_CMD_BUFFER
+;   _SCRIPT_RuntimeMode/2347/2348/2349/234A, SCRIPT_CTRL_CMD_BUFFER
 ; WRITES:
-;   Global_RefreshTickCounter, SCRIPT_StatusMaskRefreshPending, Global_WORD_CLOCK_SECONDS,
+;   _Global_RefreshTickCounter, SCRIPT_StatusMaskRefreshPending, Global_WORD_CLOCK_SECONDS,
 ;   SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
-;   SCRIPT_CTRL_CMD_BUFFER, SCRIPT_CtrlCmdCount/2348/2349
+;   SCRIPT_CTRL_CMD_BUFFER, _SCRIPT_CtrlCmdCount/2348/2349
 ; DESC:
 ;   Polls the CTRL input buffer and advances a small state machine to parse
 ;   serial control commands; dispatches actions via a jump table.
@@ -42,7 +42,7 @@ SCRIPT_HandleSerialCtrlCmd:
     BNE.S   .ctrl_cmd_gate_refresh_disabled
 
 .selectCodeIsNotRAVSEC:
-    MOVE.W  #(-1),Global_RefreshTickCounter
+    MOVE.W  #(-1),_Global_RefreshTickCounter
     BRA.S   .ctrl_cmd_handle_status_timeout
 
 .ctrl_cmd_gate_refresh_disabled:
@@ -50,7 +50,7 @@ SCRIPT_HandleSerialCtrlCmd:
     BEQ.S   .ctrl_cmd_check_display_state
 
     MOVEQ   #0,D0
-    MOVE.W  D0,Global_RefreshTickCounter
+    MOVE.W  D0,_Global_RefreshTickCounter
     BRA.W   .return
 
 .ctrl_cmd_check_display_state:
@@ -62,7 +62,7 @@ SCRIPT_HandleSerialCtrlCmd:
     TST.W   SCRIPT_StatusMaskRefreshPending
     BEQ.S   .ctrl_cmd_poll_input
 
-    MOVE.W  Global_REF_CLOCKDATA_STRUCT,D0
+    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  Global_WORD_CLOCK_SECONDS,D1
     CMP.W   D1,D0
     BEQ.S   .ctrl_cmd_poll_input
@@ -74,7 +74,7 @@ SCRIPT_HandleSerialCtrlCmd:
     CLR.W   SCRIPT_StatusMaskRefreshPending
     CLR.L   -(A7)
     PEA     32.W
-    JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
+    JSR     _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
 
@@ -82,17 +82,17 @@ SCRIPT_HandleSerialCtrlCmd:
     JSR     PARSEINI_CheckCtrlHChange(PC)
 
     MOVE.L  D0,D6
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BNE.W   .return
 
     TST.W   D6
     BEQ.W   .return
 
-    MOVE.W  Global_RefreshTickCounter,D0
+    MOVE.W  _Global_RefreshTickCounter,D0
     ADDQ.W  #1,D0
     BEQ.S   .ctrl_cmd_parse_state_dispatch
 
-    CLR.W   Global_RefreshTickCounter
+    CLR.W   _Global_RefreshTickCounter
 
 .ctrl_cmd_parse_state_dispatch:
     JSR     SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte(PC)
@@ -167,9 +167,9 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVEQ   #0,D1
     MOVE.B  D7,D1
     MOVE.W  D1,SCRIPT_CTRL_CHECKSUM
-    MOVE.W  SCRIPT_CtrlCmdCount,D1
+    MOVE.W  _SCRIPT_CtrlCmdCount,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,SCRIPT_CtrlCmdCount
+    MOVE.W  D1,_SCRIPT_CtrlCmdCount
     MOVE.W  D0,SCRIPT_CTRL_STATE
     BRA.W   .finish_29ABA
 
@@ -258,14 +258,14 @@ SCRIPT_HandleSerialCtrlCmd:
 .ctrl_cmd_checksum_mismatch:
     PEA     1.W
     PEA     32.W
-    JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
+    JSR     _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
-    MOVE.W  Global_REF_CLOCKDATA_STRUCT,Global_WORD_CLOCK_SECONDS
+    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,Global_WORD_CLOCK_SECONDS
     MOVEQ   #1,D0
-    MOVE.W  SCRIPT_CtrlCmdChecksumErrorCount,D1
+    MOVE.W  _SCRIPT_CtrlCmdChecksumErrorCount,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,SCRIPT_CtrlCmdChecksumErrorCount
+    MOVE.W  D1,_SCRIPT_CtrlCmdChecksumErrorCount
     MOVE.W  D0,SCRIPT_StatusMaskRefreshPending
 
 .ctrl_cmd_reset_parser:
@@ -291,13 +291,13 @@ SCRIPT_HandleSerialCtrlCmd:
     CMPI.W  #198,D0
     BLE.S   .return
 
-    MOVE.W  SCRIPT_CtrlCmdLengthErrorCount,D0
+    MOVE.W  _SCRIPT_CtrlCmdLengthErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,SCRIPT_CtrlCmdLengthErrorCount
+    MOVE.W  D0,_SCRIPT_CtrlCmdLengthErrorCount
     MOVEQ   #0,D0
     MOVE.W  D0,SCRIPT_CTRL_CHECKSUM
     MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
-    MOVE.W  SCRIPT_RuntimeMode,D1
+    MOVE.W  _SCRIPT_RuntimeMode,D1
     MOVE.W  D0,SCRIPT_CTRL_STATE
     TST.W   D1
     BNE.S   .return
@@ -332,11 +332,11 @@ SCRIPT_HandleSerialCtrlCmd:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   P_TYPE_GetSubtypeIfType20, P_TYPE_ConsumePrimaryTypeIfPresent, SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_SplitAndNormalizeSearchBuffer, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CompareN, SCRIPT3_JMPTBL_STRING_CopyPadNul, SCRIPT_ReadHandshakeBit5Mask, TEXTDISP_FindEntryIndexByWildcard, TEXTDISP_HandleScriptCommand, TEXTDISP_UpdateChannelRangeFlags, ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
+;   P_TYPE_GetSubtypeIfType20, P_TYPE_ConsumePrimaryTypeIfPresent, SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_SplitAndNormalizeSearchBuffer, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CompareN, SCRIPT3_JMPTBL_STRING_CopyPadNul, _SCRIPT_ReadHandshakeBit5Mask, TEXTDISP_FindEntryIndexByWildcard, _TEXTDISP_HandleScriptCommand, TEXTDISP_UpdateChannelRangeFlags, _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   BRUSH_SelectedNode, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, CTASKS_STR_1, ESQ_DefaultNoFlagChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListCount, Global_WORD_SELECT_CODE_IS_RAVESC, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_PrimaryFilterState, SCRIPT_Type20SubtypeCache, SCRIPT_CommandTextPtr, SCRIPT_BrushTag_Default00_Primary, SCRIPT_BrushTag_Default00_Secondary, SCRIPT_BrushTag_Clear11_Primary, SCRIPT_BrushTag_Clear11_Secondary, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_ChannelSourceMode, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, _TEXTDISP_CurrentMatchIndex, CLEANUP_AlignedStatusMatchIndex, WDISP_CharClassTable, WDISP_HighlightActive
+;   _BRUSH_SelectedNode, _CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, _CTASKS_STR_1, ESQ_DefaultNoFlagChar, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListCount, Global_WORD_SELECT_CODE_IS_RAVESC, _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterStep, _LOCAVAIL_PrimaryFilterState, _SCRIPT_Type20SubtypeCache, _SCRIPT_CommandTextPtr, SCRIPT_BrushTag_Default00_Primary, SCRIPT_BrushTag_Default00_Secondary, SCRIPT_BrushTag_Clear11_Primary, SCRIPT_BrushTag_Clear11_Secondary, _SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_ChannelSourceMode, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _SCRIPT_PrimarySearchFirstFlag, _TEXTDISP_CurrentMatchIndex, CLEANUP_AlignedStatusMatchIndex, _WDISP_CharClassTable, WDISP_HighlightActive
 ; WRITES:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, HIGHLIGHT_CustomValue, SCRIPT_Type20SubtypeCache, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, SCRIPT_PendingWeatherCommandChar, SCRIPT_PendingTextdispCmdChar, SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr, SCRIPT_RuntimeMode, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_CurrentMatchIndex
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, HIGHLIGHT_CustomValue, _SCRIPT_Type20SubtypeCache, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, _SCRIPT_PendingWeatherCommandChar, _SCRIPT_PendingTextdispCmdChar, _SCRIPT_PendingTextdispCmdArg, _SCRIPT_CommandTextPtr, _SCRIPT_RuntimeMode, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, _SCRIPT_ChannelRangeDigitChar, _SCRIPT_PlaybackCursor, _SCRIPT_PrimarySearchFirstFlag, _SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Parses one CTRL packet payload via a 22-way switch/jumptable and updates
 ;   brush selection, playback cursor/runtime mode, channel filters, search text,
@@ -355,12 +355,12 @@ SCRIPT_HandleBrushCommand:
     MOVEQ   #1,D6
     MOVEQ   #1,D0
     MOVE.L  D0,-8(A5)
-    MOVE.W  SCRIPT_RuntimeMode,D5
+    MOVE.W  _SCRIPT_RuntimeMode,D5
     MOVE.L  A3,-(A7)
     BSR.W   SCRIPT_LoadCtrlContextSnapshot
 
     ADDQ.W  #4,A7
-    CLR.L   SCRIPT_PlaybackCursor
+    CLR.L   _SCRIPT_PlaybackCursor
     CLR.B   0(A2,D7.L)
     MOVEQ   #0,D0
     MOVE.B  (A2),D0
@@ -413,7 +413,7 @@ SCRIPT_HandleBrushCommand:
     TST.L   D0
     BNE.S   .brush_cmd_after_tag_primary00
 
-    MOVE.L  BRUSH_SelectedNode,BRUSH_ScriptPrimarySelection    ; default primary selection to current brush
+    MOVE.L  _BRUSH_SelectedNode,BRUSH_ScriptPrimarySelection    ; default primary selection to current brush
     MOVEQ   #1,D0
     MOVE.L  D0,-16(A5)
 
@@ -428,7 +428,7 @@ SCRIPT_HandleBrushCommand:
     TST.L   D0
     BNE.S   .brush_cmd_after_tag_secondary00
 
-    MOVE.L  BRUSH_SelectedNode,BRUSH_ScriptSecondarySelection  ; same for secondary fallback
+    MOVE.L  _BRUSH_SelectedNode,BRUSH_ScriptSecondarySelection  ; same for secondary fallback
     MOVEQ   #1,D0
     MOVE.L  D0,-20(A5)
 
@@ -476,7 +476,7 @@ SCRIPT_HandleBrushCommand:
     BNE.W   .brush_cmd_finalize
 
 .brush_cmd_scan_selection_list:
-    MOVE.L  ESQIFF_BrushIniListHead,-12(A5)
+    MOVE.L  _ESQIFF_BrushIniListHead,-12(A5)
 
 .brush_cmd_scan_nodes_loop:
     ; Scan available brushes to pick the first entries matching the requested names.
@@ -540,14 +540,14 @@ SCRIPT_HandleBrushCommand:
     TST.L   -16(A5)
     BNE.S   .brush_cmd_ensure_primary_default
 
-    MOVEA.L BRUSH_SelectedNode,A0
+    MOVEA.L _BRUSH_SelectedNode,A0
     MOVE.L  A0,BRUSH_ScriptPrimarySelection
 
 .brush_cmd_ensure_primary_default:
     TST.L   -20(A5)
     BNE.W   .brush_cmd_finalize
 
-    MOVE.L  BRUSH_SelectedNode,BRUSH_ScriptSecondarySelection
+    MOVE.L  _BRUSH_SelectedNode,BRUSH_ScriptSecondarySelection
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_type20_subtype:
@@ -555,7 +555,7 @@ SCRIPT_HandleBrushCommand:
     JSR     P_TYPE_GetSubtypeIfType20(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  D0,SCRIPT_Type20SubtypeCache
+    MOVE.B  D0,_SCRIPT_Type20SubtypeCache
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_set_channel_codes:
@@ -573,7 +573,7 @@ SCRIPT_HandleBrushCommand:
     CMP.B   D1,D0
     BNE.S   .brush_cmd_toggle_primary_search_if_r
 
-    MOVE.W  #1,SCRIPT_PrimarySearchFirstFlag
+    MOVE.W  #1,_SCRIPT_PrimarySearchFirstFlag
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_toggle_primary_search_if_r:
@@ -582,11 +582,11 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .brush_cmd_toggle_primary_search_auto
 
     MOVEQ   #0,D0
-    MOVE.W  D0,SCRIPT_PrimarySearchFirstFlag
+    MOVE.W  D0,_SCRIPT_PrimarySearchFirstFlag
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_toggle_primary_search_auto:
-    TST.W   SCRIPT_PrimarySearchFirstFlag
+    TST.W   _SCRIPT_PrimarySearchFirstFlag
     BEQ.S   .brush_cmd_toggle_pick_secondary_first
 
     MOVEQ   #0,D0
@@ -596,11 +596,11 @@ SCRIPT_HandleBrushCommand:
     MOVEQ   #1,D0
 
 .brush_cmd_toggle_store_flag:
-    MOVE.W  D0,SCRIPT_PrimarySearchFirstFlag
+    MOVE.W  D0,_SCRIPT_PrimarySearchFirstFlag
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_apply_rtc_yyyymmddhhmm:
-    MOVE.B  CTASKS_STR_1,D0
+    MOVE.B  _CTASKS_STR_1,D0
     MOVEQ   #49,D1
     CMP.B   D1,D0
     BNE.W   .brush_cmd_finalize
@@ -670,7 +670,7 @@ SCRIPT_HandleBrushCommand:
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_select_playback_mode:
-    MOVE.L  LOCAVAIL_FilterStep,D0
+    MOVE.L  _LOCAVAIL_FilterStep,D0
     MOVEQ   #1,D1
     CMP.L   D1,D0
     BEQ.S   .brush_cmd_playback_cursor_mode2
@@ -681,19 +681,19 @@ SCRIPT_HandleBrushCommand:
 .brush_cmd_playback_cursor_mode2:
     MOVE.W  #(-1),_TEXTDISP_CurrentMatchIndex
     MOVEQ   #2,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_filter_mode_dispatch:
-    CMP.L   LOCAVAIL_FilterModeFlag,D1
+    CMP.L   _LOCAVAIL_FilterModeFlag,D1
     BEQ.S   .brush_cmd_try_consume_primary_type
 
-    MOVE.B  ED_DiagGraphModeChar,D0
+    MOVE.B  _ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
     BEQ.S   .brush_cmd_filter_highlight_gate
 
-    TST.L   ESQIFF_GAdsBrushListCount
+    TST.L   _ESQIFF_GAdsBrushListCount
     BNE.S   .brush_cmd_set_playback_cursor_4
 
 .brush_cmd_filter_highlight_gate:
@@ -701,7 +701,7 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .brush_cmd_set_playback_cursor_4
 
 .brush_cmd_try_consume_primary_type:
-    PEA     SCRIPT_Type20SubtypeCache
+    PEA     _SCRIPT_Type20SubtypeCache
     JSR     P_TYPE_ConsumePrimaryTypeIfPresent(PC)
 
     ADDQ.W  #4,A7
@@ -709,7 +709,7 @@ SCRIPT_HandleBrushCommand:
     BEQ.S   .brush_cmd_filter_cmd_dispatch
 
     MOVEQ   #1,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_filter_cmd_dispatch:
@@ -733,17 +733,17 @@ SCRIPT_HandleBrushCommand:
 
     MOVE.W  #(-1),_TEXTDISP_CurrentMatchIndex
     MOVEQ   #2,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_set_playback_cursor_4:
     MOVEQ   #4,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
-    CLR.W   SCRIPT_ChannelRangeArmedFlag
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
+    CLR.W   _SCRIPT_ChannelRangeArmedFlag
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_dispatch_subcommand:
-    PEA     SCRIPT_Type20SubtypeCache
+    PEA     _SCRIPT_Type20SubtypeCache
     JSR     P_TYPE_ConsumePrimaryTypeIfPresent(PC)
 
     ADDQ.W  #4,A7
@@ -751,7 +751,7 @@ SCRIPT_HandleBrushCommand:
     BEQ.S   .brush_cmd_dispatch_by_subcode
 
     MOVEQ   #1,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_dispatch_by_subcode:
@@ -792,36 +792,36 @@ SCRIPT_HandleBrushCommand:
 
 .brush_cmd_case_set_cursor_9_and_banner_text:
     MOVEQ   #9,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
-    MOVE.B  1(A2),SCRIPT_PendingTextdispCmdChar
-    MOVE.B  2(A2),SCRIPT_PendingTextdispCmdArg
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
+    MOVE.B  1(A2),_SCRIPT_PendingTextdispCmdChar
+    MOVE.B  2(A2),_SCRIPT_PendingTextdispCmdArg
     LEA     3(A2),A0                        ; payload tail inside SCRIPT_CTRL_CMD_BUFFER packet
     ; Source is NUL-terminated by caller at packet end (0(A2,D7)=0).
-    MOVE.L  SCRIPT_CommandTextPtr,-(A7)
+    MOVE.L  _SCRIPT_CommandTextPtr,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,SCRIPT_CommandTextPtr
+    MOVE.L  D0,_SCRIPT_CommandTextPtr
     CLR.L   -8(A5)
     MOVE.W  #(-2),SCRIPT_PendingBannerTargetChar
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_set_cursor_8_and_byte:
     MOVEQ   #8,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
-    MOVE.B  2(A2),SCRIPT_PendingWeatherCommandChar
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
+    MOVE.B  2(A2),_SCRIPT_PendingWeatherCommandChar
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_channel_range_gate:
-    TST.W   SCRIPT_ChannelRangeArmedFlag
+    TST.W   _SCRIPT_ChannelRangeArmedFlag
     BNE.S   .brush_cmd_case_channel_range_read_digit
 
     MOVEQ   #0,D6
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_channel_range_read_digit:
-    MOVE.W  TEXTDISP_ChannelSourceMode,D0
+    MOVE.W  _TEXTDISP_ChannelSourceMode,D0
     SUBQ.W  #1,D0
     BNE.S   .brush_cmd_case_channel_offset_secondary
 
@@ -834,7 +834,7 @@ SCRIPT_HandleBrushCommand:
 .brush_cmd_case_channel_offset_selected:
     MOVEQ   #0,D1
     MOVE.B  0(A2,D0.L),D1
-    MOVE.W  D1,SCRIPT_ChannelRangeDigitChar
+    MOVE.W  D1,_SCRIPT_ChannelRangeDigitChar
     MOVEQ   #48,D0
     CMP.W   D0,D1
     BNE.S   .brush_cmd_case_require_match_index
@@ -865,24 +865,24 @@ SCRIPT_HandleBrushCommand:
     JSR     TEXTDISP_UpdateChannelRangeFlags(PC)
 
     MOVEQ   #5,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_pending_banner_hex:
-    MOVE.B  CONFIG_LRBN_FlagChar,D0
+    MOVE.B  _CONFIG_LRBN_FlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BEQ.S   .brush_cmd_case_parse_pending_banner_hex
 
     MOVE.W  #(-1),SCRIPT_PendingBannerTargetChar
     MOVEQ   #1,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_parse_pending_banner_hex:
     MOVEQ   #0,D0
     MOVE.B  2(A2),D0
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #7,(A1)
@@ -897,7 +897,7 @@ SCRIPT_HandleBrushCommand:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -907,7 +907,7 @@ SCRIPT_HandleBrushCommand:
     EXT.L   D0
     MOVE.L  D0,(A7)
     MOVE.L  D1,36(A7)
-    JSR     SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -916,7 +916,7 @@ SCRIPT_HandleBrushCommand:
     ADD.L   D1,D0
     MOVEQ   #0,D1
     MOVE.B  4(A2),D1
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
@@ -959,7 +959,7 @@ SCRIPT_HandleBrushCommand:
 
     MOVE.W  #(-1),_TEXTDISP_CurrentMatchIndex
     MOVEQ   #2,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .checkIfSelectCodeIsRAVESC:
@@ -981,20 +981,20 @@ SCRIPT_HandleBrushCommand:
 
 .selectCodeIsRAVESC:
     MOVEQ   #3,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .selectCodeIsNotRAVESC:
     MOVEQ   #-1,D0
     MOVEQ   #1,D1
-    MOVE.L  D1,SCRIPT_PlaybackCursor
+    MOVE.L  D1,_SCRIPT_PlaybackCursor
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_pending_banner_invalid:
     MOVE.W  #(-1),SCRIPT_PendingBannerTargetChar
     MOVEQ   #1,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_reset_match_and_pick_cursor:
@@ -1005,18 +1005,18 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .brush_cmd_case_set_cursor_2
 
     MOVEQ   #1,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_set_cursor_2:
     MOVEQ   #2,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_reset_match_cursor_1:
     MOVE.W  #(-1),_TEXTDISP_CurrentMatchIndex
     MOVEQ   #1,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_find_wildcard_then_set_cursor:
@@ -1030,12 +1030,12 @@ SCRIPT_HandleBrushCommand:
 
     MOVEQ   #0,D6
     MOVEQ   #1,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_wildcard_found_cursor_3:
     MOVEQ   #3,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_select_cursor_from_primary_search:
@@ -1080,17 +1080,17 @@ SCRIPT_HandleBrushCommand:
 
 .brush_cmd_case_set_cursor_13:
     MOVEQ   #13,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_set_cursor_14:
     MOVEQ   #14,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_set_cursor_15:
     MOVEQ   #15,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_filter_or_runtime_mode:
@@ -1102,7 +1102,7 @@ SCRIPT_HandleBrushCommand:
     JSR     SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState(PC)
 
     LEA     2(A2),A0
-    PEA     LOCAVAIL_PrimaryFilterState
+    PEA     _LOCAVAIL_PrimaryFilterState
     MOVE.L  A0,-(A7)
     JSR     SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry(PC)
 
@@ -1111,7 +1111,7 @@ SCRIPT_HandleBrushCommand:
 
 .brush_cmd_case_filter_update_entry:
     MOVEQ   #1,D0
-    CMP.L   LOCAVAIL_FilterModeFlag,D0
+    CMP.L   _LOCAVAIL_FilterModeFlag,D0
     BNE.S   .brush_cmd_case_filter_mode_checks
 
     MOVEQ   #56,D0
@@ -1126,7 +1126,7 @@ SCRIPT_HandleBrushCommand:
 
 .brush_cmd_case_filter_mode_checks:
     MOVEQ   #1,D0
-    CMP.L   LOCAVAIL_FilterModeFlag,D0
+    CMP.L   _LOCAVAIL_FilterModeFlag,D0
     BNE.S   .brush_cmd_case_diag_char_mode_checks
 
     MOVEQ   #0,D6
@@ -1134,8 +1134,8 @@ SCRIPT_HandleBrushCommand:
 
 .brush_cmd_case_diag_char_mode_checks:
     MOVEQ   #0,D0
-    MOVE.B  ED_DiagVinModeChar,D0
-    LEA     WDISP_CharClassTable,A0
+    MOVE.B  _ED_DiagVinModeChar,D0
+    LEA     _WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #1,(A1)
@@ -1190,7 +1190,7 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .brush_cmd_case_check_y1
 
 .brush_cmd_case_set_runtime_mode_3:
-    MOVE.W  #3,SCRIPT_RuntimeMode
+    MOVE.W  #3,_SCRIPT_RuntimeMode
     BRA.S   .brush_cmd_finalize
 
 .brush_cmd_case_check_y1:
@@ -1246,13 +1246,13 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .brush_cmd_case_fail
 
 .brush_cmd_case_try_cursor_10:
-    JSR     SCRIPT_ReadHandshakeBit5Mask(PC)
+    JSR     _SCRIPT_ReadHandshakeBit5Mask(PC)
 
     TST.B   D0
     BEQ.S   .brush_cmd_case_fail
 
     MOVEQ   #10,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.S   .brush_cmd_finalize
 
 .brush_cmd_case_fail:
@@ -1275,7 +1275,7 @@ SCRIPT_HandleBrushCommand:
     TST.L   -8(A5)
     BEQ.S   .return
 
-    TST.L   SCRIPT_PlaybackCursor
+    TST.L   _SCRIPT_PlaybackCursor
     BEQ.S   .return
 
     CLR.L   -(A7)
@@ -1283,12 +1283,12 @@ SCRIPT_HandleBrushCommand:
     NOT.B   D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     TEXTDISP_HandleScriptCommand(PC)
+    JSR     _TEXTDISP_HandleScriptCommand(PC)
 
     LEA     12(A7),A7
 
 .return:
-    MOVE.W  D5,SCRIPT_RuntimeMode
+    MOVE.W  D5,_SCRIPT_RuntimeMode
     MOVE.L  D6,D0
 
     MOVEM.L (A7)+,D2-D7/A2-A3
@@ -1307,17 +1307,17 @@ SCRIPT_HandleBrushCommand:
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D5/D6/D7
 ; CALLS:
-;   TEXTDISP_SelectGroupAndEntry
+;   _TEXTDISP_SelectGroupAndEntry
 ; READS:
-;   _TEXTDISP_PrimarySearchText, _TEXTDISP_SecondarySearchText, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, SCRIPT_PrimarySearchFirstFlag
+;   _TEXTDISP_PrimarySearchText, _TEXTDISP_SecondarySearchText, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, _SCRIPT_PrimarySearchFirstFlag
 ; WRITES:
-;   SCRIPT_SearchMatchCountOrIndex, SCRIPT_PlaybackCursor, SCRIPT_ChannelRangeArmedFlag
+;   _SCRIPT_SearchMatchCountOrIndex, _SCRIPT_PlaybackCursor, _SCRIPT_ChannelRangeArmedFlag
 ; DESC:
 ;   Splits the incoming parse buffer into primary/secondary lookup windows and
-;   tries entry selection in preferred order based on SCRIPT_PrimarySearchFirstFlag.
+;   tries entry selection in preferred order based on _SCRIPT_PrimarySearchFirstFlag.
 ; NOTES:
-;   Sets SCRIPT_PlaybackCursor to 6/7 on successful primary/secondary matches,
-;   otherwise forces cursor 1 and clears SCRIPT_ChannelRangeArmedFlag.
+;   Sets _SCRIPT_PlaybackCursor to 6/7 on successful primary/secondary matches,
+;   otherwise forces cursor 1 and clears _SCRIPT_ChannelRangeArmedFlag.
 ;------------------------------------------------------------------------------
 SCRIPT_SelectPlaybackCursorFromSearchText:
     LINK.W  A5,#-4
@@ -1325,8 +1325,8 @@ SCRIPT_SelectPlaybackCursorFromSearchText:
     MOVE.L  8(A5),D7
     MOVEA.L 12(A5),A3
     MOVEQ   #1,D6
-    MOVE.L  D7,SCRIPT_SearchMatchCountOrIndex
-    MOVE.W  #1,SCRIPT_ChannelRangeArmedFlag
+    MOVE.L  D7,_SCRIPT_SearchMatchCountOrIndex
+    MOVE.W  #1,_SCRIPT_ChannelRangeArmedFlag
     MOVEQ   #3,D5
 
 .loop_1546:
@@ -1343,7 +1343,7 @@ SCRIPT_SelectPlaybackCursorFromSearchText:
 
 .branch_1547:
     CLR.B   0(A3,D5.W)
-    TST.W   SCRIPT_PrimarySearchFirstFlag
+    TST.W   _SCRIPT_PrimarySearchFirstFlag
     BNE.S   .if_ne_1548
 
     MOVE.L  D5,D0
@@ -1356,14 +1356,14 @@ SCRIPT_SelectPlaybackCursorFromSearchText:
     MOVE.L  D0,-(A7)
     PEA     _TEXTDISP_SecondarySearchText
     MOVE.L  A1,-(A7)
-    JSR     TEXTDISP_SelectGroupAndEntry(PC)
+    JSR     _TEXTDISP_SelectGroupAndEntry(PC)
 
     LEA     12(A7),A7
     SUBQ.W  #1,D0
     BNE.S   .if_ne_1548
 
     MOVEQ   #7,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.S   .skip_154B
 
 .if_ne_1548:
@@ -1373,18 +1373,18 @@ SCRIPT_SelectPlaybackCursorFromSearchText:
     MOVE.L  D0,-(A7)
     PEA     _TEXTDISP_PrimarySearchText
     MOVE.L  A0,-(A7)
-    JSR     TEXTDISP_SelectGroupAndEntry(PC)
+    JSR     _TEXTDISP_SelectGroupAndEntry(PC)
 
     LEA     12(A7),A7
     SUBQ.W  #1,D0
     BNE.S   .if_ne_1549
 
     MOVEQ   #6,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.S   .skip_154B
 
 .if_ne_1549:
-    TST.W   SCRIPT_PrimarySearchFirstFlag
+    TST.W   _SCRIPT_PrimarySearchFirstFlag
     BEQ.S   .branch_154A
 
     MOVE.L  D5,D0
@@ -1397,21 +1397,21 @@ SCRIPT_SelectPlaybackCursorFromSearchText:
     MOVE.L  D0,-(A7)
     PEA     _TEXTDISP_SecondarySearchText
     MOVE.L  A1,-(A7)
-    JSR     TEXTDISP_SelectGroupAndEntry(PC)
+    JSR     _TEXTDISP_SelectGroupAndEntry(PC)
 
     LEA     12(A7),A7
     SUBQ.W  #1,D0
     BNE.S   .branch_154A
 
     MOVEQ   #7,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.S   .skip_154B
 
 .branch_154A:
     MOVEQ   #0,D6
-    CLR.W   SCRIPT_ChannelRangeArmedFlag
+    CLR.W   _SCRIPT_ChannelRangeArmedFlag
     MOVEQ   #1,D0
-    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.L  D0,_SCRIPT_PlaybackCursor
 
 .skip_154B:
     MOVE.L  D6,D0
@@ -1432,9 +1432,9 @@ SCRIPT_SelectPlaybackCursorFromSearchText:
 ; CALLS:
 ;   SCRIPT_ApplyPendingBannerTarget, SCRIPT_UpdateRuntimeModeForPlaybackCursor, SCRIPT_DispatchPlaybackCursorCommand, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
 ; READS:
-;   CONFIG_MSN_FlagChar, SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, LOCAVAIL_PrimaryFilterState, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, _TEXTDISP_CurrentMatchIndex
+;   CONFIG_MSN_FlagChar, SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, _LOCAVAIL_PrimaryFilterState, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _TEXTDISP_CurrentMatchIndex
 ; WRITES:
-;   SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, TEXTDISP_CurrentMatchIndexSaved
+;   SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, TEXTDISP_CurrentMatchIndexSaved
 ; DESC:
 ;   Loads context state, applies mode/cursor gating, runs playback-command
 ;   dispatch, then saves the updated state back into the context snapshot.
@@ -1444,7 +1444,7 @@ SCRIPT_SelectPlaybackCursorFromSearchText:
 SCRIPT_ProcessCtrlContextPlaybackTick:
     MOVEM.L D2/A3,-(A7)
     MOVEA.L 12(A7),A3
-    PEA     LOCAVAIL_PrimaryFilterState
+    PEA     _LOCAVAIL_PrimaryFilterState
     MOVE.L  A3,-(A7)
     JSR     SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(PC)
 
@@ -1456,7 +1456,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     BEQ.S   .playback_tick_apply_pending_mode_change
 
     MOVEQ   #3,D0
-    MOVE.W  D0,SCRIPT_RuntimeMode
+    MOVE.W  D0,_SCRIPT_RuntimeMode
     MOVEQ   #0,D0
     MOVE.L  D0,SCRIPT_RuntimeModeDeferredFlag
 
@@ -1466,7 +1466,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     CMP.B   D1,D0
     BNE.S   .playback_tick_gate_cursor_for_m_mode
 
-    MOVE.L  SCRIPT_PlaybackCursor,D0
+    MOVE.L  _SCRIPT_PlaybackCursor,D0
     TST.L   D0
     BLE.S   .playback_tick_gate_cursor_for_m_mode
 
@@ -1475,23 +1475,23 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     BGE.S   .playback_tick_gate_cursor_for_m_mode
 
     MOVEQ   #2,D2
-    MOVE.L  D2,SCRIPT_PlaybackCursor
+    MOVE.L  D2,_SCRIPT_PlaybackCursor
 
 .playback_tick_gate_cursor_for_m_mode:
-    MOVE.W  SCRIPT_RuntimeMode,D0
+    MOVE.W  _SCRIPT_RuntimeMode,D0
     SUBQ.W  #2,D0
     BNE.S   .playback_tick_maybe_dispatch_cursor
 
     TST.W   SCRIPT_RuntimeModeDispatchLatch
     BEQ.S   .playback_tick_clear_runtime_latch
 
-    MOVE.L  SCRIPT_PlaybackCursor,D0
+    MOVE.L  _SCRIPT_PlaybackCursor,D0
     MOVEQ   #10,D1
     CMP.L   D1,D0
     BLE.S   .playback_tick_clear_runtime_latch
 
 .playback_tick_maybe_dispatch_cursor:
-    MOVE.L  SCRIPT_PlaybackCursor,D0
+    MOVE.L  _SCRIPT_PlaybackCursor,D0
     TST.L   D0
     BLE.S   .return
 
@@ -1505,13 +1505,13 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     BNE.S   .return
 
     MOVEQ   #1,D0
-    CMP.L   SCRIPT_PlaybackCursor,D0
+    CMP.L   _SCRIPT_PlaybackCursor,D0
     BEQ.S   .playback_tick_dispatch_cursor
 
     BSR.W   SCRIPT_ApplyPendingBannerTarget
 
 .playback_tick_dispatch_cursor:
-    PEA     SCRIPT_PlaybackCursor
+    PEA     _SCRIPT_PlaybackCursor
     BSR.W   SCRIPT_DispatchPlaybackCursorCommand
 
     ADDQ.W  #4,A7

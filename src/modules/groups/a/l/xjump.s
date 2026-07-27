@@ -1,9 +1,9 @@
-    XDEF    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth
+    XDEF    _GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth
     XDEF    GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault
-    XDEF    GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble
-    XDEF    GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble
+    XDEF    _GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble
+    XDEF    _GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble
     XDEF    GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte
-    XDEF    GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex
+    XDEF    _GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex
 
 ;!======
 ;------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte:
     JMP     LADFUNC_ComposePackedPenByte
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble   (Jump stub)
+; FUNC: _GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -47,11 +47,11 @@ GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble:
+_GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble:
     JMP     LADFUNC_GetPackedPenLowNibble
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex   (Jump stub)
+; FUNC: _GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -69,11 +69,11 @@ GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex:
+_GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex:
     JMP     LADFUNC_UpdateEntryFromTextAndAttrBuffers
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth   (Jump stub)
+; FUNC: _GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -91,7 +91,7 @@ GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth:
+_GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth:
     JMP     ESQ_WriteDecFixedWidth
 
 ;------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault:
     JMP     LADFUNC_BuildEntryBuffersOrDefault
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble   (Jump stub)
+; FUNC: _GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -135,5 +135,5 @@ GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble:
+_GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble:
     JMP     _LADFUNC_GetPackedPenHighNibble

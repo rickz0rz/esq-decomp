@@ -1,5 +1,5 @@
 /* RESTORES: GCOMMAND_LoadPPVTemplate
- * MODULE:   modules/groups/a/s/gcommand.s
+ * MODULE:   modules/groups/a/s/gcommand_gcommand_loadppvtemplate.s
  * STATUS:   behavioural
  *
  * Serialises the Digital PPV parameter block to DF0:Digital_PPV3.dat. The two

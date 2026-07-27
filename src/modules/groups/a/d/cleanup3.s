@@ -25,22 +25,22 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A2/A6
 ; CALLS:
-;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible, DISPLIB_NormalizeValueByStep, ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetRast,
+;   _GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible, _DISPLIB_NormalizeValueByStep, ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetRast,
 ;   GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth , GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte, _LVOSetAPen, GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner, ESQ_SetCopperEffect_OnEnableHighlight,
-;   GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode, GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange, GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime,
+;   GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode, GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName, _GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange, GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime,
 ;   GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel, CLEANUP_BuildAlignedStatusLine, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth, GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame, GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort, GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight,
-;   _LVORectFill, GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort, GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition
+;   _LVORectFill, _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort, GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition
 ; READS:
 ;   _TEXTDISP_PrimarySearchText, _TEXTDISP_SecondarySearchText, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, _TEXTDISP_CurrentMatchIndex-TEXTDISP_CurrentMatchIndexSaved,
-;   CLEANUP_AlignedStatusClockEntryBuffer, CLEANUP_AlignedStatusMatchIndex, CLEANUP_AlignedStatusClockEntryIndex, _TEXTDISP_BannerCharFallback-TEXTDISP_BannerSelectedValidFlag, TEXTDISP_ChannelLabelReadyFlag,
-;   TEXTDISP_PrimaryTitlePtrTable, CLEANUP_AlignedStatusEntryCycleTable, SCRIPT_StrChannelLabel_TuesdaysFridays, TEXTDISP_ActiveGroupId, TEXTDISP_CenterAlignToken, TEXTDISP_LeftAlignToken,
-;   TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, CLOCK_CurrentDayOfYear, ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr,
+;   CLEANUP_AlignedStatusClockEntryBuffer, CLEANUP_AlignedStatusMatchIndex, CLEANUP_AlignedStatusClockEntryIndex, _TEXTDISP_BannerCharFallback-TEXTDISP_BannerSelectedValidFlag, _TEXTDISP_ChannelLabelReadyFlag,
+;   _TEXTDISP_PrimaryTitlePtrTable, CLEANUP_AlignedStatusEntryCycleTable, SCRIPT_StrChannelLabel_TuesdaysFridays, _TEXTDISP_ActiveGroupId, TEXTDISP_CenterAlignToken, TEXTDISP_LeftAlignToken,
+;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, CLOCK_CurrentDayOfYear, _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr,
 ;   Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY,
 ;   Global_STR_ALIGNED_NOW_SHOWING, Global_STR_ALIGNED_NEXT_SHOWING,
 ;   Global_STR_ALIGNED_TODAY_AT, Global_STR_ALIGNED_TONIGHT_AT,
 ;   Global_STR_ALIGNED_TOMORROW_AT
 ; WRITES:
-;   TEXTDISP_ChannelLabelBuffer, TEXTDISP_ChannelSourceMode, CLEANUP_AlignedStatusSuffixBuffer, CLEANUP_AlignedStatusClockEntryBuffer, CLEANUP_AlignedStatusMatchIndex, CLEANUP_AlignedStatusClockEntryIndex,
+;   _TEXTDISP_ChannelLabelBuffer, _TEXTDISP_ChannelSourceMode, CLEANUP_AlignedStatusSuffixBuffer, CLEANUP_AlignedStatusClockEntryBuffer, CLEANUP_AlignedStatusMatchIndex, CLEANUP_AlignedStatusClockEntryIndex,
 ;   TEXTDISP_LinePenOverrideEnabledFlag, TEXTDISP_LinePenOverrideStateWord, TEXTDISP_CurrentMatchIndexSaved, _TEXTDISP_BannerCharFallback, _TEXTDISP_BannerCharSelected
 ; DESC:
 ;   Builds and renders the aligned status banner text (now/next and time
@@ -57,10 +57,10 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.W  10(A5),D7
     MOVE.W  14(A5),D6
     MOVE.W  18(A5),D5
-    MOVE.W  D7,TEXTDISP_ChannelSourceMode
+    MOVE.W  D7,_TEXTDISP_ChannelSourceMode
     CLR.B   -554(A5)
     MOVEQ   #0,D0
-    MOVE.W  D0,WDISP_AccumulatorFlushPending
+    MOVE.W  D0,_WDISP_AccumulatorFlushPending
     MOVE.W  D0,-40(A5)
     MOVEQ   #1,D0
     CMP.W   D0,D7
@@ -105,7 +105,7 @@ CLEANUP_RenderAlignedStatusScreen:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     CLOCK_STR_TEMPLATE_CODE_SET_FGN
-    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -151,7 +151,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
     MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
@@ -169,7 +169,7 @@ CLEANUP_RenderAlignedStatusScreen:
     PEA     48.W
     PEA     1.W
     MOVE.L  D0,-(A7)
-    JSR     DISPLIB_NormalizeValueByStep(PC)
+    JSR     _DISPLIB_NormalizeValueByStep(PC)
 
     LEA     12(A7),A7
     MOVE.W  _TEXTDISP_CurrentMatchIndex,D1
@@ -258,10 +258,10 @@ CLEANUP_RenderAlignedStatusScreen:
     BRA.S   .set_title_ready
 
 .fallback_title_buffer:
-    TST.L   ESQIFF_PrimaryLineHeadPtr
+    TST.L   _ESQIFF_PrimaryLineHeadPtr
     BEQ.W   .done
 
-    MOVEA.L ESQIFF_PrimaryLineHeadPtr,A0
+    MOVEA.L _ESQIFF_PrimaryLineHeadPtr,A0
     LEA     -554(A5),A1
 
 .copy_fallback_title_loop:
@@ -295,10 +295,10 @@ CLEANUP_RenderAlignedStatusScreen:
     BRA.S   .set_title_ready_g
 
 .fallback_title_buffer_g:
-    TST.L   ESQIFF_PrimaryLineTailPtr
+    TST.L   _ESQIFF_PrimaryLineTailPtr
     BEQ.W   .done
 
-    MOVEA.L ESQIFF_PrimaryLineTailPtr,A0
+    MOVEA.L _ESQIFF_PrimaryLineTailPtr,A0
     LEA     -554(A5),A1
 
 .copy_fallback_title_loop_g:
@@ -374,9 +374,9 @@ CLEANUP_RenderAlignedStatusScreen:
 .maybe_refresh_display:
     JSR     GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
-    MOVEA.L WDISP_DisplayContextBase,A2
+    MOVEA.L _WDISP_DisplayContextBase,A2
     MOVEA.L 14(A2),A1
     MOVEQ   #0,D0
     MOVE.B  5(A1),D0
@@ -399,7 +399,7 @@ CLEANUP_RenderAlignedStatusScreen:
     JSR     GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     BRA.S   .primary_rastport_ready
 
 .alloc_rastport_primary:
@@ -410,7 +410,7 @@ CLEANUP_RenderAlignedStatusScreen:
     JSR     GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
 
 .primary_rastport_ready:
     TST.W   D5
@@ -432,7 +432,7 @@ CLEANUP_RenderAlignedStatusScreen:
     PEA     1.W
     JSR     GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     PEA     2.W
     JSR     GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
@@ -446,7 +446,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.L  D0,-(A7)
     JSR     GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     PEA     1.W
     JSR     GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
@@ -546,7 +546,7 @@ CLEANUP_RenderAlignedStatusScreen:
 
     MOVE.W  _TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
-    TST.W   TEXTDISP_ActiveGroupId
+    TST.W   _TEXTDISP_ActiveGroupId
     BEQ.S   .select_channel_format
 
     MOVEQ   #1,D1
@@ -567,7 +567,7 @@ CLEANUP_RenderAlignedStatusScreen:
 
     LEA     16(A7),A7
     LEA     TEXTDISP_EntryShortNameScratch,A0
-    LEA     TEXTDISP_ChannelLabelBuffer,A1
+    LEA     _TEXTDISP_ChannelLabelBuffer,A1
 
 .copy_channel_string_loop:
     MOVE.B  (A0)+,(A1)+
@@ -577,7 +577,7 @@ CLEANUP_RenderAlignedStatusScreen:
 
 .clear_channel_string:
     MOVEQ   #0,D0
-    MOVE.B  D0,TEXTDISP_ChannelLabelBuffer
+    MOVE.B  D0,_TEXTDISP_ChannelLabelBuffer
 
 .append_optional_prefix:
     MOVE.B  -554(A5),D0
@@ -585,15 +585,15 @@ CLEANUP_RenderAlignedStatusScreen:
     BEQ.S   .append_template_text
 
     PEA     TEXTDISP_LeftAlignToken
-    PEA     TEXTDISP_ChannelLabelBuffer
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    PEA     _TEXTDISP_ChannelLabelBuffer
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 .append_template_text:
     PEA     -554(A5)
-    PEA     TEXTDISP_ChannelLabelBuffer
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    PEA     _TEXTDISP_ChannelLabelBuffer
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D0
@@ -641,8 +641,8 @@ CLEANUP_RenderAlignedStatusScreen:
     BEQ.W   .append_alignment_text
 
     PEA     CLEANUP_AlignedStatusSuffixBuffer
-    PEA     TEXTDISP_ChannelLabelBuffer
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    PEA     _TEXTDISP_ChannelLabelBuffer
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     Global_STR_ALIGNED_NEXT_SHOWING,A0
     LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
@@ -659,7 +659,7 @@ CLEANUP_RenderAlignedStatusScreen:
 
     PEA     -834(A5)
     PEA     CLEANUP_AlignedStatusSuffixBuffer
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     20(A7),A7
     BRA.W   .append_alignment_text
@@ -667,16 +667,16 @@ CLEANUP_RenderAlignedStatusScreen:
 .build_time_phrase:
     MOVE.W  -36(A5),D0
     EXT.L   D0
-    TST.W   TEXTDISP_ActiveGroupId
+    TST.W   _TEXTDISP_ActiveGroupId
     BEQ.S   .select_time_table
 
     MOVEQ   #0,D1
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D1
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D1
     BRA.S   .format_time_components
 
 .select_time_table:
     MOVEQ   #0,D1
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D1
 
 .format_time_components:
     MOVEQ   #0,D2
@@ -748,14 +748,14 @@ CLEANUP_RenderAlignedStatusScreen:
 
     PEA     -834(A5)
     PEA     CLEANUP_AlignedStatusSuffixBuffer
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     16(A7),A7
 
 .append_alignment_text:
     PEA     CLEANUP_AlignedStatusSuffixBuffer
-    PEA     TEXTDISP_ChannelLabelBuffer
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    PEA     _TEXTDISP_ChannelLabelBuffer
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .maybe_rebuild_output_record
@@ -804,11 +804,11 @@ CLEANUP_RenderAlignedStatusScreen:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     PEA     CLEANUP_AlignedStatusSuffixBuffer
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     PEA     CLEANUP_AlignedStatusSuffixBuffer
-    PEA     TEXTDISP_ChannelLabelBuffer
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    PEA     _TEXTDISP_ChannelLabelBuffer
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     16(A7),A7
 
@@ -839,7 +839,7 @@ CLEANUP_RenderAlignedStatusScreen:
     JSR     GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  TEXTDISP_ActiveGroupId,D0
+    MOVE.W  _TEXTDISP_ActiveGroupId,D0
     EXT.L   D0
     MOVE.W  CLEANUP_AlignedStatusMatchIndex,D1
     EXT.L   D1
@@ -856,7 +856,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVEQ   #0,D3
 
 .submit_output_record:
-    TST.L   TEXTDISP_ChannelLabelReadyFlag
+    TST.L   _TEXTDISP_ChannelLabelReadyFlag
     SEQ     D4
     NEG.B   D4
     EXT.W   D4
@@ -866,7 +866,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     TEXTDISP_ChannelLabelBuffer
+    PEA     _TEXTDISP_ChannelLabelBuffer
     JSR     CLEANUP_BuildAlignedStatusLine(PC)
 
     LEA     24(A7),A7
@@ -875,8 +875,8 @@ CLEANUP_RenderAlignedStatusScreen:
     BNE.S   .render_output_text
 
     PEA     CLEANUP_AlignedStatusSuffixBuffer
-    PEA     TEXTDISP_ChannelLabelBuffer
-    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
+    PEA     _TEXTDISP_ChannelLabelBuffer
+    JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -892,14 +892,14 @@ CLEANUP_RenderAlignedStatusScreen:
 
     MOVE.W  #1,TEXTDISP_LinePenOverrideEnabledFlag
     MOVEQ   #0,D0
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     MOVE.W  2(A0),D0
     MOVE.L  D0,-(A7)
-    PEA     TEXTDISP_ChannelLabelBuffer
+    PEA     _TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth(PC)
 
     PEA     3.W
-    PEA     TEXTDISP_ChannelLabelBuffer
+    PEA     _TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame(PC)
 
     MOVEA.L Global_REF_RASTPORT_2,A1
@@ -947,10 +947,10 @@ CLEANUP_RenderAlignedStatusScreen:
 
     JSR     ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEQ   #0,D0
-    MOVEA.L WDISP_DisplayContextBase,A1
+    MOVEA.L _WDISP_DisplayContextBase,A1
     MOVE.W  2(A1),D0
     SUBQ.L  #1,D0
     MOVEQ   #0,D1
@@ -966,7 +966,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     PEA     Global_REF_320_240_BITMAP
-    JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
+    JSR     _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
 
     JSR     GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
 

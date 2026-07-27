@@ -1,10 +1,10 @@
-    XDEF    GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn
+    XDEF    _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn
     XDEF    GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable
-    XDEF    GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow
-    XDEF    GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides
+    XDEF    _GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow
+    XDEF    _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn   (Routine at GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn)
+; FUNC: _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn   (Routine at _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -22,11 +22,11 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn:
+_GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn:
     JMP     ESQ_SetCopperEffect_AllOn
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow   (Routine at GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow)
+; FUNC: _GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow   (Routine at _GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -44,11 +44,11 @@ GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow:
+_GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow:
     JMP     SCRIPT_AssertCtrlLineNow
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides   (Routine at GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides)
+; FUNC: _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides   (Routine at _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -66,7 +66,7 @@ GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides:
+_GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides:
     JMP     TLIBA3_DrawViewModeGuides
 
 ;------------------------------------------------------------------------------

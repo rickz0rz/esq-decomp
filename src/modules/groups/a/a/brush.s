@@ -3,7 +3,7 @@
     XDEF    BRUSH_CloneBrushRecord
     XDEF    BRUSH_FindBrushByPredicate
     XDEF    BRUSH_FindType3Brush
-    XDEF    BRUSH_FreeBrushList
+    XDEF    _BRUSH_FreeBrushList
     XDEF    BRUSH_FreeBrushResources
     XDEF    BRUSH_LoadBrushAsset
     XDEF    BRUSH_LoadColorTextFont
@@ -39,9 +39,9 @@
 ; CLOBBERS:
 ;   A0/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVORead
+;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVORead
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, Global_STR_BRUSH_C_1, Global_STR_BRUSH_C_2, Global_STR_BRUSH_C_3, Global_STR_BRUSH_C_4, MEMF_PUBLIC, Struct_ColorTextFont_Size, return
+;   Global_REF_DOS_LIBRARY_2, _Global_STR_BRUSH_C_1, _Global_STR_BRUSH_C_2, _Global_STR_BRUSH_C_3, _Global_STR_BRUSH_C_4, MEMF_PUBLIC, Struct_ColorTextFont_Size, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -59,8 +59,8 @@ BRUSH_LoadColorTextFont:
     PEA     (MEMF_PUBLIC).W
     PEA     Struct_ColorTextFont_Size.W
     PEA     396.W
-    PEA     Global_STR_BRUSH_C_1
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    PEA     _Global_STR_BRUSH_C_1
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-14(A5)
@@ -77,8 +77,8 @@ BRUSH_LoadColorTextFont:
     MOVE.L  D0,-(A7)
     MOVE.L  -14(A5),-(A7)
     PEA     416.W
-    PEA     Global_STR_BRUSH_C_2
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_BRUSH_C_2
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
     BRA.W   .return
@@ -96,8 +96,8 @@ BRUSH_LoadColorTextFont:
     PEA     Struct_ColorTextFont_Size.W
     MOVE.L  D2,-(A7)
     PEA     431.W
-    PEA     Global_STR_BRUSH_C_3
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_BRUSH_C_3
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
     BRA.S   .return
@@ -139,8 +139,8 @@ BRUSH_LoadColorTextFont:
     PEA     96.W
     MOVE.L  -14(A5),-(A7)
     PEA     445.W
-    PEA     Global_STR_BRUSH_C_4
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_BRUSH_C_4
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #1,D0
 
@@ -233,7 +233,7 @@ BRUSH_StreamFontChunk:
 
 ; Walks the BRUSH list at (A3), releasing rasters and child allocations.
 ;------------------------------------------------------------------------------
-; FUNC: BRUSH_FreeBrushList   (Routine at BRUSH_FreeBrushList)
+; FUNC: _BRUSH_FreeBrushList   (Routine at _BRUSH_FreeBrushList)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -244,9 +244,9 @@ BRUSH_StreamFontChunk:
 ; CLOBBERS:
 ;   A0/A3/A5/A7/D0/D1/D2/D3/D6/D7
 ; CALLS:
-;   GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+;   _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_STR_BRUSH_C_5, Global_STR_BRUSH_C_6, Global_STR_BRUSH_C_7, BRUSH_FreeBrushList_Return, branch, lab_0121
+;   _Global_STR_BRUSH_C_5, _Global_STR_BRUSH_C_6, _Global_STR_BRUSH_C_7, BRUSH_FreeBrushList_Return, branch, lab_0121
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -254,7 +254,7 @@ BRUSH_StreamFontChunk:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-BRUSH_FreeBrushList:
+_BRUSH_FreeBrushList:
     LINK.W  A5,#-20
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
 
@@ -296,8 +296,8 @@ BRUSH_FreeBrushList:
     ADDI.L  #$90,D3
     MOVE.L  0(A0,D3.L),-(A7)
     PEA     549.W
-    PEA     Global_STR_BRUSH_C_5
-    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
+    PEA     _Global_STR_BRUSH_C_5
+    JSR     _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D6
@@ -316,8 +316,8 @@ BRUSH_FreeBrushList:
     PEA     12.W
     MOVE.L  A0,-(A7)
     PEA     561.W
-    PEA     Global_STR_BRUSH_C_6
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_BRUSH_C_6
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  -20(A5),-16(A5)
@@ -327,8 +327,8 @@ BRUSH_FreeBrushList:
     PEA     372.W
     MOVE.L  -8(A5),-(A7)
     PEA     567.W
-    PEA     Global_STR_BRUSH_C_7
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_BRUSH_C_7
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  -12(A5),-8(A5)
@@ -381,7 +381,7 @@ BRUSH_FreeBrushList_Return:
 ; CLOBBERS:
 ;   A0/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
+;   _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
 ; READS:
 ;   BRUSH_SelectBrushSlot_Return, branch_12, lab_012E
 ; WRITES:
@@ -663,7 +663,7 @@ BRUSH_SelectBrushSlot:
     MOVE.L  D2,-(A7)
     MOVE.L  -20(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
+    JSR     _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
 
 ;------------------------------------------------------------------------------
 ; FUNC: BRUSH_SelectBrushSlot_Return   (Routine at BRUSH_SelectBrushSlot_Return)
@@ -691,7 +691,7 @@ BRUSH_SelectBrushSlot_Return:
 
 ;!======
 
-; Returns the first brush node for which STRING_CompareNoCase (predicate) reports success.
+; Returns the first brush node for which _STRING_CompareNoCase (predicate) reports success.
 ;------------------------------------------------------------------------------
 ; FUNC: BRUSH_FindBrushByPredicate   (Routine at BRUSH_FindBrushByPredicate)
 ; ARGS:
@@ -702,7 +702,7 @@ BRUSH_SelectBrushSlot_Return:
 ; CLOBBERS:
 ;   A0/A2/A3/A5/A7/D0
 ; CALLS:
-;   GROUP_AA_JMPTBL_STRING_CompareNoCase
+;   _GROUP_AA_JMPTBL_STRING_CompareNoCase
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -726,7 +726,7 @@ BRUSH_FindBrushByPredicate:
 
     MOVE.L  A3,-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     GROUP_AA_JMPTBL_STRING_CompareNoCase(PC)
+    JSR     _GROUP_AA_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -830,11 +830,11 @@ BRUSH_FindType3Brush:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0
 ; CALLS:
-;   BRUSH_LoadBrushAsset, BRUSH_NormalizeBrushNames, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOForbid, _LVOPermit
+;   BRUSH_LoadBrushAsset, BRUSH_NormalizeBrushNames, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOForbid, _LVOPermit
 ; READS:
 ;   AbsExecBase, Global_STR_BRUSH_C_8
 ; WRITES:
-;   BRUSH_LoadInProgressFlag, PARSEINI_ParsedDescriptorListHead
+;   _BRUSH_LoadInProgressFlag, _PARSEINI_ParsedDescriptorListHead
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -853,7 +853,7 @@ BRUSH_PopulateBrushList:
     JSR     _LVOForbid(A6)
 
     MOVEQ   #1,D0
-    MOVE.L  D0,BRUSH_LoadInProgressFlag
+    MOVE.L  D0,_BRUSH_LoadInProgressFlag
     JSR     _LVOPermit(A6)
 
     CLR.L   (A2)
@@ -871,7 +871,7 @@ BRUSH_PopulateBrushList:
     PEA     845.W
     PEA     Global_STR_BRUSH_C_8
     MOVE.L  D0,-4(A5)
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     20(A7),A7
     MOVEA.L -12(A5),A3
@@ -895,7 +895,7 @@ BRUSH_PopulateBrushList:
     BRA.S   .populate_loop_next_descriptor
 
 .populate_finalize:
-    CLR.L   PARSEINI_ParsedDescriptorListHead
+    CLR.L   _PARSEINI_ParsedDescriptorListHead
     MOVE.L  A2,-(A7)
     BSR.W   BRUSH_NormalizeBrushNames
 
@@ -903,7 +903,7 @@ BRUSH_PopulateBrushList:
     JSR     _LVOForbid(A6)
 
     MOVEQ   #0,D0
-    MOVE.L  D0,BRUSH_LoadInProgressFlag
+    MOVE.L  D0,_BRUSH_LoadInProgressFlag
     JSR     _LVOPermit(A6)
 
     MOVEM.L -20(A5),A2-A3
@@ -922,9 +922,9 @@ BRUSH_PopulateBrushList:
 ; CLOBBERS:
 ;   A0/A3/A5/A7
 ; CALLS:
-;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+;   _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_STR_BRUSH_C_9
+;   _Global_STR_BRUSH_C_9
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -949,8 +949,8 @@ BRUSH_FreeBrushResources:
     PEA     238.W
     MOVE.L  A0,-(A7)
     PEA     887.W
-    PEA     Global_STR_BRUSH_C_9
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    PEA     _Global_STR_BRUSH_C_9
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  -4(A5),-8(A5)
@@ -965,7 +965,7 @@ BRUSH_FreeBrushResources:
 
 ;!======
 
-; Rewrite the brush filename strings in-place using GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator (path normaliser).
+; Rewrite the brush filename strings in-place using _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator (path normaliser).
 ;------------------------------------------------------------------------------
 ; FUNC: BRUSH_NormalizeBrushNames   (Routine at BRUSH_NormalizeBrushNames)
 ; ARGS:
@@ -976,7 +976,7 @@ BRUSH_FreeBrushResources:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7
 ; CALLS:
-;   GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator
+;   _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1007,7 +1007,7 @@ BRUSH_NormalizeBrushNames:
     BNE.S   .normalize_copy_to_scratch
 
     PEA     -40(A5)
-    JSR     GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(PC)
+    JSR     _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L D0,A0
@@ -1047,11 +1047,11 @@ BRUSH_NormalizeBrushNames:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   BITMAP_ProcessIlbmImage, ESQ_PackBitsDecode, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
+;   BITMAP_ProcessIlbmImage, ESQ_PackBitsDecode, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, _GROUP_AG_JMPTBL_MATH_DivS32, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
 ; READS:
-;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, Global_REF_DOS_LIBRARY_2, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_10, Global_STR_BRUSH_C_11, Global_STR_BRUSH_C_12, Global_STR_BRUSH_C_13, Global_STR_BRUSH_C_14, Global_STR_BRUSH_C_15, Global_STR_BRUSH_C_16, BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
+;   AbsExecBase, BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_DOS_LIBRARY_2, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_10, Global_STR_BRUSH_C_11, Global_STR_BRUSH_C_12, Global_STR_BRUSH_C_13, Global_STR_BRUSH_C_14, Global_STR_BRUSH_C_15, Global_STR_BRUSH_C_16, BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
-;   BRUSH_PendingAlertCode, BRUSH_SnapshotDepth, BRUSH_SnapshotWidth
+;   BRUSH_PendingAlertCode, _BRUSH_SnapshotDepth, _BRUSH_SnapshotWidth
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1118,7 +1118,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  #130000,-(A7)
     PEA     977.W
     PEA     Global_STR_BRUSH_C_10
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-46(A5)
@@ -1186,12 +1186,12 @@ BRUSH_LoadBrushAsset:
     MOVE.L  D1,BRUSH_PendingAlertCode      ; remember which cleanup alert to trigger
     MOVEQ   #0,D0
     MOVE.W  128(A3),D0
-    MOVE.L  D0,BRUSH_SnapshotWidth
+    MOVE.L  D0,_BRUSH_SnapshotWidth
     MOVEQ   #0,D0
     MOVE.B  136(A3),D0
-    MOVE.L  D0,BRUSH_SnapshotDepth
+    MOVE.L  D0,_BRUSH_SnapshotDepth
     MOVEA.L A3,A0
-    LEA     BRUSH_SnapshotHeader,A1
+    LEA     _BRUSH_SnapshotHeader,A1
 
 .loadasset_copy_snapshot_header_loop:
     MOVE.B  (A0)+,(A1)+
@@ -1209,7 +1209,7 @@ BRUSH_LoadBrushAsset:
     PEA     372.W
     PEA     1064.W
     PEA     Global_STR_BRUSH_C_11
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
@@ -1363,7 +1363,7 @@ BRUSH_LoadBrushAsset:
     MOVEQ   #1,D0
     MOVE.L  D0,BRUSH_PendingAlertCode      ; flag that cleanup should warn about oversized brushes
     MOVEA.L -16(A5),A0
-    LEA     BRUSH_SnapshotHeader,A1
+    LEA     _BRUSH_SnapshotHeader,A1
 
 .loadasset_copy_snapshot_for_alert_loop:
     MOVE.B  (A0)+,(A1)+
@@ -1413,7 +1413,7 @@ BRUSH_LoadBrushAsset:
     MOVEQ   #15,D1
     ADD.L   D1,D0
     MOVEQ   #16,D1
-    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
+    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     ADD.L   D0,D0
     CLR.W   -18(A5)
@@ -1518,7 +1518,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  0(A0,D3.L),-(A7)
     PEA     1202.W
     PEA     Global_STR_BRUSH_C_13
-    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
+    JSR     _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
 
@@ -1531,7 +1531,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  -16(A5),-(A7)
     PEA     1205.W
     PEA     Global_STR_BRUSH_C_14
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     CLR.L   -16(A5)
@@ -1545,7 +1545,7 @@ BRUSH_LoadBrushAsset:
     PEA     372.W
     PEA     1220.W
     PEA     Global_STR_BRUSH_C_15
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
@@ -1585,7 +1585,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  -50(A5),-(A7)
     PEA     1236.W
     PEA     Global_STR_BRUSH_C_16
-    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -1607,9 +1607,9 @@ BRUSH_LoadBrushAsset:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D7
 ; CALLS:
-;   GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit
+;   GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit
 ; READS:
-;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_17, Global_STR_BRUSH_C_18, MEMF_CLEAR, MEMF_PUBLIC
+;   AbsExecBase, BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_17, Global_STR_BRUSH_C_18, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   BRUSH_PendingAlertCode
 ; DESC:
@@ -1627,7 +1627,7 @@ BRUSH_CloneBrushRecord:
     PEA     372.W
     PEA     1248.W
     PEA     Global_STR_BRUSH_C_17
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -1778,7 +1778,7 @@ BRUSH_CloneBrushRecord:
     MOVEQ   #1,D0
     MOVE.L  D0,BRUSH_PendingAlertCode      ; capture snapshot so cleanup can restore UI hints
     MOVEA.L -8(A5),A0
-    LEA     BRUSH_SnapshotHeader,A1
+    LEA     _BRUSH_SnapshotHeader,A1
 
 .clone_copy_snapshot_for_alert_loop:
     MOVE.B  (A0)+,(A1)+
@@ -1840,7 +1840,7 @@ BRUSH_CloneBrushRecord:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A7/D0
 ; CALLS:
-;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory
+;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   BRUSH_LastAllocatedNode, Global_STR_BRUSH_C_19, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
@@ -1859,7 +1859,7 @@ BRUSH_AllocBrushNode:
     PEA     238.W
     PEA     1352.W
     PEA     Global_STR_BRUSH_C_19
-    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,BRUSH_LastAllocatedNode   ; expose allocation for cleanup/error handlers
@@ -1939,7 +1939,7 @@ BRUSH_PlaneMaskForIndex:
 
 ;!======
 
-; Select a brush by its string label, updating BRUSH_SelectedNode.
+; Select a brush by its string label, updating _BRUSH_SelectedNode.
 ;------------------------------------------------------------------------------
 ; FUNC: BRUSH_SelectBrushByLabel   (Routine at BRUSH_SelectBrushByLabel)
 ; ARGS:
@@ -1951,9 +1951,9 @@ BRUSH_PlaneMaskForIndex:
 ; CALLS:
 ;   BRUSH_FindBrushByPredicate, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AG_JMPTBL_STRING_CopyPadNul
 ; READS:
-;   BRUSH_LabelScratch, BRUSH_SelectedNode, BRUSH_STR_ALIAS_CODE_00, BRUSH_STR_ALIAS_CODE_11, BRUSH_STR_ALIAS_CODE_DT, BRUSH_STR_FALLBACK_DITHER, ESQIFF_BrushIniListHead
+;   BRUSH_LabelScratch, _BRUSH_SelectedNode, BRUSH_STR_ALIAS_CODE_00, BRUSH_STR_ALIAS_CODE_11, BRUSH_STR_ALIAS_CODE_DT, BRUSH_STR_FALLBACK_DITHER, _ESQIFF_BrushIniListHead
 ; WRITES:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, BRUSH_SelectedNode
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, _BRUSH_SelectedNode
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1970,8 +1970,8 @@ BRUSH_SelectBrushByLabel:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .lab_0196
 
-    MOVE.L  ESQIFF_BrushIniListHead,-4(A5)
-    CLR.L   BRUSH_SelectedNode
+    MOVE.L  _ESQIFF_BrushIniListHead,-4(A5)
+    CLR.L   _BRUSH_SelectedNode
     PEA     2.W
     PEA     BRUSH_STR_ALIAS_CODE_00
     MOVE.L  A3,-(A7)
@@ -2024,7 +2024,7 @@ BRUSH_SelectBrushByLabel:
     TST.L   D0
     BNE.S   .lab_019A
 
-    MOVE.L  -4(A5),BRUSH_SelectedNode
+    MOVE.L  -4(A5),_BRUSH_SelectedNode
 
 .lab_019A:
     MOVEA.L -4(A5),A0
@@ -2032,18 +2032,18 @@ BRUSH_SelectBrushByLabel:
     BRA.S   .lab_0199
 
 .lab_019B:
-    TST.L   BRUSH_SelectedNode
+    TST.L   _BRUSH_SelectedNode
     BNE.S   .lab_019C
 
-    PEA     ESQIFF_BrushIniListHead
+    PEA     _ESQIFF_BrushIniListHead
     PEA     BRUSH_STR_FALLBACK_DITHER
     BSR.W   BRUSH_FindBrushByPredicate
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,BRUSH_SelectedNode
+    MOVE.L  D0,_BRUSH_SelectedNode
 
 .lab_019C:
-    MOVEA.L BRUSH_SelectedNode,A0
+    MOVEA.L _BRUSH_SelectedNode,A0
     MOVE.L  A0,BRUSH_ScriptPrimarySelection   ; expose latest selection to script subsystem
     MOVE.L  A0,BRUSH_ScriptSecondarySelection ; and remember it as the fallback option
     MOVEA.L (A7)+,A3
@@ -2118,7 +2118,7 @@ BRUSH_AppendBrushNode:
 ; CLOBBERS:
 ;   A0/A5/A7/D0
 ; CALLS:
-;   BRUSH_FreeBrushList
+;   _BRUSH_FreeBrushList
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -2142,7 +2142,7 @@ BRUSH_PopBrushHead:
     MOVE.L  368(A0),-4(A5)
     PEA     1.W
     PEA     8(A5)
-    BSR.W   BRUSH_FreeBrushList
+    BSR.W   _BRUSH_FreeBrushList
 
     ADDQ.W  #8,A7
 

@@ -27,7 +27,7 @@
 
     MOVEA.L A0,A2                           ; A0 is a pointer to the command string at startup, copy to A2
     MOVE.L  D0,D2                           ; D0 is the length of the command string at startup, copy to D2
-    LEA     Global_REF_LONG_FILE_SCRATCH,A4   ; Copy address of Global_REF_LONG_FILE_SCRATCH into A4 (0x3BB24) - 00017118
+    LEA     _Global_REF_LONG_FILE_SCRATCH,A4   ; Copy address of _Global_REF_LONG_FILE_SCRATCH into A4 (0x3BB24) - 00017118
     MOVEA.L AbsExecBase.W,A6                ; 00000004 but this address is dynamically translated at runtime to 002007a0 (confirmed by checking exec.library when dumping libs in fs-uae)
     LEA     BUFFER_5929_LONGWORDS,A3        ; 00016e80
     MOVEQ   #0,D1

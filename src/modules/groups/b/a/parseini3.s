@@ -13,20 +13,20 @@
 ; CLOBBERS:
 ;   D0/D7
 ; CALLS:
-;   SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer, SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes, SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush
+;   _SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer, _SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes, _SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush
 ; READS:
-;   NEWGRID2_ErrorLogEntryPtr, FLIB_LogEntryByteCount, CLOCK_FileEofMarkerCtrlZ
+;   _NEWGRID2_ErrorLogEntryPtr, _FLIB_LogEntryByteCount, _CLOCK_FileEofMarkerCtrlZ
 ; WRITES:
 ;   Err log file on disk
 ; DESC:
-;   Opens df0:err.log (MODE_NEWFILE), writes two entries via SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes and closes.
+;   Opens df0:err.log (MODE_NEWFILE), writes two entries via _SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes and closes.
 ; NOTES:
 ;   Returns -1 when logging is disabled or open fails.
 ;------------------------------------------------------------------------------
 PARSEINI_WriteErrorLogEntry:
     MOVE.L  D7,-(A7)
 
-    TST.L   NEWGRID2_ErrorLogEntryPtr
+    TST.L   _NEWGRID2_ErrorLogEntryPtr
     BNE.S   .logging_enabled
 
     MOVEQ   #-1,D0
@@ -34,8 +34,8 @@ PARSEINI_WriteErrorLogEntry:
 
 .logging_enabled:
     PEA     MODE_NEWFILE.W
-    PEA     Global_STR_DF0_ERR_LOG
-    JSR     SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
+    PEA     _Global_STR_DF0_ERR_LOG
+    JSR     _SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -46,20 +46,20 @@ PARSEINI_WriteErrorLogEntry:
     BRA.S   .return
 
 .log_opened:
-    MOVE.W  FLIB_LogEntryByteCount,D0
+    MOVE.W  _FLIB_LogEntryByteCount,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    MOVE.L  NEWGRID2_ErrorLogEntryPtr,-(A7)
+    MOVE.L  _NEWGRID2_ErrorLogEntryPtr,-(A7)
     MOVE.L  D7,-(A7)
-    JSR     SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(PC)
+    JSR     _SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     CLOCK_FileEofMarkerCtrlZ
+    PEA     _CLOCK_FileEofMarkerCtrlZ
     MOVE.L  D7,-(A7)
-    JSR     SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(PC)
+    JSR     _SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     MOVE.L  D7,(A7)
-    JSR     SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(PC)
+    JSR     _SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(PC)
 
     LEA     24(A7),A7
 
@@ -80,9 +80,9 @@ PARSEINI_WriteErrorLogEntry:
 ; CALLS:
 ;   none
 ; READS:
-;   Global_WORD_H_VALUE, Global_WORD_T_VALUE, Global_WORD_MAX_VALUE
+;   _Global_WORD_H_VALUE, _Global_WORD_T_VALUE, _Global_WORD_MAX_VALUE
 ; WRITES:
-;   Global_WORD_MAX_VALUE
+;   _Global_WORD_MAX_VALUE
 ; DESC:
 ;   Computes (H - T) modulo 64000, updating the stored max when larger.
 ; NOTES:
@@ -92,9 +92,9 @@ PARSEINI_ComputeHTCMaxValues:
     MOVE.L  D7,-(A7)
 
     MOVEQ   #0,D0
-    MOVE.W  Global_WORD_H_VALUE,D0
+    MOVE.W  _Global_WORD_H_VALUE,D0
     MOVEQ   #0,D1
-    MOVE.W  Global_WORD_T_VALUE,D1
+    MOVE.W  _Global_WORD_T_VALUE,D1
     SUB.L   D1,D0
     MOVE.L  D0,D7
     TST.L   D7
@@ -104,12 +104,12 @@ PARSEINI_ComputeHTCMaxValues:
 
 .replaceMaxValue:
     MOVEQ   #0,D0
-    MOVE.W  Global_WORD_MAX_VALUE,D0
+    MOVE.W  _Global_WORD_MAX_VALUE,D0
     CMP.L   D7,D0
     BGE.S   .return
 
     MOVE.L  D7,D0
-    MOVE.W  D0,Global_WORD_MAX_VALUE
+    MOVE.W  D0,_Global_WORD_MAX_VALUE
 
 .return:
     MOVE.L  D7,D0
@@ -127,9 +127,9 @@ PARSEINI_ComputeHTCMaxValues:
 ; CLOBBERS:
 ;   D0-D2/D7
 ; CALLS:
-;   SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
+;   _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
 ; READS:
-;   Global_WORD_H_VALUE, Global_WORD_T_VALUE, Global_REF_CLOCKDATA_STRUCT,
+;   _Global_WORD_H_VALUE, _Global_WORD_T_VALUE, _Global_REF_CLOCKDATA_STRUCT,
 ;   PARSEINI_ClockSecondsSnapshot-20A8
 ; WRITES:
 ;   PARSEINI_ClockSecondsSnapshot-20A8
@@ -143,8 +143,8 @@ PARSEINI_MonitorClockChange:
     MOVEM.L D2/D7,-(A7)
 
     MOVEQ   #0,D7       ; Prefill D7 with 0x00000000
-    MOVE.W  Global_WORD_H_VALUE,D0     ; Not sure what these two bytes are but they're stored into D0 and D1
-    MOVE.W  Global_WORD_T_VALUE,D1
+    MOVE.W  _Global_WORD_H_VALUE,D0     ; Not sure what these two bytes are but they're stored into D0 and D1
+    MOVE.W  _Global_WORD_T_VALUE,D1
     CMP.W   D1,D0       ; Compare D1 and D0 (D1 - D0)
     SNE     D2          ; If the zero flag is set (they're equal), D2 is 0xFF else 0x00
     NEG.B   D2          ; negate the above. now, zero flag is 0x00 else 0xFF
@@ -154,7 +154,7 @@ PARSEINI_MonitorClockChange:
     TST.W   D7          ; Test D7 against 0
     BEQ.S   .check_clockdata_update   ; If D7 is now 0, jump to .check_clockdata_update
 
-    MOVE.W  Global_REF_CLOCKDATA_STRUCT,PARSEINI_ClockSecondsSnapshot  ; Get the first word of the clockdata struct, which is seconds
+    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,PARSEINI_ClockSecondsSnapshot  ; Get the first word of the clockdata struct, which is seconds
     MOVEQ   #1,D0               ; Move 1 into D0
     CMP.W   PARSEINI_ClockChangeActiveFlag,D0         ; Compare PARSEINI_ClockChangeActiveFlag - D0 (1)
     BEQ.S   .return             ; If PARSEINI_ClockChangeActiveFlag was 1, then return
@@ -163,7 +163,7 @@ PARSEINI_MonitorClockChange:
     MOVE.L  D1,-(A7)        ; Push D1 onto the stack
     MOVE.L  D1,-(A7)        ; Push it again onto the stack
     MOVE.W  D0,PARSEINI_ClockChangeActiveFlag     ; Push the least 2 sig bytes in D0 into PARSEINI_ClockChangeActiveFlag
-    JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)    ; JSR
+    JSR     _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)    ; JSR
 
     ADDQ.W  #8,A7           ; Add 8 to whatever value is in the stack (the stack pointer) clearing the last two values in the stack (D1 x2).
     BRA.S   .return
@@ -172,7 +172,7 @@ PARSEINI_MonitorClockChange:
     TST.W   PARSEINI_ClockChangeActiveFlag
     BEQ.S   .return
 
-    MOVE.W  Global_REF_CLOCKDATA_STRUCT,D0
+    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  PARSEINI_ClockSecondsSnapshot,D1
     CMP.W   D0,D1
     BEQ.S   .return
@@ -185,7 +185,7 @@ PARSEINI_MonitorClockChange:
     CLR.W   PARSEINI_ClockChangeActiveFlag
     CLR.L   -(A7)
     PEA     1.W
-    JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
+    JSR     _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
 
@@ -207,11 +207,11 @@ PARSEINI_MonitorClockChange:
 ; CALLS:
 ;   (none)
 ; READS:
-;   CTRL_H, CTRL_HPreviousSample, CTRL_HDeltaMax
+;   _CTRL_H, _CTRL_HPreviousSample, _CTRL_HDeltaMax
 ; WRITES:
-;   CTRL_HDeltaMax
+;   _CTRL_HDeltaMax
 ; DESC:
-;   Computes CTRL_H - CTRL_HPreviousSample (wrapped by +500 if negative) and updates the
+;   Computes _CTRL_H - _CTRL_HPreviousSample (wrapped by +500 if negative) and updates the
 ;   recorded max delta when the new value exceeds the previous max.
 ; NOTES:
 ;   Wrap size 500 suggests a ring buffer or modulo counter.
@@ -220,9 +220,9 @@ PARSEINI_UpdateCtrlHDeltaMax:
     MOVE.L  D7,-(A7)
 
     MOVEQ   #0,D0
-    MOVE.W  CTRL_H,D0
+    MOVE.W  _CTRL_H,D0
     MOVEQ   #0,D1
-    MOVE.W  CTRL_HPreviousSample,D1
+    MOVE.W  _CTRL_HPreviousSample,D1
     SUB.L   D1,D0
     MOVE.L  D0,D7
     TST.L   D7
@@ -232,12 +232,12 @@ PARSEINI_UpdateCtrlHDeltaMax:
 
 .delta_ok:
     MOVEQ   #0,D0
-    MOVE.W  CTRL_HDeltaMax,D0
+    MOVE.W  _CTRL_HDeltaMax,D0
     CMP.L   D7,D0
     BGE.S   .return_status
 
     MOVE.L  D7,D0
-    MOVE.W  D0,CTRL_HDeltaMax
+    MOVE.W  D0,_CTRL_HDeltaMax
 
 .return_status:
     MOVE.L  D7,D0
@@ -255,23 +255,23 @@ PARSEINI_UpdateCtrlHDeltaMax:
 ; CLOBBERS:
 ;   D0-D2/D7
 ; CALLS:
-;   SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
+;   _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
 ; READS:
-;   CTRL_H, CTRL_HPreviousSample, PARSEINI_CtrlHChangeGateFlag, PARSEINI_CtrlHClockSnapshot-20A8, PARSEINI_ClockChangeActiveFlag
+;   _CTRL_H, _CTRL_HPreviousSample, _PARSEINI_CtrlHChangeGateFlag, _PARSEINI_CtrlHClockSnapshot-20A8, PARSEINI_ClockChangeActiveFlag
 ; WRITES:
-;   PARSEINI_CtrlHClockSnapshot-20A8
+;   _PARSEINI_CtrlHClockSnapshot-20A8
 ; DESC:
-;   Compares current CTRL_H to previous value, optionally triggers SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh when
+;   Compares current _CTRL_H to previous value, optionally triggers _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh when
 ;   changes are detected and control flags permit.
 ; NOTES:
-;   Uses PARSEINI_CtrlHChangeGateFlag as gate; resets PARSEINI_ClockChangeActiveFlag when no change.
+;   Uses _PARSEINI_CtrlHChangeGateFlag as gate; resets PARSEINI_ClockChangeActiveFlag when no change.
 ;------------------------------------------------------------------------------
 PARSEINI_CheckCtrlHChange:
     MOVEM.L D2/D7,-(A7)
 
     MOVEQ   #0,D7
-    MOVE.W  CTRL_H,D0
-    MOVE.W  CTRL_HPreviousSample,D1
+    MOVE.W  _CTRL_H,D0
+    MOVE.W  _CTRL_HPreviousSample,D1
     CMP.W   D1,D0
     SNE     D2
     NEG.B   D2
@@ -281,45 +281,45 @@ PARSEINI_CheckCtrlHChange:
     TST.W   D7
     BEQ.S   .no_change_or_gate_closed
 
-    TST.W   PARSEINI_CtrlHChangeGateFlag
+    TST.W   _PARSEINI_CtrlHChangeGateFlag
     BEQ.S   .no_change_or_gate_closed
 
-    MOVE.W  Global_REF_CLOCKDATA_STRUCT,PARSEINI_CtrlHClockSnapshot
-    CLR.W   PARSEINI_CtrlHChangeGateCounter
+    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,_PARSEINI_CtrlHClockSnapshot
+    CLR.W   _PARSEINI_CtrlHChangeGateCounter
     MOVEQ   #1,D0
-    CMP.W   PARSEINI_CtrlHChangePendingFlag,D0
+    CMP.W   _PARSEINI_CtrlHChangePendingFlag,D0
     BEQ.S   .return
 
     PEA     1.W
     PEA     16.W
-    MOVE.W  D0,PARSEINI_CtrlHChangePendingFlag
-    JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
+    MOVE.W  D0,_PARSEINI_CtrlHChangePendingFlag
+    JSR     _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .return
 
 .no_change_or_gate_closed:
-    TST.W   PARSEINI_CtrlHChangePendingFlag
+    TST.W   _PARSEINI_CtrlHChangePendingFlag
     BEQ.S   .return
 
-    MOVE.W  Global_REF_CLOCKDATA_STRUCT,D0
-    MOVE.W  PARSEINI_CtrlHClockSnapshot,D1
+    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,D0
+    MOVE.W  _PARSEINI_CtrlHClockSnapshot,D1
     CMP.W   D0,D1
     BEQ.S   .return
 
-    MOVE.W  D0,PARSEINI_CtrlHClockSnapshot
-    TST.W   PARSEINI_CtrlHChangeGateFlag
+    MOVE.W  D0,_PARSEINI_CtrlHClockSnapshot
+    TST.W   _PARSEINI_CtrlHChangeGateFlag
     BEQ.S   .clear_ctrlh_pending
 
-    ADDQ.W  #1,PARSEINI_CtrlHChangeGateCounter
-    CMPI.W  #3,PARSEINI_CtrlHChangeGateCounter
+    ADDQ.W  #1,_PARSEINI_CtrlHChangeGateCounter
+    CMPI.W  #3,_PARSEINI_CtrlHChangeGateCounter
     BLT.S   .return
 
 .clear_ctrlh_pending:
-    CLR.W   PARSEINI_CtrlHChangePendingFlag
+    CLR.W   _PARSEINI_CtrlHChangePendingFlag
     CLR.L   -(A7)
     PEA     16.W
-    JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
+    JSR     _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
 

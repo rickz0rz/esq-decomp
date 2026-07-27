@@ -1,12 +1,12 @@
     XDEF    ESQSHARED_ApplyProgramTitleTextFilters
-    XDEF    ESQSHARED_CompressClosedCaptionedTag
+    XDEF    _ESQSHARED_CompressClosedCaptionedTag
     XDEF    ESQSHARED_CreateGroupEntryAndTitle
     XDEF    ESQSHARED_InitEntryDefaults
     XDEF    ESQSHARED_MatchSelectionCodeWithOptionalSuffix
-    XDEF    ESQSHARED_NormalizeInStereoTag
+    XDEF    _ESQSHARED_NormalizeInStereoTag
     XDEF    ESQSHARED_ParseCompactEntryRecord
-    XDEF    ESQSHARED_ReplaceMovieRatingToken
-    XDEF    ESQSHARED_ReplaceTvRatingToken
+    XDEF    _ESQSHARED_ReplaceMovieRatingToken
+    XDEF    _ESQSHARED_ReplaceTvRatingToken
     XDEF    ESQSHARED_UpdateMatchingEntriesByTitle
     XDEF    ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated
     XDEF    ESQSHARED_JMPTBL_DST_BuildBannerTimeWord
@@ -14,8 +14,8 @@
     XDEF    ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes
     XDEF    ESQSHARED_JMPTBL_ESQ_SetBit1Based
     XDEF    ESQSHARED_JMPTBL_ESQ_TestBit1Based
-    XDEF    ESQSHARED_JMPTBL_ESQ_WildcardMatch
-    XDEF    ESQSHARED_JMPTBL_STR_SkipClass3Chars
+    XDEF    _ESQSHARED_JMPTBL_ESQ_WildcardMatch
+    XDEF    _ESQSHARED_JMPTBL_STR_SkipClass3Chars
     XDEF    ESQSHARED_CreateGroupEntryAndTitle_Return
     XDEF    ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return
     XDEF    ESQSHARED_NormalizeInStereoTag_Return
@@ -101,15 +101,15 @@ ESQSHARED_ParseCompactEntryRecord:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   ESQSHARED_JMPTBL_ESQ_WildcardMatch
+;   _ESQSHARED_JMPTBL_ESQ_WildcardMatch
 ; READS:
-;   ESQ_SelectCodeBuffer, ESQ_STR_A, ESQPARS_SelectionSuffixBuffer
+;   _ESQ_SelectCodeBuffer, _ESQ_STR_A, _ESQPARS_SelectionSuffixBuffer
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Parses a selection token with optional '.' suffix split, wildcard-matches the
-;   base code against ESQ_SelectCodeBuffer, and optionally matches suffix text
-;   against ESQPARS_SelectionSuffixBuffer before returning boolean success.
+;   base code against _ESQ_SelectCodeBuffer, and optionally matches suffix text
+;   against _ESQPARS_SelectionSuffixBuffer before returning boolean success.
 ; NOTES:
 ;   Requires fallback marker char (-9(A5)) to remain default for success.
 ;------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
     MOVEA.L 8(A5),A3
 
     CLR.B   -10(A5)
-    MOVE.B  ESQ_STR_A,D0
+    MOVE.B  _ESQ_STR_A,D0
     MOVEQ   #0,D6
     MOVE.B  D0,-8(A5)
     MOVE.B  D0,-9(A5)
@@ -151,7 +151,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
     BNE.S   .lab_0C0D
 
 .lab_0C0C:
-    MOVE.B  ESQ_STR_A,-9(A5)
+    MOVE.B  _ESQ_STR_A,-9(A5)
     BRA.S   .branch_1
 
 .lab_0C0D:
@@ -211,8 +211,8 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
 
 .branch_7:
     MOVE.L  A0,-(A7)
-    PEA     ESQ_SelectCodeBuffer
-    JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
+    PEA     _ESQ_SelectCodeBuffer
+    JSR     _ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     MOVE.B  D0,D7
@@ -225,8 +225,8 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
     BNE.S   .branch_9
 
     PEA     -30(A5)
-    PEA     ESQPARS_SelectionSuffixBuffer
-    JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
+    PEA     _ESQPARS_SelectionSuffixBuffer
+    JSR     _ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     MOVE.B  D0,D5
@@ -239,7 +239,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
     TST.W   D5
     BNE.S   .branch_10
 
-    MOVE.B  ESQ_STR_A,D0
+    MOVE.B  _ESQ_STR_A,D0
     MOVE.B  -9(A5),D1
     CMP.B   D0,D1
     BNE.S   .branch_10
@@ -287,14 +287,14 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return:
 ; CALLS:
 ;   (none)
 ; READS:
-;   ESQPARS_DefaultEntryCodeString
+;   _ESQPARS_DefaultEntryCodeString
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Seeds default entry header bytes: status at +40, flags at +41/+42, two-byte
 ;   code string at +43..+44, and default word value 3 at +46.
 ; NOTES:
-;   Uses ESQPARS_DefaultEntryCodeString as the default code-string source.
+;   Uses _ESQPARS_DefaultEntryCodeString as the default code-string source.
 ;------------------------------------------------------------------------------
 ESQSHARED_InitEntryDefaults:
     MOVE.L  A3,-(A7)
@@ -304,7 +304,7 @@ ESQSHARED_InitEntryDefaults:
     MOVE.B  D0,41(A3)
     MOVE.B  D0,42(A3)
     LEA     43(A3),A0
-    LEA     ESQPARS_DefaultEntryCodeString,A1
+    LEA     _ESQPARS_DefaultEntryCodeString,A1
 
 .lab_0C1D:
     MOVE.B  (A1)+,(A0)+
@@ -332,11 +332,11 @@ ESQSHARED_InitEntryDefaults:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated, ESQSHARED_InitEntryDefaults
+;   _ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated, ESQSHARED_InitEntryDefaults
 ; READS:
-;   Global_ESQPARS2_C_1, Global_ESQPARS2_C_2, Global_ESQPARS2_C_3, Global_ESQPARS2_C_4, ESQSHARED_CreateGroupEntryAndTitle_Return, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, TEXTDISP_GroupMutationState, TEXTDISP_MaxEntryTitleLength, MEMF_CLEAR, MEMF_PUBLIC, lab_0C1F, lab_0C20, lab_0C21
+;   Global_ESQPARS2_C_1, Global_ESQPARS2_C_2, Global_ESQPARS2_C_3, Global_ESQPARS2_C_4, ESQSHARED_CreateGroupEntryAndTitle_Return, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryTitlePtrTable, _TEXTDISP_GroupMutationState, _TEXTDISP_MaxEntryTitleLength, MEMF_CLEAR, MEMF_PUBLIC, lab_0C1F, lab_0C20, lab_0C21
 ; WRITES:
-;   TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupHeaderCode, TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_PrimaryGroupPresentFlag, TEXTDISP_GroupMutationState, TEXTDISP_MaxEntryTitleLength
+;   _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryGroupHeaderCode, _TEXTDISP_SecondaryGroupHeaderCode, _TEXTDISP_PrimaryGroupPresentFlag, _TEXTDISP_GroupMutationState, _TEXTDISP_MaxEntryTitleLength
 ; DESC:
 ;   Allocates one entry record and one title table for the target group, seeds
 ;   defaults/flags/text fields, and appends the new pointers to group tables.
@@ -350,95 +350,95 @@ ESQSHARED_CreateGroupEntryAndTitle:
     MOVE.B  15(A5),D6
     MOVEA.L 16(A5),A3
     MOVEA.L 20(A5),A2
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     CMP.B   D0,D7
     BNE.W   .lab_0C1F
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     299.W
     PEA     Global_ESQPARS2_C_1
     MOVE.L  A0,40(A7)
-    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVEA.L 40(A7),A0
     MOVE.L  D0,(A0)
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     500.W
     PEA     301.W
     PEA     Global_ESQPARS2_C_2
     MOVE.L  A0,52(A7)
-    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVEA.L 24(A7),A0
     MOVE.L  D0,(A0)
-    MOVE.B  #$1,TEXTDISP_SecondaryGroupPresentFlag
-    MOVE.B  D7,TEXTDISP_SecondaryGroupHeaderCode
+    MOVE.B  #$1,_TEXTDISP_SecondaryGroupPresentFlag
+    MOVE.B  D7,_TEXTDISP_SecondaryGroupHeaderCode
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
     BRA.W   .lab_0C21
 
 .lab_0C1F:
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     CMP.B   D0,D7
     BNE.W   .lab_0C20
 
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     314.W
     PEA     Global_ESQPARS2_C_3
     MOVE.L  A0,40(A7)
-    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVEA.L 40(A7),A0
     MOVE.L  D0,(A0)
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     500.W
     PEA     315.W
     PEA     Global_ESQPARS2_C_4
     MOVE.L  A0,52(A7)
-    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVEA.L 24(A7),A0
     MOVE.L  D0,(A0)
-    MOVE.B  #$1,TEXTDISP_PrimaryGroupPresentFlag
-    MOVE.B  D7,TEXTDISP_PrimaryGroupHeaderCode
+    MOVE.B  #$1,_TEXTDISP_PrimaryGroupPresentFlag
+    MOVE.B  D7,_TEXTDISP_PrimaryGroupHeaderCode
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
     MOVE.L  A1,-4(A5)
@@ -505,12 +505,12 @@ ESQSHARED_CreateGroupEntryAndTitle:
     SUBQ.L  #1,A6
     SUBA.L  A1,A6
     MOVE.L  A6,D5
-    MOVE.W  TEXTDISP_MaxEntryTitleLength,D0
+    MOVE.W  _TEXTDISP_MaxEntryTitleLength,D0
     MOVE.L  A0,-16(A5)
     CMP.W   D0,D5
     BLE.S   .branch_5
 
-    MOVE.W  D5,TEXTDISP_MaxEntryTitleLength
+    MOVE.W  D5,_TEXTDISP_MaxEntryTitleLength
 
 .branch_5:
     MOVEA.L -4(A5),A0
@@ -576,30 +576,30 @@ ESQSHARED_CreateGroupEntryAndTitle:
     BRA.S   .branch_11
 
 .branch_12:
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     CMP.B   D7,D0
     BNE.S   .branch_13
 
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,TEXTDISP_PrimaryGroupEntryCount
-    MOVE.W  TEXTDISP_GroupMutationState,D0
+    MOVE.W  D0,_TEXTDISP_PrimaryGroupEntryCount
+    MOVE.W  _TEXTDISP_GroupMutationState,D0
     SUBQ.W  #2,D0
     BEQ.S   ESQSHARED_CreateGroupEntryAndTitle_Return
 
     MOVEQ   #1,D0
-    MOVE.W  D0,TEXTDISP_GroupMutationState
+    MOVE.W  D0,_TEXTDISP_GroupMutationState
     BRA.S   ESQSHARED_CreateGroupEntryAndTitle_Return
 
 .branch_13:
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     CMP.B   D0,D7
     BNE.S   ESQSHARED_CreateGroupEntryAndTitle_Return
 
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,TEXTDISP_SecondaryGroupEntryCount
-    MOVE.W  #2,TEXTDISP_GroupMutationState
+    MOVE.W  D0,_TEXTDISP_SecondaryGroupEntryCount
+    MOVE.W  #2,_TEXTDISP_GroupMutationState
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQSHARED_CreateGroupEntryAndTitle_Return   (Return tail for group entry/title allocator)
@@ -636,7 +636,7 @@ ESQSHARED_CreateGroupEntryAndTitle_Return:
 ; CLOBBERS:
 ;   A3/A7/D7
 ; CALLS:
-;   ESQSHARED_CompressClosedCaptionedTag, ESQSHARED_NormalizeInStereoTag, ESQSHARED_ReplaceMovieRatingToken, ESQSHARED_ReplaceTvRatingToken
+;   _ESQSHARED_CompressClosedCaptionedTag, _ESQSHARED_NormalizeInStereoTag, _ESQSHARED_ReplaceMovieRatingToken, _ESQSHARED_ReplaceTvRatingToken
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -652,17 +652,17 @@ ESQSHARED_ApplyProgramTitleTextFilters:
     MOVEA.L 12(A7),A3
     MOVE.L  16(A7),D7
     MOVE.L  A3,-(A7)
-    BSR.W   ESQSHARED_CompressClosedCaptionedTag
+    BSR.W   _ESQSHARED_CompressClosedCaptionedTag
 
     MOVE.L  D7,(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   ESQSHARED_NormalizeInStereoTag
+    BSR.W   _ESQSHARED_NormalizeInStereoTag
 
     MOVE.L  A3,(A7)
-    BSR.W   ESQSHARED_ReplaceMovieRatingToken
+    BSR.W   _ESQSHARED_ReplaceMovieRatingToken
 
     MOVE.L  A3,(A7)
-    BSR.W   ESQSHARED_ReplaceTvRatingToken
+    BSR.W   _ESQSHARED_ReplaceTvRatingToken
 
     ADDQ.W  #8,A7
     MOVEM.L (A7)+,D7/A3
@@ -671,7 +671,7 @@ ESQSHARED_ApplyProgramTitleTextFilters:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_CompressClosedCaptionedTag   (Compress "Closed Captioned" token)
+; FUNC: _ESQSHARED_CompressClosedCaptionedTag   (Compress "Closed Captioned" token)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ; RET:
@@ -679,7 +679,7 @@ ESQSHARED_ApplyProgramTitleTextFilters:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0
 ; CALLS:
-;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
+;   _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
 ;   AbsExecBase, Global_STR_CLOSED_CAPTIONED
 ; WRITES:
@@ -690,14 +690,14 @@ ESQSHARED_ApplyProgramTitleTextFilters:
 ; NOTES:
 ;   Uses marker byte 0x7C at token start.
 ;------------------------------------------------------------------------------
-ESQSHARED_CompressClosedCaptionedTag:
+_ESQSHARED_CompressClosedCaptionedTag:
     LINK.W  A5,#-4
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 8(A5),A3
 
     PEA     Global_STR_CLOSED_CAPTIONED
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
+    JSR     _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -731,7 +731,7 @@ ESQSHARED_CompressClosedCaptionedTag:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_NormalizeInStereoTag   (Normalize "In Stereo" token placement)
+; FUNC: _ESQSHARED_NormalizeInStereoTag   (Normalize "In Stereo" token placement)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -740,9 +740,9 @@ ESQSHARED_CompressClosedCaptionedTag:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A6/A7/D0/D1/D7
 ; CALLS:
-;   ESQSHARED_JMPTBL_STR_SkipClass3Chars, GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
+;   _ESQSHARED_JMPTBL_STR_SkipClass3Chars, _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
-;   AbsExecBase, Global_STR_IN_STEREO, ESQSHARED_NormalizeInStereoTag_Return, WDISP_CharClassTable
+;   AbsExecBase, _Global_STR_IN_STEREO, ESQSHARED_NormalizeInStereoTag_Return, _WDISP_CharClassTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -751,14 +751,14 @@ ESQSHARED_CompressClosedCaptionedTag:
 ; NOTES:
 ;   Behavior branches on bit7 of arg_2.
 ;------------------------------------------------------------------------------
-ESQSHARED_NormalizeInStereoTag:
+_ESQSHARED_NormalizeInStereoTag:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVE.L  12(A5),D7
-    PEA     Global_STR_IN_STEREO
+    PEA     _Global_STR_IN_STEREO
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
+    JSR     _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -783,7 +783,7 @@ ESQSHARED_NormalizeInStereoTag:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A0
+    LEA     _WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #3,(A0)
     BNE.S   .lab_0C36
@@ -792,7 +792,7 @@ ESQSHARED_NormalizeInStereoTag:
 
 .lab_0C37:
     MOVE.L  -8(A5),-(A7)
-    JSR     ESQSHARED_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _ESQSHARED_JMPTBL_STR_SkipClass3Chars(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L D0,A0
@@ -846,7 +846,7 @@ ESQSHARED_NormalizeInStereoTag:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Shared return tail for ESQSHARED_NormalizeInStereoTag.
+;   Shared return tail for _ESQSHARED_NormalizeInStereoTag.
 ; NOTES:
 ;   Restores D7/A3 and frame state.
 ;------------------------------------------------------------------------------
@@ -860,7 +860,7 @@ ESQSHARED_NormalizeInStereoTag_Return:
 ; Possibly the code that replaces the strings of TV ratings like (TV-G) into
 ; a corresponding character in the font
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_ReplaceMovieRatingToken   (Replace movie-rating token with glyph marker)
+; FUNC: _ESQSHARED_ReplaceMovieRatingToken   (Replace movie-rating token with glyph marker)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -868,9 +868,9 @@ ESQSHARED_NormalizeInStereoTag_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A5/A6/A7/D0/D5/D6/D7
 ; CALLS:
-;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
+;   _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
-;   AbsExecBase, Global_TBL_MOVIE_RATINGS, ESQPARS2_MovieRatingTokenGlyphMap
+;   AbsExecBase, _Global_TBL_MOVIE_RATINGS, _ESQPARS2_MovieRatingTokenGlyphMap
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -879,7 +879,7 @@ ESQSHARED_NormalizeInStereoTag_Return:
 ; NOTES:
 ;   Stops after first successful replacement.
 ;------------------------------------------------------------------------------
-ESQSHARED_ReplaceMovieRatingToken:
+_ESQSHARED_ReplaceMovieRatingToken:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A2-A3,-(A7)
 
@@ -898,25 +898,25 @@ ESQSHARED_ReplaceMovieRatingToken:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     Global_TBL_MOVIE_RATINGS,A0
+    LEA     _Global_TBL_MOVIE_RATINGS,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
+    JSR     _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
     BEQ.S   .lab_0C40
 
-    LEA     ESQPARS2_MovieRatingTokenGlyphMap,A0
+    LEA     _ESQPARS2_MovieRatingTokenGlyphMap,A0
     ADDA.L  D7,A0
     MOVE.B  (A0),D0
     MOVEA.L -4(A5),A1
     MOVE.B  D0,(A1)+
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     Global_TBL_MOVIE_RATINGS,A0
+    LEA     _Global_TBL_MOVIE_RATINGS,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
 
@@ -962,7 +962,7 @@ ESQSHARED_ReplaceMovieRatingToken:
 ; Possibly the code that replaces the strings of movie ratings like (R) into
 ; a corresponding character in the font
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_ReplaceTvRatingToken   (Replace TV-rating token with glyph marker)
+; FUNC: _ESQSHARED_ReplaceTvRatingToken   (Replace TV-rating token with glyph marker)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -970,9 +970,9 @@ ESQSHARED_ReplaceMovieRatingToken:
 ; CLOBBERS:
 ;   A0/A1/A2/A5/A6/A7/D0/D5/D6/D7
 ; CALLS:
-;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
+;   _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
-;   AbsExecBase, Global_TBL_TV_PROGRAM_RATINGS, ESQPARS2_TvRatingTokenGlyphMap
+;   AbsExecBase, _Global_TBL_TV_PROGRAM_RATINGS, _ESQPARS2_TvRatingTokenGlyphMap
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -981,7 +981,7 @@ ESQSHARED_ReplaceMovieRatingToken:
 ; NOTES:
 ;   Stops after first successful replacement.
 ;------------------------------------------------------------------------------
-ESQSHARED_ReplaceTvRatingToken:
+_ESQSHARED_ReplaceTvRatingToken:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A2-A3,-(A7)
 
@@ -1000,25 +1000,25 @@ ESQSHARED_ReplaceTvRatingToken:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     Global_TBL_TV_PROGRAM_RATINGS,A0
+    LEA     _Global_TBL_TV_PROGRAM_RATINGS,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
+    JSR     _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
     BEQ.S   .lab_0C46
 
-    LEA     ESQPARS2_TvRatingTokenGlyphMap,A0
+    LEA     _ESQPARS2_TvRatingTokenGlyphMap,A0
     ADDA.L  D7,A0
     MOVE.B  (A0),D0
     MOVEA.L -4(A5),A1
     MOVE.B  D0,(A1)+
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     Global_TBL_TV_PROGRAM_RATINGS,A0
+    LEA     _Global_TBL_TV_PROGRAM_RATINGS,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
 
@@ -1087,9 +1087,9 @@ ESQSHARED_ReplaceTvRatingToken:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MATH_Mulu32, ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQSHARED_JMPTBL_DST_BuildBannerTimeWord, ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString, ESQSHARED_JMPTBL_ESQ_SetBit1Based, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQSHARED_JMPTBL_ESQ_WildcardMatch, GROUP_AR_JMPTBL_STRING_AppendAtNull, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_WDISP_SPrintf, ESQPARS_ReplaceOwnedString, ESQSHARED_ApplyProgramTitleTextFilters, NEWGRID_JMPTBL_MATH_DivS32
+;   ESQIFF_JMPTBL_MATH_Mulu32, _ESQIFF_JMPTBL_MEMORY_AllocateMemory, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQSHARED_JMPTBL_DST_BuildBannerTimeWord, ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString, ESQSHARED_JMPTBL_ESQ_SetBit1Based, ESQSHARED_JMPTBL_ESQ_TestBit1Based, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _GROUP_AR_JMPTBL_STRING_AppendAtNull, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_WDISP_SPrintf, _ESQPARS_ReplaceOwnedString, ESQSHARED_ApplyProgramTitleTextFilters, NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   Global_STR_ESQPARS2_C_1, Global_STR_ESQPARS2_C_2, ESQSHARED_UpdateMatchingEntriesByTitle_Return, CLOCK_FormatVariantCode, ESQPARS2_DurationFmt_DecimalWithSpace, ESQPARS2_DurationFmt_OpenParenHours, ESQPARS2_DurationFmt_OpenParenMinutes, ESQPARS2_DurationFmt_CloseParen, SCRIPT_StrHoursPluralSuffix, SCRIPT_StrHourSingularSuffix, SCRIPT_StrMinutesSuffix, WDISP_CharClassTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_21, lab_0C5F, lab_0C6F
+;   Global_STR_ESQPARS2_C_1, Global_STR_ESQPARS2_C_2, ESQSHARED_UpdateMatchingEntriesByTitle_Return, _CLOCK_FormatVariantCode, ESQPARS2_DurationFmt_DecimalWithSpace, ESQPARS2_DurationFmt_OpenParenHours, ESQPARS2_DurationFmt_OpenParenMinutes, ESQPARS2_DurationFmt_CloseParen, SCRIPT_StrHoursPluralSuffix, SCRIPT_StrHourSingularSuffix, SCRIPT_StrMinutesSuffix, _WDISP_CharClassTable, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryTitlePtrTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_21, lab_0C5F, lab_0C6F
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1126,24 +1126,24 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     BRA.W   ESQSHARED_UpdateMatchingEntriesByTitle_Return
 
 .lab_0C4A:
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     CMP.B   D7,D0
     BNE.S   .lab_0C4B
 
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D0
     SUBQ.B  #1,D0
     BNE.S   .lab_0C4B
 
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     MOVE.W  D0,-14(A5)
     BRA.S   .lab_0C4D
 
 .lab_0C4B:
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     CMP.B   D0,D7
     BNE.S   .lab_0C4C
 
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.W  D0,-14(A5)
     BRA.S   .lab_0C4D
 
@@ -1159,21 +1159,21 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     CMP.W   -14(A5),D0
     BGE.W   ESQSHARED_UpdateMatchingEntriesByTitle_Return
 
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D1
     CMP.B   D1,D7
     BNE.S   .lab_0C4F
 
-    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D1
+    MOVE.B  _TEXTDISP_SecondaryGroupPresentFlag,D1
     SUBQ.B  #1,D1
     BNE.S   .lab_0C4F
 
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-4(A5)
-    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
+    LEA     _TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-8(A5)
     BRA.S   .lab_0C50
@@ -1182,17 +1182,17 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-4(A5)
-    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
+    LEA     _TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-8(A5)
 
 .lab_0C50:
     MOVE.L  A3,-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
+    JSR     _ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1307,7 +1307,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.L  D0,-38(A5)
     MOVE.L  A1,-70(A5)
     MOVE.L  A1,-66(A5)
-    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-70(A5)
@@ -1357,7 +1357,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
 
     PEA     -62(A5)
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     28(A7),A7
     MOVEQ   #1,D0
@@ -1366,7 +1366,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
 
     PEA     SCRIPT_StrHourSingularSuffix
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .branch_3
@@ -1374,7 +1374,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
 .branch_1:
     PEA     SCRIPT_StrHoursPluralSuffix
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .branch_3
@@ -1394,11 +1394,11 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
 
     PEA     -52(A5)
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     PEA     SCRIPT_StrMinutesSuffix
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     16(A7),A7
     BRA.S   .branch_6
@@ -1417,7 +1417,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     CLR.B   -1(A1,D0.L)
     PEA     ESQPARS2_DurationFmt_CloseParen
     MOVE.L  A1,-(A7)
-    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -1437,7 +1437,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.L  -70(A5),-(A7)
     PEA     765.W
     PEA     Global_STR_ESQPARS2_C_2
-    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -1456,13 +1456,13 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.L  56(A0,D2.L),-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  D1,44(A7)
-    JSR     ESQPARS_ReplaceOwnedString(PC)
+    JSR     _ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L -8(A5),A0
     MOVE.L  36(A7),D1
     MOVE.L  D0,56(A0,D1.L)
-    MOVE.B  CLOCK_FormatVariantCode,D0
+    MOVE.B  _CLOCK_FormatVariantCode,D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
     BLS.W   .branch_21
@@ -1474,7 +1474,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     ASL.L   #2,D1
     PEA     91.W
     MOVE.L  56(A0,D1.L),-(A7)
-    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
+    JSR     _GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-20(A5)
@@ -1485,7 +1485,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.B  1(A0),D1
     EXT.W   D1
     EXT.L   D1
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     MOVEA.L A1,A6
     ADDA.L  D1,A6
     BTST    #2,(A6)
@@ -1574,7 +1574,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.W  D0,-24(A5)
     EXT.L   D0
     MOVEQ   #0,D1
-    MOVE.B  CLOCK_FormatVariantCode,D1
+    MOVE.B  _CLOCK_FormatVariantCode,D1
     ADD.L   D1,D0
     MOVE.W  D0,-24(A5)
 
@@ -1727,7 +1727,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle_Return:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DST_BuildBannerTimeWord
+;   _DST_BuildBannerTimeWord
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1738,7 +1738,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle_Return:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 ESQSHARED_JMPTBL_DST_BuildBannerTimeWord:
-    JMP     DST_BuildBannerTimeWord
+    JMP     _DST_BuildBannerTimeWord
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes   (Routine at ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes)
@@ -1829,7 +1829,7 @@ ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated:
     JMP     COI_EnsureAnimObjectAllocated
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_JMPTBL_ESQ_WildcardMatch   (Routine at ESQSHARED_JMPTBL_ESQ_WildcardMatch)
+; FUNC: _ESQSHARED_JMPTBL_ESQ_WildcardMatch   (Routine at _ESQSHARED_JMPTBL_ESQ_WildcardMatch)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1847,11 +1847,11 @@ ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-ESQSHARED_JMPTBL_ESQ_WildcardMatch:
+_ESQSHARED_JMPTBL_ESQ_WildcardMatch:
     JMP     ESQ_WildcardMatch
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_JMPTBL_STR_SkipClass3Chars   (Routine at ESQSHARED_JMPTBL_STR_SkipClass3Chars)
+; FUNC: _ESQSHARED_JMPTBL_STR_SkipClass3Chars   (Routine at _ESQSHARED_JMPTBL_STR_SkipClass3Chars)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1869,7 +1869,7 @@ ESQSHARED_JMPTBL_ESQ_WildcardMatch:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-ESQSHARED_JMPTBL_STR_SkipClass3Chars:
+_ESQSHARED_JMPTBL_STR_SkipClass3Chars:
     JMP     STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------

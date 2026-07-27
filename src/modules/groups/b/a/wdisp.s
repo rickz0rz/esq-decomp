@@ -11,7 +11,7 @@
     XDEF    WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad
     XDEF    WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice
     XDEF    WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples
-    XDEF    WDISP_JMPTBL_ESQIFF_RunCopperDropTransition
+    XDEF    _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition
     XDEF    WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
     XDEF    WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock
     XDEF    WDISP_JMPTBL_NEWGRID_DrawWrappedText
@@ -53,11 +53,11 @@
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   MATH_DivS32, MATH_Mulu32, MEMORY_DeallocateMemory, ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
+;   _MATH_DivS32, _MATH_Mulu32, MEMORY_DeallocateMemory, _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE, Global_STR_WDISP_C, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, ESQFUNC_WeatherBrushPredicateNames, P_TYPE_WeatherCurrentMsgPtr, WDISP_WeatherStatusCountdown, _WDISP_PaletteTriplesRBase, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRowTable
+;   AbsExecBase, _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE, Global_STR_WDISP_C, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, _ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, ESQFUNC_WeatherBrushPredicateNames, P_TYPE_WeatherCurrentMsgPtr, WDISP_WeatherStatusCountdown, _WDISP_PaletteTriplesRBase, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRowTable
 ; WRITES:
-;   WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
+;   WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
 ; DESC:
 ;   Draws the weather-status overlay text/brush composition into the target
 ;   RastPort, including centered fallback text when no status brush is active.
@@ -88,7 +88,7 @@ WDISP_DrawWeatherStatusOverlay:
     SUBQ.B  #1,D0
     BNE.S   .overlay_lookup_brush_by_index
 
-    PEA     ESQFUNC_PwBrushListHead
+    PEA     _ESQFUNC_PwBrushListHead
     MOVE.L  ESQFUNC_WeatherBrushPredicateNames,-(A7)
     JSR     WDISP_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
@@ -103,7 +103,7 @@ WDISP_DrawWeatherStatusOverlay:
     ; Layout-coupled table anchor (ESQFUNC_STR_I5 -> ptr table).
     LEA     ESQFUNC_STR_I5,A0
     ADDA.L  D0,A0
-    PEA     ESQFUNC_PwBrushListHead
+    PEA     _ESQFUNC_PwBrushListHead
     MOVE.L  (A0),-(A7)
     JSR     WDISP_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
@@ -131,7 +131,7 @@ WDISP_DrawWeatherStatusOverlay:
 .overlay_dup_and_scan_text:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  WDISP_WeatherStatusOverlayTextPtr,-(A7)
-    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
@@ -195,11 +195,11 @@ WDISP_DrawWeatherStatusOverlay:
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L A3,A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
     MOVEQ   #0,D0
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVE.W  26(A0),D0
     MOVE.L  D6,D1
     SUB.L   D0,D1
@@ -256,7 +256,7 @@ WDISP_DrawWeatherStatusOverlay:
 
 .overlay_after_palette_copy:
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
-    CLR.W   WDISP_AccumulatorFlushPending
+    CLR.W   _WDISP_AccumulatorFlushPending
     CLR.L   -192(A5)
 
 .overlay_copy_accumulator_rows_loop:
@@ -283,7 +283,7 @@ WDISP_DrawWeatherStatusOverlay:
 
 .overlay_after_accumulator_copy:
     CLR.W   WDISP_AccumulatorCaptureActive
-    MOVE.W  #1,WDISP_AccumulatorFlushPending
+    MOVE.W  #1,_WDISP_AccumulatorFlushPending
     MOVE.L  -196(A5),D0
     MOVEQ   #0,D1
     MOVE.L  D1,-(A7)
@@ -346,7 +346,7 @@ WDISP_DrawWeatherStatusOverlay:
     ASR.L   #1,D1
     MOVE.L  D1,D5
     MOVEQ   #0,D0
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVE.W  20(A0),D0
     MOVE.L  D6,D1
     SUB.L   D0,D1
@@ -373,7 +373,7 @@ WDISP_DrawWeatherStatusOverlay:
 
 .overlay_prepare_multiline_metrics:
     MOVEQ   #0,D0
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVE.W  20(A0),D0
     MOVE.L  -152(A5),D1
     ADDQ.L  #1,D1
@@ -391,7 +391,7 @@ WDISP_DrawWeatherStatusOverlay:
     ADD.L   -212(A5),D3
     MOVE.L  D0,-180(A5)
     MOVE.L  D1,-164(A5)
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     SUB.L   D0,D3
     ADDQ.L  #5,D3
@@ -399,7 +399,7 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.L  D2,D1
     MOVE.L  D0,-172(A5)
     MOVE.L  D1,-168(A5)
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     MOVE.L  D7,D1
     SUB.L   -216(A5),D1
@@ -437,13 +437,13 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.L  -180(A5),D2
     ADD.L   D1,D2
     MOVE.L  D2,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVE.L  -196(A5),D1
     ADD.L   D0,D1
     ADD.L   -176(A5),D1
     MOVEQ   #0,D0
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVE.W  26(A0),D0
     ADD.L   D0,D1
     MOVEQ   #0,D2
@@ -613,7 +613,7 @@ WDISP_DrawWeatherStatusOverlay:
 .overlay_center_fallback_x:
     ASR.L   #1,D1
     MOVEQ   #0,D0
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVE.W  20(A0),D0
     MOVE.L  D6,D2
     SUB.L   D0,D2
@@ -673,11 +673,11 @@ WDISP_DrawWeatherStatusOverlay:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   MATH_DivS32, MATH_Mulu32, _STRING_AppendAtNull, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, WDISP_JMPTBL_NEWGRID_DrawWrappedText, WDISP_SPrintf, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOText, _LVOTextLength
+;   _MATH_DivS32, _MATH_Mulu32, _STRING_AppendAtNull, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, WDISP_JMPTBL_NEWGRID_DrawWrappedText, _WDISP_SPrintf, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOText, _LVOTextLength
 ; READS:
-;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_JMPTBL_DAYS_OF_WEEK, Global_REF_GRAPHICS_LIBRARY, Global_STR_PERCENT_D, Global_STR_PERCENT_D_SLASH, ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, P_TYPE_WeatherForecastMsgPtr, WDISP_StatusDayEntry0, WDISP_STR_UNKNOWN_NUM_WITH_SLASH, WDISP_STR_UNKNOWN_NUM, WDISP_CharClassTable, CLOCK_CurrentDayOfWeekIndex, _WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable
+;   AbsExecBase, _Global_HANDLE_PREVUEC_FONT, Global_JMPTBL_DAYS_OF_WEEK, Global_REF_GRAPHICS_LIBRARY, Global_STR_PERCENT_D, Global_STR_PERCENT_D_SLASH, _ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, P_TYPE_WeatherForecastMsgPtr, WDISP_StatusDayEntry0, WDISP_STR_UNKNOWN_NUM_WITH_SLASH, WDISP_STR_UNKNOWN_NUM, _WDISP_CharClassTable, _CLOCK_CurrentDayOfWeekIndex, _WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable
 ; WRITES:
-;   WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
+;   WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
 ; DESC:
 ;   Renders one day-entry panel for the weather status display.
 ; NOTES:
@@ -706,16 +706,16 @@ WDISP_DrawWeatherStatusDayEntry:
 
     MOVE.L  D6,D0
     MOVEQ   #3,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     MOVE.L  D7,D1
     MOVE.L  D0,-4(A5)
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     MOVE.L  D0,-8(A5)
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     LEA     WDISP_StatusDayEntry0,A0
     MOVEA.L A0,A1
@@ -746,7 +746,7 @@ WDISP_DrawWeatherStatusDayEntry:
     ; Layout-coupled table anchor (ESQFUNC_STR_I5 -> ptr table).
     LEA     ESQFUNC_STR_I5,A0
     ADDA.L  D0,A0
-    PEA     ESQFUNC_PwBrushListHead
+    PEA     _ESQFUNC_PwBrushListHead
     MOVE.L  (A0),-(A7)
     JSR     WDISP_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
@@ -774,7 +774,7 @@ WDISP_DrawWeatherStatusDayEntry:
 .dayentry_branch_by_status_mode:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
@@ -782,7 +782,7 @@ WDISP_DrawWeatherStatusDayEntry:
     BNE.W   .dayentry_draw_multiline_forecast
 
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
-    CLR.W   WDISP_AccumulatorFlushPending
+    CLR.W   _WDISP_AccumulatorFlushPending
     TST.L   -100(A5)
     BEQ.W   .dayentry_restore_base_palette
 
@@ -850,7 +850,7 @@ WDISP_DrawWeatherStatusDayEntry:
 
 .dayentry_after_accumulator_copy:
     CLR.W   WDISP_AccumulatorCaptureActive
-    MOVE.W  #1,WDISP_AccumulatorFlushPending
+    MOVE.W  #1,_WDISP_AccumulatorFlushPending
     MOVE.L  -16(A5),D0
     MOVE.L  -4(A5),D1
     SUB.L   D0,D1
@@ -867,7 +867,7 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVE.L  -12(A5),D3
     SUB.L   D3,D1
     MOVEQ   #0,D4
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVE.W  26(A0),D4
     SUB.L   D4,D1
     SUBQ.L  #5,D1
@@ -893,7 +893,7 @@ WDISP_DrawWeatherStatusDayEntry:
 .dayentry_build_temperature_strings:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
@@ -909,21 +909,21 @@ WDISP_DrawWeatherStatusDayEntry:
 .dayentry_format_high_temp_numeric:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     MOVE.L  8(A0),-(A7)
     PEA     Global_STR_PERCENT_D_SLASH
     PEA     -46(A5)
-    JSR     WDISP_SPrintf(PC)
+    JSR     _WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
 
 .dayentry_format_low_temp_string:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
@@ -938,14 +938,14 @@ WDISP_DrawWeatherStatusDayEntry:
 .dayentry_format_low_temp_numeric:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     MATH_Mulu32(PC)
+    JSR     _MATH_Mulu32(PC)
 
     LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     MOVE.L  12(A0),-(A7)
     PEA     Global_STR_PERCENT_D
     PEA     -26(A5)
-    JSR     WDISP_SPrintf(PC)
+    JSR     _WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
 
@@ -1030,7 +1030,7 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     WDISP_CharClassTable,A1
+    LEA     _WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .dayentry_draw_wrapped_line
@@ -1097,7 +1097,7 @@ WDISP_DrawWeatherStatusDayEntry:
 
     LEA     24(A7),A7
     MOVEQ   #0,D1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVE.W  20(A0),D1
     ADDQ.L  #4,D1
     ADD.L   D1,-64(A5)
@@ -1152,12 +1152,12 @@ WDISP_DrawWeatherStatusDayEntry:
     ADD.L   D0,-4(A5)
 
 .dayentry_draw_weekday_label:
-    MOVE.W  CLOCK_CurrentDayOfWeekIndex,D0
+    MOVE.W  _CLOCK_CurrentDayOfWeekIndex,D0
     EXT.L   D0
     ADD.L   D7,D0
     ADDQ.L  #1,D0
     MOVEQ   #7,D1
-    JSR     MATH_DivS32(PC)
+    JSR     _MATH_DivS32(PC)
 
     ASL.L   #2,D1
     LEA     Global_JMPTBL_DAYS_OF_WEEK,A0
@@ -1198,7 +1198,7 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVE.L  D5,D1
     SUB.L   -12(A5),D1
     MOVEQ   #0,D2
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVE.W  20(A0),D2
     SUB.L   D2,D1
     SUBQ.L  #5,D1
@@ -1242,7 +1242,7 @@ WDISP_DrawWeatherStatusDayEntry:
 ; CALLS:
 ;   WDISP_DrawWeatherStatusDayEntry, _LVOMove, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, P_TYPE_WeatherForecastMsgPtr, SCRIPT_PtrNoForecastWeatherData, TLIBA1_DayEntryModeCounter, WDISP_WeatherStatusDigitChar, return
+;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, P_TYPE_WeatherForecastMsgPtr, SCRIPT_PtrNoForecastWeatherData, TLIBA1_DayEntryModeCounter, WDISP_WeatherStatusDigitChar, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1328,7 +1328,7 @@ WDISP_DrawWeatherStatusSummary:
 .summary_center_fallback_x:
     ASR.L   #1,D1
     MOVEQ   #0,D0
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVE.W  20(A0),D0
     MOVE.L  D6,D2
     SUB.L   D0,D2
@@ -1369,11 +1369,11 @@ WDISP_DrawWeatherStatusSummary:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   TEXTDISP_ResetSelectionAndRefresh, TLIBA3_ClearViewModeRastPort, TLIBA3_BuildDisplayContextForViewMode, WDISP_DrawWeatherStatusOverlay, WDISP_DrawWeatherStatusSummary, TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
+;   TEXTDISP_ResetSelectionAndRefresh, TLIBA3_ClearViewModeRastPort, _TLIBA3_BuildDisplayContextForViewMode, WDISP_DrawWeatherStatusOverlay, WDISP_DrawWeatherStatusSummary, _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
 ; READS:
-;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, WDISP_DisplayContextBase, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRow0_Value, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd, WDISP_WeatherCycleOffsetCount
+;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, _ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, _WDISP_DisplayContextBase, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRow0_Value, _WDISP_AccumulatorRow0_CopperIndexStart, _WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, _WDISP_AccumulatorRow1_CopperIndexStart, _WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, _WDISP_AccumulatorRow2_CopperIndexStart, _WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, _WDISP_AccumulatorRow3_CopperIndexStart, _WDISP_AccumulatorRow3_CopperIndexEnd, WDISP_WeatherCycleOffsetCount
 ; WRITES:
-;   ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, ACCUMULATOR_Row3_CaptureValue, ACCUMULATOR_Row0_Sum, ACCUMULATOR_Row1_Sum, ACCUMULATOR_Row2_Sum, ACCUMULATOR_Row3_Sum, ACCUMULATOR_Row0_SaturateFlag, ACCUMULATOR_Row1_SaturateFlag, ACCUMULATOR_Row2_SaturateFlag, ACCUMULATOR_Row3_SaturateFlag, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, WDISP_WeatherCycleOffsetCount, localRastport
+;   ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, ACCUMULATOR_Row3_CaptureValue, ACCUMULATOR_Row0_Sum, ACCUMULATOR_Row1_Sum, ACCUMULATOR_Row2_Sum, ACCUMULATOR_Row3_Sum, _ACCUMULATOR_Row0_SaturateFlag, _ACCUMULATOR_Row1_SaturateFlag, _ACCUMULATOR_Row2_SaturateFlag, _ACCUMULATOR_Row3_SaturateFlag, _WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, WDISP_WeatherCycleOffsetCount, localRastport
 ; DESC:
 ;   Dispatches weather-status commands (notably 48 and 51), renders status
 ;   content, and updates accumulator capture flags.
@@ -1404,31 +1404,31 @@ WDISP_HandleWeatherStatusCommand:
     MOVE.L  D0,(A7)
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
     JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
-    MOVEA.L WDISP_DisplayContextBase,A0
+    MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEQ   #0,D6
-    MOVEA.L WDISP_DisplayContextBase,A1
+    MOVEA.L _WDISP_DisplayContextBase,A1
     MOVE.W  4(A1),D6
     MOVEQ   #0,D5
     MOVE.W  2(A1),D5
     MOVE.L  A0,.localRastport(A5)
     JSR     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
 
-    JSR     WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
+    JSR     _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
 
     MOVEQ   #0,D0
     MOVE.L  D0,(A7)
     MOVE.L  D0,-(A7)
     PEA     3.W
-    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     24(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  D0,_WDISP_DisplayContextBase
 
     MOVEA.L .localRastport(A5),A1
     MOVEQ   #0,D0
@@ -1440,7 +1440,7 @@ WDISP_HandleWeatherStatusCommand:
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L .localRastport(A5),A1
-    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
     MOVEQ   #48,D0
@@ -1472,16 +1472,16 @@ WDISP_HandleWeatherStatusCommand:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_DisplayContextBase
-    MOVE.B  WDISP_AccumulatorRow0_CopperIndexStart,D0
+    MOVE.L  D0,_WDISP_DisplayContextBase
+    MOVE.B  _WDISP_AccumulatorRow0_CopperIndexStart,D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
     BCC.S   .handle_status_cmd_clear_slot_1b0d
 
-    MOVE.B  WDISP_AccumulatorRow0_CopperIndexEnd,D0
+    MOVE.B  _WDISP_AccumulatorRow0_CopperIndexEnd,D0
     CMP.B   D1,D0
     BCC.S   .handle_status_cmd_clear_slot_1b0d
 
@@ -1497,11 +1497,11 @@ WDISP_HandleWeatherStatusCommand:
     MOVE.W  D0,ACCUMULATOR_Row0_CaptureValue
 
 .handle_status_cmd_validate_slot_1b0e:
-    MOVE.B  WDISP_AccumulatorRow1_CopperIndexStart,D2
+    MOVE.B  _WDISP_AccumulatorRow1_CopperIndexStart,D2
     CMP.B   D1,D2
     BCC.S   .handle_status_cmd_clear_slot_1b0e
 
-    MOVE.B  WDISP_AccumulatorRow1_CopperIndexEnd,D2
+    MOVE.B  _WDISP_AccumulatorRow1_CopperIndexEnd,D2
     CMP.B   D1,D2
     BCC.S   .handle_status_cmd_clear_slot_1b0e
 
@@ -1517,11 +1517,11 @@ WDISP_HandleWeatherStatusCommand:
     MOVE.W  D2,ACCUMULATOR_Row1_CaptureValue
 
 .handle_status_cmd_validate_slot_1b0f:
-    MOVE.B  WDISP_AccumulatorRow2_CopperIndexStart,D0
+    MOVE.B  _WDISP_AccumulatorRow2_CopperIndexStart,D0
     CMP.B   D1,D0
     BCC.S   .handle_status_cmd_clear_slot_1b0f
 
-    MOVE.B  WDISP_AccumulatorRow2_CopperIndexEnd,D0
+    MOVE.B  _WDISP_AccumulatorRow2_CopperIndexEnd,D0
     CMP.B   D1,D0
     BCC.S   .handle_status_cmd_clear_slot_1b0f
 
@@ -1537,11 +1537,11 @@ WDISP_HandleWeatherStatusCommand:
     MOVE.W  D0,ACCUMULATOR_Row2_CaptureValue
 
 .handle_status_cmd_validate_slot_1b10:
-    MOVE.B  WDISP_AccumulatorRow3_CopperIndexStart,D2
+    MOVE.B  _WDISP_AccumulatorRow3_CopperIndexStart,D2
     CMP.B   D1,D2
     BCC.S   .handle_status_cmd_clear_slot_1b10
 
-    MOVE.B  WDISP_AccumulatorRow3_CopperIndexEnd,D2
+    MOVE.B  _WDISP_AccumulatorRow3_CopperIndexEnd,D2
     CMP.B   D1,D2
     BCC.S   .handle_status_cmd_clear_slot_1b10
 
@@ -1580,14 +1580,14 @@ WDISP_HandleWeatherStatusCommand:
 .handle_status_cmd_finalize_state:
     MOVEQ   #0,D0
     MOVE.W  D0,ACCUMULATOR_Row0_Sum
-    MOVE.W  D0,ACCUMULATOR_Row0_SaturateFlag
+    MOVE.W  D0,_ACCUMULATOR_Row0_SaturateFlag
     MOVE.W  D0,ACCUMULATOR_Row1_Sum
-    MOVE.W  D0,ACCUMULATOR_Row1_SaturateFlag
+    MOVE.W  D0,_ACCUMULATOR_Row1_SaturateFlag
     MOVE.W  D0,ACCUMULATOR_Row2_Sum
-    MOVE.W  D0,ACCUMULATOR_Row2_SaturateFlag
+    MOVE.W  D0,_ACCUMULATOR_Row2_SaturateFlag
     MOVE.W  D0,ACCUMULATOR_Row3_Sum
-    MOVE.W  D0,ACCUMULATOR_Row3_SaturateFlag
-    JSR     TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
+    MOVE.W  D0,_ACCUMULATOR_Row3_SaturateFlag
+    JSR     _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
 
     BRA.S   .handle_status_cmd_return
 
@@ -1653,7 +1653,7 @@ WDISP_HandleWeatherStatusCommand:
     ; Layout-coupled table anchor (ESQFUNC_STR_I5 -> ptr table).
     LEA     ESQFUNC_STR_I5,A0
     ADDA.L  D0,A0
-    PEA     ESQFUNC_PwBrushListHead
+    PEA     _ESQFUNC_PwBrushListHead
     MOVE.L  (A0),-(A7)
     JSR     WDISP_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
@@ -1684,7 +1684,7 @@ WDISP_HandleWeatherStatusCommand:
 ; CALLS:
 ;   WDISP_JMPTBL_BRUSH_FreeBrushList, WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock, WDISP_JMPTBL_NEWGRID_ResetRowTable, _LVOSetRast
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, WDISP_WeatherStatusBrushListHead, P_TYPE_WeatherBrushRefreshPendingFlag, TLIBA1_PreviewSlotRefreshState, TLIBA1_PreviewSlotRenderResult, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, WDISP_WeatherCycleOffsetCount
+;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _WDISP_WeatherStatusBrushListHead, _P_TYPE_WeatherBrushRefreshPendingFlag, TLIBA1_PreviewSlotRefreshState, TLIBA1_PreviewSlotRenderResult, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, WDISP_WeatherCycleOffsetCount
 ; WRITES:
 ;   TLIBA1_PreviewSlotRefreshState, TLIBA1_PreviewSlotRenderResult
 ; DESC:
@@ -1715,13 +1715,13 @@ WDISP_UpdateSelectionPreviewPanel:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
     MOVE.L  4(A3),4(A0)
     TST.L   TLIBA1_PreviewSlotRefreshState
     BNE.S   .preview_refresh_existing_slot
 
-    MOVE.L  WDISP_WeatherStatusBrushListHead,-(A7)
+    MOVE.L  _WDISP_WeatherStatusBrushListHead,-(A7)
     MOVE.L  A2,-(A7)
     JSR     WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice(PC)
 
@@ -1735,10 +1735,10 @@ WDISP_UpdateSelectionPreviewPanel:
     MOVE.L  D0,TLIBA1_PreviewSlotRefreshState
 
 .preview_after_initial_render:
-    TST.L   WDISP_WeatherStatusBrushListHead
+    TST.L   _WDISP_WeatherStatusBrushListHead
     BEQ.S   .preview_after_render_paths
 
-    MOVEA.L WDISP_WeatherStatusBrushListHead,A0
+    MOVEA.L _WDISP_WeatherStatusBrushListHead,A0
     ADDA.W  #$e8,A0
     MOVE.L  A0,-(A7)
     JSR     WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock(PC)
@@ -1754,7 +1754,7 @@ WDISP_UpdateSelectionPreviewPanel:
     CMP.L   TLIBA1_PreviewSlotRefreshState,D0
     BNE.S   .preview_after_render_paths
 
-    MOVE.L  WDISP_WeatherStatusBrushListHead,-(A7)
+    MOVE.L  _WDISP_WeatherStatusBrushListHead,-(A7)
     MOVE.L  A2,-(A7)
     JSR     WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice(PC)
 
@@ -1769,7 +1769,7 @@ WDISP_UpdateSelectionPreviewPanel:
     BNE.S   .preview_restore_rastport_bitmap
 
     CLR.L   -(A7)
-    PEA     WDISP_WeatherStatusBrushListHead
+    PEA     _WDISP_WeatherStatusBrushListHead
     JSR     WDISP_JMPTBL_BRUSH_FreeBrushList(PC)
 
     ADDQ.W  #8,A7
@@ -1791,7 +1791,7 @@ WDISP_UpdateSelectionPreviewPanel:
     CMP.W   D2,D1
     BGT.S   .preview_mark_reload_pending
 
-    TST.L   P_TYPE_WeatherBrushRefreshPendingFlag
+    TST.L   _P_TYPE_WeatherBrushRefreshPendingFlag
     BNE.S   .preview_mark_reload_pending
 
     PEA     2.W
@@ -1806,7 +1806,7 @@ WDISP_UpdateSelectionPreviewPanel:
     MOVE.L  D0,TLIBA1_PreviewSlotRenderResult
 
 .preview_restore_rastport_bitmap:
-    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
 
 .preview_return_boolean:
@@ -1916,7 +1916,7 @@ WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad:
     JMP     ESQIFF_QueueIffBrushLoad
 
 ;------------------------------------------------------------------------------
-; FUNC: WDISP_JMPTBL_ESQIFF_RunCopperDropTransition   (Routine at WDISP_JMPTBL_ESQIFF_RunCopperDropTransition)
+; FUNC: _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition   (Routine at _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1934,7 +1934,7 @@ WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-WDISP_JMPTBL_ESQIFF_RunCopperDropTransition:
+_WDISP_JMPTBL_ESQIFF_RunCopperDropTransition:
     JMP     _ESQIFF_RunCopperDropTransition
 
 ;------------------------------------------------------------------------------
@@ -1968,7 +1968,7 @@ WDISP_JMPTBL_BRUSH_FindBrushByPredicate:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   BRUSH_FreeBrushList
+;   _BRUSH_FreeBrushList
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1979,7 +1979,7 @@ WDISP_JMPTBL_BRUSH_FindBrushByPredicate:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 WDISP_JMPTBL_BRUSH_FreeBrushList:
-    JMP     BRUSH_FreeBrushList
+    JMP     _BRUSH_FreeBrushList
 
 ;------------------------------------------------------------------------------
 ; FUNC: WDISP_JMPTBL_BRUSH_PlaneMaskForIndex   (Routine at WDISP_JMPTBL_BRUSH_PlaneMaskForIndex)

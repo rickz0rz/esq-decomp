@@ -2,7 +2,7 @@
     XDEF    STR_FindAnyCharInSet
     XDEF    STR_FindAnyCharPtr
     XDEF    STR_FindChar
-    XDEF    STR_FindCharPtr
+    XDEF    _STR_FindCharPtr
     XDEF    STR_SkipClass3Chars
 
 ;!======
@@ -129,7 +129,7 @@ STR_FindChar:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STR_FindCharPtr   (Wrapper around STR_FindChar)
+; FUNC: _STR_FindCharPtr   (Wrapper around STR_FindChar)
 ; ARGS:
 ;   stack +8: A3 = string
 ;   stack +12: D7 = byte to find
@@ -147,14 +147,14 @@ STR_FindChar:
 ;   Convenience wrapper around STR_FindChar.
 ; NOTES:
 ;   Equivalent behavior to a `strchr` helper with this ABI:
-;     D0 = STR_FindCharPtr(stringPtr, targetByte)
+;     D0 = _STR_FindCharPtr(stringPtr, targetByte)
 ;   Commonly used both for delimiter search and "is byte in set-string" tests
 ;   by checking whether D0 is non-zero.
 ;   This symbol is the canonical target behind multiple jump-table aliases
-;   (`GROUP_AS_JMPTBL_STR_FindCharPtr`, `GROUP_AI_JMPTBL_STR_FindCharPtr`,
-;   `PARSEINI_JMPTBL_STR_FindCharPtr`) used across parser/grid/disk paths.
+;   (`_GROUP_AS_JMPTBL_STR_FindCharPtr`, `_GROUP_AI_JMPTBL_STR_FindCharPtr`,
+;   `_PARSEINI_JMPTBL_STR_FindCharPtr`) used across parser/grid/disk paths.
 ;------------------------------------------------------------------------------
-STR_FindCharPtr:
+_STR_FindCharPtr:
     MOVEM.L D7/A3,-(A7)
 
     MOVEA.L 12(A7),A3
@@ -173,7 +173,7 @@ STR_FindCharPtr:
 ; TYPE: code block (unreachable in current control flow)
 ; PURPOSE: Legacy/stranded implementation that tracks the last matching byte.
 ; USED BY: none confirmed (no branch/call sites in current linked paths)
-; NOTES: Starts immediately after STR_FindCharPtr returns; behaves like
+; NOTES: Starts immediately after _STR_FindCharPtr returns; behaves like
 ;   a `strrchr`-style scan (`A2 = last match`) but is not entered by current
 ;   callers or in-file branches.
 ;------------------------------------------------------------------------------

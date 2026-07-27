@@ -4,7 +4,7 @@
     XDEF    GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry
     XDEF    GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition
     XDEF    GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition
-    XDEF    GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
+    XDEF    _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
     XDEF    GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte
     XDEF    GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel
     XDEF    GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName
@@ -26,16 +26,16 @@
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   TLIBA3_BuildDisplayContextForViewMode
+;   _TLIBA3_BuildDisplayContextForViewMode
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to TLIBA3_BuildDisplayContextForViewMode.
+;   Jump stub to _TLIBA3_BuildDisplayContextForViewMode.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
-    JMP     TLIBA3_BuildDisplayContextForViewMode
+    JMP     _TLIBA3_BuildDisplayContextForViewMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte   (JumpStub)
@@ -46,16 +46,16 @@ GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   SCRIPT_UpdateSerialShadowFromCtrlByte
+;   _SCRIPT_UpdateSerialShadowFromCtrlByte
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to SCRIPT_UpdateSerialShadowFromCtrlByte.
+;   Jump stub to _SCRIPT_UpdateSerialShadowFromCtrlByte.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte:
-    JMP     SCRIPT_UpdateSerialShadowFromCtrlByte
+    JMP     _SCRIPT_UpdateSerialShadowFromCtrlByte
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange   (JumpStub_DATETIME_NormalizeMonthRange)
@@ -158,7 +158,7 @@ GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName:
     JMP     TEXTDISP_BuildEntryShortName
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort   (JumpStub_GRAPHICS_BltBitMapRastPort)
+; FUNC: _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort   (JumpStub_GRAPHICS_BltBitMapRastPort)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -174,7 +174,7 @@ GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName:
 ; DESC:
 ;   Jump stub to GRAPHICS_BltBitMapRastPort.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort:
+_GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort:
     JMP     GRAPHICS_BltBitMapRastPort
 
 ;------------------------------------------------------------------------------

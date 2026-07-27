@@ -1,5 +1,5 @@
     XDEF    ESQIFF2_ApplyIncomingStatusPacket
-    XDEF    ESQIFF2_ClearLineHeadTailByMode
+    XDEF    _ESQIFF2_ClearLineHeadTailByMode
     XDEF    ESQIFF2_ClearPrimaryEntryFlags34To39
     XDEF    ESQIFF2_PadEntriesToMaxTitleWidth
     XDEF    ESQIFF2_ParseGroupRecordAndRefresh
@@ -36,11 +36,11 @@
 ; CLOBBERS:
 ;   A0/A3/A7/D0/D1/D2/D6/D7
 ; CALLS:
-;   ED_DrawDiagnosticModeText, ESQDISP_DrawStatusBanner, ESQPARS_JMPTBL_DST_RefreshBannerBuffer, ESQPARS_JMPTBL_DST_UpdateBannerQueue, ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds
+;   _ED_DrawDiagnosticModeText, ESQDISP_DrawStatusBanner, ESQPARS_JMPTBL_DST_RefreshBannerBuffer, ESQPARS_JMPTBL_DST_UpdateBannerQueue, ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds
 ; READS:
-;   ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED, ESQ_STR_B, CLOCK_MinuteEventBaseMinute, CLOCK_MinuteEventBaseOffset, ESQ_STR_6, ED_DiagVinModeChar, LOCAVAIL_FilterModeFlag, DST_BannerWindowPrimary, ED_SavedScrollSpeedIndex, ED_DiagnosticsScreenActive, SCRIPT_RuntimeMode
+;   _ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED, _ESQ_STR_B, CLOCK_MinuteEventBaseMinute, CLOCK_MinuteEventBaseOffset, _ESQ_STR_6, _ED_DiagVinModeChar, _LOCAVAIL_FilterModeFlag, _DST_BannerWindowPrimary, _ED_SavedScrollSpeedIndex, _ED_DiagnosticsScreenActive, _SCRIPT_RuntimeMode
 ; WRITES:
-;   CLOCK_MinuteEventBaseMinute, CLOCK_MinuteEventBaseOffset, ESQ_STR_6, ESQPARS2_StateIndex, SCRIPT_RuntimeModeDeferredFlag
+;   CLOCK_MinuteEventBaseMinute, CLOCK_MinuteEventBaseOffset, _ESQ_STR_6, _ESQPARS2_StateIndex, SCRIPT_RuntimeModeDeferredFlag
 ; DESC:
 ;   Copies status payload bytes into globals, refreshes banner/status UI paths,
 ;   reseeds minute-event thresholds, and updates scroll-speed state/index.
@@ -51,7 +51,7 @@ ESQIFF2_ApplyIncomingStatusPacket:
     MOVEM.L D2/D6-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
 
-    MOVE.B  ED_DiagVinModeChar,D6
+    MOVE.B  _ED_DiagVinModeChar,D6
     MOVEQ   #0,D7
 
 .lab_0AB9:
@@ -59,28 +59,28 @@ ESQIFF2_ApplyIncomingStatusPacket:
     CMP.W   D0,D7
     BGE.S   .lab_0ABA
 
-    LEA     ESQ_STR_B,A0
+    LEA     _ESQ_STR_B,A0
     ADDA.W  D7,A0
     MOVE.B  0(A3,D7.W),(A0)
     ADDQ.W  #1,D7
     BRA.S   .lab_0AB9
 
 .lab_0ABA:
-    TST.L   LOCAVAIL_FilterModeFlag
+    TST.L   _LOCAVAIL_FilterModeFlag
     BNE.S   .branch
 
-    MOVE.B  ED_DiagVinModeChar,D0
+    MOVE.B  _ED_DiagVinModeChar,D0
     CMP.B   D0,D6
     BEQ.S   .branch
 
-    MOVE.W  SCRIPT_RuntimeMode,D0
+    MOVE.W  _SCRIPT_RuntimeMode,D0
     BEQ.S   .branch
 
     MOVEQ   #1,D0
     MOVE.L  D0,SCRIPT_RuntimeModeDeferredFlag
 
 .branch:
-    MOVE.B  ESQ_STR_6,D0
+    MOVE.B  _ESQ_STR_6,D0
     MOVEQ   #49,D1
     CMP.B   D1,D0
     BCS.S   .branch_1
@@ -90,10 +90,10 @@ ESQIFF2_ApplyIncomingStatusPacket:
     BLS.S   .branch_2
 
 .branch_1:
-    MOVE.B  #$36,ESQ_STR_6
+    MOVE.B  #$36,_ESQ_STR_6
 
 .branch_2:
-    PEA     DST_BannerWindowPrimary
+    PEA     _DST_BannerWindowPrimary
     JSR     ESQPARS_JMPTBL_DST_UpdateBannerQueue(PC)
 
     ADDQ.W  #4,A7
@@ -143,17 +143,17 @@ ESQIFF2_ApplyIncomingStatusPacket:
     JSR     ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds(PC)
 
     ADDQ.W  #8,A7
-    TST.W   ED_DiagnosticsScreenActive
+    TST.W   _ED_DiagnosticsScreenActive
     BEQ.S   .branch_8
 
-    JSR     ED_DrawDiagnosticModeText(PC)
+    JSR     _ED_DrawDiagnosticModeText(PC)
 
 .branch_8:
-    TST.L   ED_SavedScrollSpeedIndex
+    TST.L   _ED_SavedScrollSpeedIndex
     BNE.S   ESQIFF2_ApplyIncomingStatusPacket_Return
 
     MOVEQ   #0,D0
-    MOVE.B  ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0
+    MOVE.B  _ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVE.L  D0,D7
@@ -165,11 +165,11 @@ ESQIFF2_ApplyIncomingStatusPacket:
     CMP.W   D1,D7
     BGT.S   .branch_9
 
-    MOVE.W  D7,ESQPARS2_StateIndex
+    MOVE.W  D7,_ESQPARS2_StateIndex
     BRA.S   ESQIFF2_ApplyIncomingStatusPacket_Return
 
 .branch_9:
-    MOVE.W  #4,ESQPARS2_StateIndex
+    MOVE.W  #4,_ESQPARS2_StateIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQIFF2_ApplyIncomingStatusPacket_Return   (Return tail for incoming-status packet handler)
@@ -237,26 +237,26 @@ ESQIFF2_ValidateAsciiNumericByte:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF2_ClearLineHeadTailByMode   (Clear primary/secondary line head+tail owned strings by mode)
+; FUNC: _ESQIFF2_ClearLineHeadTailByMode   (Clear primary/secondary line head+tail owned strings by mode)
 ; ARGS:
 ;   stack +4: mode (1=primary, 2=secondary)
 ; RET:
-;   D0: replacement pointer from final ESQPARS_ReplaceOwnedString call
+;   D0: replacement pointer from final _ESQPARS_ReplaceOwnedString call
 ; CLOBBERS:
 ;   A7/D0/D7
 ; CALLS:
-;   ESQPARS_ReplaceOwnedString
+;   _ESQPARS_ReplaceOwnedString
 ; READS:
-;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr
 ; WRITES:
-;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr
 ; DESC:
 ;   Releases and clears the selected line-head and line-tail owned strings for the
 ;   requested group mode.
 ; NOTES:
-;   Uses ESQPARS_ReplaceOwnedString(new=NULL, old=current) for each pointer.
+;   Uses _ESQPARS_ReplaceOwnedString(new=NULL, old=current) for each pointer.
 ;------------------------------------------------------------------------------
-ESQIFF2_ClearLineHeadTailByMode:
+_ESQIFF2_ClearLineHeadTailByMode:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
     MOVEQ   #2,D0
@@ -265,29 +265,29 @@ ESQIFF2_ClearLineHeadTailByMode:
 
     MOVE.L  ESQIFF_SecondaryLineHeadPtr,-(A7)
     CLR.L   -(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     MOVE.L  D0,ESQIFF_SecondaryLineHeadPtr
-    MOVE.L  ESQIFF_SecondaryLineTailPtr,(A7)
+    MOVE.L  _ESQIFF_SecondaryLineTailPtr,(A7)
     CLR.L   -(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     LEA     12(A7),A7
-    MOVE.L  D0,ESQIFF_SecondaryLineTailPtr
+    MOVE.L  D0,_ESQIFF_SecondaryLineTailPtr
     BRA.S   .return_clear_line_head_tail
 
 .clear_primary_line_head_tail:
-    MOVE.L  ESQIFF_PrimaryLineHeadPtr,-(A7)
+    MOVE.L  _ESQIFF_PrimaryLineHeadPtr,-(A7)
     CLR.L   -(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
-    MOVE.L  D0,ESQIFF_PrimaryLineHeadPtr
-    MOVE.L  ESQIFF_PrimaryLineTailPtr,(A7)
+    MOVE.L  D0,_ESQIFF_PrimaryLineHeadPtr
+    MOVE.L  _ESQIFF_PrimaryLineTailPtr,(A7)
     CLR.L   -(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     LEA     12(A7),A7
-    MOVE.L  D0,ESQIFF_PrimaryLineTailPtr
+    MOVE.L  D0,_ESQIFF_PrimaryLineTailPtr
 
 .return_clear_line_head_tail:
     MOVE.L  (A7)+,D7
@@ -304,16 +304,16 @@ ESQIFF2_ClearLineHeadTailByMode:
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D1/D6/D7
 ; CALLS:
-;   ESQIFF2_ClearLineHeadTailByMode, ESQPARS_ReplaceOwnedString
+;   _ESQIFF2_ClearLineHeadTailByMode, _ESQPARS_ReplaceOwnedString
 ; READS:
-;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, ESQIFF_RecordLength
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, ESQIFF_RecordLength
 ; WRITES:
-;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, ESQDISP_SecondaryLinePromotePendingFlag
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _ESQDISP_SecondaryLinePromotePendingFlag
 ; DESC:
 ;   Splits a line-head/tail record on delimiter 0x12 and updates primary or
 ;   secondary line-head/line-tail owned strings based on group code.
 ; NOTES:
-;   Calls ESQIFF2_ClearLineHeadTailByMode before replacing owned strings.
+;   Calls _ESQIFF2_ClearLineHeadTailByMode before replacing owned strings.
 ;------------------------------------------------------------------------------
 ESQIFF2_ParseLineHeadTailRecord:
     MOVEM.L D6-D7/A3,-(A7)
@@ -324,12 +324,12 @@ ESQIFF2_ParseLineHeadTailRecord:
     NOT.B   D1
     AND.L   D1,D0
     MOVE.L  D0,D7
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     CMP.B   D0,D7
     BNE.W   .check_secondary_group
 
     PEA     1.W
-    BSR.W   ESQIFF2_ClearLineHeadTailByMode
+    BSR.W   _ESQIFF2_ClearLineHeadTailByMode
 
     ADDQ.W  #4,A7
     MOVEQ   #18,D0
@@ -337,23 +337,23 @@ ESQIFF2_ParseLineHeadTailRecord:
     BNE.S   .primary_split_or_head_only
 
     SUBA.L  A0,A0
-    MOVE.L  A0,ESQIFF_PrimaryLineHeadPtr
+    MOVE.L  A0,_ESQIFF_PrimaryLineHeadPtr
     MOVEQ   #0,D1
     MOVE.W  ESQIFF_RecordLength,D1
     CMP.B   -1(A3,D1.L),D0
     BNE.S   .primary_tail_only_from_payload
 
-    MOVE.L  A0,ESQIFF_PrimaryLineTailPtr
+    MOVE.L  A0,_ESQIFF_PrimaryLineTailPtr
     BRA.W   ESQIFF2_ParseLineHeadTailRecord_Return
 
 .primary_tail_only_from_payload:
     LEA     2(A3),A0
-    MOVE.L  ESQIFF_PrimaryLineTailPtr,-(A7)
+    MOVE.L  _ESQIFF_PrimaryLineTailPtr,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,ESQIFF_PrimaryLineTailPtr
+    MOVE.L  D0,_ESQIFF_PrimaryLineTailPtr
     BRA.W   ESQIFF2_ParseLineHeadTailRecord_Return
 
 .primary_split_or_head_only:
@@ -367,13 +367,13 @@ ESQIFF2_ParseLineHeadTailRecord:
     MOVE.W  D0,D1
     CLR.B   -1(A3,D1.L)
     LEA     1(A3),A0
-    MOVE.L  ESQIFF_PrimaryLineHeadPtr,-(A7)
+    MOVE.L  _ESQIFF_PrimaryLineHeadPtr,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,ESQIFF_PrimaryLineHeadPtr
-    CLR.L   ESQIFF_PrimaryLineTailPtr
+    MOVE.L  D0,_ESQIFF_PrimaryLineHeadPtr
+    CLR.L   _ESQIFF_PrimaryLineTailPtr
     BRA.W   ESQIFF2_ParseLineHeadTailRecord_Return
 
 .primary_scan_internal_delimiter:
@@ -394,34 +394,34 @@ ESQIFF2_ParseLineHeadTailRecord:
 .primary_split_at_found_delimiter:
     CLR.B   0(A3,D6.W)
     LEA     1(A3),A0
-    MOVE.L  ESQIFF_PrimaryLineHeadPtr,-(A7)
+    MOVE.L  _ESQIFF_PrimaryLineHeadPtr,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
-    MOVE.L  D0,ESQIFF_PrimaryLineHeadPtr
+    MOVE.L  D0,_ESQIFF_PrimaryLineHeadPtr
     MOVE.L  D6,D0
     EXT.L   D0
     MOVEA.L A3,A0
     ADDA.L  D0,A0
     LEA     1(A0),A1
-    MOVE.L  ESQIFF_PrimaryLineTailPtr,(A7)
+    MOVE.L  _ESQIFF_PrimaryLineTailPtr,(A7)
     MOVE.L  A1,-(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     LEA     12(A7),A7
-    MOVE.L  D0,ESQIFF_PrimaryLineTailPtr
+    MOVE.L  D0,_ESQIFF_PrimaryLineTailPtr
     BRA.W   ESQIFF2_ParseLineHeadTailRecord_Return
 
 .check_secondary_group:
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     CMP.B   D0,D7
     BNE.W   ESQIFF2_ParseLineHeadTailRecord_Return
 
     PEA     2.W
-    BSR.W   ESQIFF2_ClearLineHeadTailByMode
+    BSR.W   _ESQIFF2_ClearLineHeadTailByMode
 
     ADDQ.W  #4,A7
-    MOVE.W  #1,ESQDISP_SecondaryLinePromotePendingFlag
+    MOVE.W  #1,_ESQDISP_SecondaryLinePromotePendingFlag
     MOVEQ   #18,D0
     CMP.B   1(A3),D0
     BNE.S   .secondary_split_or_head_only
@@ -433,17 +433,17 @@ ESQIFF2_ParseLineHeadTailRecord:
     CMP.B   -1(A3,D1.L),D0
     BNE.S   .secondary_tail_only_from_payload
 
-    MOVE.L  A0,ESQIFF_SecondaryLineTailPtr
+    MOVE.L  A0,_ESQIFF_SecondaryLineTailPtr
     BRA.W   ESQIFF2_ParseLineHeadTailRecord_Return
 
 .secondary_tail_only_from_payload:
     LEA     2(A3),A0
-    MOVE.L  ESQIFF_SecondaryLineTailPtr,-(A7)
+    MOVE.L  _ESQIFF_SecondaryLineTailPtr,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,ESQIFF_SecondaryLineTailPtr
+    MOVE.L  D0,_ESQIFF_SecondaryLineTailPtr
     BRA.W   ESQIFF2_ParseLineHeadTailRecord_Return
 
 .secondary_split_or_head_only:
@@ -456,11 +456,11 @@ ESQIFF2_ParseLineHeadTailRecord:
     LEA     1(A3),A0
     MOVE.L  ESQIFF_SecondaryLineHeadPtr,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     ADDQ.W  #8,A7
     MOVE.L  D0,ESQIFF_SecondaryLineHeadPtr
-    CLR.L   ESQIFF_SecondaryLineTailPtr
+    CLR.L   _ESQIFF_SecondaryLineTailPtr
     BRA.S   ESQIFF2_ParseLineHeadTailRecord_Return
 
 .secondary_scan_internal_delimiter:
@@ -483,7 +483,7 @@ ESQIFF2_ParseLineHeadTailRecord:
     LEA     1(A3),A0
     MOVE.L  ESQIFF_SecondaryLineHeadPtr,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     MOVE.L  D0,ESQIFF_SecondaryLineHeadPtr
     MOVE.L  D6,D0
@@ -491,12 +491,12 @@ ESQIFF2_ParseLineHeadTailRecord:
     MOVEA.L A3,A0
     ADDA.L  D0,A0
     LEA     1(A0),A1
-    MOVE.L  ESQIFF_SecondaryLineTailPtr,(A7)
+    MOVE.L  _ESQIFF_SecondaryLineTailPtr,(A7)
     MOVE.L  A1,-(A7)
-    BSR.W   ESQPARS_ReplaceOwnedString
+    BSR.W   _ESQPARS_ReplaceOwnedString
 
     LEA     12(A7),A7
-    MOVE.L  D0,ESQIFF_SecondaryLineTailPtr
+    MOVE.L  D0,_ESQIFF_SecondaryLineTailPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQIFF2_ParseLineHeadTailRecord_Return   (Return tail for line head/tail parser)
@@ -534,11 +534,11 @@ ESQIFF2_ParseLineHeadTailRecord_Return:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache, ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries, ESQIFF2_ValidateFieldIndexAndLength, ESQIFF2_PadEntriesToMaxTitleWidth, ESQPARS_RemoveGroupEntryAndReleaseStrings, ESQSHARED_CreateGroupEntryAndTitle
+;   _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache, ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries, ESQIFF2_ValidateFieldIndexAndLength, ESQIFF2_PadEntriesToMaxTitleWidth, _ESQPARS_RemoveGroupEntryAndReleaseStrings, ESQSHARED_CreateGroupEntryAndTitle
 ; READS:
-;   TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, ESQIFF_RecordLength, TEXTDISP_PrimaryGroupRecordChecksum, TEXTDISP_PrimaryGroupRecordLength, TEXTDISP_SecondaryGroupRecordChecksum, TEXTDISP_SecondaryGroupRecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseField0Buffer, ESQIFF_ParseField1Buffer, ESQIFF_ParseField2Buffer, ESQIFF_ParseField3Buffer, ff
+;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, ESQIFF_RecordLength, _TEXTDISP_PrimaryGroupRecordChecksum, _TEXTDISP_PrimaryGroupRecordLength, _TEXTDISP_SecondaryGroupRecordChecksum, _TEXTDISP_SecondaryGroupRecordLength, _ESQIFF_RecordChecksumByte, ESQIFF_ParseField0Buffer, ESQIFF_ParseField1Buffer, ESQIFF_ParseField2Buffer, ESQIFF_ParseField3Buffer, ff
 ; WRITES:
-;   TEXTDISP_PrimaryGroupRecordChecksum, TEXTDISP_PrimaryGroupRecordLength, TEXTDISP_MaxEntryTitleLength, TEXTDISP_SecondaryGroupRecordChecksum, TEXTDISP_SecondaryGroupRecordLength, NEWGRID_RefreshStateFlag, ESQIFF_ParseField0Buffer, ESQIFF_ParseField0TailBuffer, ESQIFF_ParseField1Buffer, ESQIFF_ParseField1TailByte, ESQIFF_ParseField3Buffer, ESQIFF_ParseField3TailBuffer
+;   _TEXTDISP_PrimaryGroupRecordChecksum, _TEXTDISP_PrimaryGroupRecordLength, _TEXTDISP_MaxEntryTitleLength, _TEXTDISP_SecondaryGroupRecordChecksum, _TEXTDISP_SecondaryGroupRecordLength, _NEWGRID_RefreshStateFlag, ESQIFF_ParseField0Buffer, ESQIFF_ParseField0TailBuffer, ESQIFF_ParseField1Buffer, ESQIFF_ParseField1TailByte, ESQIFF_ParseField3Buffer, ESQIFF_ParseField3TailBuffer
 ; DESC:
 ;   Parses incoming group record fields, refreshes entry/title structures when
 ;   checksum/length changed, pads titles, and triggers source-config/index rebuild.
@@ -556,63 +556,63 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     NOT.B   D1
     AND.L   D1,D0
     MOVE.L  D0,D7
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     CMP.B   D0,D7
     BNE.S   .check_secondary_group_record
 
-    MOVE.W  TEXTDISP_PrimaryGroupRecordLength,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupRecordLength,D0
     MOVE.W  ESQIFF_RecordLength,D1
     CMP.W   D1,D0
     BNE.S   .primary_record_changed
 
-    MOVE.B  TEXTDISP_PrimaryGroupRecordChecksum,D0
-    MOVE.B  ESQIFF_RecordChecksumByte,D2
+    MOVE.B  _TEXTDISP_PrimaryGroupRecordChecksum,D0
+    MOVE.B  _ESQIFF_RecordChecksumByte,D2
     CMP.B   D2,D0
     BEQ.S   .check_secondary_group_record
 
 .primary_record_changed:
-    MOVE.W  D1,TEXTDISP_PrimaryGroupRecordLength
-    MOVE.B  ESQIFF_RecordChecksumByte,TEXTDISP_PrimaryGroupRecordChecksum
+    MOVE.W  D1,_TEXTDISP_PrimaryGroupRecordLength
+    MOVE.B  _ESQIFF_RecordChecksumByte,_TEXTDISP_PrimaryGroupRecordChecksum
     MOVEQ   #0,D0
-    MOVE.W  D0,TEXTDISP_MaxEntryTitleLength
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D1
+    MOVE.W  D0,_TEXTDISP_MaxEntryTitleLength
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D1
     CMP.W   D0,D1
     BLS.S   .init_parse_state
 
     PEA     1.W
-    BSR.W   ESQPARS_RemoveGroupEntryAndReleaseStrings
+    BSR.W   _ESQPARS_RemoveGroupEntryAndReleaseStrings
 
     ADDQ.W  #4,A7
     MOVEQ   #1,D0
-    MOVE.L  D0,NEWGRID_RefreshStateFlag
+    MOVE.L  D0,_NEWGRID_RefreshStateFlag
     BRA.S   .init_parse_state
 
 .check_secondary_group_record:
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     CMP.B   D0,D7
     BNE.S   .return_group_not_target
 
-    MOVE.W  TEXTDISP_SecondaryGroupRecordLength,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupRecordLength,D0
     MOVE.W  ESQIFF_RecordLength,D1
     CMP.W   D1,D0
     BNE.S   .secondary_record_changed
 
-    MOVE.B  TEXTDISP_SecondaryGroupRecordChecksum,D0
-    MOVE.B  ESQIFF_RecordChecksumByte,D2
+    MOVE.B  _TEXTDISP_SecondaryGroupRecordChecksum,D0
+    MOVE.B  _ESQIFF_RecordChecksumByte,D2
     CMP.B   D2,D0
     BEQ.S   .return_group_not_target
 
 .secondary_record_changed:
-    MOVE.W  D1,TEXTDISP_SecondaryGroupRecordLength
-    MOVE.B  ESQIFF_RecordChecksumByte,TEXTDISP_SecondaryGroupRecordChecksum
+    MOVE.W  D1,_TEXTDISP_SecondaryGroupRecordLength
+    MOVE.B  _ESQIFF_RecordChecksumByte,_TEXTDISP_SecondaryGroupRecordChecksum
     MOVEQ   #0,D0
-    MOVE.W  D0,TEXTDISP_MaxEntryTitleLength
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D1
+    MOVE.W  D0,_TEXTDISP_MaxEntryTitleLength
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D1
     CMP.W   D0,D1
     BLS.S   .init_parse_state
 
     PEA     2.W
-    BSR.W   ESQPARS_RemoveGroupEntryAndReleaseStrings
+    BSR.W   _ESQPARS_RemoveGroupEntryAndReleaseStrings
 
     ADDQ.W  #4,A7
     BRA.S   .init_parse_state
@@ -933,7 +933,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
 
     JSR     ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries(PC)
 
-    JSR     ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(PC)
+    JSR     _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(PC)
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQIFF2_ParseGroupRecordAndRefresh_Return   (Return tail for group-record parser)
@@ -1050,35 +1050,35 @@ ESQIFF2_ValidateFieldIndexAndLength_Return:
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   GROUP_AR_JMPTBL_STRING_AppendAtNull
+;   _GROUP_AR_JMPTBL_STRING_AppendAtNull
 ; READS:
-;   TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_MaxEntryTitleLength
+;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_MaxEntryTitleLength
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   For each entry in the selected group, computes current title length and appends
-;   spaces so titles reach TEXTDISP_MaxEntryTitleLength.
+;   spaces so titles reach _TEXTDISP_MaxEntryTitleLength.
 ; NOTES:
-;   Uses a stack-local space buffer and GROUP_AR_JMPTBL_STRING_AppendAtNull.
+;   Uses a stack-local space buffer and _GROUP_AR_JMPTBL_STRING_AppendAtNull.
 ;------------------------------------------------------------------------------
 ESQIFF2_PadEntriesToMaxTitleWidth:
     LINK.W  A5,#-24
     MOVEM.L D4-D7,-(A7)
     MOVE.B  11(A5),D7
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     CMP.B   D7,D0
     BNE.S   .check_primary_group_match
 
-    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     MOVE.W  D0,-12(A5)
     BRA.S   .start_entry_padding_loop
 
 .check_primary_group_match:
-    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
+    MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     CMP.B   D0,D7
     BNE.S   .return_group_not_matched
 
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.W  D0,-12(A5)
     BRA.S   .start_entry_padding_loop
 
@@ -1093,14 +1093,14 @@ ESQIFF2_PadEntriesToMaxTitleWidth:
     CMP.W   -12(A5),D6
     BGE.W   ESQIFF2_PadEntriesToMaxTitleWidth_Return
 
-    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
+    MOVE.B  _TEXTDISP_SecondaryGroupCode,D0
     CMP.B   D0,D7
     BNE.S   .load_primary_entry_pointer
 
     MOVE.L  D6,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
     BRA.S   .measure_current_title_length
@@ -1109,7 +1109,7 @@ ESQIFF2_PadEntriesToMaxTitleWidth:
     MOVE.L  D6,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
 
@@ -1124,7 +1124,7 @@ ESQIFF2_PadEntriesToMaxTitleWidth:
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
-    MOVE.W  TEXTDISP_MaxEntryTitleLength,D0
+    MOVE.W  _TEXTDISP_MaxEntryTitleLength,D0
     EXT.L   D0
     MOVE.L  A1,D1
     SUB.L   D1,D0
@@ -1149,7 +1149,7 @@ ESQIFF2_PadEntriesToMaxTitleWidth:
     ADDQ.L  #1,A0
     MOVE.L  A0,-(A7)
     PEA     -24(A5)
-    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L -4(A5),A0
@@ -1199,7 +1199,7 @@ ESQIFF2_PadEntriesToMaxTitleWidth_Return:
 ; CLOBBERS:
 ;   A0/A3/A7/D6/D7
 ; CALLS:
-;   ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQFUNC_WaitForClockChangeAndServiceUi
+;   _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, _ESQFUNC_WaitForClockChangeAndServiceUi
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1221,12 +1221,12 @@ ESQIFF2_ReadRbfBytesToBuffer:
     CMP.W   D7,D6
     BGE.S   ESQIFF2_ReadSerialBytesToBuffer_Return
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEA.L A3,A0
     ADDQ.L  #1,A3
     MOVE.L  A0,12(A7)
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVEA.L 12(A7),A0
     MOVE.B  D0,(A0)
@@ -1269,7 +1269,7 @@ ESQIFF2_ReadSerialBytesToBuffer_Return:
 ; CLOBBERS:
 ;   A2/A3/A7/D6/D7
 ; CALLS:
-;   ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQFUNC_WaitForClockChangeAndServiceUi
+;   _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, _ESQFUNC_WaitForClockChangeAndServiceUi
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1291,9 +1291,9 @@ ESQIFF2_ReadRbfBytesWithXor:
     CMP.W   D7,D6
     BGE.S   ESQIFF2_ReadSerialBytesWithXor_Return
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.B  D0,(A3)
     ADDQ.L  #1,A3
@@ -1338,16 +1338,16 @@ ESQIFF2_ReadSerialBytesWithXor_Return:
 ; CLOBBERS:
 ;   A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQFUNC_WaitForClockChangeAndServiceUi
+;   _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, _ESQFUNC_WaitForClockChangeAndServiceUi
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   ESQIFF_RecordChecksumByte
+;   _ESQIFF_RecordChecksumByte
 ; DESC:
 ;   Reads a serial record into buffer until NUL or guard limits, with optional
 ;   handling of 0x14/0x12 escaped segments, then reads trailing checksum byte.
 ; NOTES:
-;   Writes ESQIFF_RecordChecksumByte and returns payload length in D0.
+;   Writes _ESQIFF_RecordChecksumByte and returns payload length in D0.
 ;------------------------------------------------------------------------------
 ESQIFF2_ReadSerialRecordIntoBuffer:
     LINK.W  A5,#-12
@@ -1362,12 +1362,12 @@ ESQIFF2_ReadSerialRecordIntoBuffer:
     CMPI.W  #$2328,D4
     BCC.W   .read_and_store_trailing_checksum
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEQ   #0,D0
     MOVE.W  D4,D0
     MOVE.L  D0,20(A7)
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  20(A7),D1
     MOVE.B  D0,0(A3,D1.L)
@@ -1402,14 +1402,14 @@ ESQIFF2_ReadSerialRecordIntoBuffer:
     CMP.W   D6,D5
     BCC.S   .loop_read_record_body
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVE.L  D4,D0
     ADDQ.W  #1,D4
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,20(A7)
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  20(A7),D1
     MOVE.B  D0,0(A3,D1.L)
@@ -1428,14 +1428,14 @@ ESQIFF2_ReadSerialRecordIntoBuffer:
     BNE.S   .advance_record_offset
 
     ADDQ.W  #1,D4
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVE.L  D4,D0
     ADDQ.W  #1,D4
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,20(A7)
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  20(A7),D1
     MOVE.B  D0,0(A3,D1.L)
@@ -1451,11 +1451,11 @@ ESQIFF2_ReadSerialRecordIntoBuffer:
     BRA.W   .loop_read_record_body
 
 .read_and_store_trailing_checksum:
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,ESQIFF_RecordChecksumByte
+    MOVE.B  D0,_ESQIFF_RecordChecksumByte
     MOVE.L  D4,D0
 
 ;------------------------------------------------------------------------------
@@ -1493,11 +1493,11 @@ ESQIFF2_ReadSerialRecordIntoBuffer_Return:
 ; CLOBBERS:
 ;   A3/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQFUNC_WaitForClockChangeAndServiceUi
+;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, _ESQFUNC_WaitForClockChangeAndServiceUi
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   ESQIFF_RecordChecksumByte
+;   _ESQIFF_RecordChecksumByte
 ; DESC:
 ;   Reads an initial sized text payload, parses a following signed trailer length,
 ;   reads that many trailing bytes, then validates completion before consuming and
@@ -1531,12 +1531,12 @@ ESQIFF2_ReadSerialSizedTextRecord:
     CMPI.L  #$2328,D6
     BGE.S   .parse_trailer_length
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEQ   #0,D0
     MOVE.W  D4,D0
     MOVE.L  D0,20(A7)
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  20(A7),D1
     MOVE.B  D0,0(A3,D1.L)
@@ -1549,7 +1549,7 @@ ESQIFF2_ReadSerialSizedTextRecord:
     MOVE.W  D4,D0
     CLR.B   0(A3,D0.L)
     MOVE.L  A3,-(A7)
-    JSR     ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
@@ -1570,12 +1570,12 @@ ESQIFF2_ReadSerialSizedTextRecord:
     CMPI.W  #$2328,D4
     BCC.S   .validate_trailer_completion
 
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEQ   #0,D0
     MOVE.W  D4,D0
     MOVE.L  D0,20(A7)
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  20(A7),D1
     MOVE.B  D0,0(A3,D1.L)
@@ -1598,11 +1598,11 @@ ESQIFF2_ReadSerialSizedTextRecord:
     BRA.S   .finish_sized_record_read
 
 .read_trailing_checksum:
-    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
+    JSR     _ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
+    JSR     _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,ESQIFF_RecordChecksumByte
+    MOVE.B  D0,_ESQIFF_RecordChecksumByte
 
 .finish_sized_record_read:
     MOVE.L  D4,D0
@@ -1642,11 +1642,11 @@ ESQIFF2_ReadSerialSizedTextRecord_Return:
 ; CLOBBERS:
 ;   A0/A1/A6/A7/D0/D1/D2/D3
 ; CALLS:
-;   ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQSHARED_JMPTBL_ESQ_WildcardMatch, GCOMMAND_SeedBannerFromPrefs, GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AR_JMPTBL_STRING_AppendAtNull, _LVODisable, _LVOEnable, _LVORectFill, _LVOSetAPen
+;   _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _GCOMMAND_SeedBannerFromPrefs, _GROUP_AM_JMPTBL_WDISP_SPrintf, _GROUP_AR_JMPTBL_STRING_AppendAtNull, _LVODisable, _LVOEnable, _LVORectFill, _LVOSetAPen
 ; READS:
-;   AbsExecBase, Global_LONG_PATCH_VERSION_NUMBER, Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_APOSTROPHE, Global_STR_MAJOR_MINOR_VERSION_1, Global_STR_MAJOR_MINOR_VERSION_2, ESQIFF2_ShowVersionMismatchOverlay_Return, ESQIFF_FMT_PCT_S_DOT_PCT_LD, ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA, ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD, ESQIFF_STR_CORRECT_VERSION_IS, ED_DiagnosticsScreenActive, Global_UIBusyFlag, ESQIFF_RecordBufferPtr, lab_0B24
+;   AbsExecBase, _Global_LONG_PATCH_VERSION_NUMBER, _Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, Global_STR_APOSTROPHE, Global_STR_MAJOR_MINOR_VERSION_1, Global_STR_MAJOR_MINOR_VERSION_2, ESQIFF2_ShowVersionMismatchOverlay_Return, ESQIFF_FMT_PCT_S_DOT_PCT_LD, ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA, ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD, ESQIFF_STR_CORRECT_VERSION_IS, _ED_DiagnosticsScreenActive, _Global_UIBusyFlag, ESQIFF_RecordBufferPtr, lab_0B24
 ; WRITES:
-;   ESQPARS2_ReadModeFlags, ED_DiagnosticsScreenActive
+;   _ESQPARS2_ReadModeFlags, _ED_DiagnosticsScreenActive
 ; DESC:
 ;   Compares incoming version text against the local major/minor string and, on
 ;   mismatch, draws a blocking correction overlay with current/correct versions.
@@ -1659,47 +1659,47 @@ ESQIFF2_ShowVersionMismatchOverlay:
 
     MOVEA.L ESQIFF_RecordBufferPtr,A0
     CLR.B   20(A0)
-    MOVE.L  Global_LONG_PATCH_VERSION_NUMBER,-(A7)
+    MOVE.L  _Global_LONG_PATCH_VERSION_NUMBER,-(A7)
     PEA     Global_STR_MAJOR_MINOR_VERSION_1
     PEA     ESQIFF_FMT_PCT_S_DOT_PCT_LD
     PEA     -40(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L ESQIFF_RecordBufferPtr,A0
     ADDQ.L  #1,A0
     MOVE.L  A0,(A7)
     PEA     -40(A5)
-    JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
+    JSR     _ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     LEA     20(A7),A7
     TST.B   D0
     BEQ.W   ESQIFF2_ShowVersionMismatchOverlay_Return
 
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BEQ.S   .lab_0B23
 
-    TST.W   ED_DiagnosticsScreenActive
+    TST.W   _ED_DiagnosticsScreenActive
     BEQ.W   ESQIFF2_ShowVersionMismatchOverlay_Return
 
 .lab_0B23:
     MOVEA.L AbsExecBase,A6
     JSR     _LVODisable(A6)
 
-    MOVE.W  #$100,ESQPARS2_ReadModeFlags
-    JSR     GCOMMAND_SeedBannerFromPrefs(PC)
+    MOVE.W  #$100,_ESQPARS2_ReadModeFlags
+    JSR     _GCOMMAND_SeedBannerFromPrefs(PC)
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOEnable(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A0
-    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
-    CLR.W   ED_DiagnosticsScreenActive
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A0
+    MOVE.L  #_Global_REF_696_400_BITMAP,4(A0)
+    CLR.W   _ED_DiagnosticsScreenActive
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     MOVEQ   #60,D1
     MOVE.L  #679,D2
@@ -1707,27 +1707,27 @@ ESQIFF2_ShowVersionMismatchOverlay:
     NOT.B   D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #3,D0
     JSR     _LVOSetAPen(A6)
 
     PEA     ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA
     PEA     90.W
     PEA     30.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVE.L  Global_LONG_PATCH_VERSION_NUMBER,(A7)
+    MOVE.L  _Global_LONG_PATCH_VERSION_NUMBER,(A7)
     PEA     Global_STR_MAJOR_MINOR_VERSION_2
     PEA     ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD
     PEA     -40(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -40(A5)
     PEA     120.W
     PEA     30.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     ESQIFF_STR_CORRECT_VERSION_IS,A0
     LEA     -40(A5),A1
@@ -1744,17 +1744,17 @@ ESQIFF2_ShowVersionMismatchOverlay:
     ADDQ.L  #1,A0
     MOVE.L  A0,(A7)
     PEA     -40(A5)
-    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     PEA     Global_STR_APOSTROPHE
     PEA     -40(A5)
-    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     PEA     -40(A5)
     PEA     150.W
     PEA     30.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     72(A7),A7
 
@@ -1795,11 +1795,11 @@ ESQIFF2_ShowVersionMismatchOverlay_Return:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, GCOMMAND_SeedBannerFromPrefs, GROUP_AM_JMPTBL_WDISP_SPrintf, _LVODisable, _LVOEnable, _LVORectFill, _LVOSetAPen, _LVOSetDrMd
+;   _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, _GCOMMAND_SeedBannerFromPrefs, _GROUP_AM_JMPTBL_WDISP_SPrintf, _LVODisable, _LVOEnable, _LVORectFill, _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   AbsExecBase, BRUSH_SnapshotDepth, BRUSH_SnapshotHeader, BRUSH_SnapshotWidth, Global_STR_PLEASE_STANDBY_2, Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_ATTENTION_SYSTEM_ENGINEER_2, Global_STR_FILE_PERCENT_S, Global_STR_FILE_WIDTH_COLORS_FORMATTED, Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL, Global_STR_REPORT_ERROR_CODE_FORMATTED, ESQIFF2_ShowAttentionOverlay_Return, ED_DiagnosticsScreenActive, Global_UIBusyFlag, lab_0B28, lab_0B29_0008, lab_0B29_000C, lab_0B29_0010, lab_0B29_0014, lab_0B29_0018
+;   AbsExecBase, _BRUSH_SnapshotDepth, _BRUSH_SnapshotHeader, _BRUSH_SnapshotWidth, _Global_STR_PLEASE_STANDBY_2, _Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _Global_STR_ATTENTION_SYSTEM_ENGINEER_2, _Global_STR_FILE_PERCENT_S, _Global_STR_FILE_WIDTH_COLORS_FORMATTED, _Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL, _Global_STR_REPORT_ERROR_CODE_FORMATTED, ESQIFF2_ShowAttentionOverlay_Return, _ED_DiagnosticsScreenActive, _Global_UIBusyFlag, lab_0B28, lab_0B29_0008, lab_0B29_000C, lab_0B29_0010, lab_0B29_0014, lab_0B29_0018
 ; WRITES:
-;   COI_AttentionOverlayBusyFlag, ESQPARS2_ReadModeFlags, ED_DiagnosticsScreenActive
+;   _COI_AttentionOverlayBusyFlag, _ESQPARS2_ReadModeFlags, _ED_DiagnosticsScreenActive
 ; DESC:
 ;   Draws a modal attention overlay with an error code and file context, then
 ;   restores raster draw mode/bitmap state before returning.
@@ -1811,10 +1811,10 @@ ESQIFF2_ShowAttentionOverlay:
     MOVEM.L D2-D3/D5-D7,-(A7)
     MOVE.B  11(A5),D7
     MOVEQ   #-1,D5
-    TST.W   Global_UIBusyFlag
+    TST.W   _Global_UIBusyFlag
     BEQ.S   .lab_0B27
 
-    TST.W   ED_DiagnosticsScreenActive
+    TST.W   _ED_DiagnosticsScreenActive
     BEQ.W   ESQIFF2_ShowAttentionOverlay_Return
 
 .lab_0B27:
@@ -1864,22 +1864,22 @@ ESQIFF2_ShowAttentionOverlay:
     MOVEA.L AbsExecBase,A6
     JSR     _LVODisable(A6)
 
-    MOVE.W  #$100,ESQPARS2_ReadModeFlags
-    JSR     GCOMMAND_SeedBannerFromPrefs(PC)
+    MOVE.W  #$100,_ESQPARS2_ReadModeFlags
+    JSR     _GCOMMAND_SeedBannerFromPrefs(PC)
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOEnable(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-138(A5)
-    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
-    CLR.W   ED_DiagnosticsScreenActive
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVE.L  #_Global_REF_696_400_BITMAP,4(A0)
+    CLR.W   _ED_DiagnosticsScreenActive
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     MOVEQ   #65,D1
     MOVE.L  #$2ac,D2
@@ -1887,38 +1887,38 @@ ESQIFF2_ShowAttentionOverlay:
     NOT.B   D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #3,D0
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.B  28(A0),D6
     MOVEA.L A0,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    PEA     Global_STR_PLEASE_STANDBY_2
+    PEA     _Global_STR_PLEASE_STANDBY_2
     PEA     90.W
     PEA     35.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_ATTENTION_SYSTEM_ENGINEER_2
+    PEA     _Global_STR_ATTENTION_SYSTEM_ENGINEER_2
     PEA     120.W
     PEA     35.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     MOVE.L  D5,(A7)
-    PEA     Global_STR_REPORT_ERROR_CODE_FORMATTED
+    PEA     _Global_STR_REPORT_ERROR_CODE_FORMATTED
     PEA     -128(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -128(A5)
     PEA     150.W
     PEA     35.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     56(A7),A7
     MOVEQ   #9,D0
@@ -1930,25 +1930,25 @@ ESQIFF2_ShowAttentionOverlay:
     BNE.S   .lab_0B2C
 
 .lab_0B2B:
-    MOVE.L  BRUSH_SnapshotDepth,-(A7)   ; reuse cached brush dimensions in file dialog
-    JSR     ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
+    MOVE.L  _BRUSH_SnapshotDepth,-(A7)   ; reuse cached brush dimensions in file dialog
+    JSR     _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
     MOVE.L  D0,(A7)
-    MOVE.L  BRUSH_SnapshotWidth,-(A7)
-    PEA     BRUSH_SnapshotHeader
-    PEA     Global_STR_FILE_WIDTH_COLORS_FORMATTED
+    MOVE.L  _BRUSH_SnapshotWidth,-(A7)
+    PEA     _BRUSH_SnapshotHeader
+    PEA     _Global_STR_FILE_WIDTH_COLORS_FORMATTED
     PEA     -128(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     20(A7),A7
-    MOVE.W  #1,COI_AttentionOverlayBusyFlag
+    MOVE.W  #1,_COI_AttentionOverlayBusyFlag
     BRA.S   .lab_0B2D
 
 .lab_0B2C:
-    PEA     BRUSH_SnapshotHeader
-    PEA     Global_STR_FILE_PERCENT_S
+    PEA     _BRUSH_SnapshotHeader
+    PEA     _Global_STR_FILE_PERCENT_S
     PEA     -128(A5)
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
 
@@ -1956,24 +1956,24 @@ ESQIFF2_ShowAttentionOverlay:
     PEA     -128(A5)
     PEA     180.W
     PEA     35.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL
+    PEA     _Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL
     PEA     210.W
     PEA     35.W
-    MOVE.L  Global_REF_RASTPORT_1,-(A7)
-    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    MOVE.L  _Global_REF_RASTPORT_1,-(A7)
+    JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
     MOVE.L  D6,D0
     EXT.W   D0
     EXT.L   D0
-    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  -138(A5),4(A0)
 
 ;------------------------------------------------------------------------------
@@ -2013,7 +2013,7 @@ ESQIFF2_ShowAttentionOverlay_Return:
 ; CALLS:
 ;   (none)
 ; READS:
-;   TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable
+;   _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2028,14 +2028,14 @@ ESQIFF2_ClearPrimaryEntryFlags34To39:
     MOVEQ   #0,D7
 
 .lab_0B30:
-    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
     CMP.W   D0,D7
     BGE.S   ESQIFF2_ClearPrimaryEntryFlags34To39_Return
 
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
+    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
     MOVEQ   #0,D6

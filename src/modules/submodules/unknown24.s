@@ -1,7 +1,7 @@
     XDEF    MEMLIST_AllocTracked
     XDEF    MEMLIST_FreeAll
     XDEF    PARSE_ReadSignedLongSkipClass3
-    XDEF    PARSE_ReadSignedLongSkipClass3_Alt
+    XDEF    _PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSE_ReadSignedLongSkipClass3   (Parse signed long after skipping class3.)
@@ -46,7 +46,7 @@ PARSE_ReadSignedLongSkipClass3:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSE_ReadSignedLongSkipClass3_Alt   (Alternate signed decimal parser.)
+; FUNC: _PARSE_ReadSignedLongSkipClass3_Alt   (Alternate signed decimal parser.)
 ; ARGS:
 ;   stack +16: A3 = input string
 ; RET:
@@ -60,7 +60,7 @@ PARSE_ReadSignedLongSkipClass3:
 ; NOTES:
 ;   Uses PARSE_ReadSignedLong_NoBranch instead of PARSE_ReadSignedLong (behavior differences unknown).
 ;------------------------------------------------------------------------------
-PARSE_ReadSignedLongSkipClass3_Alt:
+_PARSE_ReadSignedLongSkipClass3_Alt:
     LINK.W  A5,#-4
     MOVE.L  A3,-(A7)
     MOVEA.L 16(A7),A3
