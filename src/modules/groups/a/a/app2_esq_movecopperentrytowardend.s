@@ -13,9 +13,9 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   _ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
+;   _ESQ_CopperStatusDigitsA, _ESQ_CopperStatusDigitsB
 ; WRITES:
-;   _ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
+;   _ESQ_CopperStatusDigitsA, _ESQ_CopperStatusDigitsB
 ; DESC:
 ;   Moves an entry toward the end of the table by shifting intervening
 ;   entries up and inserting the original value at dstIndex.
@@ -32,7 +32,7 @@ _ESQ_MoveCopperEntryTowardEnd:
     LSL.W   #2,D1
     LSL.W   #2,D2
     LEA     _ESQ_CopperStatusDigitsA,A1
-    LEA     ESQ_CopperStatusDigitsB,A0
+    LEA     _ESQ_CopperStatusDigitsB,A0
     ADDI.W  #0,D1
     ADDI.W  #0,D2
     MOVE.W  #$20,D4

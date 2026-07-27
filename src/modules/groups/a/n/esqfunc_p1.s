@@ -13,7 +13,7 @@
 ; CALLS:
 ;   DATETIME_SavePairToFile, ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList, _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile, _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile, ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, ESQDISP_PromoteSecondaryGroupToPrimary, _ESQDISP_PromoteSecondaryLineHeadTailIfMarked, _ESQFUNC_UpdateDiskWarningAndRefreshTick
 ; READS:
-;   _ESQPARS2_ReadModeFlags, _DST_BannerWindowPrimary, _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
+;   _ESQPARS2_ReadModeFlags, _DST_BannerWindowPrimary, _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState
 ; WRITES:
 ;   ESQDISP_PendingGridReinitFlag, _ESQPARS2_ReadModeFlags
 ; DESC:
@@ -41,7 +41,7 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 
     JSR     ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile(PC)
 
-    PEA     LOCAVAIL_SecondaryFilterState
+    PEA     _LOCAVAIL_SecondaryFilterState
     PEA     _LOCAVAIL_PrimaryFilterState
     JSR     ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(PC)
 

@@ -12,9 +12,9 @@
 ; CALLS:
 ;   _ESQPARS_ReplaceOwnedString
 ; READS:
-;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, _ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr
 ; WRITES:
-;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, _ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr
 ; DESC:
 ;   Releases and clears the selected line-head and line-tail owned strings for the
 ;   requested group mode.
@@ -28,11 +28,11 @@ _ESQIFF2_ClearLineHeadTailByMode:
     CMP.W   D0,D7
     BNE.S   .clear_primary_line_head_tail
 
-    MOVE.L  ESQIFF_SecondaryLineHeadPtr,-(A7)
+    MOVE.L  _ESQIFF_SecondaryLineHeadPtr,-(A7)
     CLR.L   -(A7)
     BSR.W   _ESQPARS_ReplaceOwnedString
 
-    MOVE.L  D0,ESQIFF_SecondaryLineHeadPtr
+    MOVE.L  D0,_ESQIFF_SecondaryLineHeadPtr
     MOVE.L  _ESQIFF_SecondaryLineTailPtr,(A7)
     CLR.L   -(A7)
     BSR.W   _ESQPARS_ReplaceOwnedString

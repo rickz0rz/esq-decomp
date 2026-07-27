@@ -12,9 +12,9 @@
 ; CALLS:
 ;   _ESQIFF2_ClearLineHeadTailByMode
 ; READS:
-;   ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _ESQDISP_SecondaryLinePromotePendingFlag
+;   _ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _ESQDISP_SecondaryLinePromotePendingFlag
 ; WRITES:
-;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _ESQDISP_SecondaryLinePromotePendingFlag
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, _ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _ESQDISP_SecondaryLinePromotePendingFlag
 ; DESC:
 ;   If the secondary line chain is marked pending, clears primary line chain for mode 1,
 ;   moves secondary head/tail pointers into primary, then clears secondary pointers.
@@ -29,10 +29,10 @@ _ESQDISP_PromoteSecondaryLineHeadTailIfMarked:
     JSR     _ESQIFF2_ClearLineHeadTailByMode(PC)
 
     ADDQ.W  #4,A7
-    MOVE.L  ESQIFF_SecondaryLineHeadPtr,_ESQIFF_PrimaryLineHeadPtr
+    MOVE.L  _ESQIFF_SecondaryLineHeadPtr,_ESQIFF_PrimaryLineHeadPtr
     MOVE.L  _ESQIFF_SecondaryLineTailPtr,_ESQIFF_PrimaryLineTailPtr
     SUBA.L  A0,A0
-    MOVE.L  A0,ESQIFF_SecondaryLineHeadPtr
+    MOVE.L  A0,_ESQIFF_SecondaryLineHeadPtr
     MOVE.L  A0,_ESQIFF_SecondaryLineTailPtr
 
 .clear_pending_line_promote_flag:

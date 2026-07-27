@@ -31,7 +31,7 @@
 ; READS:
 ;   _ED_DiagTextModeChar, LADFUNC_TAG_RS_ResetTriggerSet, LADFUNC_TAG_RS_ParseAllowedSet, _LADFUNC_EntryPtrTable, _LADFUNC_ParsedEntryCount, ESQIFF_StatusPacketReadyFlag
 ; WRITES:
-;   _LADFUNC_ParsedEntryCount, _LADFUNC_EntryPtrTable entry buffers, WDISP_HighlightActive
+;   _LADFUNC_ParsedEntryCount, _LADFUNC_EntryPtrTable entry buffers, _WDISP_HighlightActive
 ; DESC:
 ;   Parses an encoded entry record and updates entry buffers and metadata.
 ; NOTES:

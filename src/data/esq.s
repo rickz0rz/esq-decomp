@@ -44,7 +44,7 @@
     XDEF    _Global_HANDLE_PREVUEC_FONT
     XDEF    _Global_HANDLE_H26F_FONT
     XDEF    _Global_HANDLE_TOPAZ_FONT
-    XDEF    ESQIFF_SecondaryLineHeadPtr
+    XDEF    _ESQIFF_SecondaryLineHeadPtr
     XDEF    _ESQIFF_SecondaryLineTailPtr
     XDEF    _ESQ_STR_A
     XDEF    WDISP_WeatherStatusOverlayTextPtr
@@ -151,7 +151,7 @@
     XDEF    ESQ_CopperEffectListA_PtrHiWord
     XDEF    ESQ_CopperEffectListA_PtrLoWord
     XDEF    ESQ_CopperEffectTemplateRowsSet1
-    XDEF    ESQ_CopperStatusDigitsB
+    XDEF    _ESQ_CopperStatusDigitsB
     XDEF    ESQ_CopperStatusDigitsB_ColorRegistersA
     XDEF    ESQ_CopperStatusDigitsB_TailColorWord
     XDEF    _ESQ_CopperListBannerB
@@ -193,8 +193,10 @@
     XDEF    ESQ_BannerWorkRasterPtrTailB_HiWord
     XDEF    ESQ_CopperBannerRasterPointerListB
     XDEF    _Global_PTR_AUD1_DMA
+    XDEF    _GfxBase
 ; ========== ESQ.c ==========
 
+_GfxBase:
 Global_REF_GRAPHICS_LIBRARY:
     DC.L    0
 _Global_REF_INTUITION_LIBRARY:
@@ -440,13 +442,13 @@ _Global_HANDLE_TOPAZ_FONT:
     DC.L    0,0,0
     DC.W    0
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_SecondaryLineHeadPtr   (secondary line head text pointer)
+; SYM: _ESQIFF_SecondaryLineHeadPtr   (secondary line head text pointer)
 ; TYPE: pointer (stored as two words)
 ; PURPOSE: First segment pointer for secondary ESQIFF line text.
 ; USED BY: ESQIFF2_*, ESQDISP_*
 ; NOTES: Declared as two words to preserve original layout/alignment.
 ;------------------------------------------------------------------------------
-ESQIFF_SecondaryLineHeadPtr:
+_ESQIFF_SecondaryLineHeadPtr:
     DC.W    0
 ESQIFF_SecondaryLineHeadPtr_HiWord:
     DC.W    0
@@ -455,7 +457,7 @@ ESQIFF_SecondaryLineHeadPtr_HiWord:
 ; TYPE: pointer
 ; PURPOSE: Second segment pointer for secondary ESQIFF line text.
 ; USED BY: ESQIFF2_*, ESQDISP_*
-; NOTES: Paired with ESQIFF_SecondaryLineHeadPtr.
+; NOTES: Paired with _ESQIFF_SecondaryLineHeadPtr.
 ;------------------------------------------------------------------------------
 _ESQIFF_SecondaryLineTailPtr:
     DC.L    0
@@ -662,7 +664,7 @@ ESQ_CopperEffectTemplateRowsSet0:
 ; TYPE: u32[]
 ; PURPOSE: Base copperlist words for status-digit rendering set A.
 ; USED BY: APP2_*, ESQFUNC_*, ESQSHARED4_*
-; NOTES: Paired with ESQ_CopperStatusDigitsB.
+; NOTES: Paired with _ESQ_CopperStatusDigitsB.
 ;------------------------------------------------------------------------------
 _ESQ_CopperStatusDigitsA:
     DC.L    $00030182
@@ -1114,13 +1116,13 @@ ESQ_CopperEffectTemplateRowsSet1:
     DS.L    19
     DC.W    $0180
 ;------------------------------------------------------------------------------
-; SYM: ESQ_CopperStatusDigitsB   (copper status digit list B)
+; SYM: _ESQ_CopperStatusDigitsB   (copper status digit list B)
 ; TYPE: u32[]
 ; PURPOSE: Alternate status-digit copperlist template.
 ; USED BY: APP2_*, ESQFUNC_*, ESQSHARED4_*
 ; NOTES: Mirrors _ESQ_CopperStatusDigitsA structure with companion data set.
 ;------------------------------------------------------------------------------
-ESQ_CopperStatusDigitsB:
+_ESQ_CopperStatusDigitsB:
     DC.L    $00030182
 ESQ_CopperStatusDigitsB_ColorRegistersA:
     DC.L    $0aaa0184,$03330186,$05550188,$0512018a

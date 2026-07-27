@@ -125,7 +125,7 @@ LADFUNC_ResetEntryTextBuffers:
 ; CALLS:
 ;   NEWGRID_JMPTBL_MATH_DivS32, _LADFUNC_BuildHighlightLinesFromText
 ; READS:
-;   WDISP_HighlightActive, LADFUNC_HighlightCycleCountdown, LADFUNC_HighlightCycleCountdownReload, _LADFUNC_EntryCount, _LADFUNC_EntryPtrTable
+;   _WDISP_HighlightActive, LADFUNC_HighlightCycleCountdown, LADFUNC_HighlightCycleCountdownReload, _LADFUNC_EntryCount, _LADFUNC_EntryPtrTable
 ; WRITES:
 ;   _LADFUNC_EntryCount, LADFUNC_HighlightCycleCountdown
 ; DESC:
@@ -133,7 +133,7 @@ LADFUNC_ResetEntryTextBuffers:
 ; NOTES:
 ;   Resets LADFUNC_HighlightCycleCountdown from LADFUNC_HighlightCycleCountdownReload when the countdown underflows.
 ;------------------------------------------------------------------------------
-    MOVE.W  WDISP_HighlightActive,D0
+    MOVE.W  _WDISP_HighlightActive,D0
     SUBQ.W  #1,D0
     BNE.S   .maybe_reset
 
@@ -174,7 +174,7 @@ LADFUNC_ResetEntryTextBuffers:
     MOVE.W  D1,LADFUNC_HighlightCycleCountdown
 
 .maybe_reset:
-    MOVE.W  WDISP_HighlightActive,D0
+    MOVE.W  _WDISP_HighlightActive,D0
     SUBQ.W  #1,D0
     BNE.S   .return
 

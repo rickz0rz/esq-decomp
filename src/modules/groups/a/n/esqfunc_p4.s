@@ -44,7 +44,7 @@
 ;   ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
 ; READS:
 ;   _ED_DiagnosticsScreenActive, _ED_DiagnosticsViewMode, _ED_DiagAvailMemMask, _ESQIFF_ParseAttemptCount, _DATACErrs, _ESQIFF_LineErrorCount,
-;   _SCRIPT_CtrlCmdCount/2348/2349, ESQ_SerialRbfErrorCount, _Global_WORD_H_VALUE, _Global_WORD_T_VALUE,
+;   _SCRIPT_CtrlCmdCount/2348/2349, _ESQ_SerialRbfErrorCount, _Global_WORD_H_VALUE, _Global_WORD_T_VALUE,
 ;   _Global_WORD_MAX_VALUE, _CTRL_H, _CTRL_HPreviousSample, _CTRL_HDeltaMax, _TEXTDISP_PrimaryGroupCode/_TEXTDISP_SecondaryGroupCode,
 ;   _TEXTDISP_PrimaryGroupHeaderCode/_TEXTDISP_SecondaryGroupHeaderCode, _TEXTDISP_PrimaryGroupPresentFlag/_TEXTDISP_SecondaryGroupPresentFlag, CLOCK_CacheDayIndex0/223B/2244/223D,
 ;   _CLOCK_CurrentDayOfMonth/2275/227E/2277, _DST_PrimaryCountdown/227B/225C, CLOCK_CacheHour,
@@ -228,7 +228,7 @@ ESQFUNC_DrawMemoryStatusScreen:
     JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  ESQ_SerialRbfErrorCount,D0
+    MOVE.W  _ESQ_SerialRbfErrorCount,D0
     MOVE.L  D0,(A7)
     PEA     Global_STR_DATA_OVERRUNS_FORMATTED
     PEA     -72(A5)
@@ -455,7 +455,7 @@ ESQFUNC_DrawMemoryStatusScreen:
 ;   ESQFUNC_VideoInsertionStateStrings, SCRIPT_CtrlHandshakeStage, ESQFUNC_STR_CLOSED_ENABLED/1EB9, ESQFUNC_TAG_CLOSED/1EBB, ESQFUNC_STR_CLOSED_ON_AIR/1EBD,
 ;   _Global_HANDLE_TOPAZ_FONT, Global_REF_GRAPHICS_LIBRARY, _WDISP_DisplayContextBase
 ; WRITES:
-;   _ESQ_CopperStatusDigitsA/1E27/1E28/1E29/1E2A, ESQ_CopperStatusDigitsB/1E56/1E57 (status fields),
+;   _ESQ_CopperStatusDigitsA/1E27/1E28/1E29/1E2A, _ESQ_CopperStatusDigitsB/1E56/1E57 (status fields),
 ;   _ESQ_CopperStatusDigitsA/1E27/1E28/1E29/1E2A (cleared/initialized), stack buffers
 ; DESC:
 ;   Builds and renders the ESC diagnostics screen, selecting status strings
@@ -482,7 +482,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.W  D0,ESQ_CopperStatusDigitsB_ColorRegistersA
     MOVEQ   #0,D0
     MOVE.W  D0,_ESQ_CopperStatusDigitsA
-    MOVE.W  D0,ESQ_CopperStatusDigitsB
+    MOVE.W  D0,_ESQ_CopperStatusDigitsB
     MOVE.W  D0,ESQ_CopperStatusDigitsA_ColorRegistersB
     MOVE.W  D0,ESQ_CopperStatusDigitsB_TailColorWord
     MOVE.W  D0,ESQ_CopperStatusDigitsA_ColorRegistersC

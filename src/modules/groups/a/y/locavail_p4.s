@@ -14,7 +14,7 @@
 ; CALLS:
 ;   _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, _LOCAVAIL_ResetFilterCursorState, _NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
-;   LOCAVAIL_UpdateFilterStateMachine_Return, _ESQIFF_GAdsBrushListCount, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId, LOCAVAIL_STR_YYLLZ_FilterStateUpdate, WDISP_HighlightActive, lab_0F7F, lab_0F7F_0008, lab_0F7F_0040, lab_0F7F_0062, lab_0F83, lab_0F84, lab_0F86, lab_0F86_001E, lab_0F86_0066, lab_0F89, lab_0F8C, lab_0F8C_001E, lab_0F8C_0046
+;   LOCAVAIL_UpdateFilterStateMachine_Return, _ESQIFF_GAdsBrushListCount, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId, LOCAVAIL_STR_YYLLZ_FilterStateUpdate, _WDISP_HighlightActive, lab_0F7F, lab_0F7F_0008, lab_0F7F_0040, lab_0F7F_0062, lab_0F83, lab_0F84, lab_0F86, lab_0F86_001E, lab_0F86_0066, lab_0F89, lab_0F8C, lab_0F8C_001E, lab_0F8C_0046
 ; WRITES:
 ;   _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId, LOCAVAIL_FilterPrevClassId, _LOCAVAIL_FilterWindowHalfSpan, LOCAVAIL_FilterCooldownTicks
 ; DESC:
@@ -144,7 +144,7 @@ LOCAVAIL_UpdateFilterStateMachine:
     BRA.W   LOCAVAIL_UpdateFilterStateMachine_Return
 
 .lab_0F7F_0062:
-    TST.W   WDISP_HighlightActive
+    TST.W   _WDISP_HighlightActive
     BNE.W   LOCAVAIL_UpdateFilterStateMachine_Return
 
     MOVE.L  A2,-(A7)

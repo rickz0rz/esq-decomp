@@ -12,9 +12,9 @@
 ; CALLS:
 ;   _LOCAVAIL_CopyFilterStateStructRetainRefs, _LOCAVAIL_ResetFilterCursorState, _LOCAVAIL_FreeResourceChain
 ; READS:
-;   _TEXTDISP_PrimaryGroupCode, _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
+;   _TEXTDISP_PrimaryGroupCode, _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState
 ; WRITES:
-;   LOCAVAIL_SecondaryFilterState
+;   _LOCAVAIL_SecondaryFilterState
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -24,17 +24,17 @@ _LOCAVAIL_RebuildFilterStateFromCurrentGroup:
     PEA     _LOCAVAIL_PrimaryFilterState
     BSR.W   _LOCAVAIL_FreeResourceChain
 
-    PEA     LOCAVAIL_SecondaryFilterState
+    PEA     _LOCAVAIL_SecondaryFilterState
     PEA     _LOCAVAIL_PrimaryFilterState
     BSR.W   _LOCAVAIL_CopyFilterStateStructRetainRefs
 
-    PEA     LOCAVAIL_SecondaryFilterState
+    PEA     _LOCAVAIL_SecondaryFilterState
     BSR.W   _LOCAVAIL_FreeResourceChain
 
     LEA     16(A7),A7
     MOVE.B  _TEXTDISP_PrimaryGroupCode,D0
     SUBQ.B  #1,D0
-    MOVE.B  D0,LOCAVAIL_SecondaryFilterState
+    MOVE.B  D0,_LOCAVAIL_SecondaryFilterState
     PEA     _LOCAVAIL_PrimaryFilterState
     BSR.W   _LOCAVAIL_ResetFilterCursorState
 

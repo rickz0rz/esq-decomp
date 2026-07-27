@@ -79,6 +79,17 @@ def split(module, labels):
     if missing:
         sys.exit(f'{module}: label(s) not found as a chunk start: {missing}')
 
+    # A `*+(sym-.local+n)` PC-relative expression only assembles while sym is in
+    # the same unit as the reference. Extract anything between the two and the
+    # split build dies with "illegal relocation" -- ed1.s reaches
+    # _ED1_EnterEscMenu_AfterVersionText this way from its dispatch table. Exactly
+    # one module program-wide does this, so refusing outright costs almost nothing
+    # and removes a whole class of breakage.
+    bare = '\n'.join(l.split(';')[0] for l in src.split('\n'))
+    if re.search(r'\*\+\(', bare):
+        sys.exit(f'{module}: contains a *+(expr) PC-relative form; refusing to '
+                 f'split (the target must stay in the same unit as the reference)')
+
     # Two requested labels can land in the SAME chunk -- the module separates them
     # by comment only, not by `;!======`. Emitting that chunk once per label wrote
     # the same piece twice and included it twice, which the assembler reports as a
@@ -90,11 +101,19 @@ def split(module, labels):
     shared = {}
     for l, ci in want.items():
         shared.setdefault(ci, []).append(l)
+    # A chunk holding more than one label must NOT be extracted. It cannot be
+    # C-replaced (a replacement substitutes the whole module, and only one of its
+    # functions is restored), so pulling it out buys nothing -- and it can break
+    # the split build outright: ed1.s reaches ED1_EnterEscMenu_AfterVersionText
+    # through `BSR.W *+(sym-.dispatch_table+2)`, a PC-relative expression that
+    # cannot be relocated once the target lands in another unit.
     for ci, ls in sorted(shared.items()):
         if len(ls) > 1:
-            print(f'  note: {module}: {sorted(ls)} share one chunk; '
-                  f'emitting as a single module')
+            print(f'  skip: {module}: {sorted(ls)} share one chunk; not extracting')
+            del shared[ci]
     cut = sorted(shared)
+    if not cut:
+        return []
     prev, part = 0, 0
     for ci in cut:
         if ci > prev:

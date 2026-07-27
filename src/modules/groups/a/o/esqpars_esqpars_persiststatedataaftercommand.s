@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _ESQPARS_JMPTBL_DATETIME_SavePairToFile, _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, _LOCAVAIL_SaveAvailabilityDataFile, _LADFUNC_SaveTextAdsToFile
 ; READS:
-;   _DST_BannerWindowPrimary, _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
+;   _DST_BannerWindowPrimary, _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -29,7 +29,7 @@ _ESQPARS_PersistStateDataAfterCommand:
     PEA     _DST_BannerWindowPrimary
     JSR     _ESQPARS_JMPTBL_DATETIME_SavePairToFile(PC)
 
-    PEA     LOCAVAIL_SecondaryFilterState
+    PEA     _LOCAVAIL_SecondaryFilterState
     PEA     _LOCAVAIL_PrimaryFilterState
     JSR     _LOCAVAIL_SaveAvailabilityDataFile(PC)
 

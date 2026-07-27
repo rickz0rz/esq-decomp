@@ -15,7 +15,7 @@
 ; READS:
 ;   _ED_DiagTextModeChar, _LADFUNC_EntryPtrTable, _CLOCK_HalfHourSlotIndex
 ; WRITES:
-;   WDISP_HighlightActive, _WDISP_HighlightIndex, [A3] fields
+;   _WDISP_HighlightActive, _WDISP_HighlightIndex, [A3] fields
 ; DESC:
 ;   Clears highlight state and walks banner rectangles to mark the active one.
 ; NOTES:
@@ -25,7 +25,7 @@
 _LADFUNC_UpdateHighlightState:
     MOVEM.L D7/A3,-(A7)
     MOVEQ   #0,D0
-    MOVE.W  D0,WDISP_HighlightActive
+    MOVE.W  D0,_WDISP_HighlightActive
     MOVE.W  D0,_WDISP_HighlightIndex
     MOVE.B  _ED_DiagTextModeChar,D0
     MOVEQ   #78,D1
@@ -59,7 +59,7 @@ _LADFUNC_UpdateHighlightState:
 
     MOVEQ   #1,D0
     MOVE.W  D0,4(A3)
-    MOVE.W  D0,WDISP_HighlightActive
+    MOVE.W  D0,_WDISP_HighlightActive
 
 .next_rect:
     ADDQ.L  #1,D7

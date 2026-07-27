@@ -149,7 +149,7 @@ TEXTDISP_DrawNextEntryPreview:
 ; CALLS:
 ;   _TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame, TEXTDISP_DrawNextEntryPreview, _TEXTDISP_ResetSelectionAndRefresh
 ; READS:
-;   _LOCAVAIL_FilterModeFlag/1FE8/1FE9, _ED_DiagGraphModeChar, WDISP_HighlightActive
+;   _LOCAVAIL_FilterModeFlag/1FE8/1FE9, _ED_DiagGraphModeChar, _WDISP_HighlightActive
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -188,7 +188,7 @@ TEXTDISP_UpdateHighlightOrPreview:
     BRA.S   .return
 
 .check_highlight_for_mode3:
-    MOVE.W  WDISP_HighlightActive,D1
+    MOVE.W  _WDISP_HighlightActive,D1
     SUBQ.W  #1,D1
     BNE.S   .do_reset_selection
 
@@ -218,7 +218,7 @@ TEXTDISP_UpdateHighlightOrPreview:
     BRA.S   .return
 
 .mode_char_is_n:
-    MOVE.W  WDISP_HighlightActive,D1
+    MOVE.W  _WDISP_HighlightActive,D1
     SUBQ.W  #1,D1
     BNE.S   .do_reset_selection_alt
 

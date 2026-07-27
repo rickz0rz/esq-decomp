@@ -16,7 +16,7 @@
 ; READS:
 ;   _Global_WORD_H_VALUE, _Global_WORD_T_VALUE, _Global_WORD_MAX_VALUE, _ESQPARS2_ReadModeFlags
 ; WRITES:
-;   (A1+head), ESQ_SerialRbfErrorCount, _Global_WORD_H_VALUE, _ESQ_SerialRbfFillLevel, _Global_WORD_MAX_VALUE,
+;   (A1+head), _ESQ_SerialRbfErrorCount, _Global_WORD_H_VALUE, _ESQ_SerialRbfFillLevel, _Global_WORD_MAX_VALUE,
 ;   _ESQPARS2_ReadModeFlags, _SCRIPT_SerialReadModeOverflowCount, 156(A0)
 ; DESC:
 ;   Stores a received byte into the RBF ring buffer, updates head/fill counts,
@@ -33,9 +33,9 @@ _ESQ_HandleSerialRbfInterrupt:
     BTST    #15,D1
     BEQ.S   .skip_error_count
 
-    MOVE.W  ESQ_SerialRbfErrorCount,D1
+    MOVE.W  _ESQ_SerialRbfErrorCount,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,ESQ_SerialRbfErrorCount
+    MOVE.W  D1,_ESQ_SerialRbfErrorCount
 
 .skip_error_count:
     ADDQ.W  #1,D0

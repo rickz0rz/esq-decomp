@@ -17,9 +17,9 @@
 ; CALLS:
 ;   _ESQIFF2_ClearLineHeadTailByMode, _ESQPARS_ReplaceOwnedString
 ; READS:
-;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, ESQIFF_RecordLength
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, _ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, ESQIFF_RecordLength
 ; WRITES:
-;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _ESQDISP_SecondaryLinePromotePendingFlag
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, _ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _ESQDISP_SecondaryLinePromotePendingFlag
 ; DESC:
 ;   Splits a line-head/tail record on delimiter 0x12 and updates primary or
 ;   secondary line-head/line-tail owned strings based on group code.
@@ -138,7 +138,7 @@ ESQIFF2_ParseLineHeadTailRecord:
     BNE.S   .secondary_split_or_head_only
 
     SUBA.L  A0,A0
-    MOVE.L  A0,ESQIFF_SecondaryLineHeadPtr
+    MOVE.L  A0,_ESQIFF_SecondaryLineHeadPtr
     MOVEQ   #0,D1
     MOVE.W  ESQIFF_RecordLength,D1
     CMP.B   -1(A3,D1.L),D0
@@ -165,12 +165,12 @@ ESQIFF2_ParseLineHeadTailRecord:
     BNE.S   .secondary_scan_internal_delimiter
 
     LEA     1(A3),A0
-    MOVE.L  ESQIFF_SecondaryLineHeadPtr,-(A7)
+    MOVE.L  _ESQIFF_SecondaryLineHeadPtr,-(A7)
     MOVE.L  A0,-(A7)
     BSR.W   _ESQPARS_ReplaceOwnedString
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,ESQIFF_SecondaryLineHeadPtr
+    MOVE.L  D0,_ESQIFF_SecondaryLineHeadPtr
     CLR.L   _ESQIFF_SecondaryLineTailPtr
     BRA.S   ESQIFF2_ParseLineHeadTailRecord_Return
 
@@ -192,11 +192,11 @@ ESQIFF2_ParseLineHeadTailRecord:
 .secondary_split_at_found_delimiter:
     CLR.B   0(A3,D6.W)
     LEA     1(A3),A0
-    MOVE.L  ESQIFF_SecondaryLineHeadPtr,-(A7)
+    MOVE.L  _ESQIFF_SecondaryLineHeadPtr,-(A7)
     MOVE.L  A0,-(A7)
     BSR.W   _ESQPARS_ReplaceOwnedString
 
-    MOVE.L  D0,ESQIFF_SecondaryLineHeadPtr
+    MOVE.L  D0,_ESQIFF_SecondaryLineHeadPtr
     MOVE.L  D6,D0
     EXT.L   D0
     MOVEA.L A3,A0

@@ -230,10 +230,10 @@
     XDEF    _ESQIFF_LineErrorCount
     XDEF    _Global_WORD_H_VALUE
     XDEF    _Global_WORD_T_VALUE
-    XDEF    ESQ_SerialRbfErrorCount
+    XDEF    _ESQ_SerialRbfErrorCount
     XDEF    _Global_WORD_MAX_VALUE
     XDEF    _ESQ_SerialRbfFillLevel
-    XDEF    WDISP_HighlightActive
+    XDEF    _WDISP_HighlightActive
     XDEF    _WDISP_HighlightIndex
     XDEF    _ESQDISP_SecondaryLinePromotePendingFlag
     XDEF    _ESQ_VerticalBlankInterruptUserData
@@ -384,7 +384,7 @@
     XDEF    _LOCAVAIL_PrimaryFilterState
     XDEF    LOCAVAIL_PrimaryFilterState_Field08
     XDEF    LOCAVAIL_PrimaryFilterState_Field0C
-    XDEF    LOCAVAIL_SecondaryFilterState
+    XDEF    _LOCAVAIL_SecondaryFilterState
     XDEF    LOCAVAIL_FilterCooldownTicks
     XDEF    _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST
     XDEF    _Global_REF_BACKED_UP_INTUITION_DISPLAYALERT
@@ -479,6 +479,7 @@
     XDEF    WDISP_WeatherCycleOffsetCount
     XDEF    FORMAT_ScratchBuffer
     XDEF    Global_REF_DOS_LIBRARY_2
+    XDEF    _DOSBase
 ; ========== WDISP.c ==========
 ; weather display?
 
@@ -2162,22 +2163,22 @@ _Global_WORD_H_VALUE:
 _Global_WORD_T_VALUE:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQ_SerialRbfErrorCount/_ESQ_SerialRbfFillLevel   (serial RBF diagnostics counters)
+; SYM: _ESQ_SerialRbfErrorCount/_ESQ_SerialRbfFillLevel   (serial RBF diagnostics counters)
 ; TYPE: u16/u16
 ; PURPOSE:
-;   `ESQ_SerialRbfErrorCount` accumulates serial RBF error/status events.
+;   `_ESQ_SerialRbfErrorCount` accumulates serial RBF error/status events.
 ;   `_ESQ_SerialRbfFillLevel` tracks ISR-computed `(head-tail)` serial ring-buffer occupancy.
 ; USED BY: _ESQ_HandleSerialRbfInterrupt, ESQFUNC_DrawMemoryStatusScreen, ESQ_InitializeState
 ; NOTES: Both values are displayed/reset through diagnostics paths.
 ;------------------------------------------------------------------------------
-ESQ_SerialRbfErrorCount:
+_ESQ_SerialRbfErrorCount:
     DS.W    1
 _Global_WORD_MAX_VALUE:
     DS.W    1
 _ESQ_SerialRbfFillLevel:
     DS.W    1
 ; Flag indicating a UI banner/key highlight is active.
-WDISP_HighlightActive:
+_WDISP_HighlightActive:
     DS.W    1
 ; Index of the highlighted entry (if used by callers).
 _WDISP_HighlightIndex:
@@ -2919,7 +2920,7 @@ _INPUTDEVICE_HandlerUserDataLong:
 LADFUNC_SaveAdsFileHandle:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: _LOCAVAIL_PrimaryFilterState/LOCAVAIL_SecondaryFilterState   (locavail filter state structs)
+; SYM: _LOCAVAIL_PrimaryFilterState/_LOCAVAIL_SecondaryFilterState   (locavail filter state structs)
 ; TYPE: struct/struct
 ; PURPOSE: Persistent filter/scan state blocks for primary and secondary locavail group handling.
 ; USED BY: LOCAVAIL_*, ESQPARS_*, ESQFUNC_*, CLEANUP_*, ED1_*, SCRIPT3_*
@@ -2935,7 +2936,7 @@ LOCAVAIL_PrimaryFilterState_Field10:
     DS.L    1
 LOCAVAIL_PrimaryFilterState_Field14:
     DS.L    1
-LOCAVAIL_SecondaryFilterState:
+_LOCAVAIL_SecondaryFilterState:
     DS.L    6
 LOCAVAIL_FilterCooldownTicks:
     DS.L    1
@@ -3495,6 +3496,7 @@ WDISP_WeatherCycleOffsetCount:
 FORMAT_ScratchBuffer:
     DS.L    214
 ; Through a bit of manual work, I was able to figure out this points to dos.library
+_DOSBase:
 Global_REF_DOS_LIBRARY_2:
     DS.L    55
 

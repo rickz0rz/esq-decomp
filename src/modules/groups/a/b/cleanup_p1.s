@@ -306,7 +306,7 @@ CLEANUP_ReleaseDisplayResources:
 ;   GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode, GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData, GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings, GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers,
 ;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_UNKNOWN2A_Stub0, _LVOPermit
 ; READS:
-;   _LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _ESQFUNC_PwBrushListHead, ESQIFF_RecordBufferPtr,
+;   _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _ESQFUNC_PwBrushListHead, ESQIFF_RecordBufferPtr,
 ;   _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort, ESQDISP_HighlightBitmapTable, _WDISP_HighlightRasterHeightPx, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQ_ProcessWindowPtrBackup,
 ;   WDISP_ExecBaseHookPtr, Global_REF_GRAPHICS_LIBRARY, _Global_REF_INTUITION_LIBRARY,
 ;   _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST, _Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,
@@ -330,7 +330,7 @@ CLEANUP_ShutdownSystem:
     PEA     _LOCAVAIL_PrimaryFilterState
     JSR     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
 
-    PEA     LOCAVAIL_SecondaryFilterState
+    PEA     _LOCAVAIL_SecondaryFilterState
     JSR     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
 
     CLR.L   (A7)

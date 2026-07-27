@@ -516,7 +516,7 @@ _DISKIO2_RunDiskSyncWorkflow:
     ADDQ.W  #4,A7
 
 .loc_048C:
-    PEA     LOCAVAIL_SecondaryFilterState
+    PEA     _LOCAVAIL_SecondaryFilterState
     PEA     _LOCAVAIL_PrimaryFilterState
     JSR     GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(PC)
 

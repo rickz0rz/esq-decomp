@@ -896,7 +896,7 @@ ESQ_MainInitAndRun:
     MOVE.W  D0,_CTRL_HDeltaMax
     MOVE.W  D0,_CTRL_HPreviousSample
     MOVE.W  D0,_CTRL_H
-    MOVE.W  D0,ESQ_SerialRbfErrorCount
+    MOVE.W  D0,_ESQ_SerialRbfErrorCount
     MOVE.W  D0,_DATACErrs
     MOVE.W  D0,_SCRIPT_CtrlCmdChecksumErrorCount
     MOVE.W  D0,_ESQIFF_LineErrorCount
@@ -1183,10 +1183,10 @@ ESQ_MainInitAndRun:
     PEA     _LOCAVAIL_PrimaryFilterState
     JSR     GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(PC)
 
-    PEA     LOCAVAIL_SecondaryFilterState
+    PEA     _LOCAVAIL_SecondaryFilterState
     JSR     GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(PC)
 
-    PEA     LOCAVAIL_SecondaryFilterState
+    PEA     _LOCAVAIL_SecondaryFilterState
     PEA     _LOCAVAIL_PrimaryFilterState
     JSR     GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile(PC)
 
