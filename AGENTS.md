@@ -396,13 +396,21 @@ branch and costs the match. `script_split_and_normalize_search_buffer.c`
 register and then uses a *fresh* zero for the adjacent long -- chaining all three
 would be wrong. Match the grouping, not just the idiom.
 
+**A range test just before a jump table belongs to the table.** If the original
+shows `CMPI.L #n` immediately before a PC-relative jump table, that is the
+switch's own bound check -- do NOT also write an explicit `if (x >= n)` guard, or
+SAS/C emits the test twice. Let the switch's `default` handle out-of-range.
+`ed_get_esc_menu_action_code.c` -- 172 bytes -> 156 by deleting the guard.
+
 **Keyboard dispatchers want `switch` + `SHORTINT`, together.** The original tests
 key codes with a chained subtract (`SUBI.W #13` / `SUBI.W #14` / `SUBI.W #$80`),
 each consuming the running difference. An `if/else` chain gives independent
 compares instead; a `switch` gives the chain but at the wrong width (`MOVEQ` +
 `SUB.L`). Only both together reproduce it. `ed_handle_edit_attributes_input.c`
 went 172 bytes -> 166 exact this way, and it explains why the other two ED key
-handlers needed `SHORTINT`.
+handlers needed `SHORTINT`. It is a tool to try, not a universal rule --
+`ed_get_esc_menu_action_code.c` has the same dispatch shape and `SHORTINT` does
+not help there.
 
 **`SHORTINT` is per-file and often load-bearing.** Three restorations need it
 (`ed_is_confirm_key.c`, `ed_handle_special_functions_menu.c`,
