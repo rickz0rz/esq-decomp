@@ -22,6 +22,18 @@
  *   ref:     4e55fffc                   LINK.W A5,#-4
  *   got:     (none)                     MOVEM only
  *
+ * SASC-MISMATCH: struct-form-history
+ *   summary: the body was written as *(long *)(msg + 20) and so on, which cost
+ *            SAS/C an address computation per access: 192 bytes against 176, in
+ *            14 regions. Re-expressing it as the structs it actually is -- an
+ *            Exec Message with an embedded RastPort at +60 -- folds each offset
+ *            into a (d16,An) displacement and brings it to 188 in 12 regions.
+ *            The layout is derived, not guessed: struct Message and struct
+ *            RastPort are standard, +64 is RastPort.BitMap and +112 is
+ *            RastPort.Font, and both the reference and the emitted code address
+ *            the latter as 112(An) -- which is the check that the offsets are
+ *            right, since cdiff cannot see a wrong one.
+ *
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the cross-unit calls, plus the BSR.S noted
  *            above which is a different problem entirely.
@@ -35,30 +47,54 @@ extern void *ESQ_HighlightReplyPort;
 extern struct MsgPort *ESQ_HighlightMsgPort;
 extern struct TextFont *Global_HANDLE_PREVUEC_FONT;
 
-void ESQDISP_QueueHighlightDrawMessage(unsigned char *msg, unsigned char *src)
+/* The message really is an Exec Message (ln_Type at +8, mn_ReplyPort at +14,
+ * mn_Length at +18) with an embedded RastPort at +60 -- InitRastPort/SetFont/
+ * SetDrMd prove the latter. Both are standard layouts; the fields between are
+ * modelled at the offsets the assembly already pins, so this is a re-expression
+ * of the same addresses rather than a guessed layout. Writing them as members is
+ * what makes SAS/C fold each offset into a (d16,An) displacement instead of
+ * recomputing the address -- see the source-shapes table in AGENTS.md. */
+struct HiMsg {
+    struct Message   mn;            /* +0   .. +19 */
+    long             f20, f24, f28; /* +20, +24, +28 */
+    long             f32;           /* +32 */
+    char             pad36[16];     /* +36 .. +51 */
+    short            f52;           /* +52 */
+    char             pad54[6];      /* +54 .. +59 */
+    struct RastPort  rp;            /* +60, BitMap at +64, Font at +112 */
+};
+
+struct HiSrc {
+    char pad0[8];
+    long f8, f12, f16;              /* +8, +12, +16 */
+};
+
+void ESQDISP_QueueHighlightDrawMessage(unsigned char *msgp, unsigned char *srcp)
 {
+    register struct HiMsg *m = (struct HiMsg *)msgp;
+    struct HiSrc *s = (struct HiSrc *)srcp;
     unsigned char *ctx;
 
-    msg[8] = 5;
-    *(short *)(msg + 18) = 0xa0;
-    *(void **)(msg + 14) = ESQ_HighlightReplyPort;
-    *(long *)(msg + 20) = *(long *)(src + 8);
-    *(long *)(msg + 24) = *(long *)(src + 12);
-    *(long *)(msg + 28) = *(long *)(src + 16);
-    *(short *)(msg + 52) = 0;
+    m->mn.mn_Node.ln_Type = 5;
+    m->mn.mn_Length       = 0xa0;
+    m->mn.mn_ReplyPort    = (struct MsgPort *)ESQ_HighlightReplyPort;
+    m->f20 = s->f8;
+    m->f24 = s->f12;
+    m->f28 = s->f16;
+    m->f52 = 0;
 
-    ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(msg, 0);
-    *(long *)(msg + 32) = 0;
-    ESQDISP_InitHighlightMessagePattern(msg);
+    ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(m, 0);
+    m->f32 = 0;
+    ESQDISP_InitHighlightMessagePattern(m);
 
-    InitRastPort((struct RastPort *)(msg + 60));
-    *(void **)(msg + 64) = src;
-    SetFont((struct RastPort *)(msg + 60), Global_HANDLE_PREVUEC_FONT);
-    SetDrMd((struct RastPort *)(msg + 60), 0L);
+    InitRastPort(&m->rp);
+    m->rp.BitMap = (struct BitMap *)srcp;
+    SetFont(&m->rp, Global_HANDLE_PREVUEC_FONT);
+    SetDrMd(&m->rp, 0L);
 
-    ctx = *(unsigned char **)(msg + 112);
+    ctx = (unsigned char *)m->rp.Font;
     ctx[55] = 1;
     ctx[53] |= 1;
 
-    PutMsg(ESQ_HighlightMsgPort, (struct Message *)msg);
+    PutMsg(ESQ_HighlightMsgPort, (struct Message *)m);
 }
