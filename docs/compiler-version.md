@@ -415,7 +415,7 @@ four bytes two ways, and otherwise falls back to a six-byte `MOVE.L`:
 |---|---|---:|
 | `MOVEQ #n` + `ADD.L Dn,Dn` (2n) | 190=95x2, 150=75x2, 240=120x2, 216=108x2, 130=65x2, 154=77x2 | 4 |
 | `MOVEQ #n` + `NOT.B Dn` (~n) | 215=~40 (twice), 255=~0, 145=~110 | 4 |
-| `MOVE.L #n` | 280, 300, 345, 385, 450, 475, 555, 595, 639, 265, 396 | 6 |
+| `MOVE.L #n` | 280, 300, 345, 385, 450, 475, 555, 595, 639, 265, 396, 8192 | 6 |
 
 Both short forms are confirmed across multiple independent functions and, for the
 `NOT.B` form, across three different constant values -- so neither is an artifact
