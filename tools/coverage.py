@@ -50,7 +50,12 @@ def survey():
         body = '\n'.join(lines[1:])
         if 'RTS' not in body and 'JMP' not in body:
             continue
-        name = label.lstrip('_')
+        # Keep the REAL label. Stripping the underscore was only ever meant to
+        # match src/c RESTORES entries, but the target list is also fed straight
+        # to refbytes.py and tools/cdiff.sh, which need the label as it appears in
+        # the assembly. Track both.
+        name = label
+        done_key = label.lstrip('_')
         blob = bytes.fromhex(hexb)
         # An "interior label": reached by branch or fall-through from inside a
         # larger routine, so it uses the ENCLOSING function's A5 frame and has no
@@ -60,7 +65,7 @@ def survey():
         # frame and the A5 references would address nothing.
         if '(A5)' in body and 'LINK.W  A5' not in body:
             fns.append({'name': name, 'src': srcf, 'size': len(blob),
-                        'kind': 'interior', 'status': done.get(name),
+                        'kind': 'interior', 'status': done.get(done_key),
                         'blockers': ['interior-label']})
             continue
         if re.search(r'\bBSR\.W\b', body):
@@ -70,7 +75,7 @@ def survey():
         else:
             kind = 'no-calls'
         fns.append({'name': name, 'src': srcf, 'size': len(blob), 'kind': kind,
-                    'status': done.get(name), 'blockers': blockers(hexb)})
+                    'status': done.get(done_key), 'blockers': blockers(hexb)})
     return fns
 
 
