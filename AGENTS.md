@@ -355,6 +355,42 @@ every byte, compares relocated fields positionally, confirms the size growth
 equals the sum of per-object rounding, and confirms every differing DATA byte
 sits inside a relocated longword.
 
+## Source shapes that change the emitted bytes
+
+Each of these was measured against a real function; the cited file has the
+before/after. They are not style preferences -- picking the wrong one costs bytes
+and mismatched regions.
+
+| write this | not this | why |
+|---|---|---|
+| `a = b = 0;` | `a = 0; b = 0;` | the original holds zero in a register and stores it twice; separate statements emit `CLR` twice. Works for pointers too (`SUBA.L A0,A0`). See `esqdisp_promote_secondary_group_to_primary.c`, `newgrid_init_selection_window.c` |
+| `dst = *src;` (struct) | `memcpy(&dst, src, sizeof)` | struct assignment emits a `MOVE.L`/`DBF` long copy; memcpy of the same bytes emits a `MOVE.B` loop. `tliba3_init_runtime_entry.c`, 296 -> 276 bytes |
+| `memcpy(buf, src, 24)` (char array) | a hand-written loop | for a plain byte array memcpy inlines to exactly the original's `MOVEQ`/`MOVE.B (A0)+,(A1)+`/`DBF`. `ed_capture_key_sequence.c` |
+| `table[i].field` repeatedly | hoisting `p = &table[i]` | the original often recomputes the index multiply per access; hoisting collapses them. `tliba3_init_runtime_entry.c` |
+| `strlen(s)` / `strcmp(a,b)` | anything else | both inline to the original's scan loops; no library call is involved |
+
+**The chain must stop where the original's does.** In
+`newgrid_init_selection_window.c` the original zeroes two pointers from one
+register and then uses a *fresh* zero for the adjacent long -- chaining all three
+would be wrong. Match the grouping, not just the idiom.
+
+**`SHORTINT` is per-file and often load-bearing.** Three restorations need it
+(`ed_is_confirm_key.c`, `ed_handle_special_functions_menu.c`,
+`ed_handle_edit_attributes_menu.c`); one breaks under it
+(`ladfunc_get_packed_pen_high_nibble.c`). Symptoms of needing it: the original
+compares with `SUBI.W`/`CMPI.W` where you emit `CMPI.L`, or a switch selector
+gains an extra `EXT.L`. `src/c/replacements.txt` carries a per-file options
+column.
+
+## Not every label is a function
+
+A label whose body references `(A5)` but has no `LINK.W A5` is an **interior
+label** -- reached by branch or fall-through from inside a larger routine, using
+that routine's frame. It cannot be restored as C at all: a C function would build
+its own frame and the `A5` references would address nothing. `tools/coverage.py`
+detects and excludes these. `DISKIO1_DumpDefaultCoiInfoBlock` is the worked
+example.
+
 ## The C phase
 
 Replace assembly with C **one leaf subroutine at a time**, compiled by SAS/C
