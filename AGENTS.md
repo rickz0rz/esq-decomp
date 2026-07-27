@@ -535,41 +535,50 @@ terminal, separately from the Screen Recording grant the capture needs, and it
 checks for that grant rather than assuming it — without it every keystroke fails
 silently with error 1002 and the run is a no-op that looks like a pass.
 
-### OPEN: the maximum-C build does not survive the ESC menu
+### OPEN: the maximum-C build gurus on the ESC menu action
 
-Found 2026-07-27, the first time keyboard input was available. **The build boots
-and soaks for five minutes indistinguishably from the reference, and then dies on
-the first keypress.**
+Found 2026-07-27, the first time keyboard input was available. The build boots
+and soaks for five minutes indistinguishably from the reference, then gurus when
+a menu item is ACTIVATED -- ESC and the arrow are fine, the alert lands on
+RETURN. `8100000F` = `AN_BadFreeAddr`, freeing memory at a bad address.
 
 ```
-                            reference    max-C (289)
-  kickstart-boot illegals       1             2        <- 2 = the machine reset
+  reference (byte-exact)   clean, 3/3 trials
+  maximum-C 289            GURU at step 3_return, red 0.0315
 ```
 
-The alert is `8100000F` = **`AN_BadFreeAddr`**, freeing memory at a bad address,
-and the screen blanks on the ESC itself.
+**It is INTERMITTENT, and that is the single most important fact about it.** The
+same 147-entry binary came up clean on one trial and gurued on the next. So a
+single trial is evidence of a guru but NEVER evidence of its absence, and
+`keydrive_esq.sh` defaults to `TRIALS=3` for that reason.
 
-What is known, and what was ruled out by measurement rather than argument:
+**No file has been validly attributed yet.** Two bisects each named one, and
+neither survived checking:
 
-- **At least TWO independent faults**, both in manifest entries 145-289. Entries
-  1-147 pass; adding #148 fails; removing #148 from the full manifest *still*
-  fails. So #148 is a fault in that context and something else is too.
-- **Not the stale-A6 class.** All 46 remaining `<proto/*.h>` users were converted
-  to the volatile headers and the crash is unchanged. `a6_audit.py` is clean at
-  0 of 289 either way.
-- **Not the obvious suspects.** Everything that frees memory or closes libraries
-  on the shutdown path — `cleanup_release_display_resources`,
-  `ctasks_*_teardown`, `cleanup_clear_*` — sits at positions 6-22, inside the
-  range that passes.
+- `esqiff_run_copper_drop_transition.c` -- removing it from the full manifest
+  changed nothing.
+- `esqiff_handle_brush_ini_reload_hotkey.c` -- its "confirmed" solo run is
+  actually CLEAN once the detector is fixed.
 
-Worth testing next: whether the fault is a *restoration* at all. The max-C image
-is 284716 bytes against the reference's 279804, so anything assuming a size, a
-layout or a stack budget would break without any single file being wrong.
+Both attributions were artifacts of a broken oracle, not of the program. Two
+detector bugs were found and fixed, in this order:
 
-**Do not bisect this with an empty baseline.** With several faults present a
-bisect names an arbitrary boundary, and the solo-confirmation step is worthless
-when the baseline is empty — a single replacement is not reached the way it is in
-a full build. Confirm by REMOVING a candidate from the full manifest instead.
+1. **Counting `Illegal instruction: 4e7b at 00F80B4C` in the FS-UAE log.** That
+   is Kickstart's own boot instruction; whether it appears once or twice depends
+   on where the run is when it is killed. The same binary gave 1 then 2.
+2. **Thresholding on RED pixels alone.** ESQ's TV logo is dark red and takes a
+   healthy guide screen to 0.0036, over a red-only threshold of 0.003 -- which
+   reported a clean build as gurued. `tools/guru_detect.py` now requires red
+   AND a near-black screen, which separates by two orders of magnitude.
+
+**Before bisecting anything, run the oracle twice on the same binary.** If it
+disagrees with itself, fix the oracle first: everything downstream of it is
+fiction. That rule cost two full bisects to learn.
+
+Next step: a `TRIALS=3` bisect, which is sound but roughly three times the cost
+(~90 min), or a cheaper deterministic signal if one can be found. Worth noting
+the fault may not be a single restoration at all -- adding an unused function to
+one file, changing nothing but layout, moved the symptom.
 
 ## Verifying a C build
 
