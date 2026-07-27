@@ -372,6 +372,13 @@ and mismatched regions.
 | `(long)AvailMem(...) > n` | `AvailMem(...) > n` | `AvailMem` returns ULONG, so the natural form emits `BLS`; the original has `BLE`. `disptext_append_to_buffer.c` |
 | `unsigned short` counters | `short` | when the original's loop bounds use `BCC`/`BCS`/`BHI` rather than `BGE`/`BLT`, the counters are unsigned. `esqiff2_read_serial_record_into_buffer.c` |
 
+**A green diff does NOT validate struct offsets.** `DATA=FAR` makes every global
+field access an absolute long carrying a relocation, and `cdiff.sh` masks
+relocated fields by definition -- so a wrong struct layout produces byte-identical
+output. Offsets are only tested if the file is promoted to `exact` and linked.
+Re-derive them from the listing before promoting anything that uses a struct.
+`diskio_write_buffered_bytes.c`
+
 **A provably-dead test means the source used a pointer.** If the original
 null-checks something that can never be null -- the address of a static array, say
 -- write the source through a pointer local (`p = arr; if (p && *p)`) rather than
