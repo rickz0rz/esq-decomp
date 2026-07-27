@@ -326,11 +326,30 @@ bytes. `cdiff.sh` prints one line per differing region with relocated fields
 excluded. **Region count is the number to watch**: a handful means a few idiom
 substitutions; dozens means the code generator laid the function out differently.
 
-Two rules that keep the record trustworthy:
+Three rules that keep the record trustworthy:
 
 1. **Equal size is not evidence of fidelity.** Two restorations so far emitted
    exactly the original's byte count while differing in 19 and 29 regions. Both
    say so in their headers. Always report the region count alongside the size.
+
+   The sharper version: a size-exact restoration can be *less* faithful than a
+   size-divergent one. `ctasks_start_iff_task_process.c` sat at 202/202 with four
+   regions and a header asserting the agreement was genuine. Switching its seglist
+   stores to the struct form -- which makes SAS/C emit the original's
+   `2348000a`/`337c4ef90008` *verbatim*, where the old form emitted no such
+   instructions at all -- moved it to 192/202. The ten spurious bytes had been
+   paying for a missing `LINK` and a shorter constant. Strictly closer to the
+   original, strictly worse on both headline numbers.
+
+   So **region counts are only comparable between candidates of the same size.**
+   Once the lengths differ, every region after the first divergence is misaligned
+   and the count inflates by itself. To compare two candidates of different sizes,
+   test whether the reference's actual instruction sequences appear in each:
+
+   ```sh
+   # does the emitted stream contain the original's instructions, verbatim?
+   tools/cmatch.sh <file.c> <Label> | grep '^  got ' | grep -c '<ref hex subsequence>'
+   ```
 2. **Account for the delta, or say you did not.** The strongest results explain
    every byte (`ED_HandleSpecialFunctionsMenu`: 640 vs 656, being 8 x 2 from one
    constant idiom). Where the bytes are not itemised, record it as a
@@ -371,6 +390,7 @@ and mismatched regions.
 | `void __saveds f(void)` | a plain definition | when the original opens `MOVE.L A4,-(A7)` / `LEA <data>,A4` and restores A4, it is a Task entry point. `__saveds` reproduces the `LEA` exactly. `ctasks_ifftaskcleanup.c` |
 | `(long)AvailMem(...) > n` | `AvailMem(...) > n` | `AvailMem` returns ULONG, so the natural form emits `BLS`; the original has `BLE`. `disptext_append_to_buffer.c` |
 | `unsigned short` counters | `short` | when the original's loop bounds use `BCC`/`BCS`/`BHI` rather than `BGE`/`BLT`, the counters are unsigned. `esqiff2_read_serial_record_into_buffer.c` |
+| `((struct T *)p)->field = x;` | `*(long *)((char *)p + 10) = x;` | struct member access folds the offset into a `(d16,An)` displacement (`MOVE.L A0,10(A1)`, 4 bytes); the cast-and-add form makes SAS/C materialise the address into a register per store (`MOVEA.L`/`ADDA.W`/`MOVE.L (A1)`, 10 bytes). `ctasks_start_close_task_process.c`, 148 -> 136 |
 
 **Dead code needs a zero LOCAL, not a literal.** Where the original tests a
 constant zero and branches past a block (`MOVEQ #0` / `TST.L` / `BEQ`), that block
