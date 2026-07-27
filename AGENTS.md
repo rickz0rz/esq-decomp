@@ -319,12 +319,28 @@ is identified, which depends on how the original encoded their calls:
 
 ```sh
 tools/cdiff.sh <file.c> <Label> [sc options]   # size delta + differing regions
+/tmp/.capvenv/bin/python tools/casm.py <file.c> <Label> [sc options]   # itemised delta
 ```
 
 `cmatch.sh` prints both byte strings in full, which is unreadable past a hundred
 bytes. `cdiff.sh` prints one line per differing region with relocated fields
 excluded. **Region count is the number to watch**: a handful means a few idiom
 substitutions; dozens means the code generator laid the function out differently.
+
+`casm.py` answers the question `cdiff.sh` structurally cannot: *what does each
+difference cost?* It disassembles both streams, aligns them on instruction shape
+(so a register-allocation difference is one hunk instead of desynchronising
+everything after it), and prints ref/got byte counts per hunk with a running
+total. The last line says whether the itemisation adds up to the observed byte
+delta — which is rule 3 below, checked mechanically instead of by hand. Use it
+for anything that does not land byte-exact; hand-tallying is slow and gets the
+wrong answer often enough to be worth not doing.
+
+It needs capstone, which is not in the system Python:
+
+```sh
+python3 -m venv /tmp/.capvenv && /tmp/.capvenv/bin/pip install capstone
+```
 
 Four rules that keep the record trustworthy:
 
