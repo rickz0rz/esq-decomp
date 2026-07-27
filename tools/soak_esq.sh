@@ -10,7 +10,15 @@
 #
 # No input automation is needed: ESQ is a broadcast program and cycles its own
 # displays unattended. So a long run with periodic capture exercises the grid,
-# the banners and the clock redraw for free.
+# the banners, the IFF brush loads and the clock redraw for free.
+#
+# WHAT THIS STILL DOES NOT REACH: anything behind a keypress -- the ED editor,
+# the ESC menu, the diagnostics screens. Driving those needs synthetic keyboard
+# input, and macOS refuses it: `osascript ... keystroke` returns "osascript is
+# not allowed to send keystrokes (1002)" without an Accessibility grant for the
+# terminal. Screen Recording was granted for the capture; Accessibility is a
+# separate permission and has not been. Until it is, the menu paths are covered
+# by byte comparison only.
 #
 # Each shot is cropped to the emulator window, because the rest of the desktop
 # changes constantly and would swamp any comparison. CROP is a sips geometry
@@ -29,6 +37,8 @@ PREVUE="$HOME/Downloads/Prevue"
 SHOTS="${SHOTS:-/tmp/esqsoak}"
 CONFIG="$HOME/Documents/FS-UAE/Configurations/Prevue-HDD.fs-uae"
 LOG="/tmp/soak_$LABEL.log"
+# FS-UAE writes its real log here, not to stdout, and only flushes it on exit.
+UAELOG="$HOME/Documents/FS-UAE/Cache/Logs/fs-uae.log.txt"
 
 mkdir -p "$SHOTS"
 [ -f "$BIN" ] || { echo "no such binary: $BIN"; exit 2; }
@@ -38,7 +48,8 @@ cp -f "$BIN" "$PREVUE/ESQ" && chmod +x "$PREVUE/ESQ"
 echo "== soak $LABEL: $(basename "$BIN") ($(stat -f%z "$BIN") bytes), ${TOTAL}s every ${STEP}s"
 
 pkill -f 'fs-uae' 2>/dev/null; sleep 1
-fs-uae "$CONFIG" >"$LOG" 2>&1 &
+rm -f "$UAELOG"
+fs-uae "$CONFIG" >/dev/null 2>&1 &
 UAE=$!
 
 t=0
@@ -54,6 +65,8 @@ done
 
 kill -9 $UAE 2>/dev/null; pkill -f 'fs-uae' 2>/dev/null
 wait $UAE 2>/dev/null
+sleep 1
+cp "$UAELOG" "$LOG" 2>/dev/null
 
 echo "  shots: $(ls "$SHOTS/${LABEL}_"*.png 2>/dev/null | wc -l | tr -d ' ')"
 
