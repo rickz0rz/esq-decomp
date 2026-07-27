@@ -420,6 +420,13 @@ compares with `SUBI.W`/`CMPI.W` where you emit `CMPI.L`, or a switch selector
 gains an extra `EXT.L`. `src/c/replacements.txt` carries a per-file options
 column.
 
+**SAS/C never emits `-(An)` for a store.** A function that fills a buffer
+back-to-front (`*--p = c`) costs two extra bytes per write -- SAS/C decrements
+with a separate `SUBQ` then stores through plain indirect. This is unreachable
+from C, not merely different. A restoration overshooting badly with no structural
+disagreement is a hint the original was hand-written assembly, not compiled C --
+see `esq_format_time_stamp.c`, 142 bytes against 212.
+
 ## Not every label is a function
 
 A label whose body references `(A5)` but has no `LINK.W A5` is an **interior
