@@ -472,6 +472,44 @@ this function byte-exact on the first compile, with no source changes.
 Worth running first on any newly-obtained version, before the two constant
 probes above -- it is a single yes/no with no interpretation required.
 
+## Two more isolated probes, and what makes a probe good
+
+A probe is only worth having if the candidate's answer is unambiguous, which
+means the function must contain **exactly one** open class. Three now qualify,
+and they cover different properties:
+
+| probe file | restores | size | the one thing it tests |
+|---|---|---:|---|
+| `esqiff_handle_brush_ini_reload_hotkey.c` | `ESQIFF_HandleBrushIniReloadHotkey` | 128/128 | `4EBA` vs `6100` for a cross-unit call |
+| `ladfunc_parse_hex_digit.c` | `LADFUNC_ParseHexDigit` | 100/100 | `MOVE.L Dn,Dm` vs `MOVE.B Dn,Dm` widening a char |
+| `ed_draw_help_panels.c` | `ED_DrawHelpPanels` | 118/116 | `MOVE.L #640` vs `MOVEQ #80`+`LSL.L #3` |
+
+`LADFUNC_ParseHexDigit` is the tightest of the three: 88 of its 100 bytes are
+identical, and the remaining 12 are the same two-byte instruction six times.
+
+```
+ref  2007 4880 48c0     MOVE.L D7,D0 / EXT.W D0 / EXT.L D0
+got  1007 4880 48c0     MOVE.B D7,D0 / EXT.W D0 / EXT.L D0
+```
+
+Only the low byte of that copy can matter -- `EXT.W` overwrites bits 8-15 on the
+next instruction -- so this is a free choice the two code generators make
+differently, every time a `char` parameter is widened. Neither `SHORTINT` nor
+`NOOPTIMIZE` moves it.
+
+`ED_DrawHelpPanels` is the first probe for the constant rule that is a whole
+function rather than a byte pattern to grep for: six library calls, the shared
+`GfxBase` load, the RastPort reloaded per call and the second `RectFill` reusing
+`D2` all reproduce, so a `MATCH` means the constant behaviour agrees and a
+`DIFFER` of exactly 2 bytes means it does not. It also records a convention
+difference that costs nothing but is real: the original does **not** preserve A6
+across library calls, 6.51 adds it to the save mask.
+
+The general lesson from assembling these: when a restoration lands size-exact
+with a handful of same-size hunks, check whether those hunks are all *one* class
+before filing it as ordinary. If they are, it is a probe, and it is worth more
+than the restoration.
+
 ## Arithmetic: three more classes, and a caution
 
 | operation | original | SAS/C 6.51 |
