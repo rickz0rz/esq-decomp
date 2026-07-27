@@ -487,6 +487,14 @@ broad one. The wider lesson is the diagnostic: a restoration overshooting badly
 with no structural disagreement is a hint the original was hand-written assembly,
 not compiled C -- see `esq_format_time_stamp.c`, 142 bytes against 212.
 
+**A `_Return` label means the reference bytes stop early.** Where the original's
+epilogue is branched to from inside the function, the disassembly gives it its
+own exported label (`Foo_Return`), and `refbytes.py` extracts label-to-label — so
+the reference for `Foo` ends before its `MOVEM`/`UNLK`/`RTS`. A C restoration
+always includes its own epilogue, so the raw delta overstates by the epilogue
+size. Add it back before judging, and say you did in the header.
+`esqdisp_allocate_highlight_bitmaps.c` is +18 raw and +8 real.
+
 ## Not every label is a function
 
 A label whose body references `(A5)` but has no `LINK.W A5` is an **interior
