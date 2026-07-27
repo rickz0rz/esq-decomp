@@ -34,10 +34,20 @@
  * first use -- all of which appear twice, once in the live path and once in the
  * dead one.
  *
+ * ESQ_EXACT: keeps the dead TAG_WEATHER block alive behind a zero local. With
+ *   ESQ_EXACT=0 the block is deleted outright: 74 of the 168 bytes go away and
+ *   the function stops matching, but nothing observable changes, because the
+ *   block is unreachable in the original too. This is the worked example for the
+ *   switch -- see AGENTS.md, "Two implementations behind one switch".
+ *
  * SASC-MISMATCH: case-body-layout-order
  *   summary: The two blocks are laid out in a different order and the register
  *            allocation differs, which is the 13 regions. Sizes agree exactly.
  */
+#ifndef ESQ_EXACT
+#define ESQ_EXACT 1
+#endif
+
 extern long  PARSEINI_JMPTBL_STRING_CompareNoCase(char *a, char *b);
 extern void *PARSEINI_JMPTBL_BRUSH_AllocBrushNode(char *s, void *prev);
 extern void *PARSEINI_BannerBrushResourceHead;
@@ -49,7 +59,9 @@ extern char  PARSEINI_TAG_WEATHER[];
 void PARSEINI_LoadWeatherStrings(char *key, char *value)
 {
     unsigned char *node;
+#if ESQ_EXACT
     long enabled;
+#endif
 
     if (PARSEINI_BannerBrushResourceHead == 0)
         PARSEINI_WeatherBrushNodePtr = 0;
@@ -64,6 +76,10 @@ void PARSEINI_LoadWeatherStrings(char *key, char *value)
         return;
     }
 
+#if ESQ_EXACT
+    /* Unreachable in the original as well: it loads a constant zero, tests it and
+       branches past this block. Keeping a zero LOCAL rather than writing `if (0)`
+       is what stops the compiler folding the block away -- see AGENTS.md. */
     enabled = 0;
     if (enabled) {
         if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_WEATHER) == 0) {
@@ -75,4 +91,5 @@ void PARSEINI_LoadWeatherStrings(char *key, char *value)
                 PARSEINI_BannerBrushResourceHead = node;
         }
     }
+#endif
 }

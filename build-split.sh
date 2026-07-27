@@ -15,7 +15,8 @@ cd "$ROOT"
 VASM_BIN="${VASM_BIN:-$HOME/Downloads/vasm/vasmm68k_mot}"
 VLINK_BIN="${VLINK_BIN:-$HOME/Downloads/vbcc_installer/vlink/vlink}"
 VAMOS_ACTIVATE="${VAMOS_ACTIVATE:-$HOME/Downloads/vamos/bin/activate}"
-SCOPTS="${SCOPTS:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128}"   # options MUST precede the filename;
+ESQ_EXACT="${ESQ_EXACT:-1}"          # 1 = byte-matching arm (default), 0 = pure-C fallback
+SCOPTS="${SCOPTS:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128} DEFINE=ESQ_EXACT=$ESQ_EXACT"   # options MUST precede the filename;
                                                           # CODENAME/DATANAME make sc emit into the
                                                           # same sections as the asm, so PC-relative
                                                           # calls into C resolve at link time. See AGENTS.md
@@ -60,7 +61,7 @@ while read -r u; do
                 OBJNAME=work:u.o work:u.c ) >"$cwork/log" 2>&1
         if [ ! -f "$cwork/u.o" ]; then
             fail=$((fail + 1)); echo "  FAILED (cc): $cfile"
-            grep -iE '^(error)|Invalid' "$cwork/log" | head -3
+            grep -iE 'error [0-9]+:|^(error)|Invalid' "$cwork/log" | head -3
         else
             cp "$cwork/u.o" "$cobj"
             echo "  cc $cfile${extra:+ [+$extra]} -> $(python3 tools/objbytes.py "$cobj" | sed -n 's/^code: //p')"

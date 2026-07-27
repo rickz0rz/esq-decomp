@@ -251,6 +251,63 @@ Also: `sc` truncates external symbols to 33 characters by default, which
 silently produced `_SCRIPT_ClearSearchTextsAndChanne` and an undefined-symbol
 link error. `IDLEN=128` is now passed always.
 
+## Two implementations behind one switch: `ESQ_EXACT`
+
+Some restorations can only match the original's bytes by writing C that no one
+would write on purpose — keeping provably-dead code alive, choosing a type for
+its width rather than its meaning, avoiding an early return. That is correct for
+*this* project, whose product is evidence about the original, but it is not the
+code you would want if the goal were a maintainable program.
+
+So a restoration may carry **both**, selected by a compile-time define:
+
+```c
+#ifndef ESQ_EXACT
+#define ESQ_EXACT 1
+#endif
+...
+#if ESQ_EXACT
+    /* the form that reproduces the original's bytes */
+#else
+    /* clean C, functionally identical, not byte-identical */
+#endif
+```
+
+`ESQ_EXACT` defaults to **1** everywhere, so every measurement in this document
+and every number in every restoration header refers to the exact arm. The
+fallback is opt-in:
+
+```sh
+ESQ_EXACT=0 tools/cmatch.sh <file.c> <Label>        # compile the fallback
+ESQ_EXACT=0 C_REPLACEMENTS=... ./build-split.sh     # a whole functional build
+```
+
+Three rules, or the switch does more harm than good:
+
+1. **Only add an arm when the exact form is genuinely distorted.** Most
+   restorations are natural C already and must stay single-armed. A `#if` that
+   guards two spellings of the same thing is noise.
+2. **The fallback must be functionally identical**, not merely similar. It is not
+   a place to fix bugs found in the original — `parseini_load_weather_strings.c`
+   drops a block that is unreachable in the original *too*, which is why dropping
+   it changes nothing observable.
+3. **Document it in the header** with an `ESQ_EXACT:` line saying what the exact
+   arm does that the fallback does not, and what it costs.
+
+`tools/mismatches.py --recheck` compiles the `ESQ_EXACT=0` arm of every dual-arm
+file and **exits nonzero if it does not build**. Without that, a fallback nothing
+ever compiles would rot silently, since every other tool builds the exact arm by
+default.
+
+Worked example: `parseini_load_weather_strings.c`, 168/168 exact against 92 bytes
+functional — 76 bytes of dead code that exists in the original and is unreachable
+there as well.
+
+**On inline assembly specifically:** the long-term goal is an ESQ with none. If a
+future compiler makes inline assembly available and a function genuinely needs it
+to match, it belongs in the `ESQ_EXACT` arm with a pure-C fallback in the other —
+and **ask first**. It is not a local decision.
+
 ## Recording codegen divergences
 
 When SAS/C makes a different-but-equivalent choice than the original, **record

@@ -100,6 +100,24 @@ def recheck(e):
     return 'MATCH' if r.returncode == 0 else ('FAIL' if r.returncode == 2 else 'DIFFER') , first
 
 
+def check_functional(e):
+    """Compile a dual-arm restoration's ESQ_EXACT=0 side.
+
+    A pure-C fallback that nothing ever compiles rots silently -- the byte-exact
+    arm is the one every tool builds by default, so a typo in the other arm would
+    sit undetected until someone tried a functional build. This compiles it and
+    only cares whether it builds; it is expected NOT to match, since dropping the
+    distortion is the whole point.
+    """
+    if 'ESQ_EXACT' not in open(os.path.join(ROOT, e['file'])).read():
+        return None
+    cmd = [os.path.join(ROOT, 'tools', 'cmatch.sh'),
+           os.path.join(ROOT, e['file']), e['restores']] + e['options'].split()
+    env = dict(os.environ, ESQ_EXACT='0')
+    r = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT, env=env)
+    return 'BUILDS' if r.returncode != 2 else 'BROKEN'
+
+
 def prewarm():
     """Build the listing once, single-threaded.
 
@@ -125,11 +143,16 @@ def main():
     print(f'{len(entries)} C restoration(s)' + (f' with status {only}' if only else ' in src/c/') + '\n')
     exit_bad = 0
     results = {}
+    functional = {}
     if do:
         prewarm()
         with ThreadPoolExecutor(max_workers=jobs) as pool:
             for e, r in zip(entries, pool.map(recheck, entries)):
                 results[e['file']] = r
+        with ThreadPoolExecutor(max_workers=jobs) as pool:
+            for e, r in zip(entries, pool.map(check_functional, entries)):
+                if r:
+                    functional[e['file']] = r
     flips = []
     for e in entries:
         line = f"  {e['file']:44s} {e['status']:12s} restores {e['restores']}"
@@ -143,6 +166,11 @@ def main():
                 flip = '   <-- REGRESSED: was recorded as exact'
                 exit_bad = 1
             line += f'\n      recheck: {verdict}{flip}'
+            if e['file'] in functional:
+                fr = functional[e['file']]
+                line += f'\n      ESQ_EXACT=0 fallback: {fr}'
+                if fr == 'BROKEN':
+                    exit_bad = 1
         print(line)
         for mm in e['mismatches']:
             print(f"      mismatch [{mm['slug']}]")
@@ -169,6 +197,10 @@ def main():
               '\n       src/c/replacements.txt so it reaches the binary.')
     elif do:
         print('\nno status changes')
+    if do and functional:
+        broken = [f for f, v in functional.items() if v == 'BROKEN']
+        print(f'dual-arm restorations: {len(functional)} checked, '
+              f'{len(broken)} broken' + (' *** ' + ', '.join(broken) if broken else ''))
     if not do:
         print('\nrun with --recheck to recompile and verify these against the current compiler')
     sys.exit(exit_bad)

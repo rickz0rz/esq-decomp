@@ -16,7 +16,11 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CFILE="${1:?usage: cmatch.sh <file.c> <FunctionLabel> [sc options]}"
 LABEL="${2:?usage: cmatch.sh <file.c> <FunctionLabel> [sc options]}"
 shift 2
-SCOPTS="${SCOPTS_BASE:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128} $*"
+# ESQ_EXACT selects between the two arms of a restoration that carries both: 1
+# (the default) compiles the form that matches the original's bytes, 0 compiles
+# the pure-C fallback. Files without a fallback ignore it. See AGENTS.md.
+ESQ_EXACT="${ESQ_EXACT:-1}"
+SCOPTS="${SCOPTS_BASE:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128} DEFINE=ESQ_EXACT=$ESQ_EXACT $*"
 
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/cmatch.XXXXXX")"
 trap 'rm -rf "$WORK"' EXIT
