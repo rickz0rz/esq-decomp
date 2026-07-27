@@ -126,6 +126,41 @@ def main():
             print(f'  MISCOUNT  {"/".join(names):52s} '
                   f'{len(hits)} occurrence(s) for {len(names)} function(s)'); bad += 1
 
+    # Struct offsets ride along inside relocated longwords as the addend, and
+    # cdiff/cmatch mask relocated fields -- so a wrong struct offset is invisible
+    # to those tools (see diskio_write_buffered_bytes.c). It is NOT invisible
+    # here: DATA does not move between the reference and the C build, so any
+    # relocated long pointing into DATA must hold the identical value in both.
+    # A mismatch there is a wrong offset, not code motion.
+    dref, dblt = refh[1]['img'], blth[1]['img']
+    dsize = refh[1]['size']
+    bad_off = 0
+    for (name, blob, sites) in items:
+        hits = masked_find(code, blob, list(sites))
+        if len(hits) != 1:
+            continue                       # twins: skip, handled above
+        at = hits[0]
+        for o, w in sites:
+            if w != 4:
+                continue
+            rv = int.from_bytes(code[at + o:at + o + 4], 'big')
+            # only longs that resolve into DATA are position-stable
+            if 0 < rv <= dsize:
+                refbytes_at = refh[0]['img']
+                # locate the same function in the reference by masked search
+                rh = masked_find(refbytes_at, blob, list(sites))
+                if len(rh) == 1:
+                    ov = int.from_bytes(refbytes_at[rh[0] + o:rh[0] + o + 4], 'big')
+                    if ov != rv:
+                        print(f'  *** DATA-pointer mismatch in {name} at +0x{o:x}: '
+                              f'reference 0x{ov:08x}, built 0x{rv:08x} '
+                              f'(wrong struct offset?)')
+                        bad_off += 1
+    if bad_off:
+        bad += bad_off
+    else:
+        print('  DATA-pointer addends: all match (struct offsets verified)')
+
     grew = blth[0]['size'] - refh[0]['size']
     print(f'\n  CODE size: reference {refh[0]["size"]}, built {blth[0]["size"]} '
           f'({grew:+d} bytes)')
