@@ -342,13 +342,58 @@ which is a separate and much larger problem than picking the right compiler.
 6.00 emits `4EBA` for every call and 6.51 emits `6100` for every call; neither
 picks per-callee, which is further evidence both are the wrong version.
 
+## CORRECTION: the target is OLDER than 6.00, not between 6.00 and 6.51
+
+The "6.00 < original < 6.51" bracket recorded above rested on the call-encoding
+class, and that class turned out to be translation-unit locality rather than a
+version property (see the section above). The original uses **both** `BSR.W` and
+`JSR (d16,PC)`; 6.51 always emits the former and 6.00 always the latter, so
+whichever functions matched under either compiler did so by accident of where
+their callee happened to live. That evidence has to be withdrawn.
+
+With it removed, the classes line up consistently in the other direction:
+
+| class | 6.00 | 6.51 | original |
+|---|---|---|---|
+| A5 reserved as frame pointer | no | no | **yes** |
+| `LINK` frame for locals | no | no | **yes** |
+| 680 as `MOVEQ #85`+`ASL.L #3` | yes | yes | **no** (`MOVE.L #680`) |
+| parameter load order | ascending | ascending | **descending** |
+| `1 << n` | `MOVEQ`+`ASL` | `BSET` | `MOVEQ`+`ASL` |
+| redundant `MOVE.L Dn,Dn` | emitted | removed | removed |
+
+Four classes put the original *before* 6.00; one (the shift idiom) puts it
+before 6.51 and agrees with 6.00; only the self-move peephole points the other
+way, and that one is weak — it depends on our reconstructed source shape rather
+than on structure.
+
+Combined with the Lattice C 5.10 result, the target is bracketed from both
+sides. Lattice 5.10 builds a frame unconditionally and has no address register
+variables at all; the original omits the frame when it has no locals and does
+use register variables, so it is *newer* than 5.10. 6.00 has already stopped
+reserving A5, so the original is *older* than 6.00.
+
+    Lattice C 5.10  <  ORIGINAL  <  SAS/C 6.00
+
+That means the version to hunt is a **late Lattice C 5.x / SAS/C 5.x** — 5.02,
+5.04, 5.10a/b, or the first SAS-branded 5.x — not 6.1–6.3 and not 6.55–6.58.
+
+The single most diagnostic property is whether the compiler reserves A5. That is
+one test, and it also settles the frame-for-locals class, since they are the same
+property.
+
 ## What would settle it
 
-Obtain SAS/C **6.1, 6.2 or 6.3** and run the acceptance test; `2f0b` in the first
-two bytes pins the version on the spot. 6.55–6.58 remain worth testing but are
-now the less likely direction, since the shift idiom has to get *less* optimised
-than 6.51, not more. Until then, treat 6.51 as the working toolchain and expect a
-minority of functions not to reach byte-exactness — leave those in assembly
+Run the acceptance test on any Lattice/SAS C in the 5.x range:
+
+```sh
+tools/cmatch.sh src/c/textdisp_reset_selection_state.c TEXTDISP_ResetSelectionState
+```
+
+`2f0b` (`MOVE.L A3,-(A7)`) in the first two bytes means the compiler reserves A5
+and you have found it; `2f0d` means A5 is being handed out as a register variable
+and it is not the one. Until then, treat 6.51 as the working toolchain and expect
+a minority of functions not to reach byte-exactness — leave those in assembly
 rather than distorting the C to force a match.
 
 ### Note on alignment padding
