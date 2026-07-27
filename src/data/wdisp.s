@@ -69,7 +69,7 @@
     XDEF    ED2_SelectedFlagByteOffset
     XDEF    ED_SavedCtasksIntervalByte
     XDEF    _ED_EditCursorOffset
-    XDEF    ED_ViewportOffset
+    XDEF    _ED_ViewportOffset
     XDEF    _ED_AdActiveFlag
     XDEF    _ED_BlockOffset
     XDEF    Global_REF_BOOL_IS_LINE_OR_PAGE
@@ -92,7 +92,7 @@
     XDEF    _ED_MaxAdNumber
     XDEF    _ED_AdDisplayResetFlag
     XDEF    ED_AdDisplayStateLatchA
-    XDEF    ED_CursorColumnIndex
+    XDEF    _ED_CursorColumnIndex
     XDEF    _ED_ActiveIndicatorCachedState
     XDEF    ED_AdDisplayStateLatchBlockB
     XDEF    ESQ_StartupStateWord2203
@@ -1062,18 +1062,18 @@ ED_SavedCtasksIntervalByte:
 ; TYPE: s32
 ; PURPOSE: Index of the active edit position in _ED_EditBufferLive.
 ; USED BY: ED_*, ED2_*, ED3_* editor movement and redraw routines
-; NOTES: Clamped against visible ranges with ED_ViewportOffset.
+; NOTES: Clamped against visible ranges with _ED_ViewportOffset.
 ;------------------------------------------------------------------------------
 _ED_EditCursorOffset:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_ViewportOffset   (editor viewport offset)
+; SYM: _ED_ViewportOffset   (editor viewport offset)
 ; TYPE: s32
 ; PURPOSE: Start offset of the visible editor window.
 ; USED BY: ED_*, ED3_* viewport/clamp logic
 ; NOTES: Maintained alongside _ED_EditCursorOffset.
 ;------------------------------------------------------------------------------
-ED_ViewportOffset:
+_ED_ViewportOffset:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: _ED_AdActiveFlag   (editor active/inactive toggle)
@@ -1271,13 +1271,13 @@ _ED_AdDisplayResetFlag:
 ED_AdDisplayStateLatchA:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_CursorColumnIndex   (cursor column within current 40-char row)
+; SYM: _ED_CursorColumnIndex   (cursor column within current 40-char row)
 ; TYPE: s32
 ; PURPOSE: Stores row-relative cursor column derived from linear edit index.
-; USED BY: ED_UpdateCursorPosFromIndex, _ED_DrawCursorChar
+; USED BY: _ED_UpdateCursorPosFromIndex, _ED_DrawCursorChar
 ; NOTES: Set from DivS32 remainder with divisor 40.
 ;------------------------------------------------------------------------------
-ED_CursorColumnIndex:
+_ED_CursorColumnIndex:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: _ED_ActiveIndicatorCachedState   (cached active/inactive draw state)
@@ -3081,7 +3081,7 @@ _PARSEINI_WeatherBrushNodePtr:
 ; SYM: GCOMMAND_GradientPresetTable   (gradient preset table)
 ; TYPE: s32[520]
 ; PURPOSE: Stores gradient preset values parsed from the [gradient] INI section.
-; USED BY: PARSEINI_ParseIniBufferAndDispatch, _GCOMMAND_InitPresetTableFromPalette
+; USED BY: _PARSEINI_ParseIniBufferAndDispatch, _GCOMMAND_InitPresetTableFromPalette
 ; NOTES:
 ;   Table length is 520 longs (2080 bytes).
 ;   Current traced writers/readers are parse-time only (`PARSEINI_*` + initializer/
@@ -3266,7 +3266,7 @@ TEXTDISP_StatusGroupId:
 ; SYM: _TEXTDISP_SourceConfigEntryTable/_TEXTDISP_SourceConfigEntryCount   (SourceCfg table)
 ; TYPE: pointer[302]/s32
 ; PURPOSE: Stores SourceCfg entry pointers and the active entry count.
-; USED BY: TEXTDISP_LoadSourceConfig, TEXTDISP_ClearSourceConfig, TEXTDISP_ApplySourceConfigToEntry
+; USED BY: _TEXTDISP_LoadSourceConfig, TEXTDISP_ClearSourceConfig, TEXTDISP_ApplySourceConfigToEntry
 ; NOTES: Each entry points to a 6-byte SourceCfg record.
 ;------------------------------------------------------------------------------
 _TEXTDISP_SourceConfigEntryTable:

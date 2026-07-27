@@ -509,7 +509,7 @@ SCRIPT_Tag_YL:
 ; SYM: _TEXTDISP_SourceConfigFlagMask   (source-config aggregate flag mask)
 ; TYPE: u16
 ; PURPOSE: Accumulates SourceCfg feature flags while loading/applying source config entries.
-; USED BY: TEXTDISP_LoadSourceConfig, TEXTDISP_ClearSourceConfig, TEXTDISP_ApplySourceConfigToEntry, _TEXTDISP_AddSourceConfigEntry
+; USED BY: _TEXTDISP_LoadSourceConfig, TEXTDISP_ClearSourceConfig, TEXTDISP_ApplySourceConfigToEntry, _TEXTDISP_AddSourceConfigEntry
 ; NOTES: Updated by OR-ing per-entry flags.
 ;------------------------------------------------------------------------------
 _TEXTDISP_SourceConfigFlagMask:

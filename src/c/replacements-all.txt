@@ -17,6 +17,7 @@ modules/groups/a/a/brush_brush_loadcolortextfont.s                     c/brush_l
 modules/groups/a/a/brush_brush_normalizebrushnames.s                   c/brush_normalize_brush_names.c
 modules/groups/a/a/brush_p3_brush_planemaskforindex.s                  c/brush_plane_mask_for_index.c
 modules/groups/a/a/brush_brush_popbrushhead.s                          c/brush_pop_brush_head.c
+modules/groups/a/b/cleanup_p0.s                                        c/cleanup_clear_aud1_interrupt_vector.c
 modules/groups/a/b/cleanup_cleanup_clearrbfinterruptandserial.s        c/cleanup_clear_rbf_interrupt_and_serial.c
 modules/groups/a/b/cleanup_cleanup_clearvertbinterruptserver.s         c/cleanup_clear_vertb_interrupt_server.c
 modules/groups/a/c/cleanup2_cleanup_drawclockbanner.s                  c/cleanup_draw_clock_banner.c
@@ -105,6 +106,7 @@ modules/groups/a/l/ed3bb_ed_redrawcursorchar.s                         c/ed_redr
 modules/groups/a/k/ed_ed_saveeverythingtodisk.s                        c/ed_save_everything_to_disk.c
 modules/groups/a/k/ed_ed_saveprevuedatatodisk.s                        c/ed_save_prevue_data_to_disk.c
 modules/groups/a/l/ed3bbbb_ed_updateactiveinactiveindicator.s          c/ed_update_active_inactive_indicator.c
+modules/groups/a/l/ed3bb_p3_ed_updatecursorposfromindex.s              c/ed_update_cursor_pos_from_index.c
 modules/groups/a/a/app2_esq_calcdayofyearfrommonthday.s                c/esq_calc_day_of_year_from_month_day.c
 modules/groups/a/a/app_esq_capturectrlbit4streambufferbyte.s           c/esq_capture_ctrl_bit4_stream_buffer_byte.c
 modules/groups/_main/b/b.s                                             c/esq_check_available_fast_memory.c
@@ -242,6 +244,7 @@ modules/groups/b/a/parseini3_p1.s                                      c/parsein
 modules/groups/b/a/parseini3_parseini_computehtcmaxvalues.s            c/parseini_compute_htc_max_values.c
 modules/groups/b/a/parseini_parseini_loadweatherstrings.s              c/parseini_load_weather_strings.c
 modules/groups/b/a/parseini_parseini_parsecolortable.s                 c/parseini_parse_color_table.c
+modules/groups/b/a/parseini_parseini_parsehexvaluefromstring.s         c/parseini_parse_hex_value_from_string.c
 modules/groups/b/a/parseini3_parseini_updatectrlhdeltamax.s            c/parseini_update_ctrl_h_delta_max.c
 modules/groups/b/a/parseini3_parseini_writeerrorlogentry.s             c/parseini_write_error_log_entry.c
 modules/groups/b/a/script2_script_assertctrllineifenabled.s            c/script_assert_ctrl_line_if_enabled.c
@@ -277,6 +280,7 @@ modules/groups/b/a/textdisp3_textdisp_findaliasindexbyname.s           c/textdis
 modules/groups/b/a/textdisp3_p1_textdisp_findquotedspan.s              c/textdisp_find_quoted_span.c
 modules/groups/b/a/textdisp3_p1_textdisp_formatentrytime.s             c/textdisp_format_entry_time.c
 modules/groups/b/a/textdisp_textdisp_getgroupentrycount.s              c/textdisp_get_group_entry_count.c
+modules/groups/b/a/textdisp_p2_textdisp_loadsourceconfig.s             c/textdisp_load_source_config.c
 modules/groups/b/a/textdisp2_textdisp_resetselectionandrefresh.s       c/textdisp_reset_selection_and_refresh.c
 modules/groups/b/a/textdisp_textdisp_resetselectionstate.s             c/textdisp_reset_selection_state.c
 modules/groups/b/a/textdisp_textdisp_setentrytextfields.s              c/textdisp_set_entry_text_fields.c
@@ -292,3 +296,4 @@ modules/groups/b/a/tliba3_tliba3_getviewmodeheight.s                   c/tliba3_
 modules/groups/b/a/tliba3_tliba3_getviewmoderastport.s                 c/tliba3_get_view_mode_rast_port.c
 modules/groups/b/a/tliba3_tliba3_initruntimeentry.s                    c/tliba3_init_runtime_entry.c
 modules/groups/b/a/tliba3_tliba3_selectnextviewmode.s                  c/tliba3_select_next_view_mode.c
+modules/groups/b/a/tliba2_p1.s                                         c/tliba_find_first_wildcard_match_index.c

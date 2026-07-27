@@ -1,5 +1,5 @@
     XDEF    _Global_STR_CLEANUP_C_1
-    XDEF    Global_STR_CLEANUP_C_2
+    XDEF    _Global_STR_CLEANUP_C_2
     XDEF    _Global_STR_CLEANUP_C_3
     XDEF    _Global_STR_CLEANUP_C_4
     XDEF    _Global_STR_CLEANUP_C_5
@@ -21,7 +21,7 @@
 
 _Global_STR_CLEANUP_C_1:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_2:
+_Global_STR_CLEANUP_C_2:
     NStr    "CLEANUP.c"
 _Global_STR_CLEANUP_C_3:
     NStr    "CLEANUP.c"

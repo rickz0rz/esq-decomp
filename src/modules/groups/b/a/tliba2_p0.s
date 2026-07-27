@@ -18,7 +18,7 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   TLIBA_FindFirstWildcardMatchIndex, _MATH_DivS32, _MATH_Mulu32,
+;   _TLIBA_FindFirstWildcardMatchIndex, _MATH_DivS32, _MATH_Mulu32,
 ;   _PARSE_ReadSignedLongSkipClass3_Alt, _TLIBA2_FindLastCharInString,
 ;   TLIBA2_JMPTBL_ESQ_TestBit1Based
 ; READS:
@@ -172,7 +172,7 @@ _TLIBA2_ResolveEntryWindowAndSlotCount:
     BNE.S   .branch_17E2
 
     MOVE.L  A2,-(A7)
-    BSR.W   TLIBA_FindFirstWildcardMatchIndex
+    BSR.W   _TLIBA_FindFirstWildcardMatchIndex
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-38(A5)

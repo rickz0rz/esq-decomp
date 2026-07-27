@@ -135,7 +135,7 @@ _ED_DrawAdEditingScreen:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQFUNC_JMPTBL_STRING_CopyPadNul
 ; READS:
-;   _ED_EditCursorOffset, ED_ViewportOffset
+;   _ED_EditCursorOffset, _ED_ViewportOffset
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -147,7 +147,7 @@ ED_TransformLineSpacing_Mode1:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -159,7 +159,7 @@ ED_TransformLineSpacing_Mode1:
     JSR     ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -216,7 +216,7 @@ ED_TransformLineSpacing_Mode1:
     CMP.L   D0,D7
     BGE.W   .return
 
-    MOVE.L  ED_ViewportOffset,D1
+    MOVE.L  _ED_ViewportOffset,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferScratch,A0
@@ -234,7 +234,7 @@ ED_TransformLineSpacing_Mode1:
     SUBQ.L  #1,D0
     BCC.S   .copy_prefix_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -253,7 +253,7 @@ ED_TransformLineSpacing_Mode1:
     SUBQ.L  #1,D0
     BCC.S   .copy_attrs_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -271,7 +271,7 @@ ED_TransformLineSpacing_Mode1:
     SUBQ.L  #1,D0
     BCC.S   .copy_suffix_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -307,7 +307,7 @@ ED_TransformLineSpacing_Mode1:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQFUNC_JMPTBL_STRING_CopyPadNul
 ; READS:
-;   _ED_EditCursorOffset, ED_ViewportOffset
+;   _ED_EditCursorOffset, _ED_ViewportOffset
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -318,7 +318,7 @@ ED_TransformLineSpacing_Mode1:
 ED_TransformLineSpacing_Mode2:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -330,7 +330,7 @@ ED_TransformLineSpacing_Mode2:
     JSR     ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -386,7 +386,7 @@ ED_TransformLineSpacing_Mode2:
     CMP.L   D0,D7
     BGE.W   .return
 
-    MOVE.L  ED_ViewportOffset,D1
+    MOVE.L  _ED_ViewportOffset,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D7,D0
@@ -404,7 +404,7 @@ ED_TransformLineSpacing_Mode2:
     SUBQ.L  #1,D0
     BCC.S   .copy_line_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -423,7 +423,7 @@ ED_TransformLineSpacing_Mode2:
     SUBQ.L  #1,D0
     BCC.S   .copy_attrs_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -443,7 +443,7 @@ ED_TransformLineSpacing_Mode2:
     SUBQ.L  #1,D0
     BCC.S   .copy_tail_line_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -481,7 +481,7 @@ ED_TransformLineSpacing_Mode2:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQFUNC_JMPTBL_STRING_CopyPadNul
 ; READS:
-;   _ED_EditCursorOffset, ED_ViewportOffset
+;   _ED_EditCursorOffset, _ED_ViewportOffset
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -492,7 +492,7 @@ ED_TransformLineSpacing_Mode2:
 ED_TransformLineSpacing_Mode3:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -504,7 +504,7 @@ ED_TransformLineSpacing_Mode3:
     JSR     ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -572,7 +572,7 @@ ED_TransformLineSpacing_Mode3:
 .compute_half_gap:
     ASR.L   #1,D0
     MOVE.L  D0,D7
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -591,7 +591,7 @@ ED_TransformLineSpacing_Mode3:
     SUBQ.L  #1,D0
     BCC.S   .copy_prefix_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -610,7 +610,7 @@ ED_TransformLineSpacing_Mode3:
     SUBQ.L  #1,D0
     BCC.S   .copy_attrs_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -630,7 +630,7 @@ ED_TransformLineSpacing_Mode3:
     SUBQ.L  #1,D0
     BCC.S   .copy_suffix_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -667,7 +667,7 @@ ED_TransformLineSpacing_Mode3:
 .compute_half_gap_alt:
     ASR.L   #1,D0
     MOVE.L  D0,D7
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -686,7 +686,7 @@ ED_TransformLineSpacing_Mode3:
     SUBQ.L  #1,D0
     BCC.S   .copy_prefix2_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -705,7 +705,7 @@ ED_TransformLineSpacing_Mode3:
     SUBQ.L  #1,D0
     BCC.S   .copy_attrs2_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -723,7 +723,7 @@ ED_TransformLineSpacing_Mode3:
     SUBQ.L  #1,D0
     BCC.S   .copy_suffix2_loop
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
@@ -766,7 +766,7 @@ ED_TransformLineSpacing_Mode3:
 ; READS:
 ;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _ED_BlockOffset, _ED_TextLimit
 ; WRITES:
-;   _ED_EditCursorOffset, ED_ViewportOffset, _ED_AdDisplayResetFlag, Global_REF_BOOL_IS_LINE_OR_PAGE,
+;   _ED_EditCursorOffset, _ED_ViewportOffset, _ED_AdDisplayResetFlag, Global_REF_BOOL_IS_LINE_OR_PAGE,
 ;   Global_REF_BOOL_IS_TEXT_OR_CURSOR
 ; DESC:
 ;   Loads the current ad into edit buffers and refreshes the screen.
@@ -846,7 +846,7 @@ _ED_LoadCurrentAdIntoBuffers:
 
     MOVEQ   #0,D0
     MOVE.L  D0,_ED_EditCursorOffset
-    MOVE.L  D0,ED_ViewportOffset
+    MOVE.L  D0,_ED_ViewportOffset
     MOVE.L  D0,Global_REF_BOOL_IS_LINE_OR_PAGE
     MOVE.L  D0,-(A7)
     BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE

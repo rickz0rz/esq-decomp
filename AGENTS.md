@@ -524,6 +524,13 @@ and mismatched regions.
 | `unsigned short` counters | `short` | when the original's loop bounds use `BCC`/`BCS`/`BHI` rather than `BGE`/`BLT`, the counters are unsigned. `esqiff2_read_serial_record_into_buffer.c` |
 | `((struct T *)p)->field = x;` | `*(long *)((char *)p + 10) = x;` | struct member access folds the offset into a `(d16,An)` displacement (`MOVE.L A0,10(A1)`, 4 bytes); the cast-and-add form makes SAS/C materialise the address into a register per store (`MOVEA.L`/`ADDA.W`/`MOVE.L (A1)`, 10 bytes). `ctasks_start_close_task_process.c`, 148 -> 136 |
 
+**Split an accumulate from the call that feeds it.** Where the original updates
+a variable *before* calling (`ASL.L #4,D7` then `JSR`), write two statements --
+`v <<= 4; v += f(x);` -- not one. As a single expression SAS/C evaluates the call
+first and spills the partial result to a stack slot it has to allocate:
+`parseini_parse_hex_value_from_string.c` goes 84 bytes -> 64 exact-size on that
+change alone. Match the original's ORDER, not just its arithmetic.
+
 **Dead code needs a zero LOCAL, not a literal.** Where the original tests a
 constant zero and branches past a block (`MOVEQ #0` / `TST.L` / `BEQ`), that block
 is unreachable but still occupies bytes. `if (0) {...}` gets folded away; assigning

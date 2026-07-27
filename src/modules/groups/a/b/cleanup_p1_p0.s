@@ -11,7 +11,7 @@
 ;   D0-D7/A0-A1/A6
 ; CALLS:
 ;   _LVOForbid, _LOCAVAIL_FreeResourceChain, _BRUSH_FreeBrushList,
-;   _CLEANUP_ClearVertbInterruptServer, CLEANUP_ClearAud1InterruptVector,
+;   _CLEANUP_ClearVertbInterruptServer, _CLEANUP_ClearAud1InterruptVector,
 ;   _CLEANUP_ClearRbfInterruptAndSerial, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
 ;   _CLEANUP_ShutdownInputDevices, _CLEANUP_ReleaseDisplayResources, GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries, _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers,
 ;   GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode, GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData, GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings, GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers,
@@ -62,7 +62,7 @@ CLEANUP_ShutdownSystem:
 
     BSR.W   _CLEANUP_ClearVertbInterruptServer
 
-    BSR.W   CLEANUP_ClearAud1InterruptVector
+    BSR.W   _CLEANUP_ClearAud1InterruptVector
 
     BSR.W   _CLEANUP_ClearRbfInterruptAndSerial
 

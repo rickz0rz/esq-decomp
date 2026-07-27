@@ -121,12 +121,12 @@ NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   TLIBA_FindFirstWildcardMatchIndex
+;   _TLIBA_FindFirstWildcardMatchIndex
 ; DESC:
-;   Jump table entry that forwards to TLIBA_FindFirstWildcardMatchIndex.
+;   Jump table entry that forwards to _TLIBA_FindFirstWildcardMatchIndex.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
-    BRA.W   TLIBA_FindFirstWildcardMatchIndex
+    BRA.W   _TLIBA_FindFirstWildcardMatchIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource   (Jump stub)

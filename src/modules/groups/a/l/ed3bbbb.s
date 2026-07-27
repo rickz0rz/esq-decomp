@@ -15,7 +15,7 @@
 ; READS:
 ;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _ED_AdRecordPtrTable
 ; WRITES:
-;   _ED_AdActiveFlag, ED_ViewportOffset, _ED_AdDisplayResetFlag, ED_AdDisplayStateLatchBlockB, _ED_ActiveIndicatorCachedState, ED_AdDisplayStateLatchA
+;   _ED_AdActiveFlag, _ED_ViewportOffset, _ED_AdDisplayResetFlag, ED_AdDisplayStateLatchBlockB, _ED_ActiveIndicatorCachedState, ED_AdDisplayStateLatchA
 ; DESC:
 ;   Displays the current ad number and resets editing state for the ad.
 ; NOTES:
@@ -57,7 +57,7 @@ _ED_UpdateAdNumberDisplay:
 .after_active_check:
     MOVEQ   #1,D1
     MOVE.L  D1,_ED_AdDisplayResetFlag
-    MOVE.L  D0,ED_ViewportOffset
+    MOVE.L  D0,_ED_ViewportOffset
     MOVEQ   #-1,D0
     MOVE.L  D0,ED_AdDisplayStateLatchBlockB
     MOVE.L  D0,_ED_ActiveIndicatorCachedState

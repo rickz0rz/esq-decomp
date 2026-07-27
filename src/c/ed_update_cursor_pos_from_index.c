@@ -7,11 +7,20 @@
  * time -- subtracting a whole line from the edit offset per step -- until the
  * viewport is inside the text limit.
  *
+ * 68 bytes against 68, TWO differing regions, and both are the call encoding
+ * alone -- so the division idiom, the two global stores and the clamp loop all
+ * reproduce verbatim. Exact on a compiler that emits JSR (d16,PC).
+ *
  * The original calls MATH_DivS32 twice, once for each half of the split, taking
  * the remainder from D1 the first time and the quotient from D0 the second.
  * Written as `% 40` and `/ 40`, which is the only form that reaches the
  * remainder from C -- see datetime_is_leap_year.c for why the helper cannot be
  * called directly with an ordinary prototype.
+ *
+ * SASC-MISMATCH: cross-unit-call-width
+ *   ref:     4eba57a2 / 4eba5794        JSR (d16,PC)
+ *   got:     61000000 / 61000000        BSR.W
+ *   summary: two sites, same size, different encoding. Nothing else differs.
  */
 extern long ED_CursorColumnIndex;
 extern long ED_ViewportOffset;

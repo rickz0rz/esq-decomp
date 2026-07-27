@@ -1,8 +1,8 @@
-    XDEF    CLEANUP_ClearAud1InterruptVector
+    XDEF    _CLEANUP_ClearAud1InterruptVector
 
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_ClearAud1InterruptVector
+; FUNC: _CLEANUP_ClearAud1InterruptVector
 ; ARGS:
 ;   (none)
 ; RET:
@@ -13,7 +13,7 @@
 ;   _LVOSetIntVector, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   _Global_REF_INTB_AUD1_INTERRUPT, _Global_REF_INTERRUPT_STRUCT_INTB_AUD1,
-;   AbsExecBase, Global_STR_CLEANUP_C_2
+;   AbsExecBase, _Global_STR_CLEANUP_C_2
 ; WRITES:
 ;   INTENA
 ; DESC:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   - Disables INTB_AUD1 in INTENA before restoring the vector.
 ;------------------------------------------------------------------------------
-CLEANUP_ClearAud1InterruptVector:
+_CLEANUP_ClearAud1InterruptVector:
     MOVE.W  #$100,INTENA
     MOVEQ   #INTB_AUD1,D0
     MOVEA.L _Global_REF_INTB_AUD1_INTERRUPT,A1
@@ -31,7 +31,7 @@ CLEANUP_ClearAud1InterruptVector:
     PEA     22.W
     MOVE.L  _Global_REF_INTERRUPT_STRUCT_INTB_AUD1,-(A7)
     PEA     74.W
-    PEA     Global_STR_CLEANUP_C_2
+    PEA     _Global_STR_CLEANUP_C_2
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

@@ -56,14 +56,14 @@ GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   PARSEINI_ParseIniBufferAndDispatch
+;   _PARSEINI_ParseIniBufferAndDispatch
 ; DESC:
-;   Jump stub to PARSEINI_ParseIniBufferAndDispatch.
+;   Jump stub to _PARSEINI_ParseIniBufferAndDispatch.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch:
-    JMP     PARSEINI_ParseIniBufferAndDispatch
+    JMP     _PARSEINI_ParseIniBufferAndDispatch
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_TEXTDISP_FormatEntryTimeForIndex   (JumpStub_TEXTDISP_FormatEntryTimeForIndex)

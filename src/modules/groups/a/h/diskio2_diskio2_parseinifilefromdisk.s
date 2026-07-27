@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   A7
 ; CALLS:
-;   _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers, PARSEINI_ParseIniBufferAndDispatch
+;   _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers, _PARSEINI_ParseIniBufferAndDispatch
 ; READS:
 ;   _CTASKS_PATH_QTABLE_INI
 ; WRITES:

@@ -95,7 +95,17 @@ echo "$OBJ/absdefs.o" >> "$BUILD/objlist"
 # linking a library that contributes nothing is harmless but noisy, so it is
 # opt-in. See AGENTS.md, "Library code is not application code".
 SCLIB="${SCLIB:-}"
-< "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s ${SCLIB:+-l"$SCLIB"} -o "$BUILD/ESQ"
+# Delete the previous binary FIRST and abort if the link fails. vlink leaves the
+# old build/ESQ in place on an undefined-symbol error, and a stale binary that
+# still boots will happily PASS tools/probe_esq.sh -- which it did: a 289-entry
+# manifest whose link failed on four undefined symbols "passed", because what got
+# probed was the pure-assembly build from the previous command.
+rm -f "$BUILD/ESQ"
+if ! < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s ${SCLIB:+-l"$SCLIB"} -o "$BUILD/ESQ"; then
+    echo "*** LINK FAILED -- no binary produced ***"
+    exit 1
+fi
+[ -f "$BUILD/ESQ" ] || { echo "*** LINK produced no binary ***"; exit 1; }
 
 echo "==> verifying split build against reference"
 python3 tools/hunkcmp.py "$BUILD/ESQ_reference" "$BUILD/ESQ"

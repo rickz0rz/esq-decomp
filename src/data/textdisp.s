@@ -1,7 +1,7 @@
     XDEF    Global_STR_TEXTDISP_C_1
     XDEF    TEXTDISP_DefaultSpacePad
     XDEF    Global_STR_TEXTDISP_C_2
-    XDEF    Global_STR_DF0_SOURCECFG_INI_2
+    XDEF    _Global_STR_DF0_SOURCECFG_INI_2
     XDEF    Global_STR_TEXTDISP_C_3
     XDEF    _Global_STR_TEXTDISP_C_4
     XDEF    _TEXTDISP_ActiveGroupId
@@ -31,7 +31,7 @@ TEXTDISP_DefaultSpacePad:
     NStr    " "
 Global_STR_TEXTDISP_C_2:
     NStr    "TEXTDISP.c"
-Global_STR_DF0_SOURCECFG_INI_2:
+_Global_STR_DF0_SOURCECFG_INI_2:
     NStr    "df0:SourceCfg.ini"
 Global_STR_TEXTDISP_C_3:
     NStr    "TEXTDISP.c"

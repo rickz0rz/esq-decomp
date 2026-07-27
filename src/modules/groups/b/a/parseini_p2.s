@@ -364,7 +364,7 @@ PARSEINI_HandleFontCommand:
     ; Loads/parses gradient.ini into GCOMMAND_GradientPresetTable staging data.
     ; No direct runtime consumer of this table is confirmed in named-symbol paths yet.
     PEA     Global_STR_DF0_GRADIENT_INI_3
-    BSR.W   PARSEINI_ParseIniBufferAndDispatch
+    BSR.W   _PARSEINI_ParseIniBufferAndDispatch
 
     ADDQ.W  #4,A7
     BRA.W   .return
@@ -390,7 +390,7 @@ PARSEINI_HandleFontCommand:
 
     PEA     Global_STR_DF0_BANNER_INI_3
 
-    BSR.W   PARSEINI_ParseIniBufferAndDispatch
+    BSR.W   _PARSEINI_ParseIniBufferAndDispatch
 
     PEA     1.W
     JSR     PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(PC)
@@ -400,14 +400,14 @@ PARSEINI_HandleFontCommand:
 
 .cmd_parse_default_ini:
     PEA     Global_STR_DF0_DEFAULT_INI_2
-    BSR.W   PARSEINI_ParseIniBufferAndDispatch
+    BSR.W   _PARSEINI_ParseIniBufferAndDispatch
 
     ADDQ.W  #4,A7
     BRA.S   .return
 
 .cmd_parse_sourcecfg_ini:
     PEA     Global_STR_DF0_SOURCECFG_INI_1
-    BSR.W   PARSEINI_ParseIniBufferAndDispatch
+    BSR.W   _PARSEINI_ParseIniBufferAndDispatch
 
     JSR     TEXTDISP_ApplySourceConfigAllEntries(PC)
 

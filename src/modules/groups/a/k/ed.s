@@ -207,10 +207,10 @@ ED_DispatchEscMenuState:
 ;   _GROUP_AG_JMPTBL_MATH_Mulu32, _GROUP_AG_JMPTBL_MATH_DivS32,
 ;   _ED_DrawESCMenuBottomHelp
 ; READS:
-;   _ED_LastKeyCode, _ED_LastMenuInputChar, ED_CurrentChar, _ED_EditCursorOffset, ED_ViewportOffset, _ED_BlockOffset, _ED_TextLimit,
+;   _ED_LastKeyCode, _ED_LastMenuInputChar, ED_CurrentChar, _ED_EditCursorOffset, _ED_ViewportOffset, _ED_BlockOffset, _ED_TextLimit,
 ;   ED_TextModeReinitPendingFlag, Global_REF_BOOL_IS_TEXT_OR_CURSOR, Global_REF_BOOL_IS_LINE_OR_PAGE
 ; WRITES:
-;   ED_TextModeReinitPendingFlag, ED_CurrentChar, _ED_EditCursorOffset, ED_ViewportOffset, _ED_AdActiveFlag, _ED_TempCopyOffset,
+;   ED_TextModeReinitPendingFlag, ED_CurrentChar, _ED_EditCursorOffset, _ED_ViewportOffset, _ED_AdActiveFlag, _ED_TempCopyOffset,
 ;   Global_REF_BOOL_IS_TEXT_OR_CURSOR, Global_REF_BOOL_IS_LINE_OR_PAGE
 ; DESC:
 ;   Handles editor input commands: character changes, cursor movement, and
@@ -292,7 +292,7 @@ ED_HandleEditorInput:
     CMP.L   D0,D1
     BGE.S   .page_down_clamp
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
@@ -422,7 +422,7 @@ ED_HandleEditorInput:
     TST.L   Global_REF_BOOL_IS_LINE_OR_PAGE
     BNE.W   .delete_page_mode_update
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
@@ -468,7 +468,7 @@ ED_HandleEditorInput:
     LEA     ED_EditBufferLiveIndexBaseMinus1,A1
     ADDA.L  D0,A1
     MOVE.B  (A1),(A0)
-    MOVE.L  ED_ViewportOffset,-(A7)
+    MOVE.L  _ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
@@ -668,7 +668,7 @@ ED_HandleEditorInput:
     BRA.W   .finalize_update
 
 .cursor_from_line_index:
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
@@ -720,23 +720,23 @@ ED_HandleEditorInput:
 
     JSR     ED_TransformLineSpacing_Mode3(PC)
 
-    MOVE.L  ED_ViewportOffset,-(A7)
+    MOVE.L  _ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .finalize_update
 
 .action_0831_reset:
-    CLR.L   ED_ViewportOffset
+    CLR.L   _ED_ViewportOffset
 
 .action_0831_loop:
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     CMP.L   _ED_TextLimit,D0
     BGE.S   .action_0831_done
 
     JSR     ED_TransformLineSpacing_Mode3(PC)
 
-    ADDQ.L  #1,ED_ViewportOffset
+    ADDQ.L  #1,_ED_ViewportOffset
     BRA.S   .action_0831_loop
 
 .action_0831_done:
@@ -751,23 +751,23 @@ ED_HandleEditorInput:
 
     JSR     ED_TransformLineSpacing_Mode1(PC)
 
-    MOVE.L  ED_ViewportOffset,-(A7)
+    MOVE.L  _ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .finalize_update
 
 .action_0813_reset:
-    CLR.L   ED_ViewportOffset
+    CLR.L   _ED_ViewportOffset
 
 .action_0813_loop:
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     CMP.L   _ED_TextLimit,D0
     BGE.S   .action_0813_done
 
     JSR     ED_TransformLineSpacing_Mode1(PC)
 
-    ADDQ.L  #1,ED_ViewportOffset
+    ADDQ.L  #1,_ED_ViewportOffset
     BRA.S   .action_0813_loop
 
 .action_0813_done:
@@ -782,23 +782,23 @@ ED_HandleEditorInput:
 
     JSR     ED_TransformLineSpacing_Mode2(PC)
 
-    MOVE.L  ED_ViewportOffset,-(A7)
+    MOVE.L  _ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .finalize_update
 
 .action_0822_reset:
-    CLR.L   ED_ViewportOffset
+    CLR.L   _ED_ViewportOffset
 
 .action_0822_loop:
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     CMP.L   _ED_TextLimit,D0
     BGE.S   .action_0822_done
 
     JSR     ED_TransformLineSpacing_Mode2(PC)
 
-    ADDQ.L  #1,ED_ViewportOffset
+    ADDQ.L  #1,_ED_ViewportOffset
     BRA.S   .action_0822_loop
 
 .action_0822_done:
@@ -811,7 +811,7 @@ ED_HandleEditorInput:
     TST.L   Global_REF_BOOL_IS_LINE_OR_PAGE
     BNE.S   .clear_page_setup
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
@@ -823,7 +823,7 @@ ED_HandleEditorInput:
 .clear_line_space_loop:
     MOVE.B  D1,(A0)+
     DBF     D0,.clear_line_space_loop
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
@@ -836,7 +836,7 @@ ED_HandleEditorInput:
 .clear_line_char_loop:
     MOVE.B  D0,(A0)+
     DBF     D1,.clear_line_char_loop
-    MOVE.L  ED_ViewportOffset,-(A7)
+    MOVE.L  _ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
@@ -878,7 +878,7 @@ ED_HandleEditorInput:
 .case_insert_row_shift:
     MOVE.L  _ED_TextLimit,D0
     SUBQ.L  #1,D0
-    MOVE.L  ED_ViewportOffset,D1
+    MOVE.L  _ED_ViewportOffset,D1
     CMP.L   D0,D1
     BGE.W   .finalize_update
 
@@ -888,7 +888,7 @@ ED_HandleEditorInput:
     LEA     _ED_EditBufferScratch,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
@@ -901,14 +901,14 @@ ED_HandleEditorInput:
     MOVE.L  A1,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferLive,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
@@ -922,7 +922,7 @@ ED_HandleEditorInput:
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
     LEA     20(A7),A7
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
@@ -934,7 +934,7 @@ ED_HandleEditorInput:
 .insert_row_space_loop:
     MOVE.B  D1,(A0)+
     DBF     D0,.insert_row_space_loop
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
@@ -950,7 +950,7 @@ ED_HandleEditorInput:
     LEA     _ED_EditBufferScratch,A0
     ADDA.L  _ED_BlockOffset,A0
     CLR.B   (A0)
-    MOVE.L  ED_ViewportOffset,D7
+    MOVE.L  _ED_ViewportOffset,D7
 
 .insert_row_refresh_loop:
     CMP.L   _ED_TextLimit,D7
@@ -966,7 +966,7 @@ ED_HandleEditorInput:
 .case_delete_row_shift:
     MOVE.L  _ED_TextLimit,D0
     SUBQ.L  #1,D0
-    MOVE.L  ED_ViewportOffset,D1
+    MOVE.L  _ED_ViewportOffset,D1
     CMP.L   D0,D1
     BGE.W   .finalize_update
 
@@ -979,7 +979,7 @@ ED_HandleEditorInput:
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  D0,12(A7)
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
@@ -992,7 +992,7 @@ ED_HandleEditorInput:
     MOVE.L  A1,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVE.L  D0,D1
     ADDQ.L  #1,D1
     MOVEQ   #40,D0
@@ -1002,7 +1002,7 @@ ED_HandleEditorInput:
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  D0,24(A7)
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
@@ -1046,7 +1046,7 @@ ED_HandleEditorInput:
     LEA     _ED_EditBufferScratch,A0
     ADDA.L  _ED_BlockOffset,A0
     CLR.B   (A0)
-    MOVE.L  ED_ViewportOffset,D7
+    MOVE.L  _ED_ViewportOffset,D7
 
 .delete_row_refresh_loop:
     CMP.L   _ED_TextLimit,D7
@@ -1063,7 +1063,7 @@ ED_HandleEditorInput:
     TST.L   Global_REF_BOOL_IS_LINE_OR_PAGE
     BNE.S   .fill_page_chars
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
@@ -1076,7 +1076,7 @@ ED_HandleEditorInput:
 .fill_row_chars_loop:
     MOVE.B  D0,(A0)+
     DBF     D1,.fill_row_chars_loop
-    MOVE.L  ED_ViewportOffset,-(A7)
+    MOVE.L  _ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
@@ -1110,7 +1110,7 @@ ED_HandleEditorInput:
     TST.L   Global_REF_BOOL_IS_LINE_OR_PAGE
     BNE.W   .insert_char_page_update
 
-    MOVE.L  ED_ViewportOffset,D0
+    MOVE.L  _ED_ViewportOffset,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
@@ -1153,7 +1153,7 @@ ED_HandleEditorInput:
     LEA     _ED_EditBufferLive,A0
     ADDA.L  _ED_EditCursorOffset,A0
     MOVE.B  ED_CurrentChar,(A0)
-    MOVE.L  ED_ViewportOffset,-(A7)
+    MOVE.L  _ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7

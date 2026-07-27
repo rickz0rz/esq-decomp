@@ -221,16 +221,16 @@ GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   TEXTDISP_LoadSourceConfig
+;   _TEXTDISP_LoadSourceConfig
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to TEXTDISP_LoadSourceConfig.
+;   Jump stub to _TEXTDISP_LoadSourceConfig.
 ;------------------------------------------------------------------------------
 GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig:
-    JMP     TEXTDISP_LoadSourceConfig
+    JMP     _TEXTDISP_LoadSourceConfig
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AM_JMPTBL_KYBD_InitializeInputDevices   (JumpStub_KYBD_InitializeInputDevices)

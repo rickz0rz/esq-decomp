@@ -2,6 +2,9 @@
  * MODULE:   modules/groups/a/c/cleanup2.s
  * STATUS:   behavioural
  *
+ * 54 bytes against 60. casm.py itemises the whole +6: +2 for the exec base
+ * form, +4 for a register SAS/C saves and the original does not.
+ *
  * Reproduces: masking the AUD1 interrupt at INTENA, restoring the saved AUD1
  * interrupt vector, and freeing the 22-byte Interrupt struct that held it.
  *

@@ -18,7 +18,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   TLIBA_FindFirstWildcardMatchIndex
+;   _TLIBA_FindFirstWildcardMatchIndex
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -29,7 +29,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
-    JMP     TLIBA_FindFirstWildcardMatchIndex
+    JMP     _TLIBA_FindFirstWildcardMatchIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap   (Routine at GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap)

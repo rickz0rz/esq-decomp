@@ -1,8 +1,8 @@
-    XDEF    TLIBA_FindFirstWildcardMatchIndex
+    XDEF    _TLIBA_FindFirstWildcardMatchIndex
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA_FindFirstWildcardMatchIndex   (Find first wildcard match index)
+; FUNC: _TLIBA_FindFirstWildcardMatchIndex   (Find first wildcard match index)
 ; ARGS:
 ;   stack +8: wildcardPattern (char *)
 ; RET:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Match is accepted when _ESQ_WildcardMatch returns zero.
 ;------------------------------------------------------------------------------
-TLIBA_FindFirstWildcardMatchIndex:
+_TLIBA_FindFirstWildcardMatchIndex:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVEQ   #-1,D6
