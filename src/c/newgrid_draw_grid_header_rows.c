@@ -37,6 +37,20 @@ extern short NEWGRID_RowHeightPx;
 extern short NEWGRID_ColumnStartXPx;
 extern long DISPTEXT_ControlMarkerXOffsetPx;
 
+/* Same display-context layout as newgrid_draw_clock_format_header.c and
+ * esqdisp_queue_highlight_draw_message.c: a RastPort embedded at +60, whose Font
+ * field lands at +112, plus the application field at +52. Written as a struct so
+ * SAS/C folds the offsets into (d16,An) displacements instead of recomputing each
+ * address. The check that this is right, since cdiff cannot see a wrong struct
+ * offset: the reference emits exactly 5 LEA-into-An sites and so does this form,
+ * where the cast-and-add version it replaced emitted 8. See AGENTS.md. */
+struct DispCtx {
+    char             pad0[52];
+    short            f52;           /* +52 */
+    char             pad54[6];      /* +54 .. +59 */
+    struct RastPort  rp;            /* +60, Font at +112 */
+};
+
 long NEWGRID_DrawGridHeaderRows(unsigned char *ctx, long a, long b)
 {
     register long i;
@@ -57,37 +71,37 @@ long NEWGRID_DrawGridHeaderRows(unsigned char *ctx, long a, long b)
         rowY = yAccum;
         if (NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected()) {
             v = NEWGRID_RowHeightPx / 2;
-            font = *(struct TextFont **)(ctx + 112);
+            font = ((struct DispCtx *)ctx)->rp.Font;
             v = (v - font->tf_Baseline - 4) / 2 + font->tf_Baseline - 1;
             rowY += v;
         } else {
             v = NEWGRID_RowHeightPx / 2;
-            font = *(struct TextFont **)(ctx + 112);
+            font = ((struct DispCtx *)ctx)->rp.Font;
             v = (v - font->tf_Baseline) / 2 + font->tf_Baseline - 1;
             rowY += v;
         }
-        NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(ctx + 60, xBase, rowY);
+        NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(&((struct DispCtx *)ctx)->rp, xBase, rowY);
         yAccum += NEWGRID_RowHeightPx / 2;
     }
 
     isLast = NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast();
     if (isLast) {
         yAccum += DISPTEXT_ControlMarkerXOffsetPx;
-        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(ctx + 60, 0, 0,
+        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(&((struct DispCtx *)ctx)->rp, 0, 0,
                                                     NEWGRID_ColumnStartXPx + 35L,
                                                     yAccum - 1);
-        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(ctx + 60,
+        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(&((struct DispCtx *)ctx)->rp,
                                                     NEWGRID_ColumnStartXPx + 36L, 0,
                                                     695L, yAccum - 1);
     } else {
-        NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(ctx + 60, 0, 0,
+        NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(&((struct DispCtx *)ctx)->rp, 0, 0,
                                                     NEWGRID_ColumnStartXPx + 35L,
                                                     yAccum - 1);
-        NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(ctx + 60,
+        NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(&((struct DispCtx *)ctx)->rp,
                                                     NEWGRID_ColumnStartXPx + 36L, 0,
                                                     695L, yAccum - 1);
     }
 
-    *(short *)(ctx + 52) = (short)(yAccum / 2);
+    ((struct DispCtx *)ctx)->f52 = (short)(yAccum / 2);
     return isLast;
 }
