@@ -68,7 +68,10 @@ def survey():
                         'kind': 'interior', 'status': done.get(done_key),
                         'blockers': ['interior-label']})
             continue
-        if re.search(r'\bBSR\.W\b', body):
+        # BSR.S counts too: a two-byte branch can only reach a nearby callee, so
+        # it is just as much an intra-unit call as BSR.W. Matching only BSR.W
+        # mis-filed ESQDISP_QueueHighlightDrawMessage as cross-unit.
+        if re.search(r'\bBSR\.[WS]\b', body):
             kind = 'intra-unit'
         elif b'\x4e\xba' in blob:
             kind = 'cross-unit'
