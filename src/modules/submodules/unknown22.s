@@ -5,6 +5,7 @@
     XDEF    _MATH_Mulu32
     XDEF    SIGNAL_CreateMsgPortWithSignal
     XDEF    __CXD33
+    XDEF    __CXM33
 
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_CloseWithSignalCheck   (Close a DOS handle, with signal callback.)
@@ -50,6 +51,7 @@ DOS_CloseWithSignalCheck:
 ; DESC:
 ;   Computes a 32-bit product using 16-bit MULU pieces.
 ;------------------------------------------------------------------------------
+__CXM33:                 ; SAS/C calls the 32-bit multiply helper by this name
 _MATH_Mulu32:
     MOVEM.L D2-D3,-(A7)
 

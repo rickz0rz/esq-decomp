@@ -100,7 +100,7 @@ TEXTDISP_LeftAlignToken:
 ; SYM: _TEXTDISP_Tag_PPV/_TEXTDISP_Tag_SBE/_TEXTDISP_Tag_SPORTS/_TEXTDISP_Tag_SPT_Filter/_TEXTDISP_Tag_FIND1/TEXTDISP_Tag_SPT_Select   (filter tags)
 ; TYPE: char[] strings
 ; PURPOSE: Pattern tokens used by TEXTDISP wildcard/filter and selection logic.
-; USED BY: TEXTDISP_BuildMatchIndexList, TEXTDISP_SelectBestMatchFromList
+; USED BY: _TEXTDISP_BuildMatchIndexList, TEXTDISP_SelectBestMatchFromList
 ; NOTES: Two distinct SPT tokens are retained because they are used in different phases.
 ;------------------------------------------------------------------------------
 _TEXTDISP_Tag_PPV:

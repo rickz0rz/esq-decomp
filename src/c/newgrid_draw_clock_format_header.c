@@ -29,7 +29,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the six cross-unit calls.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 #include <string.h>
 
 extern long NEWGRID_SetRowColor(unsigned char *ctx, long a, long b);

@@ -318,7 +318,7 @@ NEWGRID2_HandleGridState:
     BSR.W   NEWGRID_UpdateSelectionFromInputAlt
 
     MOVE.L  D6,(A7)
-    BSR.W   NEWGRID_TestModeFlagActive
+    BSR.W   _NEWGRID_TestModeFlagActive
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
@@ -334,7 +334,7 @@ NEWGRID2_HandleGridState:
 
     MOVE.L  D6,(A7)
     MOVE.L  D0,NEWGRID2_DispatchStateIndex
-    BSR.W   NEWGRID_TestModeFlagActive
+    BSR.W   _NEWGRID_TestModeFlagActive
 
     LEA     12(A7),A7
     TST.L   D0

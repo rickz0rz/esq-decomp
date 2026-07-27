@@ -509,16 +509,16 @@ GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   GCOMMAND_InitPresetDefaults
+;   _GCOMMAND_InitPresetDefaults
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to GCOMMAND_InitPresetDefaults.
+;   Jump stub to _GCOMMAND_InitPresetDefaults.
 ;------------------------------------------------------------------------------
 GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults:
-    JMP     GCOMMAND_InitPresetDefaults
+    JMP     _GCOMMAND_InitPresetDefaults
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS   (JumpStub_OVERRIDE_INTUITION_FUNCS)

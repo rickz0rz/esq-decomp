@@ -447,7 +447,7 @@ _SCRIPT_Type20SubtypeCache:
 ; SYM: SCRIPT_PendingBannerTargetChar/_SCRIPT_BannerTransitionActive   (banner transition control)
 ; TYPE: s16/u16
 ; PURPOSE: Stores a deferred banner-char target and whether a transition is currently active.
-; USED BY: SCRIPT_BeginBannerCharTransition, SCRIPT_UpdateBannerCharTransition, SCRIPT_ApplyPendingBannerTarget
+; USED BY: SCRIPT_BeginBannerCharTransition, _SCRIPT_UpdateBannerCharTransition, SCRIPT_ApplyPendingBannerTarget
 ; NOTES: `SCRIPT_PendingBannerTargetChar` uses sentinels (-2 = one-shot staged value, -1 = none pending).
 ;------------------------------------------------------------------------------
 SCRIPT_PendingBannerTargetChar:
@@ -469,7 +469,7 @@ BRUSH_ScriptSecondarySelection:
 ; SYM: SCRIPT_RuntimeModeDeferredFlag/_SCRIPT_PendingWeatherCommandChar/_SCRIPT_PendingTextdispCmdChar/_SCRIPT_PendingTextdispCmdArg   (deferred command payload cluster)
 ; TYPE: u32/u8/u8/u16
 ; PURPOSE: Holds deferred runtime-mode and pending command bytes consumed by weather/TEXTDISP dispatch paths.
-; USED BY: SCRIPT_HandleBrushCommand, SCRIPT_ProcessCtrlContextPlaybackTick, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, ESQIFF2_ApplyIncomingStatusPacket
+; USED BY: SCRIPT_HandleBrushCommand, SCRIPT_ProcessCtrlContextPlaybackTick, SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, ESQIFF2_ApplyIncomingStatusPacket
 ; NOTES: Command chars/arg are serialized into CTRL context at offsets +437..+439.
 ;------------------------------------------------------------------------------
 SCRIPT_RuntimeModeDeferredFlag:
@@ -484,7 +484,7 @@ _SCRIPT_PendingTextdispCmdArg:
 ; SYM: _SCRIPT_CommandTextPtr   (owned script command text pointer)
 ; TYPE: pointer
 ; PURPOSE: Stores heap-owned text payload used by TEXTDISP command dispatch (`cmd 'C'` path).
-; USED BY: SCRIPT_HandleBrushCommand, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, _TEXTDISP_HandleScriptCommand
+; USED BY: SCRIPT_HandleBrushCommand, SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, _TEXTDISP_HandleScriptCommand
 ; NOTES: Updated through _ESQPARS_ReplaceOwnedString; source commonly comes from
 ;   SCRIPT_CTRL_CMD_BUFFER tail (`LEA 3(A2),A0`) after parser NUL-termination.
 ;------------------------------------------------------------------------------

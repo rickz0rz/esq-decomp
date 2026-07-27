@@ -49,7 +49,7 @@
  */
 #include <exec/io.h>
 #include <devices/inputevent.h>
-#include <proto/exec.h>
+#include "esq-exec.h"
 
 extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
                                                     void *ptr, long size);

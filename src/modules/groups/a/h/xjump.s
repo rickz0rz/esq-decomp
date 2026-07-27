@@ -48,7 +48,7 @@ GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   NEWGRID_RebuildIndexCache
+;   _NEWGRID_RebuildIndexCache
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -59,7 +59,7 @@ GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache:
-    JMP     NEWGRID_RebuildIndexCache
+    JMP     _NEWGRID_RebuildIndexCache
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters   (Routine at GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters)

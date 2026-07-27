@@ -113,7 +113,7 @@ _Global_STR_SINGLE_SPACE:
 ; SYM: _NEWGRID_WrapWordSpacer/_NEWGRID_WrapReturnSpacer   (word-wrap spacers)
 ; TYPE: cstring/cstring
 ; PURPOSE: Single-space tokens appended during wrapped text reconstruction.
-; USED BY: NEWGRID_DrawWrappedText
+; USED BY: _NEWGRID_DrawWrappedText
 ; NOTES: Separate symbols are retained to preserve original callsite intent.
 ;------------------------------------------------------------------------------
 _NEWGRID_WrapWordSpacer:
@@ -142,7 +142,7 @@ NEWGRID_SelectedDaySlot:
 ; SYM: NEWGRID_RenderDaySlot   (render day/clock slot)
 ; TYPE: u16
 ; PURPOSE: Cached day slot used by header/list rendering calls.
-; USED BY: NEWGRID_DrawClockFormatHeader, dispatch cases in NEWGRID_ProcessGridMessages
+; USED BY: _NEWGRID_DrawClockFormatHeader, dispatch cases in NEWGRID_ProcessGridMessages
 ; NOTES: Usually derived from NEWGRID_SelectedDaySlot adjustments.
 ;------------------------------------------------------------------------------
 NEWGRID_RenderDaySlot:

@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   D0-D1/A0-A1
 ; CALLS:
-;   _SCRIPT_JMPTBL_MEMORY_AllocateMemory, NEWGRID_RebuildIndexCache
+;   _SCRIPT_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_RebuildIndexCache
 ; READS:
 ;   NEWGRID2_BufferAllocationFlag
 ; WRITES:
@@ -33,7 +33,7 @@ NEWGRID2_EnsureBuffersAllocated:
 
     MOVE.L  D0,_NEWGRID_SecondaryIndexCachePtr
     ; Rebuild secondary index cache immediately after allocation.
-    BSR.W   NEWGRID_RebuildIndexCache
+    BSR.W   _NEWGRID_RebuildIndexCache
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     1000.W

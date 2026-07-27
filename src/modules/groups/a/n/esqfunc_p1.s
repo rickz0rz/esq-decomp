@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   A7/D7
 ; CALLS:
-;   DATETIME_SavePairToFile, ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList, _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile, _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile, ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, ESQDISP_PromoteSecondaryGroupToPrimary, _ESQDISP_PromoteSecondaryLineHeadTailIfMarked, _ESQFUNC_UpdateDiskWarningAndRefreshTick
+;   DATETIME_SavePairToFile, ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList, _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile, _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile, ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _ESQDISP_PromoteSecondaryGroupToPrimary, _ESQDISP_PromoteSecondaryLineHeadTailIfMarked, _ESQFUNC_UpdateDiskWarningAndRefreshTick
 ; READS:
 ;   _ESQPARS2_ReadModeFlags, _DST_BannerWindowPrimary, _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState
 ; WRITES:
@@ -31,7 +31,7 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 
     JSR     ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup(PC)
 
-    BSR.W   ESQDISP_PromoteSecondaryGroupToPrimary
+    BSR.W   _ESQDISP_PromoteSecondaryGroupToPrimary
 
     BSR.W   ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty
 

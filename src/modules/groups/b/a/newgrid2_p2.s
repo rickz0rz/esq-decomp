@@ -97,12 +97,12 @@ _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   DISPTEXT_GetTotalLineCount
+;   _DISPTEXT_GetTotalLineCount
 ; DESC:
-;   Jump table entry that forwards to DISPTEXT_GetTotalLineCount.
+;   Jump table entry that forwards to _DISPTEXT_GetTotalLineCount.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount:
-    JMP     DISPTEXT_GetTotalLineCount
+    JMP     _DISPTEXT_GetTotalLineCount
 
 ;!======
 
@@ -465,12 +465,12 @@ _NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   DISPTEXT_IsCurrentLineLast
+;   _DISPTEXT_IsCurrentLineLast
 ; DESC:
-;   Jump table entry that forwards to DISPTEXT_IsCurrentLineLast.
+;   Jump table entry that forwards to _DISPTEXT_IsCurrentLineLast.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast:
-    JMP     DISPTEXT_IsCurrentLineLast
+    JMP     _DISPTEXT_IsCurrentLineLast
 
 ;------------------------------------------------------------------------------
 ; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected   (Jump stub)
@@ -481,12 +481,12 @@ _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   DISPTEXT_IsLastLineSelected
+;   _DISPTEXT_IsLastLineSelected
 ; DESC:
-;   Jump table entry that forwards to DISPTEXT_IsLastLineSelected.
+;   Jump table entry that forwards to _DISPTEXT_IsLastLineSelected.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected:
-    JMP     DISPTEXT_IsLastLineSelected
+    JMP     _DISPTEXT_IsLastLineSelected
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame   (Jump stub)
@@ -609,12 +609,12 @@ _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   DISPTEXT_HasMultipleLines
+;   _DISPTEXT_HasMultipleLines
 ; DESC:
-;   Jump table entry that forwards to DISPTEXT_HasMultipleLines.
+;   Jump table entry that forwards to _DISPTEXT_HasMultipleLines.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines:
-    JMP     DISPTEXT_HasMultipleLines
+    JMP     _DISPTEXT_HasMultipleLines
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel   (Jump stub)

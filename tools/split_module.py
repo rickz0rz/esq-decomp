@@ -98,6 +98,24 @@ def split(module, labels):
     # function in it is restored.
     base = module[:-2]                       # strip .s
     pieces = []                              # (relpath, lines)
+    used = {module}                          # names this split is allowed to write
+
+    def piece_name(stem):
+        """A filename for a trailing piece that clobbers no existing module.
+
+        The obvious `<base>_pN.s` is NOT safe: `_pN` is also how the original
+        disassembly named its own continuation modules, so splitting cleanup2.s
+        wrote a trailing piece called cleanup2_p1.s -- on top of the real
+        cleanup2_p1.s, silently destroying it and its 15 functions. The gates
+        caught it as `label redefined`, but only because the clobbered module
+        happened to be in the same build; a quieter collision would have shipped.
+        """
+        for cand in [f'{stem}.s'] + [f'{stem}_{k}.s' for k in range(2, 100)]:
+            if cand not in used and not os.path.exists(os.path.join(ROOT, 'src', cand)):
+                used.add(cand)
+                return cand
+        sys.exit(f'{module}: cannot find a free name for a piece based on {stem}')
+
     shared = {}
     for l, ci in want.items():
         shared.setdefault(ci, []).append(l)
@@ -117,14 +135,14 @@ def split(module, labels):
     prev, part = 0, 0
     for ci in cut:
         if ci > prev:
-            name = f'{base}.s' if prev == 0 else f'{base}_p{part}.s'
+            name = f'{base}.s' if prev == 0 else piece_name(f'{base}_p{part}')
             part += 1
             pieces.append((name, [x for c in chunks[prev:ci] for x in c]))
         lbl = sorted(shared[ci])[0]
-        pieces.append((f'{base}_{lbl.lstrip("_").lower()}.s', chunks[ci]))
+        pieces.append((piece_name(f'{base}_{lbl.lstrip("_").lower()}'), chunks[ci]))
         prev = ci + 1
     if prev < len(chunks):
-        name = f'{base}.s' if prev == 0 else f'{base}_p{part}.s'
+        name = f'{base}.s' if prev == 0 else piece_name(f'{base}_p{part}')
         pieces.append((name, [x for c in chunks[prev:] for x in c]))
     if not any(p[0] == f'{base}.s' for p in pieces):
         pieces.insert(0, (f'{base}.s', []))   # module began with a target label

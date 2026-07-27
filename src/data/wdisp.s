@@ -361,8 +361,8 @@
     XDEF    _GCOMMAND_BannerQueueSlotCurrent
     XDEF    GCOMMAND_BannerRowIndexPrevious
     XDEF    GCOMMAND_BannerRowIndexCurrent
-    XDEF    GCOMMAND_ActiveMsgSavedField20
-    XDEF    GCOMMAND_ActiveMsgSavedField24
+    XDEF    _GCOMMAND_ActiveMsgSavedField20
+    XDEF    _GCOMMAND_ActiveMsgSavedField24
     XDEF    _GCOMMAND_ActiveMsgSavedField28
     XDEF    _ESQSHARED4_InterleaveCopyBaseOffset
     XDEF    ESQSHARED4_InterleaveCopyTailOffsetCurrent
@@ -665,7 +665,7 @@ DISPTEXT_InsetNibbleSecondary:
 ; SYM: CLEANUP_AlignedInsetNibblePrimary   (aligned status inset nibble A)
 ; TYPE: u8
 ; PURPOSE: Parsed hex nibble for aligned status inset rendering (entry flag byte 6).
-; USED BY: CLEANUP_BuildAlignedStatusLine, TLIBA1_DrawInlineStyledText, SCRIPT_DrawInsetTextWithFrame
+; USED BY: CLEANUP_BuildAlignedStatusLine, TLIBA1_DrawInlineStyledText, _SCRIPT_DrawInsetTextWithFrame
 ; NOTES: Set to $FF when entry flag byte is not a valid hex digit.
 ;------------------------------------------------------------------------------
 CLEANUP_AlignedInsetNibblePrimary:
@@ -674,7 +674,7 @@ CLEANUP_AlignedInsetNibblePrimary:
 ; SYM: CLEANUP_AlignedInsetNibbleSecondary   (aligned status inset nibble B)
 ; TYPE: u8
 ; PURPOSE: Parsed hex nibble for aligned status inset rendering (entry flag byte 7).
-; USED BY: CLEANUP_BuildAlignedStatusLine, TLIBA1_DrawInlineStyledText, SCRIPT_DrawInsetTextWithFrame
+; USED BY: CLEANUP_BuildAlignedStatusLine, TLIBA1_DrawInlineStyledText, _SCRIPT_DrawInsetTextWithFrame
 ; NOTES: Set to $FF when entry flag byte is not a valid hex digit.
 ;------------------------------------------------------------------------------
 CLEANUP_AlignedInsetNibbleSecondary:
@@ -1419,7 +1419,7 @@ Global_REF_320_240_BITMAP:
 ; SYM: _WDISP_352x240RasterPtrTable   (352x240 raster pointer table)
 ; TYPE: pointer[4]
 ; PURPOSE: Stores four 352x240 raster allocations used by display setup/teardown.
-; USED BY: ESQ_MainInitAndRun, CLEANUP_ReleaseDisplayResources
+; USED BY: ESQ_MainInitAndRun, _CLEANUP_ReleaseDisplayResources
 ; NOTES: Each entry is allocated via GRAPHICS_AllocRaster and zero-cleared.
 ;------------------------------------------------------------------------------
 _WDISP_352x240RasterPtrTable:
@@ -1430,7 +1430,7 @@ _Global_REF_696_400_BITMAP:
 ; SYM: _WDISP_BannerRowScratchRasterTable0/1/2   (696x509 scratch raster bases)
 ; TYPE: pointer/pointer/pointer
 ; PURPOSE: Primary 696x509 raster bases used to derive display-context plane pointers and banner row copies.
-; USED BY: ESQ_MainInitAndRun, GCOMMAND_RefreshBannerTables, ESQSHARED4_*, CLEANUP_ReleaseDisplayResources
+; USED BY: ESQ_MainInitAndRun, GCOMMAND_RefreshBannerTables, ESQSHARED4_*, _CLEANUP_ReleaseDisplayResources
 ; NOTES: Label `WDISP_BannerRowScratchRasterTable2` spans additional contiguous longs; first long is table entry #2.
 ;------------------------------------------------------------------------------
 _WDISP_BannerRowScratchRasterTable0:
@@ -1443,7 +1443,7 @@ WDISP_BannerRowScratchRasterTable2:
 ; SYM: WDISP_BannerGridBitmapStruct/_WDISP_LivePlaneRasterTable0..2   (696x2 bitmap + live plane bases)
 ; TYPE: struct + pointer fields
 ; PURPOSE: BitMap struct and live-plane raster pointers for the 696x2 working bitmap used by ESQSHARED copy paths.
-; USED BY: ESQ_MainInitAndRun, ESQSHARED4_*, CLEANUP_ReleaseDisplayResources
+; USED BY: ESQ_MainInitAndRun, ESQSHARED4_*, _CLEANUP_ReleaseDisplayResources
 ; NOTES: Plane pointer aliases map into the BitMap plane-pointer region.
 ;------------------------------------------------------------------------------
 WDISP_BannerGridBitmapStruct:
@@ -1460,7 +1460,7 @@ Global_REF_696_241_BITMAP:
 ; SYM: _WDISP_DisplayContextPlanePointer0..4   (display-context plane pointer set)
 ; TYPE: pointer array
 ; PURPOSE: Plane pointers installed into ESQSHARED display-context state during startup.
-; USED BY: ESQ_MainInitAndRun, TLIBA3_* display-context VM paths, CLEANUP_ReleaseDisplayResources
+; USED BY: ESQ_MainInitAndRun, TLIBA3_* display-context VM paths, _CLEANUP_ReleaseDisplayResources
 ; NOTES: Initial entries may be seeded from +$5C20 offsets; later entries come from 696x241 raster allocs.
 ;------------------------------------------------------------------------------
 _WDISP_DisplayContextPlanePointer0:
@@ -1834,7 +1834,7 @@ WDISP_BannerCharIndex:
 ; SYM: _TEXTDISP_ChannelLabelBufferTerminatorByte   (channel-label trailing NUL slot)
 ; TYPE: u8
 ; PURPOSE: Extra trailing byte used to force NUL termination after label concatenation.
-; USED BY: TEXTDISP_BuildChannelLabel
+; USED BY: _TEXTDISP_BuildChannelLabel
 ; NOTES: Cleared at `base + length` after append flow; acts as guard terminator byte.
 ;------------------------------------------------------------------------------
 _TEXTDISP_ChannelLabelBufferTerminatorByte:
@@ -1843,7 +1843,7 @@ _TEXTDISP_ChannelLabelBufferTerminatorByte:
 ; SYM: _TEXTDISP_ChannelLabelBuffer   (channel label text buffer)
 ; TYPE: char[450] (storage-backed)
 ; PURPOSE: Scratch/output buffer for labels such as "On Channel <name>" used in banner rendering.
-; USED BY: TEXTDISP_BuildChannelLabel, TEXTDISP_DrawChannelBanner, CLEANUP3_*
+; USED BY: _TEXTDISP_BuildChannelLabel, TEXTDISP_DrawChannelBanner, CLEANUP3_*
 ; NOTES: Backed by 112 longs + trailing word storage; treated as a byte string buffer.
 ;------------------------------------------------------------------------------
 _TEXTDISP_ChannelLabelBuffer:
@@ -1975,7 +1975,7 @@ _ED_DiagnosticsViewMode:
 ; SYM: _ESQ_SelectCodeBuffer   (startup select-code text buffer)
 ; TYPE: u8[10]
 ; PURPOSE: Stores argv[1] select-code text shown in startup/diagnostics paths.
-; USED BY: ESQ_MainInitAndRun, _ED1_DrawDiagnosticsScreen, ESQSHARED_MatchSelectionCodeWithOptionalSuffix
+; USED BY: ESQ_MainInitAndRun, _ED1_DrawDiagnosticsScreen, _ESQSHARED_MatchSelectionCodeWithOptionalSuffix
 ; NOTES: Backed by `DS.L 2` + `DS.W 1` (10 bytes total, including NUL).
 ;   Current startup copy path writes bytewise until source NUL with no local
 ;   destination bound check.
@@ -2087,7 +2087,7 @@ _DST_SecondaryCountdown:
 ;   `CLOCK_CurrentDayOfYear` participates in status-day normalization/comparison flows.
 ;   `_CLOCK_CurrentAmPmFlag` is the AM/PM sign flag consumed by time-format helpers.
 ;   `CLOCK_CurrentLeapYearFlag` tracks leap-year state and is shown as `lp` in diagnostics.
-; USED BY: ESQ_TickClockAndFlagEvents, UNKNOWN_ParseStatusListPattern??, CLEANUP_BuildAlignedStatusSuffix, ESQDISP_CheckStatusDayEntryWindow, ESQFUNC_DrawMemoryStatusScreen, CLEANUP_DrawClockBanner
+; USED BY: ESQ_TickClockAndFlagEvents, UNKNOWN_ParseStatusListPattern??, CLEANUP_BuildAlignedStatusSuffix, ESQDISP_CheckStatusDayEntryWindow, ESQFUNC_DrawMemoryStatusScreen, _CLEANUP_DrawClockBanner
 ; NOTES:
 ;   Producer is confirmed: `ESQ_TickClockAndFlagEvents` called with `PEA _CLOCK_CurrentDayOfWeekIndex`.
 ;   Layout matches routine field writes at +16 (day-of-year), +18 (am/pm), +20 (leap-year).
@@ -2244,7 +2244,7 @@ _WDISP_PaletteTriplesBBase:
 ; SYM: _ESQPARS_SelectionSuffixBuffer   (selection suffix buffer)
 ; TYPE: char[4]
 ; PURPOSE: Stores the optional selection suffix pattern for ESQ selection matching.
-; USED BY: ESQPARS command 'E' handler, ESQSHARED_MatchSelectionCodeWithOptionalSuffix
+; USED BY: ESQPARS command 'E' handler, _ESQSHARED_MatchSelectionCodeWithOptionalSuffix
 ; NOTES: NUL-terminated; size inferred from DS.L allocation.
 ;------------------------------------------------------------------------------
 _ESQPARS_SelectionSuffixBuffer:
@@ -2294,7 +2294,7 @@ ESQPARS_CommandPreambleArmedFlag:
 ;------------------------------------------------------------------------------
 ; SYM: ESQPARS_SelectionMatchCode   (selection match code)
 ; TYPE: u16
-; PURPOSE: Stores the match result from ESQSHARED_MatchSelectionCodeWithOptionalSuffix.
+; PURPOSE: Stores the match result from _ESQSHARED_MatchSelectionCodeWithOptionalSuffix.
 ; USED BY: ESQPARS command preamble handling, ESQ init/reset
 ; NOTES: Value 1 enables command-table dispatch; other values block.
 ;------------------------------------------------------------------------------
@@ -2705,7 +2705,7 @@ _GCOMMAND_PpvShowtimesRowSpan:
 ; SYM: _GCOMMAND_DefaultPresetTable   (default preset table)
 ; TYPE: u16[16]
 ; PURPOSE: Default preset values consumed by GCOMMAND preset increment/validation paths.
-; USED BY: GCOMMAND_InitPresetDefaults, _GCOMMAND_ComputePresetIncrement, GCOMMAND_ValidatePresetTable
+; USED BY: _GCOMMAND_InitPresetDefaults, _GCOMMAND_ComputePresetIncrement, GCOMMAND_ValidatePresetTable
 ; NOTES: Copied from validated preset sources and used as fallback baseline values.
 ;------------------------------------------------------------------------------
 _GCOMMAND_DefaultPresetTable:
@@ -2723,7 +2723,7 @@ GCOMMAND_PresetValueTable:
 ; SYM: _GCOMMAND_PresetWorkEntryTable   (highlight preset work entries)
 ; TYPE: struct[4]
 ; PURPOSE: Runtime table for preset timing/accumulator state used by banner highlight updates.
-; USED BY: GCOMMAND_ResetPresetWorkTables, _GCOMMAND_LoadPresetWorkEntries, GCOMMAND_TickPresetWorkEntries
+; USED BY: _GCOMMAND_ResetPresetWorkTables, _GCOMMAND_LoadPresetWorkEntries, GCOMMAND_TickPresetWorkEntries
 ; NOTES: Four entries, each 24 bytes.
 ;        Entry0 starts at _GCOMMAND_PresetWorkEntryTable; entry1/2/3 start at
 ;        GCOMMAND_PresetWorkEntry1/2/3. The *_ValueIndex aliases map to offset +8
@@ -2812,15 +2812,15 @@ GCOMMAND_BannerRowIndexPrevious:
 GCOMMAND_BannerRowIndexCurrent:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_ActiveMsgSavedField20/GCOMMAND_ActiveMsgSavedField24/_GCOMMAND_ActiveMsgSavedField28   (active highlight-message saved fields)
+; SYM: _GCOMMAND_ActiveMsgSavedField20/_GCOMMAND_ActiveMsgSavedField24/_GCOMMAND_ActiveMsgSavedField28   (active highlight-message saved fields)
 ; TYPE: u32/u32/u32
 ; PURPOSE: Temporarily stores active highlight-message payload longs while banner/preset processing mutates message state.
 ; USED BY: GCOMMAND_ServiceHighlightMessages, _GCOMMAND_ResetHighlightMessages
 ; NOTES: Values are copied from message offsets +20/+24/+28 and restored before reply/reset.
 ;------------------------------------------------------------------------------
-GCOMMAND_ActiveMsgSavedField20:
+_GCOMMAND_ActiveMsgSavedField20:
     DS.L    1
-GCOMMAND_ActiveMsgSavedField24:
+_GCOMMAND_ActiveMsgSavedField24:
     DS.L    1
 _GCOMMAND_ActiveMsgSavedField28:
     DS.L    1
@@ -2966,7 +2966,7 @@ NEWGRID_SampleTimeTextWidthPx:
 ; SYM: _NEWGRID_ColumnStartXPx   (left edge of first data column)
 ; TYPE: u16
 ; PURPOSE: Horizontal pixel offset where NEWGRID data columns begin.
-; USED BY: NEWGRID_DrawClockFormatHeader, NEWGRID date/header rendering
+; USED BY: _NEWGRID_DrawClockFormatHeader, NEWGRID date/header rendering
 ; NOTES: Computed from NEWGRID_SampleTimeTextWidthPx plus padding.
 ;------------------------------------------------------------------------------
 _NEWGRID_ColumnStartXPx:
@@ -3181,8 +3181,8 @@ _SCRIPT_ChannelRangeDigitChar:
 ;------------------------------------------------------------------------------
 ; SYM: _SCRIPT_SearchMatchCountOrIndex   (search match count/index ??)
 ; TYPE: s32
-; PURPOSE: Stores the selection argument passed into SCRIPT_SelectPlaybackCursorFromSearchText.
-; USED BY: SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot
+; PURPOSE: Stores the selection argument passed into _SCRIPT_SelectPlaybackCursorFromSearchText.
+; USED BY: _SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot
 ; NOTES: Passed through to CLEANUP_RenderAlignedStatusScreen (usage uncertain).
 ;------------------------------------------------------------------------------
 _SCRIPT_SearchMatchCountOrIndex:
@@ -3200,7 +3200,7 @@ _SCRIPT_PlaybackCursor:
 ; SYM: _SCRIPT_BannerTransitionTargetChar/_SCRIPT_BannerTransitionStepDelta/_SCRIPT_BannerTransitionStepSign   (banner transition params)
 ; TYPE: u8/s16/s16
 ; PURPOSE: Stores the target banner character plus per-tick step data.
-; USED BY: SCRIPT_BeginBannerCharTransition, SCRIPT_UpdateBannerCharTransition, _SCRIPT_PrimeBannerTransitionFromHexCode
+; USED BY: SCRIPT_BeginBannerCharTransition, _SCRIPT_UpdateBannerCharTransition, _SCRIPT_PrimeBannerTransitionFromHexCode
 ; NOTES: Step delta is signed after applying the sign value.
 ;------------------------------------------------------------------------------
 _SCRIPT_BannerTransitionTargetChar:
@@ -3231,7 +3231,7 @@ _SCRIPT_PrimarySearchFirstFlag:
 ; SYM: _SCRIPT_ChannelRangeArmedFlag   (channel-range gate)
 ; TYPE: u16 (stored in long slot)
 ; PURPOSE: Enables channel-range parsing when set by script search selection.
-; USED BY: SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_HandleBrushCommand
+; USED BY: _SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_HandleBrushCommand
 ; NOTES: Cleared when selection fails or playback cursor is forced.
 ;------------------------------------------------------------------------------
 _SCRIPT_ChannelRangeArmedFlag:
@@ -3395,7 +3395,7 @@ TEXTDISP_CurrentMatchIndexSaved:
 ; SYM: _TEXTDISP_SbeFilterActiveFlag/_TEXTDISP_FindModeActiveFlag   (search-mode flags)
 ; TYPE: u16/u16
 ; PURPOSE: Tracks special wildcard modes while building candidate lists (`SBE` and `FIND1` flows).
-; USED BY: TEXTDISP_BuildMatchIndexList, TEXTDISP_SelectBestMatchFromList, _TEXTDISP_SelectGroupAndEntry
+; USED BY: _TEXTDISP_BuildMatchIndexList, TEXTDISP_SelectBestMatchFromList, _TEXTDISP_SelectGroupAndEntry
 ; NOTES:
 ;   `_TEXTDISP_SbeFilterActiveFlag` is set when the SBE wildcard branch is active.
 ;   `_TEXTDISP_FindModeActiveFlag` is set when pattern prefix matches FIND1 and alters selection return behavior.
@@ -3421,7 +3421,7 @@ _TEXTDISP_CandidateIndexList:
 ; USED BY: TEXTDISP_SelectBestMatchFromList, _TEXTDISP_SelectGroupAndEntry, SCRIPT3 state save/restore, TEXTDISP/CLEANUP3 banner/status draws
 ; NOTES:
 ;   Entry-index bytes pair with their corresponding `IsSpecialFlag` and `ValidFlag` fields.
-;   `_TEXTDISP_ChannelLabelReadyFlag` is set to 1 when TEXTDISP_BuildChannelLabel constructs a usable label.
+;   `_TEXTDISP_ChannelLabelReadyFlag` is set to 1 when _TEXTDISP_BuildChannelLabel constructs a usable label.
 ;------------------------------------------------------------------------------
 _TEXTDISP_BannerFallbackEntryIndex:
     DS.B    1

@@ -106,16 +106,16 @@ GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   TEXTDISP_FormatEntryTime
+;   _TEXTDISP_FormatEntryTime
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to TEXTDISP_FormatEntryTime.
+;   Jump stub to _TEXTDISP_FormatEntryTime.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime:
-    JMP     TEXTDISP_FormatEntryTime
+    JMP     _TEXTDISP_FormatEntryTime
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition   (JumpStub)
@@ -226,16 +226,16 @@ GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   TEXTDISP_BuildChannelLabel
+;   _TEXTDISP_BuildChannelLabel
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to TEXTDISP_BuildChannelLabel.
+;   Jump stub to _TEXTDISP_BuildChannelLabel.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel:
-    JMP     TEXTDISP_BuildChannelLabel
+    JMP     _TEXTDISP_BuildChannelLabel
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame   (JumpStub)

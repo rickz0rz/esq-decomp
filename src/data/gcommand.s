@@ -329,9 +329,9 @@ GCOMMAND_PresetSeedPackedWordTable:
 ; SYM: _GCOMMAND_PresetWorkResetPendingFlag   (preset-work reset pending flag)
 ; TYPE: u16 flag
 ; PURPOSE: Requests one-time reset of preset work entries before active highlight message tick.
-; USED BY: GCOMMAND_ValidatePresetTable, GCOMMAND_ResetPresetWorkTables, GCOMMAND_ServiceHighlightMessages
+; USED BY: GCOMMAND_ValidatePresetTable, _GCOMMAND_ResetPresetWorkTables, GCOMMAND_ServiceHighlightMessages
 ; NOTES:
-;   Set when preset defaults are copied/validated and cleared by GCOMMAND_ResetPresetWorkTables.
+;   Set when preset defaults are copied/validated and cleared by _GCOMMAND_ResetPresetWorkTables.
 ;------------------------------------------------------------------------------
 _GCOMMAND_PresetWorkResetPendingFlag:
     DS.W    1

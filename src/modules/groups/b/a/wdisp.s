@@ -1990,7 +1990,7 @@ WDISP_JMPTBL_BRUSH_FreeBrushList:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   BRUSH_PlaneMaskForIndex
+;   _BRUSH_PlaneMaskForIndex
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -2001,7 +2001,7 @@ WDISP_JMPTBL_BRUSH_FreeBrushList:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 WDISP_JMPTBL_BRUSH_PlaneMaskForIndex:
-    JMP     BRUSH_PlaneMaskForIndex
+    JMP     _BRUSH_PlaneMaskForIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight   (Routine at WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight)
@@ -2078,7 +2078,7 @@ WDISP_JMPTBL_BRUSH_SelectBrushSlot:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   NEWGRID_DrawWrappedText
+;   _NEWGRID_DrawWrappedText
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -2089,7 +2089,7 @@ WDISP_JMPTBL_BRUSH_SelectBrushSlot:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 WDISP_JMPTBL_NEWGRID_DrawWrappedText:
-    JMP     NEWGRID_DrawWrappedText
+    JMP     _NEWGRID_DrawWrappedText
 
 ;------------------------------------------------------------------------------
 ; FUNC: WDISP_JMPTBL_NEWGRID_ResetRowTable   (Routine at WDISP_JMPTBL_NEWGRID_ResetRowTable)

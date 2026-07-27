@@ -655,7 +655,7 @@ ED2_DrawEntrySummaryPanel:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   ED1_DrawStatusLine1, ED1_DrawStatusLine2, ED2_DrawEntrySummaryPanel,
+;   _ED1_DrawStatusLine1, _ED1_DrawStatusLine2, ED2_DrawEntrySummaryPanel,
 ;   ED2_DrawEntryDetailsPanel, _DST_FormatBannerDateTime, _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer,
 ;   _ESQIFF_JMPTBL_DOS_OpenFileWithMode, _LVORead, _LVOClose,
 ;   GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar, ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition,
@@ -870,7 +870,7 @@ ED2_HandleMenuActions:
     BRA.W   .restore_display_state
 
 .case_draw_status_line2:
-    BSR.W   ED1_DrawStatusLine2
+    BSR.W   _ED1_DrawStatusLine2
 
     BRA.W   .restore_display_state
 
@@ -1013,7 +1013,7 @@ ED2_HandleMenuActions:
     BRA.W   .restore_display_state
 
 .case_draw_status_line1:
-    BSR.W   ED1_DrawStatusLine1
+    BSR.W   _ED1_DrawStatusLine1
 
     BRA.W   .restore_display_state
 
@@ -1026,7 +1026,7 @@ ED2_HandleMenuActions:
     MOVE.W  D0,_ESQPARS2_StateIndex
 
 .after_status_index_dec:
-    BSR.W   ED1_DrawStatusLine1
+    BSR.W   _ED1_DrawStatusLine1
 
     BRA.W   .restore_display_state
 
@@ -1034,7 +1034,7 @@ ED2_HandleMenuActions:
     MOVE.W  _ESQPARS2_StateIndex,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,_ESQPARS2_StateIndex
-    BSR.W   ED1_DrawStatusLine1
+    BSR.W   _ED1_DrawStatusLine1
 
     BRA.W   .restore_display_state
 
@@ -1341,12 +1341,12 @@ ED2_HandleMenuActions:
     BRA.W   .restore_display_state
 
 .case_wait_clear_bit0:
-    JSR     ED1_WaitForFlagAndClearBit0(PC)
+    JSR     _ED1_WaitForFlagAndClearBit0(PC)
 
     BRA.W   .restore_display_state
 
 .case_wait_clear_bit1:
-    JSR     ED1_WaitForFlagAndClearBit1(PC)
+    JSR     _ED1_WaitForFlagAndClearBit1(PC)
 
     BRA.W   .restore_display_state
 

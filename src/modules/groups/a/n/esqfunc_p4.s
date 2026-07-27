@@ -826,7 +826,7 @@ ESQFUNC_DrawDiagnosticsScreen:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   TEXTDISP_SetRastForMode
+;   _TEXTDISP_SetRastForMode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -837,7 +837,7 @@ ESQFUNC_DrawDiagnosticsScreen:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode:
-    JMP     TEXTDISP_SetRastForMode
+    JMP     _TEXTDISP_SetRastForMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList   (Jump-table forwarder)
@@ -1135,7 +1135,7 @@ ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   CLEANUP_DrawClockBanner
+;   _CLEANUP_DrawClockBanner
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1146,7 +1146,7 @@ ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner:
-    JMP     CLEANUP_DrawClockBanner
+    JMP     _CLEANUP_DrawClockBanner
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues   (Jump-table forwarder)

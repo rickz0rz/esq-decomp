@@ -29,7 +29,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the five cross-unit calls.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 #include <string.h>
 
 extern long GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(long hour, long ampm);

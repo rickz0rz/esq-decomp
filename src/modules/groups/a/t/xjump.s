@@ -11,16 +11,16 @@
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ED1_WaitForFlagAndClearBit0
+;   _ED1_WaitForFlagAndClearBit0
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ED1_WaitForFlagAndClearBit0.
+;   Jump stub to _ED1_WaitForFlagAndClearBit0.
 ;------------------------------------------------------------------------------
 _GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0:
-    JMP     ED1_WaitForFlagAndClearBit0
+    JMP     _ED1_WaitForFlagAndClearBit0
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AT_JMPTBL_DOS_SystemTagList   (JumpStub_DOS_SystemTagList)
@@ -51,16 +51,16 @@ _GROUP_AT_JMPTBL_DOS_SystemTagList:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ED1_WaitForFlagAndClearBit1
+;   _ED1_WaitForFlagAndClearBit1
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ED1_WaitForFlagAndClearBit1.
+;   Jump stub to _ED1_WaitForFlagAndClearBit1.
 ;------------------------------------------------------------------------------
 _GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1:
-    JMP     ED1_WaitForFlagAndClearBit1
+    JMP     _ED1_WaitForFlagAndClearBit1
 
 ;!======
 

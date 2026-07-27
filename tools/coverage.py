@@ -126,6 +126,28 @@ def survey():
                         'kind': 'no-calls', 'status': done.get(done_key),
                         'blockers': ['tail-jump']})
             continue
+        # A body that does not END in RTS is not a function: it falls through to
+        # whatever follows. The interior-label screen above only catches the ones
+        # that use the enclosing frame via (A5), so a frameless fall-through block
+        # slips past it and shows up as a small, tempting, completely unrestorable
+        # target -- DISKIO1_AppendTimeSlotMaskValueTerminator ends `ADDQ.W #4,A7`
+        # and its sibling ends `MOVEQ #1,D4`. A C function would add a prologue
+        # and an RTS the original does not have, changing control flow, so these
+        # can never be replaced no matter what the compiler does.
+        #
+        # RTE/RTR count too (interrupt and status-restoring returns). A trailing
+        # JMP is already handled above as tail-jump.
+        #
+        # Test the WHOLE body, not just the final line: an extract can run a few
+        # bytes past the RTS into inter-function padding, and a function whose
+        # epilogue is branched to from inside ends at a `_Return` label. Both make
+        # a last-line test report a real function as falling through. Having no
+        # return instruction at all is unambiguous.
+        if not re.search(r'\b(RTS|RTE|RTR)\b', body):
+            fns.append({'name': name, 'src': srcf, 'size': len(blob),
+                        'kind': 'no-calls', 'status': done.get(done_key),
+                        'blockers': ['falls-through']})
+            continue
         # ...but ONE predecrement store is already enough to stop a byte-exact
         # match, so it has to be a blocker even below the threshold that says
         # "this whole function was hand-written". Without this, functions with one

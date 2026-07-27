@@ -81,7 +81,7 @@ ESQSHARED4_ProgramDisplayWindowAndCopper:
 ; CLOBBERS:
 ;   A0/A2/A7/D0/D1
 ; CALLS:
-;   GCOMMAND_TickHighlightState, ESQSHARED4_ProgramDisplayWindowAndCopper, ESQSHARED4_BlitBannerRowsForActiveField, SCRIPT_UpdateBannerCharTransition
+;   GCOMMAND_TickHighlightState, ESQSHARED4_ProgramDisplayWindowAndCopper, ESQSHARED4_BlitBannerRowsForActiveField, _SCRIPT_UpdateBannerCharTransition
 ; READS:
 ;   BLTDDAT, LAB_0C85, LAB_0C86, LAB_0C87, LAB_0C89, LAB_0C8A, LAB_0C8B, ED2_HighlightTickEnabledFlag, ESQ_CopperEffectListA, ESQ_BannerSnapshotPlane0DstPtrHiWord, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerSnapshotPlane1DstPtrHiWord, ESQ_BannerSnapshotPlane1DstPtrLoWord, ESQ_BannerSnapshotPlane2DstPtrHiWord, ESQ_BannerSnapshotPlane2DstPtrLoWord, ESQ_CopperEffectListB, ESQPARS2_CopperProgramPendingFlag, _ESQPARS2_StateIndex, _ESQPARS2_ReadModeFlags, _GCOMMAND_HighlightHoldoffTickCount, _SCRIPT_BannerTransitionActive, VPOSR, b0
 ; WRITES:
@@ -115,7 +115,7 @@ ESQSHARED4_TickCopperAndBannerTransitions:
     BRA.W   .lab_0C8B
 
 .lab_0C84:
-    JSR     SCRIPT_UpdateBannerCharTransition
+    JSR     _SCRIPT_UpdateBannerCharTransition
 
     TST.W   _SCRIPT_BannerTransitionActive
     BNE.W   .lab_0C8B

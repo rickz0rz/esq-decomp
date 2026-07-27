@@ -18,7 +18,7 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   _MEMORY_AllocateMemory, MEMORY_DeallocateMemory, SCRIPT_DrawInsetTextWithFrame, _STR_FindCharPtr, _LVOMove, _LVOText
+;   _MEMORY_AllocateMemory, MEMORY_DeallocateMemory, _SCRIPT_DrawInsetTextWithFrame, _STR_FindCharPtr, _LVOMove, _LVOText
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_1, Global_STR_TLIBA1_C_2, MEMF_CLEAR, MEMF_PUBLIC, if_eq_1768, if_ne_1763, return_176B
 ; WRITES:
@@ -145,7 +145,7 @@ TLIBA1_DrawTextWithInsetSegments:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     SCRIPT_DrawInsetTextWithFrame(PC)
+    JSR     _SCRIPT_DrawInsetTextWithFrame(PC)
 
     LEA     16(A7),A7
     PEA     19.W

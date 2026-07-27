@@ -4,11 +4,11 @@
     XDEF    _Global_STR_CLEANUP_C_4
     XDEF    _Global_STR_CLEANUP_C_5
     XDEF    _Global_STR_CLEANUP_C_6
-    XDEF    Global_STR_CLEANUP_C_7
+    XDEF    _Global_STR_CLEANUP_C_7
     XDEF    _Global_STR_CLEANUP_C_8
-    XDEF    Global_STR_CLEANUP_C_9
+    XDEF    _Global_STR_CLEANUP_C_9
     XDEF    _Global_STR_CLEANUP_C_10
-    XDEF    Global_STR_CLEANUP_C_11
+    XDEF    _Global_STR_CLEANUP_C_11
     XDEF    _Global_STR_CLEANUP_C_12
     XDEF    Global_STR_CLEANUP_C_13
     XDEF    Global_STR_CLEANUP_C_14
@@ -31,15 +31,15 @@ _Global_STR_CLEANUP_C_5:
     NStr    "CLEANUP.c"
 _Global_STR_CLEANUP_C_6:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_7:
+_Global_STR_CLEANUP_C_7:
     NStr    "CLEANUP.c"
 _Global_STR_CLEANUP_C_8:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_9:
+_Global_STR_CLEANUP_C_9:
     NStr    "CLEANUP.c"
 _Global_STR_CLEANUP_C_10:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_11:
+_Global_STR_CLEANUP_C_11:
     NStr    "CLEANUP.c"
 _Global_STR_CLEANUP_C_12:
     NStr    "CLEANUP.c"

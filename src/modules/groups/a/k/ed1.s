@@ -13,7 +13,7 @@
 ; CLOBBERS:
 ;   A1/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   _ED_GetEscMenuActionCode, ED_DrawAdNumberPrompt, ED_DrawDiagnosticModeHelpText, _ED_DrawMenuSelectionHighlight, _ED_DrawScrollSpeedMenuText, _ED_DrawBottomHelpBarBackground, ED_DrawEscMainMenuText,
+;   _ED_GetEscMenuActionCode, ED_DrawAdNumberPrompt, _ED_DrawDiagnosticModeHelpText, _ED_DrawMenuSelectionHighlight, _ED_DrawScrollSpeedMenuText, _ED_DrawBottomHelpBarBackground, ED_DrawEscMainMenuText,
 ;   _ED1_DrawDiagnosticsScreen, _ED_DrawSpecialFunctionsMenu,
 ;   _DISPLIB_DisplayTextAtPosition, _LVOSetAPen
 ; READS:
@@ -89,7 +89,7 @@ ED1_HandleEscMenuInput:
 
 .case_mode_6:
     MOVE.B  #$6,_ED_MenuStateId
-    JSR     ED_DrawDiagnosticModeHelpText(PC)
+    JSR     _ED_DrawDiagnosticModeHelpText(PC)
 
     MOVE.L  _ED_SavedScrollSpeedIndex,_ED_EditCursorOffset
     PEA     9.W
@@ -108,7 +108,7 @@ ED1_HandleEscMenuInput:
 
 .case_special_functions:
     MOVE.B  #$a,_ED_MenuStateId
-    JSR     ED_DrawDiagnosticModeHelpText(PC)
+    JSR     _ED_DrawDiagnosticModeHelpText(PC)
 
     CLR.L   _ED_EditCursorOffset
     PEA     4.W
@@ -444,7 +444,7 @@ _ED1_EnterEscMenu_AfterVersionText:
 ;   _LVOInitBitMap, _LVOSetFont, ED1_JMPTBL_GCOMMAND_ResetHighlightMessages,
 ;   GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode, ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, _ESQFUNC_UpdateDiskWarningAndRefreshTick, _ED1_ClearEscMenuMode, ESQFUNC_UpdateRefreshModeState,
 ;   ED1_JMPTBL_NEWGRID_DrawTopBorderLine, ED1_JMPTBL_LADFUNC_SaveTextAdsToFile,
-;   ED1_WaitForFlagAndClearBit0, ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs,
+;   _ED1_WaitForFlagAndClearBit0, ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs,
 ;   _ED_DrawBottomHelpBarBackground, ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, _ESQIFF_RunCopperRiseTransition
 ; READS:
 ;   _ED_SaveTextAdsOnExitFlag, _ED_SavedDiagGraphModeChar, _ED_DiagGraphModeChar, _SCRIPT_RuntimeMode
@@ -516,7 +516,7 @@ ED1_ExitEscMenu:
     CMP.B   D2,D0
     BNE.S   .check_mode_transition
 
-    BSR.W   ED1_WaitForFlagAndClearBit0
+    BSR.W   _ED1_WaitForFlagAndClearBit0
 
 .check_mode_transition:
     MOVE.B  _ED_DiagGraphModeChar,D0

@@ -35,7 +35,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the four cross-unit calls.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 #include <string.h>
 
 extern void ESQ_FormatTimeStamp(char *buf, void *dayIndex);

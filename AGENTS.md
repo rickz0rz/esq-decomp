@@ -195,6 +195,18 @@ When splitting, **distribute the top-of-file `XDEF` block** so each part exports
 only what it defines — an `XDEF` for a symbol that ended up in another file is
 an error. Verify with `test-hash.sh` before going near C.
 
+`tools/split_module.py` does all of this, including for many labels at once, and
+both gates must stay green across a split — content and order are unchanged, so
+a split that moves the hash is a bug in the tool.
+
+**A piece's filename can collide with a real module.** The natural name for a
+trailing piece is `<base>_pN.s`, but `_pN` is also how the original disassembly
+named its own continuation modules: splitting `cleanup2.s` wrote a piece called
+`cleanup2_p1.s` directly over the existing `cleanup2_p1.s` and its 15 functions.
+The gates caught it only because the clobbered module was in the same build. The
+tool now refuses any name that already exists on disk; if you extract by hand,
+check the name first.
+
 ## Never include `<proto/*.h>`
 
 Use `src/c/esq-dos.h`, `esq-exec.h`, `esq-graphics.h` instead. They are the stock

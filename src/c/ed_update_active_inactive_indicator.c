@@ -31,7 +31,7 @@
  *   summary: SAS/C hoists the GfxBase load above the pen argument setup where the
  *            original does it after, and adjusts the MOVEM mask accordingly.
  */
-#include <proto/graphics.h>
+#include "esq-graphics.h"
 
 extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
 extern struct RastPort *Global_REF_RASTPORT_1;

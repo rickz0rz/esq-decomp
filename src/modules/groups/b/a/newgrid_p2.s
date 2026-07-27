@@ -14,7 +14,7 @@
 ; CLOBBERS:
 ;   D0-D3/A0-A3/A6
 ; CALLS:
-;   _NEWGRID_DrawGridFrame, _LVOSetAPen, _LVOTextLength, _LVOMove, NEWGRID_DrawWrappedText, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
+;   _NEWGRID_DrawGridFrame, _LVOSetAPen, _LVOTextLength, _LVOMove, _NEWGRID_DrawWrappedText, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
 ; READS:
 ;   _NEWGRID_RowHeightPx, Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 ; WRITES:
@@ -96,7 +96,7 @@ NEWGRID_DrawAwaitingListingsMessage:
     MOVE.L  D0,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  52(A7),-(A7)
-    BSR.W   NEWGRID_DrawWrappedText
+    BSR.W   _NEWGRID_DrawWrappedText
 
     LEA     60(A3),A0
     MOVEQ   #0,D0

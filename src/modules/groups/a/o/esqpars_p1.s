@@ -60,7 +60,7 @@ _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   NEWGRID_RebuildIndexCache
+;   _NEWGRID_RebuildIndexCache
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -71,7 +71,7 @@ _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache:
-    JMP     NEWGRID_RebuildIndexCache
+    JMP     _NEWGRID_RebuildIndexCache
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQPARS_JMPTBL_DATETIME_SavePairToFile   (Jump-table forwarder)
@@ -266,7 +266,7 @@ ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   BRUSH_PlaneMaskForIndex
+;   _BRUSH_PlaneMaskForIndex
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -277,7 +277,7 @@ ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex:
-    JMP     BRUSH_PlaneMaskForIndex
+    JMP     _BRUSH_PlaneMaskForIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine   (Jump-table forwarder)

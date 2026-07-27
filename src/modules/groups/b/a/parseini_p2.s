@@ -906,14 +906,14 @@ _PARSEINI_JMPTBL_STRING_CompareNoCase:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ED1_WaitForFlagAndClearBit0
+;   _ED1_WaitForFlagAndClearBit0
 ; DESC:
-;   Jump stub to ED1_WaitForFlagAndClearBit0.
+;   Jump stub to _ED1_WaitForFlagAndClearBit0.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0:
-    JMP     ED1_WaitForFlagAndClearBit0
+    JMP     _ED1_WaitForFlagAndClearBit0
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk   (JumpStub)
@@ -996,14 +996,14 @@ PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQIFF_HandleBrushIniReloadHotkey
+;   _ESQIFF_HandleBrushIniReloadHotkey
 ; DESC:
-;   Jump stub to ESQIFF_HandleBrushIniReloadHotkey.
+;   Jump stub to _ESQIFF_HandleBrushIniReloadHotkey.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey:
-    JMP     ESQIFF_HandleBrushIniReloadHotkey
+    JMP     _ESQIFF_HandleBrushIniReloadHotkey
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_BRUSH_FreeBrushResources   (JumpStub_BRUSH_FreeBrushResources)
@@ -1248,14 +1248,14 @@ PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ED1_WaitForFlagAndClearBit1
+;   _ED1_WaitForFlagAndClearBit1
 ; DESC:
-;   Jump stub to ED1_WaitForFlagAndClearBit1.
+;   Jump stub to _ED1_WaitForFlagAndClearBit1.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1:
-    JMP     ED1_WaitForFlagAndClearBit1
+    JMP     _ED1_WaitForFlagAndClearBit1
 
 ;------------------------------------------------------------------------------
 ; FUNC: _PARSEINI_JMPTBL_WDISP_SPrintf   (JumpStub_WDISP_SPrintf)

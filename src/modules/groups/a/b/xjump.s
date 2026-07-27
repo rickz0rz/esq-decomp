@@ -62,7 +62,7 @@ GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQIFF_DeallocateAdsAndLogoLstData
+;   _ESQIFF_DeallocateAdsAndLogoLstData
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -73,7 +73,7 @@ GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData:
-    JMP     ESQIFF_DeallocateAdsAndLogoLstData
+    JMP     _ESQIFF_DeallocateAdsAndLogoLstData
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries   (Routine at GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries)

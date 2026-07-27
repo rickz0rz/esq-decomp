@@ -441,7 +441,7 @@ _DISPTEXT_LayoutAndAppendToBuffer:
     BEQ.S   .return_status
 
     MOVE.L  A0,-(A7)
-    BSR.W   DISPTEXT_AppendToBuffer
+    BSR.W   _DISPTEXT_AppendToBuffer
 
     CLR.L   (A7)
     BSR.W   _DISPTEXT_BuildLinePointerTable

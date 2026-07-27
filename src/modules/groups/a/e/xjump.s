@@ -194,7 +194,7 @@ _GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   TEXTDISP_ComputeTimeOffset
+;   _TEXTDISP_ComputeTimeOffset
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -205,7 +205,7 @@ _GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset:
-    JMP     TEXTDISP_ComputeTimeOffset
+    JMP     _TEXTDISP_ComputeTimeOffset
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString   (Routine at _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString)

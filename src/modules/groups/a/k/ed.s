@@ -201,7 +201,7 @@ ED_DispatchEscMenuState:
 ;   A0/A1/A2/A6/A7/D0/D1/D2/D7
 ; CALLS:
 ;   _ED_DrawCursorChar, _ED_ApplyActiveFlagToAdData, _ED_RedrawAllRows, ED_RedrawRow, ED_TransformLineSpacing_Mode1, ED_TransformLineSpacing_Mode2, ED_TransformLineSpacing_Mode3,
-;   _ED_CommitCurrentAdEdits, ED_NextAdNumber, ED_PrevAdNumber, ED_DrawEditHelpText, _GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble, _GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble,
+;   _ED_CommitCurrentAdEdits, _ED_NextAdNumber, _ED_PrevAdNumber, ED_DrawEditHelpText, _GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble, _GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble,
 ;   ED1_JMPTBL_LADFUNC_MergeHighLowNibbles, ED1_JMPTBL_LADFUNC_PackNibblesToByte, ED1_JMPTBL_MEM_Move,
 ;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
 ;   _GROUP_AG_JMPTBL_MATH_Mulu32, _GROUP_AG_JMPTBL_MATH_DivS32,
@@ -641,7 +641,7 @@ ED_HandleEditorInput:
     CMP.B   D1,D0
     BNE.S   .after_alt_code
 
-    JSR     ED_NextAdNumber(PC)
+    JSR     _ED_NextAdNumber(PC)
 
 .after_alt_code:
     MOVE.B  _ED_LastKeyCode,D0
@@ -649,7 +649,7 @@ ED_HandleEditorInput:
     CMP.B   D1,D0
     BNE.W   .finalize_update
 
-    JSR     ED_PrevAdNumber(PC)
+    JSR     _ED_PrevAdNumber(PC)
 
     BRA.W   .finalize_update
 
