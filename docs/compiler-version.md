@@ -382,6 +382,49 @@ The single most diagnostic property is whether the compiler reserves A5. That is
 one test, and it also settles the frame-for-locals class, since they are the same
 property.
 
+## Constant materialisation: the original's rule, measured
+
+Established across ed_draw_diagnostic_mode_text.c, cleanup_draw_grid_time_banner.c
+and ed_draw_bottom_help_bar_background.c. The original reaches a large constant in
+four bytes two ways, and otherwise falls back to a six-byte `MOVE.L`:
+
+| form | example | bytes |
+|---|---|---:|
+| `MOVEQ #n` + `ADD.L Dn,Dn` (x2) | 190 = 95x2, 150 = 75x2, 240 = 120x2, 216 = 108x2 | 4 |
+| `MOVEQ #n` + `NOT.B Dn` (~n) | 215 = ~40, 199 = ~56 | 4 |
+| `MOVE.L #n` | 280, 300, 345, 385, 450, 475, 555, 595, 639 | 6 |
+
+SAS/C 6.00 and 6.51 both generalise to `MOVEQ #n` + `ASL.L #k` for any power of
+two, so they reduce 300 as 75<<2, 328 as 82<<2 and 696 as 87<<3 where the
+original would not. **The original never shifts by more than one.**
+
+That is a cheap, high-signal test for a candidate compiler: compile something
+containing the constant 300 and look for `223c0000012c` rather than `724be589`.
+
+## Arithmetic: three more classes, and a caution
+
+| operation | original | SAS/C 6.51 |
+|---|---|---|
+| `x * 10` | `JSR MATH_Mulu32` (helper) | `ASL`/`ADD` chain inline |
+| `x * 3` | `LSL.L #2` + `SUB.L` | `MOVE`/`ADD`/`ADD` |
+| `x / n` and `x % n` | one `MATH_DivS32` call, quotient in D0 **and** remainder in D1, both used | two separate helper calls |
+
+The caution: these do not all point the same way. On `x * 10` the original calls
+out where SAS/C inlines, but on `x * 3` the original uses the shift and SAS/C
+uses adds. So "SAS/C optimises more" is too glib a summary — the two code
+generators simply pick different reductions, and only the constant-materialisation
+rule above is a clean one-directional difference.
+
+## Parameter and case layout
+
+- **Parameter load order.** The original emits prologue loads in descending
+  register order (D7, D6, D5); 6.00 and 6.51 both emit ascending (D5, D6, D7).
+  `DISPTEXT_SetLayoutParams` is 98 bytes against 98 and differs by nothing else.
+- **Case body layout.** For a switch with more than two cases the compare chain
+  matches but SAS/C places the bodies in a different order, so every dispatch
+  displacement differs. This is why `ED_HandleEditAttributesMenu` shows 29
+  differing regions despite emitting exactly 680 bytes.
+
 ## What would settle it
 
 Run the acceptance test on any Lattice/SAS C in the 5.x range:
