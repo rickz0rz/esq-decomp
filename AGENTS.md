@@ -495,6 +495,27 @@ always includes its own epilogue, so the raw delta overstates by the epilogue
 size. Add it back before judging, and say you did in the header.
 `esqdisp_allocate_highlight_bitmaps.c` is +18 raw and +8 real.
 
+## Five shapes that are hand-written assembly, and how the tool knows
+
+`coverage.py` screens these out so they stop appearing as reachable targets. Each
+was established by working the function, not by looking at it — the first four
+cost real time before they were encoded.
+
+| blocker | signature | why C cannot |
+|---|---|---|
+| `register-args` | entry `MOVEM` preserves D0/D1/A0/A1 | no compiler saves the registers its arguments arrive in |
+| `live-register-on-entry` | first instruction dereferences an address register never loaded | entered with a register already set by the caller |
+| `rotate-instruction` | `ROL`/`ROR`/`ROXL`/`ROXR` | C has no rotate operator; SAS/C emits none |
+| `tail-jump` | last instruction is `JMP` | SAS/C emits `JSR` then `RTS` — different instruction, different stack |
+| `predecrement-store` | `MOVE.x src,-(An)` | SAS/C never emits `-(An)` for a store |
+
+Two of these are narrow enough to quote: exactly **two** functions program-wide
+contain a rotate (the other is `MATH_DivU32`, SAS/C library code), and exactly
+**one** ends in a tail `JMP`. They are not blunt filters.
+
+Between them they emptied the `no-calls` unblocked bucket: it went from 9
+candidates to 0, with 4 restored and 5 proven unreachable.
+
 ## Not every label is a function
 
 A label whose body references `(A5)` but has no `LINK.W A5` is an **interior
@@ -514,3 +535,28 @@ far more than a complete one that does not.
 
 Never reach for inline assembly to close a gap. That is the exact move that
 produced the "odd regressions that don't make sense" in every prior attempt.
+
+**And in any case SAS/C 6.51 has no inline assembly**, which was tested rather
+than assumed. `__asm(" ...")` and `#asm`/`#endasm` are syntax errors; `asm(...)`
+and `__emit(...)` compile silently into ordinary external calls to `_asm` and
+`___emit`, which is worse than an error because it looks like it worked:
+
+```
+asm(" moveq #1,d0");   ->  48790000000061000000584f70004e75   (a call to _asm)
+__emit(0x7001);        ->  4878700161000000584f70004e754e71   (a call to ___emit)
+```
+
+So the rule is not just policy here, it is the toolchain. A function that needs
+assembly stays in assembly.
+
+**What SAS/C does have is `__asm` register parameters**, and they work:
+
+```c
+void __asm t(register __a0 char *p, register __d0 long n)   /* 2e00 2a48 ... */
+```
+
+Arguments arrive in the named registers with no stack traffic. This is untried
+for restoration so far and is the obvious tool for any register-argument leaf
+helper. It does **not** rescue the `register-args` family below, because SAS/C
+still copies the arguments into its own callee-saved registers, whereas those
+routines preserve and work in the argument registers themselves.

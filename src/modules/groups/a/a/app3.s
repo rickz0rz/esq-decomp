@@ -1,6 +1,4 @@
-    XDEF    ESQ_InvokeGcommandInit
     XDEF    ESQ_SupervisorColdReboot
-    XDEF    ESQ_TryRomWriteTest
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_SupervisorColdReboot   (SupervisorColdRebootuncertain)
@@ -13,7 +11,7 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   AA55, ESQ_TryRomWriteTest, FBFFFC
+;   AA55, _ESQ_TryRomWriteTest, FBFFFC
 ; WRITES:
 ;   (none) (see NOTES)
 ; DESC:
@@ -37,12 +35,12 @@ ESQ_SupervisorColdReboot:
     MOVE.W  #$55AA,(A0) ; Are we dynamically patching the rom?
     MOVE.W  (A0),D0
     CMPI.W  #$55AA,D0
-    BNE.W   ESQ_TryRomWriteTest
+    BNE.W   _ESQ_TryRomWriteTest
 
     MOVE.W  #$AA55,(A0)
     MOVE.W  (A0),D0
     CMPI.W  #$AA55,D0
-    BNE.W   ESQ_TryRomWriteTest
+    BNE.W   _ESQ_TryRomWriteTest
 
     MOVE.W  D1,(A0)
     MOVEQ   #0,D0
@@ -51,7 +49,7 @@ ESQ_SupervisorColdReboot:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_TryRomWriteTest   (TryRomWriteTestuncertain)
+; FUNC: _ESQ_TryRomWriteTest   (TryRomWriteTestuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -69,39 +67,3 @@ ESQ_SupervisorColdReboot:
 ; NOTES:
 ;   Used by ESQ_SupervisorColdReboot; likely unreachable when ROM is read-only.
 ;------------------------------------------------------------------------------
-ESQ_TryRomWriteTest:
-    MOVEQ   #1,D0
-    RTS
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: ESQ_InvokeGcommandInit   (InvokeGcommandInituncertain)
-; ARGS:
-;   (none)
-; RET:
-;   (none)
-; CLOBBERS:
-;   A0-A1
-; CALLS:
-;   GCOMMAND_ProcessCtrlCommand
-; READS:
-;   (none)
-; WRITES:
-;   (none)
-; DESC:
-;   Simple wrapper around GCOMMAND_ProcessCtrlCommand with register preservation.
-; NOTES:
-;   Likely used as a callback.
-;------------------------------------------------------------------------------
-ESQ_InvokeGcommandInit:
-    MOVEM.L A0-A1,-(A7)
-    JSR     GCOMMAND_ProcessCtrlCommand
-
-    ADDQ.L  #8,A7
-    RTS
-
-;!======
-
-    ; Alignment
-    ALIGN_WORD

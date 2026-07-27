@@ -1358,6 +1358,7 @@ ESQ_ClampBannerCharRange:
 ;   If BANNER_ResetPendingFlag is non-zero, forces a reset path and clears the flag.
 ;   Also resets when the index matches WDISP_BannerCharRangeEnd, using WDISP_BannerCharRangeStart as the base.
 ;------------------------------------------------------------------------------
+ESQ_AdvanceBannerCharIndex:
     MOVEM.L D2-D3,-(A7)
     MOVE.W  WDISP_BannerCharIndex,D0
     MOVEQ   #1,D2

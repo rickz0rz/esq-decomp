@@ -82,6 +82,50 @@ def survey():
                         'kind': 'predecrement', 'status': done.get(done_key),
                         'blockers': ['predecrement-store']})
             continue
+        # A register-argument helper: the entry MOVEM preserves D0/D1/A0/A1, which
+        # are scratch in every C calling convention -- no compiler saves the
+        # registers its arguments arrive in. These are hand-written assembly called
+        # from assembly, and SAS/C cannot express them even with __asm register
+        # parameters, because __asm still copies the arguments into its OWN
+        # callee-saved registers rather than working in place. Verified against
+        # ESQSHARED4_CopyBannerRowsWithByteOffset and its two siblings.
+        m = re.search(r'^\s*MOVEM\.L\s+(\S+),-\(A7\)', body, re.M)
+        if m and re.search(r'\b(D0|D1|A0|A1)\b', m.group(1).replace('-', ' ').replace('/', ' ')):
+            fns.append({'name': name, 'src': srcf, 'size': len(blob),
+                        'kind': 'register-args', 'status': done.get(done_key),
+                        'blockers': ['register-args']})
+            continue
+        # An interior label in the ADDRESS-register sense: the body uses an address
+        # register as a live input before ever loading it, so it is entered with
+        # that register already set by whoever branched here. The (A5) check above
+        # catches the frame-pointer form; this catches the rest.
+        # ESQSHARED4_SetBannerCopperColorAndThreshold opens `MOVE.B D0,(A4)`.
+        first = next((l for l in lines[1:] if l.strip() and not l.strip().startswith(';')), '')
+        m2 = re.search(r'\((A[0-4])\)', first)
+        if m2 and not re.search(r'(LEA|MOVEA\.L)\s+\S+,' + m2.group(1), body[:body.index(first)] or ' '):
+            fns.append({'name': name, 'src': srcf, 'size': len(blob),
+                        'kind': 'interior', 'status': done.get(done_key),
+                        'blockers': ['live-register-on-entry']})
+            continue
+        # A rotate. C has no rotate operator and SAS/C emits none, so a function
+        # containing ROL/ROR/ROXL/ROXR was written by hand. Narrow by measurement:
+        # exactly two functions program-wide contain one, and the other is
+        # MATH_DivU32, which is SAS/C library code.
+        if re.search(r'\b(ROL|ROR|ROXL|ROXR)\b', body):
+            fns.append({'name': name, 'src': srcf, 'size': len(blob),
+                        'kind': 'no-calls', 'status': done.get(done_key),
+                        'blockers': ['rotate-instruction']})
+            continue
+        # A tail JMP. Transferring to a library vector or another routine instead
+        # of returning is not expressible in C -- SAS/C emits JSR then RTS, which
+        # is a different instruction and a different stack. ESQ_ColdReboot ends
+        # `JMP _LVOColdReboot(A6)` and also BRANCHES into a sibling function.
+        last = [l for l in lines[1:] if l.strip() and not l.strip().startswith(';')]
+        if last and re.search(r'\bJMP\b', last[-1]) and 'JMPTBL' not in name:
+            fns.append({'name': name, 'src': srcf, 'size': len(blob),
+                        'kind': 'no-calls', 'status': done.get(done_key),
+                        'blockers': ['tail-jump']})
+            continue
         # ...but ONE predecrement store is already enough to stop a byte-exact
         # match, so it has to be a blocker even below the threshold that says
         # "this whole function was hand-written". Without this, functions with one

@@ -146,6 +146,8 @@ A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/a/a/app.s"
     include "modules/groups/a/a/app2.s"
     include "modules/groups/a/a/app3.s"
+    include "modules/groups/a/a/app3_esqtryromwritetest.s"
+    include "modules/groups/a/a/app3b.s"
     include "modules/groups/a/a/bevel.s"
     include "modules/groups/a/a/bitmap.s"
     include "modules/groups/a/a/brush.s"
