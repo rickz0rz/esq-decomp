@@ -439,9 +439,16 @@ single-form check and still be wrong:
 
 | operation | original | SAS/C 6.51 |
 |---|---|---|
-| `x * 10` | `JSR MATH_Mulu32` (helper) | `ASL`/`ADD` chain inline |
+| `x * 10` (32-bit) | `JSR MATH_Mulu32` (helper) | `ASL`/`ADD` chain inline |
+| `x * 30` (16-bit) | `MULU #30` inline | `MULU #30` inline (agrees) |
 | `x * 3` | `LSL.L #2` + `SUB.L` | `MOVE`/`ADD`/`ADD` |
 | `x / n` and `x % n` | one `MATH_DivS32` call, quotient in D0 **and** remainder in D1, both used | two separate helper calls |
+
+**Width matters for the multiply.** The original calls the helper only for
+32-bit multiplies; a 16-bit multiply goes inline through `MULU`, and there SAS/C
+agrees. `COI_ComputeEntryTimeDeltaMinutes` is the counterexample that establishes
+this -- earlier files stated the rule as "every multiply by a small constant",
+which was too broad.
 
 The caution: these do not all point the same way. On `x * 10` the original calls
 out where SAS/C inlines, but on `x * 3` the original uses the shift and SAS/C
