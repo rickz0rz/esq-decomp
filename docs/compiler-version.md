@@ -480,11 +480,18 @@ and they cover different properties:
 
 | probe file | restores | size | the one thing it tests |
 |---|---|---:|---|
-| `esqiff_handle_brush_ini_reload_hotkey.c` | `ESQIFF_HandleBrushIniReloadHotkey` | 128/128 | `4EBA` vs `6100` for a cross-unit call |
+| `esqiff_service_pending_copper_palette_moves.c` | `ESQIFF_ServicePendingCopperPaletteMoves` | 372/372 | `4EBA` vs `6100`, and **nothing else** |
+| `esqiff_handle_brush_ini_reload_hotkey.c` | `ESQIFF_HandleBrushIniReloadHotkey` | 128/128 | the same, plus one ordering region |
 | `ladfunc_parse_hex_digit.c` | `LADFUNC_ParseHexDigit` | 100/100 | `MOVE.L Dn,Dm` vs `MOVE.B Dn,Dm` widening a char |
 | `ed_draw_help_panels.c` | `ED_DrawHelpPanels` | 118/116 | `MOVE.L #640` vs `MOVEQ #80`+`LSL.L #3` |
 
-`LADFUNC_ParseHexDigit` is the tightest of the three: 88 of its 100 bytes are
+`ESQIFF_ServicePendingCopperPaletteMoves` supersedes the 128-byte probe in the
+section above for the call-encoding class. It is 372 bytes with eight calls, and
+`casm.py` reports exactly eight differing hunks -- every one of them `4eba`
+against `6100`, with no ninth region of any kind. 340 of its 372 bytes are
+identical. Run it first.
+
+`LADFUNC_ParseHexDigit` is the tightest of the remaining two: 88 of its 100 bytes are
 identical, and the remaining 12 are the same two-byte instruction six times.
 
 ```
