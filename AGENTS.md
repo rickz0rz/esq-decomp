@@ -372,6 +372,12 @@ and mismatched regions.
 | `(long)AvailMem(...) > n` | `AvailMem(...) > n` | `AvailMem` returns ULONG, so the natural form emits `BLS`; the original has `BLE`. `disptext_append_to_buffer.c` |
 | `unsigned short` counters | `short` | when the original's loop bounds use `BCC`/`BCS`/`BHI` rather than `BGE`/`BLT`, the counters are unsigned. `esqiff2_read_serial_record_into_buffer.c` |
 
+**Dead code needs a zero LOCAL, not a literal.** Where the original tests a
+constant zero and branches past a block (`MOVEQ #0` / `TST.L` / `BEQ`), that block
+is unreachable but still occupies bytes. `if (0) {...}` gets folded away; assigning
+0 to a local and testing that keeps it. `parseini_load_weather_strings.c` -- 74 of
+its 168 bytes are dead.
+
 **A green diff does NOT validate struct offsets.** `DATA=FAR` makes every global
 field access an absolute long carrying a relocation, and `cdiff.sh` masks
 relocated fields by definition -- so a wrong struct layout produces byte-identical
