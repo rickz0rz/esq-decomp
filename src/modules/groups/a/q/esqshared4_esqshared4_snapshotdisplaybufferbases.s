@@ -12,9 +12,9 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   ESQSHARED_LivePlaneBase0, ESQSHARED_LivePlaneBase1, _ESQSHARED_LivePlaneBase2
+;   _ESQSHARED_LivePlaneBase0, _ESQSHARED_LivePlaneBase1, _ESQSHARED_LivePlaneBase2
 ; WRITES:
-;   _ESQPARS2_SnapshotLivePlane0Base, ESQPARS2_SnapshotLivePlane1Base, _ESQPARS2_SnapshotLivePlane2Base
+;   _ESQPARS2_SnapshotLivePlane0Base, _ESQPARS2_SnapshotLivePlane1Base, _ESQPARS2_SnapshotLivePlane2Base
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -22,10 +22,10 @@
 ;------------------------------------------------------------------------------
 _ESQSHARED4_SnapshotDisplayBufferBases:
     MOVE.L  A1,-(A7)
-    LEA     ESQSHARED_LivePlaneBase0,A1
+    LEA     _ESQSHARED_LivePlaneBase0,A1
     MOVE.L  (A1),_ESQPARS2_SnapshotLivePlane0Base
-    LEA     ESQSHARED_LivePlaneBase1,A1
-    MOVE.L  (A1),ESQPARS2_SnapshotLivePlane1Base
+    LEA     _ESQSHARED_LivePlaneBase1,A1
+    MOVE.L  (A1),_ESQPARS2_SnapshotLivePlane1Base
     LEA     _ESQSHARED_LivePlaneBase2,A1
     MOVE.L  (A1),_ESQPARS2_SnapshotLivePlane2Base
     MOVEA.L (A7)+,A1

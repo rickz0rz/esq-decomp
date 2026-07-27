@@ -87,7 +87,7 @@ COI_FMT_WIDE_STR_WITH_TRAILING_SPACE:
 ; SYM: _CTASKS_IffTaskDoneFlag/_CTASKS_IffTaskState   (IFF task completion + state)
 ; TYPE: u16/u16
 ; PURPOSE: Coordinates IFF loader task lifecycle and target-state selection.
-; USED BY: CTASKS_*, ESQIFF_*, ESQFUNC_*, PARSEINI_*, GCOMMAND_SaveBrushResult
+; USED BY: CTASKS_*, ESQIFF_*, ESQFUNC_*, PARSEINI_*, _GCOMMAND_SaveBrushResult
 ; NOTES: Observed states include 0 (idle), 4/5/6 (active target classes), 11 (special case).
 ;------------------------------------------------------------------------------
 _CTASKS_IffTaskDoneFlag:

@@ -54,7 +54,7 @@
     XDEF    ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS
     XDEF    Global_STR_TRUE_2
     XDEF    Global_STR_FALSE_2
-    XDEF    __ESQFUNC_BasePaletteRgbTriples
+    XDEF    _ESQFUNC_BasePaletteRgbTriples
     XDEF    ESQFUNC_WeatherSliceWidthInitGate
     XDEF    _Global_PTR_STR_DF0_LOGO_LST
     XDEF    _ESQFUNC_FallbackType3BrushNode
@@ -205,7 +205,7 @@ Global_STR_TRUE_2:
     NStr    "TRUE"
 Global_STR_FALSE_2:
     NStr    "FALSE"
-__ESQFUNC_BasePaletteRgbTriples:
+_ESQFUNC_BasePaletteRgbTriples:
     DC.B    0,0,3       ; Dark Blue
     DC.B    12,12,12    ; Light Gray
     DC.B    0,0,0       ; Black
@@ -226,7 +226,7 @@ _ESQFUNC_FallbackType3BrushNode:
 ; SYM: _ESQIFF_BrushIniListHead/_ESQIFF_GAdsBrushListHead/_ESQIFF_LogoBrushListHead/_ESQFUNC_PwBrushListHead   (brush list heads)
 ; TYPE: pointer/pointer/pointer/pointer
 ; PURPOSE: Head pointers for brush-node lists sourced from brush.ini, g.ads, logo.lst, and pw* tag tables.
-; USED BY: ESQIFF_*, ESQFUNC_*, GCOMMAND_SaveBrushResult, CLEANUP_*, WDISP_*
+; USED BY: ESQIFF_*, ESQFUNC_*, _GCOMMAND_SaveBrushResult, CLEANUP_*, WDISP_*
 ; NOTES: Lists are freed/repopulated by BRUSH_* helpers during source refresh and mode transitions.
 ;------------------------------------------------------------------------------
 _ESQIFF_BrushIniListHead:

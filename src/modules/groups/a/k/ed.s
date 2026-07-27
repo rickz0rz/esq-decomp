@@ -16,7 +16,7 @@
 ;   _ED_EnterTextEditMode, _ED_CaptureKeySequence, _ED_HandleDiagnosticNibbleEdit,
 ;   _ED_HandleSpecialFunctionsMenu, _ED_SaveEverythingToDisk, _ED_SavePrevueDataToDisk,
 ;   _ED_LoadTextAdsFromDh2, _ED_RebootComputer, _ED_HandleEditAttributesMenu,
-;   ED_HandleEditAttributesInput, ED_HandleEditorInput,
+;   _ED_HandleEditAttributesInput, ED_HandleEditorInput,
 ;   _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
 ;   _ED_StateRingIndex, _ED_StateRingWriteIndex, ED_MenuDispatchReentryGuard, _ED_MenuStateId, _Global_UIBusyFlag
@@ -117,7 +117,7 @@ ED_DispatchEscMenuState:
     BRA.S   .advance_index
 
 .case_edit_attributes_input:
-    BSR.W   ED_HandleEditAttributesInput
+    BSR.W   _ED_HandleEditAttributesInput
 
     BRA.S   .advance_index
 

@@ -1,7 +1,7 @@
-    XDEF    KYBD_InitializeInputDevices
+    XDEF    _KYBD_InitializeInputDevices
 
 ;------------------------------------------------------------------------------
-; FUNC: KYBD_InitializeInputDevices   (InitializeInputDevices)
+; FUNC: _KYBD_InitializeInputDevices   (InitializeInputDevices)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -23,7 +23,7 @@
 ; NOTES:
 ;   Uses a 22-byte buffer and sets IOStdReq io_Command = 9 before DoIO.
 ;------------------------------------------------------------------------------
-KYBD_InitializeInputDevices:
+_KYBD_InitializeInputDevices:
     JSR     _GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(PC)
 
     CLR.L   -(A7)

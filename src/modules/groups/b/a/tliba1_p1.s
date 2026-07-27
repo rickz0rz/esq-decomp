@@ -1403,16 +1403,16 @@ TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LADFUNC_GetPackedPenLowNibble
+;   _LADFUNC_GetPackedPenLowNibble
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LADFUNC_GetPackedPenLowNibble.
+;   Jump stub to _LADFUNC_GetPackedPenLowNibble.
 ;------------------------------------------------------------------------------
 TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble:
-    JMP     LADFUNC_GetPackedPenLowNibble
+    JMP     _LADFUNC_GetPackedPenLowNibble
 
 ;------------------------------------------------------------------------------
 ; FUNC: _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode   (JumpStub)

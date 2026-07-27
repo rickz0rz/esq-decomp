@@ -37,18 +37,18 @@ GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LADFUNC_GetPackedPenLowNibble
+;   _LADFUNC_GetPackedPenLowNibble
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to LADFUNC_GetPackedPenLowNibble.
+;   Jump stub to _LADFUNC_GetPackedPenLowNibble.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble:
-    JMP     LADFUNC_GetPackedPenLowNibble
+    JMP     _LADFUNC_GetPackedPenLowNibble
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex   (Jump stub)

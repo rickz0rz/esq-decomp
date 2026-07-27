@@ -6,16 +6,16 @@
     XDEF    _Global_STR_DISK_ERRORS_FORMATTED
     XDEF    _COMMON_QueryDiskUsagePercentScratch
     XDEF    _Global_STR_DISK_IS_FULL_FORMATTED
-    XDEF    CTRL_Bit4CaptureDelayCounter
+    XDEF    _CTRL_Bit4CaptureDelayCounter
     XDEF    CTRL_Bit3CaptureDelayCounter
-    XDEF    CTRL_Bit4CapturePhase
+    XDEF    _CTRL_Bit4CapturePhase
     XDEF    CTRL_Bit4SampleSlotIndex
     XDEF    CTRL_Bit3CapturePhase
     XDEF    CTRL_Bit3SampleSlotIndex
     XDEF    CTRL_Bit4SampleScratch
     XDEF    CTRL_Bit3SampleScratch
     XDEF    _HIGHLIGHT_CopperEffectSeed
-    XDEF    HIGHLIGHT_CopperEffectParamA
+    XDEF    _HIGHLIGHT_CopperEffectParamA
     XDEF    _HIGHLIGHT_CopperEffectParamB
     XDEF    _CTRL_SampleEntryCount
     XDEF    _CTRL_SampleEntryScratch
@@ -75,11 +75,11 @@ _COMMON_QueryDiskUsagePercentScratch:
     DC.W    0
 _Global_STR_DISK_IS_FULL_FORMATTED:
     NStr    "Disk is %ld%% full"
-CTRL_Bit4CaptureDelayCounter:
+_CTRL_Bit4CaptureDelayCounter:
     DC.W    0
 CTRL_Bit3CaptureDelayCounter:
     DC.W    0
-CTRL_Bit4CapturePhase:
+_CTRL_Bit4CapturePhase:
     DC.W    0
 CTRL_Bit4SampleSlotIndex:
     DC.W    0
@@ -93,7 +93,7 @@ CTRL_Bit3SampleScratch:
     DC.L    0,0
 _HIGHLIGHT_CopperEffectSeed:
     DC.W    0
-HIGHLIGHT_CopperEffectParamA:
+_HIGHLIGHT_CopperEffectParamA:
     DC.B    0
 _HIGHLIGHT_CopperEffectParamB:
     DC.B    0
@@ -188,7 +188,7 @@ _BRUSH_SelectedNode:
 ; SYM: _ESQIFF_GAdsBrushListCount/_ESQIFF_LogoBrushListCount   (brush list node counts)
 ; TYPE: u32/u32
 ; PURPOSE: Track active node counts in the G-Ads and Logo brush lists.
-; USED BY: ESQIFF_*, ESQFUNC_*, GCOMMAND_SaveBrushResult
+; USED BY: ESQIFF_*, ESQFUNC_*, _GCOMMAND_SaveBrushResult
 ; NOTES: Counters are incremented on append and decremented on pop; selection paths gate on thresholds (G-Ads >=2, Logo >=1).
 ;------------------------------------------------------------------------------
 _ESQIFF_GAdsBrushListCount:

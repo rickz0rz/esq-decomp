@@ -14,7 +14,7 @@
 ; READS:
 ;   _LADFUNC_EntryPtrTable, _ED_DiagScrollSpeedChar
 ; WRITES:
-;   _LADFUNC_EntryPtrTable entry fields, _ED_TextLimit, LADFUNC_HighlightCycleCountdown, _LADFUNC_EntryCount, _LADFUNC_ParsedEntryCount,
+;   _LADFUNC_EntryPtrTable entry fields, _ED_TextLimit, _LADFUNC_HighlightCycleCountdown, _LADFUNC_EntryCount, _LADFUNC_ParsedEntryCount,
 ;   _WDISP_HighlightActive, _WDISP_HighlightIndex
 ; DESC:
 ;   Clears entry fields and resets highlight/row-count globals.
@@ -48,7 +48,7 @@ _LADFUNC_ClearBannerRectEntries:
 
 .after_loop:
     MOVEQ   #0,D0
-    MOVE.W  D0,LADFUNC_HighlightCycleCountdown
+    MOVE.W  D0,_LADFUNC_HighlightCycleCountdown
     MOVE.W  D0,_LADFUNC_EntryCount
     MOVE.W  D0,_LADFUNC_ParsedEntryCount
     MOVE.W  D0,_WDISP_HighlightActive

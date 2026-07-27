@@ -241,16 +241,16 @@ GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   KYBD_InitializeInputDevices
+;   _KYBD_InitializeInputDevices
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to KYBD_InitializeInputDevices.
+;   Jump stub to _KYBD_InitializeInputDevices.
 ;------------------------------------------------------------------------------
 GROUP_AM_JMPTBL_KYBD_InitializeInputDevices:
-    JMP     KYBD_InitializeInputDevices
+    JMP     _KYBD_InitializeInputDevices
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip   (JumpStub_ESQ_CheckCompatibleVideoChip)
@@ -281,16 +281,16 @@ GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ESQ_CheckAvailableFastMemory
+;   _ESQ_CheckAvailableFastMemory
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ESQ_CheckAvailableFastMemory.
+;   Jump stub to _ESQ_CheckAvailableFastMemory.
 ;------------------------------------------------------------------------------
 GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory:
-    JMP     ESQ_CheckAvailableFastMemory
+    JMP     _ESQ_CheckAvailableFastMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AM_JMPTBL_STRUCT_AllocWithOwner   (JumpStub_STRUCT_AllocWithOwner)

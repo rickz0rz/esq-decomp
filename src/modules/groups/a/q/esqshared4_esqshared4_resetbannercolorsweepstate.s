@@ -14,7 +14,7 @@
 ; READS:
 ;   _CONFIG_BannerCopperHeadByte, f5, f6
 ; WRITES:
-;   ESQ_CopperBannerTailListA, _ESQ_CopperBannerTailListB, _ESQPARS2_BannerSweepEntryGuardCounter, _ESQPARS2_BannerTailBiasValue, _ESQPARS2_BannerColorStepCounter
+;   _ESQ_CopperBannerTailListA, _ESQ_CopperBannerTailListB, _ESQPARS2_BannerSweepEntryGuardCounter, _ESQPARS2_BannerTailBiasValue, _ESQPARS2_BannerColorStepCounter
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -22,7 +22,7 @@
 ;------------------------------------------------------------------------------
 _ESQSHARED4_ResetBannerColorSweepState:
     MOVEQ   #0,D0
-    MOVE.B  #$f6,ESQ_CopperBannerTailListA
+    MOVE.B  #$f6,_ESQ_CopperBannerTailListA
     MOVE.B  #$f6,_ESQ_CopperBannerTailListB
     MOVE.W  #$f5,D0
     ADD.W   _CONFIG_BannerCopperHeadByte,D0

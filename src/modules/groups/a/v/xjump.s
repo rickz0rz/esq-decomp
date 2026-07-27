@@ -79,7 +79,7 @@ _GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_InvokeGcommandInit
+;   _ESQ_InvokeGcommandInit
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -90,7 +90,7 @@ _GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit:
-    JMP     ESQ_InvokeGcommandInit
+    JMP     _ESQ_InvokeGcommandInit
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AV_JMPTBL_EXEC_CallVector_48   (Routine at _GROUP_AV_JMPTBL_EXEC_CallVector_48)

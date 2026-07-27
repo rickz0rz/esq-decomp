@@ -1,4 +1,4 @@
-    XDEF    GCOMMAND_LoadPPV3Template
+    XDEF    _GCOMMAND_LoadPPV3Template
     XDEF    GCOMMAND_ParseCommandString
 
 ;------------------------------------------------------------------------------
@@ -624,7 +624,7 @@ GCOMMAND_ParseCommandString:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_LoadPPV3Template   (Load the Digital_PPV3 template into the working buffer tables.)
+; FUNC: _GCOMMAND_LoadPPV3Template   (Load the Digital_PPV3 template into the working buffer tables.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ; RET:
@@ -642,7 +642,7 @@ GCOMMAND_ParseCommandString:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-GCOMMAND_LoadPPV3Template:
+_GCOMMAND_LoadPPV3Template:
     LINK.W  A5,#-20
     MOVEM.L D5-D7,-(A7)
     MOVEQ   #0,D6

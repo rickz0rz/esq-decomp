@@ -818,7 +818,7 @@ LADFUNC_LoadTextAdsFromFile:
 ; CLOBBERS:
 ;   A1/A2/A3/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   LADFUNC_GetPackedPenLowNibble, _LADFUNC_GetPackedPenHighNibble, _LVOSetAPen, _LVOSetBPen, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition
+;   _LADFUNC_GetPackedPenLowNibble, _LADFUNC_GetPackedPenHighNibble, _LVOSetAPen, _LVOSetBPen, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
@@ -838,7 +838,7 @@ LADFUNC_DisplayTextPackedPens:
     MOVEQ   #0,D0
     MOVE.B  D5,D0
     MOVE.L  D0,-(A7)
-    BSR.W   LADFUNC_GetPackedPenLowNibble
+    BSR.W   _LADFUNC_GetPackedPenLowNibble
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1

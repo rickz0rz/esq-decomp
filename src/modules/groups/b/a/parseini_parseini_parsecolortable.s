@@ -16,7 +16,7 @@
 ; CALLS:
 ;   _PARSEINI_JMPTBL_STRING_CompareNoCase, _PARSEINI_JMPTBL_WDISP_SPrintf, _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition
 ; READS:
-;   _Global_STR_COLOR_PERCENT_D, __ESQFUNC_BasePaletteRgbTriples, _KYBD_CustomPaletteTriplesRBase
+;   _Global_STR_COLOR_PERCENT_D, _ESQFUNC_BasePaletteRgbTriples, _KYBD_CustomPaletteTriplesRBase
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -47,7 +47,7 @@ _PARSEINI_ParseColorTable:
     BRA.S   .init_color_index
 
 .mode5_select_table:
-    MOVE.L  #__ESQFUNC_BasePaletteRgbTriples,-116(A5)
+    MOVE.L  #_ESQFUNC_BasePaletteRgbTriples,-116(A5)
     MOVEQ   #8,D4
 
 .init_color_index:

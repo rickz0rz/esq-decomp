@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   _Global_JMPTBL_SHORT_DAYS_OF_WEEK, _Global_JMPTBL_SHORT_MONTHS, _DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_..DST_STR_NORM_YEAR
+;   _Global_JMPTBL_SHORT_DAYS_OF_WEEK, _Global_JMPTBL_SHORT_MONTHS, _DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_.._DST_STR_NORM_YEAR
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -77,7 +77,7 @@ _DST_FormatBannerDateTime:
     BRA.S   .ampm_string_ready
 
 .use_pm_string:
-    LEA     DST_TAG_AM,A6
+    LEA     _DST_TAG_AM,A6
 
 .ampm_string_ready:
     ; Copy A6 into 64(A7), then 1 into D6. Compare 14(A2) to D6 and if it's not equal,
@@ -94,7 +94,7 @@ _DST_FormatBannerDateTime:
 
 .use_day_suffix_1:
     ; A6 points to "STD"
-    LEA     DST_TAG_STD,A6
+    LEA     _DST_TAG_STD,A6
 
 .day_suffix_ready:
     MOVE.L  A6,68(A7)
@@ -107,7 +107,7 @@ _DST_FormatBannerDateTime:
 
 .use_dst_on_string:
     ; A6 points to "Norm year"
-    LEA     DST_STR_NORM_YEAR,A6
+    LEA     _DST_STR_NORM_YEAR,A6
 
 .dst_string_ready:
     ; Setup the stack and call a printf function with the string

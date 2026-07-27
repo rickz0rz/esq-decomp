@@ -450,7 +450,7 @@ _ED1_EnterEscMenu_AfterVersionText:
 ;   _ED_SaveTextAdsOnExitFlag, _ED_SavedDiagGraphModeChar, _ED_DiagGraphModeChar, _SCRIPT_RuntimeMode
 ; WRITES:
 ;   _ED_DiagnosticsScreenActive, SCRIPT_StatusRefreshHoldFlag, ESQPARS2_EdDiagResetScratchFlag, LOCAVAIL_FilterPrevClassId, _ESQIFF_GAdsBrushListCount, _SCRIPT_RuntimeMode,
-;   CTRL_BufferedByteCount, _CTRL_HPreviousSample, _CTRL_H, _Global_UIBusyFlag, _ESQPARS2_ReadModeFlags
+;   _CTRL_BufferedByteCount, _CTRL_HPreviousSample, _CTRL_H, _Global_UIBusyFlag, _ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Resets display state, refreshes banner data, and restores main screen state.
 ; NOTES:
@@ -543,7 +543,7 @@ ED1_ExitEscMenu:
 
 .after_pending_flag:
     MOVEQ   #0,D0
-    MOVE.W  D0,CTRL_BufferedByteCount
+    MOVE.W  D0,_CTRL_BufferedByteCount
     MOVE.W  D0,_CTRL_HPreviousSample
     MOVE.W  D0,_CTRL_H
     MOVE.W  D0,_Global_UIBusyFlag

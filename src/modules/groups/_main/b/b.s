@@ -1,8 +1,8 @@
-    XDEF    ESQ_CheckAvailableFastMemory
+    XDEF    _ESQ_CheckAvailableFastMemory
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_CheckAvailableFastMemory
+; FUNC: _ESQ_CheckAvailableFastMemory
 ; ARGS:
 ;   (none)
 ; RET:
@@ -23,7 +23,7 @@
 ;------------------------------------------------------------------------------
 ; If the system has at least 600,000 bytes of fast memory, keep _HAS_REQUESTED_FAST_MEMORY set to 0.
 ; Otherwise, set it to 1.
-ESQ_CheckAvailableFastMemory:
+_ESQ_CheckAvailableFastMemory:
 
 .desiredMemory  = 600000
 

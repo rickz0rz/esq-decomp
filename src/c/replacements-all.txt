@@ -221,7 +221,6 @@ modules/groups/b/a/parseini_parseini_loadweatherstrings.s              c/parsein
 modules/groups/b/a/parseini_parseini_parsecolortable.s                 c/parseini_parse_color_table.c
 modules/groups/b/a/parseini3_parseini_updatectrlhdeltamax.s            c/parseini_update_ctrl_h_delta_max.c
 modules/groups/b/a/parseini3_parseini_writeerrorlogentry.s             c/parseini_write_error_log_entry.c
-modules/groups/b/a/script2_script_assertctrlline.s                     c/script_assert_ctrl_line.c
 modules/groups/b/a/script2_script_assertctrllineifenabled.s            c/script_assert_ctrl_line_if_enabled.c
 modules/groups/b/a/script3_script_checkpathexists.s                    c/script_check_path_exists.c
 modules/groups/b/a/script2_script_clearctrllineifenabled.s             c/script_clear_ctrl_line_if_enabled.c

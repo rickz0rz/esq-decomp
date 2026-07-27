@@ -41,7 +41,7 @@
 ;   _Global_HANDLE_PREVUE_FONT, _Global_REF_RASTPORT_1, Global_REF_RASTPORT_2,
 ;   _Global_REF_STR_CLOCK_FORMAT, _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort, WDISP_HighlightBufferMode, _WDISP_HighlightRasterHeightPx,
 ;   _WDISP_352x240RasterPtrTable/_WDISP_BannerRowScratchRasterTable0/_WDISP_LivePlaneRasterTable0/_WDISP_DisplayContextPlanePointer0 tables, _WDISP_DisplayContextBase, _WDISP_BannerWorkRasterPtr,
-;   _SCRIPT_CtrlInterfaceEnabledFlag, ESQIFF_RecordBufferPtr, ESQSHARED_BannerRowScratchRasterBase0-ESQSHARED_BannerRowScratchRasterBase2, ESQSHARED_LivePlaneBase0-ESQSHARED_DisplayContextPlaneBase4,
+;   _SCRIPT_CtrlInterfaceEnabledFlag, ESQIFF_RecordBufferPtr, ESQSHARED_BannerRowScratchRasterBase0-ESQSHARED_BannerRowScratchRasterBase2, _ESQSHARED_LivePlaneBase0-ESQSHARED_DisplayContextPlaneBase4,
 ;   _Global_REF_BAUD_RATE, _WDISP_SerialIoRequestPtr, _WDISP_SerialMessagePortPtr,
 ;   _Global_REF_96_BYTES_ALLOCATED, numerous state globals cleared in .init_global_state
 ; DESC:
@@ -835,8 +835,8 @@ ESQ_MainInitAndRun:
 
 .after_raster_setup:
     ; Snapshot currently live 696x2 plane bases for ESQSHARED copy paths.
-    MOVE.L  _WDISP_LivePlaneRasterTable0,ESQSHARED_LivePlaneBase0
-    MOVE.L  WDISP_LivePlaneRasterTable1,ESQSHARED_LivePlaneBase1
+    MOVE.L  _WDISP_LivePlaneRasterTable0,_ESQSHARED_LivePlaneBase0
+    MOVE.L  WDISP_LivePlaneRasterTable1,_ESQSHARED_LivePlaneBase1
     MOVE.L  WDISP_LivePlaneRasterTable2,_ESQSHARED_LivePlaneBase2
 
     PEA     15.W                        ; Height
@@ -892,7 +892,7 @@ ESQ_MainInitAndRun:
     MOVE.W  D0,_Global_WORD_T_VALUE
     MOVE.W  D0,_Global_WORD_H_VALUE
     MOVE.W  D0,CLEANUP_PendingAlertFlag
-    MOVE.W  D0,CTRL_BufferedByteCount
+    MOVE.W  D0,_CTRL_BufferedByteCount
     MOVE.W  D0,_CTRL_HDeltaMax
     MOVE.W  D0,_CTRL_HPreviousSample
     MOVE.W  D0,_CTRL_H

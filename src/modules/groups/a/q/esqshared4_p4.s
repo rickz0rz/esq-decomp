@@ -501,7 +501,7 @@ ESQSHARED4_CopyBannerRowsWithByteOffset:
 ; CALLS:
 ;   ESQSHARED4_CopyInterleavedRowWordsFromOffset, ESQSHARED4_CopyBannerRowsWithByteOffset
 ; READS:
-;   _ESQ_CopperListBannerA, _ESQ_CopperListBannerB, _ESQPARS2_BannerRowCopySpanBytes, ESQPARS2_BannerRowCopyStrideBytes, ESQPARS2_ActiveCopperListSelectFlag, ESQSHARED_BannerRowScratchRasterBase0, ESQSHARED_BannerRowScratchRasterBase1, ESQSHARED_BannerRowScratchRasterBase2
+;   _ESQ_CopperListBannerA, _ESQ_CopperListBannerB, _ESQPARS2_BannerRowCopySpanBytes, _ESQPARS2_BannerRowCopyStrideBytes, ESQPARS2_ActiveCopperListSelectFlag, ESQSHARED_BannerRowScratchRasterBase0, ESQSHARED_BannerRowScratchRasterBase1, ESQSHARED_BannerRowScratchRasterBase2
 ; WRITES:
 ;   ESQPARS2_BannerCopySourceOffset, ESQPARS2_BannerCopyTailOffset
 ; DESC:
@@ -512,7 +512,7 @@ ESQSHARED4_CopyBannerRowsWithByteOffset:
 ESQSHARED4_BlitBannerRowsForActiveField:
     MOVEM.L D0/A0-A1,-(A7)
     MOVE.L  _ESQPARS2_BannerRowCopySpanBytes,D1
-    MOVE.L  ESQPARS2_BannerRowCopyStrideBytes,D0
+    MOVE.L  _ESQPARS2_BannerRowCopyStrideBytes,D0
     TST.L   ESQPARS2_ActiveCopperListSelectFlag
     BNE.S   .lab_0C9F
 

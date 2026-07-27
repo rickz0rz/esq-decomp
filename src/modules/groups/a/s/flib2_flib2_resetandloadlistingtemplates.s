@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   A0
 ; CALLS:
-;   GCOMMAND_LoadDefaultTable, GCOMMAND_LoadMplexTemplate, GCOMMAND_LoadPPV3Template, _FLIB2_LoadDigitalNicheDefaults, _FLIB2_LoadDigitalMplexDefaults, _FLIB2_LoadDigitalPpvDefaults
+;   _GCOMMAND_LoadDefaultTable, _GCOMMAND_LoadMplexTemplate, _GCOMMAND_LoadPPV3Template, _FLIB2_LoadDigitalNicheDefaults, _FLIB2_LoadDigitalMplexDefaults, _FLIB2_LoadDigitalPpvDefaults
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -34,10 +34,10 @@ _FLIB2_ResetAndLoadListingTemplates:
 
     BSR.W   _FLIB2_LoadDigitalPpvDefaults
 
-    BSR.W   GCOMMAND_LoadDefaultTable
+    BSR.W   _GCOMMAND_LoadDefaultTable
 
-    BSR.W   GCOMMAND_LoadMplexTemplate
+    BSR.W   _GCOMMAND_LoadMplexTemplate
 
-    BSR.W   GCOMMAND_LoadPPV3Template
+    BSR.W   _GCOMMAND_LoadPPV3Template
 
     RTS

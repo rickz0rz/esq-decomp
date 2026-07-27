@@ -12,18 +12,18 @@
 ; CALLS:
 ;   _GET_BIT_4_OF_CIAB_PRA_INTO_D1
 ; READS:
-;   CTRL_Bit4CapturePhase, CTRL_Bit4CaptureDelayCounter, CTRL_Bit4SampleSlotIndex
+;   _CTRL_Bit4CapturePhase, _CTRL_Bit4CaptureDelayCounter, CTRL_Bit4SampleSlotIndex
 ; WRITES:
-;   CTRL_Bit4CapturePhase, CTRL_Bit4CaptureDelayCounter, CTRL_Bit4SampleSlotIndex, CTRL_Bit4SampleScratch, _CTRL_BUFFER, _CTRL_H, _CTRL_HPreviousSample,
-;   _CTRL_HDeltaMax, CTRL_BufferedByteCount
+;   _CTRL_Bit4CapturePhase, _CTRL_Bit4CaptureDelayCounter, CTRL_Bit4SampleSlotIndex, CTRL_Bit4SampleScratch, _CTRL_BUFFER, _CTRL_H, _CTRL_HPreviousSample,
+;   _CTRL_HDeltaMax, _CTRL_BufferedByteCount
 ; DESC:
 ;   Samples CIAB PRA bit 4 over time, assembles bytes, and appends them to
 ;   _CTRL_BUFFER.
 ; NOTES:
-;   Uses CTRL_Bit4CapturePhase/1AF8/1AFB as sampling state. Buffer wraps at $01F4.
+;   Uses _CTRL_Bit4CapturePhase/1AF8/1AFB as sampling state. Buffer wraps at $01F4.
 ;------------------------------------------------------------------------------
 _ESQ_CaptureCtrlBit4Stream:
-    TST.W   CTRL_Bit4CapturePhase            ; Test CTRL_Bit4CapturePhase...
+    TST.W   _CTRL_Bit4CapturePhase            ; Test _CTRL_Bit4CapturePhase...
     BNE.S   .advance_state       ; and if it's not equal to zero, jump to LAB_0042
 
     JSR     _GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)        ; Read the bit from CIAB_PRA and store bit 4's value in D1
@@ -31,16 +31,16 @@ _ESQ_CaptureCtrlBit4Stream:
     TST.B   D1                  ; Test the value (this cheaply is seeing if it's 1 or 0)
     BPL.W   .return              ; If it's 1, jump to LAB_004D (which is just RTS) so exit this subroutine.
 
-    ADDQ.W  #1,CTRL_Bit4CapturePhase
-    MOVE.W  #4,CTRL_Bit4CaptureDelayCounter
+    ADDQ.W  #1,_CTRL_Bit4CapturePhase
+    MOVE.W  #4,_CTRL_Bit4CaptureDelayCounter
     MOVE.W  #0,CTRL_Bit4SampleSlotIndex
     RTS
 
 .advance_state:
-    MOVE.W  CTRL_Bit4CapturePhase,D0
+    MOVE.W  _CTRL_Bit4CapturePhase,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,CTRL_Bit4CapturePhase
-    MOVE.W  CTRL_Bit4CaptureDelayCounter,D1
+    MOVE.W  D0,_CTRL_Bit4CapturePhase
+    MOVE.W  _CTRL_Bit4CaptureDelayCounter,D1
     CMP.W   D0,D1
     BGT.W   .return
 
@@ -53,7 +53,7 @@ _ESQ_CaptureCtrlBit4Stream:
     TST.B   D1
     BPL.S   .reset_state
 
-    MOVE.W  #14,CTRL_Bit4CaptureDelayCounter
+    MOVE.W  #14,_CTRL_Bit4CaptureDelayCounter
     MOVEQ   #7,D0
     LEA     CTRL_Bit4SampleScratch,A5
     MOVEQ   #0,D1
@@ -66,9 +66,9 @@ _ESQ_CaptureCtrlBit4Stream:
 
 .reset_state:
     MOVEQ   #0,D0           ; Set D0 to 0
-    MOVE.W  D0,CTRL_Bit4CaptureDelayCounter     ; Set CTRL_Bit4CaptureDelayCounter to D0 (0)
+    MOVE.W  D0,_CTRL_Bit4CaptureDelayCounter     ; Set _CTRL_Bit4CaptureDelayCounter to D0 (0)
     MOVE.W  D0,CTRL_Bit4SampleSlotIndex     ; Set CTRL_Bit4SampleSlotIndex to D0 (0)
-    MOVE.W  D0,CTRL_Bit4CapturePhase     ; Set CTRL_Bit4CapturePhase to D0 (0)
+    MOVE.W  D0,_CTRL_Bit4CapturePhase     ; Set _CTRL_Bit4CapturePhase to D0 (0)
     RTS
 
 .collect_samples:
@@ -82,7 +82,7 @@ _ESQ_CaptureCtrlBit4Stream:
     ADDA.W  CTRL_Bit4SampleSlotIndex,A5
     MOVE.B  D1,(A5)
     ADDQ.W  #1,CTRL_Bit4SampleSlotIndex
-    ADDI.W  #10,CTRL_Bit4CaptureDelayCounter
+    ADDI.W  #10,_CTRL_Bit4CaptureDelayCounter
     RTS
 
 .assemble_and_store:
@@ -129,7 +129,7 @@ _ESQ_CaptureCtrlBit4Stream:
     ADDI.W  #$1f4,D0
 
 .fill_count_ok:
-    MOVE.W  D0,CTRL_BufferedByteCount
+    MOVE.W  D0,_CTRL_BufferedByteCount
     CMP.W   _CTRL_HDeltaMax,D0
     BCS.W   .reset_state_and_exit
 
@@ -137,9 +137,9 @@ _ESQ_CaptureCtrlBit4Stream:
 
 .reset_state_and_exit:
     MOVEQ   #0,D0
-    MOVE.W  D0,CTRL_Bit4CaptureDelayCounter
+    MOVE.W  D0,_CTRL_Bit4CaptureDelayCounter
     MOVE.W  D0,CTRL_Bit4SampleSlotIndex
-    MOVE.W  D0,CTRL_Bit4CapturePhase
+    MOVE.W  D0,_CTRL_Bit4CapturePhase
 
 .return:
     RTS

@@ -1,8 +1,8 @@
-    XDEF    ED_HandleEditAttributesInput
+    XDEF    _ED_HandleEditAttributesInput
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_HandleEditAttributesInput   (Handle edit attributes inputuncertain)
+; FUNC: _ED_HandleEditAttributesInput   (Handle edit attributes inputuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Recognizes key code $80 with modifier bytes to trigger _ED_IncrementAdNumber/_ED_DecrementAdNumber.
 ;------------------------------------------------------------------------------
-ED_HandleEditAttributesInput:
+_ED_HandleEditAttributesInput:
     MOVEQ   #0,D0
     MOVE.B  _ED_LastKeyCode,D0
     SUBI.W  #13,D0

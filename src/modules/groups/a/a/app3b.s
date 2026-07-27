@@ -1,7 +1,7 @@
-    XDEF    ESQ_InvokeGcommandInit
+    XDEF    _ESQ_InvokeGcommandInit
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_InvokeGcommandInit   (InvokeGcommandInituncertain)
+; FUNC: _ESQ_InvokeGcommandInit   (InvokeGcommandInituncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -19,7 +19,7 @@
 ; NOTES:
 ;   Likely used as a callback.
 ;------------------------------------------------------------------------------
-ESQ_InvokeGcommandInit:
+_ESQ_InvokeGcommandInit:
     MOVEM.L A0-A1,-(A7)
     JSR     _GCOMMAND_ProcessCtrlCommand
 

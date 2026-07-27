@@ -8,7 +8,7 @@
     XDEF    Global_STR_NEWGRID2_C_3
     XDEF    Global_STR_NEWGRID2_C_4
     XDEF    _Global_STR_NEWGRID2_C_5
-    XDEF    Global_STR_NEWGRID2_C_6
+    XDEF    _Global_STR_NEWGRID2_C_6
     XDEF    _NEWGRID2_ErrorLogEntryPtr
 ; ========== NEWGRID2.c ==========
 
@@ -62,7 +62,7 @@ Global_STR_NEWGRID2_C_4:
     NStr    "NEWGRID2.c"
 _Global_STR_NEWGRID2_C_5:
     NStr    "NEWGRID2.c"
-Global_STR_NEWGRID2_C_6:
+_Global_STR_NEWGRID2_C_6:
     NStr    "NEWGRID2.c"
 ;------------------------------------------------------------------------------
 ; SYM: _NEWGRID2_ErrorLogEntryPtr   (error log entry pointer)

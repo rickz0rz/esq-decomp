@@ -125,19 +125,19 @@ LADFUNC_ResetEntryTextBuffers:
 ; CALLS:
 ;   NEWGRID_JMPTBL_MATH_DivS32, _LADFUNC_BuildHighlightLinesFromText
 ; READS:
-;   _WDISP_HighlightActive, LADFUNC_HighlightCycleCountdown, LADFUNC_HighlightCycleCountdownReload, _LADFUNC_EntryCount, _LADFUNC_EntryPtrTable
+;   _WDISP_HighlightActive, _LADFUNC_HighlightCycleCountdown, LADFUNC_HighlightCycleCountdownReload, _LADFUNC_EntryCount, _LADFUNC_EntryPtrTable
 ; WRITES:
-;   _LADFUNC_EntryCount, LADFUNC_HighlightCycleCountdown
+;   _LADFUNC_EntryCount, _LADFUNC_HighlightCycleCountdown
 ; DESC:
 ;   Advances the highlighted entry when active and refreshes the display.
 ; NOTES:
-;   Resets LADFUNC_HighlightCycleCountdown from LADFUNC_HighlightCycleCountdownReload when the countdown underflows.
+;   Resets _LADFUNC_HighlightCycleCountdown from LADFUNC_HighlightCycleCountdownReload when the countdown underflows.
 ;------------------------------------------------------------------------------
     MOVE.W  _WDISP_HighlightActive,D0
     SUBQ.W  #1,D0
     BNE.S   .maybe_reset
 
-    MOVE.W  LADFUNC_HighlightCycleCountdown,D0
+    MOVE.W  _LADFUNC_HighlightCycleCountdown,D0
     BLE.S   .maybe_reset
 
 .find_next_highlight:
@@ -168,22 +168,22 @@ LADFUNC_ResetEntryTextBuffers:
     BSR.W   _LADFUNC_BuildHighlightLinesFromText
 
     ADDQ.W  #4,A7
-    MOVE.W  LADFUNC_HighlightCycleCountdown,D0
+    MOVE.W  _LADFUNC_HighlightCycleCountdown,D0
     MOVE.L  D0,D1
     SUBQ.W  #1,D1
-    MOVE.W  D1,LADFUNC_HighlightCycleCountdown
+    MOVE.W  D1,_LADFUNC_HighlightCycleCountdown
 
 .maybe_reset:
     MOVE.W  _WDISP_HighlightActive,D0
     SUBQ.W  #1,D0
     BNE.S   .return
 
-    MOVE.W  LADFUNC_HighlightCycleCountdown,D0
+    MOVE.W  _LADFUNC_HighlightCycleCountdown,D0
     MOVEQ   #1,D1
     CMP.W   D1,D0
     BGE.S   .return
 
-    MOVE.W  LADFUNC_HighlightCycleCountdownReload,LADFUNC_HighlightCycleCountdown
+    MOVE.W  LADFUNC_HighlightCycleCountdownReload,_LADFUNC_HighlightCycleCountdown
 
 .return:
     RTS

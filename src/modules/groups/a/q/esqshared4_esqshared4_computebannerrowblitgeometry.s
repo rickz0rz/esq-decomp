@@ -12,25 +12,25 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   ESQPARS2_BannerRowCount, _ESQPARS2_BannerRowWidthBytes, ESQPARS2_BannerCopyBlockSpanBytes
+;   _ESQPARS2_BannerRowCount, _ESQPARS2_BannerRowWidthBytes, _ESQPARS2_BannerCopyBlockSpanBytes
 ; WRITES:
-;   _ESQPARS2_BannerRowCopyWordCount, _ESQPARS2_BannerRowCopySpanBytes, ESQPARS2_BannerRowCopyStrideBytes, _ESQSHARED_BlitAddressOffset, _ESQPARS2_BannerCopyBlockWordLimit
+;   _ESQPARS2_BannerRowCopyWordCount, _ESQPARS2_BannerRowCopySpanBytes, _ESQPARS2_BannerRowCopyStrideBytes, _ESQSHARED_BlitAddressOffset, _ESQPARS2_BannerCopyBlockWordLimit
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _ESQSHARED4_ComputeBannerRowBlitGeometry:
-    MOVE.L  ESQPARS2_BannerRowCount,D0
+    MOVE.L  _ESQPARS2_BannerRowCount,D0
     MULU    #$58,D0
     MOVE.L  D0,_ESQPARS2_BannerRowCopySpanBytes
     CLR.L   D0
     MOVE.W  _ESQPARS2_BannerRowWidthBytes,D0
     LSR.W   #3,D0
-    MOVE.L  D0,ESQPARS2_BannerRowCopyStrideBytes
+    MOVE.L  D0,_ESQPARS2_BannerRowCopyStrideBytes
     ADDI.L  #$58,D0
     MOVE.L  D0,_ESQSHARED_BlitAddressOffset
-    MOVE.W  ESQPARS2_BannerCopyBlockSpanBytes,D0
+    MOVE.W  _ESQPARS2_BannerCopyBlockSpanBytes,D0
     LSR.W   #5,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,_ESQPARS2_BannerRowCopyWordCount

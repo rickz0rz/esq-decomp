@@ -1,7 +1,7 @@
-    XDEF    LADFUNC_GetPackedPenLowNibble
+    XDEF    _LADFUNC_GetPackedPenLowNibble
 
 ;------------------------------------------------------------------------------
-; FUNC: LADFUNC_GetPackedPenLowNibble   (Routine at LADFUNC_GetPackedPenLowNibble)
+; FUNC: _LADFUNC_GetPackedPenLowNibble   (Routine at _LADFUNC_GetPackedPenLowNibble)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -19,7 +19,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LADFUNC_GetPackedPenLowNibble:
+_LADFUNC_GetPackedPenLowNibble:
     MOVE.L  D7,-(A7)
     MOVE.B  11(A7),D7
     MOVE.L  D7,D0

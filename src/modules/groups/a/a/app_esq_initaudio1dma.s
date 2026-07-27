@@ -14,7 +14,7 @@
 ; READS:
 ;   _Global_PTR_AUD1_DMA
 ; WRITES:
-;   AUD1LCH, AUD1LEN, AUD1VOL, AUD1PER, DMACON, CTRL_Bit4CaptureDelayCounter, CTRL_Bit4CapturePhase, _CTRL_SampleEntryCount
+;   AUD1LCH, AUD1LEN, AUD1VOL, AUD1PER, DMACON, _CTRL_Bit4CaptureDelayCounter, _CTRL_Bit4CapturePhase, _CTRL_SampleEntryCount
 ; DESC:
 ;   Initializes audio channel 1 DMA and clears related CTRL capture state.
 ;------------------------------------------------------------------------------
@@ -27,8 +27,8 @@ _ESQ_InitAudio1Dma:
     MOVE.W  #$65b,(AUD1PER-BLTDDAT)(A0)
     MOVE.W  #$8202,(DMACON-BLTDDAT)(A0)
     MOVEQ   #0,D0
-    MOVE.W  D0,CTRL_Bit4CaptureDelayCounter
-    MOVE.W  D0,CTRL_Bit4CapturePhase
+    MOVE.W  D0,_CTRL_Bit4CaptureDelayCounter
+    MOVE.W  D0,_CTRL_Bit4CapturePhase
     MOVE.W  D0,_CTRL_SampleEntryCount
     RTS
 

@@ -64,7 +64,7 @@ extern long SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(long ch);
 extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
 
 extern char KYBD_CustomPaletteTriplesRBase[];
-extern char _ESQFUNC_BasePaletteRgbTriples[];
+extern char ESQFUNC_BasePaletteRgbTriples[];
 extern char Global_STR_COLOR_PERCENT_D[];
 
 void PARSEINI_ParseColorTable(char *key, char *digits, long mode)
@@ -81,7 +81,7 @@ void PARSEINI_ParseColorTable(char *key, char *digits, long mode)
         count = 8;
         break;
     case 5:
-        table = _ESQFUNC_BasePaletteRgbTriples;
+        table = ESQFUNC_BasePaletteRgbTriples;
         count = 8;
         break;
     }

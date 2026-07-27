@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0-D1/A0/A4/A6
 ; CALLS:
-;   _GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult (GCOMMAND_SaveBrushResult), _LVOForbid, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+;   _GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult (_GCOMMAND_SaveBrushResult), _LVOForbid, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   _CTASKS_IffTaskState (state), _CTASKS_PendingLogoBrushDescriptor/_CTASKS_PendingGAdsBrushDescriptor/_CTASKS_PendingIffBrushDescriptor (scratch ptrs), _BRUSH_LoadInProgressFlag
 ;   _Global_REF_LIST_IFF_TASK_PROC, _Global_STR_CTASKS_C_1

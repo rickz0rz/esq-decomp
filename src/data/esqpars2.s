@@ -22,7 +22,7 @@
     XDEF    ESQPARS2_BannerSnapshotPlane2DstPtr
     XDEF    ESQPARS2_BannerSnapshotPlane2DstPtrLo
     XDEF    _ESQPARS2_SnapshotLivePlane0Base
-    XDEF    ESQPARS2_SnapshotLivePlane1Base
+    XDEF    _ESQPARS2_SnapshotLivePlane1Base
     XDEF    _ESQPARS2_SnapshotLivePlane2Base
     XDEF    ESQPARS2_BannerRowOffsetResetPtrPlane0
     XDEF    ESQPARS2_BannerRowOffsetResetPtrPlane1
@@ -45,14 +45,14 @@
     XDEF    _ESQPARS2_BannerColorBaseValue
     XDEF    _ESQPARS2_BannerRowCopyWordCount
     XDEF    _ESQPARS2_BannerRowCopySpanBytes
-    XDEF    ESQPARS2_BannerRowCopyStrideBytes
+    XDEF    _ESQPARS2_BannerRowCopyStrideBytes
     XDEF    ESQPARS2_BannerCopySourceOffset
     XDEF    ESQPARS2_BannerCopyTailOffset
     XDEF    _ESQSHARED_BlitAddressOffset
     XDEF    ESQPARS2_ActiveCopperListSelectFlag
-    XDEF    ESQPARS2_BannerRowCount
+    XDEF    _ESQPARS2_BannerRowCount
     XDEF    _ESQPARS2_BannerRowWidthBytes
-    XDEF    ESQPARS2_BannerCopyBlockSpanBytes
+    XDEF    _ESQPARS2_BannerCopyBlockSpanBytes
     XDEF    _ESQPARS2_BannerCopyBlockWordLimit
     XDEF    _ESQPARS2_BannerQueueAttentionDelayTicks
     XDEF    ESQPARS2_LogAppendSpinlock
@@ -187,7 +187,7 @@ ESQPARS2_BannerSnapshotPlane2DstPtrLo:
     DS.W    1
 _ESQPARS2_SnapshotLivePlane0Base:
     DS.L    1
-ESQPARS2_SnapshotLivePlane1Base:
+_ESQPARS2_SnapshotLivePlane1Base:
     DS.L    1
 _ESQPARS2_SnapshotLivePlane2Base:
     DS.L    1
@@ -247,7 +247,7 @@ _ESQPARS2_BannerRowCopyWordCount:
     DS.W    1
 _ESQPARS2_BannerRowCopySpanBytes:
     DS.L    1
-ESQPARS2_BannerRowCopyStrideBytes:
+_ESQPARS2_BannerRowCopyStrideBytes:
     DS.L    1
 ESQPARS2_BannerCopySourceOffset:
     DS.L    1
@@ -264,11 +264,11 @@ _ESQSHARED_BlitAddressOffset:
     DS.L    1
 ESQPARS2_ActiveCopperListSelectFlag:
     DS.L    1
-ESQPARS2_BannerRowCount:
+_ESQPARS2_BannerRowCount:
     DC.L    $00000022
 _ESQPARS2_BannerRowWidthBytes:
     DC.W    $0100
-ESQPARS2_BannerCopyBlockSpanBytes:
+_ESQPARS2_BannerCopyBlockSpanBytes:
     DC.W    $00c0
 _ESQPARS2_BannerCopyBlockWordLimit:
     DC.W    $0010

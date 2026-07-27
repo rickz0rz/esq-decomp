@@ -1,8 +1,8 @@
-    XDEF    PARSEINI_CheckCtrlHChange
+    XDEF    _PARSEINI_CheckCtrlHChange
 
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_CheckCtrlHChange
+; FUNC: _PARSEINI_CheckCtrlHChange
 ; ARGS:
 ;   (none)
 ; RET:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Uses _PARSEINI_CtrlHChangeGateFlag as gate; resets PARSEINI_ClockChangeActiveFlag when no change.
 ;------------------------------------------------------------------------------
-PARSEINI_CheckCtrlHChange:
+_PARSEINI_CheckCtrlHChange:
     MOVEM.L D2/D7,-(A7)
 
     MOVEQ   #0,D7

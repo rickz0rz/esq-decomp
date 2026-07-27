@@ -129,7 +129,7 @@ _ESQSHARED4_ResetBannerColorToStart:
 ; READS:
 ;   _ESQ_CopperListBannerA, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerPlane0DstPtrReset_LoWord, ESQ_BannerSweepSrcPlane0Ptr_LoWord, ESQ_BannerSweepSrcPlane0PtrReset_LoWord, ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, f6, lab_0CAE, lab_0CAF, lab_0CB0
 ; WRITES:
-;   ESQ_BannerColorClampValueA, _ESQ_BannerColorClampValueB, ESQPARS2_BannerSweepDelayCounter, _ESQPARS2_BannerColorStepCounter, ESQPARS2_BannerColorClampThreshold
+;   _ESQ_BannerColorClampValueA, _ESQ_BannerColorClampValueB, ESQPARS2_BannerSweepDelayCounter, _ESQPARS2_BannerColorStepCounter, ESQPARS2_BannerColorClampThreshold
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -207,7 +207,7 @@ ESQSHARED4_ApplyBannerColorStep:
     BLT.S   .lab_0CB2
 
 .lab_0CB1:
-    MOVE.W  #$8a,ESQ_BannerColorClampValueA
+    MOVE.W  #$8a,_ESQ_BannerColorClampValueA
     MOVE.W  #$8a,ESQPARS2_BannerColorClampThreshold
 
 .lab_0CB2:

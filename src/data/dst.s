@@ -21,11 +21,11 @@
     XDEF    Global_STR_DST_C_7
     XDEF    _DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_
     XDEF    _DST_TAG_PM
-    XDEF    DST_TAG_AM
+    XDEF    _DST_TAG_AM
     XDEF    _DST_TAG_DST
-    XDEF    DST_TAG_STD
+    XDEF    _DST_TAG_STD
     XDEF    _DST_STR_LEAP_YEAR
-    XDEF    DST_STR_NORM_YEAR
+    XDEF    _DST_STR_NORM_YEAR
     XDEF    _ED_MenuStateId
     XDEF    ED_MenuDispatchReentryGuard
     XDEF    ED_TextModeReinitPendingFlag
@@ -78,15 +78,15 @@ _DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_:
     NStr2   "%s:  %s%s%02d, '%d (%03d) %2d:%02d:%02d %s %s %s",TextLineFeed
 _DST_TAG_PM:
     NStr    "PM"
-DST_TAG_AM:
+_DST_TAG_AM:
     NStr    "AM"
 _DST_TAG_DST:
     NStr    "DST"
-DST_TAG_STD:
+_DST_TAG_STD:
     NStr    "STD"
 _DST_STR_LEAP_YEAR:
     NStr    "Leap Year"
-DST_STR_NORM_YEAR:
+_DST_STR_NORM_YEAR:
     NStr    "Norm Year"
     DS.W    1
 ;------------------------------------------------------------------------------

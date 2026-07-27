@@ -11,11 +11,11 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   __ESQFUNC_BasePaletteRgbTriples, _WDISP_PaletteTriplesRBase
+;   _ESQFUNC_BasePaletteRgbTriples, _WDISP_PaletteTriplesRBase
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Restores 24 palette bytes from __ESQFUNC_BasePaletteRgbTriples into
+;   Restores 24 palette bytes from _ESQFUNC_BasePaletteRgbTriples into
 ;   _WDISP_PaletteTriplesRBase.
 ; NOTES:
 ;   Fixed-length byte copy loop; used before startup/status render transitions.
@@ -31,7 +31,7 @@ _ESQIFF_RestoreBasePaletteTriples:
 
     LEA     _WDISP_PaletteTriplesRBase,A0
     ADDA.W  D7,A0
-    LEA     __ESQFUNC_BasePaletteRgbTriples,A1
+    LEA     _ESQFUNC_BasePaletteRgbTriples,A1
     ADDA.W  D7,A1
     MOVE.B  (A1),(A0)
     ADDQ.W  #1,D7

@@ -34,7 +34,7 @@ _NEWGRID2_FreeBuffersIfAllocated:
     PEA     1208.W
     MOVE.L  _NEWGRID_SecondaryIndexCachePtr,-(A7)
     PEA     4167.W
-    PEA     Global_STR_NEWGRID2_C_6
+    PEA     _Global_STR_NEWGRID2_C_6
     JSR     _SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7

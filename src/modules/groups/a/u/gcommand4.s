@@ -1,8 +1,8 @@
-    XDEF    GCOMMAND_SaveBrushResult
+    XDEF    _GCOMMAND_SaveBrushResult
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_SaveBrushResult   (Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.)
+; FUNC: _GCOMMAND_SaveBrushResult   (Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.)
 ; ARGS:
 ;   stack +8: workPtr (brush context)
 ; RET:
@@ -23,7 +23,7 @@
 ;------------------------------------------------------------------------------
 
 ; Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.
-GCOMMAND_SaveBrushResult:
+_GCOMMAND_SaveBrushResult:
     LINK.W  A5,#-4
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A5),A3

@@ -1,11 +1,11 @@
     XDEF    GCOMMAND_LoadCommandFile
-    XDEF    GCOMMAND_LoadDefaultTable
-    XDEF    GCOMMAND_LoadMplexTemplate
+    XDEF    _GCOMMAND_LoadDefaultTable
+    XDEF    _GCOMMAND_LoadMplexTemplate
     XDEF    GCOMMAND_ParseCommandOptions
 
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_LoadDefaultTable   (Load the built-in gcommand table template into the working buffer (_Global_PTR_WORK_BUFFER).)
+; FUNC: _GCOMMAND_LoadDefaultTable   (Load the built-in gcommand table template into the working buffer (_Global_PTR_WORK_BUFFER).)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -23,7 +23,7 @@
 ; NOTES:
 ;   Copies a 32-byte template into the active table and frees the prior block.
 ;------------------------------------------------------------------------------
-GCOMMAND_LoadDefaultTable:
+_GCOMMAND_LoadDefaultTable:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
     PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable
@@ -461,7 +461,7 @@ GCOMMAND_ParseCommandOptions:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_LoadMplexTemplate   (Load the Digital_Mplex template and stage it in _GCOMMAND_MplexListingsTemplatePtr/_GCOMMAND_MplexAtTemplatePtr.)
+; FUNC: _GCOMMAND_LoadMplexTemplate   (Load the Digital_Mplex template and stage it in _GCOMMAND_MplexListingsTemplatePtr/_GCOMMAND_MplexAtTemplatePtr.)
 ; ARGS:
 ;   stack +8: arg_1 (via 12(A5))
 ;   stack +12: arg_2 (via 16(A5))
@@ -480,7 +480,7 @@ GCOMMAND_ParseCommandOptions:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-GCOMMAND_LoadMplexTemplate:
+_GCOMMAND_LoadMplexTemplate:
     LINK.W  A5,#-16
     MOVE.L  D7,-(A7)
     PEA     _GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateLoad

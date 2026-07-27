@@ -2,7 +2,7 @@
     XDEF    _Global_STR_P_TYPE_C_2
     XDEF    _Global_STR_P_TYPE_C_3
     XDEF    _Global_STR_P_TYPE_C_4
-    XDEF    Global_STR_P_TYPE_C_5
+    XDEF    _Global_STR_P_TYPE_C_5
     XDEF    P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write
     XDEF    P_TYPE_STR_CURDAY_COLON_WriteSection
     XDEF    P_TYPE_FMT_PCT_03D_PCT_02D
@@ -36,7 +36,7 @@ _Global_STR_P_TYPE_C_3:
     NStr    "P_TYPE.c"
 _Global_STR_P_TYPE_C_4:
     NStr    "P_TYPE.c"
-Global_STR_P_TYPE_C_5:
+_Global_STR_P_TYPE_C_5:
     NStr    "P_TYPE.c"
 P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write:
     NStr    "df0:PromoId.Dat"

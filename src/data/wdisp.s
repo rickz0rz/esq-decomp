@@ -99,8 +99,8 @@
     XDEF    ESQ_StartupVersionBannerBuffer
     XDEF    ESQ_TickModulo60Counter
     XDEF    _ESQIFF_UseCachedChecksumFlag
-    XDEF    ESQSHARED_LivePlaneBase0
-    XDEF    ESQSHARED_LivePlaneBase1
+    XDEF    _ESQSHARED_LivePlaneBase0
+    XDEF    _ESQSHARED_LivePlaneBase1
     XDEF    _ESQSHARED_LivePlaneBase2
     XDEF    ESQSHARED_DisplayContextPlaneBase0
     XDEF    ESQSHARED_DisplayContextPlaneBase1
@@ -224,7 +224,7 @@
     XDEF    _CTRL_H
     XDEF    _CTRL_HPreviousSample
     XDEF    _CTRL_HDeltaMax
-    XDEF    CTRL_BufferedByteCount
+    XDEF    _CTRL_BufferedByteCount
     XDEF    _ESQIFF_ParseAttemptCount
     XDEF    _DATACErrs
     XDEF    _ESQIFF_LineErrorCount
@@ -237,7 +237,7 @@
     XDEF    _WDISP_HighlightIndex
     XDEF    _ESQDISP_SecondaryLinePromotePendingFlag
     XDEF    _ESQ_VerticalBlankInterruptUserData
-    XDEF    LADFUNC_HighlightCycleCountdown
+    XDEF    _LADFUNC_HighlightCycleCountdown
     XDEF    LADFUNC_HighlightCycleCountdownReload
     XDEF    _LADFUNC_ParsedEntryCount
     XDEF    _SCRIPT_CtrlInterfaceEnabledFlag
@@ -1032,7 +1032,7 @@ _ED_SavedDiagGraphModeChar:
 ; SYM: _ED_SaveTextAdsOnExitFlag   (save text ads on exit flag)
 ; TYPE: u32[2]
 ; PURPOSE: Signals that text ads should be saved when exiting the ESC editor flows.
-; USED BY: ED_HandleEditAttributesInput, ED ad-number paths, ED1_ExitEscMenu
+; USED BY: _ED_HandleEditAttributesInput, ED ad-number paths, ED1_ExitEscMenu
 ; NOTES: Only the first long is observed in use; second long may be padding or a companion flag.
 ;------------------------------------------------------------------------------
 _ED_SaveTextAdsOnExitFlag:
@@ -1079,7 +1079,7 @@ ED_ViewportOffset:
 ; SYM: _ED_AdActiveFlag   (editor active/inactive toggle)
 ; TYPE: u32
 ; PURPOSE: Tracks whether the currently edited ad is marked active.
-; USED BY: ED_HandleEditorInput, ED_HandleEditAttributesInput, _ED_UpdateAdNumberDisplay, _ED_ApplyActiveFlagToAdData, _ED_UpdateActiveInactiveIndicator
+; USED BY: ED_HandleEditorInput, _ED_HandleEditAttributesInput, _ED_UpdateAdNumberDisplay, _ED_ApplyActiveFlagToAdData, _ED_UpdateActiveInactiveIndicator
 ; NOTES: Treated as boolean; when set, ad record gets word0=1 and word2=$30.
 ;------------------------------------------------------------------------------
 _ED_AdActiveFlag:
@@ -1339,15 +1339,15 @@ ESQ_TickModulo60Counter:
 _ESQIFF_UseCachedChecksumFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQSHARED_LivePlaneBase0/ESQSHARED_LivePlaneBase1/_ESQSHARED_LivePlaneBase2
+; SYM: _ESQSHARED_LivePlaneBase0/_ESQSHARED_LivePlaneBase1/_ESQSHARED_LivePlaneBase2
 ; TYPE: pointer triplet
 ; PURPOSE: Current live display plane base pointers used for snapshot/copy paths.
 ; USED BY: ESQ_MainInitAndRun, _ESQSHARED4_SnapshotDisplayBufferBases, ESQSHARED4_CopyLivePlanesToSnapshot
 ; NOTES: Seeded from the 696x2 raster allocation table (`2220`..`2222`).
 ;------------------------------------------------------------------------------
-ESQSHARED_LivePlaneBase0:
+_ESQSHARED_LivePlaneBase0:
     DS.L    1
-ESQSHARED_LivePlaneBase1:
+_ESQSHARED_LivePlaneBase1:
     DS.L    1
 _ESQSHARED_LivePlaneBase2:
     DS.L    1
@@ -1944,7 +1944,7 @@ _LADFUNC_EntryCount:
 ; SYM: _PARSEINI_CtrlHChangeGateFlag   (_CTRL_H change gate flag)
 ; TYPE: u16
 ; PURPOSE: Enables/disables _CTRL_H-change processing and related status refresh actions.
-; USED BY: PARSEINI_CheckCtrlHChange, ED2_HandleMenuActions, ESQ startup init
+; USED BY: _PARSEINI_CheckCtrlHChange, ED2_HandleMenuActions, ESQ startup init
 ; NOTES: Toggled via ED2 menu action path; checked as boolean gate in PARSEINI.
 ;------------------------------------------------------------------------------
 _PARSEINI_CtrlHChangeGateFlag:
@@ -2122,7 +2122,7 @@ _CTRL_H:
 ; SYM: _CTRL_HPreviousSample/_CTRL_HDeltaMax   (_CTRL_H sampling state)
 ; TYPE: u16/u16
 ; PURPOSE: Previous _CTRL_H sample and the observed maximum wrapped delta.
-; USED BY: PARSEINI_CheckCtrlHChange, _PARSEINI_UpdateCtrlHDeltaMax, ESQFUNC_DrawMemoryStatusScreen, APP_*
+; USED BY: _PARSEINI_CheckCtrlHChange, _PARSEINI_UpdateCtrlHDeltaMax, ESQFUNC_DrawMemoryStatusScreen, APP_*
 ; NOTES: Delta is computed modulo 500 (`+500` wrap for negative differences).
 ;------------------------------------------------------------------------------
 _CTRL_HPreviousSample:
@@ -2130,13 +2130,13 @@ _CTRL_HPreviousSample:
 _CTRL_HDeltaMax:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: CTRL_BufferedByteCount   (CTRL buffer byte count)
+; SYM: _CTRL_BufferedByteCount   (CTRL buffer byte count)
 ; TYPE: u16
 ; PURPOSE: Tracks the current number of bytes stored in _CTRL_BUFFER.
 ; USED BY: _ESQ_CaptureCtrlBit4Stream, _DISKIO_ResetCtrlInputStateIfIdle, ESQ init/reset
 ; NOTES: Computed as wrapped delta between _CTRL_H and _CTRL_HPreviousSample (mod 500).
 ;------------------------------------------------------------------------------
-CTRL_BufferedByteCount:
+_CTRL_BufferedByteCount:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _ESQIFF_ParseAttemptCount   (record parse attempt counter)
@@ -2202,16 +2202,16 @@ _ESQDISP_SecondaryLinePromotePendingFlag:
 _ESQ_VerticalBlankInterruptUserData:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: LADFUNC_HighlightCycleCountdown/LADFUNC_HighlightCycleCountdownReload/_LADFUNC_ParsedEntryCount   (ladfunc highlight/parse counters)
+; SYM: _LADFUNC_HighlightCycleCountdown/LADFUNC_HighlightCycleCountdownReload/_LADFUNC_ParsedEntryCount   (ladfunc highlight/parse counters)
 ; TYPE: u16/u16/u16
 ; PURPOSE: Tracks highlight-cycle countdown state and parsed-entry count for LADFUNC banner-entry flows.
 ; USED BY: _LADFUNC_ClearBannerRectEntries, LADFUNC_UpdateHighlightCycle, LADFUNC_ParseBannerEntryData
 ; NOTES:
-;   `LADFUNC_HighlightCycleCountdown` decrements during active highlight cycling.
+;   `_LADFUNC_HighlightCycleCountdown` decrements during active highlight cycling.
 ;   `LADFUNC_HighlightCycleCountdownReload` is copied into countdown on underflow.
 ;   `_LADFUNC_ParsedEntryCount` increments while parsing inbound LAD records.
 ;------------------------------------------------------------------------------
-LADFUNC_HighlightCycleCountdown:
+_LADFUNC_HighlightCycleCountdown:
     DS.W    1
 LADFUNC_HighlightCycleCountdownReload:
     DS.W    1
@@ -2527,7 +2527,7 @@ FLIB_LogEntryScratchBuffer:
 ; SYM: _GCOMMAND_DigitalNicheEnabledFlag/_GCOMMAND_DigitalNicheListingsTemplatePtr   (Digital Niche option state)
 ; TYPE: u8/pointer
 ; PURPOSE: Stores enable flag and template text pointer for the Digital Niche listings mode.
-; USED BY: GCOMMAND_ParseCommandOptions, GCOMMAND_LoadDefaultTable, FLIB2_InitDefaults, _NEWGRID_ValidateSelectionCode, NEWGRID_HandleGridEditorState
+; USED BY: GCOMMAND_ParseCommandOptions, _GCOMMAND_LoadDefaultTable, FLIB2_InitDefaults, _NEWGRID_ValidateSelectionCode, NEWGRID_HandleGridEditorState
 ; NOTES: Enable flag is normalized to 'Y'/'N'; template pointer is built/appended via _ESQPARS_ReplaceOwnedString.
 ;------------------------------------------------------------------------------
 _GCOMMAND_DigitalNicheEnabledFlag:
@@ -2599,7 +2599,7 @@ _GCOMMAND_MplexDetailLayoutFlag:
 ; SYM: _GCOMMAND_MplexListingsTemplatePtr/_GCOMMAND_MplexAtTemplatePtr   (Digital Multiplex template strings)
 ; TYPE: pointer/pointer
 ; PURPOSE: Owns the assembled "Digital Multiplex Listings" and "Digital Multiplex at %s" template strings.
-; USED BY: GCOMMAND_LoadMplexTemplate, GCOMMAND_ParseCommandString, FLIB2 init helpers
+; USED BY: _GCOMMAND_LoadMplexTemplate, GCOMMAND_ParseCommandString, FLIB2 init helpers
 ; NOTES: Both pointers are rebuilt when command templates are reloaded.
 ;------------------------------------------------------------------------------
 _GCOMMAND_MplexListingsTemplatePtr:
@@ -2902,7 +2902,7 @@ _ED_StateRingTable:
 ; PURPOSE:
 ;   `_INPUTDEVICE_LibraryBaseFromConsoleIo` caches the console-device library base used by EXEC_CallVector_48.
 ;   `_INPUTDEVICE_HandlerUserDataLong` is the handler user-data storage pointer wired into the 22-byte input-handler struct.
-; USED BY: KYBD_InitializeInputDevices, EXEC_CallVector_48
+; USED BY: _KYBD_InitializeInputDevices, EXEC_CallVector_48
 ; NOTES:
 ;   `_INPUTDEVICE_HandlerUserDataLong` address is written to handler struct offset +14 (`is_Data`-style field).
 ;------------------------------------------------------------------------------

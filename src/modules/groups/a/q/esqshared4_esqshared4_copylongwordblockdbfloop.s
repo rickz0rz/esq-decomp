@@ -13,7 +13,7 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   _ESQPARS2_BannerSnapshotPlane0DstPtr, ESQSHARED_LivePlaneBase0, ESQSHARED_LivePlaneBase1, _ESQSHARED_LivePlaneBase2, lab_0C98, lab_0C99
+;   _ESQPARS2_BannerSnapshotPlane0DstPtr, _ESQSHARED_LivePlaneBase0, _ESQSHARED_LivePlaneBase1, _ESQSHARED_LivePlaneBase2, lab_0C98, lab_0C99
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -23,7 +23,7 @@
 ;------------------------------------------------------------------------------
 ESQSHARED4_CopyLivePlanesToSnapshot:
     MOVEM.L D0-D1/A0-A4,-(A7)
-    LEA     ESQSHARED_LivePlaneBase0,A1
+    LEA     _ESQSHARED_LivePlaneBase0,A1
     MOVEA.L (A1),A3
     LEA     _ESQPARS2_BannerSnapshotPlane0DstPtr,A2
     MOVEA.L (A2)+,A4
@@ -32,7 +32,7 @@ ESQSHARED4_CopyLivePlanesToSnapshot:
 .lab_0C98:
     MOVE.L  (A3)+,(A4)+
     DBF     D1,.lab_0C98
-    LEA     ESQSHARED_LivePlaneBase1,A1
+    LEA     _ESQSHARED_LivePlaneBase1,A1
     MOVEA.L (A1),A3
     MOVEA.L (A2)+,A4
     MOVE.L  #$2b,D1

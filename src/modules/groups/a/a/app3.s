@@ -1,7 +1,7 @@
-    XDEF    ESQ_SupervisorColdReboot
+    XDEF    _ESQ_SupervisorColdReboot
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SupervisorColdReboot   (SupervisorColdRebootuncertain)
+; FUNC: _ESQ_SupervisorColdReboot   (SupervisorColdRebootuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -21,7 +21,7 @@
 ;   Uses the longword at $00FFFFEC to derive a base, then jumps via [base+4]-2.
 ;   A ROM write-test sequence follows but is unreachable due to the JMP; keep as-is.
 ;------------------------------------------------------------------------------
-ESQ_SupervisorColdReboot:
+_ESQ_SupervisorColdReboot:
     LEA     $1000000,A0
     SUBA.L  -20(A0),A0  ; [0x00FFFFEC] = uncertain (ROM base offset?)
     MOVEA.L 4(A0),A0    ; [A0+4] = reset vectoruncertain (to be jumped to)
@@ -65,5 +65,5 @@ ESQ_SupervisorColdReboot:
 ; DESC:
 ;   Attempts a ROM write-test sequence and reports success/failure.
 ; NOTES:
-;   Used by ESQ_SupervisorColdReboot; likely unreachable when ROM is read-only.
+;   Used by _ESQ_SupervisorColdReboot; likely unreachable when ROM is read-only.
 ;------------------------------------------------------------------------------

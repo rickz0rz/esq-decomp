@@ -86,9 +86,15 @@ echo "==> linking"
 # supplied as a synthesised EXT_ABS object. src/modules/c-exports.s asserts these
 # values still match hardware-addresses.s. Appended last: it defines symbols only
 # and contributes no bytes, so it cannot affect layout.
-python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000 _SERDAT=0xDFF030
+python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000 _SERDAT=0xDFF030 _INTENA=0xDFF09A
 echo "$OBJ/absdefs.o" >> "$BUILD/objlist"
-< "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s -o "$BUILD/ESQ"
+# SCLIB pulls in SAS/C's runtime helpers (__CXD33 and friends -- the 32-bit
+# divide routines the compiler calls for `/` and `%`). Only a maximum-C build
+# needs it; the byte-exact manifest never reaches code that calls them, and
+# linking a library that contributes nothing is harmless but noisy, so it is
+# opt-in. See AGENTS.md, "Library code is not application code".
+SCLIB="${SCLIB:-}"
+< "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s ${SCLIB:+-l"$SCLIB"} -o "$BUILD/ESQ"
 
 echo "==> verifying split build against reference"
 python3 tools/hunkcmp.py "$BUILD/ESQ_reference" "$BUILD/ESQ"

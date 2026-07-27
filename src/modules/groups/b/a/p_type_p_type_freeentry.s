@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _SCRIPT_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   _Global_STR_P_TYPE_C_4, Global_STR_P_TYPE_C_5
+;   _Global_STR_P_TYPE_C_4, _Global_STR_P_TYPE_C_5
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -42,7 +42,7 @@ _P_TYPE_FreeEntry:
     PEA     10.W
     MOVE.L  A3,-(A7)
     PEA     95.W
-    PEA     Global_STR_P_TYPE_C_5
+    PEA     _Global_STR_P_TYPE_C_5
     JSR     _SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

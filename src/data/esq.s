@@ -135,8 +135,8 @@
     XDEF    ESQ_CopperEffectJumpTargetA_LoWord
     XDEF    ESQ_BannerColorSweepProgramA_AnchorColorWord
     XDEF    ESQ_BannerColorSweepProgramA_TailColorWord
-    XDEF    ESQ_BannerColorClampValueA
-    XDEF    ESQ_BannerColorClampWaitRowA
+    XDEF    _ESQ_BannerColorClampValueA
+    XDEF    _ESQ_BannerColorClampWaitRowA
     XDEF    ESQ_BannerPlane0DstPtrReset_HiWord
     XDEF    ESQ_BannerPlane0DstPtrReset_LoWord
     XDEF    ESQ_BannerPlane1DstPtrReset_HiWord
@@ -144,7 +144,7 @@
     XDEF    ESQ_BannerPlane2DstPtrReset_HiWord
     XDEF    ESQ_BannerPlane2DstPtrReset_LoWord
     XDEF    ESQ_CopperEffectSwitchWaitWordA
-    XDEF    ESQ_CopperBannerTailListA
+    XDEF    _ESQ_CopperBannerTailListA
     XDEF    ESQ_BannerWorkRasterPtrTailA_HiWord
     XDEF    ESQ_CopperBannerRasterPointerListA
     XDEF    ESQ_CopperEffectListB
@@ -779,9 +779,9 @@ ESQ_BannerColorSweepProgramA_AnchorColorWord:
     DC.L    $0aaa018e
 ESQ_BannerColorSweepProgramA_TailColorWord:
     DC.W    $0003
-ESQ_BannerColorClampValueA:
+_ESQ_BannerColorClampValueA:
     DC.B    0
-ESQ_BannerColorClampWaitRowA:
+_ESQ_BannerColorClampWaitRowA:
     DC.B    $d9
     DC.L    $fffe0180,$00f000e0
 ESQ_BannerPlane0DstPtrReset_HiWord:
@@ -799,7 +799,7 @@ ESQ_BannerPlane2DstPtrReset_LoWord:
 ESQ_CopperEffectSwitchWaitWordA:
     DC.L    $009c8010
 ;------------------------------------------------------------------------------
-; SYM: ESQ_CopperBannerTailListA/_ESQ_CopperBannerTailListB   (banner copper tail lists)
+; SYM: _ESQ_CopperBannerTailListA/_ESQ_CopperBannerTailListB   (banner copper tail lists)
 ; TYPE: u32[]/u32[]
 ; PURPOSE: Short tail command lists appended into each banner copper program.
 ; USED BY: _ESQSHARED4_ResetBannerColorSweepState
@@ -807,7 +807,7 @@ ESQ_CopperEffectSwitchWaitWordA:
 ;   First byte is patched at runtime to retarget the leading wait row during
 ;   banner color-sweep reset.
 ;------------------------------------------------------------------------------
-ESQ_CopperBannerTailListA:
+_ESQ_CopperBannerTailListA:
     DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W    $00e0
 ESQ_BannerWorkRasterPtrTailA_HiWord:

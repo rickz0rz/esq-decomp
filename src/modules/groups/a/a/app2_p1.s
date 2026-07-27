@@ -12,7 +12,7 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   _HIGHLIGHT_CopperEffectSeed, HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectTemplateRowsSet0
+;   _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectTemplateRowsSet0
 ; WRITES:
 ;   ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:

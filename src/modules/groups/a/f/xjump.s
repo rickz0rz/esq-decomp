@@ -9,18 +9,18 @@
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   GCOMMAND_SaveBrushResult
+;   _GCOMMAND_SaveBrushResult
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to GCOMMAND_SaveBrushResult.
+;   Jump stub to _GCOMMAND_SaveBrushResult.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult:
-    JMP     GCOMMAND_SaveBrushResult
+    JMP     _GCOMMAND_SaveBrushResult
 
 ;!======
 

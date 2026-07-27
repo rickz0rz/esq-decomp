@@ -14,7 +14,7 @@
 ; READS:
 ;   _NEWGRID_MessagePumpSuspendFlag, NEWGRID_LastRefreshRequest
 ; WRITES:
-;   ESQFUNC_WeatherSliceWidthInitGate, _ESQPARS2_BannerRowWidthBytes, ESQPARS2_BannerCopyBlockSpanBytes, _NEWGRID_RefreshStateFlag, _NEWGRID_MessagePumpSuspendFlag, _NEWGRID_ModeSelectorState, NEWGRID_LastRefreshRequest
+;   ESQFUNC_WeatherSliceWidthInitGate, _ESQPARS2_BannerRowWidthBytes, _ESQPARS2_BannerCopyBlockSpanBytes, _NEWGRID_RefreshStateFlag, _NEWGRID_MessagePumpSuspendFlag, _NEWGRID_ModeSelectorState, NEWGRID_LastRefreshRequest
 ; DESC:
 ;   Updates NEWGRID refresh/mode selector state from the incoming request flag
 ;   and recomputes banner blit geometry when message-pump suspension is cleared.
@@ -34,7 +34,7 @@ ESQFUNC_UpdateRefreshModeState:
     MOVE.L  D0,_NEWGRID_RefreshStateFlag
     MOVE.L  D0,_NEWGRID_MessagePumpSuspendFlag
     MOVE.W  #$90,_ESQPARS2_BannerRowWidthBytes
-    MOVE.W  #$230,ESQPARS2_BannerCopyBlockSpanBytes
+    MOVE.W  #$230,_ESQPARS2_BannerCopyBlockSpanBytes
     BSR.W   _ESQSHARED4_ComputeBannerRowBlitGeometry
 
 .apply_mode_selector_state:

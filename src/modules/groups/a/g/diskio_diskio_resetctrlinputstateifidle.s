@@ -14,7 +14,7 @@
 ; READS:
 ;   AbsExecBase, _Global_UIBusyFlag
 ; WRITES:
-;   _CTRL_H, _ESQPARS2_ReadModeFlags, _CTRL_HPreviousSample, CTRL_BufferedByteCount, _Global_RefreshTickCounter
+;   _CTRL_H, _ESQPARS2_ReadModeFlags, _CTRL_HPreviousSample, _CTRL_BufferedByteCount, _Global_RefreshTickCounter
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -28,7 +28,7 @@ _DISKIO_ResetCtrlInputStateIfIdle:
     JSR     _LVODisable(A6)
 
     MOVEQ   #0,D0
-    MOVE.W  D0,CTRL_BufferedByteCount
+    MOVE.W  D0,_CTRL_BufferedByteCount
     MOVE.W  D0,_CTRL_HPreviousSample
     MOVE.W  D0,_CTRL_H
     JSR     _LVOEnable(A6)

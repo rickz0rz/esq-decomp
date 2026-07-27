@@ -50,7 +50,7 @@ ESQ_ColdReboot:
 ;   Loads the supervisor entry address into A5 and calls _LVOSupervisor.
 ;------------------------------------------------------------------------------
 ESQ_ColdRebootViaSupervisor:
-    LEA     ESQ_SupervisorColdReboot(PC),A5
+    LEA     _ESQ_SupervisorColdReboot(PC),A5
     JSR     _LVOSupervisor(A6)
 
 ;!======
