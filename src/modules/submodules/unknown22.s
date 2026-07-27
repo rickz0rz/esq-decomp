@@ -4,6 +4,7 @@
     XDEF    MATH_DivU32
     XDEF    _MATH_Mulu32
     XDEF    SIGNAL_CreateMsgPortWithSignal
+    XDEF    __CXD33
 
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_CloseWithSignalCheck   (Close a DOS handle, with signal callback.)
@@ -83,6 +84,7 @@ _MATH_Mulu32:
 ; DESC:
 ;   Handles signed division by normalizing signs and dispatching to unsigned.
 ;------------------------------------------------------------------------------
+__CXD33:                 ; SAS/C calls the signed 32-bit divide helper by this name
 _MATH_DivS32:
     TST.L   D0
     BPL.W   .dividend_pos
