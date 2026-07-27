@@ -34,7 +34,9 @@ CFGARG=""
 
 if [ ! -f "$WORK/u.o" ]; then
     echo "COMPILE FAILED  [$SCOPTS]"
-    grep -iE '^(error|warning)|Invalid' "$WORK/log" | head -5
+    # SAS/C reports as `file.c 44 Error 9: ...`, which an anchored match never
+    # sees -- a compile failure printed no reason at all until this was fixed.
+    grep -iE 'error [0-9]+:|warning [0-9]+:|^(error|warning)|Invalid' "$WORK/log" | head -5
     exit 2
 fi
 
