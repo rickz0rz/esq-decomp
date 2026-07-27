@@ -326,7 +326,7 @@ bytes. `cdiff.sh` prints one line per differing region with relocated fields
 excluded. **Region count is the number to watch**: a handful means a few idiom
 substitutions; dozens means the code generator laid the function out differently.
 
-Three rules that keep the record trustworthy:
+Four rules that keep the record trustworthy:
 
 1. **Equal size is not evidence of fidelity.** Two restorations so far emitted
    exactly the original's byte count while differing in 19 and 29 regions. Both
@@ -350,7 +350,29 @@ Three rules that keep the record trustworthy:
    # does the emitted stream contain the original's instructions, verbatim?
    tools/cmatch.sh <file.c> <Label> | grep '^  got ' | grep -c '<ref hex subsequence>'
    ```
-2. **Account for the delta, or say you did not.** The strongest results explain
+
+   Beware that a verbatim search fails on a register-allocation difference alone
+   (`2f2a0004` vs `2f2b0004` is the same instruction on a different register), so
+   match the opcode and addressing mode rather than the whole word when the A5
+   class is in play.
+
+2. **Count spurious address computations when the sizes differ.** The cheapest
+   size-independent fidelity proxy: how many `LEA <d16>(An),Am` sites the
+   reference emits versus the candidate. Equal counts mean the candidate is
+   addressing memory the way the original does; an excess means it is recomputing
+   addresses the original folded into displacements.
+
+   ```sh
+   # 41e8..41ef = LEA (d16,An),Am -- compare reference against emitted
+   python3 tools/refbytes.py <Label> | grep '^bytes:' | grep -o '41e[89a-f]00' | wc -l
+   ```
+
+   `NEWGRID_DrawGridHeaderRows` is the worked example: reference 5, cast-and-add
+   form 8, struct form 5 -- decided the question while the byte total was moving
+   the wrong way. This doubles as the **struct-offset check**, which is otherwise
+   missing: `cdiff` masks relocated fields and cannot see a wrong offset at all.
+
+3. **Account for the delta, or say you did not.** The strongest results explain
    every byte (`ED_HandleSpecialFunctionsMenu`: 640 vs 656, being 8 x 2 from one
    constant idiom). Where the bytes are not itemised, record it as a
    known-unknown -- `CLEANUP_ReleaseDisplayResources` carries an
