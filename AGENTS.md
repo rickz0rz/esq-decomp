@@ -51,6 +51,32 @@ mismatch header sends the next reader to repeat work that was already done. The
 skill removes the shapes that hide that vagueness, such as passive voice with
 no actor, stacked hedges, and one thing under two names.
 
+## Refresh the derived numbers at the end of a run
+
+Some numbers in `README.md` and in this file are copies of build output. They go
+stale without a sound. A stale number is worse than no number, because a reader
+trusts it. Refresh them at the end of any run that changes the restoration count
+or the module list.
+
+1. Run `python3 tools/coverage.py`. Read the function count, the byte count, the
+   percentage, and the exact count.
+2. Run `./build-split.sh`. Read the `N source modules -> M link units` line and
+   the two hunk sizes.
+3. Run `grep -vc '^\s*#\|^\s*$' src/c/replacements*.txt` for the manifest entry
+   counts.
+4. Write those values into the `## Status` block of `README.md`.
+5. Redraw the 40-cell bar in that block. Fill `round(percent / 100 * 40)` cells.
+6. Correct the module and unit counts in **Two constraints that will bite you**.
+7. Correct the exact-rate table in **Progress is measured in BYTES**.
+8. Correct any manifest entry count quoted in prose in this file.
+
+Do not refresh one file and skip the other. `README.md` and this file must
+agree. A reader who finds two different counts cannot tell which one is current.
+
+Never copy a number from an earlier session, from a commit message, or from
+memory. Run the command. Every count above changes when the lane moves. Several
+have already been wrong in this file for exactly that reason.
+
 ## What "binary equivalent" means here
 
 `test-hash.sh` compares the whole file. `build-split.sh` compares *content*:
