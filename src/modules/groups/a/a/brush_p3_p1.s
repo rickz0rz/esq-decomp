@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7
 ; CALLS:
-;   _BRUSH_FindBrushByPredicate, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AG_JMPTBL_STRING_CopyPadNul
+;   _BRUSH_FindBrushByPredicate, GROUP_AA_JMPTBL_STRING_CompareN, _GROUP_AG_JMPTBL_STRING_CopyPadNul
 ; READS:
 ;   BRUSH_LabelScratch, _BRUSH_SelectedNode, BRUSH_STR_ALIAS_CODE_00, BRUSH_STR_ALIAS_CODE_11, BRUSH_STR_ALIAS_CODE_DT, BRUSH_STR_FALLBACK_DITHER, _ESQIFF_BrushIniListHead
 ; WRITES:
@@ -55,7 +55,7 @@ BRUSH_SelectBrushByLabel:
     PEA     2.W
     MOVE.L  A3,-(A7)
     PEA     -7(A5)
-    JSR     GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     BRA.S   .lab_0198
@@ -64,7 +64,7 @@ BRUSH_SelectBrushByLabel:
     PEA     2.W
     PEA     BRUSH_STR_ALIAS_CODE_DT
     PEA     -7(A5)
-    JSR     GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
 

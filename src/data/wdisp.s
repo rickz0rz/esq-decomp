@@ -153,7 +153,7 @@
     XDEF    _CLOCK_DaySlotIndex
     XDEF    CLOCK_CacheMonthIndex0
     XDEF    CLOCK_CacheDayIndex0
-    XDEF    CLOCK_CacheYear
+    XDEF    _CLOCK_CacheYear
     XDEF    CLOCK_CacheHour
     XDEF    CLOCK_CacheMinuteOrSecond
     XDEF    _Global_REF_CLOCKDATA_STRUCT
@@ -1601,7 +1601,7 @@ _TEXTDISP_SecondaryGroupHeaderCode:
 _CLOCK_DaySlotIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_CacheMonthIndex0/CLOCK_CacheDayIndex0/CLOCK_CacheYear/CLOCK_CacheHour/CLOCK_CacheMinuteOrSecond/_Global_REF_CLOCKDATA_STRUCT/CLOCK_CacheAmPmFlag
+; SYM: CLOCK_CacheMonthIndex0/CLOCK_CacheDayIndex0/_CLOCK_CacheYear/CLOCK_CacheHour/CLOCK_CacheMinuteOrSecond/_Global_REF_CLOCKDATA_STRUCT/CLOCK_CacheAmPmFlag
 ; TYPE: u16/u16/u16/u16/u16/u16/s16
 ; PURPOSE: Cached clock/date fields consumed by diagnostics, log formatters, and RTC write/read helpers.
 ; USED BY: PARSEINI_*, ESQFUNC_*, FLIB_*, ESQDISP_*, SCRIPT3_*
@@ -1613,7 +1613,7 @@ CLOCK_CacheMonthIndex0:
     DS.W    1
 CLOCK_CacheDayIndex0:
     DS.W    1
-CLOCK_CacheYear:
+_CLOCK_CacheYear:
     DS.W    1
 CLOCK_CacheHour:
     DS.W    1

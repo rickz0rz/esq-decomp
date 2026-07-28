@@ -10,7 +10,7 @@
     XDEF    GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition
     XDEF    _GROUP_AG_JMPTBL_SCRIPT_CheckPathExists
     XDEF    _GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal
-    XDEF    GROUP_AG_JMPTBL_STRING_CopyPadNul
+    XDEF    _GROUP_AG_JMPTBL_STRING_CopyPadNul
     XDEF    _GROUP_AG_JMPTBL_STRUCT_AllocWithOwner
     XDEF    _GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField
     XDEF    _GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
@@ -371,7 +371,7 @@ GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState:
     JMP     ESQFUNC_UpdateRefreshModeState
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_STRING_CopyPadNul   (Routine at GROUP_AG_JMPTBL_STRING_CopyPadNul)
+; FUNC: _GROUP_AG_JMPTBL_STRING_CopyPadNul   (Routine at _GROUP_AG_JMPTBL_STRING_CopyPadNul)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -389,7 +389,7 @@ GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_STRING_CopyPadNul:
+_GROUP_AG_JMPTBL_STRING_CopyPadNul:
     JMP     _STRING_CopyPadNul
 
 ;!======

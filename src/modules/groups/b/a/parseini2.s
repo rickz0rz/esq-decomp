@@ -43,7 +43,7 @@ PARSEINI_WriteRtcFromGlobals:
     MOVE.W  D0,-10(A5)
     MOVE.W  CLOCK_CacheDayIndex0,D0
     MOVE.W  D0,-12(A5)
-    MOVE.W  CLOCK_CacheYear,D0
+    MOVE.W  _CLOCK_CacheYear,D0
     MOVE.W  D0,-8(A5)
     MOVE.W  CLOCK_CacheHour,D0
     EXT.L   D0

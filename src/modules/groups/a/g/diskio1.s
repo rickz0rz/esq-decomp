@@ -1260,7 +1260,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7/D0/D1/D2/D3/D6/D7
 ; CALLS:
-;   GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch, GROUP_AG_JMPTBL_STRING_CopyPadNul, _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
+;   GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch, _GROUP_AG_JMPTBL_STRING_CopyPadNul, _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
 ;   _Global_REF_STR_CLOCK_FORMAT, DISKIO1_DumpProgramInfoAttrTable_Return, DISKIO_FMT_PROGRAM_INFO_PCT_D, DISKIO_STR_NewlineOnly_C, DISKIO_FMT_PROG_SRCE_PCT_S_ProgramInfoAttrTable, DISKIO_FMT_PCT_02D_PCT_S_COLON_ATTR, DISKIO_STR_NONE_ProgramInfoAttrTable, DISKIO_STR_MOVIE_ProgramInfoAttrTable, DISKIO_STR_ALTHILITE_PROG_ProgramInfoAttrTable, DISKIO_STR_TAG_PROG_ProgramInfoAttrTable, DISKIO_STR_SPORTSPROG, DISKIO_STR_0X20_ProgramInfoAttrTable, DISKIO_STR_REPEATPROG, DISKIO_STR_PREV_DAYS_DATA_ProgramInfoAttrTable, DISKIO_STR_ProgramAttrCloseAndProgQuotedPrefix, DISKIO_TAG_NONE, DISKIO_FMT_ProgramStringSuffixWithTypeFields, branch, fc, lab_045E
 ; WRITES:
@@ -1412,7 +1412,7 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     PEA     40.W
     MOVE.L  56(A3,D0.L),-(A7)
     PEA     -45(A5)
-    JSR     GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     BRA.S   .branch_11

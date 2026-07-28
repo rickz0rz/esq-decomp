@@ -28,6 +28,15 @@
 #
 #   SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
 #     C_REPLACEMENTS=src/c/replacements-runnable.txt ./build-split.sh
+#
+# ALSO EXCLUDED, for a different reason: datetime_seconds_to_struct.c and
+# datetime_parse_string.c divide LONGS, which SAS/C compiles to calls to __CXD22
+# in sc.lib (the original called its own MATH_DivS32, a register-argument helper
+# returning quotient in D0 and remainder in D1 -- not expressible from C). Linking
+# sc.lib whole drags in the SAS/C startup (__WBenchMsg, @_XCEXIT) and fails. The
+# surgical fix is to extract just the divide member; until then those two count
+# toward coverage but are not linked. datetime_normalize_struct_to_seconds.c IS
+# linked -- its carries use the 68000's 16-bit DIVS and need no helper.
 modules/groups/a/a/bevel_bevel_drawbevelframewithtop.s                 c/bevel_draw_bevel_frame_with_top.c
 modules/groups/a/a/bevel_bevel_drawhorizontalbevel.s                   c/bevel_draw_horizontal_bevel.c
 modules/groups/a/a/bevel_bevel_drawverticalbevel.s                     c/bevel_draw_vertical_bevel.c
@@ -63,6 +72,7 @@ modules/groups/a/j/disptext2_datetime_buildfromglobals.s               c/datetim
 modules/groups/a/j/disptext2_p2_datetime_formatpairtostream.s          c/datetime_format_pair_to_stream.c
 modules/groups/a/j/dst2_datetime_isleapyear.s                          c/datetime_is_leap_year.c
 modules/groups/a/j/dst2_datetime_normalizemonthrange.s                 c/datetime_normalize_month_range.c
+modules/groups/a/j/disptext2_p0_datetime_normalizestructtoseconds.s    c/datetime_normalize_struct_to_seconds.c
 modules/groups/a/j/disptext2_datetime_updateselectionfield.s           c/datetime_update_selection_field.c
 modules/groups/a/h/diskio2_diskio2_copyandsanitizeslotstring.s         c/diskio2_copy_and_sanitize_slot_string.c
 modules/groups/a/h/diskio2_diskio2_loadoinfodatafile.s                 c/diskio2_load_oinfo_data_file.c

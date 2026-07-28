@@ -94,14 +94,22 @@ echo "$OBJ/absdefs.o" >> "$BUILD/objlist"
 # needs it; the byte-exact manifest never reaches code that calls them, and
 # linking a library that contributes nothing is harmless but noisy, so it is
 # opt-in. See AGENTS.md, "Library code is not application code".
+# Accept either a bare library name (resolved by vlink's -l search) or a full
+# path to a .lib, which vlink takes as an ordinary input file. The datetime
+# restorations need this: their `/` and `%` on longs compile to calls to __CXD22,
+# SAS/C's 32-bit divide helper, where the original called its own MATH_DivS32.
 SCLIB="${SCLIB:-}"
+SCLIB_ARGS=()
+if [ -n "$SCLIB" ]; then
+    if [ -f "$SCLIB" ]; then SCLIB_ARGS=("$SCLIB"); else SCLIB_ARGS=(-l"$SCLIB"); fi
+fi
 # Delete the previous binary FIRST and abort if the link fails. vlink leaves the
 # old build/ESQ in place on an undefined-symbol error, and a stale binary that
 # still boots will happily PASS tools/probe_esq.sh -- which it did: a 289-entry
 # manifest whose link failed on four undefined symbols "passed", because what got
 # probed was the pure-assembly build from the previous command.
 rm -f "$BUILD/ESQ"
-if ! < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s ${SCLIB:+-l"$SCLIB"} -o "$BUILD/ESQ"; then
+if ! < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s ${SCLIB_ARGS[@]+"${SCLIB_ARGS[@]}"} -o "$BUILD/ESQ"; then
     echo "*** LINK FAILED -- no binary produced ***"
     exit 1
 fi
@@ -115,7 +123,7 @@ fi
 # ESC-menu guru hid for as long as it did. Relink with symbols to get a map and
 # check every such call before believing any build.
 echo "==> checking 16-bit PC-relative call range"
-if < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd ${SCLIB:+-l"$SCLIB"} \
+if < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd ${SCLIB_ARGS[@]+"${SCLIB_ARGS[@]}"} \
        -M -o "$BUILD/ESQ_mapprobe" > "$BUILD/ESQ.map" 2>&1; then
     if ! python3 tools/check_pcrel_range.py "$BUILD/ESQ" "$BUILD/ESQ.map"; then
         echo "*** ABORT: the linker silently truncated a call. This build is broken. ***"

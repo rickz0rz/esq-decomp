@@ -26,7 +26,7 @@
 ; CALLS:
 ;   _DATETIME_IsLeapYear, _DATETIME_BuildFromBaseDay, _DATETIME_ClassifyValueInRange, _DATETIME_SecondsToStruct, _GROUP_AG_JMPTBL_MATH_Mulu32/1A07
 ; READS:
-;   _CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, CLOCK_CacheYear, _ESQ_SecondarySlotModeFlagChar, _ESQ_STR_6, _CLOCK_FormatVariantCode, DST_BannerWindowSecondary, _DST_BannerWindowPrimary
+;   _CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, _CLOCK_CacheYear, _ESQ_SecondarySlotModeFlagChar, _ESQ_STR_6, _CLOCK_FormatVariantCode, DST_BannerWindowSecondary, _DST_BannerWindowPrimary
 ; WRITES:
 ;   (A3), 14(A2)
 ; DESC:
@@ -99,7 +99,7 @@ DST_BuildBannerTimeEntry:
     ADDQ.W  #1,-30(A5)
 
 .adjust_for_threshold:
-    MOVE.W  CLOCK_CacheYear,D0
+    MOVE.W  _CLOCK_CacheYear,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     BSR.W   _DATETIME_IsLeapYear

@@ -43,6 +43,9 @@ modules/groups/a/j/disptext2_datetime_buildfromglobals.s               c/datetim
 modules/groups/a/j/disptext2_p2_datetime_formatpairtostream.s          c/datetime_format_pair_to_stream.c
 modules/groups/a/j/dst2_datetime_isleapyear.s                          c/datetime_is_leap_year.c
 modules/groups/a/j/dst2_datetime_normalizemonthrange.s                 c/datetime_normalize_month_range.c
+modules/groups/a/j/disptext2_p0_datetime_normalizestructtoseconds.s    c/datetime_normalize_struct_to_seconds.c
+modules/groups/a/j/disptext2_p2_datetime_parsestring.s                 c/datetime_parse_string.c
+modules/groups/a/j/disptext2_datetime_secondstostruct.s                c/datetime_seconds_to_struct.c
 modules/groups/a/j/disptext2_datetime_updateselectionfield.s           c/datetime_update_selection_field.c
 modules/groups/a/h/diskio2_diskio2_copyandsanitizeslotstring.s         c/diskio2_copy_and_sanitize_slot_string.c
 modules/groups/a/h/diskio2_diskio2_loadoinfodatafile.s                 c/diskio2_load_oinfo_data_file.c

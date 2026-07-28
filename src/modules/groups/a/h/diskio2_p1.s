@@ -22,7 +22,7 @@
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi, GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte, _DISPLIB_DisplayTextAtPosition, GROUP_AG_JMPTBL_STRING_CopyPadNul,
+;   GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi, GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte, _DISPLIB_DisplayTextAtPosition, _GROUP_AG_JMPTBL_STRING_CopyPadNul,
 ;   _LVOLock/_LVOUnLock/_LVOOpen/_LVOClose/_LVORead/_LVOWrite/_LVODeleteFile,
 ;   _GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay, GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults, _GROUP_AH_JMPTBL_STR_FindAnyCharPtr, DISKIO2_ReceiveTransferBlocksToFile
 ; READS:
@@ -123,7 +123,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     PEA     4.W
     PEA     Global_STR_RAM
     PEA     -58(A5)
-    JSR     GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     TST.W   _ED_DiagnosticsScreenActive
@@ -147,7 +147,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     PEA     4.W
     PEA     DISKIO2_TransferFilenameBuffer
     PEA     -68(A5)
-    JSR     GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D0

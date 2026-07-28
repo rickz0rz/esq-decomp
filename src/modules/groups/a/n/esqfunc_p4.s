@@ -349,7 +349,7 @@ ESQFUNC_DrawMemoryStatusScreen:
     EXT.L   D1
     MOVE.W  ESQFUNC_CListLinePointer,D2
     EXT.L   D2
-    MOVE.W  CLOCK_CacheYear,D3
+    MOVE.W  _CLOCK_CacheYear,D3
     EXT.L   D3
     MOVE.L  D3,(A7)
     MOVE.L  D2,-(A7)
@@ -630,7 +630,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     EXT.L   D0
     MOVE.W  CLOCK_CacheDayIndex0,D1
     EXT.L   D1
-    MOVE.W  CLOCK_CacheYear,D2
+    MOVE.W  _CLOCK_CacheYear,D2
     EXT.L   D2
     MOVE.W  CLOCK_CacheHour,D3
     EXT.L   D3

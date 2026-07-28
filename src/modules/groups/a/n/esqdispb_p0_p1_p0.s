@@ -224,7 +224,7 @@ ESQDISP_DrawStatusBanner:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQ_STR_B, _ESQ_STR_E, ESQDISP_StatusBannerClampGateFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, _CLOCK_DaySlotIndex, CLOCK_CacheMonthIndex0, CLOCK_CacheDayIndex0, CLOCK_CacheYear, _DST_PrimaryCountdown, WDISP_BannerSlotCursor, _CLOCK_HalfHourSlotIndex, CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
+;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQ_STR_B, _ESQ_STR_E, ESQDISP_StatusBannerClampGateFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, _CLOCK_DaySlotIndex, CLOCK_CacheMonthIndex0, CLOCK_CacheDayIndex0, _CLOCK_CacheYear, _DST_PrimaryCountdown, WDISP_BannerSlotCursor, _CLOCK_HalfHourSlotIndex, CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
 ; WRITES:
 ;   BANNER_ResetPendingFlag, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, TLIBA1_StatusBannerPropagateGuard, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _CLOCK_HalfHourSlotIndex
 ; DESC:
@@ -322,7 +322,7 @@ ESQDISP_DrawStatusBanner_Impl:
     SUBQ.W  #1,D0
     BNE.S   .lab_0939
 
-    MOVE.W  CLOCK_CacheYear,D0
+    MOVE.W  _CLOCK_CacheYear,D0
     EXT.L   D0
     SUBQ.L  #1,D0
     MOVEQ   #3,D1

@@ -16,7 +16,7 @@
 ; CLOBBERS:
 ;   A3/A7/D0/D7
 ; CALLS:
-;   DATETIME_ParseString, DATETIME_CopyPairAndRecalc, DST_UpdateBannerQueue
+;   _DATETIME_ParseString, DATETIME_CopyPairAndRecalc, DST_UpdateBannerQueue
 ; READS:
 ;   DST_BannerWindowSecondary, _DST_BannerWindowPrimary
 ; WRITES:
@@ -46,12 +46,12 @@ DST_HandleBannerCommand32_33:
     PEA     4.W
     MOVE.L  A3,-(A7)
     PEA     -22(A5)
-    BSR.W   DATETIME_ParseString
+    BSR.W   _DATETIME_ParseString
 
     PEA     19.W
     MOVE.L  A3,-(A7)
     PEA     -44(A5)
-    BSR.W   DATETIME_ParseString
+    BSR.W   _DATETIME_ParseString
 
     PEA     -44(A5)
     PEA     -22(A5)
@@ -66,12 +66,12 @@ DST_HandleBannerCommand32_33:
     PEA     4.W
     MOVE.L  A3,-(A7)
     PEA     -22(A5)
-    BSR.W   DATETIME_ParseString
+    BSR.W   _DATETIME_ParseString
 
     PEA     19.W
     MOVE.L  A3,-(A7)
     PEA     -44(A5)
-    BSR.W   DATETIME_ParseString
+    BSR.W   _DATETIME_ParseString
 
     PEA     -44(A5)
     PEA     -22(A5)

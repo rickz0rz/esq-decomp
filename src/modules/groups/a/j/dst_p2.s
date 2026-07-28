@@ -15,7 +15,7 @@
 ; CLOBBERS:
 ;   A0/A3/A5/A7/D0/D7
 ; CALLS:
-;   _DST_RebuildBannerPair, _DISKIO_LoadFileToWorkBuffer, GROUP_AJ_JMPTBL_STRING_FindSubstring, DATETIME_ParseString, DATETIME_CopyPairAndRecalc, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, DST_UpdateBannerQueue
+;   _DST_RebuildBannerPair, _DISKIO_LoadFileToWorkBuffer, GROUP_AJ_JMPTBL_STRING_FindSubstring, _DATETIME_ParseString, DATETIME_CopyPairAndRecalc, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, DST_UpdateBannerQueue
 ; READS:
 ;   DST_DefaultDatPathPtr, Global_STR_G2, Global_STR_G3
 ; WRITES:
@@ -58,12 +58,12 @@ DST_LoadBannerPairFromFiles:
     PEA     4.W
     MOVE.L  D0,-(A7)
     PEA     -22(A5)
-    BSR.W   DATETIME_ParseString
+    BSR.W   _DATETIME_ParseString
 
     PEA     19.W
     MOVE.L  -52(A5),-(A7)
     PEA     -44(A5)
-    BSR.W   DATETIME_ParseString
+    BSR.W   _DATETIME_ParseString
 
     PEA     -44(A5)
     PEA     -22(A5)
@@ -84,12 +84,12 @@ DST_LoadBannerPairFromFiles:
     PEA     4.W
     MOVE.L  D0,-(A7)
     PEA     -22(A5)
-    BSR.W   DATETIME_ParseString
+    BSR.W   _DATETIME_ParseString
 
     PEA     19.W
     MOVE.L  -52(A5),-(A7)
     PEA     -44(A5)
-    BSR.W   DATETIME_ParseString
+    BSR.W   _DATETIME_ParseString
 
     PEA     -44(A5)
     PEA     -22(A5)
