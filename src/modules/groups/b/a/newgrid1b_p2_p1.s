@@ -14,7 +14,7 @@
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   _NEWGRID_ClearEntryMarkerBits, _NEWGRID_InitSelectionWindow, NEWGRID_UpdatePresetEntry,
-;   NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID_ShouldOpenEditor, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState
+;   NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, _NEWGRID_ShouldOpenEditor, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState
 ; READS:
 ;   NEWGRID_SelectionScanEntryIndex/2031, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryGroupPresentFlag, _GCOMMAND_PpvSelectionWindowMinutes
 ; WRITES:
@@ -174,7 +174,7 @@ NEWGRID_UpdateSelectionFromInput:
     BNE.W   .scan_entry_next
 
     MOVE.L  -4(A5),-(A7)
-    JSR     NEWGRID_ShouldOpenEditor(PC)
+    JSR     _NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0

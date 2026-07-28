@@ -601,7 +601,7 @@ TEXTDISP_BuildEntryPairStatusLine:
 ; CLOBBERS:
 ;   D0/D7/A3
 ; CALLS:
-;   TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor (NEWGRID_ShouldOpenEditor)
+;   TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor (_NEWGRID_ShouldOpenEditor)
 ; READS:
 ;   entry+27, entry+40
 ; DESC:

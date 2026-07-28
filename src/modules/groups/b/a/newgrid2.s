@@ -358,7 +358,7 @@ NEWGRID2_HandleGridState:
 
 .state5_apply_column_delta_only:
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_ComputeColumnIndex
+    BSR.W   _NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
     SUB.L   D0,NEWGRID2_CachedModeIndex
@@ -404,7 +404,7 @@ NEWGRID2_HandleGridState:
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   NEWGRID2_HandleGridState, NEWGRID_HandleGridSelection, NEWGRID_ProcessAltEntryState, NEWGRID_ProcessSecondaryState, NEWGRID_ProcessScheduleState, NEWGRID_ProcessShowtimesWorkflow
+;   NEWGRID2_HandleGridState, NEWGRID_HandleGridSelection, NEWGRID_ProcessAltEntryState, NEWGRID_ProcessSecondaryState, _NEWGRID_ProcessScheduleState, NEWGRID_ProcessShowtimesWorkflow
 ; READS:
 ;   ESQDISP_PendingGridReinitFlag, NEWGRID2_PendingOperationId
 ; WRITES:
@@ -534,7 +534,7 @@ _NEWGRID2_DispatchGridOperation:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_ProcessScheduleState
+    BSR.W   _NEWGRID_ProcessScheduleState
 
     LEA     12(A7),A7
     MOVE.L  D0,NEWGRID2_LastDispatchResult

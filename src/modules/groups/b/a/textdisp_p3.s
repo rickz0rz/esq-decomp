@@ -13,14 +13,14 @@
 ;------------------------------------------------------------------------------
 ; FUNC: TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor   (JumpStub)
 ; ARGS:
-;   see NEWGRID_ShouldOpenEditor
+;   see _NEWGRID_ShouldOpenEditor
 ; RET:
-;   see NEWGRID_ShouldOpenEditor
+;   see _NEWGRID_ShouldOpenEditor
 ; DESC:
-;   Jump stub to NEWGRID_ShouldOpenEditor.
+;   Jump stub to _NEWGRID_ShouldOpenEditor.
 ;------------------------------------------------------------------------------
 TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor:
-    JMP     NEWGRID_ShouldOpenEditor
+    JMP     _NEWGRID_ShouldOpenEditor
 
 ;------------------------------------------------------------------------------
 ; FUNC: TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility   (JumpStub)

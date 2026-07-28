@@ -10,3 +10,4 @@
 
 c/esqiff_set_apen_to_brightest_palette_index.c   SHORTINT
 c/textdisp_find_entry_match_index.c              SHORTINT
+c/newgrid_process_schedule_state.c                SHORTINT

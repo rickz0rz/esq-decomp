@@ -4,7 +4,7 @@
     XDEF    NEWGRID_GetEntryStateCode
     XDEF    NEWGRID_SetSelectionMarkers
     XDEF    NEWGRID_TestEntryState
-    XDEF    NEWGRID_UpdateGridState
+    XDEF    _NEWGRID_UpdateGridState
 
 
 ;------------------------------------------------------------------------------
@@ -285,7 +285,7 @@ NEWGRID_DrawGridFrameAndRows:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_UpdateGridState   (Advance grid state machine)
+; FUNC: _NEWGRID_UpdateGridState   (Advance grid state machine)
 ; ARGS:
 ;   stack +8: A3 = grid struct
 ;   stack +12: D7 = key/index
@@ -306,7 +306,7 @@ NEWGRID_DrawGridFrameAndRows:
 ; NOTES:
 ;   State machine uses NEWGRID_GridStateFrameLatch values 4/5.
 ;------------------------------------------------------------------------------
-NEWGRID_UpdateGridState:
+_NEWGRID_UpdateGridState:
     LINK.W  A5,#-8
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 8(A5),A3

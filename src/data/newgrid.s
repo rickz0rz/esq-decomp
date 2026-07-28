@@ -41,12 +41,12 @@
     XDEF    NEWGRID_AltEntryWorkflowState
     XDEF    NEWGRID_DetailGridStateLatch
     XDEF    NEWGRID_ChannelRowFmt
-    XDEF    NEWGRID_ScheduleSelectionCodeCache
-    XDEF    NEWGRID_ScheduleEditorGateFlag
-    XDEF    NEWGRID_ScheduleAltSelectorFlag
-    XDEF    NEWGRID_ScheduleRowOffset
-    XDEF    NEWGRID_SelectedPrimaryEntryIndex
-    XDEF    NEWGRID_ScheduleWorkflowState
+    XDEF    _NEWGRID_ScheduleSelectionCodeCache
+    XDEF    _NEWGRID_ScheduleEditorGateFlag
+    XDEF    _NEWGRID_ScheduleAltSelectorFlag
+    XDEF    _NEWGRID_ScheduleRowOffset
+    XDEF    _NEWGRID_SelectedPrimaryEntryIndex
+    XDEF    _NEWGRID_ScheduleWorkflowState
     XDEF    NEWGRID_SelectionScanEntryIndex
     XDEF    NEWGRID_SelectionScanRow
     XDEF    NEWGRID_ShowtimeBucketSeparator
@@ -250,8 +250,8 @@ NEWGRID_GridSelectionWorkflowState:
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_GridEditorWorkflowState   (grid editor workflow state id)
 ; TYPE: s32
-; PURPOSE: State variable for NEWGRID_HandleGridEditorState.
-; USED BY: NEWGRID_HandleGridEditorState
+; PURPOSE: State variable for _NEWGRID_HandleGridEditorState.
+; USED BY: _NEWGRID_HandleGridEditorState
 ; NOTES: Uses a two-state redraw loop keyed by values 4 and 5.
 ;------------------------------------------------------------------------------
 NEWGRID_GridEditorWorkflowState:
@@ -299,7 +299,7 @@ NEWGRID_AltEntryCursor:
 NEWGRID_AltEntryWorkflowState:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_DetailGridStateLatch/NEWGRID_ChannelRowFmt/NEWGRID_ScheduleSelectionCodeCache/NEWGRID_ScheduleEditorGateFlag/NEWGRID_ScheduleAltSelectorFlag   (detail/schedule helpers)
+; SYM: NEWGRID_DetailGridStateLatch/NEWGRID_ChannelRowFmt/_NEWGRID_ScheduleSelectionCodeCache/_NEWGRID_ScheduleEditorGateFlag/_NEWGRID_ScheduleAltSelectorFlag   (detail/schedule helpers)
 ; TYPE: s32/cstring/s32/s32/s32
 ; PURPOSE: Drives detail/schedule-state transitions, formatting, and selection gate checks.
 ; USED BY: NEWGRID1 detail/schedule state machines
@@ -309,38 +309,38 @@ NEWGRID_DetailGridStateLatch:
     DC.L    $00000004
 NEWGRID_ChannelRowFmt:
     NStr    "%s Ch. %s"
-NEWGRID_ScheduleSelectionCodeCache:
+_NEWGRID_ScheduleSelectionCodeCache:
     DS.L    1
-NEWGRID_ScheduleEditorGateFlag:
+_NEWGRID_ScheduleEditorGateFlag:
     DS.L    1
-NEWGRID_ScheduleAltSelectorFlag:
+_NEWGRID_ScheduleAltSelectorFlag:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_ScheduleRowOffset   (schedule row offset accumulator)
+; SYM: _NEWGRID_ScheduleRowOffset   (schedule row offset accumulator)
 ; TYPE: u16
 ; PURPOSE: Tracks additional row offset while stepping schedule candidates.
-; USED BY: NEWGRID_ProcessScheduleState
+; USED BY: _NEWGRID_ProcessScheduleState
 ; NOTES: Incremented during retry scans and added to base row inputs.
 ;------------------------------------------------------------------------------
-NEWGRID_ScheduleRowOffset:
+_NEWGRID_ScheduleRowOffset:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_SelectedPrimaryEntryIndex   (selected primary entry index)
+; SYM: _NEWGRID_SelectedPrimaryEntryIndex   (selected primary entry index)
 ; TYPE: s32
 ; PURPOSE: Holds the current/newly found primary-entry index during schedule workflow.
-; USED BY: NEWGRID_ProcessScheduleState
+; USED BY: _NEWGRID_ProcessScheduleState
 ; NOTES: Uses -1 as "not found" sentinel.
 ;------------------------------------------------------------------------------
-NEWGRID_SelectedPrimaryEntryIndex:
+_NEWGRID_SelectedPrimaryEntryIndex:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_ScheduleWorkflowState   (schedule/detail workflow state id)
+; SYM: _NEWGRID_ScheduleWorkflowState   (schedule/detail workflow state id)
 ; TYPE: s32
-; PURPOSE: State variable for NEWGRID_ProcessScheduleState.
-; USED BY: NEWGRID_ProcessScheduleState
+; PURPOSE: State variable for _NEWGRID_ProcessScheduleState.
+; USED BY: _NEWGRID_ProcessScheduleState
 ; NOTES: Uses switch/jumptable with 0..7 states.
 ;------------------------------------------------------------------------------
-NEWGRID_ScheduleWorkflowState:
+_NEWGRID_ScheduleWorkflowState:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_SelectionScanEntryIndex/NEWGRID_SelectionScanRow   (selection scan cursors)

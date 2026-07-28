@@ -2527,7 +2527,7 @@ FLIB_LogEntryScratchBuffer:
 ; SYM: _GCOMMAND_DigitalNicheEnabledFlag/_GCOMMAND_DigitalNicheListingsTemplatePtr   (Digital Niche option state)
 ; TYPE: u8/pointer
 ; PURPOSE: Stores enable flag and template text pointer for the Digital Niche listings mode.
-; USED BY: GCOMMAND_ParseCommandOptions, _GCOMMAND_LoadDefaultTable, FLIB2_InitDefaults, _NEWGRID_ValidateSelectionCode, NEWGRID_HandleGridEditorState
+; USED BY: GCOMMAND_ParseCommandOptions, _GCOMMAND_LoadDefaultTable, FLIB2_InitDefaults, _NEWGRID_ValidateSelectionCode, _NEWGRID_HandleGridEditorState
 ; NOTES: Enable flag is normalized to 'Y'/'N'; template pointer is built/appended via _ESQPARS_ReplaceOwnedString.
 ;------------------------------------------------------------------------------
 _GCOMMAND_DigitalNicheEnabledFlag:
@@ -2568,7 +2568,7 @@ _GCOMMAND_DigitalMplexEnabledFlag:
 ; SYM: _GCOMMAND_MplexModeCycleCount/_GCOMMAND_MplexSearchRowLimit/_GCOMMAND_MplexClockOffsetMinutes/_GCOMMAND_MplexMessageTextPen/_GCOMMAND_MplexMessageFramePen/_GCOMMAND_MplexEditorLayoutPen/_GCOMMAND_MplexEditorRowPen/_GCOMMAND_MplexDetailLayoutPen/_GCOMMAND_MplexDetailInitialLineIndex/_GCOMMAND_MplexDetailRowPen/_GCOMMAND_MplexWorkflowMode/_GCOMMAND_MplexDetailLayoutFlag   (Digital Mplex rendering/workflow params)
 ; TYPE: s32/s32/s32/s32/s32/s32/s32/s32/s32/s32/u8/u8
 ; PURPOSE: Stores Mplex timing, pen, and workflow controls parsed from command options.
-; USED BY: GCOMMAND_ParseCommandString, _FLIB2_LoadDigitalMplexDefaults, NEWGRID_SelectNextMode, NEWGRID_DrawStatusMessage, NEWGRID_HandleDetailGridState, NEWGRID_ProcessScheduleState
+; USED BY: GCOMMAND_ParseCommandString, _FLIB2_LoadDigitalMplexDefaults, NEWGRID_SelectNextMode, _NEWGRID_DrawStatusMessage, _NEWGRID_HandleDetailGridState, _NEWGRID_ProcessScheduleState
 ; NOTES: WorkflowMode stores uppercase 'F'/'B'/'L'/'N'; DetailLayoutFlag stores uppercase 'Y'/'N'.
 ;------------------------------------------------------------------------------
 _GCOMMAND_MplexModeCycleCount:
@@ -2649,7 +2649,7 @@ _GCOMMAND_PpvMessageFramePen:
 ;------------------------------------------------------------------------------
 ; SYM: _GCOMMAND_PpvEditorLayoutPen/_GCOMMAND_PpvEditorRowPen   (PPV editor/detail pen pair)
 ; TYPE: s32/s32
-; PURPOSE: Pen indices forwarded to NEWGRID_HandleGridEditorState for PPV detail/editor rendering.
+; PURPOSE: Pen indices forwarded to _NEWGRID_HandleGridEditorState for PPV detail/editor rendering.
 ; USED BY: GCOMMAND_ParsePPVCommand, _FLIB2_LoadDigitalPpvDefaults, NEWGRID_ProcessShowtimesWorkflow
 ; NOTES: Layout pen feeds _DISPTEXT_SetLayoutParams commit-pen arg; row pen feeds NEWGRID_DrawGridFrameAndRows.
 ;------------------------------------------------------------------------------
@@ -2992,7 +2992,7 @@ NEWGRID_ShowtimesSelectionContextPtr:
 ; SYM: NEWGRID_ShowtimesWorkflowArgLong/NEWGRID_ShowtimesWorkflowArgWord   (showtimes state latch cluster ??)
 ; TYPE: s32[4] + s32 + u16
 ; PURPOSE: Auxiliary showtimes workflow state passed through NEWGRID state transitions.
-; USED BY: NEWGRID_ProcessShowtimesWorkflow, NEWGRID_UpdateGridState
+; USED BY: NEWGRID_ProcessShowtimesWorkflow, _NEWGRID_UpdateGridState
 ; NOTES:
 ;   Callers pass these slots as workflow arguments; producer semantics still unresolved.
 ;------------------------------------------------------------------------------

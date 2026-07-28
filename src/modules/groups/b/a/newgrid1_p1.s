@@ -1,8 +1,8 @@
-    XDEF    NEWGRID_ComputeColumnIndex
+    XDEF    _NEWGRID_ComputeColumnIndex
 
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_ComputeColumnIndex   (Compute column index from selection)
+; FUNC: _NEWGRID_ComputeColumnIndex   (Compute column index from selection)
 ; ARGS:
 ;   stack +8: A3 = grid struct
 ; RET:
@@ -20,7 +20,7 @@
 ; NOTES:
 ;   Returns 0 when selection >= 0x40.
 ;------------------------------------------------------------------------------
-NEWGRID_ComputeColumnIndex:
+_NEWGRID_ComputeColumnIndex:
     LINK.W  A5,#-4
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 20(A7),A3

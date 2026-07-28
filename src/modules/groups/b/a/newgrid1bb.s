@@ -1131,11 +1131,11 @@ NEWGRID_HandleShowtimesState:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_HandleGridEditorState, NEWGRID_UpdateGridState,
+;   _NEWGRID_HandleGridEditorState, _NEWGRID_UpdateGridState,
 ;   NEWGRID_HandleShowtimesState, _NEWGRID_InitSelectionWindow,
 ;   NEWGRID_UpdateSelectionFromInput, NEWGRID_DrawGridMessageAlt,
 ;   _NEWGRID_ClearEntryMarkerBits, _NEWGRID_ValidateSelectionCode,
-;   _NEWGRID_GetGridModeIndex, NEWGRID_ComputeColumnIndex
+;   _NEWGRID_GetGridModeIndex, _NEWGRID_ComputeColumnIndex
 ; READS:
 ;   NEWGRID_ShowtimesWorkflowState/2038, NEWGRID_ShowtimesSelectionContextPtr, _GCOMMAND_DigitalPpvEnabledFlag, _GCOMMAND_PpvShowtimesWorkflowMode, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PpvEditorLayoutPen, _GCOMMAND_PpvEditorRowPen
 ; WRITES:
@@ -1170,7 +1170,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleGridEditorState
+    BSR.W   _NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
@@ -1178,7 +1178,7 @@ NEWGRID_ProcessShowtimesWorkflow:
 
 .legacy_nullctx_route_by_editor_gate:
     MOVE.L  NEWGRID_ShowtimesSelectionContextPtr,-(A7)
-    JSR     NEWGRID_ShouldOpenEditor(PC)
+    JSR     _NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -1188,7 +1188,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_UpdateGridState
+    BSR.W   _NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
@@ -1275,7 +1275,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  _GCOMMAND_PpvEditorRowPen,-(A7)
     MOVE.L  _GCOMMAND_PpvEditorLayoutPen,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleGridEditorState
+    BSR.W   _NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
@@ -1308,7 +1308,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     BEQ.W   .case5_no_entry
 
     MOVE.L  NEWGRID_ShowtimesSelectionContextPtr,-(A7)
-    JSR     NEWGRID_ShouldOpenEditor(PC)
+    JSR     _NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -1319,7 +1319,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  D0,-(A7)
     MOVE.L  NEWGRID_ShowtimesWorkflowArgLong,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_UpdateGridState
+    BSR.W   _NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
@@ -1356,7 +1356,7 @@ NEWGRID_ProcessShowtimesWorkflow:
 
 .update_column_adjust:
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_ComputeColumnIndex
+    BSR.W   _NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
     SUB.L   D0,NEWGRID_ShowtimesColumnAdjust
@@ -1381,7 +1381,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  _GCOMMAND_PpvEditorRowPen,-(A7)
     MOVE.L  _GCOMMAND_PpvEditorLayoutPen,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleGridEditorState
+    BSR.W   _NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState

@@ -1,19 +1,19 @@
     XDEF    NEWGRID_DrawEmptyGridMessage
     XDEF    NEWGRID_DrawGridFrameAlt
     XDEF    NEWGRID_DrawGridFrameVariant2
-    XDEF    NEWGRID_DrawStatusMessage
-    XDEF    NEWGRID_FindNextEntryWithAltMarkers
+    XDEF    _NEWGRID_DrawStatusMessage
+    XDEF    _NEWGRID_FindNextEntryWithAltMarkers
     XDEF    NEWGRID_FindNextEntryWithFlags
     XDEF    NEWGRID_FindNextEntryWithMarkers
     XDEF    NEWGRID_FindNextFlaggedEntry
     XDEF    NEWGRID_HandleAltGridState
-    XDEF    NEWGRID_HandleDetailGridState
-    XDEF    NEWGRID_HandleGridEditorState
+    XDEF    _NEWGRID_HandleDetailGridState
+    XDEF    _NEWGRID_HandleGridEditorState
     XDEF    NEWGRID_HandleGridSelection
     XDEF    NEWGRID_ProcessAltEntryState
     XDEF    NEWGRID_ProcessGridEntries
-    XDEF    NEWGRID_ProcessScheduleState
     XDEF    NEWGRID_ProcessSecondaryState
+
 
 
 
@@ -811,8 +811,8 @@ NEWGRID_FindNextFlaggedEntry:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_UpdateGridState, NEWGRID_ProcessGridEntries, NEWGRID_FindNextFlaggedEntry,
-;   _NEWGRID_GetGridModeIndex, _NEWGRID_ValidateSelectionCode, NEWGRID_ComputeColumnIndex
+;   _NEWGRID_UpdateGridState, NEWGRID_ProcessGridEntries, NEWGRID_FindNextFlaggedEntry,
+;   _NEWGRID_GetGridModeIndex, _NEWGRID_ValidateSelectionCode, _NEWGRID_ComputeColumnIndex
 ; READS:
 ;   NEWGRID_GridSelectionColumnAdjust, NEWGRID_GridSelectionEntryIndex, NEWGRID_GridSelectionWorkflowState, CONFIG_NewgridSelectionCode32EnabledFlag, CONFIG_NewgridSelectionCode48_49EnabledFlag
 ; WRITES:
@@ -837,7 +837,7 @@ NEWGRID_HandleGridSelection:
     LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    JSR     NEWGRID_ShouldOpenEditor(PC)
+    JSR     _NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -847,7 +847,7 @@ NEWGRID_HandleGridSelection:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_UpdateGridState
+    BSR.W   _NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
     BRA.S   .reset_workflow_state
@@ -907,7 +907,7 @@ NEWGRID_HandleGridSelection:
     LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    JSR     NEWGRID_ShouldOpenEditor(PC)
+    JSR     _NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -918,7 +918,7 @@ NEWGRID_HandleGridSelection:
     MOVE.L  D0,-(A7)
     MOVE.L  NEWGRID_GridSelectionEntryIndex,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_UpdateGridState
+    BSR.W   _NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
     MOVE.L  D0,NEWGRID_GridSelectionWorkflowState
@@ -984,7 +984,7 @@ NEWGRID_HandleGridSelection:
     BLE.S   .return_state
 
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_ComputeColumnIndex
+    BSR.W   _NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
     SUB.L   D0,NEWGRID_GridSelectionColumnAdjust
@@ -1001,7 +1001,7 @@ NEWGRID_HandleGridSelection:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_HandleGridEditorState   (Handle editor state transitions)
+; FUNC: _NEWGRID_HandleGridEditorState   (Handle editor state transitions)
 ; ARGS:
 ;   stack +4: A3 = target view/rastport context
 ;   stack +8: D7 = layout pen/config value
@@ -1023,7 +1023,7 @@ NEWGRID_HandleGridSelection:
 ;   For state 4, source text (A2) is forwarded to
 ;   _DISPTEXT_LayoutAndAppendToBuffer, which tolerates NULL/empty strings.
 ;------------------------------------------------------------------------------
-NEWGRID_HandleGridEditorState:
+_NEWGRID_HandleGridEditorState:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.L  24(A7),D7
@@ -1221,10 +1221,10 @@ NEWGRID_FindNextEntryWithFlags:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_HandleGridEditorState, NEWGRID_UpdateGridState,
+;   _NEWGRID_HandleGridEditorState, _NEWGRID_UpdateGridState,
 ;   NEWGRID_ProcessGridEntries, NEWGRID_FindNextEntryWithFlags,
 ;   _NEWGRID_ValidateSelectionCode, _NEWGRID_GetGridModeIndex,
-;   NEWGRID_ComputeColumnIndex
+;   _NEWGRID_ComputeColumnIndex
 ; READS:
 ;   NEWGRID_SecondarySelectedEntryIndex/2022/2023, _GCOMMAND_DigitalNicheEnabledFlag/_GCOMMAND_NicheEditorLayoutPen/_GCOMMAND_NicheEditorRowPen/_GCOMMAND_NicheWorkflowMode/_GCOMMAND_DigitalNicheListingsTemplatePtr, CONFIG_NewgridSelectionCode48_49EnabledFlag
 ; WRITES:
@@ -1258,7 +1258,7 @@ NEWGRID_ProcessSecondaryState:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleGridEditorState
+    BSR.W   _NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     BRA.S   .legacy_nullctx_clear_selection_and_state
@@ -1269,7 +1269,7 @@ NEWGRID_ProcessSecondaryState:
     LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    JSR     NEWGRID_ShouldOpenEditor(PC)
+    JSR     _NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -1279,7 +1279,7 @@ NEWGRID_ProcessSecondaryState:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_UpdateGridState
+    BSR.W   _NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
     BRA.S   .legacy_nullctx_clear_selection_and_state
@@ -1348,7 +1348,7 @@ NEWGRID_ProcessSecondaryState:
     MOVE.L  _GCOMMAND_NicheEditorRowPen,-(A7)
     MOVE.L  _GCOMMAND_NicheEditorLayoutPen,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleGridEditorState
+    BSR.W   _NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,NEWGRID_SecondaryWorkflowState
@@ -1387,7 +1387,7 @@ NEWGRID_ProcessSecondaryState:
     LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    JSR     NEWGRID_ShouldOpenEditor(PC)
+    JSR     _NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -1398,7 +1398,7 @@ NEWGRID_ProcessSecondaryState:
     MOVE.L  D0,-(A7)
     MOVE.L  NEWGRID_SecondarySelectedEntryIndex,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_UpdateGridState
+    BSR.W   _NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
     MOVE.L  D0,NEWGRID_SecondaryWorkflowState
@@ -1464,7 +1464,7 @@ NEWGRID_ProcessSecondaryState:
     BLE.S   .return_state
 
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_ComputeColumnIndex
+    BSR.W   _NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
     SUB.L   D0,NEWGRID_SecondarySelectionHintCounter
@@ -1489,7 +1489,7 @@ NEWGRID_ProcessSecondaryState:
     MOVE.L  _GCOMMAND_NicheEditorRowPen,-(A7)
     MOVE.L  _GCOMMAND_NicheEditorLayoutPen,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleGridEditorState
+    BSR.W   _NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,NEWGRID_SecondaryWorkflowState
@@ -2259,7 +2259,7 @@ NEWGRID_HandleAltGridState:
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   NEWGRID_UpdatePresetEntry, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID_ShouldOpenEditor
+;   NEWGRID_UpdatePresetEntry, NEWGRID2_JMPTBL_ESQ_TestBit1Based, _NEWGRID_ShouldOpenEditor
 ; READS:
 ;   _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryGroupPresentFlag
 ; DESC:
@@ -2354,7 +2354,7 @@ NEWGRID_FindNextEntryWithMarkers:
     BNE.S   .advance_index
 
     MOVE.L  -4(A5),-(A7)
-    JSR     NEWGRID_ShouldOpenEditor(PC)
+    JSR     _NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -2418,7 +2418,7 @@ NEWGRID_FindNextEntryWithMarkers:
 ; CALLS:
 ;   NEWGRID_HandleAltGridState, NEWGRID_FindNextEntryWithMarkers,
 ;   NEWGRID_DrawEmptyGridMessage, _NEWGRID_ValidateSelectionCode,
-;   _NEWGRID_GetGridModeIndex, NEWGRID_ComputeColumnIndex
+;   _NEWGRID_GetGridModeIndex, _NEWGRID_ComputeColumnIndex
 ; READS:
 ;   NEWGRID_AltEntryAttemptCounter/2026/2027, CONFIG_NewgridSelectionCode35EnabledFlag
 ; WRITES:
@@ -2554,7 +2554,7 @@ NEWGRID_ProcessAltEntryState:
 
 .update_column_adjust:
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_ComputeColumnIndex
+    BSR.W   _NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
     SUB.L   D0,NEWGRID_AltEntryAttemptCounter
@@ -2571,7 +2571,7 @@ NEWGRID_ProcessAltEntryState:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_FindNextEntryWithAltMarkers   (Find next entry with alt markers)
+; FUNC: _NEWGRID_FindNextEntryWithAltMarkers   (Find next entry with alt markers)
 ; ARGS:
 ;   stack +8: D7 = scan mode selector (`0=reset`, `4=start+1`, `6=keep start`; others invalid)
 ;   stack +12: D6 = start index (entry scan cursor)
@@ -2597,7 +2597,7 @@ NEWGRID_ProcessAltEntryState:
 ;   If no entry matches, returns `-1`.
 ;   Uses entry fields `A0+46` (flags word) and `A0+40` (marker/status byte).
 ;------------------------------------------------------------------------------
-NEWGRID_FindNextEntryWithAltMarkers:
+_NEWGRID_FindNextEntryWithAltMarkers:
     LINK.W  A5,#-16
     MOVEM.L D4-D7,-(A7)
     MOVE.L  8(A5),D7
@@ -2712,7 +2712,7 @@ NEWGRID_FindNextEntryWithAltMarkers:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_DrawStatusMessage   (Draw status message banner)
+; FUNC: _NEWGRID_DrawStatusMessage   (Draw status message banner)
 ; ARGS:
 ;   stack +4: A3 = target view/rastport context
 ;   stack +10: D7 = time/status value formatted into template
@@ -2732,7 +2732,7 @@ NEWGRID_FindNextEntryWithAltMarkers:
 ;   Uses _GCOMMAND_MplexAtTemplatePtr as a printf-style format string.
 ;   This callsite currently performs no local NULL guard on that pointer.
 ;------------------------------------------------------------------------------
-NEWGRID_DrawStatusMessage:
+_NEWGRID_DrawStatusMessage:
     LINK.W  A5,#-180
     MOVEM.L D2/D6-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -3122,7 +3122,7 @@ NEWGRID_DrawGridFrameVariant2:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_HandleDetailGridState   (Handle detailed grid state)
+; FUNC: _NEWGRID_HandleDetailGridState   (Handle detailed grid state)
 ; ARGS:
 ;   stack +8: A3 = rastport
 ;   stack +12: D7 = entry index
@@ -3143,7 +3143,7 @@ NEWGRID_DrawGridFrameVariant2:
 ; NOTES:
 ;   Uses NEWGRID_DetailGridStateLatch values 4/5.
 ;------------------------------------------------------------------------------
-NEWGRID_HandleDetailGridState:
+_NEWGRID_HandleDetailGridState:
     LINK.W  A5,#-60
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -3296,419 +3296,6 @@ NEWGRID_HandleDetailGridState:
     MOVE.L  NEWGRID_DetailGridStateLatch,D0
     MOVEM.L (A7)+,D6-D7/A2-A3
     UNLK    A5
-    RTS
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: NEWGRID_ProcessScheduleState   (Process schedule/detail state)
-; ARGS:
-;   stack +8: A3 = rastport
-;   stack +12: D7 = row index
-;   stack +16: D6 = selector value
-; RET:
-;   D0: state (NEWGRID_ScheduleWorkflowState)
-; CLOBBERS:
-;   D0-D7/A0-A3
-; CALLS:
-;   NEWGRID_HandleGridEditorState, NEWGRID_UpdateGridState,
-;   NEWGRID_HandleDetailGridState, NEWGRID_FindNextEntryWithAltMarkers,
-;   NEWGRID_DrawStatusMessage, _NEWGRID_ValidateSelectionCode,
-;   _NEWGRID_GetGridModeIndex, NEWGRID_ComputeColumnIndex
-; READS:
-;   NEWGRID_ScheduleSelectionCodeCache/202B/202C/202D/202E/202F, _GCOMMAND_DigitalMplexEnabledFlag/_GCOMMAND_MplexSearchRowLimit/_GCOMMAND_MplexEditorLayoutPen/_GCOMMAND_MplexEditorRowPen/_GCOMMAND_MplexWorkflowMode/_GCOMMAND_MplexDetailLayoutFlag/_GCOMMAND_MplexListingsTemplatePtr
-; WRITES:
-;   NEWGRID_ScheduleSelectionCodeCache/202B/202C/202D/202E/202F
-; DESC:
-;   Drives a multi-state schedule/detail workflow using a jump table.
-; NOTES:
-;   Uses NEWGRID_ScheduleWorkflowState as a 0..7 state index.
-;------------------------------------------------------------------------------
-NEWGRID_ProcessScheduleState:
-    MOVEM.L D2/D5-D7/A3,-(A7)
-    MOVEA.L 24(A7),A3
-    MOVE.W  30(A7),D7
-    MOVE.W  34(A7),D6
-    MOVEQ   #0,D5
-    MOVE.L  A3,D0
-    BNE.S   .dispatch_workflow_state
-
-    MOVE.L  NEWGRID_ScheduleWorkflowState,D0
-    SUBQ.L  #2,D0
-    BEQ.S   .legacy_nullctx_editor_reset
-
-    SUBQ.L  #3,D0
-    BEQ.S   .legacy_nullctx_route_by_editor_gate
-
-    SUBQ.L  #2,D0
-    BNE.S   .legacy_nullctx_clear_selection_and_state
-
-.legacy_nullctx_editor_reset:
-    CLR.L   -(A7)
-    MOVEQ   #0,D0
-    MOVE.L  D0,-(A7)
-    MOVE.L  D0,-(A7)
-    MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleGridEditorState
-
-    LEA     16(A7),A7
-    BRA.S   .legacy_nullctx_clear_selection_and_state
-
-.legacy_nullctx_route_by_editor_gate:
-    MOVE.L  NEWGRID_SelectedPrimaryEntryIndex,D0
-    ASL.L   #2,D0
-    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
-    ADDA.L  D0,A0
-    MOVE.L  (A0),-(A7)
-    JSR     NEWGRID_ShouldOpenEditor(PC)
-
-    ADDQ.W  #4,A7
-    TST.L   D0
-    BEQ.S   .legacy_nullctx_run_detail_state
-
-    MOVEQ   #0,D0
-    MOVE.L  D0,-(A7)
-    MOVE.L  D0,-(A7)
-    MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_UpdateGridState
-
-    LEA     12(A7),A7
-    BRA.S   .legacy_nullctx_clear_selection_and_state
-
-.legacy_nullctx_run_detail_state:
-    MOVEQ   #0,D0
-    MOVE.L  D0,-(A7)
-    MOVE.L  D0,-(A7)
-    MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleDetailGridState
-
-    LEA     12(A7),A7
-
-.legacy_nullctx_clear_selection_and_state:
-    MOVEQ   #0,D0
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-    MOVE.L  D0,NEWGRID_SelectedPrimaryEntryIndex
-    BRA.W   .return_state
-
-.dispatch_workflow_state:
-    MOVE.L  NEWGRID_ScheduleWorkflowState,D0
-    CMPI.L  #$8,D0
-    BCC.W   .clear_workflow_state
-
-    ADD.W   D0,D0
-    MOVE.W  .state_jumptable(PC,D0.W),D0
-    JMP     .state_jumptable+2(PC,D0.W)
-
-; switch/jumptable
-.state_jumptable:
-    DC.W    .case_state0-.state_jumptable-2
-    DC.W    .case_state1-.state_jumptable-2
-    DC.W    .case_state2-.state_jumptable-2
-    DC.W    .case_state3_or4-.state_jumptable-2
-    DC.W    .case_state3_or4-.state_jumptable-2
-    DC.W    .case_state5-.state_jumptable-2
-    DC.W    .case_state6-.state_jumptable-2
-    DC.W    .case_state7-.state_jumptable-2
-
-.case_state0:
-    MOVE.B  _GCOMMAND_MplexWorkflowMode,D0
-    MOVEQ   #66,D1
-    CMP.B   D1,D0
-    BEQ.S   .set_mode_flag
-
-    MOVEQ   #70,D2
-    CMP.B   D2,D0
-    BEQ.S   .set_mode_flag
-
-    MOVEQ   #0,D2
-    BRA.S   .store_mode_flag
-
-.set_mode_flag:
-    MOVEQ   #1,D2
-
-.store_mode_flag:
-    MOVE.L  D2,NEWGRID_ScheduleEditorGateFlag
-    CMP.B   D1,D0
-    BEQ.S   .set_alt_flag
-
-    MOVEQ   #76,D1
-    CMP.B   D1,D0
-    BEQ.S   .set_alt_flag
-
-    MOVEQ   #0,D0
-    BRA.S   .store_alt_flag
-
-.set_alt_flag:
-    MOVEQ   #1,D0
-
-.store_alt_flag:
-    MOVE.L  D7,D1
-    EXT.L   D1
-    MOVE.L  D1,-(A7)
-    MOVE.L  NEWGRID_SelectedPrimaryEntryIndex,-(A7)
-    MOVE.L  NEWGRID_ScheduleWorkflowState,-(A7)
-    MOVE.L  D0,NEWGRID_ScheduleAltSelectorFlag
-    BSR.W   NEWGRID_FindNextEntryWithAltMarkers
-
-    LEA     12(A7),A7
-    CLR.W   NEWGRID_ScheduleRowOffset
-    MOVE.L  D0,NEWGRID_SelectedPrimaryEntryIndex
-
-.search_loop:
-    MOVE.L  NEWGRID_SelectedPrimaryEntryIndex,D0
-    MOVEQ   #-1,D1
-    CMP.L   D1,D0
-    BNE.S   .search_done
-
-    MOVE.W  NEWGRID_ScheduleRowOffset,D1
-    EXT.L   D1
-    CMP.L   _GCOMMAND_MplexSearchRowLimit,D1
-    BGE.S   .search_done
-
-    ADDQ.W  #1,NEWGRID_ScheduleRowOffset
-    MOVE.L  D7,D1
-    ADD.W   NEWGRID_ScheduleRowOffset,D1
-    EXT.L   D1
-    MOVE.L  D1,-(A7)
-    MOVE.L  D0,-(A7)
-    MOVE.L  NEWGRID_ScheduleWorkflowState,-(A7)
-    BSR.W   NEWGRID_FindNextEntryWithAltMarkers
-
-    LEA     12(A7),A7
-    MOVE.L  D0,NEWGRID_SelectedPrimaryEntryIndex
-    BRA.S   .search_loop
-
-.search_done:
-    MOVEQ   #-1,D0
-    CMP.L   NEWGRID_SelectedPrimaryEntryIndex,D0
-    BEQ.W   .return_state
-
-    MOVEQ   #1,D0
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-
-.case_state1:
-    MOVE.L  D6,D0
-    ADD.W   NEWGRID_ScheduleRowOffset,D0
-    EXT.L   D0
-    MOVE.L  D0,-(A7)
-    MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_DrawStatusMessage
-
-    ADDQ.W  #8,A7
-    CLR.L   NEWGRID_ScheduleSelectionCodeCache
-    TST.L   NEWGRID_ScheduleEditorGateFlag
-    BEQ.S   .case_state1_select
-
-    MOVEQ   #2,D0
-    BRA.S   .case_state1_store
-
-.case_state1_select:
-    MOVEQ   #3,D0
-
-.case_state1_store:
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-    BRA.W   .return_state
-
-.case_state2:
-    TST.L   NEWGRID_ScheduleEditorGateFlag
-    BEQ.S   .case_state2_force_state3
-
-    MOVE.L  _GCOMMAND_MplexListingsTemplatePtr,-(A7)
-    MOVE.L  _GCOMMAND_MplexEditorRowPen,-(A7)
-    MOVE.L  _GCOMMAND_MplexEditorLayoutPen,-(A7)
-    MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleGridEditorState
-
-    LEA     16(A7),A7
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-    SUBQ.L  #5,D0
-    BNE.S   .case_state2_done
-
-    MOVEQ   #2,D0
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-    BRA.W   .return_state
-
-.case_state2_done:
-    CLR.L   NEWGRID_ScheduleEditorGateFlag
-    MOVEQ   #3,D0
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-    BRA.W   .return_state
-
-.case_state2_force_state3:
-    MOVEQ   #3,D0
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-
-.case_state3_or4:
-    MOVE.L  D7,D0
-    ADD.W   NEWGRID_ScheduleRowOffset,D0
-    EXT.L   D0
-    MOVE.L  D0,-(A7)
-    MOVE.L  NEWGRID_SelectedPrimaryEntryIndex,-(A7)
-    MOVE.L  NEWGRID_ScheduleWorkflowState,-(A7)
-    BSR.W   NEWGRID_FindNextEntryWithAltMarkers
-
-    LEA     12(A7),A7
-    MOVEQ   #1,D5
-    MOVE.L  D0,NEWGRID_SelectedPrimaryEntryIndex
-
-.case_state5:
-    MOVE.L  NEWGRID_SelectedPrimaryEntryIndex,D0
-    MOVEQ   #-1,D1
-    CMP.L   D1,D0
-    BEQ.W   .case_state5_no_entry
-
-    ASL.L   #2,D0
-    LEA     _TEXTDISP_PrimaryEntryPtrTable,A0
-    ADDA.L  D0,A0
-    MOVE.L  (A0),-(A7)
-    JSR     NEWGRID_ShouldOpenEditor(PC)
-
-    ADDQ.W  #4,A7
-    TST.L   D0
-    BEQ.S   .case_state5_process_detail
-
-    MOVE.L  D7,D0
-    ADD.W   NEWGRID_ScheduleRowOffset,D0
-    EXT.L   D0
-    MOVE.L  D0,-(A7)
-    MOVE.L  NEWGRID_SelectedPrimaryEntryIndex,-(A7)
-    MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_UpdateGridState
-
-    LEA     12(A7),A7
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-    BRA.S   .case_state5_post
-
-.case_state5_process_detail:
-    MOVE.L  D7,D0
-    ADD.W   NEWGRID_ScheduleRowOffset,D0
-    EXT.L   D0
-    MOVE.L  D0,-(A7)
-    MOVE.L  NEWGRID_SelectedPrimaryEntryIndex,-(A7)
-    MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleDetailGridState
-
-    LEA     12(A7),A7
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-
-.case_state5_post:
-    MOVE.B  _GCOMMAND_DigitalMplexEnabledFlag,D0
-    MOVEQ   #89,D1
-    CMP.B   D1,D0
-    BNE.W   .return_state
-
-    TST.L   D5
-    BEQ.S   .update_column_adjust
-
-    CMPI.L  #$1,NEWGRID_ScheduleSelectionCodeCache
-    BGE.S   .update_column_adjust
-
-    MOVE.B  _GCOMMAND_MplexDetailLayoutFlag,D0
-    MOVEQ   #78,D1
-    CMP.B   D1,D0
-    BNE.S   .set_selection_code
-
-    MOVEQ   #36,D0
-    BRA.S   .store_selection_code
-
-.set_selection_code:
-    MOVEQ   #52,D0
-
-.store_selection_code:
-    MOVE.L  D0,-(A7)
-    MOVE.L  A3,-(A7)
-    BSR.W   _NEWGRID_ValidateSelectionCode
-
-    BSR.W   _NEWGRID_GetGridModeIndex
-
-    ADDQ.W  #8,A7
-    MOVE.L  D0,NEWGRID_ScheduleSelectionCodeCache
-
-.update_column_adjust:
-    MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_ComputeColumnIndex
-
-    ADDQ.W  #4,A7
-    SUB.L   D0,NEWGRID_ScheduleSelectionCodeCache
-    BRA.W   .return_state
-
-.case_state5_no_entry:
-    MOVEQ   #6,D0
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-
-.case_state6:
-    MOVE.L  NEWGRID_SelectedPrimaryEntryIndex,D0
-    MOVEQ   #-1,D1
-    CMP.L   D1,D0
-    BNE.S   .case_state6_done
-
-    MOVE.W  NEWGRID_ScheduleRowOffset,D1
-    EXT.L   D1
-    CMP.L   _GCOMMAND_MplexSearchRowLimit,D1
-    BGE.S   .case_state6_done
-
-    ADDQ.W  #1,NEWGRID_ScheduleRowOffset
-    MOVE.L  D7,D1
-    ADD.W   NEWGRID_ScheduleRowOffset,D1
-    EXT.L   D1
-    MOVE.L  D1,-(A7)
-    MOVE.L  D0,-(A7)
-    MOVE.L  NEWGRID_ScheduleWorkflowState,-(A7)
-    BSR.W   NEWGRID_FindNextEntryWithAltMarkers
-
-    LEA     12(A7),A7
-    MOVE.L  D0,NEWGRID_SelectedPrimaryEntryIndex
-    BRA.S   .case_state6
-
-.case_state6_done:
-    MOVEQ   #-1,D0
-    CMP.L   NEWGRID_SelectedPrimaryEntryIndex,D0
-    BNE.S   .case_state6_store
-
-    MOVEQ   #7,D0
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-    BRA.S   .case_state7
-
-.case_state6_store:
-    MOVEQ   #1,D0
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-    BRA.S   .return_state
-
-.case_state7:
-    TST.L   NEWGRID_ScheduleAltSelectorFlag
-    BEQ.S   .case_state7_clear_state
-
-    MOVE.L  _GCOMMAND_MplexListingsTemplatePtr,-(A7)
-    MOVE.L  _GCOMMAND_MplexEditorRowPen,-(A7)
-    MOVE.L  _GCOMMAND_MplexEditorLayoutPen,-(A7)
-    MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleGridEditorState
-
-    LEA     16(A7),A7
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-    SUBQ.L  #5,D0
-    BNE.S   .case_state7_done
-
-    MOVEQ   #7,D0
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-    BRA.S   .return_state
-
-.case_state7_done:
-    MOVEQ   #0,D0
-    MOVE.L  D0,NEWGRID_ScheduleWorkflowState
-    MOVE.L  D0,NEWGRID_ScheduleAltSelectorFlag
-    BRA.S   .return_state
-
-.case_state7_clear_state:
-    CLR.L   NEWGRID_ScheduleWorkflowState
-    BRA.S   .return_state
-
-.clear_workflow_state:
-    CLR.L   NEWGRID_ScheduleWorkflowState
-
-.return_state:
-    MOVE.L  NEWGRID_ScheduleWorkflowState,D0
-    MOVEM.L (A7)+,D2/D5-D7/A3
     RTS
 
 ;!======

@@ -1,5 +1,5 @@
     XDEF    _NEWGRID_DrawGridFrame
-    XDEF    NEWGRID_ShouldOpenEditor
+    XDEF    _NEWGRID_ShouldOpenEditor
 
 
 
@@ -59,7 +59,7 @@ _NEWGRID_DrawGridFrame:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_ShouldOpenEditor   (Check if entry can open editor)
+; FUNC: _NEWGRID_ShouldOpenEditor   (Check if entry can open editor)
 ; ARGS:
 ;   stack +8: A3 = entry pointer
 ; RET:
@@ -77,7 +77,7 @@ _NEWGRID_DrawGridFrame:
 ; NOTES:
 ;   Returns true when both strings are empty and flag bit 5 is set.
 ;------------------------------------------------------------------------------
-NEWGRID_ShouldOpenEditor:
+_NEWGRID_ShouldOpenEditor:
     LINK.W  A5,#-12
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
