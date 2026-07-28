@@ -107,5 +107,23 @@ if ! < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s ${SCLIB:+-l"$SCL
 fi
 [ -f "$BUILD/ESQ" ] || { echo "*** LINK produced no binary ***"; exit 1; }
 
+# A 16-bit PC-relative call whose target drifts past +/-32767 is written by vlink
+# with a WRAPPED displacement and no diagnostic, so the call jumps 65536 bytes into
+# arbitrary code. Nothing else here can see it: the CODE size is unchanged, the
+# relocation count is unchanged (a same-section PC-relative reference emits no
+# reloc either way), and both byte gates stay green. That is precisely how the
+# ESC-menu guru hid for as long as it did. Relink with symbols to get a map and
+# check every such call before believing any build.
+echo "==> checking 16-bit PC-relative call range"
+if < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd ${SCLIB:+-l"$SCLIB"} \
+       -M -o "$BUILD/ESQ_mapprobe" > "$BUILD/ESQ.map" 2>&1; then
+    if ! python3 tools/check_pcrel_range.py "$BUILD/ESQ" "$BUILD/ESQ.map"; then
+        echo "*** ABORT: the linker silently truncated a call. This build is broken. ***"
+        exit 1
+    fi
+else
+    echo "  (map link failed -- range check skipped; see $BUILD/ESQ.map)"
+fi
+
 echo "==> verifying split build against reference"
 python3 tools/hunkcmp.py "$BUILD/ESQ_reference" "$BUILD/ESQ"

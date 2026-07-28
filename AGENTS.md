@@ -621,308 +621,65 @@ python3 tools/btrap_bisect.py --list <file>               # removal-bisect
 sequence does — it boots once, sends whatever you list, and scores every frame.
 That is how the dead arrow key was found, after months of trusting it.
 
-### OPEN: the maximum-C build gurus on the ESC menu — 2026-07-28 update
+### SOLVED: the ESC-menu guru was a silently truncated 16-bit call (2026-07-28)
 
-Still open, but the picture changed substantially on 2026-07-28 and **several
-earlier conclusions in this section were false negatives from a broken harness.**
-Read this part before re-running any old experiment.
+**Cause.** vlink resolves a 16-bit PC-relative reference internally when both ends
+land in the same output section, and when the required displacement exceeds
++/-32767 it **writes the wrapped low 16 bits and says nothing**. The call then
+jumps exactly 65536 bytes away from its target, into arbitrary code. In the
+313-entry maximum-C build five calls were wrapped:
 
-#### The harness was only ever pressing one menu item
+| caller | callee | over the limit by |
+|---|---|---:|
+| `DISKIO2_HandleInteractiveFileTransfer` | `_GROUP_AM_JMPTBL_WDISP_SPrintf` | 687 |
+| `ED1_HandleEscMenuInput` | `ESQIFF_JMPTBL_MATH_DivS32` | 379 |
+| `_ED1_EnterEscMenu` | `ESQIFF_JMPTBL_MATH_Mulu32` | 189 |
+| `_ED1_EnterEscMenu` | `ESQIFF_JMPTBL_MATH_Mulu32` | 121 |
+| `ESQSHARED_UpdateMatchingEntriesByTitle` | `NEWGRID_JMPTBL_MATH_DivS32` | 23 |
 
-`keydrive_esq.sh` sends ESC / Down / Return. Reading its captures showed **the
-Down arrow never did anything**: FS-UAE consumes the cursor keys as emulated
-joystick input before the Amiga keyboard sees them, so the `2_down` screen is
-identical to the freshly-opened menu with "Edit Ads" still highlighted. Every
-guru trial ever run therefore activated **menu item 1 and only item 1**, and the
-old note that "ESC and the arrow are fine, the alert lands on RETURN" was
-vacuous — the arrow was a no-op, not a passing case.
+`_ED1_EnterEscMenu` is the function that runs when you press ESC. Both of its
+calls were wrapped, which is why the alert arrived on the ESC-menu path and
+nowhere else.
 
-The menu's own text says "Push any key to select" and that is literal: an
-**ordinary** key advances the selection by one. `tools/menusweep_esq.sh` uses
-that to reach all six items, one boot per item. Five of them —
-Edit Attributes, Change Scroll Speed, Diagnostic Mode, Special Functions,
-Versions Screen — had never been exercised by anything, and that is where most
-of the restored `ED_*` code lives.
+**Why it hid for so long.** Nothing in the toolchain could see it. The CODE size
+is unchanged. The relocation count is unchanged, because a same-section
+PC-relative reference emits no reloc either way. `cmatch`/`cdiff` compare a
+function's own bytes, not where its calls land. Both byte gates stay green, and
+`a6_audit` and `verify_restorations` pass. vlink DOES range-check some references
+-- that is `Error 28`, which this project hit while padding -- so the checking is
+simply inconsistent, and the unchecked path is silent.
 
-#### It is NOT intermittent. That was an artifact of the weak sequence.
+It also explains every confusing symptom: the fault depended on image LAYOUT
+rather than on any restoration's content (a wrapped displacement is a function of
+the distance between caller and callee); no single file was ever attributable;
+removing enough restorations fixed it by bringing the pairs back into range; and
+the landing address moved between builds because it is always 64KB below whatever
+the intended target happened to be.
 
-With the real sequence the fault fires **every time**:
+**The check, and it is wired in.** `tools/check_pcrel_range.py` scans every
+`JSR (d16,PC)` and `BSR.W` in a linked binary against a `vlink -M` map and reports
+any whose target is not a symbol but sits exactly 64KB from one. `build-split.sh`
+now relinks with symbols, runs it, and **ABORTS the build** on any hit. Validated
+three ways: the byte-exact pure-assembly build (which works) reports 0 of 3892;
+the 271-entry build reports 0 of 3407; the 313-entry build reports 5 of 3200 and
+fails the build.
 
-```
-  reference (byte-exact)      clean 6/6      (all six menu items)
-  byte-exact C, 23 entries    clean 3/3      (splits and renames ARE inert)
-  maximum-C 289               guru 2/2
-  maximum-C 305               guru 6/6
-```
+> Two false-positive classes had to be excluded first, both found by testing the
+> detector against the KNOWN-GOOD pure build rather than assuming it was right.
+> DATA symbols must not be mixed in (the map lists them under `Symbols of S_1:`),
+> and the encoded displacement must be large in magnitude -- a legitimate short
+> branch to a local label that happens to sit 64KB from some symbol is not a wrap.
 
-So "a single trial is never evidence of absence" was the right rule for the old
-harness and is now over-cautious: this reproducer is deterministic. **Every
-earlier conclusion that rested on a CLEAN verdict has to be re-checked**, because
-those verdicts were produced by a sequence that barely touched the program.
+**How to grow a C manifest now.** Add restorations and build. If the check fails
+it names the caller, the callee and the overshoot, so shrink the span between
+them. Dropping an OVERSHOOTING restoration inside the span works, since those make
+the image larger than the assembly they replace -- note that dropping an
+*undershooting* one makes things WORSE, which is a real trap: the first three
+entries tried this way grew the image by 12 bytes and pushed the overshoot from
+23 to 35.
 
-`tools/gururate_esq.sh` measures a fire rate rather than assuming one, and its
-header does the arithmetic on how many clean trials an acquittal actually needs.
-
-#### "Not one file" was WRONG
-
-The claim rested on: the first 144 entries guru, but neither 72-entry half does.
-Re-run with the working harness, **the second 72 (entries 73–144) gurus on its
-own.** The old result was a false acquittal. A single culprit is back on the
-table and the search space is 72 entries, not 289.
-
-#### Two alert codes, one fault, and the landing site moves
-
-| build | alert | log |
-|---|---|---|
-| 289 | `8100000F` | no log line |
-| 305 | `8000000B` | `B-Trap FFF8 at 002248F6` |
-
-`8000000B` is `ACPU_LineF` — the CPU executed a word as an instruction. Across
-three builds the trap moved: `FFF8@002248F6`, `FFEC@00224932`, `FFF8@00224524`.
-**Both the address and the opcode track image layout**, which is the signature of
-a wild jump landing on whatever data happens to be there. Treat the two codes as
-one fault with a layout-dependent symptom, not two bugs.
-
-#### A log oracle now exists, and it is trustworthy
-
-`grep -c B-Trap` on the FS-UAE log: **1 in each of six 305 trials, 0 in each of
-six reference trials and both 289 trials** — 14 trials, no disagreement. That is
-a different thing from the `Illegal instruction: 4e7b` mistake, which counted
-Kickstart's own boot instruction.
-
-It only sees the F-line variant, so `tools/btrap_test.sh` reports the log signal
-**and** the screen verdict, and treats a build that merely swapped `8000000B` for
-`8100000F` as still broken. Never oracle on the log alone.
-
-#### Ruled out on 2026-07-28
-
-- **My 16 restorations added that day.** Removing all sixteen still gurus.
-- **The module splits and symbol renames.** The byte-exact 23-entry build carries
-  all of them and is clean, so they are inert at runtime as well as byte-neutral.
-- **A wrong pointer baked into DATA.** All six differing DATA bytes sit inside
-  relocated longwords and each is shifted by exactly `0xAB2`, matching CODE
-  growth. Nothing stray. The wild jump is computed at runtime, not linked in.
-- **CHIP-memory exhaustion.** Worth stating precisely because the earlier
-  "8MB of RAM does not fix it" experiment does NOT rule this out: the bigmem
-  config raises `fast_memory` only, and `chip_memory` stays at 1024. Bitmaps and
-  copper lists must live in chip RAM, so a failed chip allocation would be
-  invisible to that test — and an unchecked one explains BOTH symptoms at once (a
-  null jumped through, or a null freed). It is still wrong: `chip_memory = 2048`
-  gurus 3/3 on the 305 build. `Prevue-HDD-bigchip.fs-uae` is left in place for
-  re-testing.
-
-#### The strongest remaining signal is SIZE, and it is very tight
-
-| build | bytes | verdict |
-|---|---:|---|
-| reference / byte-exact C | 279804 | clean |
-| keep 36b of the window | 280324 | clean |
-| keep 36a of the window | 281172 | clean |
-| keep entries 0–72 | 281360 | clean |
-| keep entries 72–144 | 281740 | **fails** |
-| 289 / 305 entries | 284716 / 285292 | **fails** |
-
-Every failing build is larger than every clean build, with the boundary inside a
-380-byte window. That is consistent with a latent fault that only manifests past
-some layout threshold, and it explains why entry-level attribution keeps failing
-in both directions: the subsets are changing size as much as content.
-
-Trying to test size directly by padding a clean build hit `Error 28` at
-**`-0x80e0`, only 224 bytes past the 16-bit limit** — so the hand-written
-assembly's `BSR.W` pairs really are at the ceiling, and the padding experiment
-that would settle this cannot be built at that size. Note the corollary: because
-a C replacement moves code in and out of units, *which* pairs are stressed
-depends on the manifest, not just on total size.
-
-**The obvious next question is whether something 16-bit is truncating silently.**
-vlink range-checks what it emits — it produced the Error 28 above — so a linked
-build should be free of overflowed displacements. If that is true the size
-correlation needs another explanation; if some reloc class is NOT checked, a
-wrapped 16-bit displacement lands ~64KB away, on data, at a layout-dependent
-address, which fits every observation. Auditing vlink's range checks per reloc
-type is the cheapest way to close this.
-
-#### Entry-level removal-bisect is confounded by layout — do not trust it alone
-
-Keeping entries 73–144 reproduces the fault, yet removing **either** 36-entry
-half of that window from the full manifest fails to fix it. Both cannot be true
-of a simple single culprit, and the reason is that every subset changes the image
-layout, which this fault is sensitive to. `tools/btrap_bisect.py` therefore stops
-and says so rather than picking a half.
-
-#### NARROWED to the ED_* family, but still NOT attributable to one file
-
-Removing all **39 `ED_*` restorations** from the 313-entry manifest makes the
-fault go away -- clean on both the log signal and the screen, across all six menu
-items. That is the sharpest cut found so far, and it makes sense: `ED_*` is the
-menu code and the fault fires on menu interaction.
-
-**It is not any single one of them, and the attribution that looked solid did not
-survive.** Bisecting inside the family needs the two-culprit technique (remove
-half B permanently, then bisect half A against that baseline -- `btrap_bisect.py
---fixed`), because removing either half alone leaves the other half's failure in
-place. Doing that named `ed1_draw_diagnostics_screen.c`. The confirmation step
-then **refuted it**: an ED-free baseline plus only that file is CLEAN.
-
-So the fault needs several `ED_*` entries present together and remains sensitive
-to image layout. Two hypotheses were checked and are wrong:
-
-- **A too-small `printfResult` buffer** in `ed1_draw_diagnostics_screen.c`. The
-  original really does use 41 bytes (`.printfResult = -41`, frame 48) and the
-  format expands to about 34, so there is no overflow and the C matches.
-- **An out-of-bounds scratch write** in `ed_capture_key_sequence.c`. Its
-  `scratch[sentinel*3 + phase]` reaches index 24, which looks like one past a
-  24-byte array -- but `_KYBD_CustomPaletteCaptureScratchBase` is `DS.B 1`
-  immediately before the 24-byte palette, so phase 1..3 lands exactly on R/G/B of
-  pen `sentinel`. The off-by-one is deliberate and the restoration is faithful.
-
-**ALWAYS RUN THE CONFIRMATION.** This project has now retracted three culprit
-attributions, and this is the first one caught before it was believed, purely
-because `btrap_bisect.py` prints the confirmation instruction and it was
-followed. A bisect verdict inside a layout-sensitive fault is a hypothesis, not
-a result.
-
-#### The trap lands MID-INSTRUCTION: it is a wild jump, not a bad free
-
-The logged opcodes are `FFF8`, `FFF4` and `FFEC` -- i.e. -8, -12 and -20 as
-signed words. Those are not plausible instructions; they are **extension words**,
-the second word of a `LINK.W A5,#-n` prologue (or equivalent data). So the PC is
-landing at an ODD PLACE INSIDE an instruction stream, which makes this a wild
-jump, and `ACPU_LineF` is just what the CPU says when it gets there. The
-`8100000F` variant is the same wild jump landing somewhere that frees instead.
-
-**The CODE base is not pinned yet, and this is what to finish.** Solving
-`trapPC - base` against a `4e55fff8`-style site across four saved builds
-(`ESQ_maxc305/313/314/disc1`, traps `0x2248f6 / 0x224932 / 0x224932 / 0x22491e`)
-leaves **11 candidate bases**. Two land on a map symbol, and neither survives:
-
-- `0x2207cc` -> `ESQ_CopperStatusDigitsB_TailColorWord`, which is in
-  `src/data/esq.s` -- a DATA symbol matched against a CODE offset. Invalid; the
-  map's symbol list must be split at `Symbols of S_1:` before use.
-- `0x220076` -> `CLEANUP_TestEntryFlagYAndBit1 + 2`, but that base is 6 mod 8 and
-  a loaded hunk comes from `AllocMem`, so it is 8-aligned. Implausible.
-
-Each additional failing build with a distinct layout is one more constraint;
-four gave 11 candidates, so a handful more should give one. `tools/btrap_test.sh`
-already prints the trap line, and the binaries must be SAVED (it overwrites
-`~/Downloads/Prevue/ESQ` every run). Once the base is known, the landing symbol
-follows from the map and names what the wild pointer actually held.
-
-#### THE LANDING SITE IS IDENTIFIED: `CLEANUP_RenderAlignedStatusScreen + 0x10c`
-
-Method, which is reusable for any future wild-jump fault here:
-
-1. Collect (trapPC, binary) from several FAILING builds with different layouts,
-   saving each binary -- `btrap_test.sh` overwrites the staged `ESQ` every run.
-2. Brute-force the CODE base: for every candidate `base`, require the word at
-   `trapPC - base` to equal the logged opcode in EVERY build.
-3. Discriminate what survives by requiring the ~24 bytes around the landing site
-   to be BYTE-IDENTICAL across builds -- the real site is the same code in all of
-   them, so candidates landing in shifting C output are eliminated.
-4. Break any remaining tie on alignment: a loaded hunk comes from `AllocMem`, so
-   the base is 8-ALIGNED. That is what settles it.
-
-Result: base `0x00220888`, and the trap word is the `FFF8` displacement of a
-`-8(A5)` access at `CLEANUP_RenderAlignedStatusScreen + 0x10c`. (Three candidate
-bases survived step 3 because all three land on an `FFF8` displacement inside the
-SAME function; only one is 8-aligned.) The function is **still assembly, not
-restored**, so the landing site is untouched code -- it is where control arrives,
-not the bug.
-
-#### And the mechanism: an UNBOUNDED STACK COPY four instructions later
-
-```
-+0x1c6  MOVEA.L -8(A5),A0          ; title-table entry
-+0x1ca  MOVEA.L 56(A0,D0.L),A0     ; -> title text pointer
-+0x1ce  LEA     -554(A5),A1        ; stack buffer inside a LINK.W A5,#-840 frame
-+0x1d2  MOVE.B  (A0)+,(A1)+ / BNE  ; copy until NUL -- NO length limit
-```
-
-`-8(A5)` is `_TEXTDISP_PrimaryTitlePtrTable[_TEXTDISP_CurrentMatchIndex]`, loaded
-at `+0x0f8..+0x10a` with **no bound check on the index**. So a
-`CurrentMatchIndex` that is out of range (notably -1, which several code paths
-assign) reads a pointer from OUTSIDE the table, and the copy then runs from
-whatever that points at until it happens to find a zero -- straight over the
-840-byte frame and its return address. A smashed return address landing on
-whatever the garbage text happened to contain is *exactly* a wild jump whose
-target moves with image layout, and it explains both alert codes, the ED_*
-sensitivity (ED drives the menu that sets the index) and why no single file is
-attributable.
-
-#### ...AND THAT MECHANISM IS REFUTED. Two diagnostic builds killed it.
-
-The story above is coherent, fits every observation, and is WRONG. It was tested
-rather than believed, with throwaway patches to `cleanup3.s` (which break
-`test-hash` by design -- revert them):
-
-1. **Clamp a negative index on entry** (`TST.W` / `BPL` / `CLR.W` at the top of
-   `CLEANUP_RenderAlignedStatusScreen`). Still gurus 3/3 with the B-Trap.
-2. **Bound the copy to 120 bytes** (`DBF` counter around the
-   `MOVE.B (A0)+,(A1)+` loop), which tests the stack-smash mechanism
-   independently of *why* the source pointer is bad. Still gurus 3/3.
-
-So the unbounded copy is not the route, and a negative index is not the trigger.
-
-**That also puts the landing-site identification in doubt**, because both patches
-targeted that function on the strength of it. The base rests on a single
-alignment tiebreak: three candidates survived the cross-build identity test and
-only `0x220888` is 8-aligned. If the base is actually one of the two others
-(`0x2207cc`, `0x22082e` -- both also inside this same function) the conclusion is
-unchanged; but if the identity test wrongly eliminated a candidate, the whole
-chain moves. **Do not build on the landing site until the base is confirmed
-independently** -- e.g. by a diagnostic build that plants a recognisable unique
-word at a known CODE offset and checks which address the trap reports.
-
-What survives from all this is method, not a culprit: the base-solving recipe,
-the two-culprit `--fixed` bisect, the ED_* family cut, and the elimination of
-argument-count bugs, chip RAM, DATA corruption and the 16-bit ceiling.
-
-#### Refuted: the 16-bit branch ceiling as the cause
-
-`CLEANUP_RenderAlignedStatusScreen + 0x13c` calls `_DISPLIB_NormalizeValueByStep`,
-which is the very symbol that produced `Error 28` during the padding experiment --
-an appealing connection, since it would tie the guru to the branch ceiling and
-explain the layout sensitivity. It is wrong: in the failing 313-entry build that
-`JSR (d16,PC)` encodes `+28312`, well inside range and resolving exactly to the
-symbol. vlink range-checks and ERRORS rather than truncating, which is why the pad
-experiment failed to link instead of miscompiling.
-
-#### Ruled out: wrong argument counts (`tools/check_c_signatures.py`)
-
-A callee reading a stack slot the caller never pushed is the textbook way to
-produce a wild pointer, and no existing check could see it -- cmatch compares the
-body not the convention, both byte gates stay green, `a6_audit` only looks at
-library bases, and the linker cannot know how many arguments a function wants.
-
-So it is now checked: the tool derives the argument count from the reference's own
-`d(A5)` reads and compares it with the C signature. **100 restorations checked, 0
-errors.** That eliminates the class.
-
-Two idioms it had to learn first, both after it cried wolf:
-
-- **varargs.** `LEA 16(A5),A0` takes the address of the slot past the last named
-  argument and passes it on. `disptext_build_layout_for_source.c` is `(src, fmt,
-  ...)` and correctly spells that `&fmt + 1`, so 2 parameters is right even though
-  slot 2 is touched.
-- **A7-addressed arguments in a framed function.** `_DISPLIB_DisplayTextAtPosition`
-  has `LINK.W A5` and still reads 28/32/36/40(A7). Those are invisible to the A5
-  scan, so such functions report 0 slots -- which is why the "declares more"
-  direction is advisory and only "declares fewer" is an error.
-
-#### There is a verified-working C build: `src/c/replacements-runnable.txt`
-
-274 entries -- `replacements-all.txt` minus the 39 `ED_*`. Verified 2026-07-28:
-boots, `a6_audit` 0/274, and **clean on all six ESC-menu items** with no B-Trap.
-Use it whenever you need a C build that actually runs; keep
-`replacements-all.txt` as the maximal-coverage target that does not.
-
-**Next step:** run `tools/ddmin_guru.py` against the 72-entry reproducer with the
-new deterministic oracle. ddmin was previously crippled by the intermittent
-verdict — a clean answer cost `trials` runs and was still unreliable. Now a
-verdict costs one run and can be believed, which is what makes the complement
-testing it does affordable. Prefer the 72-entry reproducer over the 289: same
-fault, a quarter of the search space, and builds fast enough to iterate on.
-
+`src/c/replacements-runnable.txt` is the current verified-good manifest: 271
+entries, check clean, `a6_audit` 0/271, boots, and clean on all six ESC-menu items.
 
 ## Verifying a C build
 

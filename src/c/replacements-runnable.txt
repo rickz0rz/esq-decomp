@@ -1,19 +1,33 @@
-# LARGEST C MANIFEST VERIFIED TO RUN (2026-07-28).
+# LARGEST C MANIFEST THAT LINKS CORRECTLY AND RUNS (2026-07-28).
 #
-# replacements-all.txt gurus on the ESC menu. This is that manifest MINUS the 39
-# ED_* entries, which is the cut that makes the fault go away -- verified clean on
-# both the log signal (B-Trap) and the screen, across all six menu items.
+# The ESC-menu guru was NOT a bad restoration. vlink silently writes a WRAPPED
+# displacement when a 16-bit PC-relative call drifts past +/-32767, so the call
+# jumps 65536 bytes into arbitrary code -- with no diagnostic, no size change and
+# no change in relocation count. In the 313-entry build five calls were wrapped,
+# including both of _ED1_EnterEscMenu's calls to ESQIFF_JMPTBL_MATH_Mulu32. That
+# function runs when you press ESC, which is exactly when the guru appeared.
 #
-# It is NOT that any one ED_* file is wrong. A bisect inside the family named
-# ed1_draw_diagnostics_screen.c and the confirmation step REFUTED it: an ED-free
-# baseline plus only that file is clean. The fault needs several of them present
-# and is sensitive to image layout, so the family is excluded wholesale rather
-# than blamed on a member. See AGENTS.md, "OPEN: the maximum-C build gurus".
+# So the manifest is now selected BY A CHECK, not by excluding a family:
 #
-# Rebuild and re-verify with:
+#     python3 tools/check_pcrel_range.py build/ESQ build/ESQ.map
+#
+# build-split.sh runs it automatically and ABORTS if any call is truncated. To
+# grow this manifest, add restorations and re-run the build; if the check fails it
+# names the caller, the callee and how many bytes over the limit it is. Shrink the
+# span between them -- dropping an OVERSHOOTING restoration inside it works, since
+# those make the image larger than the assembly they replace.
+#
+# This set excludes the 39 ED_* entries plus four large overshooting restorations
+# (newgrid_select_next_mode, newgrid_process_schedule_state,
+# newgrid_process_secondary_state, textdisp_find_entry_match_index) which together
+# were pushing ESQSHARED_UpdateMatchingEntriesByTitle's call to
+# NEWGRID_JMPTBL_MATH_DivS32 23 bytes past the limit.
+#
+# Verified: check_pcrel_range clean (0 of 3407), a6_audit 0/271, boots, and clean
+# on all six ESC-menu items with zero B-Traps.
+#
 #   SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
 #     C_REPLACEMENTS=src/c/replacements-runnable.txt ./build-split.sh
-#   tools/menusweep_esq.sh <binary> label "1 2 3 4 5 6" 1
 modules/groups/a/a/bevel_bevel_drawbevelframewithtop.s                 c/bevel_draw_bevel_frame_with_top.c
 modules/groups/a/a/bevel_bevel_drawhorizontalbevel.s                   c/bevel_draw_horizontal_bevel.c
 modules/groups/a/a/bevel_bevel_drawverticalbevel.s                     c/bevel_draw_vertical_bevel.c
@@ -206,12 +220,9 @@ modules/groups/b/a/newgrid1_getgridmodeindex.s                         c/newgrid
 modules/groups/b/a/newgrid1b_p2_newgrid_initselectionwindow.s          c/newgrid_init_selection_window.c
 modules/groups/b/a/newgrid1b_newgridinitshowtimebuckets.s              c/newgrid_init_showtime_buckets.c
 modules/groups/b/a/newgrid_newgrid_isgridreadyforinput.s               c/newgrid_is_grid_ready_for_input.c
-modules/groups/b/a/newgrid1b_p2_newgrid_processschedulestate.s         c/newgrid_process_schedule_state.c  SHORTINT
-modules/groups/b/a/newgrid1b_p2_newgrid_processsecondarystate.s        c/newgrid_process_secondary_state.c
 modules/groups/b/a/newgrid1b_newgrid_rebuildindexcache.s               c/newgrid_rebuild_index_cache.c
 modules/groups/b/a/newgrid1_newgrid_resetrowtable.s                    c/newgrid_reset_row_table.c
 modules/groups/b/a/newgrid1b_newgrid_selectentrypen.s                  c/newgrid_select_entry_pen.c
-modules/groups/b/a/newgrid_p1_newgrid_selectnextmode.s                 c/newgrid_select_next_mode.c
 modules/groups/b/a/newgrid_newgrid_shutdowngridresources.s             c/newgrid_shutdown_grid_resources.c
 modules/groups/b/a/newgrid1bb_newgrid_testmodeflagactive.s             c/newgrid_test_mode_flag_active.c
 modules/groups/a/z/locavail2_override_intuition_funcs.s                c/override_intuition_funcs.c
@@ -264,7 +275,6 @@ modules/groups/b/a/textdisp3_p1_textdisp_buildmatchindexlist.s         c/textdis
 modules/groups/b/a/textdisp3_p1_textdisp_computetimeoffset.s           c/textdisp_compute_time_offset.c
 modules/groups/b/a/textdisp3_textdisp_findaliasindexbyname.s           c/textdisp_find_alias_index_by_name.c
 modules/groups/b/a/textdisp3_p1.s                                      c/textdisp_find_control_token.c
-modules/groups/b/a/textdisp3_p1_p1_textdisp_findentrymatchindex.s      c/textdisp_find_entry_match_index.c  SHORTINT
 modules/groups/b/a/textdisp3_p1_textdisp_findquotedspan.s              c/textdisp_find_quoted_span.c
 modules/groups/b/a/textdisp3_p1_textdisp_formatentrytime.s             c/textdisp_format_entry_time.c
 modules/groups/b/a/textdisp_textdisp_getgroupentrycount.s              c/textdisp_get_group_entry_count.c
