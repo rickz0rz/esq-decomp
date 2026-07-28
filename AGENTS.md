@@ -604,111 +604,120 @@ terminal, separately from the Screen Recording grant the capture needs, and it
 checks for that grant rather than assuming it — without it every keystroke fails
 silently with error 1002 and the run is a no-op that looks like a pass.
 
-### OPEN: the maximum-C build gurus on the ESC menu action
+> **Its arrow keypress is a NO-OP and always was** — FS-UAE eats the cursor keys
+> as joystick input, so it only ever activates menu item 1. Prefer
+> `tools/menusweep_esq.sh`, which reaches all six items using ordinary keys. See
+> the OPEN section below; this one fact invalidated several published conclusions.
 
-Found 2026-07-27, the first time keyboard input was available. The build boots
-and soaks for five minutes indistinguishably from the reference, then gurus when
-a menu item is ACTIVATED -- ESC and the arrow are fine, the alert lands on
-RETURN. `8100000F` = `AN_BadFreeAddr`, freeing memory at a bad address.
-
-```
-  reference (byte-exact)   clean, 3/3 trials
-  maximum-C 289            GURU at step 3_return, red 0.0315
-```
-
-**It is INTERMITTENT, and that is the single most important fact about it.** The
-same 147-entry binary came up clean on one trial and gurued on the next. So a
-single trial is evidence of a guru but NEVER evidence of its absence, and
-`keydrive_esq.sh` defaults to `TRIALS=3` for that reason.
-
-**No file has been validly attributed yet.** Two bisects each named one, and
-neither survived checking:
-
-- `esqiff_run_copper_drop_transition.c` -- removing it from the full manifest
-  changed nothing.
-- `esqiff_handle_brush_ini_reload_hotkey.c` -- its "confirmed" solo run is
-  actually CLEAN once the detector is fixed.
-
-Both attributions were artifacts of a broken oracle, not of the program. Two
-detector bugs were found and fixed, in this order:
-
-1. **Counting `Illegal instruction: 4e7b at 00F80B4C` in the FS-UAE log.** That
-   is Kickstart's own boot instruction; whether it appears once or twice depends
-   on where the run is when it is killed. The same binary gave 1 then 2.
-2. **Thresholding on RED pixels alone.** ESQ's TV logo is dark red and takes a
-   healthy guide screen to 0.0036, over a red-only threshold of 0.003 -- which
-   reported a clean build as gurued. `tools/guru_detect.py` now requires red
-   AND a near-black screen, which separates by two orders of magnitude.
-
-**Before bisecting anything, run the oracle twice on the same binary.** If it
-disagrees with itself, fix the oracle first: everything downstream of it is
-fiction. That rule cost two full bisects to learn.
-
-**What is now known, each from a measured experiment:**
-
-- **Not "being a C build".** The byte-exact manifest (23 restorations, each
-  verified byte-identical in the linked image, same 279804 bytes as the
-  reference) is clean 3/3. So padding, unit boundaries and section layout are
-  not by themselves the cause.
-- **Not a single entry.** Removal-bisecting the 289: keeping the first 144 STILL
-  gurus, but NEITHER 72-entry half of that 144 gurus on its own. A single bad
-  restoration cannot produce that.
-- **Not memory exhaustion.** Re-running on 8MB of fast RAM instead of 1MB still
-  gurus (clean trial 1, guru trial 2). `AN_BadFreeAddr` made a failed allocation
-  followed by a free of the null result an attractive theory; the RAM makes it
-  at most less likely, not absent.
-- **Layout moves it.** Adding an unused function to one restoration -- changing
-  nothing but the image layout -- moved the symptom from one keystroke to
-  another.
-
-Taken together the fault behaves like an INTERACTION or a latent bug exposed
-probabilistically, not like one wrong function.
-
-`tools/ddmin_guru.py` is the tool for this shape. When no subset reproduces it
-tests the COMPLEMENTS, and when those fail too it refines granularity rather
-than giving up -- which is exactly where `bisect_remove.sh` (2-way splits only)
-correctly stops. Two properties of the fault make the cost work out:
-
-- a guru is definitive on the first trial but "clean" is not, and
-  `keydrive_esq.sh` exits on the first guru -- so a FAILING test costs one
-  emulator run and a CLEAN one costs `trials`. The expensive verdict is the one
-  that has to be trustworthy.
-- complements are large, and large builds fire reliably, so most of the budget
-  is spent where the oracle is dependable.
-
-A build that does not LINK is treated as clean, deliberately: it says nothing
-about the fault, and with the 16-bit range problem below it will happen.
-
-**The maximum-C build is near the 16-bit branch ceiling, and that is a ceiling on
-GROWTH, not just on diagnostics.** Trying to size-match a clean build against a
-failing one by adding ~2KB of dead code failed to link, twice, in two different
-places:
-
-```
-Error 28: ... Relative reference to relocatable symbol _ESQ_TestBit1Based
-          (value to write: -0x808e) doesn't fit into 16 bits
+```sh
+tools/menusweep_esq.sh <binary> <label> [items] [reps]   # all six ESC-menu items
+tools/keyprobe_esq.sh  <binary> <label> <key:wait>...    # one boot, arbitrary keys
+tools/gururate_esq.sh  <binary> <label> [runs]           # measure the FIRE RATE
+tools/btrap_test.sh    <label> [exclude.c ...]           # build+run one manifest
+python3 tools/btrap_bisect.py --list <file>               # removal-bisect
 ```
 
-The hand-written assembly reaches many callees with `BSR.W`, whose displacement
-is +/-32KB. Every restoration that grows the image pushes some of those pairs
-further apart, and at 289 entries several are within a couple of KB of the
-limit. So expect `Error 28` as the manifest grows, and treat it as a layout
-problem to be solved by ORDERING rather than by dropping restorations. `CODE=FAR`
-already covers the compiler's own calls; it does nothing for the assembly's.
+`keyprobe_esq.sh` is the one to reach for when you do not yet know what a key
+sequence does — it boots once, sends whatever you list, and scores every frame.
+That is how the dead arrow key was found, after months of trusting it.
 
-A useful side effect: padding experiments on this program are sharply limited.
-A +1000-byte pad on the clean 72-entry build did link and stayed clean 3/3,
-which is evidence against pure image size being the trigger -- but the +1984
-needed for a true size match could not be built at all.
+### OPEN: the maximum-C build gurus on the ESC menu — 2026-07-28 update
 
-Cheap things worth trying first, in rough order of information per run:
+Still open, but the picture changed substantially on 2026-07-28 and **several
+earlier conclusions in this section were false negatives from a broken harness.**
+Read this part before re-running any old experiment.
 
-1. Does the 144-entry set still guru with the two 72-halves REVERSED in link
-   order? If order matters, it is layout, not semantics.
-2. Bisect the DATA side: does a build with the behavioural restorations but the
-   original assembly for anything touching allocation stay clean?
-3. Turn on FS-UAE's memory debugging, if it has any, to catch the bad FreeMem
-   address rather than inferring it from the alert code.
+#### The harness was only ever pressing one menu item
+
+`keydrive_esq.sh` sends ESC / Down / Return. Reading its captures showed **the
+Down arrow never did anything**: FS-UAE consumes the cursor keys as emulated
+joystick input before the Amiga keyboard sees them, so the `2_down` screen is
+identical to the freshly-opened menu with "Edit Ads" still highlighted. Every
+guru trial ever run therefore activated **menu item 1 and only item 1**, and the
+old note that "ESC and the arrow are fine, the alert lands on RETURN" was
+vacuous — the arrow was a no-op, not a passing case.
+
+The menu's own text says "Push any key to select" and that is literal: an
+**ordinary** key advances the selection by one. `tools/menusweep_esq.sh` uses
+that to reach all six items, one boot per item. Five of them —
+Edit Attributes, Change Scroll Speed, Diagnostic Mode, Special Functions,
+Versions Screen — had never been exercised by anything, and that is where most
+of the restored `ED_*` code lives.
+
+#### It is NOT intermittent. That was an artifact of the weak sequence.
+
+With the real sequence the fault fires **every time**:
+
+```
+  reference (byte-exact)      clean 6/6      (all six menu items)
+  byte-exact C, 23 entries    clean 3/3      (splits and renames ARE inert)
+  maximum-C 289               guru 2/2
+  maximum-C 305               guru 6/6
+```
+
+So "a single trial is never evidence of absence" was the right rule for the old
+harness and is now over-cautious: this reproducer is deterministic. **Every
+earlier conclusion that rested on a CLEAN verdict has to be re-checked**, because
+those verdicts were produced by a sequence that barely touched the program.
+
+`tools/gururate_esq.sh` measures a fire rate rather than assuming one, and its
+header does the arithmetic on how many clean trials an acquittal actually needs.
+
+#### "Not one file" was WRONG
+
+The claim rested on: the first 144 entries guru, but neither 72-entry half does.
+Re-run with the working harness, **the second 72 (entries 73–144) gurus on its
+own.** The old result was a false acquittal. A single culprit is back on the
+table and the search space is 72 entries, not 289.
+
+#### Two alert codes, one fault, and the landing site moves
+
+| build | alert | log |
+|---|---|---|
+| 289 | `8100000F` | no log line |
+| 305 | `8000000B` | `B-Trap FFF8 at 002248F6` |
+
+`8000000B` is `ACPU_LineF` — the CPU executed a word as an instruction. Across
+three builds the trap moved: `FFF8@002248F6`, `FFEC@00224932`, `FFF8@00224524`.
+**Both the address and the opcode track image layout**, which is the signature of
+a wild jump landing on whatever data happens to be there. Treat the two codes as
+one fault with a layout-dependent symptom, not two bugs.
+
+#### A log oracle now exists, and it is trustworthy
+
+`grep -c B-Trap` on the FS-UAE log: **1 in each of six 305 trials, 0 in each of
+six reference trials and both 289 trials** — 14 trials, no disagreement. That is
+a different thing from the `Illegal instruction: 4e7b` mistake, which counted
+Kickstart's own boot instruction.
+
+It only sees the F-line variant, so `tools/btrap_test.sh` reports the log signal
+**and** the screen verdict, and treats a build that merely swapped `8000000B` for
+`8100000F` as still broken. Never oracle on the log alone.
+
+#### Ruled out on 2026-07-28
+
+- **My 16 restorations added that day.** Removing all sixteen still gurus.
+- **The module splits and symbol renames.** The byte-exact 23-entry build carries
+  all of them and is clean, so they are inert at runtime as well as byte-neutral.
+- **A wrong pointer baked into DATA.** All six differing DATA bytes sit inside
+  relocated longwords and each is shifted by exactly `0xAB2`, matching CODE
+  growth. Nothing stray. The wild jump is computed at runtime, not linked in.
+
+#### Entry-level removal-bisect is confounded by layout — do not trust it alone
+
+Keeping entries 73–144 reproduces the fault, yet removing **either** 36-entry
+half of that window from the full manifest fails to fix it. Both cannot be true
+of a simple single culprit, and the reason is that every subset changes the image
+layout, which this fault is sensitive to. `tools/btrap_bisect.py` therefore stops
+and says so rather than picking a half.
+
+**Next step:** run `tools/ddmin_guru.py` against the 72-entry reproducer with the
+new deterministic oracle. ddmin was previously crippled by the intermittent
+verdict — a clean answer cost `trials` runs and was still unreliable. Now a
+verdict costs one run and can be believed, which is what makes the complement
+testing it does affordable. Prefer the 72-entry reproducer over the 289: same
+fault, a quarter of the search space, and builds fast enough to iterate on.
+
 
 ## Verifying a C build
 
