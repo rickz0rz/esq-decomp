@@ -782,6 +782,54 @@ because `btrap_bisect.py` prints the confirmation instruction and it was
 followed. A bisect verdict inside a layout-sensitive fault is a hypothesis, not
 a result.
 
+#### The trap lands MID-INSTRUCTION: it is a wild jump, not a bad free
+
+The logged opcodes are `FFF8`, `FFF4` and `FFEC` -- i.e. -8, -12 and -20 as
+signed words. Those are not plausible instructions; they are **extension words**,
+the second word of a `LINK.W A5,#-n` prologue (or equivalent data). So the PC is
+landing at an ODD PLACE INSIDE an instruction stream, which makes this a wild
+jump, and `ACPU_LineF` is just what the CPU says when it gets there. The
+`8100000F` variant is the same wild jump landing somewhere that frees instead.
+
+**The CODE base is not pinned yet, and this is what to finish.** Solving
+`trapPC - base` against a `4e55fff8`-style site across four saved builds
+(`ESQ_maxc305/313/314/disc1`, traps `0x2248f6 / 0x224932 / 0x224932 / 0x22491e`)
+leaves **11 candidate bases**. Two land on a map symbol, and neither survives:
+
+- `0x2207cc` -> `ESQ_CopperStatusDigitsB_TailColorWord`, which is in
+  `src/data/esq.s` -- a DATA symbol matched against a CODE offset. Invalid; the
+  map's symbol list must be split at `Symbols of S_1:` before use.
+- `0x220076` -> `CLEANUP_TestEntryFlagYAndBit1 + 2`, but that base is 6 mod 8 and
+  a loaded hunk comes from `AllocMem`, so it is 8-aligned. Implausible.
+
+Each additional failing build with a distinct layout is one more constraint;
+four gave 11 candidates, so a handful more should give one. `tools/btrap_test.sh`
+already prints the trap line, and the binaries must be SAVED (it overwrites
+`~/Downloads/Prevue/ESQ` every run). Once the base is known, the landing symbol
+follows from the map and names what the wild pointer actually held.
+
+#### Ruled out: wrong argument counts (`tools/check_c_signatures.py`)
+
+A callee reading a stack slot the caller never pushed is the textbook way to
+produce a wild pointer, and no existing check could see it -- cmatch compares the
+body not the convention, both byte gates stay green, `a6_audit` only looks at
+library bases, and the linker cannot know how many arguments a function wants.
+
+So it is now checked: the tool derives the argument count from the reference's own
+`d(A5)` reads and compares it with the C signature. **100 restorations checked, 0
+errors.** That eliminates the class.
+
+Two idioms it had to learn first, both after it cried wolf:
+
+- **varargs.** `LEA 16(A5),A0` takes the address of the slot past the last named
+  argument and passes it on. `disptext_build_layout_for_source.c` is `(src, fmt,
+  ...)` and correctly spells that `&fmt + 1`, so 2 parameters is right even though
+  slot 2 is touched.
+- **A7-addressed arguments in a framed function.** `_DISPLIB_DisplayTextAtPosition`
+  has `LINK.W A5` and still reads 28/32/36/40(A7). Those are invisible to the A5
+  scan, so such functions report 0 slots -- which is why the "declares more"
+  direction is advisory and only "declares fewer" is an error.
+
 #### There is a verified-working C build: `src/c/replacements-runnable.txt`
 
 274 entries -- `replacements-all.txt` minus the 39 `ED_*`. Verified 2026-07-28:
