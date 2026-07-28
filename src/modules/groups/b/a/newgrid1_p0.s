@@ -102,7 +102,7 @@ _NEWGRID_SetRowColor:
 ;   none
 ; READS:
 ;   CONFIG_NewgridSelectionCode16EnabledFlag, CONFIG_NewgridSelectionCode32EnabledFlag, _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag,
-;   _CONFIG_NewgridSelectionCode34AltEnabledFlag, CONFIG_NewgridSelectionCode35EnabledFlag, CONFIG_NewgridSelectionCode48_49EnabledFlag,
+;   _CONFIG_NewgridSelectionCode34AltEnabledFlag, CONFIG_NewgridSelectionCode35EnabledFlag, _CONFIG_NewgridSelectionCode48_49EnabledFlag,
 ;   _GCOMMAND_DigitalNicheEnabledFlag
 ; WRITES:
 ;   54(A3)
@@ -203,7 +203,7 @@ _NEWGRID_ValidateSelectionCode:
     BRA.W   .return_selection_validation
 
 .case_48:
-    MOVE.B  CONFIG_NewgridSelectionCode48_49EnabledFlag,D0
+    MOVE.B  _CONFIG_NewgridSelectionCode48_49EnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .return_selection_validation
@@ -223,7 +223,7 @@ _NEWGRID_ValidateSelectionCode:
     BRA.W   .return_selection_validation
 
 .case_49:
-    MOVE.B  CONFIG_NewgridSelectionCode48_49EnabledFlag,D0
+    MOVE.B  _CONFIG_NewgridSelectionCode48_49EnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .return_selection_validation

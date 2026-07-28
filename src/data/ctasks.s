@@ -42,7 +42,7 @@
     XDEF    CONFIG_SerializedNumericSlot20
     XDEF    _CONFIG_ModeCycleEnabledFlag
     XDEF    CONFIG_NewgridPlaceholderBevelFlag
-    XDEF    CONFIG_NewgridSelectionCode48_49EnabledFlag
+    XDEF    _CONFIG_NewgridSelectionCode48_49EnabledFlag
     XDEF    CONFIG_SerializedNumericSlot25
     XDEF    CONFIG_SerializedNumericSlot26
     XDEF    CONFIG_NewgridWindowSpanHalfHoursAlt
@@ -212,7 +212,7 @@ _CONFIG_ModeCycleEnabledFlag:
     DC.B    "Y"
 CONFIG_NewgridPlaceholderBevelFlag:
     DC.B    "Y"
-CONFIG_NewgridSelectionCode48_49EnabledFlag:
+_CONFIG_NewgridSelectionCode48_49EnabledFlag:
     DC.B    "N"
 CONFIG_SerializedNumericSlot25:
     DC.B    23

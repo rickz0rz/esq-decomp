@@ -656,6 +656,8 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/b/a/newgrid1b_p1.s"
     include "modules/groups/b/a/newgrid1b_newgrid_selectentrypen.s"
     include "modules/groups/b/a/newgrid1b_p2.s"
+    include "modules/groups/b/a/newgrid1b_p2_newgrid_processsecondarystate.s"
+    include "modules/groups/b/a/newgrid1b_p2_p1_2.s"
     include "modules/groups/b/a/newgrid1b_p2_newgrid_processschedulestate.s"
     include "modules/groups/b/a/newgrid1b_p2_newgrid_clearentrymarkerbits.s"
     include "modules/groups/b/a/newgrid1b_p2_newgrid_initselectionwindow.s"

@@ -32,9 +32,9 @@
     XDEF    NEWGRID_GridSelectionEntryIndex
     XDEF    NEWGRID_GridSelectionWorkflowState
     XDEF    NEWGRID_GridEditorWorkflowState
-    XDEF    NEWGRID_SecondarySelectedEntryIndex
-    XDEF    NEWGRID_SecondaryWorkflowState
-    XDEF    NEWGRID_SecondarySelectionHintCounter
+    XDEF    _NEWGRID_SecondarySelectedEntryIndex
+    XDEF    _NEWGRID_SecondaryWorkflowState
+    XDEF    _NEWGRID_SecondarySelectionHintCounter
     XDEF    NEWGRID_AltGridStateLatch
     XDEF    NEWGRID_AltEntryAttemptCounter
     XDEF    NEWGRID_AltEntryCursor
@@ -169,7 +169,7 @@ _NEWGRID_SecondaryIndexCachePtr:
 ; SYM: _NEWGRID_GridOperationId   (active grid operation id)
 ; TYPE: s32
 ; PURPOSE: Stores the current operation index dispatched by NEWGRID2.
-; USED BY: _NEWGRID2_DispatchGridOperation, NEWGRID_ProcessGridEntries, _NEWGRID_SelectEntryPen
+; USED BY: _NEWGRID2_DispatchGridOperation, _NEWGRID_ProcessGridEntries, _NEWGRID_SelectEntryPen
 ; NOTES: Valid range is 1..7; cleared to 0 when dispatch receives an out-of-range operation.
 ;------------------------------------------------------------------------------
 _NEWGRID_GridOperationId:
@@ -221,8 +221,8 @@ NEWGRID_GridStateFrameLatch:
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_GridEntriesWorkflowState   (grid entries workflow state id)
 ; TYPE: s32
-; PURPOSE: State variable for NEWGRID_ProcessGridEntries.
-; USED BY: NEWGRID_ProcessGridEntries
+; PURPOSE: State variable for _NEWGRID_ProcessGridEntries.
+; USED BY: _NEWGRID_ProcessGridEntries
 ; NOTES: Initialized to 4 and updated by a switch/jumptable flow.
 ;------------------------------------------------------------------------------
 NEWGRID_GridEntriesWorkflowState:
@@ -257,31 +257,31 @@ NEWGRID_GridSelectionWorkflowState:
 NEWGRID_GridEditorWorkflowState:
     DC.L    $00000004
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_SecondarySelectedEntryIndex   (secondary workflow selected entry index)
+; SYM: _NEWGRID_SecondarySelectedEntryIndex   (secondary workflow selected entry index)
 ; TYPE: s32
-; PURPOSE: Holds the active candidate entry index while NEWGRID_ProcessSecondaryState runs.
-; USED BY: NEWGRID_ProcessSecondaryState
+; PURPOSE: Holds the active candidate entry index while _NEWGRID_ProcessSecondaryState runs.
+; USED BY: _NEWGRID_ProcessSecondaryState
 ; NOTES: Uses -1 as "no entry found" sentinel during scans.
 ;------------------------------------------------------------------------------
-NEWGRID_SecondarySelectedEntryIndex:
+_NEWGRID_SecondarySelectedEntryIndex:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_SecondaryWorkflowState   (secondary workflow state id)
+; SYM: _NEWGRID_SecondaryWorkflowState   (secondary workflow state id)
 ; TYPE: s32
-; PURPOSE: State variable for NEWGRID_ProcessSecondaryState.
-; USED BY: NEWGRID_ProcessSecondaryState
+; PURPOSE: State variable for _NEWGRID_ProcessSecondaryState.
+; USED BY: _NEWGRID_ProcessSecondaryState
 ; NOTES: Uses switch/jumptable with 0..7 states.
 ;------------------------------------------------------------------------------
-NEWGRID_SecondaryWorkflowState:
+_NEWGRID_SecondaryWorkflowState:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_SecondarySelectionHintCounter/NEWGRID_AltGridStateLatch/NEWGRID_AltEntryAttemptCounter/NEWGRID_AltEntryCursor   (secondary+alt workflow scratch)
+; SYM: _NEWGRID_SecondarySelectionHintCounter/NEWGRID_AltGridStateLatch/NEWGRID_AltEntryAttemptCounter/NEWGRID_AltEntryCursor   (secondary+alt workflow scratch)
 ; TYPE: s32/s32/s32/s32
 ; PURPOSE: Maintains counters/cursors used while probing secondary/alternate entry workflows.
-; USED BY: NEWGRID_ProcessSecondaryState, NEWGRID_HandleAltGridState
+; USED BY: _NEWGRID_ProcessSecondaryState, NEWGRID_HandleAltGridState
 ; NOTES: Values are transitional and frequently reset on state changes.
 ;------------------------------------------------------------------------------
-NEWGRID_SecondarySelectionHintCounter:
+_NEWGRID_SecondarySelectionHintCounter:
     DS.L    1
 NEWGRID_AltGridStateLatch:
     DC.L    $00000004

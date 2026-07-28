@@ -2536,7 +2536,7 @@ _GCOMMAND_DigitalNicheEnabledFlag:
 ; SYM: _GCOMMAND_NicheTextPen/_GCOMMAND_NicheFramePen/_GCOMMAND_NicheEditorLayoutPen/_GCOMMAND_NicheEditorRowPen/_GCOMMAND_NicheModeCycleCount/_GCOMMAND_NicheForceMode5Flag/_GCOMMAND_NicheWorkflowMode   (Digital Niche rendering/workflow params)
 ; TYPE: s32/s32/s32/s32/s32/s32/u8
 ; PURPOSE: Stores Niche pen/layout and mode-selection parameters parsed from command options.
-; USED BY: GCOMMAND_ParseCommandOptions, _FLIB2_LoadDigitalNicheDefaults, NEWGRID_DrawGridCellText, _NEWGRID_SelectNextMode, NEWGRID_MapSelectionToMode, NEWGRID_ProcessSecondaryState
+; USED BY: GCOMMAND_ParseCommandOptions, _FLIB2_LoadDigitalNicheDefaults, NEWGRID_DrawGridCellText, _NEWGRID_SelectNextMode, NEWGRID_MapSelectionToMode, _NEWGRID_ProcessSecondaryState
 ; NOTES: WorkflowMode stores uppercase 'F'/'B'/'L'/'N'; ForceMode5Flag toggles one mode-selection branch.
 ;------------------------------------------------------------------------------
 _GCOMMAND_NicheTextPen:
@@ -3010,7 +3010,7 @@ NEWGRID_SelectedGridEntryPtr:
 ; SYM: _NEWGRID_OverridePenIndex   (newgrid override pen index)
 ; TYPE: s32
 ; PURPOSE: Holds temporary color/pen override selected while drawing current grid entry.
-; USED BY: _NEWGRID_SelectEntryPen, NEWGRID_ProcessGridEntries
+; USED BY: _NEWGRID_SelectEntryPen, _NEWGRID_ProcessGridEntries
 ; NOTES: Clamped to 1..3 by _NEWGRID_SelectEntryPen before cell drawing consumes it.
 ;------------------------------------------------------------------------------
 _NEWGRID_OverridePenIndex:

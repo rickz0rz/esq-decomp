@@ -404,7 +404,7 @@ NEWGRID2_HandleGridState:
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   NEWGRID2_HandleGridState, NEWGRID_HandleGridSelection, NEWGRID_ProcessAltEntryState, NEWGRID_ProcessSecondaryState, _NEWGRID_ProcessScheduleState, NEWGRID_ProcessShowtimesWorkflow
+;   NEWGRID2_HandleGridState, NEWGRID_HandleGridSelection, NEWGRID_ProcessAltEntryState, _NEWGRID_ProcessSecondaryState, _NEWGRID_ProcessScheduleState, NEWGRID_ProcessShowtimesWorkflow
 ; READS:
 ;   ESQDISP_PendingGridReinitFlag, NEWGRID2_PendingOperationId
 ; WRITES:
@@ -520,7 +520,7 @@ _NEWGRID2_DispatchGridOperation:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_ProcessSecondaryState
+    BSR.W   _NEWGRID_ProcessSecondaryState
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID2_LastDispatchResult

@@ -240,6 +240,7 @@ modules/groups/b/a/newgrid1b_p2_newgrid_initselectionwindow.s          c/newgrid
 modules/groups/b/a/newgrid1b_newgridinitshowtimebuckets.s              c/newgrid_init_showtime_buckets.c
 modules/groups/b/a/newgrid_newgrid_isgridreadyforinput.s               c/newgrid_is_grid_ready_for_input.c
 modules/groups/b/a/newgrid1b_p2_newgrid_processschedulestate.s         c/newgrid_process_schedule_state.c  SHORTINT
+modules/groups/b/a/newgrid1b_p2_newgrid_processsecondarystate.s        c/newgrid_process_secondary_state.c
 modules/groups/b/a/newgrid1b_newgrid_rebuildindexcache.s               c/newgrid_rebuild_index_cache.c
 modules/groups/b/a/newgrid1_newgrid_resetrowtable.s                    c/newgrid_reset_row_table.c
 modules/groups/b/a/newgrid1b_newgrid_selectentrypen.s                  c/newgrid_select_entry_pen.c
