@@ -19,9 +19,9 @@
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
 ; READS:
-;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _SCRIPT_BannerTransitionActive, _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable, WDISP_AccumulatorRow0_Value, _WDISP_AccumulatorRow0_CopperIndexStart, _WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, _WDISP_AccumulatorRow1_CopperIndexStart, _WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, _WDISP_AccumulatorRow2_CopperIndexStart, _WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, _WDISP_AccumulatorRow3_CopperIndexStart, _WDISP_AccumulatorRow3_CopperIndexEnd, e8
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, _ACCUMULATOR_Row0_CaptureValue, _ACCUMULATOR_Row1_CaptureValue, _ACCUMULATOR_Row2_CaptureValue, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _SCRIPT_BannerTransitionActive, _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, _WDISP_AccumulatorRowTable, _WDISP_AccumulatorRow0_Value, _WDISP_AccumulatorRow0_CopperIndexStart, _WDISP_AccumulatorRow0_CopperIndexEnd, _WDISP_AccumulatorRow1_Value, _WDISP_AccumulatorRow1_CopperIndexStart, _WDISP_AccumulatorRow1_CopperIndexEnd, _WDISP_AccumulatorRow2_Value, _WDISP_AccumulatorRow2_CopperIndexStart, _WDISP_AccumulatorRow2_CopperIndexEnd, _WDISP_AccumulatorRow3_Value, _WDISP_AccumulatorRow3_CopperIndexStart, _WDISP_AccumulatorRow3_CopperIndexEnd, e8
 ; WRITES:
-;   ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, ACCUMULATOR_Row3_CaptureValue, ACCUMULATOR_Row0_Sum, ACCUMULATOR_Row1_Sum, ACCUMULATOR_Row2_Sum, ACCUMULATOR_Row3_Sum, _ACCUMULATOR_Row0_SaturateFlag, _ACCUMULATOR_Row1_SaturateFlag, _ACCUMULATOR_Row2_SaturateFlag, _ACCUMULATOR_Row3_SaturateFlag, ESQFUNC_MissingAssetRetryMask, _WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
+;   _ACCUMULATOR_Row0_CaptureValue, _ACCUMULATOR_Row1_CaptureValue, _ACCUMULATOR_Row2_CaptureValue, _ACCUMULATOR_Row3_CaptureValue, _ACCUMULATOR_Row0_Sum, _ACCUMULATOR_Row1_Sum, _ACCUMULATOR_Row2_Sum, _ACCUMULATOR_Row3_Sum, _ACCUMULATOR_Row0_SaturateFlag, _ACCUMULATOR_Row1_SaturateFlag, _ACCUMULATOR_Row2_SaturateFlag, _ACCUMULATOR_Row3_SaturateFlag, ESQFUNC_MissingAssetRetryMask, _WDISP_DisplayContextBase, _WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
 ; DESC:
 ;   Selects source brush list by mode, performs drop/rise copper transitions, builds
 ;   a display context, blits the external asset, and captures accumulator thresholds
@@ -92,7 +92,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     TST.W   _SCRIPT_BannerTransitionActive
     BNE.S   .wait_banner_transition_idle
 
-    MOVE.W  #1,WDISP_AccumulatorCaptureActive
+    MOVE.W  #1,_WDISP_AccumulatorCaptureActive
     CLR.W   _WDISP_AccumulatorFlushPending
     MOVEQ   #0,D5
 
@@ -106,7 +106,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVEA.L -22(A5),A0
     ADDA.L  D0,A0
     LEA     200(A0),A1
-    LEA     WDISP_AccumulatorRowTable,A0
+    LEA     _WDISP_AccumulatorRowTable,A0
     ADDA.L  D0,A0
     MOVE.L  A0,28(A7)
     MOVEA.L A1,A0
@@ -119,7 +119,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     BRA.S   .loop_copy_accumulator_rows
 
 .select_display_context_mode:
-    CLR.W   WDISP_AccumulatorCaptureActive
+    CLR.W   _WDISP_AccumulatorCaptureActive
     MOVE.W  #1,_WDISP_AccumulatorFlushPending
     MOVE.L  #$8004,D0
     MOVEA.L -22(A5),A0
@@ -275,16 +275,16 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     CMP.B   D1,D0
     BCC.S   .branch_1
 
-    MOVE.W  WDISP_AccumulatorRow0_Value,D0
+    MOVE.W  _WDISP_AccumulatorRow0_Value,D0
     CMPI.W  #$4000,D0
     BGE.S   .branch_1
 
-    MOVE.W  D0,ACCUMULATOR_Row0_CaptureValue
+    MOVE.W  D0,_ACCUMULATOR_Row0_CaptureValue
     BRA.S   .branch_2
 
 .branch_1:
     MOVEQ   #0,D0
-    MOVE.W  D0,ACCUMULATOR_Row0_CaptureValue
+    MOVE.W  D0,_ACCUMULATOR_Row0_CaptureValue
 
 .branch_2:
     MOVE.B  _WDISP_AccumulatorRow1_CopperIndexStart,D2
@@ -295,16 +295,16 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     CMP.B   D1,D2
     BCC.S   .branch_3
 
-    MOVE.W  WDISP_AccumulatorRow1_Value,D2
+    MOVE.W  _WDISP_AccumulatorRow1_Value,D2
     CMPI.W  #$4000,D2
     BGE.S   .branch_3
 
-    MOVE.W  D2,ACCUMULATOR_Row1_CaptureValue
+    MOVE.W  D2,_ACCUMULATOR_Row1_CaptureValue
     BRA.S   .branch_4
 
 .branch_3:
     MOVEQ   #0,D2
-    MOVE.W  D2,ACCUMULATOR_Row1_CaptureValue
+    MOVE.W  D2,_ACCUMULATOR_Row1_CaptureValue
 
 .branch_4:
     MOVE.B  _WDISP_AccumulatorRow2_CopperIndexStart,D0
@@ -315,16 +315,16 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     CMP.B   D1,D0
     BCC.S   .branch_5
 
-    MOVE.W  WDISP_AccumulatorRow2_Value,D0
+    MOVE.W  _WDISP_AccumulatorRow2_Value,D0
     CMPI.W  #$4000,D0
     BGE.S   .branch_5
 
-    MOVE.W  D0,ACCUMULATOR_Row2_CaptureValue
+    MOVE.W  D0,_ACCUMULATOR_Row2_CaptureValue
     BRA.S   .branch_6
 
 .branch_5:
     MOVEQ   #0,D0
-    MOVE.W  D0,ACCUMULATOR_Row2_CaptureValue
+    MOVE.W  D0,_ACCUMULATOR_Row2_CaptureValue
 
 .branch_6:
     MOVE.B  _WDISP_AccumulatorRow3_CopperIndexStart,D2
@@ -335,47 +335,47 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     CMP.B   D1,D2
     BCC.S   .branch_7
 
-    MOVE.W  WDISP_AccumulatorRow3_Value,D1
+    MOVE.W  _WDISP_AccumulatorRow3_Value,D1
     CMPI.W  #$4000,D1
     BGE.S   .branch_7
 
-    MOVE.W  D1,ACCUMULATOR_Row3_CaptureValue
+    MOVE.W  D1,_ACCUMULATOR_Row3_CaptureValue
     BRA.S   .branch_8
 
 .branch_7:
     MOVEQ   #0,D1
-    MOVE.W  D1,ACCUMULATOR_Row3_CaptureValue
+    MOVE.W  D1,_ACCUMULATOR_Row3_CaptureValue
 
 .branch_8:
-    TST.W   ACCUMULATOR_Row0_CaptureValue
+    TST.W   _ACCUMULATOR_Row0_CaptureValue
     BNE.S   .branch_9
 
-    TST.W   ACCUMULATOR_Row1_CaptureValue
+    TST.W   _ACCUMULATOR_Row1_CaptureValue
     BNE.S   .branch_9
 
-    TST.W   ACCUMULATOR_Row2_CaptureValue
+    TST.W   _ACCUMULATOR_Row2_CaptureValue
     BNE.S   .branch_9
 
     TST.W   D1
     BEQ.S   .branch_10
 
 .branch_9:
-    MOVE.W  #1,WDISP_AccumulatorCaptureActive
+    MOVE.W  #1,_WDISP_AccumulatorCaptureActive
     BRA.S   .branch_11
 
 .branch_10:
     MOVEQ   #0,D0
-    MOVE.W  D0,WDISP_AccumulatorCaptureActive
+    MOVE.W  D0,_WDISP_AccumulatorCaptureActive
 
 .branch_11:
     MOVEQ   #0,D0
-    MOVE.W  D0,ACCUMULATOR_Row0_Sum
+    MOVE.W  D0,_ACCUMULATOR_Row0_Sum
     MOVE.W  D0,_ACCUMULATOR_Row0_SaturateFlag
-    MOVE.W  D0,ACCUMULATOR_Row1_Sum
+    MOVE.W  D0,_ACCUMULATOR_Row1_Sum
     MOVE.W  D0,_ACCUMULATOR_Row1_SaturateFlag
-    MOVE.W  D0,ACCUMULATOR_Row2_Sum
+    MOVE.W  D0,_ACCUMULATOR_Row2_Sum
     MOVE.W  D0,_ACCUMULATOR_Row2_SaturateFlag
-    MOVE.W  D0,ACCUMULATOR_Row3_Sum
+    MOVE.W  D0,_ACCUMULATOR_Row3_Sum
     MOVE.W  D0,_ACCUMULATOR_Row3_SaturateFlag
     BSR.W   _ESQIFF_RunCopperRiseTransition
 
@@ -514,9 +514,9 @@ ESQIFF_ServiceExternalAssetSourceState:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, _ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
 ; READS:
-;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, _TEXTDISP_DeferredActionCountdown, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, ESQIFF_ExternalAssetStateTable, ESQIFF_ExternalAssetPathCommaFlag
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, _TEXTDISP_DeferredActionCountdown, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryGroupEntryCount, _WDISP_AccumulatorCaptureActive, ESQIFF_ExternalAssetStateTable, ESQIFF_ExternalAssetPathCommaFlag
 ; WRITES:
-;   _ESQIFF_GAdsBrushListCount, _ESQIFF_LogoBrushListCount, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, _TEXTDISP_CurrentMatchIndex
+;   _ESQIFF_GAdsBrushListCount, _ESQIFF_LogoBrushListCount, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _WDISP_AccumulatorCaptureActive, _TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Chooses source brush head, renders one frame with copper/display setup, pops the
 ;   consumed brush node from the active list, then services source-state queueing.
@@ -693,11 +693,11 @@ ESQIFF_PlayNextExternalAssetFrame:
     ADDQ.W  #4,A7
 
 .run_rise_transition_and_service_source:
-    MOVE.W  WDISP_AccumulatorCaptureActive,D6
-    CLR.W   WDISP_AccumulatorCaptureActive
+    MOVE.W  _WDISP_AccumulatorCaptureActive,D6
+    CLR.W   _WDISP_AccumulatorCaptureActive
     BSR.W   _ESQIFF_RunCopperRiseTransition
 
-    MOVE.W  D6,WDISP_AccumulatorCaptureActive
+    MOVE.W  D6,_WDISP_AccumulatorCaptureActive
     TST.W   D7
     BEQ.S   .service_source_mode_zero
 

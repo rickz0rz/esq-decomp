@@ -18,13 +18,13 @@
 ;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_UNKNOWN2A_Stub0, _LVOPermit
 ; READS:
 ;   _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _ESQFUNC_PwBrushListHead, ESQIFF_RecordBufferPtr,
-;   _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort, ESQDISP_HighlightBitmapTable, _WDISP_HighlightRasterHeightPx, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQ_ProcessWindowPtrBackup,
+;   _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort, ESQDISP_HighlightBitmapTable, _WDISP_HighlightRasterHeightPx, _WDISP_WeatherStatusTextPtr, _WDISP_WeatherStatusOverlayTextPtr, ESQ_ProcessWindowPtrBackup,
 ;   WDISP_ExecBaseHookPtr, Global_REF_GRAPHICS_LIBRARY, _Global_REF_INTUITION_LIBRARY,
 ;   _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST, _Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,
 ;   AbsExecBase, Global_STR_CLEANUP_C_13, Global_STR_CLEANUP_C_14, Global_STR_CLEANUP_C_15,
 ;   Global_STR_CLEANUP_C_16
 ; WRITES:
-;   WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr
+;   _WDISP_WeatherStatusTextPtr, _WDISP_WeatherStatusOverlayTextPtr
 ; DESC:
 ;   Global shutdown: forbids task switches, releases resources, restores patched
 ;   system vectors, and re-enables multitasking.
@@ -157,17 +157,17 @@ CLEANUP_ShutdownSystem:
     BRA.S   .freeRaster_rows_loop
 
 .after_raster_table:
-    MOVE.L  WDISP_WeatherStatusTextPtr,-(A7)
+    MOVE.L  _WDISP_WeatherStatusTextPtr,-(A7)
     CLR.L   -(A7)
     JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
-    MOVE.L  D0,WDISP_WeatherStatusTextPtr
-    MOVE.L  WDISP_WeatherStatusOverlayTextPtr,(A7)
+    MOVE.L  D0,_WDISP_WeatherStatusTextPtr
+    MOVE.L  _WDISP_WeatherStatusOverlayTextPtr,(A7)
     CLR.L   -(A7)
     JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,WDISP_WeatherStatusOverlayTextPtr
+    MOVE.L  D0,_WDISP_WeatherStatusOverlayTextPtr
 
     ; this must be restoring functions that were hijacked?
     ; ...the other use of this stores D0 and this doesn't.

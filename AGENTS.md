@@ -130,8 +130,8 @@ Both were discovered the hard way; both are enforced by `build-split.sh`.
 **1. Objects are longword-sized.** Hunk objects store section sizes in
 longwords, so an object whose content is 2 (mod 4) bytes gets padded, shifting
 everything after it. `gen_units.py` therefore coalesces consecutive modules
-until each unit lands on a 4-byte boundary — which is why 164 source modules
-become 69 link units. Source files stay fine-grained; only the assembly grouping
+until each unit lands on a 4-byte boundary — which is why 745 source modules
+become 385 link units. Source files stay fine-grained; only the assembly grouping
 is coarser. **You can still edit any module in isolation.**
 
 **2. vasm rewrites branches based on what is visible.** A bare
@@ -230,6 +230,21 @@ Two things must line up or the link fails:
   byte-neutral (labels do not affect encoding), so `test-hash.sh` stays green.
   Use a word-boundary match: `\bfoo\b` will not touch `SOME_JMPTBL_foo`, since
   `_` is a word character.
+
+  Two tools do this so you do not have to find the sites by hand, and a
+  restoration that reads a dozen globals needs a dozen renames:
+
+  ```sh
+  python3 tools/check_c_symbols.py          # which externs still lack the underscore
+  python3 tools/check_c_symbols.py --fix    # rename them all
+  python3 tools/rename_for_c.py <Symbol>... # rename named symbols only
+  ```
+
+  Run `./test-hash.sh` after `--fix`. One tranche renamed 144 symbols in one
+  call and the hash did not move. Do this BEFORE the first full C build:
+  otherwise every missing underscore costs a whole split build to find, one at
+  a time, as `Reference to undefined symbol _FOO`.
+
 - **Section names.** `sc` emits into `text`/`data` by default, which vlink keeps
   as separate output sections from `S_0`/`S_1`. The program's 3072 explicit
   `(sym,PC)` operands then become cross-section 16-bit PC-relative relocations,
@@ -507,11 +522,11 @@ The restoration record says so unambiguously:
 
 | bucket | exact | behavioural | exact rate |
 |---|---:|---:|---:|
-| intra-unit (`6100`) | **11** | 57 | 16% |
-| no-calls | 11 | 109 | 9% |
-| cross-unit (`4EBA`) | **0** | 144 | **0%** |
+| intra-unit (`6100`) | **11** | 74 | 12% |
+| no-calls | 11 | 123 | 8% |
+| cross-unit (`4EBA`) | **0** | 150 | **0%** |
 
-Zero of 144. Every function whose original calls are `4EBA` is capped at
+Zero of 150. Every function whose original calls are `4EBA` is capped at
 `behavioural` under 6.51, and the cap is the call opcode alone — same size, same
 displacement, same semantics, different byte. `src/c/script_read_next_rbf_byte.c`
 is the whole class in six bytes.
@@ -717,6 +732,19 @@ three ways: the byte-exact pure-assembly build (which works) reports 0 of 3892;
 the 271-entry build reports 0 of 3407; the 313-entry build reports 5 of 3200 and
 fails the build.
 
+**`--margins` says how much room is left, which is what you need BEFORE adding
+restorations, not after:**
+
+```sh
+python3 tools/check_pcrel_range.py --margins build/ESQ build/ESQ.map
+```
+
+It prints the surviving calls closest to the limit with the caller each sits in.
+Growth only costs a call if it lands BETWEEN that caller and its callee — code
+added before the pair, or after it, moves both ends equally and is free. So read
+the tight pairs first, look up their addresses, and pick targets outside those
+spans. On the 279-entry manifest the tightest is 45 bytes.
+
 > Two false-positive classes had to be excluded first, both found by testing the
 > detector against the KNOWN-GOOD pure build rather than assuming it was right.
 > DATA symbols must not be mixed in (the map lists them under `Symbols of S_1:`),
@@ -731,8 +759,17 @@ the image larger than the assembly they replace -- note that dropping an
 entries tried this way grew the image by 12 bytes and pushed the overshoot from
 23 to 35.
 
-`src/c/replacements-runnable.txt` is the current verified-good manifest: 271
-entries, check clean, `a6_audit` 0/271, boots, and clean on all six ESC-menu items.
+`src/c/replacements-runnable.txt` is the current verified-good manifest: 279
+entries, check clean, `a6_audit` 0/279, boots, and clean on all six ESC-menu
+items. `src/c/replacements-all.txt` holds 328 and still gurus.
+
+**A restoration that FAULTS AT RUNTIME says so in its own header.** Put
+`DO-NOT-LINK: <what was measured>` in the header block and
+`tools/gen_all_manifest.py` keeps it out of every manifest it writes. The
+restoration still counts toward coverage, which is read from the headers, so the
+analysis is kept rather than deleted. Two files carry it today, both weather
+brush drawers, both confirmed solo against the verified baseline with an address
+error -- see the notes in `src/c/wdisp_draw_weather_status_day_entry.c`.
 
 ## Verifying a C build
 

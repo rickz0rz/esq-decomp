@@ -48,6 +48,7 @@ some symbol has a small displacement. Without this the pure build reported a
 
 Exits nonzero if any wrapped call is found. Wire it into every build.
 """
+import bisect
 import importlib.util
 import os
 import re
@@ -92,13 +93,44 @@ def code_symbols(mappath):
     return out
 
 
+def margins(code, sym, n=10):
+    """The surviving calls that are closest to the 16-bit limit.
+
+    Every added restoration moves callers and callees apart, so the question
+    "how much can this manifest still grow" has an answer: the smallest gap
+    between a live call's displacement and 32767. Print the tightest ones with
+    the caller they sit in, so a manifest can be grown on evidence instead of by
+    trial and error.
+    """
+    starts = sorted(sym)
+    tight = []
+    for i in range(0, len(code) - 3, 2):
+        if code[i:i + 2] not in CALLS:
+            continue
+        d = struct.unpack('>h', code[i + 2:i + 4])[0]
+        target = i + 2 + d
+        if target not in sym:
+            continue
+        j = bisect.bisect_right(starts, i) - 1
+        caller = sym[starts[j]] if j >= 0 else '?'
+        tight.append((32767 - abs(d), caller, sym[target], d))
+    tight.sort()
+    print(f'tightest {min(n, len(tight))} of {len(tight)} resolved PC-relative calls:')
+    for room, caller, callee, d in tight[:n]:
+        print(f'  {room:6d} bytes of room   d={d:+7d}   {caller} -> {callee}')
+
+
 def main():
-    if len(sys.argv) < 3:
-        sys.exit('usage: check_pcrel_range.py <binary> <vlink -M map>')
-    code = load_code(sys.argv[1])
-    sym = code_symbols(sys.argv[2])
+    args = [a for a in sys.argv[1:] if not a.startswith('--')]
+    want_margins = '--margins' in sys.argv
+    if len(args) < 2:
+        sys.exit('usage: check_pcrel_range.py [--margins] <binary> <vlink -M map>')
+    code = load_code(args[0])
+    sym = code_symbols(args[1])
     if not sym:
         sys.exit('no code symbols in the map -- link with -M and without -s')
+    if want_margins:
+        margins(code, sym)
 
     bad, total = [], 0
     for i in range(0, len(code) - 3, 2):

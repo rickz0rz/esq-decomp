@@ -52,7 +52,7 @@ SCRIPT_SetupHighlightEffect:
     MOVE.L  D0,-20(A5)
     JSR     _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
 
-    JSR     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
+    JSR     _WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
 
     LEA     20(A7),A7
     MOVEA.L _WDISP_DisplayContextBase,A0
@@ -89,7 +89,7 @@ SCRIPT_SetupHighlightEffect:
 
     MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
-    MOVE.W  #1,WDISP_AccumulatorCaptureActive
+    MOVE.W  #1,_WDISP_AccumulatorCaptureActive
     CLR.W   _WDISP_AccumulatorFlushPending
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)

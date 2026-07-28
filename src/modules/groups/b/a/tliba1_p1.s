@@ -421,7 +421,7 @@ TLIBA1_DrawInlineStyledText:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
 ;   TLIBA1_DrawInlineStyledText, _MATH_DivS32, _MATH_Mulu32, _MEMORY_AllocateMemory,
-;   MEMORY_DeallocateMemory, _LVOSetAPen, _LVOSetFont, _LVOTextLength
+;   _MEMORY_DeallocateMemory, _LVOSetAPen, _LVOSetFont, _LVOTextLength
 ; READS:
 ;   _Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_3, CLOCK_AlignedInsetRenderGateFlag, TLIBA1_STR_TLIBA1_DOT_C, CLEANUP_AlignedInsetNibblePrimary, TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
 ; WRITES:
@@ -871,7 +871,7 @@ TLIBA1_DrawFormattedTextBlock:
     MOVE.L  -4(A5),-(A7)
     PEA     2385.W
     PEA     TLIBA1_STR_TLIBA1_DOT_C
-    JSR     MEMORY_DeallocateMemory(PC)
+    JSR     _MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -1091,7 +1091,7 @@ TLIBA1_BuildClockFormatEntryIfVisible:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   FORMAT_RawDoFmtWithScratchBuffer, _STRING_AppendAtNull, _WDISP_SPrintf
+;   _FORMAT_RawDoFmtWithScratchBuffer, _STRING_AppendAtNull, _WDISP_SPrintf
 ; READS:
 ;   TEXTDISP_FormatEntryFallbackTable, TLIBA1_FormatFallbackBuffer, TLIBA1_FormatFallbackFieldPtr0, TLIBA1_FormatFallbackFieldPtr1, TLIBA1_FormatFallbackFieldPtr2, TLIBA1_FormatFallbackFieldPtr3, TLIBA1_FMT_PCT_C_PCT_S, TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X, TLIBA1_STR_TLFormatStructOpenBraceLine, TLIBA1_FMT_TLF_COLOR_PCT_D, TLIBA1_FMT_TLF_OFFSET_PCT_D, TLIBA1_FMT_TLF_FONTSEL_PCT_D, TLIBA1_FMT_TLF_ALIGN_PCT_D, TLIBA1_FMT_TLF_PREGAP_PCT_D, TLIBA1_STR_TLFormatStructCloseBraceLine, _WDISP_CharClassTable, copy_loop
 ; WRITES:
@@ -1305,43 +1305,43 @@ TLIBA1_FormatClockFormatEntry:
     MOVEA.L 8(A7),A3
     MOVE.L  A3,-(A7)
     PEA     TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X
-    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     PEA     TLIBA1_STR_TLFormatStructOpenBraceLine
-    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  (A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     TLIBA1_FMT_TLF_COLOR_PCT_D
-    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  2(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     TLIBA1_FMT_TLF_OFFSET_PCT_D
-    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  4(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     TLIBA1_FMT_TLF_FONTSEL_PCT_D
-    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     TLIBA1_FMT_TLF_ALIGN_PCT_D
-    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  8(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     TLIBA1_FMT_TLF_PREGAP_PCT_D
-    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     PEA     TLIBA1_STR_TLFormatStructCloseBraceLine
-    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
+    JSR     _FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     36(A7),A7
     MOVEA.L (A7)+,A3

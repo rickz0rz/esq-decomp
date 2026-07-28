@@ -826,7 +826,7 @@ TEXTDISP_FilterAndSelectEntry:
 ; READS:
 ;   entry+220, _CONFIG_LRBN_FlagChar, _TEXTDISP_EntryTextBaseWidthPx
 ; WRITES:
-;   _WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive/_WDISP_AccumulatorFlushPending, TEXTDISP_LinePenOverrideEnabledFlag
+;   _WDISP_DisplayContextBase, _WDISP_AccumulatorCaptureActive/_WDISP_AccumulatorFlushPending, TEXTDISP_LinePenOverrideEnabledFlag
 ; DESC:
 ;   Enables the highlight copper effect, computes bounds, and draws the frame.
 ; NOTES:
@@ -885,7 +885,7 @@ TEXTDISP_DrawHighlightFrame:
 .clamp_width:
     MOVEQ   #0,D0
     MOVE.W  2(A0),D0
-    MOVE.W  #1,WDISP_AccumulatorCaptureActive
+    MOVE.W  #1,_WDISP_AccumulatorCaptureActive
     CLR.W   _WDISP_AccumulatorFlushPending
     MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
@@ -894,7 +894,7 @@ TEXTDISP_DrawHighlightFrame:
     MOVE.L  A0,-4(A5)
     JSR     _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
 
-    JSR     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
+    JSR     _WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
 
     MOVE.B  _CONFIG_LRBN_FlagChar,D0
     MOVEQ   #89,D1
@@ -1009,7 +1009,7 @@ TEXTDISP_DrawHighlightFrame:
 ; CALLS:
 ;   TEXTDISP_BuildNowShowingStatusLine, TEXTDISP_BuildEntryPairStatusLine,
 ;   _TEXTDISP_SetEntryTextFields, TEXTDISP_FilterAndSelectEntry,
-;   TEXTDISP_DrawHighlightFrame, _MEMORY_AllocateMemory, MEMORY_DeallocateMemory
+;   TEXTDISP_DrawHighlightFrame, _MEMORY_AllocateMemory, _MEMORY_DeallocateMemory
 ; READS:
 ;   TEXTDISP_CommandBufferPtr, TEXTDISP_PrimaryFirstMatchIndex/2361/2364
 ; WRITES:
@@ -1217,7 +1217,7 @@ _TEXTDISP_HandleScriptCommand:
     MOVE.L  TEXTDISP_CommandBufferPtr,-(A7)
     PEA     1106.W
     PEA     Global_STR_TEXTDISP_C_2
-    JSR     MEMORY_DeallocateMemory(PC)
+    JSR     _MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     CLR.L   TEXTDISP_CommandBufferPtr

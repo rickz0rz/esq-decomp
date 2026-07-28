@@ -12,7 +12,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A2
 ; CALLS:
-;   _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, MEMORY_DeallocateMemory
+;   _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, _MEMORY_DeallocateMemory
 ; READS:
 ;   _TEXTDISP_SourceConfigEntryTable, _TEXTDISP_SourceConfigEntryCount
 ; WRITES:
@@ -59,7 +59,7 @@ TEXTDISP_ClearSourceConfig:
     MOVE.L  (A0),-(A7)
     PEA     1153.W
     PEA     Global_STR_TEXTDISP_C_3
-    JSR     MEMORY_DeallocateMemory(PC)
+    JSR     _MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
     MOVE.L  D7,D0

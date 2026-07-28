@@ -24,7 +24,7 @@
 ; CALLS:
 ;   _DISKIO_OpenFileWithBuffer, _DISKIO_WriteBufferedBytes, _DISKIO_WriteDecimalField, _DISKIO_CloseBufferedFileAndFlush, _DISKIO2_CopyAndSanitizeSlotString
 ; READS:
-;   _TEXTDISP_PrimaryGroupCode/2231/2247/2248, _TEXTDISP_PrimaryEntryPtrTable/2236 tables, WDISP_WeatherStatusTextPtr
+;   _TEXTDISP_PrimaryGroupCode/2231/2247/2248, _TEXTDISP_PrimaryEntryPtrTable/2236 tables, _WDISP_WeatherStatusTextPtr
 ; WRITES:
 ;   DISKIO2_OutputFileHandle, DISKIO_SaveOperationReadyFlag
 ; DESC:
@@ -126,7 +126,7 @@ _DISKIO2_WriteCurDayDataFile:
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     LEA     36(A7),A7
-    TST.L   WDISP_WeatherStatusTextPtr
+    TST.L   _WDISP_WeatherStatusTextPtr
     BNE.S   .writecur_use_weather_status_text
 
     LEA     -17(A5),A0
@@ -134,10 +134,10 @@ _DISKIO2_WriteCurDayDataFile:
     BRA.S   .writecur_scan_optional_status_text
 
 .writecur_use_weather_status_text:
-    MOVEA.L WDISP_WeatherStatusTextPtr,A0
+    MOVEA.L _WDISP_WeatherStatusTextPtr,A0
     MOVE.L  A0,-12(A5)
 
-    ; Compute length of optional string (WDISP_WeatherStatusTextPtr or empty) and write it.
+    ; Compute length of optional string (_WDISP_WeatherStatusTextPtr or empty) and write it.
 .writecur_scan_optional_status_text:
     TST.B   (A0)+
     BNE.S   .writecur_scan_optional_status_text
@@ -650,9 +650,9 @@ _DISKIO2_RunDiskSyncWorkflow:
 ;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory/DeallocateMemory, GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults,
 ;   _COI_EnsureAnimObjectAllocated, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString, GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket, GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters, _ESQPARS_ReplaceOwnedString
 ; READS:
-;   CTASKS_PATH_CURDAY_DAT, _Global_PTR_WORK_BUFFER, DISKIO_CurrentDriveRevisionIndex, WDISP_WeatherStatusTextPtr, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryEntryPtrTable/2236
+;   CTASKS_PATH_CURDAY_DAT, _Global_PTR_WORK_BUFFER, DISKIO_CurrentDriveRevisionIndex, _WDISP_WeatherStatusTextPtr, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryEntryPtrTable/2236
 ; WRITES:
-;   _TEXTDISP_PrimaryGroupCode/2231/2238, _TEXTDISP_PrimaryGroupRecordChecksum/2248/224A-224C, _TEXTDISP_AliasPtrTable tables, WDISP_WeatherStatusTextPtr
+;   _TEXTDISP_PrimaryGroupCode/2231/2238, _TEXTDISP_PrimaryGroupRecordChecksum/2248/224A-224C, _TEXTDISP_AliasPtrTable tables, _WDISP_WeatherStatusTextPtr
 ; DESC:
 ;   Parses the on-disk data file, allocates per-entry structures, and fills
 ;   the in-memory tables with parsed records.
@@ -879,12 +879,12 @@ _DISKIO2_LoadCurDayDataFile:
     BRA.W   .loc_04C0
 
 .loc_04A7:
-    MOVE.L  WDISP_WeatherStatusTextPtr,-(A7)
+    MOVE.L  _WDISP_WeatherStatusTextPtr,-(A7)
     MOVE.L  D0,-(A7)
     JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,WDISP_WeatherStatusTextPtr
+    MOVE.L  D0,_WDISP_WeatherStatusTextPtr
 
 .loc_04A8:
     JSR     _DISKIO_ParseLongFromWorkBuffer(PC)

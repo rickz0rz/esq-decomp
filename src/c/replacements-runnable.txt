@@ -1,42 +1,40 @@
-# LARGEST C MANIFEST THAT LINKS CORRECTLY AND RUNS (2026-07-28).
+# LARGEST C MANIFEST THAT LINKS CORRECTLY AND RUNS.
 #
-# The ESC-menu guru was NOT a bad restoration. vlink silently writes a WRAPPED
-# displacement when a 16-bit PC-relative call drifts past +/-32767, so the call
-# jumps 65536 bytes into arbitrary code -- with no diagnostic, no size change and
-# no change in relocation count. In the 313-entry build five calls were wrapped,
-# including both of _ED1_EnterEscMenu's calls to ESQIFF_JMPTBL_MATH_Mulu32. That
-# function runs when you press ESC, which is exactly when the guru appeared.
-#
-# So the manifest is now selected BY A CHECK, not by excluding a family:
-#
-#     python3 tools/check_pcrel_range.py build/ESQ build/ESQ.map
-#
-# build-split.sh runs it automatically and ABORTS if any call is truncated. To
-# grow this manifest, add restorations and re-run the build; if the check fails it
-# names the caller, the callee and how many bytes over the limit it is. Shrink the
-# span between them -- dropping an OVERSHOOTING restoration inside it works, since
-# those make the image larger than the assembly they replace.
-#
-# This set excludes the 39 ED_* entries plus four large overshooting restorations
-# (newgrid_select_next_mode, newgrid_process_schedule_state,
-# newgrid_process_secondary_state, textdisp_find_entry_match_index) which together
-# were pushing ESQSHARED_UpdateMatchingEntriesByTitle's call to
-# NEWGRID_JMPTBL_MATH_DivS32 23 bytes past the limit.
-#
-# Verified: check_pcrel_range clean (0 of 3407), a6_audit 0/271, boots, and clean
-# on all six ESC-menu items with zero B-Traps.
+# Selected BY MEASUREMENT, not by rule. Every entry here is in a build that
+# boots and is clean on all six ESC-menu items under tools/menusweep_esq.sh, and
+# the whole set passes tools/check_pcrel_range.py, tools/a6_audit.py and
+# tools/verify_restorations.py.
 #
 #   SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
 #     C_REPLACEMENTS=src/c/replacements-runnable.txt ./build-split.sh
 #
-# ALSO EXCLUDED, for a different reason: datetime_seconds_to_struct.c and
-# datetime_parse_string.c divide LONGS, which SAS/C compiles to calls to __CXD22
-# in sc.lib (the original called its own MATH_DivS32, a register-argument helper
-# returning quotient in D0 and remainder in D1 -- not expressible from C). Linking
-# sc.lib whole drags in the SAS/C startup (__WBenchMsg, @_XCEXIT) and fails. The
-# surgical fix is to extract just the divide member; until then those two count
-# toward coverage but are not linked. datetime_normalize_struct_to_seconds.c IS
-# linked -- its carries use the 68000's 16-bit DIVS and need no helper.
+# CODE=FAR is mandatory. Without it `sc` emits BSR.W for every call and vlink
+# rejects the long ones with Error 28.
+#
+# WHAT IS DELIBERATELY MISSING, and what was measured about it (2026-07-28):
+#
+#   c/wdisp_draw_weather_status_overlay.c    address error, Guru 8000 0003,
+#   c/wdisp_draw_weather_status_day_entry.c  each CONFIRMED SOLO against this
+#                                            baseline. Both carry DO-NOT-LINK in
+#                                            their headers, so gen_all_manifest
+#                                            keeps them out of every manifest.
+#
+#   c/wdisp_handle_weather_status_command.c  each passes SOLO against this
+#   c/tliba3_format_pattern_register_dump.c  baseline, and the pair fails
+#   c/esqfunc_draw_memory_status_screen.c    together. No single file is
+#   c/esqfunc_draw_diagnostics_screen.c      attributable, so none is marked
+#   c/datetime_parse_string.c                DO-NOT-LINK -- that would be an
+#                                            invented attribution. They stay in
+#                                            replacements-all.txt and out of
+#                                            here until the pair is understood.
+#
+#   the 39 c/ed*.c entries and four large overshooting NEWGRID/TEXTDISP
+#   restorations, which the 16-bit call range cannot afford at this size.
+#
+# To grow this manifest: add entries, build, and run menusweep. If
+# check_pcrel_range fails it names the caller, the callee and the overshoot, so
+# shrink the span between them.
+#
 modules/groups/a/a/bevel_bevel_drawbevelframewithtop.s                 c/bevel_draw_bevel_frame_with_top.c
 modules/groups/a/a/bevel_bevel_drawhorizontalbevel.s                   c/bevel_draw_horizontal_bevel.c
 modules/groups/a/a/bevel_bevel_drawverticalbevel.s                     c/bevel_draw_vertical_bevel.c
@@ -222,11 +220,18 @@ modules/groups/b/a/newgrid_newgrid_clearhighlightarea.s                c/newgrid
 modules/groups/b/a/newgrid_p1_newgrid_drawclockformatheader.s          c/newgrid_draw_clock_format_header.c
 modules/groups/b/a/newgrid_newgrid_drawdatebanner.s                    c/newgrid_draw_date_banner.c
 modules/groups/b/a/newgrid1b_newgrid_drawentryflagbadge.s              c/newgrid_draw_entry_flag_badge.c
+modules/groups/b/a/newgrid1b_p0_newgrid_drawgridentry.s                c/newgrid_draw_grid_entry.c
+modules/groups/b/a/newgrid1b_p2_p1_2_newgrid_drawgridframealt.s        c/newgrid_draw_grid_frame_alt.c
+modules/groups/b/a/newgrid1b_p1_2_newgrid_drawgridframeandrows.s       c/newgrid_draw_grid_frame_and_rows.c
+modules/groups/b/a/newgrid1b_p2_p1_2_newgrid_drawgridframevariant2.s   c/newgrid_draw_grid_frame_variant2.c
 modules/groups/b/a/newgrid1b_newgrid_drawgridheaderrows.s              c/newgrid_draw_grid_header_rows.c
 modules/groups/b/a/newgrid_newgrid_drawgridtopbars.s                   c/newgrid_draw_grid_top_bars.c
+modules/groups/b/a/newgrid1b_p1_newgrid_drawselectionmarkers.s         c/newgrid_draw_selection_markers.c
+modules/groups/b/a/newgrid1b_p2_p1_2_newgrid_drawstatusmessage.s       c/newgrid_draw_status_message.c
 modules/groups/b/a/newgrid_newgrid_drawtopborderline.s                 c/newgrid_draw_top_border_line.c
 modules/groups/b/a/newgrid_p4_newgrid_drawwrappedtext.s                c/newgrid_draw_wrapped_text.c
 modules/groups/b/a/newgrid1_getgridmodeindex.s                         c/newgrid_get_grid_mode_index.c
+modules/groups/b/a/newgrid1b_p2_p1_2_newgrid_handlealtgridstate.s      c/newgrid_handle_alt_grid_state.c
 modules/groups/b/a/newgrid1b_p2_newgrid_initselectionwindow.s          c/newgrid_init_selection_window.c
 modules/groups/b/a/newgrid1b_newgridinitshowtimebuckets.s              c/newgrid_init_showtime_buckets.c
 modules/groups/b/a/newgrid_newgrid_isgridreadyforinput.s               c/newgrid_is_grid_ready_for_input.c

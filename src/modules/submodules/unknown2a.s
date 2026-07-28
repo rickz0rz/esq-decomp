@@ -1,4 +1,4 @@
-    XDEF    FORMAT_RawDoFmtWithScratchBuffer
+    XDEF    _FORMAT_RawDoFmtWithScratchBuffer
     XDEF    UNKNOWN2A_Stub0
 
 ;!======
@@ -43,7 +43,7 @@
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: FORMAT_RawDoFmtWithScratchBuffer   (FORMAT_FormatToBuffer2/RawDoFmt wrapper)
+; FUNC: _FORMAT_RawDoFmtWithScratchBuffer   (FORMAT_FormatToBuffer2/RawDoFmt wrapper)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -62,7 +62,7 @@
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-FORMAT_RawDoFmtWithScratchBuffer:
+_FORMAT_RawDoFmtWithScratchBuffer:
     LINK.W  A5,#-4
     LEA     12(A5),A0
     MOVE.L  A0,-(A7)

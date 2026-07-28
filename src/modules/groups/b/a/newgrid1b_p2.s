@@ -28,9 +28,9 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _NEWGRID_DrawGridHeaderRows, NEWGRID_DrawSelectionMarkers,
+;   _NEWGRID_DrawGridHeaderRows, _NEWGRID_DrawSelectionMarkers,
 ;   NEWGRID_DrawEntryRowOrPlaceholder, NEWGRID_GetEntryStateCode,
-;   NEWGRID_TestEntryState, _NEWGRID_SelectEntryPen, NEWGRID_DrawGridCell,
+;   NEWGRID_TestEntryState, _NEWGRID_SelectEntryPen, _NEWGRID_DrawGridCell,
 ;   _NEWGRID_DrawGridFrame, _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex, _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode, _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths,
 ;   _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
 ; READS:
@@ -475,7 +475,7 @@ _NEWGRID_ProcessGridEntries:
     CMP.W   D1,D0
     BNE.S   .cell_height_default
 
-    MOVE.B  CONFIG_NewgridPlaceholderBevelFlag,D1
+    MOVE.B  _CONFIG_NewgridPlaceholderBevelFlag,D1
     MOVEQ   #89,D2
     CMP.B   D2,D1
     BNE.S   .cell_height_default
@@ -612,7 +612,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_DrawSelectionMarkers
+    BSR.W   _NEWGRID_DrawSelectionMarkers
 
     LEA     24(A7),A7
 
@@ -629,7 +629,7 @@ _NEWGRID_ProcessGridEntries:
     CMP.W   -22(A5),D0
     BNE.S   .draw_empty_cell
 
-    MOVE.B  CONFIG_NewgridPlaceholderBevelFlag,D0
+    MOVE.B  _CONFIG_NewgridPlaceholderBevelFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .draw_empty_cell
@@ -643,7 +643,7 @@ _NEWGRID_ProcessGridEntries:
     CLR.L   -(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   NEWGRID_DrawGridCell
+    BSR.W   _NEWGRID_DrawGridCell
 
     LEA     12(A7),A7
     MOVEQ   #5,D0
@@ -661,7 +661,7 @@ _NEWGRID_ProcessGridEntries:
     PEA     1.W
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   NEWGRID_DrawGridCell
+    BSR.W   _NEWGRID_DrawGridCell
 
     LEA     12(A7),A7
     MOVEQ   #4,D0
@@ -672,7 +672,7 @@ _NEWGRID_ProcessGridEntries:
     LSR.W   #1,D0
     MOVE.W  D0,52(A3)
     PEA     2.W
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,32(A3)
@@ -1003,7 +1003,7 @@ NEWGRID_HandleGridSelection:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_DrawGridFrameAndRows, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount, _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
+;   _NEWGRID_DrawGridFrameAndRows, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer, _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount, _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
 ; READS:
 ;   NEWGRID_GridEditorWorkflowState
 ; WRITES:
@@ -1050,12 +1050,12 @@ _NEWGRID_HandleGridEditorState:
     JSR     _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     CLR.L   (A7)
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     MOVE.L  D0,32(A3)
     MOVE.L  D6,(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_DrawGridFrameAndRows
+    BSR.W   _NEWGRID_DrawGridFrameAndRows
 
     LEA     20(A7),A7
     TST.L   D0
@@ -1076,7 +1076,7 @@ _NEWGRID_HandleGridEditorState:
     MOVE.L  D0,32(A3)
     MOVE.L  D6,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_DrawGridFrameAndRows
+    BSR.W   _NEWGRID_DrawGridFrameAndRows
 
     ADDQ.W  #8,A7
     TST.L   D0

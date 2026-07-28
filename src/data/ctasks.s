@@ -41,7 +41,7 @@
     XDEF    CONFIG_SerializedNumericSlot19
     XDEF    CONFIG_SerializedNumericSlot20
     XDEF    _CONFIG_ModeCycleEnabledFlag
-    XDEF    CONFIG_NewgridPlaceholderBevelFlag
+    XDEF    _CONFIG_NewgridPlaceholderBevelFlag
     XDEF    _CONFIG_NewgridSelectionCode48_49EnabledFlag
     XDEF    CONFIG_SerializedNumericSlot25
     XDEF    CONFIG_SerializedNumericSlot26
@@ -151,14 +151,14 @@ _DISKIO_BufferControl:
 ; Values used for the default configuration.
 ; https://prevueguide.com/wiki/Prevue_Emulation:Configuration_File
 ;------------------------------------------------------------------------------
-; SYM: CONFIG_RefreshIntervalMinutes/.../_CONFIG_ModeCycleEnabledFlag/CONFIG_NewgridPlaceholderBevelFlag   (config byte cluster)
+; SYM: CONFIG_RefreshIntervalMinutes/.../_CONFIG_ModeCycleEnabledFlag/_CONFIG_NewgridPlaceholderBevelFlag   (config byte cluster)
 ; TYPE: u8 flags/counters
 ; PURPOSE: Persisted configuration defaults parsed/saved by DISKIO config flows.
 ; USED BY: DISKIO_ParseConfigBuffer, DISKIO_SaveConfigToFileHandle
 ; NOTES:
 ;   Field-to-tag mapping remains partially unresolved.
 ;   `_CONFIG_ModeCycleEnabledFlag` toggles mode-cycle gating in NEWGRID mode selection.
-;   `CONFIG_NewgridPlaceholderBevelFlag` toggles beveled placeholder styling in NEWGRID column-3 paths.
+;   `_CONFIG_NewgridPlaceholderBevelFlag` toggles beveled placeholder styling in NEWGRID column-3 paths.
 ;   Remaining unresolved persisted slots (parse/save observed; semantic readers not yet confirmed):
 ;   `CONFIG_SerializedNumericSlot05`, `CONFIG_SerializedFlagSlot08_DefaultN`,
 ;   `CONFIG_SerializedNumericSlot10`, `CONFIG_SerializedFlagSlot15_DefaultN`,
@@ -210,7 +210,7 @@ CONFIG_SerializedNumericSlot20:
     DC.B    6
 _CONFIG_ModeCycleEnabledFlag:
     DC.B    "Y"
-CONFIG_NewgridPlaceholderBevelFlag:
+_CONFIG_NewgridPlaceholderBevelFlag:
     DC.B    "Y"
 _CONFIG_NewgridSelectionCode48_49EnabledFlag:
     DC.B    "N"

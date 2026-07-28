@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   FORMAT_RawDoFmtWithScratchBuffer
+;   _FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -20,7 +20,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer:
-    JMP     FORMAT_RawDoFmtWithScratchBuffer
+    JMP     _FORMAT_RawDoFmtWithScratchBuffer
 
 ;!======
 

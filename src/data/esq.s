@@ -28,7 +28,7 @@
     XDEF    _ED_DiagGraphModeChar
     XDEF    _ED_DiagVinModeChar
     XDEF    _CLOCK_FormatVariantCode
-    XDEF    WDISP_WeatherStatusTextPtr
+    XDEF    _WDISP_WeatherStatusTextPtr
     XDEF    _TEXTDISP_AliasCount
     XDEF    _ESQIFF_PrimaryLineHeadPtr
     XDEF    _ESQIFF_PrimaryLineTailPtr
@@ -47,7 +47,7 @@
     XDEF    _ESQIFF_SecondaryLineHeadPtr
     XDEF    _ESQIFF_SecondaryLineTailPtr
     XDEF    _ESQ_STR_A
-    XDEF    WDISP_WeatherStatusOverlayTextPtr
+    XDEF    _WDISP_WeatherStatusOverlayTextPtr
     XDEF    _Global_LONG_ROM_VERSION_CHECK
     XDEF    _ESQDISP_StatusIndicatorDeferredApplyFlag
     XDEF    CLEANUP_DiagOverlayAutoRefreshFlag
@@ -105,10 +105,10 @@
     XDEF    ESQ_CopperEffectListB_PtrLoWord
     XDEF    ESQ_CopperEffectTemplateRowsSet0
     XDEF    _ESQ_CopperStatusDigitsA
-    XDEF    ESQ_CopperStatusDigitsA_ColorRegistersA
-    XDEF    ESQ_CopperStatusDigitsA_ColorRegistersB
-    XDEF    ESQ_CopperStatusDigitsA_ColorRegistersC
-    XDEF    ESQ_CopperStatusDigitsA_TailColorWord
+    XDEF    _ESQ_CopperStatusDigitsA_ColorRegistersA
+    XDEF    _ESQ_CopperStatusDigitsA_ColorRegistersB
+    XDEF    _ESQ_CopperStatusDigitsA_ColorRegistersC
+    XDEF    _ESQ_CopperStatusDigitsA_TailColorWord
     XDEF    _ESQ_CopperListBannerA
     XDEF    ESQ_BannerWorkRasterPtrA_HiWord
     XDEF    ESQ_BannerWorkRasterPtrA_LoWord
@@ -152,8 +152,8 @@
     XDEF    ESQ_CopperEffectListA_PtrLoWord
     XDEF    ESQ_CopperEffectTemplateRowsSet1
     XDEF    _ESQ_CopperStatusDigitsB
-    XDEF    ESQ_CopperStatusDigitsB_ColorRegistersA
-    XDEF    ESQ_CopperStatusDigitsB_TailColorWord
+    XDEF    _ESQ_CopperStatusDigitsB_ColorRegistersA
+    XDEF    _ESQ_CopperStatusDigitsB_TailColorWord
     XDEF    _ESQ_CopperListBannerB
     XDEF    ESQ_BannerWorkRasterPtrB_HiWord
     XDEF    ESQ_BannerWorkRasterPtrB_LoWord
@@ -348,13 +348,13 @@ _CLOCK_FormatVariantCode:
 ESQ_TopazGuardRastPortAnchor:
     DC.W    0
 ;------------------------------------------------------------------------------
-; SYM: WDISP_WeatherStatusTextPtr   (weather/status text pointer)
+; SYM: _WDISP_WeatherStatusTextPtr   (weather/status text pointer)
 ; TYPE: pointer
 ; PURPOSE: Optional pointer to dynamic weather/status text for display/export.
 ; USED BY: WDISP_*, DISKIO2_*, CLEANUP_*, UNKNOWN_*
 ; NOTES: Null when no status text is available.
 ;------------------------------------------------------------------------------
-WDISP_WeatherStatusTextPtr:
+_WDISP_WeatherStatusTextPtr:
     DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: _TEXTDISP_AliasCount   (alias table entry count)
@@ -464,13 +464,13 @@ _ESQIFF_SecondaryLineTailPtr:
 _ESQ_STR_A:
     NStr    "A"
 ;------------------------------------------------------------------------------
-; SYM: WDISP_WeatherStatusOverlayTextPtr   (weather overlay text pointer)
+; SYM: _WDISP_WeatherStatusOverlayTextPtr   (weather overlay text pointer)
 ; TYPE: pointer
 ; PURPOSE: Dynamic text pointer used by weather/status overlay formatting paths.
 ; USED BY: UNKNOWN_ParseRecordAndUpdateDisplay, WDISP weather draw paths, ESQIFF helpers
 ; NOTES: Updated through _ESQPARS_ReplaceOwnedString-style realloc/copy helper flows.
 ;------------------------------------------------------------------------------
-WDISP_WeatherStatusOverlayTextPtr:
+_WDISP_WeatherStatusOverlayTextPtr:
     DC.L    0
 _Global_LONG_ROM_VERSION_CHECK:
     DC.L    1
@@ -496,7 +496,7 @@ CLEANUP_DiagOverlayAutoRefreshFlag:
 ; SYM: _ED_DiagAvailMemMask   (diagnostics available-memory mask)
 ; TYPE: u32 (stored in word slot + alignment)
 ; PURPOSE: Selects which memory classes (chip/fast/max/largest) are displayed on diagnostics screen.
-; USED BY: _ED2_HandleDiagnosticsMenuActions, ESQFUNC_DrawMemoryStatusScreen
+; USED BY: _ED2_HandleDiagnosticsMenuActions, _ESQFUNC_DrawMemoryStatusScreen
 ; NOTES: Low three bits are toggled by diagnostics actions.
 ;------------------------------------------------------------------------------
 _ED_DiagAvailMemMask:
@@ -668,18 +668,18 @@ ESQ_CopperEffectTemplateRowsSet0:
 ;------------------------------------------------------------------------------
 _ESQ_CopperStatusDigitsA:
     DC.L    $00030182
-ESQ_CopperStatusDigitsA_ColorRegistersA:
+_ESQ_CopperStatusDigitsA_ColorRegistersA:
     DC.L    $0aaa0184,$03330186,$05550188,$0512018a
     DC.L    $016a018c,$0cc0018e
-ESQ_CopperStatusDigitsA_ColorRegistersB:
+_ESQ_CopperStatusDigitsA_ColorRegistersB:
     DC.L    $00030190,$00030192,$00030194,$00030196
     DC.L    $00030198,$0003019a,$0003019c,$0003019e
-ESQ_CopperStatusDigitsA_ColorRegistersC:
+_ESQ_CopperStatusDigitsA_ColorRegistersC:
     DC.L    $000301a0,$000301a2,$000301a4,$000301a6
     DC.L    $000301a8,$000301aa,$000301ac,$000301ae
     DC.L    $000301b0,$000301b2,$000301b4,$000301b6
     DC.L    $000301b8,$000301ba,$000301bc,$000301be
-ESQ_CopperStatusDigitsA_TailColorWord:
+_ESQ_CopperStatusDigitsA_TailColorWord:
     DC.W    $0003
 ;------------------------------------------------------------------------------
 ; SYM: _ESQ_CopperListBannerA   (banner copper list A)
@@ -1124,10 +1124,10 @@ ESQ_CopperEffectTemplateRowsSet1:
 ;------------------------------------------------------------------------------
 _ESQ_CopperStatusDigitsB:
     DC.L    $00030182
-ESQ_CopperStatusDigitsB_ColorRegistersA:
+_ESQ_CopperStatusDigitsB_ColorRegistersA:
     DC.L    $0aaa0184,$03330186,$05550188,$0512018a
     DC.L    $016a018c,$0cc0018e
-ESQ_CopperStatusDigitsB_TailColorWord:
+_ESQ_CopperStatusDigitsB_TailColorWord:
     DC.W    $0003
 ;------------------------------------------------------------------------------
 ; SYM: _ESQ_CopperListBannerB   (banner copper list B)

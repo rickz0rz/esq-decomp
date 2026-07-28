@@ -224,7 +224,7 @@ ESQDISP_DrawStatusBanner:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQ_STR_B, _ESQ_STR_E, ESQDISP_StatusBannerClampGateFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, _CLOCK_DaySlotIndex, CLOCK_CacheMonthIndex0, CLOCK_CacheDayIndex0, _CLOCK_CacheYear, _DST_PrimaryCountdown, WDISP_BannerSlotCursor, _CLOCK_HalfHourSlotIndex, CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
+;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQ_STR_B, _ESQ_STR_E, ESQDISP_StatusBannerClampGateFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, _WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, _CLOCK_DaySlotIndex, _CLOCK_CacheMonthIndex0, _CLOCK_CacheDayIndex0, _CLOCK_CacheYear, _DST_PrimaryCountdown, WDISP_BannerSlotCursor, _CLOCK_HalfHourSlotIndex, CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
 ; WRITES:
 ;   BANNER_ResetPendingFlag, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, TLIBA1_StatusBannerPropagateGuard, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _CLOCK_HalfHourSlotIndex
 ; DESC:
@@ -290,12 +290,12 @@ ESQDISP_DrawStatusBanner_Impl:
     NOT.B   D2
     AND.L   D2,D1
     MOVE.B  D1,_TEXTDISP_PrimaryGroupCode
-    MOVE.W  CLOCK_CacheDayIndex0,D0
+    MOVE.W  _CLOCK_CacheDayIndex0,D0
     MOVEQ   #31,D3
     CMP.W   D3,D0
     BNE.S   .lab_0936
 
-    MOVE.W  CLOCK_CacheMonthIndex0,D0
+    MOVE.W  _CLOCK_CacheMonthIndex0,D0
     MOVEQ   #11,D3
     CMP.W   D3,D0
     BNE.S   .lab_0936
@@ -384,7 +384,7 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVEQ   #20,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     WDISP_StatusDayEntry0,A0
+    LEA     _WDISP_StatusDayEntry0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   16(A1)
@@ -430,7 +430,7 @@ ESQDISP_DrawStatusBanner_Impl:
 
     LEA     WDISP_StatusDayEntry1,A0
     MOVEA.L A0,A1
-    LEA     WDISP_StatusDayEntry0,A2
+    LEA     _WDISP_StatusDayEntry0,A2
     MOVEQ   #4,D0
 
 .lab_0942:
@@ -538,7 +538,7 @@ ESQDISP_DrawStatusBanner_Impl_Return:
 ; READS:
 ;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTablePreSlot, ff7f
 ; WRITES:
-;   ESQDISP_PrimarySecondaryMirrorFlag
+;   _ESQDISP_PrimarySecondaryMirrorFlag
 ; DESC:
 ;   If secondary group has no entries, clones each primary entry into a newly created
 ;   secondary entry/title record and copies the per-slot program-info header fields.
@@ -616,11 +616,11 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
     BRA.W   .loop_primary_entries_for_mirror
 
 .set_mirror_performed_flag:
-    MOVE.W  #1,ESQDISP_PrimarySecondaryMirrorFlag
+    MOVE.W  #1,_ESQDISP_PrimarySecondaryMirrorFlag
     BRA.S   ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return
 
 .mark_no_mirror_needed:
-    CLR.W   ESQDISP_PrimarySecondaryMirrorFlag
+    CLR.W   _ESQDISP_PrimarySecondaryMirrorFlag
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return   (Return tail for secondary mirror helper)

@@ -22,9 +22,9 @@
     XDEF    _NEWGRID_GridOperationId
     XDEF    NEWGRID_EntryPlaceholderModeFlag
     XDEF    NEWGRID_PrimeTimeLayoutEnable
-    XDEF    NEWGRID_ShowtimeEntryVariantFlag
+    XDEF    _NEWGRID_ShowtimeEntryVariantFlag
     XDEF    _NEWGRID_EntrySplitDelimiterMask
-    XDEF    NEWGRID_GridEntryDelimiterBar
+    XDEF    _NEWGRID_GridEntryDelimiterBar
     XDEF    _NEWGRID_EntryDetailFmtStr
     XDEF    NEWGRID_GridStateFrameLatch
     XDEF    NEWGRID_GridEntriesWorkflowState
@@ -35,7 +35,7 @@
     XDEF    _NEWGRID_SecondarySelectedEntryIndex
     XDEF    _NEWGRID_SecondaryWorkflowState
     XDEF    _NEWGRID_SecondarySelectionHintCounter
-    XDEF    NEWGRID_AltGridStateLatch
+    XDEF    _NEWGRID_AltGridStateLatch
     XDEF    NEWGRID_AltEntryAttemptCounter
     XDEF    NEWGRID_AltEntryCursor
     XDEF    NEWGRID_AltEntryWorkflowState
@@ -175,7 +175,7 @@ _NEWGRID_SecondaryIndexCachePtr:
 _NEWGRID_GridOperationId:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_EntryPlaceholderModeFlag/NEWGRID_PrimeTimeLayoutEnable/NEWGRID_ShowtimeEntryVariantFlag   (entry layout gate flags)
+; SYM: NEWGRID_EntryPlaceholderModeFlag/NEWGRID_PrimeTimeLayoutEnable/_NEWGRID_ShowtimeEntryVariantFlag   (entry layout gate flags)
 ; TYPE: u16/u16/u16
 ; PURPOSE: Gate placeholder/layout variants across NEWGRID1/NEWGRID2 entry draw flows.
 ; USED BY: NEWGRID1_*, NEWGRID2_ProcessGridState
@@ -185,7 +185,7 @@ NEWGRID_EntryPlaceholderModeFlag:
     DC.W    $0001
 NEWGRID_PrimeTimeLayoutEnable:
     DC.W    $0001
-NEWGRID_ShowtimeEntryVariantFlag:
+_NEWGRID_ShowtimeEntryVariantFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _NEWGRID_EntrySplitDelimiterMask   (entry split delimiter mask??)
@@ -198,7 +198,7 @@ _NEWGRID_EntrySplitDelimiterMask:
     DC.L    $90939b99,$a3a39a84,$86858c87
     DC.W    $8d8f
     DS.B    1
-NEWGRID_GridEntryDelimiterBar:
+_NEWGRID_GridEntryDelimiterBar:
     NStr2   145,"|"
 ;------------------------------------------------------------------------------
 ; SYM: _NEWGRID_EntryDetailFmtStr   (entry detail format)
@@ -275,15 +275,15 @@ _NEWGRID_SecondarySelectedEntryIndex:
 _NEWGRID_SecondaryWorkflowState:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: _NEWGRID_SecondarySelectionHintCounter/NEWGRID_AltGridStateLatch/NEWGRID_AltEntryAttemptCounter/NEWGRID_AltEntryCursor   (secondary+alt workflow scratch)
+; SYM: _NEWGRID_SecondarySelectionHintCounter/_NEWGRID_AltGridStateLatch/NEWGRID_AltEntryAttemptCounter/NEWGRID_AltEntryCursor   (secondary+alt workflow scratch)
 ; TYPE: s32/s32/s32/s32
 ; PURPOSE: Maintains counters/cursors used while probing secondary/alternate entry workflows.
-; USED BY: _NEWGRID_ProcessSecondaryState, NEWGRID_HandleAltGridState
+; USED BY: _NEWGRID_ProcessSecondaryState, _NEWGRID_HandleAltGridState
 ; NOTES: Values are transitional and frequently reset on state changes.
 ;------------------------------------------------------------------------------
 _NEWGRID_SecondarySelectionHintCounter:
     DS.L    1
-NEWGRID_AltGridStateLatch:
+_NEWGRID_AltGridStateLatch:
     DC.L    $00000004
 NEWGRID_AltEntryAttemptCounter:
     DS.L    1

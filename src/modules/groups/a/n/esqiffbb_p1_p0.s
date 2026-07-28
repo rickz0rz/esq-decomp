@@ -246,7 +246,7 @@ _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MEMORY_DeallocateMemory
+;   _MEMORY_DeallocateMemory
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -257,7 +257,7 @@ _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQIFF_JMPTBL_MEMORY_DeallocateMemory:
-    JMP     MEMORY_DeallocateMemory
+    JMP     _MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle   (Jump-table forwarder)

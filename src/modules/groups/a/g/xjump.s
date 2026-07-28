@@ -71,7 +71,7 @@ _GROUP_AG_JMPTBL_MATH_DivS32:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MEMORY_DeallocateMemory
+;   _MEMORY_DeallocateMemory
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -82,7 +82,7 @@ _GROUP_AG_JMPTBL_MATH_DivS32:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory:
-    JMP     MEMORY_DeallocateMemory
+    JMP     _MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AG_JMPTBL_STRUCT_AllocWithOwner   (Routine at _GROUP_AG_JMPTBL_STRUCT_AllocWithOwner)

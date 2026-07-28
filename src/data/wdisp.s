@@ -1,8 +1,8 @@
-    XDEF    Global_STR_WDISP_C
-    XDEF    WDISP_STR_UNKNOWN_NUM_WITH_SLASH
-    XDEF    Global_STR_PERCENT_D_SLASH
-    XDEF    WDISP_STR_UNKNOWN_NUM
-    XDEF    Global_STR_PERCENT_D
+    XDEF    _Global_STR_WDISP_C
+    XDEF    _WDISP_STR_UNKNOWN_NUM_WITH_SLASH
+    XDEF    _Global_STR_PERCENT_D_SLASH
+    XDEF    _WDISP_STR_UNKNOWN_NUM
+    XDEF    _Global_STR_PERCENT_D
     XDEF    Global_MEM_BYTES_ALLOCATED
     XDEF    Global_MEM_ALLOC_COUNT
     XDEF    Global_MEM_DEALLOC_COUNT
@@ -151,16 +151,16 @@
     XDEF    _TEXTDISP_PrimaryGroupHeaderCode
     XDEF    _TEXTDISP_SecondaryGroupHeaderCode
     XDEF    _CLOCK_DaySlotIndex
-    XDEF    CLOCK_CacheMonthIndex0
-    XDEF    CLOCK_CacheDayIndex0
+    XDEF    _CLOCK_CacheMonthIndex0
+    XDEF    _CLOCK_CacheDayIndex0
     XDEF    _CLOCK_CacheYear
-    XDEF    CLOCK_CacheHour
-    XDEF    CLOCK_CacheMinuteOrSecond
+    XDEF    _CLOCK_CacheHour
+    XDEF    _CLOCK_CacheMinuteOrSecond
     XDEF    _Global_REF_CLOCKDATA_STRUCT
     XDEF    _DST_PrimaryCountdown
     XDEF    WDISP_BannerSlotCursor
-    XDEF    CLOCK_CacheAmPmFlag
-    XDEF    ESQFUNC_CListLinePointer
+    XDEF    _CLOCK_CacheAmPmFlag
+    XDEF    _ESQFUNC_CListLinePointer
     XDEF    _WDISP_WeatherStatusLabelBuffer
     XDEF    WDISP_StatusListMatchPattern
     XDEF    _TEXTDISP_PrimaryGroupRecordChecksum
@@ -218,8 +218,8 @@
     XDEF    _DST_SecondaryCountdown
     XDEF    CLOCK_CurrentDayOfYear
     XDEF    _CLOCK_CurrentAmPmFlag
-    XDEF    CLOCK_CurrentLeapYearFlag
-    XDEF    WDISP_WeatherStatusCountdown
+    XDEF    _CLOCK_CurrentLeapYearFlag
+    XDEF    _WDISP_WeatherStatusCountdown
     XDEF    _WDISP_BannerCharRangeEnd
     XDEF    _CTRL_H
     XDEF    _CTRL_HPreviousSample
@@ -248,8 +248,8 @@
     XDEF    ESQIFF_StatusPacketReadyFlag
     XDEF    ESQIFF_RecordBufferPtr
     XDEF    WDISP_WeatherStatusColorCode
-    XDEF    WDISP_WeatherStatusBrushIndex
-    XDEF    WDISP_WeatherStatusDigitChar
+    XDEF    _WDISP_WeatherStatusBrushIndex
+    XDEF    _WDISP_WeatherStatusDigitChar
     XDEF    ESQPARS_Preamble55SeenFlag
     XDEF    ESQPARS_CommandPreambleArmedFlag
     XDEF    ESQPARS_SelectionMatchCode
@@ -262,25 +262,25 @@
     XDEF    ESQDISP_HighlightBitmapTable
     XDEF    ESQIFF_PendingExternalBrushNode
     XDEF    _ESQIFF_ExternalAssetFlags
-    XDEF    WDISP_AccumulatorCaptureActive
+    XDEF    _WDISP_AccumulatorCaptureActive
     XDEF    _WDISP_AccumulatorFlushPending
     XDEF    _ESQIFF_LogoListLineIndex
     XDEF    _ESQIFF_GAdsListLineIndex
     XDEF    _WDISP_PaletteDepthLog2
-    XDEF    WDISP_AccumulatorRowTable
-    XDEF    WDISP_AccumulatorRow0_Value
+    XDEF    _WDISP_AccumulatorRowTable
+    XDEF    _WDISP_AccumulatorRow0_Value
     XDEF    _WDISP_AccumulatorRow0_MoveFlags
     XDEF    _WDISP_AccumulatorRow0_CopperIndexStart
     XDEF    _WDISP_AccumulatorRow0_CopperIndexEnd
-    XDEF    WDISP_AccumulatorRow1_Value
+    XDEF    _WDISP_AccumulatorRow1_Value
     XDEF    _WDISP_AccumulatorRow1_MoveFlags
     XDEF    _WDISP_AccumulatorRow1_CopperIndexStart
     XDEF    _WDISP_AccumulatorRow1_CopperIndexEnd
-    XDEF    WDISP_AccumulatorRow2_Value
+    XDEF    _WDISP_AccumulatorRow2_Value
     XDEF    _WDISP_AccumulatorRow2_MoveFlags
     XDEF    _WDISP_AccumulatorRow2_CopperIndexStart
     XDEF    _WDISP_AccumulatorRow2_CopperIndexEnd
-    XDEF    WDISP_AccumulatorRow3_Value
+    XDEF    _WDISP_AccumulatorRow3_Value
     XDEF    _WDISP_AccumulatorRow3_MoveFlags
     XDEF    _WDISP_AccumulatorRow3_CopperIndexStart
     XDEF    _WDISP_AccumulatorRow3_CopperIndexEnd
@@ -385,7 +385,7 @@
     XDEF    LOCAVAIL_PrimaryFilterState_Field08
     XDEF    LOCAVAIL_PrimaryFilterState_Field0C
     XDEF    _LOCAVAIL_SecondaryFilterState
-    XDEF    LOCAVAIL_FilterCooldownTicks
+    XDEF    _LOCAVAIL_FilterCooldownTicks
     XDEF    _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST
     XDEF    _Global_REF_BACKED_UP_INTUITION_DISPLAYALERT
     XDEF    _NEWGRID_RowHeightPx
@@ -483,29 +483,29 @@
 ; ========== WDISP.c ==========
 ; weather display?
 
-Global_STR_WDISP_C:
+_Global_STR_WDISP_C:
     NStr    "WDISP.c"
 ;------------------------------------------------------------------------------
-; SYM: WDISP_STR_UNKNOWN_NUM_WITH_SLASH   (unknown numeric placeholder with slash)
+; SYM: _WDISP_STR_UNKNOWN_NUM_WITH_SLASH   (unknown numeric placeholder with slash)
 ; TYPE: cstring
 ; PURPOSE: Display fallback when sentinel value indicates missing first numeric field.
 ; USED BY: LAB_188C
 ; NOTES: Rendered instead of formatted "%d/" text.
 ;------------------------------------------------------------------------------
-WDISP_STR_UNKNOWN_NUM_WITH_SLASH:
+_WDISP_STR_UNKNOWN_NUM_WITH_SLASH:
     NStr3   '?','?','?/'
-Global_STR_PERCENT_D_SLASH:
+_Global_STR_PERCENT_D_SLASH:
     NStr    "%d/"
 ;------------------------------------------------------------------------------
-; SYM: WDISP_STR_UNKNOWN_NUM   (unknown numeric placeholder)
+; SYM: _WDISP_STR_UNKNOWN_NUM   (unknown numeric placeholder)
 ; TYPE: cstring
 ; PURPOSE: Display fallback when sentinel value indicates missing second numeric field.
 ; USED BY: LAB_188C
 ; NOTES: Rendered instead of formatted "%d" text.
 ;------------------------------------------------------------------------------
-WDISP_STR_UNKNOWN_NUM:
+_WDISP_STR_UNKNOWN_NUM:
     NStr3   '?','?','?'
-Global_STR_PERCENT_D:
+_Global_STR_PERCENT_D:
     NStr    "%d"
 Global_MEM_BYTES_ALLOCATED:
     DS.L    1
@@ -1601,23 +1601,23 @@ _TEXTDISP_SecondaryGroupHeaderCode:
 _CLOCK_DaySlotIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_CacheMonthIndex0/CLOCK_CacheDayIndex0/_CLOCK_CacheYear/CLOCK_CacheHour/CLOCK_CacheMinuteOrSecond/_Global_REF_CLOCKDATA_STRUCT/CLOCK_CacheAmPmFlag
+; SYM: _CLOCK_CacheMonthIndex0/_CLOCK_CacheDayIndex0/_CLOCK_CacheYear/_CLOCK_CacheHour/_CLOCK_CacheMinuteOrSecond/_Global_REF_CLOCKDATA_STRUCT/_CLOCK_CacheAmPmFlag
 ; TYPE: u16/u16/u16/u16/u16/u16/s16
 ; PURPOSE: Cached clock/date fields consumed by diagnostics, log formatters, and RTC write/read helpers.
 ; USED BY: PARSEINI_*, ESQFUNC_*, FLIB_*, ESQDISP_*, SCRIPT3_*
 ; NOTES: Month/day are stored as 0-based indexes for table lookups and normalized by PARSEINI_NormalizeClockData.
 ;        _Global_REF_CLOCKDATA_STRUCT is treated as a seconds/clock snapshot field in multiple call sites.
-;        CLOCK_CacheAmPmFlag uses 0 for AM and non-zero (typically -1) for PM.
+;        _CLOCK_CacheAmPmFlag uses 0 for AM and non-zero (typically -1) for PM.
 ;------------------------------------------------------------------------------
-CLOCK_CacheMonthIndex0:
+_CLOCK_CacheMonthIndex0:
     DS.W    1
-CLOCK_CacheDayIndex0:
+_CLOCK_CacheDayIndex0:
     DS.W    1
 _CLOCK_CacheYear:
     DS.W    1
-CLOCK_CacheHour:
+_CLOCK_CacheHour:
     DS.W    1
-CLOCK_CacheMinuteOrSecond:
+_CLOCK_CacheMinuteOrSecond:
     DS.W    1
 _Global_REF_CLOCKDATA_STRUCT:
     DS.W    1
@@ -1639,16 +1639,16 @@ _DST_PrimaryCountdown:
 ;------------------------------------------------------------------------------
 WDISP_BannerSlotCursor:
     DS.W    1
-CLOCK_CacheAmPmFlag:
+_CLOCK_CacheAmPmFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQFUNC_CListLinePointer   (diagnostic C-list line pointer/value)
+; SYM: _ESQFUNC_CListLinePointer   (diagnostic C-list line pointer/value)
 ; TYPE: u16
 ; PURPOSE: Value printed in ESQFUNC memory/status diagnostics as the C-list line pointer field.
-; USED BY: ESQFUNC_DrawMemoryStatusScreen
+; USED BY: _ESQFUNC_DrawMemoryStatusScreen
 ; NOTES: Naming is diagnostic-format driven; keep conservative until more writers are identified.
 ;------------------------------------------------------------------------------
-ESQFUNC_CListLinePointer:
+_ESQFUNC_CListLinePointer:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _WDISP_WeatherStatusLabelBuffer   (weather/status label buffer)
@@ -1864,7 +1864,7 @@ _LADFUNC_LineControlCodeTable:
 ; SYM: _WDISP_BannerCharPhaseShift   (banner char phase-shift value)
 ; TYPE: s16
 ; PURPOSE: Per-tick phase/step value applied by banner-char index advance logic.
-; USED BY: _DST_TickBannerCounters, ESQ_AdvanceBannerCharIndex, ESQFUNC_DrawMemoryStatusScreen
+; USED BY: _DST_TickBannerCounters, ESQ_AdvanceBannerCharIndex, _ESQFUNC_DrawMemoryStatusScreen
 ; NOTES: Derived from DST counters and applied as +/- two-step adjustments in index math.
 ;------------------------------------------------------------------------------
 _WDISP_BannerCharPhaseShift:
@@ -1966,7 +1966,7 @@ ESQSHARED_BannerRowScratchRasterBase2:
 ; SYM: _ED_DiagnosticsViewMode   (diagnostics view mode)
 ; TYPE: u16
 ; PURPOSE: Selects which diagnostics screen page is drawn/updated.
-; USED BY: _ED2_HandleDiagnosticsMenuActions, ESQFUNC_DrawMemoryStatusScreen, ESQPARS processCommand_K_Clock gate
+; USED BY: _ED2_HandleDiagnosticsMenuActions, _ESQFUNC_DrawMemoryStatusScreen, ESQPARS processCommand_K_Clock gate
 ; NOTES: Value 0 draws memory/status view; value 1 enables calendar-style diagnostics view.
 ;------------------------------------------------------------------------------
 _ED_DiagnosticsViewMode:
@@ -2080,14 +2080,14 @@ _Global_WORD_CURRENT_SECOND:
 _DST_SecondaryCountdown:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_CurrentDayOfYear/_CLOCK_CurrentAmPmFlag/CLOCK_CurrentLeapYearFlag   (secondary live-clock trailing fields)
+; SYM: CLOCK_CurrentDayOfYear/_CLOCK_CurrentAmPmFlag/_CLOCK_CurrentLeapYearFlag   (secondary live-clock trailing fields)
 ; TYPE: u16/u16/u16
 ; PURPOSE:
 ;   Trailing fields of the secondary live-clock tuple rooted at `_CLOCK_CurrentDayOfWeekIndex`.
 ;   `CLOCK_CurrentDayOfYear` participates in status-day normalization/comparison flows.
 ;   `_CLOCK_CurrentAmPmFlag` is the AM/PM sign flag consumed by time-format helpers.
-;   `CLOCK_CurrentLeapYearFlag` tracks leap-year state and is shown as `lp` in diagnostics.
-; USED BY: ESQ_TickClockAndFlagEvents, UNKNOWN_ParseStatusListPattern??, CLEANUP_BuildAlignedStatusSuffix, ESQDISP_CheckStatusDayEntryWindow, ESQFUNC_DrawMemoryStatusScreen, _CLEANUP_DrawClockBanner
+;   `_CLOCK_CurrentLeapYearFlag` tracks leap-year state and is shown as `lp` in diagnostics.
+; USED BY: ESQ_TickClockAndFlagEvents, UNKNOWN_ParseStatusListPattern??, CLEANUP_BuildAlignedStatusSuffix, ESQDISP_CheckStatusDayEntryWindow, _ESQFUNC_DrawMemoryStatusScreen, _CLEANUP_DrawClockBanner
 ; NOTES:
 ;   Producer is confirmed: `ESQ_TickClockAndFlagEvents` called with `PEA _CLOCK_CurrentDayOfWeekIndex`.
 ;   Layout matches routine field writes at +16 (day-of-year), +18 (am/pm), +20 (leap-year).
@@ -2096,16 +2096,16 @@ CLOCK_CurrentDayOfYear:
     DS.W    1
 _CLOCK_CurrentAmPmFlag:
     DS.W    1
-CLOCK_CurrentLeapYearFlag:
+_CLOCK_CurrentLeapYearFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_WeatherStatusCountdown   (weather status countdown)
+; SYM: _WDISP_WeatherStatusCountdown   (weather status countdown)
 ; TYPE: u16 (low byte used)
 ; PURPOSE: Countdown gate controlling timed weather-status overlay/banner rendering.
 ; USED BY: WDISP weather draw paths, CLEANUP_ProcessAlerts, ED2 weather setup
 ; NOTES: Commonly initialized to `0x3C` and decremented in periodic update loops.
 ;------------------------------------------------------------------------------
-WDISP_WeatherStatusCountdown:
+_WDISP_WeatherStatusCountdown:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _WDISP_BannerCharRangeEnd   (banner char range end index)
@@ -2122,7 +2122,7 @@ _CTRL_H:
 ; SYM: _CTRL_HPreviousSample/_CTRL_HDeltaMax   (_CTRL_H sampling state)
 ; TYPE: u16/u16
 ; PURPOSE: Previous _CTRL_H sample and the observed maximum wrapped delta.
-; USED BY: _PARSEINI_CheckCtrlHChange, _PARSEINI_UpdateCtrlHDeltaMax, ESQFUNC_DrawMemoryStatusScreen, APP_*
+; USED BY: _PARSEINI_CheckCtrlHChange, _PARSEINI_UpdateCtrlHDeltaMax, _ESQFUNC_DrawMemoryStatusScreen, APP_*
 ; NOTES: Delta is computed modulo 500 (`+500` wrap for negative differences).
 ;------------------------------------------------------------------------------
 _CTRL_HPreviousSample:
@@ -2153,7 +2153,7 @@ _DATACErrs:
 ; SYM: _ESQIFF_LineErrorCount   (record line/length error counter)
 ; TYPE: u16
 ; PURPOSE: Counts record-line validation failures that are not checksum mismatches.
-; USED BY: ESQPARS_*, ESQFUNC_DrawMemoryStatusScreen, ED2 diagnostics reset path
+; USED BY: ESQPARS_*, _ESQFUNC_DrawMemoryStatusScreen, ED2 diagnostics reset path
 ; NOTES: Displayed alongside data command/checksum counters on diagnostics screens.
 ;------------------------------------------------------------------------------
 _ESQIFF_LineErrorCount:
@@ -2168,7 +2168,7 @@ _Global_WORD_T_VALUE:
 ; PURPOSE:
 ;   `_ESQ_SerialRbfErrorCount` accumulates serial RBF error/status events.
 ;   `_ESQ_SerialRbfFillLevel` tracks ISR-computed `(head-tail)` serial ring-buffer occupancy.
-; USED BY: _ESQ_HandleSerialRbfInterrupt, ESQFUNC_DrawMemoryStatusScreen, ESQ_InitializeState
+; USED BY: _ESQ_HandleSerialRbfInterrupt, _ESQFUNC_DrawMemoryStatusScreen, ESQ_InitializeState
 ; NOTES: Both values are displayed/reset through diagnostics paths.
 ;------------------------------------------------------------------------------
 _ESQ_SerialRbfErrorCount:
@@ -2270,15 +2270,15 @@ ESQIFF_RecordBufferPtr:
 WDISP_WeatherStatusColorCode:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_WeatherStatusBrushIndex/WDISP_WeatherStatusDigitChar   (weather status style fields)
+; SYM: _WDISP_WeatherStatusBrushIndex/_WDISP_WeatherStatusDigitChar   (weather status style fields)
 ; TYPE: u8/u16
 ; PURPOSE: Brush/style selector plus leading digit character used by weather-status banner rendering.
 ; USED BY: ESQPROTO_ParseDigitLabelAndDisplay, WDISP weather drawing routines, ED2 setup paths
 ; NOTES: Digit char is clamped to ASCII `'0'..'9'`; `'0'` is treated as a suppress/idle value in some paths.
 ;------------------------------------------------------------------------------
-WDISP_WeatherStatusBrushIndex:
+_WDISP_WeatherStatusBrushIndex:
     DS.B    1
-WDISP_WeatherStatusDigitChar:
+_WDISP_WeatherStatusDigitChar:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQPARS_Preamble55SeenFlag/ESQPARS_CommandPreambleArmedFlag   (serial preamble parser flags)
@@ -2370,13 +2370,13 @@ ESQIFF_PendingExternalBrushNode:
 _ESQIFF_ExternalAssetFlags:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_AccumulatorCaptureActive/_WDISP_AccumulatorFlushPending   (display accumulator state flags)
+; SYM: _WDISP_AccumulatorCaptureActive/_WDISP_AccumulatorFlushPending   (display accumulator state flags)
 ; TYPE: u16/u16
 ; PURPOSE: Coordinates when accumulator buckets are updated and when the flush pass should run.
 ; USED BY: WDISP_*, APP2_*, ESQIFF_*, TEXTDISP_*, SCRIPT4_*
 ; NOTES: Common pattern is set capture active during copy/update, then clear it and set flush pending.
 ;------------------------------------------------------------------------------
-WDISP_AccumulatorCaptureActive:
+_WDISP_AccumulatorCaptureActive:
     DS.W    1
 _WDISP_AccumulatorFlushPending:
     DS.W    1
@@ -2409,18 +2409,18 @@ _ESQIFF_GAdsListLineIndex:
 _WDISP_PaletteDepthLog2:
     DS.L    3
 ;------------------------------------------------------------------------------
-; SYM: WDISP_AccumulatorRowTable   (accumulator row table)
+; SYM: _WDISP_AccumulatorRowTable   (accumulator row table)
 ; TYPE: u8[32]
 ; PURPOSE: Captures four 8-byte rows copied from brush accumulator data.
-; USED BY: WDISP_DrawWeatherStatusOverlay, WDISP_DrawWeatherStatusDayEntry, ESQIFF_ShowExternalAssetWithCopperFx
+; USED BY: _WDISP_DrawWeatherStatusOverlay, _WDISP_DrawWeatherStatusDayEntry, ESQIFF_ShowExternalAssetWithCopperFx
 ; NOTES:
 ;   Row layout (8 bytes each, 4 rows):
 ;   rowN: word0 (metadata), word1 (value), word2 (move flags), byte3/byte4 (copper indices).
 ;------------------------------------------------------------------------------
-WDISP_AccumulatorRowTable:
+_WDISP_AccumulatorRowTable:
 WDISP_AccumulatorRow0_MetadataWord:
     DS.W    1
-WDISP_AccumulatorRow0_Value:
+_WDISP_AccumulatorRow0_Value:
     DS.W    1
 _WDISP_AccumulatorRow0_MoveFlags:
     DS.W    1
@@ -2430,7 +2430,7 @@ _WDISP_AccumulatorRow0_CopperIndexEnd:
     DS.B    1
 WDISP_AccumulatorRow1_MetadataWord:
     DS.W    1
-WDISP_AccumulatorRow1_Value:
+_WDISP_AccumulatorRow1_Value:
     DS.W    1
 _WDISP_AccumulatorRow1_MoveFlags:
     DS.W    1
@@ -2440,7 +2440,7 @@ _WDISP_AccumulatorRow1_CopperIndexEnd:
     DS.B    1
 WDISP_AccumulatorRow2_MetadataWord:
     DS.W    1
-WDISP_AccumulatorRow2_Value:
+_WDISP_AccumulatorRow2_Value:
     DS.W    1
 _WDISP_AccumulatorRow2_MoveFlags:
     DS.W    1
@@ -2450,7 +2450,7 @@ _WDISP_AccumulatorRow2_CopperIndexEnd:
     DS.B    1
 WDISP_AccumulatorRow3_MetadataWord:
     DS.W    1
-WDISP_AccumulatorRow3_Value:
+_WDISP_AccumulatorRow3_Value:
     DS.W    1
 _WDISP_AccumulatorRow3_MoveFlags:
     DS.W    1
@@ -2651,7 +2651,7 @@ _GCOMMAND_PpvMessageFramePen:
 ; TYPE: s32/s32
 ; PURPOSE: Pen indices forwarded to _NEWGRID_HandleGridEditorState for PPV detail/editor rendering.
 ; USED BY: GCOMMAND_ParsePPVCommand, _FLIB2_LoadDigitalPpvDefaults, NEWGRID_ProcessShowtimesWorkflow
-; NOTES: Layout pen feeds _DISPTEXT_SetLayoutParams commit-pen arg; row pen feeds NEWGRID_DrawGridFrameAndRows.
+; NOTES: Layout pen feeds _DISPTEXT_SetLayoutParams commit-pen arg; row pen feeds _NEWGRID_DrawGridFrameAndRows.
 ;------------------------------------------------------------------------------
 _GCOMMAND_PpvEditorLayoutPen:    ; 22EA
     DS.L    1
@@ -2938,7 +2938,7 @@ LOCAVAIL_PrimaryFilterState_Field14:
     DS.L    1
 _LOCAVAIL_SecondaryFilterState:
     DS.L    6
-LOCAVAIL_FilterCooldownTicks:
+_LOCAVAIL_FilterCooldownTicks:
     DS.L    1
 _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST:
     DS.L    1
@@ -3019,7 +3019,7 @@ _NEWGRID_OverridePenIndex:
 ; SYM: _NEWGRID_EntryTextScratchPtr   (newgrid entry text scratch pointer)
 ; TYPE: pointer
 ; PURPOSE: Heap buffer used as staging text while NEWGRID formats/splits per-entry display lines.
-; USED BY: NEWGRID_DrawGridEntry, NEWGRID2_EnsureBuffersAllocated, _NEWGRID2_FreeBuffersIfAllocated
+; USED BY: _NEWGRID_DrawGridEntry, NEWGRID2_EnsureBuffersAllocated, _NEWGRID2_FreeBuffersIfAllocated
 ; NOTES: Allocated as 1000 bytes in NEWGRID2_EnsureBuffersAllocated.
 ;------------------------------------------------------------------------------
 _NEWGRID_EntryTextScratchPtr:
@@ -3129,7 +3129,7 @@ _SCRIPT_RuntimeMode:
 ; SYM: _SCRIPT_CtrlCmdCount/_SCRIPT_CtrlCmdChecksumErrorCount/_SCRIPT_CtrlCmdLengthErrorCount   (CTRL command counters)
 ; TYPE: u16/u16/u16
 ; PURPOSE: Tracks CTRL command totals plus checksum and length error counts.
-; USED BY: SCRIPT_HandleSerialCtrlCmd, ESQFUNC_DrawMemoryStatusScreen, _ED2_HandleDiagnosticsMenuActions
+; USED BY: SCRIPT_HandleSerialCtrlCmd, _ESQFUNC_DrawMemoryStatusScreen, _ED2_HandleDiagnosticsMenuActions
 ; NOTES: "LERRS" increments when CTRL buffer length exceeds 198 bytes.
 ;------------------------------------------------------------------------------
 _SCRIPT_CtrlCmdCount:
@@ -3490,7 +3490,7 @@ WDISP_WeatherCycleOffsetCount:
 ; SYM: FORMAT_ScratchBuffer   (shared RawDoFmt scratch buffer)
 ; TYPE: u8[856]
 ; PURPOSE: Temporary output buffer for formatter wrappers and optional debug-log writes.
-; USED BY: FORMAT_RawDoFmtWithScratchBuffer, UNKNOWN2A dead-code formatting wrappers
+; USED BY: _FORMAT_RawDoFmtWithScratchBuffer, UNKNOWN2A dead-code formatting wrappers
 ; NOTES: Sized as 214 longwords.
 ;------------------------------------------------------------------------------
 FORMAT_ScratchBuffer:

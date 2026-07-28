@@ -21,13 +21,13 @@
 ;   _LVOSetAPen, _GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
 ;   CLEANUP_PendingAlertFlag, CLEANUP_AlertProcessingFlag, CLEANUP_DiagOverlayAutoRefreshFlag, _Global_UIBusyFlag,
-;   CLEANUP_AlertCooldownTicks, _LOCAVAIL_FilterStep, LOCAVAIL_FilterCooldownTicks, _CLOCK_DaySlotIndex, _CLOCK_CurrentDayOfWeekIndex,
-;   TEXTDISP_DeferredActionDelayTicks, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown, CLEANUP_BannerTickCounter,
+;   CLEANUP_AlertCooldownTicks, _LOCAVAIL_FilterStep, _LOCAVAIL_FilterCooldownTicks, _CLOCK_DaySlotIndex, _CLOCK_CurrentDayOfWeekIndex,
+;   TEXTDISP_DeferredActionDelayTicks, BRUSH_PendingAlertCode, _WDISP_WeatherStatusCountdown, CLEANUP_BannerTickCounter,
 ;   TLIBA1_DayEntryModeCounter, _DST_BannerWindowPrimary, ESQ_AlertType235ModeFlagChar, ESQ_AlertType4ModeFlagChar, _ED_MenuStateId, _CLOCK_HalfHourSlotIndex,
 ;   _Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   CLEANUP_AlertProcessingFlag, CLEANUP_AlertCooldownTicks, _LOCAVAIL_FilterStep,
-;   LOCAVAIL_FilterCooldownTicks, CLEANUP_PendingAlertFlag, TEXTDISP_DeferredActionDelayTicks, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown,
+;   _LOCAVAIL_FilterCooldownTicks, CLEANUP_PendingAlertFlag, TEXTDISP_DeferredActionDelayTicks, BRUSH_PendingAlertCode, _WDISP_WeatherStatusCountdown,
 ;   CLEANUP_BannerTickCounter, TLIBA1_DayEntryModeCounter, ESQDISP_StatusBannerClampGateFlag, BANNER_ResetPendingFlag,
 ;   _WDISP_BannerCharRangeStart, _WDISP_BannerCharRangeEnd
 ; DESC:
@@ -67,12 +67,12 @@ CLEANUP_ProcessAlerts:
     CMP.L   _LOCAVAIL_FilterStep,D0
     BNE.S   .check_state_three
 
-    MOVE.W  LOCAVAIL_FilterCooldownTicks,D0
+    MOVE.W  _LOCAVAIL_FilterCooldownTicks,D0
     BGT.S   .after_state_update
 
     MOVE.L  D0,D1
     ADDI.W  #10,D1
-    MOVE.W  D1,LOCAVAIL_FilterCooldownTicks
+    MOVE.W  D1,_LOCAVAIL_FilterCooldownTicks
     MOVEQ   #3,D0
     MOVE.L  D0,_LOCAVAIL_FilterStep
     BRA.S   .after_state_update
@@ -82,7 +82,7 @@ CLEANUP_ProcessAlerts:
     CMP.L   _LOCAVAIL_FilterStep,D0
     BNE.S   .after_state_update
 
-    MOVE.W  LOCAVAIL_FilterCooldownTicks,D0
+    MOVE.W  _LOCAVAIL_FilterCooldownTicks,D0
     BGT.S   .after_state_update
 
     MOVEQ   #4,D0
@@ -156,13 +156,13 @@ CLEANUP_ProcessAlerts:
     TST.L   D7
     BEQ.S   .after_banner_poll
 
-    MOVE.B  WDISP_WeatherStatusCountdown,D0
+    MOVE.B  _WDISP_WeatherStatusCountdown,D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
     BLS.S   .decrement_banner_counter
 
     SUBQ.B  #1,D0
-    MOVE.B  D0,WDISP_WeatherStatusCountdown
+    MOVE.B  D0,_WDISP_WeatherStatusCountdown
 
 .decrement_banner_counter:
     SUBQ.L  #1,CLEANUP_BannerTickCounter

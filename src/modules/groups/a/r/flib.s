@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _GROUP_AR_JMPTBL_STRING_AppendAtNull, GROUP_AW_JMPTBL_WDISP_SPrintf, _ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MATH_DivS32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   _Global_REF_CLOCKDATA_STRUCT, Global_STR_FLIB_C_1, Global_STR_FLIB_C_2, FLIB_AppendClockStampedLogEntry_Return, ESQPARS2_LogAppendSpinlock, ESQPARS2_LogTimestampFmt, ESQPARS2_LogTagPm, ESQPARS2_LogTagAm, ESQPARS2_LogFieldTab, ESQPARS2_LogLineTerminator, _NEWGRID2_ErrorLogEntryPtr, CLOCK_CacheHour, CLOCK_CacheMinuteOrSecond, CLOCK_CacheAmPmFlag, _FLIB_LogEntryByteCount, MEMF_PUBLIC
+;   _Global_REF_CLOCKDATA_STRUCT, Global_STR_FLIB_C_1, Global_STR_FLIB_C_2, FLIB_AppendClockStampedLogEntry_Return, ESQPARS2_LogAppendSpinlock, ESQPARS2_LogTimestampFmt, ESQPARS2_LogTagPm, ESQPARS2_LogTagAm, ESQPARS2_LogFieldTab, ESQPARS2_LogLineTerminator, _NEWGRID2_ErrorLogEntryPtr, _CLOCK_CacheHour, _CLOCK_CacheMinuteOrSecond, _CLOCK_CacheAmPmFlag, _FLIB_LogEntryByteCount, MEMF_PUBLIC
 ; WRITES:
 ;   ESQPARS2_LogAppendSpinlock, _NEWGRID2_ErrorLogEntryPtr, _FLIB_LogEntryByteCount
 ; DESC:
@@ -58,12 +58,12 @@ FLIB_AppendClockStampedLogEntry:
     CLR.B   99(A3)
 
 .branch_1:
-    MOVE.W  CLOCK_CacheHour,D0
+    MOVE.W  _CLOCK_CacheHour,D0
     EXT.L   D0
     MOVEQ   #100,D1
     JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.W  CLOCK_CacheMinuteOrSecond,D0
+    MOVE.W  _CLOCK_CacheMinuteOrSecond,D0
     EXT.L   D0
     MOVE.L  D1,8(A7)
     MOVEQ   #100,D1
@@ -75,7 +75,7 @@ FLIB_AppendClockStampedLogEntry:
     MOVEQ   #100,D1
     JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
 
-    TST.W   CLOCK_CacheAmPmFlag
+    TST.W   _CLOCK_CacheAmPmFlag
     BEQ.S   .branch_2
 
     LEA     ESQPARS2_LogTagPm,A0
@@ -171,7 +171,7 @@ FLIB_AppendClockStampedLogEntry:
 ; CALLS:
 ;   GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry, GROUP_AW_JMPTBL_WDISP_SPrintf, _ESQPARS_ReplaceOwnedString, FLIB_AppendClockStampedLogEntry
 ; READS:
-;   FLIB_EmptyLogReplacementString, FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02, _NEWGRID2_ErrorLogEntryPtr, _CLOCK_DaySlotIndex, CLOCK_CacheDayIndex0, CLOCK_CacheHour, FLIB_LogEntryScratchBuffer
+;   FLIB_EmptyLogReplacementString, FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02, _NEWGRID2_ErrorLogEntryPtr, _CLOCK_DaySlotIndex, _CLOCK_CacheDayIndex0, _CLOCK_CacheHour, FLIB_LogEntryScratchBuffer
 ; WRITES:
 ;   _NEWGRID2_ErrorLogEntryPtr, _FLIB_LogEntryByteCount
 ; DESC:
@@ -196,12 +196,12 @@ FLIB_AppendClockStampedLogEntry_Return:
     SUBQ.W  #3,D0
     BNE.S   .lab_0CC1
 
-    MOVE.W  CLOCK_CacheDayIndex0,D0
+    MOVE.W  _CLOCK_CacheDayIndex0,D0
     MOVEQ   #7,D1
     CMP.W   D1,D0
     BGE.S   .lab_0CC1
 
-    MOVE.W  CLOCK_CacheHour,D0
+    MOVE.W  _CLOCK_CacheHour,D0
     SUBQ.W  #5,D0
     BNE.S   .lab_0CC1
 

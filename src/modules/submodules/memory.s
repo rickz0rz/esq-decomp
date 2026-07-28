@@ -1,5 +1,5 @@
     XDEF    _MEMORY_AllocateMemory
-    XDEF    MEMORY_DeallocateMemory
+    XDEF    _MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: _MEMORY_AllocateMemory
@@ -42,7 +42,7 @@ _MEMORY_AllocateMemory:
     RTS
 
 ;------------------------------------------------------------------------------
-; FUNC: MEMORY_DeallocateMemory
+; FUNC: _MEMORY_DeallocateMemory
 ; ARGS:
 ;   stack +16: memoryBlock (loaded into A3)
 ;   stack +20: byteSize (loaded into D7)
@@ -61,7 +61,7 @@ _MEMORY_AllocateMemory:
 ; NOTES:
 ;   Counters are updated only when both ptr and size are non-zero.
 ;------------------------------------------------------------------------------
-MEMORY_DeallocateMemory:
+_MEMORY_DeallocateMemory:
     LINK.W  A5,#0
     MOVEM.L D7/A3,-(A7)
 

@@ -1,4 +1,4 @@
-    XDEF    NEWGRID_DrawGridCell
+    XDEF    _NEWGRID_DrawGridCell
     XDEF    NEWGRID_DrawGridCellText
     XDEF    _NEWGRID_SetRowColor
     XDEF    _NEWGRID_ValidateSelectionCode
@@ -642,7 +642,7 @@ NEWGRID_DrawGridCellText:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_DrawGridCell   (Draw cell background and text)
+; FUNC: _NEWGRID_DrawGridCell   (Draw cell background and text)
 ; ARGS:
 ;   stack +8: A3 = rastport
 ;   stack +12: A2 = cell struct
@@ -652,7 +652,7 @@ NEWGRID_DrawGridCellText:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _NEWGRID2_JMPTBL_STR_SkipClass3Chars, NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, NEWGRID_DrawGridCellText
+;   _NEWGRID2_JMPTBL_STR_SkipClass3Chars, _NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, NEWGRID_DrawGridCellText
 ; READS:
 ;   _NEWGRID_ColumnStartXPx, _NEWGRID_RowHeightPx
 ; WRITES:
@@ -662,7 +662,7 @@ NEWGRID_DrawGridCellText:
 ; NOTES:
 ;   Uses two string pointers from the cell struct (1(A2), 19(A2)).
 ;------------------------------------------------------------------------------
-NEWGRID_DrawGridCell:
+_NEWGRID_DrawGridCell:
     LINK.W  A5,#-8
     MOVEM.L D2/D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -698,7 +698,7 @@ NEWGRID_DrawGridCell:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(PC)
+    JSR     _NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(PC)
 
     LEA     20(A7),A7
     BRA.S   .draw_cell_text

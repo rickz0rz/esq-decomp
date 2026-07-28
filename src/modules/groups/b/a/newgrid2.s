@@ -14,9 +14,9 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams, NEWGRID_TestPrimeTimeWindow, NEWGRID_DrawGridEntry, _SCRIPT_JMPTBL_MEMORY_AllocateMemory,
+;   _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams, NEWGRID_TestPrimeTimeWindow, _NEWGRID_DrawGridEntry, _SCRIPT_JMPTBL_MEMORY_AllocateMemory,
 ;   NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, NEWGRID_AppendShowtimesForRow, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer,
-;   _SCRIPT_JMPTBL_MEMORY_DeallocateMemory, NEWGRID_DrawGridFrameVariant4, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
+;   _SCRIPT_JMPTBL_MEMORY_DeallocateMemory, NEWGRID_DrawGridFrameVariant4, _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
 ; READS:
 ;   NEWGRID_RenderStateLatch, NEWGRID_PrimeTimeLayoutEnable
 ; WRITES:
@@ -99,7 +99,7 @@ NEWGRID2_ProcessGridState:
     MOVE.L  4(A2),-(A7)
     MOVE.L  (A2),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   NEWGRID_DrawGridEntry
+    BSR.W   _NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
     BRA.S   .allocate_showtimes_buffer
@@ -116,7 +116,7 @@ NEWGRID2_ProcessGridState:
     MOVE.L  4(A2),-(A7)
     MOVE.L  (A2),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   NEWGRID_DrawGridEntry
+    BSR.W   _NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
 
@@ -170,7 +170,7 @@ NEWGRID2_ProcessGridState:
 .store_next_state_and_visible_count:
     PEA     2.W
     MOVE.L  D0,NEWGRID_RenderStateLatch
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,32(A3)                      ; A3+32 = visible-line count cache

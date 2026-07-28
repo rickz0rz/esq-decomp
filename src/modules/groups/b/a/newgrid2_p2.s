@@ -1,26 +1,26 @@
     XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop
     XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
-    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame
-    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
-    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel
+    XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame
+    XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
+    XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel
     XDEF    _NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair
     XDEF    _NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry
     XDEF    _NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1
     XDEF    _NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes
     XDEF    NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState
-    XDEF    NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant
+    XDEF    _NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant
     XDEF    _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer
     XDEF    NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex
     XDEF    _NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource
     XDEF    NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines
     XDEF    _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast
     XDEF    _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected
     XDEF    _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength
     XDEF    _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine
     XDEF    NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex
     XDEF    _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
@@ -89,7 +89,7 @@ _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer:
     JMP     _DISPTEXT_LayoutAndAppendToBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -101,7 +101,7 @@ _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer:
 ; DESC:
 ;   Jump table entry that forwards to _DISPTEXT_GetTotalLineCount.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount:
+_NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount:
     JMP     _DISPTEXT_GetTotalLineCount
 
 ;!======
@@ -185,7 +185,7 @@ _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
     JMP     _ESQDISP_GetEntryAuxPointerByMode
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -197,11 +197,11 @@ _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
 ; DESC:
 ;   Jump table entry that forwards to _BEVEL_DrawVerticalBevel.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel:
+_NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel:
     JMP     _BEVEL_DrawVerticalBevel
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -213,7 +213,7 @@ NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel:
 ; DESC:
 ;   Jump table entry that forwards to DISPTEXT_LayoutSourceToLines.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines:
+_NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines:
     JMP     DISPTEXT_LayoutSourceToLines
 
 ;------------------------------------------------------------------------------
@@ -233,7 +233,7 @@ _NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes:
     JMP     CLEANUP_UpdateEntryFlagBytes
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -245,7 +245,7 @@ _NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes:
 ; DESC:
 ;   Jump table entry that forwards to COI_RenderClockFormatEntryVariant.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant:
+_NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant:
     JMP     COI_RenderClockFormatEntryVariant
 
 ;------------------------------------------------------------------------------
@@ -265,7 +265,7 @@ NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2:
     JMP     ESQDISP_TestEntryBits0And2
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -277,7 +277,7 @@ NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2:
 ; DESC:
 ;   Jump table entry that forwards to DISPTEXT_ComputeVisibleLineCount.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount:
+_NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount:
     JMP     DISPTEXT_ComputeVisibleLineCount
 
 ;------------------------------------------------------------------------------
@@ -489,7 +489,7 @@ _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected:
     JMP     _DISPTEXT_IsLastLineSelected
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -501,7 +501,7 @@ _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected:
 ; DESC:
 ;   Jump table entry that forwards to BEVEL_DrawBeveledFrame.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame:
+_NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame:
     JMP     BEVEL_DrawBeveledFrame
 
 ;------------------------------------------------------------------------------
@@ -569,7 +569,7 @@ _NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair:
     JMP     _BEVEL_DrawVerticalBevelPair
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -581,7 +581,7 @@ _NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair:
 ; DESC:
 ;   Jump table entry that forwards to DISPTEXT_MeasureCurrentLineLength.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength:
+_NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength:
     JMP     DISPTEXT_MeasureCurrentLineLength
 
 ;------------------------------------------------------------------------------
@@ -601,7 +601,7 @@ _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams:
     JMP     _DISPTEXT_SetLayoutParams
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -613,11 +613,11 @@ _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams:
 ; DESC:
 ;   Jump table entry that forwards to _DISPTEXT_HasMultipleLines.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines:
+_NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines:
     JMP     _DISPTEXT_HasMultipleLines
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -629,7 +629,7 @@ NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines:
 ; DESC:
 ;   Jump table entry that forwards to _BEVEL_DrawHorizontalBevel.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel:
+_NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel:
     JMP     _BEVEL_DrawHorizontalBevel
 
 ;!======

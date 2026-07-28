@@ -12,10 +12,10 @@
 ; CALLS:
 ;   ESQ_ColdReboot, ESQSHARED4_TickCopperAndBannerTransitions, _ESQIFF_ServicePendingCopperPaletteMoves
 ; READS:
-;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, LOCAVAIL_FilterCooldownTicks, _Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
+;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, _LOCAVAIL_FilterCooldownTicks, _Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, _WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
 ; WRITES:
-;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, CLEANUP_PendingAlertFlag, LOCAVAIL_FilterCooldownTicks, _Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, _TEXTDISP_DeferredActionArmed,
-;   ACCUMULATOR_Row0_Sum.._ACCUMULATOR_Row3_SaturateFlag
+;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, CLEANUP_PendingAlertFlag, _LOCAVAIL_FilterCooldownTicks, _Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, _TEXTDISP_DeferredActionArmed,
+;   _ACCUMULATOR_Row0_Sum.._ACCUMULATOR_Row3_SaturateFlag
 ; DESC:
 ;   Increments global timing counters, performs periodic resets, and updates
 ;   accumulator fields with saturation flags.
@@ -41,11 +41,11 @@ ESQ_TickGlobalCounters:
     BNE.W   .store_tick_counter
 
     MOVE.W  D0,CLEANUP_PendingAlertFlag
-    MOVE.W  LOCAVAIL_FilterCooldownTicks,D0
+    MOVE.W  _LOCAVAIL_FilterCooldownTicks,D0
     BMI.W   .after_decrement_2325
 
     SUBQ.W  #1,D0
-    MOVE.W  D0,LOCAVAIL_FilterCooldownTicks
+    MOVE.W  D0,_LOCAVAIL_FilterCooldownTicks
 
 .after_decrement_2325:
     MOVE.W  _Global_RefreshTickCounter,D0
@@ -81,13 +81,13 @@ ESQ_TickGlobalCounters:
 
 .store_tick_counter:
     MOVE.W  D0,ESQ_TickModulo60Counter
-    TST.W   WDISP_AccumulatorCaptureActive
+    TST.W   _WDISP_AccumulatorCaptureActive
     BEQ.W   .after_accumulators
 
-    MOVE.W  ACCUMULATOR_Row0_CaptureValue,D0
+    MOVE.W  _ACCUMULATOR_Row0_CaptureValue,D0
     BEQ.S   .after_accum_1b11
 
-    MOVE.W  ACCUMULATOR_Row0_Sum,D1
+    MOVE.W  _ACCUMULATOR_Row0_Sum,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b11_saturate
@@ -96,13 +96,13 @@ ESQ_TickGlobalCounters:
     MOVEQ   #0,D1
 
 .after_accum_1b11_saturate:
-    MOVE.W  D1,ACCUMULATOR_Row0_Sum
+    MOVE.W  D1,_ACCUMULATOR_Row0_Sum
 
 .after_accum_1b11:
-    MOVE.W  ACCUMULATOR_Row1_CaptureValue,D0
+    MOVE.W  _ACCUMULATOR_Row1_CaptureValue,D0
     BEQ.S   .after_accum_1b12
 
-    MOVE.W  ACCUMULATOR_Row1_Sum,D1
+    MOVE.W  _ACCUMULATOR_Row1_Sum,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b12_saturate
@@ -111,13 +111,13 @@ ESQ_TickGlobalCounters:
     MOVEQ   #0,D1
 
 .after_accum_1b12_saturate:
-    MOVE.W  D1,ACCUMULATOR_Row1_Sum
+    MOVE.W  D1,_ACCUMULATOR_Row1_Sum
 
 .after_accum_1b12:
-    MOVE.W  ACCUMULATOR_Row2_CaptureValue,D0
+    MOVE.W  _ACCUMULATOR_Row2_CaptureValue,D0
     BEQ.S   .after_accum_1b13
 
-    MOVE.W  ACCUMULATOR_Row2_Sum,D1
+    MOVE.W  _ACCUMULATOR_Row2_Sum,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b13_saturate
@@ -126,13 +126,13 @@ ESQ_TickGlobalCounters:
     MOVEQ   #0,D1
 
 .after_accum_1b13_saturate:
-    MOVE.W  D1,ACCUMULATOR_Row2_Sum
+    MOVE.W  D1,_ACCUMULATOR_Row2_Sum
 
 .after_accum_1b13:
-    MOVE.W  ACCUMULATOR_Row3_CaptureValue,D0
+    MOVE.W  _ACCUMULATOR_Row3_CaptureValue,D0
     BEQ.S   .after_accumulators
 
-    MOVE.W  ACCUMULATOR_Row3_Sum,D1
+    MOVE.W  _ACCUMULATOR_Row3_Sum,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b14_saturate
@@ -141,7 +141,7 @@ ESQ_TickGlobalCounters:
     MOVEQ   #0,D1
 
 .after_accum_1b14_saturate:
-    MOVE.W  D1,ACCUMULATOR_Row3_Sum
+    MOVE.W  D1,_ACCUMULATOR_Row3_Sum
 
 .after_accumulators:
     TST.W   _WDISP_AccumulatorFlushPending

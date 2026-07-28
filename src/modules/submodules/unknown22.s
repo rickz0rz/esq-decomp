@@ -4,6 +4,7 @@
     XDEF    MATH_DivU32
     XDEF    _MATH_Mulu32
     XDEF    SIGNAL_CreateMsgPortWithSignal
+    XDEF    __CXD22
     XDEF    __CXD33
     XDEF    __CXM33
 
@@ -130,6 +131,14 @@ _MATH_DivS32:
 ; CLOBBERS:
 ;   D0-D3
 ;------------------------------------------------------------------------------
+; SAS/C names this helper __CXD22 and __CXD33's signed sibling __CXD33. The
+; digit pair is the operand class, not the width: 3 is signed long, 2 is
+; unsigned long. So `unsigned long % 7` compiles to a call to __CXD22 and
+; `long / 24` to __CXD33, and both take the same registers -- dividend in D0,
+; divisor in D1, quotient back in D0 and REMAINDER in D1, which is exactly this
+; routine's contract. The alias is a label, so it emits no bytes and both gates
+; stay green.
+__CXD22:
 MATH_DivU32:
     MOVE.L  D2,-(A7)
 

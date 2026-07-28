@@ -27,14 +27,14 @@
     XDEF    _CLOCK_MinuteTrigger60MinusBase
     XDEF    _CLOCK_MinuteTriggerBaseOffsetPlus30
     XDEF    _CLOCK_MinuteTriggerBaseOffset
-    XDEF    ACCUMULATOR_Row0_CaptureValue
-    XDEF    ACCUMULATOR_Row1_CaptureValue
-    XDEF    ACCUMULATOR_Row2_CaptureValue
-    XDEF    ACCUMULATOR_Row3_CaptureValue
-    XDEF    ACCUMULATOR_Row0_Sum
-    XDEF    ACCUMULATOR_Row1_Sum
-    XDEF    ACCUMULATOR_Row2_Sum
-    XDEF    ACCUMULATOR_Row3_Sum
+    XDEF    _ACCUMULATOR_Row0_CaptureValue
+    XDEF    _ACCUMULATOR_Row1_CaptureValue
+    XDEF    _ACCUMULATOR_Row2_CaptureValue
+    XDEF    _ACCUMULATOR_Row3_CaptureValue
+    XDEF    _ACCUMULATOR_Row0_Sum
+    XDEF    _ACCUMULATOR_Row1_Sum
+    XDEF    _ACCUMULATOR_Row2_Sum
+    XDEF    _ACCUMULATOR_Row3_Sum
     XDEF    _ACCUMULATOR_Row0_SaturateFlag
     XDEF    _ACCUMULATOR_Row1_SaturateFlag
     XDEF    _ACCUMULATOR_Row2_SaturateFlag
@@ -119,21 +119,21 @@ _CLOCK_MinuteTriggerBaseOffsetPlus30:
     DC.W    0
 _CLOCK_MinuteTriggerBaseOffset:
     DC.W    0
-ACCUMULATOR_Row0_CaptureValue:
+_ACCUMULATOR_Row0_CaptureValue:
     DC.W    0
-ACCUMULATOR_Row1_CaptureValue:
+_ACCUMULATOR_Row1_CaptureValue:
     DC.W    0
-ACCUMULATOR_Row2_CaptureValue:
+_ACCUMULATOR_Row2_CaptureValue:
     DC.W    0
-ACCUMULATOR_Row3_CaptureValue:
+_ACCUMULATOR_Row3_CaptureValue:
     DC.W    0
-ACCUMULATOR_Row0_Sum:
+_ACCUMULATOR_Row0_Sum:
     DC.W    0
-ACCUMULATOR_Row1_Sum:
+_ACCUMULATOR_Row1_Sum:
     DC.W    0
-ACCUMULATOR_Row2_Sum:
+_ACCUMULATOR_Row2_Sum:
     DC.W    0
-ACCUMULATOR_Row3_Sum:
+_ACCUMULATOR_Row3_Sum:
     DC.W    0
 _ACCUMULATOR_Row0_SaturateFlag:
     DC.W    0

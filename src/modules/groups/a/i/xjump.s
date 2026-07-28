@@ -16,18 +16,18 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   NEWGRID_SetSelectionMarkers
+;   _NEWGRID_SetSelectionMarkers
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to NEWGRID_SetSelectionMarkers.
+;   Jump stub to _NEWGRID_SetSelectionMarkers.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers:
-    JMP     NEWGRID_SetSelectionMarkers
+    JMP     _NEWGRID_SetSelectionMarkers
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AI_JMPTBL_STR_FindCharPtr   (JumpStub_STR_FindCharPtr)

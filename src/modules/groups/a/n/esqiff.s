@@ -32,7 +32,7 @@
 ; CALLS:
 ;   _ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate, ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_MATH_Mulu32, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQFUNC_TrimTextToPixelWidthWordBoundary, _ESQPARS_ReplaceOwnedString, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQIFF_C_1, WDISP_WeatherStatusOverlayTextPtr, _ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, WDISP_WeatherStatusBrushIndex
+;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQIFF_C_1, _WDISP_WeatherStatusOverlayTextPtr, _ESQFUNC_PwBrushListHead, _ESQFUNC_STR_I5, _WDISP_WeatherStatusBrushIndex
 ; WRITES:
 ;   weather-overlay working copy buffer, selected brush flags (+356/+360) ??
 ; DESC:
@@ -53,18 +53,18 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVEQ   #0,D5
     CLR.L   -24(A5)
     MOVEQ   #0,D0
-    MOVE.B  WDISP_WeatherStatusBrushIndex,D0
+    MOVE.B  _WDISP_WeatherStatusBrushIndex,D0
     ASL.L   #2,D0
     ; Layout-coupled table anchor: this string label sits immediately before
     ; an indexed pointer table used by weather-status brush lookup.
-    LEA     ESQFUNC_STR_I5,A0
+    LEA     _ESQFUNC_STR_I5,A0
     ADDA.L  D0,A0
     PEA     _ESQFUNC_PwBrushListHead
     MOVE.L  (A0),-(A7)
     JSR     _ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
     MOVE.L  -4(A5),(A7)
-    MOVE.L  WDISP_WeatherStatusOverlayTextPtr,-(A7)
+    MOVE.L  _WDISP_WeatherStatusOverlayTextPtr,-(A7)
     MOVE.L  D0,-52(A5)
     JSR     _ESQPARS_ReplaceOwnedString(PC)
 
@@ -389,7 +389,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 ; CALLS:
 ;   _ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_BRUSH_CloneBrushRecord, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_STRING_CompareNoCase, ESQIFF_DrawWeatherStatusOverlayIntoBrush
 ; READS:
-;   Global_STR_ESQIFF_C_2, _PARSEINI_BannerBrushResourceHead, _CTASKS_PendingIffBrushDescriptor, ESQIFF_BannerBrushResourceCursor, ESQIFF_STR_WEATHER, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar
+;   Global_STR_ESQIFF_C_2, _PARSEINI_BannerBrushResourceHead, _CTASKS_PendingIffBrushDescriptor, ESQIFF_BannerBrushResourceCursor, ESQIFF_STR_WEATHER, _WDISP_WeatherStatusCountdown, _WDISP_WeatherStatusDigitChar
 ; WRITES:
 ;   _CTASKS_PendingIffBrushDescriptor, _WDISP_WeatherStatusBrushListHead, _CTASKS_IffTaskState, ESQIFF_BannerBrushResourceCursor
 ; DESC:
@@ -429,12 +429,12 @@ ESQIFF_QueueIffBrushLoad:
     BNE.W   .queue_standard_iff_task
 
 .render_weather_overlay_now:
-    MOVE.B  WDISP_WeatherStatusCountdown,D0
+    MOVE.B  _WDISP_WeatherStatusCountdown,D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
     BLS.W   .finalize_and_advance_resource_cursor
 
-    MOVE.W  WDISP_WeatherStatusDigitChar,D0
+    MOVE.W  _WDISP_WeatherStatusDigitChar,D0
     MOVEQ   #48,D1
     CMP.W   D1,D0
     BEQ.W   .finalize_and_advance_resource_cursor

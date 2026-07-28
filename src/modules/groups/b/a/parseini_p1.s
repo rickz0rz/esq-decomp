@@ -12,9 +12,9 @@
 ; CALLS:
 ;   PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString, _PARSEINI_JMPTBL_STRING_CompareNoCase
 ; READS:
-;   P_TYPE_WeatherCurrentMsgPtr, P_TYPE_WeatherForecastMsgPtr, P_TYPE_WeatherBottomLineMsgPtr, PARSEINI_STR_WEATHERCURRENT, PARSEINI_STR_WEATHERFORECAST, PARSEINI_STR_BOTTOMLINETAG
+;   _P_TYPE_WeatherCurrentMsgPtr, _P_TYPE_WeatherForecastMsgPtr, P_TYPE_WeatherBottomLineMsgPtr, PARSEINI_STR_WEATHERCURRENT, PARSEINI_STR_WEATHERFORECAST, PARSEINI_STR_BOTTOMLINETAG
 ; WRITES:
-;   P_TYPE_WeatherCurrentMsgPtr, P_TYPE_WeatherForecastMsgPtr, P_TYPE_WeatherBottomLineMsgPtr
+;   _P_TYPE_WeatherCurrentMsgPtr, _P_TYPE_WeatherForecastMsgPtr, P_TYPE_WeatherBottomLineMsgPtr
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -32,12 +32,12 @@ PARSEINI_LoadWeatherMessageStrings:
     TST.L   D0
     BNE.S   .if_ne_1405
 
-    MOVE.L  P_TYPE_WeatherCurrentMsgPtr,-(A7)
+    MOVE.L  _P_TYPE_WeatherCurrentMsgPtr,-(A7)
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,P_TYPE_WeatherCurrentMsgPtr
+    MOVE.L  D0,_P_TYPE_WeatherCurrentMsgPtr
     BRA.S   .return_1407
 
 .if_ne_1405:
@@ -49,12 +49,12 @@ PARSEINI_LoadWeatherMessageStrings:
     TST.L   D0
     BNE.S   .if_ne_1406
 
-    MOVE.L  P_TYPE_WeatherForecastMsgPtr,-(A7)
+    MOVE.L  _P_TYPE_WeatherForecastMsgPtr,-(A7)
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,P_TYPE_WeatherForecastMsgPtr
+    MOVE.L  D0,_P_TYPE_WeatherForecastMsgPtr
     BRA.S   .return_1407
 
 .if_ne_1406:

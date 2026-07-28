@@ -29,12 +29,12 @@ GROUP_AJ_JMPTBL_STRING_FindSubstring:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   FORMAT_RawDoFmtWithScratchBuffer
+;   _FORMAT_RawDoFmtWithScratchBuffer
 ; DESC:
-;   Jump stub to FORMAT_RawDoFmtWithScratchBuffer.
+;   Jump stub to _FORMAT_RawDoFmtWithScratchBuffer.
 ;------------------------------------------------------------------------------
 _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer:
-    JMP     FORMAT_RawDoFmtWithScratchBuffer
+    JMP     _FORMAT_RawDoFmtWithScratchBuffer
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AJ_JMPTBL_MATH_DivU32   (Jump stub)

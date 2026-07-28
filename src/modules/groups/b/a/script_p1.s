@@ -164,7 +164,7 @@ SCRIPT_BuildTokenIndexMap:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MEMORY_DeallocateMemory
+;   _MEMORY_DeallocateMemory
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -175,7 +175,7 @@ SCRIPT_BuildTokenIndexMap:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _SCRIPT_JMPTBL_MEMORY_DeallocateMemory:
-    JMP     MEMORY_DeallocateMemory
+    JMP     _MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: _SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes   (Routine at _SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes)

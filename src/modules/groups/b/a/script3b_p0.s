@@ -224,9 +224,9 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 ; CALLS:
 ;   SCRIPT_DeassertCtrlLineNow, _TEXTDISP_ResetSelectionAndRefresh, _STR_FindCharPtr, _SCRIPT_ReadHandshakeBit3Flag
 ; READS:
-;   _SCRIPT_RuntimeMode, SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount, _ED_DiagVinModeChar, _Global_UIBusyFlag
+;   _SCRIPT_RuntimeMode, _SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount, _ED_DiagVinModeChar, _Global_UIBusyFlag
 ; WRITES:
-;   _SCRIPT_RuntimeMode, SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount
+;   _SCRIPT_RuntimeMode, _SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount
 ; DESC:
 ;   Advances a small control state machine and triggers follow-up actions when
 ;   counters hit thresholds.
@@ -240,7 +240,7 @@ SCRIPT_UpdateCtrlStateMachine:
     SUBQ.W  #2,D0
     BNE.S   .reset_state
 
-    MOVE.W  SCRIPT_CtrlHandshakeStage,D0
+    MOVE.W  _SCRIPT_CtrlHandshakeStage,D0
     SUBQ.W  #1,D0
     BNE.S   .check_state_two
 
@@ -261,7 +261,7 @@ SCRIPT_UpdateCtrlStateMachine:
     BRA.S   .return_status
 
 .check_state_two:
-    MOVE.W  SCRIPT_CtrlHandshakeStage,D0
+    MOVE.W  _SCRIPT_CtrlHandshakeStage,D0
     SUBQ.W  #2,D0
     BNE.S   .check_banner_active
 
@@ -301,15 +301,15 @@ SCRIPT_UpdateCtrlStateMachine:
     TST.B   D0
     BEQ.S   .set_state_one
 
-    MOVE.W  #2,SCRIPT_CtrlHandshakeStage
+    MOVE.W  #2,_SCRIPT_CtrlHandshakeStage
     BRA.S   .refresh_done
 
 .set_state_one:
-    MOVE.W  #1,SCRIPT_CtrlHandshakeStage
+    MOVE.W  #1,_SCRIPT_CtrlHandshakeStage
     BRA.S   .refresh_done
 
 .clear_state:
-    CLR.W   SCRIPT_CtrlHandshakeStage
+    CLR.W   _SCRIPT_CtrlHandshakeStage
 
 .refresh_done:
     RTS

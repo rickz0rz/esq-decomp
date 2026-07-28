@@ -966,8 +966,8 @@ NEWGRID_BuildShowtimesText:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_DrawGridEntry, NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, NEWGRID_BuildShowtimesText, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer,
-;   NEWGRID_DrawGridFrameVariant3, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount, _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
+;   _NEWGRID_DrawGridEntry, NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, NEWGRID_BuildShowtimesText, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer,
+;   NEWGRID_DrawGridFrameVariant3, _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount, _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
 ; READS:
 ;   NEWGRID_ShowtimesWorkflowStateLatch, _GCOMMAND_PpvShowtimesLayoutPen, _GCOMMAND_PpvShowtimesInitialLineIndex, _GCOMMAND_PpvDetailLayoutFlag
 ; WRITES:
@@ -1033,7 +1033,7 @@ NEWGRID_HandleShowtimesState:
     MOVE.L  4(A2),-(A7)
     MOVE.L  (A2),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   NEWGRID_DrawGridEntry
+    BSR.W   _NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
     BRA.S   .after_draw
@@ -1049,7 +1049,7 @@ NEWGRID_HandleShowtimesState:
     MOVE.L  4(A2),-(A7)
     MOVE.L  (A2),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   NEWGRID_DrawGridEntry
+    BSR.W   _NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
 
@@ -1083,7 +1083,7 @@ NEWGRID_HandleShowtimesState:
 .store_state2:
     PEA     2.W
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowStateLatch
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,32(A3)

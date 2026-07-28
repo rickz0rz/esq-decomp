@@ -139,8 +139,17 @@ def main():
     for f in sorted(os.listdir(cdir)):
         if not f.endswith('.c'):
             continue
-        m = re.search(r'RESTORES:\s*(\S+)', open(os.path.join(cdir, f)).read())
+        text = open(os.path.join(cdir, f)).read()
+        m = re.search(r'RESTORES:\s*(\S+)', text)
         if not m:
+            continue
+        # A restoration that FAULTS AT RUNTIME says so in its own header, and
+        # that keeps it out of every generated manifest. No blocker can predict
+        # this: the file compiles, compares sanely, links, and passes a6_audit,
+        # and the only thing that knows better is the emulator.
+        dnl = re.search(r'DO-NOT-LINK:\s*(.+)', text)
+        if dnl:
+            skipped.append((f, 'DO-NOT-LINK: ' + dnl.group(1).strip()))
             continue
         lab = m.group(1)
         bare = lab.lstrip('_')

@@ -17,7 +17,7 @@
 ; CALLS:
 ;   _PARSEINI_JMPTBL_WDISP_SPrintf
 ; READS:
-;   _CLOCK_CurrentDayOfWeekIndex/2275/2276/2277, Global_JMPTBL_DAYS_OF_WEEK, Global_JMPTBL_MONTHS
+;   _CLOCK_CurrentDayOfWeekIndex/2275/2276/2277, _Global_JMPTBL_DAYS_OF_WEEK, Global_JMPTBL_MONTHS
 ; WRITES:
 ;   outBuffer
 ; DESC:
@@ -32,7 +32,7 @@ GENERATE_GRID_DATE_STRING:
     MOVE.W  _CLOCK_CurrentDayOfWeekIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     Global_JMPTBL_DAYS_OF_WEEK,A0
+    LEA     _Global_JMPTBL_DAYS_OF_WEEK,A0
     ADDA.L  D0,A0
     MOVE.W  _CLOCK_CurrentMonthIndex,D0
     EXT.L   D0

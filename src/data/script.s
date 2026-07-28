@@ -2,12 +2,12 @@
     XDEF    _Global_STR_SCRIPT_C_2
     XDEF    _SCRIPT_SerialReadModeOverflowCount
     XDEF    _SCRIPT_CtrlLineAssertedFlag
-    XDEF    Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE
+    XDEF    _Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE
     XDEF    SCRIPT_PtrNoForecastWeatherData
     XDEF    SCRIPT_PtrWeatherDataAvailabilityDisclaimer
     XDEF    Global_JMPTBL_MONTHS
     XDEF    _Global_JMPTBL_SHORT_MONTHS
-    XDEF    Global_JMPTBL_DAYS_OF_WEEK
+    XDEF    _Global_JMPTBL_DAYS_OF_WEEK
     XDEF    _Global_JMPTBL_SHORT_DAYS_OF_WEEK
     XDEF    SCRIPT_StrChannelLabel_TuesdaysFridays
     XDEF    Global_STR_ALIGNED_NOW_SHOWING
@@ -26,12 +26,12 @@
     XDEF    SCRIPT_PtrMovieSummaryForPrefix
     XDEF    SCRIPT_PtrSummaryOfPrefix
     XDEF    SCRIPT_PtrChannelSuffix
-    XDEF    SCRIPT_PtrNoDataPlaceholder
+    XDEF    _SCRIPT_PtrNoDataPlaceholder
     XDEF    Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
     XDEF    SCRIPT_PtrOffAirPlaceholder
     XDEF    Global_STR_GRID_DATE_FORMAT_STRING
     XDEF    Global_STR_WEATHER_UPDATE_FOR
-    XDEF    SCRIPT_CtrlHandshakeStage
+    XDEF    _SCRIPT_CtrlHandshakeStage
     XDEF    SCRIPT_CtrlHandshakeRetryCount
     XDEF    SCRIPT_RuntimeModeDispatchLatch
     XDEF    SCRIPT_CtrlCmdDeferCounter
@@ -109,7 +109,7 @@ _SCRIPT_CtrlLineAssertedFlag:
     DS.L    1
 Global_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
     NStr    "No Current Weather Data Available"
-Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
+_Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
     DC.L    Global_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE
 SCRIPT_StrNoForecastWeatherData:
     NStr    "No Forecast Weather Data Available"
@@ -217,7 +217,7 @@ Global_STR_FRIDAY_1:
 Global_STR_SATURDAY_1:
     NStr    "Saturday"
 
-Global_JMPTBL_DAYS_OF_WEEK:
+_Global_JMPTBL_DAYS_OF_WEEK:
     DC.L    Global_STR_SUNDAY_1
     DC.L    Global_STR_MONDAY_1
     DC.L    Global_STR_TUESDAY_1
@@ -409,7 +409,7 @@ SCRIPT_PtrChannelSuffix:
     DC.L    SCRIPT_StrChannelSuffix
 SCRIPT_StrNoDataPlaceholder:
     NStr    "No Data."
-SCRIPT_PtrNoDataPlaceholder:
+_SCRIPT_PtrNoDataPlaceholder:
     DC.L    SCRIPT_StrNoDataPlaceholder
 Global_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     NStr    "Please Stand By for your Local Listings.  ER007"
@@ -424,14 +424,14 @@ Global_STR_GRID_DATE_FORMAT_STRING:
 Global_STR_WEATHER_UPDATE_FOR:
     NStr    "Weather Update for "
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_CtrlHandshakeStage/SCRIPT_CtrlHandshakeRetryCount/SCRIPT_RuntimeModeDispatchLatch/SCRIPT_CtrlCmdDeferCounter/_SCRIPT_PlaybackFallbackCounter/_SCRIPT_Type20SubtypeCache   (script ctrl/runtime state cluster)
+; SYM: _SCRIPT_CtrlHandshakeStage/SCRIPT_CtrlHandshakeRetryCount/SCRIPT_RuntimeModeDispatchLatch/SCRIPT_CtrlCmdDeferCounter/_SCRIPT_PlaybackFallbackCounter/_SCRIPT_Type20SubtypeCache   (script ctrl/runtime state cluster)
 ; TYPE: u16/u16/u16/u16/u16/u16
 ; PURPOSE: Tracks CTRL handshake/retry/dispatch state and cached subtype in runtime command processing.
-; USED BY: SCRIPT_UpdateCtrlStateMachine, SCRIPT_HandleBrushCommand, SCRIPT_ProcessCtrlContextPlaybackTick, ESQFUNC_DrawDiagnosticsScreen
+; USED BY: SCRIPT_UpdateCtrlStateMachine, SCRIPT_HandleBrushCommand, SCRIPT_ProcessCtrlContextPlaybackTick, _ESQFUNC_DrawDiagnosticsScreen
 ; NOTES:
 ;   `_SCRIPT_Type20SubtypeCache` semantics are still partially inferred from P_TYPE type-20 helper flows.
 ;------------------------------------------------------------------------------
-SCRIPT_CtrlHandshakeStage:
+_SCRIPT_CtrlHandshakeStage:
     DS.W    1
 SCRIPT_CtrlHandshakeRetryCount:
     DS.W    1

@@ -23,9 +23,9 @@
 ; CALLS:
 ;   _UNKNOWN_JMPTBL_ESQ_WildcardMatch, _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
-;   _ED_DiagnosticsScreenActive, _WDISP_WeatherStatusLabelBuffer, WDISP_WeatherStatusOverlayTextPtr, _Global_REF_RASTPORT_1
+;   _ED_DiagnosticsScreenActive, _WDISP_WeatherStatusLabelBuffer, _WDISP_WeatherStatusOverlayTextPtr, _Global_REF_RASTPORT_1
 ; WRITES:
-;   WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusColorCode, WDISP_WeatherStatusBrushIndex
+;   _WDISP_WeatherStatusOverlayTextPtr, _WDISP_WeatherStatusCountdown, WDISP_WeatherStatusColorCode, _WDISP_WeatherStatusBrushIndex
 ; DESC:
 ;   Parses a small record from the input buffer, validates via wildcard match,
 ;   updates globals, and optionally redraws text.
@@ -84,19 +84,19 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
     TST.B   D0
     BNE.S   .return
 
-    MOVE.L  WDISP_WeatherStatusOverlayTextPtr,-(A7)
+    MOVE.L  _WDISP_WeatherStatusOverlayTextPtr,-(A7)
     MOVE.L  A3,-(A7)
     JSR     _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,WDISP_WeatherStatusOverlayTextPtr
-    MOVE.B  D6,WDISP_WeatherStatusCountdown
+    MOVE.L  D0,_WDISP_WeatherStatusOverlayTextPtr
+    MOVE.B  D6,_WDISP_WeatherStatusCountdown
     MOVE.B  D5,WDISP_WeatherStatusColorCode
-    MOVE.B  D4,WDISP_WeatherStatusBrushIndex
+    MOVE.B  D4,_WDISP_WeatherStatusBrushIndex
     TST.W   _ED_DiagnosticsScreenActive
     BEQ.S   .return
 
-    MOVE.L  WDISP_WeatherStatusOverlayTextPtr,-(A7)
+    MOVE.L  _WDISP_WeatherStatusOverlayTextPtr,-(A7)
     PEA     172.W
     CLR.L   -(A7)
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
@@ -111,7 +111,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_ParseListAndUpdateEntries   (Parse list and update WDISP_StatusDayEntry0 entries.)
+; FUNC: UNKNOWN_ParseListAndUpdateEntries   (Parse list and update _WDISP_StatusDayEntry0 entries.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +11: arg_2 (via 15(A5))
@@ -125,11 +125,11 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
 ; CALLS:
 ;   _UNKNOWN_JMPTBL_ESQ_WildcardMatch, UNKNOWN_JMPTBL_DST_NormalizeDayOfYear, _STRING_CopyPadNul, _PARSE_ReadSignedLongSkipClass3_Alt, _MATH_Mulu32
 ; READS:
-;   WDISP_StatusListMatchPattern, CLOCK_CurrentDayOfYear, _CLOCK_CurrentYearValue, WDISP_StatusDayEntry0
+;   WDISP_StatusListMatchPattern, CLOCK_CurrentDayOfYear, _CLOCK_CurrentYearValue, _WDISP_StatusDayEntry0
 ; WRITES:
 ;   TLIBA1_DayEntryModeCounter
 ; DESC:
-;   Parses a list of records from the input buffer and updates WDISP_StatusDayEntry0
+;   Parses a list of records from the input buffer and updates _WDISP_StatusDayEntry0
 ;   table entries, including optional numeric fields and flags.
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for local buffer.
@@ -179,7 +179,7 @@ UNKNOWN_ParseListAndUpdateEntries:
 
     MOVE.L  D7,D0
     MULS    #20,D0
-    LEA     WDISP_StatusDayEntry0,A0
+    LEA     _WDISP_StatusDayEntry0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #1,D1
@@ -233,7 +233,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     _MATH_Mulu32(PC)
 
-    LEA     WDISP_StatusDayEntry0,A0
+    LEA     _WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     MOVE.L  D6,D0
     EXT.L   D0
@@ -267,7 +267,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     _MATH_Mulu32(PC)
 
-    LEA     WDISP_StatusDayEntry0,A0
+    LEA     _WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     CLR.L   16(A0)
     PEA     1.W
@@ -286,7 +286,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     _MATH_Mulu32(PC)
 
-    LEA     WDISP_StatusDayEntry0,A0
+    LEA     _WDISP_StatusDayEntry0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #1,D0
@@ -298,7 +298,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     _MATH_Mulu32(PC)
 
-    LEA     WDISP_StatusDayEntry0,A0
+    LEA     _WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     PEA     -25(A5)
     MOVE.L  A0,24(A7)
@@ -326,7 +326,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     _MATH_Mulu32(PC)
 
-    LEA     WDISP_StatusDayEntry0,A0
+    LEA     _WDISP_StatusDayEntry0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  #(-999),8(A1)
@@ -337,7 +337,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     _MATH_Mulu32(PC)
 
-    LEA     WDISP_StatusDayEntry0,A0
+    LEA     _WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     PEA     -25(A5)
     MOVE.L  A0,24(A7)
@@ -365,7 +365,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     _MATH_Mulu32(PC)
 
-    LEA     WDISP_StatusDayEntry0,A0
+    LEA     _WDISP_StatusDayEntry0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  #(-999),12(A1)
@@ -376,7 +376,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     _MATH_Mulu32(PC)
 
-    LEA     WDISP_StatusDayEntry0,A0
+    LEA     _WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     PEA     -25(A5)
     MOVE.L  A0,24(A7)
@@ -542,9 +542,9 @@ ESQPROTO_VerifyChecksumAndParseList:
 ; CALLS:
 ;   _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
-;   WDISP_WeatherStatusTextPtr, _ED_DiagnosticsScreenActive, _Global_REF_RASTPORT_1
+;   _WDISP_WeatherStatusTextPtr, _ED_DiagnosticsScreenActive, _Global_REF_RASTPORT_1
 ; WRITES:
-;   WDISP_WeatherStatusDigitChar, WDISP_WeatherStatusTextPtr, _WDISP_WeatherStatusLabelBuffer
+;   _WDISP_WeatherStatusDigitChar, _WDISP_WeatherStatusTextPtr, _WDISP_WeatherStatusLabelBuffer
 ; DESC:
 ;   Parses a digit plus a short label string, stores it, and optionally redraws text.
 ; NOTES:
@@ -557,7 +557,7 @@ ESQPROTO_ParseDigitLabelAndDisplay:
 
     MOVEQ   #0,D0
     MOVE.B  (A3)+,D0
-    MOVE.W  D0,WDISP_WeatherStatusDigitChar
+    MOVE.W  D0,_WDISP_WeatherStatusDigitChar
     MOVEQ   #48,D1
     CMP.W   D1,D0
     BLT.S   .clamp_digit
@@ -567,7 +567,7 @@ ESQPROTO_ParseDigitLabelAndDisplay:
     BLE.S   .start_copy
 
 .clamp_digit:
-    MOVE.W  D1,WDISP_WeatherStatusDigitChar
+    MOVE.W  D1,_WDISP_WeatherStatusDigitChar
 
 .start_copy:
     MOVEQ   #0,D7
@@ -595,12 +595,12 @@ ESQPROTO_ParseDigitLabelAndDisplay:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_label
 
-    MOVE.L  WDISP_WeatherStatusTextPtr,-(A7)
+    MOVE.L  _WDISP_WeatherStatusTextPtr,-(A7)
     MOVE.L  A3,-(A7)
     JSR     _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,WDISP_WeatherStatusTextPtr
+    MOVE.L  D0,_WDISP_WeatherStatusTextPtr
     TST.W   _ED_DiagnosticsScreenActive
     BEQ.S   .return
 

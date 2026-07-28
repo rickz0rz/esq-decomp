@@ -1391,8 +1391,8 @@ NEWGRID_DrawShowtimesPrompt:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   _NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast, NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines,
-;   NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel, _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected, _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine, NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
+;   _NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, _NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast, _NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines,
+;   _NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel, _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected, _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine, _NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
 ; READS:
 ;   _NEWGRID_RowHeightPx, _DISPTEXT_ControlMarkerXOffsetPx
 ; WRITES:
@@ -1443,7 +1443,7 @@ NEWGRID_DrawGridFrameVariant4:
     BNE.W   .after_rows
 
     MOVE.L  D4,D5
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(PC)
 
     TST.L   D0
     BEQ.S   .alt_path
@@ -1457,7 +1457,7 @@ NEWGRID_DrawGridFrameVariant4:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(PC)
+    JSR     _NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D0
@@ -1585,7 +1585,7 @@ NEWGRID_DrawGridFrameVariant4:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(PC)
+    JSR     _NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(PC)
 
     LEA     20(A7),A7
 

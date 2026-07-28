@@ -14,8 +14,8 @@
     XDEF    P_TYPE_STR_NXTDAY_COLON_LoadSection
     XDEF    Global_STR_P_TYPE_C_6
     XDEF    _P_TYPE_WeatherBrushRefreshPendingFlag
-    XDEF    P_TYPE_WeatherCurrentMsgPtr
-    XDEF    P_TYPE_WeatherForecastMsgPtr
+    XDEF    _P_TYPE_WeatherCurrentMsgPtr
+    XDEF    _P_TYPE_WeatherForecastMsgPtr
     XDEF    P_TYPE_WeatherBottomLineMsgPtr
     XDEF    P_TYPE_STR_QTABLE
     XDEF    P_TYPE_TAG_BACKDROP
@@ -63,9 +63,9 @@ Global_STR_P_TYPE_C_6:
     DS.W    1
 _P_TYPE_WeatherBrushRefreshPendingFlag:
     DS.L    1
-P_TYPE_WeatherCurrentMsgPtr:
+_P_TYPE_WeatherCurrentMsgPtr:
     DS.L    1
-P_TYPE_WeatherForecastMsgPtr:
+_P_TYPE_WeatherForecastMsgPtr:
     DS.L    1
 P_TYPE_WeatherBottomLineMsgPtr:
     DS.L    1

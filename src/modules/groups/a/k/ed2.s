@@ -665,11 +665,11 @@ ED2_DrawEntrySummaryPanel:
 ;   _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch
 ; READS:
 ;   _ED_StateRingIndex, _ED_StateRingTable, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, ED2_SelectedEntryDataPtr, ED2_SelectedEntryTitlePtr, _TEXTDISP_PrimaryGroupEntryCount,
-;   _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_PrimaryGroupPresentFlag, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusColorCode, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar,
-;   WDISP_WeatherCycleOffsetCount, WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusTextPtr, _P_TYPE_WeatherBrushRefreshPendingFlag
+;   _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_PrimaryGroupPresentFlag, _WDISP_WeatherStatusCountdown, WDISP_WeatherStatusColorCode, _WDISP_WeatherStatusBrushIndex, _WDISP_WeatherStatusDigitChar,
+;   WDISP_WeatherCycleOffsetCount, _WDISP_WeatherStatusOverlayTextPtr, _WDISP_WeatherStatusTextPtr, _P_TYPE_WeatherBrushRefreshPendingFlag
 ; WRITES:
 ;   _ED_LastKeyCode, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, GCOMMAND_BannerRowFallbackOnFirstRowFlag, _ED_MenuStateId, ESQ_ShutdownRequestedFlag, CLEANUP_DiagOverlayAutoRefreshFlag,
-;   HIGHLIGHT_CustomValue, _ESQPARS2_ReadModeFlags, LOCAVAIL_FilterPrevClassId, _TEXTDISP_DeferredActionCountdown, _TEXTDISP_DeferredActionArmed, WDISP_AccumulatorCaptureActive, _SCRIPT_RuntimeMode,
+;   HIGHLIGHT_CustomValue, _ESQPARS2_ReadModeFlags, LOCAVAIL_FilterPrevClassId, _TEXTDISP_DeferredActionCountdown, _TEXTDISP_DeferredActionArmed, _WDISP_AccumulatorCaptureActive, _SCRIPT_RuntimeMode,
 ;   _PARSEINI_CtrlHChangeGateFlag
 ; DESC:
 ;   Dispatches ESC menu selections to a large set of diagnostic and UI actions.
@@ -1148,22 +1148,22 @@ ED2_HandleMenuActions:
 
 .case_dump_runtime_vars:
     MOVEQ   #0,D0
-    MOVE.B  WDISP_WeatherStatusBrushIndex,D0
+    MOVE.B  _WDISP_WeatherStatusBrushIndex,D0
     MOVE.L  D0,-(A7)
     PEA     ED2_FMT_WICON_PCT_LD
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  WDISP_WeatherStatusCountdown,D0
+    MOVE.B  _WDISP_WeatherStatusCountdown,D0
     MOVE.L  D0,(A7)
     PEA     ED2_FMT_W_MIN_PCT_LD_MINUTES
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    MOVE.W  WDISP_WeatherStatusDigitChar,D0
+    MOVE.W  _WDISP_WeatherStatusDigitChar,D0
     EXT.L   D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
-    MOVE.W  WDISP_WeatherStatusDigitChar,D1
+    MOVE.W  _WDISP_WeatherStatusDigitChar,D1
     EXT.L   D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
@@ -1179,11 +1179,11 @@ ED2_HandleMenuActions:
     PEA     ED2_FMT_CWCNT_PCT_LD_TIMES_FROM_NOW_PCT_LD
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    MOVE.L  WDISP_WeatherStatusOverlayTextPtr,(A7)
+    MOVE.L  _WDISP_WeatherStatusOverlayTextPtr,(A7)
     PEA     ED2_FMT_WDATA_PCT_08LX
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    MOVE.L  WDISP_WeatherStatusTextPtr,(A7)
+    MOVE.L  _WDISP_WeatherStatusTextPtr,(A7)
     PEA     ED2_FMT_WCITY_PCT_S
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
@@ -1205,10 +1205,10 @@ ED2_HandleMenuActions:
     BRA.W   .restore_display_state
 
 .case_reset_defaults:
-    MOVE.B  #$3c,WDISP_WeatherStatusCountdown
+    MOVE.B  #$3c,_WDISP_WeatherStatusCountdown
     MOVE.B  #$1,WDISP_WeatherStatusColorCode
-    MOVE.B  #$2,WDISP_WeatherStatusBrushIndex
-    MOVE.W  #$32,WDISP_WeatherStatusDigitChar
+    MOVE.B  #$2,_WDISP_WeatherStatusBrushIndex
+    MOVE.W  #$32,_WDISP_WeatherStatusDigitChar
     CLR.W   WDISP_WeatherCycleOffsetCount
     BRA.W   .restore_display_state
 
@@ -1402,7 +1402,7 @@ ED2_HandleMenuActions:
     JSR     _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
-    CLR.W   WDISP_AccumulatorCaptureActive
+    CLR.W   _WDISP_AccumulatorCaptureActive
     BRA.W   .restore_display_state
 
 .case_call_0539:

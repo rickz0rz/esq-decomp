@@ -536,12 +536,12 @@ _NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MEMORY_DeallocateMemory
+;   _MEMORY_DeallocateMemory
 ; DESC:
-;   Jump table entry that forwards to MEMORY_DeallocateMemory.
+;   Jump table entry that forwards to _MEMORY_DeallocateMemory.
 ;------------------------------------------------------------------------------
 _NEWGRID_JMPTBL_MEMORY_DeallocateMemory:
-    JMP     MEMORY_DeallocateMemory
+    JMP     _MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMPTBL_CLEANUP_DrawClockFormatList   (Jump stub)

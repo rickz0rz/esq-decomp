@@ -16,7 +16,7 @@
 ; READS:
 ;   _Global_PTR_WORK_BUFFER, _WDISP_CharClassTable (char class table), many LAB_205* globals, _PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockPtr
 ; WRITES:
-;   _P_TYPE_WeatherBrushRefreshPendingFlag-2064/206A..., _TEXTDISP_AliasCount, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr, _PARSEINI_CurrentRangeTableIndex, P_TYPE_WeatherCurrentMsgPtr-C, etc.
+;   _P_TYPE_WeatherBrushRefreshPendingFlag-2064/206A..., _TEXTDISP_AliasCount, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr, _PARSEINI_CurrentRangeTableIndex, _P_TYPE_WeatherCurrentMsgPtr-C, etc.
 ; DESC:
 ;   Top-level INI parser: scans the buffer, skips whitespace/comment chars, detects
 ;   section headers and key/value pairs, and dispatches to per-section handlers.
@@ -185,16 +185,16 @@ _PARSEINI_ParseIniBufferAndDispatch:
     BNE.S   .check_section_8
 
     MOVEQ   #7,D7
-    MOVE.L  P_TYPE_WeatherCurrentMsgPtr,-(A7)
-    MOVE.L  Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,-(A7)
+    MOVE.L  _P_TYPE_WeatherCurrentMsgPtr,-(A7)
+    MOVE.L  _Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,-(A7)
     JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
-    MOVE.L  D0,P_TYPE_WeatherCurrentMsgPtr
-    MOVE.L  P_TYPE_WeatherForecastMsgPtr,(A7)
+    MOVE.L  D0,_P_TYPE_WeatherCurrentMsgPtr
+    MOVE.L  _P_TYPE_WeatherForecastMsgPtr,(A7)
     MOVE.L  SCRIPT_PtrNoForecastWeatherData,-(A7)
     JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
-    MOVE.L  D0,P_TYPE_WeatherForecastMsgPtr
+    MOVE.L  D0,_P_TYPE_WeatherForecastMsgPtr
     MOVE.L  P_TYPE_WeatherBottomLineMsgPtr,(A7)
     MOVE.L  SCRIPT_PtrWeatherDataAvailabilityDisclaimer,-(A7)
     JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)

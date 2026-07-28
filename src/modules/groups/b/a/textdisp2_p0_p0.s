@@ -167,7 +167,7 @@ TEXTDISP_UpdateHighlightOrPreview:
 ; CLOBBERS:
 ;   D0-D1/A0
 ; CALLS:
-;   _TLIBA3_BuildDisplayContextForViewMode, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples
+;   _TLIBA3_BuildDisplayContextForViewMode, _WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples
 ; READS:
 ;   (none)
 ; WRITES:
@@ -183,7 +183,7 @@ TEXTDISP_UpdateHighlightOrPreview:
     JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
     MOVE.L  D0,_WDISP_DisplayContextBase
-    JSR     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
+    JSR     _WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
 
     LEA     12(A7),A7
     CLR.W   _WDISP_AccumulatorFlushPending

@@ -39,14 +39,14 @@ GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_DrawDiagnosticsScreen
+;   _ESQFUNC_DrawDiagnosticsScreen
 ; DESC:
-;   Jump stub to ESQFUNC_DrawDiagnosticsScreen.
+;   Jump stub to _ESQFUNC_DrawDiagnosticsScreen.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen:
-    JMP     ESQFUNC_DrawDiagnosticsScreen
+    JMP     _ESQFUNC_DrawDiagnosticsScreen
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen   (JumpStub_ESQFUNC_DrawMemoryStatusScreen)
@@ -57,14 +57,14 @@ GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_DrawMemoryStatusScreen
+;   _ESQFUNC_DrawMemoryStatusScreen
 ; DESC:
-;   Jump stub to ESQFUNC_DrawMemoryStatusScreen.
+;   Jump stub to _ESQFUNC_DrawMemoryStatusScreen.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen:
-    JMP     ESQFUNC_DrawMemoryStatusScreen
+    JMP     _ESQFUNC_DrawMemoryStatusScreen
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine   (JumpStub_SCRIPT_UpdateCtrlStateMachine)

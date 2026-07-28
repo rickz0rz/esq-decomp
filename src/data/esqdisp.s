@@ -6,7 +6,7 @@
     XDEF    ESQDISP_DisplayActiveFlag
     XDEF    ESQDISP_StatusBannerClampGateFlag
     XDEF    ESQDISP_PendingGridReinitFlag
-    XDEF    ESQDISP_PrimarySecondaryMirrorFlag
+    XDEF    _ESQDISP_PrimarySecondaryMirrorFlag
     XDEF    ESQDISP_SecondaryPersistRequestFlag
     XDEF    _ESQDISP_StatusRefreshPendingFlag
     XDEF    ESQDISP_ProgramInfoZeroTag
@@ -84,13 +84,13 @@ ESQDISP_StatusBannerClampGateFlag:
 ESQDISP_PendingGridReinitFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_PrimarySecondaryMirrorFlag   (mirror-done flag)
+; SYM: _ESQDISP_PrimarySecondaryMirrorFlag   (mirror-done flag)
 ; TYPE: u16 flag
 ; PURPOSE: Marks when primary entries were mirrored into secondary slots.
-; USED BY: ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty, ESQFUNC_DrawDiagnosticsScreen
+; USED BY: ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty, _ESQFUNC_DrawDiagnosticsScreen
 ; NOTES: Set on successful mirror path; cleared when not mirrored.
 ;------------------------------------------------------------------------------
-ESQDISP_PrimarySecondaryMirrorFlag:
+_ESQDISP_PrimarySecondaryMirrorFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQDISP_SecondaryPersistRequestFlag   (secondary persist request)
