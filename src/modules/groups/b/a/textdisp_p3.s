@@ -77,7 +77,7 @@ TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   CLEANUP_DrawInsetRectFrame
+;   _CLEANUP_DrawInsetRectFrame
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -88,7 +88,7 @@ TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame:
-    JMP     CLEANUP_DrawInsetRectFrame
+    JMP     _CLEANUP_DrawInsetRectFrame
 
 ;!======
 

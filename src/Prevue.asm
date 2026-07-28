@@ -245,6 +245,8 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/a/d/xjump.s"
 
     include "modules/groups/a/e/cleanup4.s"
+    include "modules/groups/a/e/cleanup4_cleanup_drawinsetrectframe.s"
+    include "modules/groups/a/e/cleanup4_p1.s"
     include "modules/groups/a/e/coi.s"
     include "modules/groups/a/e/coi_coi_clearanimobjectstrings.s"
     include "modules/groups/a/e/coi_coi_clearanimobjectstrings_coi_clearanimobjectstrings.s"

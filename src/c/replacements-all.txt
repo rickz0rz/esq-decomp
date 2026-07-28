@@ -28,6 +28,7 @@ modules/groups/a/b/cleanup_cleanup_clearvertbinterruptserver.s         c/cleanup
 modules/groups/a/c/cleanup2_cleanup_drawclockbanner.s                  c/cleanup_draw_clock_banner.c
 modules/groups/a/c/cleanup2_cleanup_drawclockformatframe.s             c/cleanup_draw_clock_format_frame.c
 modules/groups/a/c/cleanup2_p1_cleanup_drawgridtimebanner.s            c/cleanup_draw_grid_time_banner.c
+modules/groups/a/e/cleanup4_cleanup_drawinsetrectframe.s               c/cleanup_draw_inset_rect_frame.c
 modules/groups/a/b/cleanup_p1_cleanup_releasedisplayresources.s        c/cleanup_release_display_resources.c
 modules/groups/a/b/cleanup_p1_cleanup_shutdowninputdevices.s           c/cleanup_shutdown_input_devices.c
 modules/groups/a/e/coi_coi_allocsubentrytable.s                        c/coi_alloc_sub_entry_table.c
