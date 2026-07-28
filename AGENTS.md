@@ -24,6 +24,33 @@ and pick a different approach. Do not "fix" a mismatch by hand-patching bytes,
 inserting inline assembly, or special-casing the build. A red gate is
 information, not an obstacle.
 
+## How to write documentation and comments
+
+Use the `ste-writing-skill` skill for every piece of prose you write here. That
+covers `README.md`, `AGENTS.md`, the files under `docs/`, the `SASC-MISMATCH`
+headers in `src/c/`, script header comments, and pull-request text. Invoke the
+skill before you write, not after.
+
+Install it from
+<https://github.com/woosal1337/blog/blob/main/videos/ep01-the-cure-for-ai-slop/ste-writing-skill.md>.
+Save it as `SKILL.md` under `~/.claude/skills/ste-writing-skill/` for every
+project, or under `.claude/skills/ste-writing-skill/` for this one.
+
+The skill writes ASD-STE100 Simplified Technical English. It has two modes. Use
+**strict** for procedures, build steps, and anything an operator follows under
+pressure. Use **STE-flavored** for explanation, such as the reasoning in this
+file and the summary lines in a mismatch header.
+
+The rule applies to prose only. Do not change code, identifiers, command
+syntax, byte strings, or disassembly text to satisfy it. A `ref:` or `got:`
+line is evidence, so copy it exactly.
+
+Why this matters more here than in most repositories: this file and the C
+headers are the record of what was tested and ruled out. A vague sentence in a
+mismatch header sends the next reader to repeat work that was already done. The
+skill removes the shapes that hide that vagueness, such as passive voice with
+no actor, stacked hedges, and one thing under two names.
+
 ## What "binary equivalent" means here
 
 `test-hash.sh` compares the whole file. `build-split.sh` compares *content*:
