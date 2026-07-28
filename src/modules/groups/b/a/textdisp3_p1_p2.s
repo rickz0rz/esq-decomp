@@ -99,7 +99,7 @@ TEXTDISP_DrawChannelBanner:
 .trim_and_draw:
     MOVE.L  D5,-(A7)
     PEA     _TEXTDISP_ChannelLabelBuffer
-    BSR.W   TEXTDISP_TrimTextToPixelWidth
+    BSR.W   _TEXTDISP_TrimTextToPixelWidth
 
     MOVE.L  D6,D0
     EXT.L   D0

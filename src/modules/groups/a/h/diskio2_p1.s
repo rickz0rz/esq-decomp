@@ -26,7 +26,7 @@
 ;   _LVOLock/_LVOUnLock/_LVOOpen/_LVOClose/_LVORead/_LVOWrite/_LVODeleteFile,
 ;   _GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay, GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults, _GROUP_AH_JMPTBL_STR_FindAnyCharPtr, DISKIO2_ReceiveTransferBlocksToFile
 ; READS:
-;   DISKIO2_TransferFilenameBuffer..DISKIO_SavedReadModeFlags, _ED_DiagnosticsScreenActive, DISKIO2_TransferXorChecksumByte, CTASKS_EXT_GRF
+;   DISKIO2_TransferFilenameBuffer.._DISKIO_SavedReadModeFlags, _ED_DiagnosticsScreenActive, DISKIO2_TransferXorChecksumByte, CTASKS_EXT_GRF
 ; WRITES:
 ;   DISKIO2_TransferFilenameBuffer..DISKIO2_TransferCrcErrorCount, DISKIO2_InteractiveTransferArmedFlag/21CB, _ESQPARS2_ReadModeFlags
 ; DESC:
@@ -287,7 +287,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     JSR     GROUP_AG_JMPTBL_DOS_OpenFileWithMode(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DISKIO_WriteFileHandle
+    MOVE.L  D0,_DISKIO_WriteFileHandle
     TST.L   D0
     BNE.S   .xfer_setup_transfer_state
 
@@ -302,7 +302,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     BRA.W   .xfer_return
 
 .xfer_setup_transfer_state:
-    MOVE.W  _ESQPARS2_ReadModeFlags,DISKIO_SavedReadModeFlags
+    MOVE.W  _ESQPARS2_ReadModeFlags,_DISKIO_SavedReadModeFlags
     MOVE.W  #$100,_ESQPARS2_ReadModeFlags
     CLR.L   DISKIO2_TransferCrcErrorCount
     CLR.B   DISKIO2_TransferBlockSequence
@@ -314,7 +314,7 @@ DISKIO2_HandleInteractiveFileTransfer:
 
     LEA     16(A7),A7
     MOVE.L  D0,DISKIO2_TransferBlockBufferPtr
-    MOVE.W  DISKIO_SavedReadModeFlags,_ESQPARS2_ReadModeFlags
+    MOVE.W  _DISKIO_SavedReadModeFlags,_ESQPARS2_ReadModeFlags
     CLR.W   DISKIO2_TransferBufferedByteCount
 
 .xfer_wait_for_sync_markers:
@@ -423,9 +423,9 @@ DISKIO2_HandleInteractiveFileTransfer:
     MOVEQ   #4,D6
 
 .xfer_teardown_transfer_state:
-    MOVE.W  _ESQPARS2_ReadModeFlags,DISKIO_SavedReadModeFlags
+    MOVE.W  _ESQPARS2_ReadModeFlags,_DISKIO_SavedReadModeFlags
     MOVE.W  #$100,_ESQPARS2_ReadModeFlags
-    MOVE.L  DISKIO_WriteFileHandle,D1
+    MOVE.L  _DISKIO_WriteFileHandle,D1
     MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
@@ -520,7 +520,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     JSR     _LVODeleteFile(A6)
 
 .xfer_restore_read_mode:
-    MOVE.W  DISKIO_SavedReadModeFlags,_ESQPARS2_ReadModeFlags
+    MOVE.W  _DISKIO_SavedReadModeFlags,_ESQPARS2_ReadModeFlags
 
 .xfer_clear_overlay_and_maybe_report_disk:
     MOVEQ   #0,D0
@@ -576,7 +576,7 @@ DISKIO2_HandleInteractiveFileTransfer:
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi, GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte, DISKIO_WriteBytesToOutputHandleGuarded, GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay, _DISKIO_DrawTransferErrorMessageIfDiagnostics, _LVODeleteFile
+;   GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi, GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte, _DISKIO_WriteBytesToOutputHandleGuarded, GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay, _DISKIO_DrawTransferErrorMessageIfDiagnostics, _LVODeleteFile
 ; READS:
 ;   DISKIO2_TransferBlockLength..DISKIO2_TransferCrcErrorCount, _ESQIFF_ParseAttemptCount, DISKIO2_TransferXorChecksumByte
 ; WRITES:
@@ -733,7 +733,7 @@ DISKIO2_ReceiveTransferBlocksToFile:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  DISKIO2_TransferBlockBufferPtr,-(A7)
-    JSR     DISKIO_WriteBytesToOutputHandleGuarded(PC)
+    JSR     _DISKIO_WriteBytesToOutputHandleGuarded(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -781,7 +781,7 @@ DISKIO2_ReceiveTransferBlocksToFile:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  DISKIO2_TransferBlockBufferPtr,-(A7)
-    JSR     DISKIO_WriteBytesToOutputHandleGuarded(PC)
+    JSR     _DISKIO_WriteBytesToOutputHandleGuarded(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0

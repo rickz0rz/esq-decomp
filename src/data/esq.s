@@ -478,7 +478,7 @@ _Global_LONG_ROM_VERSION_CHECK:
 ; SYM: _ESQDISP_StatusIndicatorDeferredApplyFlag   (status-indicator deferred paint gate)
 ; TYPE: u8
 ; PURPOSE: Defers indicator repaint and caches color while attention countdown is active.
-; USED BY: _GCOMMAND_ConsumeBannerQueueEntry, ESQDISP_SetStatusIndicatorColorSlot
+; USED BY: _GCOMMAND_ConsumeBannerQueueEntry, _ESQDISP_SetStatusIndicatorColorSlot
 ; NOTES: Set on queue control byte `0xFF`, cleared when countdown expires.
 ;------------------------------------------------------------------------------
 _ESQDISP_StatusIndicatorDeferredApplyFlag:

@@ -266,16 +266,16 @@ GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   TEXTDISP_TrimTextToPixelWidth
+;   _TEXTDISP_TrimTextToPixelWidth
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to TEXTDISP_TrimTextToPixelWidth.
+;   Jump stub to _TEXTDISP_TrimTextToPixelWidth.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth:
-    JMP     TEXTDISP_TrimTextToPixelWidth
+    JMP     _TEXTDISP_TrimTextToPixelWidth
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort   (JumpStub)

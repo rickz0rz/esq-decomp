@@ -9,6 +9,9 @@
 #   SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
 #     C_REPLACEMENTS=src/c/replacements-all.txt ./build-split.sh
 modules/groups/a/a/bevel_bevel_drawbevelframewithtop.s                 c/bevel_draw_bevel_frame_with_top.c
+modules/groups/a/a/bevel_bevel_drawhorizontalbevel.s                   c/bevel_draw_horizontal_bevel.c
+modules/groups/a/a/bevel_bevel_drawverticalbevel.s                     c/bevel_draw_vertical_bevel.c
+modules/groups/a/a/bevel_bevel_drawverticalbevelpair.s                 c/bevel_draw_vertical_bevel_pair.c
 modules/groups/a/a/brush_brush_appendbrushnode.s                       c/brush_append_brush_node.c
 modules/groups/a/a/brush_brush_findbrushbypredicate.s                  c/brush_find_brush_by_predicate.c
 modules/groups/a/a/brush_brush_findtype3brush.s                        c/brush_find_type3_brush.c
@@ -17,6 +20,7 @@ modules/groups/a/a/brush_brush_loadcolortextfont.s                     c/brush_l
 modules/groups/a/a/brush_brush_normalizebrushnames.s                   c/brush_normalize_brush_names.c
 modules/groups/a/a/brush_p3_brush_planemaskforindex.s                  c/brush_plane_mask_for_index.c
 modules/groups/a/a/brush_brush_popbrushhead.s                          c/brush_pop_brush_head.c
+modules/groups/a/a/brush_p0_brush_streamfontchunk.s                    c/brush_stream_font_chunk.c
 modules/groups/a/b/cleanup_p0.s                                        c/cleanup_clear_aud1_interrupt_vector.c
 modules/groups/a/b/cleanup_cleanup_clearrbfinterruptandserial.s        c/cleanup_clear_rbf_interrupt_and_serial.c
 modules/groups/a/b/cleanup_cleanup_clearvertbinterruptserver.s         c/cleanup_clear_vertb_interrupt_server.c
@@ -50,7 +54,9 @@ modules/groups/a/g/diskio_diskio_parselongfromworkbuffer.s             c/diskio_
 modules/groups/a/g/diskio_diskio_probedrivesandassignpaths.s           c/diskio_probe_drives_and_assign_paths.c
 modules/groups/a/g/diskio_diskio_querydiskusagepercentandsetbuffersize.s c/diskio_query_disk_usage_percent.c
 modules/groups/a/g/diskio_diskio_resetctrlinputstateifidle.s           c/diskio_reset_ctrl_input_state_if_idle.c
+modules/groups/a/g/diskio_p4_diskio_writebytestooutputhandleguarded.s  c/diskio_write_bytes_to_output_handle_guarded.c
 modules/groups/a/i/displibb_p0.s                                       c/displib_commit_current_line_pen_and_advance.c
+modules/groups/a/i/displib_displib_displaytextatposition.s             c/displib_display_text_at_position.c
 modules/groups/a/i/displib_displib_normalizevaluebystep.s              c/displib_normalize_value_by_step.c
 modules/groups/a/i/displibb_displib_resettextbufferandlinetables.s     c/displib_reset_text_buffer_and_line_tables.c
 modules/groups/a/i/disptext_disptext_appendtobuffer.s                  c/disptext_append_to_buffer.c
@@ -142,6 +148,7 @@ modules/groups/a/n/esqdispb_p0_esqdisp_promotesecondarygrouptoprimary.s c/esqdis
 modules/groups/a/n/esqdispb_esqdisp_promotesecondarylineheadtailifmarked.s c/esqdisp_promote_secondary_line_head_tail.c
 modules/groups/a/n/esqdisp_esqdisp_queuehighlightdrawmessage.s         c/esqdisp_queue_highlight_draw_message.c
 modules/groups/a/n/esqdisp_esqdisprefreshstatusindicatorsfromcurrentmask.s c/esqdisp_refresh_status_indicators.c
+modules/groups/a/n/esqdisp_p1_esqdisp_setstatusindicatorcolorslot.s    c/esqdisp_set_status_indicator_color_slot.c
 modules/groups/a/n/esqdispb_p1.s                                       c/esqdisp_test_word_is_zero_booleanize.c
 modules/groups/a/n/esqfunc_esqfunc_allocatelinetextbuffers.s           c/esqfunc_allocate_line_text_buffers.c
 modules/groups/a/n/esqfunc_esqfunc_drawescmenuversion.s                c/esqfunc_draw_esc_menu_version.c
@@ -161,6 +168,7 @@ modules/groups/a/n/esqiffb_esqiffruncopperdroptransition.s             c/esqiff_
 modules/groups/a/n/esqiffb_esqiffruncopperrisetransition.s             c/esqiff_run_copper_rise_transition.c
 modules/groups/a/n/esqiffbb_esqiff_runpendingcopperanimations.s        c/esqiff_run_pending_copper_animations.c
 modules/groups/a/n/esqiffbb_esqiff_servicependingcopperpalettemoves.s  c/esqiff_service_pending_copper_palette_moves.c
+modules/groups/a/n/esqiffbb_p0_esqiff_setapentobrightestpaletteindex.s c/esqiff_set_apen_to_brightest_palette_index.c
 modules/groups/a/o/esqpars_esqpars_persiststatedataaftercommand.s      c/esqpars_persist_state_data_after_command.c
 modules/groups/a/q/esqshared4_esqshared4_computebannerrowblitgeometry.s c/esqshared4_compute_banner_row_blit_geometry.c
 modules/groups/a/q/esqshared4_esqshared4_loaddefaultpalettetocopper_noop.s c/esqshared4_load_default_palette_noop.c
@@ -291,11 +299,14 @@ modules/groups/b/a/textdisp_textdisp_resetselectionstate.s             c/textdis
 modules/groups/b/a/textdisp_textdisp_setentrytextfields.s              c/textdisp_set_entry_text_fields.c
 modules/groups/b/a/textdisp2_p0_textdisp_setrastformode.s              c/textdisp_set_rast_for_mode.c
 modules/groups/b/a/textdisp_textdisp_skipcontrolcodes.s                c/textdisp_skip_control_codes.c
+modules/groups/b/a/textdisp3_p1_p5_textdisp_trimtexttopixelwidth.s     c/textdisp_trim_text_to_pixel_width.c
 modules/groups/b/a/tliba1_tliba1_parsestylecodechar.s                  c/tliba1_parse_style_code_char.c
 modules/groups/b/a/tliba2_tliba2_findlastcharinstring.s                c/tliba2_find_last_char_in_string.c
 modules/groups/b/a/tliba2_tliba2_parseentrytimewindow.s                c/tliba2_parse_entry_time_window.c
 modules/groups/b/a/tliba2_tliba2_resolveentrywindowwithdefaultrange.s  c/tliba2_resolve_entry_window_with_default_range.c
 modules/groups/b/a/tliba3_tliba3_clearviewmoderastport.s               c/tliba3_clear_view_mode_rast_port.c
+modules/groups/b/a/tliba3_p1_tliba3_drawinnerframeborder.s             c/tliba3_draw_inner_frame_border.c
+modules/groups/b/a/tliba3_p1_tliba3_drawouterframeborder.s             c/tliba3_draw_outer_frame_border.c
 modules/groups/b/a/tliba3_tliba3_drawverticalscaleticks.s              c/tliba3_draw_vertical_scale_ticks.c
 modules/groups/b/a/tliba3_tliba3_getviewmodeheight.s                   c/tliba3_get_view_mode_height.c
 modules/groups/b/a/tliba3_tliba3_getviewmoderastport.s                 c/tliba3_get_view_mode_rast_port.c

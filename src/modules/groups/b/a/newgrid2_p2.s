@@ -193,12 +193,12 @@ _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   BEVEL_DrawVerticalBevel
+;   _BEVEL_DrawVerticalBevel
 ; DESC:
-;   Jump table entry that forwards to BEVEL_DrawVerticalBevel.
+;   Jump table entry that forwards to _BEVEL_DrawVerticalBevel.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel:
-    JMP     BEVEL_DrawVerticalBevel
+    JMP     _BEVEL_DrawVerticalBevel
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines   (Jump stub)

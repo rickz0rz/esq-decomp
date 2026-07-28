@@ -36,13 +36,13 @@
     XDEF    DISKIO2_TransferFilenameBuffer
     XDEF    DISKIO2_TransferFilenameExtPtr
     XDEF    DISKIO2_TransferSizeTokenBuffer
-    XDEF    DISKIO_WriteFileHandle
+    XDEF    _DISKIO_WriteFileHandle
     XDEF    DISKIO2_TransferBlockLength
     XDEF    DISKIO2_TransferXorChecksumByte
     XDEF    DISKIO2_TransferBlockSequence
     XDEF    DISKIO2_TransferBlockBufferPtr
     XDEF    DISKIO2_TransferBufferedByteCount
-    XDEF    DISKIO_SavedReadModeFlags
+    XDEF    _DISKIO_SavedReadModeFlags
     XDEF    DISKIO2_TransferCrcErrorCount
     XDEF    _DISKIO_TrackdiskMsgPortPtr
     XDEF    _DISKIO_TrackdiskIoReqPtr
@@ -266,7 +266,7 @@
     XDEF    _WDISP_AccumulatorFlushPending
     XDEF    _ESQIFF_LogoListLineIndex
     XDEF    _ESQIFF_GAdsListLineIndex
-    XDEF    WDISP_PaletteDepthLog2
+    XDEF    _WDISP_PaletteDepthLog2
     XDEF    WDISP_AccumulatorRowTable
     XDEF    WDISP_AccumulatorRow0_Value
     XDEF    _WDISP_AccumulatorRow0_MoveFlags
@@ -806,13 +806,13 @@ DISKIO2_TransferFilenameExtPtr:
 DISKIO2_TransferSizeTokenBuffer:
     DS.L    4
 ;------------------------------------------------------------------------------
-; SYM: DISKIO_WriteFileHandle   (active DOS write handle)
+; SYM: _DISKIO_WriteFileHandle   (active DOS write handle)
 ; TYPE: pointer/handle
-; PURPOSE: Active file handle used by shared write helper DISKIO_WriteBytesToOutputHandleGuarded and serial transfer paths.
-; USED BY: DISKIO/DISKIO_WriteBytesToOutputHandleGuarded, DISKIO2 serial receive/write flow
+; PURPOSE: Active file handle used by shared write helper _DISKIO_WriteBytesToOutputHandleGuarded and serial transfer paths.
+; USED BY: DISKIO/_DISKIO_WriteBytesToOutputHandleGuarded, DISKIO2 serial receive/write flow
 ; NOTES: Opened by DISKIO2 before streaming blocks; closed when transfer completes.
 ;------------------------------------------------------------------------------
-DISKIO_WriteFileHandle:
+_DISKIO_WriteFileHandle:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: DISKIO2_TransferBlockLength   (incoming transfer block length)
@@ -855,18 +855,18 @@ DISKIO2_TransferBlockBufferPtr:
 ; TYPE: u16
 ; PURPOSE: Number of staged bytes currently queued in DISKIO2_TransferBlockBufferPtr.
 ; USED BY: DISKIO2/DISKIO2_ReceiveTransferBlocksToFile
-; NOTES: Flushed through DISKIO_WriteBytesToOutputHandleGuarded at block boundaries or when reaching 0x1000.
+; NOTES: Flushed through _DISKIO_WriteBytesToOutputHandleGuarded at block boundaries or when reaching 0x1000.
 ;------------------------------------------------------------------------------
 DISKIO2_TransferBufferedByteCount:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DISKIO_SavedReadModeFlags   (saved ESQPARS2 read mode flags)
+; SYM: _DISKIO_SavedReadModeFlags   (saved ESQPARS2 read mode flags)
 ; TYPE: u16
 ; PURPOSE: Temporary save slot while DISKIO/DISKIO2 force _ESQPARS2_ReadModeFlags to `$0100`.
-; USED BY: DISKIO/DISKIO_WriteBytesToOutputHandleGuarded, DISKIO2 transfer setup/teardown
+; USED BY: DISKIO/_DISKIO_WriteBytesToOutputHandleGuarded, DISKIO2 transfer setup/teardown
 ; NOTES: Restored immediately after disk I/O calls.
 ;------------------------------------------------------------------------------
-DISKIO_SavedReadModeFlags:
+_DISKIO_SavedReadModeFlags:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: DISKIO2_TransferCrcErrorCount   (transfer CRC mismatch counter)
@@ -2400,13 +2400,13 @@ _ESQIFF_GAdsListLineIndex:
     DS.L    3
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_PaletteDepthLog2   (palette depth log2)
+; SYM: _WDISP_PaletteDepthLog2   (palette depth log2)
 ; TYPE: u8 (stored in long slot)
 ; PURPOSE: Log2 palette size used when scanning palette triples for brightest entry.
-; USED BY: ESQIFF_SetApenToBrightestPaletteIndex
+; USED BY: _ESQIFF_SetApenToBrightestPaletteIndex
 ; NOTES: Interpreted as `1 << value` for the palette entry count.
 ;------------------------------------------------------------------------------
-WDISP_PaletteDepthLog2:
+_WDISP_PaletteDepthLog2:
     DS.L    3
 ;------------------------------------------------------------------------------
 ; SYM: WDISP_AccumulatorRowTable   (accumulator row table)

@@ -16,7 +16,7 @@
 ; CALLS:
 ;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TEXTDISP_BuildEntryShortName, TEXTDISP_FormatEntryTimeForIndex,
 ;   _STRING_AppendAtNull, _WDISP_SPrintf, TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold,
-;   _STR_FindCharPtr, _TEXTDISP_SkipControlCodes, TEXTDISP_TrimTextToPixelWidth
+;   _STR_FindCharPtr, _TEXTDISP_SkipControlCodes, _TEXTDISP_TrimTextToPixelWidth
 ; READS:
 ;   entry+210/214/218, _WDISP_CharClassTable
 ; DESC:
@@ -338,7 +338,7 @@ TEXTDISP_BuildEntryDetailLine:
 .append_channel_word:
     PEA     284.W
     MOVE.L  -8(A5),-(A7)
-    JSR     TEXTDISP_TrimTextToPixelWidth(PC)
+    JSR     _TEXTDISP_TrimTextToPixelWidth(PC)
 
     ADDQ.W  #8,A7
 

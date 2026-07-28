@@ -222,6 +222,43 @@ anyway (three separate `MOVEA.L Global_REF_DOS_LIBRARY_2,A6` in one function).
 The `reload-vs-cache` divergence recorded in several files was never cosmetic; it
 was this bug. Full write-up and the exec-specific wrinkle: `src/c/esq-libbase.md`.
 
+### The one exception: `esq-graphics-leaf.h`, for functions that call nothing else
+
+The hazard above is an intervening call to **ESQ assembly**. AmigaOS library
+functions preserve A6 (only D0/D1/A0/A1 are volatile across one), so a base
+cached across nothing but library calls is safe — and the original relies on
+exactly that: `TLIBA3_DrawInnerFrameBorder` loads the base once and issues four
+`Move`/`Draw` calls on it. Forcing a reload there is not fidelity, it is **our**
+artifact, +6 bytes a site the original never had (18 on that one function).
+
+So `src/c/esq-graphics-leaf.h` is the same header with a non-volatile base, for
+use **only** in a function whose every call is a library call — i.e. the
+`no-calls` bucket in `coverage.py`. Say so in the file's header comment when you
+use it.
+
+**What makes this safe rather than a footgun is that `tools/a6_audit.py` already
+draws the line in the right place.** Read its `audit` loop: a `jsr d16(a6)` leaves
+the base live, a `jsr`/`bsr` to a symbol clears it. So adding an ESQ call to a
+leaf file makes the audit flag the next library call and exit nonzero. The
+precondition is machine-checked. If a6_audit flags a leaf file, switch it back to
+`esq-graphics.h` — do not silence the audit.
+
+Two measured results worth knowing before you reach for it:
+
+- **It reproduced the original's reload pattern exactly**, which is the real
+  argument for it. `_BEVEL_DrawHorizontalBevel` loads the base **twice** in the
+  original — once up front, once after the pattern-reset stores — and 6.51 under
+  the leaf header emits the same two loads in the same places. Both compilers
+  treat a store through the rastport pointer as possibly aliasing the base. The
+  volatile header would have emitted eight.
+- **The alias behaviour is not option-selectable.** `OPTIMIZE`,
+  `OPTIMIZERALIAS` and `NOOPTIMIZERALIAS` were tried and none changed it.
+
+There is deliberately **no** `esq-dos-leaf.h` or `esq-exec-leaf.h`: the DOS
+functions restored so far reload the base before every call in the original
+anyway (`BRUSH_StreamFontChunk` does it twice for two `Read`s), so the volatile
+header is already exactly right there and a leaf variant would buy nothing.
+
 ```sh
 /tmp/.capvenv/bin/python tools/a6_audit.py     # run after any C build
 ```
@@ -707,6 +744,7 @@ and mismatched regions.
 | `(long)AvailMem(...) > n` | `AvailMem(...) > n` | `AvailMem` returns ULONG, so the natural form emits `BLS`; the original has `BLE`. `disptext_append_to_buffer.c` |
 | `unsigned short` counters | `short` | when the original's loop bounds use `BCC`/`BCS`/`BHI` rather than `BGE`/`BLT`, the counters are unsigned. `esqiff2_read_serial_record_into_buffer.c` |
 | `((struct T *)p)->field = x;` | `*(long *)((char *)p + 10) = x;` | struct member access folds the offset into a `(d16,An)` displacement (`MOVE.L A0,10(A1)`, 4 bytes); the cast-and-add form makes SAS/C materialise the address into a register per store (`MOVEA.L`/`ADDA.W`/`MOVE.L (A1)`, 10 bytes). `ctasks_start_close_task_process.c`, 148 -> 136 |
+| `(x << 3)` | `(x * 8)` | where the original has `ASL.L #3`, write the shift. `* 8` makes SAS/C widen the whole computation: it zero-extends via `SWAP`/`CLR.W`/`SWAP` (8 bytes where the original's `MOVEQ #0` / `MOVE.W` is 4) **and** spills an argument to a stack slot it has to allocate, giving the function a frame the original has none of. Worth **28 bytes** on one 94-byte function. `tliba3_draw_inner_frame_border.c`, 144 -> 116 |
 
 **Split an accumulate from the call that feeds it.** Where the original updates
 a variable *before* calling (`ASL.L #4,D7` then `JSR`), write two statements --

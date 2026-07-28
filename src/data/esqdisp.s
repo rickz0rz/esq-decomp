@@ -1,5 +1,5 @@
     XDEF    _Global_STR_ESQDISP_C
-    XDEF    ESQDISP_StatusIndicatorColorCache
+    XDEF    _ESQDISP_StatusIndicatorColorCache
     XDEF    ESQDISP_StatusIndicatorMask
     XDEF    _Global_REF_INTB_AUD1_INTERRUPT
     XDEF    _Global_REF_INTB_RBF_INTERRUPT
@@ -20,13 +20,13 @@
 _Global_STR_ESQDISP_C:
     NStr    "ESQDISP.c"
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_StatusIndicatorColorCache   (status indicator color cache)
+; SYM: _ESQDISP_StatusIndicatorColorCache   (status indicator color cache)
 ; TYPE: u32[2]
 ; PURPOSE: Stores current color values for the two status indicator slots.
-; USED BY: ESQDISP_SetStatusIndicatorColorSlot
+; USED BY: _ESQDISP_SetStatusIndicatorColorSlot
 ; NOTES: Initialized to all 1s and refreshed when indicator colors change.
 ;------------------------------------------------------------------------------
-ESQDISP_StatusIndicatorColorCache:
+_ESQDISP_StatusIndicatorColorCache:
     DC.L    $ffffffff,$ffffffff
 ;------------------------------------------------------------------------------
 ; SYM: ESQDISP_StatusIndicatorMask   (status indicator bitmask)

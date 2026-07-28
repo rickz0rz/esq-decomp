@@ -200,7 +200,7 @@ BITMAP_ProcessIlbmImage:
     MOVE.L  D6,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D7,-(A7)
-    BSR.W   BRUSH_StreamFontChunk
+    BSR.W   _BRUSH_StreamFontChunk
 
     LEA     20(A7),A7
     SUBQ.L  #1,D0
