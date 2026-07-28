@@ -1,6 +1,6 @@
     XDEF    _TLIBA2_ComputeBroadcastTimeWindow
     XDEF    TLIBA2_JMPTBL_DST_AddTimeOffset
-    XDEF    TLIBA2_JMPTBL_ESQ_TestBit1Based
+    XDEF    _TLIBA2_JMPTBL_ESQ_TestBit1Based
 
 
 ;------------------------------------------------------------------------------
@@ -299,7 +299,7 @@ TLIBA2_JMPTBL_DST_AddTimeOffset:
     JMP     _DST_AddTimeOffset
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA2_JMPTBL_ESQ_TestBit1Based   (JumpStub_ESQ_TestBit1Based)
+; FUNC: _TLIBA2_JMPTBL_ESQ_TestBit1Based   (JumpStub_ESQ_TestBit1Based)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -315,7 +315,7 @@ TLIBA2_JMPTBL_DST_AddTimeOffset:
 ; DESC:
 ;   Jump stub to _ESQ_TestBit1Based.
 ;------------------------------------------------------------------------------
-TLIBA2_JMPTBL_ESQ_TestBit1Based:
+_TLIBA2_JMPTBL_ESQ_TestBit1Based:
     JMP     _ESQ_TestBit1Based
 
 ;!======

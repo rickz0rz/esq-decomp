@@ -16,7 +16,7 @@
 ; CLOBBERS:
 ;   D0-D3/A0-A1
 ; CALLS:
-;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow,
+;   _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow,
 ;   TEXTDISP_FormatEntryTimeForIndex, STR_SkipClass3Chars, _STRING_AppendAtNull, _TEXTDISP_FindControlToken,
 ;   TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
@@ -50,7 +50,7 @@ TEXTDISP_BuildNowShowingStatusLine:
 .after_table_kind:
     MOVE.L  D0,-(A7)
     MOVE.L  D1,-(A7)
-    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
+    JSR     _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D6,D1
@@ -414,7 +414,7 @@ TEXTDISP_BuildNowShowingStatusLine:
 ; CLOBBERS:
 ;   D0-D3/A0-A1
 ; CALLS:
-;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow,
+;   _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow,
 ;   TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode, _STRING_AppendAtNull,
 ;   TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
@@ -444,7 +444,7 @@ TEXTDISP_BuildEntryPairStatusLine:
 .dispatch_kind:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
+    JSR     _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D6,D1

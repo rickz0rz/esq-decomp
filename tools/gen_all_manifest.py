@@ -113,12 +113,26 @@ def main():
             for l in labs:
                 home[l] = (os.path.relpath(p, os.path.join(ROOT, 'src')), len(labs))
 
+    # Per-file sc options come from TWO places. replacements.txt carries them for
+    # byte-exact restorations, but a BEHAVIOURAL file cannot have an entry there
+    # -- that manifest is the byte-exact gate -- so a behavioural restoration that
+    # needs SHORTINT had no way to say so and was silently compiled without it.
+    # Two files hit that (esqiff_set_apen_to_brightest_palette_index at 192 bytes
+    # instead of 172, textdisp_find_entry_match_index at 748 instead of 732);
+    # both still built and ran, just less faithfully. src/c/scopts.txt fixes it.
     opts = {}
-    for line in open(os.path.join(ROOT, 'src/c/replacements.txt')):
-        if line.strip() and not line.startswith('#'):
-            parts = line.split()
-            if len(parts) > 2:
-                opts[parts[1]] = ' '.join(parts[2:])
+    for src in ('src/c/replacements.txt', 'src/c/scopts.txt'):
+        path = os.path.join(ROOT, src)
+        if not os.path.exists(path):
+            continue
+        for line in open(path):
+            if line.strip() and not line.startswith('#'):
+                parts = line.split()
+                if src.endswith('scopts.txt'):
+                    if len(parts) > 1:
+                        opts[parts[0]] = ' '.join(parts[1:])
+                elif len(parts) > 2:
+                    opts[parts[1]] = ' '.join(parts[2:])
 
     rows, skipped = [], []
     cdir = os.path.join(ROOT, 'src', 'c')

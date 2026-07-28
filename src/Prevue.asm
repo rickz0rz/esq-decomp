@@ -756,6 +756,8 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/b/a/textdisp3_p1.s"
     include "modules/groups/b/a/textdisp3_p1_textdisp_findquotedspan.s"
     include "modules/groups/b/a/textdisp3_p1_p1.s"
+    include "modules/groups/b/a/textdisp3_p1_p1_textdisp_findentrymatchindex.s"
+    include "modules/groups/b/a/textdisp3_p1_p1_p0.s"
     include "modules/groups/b/a/textdisp3_p1_textdisp_buildchannellabel.s"
     include "modules/groups/b/a/textdisp3_p1_p2.s"
     include "modules/groups/b/a/textdisp3_p1_textdisp_formatentrytime.s"

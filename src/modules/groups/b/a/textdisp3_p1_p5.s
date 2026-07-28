@@ -15,7 +15,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   TEXTDISP_FindEntryMatchIndex, _TEXTDISP_ComputeTimeOffset
+;   _TEXTDISP_FindEntryMatchIndex, _TEXTDISP_ComputeTimeOffset
 ; READS:
 ;   _TEXTDISP_ActiveGroupId, _TEXTDISP_PrimaryTitlePtrTable/2237, _TEXTDISP_PrimaryGroupCode/222D, _CLOCK_HalfHourSlotIndex, _TEXTDISP_CurrentMatchIndex, _TEXTDISP_CandidateIndexList
 ; WRITES:
@@ -118,7 +118,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.L  D0,-(A7)
     PEA     1.W
     MOVE.L  A3,-(A7)
-    BSR.W   TEXTDISP_FindEntryMatchIndex
+    BSR.W   _TEXTDISP_FindEntryMatchIndex
 
     LEA     12(A7),A7
     MOVE.W  D0,-4(A5)
@@ -217,7 +217,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.L  D0,-(A7)
     PEA     2.W
     MOVE.L  A3,-(A7)
-    BSR.W   TEXTDISP_FindEntryMatchIndex
+    BSR.W   _TEXTDISP_FindEntryMatchIndex
 
     LEA     12(A7),A7
     MOVE.W  D0,-16(A5)
@@ -295,7 +295,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.L  D0,-(A7)
     PEA     3.W
     MOVE.L  A3,-(A7)
-    BSR.W   TEXTDISP_FindEntryMatchIndex
+    BSR.W   _TEXTDISP_FindEntryMatchIndex
 
     LEA     12(A7),A7
     MOVE.W  D0,-4(A5)
@@ -437,7 +437,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   TEXTDISP_FindEntryMatchIndex
+    BSR.W   _TEXTDISP_FindEntryMatchIndex
 
     LEA     12(A7),A7
     MOVE.W  _TEXTDISP_CurrentMatchIndex,D1
@@ -557,7 +557,7 @@ TEXTDISP_SelectBestMatchFromList:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   TEXTDISP_FindEntryMatchIndex
+;   _TEXTDISP_FindEntryMatchIndex
 ; READS:
 ;   _TEXTDISP_ChannelSourceMode, _TEXTDISP_PrimaryChannelCode/234E, _CLOCK_CurrentDayOfWeekIndex
 ; WRITES:
@@ -626,7 +626,7 @@ TEXTDISP_UpdateChannelRangeFlags:
     CLR.L   -(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   TEXTDISP_FindEntryMatchIndex
+    BSR.W   _TEXTDISP_FindEntryMatchIndex
 
     LEA     12(A7),A7
     MOVE.B  D0,_TEXTDISP_BannerCharFallback

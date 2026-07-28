@@ -1,0 +1,12 @@
+# Per-file SAS/C options for BEHAVIOURAL restorations.
+#
+# replacements.txt has an options column, but only byte-exact restorations may
+# appear there -- it is the byte-exact gate. A behavioural file that needs an
+# option therefore had nowhere to declare it and was silently compiled without
+# one. gen_all_manifest.py reads both files; entries here apply to any manifest
+# it generates.
+#
+# columns: <C file, relative to src/>   <sc options>
+
+c/esqiff_set_apen_to_brightest_palette_index.c   SHORTINT
+c/textdisp_find_entry_match_index.c              SHORTINT

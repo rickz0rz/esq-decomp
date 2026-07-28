@@ -14,8 +14,8 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A2
 ; CALLS:
-;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TEXTDISP_BuildEntryShortName, TEXTDISP_FormatEntryTimeForIndex,
-;   _STRING_AppendAtNull, _WDISP_SPrintf, TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold,
+;   _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TEXTDISP_BuildEntryShortName, TEXTDISP_FormatEntryTimeForIndex,
+;   _STRING_AppendAtNull, _WDISP_SPrintf, _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold,
 ;   _STR_FindCharPtr, _TEXTDISP_SkipControlCodes, _TEXTDISP_TrimTextToPixelWidth
 ; READS:
 ;   entry+210/214/218, _WDISP_CharClassTable
@@ -58,7 +58,7 @@ TEXTDISP_BuildEntryDetailLine:
     MOVE.L  210(A3),-(A7)
     MOVE.L  214(A3),-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
+    JSR     _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     MOVE.L  210(A3),(A7)
     MOVE.L  214(A3),-(A7)
@@ -177,7 +177,7 @@ TEXTDISP_BuildEntryDetailLine:
 
     PEA     SCRIPT_StrAtSeparator
     PEA     -524(A5)
-    JSR     TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
+    JSR     _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     LEA     20(A7),A7
     MOVE.L  D0,-12(A5)
@@ -186,7 +186,7 @@ TEXTDISP_BuildEntryDetailLine:
 
     PEA     SCRIPT_StrVsDotSeparator
     PEA     -524(A5)
-    JSR     TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
+    JSR     _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -197,7 +197,7 @@ TEXTDISP_BuildEntryDetailLine:
 
     PEA     SCRIPT_StrVsSeparator
     PEA     -524(A5)
-    JSR     TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
+    JSR     _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -360,7 +360,7 @@ TEXTDISP_BuildEntryDetailLine:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   _UNKNOWN_JMPTBL_ESQ_WildcardMatch, _TEXTDISP_GetGroupEntryCount,
-;   _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TEXTDISP_ShouldOpenEditorForEntry,
+;   _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TEXTDISP_ShouldOpenEditorForEntry,
 ;   TEXTDISP_SetSelectionFields, TEXTDISP_BuildEntryDetailLine, _TEXTDISP_ResetSelectionState
 ; READS:
 ;   TEXTDISP_FilterModeId/TEXTDISP_FilterCandidateCursor-235C, _TEXTDISP_CandidateIndexList
@@ -583,7 +583,7 @@ TEXTDISP_FilterAndSelectEntry:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
+    JSR     _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -726,7 +726,7 @@ TEXTDISP_FilterAndSelectEntry:
     MOVE.L  D1,(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  D0,-8(A5)
-    JSR     TLIBA2_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _TLIBA2_JMPTBL_ESQ_TestBit1Based(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D0

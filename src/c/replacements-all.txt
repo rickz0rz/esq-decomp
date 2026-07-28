@@ -168,7 +168,7 @@ modules/groups/a/n/esqiffb_esqiffruncopperdroptransition.s             c/esqiff_
 modules/groups/a/n/esqiffb_esqiffruncopperrisetransition.s             c/esqiff_run_copper_rise_transition.c
 modules/groups/a/n/esqiffbb_esqiff_runpendingcopperanimations.s        c/esqiff_run_pending_copper_animations.c
 modules/groups/a/n/esqiffbb_esqiff_servicependingcopperpalettemoves.s  c/esqiff_service_pending_copper_palette_moves.c
-modules/groups/a/n/esqiffbb_p0_esqiff_setapentobrightestpaletteindex.s c/esqiff_set_apen_to_brightest_palette_index.c
+modules/groups/a/n/esqiffbb_p0_esqiff_setapentobrightestpaletteindex.s c/esqiff_set_apen_to_brightest_palette_index.c  SHORTINT
 modules/groups/a/o/esqpars_esqpars_persiststatedataaftercommand.s      c/esqpars_persist_state_data_after_command.c
 modules/groups/a/q/esqshared4_esqshared4_computebannerrowblitgeometry.s c/esqshared4_compute_banner_row_blit_geometry.c
 modules/groups/a/q/esqshared4_esqshared4_loaddefaultpalettetocopper_noop.s c/esqshared4_load_default_palette_noop.c
@@ -290,6 +290,7 @@ modules/groups/b/a/textdisp3_p1_textdisp_buildmatchindexlist.s         c/textdis
 modules/groups/b/a/textdisp3_p1_textdisp_computetimeoffset.s           c/textdisp_compute_time_offset.c
 modules/groups/b/a/textdisp3_textdisp_findaliasindexbyname.s           c/textdisp_find_alias_index_by_name.c
 modules/groups/b/a/textdisp3_p1.s                                      c/textdisp_find_control_token.c
+modules/groups/b/a/textdisp3_p1_p1_textdisp_findentrymatchindex.s      c/textdisp_find_entry_match_index.c  SHORTINT
 modules/groups/b/a/textdisp3_p1_textdisp_findquotedspan.s              c/textdisp_find_quoted_span.c
 modules/groups/b/a/textdisp3_p1_textdisp_formatentrytime.s             c/textdisp_format_entry_time.c
 modules/groups/b/a/textdisp_textdisp_getgroupentrycount.s              c/textdisp_get_group_entry_count.c

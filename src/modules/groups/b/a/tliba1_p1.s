@@ -5,11 +5,11 @@
     XDEF    _TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry
     XDEF    TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode
     XDEF    TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow
-    XDEF    TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex
+    XDEF    _TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex
     XDEF    _TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
-    XDEF    TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
+    XDEF    _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
     XDEF    _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode
-    XDEF    TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold
+    XDEF    _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold
     XDEF    TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble
     XDEF    TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble
 
@@ -902,7 +902,7 @@ TLIBA1_DrawFormattedTextBlock:
 ; CALLS:
 ;   TLIBA1_FormatClockFormatEntry, TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode,
 ;   TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode,
-;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
+;   _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
 ; READS:
 ;   _CONFIG_TimeWindowMinutes, _TEXTDISP_ActiveGroupId
 ; WRITES:
@@ -936,7 +936,7 @@ TLIBA1_BuildClockFormatEntryIfVisible:
     PEA     1.W
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
+    JSR     _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -954,7 +954,7 @@ TLIBA1_BuildClockFormatEntryIfVisible:
     PEA     2.W
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
+    JSR     _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -1375,7 +1375,7 @@ TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode:
     JMP     COI_GetAnimFieldPointerByMode
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode   (JumpStub)
+; FUNC: _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1391,7 +1391,7 @@ TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode:
 ; DESC:
 ;   Jump stub to _ESQDISP_GetEntryAuxPointerByMode.
 ;------------------------------------------------------------------------------
-TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
+_TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
     JMP     _ESQDISP_GetEntryAuxPointerByMode
 
 ;------------------------------------------------------------------------------
@@ -1495,7 +1495,7 @@ _TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow:
     JMP     _ESQDISP_ComputeScheduleOffsetForRow
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold   (JumpStub_ESQ_FindSubstringCaseFold)
+; FUNC: _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold   (JumpStub_ESQ_FindSubstringCaseFold)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1511,11 +1511,11 @@ _TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow:
 ; DESC:
 ;   Jump stub to _ESQ_FindSubstringCaseFold.
 ;------------------------------------------------------------------------------
-TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold:
+_TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold:
     JMP     _ESQ_FindSubstringCaseFold
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex   (JumpStub)
+; FUNC: _TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1531,7 +1531,7 @@ TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold:
 ; DESC:
 ;   Jump stub to DISPLIB_FindPreviousValidEntryIndex.
 ;------------------------------------------------------------------------------
-TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
+_TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
     JMP     DISPLIB_FindPreviousValidEntryIndex
 
 ;------------------------------------------------------------------------------

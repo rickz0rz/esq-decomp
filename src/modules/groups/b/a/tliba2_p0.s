@@ -20,7 +20,7 @@
 ; CALLS:
 ;   _TLIBA_FindFirstWildcardMatchIndex, _MATH_DivS32, _MATH_Mulu32,
 ;   _PARSE_ReadSignedLongSkipClass3_Alt, _TLIBA2_FindLastCharInString,
-;   TLIBA2_JMPTBL_ESQ_TestBit1Based
+;   _TLIBA2_JMPTBL_ESQ_TestBit1Based
 ; READS:
 ;   _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_SecondaryTitlePtrTable, if_eq_17DB, return_17E5
 ; WRITES:
@@ -145,7 +145,7 @@ _TLIBA2_ResolveEntryWindowAndSlotCount:
     LEA     28(A3),A0
     MOVE.L  D7,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     TLIBA2_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _TLIBA2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -198,7 +198,7 @@ _TLIBA2_ResolveEntryWindowAndSlotCount:
     ADDA.W  #$1c,A0
     MOVE.L  D7,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     TLIBA2_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _TLIBA2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
