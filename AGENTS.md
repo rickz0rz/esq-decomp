@@ -595,10 +595,42 @@ fiction. That rule cost two full bisects to learn.
 Taken together the fault behaves like an INTERACTION or a latent bug exposed
 probabilistically, not like one wrong function.
 
-Next step is proper delta debugging (ddmin), which tests complements and
-increases granularity when a plain split fails -- exactly the case here.
-`tools/bisect_remove.sh` only does 2-way splits and correctly gives up rather
-than naming a boundary; it stops with the surviving set in `/tmp/br_set.txt`.
+`tools/ddmin_guru.py` is the tool for this shape. When no subset reproduces it
+tests the COMPLEMENTS, and when those fail too it refines granularity rather
+than giving up -- which is exactly where `bisect_remove.sh` (2-way splits only)
+correctly stops. Two properties of the fault make the cost work out:
+
+- a guru is definitive on the first trial but "clean" is not, and
+  `keydrive_esq.sh` exits on the first guru -- so a FAILING test costs one
+  emulator run and a CLEAN one costs `trials`. The expensive verdict is the one
+  that has to be trustworthy.
+- complements are large, and large builds fire reliably, so most of the budget
+  is spent where the oracle is dependable.
+
+A build that does not LINK is treated as clean, deliberately: it says nothing
+about the fault, and with the 16-bit range problem below it will happen.
+
+**The maximum-C build is near the 16-bit branch ceiling, and that is a ceiling on
+GROWTH, not just on diagnostics.** Trying to size-match a clean build against a
+failing one by adding ~2KB of dead code failed to link, twice, in two different
+places:
+
+```
+Error 28: ... Relative reference to relocatable symbol _ESQ_TestBit1Based
+          (value to write: -0x808e) doesn't fit into 16 bits
+```
+
+The hand-written assembly reaches many callees with `BSR.W`, whose displacement
+is +/-32KB. Every restoration that grows the image pushes some of those pairs
+further apart, and at 289 entries several are within a couple of KB of the
+limit. So expect `Error 28` as the manifest grows, and treat it as a layout
+problem to be solved by ORDERING rather than by dropping restorations. `CODE=FAR`
+already covers the compiler's own calls; it does nothing for the assembly's.
+
+A useful side effect: padding experiments on this program are sharply limited.
+A +1000-byte pad on the clean 72-entry build did link and stayed clean 3/3,
+which is evidence against pure image size being the trigger -- but the +1984
+needed for a true size match could not be built at all.
 
 Cheap things worth trying first, in rough order of information per run:
 
