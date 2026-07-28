@@ -12,6 +12,7 @@ modules/groups/a/a/bevel_bevel_drawbevelframewithtop.s                 c/bevel_d
 modules/groups/a/a/bevel_bevel_drawhorizontalbevel.s                   c/bevel_draw_horizontal_bevel.c
 modules/groups/a/a/bevel_bevel_drawverticalbevel.s                     c/bevel_draw_vertical_bevel.c
 modules/groups/a/a/bevel_bevel_drawverticalbevelpair.s                 c/bevel_draw_vertical_bevel_pair.c
+modules/groups/a/a/bitmap_bitmap_processilbmimage.s                    c/bitmap_process_ilbm_image.c
 modules/groups/a/a/brush_brush_appendbrushnode.s                       c/brush_append_brush_node.c
 modules/groups/a/a/brush_brush_findbrushbypredicate.s                  c/brush_find_brush_by_predicate.c
 modules/groups/a/a/brush_brush_findtype3brush.s                        c/brush_find_type3_brush.c
@@ -241,6 +242,7 @@ modules/groups/b/a/newgrid1b_p2_newgrid_processschedulestate.s         c/newgrid
 modules/groups/b/a/newgrid1b_newgrid_rebuildindexcache.s               c/newgrid_rebuild_index_cache.c
 modules/groups/b/a/newgrid1_newgrid_resetrowtable.s                    c/newgrid_reset_row_table.c
 modules/groups/b/a/newgrid1b_newgrid_selectentrypen.s                  c/newgrid_select_entry_pen.c
+modules/groups/b/a/newgrid_p1_newgrid_selectnextmode.s                 c/newgrid_select_next_mode.c
 modules/groups/b/a/newgrid_newgrid_shutdowngridresources.s             c/newgrid_shutdown_grid_resources.c
 modules/groups/b/a/newgrid1bb_newgrid_testmodeflagactive.s             c/newgrid_test_mode_flag_active.c
 modules/groups/a/z/locavail2_override_intuition_funcs.s                c/override_intuition_funcs.c

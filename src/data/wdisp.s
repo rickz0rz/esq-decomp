@@ -2536,7 +2536,7 @@ _GCOMMAND_DigitalNicheEnabledFlag:
 ; SYM: _GCOMMAND_NicheTextPen/_GCOMMAND_NicheFramePen/_GCOMMAND_NicheEditorLayoutPen/_GCOMMAND_NicheEditorRowPen/_GCOMMAND_NicheModeCycleCount/_GCOMMAND_NicheForceMode5Flag/_GCOMMAND_NicheWorkflowMode   (Digital Niche rendering/workflow params)
 ; TYPE: s32/s32/s32/s32/s32/s32/u8
 ; PURPOSE: Stores Niche pen/layout and mode-selection parameters parsed from command options.
-; USED BY: GCOMMAND_ParseCommandOptions, _FLIB2_LoadDigitalNicheDefaults, NEWGRID_DrawGridCellText, NEWGRID_SelectNextMode, NEWGRID_MapSelectionToMode, NEWGRID_ProcessSecondaryState
+; USED BY: GCOMMAND_ParseCommandOptions, _FLIB2_LoadDigitalNicheDefaults, NEWGRID_DrawGridCellText, _NEWGRID_SelectNextMode, NEWGRID_MapSelectionToMode, NEWGRID_ProcessSecondaryState
 ; NOTES: WorkflowMode stores uppercase 'F'/'B'/'L'/'N'; ForceMode5Flag toggles one mode-selection branch.
 ;------------------------------------------------------------------------------
 _GCOMMAND_NicheTextPen:
@@ -2568,7 +2568,7 @@ _GCOMMAND_DigitalMplexEnabledFlag:
 ; SYM: _GCOMMAND_MplexModeCycleCount/_GCOMMAND_MplexSearchRowLimit/_GCOMMAND_MplexClockOffsetMinutes/_GCOMMAND_MplexMessageTextPen/_GCOMMAND_MplexMessageFramePen/_GCOMMAND_MplexEditorLayoutPen/_GCOMMAND_MplexEditorRowPen/_GCOMMAND_MplexDetailLayoutPen/_GCOMMAND_MplexDetailInitialLineIndex/_GCOMMAND_MplexDetailRowPen/_GCOMMAND_MplexWorkflowMode/_GCOMMAND_MplexDetailLayoutFlag   (Digital Mplex rendering/workflow params)
 ; TYPE: s32/s32/s32/s32/s32/s32/s32/s32/s32/s32/u8/u8
 ; PURPOSE: Stores Mplex timing, pen, and workflow controls parsed from command options.
-; USED BY: GCOMMAND_ParseCommandString, _FLIB2_LoadDigitalMplexDefaults, NEWGRID_SelectNextMode, _NEWGRID_DrawStatusMessage, _NEWGRID_HandleDetailGridState, _NEWGRID_ProcessScheduleState
+; USED BY: GCOMMAND_ParseCommandString, _FLIB2_LoadDigitalMplexDefaults, _NEWGRID_SelectNextMode, _NEWGRID_DrawStatusMessage, _NEWGRID_HandleDetailGridState, _NEWGRID_ProcessScheduleState
 ; NOTES: WorkflowMode stores uppercase 'F'/'B'/'L'/'N'; DetailLayoutFlag stores uppercase 'Y'/'N'.
 ;------------------------------------------------------------------------------
 _GCOMMAND_MplexModeCycleCount:
@@ -2619,7 +2619,7 @@ _GCOMMAND_DigitalPpvEnabledFlag:
 ; SYM: _GCOMMAND_PpvModeCycleCount   (PPV mode cycle count)
 ; TYPE: s32
 ; PURPOSE: Optional cycle/repeat interval used by NEWGRID PPV mode-selection loops.
-; USED BY: GCOMMAND_ParsePPVCommand, _FLIB2_LoadDigitalPpvDefaults, NEWGRID_SelectNextMode
+; USED BY: GCOMMAND_ParsePPVCommand, _FLIB2_LoadDigitalPpvDefaults, _NEWGRID_SelectNextMode
 ; NOTES: Zero disables delay behavior; positive values seed per-mode countdown bytes.
 ;------------------------------------------------------------------------------
 _GCOMMAND_PpvModeCycleCount:

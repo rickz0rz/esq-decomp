@@ -136,7 +136,7 @@ NEWGRID_DrawAwaitingListingsMessage:
 ; CALLS:
 ;   _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
 ; READS:
-;   _CONFIG_ModeCycleEnabledFlag, NEWGRID_ModeCycleCountdown
+;   _CONFIG_ModeCycleEnabledFlag, _NEWGRID_ModeCycleCountdown
 ; WRITES:
 ;   none
 ; DESC:

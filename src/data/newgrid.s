@@ -2,15 +2,15 @@
     XDEF    Global_STR_NEWGRID_C_2
     XDEF    Global_STR_44_44_44
     XDEF    _Global_STR_NEWGRID_C_3
-    XDEF    NEWGRID_ModeCycleCountdown
-    XDEF    NEWGRID_NicheModeCycleBudget_Static
-    XDEF    NEWGRID_NicheModeCycleBudget_Y
-    XDEF    NEWGRID_NicheModeCycleBudget_Custom
-    XDEF    NEWGRID_NicheModeCycleBudget_Global
-    XDEF    NEWGRID_MplexModeCycleBudget
-    XDEF    NEWGRID_PpvModeCycleBudget
-    XDEF    NEWGRID_ModeCandidateIndex
-    XDEF    NEWGRID_ModeSelectionTable
+    XDEF    _NEWGRID_ModeCycleCountdown
+    XDEF    _NEWGRID_NicheModeCycleBudget_Static
+    XDEF    _NEWGRID_NicheModeCycleBudget_Y
+    XDEF    _NEWGRID_NicheModeCycleBudget_Custom
+    XDEF    _NEWGRID_NicheModeCycleBudget_Global
+    XDEF    _NEWGRID_MplexModeCycleBudget
+    XDEF    _NEWGRID_PpvModeCycleBudget
+    XDEF    _NEWGRID_ModeCandidateIndex
+    XDEF    _NEWGRID_ModeSelectionTable
     XDEF    _Global_STR_SINGLE_SPACE
     XDEF    _NEWGRID_WrapWordSpacer
     XDEF    _NEWGRID_WrapReturnSpacer
@@ -73,38 +73,38 @@ Global_STR_44_44_44:
 _Global_STR_NEWGRID_C_3:
     NStr    "NEWGRID.c"
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_ModeCycleCountdown/NEWGRID_NicheModeCycleBudget_*/NEWGRID_ModeCandidateIndex   (mode-cycle budget cluster)
+; SYM: _NEWGRID_ModeCycleCountdown/NEWGRID_NicheModeCycleBudget_*/_NEWGRID_ModeCandidateIndex   (mode-cycle budget cluster)
 ; TYPE: u32 + u8 flags + u32
 ; PURPOSE: Tracks rotating mode-candidate selection and per-family retry budgets.
-; USED BY: NEWGRID_SelectNextMode
+; USED BY: _NEWGRID_SelectNextMode
 ; NOTES:
 ;   Budget bytes are decremented/reloaded from GCOMMAND niche/mplex/ppv cycle counts.
-;   NEWGRID_ModeCandidateIndex rotates through NEWGRID_ModeSelectionTable entries.
+;   _NEWGRID_ModeCandidateIndex rotates through _NEWGRID_ModeSelectionTable entries.
 ;------------------------------------------------------------------------------
-NEWGRID_ModeCycleCountdown:
+_NEWGRID_ModeCycleCountdown:
     DS.L    1
-NEWGRID_NicheModeCycleBudget_Static:
+_NEWGRID_NicheModeCycleBudget_Static:
     DS.B    1
-NEWGRID_NicheModeCycleBudget_Y:
+_NEWGRID_NicheModeCycleBudget_Y:
     DS.B    1
-NEWGRID_NicheModeCycleBudget_Custom:
+_NEWGRID_NicheModeCycleBudget_Custom:
     DS.B    1
-NEWGRID_NicheModeCycleBudget_Global:
+_NEWGRID_NicheModeCycleBudget_Global:
     DS.B    1
-NEWGRID_MplexModeCycleBudget:
+_NEWGRID_MplexModeCycleBudget:
     DS.B    1
-NEWGRID_PpvModeCycleBudget:
+_NEWGRID_PpvModeCycleBudget:
     DS.B    1
-NEWGRID_ModeCandidateIndex:
+_NEWGRID_ModeCandidateIndex:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_ModeSelectionTable   (mode selection candidates)
+; SYM: _NEWGRID_ModeSelectionTable   (mode selection candidates)
 ; TYPE: u32[7]
-; PURPOSE: Candidate NEWGRID mode IDs sampled by NEWGRID_SelectNextMode.
-; USED BY: NEWGRID_SelectNextMode
+; PURPOSE: Candidate NEWGRID mode IDs sampled by _NEWGRID_SelectNextMode.
+; USED BY: _NEWGRID_SelectNextMode
 ; NOTES: Copied into stack scratch before randomized/rotating selection.
 ;------------------------------------------------------------------------------
-NEWGRID_ModeSelectionTable:
+_NEWGRID_ModeSelectionTable:
     DC.L    $00000005,$00000006,$00000007,$00000008
     DC.L    $00000009,$0000000a,$0000000c
 _Global_STR_SINGLE_SPACE:
