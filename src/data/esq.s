@@ -33,8 +33,8 @@
     XDEF    _ESQIFF_PrimaryLineHeadPtr
     XDEF    _ESQIFF_PrimaryLineTailPtr
     XDEF    _Global_REF_STR_CLOCK_FORMAT
-    XDEF    TEXTDISP_DeferredActionCountdown
-    XDEF    TEXTDISP_DeferredActionArmed
+    XDEF    _TEXTDISP_DeferredActionCountdown
+    XDEF    _TEXTDISP_DeferredActionArmed
     XDEF    _GCOMMAND_PresetFallbackValue0
     XDEF    _GCOMMAND_PresetFallbackValue1
     XDEF    _GCOMMAND_PresetFallbackValue2
@@ -386,22 +386,22 @@ _ESQIFF_PrimaryLineTailPtr:
 _Global_REF_STR_CLOCK_FORMAT:
     DC.L    0
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_DeferredActionCountdown   (deferred action countdown)
+; SYM: _TEXTDISP_DeferredActionCountdown   (deferred action countdown)
 ; TYPE: u16
 ; PURPOSE: Tick countdown before committing a deferred text/display action.
 ; USED BY: TEXTDISP_TickDisplayState, SCRIPT3_*, ED2_*, ESQFUNC_*
-; NOTES: Decremented each tick while TEXTDISP_DeferredActionArmed is set.
+; NOTES: Decremented each tick while _TEXTDISP_DeferredActionArmed is set.
 ;------------------------------------------------------------------------------
-TEXTDISP_DeferredActionCountdown:
+_TEXTDISP_DeferredActionCountdown:
     DC.W    0
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_DeferredActionArmed   (deferred action armed flag)
+; SYM: _TEXTDISP_DeferredActionArmed   (deferred action armed flag)
 ; TYPE: u16
 ; PURPOSE: Indicates a deferred action countdown is active.
 ; USED BY: TEXTDISP_TickDisplayState, SCRIPT3_*, APP2_*
 ; NOTES: Treated as boolean/non-zero guard for countdown handling.
 ;------------------------------------------------------------------------------
-TEXTDISP_DeferredActionArmed:
+_TEXTDISP_DeferredActionArmed:
     DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: _GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3   (banner preset fallback nibble values)

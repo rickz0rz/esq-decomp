@@ -12,9 +12,9 @@
 ;   D0-D7/A0-A1
 ; CALLS:
 ;   _SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, _PARSEINI_CheckCtrlHChange, SCRIPT_HandleBrushCommand, SCRIPT_ApplyPendingBannerTarget,
-;   WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, _TEXTDISP_SetRastForMode, SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, _TEXTDISP_ResetSelectionAndRefresh
+;   _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, _TEXTDISP_SetRastForMode, SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, _TEXTDISP_ResetSelectionAndRefresh
 ; READS:
-;   Global_WORD_SELECT_CODE_IS_RAVESC, CONFIG_MSN_FlagChar, SCRIPT_StatusRefreshHoldFlag, ESQDISP_DisplayActiveFlag, SCRIPT_StatusMaskRefreshPending
+;   Global_WORD_SELECT_CODE_IS_RAVESC, _CONFIG_MSN_FlagChar, SCRIPT_StatusRefreshHoldFlag, ESQDISP_DisplayActiveFlag, SCRIPT_StatusMaskRefreshPending
 ;   _Global_REF_CLOCKDATA_STRUCT, Global_WORD_CLOCK_SECONDS
 ;   SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
 ;   _SCRIPT_RuntimeMode/2347/2348/2349/234A, SCRIPT_CTRL_CMD_BUFFER
@@ -35,7 +35,7 @@ SCRIPT_HandleSerialCtrlCmd:
     TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .selectCodeIsNotRAVSEC
 
-    MOVE.B  CONFIG_MSN_FlagChar,D0
+    MOVE.B  _CONFIG_MSN_FlagChar,D0
     MOVEQ   #'M',D1
     CMP.B   D1,D0
     BNE.S   .ctrl_cmd_gate_refresh_disabled
@@ -218,7 +218,7 @@ SCRIPT_HandleSerialCtrlCmd:
 
     BSR.W   SCRIPT_ApplyPendingBannerTarget
 
-    JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   (A7)
     JSR     _TEXTDISP_SetRastForMode(PC)
@@ -227,7 +227,7 @@ SCRIPT_HandleSerialCtrlCmd:
     BRA.S   .ctrl_cmd_reset_parser
 
 .ctrl_cmd_checksum_ok_normal_mode:
-    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
+    MOVE.W  _TEXTDISP_DeferredActionCountdown,D0
     BEQ.S   .ctrl_cmd_dispatch_brush_now
 
     SUBQ.W  #1,D0
@@ -333,9 +333,9 @@ SCRIPT_HandleSerialCtrlCmd:
 ; CALLS:
 ;   _P_TYPE_GetSubtypeIfType20, _P_TYPE_ConsumePrimaryTypeIfPresent, _SCRIPT_SelectPlaybackCursorFromSearchText, _SCRIPT_SplitAndNormalizeSearchBuffer, SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CompareN, SCRIPT3_JMPTBL_STRING_CopyPadNul, _SCRIPT_ReadHandshakeBit5Mask, TEXTDISP_FindEntryIndexByWildcard, _TEXTDISP_HandleScriptCommand, TEXTDISP_UpdateChannelRangeFlags, _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   _BRUSH_SelectedNode, _CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, _CTASKS_STR_1, ESQ_DefaultNoFlagChar, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListCount, Global_WORD_SELECT_CODE_IS_RAVESC, _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterStep, _LOCAVAIL_PrimaryFilterState, _SCRIPT_Type20SubtypeCache, _SCRIPT_CommandTextPtr, SCRIPT_BrushTag_Default00_Primary, SCRIPT_BrushTag_Default00_Secondary, SCRIPT_BrushTag_Clear11_Primary, SCRIPT_BrushTag_Clear11_Secondary, _SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_ChannelSourceMode, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _SCRIPT_PrimarySearchFirstFlag, _TEXTDISP_CurrentMatchIndex, CLEANUP_AlignedStatusMatchIndex, _WDISP_CharClassTable, _WDISP_HighlightActive
+;   _BRUSH_SelectedNode, _CONFIG_LRBN_FlagChar, _CONFIG_MSN_FlagChar, _CTASKS_STR_1, ESQ_DefaultNoFlagChar, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListCount, Global_WORD_SELECT_CODE_IS_RAVESC, _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterStep, _LOCAVAIL_PrimaryFilterState, _SCRIPT_Type20SubtypeCache, _SCRIPT_CommandTextPtr, SCRIPT_BrushTag_Default00_Primary, SCRIPT_BrushTag_Default00_Secondary, SCRIPT_BrushTag_Clear11_Primary, SCRIPT_BrushTag_Clear11_Secondary, _SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_ChannelSourceMode, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _SCRIPT_PrimarySearchFirstFlag, _TEXTDISP_CurrentMatchIndex, CLEANUP_AlignedStatusMatchIndex, _WDISP_CharClassTable, _WDISP_HighlightActive
 ; WRITES:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, HIGHLIGHT_CustomValue, _SCRIPT_Type20SubtypeCache, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, _SCRIPT_PendingWeatherCommandChar, _SCRIPT_PendingTextdispCmdChar, _SCRIPT_PendingTextdispCmdArg, _SCRIPT_CommandTextPtr, _SCRIPT_RuntimeMode, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, _SCRIPT_ChannelRangeDigitChar, _SCRIPT_PlaybackCursor, _SCRIPT_PrimarySearchFirstFlag, _SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_CurrentMatchIndex
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, HIGHLIGHT_CustomValue, _SCRIPT_Type20SubtypeCache, _SCRIPT_PendingBannerTargetChar, _SCRIPT_PendingBannerSpeedMs, _SCRIPT_PendingWeatherCommandChar, _SCRIPT_PendingTextdispCmdChar, _SCRIPT_PendingTextdispCmdArg, _SCRIPT_CommandTextPtr, _SCRIPT_RuntimeMode, _TEXTDISP_PrimaryChannelCode, _TEXTDISP_SecondaryChannelCode, _SCRIPT_ChannelRangeDigitChar, _SCRIPT_PlaybackCursor, _SCRIPT_PrimarySearchFirstFlag, _SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Parses one CTRL packet payload via a 22-way switch/jumptable and updates
 ;   brush selection, playback cursor/runtime mode, channel filters, search text,
@@ -803,7 +803,7 @@ SCRIPT_HandleBrushCommand:
     ADDQ.W  #8,A7
     MOVE.L  D0,_SCRIPT_CommandTextPtr
     CLR.L   -8(A5)
-    MOVE.W  #(-2),SCRIPT_PendingBannerTargetChar
+    MOVE.W  #(-2),_SCRIPT_PendingBannerTargetChar
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_set_cursor_8_and_byte:
@@ -873,7 +873,7 @@ SCRIPT_HandleBrushCommand:
     CMP.B   D1,D0
     BEQ.S   .brush_cmd_case_parse_pending_banner_hex
 
-    MOVE.W  #(-1),SCRIPT_PendingBannerTargetChar
+    MOVE.W  #(-1),_SCRIPT_PendingBannerTargetChar
     MOVEQ   #1,D0
     MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize
@@ -918,7 +918,7 @@ SCRIPT_HandleBrushCommand:
     LEA     _WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D1,A1
-    MOVE.W  D0,SCRIPT_PendingBannerTargetChar
+    MOVE.W  D0,_SCRIPT_PendingBannerTargetChar
     BTST    #2,(A1)
     BEQ.S   .brush_cmd_case_default_banner_speed
 
@@ -946,11 +946,11 @@ SCRIPT_HandleBrushCommand:
 
     MOVE.L  32(A7),D1
     ADD.L   D0,D1
-    MOVE.W  D1,SCRIPT_PendingBannerSpeedMs
+    MOVE.W  D1,_SCRIPT_PendingBannerSpeedMs
     BRA.S   .brush_cmd_case_after_banner_speed
 
 .brush_cmd_case_default_banner_speed:
-    MOVE.W  #1000,SCRIPT_PendingBannerSpeedMs
+    MOVE.W  #1000,_SCRIPT_PendingBannerSpeedMs
 
 .brush_cmd_case_after_banner_speed:
     TST.B   6(A2)
@@ -965,7 +965,7 @@ SCRIPT_HandleBrushCommand:
     TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .selectCodeIsRAVESC
 
-    MOVE.B  CONFIG_MSN_FlagChar,D0
+    MOVE.B  _CONFIG_MSN_FlagChar,D0
     MOVEQ   #'M',D1
     CMP.B   D1,D0
     BEQ.S   .selectCodeIsRAVESC
@@ -987,11 +987,11 @@ SCRIPT_HandleBrushCommand:
     MOVEQ   #-1,D0
     MOVEQ   #1,D1
     MOVE.L  D1,_SCRIPT_PlaybackCursor
-    MOVE.W  D0,SCRIPT_PendingBannerTargetChar
+    MOVE.W  D0,_SCRIPT_PendingBannerTargetChar
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_pending_banner_invalid:
-    MOVE.W  #(-1),SCRIPT_PendingBannerTargetChar
+    MOVE.W  #(-1),_SCRIPT_PendingBannerTargetChar
     MOVEQ   #1,D0
     MOVE.L  D0,_SCRIPT_PlaybackCursor
     BRA.W   .brush_cmd_finalize

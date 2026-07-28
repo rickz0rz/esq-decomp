@@ -203,9 +203,9 @@ TEXTDISP_UpdateHighlightOrPreview:
 ;   TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan, _SCRIPT_AssertCtrlLineIfEnabled, TEXTDISP_UpdateHighlightOrPreview,
 ;   _TEXTDISP_ResetSelectionAndRefresh, TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations
 ; READS:
-;   TEXTDISP_TickSuspendFlag, _Global_UIBusyFlag, _SCRIPT_RuntimeMode, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, LOCAVAIL_FilterPrevClassId, _Global_RefreshTickCounter
+;   TEXTDISP_TickSuspendFlag, _Global_UIBusyFlag, _SCRIPT_RuntimeMode, _TEXTDISP_DeferredActionCountdown, _TEXTDISP_DeferredActionArmed, LOCAVAIL_FilterPrevClassId, _Global_RefreshTickCounter
 ; WRITES:
-;   ESQ_GlobalTickCounter, TEXTDISP_DeferredActionDelayTicks, TEXTDISP_DeferredActionArmed, TEXTDISP_DeferredActionCountdown, _Global_RefreshTickCounter
+;   ESQ_GlobalTickCounter, TEXTDISP_DeferredActionDelayTicks, _TEXTDISP_DeferredActionArmed, _TEXTDISP_DeferredActionCountdown, _Global_RefreshTickCounter
 ; DESC:
 ;   Updates internal display/control counters and triggers refresh/preview steps.
 ; NOTES:
@@ -225,18 +225,18 @@ TEXTDISP_TickDisplayState:
     SUBQ.W  #2,D1
     BEQ.S   .tick_refresh_timer
 
-    MOVE.W  TEXTDISP_DeferredActionCountdown,D1
+    MOVE.W  _TEXTDISP_DeferredActionCountdown,D1
     BEQ.S   .handle_refresh_timer
 
-    MOVE.W  TEXTDISP_DeferredActionArmed,D2
+    MOVE.W  _TEXTDISP_DeferredActionArmed,D2
     BEQ.S   .handle_refresh_timer
 
-    MOVE.W  D0,TEXTDISP_DeferredActionArmed
-    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
+    MOVE.W  D0,_TEXTDISP_DeferredActionArmed
+    MOVE.W  _TEXTDISP_DeferredActionCountdown,D0
     SUBQ.W  #3,D0
     BEQ.S   .assert_ctrl_and_refresh
 
-    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
+    MOVE.W  _TEXTDISP_DeferredActionCountdown,D0
     SUBQ.W  #2,D0
     BNE.S   .clear_pending_mode
 
@@ -258,13 +258,13 @@ TEXTDISP_TickDisplayState:
     MOVE.L  D0,LOCAVAIL_FilterPrevClassId
 
 .decrement_delay_counter:
-    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
+    MOVE.W  _TEXTDISP_DeferredActionCountdown,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.S   .handle_refresh_timer
 
     SUBQ.W  #1,D0
-    MOVE.W  D0,TEXTDISP_DeferredActionCountdown
+    MOVE.W  D0,_TEXTDISP_DeferredActionCountdown
 
 .handle_refresh_timer:
     MOVE.W  _Global_RefreshTickCounter,D0

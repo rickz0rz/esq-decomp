@@ -35,13 +35,13 @@
     XDEF    SCRIPT_CtrlHandshakeRetryCount
     XDEF    SCRIPT_RuntimeModeDispatchLatch
     XDEF    SCRIPT_CtrlCmdDeferCounter
-    XDEF    SCRIPT_PlaybackFallbackCounter
+    XDEF    _SCRIPT_PlaybackFallbackCounter
     XDEF    _SCRIPT_Type20SubtypeCache
-    XDEF    SCRIPT_PendingBannerTargetChar
-    XDEF    SCRIPT_PendingBannerSpeedMs
+    XDEF    _SCRIPT_PendingBannerTargetChar
+    XDEF    _SCRIPT_PendingBannerSpeedMs
     XDEF    _SCRIPT_BannerTransitionStepBudget
     XDEF    _SCRIPT_BannerTransitionActive
-    XDEF    SCRIPT_ReadModeActiveLatch
+    XDEF    _SCRIPT_ReadModeActiveLatch
     XDEF    BRUSH_ScriptPrimarySelection
     XDEF    BRUSH_ScriptSecondarySelection
     XDEF    SCRIPT_RuntimeModeDeferredFlag
@@ -424,7 +424,7 @@ Global_STR_GRID_DATE_FORMAT_STRING:
 Global_STR_WEATHER_UPDATE_FOR:
     NStr    "Weather Update for "
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_CtrlHandshakeStage/SCRIPT_CtrlHandshakeRetryCount/SCRIPT_RuntimeModeDispatchLatch/SCRIPT_CtrlCmdDeferCounter/SCRIPT_PlaybackFallbackCounter/_SCRIPT_Type20SubtypeCache   (script ctrl/runtime state cluster)
+; SYM: SCRIPT_CtrlHandshakeStage/SCRIPT_CtrlHandshakeRetryCount/SCRIPT_RuntimeModeDispatchLatch/SCRIPT_CtrlCmdDeferCounter/_SCRIPT_PlaybackFallbackCounter/_SCRIPT_Type20SubtypeCache   (script ctrl/runtime state cluster)
 ; TYPE: u16/u16/u16/u16/u16/u16
 ; PURPOSE: Tracks CTRL handshake/retry/dispatch state and cached subtype in runtime command processing.
 ; USED BY: SCRIPT_UpdateCtrlStateMachine, SCRIPT_HandleBrushCommand, SCRIPT_ProcessCtrlContextPlaybackTick, ESQFUNC_DrawDiagnosticsScreen
@@ -439,26 +439,26 @@ SCRIPT_RuntimeModeDispatchLatch:
     DS.W    1
 SCRIPT_CtrlCmdDeferCounter:
     DS.W    1
-SCRIPT_PlaybackFallbackCounter:
+_SCRIPT_PlaybackFallbackCounter:
     DS.W    1
 _SCRIPT_Type20SubtypeCache:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_PendingBannerTargetChar/_SCRIPT_BannerTransitionActive   (banner transition control)
+; SYM: _SCRIPT_PendingBannerTargetChar/_SCRIPT_BannerTransitionActive   (banner transition control)
 ; TYPE: s16/u16
 ; PURPOSE: Stores a deferred banner-char target and whether a transition is currently active.
 ; USED BY: SCRIPT_BeginBannerCharTransition, _SCRIPT_UpdateBannerCharTransition, SCRIPT_ApplyPendingBannerTarget
-; NOTES: `SCRIPT_PendingBannerTargetChar` uses sentinels (-2 = one-shot staged value, -1 = none pending).
+; NOTES: `_SCRIPT_PendingBannerTargetChar` uses sentinels (-2 = one-shot staged value, -1 = none pending).
 ;------------------------------------------------------------------------------
-SCRIPT_PendingBannerTargetChar:
+_SCRIPT_PendingBannerTargetChar:
     DC.W    $ffff
-SCRIPT_PendingBannerSpeedMs:
+_SCRIPT_PendingBannerSpeedMs:
     DS.W    1
 _SCRIPT_BannerTransitionStepBudget:
     DS.W    1
 _SCRIPT_BannerTransitionActive:
     DS.W    1
-SCRIPT_ReadModeActiveLatch:
+_SCRIPT_ReadModeActiveLatch:
     DS.W    1
 ; Brush pointers exposed to scripting (primary/secondary selections).
 BRUSH_ScriptPrimarySelection:

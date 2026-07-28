@@ -57,7 +57,7 @@
     XDEF    CONFIG_EnsurePc1GfxAssignedFlag
     XDEF    CONFIG_MsnRuntimeModeSelectorChar_LRBN
     XDEF    _CONFIG_LRBN_FlagChar
-    XDEF    CONFIG_MSN_FlagChar
+    XDEF    _CONFIG_MSN_FlagChar
     XDEF    _CTASKS_STR_1
     XDEF    _CONFIG_RefreshIntervalSeconds
     XDEF    _DISKIO_OpenCount
@@ -274,7 +274,7 @@ CONFIG_EnsurePc1GfxAssignedFlag:
 CONFIG_MsnRuntimeModeSelectorChar_LRBN:
     DC.B    "N"
 ;------------------------------------------------------------------------------
-; SYM: _CONFIG_LRBN_FlagChar/CONFIG_MSN_FlagChar   (config tag flag chars)
+; SYM: _CONFIG_LRBN_FlagChar/_CONFIG_MSN_FlagChar   (config tag flag chars)
 ; TYPE: u8/u8 (ASCII)
 ; PURPOSE: Persisted Y/N-like flag chars associated with `LRBN` and `MSN` config tags.
 ; USED BY: DISKIO config parse/write flows, SCRIPT3 menu toggles, TEXTDISP/ED2 status draws
@@ -282,7 +282,7 @@ CONFIG_MsnRuntimeModeSelectorChar_LRBN:
 ;------------------------------------------------------------------------------
 _CONFIG_LRBN_FlagChar:
     DC.B    "Y"
-CONFIG_MSN_FlagChar:
+_CONFIG_MSN_FlagChar:
     DC.B    "N"
 _CTASKS_STR_1:
     NStr    "1"

@@ -669,7 +669,7 @@ ED2_DrawEntrySummaryPanel:
 ;   WDISP_WeatherCycleOffsetCount, WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusTextPtr, _P_TYPE_WeatherBrushRefreshPendingFlag
 ; WRITES:
 ;   _ED_LastKeyCode, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, GCOMMAND_BannerRowFallbackOnFirstRowFlag, _ED_MenuStateId, ESQ_ShutdownRequestedFlag, CLEANUP_DiagOverlayAutoRefreshFlag,
-;   HIGHLIGHT_CustomValue, _ESQPARS2_ReadModeFlags, LOCAVAIL_FilterPrevClassId, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, WDISP_AccumulatorCaptureActive, _SCRIPT_RuntimeMode,
+;   HIGHLIGHT_CustomValue, _ESQPARS2_ReadModeFlags, LOCAVAIL_FilterPrevClassId, _TEXTDISP_DeferredActionCountdown, _TEXTDISP_DeferredActionArmed, WDISP_AccumulatorCaptureActive, _SCRIPT_RuntimeMode,
 ;   _PARSEINI_CtrlHChangeGateFlag
 ; DESC:
 ;   Dispatches ESC menu selections to a large set of diagnostic and UI actions.
@@ -1322,8 +1322,8 @@ ED2_HandleMenuActions:
     JSR     _GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  #3,TEXTDISP_DeferredActionCountdown
-    MOVE.W  #1,TEXTDISP_DeferredActionArmed
+    MOVE.W  #3,_TEXTDISP_DeferredActionCountdown
+    MOVE.W  #1,_TEXTDISP_DeferredActionArmed
     BRA.W   .restore_display_state
 
 .case_start_transition_3:
@@ -1336,8 +1336,8 @@ ED2_HandleMenuActions:
     JSR     _GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  #3,TEXTDISP_DeferredActionCountdown
-    MOVE.W  #1,TEXTDISP_DeferredActionArmed
+    MOVE.W  #3,_TEXTDISP_DeferredActionCountdown
+    MOVE.W  #1,_TEXTDISP_DeferredActionArmed
     BRA.W   .restore_display_state
 
 .case_wait_clear_bit0:

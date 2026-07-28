@@ -18,7 +18,7 @@
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   _TLIBA3_ClearViewModeRastPort, _TLIBA3_BuildDisplayContextForViewMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+;   _TLIBA3_ClearViewModeRastPort, _TLIBA3_BuildDisplayContextForViewMode, _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
 ;   _WDISP_DisplayContextBase, copper/effect state
 ; WRITES:
@@ -42,7 +42,7 @@ SCRIPT_SetupHighlightEffect:
     JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
     MOVE.L  D0,_WDISP_DisplayContextBase
-    JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEQ   #0,D5
     MOVEA.L _WDISP_DisplayContextBase,A0

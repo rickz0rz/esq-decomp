@@ -14,9 +14,9 @@
 ; CALLS:
 ;   _GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_MATH_DivS32, SCRIPT3_JMPTBL_MATH_Mulu32
 ; READS:
-;   _CONFIG_LRBN_FlagChar/CONFIG_MSN_FlagChar, Global_WORD_SELECT_CODE_IS_RAVESC, _SCRIPT_BannerTransitionActive
+;   _CONFIG_LRBN_FlagChar/_CONFIG_MSN_FlagChar, Global_WORD_SELECT_CODE_IS_RAVESC, _SCRIPT_BannerTransitionActive
 ; WRITES:
-;   _SCRIPT_BannerTransitionTargetChar/2353/2354, _SCRIPT_BannerTransitionStepBudget, _SCRIPT_BannerTransitionActive, SCRIPT_PendingBannerSpeedMs
+;   _SCRIPT_BannerTransitionTargetChar/2353/2354, _SCRIPT_BannerTransitionStepBudget, _SCRIPT_BannerTransitionActive, _SCRIPT_PendingBannerSpeedMs
 ; DESC:
 ;   Prepares parameters for a banner-char transition toward a target value.
 ; NOTES:
@@ -82,7 +82,7 @@ SCRIPT_BeginBannerCharTransition:
     TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .selectCodeIsNotRAVSEC
 
-    MOVE.B  CONFIG_MSN_FlagChar,D0
+    MOVE.B  _CONFIG_MSN_FlagChar,D0
     MOVEQ   #'M',D1
     CMP.B   D1,D0
     BNE.S   .config_msn_flag_not_m
@@ -168,7 +168,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.L  D6,D0
     MOVEQ   #1,D5
     MOVE.W  D5,_SCRIPT_BannerTransitionActive
-    MOVE.W  D0,SCRIPT_PendingBannerSpeedMs
+    MOVE.W  D0,_SCRIPT_PendingBannerSpeedMs
 
 .return:
     MOVE.L  D5,D0

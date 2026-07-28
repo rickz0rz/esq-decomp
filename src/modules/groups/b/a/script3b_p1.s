@@ -1,8 +1,8 @@
-    XDEF    SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen
+    XDEF    _SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen
     XDEF    _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
     XDEF    SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist
     XDEF    _SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters
-    XDEF    SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom
+    XDEF    _SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom
     XDEF    _SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset
     XDEF    _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar
     XDEF    _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit
@@ -229,7 +229,7 @@ _SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset:
     JMP     GCOMMAND_AdjustBannerCopperOffset
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom   (JumpStub_ESQ_SetCopperEffect_Custom)
+; FUNC: _SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom   (JumpStub_ESQ_SetCopperEffect_Custom)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -245,11 +245,11 @@ _SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset:
 ; DESC:
 ;   Jump stub to _ESQ_SetCopperEffect_Custom.
 ;------------------------------------------------------------------------------
-SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom:
+_SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom:
     JMP     _ESQ_SetCopperEffect_Custom
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen   (JumpStub_CLEANUP_RenderAlignedStatusScreen)
+; FUNC: _SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen   (JumpStub_CLEANUP_RenderAlignedStatusScreen)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -265,7 +265,7 @@ SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom:
 ; DESC:
 ;   Jump stub to CLEANUP_RenderAlignedStatusScreen.
 ;------------------------------------------------------------------------------
-SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen:
+_SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen:
     JMP     CLEANUP_RenderAlignedStatusScreen
 
 ;------------------------------------------------------------------------------

@@ -34,7 +34,7 @@ _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_AssertCtrlLineNow
+;   _SCRIPT_AssertCtrlLineNow
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -45,7 +45,7 @@ _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow:
-    JMP     SCRIPT_AssertCtrlLineNow
+    JMP     _SCRIPT_AssertCtrlLineNow
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides   (Routine at _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides)

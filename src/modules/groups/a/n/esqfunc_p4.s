@@ -597,9 +597,9 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVEQ   #0,D0
     ; Deferred action countdown/armed are populated in SCRIPT3/ED2 and then
     ; decremented in TEXTDISP_TickDisplayState while armed.
-    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
+    MOVE.W  _TEXTDISP_DeferredActionCountdown,D0
     MOVEQ   #0,D1
-    MOVE.W  TEXTDISP_DeferredActionArmed,D1
+    MOVE.W  _TEXTDISP_DeferredActionArmed,D1
     ; Layout-coupled _LOCAVAIL_PrimaryFilterState longs (+12 then +8).
     MOVE.L  LOCAVAIL_PrimaryFilterState_Field0C,(A7)
     MOVE.L  LOCAVAIL_PrimaryFilterState_Field08,-(A7)
@@ -779,7 +779,7 @@ ESQFUNC_DrawDiagnosticsScreen:
 
 .format_tick_line:
     ; SCRIPT playback-side command counter (incremented in SCRIPT3 dispatch path).
-    MOVE.W  SCRIPT_PlaybackFallbackCounter,D1
+    MOVE.W  _SCRIPT_PlaybackFallbackCounter,D1
     EXT.L   D1
     ; ED finite-state id (byte enum set across ED menu handlers).
     MOVE.B  _ED_MenuStateId,D2

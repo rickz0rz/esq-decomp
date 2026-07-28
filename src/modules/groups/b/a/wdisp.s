@@ -1,7 +1,7 @@
     XDEF    WDISP_DrawWeatherStatusDayEntry
     XDEF    WDISP_DrawWeatherStatusOverlay
     XDEF    WDISP_DrawWeatherStatusSummary
-    XDEF    WDISP_HandleWeatherStatusCommand
+    XDEF    _WDISP_HandleWeatherStatusCommand
     XDEF    WDISP_UpdateSelectionPreviewPanel
     XDEF    WDISP_JMPTBL_BRUSH_FindBrushByPredicate
     XDEF    WDISP_JMPTBL_BRUSH_FreeBrushList
@@ -12,7 +12,7 @@
     XDEF    WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice
     XDEF    WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples
     XDEF    _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition
-    XDEF    WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+    XDEF    _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
     XDEF    WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock
     XDEF    WDISP_JMPTBL_NEWGRID_DrawWrappedText
     XDEF    WDISP_JMPTBL_NEWGRID_ResetRowTable
@@ -1360,7 +1360,7 @@ WDISP_DrawWeatherStatusSummary:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: WDISP_HandleWeatherStatusCommand   (HandleWeatherStatusCommand)
+; FUNC: _WDISP_HandleWeatherStatusCommand   (HandleWeatherStatusCommand)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +12: arg_2 (via 16(A5))
@@ -1369,7 +1369,7 @@ WDISP_DrawWeatherStatusSummary:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   _TEXTDISP_ResetSelectionAndRefresh, _TLIBA3_ClearViewModeRastPort, _TLIBA3_BuildDisplayContextForViewMode, WDISP_DrawWeatherStatusOverlay, WDISP_DrawWeatherStatusSummary, _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
+;   _TEXTDISP_ResetSelectionAndRefresh, _TLIBA3_ClearViewModeRastPort, _TLIBA3_BuildDisplayContextForViewMode, WDISP_DrawWeatherStatusOverlay, WDISP_DrawWeatherStatusSummary, _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
 ; READS:
 ;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, _ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, _WDISP_DisplayContextBase, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRow0_Value, _WDISP_AccumulatorRow0_CopperIndexStart, _WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, _WDISP_AccumulatorRow1_CopperIndexStart, _WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, _WDISP_AccumulatorRow2_CopperIndexStart, _WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, _WDISP_AccumulatorRow3_CopperIndexStart, _WDISP_AccumulatorRow3_CopperIndexEnd, WDISP_WeatherCycleOffsetCount
 ; WRITES:
@@ -1380,7 +1380,7 @@ WDISP_DrawWeatherStatusSummary:
 ; NOTES:
 ;   Command values other than 48/51 fall back to _TEXTDISP_ResetSelectionAndRefresh.
 ;------------------------------------------------------------------------------
-WDISP_HandleWeatherStatusCommand:
+_WDISP_HandleWeatherStatusCommand:
     LINK.W  A5,#-12
     MOVEM.L D2/D5-D7,-(A7)
 
@@ -1407,7 +1407,7 @@ WDISP_HandleWeatherStatusCommand:
     JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
     MOVE.L  D0,_WDISP_DisplayContextBase
-    JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
@@ -2004,7 +2004,7 @@ WDISP_JMPTBL_BRUSH_PlaneMaskForIndex:
     JMP     _BRUSH_PlaneMaskForIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight   (Routine at WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight)
+; FUNC: _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight   (Routine at _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2022,7 +2022,7 @@ WDISP_JMPTBL_BRUSH_PlaneMaskForIndex:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight:
+_WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight:
     JMP     _ESQ_SetCopperEffect_OnEnableHighlight
 
 ;------------------------------------------------------------------------------

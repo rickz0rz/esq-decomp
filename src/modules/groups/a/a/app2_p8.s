@@ -14,7 +14,7 @@
 ; READS:
 ;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, LOCAVAIL_FilterCooldownTicks, _Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
 ; WRITES:
-;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, CLEANUP_PendingAlertFlag, LOCAVAIL_FilterCooldownTicks, _Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, TEXTDISP_DeferredActionArmed,
+;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, CLEANUP_PendingAlertFlag, LOCAVAIL_FilterCooldownTicks, _Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, _TEXTDISP_DeferredActionArmed,
 ;   ACCUMULATOR_Row0_Sum.._ACCUMULATOR_Row3_SaturateFlag
 ; DESC:
 ;   Increments global timing counters, performs periodic resets, and updates
@@ -64,7 +64,7 @@ ESQ_TickGlobalCounters:
     MOVE.W  D0,TEXTDISP_DeferredActionDelayTicks
     BNE.W   .after_decay_22A5
 
-    MOVE.W  #1,TEXTDISP_DeferredActionArmed
+    MOVE.W  #1,_TEXTDISP_DeferredActionArmed
 
 .after_decay_22A5:
     LEA     CLOCK_DaySlotIndexPtr,A0

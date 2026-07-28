@@ -1,9 +1,9 @@
-    XDEF    SCRIPT_AssertCtrlLineNow
+    XDEF    _SCRIPT_AssertCtrlLineNow
     XDEF    SCRIPT_DeassertCtrlLineNow
 
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_AssertCtrlLineNow   (Assert CTRL line immediately)
+; FUNC: _SCRIPT_AssertCtrlLineNow   (Assert CTRL line immediately)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -19,7 +19,7 @@
 ; DESC:
 ;   Unconditionally asserts the CTRL/serial output bit.
 ;------------------------------------------------------------------------------
-SCRIPT_AssertCtrlLineNow:
+_SCRIPT_AssertCtrlLineNow:
     BSR.S   _SCRIPT_AssertCtrlLine
 
     RTS

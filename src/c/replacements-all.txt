@@ -267,6 +267,7 @@ modules/groups/b/a/script3_script_checkpathexists.s                    c/script_
 modules/groups/b/a/script2_script_clearctrllineifenabled.s             c/script_clear_ctrl_line_if_enabled.c
 modules/groups/b/a/script3_scriptclearsearchtextsandchannels.s         c/script_clear_search_texts_and_channels.c
 modules/groups/b/a/script_script_deallocatebufferarray.s               c/script_deallocate_buffer_array.c
+modules/groups/b/a/script3b_p0_script_dispatchplaybackcursorcommand.s  c/script_dispatch_playback_cursor_command.c
 modules/groups/b/a/script4b_p0_script_drawinsettextwithframe.s         c/script_draw_inset_text_with_frame.c
 modules/groups/b/a/script2_script_esq_capturectrlbit4streambufferbyte.s c/script_esq_capture_ctrl_bit4_stream_buffer_byte.c
 modules/groups/b/a/script4b_script_getbannercharorfallback.s           c/script_get_banner_char_or_fallback.c

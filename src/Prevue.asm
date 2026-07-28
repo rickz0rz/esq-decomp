@@ -734,6 +734,8 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/b/a/script3b.s"
     include "modules/groups/b/a/script3b_script_splitandnormalizesearchbuffer.s"
     include "modules/groups/b/a/script3b_p0.s"
+    include "modules/groups/b/a/script3b_p0_script_dispatchplaybackcursorcommand.s"
+    include "modules/groups/b/a/script3b_p0_p1.s"
     include "modules/groups/b/a/script3b_script_savectrlcontextsnapshot.s"
     include "modules/groups/b/a/script3b_script_resetctrlcontextandclearstatusline.s"
     include "modules/groups/b/a/script3b_p1.s"

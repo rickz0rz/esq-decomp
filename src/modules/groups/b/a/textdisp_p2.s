@@ -852,7 +852,7 @@ TEXTDISP_DrawHighlightFrame:
     JSR     _TLIBA3_BuildDisplayContextForViewMode(PC)
 
     MOVE.L  D0,_WDISP_DisplayContextBase
-    JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D0

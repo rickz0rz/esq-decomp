@@ -21,7 +21,7 @@
 ; READS:
 ;   Global_JMPTBL_HALF_HOURS_12_HR_FMT, _Global_JMPTBL_HALF_HOURS_24_HR_FMT, _Global_REF_STR_USE_24_HR_CLOCK, _CONFIG_BannerCopperHeadByte, LAB_0409, CONFIG_RefreshIntervalMinutes, _ED_DiagTextModeChar, CONFIG_EnsurePc1GfxAssignedFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, _CONFIG_LRBN_FlagChar, DISKIO_TAG_NRLS, DISKIO_TAG_LRBN, DISKIO_TAG_MSN, _WDISP_CharClassTable, N
 ; WRITES:
-;   Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, _Global_REF_STR_CLOCK_FORMAT, _Global_REF_STR_USE_24_HR_CLOCK, _CONFIG_BannerCopperHeadByte, CONFIG_RefreshIntervalMinutes, CTASKS_STR_C, _CONFIG_NicheModeCycleBudget_Y, _CONFIG_NicheModeCycleBudget_Static, CONFIG_SerializedNumericSlot05, CONFIG_NewgridWindowSpanHalfHoursPrimary, CTASKS_STR_G, CONFIG_SerializedFlagSlot08_DefaultN, CTASKS_STR_A, CTASKS_STR_E, CONFIG_SerializedNumericSlot10, _CONFIG_NicheModeCycleBudget_Custom, _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag, CONFIG_NewgridSelectionCode35EnabledFlag, CONFIG_SerializedFlagSlot15_DefaultN, _CONFIG_NewgridSelectionCode34AltEnabledFlag, CONFIG_NewgridSelectionCode32EnabledFlag, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CTASKS_STR_L, CONFIG_SerializedNumericSlot19, CONFIG_SerializedNumericSlot20, _CONFIG_ModeCycleEnabledFlag, CONFIG_NewgridPlaceholderBevelFlag, _CONFIG_NewgridSelectionCode48_49EnabledFlag, CONFIG_SerializedNumericSlot25, CONFIG_SerializedNumericSlot26, CONFIG_NewgridWindowSpanHalfHoursAlt, _CONFIG_TimeWindowMinutes, _CONFIG_ModeCycleGateDuration, CONFIG_NewgridSelectionCode16EnabledFlag, CONFIG_ParseiniLogoScanEnabledFlag, _ED_DiagTextModeChar, CONFIG_EnsurePc1GfxAssignedFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, _CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, _CTASKS_STR_1, _CONFIG_RefreshIntervalSeconds
+;   Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, _Global_REF_STR_CLOCK_FORMAT, _Global_REF_STR_USE_24_HR_CLOCK, _CONFIG_BannerCopperHeadByte, CONFIG_RefreshIntervalMinutes, CTASKS_STR_C, _CONFIG_NicheModeCycleBudget_Y, _CONFIG_NicheModeCycleBudget_Static, CONFIG_SerializedNumericSlot05, CONFIG_NewgridWindowSpanHalfHoursPrimary, CTASKS_STR_G, CONFIG_SerializedFlagSlot08_DefaultN, CTASKS_STR_A, CTASKS_STR_E, CONFIG_SerializedNumericSlot10, _CONFIG_NicheModeCycleBudget_Custom, _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag, CONFIG_NewgridSelectionCode35EnabledFlag, CONFIG_SerializedFlagSlot15_DefaultN, _CONFIG_NewgridSelectionCode34AltEnabledFlag, CONFIG_NewgridSelectionCode32EnabledFlag, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CTASKS_STR_L, CONFIG_SerializedNumericSlot19, CONFIG_SerializedNumericSlot20, _CONFIG_ModeCycleEnabledFlag, CONFIG_NewgridPlaceholderBevelFlag, _CONFIG_NewgridSelectionCode48_49EnabledFlag, CONFIG_SerializedNumericSlot25, CONFIG_SerializedNumericSlot26, CONFIG_NewgridWindowSpanHalfHoursAlt, _CONFIG_TimeWindowMinutes, _CONFIG_ModeCycleGateDuration, CONFIG_NewgridSelectionCode16EnabledFlag, CONFIG_ParseiniLogoScanEnabledFlag, _ED_DiagTextModeChar, CONFIG_EnsurePc1GfxAssignedFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, _CONFIG_LRBN_FlagChar, _CONFIG_MSN_FlagChar, _CTASKS_STR_1, _CONFIG_RefreshIntervalSeconds
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -897,7 +897,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,CONFIG_MSN_FlagChar
+    MOVE.B  D1,_CONFIG_MSN_FlagChar
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
@@ -908,7 +908,7 @@ DISKIO_ParseConfigBuffer:
     TST.L   D0
     BNE.S   .lab_0416
 
-    MOVE.B  #'N',CONFIG_MSN_FlagChar
+    MOVE.B  #'N',_CONFIG_MSN_FlagChar
 
 .lab_0416:
     MOVE.L  D7,D0
@@ -1027,7 +1027,7 @@ DISKIO_EnsurePc1MountedAndGfxAssigned_Return:
 ; CALLS:
 ;   _DISKIO_OpenFileWithBuffer, _GROUP_AE_JMPTBL_WDISP_SPrintf, _DISKIO_CloseBufferedFileAndFlush, _DISKIO_WriteBufferedBytes
 ; READS:
-;   BRUSH_LabelScratch, Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, _Global_REF_STR_USE_24_HR_CLOCK, _CONFIG_BannerCopperHeadByte, Global_STR_DEFAULT_CONFIG_FORMATTED, Global_STR_DF0_CONFIG_DAT_1, DISKIO_SaveConfigToFileHandle_Return, CONFIG_RefreshIntervalMinutes, CTASKS_STR_C, _CONFIG_NicheModeCycleBudget_Y, _CONFIG_NicheModeCycleBudget_Static, CONFIG_SerializedNumericSlot05, CONFIG_NewgridWindowSpanHalfHoursPrimary, CTASKS_STR_G, CONFIG_SerializedFlagSlot08_DefaultN, CTASKS_STR_A, CTASKS_STR_E, CONFIG_SerializedNumericSlot10, _CONFIG_NicheModeCycleBudget_Custom, _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag, CONFIG_NewgridSelectionCode35EnabledFlag, CONFIG_SerializedFlagSlot15_DefaultN, _CONFIG_NewgridSelectionCode34AltEnabledFlag, CONFIG_NewgridSelectionCode32EnabledFlag, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CTASKS_STR_L, CONFIG_SerializedNumericSlot19, CONFIG_SerializedNumericSlot20, _CONFIG_ModeCycleEnabledFlag, CONFIG_NewgridPlaceholderBevelFlag, _CONFIG_NewgridSelectionCode48_49EnabledFlag, CONFIG_SerializedNumericSlot25, CONFIG_SerializedNumericSlot26, CONFIG_NewgridWindowSpanHalfHoursAlt, _CONFIG_TimeWindowMinutes, _CONFIG_ModeCycleGateDuration, CONFIG_NewgridSelectionCode16EnabledFlag, CONFIG_ParseiniLogoScanEnabledFlag, _ED_DiagTextModeChar, CONFIG_EnsurePc1GfxAssignedFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, _CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, _CTASKS_STR_1, MODE_NEWFILE
+;   BRUSH_LabelScratch, Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, _Global_REF_STR_USE_24_HR_CLOCK, _CONFIG_BannerCopperHeadByte, Global_STR_DEFAULT_CONFIG_FORMATTED, Global_STR_DF0_CONFIG_DAT_1, DISKIO_SaveConfigToFileHandle_Return, CONFIG_RefreshIntervalMinutes, CTASKS_STR_C, _CONFIG_NicheModeCycleBudget_Y, _CONFIG_NicheModeCycleBudget_Static, CONFIG_SerializedNumericSlot05, CONFIG_NewgridWindowSpanHalfHoursPrimary, CTASKS_STR_G, CONFIG_SerializedFlagSlot08_DefaultN, CTASKS_STR_A, CTASKS_STR_E, CONFIG_SerializedNumericSlot10, _CONFIG_NicheModeCycleBudget_Custom, _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag, CONFIG_NewgridSelectionCode35EnabledFlag, CONFIG_SerializedFlagSlot15_DefaultN, _CONFIG_NewgridSelectionCode34AltEnabledFlag, CONFIG_NewgridSelectionCode32EnabledFlag, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CTASKS_STR_L, CONFIG_SerializedNumericSlot19, CONFIG_SerializedNumericSlot20, _CONFIG_ModeCycleEnabledFlag, CONFIG_NewgridPlaceholderBevelFlag, _CONFIG_NewgridSelectionCode48_49EnabledFlag, CONFIG_SerializedNumericSlot25, CONFIG_SerializedNumericSlot26, CONFIG_NewgridWindowSpanHalfHoursAlt, _CONFIG_TimeWindowMinutes, _CONFIG_ModeCycleGateDuration, CONFIG_NewgridSelectionCode16EnabledFlag, CONFIG_ParseiniLogoScanEnabledFlag, _ED_DiagTextModeChar, CONFIG_EnsurePc1GfxAssignedFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, _CONFIG_LRBN_FlagChar, _CONFIG_MSN_FlagChar, _CTASKS_STR_1, MODE_NEWFILE
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1202,7 +1202,7 @@ DISKIO_SaveConfigToFileHandle:
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,168(A7)
-    MOVE.B  CONFIG_MSN_FlagChar,D4
+    MOVE.B  _CONFIG_MSN_FlagChar,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,172(A7)

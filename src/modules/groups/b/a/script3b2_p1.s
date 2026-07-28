@@ -10,9 +10,9 @@
 ; CLOBBERS:
 ;   A3/A7/D0/D1/D2
 ; CALLS:
-;   SCRIPT_ApplyPendingBannerTarget, SCRIPT_UpdateRuntimeModeForPlaybackCursor, SCRIPT_DispatchPlaybackCursorCommand, SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
+;   SCRIPT_ApplyPendingBannerTarget, SCRIPT_UpdateRuntimeModeForPlaybackCursor, _SCRIPT_DispatchPlaybackCursorCommand, SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
 ; READS:
-;   CONFIG_MSN_FlagChar, SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, _LOCAVAIL_PrimaryFilterState, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _TEXTDISP_CurrentMatchIndex
+;   _CONFIG_MSN_FlagChar, SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, _LOCAVAIL_PrimaryFilterState, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _TEXTDISP_CurrentMatchIndex
 ; WRITES:
 ;   SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, TEXTDISP_CurrentMatchIndexSaved
 ; DESC:
@@ -41,7 +41,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     MOVE.L  D0,SCRIPT_RuntimeModeDeferredFlag
 
 .playback_tick_apply_pending_mode_change:
-    MOVE.B  CONFIG_MSN_FlagChar,D0
+    MOVE.B  _CONFIG_MSN_FlagChar,D0
     MOVEQ   #77,D1
     CMP.B   D1,D0
     BNE.S   .playback_tick_gate_cursor_for_m_mode
@@ -92,7 +92,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
 
 .playback_tick_dispatch_cursor:
     PEA     _SCRIPT_PlaybackCursor
-    BSR.W   SCRIPT_DispatchPlaybackCursorCommand
+    BSR.W   _SCRIPT_DispatchPlaybackCursorCommand
 
     ADDQ.W  #4,A7
     BRA.S   .return
