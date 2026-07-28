@@ -750,6 +750,45 @@ of a simple single culprit, and the reason is that every subset changes the imag
 layout, which this fault is sensitive to. `tools/btrap_bisect.py` therefore stops
 and says so rather than picking a half.
 
+#### NARROWED to the ED_* family, but still NOT attributable to one file
+
+Removing all **39 `ED_*` restorations** from the 313-entry manifest makes the
+fault go away -- clean on both the log signal and the screen, across all six menu
+items. That is the sharpest cut found so far, and it makes sense: `ED_*` is the
+menu code and the fault fires on menu interaction.
+
+**It is not any single one of them, and the attribution that looked solid did not
+survive.** Bisecting inside the family needs the two-culprit technique (remove
+half B permanently, then bisect half A against that baseline -- `btrap_bisect.py
+--fixed`), because removing either half alone leaves the other half's failure in
+place. Doing that named `ed1_draw_diagnostics_screen.c`. The confirmation step
+then **refuted it**: an ED-free baseline plus only that file is CLEAN.
+
+So the fault needs several `ED_*` entries present together and remains sensitive
+to image layout. Two hypotheses were checked and are wrong:
+
+- **A too-small `printfResult` buffer** in `ed1_draw_diagnostics_screen.c`. The
+  original really does use 41 bytes (`.printfResult = -41`, frame 48) and the
+  format expands to about 34, so there is no overflow and the C matches.
+- **An out-of-bounds scratch write** in `ed_capture_key_sequence.c`. Its
+  `scratch[sentinel*3 + phase]` reaches index 24, which looks like one past a
+  24-byte array -- but `_KYBD_CustomPaletteCaptureScratchBase` is `DS.B 1`
+  immediately before the 24-byte palette, so phase 1..3 lands exactly on R/G/B of
+  pen `sentinel`. The off-by-one is deliberate and the restoration is faithful.
+
+**ALWAYS RUN THE CONFIRMATION.** This project has now retracted three culprit
+attributions, and this is the first one caught before it was believed, purely
+because `btrap_bisect.py` prints the confirmation instruction and it was
+followed. A bisect verdict inside a layout-sensitive fault is a hypothesis, not
+a result.
+
+#### There is a verified-working C build: `src/c/replacements-runnable.txt`
+
+274 entries -- `replacements-all.txt` minus the 39 `ED_*`. Verified 2026-07-28:
+boots, `a6_audit` 0/274, and **clean on all six ESC-menu items** with no B-Trap.
+Use it whenever you need a C build that actually runs; keep
+`replacements-all.txt` as the maximal-coverage target that does not.
+
 **Next step:** run `tools/ddmin_guru.py` against the 72-entry reproducer with the
 new deterministic oracle. ddmin was previously crippled by the intermittent
 verdict — a clean answer cost `trials` runs and was still unreliable. Now a

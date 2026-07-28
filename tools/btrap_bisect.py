@@ -3,6 +3,14 @@
 
     python3 tools/btrap_bisect.py <first> <last>     # indices into the manifest
     python3 tools/btrap_bisect.py --list <file>      # explicit candidate list
+    python3 tools/btrap_bisect.py --fixed <f> --list <g>   # always exclude <f> too
+
+WHEN THERE ARE TWO CULPRITS, a plain bisect stalls: removing either half leaves
+the other half's bug in place, so both halves "FAIL" and the script correctly
+refuses to pick one. --fixed breaks that deadlock. Remove half B permanently
+(the baseline still fails, which proves half A also contains a culprit), then
+bisect half A against that baseline. Repeat with the halves swapped to find the
+other. This is what the ED_* window needed.
 
 Drives tools/btrap_test.sh, which is the deterministic oracle: it reports a
 B-Trap from the emulator log AND a guru from the screen, so a build that swaps
@@ -40,12 +48,16 @@ def entries():
             if l.strip() and not l.startswith('#')]
 
 
+FIXED = []          # always-excluded baseline; see --fixed
+
+
 def test(label, exclude):
     """True = FAILS (fault present). False = clean. None = inconclusive."""
     ex = f'/tmp/btrap_ex_{label}.txt'
     with open(ex, 'w') as f:
         f.write('\n'.join(exclude) + '\n')
-    r = subprocess.run(['bash', os.path.join(ROOT, 'tools/btrap_test.sh'), label] + exclude,
+    r = subprocess.run(['bash', os.path.join(ROOT, 'tools/btrap_test.sh'), label]
+                       + FIXED + exclude,
                        capture_output=True, text=True, cwd=ROOT)
     tail = [l for l in r.stdout.splitlines() if 'VERDICT' in l or 'LINK' in l or 'WRONG' in l]
     msg = tail[-1].strip() if tail else r.stdout.strip()[-120:]
@@ -58,6 +70,12 @@ def test(label, exclude):
 
 
 def main():
+    global FIXED
+    if '--fixed' in sys.argv:
+        i = sys.argv.index('--fixed')
+        FIXED = [l.strip() for l in open(sys.argv[i + 1]) if l.strip()]
+        del sys.argv[i:i + 2]
+        print(f'baseline also excludes {len(FIXED)} entries (--fixed)')
     all_e = entries()
     if sys.argv[1] == '--list':
         want = [l.strip() for l in open(sys.argv[2]) if l.strip()]
