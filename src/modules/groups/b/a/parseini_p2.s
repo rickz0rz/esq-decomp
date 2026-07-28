@@ -19,14 +19,14 @@
     XDEF    PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
     XDEF    PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator
     XDEF    PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette
-    XDEF    PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable
+    XDEF    _PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable
     XDEF    PARSEINI_JMPTBL_HANDLE_OpenWithMode
     XDEF    PARSEINI_JMPTBL_STREAM_ReadLineWithLimit
     XDEF    PARSEINI_JMPTBL_STRING_AppendAtNull
     XDEF    _PARSEINI_JMPTBL_STRING_CompareNoCase
-    XDEF    PARSEINI_JMPTBL_STRING_CompareNoCaseN
+    XDEF    _PARSEINI_JMPTBL_STRING_CompareNoCaseN
     XDEF    PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest
-    XDEF    PARSEINI_JMPTBL_STR_FindAnyCharPtr
+    XDEF    _PARSEINI_JMPTBL_STR_FindAnyCharPtr
     XDEF    _PARSEINI_JMPTBL_STR_FindCharPtr
     XDEF    _PARSEINI_JMPTBL_WDISP_SPrintf
 
@@ -1114,7 +1114,7 @@ PARSEINI_JMPTBL_BRUSH_FreeBrushList:
     JMP     _BRUSH_FreeBrushList
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable   (JumpStub_GCOMMAND_ValidatePresetTable)
+; FUNC: _PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable   (JumpStub_GCOMMAND_ValidatePresetTable)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1128,7 +1128,7 @@ PARSEINI_JMPTBL_BRUSH_FreeBrushList:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable:
+_PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable:
     JMP     GCOMMAND_ValidatePresetTable
 
 ;------------------------------------------------------------------------------
@@ -1186,7 +1186,7 @@ PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette:
     JMP     _GCOMMAND_InitPresetTableFromPalette
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_STRING_CompareNoCaseN   (JumpStub_STRING_CompareNoCaseN)
+; FUNC: _PARSEINI_JMPTBL_STRING_CompareNoCaseN   (JumpStub_STRING_CompareNoCaseN)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1200,7 +1200,7 @@ PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_STRING_CompareNoCaseN:
+_PARSEINI_JMPTBL_STRING_CompareNoCaseN:
     JMP     _STRING_CompareNoCaseN
 
 ;------------------------------------------------------------------------------
@@ -1294,7 +1294,7 @@ PARSEINI_JMPTBL_STREAM_ReadLineWithLimit:
     JMP     STREAM_ReadLineWithLimit
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_STR_FindAnyCharPtr   (JumpStub_STR_FindAnyCharPtr)
+; FUNC: _PARSEINI_JMPTBL_STR_FindAnyCharPtr   (JumpStub_STR_FindAnyCharPtr)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1308,7 +1308,7 @@ PARSEINI_JMPTBL_STREAM_ReadLineWithLimit:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_STR_FindAnyCharPtr:
+_PARSEINI_JMPTBL_STR_FindAnyCharPtr:
     JMP     STR_FindAnyCharPtr
 
 ;------------------------------------------------------------------------------

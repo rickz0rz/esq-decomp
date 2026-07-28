@@ -687,6 +687,8 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/b/a/parseini.s"
     include "modules/groups/b/a/parseini_parseini_parsehexvaluefromstring.s"
     include "modules/groups/b/a/parseini_p1_2.s"
+    include "modules/groups/b/a/parseini_p1_2_parseini_parserangekeyvalue.s"
+    include "modules/groups/b/a/parseini_p1_2_p0.s"
     include "modules/groups/b/a/parseini_parseini_loadweatherstrings.s"
     include "modules/groups/b/a/parseini_p1.s"
     include "modules/groups/b/a/parseini_parseini_parsecolortable.s"

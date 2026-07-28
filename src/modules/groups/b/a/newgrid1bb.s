@@ -73,7 +73,7 @@ _NEWGRID_ResetShowtimeBuckets:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _PARSEINI_JMPTBL_STR_FindCharPtr, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
+;   _PARSEINI_JMPTBL_STR_FindCharPtr, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   _NEWGRID_ShowtimeBucketEntryTable, _NEWGRID_ShowtimeBucketPtrTable, NEWGRID_ShowtimeBucketCount
 ; WRITES:
@@ -97,7 +97,7 @@ NEWGRID_AddShowtimeBucketEntry:
     LEA     1(A0),A1
     MOVE.L  A1,(A7)
     MOVE.L  A1,-4(A5)
-    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6

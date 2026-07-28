@@ -260,6 +260,7 @@ modules/groups/b/a/parseini3_parseini_computehtcmaxvalues.s            c/parsein
 modules/groups/b/a/parseini_parseini_loadweatherstrings.s              c/parseini_load_weather_strings.c
 modules/groups/b/a/parseini_parseini_parsecolortable.s                 c/parseini_parse_color_table.c
 modules/groups/b/a/parseini_parseini_parsehexvaluefromstring.s         c/parseini_parse_hex_value_from_string.c
+modules/groups/b/a/parseini_p1_2_parseini_parserangekeyvalue.s         c/parseini_parse_range_key_value.c
 modules/groups/b/a/parseini3_parseini_updatectrlhdeltamax.s            c/parseini_update_ctrl_h_delta_max.c
 modules/groups/b/a/parseini3_parseini_writeerrorlogentry.s             c/parseini_write_error_log_entry.c
 modules/groups/b/a/script2_script_assertctrllineifenabled.s            c/script_assert_ctrl_line_if_enabled.c

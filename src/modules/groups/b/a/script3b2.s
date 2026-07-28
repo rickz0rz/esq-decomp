@@ -331,7 +331,7 @@ SCRIPT_HandleSerialCtrlCmd:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   _P_TYPE_GetSubtypeIfType20, _P_TYPE_ConsumePrimaryTypeIfPresent, _SCRIPT_SelectPlaybackCursorFromSearchText, _SCRIPT_SplitAndNormalizeSearchBuffer, SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CompareN, SCRIPT3_JMPTBL_STRING_CopyPadNul, _SCRIPT_ReadHandshakeBit5Mask, TEXTDISP_FindEntryIndexByWildcard, _TEXTDISP_HandleScriptCommand, TEXTDISP_UpdateChannelRangeFlags, _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
+;   _P_TYPE_GetSubtypeIfType20, _P_TYPE_ConsumePrimaryTypeIfPresent, _SCRIPT_SelectPlaybackCursorFromSearchText, _SCRIPT_SplitAndNormalizeSearchBuffer, SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CompareN, SCRIPT3_JMPTBL_STRING_CopyPadNul, _SCRIPT_ReadHandshakeBit5Mask, TEXTDISP_FindEntryIndexByWildcard, _TEXTDISP_HandleScriptCommand, TEXTDISP_UpdateChannelRangeFlags, _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   _BRUSH_SelectedNode, _CONFIG_LRBN_FlagChar, _CONFIG_MSN_FlagChar, _CTASKS_STR_1, ESQ_DefaultNoFlagChar, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListCount, Global_WORD_SELECT_CODE_IS_RAVESC, _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterStep, _LOCAVAIL_PrimaryFilterState, _SCRIPT_Type20SubtypeCache, _SCRIPT_CommandTextPtr, SCRIPT_BrushTag_Default00_Primary, SCRIPT_BrushTag_Default00_Secondary, SCRIPT_BrushTag_Clear11_Primary, SCRIPT_BrushTag_Clear11_Secondary, _SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_ChannelSourceMode, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _SCRIPT_PrimarySearchFirstFlag, _TEXTDISP_CurrentMatchIndex, CLEANUP_AlignedStatusMatchIndex, _WDISP_CharClassTable, _WDISP_HighlightActive
 ; WRITES:
@@ -622,7 +622,7 @@ SCRIPT_HandleBrushCommand:
     JSR     SCRIPT3_JMPTBL_STRING_CopyPadNul(PC)
 
     PEA     -28(A5)
-    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     LEA     16(A7),A7
     MOVEQ   #-48,D1
@@ -1060,7 +1060,7 @@ SCRIPT_HandleBrushCommand:
 .brush_cmd_case_set_string_value:
     LEA     1(A2),A0
     MOVE.L  A0,-(A7)
-    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #63,D1

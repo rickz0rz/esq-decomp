@@ -11,7 +11,7 @@
     XDEF    SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
     XDEF    SCRIPT3_JMPTBL_MATH_DivS32
     XDEF    SCRIPT3_JMPTBL_MATH_Mulu32
-    XDEF    SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+    XDEF    _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
     XDEF    SCRIPT3_JMPTBL_STRING_CompareN
     XDEF    SCRIPT3_JMPTBL_STRING_CopyPadNul
 
@@ -189,7 +189,7 @@ SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist:
     JMP     ESQPARS_ApplyRtcBytesAndPersist
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (JumpStub_PARSE_ReadSignedLongSkipClass3_Alt)
+; FUNC: _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (JumpStub_PARSE_ReadSignedLongSkipClass3_Alt)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -205,7 +205,7 @@ SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist:
 ; DESC:
 ;   Jump stub to _PARSE_ReadSignedLongSkipClass3_Alt.
 ;------------------------------------------------------------------------------
-SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
+_SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
     BRA.W   _PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------

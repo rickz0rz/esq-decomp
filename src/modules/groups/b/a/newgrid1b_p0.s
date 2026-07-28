@@ -317,7 +317,7 @@ NEWGRID_DrawGridEntry:
 
     PEA     _NEWGRID_EntrySplitDelimiterMask
     MOVE.L  D0,-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -561,7 +561,7 @@ NEWGRID_DrawGridEntry:
 
     PEA     -19(A5)
     MOVE.L  -4(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -572,7 +572,7 @@ NEWGRID_DrawGridEntry:
     PEA     -19(A5)
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -586,7 +586,7 @@ NEWGRID_DrawGridEntry:
     MOVE.L  A0,-4(A5)
     PEA     -19(A5)
     MOVE.L  -4(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)

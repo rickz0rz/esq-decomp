@@ -5,12 +5,12 @@
     XDEF    PARSEINI_DelimSpaceTab_Section7
     XDEF    PARSEINI_DelimSpaceTab_Section8
     XDEF    Global_STR_PARSEINI_C_2
-    XDEF    PARSEINI_CurrentRangeTableIndex
-    XDEF    PARSEINI_DelimSpaceTab_RangeKey
-    XDEF    PARSEINI_DelimSpaceSemicolonTab_RangeValue
-    XDEF    PARSEINI_TAG_TABLE
-    XDEF    PARSEINI_TAG_DONE
-    XDEF    PARSEINI_TAG_COLOR
+    XDEF    _PARSEINI_CurrentRangeTableIndex
+    XDEF    _PARSEINI_DelimSpaceTab_RangeKey
+    XDEF    _PARSEINI_DelimSpaceSemicolonTab_RangeValue
+    XDEF    _PARSEINI_TAG_TABLE
+    XDEF    _PARSEINI_TAG_DONE
+    XDEF    _PARSEINI_TAG_COLOR
     XDEF    PARSEINI_CurrentWeatherBlockTempPtr
     XDEF    PARSEINI_TAG_FILENAME_WeatherBlock
     XDEF    PARSEINI_STR_LOADCOLOR
@@ -82,23 +82,23 @@ PARSEINI_DelimSpaceTab_Section8:
 Global_STR_PARSEINI_C_2:
     NStr    "PARSEINI.c"
 ;------------------------------------------------------------------------------
-; SYM: PARSEINI_CurrentRangeTableIndex   (current TABLE/COLOR range index)
+; SYM: _PARSEINI_CurrentRangeTableIndex   (current TABLE/COLOR range index)
 ; TYPE: s32
 ; PURPOSE: Holds the active TABLE/COLOR index while parsing range assignment lines.
-; USED BY: PARSEINI_ParseRangeKeyValue, PARSEINI_ProcessWeatherBlocks
+; USED BY: _PARSEINI_ParseRangeKeyValue, PARSEINI_ProcessWeatherBlocks
 ; NOTES: Sentinel is -1 when no valid index is active.
 ;------------------------------------------------------------------------------
-PARSEINI_CurrentRangeTableIndex:
+_PARSEINI_CurrentRangeTableIndex:
     DC.L    $ffffffff
-PARSEINI_DelimSpaceTab_RangeKey:
+_PARSEINI_DelimSpaceTab_RangeKey:
     NStr2   " ",9
-PARSEINI_DelimSpaceSemicolonTab_RangeValue:
+_PARSEINI_DelimSpaceSemicolonTab_RangeValue:
     NStr2   " ;",9
-PARSEINI_TAG_TABLE:
+_PARSEINI_TAG_TABLE:
     NStr    "TABLE"
-PARSEINI_TAG_DONE:
+_PARSEINI_TAG_DONE:
     NStr    "DONE"
-PARSEINI_TAG_COLOR:
+_PARSEINI_TAG_COLOR:
     NStr    "COLOR"
 PARSEINI_CurrentWeatherBlockTempPtr:
     DS.L    1

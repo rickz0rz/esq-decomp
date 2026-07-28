@@ -16,7 +16,7 @@
 ; READS:
 ;   _Global_PTR_WORK_BUFFER, _WDISP_CharClassTable (char class table), many LAB_205* globals, _PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockPtr
 ; WRITES:
-;   _P_TYPE_WeatherBrushRefreshPendingFlag-2064/206A..., _TEXTDISP_AliasCount, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr, PARSEINI_CurrentRangeTableIndex, P_TYPE_WeatherCurrentMsgPtr-C, etc.
+;   _P_TYPE_WeatherBrushRefreshPendingFlag-2064/206A..., _TEXTDISP_AliasCount, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr, _PARSEINI_CurrentRangeTableIndex, P_TYPE_WeatherCurrentMsgPtr-C, etc.
 ; DESC:
 ;   Top-level INI parser: scans the buffer, skips whitespace/comment chars, detects
 ;   section headers and key/value pairs, and dispatches to per-section handlers.
@@ -275,7 +275,7 @@ _PARSEINI_ParseIniBufferAndDispatch:
 .section1_cut_marker:
     PEA     PARSEINI_DelimSpaceTab_Section1
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -423,7 +423,7 @@ _PARSEINI_ParseIniBufferAndDispatch:
 .section2_cut_marker:
     PEA     PARSEINI_DelimSpaceTab_Section2
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -477,7 +477,7 @@ _PARSEINI_ParseIniBufferAndDispatch:
     ; Parse "COLORx"/"TABLE"/range assignments into GCOMMAND_GradientPresetTable.
     PEA     GCOMMAND_GradientPresetTable
     MOVE.L  -8(A5),-(A7)
-    BSR.W   PARSEINI_ParseRangeKeyValue
+    BSR.W   _PARSEINI_ParseRangeKeyValue
 
     ADDQ.W  #8,A7
     BRA.W   .next_line
@@ -511,7 +511,7 @@ _PARSEINI_ParseIniBufferAndDispatch:
 .section4_5_cut_marker:
     PEA     PARSEINI_DelimSpaceTab_Section4_5
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -593,7 +593,7 @@ _PARSEINI_ParseIniBufferAndDispatch:
 .section6_cut_marker:
     PEA     PARSEINI_DelimSpaceTab_Section6
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -672,7 +672,7 @@ _PARSEINI_ParseIniBufferAndDispatch:
 .section7_cut_marker:
     PEA     PARSEINI_DelimSpaceTab_Section7
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -751,7 +751,7 @@ _PARSEINI_ParseIniBufferAndDispatch:
 .section8_cut_marker:
     PEA     PARSEINI_DelimSpaceTab_Section8
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
+    JSR     _PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
