@@ -1383,16 +1383,16 @@ TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ESQDISP_GetEntryAuxPointerByMode
+;   _ESQDISP_GetEntryAuxPointerByMode
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ESQDISP_GetEntryAuxPointerByMode.
+;   Jump stub to _ESQDISP_GetEntryAuxPointerByMode.
 ;------------------------------------------------------------------------------
 TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
-    JMP     ESQDISP_GetEntryAuxPointerByMode
+    JMP     _ESQDISP_GetEntryAuxPointerByMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble   (JumpStub)
@@ -1423,16 +1423,16 @@ TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ESQDISP_GetEntryPointerByMode
+;   _ESQDISP_GetEntryPointerByMode
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ESQDISP_GetEntryPointerByMode.
+;   Jump stub to _ESQDISP_GetEntryPointerByMode.
 ;------------------------------------------------------------------------------
 _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode:
-    JMP     ESQDISP_GetEntryPointerByMode
+    JMP     _ESQDISP_GetEntryPointerByMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow   (JumpStub)

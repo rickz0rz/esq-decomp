@@ -401,12 +401,44 @@ Targets are ranked by how likely they are to become byte-exact once the compiler
 is identified, which depends on how the original encoded their calls:
 
 - **cross-unit** — every call is `4EBA` (`JSR (d16,PC)`), the encoding the
-  original used for a callee in another translation unit. Our restorations are
-  one function per file, so every call we emit is cross-unit too. **These are the
-  high-value targets**: they are pre-positioned to match.
-- **intra-unit** — contains a `BSR.W` to a nearby callee, so that callee shared a
-  `.c` file with it. Matching those means reconstructing the original's source
-  grouping, which is a separate and much larger problem.
+  original used for a callee in another translation unit.
+- **intra-unit** — contains a `BSR.W` (`6100`) to a nearby callee, so that callee
+  shared a `.c` file with it.
+
+**The bucket names describe the ORIGINAL. They do not rank our chances, and for
+a long time this section claimed the opposite.** It used to say cross-unit
+targets were "pre-positioned to match" because our one-function-per-file
+restorations emit only cross-unit calls. That reasoning is sound and the
+conclusion is still wrong, because it assumed `sc` encodes a cross-unit call the
+way the original did. It does not: **SAS/C 6.51 emits `BSR.W` for every call,
+whoever the callee is.** So it is the `6100` bucket our output lines up with.
+
+The restoration record says so unambiguously:
+
+| bucket | exact | behavioural | exact rate |
+|---|---:|---:|---:|
+| intra-unit (`6100`) | **11** | 57 | 16% |
+| no-calls | 11 | 109 | 9% |
+| cross-unit (`4EBA`) | **0** | 144 | **0%** |
+
+Zero of 144. Every function whose original calls are `4EBA` is capped at
+`behavioural` under 6.51, and the cap is the call opcode alone — same size, same
+displacement, same semantics, different byte. `src/c/script_read_next_rbf_byte.c`
+is the whole class in six bytes.
+
+So **prefer `intra-unit` targets, and treat `cross-unit` as blocked until the
+compiler question is settled.** Two caveats keep this honest:
+
+- Matching an intra-unit call is still luck, not skill. The original emitted
+  `6100` because the callee was in the same `.c` file; we emit it because that
+  is all 6.51 emits. The two coincide, which is why the rate is 16% and not
+  higher — see `docs/compiler-version.md`, "Call encoding depends on the
+  callee's translation unit".
+- 6.00 has the mirror-image problem: it emits `4EBA` for everything. Neither
+  version picks per callee, which is part of why neither is the one.
+
+`--targets` still ranks by the old assumption and prints cross-unit only; use the
+`coverage.survey()` enumeration below instead.
 
 ## Reading a large restoration
 

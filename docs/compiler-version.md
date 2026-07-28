@@ -365,6 +365,40 @@ which is a separate and much larger problem than picking the right compiler.
 6.00 emits `4EBA` for every call and 6.51 emits `6100` for every call; neither
 picks per-callee, which is further evidence both are the wrong version.
 
+### It is locality, not distance — three counter-examples
+
+The evidence above is drawn from a single function, where "same translation
+unit" and "nearby after linking" are confounded: same-unit callees are nearby
+*because* they are same-unit. The displacement table therefore cannot tell the
+two explanations apart, and as written it reads as though near/far were the
+rule.
+
+Three thunks separate them. Each is a six-byte forwarder whose callee is a jump
+stub in an adjacent but *different* module, and each is encoded `4EBA` at a
+displacement far inside the range where `ED_SaveEverythingToDisk` used `BSR.W`:
+
+| function | displacement | encoding |
+|---|---|---|
+| `SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte` | 0x0158 | `4EBA` |
+| `SCRIPT_ReadNextRbfByte` | 0x0164 | `4EBA` |
+| `DST_WriteRtcFromGlobals` | 0x066c | `4EBA` |
+
+All three are smaller than the largest `BSR.W` displacement observed (0x123c)
+and two are smaller than the *smallest* `4EBA` one by an order of magnitude. So
+the split is not a distance heuristic. **Translation-unit locality is the rule**,
+and the near/far correlation in the original table is a side effect of it.
+
+This matters because it is the difference between a property that might be
+tuned by an option and one that cannot be: a distance threshold would be a
+code-generator parameter worth hunting for in the option list, whereas per-callee
+locality is a linker-visible fact the compiler can only know from the source
+grouping. Nothing in `sc`'s option list reaches it.
+
+`src/c/script_read_next_rbf_byte.c` and its sibling are the minimal probes for
+this class — six bytes, one instruction in question, no other open class in the
+function. They supersede `esqiff_handle_brush_ini_reload_hotkey.c` (128 bytes,
+nine regions) as the first thing to run on a newly obtained compiler.
+
 ## CORRECTION: the target is OLDER than 6.00, not between 6.00 and 6.51
 
 The "6.00 < original < 6.51" bracket recorded above rested on the call-encoding

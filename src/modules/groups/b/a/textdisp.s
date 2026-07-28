@@ -17,7 +17,7 @@
 ;   D0-D3/A0-A1
 ; CALLS:
 ;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow,
-;   TEXTDISP_FormatEntryTimeForIndex, STR_SkipClass3Chars, _STRING_AppendAtNull, TEXTDISP_FindControlToken,
+;   TEXTDISP_FormatEntryTimeForIndex, STR_SkipClass3Chars, _STRING_AppendAtNull, _TEXTDISP_FindControlToken,
 ;   TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
 ;   _TEXTDISP_PrimaryChannelCode, _CLOCK_CurrentDayOfWeekIndex, TEXTDISP_BannerFallbackIsSpecialFlag/_TEXTDISP_BannerCharSelected/TEXTDISP_BannerSelectedIsSpecialFlag, P_TYPE_WeatherBottomLineMsgPtr
@@ -208,7 +208,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     ASL.L   #2,D0
     MOVEA.L -4(A5),A0
     MOVE.L  56(A0,D0.L),(A7)
-    JSR     TEXTDISP_FindControlToken(PC)
+    JSR     _TEXTDISP_FindControlToken(PC)
 
     ADDQ.W  #8,A7
     CLR.L   -216(A5)
@@ -255,7 +255,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     JSR     _STRING_AppendAtNull(PC)
 
     PEA     _TEXTDISP_PrimarySearchText
-    JSR     TEXTDISP_FindControlToken(PC)
+    JSR     _TEXTDISP_FindControlToken(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1

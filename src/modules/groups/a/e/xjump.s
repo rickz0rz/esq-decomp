@@ -62,7 +62,7 @@ GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQDISP_GetEntryAuxPointerByMode
+;   _ESQDISP_GetEntryAuxPointerByMode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -73,7 +73,7 @@ GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
-    JMP     ESQDISP_GetEntryAuxPointerByMode
+    JMP     _ESQDISP_GetEntryAuxPointerByMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode   (Routine at GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode)
@@ -84,7 +84,7 @@ _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQDISP_GetEntryPointerByMode
+;   _ESQDISP_GetEntryPointerByMode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -95,7 +95,7 @@ _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode:
-    JMP     ESQDISP_GetEntryPointerByMode
+    JMP     _ESQDISP_GetEntryPointerByMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit   (Routine at GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit)

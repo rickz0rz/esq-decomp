@@ -135,6 +135,8 @@ modules/groups/a/a/app2_esq_testbit1based.s                            c/esq_tes
 modules/groups/a/a/app3_esqtryromwritetest.s                           c/esq_try_rom_write_test.c
 modules/groups/a/a/app2_esq_wildcardmatch.s                            c/esq_wildcard_match.c
 modules/groups/a/n/esqdispb_esqdisp_computescheduleoffsetforrow.s      c/esqdisp_compute_schedule_offset_for_row.c
+modules/groups/a/n/esqdispb_p0_p1_esqdisp_getentryauxpointerbymode.s   c/esqdisp_get_entry_aux_pointer_by_mode.c
+modules/groups/a/n/esqdispb_p0_p1_esqdisp_getentrypointerbymode.s      c/esqdisp_get_entry_pointer_by_mode.c
 modules/groups/a/n/esqdisp_esqdisp_processgridmessagesifidle.s         c/esqdisp_process_grid_messages_if_idle.c
 modules/groups/a/n/esqdispb_p0_esqdisp_promotesecondarygrouptoprimary.s c/esqdisp_promote_secondary_group_to_primary.c
 modules/groups/a/n/esqdispb_esqdisp_promotesecondarylineheadtailifmarked.s c/esqdisp_promote_secondary_line_head_tail.c
@@ -253,6 +255,7 @@ modules/groups/b/a/script2_script_clearctrllineifenabled.s             c/script_
 modules/groups/b/a/script3_scriptclearsearchtextsandchannels.s         c/script_clear_search_texts_and_channels.c
 modules/groups/b/a/script_script_deallocatebufferarray.s               c/script_deallocate_buffer_array.c
 modules/groups/b/a/script4b_p0_script_drawinsettextwithframe.s         c/script_draw_inset_text_with_frame.c
+modules/groups/b/a/script2_script_esq_capturectrlbit4streambufferbyte.s c/script_esq_capture_ctrl_bit4_stream_buffer_byte.c
 modules/groups/b/a/script4b_script_getbannercharorfallback.s           c/script_get_banner_char_or_fallback.c
 modules/groups/b/a/script2_script_getctrllineflag.s                    c/script_get_ctrl_line_flag.c
 modules/groups/b/a/script3_scriptinitctrlcontext.s                     c/script_init_ctrl_context.c
@@ -260,6 +263,7 @@ modules/groups/b/a/script2_script_pollhandshakeandapplytimeout.s       c/script_
 modules/groups/b/a/script3_script_primebannertransitionfromhexcode.s   c/script_prime_banner_transition_from_hex_code.c
 modules/groups/b/a/script2_script_readhandshakebit3flag.s              c/script_read_handshake_bit3_flag.c
 modules/groups/b/a/script2_script_readhandshakebit5mask.s              c/script_read_handshake_bit5_mask.c
+modules/groups/b/a/script2_script_readnextrbfbyte.s                    c/script_read_next_rbf_byte.c
 modules/groups/b/a/script4_scriptresetbannerchardefaults.s             c/script_reset_banner_char_defaults.c
 modules/groups/b/a/script3b_script_resetctrlcontextandclearstatusline.s c/script_reset_ctrl_context_and_clear_status_line.c
 modules/groups/b/a/script3b_script_savectrlcontextsnapshot.s           c/script_save_ctrl_context_snapshot.c
@@ -277,6 +281,7 @@ modules/groups/b/a/textdisp3_p1_textdisp_buildchannellabel.s           c/textdis
 modules/groups/b/a/textdisp3_p1_textdisp_buildmatchindexlist.s         c/textdisp_build_match_index_list.c
 modules/groups/b/a/textdisp3_p1_textdisp_computetimeoffset.s           c/textdisp_compute_time_offset.c
 modules/groups/b/a/textdisp3_textdisp_findaliasindexbyname.s           c/textdisp_find_alias_index_by_name.c
+modules/groups/b/a/textdisp3_p1.s                                      c/textdisp_find_control_token.c
 modules/groups/b/a/textdisp3_p1_textdisp_findquotedspan.s              c/textdisp_find_quoted_span.c
 modules/groups/b/a/textdisp3_p1_textdisp_formatentrytime.s             c/textdisp_format_entry_time.c
 modules/groups/b/a/textdisp_textdisp_getgroupentrycount.s              c/textdisp_get_group_entry_count.c

@@ -1,4 +1,4 @@
-/* RESTORES: TEXTDISP_FindControlToken
+/* RESTORES: _TEXTDISP_FindControlToken
  * MODULE:   modules/groups/b/a/textdisp3_p1.s
  * STATUS:   behavioural
  *

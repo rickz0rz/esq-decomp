@@ -90,7 +90,7 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ;      CTRL/handshake state via SERDAT shadow + CIAB reads
 ;      (src/modules/groups/b/a/script2.s).
 ; 3) Byte ingress source:
-;      Incoming serial bytes are consumed through SCRIPT_ReadNextRbfByte
+;      Incoming serial bytes are consumed through _SCRIPT_ReadNextRbfByte
 ;      (RBF-backed producer/consumer path).
 ; 4) Command framing:
 ;      ESQPARS_ConsumeRbfByteAndDispatchCommand applies 0x55/0xAA preamble sync and
@@ -101,7 +101,7 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ;      stream and feed command handlers.
 ; 6) Custom-build hook guidance:
 ;      To reuse the standard 2400 protocol decode path, keep steps 4/5 intact and
-;      adapt only step 2/3 so equivalent byte sequences reach SCRIPT_ReadNextRbfByte.
+;      adapt only step 2/3 so equivalent byte sequences reach _SCRIPT_ReadNextRbfByte.
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_ConsumeRbfByteAndDispatchCommand   (Parse one serial command byte stream)
@@ -140,7 +140,7 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal, ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, _ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, _GROUP_AM_JMPTBL_WDISP_SPrintf, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, _ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadRbfBytesToBuffer, ESQIFF2_ReadRbfBytesWithXor, _ESQIFF2_ReadSerialRecordIntoBuffer, _ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, _ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, _ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, _ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
+;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal, ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, _ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, _GROUP_AM_JMPTBL_WDISP_SPrintf, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, _ESQDISP_GetEntryPointerByMode, _ESQDISP_GetEntryAuxPointerByMode, _ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadRbfBytesToBuffer, ESQIFF2_ReadRbfBytesWithXor, _ESQIFF2_ReadSerialRecordIntoBuffer, _ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, _ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, _ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, _ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
 ; READS:
 ;   _CTRL_BUFFER, _CTRL_H, _DATACErrs, _Global_REF_696_400_BITMAP, _Global_REF_RASTPORT_1, ESQPARS_BannerSubcommandSet, Global_STR_RESET_COMMAND_RECEIVED, _CTASKS_STR_1, ESQPARS_PersistOnNextBoxOffFlag, DISKIO2_InteractiveTransferArmedFlag, _ESQPARS_SelectionSuffixBuffer, ESQIFF_StatusPacketReadyFlag, ESQPARS_SelectionMatchCode, _ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, _ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, _ESQIFF_ParseAttemptCount, _ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
@@ -152,7 +152,7 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ;   Uses 0x55/0xAA preamble sync and clears preamble flags on command completion.
 ;   This is the shared command/data ingest path for serial bytes once they are in
 ;   the RBF-backed stream. Custom transports/handshakes can reuse this by feeding
-;   equivalent byte sequences to SCRIPT_ReadNextRbfByte / _CTRL_BUFFER producers.
+;   equivalent byte sequences to _SCRIPT_ReadNextRbfByte / _CTRL_BUFFER producers.
 ;------------------------------------------------------------------------------
 ESQPARS_ConsumeRbfByteAndDispatchCommand:
     LINK.W  A5,#-232
@@ -590,12 +590,12 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     MOVE.L  -30(A5),-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQDISP_GetEntryPointerByMode(PC)
+    JSR     _ESQDISP_GetEntryPointerByMode(PC)
 
     MOVE.L  -30(A5),(A7)
     MOVE.L  -26(A5),-(A7)
     MOVE.L  D0,-66(A5)
-    JSR     ESQDISP_GetEntryAuxPointerByMode(PC)
+    JSR     _ESQDISP_GetEntryAuxPointerByMode(PC)
 
     LEA     12(A7),A7
     LEA     -41(A5),A0

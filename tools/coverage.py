@@ -13,12 +13,22 @@ compiler is identified, not just by size. The key split is how a function's call
 were encoded in the original (see docs/compiler-version.md):
 
   cross-unit   every call is 4EBA, JSR (d16,PC) -- the encoding the original used
-               for a callee in another translation unit. Our restorations are one
-               function per file, so every call we emit is cross-unit too. These
-               are pre-positioned to match and are the highest-value targets.
-  intra-unit   contains a BSR.W to a nearby callee, which means that callee shared
-               a .c file with it. Matching those needs the original source grouping
-               reconstructed, which is a separate and much larger problem.
+               for a callee in another translation unit.
+  intra-unit   contains a BSR.W (6100) to a nearby callee, which means that callee
+               shared a .c file with it.
+
+The names describe the ORIGINAL, not our chances. This docstring used to claim
+cross-unit was "pre-positioned to match", reasoning that a one-function-per-file
+restoration emits only cross-unit calls. The reasoning is fine; the premise is
+not. SAS/C 6.51 emits BSR.W for EVERY call regardless of the callee, so our
+output lines up with the 6100 bucket, not the 4EBA one:
+
+    intra-unit  11 exact / 57 behavioural    16%
+    no-calls    11 exact / 109 behavioural    9%
+    cross-unit   0 exact / 144 behavioural    0%   <-- capped by the call opcode
+
+--targets therefore ranks intra-unit and no-calls, and withholds cross-unit
+behind --cross-unit. See AGENTS.md, "Progress is measured in BYTES".
 """
 import os, re, sys
 
@@ -26,6 +36,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 import candidates as C
 from screen_candidates import blockers
+
+# Shapes a C replacement cannot express at all (AGENTS.md, "Six shapes a C
+# replacement cannot express"). Screened out of the target list entirely.
+BLOCKERS_HARD = {'register-args', 'live-register-on-entry', 'interior-label',
+                 'rotate-instruction', 'tail-jump', 'predecrement-store',
+                 'falls-through'}
 
 
 def survey():
@@ -184,12 +200,29 @@ def main():
 
     if '--targets' in sys.argv:
         n = int(sys.argv[sys.argv.index('--targets') + 1]) if len(sys.argv) > sys.argv.index('--targets') + 1 and sys.argv[sys.argv.index('--targets') + 1].isdigit() else 25
-        print(f'\n  next {n} targets (cross-unit, largest first):')
-        g = sorted((f for f in fns if f['kind'] == 'cross-unit' and not f['status']),
-                   key=lambda f: -f['size'])
-        for f in g[:n]:
-            bl = ','.join(f['blockers']) or '-'
-            print(f'    {f["size"]:5d}  {f["name"]:54s} {bl:24s} {f["src"]}')
+        # Rank by the buckets that actually produce exact restorations. This used
+        # to print cross-unit ('4EBA') on the theory that our one-function-per-file
+        # output was pre-positioned to match it. It is not: SAS/C 6.51 emits BSR.W
+        # for EVERY call, so cross-unit is the one bucket our output can never
+        # match -- 0 exact out of 144 attempts, against 11 of 68 for intra-unit.
+        # See AGENTS.md, "Progress is measured in BYTES".
+        for kind in ('intra-unit', 'no-calls'):
+            g = sorted((f for f in fns
+                        if f['kind'] == kind and not f['status']
+                        and not (set(f['blockers']) & BLOCKERS_HARD)),
+                       key=lambda f: -f['size'])
+            print(f'\n  next {n} unblocked {kind} targets (largest first):')
+            for f in g[:n]:
+                bl = ','.join(f['blockers']) or '-'
+                print(f'    {f["size"]:5d}  {f["name"]:54s} {bl:24s} {f["src"]}')
+        blocked = [f for f in fns if f['kind'] == 'cross-unit' and not f['status']]
+        print(f'\n  (cross-unit withheld: {len(blocked)} functions / '
+              f'{sum(f["size"] for f in blocked)} bytes, capped at behavioural '
+              f'under 6.51 by the call opcode alone -- pass --cross-unit to list them)')
+        if '--cross-unit' in sys.argv:
+            for f in sorted(blocked, key=lambda f: -f['size'])[:n]:
+                bl = ','.join(f['blockers']) or '-'
+                print(f'    {f["size"]:5d}  {f["name"]:54s} {bl:24s} {f["src"]}')
 
 
 if __name__ == '__main__':

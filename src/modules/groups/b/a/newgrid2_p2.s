@@ -177,12 +177,12 @@ _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   ESQDISP_GetEntryAuxPointerByMode
+;   _ESQDISP_GetEntryAuxPointerByMode
 ; DESC:
-;   Jump table entry that forwards to ESQDISP_GetEntryAuxPointerByMode.
+;   Jump table entry that forwards to _ESQDISP_GetEntryAuxPointerByMode.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
-    JMP     ESQDISP_GetEntryAuxPointerByMode
+    JMP     _ESQDISP_GetEntryAuxPointerByMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel   (Jump stub)
@@ -289,12 +289,12 @@ NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   ESQDISP_GetEntryPointerByMode
+;   _ESQDISP_GetEntryPointerByMode
 ; DESC:
-;   Jump table entry that forwards to ESQDISP_GetEntryPointerByMode.
+;   Jump table entry that forwards to _ESQDISP_GetEntryPointerByMode.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode:
-    JMP     ESQDISP_GetEntryPointerByMode
+    JMP     _ESQDISP_GetEntryPointerByMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine   (Jump stub)

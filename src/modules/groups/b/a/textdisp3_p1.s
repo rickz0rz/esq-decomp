@@ -1,9 +1,9 @@
-    XDEF    TEXTDISP_FindControlToken
+    XDEF    _TEXTDISP_FindControlToken
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_FindControlToken   (Find control token in text)
+; FUNC: _TEXTDISP_FindControlToken   (Find control token in text)
 ; ARGS:
 ;   stack +8: textPtr (A3)
 ; RET:
@@ -16,7 +16,7 @@
 ;   Returns the first matching token byte.
 ;   Control tokens: 0x84, 0x85, 0x86, 0x87, 0x8C, 0x8D, 0x8F, 0x90, 0x93, 0x99, 0x9A, 0x9B, 0xA3
 ;------------------------------------------------------------------------------
-TEXTDISP_FindControlToken:
+_TEXTDISP_FindControlToken:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 

@@ -14,7 +14,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   TEXTDISP_FindControlToken, _TEXTDISP_FindQuotedSpan,
+;   _TEXTDISP_FindControlToken, _TEXTDISP_FindQuotedSpan,
 ;   TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode,
 ;   TLIBA2_JMPTBL_ESQ_TestBit1Based, _STRING_CompareNoCase,
 ;   TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold
@@ -195,7 +195,7 @@ TEXTDISP_FindEntryMatchIndex:
 
 .begin_scan:
     MOVE.L  8(A5),-(A7)
-    BSR.W   TEXTDISP_FindControlToken
+    BSR.W   _TEXTDISP_FindControlToken
 
     PEA     -26(A5)
     MOVE.L  D0,-(A7)
@@ -245,7 +245,7 @@ TEXTDISP_FindEntryMatchIndex:
     MOVEA.L 56(A3,D0.L),A0
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-14(A5)
-    BSR.W   TEXTDISP_FindControlToken
+    BSR.W   _TEXTDISP_FindControlToken
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1

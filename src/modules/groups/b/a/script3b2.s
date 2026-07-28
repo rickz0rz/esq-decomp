@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, _PARSEINI_CheckCtrlHChange, SCRIPT_HandleBrushCommand, SCRIPT_ApplyPendingBannerTarget,
+;   _SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, _PARSEINI_CheckCtrlHChange, SCRIPT_HandleBrushCommand, SCRIPT_ApplyPendingBannerTarget,
 ;   WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, _TEXTDISP_SetRastForMode, SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, _TEXTDISP_ResetSelectionAndRefresh
 ; READS:
 ;   Global_WORD_SELECT_CODE_IS_RAVESC, CONFIG_MSN_FlagChar, SCRIPT_StatusRefreshHoldFlag, ESQDISP_DisplayActiveFlag, SCRIPT_StatusMaskRefreshPending
@@ -94,7 +94,7 @@ SCRIPT_HandleSerialCtrlCmd:
     CLR.W   _Global_RefreshTickCounter
 
 .ctrl_cmd_parse_state_dispatch:
-    JSR     SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte(PC)
+    JSR     _SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte(PC)
 
     MOVE.L  D0,D7
     MOVE.W  SCRIPT_CTRL_STATE,D0

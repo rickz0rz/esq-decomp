@@ -606,7 +606,7 @@ ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_ReadNextRbfByte
+;   _SCRIPT_ReadNextRbfByte
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -617,7 +617,7 @@ ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte:
-    JMP     SCRIPT_ReadNextRbfByte
+    JMP     _SCRIPT_ReadNextRbfByte
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte   (Jump-table forwarder)
