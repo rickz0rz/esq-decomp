@@ -849,18 +849,33 @@ target moves with image layout, and it explains both alert codes, the ED_*
 sensitivity (ED drives the menu that sets the index) and why no single file is
 attributable.
 
-**This is a latent bug in the ORIGINAL, not something a restoration introduced** --
-the unguarded index and the unbounded copy are in unmodified assembly. The C build
-presumably just changes which value the index holds, or what lies past the table,
-often enough to matter.
+#### ...AND THAT MECHANISM IS REFUTED. Two diagnostic builds killed it.
 
-**Next step:** find what `_TEXTDISP_CurrentMatchIndex` actually holds when
-`CLEANUP_RenderAlignedStatusScreen` runs, and which writer leaves it out of range.
-Three restorations write it -- `script_dispatch_playback_cursor_command.c` (six
-times), `textdisp_reset_selection_and_refresh.c`, and
-`script_reset_banner_char_defaults.c` -- and the first was re-verified against the
-original's jump table: its cases 5/6/7 call the renderer and do NOT set -1, which
-matches. Do not assume the writer is a C file; the assembly writes it too.
+The story above is coherent, fits every observation, and is WRONG. It was tested
+rather than believed, with throwaway patches to `cleanup3.s` (which break
+`test-hash` by design -- revert them):
+
+1. **Clamp a negative index on entry** (`TST.W` / `BPL` / `CLR.W` at the top of
+   `CLEANUP_RenderAlignedStatusScreen`). Still gurus 3/3 with the B-Trap.
+2. **Bound the copy to 120 bytes** (`DBF` counter around the
+   `MOVE.B (A0)+,(A1)+` loop), which tests the stack-smash mechanism
+   independently of *why* the source pointer is bad. Still gurus 3/3.
+
+So the unbounded copy is not the route, and a negative index is not the trigger.
+
+**That also puts the landing-site identification in doubt**, because both patches
+targeted that function on the strength of it. The base rests on a single
+alignment tiebreak: three candidates survived the cross-build identity test and
+only `0x220888` is 8-aligned. If the base is actually one of the two others
+(`0x2207cc`, `0x22082e` -- both also inside this same function) the conclusion is
+unchanged; but if the identity test wrongly eliminated a candidate, the whole
+chain moves. **Do not build on the landing site until the base is confirmed
+independently** -- e.g. by a diagnostic build that plants a recognisable unique
+word at a known CODE offset and checks which address the trap reports.
+
+What survives from all this is method, not a culprit: the base-solving recipe,
+the two-culprit `--fixed` bisect, the ED_* family cut, and the elimination of
+argument-count bugs, chip RAM, DATA corruption and the 16-bit ceiling.
 
 #### Refuted: the 16-bit branch ceiling as the cause
 
