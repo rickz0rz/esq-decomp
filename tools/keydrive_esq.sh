@@ -46,7 +46,9 @@ BOOT="${3:-50}"
 TRIALS="${TRIALS:-3}"
 PREVUE="$HOME/Downloads/Prevue"
 SHOTS="${SHOTS:-/tmp/esqkeys}"
-CONFIG="$HOME/Documents/FS-UAE/Configurations/Prevue-HDD.fs-uae"
+# FSUAE_CONFIG lets a diagnostic run use a different machine (e.g. more RAM)
+# without touching the user's own configuration.
+CONFIG="${FSUAE_CONFIG:-$HOME/Documents/FS-UAE/Configurations/Prevue-HDD.fs-uae}"
 UAELOG="$HOME/Documents/FS-UAE/Cache/Logs/fs-uae.log.txt"
 LOG="/tmp/keydrive_$LABEL.log"
 PYBIN=/tmp/.capvenv/bin/python

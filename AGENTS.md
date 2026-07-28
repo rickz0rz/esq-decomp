@@ -575,10 +575,39 @@ detector bugs were found and fixed, in this order:
 disagrees with itself, fix the oracle first: everything downstream of it is
 fiction. That rule cost two full bisects to learn.
 
-Next step: a `TRIALS=3` bisect, which is sound but roughly three times the cost
-(~90 min), or a cheaper deterministic signal if one can be found. Worth noting
-the fault may not be a single restoration at all -- adding an unused function to
-one file, changing nothing but layout, moved the symptom.
+**What is now known, each from a measured experiment:**
+
+- **Not "being a C build".** The byte-exact manifest (23 restorations, each
+  verified byte-identical in the linked image, same 279804 bytes as the
+  reference) is clean 3/3. So padding, unit boundaries and section layout are
+  not by themselves the cause.
+- **Not a single entry.** Removal-bisecting the 289: keeping the first 144 STILL
+  gurus, but NEITHER 72-entry half of that 144 gurus on its own. A single bad
+  restoration cannot produce that.
+- **Not memory exhaustion.** Re-running on 8MB of fast RAM instead of 1MB still
+  gurus (clean trial 1, guru trial 2). `AN_BadFreeAddr` made a failed allocation
+  followed by a free of the null result an attractive theory; the RAM makes it
+  at most less likely, not absent.
+- **Layout moves it.** Adding an unused function to one restoration -- changing
+  nothing but the image layout -- moved the symptom from one keystroke to
+  another.
+
+Taken together the fault behaves like an INTERACTION or a latent bug exposed
+probabilistically, not like one wrong function.
+
+Next step is proper delta debugging (ddmin), which tests complements and
+increases granularity when a plain split fails -- exactly the case here.
+`tools/bisect_remove.sh` only does 2-way splits and correctly gives up rather
+than naming a boundary; it stops with the surviving set in `/tmp/br_set.txt`.
+
+Cheap things worth trying first, in rough order of information per run:
+
+1. Does the 144-entry set still guru with the two 72-halves REVERSED in link
+   order? If order matters, it is layout, not semantics.
+2. Bisect the DATA side: does a build with the behavioural restorations but the
+   original assembly for anything touching allocation stay clean?
+3. Turn on FS-UAE's memory debugging, if it has any, to catch the bad FreeMem
+   address rather than inferring it from the alert code.
 
 ## Verifying a C build
 
