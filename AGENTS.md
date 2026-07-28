@@ -808,6 +808,70 @@ already prints the trap line, and the binaries must be SAVED (it overwrites
 `~/Downloads/Prevue/ESQ` every run). Once the base is known, the landing symbol
 follows from the map and names what the wild pointer actually held.
 
+#### THE LANDING SITE IS IDENTIFIED: `CLEANUP_RenderAlignedStatusScreen + 0x10c`
+
+Method, which is reusable for any future wild-jump fault here:
+
+1. Collect (trapPC, binary) from several FAILING builds with different layouts,
+   saving each binary -- `btrap_test.sh` overwrites the staged `ESQ` every run.
+2. Brute-force the CODE base: for every candidate `base`, require the word at
+   `trapPC - base` to equal the logged opcode in EVERY build.
+3. Discriminate what survives by requiring the ~24 bytes around the landing site
+   to be BYTE-IDENTICAL across builds -- the real site is the same code in all of
+   them, so candidates landing in shifting C output are eliminated.
+4. Break any remaining tie on alignment: a loaded hunk comes from `AllocMem`, so
+   the base is 8-ALIGNED. That is what settles it.
+
+Result: base `0x00220888`, and the trap word is the `FFF8` displacement of a
+`-8(A5)` access at `CLEANUP_RenderAlignedStatusScreen + 0x10c`. (Three candidate
+bases survived step 3 because all three land on an `FFF8` displacement inside the
+SAME function; only one is 8-aligned.) The function is **still assembly, not
+restored**, so the landing site is untouched code -- it is where control arrives,
+not the bug.
+
+#### And the mechanism: an UNBOUNDED STACK COPY four instructions later
+
+```
++0x1c6  MOVEA.L -8(A5),A0          ; title-table entry
++0x1ca  MOVEA.L 56(A0,D0.L),A0     ; -> title text pointer
++0x1ce  LEA     -554(A5),A1        ; stack buffer inside a LINK.W A5,#-840 frame
++0x1d2  MOVE.B  (A0)+,(A1)+ / BNE  ; copy until NUL -- NO length limit
+```
+
+`-8(A5)` is `_TEXTDISP_PrimaryTitlePtrTable[_TEXTDISP_CurrentMatchIndex]`, loaded
+at `+0x0f8..+0x10a` with **no bound check on the index**. So a
+`CurrentMatchIndex` that is out of range (notably -1, which several code paths
+assign) reads a pointer from OUTSIDE the table, and the copy then runs from
+whatever that points at until it happens to find a zero -- straight over the
+840-byte frame and its return address. A smashed return address landing on
+whatever the garbage text happened to contain is *exactly* a wild jump whose
+target moves with image layout, and it explains both alert codes, the ED_*
+sensitivity (ED drives the menu that sets the index) and why no single file is
+attributable.
+
+**This is a latent bug in the ORIGINAL, not something a restoration introduced** --
+the unguarded index and the unbounded copy are in unmodified assembly. The C build
+presumably just changes which value the index holds, or what lies past the table,
+often enough to matter.
+
+**Next step:** find what `_TEXTDISP_CurrentMatchIndex` actually holds when
+`CLEANUP_RenderAlignedStatusScreen` runs, and which writer leaves it out of range.
+Three restorations write it -- `script_dispatch_playback_cursor_command.c` (six
+times), `textdisp_reset_selection_and_refresh.c`, and
+`script_reset_banner_char_defaults.c` -- and the first was re-verified against the
+original's jump table: its cases 5/6/7 call the renderer and do NOT set -1, which
+matches. Do not assume the writer is a C file; the assembly writes it too.
+
+#### Refuted: the 16-bit branch ceiling as the cause
+
+`CLEANUP_RenderAlignedStatusScreen + 0x13c` calls `_DISPLIB_NormalizeValueByStep`,
+which is the very symbol that produced `Error 28` during the padding experiment --
+an appealing connection, since it would tie the guru to the branch ceiling and
+explain the layout sensitivity. It is wrong: in the failing 313-entry build that
+`JSR (d16,PC)` encodes `+28312`, well inside range and resolving exactly to the
+symbol. vlink range-checks and ERRORS rather than truncating, which is why the pad
+experiment failed to link instead of miscompiling.
+
 #### Ruled out: wrong argument counts (`tools/check_c_signatures.py`)
 
 A callee reading a stack slot the caller never pushed is the textbook way to
