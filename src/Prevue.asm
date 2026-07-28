@@ -785,6 +785,7 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/b/a/tliba2.s"
     include "modules/groups/b/a/tliba2_tliba2_findlastcharinstring.s"
     include "modules/groups/b/a/tliba2_p0.s"
+    include "modules/groups/b/a/tliba2_p0_tliba2_resolveentrywindowandslotcount.s"
     include "modules/groups/b/a/tliba2_tliba2_resolveentrywindowwithdefaultrange.s"
     include "modules/groups/b/a/tliba2_p1.s"
     include "modules/groups/b/a/tliba2_tliba2_parseentrytimewindow.s"

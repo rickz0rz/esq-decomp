@@ -278,6 +278,7 @@ modules/groups/b/a/textdisp3_p1_p5_textdisp_trimtexttopixelwidth.s     c/textdis
 modules/groups/b/a/tliba1_tliba1_parsestylecodechar.s                  c/tliba1_parse_style_code_char.c
 modules/groups/b/a/tliba2_tliba2_findlastcharinstring.s                c/tliba2_find_last_char_in_string.c
 modules/groups/b/a/tliba2_tliba2_parseentrytimewindow.s                c/tliba2_parse_entry_time_window.c
+modules/groups/b/a/tliba2_p0_tliba2_resolveentrywindowandslotcount.s   c/tliba2_resolve_entry_window_and_slot_count.c
 modules/groups/b/a/tliba2_tliba2_resolveentrywindowwithdefaultrange.s  c/tliba2_resolve_entry_window_with_default_range.c
 modules/groups/b/a/tliba3_tliba3_clearviewmoderastport.s               c/tliba3_clear_view_mode_rast_port.c
 modules/groups/b/a/tliba3_p1_tliba3_drawinnerframeborder.s             c/tliba3_draw_inner_frame_border.c
