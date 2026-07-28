@@ -702,6 +702,45 @@ It only sees the F-line variant, so `tools/btrap_test.sh` reports the log signal
 - **A wrong pointer baked into DATA.** All six differing DATA bytes sit inside
   relocated longwords and each is shifted by exactly `0xAB2`, matching CODE
   growth. Nothing stray. The wild jump is computed at runtime, not linked in.
+- **CHIP-memory exhaustion.** Worth stating precisely because the earlier
+  "8MB of RAM does not fix it" experiment does NOT rule this out: the bigmem
+  config raises `fast_memory` only, and `chip_memory` stays at 1024. Bitmaps and
+  copper lists must live in chip RAM, so a failed chip allocation would be
+  invisible to that test — and an unchecked one explains BOTH symptoms at once (a
+  null jumped through, or a null freed). It is still wrong: `chip_memory = 2048`
+  gurus 3/3 on the 305 build. `Prevue-HDD-bigchip.fs-uae` is left in place for
+  re-testing.
+
+#### The strongest remaining signal is SIZE, and it is very tight
+
+| build | bytes | verdict |
+|---|---:|---|
+| reference / byte-exact C | 279804 | clean |
+| keep 36b of the window | 280324 | clean |
+| keep 36a of the window | 281172 | clean |
+| keep entries 0–72 | 281360 | clean |
+| keep entries 72–144 | 281740 | **fails** |
+| 289 / 305 entries | 284716 / 285292 | **fails** |
+
+Every failing build is larger than every clean build, with the boundary inside a
+380-byte window. That is consistent with a latent fault that only manifests past
+some layout threshold, and it explains why entry-level attribution keeps failing
+in both directions: the subsets are changing size as much as content.
+
+Trying to test size directly by padding a clean build hit `Error 28` at
+**`-0x80e0`, only 224 bytes past the 16-bit limit** — so the hand-written
+assembly's `BSR.W` pairs really are at the ceiling, and the padding experiment
+that would settle this cannot be built at that size. Note the corollary: because
+a C replacement moves code in and out of units, *which* pairs are stressed
+depends on the manifest, not just on total size.
+
+**The obvious next question is whether something 16-bit is truncating silently.**
+vlink range-checks what it emits — it produced the Error 28 above — so a linked
+build should be free of overflowed displacements. If that is true the size
+correlation needs another explanation; if some reloc class is NOT checked, a
+wrapped 16-bit displacement lands ~64KB away, on data, at a layout-dependent
+address, which fits every observation. Auditing vlink's range checks per reloc
+type is the cheapest way to close this.
 
 #### Entry-level removal-bisect is confounded by layout — do not trust it alone
 
