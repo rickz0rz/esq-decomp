@@ -17,7 +17,7 @@
 ;   D0-D7, A0-A3, A6
 ; CALLS:
 ;   _GCOMMAND_ComputePresetIncrement, _GCOMMAND_InitPresetWorkEntry,
-;   GCOMMAND_TickPresetWorkEntries
+;   _GCOMMAND_TickPresetWorkEntries
 ; READS:
 ;   _Global_UIBusyFlag, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, _GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3
 ; WRITES:
@@ -218,7 +218,7 @@ GCOMMAND_BuildBannerBlock:
     MOVE.W  D0,26(A0)
     MOVE.W  #$8a,28(A0)
     CLR.W   30(A0)
-    BSR.W   GCOMMAND_TickPresetWorkEntries
+    BSR.W   _GCOMMAND_TickPresetWorkEntries
 
     ADDQ.L  #1,-8(A5)
     MOVEQ   #32,D0

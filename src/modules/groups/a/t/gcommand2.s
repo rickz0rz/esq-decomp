@@ -1,8 +1,8 @@
-    XDEF    GCOMMAND_FindPathSeparator
+    XDEF    _GCOMMAND_FindPathSeparator
 
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_FindPathSeparator   (Return a pointer to the final path separator (':' or '/') in the buffer.)
+; FUNC: _GCOMMAND_FindPathSeparator   (Return a pointer to the final path separator (':' or '/') in the buffer.)
 ; ARGS:
 ;   stack +4: pathPtr (via 8(A5))
 ; RET:
@@ -20,7 +20,7 @@
 ; NOTES:
 ;   Scans to NUL, then walks backward until a separator is found.
 ;------------------------------------------------------------------------------
-GCOMMAND_FindPathSeparator:
+_GCOMMAND_FindPathSeparator:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3

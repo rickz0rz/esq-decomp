@@ -1,8 +1,8 @@
-    XDEF    DISKIO_ConsumeLineFromWorkBuffer
+    XDEF    _DISKIO_ConsumeLineFromWorkBuffer
 
 
 ;------------------------------------------------------------------------------
-; FUNC: DISKIO_ConsumeLineFromWorkBuffer   (Routine at DISKIO_ConsumeLineFromWorkBuffer)
+; FUNC: _DISKIO_ConsumeLineFromWorkBuffer   (Routine at _DISKIO_ConsumeLineFromWorkBuffer)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -20,7 +20,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-DISKIO_ConsumeLineFromWorkBuffer:
+_DISKIO_ConsumeLineFromWorkBuffer:
     LINK.W  A5,#-4
     MOVE.L  _Global_PTR_WORK_BUFFER,-4(A5)
 

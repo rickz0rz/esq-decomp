@@ -12,7 +12,7 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectTemplateRowsSet0
+;   _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, _ESQ_CopperEffectTemplateRowsSet0
 ; WRITES:
 ;   ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
@@ -21,7 +21,7 @@
 ;   Writes 16 entries (DBF runs D4+1 iterations). Exact effect semantics unknown.
 ;------------------------------------------------------------------------------
 _ESQ_UpdateCopperListsFromParams:
-    LEA     ESQ_CopperEffectTemplateRowsSet0,A0
+    LEA     _ESQ_CopperEffectTemplateRowsSet0,A0
     MOVE.W  26(A0),D1
     MOVE.L  _HIGHLIGHT_CopperEffectSeed,D0
     LEA     ESQ_CopperEffectListA,A0

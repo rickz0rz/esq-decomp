@@ -314,3 +314,9 @@ modules/groups/b/a/tliba3_tliba3_getviewmoderastport.s                 c/tliba3_
 modules/groups/b/a/tliba3_tliba3_initruntimeentry.s                    c/tliba3_init_runtime_entry.c
 modules/groups/b/a/tliba3_tliba3_selectnextviewmode.s                  c/tliba3_select_next_view_mode.c
 modules/groups/b/a/tliba2_p1.s                                         c/tliba_find_first_wildcard_match_index.c
+modules/groups/a/g/diskio_p3.s                                         c/diskio_consume_line_from_work_buffer.c
+modules/groups/a/i/disptext_p0_disptext_buildlinepointertable.s        c/disptext_build_line_pointer_table.c
+modules/groups/a/j/disptext2_p1.s                                      c/datetime_classify_value_in_range.c
+modules/groups/a/t/gcommand2.s                                         c/gcommand_find_path_separator.c
+modules/groups/a/u/gcommand3_p1.s                                      c/gcommand_apply_highlight_flag.c  SHORTINT
+modules/groups/a/u/gcommand3b_p2_gcommand_tickpresetworkentries.s      c/gcommand_tick_preset_work_entries.c

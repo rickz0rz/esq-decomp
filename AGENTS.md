@@ -130,7 +130,7 @@ Both were discovered the hard way; both are enforced by `build-split.sh`.
 **1. Objects are longword-sized.** Hunk objects store section sizes in
 longwords, so an object whose content is 2 (mod 4) bytes gets padded, shifting
 everything after it. `gen_units.py` therefore coalesces consecutive modules
-until each unit lands on a 4-byte boundary — which is why 745 source modules
+until each unit lands on a 4-byte boundary — which is why 748 source modules
 become 385 link units. Source files stay fine-grained; only the assembly grouping
 is coarser. **You can still edit any module in isolation.**
 
@@ -522,8 +522,8 @@ The restoration record says so unambiguously:
 
 | bucket | exact | behavioural | exact rate |
 |---|---:|---:|---:|
-| intra-unit (`6100`) | **11** | 74 | 12% |
-| no-calls | 11 | 123 | 8% |
+| intra-unit (`6100`) | **11** | 74 | 13% |
+| no-calls | 11 | 129 | 8% |
 | cross-unit (`4EBA`) | **0** | 150 | **0%** |
 
 Zero of 150. Every function whose original calls are `4EBA` is capped at
@@ -536,7 +536,7 @@ compiler question is settled.** Two caveats keep this honest:
 
 - Matching an intra-unit call is still luck, not skill. The original emitted
   `6100` because the callee was in the same `.c` file; we emit it because that
-  is all 6.51 emits. The two coincide, which is why the rate is 16% and not
+  is all 6.51 emits. The two coincide, which is why the rate is 13% and not
   higher — see `docs/compiler-version.md`, "Call encoding depends on the
   callee's translation unit".
 - 6.00 has the mirror-image problem: it emits `4EBA` for everything. Neither
@@ -743,7 +743,7 @@ It prints the surviving calls closest to the limit with the caller each sits in.
 Growth only costs a call if it lands BETWEEN that caller and its callee — code
 added before the pair, or after it, moves both ends equally and is free. So read
 the tight pairs first, look up their addresses, and pick targets outside those
-spans. On the 279-entry manifest the tightest is 45 bytes.
+spans. On the 285-entry manifest the tightest is 45 bytes.
 
 > Two false-positive classes had to be excluded first, both found by testing the
 > detector against the KNOWN-GOOD pure build rather than assuming it was right.
@@ -759,9 +759,26 @@ the image larger than the assembly they replace -- note that dropping an
 entries tried this way grew the image by 12 bytes and pushed the overshoot from
 23 to 35.
 
-`src/c/replacements-runnable.txt` is the current verified-good manifest: 279
-entries, check clean, `a6_audit` 0/279, boots, and clean on all six ESC-menu
-items. `src/c/replacements-all.txt` holds 328 and still gurus.
+`src/c/replacements-runnable.txt` is the current verified-good manifest: 285
+entries, check clean, `a6_audit` 0/285, boots, and clean on all six ESC-menu
+items. `src/c/replacements-all.txt` holds 334 and still gurus.
+
+**Build it with `CODE=FAR` or it will not link, and the errors will blame the
+wrong files.** The option is in the manifest header, and skipping it costs an
+hour:
+
+```sh
+SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
+  C_REPLACEMENTS=src/c/replacements-runnable.txt ./build-split.sh
+```
+
+Without it `sc` emits `BSR.W` for every call. Every C caller more than 32767
+bytes from its callee then fails with `Error 28`. vlink names only the first few
+per run, so dropping the entries it names uncovers the next batch. It reads
+exactly like the manifest outgrowing the address space, and it is not. Byte-exact
+manifests must NOT use `CODE=FAR`, because it changes the call encoding. That is
+why it cannot be the default. `build-split.sh` now detects this case and prints
+the fix.
 
 **A restoration that FAULTS AT RUNTIME says so in its own header.** Put
 `DO-NOT-LINK: <what was measured>` in the header block and
@@ -919,11 +936,12 @@ c = [f for f in coverage.survey()
      and not (set(f['blockers']) & BLOCK)]
 ```
 
-Without the `status` filter that returns 132, not 31 — it counts everything
+Without the `status` filter that returns 146, not 8 — it counts everything
 already done.
 
-As of 2026-07-27 that leaves **31 unblocked `no-calls` candidates, 6302 bytes** —
+As of 2026-07-28 that leaves **8 unblocked `no-calls` candidates, 1692 bytes** —
 an earlier version of this file claimed the bucket was empty, which was wrong.
+It is now nearly worked out, so the next tranche has to come from `intra-unit`.
 They matter out of proportion to their size: with no cross-unit call in them,
 nothing structural stops one being **exact**, and every other bucket is capped at
 `behavioural` until the compiler question is settled.

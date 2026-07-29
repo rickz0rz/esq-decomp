@@ -11,7 +11,7 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   _GCOMMAND_HighlightFlag, ESQ_CopperEffectTemplateRowsSet0, _ESQ_CopperListBannerA, ESQ_CopperEffectTemplateRowsSet1, _ESQ_CopperListBannerB
+;   _GCOMMAND_HighlightFlag, _ESQ_CopperEffectTemplateRowsSet0, _ESQ_CopperListBannerA, _ESQ_CopperEffectTemplateRowsSet1, _ESQ_CopperListBannerB
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -36,13 +36,13 @@ _GCOMMAND_ApplyHighlightFlag:
 
 .lab_0D6C:
     MOVE.L  D0,D7
-    MOVE.L  #ESQ_CopperEffectTemplateRowsSet0,-4(A5)
+    MOVE.L  #_ESQ_CopperEffectTemplateRowsSet0,-4(A5)
     MOVEQ   #-3,D0
     MOVEA.L -4(A5),A0
     AND.W   26(A0),D0
     OR.W    D7,D0
     MOVE.W  D0,26(A0)
-    MOVE.L  #ESQ_CopperEffectTemplateRowsSet1,-4(A5)
+    MOVE.L  #_ESQ_CopperEffectTemplateRowsSet1,-4(A5)
     MOVEQ   #-3,D0
     MOVEA.L -4(A5),A0
     AND.W   26(A0),D0

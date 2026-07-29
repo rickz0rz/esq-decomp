@@ -2723,7 +2723,7 @@ GCOMMAND_PresetValueTable:
 ; SYM: _GCOMMAND_PresetWorkEntryTable   (highlight preset work entries)
 ; TYPE: struct[4]
 ; PURPOSE: Runtime table for preset timing/accumulator state used by banner highlight updates.
-; USED BY: _GCOMMAND_ResetPresetWorkTables, _GCOMMAND_LoadPresetWorkEntries, GCOMMAND_TickPresetWorkEntries
+; USED BY: _GCOMMAND_ResetPresetWorkTables, _GCOMMAND_LoadPresetWorkEntries, _GCOMMAND_TickPresetWorkEntries
 ; NOTES: Four entries, each 24 bytes.
 ;        Entry0 starts at _GCOMMAND_PresetWorkEntryTable; entry1/2/3 start at
 ;        GCOMMAND_PresetWorkEntry1/2/3. The *_ValueIndex aliases map to offset +8

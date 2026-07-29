@@ -56,7 +56,7 @@ GROUP_AA_JMPTBL_STRING_CompareN:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   GCOMMAND_FindPathSeparator
+;   _GCOMMAND_FindPathSeparator
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -67,7 +67,7 @@ GROUP_AA_JMPTBL_STRING_CompareN:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
-    JMP     GCOMMAND_FindPathSeparator
+    JMP     _GCOMMAND_FindPathSeparator
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AA_JMPTBL_GRAPHICS_AllocRaster   (Routine at GROUP_AA_JMPTBL_GRAPHICS_AllocRaster)

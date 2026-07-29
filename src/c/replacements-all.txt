@@ -40,6 +40,7 @@ modules/groups/a/f/ctasks_ctasks_startclosetaskprocess.s               c/ctasks_
 modules/groups/a/f/ctasks_ctasks_startifftaskprocess.s                 c/ctasks_start_iff_task_process.c
 modules/groups/a/j/dst2_datetime_adjustmonthindex.s                    c/datetime_adjust_month_index.c
 modules/groups/a/j/disptext2_datetime_buildfromglobals.s               c/datetime_build_from_globals.c
+modules/groups/a/j/disptext2_p1.s                                      c/datetime_classify_value_in_range.c
 modules/groups/a/j/disptext2_p2_datetime_formatpairtostream.s          c/datetime_format_pair_to_stream.c
 modules/groups/a/j/dst2_datetime_isleapyear.s                          c/datetime_is_leap_year.c
 modules/groups/a/j/dst2_datetime_normalizemonthrange.s                 c/datetime_normalize_month_range.c
@@ -53,6 +54,7 @@ modules/groups/a/h/diskio2_diskio2_parseinifilefromdisk.s              c/diskio2
 modules/groups/a/h/diskio2_diskio2reloaddatafilesandrebuildindex.s     c/diskio2_reload_data_files_and_rebuild_index.c
 modules/groups/a/h/diskio2_diskio2_writeoinfodatafile.s                c/diskio2_write_oinfo_data_file.c
 modules/groups/a/h/diskio2_diskio2_writeqtableinifile.s                c/diskio2_write_qtable_ini_file.c
+modules/groups/a/g/diskio_p3.s                                         c/diskio_consume_line_from_work_buffer.c
 modules/groups/a/g/diskio_diskio_drawtransfererrormessageifdiagnostics.s c/diskio_draw_transfer_error_message_if_diagnostics.c
 modules/groups/a/g/diskio_diskio_forceuirefreshifidle.s                c/diskio_force_ui_refresh_if_idle.c
 modules/groups/a/g/diskio_diskio_parselongfromworkbuffer.s             c/diskio_parse_long_from_work_buffer.c
@@ -66,6 +68,7 @@ modules/groups/a/i/displib_displib_normalizevaluebystep.s              c/displib
 modules/groups/a/i/displibb_displib_resettextbufferandlinetables.s     c/displib_reset_text_buffer_and_line_tables.c
 modules/groups/a/i/disptext_disptext_appendtobuffer.s                  c/disptext_append_to_buffer.c
 modules/groups/a/i/disptext_disptext_buildlayoutforsource.s            c/disptext_build_layout_for_source.c
+modules/groups/a/i/disptext_p0_disptext_buildlinepointertable.s        c/disptext_build_line_pointer_table.c
 modules/groups/a/i/disptext_disptext_finalizelinetable.s               c/disptext_finalize_line_table.c
 modules/groups/a/i/disptextb_disptext_gettotallinecount.s              c/disptext_get_total_line_count.c
 modules/groups/a/i/disptextb_disptext_hasmultiplelines.s               c/disptext_has_multiple_lines.c
@@ -189,11 +192,13 @@ modules/groups/a/s/flib2_flib2_loaddigitalnichedefaults.s              c/flib2_l
 modules/groups/a/s/flib2_flib2_loaddigitalppvdefaults.s                c/flib2_load_digital_ppv_defaults.c
 modules/groups/a/s/flib2_flib2_resetandloadlistingtemplates.s          c/flib2_reset_and_load_listing_templates.c
 modules/groups/a/u/gcommand3b_p4_gcommand_addbannertablebytedelta.s    c/gcommand_add_banner_table_byte_delta.c
+modules/groups/a/u/gcommand3_p1.s                                      c/gcommand_apply_highlight_flag.c  SHORTINT
 modules/groups/a/u/gcommand3b_gcommand_computepresetincrement.s        c/gcommand_compute_preset_increment.c
 modules/groups/a/u/gcommand3b_gcommand_consumebannerqueueentry.s       c/gcommand_consume_banner_queue_entry.c
 modules/groups/a/t/gcommand2_gcommand_copygfxtoworkifavailable.s       c/gcommand_copy_gfx_to_work_if_available.c
 modules/groups/a/u/gcommand3b_gcommand_disablehighlight.s              c/gcommand_disable_highlight.c
 modules/groups/a/u/gcommand3_gcommandenablehighlight.s                 c/gcommand_enable_highlight.c
+modules/groups/a/t/gcommand2.s                                         c/gcommand_find_path_separator.c
 modules/groups/a/u/gcommand3b_p2_gcommand_getbannerchar.s              c/gcommand_get_banner_char.c
 modules/groups/a/u/gcommand3b_gcommand_initpresetdefaults.s            c/gcommand_init_preset_defaults.c
 modules/groups/a/s/gcommand_gcommand_loadmplexfile.s                   c/gcommand_load_mplex_file.c
@@ -206,6 +211,7 @@ modules/groups/a/u/gcommand3b_gcommand_resetbannerfadestate.s          c/gcomman
 modules/groups/a/u/gcommand3b_p3_gcommand_resethighlightmessages.s     c/gcommand_reset_highlight_messages.c
 modules/groups/a/u/gcommand3b_p1_gcommand_resetpresetworktables.s      c/gcommand_reset_preset_work_tables.c
 modules/groups/a/u/gcommand4.s                                         c/gcommand_save_brush_result.c
+modules/groups/a/u/gcommand3b_p2_gcommand_tickpresetworkentries.s      c/gcommand_tick_preset_work_entries.c
 modules/groups/a/v/kybd.s                                              c/kybd_initialize_input_devices.c
 modules/groups/a/x/ladfunc2_ladfunc2_emitescapedchartoscratch.s        c/ladfunc2_emit_escaped_char_to_scratch.c
 modules/groups/a/x/ladfunc2_ladfunc2_emitescapedstringtoscratch.s      c/ladfunc2_emit_escaped_string_to_scratch.c

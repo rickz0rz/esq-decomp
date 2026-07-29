@@ -16,8 +16,8 @@ that broke it.
 Both byte gates pass on the current tree.
 
 ```
-assembly converted to C   30.4%   [############............................]
-                                  58,816 of 193,516 application bytes
+assembly converted to C   30.9%   [############............................]
+                                  59,708 of 193,516 application bytes
 ```
 
 Count the bytes, not the functions. The easy targets are small, so a function
@@ -29,9 +29,9 @@ Run `python3 tools/coverage.py` to regenerate every number in this section.
 | measure | value |
 |---|---|
 | application functions | 718 (193,516 bytes) |
-| restored to C | 378 (58,816 bytes, 30.4% by byte, 53% by count) |
+| restored to C | 384 (59,708 bytes, 30.9% by byte, 53% by count) |
 | byte-exact restorations | 22 |
-| source modules | 745, coalesced into 385 link units |
+| source modules | 748, coalesced into 385 link units |
 | linked size | CODE 211,348 bytes, DATA 55,820 bytes |
 
 A restoration is **exact** when the compiler emits the original bytes. It is

@@ -19,7 +19,7 @@
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   _ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, ESQIFF_JMPTBL_STRING_CompareNoCaseN, ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard, GCOMMAND_FindPathSeparator, _ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_ReadNextExternalAssetPathEntry, _LVOForbid, _LVOPermit
+;   _ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, ESQIFF_JMPTBL_STRING_CompareNoCaseN, ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard, _GCOMMAND_FindPathSeparator, _ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_ReadNextExternalAssetPathEntry, _LVOForbid, _LVOPermit
 ; READS:
 ;   AbsExecBase, _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_GFX_G_ADS_DATA, _CTASKS_IffTaskDoneFlag, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, ESQIFF_PATH_DF0_COLON, ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, _ESQIFF_LogoListLineIndex, _ESQIFF_AssetSourceSelect, ESQIFF_ExternalAssetPathCommaFlag, _TEXTDISP_CurrentMatchIndex, fa00
 ; WRITES:
@@ -149,7 +149,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
 
 .probe_match_index_by_wildcard:
     PEA     -80(A5)
-    JSR     GCOMMAND_FindPathSeparator(PC)
+    JSR     _GCOMMAND_FindPathSeparator(PC)
 
     MOVE.L  D0,(A7)
     JSR     ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(PC)

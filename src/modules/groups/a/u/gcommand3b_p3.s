@@ -64,7 +64,7 @@ GCOMMAND_RefreshBannerTables:
 ; CALLS:
 ;   _LVOGetMsg, _LVOReplyMsg, _GCOMMAND_LoadPresetWorkEntries,
 ;   GCOMMAND_RefreshBannerTables, _GCOMMAND_ConsumeBannerQueueEntry,
-;   _GCOMMAND_ResetPresetWorkTables, GCOMMAND_TickPresetWorkEntries,
+;   _GCOMMAND_ResetPresetWorkTables, _GCOMMAND_TickPresetWorkEntries,
 ;   _ESQSHARED4_CopyPlanesFromContextToSnapshot, ESQSHARED4_CopyLivePlanesToSnapshot, _GCOMMAND_MapKeycodeToPreset
 ; READS:
 ;   _GCOMMAND_ActiveHighlightMsgPtr, _GCOMMAND_PresetWorkResetPendingFlag, _ESQ_HighlightMsgPort, _GCOMMAND_ActiveMsgSavedField20.._GCOMMAND_ActiveMsgSavedField28
@@ -143,7 +143,7 @@ GCOMMAND_ServiceHighlightMessages:
     BSR.W   _GCOMMAND_ResetPresetWorkTables
 
 .tick_active_msg:
-    BSR.W   GCOMMAND_TickPresetWorkEntries
+    BSR.W   _GCOMMAND_TickPresetWorkEntries
 
     MOVEA.L _GCOMMAND_ActiveHighlightMsgPtr,A1
     JSR     _ESQSHARED4_CopyPlanesFromContextToSnapshot(PC)

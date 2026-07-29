@@ -103,7 +103,7 @@
     XDEF    ESQ_CopperEffectListA
     XDEF    ESQ_CopperEffectListB_PtrHiWord
     XDEF    ESQ_CopperEffectListB_PtrLoWord
-    XDEF    ESQ_CopperEffectTemplateRowsSet0
+    XDEF    _ESQ_CopperEffectTemplateRowsSet0
     XDEF    _ESQ_CopperStatusDigitsA
     XDEF    _ESQ_CopperStatusDigitsA_ColorRegistersA
     XDEF    _ESQ_CopperStatusDigitsA_ColorRegistersB
@@ -150,7 +150,7 @@
     XDEF    ESQ_CopperEffectListB
     XDEF    ESQ_CopperEffectListA_PtrHiWord
     XDEF    ESQ_CopperEffectListA_PtrLoWord
-    XDEF    ESQ_CopperEffectTemplateRowsSet1
+    XDEF    _ESQ_CopperEffectTemplateRowsSet1
     XDEF    _ESQ_CopperStatusDigitsB
     XDEF    _ESQ_CopperStatusDigitsB_ColorRegistersA
     XDEF    _ESQ_CopperStatusDigitsB_TailColorWord
@@ -648,7 +648,7 @@ ESQ_CopperEffectListB_PtrHiWord:
 ESQ_CopperEffectListB_PtrLoWord:
     DC.W    0
 ;------------------------------------------------------------------------------
-; SYM: ESQ_CopperEffectTemplateRowsSet0   (copper effect list B body template ??)
+; SYM: _ESQ_CopperEffectTemplateRowsSet0   (copper effect list B body template ??)
 ; TYPE: u32[] + tail word
 ; PURPOSE: Backing storage for effect-list B command payload words.
 ; USED BY: ESQSHARED4 banner/copper setup and update paths
@@ -656,7 +656,7 @@ ESQ_CopperEffectListB_PtrLoWord:
 ;   Pointer high/low words above are rebound at runtime; per-entry color/wait
 ;   semantics in this block are not fully resolved yet.
 ;------------------------------------------------------------------------------
-ESQ_CopperEffectTemplateRowsSet0:
+_ESQ_CopperEffectTemplateRowsSet0:
     DS.L    19
     DC.W    $0180
 ;------------------------------------------------------------------------------
@@ -1105,14 +1105,14 @@ ESQ_CopperEffectListA_PtrHiWord:
 ESQ_CopperEffectListA_PtrLoWord:
     DC.W    0
 ;------------------------------------------------------------------------------
-; SYM: ESQ_CopperEffectTemplateRowsSet1   (copper effect list A body template ??)
+; SYM: _ESQ_CopperEffectTemplateRowsSet1   (copper effect list A body template ??)
 ; TYPE: u32[] + tail word
 ; PURPOSE: Backing storage for effect-list A command payload words.
 ; USED BY: ESQSHARED4 banner/copper setup and update paths
 ; NOTES:
-;   Mirrors ESQ_CopperEffectTemplateRowsSet0 for the alternate effect list.
+;   Mirrors _ESQ_CopperEffectTemplateRowsSet0 for the alternate effect list.
 ;------------------------------------------------------------------------------
-ESQ_CopperEffectTemplateRowsSet1:
+_ESQ_CopperEffectTemplateRowsSet1:
     DS.L    19
     DC.W    $0180
 ;------------------------------------------------------------------------------

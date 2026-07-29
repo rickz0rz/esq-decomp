@@ -315,6 +315,28 @@ frame construction — are one property, and it is not option-selectable:
 all leave 6.51 emitting `2f0d`. A candidate compiler that passes the `2f0b`
 acceptance test will fix both at once.
 
+### The same property, seen from the local-variable side
+
+The `stack-local-pointer` divergence recorded in four `src/c` headers is this
+same property, and not a separate class. Because the original reserves A5 for a
+frame, it also has a frame to spill into, so it keeps a walking pointer in a slot
+and reloads it at every use. 6.51 has no frame to spill into, so it allocates the
+pointer to an address register and the reloads disappear.
+
+| function | ref | got | delta | what the delta is |
+|---|---:|---:|---:|---|
+| `GCOMMAND_FindPathSeparator` | 96 | 80 | -16 | all of it |
+| `GCOMMAND_TickPresetWorkEntries` | 132 | 116 | -16 | all of it |
+| `DISKIO_ConsumeLineFromWorkBuffer` | 130 | 140 | +10 | most of it |
+| `GCOMMAND_ApplyHighlightFlag` | 220 | 216 | -4 | -24 of it |
+
+Two properties make this useful as a probe. The sign of the delta is not fixed,
+so it cannot be mistaken for a size-optimization difference. And
+`tools/casm.py` attributes 100% of the delta on the first two functions, which
+means they contain no other disagreement at all. A candidate compiler that
+reproduces `GCOMMAND_TickPresetWorkEntries` at 132 bytes has the frame-pointer
+property, and it needs nothing else to get there.
+
 ### What finding the compiler is actually worth
 
 `SCRIPT_SaveCtrlContextSnapshot` is the cleanest evidence in the project, because

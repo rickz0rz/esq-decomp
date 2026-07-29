@@ -109,7 +109,22 @@ fi
 # manifest whose link failed on four undefined symbols "passed", because what got
 # probed was the pure-assembly build from the previous command.
 rm -f "$BUILD/ESQ"
-if ! < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s ${SCLIB_ARGS[@]+"${SCLIB_ARGS[@]}"} -o "$BUILD/ESQ"; then
+LINKLOG="$BUILD/link.log"
+if ! < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd -s ${SCLIB_ARGS[@]+"${SCLIB_ARGS[@]}"} -o "$BUILD/ESQ" 2>&1 | tee "$LINKLOG"; then :; fi
+if [ ! -f "$BUILD/ESQ" ]; then
+    # Error 28 on a LARGE manifest almost always means CODE=FAR was left out, not
+    # that the manifest outgrew the address space. Without it `sc` emits BSR.W for
+    # every call, so any C caller more than 32767 bytes from its callee fails --
+    # and the errors name innocent restorations, which sends you dropping entries
+    # that were never the problem. Say so here rather than in a comment nobody
+    # reads until after the third rebuild.
+    if grep -q "Error 28" "$LINKLOG" 2>/dev/null && ! [[ "$SCOPTS" == *CODE=FAR* ]]; then
+        echo
+        echo "*** Error 28 and CODE=FAR is NOT set. Retry with:"
+        echo "      SCOPTS=\"NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128\" \\"
+        echo "        C_REPLACEMENTS=$C_REPLACEMENTS ./build-split.sh"
+        echo "    Byte-exact manifests must NOT use it -- it changes the call encoding."
+    fi
     echo "*** LINK FAILED -- no binary produced ***"
     exit 1
 fi

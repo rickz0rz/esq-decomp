@@ -1050,14 +1050,14 @@ PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   GCOMMAND_FindPathSeparator
+;   _GCOMMAND_FindPathSeparator
 ; DESC:
-;   Jump stub to GCOMMAND_FindPathSeparator.
+;   Jump stub to _GCOMMAND_FindPathSeparator.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator:
-    JMP     GCOMMAND_FindPathSeparator
+    JMP     _GCOMMAND_FindPathSeparator
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer   (JumpStub)
@@ -1068,14 +1068,14 @@ PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DISKIO_ConsumeLineFromWorkBuffer
+;   _DISKIO_ConsumeLineFromWorkBuffer
 ; DESC:
-;   Jump stub to DISKIO_ConsumeLineFromWorkBuffer.
+;   Jump stub to _DISKIO_ConsumeLineFromWorkBuffer.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer:
-    JMP     DISKIO_ConsumeLineFromWorkBuffer
+    JMP     _DISKIO_ConsumeLineFromWorkBuffer
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen   (JumpStub_ED1_DrawDiagnosticsScreen)
