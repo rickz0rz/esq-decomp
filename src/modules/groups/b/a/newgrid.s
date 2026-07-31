@@ -77,7 +77,7 @@ NEWGRID_InitGridResources:
     JSR     _LVOInitRastPort(A6)
 
     MOVEA.L _NEWGRID_HeaderRastPortPtr,A0
-    MOVE.L  #WDISP_BannerGridBitmapStruct,4(A0)
+    MOVE.L  #_WDISP_BannerGridBitmapStruct,4(A0)
     MOVEA.L _NEWGRID_HeaderRastPortPtr,A1
     MOVEQ   #0,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6

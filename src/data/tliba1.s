@@ -16,7 +16,7 @@
     XDEF    TLIBA1_FMT_TLF_ALIGN_PCT_D
     XDEF    TLIBA1_FMT_TLF_PREGAP_PCT_D
     XDEF    TLIBA1_STR_TLFormatStructCloseBraceLine
-    XDEF    TLIBA1_PatternTableInitGuard
+    XDEF    _TLIBA1_PatternTableInitGuard
     XDEF    _TEXTDISP_LrbnEntryWidthPx
     XDEF    _TLIBA1_FMT_PCT_03LD_VerticalScaleTick
     XDEF    TLIBA1_FMT_PCT_03LD_HorizontalScaleTick
@@ -51,7 +51,7 @@
     XDEF    TLIBA1_STR_PatternDumpLoopNewline
     XDEF    TLIBA1_PreviewSlotRefreshState
     XDEF    TLIBA1_PreviewSlotRenderResult
-    XDEF    TLIBA1_DayEntryModeCounter
+    XDEF    _TLIBA1_DayEntryModeCounter
     XDEF    _WDISP_StatusDayEntry0
     XDEF    WDISP_StatusDayEntry1
     XDEF    WDISP_StatusDayEntry2
@@ -96,7 +96,7 @@ TLIBA1_FMT_TLF_PREGAP_PCT_D:
     NStr3   TextHorizontalTab,"tlf_Pregap =  %d",TextLineFeed
 TLIBA1_STR_TLFormatStructCloseBraceLine:
     NStr2   "}",TextLineFeed
-TLIBA1_PatternTableInitGuard:
+_TLIBA1_PatternTableInitGuard:
     DS.W    1
 _TEXTDISP_LrbnEntryWidthPx:
     DC.B    1,"("
@@ -174,7 +174,7 @@ TLIBA1_PreviewSlotRefreshState:
     DS.L    1
 TLIBA1_PreviewSlotRenderResult:
     DS.L    1
-TLIBA1_DayEntryModeCounter:
+_TLIBA1_DayEntryModeCounter:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _WDISP_StatusDayEntry0..WDISP_StatusDayEntry3   (status-day entry ring)

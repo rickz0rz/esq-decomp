@@ -28,7 +28,7 @@
     XDEF    _DST_STR_NORM_YEAR
     XDEF    _ED_MenuStateId
     XDEF    ED_MenuDispatchReentryGuard
-    XDEF    ED_TextModeReinitPendingFlag
+    XDEF    _ED_TextModeReinitPendingFlag
 ; ========== DST.c ==========
 DST_PATH_DF0_COLON_DST_DOT_DAT:
     NStr    "df0:dst.dat"
@@ -108,11 +108,11 @@ _ED_MenuStateId:
 ED_MenuDispatchReentryGuard:
     DC.L    1
 ;------------------------------------------------------------------------------
-; SYM: ED_TextModeReinitPendingFlag   (text-mode reinit pending)
+; SYM: _ED_TextModeReinitPendingFlag   (text-mode reinit pending)
 ; TYPE: u32 flag
 ; PURPOSE: Marks one-shot editor text/cursor reinitialization after text-mode force path.
-; USED BY: ED_HandleEditorInput
+; USED BY: _ED_HandleEditorInput
 ; NOTES: Set in force-text-mode case and consumed/cleared on next handler entry.
 ;------------------------------------------------------------------------------
-ED_TextModeReinitPendingFlag:
+_ED_TextModeReinitPendingFlag:
     DC.L    1

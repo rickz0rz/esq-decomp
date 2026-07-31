@@ -26,15 +26,26 @@
  *   retest:  tools/mismatches.py --recheck on a compiler that spills the local.
  *
  * SASC-MISMATCH: word-immediate-pointer
- *   ref:     307cffff       MOVEA.W #-1,A0    (4 bytes, sign-extends)
- *   got:     207c0000ffff   MOVEA.L #$FFFF,A0 (6 bytes)
- *   summary: the error return is the same value either way. Every caller tests
- *            it only for non-NULL, and both the sign-extended -1 and the literal
- *            0xFFFF pass that test. (char *)-1 emits a 6-byte MOVEA.L #-1, so
- *            no spelling reaches 4 bytes.
- *   tried:   (char *)-1, (char *)0xFFFF, (char *)(short)-1.
- *   scope:   both DISKIO consume routines.
- *   retest:  a compiler that narrows a small pointer constant to MOVEA.W.
+ *   ref:     307cffff       MOVEA.W #-1,A0    (4 bytes, sign-extends to -1)
+ *   got:     207cffffffff   MOVEA.L #-1,A0    (6 bytes)
+ *   summary: same VALUE, two bytes more to express it. SAS/C has no way to reach
+ *            the 4-byte form: MOVEA.W with a negative immediate sign-extends, and
+ *            nothing in C asks for that narrowing.
+ *
+ *   THIS BLOCK USED TO SAY the sentinel could be written 0xFFFF instead, on the
+ *   grounds that "every caller tests it only for non-NULL". THAT WAS FALSE and it
+ *   cost a working build. Callers test EQUALITY against -1 --
+ *   `MOVEA.W #$ffff,A0` / `CMP.L A0,D0` -- so 0x0000FFFF fails the test, the
+ *   caller never sees end-of-buffer, and PARSEINI_ParseIniBufferAndDispatch's
+ *   read loop never terminates. The machine hangs during startup with the frame
+ *   chrome drawn and no text, which no byte gate can see and which probe_esq.sh
+ *   reports as a clean boot. Found by soak_esq.sh's freeze check.
+ *
+ *   DO NOT trade this two-byte difference for a value change again.
+ *   tried:   (char *)-1 is correct and is what is here. (char *)0xFFFF matches no
+ *            better and is WRONG.
+ *   scope:   all three DISKIO work-buffer routines; all were wrong the same way.
+ *   retest:  a compiler that narrows a negative pointer constant to MOVEA.W.
  */
 extern char *Global_PTR_WORK_BUFFER;
 extern long  Global_REF_LONG_FILE_SCRATCH;
@@ -52,7 +63,7 @@ char *DISKIO_ConsumeLineFromWorkBuffer(void)
     }
     *Global_PTR_WORK_BUFFER++ = 0;
     if (Global_REF_LONG_FILE_SCRATCH < 0)
-        return (char *)0xFFFF;
+        return (char *)-1;
     while ((c = *Global_PTR_WORK_BUFFER) == 13 || c == 10) {
         Global_PTR_WORK_BUFFER++;
         Global_REF_LONG_FILE_SCRATCH--;

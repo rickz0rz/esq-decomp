@@ -25,7 +25,7 @@
 ; READS:
 ;   _ED_DiagnosticsScreenActive, _WDISP_WeatherStatusLabelBuffer, _WDISP_WeatherStatusOverlayTextPtr, _Global_REF_RASTPORT_1
 ; WRITES:
-;   _WDISP_WeatherStatusOverlayTextPtr, _WDISP_WeatherStatusCountdown, WDISP_WeatherStatusColorCode, _WDISP_WeatherStatusBrushIndex
+;   _WDISP_WeatherStatusOverlayTextPtr, _WDISP_WeatherStatusCountdown, _WDISP_WeatherStatusColorCode, _WDISP_WeatherStatusBrushIndex
 ; DESC:
 ;   Parses a small record from the input buffer, validates via wildcard match,
 ;   updates globals, and optionally redraws text.
@@ -91,7 +91,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
     ADDQ.W  #8,A7
     MOVE.L  D0,_WDISP_WeatherStatusOverlayTextPtr
     MOVE.B  D6,_WDISP_WeatherStatusCountdown
-    MOVE.B  D5,WDISP_WeatherStatusColorCode
+    MOVE.B  D5,_WDISP_WeatherStatusColorCode
     MOVE.B  D4,_WDISP_WeatherStatusBrushIndex
     TST.W   _ED_DiagnosticsScreenActive
     BEQ.S   .return
@@ -125,9 +125,9 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
 ; CALLS:
 ;   _UNKNOWN_JMPTBL_ESQ_WildcardMatch, UNKNOWN_JMPTBL_DST_NormalizeDayOfYear, _STRING_CopyPadNul, _PARSE_ReadSignedLongSkipClass3_Alt, _MATH_Mulu32
 ; READS:
-;   WDISP_StatusListMatchPattern, CLOCK_CurrentDayOfYear, _CLOCK_CurrentYearValue, _WDISP_StatusDayEntry0
+;   WDISP_StatusListMatchPattern, _CLOCK_CurrentDayOfYear, _CLOCK_CurrentYearValue, _WDISP_StatusDayEntry0
 ; WRITES:
-;   TLIBA1_DayEntryModeCounter
+;   _TLIBA1_DayEntryModeCounter
 ; DESC:
 ;   Parses a list of records from the input buffer and updates _WDISP_StatusDayEntry0
 ;   table entries, including optional numeric fields and flags.
@@ -184,7 +184,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     ADDA.L  D0,A1
     MOVEQ   #1,D1
     MOVE.L  D1,16(A1)
-    MOVE.W  CLOCK_CurrentDayOfYear,D1
+    MOVE.W  _CLOCK_CurrentDayOfYear,D1
     ADD.W   D7,D1
     MOVE.L  D1,D6
     ADDQ.W  #1,D6
@@ -206,7 +206,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     BRA.S   .init_entries_loop
 
 .after_init_entries:
-    MOVE.B  (A3)+,TLIBA1_DayEntryModeCounter
+    MOVE.B  (A3)+,_TLIBA1_DayEntryModeCounter
     MOVE.B  (A3)+,D5
 
 .parse_entries_loop:
@@ -413,9 +413,9 @@ UNKNOWN_ParseListAndUpdateEntries:
 ; CALLS:
 ;   UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer, UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte, UNKNOWN_ParseRecordAndUpdateDisplay
 ; READS:
-;   ESQIFF_RecordBufferPtr, _ESQIFF_RecordChecksumByte, _DATACErrs
+;   _ESQIFF_RecordBufferPtr, _ESQIFF_RecordChecksumByte, _DATACErrs
 ; WRITES:
-;   _ESQIFF_ParseAttemptCount, ESQIFF_RecordLength, _DATACErrs
+;   _ESQIFF_ParseAttemptCount, _ESQIFF_RecordLength, _DATACErrs
 ; DESC:
 ;   Computes a checksum and, on success, invokes UNKNOWN_ParseRecordAndUpdateDisplay; otherwise bumps error count.
 ; NOTES:
@@ -431,16 +431,16 @@ ESQPROTO_VerifyChecksumAndParseRecord:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    MOVE.L  _ESQIFF_RecordBufferPtr,-(A7)
     JSR     UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer(PC)
 
-    MOVE.W  D0,ESQIFF_RecordLength
+    MOVE.W  D0,_ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVEQ   #0,D1
-    MOVE.W  ESQIFF_RecordLength,D1
+    MOVE.W  _ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    MOVE.L  _ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
     JSR     UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
@@ -450,7 +450,7 @@ ESQPROTO_VerifyChecksumAndParseRecord:
     CMP.L   D1,D0
     BNE.S   .checksum_mismatch
 
-    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    MOVE.L  _ESQIFF_RecordBufferPtr,-(A7)
     BSR.W   UNKNOWN_ParseRecordAndUpdateDisplay
 
     ADDQ.W  #4,A7
@@ -477,9 +477,9 @@ ESQPROTO_VerifyChecksumAndParseRecord:
 ; CALLS:
 ;   UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer, UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte, UNKNOWN_ParseListAndUpdateEntries
 ; READS:
-;   ESQIFF_RecordBufferPtr, _ESQIFF_RecordChecksumByte, _DATACErrs
+;   _ESQIFF_RecordBufferPtr, _ESQIFF_RecordChecksumByte, _DATACErrs
 ; WRITES:
-;   _ESQIFF_ParseAttemptCount, ESQIFF_RecordLength, _DATACErrs
+;   _ESQIFF_ParseAttemptCount, _ESQIFF_RecordLength, _DATACErrs
 ; DESC:
 ;   Computes a checksum and, on success, invokes UNKNOWN_ParseListAndUpdateEntries; otherwise bumps error count.
 ; NOTES:
@@ -495,16 +495,16 @@ ESQPROTO_VerifyChecksumAndParseList:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    MOVE.L  _ESQIFF_RecordBufferPtr,-(A7)
     JSR     UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer(PC)
 
-    MOVE.W  D0,ESQIFF_RecordLength
+    MOVE.W  D0,_ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVEQ   #0,D1
-    MOVE.W  ESQIFF_RecordLength,D1
+    MOVE.W  _ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    MOVE.L  _ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
     JSR     UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
@@ -514,7 +514,7 @@ ESQPROTO_VerifyChecksumAndParseList:
     CMP.L   D1,D0
     BNE.S   .checksum_mismatch
 
-    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    MOVE.L  _ESQIFF_RecordBufferPtr,-(A7)
     BSR.W   UNKNOWN_ParseListAndUpdateEntries
 
     ADDQ.W  #4,A7

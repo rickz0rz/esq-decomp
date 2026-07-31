@@ -1,8 +1,8 @@
-    XDEF    TEXTDISP_FormatEntryTimeForIndex
+    XDEF    _TEXTDISP_FormatEntryTimeForIndex
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_FormatEntryTimeForIndex   (Format time using entry table)
+; FUNC: _TEXTDISP_FormatEntryTimeForIndex   (Format time using entry table)
 ; ARGS:
 ;   stack +8: outPtr (A3)
 ;   stack +14: entryIndex (word)
@@ -20,7 +20,7 @@
 ; NOTES:
 ;   Falls back to numeric minutes when no HH:MM text exists.
 ;------------------------------------------------------------------------------
-TEXTDISP_FormatEntryTimeForIndex:
+_TEXTDISP_FormatEntryTimeForIndex:
     LINK.W  A5,#-12
     MOVEM.L D5-D7/A2-A3/A6,-(A7)
     MOVEA.L 8(A5),A3

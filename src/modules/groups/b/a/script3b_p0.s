@@ -93,9 +93,9 @@ SCRIPT_ApplyPendingBannerTarget:
 ; CLOBBERS:
 ;   A7/D0/D1/D7
 ; CALLS:
-;   _SCRIPT_UpdateSerialShadowFromCtrlByte, _SCRIPT_ClearSearchTextsAndChannels, SCRIPT_BeginBannerCharTransition, SCRIPT_DeassertCtrlLineNow, _TEXTDISP_SetRastForMode, _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+;   _SCRIPT_UpdateSerialShadowFromCtrlByte, _SCRIPT_ClearSearchTextsAndChannels, SCRIPT_BeginBannerCharTransition, _SCRIPT_DeassertCtrlLineNow, _TEXTDISP_SetRastForMode, _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   _CONFIG_BannerCopperHeadByte, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, _CONFIG_MSN_FlagChar, _SCRIPT_RuntimeMode
+;   _CONFIG_BannerCopperHeadByte, _CONFIG_RuntimeMode12BannerJumpEnabledFlag, _CONFIG_MsnRuntimeModeSelectorChar_LRBN, _CONFIG_MSN_FlagChar, _SCRIPT_RuntimeMode
 ; WRITES:
 ;   SCRIPT_CtrlHandshakeRetryCount, SCRIPT_RuntimeModeDispatchLatch, _SCRIPT_RuntimeMode, _TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -111,7 +111,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     SUBQ.W  #1,D0
     BNE.W   .runtime_mode_else_paths
 
-    MOVE.B  CONFIG_RuntimeMode12BannerJumpEnabledFlag,D0
+    MOVE.B  _CONFIG_RuntimeMode12BannerJumpEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .runtime_mode_enter_mode2
@@ -146,7 +146,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     BNE.S   .runtime_mode_shadow_default
 
 .runtime_mode_pick_shadow_byte:
-    MOVE.B  CONFIG_MsnRuntimeModeSelectorChar_LRBN,D0
+    MOVE.B  _CONFIG_MsnRuntimeModeSelectorChar_LRBN,D0
     EXT.W   D0
     SUBI.W  #$42,D0
     BEQ.S   .runtime_mode_shadow_case_3
@@ -198,7 +198,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     SUBQ.W  #3,D0
     BNE.S   .runtime_mode_clear_to_zero
 
-    JSR     SCRIPT_DeassertCtrlLineNow(PC)
+    JSR     _SCRIPT_DeassertCtrlLineNow(PC)
 
     MOVEQ   #0,D0
     MOVE.W  D0,SCRIPT_RuntimeModeDispatchLatch
@@ -222,7 +222,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_DeassertCtrlLineNow, _TEXTDISP_ResetSelectionAndRefresh, _STR_FindCharPtr, _SCRIPT_ReadHandshakeBit3Flag
+;   _SCRIPT_DeassertCtrlLineNow, _TEXTDISP_ResetSelectionAndRefresh, _STR_FindCharPtr, _SCRIPT_ReadHandshakeBit3Flag
 ; READS:
 ;   _SCRIPT_RuntimeMode, _SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount, _ED_DiagVinModeChar, _Global_UIBusyFlag
 ; WRITES:
@@ -254,7 +254,7 @@ SCRIPT_UpdateCtrlStateMachine:
 
     CLR.W   SCRIPT_CtrlHandshakeRetryCount
     MOVE.W  D0,_SCRIPT_RuntimeMode
-    JSR     SCRIPT_DeassertCtrlLineNow(PC)
+    JSR     _SCRIPT_DeassertCtrlLineNow(PC)
 
     JSR     _TEXTDISP_ResetSelectionAndRefresh(PC)
 

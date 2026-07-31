@@ -1,8 +1,8 @@
-    XDEF    ED_DrawEditHelpText
+    XDEF    _ED_DrawEditHelpText
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_DrawEditHelpText   (Draw edit help textuncertain)
+; FUNC: _ED_DrawEditHelpText   (Draw edit help textuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Uses a fixed list of help strings.
 ;------------------------------------------------------------------------------
-ED_DrawEditHelpText:
+_ED_DrawEditHelpText:
     MOVEM.L D2-D3,-(A7)
 
     BSR.W   _ED_DrawBottomHelpBarBackground

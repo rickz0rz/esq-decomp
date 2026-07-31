@@ -104,18 +104,18 @@ _GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STR_SkipClass3Chars
+;   _STR_SkipClass3Chars
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to STR_SkipClass3Chars.
+;   Jump stub to _STR_SkipClass3Chars.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AI_JMPTBL_STR_SkipClass3Chars:
-    JMP     STR_SkipClass3Chars
+    JMP     _STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AI_JMPTBL_STRING_AppendAtNull   (JumpStub_STRING_AppendAtNull)

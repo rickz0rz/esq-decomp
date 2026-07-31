@@ -15,7 +15,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
+;   _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   _NEWGRID_ShowtimeBucketEntryTable
 ; WRITES:
@@ -47,7 +47,7 @@ _NEWGRID_ResetShowtimeBuckets:
     MOVE.L  4(A0),-(A7)
     CLR.L   -(A7)
     MOVE.L  A1,16(A7)
-    JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L 8(A7),A0
@@ -73,7 +73,7 @@ _NEWGRID_ResetShowtimeBuckets:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _PARSEINI_JMPTBL_STR_FindCharPtr, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
+;   _PARSEINI_JMPTBL_STR_FindCharPtr, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   _NEWGRID_ShowtimeBucketEntryTable, _NEWGRID_ShowtimeBucketPtrTable, NEWGRID_ShowtimeBucketCount
 ; WRITES:
@@ -120,7 +120,7 @@ NEWGRID_AddShowtimeBucketEntry:
     MOVE.L  4(A0),-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A1,32(A7)
-    JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L 24(A7),A0
@@ -262,7 +262,7 @@ NEWGRID_AppendShowtimeBuckets:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState, _NEWGRID2_JMPTBL_STR_SkipClass3Chars,
+;   _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, _TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState, _NEWGRID2_JMPTBL_STR_SkipClass3Chars,
 ;   _NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry,
 ;   NEWGRID_AppendShowtimeBuckets, PARSEINI_JMPTBL_STRING_AppendAtNull
 ; READS:
@@ -379,7 +379,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D1,-(A7)
     PEA     -49(A5)
     MOVE.L  D0,-70(A5)
-    JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
+    JSR     _TEXTDISP_FormatEntryTimeForIndex(PC)
 
     LEA     56(A7),A7
     MOVE.L  #$264,-16(A5)
@@ -820,7 +820,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  -98(A5),-(A7)
     MOVE.L  D0,-(A7)
     PEA     -49(A5)
-    JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
+    JSR     _TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -49(A5)
     JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
@@ -967,7 +967,7 @@ NEWGRID_BuildShowtimesText:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   _NEWGRID_DrawGridEntry, NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, NEWGRID_BuildShowtimesText, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer,
-;   NEWGRID_DrawGridFrameVariant3, _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount, _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
+;   _NEWGRID_DrawGridFrameVariant3, _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount, _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
 ; READS:
 ;   NEWGRID_ShowtimesWorkflowStateLatch, _GCOMMAND_PpvShowtimesLayoutPen, _GCOMMAND_PpvShowtimesInitialLineIndex, _GCOMMAND_PpvDetailLayoutFlag
 ; WRITES:
@@ -1068,7 +1068,7 @@ NEWGRID_HandleShowtimesState:
     JSR     _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     MOVE.L  A3,(A7)
-    BSR.W   NEWGRID_DrawGridFrameVariant3
+    BSR.W   _NEWGRID_DrawGridFrameVariant3
 
     LEA     24(A7),A7
     TST.L   D0
@@ -1091,7 +1091,7 @@ NEWGRID_HandleShowtimesState:
 
 .state5_reset:
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_DrawGridFrameVariant3
+    BSR.W   _NEWGRID_DrawGridFrameVariant3
 
     ADDQ.W  #4,A7
     TST.L   D0

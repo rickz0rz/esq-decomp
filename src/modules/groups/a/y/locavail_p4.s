@@ -16,7 +16,7 @@
 ; READS:
 ;   LOCAVAIL_UpdateFilterStateMachine_Return, _ESQIFF_GAdsBrushListCount, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId, LOCAVAIL_STR_YYLLZ_FilterStateUpdate, _WDISP_HighlightActive, lab_0F7F, lab_0F7F_0008, lab_0F7F_0040, lab_0F7F_0062, lab_0F83, lab_0F84, lab_0F86, lab_0F86_001E, lab_0F86_0066, lab_0F89, lab_0F8C, lab_0F8C_001E, lab_0F8C_0046
 ; WRITES:
-;   _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId, LOCAVAIL_FilterPrevClassId, _LOCAVAIL_FilterWindowHalfSpan, _LOCAVAIL_FilterCooldownTicks
+;   _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId, _LOCAVAIL_FilterPrevClassId, _LOCAVAIL_FilterWindowHalfSpan, _LOCAVAIL_FilterCooldownTicks
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -84,7 +84,7 @@ LOCAVAIL_UpdateFilterStateMachine:
     MOVEQ   #1,D1
     MOVE.L  D1,_LOCAVAIL_FilterStep
     MOVEQ   #-1,D1
-    MOVE.L  D1,LOCAVAIL_FilterPrevClassId
+    MOVE.L  D1,_LOCAVAIL_FilterPrevClassId
     CMPI.L  #$5,D0
     BCC.W   .lab_0F83
 

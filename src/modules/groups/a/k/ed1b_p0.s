@@ -4,11 +4,11 @@
     XDEF    ED1_JMPTBL_GCOMMAND_ResetHighlightMessages
     XDEF    _ED1_JMPTBL_GCOMMAND_SeedBannerDefaults
     XDEF    ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs
-    XDEF    ED1_JMPTBL_LADFUNC_MergeHighLowNibbles
-    XDEF    ED1_JMPTBL_LADFUNC_PackNibblesToByte
+    XDEF    _ED1_JMPTBL_LADFUNC_MergeHighLowNibbles
+    XDEF    _ED1_JMPTBL_LADFUNC_PackNibblesToByte
     XDEF    ED1_JMPTBL_LADFUNC_SaveTextAdsToFile
     XDEF    _ED1_JMPTBL_LOCAVAIL_ResetFilterCursorState
-    XDEF    ED1_JMPTBL_MEM_Move
+    XDEF    _ED1_JMPTBL_MEM_Move
     XDEF    ED1_JMPTBL_NEWGRID_DrawTopBorderLine
 
 
@@ -79,7 +79,7 @@ ED1_JMPTBL_GCOMMAND_ResetHighlightMessages:
     JMP     _GCOMMAND_ResetHighlightMessages
 
 ;------------------------------------------------------------------------------
-; FUNC: ED1_JMPTBL_LADFUNC_MergeHighLowNibbles   (Jump stub)
+; FUNC: _ED1_JMPTBL_LADFUNC_MergeHighLowNibbles   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -93,7 +93,7 @@ ED1_JMPTBL_GCOMMAND_ResetHighlightMessages:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-ED1_JMPTBL_LADFUNC_MergeHighLowNibbles:
+_ED1_JMPTBL_LADFUNC_MergeHighLowNibbles:
     JMP     _LADFUNC_SetPackedPenLowNibble
 
 ;------------------------------------------------------------------------------
@@ -169,7 +169,7 @@ _ED1_JMPTBL_GCOMMAND_SeedBannerDefaults:
     JMP     GCOMMAND_SeedBannerDefaults
 
 ;------------------------------------------------------------------------------
-; FUNC: ED1_JMPTBL_MEM_Move   (Jump stub)
+; FUNC: _ED1_JMPTBL_MEM_Move   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -183,7 +183,7 @@ _ED1_JMPTBL_GCOMMAND_SeedBannerDefaults:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-ED1_JMPTBL_MEM_Move:
+_ED1_JMPTBL_MEM_Move:
     JMP     MEM_Move
 
 ;------------------------------------------------------------------------------
@@ -223,7 +223,7 @@ _ED1_JMPTBL_CLEANUP_DrawDateTimeBannerRow:
     JMP     CLEANUP_DrawDateTimeBannerRow
 
 ;------------------------------------------------------------------------------
-; FUNC: ED1_JMPTBL_LADFUNC_PackNibblesToByte   (Jump stub)
+; FUNC: _ED1_JMPTBL_LADFUNC_PackNibblesToByte   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -237,7 +237,7 @@ _ED1_JMPTBL_CLEANUP_DrawDateTimeBannerRow:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-ED1_JMPTBL_LADFUNC_PackNibblesToByte:
+_ED1_JMPTBL_LADFUNC_PackNibblesToByte:
     JMP     _LADFUNC_SetPackedPenHighNibble
 
 ;!======

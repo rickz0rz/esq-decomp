@@ -1,8 +1,8 @@
-    XDEF    DST_LoadBannerPairFromFiles
+    XDEF    _DST_LoadBannerPairFromFiles
 
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_LoadBannerPairFromFiles   (Load G2/G3 banner fragments and refresh queue)
+; FUNC: _DST_LoadBannerPairFromFiles   (Load G2/G3 banner fragments and refresh queue)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +18: arg_2 (via 22(A5))
@@ -25,7 +25,7 @@
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DST_LoadBannerPairFromFiles:
+_DST_LoadBannerPairFromFiles:
     LINK.W  A5,#-56
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3

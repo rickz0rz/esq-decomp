@@ -14,9 +14,9 @@
     XDEF    Global_STR_CLEANUP_C_14
     XDEF    Global_STR_CLEANUP_C_15
     XDEF    Global_STR_CLEANUP_C_16
-    XDEF    CLEANUP_AlertCooldownTicks
-    XDEF    CLEANUP_AlertProcessingFlag
-    XDEF    CLEANUP_BannerTickCounter
+    XDEF    _CLEANUP_AlertCooldownTicks
+    XDEF    _CLEANUP_AlertProcessingFlag
+    XDEF    _CLEANUP_BannerTickCounter
 ; ========== CLEANUP.c ==========
 
 _Global_STR_CLEANUP_C_1:
@@ -52,11 +52,11 @@ Global_STR_CLEANUP_C_15:
 Global_STR_CLEANUP_C_16:
     NStr    "CLEANUP.c"
 ; Frame countdown for alert retry attempts.
-CLEANUP_AlertCooldownTicks:
+_CLEANUP_AlertCooldownTicks:
     DS.L    1
-; Non-zero while CLEANUP_ProcessAlerts is running to avoid re-entry.
-CLEANUP_AlertProcessingFlag:
+; Non-zero while _CLEANUP_ProcessAlerts is running to avoid re-entry.
+_CLEANUP_AlertProcessingFlag:
     DS.L    1
 ; Counts down frames before cycling banner palette.
-CLEANUP_BannerTickCounter:
+_CLEANUP_BannerTickCounter:
     DC.L    60

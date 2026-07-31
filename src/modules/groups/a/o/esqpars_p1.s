@@ -420,7 +420,7 @@ _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   DISKIO2_HandleInteractiveFileTransfer
+;   _DISKIO2_HandleInteractiveFileTransfer
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -431,7 +431,7 @@ _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer:
-    JMP     DISKIO2_HandleInteractiveFileTransfer
+    JMP     _DISKIO2_HandleInteractiveFileTransfer
 
 ;!======
 
@@ -474,7 +474,7 @@ _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   COI_FreeEntryResources
+;   _COI_FreeEntryResources
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -485,7 +485,7 @@ _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_COI_FreeEntryResources:
-    JMP     COI_FreeEntryResources
+    JMP     _COI_FreeEntryResources
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_DST_UpdateBannerQueue   (Jump-table forwarder)
@@ -562,7 +562,7 @@ ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DISKIO_ParseConfigBuffer
+;   _DISKIO_ParseConfigBuffer
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -573,7 +573,7 @@ ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer:
-    JMP     DISKIO_ParseConfigBuffer
+    JMP     _DISKIO_ParseConfigBuffer
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock   (Jump-table forwarder)
@@ -584,7 +584,7 @@ ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   CLEANUP_ParseAlignedListingBlock
+;   _CLEANUP_ParseAlignedListingBlock
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -595,7 +595,7 @@ ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
-    JMP     CLEANUP_ParseAlignedListingBlock
+    JMP     _CLEANUP_ParseAlignedListingBlock
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte   (Jump-table forwarder)

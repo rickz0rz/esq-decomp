@@ -38,7 +38,7 @@ _DISKIO_OpenFileWithBuffer:
     CLR.L   _DISKIO_BufferControl+Struct_DiskIoBufferControl__ErrorFlag
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AG_JMPTBL_DOS_OpenFileWithMode(PC)
+    JSR     _GROUP_AG_JMPTBL_DOS_OpenFileWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6

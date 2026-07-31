@@ -1,8 +1,8 @@
-    XDEF    ESQFUNC_UpdateRefreshModeState
+    XDEF    _ESQFUNC_UpdateRefreshModeState
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_UpdateRefreshModeState   (UpdateRefreshModeState)
+; FUNC: _ESQFUNC_UpdateRefreshModeState   (UpdateRefreshModeState)
 ; ARGS:
 ;   stack +8: arg_1 (via 12(A5))
 ; RET:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Writes NEWGRID_LastRefreshRequest every call; uses mode 0 vs 2 selector states.
 ;------------------------------------------------------------------------------
-ESQFUNC_UpdateRefreshModeState:
+_ESQFUNC_UpdateRefreshModeState:
     LINK.W  A5,#0
 
     MOVE.L  D7,-(A7)

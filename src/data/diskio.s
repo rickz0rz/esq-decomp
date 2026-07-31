@@ -21,9 +21,9 @@
     XDEF    _DISKIO_PATH_DF1_G_ADS
     XDEF    _DISKIO_CMD_ASSIGN_GFX_DF1
     XDEF    _DISKIO_CMD_ASSIGN_GFX_PC1
-    XDEF    DISKIO_TAG_NRLS
-    XDEF    DISKIO_TAG_LRBN
-    XDEF    DISKIO_TAG_MSN
+    XDEF    _DISKIO_TAG_NRLS
+    XDEF    _DISKIO_TAG_LRBN
+    XDEF    _DISKIO_TAG_MSN
     XDEF    DISKIO_Pc1MountAssignFlag
     XDEF    DISKIO_CMD_MOUNT_PC1
     XDEF    DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT
@@ -115,7 +115,7 @@
     XDEF    DISKIO_STR_ProgramAttrCloseAndProgQuotedPrefix
     XDEF    DISKIO_TAG_NONE
     XDEF    DISKIO_FMT_ProgramStringSuffixWithTypeFields
-    XDEF    DISKIO_CurrentDriveRevisionIndex
+    XDEF    _DISKIO_CurrentDriveRevisionIndex
 ; ========== DISKIO.c ==========
 
 Global_STR_DISKIO_C_1:
@@ -171,11 +171,11 @@ _DISKIO_CMD_ASSIGN_GFX_DF1:
     NStr    "ram:assign >nil: gfx: DF1:"
 _DISKIO_CMD_ASSIGN_GFX_PC1:
     NStr    "ram:assign >nil: gfx: PC1:"
-DISKIO_TAG_NRLS:
+_DISKIO_TAG_NRLS:
     NStr    "NRLS"
-DISKIO_TAG_LRBN:
+_DISKIO_TAG_LRBN:
     NStr    "LRBN"
-DISKIO_TAG_MSN:
+_DISKIO_TAG_MSN:
     NStr    "MSN"
 DISKIO_Pc1MountAssignFlag:
     DS.W    1
@@ -368,5 +368,5 @@ DISKIO_FMT_ProgramStringSuffixWithTypeFields:
     DC.B    "'",TextLineFeed
     NStr2   "    p_type=%03d, movie_cat=%03d, color=0x%02x",TextLineFeed
     DS.W    1
-DISKIO_CurrentDriveRevisionIndex:
+_DISKIO_CurrentDriveRevisionIndex:
     DS.W    1

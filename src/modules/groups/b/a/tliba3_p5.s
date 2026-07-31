@@ -1,10 +1,10 @@
-    XDEF    TLIBA3_InitRuntimeEntries
+    XDEF    _TLIBA3_InitRuntimeEntries
     XDEF    TLIBA3_SetFontForAllViewModes
     XDEF    TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA3_InitRuntimeEntries   (TLIBA3_InitRuntimeEntries)
+; FUNC: _TLIBA3_InitRuntimeEntries   (_TLIBA3_InitRuntimeEntries)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-TLIBA3_InitRuntimeEntries:
+_TLIBA3_InitRuntimeEntries:
     MOVE.L  D7,-(A7)
 
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A0

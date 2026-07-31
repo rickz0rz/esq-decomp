@@ -1,8 +1,8 @@
-    XDEF    TEXTDISP_FindEntryIndexByWildcard
+    XDEF    _TEXTDISP_FindEntryIndexByWildcard
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_FindEntryIndexByWildcard   (Find entry index by pattern)
+; FUNC: _TEXTDISP_FindEntryIndexByWildcard   (Find entry index by pattern)
 ; ARGS:
 ;   stack +8: patternPtr
 ; RET:
@@ -20,10 +20,10 @@
 ; NOTES:
 ;   Skips entries with flag bit 3 set.
 ;------------------------------------------------------------------------------
-TEXTDISP_FindEntryIndexByWildcard:
+_TEXTDISP_FindEntryIndexByWildcard:
     LINK.W  A5,#-12
     MOVEM.L D7/A2-A3,-(A7)
-    MOVE.W  _TEXTDISP_CurrentMatchIndex,TEXTDISP_CurrentMatchIndexSaved
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,_TEXTDISP_CurrentMatchIndexSaved
     MOVEQ   #0,D7
 
 .loop_entries:

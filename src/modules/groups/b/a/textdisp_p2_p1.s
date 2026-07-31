@@ -1,10 +1,10 @@
     XDEF    TEXTDISP_ApplySourceConfigAllEntries
     XDEF    TEXTDISP_ApplySourceConfigToEntry
-    XDEF    TEXTDISP_ClearSourceConfig
+    XDEF    _TEXTDISP_ClearSourceConfig
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_ClearSourceConfig   (Free SourceCfg table)
+; FUNC: _TEXTDISP_ClearSourceConfig   (Free SourceCfg table)
 ; ARGS:
 ;   none
 ; RET:
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Each entry is 6 bytes.
 ;------------------------------------------------------------------------------
-TEXTDISP_ClearSourceConfig:
+_TEXTDISP_ClearSourceConfig:
     LINK.W  A5,#-8
     MOVEM.L D7/A2,-(A7)
     MOVEQ   #0,D7
@@ -58,7 +58,7 @@ TEXTDISP_ClearSourceConfig:
     PEA     6.W
     MOVE.L  (A0),-(A7)
     PEA     1153.W
-    PEA     Global_STR_TEXTDISP_C_3
+    PEA     _Global_STR_TEXTDISP_C_3
     JSR     _MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7

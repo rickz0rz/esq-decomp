@@ -8,7 +8,7 @@
     XDEF    _ESQFUNC_JMPTBL_ESQ_PollCtrlInput
     XDEF    _ESQFUNC_JMPTBL_ESQ_TickGlobalCounters
     XDEF    _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit
-    XDEF    ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState
+    XDEF    _ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState
     XDEF    ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup
     XDEF    ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup
     XDEF    _ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues
@@ -22,14 +22,14 @@
     XDEF    _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag
     XDEF    _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask
     XDEF    ESQFUNC_JMPTBL_STRING_CopyPadNul
-    XDEF    ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
-    XDEF    ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode
+    XDEF    _ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
+    XDEF    _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode
     XDEF    ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState
     XDEF    _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -47,7 +47,7 @@
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode:
+_ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode:
     JMP     _TEXTDISP_SetRastForMode
 
 ;------------------------------------------------------------------------------
@@ -227,7 +227,7 @@ ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup:
     JMP     _LOCAVAIL_SyncSecondaryFilterForCurrentGroup
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -245,7 +245,7 @@ ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
+_ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
     JMP     _TEXTDISP_ResetSelectionAndRefresh
 
 ;------------------------------------------------------------------------------
@@ -301,7 +301,7 @@ _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   CLEANUP_ProcessAlerts
+;   _CLEANUP_ProcessAlerts
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -313,7 +313,7 @@ _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit:
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts:
     ; Update on-screen alerts and pending timers (cleanup module owns the UI state).
-    JMP     CLEANUP_ProcessAlerts
+    JMP     _CLEANUP_ProcessAlerts
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex   (Jump-table forwarder)
@@ -382,7 +382,7 @@ _ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues:
     JMP     _PARSEINI_ComputeHTCMaxValues
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -400,7 +400,7 @@ _ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState:
+_ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState:
     JMP     _LADFUNC_UpdateHighlightState
 
 ;------------------------------------------------------------------------------
@@ -644,7 +644,7 @@ ESQFUNC_JMPTBL_STRING_CopyPadNul:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_STRING_CompareN, _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _ESQIFF_RestoreBasePaletteTriples, _LVOSetRast
 ; READS:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, _BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, _ESQFUNC_BasePaletteRgbTriples, _ESQFUNC_FallbackType3BrushNode, _ESQIFF_BrushIniListHead, ESQFUNC_TAG_00, ESQFUNC_TAG_11, _TEXTDISP_ActiveGroupId, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _WDISP_PaletteTriplesRBase, _TEXTDISP_CurrentMatchIndex, e8
+;   _BRUSH_ScriptPrimarySelection, _BRUSH_ScriptSecondarySelection, _BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _ESQFUNC_BasePaletteRgbTriples, _ESQFUNC_FallbackType3BrushNode, _ESQIFF_BrushIniListHead, ESQFUNC_TAG_00, ESQFUNC_TAG_11, _TEXTDISP_ActiveGroupId, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _WDISP_PaletteTriplesRBase, _TEXTDISP_CurrentMatchIndex, e8
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -662,11 +662,11 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     TST.W   D7
     BNE.S   .load_secondary_script_selection
 
-    MOVE.L  BRUSH_ScriptPrimarySelection,-24(A5) ; prefer script-selected brush if present
+    MOVE.L  _BRUSH_ScriptPrimarySelection,-24(A5) ; prefer script-selected brush if present
     BRA.S   .resolve_selection_source
 
 .load_secondary_script_selection:
-    MOVEA.L BRUSH_ScriptSecondarySelection,A0 ; fall back to secondary slot when requested
+    MOVEA.L _BRUSH_ScriptSecondarySelection,A0 ; fall back to secondary slot when requested
     MOVE.L  A0,-24(A5)
 
 .resolve_selection_source:
@@ -819,7 +819,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVE.L  _BRUSH_SelectedNode,-4(A5)
 
 .clear_rastports_before_brush_blit:
-    MOVEA.L Global_REF_RASTPORT_2,A1
+    MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEQ   #31,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
@@ -849,7 +849,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     SUBQ.L  #1,D1
     MOVEQ   #0,D2
     MOVE.L  D2,-(A7)
-    MOVE.L  Global_REF_RASTPORT_2,-(A7)
+    MOVE.L  _Global_REF_RASTPORT_2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D2,-(A7)

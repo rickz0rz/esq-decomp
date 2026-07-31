@@ -25,7 +25,7 @@
 ;   D0-D7/A0-A6
 ; CALLS:
 ;   NEWGRID_InitGridResources, _NEWGRID_ClearHighlightArea, _CLEANUP_DrawClockBanner,
-;   NEWGRID_AdjustClockStringBySlot, CLEANUP_DrawClockFormatList/Frame, _NEWGRID2_DispatchOperationDefault,
+;   NEWGRID_AdjustClockStringBySlot, _CLEANUP_DrawClockFormatList/Frame, _NEWGRID2_DispatchOperationDefault,
 ;   NEWGRID_MapSelectionToMode, _LVOGetMsg, _NEWGRID_ValidateSelectionCode, _NEWGRID_DrawClockFormatHeader,
 ;   _NEWGRID_DrawDateBanner, NEWGRID_DrawAwaitingListingsMessage, _NEWGRID2_DispatchGridOperation, NEWGRID_MapSelectionToMode,
 ;   GCOMMAND_UpdatePresetEntryCache, _LVOPutMsg, _NEWGRID_DrawGridTopBars
@@ -552,12 +552,12 @@ _NEWGRID_JMPTBL_MEMORY_DeallocateMemory:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   CLEANUP_DrawClockFormatList
+;   _CLEANUP_DrawClockFormatList
 ; DESC:
-;   Jump table entry that forwards to CLEANUP_DrawClockFormatList.
+;   Jump table entry that forwards to _CLEANUP_DrawClockFormatList.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_CLEANUP_DrawClockFormatList:
-    JMP     CLEANUP_DrawClockFormatList
+    JMP     _CLEANUP_DrawClockFormatList
 
 ;------------------------------------------------------------------------------
 ; FUNC: _NEWGRID_JMPTBL_DISPTEXT_FreeBuffers   (Jump stub)

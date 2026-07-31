@@ -17,9 +17,9 @@
 ;   GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode, GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData, GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings, GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers,
 ;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_UNKNOWN2A_Stub0, _LVOPermit
 ; READS:
-;   _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _ESQFUNC_PwBrushListHead, ESQIFF_RecordBufferPtr,
-;   _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort, ESQDISP_HighlightBitmapTable, _WDISP_HighlightRasterHeightPx, _WDISP_WeatherStatusTextPtr, _WDISP_WeatherStatusOverlayTextPtr, ESQ_ProcessWindowPtrBackup,
-;   WDISP_ExecBaseHookPtr, Global_REF_GRAPHICS_LIBRARY, _Global_REF_INTUITION_LIBRARY,
+;   _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _ESQFUNC_PwBrushListHead, _ESQIFF_RecordBufferPtr,
+;   _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort, _ESQDISP_HighlightBitmapTable, _WDISP_HighlightRasterHeightPx, _WDISP_WeatherStatusTextPtr, _WDISP_WeatherStatusOverlayTextPtr, _ESQ_ProcessWindowPtrBackup,
+;   _WDISP_ExecBaseHookPtr, Global_REF_GRAPHICS_LIBRARY, _Global_REF_INTUITION_LIBRARY,
 ;   _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST, _Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,
 ;   AbsExecBase, Global_STR_CLEANUP_C_13, Global_STR_CLEANUP_C_14, Global_STR_CLEANUP_C_15,
 ;   Global_STR_CLEANUP_C_16
@@ -29,7 +29,7 @@
 ;   Global shutdown: forbids task switches, releases resources, restores patched
 ;   system vectors, and re-enables multitasking.
 ; NOTES:
-;   - Frees raster tables via nested loops over ESQDISP_HighlightBitmapTable entries.
+;   - Frees raster tables via nested loops over _ESQDISP_HighlightBitmapTable entries.
 ;------------------------------------------------------------------------------
 ; Global shutdown sequence: stop interrupts, free rsrcs, reset display.
 CLEANUP_ShutdownSystem:
@@ -67,7 +67,7 @@ CLEANUP_ShutdownSystem:
     BSR.W   _CLEANUP_ClearRbfInterruptAndSerial
 
     PEA     9000.W
-    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    MOVE.L  _ESQIFF_RecordBufferPtr,-(A7)
     PEA     260.W
     PEA     Global_STR_CLEANUP_C_13
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
@@ -134,7 +134,7 @@ CLEANUP_ShutdownSystem:
     MOVEQ   #40,D1
     JSR     _GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     ESQDISP_HighlightBitmapTable,A0
+    LEA     _ESQDISP_HighlightBitmapTable,A0
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -192,11 +192,11 @@ CLEANUP_ShutdownSystem:
     MOVEA.L _Global_REF_INTUITION_LIBRARY,A6
     JSR     _LVOVBeamPos(A6)
 
-    TST.L   ESQ_ProcessWindowPtrBackup
+    TST.L   _ESQ_ProcessWindowPtrBackup
     BEQ.S   .after_optional_restore
 
-    MOVEA.L WDISP_ExecBaseHookPtr,A0
-    MOVE.L  ESQ_ProcessWindowPtrBackup,184(A0)
+    MOVEA.L _WDISP_ExecBaseHookPtr,A0
+    MOVE.L  _ESQ_ProcessWindowPtrBackup,184(A0)
 
 .after_optional_restore:
     JSR     GROUP_AB_JMPTBL_UNKNOWN2A_Stub0(PC)

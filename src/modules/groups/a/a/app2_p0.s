@@ -1,8 +1,8 @@
-    XDEF    ESQ_SetCopperEffect_AllOn
+    XDEF    _ESQ_SetCopperEffect_AllOn
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffect_AllOn   (SetCopperEffectAllOn)
+; FUNC: _ESQ_SetCopperEffect_AllOn   (SetCopperEffectAllOn)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Exact meaning of the parameters is unknown.
 ;------------------------------------------------------------------------------
-ESQ_SetCopperEffect_AllOn:
+_ESQ_SetCopperEffect_AllOn:
     MOVEA.L #CIAB_PRA,A1
     MOVE.B  (A1),D1
     BCLR    #6,D1

@@ -12,11 +12,11 @@
 ; CALLS:
 ;   _ESQ_SetCopperEffectParams
 ; READS:
-;   HIGHLIGHT_CustomValue, CIAB_PRA
+;   _HIGHLIGHT_CustomValue, CIAB_PRA
 ; WRITES:
 ;   CIAB_PRA, _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
-;   Forces CIAB_PRA bits 6/7 high, uses HIGHLIGHT_CustomValue as a parameter, and updates
+;   Forces CIAB_PRA bits 6/7 high, uses _HIGHLIGHT_CustomValue as a parameter, and updates
 ;   the copper tables.
 ; NOTES:
 ;   Exact meaning of the parameters is unknown.
@@ -28,7 +28,7 @@ _ESQ_SetCopperEffect_Custom:
     BSET    #7,D1
     MOVE.B  D1,(A1)
     MOVE.B  #$3f,D0
-    MOVE.B  HIGHLIGHT_CustomValue,D1
+    MOVE.B  _HIGHLIGHT_CustomValue,D1
     BSR.S   _ESQ_SetCopperEffectParams
 
     RTS

@@ -1,6 +1,11 @@
 /* RESTORES: ESQ_MoveCopperEntryTowardEnd
  * MODULE:   modules/groups/a/a/app2.s
  * STATUS:   behavioural
+ * DO-NOT-LINK: takes its arguments in REGISTERS, so the compiled C reads the
+ *   stack and gets garbage. Proven: esq_dec_color_step.c linked alone over a
+ *   clean 356-entry build paints a green panel over the grid area, and
+ *   ESQ_SetCopperEffect_Custom compiles to 610000004e75 -- a call and a
+ *   return, doing none of the work. Kept for the analysis, never linked.
  *
  * SASC-MISMATCH: register-argument-convention
  *   ref:     222f0004202f000848e7380024000242001f0241001fe549e54a43f900002d2a41f90000414a0641000006420000383c00207604d64130311000b2426a00001a33b130001000b2446a00000831b1300010005841584360e233801000b2446a000006318010004cdf001c4e75

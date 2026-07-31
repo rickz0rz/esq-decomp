@@ -1,4 +1,4 @@
-    XDEF    TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine
+    XDEF    _TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine
     XDEF    _TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame
     XDEF    TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility
     XDEF    _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition
@@ -47,7 +47,7 @@ _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition:
     JMP     _ESQIFF_RunCopperRiseTransition
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine   (Routine at TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine)
+; FUNC: _TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine   (Routine at _TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -55,7 +55,7 @@ _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   CLEANUP_BuildAlignedStatusLine
+;   _CLEANUP_BuildAlignedStatusLine
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -65,8 +65,8 @@ _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine:
-    JMP     CLEANUP_BuildAlignedStatusLine
+_TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine:
+    JMP     _CLEANUP_BuildAlignedStatusLine
 
 ;------------------------------------------------------------------------------
 ; FUNC: _TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame   (Routine at _TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame)

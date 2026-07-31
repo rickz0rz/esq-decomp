@@ -1,5 +1,5 @@
     XDEF    _ESQDISP_ApplyStatusMaskToIndicators
-    XDEF    ESQDISP_UpdateStatusMaskAndRefresh
+    XDEF    _ESQDISP_UpdateStatusMaskAndRefresh
     XDEF    ESQDISP_UpdateStatusMaskAndRefresh_Return
 
 
@@ -158,7 +158,7 @@ _ESQDISP_ApplyStatusMaskToIndicators:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_UpdateStatusMaskAndRefresh   (UpdateStatusMaskAndRefresh)
+; FUNC: _ESQDISP_UpdateStatusMaskAndRefresh   (UpdateStatusMaskAndRefresh)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -177,7 +177,7 @@ _ESQDISP_ApplyStatusMaskToIndicators:
 ; NOTES:
 ;   D6 controls operation mode: non-zero = OR-in mask, zero = clear mask bits.
 ;------------------------------------------------------------------------------
-ESQDISP_UpdateStatusMaskAndRefresh:
+_ESQDISP_UpdateStatusMaskAndRefresh:
     MOVEM.L D5-D7,-(A7)
     MOVE.L  16(A7),D7
     MOVE.L  20(A7),D6
@@ -220,7 +220,7 @@ ESQDISP_UpdateStatusMaskAndRefresh:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Shared return tail for ESQDISP_UpdateStatusMaskAndRefresh.
+;   Shared return tail for _ESQDISP_UpdateStatusMaskAndRefresh.
 ; NOTES:
 ;   Restores D5-D7 and returns.
 ;------------------------------------------------------------------------------

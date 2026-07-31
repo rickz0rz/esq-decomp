@@ -1,8 +1,8 @@
-    XDEF    SCRIPT_SetupHighlightEffect
+    XDEF    _SCRIPT_SetupHighlightEffect
 
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_SetupHighlightEffect   (SetupHighlightEffectuncertain)
+; FUNC: _SCRIPT_SetupHighlightEffect   (SetupHighlightEffectuncertain)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +16: arg_2 (via 20(A5))
@@ -28,7 +28,7 @@
 ; NOTES:
 ;   Exact effect semantics still under investigation.
 ;------------------------------------------------------------------------------
-SCRIPT_SetupHighlightEffect:
+_SCRIPT_SetupHighlightEffect:
     LINK.W  A5,#-176
     MOVEM.L D2/D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3

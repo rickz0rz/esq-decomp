@@ -67,7 +67,7 @@ TEXTDISP_DrawInsetRectFrame:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  A3,-(A7)
-    MOVE.L  Global_REF_RASTPORT_2,-(A7)
+    MOVE.L  _Global_REF_RASTPORT_2,-(A7)
     BSR.W   TLIBA1_DrawFormattedTextBlock
 
     LEA     24(A7),A7
@@ -112,7 +112,7 @@ TEXTDISP_DrawInsetRectFrame:
 ; CALLS:
 ;   _TEXTDISP_FindAliasIndexByName, _STRING_AppendAtNull
 ; READS:
-;   _TEXTDISP_AliasPtrTable, TEXTDISP_CenterAlignToken
+;   _TEXTDISP_AliasPtrTable, _TEXTDISP_CenterAlignToken
 ; DESC:
 ;   Writes a short display name to outPtr, using alias table when available.
 ; NOTES:
@@ -170,7 +170,7 @@ TEXTDISP_BuildEntryShortName:
     TST.L   D6
     BEQ.S   .return
 
-    LEA     TEXTDISP_CenterAlignToken,A0
+    LEA     _TEXTDISP_CenterAlignToken,A0
     MOVEA.L A2,A1
 
 .prepend_align:

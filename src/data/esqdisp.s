@@ -3,8 +3,8 @@
     XDEF    ESQDISP_StatusIndicatorMask
     XDEF    _Global_REF_INTB_AUD1_INTERRUPT
     XDEF    _Global_REF_INTB_RBF_INTERRUPT
-    XDEF    ESQDISP_DisplayActiveFlag
-    XDEF    ESQDISP_StatusBannerClampGateFlag
+    XDEF    _ESQDISP_DisplayActiveFlag
+    XDEF    _ESQDISP_StatusBannerClampGateFlag
     XDEF    ESQDISP_PendingGridReinitFlag
     XDEF    _ESQDISP_PrimarySecondaryMirrorFlag
     XDEF    ESQDISP_SecondaryPersistRequestFlag
@@ -32,7 +32,7 @@ _ESQDISP_StatusIndicatorColorCache:
 ; SYM: ESQDISP_StatusIndicatorMask   (status indicator bitmask)
 ; TYPE: u32 mask
 ; PURPOSE: Tracks active status-indicator bits used for repaint decisions.
-; USED BY: ESQDISP_UpdateStatusMaskAndRefresh
+; USED BY: _ESQDISP_UpdateStatusMaskAndRefresh
 ; NOTES: Mask is clamped to 12 bits.
 ;------------------------------------------------------------------------------
 ESQDISP_StatusIndicatorMask:
@@ -57,22 +57,22 @@ _Global_REF_INTB_AUD1_INTERRUPT:
 _Global_REF_INTB_RBF_INTERRUPT:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_DisplayActiveFlag   (display-active gate)
+; SYM: _ESQDISP_DisplayActiveFlag   (display-active gate)
 ; TYPE: u32 flag
 ; PURPOSE: Indicates whether ESQ display/update polling should run.
 ; USED BY: ESQ, _ESQFUNC_ProcessUiFrameTick, SCRIPT_HandleSerialCtrlCmd
 ; NOTES: Cleared at startup and set once display state is initialized.
 ;------------------------------------------------------------------------------
-ESQDISP_DisplayActiveFlag:
+_ESQDISP_DisplayActiveFlag:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_StatusBannerClampGateFlag   (status banner clamp gate)
+; SYM: _ESQDISP_StatusBannerClampGateFlag   (status banner clamp gate)
 ; TYPE: u16 flag
 ; PURPOSE: Gates status-banner clamp/highlight setup around forced redraw paths.
 ; USED BY: CLEANUP2_ForceStatusBannerRedraw, ESQDISP_DrawStatusBanner_Impl
 ; NOTES: Temporarily cleared during cleanup-triggered redraw.
 ;------------------------------------------------------------------------------
-ESQDISP_StatusBannerClampGateFlag:
+_ESQDISP_StatusBannerClampGateFlag:
     DC.W    $0001
 ;------------------------------------------------------------------------------
 ; SYM: ESQDISP_PendingGridReinitFlag   (pending grid reinit)

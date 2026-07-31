@@ -1,10 +1,9 @@
-    XDEF    DST_BuildBannerTimeEntry
-    XDEF    _DST_BuildBannerTimeWord
-    XDEF    DST_ComputeBannerIndex
+    XDEF    _DST_BuildBannerTimeEntry
+
 
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_BuildBannerTimeEntry   (Build banner time entryuncertain)
+; FUNC: _DST_BuildBannerTimeEntry   (Build banner time entryuncertain)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -26,7 +25,7 @@
 ; CALLS:
 ;   _DATETIME_IsLeapYear, _DATETIME_BuildFromBaseDay, _DATETIME_ClassifyValueInRange, _DATETIME_SecondsToStruct, _GROUP_AG_JMPTBL_MATH_Mulu32/1A07
 ; READS:
-;   _CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, _CLOCK_CacheYear, _ESQ_SecondarySlotModeFlagChar, _ESQ_STR_6, _CLOCK_FormatVariantCode, DST_BannerWindowSecondary, _DST_BannerWindowPrimary
+;   _CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, _CLOCK_CacheYear, _ESQ_SecondarySlotModeFlagChar, _ESQ_STR_6, _CLOCK_FormatVariantCode, _DST_BannerWindowSecondary, _DST_BannerWindowPrimary
 ; WRITES:
 ;   (A3), 14(A2)
 ; DESC:
@@ -34,7 +33,7 @@
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DST_BuildBannerTimeEntry:
+_DST_BuildBannerTimeEntry:
     LINK.W  A5,#-36
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
     MOVE.W  10(A5),D7
@@ -203,9 +202,9 @@ DST_BuildBannerTimeEntry:
     CMP.B   D1,D0
     BNE.S   .skip_alt_buffer
 
-    ; If in 'Y' mode, write into DST_BannerWindowSecondary buffer first.
+    ; If in 'Y' mode, write into _DST_BannerWindowSecondary buffer first.
     MOVE.L  D5,-(A7)
-    MOVE.L  DST_BannerWindowSecondary,-(A7)
+    MOVE.L  _DST_BannerWindowSecondary,-(A7)
     BSR.W   _DATETIME_ClassifyValueInRange
 
     ADDQ.W  #8,A7
@@ -276,134 +275,6 @@ DST_BuildBannerTimeEntry:
 
 .return:
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
-    UNLK    A5
-    RTS
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: _DST_BuildBannerTimeWord   (Wrapper: call DST_BuildBannerTimeEntry and return word.)
-; ARGS:
-;   stack +6: arg_1 (via 10(A5))
-;   stack +8: arg_2 (via 12(A5))
-;   stack +11: arg_3 (via 15(A5))
-; RET:
-;   D0: result/status
-; CLOBBERS:
-;   A7/D0/D1/D6/D7
-; CALLS:
-;   DST_BuildBannerTimeEntry
-; READS:
-;   (none observed)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Calls DST_BuildBannerTimeEntry and returns the computed word from stack temp.
-; NOTES:
-;   Requires deeper reverse-engineering.
-;------------------------------------------------------------------------------
-_DST_BuildBannerTimeWord:
-    LINK.W  A5,#-4
-    MOVEM.L D6-D7,-(A7)
-    MOVE.W  10(A5),D7
-    MOVE.B  15(A5),D6
-    MOVE.L  D7,D0
-    EXT.L   D0
-    MOVEQ   #0,D1
-    MOVE.B  D6,D1
-    CLR.L   -(A7)
-    PEA     -2(A5)
-    MOVE.L  D1,-(A7)
-    MOVE.L  D0,-(A7)
-    BSR.W   DST_BuildBannerTimeEntry
-
-    MOVE.W  -2(A5),D0
-    MOVEM.L -12(A5),D6-D7
-    UNLK    A5
-    RTS
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: DST_ComputeBannerIndex   (Compute banner index from time structuncertain)
-; ARGS:
-;   stack +4: arg_1 (via 8(A5))
-;   stack +10: arg_2 (via 14(A5))
-;   stack +15: arg_3 (via 19(A5))
-; RET:
-;   D0: result/status
-; CLOBBERS:
-;   A3/A7/D0/D1/D6/D7
-; CALLS:
-;   DST_BuildBannerTimeEntry, _GROUP_AG_JMPTBL_MATH_DivS32
-; READS:
-;   8(A3), 10(A3), 18(A3)
-; WRITES:
-;   (none observed)
-; DESC:
-;   Calls DST_BuildBannerTimeEntry and computes a derived index value.
-; NOTES:
-;   Requires deeper reverse-engineering.
-;------------------------------------------------------------------------------
-DST_ComputeBannerIndex:
-    LINK.W  A5,#-4
-    MOVEM.L D6-D7/A3,-(A7)
-    MOVEA.L 8(A5),A3
-    MOVE.W  14(A5),D7
-    MOVE.B  19(A5),D6
-    MOVE.L  D7,D0
-    EXT.L   D0
-    MOVEQ   #0,D1
-    MOVE.B  D6,D1
-    MOVE.L  A3,-(A7)
-    PEA     -2(A5)
-    MOVE.L  D1,-(A7)
-    MOVE.L  D0,-(A7)
-    BSR.W   DST_BuildBannerTimeEntry
-
-    LEA     16(A7),A7
-    MOVE.W  8(A3),D0
-    EXT.L   D0
-    MOVEQ   #12,D1
-    JSR     _GROUP_AG_JMPTBL_MATH_DivS32(PC)
-
-    TST.W   18(A3)
-    BEQ.S   .month_offset_zero
-
-    MOVEQ   #12,D0
-    BRA.S   .month_offset_ready
-
-.month_offset_zero:
-    MOVEQ   #0,D0
-
-.month_offset_ready:
-    ADD.L   D0,D1
-    ADD.L   D1,D1
-    CMPI.W  #$1d,10(A3)
-    SGT     D0
-    NEG.B   D0
-    EXT.W   D0
-    EXT.L   D0
-    ADD.L   D0,D1
-    BEQ.S   .set_nonzero_flag
-
-    MOVEQ   #1,D0
-    BRA.S   .nonzero_flag_ready
-
-.set_nonzero_flag:
-    MOVEQ   #0,D0
-
-.nonzero_flag_ready:
-    MOVE.L  D0,D7
-    ADDI.W  #$26,D7
-    MOVE.L  D7,D0
-    EXT.L   D0
-    DIVS    #$30,D0
-    SWAP    D0
-    MOVE.L  D0,D7
-    ADDQ.W  #1,D7
-    MOVE.L  D7,D0
-    MOVEM.L (A7)+,D6-D7/A3
     UNLK    A5
     RTS
 

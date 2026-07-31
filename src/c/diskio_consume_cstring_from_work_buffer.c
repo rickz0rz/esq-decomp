@@ -22,6 +22,6 @@ char *DISKIO_ConsumeCStringFromWorkBuffer(void)
         c = *Global_PTR_WORK_BUFFER++;
     } while (c != 0);
     if (Global_REF_LONG_FILE_SCRATCH < 0)
-        start = (char *)0xFFFF;
+        start = (char *)-1;
     return start;
 }

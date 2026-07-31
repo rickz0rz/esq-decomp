@@ -5,8 +5,8 @@
     XDEF    PARSEINI_JMPTBL_BRUSH_FreeBrushList
     XDEF    PARSEINI_JMPTBL_BRUSH_FreeBrushResources
     XDEF    PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk
-    XDEF    PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer
-    XDEF    PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer
+    XDEF    _PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer
+    XDEF    _PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer
     XDEF    PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen
     XDEF    PARSEINI_JMPTBL_ED1_EnterEscMenu
     XDEF    PARSEINI_JMPTBL_ED1_ExitEscMenu
@@ -16,9 +16,9 @@
     XDEF    PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable
     XDEF    PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey
     XDEF    PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad
-    XDEF    PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
+    XDEF    _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
     XDEF    PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator
-    XDEF    PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette
+    XDEF    _PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette
     XDEF    _PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable
     XDEF    PARSEINI_JMPTBL_HANDLE_OpenWithMode
     XDEF    PARSEINI_JMPTBL_STREAM_ReadLineWithLimit
@@ -241,7 +241,7 @@ PARSEINI_HandleFontCommand:
     BRA.W   .return
 
 .cmd_scan_logos_and_clear_flag1:
-    MOVE.B  CONFIG_ParseiniLogoScanEnabledFlag,D0
+    MOVE.B  _CONFIG_ParseiniLogoScanEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .after_optional_logo_scan
@@ -259,7 +259,7 @@ PARSEINI_HandleFontCommand:
     BRA.W   .return
 
 .cmd_set_h26f_font:
-    PEA     Global_STRUCT_TEXTATTR_H26F_FONT
+    PEA     _Global_STRUCT_TEXTATTR_H26F_FONT
     PEA     _Global_HANDLE_H26F_FONT
     BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
 
@@ -278,7 +278,7 @@ PARSEINI_HandleFontCommand:
     BRA.W   .return
 
 .cmd_set_prevuec_font:
-    PEA     Global_STRUCT_TEXTATTR_PREVUEC_FONT
+    PEA     _Global_STRUCT_TEXTATTR_PREVUEC_FONT
     PEA     _Global_HANDLE_PREVUEC_FONT
     BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
 
@@ -298,7 +298,7 @@ PARSEINI_HandleFontCommand:
     MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
-    MOVEA.L Global_REF_RASTPORT_2,A1
+    MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
@@ -340,7 +340,7 @@ PARSEINI_HandleFontCommand:
     BRA.W   .return
 
 .cmd_set_prevue_font:
-    PEA     Global_STRUCT_TEXTATTR_PREVUE_FONT
+    PEA     _Global_STRUCT_TEXTATTR_PREVUE_FONT
     PEA     _Global_HANDLE_PREVUE_FONT
     BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
 
@@ -361,7 +361,7 @@ PARSEINI_HandleFontCommand:
     BRA.W   .return
 
 .cmd_parse_gradient_ini:
-    ; Loads/parses gradient.ini into GCOMMAND_GradientPresetTable staging data.
+    ; Loads/parses gradient.ini into _GCOMMAND_GradientPresetTable staging data.
     ; No direct runtime consumer of this table is confirmed in named-symbol paths yet.
     PEA     Global_STR_DF0_GRADIENT_INI_3
     BSR.W   _PARSEINI_ParseIniBufferAndDispatch
@@ -1060,7 +1060,7 @@ PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator:
     JMP     _GCOMMAND_FindPathSeparator
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer   (JumpStub)
+; FUNC: _PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer   (JumpStub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1074,7 +1074,7 @@ PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer:
+_PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer:
     JMP     _DISKIO_ConsumeLineFromWorkBuffer
 
 ;------------------------------------------------------------------------------
@@ -1168,7 +1168,7 @@ PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest:
     JMP     UNKNOWN36_FinalizeRequest
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette   (JumpStub_GCOMMAND_InitPresetTableFromPalette)
+; FUNC: _PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette   (JumpStub_GCOMMAND_InitPresetTableFromPalette)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1182,7 +1182,7 @@ PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette:
+_PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette:
     JMP     _GCOMMAND_InitPresetTableFromPalette
 
 ;------------------------------------------------------------------------------
@@ -1222,7 +1222,7 @@ PARSEINI_JMPTBL_STRING_AppendAtNull:
     JMP     _STRING_AppendAtNull
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer   (JumpStub)
+; FUNC: _PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer   (JumpStub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1236,7 +1236,7 @@ PARSEINI_JMPTBL_STRING_AppendAtNull:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer:
+_PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer:
     JMP     _DISKIO_LoadFileToWorkBuffer
 
 ;------------------------------------------------------------------------------
@@ -1330,7 +1330,7 @@ PARSEINI_JMPTBL_ED1_ExitEscMenu:
     JMP     ED1_ExitEscMenu
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString   (JumpStub)
+; FUNC: _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString   (JumpStub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1344,7 +1344,7 @@ PARSEINI_JMPTBL_ED1_ExitEscMenu:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString:
+_PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString:
     JMP     _ESQPARS_ReplaceOwnedString
 
 ;------------------------------------------------------------------------------

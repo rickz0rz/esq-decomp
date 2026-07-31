@@ -175,7 +175,7 @@ NEWGRID_FindNextEntryWithMarkers:
 ;   NEWGRID_DrawEmptyGridMessage, _NEWGRID_ValidateSelectionCode,
 ;   _NEWGRID_GetGridModeIndex, _NEWGRID_ComputeColumnIndex
 ; READS:
-;   NEWGRID_AltEntryAttemptCounter/2026/2027, CONFIG_NewgridSelectionCode35EnabledFlag
+;   NEWGRID_AltEntryAttemptCounter/2026/2027, _CONFIG_NewgridSelectionCode35EnabledFlag
 ; WRITES:
 ;   NEWGRID_AltEntryAttemptCounter/2026/2027
 ; DESC:
@@ -286,7 +286,7 @@ NEWGRID_ProcessAltEntryState:
     BSR.W   _NEWGRID_HandleAltGridState
 
     LEA     12(A7),A7
-    MOVE.B  CONFIG_NewgridSelectionCode35EnabledFlag,D1
+    MOVE.B  _CONFIG_NewgridSelectionCode35EnabledFlag,D1
     MOVE.L  D0,NEWGRID_AltEntryWorkflowState
     MOVEQ   #89,D0
     CMP.B   D0,D1

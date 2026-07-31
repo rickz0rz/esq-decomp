@@ -1,8 +1,8 @@
-    XDEF    ESQ_TickClockAndFlagEvents
+    XDEF    _ESQ_TickClockAndFlagEvents
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_TickClockAndFlagEvents   (Tick clock and emit boundary event code)
+; FUNC: _ESQ_TickClockAndFlagEvents   (Tick clock and emit boundary event code)
 ; ARGS:
 ;   stack +4: timePtr (struct with date/time fields)
 ; RET:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Field meanings are inferred; 18(A0) is treated as an AM/PM sign flag.
 ;------------------------------------------------------------------------------
-ESQ_TickClockAndFlagEvents:
+_ESQ_TickClockAndFlagEvents:
     MOVEA.L 4(A7),A0
     MOVEM.L D2-D4,-(A7)
     MOVEQ   #0,D0

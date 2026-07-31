@@ -61,7 +61,7 @@ LOCAVAIL_STR_YYLLZ_FilterStateUpdate:
 ; USED BY: NEWGRID_InitGridResources, _NEWGRID_DrawTopBorderLine, _CLEANUP_DrawGridTimeBanner, PARSEINI command font updates
 ; NOTES:
 ;   `_NEWGRID_MainRastPortPtr` binds to `_Global_REF_696_400_BITMAP`.
-;   `_NEWGRID_HeaderRastPortPtr` binds to `WDISP_BannerGridBitmapStruct`.
+;   `_NEWGRID_HeaderRastPortPtr` binds to `_WDISP_BannerGridBitmapStruct`.
 ;------------------------------------------------------------------------------
 _NEWGRID_MainRastPortPtr:
     DS.L    1

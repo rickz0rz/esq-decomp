@@ -1,7 +1,7 @@
 
     JSR     _ESQDISP_ProcessGridMessagesIfIdle(PC)
 
-    TST.W   CLEANUP_PendingAlertFlag
+    TST.W   _CLEANUP_PendingAlertFlag
     BEQ.S   .lab_0980
 
     JSR     ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(PC)

@@ -29,7 +29,7 @@
 ;   _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory,
 ;   _GROUP_AS_JMPTBL_STR_FindCharPtr, _LADFUNC_UpdateHighlightState
 ; READS:
-;   _ED_DiagTextModeChar, LADFUNC_TAG_RS_ResetTriggerSet, LADFUNC_TAG_RS_ParseAllowedSet, _LADFUNC_EntryPtrTable, _LADFUNC_ParsedEntryCount, ESQIFF_StatusPacketReadyFlag
+;   _ED_DiagTextModeChar, LADFUNC_TAG_RS_ResetTriggerSet, LADFUNC_TAG_RS_ParseAllowedSet, _LADFUNC_EntryPtrTable, _LADFUNC_ParsedEntryCount, _ESQIFF_StatusPacketReadyFlag
 ; WRITES:
 ;   _LADFUNC_ParsedEntryCount, _LADFUNC_EntryPtrTable entry buffers, _WDISP_HighlightActive
 ; DESC:
@@ -65,7 +65,7 @@ LADFUNC_ParseBannerEntryData:
     BNE.S   .return_zero
 
 .maybe_refresh:
-    MOVE.W  ESQIFF_StatusPacketReadyFlag,D0
+    MOVE.W  _ESQIFF_StatusPacketReadyFlag,D0
     SUBQ.W  #1,D0
     BNE.S   .return_zero
 
@@ -350,9 +350,9 @@ LADFUNC_ParseBannerEntryData:
 ;   _LADFUNC_ComposePackedPenByte, GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer,
 ;   GROUP_AY_JMPTBL_DISKIO_WriteDecimalField, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AW_JMPTBL_WDISP_SPrintf
 ; READS:
-;   DISKIO_SaveOperationReadyFlag, KYBD_PATH_DF0_LOCAL_ADS, LADFUNC_FMT_AttrEscapePrefixCharHex, LADFUNC_TextAdLineBreakBuffer, _LADFUNC_EntryPtrTable, LADFUNC_SaveAdsFileHandle
+;   _DISKIO_SaveOperationReadyFlag, KYBD_PATH_DF0_LOCAL_ADS, LADFUNC_FMT_AttrEscapePrefixCharHex, LADFUNC_TextAdLineBreakBuffer, _LADFUNC_EntryPtrTable, LADFUNC_SaveAdsFileHandle
 ; WRITES:
-;   DISKIO_SaveOperationReadyFlag, LADFUNC_SaveAdsFileHandle
+;   _DISKIO_SaveOperationReadyFlag, LADFUNC_SaveAdsFileHandle
 ; DESC:
 ;   Encodes entry text/attribute data and writes it to a file.
 ; NOTES:
@@ -367,14 +367,14 @@ _LADFUNC_SaveTextAdsToFile:
 
     ADDQ.W  #8,A7
     MOVE.B  D0,-25(A5)
-    TST.L   DISKIO_SaveOperationReadyFlag
+    TST.L   _DISKIO_SaveOperationReadyFlag
     BNE.S   .open_file
 
     MOVEQ   #0,D0
     BRA.W   .return
 
 .open_file:
-    CLR.L   DISKIO_SaveOperationReadyFlag
+    CLR.L   _DISKIO_SaveOperationReadyFlag
     CLR.B   -15(A5)
     PEA     MODE_NEWFILE.W
     PEA     KYBD_PATH_DF0_LOCAL_ADS
@@ -386,7 +386,7 @@ _LADFUNC_SaveTextAdsToFile:
     BNE.S   .start_entry_loop
 
     MOVEQ   #1,D0
-    MOVE.L  D0,DISKIO_SaveOperationReadyFlag
+    MOVE.L  D0,_DISKIO_SaveOperationReadyFlag
     MOVEQ   #-1,D0
     BRA.W   .return
 
@@ -525,7 +525,7 @@ _LADFUNC_SaveTextAdsToFile:
     JSR     GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(PC)
 
     MOVEQ   #1,D0
-    MOVE.L  D0,DISKIO_SaveOperationReadyFlag
+    MOVE.L  D0,_DISKIO_SaveOperationReadyFlag
 
 .return:
     MOVEM.L -52(A5),D4-D7

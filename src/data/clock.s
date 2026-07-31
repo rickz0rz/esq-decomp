@@ -4,11 +4,11 @@
     XDEF    _Global_STR_12_44_44_SINGLE_SPACE
     XDEF    _Global_STR_12_44_44_PM
     XDEF    Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED
-    XDEF    CLOCK_STR_TEMPLATE_CODE_SET_FGN
+    XDEF    _CLOCK_STR_TEMPLATE_CODE_SET_FGN
     XDEF    CLOCK_AlignedInsetRenderGateFlag
     XDEF    _CLOCK_FileEofMarkerCtrlZ
-    XDEF    COI_FieldDelimiterTab
-    XDEF    COI_RecordTerminatorCrLf
+    XDEF    _COI_FieldDelimiterTab
+    XDEF    _COI_RecordTerminatorCrLf
     XDEF    CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY
     XDEF    CLOCK_FMT_WRAP_CHAR_STRING_CHAR
     XDEF    CLOCK_STR_DOUBLE_SPACE
@@ -18,7 +18,7 @@
     XDEF    CLOCK_STR_TOKEN_OUTPUT_TEMPLATE
     XDEF    CLOCK_STR_BOOL_CHARS_YyNn
     XDEF    CLOCK_STR_EMPTY_TOKEN_TEMPLATE
-    XDEF    CLOCK_STR_MISSING_TITLE_TEMPLATE
+    XDEF    _CLOCK_STR_MISSING_TITLE_TEMPLATE
 ; ========== CLOCK.c ========== probably
 
 _Global_STR_EXTRA_TIME_FORMAT: ; not sure where this is used.
@@ -35,13 +35,13 @@ Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED:
     NStr    "%s%s%ld  "
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_STR_TEMPLATE_CODE_SET_FGN   (template code set)
+; SYM: _CLOCK_STR_TEMPLATE_CODE_SET_FGN   (template code set)
 ; TYPE: cstring
 ; PURPOSE: Character set checked when selecting aligned status/time templates.
-; USED BY: CLEANUP_RenderAlignedStatusScreen
+; USED BY: _CLEANUP_RenderAlignedStatusScreen
 ; NOTES: Membership test performed via _STR_FindCharPtr.
 ;------------------------------------------------------------------------------
-CLOCK_STR_TEMPLATE_CODE_SET_FGN:
+_CLOCK_STR_TEMPLATE_CODE_SET_FGN:
     NStr    "FGN"
 ;------------------------------------------------------------------------------
 ; SYM: CLOCK_AlignedInsetRenderGateFlag   (aligned inset render gate flag)
@@ -65,15 +65,15 @@ CLOCK_AlignedInsetRenderGateFlag:
 _CLOCK_FileEofMarkerCtrlZ:
     DC.B    $1a
 ;------------------------------------------------------------------------------
-; SYM: COI_FieldDelimiterTab   (COI export field delimiter)
+; SYM: _COI_FieldDelimiterTab   (COI export field delimiter)
 ; TYPE: u8
 ; PURPOSE: Delimiter byte emitted between serialized COI fields.
 ; USED BY: COI_Write* export routines
 ; NOTES: Value is $09 (TAB).
 ;------------------------------------------------------------------------------
-COI_FieldDelimiterTab:
+_COI_FieldDelimiterTab:
     DC.B    $09
-COI_RecordTerminatorCrLf:
+_COI_RecordTerminatorCrLf:
     DC.B    $0d
     DC.W    $0a00
 ;------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ CLOCK_STR_DOUBLE_SPACE:
     NStr    "  "
 CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY:
     NStr    "NYYYYYXX00"
-; Default pair bytes used by CLEANUP_FormatEntryStringTokens replacement logic.
+; Default pair bytes used by _CLEANUP_FormatEntryStringTokens replacement logic.
 CLOCK_STR_TOKEN_PAIR_DEFAULTS:
     NStr    "NYYYYYXX00"
 CLEANUP_TokenPairScratch:
@@ -104,5 +104,5 @@ CLOCK_STR_BOOL_CHARS_YyNnAlias:
     NStr    "YyNn"
 CLOCK_STR_EMPTY_TOKEN_TEMPLATE:
     NStr    "NNNNNNXX00"
-CLOCK_STR_MISSING_TITLE_TEMPLATE:
+_CLOCK_STR_MISSING_TITLE_TEMPLATE:
     NStr    "NNNNNNXX00"

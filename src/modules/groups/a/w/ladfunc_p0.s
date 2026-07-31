@@ -133,6 +133,12 @@ LADFUNC_ResetEntryTextBuffers:
 ; NOTES:
 ;   Resets _LADFUNC_HighlightCycleCountdown from LADFUNC_HighlightCycleCountdownReload when the countdown underflows.
 ;------------------------------------------------------------------------------
+;   This block carried no label. The extract for whatever precedes it ran
+;   on into it and reported that function as larger than it is. The label
+;   below is byte-neutral and separates the two again. It is deliberately
+;   not XDEF'd: no other module refers to it.
+;------------------------------------------------------------------------------
+LADFUNC_UpdateHighlightCycle:
     MOVE.W  _WDISP_HighlightActive,D0
     SUBQ.W  #1,D0
     BNE.S   .maybe_reset

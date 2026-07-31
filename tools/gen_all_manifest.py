@@ -45,6 +45,11 @@ import coverage
 
 ABI_BLOCKERS = {'register-args', 'live-register-on-entry', 'interior-label'}
 
+# This manifest is built with ESQ_FARCALLS=1 -- the header written below says so,
+# and without it the link fails. So the generator assumes the flag by default.
+# Set ESQ_FARCALLS=0 to regenerate the smaller manifest that links without it.
+FARCALLS = os.environ.get('ESQ_FARCALLS', '1') != '0'
+
 
 def register_entry_abi():
     """Functions the OS enters with a register convention.
@@ -110,8 +115,19 @@ def main():
                 continue
             p = os.path.join(dp, f)
             labs = re.findall(r'^([A-Za-z_][\w]*):', open(p).read(), re.M)
+            # A `<name>_Return` label is NOT a second function. It is the
+            # epilogue of <name>, given its own label because the body branches
+            # to it, and a C restoration of <name> carries that epilogue itself.
+            # Counting it made the module look like it held two functions, and
+            # the `n != 1` test below then refused to link the restoration --
+            # silently, since the file compiles and compares fine. SIXTEEN
+            # restorations were dropped that way on the day this was found.
+            fnlabs = [l for l in labs
+                      if not (l.endswith('_Return') and l[:-7].lstrip('_') in
+                              [x.lstrip('_') for x in labs])]
             for l in labs:
-                home[l] = (os.path.relpath(p, os.path.join(ROOT, 'src')), len(labs))
+                home[l] = (os.path.relpath(p, os.path.join(ROOT, 'src')),
+                           len(fnlabs))
 
     # Per-file sc options come from TWO places. replacements.txt carries them for
     # byte-exact restorations, but a BEHAVIOURAL file cannot have an entry there
@@ -167,7 +183,12 @@ def main():
         if bare in reg_abi:
             skipped.append((f, 'entered by the OS with a register convention'))
             continue
-        if bare in short_br:
+        # This manifest mandates ESQ_FARCALLS=1, which rewrites every `BSR.S sym`
+        # to a global into an absolute `JSR sym`. That is exactly the reference
+        # this exclusion was protecting, so the callee no longer has to stay
+        # beside its caller. Keep the detector: it still describes the pure
+        # build, and it is the reason the flag is mandatory here.
+        if bare in short_br and not FARCALLS:
             skipped.append((f, 'reached by an 8-bit BSR.S from another module'))
             continue
         rows.append((mod, 'c/' + f, opts.get('c/' + f, '')))
@@ -181,9 +202,20 @@ def main():
                  '# original by construction, so build-split.sh reports DIFFERS. The\n'
                  '# byte-exact deliverable is src/c/replacements.txt.\n'
                  '#\n'
-                 '# Build with (CODE=FAR is mandatory -- see AGENTS.md):\n'
-                 '#   SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \\\n'
-                 '#     C_REPLACEMENTS=src/c/replacements-all.txt ./build-split.sh\n')
+                 '# Build with BOTH flags -- see AGENTS.md. CODE=FAR fixes the call\n'
+                 '# encoding on the C side. ESQ_FARCALLS=1 widens the ASSEMBLY 16-bit\n'
+                 '# PC-relative references, which is what used to cap this manifest.\n'
+                 '# Without ESQ_FARCALLS=1 the link fails with Error 28, and the message\n'
+                 '# blames an assembly unit rather than any restoration.\n'
+                 '#\n'
+                 '#   ESQ_FARCALLS=1 \\\n'
+                 '#     SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \\\n'
+                 '#     C_REPLACEMENTS=src/c/replacements-all.txt ./build-split.sh\n'
+                 '#\n'
+                 '# Verified 2026-07-30 at 391 entries: check_pcrel_range clean at 204\n'
+                 '# calls, a6_audit 0 of 391, soak 10 of 10 distinct frames,\n'
+                 '# menusweep clean on all six ESC-menu items, and framecolor.py\n'
+                 '# shows every colour bin overlapping the known-good build.\n')
         for mod, c, o in rows:
             fh.write(f'{mod:70s} {c}' + (f'  {o}' if o else '') + '\n')
 

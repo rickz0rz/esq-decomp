@@ -1,8 +1,8 @@
-    XDEF    COI_LoadOiDataFile
+    XDEF    _COI_LoadOiDataFile
 
 
 ;------------------------------------------------------------------------------
-; FUNC: COI_LoadOiDataFile   (LoadOiDataFileuncertain)
+; FUNC: _COI_LoadOiDataFile   (LoadOiDataFileuncertain)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +7: arg_2 (via 11(A5))
@@ -65,7 +65,7 @@
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_MATH_DivS32, _GROUP_AE_JMPTBL_WDISP_SPrintf, _DISKIO_LoadFileToWorkBuffer, _GROUP_AI_JMPTBL_STR_FindCharPtr, _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt,
-;   GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap, _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString, CLEANUP_FormatEntryStringTokens, _ESQ_WildcardMatch, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
+;   _GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap, _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString, _CLEANUP_FormatEntryStringTokens, _ESQ_WildcardMatch, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
 ;   _COI_AllocSubEntryTable
 ; READS:
 ;   _TEXTDISP_SecondaryGroupCode/_TEXTDISP_SecondaryGroupPresentFlag/_TEXTDISP_SecondaryGroupEntryCount/_TEXTDISP_PrimaryGroupCode/_TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable/_TEXTDISP_SecondaryEntryPtrTable,
@@ -83,7 +83,7 @@
 ;   - Uses tab separators and parses numeric fields via _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt.
 ;   - DBF loops run (Dn+1) iterations when clearing scratch buffers.
 ;------------------------------------------------------------------------------
-COI_LoadOiDataFile:
+_COI_LoadOiDataFile:
     LINK.W  A5,#-648
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
     MOVE.B  11(A5),D7
@@ -121,7 +121,7 @@ COI_LoadOiDataFile:
     MOVE.W  D1,-334(A5)
     EXT.L   D1
     MOVE.L  D1,-(A7)
-    PEA     Global_STR_DF0_OI_PERCENT_2_LX_DAT_2
+    PEA     _Global_STR_DF0_OI_PERCENT_2_LX_DAT_2
     PEA     -566(A5)
     JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -167,7 +167,7 @@ COI_LoadOiDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
     PEA     1198.W
-    PEA     Global_STR_COI_C_6
+    PEA     _Global_STR_COI_C_6
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
@@ -185,7 +185,7 @@ COI_LoadOiDataFile:
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
-    PEA     COI_STR_LINEFEED_CR_1
+    PEA     _COI_STR_LINEFEED_CR_1
     JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
@@ -249,7 +249,7 @@ COI_LoadOiDataFile:
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
-    PEA     COI_STR_LINEFEED_CR_2
+    PEA     _COI_STR_LINEFEED_CR_2
     JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
@@ -295,7 +295,7 @@ COI_LoadOiDataFile:
     PEA     11.W
     PEA     -604(A5)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
+    JSR     _GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
 
     LEA     28(A7),A7
     BRA.S   .init_entry_loop
@@ -319,7 +319,7 @@ COI_LoadOiDataFile:
     PEA     11.W
     PEA     -600(A5)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
+    JSR     _GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
 
     LEA     28(A7),A7
 
@@ -448,7 +448,7 @@ COI_LoadOiDataFile:
     MOVE.L  A1,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A2,-(A7)
-    BSR.W   CLEANUP_FormatEntryStringTokens
+    BSR.W   _CLEANUP_FormatEntryStringTokens
 
     LEA     12(A7),A7
     BRA.S   .after_field24
@@ -461,7 +461,7 @@ COI_LoadOiDataFile:
     MOVEA.L -8(A5),A0
     MOVE.L  D0,24(A0)
     MOVE.L  28(A0),(A7)
-    PEA     COI_STR_DEFAULT_TOKEN_TEMPLATE_A
+    PEA     _COI_STR_DEFAULT_TOKEN_TEMPLATE_A
     JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
@@ -500,7 +500,7 @@ COI_LoadOiDataFile:
     ADDA.L  -578(A5),A0
     ADDA.W  -588(A5),A0
     MOVE.L  A0,-(A7)
-    PEA     Global_STR_PERCENT_S_1
+    PEA     _Global_STR_PERCENT_S_1
     PEA     -486(A5)
     JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -548,7 +548,7 @@ COI_LoadOiDataFile:
     PEA     8.W
     PEA     -632(A5)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
+    JSR     _GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
 
     LEA     28(A7),A7
     BRA.S   .process_subentry
@@ -572,7 +572,7 @@ COI_LoadOiDataFile:
     PEA     6.W
     PEA     -628(A5)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
+    JSR     _GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
 
     LEA     28(A7),A7
 
@@ -644,7 +644,7 @@ COI_LoadOiDataFile:
     MOVE.L  A1,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A2,-(A7)
-    BSR.W   CLEANUP_FormatEntryStringTokens
+    BSR.W   _CLEANUP_FormatEntryStringTokens
 
     LEA     12(A7),A7
     BRA.S   .after_subentry_field18
@@ -916,7 +916,7 @@ COI_LoadOiDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -570(A5),-(A7)
     PEA     1443.W
-    PEA     Global_STR_COI_C_1
+    PEA     _Global_STR_COI_C_1
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0

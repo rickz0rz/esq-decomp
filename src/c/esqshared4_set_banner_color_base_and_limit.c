@@ -1,6 +1,11 @@
 /* RESTORES: ESQSHARED4_SetBannerColorBaseAndLimit
  * MODULE:   modules/groups/a/q/esqshared4.s
  * STATUS:   behavioural
+ * DO-NOT-LINK: takes its arguments in REGISTERS, so the compiled C reads the
+ *   stack and gets garbage. Proven: esq_dec_color_step.c linked alone over a
+ *   clean 356-entry build paints a green panel over the grid area, and
+ *   ESQ_SetCopperEffect_Custom compiles to 610000004e75 -- a call and a
+ *   return, doing none of the work. Kept for the analysis, never linked.
  *
  * SASC-MISMATCH: register-argument-convention
  *   ref:     33c000005efe323c00d913c000002fa013c00000436413c100002fa113c1000043654e75

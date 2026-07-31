@@ -14,7 +14,7 @@
 ; CLOBBERS:
 ;   A0/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   _P_TYPE_FreeEntry, _P_TYPE_AllocateEntry, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CopyPadNul
+;   _P_TYPE_FreeEntry, _P_TYPE_AllocateEntry, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _SCRIPT3_JMPTBL_STRING_CopyPadNul
 ; READS:
 ;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _P_TYPE_PrimaryGroupListPtr
 ; WRITES:
@@ -33,7 +33,7 @@ P_TYPE_ParseAndStoreTypeRecord:
     PEA     3.W
     MOVE.L  A3,-(A7)
     PEA     -16(A5)
-    JSR     SCRIPT3_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _SCRIPT3_JMPTBL_STRING_CopyPadNul(PC)
 
     CLR.B   -13(A5)
     PEA     -16(A5)
@@ -47,7 +47,7 @@ P_TYPE_ParseAndStoreTypeRecord:
     PEA     2.W
     MOVE.L  A3,-(A7)
     PEA     -16(A5)
-    JSR     SCRIPT3_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _SCRIPT3_JMPTBL_STRING_CopyPadNul(PC)
 
     CLR.B   -14(A5)
     PEA     -16(A5)
@@ -306,7 +306,7 @@ P_TYPE_WritePromoIdDataFile:
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   _P_TYPE_FreeEntry, PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, _P_TYPE_AllocateEntry, P_TYPE_JMPTBL_STRING_FindSubstring, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _SCRIPT_JMPTBL_MEMORY_DeallocateMemory
+;   _P_TYPE_FreeEntry, _PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, _P_TYPE_AllocateEntry, P_TYPE_JMPTBL_STRING_FindSubstring, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _SCRIPT_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   _Global_REF_LONG_FILE_SCRATCH, Global_STR_P_TYPE_C_6, P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load, P_TYPE_STR_CURDAY_COLON_LoadSection, P_TYPE_STR_TYPES_COLON, P_TYPE_STR_NXTDAY_COLON_LoadSection, _WDISP_CharClassTable, _Global_PTR_WORK_BUFFER, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _P_TYPE_PrimaryGroupListPtr, if_eq_1394, if_eq_1398, if_eq_1399, loop_1389
 ; WRITES:
@@ -321,7 +321,7 @@ _P_TYPE_LoadPromoIdDataFile:
     LINK.W  A5,#-52
     MOVEM.L D4-D7,-(A7)
     PEA     P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load
-    JSR     PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
+    JSR     _PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0

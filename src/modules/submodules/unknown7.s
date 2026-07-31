@@ -3,7 +3,7 @@
     XDEF    STR_FindAnyCharPtr
     XDEF    STR_FindChar
     XDEF    _STR_FindCharPtr
-    XDEF    STR_SkipClass3Chars
+    XDEF    _STR_SkipClass3Chars
 
 ;!======
 ;------------------------------------------------------------------------------
@@ -301,7 +301,7 @@ STR_FindAnyCharPtr:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STR_SkipClass3Chars   (Skip chars with class bit 3 set)
+; FUNC: _STR_SkipClass3Chars   (Skip chars with class bit 3 set)
 ; ARGS:
 ;   stack +8: A3 = string
 ; RET:
@@ -320,7 +320,7 @@ STR_FindAnyCharPtr:
 ; NOTES:
 ;   In observed parser paths this behaves as a "skip whitespace class" helper.
 ;------------------------------------------------------------------------------
-STR_SkipClass3Chars:
+_STR_SkipClass3Chars:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 

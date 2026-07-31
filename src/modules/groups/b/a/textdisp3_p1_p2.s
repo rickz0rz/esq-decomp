@@ -16,7 +16,7 @@
 ; READS:
 ;   _TEXTDISP_CurrentMatchIndex, _TEXTDISP_ActiveGroupId, _WDISP_DisplayContextBase
 ; WRITES:
-;   TEXTDISP_EntryShortNameScratch, TEXTDISP_LinePenOverrideEnabledFlag, TEXTDISP_LinePenOverrideStateWord
+;   _TEXTDISP_EntryShortNameScratch, _TEXTDISP_LinePenOverrideEnabledFlag, _TEXTDISP_LinePenOverrideStateWord
 ; DESC:
 ;   Builds banner text and draws it in the selected rastport.
 ; NOTES:
@@ -43,12 +43,12 @@ TEXTDISP_DrawChannelBanner:
     MOVE.L  D0,-(A7)
     JSR     _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
 
-    PEA     TEXTDISP_EntryShortNameScratch
+    PEA     _TEXTDISP_EntryShortNameScratch
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-4(A5)
     BSR.W   TEXTDISP_BuildEntryShortName
 
-    LEA     TEXTDISP_EntryShortNameScratch,A0
+    LEA     _TEXTDISP_EntryShortNameScratch,A0
     LEA     _TEXTDISP_ChannelLabelBuffer,A1
 
 .copy_short_name:
@@ -59,12 +59,12 @@ TEXTDISP_DrawChannelBanner:
     BSR.W   _TEXTDISP_BuildChannelLabel
 
     LEA     20(A7),A7
-    CLR.W   TEXTDISP_LinePenOverrideStateWord
+    CLR.W   _TEXTDISP_LinePenOverrideStateWord
     MOVEQ   #3,D0
     CMP.W   D0,D6
     BNE.S   .select_rast
 
-    MOVEA.L Global_REF_RASTPORT_2,A1
+    MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEQ   #0,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
@@ -80,7 +80,7 @@ TEXTDISP_DrawChannelBanner:
     JSR     _LVOSetDrMd(A6)
 
 .init_rect:
-    MOVE.W  #1,TEXTDISP_LinePenOverrideEnabledFlag
+    MOVE.W  #1,_TEXTDISP_LinePenOverrideEnabledFlag
     MOVEQ   #0,D5
     MOVEA.L _WDISP_DisplayContextBase,A0
     MOVE.W  2(A0),D5
@@ -112,7 +112,7 @@ TEXTDISP_DrawChannelBanner:
     CMP.W   D0,D6
     BNE.S   .set_drawmode_normal
 
-    MOVEA.L Global_REF_RASTPORT_2,A1
+    MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)

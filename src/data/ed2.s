@@ -1,5 +1,5 @@
-    XDEF    ED2_STR_PAGE
-    XDEF    ED2_STR_LINE
+    XDEF    _ED2_STR_PAGE
+    XDEF    _ED2_STR_LINE
     XDEF    _ED_CustomPaletteCapturePhaseMod4
     XDEF    _ED_CustomPaletteCaptureIndexOrSentinel
     XDEF    _ED_CustomPaletteTriplesDefaultTemplate24B
@@ -26,63 +26,63 @@
     XDEF    _ED2_DiagnosticDiskSoftErrorCount
     XDEF    _Global_STR_PUSH_ANY_KEY_TO_CONTINUE_2
     XDEF    ED2_HighlightTickEnabledFlag
-    XDEF    ED2_SelectedEntryDataPtr
-    XDEF    ED2_SelectedEntryTitlePtr
+    XDEF    _ED2_SelectedEntryDataPtr
+    XDEF    _ED2_SelectedEntryTitlePtr
     XDEF    _ED2_FMT_SCRSPD_PCT_D
     XDEF    _ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D
     XDEF    _ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR
     XDEF    _Global_STR_CLOCKCMD_EQUALS_PCT_C
-    XDEF    Global_STR_ED2_C_1
-    XDEF    Global_STR_PI_CLU_POS1
-    XDEF    Global_STR_CHAN_SOURCE_CALLLTRS_1
-    XDEF    ED2_STR_NullFallbackChannel
-    XDEF    ED2_STR_NullFallbackSource
-    XDEF    ED2_STR_NullFallbackCallLetters
-    XDEF    Global_STR_TS_TITLE_TIME
-    XDEF    ED2_STR_NullFallbackTitle
-    XDEF    ED2_STR_NONE_ProgramFlagSummary
-    XDEF    ED2_STR_MOVIE
-    XDEF    ED2_STR_ALTHILITEPROG
-    XDEF    ED2_STR_TAGPROG
-    XDEF    ED2_STR_SPORTSPROG
-    XDEF    ED2_STR_DVIEW_USED
-    XDEF    ED2_STR_REPEATPROG
-    XDEF    ED2_STR_PREVDAYSDATA
-    XDEF    Global_STR_ED2_C_2
-    XDEF    Global_STR_CLU_CLU_POS1
-    XDEF    Global_STR_CHAN_SOURCE_CALLLTRS_2
-    XDEF    ED2_STR_NONE_SourceFlagSummary
-    XDEF    ED2_STR_HILITESRC
-    XDEF    ED2_STR_SUMBYSRC
-    XDEF    ED2_STR_VIDEO_TAG_DISABLE
-    XDEF    ED2_STR_CAF_PPVSRC
-    XDEF    ED2_STR_DITTO
-    XDEF    ED2_STR_ALTHILITESRC
-    XDEF    ED2_STR_STEREO
-    XDEF    ED2_STR_GRID
-    XDEF    ED2_STR_MR
-    XDEF    ED2_STR_DNICHE
-    XDEF    ED2_STR_DMPLEX
-    XDEF    ED2_STR_CF2_DPPV
-    XDEF    ED2_STR_CTIME
-    XDEF    ED2_STR_BTIME
-    XDEF    Global_STR_DF0_CLOCK_CMD
-    XDEF    ED2_STR_ED_DOT_C_COLON_SHORT_DUMP_OF_CLU
-    XDEF    ED2_FMT_CLU_POS1_PCT_LD_CURCLU_PCT_S_JDCLU1_
-    XDEF    Global_STR_TRUE_1
-    XDEF    Global_STR_FALSE_1
-    XDEF    ED2_STR_ED_DOT_C_COLON_END_OF_DUMP_OF_CLU
-    XDEF    ED2_FMT_WICON_PCT_LD
-    XDEF    ED2_FMT_W_MIN_PCT_LD_MINUTES
-    XDEF    ED2_FMT_WDCNT_EVERY_PCT_LD_TIMES_PCT_LD
-    XDEF    ED2_FMT_CWCNT_PCT_LD_TIMES_FROM_NOW_PCT_LD
-    XDEF    ED2_FMT_WDATA_PCT_08LX
-    XDEF    ED2_FMT_WCITY_PCT_S
-    XDEF    ED2_FMT_WEATHER_ID_PCT_S
-    XDEF    ED2_FMT_CWCOLOR_PCT_LD
-    XDEF    ED2_FMT_BANNER_FOR_WEATHER_PCT_D
-    XDEF    ED2_FMT_BITPLANE1_PCT_8LX
-    XDEF    Global_STR_DF0_GRADIENT_INI_1
+    XDEF    _Global_STR_ED2_C_1
+    XDEF    _Global_STR_PI_CLU_POS1
+    XDEF    _Global_STR_CHAN_SOURCE_CALLLTRS_1
+    XDEF    _ED2_STR_NullFallbackChannel
+    XDEF    _ED2_STR_NullFallbackSource
+    XDEF    _ED2_STR_NullFallbackCallLetters
+    XDEF    _Global_STR_TS_TITLE_TIME
+    XDEF    _ED2_STR_NullFallbackTitle
+    XDEF    _ED2_STR_NONE_ProgramFlagSummary
+    XDEF    _ED2_STR_MOVIE
+    XDEF    _ED2_STR_ALTHILITEPROG
+    XDEF    _ED2_STR_TAGPROG
+    XDEF    _ED2_STR_SPORTSPROG
+    XDEF    _ED2_STR_DVIEW_USED
+    XDEF    _ED2_STR_REPEATPROG
+    XDEF    _ED2_STR_PREVDAYSDATA
+    XDEF    _Global_STR_ED2_C_2
+    XDEF    _Global_STR_CLU_CLU_POS1
+    XDEF    _Global_STR_CHAN_SOURCE_CALLLTRS_2
+    XDEF    _ED2_STR_NONE_SourceFlagSummary
+    XDEF    _ED2_STR_HILITESRC
+    XDEF    _ED2_STR_SUMBYSRC
+    XDEF    _ED2_STR_VIDEO_TAG_DISABLE
+    XDEF    _ED2_STR_CAF_PPVSRC
+    XDEF    _ED2_STR_DITTO
+    XDEF    _ED2_STR_ALTHILITESRC
+    XDEF    _ED2_STR_STEREO
+    XDEF    _ED2_STR_GRID
+    XDEF    _ED2_STR_MR
+    XDEF    _ED2_STR_DNICHE
+    XDEF    _ED2_STR_DMPLEX
+    XDEF    _ED2_STR_CF2_DPPV
+    XDEF    _ED2_STR_CTIME
+    XDEF    _ED2_STR_BTIME
+    XDEF    _Global_STR_DF0_CLOCK_CMD
+    XDEF    _ED2_STR_ED_DOT_C_COLON_SHORT_DUMP_OF_CLU
+    XDEF    _ED2_FMT_CLU_POS1_PCT_LD_CURCLU_PCT_S_JDCLU1_
+    XDEF    _Global_STR_TRUE_1
+    XDEF    _Global_STR_FALSE_1
+    XDEF    _ED2_STR_ED_DOT_C_COLON_END_OF_DUMP_OF_CLU
+    XDEF    _ED2_FMT_WICON_PCT_LD
+    XDEF    _ED2_FMT_W_MIN_PCT_LD_MINUTES
+    XDEF    _ED2_FMT_WDCNT_EVERY_PCT_LD_TIMES_PCT_LD
+    XDEF    _ED2_FMT_CWCNT_PCT_LD_TIMES_FROM_NOW_PCT_LD
+    XDEF    _ED2_FMT_WDATA_PCT_08LX
+    XDEF    _ED2_FMT_WCITY_PCT_S
+    XDEF    _ED2_FMT_WEATHER_ID_PCT_S
+    XDEF    _ED2_FMT_CWCOLOR_PCT_LD
+    XDEF    _ED2_FMT_BANNER_FOR_WEATHER_PCT_D
+    XDEF    _ED2_FMT_BITPLANE1_PCT_8LX
+    XDEF    _Global_STR_DF0_GRADIENT_INI_1
     XDEF    _ED2_TAG_NRLS
     XDEF    _ED2_STR_NYYLLZ
     XDEF    _ED2_TAG_NYLRS
@@ -99,7 +99,7 @@
     XDEF    _ED2_STR_CLOSED
     XDEF    _ED2_STR_START_TAPE_VIDEO
     XDEF    _ED2_STR_STOP
-    XDEF    Global_REF_BOOL_IS_TEXT_OR_CURSOR
+    XDEF    _Global_REF_BOOL_IS_TEXT_OR_CURSOR
     XDEF    Global_STR_EDIT_ADS
     XDEF    Global_STR_EDIT_ATTRIBUTES
     XDEF    Global_STR_CHANGE_SCROLL_SPEED
@@ -160,9 +160,9 @@
     XDEF    Global_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND
 ; ========== ED2.c ==========
 
-ED2_STR_PAGE:
+_ED2_STR_PAGE:
     NStr    " Page"
-ED2_STR_LINE:
+_ED2_STR_LINE:
     NStr    " Line"
 ;------------------------------------------------------------------------------
 ; SYM: _ED_CustomPaletteCapturePhaseMod4   (custom palette capture phase)
@@ -283,15 +283,15 @@ _Global_STR_PUSH_ANY_KEY_TO_CONTINUE_2:
 ED2_HighlightTickEnabledFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ED2_SelectedEntryDataPtr/ED2_SelectedEntryTitlePtr   (currently selected entry pointers)
+; SYM: _ED2_SelectedEntryDataPtr/_ED2_SelectedEntryTitlePtr   (currently selected entry pointers)
 ; TYPE: pointer/pointer
 ; PURPOSE: Tracks the active entry record pointer and its title pointer for ED2 detail/summary panels.
-; USED BY: ED2_DrawEntrySummaryPanel, ED2_DrawEntryDetailsPanel
+; USED BY: _ED2_DrawEntrySummaryPanel, _ED2_DrawEntryDetailsPanel
 ; NOTES: Either pointer may be null when there is no valid current selection.
 ;------------------------------------------------------------------------------
-ED2_SelectedEntryDataPtr:
+_ED2_SelectedEntryDataPtr:
     DS.L    1
-ED2_SelectedEntryTitlePtr:
+_ED2_SelectedEntryTitlePtr:
     DS.L    1
 _ED2_FMT_SCRSPD_PCT_D:
     NStr    "SCRSPD=%d"
@@ -301,108 +301,108 @@ _ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR:
     NStr    "Cycle=%c CycleFreq=%d AftrOrdr=%d"
 _Global_STR_CLOCKCMD_EQUALS_PCT_C:
     NStr    "ClockCmd=%c"
-Global_STR_ED2_C_1:
+_Global_STR_ED2_C_1:
     NStr    "ED2.c"
-Global_STR_PI_CLU_POS1:
+_Global_STR_PI_CLU_POS1:
     NStr    "PI[%d] Clu_pos1=%d"
-Global_STR_CHAN_SOURCE_CALLLTRS_1:
+_Global_STR_CHAN_SOURCE_CALLLTRS_1:
     NStr    "Chan=%s Source=%s CallLtrs=%s"
-ED2_STR_NullFallbackChannel:
+_ED2_STR_NullFallbackChannel:
     NStr    "NULL"
-ED2_STR_NullFallbackSource:
+_ED2_STR_NullFallbackSource:
     NStr    "NULL"
-ED2_STR_NullFallbackCallLetters:
+_ED2_STR_NullFallbackCallLetters:
     NStr    "NULL"
-Global_STR_TS_TITLE_TIME:
+_Global_STR_TS_TITLE_TIME:
     NStr    "TS=%d Title='%s' Time=%s"
-ED2_STR_NullFallbackTitle:
+_ED2_STR_NullFallbackTitle:
     NStr    "NULL"
-ED2_STR_NONE_ProgramFlagSummary:
+_ED2_STR_NONE_ProgramFlagSummary:
     NStr    "None "
-ED2_STR_MOVIE:
+_ED2_STR_MOVIE:
     NStr    "Movie "
-ED2_STR_ALTHILITEPROG:
+_ED2_STR_ALTHILITEPROG:
     NStr    "ALTHILITEPROG "
-ED2_STR_TAGPROG:
+_ED2_STR_TAGPROG:
     NStr    "TAGPROG "
-ED2_STR_SPORTSPROG:
+_ED2_STR_SPORTSPROG:
     NStr    "SPORTSPROG "
-ED2_STR_DVIEW_USED:
+_ED2_STR_DVIEW_USED:
     NStr    "DVIEW_USED "
-ED2_STR_REPEATPROG:
+_ED2_STR_REPEATPROG:
     NStr    "REPEATPROG "
-ED2_STR_PREVDAYSDATA:
+_ED2_STR_PREVDAYSDATA:
     NStr    "PREVDAYSDATA "
-Global_STR_ED2_C_2:
+_Global_STR_ED2_C_2:
     NStr    "ED2.c"
-Global_STR_CLU_CLU_POS1:
+_Global_STR_CLU_CLU_POS1:
     NStr    "CLU[%d] Clu_pos1=%d"
-Global_STR_CHAN_SOURCE_CALLLTRS_2:
+_Global_STR_CHAN_SOURCE_CALLLTRS_2:
     NStr    "Chan=%s Source=%s CallLtrs=%s"
-ED2_STR_NONE_SourceFlagSummary:
+_ED2_STR_NONE_SourceFlagSummary:
     NStr    "None "
-ED2_STR_HILITESRC:
+_ED2_STR_HILITESRC:
     NStr    "HILITESRC "
-ED2_STR_SUMBYSRC:
+_ED2_STR_SUMBYSRC:
     NStr    "SUMBYSRC "
-ED2_STR_VIDEO_TAG_DISABLE:
+_ED2_STR_VIDEO_TAG_DISABLE:
     NStr    "VIDEO_TAG_DISABLE "
-ED2_STR_CAF_PPVSRC:
+_ED2_STR_CAF_PPVSRC:
     NStr    "CAF_PPVSRC "
-ED2_STR_DITTO:
+_ED2_STR_DITTO:
     NStr    "DITTO "
-ED2_STR_ALTHILITESRC:
+_ED2_STR_ALTHILITESRC:
     NStr    "ALTHILITESRC "
-ED2_STR_STEREO:
+_ED2_STR_STEREO:
     NStr    "STEREO "
-ED2_STR_GRID:
+_ED2_STR_GRID:
     NStr    "Grid "
-ED2_STR_MR:
+_ED2_STR_MR:
     NStr    "MR "
-ED2_STR_DNICHE:
+_ED2_STR_DNICHE:
     NStr    "DNICHE "
-ED2_STR_DMPLEX:
+_ED2_STR_DMPLEX:
     NStr    "DMPLEX "
-ED2_STR_CF2_DPPV:
+_ED2_STR_CF2_DPPV:
     NStr    "CF2_DPPV "
     DS.W    1
-ED2_STR_CTIME:
+_ED2_STR_CTIME:
     NStr    "CTime"
-ED2_STR_BTIME:
+_ED2_STR_BTIME:
     NStr    "BTime"
-Global_STR_DF0_CLOCK_CMD:
+_Global_STR_DF0_CLOCK_CMD:
     NStr    "df0:clock.cmd"
-ED2_STR_ED_DOT_C_COLON_SHORT_DUMP_OF_CLU:
+_ED2_STR_ED_DOT_C_COLON_SHORT_DUMP_OF_CLU:
     NStr3   TextLineFeed,"ED.C: Short DUMP OF CLU",TextLineFeed
-ED2_FMT_CLU_POS1_PCT_LD_CURCLU_PCT_S_JDCLU1_:
+_ED2_FMT_CLU_POS1_PCT_LD_CURCLU_PCT_S_JDCLU1_:
     NStr2   "    clu_pos1=%ld, curclu=%s, jdclu1=%ld, curjd=%ld",TextLineFeed
-Global_STR_TRUE_1:
+_Global_STR_TRUE_1:
     NStr    "TRUE"
-Global_STR_FALSE_1:
+_Global_STR_FALSE_1:
     NStr    "FALSE"
-ED2_STR_ED_DOT_C_COLON_END_OF_DUMP_OF_CLU:
+_ED2_STR_ED_DOT_C_COLON_END_OF_DUMP_OF_CLU:
     NStr3   "ED.C: END OF DUMP OF CLU",TextLineFeed,TextLineFeed
-ED2_FMT_WICON_PCT_LD:
+_ED2_FMT_WICON_PCT_LD:
     NStr2   "wicon = %ld",TextLineFeed
-ED2_FMT_W_MIN_PCT_LD_MINUTES:
+_ED2_FMT_W_MIN_PCT_LD_MINUTES:
     NStr2   "w_min = %ld minutes",TextLineFeed
-ED2_FMT_WDCNT_EVERY_PCT_LD_TIMES_PCT_LD:
+_ED2_FMT_WDCNT_EVERY_PCT_LD_TIMES_PCT_LD:
     NStr2   "wdcnt = every %ld times     (%ld)",TextLineFeed
-ED2_FMT_CWCNT_PCT_LD_TIMES_FROM_NOW_PCT_LD:
+_ED2_FMT_CWCNT_PCT_LD_TIMES_FROM_NOW_PCT_LD:
     NStr2   "cwcnt = %ld times from now  (%ld)",TextLineFeed
-ED2_FMT_WDATA_PCT_08LX:
+_ED2_FMT_WDATA_PCT_08LX:
     NStr2   "WData = $%08lx",TextLineFeed
-ED2_FMT_WCITY_PCT_S:
+_ED2_FMT_WCITY_PCT_S:
     NStr2   "WCity = '%s'",TextLineFeed
-ED2_FMT_WEATHER_ID_PCT_S:
+_ED2_FMT_WEATHER_ID_PCT_S:
     NStr2   "Weather_ID = '%s'",TextLineFeed
-ED2_FMT_CWCOLOR_PCT_LD:
+_ED2_FMT_CWCOLOR_PCT_LD:
     NStr2   "cwcolor = %ld",TextLineFeed
-ED2_FMT_BANNER_FOR_WEATHER_PCT_D:
+_ED2_FMT_BANNER_FOR_WEATHER_PCT_D:
     NStr3   TextLineFeed,"banner_for_weather = %d",TextLineFeed
-ED2_FMT_BITPLANE1_PCT_8LX:
+_ED2_FMT_BITPLANE1_PCT_8LX:
     NStr    "BitPlane1 =%8lx  "
-Global_STR_DF0_GRADIENT_INI_1:
+_Global_STR_DF0_GRADIENT_INI_1:
     NStr    "df0:Gradient.ini"
 _ED2_TAG_NRLS:
     NStr    "NRLS"
@@ -437,7 +437,7 @@ _ED2_STR_START_TAPE_VIDEO:
 _ED2_STR_STOP:
     NStr    "Stop  "
     DS.W    1
-Global_REF_BOOL_IS_TEXT_OR_CURSOR:
+_Global_REF_BOOL_IS_TEXT_OR_CURSOR:
     DC.L    1
 
 ; Strings for the ESC menu

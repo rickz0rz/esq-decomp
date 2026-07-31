@@ -161,14 +161,14 @@ ESQIFF2_ApplyIncomingStatusPacket:
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   ESQIFF_StatusPacketReadyFlag
+;   _ESQIFF_StatusPacketReadyFlag
 ; DESC:
 ;   Marks banner/status dirty flag, restores registers, and returns.
 ; NOTES:
 ;   Shared tail for all post-update state/index clamp paths.
 ;------------------------------------------------------------------------------
 ESQIFF2_ApplyIncomingStatusPacket_Return:
-    MOVE.W  #1,ESQIFF_StatusPacketReadyFlag
+    MOVE.W  #1,_ESQIFF_StatusPacketReadyFlag
     MOVEM.L (A7)+,D2/D6-D7/A3
     RTS
 

@@ -26,14 +26,14 @@
     TST.B   D2
     BEQ.S   .return
 
-    MOVE.W  WDISP_WeatherCycleOffsetCount,D2
+    MOVE.W  _WDISP_WeatherCycleOffsetCount,D2
     MOVE.L  D2,D3
     SUBQ.W  #1,D3
-    MOVE.W  D3,WDISP_WeatherCycleOffsetCount
+    MOVE.W  D3,_WDISP_WeatherCycleOffsetCount
     BGT.S   .return
 
     SUBI.W  #$30,D0
-    MOVE.W  D0,WDISP_WeatherCycleOffsetCount
+    MOVE.W  D0,_WDISP_WeatherCycleOffsetCount
 
 .return:
     MOVEM.L (A7)+,D2-D3
@@ -97,7 +97,7 @@
 ; CALLS:
 ;   WDISP_JMPTBL_BRUSH_FreeBrushList, WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock, WDISP_JMPTBL_NEWGRID_ResetRowTable, _LVOSetRast
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _WDISP_WeatherStatusBrushListHead, _P_TYPE_WeatherBrushRefreshPendingFlag, TLIBA1_PreviewSlotRefreshState, TLIBA1_PreviewSlotRenderResult, _WDISP_WeatherStatusCountdown, _WDISP_WeatherStatusDigitChar, WDISP_WeatherCycleOffsetCount
+;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _WDISP_WeatherStatusBrushListHead, _P_TYPE_WeatherBrushRefreshPendingFlag, TLIBA1_PreviewSlotRefreshState, TLIBA1_PreviewSlotRenderResult, _WDISP_WeatherStatusCountdown, _WDISP_WeatherStatusDigitChar, _WDISP_WeatherCycleOffsetCount
 ; WRITES:
 ;   TLIBA1_PreviewSlotRefreshState, TLIBA1_PreviewSlotRenderResult
 ; DESC:
@@ -199,7 +199,7 @@ WDISP_UpdateSelectionPreviewPanel:
     TST.B   D1
     BEQ.S   .preview_mark_reload_pending
 
-    MOVE.W  WDISP_WeatherCycleOffsetCount,D1
+    MOVE.W  _WDISP_WeatherCycleOffsetCount,D1
     MOVEQ   #1,D2
     CMP.W   D2,D1
     BGT.S   .preview_mark_reload_pending

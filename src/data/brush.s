@@ -74,8 +74,8 @@ Global_STR_BRUSH_C_19:
 ;------------------------------------------------------------------------------
 ; SYM: BRUSH_STR_ALIAS_CODE_00   (legacy brush alias token)
 ; TYPE: cstring
-; PURPOSE: Two-character brush alias accepted by BRUSH_SelectBrushByLabel.
-; USED BY: BRUSH_SelectBrushByLabel
+; PURPOSE: Two-character brush alias accepted by _BRUSH_SelectBrushByLabel.
+; USED BY: _BRUSH_SelectBrushByLabel
 ; NOTES: "00" and "11" are normalized to "DT"; "DITHER" is the fallback query.
 ;------------------------------------------------------------------------------
 BRUSH_STR_ALIAS_CODE_00:

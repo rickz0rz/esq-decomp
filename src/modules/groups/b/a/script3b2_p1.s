@@ -10,11 +10,11 @@
 ; CLOBBERS:
 ;   A3/A7/D0/D1/D2
 ; CALLS:
-;   SCRIPT_ApplyPendingBannerTarget, SCRIPT_UpdateRuntimeModeForPlaybackCursor, _SCRIPT_DispatchPlaybackCursorCommand, SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
+;   SCRIPT_ApplyPendingBannerTarget, SCRIPT_UpdateRuntimeModeForPlaybackCursor, _SCRIPT_DispatchPlaybackCursorCommand, _SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
 ; READS:
 ;   _CONFIG_MSN_FlagChar, SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, _LOCAVAIL_PrimaryFilterState, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _TEXTDISP_CurrentMatchIndex
 ; WRITES:
-;   SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, TEXTDISP_CurrentMatchIndexSaved
+;   SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _TEXTDISP_CurrentMatchIndexSaved
 ; DESC:
 ;   Loads context state, applies mode/cursor gating, runs playback-command
 ;   dispatch, then saves the updated state back into the context snapshot.
@@ -29,7 +29,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     JSR     SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(PC)
 
     MOVE.L  A3,(A7)
-    BSR.W   SCRIPT_LoadCtrlContextSnapshot
+    BSR.W   _SCRIPT_LoadCtrlContextSnapshot
 
     ADDQ.W  #8,A7
     TST.L   SCRIPT_RuntimeModeDeferredFlag
@@ -101,7 +101,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     CLR.W   SCRIPT_RuntimeModeDispatchLatch
 
 .return:
-    MOVE.W  _TEXTDISP_CurrentMatchIndex,TEXTDISP_CurrentMatchIndexSaved
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,_TEXTDISP_CurrentMatchIndexSaved
     MOVE.L  A3,-(A7)
     BSR.W   _SCRIPT_SaveCtrlContextSnapshot
 

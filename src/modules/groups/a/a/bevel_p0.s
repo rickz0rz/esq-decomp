@@ -1,8 +1,8 @@
-    XDEF    BEVEL_DrawBeveledFrame
+    XDEF    _BEVEL_DrawBeveledFrame
 
 
 ;------------------------------------------------------------------------------
-; FUNC: BEVEL_DrawBeveledFrame   (DrawBeveledFrameuncertain)
+; FUNC: _BEVEL_DrawBeveledFrame   (DrawBeveledFrameuncertain)
 ; ARGS:
 ;   stack +4: rastPort
 ;   stack +8: leftX
@@ -24,7 +24,7 @@
 ; NOTES:
 ;   Composes _BEVEL_DrawVerticalBevelPair + _BEVEL_DrawVerticalBevel helpers.
 ;------------------------------------------------------------------------------
-BEVEL_DrawBeveledFrame:
+_BEVEL_DrawBeveledFrame:
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
     MOVE.L  28(A7),D7

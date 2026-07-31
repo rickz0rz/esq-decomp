@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   A0/A1/A6/A7/D0/D1/D2/D3/D4
 ; CALLS:
-;   _ED_DrawCursorChar, _ED_RedrawCursorChar, _ED_NextAdNumber, _ED_PrevAdNumber, ED_DrawEditHelpText, _ED_DrawAdEditingScreen, _ED_LoadCurrentAdIntoBuffers,
+;   _ED_DrawCursorChar, _ED_RedrawCursorChar, _ED_NextAdNumber, _ED_PrevAdNumber, _ED_DrawEditHelpText, _ED_DrawAdEditingScreen, _ED_LoadCurrentAdIntoBuffers,
 ;   _ED_DrawHelpPanels, _ED_UpdateAdNumberDisplay, _DISPLIB_DisplayTextAtPosition,
 ;   _GROUP_AG_JMPTBL_MATH_Mulu32, _GROUP_AG_JMPTBL_MATH_DivS32,
 ;   _LVOSetAPen, _LVOSetDrMd

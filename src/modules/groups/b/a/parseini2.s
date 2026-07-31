@@ -14,7 +14,7 @@
 ;   _PARSEINI_AdjustHoursTo24HrFormat, PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch,
 ;   PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch, PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; READS:
-;   _CLOCK_DaySlotIndex-E, _CLOCK_CacheAmPmFlag, _Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE,
+;   _CLOCK_DaySlotIndex-E, _CLOCK_CacheAmPmFlag, _Global_REF_UTILITY_LIBRARY, _Global_REF_BATTCLOCK_RESOURCE,
 ;   _Global_REF_CLOCKDATA_STRUCT
 ; WRITES:
 ;   RTC chip via BATTCLOCK_WriteSecondsToBatteryBackedClock
@@ -33,7 +33,7 @@ PARSEINI_WriteRtcFromGlobals:
     TST.L   _Global_REF_UTILITY_LIBRARY
     BEQ.W   .return
 
-    TST.L   Global_REF_BATTCLOCK_RESOURCE
+    TST.L   _Global_REF_BATTCLOCK_RESOURCE
     BEQ.S   .return
 
     MOVE.W  _CLOCK_DaySlotIndex,D0
@@ -94,7 +94,7 @@ PARSEINI_WriteRtcFromGlobals:
 ;   PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock, PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData,
 ;   PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch, PARSEINI_NormalizeClockData
 ; READS:
-;   _Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE
+;   _Global_REF_UTILITY_LIBRARY, _Global_REF_BATTCLOCK_RESOURCE
 ; WRITES:
 ;   _CLOCK_DaySlotIndex (date/time fields via PARSEINI_NormalizeClockData)
 ; DESC:
@@ -119,7 +119,7 @@ PARSEINI_UpdateClockFromRtc:
     TST.L   _Global_REF_UTILITY_LIBRARY
     BEQ.W   .return_status
 
-    TST.L   Global_REF_BATTCLOCK_RESOURCE
+    TST.L   _Global_REF_BATTCLOCK_RESOURCE
     BEQ.W   .return_status
 
     JSR     PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock(PC)

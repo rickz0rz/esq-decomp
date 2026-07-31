@@ -1,9 +1,9 @@
     XDEF    _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
-    XDEF    GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode
+    XDEF    _GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode
     XDEF    _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
     XDEF    GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
     XDEF    _GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray
-    XDEF    GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap
+    XDEF    _GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap
     XDEF    _GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray
     XDEF    _GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset
     XDEF    _GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex
@@ -32,7 +32,7 @@ _GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
     JMP     _TLIBA_FindFirstWildcardMatchIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap   (Routine at GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap)
+; FUNC: _GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap   (Routine at _GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -50,7 +50,7 @@ _GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap:
+_GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap:
     JMP     SCRIPT_BuildTokenIndexMap
 
 ;------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
     JMP     _ESQDISP_GetEntryAuxPointerByMode
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode   (Routine at GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode)
+; FUNC: _GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode   (Routine at _GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -94,7 +94,7 @@ _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode:
+_GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode:
     JMP     _ESQDISP_GetEntryPointerByMode
 
 ;------------------------------------------------------------------------------

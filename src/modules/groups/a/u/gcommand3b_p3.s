@@ -12,9 +12,9 @@
 ; CLOBBERS:
 ;   D0-D7, A0-A1
 ; CALLS:
-;   GCOMMAND_BuildBannerRow
+;   _GCOMMAND_BuildBannerRow
 ; READS:
-;   GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, GCOMMAND_BannerPhaseIndexCurrent, _WDISP_BannerRowScratchRasterTable0..WDISP_BannerRowScratchRasterTable2, _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
+;   GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, GCOMMAND_BannerPhaseIndexCurrent, _WDISP_BannerRowScratchRasterTable0.._WDISP_BannerRowScratchRasterTable2, _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
 ; WRITES:
 ;   _ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerSnapshotPlane1DstPtr, ESQPARS2_BannerSnapshotPlane2DstPtr
 ; DESC:
@@ -28,7 +28,7 @@ GCOMMAND_RefreshBannerTables:
     MOVE.L  GCOMMAND_BannerPhaseIndexCurrent,-(A7)
     PEA     _ESQ_CopperListBannerA
     PEA     _Global_REF_696_400_BITMAP
-    BSR.W   GCOMMAND_BuildBannerRow
+    BSR.W   _GCOMMAND_BuildBannerRow
 
     MOVEQ   #88,D0
     ADD.L   GCOMMAND_BannerRowByteOffsetCurrent,D0
@@ -37,17 +37,17 @@ GCOMMAND_RefreshBannerTables:
     MOVE.L  GCOMMAND_BannerPhaseIndexCurrent,-(A7)
     PEA     _ESQ_CopperListBannerB
     PEA     _Global_REF_696_400_BITMAP
-    BSR.W   GCOMMAND_BuildBannerRow
+    BSR.W   _GCOMMAND_BuildBannerRow
 
     LEA     36(A7),A7
     MOVE.L  GCOMMAND_BannerRowByteOffsetPrevious,D0
     MOVEA.L _WDISP_BannerRowScratchRasterTable0,A0
     ADDA.L  D0,A0
     MOVE.L  A0,_ESQPARS2_BannerSnapshotPlane0DstPtr
-    MOVEA.L WDISP_BannerRowScratchRasterTable1,A0
+    MOVEA.L _WDISP_BannerRowScratchRasterTable1,A0
     ADDA.L  D0,A0
     MOVE.L  A0,ESQPARS2_BannerSnapshotPlane1DstPtr
-    MOVEA.L WDISP_BannerRowScratchRasterTable2,A0
+    MOVEA.L _WDISP_BannerRowScratchRasterTable2,A0
     ADDA.L  D0,A0
     MOVE.L  A0,ESQPARS2_BannerSnapshotPlane2DstPtr
     RTS

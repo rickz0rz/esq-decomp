@@ -23,6 +23,12 @@
 ; NOTES:
 ;   - Uses Workbench message fields when launched from Workbench.
 ;------------------------------------------------------------------------------
+;   This block carried no label. The extract for whatever precedes it ran
+;   on into it and reported that function as larger than it is. The label
+;   below is byte-neutral and separates the two again. It is deliberately
+;   not XDEF'd: no other module refers to it.
+;------------------------------------------------------------------------------
+ESQ_StartupEntry:
     MOVEM.L D1-D6/A0-A6,-(A7)               ; Backup registers to the stack
 
     MOVEA.L A0,A2                           ; A0 is a pointer to the command string at startup, copy to A2

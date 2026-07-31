@@ -1,4 +1,4 @@
-    XDEF    GCOMMAND_BuildBannerRow
+    XDEF    _GCOMMAND_BuildBannerRow
     XDEF    GCOMMAND_ClearBannerQueue
     XDEF    GCOMMAND_UpdateBannerRowPointers
 
@@ -95,7 +95,7 @@ GCOMMAND_UpdateBannerRowPointers:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_BuildBannerRow   (Emit one banner copper row from bitmap/preset state)
+; FUNC: _GCOMMAND_BuildBannerRow   (Emit one banner copper row from bitmap/preset state)
 ; ARGS:
 ;   stack +4: bitmapPtr
 ;   stack +8: tablePtr (banner table base)
@@ -109,16 +109,16 @@ GCOMMAND_UpdateBannerRowPointers:
 ; CALLS:
 ;   GCOMMAND_UpdateBannerRowPointers
 ; READS:
-;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3_ValueIndex, GCOMMAND_BannerRowFallbackOnFirstRowFlag
+;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3_ValueIndex, _GCOMMAND_BannerRowFallbackOnFirstRowFlag
 ; WRITES:
-;   [tablePtr + offsets], GCOMMAND_BannerRowFallbackOnFirstRowFlag?
+;   [tablePtr + offsets], _GCOMMAND_BannerRowFallbackOnFirstRowFlag?
 ; DESC:
 ;   Writes banner row pointer fields and color values into the table.
 ; NOTES:
 ;   Uses rowIndex when > 0, otherwise fallbackIndex. Row stride is 32 bytes.
 ;   Color words land at row-local offsets `+$2EA/+2EE/+2F2/+2F6`.
 ;------------------------------------------------------------------------------
-GCOMMAND_BuildBannerRow:
+_GCOMMAND_BuildBannerRow:
     LINK.W  A5,#-12
     MOVEM.L D2/D4-D7/A2-A3/A6,-(A7)
     MOVEA.L 8(A5),A3
@@ -186,7 +186,7 @@ GCOMMAND_BuildBannerRow:
 .index_ready:
     MOVE.L  D0,D4
     SUBQ.L  #1,D4
-    TST.W   GCOMMAND_BannerRowFallbackOnFirstRowFlag
+    TST.W   _GCOMMAND_BannerRowFallbackOnFirstRowFlag
     BEQ.S   .write_from_tables
 
     TST.L   D4

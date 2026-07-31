@@ -18,7 +18,7 @@
 BATTCLOCK_GetSecondsFromBatteryBackedClock:
     MOVE.L  A6,-(A7)
 
-    MOVEA.L Global_REF_BATTCLOCK_RESOURCE,A6
+    MOVEA.L _Global_REF_BATTCLOCK_RESOURCE,A6
     JSR     _LVOReadBattClock(A6)
 
     MOVEA.L (A7)+,A6
@@ -40,7 +40,7 @@ BATTCLOCK_GetSecondsFromBatteryBackedClock:
 BATTCLOCK_WriteSecondsToBatteryBackedClock:
     MOVE.L  A6,-(A7)
 
-    MOVEA.L Global_REF_BATTCLOCK_RESOURCE,A6
+    MOVEA.L _Global_REF_BATTCLOCK_RESOURCE,A6
     MOVE.L  8(A7),D0
     JSR     _LVOWriteBattClock(A6)
 

@@ -1,24 +1,24 @@
-    XDEF    GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex
-    XDEF    GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange
-    XDEF    GROUP_AD_JMPTBL_DST_ComputeBannerIndex
-    XDEF    GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry
-    XDEF    GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition
-    XDEF    GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition
+    XDEF    _GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex
+    XDEF    _GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange
+    XDEF    _GROUP_AD_JMPTBL_DST_ComputeBannerIndex
+    XDEF    _GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry
+    XDEF    _GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition
+    XDEF    _GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition
     XDEF    _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
-    XDEF    GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte
-    XDEF    GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel
-    XDEF    GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName
-    XDEF    GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner
-    XDEF    GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame
-    XDEF    GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime
-    XDEF    GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth
-    XDEF    GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible
-    XDEF    GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode
-    XDEF    GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight
-    XDEF    GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort
+    XDEF    _GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte
+    XDEF    _GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel
+    XDEF    _GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName
+    XDEF    _GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner
+    XDEF    _GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame
+    XDEF    _GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime
+    XDEF    _GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth
+    XDEF    _GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible
+    XDEF    _GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode
+    XDEF    _GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight
+    XDEF    _GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (JumpStub)
+; FUNC: _GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -34,11 +34,11 @@
 ; DESC:
 ;   Jump stub to _TLIBA3_BuildDisplayContextForViewMode.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
+_GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
     JMP     _TLIBA3_BuildDisplayContextForViewMode
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte   (JumpStub)
+; FUNC: _GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -54,11 +54,11 @@ GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
 ; DESC:
 ;   Jump stub to _SCRIPT_UpdateSerialShadowFromCtrlByte.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte:
+_GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte:
     JMP     _SCRIPT_UpdateSerialShadowFromCtrlByte
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange   (JumpStub_DATETIME_NormalizeMonthRange)
+; FUNC: _GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange   (JumpStub_DATETIME_NormalizeMonthRange)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -74,11 +74,11 @@ GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte:
 ; DESC:
 ;   Jump stub to _DATETIME_NormalizeMonthRange.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange:
+_GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange:
     JMP     _DATETIME_NormalizeMonthRange
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner   (JumpStub_TEXTDISP_DrawChannelBanner)
+; FUNC: _GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner   (JumpStub_TEXTDISP_DrawChannelBanner)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -94,11 +94,11 @@ GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange:
 ; DESC:
 ;   Jump stub to TEXTDISP_DrawChannelBanner.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner:
+_GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner:
     JMP     TEXTDISP_DrawChannelBanner
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime   (JumpStub_TEXTDISP_FormatEntryTime)
+; FUNC: _GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime   (JumpStub_TEXTDISP_FormatEntryTime)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -114,11 +114,11 @@ GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner:
 ; DESC:
 ;   Jump stub to _TEXTDISP_FormatEntryTime.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime:
+_GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime:
     JMP     _TEXTDISP_FormatEntryTime
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition   (JumpStub)
+; FUNC: _GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -134,11 +134,11 @@ GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime:
 ; DESC:
 ;   Jump stub to _ESQIFF_RunCopperRiseTransition.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition:
+_GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition:
     JMP     _ESQIFF_RunCopperRiseTransition
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName   (JumpStub_TEXTDISP_BuildEntryShortName)
+; FUNC: _GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName   (JumpStub_TEXTDISP_BuildEntryShortName)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -154,7 +154,7 @@ GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition:
 ; DESC:
 ;   Jump stub to TEXTDISP_BuildEntryShortName.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName:
+_GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName:
     JMP     TEXTDISP_BuildEntryShortName
 
 ;------------------------------------------------------------------------------
@@ -178,7 +178,7 @@ _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort:
     JMP     GRAPHICS_BltBitMapRastPort
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition   (JumpStub)
+; FUNC: _GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -194,11 +194,11 @@ _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort:
 ; DESC:
 ;   Jump stub to _ESQIFF_RunCopperDropTransition.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition:
+_GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition:
     JMP     _ESQIFF_RunCopperDropTransition
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible   (JumpStub)
+; FUNC: _GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -214,11 +214,11 @@ GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition:
 ; DESC:
 ;   Jump stub to TLIBA1_BuildClockFormatEntryIfVisible.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible:
+_GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible:
     JMP     TLIBA1_BuildClockFormatEntryIfVisible
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel   (JumpStub_TEXTDISP_BuildChannelLabel)
+; FUNC: _GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel   (JumpStub_TEXTDISP_BuildChannelLabel)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -234,11 +234,11 @@ GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible:
 ; DESC:
 ;   Jump stub to _TEXTDISP_BuildChannelLabel.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel:
+_GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel:
     JMP     _TEXTDISP_BuildChannelLabel
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame   (JumpStub)
+; FUNC: _GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -254,11 +254,11 @@ GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel:
 ; DESC:
 ;   Jump stub to TEXTDISP_DrawInsetRectFrame.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame:
+_GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame:
     JMP     TEXTDISP_DrawInsetRectFrame
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth   (JumpStub_TEXTDISP_TrimTextToPixelWidth)
+; FUNC: _GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth   (JumpStub_TEXTDISP_TrimTextToPixelWidth)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -274,11 +274,11 @@ GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame:
 ; DESC:
 ;   Jump stub to _TEXTDISP_TrimTextToPixelWidth.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth:
+_GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth:
     JMP     _TEXTDISP_TrimTextToPixelWidth
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort   (JumpStub)
+; FUNC: _GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -294,11 +294,11 @@ GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth:
 ; DESC:
 ;   Jump stub to _TLIBA3_GetViewModeRastPort.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort:
+_GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort:
     JMP     _TLIBA3_GetViewModeRastPort
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry   (JumpStub)
+; FUNC: _GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -314,11 +314,11 @@ GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort:
 ; DESC:
 ;   Jump stub to ESQFUNC_SelectAndApplyBrushForCurrentEntry.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry:
+_GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     JMP     ESQFUNC_SelectAndApplyBrushForCurrentEntry
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex   (JumpStub_DATETIME_AdjustMonthIndex)
+; FUNC: _GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex   (JumpStub_DATETIME_AdjustMonthIndex)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -334,11 +334,11 @@ GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 ; DESC:
 ;   Jump stub to _DATETIME_AdjustMonthIndex.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex:
+_GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex:
     JMP     _DATETIME_AdjustMonthIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_DST_ComputeBannerIndex   (JumpStub_DST_ComputeBannerIndex)
+; FUNC: _GROUP_AD_JMPTBL_DST_ComputeBannerIndex   (JumpStub_DST_ComputeBannerIndex)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -354,11 +354,11 @@ GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex:
 ; DESC:
 ;   Jump stub to DST_ComputeBannerIndex.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_DST_ComputeBannerIndex:
+_GROUP_AD_JMPTBL_DST_ComputeBannerIndex:
     JMP     DST_ComputeBannerIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight   (JumpStub)
+; FUNC: _GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -374,5 +374,5 @@ GROUP_AD_JMPTBL_DST_ComputeBannerIndex:
 ; DESC:
 ;   Jump stub to _TLIBA3_GetViewModeHeight.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight:
+_GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight:
     JMP     _TLIBA3_GetViewModeHeight

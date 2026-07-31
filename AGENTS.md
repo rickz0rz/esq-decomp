@@ -130,8 +130,8 @@ Both were discovered the hard way; both are enforced by `build-split.sh`.
 **1. Objects are longword-sized.** Hunk objects store section sizes in
 longwords, so an object whose content is 2 (mod 4) bytes gets padded, shifting
 everything after it. `gen_units.py` therefore coalesces consecutive modules
-until each unit lands on a 4-byte boundary — which is why 748 source modules
-become 385 link units. Source files stay fine-grained; only the assembly grouping
+until each unit lands on a 4-byte boundary — which is why 788 source modules
+become 401 link units. Source files stay fine-grained; only the assembly grouping
 is coarser. **You can still edit any module in isolation.**
 
 **2. vasm rewrites branches based on what is visible.** A bare
@@ -493,6 +493,14 @@ Known divergences so far are written up in `docs/compiler-version.md`.
 
 ## Progress is measured in BYTES, not function count
 
+**The current tranche target is in `docs/tranche-target.md`: every unblocked
+function under 400 bytes, which takes coverage from 48.8% to 69.0%.** Run
+`python3 tools/worklist.py` for what is left, smallest first. It regenerates
+from `coverage.survey()`, so it cannot go stale. `--bands` shows what the next
+size band would add. **97.7% is the ceiling**; only 4,368 bytes are truly
+blocked, and `docs/blocked-shapes.md` says what each class would take.
+
+
 Function count flatters: the easy targets are small, so a high count can sit on a
 tiny fraction of the program. 202 restorations once read as 28% of the program
 and was 5.2% of it by byte.
@@ -522,11 +530,11 @@ The restoration record says so unambiguously:
 
 | bucket | exact | behavioural | exact rate |
 |---|---:|---:|---:|
-| intra-unit (`6100`) | **11** | 74 | 13% |
-| no-calls | 11 | 129 | 8% |
-| cross-unit (`4EBA`) | **0** | 150 | **0%** |
+| intra-unit (`6100`) | **11** | 101 | 10% |
+| no-calls | **13** | 117 | 10% |
+| cross-unit (`4EBA`) | **0** | 174 | **0%** |
 
-Zero of 150. Every function whose original calls are `4EBA` is capped at
+Zero of 174. Every function whose original calls are `4EBA` is capped at
 `behavioural` under 6.51, and the cap is the call opcode alone — same size, same
 displacement, same semantics, different byte. `src/c/script_read_next_rbf_byte.c`
 is the whole class in six bytes.
@@ -536,7 +544,7 @@ compiler question is settled.** Two caveats keep this honest:
 
 - Matching an intra-unit call is still luck, not skill. The original emitted
   `6100` because the callee was in the same `.c` file; we emit it because that
-  is all 6.51 emits. The two coincide, which is why the rate is 13% and not
+  is all 6.51 emits. The two coincide, which is why the rate is 12% and not
   higher — see `docs/compiler-version.md`, "Call encoding depends on the
   callee's translation unit".
 - 6.00 has the mirror-image problem: it emits `4EBA` for everything. Neither
@@ -646,6 +654,41 @@ ESQ redraws a clock every second, so **identical consecutive frames mean the
 display stopped updating** — a hang the boot probe cannot see, because the
 machine is still nominally up.
 
+> **`soak_esq.sh` captures the fs-uae window BY ID, and this is not a detail.**
+> It used to crop a hardcoded rectangle out of a full-screen grab. On 2026-07-30
+> that scored the WRONG PIXELS three times in one day — twice an editor window,
+> once the desktop — because fs-uae had moved to another macOS Space, where a
+> full-screen grab cannot see it at all. The same binary then read FROZEN and
+> PASS on consecutive runs. A window-id capture finds the window on any Space at
+> any position. It needs `pyobjc-framework-Quartz` and `Pillow`:
+> `/tmp/.capvenv/bin/pip install pyobjc-framework-Quartz Pillow`.
+>
+> It now also **exits nonzero** on a frozen display, and reports how many frames
+> hold Amiga content, so a broken capture fails loudly instead of reading as a
+> hang. The old version printed `DISPLAY FROZEN` and exited 0, which is why a
+> real hang survived in a manifest documented as proven.
+>
+> **Compare a candidate against the reference by MEASUREMENT, not by eye.** Frames
+> from two runs are never at the same point in ESQ's display cycle, and judging
+> them by eye produced three wrong calls in one session — including a "clipped
+> logo" defect that was only the crop cutting off the window. A per-frame colour
+> statistic settles it: the green panel that exposed the register-argument class
+> read 0.0 in every reference frame and 0.328 in every candidate frame.
+>
+> `tools/framecolor.py` now does that comparison. Soak both builds, then:
+>
+> ```sh
+> ./tools/soak_esq.sh ~/Downloads/Prevue/ESQ.known-good-36cf56ed kg 150 15
+> ./tools/soak_esq.sh build/ESQ <label> 150 15
+> /tmp/.capvenv/bin/python tools/framecolor.py kg <label>
+> ```
+>
+> It bins every pixel of every frame into six coarse colours and prints the
+> min, median and max share per bin per label. **Read the RANGES, not the
+> medians.** Two ranges that overlap are the display cycle and mean nothing. A
+> bin whose ranges are DISJOINT is a real difference in what the program drew,
+> and the tool exits nonzero on one.
+
 `~/Downloads/Prevue/ESQ.known-good-36cf56ed` is the pristine byte-exact build.
 **Probe it first whenever a FAIL looks surprising**, since every harness copies
 the candidate over `~/Downloads/Prevue/ESQ`.
@@ -743,7 +786,17 @@ It prints the surviving calls closest to the limit with the caller each sits in.
 Growth only costs a call if it lands BETWEEN that caller and its callee — code
 added before the pair, or after it, moves both ends equally and is free. So read
 the tight pairs first, look up their addresses, and pick targets outside those
-spans. On the 285-entry manifest the tightest is 45 bytes.
+spans. On the 285-entry manifest the tightest is 47 bytes
+(`DISKIO2_HandleInteractiveFileTransfer -> _GROUP_AM_JMPTBL_WDISP_SPrintf`).
+
+**BUT THE MARGINS DO NOT PREDICT THE COST OF A NEW ENTRY, and treating them as if
+they did wastes builds.** Replacing a module makes it its own link unit, which
+changes how `gen_units.py` coalesces its neighbours, so the image moves by more
+than the restoration's own size delta. Measured on the 2026-07-29 tranche: three
+new entries inside the 47-byte pair total +138 bytes by their own deltas, and the pair
+went over by 513. Use the margins to CHOOSE candidates, then bisect empirically —
+add, build, read `check_pcrel_range`, drop the biggest OVERSHOOTING entry inside
+the named span, repeat. Dropping an undershooting one makes it worse.
 
 > Two false-positive classes had to be excluded first, both found by testing the
 > detector against the KNOWN-GOOD pure build rather than assuming it was right.
@@ -759,9 +812,30 @@ the image larger than the assembly they replace -- note that dropping an
 entries tried this way grew the image by 12 bytes and pushed the overshoot from
 23 to 35.
 
-`src/c/replacements-runnable.txt` is the current verified-good manifest: 285
-entries, check clean, `a6_audit` 0/285, boots, and clean on all six ESC-menu
-items. `src/c/replacements-all.txt` holds 334 and still gurus.
+`src/c/replacements-tranche.txt` is the largest manifest verified WITHOUT the
+far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
+BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
+278-entry parent, also clean and additionally proven on all six ESC-menu items.
+
+`src/c/replacements-all.txt` is the one to grow. At **391 entries** on
+2026-07-30 it is clean on every check there is: `check_pcrel_range` 0 truncated
+of 204 calls, `a6_audit` 0 of 391, `soak_esq.sh` 10 of 10 distinct frames,
+`menusweep_esq.sh` clean on all six ESC-menu items with no guru, and
+`framecolor.py` shows every colour bin overlapping the known-good build.
+
+**`ESQ_FARCALLS=1` removes this whole constraint, and `replacements-all.txt` now
+links and runs under it.** Read the next section before you grow a manifest by
+hand. The advice above still applies to a byte-exact manifest, which cannot use
+the flag.
+
+SEVEN of the 2026-07-29 restorations are deliberately absent from the tranche
+manifest: `esq_main_init_and_run.c`, `ed_handle_editor_input.c`,
+`ed2_handle_menu_actions.c`, `diskio_parse_config_buffer.c`,
+`cleanup_parse_aligned_listing_block.c`, `coi_load_oi_data_file.c` and
+`cleanup_draw_clock_format_list.c`. Each sits between a tight caller/callee pair
+and wraps it. Nothing is known to be wrong with any of them; this is the layout
+limit, not a defect, and the manifest header says so. They still count toward
+coverage, which is read from the headers.
 
 **Build it with `CODE=FAR` or it will not link, and the errors will blame the
 wrong files.** The option is in the manifest header, and skipping it costs an
@@ -780,6 +854,31 @@ manifests must NOT use `CODE=FAR`, because it changes the call encoding. That is
 why it cannot be the default. `build-split.sh` now detects this case and prints
 the fix.
 
+### A prose warning in a header protects nothing (2026-07-30)
+
+FIFTEEN restorations carry `SASC-MISMATCH: register-argument-convention`. Their
+summaries say the original takes its arguments in REGISTERS, so the function is
+"callable only from assembly" and is "documented, not linkable". **Not one of
+them carried the `DO-NOT-LINK:` marker, which is the only form a tool reads.**
+Seven were linked into `replacements-tranche.txt` and `replacements-runnable.txt`
+-- the two manifests this file called verified-good, one of them "proven on all
+six ESC-menu items".
+
+They are not a subtle risk. `ESQ_SetCopperEffect_Custom` compiles to
+`610000004e75`, a call and a return, against a 32-byte original that reads D0 and
+D1. The function does none of its work. `ESQ_DecColorStep` linked alone over a
+clean 356-entry build paints a green panel over the grid area, which is how the
+class was found at all.
+
+Every one of the fifteen now carries `DO-NOT-LINK:`, and the manifests were
+rebuilt without them: maximum-C 373 -> **362**, tranche 300 -> **293**, runnable
+285 -> **278**. The byte-exact manifest never contained one.
+
+**Two rules follow.** Write the machine-readable marker whenever the prose says a
+restoration must not be linked. And treat `register-args` as a link blocker
+rather than only a restoration blocker -- `coverage.py` screens it when choosing
+targets, which is not the same as keeping the result out of a build.
+
 **A restoration that FAULTS AT RUNTIME says so in its own header.** Put
 `DO-NOT-LINK: <what was measured>` in the header block and
 `tools/gen_all_manifest.py` keeps it out of every manifest it writes. The
@@ -787,6 +886,71 @@ restoration still counts toward coverage, which is read from the headers, so the
 analysis is kept rather than deleted. Two files carry it today, both weather
 brush drawers, both confirmed solo against the verified baseline with an address
 error -- see the notes in `src/c/wdisp_draw_weather_status_day_entry.c`.
+
+### SOLVED: `ESQ_FARCALLS=1` lifts the 16-bit ceiling (2026-07-30)
+
+`CODE=FAR` fixes the call encoding on the **C** side only. The assembly keeps
+its own 16-bit PC-relative references, and those are what capped the manifest.
+There are two forms, and the second one is easy to miss:
+
+| form | sites | becomes |
+|---|---:|---|
+| `BSR.W sym` / `BRA.W sym` to a global | 882 | `JSR sym` / `JMP sym` |
+| `sym(PC)` -- 3047 `JSR`, 18 `LEA`, 4 `PEA` | 3069 | the same operand without `(PC)` |
+
+`sym(PC)` is the original's cross-unit call encoding, so it is spread over the
+whole program. A first attempt at this work searched for `(sym,PC)`, found zero,
+and reported the problem as ten times smaller than it is. **The syntax in these
+sources is `sym(PC)`.**
+
+An absolute operand reaches the same target with the same meaning and costs 2
+bytes. vasm keeps the short form when the target is in the same unit, where the
+distance is bounded anyway. Set the flag on any manifest you intend to RUN:
+
+```sh
+ESQ_FARCALLS=1 SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
+  C_REPLACEMENTS=src/c/replacements-all.txt ./build-split.sh
+```
+
+Measured on the 362-entry maximum-C build: 4114 branches widened over 475
+modules, `check_pcrel_range` down from 3892 calls to **219, none truncated**,
+`a6_audit` 0 of 362, and the soak gives 10 of 10 distinct frames. The pure
+assembly build under the flag also runs, which is the cleaner test, because a
+failure there belongs to the rewrite and not to any restoration.
+
+**The flag also retired an exclusion, and that uncovered a real defect.** 17
+restorations were excluded only because an 8-bit `BSR.S` in another module
+reached them, which `ESQ_FARCALLS=1` removes. Admitting them turned the grid
+area GREEN in every frame. The cause was not the far-call rewrite. Four of the
+17 are **register-argument** functions whose own headers said they could not be
+linked, in prose that no tool reads. The 8-bit rule had been keeping them out by
+accident. See the section below.
+
+`gen_units.py` writes rewritten COPIES under `build/units/far/`, and
+`build-split.sh` puts that directory first on the include path. A rewritten
+module shadows the original and every other file still resolves from `src/`. The
+directory is emptied on every run, so a stale tree can never shadow a pure
+build. **Both byte-exact gates are untouched, because the default build does not
+set the flag.**
+
+Do NOT set it for `src/c/replacements.txt`. `verify_restorations.py` proves the
+image grew by exactly the sum of per-object rounding, and widened branches add
+bytes that this accounting does not know about.
+
+Two traps, both of which cost a build to find:
+
+1. **Widening a module can break its own short branches.** A module gains 2
+   bytes per site, so an 8-bit branch inside it can go out of reach. The tool
+   promotes every `.S` branch in a module it rewrites.
+2. **A short branch can cross a module boundary.** `BSR.S _P_TYPE_CloneEntry`
+   reaches the next module only while the two stay adjacent. An earlier version
+   promoted local labels alone, and vlink answered `does not fit into 8 bits`.
+   Short branches to a global are now widened everywhere, not only in rewritten
+   modules.
+
+The remaining 220 PC-relative calls are same-unit branches that vasm chose to
+keep short. `check_pcrel_range` still runs on every build and still aborts on a
+wrap, so this is a smaller haystack rather than a removed check.
 
 ## Verifying a C build
 
@@ -936,12 +1100,15 @@ c = [f for f in coverage.survey()
      and not (set(f['blockers']) & BLOCK)]
 ```
 
-Without the `status` filter that returns 146, not 8 — it counts everything
+Without the `status` filter that returns 137, not 9 — it counts everything
 already done.
 
-As of 2026-07-28 that leaves **8 unblocked `no-calls` candidates, 1692 bytes** —
+As of 2026-07-30 that leaves **9 unblocked `no-calls` candidates, 2,036 bytes** —
 an earlier version of this file claimed the bucket was empty, which was wrong.
-It is now nearly worked out, so the next tranche has to come from `intra-unit`.
+The count goes UP as well as down: four of these appeared on 2026-07-30 when
+blocks that carried no label were given one, which stopped their neighbours
+absorbing them. So the bucket is nearly worked out, but "nearly" has been wrong
+here twice; run the enumeration rather than trusting a number.
 They matter out of proportion to their size: with no cross-unit call in them,
 nothing structural stops one being **exact**, and every other bucket is capped at
 `behavioural` until the compiler question is settled.
@@ -954,6 +1121,65 @@ that routine's frame. It cannot be restored as C at all: a C function would buil
 its own frame and the `A5` references would address nothing. `tools/coverage.py`
 detects and excludes these. `DISKIO1_DumpDefaultCoiInfoBlock` is the worked
 example.
+
+## ...and not every function has a label
+
+`refbytes.py` extracts label to label, so a function that is followed by
+UNLABELLED code absorbs it. The size in the worklist is then the sum of two
+functions, and a split at that label would move the second one into the C
+replacement and delete it.
+
+`ESQ_NoOp_006A` is the worked example. It reads as **58 bytes** and it is two
+bytes, one `RTS`. The other 56 belong to a dead copper-list routine that the
+disassembly documented in a `; FUNC:` comment and never gave a label. The same
+thing hid `ESQ_NoOp_0074`.
+
+The comment block IS the tell, because the disassembly writes one per function.
+Find every site with:
+
+```sh
+python3 - <<'EOF'
+import os, re
+for root, _, files in os.walk('src/modules'):
+    for f in files:
+        if not f.endswith('.s'): continue
+        p = os.path.join(root, f); lines = open(p).read().split('\n')
+        for i, ln in enumerate(lines):
+            if not ln.startswith('; FUNC:'): continue
+            j = i
+            while j < len(lines) and (lines[j].startswith(';') or not lines[j].strip()):
+                j += 1
+            if j < len(lines) and not re.match(r'^[A-Za-z_.][\w.]*:', lines[j]):
+                print(p, ln.split(':')[1].split()[0])
+EOF
+```
+
+That found 15 sites. Six were real and are now labelled, one was a false
+positive (a labelled function whose comment block repeats), and the rest are in
+`submodules/`, which `coverage.py` does not survey. **Adding the label is
+byte-neutral** — both gates stay green — and it costs nothing else, because the
+new labels need no `XDEF`: nothing outside the module refers to them.
+
+Fixing the six moved four new candidates into the `no-calls` bucket and shrank
+two worklist entries from 58 bytes to 2. Both directions are the point: the
+worklist was reporting sizes that were not true.
+
+## A `_Return` label is not a second function
+
+`gen_all_manifest.py` refuses to link a restoration whose module holds more than
+one label, because a C file replaces the WHOLE module. That rule was counting
+`<name>_Return` labels, which are not functions — they are the epilogue of
+`<name>`, given a label because the body branches to them, and a C restoration
+carries its own epilogue anyway.
+
+The result was silent. The file compiled, compared correctly, and simply never
+appeared in any manifest. **16 restorations were being dropped** when this was
+found on 2026-07-30. Nothing reported it, because a missing manifest entry looks
+exactly like a manifest entry that was never written.
+
+If a restoration seems finished and the manifest count does not move, run
+`python3 tools/gen_all_manifest.py` and read the `skipped` lines it prints. Every
+exclusion has a reason attached.
 
 ## The C phase
 
@@ -985,8 +1211,45 @@ assembly stays in assembly.
 void __asm t(register __a0 char *p, register __d0 long n)   /* 2e00 2a48 ... */
 ```
 
-Arguments arrive in the named registers with no stack traffic. This is untried
-for restoration so far and is the obvious tool for any register-argument leaf
-helper. It does **not** rescue the `register-args` family below, because SAS/C
-still copies the arguments into its own callee-saved registers, whereas those
-routines preserve and work in the argument registers themselves.
+Arguments arrive in the named registers with no stack traffic. It does **not**
+rescue the `register-args` family below, because SAS/C still copies the
+arguments into its own callee-saved registers, whereas those routines preserve
+and work in the argument registers themselves.
+
+**It DOES rescue the callers of that family, and five restorations now depend on
+it.** A function that takes nothing itself but sets D0/D1 for a hand-written
+helper is ordinary C plus an `__asm` prototype on the helper.
+`esq_set_copper_effect_all_on.c` is the worked example. It is linked, it is in
+`replacements-all.txt`, and the colour comparison against the known-good build
+shows no difference — which is the test that found the register-argument class
+in the first place.
+
+### But read the helper's CLOBBERS before you link the caller
+
+`__asm` says where the arguments go. It says nothing about what the helper
+destroys, and SAS/C assumes the standard rule: D0/D1/A0/A1 are scratch, and
+D2-D7/A2-A6 survive a call. A hand-written helper is under no such obligation.
+
+- `_ESQ_DecColorStep` works in D1 and **D2** and restores neither.
+- `_ESQ_BumpColorTowardTargets` works in D1, **D2** and **D3**, and also reads a
+  target stream through **A1**, which it leaves advanced by 3.
+
+So a C caller compiled by SAS/C does not save D2, because it believes nothing
+can destroy it, and D2 then leaks out to whoever called the C function. The four
+copper-list restorations therefore carry `DO-NOT-LINK:` and say why. The
+original callers all open `MOVEM.L D2-D5/A2-A3` and never touch D2 or D3 in
+their own bodies — **that MOVEM is not redundant, it is the clobber list**. A
+saved register a function appears not to use is a message about its callees.
+
+The A1 case is worse, because the caller relies on the helper to advance the
+cursor. C cannot say "the callee moved my pointer": SAS/C models A1 as clobbered
+by the call, so the value cannot survive it. `register __a1` gets the pointer
+in. Nothing gets the advanced value back out. See
+`esq_inc_copper_lists_towards_targets.c`, which threads the cursor by hand at
++4 bytes per call site.
+
+Three of the fifteen `register-argument-convention` files are **callers**, not
+register-argument functions, and are safe to link once the clobbers check out.
+`ESQ_SetCopperEffect_OnEnableHighlight` and its sibling are already linked and
+already proven, because their chain ends in `_ESQ_UpdateCopperListsFromParams`,
+which opens `MOVEM.L D2-D4/A6,-(A7)` and honors the convention.

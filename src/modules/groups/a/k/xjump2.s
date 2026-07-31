@@ -1,5 +1,5 @@
     XDEF    _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn
-    XDEF    GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable
+    XDEF    _GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable
     XDEF    _GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow
     XDEF    _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides
 
@@ -12,7 +12,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_SetCopperEffect_AllOn
+;   _ESQ_SetCopperEffect_AllOn
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -23,7 +23,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn:
-    JMP     ESQ_SetCopperEffect_AllOn
+    JMP     _ESQ_SetCopperEffect_AllOn
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow   (Routine at _GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow)
@@ -70,7 +70,7 @@ _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides:
     JMP     TLIBA3_DrawViewModeGuides
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable   (Routine at GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable)
+; FUNC: _GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable   (Routine at _GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -88,7 +88,7 @@ _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable:
+_GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable:
     JMP     _GCOMMAND_CopyGfxToWorkIfAvailable
 
     MOVEQ   #97,D0

@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   A6/A7/D0/D1/D2/D3/D7
 ; CALLS:
-;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVORead
+;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVORead
 ; READS:
 ;   Global_REF_DOS_LIBRARY_2, _Global_REF_LONG_FILE_SCRATCH, Global_STR_DISKIO_C_3, Global_STR_DISKIO_C_4, _Global_PTR_WORK_BUFFER, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE, return
 ; WRITES:
@@ -30,7 +30,7 @@ _DISKIO_LoadFileToWorkBuffer:
     ; Open the filename in A3
     PEA     (MODE_OLDFILE).W
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AG_JMPTBL_DOS_OpenFileWithMode(PC)
+    JSR     _GROUP_AG_JMPTBL_DOS_OpenFileWithMode(PC)
 
     ADDQ.W  #8,A7
 

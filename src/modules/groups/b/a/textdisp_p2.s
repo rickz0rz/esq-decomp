@@ -14,7 +14,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A2
 ; CALLS:
-;   _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TEXTDISP_BuildEntryShortName, TEXTDISP_FormatEntryTimeForIndex,
+;   _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TEXTDISP_BuildEntryShortName, _TEXTDISP_FormatEntryTimeForIndex,
 ;   _STRING_AppendAtNull, _WDISP_SPrintf, _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold,
 ;   _STR_FindCharPtr, _TEXTDISP_SkipControlCodes, _TEXTDISP_TrimTextToPixelWidth
 ; READS:
@@ -261,7 +261,7 @@ TEXTDISP_BuildEntryDetailLine:
     MOVE.L  -532(A5),-(A7)
     MOVE.L  D0,-(A7)
     PEA     -524(A5)
-    JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
+    JSR     _TEXTDISP_FormatEntryTimeForIndex(PC)
 
     LEA     12(A7),A7
     LEA     -524(A5),A0
@@ -647,7 +647,7 @@ TEXTDISP_FilterAndSelectEntry:
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-8(A5)
-    JSR     TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(PC)
+    JSR     _TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(PC)
 
     LEA     24(A7),A7
     TST.L   D0
@@ -826,7 +826,7 @@ TEXTDISP_FilterAndSelectEntry:
 ; READS:
 ;   entry+220, _CONFIG_LRBN_FlagChar, _TEXTDISP_EntryTextBaseWidthPx
 ; WRITES:
-;   _WDISP_DisplayContextBase, _WDISP_AccumulatorCaptureActive/_WDISP_AccumulatorFlushPending, TEXTDISP_LinePenOverrideEnabledFlag
+;   _WDISP_DisplayContextBase, _WDISP_AccumulatorCaptureActive/_WDISP_AccumulatorFlushPending, _TEXTDISP_LinePenOverrideEnabledFlag
 ; DESC:
 ;   Enables the highlight copper effect, computes bounds, and draws the frame.
 ; NOTES:
@@ -958,7 +958,7 @@ TEXTDISP_DrawHighlightFrame:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVE.W  #1,TEXTDISP_LinePenOverrideEnabledFlag
+    MOVE.W  #1,_TEXTDISP_LinePenOverrideEnabledFlag
     LEA     220(A3),A0
     MOVE.L  D6,D0
     EXT.L   D0
@@ -1007,7 +1007,7 @@ TEXTDISP_DrawHighlightFrame:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   TEXTDISP_BuildNowShowingStatusLine, TEXTDISP_BuildEntryPairStatusLine,
+;   _TEXTDISP_BuildNowShowingStatusLine, TEXTDISP_BuildEntryPairStatusLine,
 ;   _TEXTDISP_SetEntryTextFields, TEXTDISP_FilterAndSelectEntry,
 ;   TEXTDISP_DrawHighlightFrame, _MEMORY_AllocateMemory, _MEMORY_DeallocateMemory
 ; READS:
@@ -1052,10 +1052,10 @@ _TEXTDISP_HandleScriptCommand:
     PEA     TEXTDISP_CommandPrefixFormat
     ; 200-byte local target; source text comes from script argument pointer.
     ; Provenance: A3 is typically _SCRIPT_CommandTextPtr (legacy _SCRIPT_CommandTextPtr), populated from
-    ; SCRIPT_CTRL_CMD_BUFFER payload bytes in SCRIPT_HandleBrushCommand.
+    ; SCRIPT_CTRL_CMD_BUFFER payload bytes in _SCRIPT_HandleBrushCommand.
     ; Budget note for .commandScratchBuffer (200 bytes incl NUL):
     ; "xx%s" => 3 + len(arg), so payload must stay <= 197 bytes.
-    ; CTRL packet path enforces SCRIPT_CTRL_READ_INDEX <= 198 before dispatch.
+    ; CTRL packet path enforces _SCRIPT_CTRL_READ_INDEX <= 198 before dispatch.
     PEA     .commandScratchBuffer(A5)
     JSR     _WDISP_SPrintf(PC)
 
@@ -1117,7 +1117,7 @@ _TEXTDISP_HandleScriptCommand:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   TEXTDISP_BuildNowShowingStatusLine
+    BSR.W   _TEXTDISP_BuildNowShowingStatusLine
 
     BSR.W   _SCRIPT_ResetBannerCharDefaults
 

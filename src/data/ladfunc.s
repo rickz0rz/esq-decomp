@@ -44,7 +44,7 @@
     XDEF    _LOCAVAIL_FilterModeFlag
     XDEF    _LOCAVAIL_FilterStep
     XDEF    _LOCAVAIL_FilterClassId
-    XDEF    LOCAVAIL_FilterPrevClassId
+    XDEF    _LOCAVAIL_FilterPrevClassId
     XDEF    _LOCAVAIL_FilterWindowHalfSpan
 ; ========== LADFUNC.c ==========
 
@@ -135,7 +135,7 @@ _LADFUNC_FMT_HexEscapeByte:
 _LADFUNC_FMT_LiteralChar:
     NStr    "%lc"
 ;------------------------------------------------------------------------------
-; SYM: _LOCAVAIL_FilterModeFlag/_LOCAVAIL_FilterStep/_LOCAVAIL_FilterClassId/LOCAVAIL_FilterPrevClassId   (locavail filter state)
+; SYM: _LOCAVAIL_FilterModeFlag/_LOCAVAIL_FilterStep/_LOCAVAIL_FilterClassId/_LOCAVAIL_FilterPrevClassId   (locavail filter state)
 ; TYPE: s32/s32/s32/s32
 ; PURPOSE: Stores mode and step state for locavail-style filter/selection transitions.
 ; USED BY: LOCAVAIL_*, SCRIPT3_*, TEXTDISP2_*, ED1_*, ED2_*
@@ -147,7 +147,7 @@ _LOCAVAIL_FilterStep:
     DS.L    1
 _LOCAVAIL_FilterClassId:
     DC.L    $ffffffff
-LOCAVAIL_FilterPrevClassId:
+_LOCAVAIL_FilterPrevClassId:
     DC.L    $ffffffff
 _LOCAVAIL_FilterWindowHalfSpan:
     DC.W    $ffff

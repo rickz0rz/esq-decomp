@@ -1,5 +1,5 @@
     XDEF    _ED_RedrawAllRows
-    XDEF    ED_RedrawRow
+    XDEF    _ED_RedrawRow
 
 
 ;------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ _ED_RedrawAllRows:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_RedrawRow   (Redraw a rowuncertain)
+; FUNC: _ED_RedrawRow   (Redraw a rowuncertain)
 ; ARGS:
 ;   stack +4: u32 rowIndex
 ; RET:
@@ -88,7 +88,7 @@ _ED_RedrawAllRows:
 ; NOTES:
 ;   Temporarily updates _ED_EditCursorOffset to walk the row range.
 ;------------------------------------------------------------------------------
-ED_RedrawRow:
+_ED_RedrawRow:
     MOVEM.L D6-D7,-(A7)
 
     MOVE.L  12(A7),D7

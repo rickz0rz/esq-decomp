@@ -12,18 +12,18 @@
 ; CALLS:
 ;   ESQ_ColdReboot, ESQSHARED4_TickCopperAndBannerTransitions, _ESQIFF_ServicePendingCopperPaletteMoves
 ; READS:
-;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, _LOCAVAIL_FilterCooldownTicks, _Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, _WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
+;   _ESQ_GlobalTickCounter, _ESQ_TickModulo60Counter, _LOCAVAIL_FilterCooldownTicks, _Global_RefreshTickCounter, _TEXTDISP_DeferredActionDelayTicks, _WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
 ; WRITES:
-;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, CLEANUP_PendingAlertFlag, _LOCAVAIL_FilterCooldownTicks, _Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, _TEXTDISP_DeferredActionArmed,
+;   _ESQ_GlobalTickCounter, _ESQ_TickModulo60Counter, _CLEANUP_PendingAlertFlag, _LOCAVAIL_FilterCooldownTicks, _Global_RefreshTickCounter, _TEXTDISP_DeferredActionDelayTicks, _TEXTDISP_DeferredActionArmed,
 ;   _ACCUMULATOR_Row0_Sum.._ACCUMULATOR_Row3_SaturateFlag
 ; DESC:
 ;   Increments global timing counters, performs periodic resets, and updates
 ;   accumulator fields with saturation flags.
 ; NOTES:
-;   Triggers ESQ_ColdReboot when ESQ_GlobalTickCounter reaches $5460.
+;   Triggers ESQ_ColdReboot when _ESQ_GlobalTickCounter reaches $5460.
 ;------------------------------------------------------------------------------
 ESQ_TickGlobalCounters:
-    MOVE.W  ESQ_GlobalTickCounter,D0
+    MOVE.W  _ESQ_GlobalTickCounter,D0
     ADDQ.W  #1,D0
     CMPI.W  #$5460,D0
     BNE.S   .after_reboot_check
@@ -31,16 +31,16 @@ ESQ_TickGlobalCounters:
     BSR.W   ESQ_ColdReboot
 
 .after_reboot_check:
-    MOVE.W  D0,ESQ_GlobalTickCounter
+    MOVE.W  D0,_ESQ_GlobalTickCounter
     JSR     ESQSHARED4_TickCopperAndBannerTransitions
 
-    MOVE.W  ESQ_TickModulo60Counter,D0
+    MOVE.W  _ESQ_TickModulo60Counter,D0
     ADDQ.W  #1,D0
     MOVEQ   #60,D1
     CMP.W   D1,D0
     BNE.W   .store_tick_counter
 
-    MOVE.W  D0,CLEANUP_PendingAlertFlag
+    MOVE.W  D0,_CLEANUP_PendingAlertFlag
     MOVE.W  _LOCAVAIL_FilterCooldownTicks,D0
     BMI.W   .after_decrement_2325
 
@@ -55,24 +55,24 @@ ESQ_TickGlobalCounters:
     MOVE.W  D0,_Global_RefreshTickCounter
 
 .after_increment_234A:
-    MOVE.W  TEXTDISP_DeferredActionDelayTicks,D0
+    MOVE.W  _TEXTDISP_DeferredActionDelayTicks,D0
     BMI.W   .after_decay_22A5
 
     BEQ.W   .after_decay_22A5
 
     SUBQ.W  #1,D0
-    MOVE.W  D0,TEXTDISP_DeferredActionDelayTicks
+    MOVE.W  D0,_TEXTDISP_DeferredActionDelayTicks
     BNE.W   .after_decay_22A5
 
     MOVE.W  #1,_TEXTDISP_DeferredActionArmed
 
 .after_decay_22A5:
-    LEA     CLOCK_DaySlotIndexPtr,A0
+    LEA     _CLOCK_DaySlotIndexPtr,A0
     MOVEA.L (A0),A1
     MOVE.W  12(A1),D1
     ADDQ.W  #1,D1
     MOVE.W  D1,12(A1)
-    LEA     CLOCK_CurrentDayOfWeekIndexPtr,A0
+    LEA     _CLOCK_CurrentDayOfWeekIndexPtr,A0
     MOVEA.L (A0),A1
     MOVE.W  12(A1),D1
     ADDQ.W  #1,D1
@@ -80,7 +80,7 @@ ESQ_TickGlobalCounters:
     MOVEQ   #0,D0
 
 .store_tick_counter:
-    MOVE.W  D0,ESQ_TickModulo60Counter
+    MOVE.W  D0,_ESQ_TickModulo60Counter
     TST.W   _WDISP_AccumulatorCaptureActive
     BEQ.W   .after_accumulators
 

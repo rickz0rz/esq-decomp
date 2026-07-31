@@ -1,9 +1,9 @@
     XDEF    SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE
-    XDEF    SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR
+    XDEF    _SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR
 
 
 ;------------------------------------------------------------------------------
-; FUNC: SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR   (Draw text/cursor label)
+; FUNC: _SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR   (Draw text/cursor label)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Uses D7 as the boolean input.
 ;------------------------------------------------------------------------------
-SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR:
+_SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR:
     MOVE.L  D7,-(A7)
 
     MOVE.L  8(A7),D7
@@ -81,13 +81,13 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR:
 ; CALLS:
 ;   _DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   Global_REF_BOOL_IS_LINE_OR_PAGE, _Global_REF_RASTPORT_1
+;   _Global_REF_BOOL_IS_LINE_OR_PAGE, _Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
 ;   Draws either "LINE" or "PAGE" label with fixed pens.
 ; NOTES:
-;   Uses Global_REF_BOOL_IS_LINE_OR_PAGE as the selector.
+;   Uses _Global_REF_BOOL_IS_LINE_OR_PAGE as the selector.
 ;------------------------------------------------------------------------------
 SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE:
     LINK.W  A5,#0
@@ -106,7 +106,7 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE:
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
-    TST.L   Global_REF_BOOL_IS_LINE_OR_PAGE
+    TST.L   _Global_REF_BOOL_IS_LINE_OR_PAGE
     BNE.S   .setTextToPage
 
     LEA     Global_STR_LINE,A0

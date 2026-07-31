@@ -70,7 +70,10 @@ while read -r u; do
         fi
         ;;
     *)
-        if ! "$VASM_BIN" -I src -I "$UNITS" -Fhunk -nosym \
+        # $UNITS/far comes FIRST so an ESQ_FARCALLS=1 rewrite shadows the original
+        # module; gen_units.py empties that directory when the flag is off, so a
+        # default build resolves everything from src/ exactly as before.
+        if ! "$VASM_BIN" -I "$UNITS/far" -I src -I "$UNITS" -Fhunk -nosym \
                 -o "$OBJ/$u.o" "$UNITS/$u.asm" >"$OBJ/$u.log" 2>&1; then
             fail=$((fail + 1)); echo "  FAILED: $u"; sed -n '1,4p' "$OBJ/$u.log"
         fi
@@ -118,12 +121,24 @@ if [ ! -f "$BUILD/ESQ" ]; then
     # and the errors name innocent restorations, which sends you dropping entries
     # that were never the problem. Say so here rather than in a comment nobody
     # reads until after the third rebuild.
-    if grep -q "Error 28" "$LINKLOG" 2>/dev/null && ! [[ "$SCOPTS" == *CODE=FAR* ]]; then
+    # The two causes are told apart by WHICH object vlink names. A `c_*.o` that is
+    # a compiled restoration means CODE=FAR. An assembly unit means the program's
+    # own 16-bit references have been stretched, and only ESQ_FARCALLS=1 fixes
+    # that -- CODE=FAR does nothing for them.
+    if grep -q "Error 28" "$LINKLOG" 2>/dev/null; then
         echo
-        echo "*** Error 28 and CODE=FAR is NOT set. Retry with:"
-        echo "      SCOPTS=\"NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128\" \\"
-        echo "        C_REPLACEMENTS=$C_REPLACEMENTS ./build-split.sh"
-        echo "    Byte-exact manifests must NOT use it -- it changes the call encoding."
+        if ! [[ "$SCOPTS" == *CODE=FAR* ]]; then
+            echo "*** Error 28 and CODE=FAR is NOT set. Retry with:"
+            echo "      SCOPTS=\"NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128\" \\"
+            echo "        C_REPLACEMENTS=$C_REPLACEMENTS ./build-split.sh"
+            echo "    Byte-exact manifests must NOT use it -- it changes the call encoding."
+        fi
+        if [ "${ESQ_FARCALLS:-0}" != "1" ]; then
+            echo "*** Error 28 and ESQ_FARCALLS is NOT set. If the object named above is an"
+            echo "    assembly unit, the assembly's own 16-bit references are out of range."
+            echo "    CODE=FAR cannot fix those. Prefix the command with ESQ_FARCALLS=1."
+            echo "    Byte-exact manifests must NOT use it -- see AGENTS.md."
+        fi
     fi
     echo "*** LINK FAILED -- no binary produced ***"
     exit 1

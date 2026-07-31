@@ -44,6 +44,31 @@ BLOCKERS_HARD = {'register-args', 'live-register-on-entry', 'interior-label',
                  'falls-through'}
 
 
+_ALL_LABELS = None
+
+
+def has_return_label(name):
+    """True when `<name>_Return` is defined somewhere in src/modules.
+
+    That label is the function's own epilogue, split out because something
+    inside the function branches to it. Its presence means the function
+    returns, even though the extract for `name` stops before the RTS.
+    """
+    global _ALL_LABELS
+    if _ALL_LABELS is None:
+        _ALL_LABELS = set()
+        root = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))), 'src', 'modules')
+        for dp, _, fs in os.walk(root):
+            for f in fs:
+                if f.endswith('.s'):
+                    _ALL_LABELS.update(re.findall(
+                        r'^([A-Za-z_][\w]*):',
+                        open(os.path.join(dp, f)).read(), re.M))
+    bare = name.lstrip('_')
+    return any(c + '_Return' in _ALL_LABELS for c in (name, bare, '_' + bare))
+
+
 def survey():
     table = C.parse_listing()
     done = {}
@@ -155,11 +180,17 @@ def survey():
         # JMP is already handled above as tail-jump.
         #
         # Test the WHOLE body, not just the final line: an extract can run a few
-        # bytes past the RTS into inter-function padding, and a function whose
-        # epilogue is branched to from inside ends at a `_Return` label. Both make
-        # a last-line test report a real function as falling through. Having no
-        # return instruction at all is unambiguous.
-        if not re.search(r'\b(RTS|RTE|RTR)\b', body):
+        # bytes past the RTS into inter-function padding, so a last-line test
+        # reports real functions as falling through.
+        #
+        # "No return instruction at all" is NOT unambiguous, which this code used
+        # to assume. When the epilogue is branched to from inside, the
+        # disassembly gives it its own `<name>_Return` label, and the extract
+        # stops there -- so the body legitimately holds no RTS while the function
+        # returns perfectly well. That misread 30 functions and 15,388 bytes,
+        # about 8% of the program, as unrestorable. An existing `_Return` label
+        # IS the return, so check for one before believing the body.
+        if not re.search(r'\b(RTS|RTE|RTR)\b', body) and not has_return_label(name):
             fns.append({'name': name, 'src': srcf, 'size': len(blob),
                         'kind': 'no-calls', 'status': done.get(done_key),
                         'blockers': ['falls-through']})

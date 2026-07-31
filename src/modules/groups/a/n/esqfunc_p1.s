@@ -70,9 +70,9 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 ; CLOBBERS:
 ;   A7/D0/D1
 ; CALLS:
-;   ED_DispatchEscMenuState, ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, _ESQDISP_ProcessGridMessagesIfIdle, _ESQDISP_RefreshStatusIndicatorsFromCurrentMask, ESQDISP_PollInputModeAndRefreshSelection, ESQFUNC_CommitSecondaryStateAndPersist, ESQIFF_QueueIffBrushLoad, ESQIFF_ServiceExternalAssetSourceState, ESQIFF_PlayNextExternalAssetFrame
+;   ED_DispatchEscMenuState, ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, _ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, _ESQDISP_ProcessGridMessagesIfIdle, _ESQDISP_RefreshStatusIndicatorsFromCurrentMask, ESQDISP_PollInputModeAndRefreshSelection, ESQFUNC_CommitSecondaryStateAndPersist, ESQIFF_QueueIffBrushLoad, ESQIFF_ServiceExternalAssetSourceState, _ESQIFF_PlayNextExternalAssetFrame
 ; READS:
-;   _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_GFX_G_ADS_DATA, LAB_097C, _PARSEINI_BannerBrushResourceHead, _WDISP_WeatherStatusBrushListHead, _CTASKS_IffTaskDoneFlag, _ED_DiagGraphModeChar, ESQDISP_DisplayActiveFlag, ESQDISP_SecondaryPersistRequestFlag, _ESQDISP_StatusRefreshPendingFlag, ESQFUNC_IffTaskGateFlags, _GCOMMAND_HighlightHoldoffTickCount, _GCOMMAND_DriveProbeRequestedFlag, _Global_UIBusyFlag, CLEANUP_PendingAlertFlag, _ESQIFF_ExternalAssetFlags, fffd, fffe
+;   _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_GFX_G_ADS_DATA, LAB_097C, _PARSEINI_BannerBrushResourceHead, _WDISP_WeatherStatusBrushListHead, _CTASKS_IffTaskDoneFlag, _ED_DiagGraphModeChar, _ESQDISP_DisplayActiveFlag, ESQDISP_SecondaryPersistRequestFlag, _ESQDISP_StatusRefreshPendingFlag, ESQFUNC_IffTaskGateFlags, _GCOMMAND_HighlightHoldoffTickCount, _GCOMMAND_DriveProbeRequestedFlag, _Global_UIBusyFlag, _CLEANUP_PendingAlertFlag, _ESQIFF_ExternalAssetFlags, fffd, fffe
 ; WRITES:
 ;   _ESQIFF_GAdsBrushListCount, _ESQIFF_LogoBrushListCount, ESQDISP_SecondaryPersistRequestFlag, _ESQDISP_StatusRefreshPendingFlag, ESQFUNC_IffTaskGateFlags, _ESQIFF_ExternalAssetFlags
 ; DESC:
@@ -90,7 +90,7 @@ _ESQFUNC_ProcessUiFrameTick:
 
 .lab_0971:
     MOVEQ   #1,D0
-    CMP.L   ESQDISP_DisplayActiveFlag,D0
+    CMP.L   _ESQDISP_DisplayActiveFlag,D0
     BNE.S   .lab_0972
 
     BSR.W   ESQDISP_PollInputModeAndRefreshSelection
@@ -110,7 +110,7 @@ _ESQFUNC_ProcessUiFrameTick:
     JSR     ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd(PC)
 
 .lab_0974:
-    TST.W   CLEANUP_PendingAlertFlag
+    TST.W   _CLEANUP_PendingAlertFlag
     BEQ.W   .lab_097C
 
     JSR     ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(PC)
@@ -132,7 +132,7 @@ _ESQFUNC_ProcessUiFrameTick:
     BNE.S   .lab_0976
 
     BCLR    #1,ESQFUNC_IffTaskGateFlags
-    JSR     ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(PC)
+    JSR     _ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(PC)
 
     BRA.S   .lab_0977
 
@@ -145,7 +145,7 @@ _ESQFUNC_ProcessUiFrameTick:
 
     BCLR    #0,ESQFUNC_IffTaskGateFlags
     PEA     1.W
-    JSR     ESQIFF_PlayNextExternalAssetFrame(PC)
+    JSR     _ESQIFF_PlayNextExternalAssetFrame(PC)
 
     ADDQ.W  #4,A7
 

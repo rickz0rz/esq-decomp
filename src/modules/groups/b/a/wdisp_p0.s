@@ -14,14 +14,14 @@
 ; CALLS:
 ;   _WDISP_DrawWeatherStatusDayEntry, _LVOMove, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, _P_TYPE_WeatherForecastMsgPtr, SCRIPT_PtrNoForecastWeatherData, TLIBA1_DayEntryModeCounter, _WDISP_WeatherStatusDigitChar, return
+;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, _P_TYPE_WeatherForecastMsgPtr, _SCRIPT_PtrNoForecastWeatherData, _TLIBA1_DayEntryModeCounter, _WDISP_WeatherStatusDigitChar, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Clears the status area and draws either day-entry panels or centered
 ;   fallback summary text.
 ; NOTES:
-;   Day-entry mode is enabled only when TLIBA1_DayEntryModeCounter > 0 and the
+;   Day-entry mode is enabled only when _TLIBA1_DayEntryModeCounter > 0 and the
 ;   weather digit char is not '0'.
 ;------------------------------------------------------------------------------
 _WDISP_DrawWeatherStatusSummary:
@@ -36,7 +36,7 @@ _WDISP_DrawWeatherStatusSummary:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
-    MOVE.B  TLIBA1_DayEntryModeCounter,D0
+    MOVE.B  _TLIBA1_DayEntryModeCounter,D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
     BLS.S   .summary_draw_fallback_text
@@ -71,7 +71,7 @@ _WDISP_DrawWeatherStatusSummary:
     BRA.S   .summary_measure_fallback_text
 
 .summary_use_default_fallback_text:
-    MOVEA.L SCRIPT_PtrNoForecastWeatherData,A0
+    MOVEA.L _SCRIPT_PtrNoForecastWeatherData,A0
     MOVE.L  A0,-4(A5)
 
 .summary_measure_fallback_text:

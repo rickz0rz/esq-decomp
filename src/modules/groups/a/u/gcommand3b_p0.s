@@ -403,7 +403,7 @@ GCOMMAND_ValidatePresetTable_Return:
 ;   with row in 0..15 and col in 0..15 for this initializer pass.
 ;   Source lookup uses GCOMMAND_PresetSeedPackedWordTable with base index (row*62)+col.
 ;   The destination table can be either _GCOMMAND_DefaultPresetTable or
-;   GCOMMAND_GradientPresetTable (parse-time staging path).
+;   _GCOMMAND_GradientPresetTable (parse-time staging path).
 ;------------------------------------------------------------------------------
 _GCOMMAND_InitPresetTableFromPalette:
     LINK.W  A5,#-8

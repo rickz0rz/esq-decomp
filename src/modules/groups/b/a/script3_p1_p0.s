@@ -14,7 +14,7 @@
 ; CALLS:
 ;   _GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_MATH_DivS32, SCRIPT3_JMPTBL_MATH_Mulu32
 ; READS:
-;   _CONFIG_LRBN_FlagChar/_CONFIG_MSN_FlagChar, Global_WORD_SELECT_CODE_IS_RAVESC, _SCRIPT_BannerTransitionActive
+;   _CONFIG_LRBN_FlagChar/_CONFIG_MSN_FlagChar, _Global_WORD_SELECT_CODE_IS_RAVESC, _SCRIPT_BannerTransitionActive
 ; WRITES:
 ;   _SCRIPT_BannerTransitionTargetChar/2353/2354, _SCRIPT_BannerTransitionStepBudget, _SCRIPT_BannerTransitionActive, _SCRIPT_PendingBannerSpeedMs
 ; DESC:
@@ -79,7 +79,7 @@ SCRIPT_BeginBannerCharTransition:
     SUB.L   D0,D2
     MOVE.L  D2,D4
     MOVE.B  D1,_SCRIPT_BannerTransitionTargetChar
-    TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
+    TST.W   _Global_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .selectCodeIsNotRAVSEC
 
     MOVE.B  _CONFIG_MSN_FlagChar,D0

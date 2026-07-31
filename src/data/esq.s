@@ -1,30 +1,31 @@
     XDEF    Global_REF_GRAPHICS_LIBRARY
     XDEF    _Global_REF_INTUITION_LIBRARY
     XDEF    _Global_REF_UTILITY_LIBRARY
-    XDEF    Global_REF_BATTCLOCK_RESOURCE
-    XDEF    Global_STRUCT_TEXTATTR_PREVUEC_FONT
-    XDEF    Global_STRUCT_TEXTATTR_H26F_FONT
-    XDEF    Global_STRUCT_TEXTATTR_TOPAZ_FONT
-    XDEF    Global_STRUCT_TEXTATTR_PREVUE_FONT
+    XDEF    _Global_REF_BATTCLOCK_RESOURCE
+    XDEF    _Global_STRUCT_TEXTATTR_PREVUEC_FONT
+    XDEF    _Global_STRUCT_TEXTATTR_H26F_FONT
+    XDEF    _Global_STRUCT_TEXTATTR_TOPAZ_FONT
+    XDEF    _Global_STRUCT_TEXTATTR_PREVUE_FONT
     XDEF    _Global_HANDLE_PREVUE_FONT
     XDEF    _Global_REF_DISKFONT_LIBRARY
+    XDEF    _DiskfontBase
     XDEF    _Global_REF_DOS_LIBRARY
     XDEF    _ESQ_HighlightMsgPort
     XDEF    _ESQ_HighlightReplyPort
-    XDEF    ESQ_ProcessWindowPtrBackup
+    XDEF    _ESQ_ProcessWindowPtrBackup
     XDEF    _ESQ_STR_B
     XDEF    _ESQ_STR_E
     XDEF    _ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED
     XDEF    _ESQ_TAG_36
     XDEF    _ED_DiagScrollSpeedChar
-    XDEF    ESQ_DefaultNoFlagChar
+    XDEF    _ESQ_DefaultNoFlagChar
     XDEF    CLOCK_MinuteEventBaseMinute
     XDEF    CLOCK_MinuteEventBaseOffset
     XDEF    _ESQ_STR_6
     XDEF    _ESQ_SecondarySlotModeFlagChar
     XDEF    _ESQ_STR_Y
-    XDEF    ESQ_AlertType4ModeFlagChar
-    XDEF    ESQ_AlertType235ModeFlagChar
+    XDEF    _ESQ_AlertType4ModeFlagChar
+    XDEF    _ESQ_AlertType235ModeFlagChar
     XDEF    _ED_DiagGraphModeChar
     XDEF    _ED_DiagVinModeChar
     XDEF    _CLOCK_FormatVariantCode
@@ -39,7 +40,7 @@
     XDEF    _GCOMMAND_PresetFallbackValue1
     XDEF    _GCOMMAND_PresetFallbackValue2
     XDEF    GCOMMAND_PresetFallbackValue3
-    XDEF    ESQ_ShutdownRequestedFlag
+    XDEF    _ESQ_ShutdownRequestedFlag
     XDEF    _ESQ_MainLoopUiTickEnabledFlag
     XDEF    _Global_HANDLE_PREVUEC_FONT
     XDEF    _Global_HANDLE_H26F_FONT
@@ -50,54 +51,54 @@
     XDEF    _WDISP_WeatherStatusOverlayTextPtr
     XDEF    _Global_LONG_ROM_VERSION_CHECK
     XDEF    _ESQDISP_StatusIndicatorDeferredApplyFlag
-    XDEF    CLEANUP_DiagOverlayAutoRefreshFlag
+    XDEF    _CLEANUP_DiagOverlayAutoRefreshFlag
     XDEF    _ED_DiagAvailMemMask
     XDEF    ED_DiagAvailMemPresetBits
     XDEF    _ESQDISP_GridMessagePumpBlockFlag
-    XDEF    SCRIPT_StatusRefreshHoldFlag
+    XDEF    _SCRIPT_StatusRefreshHoldFlag
     XDEF    TEXTDISP_TickSuspendFlag
-    XDEF    Global_WORD_SELECT_CODE_IS_RAVESC
+    XDEF    _Global_WORD_SELECT_CODE_IS_RAVESC
     XDEF    ESQPARS_PersistOnNextBoxOffFlag
     XDEF    _HAS_REQUESTED_FAST_MEMORY
     XDEF    _IS_COMPATIBLE_VIDEO_CHIP
-    XDEF    Global_STR_RAVESC
-    XDEF    Global_STR_COPY_NIL_ASSIGN_RAM
-    XDEF    Global_STR_GRAPHICS_LIBRARY
-    XDEF    Global_STR_DISKFONT_LIBRARY
-    XDEF    Global_STR_DOS_LIBRARY
-    XDEF    Global_STR_INTUITION_LIBRARY
-    XDEF    Global_STR_UTILITY_LIBRARY
-    XDEF    Global_STR_BATTCLOCK_RESOURCE
-    XDEF    Global_STR_ESQ_C_1
-    XDEF    Global_STR_ESQ_C_2
-    XDEF    Global_STR_ESQ_C_3
-    XDEF    Global_STR_ESQ_C_4
-    XDEF    Global_STR_ESQ_C_5
-    XDEF    Global_STR_CART
-    XDEF    Global_STR_ESQ_C_6
-    XDEF    Global_STR_SERIAL_READ
-    XDEF    Global_STR_SERIAL_DEVICE
-    XDEF    Global_STR_ESQ_C_7
-    XDEF    Global_STR_ESQ_C_8
-    XDEF    Global_STR_ESQ_C_9
-    XDEF    Global_STR_ESQ_C_10
-    XDEF    Global_STR_ESQ_C_11
-    XDEF    ESQ_STR_NO_DF1_PRESENT
-    XDEF    Global_STR_GUIDE_START_VERSION_AND_BUILD
-    XDEF    Global_STR_MAJOR_MINOR_VERSION
-    XDEF    ESQ_STR_38_Spaces
-    XDEF    Global_STR_DF0_GRADIENT_INI_2
-    XDEF    ESQ_STR_SystemInitializing
-    XDEF    ESQ_STR_PleaseStandByEllipsis
-    XDEF    ESQ_STR_AttentionSystemEngineer
-    XDEF    ESQ_STR_ReportErrorCodeEr011ToTVGuide
-    XDEF    ESQ_STR_ReportErrorCodeER012ToTVGuide
-    XDEF    Global_STR_DF0_DEFAULT_INI_1
-    XDEF    Global_STR_DF0_BRUSH_INI_1
-    XDEF    ESQ_STR_DT
-    XDEF    ESQ_STR_DITHER
-    XDEF    Global_STR_DF0_BANNER_INI_1
-    XDEF    ESQ_TAG_GRANADA
+    XDEF    _Global_STR_RAVESC
+    XDEF    _Global_STR_COPY_NIL_ASSIGN_RAM
+    XDEF    _Global_STR_GRAPHICS_LIBRARY
+    XDEF    _Global_STR_DISKFONT_LIBRARY
+    XDEF    _Global_STR_DOS_LIBRARY
+    XDEF    _Global_STR_INTUITION_LIBRARY
+    XDEF    _Global_STR_UTILITY_LIBRARY
+    XDEF    _Global_STR_BATTCLOCK_RESOURCE
+    XDEF    _Global_STR_ESQ_C_1
+    XDEF    _Global_STR_ESQ_C_2
+    XDEF    _Global_STR_ESQ_C_3
+    XDEF    _Global_STR_ESQ_C_4
+    XDEF    _Global_STR_ESQ_C_5
+    XDEF    _Global_STR_CART
+    XDEF    _Global_STR_ESQ_C_6
+    XDEF    _Global_STR_SERIAL_READ
+    XDEF    _Global_STR_SERIAL_DEVICE
+    XDEF    _Global_STR_ESQ_C_7
+    XDEF    _Global_STR_ESQ_C_8
+    XDEF    _Global_STR_ESQ_C_9
+    XDEF    _Global_STR_ESQ_C_10
+    XDEF    _Global_STR_ESQ_C_11
+    XDEF    _ESQ_STR_NO_DF1_PRESENT
+    XDEF    _Global_STR_GUIDE_START_VERSION_AND_BUILD
+    XDEF    _Global_STR_MAJOR_MINOR_VERSION
+    XDEF    _ESQ_STR_38_Spaces
+    XDEF    _Global_STR_DF0_GRADIENT_INI_2
+    XDEF    _ESQ_STR_SystemInitializing
+    XDEF    _ESQ_STR_PleaseStandByEllipsis
+    XDEF    _ESQ_STR_AttentionSystemEngineer
+    XDEF    _ESQ_STR_ReportErrorCodeEr011ToTVGuide
+    XDEF    _ESQ_STR_ReportErrorCodeER012ToTVGuide
+    XDEF    _Global_STR_DF0_DEFAULT_INI_1
+    XDEF    _Global_STR_DF0_BRUSH_INI_1
+    XDEF    _ESQ_STR_DT
+    XDEF    _ESQ_STR_DITHER
+    XDEF    _Global_STR_DF0_BANNER_INI_1
+    XDEF    _ESQ_TAG_GRANADA
     XDEF    _Global_LONG_BUILD_NUMBER
     XDEF    _Global_PTR_STR_BUILD_ID
     XDEF    ESQ_CopperEffectListA
@@ -112,7 +113,7 @@
     XDEF    _ESQ_CopperListBannerA
     XDEF    ESQ_BannerWorkRasterPtrA_HiWord
     XDEF    ESQ_BannerWorkRasterPtrA_LoWord
-    XDEF    ESQ_BannerPaletteWordsA
+    XDEF    _ESQ_BannerPaletteWordsA
     XDEF    ESQ_BannerSweepWaitRowA
     XDEF    ESQ_BannerPlane0SnapshotScratchPtrHiWord
     XDEF    ESQ_BannerPlane0SnapshotScratchPtrLoWord
@@ -157,7 +158,7 @@
     XDEF    _ESQ_CopperListBannerB
     XDEF    ESQ_BannerWorkRasterPtrB_HiWord
     XDEF    ESQ_BannerWorkRasterPtrB_LoWord
-    XDEF    ESQ_BannerPaletteWordsB
+    XDEF    _ESQ_BannerPaletteWordsB
     XDEF    ESQ_BannerSweepWaitRowB
     XDEF    ESQ_BannerPlane0ScratchPtrAlt_HiWord
     XDEF    ESQ_BannerPlane0ScratchPtrAlt_LoWord
@@ -203,12 +204,12 @@ _Global_REF_INTUITION_LIBRARY:
     DC.L    0
 _Global_REF_UTILITY_LIBRARY:
     DC.L    0
-Global_REF_BATTCLOCK_RESOURCE:
+_Global_REF_BATTCLOCK_RESOURCE:
     DC.L    0
 
 Global_STR_PREVUEC_FONT:
     NStr    "PrevueC.font"          ; 14 bytes
-Global_STRUCT_TEXTATTR_PREVUEC_FONT:
+_Global_STRUCT_TEXTATTR_PREVUEC_FONT:
     DC.L    Global_STR_PREVUEC_FONT
     DC.W    25      ; Size 25 font
     DC.B    $40     ; Style
@@ -216,7 +217,7 @@ Global_STRUCT_TEXTATTR_PREVUEC_FONT:
 
 Global_STR_H26F_FONT:
     NStr    "h26f.font"             ; 10 bytes
-Global_STRUCT_TEXTATTR_H26F_FONT:
+_Global_STRUCT_TEXTATTR_H26F_FONT:
     DC.L    Global_STR_H26F_FONT
     DC.W    26      ; Size 26 font
     DC.B    0       ; Style: 0
@@ -224,7 +225,7 @@ Global_STRUCT_TEXTATTR_H26F_FONT:
 
 Global_STR_TOPAZ_FONT:
     NStr    "topaz.font"            ; 12 bytes
-Global_STRUCT_TEXTATTR_TOPAZ_FONT:
+_Global_STRUCT_TEXTATTR_TOPAZ_FONT:
     DC.L    Global_STR_TOPAZ_FONT
     DC.W    8      ; Size 8 font
     DC.B    0      ; Style: 0
@@ -232,7 +233,7 @@ Global_STRUCT_TEXTATTR_TOPAZ_FONT:
 
 Global_STR_PREVUE_FONT:
     NStr    "Prevue.font"           ; 12 bytes
-Global_STRUCT_TEXTATTR_PREVUE_FONT:
+_Global_STRUCT_TEXTATTR_PREVUE_FONT:
     DC.L    Global_STR_PREVUE_FONT
     DC.W    13      ; Size 13 font
     DC.B    $40     ; Style
@@ -240,6 +241,10 @@ Global_STRUCT_TEXTATTR_PREVUE_FONT:
 
 _Global_HANDLE_PREVUE_FONT:
     DC.L    0
+; `_DiskfontBase` is the name the SAS/C diskfont pragma qualifies its calls
+; with, the same arrangement _GfxBase and _DOSBase already use. A label emits
+; no bytes, so both gates stay green.
+_DiskfontBase:
 _Global_REF_DISKFONT_LIBRARY:
     DC.L    0
 _Global_REF_DOS_LIBRARY:
@@ -256,13 +261,13 @@ _ESQ_HighlightMsgPort:
 _ESQ_HighlightReplyPort:
     DC.L    0
 ;------------------------------------------------------------------------------
-; SYM: ESQ_ProcessWindowPtrBackup   (startup/restored process window pointer)
+; SYM: _ESQ_ProcessWindowPtrBackup   (startup/restored process window pointer)
 ; TYPE: pointer
 ; PURPOSE: Saves current process `pr_WindowPtr` before ESQ sets it to `-1`.
 ; USED BY: ESQ startup task init, CLEANUP shutdown restore
 ; NOTES: Restored only when non-null.
 ;------------------------------------------------------------------------------
-ESQ_ProcessWindowPtrBackup:
+_ESQ_ProcessWindowPtrBackup:
     DC.L    0
 ; ED_DiagVinModeChar_Length moved to src/data-lengths.s (plain constant, value 1)
 
@@ -291,9 +296,9 @@ _ESQ_TAG_36:
 ;------------------------------------------------------------------------------
 _ED_DiagScrollSpeedChar:
     DC.B    "6"
-    assert ED_DiagScrollSpeedChar_Length==ESQ_DefaultNoFlagChar-_ED_DiagScrollSpeedChar,"ED_DiagScrollSpeedChar_Length in data-lengths.s is out of sync with the data layout"
+    assert ED_DiagScrollSpeedChar_Length==_ESQ_DefaultNoFlagChar-_ED_DiagScrollSpeedChar,"ED_DiagScrollSpeedChar_Length in data-lengths.s is out of sync with the data layout"
 
-ESQ_DefaultNoFlagChar:
+_ESQ_DefaultNoFlagChar:
     DC.B    "N"
 ;------------------------------------------------------------------------------
 ; SYM: CLOCK_MinuteEventBaseMinute/CLOCK_MinuteEventBaseOffset   (minute trigger seeds)
@@ -319,9 +324,9 @@ _ESQ_STR_Y:
     assert ESQ_STR_Y_Length==ESQ_ReservedFlagChar0-_ESQ_STR_Y,"ESQ_STR_Y_Length in data-lengths.s is out of sync with the data layout"
 ESQ_ReservedFlagChar0:
     DC.B    "N"
-ESQ_AlertType4ModeFlagChar:
+_ESQ_AlertType4ModeFlagChar:
     DC.B    "N"
-ESQ_AlertType235ModeFlagChar:
+_ESQ_AlertType235ModeFlagChar:
     DC.B    "N"
     DC.B    "YA"
 ;------------------------------------------------------------------------------
@@ -424,13 +429,13 @@ GCOMMAND_PresetFallbackTemplateTable:
     DC.L    $05000003,$00080007,$00070007,$07000c00
     DC.L    $0c000c00,$0c0c0c00,$0000000c
 ;------------------------------------------------------------------------------
-; SYM: ESQ_ShutdownRequestedFlag/_ESQ_MainLoopUiTickEnabledFlag   (main-loop runtime gates)
+; SYM: _ESQ_ShutdownRequestedFlag/_ESQ_MainLoopUiTickEnabledFlag   (main-loop runtime gates)
 ; TYPE: u16/u16
 ; PURPOSE: Shutdown request latch and UI-tick enable gate for the main loop.
-; USED BY: ESQ_MainInitAndRun, _ESQFUNC_ServiceUiTickIfRunning, ED menu handlers
+; USED BY: _ESQ_MainInitAndRun, _ESQFUNC_ServiceUiTickIfRunning, ED menu handlers
 ; NOTES: Shutdown flag exits the main idle loop when non-zero.
 ;------------------------------------------------------------------------------
-ESQ_ShutdownRequestedFlag:
+_ESQ_ShutdownRequestedFlag:
     DC.W    0
 _ESQ_MainLoopUiTickEnabledFlag:
     DC.W    0
@@ -484,13 +489,13 @@ _Global_LONG_ROM_VERSION_CHECK:
 _ESQDISP_StatusIndicatorDeferredApplyFlag:
     DC.B    0
 ;------------------------------------------------------------------------------
-; SYM: CLEANUP_DiagOverlayAutoRefreshFlag   (diagnostic overlay auto-refresh enable)
+; SYM: _CLEANUP_DiagOverlayAutoRefreshFlag   (diagnostic overlay auto-refresh enable)
 ; TYPE: u8
 ; PURPOSE: Enables periodic diagnostics redraw from alert-processing tick paths.
-; USED BY: ED2 diagnostic menu action, CLEANUP_ProcessAlerts
+; USED BY: ED2 diagnostic menu action, _CLEANUP_ProcessAlerts
 ; NOTES: Toggled by diagnostics menu command.
 ;------------------------------------------------------------------------------
-CLEANUP_DiagOverlayAutoRefreshFlag:
+_CLEANUP_DiagOverlayAutoRefreshFlag:
     DC.B    0
 ;------------------------------------------------------------------------------
 ; SYM: _ED_DiagAvailMemMask   (diagnostics available-memory mask)
@@ -512,7 +517,7 @@ _ED_DiagAvailMemMask:
 ED_DiagAvailMemPresetBits:
     DC.B    0
 ;------------------------------------------------------------------------------
-; SYM: _ESQDISP_GridMessagePumpBlockFlag/SCRIPT_StatusRefreshHoldFlag/TEXTDISP_TickSuspendFlag/ESQPARS_PersistOnNextBoxOffFlag
+; SYM: _ESQDISP_GridMessagePumpBlockFlag/_SCRIPT_StatusRefreshHoldFlag/TEXTDISP_TickSuspendFlag/ESQPARS_PersistOnNextBoxOffFlag
 ; TYPE: u16/u16/u16/u16
 ; PURPOSE: Misc runtime gates for grid message pump, script refresh hold, text tick suspend, and deferred boxoff persist.
 ; USED BY: _ESQDISP_ProcessGridMessagesIfIdle, SCRIPT_UpdateCtrlStateMachine, TEXTDISP_TickDisplayState, ESQPARS command parser
@@ -520,11 +525,11 @@ ED_DiagAvailMemPresetBits:
 ;------------------------------------------------------------------------------
 _ESQDISP_GridMessagePumpBlockFlag:
     DC.W    0
-SCRIPT_StatusRefreshHoldFlag:
+_SCRIPT_StatusRefreshHoldFlag:
     DC.W    0
 TEXTDISP_TickSuspendFlag:
     DC.W    0
-Global_WORD_SELECT_CODE_IS_RAVESC:
+_Global_WORD_SELECT_CODE_IS_RAVESC:
     DC.W    0
 ESQPARS_PersistOnNextBoxOffFlag:
     DC.W    0
@@ -532,81 +537,81 @@ _HAS_REQUESTED_FAST_MEMORY:
     DC.W    0
 _IS_COMPATIBLE_VIDEO_CHIP:
     DC.L    1
-Global_STR_RAVESC:
+_Global_STR_RAVESC:
     NStr    "RAVESC"
-Global_STR_COPY_NIL_ASSIGN_RAM:
+_Global_STR_COPY_NIL_ASSIGN_RAM:
     NStr    "copy >NIL: C:assign ram:"
-Global_STR_GRAPHICS_LIBRARY:
+_Global_STR_GRAPHICS_LIBRARY:
     NStr    "graphics.library"
-Global_STR_DISKFONT_LIBRARY:
+_Global_STR_DISKFONT_LIBRARY:
     NStr    "diskfont.library"
-Global_STR_DOS_LIBRARY:
+_Global_STR_DOS_LIBRARY:
     NStr    "dos.library"
-Global_STR_INTUITION_LIBRARY:
+_Global_STR_INTUITION_LIBRARY:
     NStr    "intuition.library"
-Global_STR_UTILITY_LIBRARY:
+_Global_STR_UTILITY_LIBRARY:
     NStr    "utility.library"
-Global_STR_BATTCLOCK_RESOURCE:
+_Global_STR_BATTCLOCK_RESOURCE:
     NStr    "battclock.resource"
-Global_STR_ESQ_C_1:
+_Global_STR_ESQ_C_1:
     NStr    "ESQ.c"
-Global_STR_ESQ_C_2:
+_Global_STR_ESQ_C_2:
     NStr    "ESQ.c"
-Global_STR_ESQ_C_3:
+_Global_STR_ESQ_C_3:
     NStr    "ESQ.c"
-Global_STR_ESQ_C_4:
+_Global_STR_ESQ_C_4:
     NStr    "ESQ.c"
-Global_STR_ESQ_C_5:
+_Global_STR_ESQ_C_5:
     NStr    "ESQ.c"
-Global_STR_CART:
+_Global_STR_CART:
     NStr    "CART"
-Global_STR_ESQ_C_6:
+_Global_STR_ESQ_C_6:
     NStr    "ESQ.c"
-Global_STR_SERIAL_READ:
+_Global_STR_SERIAL_READ:
     NStr    "Serial.Read"
-Global_STR_SERIAL_DEVICE:
+_Global_STR_SERIAL_DEVICE:
     NStr    "serial.device"
-Global_STR_ESQ_C_7:
+_Global_STR_ESQ_C_7:
     NStr    "ESQ.c"
-Global_STR_ESQ_C_8:
+_Global_STR_ESQ_C_8:
     NStr    "ESQ.c"
-Global_STR_ESQ_C_9:
+_Global_STR_ESQ_C_9:
     NStr    "ESQ.c"
-Global_STR_ESQ_C_10:
+_Global_STR_ESQ_C_10:
     NStr    "ESQ.c"
-Global_STR_ESQ_C_11:
+_Global_STR_ESQ_C_11:
     NStr    "ESQ.c"
-ESQ_STR_NO_DF1_PRESENT:
+_ESQ_STR_NO_DF1_PRESENT:
     NStr    "no df1 present"
-Global_STR_GUIDE_START_VERSION_AND_BUILD:
+_Global_STR_GUIDE_START_VERSION_AND_BUILD:
     NStr    "Ver %s.%ld Build %ld %s"
-Global_STR_MAJOR_MINOR_VERSION:
+_Global_STR_MAJOR_MINOR_VERSION:
     NStr    "9.0"   ; Major/minor version string
-ESQ_STR_38_Spaces:
+_ESQ_STR_38_Spaces:
     NStr    "                                       "
-Global_STR_DF0_GRADIENT_INI_2:
+_Global_STR_DF0_GRADIENT_INI_2:
     NStr    "df0:Gradient.ini"
-ESQ_STR_SystemInitializing:
+_ESQ_STR_SystemInitializing:
     NStr    "System Initializing"
-ESQ_STR_PleaseStandByEllipsis:
+_ESQ_STR_PleaseStandByEllipsis:
     NStr    "Please Stand By..."
-ESQ_STR_AttentionSystemEngineer:
+_ESQ_STR_AttentionSystemEngineer:
     NStr    "ATTENTION SYSTEM ENGINEER!"
-ESQ_STR_ReportErrorCodeEr011ToTVGuide:
+_ESQ_STR_ReportErrorCodeEr011ToTVGuide:
     NStr    "Report Error Code ER011 to TV Guide Technical Services."
-ESQ_STR_ReportErrorCodeER012ToTVGuide:
+_ESQ_STR_ReportErrorCodeER012ToTVGuide:
     NStr    "Report Error Code ER012 to TV Guide Technical Services."
-Global_STR_DF0_DEFAULT_INI_1:
+_Global_STR_DF0_DEFAULT_INI_1:
     NStr    "df0:default.ini"
-Global_STR_DF0_BRUSH_INI_1:
+_Global_STR_DF0_BRUSH_INI_1:
     NStr    "df0:brush.ini"
-ESQ_STR_DT:
+_ESQ_STR_DT:
     NStr    "DT"
-ESQ_STR_DITHER:
+_ESQ_STR_DITHER:
     NStr    "DITHER"
-Global_STR_DF0_BANNER_INI_1:
+_Global_STR_DF0_BANNER_INI_1:
     NStr    "df0:banner.ini"
-ESQ_TAG_GRANADA:
+_ESQ_TAG_GRANADA:
     NStr    "GRANADA"
 _Global_LONG_BUILD_NUMBER:
     DC.L    21
@@ -697,7 +702,7 @@ ESQ_BannerWorkRasterPtrA_HiWord:
     DC.L    $000000e2
 ESQ_BannerWorkRasterPtrA_LoWord:
     DC.L    $00000180
-ESQ_BannerPaletteWordsA:
+_ESQ_BannerPaletteWordsA:
     DC.L    $00030182,$00030184,$03330186,$0cc00188
     DC.L    $0512018a,$016a018c,$0555018e
     DC.W    $0003
@@ -720,7 +725,7 @@ ESQ_BannerPlane2SnapshotScratchPtrLoWord:
 ; SYM: ESQ_BannerColorSweepProgramA..ESQ_CopperEffectSwitchWaitWordA   (banner copper color-sweep cluster A ??)
 ; TYPE: u32/u16 mixed command templates
 ; PURPOSE: Runtime-patched copper command words used by banner color sweep (A path).
-; USED BY: ESQSHARED4_InitializeBannerCopperSystem, ESQSHARED4_ApplyBannerColorStep
+; USED BY: _ESQSHARED4_InitializeBannerCopperSystem, ESQSHARED4_ApplyBannerColorStep
 ; NOTES:
 ;   Includes wait rows, color register writes, and pointer-word placeholders.
 ;   Individual entries remain intentionally anonymous until per-word behavior is
@@ -1145,7 +1150,7 @@ _ESQ_CopperListBannerB:
 ; SYM: ESQ_BannerWorkRasterPtrB_HiWord..ESQ_BannerWorkRasterPtrTailB_HiWord   (banner copper color-sweep cluster B ??)
 ; TYPE: u32/u16 mixed command templates
 ; PURPOSE: Runtime-patched copper command words used by banner color sweep (B path).
-; USED BY: ESQSHARED4_InitializeBannerCopperSystem, ESQSHARED4_ApplyBannerColorStep
+; USED BY: _ESQSHARED4_InitializeBannerCopperSystem, ESQSHARED4_ApplyBannerColorStep
 ; NOTES:
 ;   Companion set to cluster A above; many entries are structural mirrors.
 ;   Retain anonymous per-entry labels until row/register mapping is fully traced.
@@ -1154,7 +1159,7 @@ ESQ_BannerWorkRasterPtrB_HiWord:
     DC.L    $000000e2
 ESQ_BannerWorkRasterPtrB_LoWord:
     DC.L    $00000180
-ESQ_BannerPaletteWordsB:
+_ESQ_BannerPaletteWordsB:
     DC.L    $00030182,$00030184,$03330186,$0cc00188
     DC.L    $0512018a,$016a018c,$0555018e
     DC.W    $0003

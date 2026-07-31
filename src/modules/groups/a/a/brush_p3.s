@@ -23,11 +23,11 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   _BITMAP_ProcessIlbmImage, _ESQ_PackBitsDecode, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, _GROUP_AG_JMPTBL_MATH_DivS32, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
+;   _BITMAP_ProcessIlbmImage, _ESQ_PackBitsDecode, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, _GROUP_AG_JMPTBL_MATH_DivS32, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
 ; READS:
-;   AbsExecBase, BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_DOS_LIBRARY_2, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_10, Global_STR_BRUSH_C_11, Global_STR_BRUSH_C_12, Global_STR_BRUSH_C_13, Global_STR_BRUSH_C_14, Global_STR_BRUSH_C_15, Global_STR_BRUSH_C_16, BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
+;   AbsExecBase, _BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_DOS_LIBRARY_2, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_10, Global_STR_BRUSH_C_11, Global_STR_BRUSH_C_12, Global_STR_BRUSH_C_13, Global_STR_BRUSH_C_14, Global_STR_BRUSH_C_15, Global_STR_BRUSH_C_16, BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
-;   BRUSH_PendingAlertCode, _BRUSH_SnapshotDepth, _BRUSH_SnapshotWidth
+;   _BRUSH_PendingAlertCode, _BRUSH_SnapshotDepth, _BRUSH_SnapshotWidth
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -49,7 +49,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  A0,-50(A5)
     MOVE.L  A0,-46(A5)
     MOVE.L  A0,-16(A5)
-    JSR     GROUP_AG_JMPTBL_DOS_OpenFileWithMode(PC)
+    JSR     _GROUP_AG_JMPTBL_DOS_OpenFileWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -159,7 +159,7 @@ BRUSH_LoadBrushAsset:
     MOVEQ   #3,D1
 
 .loadasset_capture_alert_snapshot:
-    MOVE.L  D1,BRUSH_PendingAlertCode      ; remember which cleanup alert to trigger
+    MOVE.L  D1,_BRUSH_PendingAlertCode      ; remember which cleanup alert to trigger
     MOVEQ   #0,D0
     MOVE.W  128(A3),D0
     MOVE.L  D0,_BRUSH_SnapshotWidth
@@ -333,11 +333,11 @@ BRUSH_LoadBrushAsset:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
-    TST.L   BRUSH_PendingAlertCode
+    TST.L   _BRUSH_PendingAlertCode
     BNE.S   .loadasset_alert_already_set
 
     MOVEQ   #1,D0
-    MOVE.L  D0,BRUSH_PendingAlertCode      ; flag that cleanup should warn about oversized brushes
+    MOVE.L  D0,_BRUSH_PendingAlertCode      ; flag that cleanup should warn about oversized brushes
     MOVEA.L -16(A5),A0
     LEA     _BRUSH_SnapshotHeader,A1
 
@@ -585,9 +585,9 @@ BRUSH_LoadBrushAsset:
 ; CALLS:
 ;   GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit
 ; READS:
-;   AbsExecBase, BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_17, Global_STR_BRUSH_C_18, MEMF_CLEAR, MEMF_PUBLIC
+;   AbsExecBase, _BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_17, Global_STR_BRUSH_C_18, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
-;   BRUSH_PendingAlertCode
+;   _BRUSH_PendingAlertCode
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -748,11 +748,11 @@ BRUSH_CloneBrushRecord:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
-    TST.L   BRUSH_PendingAlertCode
+    TST.L   _BRUSH_PendingAlertCode
     BNE.S   .clone_alert_already_set
 
     MOVEQ   #1,D0
-    MOVE.L  D0,BRUSH_PendingAlertCode      ; capture snapshot so cleanup can restore UI hints
+    MOVE.L  D0,_BRUSH_PendingAlertCode      ; capture snapshot so cleanup can restore UI hints
     MOVEA.L -8(A5),A0
     LEA     _BRUSH_SnapshotHeader,A1
 

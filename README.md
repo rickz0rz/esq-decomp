@@ -16,22 +16,22 @@ that broke it.
 Both byte gates pass on the current tree.
 
 ```
-assembly converted to C   30.9%   [############............................]
-                                  59,708 of 193,516 application bytes
+assembly converted to C   49.0%   [####################....................]
+                                  94,992 of 193,864 application bytes
 ```
 
 Count the bytes, not the functions. The easy targets are small, so a function
 count reads higher than the real progress. By function count the same work is
-53%, which is nearly twice the honest number.
+59%, which flatters it.
 
 Run `python3 tools/coverage.py` to regenerate every number in this section.
 
 | measure | value |
 |---|---|
-| application functions | 718 (193,516 bytes) |
-| restored to C | 384 (59,708 bytes, 30.9% by byte, 53% by count) |
-| byte-exact restorations | 22 |
-| source modules | 748, coalesced into 385 link units |
+| application functions | 725 (193,864 bytes) |
+| restored to C | 425 (94,992 bytes, 49.0% by byte, 59% by count) |
+| byte-exact restorations | 24 |
+| source modules | 788, coalesced into 401 link units |
 | linked size | CODE 211,348 bytes, DATA 55,820 bytes |
 
 A restoration is **exact** when the compiler emits the original bytes. It is
@@ -102,7 +102,7 @@ builds cannot disagree about content or ordering.
 Hunk objects store section sizes in longwords. An object whose content is 2
 modulo 4 bytes gets padded, which shifts everything after it. `gen_units.py`
 therefore joins consecutive modules until each unit lands on a 4-byte boundary.
-That is why 725 source modules become 377 link units. You can still edit any
+That is why 788 source modules become 401 link units. You can still edit any
 module on its own.
 
 ## The C phase
@@ -129,14 +129,20 @@ python3 tools/verify_restorations.py
 /tmp/.capvenv/bin/python tools/a6_audit.py
 ```
 
-Four manifests exist, each for a different question:
+Five manifests exist, each for a different question:
 
 | manifest | entries | what it is for |
 |---|---:|---|
 | `replacements.txt` | 22 | byte-exact only, so the build must stay content-identical |
-| `replacements-runnable.txt` | 272 | the largest set that boots and passes the menu sweep |
-| `replacements-all.txt` | 317 | every restoration, judged by running it |
+| `replacements-runnable.txt` | 278 | proven on all six ESC-menu items |
+| `replacements-tranche.txt` | 293 | the largest set proven without `ESQ_FARCALLS` |
+| `replacements-all.txt` | 391 | every restoration, judged by running it |
 | `replacements-canary.txt` | 20 | a deliberate mismatch, to prove the gate can fail |
+
+`replacements-all.txt` needs `ESQ_FARCALLS=1`. That flag widens the assembly's
+own 16-bit PC-relative references, which used to cap how much C the program
+could hold. It must stay off for `replacements.txt`, and both byte-exact gates
+run without it.
 
 `build-split.sh` reports DIFFERS for any build that contains a behavioural
 restoration. That is expected. The size growth must equal the sum of the
@@ -152,10 +158,17 @@ tools/probe_esq.sh     <binary> <label> [secs]              # does it boot
 tools/soak_esq.sh      <binary> <label> [total] [gap]       # minutes, plus a freeze check
 tools/menusweep_esq.sh <binary> <label> [items] [reps]      # all six ESC-menu items
 tools/keyprobe_esq.sh  <binary> <label> <key:wait>...       # one boot, arbitrary keys
+python3 tools/framecolor.py <label-a> <label-b>             # compare two runs by colour
 ```
 
 ESQ redraws a clock every second. Identical consecutive frames therefore mean
 the display stopped, which is a hang the boot probe cannot see.
+
+A build can animate correctly and still draw the wrong picture, because a wrong
+constant changes a colour without stopping the display. Soak the known-good
+binary under its own label, then run `framecolor.py` against the candidate. Read
+the ranges it prints, not the medians: overlapping ranges are the display cycle,
+and a disjoint range is a real difference.
 
 Read the harness notes in `AGENTS.md` before you trust a result. A PASS is
 reliable and a FAIL is not, because a busy host can miss the marker.
@@ -163,6 +176,8 @@ reliable and a FAIL is not, because a busy host can miss the marker.
 ## Documentation
 
 - `AGENTS.md` — the working agreement, and the first thing to read
+- `docs/tranche-target.md` — the current restoration target and the loop to follow
+- `docs/blocked-shapes.md` — what cannot be restored, and what each class would take
 - `docs/reference-binary.md` — what the reference hash is and is not
 - `docs/compiler-version.md` — known codegen divergences and the compiler hunt
 - `docs/*-format.md` — the on-disk data formats ESQ reads

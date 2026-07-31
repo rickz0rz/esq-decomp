@@ -1,4 +1,4 @@
-    XDEF    CLEANUP_BuildAlignedStatusLine
+    XDEF    _CLEANUP_BuildAlignedStatusLine
     XDEF    CLEANUP_TestEntryFlagYAndBit1
     XDEF    CLEANUP_UpdateEntryFlagBytes
 
@@ -181,7 +181,7 @@ CLEANUP_UpdateEntryFlagBytes:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_BuildAlignedStatusLine   (BuildAlignedStatusLineuncertain)
+; FUNC: _CLEANUP_BuildAlignedStatusLine   (BuildAlignedStatusLineuncertain)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -197,10 +197,10 @@ CLEANUP_UpdateEntryFlagBytes:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode, CLEANUP_TestEntryFlagYAndBit1, COI_GetAnimFieldPointerByMode,
+;   _GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode, CLEANUP_TestEntryFlagYAndBit1, COI_GetAnimFieldPointerByMode,
 ;   _GROUP_AE_JMPTBL_WDISP_SPrintf, _GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
 ; READS:
-;   CLOCK_FMT_WRAP_CHAR_STRING_CHAR, CLOCK_STR_DOUBLE_SPACE, CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY, _WDISP_CharClassTable, TEXTDISP_CenterAlignToken
+;   CLOCK_FMT_WRAP_CHAR_STRING_CHAR, CLOCK_STR_DOUBLE_SPACE, CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY, _WDISP_CharClassTable, _TEXTDISP_CenterAlignToken
 ; WRITES:
 ;   CLEANUP_AlignedInsetNibblePrimary, CLEANUP_AlignedInsetNibbleSecondary, CLOCK_AlignedInsetRenderGateFlag
 ; DESC:
@@ -209,7 +209,7 @@ CLEANUP_UpdateEntryFlagBytes:
 ; NOTES:
 ;   - Uses COI_GetAnimFieldPointerByMode to resolve entry records and _WDISP_CharClassTable for attribute bits.
 ;------------------------------------------------------------------------------
-CLEANUP_BuildAlignedStatusLine:
+_CLEANUP_BuildAlignedStatusLine:
     LINK.W  A5,#-32
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -231,7 +231,7 @@ CLEANUP_BuildAlignedStatusLine:
 .format_selected:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
+    JSR     _GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -270,7 +270,7 @@ CLEANUP_BuildAlignedStatusLine:
     TST.L   28(A5)
     BEQ.S   .append_default_prefix
 
-    PEA     TEXTDISP_CenterAlignToken
+    PEA     _TEXTDISP_CenterAlignToken
     MOVE.L  A3,-(A7)
     JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 

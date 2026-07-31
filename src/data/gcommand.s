@@ -23,7 +23,7 @@
     XDEF    GCOMMAND_PresetSeedPackedWordTable
     XDEF    _GCOMMAND_PresetWorkResetPendingFlag
     XDEF    GCOMMAND_BannerRebuildPendingFlag
-    XDEF    GCOMMAND_BannerRowFallbackOnFirstRowFlag
+    XDEF    _GCOMMAND_BannerRowFallbackOnFirstRowFlag
     XDEF    _GCOMMAND_ActiveHighlightMsgPtr
     XDEF    GCOMMAND_BannerRowByteOffsetResetValue
     XDEF    GCOMMAND_BannerPhaseIndexCurrent
@@ -346,15 +346,15 @@ _GCOMMAND_PresetWorkResetPendingFlag:
 GCOMMAND_BannerRebuildPendingFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_BannerRowFallbackOnFirstRowFlag   (first-row fallback toggle)
+; SYM: _GCOMMAND_BannerRowFallbackOnFirstRowFlag   (first-row fallback toggle)
 ; TYPE: u16 flag
 ; PURPOSE: Toggles alternate row-0 write behavior in banner-row builder.
-; USED BY: GCOMMAND_BuildBannerRow, ED2 command toggle path
+; USED BY: _GCOMMAND_BuildBannerRow, ED2 command toggle path
 ; NOTES:
 ;   When set and computed row index <= 0, builder follows `.write_defaults` path.
 ;   Exact visual intent remains uncertain (`??`) but behavior is trace-confirmed.
 ;------------------------------------------------------------------------------
-GCOMMAND_BannerRowFallbackOnFirstRowFlag:
+_GCOMMAND_BannerRowFallbackOnFirstRowFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _GCOMMAND_ActiveHighlightMsgPtr   (active highlight message node)
@@ -381,10 +381,10 @@ GCOMMAND_BannerRowByteOffsetResetValue:
 ; SYM: GCOMMAND_BannerPhaseIndexCurrent   (banner phase/ring index)
 ; TYPE: u32 scalar
 ; PURPOSE: Tracks the current phase index for banner row generation.
-; USED BY: _GCOMMAND_BuildBannerTables, GCOMMAND_TickHighlightState, GCOMMAND_RefreshBannerTables, GCOMMAND_BuildBannerRow
+; USED BY: _GCOMMAND_BuildBannerTables, GCOMMAND_TickHighlightState, GCOMMAND_RefreshBannerTables, _GCOMMAND_BuildBannerRow
 ; NOTES:
 ;   Increments once per highlight tick and wraps at 98 (`0..97`).
-;   Passed as the `baseRowIndex` argument into GCOMMAND_BuildBannerRow.
+;   Passed as the `baseRowIndex` argument into _GCOMMAND_BuildBannerRow.
 ;------------------------------------------------------------------------------
 GCOMMAND_BannerPhaseIndexCurrent:
     DS.L    1

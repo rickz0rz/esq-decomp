@@ -1,5 +1,5 @@
     XDEF    TEXTDISP_SelectBestMatchFromList
-    XDEF    TEXTDISP_UpdateChannelRangeFlags
+    XDEF    _TEXTDISP_UpdateChannelRangeFlags
 
 
 
@@ -19,7 +19,7 @@
 ; READS:
 ;   _TEXTDISP_ActiveGroupId, _TEXTDISP_PrimaryTitlePtrTable/2237, _TEXTDISP_PrimaryGroupCode/222D, _CLOCK_HalfHourSlotIndex, _TEXTDISP_CurrentMatchIndex, _TEXTDISP_CandidateIndexList
 ; WRITES:
-;   _TEXTDISP_BannerFallbackEntryIndex-2379, _TEXTDISP_BannerCharFallback, TEXTDISP_BannerFallbackValidFlag, _TEXTDISP_BannerCharSelected
+;   _TEXTDISP_BannerFallbackEntryIndex-2379, _TEXTDISP_BannerCharFallback, _TEXTDISP_BannerFallbackValidFlag, _TEXTDISP_BannerCharSelected
 ; DESC:
 ;   Walks candidate indices, evaluates timing/channel constraints, and updates
 ;   global selection state for text display.
@@ -37,8 +37,8 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.W  #$5a1,-20(A5)
     MOVE.W  #$fa5f,-22(A5)
     MOVEQ   #0,D0
-    MOVE.B  D0,TEXTDISP_BannerFallbackValidFlag
-    MOVE.B  D0,TEXTDISP_BannerSelectedValidFlag
+    MOVE.B  D0,_TEXTDISP_BannerFallbackValidFlag
+    MOVE.B  D0,_TEXTDISP_BannerSelectedValidFlag
     MOVE.B  #$64,_TEXTDISP_BannerCharSelected
     LEA     TEXTDISP_Tag_SPT_Select,A0
     MOVEA.L A2,A1
@@ -90,7 +90,7 @@ TEXTDISP_SelectBestMatchFromList:
 .channel_enabled:
     MOVE.L  D6,D0
     EXT.L   D0
-    LEA     Global_STR_TEXTDISP_C_3,A0
+    LEA     _Global_STR_TEXTDISP_C_3,A0
     ADDA.L  D0,A0
     MOVE.W  _CLOCK_CurrentDayOfWeekIndex,D0
     EXT.L   D0
@@ -225,7 +225,7 @@ TEXTDISP_SelectBestMatchFromList:
     CMP.W   D1,D0
     BGE.S   .mark_found_primary
 
-    MOVE.B  #$1,TEXTDISP_BannerFallbackValidFlag
+    MOVE.B  #$1,_TEXTDISP_BannerFallbackValidFlag
     BRA.S   .compute_time_secondary
 
 .mark_found_primary:
@@ -336,13 +336,13 @@ TEXTDISP_SelectBestMatchFromList:
     BLS.S   .check_best_match
 
     MOVEQ   #1,D1
-    MOVE.B  D1,TEXTDISP_BannerSelectedValidFlag
+    MOVE.B  D1,_TEXTDISP_BannerSelectedValidFlag
     MOVE.W  -16(A5),D3
     MOVE.B  D3,_TEXTDISP_BannerCharSelected
     MOVE.W  _TEXTDISP_CurrentMatchIndex,D4
     MOVE.B  D4,_TEXTDISP_BannerSelectedEntryIndex
     MOVE.B  -23(A5),D2
-    MOVE.B  D2,TEXTDISP_BannerSelectedIsSpecialFlag
+    MOVE.B  D2,_TEXTDISP_BannerSelectedIsSpecialFlag
 
 .check_best_match:
     TST.W   D0
@@ -352,18 +352,18 @@ TEXTDISP_SelectBestMatchFromList:
     BGE.S   .check_alt_match
 
     MOVEQ   #1,D1
-    MOVE.B  D1,TEXTDISP_BannerFallbackValidFlag
+    MOVE.B  D1,_TEXTDISP_BannerFallbackValidFlag
     MOVE.W  -16(A5),D1
     MOVE.B  D1,_TEXTDISP_BannerCharFallback
     MOVE.W  _TEXTDISP_CurrentMatchIndex,D2
     MOVE.B  D2,_TEXTDISP_BannerFallbackEntryIndex
     MOVE.B  -23(A5),D3
-    MOVE.B  D3,TEXTDISP_BannerFallbackIsSpecialFlag
+    MOVE.B  D3,_TEXTDISP_BannerFallbackIsSpecialFlag
     MOVE.W  D0,-20(A5)
     BRA.W   .update_last_seen
 
 .check_alt_match:
-    TST.B   TEXTDISP_BannerSelectedValidFlag
+    TST.B   _TEXTDISP_BannerSelectedValidFlag
     BNE.S   .check_fallback_match
 
     TST.W   D0
@@ -388,10 +388,10 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.W  _TEXTDISP_CurrentMatchIndex,D3
     MOVE.B  D3,_TEXTDISP_BannerSelectedEntryIndex
     MOVE.B  -23(A5),D4
-    MOVE.B  D4,TEXTDISP_BannerSelectedIsSpecialFlag
+    MOVE.B  D4,_TEXTDISP_BannerSelectedIsSpecialFlag
 
 .check_fallback_match:
-    TST.B   TEXTDISP_BannerFallbackValidFlag
+    TST.B   _TEXTDISP_BannerFallbackValidFlag
     BNE.S   .update_last_seen
 
     TST.W   D0
@@ -404,7 +404,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.B  D1,_TEXTDISP_BannerCharFallback
     MOVE.W  _TEXTDISP_CurrentMatchIndex,D2
     MOVE.B  D2,_TEXTDISP_BannerFallbackEntryIndex
-    MOVE.B  -23(A5),TEXTDISP_BannerFallbackIsSpecialFlag
+    MOVE.B  -23(A5),_TEXTDISP_BannerFallbackIsSpecialFlag
     MOVE.W  D0,-22(A5)
 
 .update_last_seen:
@@ -549,7 +549,7 @@ TEXTDISP_SelectBestMatchFromList:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_UpdateChannelRangeFlags   (Update channel range flags)
+; FUNC: _TEXTDISP_UpdateChannelRangeFlags   (Update channel range flags)
 ; ARGS:
 ;   none
 ; RET:
@@ -567,7 +567,7 @@ TEXTDISP_SelectBestMatchFromList:
 ; NOTES:
 ;   Falls back to defaults when channel is out of range.
 ;------------------------------------------------------------------------------
-TEXTDISP_UpdateChannelRangeFlags:
+_TEXTDISP_UpdateChannelRangeFlags:
     LINK.W  A5,#-8
     MOVEM.L D2/D7,-(A7)
     MOVE.W  _TEXTDISP_ChannelSourceMode,D0
@@ -610,7 +610,7 @@ TEXTDISP_UpdateChannelRangeFlags:
 .channel_enabled:
     MOVE.L  D7,D0
     EXT.L   D0
-    LEA     Global_STR_TEXTDISP_C_3,A0
+    LEA     _Global_STR_TEXTDISP_C_3,A0
     ADDA.L  D0,A0
     MOVE.W  _CLOCK_CurrentDayOfWeekIndex,D0
     EXT.L   D0

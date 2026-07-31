@@ -14,7 +14,7 @@
 ; CLOBBERS:
 ;   D0-D7, A3
 ; CALLS:
-;   BEVEL_DrawBeveledFrame, _BEVEL_DrawHorizontalBevel
+;   _BEVEL_DrawBeveledFrame, _BEVEL_DrawHorizontalBevel
 ; READS:
 ;   (none)
 ; WRITES:
@@ -22,7 +22,7 @@
 ; DESC:
 ;   Draws a beveled frame plus a top edge and right-side accent.
 ; NOTES:
-;   Composes BEVEL_DrawBeveledFrame + _BEVEL_DrawHorizontalBevel helpers.
+;   Composes _BEVEL_DrawBeveledFrame + _BEVEL_DrawHorizontalBevel helpers.
 ;------------------------------------------------------------------------------
 _BEVEL_DrawBevelFrameWithTopRight:
     MOVEM.L D4-D7/A3,-(A7)
@@ -37,7 +37,7 @@ _BEVEL_DrawBevelFrameWithTopRight:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   BEVEL_DrawBeveledFrame
+    BSR.W   _BEVEL_DrawBeveledFrame
 
     MOVE.L  D4,(A7)
     MOVE.L  D5,-(A7)

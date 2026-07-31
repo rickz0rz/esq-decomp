@@ -258,7 +258,7 @@ ESQ_ParseCommandLineAndRun:
 ; FUNC: UNKNOWN29_JMPTBL_ESQ_MainInitAndRun   (JumpStub_ESQ_MainInitAndRun)
 ;------------------------------------------------------------------------------
 UNKNOWN29_JMPTBL_ESQ_MainInitAndRun:
-    JMP     ESQ_MainInitAndRun
+    JMP     _ESQ_MainInitAndRun
 
 ;!======
 

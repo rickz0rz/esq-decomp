@@ -1,8 +1,8 @@
-    XDEF    COI_WriteOiDataFile
+    XDEF    _COI_WriteOiDataFile
 
 
 ;------------------------------------------------------------------------------
-; FUNC: COI_WriteOiDataFile   (WriteOiDataFileuncertain)
+; FUNC: _COI_WriteOiDataFile   (WriteOiDataFileuncertain)
 ; ARGS:
 ;   stack +7: arg_1 (via 11(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -32,7 +32,7 @@
 ;   Uses wildcard name matching to skip duplicate entries, and writes $1A as an
 ;   EOF marker at the end of the file.
 ;------------------------------------------------------------------------------
-COI_WriteOiDataFile:
+_COI_WriteOiDataFile:
     LINK.W  A5,#-152
     MOVEM.L D5-D7/A2-A3/A6,-(A7)
     MOVE.B  11(A5),D7
@@ -83,7 +83,7 @@ COI_WriteOiDataFile:
     MOVE.W  D1,-30(A5)
     EXT.L   D1
     MOVE.L  D1,-(A7)
-    PEA     Global_STR_DF0_OI_PERCENT_2_LX_DAT_1
+    PEA     _Global_STR_DF0_OI_PERCENT_2_LX_DAT_1
     PEA     -112(A5)
     JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -103,7 +103,7 @@ COI_WriteOiDataFile:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
-    PEA     COI_FMT_LONG_DEC_A
+    PEA     _COI_FMT_LONG_DEC_A
     PEA     -152(A5)
     JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -122,12 +122,12 @@ COI_WriteOiDataFile:
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     2.W
-    PEA     COI_FMT_DEC_A
+    PEA     _COI_FMT_DEC_A
     PEA     -152(A5)
     JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -146,7 +146,7 @@ COI_WriteOiDataFile:
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     2.W
-    PEA     COI_RecordTerminatorCrLf
+    PEA     _COI_RecordTerminatorCrLf
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -265,7 +265,7 @@ COI_WriteOiDataFile:
 
 .write_field24:
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -290,7 +290,7 @@ COI_WriteOiDataFile:
 
 .write_field28:
     PEA     1.W
-    PEA     COI_STR_COLON_A
+    PEA     _COI_STR_COLON_A
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -315,12 +315,12 @@ COI_WriteOiDataFile:
 
 .write_field32:
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     MOVE.L  32(A2),(A7)
-    PEA     COI_FMT_LONG_DEC_B
+    PEA     _COI_FMT_LONG_DEC_B
     PEA     -152(A5)
     JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -339,7 +339,7 @@ COI_WriteOiDataFile:
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -364,7 +364,7 @@ COI_WriteOiDataFile:
 
 .write_field0:
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -382,7 +382,7 @@ COI_WriteOiDataFile:
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -407,7 +407,7 @@ COI_WriteOiDataFile:
 
 .write_field16:
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -432,7 +432,7 @@ COI_WriteOiDataFile:
 
 .write_field20:
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -457,7 +457,7 @@ COI_WriteOiDataFile:
 
 .write_field8:
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -482,14 +482,14 @@ COI_WriteOiDataFile:
 
 .write_entry_count:
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     MOVE.W  36(A2),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     COI_FMT_LONG_DEC_C
+    PEA     _COI_FMT_LONG_DEC_C
     PEA     -152(A5)
     JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -508,7 +508,7 @@ COI_WriteOiDataFile:
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     2.W
-    PEA     COI_RecordTerminatorCrLf
+    PEA     _COI_RecordTerminatorCrLf
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -530,7 +530,7 @@ COI_WriteOiDataFile:
     MOVE.W  (A0),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     COI_FMT_LONG_DEC_PAD2
+    PEA     _COI_FMT_LONG_DEC_PAD2
     PEA     -152(A5)
     JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -549,7 +549,7 @@ COI_WriteOiDataFile:
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -575,7 +575,7 @@ COI_WriteOiDataFile:
 
 .write_subentry_field22:
     PEA     1.W
-    PEA     COI_STR_COLON_B
+    PEA     _COI_STR_COLON_B
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -602,13 +602,13 @@ COI_WriteOiDataFile:
 
 .write_subentry_field26:
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     MOVEA.L -12(A5),A0
     MOVE.L  26(A0),(A7)
-    PEA     COI_FMT_DEC_B
+    PEA     _COI_FMT_DEC_B
     PEA     -152(A5)
     JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -627,7 +627,7 @@ COI_WriteOiDataFile:
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -654,7 +654,7 @@ COI_WriteOiDataFile:
 
 .write_subentry_field10:
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -681,7 +681,7 @@ COI_WriteOiDataFile:
 
 .write_subentry_field14:
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -708,7 +708,7 @@ COI_WriteOiDataFile:
 
 .write_subentry_field2:
     PEA     1.W
-    PEA     COI_FieldDelimiterTab
+    PEA     _COI_FieldDelimiterTab
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -735,7 +735,7 @@ COI_WriteOiDataFile:
 
 .next_subentry:
     PEA     2.W
-    PEA     COI_RecordTerminatorCrLf
+    PEA     _COI_RecordTerminatorCrLf
     MOVE.L  D5,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 

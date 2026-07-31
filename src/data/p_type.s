@@ -16,16 +16,16 @@
     XDEF    _P_TYPE_WeatherBrushRefreshPendingFlag
     XDEF    _P_TYPE_WeatherCurrentMsgPtr
     XDEF    _P_TYPE_WeatherForecastMsgPtr
-    XDEF    P_TYPE_WeatherBottomLineMsgPtr
-    XDEF    P_TYPE_STR_QTABLE
-    XDEF    P_TYPE_TAG_BACKDROP
-    XDEF    P_TYPE_TAG_GRADIENT
-    XDEF    P_TYPE_TAG_TEXTADS
-    XDEF    P_TYPE_TAG_BRUSH
-    XDEF    P_TYPE_TAG_BANNER
-    XDEF    P_TYPE_STR_DEFAULT_TEXT
-    XDEF    P_TYPE_STR_SOURCE_CONFIG
-    XDEF    PARSEINI_DelimSpaceTab_Section1
+    XDEF    _P_TYPE_WeatherBottomLineMsgPtr
+    XDEF    _P_TYPE_STR_QTABLE
+    XDEF    _P_TYPE_TAG_BACKDROP
+    XDEF    _P_TYPE_TAG_GRADIENT
+    XDEF    _P_TYPE_TAG_TEXTADS
+    XDEF    _P_TYPE_TAG_BRUSH
+    XDEF    _P_TYPE_TAG_BANNER
+    XDEF    _P_TYPE_STR_DEFAULT_TEXT
+    XDEF    _P_TYPE_STR_SOURCE_CONFIG
+    XDEF    _PARSEINI_DelimSpaceTab_Section1
 ; ========== P_TYPE.c ==========
 
 _Global_STR_P_TYPE_C_1:
@@ -67,23 +67,23 @@ _P_TYPE_WeatherCurrentMsgPtr:
     DS.L    1
 _P_TYPE_WeatherForecastMsgPtr:
     DS.L    1
-P_TYPE_WeatherBottomLineMsgPtr:
+_P_TYPE_WeatherBottomLineMsgPtr:
     DS.L    1
-P_TYPE_STR_QTABLE:
+_P_TYPE_STR_QTABLE:
     NStr    "Qtable"
-P_TYPE_TAG_BACKDROP:
+_P_TYPE_TAG_BACKDROP:
     NStr    "BACKDROP"
-P_TYPE_TAG_GRADIENT:
+_P_TYPE_TAG_GRADIENT:
     NStr    "GRADIENT"
-P_TYPE_TAG_TEXTADS:
+_P_TYPE_TAG_TEXTADS:
     NStr    "TEXTADS"
-P_TYPE_TAG_BRUSH:
+_P_TYPE_TAG_BRUSH:
     NStr    "BRUSH"
-P_TYPE_TAG_BANNER:
+_P_TYPE_TAG_BANNER:
     NStr    "BANNER"
-P_TYPE_STR_DEFAULT_TEXT:
+_P_TYPE_STR_DEFAULT_TEXT:
     NStr    "DEFAULT TEXT"
-P_TYPE_STR_SOURCE_CONFIG:
+_P_TYPE_STR_SOURCE_CONFIG:
     NStr    "SOURCE CONFIG"
-PARSEINI_DelimSpaceTab_Section1:
+_PARSEINI_DelimSpaceTab_Section1:
     NStr2   " ",9

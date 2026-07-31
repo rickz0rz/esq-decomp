@@ -2,12 +2,12 @@
     XDEF    TEXTDISP_DefaultSpacePad
     XDEF    Global_STR_TEXTDISP_C_2
     XDEF    _Global_STR_DF0_SOURCECFG_INI_2
-    XDEF    Global_STR_TEXTDISP_C_3
+    XDEF    _Global_STR_TEXTDISP_C_3
     XDEF    _Global_STR_TEXTDISP_C_4
     XDEF    _TEXTDISP_ActiveGroupId
     XDEF    TEXTDISP_FormatEntryFallbackTable
-    XDEF    TEXTDISP_CenterAlignToken
-    XDEF    TEXTDISP_LeftAlignToken
+    XDEF    _TEXTDISP_CenterAlignToken
+    XDEF    _TEXTDISP_LeftAlignToken
     XDEF    _TEXTDISP_Tag_PPV
     XDEF    _TEXTDISP_Tag_SBE
     XDEF    _TEXTDISP_Tag_SPORTS
@@ -33,7 +33,7 @@ Global_STR_TEXTDISP_C_2:
     NStr    "TEXTDISP.c"
 _Global_STR_DF0_SOURCECFG_INI_2:
     NStr    "df0:SourceCfg.ini"
-Global_STR_TEXTDISP_C_3:
+_Global_STR_TEXTDISP_C_3:
     NStr    "TEXTDISP.c"
 _Global_STR_TEXTDISP_C_4:
     NStr    "TEXTDISP.c"
@@ -79,22 +79,22 @@ TEXTDISP_FormatEntryFallbackTable:
     DC.L    $42617f7f,$00000000,$7e1e3e3e,$14001819
     DC.B    0
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_CenterAlignToken   (center-align control token)
+; SYM: _TEXTDISP_CenterAlignToken   (center-align control token)
 ; TYPE: u8[2]
 ; PURPOSE: Prefix token sequence that requests centered text formatting.
 ; USED BY: TEXTDISP_BuildEntryShortName, CLEANUP3_*, CLEANUP4_*
 ; NOTES: First byte is TextAlignCenter.
 ;------------------------------------------------------------------------------
-TEXTDISP_CenterAlignToken:
+_TEXTDISP_CenterAlignToken:
     DC.B    TextAlignCenter,0
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_LeftAlignToken   (left-align control token)
+; SYM: _TEXTDISP_LeftAlignToken   (left-align control token)
 ; TYPE: u8[3]
 ; PURPOSE: Prefix token sequence that requests left-aligned text formatting.
 ; USED BY: CLEANUP3_*
 ; NOTES: First byte is TextAlignLeft.
 ;------------------------------------------------------------------------------
-TEXTDISP_LeftAlignToken:
+_TEXTDISP_LeftAlignToken:
     DC.B    TextAlignLeft,0,0
 ;------------------------------------------------------------------------------
 ; SYM: _TEXTDISP_Tag_PPV/_TEXTDISP_Tag_SBE/_TEXTDISP_Tag_SPORTS/_TEXTDISP_Tag_SPT_Filter/_TEXTDISP_Tag_FIND1/TEXTDISP_Tag_SPT_Select   (filter tags)

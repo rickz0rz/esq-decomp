@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   A7/D0
 ; CALLS:
-;   _DISKIO2_WriteCurDayDataFile, DISKIO2_WriteNxtDayDataFile, _DISKIO2_WriteOinfoDataFile, COI_WriteOiDataFile
+;   _DISKIO2_WriteCurDayDataFile, _DISKIO2_WriteNxtDayDataFile, _DISKIO2_WriteOinfoDataFile, _COI_WriteOiDataFile
 ; READS:
 ;   DISKIO2_FlushDataFilesGuardFlag, _TEXTDISP_PrimaryGroupEntryCount, _CTASKS_PrimaryOiWritePendingFlag/1B90
 ; WRITES:
@@ -31,7 +31,7 @@ DISKIO2_FlushDataFilesIfNeeded:
 
     BSR.W   _DISKIO2_WriteCurDayDataFile
 
-    BSR.W   DISKIO2_WriteNxtDayDataFile
+    BSR.W   _DISKIO2_WriteNxtDayDataFile
 
     BSR.W   _DISKIO2_WriteOinfoDataFile
 
@@ -41,7 +41,7 @@ DISKIO2_FlushDataFilesIfNeeded:
     MOVEQ   #0,D0
     MOVE.B  _CTASKS_PendingPrimaryOiDiskId,D0
     MOVE.L  D0,-(A7)
-    JSR     COI_WriteOiDataFile(PC)
+    JSR     _COI_WriteOiDataFile(PC)
 
     ADDQ.W  #4,A7
 
@@ -52,7 +52,7 @@ DISKIO2_FlushDataFilesIfNeeded:
     MOVEQ   #0,D0
     MOVE.B  _CTASKS_PendingSecondaryOiDiskId,D0
     MOVE.L  D0,-(A7)
-    JSR     COI_WriteOiDataFile(PC)
+    JSR     _COI_WriteOiDataFile(PC)
 
     ADDQ.W  #4,A7
 

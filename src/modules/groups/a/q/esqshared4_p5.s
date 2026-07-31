@@ -5,8 +5,8 @@
 
 
     MOVEM.L D0-D4/A0-A4,-(A7)
-    LEA     ESQ_BannerPaletteWordsA,A2
-    LEA     ESQ_BannerPaletteWordsB,A3
+    LEA     _ESQ_BannerPaletteWordsA,A2
+    LEA     _ESQ_BannerPaletteWordsB,A3
     MOVE.W  #0,D3
     LEA     _GCOMMAND_PresetFallbackValue0,A1
     JSR     ESQSHARED4_LoadCopperColorWordsFromNibbleTable(PC)

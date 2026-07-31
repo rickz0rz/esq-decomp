@@ -19,10 +19,10 @@
     XDEF    _HIGHLIGHT_CopperEffectParamB
     XDEF    _CTRL_SampleEntryCount
     XDEF    _CTRL_SampleEntryScratch
-    XDEF    HIGHLIGHT_CustomValue
-    XDEF    CLOCK_DaySlotIndexPtr
-    XDEF    CLOCK_CurrentDayOfWeekIndexPtr
-    XDEF    BANNER_ResetPendingFlag
+    XDEF    _HIGHLIGHT_CustomValue
+    XDEF    _CLOCK_DaySlotIndexPtr
+    XDEF    _CLOCK_CurrentDayOfWeekIndexPtr
+    XDEF    _BANNER_ResetPendingFlag
     XDEF    _CLOCK_MinuteTrigger30MinusBase
     XDEF    _CLOCK_MinuteTrigger60MinusBase
     XDEF    _CLOCK_MinuteTriggerBaseOffsetPlus30
@@ -56,7 +56,7 @@
     XDEF    _ESQIFF_GAdsBrushListCount
     XDEF    _ESQIFF_LogoBrushListCount
     XDEF    _BRUSH_LoadInProgressFlag
-    XDEF    BRUSH_PendingAlertCode
+    XDEF    _BRUSH_PendingAlertCode
 
 Global_STR_PLEASE_STANDBY_1:
     NStr    "Please Standby..."
@@ -103,13 +103,13 @@ _CTRL_SampleEntryCount:
 _CTRL_SampleEntryScratch:
     DC.L    0
     DC.W    0
-HIGHLIGHT_CustomValue:
+_HIGHLIGHT_CustomValue:
     NStr    "?"
-CLOCK_DaySlotIndexPtr:
+_CLOCK_DaySlotIndexPtr:
     DC.L    0
-CLOCK_CurrentDayOfWeekIndexPtr:
+_CLOCK_CurrentDayOfWeekIndexPtr:
     DC.L    0
-BANNER_ResetPendingFlag:
+_BANNER_ResetPendingFlag:
     DC.L    0
 _CLOCK_MinuteTrigger30MinusBase:
     DC.W    0
@@ -199,5 +199,5 @@ _ESQIFF_LogoBrushListCount:
 _BRUSH_LoadInProgressFlag:
     DC.L    0
 ; Tracks which cleanup alert message (if any) should be shown after brush loads.
-BRUSH_PendingAlertCode:
+_BRUSH_PendingAlertCode:
     DC.L    0

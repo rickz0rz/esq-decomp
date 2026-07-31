@@ -1,8 +1,8 @@
     XDEF    _ED_DrawAdEditingScreen
     XDEF    _ED_LoadCurrentAdIntoBuffers
-    XDEF    ED_TransformLineSpacing_Mode1
-    XDEF    ED_TransformLineSpacing_Mode2
-    XDEF    ED_TransformLineSpacing_Mode3
+    XDEF    _ED_TransformLineSpacing_Mode1
+    XDEF    _ED_TransformLineSpacing_Mode2
+    XDEF    _ED_TransformLineSpacing_Mode3
 
 
 ; draw ad editing screen (editing ad)
@@ -16,12 +16,12 @@
 ;   A1/A6/A7/D0/D1/D2/D3
 ; CALLS:
 ;   _ED_DrawHelpPanels, SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE,
-;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
+;   _SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
 ;   _GROUP_AM_JMPTBL_WDISP_SPrintf, _DISPLIB_DisplayTextAtPosition,
 ;   ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
 ;   _ED_TextLimit, _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,
-;   Global_REF_BOOL_IS_LINE_OR_PAGE, Global_REF_BOOL_IS_TEXT_OR_CURSOR
+;   _Global_REF_BOOL_IS_LINE_OR_PAGE, _Global_REF_BOOL_IS_TEXT_OR_CURSOR
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -65,11 +65,11 @@ _ED_DrawAdEditingScreen:
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVE.L  Global_REF_BOOL_IS_LINE_OR_PAGE,(A7)
+    MOVE.L  _Global_REF_BOOL_IS_LINE_OR_PAGE,(A7)
     BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE
 
-    MOVE.L  Global_REF_BOOL_IS_TEXT_OR_CURSOR,(A7)
-    BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR
+    MOVE.L  _Global_REF_BOOL_IS_TEXT_OR_CURSOR,(A7)
+    BSR.W   _SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
@@ -125,7 +125,7 @@ _ED_DrawAdEditingScreen:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_TransformLineSpacing_Mode1   (Transform line spacing mode 1uncertain)
+; FUNC: _ED_TransformLineSpacing_Mode1   (Transform line spacing mode 1uncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -143,7 +143,7 @@ _ED_DrawAdEditingScreen:
 ; NOTES:
 ;   Uses local buffers on the stack for processing.
 ;------------------------------------------------------------------------------
-ED_TransformLineSpacing_Mode1:
+_ED_TransformLineSpacing_Mode1:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
 
@@ -297,7 +297,7 @@ ED_TransformLineSpacing_Mode1:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_TransformLineSpacing_Mode2   (Transform line spacing mode 2uncertain)
+; FUNC: _ED_TransformLineSpacing_Mode2   (Transform line spacing mode 2uncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -315,7 +315,7 @@ ED_TransformLineSpacing_Mode1:
 ; NOTES:
 ;   Uses local buffers on the stack for processing.
 ;------------------------------------------------------------------------------
-ED_TransformLineSpacing_Mode2:
+_ED_TransformLineSpacing_Mode2:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
     MOVE.L  _ED_ViewportOffset,D0
@@ -471,7 +471,7 @@ ED_TransformLineSpacing_Mode2:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_TransformLineSpacing_Mode3   (Transform line spacing mode 3uncertain)
+; FUNC: _ED_TransformLineSpacing_Mode3   (Transform line spacing mode 3uncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -489,7 +489,7 @@ ED_TransformLineSpacing_Mode2:
 ; NOTES:
 ;   Uses local buffers on the stack for processing.
 ;------------------------------------------------------------------------------
-ED_TransformLineSpacing_Mode3:
+_ED_TransformLineSpacing_Mode3:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
     MOVE.L  _ED_ViewportOffset,D0
@@ -760,14 +760,14 @@ ED_TransformLineSpacing_Mode3:
 ;   GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault, GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte, _ED_RedrawAllRows, _ED_DrawCurrentColorIndicator,
 ;   _ED_RedrawCursorChar,
 ;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE,
-;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
+;   _SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
 ;   _GROUP_AM_JMPTBL_WDISP_SPrintf, _DISPLIB_DisplayTextAtPosition,
 ;   ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVORectFill
 ; READS:
 ;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _ED_BlockOffset, _ED_TextLimit
 ; WRITES:
-;   _ED_EditCursorOffset, _ED_ViewportOffset, _ED_AdDisplayResetFlag, Global_REF_BOOL_IS_LINE_OR_PAGE,
-;   Global_REF_BOOL_IS_TEXT_OR_CURSOR
+;   _ED_EditCursorOffset, _ED_ViewportOffset, _ED_AdDisplayResetFlag, _Global_REF_BOOL_IS_LINE_OR_PAGE,
+;   _Global_REF_BOOL_IS_TEXT_OR_CURSOR
 ; DESC:
 ;   Loads the current ad into edit buffers and refreshes the screen.
 ; NOTES:
@@ -847,14 +847,14 @@ _ED_LoadCurrentAdIntoBuffers:
     MOVEQ   #0,D0
     MOVE.L  D0,_ED_EditCursorOffset
     MOVE.L  D0,_ED_ViewportOffset
-    MOVE.L  D0,Global_REF_BOOL_IS_LINE_OR_PAGE
+    MOVE.L  D0,_Global_REF_BOOL_IS_LINE_OR_PAGE
     MOVE.L  D0,-(A7)
     BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE
 
     MOVEQ   #1,D0
-    MOVE.L  D0,Global_REF_BOOL_IS_TEXT_OR_CURSOR
+    MOVE.L  D0,_Global_REF_BOOL_IS_TEXT_OR_CURSOR
     MOVE.L  D0,(A7)
-    BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR
+    BSR.W   _SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0

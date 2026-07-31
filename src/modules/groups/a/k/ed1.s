@@ -19,7 +19,7 @@
 ; READS:
 ;   _ED_DiagTextModeChar, _ED_SavedScrollSpeedIndex, _ED_EditCursorOffset
 ; WRITES:
-;   _ED_MenuStateId, _ED_EditCursorOffset, ESQ_ShutdownRequestedFlag
+;   _ED_MenuStateId, _ED_EditCursorOffset, _ESQ_ShutdownRequestedFlag
 ; DESC:
 ;   Dispatches ESC-menu commands, updates selection state, and shows errors.
 ; NOTES:
@@ -127,7 +127,7 @@ ED1_HandleEscMenuInput:
     BRA.S   .done
 
 .case_set_flag:
-    MOVE.W  #1,ESQ_ShutdownRequestedFlag
+    MOVE.W  #1,_ESQ_ShutdownRequestedFlag
     BRA.S   .done
 
 .case_adjust_selection:
@@ -442,14 +442,14 @@ _ED1_EnterEscMenu_AfterVersionText:
 ;   A0/A1/A6/A7/D0/D1/D2
 ; CALLS:
 ;   _LVOInitBitMap, _LVOSetFont, ED1_JMPTBL_GCOMMAND_ResetHighlightMessages,
-;   GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode, ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, _ESQFUNC_UpdateDiskWarningAndRefreshTick, _ED1_ClearEscMenuMode, ESQFUNC_UpdateRefreshModeState,
+;   _GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode, _ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, _ESQFUNC_UpdateDiskWarningAndRefreshTick, _ED1_ClearEscMenuMode, _ESQFUNC_UpdateRefreshModeState,
 ;   ED1_JMPTBL_NEWGRID_DrawTopBorderLine, ED1_JMPTBL_LADFUNC_SaveTextAdsToFile,
 ;   _ED1_WaitForFlagAndClearBit0, ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs,
-;   _ED_DrawBottomHelpBarBackground, ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, _ESQIFF_RunCopperRiseTransition
+;   _ED_DrawBottomHelpBarBackground, _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, _ESQIFF_RunCopperRiseTransition
 ; READS:
 ;   _ED_SaveTextAdsOnExitFlag, _ED_SavedDiagGraphModeChar, _ED_DiagGraphModeChar, _SCRIPT_RuntimeMode
 ; WRITES:
-;   _ED_DiagnosticsScreenActive, SCRIPT_StatusRefreshHoldFlag, ESQPARS2_EdDiagResetScratchFlag, LOCAVAIL_FilterPrevClassId, _ESQIFF_GAdsBrushListCount, _SCRIPT_RuntimeMode,
+;   _ED_DiagnosticsScreenActive, _SCRIPT_StatusRefreshHoldFlag, ESQPARS2_EdDiagResetScratchFlag, _LOCAVAIL_FilterPrevClassId, _ESQIFF_GAdsBrushListCount, _SCRIPT_RuntimeMode,
 ;   _CTRL_BufferedByteCount, _CTRL_HPreviousSample, _CTRL_H, _Global_UIBusyFlag, _ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Resets display state, refreshes banner data, and restores main screen state.
@@ -476,11 +476,11 @@ ED1_ExitEscMenu:
 
     MOVEQ   #0,D0
     MOVE.W  D0,_ED_DiagnosticsScreenActive
-    MOVE.W  D0,SCRIPT_StatusRefreshHoldFlag
-    JSR     GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode(PC)
+    MOVE.W  D0,_SCRIPT_StatusRefreshHoldFlag
+    JSR     _GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode(PC)
 
     CLR.W   ESQPARS2_EdDiagResetScratchFlag
-    JSR     ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(PC)
+    JSR     _ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(PC)
 
     JSR     _ESQFUNC_UpdateDiskWarningAndRefreshTick(PC)
 
@@ -490,7 +490,7 @@ ED1_ExitEscMenu:
     MOVE.L  D0,_NEWGRID_RefreshStateFlag
     MOVE.L  NEWGRID_LastRefreshRequest,-(A7)
     MOVE.L  _NEWGRID_MessagePumpSuspendFlag,-(A7)
-    JSR     ESQFUNC_UpdateRefreshModeState(PC)
+    JSR     _ESQFUNC_UpdateRefreshModeState(PC)
 
     JSR     ED1_JMPTBL_NEWGRID_DrawTopBorderLine(PC)
 
@@ -503,7 +503,7 @@ ED1_ExitEscMenu:
 
 .after_optional_refresh:
     MOVEQ   #-1,D0
-    MOVE.L  D0,LOCAVAIL_FilterPrevClassId
+    MOVE.L  D0,_LOCAVAIL_FilterPrevClassId
     MOVE.B  _ED_SavedDiagGraphModeChar,D0
     MOVE.B  _ED_DiagGraphModeChar,D1
     CMP.B   D1,D0
@@ -552,7 +552,7 @@ ED1_ExitEscMenu:
     JSR     _ED_DrawBottomHelpBarBackground(PC)
 
     PEA     1.W
-    JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
+    JSR     _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
 
     JSR     _ESQIFF_RunCopperRiseTransition(PC)
 

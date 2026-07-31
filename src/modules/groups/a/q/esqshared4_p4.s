@@ -501,7 +501,7 @@ ESQSHARED4_CopyBannerRowsWithByteOffset:
 ; CALLS:
 ;   ESQSHARED4_CopyInterleavedRowWordsFromOffset, ESQSHARED4_CopyBannerRowsWithByteOffset
 ; READS:
-;   _ESQ_CopperListBannerA, _ESQ_CopperListBannerB, _ESQPARS2_BannerRowCopySpanBytes, _ESQPARS2_BannerRowCopyStrideBytes, ESQPARS2_ActiveCopperListSelectFlag, ESQSHARED_BannerRowScratchRasterBase0, ESQSHARED_BannerRowScratchRasterBase1, ESQSHARED_BannerRowScratchRasterBase2
+;   _ESQ_CopperListBannerA, _ESQ_CopperListBannerB, _ESQPARS2_BannerRowCopySpanBytes, _ESQPARS2_BannerRowCopyStrideBytes, ESQPARS2_ActiveCopperListSelectFlag, _ESQSHARED_BannerRowScratchRasterBase0, _ESQSHARED_BannerRowScratchRasterBase1, _ESQSHARED_BannerRowScratchRasterBase2
 ; WRITES:
 ;   ESQPARS2_BannerCopySourceOffset, ESQPARS2_BannerCopyTailOffset
 ; DESC:
@@ -529,15 +529,15 @@ ESQSHARED4_BlitBannerRowsForActiveField:
     MOVE.L  D1,ESQPARS2_BannerCopySourceOffset
     JSR     ESQSHARED4_CopyInterleavedRowWordsFromOffset(PC)
 
-    LEA     ESQSHARED_BannerRowScratchRasterBase0,A1
+    LEA     _ESQSHARED_BannerRowScratchRasterBase0,A1
     MOVEA.L (A1),A0
     JSR     ESQSHARED4_CopyBannerRowsWithByteOffset(PC)
 
-    LEA     ESQSHARED_BannerRowScratchRasterBase1,A1
+    LEA     _ESQSHARED_BannerRowScratchRasterBase1,A1
     MOVEA.L (A1),A0
     JSR     ESQSHARED4_CopyBannerRowsWithByteOffset(PC)
 
-    LEA     ESQSHARED_BannerRowScratchRasterBase2,A1
+    LEA     _ESQSHARED_BannerRowScratchRasterBase2,A1
     MOVEA.L (A1),A0
     JSR     ESQSHARED4_CopyBannerRowsWithByteOffset(PC)
 

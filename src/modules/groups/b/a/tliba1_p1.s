@@ -4,7 +4,7 @@
     XDEF    TLIBA1_FormatClockFormatEntry
     XDEF    _TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry
     XDEF    TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode
-    XDEF    TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow
+    XDEF    _TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow
     XDEF    _TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex
     XDEF    _TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
     XDEF    _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
@@ -423,7 +423,7 @@ TLIBA1_DrawInlineStyledText:
 ;   TLIBA1_DrawInlineStyledText, _MATH_DivS32, _MATH_Mulu32, _MEMORY_AllocateMemory,
 ;   _MEMORY_DeallocateMemory, _LVOSetAPen, _LVOSetFont, _LVOTextLength
 ; READS:
-;   _Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_3, CLOCK_AlignedInsetRenderGateFlag, TLIBA1_STR_TLIBA1_DOT_C, CLEANUP_AlignedInsetNibblePrimary, TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
+;   _Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_3, CLOCK_AlignedInsetRenderGateFlag, TLIBA1_STR_TLIBA1_DOT_C, CLEANUP_AlignedInsetNibblePrimary, _TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -722,7 +722,7 @@ TLIBA1_DrawFormattedTextBlock:
     CMP.W   -18(A5),D0
     BGE.W   .if_ge_17A6
 
-    TST.W   TEXTDISP_LinePenOverrideEnabledFlag
+    TST.W   _TEXTDISP_LinePenOverrideEnabledFlag
     BEQ.S   .if_eq_179D
 
     MULS    #10,D0
@@ -901,7 +901,7 @@ TLIBA1_DrawFormattedTextBlock:
 ;   A3/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
 ;   TLIBA1_FormatClockFormatEntry, TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode,
-;   TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode,
+;   _TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode,
 ;   _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
 ; READS:
 ;   _CONFIG_TimeWindowMinutes, _TEXTDISP_ActiveGroupId
@@ -1012,7 +1012,7 @@ TLIBA1_BuildClockFormatEntryIfVisible:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(PC)
+    JSR     _TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -1435,7 +1435,7 @@ _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode:
     JMP     _ESQDISP_GetEntryPointerByMode
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow   (JumpStub)
+; FUNC: _TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1451,7 +1451,7 @@ _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode:
 ; DESC:
 ;   Jump stub to COI_TestEntryWithinTimeWindow.
 ;------------------------------------------------------------------------------
-TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow:
+_TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow:
     JMP     COI_TestEntryWithinTimeWindow
 
 ;------------------------------------------------------------------------------
@@ -1463,16 +1463,16 @@ TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   CLEANUP_FormatClockFormatEntry
+;   _CLEANUP_FormatClockFormatEntry
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to CLEANUP_FormatClockFormatEntry.
+;   Jump stub to _CLEANUP_FormatClockFormatEntry.
 ;------------------------------------------------------------------------------
 _TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry:
-    JMP     CLEANUP_FormatClockFormatEntry
+    JMP     _CLEANUP_FormatClockFormatEntry
 
 ;------------------------------------------------------------------------------
 ; FUNC: _TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow   (JumpStub)

@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines
 ; READS:
-;   Global_REF_RASTPORT_2, _Global_STR_DISK_0_IS_WRITE_PROTECTED, _Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0, _WDISP_DisplayContextBase, _DISKIO_Drive0WriteProtectedCode, _DISKIO_DriveMediaStatusCodeTable, _Global_RefreshTickCounter
+;   _Global_REF_RASTPORT_2, _Global_STR_DISK_0_IS_WRITE_PROTECTED, _Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0, _WDISP_DisplayContextBase, _DISKIO_Drive0WriteProtectedCode, _DISKIO_DriveMediaStatusCodeTable, _Global_RefreshTickCounter
 ; WRITES:
 ;   _Global_RefreshTickCounter
 ; DESC:

@@ -26,7 +26,7 @@ _DISKIO_WriteBufferedBytes:
     MOVEM.L D2-D7/A3,-(A7)
 
     SetOffsetForStack 7
-    UseStackLong    MOVE.L,1,D7     ; Value DISKIO2_OutputFileHandle
+    UseStackLong    MOVE.L,1,D7     ; Value _DISKIO2_OutputFileHandle
     UseStackLong    MOVEA.L,2,A3    ; Address _ESQ_STR_B
     UseStackLong    MOVE.L,3,D6     ; 21
 

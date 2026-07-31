@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _TLIBA3_BuildDisplayContextForViewMode, _LVOSetRast
 ; READS:
-;   _WDISP_PaletteTriplesRBase-2297, Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY
+;   _WDISP_PaletteTriplesRBase-2297, _Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase-2297, _WDISP_AccumulatorFlushPending
 ; DESC:

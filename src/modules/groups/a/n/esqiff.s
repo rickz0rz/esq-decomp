@@ -518,7 +518,7 @@ ESQIFF_QueueIffBrushLoad:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, _ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode
 ; READS:
-;   ESQIFF_RenderWeatherStatusBrushSlice_Return, CONFIG_NewgridSelectionCode16EnabledFlag, ESQFUNC_WeatherSliceWidthInitGate, ESQIFF_WeatherSliceRemainingWidth, ESQIFF_WeatherSliceSourceOffset, ESQIFF_WeatherSliceValidateGateFlag
+;   ESQIFF_RenderWeatherStatusBrushSlice_Return, _CONFIG_NewgridSelectionCode16EnabledFlag, ESQFUNC_WeatherSliceWidthInitGate, ESQIFF_WeatherSliceRemainingWidth, ESQIFF_WeatherSliceSourceOffset, ESQIFF_WeatherSliceValidateGateFlag
 ; WRITES:
 ;   ESQFUNC_WeatherSliceWidthInitGate, ESQIFF_WeatherSliceRemainingWidth, ESQIFF_WeatherSliceSourceOffset, ESQIFF_WeatherSliceValidateGateFlag
 ; DESC:
@@ -658,7 +658,7 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     CMP.B   ESQIFF_WeatherSliceValidateGateFlag,D0
     BNE.S   .update_slice_progress_and_return
 
-    MOVE.B  CONFIG_NewgridSelectionCode16EnabledFlag,D0
+    MOVE.B  _CONFIG_NewgridSelectionCode16EnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .update_slice_progress_and_return

@@ -1,7 +1,7 @@
-    XDEF    Global_STR_DISKIO2_C_1
-    XDEF    Global_STR_DISKIO2_C_2
-    XDEF    Global_STR_DREV_5_1
-    XDEF    Global_STR_DISKIO2_C_3
+    XDEF    _Global_STR_DISKIO2_C_1
+    XDEF    _Global_STR_DISKIO2_C_2
+    XDEF    _Global_STR_DREV_5_1
+    XDEF    _Global_STR_DISKIO2_C_3
     XDEF    Global_STR_38_SPACES
     XDEF    DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT
     XDEF    DISKIO2_STR_SAVING_TEXT_ADS_DOT
@@ -12,30 +12,30 @@
     XDEF    DISKIO2_STR_SAVING_DST_DATA_DOT
     XDEF    DISKIO2_STR_SAVING_PROMO_TYPES
     XDEF    DISKIO2_STR_SAVING_DATA_VIEW_CONFIG
-    XDEF    Global_STR_DISKIO2_C_4
-    XDEF    DISKIO2_STR_DREV_1
-    XDEF    DISKIO2_STR_DREV_2
-    XDEF    DISKIO2_STR_DREV_3
-    XDEF    DISKIO2_STR_DREV_4
-    XDEF    DISKIO2_STR_DREV_5
-    XDEF    Global_STR_DISKIO2_C_5
-    XDEF    Global_STR_DISKIO2_C_6
-    XDEF    Global_STR_DISKIO2_C_7
-    XDEF    Global_STR_DISKIO2_C_8
-    XDEF    Global_STR_DISKIO2_C_9
-    XDEF    Global_STR_DISKIO2_C_10
-    XDEF    Global_STR_DISKIO2_C_11
-    XDEF    Global_STR_DISKIO2_C_12
-    XDEF    Global_STR_DISKIO2_C_13
-    XDEF    Global_STR_DISKIO2_C_14
-    XDEF    Global_STR_DISKIO2_C_15
-    XDEF    Global_STR_DISKIO2_C_16
-    XDEF    Global_STR_DISKIO2_C_17
-    XDEF    Global_STR_DISKIO2_C_18
-    XDEF    Global_STR_DISKIO2_C_19
-    XDEF    Global_STR_DISKIO2_C_20
-    XDEF    Global_STR_DISKIO2_C_21
-    XDEF    Global_STR_DISKIO2_C_22
+    XDEF    _Global_STR_DISKIO2_C_4
+    XDEF    _DISKIO2_STR_DREV_1
+    XDEF    _DISKIO2_STR_DREV_2
+    XDEF    _DISKIO2_STR_DREV_3
+    XDEF    _DISKIO2_STR_DREV_4
+    XDEF    _DISKIO2_STR_DREV_5
+    XDEF    _Global_STR_DISKIO2_C_5
+    XDEF    _Global_STR_DISKIO2_C_6
+    XDEF    _Global_STR_DISKIO2_C_7
+    XDEF    _Global_STR_DISKIO2_C_8
+    XDEF    _Global_STR_DISKIO2_C_9
+    XDEF    _Global_STR_DISKIO2_C_10
+    XDEF    _Global_STR_DISKIO2_C_11
+    XDEF    _Global_STR_DISKIO2_C_12
+    XDEF    _Global_STR_DISKIO2_C_13
+    XDEF    _Global_STR_DISKIO2_C_14
+    XDEF    _Global_STR_DISKIO2_C_15
+    XDEF    _Global_STR_DISKIO2_C_16
+    XDEF    _Global_STR_DISKIO2_C_17
+    XDEF    _Global_STR_DISKIO2_C_18
+    XDEF    _Global_STR_DISKIO2_C_19
+    XDEF    _Global_STR_DISKIO2_C_20
+    XDEF    _Global_STR_DISKIO2_C_21
+    XDEF    _Global_STR_DISKIO2_C_22
     XDEF    _DISKIO2_STR_QTABLE
     XDEF    _DISKIO2_STR_QTableLineBreakAfterHeader
     XDEF    _DISKIO2_STR_QTableEquals
@@ -43,36 +43,36 @@
     XDEF    _DISKIO2_STR_QTableValueQuoteClose
     XDEF    _DISKIO2_STR_QTableLineBreakAfterEntry
     XDEF    _Global_STR_DISKIO2_C_23
-    XDEF    Global_STR_SPECIAL_NGAD
-    XDEF    Global_STR_RAM
-    XDEF    Global_STR_FILENAME
-    XDEF    Global_STR_DISKIO2_C_24
-    XDEF    Global_STR_DISKIO2_C_25
-    XDEF    Global_STR_DISKIO2_C_26
-    XDEF    Global_STR_DISKIO2_C_27
-    XDEF    DISKIO2_STR_DiagTransferStatusClearLine210
-    XDEF    DISKIO2_STR_DiagTransferStatusClearLine240
-    XDEF    Global_STR_COPY_NIL
-    XDEF    DISKIO2_STR_ShellCommandArgSeparator
-    XDEF    Global_STR_STORED
-    XDEF    Global_STR_DISK_0_IS_FULL_WITH_ERRORS_FORMATTED
-    XDEF    DISKIO2_DiagnosticsDiskUsagePercentBuffer
-    XDEF    DISKIO2_DiagnosticsSoftErrorCountBuffer
+    XDEF    _Global_STR_SPECIAL_NGAD
+    XDEF    _Global_STR_RAM
+    XDEF    _Global_STR_FILENAME
+    XDEF    _Global_STR_DISKIO2_C_24
+    XDEF    _Global_STR_DISKIO2_C_25
+    XDEF    _Global_STR_DISKIO2_C_26
+    XDEF    _Global_STR_DISKIO2_C_27
+    XDEF    _DISKIO2_STR_DiagTransferStatusClearLine210
+    XDEF    _DISKIO2_STR_DiagTransferStatusClearLine240
+    XDEF    _Global_STR_COPY_NIL
+    XDEF    _DISKIO2_STR_ShellCommandArgSeparator
+    XDEF    _Global_STR_STORED
+    XDEF    _Global_STR_DISK_0_IS_FULL_WITH_ERRORS_FORMATTED
+    XDEF    _DISKIO2_DiagnosticsDiskUsagePercentBuffer
+    XDEF    _DISKIO2_DiagnosticsSoftErrorCountBuffer
     XDEF    DISKIO2_TransferCrc32Table
     XDEF    DISKIO2_FlushDataFilesGuardFlag
-    XDEF    Global_JMPTBL_HALF_HOURS_12_HR_FMT
+    XDEF    _Global_JMPTBL_HALF_HOURS_12_HR_FMT
     XDEF    _Global_JMPTBL_HALF_HOURS_24_HR_FMT
     XDEF    DISPLIB_STR_InlineAlignPadCharCenter
     XDEF    DISPLIB_STR_InlineAlignPadCharRight
 ; ========== DISKIO2.c ==========
 
-Global_STR_DISKIO2_C_1:
+_Global_STR_DISKIO2_C_1:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_2:
+_Global_STR_DISKIO2_C_2:
     NStr    "DISKIO2.c"
-Global_STR_DREV_5_1:
+_Global_STR_DREV_5_1:
     NStr    "DREV 5"
-Global_STR_DISKIO2_C_3:
+_Global_STR_DISKIO2_C_3:
     NStr    "DISKIO2.c"
 Global_STR_38_SPACES:
     NStr    "                                      "
@@ -94,53 +94,53 @@ DISKIO2_STR_SAVING_PROMO_TYPES:
     NStr    "Saving Promo Types                 "
 DISKIO2_STR_SAVING_DATA_VIEW_CONFIG:
     NStr    "Saving Data View config            "
-Global_STR_DISKIO2_C_4:
+_Global_STR_DISKIO2_C_4:
     NStr    "DISKIO2.c"
-DISKIO2_STR_DREV_1:
+_DISKIO2_STR_DREV_1:
     NStr    "DREV 1"
-DISKIO2_STR_DREV_2:
+_DISKIO2_STR_DREV_2:
     NStr    "DREV 2"
-DISKIO2_STR_DREV_3:
+_DISKIO2_STR_DREV_3:
     NStr    "DREV 3"
-DISKIO2_STR_DREV_4:
+_DISKIO2_STR_DREV_4:
     NStr    "DREV 4"
-DISKIO2_STR_DREV_5:
+_DISKIO2_STR_DREV_5:
     NStr    "DREV 5"
-Global_STR_DISKIO2_C_5:
+_Global_STR_DISKIO2_C_5:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_6:
+_Global_STR_DISKIO2_C_6:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_7:
+_Global_STR_DISKIO2_C_7:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_8:
+_Global_STR_DISKIO2_C_8:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_9:
+_Global_STR_DISKIO2_C_9:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_10:
+_Global_STR_DISKIO2_C_10:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_11:
+_Global_STR_DISKIO2_C_11:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_12:
+_Global_STR_DISKIO2_C_12:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_13:
+_Global_STR_DISKIO2_C_13:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_14:
+_Global_STR_DISKIO2_C_14:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_15:
+_Global_STR_DISKIO2_C_15:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_16:
+_Global_STR_DISKIO2_C_16:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_17:
+_Global_STR_DISKIO2_C_17:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_18:
+_Global_STR_DISKIO2_C_18:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_19:
+_Global_STR_DISKIO2_C_19:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_20:
+_Global_STR_DISKIO2_C_20:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_21:
+_Global_STR_DISKIO2_C_21:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_22:
+_Global_STR_DISKIO2_C_22:
     NStr    "DISKIO2.c"
 _DISKIO2_STR_QTABLE:
     NStr    "[Qtable]"
@@ -156,41 +156,41 @@ _DISKIO2_STR_QTableLineBreakAfterEntry:
     NStr2   TextCarriageReturn,TextLineFeed
 _Global_STR_DISKIO2_C_23:
     NStr    "DISKIO2.c"
-Global_STR_SPECIAL_NGAD:
+_Global_STR_SPECIAL_NGAD:
     NStr    "Special NGAD"
-Global_STR_RAM:
+_Global_STR_RAM:
     NStr    "RAM:"
-Global_STR_FILENAME:
+_Global_STR_FILENAME:
     NStr    "Filename:                            "
-Global_STR_DISKIO2_C_24:
+_Global_STR_DISKIO2_C_24:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_25:
+_Global_STR_DISKIO2_C_25:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_26:
+_Global_STR_DISKIO2_C_26:
     NStr    "DISKIO2.c"
-Global_STR_DISKIO2_C_27:
+_Global_STR_DISKIO2_C_27:
     NStr    "DISKIO2.c"
-DISKIO2_STR_DiagTransferStatusClearLine210:
+_DISKIO2_STR_DiagTransferStatusClearLine210:
     NStr    "                                      "
-DISKIO2_STR_DiagTransferStatusClearLine240:
+_DISKIO2_STR_DiagTransferStatusClearLine240:
     NStr    "                                      "
-Global_STR_COPY_NIL:
+_Global_STR_COPY_NIL:
     NStr    "Copy >nil: "
-DISKIO2_STR_ShellCommandArgSeparator:
+_DISKIO2_STR_ShellCommandArgSeparator:
     NStr    " "
-Global_STR_STORED:
+_Global_STR_STORED:
     NStr    "Stored:   "
-Global_STR_DISK_0_IS_FULL_WITH_ERRORS_FORMATTED:
+_Global_STR_DISK_0_IS_FULL_WITH_ERRORS_FORMATTED:
     NStr    "Disk 0 is %ld%% full with %ld Errors"
-DISKIO2_DiagnosticsDiskUsagePercentBuffer:
+_DISKIO2_DiagnosticsDiskUsagePercentBuffer:
     DS.W    1
-DISKIO2_DiagnosticsSoftErrorCountBuffer:
+_DISKIO2_DiagnosticsSoftErrorCountBuffer:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: DISKIO2_TransferCrc32Table   (serial transfer CRC32 lookup table)
 ; TYPE: u32[256]
 ; PURPOSE: Lookup table for per-byte CRC update in transfer block receiver.
-; USED BY: DISKIO2_ReceiveTransferBlocksToFile
+; USED BY: _DISKIO2_ReceiveTransferBlocksToFile
 ; NOTES:
 ;   First entry is zero (stored via DS.L 1), followed by reflected CRC-32
 ;   polynomial table constants (`0x77073096` ...).
@@ -234,7 +234,7 @@ DISKIO2_FlushDataFilesGuardFlag:
 ; SYM: CLOCK_HalfHourLabelEmpty12Hr   (half-hour 12h table slot-0 empty label)
 ; TYPE: u16 (NUL string sentinel)
 ; PURPOSE: Empty string entry at table index 0 for 12-hour half-hour labels.
-; USED BY: Global_JMPTBL_HALF_HOURS_12_HR_FMT
+; USED BY: _Global_JMPTBL_HALF_HOURS_12_HR_FMT
 ; NOTES: Keeps 1-based half-hour index lookups from requiring a pointer adjustment.
 ;------------------------------------------------------------------------------
 CLOCK_HalfHourLabelEmpty12Hr:
@@ -335,7 +335,7 @@ DISKIO2_STR_4_COLON_00_AM:
     NStr    " 4:00 AM"
 DISKIO2_STR_4_COLON_30_AM:
     NStr    " 4:30 AM"
-Global_JMPTBL_HALF_HOURS_12_HR_FMT:
+_Global_JMPTBL_HALF_HOURS_12_HR_FMT:
     DC.L    CLOCK_HalfHourLabelEmpty12Hr
     DC.L    DISKIO2_STR_5_COLON_00_AM
     DC.L    DISKIO2_STR_5_COLON_30_AM

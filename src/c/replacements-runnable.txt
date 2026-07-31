@@ -114,18 +114,12 @@ modules/groups/a/a/app2_p6.s                                           c/esq_for
 modules/groups/a/a/app2_esq_generatexorchecksumbyte.s                  c/esq_generate_xor_checksum_byte.c
 modules/groups/a/a/app2_esq_gethalfhourslotindex.s                     c/esq_get_half_hour_slot_index.c
 modules/groups/a/a/app_esq_initaudio1dma.s                             c/esq_init_audio1_dma.c
-modules/groups/a/a/app2_esq_movecopperentrytowardend.s                 c/esq_move_copper_entry_toward_end.c
-modules/groups/a/a/app2_esq_movecopperentrytowardstart.s               c/esq_move_copper_entry_toward_start.c
 modules/groups/a/a/app2_esq_noop.s                                     c/esq_noop.c
 modules/groups/a/a/app2_esq_packbitsdecode.s                           c/esq_pack_bits_decode.c
 modules/groups/a/a/app_esq_readserialrbfbyte.s                         c/esq_read_serial_rbf_byte.c
 modules/groups/a/a/app2_esq_reversebitsin6bytes.s                      c/esq_reverse_bits_in_6bytes.c
 modules/groups/a/a/app2_esq_seedminuteeventthresholds.s                c/esq_seed_minute_event_thresholds.c
 modules/groups/a/a/app2_esq_setbit1based.s                             c/esq_set_bit_1based.c
-modules/groups/a/a/app2_esq_setcoppereffect_custom.s                   c/esq_set_copper_effect_custom.c
-modules/groups/a/a/app2_esq_setcoppereffect_default.s                  c/esq_set_copper_effect_default.c
-modules/groups/a/a/app2_esq_setcoppereffect_offdisablehighlight.s      c/esq_set_copper_effect_off_disable_highlight.c
-modules/groups/a/a/app2_esq_setcoppereffect_onenablehighlight.s        c/esq_set_copper_effect_on_enable_highlight.c
 modules/groups/a/a/app3.s                                              c/esq_supervisor_cold_reboot.c
 modules/groups/a/a/app2_esq_terminateaftersecondquote.s                c/esq_terminate_after_second_quote.c
 modules/groups/a/a/app2_esq_testbit1based.s                            c/esq_test_bit_1based.c
@@ -163,7 +157,6 @@ modules/groups/a/n/esqiffbb_p0_esqiff_setapentobrightestpaletteindex.s c/esqiff_
 modules/groups/a/o/esqpars_esqpars_persiststatedataaftercommand.s      c/esqpars_persist_state_data_after_command.c
 modules/groups/a/q/esqshared4_esqshared4_computebannerrowblitgeometry.s c/esqshared4_compute_banner_row_blit_geometry.c
 modules/groups/a/q/esqshared4_esqshared4_loaddefaultpalettetocopper_noop.s c/esqshared4_load_default_palette_noop.c
-modules/groups/a/q/esqshared4_esqshared4_setbannercolorbaseandlimit.s  c/esqshared4_set_banner_color_base_and_limit.c
 modules/groups/a/q/esqshared4_esqshared4_snapshotdisplaybufferbases.s  c/esqshared4_snapshot_display_buffer_bases.c
 modules/groups/a/p/esqshared_esqshared_applyprogramtitletextfilters.s  c/esqshared_apply_program_title_text_filters.c
 modules/groups/a/p/esqshared_esqshared_initentrydefaults.s             c/esqshared_init_entry_defaults.c

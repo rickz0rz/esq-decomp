@@ -100,7 +100,7 @@
 ; CLOBBERS:
 ;   A0/A5/A7/D0/D1/D7
 ; CALLS:
-;   ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode
+;   _ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode
 ; READS:
 ;   ESQDISP_LatchedInputModeBit, bfd0ee
 ; WRITES:
@@ -142,13 +142,13 @@ ESQDISP_PollInputModeAndRefreshSelection:
     BNE.S   .lab_092F
 
     MOVE.L  D1,-(A7)
-    JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
+    JSR     _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .return
 
 .lab_092F:
-    JSR     ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(PC)
+    JSR     _ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(PC)
 
 .return:
     MOVE.L  (A7)+,D7
@@ -222,11 +222,11 @@ ESQDISP_DrawStatusBanner:
 ; CLOBBERS:
 ;   A0/A1/A2/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
+;   ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, _ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQ_STR_B, _ESQ_STR_E, ESQDISP_StatusBannerClampGateFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, _WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, _CLOCK_DaySlotIndex, _CLOCK_CacheMonthIndex0, _CLOCK_CacheDayIndex0, _CLOCK_CacheYear, _DST_PrimaryCountdown, WDISP_BannerSlotCursor, _CLOCK_HalfHourSlotIndex, CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
+;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQ_STR_B, _ESQ_STR_E, _ESQDISP_StatusBannerClampGateFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, _WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, _CLOCK_DaySlotIndex, _CLOCK_CacheMonthIndex0, _CLOCK_CacheDayIndex0, _CLOCK_CacheYear, _DST_PrimaryCountdown, WDISP_BannerSlotCursor, _CLOCK_HalfHourSlotIndex, _CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
 ; WRITES:
-;   BANNER_ResetPendingFlag, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, TLIBA1_StatusBannerPropagateGuard, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _CLOCK_HalfHourSlotIndex
+;   _BANNER_ResetPendingFlag, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, TLIBA1_StatusBannerPropagateGuard, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _CLOCK_HalfHourSlotIndex
 ; DESC:
 ;   Computes the current half-hour banner slot, applies optional range clamp,
 ;   updates highlight/banner state, and renders status text for active day entries.
@@ -249,7 +249,7 @@ ESQDISP_DrawStatusBanner_Impl:
 
     ADDQ.W  #4,A7
     MOVE.W  D0,_CLOCK_HalfHourSlotIndex
-    TST.W   ESQDISP_StatusBannerClampGateFlag
+    TST.W   _ESQDISP_StatusBannerClampGateFlag
     BEQ.S   .lab_0934
 
     MOVEQ   #0,D1
@@ -266,13 +266,13 @@ ESQDISP_DrawStatusBanner_Impl:
     LEA     12(A7),A7
 
 .lab_0934:
-    JSR     ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(PC)
+    JSR     _ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(PC)
 
     TST.W   D7
     BEQ.S   .lab_0935
 
     MOVEQ   #1,D0
-    MOVE.W  D0,BANNER_ResetPendingFlag
+    MOVE.W  D0,_BANNER_ResetPendingFlag
 
 .lab_0935:
     MOVE.W  _CLOCK_HalfHourSlotIndex,D0
@@ -390,7 +390,7 @@ ESQDISP_DrawStatusBanner_Impl:
     TST.L   16(A1)
     BNE.S   .lab_093E
 
-    MOVE.W  CLOCK_CurrentDayOfYear,D1
+    MOVE.W  _CLOCK_CurrentDayOfYear,D1
     EXT.L   D1
     ADD.L   D6,D1
     MOVEA.L A0,A1
@@ -399,7 +399,7 @@ ESQDISP_DrawStatusBanner_Impl:
     BEQ.S   .lab_093F
 
 .lab_093E:
-    MOVE.W  CLOCK_CurrentDayOfYear,D0
+    MOVE.W  _CLOCK_CurrentDayOfYear,D0
     EXT.L   D0
     ADD.L   D6,D0
     MOVE.L  D0,24(A7)

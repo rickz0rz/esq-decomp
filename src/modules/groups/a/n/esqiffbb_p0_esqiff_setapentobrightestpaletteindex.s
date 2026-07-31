@@ -14,7 +14,7 @@
 ; CALLS:
 ;   _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, _WDISP_PaletteTriplesGBase, _WDISP_PaletteTriplesBBase, _WDISP_PaletteDepthLog2
+;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, _WDISP_PaletteTriplesGBase, _WDISP_PaletteTriplesBBase, _WDISP_PaletteDepthLog2
 ; WRITES:
 ;   (none observed)
 ; DESC:

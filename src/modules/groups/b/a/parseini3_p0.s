@@ -18,7 +18,7 @@
 ;   PARSEINI_ClockSecondsSnapshot-20A8
 ; DESC:
 ;   Tracks transitions between H/T mismatch and stable states, latches RTC second
-;   samples, and toggles a status-mask bit via ESQDISP_UpdateStatusMaskAndRefresh.
+;   samples, and toggles a status-mask bit via _ESQDISP_UpdateStatusMaskAndRefresh.
 ; NOTES:
 ;   Uses a 3-sample threshold before clearing PARSEINI_ClockChangeActiveFlag.
 ;------------------------------------------------------------------------------

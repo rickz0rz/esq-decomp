@@ -17,7 +17,7 @@
 ; CALLS:
 ;   _ESQIFF2_ClearLineHeadTailByMode, _ESQPARS_ReplaceOwnedString
 ; READS:
-;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, _ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, ESQIFF_RecordLength
+;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, _ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _ESQIFF_RecordLength
 ; WRITES:
 ;   _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr, _ESQIFF_SecondaryLineHeadPtr, _ESQIFF_SecondaryLineTailPtr, _ESQDISP_SecondaryLinePromotePendingFlag
 ; DESC:
@@ -50,7 +50,7 @@ ESQIFF2_ParseLineHeadTailRecord:
     SUBA.L  A0,A0
     MOVE.L  A0,_ESQIFF_PrimaryLineHeadPtr
     MOVEQ   #0,D1
-    MOVE.W  ESQIFF_RecordLength,D1
+    MOVE.W  _ESQIFF_RecordLength,D1
     CMP.B   -1(A3,D1.L),D0
     BNE.S   .primary_tail_only_from_payload
 
@@ -69,7 +69,7 @@ ESQIFF2_ParseLineHeadTailRecord:
 
 .primary_split_or_head_only:
     MOVEQ   #0,D0
-    MOVE.W  ESQIFF_RecordLength,D0
+    MOVE.W  _ESQIFF_RecordLength,D0
     MOVEQ   #18,D1
     CMP.B   -1(A3,D0.L),D1
     BNE.S   .primary_scan_internal_delimiter
@@ -140,7 +140,7 @@ ESQIFF2_ParseLineHeadTailRecord:
     SUBA.L  A0,A0
     MOVE.L  A0,_ESQIFF_SecondaryLineHeadPtr
     MOVEQ   #0,D1
-    MOVE.W  ESQIFF_RecordLength,D1
+    MOVE.W  _ESQIFF_RecordLength,D1
     CMP.B   -1(A3,D1.L),D0
     BNE.S   .secondary_tail_only_from_payload
 
@@ -159,7 +159,7 @@ ESQIFF2_ParseLineHeadTailRecord:
 
 .secondary_split_or_head_only:
     MOVEQ   #0,D0
-    MOVE.W  ESQIFF_RecordLength,D0
+    MOVE.W  _ESQIFF_RecordLength,D0
     MOVEQ   #18,D1
     CMP.B   -1(A3,D0.L),D1
     BNE.S   .secondary_scan_internal_delimiter
@@ -247,7 +247,7 @@ ESQIFF2_ParseLineHeadTailRecord_Return:
 ; CALLS:
 ;   _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache, ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries, ESQIFF2_ValidateFieldIndexAndLength, _ESQIFF2_PadEntriesToMaxTitleWidth, _ESQPARS_RemoveGroupEntryAndReleaseStrings, ESQSHARED_CreateGroupEntryAndTitle
 ; READS:
-;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, ESQIFF_RecordLength, _TEXTDISP_PrimaryGroupRecordChecksum, _TEXTDISP_PrimaryGroupRecordLength, _TEXTDISP_SecondaryGroupRecordChecksum, _TEXTDISP_SecondaryGroupRecordLength, _ESQIFF_RecordChecksumByte, ESQIFF_ParseField0Buffer, ESQIFF_ParseField1Buffer, ESQIFF_ParseField2Buffer, ESQIFF_ParseField3Buffer, ff
+;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _ESQIFF_RecordLength, _TEXTDISP_PrimaryGroupRecordChecksum, _TEXTDISP_PrimaryGroupRecordLength, _TEXTDISP_SecondaryGroupRecordChecksum, _TEXTDISP_SecondaryGroupRecordLength, _ESQIFF_RecordChecksumByte, ESQIFF_ParseField0Buffer, ESQIFF_ParseField1Buffer, ESQIFF_ParseField2Buffer, ESQIFF_ParseField3Buffer, ff
 ; WRITES:
 ;   _TEXTDISP_PrimaryGroupRecordChecksum, _TEXTDISP_PrimaryGroupRecordLength, _TEXTDISP_MaxEntryTitleLength, _TEXTDISP_SecondaryGroupRecordChecksum, _TEXTDISP_SecondaryGroupRecordLength, _NEWGRID_RefreshStateFlag, ESQIFF_ParseField0Buffer, ESQIFF_ParseField0TailBuffer, ESQIFF_ParseField1Buffer, ESQIFF_ParseField1TailByte, ESQIFF_ParseField3Buffer, ESQIFF_ParseField3TailBuffer
 ; DESC:
@@ -272,7 +272,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     BNE.S   .check_secondary_group_record
 
     MOVE.W  _TEXTDISP_PrimaryGroupRecordLength,D0
-    MOVE.W  ESQIFF_RecordLength,D1
+    MOVE.W  _ESQIFF_RecordLength,D1
     CMP.W   D1,D0
     BNE.S   .primary_record_changed
 
@@ -304,7 +304,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     BNE.S   .return_group_not_target
 
     MOVE.W  _TEXTDISP_SecondaryGroupRecordLength,D0
-    MOVE.W  ESQIFF_RecordLength,D1
+    MOVE.W  _ESQIFF_RecordLength,D1
     CMP.W   D1,D0
     BNE.S   .secondary_record_changed
 

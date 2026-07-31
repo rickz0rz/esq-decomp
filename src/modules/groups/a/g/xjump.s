@@ -1,5 +1,5 @@
     XDEF    _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning
-    XDEF    GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState
+    XDEF    _GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState
     XDEF    _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport
     XDEF    GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch
     XDEF    _GROUP_AG_JMPTBL_MATH_DivS32
@@ -7,14 +7,14 @@
     XDEF    _GROUP_AG_JMPTBL_MEMORY_AllocateMemory
     XDEF    _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
     XDEF    _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
-    XDEF    GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition
+    XDEF    _GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition
     XDEF    _GROUP_AG_JMPTBL_SCRIPT_CheckPathExists
     XDEF    _GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal
     XDEF    _GROUP_AG_JMPTBL_STRING_CopyPadNul
     XDEF    _GROUP_AG_JMPTBL_STRUCT_AllocWithOwner
     XDEF    _GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField
     XDEF    _GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
-    XDEF    GROUP_AG_JMPTBL_DOS_OpenFileWithMode
+    XDEF    _GROUP_AG_JMPTBL_DOS_OpenFileWithMode
 
 ;!======
 
@@ -217,7 +217,7 @@ _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
     JMP     _PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition   (Routine at GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition)
+; FUNC: _GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition   (Routine at _GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -235,7 +235,7 @@ _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition:
+_GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition:
     JMP     SCRIPT_BeginBannerCharTransition
 
 ;------------------------------------------------------------------------------
@@ -283,7 +283,7 @@ _GROUP_AG_JMPTBL_MEMORY_AllocateMemory:
     JMP     _MEMORY_AllocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_DOS_OpenFileWithMode   (Routine at GROUP_AG_JMPTBL_DOS_OpenFileWithMode)
+; FUNC: _GROUP_AG_JMPTBL_DOS_OpenFileWithMode   (Routine at _GROUP_AG_JMPTBL_DOS_OpenFileWithMode)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -301,7 +301,7 @@ _GROUP_AG_JMPTBL_MEMORY_AllocateMemory:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_DOS_OpenFileWithMode:
+_GROUP_AG_JMPTBL_DOS_OpenFileWithMode:
     JMP     DOS_OpenFileWithMode
 
 ;------------------------------------------------------------------------------
@@ -349,7 +349,7 @@ _GROUP_AG_JMPTBL_MATH_Mulu32:
     JMP     _MATH_Mulu32
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState   (Routine at GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState)
+; FUNC: _GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState   (Routine at _GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -357,7 +357,7 @@ _GROUP_AG_JMPTBL_MATH_Mulu32:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_UpdateRefreshModeState
+;   _ESQFUNC_UpdateRefreshModeState
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -367,8 +367,8 @@ _GROUP_AG_JMPTBL_MATH_Mulu32:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState:
-    JMP     ESQFUNC_UpdateRefreshModeState
+_GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState:
+    JMP     _ESQFUNC_UpdateRefreshModeState
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AG_JMPTBL_STRING_CopyPadNul   (Routine at _GROUP_AG_JMPTBL_STRING_CopyPadNul)

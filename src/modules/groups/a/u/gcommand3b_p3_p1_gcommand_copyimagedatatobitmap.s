@@ -1,0 +1,361 @@
+    XDEF    _GCOMMAND_CopyImageDataToBitmap
+
+;------------------------------------------------------------------------------
+; FUNC: _GCOMMAND_CopyImageDataToBitmap   (Emit banner copper template and row block into target table)
+; ARGS:
+;   stack +4: bitmapPtr
+;   stack +8: tablePtr
+;   stack +12: length
+;   stack +16: baseOffset
+;   stack +20: argWord0
+;   stack +24: argByte0
+; RET:
+;   D0: tablePtr (echoed)
+; CLOBBERS:
+;   D0-D7, A0-A3, A6
+; CALLS:
+;   _GCOMMAND_BuildBannerBlock
+; READS:
+;   _WDISP_BannerWorkRasterPtr, [A3+8/12/16]
+; WRITES:
+;   [tablePtr] (copper list entries)
+; DESC:
+;   Emits a banner copper-list block into tablePtr using source offsets.
+; NOTES:
+;   Seeds a fixed copper prologue, then appends per-row words via
+;   _GCOMMAND_BuildBannerBlock.
+;------------------------------------------------------------------------------
+_GCOMMAND_CopyImageDataToBitmap:
+    LINK.W  A5,#-4
+    MOVEM.L D2-D7/A2-A3/A6,-(A7)
+
+    UseLinkStackLong    MOVEA.L,1,A3
+    UseLinkStackLong    MOVEA.L,2,A2
+    UseLinkStackLong    MOVE.L,3,D7
+    UseLinkStackLong    MOVE.L,4,D6
+    MOVE.W  30(A5),D5
+    MOVE.B  35(A5),D4
+
+    MOVE.L  A2,-4(A5)
+    MOVEA.L -4(A5),A0
+    MOVE.B  #$8e,(A0)
+    MOVE.B  #$d9,1(A0)
+    MOVE.W  #$fffe,2(A0)
+    MOVE.W  #$92,4(A0)
+    MOVE.W  #$30,6(A0)
+    MOVE.W  #$94,8(A0)
+    MOVE.W  #$d8,10(A0)
+    MOVE.W  #$8e,12(A0)
+    MOVE.W  #$1769,14(A0)
+    MOVE.W  #$90,16(A0)
+    MOVE.W  #$ffc5,18(A0)
+    MOVE.W  #$108,20(A0)
+    MOVEQ   #88,D0
+    MOVE.W  D0,22(A0)
+    MOVE.W  #$10a,24(A0)
+    MOVE.W  D0,26(A0)
+    MOVE.W  #$100,D0
+    MOVE.W  D0,28(A0)
+    MOVE.W  #$9306,30(A0)
+    MOVE.W  #$102,32(A0)
+    MOVEQ   #0,D1
+    MOVE.W  D1,34(A0)
+    MOVE.W  #$182,D2
+    MOVE.W  D2,36(A0)
+    MOVEQ   #3,D3
+    MOVE.W  D3,38(A0)
+    MOVE.W  #$e0,D1
+    MOVE.W  D1,40(A0)
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D0
+    MOVE.L  D0,D1
+    CLR.W   D1
+    SWAP    D1
+    MOVE.W  D1,42(A0)
+    MOVE.W  #$e2,D0
+    MOVE.W  D0,44(A0)
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D1
+    MOVE.L  #$ffff,D0
+    AND.L   D0,D1
+    MOVE.W  D1,46(A0)
+    MOVE.W  #$180,48(A0)
+    MOVE.W  D3,50(A0)
+    MOVE.W  D2,52(A0)
+    MOVE.W  D3,54(A0)
+    MOVE.W  #$184,56(A0)
+    MOVE.W  #$111,58(A0)
+    MOVE.W  #$186,60(A0)
+    MOVE.W  #$cc0,62(A0)
+    MOVE.W  #$188,64(A0)
+    MOVE.W  #$512,66(A0)
+    MOVE.W  #$18a,68(A0)
+    MOVE.W  #$16a,70(A0)
+    MOVE.W  #$18c,72(A0)
+    MOVE.W  #$555,74(A0)
+    MOVE.W  #$18e,76(A0)
+    MOVE.W  D3,78(A0)
+    MOVEA.L 24(A5),A1
+    MOVE.B  (A1),D1
+    MOVE.B  D1,80(A0)
+    ADD.B   D4,(A1)
+    MOVE.B  #$db,81(A0)
+    MOVE.W  D5,82(A0)
+    MOVE.W  #$e0,84(A0)
+    MOVE.L  8(A3),D1
+    MOVE.L  D1,D3
+    ADD.L   D7,D3
+    CLR.W   D3
+    SWAP    D3
+    MOVE.W  D3,86(A0)
+    MOVE.W  #$e2,88(A0)
+    MOVE.L  8(A3),D1
+    ADD.L   D7,D1
+    AND.L   D0,D1
+    MOVE.W  D1,90(A0)
+    MOVE.W  #$e4,92(A0)
+    MOVE.L  12(A3),D1
+    MOVE.L  D1,D3
+    ADD.L   D7,D3
+    CLR.W   D3
+    SWAP    D3
+    MOVE.W  D3,94(A0)
+    MOVE.W  #$e6,96(A0)
+    MOVE.L  12(A3),D1
+    ADD.L   D7,D1
+    AND.L   D0,D1
+    MOVE.W  D1,98(A0)
+    MOVE.W  #$e8,100(A0)
+    MOVE.L  16(A3),D1
+    MOVE.L  D1,D3
+    ADD.L   D7,D3
+    CLR.W   D3
+    SWAP    D3
+    MOVE.W  D3,102(A0)
+    MOVE.W  #$ea,104(A0)
+    MOVE.L  16(A3),D1
+    ADD.L   D7,D1
+    AND.L   D0,D1
+    MOVE.W  D1,106(A0)
+    MOVE.W  D2,108(A0)
+    MOVE.W  #$aaa,110(A0)
+    MOVE.W  #$100,112(A0)
+    MOVE.W  #$b306,114(A0)
+    MOVE.W  #$84,116(A0)
+    LEA     132(A0),A6
+    MOVE.L  A6,D1
+    CLR.W   D1
+    SWAP    D1
+    MOVE.W  D1,118(A0)
+    MOVE.W  #$86,120(A0)
+    LEA     132(A0),A6
+    MOVE.L  A6,D0
+    ANDI.L  #$ffff,D0
+    MOVE.W  D0,122(A0)
+    MOVE.W  #$8a,124(A0)
+    CLR.W   126(A0)
+    LEA     128(A0),A6
+    MOVEQ   #0,D0
+    MOVE.W  D5,D0
+    MOVEQ   #0,D1
+    MOVE.B  D4,D1
+    MOVE.L  D1,-(A7)
+    MOVE.L  D0,-(A7)
+    PEA     221.W
+    MOVE.L  A1,-(A7)
+    PEA     17.W
+    MOVE.L  A6,-(A7)
+    BSR.W   _GCOMMAND_BuildBannerBlock
+
+    LEA     24(A7),A7
+    MOVEA.L 24(A5),A0
+    MOVE.B  (A0),D0
+    MOVEA.L -4(A5),A0
+    MOVE.B  D0,672(A0)
+    MOVEA.L 24(A5),A1
+    ADD.B   D4,(A1)
+    MOVE.B  #$d9,673(A0)
+    MOVE.W  D5,674(A0)
+    MOVE.W  #$100,D0
+    MOVE.W  D0,676(A0)
+    MOVE.W  #$9306,678(A0)
+    MOVE.W  #$182,D1
+    MOVE.W  D1,680(A0)
+    MOVE.W  #3,682(A0)
+    MOVE.W  #$e0,D2
+    MOVE.W  D2,684(A0)
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D3
+    MOVE.L  D3,D0
+    CLR.W   D0
+    SWAP    D0
+    MOVE.W  D0,686(A0)
+    MOVE.W  #$e2,D0
+    MOVE.W  D0,688(A0)
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D3
+    MOVE.L  #$ffff,D1
+    AND.L   D1,D3
+    MOVE.W  D3,690(A0)
+    MOVE.W  #$e4,692(A0)
+    MOVE.L  12(A3),D3
+    MOVE.L  D3,D0
+    ADD.L   D6,D0
+    CLR.W   D0
+    SWAP    D0
+    MOVE.W  D0,694(A0)
+    MOVE.W  #$e6,696(A0)
+    MOVE.L  12(A3),D0
+    ADD.L   D6,D0
+    AND.L   D1,D0
+    MOVE.W  D0,698(A0)
+    MOVE.W  #$e8,700(A0)
+    MOVE.L  16(A3),D0
+    MOVE.L  D0,D3
+    ADD.L   D6,D3
+    CLR.W   D3
+    SWAP    D3
+    MOVE.W  D3,702(A0)
+    MOVE.W  #$ea,704(A0)
+    MOVE.L  16(A3),D0
+    ADD.L   D6,D0
+    AND.L   D1,D0
+    MOVE.W  D0,706(A0)
+    MOVE.B  (A1),D0
+    MOVE.B  D0,708(A0)
+    ADD.B   D4,(A1)
+    MOVE.B  #$db,709(A0)
+    MOVE.W  D5,710(A0)
+    MOVE.W  D2,712(A0)
+    MOVE.L  8(A3),D0
+    MOVE.L  D0,D2
+    ADD.L   D6,D2
+    CLR.W   D2
+    SWAP    D2
+    MOVE.W  D2,714(A0)
+    MOVE.W  #$e2,716(A0)
+    MOVE.L  8(A3),D0
+    ADD.L   D6,D0
+    AND.L   D1,D0
+    MOVE.W  D0,718(A0)
+    MOVE.W  #$182,720(A0)
+    MOVE.W  #$aaa,722(A0)
+    MOVE.W  #$100,724(A0)
+    MOVE.W  #$b306,726(A0)
+    MOVE.W  #$84,728(A0)
+    LEA     744(A0),A1
+    MOVE.L  A1,D0
+    CLR.W   D0
+    SWAP    D0
+    MOVE.W  D0,730(A0)
+    MOVE.W  #$86,732(A0)
+    LEA     744(A0),A1
+    MOVE.L  A1,D0
+    ANDI.L  #$ffff,D0
+    MOVE.W  D0,734(A0)
+    MOVE.W  #$8a,736(A0)
+    CLR.W   738(A0)
+    LEA     740(A0),A1
+    MOVEQ   #0,D0
+    MOVE.W  D5,D0
+    MOVEQ   #0,D1
+    MOVE.B  D4,D1
+    MOVE.L  D1,-(A7)
+    MOVE.L  D0,-(A7)
+    PEA     221.W
+    MOVE.L  24(A5),-(A7)
+    PEA     98.W
+    MOVE.L  A1,-(A7)
+    BSR.W   _GCOMMAND_BuildBannerBlock
+
+    MOVE.L  D6,(A7)
+    PEA     98.W
+    CLR.L   -(A7)
+    MOVE.L  A2,-(A7)
+    MOVE.L  A3,-(A7)
+    BSR.W   _GCOMMAND_BuildBannerRow
+
+    LEA     40(A7),A7
+    MOVEA.L -4(A5),A0
+    MOVE.B  #$80,3916(A0)
+    MOVEQ   #-39,D0
+    MOVE.B  D0,3917(A0)
+    MOVE.W  #$80fe,3918(A0)
+    MOVE.W  #$100,3920(A0)
+    MOVE.W  #$9306,3922(A0)
+    MOVE.W  #$182,3924(A0)
+    MOVE.W  #3,3926(A0)
+    MOVE.W  #$e0,D1
+    MOVE.W  D1,3928(A0)
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D2
+    MOVE.L  D2,D3
+    CLR.W   D3
+    SWAP    D3
+    MOVE.W  D3,3930(A0)
+    MOVE.W  #$e2,D2
+    MOVE.W  D2,3932(A0)
+    MOVE.L  _WDISP_BannerWorkRasterPtr,D3
+    MOVE.L  #$ffff,D2
+    AND.L   D2,D3
+    MOVE.W  D3,3934(A0)
+    MOVEQ   #-1,D3
+    MOVE.B  D3,3936(A0)
+    MOVE.B  D3,3937(A0)
+    MOVE.W  #$fffe,3938(A0)
+    MOVEA.L 24(A5),A1
+    MOVE.B  (A1),D3
+    MOVE.B  D3,3876(A0)
+    ADD.B   D4,(A1)
+    MOVE.B  D0,3877(A0)
+    MOVE.W  D5,3878(A0)
+    MOVE.W  D1,3880(A0)
+    MOVE.L  8(A3),D0
+    MOVE.L  D0,D1
+    ADD.L   D6,D1
+    CLR.W   D1
+    SWAP    D1
+    MOVE.W  D1,3882(A0)
+    MOVE.W  #$e2,3884(A0)
+    MOVE.L  8(A3),D0
+    ADD.L   D6,D0
+    AND.L   D2,D0
+    MOVE.W  D0,3886(A0)
+    MOVE.W  #$e4,3888(A0)
+    MOVE.L  12(A3),D0
+    MOVE.L  D0,D1
+    ADD.L   D6,D1
+    CLR.W   D1
+    SWAP    D1
+    MOVE.W  D1,3890(A0)
+    MOVE.W  #$e6,3892(A0)
+    MOVE.L  12(A3),D0
+    ADD.L   D6,D0
+    AND.L   D2,D0
+    MOVE.W  D0,3894(A0)
+    MOVE.W  #$e8,3896(A0)
+    MOVE.L  16(A3),D0
+    MOVE.L  D0,D1
+    ADD.L   D6,D1
+    CLR.W   D1
+    SWAP    D1
+    MOVE.W  D1,3898(A0)
+    MOVE.W  #$ea,3900(A0)
+    MOVE.L  16(A3),D0
+    ADD.L   D6,D0
+    AND.L   D2,D0
+    MOVE.W  D0,3902(A0)
+    MOVE.W  #$84,3904(A0)
+    LEA     744(A0),A1
+    MOVE.L  A1,D0
+    CLR.W   D0
+    SWAP    D0
+    MOVE.W  D0,3906(A0)
+    MOVE.W  #$86,3908(A0)
+    LEA     744(A0),A1
+    MOVE.L  A1,D0
+    ANDI.L  #$ffff,D0
+    MOVE.W  D0,3910(A0)
+    MOVE.W  #$8a,3912(A0)
+    CLR.W   3914(A0)
+
+    MOVEM.L (A7)+,D2-D7/A2-A3/A6
+    UNLK    A5
+    RTS
+
+;!======

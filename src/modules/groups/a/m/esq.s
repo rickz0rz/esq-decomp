@@ -1,7 +1,7 @@
-    XDEF    ESQ_MainInitAndRun
+    XDEF    _ESQ_MainInitAndRun
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_MainInitAndRun   (MainInitAndRun)
+; FUNC: _ESQ_MainInitAndRun   (MainInitAndRun)
 ; ARGS:
 ;   stack +4: argc (s32, via 8(A5))
 ;   stack +8: argv (char**/pointer table, via 12(A5))
@@ -11,37 +11,37 @@
 ;   D0-D7/A0-A6
 ; CALLS:
 ;   _LVOExecute, _LVOFindTask, _LVOOpenLibrary, _LVOOpenResource,
-;   GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode, GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS,
+;   _GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode, _GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS,
 ;   _LVOOpenFont, _LVOOpenDiskFont, _ESQIFF_JMPTBL_MEMORY_AllocateMemory,
 ;   _LVOInitRastPort, _LVOSetFont, ESQIFF_JMPTBL_MATH_DivS32, _ESQDISP_JMPTBL_GRAPHICS_AllocRaster,
-;   _LVOBltClear, _LVOInitBitMap, GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory,
-;   GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip, _ESQDISP_AllocateHighlightBitmaps, GROUP_AM_JMPTBL_LIST_InitHeader, _ESQDISP_QueueHighlightDrawMessage,
-;   _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage, GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard, GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc, _DST_RefreshBannerBuffer,
-;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal, GROUP_AM_JMPTBL_STRUCT_AllocWithOwner, _LVOOpenDevice,
+;   _LVOBltClear, _LVOInitBitMap, _GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory,
+;   _GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip, _ESQDISP_AllocateHighlightBitmaps, _GROUP_AM_JMPTBL_LIST_InitHeader, _ESQDISP_QueueHighlightDrawMessage,
+;   _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, _GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage, _GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard, _GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc, _DST_RefreshBannerBuffer,
+;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal, _GROUP_AM_JMPTBL_STRUCT_AllocWithOwner, _LVOOpenDevice,
 ;   _LVODoIO, _SETUP_INTERRUPT_INTB_RBF, _SETUP_INTERRUPT_INTB_AUD1,
-;   GROUP_AM_JMPTBL_ESQ_InitAudio1Dma, GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext, GROUP_AM_JMPTBL_KYBD_InitializeInputDevices, _ESQFUNC_AllocateLineTextBuffers, GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk, ESQFUNC_UpdateRefreshModeState, ESQSHARED4_InitializeBannerCopperSystem,
-;   GROUP_AM_JMPTBL_TLIBA3_InitPatternTable, _SETUP_INTERRUPT_INTB_VERTB, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperDropTransition, _LVOSetAPen,
+;   _GROUP_AM_JMPTBL_ESQ_InitAudio1Dma, _GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext, _GROUP_AM_JMPTBL_KYBD_InitializeInputDevices, _ESQFUNC_AllocateLineTextBuffers, _GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk, _ESQFUNC_UpdateRefreshModeState, _ESQSHARED4_InitializeBannerCopperSystem,
+;   _GROUP_AM_JMPTBL_TLIBA3_InitPatternTable, _SETUP_INTERRUPT_INTB_VERTB, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperDropTransition, _LVOSetAPen,
 ;   _LVORectFill, _LVOSetBPen, _LVOSetDrMd, _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines, _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths,
-;   _GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode, GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults, _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch, GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState
+;   _GROUP_AM_JMPTBL_WDISP_SPrintf, _GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode, _GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults, _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch, _GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, AbsExecBase, Global_STR_GRAPHICS_LIBRARY,
-;   Global_STR_DISKFONT_LIBRARY, Global_STR_DOS_LIBRARY, Global_STR_INTUITION_LIBRARY,
-;   Global_STR_UTILITY_LIBRARY, Global_STR_BATTCLOCK_RESOURCE,
-;   Global_STRUCT_TEXTATTR_TOPAZ_FONT, Global_STRUCT_TEXTATTR_PREVUEC_FONT,
-;   Global_STRUCT_TEXTATTR_H26F_FONT, Global_STRUCT_TEXTATTR_PREVUE_FONT,
-;   Global_STR_RAVESC, Global_STR_COPY_NIL_ASSIGN_RAM, Global_STR_ESQ_C_1..11,
-;   Global_STR_SERIAL_READ, Global_STR_SERIAL_DEVICE, Global_STR_DF0_GRADIENT_INI_2,
-;   Global_STR_GUIDE_START_VERSION_AND_BUILD, Global_STR_MAJOR_MINOR_VERSION,
+;   Global_REF_DOS_LIBRARY_2, AbsExecBase, _Global_STR_GRAPHICS_LIBRARY,
+;   _Global_STR_DISKFONT_LIBRARY, _Global_STR_DOS_LIBRARY, _Global_STR_INTUITION_LIBRARY,
+;   _Global_STR_UTILITY_LIBRARY, _Global_STR_BATTCLOCK_RESOURCE,
+;   _Global_STRUCT_TEXTATTR_TOPAZ_FONT, _Global_STRUCT_TEXTATTR_PREVUEC_FONT,
+;   _Global_STRUCT_TEXTATTR_H26F_FONT, _Global_STRUCT_TEXTATTR_PREVUE_FONT,
+;   _Global_STR_RAVESC, _Global_STR_COPY_NIL_ASSIGN_RAM, _Global_STR_ESQ_C_1..11,
+;   _Global_STR_SERIAL_READ, _Global_STR_SERIAL_DEVICE, _Global_STR_DF0_GRADIENT_INI_2,
+;   _Global_STR_GUIDE_START_VERSION_AND_BUILD, _Global_STR_MAJOR_MINOR_VERSION,
 ;   _Global_PTR_STR_BUILD_ID, _Global_LONG_BUILD_NUMBER, _Global_LONG_PATCH_VERSION_NUMBER
 ; WRITES:
-;   _ESQ_SelectCodeBuffer, Global_WORD_SELECT_CODE_IS_RAVESC,
+;   _ESQ_SelectCodeBuffer, _Global_WORD_SELECT_CODE_IS_RAVESC,
 ;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_DISKFONT_LIBRARY, _Global_REF_DOS_LIBRARY,
-;   _Global_REF_INTUITION_LIBRARY, _Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE,
+;   _Global_REF_INTUITION_LIBRARY, _Global_REF_UTILITY_LIBRARY, _Global_REF_BATTCLOCK_RESOURCE,
 ;   _Global_HANDLE_TOPAZ_FONT, _Global_HANDLE_PREVUEC_FONT, _Global_HANDLE_H26F_FONT,
-;   _Global_HANDLE_PREVUE_FONT, _Global_REF_RASTPORT_1, Global_REF_RASTPORT_2,
-;   _Global_REF_STR_CLOCK_FORMAT, _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort, WDISP_HighlightBufferMode, _WDISP_HighlightRasterHeightPx,
+;   _Global_HANDLE_PREVUE_FONT, _Global_REF_RASTPORT_1, _Global_REF_RASTPORT_2,
+;   _Global_REF_STR_CLOCK_FORMAT, _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort, _WDISP_HighlightBufferMode, _WDISP_HighlightRasterHeightPx,
 ;   _WDISP_352x240RasterPtrTable/_WDISP_BannerRowScratchRasterTable0/_WDISP_LivePlaneRasterTable0/_WDISP_DisplayContextPlanePointer0 tables, _WDISP_DisplayContextBase, _WDISP_BannerWorkRasterPtr,
-;   _SCRIPT_CtrlInterfaceEnabledFlag, ESQIFF_RecordBufferPtr, ESQSHARED_BannerRowScratchRasterBase0-ESQSHARED_BannerRowScratchRasterBase2, _ESQSHARED_LivePlaneBase0-ESQSHARED_DisplayContextPlaneBase4,
+;   _SCRIPT_CtrlInterfaceEnabledFlag, _ESQIFF_RecordBufferPtr, _ESQSHARED_BannerRowScratchRasterBase0-_ESQSHARED_BannerRowScratchRasterBase2, _ESQSHARED_LivePlaneBase0-_ESQSHARED_DisplayContextPlaneBase4,
 ;   _Global_REF_BAUD_RATE, _WDISP_SerialIoRequestPtr, _WDISP_SerialMessagePortPtr,
 ;   _Global_REF_96_BYTES_ALLOCATED, numerous state globals cleared in .init_global_state
 ; DESC:
@@ -52,14 +52,14 @@
 ;   - Treats argv[1] as a select code string; detects \"RAVESC\".
 ;   - Falls back to topaz for missing disk fonts.
 ;   - Copies argv strings bytewise without explicit destination-length checks.
-;   - Startup banner text is composed into ESQ_StartupVersionBannerBuffer via
+;   - Startup banner text is composed into _ESQ_StartupVersionBannerBuffer via
 ;     RawDoFmt-style formatting; template/string edits can affect memory safety.
 ;   - Current destination capacities:
 ;       _ESQ_SelectCodeBuffer = 10 bytes (including NUL)
-;       ESQ_StartupVersionBannerBuffer = 80 bytes (including NUL)
+;       _ESQ_StartupVersionBannerBuffer = 80 bytes (including NUL)
 ;       _DISKIO_ErrorMessageScratch = 41 bytes (including NUL)
 ;------------------------------------------------------------------------------
-ESQ_MainInitAndRun:
+_ESQ_MainInitAndRun:
     LINK.W  A5,#-16
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
 
@@ -93,7 +93,7 @@ ESQ_MainInitAndRun:
 
 .select_code_ready:
     LEA     _ESQ_SelectCodeBuffer,A0
-    LEA     Global_STR_RAVESC,A1
+    LEA     _Global_STR_RAVESC,A1
 
 .compare_select_code_loop:
     MOVE.B  (A0)+,D0
@@ -105,14 +105,14 @@ ESQ_MainInitAndRun:
 
     BNE.S   .clear_select_code_flag
 
-    MOVE.W  #1,Global_WORD_SELECT_CODE_IS_RAVESC
+    MOVE.W  #1,_Global_WORD_SELECT_CODE_IS_RAVESC
     BRA.S   .runStartupSequence
 
 .clear_select_code_flag:
-    CLR.W   Global_WORD_SELECT_CODE_IS_RAVESC
+    CLR.W   _Global_WORD_SELECT_CODE_IS_RAVESC
 
 .runStartupSequence:
-    LEA     Global_STR_COPY_NIL_ASSIGN_RAM,A0
+    LEA     _Global_STR_COPY_NIL_ASSIGN_RAM,A0
     MOVE.L  A0,D1       ; command string
     MOVEQ   #0,D2       ; input
     MOVE.L  D2,D3       ; output
@@ -123,14 +123,14 @@ ESQ_MainInitAndRun:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOFindTask(A6)
 
-    MOVE.L  D0,WDISP_ExecBaseHookPtr
+    MOVE.L  D0,_WDISP_ExecBaseHookPtr
     MOVEA.L D0,A0
-    MOVE.L  184(A0),ESQ_ProcessWindowPtrBackup
+    MOVE.L  184(A0),_ESQ_ProcessWindowPtrBackup
     MOVEQ   #-1,D0
     MOVE.L  D0,184(A0)
     MOVE.L  D2,D0
 
-    LEA     Global_STR_GRAPHICS_LIBRARY,A1
+    LEA     _Global_STR_GRAPHICS_LIBRARY,A1
     JSR     _LVOOpenLibrary(A6)
 
     MOVE.L  D0,Global_REF_GRAPHICS_LIBRARY
@@ -138,12 +138,12 @@ ESQ_MainInitAndRun:
     BNE.S   .loadDiskfontLibrary
 
     MOVE.L  D2,-(A7)
-    JSR     GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(PC)
+    JSR     _GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(PC)
 
     ADDQ.W  #4,A7
 
 .loadDiskfontLibrary:
-    LEA     Global_STR_DISKFONT_LIBRARY,A1
+    LEA     _Global_STR_DISKFONT_LIBRARY,A1
     MOVEQ   #0,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOOpenLibrary(A6)
@@ -152,12 +152,12 @@ ESQ_MainInitAndRun:
     BNE.S   .loadDosLibrary
 
     CLR.L   -(A7)
-    JSR     GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(PC)
+    JSR     _GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(PC)
 
     ADDQ.W  #4,A7
 
 .loadDosLibrary:
-    LEA     Global_STR_DOS_LIBRARY,A1
+    LEA     _Global_STR_DOS_LIBRARY,A1
     MOVEQ   #0,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOOpenLibrary(A6)
@@ -166,12 +166,12 @@ ESQ_MainInitAndRun:
     BNE.S   .loadIntuitionLibrary
 
     CLR.L   -(A7)
-    JSR     GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(PC)
+    JSR     _GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(PC)
 
     ADDQ.W  #4,A7
 
 .loadIntuitionLibrary:
-    LEA     Global_STR_INTUITION_LIBRARY,A1
+    LEA     _Global_STR_INTUITION_LIBRARY,A1
     MOVEQ   #0,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOOpenLibrary(A6)
@@ -180,7 +180,7 @@ ESQ_MainInitAndRun:
     BNE.S   .loadUtilityLibraryAndBattclockResource
 
     CLR.L   -(A7)
-    JSR     GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(PC)
+    JSR     _GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode(PC)
 
     ADDQ.W  #4,A7
 
@@ -191,7 +191,7 @@ ESQ_MainInitAndRun:
     CMP.W   D1,D0       ; CMP.W -> subtract D1 from D0 and store CCR conditions
     BCS.S   .loadFonts  ; If carry is set post comparison, jump to .loadFonts
 
-    LEA     Global_STR_UTILITY_LIBRARY,A1
+    LEA     _Global_STR_UTILITY_LIBRARY,A1
 
     ; Open the "utility.library" library, version 37
     MOVEQ   #37,D0
@@ -204,20 +204,20 @@ ESQ_MainInitAndRun:
     BEQ.S   .unableToLoadUtilityLibrary
 
     ; Open the "battclock.resource" resource
-    LEA     Global_STR_BATTCLOCK_RESOURCE,A1
+    LEA     _Global_STR_BATTCLOCK_RESOURCE,A1
     JSR     _LVOOpenResource(A6)
 
-    MOVE.L  D0,Global_REF_BATTCLOCK_RESOURCE
+    MOVE.L  D0,_Global_REF_BATTCLOCK_RESOURCE
 
 .unableToLoadUtilityLibrary:
     MOVEQ   #2,D0
     MOVE.L  D0,_Global_LONG_ROM_VERSION_CHECK
 
 .loadFonts:
-    JSR     GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS(PC)
+    JSR     _GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS(PC)
 
     ; Open the "topaz.font" file.
-    LEA     Global_STRUCT_TEXTATTR_TOPAZ_FONT,A0
+    LEA     _Global_STRUCT_TEXTATTR_TOPAZ_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOOpenFont(A6)
 
@@ -227,7 +227,7 @@ ESQ_MainInitAndRun:
     BEQ.W   .return
 
     ; Open the "PrevueC.font" file.
-    LEA     Global_STRUCT_TEXTATTR_PREVUEC_FONT,A0
+    LEA     _Global_STRUCT_TEXTATTR_PREVUEC_FONT,A0
     MOVEA.L _Global_REF_DISKFONT_LIBRARY,A6
 
     JSR     _LVOOpenDiskFont(A6)
@@ -242,7 +242,7 @@ ESQ_MainInitAndRun:
 
 .openH26fFont:
     ; Open the "h26f.font" file.
-    LEA     Global_STRUCT_TEXTATTR_H26F_FONT,A0
+    LEA     _Global_STRUCT_TEXTATTR_H26F_FONT,A0
     JSR     _LVOOpenDiskFont(A6)
 
     MOVE.L  D0,_Global_HANDLE_H26F_FONT
@@ -255,7 +255,7 @@ ESQ_MainInitAndRun:
 
 .openPrevueFont:
     ; Open the "Prevue.font" file.
-    LEA     Global_STRUCT_TEXTATTR_PREVUE_FONT,A0
+    LEA     _Global_STRUCT_TEXTATTR_PREVUE_FONT,A0
     JSR     _LVOOpenDiskFont(A6)
 
     MOVE.L  D0,_Global_HANDLE_PREVUE_FONT
@@ -270,7 +270,7 @@ ESQ_MainInitAndRun:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     100.W
     PEA     623.W
-    PEA     Global_STR_ESQ_C_1
+    PEA     _Global_STR_ESQ_C_1
     JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -307,20 +307,20 @@ ESQ_MainInitAndRun:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     100.W
     PEA     645.W
-    PEA     Global_STR_ESQ_C_2
+    PEA     _Global_STR_ESQ_C_2
     JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
-    MOVE.L  D0,Global_REF_RASTPORT_2
+    MOVE.L  D0,_Global_REF_RASTPORT_2
     MOVEA.L D0,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
-    MOVEA.L Global_REF_RASTPORT_2,A0
-    MOVE.L  #Global_REF_320_240_BITMAP,4(A0)      ; #Global_REF_320_240_BITMAP into Global_REF_RASTPORT_2.BitMap
+    MOVEA.L _Global_REF_RASTPORT_2,A0
+    MOVE.L  #_Global_REF_320_240_BITMAP,4(A0)      ; #_Global_REF_320_240_BITMAP into _Global_REF_RASTPORT_2.BitMap
 
-    MOVEA.L Global_REF_RASTPORT_2,A1
+    MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
@@ -334,7 +334,7 @@ ESQ_MainInitAndRun:
 
     MOVE.L  D5,D0
     MULS    #40,D0
-    LEA     ESQDISP_HighlightBitmapTable,A0
+    LEA     _ESQDISP_HighlightBitmapTable,A0
     ADDA.L  D0,A0
     MOVE.L  A0,-(A7)
     JSR     _ESQDISP_AllocateHighlightBitmaps(PC)
@@ -344,7 +344,7 @@ ESQ_MainInitAndRun:
     BRA.S   .init_rastport1_rows_loop
 
 .init_bitmap_320_240:
-    LEA     Global_REF_320_240_BITMAP,A0     ; BitMap struct pointer
+    LEA     _Global_REF_320_240_BITMAP,A0     ; BitMap struct pointer
     MOVEQ   #4,D0           ; depth: 4 bitplanes or 16 colors (2 ^ 4) into D0
     MOVE.L  #352,D1         ; width: 352 into D1
     MOVEQ   #120,D2         ; height: 120 into D2
@@ -368,7 +368,7 @@ ESQ_MainInitAndRun:
     PEA     240.W                       ; Height
     PEA     352.W                       ; Width
     PEA     668.W                       ; Line Number
-    PEA     Global_STR_ESQ_C_3            ; Calling File
+    PEA     _Global_STR_ESQ_C_3            ; Calling File
     MOVE.L  A0,44(A7)
     JSR     _ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
@@ -400,7 +400,7 @@ ESQ_MainInitAndRun:
     BRA.S   .store_clock_format_table
 
 .use12HourClock:
-    LEA     Global_JMPTBL_HALF_HOURS_12_HR_FMT,A0
+    LEA     _Global_JMPTBL_HALF_HOURS_12_HR_FMT,A0
 
 .store_clock_format_table:
     MOVE.L  A0,_Global_REF_STR_CLOCK_FORMAT
@@ -408,7 +408,7 @@ ESQ_MainInitAndRun:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     34.W
     PEA     683.W
-    PEA     Global_STR_ESQ_C_4
+    PEA     _Global_STR_ESQ_C_4
     JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -427,12 +427,12 @@ ESQ_MainInitAndRun:
     MOVEA.L _ESQ_HighlightMsgPort,A0
     ADDA.W  #20,A0
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AM_JMPTBL_LIST_InitHeader(PC)
+    JSR     _GROUP_AM_JMPTBL_LIST_InitHeader(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     34.W
     PEA     698.W
-    PEA     Global_STR_ESQ_C_5
+    PEA     _Global_STR_ESQ_C_5
     JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -451,7 +451,7 @@ ESQ_MainInitAndRun:
     MOVEA.L _ESQ_HighlightReplyPort,A0
     ADDA.W  #20,A0
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AM_JMPTBL_LIST_InitHeader(PC)
+    JSR     _GROUP_AM_JMPTBL_LIST_InitHeader(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D5
@@ -467,7 +467,7 @@ ESQ_MainInitAndRun:
     ADDA.L  D0,A0
     MOVE.L  D5,D0
     MULS    #$28,D0
-    LEA     ESQDISP_HighlightBitmapTable,A1
+    LEA     _ESQDISP_HighlightBitmapTable,A1
     ADDA.L  D0,A1
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
@@ -480,14 +480,14 @@ ESQ_MainInitAndRun:
 .after_entry_tables:
     JSR     _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
-    CLR.W   WDISP_HighlightBufferMode
+    CLR.W   _WDISP_HighlightBufferMode
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A0
     MOVE.W  20(A0),D0
     MOVEQ   #34,D1
     CMP.W   D1,D0
     BCS.S   .check_graphics_version
 
-    MOVE.W  #1,WDISP_HighlightBufferMode
+    MOVE.W  #1,_WDISP_HighlightBufferMode
 
 .check_graphics_version:
     MOVEQ   #4,D1
@@ -497,26 +497,26 @@ ESQ_MainInitAndRun:
     CMPI.L  #1750000,D0
     BLE.S   .check_available_mem
 
-    MOVE.W  #2,WDISP_HighlightBufferMode
+    MOVE.W  #2,_WDISP_HighlightBufferMode
 
 .check_available_mem:
-    JSR     GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage(PC)
+    JSR     _GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage(PC)
 
     TST.L   D0
     BNE.W   .return
 
-    JSR     GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory(PC)
+    JSR     _GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory(PC)
 
-    JSR     GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip(PC)
+    JSR     _GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip(PC)
 
-    JSR     GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard(PC)
+    JSR     _GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard(PC)
 
-    MOVE.L  #_CLOCK_DaySlotIndex,CLOCK_DaySlotIndexPtr
-    MOVE.L  #_CLOCK_CurrentDayOfWeekIndex,CLOCK_CurrentDayOfWeekIndexPtr
+    MOVE.L  #_CLOCK_DaySlotIndex,_CLOCK_DaySlotIndexPtr
+    MOVE.L  #_CLOCK_CurrentDayOfWeekIndex,_CLOCK_CurrentDayOfWeekIndexPtr
     MOVEQ   #0,D0
     MOVE.W  D0,_DST_PrimaryCountdown
     MOVE.W  D0,_DST_SecondaryCountdown
-    JSR     GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc(PC)
+    JSR     _GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc(PC)
 
     JSR     _DST_RefreshBannerBuffer(PC)
 
@@ -533,7 +533,7 @@ ESQ_MainInitAndRun:
     EXT.L   D0
     ASL.L   #2,D0
     MOVEA.L 0(A3,D0.L),A0
-    LEA     Global_STR_CART,A1
+    LEA     _Global_STR_CART,A1
 
 .compare_cart_string_loop:
     MOVE.B  (A0)+,D1
@@ -557,7 +557,7 @@ ESQ_MainInitAndRun:
     ; Serial device speed gate for the standard ingest path.
     ; Accepted runtime values here are 2400/4800/9600; other values clamp to 2400.
     ; The downstream parser/record handlers are shared regardless of which accepted
-    ; baud is selected (see ESQPARS_ConsumeRbfByteAndDispatchCommand and ESQIFF2_ReadRbfBytes*).
+    ; baud is selected (see _ESQPARS_ConsumeRbfByteAndDispatchCommand and ESQIFF2_ReadRbfBytes*).
     MOVEQ   #2,D0
     CMP.L   D0,D7
 
@@ -591,13 +591,13 @@ ESQ_MainInitAndRun:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)     ; flags
     PEA     9000.W                              ; 9000 bytes
     PEA     854.W                               ; line number?
-    PEA     Global_STR_ESQ_C_6
+    PEA     _Global_STR_ESQ_C_6
     JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
-    MOVE.L  D0,ESQIFF_RecordBufferPtr
+    MOVE.L  D0,_ESQIFF_RecordBufferPtr
     CLR.L   (A7)
-    PEA     Global_STR_SERIAL_READ
-    JSR     GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal(PC)
+    PEA     _Global_STR_SERIAL_READ
+    JSR     _GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal(PC)
 
     LEA     20(A7),A7
     MOVE.L  D0,_WDISP_SerialMessagePortPtr
@@ -605,7 +605,7 @@ ESQ_MainInitAndRun:
 
     PEA     82.W
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AM_JMPTBL_STRUCT_AllocWithOwner(PC)
+    JSR     _GROUP_AM_JMPTBL_STRUCT_AllocWithOwner(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,_WDISP_SerialIoRequestPtr
@@ -613,7 +613,7 @@ ESQ_MainInitAndRun:
     BEQ.W   .return
 
     MOVEA.L D0,A1                       ; ioRequest
-    LEA     Global_STR_SERIAL_DEVICE,A0   ; devName
+    LEA     _Global_STR_SERIAL_DEVICE,A0   ; devName
     MOVEQ   #0,D0                       ; unit number
     MOVE.L  D0,D1                       ; flags
     MOVEA.L AbsExecBase,A6
@@ -636,18 +636,18 @@ ESQ_MainInitAndRun:
 
     JSR     _SETUP_INTERRUPT_INTB_AUD1(PC)
 
-    JSR     GROUP_AM_JMPTBL_ESQ_InitAudio1Dma(PC)
+    JSR     _GROUP_AM_JMPTBL_ESQ_InitAudio1Dma(PC)
 
-    JSR     GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext(PC)
+    JSR     _GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext(PC)
 
-    JSR     GROUP_AM_JMPTBL_KYBD_InitializeInputDevices(PC)
+    JSR     _GROUP_AM_JMPTBL_KYBD_InitializeInputDevices(PC)
 
     JSR     _ESQFUNC_AllocateLineTextBuffers(PC)
 
     PEA     (MEMF_PUBLIC).W                 ; Memory Type
     PEA     96.W                            ; Bytes to Allocate
     PEA     984.W                           ; Line Number
-    PEA     Global_STR_ESQ_C_7                ; Calling File
+    PEA     _Global_STR_ESQ_C_7                ; Calling File
     JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -661,7 +661,7 @@ ESQ_MainInitAndRun:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
-    LEA     Global_REF_696_241_BITMAP,A0
+    LEA     _Global_REF_696_241_BITMAP,A0
     MOVEQ   #4,D0       ; 4 bitplanes
     MOVE.L  #696,D1     ; 696 w
     MOVEQ   #14,D2      ; 14 h
@@ -684,7 +684,7 @@ ESQ_MainInitAndRun:
     PEA     509.W                       ; Height
     PEA     696.W                       ; Width
     PEA     991.W                       ; Line Number
-    PEA     Global_STR_ESQ_C_8            ; Calling File
+    PEA     _Global_STR_ESQ_C_8            ; Calling File
     MOVE.L  A0,44(A7)
     JSR     _ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
@@ -707,9 +707,9 @@ ESQ_MainInitAndRun:
 
 .seed_raster_aliases:
     ; Preserve original 696x509 raster bases for display/scratch reuse.
-    MOVE.L  _WDISP_BannerRowScratchRasterTable0,ESQSHARED_BannerRowScratchRasterBase0
-    MOVE.L  WDISP_BannerRowScratchRasterTable1,ESQSHARED_BannerRowScratchRasterBase1
-    MOVE.L  WDISP_BannerRowScratchRasterTable2,ESQSHARED_BannerRowScratchRasterBase2
+    MOVE.L  _WDISP_BannerRowScratchRasterTable0,_ESQSHARED_BannerRowScratchRasterBase0
+    MOVE.L  _WDISP_BannerRowScratchRasterTable1,_ESQSHARED_BannerRowScratchRasterBase1
+    MOVE.L  _WDISP_BannerRowScratchRasterTable2,_ESQSHARED_BannerRowScratchRasterBase2
     MOVEQ   #0,D5
 
 .seed_raster_offsets_loop:
@@ -748,7 +748,7 @@ ESQ_MainInitAndRun:
     PEA     241.W                       ; Height
     PEA     696.W                       ; Width
     PEA     1008.W                      ; Line Number
-    PEA     Global_STR_ESQ_C_9            ; Calling File
+    PEA     _Global_STR_ESQ_C_9            ; Calling File
     MOVE.L  A0,44(A7)
     JSR     _ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
@@ -770,11 +770,11 @@ ESQ_MainInitAndRun:
     BRA.S   .GRAPHICS_AllocRasters_696x241_loop
 
 .init_main_rastport:
-    MOVE.L  _WDISP_DisplayContextPlanePointer0,ESQSHARED_DisplayContextPlaneBase0
-    MOVE.L  WDISP_DisplayContextPlanePointer1,ESQSHARED_DisplayContextPlaneBase1
-    MOVE.L  WDISP_DisplayContextPlanePointer2,ESQSHARED_DisplayContextPlaneBase2
-    MOVE.L  WDISP_DisplayContextPlanePointer3,ESQSHARED_DisplayContextPlaneBase3
-    MOVE.L  WDISP_DisplayContextPlanePointer4,ESQSHARED_DisplayContextPlaneBase4
+    MOVE.L  _WDISP_DisplayContextPlanePointer0,_ESQSHARED_DisplayContextPlaneBase0
+    MOVE.L  _WDISP_DisplayContextPlanePointer1,_ESQSHARED_DisplayContextPlaneBase1
+    MOVE.L  _WDISP_DisplayContextPlanePointer2,_ESQSHARED_DisplayContextPlaneBase2
+    MOVE.L  _WDISP_DisplayContextPlanePointer3,_ESQSHARED_DisplayContextPlaneBase3
+    MOVE.L  _WDISP_DisplayContextPlanePointer4,_ESQSHARED_DisplayContextPlaneBase4
     MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  52(A0),-4(A5)
     MOVEA.L -4(A5),A0
@@ -783,11 +783,11 @@ ESQ_MainInitAndRun:
     PEA     3.W
     CLR.L   -(A7)
     PEA     2.W
-    JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,_WDISP_DisplayContextBase
-    LEA     WDISP_BannerGridBitmapStruct,A0
+    LEA     _WDISP_BannerGridBitmapStruct,A0
     MOVEQ   #3,D0
     MOVE.L  #696,D1
     MOVEQ   #2,D2
@@ -810,7 +810,7 @@ ESQ_MainInitAndRun:
     PEA     2.W                         ; Height
     PEA     696.W                       ; Width
     PEA     1027.W                      ; Line Number
-    PEA     Global_STR_ESQ_C_10           ; Calling file
+    PEA     _Global_STR_ESQ_C_10           ; Calling file
     MOVE.L  A0,44(A7)
     JSR     _ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
@@ -836,13 +836,13 @@ ESQ_MainInitAndRun:
 .after_raster_setup:
     ; Snapshot currently live 696x2 plane bases for ESQSHARED copy paths.
     MOVE.L  _WDISP_LivePlaneRasterTable0,_ESQSHARED_LivePlaneBase0
-    MOVE.L  WDISP_LivePlaneRasterTable1,_ESQSHARED_LivePlaneBase1
-    MOVE.L  WDISP_LivePlaneRasterTable2,_ESQSHARED_LivePlaneBase2
+    MOVE.L  _WDISP_LivePlaneRasterTable1,_ESQSHARED_LivePlaneBase1
+    MOVE.L  _WDISP_LivePlaneRasterTable2,_ESQSHARED_LivePlaneBase2
 
     PEA     15.W                        ; Height
     PEA     696.W                       ; Width
     PEA     1038.W                      ; Line Number
-    PEA     Global_STR_ESQ_C_11           ; Calling file
+    PEA     _Global_STR_ESQ_C_11           ; Calling file
     JSR     _ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     MOVE.L  D0,_WDISP_BannerWorkRasterPtr
@@ -850,7 +850,7 @@ ESQ_MainInitAndRun:
     CLR.L   _NEWGRID_RefreshStateFlag
     MOVEQ   #-1,D0
     MOVE.L  D0,_NEWGRID_MessagePumpSuspendFlag
-    JSR     GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk(PC)
+    JSR     _GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk(PC)
 
     LEA     16(A7),A7
     ADDQ.L  #1,D0
@@ -859,14 +859,14 @@ ESQ_MainInitAndRun:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQFUNC_UpdateRefreshModeState(PC)
+    JSR     _ESQFUNC_UpdateRefreshModeState(PC)
 
     ADDQ.W  #8,A7
 
 .init_global_state:
-    JSR     ESQSHARED4_InitializeBannerCopperSystem(PC)
+    JSR     _ESQSHARED4_InitializeBannerCopperSystem(PC)
 
-    JSR     GROUP_AM_JMPTBL_TLIBA3_InitPatternTable(PC)
+    JSR     _GROUP_AM_JMPTBL_TLIBA3_InitPatternTable(PC)
 
     JSR     _SETUP_INTERRUPT_INTB_VERTB(PC)
 
@@ -874,24 +874,24 @@ ESQ_MainInitAndRun:
     ; default value it uses.
     MOVEQ   #0,D0
     MOVE.W  D0,_Global_UIBusyFlag
-    MOVE.W  D0,ESQ_StartupStateWord2203
+    MOVE.W  D0,_ESQ_StartupStateWord2203
     MOVE.W  D0,_TEXTDISP_SecondaryGroupRecordLength
     MOVE.W  D0,_TEXTDISP_PrimaryGroupRecordLength
-    MOVE.W  D0,ESQ_TickModulo60Counter
-    MOVE.W  D0,ESQ_StartupWriteOnlyWord2271
+    MOVE.W  D0,_ESQ_TickModulo60Counter
+    MOVE.W  D0,_ESQ_StartupWriteOnlyWord2271
     MOVE.W  D0,_ESQIFF_ParseAttemptCount
     MOVE.W  D0,_SCRIPT_CtrlCmdCount
     MOVE.W  D0,_TEXTDISP_SecondaryGroupEntryCount
     MOVE.W  D0,_TEXTDISP_PrimaryGroupEntryCount
     MOVE.W  D0,_ESQIFF_GAdsListLineIndex
     MOVE.W  D0,_ESQIFF_LogoListLineIndex
-    MOVE.W  D0,ESQIFF_StatusPacketReadyFlag
+    MOVE.W  D0,_ESQIFF_StatusPacketReadyFlag
     MOVE.W  D0,_TEXTDISP_GroupMutationState
     MOVE.W  D0,_ESQ_SerialRbfFillLevel
     MOVE.W  D0,_Global_WORD_MAX_VALUE
     MOVE.W  D0,_Global_WORD_T_VALUE
     MOVE.W  D0,_Global_WORD_H_VALUE
-    MOVE.W  D0,CLEANUP_PendingAlertFlag
+    MOVE.W  D0,_CLEANUP_PendingAlertFlag
     MOVE.W  D0,_CTRL_BufferedByteCount
     MOVE.W  D0,_CTRL_HDeltaMax
     MOVE.W  D0,_CTRL_HPreviousSample
@@ -901,11 +901,11 @@ ESQ_MainInitAndRun:
     MOVE.W  D0,_SCRIPT_CtrlCmdChecksumErrorCount
     MOVE.W  D0,_ESQIFF_LineErrorCount
     MOVE.W  D0,_SCRIPT_CtrlCmdLengthErrorCount
-    MOVE.W  D0,ESQPARS_CommandPreambleArmedFlag
-    MOVE.W  D0,ESQPARS_Preamble55SeenFlag
+    MOVE.W  D0,_ESQPARS_CommandPreambleArmedFlag
+    MOVE.W  D0,_ESQPARS_Preamble55SeenFlag
     MOVE.W  D0,_WDISP_BannerCharPhaseShift
-    MOVE.W  D0,ESQPARS_SelectionMatchCode
-    MOVE.W  D0,ESQPARS_ResetArmedFlag
+    MOVE.W  D0,_ESQPARS_SelectionMatchCode
+    MOVE.W  D0,_ESQPARS_ResetArmedFlag
     MOVEQ   #0,D1
     MOVE.B  D1,_ESQIFF_UseCachedChecksumFlag
     MOVE.B  D1,_TEXTDISP_SecondaryGroupRecordChecksum
@@ -913,11 +913,11 @@ ESQ_MainInitAndRun:
     MOVE.B  D1,_TEXTDISP_SecondaryGroupPresentFlag
     MOVE.B  D1,_TEXTDISP_PrimaryGroupCode
     MOVE.B  #$1,_TEXTDISP_SecondaryGroupCode
-    MOVE.W  #7,ESQ_StartupPhaseSeed225E
+    MOVE.W  #7,_ESQ_StartupPhaseSeed225E
     MOVE.W  #2,_CLOCK_HalfHourSlotIndex
-    MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
+    MOVE.W  D0,_SCRIPT_CTRL_READ_INDEX
     MOVE.W  D0,_PARSEINI_CtrlHChangeGateFlag
-    MOVE.W  #$ff,SCRIPT_CTRL_CHECKSUM
+    MOVE.W  #$ff,_SCRIPT_CTRL_CHECKSUM
     JSR     _ESQIFF_RestoreBasePaletteTriples(PC)
 
     JSR     _ESQIFF_RunCopperDropTransition(PC)
@@ -936,7 +936,7 @@ ESQ_MainInitAndRun:
     JSR     _LVORectFill(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A0
-    MOVE.L  #Global_REF_696_241_BITMAP,4(A0)
+    MOVE.L  #_Global_REF_696_241_BITMAP,4(A0)
     MOVEA.L _Global_REF_RASTPORT_1,A1
 
     MOVEQ   #7,D0
@@ -985,7 +985,7 @@ ESQ_MainInitAndRun:
     MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     150.W
-    PEA     ESQ_STR_NO_DF1_PRESENT
+    PEA     _ESQ_STR_NO_DF1_PRESENT
     MOVE.L  A0,-(A7)
     JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -998,37 +998,37 @@ ESQ_MainInitAndRun:
     ; Current format literal contributes 13 fixed chars; remaining budget is
     ; shared across %s/%ld/%ld/%s substitutions.
     ; Current configured render: "Ver 9.0.4 Build 21 JGT" (22 chars + NUL).
-    ; ESQ_StartupVersionBannerBuffer capacity is 80 bytes => current headroom 57.
+    ; _ESQ_StartupVersionBannerBuffer capacity is 80 bytes => current headroom 57.
     ; With signed-32 worst-case %ld fields and current %s inputs, usage is
     ; 41 chars + NUL (headroom 38). Under current major/minor width, final
     ; build-id text above 41 chars would drop below a 16-byte safety margin.
     MOVE.L  _Global_PTR_STR_BUILD_ID,-(A7)             ; JGT
     MOVE.L  _Global_LONG_BUILD_NUMBER,-(A7)            ; 21
     MOVE.L  _Global_LONG_PATCH_VERSION_NUMBER,-(A7)    ; 4
-    PEA     Global_STR_MAJOR_MINOR_VERSION            ; 9.0
-    PEA     Global_STR_GUIDE_START_VERSION_AND_BUILD
-    PEA     ESQ_StartupVersionBannerBuffer
+    PEA     _Global_STR_MAJOR_MINOR_VERSION            ; 9.0
+    PEA     _Global_STR_GUIDE_START_VERSION_AND_BUILD
+    PEA     _ESQ_StartupVersionBannerBuffer
     JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    LEA     ESQ_STR_38_Spaces,A0
+    LEA     _ESQ_STR_38_Spaces,A0
     LEA     _DISKIO_ErrorMessageScratch,A1
     MOVEQ   #9,D0
 
-; Copy 40 bytes (10 longwords) from ESQ_STR_38_Spaces into a 41-byte scratch.
-; Current ESQ_STR_38_Spaces length is 39 chars + NUL = 40 bytes.
+; Copy 40 bytes (10 longwords) from _ESQ_STR_38_Spaces into a 41-byte scratch.
+; Current _ESQ_STR_38_Spaces length is 39 chars + NUL = 40 bytes.
 ; If that source string shrinks, this fixed-size copy can pull adjacent data.
 .copy_version_template_loop:
     MOVE.L  (A0)+,(A1)+
     DBF     D0,.copy_version_template_loop
 
-    JSR     GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode(PC)
+    JSR     _GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode(PC)
 
-    JSR     GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults(PC)
+    JSR     _GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults(PC)
 
-    PEA     Global_STR_DF0_GRADIENT_INI_2
+    PEA     _Global_STR_DF0_GRADIENT_INI_2
     JSR     _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
 
-    JSR     GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState(PC)
+    JSR     _GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState(PC)
 
     MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
@@ -1041,21 +1041,21 @@ ESQ_MainInitAndRun:
     MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     90.W
-    PEA     ESQ_StartupVersionBannerBuffer
+    PEA     _ESQ_StartupVersionBannerBuffer
     MOVE.L  A0,-(A7)
     JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     120.W
-    PEA     ESQ_STR_SystemInitializing
+    PEA     _ESQ_STR_SystemInitializing
     MOVE.L  A0,-(A7)
     JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     150.W
-    PEA     ESQ_STR_PleaseStandByEllipsis
+    PEA     _ESQ_STR_PleaseStandByEllipsis
     MOVE.L  A0,-(A7)
     JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1070,7 +1070,7 @@ ESQ_MainInitAndRun:
     MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     180.W
-    PEA     ESQ_STR_AttentionSystemEngineer
+    PEA     _ESQ_STR_AttentionSystemEngineer
     MOVE.L  A0,-(A7)
     JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1081,7 +1081,7 @@ ESQ_MainInitAndRun:
     MOVEA.L _WDISP_DisplayContextBase,A0
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     PEA     210.W
-    PEA     ESQ_STR_ReportErrorCodeEr011ToTVGuide
+    PEA     _ESQ_STR_ReportErrorCodeEr011ToTVGuide
     MOVE.L  A0,-(A7)
     JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1106,7 +1106,7 @@ ESQ_MainInitAndRun:
 
 .draw_compat_note:
     MOVE.L  D0,-(A7)
-    PEA     ESQ_STR_ReportErrorCodeER012ToTVGuide
+    PEA     _ESQ_STR_ReportErrorCodeER012ToTVGuide
     MOVE.L  A0,-(A7)
     JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1121,27 +1121,27 @@ ESQ_MainInitAndRun:
 .continue_startup:
     JSR     _ESQIFF_RunCopperRiseTransition(PC)
 
-    JSR     GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries(PC)
+    JSR     _GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries(PC)
 
-    JSR     GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries(PC)
+    JSR     _GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries(PC)
 
     JSR     _DISKIO2_ReloadDataFilesAndRebuildIndex(PC)
 
-    JSR     GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk(PC)
+    JSR     _GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk(PC)
 
-    JSR     GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig(PC)
+    JSR     _GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig(PC)
 
-    PEA     Global_STR_DF0_DEFAULT_INI_1
+    PEA     _Global_STR_DF0_DEFAULT_INI_1
     JSR     _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
 
-    PEA     Global_STR_DF0_BRUSH_INI_1
+    PEA     _Global_STR_DF0_BRUSH_INI_1
     JSR     _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
 
     PEA     _ESQIFF_BrushIniListHead
     MOVE.L  _PARSEINI_ParsedDescriptorListHead,-(A7)
     JSR     _ESQIFF_JMPTBL_BRUSH_PopulateBrushList(PC)
 
-    PEA     ESQ_STR_DT
+    PEA     _ESQ_STR_DT
     JSR     _ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel(PC)
 
     LEA     20(A7),A7
@@ -1149,7 +1149,7 @@ ESQ_MainInitAndRun:
     BNE.S   .ensure_brush_selected
 
     PEA     _ESQIFF_BrushIniListHead
-    PEA     ESQ_STR_DITHER
+    PEA     _ESQ_STR_DITHER
     JSR     _ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
     ADDQ.W  #8,A7
@@ -1162,45 +1162,45 @@ ESQ_MainInitAndRun:
     MOVE.L  D0,_ESQFUNC_FallbackType3BrushNode
     JSR     _ESQFUNC_RebuildPwBrushListFromTagTable(PC)
 
-    PEA     Global_STR_DF0_BANNER_INI_1
+    PEA     _Global_STR_DF0_BANNER_INI_1
     JSR     _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
 
-    JSR     GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates(PC)
+    JSR     _GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates(PC)
 
     JSR     _GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile(PC)
 
-    JSR     ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(PC)
+    JSR     _ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(PC)
 
-    MOVE.W  #1,ESQ_StartupWriteOnlyLong2272
-    MOVE.W  _WDISP_BannerCharRangeStart,WDISP_BannerCharIndex
+    MOVE.W  #1,_ESQ_StartupWriteOnlyLong2272
+    MOVE.W  _WDISP_BannerCharRangeStart,_WDISP_BannerCharIndex
     CLR.L   (A7)
     PEA     4095.W
-    JSR     ESQDISP_UpdateStatusMaskAndRefresh(PC)
+    JSR     _ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     MOVE.W  #$8100,INTENA
-    JSR     GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds(PC)
+    JSR     _GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds(PC)
 
     PEA     _LOCAVAIL_PrimaryFilterState
-    JSR     GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(PC)
+    JSR     _GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(PC)
 
     PEA     _LOCAVAIL_SecondaryFilterState
-    JSR     GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(PC)
+    JSR     _GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct(PC)
 
     PEA     _LOCAVAIL_SecondaryFilterState
     PEA     _LOCAVAIL_PrimaryFilterState
-    JSR     GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile(PC)
+    JSR     _GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile(PC)
 
     SUBA.L  A0,A0
     MOVE.L  A0,_DST_BannerWindowPrimary
-    MOVE.L  A0,DST_BannerWindowSecondary
+    MOVE.L  A0,_DST_BannerWindowSecondary
     PEA     _DST_BannerWindowPrimary
-    JSR     DST_LoadBannerPairFromFiles(PC)
+    JSR     _DST_LoadBannerPairFromFiles(PC)
 
     CLR.W   _Global_RefreshTickCounter
     JSR     _ESQFUNC_UpdateDiskWarningAndRefreshTick(PC)
 
     LEA     32(A7),A7
-    CLR.L   ESQDISP_DisplayActiveFlag
+    CLR.L   _ESQDISP_DisplayActiveFlag
     MOVEQ   #1,D5
 
 .scan_startup_flags_loop:
@@ -1213,7 +1213,7 @@ ESQ_MainInitAndRun:
     EXT.L   D0
     ASL.L   #2,D0
     MOVEA.L 0(A3,D0.L),A0
-    LEA     ESQ_TAG_GRANADA,A1
+    LEA     _ESQ_TAG_GRANADA,A1
 
 .compare_startup_flag_loop:
     MOVE.B  (A0)+,D1
@@ -1226,7 +1226,7 @@ ESQ_MainInitAndRun:
     BNE.S   .next_startup_flag
 
     MOVEQ   #1,D0
-    MOVE.L  D0,ESQDISP_DisplayActiveFlag
+    MOVE.L  D0,_ESQDISP_DisplayActiveFlag
 
 .next_startup_flag:
     ADDQ.W  #1,D5
@@ -1246,7 +1246,7 @@ ESQ_MainInitAndRun:
 
     CLR.W   _ESQIFF_ExternalAssetFlags
     CLR.L   -(A7)
-    JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
+    JSR     _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
 
     JSR     _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
@@ -1260,20 +1260,20 @@ ESQ_MainInitAndRun:
     MOVE.L  D5,D0
     EXT.L   D0
     ADD.L   D0,D0
-    LEA     CLEANUP_AlignedStatusEntryCycleTable,A0
+    LEA     _CLEANUP_AlignedStatusEntryCycleTable,A0
     ADDA.L  D0,A0
     CLR.W   (A0)
     ADDQ.W  #1,D5
     BRA.S   .clear_schedule_table_loop
 
 .after_schedule_table_clear:
-    TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
+    TST.W   _Global_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   .after_ravesc_banner
 
     JSR     _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
-    JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
+    JSR     _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
 
@@ -1288,17 +1288,17 @@ ESQ_MainInitAndRun:
     TST.W   D0
     BEQ.S   .check_exit_condition
 
-    TST.W   ESQ_ShutdownRequestedFlag
+    TST.W   _ESQ_ShutdownRequestedFlag
     BNE.S   .check_exit_condition
 
-    JSR     ESQPARS_ConsumeRbfByteAndDispatchCommand(PC)
+    JSR     _ESQPARS_ConsumeRbfByteAndDispatchCommand(PC)
 
 .check_exit_condition:
-    TST.W   ESQ_ShutdownRequestedFlag
+    TST.W   _ESQ_ShutdownRequestedFlag
     BEQ.S   .main_idle_loop
 
 .return:
-    JSR     GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem(PC)
+    JSR     _GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem(PC)
 
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
     UNLK    A5

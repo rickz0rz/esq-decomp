@@ -1,4 +1,4 @@
-    XDEF    ESQIFF_PlayNextExternalAssetFrame
+    XDEF    _ESQIFF_PlayNextExternalAssetFrame
     XDEF    ESQIFF_ServiceExternalAssetSourceState
     XDEF    ESQIFF_ShowExternalAssetWithCopperFx
     XDEF    ESQIFF_PlayNextExternalAssetFrame_Return
@@ -17,9 +17,9 @@
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
+;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_MATH_DivS32, _ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
 ; READS:
-;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, _ACCUMULATOR_Row0_CaptureValue, _ACCUMULATOR_Row1_CaptureValue, _ACCUMULATOR_Row2_CaptureValue, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _SCRIPT_BannerTransitionActive, _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, _WDISP_AccumulatorRowTable, _WDISP_AccumulatorRow0_Value, _WDISP_AccumulatorRow0_CopperIndexStart, _WDISP_AccumulatorRow0_CopperIndexEnd, _WDISP_AccumulatorRow1_Value, _WDISP_AccumulatorRow1_CopperIndexStart, _WDISP_AccumulatorRow1_CopperIndexEnd, _WDISP_AccumulatorRow2_Value, _WDISP_AccumulatorRow2_CopperIndexStart, _WDISP_AccumulatorRow2_CopperIndexEnd, _WDISP_AccumulatorRow3_Value, _WDISP_AccumulatorRow3_CopperIndexStart, _WDISP_AccumulatorRow3_CopperIndexEnd, e8
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _ACCUMULATOR_Row0_CaptureValue, _ACCUMULATOR_Row1_CaptureValue, _ACCUMULATOR_Row2_CaptureValue, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _SCRIPT_BannerTransitionActive, _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, _WDISP_AccumulatorRowTable, _WDISP_AccumulatorRow0_Value, _WDISP_AccumulatorRow0_CopperIndexStart, _WDISP_AccumulatorRow0_CopperIndexEnd, _WDISP_AccumulatorRow1_Value, _WDISP_AccumulatorRow1_CopperIndexStart, _WDISP_AccumulatorRow1_CopperIndexEnd, _WDISP_AccumulatorRow2_Value, _WDISP_AccumulatorRow2_CopperIndexStart, _WDISP_AccumulatorRow2_CopperIndexEnd, _WDISP_AccumulatorRow3_Value, _WDISP_AccumulatorRow3_CopperIndexStart, _WDISP_AccumulatorRow3_CopperIndexEnd, e8
 ; WRITES:
 ;   _ACCUMULATOR_Row0_CaptureValue, _ACCUMULATOR_Row1_CaptureValue, _ACCUMULATOR_Row2_CaptureValue, _ACCUMULATOR_Row3_CaptureValue, _ACCUMULATOR_Row0_Sum, _ACCUMULATOR_Row1_Sum, _ACCUMULATOR_Row2_Sum, _ACCUMULATOR_Row3_Sum, _ACCUMULATOR_Row0_SaturateFlag, _ACCUMULATOR_Row1_SaturateFlag, _ACCUMULATOR_Row2_SaturateFlag, _ACCUMULATOR_Row3_SaturateFlag, ESQFUNC_MissingAssetRetryMask, _WDISP_DisplayContextBase, _WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
 ; DESC:
@@ -84,7 +84,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     EXT.L   D0
     PEA     1000.W
     MOVE.L  D0,-(A7)
-    JSR     ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(PC)
+    JSR     _ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
 
@@ -133,7 +133,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     4.W
-    JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,_WDISP_DisplayContextBase
@@ -150,7 +150,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     6.W
-    JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,_WDISP_DisplayContextBase
@@ -167,7 +167,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     5.W
-    JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,_WDISP_DisplayContextBase
@@ -181,7 +181,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     7.W
-    JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,_WDISP_DisplayContextBase
@@ -431,7 +431,7 @@ ESQIFF_ShowExternalAssetWithCopperFx_Return:
 ; CALLS:
 ;   _ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_ReloadExternalAssetCatalogBuffers, ESQIFF_QueueNextExternalAssetIffJob
 ; READS:
-;   Global_WORD_SELECT_CODE_IS_RAVESC, _COI_AttentionOverlayBusyFlag, _ESQIFF_ExternalAssetFlags, _DISKIO_Drive0WriteProtectedCode, _DISKIO_DriveWriteProtectStatusCodeDrive1
+;   _Global_WORD_SELECT_CODE_IS_RAVESC, _COI_AttentionOverlayBusyFlag, _ESQIFF_ExternalAssetFlags, _DISKIO_Drive0WriteProtectedCode, _DISKIO_DriveWriteProtectStatusCodeDrive1
 ; WRITES:
 ;   _ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled
 ; DESC:
@@ -443,7 +443,7 @@ ESQIFF_ShowExternalAssetWithCopperFx_Return:
 ESQIFF_ServiceExternalAssetSourceState:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
-    TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
+    TST.W   _Global_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .return
 
     JSR     _ESQDISP_ProcessGridMessagesIfIdle(PC)
@@ -504,7 +504,7 @@ ESQIFF_ServiceExternalAssetSourceState:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_PlayNextExternalAssetFrame   (Render and retire next external asset frame)
+; FUNC: _ESQIFF_PlayNextExternalAssetFrame   (Render and retire next external asset frame)
 ; ARGS:
 ;   stack +6: arg_1 (via 10(A5))
 ; RET:
@@ -512,9 +512,9 @@ ESQIFF_ServiceExternalAssetSourceState:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, _ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
+;   _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, _ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
 ; READS:
-;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, _TEXTDISP_DeferredActionCountdown, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryGroupEntryCount, _WDISP_AccumulatorCaptureActive, ESQIFF_ExternalAssetStateTable, ESQIFF_ExternalAssetPathCommaFlag
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _TEXTDISP_DeferredActionCountdown, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryGroupEntryCount, _WDISP_AccumulatorCaptureActive, ESQIFF_ExternalAssetStateTable, ESQIFF_ExternalAssetPathCommaFlag
 ; WRITES:
 ;   _ESQIFF_GAdsBrushListCount, _ESQIFF_LogoBrushListCount, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _WDISP_AccumulatorCaptureActive, _TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -523,7 +523,7 @@ ESQIFF_ServiceExternalAssetSourceState:
 ; NOTES:
 ;   Mode 0 path may redraw channel banner using stored match index snapshot.
 ;------------------------------------------------------------------------------
-ESQIFF_PlayNextExternalAssetFrame:
+_ESQIFF_PlayNextExternalAssetFrame:
     LINK.W  A5,#-8
     MOVEM.L D6-D7,-(A7)
     MOVE.W  10(A5),D7
@@ -559,7 +559,7 @@ ESQIFF_PlayNextExternalAssetFrame:
     JSR     _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     2.W
-    JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
+    JSR     _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .run_rise_transition_and_service_source
@@ -570,7 +570,7 @@ ESQIFF_PlayNextExternalAssetFrame:
     PEA     1.W
     CLR.L   -(A7)
     PEA     4.W
-    JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
+    JSR     _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     MOVE.L  D0,_WDISP_DisplayContextBase
     MOVEA.L D0,A0
@@ -688,7 +688,7 @@ ESQIFF_PlayNextExternalAssetFrame:
     JSR     _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     2.W
-    JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
+    JSR     _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
 

@@ -20,7 +20,7 @@
     XDEF    DISKIO1_AppendTimeSlotMaskValueHeader
     XDEF    DISKIO1_AppendTimeSlotMaskValueTerminator
     XDEF    DISKIO1_DumpDefaultCoiInfoBlock
-    XDEF    DISKIO1_DumpProgramSourceRecordVerbose
+    XDEF    _DISKIO1_DumpProgramSourceRecordVerbose
     XDEF    DISKIO1_FormatBlackoutMaskFlags
     XDEF    DISKIO1_FormatTimeSlotMaskFlags
     XDEF    DISKIO1_DumpDefaultCoiInfoBlock_Return
@@ -919,7 +919,7 @@ DISKIO1_DumpDefaultCoiInfoBlock_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DISKIO1_DumpProgramSourceRecordVerbose   (Routine at DISKIO1_DumpProgramSourceRecordVerbose)
+; FUNC: _DISKIO1_DumpProgramSourceRecordVerbose   (Routine at _DISKIO1_DumpProgramSourceRecordVerbose)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -937,7 +937,7 @@ DISKIO1_DumpDefaultCoiInfoBlock_Return:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-DISKIO1_DumpProgramSourceRecordVerbose:
+_DISKIO1_DumpProgramSourceRecordVerbose:
     MOVEM.L D2-D5/D7/A2-A3,-(A7)
     MOVEA.L 32(A7),A3
     MOVE.L  36(A7),D7

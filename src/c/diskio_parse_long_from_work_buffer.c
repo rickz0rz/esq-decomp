@@ -15,7 +15,7 @@ long DISKIO_ParseLongFromWorkBuffer(void)
 {
     char *s = DISKIO_ConsumeCStringFromWorkBuffer();
 
-    if (s == (char *)0xFFFF)
-        return 0xFFFF;
+    if (s == (char *)-1)
+        return -1;
     return GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(s);
 }

@@ -154,7 +154,7 @@ _ESQSHARED_JMPTBL_ESQ_WildcardMatch:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STR_SkipClass3Chars
+;   _STR_SkipClass3Chars
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -165,7 +165,7 @@ _ESQSHARED_JMPTBL_ESQ_WildcardMatch:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _ESQSHARED_JMPTBL_STR_SkipClass3Chars:
-    JMP     STR_SkipClass3Chars
+    JMP     _STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQSHARED_JMPTBL_ESQ_TestBit1Based   (Routine at ESQSHARED_JMPTBL_ESQ_TestBit1Based)

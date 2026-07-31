@@ -220,7 +220,7 @@ NEWGRID_ClearMarkersIfSelectable:
 ; CALLS:
 ;   _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
 ; READS:
-;   _CLOCK_DaySlotIndex, CONFIG_NewgridWindowSpanHalfHoursPrimary, CONFIG_NewgridWindowSpanHalfHoursAlt
+;   _CLOCK_DaySlotIndex, _CONFIG_NewgridWindowSpanHalfHoursPrimary, _CONFIG_NewgridWindowSpanHalfHoursAlt
 ; WRITES:
 ;   0(A3)..24(A3)
 ; DESC:
@@ -264,13 +264,13 @@ NEWGRID_InitSelectionWindowAlt:
     TST.L   D6
     BNE.S   .mode_offset
 
-    MOVE.B  CONFIG_NewgridWindowSpanHalfHoursPrimary,D0
+    MOVE.B  _CONFIG_NewgridWindowSpanHalfHoursPrimary,D0
     EXT.W   D0
     EXT.L   D0
     BRA.S   .mode_offset_done
 
 .mode_offset:
-    MOVE.B  CONFIG_NewgridWindowSpanHalfHoursAlt,D0
+    MOVE.B  _CONFIG_NewgridWindowSpanHalfHoursAlt,D0
     EXT.W   D0
     EXT.L   D0
 
@@ -616,7 +616,7 @@ NEWGRID_UpdateSelectionFromInputAlt:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID_UpdatePresetEntry, _NEWGRID2_JMPTBL_STR_SkipClass3Chars,
+;   _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility, _TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID_UpdatePresetEntry, _NEWGRID2_JMPTBL_STR_SkipClass3Chars,
 ;   PARSEINI_JMPTBL_STRING_AppendAtNull
 ; READS:
 ;   _CONFIG_TimeWindowMinutes, NEWGRID_ShowtimeListSeparator
@@ -748,7 +748,7 @@ NEWGRID_AppendShowtimesForRow:
     MOVE.L  D0,-(A7)
     PEA     -31(A5)
     MOVE.B  D1,-53(A5)
-    JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
+    JSR     _TEXTDISP_FormatEntryTimeForIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  (A3),-80(A5)
@@ -1061,7 +1061,7 @@ NEWGRID_AppendShowtimesForRow:
     MOVE.L  -84(A5),-(A7)
     MOVE.L  D0,-(A7)
     PEA     -31(A5)
-    JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
+    JSR     _TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -31(A5)
     JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
@@ -1202,7 +1202,7 @@ NEWGRID_DrawShowtimesPrompt:
     JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
-    TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
+    TST.W   _Global_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   .append_suffix
 
     MOVEA.L -8(A5),A0

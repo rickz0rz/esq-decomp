@@ -1,22 +1,22 @@
-    XDEF    Global_STR_COI_C_3
+    XDEF    _Global_STR_COI_C_3
     XDEF    _Global_STR_COI_C_4
-    XDEF    Global_STR_DF0_OI_PERCENT_2_LX_DAT_1
-    XDEF    COI_FMT_LONG_DEC_A
-    XDEF    COI_FMT_DEC_A
-    XDEF    COI_STR_COLON_A
-    XDEF    COI_FMT_LONG_DEC_B
-    XDEF    COI_FMT_LONG_DEC_C
-    XDEF    COI_FMT_LONG_DEC_PAD2
-    XDEF    COI_STR_COLON_B
-    XDEF    COI_FMT_DEC_B
+    XDEF    _Global_STR_DF0_OI_PERCENT_2_LX_DAT_1
+    XDEF    _COI_FMT_LONG_DEC_A
+    XDEF    _COI_FMT_DEC_A
+    XDEF    _COI_STR_COLON_A
+    XDEF    _COI_FMT_LONG_DEC_B
+    XDEF    _COI_FMT_LONG_DEC_C
+    XDEF    _COI_FMT_LONG_DEC_PAD2
+    XDEF    _COI_STR_COLON_B
+    XDEF    _COI_FMT_DEC_B
     XDEF    _Global_STR_COI_C_5
-    XDEF    Global_STR_DF0_OI_PERCENT_2_LX_DAT_2
-    XDEF    Global_STR_COI_C_6
-    XDEF    COI_STR_LINEFEED_CR_1
-    XDEF    COI_STR_LINEFEED_CR_2
-    XDEF    COI_STR_DEFAULT_TOKEN_TEMPLATE_A
-    XDEF    Global_STR_PERCENT_S_1
-    XDEF    Global_STR_COI_C_1
+    XDEF    _Global_STR_DF0_OI_PERCENT_2_LX_DAT_2
+    XDEF    _Global_STR_COI_C_6
+    XDEF    _COI_STR_LINEFEED_CR_1
+    XDEF    _COI_STR_LINEFEED_CR_2
+    XDEF    _COI_STR_DEFAULT_TOKEN_TEMPLATE_A
+    XDEF    _Global_STR_PERCENT_S_1
+    XDEF    _Global_STR_COI_C_1
     XDEF    _Global_STR_COI_C_2
     XDEF    _COI_STR_DEFAULT_TOKEN_TEMPLATE_B
     XDEF    COI_FMT_WRAP_CHAR_STRING_CHAR
@@ -27,50 +27,50 @@
     XDEF    _COI_AttentionOverlayBusyFlag
 ; ========== COI.c ==========
 
-Global_STR_COI_C_3:
+_Global_STR_COI_C_3:
     NStr    "COI.c"
 _Global_STR_COI_C_4:
     NStr    "COI.c"
-Global_STR_DF0_OI_PERCENT_2_LX_DAT_1:
+_Global_STR_DF0_OI_PERCENT_2_LX_DAT_1:
     NStr    "df0:OI_%02lx.dat"
 ;------------------------------------------------------------------------------
-; SYM: COI_FMT_LONG_DEC_A   (decimal formatting strings)
+; SYM: _COI_FMT_LONG_DEC_A   (decimal formatting strings)
 ; TYPE: cstring
 ; PURPOSE: Format strings and separators used while parsing/building COI fields.
 ; USED BY: COI parsing/serialization helpers
 ; NOTES: Multiple aliases point to similar formats with context-specific usage.
 ;------------------------------------------------------------------------------
-COI_FMT_LONG_DEC_A:
+_COI_FMT_LONG_DEC_A:
     NStr    "%ld"
-COI_FMT_DEC_A:
+_COI_FMT_DEC_A:
     NStr    "%d"
-COI_STR_COLON_A:
+_COI_STR_COLON_A:
     NStr    ":"
-COI_FMT_LONG_DEC_B:
+_COI_FMT_LONG_DEC_B:
     NStr    "%ld"
-COI_FMT_LONG_DEC_C:
+_COI_FMT_LONG_DEC_C:
     NStr    "%ld"
-COI_FMT_LONG_DEC_PAD2:
+_COI_FMT_LONG_DEC_PAD2:
     NStr    "%02ld"
-COI_STR_COLON_B:
+_COI_STR_COLON_B:
     NStr    ":"
-COI_FMT_DEC_B:
+_COI_FMT_DEC_B:
     NStr    "%d"
 _Global_STR_COI_C_5:
     NStr    "COI.c"
-Global_STR_DF0_OI_PERCENT_2_LX_DAT_2:
+_Global_STR_DF0_OI_PERCENT_2_LX_DAT_2:
     NStr    "df0:OI_%02lx.dat"
-Global_STR_COI_C_6:
+_Global_STR_COI_C_6:
     NStr    "COI.c"
-COI_STR_LINEFEED_CR_1:
+_COI_STR_LINEFEED_CR_1:
     NStr2   TextLineFeed,TextCarriageReturn
-COI_STR_LINEFEED_CR_2:
+_COI_STR_LINEFEED_CR_2:
     NStr2   TextLineFeed,TextCarriageReturn
-COI_STR_DEFAULT_TOKEN_TEMPLATE_A:
+_COI_STR_DEFAULT_TOKEN_TEMPLATE_A:
     NStr    "NNNNNNXX00"
-Global_STR_PERCENT_S_1:
+_Global_STR_PERCENT_S_1:
     NStr    "%s"
-Global_STR_COI_C_1:
+_Global_STR_COI_C_1:
     NStr    "COI.c"
 _Global_STR_COI_C_2:
     NStr    "COI.c"

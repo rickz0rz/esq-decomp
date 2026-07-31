@@ -1,9 +1,9 @@
-    XDEF    BRUSH_SelectBrushByLabel
+    XDEF    _BRUSH_SelectBrushByLabel
 
 
 ; Select a brush by its string label, updating _BRUSH_SelectedNode.
 ;------------------------------------------------------------------------------
-; FUNC: BRUSH_SelectBrushByLabel   (Routine at BRUSH_SelectBrushByLabel)
+; FUNC: _BRUSH_SelectBrushByLabel   (Routine at _BRUSH_SelectBrushByLabel)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ; RET:
@@ -15,13 +15,13 @@
 ; READS:
 ;   BRUSH_LabelScratch, _BRUSH_SelectedNode, BRUSH_STR_ALIAS_CODE_00, BRUSH_STR_ALIAS_CODE_11, BRUSH_STR_ALIAS_CODE_DT, BRUSH_STR_FALLBACK_DITHER, _ESQIFF_BrushIniListHead
 ; WRITES:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, _BRUSH_SelectedNode
+;   _BRUSH_ScriptPrimarySelection, _BRUSH_ScriptSecondarySelection, _BRUSH_SelectedNode
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-BRUSH_SelectBrushByLabel:
+_BRUSH_SelectBrushByLabel:
     LINK.W  A5,#-8
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -106,8 +106,8 @@ BRUSH_SelectBrushByLabel:
 
 .lab_019C:
     MOVEA.L _BRUSH_SelectedNode,A0
-    MOVE.L  A0,BRUSH_ScriptPrimarySelection   ; expose latest selection to script subsystem
-    MOVE.L  A0,BRUSH_ScriptSecondarySelection ; and remember it as the fallback option
+    MOVE.L  A0,_BRUSH_ScriptPrimarySelection   ; expose latest selection to script subsystem
+    MOVE.L  A0,_BRUSH_ScriptSecondarySelection ; and remember it as the fallback option
     MOVEA.L (A7)+,A3
     UNLK    A5
     RTS

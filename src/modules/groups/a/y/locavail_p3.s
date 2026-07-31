@@ -21,7 +21,7 @@
 ; CALLS:
 ;   _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, LOCAVAIL_MapFilterTokenCharToClass, _NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
-;   LOCAVAIL_ComputeFilterOffsetForEntry_Return, _ESQIFF_GAdsBrushListCount, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _LOCAVAIL_FilterStep, LOCAVAIL_FilterPrevClassId, LOCAVAIL_STR_YYLLZ_FilterGateCheck, _WDISP_HighlightActive, lab_0F3E, lab_0F43, lab_0F4B
+;   LOCAVAIL_ComputeFilterOffsetForEntry_Return, _ESQIFF_GAdsBrushListCount, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _LOCAVAIL_FilterStep, _LOCAVAIL_FilterPrevClassId, LOCAVAIL_STR_YYLLZ_FilterGateCheck, _WDISP_HighlightActive, lab_0F3E, lab_0F43, lab_0F4B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -41,7 +41,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry:
     TST.L   _LOCAVAIL_FilterStep
     BNE.W   LOCAVAIL_ComputeFilterOffsetForEntry_Return
 
-    CMP.L   LOCAVAIL_FilterPrevClassId,D0
+    CMP.L   _LOCAVAIL_FilterPrevClassId,D0
     BNE.W   LOCAVAIL_ComputeFilterOffsetForEntry_Return
 
     MOVEQ   #0,D7

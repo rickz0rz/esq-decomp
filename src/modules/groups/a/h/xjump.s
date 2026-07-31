@@ -1,24 +1,24 @@
-    XDEF    GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
-    XDEF    GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi
-    XDEF    GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket
-    XDEF    GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay
+    XDEF    _GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
+    XDEF    _GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi
+    XDEF    _GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket
+    XDEF    _GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay
     XDEF    _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers
-    XDEF    GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters
-    XDEF    GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults
-    XDEF    GROUP_AH_JMPTBL_ESQ_TestBit1Based
-    XDEF    GROUP_AH_JMPTBL_ESQ_WildcardMatch
+    XDEF    _GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters
+    XDEF    _GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults
+    XDEF    _GROUP_AH_JMPTBL_ESQ_TestBit1Based
+    XDEF    _GROUP_AH_JMPTBL_ESQ_WildcardMatch
     XDEF    GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile
     XDEF    GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile
     XDEF    GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate
     XDEF    GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile
     XDEF    _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache
-    XDEF    GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3
+    XDEF    _GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3
     XDEF    GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile
-    XDEF    GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte
+    XDEF    _GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte
     XDEF    _GROUP_AH_JMPTBL_STR_FindAnyCharPtr
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket   (Routine at GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket)
+; FUNC: _GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket   (Routine at _GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -36,7 +36,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket:
+_GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket:
     JMP     ESQIFF2_ApplyIncomingStatusPacket
 
 ;------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache:
     JMP     _NEWGRID_RebuildIndexCache
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters   (Routine at GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters)
+; FUNC: _GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters   (Routine at _GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -80,11 +80,11 @@ _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
+_GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
     JMP     _ESQSHARED_ApplyProgramTitleTextFilters
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh   (Routine at GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh)
+; FUNC: _GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh   (Routine at _GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -92,7 +92,7 @@ GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQDISP_UpdateStatusMaskAndRefresh
+;   _ESQDISP_UpdateStatusMaskAndRefresh
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -102,11 +102,11 @@ GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh:
-    BRA.W   ESQDISP_UpdateStatusMaskAndRefresh
+_GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh:
+    BRA.W   _ESQDISP_UpdateStatusMaskAndRefresh
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults   (Routine at GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults)
+; FUNC: _GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults   (Routine at _GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -124,7 +124,7 @@ GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults:
+_GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults:
     JMP     _ESQSHARED_InitEntryDefaults
 
 ;------------------------------------------------------------------------------
@@ -194,7 +194,7 @@ GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile:
     JMP     GCOMMAND_LoadCommandFile
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_ESQ_WildcardMatch   (Routine at GROUP_AH_JMPTBL_ESQ_WildcardMatch)
+; FUNC: _GROUP_AH_JMPTBL_ESQ_WildcardMatch   (Routine at _GROUP_AH_JMPTBL_ESQ_WildcardMatch)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -212,7 +212,7 @@ GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_ESQ_WildcardMatch:
+_GROUP_AH_JMPTBL_ESQ_WildcardMatch:
     JMP     _ESQ_WildcardMatch
 
 ;------------------------------------------------------------------------------
@@ -238,7 +238,7 @@ GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile:
     JMP     P_TYPE_WritePromoIdDataFile
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi   (Routine at GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi)
+; FUNC: _GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi   (Routine at _GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -256,11 +256,11 @@ GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi:
+_GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi:
     JMP     _ESQFUNC_WaitForClockChangeAndServiceUi
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_ESQ_TestBit1Based   (Routine at GROUP_AH_JMPTBL_ESQ_TestBit1Based)
+; FUNC: _GROUP_AH_JMPTBL_ESQ_TestBit1Based   (Routine at _GROUP_AH_JMPTBL_ESQ_TestBit1Based)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -278,11 +278,11 @@ GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_ESQ_TestBit1Based:
+_GROUP_AH_JMPTBL_ESQ_TestBit1Based:
     JMP     _ESQ_TestBit1Based
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay   (Routine at GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay)
+; FUNC: _GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay   (Routine at _GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -300,7 +300,7 @@ GROUP_AH_JMPTBL_ESQ_TestBit1Based:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay:
+_GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay:
     JMP     _ESQIFF2_ShowAttentionOverlay
 
 ;------------------------------------------------------------------------------
@@ -348,7 +348,7 @@ GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile:
     JMP     _GCOMMAND_LoadMplexFile
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte   (Routine at GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte)
+; FUNC: _GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte   (Routine at _GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -366,7 +366,7 @@ GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte:
+_GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte:
     JMP     _SCRIPT_ReadNextRbfByte
 
 ;------------------------------------------------------------------------------
@@ -392,7 +392,7 @@ _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers:
     JMP     ESQPARS_ClearAliasStringPointers
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3   (Routine at GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3)
+; FUNC: _GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3   (Routine at _GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -410,5 +410,5 @@ _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3:
+_GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3:
     JMP     PARSE_ReadSignedLongSkipClass3

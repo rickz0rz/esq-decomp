@@ -10,7 +10,7 @@
     MOVEQ   #76,D1
     JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayPatternTable,A0
+    LEA     _TLIBA3_VmArrayPatternTable,A0
     ADDA.L  D0,A0
     MOVE.L  A0,(A7)
     PEA     -80(A5)
@@ -40,7 +40,7 @@
     MOVEQ   #76,D1
     JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayPatternTable,A0
+    LEA     _TLIBA3_VmArrayPatternTable,A0
     ADDA.L  D0,A0
     MOVE.L  A0,(A7)
     PEA     -84(A5)

@@ -23,9 +23,9 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A5/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   _TLIBA3_BuildDisplayContextForViewMode, _MATH_Mulu32, TLIBA3_InitPatternTable, TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag
+;   _TLIBA3_BuildDisplayContextForViewMode, _MATH_Mulu32, _TLIBA3_InitPatternTable, TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag
 ; READS:
-;   LAB_1840, LAB_1847, LAB_1848, LAB_184D, LAB_184E, _ESQ_CopperEffectTemplateRowsSet0, _ESQ_CopperEffectTemplateRowsSet1, TLIBA1_PatternTableInitGuard, _TLIBA1_CurrentViewModeIndex, _TLIBA3_VmArrayRuntimeTable, TLIBA3_VmArrayPatternTable, fffe, ffff
+;   LAB_1840, LAB_1847, LAB_1848, LAB_184D, LAB_184E, _ESQ_CopperEffectTemplateRowsSet0, _ESQ_CopperEffectTemplateRowsSet1, _TLIBA1_PatternTableInitGuard, _TLIBA1_CurrentViewModeIndex, _TLIBA3_VmArrayRuntimeTable, _TLIBA3_VmArrayPatternTable, fffe, ffff
 ; WRITES:
 ;   _TLIBA1_CurrentViewModeIndex, _WDISP_DisplayContextBase
 ; DESC:
@@ -40,10 +40,10 @@ _TLIBA3_BuildDisplayContextForViewMode:
     MOVE.W  18(A5),D6
 
     MOVE.L  D7,_TLIBA1_CurrentViewModeIndex
-    TST.W   TLIBA1_PatternTableInitGuard
+    TST.W   _TLIBA1_PatternTableInitGuard
     BNE.S   .lab_183F
 
-    BSR.W   TLIBA3_InitPatternTable
+    BSR.W   _TLIBA3_InitPatternTable
 
 .lab_183F:
     MOVE.L  #_ESQ_CopperEffectTemplateRowsSet0,-4(A5)
@@ -52,7 +52,7 @@ _TLIBA3_BuildDisplayContextForViewMode:
     MOVEQ   #76,D1
     JSR     _MATH_Mulu32(PC)
 
-    LEA     TLIBA3_VmArrayPatternTable,A0
+    LEA     _TLIBA3_VmArrayPatternTable,A0
     ADDA.L  D0,A0
     LEA     -84(A5),A1
     MOVEA.L A1,A2

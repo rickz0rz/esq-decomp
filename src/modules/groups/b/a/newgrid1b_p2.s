@@ -805,7 +805,7 @@ NEWGRID_FindNextFlaggedEntry:
 ;   _NEWGRID_UpdateGridState, _NEWGRID_ProcessGridEntries, NEWGRID_FindNextFlaggedEntry,
 ;   _NEWGRID_GetGridModeIndex, _NEWGRID_ValidateSelectionCode, _NEWGRID_ComputeColumnIndex
 ; READS:
-;   NEWGRID_GridSelectionColumnAdjust, NEWGRID_GridSelectionEntryIndex, NEWGRID_GridSelectionWorkflowState, CONFIG_NewgridSelectionCode32EnabledFlag, _CONFIG_NewgridSelectionCode48_49EnabledFlag
+;   NEWGRID_GridSelectionColumnAdjust, NEWGRID_GridSelectionEntryIndex, NEWGRID_GridSelectionWorkflowState, _CONFIG_NewgridSelectionCode32EnabledFlag, _CONFIG_NewgridSelectionCode48_49EnabledFlag
 ; WRITES:
 ;   NEWGRID_GridSelectionColumnAdjust, NEWGRID_GridSelectionEntryIndex, NEWGRID_GridSelectionWorkflowState
 ; DESC:
@@ -949,7 +949,7 @@ NEWGRID_HandleGridSelection:
     MOVE.L  D0,NEWGRID_GridSelectionColumnAdjust
 
 .post_process:
-    MOVE.B  CONFIG_NewgridSelectionCode32EnabledFlag,D0
+    MOVE.B  _CONFIG_NewgridSelectionCode32EnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .update_column_adjust

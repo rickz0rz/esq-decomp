@@ -13,18 +13,18 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   WDISP_BannerCharIndex, _WDISP_BannerCharPhaseShift, _WDISP_BannerCharRangeStart, _WDISP_BannerCharRangeEnd, BANNER_ResetPendingFlag
+;   _WDISP_BannerCharIndex, _WDISP_BannerCharPhaseShift, _WDISP_BannerCharRangeStart, _WDISP_BannerCharRangeEnd, _BANNER_ResetPendingFlag
 ; WRITES:
-;   ESQ_BannerCharResetPulse, WDISP_BannerCharIndex, ESQ_BannerCharIndexShadow2273, BANNER_ResetPendingFlag
+;   ESQ_BannerCharResetPulse, _WDISP_BannerCharIndex, ESQ_BannerCharIndexShadow2273, _BANNER_ResetPendingFlag
 ; DESC:
 ;   Advances a cycling index in the 1..48 range and applies a step offset.
 ; NOTES:
-;   If BANNER_ResetPendingFlag is non-zero, forces a reset path and clears the flag.
+;   If _BANNER_ResetPendingFlag is non-zero, forces a reset path and clears the flag.
 ;   Also resets when the index matches _WDISP_BannerCharRangeEnd, using _WDISP_BannerCharRangeStart as the base.
 ;------------------------------------------------------------------------------
 ESQ_AdvanceBannerCharIndex:
     MOVEM.L D2-D3,-(A7)
-    MOVE.W  WDISP_BannerCharIndex,D0
+    MOVE.W  _WDISP_BannerCharIndex,D0
     MOVEQ   #1,D2
     ADD.W   D2,D0
     MOVEQ   #48,D3
@@ -34,10 +34,10 @@ ESQ_AdvanceBannerCharIndex:
     MOVE.W  D2,D0
 
 .lab_00A1:
-    TST.W   BANNER_ResetPendingFlag
+    TST.W   _BANNER_ResetPendingFlag
     BEQ.S   .lab_00A2
 
-    MOVE.W  #0,BANNER_ResetPendingFlag
+    MOVE.W  #0,_BANNER_ResetPendingFlag
     BRA.S   .lab_00A3
 
 .lab_00A2:
@@ -50,7 +50,7 @@ ESQ_AdvanceBannerCharIndex:
     MOVE.W  _WDISP_BannerCharRangeStart,D0
 
 .lab_00A4:
-    MOVE.W  D0,WDISP_BannerCharIndex
+    MOVE.W  D0,_WDISP_BannerCharIndex
     MOVE.W  _WDISP_BannerCharPhaseShift,D1
     BEQ.S   ESQ_AdvanceBannerCharIndex_Return
 

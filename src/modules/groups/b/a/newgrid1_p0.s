@@ -101,8 +101,8 @@ _NEWGRID_SetRowColor:
 ; CALLS:
 ;   none
 ; READS:
-;   CONFIG_NewgridSelectionCode16EnabledFlag, CONFIG_NewgridSelectionCode32EnabledFlag, _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag,
-;   _CONFIG_NewgridSelectionCode34AltEnabledFlag, CONFIG_NewgridSelectionCode35EnabledFlag, _CONFIG_NewgridSelectionCode48_49EnabledFlag,
+;   _CONFIG_NewgridSelectionCode16EnabledFlag, _CONFIG_NewgridSelectionCode32EnabledFlag, _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag,
+;   _CONFIG_NewgridSelectionCode34AltEnabledFlag, _CONFIG_NewgridSelectionCode35EnabledFlag, _CONFIG_NewgridSelectionCode48_49EnabledFlag,
 ;   _GCOMMAND_DigitalNicheEnabledFlag
 ; WRITES:
 ;   54(A3)
@@ -183,7 +183,7 @@ _NEWGRID_ValidateSelectionCode:
     BRA.W   .clear_active_selection
 
 .case_16:
-    MOVE.B  CONFIG_NewgridSelectionCode16EnabledFlag,D0
+    MOVE.B  _CONFIG_NewgridSelectionCode16EnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .return_selection_validation
@@ -193,7 +193,7 @@ _NEWGRID_ValidateSelectionCode:
     BRA.W   .return_selection_validation
 
 .case_32:
-    MOVE.B  CONFIG_NewgridSelectionCode32EnabledFlag,D0
+    MOVE.B  _CONFIG_NewgridSelectionCode32EnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .return_selection_validation
@@ -252,7 +252,7 @@ _NEWGRID_ValidateSelectionCode:
     BRA.S   .return_selection_validation
 
 .case_35:
-    MOVE.B  CONFIG_NewgridSelectionCode35EnabledFlag,D0
+    MOVE.B  _CONFIG_NewgridSelectionCode35EnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .return_selection_validation
@@ -319,13 +319,13 @@ _NEWGRID_ValidateSelectionCode:
 ;   _LVOMove, _LVOText
 ; READS:
 ;   NEWGRID_SampleTimeTextWidthPx, _NEWGRID_RowHeightPx, _NEWGRID_GridOperationId,
-;   _GCOMMAND_NicheTextPen, CTASKS_STR_C
+;   _GCOMMAND_NicheTextPen, _CTASKS_STR_C
 ; WRITES:
 ;   local temp strings (-26(A5))
 ; DESC:
 ;   Draws up to two strings centered within a grid cell, handling RAVESC markers.
 ; NOTES:
-;   Uses _NEWGRID_GridOperationId/CTASKS_STR_C to alter pen/centering behavior.
+;   Uses _NEWGRID_GridOperationId/_CTASKS_STR_C to alter pen/centering behavior.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawGridCellText:
     LINK.W  A5,#-36
@@ -333,7 +333,7 @@ NEWGRID_DrawGridCellText:
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVE.L  20(A5),D7
-    TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
+    TST.W   _Global_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   .compute_layout
 
     MOVEA.L 16(A5),A0
@@ -535,7 +535,7 @@ NEWGRID_DrawGridCellText:
     ASR.L   #1,D0
     MOVE.L  D5,D1
     SUB.L   D0,D1
-    MOVE.B  CTASKS_STR_C,D0
+    MOVE.B  _CTASKS_STR_C,D0
     MOVEQ   #83,D2
     CMP.B   D2,D0
     BNE.S   .primary_use_cell_center_x
@@ -611,7 +611,7 @@ NEWGRID_DrawGridCellText:
     ASR.L   #1,D0
     MOVE.L  D5,D1
     SUB.L   D0,D1
-    MOVE.B  CTASKS_STR_C,D0
+    MOVE.B  _CTASKS_STR_C,D0
     MOVEQ   #83,D2
     CMP.B   D2,D0
     BNE.S   .secondary_use_cell_center_x

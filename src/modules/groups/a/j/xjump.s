@@ -1,7 +1,7 @@
     XDEF    _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
     XDEF    GROUP_AJ_JMPTBL_MATH_DivU32
     XDEF    GROUP_AJ_JMPTBL_MATH_Mulu32
-    XDEF    GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals
+    XDEF    _GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals
     XDEF    GROUP_AJ_JMPTBL_STRING_FindSubstring
 
 ;------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ GROUP_AJ_JMPTBL_MATH_DivU32:
     JMP     MATH_DivU32
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals   (Jump stub)
+; FUNC: _GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -65,7 +65,7 @@ GROUP_AJ_JMPTBL_MATH_DivU32:
 ; DESC:
 ;   Jump stub to PARSEINI_WriteRtcFromGlobals.
 ;------------------------------------------------------------------------------
-GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals:
+_GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals:
     JMP     PARSEINI_WriteRtcFromGlobals
 
 ;------------------------------------------------------------------------------

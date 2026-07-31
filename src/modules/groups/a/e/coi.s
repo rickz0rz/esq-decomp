@@ -1,11 +1,11 @@
-    XDEF    COI_FreeEntryResources
+    XDEF    _COI_FreeEntryResources
     XDEF    COI_FreeEntryResources_Return
 
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: COI_FreeEntryResources   (Routine at COI_FreeEntryResources)
+; FUNC: _COI_FreeEntryResources   (Routine at _COI_FreeEntryResources)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -15,7 +15,7 @@
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _COI_ClearAnimObjectStrings, _COI_FreeSubEntryTableEntries
 ; READS:
-;   Global_STR_COI_C_3
+;   _Global_STR_COI_C_3
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -23,7 +23,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-COI_FreeEntryResources:
+_COI_FreeEntryResources:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVE.L  A3,D0
@@ -43,7 +43,7 @@ COI_FreeEntryResources:
     PEA     42.W
     MOVE.L  A2,-(A7)
     PEA     815.W
-    PEA     Global_STR_COI_C_3
+    PEA     _Global_STR_COI_C_3
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

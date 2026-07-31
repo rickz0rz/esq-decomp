@@ -337,12 +337,12 @@ NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   CLEANUP_FormatClockFormatEntry
+;   _CLEANUP_FormatClockFormatEntry
 ; DESC:
-;   Jump table entry that forwards to CLEANUP_FormatClockFormatEntry.
+;   Jump table entry that forwards to _CLEANUP_FormatClockFormatEntry.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry:
-    JMP     CLEANUP_FormatClockFormatEntry
+    JMP     _CLEANUP_FormatClockFormatEntry
 
 ;------------------------------------------------------------------------------
 ; FUNC: _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop   (Jump stub)
@@ -385,12 +385,12 @@ _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   STR_SkipClass3Chars
+;   _STR_SkipClass3Chars
 ; DESC:
-;   Jump table entry that forwards to STR_SkipClass3Chars.
+;   Jump table entry that forwards to _STR_SkipClass3Chars.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_STR_SkipClass3Chars:
-    JMP     STR_SkipClass3Chars
+    JMP     _STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_STRING_AppendN   (Jump stub)
@@ -497,12 +497,12 @@ _NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   BEVEL_DrawBeveledFrame
+;   _BEVEL_DrawBeveledFrame
 ; DESC:
-;   Jump table entry that forwards to BEVEL_DrawBeveledFrame.
+;   Jump table entry that forwards to _BEVEL_DrawBeveledFrame.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame:
-    JMP     BEVEL_DrawBeveledFrame
+    JMP     _BEVEL_DrawBeveledFrame
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex   (Jump stub)

@@ -1,9 +1,9 @@
-    XDEF    ESQSHARED4_InitializeBannerCopperSystem
+    XDEF    _ESQSHARED4_InitializeBannerCopperSystem
     XDEF    ESQSHARED4_SetupBannerPlanePointerWords
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED4_InitializeBannerCopperSystem   (InitializeBannerCopperSystem)
+; FUNC: _ESQSHARED4_InitializeBannerCopperSystem   (InitializeBannerCopperSystem)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Sets baseline read/state flags used by subsequent banner color/plane updates.
 ;------------------------------------------------------------------------------
-ESQSHARED4_InitializeBannerCopperSystem:
+_ESQSHARED4_InitializeBannerCopperSystem:
     MOVEM.L D0-D1/A0-A4,-(A7)
     MOVE.W  #$62,D0
     MOVE.W  D0,ESQPARS2_BannerSweepBaseColor
@@ -65,7 +65,7 @@ ESQSHARED4_InitializeBannerCopperSystem:
 ; CALLS:
 ;   _ESQSHARED4_SetBannerColorBaseAndLimit
 ; READS:
-;   _ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerRowOffsetResetPtrPlane0, ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, ESQSHARED_BannerRowScratchRasterBase0, ESQSHARED_BannerRowScratchRasterBase1, ESQSHARED_BannerRowScratchRasterBase2
+;   _ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerRowOffsetResetPtrPlane0, ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, _ESQSHARED_BannerRowScratchRasterBase0, _ESQSHARED_BannerRowScratchRasterBase1, _ESQSHARED_BannerRowScratchRasterBase2
 ; WRITES:
 ;   ESQ_BannerPlane0SnapshotScratchPtrHiWord, ESQ_BannerPlane0SnapshotScratchPtrLoWord, ESQ_BannerPlane1SnapshotScratchPtrHiWord, ESQ_BannerPlane1SnapshotScratchPtrLoWord, ESQ_BannerPlane2SnapshotScratchPtrHiWord, ESQ_BannerPlane2SnapshotScratchPtrLoWord, ESQ_BannerSnapshotPlane0DstPtrHiWord, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerSnapshotPlane1DstPtrHiWord, ESQ_BannerSnapshotPlane1DstPtrLoWord, ESQ_BannerSnapshotPlane2DstPtrHiWord, ESQ_BannerSnapshotPlane2DstPtrLoWord, ESQ_BannerPlane0DstPtrReset_HiWord, ESQ_BannerPlane0DstPtrReset_LoWord, ESQ_BannerPlane1DstPtrReset_HiWord, ESQ_BannerPlane1DstPtrReset_LoWord, ESQ_BannerPlane2DstPtrReset_HiWord, ESQ_BannerPlane2DstPtrReset_LoWord, ESQ_BannerPlane0ScratchPtrAlt_HiWord, ESQ_BannerPlane0ScratchPtrAlt_LoWord, ESQ_BannerPlane1ScratchPtrAlt_HiWord, ESQ_BannerPlane1ScratchPtrAlt_LoWord, ESQ_BannerPlane2ScratchPtrAlt_HiWord, ESQ_BannerPlane2ScratchPtrAlt_LoWord, ESQ_BannerSweepSrcPlane0Ptr_HiWord, ESQ_BannerSweepSrcPlane0Ptr_LoWord, ESQ_BannerSweepSrcPlane1Ptr_HiWord, ESQ_BannerSweepSrcPlane1Ptr_LoWord, ESQ_BannerSweepSrcPlane2Ptr_HiWord, ESQ_BannerSweepSrcPlane2Ptr_LoWord, ESQ_BannerSweepSrcPlane0PtrReset_HiWord, ESQ_BannerSweepSrcPlane0PtrReset_LoWord, ESQ_BannerSweepSrcPlane1PtrReset_HiWord, ESQ_BannerSweepSrcPlane1PtrReset_LoWord, ESQ_BannerSweepSrcPlane2PtrReset_HiWord, ESQ_BannerSweepSrcPlane2PtrReset_LoWord, ESQPARS2_BannerRowOffsetResetPtrPlane1, ESQPARS2_BannerRowOffsetResetPtrPlane2Table
 ; DESC:
@@ -76,7 +76,7 @@ ESQSHARED4_InitializeBannerCopperSystem:
 ESQSHARED4_SetupBannerPlanePointerWords:
     MOVEM.L D0-D1/A0-A4,-(A7)
     LEA     _ESQPARS2_BannerSnapshotPlane0DstPtr,A1
-    LEA     ESQSHARED_BannerRowScratchRasterBase0,A3
+    LEA     _ESQSHARED_BannerRowScratchRasterBase0,A3
     MOVEA.L (A3),A2
     LEA     2992(A2),A2
     MOVE.L  A2,D0
@@ -109,7 +109,7 @@ ESQSHARED4_SetupBannerPlanePointerWords:
     SWAP    D0
     MOVE.W  D0,ESQ_BannerSweepSrcPlane0Ptr_HiWord
     MOVE.W  D0,ESQ_BannerSweepSrcPlane0PtrReset_HiWord
-    LEA     ESQSHARED_BannerRowScratchRasterBase1,A3
+    LEA     _ESQSHARED_BannerRowScratchRasterBase1,A3
     MOVEA.L (A3),A2
     LEA     2992(A2),A2
     MOVE.L  A2,D0
@@ -140,7 +140,7 @@ ESQSHARED4_SetupBannerPlanePointerWords:
     SWAP    D0
     MOVE.W  D0,ESQ_BannerSweepSrcPlane1Ptr_HiWord
     MOVE.W  D0,ESQ_BannerSweepSrcPlane1PtrReset_HiWord
-    LEA     ESQSHARED_BannerRowScratchRasterBase2,A3
+    LEA     _ESQSHARED_BannerRowScratchRasterBase2,A3
     MOVEA.L (A3),A2
     LEA     2992(A2),A2
     MOVE.L  A2,D0

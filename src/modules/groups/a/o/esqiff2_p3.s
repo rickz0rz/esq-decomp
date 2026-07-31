@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _GCOMMAND_SeedBannerFromPrefs, _GROUP_AM_JMPTBL_WDISP_SPrintf, _GROUP_AR_JMPTBL_STRING_AppendAtNull, _LVODisable, _LVOEnable, _LVORectFill, _LVOSetAPen
 ; READS:
-;   AbsExecBase, _Global_LONG_PATCH_VERSION_NUMBER, _Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, Global_STR_APOSTROPHE, Global_STR_MAJOR_MINOR_VERSION_1, Global_STR_MAJOR_MINOR_VERSION_2, ESQIFF2_ShowVersionMismatchOverlay_Return, ESQIFF_FMT_PCT_S_DOT_PCT_LD, ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA, ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD, ESQIFF_STR_CORRECT_VERSION_IS, _ED_DiagnosticsScreenActive, _Global_UIBusyFlag, ESQIFF_RecordBufferPtr, lab_0B24
+;   AbsExecBase, _Global_LONG_PATCH_VERSION_NUMBER, _Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, Global_STR_APOSTROPHE, Global_STR_MAJOR_MINOR_VERSION_1, Global_STR_MAJOR_MINOR_VERSION_2, ESQIFF2_ShowVersionMismatchOverlay_Return, ESQIFF_FMT_PCT_S_DOT_PCT_LD, ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA, ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD, ESQIFF_STR_CORRECT_VERSION_IS, _ED_DiagnosticsScreenActive, _Global_UIBusyFlag, _ESQIFF_RecordBufferPtr, lab_0B24
 ; WRITES:
 ;   _ESQPARS2_ReadModeFlags, _ED_DiagnosticsScreenActive
 ; DESC:
@@ -26,7 +26,7 @@ ESQIFF2_ShowVersionMismatchOverlay:
     LINK.W  A5,#-40
     MOVEM.L D2-D3,-(A7)
 
-    MOVEA.L ESQIFF_RecordBufferPtr,A0
+    MOVEA.L _ESQIFF_RecordBufferPtr,A0
     CLR.B   20(A0)
     MOVE.L  _Global_LONG_PATCH_VERSION_NUMBER,-(A7)
     PEA     Global_STR_MAJOR_MINOR_VERSION_1
@@ -34,7 +34,7 @@ ESQIFF2_ShowVersionMismatchOverlay:
     PEA     -40(A5)
     JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    MOVEA.L ESQIFF_RecordBufferPtr,A0
+    MOVEA.L _ESQIFF_RecordBufferPtr,A0
     ADDQ.L  #1,A0
     MOVE.L  A0,(A7)
     PEA     -40(A5)
@@ -109,7 +109,7 @@ ESQIFF2_ShowVersionMismatchOverlay:
     DBF     D0,.lab_0B24 ; incrementing both until A0 is null.
 
     CLR.B   (A1)
-    MOVEA.L ESQIFF_RecordBufferPtr,A0
+    MOVEA.L _ESQIFF_RecordBufferPtr,A0
     ADDQ.L  #1,A0
     MOVE.L  A0,(A7)
     PEA     -40(A5)

@@ -1,8 +1,8 @@
-    XDEF    PARSEINI_ProcessWeatherBlocks
+    XDEF    _PARSEINI_ProcessWeatherBlocks
 
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_ProcessWeatherBlocks   (Routine at PARSEINI_ProcessWeatherBlocks)
+; FUNC: _PARSEINI_ProcessWeatherBlocks   (Routine at _PARSEINI_ProcessWeatherBlocks)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D7
 ; CALLS:
-;   _PARSEINI_JMPTBL_BRUSH_AllocBrushNode, _PARSEINI_JMPTBL_STRING_CompareNoCase, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CopyPadNul, _SCRIPT_JMPTBL_MEMORY_AllocateMemory
+;   _PARSEINI_JMPTBL_BRUSH_AllocBrushNode, _PARSEINI_JMPTBL_STRING_CompareNoCase, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _SCRIPT3_JMPTBL_STRING_CopyPadNul, _SCRIPT_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   Global_STR_PARSEINI_C_3, _PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_TAG_FILENAME_WeatherBlock, PARSEINI_STR_LOADCOLOR, PARSEINI_TAG_ALL, PARSEINI_TAG_NONE, PARSEINI_TAG_TEXT, PARSEINI_TAG_XPOS, PARSEINI_TAG_TYPE, PARSEINI_TAG_DITHER, PARSEINI_TAG_YPOS, PARSEINI_TAG_XSOURCE, PARSEINI_TAG_YSOURCE, PARSEINI_TAG_SIZEX, PARSEINI_TAG_SIZEY, PARSEINI_TAG_SOURCE, PARSEINI_TAG_PPV, PARSEINI_STR_HORIZONTAL, PARSEINI_TAG_RIGHT, PARSEINI_TAG_CENTER_HorizontalAlign, PARSEINI_TAG_VERTICAL, PARSEINI_TAG_BOTTOM, PARSEINI_TAG_CENTER_VerticalAlign, PARSEINI_TAG_ID, PARSEINI_CurrentWeatherBlockPtr, MEMF_CLEAR, MEMF_PUBLIC, check_key_2084, return
 ; WRITES:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-PARSEINI_ProcessWeatherBlocks:
+_PARSEINI_ProcessWeatherBlocks:
     LINK.W  A5,#-8
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -408,7 +408,7 @@ PARSEINI_ProcessWeatherBlocks:
     PEA     2.W
     MOVE.L  A2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     SCRIPT3_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _SCRIPT3_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0

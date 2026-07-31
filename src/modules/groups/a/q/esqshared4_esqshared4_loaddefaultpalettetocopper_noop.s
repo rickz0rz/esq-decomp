@@ -12,7 +12,7 @@
 ; CALLS:
 ;   ESQSHARED4_LoadCopperColorWordsFromNibbleTable
 ; READS:
-;   _GCOMMAND_PresetFallbackValue0, ESQ_BannerPaletteWordsA, ESQ_BannerPaletteWordsB
+;   _GCOMMAND_PresetFallbackValue0, _ESQ_BannerPaletteWordsA, _ESQ_BannerPaletteWordsB
 ; WRITES:
 ;   (none observed)
 ; DESC:

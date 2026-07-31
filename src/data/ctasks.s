@@ -12,50 +12,50 @@
     XDEF    _CTASKS_PendingPrimaryOiDiskId
     XDEF    _CTASKS_PendingSecondaryOiDiskId
     XDEF    _CTASKS_TerminationReasonPtrTable
-    XDEF    CTASKS_EXT_GRF
-    XDEF    CTASKS_PATH_CURDAY_DAT
+    XDEF    _CTASKS_EXT_GRF
+    XDEF    _CTASKS_PATH_CURDAY_DAT
     XDEF    _CTASKS_PATH_QTABLE_INI
     XDEF    _CTASKS_PATH_OINFO_DAT
-    XDEF    Global_STR_DF0_NXTDAY_DAT
-    XDEF    DISKIO_SaveOperationReadyFlag
+    XDEF    _Global_STR_DF0_NXTDAY_DAT
+    XDEF    _DISKIO_SaveOperationReadyFlag
     XDEF    _DISKIO_BufferControl
-    XDEF    CONFIG_RefreshIntervalMinutes
-    XDEF    CTASKS_STR_C
+    XDEF    _CONFIG_RefreshIntervalMinutes
+    XDEF    _CTASKS_STR_C
     XDEF    _CONFIG_NicheModeCycleBudget_Y
     XDEF    _CONFIG_NicheModeCycleBudget_Static
-    XDEF    CONFIG_SerializedNumericSlot05
-    XDEF    CONFIG_NewgridWindowSpanHalfHoursPrimary
-    XDEF    CTASKS_STR_G
-    XDEF    CONFIG_SerializedFlagSlot08_DefaultN
-    XDEF    CTASKS_STR_A
-    XDEF    CTASKS_STR_E
-    XDEF    CONFIG_SerializedNumericSlot10
+    XDEF    _CONFIG_SerializedNumericSlot05
+    XDEF    _CONFIG_NewgridWindowSpanHalfHoursPrimary
+    XDEF    _CTASKS_STR_G
+    XDEF    _CONFIG_SerializedFlagSlot08_DefaultN
+    XDEF    _CTASKS_STR_A
+    XDEF    _CTASKS_STR_E
+    XDEF    _CONFIG_SerializedNumericSlot10
     XDEF    _CONFIG_NicheModeCycleBudget_Custom
     XDEF    _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag
-    XDEF    CONFIG_NewgridSelectionCode35EnabledFlag
-    XDEF    CONFIG_SerializedFlagSlot15_DefaultN
+    XDEF    _CONFIG_NewgridSelectionCode35EnabledFlag
+    XDEF    _CONFIG_SerializedFlagSlot15_DefaultN
     XDEF    _CONFIG_NewgridSelectionCode34AltEnabledFlag
-    XDEF    CONFIG_NewgridSelectionCode32EnabledFlag
-    XDEF    CONFIG_RuntimeMode12BannerJumpEnabledFlag
-    XDEF    CTASKS_STR_L
-    XDEF    CONFIG_SerializedNumericSlot19
-    XDEF    CONFIG_SerializedNumericSlot20
+    XDEF    _CONFIG_NewgridSelectionCode32EnabledFlag
+    XDEF    _CONFIG_RuntimeMode12BannerJumpEnabledFlag
+    XDEF    _CTASKS_STR_L
+    XDEF    _CONFIG_SerializedNumericSlot19
+    XDEF    _CONFIG_SerializedNumericSlot20
     XDEF    _CONFIG_ModeCycleEnabledFlag
     XDEF    _CONFIG_NewgridPlaceholderBevelFlag
     XDEF    _CONFIG_NewgridSelectionCode48_49EnabledFlag
-    XDEF    CONFIG_SerializedNumericSlot25
-    XDEF    CONFIG_SerializedNumericSlot26
-    XDEF    CONFIG_NewgridWindowSpanHalfHoursAlt
+    XDEF    _CONFIG_SerializedNumericSlot25
+    XDEF    _CONFIG_SerializedNumericSlot26
+    XDEF    _CONFIG_NewgridWindowSpanHalfHoursAlt
     XDEF    _CONFIG_TimeWindowMinutes
     XDEF    _CONFIG_ModeCycleGateDuration
-    XDEF    CONFIG_NewgridSelectionCode16EnabledFlag
+    XDEF    _CONFIG_NewgridSelectionCode16EnabledFlag
     XDEF    _Global_REF_STR_USE_24_HR_CLOCK
-    XDEF    CONFIG_ParseiniLogoScanEnabledFlag
+    XDEF    _CONFIG_ParseiniLogoScanEnabledFlag
     XDEF    _CONFIG_BannerCopperHeadByte
-    XDEF    Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES
+    XDEF    _Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES
     XDEF    _ED_DiagTextModeChar
-    XDEF    CONFIG_EnsurePc1GfxAssignedFlag
-    XDEF    CONFIG_MsnRuntimeModeSelectorChar_LRBN
+    XDEF    _CONFIG_EnsurePc1GfxAssignedFlag
+    XDEF    _CONFIG_MsnRuntimeModeSelectorChar_LRBN
     XDEF    _CONFIG_LRBN_FlagChar
     XDEF    _CONFIG_MSN_FlagChar
     XDEF    _CTASKS_STR_1
@@ -119,30 +119,30 @@ _CTASKS_TerminationReasonPtrTable:
 ; them on a boundary of a word/2 bytes. It almost feels like this is
 ; some kind of struct instead...
 ;------------------------------------------------------------------------------
-; SYM: CTASKS_EXT_GRF   (file extension and task data paths)
+; SYM: _CTASKS_EXT_GRF   (file extension and task data paths)
 ; TYPE: cstring
 ; PURPOSE: Disk filename constants used by disk I/O save/load routines.
 ; USED BY: LAB_04D8, LAB_04EC, _DISKIO2_WriteOinfoDataFile, _DISKIO2_LoadOinfoDataFile
 ; NOTES: Stored as DC.B to preserve original packing/alignment.
 ;------------------------------------------------------------------------------
-CTASKS_EXT_GRF:
+_CTASKS_EXT_GRF:
     DC.B    ".GRF",0
-CTASKS_PATH_CURDAY_DAT:
+_CTASKS_PATH_CURDAY_DAT:
     DC.B    "df0:curday.dat",0
 _CTASKS_PATH_QTABLE_INI:
     DC.B    "df0:qtable.ini",0
 _CTASKS_PATH_OINFO_DAT:
     DC.B    "df0:oinfo.dat",0
-Global_STR_DF0_NXTDAY_DAT:
+_Global_STR_DF0_NXTDAY_DAT:
     DC.B    "df0:nxtday.dat",0
 ;------------------------------------------------------------------------------
-; SYM: DISKIO_SaveOperationReadyFlag   (save-operation gate flag)
+; SYM: _DISKIO_SaveOperationReadyFlag   (save-operation gate flag)
 ; TYPE: u32
 ; PURPOSE: Global gate used by save/export flows before opening output files.
 ; USED BY: DISKIO2_WriteCurdayDataFile, _LADFUNC_SaveTextAdsToFile
 ; NOTES: Initialized to 1; routines clear while active and restore to 1 on completion/error.
 ;------------------------------------------------------------------------------
-DISKIO_SaveOperationReadyFlag:
+_DISKIO_SaveOperationReadyFlag:
     DC.L    1
 _DISKIO_BufferControl:
     DS.L    1
@@ -151,62 +151,62 @@ _DISKIO_BufferControl:
 ; Values used for the default configuration.
 ; https://prevueguide.com/wiki/Prevue_Emulation:Configuration_File
 ;------------------------------------------------------------------------------
-; SYM: CONFIG_RefreshIntervalMinutes/.../_CONFIG_ModeCycleEnabledFlag/_CONFIG_NewgridPlaceholderBevelFlag   (config byte cluster)
+; SYM: _CONFIG_RefreshIntervalMinutes/.../_CONFIG_ModeCycleEnabledFlag/_CONFIG_NewgridPlaceholderBevelFlag   (config byte cluster)
 ; TYPE: u8 flags/counters
 ; PURPOSE: Persisted configuration defaults parsed/saved by DISKIO config flows.
-; USED BY: DISKIO_ParseConfigBuffer, DISKIO_SaveConfigToFileHandle
+; USED BY: _DISKIO_ParseConfigBuffer, DISKIO_SaveConfigToFileHandle
 ; NOTES:
 ;   Field-to-tag mapping remains partially unresolved.
 ;   `_CONFIG_ModeCycleEnabledFlag` toggles mode-cycle gating in NEWGRID mode selection.
 ;   `_CONFIG_NewgridPlaceholderBevelFlag` toggles beveled placeholder styling in NEWGRID column-3 paths.
 ;   Remaining unresolved persisted slots (parse/save observed; semantic readers not yet confirmed):
-;   `CONFIG_SerializedNumericSlot05`, `CONFIG_SerializedFlagSlot08_DefaultN`,
-;   `CONFIG_SerializedNumericSlot10`, `CONFIG_SerializedFlagSlot15_DefaultN`,
-;   `CONFIG_SerializedNumericSlot19`, `CONFIG_SerializedNumericSlot20`,
-;   `CONFIG_SerializedNumericSlot25`, `CONFIG_SerializedNumericSlot26`.
+;   `_CONFIG_SerializedNumericSlot05`, `_CONFIG_SerializedFlagSlot08_DefaultN`,
+;   `_CONFIG_SerializedNumericSlot10`, `_CONFIG_SerializedFlagSlot15_DefaultN`,
+;   `_CONFIG_SerializedNumericSlot19`, `_CONFIG_SerializedNumericSlot20`,
+;   `_CONFIG_SerializedNumericSlot25`, `_CONFIG_SerializedNumericSlot26`.
 ;   Keep grouped until each byte is tied to a single CONFIG_* semantic.
 ;------------------------------------------------------------------------------
-CONFIG_RefreshIntervalMinutes:
+_CONFIG_RefreshIntervalMinutes:
     DC.B    2
-CTASKS_STR_C:
+_CTASKS_STR_C:
     DC.B    "C"
 _CONFIG_NicheModeCycleBudget_Y:
     DS.B    1
 _CONFIG_NicheModeCycleBudget_Static:
     DC.B    3
-CONFIG_SerializedNumericSlot05:
+_CONFIG_SerializedNumericSlot05:
     DC.B    24
-CONFIG_NewgridWindowSpanHalfHoursPrimary:
+_CONFIG_NewgridWindowSpanHalfHoursPrimary:
     DC.B    24
-CTASKS_STR_G:
+_CTASKS_STR_G:
     DC.B    "G"
-CONFIG_SerializedFlagSlot08_DefaultN:
+_CONFIG_SerializedFlagSlot08_DefaultN:
     DC.B    "N"
-CTASKS_STR_A:
+_CTASKS_STR_A:
     DC.B    "A"
-CTASKS_STR_E:
+_CTASKS_STR_E:
     DC.B    "E"
-CONFIG_SerializedNumericSlot10:
+_CONFIG_SerializedNumericSlot10:
     DS.B    1
 _CONFIG_NicheModeCycleBudget_Custom:
     DS.B    1
 _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag:
     DC.B    "Y"
-CONFIG_NewgridSelectionCode35EnabledFlag:
+_CONFIG_NewgridSelectionCode35EnabledFlag:
     DC.B    "Y"
-CONFIG_SerializedFlagSlot15_DefaultN:
+_CONFIG_SerializedFlagSlot15_DefaultN:
     DC.B    "N"
 _CONFIG_NewgridSelectionCode34AltEnabledFlag:
     DC.B    "N"
-CONFIG_NewgridSelectionCode32EnabledFlag:
+_CONFIG_NewgridSelectionCode32EnabledFlag:
     DC.B    "Y"
-CONFIG_RuntimeMode12BannerJumpEnabledFlag:
+_CONFIG_RuntimeMode12BannerJumpEnabledFlag:
     DC.B    "N"
-CTASKS_STR_L:
+_CTASKS_STR_L:
     DC.B    "L"
-CONFIG_SerializedNumericSlot19:
+_CONFIG_SerializedNumericSlot19:
     DC.B    29
-CONFIG_SerializedNumericSlot20:
+_CONFIG_SerializedNumericSlot20:
     DC.B    6
 _CONFIG_ModeCycleEnabledFlag:
     DC.B    "Y"
@@ -214,11 +214,11 @@ _CONFIG_NewgridPlaceholderBevelFlag:
     DC.B    "Y"
 _CONFIG_NewgridSelectionCode48_49EnabledFlag:
     DC.B    "N"
-CONFIG_SerializedNumericSlot25:
+_CONFIG_SerializedNumericSlot25:
     DC.B    23
-CONFIG_SerializedNumericSlot26:
+_CONFIG_SerializedNumericSlot26:
     DC.B    36
-CONFIG_NewgridWindowSpanHalfHoursAlt:
+_CONFIG_NewgridWindowSpanHalfHoursAlt:
     DC.B    12
     DC.B    0
 ;------------------------------------------------------------------------------
@@ -232,18 +232,18 @@ _CONFIG_TimeWindowMinutes:
     DC.L    15
 _CONFIG_ModeCycleGateDuration:
     DC.L    1
-CONFIG_NewgridSelectionCode16EnabledFlag:
+_CONFIG_NewgridSelectionCode16EnabledFlag:
     DC.B    "Y"
 _Global_REF_STR_USE_24_HR_CLOCK:
     DC.B    "N"
-CONFIG_ParseiniLogoScanEnabledFlag:
+_CONFIG_ParseiniLogoScanEnabledFlag:
     NStr    "Y"
 ;------------------------------------------------------------------------------
 ; SYM: _CONFIG_BannerCopperHeadByte   (banner copper head byte config)
 ; TYPE: u16 (packed storage, low byte consumed)
 ; PURPOSE: Config-backed default byte written into banner copper list head words.
-; USED BY: DISKIO_ParseConfigBuffer, DISKIO_SaveConfigToFileHandle,
-;   ESQSHARED4_InitializeBannerCopperSystem, _GCOMMAND_SeedBannerFromPrefs,
+; USED BY: _DISKIO_ParseConfigBuffer, DISKIO_SaveConfigToFileHandle,
+;   _ESQSHARED4_InitializeBannerCopperSystem, _GCOMMAND_SeedBannerFromPrefs,
 ;   SCRIPT banner-transition target selection.
 ; NOTES:
 ;   Parse path clamps to 128..220 and falls back to $8E (142) when invalid.
@@ -252,26 +252,26 @@ CONFIG_ParseiniLogoScanEnabledFlag:
 _CONFIG_BannerCopperHeadByte:
     DC.B    0
     DC.B    142
-Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES:
+_Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES:
     DC.B    8
 ;------------------------------------------------------------------------------
-; SYM: _ED_DiagTextModeChar/CONFIG_EnsurePc1GfxAssignedFlag/CONFIG_MsnRuntimeModeSelectorChar_LRBN
+; SYM: _ED_DiagTextModeChar/_CONFIG_EnsurePc1GfxAssignedFlag/_CONFIG_MsnRuntimeModeSelectorChar_LRBN
 ; TYPE: u8/u8/u8 (ASCII)
 ; PURPOSE:
 ;   `_ED_DiagTextModeChar` stores the diagnostics TXT mode selector.
-;   `CONFIG_EnsurePc1GfxAssignedFlag` gates DISKIO's PC1 mount + GFX assign path.
-;   `CONFIG_MsnRuntimeModeSelectorChar_LRBN` selects MSN runtime shadow bucket using LRBN letters.
-; USED BY: _ED_DrawDiagnosticModeText, ED2 diagnostic menu action cycling, DISKIO_ParseConfigBuffer, SCRIPT_UpdateRuntimeModeForPlaybackCursor
+;   `_CONFIG_EnsurePc1GfxAssignedFlag` gates DISKIO's PC1 mount + GFX assign path.
+;   `_CONFIG_MsnRuntimeModeSelectorChar_LRBN` selects MSN runtime shadow bucket using LRBN letters.
+; USED BY: _ED_DrawDiagnosticModeText, ED2 diagnostic menu action cycling, _DISKIO_ParseConfigBuffer, SCRIPT_UpdateRuntimeModeForPlaybackCursor
 ; NOTES:
 ;   `_ED_DiagTextModeChar` is cycled against the `NRLS` option set.
-;   `CONFIG_MsnRuntimeModeSelectorChar_LRBN` is validated against DISKIO_TAG_LRBN ("LRBN").
+;   `_CONFIG_MsnRuntimeModeSelectorChar_LRBN` is validated against _DISKIO_TAG_LRBN ("LRBN").
 ;------------------------------------------------------------------------------
 _ED_DiagTextModeChar:
     DC.B    "N"
-    assert ED_DiagTextModeChar_Length==CONFIG_EnsurePc1GfxAssignedFlag-_ED_DiagTextModeChar,"ED_DiagTextModeChar_Length in data-lengths.s is out of sync with the data layout"
-CONFIG_EnsurePc1GfxAssignedFlag:
+    assert ED_DiagTextModeChar_Length==_CONFIG_EnsurePc1GfxAssignedFlag-_ED_DiagTextModeChar,"ED_DiagTextModeChar_Length in data-lengths.s is out of sync with the data layout"
+_CONFIG_EnsurePc1GfxAssignedFlag:
     DC.B    "N"
-CONFIG_MsnRuntimeModeSelectorChar_LRBN:
+_CONFIG_MsnRuntimeModeSelectorChar_LRBN:
     DC.B    "N"
 ;------------------------------------------------------------------------------
 ; SYM: _CONFIG_LRBN_FlagChar/_CONFIG_MSN_FlagChar   (config tag flag chars)
